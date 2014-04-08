@@ -34,11 +34,11 @@ import com.itextpdf.text.ListItem;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
-import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dto.AgeRangeVO;
 import com.itgrids.partyanalyst.dto.AssumptionsVO;
 import com.itgrids.partyanalyst.dto.CasteStratagicReportVO;
@@ -77,7 +77,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	  BaseColor bcolor=BaseColor.YELLOW;
 	  BaseColor subHeading= new BaseColor(69,109,142);
 	  Font SMALLFONT = FontFactory.getFont("Calibri",9,Font.NORMAL);
-
+	  Font param = FontFactory.getFont("Calibri",12,Font.BOLD);
 	
 	@Autowired 
 	public IStratagicReportsService stratagicReportsService;
@@ -99,16 +99,13 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	@Autowired
 	
 	private IConstituencyDAO  constituencyDAO;
+
 	
-	@Autowired
-	IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	
 	private enum PdfPages{
 		prevConst,prevPar,prevMptcZptc,census,hoseHolds,voterInfo,firstTimeVoters, votersAgeGroup, votersCaste,panchayatVoterDensity, voterAdditionAndDeletion, genderWiseVoterModification, ageGroup,pollingPercent, boothWiseAddedDelList, delimitationEffect, assumptions, localityAddedDeleted 
 		,selectedCastes,totalCastesOrder,partyPerformance,previousTrends,youngCastes,agedCastes,otherPartyEffect,panchayatsClassification,impfamilesList,finalOrderOfOriority,constId
 	}
-	
-	
 	
 	
 	//serialization utility class
@@ -130,19 +127,13 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		
 	}
 	}
-	 public static  String  serialize(String fileName,Object obj,boolean autoStrategy) throws IOException 
+	 public static  String  serialize(String fileName,Object obj) throws IOException 
 		
 		{
 		 String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
 			FileOutputStream fileOut =null;
 			try{
-				String path = "";
-				if(autoStrategy){
-					 path =  IConstants.STATIC_CONTENT_FOLDER_URL+"DynamicReports"+pathSeperator+"temp"+pathSeperator+fileName+".ser";
-				 }else{
-					 path =  IConstants.STATIC_CONTENT_FOLDER_URL+"Strategy"+pathSeperator+"temp"+pathSeperator+fileName+".ser";
-				 }
-
+				String path = IConstants.STATIC_CONTENT_FOLDER_URL+"Strategy"+pathSeperator+"temp"+pathSeperator+fileName+".ser";
 			fileOut =new FileOutputStream(path);
 			         ObjectOutputStream out = new ObjectOutputStream(fileOut);
 			         out.writeObject(obj);
@@ -162,16 +153,12 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	// desrialization utility calss
 	public class DeSerialize<E> 
 	{
-		  public   E deSerialize(String fileName,boolean autoStrategy) throws IOException, ClassNotFoundException 
+		  public   E deSerialize(String fileName) throws IOException, ClassNotFoundException 
 			
 			{
-			  String path ="";
+			
 			  String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
-			  if(autoStrategy){
-				  path =  IConstants.STATIC_CONTENT_FOLDER_URL+"DynamicReports"+pathSeperator+"temp"+pathSeperator+fileName+".ser";
-				 }else{
-		    	  path = IConstants.STATIC_CONTENT_FOLDER_URL+"Strategy"+pathSeperator+"temp"+pathSeperator+fileName+".ser";
-				 }
+		    	 String path = IConstants.STATIC_CONTENT_FOLDER_URL+"Strategy"+pathSeperator+"temp"+pathSeperator+fileName+".ser";
 			 FileInputStream fileIn = new FileInputStream(path);
 		     ObjectInputStream in = new ObjectInputStream(fileIn);
 		     E vos   =  (E) in.readObject();
@@ -183,24 +170,11 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 			}
 	}
 
-
-
-	
-	
-	
 	public Object buildPdf(StrategyVO inputVo) {
 		
 		return null;
 	}
     
-	
-	public void buildAutoStrategy(Long constituencyId){
-		StrategyVO strategyVO = strategyModelTargetingService.getStrategyArguments(constituencyId);
-		strategyVO.setAutoStrategy(true);
-		buildPdfDelegator(strategyVO);
-	}
-	
-	
 	public Object buildPdfDelegator(StrategyVO strategyVO) {
 		
 		int noOfPages=29;
@@ -212,7 +186,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		serializationOfObjects(strategyVO,maps);
 		//deserilization of data
 		
-		Object url = DeserializationOfObjects(maps,strategyVO.getConstituencyId(),strategyVO.isAutoStrategy());
+		Object url = DeserializationOfObjects(maps,strategyVO.getConstituencyId());
 		//build pdf 
 		
 		return url;
@@ -248,7 +222,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		maps.put(PdfPages.constId, constId.toString());
 		defaultFileName="prev1"+uidentifier;
 		List<PartyElectionTrendsReportVO> resForPrevTrends=stratagicReportServiceForMLASuccess.getPreviousTrendsReport(constId);	                    
-		defaultFileName=serialize(defaultFileName, resForPrevTrends,strategyVO.isAutoStrategy());
+		defaultFileName=serialize(defaultFileName, resForPrevTrends);
 		maps.put(PdfPages.prevConst, defaultFileName);
 		
 		resForPrevTrends=null;
@@ -256,7 +230,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		
 		defaultFileName="prev2"+uidentifier;
 		List<PartyElectionTrendsReportVO> resForPrevTrendsForPaliament=stratagicReportServiceForMLASuccess.getPreviousTrendsReportParliament(constId);
-		defaultFileName =   serialize(defaultFileName, resForPrevTrendsForPaliament,strategyVO.isAutoStrategy());
+		defaultFileName =   serialize(defaultFileName, resForPrevTrendsForPaliament);
 		maps.put(PdfPages.prevPar, defaultFileName);
 
 		resForPrevTrendsForPaliament=null;
@@ -268,19 +242,19 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		 
 		defaultFileName="mptcZptc"+uidentifier;
 		PartyResultsVerVO mptcZptcResults=resultsForMptcZptcElections(constId);
-		defaultFileName =   serialize(defaultFileName, mptcZptcResults,strategyVO.isAutoStrategy());
+		defaultFileName =   serialize(defaultFileName, mptcZptcResults);
 		maps.put(PdfPages.prevMptcZptc, defaultFileName);
 		
 		
    //apge-6 
 		
 		//census
-		defaultFileName="census"+uidentifier;
+	   defaultFileName="census"+uidentifier;
 		StrategicCensusVO cVo=	stratagicReportServiceForMLASuccess.getCensusDetailsForAConstituency(constId);
 		List<StrategicCensusVO> objs=cVo.getCensusDetailsList();
 		   if(objs.size()>2)
 				objs.remove(2);
-		defaultFileName =   serialize(defaultFileName, cVo,strategyVO.isAutoStrategy());
+		defaultFileName =   serialize(defaultFileName, cVo);
 		maps.put(PdfPages.census, defaultFileName);
 		cVo=null;
   //page-7
@@ -288,28 +262,28 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		//households
 		defaultFileName="houses"+uidentifier;
 		HouseHoldsVO hvo=stratagicReportServiceForMLASuccess.getHouseHoldInfoByConstituency(null, constId, publicationDateId);
-		defaultFileName =   serialize(defaultFileName, hvo,strategyVO.isAutoStrategy());
+		defaultFileName =   serialize(defaultFileName, hvo);
 		maps.put(PdfPages.hoseHolds, defaultFileName);
 		hvo=null;
 		
 		//voters
 		defaultFileName="vinfo"+uidentifier;
 		VoterStratagicReportVo vinfo=stratagicReportServiceForMLASuccess.getVotersInfoByConstituency(userId, constId, publicationDateId);
-		defaultFileName =   serialize(defaultFileName, vinfo,strategyVO.isAutoStrategy());
+		defaultFileName =   serialize(defaultFileName, vinfo);
 		maps.put(PdfPages.voterInfo, defaultFileName);
 		vinfo=null;
 		
 		//firsttime voters
 		defaultFileName="firstTimeVoters"+uidentifier;
 		vinfo=stratagicReportServiceForMLASuccess.getFirstTimeVotersInfoByConstituency(userId, constId, publicationDateId);
-		defaultFileName =   serialize(defaultFileName, vinfo,strategyVO.isAutoStrategy());
+		defaultFileName =   serialize(defaultFileName, vinfo);
 		maps.put(PdfPages.firstTimeVoters, defaultFileName);
 		vinfo=null;
 		
 		//voters by age group
 		defaultFileName="votersAgeGroup"+uidentifier;
 		vinfo=stratagicReportServiceForMLASuccess.getAgeWiseVotersInfoByConstituency(userId, constId, publicationDateId);
-		defaultFileName =   serialize(defaultFileName, vinfo,strategyVO.isAutoStrategy());
+		defaultFileName =   serialize(defaultFileName, vinfo);
 		maps.put(PdfPages.votersAgeGroup, defaultFileName);
 		vinfo=null;
 	//page-8
@@ -317,14 +291,14 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		//voters by caste
 		defaultFileName="votersCaste"+uidentifier;
 		CasteStratagicReportVO cvo=stratagicReportServiceForMLASuccess.getCasteWiseVotersInfoByConstituency(userId, constId, publicationDateId);
-		defaultFileName =   serialize(defaultFileName, cvo,strategyVO.isAutoStrategy());
+		defaultFileName =   serialize(defaultFileName, cvo);
 		maps.put(PdfPages.votersCaste, defaultFileName);
 		cvo=null;
 		
 		//voter-density vs panchayats
 		defaultFileName="panchayatVoterDensity"+uidentifier;
 		VoterDensityWithPartyVO voterDensityWithPartyVO = stratagicReportsService.getVotersCountInPanchayatsForDensity(constId,publicationDateId);
-		defaultFileName =   serialize(defaultFileName, voterDensityWithPartyVO,strategyVO.isAutoStrategy());
+		defaultFileName =   serialize(defaultFileName, voterDensityWithPartyVO);
 		maps.put(PdfPages.panchayatVoterDensity, defaultFileName);
 		voterDensityWithPartyVO=null;
 		
@@ -333,16 +307,14 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		//delimitationeffect
 		defaultFileName="delimitationEffect"+uidentifier;
 		DelimitationEffectVO delimitationEffectVO=stratagicReportsService.getDelimationEffectOnConstituency(constId,partyId);
-		defaultFileName =   serialize(defaultFileName, delimitationEffectVO,strategyVO.isAutoStrategy());
+		defaultFileName =   serialize(defaultFileName, delimitationEffectVO);
 		maps.put(PdfPages.delimitationEffect, defaultFileName);
 		
 		//assumptions
-		if(!strategyVO.isAutoStrategy()){
-			defaultFileName="assumptions"+uidentifier;
-			AssumptionsVO assumptionsVO=stratagicReportsService.votersAssumptionsService( constId,base,assured,publicationDateId,tdpPerc);
-			defaultFileName =   serialize(defaultFileName, assumptionsVO,strategyVO.isAutoStrategy());
-			maps.put(PdfPages.assumptions, defaultFileName);
-		}
+		defaultFileName="assumptions"+uidentifier;
+		AssumptionsVO assumptionsVO=stratagicReportsService.votersAssumptionsService( constId,base,assured,publicationDateId,tdpPerc);
+		defaultFileName =   serialize(defaultFileName, assumptionsVO);
+		maps.put(PdfPages.assumptions, defaultFileName);
 		
 		
 		
@@ -369,52 +341,52 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		//page-21
 		
 		    defaultFileName="selectedCastes"+uidentifier;		 
-			defaultFileName =   serialize(defaultFileName, casteNamePercMap,strategyVO.isAutoStrategy());
+			defaultFileName =   serialize(defaultFileName, casteNamePercMap);
 			maps.put(PdfPages.selectedCastes, defaultFileName);
 			casteNamePercMap=null;
 		
 			defaultFileName="totalCastesOrder"+uidentifier;
-			defaultFileName =   serialize(defaultFileName, totalCastesList,strategyVO.isAutoStrategy());
+			defaultFileName =   serialize(defaultFileName, totalCastesList);
 			maps.put(PdfPages.totalCastesOrder, defaultFileName);
 			totalCastesList=null;
 				
 			defaultFileName="partyPerformance"+uidentifier;
-			defaultFileName =   serialize(defaultFileName,partyPerformance,strategyVO.isAutoStrategy());
+			defaultFileName =   serialize(defaultFileName,partyPerformance);
 			maps.put(PdfPages.partyPerformance, defaultFileName);
 			partyPerformance=null;
 			
 		    defaultFileName="previousTrends"+uidentifier;		 
-			defaultFileName =   serialize(defaultFileName, previousTrends,strategyVO.isAutoStrategy());
+			defaultFileName =   serialize(defaultFileName, previousTrends);
 			maps.put(PdfPages.previousTrends, defaultFileName);
 			previousTrends=null;
 		
 			defaultFileName="youngCastes"+uidentifier;
-			defaultFileName =   serialize(defaultFileName, youngCastesList,strategyVO.isAutoStrategy());
+			defaultFileName =   serialize(defaultFileName, youngCastesList);
 			maps.put(PdfPages.youngCastes, defaultFileName);
 			youngCastesList=null;
 				
 			defaultFileName="agedCastes"+uidentifier;
-			defaultFileName =   serialize(defaultFileName,agedCastesList,strategyVO.isAutoStrategy());
+			defaultFileName =   serialize(defaultFileName,agedCastesList);
 			maps.put(PdfPages.agedCastes, defaultFileName);
 			agedCastesList=null;
 			
 			defaultFileName="otherPartyEffect"+uidentifier;
-			defaultFileName =   serialize(defaultFileName,otherPartyEffect,strategyVO.isAutoStrategy());
+			defaultFileName =   serialize(defaultFileName,otherPartyEffect);
 			maps.put(PdfPages.otherPartyEffect, defaultFileName);
 			otherPartyEffect=null;
 			
 		    defaultFileName="panchayatsClassification"+uidentifier;		 
-			defaultFileName =   serialize(defaultFileName, panchayatsClassification,strategyVO.isAutoStrategy());
+			defaultFileName =   serialize(defaultFileName, panchayatsClassification);
 			maps.put(PdfPages.panchayatsClassification, defaultFileName);
 			panchayatsClassification=null;
 		
 			defaultFileName="impfamilesList"+uidentifier;
-			defaultFileName =   serialize(defaultFileName, impfamilesList,strategyVO.isAutoStrategy());
+			defaultFileName =   serialize(defaultFileName, impfamilesList);
 			maps.put(PdfPages.impfamilesList, defaultFileName);
 			impfamilesList=null;
 				
 			defaultFileName="finalOrderOfOriority"+uidentifier;
-			defaultFileName =   serialize(defaultFileName,finalOrderOfOriority,strategyVO.isAutoStrategy());
+			defaultFileName =   serialize(defaultFileName,finalOrderOfOriority);
 			maps.put(PdfPages.finalOrderOfOriority, defaultFileName);
 			finalOrderOfOriority=null;		
 			//targetting key factors ends
@@ -426,7 +398,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		
 		   defaultFileName="voterAdditionAndDeletion"+uidentifier;
 		   PDFHeadingAndReturnVO voterAgeRangeVOList = stratagicReportsService.getVoterInfoByPublicationDateList(locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId);
-			defaultFileName =   serialize(defaultFileName, voterAgeRangeVOList,strategyVO.isAutoStrategy());
+			defaultFileName =   serialize(defaultFileName, voterAgeRangeVOList);
 			maps.put(PdfPages.voterAdditionAndDeletion, defaultFileName);
 			voterAgeRangeVOList=null;
 		 //stratagicReportsService.generatePDFForVoterInfo(voterAgeRangeVOList,"voterInfo");
@@ -434,7 +406,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		//-->Gender Wise Voter Modifications between Electoral Roll 2013 - Draft To Electoral Roll 2013 – Final
 		 defaultFileName="genderWiseVoterModification"+uidentifier;
 		 PDFHeadingAndReturnVO voterModificationAgeRangeVOList = stratagicReportsService.getGenderWiseVoterModificationsForEachPublication(locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId,"intermediate");
-			defaultFileName =   serialize(defaultFileName, voterModificationAgeRangeVOList,strategyVO.isAutoStrategy());
+			defaultFileName =   serialize(defaultFileName, voterModificationAgeRangeVOList);
 			maps.put(PdfPages.genderWiseVoterModification, defaultFileName);
 			voterModificationAgeRangeVOList=null;
 		 //stratagicReportsService.generatePDFForVoterInfo(voterModificationAgeRangeVOList,"addedDeleted");
@@ -442,7 +414,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		//--->Age Group
 		 defaultFileName="ageGroup"+uidentifier;
 		 PDFHeadingAndReturnVO voterModificationGenderInfoVOList = stratagicReportsService.getVotersAddedAndDeletedCountAgeWiseInBeetweenPublications(locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId,"intermediate");
-			defaultFileName =   serialize(defaultFileName, voterModificationGenderInfoVOList,strategyVO.isAutoStrategy());
+			defaultFileName =   serialize(defaultFileName, voterModificationGenderInfoVOList);
 			maps.put(PdfPages.ageGroup, defaultFileName);
 			voterModificationGenderInfoVOList=null;
 		 //stratagicReportsService.generatePDFForVoterInfo(voterModificationGenderInfoVOList,"genderWise");
@@ -455,21 +427,21 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 			defaultFileName="boothWiseAddedDelList"+uidentifier;
 			List<AgeRangeVO> boothWiseAddedDelList =stratagicReportsService.getBoothWiseAddedAndDeletedVoters(constituencyId,publicationDateId);
 		
-			defaultFileName =   serialize(defaultFileName, boothWiseAddedDelList,strategyVO.isAutoStrategy());
+			defaultFileName =   serialize(defaultFileName, boothWiseAddedDelList);
 			maps.put(PdfPages.boothWiseAddedDelList, defaultFileName);
 			
 		//-->locality wise added deleted 
 			
 			defaultFileName="localityAddedDeleted"+uidentifier;
 			VoterModificationVO voterModificationVO=stratagicReportsService.getSubLevelsVoterModificationDetailsByLocationValue(locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId);
-			defaultFileName =   serialize(defaultFileName, voterModificationVO,strategyVO.isAutoStrategy());
+			defaultFileName =   serialize(defaultFileName, voterModificationVO);
 			maps.put(PdfPages.localityAddedDeleted, defaultFileName);
 		
 	//page-23
 		//Polling Stations – Increase Polling %
 		  defaultFileName="boothPolling"+uidentifier;
 		 List<PartyPositionVO> polling= boothwisePollingStratagicService.getPollingPercentagesByParty(constId, partyId, electionId, electionId1);
-		  defaultFileName =   serialize(defaultFileName, polling,strategyVO.isAutoStrategy());
+		  defaultFileName =   serialize(defaultFileName, polling);
 			maps.put(PdfPages.pollingPercent, defaultFileName);
 		}catch (Exception e) {
 			LOG.error("exception rised in serializationOfObjects ",e);
@@ -480,7 +452,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		return null;
 	}
 	
-	public Object DeserializationOfObjects(Map<PdfPages,String> maps,Long constituencyId,boolean autoStrategy) 
+	public Object DeserializationOfObjects(Map<PdfPages,String> maps,Long constituencyId) 
 	{
 		 //page-4
 	    //previous trends 
@@ -489,15 +461,9 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		   Document document=null;
 		   String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
 			 String uidentifier = new Random().nextInt(100000000)+"";
-			 String path ="";
-			 if(autoStrategy){
-				 path = IConstants.STATIC_CONTENT_FOLDER_URL+"DynamicReports"+pathSeperator+"pdfs";
-			 }else{
-				 path = IConstants.STATIC_CONTENT_FOLDER_URL+"Strategy"+pathSeperator+"pdfs";
-			 }
-			 Long constiNo = delimitationConstituencyDAO.getConstituencyNo(constituencyId, 2009l);
-		  String filePath = path+pathSeperator+constiNo+"_"+constituencyDAO.get(constituencyId).getName()+"_"+uidentifier+".pdf";
-		   String url = "Strategy"+pathSeperator+"pdfs"+pathSeperator+constiNo+"_"+constituencyDAO.get(constituencyId).getName()+"_"+uidentifier+".pdf";
+			 String path = IConstants.STATIC_CONTENT_FOLDER_URL+"Strategy"+pathSeperator+"pdfs";
+			 String filePath = path+pathSeperator+constituencyDAO.get(constituencyId).getName()+"_"+uidentifier+".pdf";
+		   String url = "Strategy"+pathSeperator+"pdfs"+pathSeperator+constituencyDAO.get(constituencyId).getName()+"_"+uidentifier+".pdf";
 	try{
 		
 		 
@@ -537,14 +503,14 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 				 
 	
 		DeSerialize<List<PartyElectionTrendsReportVO>> des =new DeSerialize<List<PartyElectionTrendsReportVO>>();
-	   List<PartyElectionTrendsReportVO> resForPrevTrends=des.deSerialize( maps.get(PdfPages.prevConst),autoStrategy );	                    
+	   List<PartyElectionTrendsReportVO> resForPrevTrends=des.deSerialize( maps.get(PdfPages.prevConst) );	                    
 	   buildPdfForPrevTrends( maps.get(PdfPages.prevConst), resForPrevTrends, document, writer, heading);
 	   resForPrevTrends=null;
 	   des=null;
 	 //previous trends in parliament
 	
 	   DeSerialize<List<PartyElectionTrendsReportVO>> des1 =new DeSerialize<List<PartyElectionTrendsReportVO>>();
-	   List<PartyElectionTrendsReportVO> resForPrevTrendsForPaliament=des1.deSerialize( maps.get(PdfPages.prevPar),autoStrategy );	
+	   List<PartyElectionTrendsReportVO> resForPrevTrendsForPaliament=des1.deSerialize( maps.get(PdfPages.prevPar) );	
 	   String parliamentName=name+" Segment";
 	   String heading2="Parliament Results In "+parliamentName;
 	   buildPdfForPrevTrends( maps.get(PdfPages.prevPar), resForPrevTrendsForPaliament, document, writer, heading2);
@@ -559,7 +525,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	  //previous trends in mptc and zptc
 	   //buildSubHeading(document, "Zilla and Mandal Parishad Elections Results"); 
 	   DeSerialize<PartyResultsVerVO> dmptcZptcResults =new DeSerialize<PartyResultsVerVO>();
-	   PartyResultsVerVO mptcZptcResults =dmptcZptcResults.deSerialize( maps.get(PdfPages.prevMptcZptc),autoStrategy );
+	   PartyResultsVerVO mptcZptcResults =dmptcZptcResults.deSerialize( maps.get(PdfPages.prevMptcZptc) );
 	   
 	   stratagicReportsService.generatePdfForLocalElectionResults(mptcZptcResults,document);
 	   mptcZptcResults=null;
@@ -570,7 +536,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	   document.newPage();
 	   buildSubHeading(document, "Census “A Snapshot”");
 	   DeSerialize<StrategicCensusVO> cdes =new DeSerialize<StrategicCensusVO>();
-	  StrategicCensusVO cVo =cdes.deSerialize( maps.get(PdfPages.census),autoStrategy );
+	  StrategicCensusVO cVo =cdes.deSerialize( maps.get(PdfPages.census) );
 	  try{
 	  buildPdfForCensusData(cVo, document, writer, cVo.getMessage());
 	  if(cVo != null && cVo.getConclusion() != null){
@@ -604,7 +570,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	   document.newPage();
 		 buildSubHeading(document, "Households");
 	 DeSerialize<HouseHoldsVO> dhvo =new DeSerialize<HouseHoldsVO>();
-	 HouseHoldsVO hvo=dhvo.deSerialize( maps.get(PdfPages.hoseHolds),autoStrategy );
+	 HouseHoldsVO hvo=dhvo.deSerialize( maps.get(PdfPages.hoseHolds) );
      buildPdfForHouseHolds( hvo, document, writer, hvo.getMessage());
 
 	 dhvo=null;hvo=null;
@@ -612,12 +578,12 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	//voters
 	 buildSubHeading(document, "Voters");
 	 DeSerialize<VoterStratagicReportVo> dvinfo =new DeSerialize<VoterStratagicReportVo>();
-	 VoterStratagicReportVo vinfo =dvinfo.deSerialize( maps.get(PdfPages.voterInfo),autoStrategy );
+	 VoterStratagicReportVo vinfo =dvinfo.deSerialize( maps.get(PdfPages.voterInfo) );
 	 buildPdfForVotersInfo(vinfo, document, writer, vinfo.getMessage());
 	
 	//firsttime voters
 	  buildSubHeading(document, "First Time Voters");
-	  vinfo =dvinfo.deSerialize( maps.get(PdfPages.firstTimeVoters),autoStrategy );
+	  vinfo =dvinfo.deSerialize( maps.get(PdfPages.firstTimeVoters) );
 	  if(vinfo !=null)
 	 buildPdfForFirstTimeVotersAndVotersByAgeGroup(vinfo, document, writer, "");
       
@@ -626,7 +592,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	//voters by age group
 	
 	 buildSubHeading(document, "Voters by Age Group");
-     vinfo =dvinfo.deSerialize( maps.get(PdfPages.votersAgeGroup),autoStrategy );
+     vinfo =dvinfo.deSerialize( maps.get(PdfPages.votersAgeGroup) );
 	 buildPdfForFirstTimeVotersAndVotersByAgeGroup(vinfo, document, writer, "");
 
 	 vinfo=null;
@@ -637,7 +603,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	// buildSubHeading(document, "Voters by Caste");
 	 
 	 DeSerialize<CasteStratagicReportVO>  dcvo=new DeSerialize<CasteStratagicReportVO>();
-	 CasteStratagicReportVO cvo =dcvo.deSerialize( maps.get(PdfPages.votersCaste),autoStrategy );
+	 CasteStratagicReportVO cvo =dcvo.deSerialize( maps.get(PdfPages.votersCaste) );
 	 if(cvo!=null)
 	 {
 		 List<String> columnNames = new ArrayList<String>();
@@ -659,242 +625,19 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	 buildSubHeading(document, "Voter Density Vs Panchayaths – Along with 2013 Panchayath Results"); 
 	   // VoterDensityWithPartyVO voterDensityWithPartyVO = stratagicReportsService.getVotersCountInPanchayatsForDensity(constituencyId,publicationId);
 	  DeSerialize<VoterDensityWithPartyVO>  dvoterDensityWithPartyVO=new DeSerialize<VoterDensityWithPartyVO>();
-	  VoterDensityWithPartyVO voterDensityWithPartyVO =dvoterDensityWithPartyVO.deSerialize( maps.get(PdfPages.panchayatVoterDensity),autoStrategy );
+	  VoterDensityWithPartyVO voterDensityWithPartyVO =dvoterDensityWithPartyVO.deSerialize( maps.get(PdfPages.panchayatVoterDensity) );
 	  stratagicReportsService.generatePDFForDensity(voterDensityWithPartyVO,document);
 	  voterDensityWithPartyVO=null;
 	 
-	/* //page 9
-	 document.newPage();
-	  buildSubHeading(document, "Our Candidate");
-	 
-      Paragraph str =new Paragraph("We consolidate the inputs procured from the field operations to provide a snapshot of the strengths, 	 weakness of the contestants available in the constituency. This is a key ingredient in helping us to create  a  strategy  based  on  the  covering  up  our  weakness  and  fortify  our  strengths  &  opportunities  as  well 	 exploit the opponent’s weakness.",SMALLFONT);
-      document.add(str);
-
-	 document.add(Chunk.NEWLINE);
-	 document.add(Chunk.NEWLINE);
-	 buildPdfForText(document);*/
-
-     //page-10
-
-      document.add(Chunk.NEWLINE);
- 	 document.add(Chunk.NEWLINE);
- 	 
- 		
-/* 	 buildSubHeading1(document, "Mr. Gobbula Tammaiah (TDP)");
- 	 document.add(Chunk.NEWLINE);
- 	 buildSubHeading(document, "Strength & Weakness");
- 	 buildSubHeading2(document, "Strengths");
- 	 
- 	
- 	 
- 	 Paragraph str2 =new Paragraph("     Having Good Following in Student Community as a Principal of a College.",SMALLFONT);
- 	 //document.add(str2);
- 	 Paragraph str3 =new Paragraph("     Good Relationship in his Settibalija Community which is the Major Community in Constituency.",SMALLFONT);
- 	 //document.add(str3);
- 	 Paragraph str4 =new Paragraph("     Good Financial background.",SMALLFONT);
- 	// document.add(str4);
- 	 
- 	 document.add(Chunk.NEWLINE);
- 	  com.itextpdf.text.ZapfDingbatsList orderedList = new com.itextpdf.text.ZapfDingbatsList(108, 10);
-     
- 	 
- 		
- 	                orderedList.add(new ListItem(str2));
-                     orderedList.add(new ListItem(str3));
-                     orderedList.add(new ListItem(str4));
- 		  
- 	  document.add(orderedList);
- 	 
- 	  document.add(Chunk.NEWLINE);
- 	 buildSubHeading2(document, "Weakness");
- 	
- 	 
- 	 Paragraph str5 =new Paragraph("  Some of the Cadre are Silent.",SMALLFONT);
- 	 //document.add(str5);
- 	 Paragraph str6 =new Paragraph("  No Good Relationship in Cadre.",SMALLFONT);
- 	 //document.add(str6);
- 	 
- 	 document.add(Chunk.NEWLINE);
- 	 com.itextpdf.text.ZapfDingbatsList orderedList1 = new com.itextpdf.text.ZapfDingbatsList(108, 10);
-    
- 	               orderedList1.add(new ListItem(str5));
-                    orderedList1.add(new ListItem(str6));
-                    
-       
- 	  document.add(orderedList1);
- 	  document.add(Chunk.NEWLINE); 
- 	 buildSubHeading2(document, "Opportunity");
- 	 Paragraph str7 =new Paragraph("  With the Solid Support of Settibalija Community, can win Easily .",SMALLFONT);
- 	 //document.add(str7);
- 	 Paragraph str8 =new Paragraph("  By Maintaining Good Relationship with Neutral Cadre may help to win Easily .",SMALLFONT);
- 	// document.add(str8);
- 	 Paragraph str9 =new Paragraph("  Capture the PRP Voting with lost by the party in 2009 General Elections .",SMALLFONT);
- 	 //document.add(str9);
- 	 
- 	 document.add(Chunk.NEWLINE);
- 	 com.itextpdf.text.ZapfDingbatsList orderedList2 = new com.itextpdf.text.ZapfDingbatsList(108, 10);
-    
- 	               orderedList2.add(new ListItem(str7));
-                    orderedList2.add(new ListItem(str8));
-                    orderedList2.add(new ListItem(str9));
-                    
-                    
- 	  
- 	  document.add(orderedList2);
- 	 
- 	  document.add(Chunk.NEWLINE); 
- 	 buildSubHeading2(document, "Threat");
- 	 Paragraph str10 =new Paragraph("   All the Parties may field their candidates from Settibalija Community .",SMALLFONT);
- 	 //document.add(str10);
- 	 Paragraph str11 =new Paragraph("   Ex Minister Pitani Satyanarayana near relative may contest from Jai Samaikya Andhra Party .",SMALLFONT);
- 	 //document.add(str11);
- 	 Paragraph str12 =new Paragraph("   Kapu Community Votes May Split, if Pawan Kalyan Party Contests.",SMALLFONT);
- 	 //document.add(str12); 
- 	 Paragraph str13 =new Paragraph("   Polling % in Nelamuru and Ramannapalem Panchayaths was above 90% in 2009 Election, and Our Party is losing much so, Preventive measures have to be taken in Maintain the Election process .",SMALLFONT);
- 	 //document.add(str13); 
- 	 
- 	 document.add(Chunk.NEWLINE);
- 	 com.itextpdf.text.ZapfDingbatsList orderedList3 = new com.itextpdf.text.ZapfDingbatsList(108, 10);
-    
- 	               orderedList3.add(new ListItem(str10));
-                    orderedList3.add(new ListItem(str11));
-                    orderedList3.add(new ListItem(str12));
-                    orderedList3.add(new ListItem(str13));
-                    
- 	  
- 	  document.add(orderedList3);
- 	 
- 	 buildSubHeading(document, "Viable Opponents");
- 	 Paragraph str1 =new Paragraph("   After required amount of survey & opinions collected from distinguished politicians, journalists as well  as the local public we have created a list of candidates who can pose threat ", SMALLFONT);
- 	 document.add(str1);
- 	 document.add(Chunk.NEWLINE);
- 	 buildSubHeading1(document, "Mr. Kaadiboina Srinivas (YSRCP)");
- 	 document.add(Chunk.NEWLINE);
- 	 buildSubHeading(document, "Strength & Weakness");
- 	 document.add(Chunk.NEWLINE);
- 	 buildSubHeading2(document, "Strengths:");
- 	 
- 	 Paragraph str21 =new Paragraph("   Good Support from MALA Community.",SMALLFONT);
- 	// document.add(str21);
- 	 Paragraph str22 =new Paragraph("   Can invest huge amounts.",SMALLFONT);
- 	// document.add(str22);
- 	 Paragraph str23 =new Paragraph("   Good Support from Kudupudi Srinivas, MP Contesting Candidate.",SMALLFONT);
- 	 //document.add(str23);
- 	 Paragraph str33 =new Paragraph("   Settibalija Caste Voting percentage may gain.",SMALLFONT);
- 	 //document.add(str33);
- 	 
- 	 document.add(Chunk.NEWLINE);
- 	 com.itextpdf.text.ZapfDingbatsList orderedList4 = new com.itextpdf.text.ZapfDingbatsList(108, 10);
-    
- 	               orderedList4.add(new ListItem(str21));
-                    orderedList4.add(new ListItem(str22));
-                    orderedList4.add(new ListItem(str23));
-                    orderedList4.add(new ListItem(str33));
-                    
- 	  
- 	  document.add(orderedList4);
- 	  document.add(Chunk.NEWLINE);
- 	 buildSubHeading2(document, "Weakness:");
- 	 Paragraph str24 =new Paragraph("   Low Strength of Mala Community.",SMALLFONT);
- 	 //document.add(str24);
- 	 Paragraph str25 =new Paragraph("   Can lose Support from the Cadre, in case not getting the Chance of their Choice.",SMALLFONT);
- 	 //document.add(str25);
- 	 document.add(Chunk.NEWLINE);
- 	 com.itextpdf.text.ZapfDingbatsList orderedList5 = new com.itextpdf.text.ZapfDingbatsList(108, 10);
-    
- 	               orderedList5.add(new ListItem(str24));
-                    orderedList5.add(new ListItem(str25));
-                    
- 	  document.add(orderedList5);
- 	  document.add(Chunk.NEWLINE);
- 	 buildSubHeading2(document, "Opportunity");
- 	 Paragraph str26 =new Paragraph("   Winning Chances are there, if Kapu and Settibalija Castes Work together .",SMALLFONT);
- 	 //document.add(str26);
- 	 
- 	 document.add(Chunk.NEWLINE);
- 	 com.itextpdf.text.ZapfDingbatsList orderedList6 = new com.itextpdf.text.ZapfDingbatsList(108, 10);
-    
- 	               orderedList6.add(new ListItem(str26));
-                  
-                    
- 	  document.add(orderedList6);
- 	  document.add(Chunk.NEWLINE);
- 	 buildSubHeading2(document, "Threat:");
- 	 Paragraph str29 =new Paragraph("   Dissatisfied Aspirants non Cooperation .",SMALLFONT);
- 	// document.add(str29);
- 	 Paragraph str30 =new Paragraph("   Ex Minister Pitani Satyanarayana May also in the Fray.",SMALLFONT);
- 	 //document.add(str30);
- 	 document.add(Chunk.NEWLINE);
- 	 com.itextpdf.text.ZapfDingbatsList orderedList7 = new com.itextpdf.text.ZapfDingbatsList(108, 10);
-    
- 	               orderedList7.add(new ListItem(str29));
- 	               orderedList7.add(new ListItem(str30));
-                  
-                    
- 	  document.add(orderedList7);
- 	 
- 	  document.add(Chunk.NEWLINE);
- 	 buildSubHeading1(document, "Mr.Pitani Satyanarayana (JSAP)");
- 	 document.add(Chunk.NEWLINE);
- 	// buildSubHeading(document, "Strength & Weakness");
- 	 buildSubHeading2(document, "Strengths");
- 	 
- 	 Paragraph str41 =new Paragraph("   He was Ex Minister.",SMALLFONT);
- 	 //document.add(str21);
- 	 Paragraph str42 =new Paragraph("   Good Hold on Constituency.",SMALLFONT);
- 	// document.add(str22);
- 	 
- 	 document.add(Chunk.NEWLINE);
- 	 com.itextpdf.text.ZapfDingbatsList orderedList8 = new com.itextpdf.text.ZapfDingbatsList(108, 10);
-    
- 	               orderedList8.add(new ListItem(str41));
- 	               orderedList8.add(new ListItem(str42));
-                  
-                    
- 	  document.add(orderedList8);
- 	  document.add(Chunk.NEWLINE);
- 	 buildSubHeading2(document, "Weakness");
- 	 Paragraph str43 =new Paragraph("   OC Category May against his Candidature.",SMALLFONT);
- 	 //document.add(str43);
- 	 Paragraph str44 =new Paragraph("   Lost Confidence in Samaikya Andhra Movement.",SMALLFONT);
- 	 //document.add(str44);
- 	 
- 	 document.add(Chunk.NEWLINE);
- 	 com.itextpdf.text.ZapfDingbatsList orderedList9 = new com.itextpdf.text.ZapfDingbatsList(108, 10);
-    
- 	               orderedList9.add(new ListItem(str43));
- 	               orderedList9.add(new ListItem(str44));
-                  
-                    
- 	  document.add(orderedList9);
- 	 
- 	  document.add(Chunk.NEWLINE);
- 	 buildSubHeading2(document, "Opportunity");
- 	 Paragraph str45 =new Paragraph("   May get support from NGO’s to Jai Samaikya Andhra Party .",SMALLFONT);
- 	// document.add(str45);
- 	 
- 	 document.add(Chunk.NEWLINE);
- 	 com.itextpdf.text.ZapfDingbatsList orderedList10 = new com.itextpdf.text.ZapfDingbatsList(108, 10);
-    
- 	               orderedList10.add(new ListItem(str45));
- 	              
- 	  document.add(orderedList10);
- 	 
- 	  document.add(Chunk.NEWLINE);
- 	 buildSubHeading2(document, "Threat");
- 	 Paragraph str46 =new Paragraph("   Less Support from Own Caste .",SMALLFONT);
- 	 //document.add(str46);
- 	 Paragraph str47 =new Paragraph("   Nil Support from OC’s.",SMALLFONT);
- 	 //document.add(str47);
- 	  
- 	 document.add(Chunk.NEWLINE);
- 	 com.itextpdf.text.ZapfDingbatsList orderedList11 = new com.itextpdf.text.ZapfDingbatsList(108, 10);
-    
- 	               orderedList11.add(new ListItem(str46));
- 	               orderedList11.add(new ListItem(str47));
-                  
-                    
- 	  document.add(orderedList11);*/
+	  /* //page 9
+		 document.newPage();
+		  buildSubHeading(document, "Our Candidate");
+		 
+	      Paragraph str =new Paragraph("We consolidate the inputs procured from the field operations to provide a snapshot of the strengths, 	 weakness of the contestants available in the constituency. This is a key ingredient in helping us to create  a  strategy  based  on  the  covering  up  our  weakness  and  fortify  our  strengths  &  opportunities  as  well 	 exploit the opponent’s weakness.",SMALLFONT);
+	      document.add(str);
+		 document.add(Chunk.NEWLINE);
+		 document.add(Chunk.NEWLINE);
+		 buildPdfForText(document);*/
  	 
       //page-10
 
@@ -909,17 +652,16 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	 buildSubHeading(document, "Delimitation Effect");
 
      DeSerialize<DelimitationEffectVO> desdelimitationEffectVO =new DeSerialize<DelimitationEffectVO>();
-     DelimitationEffectVO delimitationEffectVO=desdelimitationEffectVO.deSerialize( maps.get(PdfPages.delimitationEffect),autoStrategy );
+     DelimitationEffectVO delimitationEffectVO=desdelimitationEffectVO.deSerialize( maps.get(PdfPages.delimitationEffect) );
      //call to pdf generation 	   
     stratagicReportsService.generatePDFForDelimitationEffect(delimitationEffectVO,document);
      
     //assumptions
-   if(!autoStrategy){
+    
     DeSerialize<AssumptionsVO> desassumptionsVO =new DeSerialize<AssumptionsVO>();
-    AssumptionsVO assumptionsVO =desassumptionsVO.deSerialize( maps.get(PdfPages.assumptions),autoStrategy );
+    AssumptionsVO assumptionsVO =desassumptionsVO.deSerialize( maps.get(PdfPages.assumptions) );
     //call to pdf generation 	   
     stratagicReportsService.generatePDFForAssuredTargetVotersBlock(assumptionsVO,document);
-   }
     
     
      //page-11
@@ -937,21 +679,21 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		preface.add( new Paragraph(" ") );
 	    document.add(preface);
         DeSerialize<Map<String,Float>>  dcasteNamePercMap=new DeSerialize<Map<String,Float>>();
-	    Map<String,Float> casteNamePercMap =dcasteNamePercMap.deSerialize( maps.get(PdfPages.selectedCastes),autoStrategy );
+	    Map<String,Float> casteNamePercMap =dcasteNamePercMap.deSerialize( maps.get(PdfPages.selectedCastes) );
 	    if(casteNamePercMap != null && casteNamePercMap.size() > 0){
 		  
 		  strategyModelTargetingService.generateCasteWiseTable(document,casteNamePercMap);//1
 		  casteNamePercMap=null;
 	 
 	  	  DeSerialize<List<PanchayatVO>>  dtotalCastesList=new DeSerialize<List<PanchayatVO>>();
-	      List<PanchayatVO> totalCastesList =dtotalCastesList.deSerialize( maps.get(PdfPages.totalCastesOrder),autoStrategy );
+	      List<PanchayatVO> totalCastesList =dtotalCastesList.deSerialize( maps.get(PdfPages.totalCastesOrder) );
 	      strategyModelTargetingService.panchayatWiseTargetVotesTable(document,totalCastesList);//2
 	      totalCastesList=null;
 	   }
 	  
 
       DeSerialize<List<PartyPositionVO>>  dpreviousTrends=new DeSerialize<List<PartyPositionVO>>();
-	  List<PartyPositionVO> previousTrends =dpreviousTrends.deSerialize( maps.get(PdfPages.previousTrends),autoStrategy );
+	  List<PartyPositionVO> previousTrends =dpreviousTrends.deSerialize( maps.get(PdfPages.previousTrends) );
 	  strategyModelTargetingService.generatePdfForMatrixReport(document,previousTrends);//4
 	  previousTrends=null;
 
@@ -962,18 +704,18 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	  preface.add( new Paragraph("Constituency Wise :",calibriNormal));
 	  //preface.add( new Paragraph(" ") );
 	  document.add(preface);
-	  vinfo =dvinfo.deSerialize( maps.get(PdfPages.firstTimeVoters),autoStrategy );
+	  vinfo =dvinfo.deSerialize( maps.get(PdfPages.firstTimeVoters) );
 	  if(vinfo !=null)
 	  buildPdfForFirstTimeVotersAndVotersByAgeGroup(vinfo, document, writer, "");
 	  vinfo=null;
 	  
      DeSerialize<List<PanchayatVO>>  dyoungCastesList=new DeSerialize<List<PanchayatVO>>();
-	  List<PanchayatVO> youngCastesList =dyoungCastesList.deSerialize( maps.get(PdfPages.youngCastes),autoStrategy );
+	  List<PanchayatVO> youngCastesList =dyoungCastesList.deSerialize( maps.get(PdfPages.youngCastes) );
 	  strategyModelTargetingService.panchayatWiseTargetYoungVotesTable(document,youngCastesList,"18-22");//5
 	  youngCastesList=null;
 	  
 	  DeSerialize<List<PanchayatVO>>  dagedCastesList=new DeSerialize<List<PanchayatVO>>();
-	  List<PanchayatVO> agedCastesList =dagedCastesList.deSerialize( maps.get(PdfPages.agedCastes),autoStrategy );
+	  List<PanchayatVO> agedCastesList =dagedCastesList.deSerialize( maps.get(PdfPages.agedCastes) );
 	   if(agedCastesList != null && agedCastesList.size() > 0){
 		  buildSubHeading(document, "Aged (Above 60) Voters");
 		  Paragraph preface1 = new Paragraph();
@@ -981,7 +723,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		  preface1.add( new Paragraph("Constituency Wise :",calibriNormal));
 		  //preface1.add( new Paragraph(" ") );
 		  document.add(preface1);
-		  vinfo =dvinfo.deSerialize( maps.get(PdfPages.votersAgeGroup),autoStrategy );
+		  vinfo =dvinfo.deSerialize( maps.get(PdfPages.votersAgeGroup) );
 		  if(vinfo.getVoterStategicReportVOList() != null && vinfo.getVoterStategicReportVOList().size() > 0)
 		  {
 			  int size = vinfo.getVoterStategicReportVOList().size() ;
@@ -995,17 +737,17 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		  agedCastesList=null;
 	  }
      DeSerialize<List<PartyEffectVO>>  dotherPartyEffect=new DeSerialize<List<PartyEffectVO>>();
-	  List<PartyEffectVO> otherPartyEffect =dotherPartyEffect.deSerialize( maps.get(PdfPages.otherPartyEffect),autoStrategy );
+	  List<PartyEffectVO> otherPartyEffect =dotherPartyEffect.deSerialize( maps.get(PdfPages.otherPartyEffect) );
 	  strategyModelTargetingService.prpEffectTableTable(document,otherPartyEffect);//7
 	  otherPartyEffect=null;
 	  
 	  DeSerialize<List<ImpFamilesVO>>  dimpfamilesList=new DeSerialize<List<ImpFamilesVO>>();
-	  List<ImpFamilesVO> impfamilesList =dimpfamilesList.deSerialize( maps.get(PdfPages.impfamilesList),autoStrategy );
+	  List<ImpFamilesVO> impfamilesList =dimpfamilesList.deSerialize( maps.get(PdfPages.impfamilesList) );
 	  strategyModelTargetingService.generateImpFamilesTable(document,impfamilesList,null);//9
 	  impfamilesList=null;
 
      DeSerialize<List<OrderOfPriorityVO>>  dpanchayatsClassification=new DeSerialize<List<OrderOfPriorityVO>>();
-	  List<OrderOfPriorityVO> panchayatsClassification =dpanchayatsClassification.deSerialize( maps.get(PdfPages.panchayatsClassification),autoStrategy );
+	  List<OrderOfPriorityVO> panchayatsClassification =dpanchayatsClassification.deSerialize( maps.get(PdfPages.panchayatsClassification) );
 	  strategyModelTargetingService.buildPiChart(document,panchayatsClassification,writer);//8
 	  strategyModelTargetingService.buildPanchayatsClassificationBlock(document,panchayatsClassification);//8
 	  panchayatsClassification=null;
@@ -1013,7 +755,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
   
 
      DeSerialize<List<OrderOfPriorityVO>>  dfinalOrderOfOriority=new DeSerialize<List<OrderOfPriorityVO>>();
-	  List<OrderOfPriorityVO> finalOrderOfOriority =dfinalOrderOfOriority.deSerialize( maps.get(PdfPages.finalOrderOfOriority),autoStrategy );
+	  List<OrderOfPriorityVO> finalOrderOfOriority =dfinalOrderOfOriority.deSerialize( maps.get(PdfPages.finalOrderOfOriority) );
 	  strategyModelTargetingService.orderOFPriorityTable(document,finalOrderOfOriority,15);//10
 	  finalOrderOfOriority=null;	  
 	  
@@ -1021,7 +763,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 			DeSerialize<List<PartyPositionVO>>  dpartyPerformance=new DeSerialize<List<PartyPositionVO>>();
 			  
 			  String Eleheading="Election Results Comparision b/w 2009 Assembly & 2013  Panchayat";
-			  List<PartyPositionVO> partyPerformance =dpartyPerformance.deSerialize( maps.get(PdfPages.partyPerformance),autoStrategy ); 
+			  List<PartyPositionVO> partyPerformance =dpartyPerformance.deSerialize( maps.get(PdfPages.partyPerformance) ); 
 			  strategyModelTargetingService.panchayatwisePartyPerformanceTable(document,partyPerformance,1l,Eleheading);//3
 			  strategyModelTargetingService.panchayatwisePartyPerformanceTable(document,partyPerformance,2l,Eleheading);//3
 			  String EleChartheading="Election Results Comparision Chart b/w 2009 Assembly & 2013  Panchayat";
@@ -1040,13 +782,13 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
      document.newPage();
 		
 	  DeSerialize<PDFHeadingAndReturnVO>  dvoterAgeRangeVOList=new DeSerialize<PDFHeadingAndReturnVO>();
-	  PDFHeadingAndReturnVO voterAgeRangeVOList =dvoterAgeRangeVOList.deSerialize( maps.get(PdfPages.voterAdditionAndDeletion),autoStrategy );
+	  PDFHeadingAndReturnVO voterAgeRangeVOList =dvoterAgeRangeVOList.deSerialize( maps.get(PdfPages.voterAdditionAndDeletion) );
 	  stratagicReportsService.generatePDFForVoterInfo(voterAgeRangeVOList,"voterInfo",document);	 
 		voterAgeRangeVOList=null;
 	 //stratagicReportsService.generatePDFForVoterInfo(voterAgeRangeVOList,"voterInfo");
 	
 	//-->Gender Wise Voter Modifications between Electoral Roll 2013 - Draft To Electoral Roll 2013 – Final
-	 PDFHeadingAndReturnVO voterModificationGenderInfoVOList = dvoterAgeRangeVOList.deSerialize( maps.get(PdfPages.genderWiseVoterModification),autoStrategy );
+	 PDFHeadingAndReturnVO voterModificationGenderInfoVOList = dvoterAgeRangeVOList.deSerialize( maps.get(PdfPages.genderWiseVoterModification) );
 	    stratagicReportsService.generatePDFForVoterInfo(voterModificationGenderInfoVOList,"genderWise",document);
 
 	    voterModificationGenderInfoVOList=null;
@@ -1054,7 +796,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	
 	//--->Age Group
 	    
-	    PDFHeadingAndReturnVO ageGroup = dvoterAgeRangeVOList.deSerialize( maps.get(PdfPages.ageGroup),autoStrategy );
+	    PDFHeadingAndReturnVO ageGroup = dvoterAgeRangeVOList.deSerialize( maps.get(PdfPages.ageGroup) );
 		stratagicReportsService.generatePDFForVoterInfo(ageGroup,"addedDeleted",document);
 
 		voterModificationGenderInfoVOList=null;
@@ -1064,14 +806,14 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		 //List<AgeRangeVO> boothWiseAddedDelList=stratagicReportsService.getBoothWiseAddedAndDeletedVoters(constituencyId,publicationDateId);
 		
 		  DeSerialize<List<AgeRangeVO>>  dboothWiseAddedDelList=new DeSerialize<List<AgeRangeVO>>();
-		  List<AgeRangeVO> boothWiseAddedDelList = dboothWiseAddedDelList.deSerialize( maps.get(PdfPages.boothWiseAddedDelList),autoStrategy );
+		  List<AgeRangeVO> boothWiseAddedDelList = dboothWiseAddedDelList.deSerialize( maps.get(PdfPages.boothWiseAddedDelList) );
 
 		  stratagicReportsService.generateBoothWiseAddedDeletedVoters(boothWiseAddedDelList,document);
 	      
 		  //locality wise added and deleted
 		  
 		   DeSerialize<VoterModificationVO> desvoterModificationVO =new DeSerialize<VoterModificationVO>();
-		    VoterModificationVO voterModificationVO =desvoterModificationVO.deSerialize( maps.get(PdfPages.localityAddedDeleted),autoStrategy );
+		    VoterModificationVO voterModificationVO =desvoterModificationVO.deSerialize( maps.get(PdfPages.localityAddedDeleted) );
 	         //call to pdf generation 	   
 			 stratagicReportsService.getPDFForSubLevelAddedDeleted(voterModificationVO,document);
 		
@@ -1080,7 +822,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
      document.newPage();
    		//Polling Stations – Increase Polling %
      DeSerialize<List<PartyPositionVO>>  dpolling=new DeSerialize<List<PartyPositionVO>>();
-     List<PartyPositionVO> polling =dpolling.deSerialize( maps.get(PdfPages.pollingPercent),autoStrategy );
+     List<PartyPositionVO> polling =dpolling.deSerialize( maps.get(PdfPages.pollingPercent) );
      
      List<String> columnNames = new ArrayList<String>();
      columnNames.add("P.S#");
@@ -1104,9 +846,6 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		
 		
 	}
-
-
-
 
 	public void buildPreviousTrendsHeadings(Document document) throws DocumentException {
 	
@@ -1136,6 +875,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		document.add(p);
 		
 		document.add(p1);
+		
 		TITLE.setColor(BaseColor.BLACK);
 
 	}
@@ -1545,12 +1285,33 @@ public PdfPCell getHeaderCell(String columText ,Font font){
 	PdfPCell c1 = new PdfPCell(new Phrase(columText,font));
 	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	c1.setBackgroundColor(BaseColor.YELLOW);
+	c1.setPaddingTop(13);
+
+  	return c1;
+ 	
+}
+
+public PdfPCell getHeaderCell1(String columText ,Font font){
+	PdfPCell c1 = new PdfPCell(new Phrase(columText,font));
+	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+	c1.setBackgroundColor(BaseColor.YELLOW);
+	c1.setPadding(5);
+
+	
   	return c1;
  	
 }
 
 public PdfPCell getColumnCell(String columText ,Font font){
 	PdfPCell c1 = new PdfPCell(new Phrase(columText,font));
+	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+  	return c1;
+ 	
+}
+
+public PdfPCell getColumnCell4(String columText ,Font font){
+	PdfPCell c1 = new PdfPCell(new Phrase(columText,font));
+	 c1.setHorizontalAlignment(Element.ALIGN_LEFT);
   	return c1;
  	
 }
@@ -1562,6 +1323,7 @@ public String buildNullsAsEmptyString(Object obj)
 	else
 	
 		return obj.toString();
+	
 		
 }
 //pdf census
@@ -1575,29 +1337,39 @@ public void buildPdfForCensusData(StrategicCensusVO finalRes,Document document,P
 	    Font subHeading = new Font(Font.FontFamily.TIMES_ROMAN,15,Font.BOLD);
 	    subHeading.setColor(BaseColor.MAGENTA); 
 	  */
+	//Font calibribold = FontFactory.getFont("Calibri",9,Font.BOLD);
 	
-	
+	 int padding =4;
 	Paragraph p =   new Paragraph(heading ,SMALLFONT);
 	//p.setFont(subHeading);
 	
 	document.add(p );
 	
+
+	
 	PdfPCell c1;
 	document.add( new Paragraph(" ") );
 
-	PdfPTable table = null;
+	//PdfPTable table=null;
+    PdfPTable table = new PdfPTable(9);
+	//table.setWidthPercentage(100);
+	
+	
+	
+
 	int count=finalRes.getCount();
 	if(finalRes.getCount()>1)
-		table = new PdfPTable(9);
+		 table = new PdfPTable(9);
 	else
 		table = new PdfPTable(3);
+	table.setWidthPercentage(100);
+	table.setHorizontalAlignment(PdfPTable.ALIGN_LEFT);
 	
- 
 	
-	
-	c1 = new PdfPCell(new Phrase("Parameter",TITLE));
+	c1 = new PdfPCell(new Phrase("Parameter",param));
 	 	 c1.setBackgroundColor(BaseColor.YELLOW);
 	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+	c1.setPaddingTop(25);
 	c1.setRowspan(3);
 //	c1.set
   	table.addCell(c1);    	
@@ -1609,73 +1381,75 @@ public void buildPdfForCensusData(StrategicCensusVO finalRes,Document document,P
   		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getYear()),SMALLFONT));
   	 	 c1.setBackgroundColor(BaseColor.YELLOW);
   	 	 c1.setColspan(2);
-  		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-  		 table.addCell(c1);
   		 
-  		table.addCell(getHeaderCell(finalRes.getConstituencyName(), TITLE));
-  		table.addCell(getHeaderCell(finalRes.getConstituencyName(), TITLE));
-  		table.addCell(getHeaderCell("Values", BIGFONT));
-  		table.addCell(getHeaderCell("%", BIGFONT));
+  		 table.addCell(c1);
   		
-  		table.addCell(getColumnCell("Population", SMALLFONT));
+  		table.addCell(getHeaderCell(finalRes.getConstituencyName(), TITLE));
+  		
+  		table.addCell(getHeaderCell(finalRes.getConstituencyName(), TITLE));
+  		
+  		table.addCell(getHeaderCell1("Values", BIGFONT));
+  		table.addCell(getHeaderCell1("%", BIGFONT));
+  		
+  		table.addCell(getColumnCell4("Population", SMALLFONT));
   		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getTotalPopulation()), SMALLFONT));
   		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getTotalPopulationPercentage()), SMALLFONT));
 
 
   		
-  		table.addCell(getColumnCell("Male", SMALLFONT));
+  		table.addCell(getColumnCell4("Male", SMALLFONT));
   		
   		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getMalePopulation()), SMALLFONT));
   		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getMalePopulationPercentage()), SMALLFONT));
   		
   		
-  		table.addCell(getColumnCell("Female", SMALLFONT));
+  		table.addCell(getColumnCell4("Female", SMALLFONT));
   		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getFemalePopulation()), SMALLFONT));
   		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getFemalePopulationPercentage()), SMALLFONT));
   		
   		
-  		table.addCell(getColumnCell("Households", SMALLFONT));
+  		table.addCell(getColumnCell4("Households", SMALLFONT));
   		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getHouseHolds()), SMALLFONT));
   		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getHouseHoldsPercentage()), SMALLFONT));
   		
-  		table.addCell(getColumnCell("SC", SMALLFONT));
+  		table.addCell(getColumnCell4("SC", SMALLFONT));
   		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getPopulationSC()), SMALLFONT));
   		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getPopulationSCPercent()), SMALLFONT));
   		
-  		table.addCell(getColumnCell("ST", SMALLFONT));
+  		table.addCell(getColumnCell4("ST", SMALLFONT));
   		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getPopulationST()), SMALLFONT));
   		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getPopulationSTPercent()), SMALLFONT));
   		
   		
-  		table.addCell(getColumnCell("Working People", SMALLFONT));
+  		table.addCell(getColumnCell4("Working People", SMALLFONT));
   		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getWorkingPeople()), SMALLFONT));
   		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getWorkingPeoplePercentage()), SMALLFONT));
   		
-  		table.addCell(getColumnCell("Male Working People", SMALLFONT));
+  		table.addCell(getColumnCell4("Male Working People", SMALLFONT));
   		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getWorkingMale()), SMALLFONT));
   		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getTotalWorkingMalePercentage()), SMALLFONT));
   		
-  		table.addCell(getColumnCell("Female Working People", SMALLFONT));
+  		table.addCell(getColumnCell4("Female Working People", SMALLFONT));
   		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getWorkingFemale()), SMALLFONT));
   		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getTotalWorkingFemalePercentage()), SMALLFONT));
   		
-  		table.addCell(getColumnCell("Non Working People", SMALLFONT));
+  		table.addCell(getColumnCell4("Non Working People", SMALLFONT));
   		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getNonWorkingPeople()), SMALLFONT));
   		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getNonWorkingPeoplePercent()), SMALLFONT));
   		
-  		table.addCell(getColumnCell("Population(Age<6)", SMALLFONT));
+  		table.addCell(getColumnCell4("Population(Age<6)", SMALLFONT));
   		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getPopulationUnderSix()), SMALLFONT));
   		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getPopulationUnderSixPercentage()), SMALLFONT));
   		
-  		table.addCell(getColumnCell("Literates", SMALLFONT));
+  		table.addCell(getColumnCell4("Literates", SMALLFONT));
   		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getLiterates()), SMALLFONT));
   		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getLiteratesPercentage()), SMALLFONT));
   		
-  		table.addCell(getColumnCell("Male Literates", SMALLFONT));
+  		table.addCell(getColumnCell4("Male Literates", SMALLFONT));
   		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getMaleLiterates()), SMALLFONT));
   		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getMaleLiteraturePercentage()), SMALLFONT));
   		
-  		table.addCell(getColumnCell("Female Literates", SMALLFONT));
+  		table.addCell(getColumnCell4("Female Literates", SMALLFONT));
   		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getFemaleLiterates()), SMALLFONT));
   		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getFemaleLiteraturePercentage()), SMALLFONT));
   		
@@ -1693,70 +1467,81 @@ public void buildPdfForCensusData(StrategicCensusVO finalRes,Document document,P
   	  		 table.addCell(c1);
   	  		 
   		}
-  		String titl ="2001 to 2011 Changes in Percentages";
+  		String titl ="     2001 to 2011 Changes in Percentages";
   		     c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(titl),TITLE));
 	  	 	 c1.setBackgroundColor(BaseColor.YELLOW);
-	  	 	 c1.setColspan(4);	  		
+	  	 	 c1.setColspan(4);
+	  	    
 	  		 table.addCell(c1);
 	  		
 	  		    for(int i=0;i<6;i++)
 	  		    {
+	  		    	 
 	  			table.addCell(getHeaderCell(finalRes.getConstituencyName(), TITLE));
 	  	  	
 	  		    }
 	  	  		
 	  		
 	  		table.addCell(getHeaderCell(finalRes.getDistrictName(), TITLE));
-	  	
-	  		table.addCell(getHeaderCell(finalRes.getStateName(), TITLE));
+	  		
+	  		
+	  		if(finalRes.getStateName().equalsIgnoreCase("Andhra Pradesh"))
+	  			
+	  	 	 {
+	  			table.addCell(getHeaderCell("A.P. State", TITLE));	  		   	 
+	  	 	 }
+	  		
 	  	  for(int i=0;i<3;i++)
-		    {
-	  		table.addCell(getHeaderCell("Values", TITLE));
-  	  		table.addCell(getHeaderCell("%", TITLE));
+		    { 
+	  		table.addCell(getHeaderCell1("Values", TITLE));
+	  		
+  	  		table.addCell(getHeaderCell1("%", TITLE));
 	  	
 		    }
-	  		
-	  	table.addCell(getHeaderCell("%", TITLE));
+	  	
+	  	table.addCell(getHeaderCell1("%", TITLE));
+	  	
+	  	table.addCell(getHeaderCell1("%", TITLE));
 
-	  	table.addCell(getHeaderCell("%", TITLE));
-
 	  		
-	  		 
-  	  		 
-  	  		
-  	  		
-  	  		table.addCell(getColumnCell("Population", TITLE));
+  	  		table.addCell(getColumnCell("Population", SMALLFONT));
   	  		
   	  	for (StrategicCensusVO prev : finalRes.getCensusDetailsList()) {
+  	  
   	  		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getTotalPopulation()), SMALLFONT));
+  	  	
   	  		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getTotalPopulationPercentage()), SMALLFONT));
 
   	  	}
-  	  	
+  	       
   	    table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferencePopulation()), SMALLFONT));
+  	  
   		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferencePopulationPercent()), SMALLFONT));
   		
+  		
   		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getDifferencePopulationPercent()), SMALLFONT));
+  	
   		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getStateDetails().getDifferencePopulationPercent()), SMALLFONT));
 
        //male
   	  		
   	  		table.addCell(getColumnCell("Male", SMALLFONT));
   	   	for (StrategicCensusVO prev : finalRes.getCensusDetailsList()) {
+  	   	
   	  		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getMalePopulation()), SMALLFONT));
+  	  	
   	  		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getMalePopulationPercentage()), SMALLFONT));
   	   	}
-  	  		
+  	
   	    table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceMalePopulation()), SMALLFONT));
-		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceMalePercent()), SMALLFONT));
+  	 	table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceMalePercent()), SMALLFONT));
 		
 		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getDifferenceMalePercent()), SMALLFONT));
 		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getStateDetails().getDifferenceMalePercent()), SMALLFONT));
 		
 		
-		
 		//female
-		
+		 
   	  		table.addCell(getColumnCell("Female", SMALLFONT));
   	  		
   	   	for (StrategicCensusVO prev : finalRes.getCensusDetailsList()) {
@@ -1793,7 +1578,6 @@ public void buildPdfForCensusData(StrategicCensusVO finalRes,Document document,P
   			
   			table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getDifferenceSCPercent()), SMALLFONT));
   			table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getStateDetails().getDifferenceSCPercent()), SMALLFONT));
-  			
   			
   			
   	  		table.addCell(getColumnCell("ST", SMALLFONT));
@@ -1856,7 +1640,7 @@ public void buildPdfForCensusData(StrategicCensusVO finalRes,Document document,P
   	  		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getNonWorkingPeoplePercent()), SMALLFONT));
   	  	}
   	  	
-  	  table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceNonWorkingPeople()), SMALLFONT));
+  	    table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceNonWorkingPeople()), SMALLFONT));
 		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceNonWorkingPeoplePercent()), SMALLFONT));
 		
 		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getDifferenceNonWorkingPeoplePercent()), SMALLFONT));
@@ -1869,7 +1653,7 @@ public void buildPdfForCensusData(StrategicCensusVO finalRes,Document document,P
   	  		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getPopulationUnderSix()), SMALLFONT));
   	  		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getPopulationUnderSixPercentage()), SMALLFONT));
   	  	}
-  	  table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceLessthan6Population()), SMALLFONT));
+  	    table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceLessthan6Population()), SMALLFONT));
 		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceLessthan6Percent()), SMALLFONT));
 		
 		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getDifferenceLessthan6Percent()), SMALLFONT));
@@ -1882,7 +1666,7 @@ public void buildPdfForCensusData(StrategicCensusVO finalRes,Document document,P
   	  		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getLiteratesPercentage()), SMALLFONT));
   	  	}
   	  	
-  	  table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceLiterates()), SMALLFONT));
+  	    table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceLiterates()), SMALLFONT));
 		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceLiteratesPercent()), SMALLFONT));
 		
 		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getDifferenceLiteratesPercent()), SMALLFONT));
@@ -1895,7 +1679,7 @@ public void buildPdfForCensusData(StrategicCensusVO finalRes,Document document,P
   	  		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getMaleLiteraturePercentage()), SMALLFONT));
   	  		
   	  	}
-    	  table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceMaleLiterates()), SMALLFONT));
+    	table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceMaleLiterates()), SMALLFONT));
   		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceMaleLiteratesPercent()), SMALLFONT));
   		
   		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getDifferenceMaleLiteratesPercent()), SMALLFONT));
@@ -1912,16 +1696,13 @@ public void buildPdfForCensusData(StrategicCensusVO finalRes,Document document,P
 		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getDifferenceFemaleLiteratesPercent()), SMALLFONT));
 		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getStateDetails().getDifferenceFemaleLiteratesPercent()), SMALLFONT));
 		
-  		
-  	
-  	
-		 
+  		 
 
   }
 	float[] widths = null;
 	
 	if(finalRes.getCount()>1)
-		widths=new float[] {1.8f, 1.2f ,1.2f,1.2f,1.2f, 1.5f ,1.2f,1.2f,1.7f};
+		widths=new float[] {2.3f, 1.9f ,1.9f,1.9f,1.9f, 1.9f ,1.9f,1.4f,1.2f};
 	else
 		widths=new float[] {1.2f, 1.2f ,1.2f};
 	table.setWidths(widths);
@@ -2462,7 +2243,7 @@ public void pollingStationHelper(PartyPositionVO finalRes,PdfPTable table ,List<
 	  		}
 	  		count++;
          
-	  		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getName()),SMALLFONT));
+	  		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getId()),SMALLFONT));
 	  		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	 	 table.addCell(c1);
 	  		
@@ -2513,7 +2294,7 @@ public void pollingStationHelper(PartyPositionVO finalRes,PdfPTable table ,List<
 }
 public String roundTo2DigitsDoubleValue(Double number){
 	  
-	//LOG.debug("Entered into the roundTo2DigitsFloatValue service method");
+	LOG.debug("Entered into the roundTo2DigitsFloatValue service method");
 	  
 	  String result = "";
 	  try
@@ -2527,7 +2308,8 @@ public String roundTo2DigitsDoubleValue(Double number){
 		result =  f.format(number);
 	  }catch(Exception e)
 	  {
-		  LOG.error("Exception raised in roundTo2DigitsFloatValue service method",e);
+		  LOG.error("Exception raised in roundTo2DigitsFloatValue service method");
+		  e.printStackTrace();
 	  }
 	  return result;
   }
@@ -2601,11 +2383,11 @@ public String roundTo2DigitsDoubleValue(Double number){
   	  	table.addCell(c1);    	
   	 	
   	 	
-  	 	 c1 = new PdfPCell(new Phrase("Male",BIGFONT));
-  	 	 c1.setBackgroundColor(BaseColor.YELLOW);
-  	 	 c1.setColspan(2);
-  		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-  		 table.addCell(c1);
+  	 	c1 = new PdfPCell(new Phrase("Male",BIGFONT));
+  	 	c1.setBackgroundColor(BaseColor.YELLOW);
+  	 	c1.setColspan(2);
+  		c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+  		table.addCell(c1);
   		 
   		 c1 = new PdfPCell(new Phrase("Female",BIGFONT));
   	 	 c1.setBackgroundColor(BaseColor.YELLOW);
@@ -2646,10 +2428,6 @@ public String roundTo2DigitsDoubleValue(Double number){
   			 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
   		 	 table.addCell(c1);
   			 
-  		 	 
-  			
-  			 
-  		 	 
   			 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(finalRes.getFemaleVotersCount()),SMALLFONT));
   			 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
   			 table.addCell(c1);
@@ -2667,60 +2445,54 @@ public String roundTo2DigitsDoubleValue(Double number){
   public void buildPdfForText(Document document)  throws DocumentException, IOException
 	 {
 		 
-		 String candidate="Mr. Gobbula Tammaiah (TDP)";
+	  String candidate="Mr. Gobbula Tammaiah (TDP)";
 	
-		 
-		 
-	 buildSubHeading1(document, candidate);
-	 document.add(Chunk.NEWLINE);
-	 buildSubHeading(document, "Strength & Weakness");
-	 buildSubHeading2(document, "Strengths");
-	 
-	 
-	 Paragraph str2 =new Paragraph("     Having Good Following in Student Community as a Principal of a College.",SMALLFONT);
-	 //document.add(str2);
-	 Paragraph str3 =new Paragraph("     Good Relationship in his Settibalija Community which is the Major Community in Constituency.",SMALLFONT);
-	 //document.add(str3);
-	 Paragraph str4 =new Paragraph("     Good Financial background.",SMALLFONT);
-	// document.add(str4);
+	  buildSubHeading1(document, candidate);
+	  document.add(Chunk.NEWLINE);
+	  buildSubHeading(document, "Strength & Weakness");
+	  buildSubHeading2(document, "Strengths");
 	
 	 
-	 document.add(new Paragraph(" ")); 
+	  Paragraph str2 =new Paragraph("     Having Good Following in Student Community as a Principal of a College.",SMALLFONT);
+	  //document.add(str2);
+	  Paragraph str3 =new Paragraph("     Good Relationship in his Settibalija Community which is the Major Community in Constituency.",SMALLFONT);
+	  //document.add(str3);
+	  Paragraph str4 =new Paragraph("     Good Financial background.",SMALLFONT);
+	  // document.add(str4);
 	
-              
-       List<String> columnNames1 = new ArrayList<String>();
-       columnNames1.add(new ListItem(str2).toString());
-       columnNames1.add(new ListItem(str3).toString());
-       columnNames1.add(new ListItem(str4).toString());
-
-       getPdfContent(document,columnNames1);   	 
 	 
 	  document.add(new Paragraph(" ")); 
-	 buildSubHeading2(document, "Weakness");
-	
-	 
-	 Paragraph str5 =new Paragraph("  Some of the Cadre are Silent.",SMALLFONT);
-	 //document.add(str5);
-	 Paragraph str6 =new Paragraph("  No Good Relationship in Cadre.",SMALLFONT);
-	 //document.add(str6);
-	 
-	 document.add(new Paragraph(" ")); 
-	 
-    List<String> columnNames2 = new ArrayList<String>();
-   columnNames2.add(new ListItem(str5).toString());
-   columnNames2.add(new ListItem(str6).toString());
+	  List<String> columnNames1 = new ArrayList<String>();
+      columnNames1.add(new ListItem(str2).toString());
+      columnNames1.add(new ListItem(str3).toString());
+      columnNames1.add(new ListItem(str4).toString());
 
-     getPdfContent(document,columnNames2); 
-	  document.add(Chunk.NEWLINE); 
-	 buildSubHeading2(document, "Opportunity");
-	 Paragraph str7 =new Paragraph("  With the Solid Support of Settibalija Community, can win Easily .",SMALLFONT);
-	 //document.add(str7);
-	 Paragraph str8 =new Paragraph("  By Maintaining Good Relationship with Neutral Cadre may help to win Easily .",SMALLFONT);
-	// document.add(str8);
-	 Paragraph str9 =new Paragraph("  Capture the PRP Voting with lost by the party in 2009 General Elections .",SMALLFONT);
-	 //document.add(str9);
+      getPdfContent(document,columnNames1);   	 
 	 
-	 document.add(Chunk.NEWLINE);
+	  document.add(new Paragraph(" ")); 
+      buildSubHeading2(document, "Weakness");
+	  Paragraph str5 =new Paragraph("  Some of the Cadre are Silent.",SMALLFONT);
+	  //document.add(str5);
+	  Paragraph str6 =new Paragraph("  No Good Relationship in Cadre.",SMALLFONT);
+	  //document.add(str6);
+	 
+	  document.add(new Paragraph(" ")); 
+	 
+      List<String> columnNames2 = new ArrayList<String>();
+      columnNames2.add(new ListItem(str5).toString());
+      columnNames2.add(new ListItem(str6).toString());
+
+      getPdfContent(document,columnNames2); 
+	  document.add(Chunk.NEWLINE); 
+	  buildSubHeading2(document, "Opportunity");
+	  Paragraph str7 =new Paragraph("  With the Solid Support of Settibalija Community, can win Easily .",SMALLFONT);
+	  //document.add(str7);
+	  Paragraph str8 =new Paragraph("  By Maintaining Good Relationship with Neutral Cadre may help to win Easily .",SMALLFONT);
+	  // document.add(str8);
+	  Paragraph str9 =new Paragraph("  Capture the PRP Voting with lost by the party in 2009 General Elections .",SMALLFONT);
+	  //document.add(str9);
+	 
+	  document.add(Chunk.NEWLINE);
 	 
 	  
 	  List<String> columnNames3 = new ArrayList<String>();
@@ -2729,51 +2501,49 @@ public String roundTo2DigitsDoubleValue(Double number){
       columnNames3.add(new ListItem(str9).toString());
       getPdfContent(document,columnNames3); 
 	  document.add(Chunk.NEWLINE); 
-	 buildSubHeading2(document, "Threat");
-	 Paragraph str10 =new Paragraph("   All the Parties may field their candidates from Settibalija Community .",SMALLFONT);
-	 //document.add(str10);
-	 Paragraph str11 =new Paragraph("   Ex Minister Pitani Satyanarayana near relative may contest from Jai Samaikya Andhra Party .",SMALLFONT);
-	 //document.add(str11);
-	 Paragraph str12 =new Paragraph("   Kapu Community Votes May Split, if Pawan Kalyan Party Contests.",SMALLFONT);
-	 //document.add(str12); 
-	 Paragraph str13 =new Paragraph("   Polling % in Nelamuru and Ramannapalem Panchayaths was above 90% in 2009 Election, and Our Party is losing much so, Preventive measures have to be taken in Maintain the Election process .",SMALLFONT);
-	 //document.add(str13); 
+	  buildSubHeading2(document, "Threat");
+	  Paragraph str10 =new Paragraph("   All the Parties may field their candidates from Settibalija Community .",SMALLFONT);
+	  //document.add(str10);
+	  Paragraph str11 =new Paragraph("   Ex Minister Pitani Satyanarayana near relative may contest from Jai Samaikya Andhra Party .",SMALLFONT);
+	  //document.add(str11);
+	  Paragraph str12 =new Paragraph("   Kapu Community Votes May Split, if Pawan Kalyan Party Contests.",SMALLFONT);
+	  //document.add(str12); 
+	  Paragraph str13 =new Paragraph("   Polling % in Nelamuru and Ramannapalem Panchayaths was above 90% in 2009 Election, and Our Party is losing much so, Preventive measures have to be taken in Maintain the Election process .",SMALLFONT);
+	  //document.add(str13); 
 	 
-	 document.add(Chunk.NEWLINE);
+	  document.add(Chunk.NEWLINE);
 	 
 	  
 	  List<String> columnNames4 = new ArrayList<String>();
-     columnNames4.add(new ListItem(str10).toString());
-     columnNames4.add(new ListItem(str11).toString());
-     columnNames4.add(new ListItem(str12).toString());
-     columnNames4.add(new ListItem(str13).toString());
-     getPdfContent(document,columnNames4);
-	 buildSubHeading(document, "Viable Opponents");
-	 Paragraph str1 =new Paragraph("   After required amount of survey & opinions collected from distinguished politicians, journalists as well  as the local public we have created a list of candidates who can pose threat ", SMALLFONT);
-	 document.add(str1);
-	 document.add(Chunk.NEWLINE);
+      columnNames4.add(new ListItem(str10).toString());
+      columnNames4.add(new ListItem(str11).toString());
+      columnNames4.add(new ListItem(str12).toString());
+      columnNames4.add(new ListItem(str13).toString());
+      getPdfContent(document,columnNames4);
+	  buildSubHeading(document, "Viable Opponents");
+	  Paragraph str1 =new Paragraph("   After required amount of survey & opinions collected from distinguished politicians, journalists as well  as the local public we have created a list of candidates who can pose threat ", SMALLFONT);
+	  document.add(str1);
+	  document.add(Chunk.NEWLINE);
 	 
 	 
-	 String candidate1="Mr. Kaadiboina Srinivas (YSRCP)";
-     buildSubHeading1(document, candidate1);
-	 document.add(Chunk.NEWLINE);
-	 buildSubHeading(document, "Strength & Weakness");
-	 document.add(Chunk.NEWLINE);
-	 buildSubHeading2(document, "Strengths:");
+	  String candidate1="Mr. Kaadiboina Srinivas (YSRCP)";
+      buildSubHeading1(document, candidate1);
+	  document.add(Chunk.NEWLINE);
+	  buildSubHeading(document, "Strength & Weakness");
+	  document.add(Chunk.NEWLINE);
+	  buildSubHeading2(document, "Strengths:");
 	 
-	 Paragraph str21 =new Paragraph("   Good Support from MALA Community.",SMALLFONT);
-	// document.add(str21);
-	 Paragraph str22 =new Paragraph("   Can invest huge amounts.",SMALLFONT);
-	// document.add(str22);
-	 Paragraph str23 =new Paragraph("   Good Support from Kudupudi Srinivas, MP Contesting Candidate.",SMALLFONT);
-	 //document.add(str23);
-	 Paragraph str33 =new Paragraph("   Settibalija Caste Voting percentage may gain.",SMALLFONT);
-	 //document.add(str33);
+	  Paragraph str21 =new Paragraph("   Good Support from MALA Community.",SMALLFONT);
+	  // document.add(str21);
+	  Paragraph str22 =new Paragraph("   Can invest huge amounts.",SMALLFONT);
+	  // document.add(str22);
+	  Paragraph str23 =new Paragraph("   Good Support from Kudupudi Srinivas, MP Contesting Candidate.",SMALLFONT);
+	  //document.add(str23);
+	  Paragraph str33 =new Paragraph("   Settibalija Caste Voting percentage may gain.",SMALLFONT);
+	  //document.add(str33);
 	 
-	 document.add(Chunk.NEWLINE);
+	  document.add(Chunk.NEWLINE);
 	
-	  
-
 	  List<String> columnNames5 = new ArrayList<String>();
       columnNames5.add(new ListItem(str21).toString());
       columnNames5.add(new ListItem(str22).toString());
@@ -2781,36 +2551,34 @@ public String roundTo2DigitsDoubleValue(Double number){
       columnNames5.add(new ListItem(str33).toString());
       getPdfContent(document,columnNames5);
 	  document.add(Chunk.NEWLINE);
-	 buildSubHeading2(document, "Weakness:");
-	 Paragraph str24 =new Paragraph("   Low Strength of Mala Community.",SMALLFONT);
-	 //document.add(str24);
-	 Paragraph str25 =new Paragraph("   Can lose Support from the Cadre, in case not getting the Chance of their Choice.",SMALLFONT);
-	 //document.add(str25);
-	 document.add(Chunk.NEWLINE);
+	  buildSubHeading2(document, "Weakness:");
+	  Paragraph str24 =new Paragraph("   Low Strength of Mala Community.",SMALLFONT);
+	  //document.add(str24);
+	  Paragraph str25 =new Paragraph("   Can lose Support from the Cadre, in case not getting the Chance of their Choice.",SMALLFONT);
+	  //document.add(str25);
+	  document.add(Chunk.NEWLINE);
 	 
 	  List<String> columnNames6 = new ArrayList<String>();
       columnNames6.add(new ListItem(str24).toString());
       columnNames6.add(new ListItem(str25).toString());
       getPdfContent(document,columnNames6);
 	  document.add(Chunk.NEWLINE);
-	 buildSubHeading2(document, "Opportunity");
-	 Paragraph str26 =new Paragraph("   Winning Chances are there, if Kapu and Settibalija Castes Work together .",SMALLFONT);
-	 //document.add(str26);
+	  buildSubHeading2(document, "Opportunity");
+	  Paragraph str26 =new Paragraph("   Winning Chances are there, if Kapu and Settibalija Castes Work together .",SMALLFONT);
+	  //document.add(str26);
 	 
-	 document.add(Chunk.NEWLINE);
+	  document.add(Chunk.NEWLINE);
 	 
-	  
-	  
 	  List<String> columnNames7 = new ArrayList<String>();
       columnNames7.add(new ListItem(str26).toString());
       getPdfContent(document,columnNames7);
 	  document.add(Chunk.NEWLINE);
-	 buildSubHeading2(document, "Threat:");
-	 Paragraph str29 =new Paragraph("   Dissatisfied Aspirants non Cooperation .",SMALLFONT);
-	// document.add(str29);
-	 Paragraph str30 =new Paragraph("   Ex Minister Pitani Satyanarayana May also in the Fray.",SMALLFONT);
-	 //document.add(str30);
-	 document.add(Chunk.NEWLINE);
+	  buildSubHeading2(document, "Threat:");
+	  Paragraph str29 =new Paragraph("   Dissatisfied Aspirants non Cooperation .",SMALLFONT);
+	  // document.add(str29);
+	  Paragraph str30 =new Paragraph("   Ex Minister Pitani Satyanarayana May also in the Fray.",SMALLFONT);
+	  //document.add(str30);
+	  document.add(Chunk.NEWLINE);
 	
 	  
 	  List<String> columnNames8 = new ArrayList<String>();
@@ -2822,30 +2590,27 @@ public String roundTo2DigitsDoubleValue(Double number){
 	  String candidate2="Mr.Pitani Satyanarayana (JSAP)";
 	  buildSubHeading1(document, candidate2);
 	 
-	 document.add(Chunk.NEWLINE);
-	// buildSubHeading(document, "Strength & Weakness");
-	 buildSubHeading2(document, "Strengths");
+	  document.add(Chunk.NEWLINE);
+	 // buildSubHeading(document, "Strength & Weakness");
+	  buildSubHeading2(document, "Strengths");
 	 
-	 Paragraph str41 =new Paragraph("   He was Ex Minister.",SMALLFONT);
-	 //document.add(str21);
-	 Paragraph str42 =new Paragraph("   Good Hold on Constituency.",SMALLFONT);
-	// document.add(str22);
-	 
-	 document.add(Chunk.NEWLINE);
-	
-	  
+	  Paragraph str41 =new Paragraph("   He was Ex Minister.",SMALLFONT);
+	  //document.add(str21);
+	  Paragraph str42 =new Paragraph("   Good Hold on Constituency.",SMALLFONT);
+	  // document.add(str22);
+	  document.add(Chunk.NEWLINE);
 	  List<String> columnNames9 = new ArrayList<String>();
       columnNames9.add(new ListItem(str41).toString());
       columnNames9.add(new ListItem(str42).toString());
       getPdfContent(document,columnNames9);
 	  document.add(Chunk.NEWLINE);
-	 buildSubHeading2(document, "Weakness");
-	 Paragraph str43 =new Paragraph("   OC Category May against his Candidature.",SMALLFONT);
-	 //document.add(str43);
-	 Paragraph str44 =new Paragraph("   Lost Confidence in Samaikya Andhra Movement.",SMALLFONT);
-	 //document.add(str44);
+	  buildSubHeading2(document, "Weakness");
+	  Paragraph str43 =new Paragraph("   OC Category May against his Candidature.",SMALLFONT);
+	  //document.add(str43);
+	  Paragraph str44 =new Paragraph("   Lost Confidence in Samaikya Andhra Movement.",SMALLFONT);
+	  //document.add(str44);
 	 
-	 document.add(Chunk.NEWLINE);
+	  document.add(Chunk.NEWLINE);
 	 
 	  List<String> columnNames10 = new ArrayList<String>();
       columnNames10.add(new ListItem(str43).toString());
@@ -2854,47 +2619,36 @@ public String roundTo2DigitsDoubleValue(Double number){
 	  document.add(Chunk.NEWLINE);
 	  buildSubHeading2(document, "Opportunity");
 	  Paragraph str45 =new Paragraph("   May get support from NGO’s to Jai Samaikya Andhra Party .",SMALLFONT);
-	// document.add(str45);
+	  // document.add(str45);
 	 
-	 document.add(Chunk.NEWLINE);
-	
-	  
+	  document.add(Chunk.NEWLINE);
 	  List<String> columnNames11 = new ArrayList<String>();
       columnNames11.add(new ListItem(str45).toString());
-
-	 
-     getPdfContent(document,columnNames11);
-	 document.add(Chunk.NEWLINE);
-	 buildSubHeading2(document, "Threat");
-	 Paragraph str46 =new Paragraph("   Less Support from Own Caste .",SMALLFONT);
-	 //document.add(str46);
-	 Paragraph str47 =new Paragraph("   Nil Support from OC’s.",SMALLFONT);
-	 //document.add(str47);
+      getPdfContent(document,columnNames11);
+	  document.add(Chunk.NEWLINE);
+	  buildSubHeading2(document, "Threat");
+	  Paragraph str46 =new Paragraph("   Less Support from Own Caste .",SMALLFONT);
+	  //document.add(str46);
+	  Paragraph str47 =new Paragraph("   Nil Support from OC’s.",SMALLFONT);
+	  //document.add(str47);
 	  
-	 document.add(Chunk.NEWLINE);
+	  document.add(Chunk.NEWLINE);
 	 
 	  List<String> columnNames12 = new ArrayList<String>();
-     columnNames12.add(new ListItem(str46).toString());
-     columnNames12.add(new ListItem(str47).toString());
-     getPdfContent(document,columnNames12);
+      columnNames12.add(new ListItem(str46).toString());
+      columnNames12.add(new ListItem(str47).toString());
+      getPdfContent(document,columnNames12);
 	 }
 	 public void getPdfContent(Document document,List<String> strengths)throws DocumentException,IOException
 	 {
-		
 		 com.itextpdf.text.ZapfDingbatsList orderedList = new com.itextpdf.text.ZapfDingbatsList(108, 10);
 	 
 		 for (String string : strengths) {
 			  orderedList.add(new ListItem(string));
-              
-		}
+    	}
 		 document.add(orderedList);   
-	 
 	  
-		 
 	 }
 	
-	 public Long getConstituencyNo(Long constituencyId){
-		return delimitationConstituencyDAO.getConstituencyNo(constituencyId, 2009l);
-	 }
 }
 
