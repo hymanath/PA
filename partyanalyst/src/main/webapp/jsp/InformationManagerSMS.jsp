@@ -426,25 +426,24 @@ var limitno = 160;
 function limitText(limitField, limitCount, limitNum)
 {
 
-var limitFieldElmt = document.getElementById(limitField);
+//var limitFieldElmt = document.getElementById(limitField);
+var limitFieldElmt = $("#"+limitField).val().trim();
 var limitCountElmt = document.getElementById(limitCount);
-limitCountElmt.innerHTML = limitNum + limitFieldElmt.value.length+"";
-if(limitFieldElmt.value.length == 0 || limitFieldElmt.value.length < 160)
+limitCountElmt.innerHTML = limitNum + limitFieldElmt.length+"";
+if(limitFieldElmt.length == 0 || limitFieldElmt.length < 160)
 	{
 $("#alertMsg").html('');
 count = 2;
 limitno = 160;
 	}
 	
-if(limitFieldElmt.value.length > limitno)
+if(limitFieldElmt.length > limitno)
 	{
 $("#alertMsg").html('exceeding the limit '+limitno+' characters and you are in to '+count+' nd message');
 count ++;
 limitno = limitno + 160;
 	}
-var count1 = limitFieldElmt.value.length;
-
-
+var count1 = limitFieldElmt.length;
 if(count1 < limitno && count >= 3)
 	{
 	 count--;
