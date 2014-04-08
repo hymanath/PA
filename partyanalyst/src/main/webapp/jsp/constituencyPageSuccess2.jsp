@@ -944,7 +944,7 @@ var queryString='';
             <!--LOCATION MAP SECTION END--> 
             
             <!--NEWS AND UPDATES SECTION START-->
-			<c:if test="${userDetails.loginStatus}">
+			
             <div class="cp-sub-field-sec">
 			  <c:if test="${constituencyDetails.votingTrendz}">
 			 	<div  class="cp-sub-field-sec" id="votingTrendzDiv_Body">
@@ -957,7 +957,7 @@ var queryString='';
             <!--NEWS AND UPDATES SECTION END--> 
             
           </div>
-</c:if>
+
         
         </div>
 <!-- Opinion Poll Start-->
@@ -1155,7 +1155,7 @@ var queryString='';
 		   
 	  
 	  
-		<c:if test="${userDetails.loginStatus}">
+		
 		
 		
 		<c:if test="${constituencyDetails.viewCompletePage}">
@@ -1184,7 +1184,7 @@ var queryString='';
 		</c:if>
 		
 		
-			</c:if>	
+			
       <!--CIBSTUTYEBCT DETAILS RIGHT SECTION END--> 
 
 	<script type="text/javascript">
