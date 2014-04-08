@@ -7981,7 +7981,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			try{
 				Long constituencyId = votervo.getConstituencyId();
 				Long publicationId = voterInfoDAO.getLatestPublicationDate(votervo.getConstituencyId());
-				votervo.setPublicationDateId(9l);
+				
 				List<Object[]> list = criticalPanchayatsDAO.getCriticalPanchayatBoothHnos(votervo,votervo.getStartIndex(),votervo.getMaxIndex());
 				List<Object[]> totalList = criticalPanchayatsDAO.getCriticalPanchayatBoothHnos(votervo,null,null);
 				Map<Long,List<String>> boothHousesMap = new HashMap<Long, List<String>>();
