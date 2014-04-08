@@ -749,7 +749,26 @@ public List<PartyElectionTrendsReportVO> getPreviousTrendsReport(Long constId){
 			PartyElectionTrendsReportVO vo=	maps.get(year);
 			if(vo.getDistrictId()>10)
 			alliancesCheck(vo, constId);
+			Long votesPolled = vo.getTotalVotesPolled();
+			Long totalVotes = 0l;
+			if(vo.getBjpVo()!=null){
+				totalVotes +=vo.getBjpVo().getVotesEarned();
+			}
+			if(vo.getIncVo()!=null){
+				totalVotes +=vo.getIncVo().getVotesEarned();
+			}
+			if(vo.getTdpVo()!=null){
+				totalVotes +=vo.getTdpVo().getVotesEarned();
+			}
+			if(vo.getPrpVo()!=null){
+				totalVotes +=vo.getPrpVo().getVotesEarned();
+			}
+			if(vo.getTrsVo()!=null){
+				totalVotes +=vo.getTrsVo().getVotesEarned();
+			}
+			
 			if(vo.getOthersVo()!=null){
+				totalVotes +=vo.getOthersVo().getVotesEarned();
 				//vo.getOthersVo().setVotesEarned(vo.getTotalVotesPolled()-( + vo.getIncVo()!=null ?vo.getIncVo().getVotesEarned().longValue():0L));
 				vo.getOthersVo().setPercentage(Double.valueOf(roundTo2DigitsDoubleValue((double)((double)vo.getOthersVo().getVotesEarned()/(double)vo.getTotalVotesPolled())*100)));
 			}else{
@@ -757,7 +776,8 @@ public List<PartyElectionTrendsReportVO> getPreviousTrendsReport(Long constId){
 				vo.setOthersVo(othersVo);
 			}
 		 // check for aliances
-			
+			Long rejectedVotes = votesPolled - totalVotes;
+			vo.setRejectedVotes(rejectedVotes);
 			finalRes.add(vo);
 		}
 		Collections.sort(finalRes);
