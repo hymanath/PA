@@ -517,7 +517,7 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 		return resultVO;
 	}
 
-	private void setValuesToCensusVO(Object[] currentDetails , Object[] previousDetails,StrategicCensusVO censusDetailsVO)
+	private void setValuesToCensusVO(Object[] previousDetails , Object[] currentDetails,StrategicCensusVO censusDetailsVO)
 	{
 		LOG.error("Entered into the setValuesToCensusVO method StratagicReportServiceForMLASuccess class");
 		//CensusVO censusDetailsVO = new CensusVO();
