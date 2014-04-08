@@ -8,10 +8,13 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.ICriticalPanchayatsDAO;
+import com.itgrids.partyanalyst.excel.booth.VoterVO;
 
 public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
+	private ICriticalPanchayatsDAO criticalPanchayatsDAO;
 
 	public void setBoothPublicationVoterDAO(
 			IBoothPublicationVoterDAO boothPublicationVoterDAO) {
@@ -1219,9 +1222,34 @@ List<Long> attrIds = new ArrayList<Long>();
   		}
   	}*/
 	
+	public ICriticalPanchayatsDAO getCriticalPanchayatsDAO() {
+		return criticalPanchayatsDAO;
+	}
+
+
+
+	public void setCriticalPanchayatsDAO(
+			ICriticalPanchayatsDAO criticalPanchayatsDAO) {
+		this.criticalPanchayatsDAO = criticalPanchayatsDAO;
+	}
+
+
+
 	public void testGetMaxSerialNoOfABooth()
 	{
-		Long serialNo = boothPublicationVoterDAO.getMaxSerialNoOfABooth(371092l);
-		System.out.println(serialNo);
+		/*Long serialNo = boothPublicationVoterDAO.getMaxSerialNoOfABooth(371092l);
+		System.out.println(serialNo);*/
+		VoterVO voterVo = new VoterVO();
+		voterVo.setConstituencyId(181l);
+		voterVo.setPublicationDateId(10l);
+		voterVo.setType("Normal");
+		voterVo.setYear(2009l);
+		 List<Object[]> list = criticalPanchayatsDAO.getCriticalPanchayatBoothHnos(voterVo,0,1000);
+		 System.out.println(list.size());
+		 for(Object[] params : list)
+		 {
+			 System.out.println(params[0]);
+		 }
+		
 	}
 }
