@@ -2,22 +2,34 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.io.File;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.apache.log4j.Logger;
+import org.apache.struts2.interceptor.ServletRequestAware;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IStratagicReportsServicePdf;
 import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionSupport;
 
-public class GenerateStrategyReportsAction {
+public class GenerateStrategyReportsAction  extends ActionSupport implements ServletRequestAware{
 	private static final Logger LOG = Logger.getLogger(GenerateStrategyReportsAction.class);
 	public String constituencyIds;
 	public Long constituencyId;
 	public String status;
+	private HttpServletRequest request;
 	
 	@Autowired 
 	private IStratagicReportsServicePdf stratagicReportsServicePdf;
+	
+	
+	@Autowired 
+	private EntitlementsHelper entitlementsHelper;
 	
 	public String getConstituencyIds() {
 		return constituencyIds;
@@ -43,7 +55,16 @@ public class GenerateStrategyReportsAction {
 		this.status = status;
 	}
 
+	public void setServletRequest(HttpServletRequest request) {
+		this.request = request;
+	}
 	public String execute(){
+		HttpSession session = request.getSession();
+		if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.ADMIN_PAGE))
+			return INPUT;
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ADMIN_PAGE))
+			return ERROR;
 		String[] constituenciesArray = constituencyIds.split(",");
 		for(String consti:constituenciesArray){
 			try{
