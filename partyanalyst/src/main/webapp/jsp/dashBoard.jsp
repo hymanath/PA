@@ -557,11 +557,11 @@ lable{line-height:40px;}
 			<div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
 				<h2 style="padding-bottom:35px;">CONSTITUENCY WISE AGE DETAILS<div><input type="button" value="View" class="btn btn-small btnStyle" onCLick="getConstituencyWiseAgeDetails();" style="float:right;"></input></div></h2>
 			</div>
-			<!--<c:if test="${ fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">	
+			<c:if test="${ fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">	
 			<div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
 				<h2 style="padding-bottom:35px;">STRATEGY REPORTS<div><input type="button" value="View" class="btn btn-small btnStyle" onCLick="strategyReport();" style="float:right;"></input></div></h2>
 			</div>
-			</c:if>-->
+			</c:if>
           <c:if test="${not fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">		 
 			<div class="span4 widget divHeightClass"  style="margin-left:7px;padding: 0px 20px;">
 			  <h2>Voters Search</h2>
