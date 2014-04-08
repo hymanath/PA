@@ -1786,6 +1786,7 @@
 	  <property name="allianceGroupDAO" ref="allianceGroupDAO" />	
 	  <property name="panchayatResultDAO" ref="panchayatResultDAO" />	
 	  <property name="ageWiseExcelsGenerationService" ref="ageWiseExcelsGenerationService" />
+	  <property name="criticalPanchayatsDAO" ref="criticalPanchayatsDAO" />
 	  
     </bean>
     

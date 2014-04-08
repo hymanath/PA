@@ -407,6 +407,7 @@
 				<value>com.itgrids.partyanalyst.model.VoterNames</value>
 
 				<value>com.itgrids.partyanalyst.model.VoterNamesTemp</value>
+				<value>com.itgrids.partyanalyst.model.CriticalPanchayats</value>
 				
 			</list>
 			

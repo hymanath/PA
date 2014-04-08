@@ -6844,7 +6844,8 @@
 		<param name="root">voiceSmsResponseDetails</param>
 		</result>
 		</action>
-		<action name="getStrategyReportsAction" class="strattegtReportsAction" >
+		
+	<action name="getStrategyReportsAction" class="strattegtReportsAction" >
 		    <result name="error">/jsp/entitlementErrorPage.jsp</result>
 		    <result name="success">/jsp/strattegtReports.jsp</result>	
 		 </action>
@@ -6871,6 +6872,22 @@
 			<result type="json" name="success">
 				<param name="root">status</param>				
 			</result>		
+		</action>
+		 <action name="criticalPanchayatsAction" class="suggestiveModelAction">
+			<result name="success">/jsp/criticalPanchayatfamilyDetails.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
+		</action>
+			<action name="getCriticalPanchayatConstituenciesAction" class="suggestiveModelAction"
+		method="getCriticalPanchayatConstituencies">
+		<result type="json" name="success">
+		<param name="root">constituencies</param>
+		</result>
+		</action>
+			<action name="getcriticalPanchayatFamilyDetailsAction" class="suggestiveModelAction"
+		method="getFamilyDetailsForPanchayat">
+		<result type="json" name="success">
+		<param name="root">familyInfo</param>
+		</result>
 		</action>
 </package>
 		
