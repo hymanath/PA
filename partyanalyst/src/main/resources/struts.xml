@@ -6862,7 +6862,9 @@
 		</action>
 				
 		<action name="autoGenerateStrategyReport" class="generateStrategyReportsAction">
-		   
+		    <result name="error">/jsp/entitlementErrorPage.jsp</result>
+		    <result name="input">/jsp/loginForm.jsp</result>
+		     <result name="success">/jsp/successPage.jsp</result>
 		 </action>
 		 
 		 <action name="getstrategyReport" class="generateStrategyReportsAction" method="getStrategyReportPath">
