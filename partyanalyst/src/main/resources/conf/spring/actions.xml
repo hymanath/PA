@@ -1414,5 +1414,6 @@
 	    <property name="crossVotingEstimationService" ref="crossVotingEstimationService" />  
 	</bean>
 	
+	<bean id="generateStrategyReportsAction" class="com.itgrids.partyanalyst.web.action.GenerateStrategyReportsAction" singleton="false"></bean>
 </beans>	
 	
