@@ -422,35 +422,37 @@ function getInformationManagers(){
 	}
 var count = 2;
 var limitno = 160;
+
 function limitText(limitField, limitCount, limitNum)
 {
 
 var limitFieldElmt = document.getElementById(limitField);
 var limitCountElmt = document.getElementById(limitCount);
 limitCountElmt.innerHTML = limitNum + limitFieldElmt.value.length+"";
-if(limitFieldElmt.value.length == 0)
+if(limitFieldElmt.value.length == 0 || limitFieldElmt.value.length < 160)
 	{
 $("#alertMsg").html('');
 count = 2;
 limitno = 160;
 	}
+	
 if(limitFieldElmt.value.length > limitno)
 	{
 $("#alertMsg").html('exceeding the limit '+limitno+' characters and you are in to '+count+' nd message');
 count ++;
 limitno = limitno + 160;
 	}
+var count1 = limitFieldElmt.value.length;
 
-/*if (limitFieldElmt.value.length > compare)
-{
-alert('exceeding the limit 160 characters and you are in to 2nd message');
+
+if(count1 < limitno && count >= 3)
+	{
+	count --;
+	limitno = limitno - 160;
+	$("#alertMsg").html('exceeding the limit '+limitno+' characters and you are in to '+count+' nd message');
+	}
+
 }
-else
-{
-
-}*/
-}
-
 
 function getLocationSearchDetails()
 {
