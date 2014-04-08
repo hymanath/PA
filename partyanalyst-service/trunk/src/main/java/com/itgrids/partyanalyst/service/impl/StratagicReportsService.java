@@ -901,9 +901,12 @@ public class StratagicReportsService implements IStratagicReportsService{
 				}
 				
 				partyResults.get(0).setRank(1l);
+				LOG.error("RANK 1 -" +partyResults.get(0).getPartyId());
 				if(partyResults.size()>1){
 					partyResults.get(1).setRank(2l);
+					LOG.error("RANK 2 -" +partyResults.get(1).getPartyId());
 				}
+				LOG.error(" --- ---- ");
 			}
 			
 			
@@ -916,12 +919,24 @@ public class StratagicReportsService implements IStratagicReportsService{
 						if(!partyIds.contains(partyResults.get(1).getPartyId())){
 							marginVotes=partyResults.get(0).getVotesEarned()-pvo.getOtherVotes();
 							//partyResults.get(0).setRank(1l);
+							LOG.error("IF TDP AT POS-1 AND OTHERS ARE SECOND LEADING ");
+							LOG.error("TDP VOTES -"+partyResults.get(0).getVotesEarned());
+							LOG.error("OTHERS VOTES -"+pvo.getOtherVotes());
+							marginVotes=partyResults.get(0).getVotesEarned()-pvo.getOtherVotes();
+							LOG.error("MARGIN VOTES -"+marginVotes);
+							LOG.error(" ----------------------------- ");
 							pvo.setMarginVotes(marginVotes);
 							pvo.setMarginPercent(calcPercentage(pvo.getValidVotes(), marginVotes));
 						}else{
+							LOG.error("IF TDP AT POS-1 AND OTHER PARTIES ARE SECOND LEADING ");
+							LOG.error("TDP VOTES -"+partyResults.get(0).getVotesEarned());
+							LOG.error("SECOND PARTY VOTES -"+partyResults.get(1).getVotesEarned());
+							
 							marginVotes=partyResults.get(0).getVotesEarned()-partyResults.get(1).getVotesEarned();
 							//partyResults.get(0).setRank(1l);
 							pvo.setMarginVotes(marginVotes);
+							LOG.error("MARGIN VOTES -"+marginVotes);
+							LOG.error(" ----------------------------- ");
 							pvo.setMarginPercent(calcPercentage(pvo.getValidVotes(), marginVotes));
 						}
 						}else{
@@ -932,14 +947,24 @@ public class StratagicReportsService implements IStratagicReportsService{
 						}
 					}else{
 						if(!partyIds.contains(partyResults.get(0).getPartyId())){
-							marginVotes=partyResults.get(i).getPartyId().longValue()-pvo.getOtherVotes();
+							LOG.error("IF OTHERS AT POS-1 AND TDP IS RUNNING BEHIND ");
+							LOG.error("TDP VOTES -"+partyResults.get(i).getVotesEarned());
+							LOG.error("OTHERS VOTES -"+pvo.getOtherVotes());
+							marginVotes=partyResults.get(i).getVotesEarned()-pvo.getOtherVotes();
+							LOG.error("MARGIN VOTES -"+marginVotes);
+							LOG.error(" ----------------------------- ");
 							//partyResults.get(0).setRank(1l);
 							pvo.setMarginVotes(marginVotes);
 							pvo.setMarginPercent(calcPercentage(pvo.getValidVotes(), marginVotes));
 						}else{
 							marginVotes=partyResults.get(i).getVotesEarned()-partyResults.get(0).getVotesEarned();
 							//partyResults.get(0).setRank(1l);
+							LOG.error("IF OTHER PARTY AT POS-1 AND TDP IS RUNNING BEHIND ");
+							LOG.error("TDP VOTES -"+partyResults.get(i).getVotesEarned());
+							LOG.error("OTHERS VOTES -"+partyResults.get(0).getVotesEarned());
 							pvo.setMarginVotes(marginVotes);
+							LOG.error("MARGIN VOTES -"+marginVotes);
+							LOG.error(" ----------------------------- ");
 							pvo.setMarginPercent(calcPercentage(pvo.getValidVotes(), marginVotes));
 						}
 					}
