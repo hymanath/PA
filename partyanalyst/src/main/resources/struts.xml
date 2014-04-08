@@ -6889,6 +6889,22 @@
 		<param name="root">familyInfo</param>
 		</result>
 		</action>
+		
+		<action name="crossVotingAnalysisAction" class="dashBoardAction">
+			<result name="success">/jsp/crossVotingAnalysis.jsp</result>			
+		</action>
+		
+		<action name="voterModificationReportAction" class="dashBoardAction">
+			<result name="success">/jsp/voterModifications.jsp</result>			
+		</action>
+		
+		<action name="importentFamilyResultsAction" class="dashBoardAction">
+			<result name="success">/jsp/importentFamilyResults.jsp</result>			
+		</action>
+		
+		<action name="boothWiseResultsAction" class="dashBoardAction">
+			<result name="success">/jsp/boothWiseResults.jsp</result>			
+		</action>
 </package>
 		
 </struts>      
