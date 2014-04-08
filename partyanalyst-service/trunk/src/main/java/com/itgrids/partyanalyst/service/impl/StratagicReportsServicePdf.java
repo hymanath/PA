@@ -2437,7 +2437,7 @@ public void pollingStationHelper(PartyPositionVO finalRes,PdfPTable table ,List<
 	  		}
 	  		count++;
          
-	  		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getId()),SMALLFONT));
+	  		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getName()),SMALLFONT));
 	  		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	 	 table.addCell(c1);
 	  		
