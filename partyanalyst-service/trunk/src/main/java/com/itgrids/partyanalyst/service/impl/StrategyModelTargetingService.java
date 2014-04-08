@@ -2645,23 +2645,24 @@ public class StrategyModelTargetingService implements
 					  }
 					  table.setHorizontalAlignment(Element.ALIGN_LEFT);
 					  document.add(table);
-					   preface = new Paragraph();
-					   preface.add( new Paragraph(" ") );
-					   document.add(preface);
-					   
-					   Font calibriNormal = FontFactory.getFont("Calibri",9,Font.NORMAL);
-					
-						  Paragraph preface1 = new Paragraph();
-						  preface1.setAlignment(Element.PTABLE);
-						  preface1.add( new Paragraph(" ") );
-						  preface1.add( new Paragraph(" ") );
-						  preface1.add( new Paragraph("List of the Top Panchayats based on the Caste Assumption (Please note that these Panchayats are in order of priority",calibriNormal));
-						  preface1.add( new Paragraph("which is though not the final list is though not the final list, you can find the full & final list in \"START HERE\" Section)",calibriNormal));
-						  preface1.add( new Paragraph(" ") );
-						  preface1.add( new Paragraph(" ") );
-						  preface1.add( new Paragraph(" ") );
-						  document.add(preface1); 
+				
 				  }
+				   preface = new Paragraph();
+				   preface.add( new Paragraph(" ") );
+				   document.add(preface);
+				   
+				   Font calibriNormal = FontFactory.getFont("Calibri",9,Font.NORMAL);
+				
+					  Paragraph preface1 = new Paragraph();
+					  preface1.setAlignment(Element.PTABLE);
+					  preface1.add( new Paragraph(" ") );
+					  preface1.add( new Paragraph(" ") );
+					  preface1.add( new Paragraph("List of the Top Panchayats based on the Caste Assumption (Please note that these Panchayats are in order of priority",calibriNormal));
+					  preface1.add( new Paragraph("which is though not the final list is though not the final list, you can find the full & final list in \"START HERE\" Section)",calibriNormal));
+					  preface1.add( new Paragraph(" ") );
+					  preface1.add( new Paragraph(" ") );
+					  preface1.add( new Paragraph(" ") );
+					  document.add(preface1); 
 				  
 		} catch (Exception e) {
 			LOG.debug("Exception raised in generateCasteWiseTable() method ",e);
@@ -3783,40 +3784,46 @@ public class StrategyModelTargetingService implements
 		
 		}
 	public List<Object> getCriticalPanchayats(Long constituencyId){
-		 StrategyVO strategyVO = new StrategyVO();
-		Long publicationId =  voterInfoDAO.getLatestPublicationDate(constituencyId);
-		  strategyVO.setConstituencyId(constituencyId);
-			strategyVO.setPartyId(872l);
-			List<Long> electionIds = new ArrayList<Long>();
-			electionIds.add(38l);
-			electionIds.add(3l);
-			strategyVO.setPublicationId(publicationId);
-			strategyVO.setAutoCalculate(true);
-			strategyVO.setElectionIds(electionIds);
-			Double regainVotrsWeigthPerc = null;
-			try{
-			 regainVotrsWeigthPerc = prpWeightegesDAO.getPRPWeightageByConstiId(strategyVO.getConstituencyId());
-			}catch(Exception e){
-				
-			}
-			 if(regainVotrsWeigthPerc == null || regainVotrsWeigthPerc == 0d)
-				  regainVotrsWeigthPerc = 0d;
-			  Double prevTrendWeigthPerc = 90d-regainVotrsWeigthPerc;
-			  
-			strategyVO.setCastePercents(null);
-			strategyVO.setPrevTrnzWt(prevTrendWeigthPerc);
-			strategyVO.setYoungWt(10d);
-			strategyVO.setPrpWt(regainVotrsWeigthPerc);
-			strategyVO.setAgedWt(0d);
-			strategyVO.setTotalCastWt(0d);
-			strategyVO.setAutoCalculate(true);
-			strategyVO.setEffectPartyId(662l);
-			strategyVO.setEffectElectionId(38l);
+		StrategyVO strategyVO = getStrategyArguments(constituencyId);
 		List<Object> criticalPanchayats = new ArrayList<Object>();
 		List<Object> priorityList = getPrioritiesToTarget(strategyVO,false);
 		criticalPanchayats.add(priorityList.get(7));
 		criticalPanchayats.add(priorityList.get(9));
 		return criticalPanchayats;
+	}
+	
+	public StrategyVO getStrategyArguments(Long constituencyId){
+		 StrategyVO strategyVO = new StrategyVO();
+			Long publicationId =  voterInfoDAO.getLatestPublicationDate(constituencyId);
+			  strategyVO.setConstituencyId(constituencyId);
+				strategyVO.setPartyId(872l);
+				List<Long> electionIds = new ArrayList<Long>();
+				electionIds.add(38l);
+				electionIds.add(3l);
+				strategyVO.setPublicationId(publicationId);
+				strategyVO.setAutoCalculate(true);
+				strategyVO.setElectionIds(electionIds);
+				Double regainVotrsWeigthPerc = null;
+				try{
+				 regainVotrsWeigthPerc = prpWeightegesDAO.getPRPWeightageByConstiId(strategyVO.getConstituencyId());
+				}catch(Exception e){
+					
+				}
+				 if(regainVotrsWeigthPerc == null || regainVotrsWeigthPerc == 0d)
+					  regainVotrsWeigthPerc = 0d;
+				  Double prevTrendWeigthPerc = 90d-regainVotrsWeigthPerc;
+				  
+				strategyVO.setCastePercents(null);
+				strategyVO.setPrevTrnzWt(prevTrendWeigthPerc);
+				strategyVO.setYoungWt(10d);
+				strategyVO.setPrpWt(regainVotrsWeigthPerc);
+				strategyVO.setAgedWt(0d);
+				strategyVO.setTotalCastWt(0d);
+				strategyVO.setAutoCalculate(true);
+				strategyVO.setEffectPartyId(662l);
+				strategyVO.setEffectElectionId(38l);
+				
+				return strategyVO;
 	}
 		public EffectedBoothsResponse getPanchayatCategoriesForInfectedBooths(Long constituencyId){
 			StrategyVO strategyVO=new StrategyVO();

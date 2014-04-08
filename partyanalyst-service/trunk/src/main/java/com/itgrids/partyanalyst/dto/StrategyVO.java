@@ -43,6 +43,7 @@ public class StrategyVO implements Serializable {
 	private Double veryStrongMax;
 	private boolean considerRange;
 	private boolean autoCalculate;
+	private boolean autoStrategy;
 	
 	public Long getConstituencyId() {
 		return constituencyId;
@@ -223,6 +224,12 @@ public class StrategyVO implements Serializable {
 	}
 	public void setAutoCalculate(boolean autoCalculate) {
 		this.autoCalculate = autoCalculate;
+	}
+	public boolean isAutoStrategy() {
+		return autoStrategy;
+	}
+	public void setAutoStrategy(boolean autoStrategy) {
+		this.autoStrategy = autoStrategy;
 	}
 	
 	
