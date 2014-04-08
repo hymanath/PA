@@ -382,7 +382,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 				/*table.append("</table>");*/
 			System.out.println(table.toString());
 			}catch(Exception e){
-				e.printStackTrace();
+				LOG.error("Exception rised in getBoothWiseAddedAndDeletedVoters",e);
 			}
 		if(boothWiseAddedDeletedVoters.size()>0){
 			boothWiseAddedDeletedVoters.get(0).setMainHeading1("Age Group –Booth wise Additions information");
@@ -415,7 +415,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 	
 	public String roundTo2DigitsFloatValue(Float number){
 		  
-		LOG.debug("Entered into the roundTo2DigitsFloatValue service method");
+		//LOG.debug("Entered into the roundTo2DigitsFloatValue service method");
 		  
 		  String result = "";
 		  try
@@ -429,8 +429,8 @@ public class StratagicReportsService implements IStratagicReportsService{
 			result =  f.format(number);
 		  }catch(Exception e)
 		  {
-			  LOG.error("Exception raised in roundTo2DigitsFloatValue service method");
-			  e.printStackTrace();
+			  LOG.error("Exception raised in roundTo2DigitsFloatValue service method",e);
+			 
 		  }
 		  return result;
 	  }
@@ -450,8 +450,8 @@ public class StratagicReportsService implements IStratagicReportsService{
 			result =  f.format(number);
 		  }catch(Exception e)
 		  {
-			  LOG.error("Exception raised in roundTo2DigitsFloatValue service method");
-			  e.printStackTrace();
+			  LOG.error("Exception raised in roundTo2DigitsFloatValue service method",e);
+			
 		  }
 		  return result;
 	  }
@@ -1729,7 +1729,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 			
 			
 			}catch(Exception e){
-				LOG.error("Exception Raised in PartyChanges in Stratagic Report Service" + e);
+				LOG.error("Exception Raised in PartyChanges in Stratagic Report Service" , e);
 			}
 			
 			return finalVO;
@@ -1856,8 +1856,8 @@ public class StratagicReportsService implements IStratagicReportsService{
 			
 			
 			}catch (Exception e) {
-				e.printStackTrace();
-				LOG.error(" Exception Occured in getMandalWisePartyPerformanceReport() method, Exception - "+e);
+			
+				LOG.error(" Exception Occured in getMandalWisePartyPerformanceReport() method, Exception - ",e);
 			  }
 		}
 	 
@@ -2199,7 +2199,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 				
 			 }catch (Exception e) {
 				 LOG.error("Exception Occured in getSubLevelsVoterModificationDetailsByLocationValue() Method");
-				 LOG.error("Exception is - "+e);
+				 LOG.error("Exception is - ",e);
 			}
 			 voterModificationVO.setMainHeading("Locality");
 			 return voterModificationVO;
@@ -2221,8 +2221,8 @@ public class StratagicReportsService implements IStratagicReportsService{
 				 return voterModificationVO;
 				 
 			 }catch (Exception e) {
-				 e.printStackTrace();
-				 LOG.error("Exception Occured in getVoterModificationSubLevelsData() Method, Exception - "+e);
+
+				 LOG.error("Exception Occured in getVoterModificationSubLevelsData() Method, Exception - ",e);
 				 return voterModificationVO;
 			}
 		 }
@@ -2242,7 +2242,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 				 return publicationIdsList;
 			 }catch (Exception e) {
 				 LOG.error("Exception Occured in getVoterPublicationIdsBetweenTwoPublicationsForVotersModification() Method");
-				 LOG.error("Exception is - "+e);
+				 LOG.error("Exception is - ",e);
 				 return publicationIdsList; 
 			 }
 		 }
@@ -2269,8 +2269,8 @@ public class StratagicReportsService implements IStratagicReportsService{
 				 }
 				 
 			 }catch (Exception e) {
-				 e.printStackTrace();
-				 LOG.error("Exception Occured in getVoterModificationDataByPublicationDateList() Method, Exception - +e");
+
+				 LOG.error("Exception Occured in getVoterModificationDataByPublicationDateList() Method, Exception - ",e);
 				 
 			}
 		 }
@@ -2282,7 +2282,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 				 return voterInfoDAO.getVoterPublicationIdsBetweenTwoPublications(fromPublicationDateId, toPublicationDateId);
 			 }catch (Exception e) {
 				 LOG.error("Exception Occured in getVoterPublicationIdsBetweenTwoPublications() Method");
-				 LOG.error("Exception is - "+e);
+				 LOG.error("Exception is - ",e);
 				 return null;
 			 }
 		 }
@@ -2483,8 +2483,8 @@ public class StratagicReportsService implements IStratagicReportsService{
 				 }
 				 
 			 }catch (Exception e) {
-				 e.printStackTrace();
-				 LOG.error("Exception Occured in getVotermodificationDetailsFromVoterModifInfoTable() Method, Exception - +e");
+
+				 LOG.error("Exception Occured in getVotermodificationDetailsFromVoterModifInfoTable() Method, Exception - ",e);
 			}
 		 }
 	  public void getVotermodificationDetailsFromVoterModificationTable(List<Object[]> voterModifDetails, List<VoterModificationVO> voterModificationVOsList, SelectOptionVO optionVO, List<Long> pubIdsListForTotVoters,Long constituencyId)
@@ -2576,8 +2576,8 @@ public class StratagicReportsService implements IStratagicReportsService{
 				 }
 				 
 			 }catch (Exception e) {
-				 e.printStackTrace();
-				 LOG.error("Exception Occured in getVotermodificationDetailsFromVoterModificationTable() Method, Exception -" +e);
+
+				 LOG.error("Exception Occured in getVotermodificationDetailsFromVoterModificationTable() Method, Exception -" ,e);
 				 
 				 
 			}
@@ -2609,8 +2609,8 @@ public class StratagicReportsService implements IStratagicReportsService{
 				 return stringBuilder.toString();
 				 
 			 }catch (Exception e) {
-				 e.printStackTrace();
-				 LOG.error("Exception Occured in getVoterModificationSublevelQueryString() method, Exception - "+e);
+
+				 LOG.error("Exception Occured in getVoterModificationSublevelQueryString() method, Exception - ",e);
 				 return "";
 			}
 		 }
@@ -2628,8 +2628,8 @@ public class StratagicReportsService implements IStratagicReportsService{
 				 
 				 return selectOptionVOList;
 			 }catch (Exception e) {
-				 e.printStackTrace();
-				 LOG.error("Exception Occured in getTotalVotersByPublicationIdsList() method, Exception - "+e);
+
+				 LOG.error("Exception Occured in getTotalVotersByPublicationIdsList() method, Exception - ",e);
 				 return null;
 			}
 		}
@@ -2923,8 +2923,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 				 pdfVO.setMainHeading("Voters Additions & Deletions");
 				 return pdfVO;
 			 }catch (Exception e) {
-				 e.printStackTrace();
-				 LOG.error("Exception Occured in getVoterInfoByPublicationDateList() Method, Exception - "+e);
+				 LOG.error("Exception Occured in getVoterInfoByPublicationDateList() Method, Exception - ",e);
 				 return pdfVO;
 			}
 			 
@@ -3067,7 +3066,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 				 return result;
 			 }catch (Exception e) {
 				 LOG.error("Exception Occured in getVotersAddedAndDeletedCountAgeWiseInBeetweenPublications() Method");
-				 LOG.error("Exception is - "+e);
+				 LOG.error("Exception is - ",e);
 				 return result;
 			 }
 		 }
@@ -3199,7 +3198,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 				 return pdfVO;
 			 }catch (Exception e) {
 				 LOG.error("Exception Occured in getGenderWiseVoterModificationsForEachPublication() Method");
-				 LOG.error("Exception is - "+e);
+				 LOG.error("Exception is - ",e);
 				 return pdfVO;
 			 }
 		 }
@@ -3253,8 +3252,8 @@ public class StratagicReportsService implements IStratagicReportsService{
 							 return infoVO;
 				 return null;
 			 }catch (Exception e) {
-				 LOG.error("Exception Occured in getVoterModificationGenderInfoVOFromResultList() Method");
-				 LOG.error("Exception is - "+e);
+				 LOG.error("Exception Occured in getVoterModificationGenderInfoVOFromResultList() Method",e);
+
 				 return null;
 			}
 		 }
@@ -3265,8 +3264,8 @@ public class StratagicReportsService implements IStratagicReportsService{
 			 try{
 				 return voterInfoDAO.getPreviousPublicationIds(publicationDateId);
 			 }catch (Exception e) {
-				 LOG.error("Exception Occured in getPreviousPublicationId() Method");
-				 LOG.error("Exception is - "+e);
+				 LOG.error("Exception Occured in getPreviousPublicationId() Method",e);
+
 				 return null; 
 			 }
 		 }
@@ -4437,8 +4436,8 @@ public class StratagicReportsService implements IStratagicReportsService{
 		 
 		  
 		  } catch (Exception e) {
-			  LOG.debug("Exception Raised while GENERATING PDF in LocalElectionResults Blocks" +e);
-			  e.printStackTrace();
+			  LOG.debug("Exception Raised while GENERATING PDF in LocalElectionResults Blocks" ,e);
+			
 		  } 
 		 
 	  }
@@ -4705,7 +4704,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 		 // document.close(); 
 		  }
 		  catch (Exception e) {
-			  LOG.error("Exception Occured While Generating PDF for VotersInfo Block of VoterModification" +e);
+			  LOG.error("Exception Occured While Generating PDF for VotersInfo Block of VoterModification" ,e);
 		}
 	  }
 		  
@@ -4796,8 +4795,8 @@ public class StratagicReportsService implements IStratagicReportsService{
 		//  document.close();
 		  
 		  }catch (Exception e) {
-			  LOG.debug("Exception Raised while GENERATING PDF in Density Block" +e);
-			  e.printStackTrace();
+			  LOG.debug("Exception Raised while GENERATING PDF in Density Block" ,e);
+
 		}
 		  
 	  }
@@ -4925,8 +4924,8 @@ public class StratagicReportsService implements IStratagicReportsService{
 		//  document.close();
 		  
 		  }catch (Exception e) {
-			  LOG.debug("Exception Raised while GENERATING PDF in generatePDFForAssuredTargetVotersBlock Block" +e);
-			  e.printStackTrace();
+			  LOG.debug("Exception Raised while GENERATING PDF in generatePDFForAssuredTargetVotersBlock Block",e);
+
 		}
 		  
 	  }
@@ -5100,8 +5099,8 @@ public class StratagicReportsService implements IStratagicReportsService{
 		  //document.close();
 		  
 		  }catch (Exception e) {
-			  LOG.debug("Exception Raised while GENERATING PDF in generatePDFForDelimitationEffect Block" +e);
-			  e.printStackTrace();
+			  LOG.debug("Exception Raised while GENERATING PDF in generatePDFForDelimitationEffect Block" ,e);
+
 		}
 		  
 	  }
@@ -5554,8 +5553,8 @@ public class StratagicReportsService implements IStratagicReportsService{
 		  document.add(table1);
 		 // document.close();
 		  } catch (Exception e) {
-				LOG.error("Exception Occured While Generating PDF for BoothWiseAddedDeletedVoters" +e);
-				e.printStackTrace();
+				LOG.error("Exception Occured While Generating PDF for BoothWiseAddedDeletedVoters",e);
+
 			} 
 	  }
 	  
@@ -5708,7 +5707,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 			
 		  
 		  	}catch (Exception e) {
-			  LOG.error("Exception Occured While Generating PDF for BoothWiseAddedDeletedVoters" +e);
+			  LOG.error("Exception Occured While Generating PDF for BoothWiseAddedDeletedVoters",e);
 		  	}  
 	  }
 	  

@@ -47,4 +47,6 @@ public interface IStrategyModelTargetingService {
 	 public EffectedBoothsResponse getPanchayatCategoriesForInfectedBooths(Long constituencyId);
 	 
 	 public List<Object> getCriticalPanchayats(Long constituencyId);
+	 
+	 public StrategyVO getStrategyArguments(Long constituencyId);
 }
