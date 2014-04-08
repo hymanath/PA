@@ -21,6 +21,24 @@
 	<script type="text/javascript" src="js/md5.js"></script>
 </head>
 <style>
+	.view{
+	color:white;
+	
+	}
+
+	.bguser5
+	{
+		background: #59A2BE;
+		padding: 8px;
+		color: white;
+		border-radius: 5px 5px 5px 5px;
+		margin-top: 10px;
+		margin-bottom: 6px;
+	}
+	
+	
+	
+	
 	#changePWDButton,#cancelButtonID{background-color: #2F96B4;}
 	table {
     background-color: transparent;
@@ -516,69 +534,112 @@ lable{line-height:40px;}
 		
 		<div class="row-fluid">
 		    <div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
-				<h2 style="padding-bottom:35px;"> CRITICAL PANCHAYATS REPORT <div><input type="button" value="View" class="btn btn-small btnStyle" onCLick="viewCriticalPanchayats();" style="float:right;"></input></div></h2>
+				<h2 style="padding-bottom:35px;" > <div class="bguser5">CRITICAL PANCHAYATS REPORT </div><div><input type="button" value="View" class="btn btn-small btnStyle view" onCLick="viewCriticalPanchayats();" style="float:right;margin-top:3px;background:#F06081;"></input></div></h2>
 			</div>
 			
 		    <div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
-				<h2 style="padding-bottom:35px;"> REDUCE POLLING ANALYSIS <div><input type="button" value="View" class="btn btn-small btnStyle" onCLick="reducePolling();" style="float:right;"></input></div></h2>
+				<h2 style="padding-bottom:35px;"> <div class="bguser5">REDUCE POLLING PERCENTAGE</div><div><input type="button" value="View" class="btn btn-small btnStyle view" onCLick="reducePolling();" style="float:right;margin-top:3px;background:#F06081;"></input></div></h2>
 			</div>
 			
 			<div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
-			  <h2 style="padding-bottom:35px;"> INCREASE POLLING ANALYSIS <div><input type="button" value="View" class="btn btn-small btnStyle" onCLick="increasePolling();" style="float:right;"></input></div></h2>
+			  <h2 style="padding-bottom:35px;"> <div class="bguser5"> INCREASE POLLING PERCENTAGE</div> <div><input type="button" value="View" class="btn btn-small btnStyle view" onCLick="increasePolling();" style="float:right;margin-top:3px;background:#F06081;"></input></div></h2>
 			</div>
 			<div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
-				<h2 style="padding-bottom:35px;">VOTER AVERAGE AGE REPORT
-					<div><input type="button" value="View" class="btn btn-small btnStyle" onCLick="voterAverageAgePopUp();" style="float:right;"></input></div></h2>
+				<h2 style="padding-bottom:35px;">
+				<div class="bguser5">VOTER AVERAGE AGE REPORT</div>
+					<div><input type="button" value="View" class="btn btn-small btnStyle view" onCLick="voterAverageAgePopUp();" style="float:right;margin-top:3px;background:#F06081;"></input></div></h2>
 			</div>
 			
 			<div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
-				<h2 style="padding-bottom:35px;">Voters Analysis
-					<div style="padding-top:20px;"><input type="button" value="View" class="btn btn-small btnStyle" onCLick="openVotersAnalysts();" style="float:right;"></input></div></h2>
+				<h2 style="padding-bottom:35px;" ><div class="bguser5">Voters Analysis</div>
+					<div style="padding-top:20px;"><input type="button" value="View" class="btn btn-small btnStyle view" onCLick="openVotersAnalysts();" style="float:right;margin-top:3px;background:#F06081;"></input></div></h2>
 			</div>
 			
+			<c:if test="${not fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">
 		    <div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
-				<h2 style="padding-bottom:35px;"> Results Vs Caste					
-			    <div style="padding-top:20px;"><input type="button" value="View" class="btn btn-small btnStyle" onCLick="openCasteViseAnalysis();" style="float:right;"></input></div></h2>
+				<h2 style="padding-bottom:35px;" > <div class="bguser5">Results Vs Caste</div>					
+			    <div style="padding-top:20px;"><input type="button" value="View" class="btn btn-small btnStyle view" onCLick="openCasteViseAnalysis();" style="float:right;margin-top:3px;background:#F06081;"></input></div></h2>
 		
 			</div>
+			</c:if>
             <c:if test="${sessionScope.USER.isAdmin == 'true'}">
 			<div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
-				<h2 style="padding-bottom:35px;">STRATEGY ANALYSIS REPORT<div><input type="button" value="View" class="btn btn-small btnStyle" onCLick="viewStrategyAnalysisReport();" style="float:right;"></input></div></h2>
+				<h2 style="padding-bottom:35px;"><div class="bguser5">STRATEGY ANALYSIS REPORT</div><div><input type="button" value="View" class="btn btn-small btnStyle view" onCLick="viewStrategyAnalysisReport();" style="float:right;margin-top:3px;background:#F06081;"></input></div></h2>
 			</div>
 			</c:if>
 
 			<div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
-				<h2 style="padding-bottom:35px;">INFECTED BOOTHS<div style="padding-top:20px;"><input type="button" value="View" class="btn btn-small btnStyle" onCLick="viewInfectedBooths();" style="float:right;"></input></div></h2>
+				<h2 style="padding-bottom:35px;" ><div class="bguser5">INFECTED BOOTHS</div><div style="padding-top:20px;"><input type="button" value="View" class="btn btn-small btnStyle view" onCLick="viewInfectedBooths();" style="float:right;margin-top:3px;background:#F06081;"></input></div></h2>
 			</div>
 
 			<div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
-				<h2 style="padding-bottom:35px;">2009 ASSEMBLY VS 2013 PANCHAYAT RESULTS<div><input type="button" value="View" class="btn btn-small btnStyle" onCLick="viewPanchayathResults();" style="float:right;"></input></div></h2>
+				<h2 style="padding-bottom:35px;" ><div class="bguser5" style="width: 180px;">2009 ASSEMBLY VS 2013 PANCHAYAT RESULTS</div><div><input type="button" value="View" class="btn btn-small btnStyle view" onCLick="viewPanchayathResults();" style="float:right;margin-top:3px;background:#F06081;"></input></div></h2>
 			</div>
-			<div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
-				<h2 style="padding-bottom:35px;">CONSTITUENCY WISE AGE DETAILS<div><input type="button" value="View" class="btn btn-small btnStyle" onCLick="getConstituencyWiseAgeDetails();" style="float:right;"></input></div></h2>
+          
+          	<div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
+				<h2 style="padding-bottom:35px;"><div class="bguser5" style="width: 180px;">CONSTITUENCY WISE AGE DETAILS</div><div><input type="button" value="View" class="btn btn-small btnStyle view" onCLick="getConstituencyWiseAgeDetails();" style="float:right;margin-top:3px;background:#F06081;"></input></div></h2>
 			</div>
 			<c:if test="${ fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">	
 			<div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
-				<h2 style="padding-bottom:35px;">STRATEGY REPORTS<div><input type="button" value="View" class="btn btn-small btnStyle" onCLick="strategyReport();" style="float:right;"></input></div></h2>
+				<h2 style="padding-bottom:35px;"><div class="bguser5" style="width: 180px;">STRATEGY REPORTS</div><div><input type="button" value="View" class="btn btn-small btnStyle view" onCLick="strategyReport();" style="float:right;margin-top:3px;background:#F06081;"></input></div></h2>
 			</div>
 			</c:if>
+			
+		  <div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
+			<h2 style="padding-bottom:35px;">
+			<div class="bguser5" style="width: 180px;">Cross Voting Analysis</div>
+			<div>
+			<input class="btn btn-small btnStyle view" type="button" style="float:right;margin-top:3px;background:#F06081;" onclick="getCrossVotingReport();" value="View">
+			</div>
+			</h2>
+		</div>
+
+		<div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
+			<h2 style="padding-bottom:35px;">
+			<div class="bguser5" style="width: 180px;">Voter Modification Report </div>
+			<div>
+			<input class="btn btn-small btnStyle view" type="button" style="float:right;margin-top:3px;background:#F06081;" onclick="viewVoterModificationReport();" value="View">
+			</div>
+			</h2>
+		</div>
+
+		<div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
+			<h2 style="padding-bottom:35px;">
+			<div class="bguser5" style="width: 180px;">Importent Family Details</div>
+			<div>
+			<input class="btn btn-small btnStyle view" type="button" style="float:right;margin-top:3px;background:#F06081;" onclick="viewImportentFamilyDetails();" value="View">
+			</div>
+			</h2>
+		</div>
+
+		<div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
+			<h2 style="padding-bottom:35px;">
+			<div class="bguser5">Booth Wise Results</div>
+			<div>
+			<input class="btn btn-small btnStyle view" type="button" style="float:right;margin-top:3px;background:#F06081;" onclick="viewBoothWiseResults();" value="View">
+			</div>
+			</h2>
+		</div>
+
+
+
           <c:if test="${not fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">		 
-			<div class="span4 widget divHeightClass"  style="margin-left:7px;padding: 0px 20px;">
+			<div class="span4 widget"  style="margin-left:7px;padding: 0px 20px;">
 			  <h2>Voters Search</h2>
 				<div class="media">
-					<img class="media-object pull-left m-top15" alt="Party Performance Report" src="./images/dashboard/Voters Search.png"style="width: 64px; height: 64px;"></img>
+					<img class="media-object pull-left m-top15" alt="Party Performance Report" src="./images/dashboard/Voters Search.png" style="width: 64px; height: 66px; margin-top: 0px;"></img>
 					<div class="media-body">
-						<p>Voters Search</p>
-						<input type="button" value="View" class="btn btn-small btnStyle" onCLick="openAllInNewWindow('voterssearch');" style="float:right;"></input>
+						<p style="margin-top: 0px;">Voters Search</p>
+						<input type="button" value="View" class="btn btn-small btnStyle view" onCLick="openAllInNewWindow('voterssearch');" style="float:right;margin-top:-7px;background:#F06081;"></input>
 					</div>
 				</div>  
 			</div>
 		 </c:if>
 	    </div>
-		<div class="row-fluid">
+		<!----<div class="row-fluid">
 			<div class="span12 widget">
 				<h2>Cross Voting Analysis</h2>
-				<!----<fieldset>
+				<fieldset>
 				  <div class="row-fluid">
 					<div class="span2">
 						<label>Election year </label>					
@@ -592,7 +653,7 @@ lable{line-height:40px;}
 				  </div>
 				</fieldset>----->
 				
-				<div>
+				<!--<div>
 				   <table>
 				     <tr>
 				        <td><s:label theme="simple" for="electionYearField" value="Election year"/></td>
@@ -613,9 +674,9 @@ lable{line-height:40px;}
 					<input type="button" value="View" class="btn btn-small btnStyle" onClick="getCrossVotingReport();" style="float:right;"></input>
 				</div>
 			</div>       				
-		</div>
+		</div>-->
 		
-		<div class="row-fluid">
+		<!--<div class="row-fluid">
 			<div class="span12 widget">
 				<h2>Voter Modification Report </h2>
 				
@@ -642,10 +703,10 @@ lable{line-height:40px;}
 					 </c:if>
 				     <tr>
 				        <td><s:label theme="simple" for="prevPublicationId" value="Previous Publication"/></td>
-						 <!--<td><s:select theme="simple" id="prevPublicationId" list="publicationDatesList" listKey="id"  name="crossVotingAConsti" listValue="name" onChange=""/></td>-->
+						 <!--<td><s:select theme="simple" id="prevPublicationId" list="publicationDatesList" listKey="id"  name="crossVotingAConsti" listValue="name" onChange=""/></td>
 						 <td><select id="prevPublicationId"><option value="9">2014-01-01</option></select></td>
 					    <td><s:label theme="simple" for="presentPublicationId" value="Present Publication"/></td>
-						<!--<td><s:select theme="simple" id="presentPublicationId" list="publicationDatesList" listKey="id"  name="crossVotingParty" listValue="name"/></td>-->
+						<!--<td><s:select theme="simple" id="presentPublicationId" list="publicationDatesList" listKey="id"  name="crossVotingParty" listValue="name"/></td>
 						<td><select id="presentPublicationId"><option value="10">2014-02-01</option></select></td>
 				    </tr>
 				   </table>
@@ -660,9 +721,9 @@ lable{line-height:40px;}
 					</c:if>
 				</div>
 			</div>       				
-		</div>
+		</div>-->
 		
-		<div class="row-fluid">
+		<!--<div class="row-fluid">
 			<div class="span12 widget">
 				<h2>Important Family Details</h2>
 				
@@ -705,8 +766,8 @@ lable{line-height:40px;}
 					</c:if>
 				</div>
 			</div>       				
-		</div>
-	    <div class="row-fluid">
+		</div>-->
+	    <!--<div class="row-fluid">
 			<div class="span12 widget" id="boothResultsDiv" >
 				<h2>Booth Wise Results</h2>
 				<div id="boothWiseResult"></div>
@@ -746,7 +807,7 @@ lable{line-height:40px;}
 					</tr>
 					</table>
 					<div class="control-group" id="errorDiv" style="color:red;"></div>
-					<button class="btn btn-mini btn-small btnStyle" data-dismiss="modal" aria-hidden="true" onclick="submitRes()" style="float: right; margin-top: -55px; margin-right: 201px;">SUBMIT</button>
+					<button class="btn btn-mini btn-small btnStyle" data-dismiss="modal" aria-hidden="true" onclick="submitRes()" style="float: right; margin-top: -55px; margin-right: 201px;">SUBMIT</button>-->
 					<!--<div class="control-group ">
 						<label class="control-label" for="electionYear">Select Year</label>
 						<div class="controls">
@@ -770,21 +831,21 @@ lable{line-height:40px;}
 								<option value='0'>Select Party</option>
 							</select>
 						</div>
-					</div>-->
+					</div>
 					
 				</div>
-			</div>
+			</div>-->
 			<!----<div class="span6 widget-simple">
 				<h4>Voters Search</h4>
 				<div><input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('voterssearch');" style="float:right;"></input></div>
-			</div>	---->  
+			</div>	
 			
 
 
 
 
 			</div>
-    </div>
+    </div>-->
     
     
     
@@ -1031,11 +1092,13 @@ lable{line-height:40px;}
 			
         </div>
      </div>
+	</c:if>
 	
 
 	
  <!--End of Management Tools Block-->
  <!-- STRATAGIC REPORTS BLOCK -- SASI-->
+ <c:if test="${not fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">
  <div class="span12 well well-small" style="margin-left:0px;">
      <div class="page-header"><h4>STRATAGIC REPORT</h4></div>
 		
@@ -1290,7 +1353,8 @@ function increasePolling()
 function getCrossVotingReport()
 {
 	
-	var electionYear  = $('#electionYearField option:selected').val();
+	window.open("crossVotingReportInputAction.action");
+	/*var electionYear  = $('#electionYearField option:selected').val();
 	
 	var pConstituency = $('#pConstituencyList option:selected').val();
 	
@@ -1301,7 +1365,7 @@ function getCrossVotingReport()
 	if(electionYear != null && electionYear != "" && electionYear > 0)
 	{
 		window.open("crossVotingReportInputAction.action?year="+electionYear+"&pConstituency="+pConstituency+"&aConstituency="+aConstituency+"&partyId="+party+"");
-	}
+	}*/
 }
 
 function getParties()
@@ -2696,6 +2760,27 @@ function strategyReport()
 {
 	window.open("getStrategyReportsAction.action");
 }
+
+function viewCrossVotingAnalysis()
+{
+  window.open("crossVotingAnalysisAction.action")
+}
+
+function viewVoterModificationReport()
+{
+  window.open("voterModificationReportAction.action")
+}
+
+function viewImportentFamilyDetails()
+{
+  window.open("importentFamilyResultsAction.action")
+}
+
+function viewBoothWiseResults()
+{
+  window.open("boothWiseResultsAction.action")
+}
+
 </script>
 
 </body>
