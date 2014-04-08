@@ -350,12 +350,12 @@ $(".userCheck").attr("checked",false);
 	var description = $("#description").val().trim();
 	if(userIds.length == 0)
 	{
-	str+='Select atleast one user<br/>';
+	str+='<font color="red">Select atleast one user</font><br/>';
 	flag = true;
 	}
 	if(description == "" || description.length == 0 )
 	{
-	str += 'Description Required<br>';
+	str += '<font color="red">Description Required</font><br>';
 		flag = true;
 	}
 	if(flag == true)
