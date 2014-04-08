@@ -306,6 +306,10 @@
 		<pattern>/criticalPanchayatsAction*</pattern>
 		<pattern>/partyHighLowPollingAction*</pattern>
 		<pattern>/getStrategyReportsAction*</pattern>
+		<pattern>/crossVotingAnalysisAction*</pattern>
+		<pattern>/voterModificationReportAction*</pattern>
+		<pattern>/importentFamilyResultsAction*</pattern>	
+		<pattern>/boothWiseResultsAction*</pattern>
 		</decorator>
     	 
        <decorator name="tdpHome" page="tdplayout.jsp">
