@@ -1410,5 +1410,8 @@
 	<bean id="voterNamesTempDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterNamesTempDAO">
 	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+	<bean id="criticalPanchayatsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CriticalPanchayatsDAO">
+	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	  
 </beans>		

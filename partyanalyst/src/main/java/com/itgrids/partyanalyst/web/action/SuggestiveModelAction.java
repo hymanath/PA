@@ -1063,4 +1063,38 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 			}
 			 return Action.SUCCESS;	
 		}
+		
+		public String getFamilyDetailsForPanchayat()
+		{
+			try{
+				jObj = new JSONObject(getTask());
+				String path = IWebConstants.STATIC_CONTENT_FOLDER_URL ;
+				session = request.getSession();
+				RegistrationVO regVo = (RegistrationVO) session.getAttribute(IConstants.USER);
+				if(regVo == null)
+					return Action.ERROR;
+				Long userId = regVo.getRegistrationID();
+				VoterVO votervo = new VoterVO();
+				votervo.setConstituencyId(jObj.getLong("constituencyId"));
+				votervo.setType(jObj.getString("type").toString().trim());
+				votervo.setYear(jObj.getLong("year"));
+				votervo.setStartIndex(jObj.getInt("startIndex"));
+				votervo.setMaxIndex(jObj.getInt("results"));
+				familyInfo = suggestiveModelService.getFamilyDetailsForPanchayat(votervo,userId,path);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			 return Action.SUCCESS;	
+		}
+		public String getCriticalPanchayatConstituencies()
+		{
+			try{
+				constituencies = suggestiveModelService.getCriticalPanchayatConstituencies();
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			 return Action.SUCCESS;	
+		}
 }
