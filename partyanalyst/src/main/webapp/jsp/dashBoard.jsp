@@ -2694,7 +2694,7 @@ function getConstituencyWiseAgeDetails()
 
 function strategyReport()
 {
-	window.open("strattegtReportsAction.action");
+	window.open("getStrategyReportsAction.action");
 }
 </script>
 

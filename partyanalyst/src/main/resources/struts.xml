@@ -6844,7 +6844,7 @@
 		<param name="root">voiceSmsResponseDetails</param>
 		</result>
 		</action>
-		<action name="strattegtReportsAction" class="strattegtReportsAction" >
+		<action name="getStrategyReportsAction" class="strattegtReportsAction" >
 		    <result name="error">/jsp/entitlementErrorPage.jsp</result>
 		    <result name="success">/jsp/strattegtReports.jsp</result>	
 		 </action>
@@ -6860,7 +6860,16 @@
 		<param name="root">constituenciesList</param>
 		</result>
 		</action>
-		
+				
+		<action name="autoGenerateStrategyReport" class="generateStrategyReportsAction">
+		   
+		 </action>
+		 
+		 <action name="getstrategyReport" class="generateStrategyReportsAction" method="getStrategyReportPath">
+			<result type="json" name="success">
+				<param name="root">status</param>				
+			</result>		
+		</action>
 </package>
 		
 </struts>      

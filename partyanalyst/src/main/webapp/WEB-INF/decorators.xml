@@ -305,7 +305,7 @@
 		<pattern>/panchayatResultsAction*</pattern>
 		<pattern>/criticalPanchayatsAction*</pattern>
 		<pattern>/partyHighLowPollingAction*</pattern>
-		<pattern>/strattegtReportsAction*</pattern>
+		<pattern>/getStrategyReportsAction*</pattern>
 		</decorator>
     	 
        <decorator name="tdpHome" page="tdplayout.jsp">
