@@ -293,7 +293,7 @@ maxDate: new Date()
 	{
 		 maxcount = 0;
 		 count = 2;
-         limitno = 10;
+         limitno = 160;
 		$("#ajaxImage").css("display","none");
 		document.getElementById("description").value = '';
 
