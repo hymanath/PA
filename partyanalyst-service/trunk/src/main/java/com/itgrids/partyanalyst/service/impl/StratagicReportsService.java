@@ -335,6 +335,8 @@ public class StratagicReportsService implements IStratagicReportsService{
 						}
 					}
 					}
+				
+				loc = new ArrayList<Long>(new HashSet<Long>(loc));
 				Collections.sort(loc);
 				
 				
