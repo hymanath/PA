@@ -170,6 +170,7 @@ import com.itgrids.partyanalyst.model.VoterNamesTemp;
 import com.itgrids.partyanalyst.model.VoterStatus;
 import com.itgrids.partyanalyst.model.VoterTemp;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
+import com.itgrids.partyanalyst.service.IMobileService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IVoterReportService;
@@ -263,8 +264,9 @@ public class VotersAnalysisService implements IVotersAnalysisService{
     private IVoterNamesTempDAO voterNamesTempDAO;
     private ILanguageDAO languageDAO;
     private IVoterNamesDAO voterNamesDAO;
-    
-    public IVoterNamesDAO getVoterNamesDAO() {
+   
+
+	public IVoterNamesDAO getVoterNamesDAO() {
 		return voterNamesDAO;
 	}
 
@@ -21500,10 +21502,10 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 					  for(VoterVO voter : list)
 					  {
 						  VoterNames voterNames = new VoterNames();
-						  voterNames.setFirstName(voter.getFirstName());
-						  voterNames.setLastName(voter.getName());
-						  voterNames.setRelativeFirstName(voter.getRelativeFirstName());
-						  voterNames.setRelativeLastName(voter.getRelativeLastName());
+						  voterNames.setFirstName(voter.getFirstName().trim());
+						  voterNames.setLastName(voter.getName().trim());
+						  voterNames.setRelativeFirstName(voter.getRelativeFirstName().trim());
+						  voterNames.setRelativeLastName(voter.getRelativeLastName().trim());
 						  voterNames.setLanguage(languageDAO.get(3l));
 						  voterNames.setVoter(voterDAO.get(voteIdMap.get(voter.getVoterIDCardNo())));
 						  voterNamesDAO.save(voterNames);
