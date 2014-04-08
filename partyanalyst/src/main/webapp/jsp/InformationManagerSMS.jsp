@@ -447,7 +447,7 @@ var count1 = limitFieldElmt.value.length;
 
 if(count1 < limitno && count >= 3)
 	{
-	count --;
+	 count--;
 	limitno = limitno - 160;
 	$("#alertMsg").html('exceeding the limit '+limitno+' characters and you are in to '+count+' nd message');
 	}
