@@ -76,6 +76,7 @@
 		<class>com.itgrids.partyanalyst.model.HHSurvey</class>
 		<class>com.itgrids.partyanalyst.model.HouseHolds</class>
 		<class>com.itgrids.partyanalyst.model.HHSurveyAnswers</class>
+		<class>com.itgrids.partyanalyst.model.voterNames</class>
 		
 		
 		 <properties> 
