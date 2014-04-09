@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao;
 
 import java.util.List;
+
 import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
