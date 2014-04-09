@@ -48,5 +48,7 @@ public interface IStrategyModelTargetingService {
 	 
 	 public List<Object> getCriticalPanchayats(Long constituencyId);
 	 
+	 public List<PartyPositionVO> getPartyPreviousTrends(StrategyVO strategyVO,Long constituencyId,Long partyId,List<Long> electionIds,Map<Long,PartyEffectVO> partyEffect,Long effectPartyId,Long effectElectionId,Map<Long,Double> currentResult);	
+	 
 	 public StrategyVO getStrategyArguments(Long constituencyId);
 }
