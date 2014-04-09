@@ -476,7 +476,7 @@ public void setPanchayatResult(List<PartyPositionVO> panchayatResult) {
 		jObj = new JSONObject(getTask());
 	
 	Long constituencyId=jObj.getLong("constituencyId");
-	prevTrends=stratagicReportsService.getPreviousTrendsReport(constituencyId);
+	prevTrends=stratagicReportServiceForMLASuccess.getPreviousTrendsReport(constituencyId);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Action.ERROR;
@@ -490,7 +490,7 @@ public void setPanchayatResult(List<PartyPositionVO> panchayatResult) {
 		jObj = new JSONObject(getTask());
 	
 	Long constituencyId=jObj.getLong("constituencyId");
-	prevTrendsParliament=stratagicReportsService.getPreviousTrendsReportParliament(constituencyId);
+	prevTrendsParliament=stratagicReportServiceForMLASuccess.getPreviousTrendsReportParliament(constituencyId);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Action.ERROR;
