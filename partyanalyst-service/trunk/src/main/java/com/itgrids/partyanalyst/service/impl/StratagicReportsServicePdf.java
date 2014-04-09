@@ -2649,6 +2649,16 @@ public String roundTo2DigitsDoubleValue(Double number){
 		 document.add(orderedList);   
 	  
 	 }
+
+	public void buildAutoStrategy(Long constituencyId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public Long getConstituencyNo(Long constituencyId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }
 
