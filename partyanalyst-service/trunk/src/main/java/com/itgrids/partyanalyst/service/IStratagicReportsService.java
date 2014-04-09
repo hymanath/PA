@@ -61,4 +61,8 @@ public interface IStratagicReportsService {
 	public void getPDFForSubLevelAddedDeleted(VoterModificationVO result,Document document);
 	 public void generatePDFForAssuredTargetVotersBlock(AssumptionsVO result,Document document);
 	 public void generatePDFForDelimitationEffect(DelimitationEffectVO result,Document document);
+	 
+	 public ResultStatus getRecordsCountToCasteContainConsti(Long constituencyId);
+	 public void buildAutoStrategy(Long constituencyId);
+	 public Long getConstituencyNo(Long constituencyId);
 }
