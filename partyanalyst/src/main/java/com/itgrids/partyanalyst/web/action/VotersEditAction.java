@@ -1757,4 +1757,16 @@ public String saveLocality()
 		return Action.SUCCESS;
 	  }
 
+	   public String updateMobileNos()
+	   {
+		   try{
+			   result = voterReportService.updateMobileNos();	   
+		   }
+		   catch(Exception e)
+		   {
+			   LOG.error("Exception rised in updateMobileNos ",e);
+	     }
+		return Action.SUCCESS;
+	  }
+	   
    }
