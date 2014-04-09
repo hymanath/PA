@@ -6911,6 +6911,12 @@
            		<param name="root">casteContainConstiList</param>
         	</result>
         </action>
+         <action name="updateMobileNosAction" class="votersEditAction"
+			method="updateMobileNos">
+			<result type="json" name="success">
+				<param name="root">result</param>
+			</result>
+		</action>
 </package>
 		
 </struts>      

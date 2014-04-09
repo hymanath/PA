@@ -1416,5 +1416,8 @@
 	<bean id="criticalPanchayatsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CriticalPanchayatsDAO">
 	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="mobileNumbersDAO" class="com.itgrids.partyanalyst.dao.hibernate.MobileNumbersDAO">
+	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	  
 </beans>		
