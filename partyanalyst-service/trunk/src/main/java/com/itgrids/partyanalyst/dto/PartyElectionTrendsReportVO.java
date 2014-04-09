@@ -24,8 +24,16 @@ public class PartyElectionTrendsReportVO implements Comparable<PartyElectionTren
 	private PartyElectionTrendsReportHelperVO bjpVo = new PartyElectionTrendsReportHelperVO();
 	private PartyElectionTrendsReportHelperVO othersVo;
 	
+	private Long rejectedVotes;
+	
 
 	
+	public Long getRejectedVotes() {
+		return rejectedVotes;
+	}
+	public void setRejectedVotes(Long rejectedVotes) {
+		this.rejectedVotes = rejectedVotes;
+	}
 	public Long getElectionIdForConst() {
 		return electionIdForConst;
 	}
