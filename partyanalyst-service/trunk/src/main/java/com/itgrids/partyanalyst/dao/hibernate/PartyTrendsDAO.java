@@ -158,12 +158,18 @@ public class PartyTrendsDAO extends GenericDaoHibernate<PartyTrends, Long> imple
     public List<?> getPreviousTrendsDataForParleament(List<Long> partyIds,Long constId)
     {
     	Query q= getSession().createQuery("select ce.election.electionYear,sum(be.boothResult.validVotes),n.party.partyId,sum(cr.votesEarned),(sum(cr.votesEarned)/sum(be.boothResult.validVotes)) * 100,  " +
-    			" b.constituency.district.districtId,n.candidateResult.rank,n.party.shortName,ce.election.electionId from ConstituencyElection ce " +
+    			" b.constituency.district.districtId,n.candidateResult.rank,n.party.shortName,ce.election.electionId,ce.constituency.constituencyId,dc.delimitationConstituency.constituency.constituencyId,e.electionId  from ConstituencyElection ce " +
     			"  ,BoothConstituencyElection be " +
     			" ,Booth b   " +
     			", Nomination   n  " +
     			" ,CandidateBoothResult    cr     " +
+    			",DelimitationConstituencyAssemblyDetails dc   "+
+    			",Election  e "+
     			"where  " +
+    			"e.electionScope.electionScopeId=2 and e.electionYear=ce.election.electionYear and "+
+    			"dc.constituency.constituencyId= b.constituency.constituencyId and "+
+    			"dc.delimitationConstituency.year=ce.election.electionYear and "+
+    			"dc.delimitationConstituency.constituency.constituencyId=ce.constituency.constituencyId and "+
     			"be.constituencyElection.constiElecId=ce.constiElecId and " +
     			"b.boothId= be.booth.boothId and " +
     			"n.constituencyElection.constiElecId=ce.constiElecId and " +
