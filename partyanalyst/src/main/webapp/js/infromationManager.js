@@ -1,4 +1,4 @@
-
+	
 	var receiverSmsArray = null;
 	var maxcount = 0;
 	function buildUsers(results,jobj)
@@ -73,8 +73,8 @@ str+='<textarea rows="3" id="description" class="span9 m-top15" placeholder="Ent
 str+='&nbsp;&nbsp; &nbsp;&nbsp;<button class="btn btn-small btn-info" type="submit" onclick="sendSMS()">Send SMS</button><img id="ajaxImage" src="./images/icons/search.gif" alt="Processing Image" style="display:none;float:right;"/>';
 str+='<div id="limitDiv">';
 str+='<table style="width:100%;"><tr>';
-str+='<td style="width:50%;"><div id="remainChars" style="margin-left:266px;">';
-str+='<span id="maxcount">'+maxcount+' </span> </div></td>';
+str+='<td style="width:50%;"><div id="remainChars" style="margin-left: 9px;">';
+str+='<span id="maxcount">'+maxcount+' Characters</span> </div></td>';
 //str+='<td style="width:50%;"><div>Remaining no. of characters</div></td>';
 str+='</tr></table>';
 str+='</div><br/><br/>';
@@ -215,7 +215,7 @@ str += '<thead>';
 		  str+='</tr>';*/
 
 		  str+='<tr id="wonCandidatesTableSearch">';
-		  str+=' <th><input id="parentViewSmsCheckbox" type="checkbox" style="width:4px !imporatnt;"/></th>';
+		  str+=' <th><input id="parentViewSmsCheckbox" type="checkbox" /></th>';
 str+=' <th >MESSAGE</th>';
 str+='<th >SENT ON</th>';
 str+=' <th > Incharge</th>';
@@ -233,14 +233,14 @@ str+='<tbody>';
 for(var i in myResults){
 
 str += '<tr id="row'+i+'" value="'+myResults[i].responseId+'">';
-str+=' <td><input type="checkbox" class="viewSmsCheckbox" value="'+myResults[i].responseCount+'" style="width:4px !imporatnt;"></td>';
+str+=' <td style="width: 20px;"><input type="checkbox" class="viewSmsCheckbox" value="'+myResults[i].responseCount+'" style="width:4px !imporatnt;"></td>';
 str += '<td class="span8">'+myResults[i].description+'</td>';
-str += '<td>'+myResults[i].dateSent+'</td>';
-str+='<td>'+myResults[i].locationName+'</td>';
+str += '<td style="width: 114px;">'+myResults[i].dateSent+'</td>';
+str+='<td style="width: 114px;">'+myResults[i].locationName+'</td>';
 //str+='<td>'+myResults[i].numbers+'</td>';
-str += '<td><button class="btn btn-small" onClick="messageResend('+myResults[i].responseCount+',\''+myResults[i].description+'\','+myResults[i].numbers+');" ><i class="icon-repeat"></i> </button></td>';
-str += '<td><button type="submit" class="btn btn-small btn-success" id="forward'+i+'" onClick="messageForward(\'row'+i+'\','+myResults[i].responseId+',\''+myResults[i].description+'\','+myResults[i].numbers+',\'forward'+i+'\');" ><i class="icon-share icon-white"></i></button></td>';
-str += '<td><button type="submit" class="btn btn-small btn-danger" onClick="deleteRow('+myResults[i].responseCount+',\'forward'+i+'\');"><i class="icon-trash icon-white"></i> </button></td></tr>';
+str += '<td style="width: 114px;"><button class="btn btn-small" onClick="messageResend('+myResults[i].responseCount+',\''+myResults[i].description+'\','+myResults[i].numbers+');" ><i class="icon-repeat"></i> </button></td>';
+str += '<td style="width: 114px;"><button type="submit" class="btn btn-small btn-success" id="forward'+i+'" onClick="messageForward(\'row'+i+'\','+myResults[i].responseId+',\''+myResults[i].description+'\','+myResults[i].numbers+',\'forward'+i+'\');" ><i class="icon-share icon-white"></i></button></td>';
+str += '<td style="width: 114px;"><button type="submit" class="btn btn-small btn-danger" onClick="deleteRow('+myResults[i].responseCount+',\'forward'+i+'\');"><i class="icon-trash icon-white"></i> </button></td></tr>';
 
 }
 str += '</tbody>';
@@ -315,18 +315,6 @@ var jsObj=
 
 }
 
-function isContainsMessage(id){
-
-var messgae = $('#'+id+'').val();
-
-	if(messgae.trim().length == 0){
-		$('#forward'+id+'').attr("disabled","disabled");
-	}
-	else{
-	$('#forward'+id+'').removeAttr("disabled");
-	}
-
-}
  var j = 1;
  var count = 0;
 function messageForward(value,id,msg,mobileno,fId)
@@ -346,15 +334,15 @@ arrUnique = uniqBy(arr, JSON.stringify)
 
 var str = '';
 str += '<tr id="subrow'+value.match(/\d+/)+j+'">';
-str += '<td></td><td class="span3" colspan="2"><input class="comnClss" id="input'+value+'" type="text" style="width:150px !important;" value="'+msg+'" onKeyup="isContainsMessage(\'input'+value+'\');"></td>';
-str += '<td><select id="mulSelect" multiple="multiple">';
+str += '<td></td><td class="span3" colspan="2"><textarea rows="3" class="comnClss" id="input'+value+'" type="text" style="background-color: white; width: 383px ! important; font-family: verdana;">'+msg+'</textarea></td>';
+str += '<td><select id="mulSelect" multiple="multiple" style="height: 92px;">';
 for ( var i in arrUnique) {
 		str += '<option value='
 				+ arrUnique[i].userId + '>'
 				+ arrUnique[i].name + '</option>';
 	}
 str+='</select></td>';
-str += '<td><span class="btn btn-small" id="forwardinput'+value+'" onClick="forwardMessage('+id+',\'input'+value+'\','+mobileno+');"><i class="icon-share-alt"></i></span></td>';
+str += '<td><span class="btn btn-small" onClick="forwardMessage('+id+',\'input'+value+'\','+mobileno+');"><i class="icon-share-alt"></i></span></td>';
 str += '<td></td><td><span class="btn btn-small btn-danger"  onClick="deleteRow(\'subrow'+value.match(/\d+/)+j+'\',\''+fId+'\');"><i class="icon-trash icon-white"></i></span></td></tr>';
 $('#'+value).after(str);
 
@@ -411,16 +399,15 @@ callAjax(jsObj,url);
 
 var receiverIds = null;
 function forwardMessage(id,msg,mobileNo){
-
-
-
+var userIds =new Array();
+var message = $('#'+msg).val();
 receiverIds =new Array();
 $('#mulSelect option:selected').each(function(i, selected){ 
  receiverIds[i] = $(this).val(); 
- });
+});
 	if(receiverIds.length==0){
 	setTimeout(function(){
-		$("#successDiv").html("Please Select at least one User..").css({"color":"red","width":"600px","float":"right"}).scrollTop();
+		$("#successDiv").html("Please Select atleast one User..").css({"color":"red","width":"600px","float":"right"}).scrollTop();
 		$('html, body,#successDiv').animate({scrollTop:208}, 'slow');
 			setTimeout(function(){
 				$("#successDiv").html('');
@@ -467,26 +454,20 @@ callAjax(jsObj,url);
 
 function deleteAllRows(){
 
-
-if(!$('input.viewSmsCheckbox:checked').length > 0){
-		setTimeout(function(){
-		$("#successDiv").html("Please Select at least one message..").css({"color":"red","width":"600px","float":"right"}).scrollTop();
-		$('html, body,#successDiv').animate({scrollTop:500}, 'slow');
-			setTimeout(function(){
-				$("#successDiv").html('');
-			},3000);
-		},500);
-		return;
-	}
-
-      
-  
-
 var r=confirm("Are you sure to delete ?");
 if (r)
 {
 
-	
+	if(!$('input.viewSmsCheckbox:checked').length > 0){
+		setTimeout(function(){
+		$("#successDiv").html("Please Select atleast one message..").css({"color":"red","width":"600px","float":"right"}).scrollTop();
+		$('html, body,#successDiv').animate({scrollTop:308}, 'slow');
+			setTimeout(function(){
+				$("#successDiv").html('');
+			},3000);
+		},1000);
+		return;
+	}
 	var total = new Array();
 	$('input.viewSmsCheckbox:checked').each(function() {
 				total.push($(this).val());
@@ -499,8 +480,6 @@ if (r)
 		}
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "deleteSmsDetailsAction.action?"+rparam;	
-		
-	
 
 		callAjax(jsObj,url);
 	
