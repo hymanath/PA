@@ -792,8 +792,8 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 			  List<PartyPositionVO> partyPerformance =dpartyPerformance.deSerialize( maps.get(PdfPages.partyPerformance),autoStrategy ); 
 			  strategyModelTargetingService.panchayatwisePartyPerformanceTable(document,partyPerformance,1l,Eleheading);//3
 			  strategyModelTargetingService.panchayatwisePartyPerformanceTable(document,partyPerformance,2l,Eleheading);//3
-			  String EleChartheading="Election Results Comparision Chart b/w 2009 Assembly & 2013  Panchayat";
-			  strategyModelTargetingService.buildChartForPartyPerformanceReort(document,partyPerformance,writer,EleChartheading);//3
+			  //String EleChartheading="Election Results Comparision Chart b/w 2009 Assembly & 2013  Panchayat";
+			  //strategyModelTargetingService.buildChartForPartyPerformanceReort(document,partyPerformance,writer,EleChartheading);//3
 			  partyPerformance=null;
 		
 		} catch (Exception e) {
