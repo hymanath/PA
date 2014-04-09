@@ -328,11 +328,12 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		maps.put(PdfPages.delimitationEffect, defaultFileName);
 		
 		//assumptions
-		defaultFileName="assumptions"+uidentifier;
-		AssumptionsVO assumptionsVO=stratagicReportsService.votersAssumptionsService( constId,base,assured,publicationDateId,tdpPerc);
-		defaultFileName =   serialize(defaultFileName, assumptionsVO,strategyVO.isAutoStrategy());
-		maps.put(PdfPages.assumptions, defaultFileName);
-		
+		if(!strategyVO.isAutoStrategy()){
+			defaultFileName="assumptions"+uidentifier;
+			AssumptionsVO assumptionsVO=stratagicReportsService.votersAssumptionsService( constId,base,assured,publicationDateId,tdpPerc);
+			defaultFileName =   serialize(defaultFileName, assumptionsVO,strategyVO.isAutoStrategy());
+			maps.put(PdfPages.assumptions, defaultFileName);
+		}
 		
 		
 		
