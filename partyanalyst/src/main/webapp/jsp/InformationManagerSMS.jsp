@@ -105,7 +105,15 @@ background-color:  #FFFFFF !important;
  <BODY>
  <script type="text/javascript">
  var loginUserId = "${sessionScope.USER.registrationID}";
+ 
  $( document ).ready(function() {
+ 
+ 	
+ 
+  $('#dateId').val(' ');
+  $('#nameSearch').val('');
+  
+
 
 $("#parentUserCheck").live("click",function(){
 var th = $(this);
@@ -150,7 +158,8 @@ maxDate: new Date()
 
 <h2>Send Text SMS </h2>
 
-<h4>Existing Phone Numbers</h4>
+<h4>EXISTING INCHARGE DETAILS
+</h4>
 		 <!--<div class="">
     <div class="span4 offset2 m-top15">
     <label>Select Parliament: <select id="constituency" onchange="getInformationManagers();"></select><label>
