@@ -205,6 +205,9 @@ lable{line-height:40px;}
 #helpbutt6{margin-left: 6px;margin-top:-18px;}
 #helpbutt7{margin-left: 6px;}
 #helpbutt8{margin-left: 6px;margin-top:-18px;}
+
+.linkDivs h2{padding:20px;}
+.linkDivs h2{height:100px;}
 </style>
 <div class="container">
 	
@@ -543,116 +546,142 @@ lable{line-height:40px;}
 		
 		<div id="helpWindow"></div>
 		<div class="row-fluid">
-		    <div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
+		    <!--<div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
 				<h2 style="padding-bottom:35px;"><div class="bguser5"> CRITICAL PANCHAYATS REPORT</div>
 				<span>
-				<a  id="helpbutt" onCLick="popUpForHelp();" value="Help" style="float: right;width: 20px;"  title="Click To View Help"><img alt="" src="./images/help.jpeg"></a></span>
+				</span>
 				<div><input type="button" value="View" class="btn btn-small btnStyle view" onCLick="viewCriticalPanchayats();" style="float:right;margin-top:3px;background:#F06081;"></input></div></h2>
+			</div>-->
+			
+			<div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;">
+					<h2><div class="bguser5">Voters Analysis</div>
+						<div>
+							<input type="button" value="View" class="btn btn-small btnStyle view" onCLick="openVotersAnalysts();" style="float:right;margin-top:3px;background:#F06081;"></input>
+						</div>
+					</h2>
 			</div>
 			
-		    <div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
-				<h2 style="padding-bottom:35px;"> <div class="bguser5">REDUCE POLLING ANALYSIS</div> <span>
-				<a  id="helpbutt1" onCLick="popUpForHelp();" value="Help" style="float: right;width: 20px;margin-top:3px;background:#F06081;"  title="Click To View Help"><img alt="" src="./images/help.jpeg"></a></span><div><input type="button" value="View" class="btn btn-small btnStyle view" onCLick="reducePolling();" style="float:right;"></input></div></h2>
+		    <div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;">
+				<h2> <div class="bguser5">REDUCE POLLING ANALYSIS</div>
+					<div>
+						<input type="button" value="View" class="btn btn-small btnStyle view" onCLick="reducePolling();" style="float:right;margin-top:3px;background:#F06081;"></input>
+					</div>
+				</h2>
 			</div>
 			
-			<div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
-			  <h2 style="padding-bottom:35px;"><div class="bguser5"> INCREASE POLLING ANALYSIS </div><span>
-				<a  id="helpbutt2" onCLick="popUpForHelp();" value="Help" style="float: right;width: 20px;margin-top:3px;background:#F06081;"  title="Click To View Help"><img alt="" src="./images/help.jpeg"></a></span><div><input type="button" value="View" class="btn btn-small btnStyle" onCLick="increasePolling();" style="float:right;"></input></div></h2>
-			</div>
-			<div class="span4 widget" style="margin-left:7px;padding: 0px 18px;">
-				<h2 style="padding-bottom:35px;"><div class="bguser5">VOTER AVERAGE AGE REPORT</div>
-					<span>
-				<a  id="helpbutt3" onCLick="popUpForHelp();" value="Help" style="float: right;width: 20px;"  title="Click To View Help"><img alt="" src="./images/help.jpeg"></a></span><div><input type="button" value="View" class="btn btn-small btnStyle view" onCLick="voterAverageAgePopUp();" style="float:right;margin-top:3px;background:#F06081;"></input></div></h2>
+			<div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;">
+				<h2><div class="bguser5"> INCREASE POLLING ANALYSIS </div>
+					<div>
+						<input type="button" value="View" class="btn btn-small btnStyle view" onCLick="increasePolling();" style="float:right;margin-top:3px;background:#F06081;"></input>
+					</div>
+				</h2>
 			</div>
 			
-			<div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
-				<h2 style="padding-bottom:35px;"><div class="bguser5">Voters Analysis</div>
-					<span>
-				<a  id="helpbutt4" onCLick="popUpForHelp();" value="Help" style="float: right;width: 20px;"  title="Click To View Help"><img alt="" src="./images/help.jpeg"></a></span><div style="padding-top:20px;"><input type="button" value="View" class="btn btn-small btnStyle view" onCLick="openVotersAnalysts();" style="float:right;margin-top:3px;background:#F06081;"></input></div></h2>
+			<div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 18px;">
+				<h2><div class="bguser5">VOTER AVERAGE AGE REPORT</div>
+					<div>
+						<input type="button" value="View" class="btn btn-small btnStyle view" onCLick="voterAverageAgePopUp();" style="float:right;margin-top:3px;background:#F06081;"></input>
+					</div>
+				</h2>
 			</div>
+			
+			
 			
 			<c:if test="${not fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">
-		    <div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
-				<h2 style="padding-bottom:35px;"><div class="bguser5"> Results Vs Caste	</div>				
-			    <span>
-				<a  id="helpbutt5" onCLick="popUpForHelp();" value="Help" style="float: right;width: 20px;"  title="Click To View Help"><img alt="" src="./images/help.jpeg"></a></span><div style="padding-top:20px;margin-top:3px;background:#F06081;"><input type="button" value="View" class="btn btn-small btnStyle view" onCLick="openCasteViseAnalysis();" style="float:right;"></input></div></h2>
-		
-			</div>
-			</c:if>
-            <c:if test="${sessionScope.USER.isAdmin == 'true'}">
-			<div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
-				<h2 style="padding-bottom:35px;"><div class="bguser5">STRATEGY ANALYSIS REPORT</div><span>
-				<a  id="helpbutt6" onCLick="popUpForHelp();" value="Help" style="float: right;width: 20px;"  title="Click To View Help"><img alt="" src="./images/help.jpeg"></a></span><div><input type="button" value="View" class="btn btn-small btnStyle view" onCLick="viewStrategyAnalysisReport();" style="float:right;margin-top:3px;background:#F06081;"></input></div></h2>
-			</div>
-			</c:if>
-
-			<div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
-				<h2 style="padding-bottom:35px;"><div class="bguser5">INFECTED BOOTHS</div><span>
-				<a  id="helpbutt7" onCLick="popUpForHelp();" value="Help" style="float: right;width: 20px;"  title="Click To View Help"><img alt="" src="./images/help.jpeg"></a></span><div style="padding-top:20px;"><input type="button" value="View" class="btn btn-small btnStyle view" onCLick="viewInfectedBooths();" style="float:right;margin-top:3px;background:#F06081;"></input></div></h2>
-			</div>
-
-			<div class="span4 widget" style="margin-left:7px;padding: 0px 15px;">
-				<h2 style="padding-bottom:35px;"><div class="bguser5">2009 ASSEMBLY VS 2013 PANCHAYAT RESULTS</div><span>
-				<a  id="helpbutt8" onCLick="popUpForHelp();" value="Help" style="float: right;width: 20px;"  title="Click To View Help"><img alt="" src="./images/help.jpeg"></a></span><div><input type="button" value="View" class="btn btn-small btnStyle view" onCLick="viewPavchayathResults();" style="float:right;margin-top:3px;background:#F06081;"></input></div></h2>
-			</div>
-          
-          	<div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
-				<h2 style="padding-bottom:35px;"><div class="bguser5" style="width: 180px;">CONSTITUENCY WISE AGE DETAILS</div><div><input type="button" value="View" class="btn btn-small btnStyle view" onCLick="getConstituencyWiseAgeDetails();" style="float:right;margin-top:3px;background:#F06081;"></input></div></h2>
-			</div>
-			<c:if test="${ fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">	
-			<div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
-				<h2 style="padding-bottom:35px;"><div class="bguser5" style="width: 180px;">STRATEGY REPORTS</div><div><input type="button" value="View" class="btn btn-small btnStyle view" onCLick="strategyReport();" style="float:right;margin-top:3px;background:#F06081;"></input></div></h2>
+		    <div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;">
+				<h2><div class="bguser5"> Results Vs Caste	</div>				
+					<div>
+						<input type="button" value="View" class="btn btn-small btnStyle view" onCLick="openCasteViseAnalysis();" style="float:right;margin-top:3px;background:#F06081;"></input>
+					</div>
+				</h2>
 			</div>
 			</c:if>
 			
-		  <div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
-			<h2 style="padding-bottom:35px;">
-			<div class="bguser5" style="width: 180px;">Cross Voting Analysis</div>
-			<div>
-			<input class="btn btn-small btnStyle view" type="button" style="float:right;margin-top:3px;background:#F06081;" onclick="getCrossVotingReport();" value="View">
+			
+            <c:if test="${sessionScope.USER.isAdmin == 'true'}">
+			<div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;">
+				<h2><div class="bguser5">STRATEGY ANALYSIS REPORT</div>
+					<div>
+						<input type="button" value="View" class="btn btn-small btnStyle view" onCLick="viewStrategyAnalysisReport();" style="float:right;margin-top:3px;background:#F06081;"></input>
+					</div>
+				</h2>
 			</div>
+			</c:if>
+
+			<div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;">
+				<h2><div class="bguser5">INFECTED BOOTHS</div>
+					<div>
+						<input type="button" value="View" class="btn btn-small btnStyle view" onCLick="viewInfectedBooths();" style="float:right;margin-top:3px;background:#F06081;"></input>
+					</div>
+				</h2>
+			</div>
+
+			<div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 15px;">
+				<h2><div class="bguser5">2009 ASSEMBLY VS 2013 PANCHAYAT RESULTS</div>
+					<div>
+						<input type="button" value="View" class="btn btn-small btnStyle view" onCLick="viewPanchayathResults();" style="float:right;margin-top:3px;background:#F06081;"></input>
+					</div>
+				</h2>
+			</div>
+          
+          	<div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;">
+					<h2><div class="bguser5" style="width: 180px;">CONSTITUENCY WISE AGE DETAILS</div>
+						<div>
+							<input type="button" value="View" class="btn btn-small btnStyle view" onCLick="getConstituencyWiseAgeDetails();" style="float:right;margin-top:3px;background:#F06081;"></input>
+						</div>
+					</h2>
+			</div>
+			<c:if test="${ fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">	
+			<div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;">
+				<h2><div class="bguser5" style="width: 180px;">STRATEGY REPORTS</div>
+					<div>
+						<input type="button" value="View" class="btn btn-small btnStyle view" onCLick="strategyReport();" style="float:right;margin-top:3px;background:#F06081;"></input>
+					</div>
+				</h2>
+			</div>
+			</c:if>
+			
+		  <div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;">
+			<h2><div class="bguser5" style="width: 180px;">Cross Voting Analysis</div>
+				<div>
+					<input class="btn btn-small btnStyle view" type="button" style="float:right;margin-top:3px;background:#F06081;" onclick="getCrossVotingReport();" value="View">
+				</div>
 			</h2>
 		</div>
 
-		<div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
-			<h2 style="padding-bottom:35px;">
-			<div class="bguser5" style="width: 180px;">Voter Modification Report </div>
-			<div>
-			<input class="btn btn-small btnStyle view" type="button" style="float:right;margin-top:3px;background:#F06081;" onclick="viewVoterModificationReport();" value="View">
-			</div>
+		<div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;">
+			<h2><div class="bguser5" style="width: 180px;">Voter Modification Report </div>
+				<div>
+					<input class="btn btn-small btnStyle view" type="button" style="float:right;margin-top:3px;background:#F06081;" onclick="viewVoterModificationReport();" value="View">
+				</div>
 			</h2>
 		</div>
 
-		<div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
-			<h2 style="padding-bottom:35px;">
-			<div class="bguser5" style="width: 180px;">Importent Family Details</div>
-			<div>
-			<input class="btn btn-small btnStyle view" type="button" style="float:right;margin-top:3px;background:#F06081;" onclick="viewImportentFamilyDetails();" value="View">
-			</div>
+		<div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;">
+			<h2><div class="bguser5" style="width: 180px;">Importent Family Details</div>
+				<div>
+					<input class="btn btn-small btnStyle view" type="button" style="float:right;margin-top:3px;background:#F06081;" onclick="viewImportentFamilyDetails();" value="View">
+				</div>
 			</h2>
 		</div>
 
-		<div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
-			<h2 style="padding-bottom:35px;">
-			<div class="bguser5">Booth Wise Results</div>
-			<div>
-			<input class="btn btn-small btnStyle view" type="button" style="float:right;margin-top:3px;background:#F06081;" onclick="viewBoothWiseResults();" value="View">
-			</div>
+		<div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;">
+			<h2><div class="bguser5">Booth Wise Results</div>
+				<div>
+					<input class="btn btn-small btnStyle view" type="button" style="float:right;margin-top:3px;background:#F06081;" onclick="viewBoothWiseResults();" value="View">
+				</div>
 			</h2>
 		</div>
 
 
 
           <c:if test="${not fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">		 
-			<div class="span4 widget"  style="margin-left:7px;padding: 0px 20px;">
-			  <h2>Voters Search</h2>
-				<div class="media">
-					<img class="media-object pull-left m-top15" alt="Party Performance Report" src="./images/dashboard/Voters Search.png" style="width: 64px; height: 66px; margin-top: 0px;"></img>
-					<div class="media-body">
-						<p style="margin-top: 0px;">Voters Search</p>
+			<div class="span4 widget linkDivs"  style="margin-left:7px;padding: 0px 20px;">
+				<h2><div class="bguser5">Voters Search</div>
+					<div>
 						<input type="button" value="View" class="btn btn-small btnStyle view" onCLick="openAllInNewWindow('voterssearch');" style="float:right;margin-top:-7px;background:#F06081;"></input>
 					</div>
-				</div>  
+				</h2>
 			</div>
 		 </c:if>
 	    </div>
@@ -901,11 +930,11 @@ lable{line-height:40px;}
    </div><!---Constituency Level Analysis END--->
    
    <!-- SUGGESTIVE MODEL  START-->
-	
+	 <c:if test="${not fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">
 	<div class="span12 well well-small" style="margin-left:0px;">
      <div class="page-header"><h4><img src="./images/dashboard/Management Tools copy.png" />Suggestive Model</h4></div>
-	  <c:if test="${not fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">
-		<div class="row-fluid">
+	 
+		<!--<div class="row-fluid">
 			<div class="span6 widget" style="height: 235px;">
 				<h2> Panchayat wise Caste Details</h2>
 				<fieldset>
@@ -937,8 +966,8 @@ lable{line-height:40px;}
 				</fieldset>
 			</div>       
 							
-		</div>
-	</c:if>
+		</div>-->
+		
 		<div class="row-fluid">
 			<div class="span6 widget">
 				<h2>Younger Voter Details</h2>
@@ -988,6 +1017,7 @@ lable{line-height:40px;}
 		</div>
 	</div>
    </div>
+   </c:if>
 	<!-- SUGGESTIVE MODEL END -- >
    <!--Created By SASI Management Tools Block-->
 <c:if test="${not fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">

@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>2009 ASSEMBLY VS 2013 PANCHAYAT RESULTS REPORT</title>
+<title>IMPORTANT FAMILY DETAILS</title>
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
  <script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
 <script type="text/javascript"> 
@@ -80,7 +80,7 @@ background-color: #CDE6FC;
  	<div id= "headDivStyle">
 	<table border="0" cellpadding="0" cellspacing="0">          
 		<tr><!--<td><img src="images/icons/cadreReport/bg_left.png"/></td>-->
-			<td><div id="headingImgStyle"><span>&nbsp;Booth Wise Results</span></div></td>
+			<td><div id="headingImgStyle"><span>&nbsp;Important Family Details</span></div></td>
 	       <!--<td><img src="images/icons/cadreReport/bg_right.png"/></td>-->
 	   </tr>
 		</table>

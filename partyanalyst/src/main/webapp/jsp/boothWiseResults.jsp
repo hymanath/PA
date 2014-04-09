@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>2009 ASSEMBLY VS 2013 PANCHAYAT RESULTS REPORT</title>
+<title>BOOTH WISE RESULTS</title>
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
  <script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
 <script type="text/javascript"> 
