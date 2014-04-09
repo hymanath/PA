@@ -137,6 +137,8 @@ public interface IVoterReportService {
 	 
 	 public ResultStatus getCasteVotersAvailableConstituencyIds();
 	 
+	 public ResultStatus updateMobileNos();
+	 
 	
 	 
     
