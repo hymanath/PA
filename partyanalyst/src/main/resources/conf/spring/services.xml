@@ -58,6 +58,7 @@
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="mobileService" ref="mobileService" />
 		
+		
 	</bean>
 	
 	<bean name="partyStrengthService" class="com.itgrids.partyanalyst.service.impl.PartyStrengthService" >
@@ -1977,6 +1978,7 @@
    <bean name="stratagicReportsService" class="com.itgrids.partyanalyst.service.impl.StratagicReportsService">
        <property name="transactionTemplate" ref="transactionTemplate" />   	
    	   <property name="publicationDateDAO" ref="publicationDateDAO"></property>
+   	   <property name="casteContainConstituencyDAO" ref="casteContainConstituencyDAO"/>
    </bean>
    
    <bean name="votersInformationService" class="com.itgrids.partyanalyst.service.impl.VotersInformationService" >

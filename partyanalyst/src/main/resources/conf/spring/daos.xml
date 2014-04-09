@@ -1383,6 +1383,9 @@
    <bean id="strategyMergePanchayatDAO" class="com.itgrids.partyanalyst.dao.hibernate.StrategyMergePanchayatDAO">
     	<property name="sessionFactory" ref="sessionFactory" />
    </bean>
+   <bean id="casteContainConstituencyDAO" class="com.itgrids.partyanalyst.dao.hibernate.CasteContainConstituencyDAO">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
    
     <bean id="userSmsSentDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserSmsSentDAO">
     <property name="sessionFactory" ref="sessionFactory" />
