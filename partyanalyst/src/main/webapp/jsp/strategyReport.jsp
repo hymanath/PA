@@ -29,12 +29,6 @@
     font-weight: bold;
     margin-top: 10px;
 }
-
-.requiredFont {
-    color: red;
-    font-weight: bold;
-}
-
 </style>
 
 <script type="text/javascript" >
@@ -66,64 +60,67 @@ function getConstituencyList(){
 </script>
 </head>
 <body>
+<div style="margin-left:65px;"><h3 class="offset4">Strategy Analysis Report</h3></div>
 <div id="mainDiv" align="center">
-     <div id="errorMsgDiv" >&nbsp;</div><br><br>
-     <div>
+     <div id="errorMsgDiv" style="margin-right: -159px;">&nbsp;</div><br><br>
+	 <!--<div id="warningMsgs"></div>-->
+     <div style="margin-left:198px; margin-top:-30px;">
+	  <div id="helpWindow"><div id="helpWindowInner"></div></div>
 		<table>
 		 <tr>
 		    <td>Constituency Name :<font id="requiredValue" class="requiredFont">*</font> </td>
-		    <td><select id="constituencyId" onchange="getPublicationDate();removeCastesPerc();"><option value="0"> Select   
+		    <td><select id="constituencyId" onchange="getPublicationDate();removeCastesPerc();getCasteContainConstituency()" style="width:190px;"><option value="0"> Select   
 		    Constituency </option></select></td>			
 		</tr>
 		<tr>
 		  <td>Publication Date:<font id="requiredValue" class="requiredFont">*</font></td>
-		  <td><select id="publicationId" onchange="getPartyDetails(this.options[this.selectedIndex].value);getCandidateCastes(this.options[this.selectedIndex].value);" class="selectWidth"><option value="0">Select Publication Date</option></select></td>
+		  <td><select id="publicationId" onchange="getPartyDetails(this.options[this.selectedIndex].value);getCandidateCastes(this.options[this.selectedIndex].value);" class="selectWidth" style="width:190px;"><option value="0">Select Publication Date</option></select></td>
 		</tr>
 		<tr>
 			<td>Party Name:<font id="requiredValue" class="requiredFont">*</font> </td>
-			<td><select id="partyId" onchange="getElectionYears(this.options[this.selectedIndex].value)"><option value="0"> Select Party </option></select></td>
+			<td><select id="partyId" onchange="getElectionYears(this.options[this.selectedIndex].value)"style="width:190px;"><option value="0"> Select Party </option></select></td>
 		</tr>
 
 	<tr>
 		<td>From Year :<font id="requiredValue" class="requiredFont">*</font></td>		
-		<td><select id="electionYear1" onchange="validateYear1(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text);"><option value="0"> Select Year </option></select></td>
+		<td><select id="electionYear1" onchange="validateYear1(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text);" style="width:190px;"><option value="0"> Select Year </option></select></td>
 	</tr>
 	<tr>
 		<td>To Year :<font id="requiredValue" class="requiredFont">*</font> </td>	
-		<td><select id="electionYear2" ><option value="0"> Select Year </option></select></td>
+		<td><select id="electionYear2" style="width:190px;" ><option value="0"> Select Year </option></select></td>
 	</tr>
 	
     <tr>
-        <td>PRP Effect Weightage :</td>
-		<td><input id="prpEffId" type="text"></td>
+        <td>PRP Effect Weightage :<a  id="helpbutt" onCLick="popUpForHelp(' TDP is major looser with existence of PRP in 2009 Election. As a new Party, majority of the votes are Splitted to PRP from TDP and others, To recollect those votes, firstly we are trying to analyze how much Votes we lost due to that Party, and how much that loss were effected to our party, Along with other aspects we needs takes this effect into Consideration and gives certain Weightages to recollect ');" value="Help" style="float: right;width: 20px;"  title="Click To View Help"><img alt="" src="./images/help.jpeg"></a></td>
+		<td><input id="prpEffId" type="text" style="width:176px;"></td>
 	</tr>
 	<tr>
-        <td>Cast Weightage :<font class="mandatory">*</font></td>
-		<td><input id="totalId" type="text"></td>
+        <td>Cast Weightage :<font class="mandatory">*</font> <a  id="helpbutt" onCLick="popUpForHelp(' As our election is caste based Election, with the top castes in the constituency how many votes can get apart from 2009 votes, as one of the criteria with other aspects, we give certain Weightages to calculate where they can prioritize the Villages to get the votes. Weightage for this category does not less than 50% but will take after giving weightages to all other categories');" value="Help" style="float: right;width: 20px;"  title="Click To View Help"><img alt="" src="./images/help.jpeg"></a></td>
+		<td><input id="totalId" type="text" style="width:176px;"></td>
 	</tr>
 	<tr>
-         <td>Young Voters Weightage :<font class="mandatory">*</font></td>
-		 <td><input id="YVotersId" type="text"></td>
+         <td>Young Voters Weightage :<font class="mandatory">*</font><a id="helpbutt" onCLick="popUpForHelp('These are First time voters, Party can grab these voters by Various schemes, here we are trying to grab these voters where they are populated highly and targeted them along with Top castes in Constituency, we give least weightage to this category like 2.5 to 5%');" value="Help" style="float: right;width: 20px;"  title="Click To View Help"><img alt="" src="./images/help.jpeg"></a></td>
+		 <td><input id="YVotersId" type="text" style="width:176px;"></td>
     </tr>
 	<tr>
-	     <td>Age Wise Weightage :<font class="mandatory">*</font></td>
-		 <td><input id="ageWiseId" type="text"></td>
+	     <td>Age Wise Weightage :<font class="mandatory">*</font><a  id="helpbutt" onCLick="popUpForHelp(' These are Above 60 aged voters, Party cadre can mobilize these voters by on the day of Election, here we are trying to grab these voters where they are populated highly and targeted them along with Top castes in Constituency, we give least weightages to this category like 2.5 to 5% ');" value="Help" style="float: right;width: 20px;"  title="Click To View Help"><img alt="" src="./images/help.jpeg"></a></td>
+		 <td><input id="ageWiseId" type="text" style="width:176px;"></td>
     </tr>
 	<tr>
-	     <td>Previous Trendz Weightage :<font class="mandatory">*</font></td>
-		 <td><input id="prevTrendsId" type="text"></td>
+	     <td>Previous Trendz Weightage :<font class="mandatory">*</font><a  id="helpbutt" onCLick="popUpForHelp(' This is the Category where we analyse the previous results like 2004 and 2009, based on this we analyse the villages from 2004 to 2009, by giving certain weightage to this category with all other categories and gives second importance to this like 15% to 30% ');" value="Help" style="float: right;width: 20px;"  title="Click To View Help"><img alt="" src="./images/help.jpeg"></a></td>
+		 <td><input id="prevTrendsId" type="text" style="width:176px;"></td>
     </tr>
     <tr>
-	     <td>Excepted Polling Percentage :<font class="mandatory">*</font></td>
-		 <td><input id="base" type="text"></td>
+	     <td>Excepted Polling Percentage :<font class="mandatory">*</font><a  id="helpbutt" onCLick="popUpForHelp('  Candidate can give the Expected Percentage of Polling in Particular Constituency  by taking consideration of Previous Election Polling Percentage');" value="Help" style="float: right;width: 20px;"  title="Click To View Help"><img alt="" src="./images/help.jpeg"></a></td>
+		 <td><input id="base" type="text" style="width:176px;"></td>
     </tr>
     <tr>
-	     <td>Voter Base Percentage :<font class="mandatory">*</font></td>
-		 <td><input id="assured" type="text"></td>
+	     <td>Voter Base Percentage :<font class="mandatory">*</font><a  id="helpbutt" onCLick="popUpForHelp(' Candidate can provide the Voter base of the Party in Particular Constituency along with considering minimum voting percentage in past three election years');" value="Help" style="float: right;width: 20px;"  title="Click To View Help"><img alt="" src="./images/help.jpeg"></a></td>
+		 <td><input id="assured" type="text" style="width:176px;"></td>
     </tr>
     <tr>
-	     <td>Targeted Votes Percentage :<font class="mandatory">*</font></td>
-		 <td><input id="partyPerc" type="text"></td>
+	     <td>Targeted Votes Percentage :<font class="mandatory">*</font><a  id="helpbutt" onCLick="popUpForHelp('  Candidate can provide the Assumed target percentage of   Polling to his Party in Particular Constituency');" value="Help" style="float: right;width: 20px;"  title="Click To View Help"><img alt="" src="./images/help.jpeg"></a></td>
+		 <td><input id="partyPerc" type="text" style="width:176px;"></td>
     </tr>
     
     
@@ -168,12 +165,10 @@ function getConstituencyList(){
 	     <td>Very Strong Min :<font class="mandatory">*</font></td>
 		 <td><input id="veryStrongMin" value="0"  type="text"></td>
     </tr>
-    
-    
-    
-	<tr>
-	    <td>Caste Names :<font id="requiredValue" class="requiredFont">*</font></td>		
-		<td><select id="candidateCastesId" multiple="multiple" ></select></td>
+   
+	<tr id="castesId">
+	    <td>Caste Names :</td>		
+		<td><select id="candidateCastesId" multiple="multiple" style="position:relative;"></select></td>
 		<td><input type="button" id="castePerId" value="Caste Percentage" onClick="getSelectedCastes();"  class="btn btn-success"></input></td>
     </tr>
 </table></div>
@@ -203,6 +198,35 @@ function getPublicationDate()
 		
 }
 
+var isCasteDataAvail = true;
+function getCasteContainConstituency()
+{
+	    var constituencyId = $("#constituencyId").val();
+		  var jsObj = 
+	       {
+		      constituencyId:constituencyId,
+		      task:"getCasteContainConstituency"
+	       }	
+		    $.ajax({
+				type : "POST",
+				url : "casteContainConstituencies.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+			        
+					if(result.resultCode==1)
+					{
+					isCasteDataAvail=false;
+					$('#errorMsgDiv').html("Caste data for this constituency is not available");
+					$("#castesId").hide();	
+					$("#castePerId").hide();
+                    $("#totalId").attr("disabled","true");					
+					}
+					
+			});
+		
+}
+
+
 function getPartyDetails(id){
 	
 	$('#errorMsgDiv').html('');
@@ -221,6 +245,8 @@ function getPartyDetails(id){
 			$("#partyId option").remove();
 			$("#partyId").append("<option value='0'>Select Party</option>");
 			for(var i in result.partiesInMandal){
+			
+			if(result.partiesInMandal[i].name == "TDP")
                 $("#partyId").append("<option value="+result.partiesInMandal[i].id+">"+result.partiesInMandal[i].name+"</option>");
 			}
 	});
@@ -286,6 +312,12 @@ $('#electionYear1 option').each(function(){
 for(var i=0;i<select.length;i++)
 	{	 					$('<option>').val(''+select[i].id+'').text(''+select[i].name+'').appendTo('#electionYear2');
 	}
+	/*alert($('select#electionYear2 option').length);
+	alert($('#electionYear2').options.length);
+	if($('#electionYear2').length>1)
+	{
+	  $('#errorMsgDiv').html('Please Select Election Years');
+	}*/
 
 }
 function getElectionYears(id){
@@ -429,7 +461,7 @@ function submitDetails()
 		 $("#errorMsgDiv").html("Please Select Party");
 		 return;
 	}
-	if(electionYear1 == 0 || electionYear2 == 0)
+	if(electionYear1 == 0)
     {
 		 $("#errorMsgDiv").html("Please Select Election Year");
 		 return;
@@ -444,12 +476,22 @@ function submitDetails()
          $("#errorMsgDiv").html("");
 	} 
   
-	if(totalId == "" || prevTrendsId == "" || YVotersId == "" || ageWiseId == "" || base =="" || assured == "" || partyPerc == "")
+	if(!isCasteDataAvail){
+		if(totalId == ""){
+			$("#errorMsgDiv").html("Please enter all the text fields");
+			return;
+		}
+		if(isNaN(totalId)){
+			 $("#errorMsgDiv").html("Weightage values must be Numeric");
+			return;
+		}
+	}
+	if(prevTrendsId == "" || YVotersId == "" || ageWiseId == "" || base =="" || assured == "" || partyPerc == "")
     {
 		 $("#errorMsgDiv").html("Please enter all the text fields");
 		 return;
 	}  
-	if(isNaN(totalId) || isNaN(prevTrendsId) || isNaN(YVotersId) || isNaN(ageWiseId) || isNaN(base) || isNaN(assured) || isNaN(partyPerc))
+	if(isNaN(prevTrendsId) || isNaN(YVotersId) || isNaN(ageWiseId) || isNaN(base) || isNaN(assured) || isNaN(partyPerc))
     {
 		 $("#errorMsgDiv").html("Weightage values must be Numeric");
 		 return;
@@ -514,6 +556,24 @@ $("#candidateCastesId").multiselect('refresh');
 
 }
 
+function popUpForHelp(text)
+{
+
+$("#helpWindow").dialog({
+				resizable:false,
+				title:'Help',
+				height: 'auto',
+				width:'400',
+				top:250,
+				left:100,
+				modal: true
+				
+	});
+	$("#helpWindowInner").html(text);
+	
+	}
+
+		
 </script>
 </body>
 </html>
