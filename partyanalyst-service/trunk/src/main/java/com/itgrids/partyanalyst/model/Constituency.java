@@ -77,9 +77,12 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 	private Set<User> users = new HashSet<User>(0);
 	private Set<CustomVoterGroup> customVoterGroups = new HashSet<CustomVoterGroup>(0);
 	private Set<VoterDataAvailableConstituencies> voterDataAvailableConstituencies = new HashSet<VoterDataAvailableConstituencies>(0);
+	private Set<CasteContainConstituency> casteContainConstituency = new HashSet<CasteContainConstituency>(0);
 	
 	// Constructors
 
+
+	
 
 	/** default constructor */
 	public Constituency() {
@@ -431,7 +434,15 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 		this.voterDataAvailableConstituencies = voterDataAvailableConstituencies;
 	}
 
-	
-	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "constituency")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<CasteContainConstituency> getCasteContainConstituency() {
+		return casteContainConstituency;
+	}
+
+	public void setCasteContainConstituency(
+			Set<CasteContainConstituency> casteContainConstituency) {
+		this.casteContainConstituency = casteContainConstituency;
+	}
 
 }
