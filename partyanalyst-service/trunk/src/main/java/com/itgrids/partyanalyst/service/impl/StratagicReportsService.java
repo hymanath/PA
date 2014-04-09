@@ -351,6 +351,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 						vo = new AgeRangeVO();
 						vo.setPanchayat(namesMap.get(id.toString().substring(0, 1).toUpperCase() + id.toString().substring(1).toLowerCase()));
 						vo.setHamlet(id.toString());
+						vo.setTotalVotersInBooth(boothsTtlMap.get(id.toString()));
 					}
 					
 					//PERCENTAGE CALUCULATIONS
