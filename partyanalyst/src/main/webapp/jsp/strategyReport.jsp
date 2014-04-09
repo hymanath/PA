@@ -29,6 +29,12 @@
     font-weight: bold;
     margin-top: 10px;
 }
+
+.requiredFont {
+    color: red;
+    font-weight: bold;
+}
+
 </style>
 
 <script type="text/javascript" >
