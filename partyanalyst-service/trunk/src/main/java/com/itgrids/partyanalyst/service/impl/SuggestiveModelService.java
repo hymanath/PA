@@ -3720,7 +3720,8 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			 List castes;
 			 List<Long> constituencyIds = new ArrayList<Long>();
 			 constituencyIds.add(constituencyId);
-			 //Long publicationId = getLatestPublicationByConstituency(constituencyId);
+			 if(publicationId == null || publicationId.equals(0l))
+			  publicationId = getLatestPublicationByConstituency(constituencyId);
 			// Long publicationId = publicationDateDAO.getLatestPublicationId();
 			 try{
 				 if(constituencyId !=null){
