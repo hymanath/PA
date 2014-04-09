@@ -7,7 +7,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<title> Party Analyst - Suggestive Model</title>
+<title>Suggestive Model</title>
 	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
  <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
  <script type="text/javascript" src="js/jqueryDataTable/jquery.dataTables.js"></script>
