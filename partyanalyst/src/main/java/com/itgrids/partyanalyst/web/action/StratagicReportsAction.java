@@ -44,6 +44,7 @@ import com.itgrids.partyanalyst.service.IStratagicReportsService;
 import com.itgrids.partyanalyst.service.IStratagicReportsServicePdf;
 import com.itgrids.partyanalyst.service.IStrategyModelTargetingService;
 import com.itgrids.partyanalyst.service.ISuggestiveModelService;
+import com.itgrids.partyanalyst.service.IVoterReportService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -61,6 +62,15 @@ public class StratagicReportsAction extends ActionSupport implements
 	private String task = null;
 	private ResultStatus status;
 	private IStratagicReportsService stratagicReportsService;
+	private IVoterReportService voterReportService;
+	
+	public IVoterReportService getVoterReportService() {
+		return voterReportService;
+	}
+	public void setVoterReportService(IVoterReportService voterReportService) {
+		this.voterReportService = voterReportService;
+	}
+
 	private IStratagicReportServiceForMLASuccess stratagicReportServiceForMLASuccess;
 	private List<SelectOptionVO> constituenciesList;
 	private List userAccessConstituencyList;
@@ -78,6 +88,16 @@ public class StratagicReportsAction extends ActionSupport implements
 	private VoterStratagicReportVo voterStratagicReportVo;
 	private HouseHoldsVO houseHoldsVO;
 	private List<SelectOptionVO> optionsList ;
+	private ResultStatus casteContainConstiList ;
+	
+
+	public ResultStatus getCasteContainConstiList() {
+		return casteContainConstiList;
+	}
+	public void setCasteContainConstiList(ResultStatus casteContainConstiList) {
+		this.casteContainConstiList = casteContainConstiList;
+	}
+
 	private PartyPositionResultsVO locationsList;
 	private IStaticDataService staticDataService;
 	private VoterModificationVO voterModificationVO;
@@ -688,6 +708,10 @@ public void setPanchayatResult(List<PartyPositionVO> panchayatResult) {
 				voterModificationGenderInfoVOList = stratagicReportsService.getGenderWiseVoterModificationsForEachPublication(locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId,"intermediate");
 				//stratagicReportsService.generatePDFForVoterInfo(voterModificationGenderInfoVOList,"genderWise");
 			}
+			/*if(taskToDo.equalsIgnoreCase("getCasteContainConstituency")){
+				casteContainConstiList = stratagicReportsService.getRecordsCountToCasteContainConsti(constituencyId);
+				
+			}*/
 			return Action.SUCCESS;
 		}
 	
@@ -1044,4 +1068,19 @@ public void setPanchayatResult(List<PartyPositionVO> panchayatResult) {
 		
 		return Action.SUCCESS;
 	}
+	
+	public String getCasteContainConstituency(){
+		try{
+			jObj = new JSONObject(getTask());
+			Long constituencyId= jObj.getLong("constituencyId");
+		 casteContainConstiList = stratagicReportsService.getRecordsCountToCasteContainConsti(constituencyId);
+		} catch (Exception e) {
+			LOG.error("Exception occured in getCasteContainConstituency() ",e);
+			return Action.ERROR;
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	
 }
