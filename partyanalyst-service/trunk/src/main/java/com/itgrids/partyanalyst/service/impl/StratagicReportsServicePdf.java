@@ -2675,6 +2675,8 @@ public String roundTo2DigitsDoubleValue(Double number){
 	  
 	 }
 
-	
+	 public Long getConstituencyNo(Long constituencyId){
+			return delimitationConstituencyDAO.getConstituencyNo(constituencyId, 2009l);
+		 }
 }
 
