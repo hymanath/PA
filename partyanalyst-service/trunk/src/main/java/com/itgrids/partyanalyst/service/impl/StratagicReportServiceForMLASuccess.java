@@ -605,6 +605,7 @@ public List<PartyElectionTrendsReportVO> getPreviousTrendsReport(Long constId){
 	        vo.setTotalVotesPolled(((Double)object[2]).longValue());
 	        vo.setDistrictId(Long.valueOf(object[9].toString()));
 	        vo.setElectionId(Long.valueOf(object[11].toString()));
+	        //vo.setElectionIdForConst(Long.valueOf(object[11].toString()));
 	        PartyElectionTrendsReportHelperVO voh= new PartyElectionTrendsReportHelperVO();
 	        voh.setPercentage(Double.valueOf(roundTo2DigitsDoubleValue((Double)object[7])));
 	        voh.setVotesEarned(((Double)object[4]).longValue());
@@ -677,6 +678,7 @@ public List<PartyElectionTrendsReportVO> getPreviousTrendsReport(Long constId){
 			           vo.setTotalVotesPolled(((Double)object[2]).longValue());
 			           vo.setDistrictId(Long.valueOf(object[9].toString()));
 				       vo.setElectionId(Long.valueOf(object[11].toString()));
+				       //vo.setElectionIdForConst(Long.valueOf(object[11].toString()));
 
 			           PartyElectionTrendsReportHelperVO voh= new PartyElectionTrendsReportHelperVO();
 			           voh.setPercentage(Double.valueOf(roundTo2DigitsDoubleValue((Double)object[7])));
@@ -748,7 +750,7 @@ public List<PartyElectionTrendsReportVO> getPreviousTrendsReport(Long constId){
 		{
 			PartyElectionTrendsReportVO vo=	maps.get(year);
 			if(vo.getDistrictId()>10)
-			alliancesCheck(vo, constId);
+			alliancesCheck(vo, constId,vo.getElectionId());
 			Long votesPolled = vo.getTotalVotesPolled();
 			Long totalVotes = 0l;
 			if(vo.getBjpVo()!=null){
@@ -809,13 +811,13 @@ public String roundTo2DigitsDoubleValue(Double number){
   }
  
 
-public void alliancesCheck(PartyElectionTrendsReportVO partyVos,Long constId)
+public void alliancesCheck(PartyElectionTrendsReportVO partyVos,Long constId,Long electionId)
    {
 	   List<Object[]> obj=null;
 	   if(partyVos.getTdpVo()==null)
 	   {
 		   // get aliance for tdp and add it to current vo by rank 
-		   obj= getData(IConstants.TDP_PARTY_ID,partyVos.getElectionId(),constId, Long.valueOf(partyVos.getElectionYear().toString()));
+		   obj= getData(IConstants.TDP_PARTY_ID,electionId,constId, Long.valueOf(partyVos.getElectionYear().toString()));
 		
 			   //get aliances for inc and add it to current vo
 			   if(obj !=null && obj.size()>0 ){
@@ -923,6 +925,7 @@ public void buildHelperVoForConst(PartyElectionTrendsReportVO partyVos ,String n
 			   vo.setTotalVotesPolled(Long.valueOf(object[1].toString()));
 	           vo.setDistrictId(Long.valueOf(object[5].toString()));
 	           vo.setElectionId(Long.valueOf(object[8].toString()));
+	           vo.setElectionIdForConst(Long.valueOf(object[11].toString()));
 	           PartyElectionTrendsReportHelperVO voh= new PartyElectionTrendsReportHelperVO();
 	           voh.setPercentage(Double.valueOf(roundTo2DigitsDoubleValue((double)(((double)((Long)object[3]).longValue()/(double)Long.valueOf(object[1].toString()))*100))));
 	           voh.setVotesEarned(((Long)object[3]).longValue());
@@ -992,6 +995,7 @@ public void buildHelperVoForConst(PartyElectionTrendsReportVO partyVos ,String n
 			           vo.setTotalVotesPolled(Long.valueOf(object[1].toString()));
 			           vo.setDistrictId(Long.valueOf(object[5].toString()));
 			           vo.setElectionId(Long.valueOf(object[8].toString()));
+			           vo.setElectionIdForConst(Long.valueOf(object[11].toString()));
 
 			           PartyElectionTrendsReportHelperVO voh= new PartyElectionTrendsReportHelperVO();
 			           voh.setPercentage(Double.valueOf(roundTo2DigitsDoubleValue((double)(((double)(((Long)object[3]).longValue())/(double)(Long.valueOf(object[1].toString()).longValue()))*100))));
@@ -1059,11 +1063,12 @@ public void buildHelperVoForConst(PartyElectionTrendsReportVO partyVos ,String n
 		List<PartyElectionTrendsReportVO> finalRes= new ArrayList<PartyElectionTrendsReportVO>();
 
 		for(Long year:maps.keySet())
-		{PartyElectionTrendsReportVO vo=maps.get(year);
+		{
+			PartyElectionTrendsReportVO vo=maps.get(year);
 		
 		   //here aliance check for tdp in seemandara
 		     if(vo.getDistrictId()>10)
-			alliancesCheck(vo, constId);
+			alliancesCheck(vo, constId,vo.getElectionIdForConst());
 		
 			Long tdp=vo.getTdpVo()!=null ?vo.getTdpVo().getVotesEarned():0L;
 			
