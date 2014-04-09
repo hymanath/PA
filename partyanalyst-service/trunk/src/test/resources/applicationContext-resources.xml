@@ -422,6 +422,7 @@
 		<value>com.itgrids.partyanalyst.model.VoterNamesTemp</value>
 		<value>com.itgrids.partyanalyst.model.VoterNames</value>
 		<value>com.itgrids.partyanalyst.model.CriticalPanchayats</value>
+		<value>com.itgrids.partyanalyst.model.MobileNumbers</value>
 		
 				<value>com.itgrids.partyanalyst.model.CasteContainConstituency</value>
 				
@@ -2225,9 +2226,11 @@
 	<bean id="criticalPanchayatsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CriticalPanchayatsDAO">
 	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="mobileNumbersDAO" class="com.itgrids.partyanalyst.dao.hibernate.MobileNumbersDAO">
+	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
    <bean id="casteContainConstituencyDAO" class="com.itgrids.partyanalyst.dao.hibernate.CasteContainConstituencyDAO">
     <property name="sessionFactory" ref="sessionFactory" />
    </bean>
    
 </beans>
-
