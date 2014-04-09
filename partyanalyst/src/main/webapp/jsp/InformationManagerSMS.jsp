@@ -105,15 +105,7 @@ background-color:  #FFFFFF !important;
  <BODY>
  <script type="text/javascript">
  var loginUserId = "${sessionScope.USER.registrationID}";
- 
  $( document ).ready(function() {
- 
- 	
- 
-  $('#dateId').val(' ');
-  $('#nameSearch').val('');
-  
-
 
 $("#parentUserCheck").live("click",function(){
 var th = $(this);
@@ -158,18 +150,8 @@ maxDate: new Date()
 
 <h2>Send Text SMS </h2>
 
-<h4>EXISTING INCHARGE DETAILS
-</h4>
-		 <!--<div class="">
-    <div class="span4 offset2 m-top15">
-    <label>Select Parliament: <select id="constituency" onchange="getInformationManagers();"></select><label>
-</label></label></div>
- <div class="span6 m-top15">
-<label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Select One Option: <select><option>01</option><option>02</option><option>03</option></select><label>
-        </label></label></div>
-		
-	
-		</div>-->
+<h4>Existing Phone Numbers</h4>
+
 	<div id="errorMsgDiv" style="font-size: 12px; font-family: verdana;"> </div>
 	<div id="userInfoDiv" class="span6 m-top15" style="width: 900px; margin-right: auto; margin-left: auto;">
 </div>
@@ -184,36 +166,15 @@ maxDate: new Date()
 		<span id="errorDivName" style="margin-left:382px;display:none;"></span>
 		<span id="errorDivMobile" style="margin-left:382px;display:none;"></span>
 
-<div class="well well-samll form-inline" style="padding:9px;margin-left:-20px;width:941px"><label>Select Date: <input type="text" class="input-small" id="dateId" placeholder="Enter Date" style="width:120px !important;" onChange="getSortedInfoByDate(this.value);">
+<!--<div class="well well-samll form-inline" style="padding:9px;margin-left:-20px;width:941px"><label>Select Date: <input type="text" class="input-small" id="dateId" placeholder="Enter Date" style="width:120px !important;" onChange="getSortedInfoByDate(this.value);">-->
+
+<div class="well well-samll form-inline" style="padding:9px;margin-left:-20px;width:941px"><label>Select Date: <input type="text" class="input-small" id="dateId" placeholder="Enter Date" style="width:120px !important;" readonly="true">
               <span class="add-on"></span></label>&nbsp;&nbsp;<label>Enter Name: <input type="text" onchange="" style="width:120px !important;" id="nameSearch" class="input-small hasDatepicker" placeholder="Enter Name"></label>&nbsp;&nbsp; 
-			  <!--<label>Enter Number: <input type="text" class="input-small hasDatepicker" id="MobileSearch" style="width:120px !important;" placeholder="Enter Number"  maxlength="12"></label>&nbsp;&nbsp;-->
+
 <a class="btn btn-info" onClick="getLocationSearchDetails();">search</a></div>
 
 
-
-
-		<!--<div class="well-small input-form">
-		<label><input type="text" class="input-small" id="dateId" placeholder="Enter Date" style="width:120px !important;" onChange="getSortedInfoByDate(this.value);">
-              <span class="add-on"><i class="icon-calendar"></i></span></label>
-            </div>
-<div class="span3 m-top15"  style="width: 235px;">
-    <label>Select Name:&nbsp;<input type="text" class="input-small" id="nameSearch"  placeholder="Enter Date"  style="width:120px !important;"><label>
-</label></label></div>
-<div class="span3 m-top15"  style="width: 235px;">
-    <label>Select Number:&nbsp;<input type="text" class="input-small" id="MobileSearch" placeholder="Enter Number"  style="width:120px !important;"><label>
-</label></label></div>
-
-<button type="submit" class="btn btn-info" style="margin-left: 20px; margin-top: 10px;" onClick="getSearchDetails();"><i class="icon-search icon-white"></i>Search</button>-->
 <div class="well well-small" style="margin-left: -20px; width: 940px; display: inline-block;" id="viewSmsDiv">
-    
-
- <!--<div class="span3   m-top15">
-<label>Name:&nbsp; <input type="text" placeholder="Enter Name" class="input-small"></label>
-</div>
-<div class="span3   m-top15">
-<label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Contact No: <input type="text" class="input-small" placeholder="Enter Contact Number"></label></div>-->
-<!--<div class="span3   m-top15">
-<span class="btn btn-info"><i class="icon-search icon-white"></i> Search</span></div>-->
 
 </div>
 
@@ -378,32 +339,7 @@ $(".userCheck").attr("checked",false);
 		
 		$("#ajaxImage").css("display","inline-block");
 		errorMsgDiv.innerHTML = '';
-	/*if($('#mobileNumber').val().trim() != "")
-  {
-
-	  var othrNums= $('#mobileNumber').val().split(",");
-	 
-	 for(var i=0;i<othrNums.length;i++)
-		 otherNos.push(othrNums[i]);
- }
- 
-	 $(".otherInfo").each(function(){
-		 if( $(this).find(".firstname").val() != "")
-		 {
-	 var firstName = $(this).find(".firstname").val();
-	 var lastName = $(this).find(".lastName").val();
-	 var mobileNo = $(this).find(".mobileNumber").val();
-	 var obj ={
-		firstName :firstName, 
-		lastName : lastName,
-		mobileNo :mobileNo
-		}
-		otherNos.push(obj);
-		 }
-	 });
-	 */
 	
-
 	var jsObj=
 				{					
 					userIds:userIds,	
@@ -438,7 +374,7 @@ function limitText(limitField, limitCount, limitNum)
 //var limitFieldElmt = document.getElementById(limitField);
 var limitFieldElmt = $("#"+limitField).val().trim();
 var limitCountElmt = document.getElementById(limitCount);
-limitCountElmt.innerHTML = limitNum + limitFieldElmt.length+"";
+limitCountElmt.innerHTML = limitNum + limitFieldElmt.length+" Characters";
 if(limitFieldElmt.length == 0 || limitFieldElmt.length < 160)
 	{
 $("#alertMsg").html('');
@@ -448,7 +384,7 @@ limitno = 160;
 	
 if(limitFieldElmt.length > limitno)
 	{
-$("#alertMsg").html('exceeding the limit '+limitno+' characters and you are in to '+count+' nd message');
+$("#alertMsg").html('Exceeding the limit '+limitno+' characters and you are in to '+count+' nd message');
 count ++;
 limitno = limitno + 160;
 	}
@@ -479,16 +415,10 @@ var url = "getSmsDetailsLocationSeacrhAction.action?"+rparam;
 callAjax(jsObj,url);
 }
 
-	  </script>
-	  <script type="text/javascript">
-	 
-	  getInformationManagers();
-	  getSmsDetails();
-	   </script> 
+getInformationManagers();
+getSmsDetails();
 
-	    <script type="text/javascript">
-      
-		
-   </script>
+</script>
+
  </BODY>
 </HTML>
