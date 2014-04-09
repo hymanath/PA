@@ -423,6 +423,10 @@
 		<value>com.itgrids.partyanalyst.model.VoterNames</value>
 		<value>com.itgrids.partyanalyst.model.CriticalPanchayats</value>
 		
+				<value>com.itgrids.partyanalyst.model.CasteContainConstituency</value>
+				
+				
+				
 		
 			</list>
 		</property>
@@ -2161,8 +2165,17 @@
 	  <property name="candidateResultDAO" ref="candidateResultDAO"></property>	  
 	  <property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
 	  <property name="casteStateDAO" ref="casteStateDAO" />
+	  <!-- <property name="casteContainConstituencyDAO" ref="casteContainConstituencyDAO" /> -->
+	  
+
+	 <!--<property name="regionServiceData" ref="regionServiceData"></property>-->
+
 	  <property name="voterFamilyInfoDAO" ref="voterFamilyInfoDAO" />
+
  </bean>
+
+
+
     <bean name="stratagicReportsServicePdf" class="com.itgrids.partyanalyst.service.impl.StratagicReportsServicePdf"></bean>
     <bean name="stratagicReportServiceForMLASuccess" class="com.itgrids.partyanalyst.service.impl.StratagicReportServiceForMLASuccess"/>
     <bean name="stratagicReportsService" class="com.itgrids.partyanalyst.service.impl.StratagicReportsService">
@@ -2212,4 +2225,9 @@
 	<bean id="criticalPanchayatsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CriticalPanchayatsDAO">
 	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+   <bean id="casteContainConstituencyDAO" class="com.itgrids.partyanalyst.dao.hibernate.CasteContainConstituencyDAO">
+    <property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+   
 </beans>
+
