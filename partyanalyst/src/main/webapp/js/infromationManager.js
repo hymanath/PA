@@ -1,4 +1,4 @@
-	
+
 	var receiverSmsArray = null;
 	var maxcount = 0;
 	function buildUsers(results,jobj)
@@ -315,6 +315,18 @@ var jsObj=
 
 }
 
+function isContainsMessage(id){
+
+var messgae = $('#'+id+'').val();
+
+	if(messgae.trim().length == 0){
+		$('#forward'+id+'').attr("disabled","disabled");
+	}
+	else{
+	$('#forward'+id+'').removeAttr("disabled");
+	}
+
+}
  var j = 1;
  var count = 0;
 function messageForward(value,id,msg,mobileno,fId)
@@ -334,7 +346,7 @@ arrUnique = uniqBy(arr, JSON.stringify)
 
 var str = '';
 str += '<tr id="subrow'+value.match(/\d+/)+j+'">';
-str += '<td></td><td class="span3" colspan="2"><input class="comnClss" id="input'+value+'" type="text" style="width:150px !important;" value="'+msg+'"></td>';
+str += '<td></td><td class="span3" colspan="2"><input class="comnClss" id="input'+value+'" type="text" style="width:150px !important;" value="'+msg+'" onKeyup="isContainsMessage(\'input'+value+'\');"></td>';
 str += '<td><select id="mulSelect" multiple="multiple">';
 for ( var i in arrUnique) {
 		str += '<option value='
@@ -342,7 +354,7 @@ for ( var i in arrUnique) {
 				+ arrUnique[i].name + '</option>';
 	}
 str+='</select></td>';
-str += '<td><span class="btn btn-small" onClick="forwardMessage('+id+',\'input'+value+'\','+mobileno+');"><i class="icon-share-alt"></i></span></td>';
+str += '<td><span class="btn btn-small" id="forwardinput'+value+'" onClick="forwardMessage('+id+',\'input'+value+'\','+mobileno+');"><i class="icon-share-alt"></i></span></td>';
 str += '<td></td><td><span class="btn btn-small btn-danger"  onClick="deleteRow(\'subrow'+value.match(/\d+/)+j+'\',\''+fId+'\');"><i class="icon-trash icon-white"></i></span></td></tr>';
 $('#'+value).after(str);
 
@@ -399,15 +411,16 @@ callAjax(jsObj,url);
 
 var receiverIds = null;
 function forwardMessage(id,msg,mobileNo){
-var userIds =new Array();
-var message = $('#'+msg).val();
+
+
+
 receiverIds =new Array();
 $('#mulSelect option:selected').each(function(i, selected){ 
  receiverIds[i] = $(this).val(); 
-});
+ });
 	if(receiverIds.length==0){
 	setTimeout(function(){
-		$("#successDiv").html("Please Select atleast one User..").css({"color":"red","width":"600px","float":"right"}).scrollTop();
+		$("#successDiv").html("Please Select at least one User..").css({"color":"red","width":"600px","float":"right"}).scrollTop();
 		$('html, body,#successDiv').animate({scrollTop:208}, 'slow');
 			setTimeout(function(){
 				$("#successDiv").html('');
@@ -454,20 +467,26 @@ callAjax(jsObj,url);
 
 function deleteAllRows(){
 
+
+if(!$('input.viewSmsCheckbox:checked').length > 0){
+		setTimeout(function(){
+		$("#successDiv").html("Please Select at least one message..").css({"color":"red","width":"600px","float":"right"}).scrollTop();
+		$('html, body,#successDiv').animate({scrollTop:500}, 'slow');
+			setTimeout(function(){
+				$("#successDiv").html('');
+			},3000);
+		},500);
+		return;
+	}
+
+      
+  
+
 var r=confirm("Are you sure to delete ?");
 if (r)
 {
 
-	if(!$('input.viewSmsCheckbox:checked').length > 0){
-		setTimeout(function(){
-		$("#successDiv").html("Please Select atleast one message..").css({"color":"red","width":"600px","float":"right"}).scrollTop();
-		$('html, body,#successDiv').animate({scrollTop:308}, 'slow');
-			setTimeout(function(){
-				$("#successDiv").html('');
-			},3000);
-		},1000);
-		return;
-	}
+	
 	var total = new Array();
 	$('input.viewSmsCheckbox:checked').each(function() {
 				total.push($(this).val());
@@ -480,6 +499,8 @@ if (r)
 		}
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "deleteSmsDetailsAction.action?"+rparam;	
+		
+	
 
 		callAjax(jsObj,url);
 	
