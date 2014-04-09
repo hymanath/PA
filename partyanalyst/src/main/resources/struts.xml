@@ -6905,6 +6905,12 @@
 		<action name="boothWiseResultsAction" class="dashBoardAction">
 			<result name="success">/jsp/boothWiseResults.jsp</result>			
 		</action>
+		
+		<action name="casteContainConstituencies" class="stratagicReportsAction" method="getCasteContainConstituency">
+           <result type="json" name="success">
+           		<param name="root">casteContainConstiList</param>
+        	</result>
+        </action>
 </package>
 		
 </struts>      
