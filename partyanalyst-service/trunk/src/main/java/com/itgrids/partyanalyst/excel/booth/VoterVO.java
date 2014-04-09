@@ -72,8 +72,17 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 	private Integer startIndex;
 	private Integer maxIndex;
 	private Long constituencyId;
+	private Long uvdId;
 	
 	
+	public Long getUvdId() {
+		return uvdId;
+	}
+
+	public void setUvdId(Long uvdId) {
+		this.uvdId = uvdId;
+	}
+
 	public Long getConstituencyId() {
 		return constituencyId;
 	}
