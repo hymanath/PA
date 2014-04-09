@@ -13,7 +13,10 @@ public class PartyElectionTrendsReportVO implements Comparable<PartyElectionTren
 	private Long  totalVoters=0L;
 	private Long totalVotesPolled;
 	private String tdpPartyName;
+	//for paliament
 	private Long electionId;
+	
+	private Long electionIdForConst;
 	private PartyElectionTrendsReportHelperVO tdpVo;
 	private PartyElectionTrendsReportHelperVO incVo=new PartyElectionTrendsReportHelperVO();
 	private PartyElectionTrendsReportHelperVO prpVo = new PartyElectionTrendsReportHelperVO();
@@ -23,6 +26,12 @@ public class PartyElectionTrendsReportVO implements Comparable<PartyElectionTren
 	
 
 	
+	public Long getElectionIdForConst() {
+		return electionIdForConst;
+	}
+	public void setElectionIdForConst(Long electionIdForConst) {
+		this.electionIdForConst = electionIdForConst;
+	}
 	public Long getElectionId() {
 		return electionId;
 	}
