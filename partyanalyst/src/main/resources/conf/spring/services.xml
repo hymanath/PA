@@ -57,6 +57,8 @@
 		<property name="voterDataInsertDAO" ref="voterDataInsertDAO"></property>
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="mobileService" ref="mobileService" />
+		<property name="mobileNumbersDAO" ref="mobileNumbersDAO" />
+		
 		
 		
 	</bean>
