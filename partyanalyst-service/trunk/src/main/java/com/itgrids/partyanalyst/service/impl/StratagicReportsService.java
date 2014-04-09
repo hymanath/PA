@@ -42,6 +42,7 @@ import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IBoothResultDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
+import com.itgrids.partyanalyst.dao.ICasteContainConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothElectionDAO;
@@ -72,6 +73,7 @@ import com.itgrids.partyanalyst.dto.PartyElectionTrendsReportVO;
 import com.itgrids.partyanalyst.dto.PartyPositionResultsVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVerVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterAgeRangeVO;
@@ -101,6 +103,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 	 Font calibriBold2 = FontFactory.getFont("Calibri",9,Font.BOLD);
 	
 	@Autowired public IUserDAO userDAO;
+	
 	
 	@Autowired public  IBoothPublicationVoterDAO boothPublicationVoterDAO;
 	
@@ -133,7 +136,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 	public ILocalElectionBodyDAO localElectionBodyDAO;
 
 	
-
+	
 
 
 	
@@ -182,6 +185,17 @@ public class StratagicReportsService implements IStratagicReportsService{
 	
 	public IPublicationDateDAO publicationDateDAO;
 	
+	public ICasteContainConstituencyDAO casteContainConstituencyDAO;
+	
+	public ICasteContainConstituencyDAO getCasteContainConstituencyDAO() {
+		return casteContainConstituencyDAO;
+	}
+
+	public void setCasteContainConstituencyDAO(
+			ICasteContainConstituencyDAO casteContainConstituencyDAO) {
+		this.casteContainConstituencyDAO = casteContainConstituencyDAO;
+	}
+
 	@Autowired public IBoothResultDAO boothResultDAO;
 	
 	
@@ -351,7 +365,6 @@ public class StratagicReportsService implements IStratagicReportsService{
 						vo = new AgeRangeVO();
 						vo.setPanchayat(namesMap.get(id.toString().substring(0, 1).toUpperCase() + id.toString().substring(1).toLowerCase()));
 						vo.setHamlet(id.toString());
-						vo.setTotalVotersInBooth(boothsTtlMap.get(id.toString()));
 					}
 					
 					//PERCENTAGE CALUCULATIONS
@@ -893,7 +906,9 @@ public class StratagicReportsService implements IStratagicReportsService{
 		
 		for(PartyResultsVO pvo:electionList){
 			List<PartyResultsVO> partyResults=pvo.getPartyResultsVOList();
-			Collections.sort(partyResults);
+			//Collections.sort(partyResults);
+			Collections.sort(partyResults, sortByVotesEarned);
+			Collections.reverse(partyResults);
 			
 			if(partyResults.size()>0){
 				if(!partyIds.contains(partyResults.get(0).getPartyId().longValue())){
@@ -5738,5 +5753,52 @@ public class StratagicReportsService implements IStratagicReportsService{
 			  LOG.error("Exception Occured While Generating PDF for BoothWiseAddedDeletedVoters",e);
 		  	}  
 	  }
+	 
+	  public ResultStatus getRecordsCountToCasteContainConsti(Long constituencyId)
+	  {
+		  ResultStatus resultStatus = new ResultStatus();
+		  try{
+				  if(constituencyId != null && constituencyId > 0)
+				  {
+				 Long count =  casteContainConstituencyDAO.getRecordsCountToCasteContainConsti(constituencyId);
+				  if(count > 0)
+				  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				  else
+					  resultStatus.setResultCode(ResultCodeMapper.FAILURE);  
+				  }
+				 
+		  	}
+		  catch (Exception e) {
+			  resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			  e.printStackTrace();
+			
+		  }
+		return resultStatus;
+	}
+
+	public void buildAutoStrategy(Long constituencyId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public Long getConstituencyNo(Long constituencyId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+		public static Comparator<PartyResultsVO> sortByVotesEarned = new Comparator<PartyResultsVO>()
+            {
+          
+                public int compare(PartyResultsVO resultList1, PartyResultsVO resultList2)
+                {
+                    if(resultList1.getVotesEarned() == null || resultList2.getVotesEarned() == null){
+                        return 0;
+                    }
+                    else{
+                    	return (resultList1.getVotesEarned()).compareTo(resultList2.getVotesEarned());
+                    }
+                }
+            };
+			
 	  
 }
