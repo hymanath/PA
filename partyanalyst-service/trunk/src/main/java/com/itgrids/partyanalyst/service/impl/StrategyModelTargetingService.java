@@ -30,6 +30,7 @@ import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.ui.TextAnchor;
 
 import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
@@ -94,11 +95,11 @@ public class StrategyModelTargetingService implements
 	
 	private static final Logger LOG = Logger.getLogger(StrategyModelTargetingService.class);
 	
-	private IRegionServiceData regionServiceDataImp;
-	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO ;
-	private ISuggestiveRangeDAO suggestiveRangeDAO;
-	private IElectionDAO electionDAO;
-	private IHamletBoothElectionDAO hamletBoothElectionDAO;
+	public IRegionServiceData regionServiceDataImp;
+	public IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO ;
+	public ISuggestiveRangeDAO suggestiveRangeDAO;
+	public IElectionDAO electionDAO;
+	public IHamletBoothElectionDAO hamletBoothElectionDAO;
 	private ICandidateBoothResultDAO candidateBoothResultDAO;
 	private IBoothDAO boothDAO;
 	private IStaticDataService staticDataService;
@@ -106,7 +107,7 @@ public class StrategyModelTargetingService implements
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	private IStrategyMergPancListDAO strategyMergPancListDAO;
 	private IVoterInfoDAO voterInfoDAO;
-	private IVoterCastInfoDAO voterCastInfoDAO;
+	public IVoterCastInfoDAO voterCastInfoDAO;
 	private IPartialBoothPanchayatDAO partialBoothPanchayatDAO;
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
 	private IConstituencyDAO constituencyDAO;
@@ -118,7 +119,7 @@ public class StrategyModelTargetingService implements
 	private IPRPWeightegesDAO prpWeightegesDAO;
 	
 	private static Font style6 = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.NORMAL);
-	private static Font style5 = new Font(Font.FontFamily.TIMES_ROMAN, 8,Font.NORMAL);
+	private static Font style5 = new Font(Font.FontFamily.TIMES_ROMAN, 6,Font.BOLD);
 	private static Font style1 = new Font(FontFactory.getFont("arial",10,Font.BOLD));
 	private static Font style2 = new Font(FontFactory.getFont("arial",8,Font.NORMAL));
 	
@@ -3044,15 +3045,40 @@ public class StrategyModelTargetingService implements
 						  	cell.setPadding(padding);
 						  	  table.addCell(cell);
 						  	  
-						  	  cell = new PdfPCell(new Phrase(partyEffectVO.getCastes(),style2));
-						  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-						  	cell.setPadding(padding);
-						  	  table.addCell(cell);
+						  	 // cell = new PdfPCell(new Phrase(partyEffectVO.getCastes(),style2));
+						  	  
+						  	  String arr [] = partyEffectVO.getCastes().toString().split("[\\(\\)]");
+						  	StringBuilder sb = new StringBuilder();
+						  	  for(int i=0;i<arr.length;i++){
+						  		  if(arr[i].length()>0 && arr[i]!=""){
+						  			  sb.append("( "+arr[i]+" )");
+						  			  sb.append("\n");
+						  		  }
+						  	  }
+						  	  
+						  	  cell=  new PdfPCell(new Phrase(new Chunk(sb.toString(),style2)));
+						  		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+						  		cell.setPadding(padding);
+						  		table.addCell(cell);
+						  	
+						  	  /*for(String s : arr){
+						  		  if(s.length()>0 && s!=""){
+						  			  cell=  new PdfPCell(new Phrase(new Chunk(s,style2)));
+						  		  }
+						  		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+  						  		cell.setPadding(padding);
+  						  		table.addCell(cell);
+						  	  }*/
+						  	 
+						  	  	
 						  	  
 				  		  }
 
 					}
 				  	//table.setHorizontalAlignment(Element.ALIGN_LEFT);
+				  	  float[] widths = new float[] {0.8f,0.3f,0.3f,1.4f};
+				  	  table.setWidths(widths);
+				  	   
 				  	  table.setHeaderRows(1);
 					  document.add(table);
 					  document.newPage();
