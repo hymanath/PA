@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
+
 import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
