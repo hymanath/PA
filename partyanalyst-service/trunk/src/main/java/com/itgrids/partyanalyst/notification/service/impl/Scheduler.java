@@ -2,8 +2,12 @@ package com.itgrids.partyanalyst.notification.service.impl;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dto.EmailDetailsVO;
+import com.itgrids.partyanalyst.dto.ProblemDetailsVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.notification.service.ISchedulerService;
+import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.service.IMailsSendingService;
 import com.itgrids.partyanalyst.service.IMobileService;
 import com.itgrids.partyanalyst.service.IPartyCandidateSpecialPageScheduleService;
@@ -21,10 +25,26 @@ public class Scheduler {
 	private IPartyCandidateSpecialPageScheduleService partyCandidateSpecialPageScheduleService;
 	private IUserDAO userDAO;
 	private IVoterReportService voterReportService;
-	
 	private IMobileService mobileService;
+	private IMailService mailService;
+	private ResultStatus rs;
 	
-	
+	public ResultStatus getRs() {
+		return rs;
+	}
+
+	public void setRs(ResultStatus rs) {
+		this.rs = rs;
+	}
+
+	public IMailService getMailService() {
+		return mailService;
+	}
+
+	public void setMailService(IMailService mailService) {
+		this.mailService = mailService;
+	}
+
 	public IMobileService getMobileService() {
 		return mobileService;
 	}
@@ -105,7 +125,9 @@ public class Scheduler {
 		try{
 			if(!IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
 				return;
+			rs = mailService.sendEmailStatusForJob("Caste data inserting job started");
 		voterReportService.getCasteVotersAvailableConstituencyIds();
+		rs = mailService.sendEmailStatusForJob("Caste data inserting job end");
 		}
 		catch(Exception e)
 		{
@@ -132,11 +154,15 @@ public class Scheduler {
 		try{
 			/*if(!IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
 				return;*/
-		mobileService.populateVoterData();
+			rs = mailService.sendEmailStatusForJob("Populate Voter data job started");
+		     mobileService.populateVoterData();
+		    rs = mailService.sendEmailStatusForJob("Populate Voter data job end");
 		}
 		catch(Exception e)
 		{
 			 log.error("Exception rised in runTheBatchJobTosendSmsToMobileAppUser : ",e);
 		}
 	}
+	
+	
 }

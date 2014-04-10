@@ -11,4 +11,7 @@ public interface IVoterDataAvailableConstituenciesDAO extends GenericDao<VoterDa
 	public List<Object[]> getConstituencies();
 	
 	public List<Object[]> getPublicationDatesBasedOnConstituency(Long constituencyId);
+	
+	
+	public List<VoterDataAvailableConstituencies> getPublicationDatesBasedOnConstituency();
 }
