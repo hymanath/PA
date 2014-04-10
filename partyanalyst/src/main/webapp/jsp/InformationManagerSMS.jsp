@@ -106,7 +106,8 @@ background-color:  #FFFFFF !important;
  <script type="text/javascript">
  var loginUserId = "${sessionScope.USER.registrationID}";
  $( document ).ready(function() {
-
+  $('#dateId').val(' ');
+  $('#nameSearch').val('');
 $("#parentUserCheck").live("click",function(){
 var th = $(this);
 if(th.is(':checked')) {
@@ -150,7 +151,8 @@ maxDate: new Date()
 
 <h2>Send Text SMS </h2>
 
-<h4>Existing Phone Numbers</h4>
+<!-- <h4>Existing Phone Numbers</h4> -->
+<h4>Existing Incharge Details </h4>
 
 	<div id="errorMsgDiv" style="font-size: 12px; font-family: verdana;"> </div>
 	<div id="userInfoDiv" class="span6 m-top15" style="width: 900px; margin-right: auto; margin-left: auto;">
