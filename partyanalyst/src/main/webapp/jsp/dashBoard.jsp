@@ -550,15 +550,10 @@ lable{line-height:40px;}
 		
 		<div id="helpWindow"></div>
 		<div class="row-fluid">
-		    <!--<div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
-				<h2 style="padding-bottom:35px;"><div class="bguser5"> CRITICAL PANCHAYATS REPORT</div>
-				<span>
-				</span>
-				<div><input type="button" value="View" class="btn btn-small btnStyle view" onCLick="viewCriticalPanchayats();" style="float:right;margin-top:3px;background:#F06081;"></input></div></h2>
-			</div>-->
+		  
 			
 			<div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;max-height: 87px;">
-					<h2 style="border-bottom:0px;"><div class="bguser5">Voters Analysis</div>
+					<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5">Voters Analysis</div>
 						<div>
 							<input type="button" value="View" class="btn btn-small btnStyle view" onCLick="openVotersAnalysts();" style="float:right;margin-top:3px;background:#F06081;"></input>
 						</div>
@@ -566,7 +561,7 @@ lable{line-height:40px;}
 			</div>
 			<c:if test="${not fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">
 		    <div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;max-height: 87px;">
-				<h2 style="border-bottom:0px;"><div class="bguser5"> Results Vs Caste	</div>				
+				<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5"> Results Vs Caste	</div>				
 					<div>
 						<input type="button" value="View" class="btn btn-small btnStyle view" onCLick="openCasteViseAnalysis();" style="float:right;margin-top:3px;background:#F06081;"></input>
 					</div>
@@ -574,14 +569,29 @@ lable{line-height:40px;}
 			</div>
 			</c:if>
 			<div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;max-height: 87px;">
-				<h2 style="border-bottom:0px;"><div class="bguser5">INFECTED BOOTHS</div>
+				<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5">INFECTED BOOTHS</div>
 					<div>
 						<input type="button" value="View" class="btn btn-small btnStyle view" onCLick="viewInfectedBooths();" style="float:right;margin-top:3px;background:#F06081;"></input>
 					</div>
 				</h2>
 			</div>
+			<c:if test="${ fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">	
+			<div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;max-height: 87px;">
+				<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5" style="width: 180px;">STRATEGY REPORTS</div>
+					<div>
+						<input type="button" value="View" class="btn btn-small btnStyle view" onCLick="strategyReport();" style="float:right;margin-top:3px;background:#F06081;"></input>
+					</div>
+				</h2>
+			</div>
+			</c:if>
+			  <div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;">
+				<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5"> CRITICAL PANCHAYATS REPORT</div>
+				<span>
+				</span>
+				<div><input type="button" value="View" class="btn btn-small btnStyle view" onCLick="viewCriticalPanchayats();" style="float:right;margin-top:3px;background:#F06081;"></input></div></h2>
+			</div>
 		    <div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;">
-				<h2 style="border-bottom:0px;"> <div class="bguser5">REDUCE POLLING ANALYSIS</div>
+				<h2 style="border-bottom:0px;font-size: 13px;"> <div class="bguser5">REDUCE POLLING RESULTS</div>
 					<div>
 						<input type="button" value="View" class="btn btn-small btnStyle view" onCLick="reducePolling();" style="float:right;margin-top:3px;background:#F06081;"></input>
 					</div>
@@ -589,7 +599,7 @@ lable{line-height:40px;}
 			</div>
 			
 			<div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;">
-				<h2 style="border-bottom:0px;"><div class="bguser5"> INCREASE POLLING ANALYSIS </div>
+				<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5"> INCREASE POLLING RESULTS </div>
 					<div>
 						<input type="button" value="View" class="btn btn-small btnStyle view" onCLick="increasePolling();" style="float:right;margin-top:3px;background:#F06081;"></input>
 					</div>
@@ -597,7 +607,7 @@ lable{line-height:40px;}
 			</div>
 			
 			<div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 18px;">
-				<h2 style="border-bottom:0px;"><div class="bguser5">VOTER AVERAGE AGE REPORT</div>
+				<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5">VOTER AVERAGE AGE REPORT</div>
 					<div>
 						<input type="button" value="View" class="btn btn-small btnStyle view" onCLick="voterAverageAgePopUp();" style="float:right;margin-top:3px;background:#F06081;"></input>
 					</div>
@@ -611,7 +621,7 @@ lable{line-height:40px;}
 			
             <c:if test="${sessionScope.USER.isAdmin == 'true'}">
 			<div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;">
-				<h2 style="border-bottom:0px;"><div class="bguser5">STRATEGY ANALYSIS REPORT</div>
+				<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5">STRATEGY ANALYSIS REPORT</div>
 					<div>
 						<input type="button" value="View" class="btn btn-small btnStyle view" onCLick="viewStrategyAnalysisReport();" style="float:right;margin-top:3px;background:#F06081;"></input>
 					</div>
@@ -622,7 +632,7 @@ lable{line-height:40px;}
 
 
 			<div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 15px;">
-				<h2 style="border-bottom:0px;"><div class="bguser5">2009 ASSEMBLY VS 2013 PANCHAYAT RESULTS</div>
+				<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5">2009 ASSEMBLY VS 2013 PANCHAYAT RESULTS</div>
 					<div>
 						<input type="button" value="View" class="btn btn-small btnStyle view" onCLick="viewPanchayathResults();" style="float:right;margin-top:3px;background:#F06081;"></input>
 					</div>
@@ -630,24 +640,16 @@ lable{line-height:40px;}
 			</div>
           
           	<div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;">
-					<h2 style="border-bottom:0px;"><div class="bguser5" style="width: 180px;">CONSTITUENCY WISE AGE DETAILS</div>
+					<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5" style="width: 180px;">CONSTITUENCY WISE AGE DETAILS</div>
 						<div>
 							<input type="button" value="View" class="btn btn-small btnStyle view" onCLick="getConstituencyWiseAgeDetails();" style="float:right;margin-top:3px;background:#F06081;"></input>
 						</div>
 					</h2>
 			</div>
-			<c:if test="${ fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">	
-			<div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;">
-				<h2 style="border-bottom:0px;"><div class="bguser5" style="width: 180px;">STRATEGY REPORTS</div>
-					<div>
-						<input type="button" value="View" class="btn btn-small btnStyle view" onCLick="strategyReport();" style="float:right;margin-top:3px;background:#F06081;"></input>
-					</div>
-				</h2>
-			</div>
-			</c:if>
+
 			
 		  <div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;">
-			<h2 style="border-bottom:0px;"><div class="bguser5" style="width: 180px;">Cross Voting Analysis</div>
+			<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5" style="width: 180px;">Cross Voting Analysis</div>
 				<div>
 					<input class="btn btn-small btnStyle view" type="button" style="float:right;margin-top:3px;background:#F06081;" onclick="getCrossVotingReport();" value="View">
 				</div>
@@ -655,7 +657,7 @@ lable{line-height:40px;}
 		</div>
 
 		<div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;">
-			<h2 style="border-bottom:0px;"><div class="bguser5" style="width: 180px;">Voter Modification Report </div>
+			<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5" style="width: 180px;">Voter Modification Report </div>
 				<div>
 					<input class="btn btn-small btnStyle view" type="button" style="float:right;margin-top:3px;background:#F06081;" onclick="viewVoterModificationReport();" value="View">
 				</div>
@@ -663,7 +665,7 @@ lable{line-height:40px;}
 		</div>
 
 		<div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;">
-			<h2 style="border-bottom:0px;"><div class="bguser5" style="width: 180px;">Importent Family Details</div>
+			<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5" style="width: 180px;">Importent Family Details</div>
 				<div>
 					<input class="btn btn-small btnStyle view" type="button" style="float:right;margin-top:3px;background:#F06081;" onclick="viewImportentFamilyDetails();" value="View">
 				</div>
@@ -671,7 +673,7 @@ lable{line-height:40px;}
 		</div>
 
 		<div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;">
-			<h2 style="border-bottom:0px;"><div class="bguser5">Booth Wise Results</div>
+			<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5">Booth Wise Results</div>
 				<div>
 					<input class="btn btn-small btnStyle view" type="button" style="float:right;margin-top:3px;background:#F06081;" onclick="viewBoothWiseResults();" value="View">
 				</div>
@@ -682,7 +684,7 @@ lable{line-height:40px;}
 
           <c:if test="${not fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">		 
 			<div class="span4 widget linkDivs"  style="margin-left:7px;padding: 0px 20px;max-height: 87px;">
-				<h2 style="border-bottom:0px;"><div class="bguser5">Voters Search</div>
+				<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5">Voters Search</div>
 					<div>
 						<input type="button" value="View" class="btn btn-small btnStyle view" onCLick="openAllInNewWindow('voterssearch');" style="float:right;margin-top:3px;background:#F06081;"></input>
 					</div>
