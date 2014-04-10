@@ -648,7 +648,14 @@ lable{line-height:40px;}
 			</div>
 
 			
-		  
+		  <div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;">
+			<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5" style="padding: 0px 18px;">Cross Voting Analysis</div>
+				<div>
+					<input class="btn btn-small btnStyle view" type="button" style="float:right;margin-top:3px;background:#F06081;" onclick="getCrossVotingReport();" value="View">
+				</div>
+			</h2>
+		</div>
+
 		<div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;">
 			<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5" style="width: 180px;">Voter Modification Report </div>
 				<div>
@@ -673,13 +680,6 @@ lable{line-height:40px;}
 			</h2>
 		</div>
 
-        <div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;max-height: 87px;">
-			<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5" >Cross Voting Analysis</div>
-				<div>
-					<input class="btn btn-small btnStyle view" type="button" style="float:right;margin-top:3px;background:#F06081;" onclick="getCrossVotingReport();" value="View">
-				</div>
-			</h2>
-		</div>
 
 
           <c:if test="${not fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">		 
