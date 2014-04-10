@@ -4554,7 +4554,7 @@ win.focus();
 }
 function redirectTopanchayatFamilyInfo()
 {
-	var win=window.open('criticalPanchayatsAction.action', '_blank');
+	var win=window.open('criticalPanchayatsFamilyAction.action', '_blank');
   win.focus();
 }
 
