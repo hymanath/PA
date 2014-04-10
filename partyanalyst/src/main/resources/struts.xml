@@ -6873,7 +6873,7 @@
 				<param name="root">status</param>				
 			</result>		
 		</action>
-		 <action name="criticalPanchayatsAction" class="suggestiveModelAction">
+		 <action name="criticalPanchayatsFamilyAction" class="suggestiveModelAction">
 			<result name="success">/jsp/criticalPanchayatfamilyDetails.jsp</result>
 			<result name="error">/jsp/loginForm.jsp</result>
 		</action>
