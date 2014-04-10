@@ -71,6 +71,19 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 			Long houseHoldsByNewVoterList = 0L; 
 			Long houseHoldsByCensus = 0L;
 			
+			List<Long> yearIds = new ArrayList<Long>();
+			yearIds.add(2011L);
+						
+			List<ConstituencyCensusDetails> censusDetailsList = constituencyCensusDetailsDAO.getCensusConstituencyByConstituencyIdAndYears(constituencyId,yearIds);
+			
+			if(censusDetailsList != null && censusDetailsList.size()>0){
+				ConstituencyCensusDetails censusDetails = censusDetailsList.get(0);
+				
+				houseHoldsByCensus = censusDetails.getHouseHolds();
+			}
+			
+			
+			/*
 			List<Long> tehsilIds = boothDAO.getTehsildByConstituency(constituencyId, publicationDateId);
 			List<Long> houstholdsDetials = censusDAO.getCensusDetailsInConstituency(tehsilIds,2011L);
 			if(houstholdsDetials != null && houstholdsDetials.size()>0){		
@@ -81,7 +94,7 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 					houseHoldsByCensus = houseHoldsByCensus + houseHolds;
 				}
 			}
-			
+			*/
 			List<Object[]> houseHoldsDetails = voterFamilyInfoDAO.getTotalFamiliesByCosntituency(constituencyId,publicationDateId,constituencyId);
 			if(houseHoldsDetails != null && houseHoldsDetails.size()>0){
 				houseHoldsVOList = new ArrayList<HouseHoldsVO>();
