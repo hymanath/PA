@@ -1319,7 +1319,9 @@
 		<property name="voterReportService" ref="voterReportService"/>
 		<property name="userDAO" ref="userDAO"/>
 		<property name="partyCandidateSpecialPageScheduleService" ref="partyCandidateSpecialPageScheduleService"/>
-		  <property name="mobileService" ref="mobileService"></property>
+		<property name="mobileService" ref="mobileService"></property>
+		<property name="mailService" ref="mailService"></property>
+		  
 	</bean>
 	
 	<bean name="everyDayBatchJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
