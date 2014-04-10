@@ -201,6 +201,8 @@ function getPublicationDate()
 var isCasteDataAvail = true;
 function getCasteContainConstituency()
 {
+
+$('#errorMsgDiv').html('');
 	    var constituencyId = $("#constituencyId").val();
 		  var jsObj = 
 	       {
@@ -220,6 +222,12 @@ function getCasteContainConstituency()
 					$("#castesId").hide();	
 					$("#castePerId").hide();
                     $("#totalId").attr("disabled","true");					
+					}
+					else
+					{
+					  $("#totalId").removeAttr("disabled");	
+					  $("#castePerId").show();
+					  $("#castesId").show();
 					}
 					
 			});
