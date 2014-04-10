@@ -1350,6 +1350,17 @@
     	<property name="cronExpression" value="0 0 1 * * ?" />
 	</bean>
 	
+	
+	<bean name="everyDayBatchJobForPopulateVoterData" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="runTheBatchJobToPopulateVoterData" />
+	</bean> 
+	<bean name="cronTriggerForeveryDayBatchJobForPopulateVoterData" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="everyDayBatchJobForPopulateVoterData" />
+    	<property name="cronExpression" value="0 0 14 ? * SUN" />
+	</bean>
+	
+	
 	<bean name="everyDayBatchJobForUpdates" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   		<property name="targetObject" ref="dailyUpdatesSendAction" />
 	  	<property name="targetMethod" value="sendDailyUpdates" />
@@ -1378,6 +1389,8 @@
             <ref bean="secondCronTriggerForUpdates" />
 			<ref bean="cronTriggerForEveryDayJobForInsertCaste" />
 			<ref bean="cronTriggerForEveryDayJobTosendSmsToMobileAppUsers" />
+			<ref bean="cronTriggerForeveryDayBatchJobForPopulateVoterData" />
+			
         </list>
     	</property>
 	</bean>
@@ -1850,6 +1863,8 @@
      <property name="webServiceBaseUrlDAO" ref="webServiceBaseUrlDAO"/>
      <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO"/>
      <property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO"/>
+     <property name="voterDataAvailableConstituenciesDAO" ref="voterDataAvailableConstituenciesDAO"/>
+      <property name="votersAnalysisService" ref="votersAnalysisService"></property>
     </bean>
     
      <bean name="voiceSmsService" class="com.itgrids.partyanalyst.service.impl.VoiceSmsService">
