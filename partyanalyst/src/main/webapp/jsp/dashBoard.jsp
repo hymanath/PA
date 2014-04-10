@@ -649,7 +649,7 @@ lable{line-height:40px;}
 
 			
 		  <div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;">
-			<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5" style="width: 180px;">Cross Voting Analysis</div>
+			<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5" style="padding: 0px 18px;">Cross Voting Analysis</div>
 				<div>
 					<input class="btn btn-small btnStyle view" type="button" style="float:right;margin-top:3px;background:#F06081;" onclick="getCrossVotingReport();" value="View">
 				</div>
