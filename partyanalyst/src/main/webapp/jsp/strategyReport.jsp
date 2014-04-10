@@ -437,8 +437,14 @@ function submitDetails()
 	var strongMin = $("#strongMin").val().trim();
 	var strongMax = $("#strongMax").val().trim();
 	var veryStrongMin  = $("#veryStrongMin").val().trim();
+	var totalId = 0;
+	var total = 0;
+	if(isCasteDataAvail){
+		var total = parseFloat(prpEffId) + parseFloat(prevTrendsId) + parseFloat(totalId) + parseFloat(YVotersId)+ parseFloat(ageWiseId);
+	}else{
+		var total = parseFloat(prpEffId) + parseFloat(prevTrendsId) + parseFloat(YVotersId)+ parseFloat(ageWiseId);
+	}
 	
-	var total = parseFloat(prpEffId) + parseFloat(prevTrendsId) + parseFloat(totalId) + parseFloat(YVotersId)+ parseFloat(ageWiseId);
 	
     $('#candidateCastesId :selected').each(function(i, selected){ 
 		var casteDetails = {};
@@ -476,7 +482,7 @@ function submitDetails()
          $("#errorMsgDiv").html("");
 	} 
   
-	if(!isCasteDataAvail){
+	if(isCasteDataAvail){
 		if(totalId == ""){
 			$("#errorMsgDiv").html("Please enter all the text fields");
 			return;
