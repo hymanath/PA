@@ -6894,7 +6894,7 @@
 			<result name="success">/jsp/crossVotingAnalysis.jsp</result>			
 		</action>
 		
-		<action name="voterModificationReportAction" class="dashBoardAction">
+		<action name="voterModificationReport" class="dashBoardAction">
 			<result name="success">/jsp/voterModifications.jsp</result>			
 		</action>
 		
