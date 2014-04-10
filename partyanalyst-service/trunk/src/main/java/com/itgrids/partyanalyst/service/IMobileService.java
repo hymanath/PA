@@ -46,4 +46,6 @@ public interface IMobileService {
 	public String replaceSpecialChars(String str);
 	
 	public ResultStatus getMobileAppLastAuthorisedTime();
+	
+	public ResultStatus populateVoterData();
 }
