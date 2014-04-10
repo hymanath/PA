@@ -2836,7 +2836,7 @@ function viewCrossVotingAnalysis()
 
 function viewVoterModificationReport()
 {
-  window.open("voterModificationReportAction.action")
+  window.open("voterModificationReport.action")
 }
 
 function viewImportentFamilyDetails()
