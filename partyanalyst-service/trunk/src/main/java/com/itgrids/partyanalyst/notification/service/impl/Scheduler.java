@@ -125,4 +125,18 @@ public class Scheduler {
 			 log.error("Exception rised in runTheBatchJobTosendSmsToMobileAppUser : ",e);
 		}
 	}
+	
+	
+	public void runTheBatchJobToPopulateVoterData()
+	{
+		try{
+			/*if(!IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
+				return;*/
+		mobileService.populateVoterData();
+		}
+		catch(Exception e)
+		{
+			 log.error("Exception rised in runTheBatchJobTosendSmsToMobileAppUser : ",e);
+		}
+	}
 }
