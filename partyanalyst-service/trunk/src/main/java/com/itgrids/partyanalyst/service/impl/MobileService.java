@@ -73,6 +73,7 @@ import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterBasicInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastBasicInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
+import com.itgrids.partyanalyst.dao.IVoterDataAvailableConstituenciesDAO;
 import com.itgrids.partyanalyst.dao.IVoterFamilyInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterFamilyRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
@@ -122,6 +123,7 @@ import com.itgrids.partyanalyst.model.VoterAgeRange;
 import com.itgrids.partyanalyst.model.VoterBasicInfo;
 import com.itgrids.partyanalyst.model.VoterCastBasicInfo;
 import com.itgrids.partyanalyst.model.VoterCastInfo;
+import com.itgrids.partyanalyst.model.VoterDataAvailableConstituencies;
 import com.itgrids.partyanalyst.model.VoterFamilyInfo;
 import com.itgrids.partyanalyst.model.VoterFamilyRange;
 import com.itgrids.partyanalyst.model.VoterInfo;
@@ -131,6 +133,7 @@ import com.itgrids.partyanalyst.model.VotingTrendzPartiesResult;
 import com.itgrids.partyanalyst.model.WebServiceBaseUrl;
 import com.itgrids.partyanalyst.service.IMobileService;
 import com.itgrids.partyanalyst.service.ISmsService;
+import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -193,7 +196,27 @@ public class MobileService implements IMobileService{
  private IWebServiceBaseUrlDAO webServiceBaseUrlDAO;
  private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
  private IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO;
+ private IVoterDataAvailableConstituenciesDAO voterDataAvailableConstituenciesDAO;
+ private IVotersAnalysisService votersAnalysisService;
  
+public IVotersAnalysisService getVotersAnalysisService() {
+	return votersAnalysisService;
+}
+
+public void setVotersAnalysisService(
+		IVotersAnalysisService votersAnalysisService) {
+	this.votersAnalysisService = votersAnalysisService;
+}
+
+public IVoterDataAvailableConstituenciesDAO getVoterDataAvailableConstituenciesDAO() {
+	return voterDataAvailableConstituenciesDAO;
+}
+
+public void setVoterDataAvailableConstituenciesDAO(
+		IVoterDataAvailableConstituenciesDAO voterDataAvailableConstituenciesDAO) {
+	this.voterDataAvailableConstituenciesDAO = voterDataAvailableConstituenciesDAO;
+}
+
 public IAssemblyLocalElectionBodyWardDAO getAssemblyLocalElectionBodyWardDAO() {
 	return assemblyLocalElectionBodyWardDAO;
 }
@@ -3058,5 +3081,44 @@ public List<SelectOptionVO> getConstituencyList()
   	}
     }
   	
-	
+	public ResultStatus populateVoterData()
+	{
+	 ResultStatus resultStatus = new ResultStatus();
+		try{
+			Map<Long,List<Long>> constituencyMap = new HashMap<Long, List<Long>>();
+			List<VoterDataAvailableConstituencies> list = voterDataAvailableConstituenciesDAO.getPublicationDatesBasedOnConstituency();
+			if(list != null && list.size() > 0)
+			for(VoterDataAvailableConstituencies params : list)
+			{
+				List<Long> publicationIds = constituencyMap.get(params.getConstituency().getConstituencyId());
+				if(publicationIds == null)
+				{
+					publicationIds = new ArrayList<Long>();
+					
+					constituencyMap.put(params.getConstituency().getConstituencyId(), publicationIds);
+				}
+				
+				if(!publicationIds.contains(params.getPublicationDate().getPublicationDateId()))
+					publicationIds.add(params.getPublicationDate().getPublicationDateId());
+				
+			}
+			
+			for(Long id : constituencyMap.keySet())
+			{
+				List<Long> publicationIds = constituencyMap.get(id);
+				for(Long publicationId : publicationIds)
+				{
+			 votersAnalysisService.deleteVoterInfoFromIntermediateTablesByConstituencyId(id, publicationId);
+			 votersAnalysisService.insertVotersDataInIntermediateTables(id, publicationId,1l,false,false,false);
+				}
+			}
+			
+		}
+		catch (Exception e) {
+			 e.printStackTrace();
+		  	  LOG.error(" Exception Occured in getPCConstituencyList() method, Exception - "+e);
+		  	  
+		}
+		return resultStatus;
+	}
 }

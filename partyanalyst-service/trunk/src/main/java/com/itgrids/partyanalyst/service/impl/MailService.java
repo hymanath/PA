@@ -681,6 +681,43 @@ public class MailService implements IMailService{
 		}
 		return rs;
 	}
+	
+	public ResultStatus sendEmailStatusForJob(String content)
+	{
+		ResultStatus rs = new ResultStatus();
+		try{
+			
+			EmailDetailsVO emailDetailsVo = new EmailDetailsVO();
+			String subject;
+			subject = "";
+			String text = "";
+	    	subject = "PopulateVoterData Job Status";
+	    	text = "<div style='border:1px solid #CCCCCC;background:#EFFFFF;'>"+mailsTemplateService.getHeader()+"" ;
+	    	text += "<div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;'><b>Hi Admin Group,</b></div>";
+	    	text+="<div style='margin-left:45px;margin-bottom:40px;line-height: 1.5em;'>";
+	    	text+="" +content+ " ";
+	    	text+="</div>";
+	        text+="<div style='margin: -17px 3px 0px 19px; padding-bottom: 18px;'>"+mailsTemplateService.getFooter()+"</div></div>";
+	        String emails = "kamalakardandu@gmail.com";
+	        
+	        String emailArr[] = emails.split(",");
+	        for(String email : emailArr)
+	        {
+		        emailDetailsVo.setContent(text);
+		        emailDetailsVo.setSubject(subject);
+		        emailDetailsVo.setToAddress(email.toString());
+		        emailDetailsVo.setFromAddress(IConstants.LOCALFROMEMAILID);
+				rs = sendEmail(emailDetailsVo);
+	        }
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return rs;
+		
+	}
 }
 
 
