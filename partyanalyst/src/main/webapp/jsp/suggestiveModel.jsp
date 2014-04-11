@@ -1083,19 +1083,18 @@ function panchayatMatrx(result)
   <h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">SUGGESTIVE MODEL</h4>
 
  <div class="well" style="float:left;width:300px;margin-top:70px;height:auto;">
- <fieldset>
-  <legend>TOOLS</legend>
- <input type="button" value="Get FamilyWise Details" class="btn" id="familyWisebtn" onclick="redirectToFamilyInfo()"/>
- <input type="button" value="Get Panchayat FamilyWise Details" class="btn" id="familyWisebtn" onclick="redirectTopanchayatFamilyInfo()" style="margin-top:10px;"/>
-<!-- <span>Caste Wise Info</span>-->
- <input type="button" value="Get Mandal Wise CasteInfo" class="btn" id="mandalcasteInfobtn" onclick="redirectToCasteInfo('mandal')" style="margin-top:10px;"/>
- <input type="button" value="Get Panchayat Wise CasteInfo" class="btn" id="panchayatcasteInfobtn" onclick="redirectToCasteInfo('panchayat')" style="margin-top:10px;"/>
- <input type="button" value="Get Booth Wise CasteInfo" class="btn" id="boothcasteInfobtn" onclick="redirectToCasteInfo('booth')" style="margin-top:10px;"/>
-  <input type="button" value="Get Hamlet Wise CasteInfo" class="btn" id="hamletcasteInfobtn" onclick="redirectToCasteInfo('hamlet')" style="margin-top:10px;"/>
-  <input type="button" value="Get Voter Address" class="btn" id="voterAddressbtn" onclick="redirectToVoterAddress()" style="margin-top:10px;"/>
-   <input type="button" value="Get Voter Locations" class="btn" id="voterrangebtn" onclick="redirectToVoterRange()" style="margin-top:10px;"/>
 
- </fieldset>
+  <h4>TOOLS</h4>
+ <input type="button" value="Get FamilyWise Details" class="btn btn-info btn-block" id="familyWisebtn" onclick="redirectToFamilyInfo()" style="margin-top:20px;"/>
+ <input type="button" value="Get Panchayat FamilyWise Details" class="btn btn-info btn-block" id="familyWisebtn" onclick="redirectTopanchayatFamilyInfo()" style="margin-top:10px;"/>
+<!-- <span>Caste Wise Info</span>-->
+ <input type="button" value="Get Mandal Wise CasteInfo" class="btn btn-info btn-block" id="mandalcasteInfobtn" onclick="redirectToCasteInfo('mandal')" style="margin-top:10px;"/>
+ <input type="button" value="Get Panchayat Wise CasteInfo" class="btn btn-info btn-block" id="panchayatcasteInfobtn" onclick="redirectToCasteInfo('panchayat')" style="margin-top:10px;"/>
+ <input type="button" value="Get Booth Wise CasteInfo" class="btn btn-info btn-block" id="boothcasteInfobtn" onclick="redirectToCasteInfo('booth')" style="margin-top:10px;"/>
+  <input type="button" value="Get Hamlet Wise CasteInfo" class="btn btn-info btn-block" id="hamletcasteInfobtn" onclick="redirectToCasteInfo('hamlet')" style="margin-top:10px;"/>
+  <input type="button" value="Get Voter Address" class="btn btn-info btn-block" id="voterAddressbtn" onclick="redirectToVoterAddress()" style="margin-top:10px;"/>
+   <input type="button" value="Get Voter Locations" class="btn btn-info btn-block" id="voterrangebtn" onclick="redirectToVoterRange()" style="margin-top:10px;"/>
+
   </div>
    <div id="mainDiv" align="center"  style="margin-left: 196px;">
      <div id="errorMsgDiv" >&nbsp;</div><br><br>
@@ -1106,7 +1105,7 @@ function panchayatMatrx(result)
 					Constituency Name :<font id="requiredValue" class="requiredFont">*</font> 
 				</td>
 				<td>
-					<select id="listConstituencyNames" onchange="clearAll(),getLatestPublicationId();getPartyDetails(this.options[this.selectedIndex].value);getCandidateCastes(this.options[this.selectedIndex].value);getConstituencyBasicCountInfo();getPublicationDate();">
+					<select id="listConstituencyNames" onchange="clearAll(),getLatestPublicationId();getPartyDetails(this.options[this.selectedIndex].value);getCandidateCastes(this.options[this.selectedIndex].value);getPublicationDate();">
 					<option value="0"> Select Constituency </option>
 					</select>
 				</td>		
@@ -1130,7 +1129,7 @@ function panchayatMatrx(result)
 			<td id="tdWidth">
 				Publication Date:<font id="requiredValue" class="requiredFont">*</font> 
 			</td>
-			<td><select id="listPublicationValues" class="selectWidth"  name="listPublicationValues" >
+			<td><select id="listPublicationValues" class="selectWidth"  name="listPublicationValues" onchange="getConstituencyBasicCountInfo();">
 			<option value="0">Select Publication Date</option>
 			</select>
 			</td>
@@ -1189,8 +1188,9 @@ function panchayatMatrx(result)
 				<option value="0"> Select Caste </option>
 				</select>
 			</td>	
-
-		<td><input type="checkbox" name="expCaste" id="expCaste" value="expCaste" onclick="showExpCasteDetailsButton();" style="margin-left: 10px; margin-top: 0px;"><span id="ecpCheckBox" style="margin-left:10px;">Please Check Here For Excepted Castes</span></td>
+</tr>
+<tr><td></td>
+		<td><input type="checkbox" name="expCaste" id="expCaste" value="expCaste" onclick="showExpCasteDetailsButton();" style="margin-top: 0px;"><span id="ecpCheckBox" style="margin-left:10px;">Please Check Here For Excepted Castes</span></td>
 		
 		</tr>
 	</table>
