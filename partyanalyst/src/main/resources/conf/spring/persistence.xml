@@ -411,6 +411,7 @@
 				<value>com.itgrids.partyanalyst.model.MobileNumbers</value>
 				
 				<value>com.itgrids.partyanalyst.model.CasteContainConstituency</value>
+				<value>com.itgrids.partyanalyst.model.StrategyAssumptions</value>
 			</list>
 			
 		</property>

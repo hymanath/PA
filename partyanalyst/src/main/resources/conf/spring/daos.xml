@@ -1420,4 +1420,8 @@
 	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	  
+	 <bean id="strategyAssumptionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.StrategyAssumptionsDAO">
+	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		
