@@ -1857,6 +1857,7 @@ public class StrategyModelTargetingService implements
     	   totalOpportunity = totalOpportunity*(-1);
     	   highOppourtunity = totalOpportunity*(0.4);
     	   criticalOppourtunity = totalOpportunity*(0.2);
+    	   Double considerCritical = highOppourtunity+criticalOppourtunity;
     	   mediumOppourtunity = totalOpportunity*(0.15);
     	   easyOppourtunity = totalOpportunity*(0.15);
     	   goodOppourtunity = totalOpportunity*(0.1);
@@ -1867,7 +1868,7 @@ public class StrategyModelTargetingService implements
     	   Long gainableVotes = 0l;
     	   OrderOfPriorityVO highCriticalPrior = new OrderOfPriorityVO();
     	   for(int i = 0;i< finalOrderOfOriority.size();i++){
-    		   if(gainableVotes < highOppourtunity){
+    		   if(gainableVotes.longValue() < highOppourtunity.longValue()){
     		     count = count+1;
     		     gainableVotes = gainableVotes+((-1)*finalOrderOfOriority.get(i).getOpportunity());
     		     gainablePerc = gainablePerc+((-1)*finalOrderOfOriority.get(i).getOpportunityPerc());
@@ -1891,7 +1892,7 @@ public class StrategyModelTargetingService implements
 	    	    
 	    	    OrderOfPriorityVO criticalPrior = new OrderOfPriorityVO();
 	     	   for(int i = size;i< finalOrderOfOriority.size();i++){
-	     		   if(gainableVotes < criticalOppourtunity){
+	     		   if(new Long(gainableVotes+highCriticalPrior.getOpportunity()).longValue() < considerCritical.longValue()){
 	     		     count = count+1;
 	     		     gainableVotes = gainableVotes+((-1)*finalOrderOfOriority.get(i).getOpportunity());
 	     		     gainablePerc = gainablePerc+((-1)*finalOrderOfOriority.get(i).getOpportunityPerc());
@@ -1916,7 +1917,7 @@ public class StrategyModelTargetingService implements
 		 	    
 		 	    OrderOfPriorityVO mediumPrior = new OrderOfPriorityVO();
 		  	   for(int i = size;i< finalOrderOfOriority.size();i++){
-		  		   if(gainableVotes < mediumOppourtunity){
+		  		   if(gainableVotes.longValue() < mediumOppourtunity.longValue()){
 		  		     count = count+1;
 		  		     gainableVotes = gainableVotes+((-1)*finalOrderOfOriority.get(i).getOpportunity());
 		  		     gainablePerc = gainablePerc+((-1)*finalOrderOfOriority.get(i).getOpportunityPerc());
@@ -1941,7 +1942,7 @@ public class StrategyModelTargetingService implements
 			    
 			    OrderOfPriorityVO easyPrior = new OrderOfPriorityVO();
 			   for(int i = size;i< finalOrderOfOriority.size();i++){
-				   if(gainableVotes < easyOppourtunity){
+				   if(gainableVotes.longValue() < easyOppourtunity.longValue()){
 				     count = count+1;
 				     gainableVotes = gainableVotes+((-1)*finalOrderOfOriority.get(i).getOpportunity());
 				     gainablePerc = gainablePerc+((-1)*finalOrderOfOriority.get(i).getOpportunityPerc());
@@ -1966,14 +1967,12 @@ public class StrategyModelTargetingService implements
 			    
 			    OrderOfPriorityVO goodPrior = new OrderOfPriorityVO();
 			   for(int i = size;i< finalOrderOfOriority.size();i++){
-				   if(gainableVotes < goodOppourtunity){
+				  
 				     count = count+1;
 				     gainableVotes = gainableVotes+((-1)*finalOrderOfOriority.get(i).getOpportunity());
 				     gainablePerc = gainablePerc+((-1)*finalOrderOfOriority.get(i).getOpportunityPerc());
 				     finalOrderOfOriority.get(i).setType("Good");
-				   }else{
-					   break;
-				   }
+				   
 				   size= size+1;
 			   }
 			  if(count > 0){
