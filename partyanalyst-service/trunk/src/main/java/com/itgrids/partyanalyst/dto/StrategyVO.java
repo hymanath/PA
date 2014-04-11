@@ -44,6 +44,7 @@ public class StrategyVO implements Serializable {
 	private boolean considerRange;
 	private boolean autoCalculate;
 	private boolean autoStrategy;
+	private boolean goalDataPresent;
 	
 	public Long getConstituencyId() {
 		return constituencyId;
@@ -230,6 +231,12 @@ public class StrategyVO implements Serializable {
 	}
 	public void setAutoStrategy(boolean autoStrategy) {
 		this.autoStrategy = autoStrategy;
+	}
+	public boolean isGoalDataPresent() {
+		return goalDataPresent;
+	}
+	public void setGoalDataPresent(boolean goalDataPresent) {
+		this.goalDataPresent = goalDataPresent;
 	}
 	
 	

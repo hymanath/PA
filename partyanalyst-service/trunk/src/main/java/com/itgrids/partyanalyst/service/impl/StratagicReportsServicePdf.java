@@ -1,5 +1,8 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
@@ -20,6 +23,10 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 
 import org.apache.log4j.Logger;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.data.general.DefaultPieDataset;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itextpdf.text.BaseColor;
@@ -34,11 +41,14 @@ import com.itextpdf.text.ListItem;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IStrategyAssumptionsDAO;
 import com.itgrids.partyanalyst.dto.AgeRangeVO;
 import com.itgrids.partyanalyst.dto.AssumptionsVO;
 import com.itgrids.partyanalyst.dto.CasteStratagicReportVO;
@@ -57,6 +67,7 @@ import com.itgrids.partyanalyst.dto.StrategyVO;
 import com.itgrids.partyanalyst.dto.VoterDensityWithPartyVO;
 import com.itgrids.partyanalyst.dto.VoterStratagicReportVo;
 import com.itgrids.partyanalyst.excel.booth.VoterModificationVO;
+import com.itgrids.partyanalyst.model.StrategyAssumptions;
 import com.itgrids.partyanalyst.service.IBoothwisePollingStratagicService;
 import com.itgrids.partyanalyst.service.IStratagicReportServiceForMLASuccess;
 import com.itgrids.partyanalyst.service.IStratagicReportsService;
@@ -102,6 +113,10 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 
 	@Autowired
 	IDelimitationConstituencyDAO delimitationConstituencyDAO;
+	
+	@Autowired
+	IStrategyAssumptionsDAO strategyAssumptionsDAO;
+	
 	
 	private enum PdfPages{
 		prevConst,prevPar,prevMptcZptc,census,hoseHolds,voterInfo,firstTimeVoters, votersAgeGroup, votersCaste,panchayatVoterDensity, voterAdditionAndDeletion, genderWiseVoterModification, ageGroup,pollingPercent, boothWiseAddedDelList, delimitationEffect, assumptions, localityAddedDeleted 
@@ -189,6 +204,14 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	public void buildAutoStrategy(Long constituencyId){
 		StrategyVO strategyVO = strategyModelTargetingService.getStrategyArguments(constituencyId);
 		strategyVO.setAutoStrategy(true);
+		List<StrategyAssumptions> assumptionsList =  strategyAssumptionsDAO.getDataByConstituencyId(constituencyId);
+		if(assumptionsList != null && assumptionsList.size() > 0 && assumptionsList.get(0) != null){
+			StrategyAssumptions model = assumptionsList.get(0);
+			strategyVO.setGoalDataPresent(true);
+			strategyVO.setBase(model.getExceptedPollingPerc());
+			strategyVO.setAssured(model.getVoterBasePerc());
+			strategyVO.setTdpPerc(model.getTargetedVotesPerc());
+		}
 		buildPdfDelegator(strategyVO);
 	}
 	
@@ -203,7 +226,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		serializationOfObjects(strategyVO,maps);
 		//deserilization of data
 		
-		Object url = DeserializationOfObjects(maps,strategyVO.getConstituencyId(),strategyVO.isAutoStrategy());
+		Object url = DeserializationOfObjects(maps,strategyVO.getConstituencyId(),strategyVO.isAutoStrategy(),strategyVO.isGoalDataPresent());
 		//build pdf 
 		
 		return url;
@@ -328,7 +351,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		maps.put(PdfPages.delimitationEffect, defaultFileName);
 		
 		//assumptions
-		if(!strategyVO.isAutoStrategy()){
+		if(!strategyVO.isAutoStrategy() || strategyVO.isGoalDataPresent()){
 			defaultFileName="assumptions"+uidentifier;
 			AssumptionsVO assumptionsVO=stratagicReportsService.votersAssumptionsService( constId,base,assured,publicationDateId,tdpPerc);
 			defaultFileName =   serialize(defaultFileName, assumptionsVO,strategyVO.isAutoStrategy());
@@ -470,7 +493,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		return null;
 	}
 	
-	public Object DeserializationOfObjects(Map<PdfPages,String> maps,Long constituencyId,boolean autoStrategy) 
+	public Object DeserializationOfObjects(Map<PdfPages,String> maps,Long constituencyId,boolean autoStrategy,boolean goalDataPresent) 
 	{
 		 //page-4
 	    //previous trends 
@@ -486,9 +509,9 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 				 path = IConstants.STATIC_CONTENT_FOLDER_URL+"Strategy"+pathSeperator+"pdfs";
 			 }
 			 Long constiNo = delimitationConstituencyDAO.getConstituencyNo(constituencyId, 2009l);
-		  String filePath = path+pathSeperator+constiNo+"_"+constituencyDAO.get(constituencyId).getName()+"_"+uidentifier+".pdf";
-		   String url = "Strategy"+pathSeperator+"pdfs"+pathSeperator+constiNo+"_"+constituencyDAO.get(constituencyId).getName()+"_"+uidentifier+".pdf";
-	try{
+			  String filePath = path+pathSeperator+constiNo+"_"+constituencyDAO.get(constituencyId).getName()+"_"+uidentifier+".pdf";
+			   String url = "Strategy"+pathSeperator+"pdfs"+pathSeperator+constiNo+"_"+constituencyDAO.get(constituencyId).getName()+"_"+uidentifier+".pdf";
+		try{
 		
 		 
 		//basic pdf blocks
@@ -682,7 +705,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
      
     //assumptions
     
-    if(!autoStrategy){
+    if(!autoStrategy  || goalDataPresent){
         DeSerialize<AssumptionsVO> desassumptionsVO =new DeSerialize<AssumptionsVO>();
         AssumptionsVO assumptionsVO =desassumptionsVO.deSerialize( maps.get(PdfPages.assumptions),autoStrategy );
         //call to pdf generation 	   
@@ -787,11 +810,18 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	  
 	  try {
 			DeSerialize<List<PartyPositionVO>>  dpartyPerformance=new DeSerialize<List<PartyPositionVO>>();
-			  
-			  String Eleheading="Election Results Comparision b/w 2009 Assembly & 2013  Panchayat";
+			  String Eleheading="Election Results Comparision Table b/w 2009(TDP @ Top Position) Assembly & 2013 Panchayat";
 			  List<PartyPositionVO> partyPerformance =dpartyPerformance.deSerialize( maps.get(PdfPages.partyPerformance),autoStrategy ); 
-			  strategyModelTargetingService.panchayatwisePartyPerformanceTable(document,partyPerformance,1l,Eleheading);//3
-			  strategyModelTargetingService.panchayatwisePartyPerformanceTable(document,partyPerformance,2l,Eleheading);//3
+			  if(partyPerformance != null && partyPerformance.size() > 0){
+				  List<Long> wonPanchayats = getData(partyPerformance,1l);
+				  List<Long> regainedPanchayats = getData(partyPerformance,2l);
+				  buildTableAndGraph(document,wonPanchayats,regainedPanchayats,writer);
+				  strategyModelTargetingService.panchayatwisePartyPerformanceTable(document,partyPerformance,1l,Eleheading);//3
+				  Eleheading="Election Results Comparision Table b/w 2009(TDP @ Lower Positions) Assembly & 2013 Panchayat";
+				  strategyModelTargetingService.panchayatwisePartyPerformanceTable(document,partyPerformance,2l,Eleheading);//3
+				  
+				  
+			  }
 			  //String EleChartheading="Election Results Comparision Chart b/w 2009 Assembly & 2013  Panchayat";
 			  //strategyModelTargetingService.buildChartForPartyPerformanceReort(document,partyPerformance,writer,EleChartheading);//3
 			  partyPerformance=null;
@@ -2679,5 +2709,260 @@ public String roundTo2DigitsDoubleValue(Double number){
 	 public Long getConstituencyNo(Long constituencyId){
 			return delimitationConstituencyDAO.getConstituencyNo(constituencyId, 2009l);
 		 }
+	 
+	 public  List<Long> getData(List<PartyPositionVO> result,long rank){
+		
+		    List<Long> returnList = new ArrayList<Long>();
+			 Long topCount = 0l;
+			 Long regained =0l;
+			 Long lost = 0l;
+			 Long regaintotalvotes =0l;
+			 Long losttotalvotes = 0l;
+			 Long count = 0l;
+			 Long reg = 0l;
+			 
+			 for(int j = 0 ; j< result.size() ; j++){
+				 PartyPositionVO vo = result.get(j);
+				if(vo.getRank().longValue() == rank){
+						  if(vo.getWinPartyName().equalsIgnoreCase("TDP"))
+						  {
+							
+							count ++;
+							topCount =  count;
+							regaintotalvotes = vo.getTotalValidVotes() + regaintotalvotes;
+						  }
+				  
+						  else
+						 {
+							   reg++;
+							   regained = reg;
+							  losttotalvotes =  vo.getTotalValidVotes() + losttotalvotes;
+							  
+						 }
+				}
+			 }
+			Long totalPanchayats = topCount + regained;
+			 lost = totalPanchayats - topCount;
+
+			
+			 returnList.add(totalPanchayats);
+			 returnList.add(topCount);
+			 returnList.add(lost);
+			 returnList.add(regaintotalvotes);
+			 returnList.add(losttotalvotes);
+			return returnList;
+	 }
+	 
+	 public void buildTableAndGraph(Document document,List<Long> wonPanchayats,List<Long> regainedPanchayats,PdfWriter writer){
+		 try{
+			 
+			 Paragraph p =new Paragraph("   ");
+			 document.add(p);
+			  p =new Paragraph("   ");
+			  document.add(p);
+			  Font subHeading = FontFactory.getFont("Calibri",11,Font.BOLD);
+	    	    subHeading.setColor(new BaseColor(69,109,142)); 
+	    	      p =   new Paragraph("Summary Report",subHeading);
+	     	     document.add(p );
+	     	     document.add(new Paragraph(" "));
+			     PdfPTable table = new PdfPTable(2);
+			  int padding = 4;
+		         PdfPCell cell ;
+			  	  
+		        cell = new PdfPCell(new Phrase("In 2009 TDP @ top position Panchayats"));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			  	  
+			  	cell.setPadding(padding);
+			  	  table.addCell(cell);
+				  
+			  	  
+			  	  cell = new PdfPCell(new Phrase(wonPanchayats.get(0).toString()));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	cell.setMinimumHeight(45);
+			  	 
+			  	cell.setPadding(padding);
+			  	  table.addCell(cell);
+			  	  
+			  	  
+			  	cell = new PdfPCell(new Phrase("Win Panchayats in 2013"));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			  	cell.setMinimumHeight(45);
+			  	cell.setPadding(padding);
+			  	  table.addCell(cell);
+				  
+			  	  
+			  	  cell = new PdfPCell(new Phrase(wonPanchayats.get(1).toString()));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	cell.setMinimumHeight(45);
+			  	cell.setPadding(padding);
+			  	  table.addCell(cell);
+			  	  
+			  	cell = new PdfPCell(new Phrase("Lost in 2013"));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			  	cell.setMinimumHeight(45);
+			  	cell.setPadding(padding);
+			  	  table.addCell(cell);
+				  
+			  	  
+			  	  cell = new PdfPCell(new Phrase(wonPanchayats.get(2).toString()));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	cell.setMinimumHeight(45);
+			  	cell.setPadding(padding);
+			  	  table.addCell(cell);
+			  	  
+			  	cell = new PdfPCell(new Phrase("Total votes in Win Panchayats"));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			  	cell.setMinimumHeight(45);
+			  	cell.setPadding(padding);
+			  	  table.addCell(cell);
+				  
+			  	  
+			  	  cell = new PdfPCell(new Phrase(wonPanchayats.get(3).toString()));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	cell.setMinimumHeight(45);
+			  	cell.setPadding(padding);
+			  	  table.addCell(cell);
+			  	  
+			  	cell = new PdfPCell(new Phrase("Total votes in lost Panchayats"));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			  	cell.setMinimumHeight(45);
+			  	cell.setPadding(padding);
+			  	  table.addCell(cell);
+				  
+			  	  
+			  	  cell = new PdfPCell(new Phrase(wonPanchayats.get(4).toString()));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	cell.setMinimumHeight(45);
+			  	cell.setPadding(padding);
+			  	  table.addCell(cell);
+			  
+			  	float[] widths = new float[] {2.0f, 0.8f};
+				table.setWidths(widths);
+			  	 PdfPTable table1 = new PdfPTable(2);
+				  
+		       
+		        cell = new PdfPCell(new Phrase("In 2009 TDP @ second or lower position Panchayats "));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			  	cell.setMinimumHeight(45);
+			  	cell.setPadding(padding);
+			  	table1.addCell(cell);
+				  
+			  	  
+			  	  cell = new PdfPCell(new Phrase(regainedPanchayats.get(0).toString()));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	cell.setMinimumHeight(45);
+			  	cell.setPadding(padding);
+			  	table1.addCell(cell);
+			  	  
+			  	  
+			  	cell = new PdfPCell(new Phrase("Regained Panchayats in 2013"));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			  	cell.setMinimumHeight(45);
+			  	cell.setPadding(padding);
+			  	table1.addCell(cell);
+				  
+			  	  
+			  	  cell = new PdfPCell(new Phrase(regainedPanchayats.get(1).toString()));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	cell.setMinimumHeight(45);
+			  	cell.setPadding(padding);
+			  	table1.addCell(cell);
+			  	  
+			  	cell = new PdfPCell(new Phrase("Lost in 2013"));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			  	cell.setMinimumHeight(45);
+			  	cell.setPadding(padding);
+			  	table1.addCell(cell);
+				  
+			  	  
+			  	  cell = new PdfPCell(new Phrase(regainedPanchayats.get(2).toString()));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	cell.setMinimumHeight(45);
+			  	cell.setPadding(padding);
+			  	table1.addCell(cell);
+			  	  
+			  	cell = new PdfPCell(new Phrase("Total votes in Regained Panchayats"));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			  	cell.setMinimumHeight(45);
+			  	cell.setPadding(padding);
+			  	table1.addCell(cell);
+				  
+			  	  
+			  	  cell = new PdfPCell(new Phrase(regainedPanchayats.get(3).toString()));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	cell.setMinimumHeight(45);
+			  	cell.setPadding(padding);
+			  	table1.addCell(cell);
+			  	  
+			  	cell = new PdfPCell(new Phrase("Total votes in lost Panchayats"));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			  	cell.setMinimumHeight(45);
+			  	cell.setPadding(padding);
+			  	table1.addCell(cell);
+				  
+			  	  
+			  	  cell = new PdfPCell(new Phrase(regainedPanchayats.get(4).toString()));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	cell.setMinimumHeight(45);
+			  	cell.setPadding(padding);
+			  	table1.addCell(cell);
+			  	
+				table1.setWidths(widths);
+			  	 PdfPTable table2 = new PdfPTable(2);
+			  	table2.setWidthPercentage(100);
+			        PdfPCell cell2 = new PdfPCell(table);
+			        cell2.setPaddingRight(7);
+			        cell2.setBorder(PdfPCell.NO_BORDER);   
+			        table2.addCell(cell2);
+			       
+			        PdfPCell cell3 = new PdfPCell(table1);
+			        cell3.setBorder(PdfPCell.NO_BORDER);
+			        cell3.setPaddingLeft(7);
+			        table2.addCell(cell3);
+			       
+			        document.add(table2);
+			  	 DefaultPieDataset  dataSet = new DefaultPieDataset();
+				    dataSet.setValue("Win Panchayats In 2013",wonPanchayats.get(1));
+				    dataSet.setValue("Lost Panchayats In 2013",wonPanchayats.get(2));
+				    JFreeChart chart = ChartFactory.createPieChart("", dataSet, true, true, false);
+				    chart.setBackgroundPaint(Color.white);
+				    PiePlot plot = (PiePlot)chart.getPlot();
+				    
+				    plot.setSectionPaint("Win Panchayats In 2013",new Color(51, 102, 204));
+				    plot.setSectionPaint("Lost Panchayats In 2013",new Color(255, 0, 0));
+				    plot.setLabelGenerator(null);
+				    PdfContentByte cb = writer.getDirectContent();
+				    PdfTemplate bar = cb.createTemplate(380, 480);
+				    Graphics2D g2d2 = bar.createGraphics(380,480);
+				    Rectangle2D rectangle2d = new Rectangle2D.Double(27,0, 270,300);
+				  
+				    chart.draw(g2d2, rectangle2d);
+				    g2d2.dispose();
+				    cb.addTemplate(bar,0.0f,0.0f);
+				    
+			    
+    			DefaultPieDataset  dataSet1 = new DefaultPieDataset();
+    			dataSet1.setValue("Regained Panchayats In 2013",regainedPanchayats.get(1));
+    			dataSet1.setValue("Lost Panchayats In 2013",regainedPanchayats.get(2));
+    			JFreeChart chart1 = ChartFactory.createPieChart("", dataSet1, true, true, false);
+  			    chart1.setBackgroundPaint(Color.white);
+  			    PiePlot plot1 = (PiePlot)chart1.getPlot();
+  			 
+			    plot1.setSectionPaint("Regained Panchayats In 2013",new Color(51, 102, 204));
+			    plot1.setSectionPaint("Lost Panchayats In 2013",new Color(255, 0, 0));
+			    plot1.setLabelGenerator(null);
+			    PdfContentByte cb1 = writer.getDirectContent();
+			    PdfTemplate bar1 = cb1.createTemplate(700, 800);
+			    Graphics2D g2d21 = bar1.createGraphics(700,800);
+			    Rectangle2D rectangle2d1 = new Rectangle2D.Double(298,320, 270,300);
+			  
+			    chart1.draw(g2d21, rectangle2d1);
+			    g2d21.dispose();
+			    cb1.addTemplate(bar1,0.0f,0.0f);
+    			  
+		 }catch(Exception e){
+			 LOG.error("Exception rised in buildTableAndGraph ",e);
+		 }
+	 }
 }
 
