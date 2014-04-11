@@ -1,0 +1,101 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.itgrids.elite</groupId>
+  <artifactId>elite</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>war</packaging>
+  
+  <properties>
+ <spring.version>4.0.3.RELEASE</spring.version>
+ <jackson.databind-version>2.2.3</jackson.databind-version>
+ </properties>
+ <build>
+ 		<finalName>Elite</finalName>
+  
+   <plugins>
+ 	<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>tomcat-maven-plugin</artifactId>
+				<configuration>
+					<server>myserver</server>
+					<url>http://localhost:8080/manager
+					</url>
+					<path>/Elite</path>
+				</configuration>
+			</plugin>
+		</plugins>
+		</build>
+  <dependencies>
+  <!-- Servlet & Jsp -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- <dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+			<version>2.8.0</version>
+		</dependency>
+             -->
+    <!-- <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context</artifactId>
+        <version>${spring.version}</version>
+    </dependency> -->
+    <!-- Spring dependencies -->
+	 <dependency>
+		 <groupId>org.springframework</groupId>
+		 <artifactId>spring-core</artifactId>
+		 <version>${spring.version}</version>
+	 </dependency>
+	 
+	 <dependency>
+		 <groupId>org.springframework</groupId>
+		 <artifactId>spring-web</artifactId>
+		 <version>${spring.version}</version>
+	 </dependency>
+	 
+	 <dependency>
+		 <groupId>org.springframework</groupId>
+		 <artifactId>spring-webmvc</artifactId>
+		 <version>${spring.version}</version>
+	 </dependency>
+	   <dependency>
+           <groupId>org.springframework</groupId>
+           <artifactId>spring-orm</artifactId>
+           <version>${spring.version}</version>
+     </dependency>
+	 
+	 <!-- jackson json  -->
+	  <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.databind-version}</version>
+        </dependency>
+        
+         <!-- hibernate-core -->
+         <dependency>
+		   <groupId>org.hibernate</groupId>
+		   <artifactId>hibernate-core</artifactId>
+		   <version>4.2.12.Final</version>
+        </dependency>
+         <!-- mysql connector j -->
+        <dependency>
+		   <groupId>mysql</groupId>
+		   <artifactId>mysql-connector-java</artifactId>
+		   <version>5.1.26</version>
+		   <scope>runtime</scope>
+		</dependency>
+      </dependencies>
+      
+     
+  
+</project>
