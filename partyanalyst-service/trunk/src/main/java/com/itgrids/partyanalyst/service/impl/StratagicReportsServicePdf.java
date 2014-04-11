@@ -816,6 +816,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 				  List<Long> wonPanchayats = getData(partyPerformance,1l);
 				  List<Long> regainedPanchayats = getData(partyPerformance,2l);
 				  buildTableAndGraph(document,wonPanchayats,regainedPanchayats,writer);
+				  document.newPage();
 				  strategyModelTargetingService.panchayatwisePartyPerformanceTable(document,partyPerformance,1l,Eleheading);//3
 				  Eleheading="Election Results Comparision Table b/w 2009(TDP @ Lower Positions) Assembly & 2013 Panchayat";
 				  strategyModelTargetingService.panchayatwisePartyPerformanceTable(document,partyPerformance,2l,Eleheading);//3
