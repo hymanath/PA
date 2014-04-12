@@ -1,7 +1,12 @@
 package com.itgrids.eliteclub.service;
 
+import com.itgrids.eliteclub.dto.UserContactsInputVO;
+
 public interface WebserviceHandlerSevice {
 
-	public void loadObject(long id);
+	
+	
+	public Object loadCategories(UserContactsInputVO inputVo);
+	
 	
 }

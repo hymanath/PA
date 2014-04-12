@@ -26,8 +26,8 @@ public abstract class AbstractDaoImpl<E, I extends Serializable> implements Abst
         this.entityClass = entityClass;
     }
 
-   // @Autowired
-    @Resource(name="sessionFactory")
+    @Autowired
+    //@Resource(name="sessionFactory")
     private SessionFactory sessionFactory;
 
     public Session getCurrentSession() {
@@ -58,14 +58,20 @@ public abstract class AbstractDaoImpl<E, I extends Serializable> implements Abst
     }
 
   
-    public List<E> findByCriteria(Criterion criterion) {
+    @SuppressWarnings("unchecked")
+	public List<E> findByCriteria(Criterion criterion) {
         Criteria criteria = getCurrentSession().createCriteria(entityClass);
         criteria.add(criterion);
         return criteria.list();
     }
     
     
-    public E save(E object) {
-        return (E)getCurrentSession().merge(object);
+    @SuppressWarnings("unchecked")
+	public E save(E object) {
+       // return (E)getCurrentSession().saveOrUpdate(object);.merge(object);
+    	
+    	Session session = getCurrentSession();
+    	session.saveOrUpdate(object);
+    	return (E) session.merge(object);
     }
 }
