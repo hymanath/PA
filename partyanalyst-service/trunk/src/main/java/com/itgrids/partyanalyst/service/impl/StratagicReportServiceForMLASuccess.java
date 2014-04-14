@@ -6,11 +6,10 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -351,69 +350,75 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 		
 		try
 		{
-			List<Long> years = new ArrayList<Long>();
-			
+			LinkedList<Long> years = new LinkedList<Long>();			
 			years.add(2001L);
 			years.add(2011L);
-		
-			List<ConstituencyCensusDetails> censusDetailsList = constituencyCensusDetailsDAO
-					.getCensusConstituencyByConstituencyIdAndYears(constituencyId, years);
-					
+
 			
-			resultVO.setCount(Integer.valueOf(censusDetailsList.size()));	
+			List<Long> tehsilIds = boothDAO.getTehsildByConstituency(constituencyId,10L);
+
 			List<StrategicCensusVO> censusList = new ArrayList<StrategicCensusVO>();
 			
-			for(ConstituencyCensusDetails details:censusDetailsList)
-			{
-					StrategicCensusVO censusDetailsVO = new StrategicCensusVO();				
-					
-					censusDetailsVO.setYear(Integer.parseInt(details.getYear().toString()!= null ? details.getYear().toString():"0"));
-					censusDetailsVO.setTotalPopulation(details.getTotalPopulation());
-					censusDetailsVO.setTotalPopulationPercentage("".toString());
-					
-					censusDetailsVO.setMalePopulation(details.getTotalMalePopulation());
-					censusDetailsVO.setFemalePopulation(details.getTotalFemalePopulation());				
-					censusDetailsVO.setMalePopulationPercentage(roundTo2DigitsFloatValue((float)details.getTotalMalePopulation()*100f/details.getTotalPopulation()));
-					censusDetailsVO.setFemalePopulationPercentage(roundTo2DigitsFloatValue((float)details.getTotalFemalePopulation()*100f/details.getTotalPopulation()));
-					
-					censusDetailsVO.setHouseHolds(details.getHouseHolds());
-					censusDetailsVO.setHouseHoldsPercentage(details.getPopHHPercentage().toString()!=null?details.getPopHHPercentage().toString():"0.0");
-					
-					censusDetailsVO.setPopulationSC(details.getPopulationSC());
-					censusDetailsVO.setPopulationSCPercent(BigDecimal.valueOf(details.getPercentageSC()));
-					
-					censusDetailsVO.setPopulationST(details.getPopulationST());
-					censusDetailsVO.setPopulationSTPercent(BigDecimal.valueOf(details.getPercentageST()));
-					
-					censusDetailsVO.setWorkingPeople(details.getWorkingPopulation());
-					censusDetailsVO.setWorkingPeoplePercentage(details.getTotalWorkingPopPercentage().toString()!= null ? details.getTotalWorkingPopPercentage().toString():"0.0");
-					
-					censusDetailsVO.setWorkingMale(details.getWorkingMale());
-					censusDetailsVO.setTotalWorkingMalePercentage(Double.parseDouble(roundTo2DigitsFloatValue((float)details.getWorkingMale()*100f/details.getWorkingPopulation())));
-					
-					censusDetailsVO.setWorkingFemale(details.getWorkingFemale());
-					censusDetailsVO.setTotalWorkingFemalePercentage(Double.parseDouble(roundTo2DigitsFloatValue((float)details.getWorkingFemale()*100f/details.getWorkingPopulation())));
-					
-					censusDetailsVO.setNonWorkingPeople(details.getNonWorkingPopulation());
-					censusDetailsVO.setNonWorkingPeoplePercent(BigDecimal.valueOf(100-details.getTotalWorkingPopPercentage()));
-					
-					censusDetailsVO.setPopulationUnderSix(details.getPopulationUnderSix());
-					censusDetailsVO.setPopulationUnderSixPercentage(roundTo2DigitsFloatValue((float)censusDetailsVO.getPopulationUnderSix()*100f/censusDetailsVO.getTotalPopulation()).toString());
-					
-					censusDetailsVO.setLiterates(details.getPopulationLiterates());
-					censusDetailsVO.setLiteratesPercentage(roundTo2DigitsFloatValue((float)censusDetailsVO.getLiterates()*100f/censusDetailsVO.getTotalPopulation()).toString());
-					
-					censusDetailsVO.setMaleLiterates(details.getMaleLiterates());
-					censusDetailsVO.setMaleLiteraturePercentage(Double.parseDouble(roundTo2DigitsFloatValue((float)details.getMaleLiterates()*100f/details.getPopulationLiterates())));
-					
-					censusDetailsVO.setFemaleLiterates(details.getFemaleLiterates());
-					censusDetailsVO.setFemaleLiteraturePercentage(Double.parseDouble(roundTo2DigitsFloatValue((float)details.getFemaleLiterates()*100f/details.getPopulationLiterates())));
-					
-					censusList.add(censusDetailsVO);
+			for(int i = 0 ;i<years.size();i++){
+			
+				List<Object[]> censusDeltails = censusDAO.getCensusDetailsInConstituencyByTehsilIdsAndYears(tehsilIds,years.get(i));
+
+				 if(censusDeltails != null && censusDeltails.size()>0){
+					 
+					   for (Object[] census : censusDeltails) {
+						   
+						   StrategicCensusVO censusDetailsVO = new StrategicCensusVO();
+						   
+						   censusDetailsVO.setYear(census[106] != null ?Integer.parseInt(	census[106].toString()):0);
+						   censusDetailsVO.setTotalPopulation(census[1] !=null?Long.valueOf(census[1].toString()):0L);
+						   censusDetailsVO.setTotalPopulationPercentage("100 % ".toString());
+						   
+						   censusDetailsVO.setMalePopulation(census[2] !=null?Long.valueOf(census[2].toString()):0L);
+						   censusDetailsVO.setFemalePopulation(census[3] !=null?Long.valueOf(census[3].toString()):0L);
+							
+						   censusDetailsVO.setMalePopulationPercentage(roundTo2DigitsFloatValue((float) censusDetailsVO.getMalePopulation() *100f/censusDetailsVO.getTotalPopulation()));
+						   censusDetailsVO.setFemalePopulationPercentage(roundTo2DigitsFloatValue((float)censusDetailsVO.getFemalePopulation()*100f/censusDetailsVO.getTotalPopulation()));
+						   
+						   censusDetailsVO.setHouseHolds(census[0] !=null? (Long)census[0]:0L);
+						   censusDetailsVO.setHouseHoldsPercentage(roundTo2DigitsFloatValue((float)censusDetailsVO.getTotalPopulation()/censusDetailsVO.getHouseHolds()));
+							
+						   censusDetailsVO.setPopulationSC(census[7] !=null?Long.valueOf(census[7].toString()):0L);
+						   censusDetailsVO.setPopulationSCPercent(BigDecimal.valueOf(Double.valueOf(roundTo2DigitsFloatValue((float)censusDetailsVO.getPopulationSC()*100f/censusDetailsVO.getTotalPopulation()))));
+						   
+						   censusDetailsVO.setPopulationST(census[10] !=null?Long.valueOf(census[10].toString()):0L);
+						   censusDetailsVO.setPopulationSTPercent(BigDecimal.valueOf(Double.valueOf(roundTo2DigitsFloatValue((float)censusDetailsVO.getPopulationST()*100f/censusDetailsVO.getTotalPopulation()))));						
+							
+						   censusDetailsVO.setWorkingPeople(census[19] !=null?Long.valueOf(census[19].toString()):0L);
+						   censusDetailsVO.setWorkingPeoplePercentage(roundTo2DigitsFloatValue((float)censusDetailsVO.getWorkingPeople()*100f/censusDetailsVO.getTotalPopulation()));
+							
+							censusDetailsVO.setWorkingMale(census[20] !=null?Long.valueOf(census[20].toString()):0L);
+							censusDetailsVO.setTotalWorkingMalePercentage(Double.parseDouble(roundTo2DigitsFloatValue((float)censusDetailsVO.getWorkingMale()*100f/censusDetailsVO.getTotalPopulation()).toString()));
+								
+							censusDetailsVO.setWorkingFemale(census[21] !=null?Long.valueOf(census[21].toString()):0L);
+							censusDetailsVO.setTotalWorkingFemalePercentage(Double.parseDouble(roundTo2DigitsFloatValue((float)censusDetailsVO.getWorkingFemale()*100f/censusDetailsVO.getTotalPopulation()).toString()));					
+								
+							censusDetailsVO.setNonWorkingPeople(census[52] !=null?Long.valueOf(census[52].toString()):0L);
+							censusDetailsVO.setNonWorkingPeoplePercent(BigDecimal.valueOf(Double.valueOf(roundTo2DigitsFloatValue((float)censusDetailsVO.getNonWorkingPeople()*100f/censusDetailsVO.getTotalPopulation()))));
+								
+							censusDetailsVO.setPopulationUnderSix(census[4] !=null?Long.valueOf(census[4].toString()):0L);
+							censusDetailsVO.setPopulationUnderSixPercentage(roundTo2DigitsFloatValue((float)censusDetailsVO.getPopulationUnderSix()*100f/censusDetailsVO.getTotalPopulation()));
+								
+							censusDetailsVO.setLiterates(census[13] !=null?Long.valueOf(census[13].toString()):0L);
+							censusDetailsVO.setLiteratesPercentage(roundTo2DigitsFloatValue((float)censusDetailsVO.getLiterates()*100f/censusDetailsVO.getTotalPopulation()));
+								
+							censusDetailsVO.setMaleLiterates(census[14] !=null?Long.valueOf(census[14].toString()):0L);
+							censusDetailsVO.setMaleLiteraturePercentage(Double.valueOf(roundTo2DigitsFloatValue((float)censusDetailsVO.getMaleLiterates()*100f/censusDetailsVO.getTotalPopulation()).toString()));
+							
+							censusDetailsVO.setFemaleLiterates(census[15] !=null?Long.valueOf(census[15].toString()):0L);
+							censusDetailsVO.setFemaleLiteraturePercentage(Double.valueOf(roundTo2DigitsFloatValue((float)censusDetailsVO.getFemaleLiterates()*100f/censusDetailsVO.getTotalPopulation()).toString()));
+								
+							censusList.add(censusDetailsVO);
+					   }
+				   }
 			}
-			
+			 
 			resultVO.setCensusDetailsList(censusList);
-			
+			resultVO.setCount(censusList.size());
 			StrategicCensusVO previousDetails = censusList.get(0);
 			StrategicCensusVO currentDetails = censusList.get(1);
 			
