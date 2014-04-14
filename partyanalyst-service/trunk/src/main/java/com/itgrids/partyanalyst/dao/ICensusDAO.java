@@ -59,4 +59,6 @@ public interface ICensusDAO extends GenericDao<Census, Long> {
     public List<Object[]> getStatePopulationForDifferentYears(Long stateId , List<Long> years);
 
     public List<Long> getCensusDetailsInConstituency(List<Long> tehsilIDs,Long year);
+    
+    public List<Object[]> getCensusDetailsInConstituencyByTehsilIdsAndYears(List<Long> tehsilIDs,Long year);
 }
