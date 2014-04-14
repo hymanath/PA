@@ -2,6 +2,9 @@ package com.itgrids.eliteclub.dao.impl;
 
 
 
+import java.io.Serializable;
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
@@ -11,11 +14,6 @@ import org.hibernate.criterion.Criterion;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.eliteclub.dao.AbstractDao;
-
-import java.io.Serializable;
-import java.util.List;
-
-import javax.annotation.Resource;
 
 public abstract class AbstractDaoImpl<E, I extends Serializable> implements AbstractDao<E,I> {
     protected final Log log = LogFactory.getLog(getClass());
