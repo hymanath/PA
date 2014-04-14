@@ -289,113 +289,113 @@ public class CensusDAO extends GenericDaoHibernate<Census, Long> implements ICen
 		    " model.wpr" ;
 	  
 	  String censusSumString = "select " +
-		" sum(model.houseHolds)," +
-		" sum(model.totalPopulation)," +
-		" sum(model.totalMalePopulation)," +
-		" sum(model.totalFemalePopulation)," +
-		" sum(model.populationUnderSix)," +
-		" sum(model.maleUnderSix)," +
-		" sum(model.femaleUnderSix)," +
-		" sum(model.populationSC)," +
-		" sum(model.maleSC)," +
-		" sum(model.femaleSC),"+
-		" sum(model.populationST)," +
-		" sum(model.maleST)," +
-		" sum(model.femaleST)," +
-		" sum(model.populationLiterates)," +
-		" sum(model.maleLiterates)," +
-		" sum(model.femaleLiterates)," +
-		" sum(model.populationIlliterates)," +
-		" sum(model.maleIlliterates)," +
-		" sum(model.femaleIlliterates)," +
-		" sum(model.workingPopulation)," +
-		" sum(model.workingMale)," +
-		" sum(model.workingFemale)," +
-		" sum(model.mainWorkPopulation)," +
-		" sum(model.mainWorkMale)," +
-		" sum(model.mainWorkFemale)," +
-	    " sum(model.mainCLPopulation)," +
-	    " sum(model.mainCLMale)," +
-	    " sum(model.mainCLFemale)," +
-	    " sum(model.mainALPopulation)," +
-	    " sum(model.mainALMale)," +
-	    " sum(model.mainALFemale)," +
-	    " sum(model.mainHHPopulation)," +
-	    " sum(model.mainHHMale)," +
-	    " sum(model.mainHHFemale)," +
-	    " sum(model.mainOTPopulation)," +
-	    " sum(model.mainOTMale)," +
-	    " sum(model.mainOTFemale)," +
-	    " sum(model.margWorkPopulation)," +
-	    " sum(model.margWorkMale)," +
-	    " sum(model.margWorkFemale), " +
-	    " sum(model.margCLPopulation)," +
-	    " sum(model.margCLMale)," +
-	    " sum(model.margCLFemale)," +
-	    " sum(model.margALPopulation)," +
-	    " sum(model.margALMale)," +
-	    " sum(model.margALFemale)," +
-	    " sum(model.margHHPopulation)," +
-	    " sum(model.margHHMale)," +
-	    " sum(model.margHHFemale)," +
-	    " sum(model.margOTPopulation)," +
-	    " sum(model.margOTMale)," +
-	    " sum(model.margOTFemale)," +
-	    " sum(model.nonWorkingPopulation)," +
-	    " sum(model.nonWorkingMale)," +
-	    " sum(model.nonWorkingFemale), " +
-	    " sum(model.sexRatio)," +
-	    " sum(model.sexRatioSC)," +
-	    " sum(model.sexRatioST)," +
-	    " sum(model.houseHoldsSize)," +
-	    " sum(model.percentageSC)," +
-	    " sum(model.percentageST)," +
-	    " sum(model.sexRatioUnderSix)," +
-	    " sum(model.maleLiteratureRate)," +
-	    " sum(model.femaleLiteratureRate)," +
-	    " sum(model.genderGap)," +
-	    " sum(model.popLiteraturePercentage)," +
-	    " sum(model.maleLiteraturePercentage)," +
-	    " sum(model.femaleLiteraturePercentage), "+
-	    " sum(model.totalPopPercentage)," +
-	    " sum(model.totalWorkingPopPercentage)," +
-	    " sum(model.totalWorkingMalePercentage)," +
-	    " sum(model.totalWorkingFemalePercentage)," +
-	    " sum(model.totalMainPopPercentage)," +
-	    " sum(model.totalMainMalePercentage)," +
-	    " sum(model.totalMainFemalePercentage)," +
-	    " sum(model.totalMargPopPercentage)," +
-	    " sum(model.totalMargMalePercentage)," +
-	    " sum(model.totalMargFemalePercentage), " +
-	    " sum(model.nonWorkingPopPercentage)," +
-	    " sum(model.nonWorkingMalePercentage)," +
-	    " sum(model.nonWorkingFemalePercentage)," +
-	    " sum(model.popCLPercentage)," +
-	    " sum(model.maleCLPercentage)," +
-	    " sum(model.femaleCLPercentage)," +
-	    " sum(model.popALPercentage)," +
-	    " sum(model.maleALPercentage)," +
-	    " sum(model.femaleALPercentage)," +
-	    " sum(model.popHHPercentage)," +
-	    " sum(model.maleHHPercentage)," +
-	    " sum(model.femaleHHPercentage)," +
-	    " sum(model.popOWPercentage)," +
-	    " sum(model.maleOWPercentage)," +
-	    " sum(model.femaleOWPercentage)," +
-	    " sum(model.mainMargCLPopulation)," +
-	    " sum(model.mainMargCLMale)," +
-	    " sum(model.mainMargCLFemale)," +
-	    " sum(model.mainMargALPopulation)," +
-	    " sum(model.mainMargALMale)," +
-	    " sum(model.mainMargALFemale)," +
-	    " sum(model.mainMargHHPopulation)," +
-	    " sum(model.mainMargHHMale)," +
-	    " sum(model.mainMargHHFemale)," +
-	    " sum(model.mainMargOWPopulation)," +
-	    " sum(model.mainMargOWMale)," +
-	    " sum(model.mainMargOWFemale)," +
-	    " sum(model.wpr)" ;
-	  
+				" sum(model.houseHolds)," + 			//0
+				" sum(model.totalPopulation)," +		//1
+				" sum(model.totalMalePopulation)," +	//2
+				" sum(model.totalFemalePopulation)," +	//3
+				" sum(model.populationUnderSix)," +		//4
+				" sum(model.maleUnderSix)," +			//5
+				" sum(model.femaleUnderSix)," +			//6
+				" sum(model.populationSC)," +			//7
+				" sum(model.maleSC)," +					//8
+				" sum(model.femaleSC),"+				//9
+				" sum(model.populationST)," +			//10
+				" sum(model.maleST)," +					//11
+				" sum(model.femaleST)," +				//12
+				" sum(model.populationLiterates)," +	//13
+				" sum(model.maleLiterates)," +			//14
+				" sum(model.femaleLiterates)," +		//15
+				" sum(model.populationIlliterates)," +	//16
+				" sum(model.maleIlliterates)," +		//17
+				" sum(model.femaleIlliterates)," +		//18
+				" sum(model.workingPopulation)," +		//19
+				" sum(model.workingMale)," +			//20
+				" sum(model.workingFemale)," +			//21
+				" sum(model.mainWorkPopulation)," +		//22
+				" sum(model.mainWorkMale)," +			//23
+				" sum(model.mainWorkFemale)," +			//24
+			    " sum(model.mainCLPopulation)," +		//25
+			    " sum(model.mainCLMale)," +				//26
+			    " sum(model.mainCLFemale)," +			//27
+			    " sum(model.mainALPopulation)," +		//28
+			    " sum(model.mainALMale)," +				//29
+			    " sum(model.mainALFemale)," +			//30
+			    " sum(model.mainHHPopulation)," +		//31
+			    " sum(model.mainHHMale)," +				//32
+			    " sum(model.mainHHFemale)," +			//33
+			    " sum(model.mainOTPopulation)," +		//34
+			    " sum(model.mainOTMale)," +				//35
+			    " sum(model.mainOTFemale)," +			//36
+			    " sum(model.margWorkPopulation)," +		//37
+			    " sum(model.margWorkMale)," +			//38
+			    " sum(model.margWorkFemale), " +		//39
+			    " sum(model.margCLPopulation)," +		//40
+			    " sum(model.margCLMale)," +				//41
+			    " sum(model.margCLFemale)," +			//42
+			    " sum(model.margALPopulation)," +		//43
+			    " sum(model.margALMale)," +				//44
+			    " sum(model.margALFemale)," +			//45
+			    " sum(model.margHHPopulation)," +		//46
+			    " sum(model.margHHMale)," +				//47
+			    " sum(model.margHHFemale)," +			//48
+			    " sum(model.margOTPopulation)," +		//49
+			    " sum(model.margOTMale)," +				//50
+			    " sum(model.margOTFemale)," +			//51
+			    " sum(model.nonWorkingPopulation)," +	//52
+			    " sum(model.nonWorkingMale)," +			//53
+			    " sum(model.nonWorkingFemale), " +		//54
+			    " sum(model.sexRatio)," +				//55
+			    " sum(model.sexRatioSC)," +				//56
+			    " sum(model.sexRatioST)," +				//57
+			    " sum(model.houseHoldsSize)," +			//58
+			    " sum(model.percentageSC)," +			//59
+			    " sum(model.percentageST)," +			//60
+			    " sum(model.sexRatioUnderSix)," +		//61
+			    " sum(model.maleLiteratureRate)," +		//62
+			    " sum(model.femaleLiteratureRate)," +	//63
+			    " sum(model.genderGap)," +							//64		
+			    " sum(model.popLiteraturePercentage)," +			//65
+			    " sum(model.maleLiteraturePercentage)," +			//66
+			    " sum(model.femaleLiteraturePercentage), "+ 		//67
+			    " sum(model.totalPopPercentage)," +					//68
+			    " sum(model.totalWorkingPopPercentage)," +			//69
+			    " sum(model.totalWorkingMalePercentage)," +			//70
+			    " sum(model.totalWorkingFemalePercentage)," +		//71
+			    " sum(model.totalMainPopPercentage)," +				//72
+			    " sum(model.totalMainMalePercentage)," +			//73
+			    " sum(model.totalMainFemalePercentage)," +			//74
+			    " sum(model.totalMargPopPercentage)," +				//75
+			    " sum(model.totalMargMalePercentage)," +			//76
+			    " sum(model.totalMargFemalePercentage), " +			//77
+			    " sum(model.nonWorkingPopPercentage)," +			//78
+			    " sum(model.nonWorkingMalePercentage)," +			//79
+			    " sum(model.nonWorkingFemalePercentage)," +			//80
+			    " sum(model.popCLPercentage)," +					//81
+			    " sum(model.maleCLPercentage)," +					//82
+			    " sum(model.femaleCLPercentage)," +					//83
+			    " sum(model.popALPercentage)," +					//84
+			    " sum(model.maleALPercentage)," +					//85
+			    " sum(model.femaleALPercentage)," +					//86
+			    " sum(model.popHHPercentage)," +					//87
+			    " sum(model.maleHHPercentage)," +					//88
+			    " sum(model.femaleHHPercentage)," +					//89
+			    " sum(model.popOWPercentage)," +					//90
+			    " sum(model.maleOWPercentage)," +					//91
+			    " sum(model.femaleOWPercentage)," +					//92
+			    " sum(model.mainMargCLPopulation)," +				//93
+			    " sum(model.mainMargCLMale)," +						//94
+			    " sum(model.mainMargCLFemale)," +					//95
+			    " sum(model.mainMargALPopulation)," +				//96
+			    " sum(model.mainMargALMale)," +						//97
+			    " sum(model.mainMargALFemale)," +					//98
+			    " sum(model.mainMargHHPopulation)," +				//99
+			    " sum(model.mainMargHHMale)," +						//100
+			    " sum(model.mainMargHHFemale)," +					//101
+			    " sum(model.mainMargOWPopulation)," +				//102
+			    " sum(model.mainMargOWMale)," +						//103
+			    " sum(model.mainMargOWFemale)," +					//104
+			    " sum(model.wpr)" ;									//105
+	  			
       @SuppressWarnings("unchecked")
 	  public List<Object[]> findMandalWiseCompleteCensusDetails(Long stateId,Long districtId,Long tehsilId,Long year,String level){
 		Object[] params = {stateId,districtId,tehsilId,new Long(year),level};
@@ -472,6 +472,19 @@ public class CensusDAO extends GenericDaoHibernate<Census, Long> implements ICen
 		  
 		  Query query = getSession().createQuery("select model.houseHolds from Census model where " +
 		  		"model.tehsilId in (:tehsilIDs) and model.level = :level and model.year =:year");
+
+		  query.setParameter("year", year);
+		  query.setParameter("level", IConstants.TEHSIL);
+		  query.setParameterList("tehsilIDs", tehsilIDs);
+		  
+		  return query.list();
+	  }
+	  
+	  public List<Object[]> getCensusDetailsInConstituencyByTehsilIdsAndYears(List<Long> tehsilIDs,Long year) {
+  
+		  
+		  Query query = getSession().createQuery(censusSumString+" ,model.year from Census model where " +
+		  		"model.tehsilId in (:tehsilIDs) and model.level = :level and model.year =:year and model.tru ='total' ");
 
 		  query.setParameter("year", year);
 		  query.setParameter("level", IConstants.TEHSIL);
