@@ -58,7 +58,7 @@ public class ConstituencyCensusDetailsDAO extends GenericDaoHibernate<Constituen
 		
 		Query query = getSession().createQuery("from ConstituencyCensusDetails  model " +
 				"where model.constituencyId = :constituencyId and " +
-				"model.year in(:years) order by model.year");
+				"model.year in(:years) order by model.year asc");
 		
 		query.setParameter("constituencyId", constituencyId);
 		query.setParameterList("years", years);
