@@ -21,7 +21,6 @@ public class WebserviceHandlerSeviceImpl implements   WebserviceHandlerSevice
 @Autowired
 private UserDAO userDAO;
 
-	@Override
 	public Object loadCategories(UserContactsInputVO inputVo) {
 		
 		User user= getUserObject(inputVo);

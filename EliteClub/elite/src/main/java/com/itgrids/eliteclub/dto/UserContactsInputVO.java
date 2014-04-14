@@ -26,7 +26,7 @@ public class UserContactsInputVO  implements Serializable{
 	private String imeiNo;
 	private Date userCreationTime;
 	
-	private Map<String,String> contacts = new HashMap<>();
+	private Map<String,String> contacts = new HashMap<String,String>();
 
 	public Integer getUserId() {
 		return userId;
