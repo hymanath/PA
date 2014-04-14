@@ -17,6 +17,7 @@ public class CensusVO implements Serializable{
 	private Long stateId;
 	private Long censusId;
 	private int year;
+	private String constituencyName;
 	private Long districtId;
 	private Long tehsilId;
 	private Long locationId;
@@ -1365,6 +1366,13 @@ public class CensusVO implements Serializable{
 			String differenceFemaleLiteratesPercent) {
 		this.differenceFemaleLiteratesPercent = differenceFemaleLiteratesPercent;
 	}
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
+	}
+	
 	
 
 }
