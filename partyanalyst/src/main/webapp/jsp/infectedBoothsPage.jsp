@@ -108,7 +108,6 @@ input, button, select, textarea {
 		
 		function buildInfectedBoothsTable(result){
 	
-		
 		if(result!=null){
 			$("#infectedBoothsId").html("");
 			var str ="";
@@ -121,10 +120,30 @@ input, button, select, textarea {
 			str+="<thead>";
 				str+="<th>Panchayat</th>";
 				str+="<th>Polling Stations</th>";
-				str+="<th>Effected Count</th>";
+				//str+="<th>Effected Count</th>";
 			str+="</thead>";
 			str+="<tbody>";
 			var flag=false;
+			var sortArr = new Array();
+		
+			for(var i in result.panchayats){
+			flag=true;
+			sortArr = [];
+					if(result.panchayats[i]){						
+						sortArr = result.panchayats[i].booths;
+					}
+					sortArr.sort(sortAscending); 
+					$.unique(sortArr);
+					sortArr.sort(sortAscending);
+					
+					    str+="<tr align='center'>";
+						str+="<td width='25%'>"+result.panchayats[i].panchayatName+"</td>";
+						str+="<td width='25%'>"+sortArr+"</td>";
+						str+="</tr>";	
+						
+				}
+				
+				/*var flag=false;
 				for(var i in result.panchayats){
 			
 					if(result.panchayats[i].effected){
@@ -136,7 +155,8 @@ input, button, select, textarea {
 						str+="<td width='15%' >"+result.panchayats[i].effectedCount+"</td>";
 					str+="</tr>";
 					}
-				}
+				}*/
+				
 			str+="</tbody>";
 				str+="</table>";
 			str+="</div>";    
@@ -146,6 +166,11 @@ input, button, select, textarea {
 			}else{
 			$("#infectedBoothsId").html("<br/><legend>No Panchayats Available</legend>");
 			}
+		}
+		
+		function sortAscending(data_A, data_B)
+		{
+			return (data_A - data_B);
 		}
 		
 		function getAssemblyConstituencies(){
@@ -182,7 +207,7 @@ input, button, select, textarea {
 			$("#assemblyId").html(str);
 		}
 		
-		
+
 	</script>
 </body>
 </html>
