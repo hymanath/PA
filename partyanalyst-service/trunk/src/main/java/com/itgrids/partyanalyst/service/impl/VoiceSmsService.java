@@ -1,12 +1,9 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.io.BufferedReader;
-
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -16,7 +13,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.hsqldb.lib.HashSet;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -45,23 +41,17 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SMSSearchCriteriaVO;
 import com.itgrids.partyanalyst.dto.VoiceSmsResponseDetailsVO;
 import com.itgrids.partyanalyst.model.Constituency;
-import com.itgrids.partyanalyst.model.District;
-import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
-import com.itgrids.partyanalyst.model.RegionScopes;
 import com.itgrids.partyanalyst.model.SmsHistory;
 import com.itgrids.partyanalyst.model.SmsModule;
 import com.itgrids.partyanalyst.model.SmsResponseDetails;
 import com.itgrids.partyanalyst.model.SmsTrack;
-import com.itgrids.partyanalyst.model.State;
-import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserSmsReceiver;
 import com.itgrids.partyanalyst.model.UserSmsSent;
 import com.itgrids.partyanalyst.model.VoiceRecordingDetails;
 import com.itgrids.partyanalyst.model.VoiceSmsVerifiedNumbers;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
-
 import com.itgrids.partyanalyst.service.IVoiceSmsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
