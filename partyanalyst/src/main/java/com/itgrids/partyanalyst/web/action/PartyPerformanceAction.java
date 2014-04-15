@@ -19,7 +19,6 @@ import javax.servlet.http.HttpSession;
 
 import net.sf.jasperreports.engine.JRException;
 
-import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
@@ -27,17 +26,14 @@ import org.apache.struts2.util.ServletContextAware;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.json.JSONObject;
-import org.springframework.util.StringUtils;
 
-import com.google.gdata.model.atompub.Accept;
-import com.googlecode.jsonplugin.annotations.JSON;
+
 import com.itgrids.partyanalyst.dto.PartyPerformanceReportVO;
 import com.itgrids.partyanalyst.dto.PartyPositionDisplayVO;
 import com.itgrids.partyanalyst.dto.PartyPositionsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VotesMarginAnalysisVO;
-import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.helper.Constants;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.helper.JasperProducer;
@@ -48,7 +44,6 @@ import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
-import com.sun.net.httpserver.Authenticator.Success;
 
 public class PartyPerformanceAction extends ActionSupport implements ServletRequestAware, ServletResponseAware, ServletContextAware {
 
@@ -185,7 +180,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		this.hasAllianceParties = hasAllianceParties;
 	}
 	
-	@JSON (serialize= false )
+	//@JSON (serialize= false )
 	public PartyPerformanceReportVO getStateData() {
 		return reportVO;
 	}
@@ -196,38 +191,38 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 	public boolean isHasAllianceParties() {
 		return hasAllianceParties;
 	}
-	@JSON (serialize= false )
+	//@JSON (serialize= false )
 	public HttpServletRequest getRequest() {
 		return request;
 	}
 	
-	@JSON (serialize= false )
+	//@JSON (serialize= false )
 	public Long getDefaultId() {
 		return electionTypeId;
 	}
 	
-	@JSON (serialize= false )
+	//@JSON (serialize= false )
 	public HttpServletResponse getResponse() {
 		return response;
 	}
 	
-	@JSON (serialize= false )
+	//@JSON (serialize= false )
 	public HttpSession getSession() {
 		return session;
 	}
 	
-	@JSON (serialize= false )
+	//@JSON (serialize= false )
 	public ServletContext getContext() {
 		return context;
 	}
 	
-	@JSON (serialize= false )
+	//@JSON (serialize= false )
 	public PartyPerformanceReportVO getReportVO() {
 		return reportVO;
 	}
 	
 	
-	@JSON (serialize= false )
+	//@JSON (serialize= false )
 	public IPartyService getPartyService() {
 		return partyService;
 	}
@@ -235,7 +230,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 	    this.partyService = partyService;
 	}
 	
-	@JSON (serialize= false )   
+	//@JSON (serialize= false )   
 	public IStaticDataService getStaticDataService() {
 		return staticDataService;
 	}
@@ -454,7 +449,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		hasAllianceParties = reportVO.getReportSuccessOrFailure();
 		return Action.SUCCESS;
 	}
-	@JSON (serialize= false )   
+	//@JSON (serialize= false )   
 	public String getReport() {
 		
 		session = request.getSession();
@@ -602,7 +597,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		return Action.SUCCESS;
     }
 	
-	@JSON (serialize= false )   
+	//@JSON (serialize= false )   
 	public String getJasper() throws JRException {
 		
 		log.debug("Party Performance Jasper execution started...");
