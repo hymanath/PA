@@ -1563,6 +1563,7 @@
 		<property name="voterNamesTempDAO" ref="voterNamesTempDAO" />
 		<property name="voterNamesDAO" ref="voterNamesDAO" />
 		<property name="languageDAO" ref="languageDAO" />
+		<property name="pdfReportService" ref="pdfReportService" />
 		</bean>
 	
 	<bean name="voterModificationService" class="com.itgrids.partyanalyst.service.impl.VoterModificationService">
@@ -1805,7 +1806,7 @@
 	  <property name="panchayatResultDAO" ref="panchayatResultDAO" />	
 	  <property name="ageWiseExcelsGenerationService" ref="ageWiseExcelsGenerationService" />
 	  <property name="criticalPanchayatsDAO" ref="criticalPanchayatsDAO" />
-	  
+	  <property name="pdfReportService" ref="pdfReportService" />
     </bean>
     
     <bean name="mobileService" class="com.itgrids.partyanalyst.service.impl.MobileService">
@@ -2036,7 +2037,7 @@
 	  <property name="voterFamilyInfoDAO" ref="voterFamilyInfoDAO" />
 	  <property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
 	  <property name="prpWeightegesDAO" ref="prpWeightegesDAO" />
-	  
+	  <property name="pdfReportService" ref="pdfReportService" />
  </bean>
   
   
@@ -2056,6 +2057,8 @@
    <bean name="stratagicReportsServicePdf" class="com.itgrids.partyanalyst.service.impl.StratagicReportsServicePdf"></bean>
    
    <bean name="infectedBoothsService" class="com.itgrids.partyanalyst.service.impl.InfectedBoothsService"></bean>
+   
+   <bean name="pdfReportService" class="com.itgrids.partyanalyst.service.impl.PdfReportService"></bean>
    
 </beans>		
 	
