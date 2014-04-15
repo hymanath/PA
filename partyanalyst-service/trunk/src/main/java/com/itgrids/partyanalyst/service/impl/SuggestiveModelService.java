@@ -1,7 +1,9 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -23,6 +25,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
@@ -90,6 +93,7 @@ import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.model.VoterCastInfo;
 import com.itgrids.partyanalyst.model.VoterInfo;
+import com.itgrids.partyanalyst.service.IPdfReportsService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.ISuggestiveModelService;
@@ -142,9 +146,15 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 	private IAllianceGroupDAO allianceGroupDAO;
 	private IPanchayatResultDAO panchayatResultDAO;
 	private ICriticalPanchayatsDAO criticalPanchayatsDAO;
+	private IPdfReportsService pdfReportService;
 	
 	
 	
+
+	public void setPdfReportService(IPdfReportsService pdfReportService) {
+		this.pdfReportService = pdfReportService;
+	}
+
 	public ICriticalPanchayatsDAO getCriticalPanchayatsDAO() {
 		return criticalPanchayatsDAO;
 	}
@@ -5765,6 +5775,54 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				 if(result != null && result.size() > 0){
 					 result.get(0).setConstituencyType(constituencyDAO.get(constituenycId).getAreaType());
 				 }
+				 
+				 if(result != null && result.size() > 0)
+				 {
+					 Document document = null;
+						try 
+						{
+							document = new Document();
+							Object[] values = constituencyDAO.constituencyName(constituenycId).get(0);
+					    	String constituenyName = values[0].toString().toUpperCase();
+					    	String districtName = values[1].toString().toUpperCase();
+					    	Long constituenyNo = delimitationConstituencyDAO.getConstituencyNo(constituenycId,2009l);
+					    	String path = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\";
+						    String filePath = "VMR"+"/"+""+districtName+"_"+constituenyNo+"_"+constituenyName+".pdf";
+						    String FILE = path+filePath;
+						    File file  = new File(FILE);
+						    try {
+								file.createNewFile();
+							} catch (IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						    result.get(0).setUrl(filePath);
+						  	try {
+						  		PdfWriter.getInstance(document, new FileOutputStream(FILE));
+						  	} catch (FileNotFoundException e) {
+						  		e.printStackTrace();
+						  	} catch (DocumentException e) {
+						  		e.printStackTrace();
+						  	}
+						  	
+						  	document.open();
+							pdfReportService.pollingPercentageReport(document,result.get(0).getStrongPollingPercentVOList(),"Polling High,TDP Party Weak");
+							
+							pdfReportService.pollingPercentageReportForHighPolling(document,result.get(0).getWeakPollingPercentVOList(),"Polling Low,TDP Party Strong");
+							
+							
+						} 
+						catch (Exception e)
+						{
+							
+						}
+						finally
+						{
+							if(document != null)
+							document.close();
+						}
+						
+				 }
 				return result;
 			 }
 			 
@@ -7748,6 +7806,53 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		  catch(Exception e)
 		  {
 				LOG.error("Exception raised in getPartyPerfromanceStratagicReport() method in Suggestive Model Service",e);  
+		  }
+		  
+		  if(resultList != null && resultList.size() > 0)
+		  {
+			  Document document = null;
+				try 
+				{
+					document = new Document();
+					Object[] values = constituencyDAO.constituencyName(constituencyId).get(0);
+			    	String constituenyName = values[0].toString().toUpperCase();
+			    	String districtName = values[1].toString().toUpperCase();
+			    	Long constituenyNo = delimitationConstituencyDAO.getConstituencyNo(constituencyId,2009l);
+			    	String path = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\";
+				    String filePath = "VMR"+"/"+""+districtName+"_"+constituenyNo+"_"+constituenyName+".pdf";
+				    String FILE = path+filePath;
+				    File file  = new File(FILE);
+				    try {
+						file.createNewFile();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				    resultList.get(0).setUrl(filePath);
+				  	try {
+				  		PdfWriter.getInstance(document, new FileOutputStream(FILE));
+				  	} catch (FileNotFoundException e) {
+				  		e.printStackTrace();
+				  	} catch (DocumentException e) {
+				  		e.printStackTrace();
+				  	}
+				  	
+				  	document.open();
+					
+					
+					pdfReportService.buildPanchaytWiseReport(document,resultList);
+					
+					
+				} 
+				catch (Exception e)
+				{
+					
+				}
+				finally
+				{
+					if(document != null)
+					document.close();
+				}
 		  }
 		return resultList;
 	  }

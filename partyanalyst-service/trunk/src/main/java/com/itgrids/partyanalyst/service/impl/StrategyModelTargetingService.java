@@ -4,7 +4,10 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.geom.Rectangle2D;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -32,6 +35,7 @@ import org.jfree.ui.TextAnchor;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
@@ -78,6 +82,7 @@ import com.itgrids.partyanalyst.dto.StrategyVO;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.SuggestiveRange;
+import com.itgrids.partyanalyst.service.IPdfReportsService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IStrategyModelTargetingService;
@@ -118,6 +123,8 @@ public class StrategyModelTargetingService implements
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private IPRPWeightegesDAO prpWeightegesDAO;
 	
+	private IPdfReportsService pdfReportService;
+	
 	private static Font style6 = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.NORMAL);
 	private static Font style5 = new Font(Font.FontFamily.TIMES_ROMAN, 6,Font.BOLD);
 	private static Font style1 = new Font(FontFactory.getFont("arial",10,Font.BOLD));
@@ -127,6 +134,13 @@ public class StrategyModelTargetingService implements
 	private static Font style4 = new Font(FontFactory.getFont("arial",6,Font.NORMAL));
 
 	
+	
+	
+
+	public void setPdfReportService(IPdfReportsService pdfReportService) {
+		this.pdfReportService = pdfReportService;
+	}
+
 	public ISuggestiveModelService getSuggestiveModelService() {
 		return suggestiveModelService;
 	}
@@ -3814,6 +3828,50 @@ public class StrategyModelTargetingService implements
 		List<Object> priorityList = getPrioritiesToTarget(strategyVO,false);
 		criticalPanchayats.add(priorityList.get(7));
 		criticalPanchayats.add(priorityList.get(9));
+		if(criticalPanchayats != null && criticalPanchayats.size() > 0)
+		{
+			Document document = null;
+			try 
+			{
+				document = new Document();
+				Object[] values = constituencyDAO.constituencyName(constituencyId).get(0);
+		    	String constituenyName = values[0].toString().toUpperCase();
+		    	String districtName = values[1].toString().toUpperCase();
+		    	Long constituenyNo = delimitationConstituencyDAO.getConstituencyNo(constituencyId,2009l);
+		    	String path = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\";
+			    String filePath = "VMR"+"/"+""+districtName+"_"+constituenyNo+"_"+constituenyName+".pdf";
+			    String FILE = path+filePath;
+			    File file  = new File(FILE);
+			    try {
+					file.createNewFile();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			    criticalPanchayats.add(filePath);
+			  	try {
+			  		PdfWriter.getInstance(document, new FileOutputStream(FILE));
+			  	} catch (FileNotFoundException e) {
+			  		e.printStackTrace();
+			  	} catch (DocumentException e) {
+			  		e.printStackTrace();
+			  	}
+			  	
+			  	document.open();
+				pdfReportService.criticalPanchayatsReport(document,criticalPanchayats);
+			} 
+			catch (Exception e)
+			{
+				
+			}
+			finally
+			{
+				if(document != null)
+				document.close();
+			}
+			
+			
+		}
 		return criticalPanchayats;
 	}
 	
@@ -4009,6 +4067,52 @@ public class StrategyModelTargetingService implements
 				panchayatCountVo.setQuestionsMap(null);
 				
 			}
+			
+			if(output != null && output.getPanchayats() != null && output.getPanchayats().size() > 0)
+			{
+				Document document = null;
+				try 
+				{
+					document = new Document();
+					Object[] values = constituencyDAO.constituencyName(constituencyId).get(0);
+			    	String constituenyName = values[0].toString().toUpperCase();
+			    	String districtName = values[1].toString().toUpperCase();
+			    	Long constituenyNo = delimitationConstituencyDAO.getConstituencyNo(constituencyId,2009l);
+			    	String path = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\";
+				    String filePath = "VMR"+"/"+""+districtName+"_"+constituenyNo+"_"+constituenyName+".pdf";
+				    String FILE = path+filePath;
+				    File file  = new File(FILE);
+				    try {
+						file.createNewFile();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				    output.setUrl(filePath);
+				  	try {
+				  		PdfWriter.getInstance(document, new FileOutputStream(FILE));
+				  	} catch (FileNotFoundException e) {
+				  		e.printStackTrace();
+				  	} catch (DocumentException e) {
+				  		e.printStackTrace();
+				  	}
+				  	
+				  	document.open();
+					pdfReportService.infectedBoothsReport(document,output);
+				} 
+				catch (Exception e)
+				{
+					
+				}
+				finally
+				{
+					if(document != null)
+					document.close();
+				}
+				
+				
+			}
+			
 			return output;
 			
 		}

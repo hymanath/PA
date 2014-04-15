@@ -1,7 +1,10 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
-
 import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -29,6 +32,9 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.itgrids.partyanalyst.dao.IAreaTypeDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
@@ -99,7 +105,6 @@ import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
 import com.itgrids.partyanalyst.dao.IVoterStatusDAO;
 import com.itgrids.partyanalyst.dao.IVoterTempDAO;
 import com.itgrids.partyanalyst.dao.IWardDAO;
-import com.itgrids.partyanalyst.dao.hibernate.BoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.hibernate.HHBoothLeaderDAO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.CastLocationVO;
@@ -113,7 +118,6 @@ import com.itgrids.partyanalyst.dto.HHSurveyVO;
 import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
-import com.itgrids.partyanalyst.dto.PartyPositionVO;
 import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -170,7 +174,7 @@ import com.itgrids.partyanalyst.model.VoterNamesTemp;
 import com.itgrids.partyanalyst.model.VoterStatus;
 import com.itgrids.partyanalyst.model.VoterTemp;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
-import com.itgrids.partyanalyst.service.IMobileService;
+import com.itgrids.partyanalyst.service.IPdfReportsService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IVoterReportService;
@@ -264,7 +268,13 @@ public class VotersAnalysisService implements IVotersAnalysisService{
     private IVoterNamesTempDAO voterNamesTempDAO;
     private ILanguageDAO languageDAO;
     private IVoterNamesDAO voterNamesDAO;
-   
+    private IPdfReportsService pdfReportService;
+    
+    
+
+	public void setPdfReportService(IPdfReportsService pdfReportService) {
+		this.pdfReportService = pdfReportService;
+	}
 
 	public IVoterNamesDAO getVoterNamesDAO() {
 		return voterNamesDAO;
@@ -21250,7 +21260,52 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 			  setData(result,mandalwiseDetails,"muncipalityBooth");
 		  }
 		 
-	
+		  if(result != null)
+		  {
+			  Document document = null;
+				try 
+				{
+					document = new Document();
+					Object[] values = constituencyDAO.constituencyName(id).get(0);
+			    	String constituenyName = values[0].toString().toUpperCase();
+			    	String districtName = values[1].toString().toUpperCase();
+			    	Long constituenyNo = delimitationConstituencyDAO.getConstituencyNo(id,2009l);
+			    	String path = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\";
+				    String filePath = "VMR"+"/"+""+districtName+"_"+constituenyNo+"_"+constituenyName+".pdf";
+				    String FILE = path+filePath;
+				    File file  = new File(FILE);
+				    try {
+						file.createNewFile();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				    result.setUrl(filePath);
+				  	try {
+				  		PdfWriter.getInstance(document, new FileOutputStream(FILE));
+				  	} catch (FileNotFoundException e) {
+				  		e.printStackTrace();
+				  	} catch (DocumentException e) {
+				  		e.printStackTrace();
+				  	}
+				  	
+				  	document.open();
+					
+					
+					pdfReportService.voterAvgAgeReport(document,result);
+					
+					
+				} 
+				catch (Exception e)
+				{
+					
+				}
+				finally
+				{
+					if(document != null)
+					document.close();
+				}
+		  }
 		  return result;
 	  }
 	  
