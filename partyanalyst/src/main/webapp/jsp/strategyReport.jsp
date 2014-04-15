@@ -445,7 +445,7 @@ function submitDetails()
 	var strongMin = $("#strongMin").val().trim();
 	var strongMax = $("#strongMax").val().trim();
 	var veryStrongMin  = $("#veryStrongMin").val().trim();
-	var totalId = 0;
+	
 	var total = 0;
 	if(isCasteDataAvail){
 		 total = parseFloat(prpEffId) + parseFloat(prevTrendsId) + parseFloat(totalId) + parseFloat(YVotersId)+ parseFloat(ageWiseId);
@@ -491,11 +491,11 @@ function submitDetails()
 	} 
   
 	if(isCasteDataAvail){
-		if(totalId == ""){
+		if(total == ""){
 			$("#errorMsgDiv").html("Please enter all the text fields");
 			return;
 		}
-		if(isNaN(totalId)){
+		if(isNaN(total)){
 			 $("#errorMsgDiv").html("Weightage values must be Numeric");
 			return;
 		}
