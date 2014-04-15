@@ -448,9 +448,9 @@ function submitDetails()
 	var totalId = 0;
 	var total = 0;
 	if(isCasteDataAvail){
-		var total = parseFloat(prpEffId) + parseFloat(prevTrendsId) + parseFloat(totalId) + parseFloat(YVotersId)+ parseFloat(ageWiseId);
+		 total = parseFloat(prpEffId) + parseFloat(prevTrendsId) + parseFloat(totalId) + parseFloat(YVotersId)+ parseFloat(ageWiseId);
 	}else{
-		var total = parseFloat(prpEffId) + parseFloat(prevTrendsId) + parseFloat(YVotersId)+ parseFloat(ageWiseId);
+		 total = parseFloat(prpEffId) + parseFloat(prevTrendsId) + parseFloat(YVotersId)+ parseFloat(ageWiseId);
 	}
 	
 	
