@@ -16,7 +16,7 @@ import net.sf.jasperreports.engine.JRException;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 
-import com.googlecode.jsonplugin.annotations.JSON;
+
 import com.itgrids.partyanalyst.dto.StateElectionResultsVO;
 import com.itgrids.partyanalyst.service.IStatePageService;
 import com.opensymphony.xwork2.Action;
@@ -52,16 +52,16 @@ public class StateElectionResultsAction extends ActionSupport implements
 		return serialVersionUID;
 	}
 	
-	@JSON (serialize= false )
+	//@JSON (serialize= false )
 	public HttpServletRequest getRequest() {
 		return request;
 	}
-	@JSON (serialize= false )
+	//@JSON (serialize= false )
 	public HttpServletResponse getResponse() {
 		return response;
 	}
     
-	@JSON (serialize= false )
+	//@JSON (serialize= false )
 	public HttpSession getSession() {
 		return session;
 	}
@@ -100,7 +100,7 @@ public class StateElectionResultsAction extends ActionSupport implements
 		return Action.ERROR;
 	}
 	
-	@JSON (serialize= false )
+	//@JSON (serialize= false )
 	public IStatePageService getStatePageService() {
 		return statePageService;
 	}
