@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import com.itgrids.partyanalyst.model.AddressType;
-
 public class PanchayatVO implements Serializable {
 
 	/**

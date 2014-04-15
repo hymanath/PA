@@ -54,6 +54,7 @@ public class PartyPositionVO implements Serializable{
     private Long winPartyTotal =0l;
     private Long rank;
     private boolean winpartyExist;
+    private String url;
     
 	public boolean isWinpartyExist() {
 		return winpartyExist;
@@ -323,6 +324,12 @@ public class PartyPositionVO implements Serializable{
 	}
 	public void setType(String type) {
 		this.type = type;
+	}
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
 	}
 	
 	
