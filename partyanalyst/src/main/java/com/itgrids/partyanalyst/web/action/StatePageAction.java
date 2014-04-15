@@ -7,7 +7,6 @@
  */
 package com.itgrids.partyanalyst.web.action;
 
-import java.text.ParseException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,21 +17,16 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
-import org.jfree.util.Log;
 import org.json.JSONObject;
 
-import com.googlecode.jsonplugin.annotations.JSON;
 import com.itgrids.partyanalyst.dto.CensusVO;
 import com.itgrids.partyanalyst.dto.ElectionGoverningBodyVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.StateElectionsVO;
 import com.itgrids.partyanalyst.dto.StatePageVO;
-import com.itgrids.partyanalyst.service.ICandidateDetailsService;
-import com.itgrids.partyanalyst.service.IStatePageService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
-import com.itgrids.partyanalyst.service.IStaticDataService;
-import com.itgrids.partyanalyst.service.impl.CandidateDetailsService;
+import com.itgrids.partyanalyst.service.IStatePageService;
 import com.itgrids.partyanalyst.utils.IConstants;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.opensymphony.xwork2.ActionSupport;
 
 
