@@ -236,7 +236,7 @@ public class ReadMobileDataFor20K {
 	
 	public List<String> readData(String filePath)
 	{
-		List<String> data = new ArrayList<>(0);
+		List<String> data = new ArrayList<String>(0);
 		try{
 			File file = new File(filePath);
 			
