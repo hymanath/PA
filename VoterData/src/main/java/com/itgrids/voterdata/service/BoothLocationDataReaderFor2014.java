@@ -19,14 +19,6 @@ import com.itgrids.voterdata.VO.LocationVO;
 
 public class BoothLocationDataReaderFor2014 {
 	
-		static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-		static final String DB_URL = "jdbc:mysql://localhost/dakavara_pa";
-		static final String USER = "root";
-		static final String PASS = "root";
-		
-		static Connection conn = null;
-		static Statement stmt = null;
-	
     public static void main(String args[]) throws IOException {
         PDDocument pd = null;
         try {
@@ -37,8 +29,6 @@ public class BoothLocationDataReaderFor2014 {
                 StringBuilder sb = null;
                 StringBuilder boothSB = new StringBuilder();
                 List<BoothVO> boothsInfoList = new ArrayList<BoothVO>(0);
-                Class.forName("com.mysql.jdbc.Driver");
-                conn = DriverManager.getConnection(DB_URL,USER,PASS);
                 
                 for (File input : inputDir.listFiles(new FilenameFilter() {
                     @Override
@@ -47,7 +37,6 @@ public class BoothLocationDataReaderFor2014 {
                     }
                 })) {
                 	try{
-                	stmt = conn.createStatement();
                 	sb = new StringBuilder();
                     pd = PDDocument.load(input);
                     String constituencyId = null;
@@ -84,7 +73,6 @@ public class BoothLocationDataReaderFor2014 {
                     
                     String [] locArr = locStr.split("\r\n");
                     List<LocationVO> locList = new ArrayList<LocationVO>(0);
-                    List<String> locMap = new ArrayList<String>(0);
                     
                     for(String location : locArr)
                     {
@@ -93,44 +81,55 @@ public class BoothLocationDataReaderFor2014 {
                     	
                     	for(String houseStr : loc2Arr)
                     	{
-                    		if(houseStr.contains(". "))
-                    			houseStr = houseStr.substring(houseStr.indexOf(". ")+1);
-                    		
-                    		houseStr = houseStr.trim();
-                    		
-                    		if(isHouseNo(houseStr.trim()))
-                    		{
-                    			if(houseStr.trim() != null)
-                    			{
-                    				houseNo = houseStr.trim();
-                    			}
-                    		}
-                    		else
-                    		{
-                    			if(!locMap.contains(houseStr.trim()))
-                    			{
-                    				locMap.add(houseStr.trim());
-                    				LocationVO lvo = new LocationVO();
-                    				lvo.setLocation(houseStr.trim());
-                    				locList.add(lvo);
-                    			}
-                    		}
+                    		try{
+	                    		if(houseStr.contains(". ") && houseStr.indexOf(". ") <= 1)
+	                    			houseStr = houseStr.substring(houseStr.indexOf(". ")+1);
+	                    		
+	                    		houseStr = removeSpecialChars(houseStr);
+	                    		
+	                    		if(isHouseNo(houseStr.trim()) && houseStr.trim() != null)
+	                    			houseNo = houseStr.trim();
+                    		}catch(Exception e){e.printStackTrace();}
                     		
                     	}
-                    	if(locList.size() > 0)
-                			locList.get(locList.size() - 1).setHouseNo(houseNo);
+                    	
+                    	for(String houseStr : loc2Arr)
+                    	{
+                    		try{
+                    		if(houseStr.contains(". ") && houseStr.indexOf(". ") <= 1)
+                    			houseStr = houseStr.substring(houseStr.indexOf(". ")+1);
+                    		
+                    		houseStr = removeSpecialChars(houseStr);
+                    		
+                    		if(!isHouseNo(houseStr) && houseStr.trim().length() > 0 && !houseStr.contains("Number"))
+                    		{
+                    			LocationVO lvo = new LocationVO();
+                				lvo.setLocation(houseStr);
+                				lvo.setHouseNo(houseNo);
+                				locList.add(lvo);
+                    		}	
+                    		}catch(Exception e){e.printStackTrace();}
+                    	}
                     }
                     boothVO.setLocations(locList);
                     
                     for(int i = 0;i<boothVO.getLocations().size();i++)
                     {
-                    	String hNo = boothVO.getLocations().get(i).getHouseNo() != null ? boothVO.getLocations().get(i).getHouseNo() : " ";
-                    	if(hNo.trim().length() > 0 && hNo.trim().contains(" "))
-                    	{
-                    		hNo = hNo.trim();
-                    		hNo = hNo.substring(0,hNo.indexOf(" "));
-                    	}
-                    		
+                    	String hNo = boothVO.getLocations().get(i).getHouseNo() != null ? 
+                    			boothVO.getLocations().get(i).getHouseNo() : " ";
+                    	
+                    	hNo = hNo.trim();
+                    	if(hNo.trim().length() > 0 && hNo.trim().contains(" All By"))
+                    		hNo = hNo.substring(0,hNo.indexOf("All By")).trim();
+                    	if(hNo.trim().length() > 0 && hNo.trim().contains("Bye All"))
+                    		hNo = hNo.substring(0,hNo.indexOf("Bye All")).trim();
+                    	if(hNo.trim().length() > 0 && hNo.trim().contains("By All"))
+                    		hNo = hNo.substring(0,hNo.indexOf("By All")).trim();
+                    	if(hNo.trim().length() > 0 && hNo.trim().contains("By No"))
+                    		hNo = hNo.substring(0,hNo.indexOf("By No")).trim();
+                    	if(hNo.trim().length() > 0 && hNo.trim().contains(" By"))
+                    		hNo = hNo.substring(0,hNo.indexOf(" By")).trim();
+                    	
 	                    boothSB.append(boothVO.getDistrict()+"\t"+boothVO.getConstituencyName()+"\t"+boothVO.getConstituencyId()+"\t"+boothVO.getMandalName()+"\t"+boothVO.getLocations().get(i).getLocation()+"\t#"+hNo+"\t"+boothVO.getMailTown()+"\t"+boothVO.getPartNo()+"\t"+boothVO.getPincode()+"\n");
 	                    System.out.println(boothVO.getDistrict()+"\t"+boothVO.getConstituencyName()+"\t"+boothVO.getConstituencyId()+"\t"+boothVO.getMandalName()+"\t"+boothVO.getLocations().get(i).getLocation()+"\t#"+hNo+"\t"+boothVO.getMailTown()+"\t"+boothVO.getPartNo()+"\t"+boothVO.getPincode());
                     }
@@ -138,6 +137,7 @@ public class BoothLocationDataReaderFor2014 {
                     if (pd != null) {
                         pd.close();
                     }
+                    System.gc();
                 	}catch (Exception e) {e.printStackTrace();}
         }
             boothInfoReader.write(boothSB.toString());
@@ -156,14 +156,34 @@ public class BoothLocationDataReaderFor2014 {
     		char[] chars = houseNo.toCharArray();
     		for(char c : chars)
     		{
-    			if(Character.getType(c) == 9)
+    			if(Character.getType(c) == 9 && houseNo.contains(" To "))
+    			{
     				return true;
+    			}
     		}
     		return false;
     	}catch(Exception e)
     	{
     		e.printStackTrace();
     		return false;
+    	}
+    }
+    
+    public static String removeSpecialChars(String str)
+    {
+    	try{
+    		str = str.trim();
+    		str = str.replaceAll("\"", "");
+    		str = str.replace("	","");
+    		
+    		if(str.contains("\r\n"))
+    			str = str.substring(0,str.indexOf("\r\n"));
+    		
+    		return str;
+    	}catch(Exception e)
+    	{
+    		e.printStackTrace();
+    		return str;
     	}
     }
        	

@@ -17,8 +17,8 @@ public class DistrictWiseBoothLocationDataReaderFor2014 {
 			File fk = new File(args[0]);
 			List<String> flist = new ArrayList<String>(0);
 			
-			flist.add("Nalgonda");
-			flist.add("Nellore");
+			flist.add("Hyderabad");
+			/*flist.add("Nellore");
 			flist.add("Nizamabad");
 			flist.add("Prakasam");
 			flist.add("Rangareddy");
@@ -26,7 +26,7 @@ public class DistrictWiseBoothLocationDataReaderFor2014 {
 			flist.add("Vizianagaram");
 			flist.add("Visakhapatnam");
 			flist.add("Warangal");
-			flist.add("WestGodavari");
+			flist.add("WestGodavari");*/
 			
 			if(fk.isDirectory())
 			{
