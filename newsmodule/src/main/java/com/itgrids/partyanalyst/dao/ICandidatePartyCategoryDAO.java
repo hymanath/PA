@@ -46,4 +46,8 @@ public interface ICandidatePartyCategoryDAO extends GenericDao<CandidatePartyCat
 	public List<Object[]> getCandidatePartyCategoryDetialsByFileId(Long gallaryId);
 	
 	public void deleteCandidatePartyCategories(List<Long> candidatePartyFileIds);
+	
+	 public List<Object[]> getProblemsCount(Date fromDate,Date toDate,Long locationType,List<Long> locationIds,Long categoryId);
+	 
+	 public List<Object[]> getElectionIssues(Date fromDate,Date toDate,Long locationType,List<Long> locationIds,Long categoryId,List<Long> partyIds);
 }

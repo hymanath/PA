@@ -196,6 +196,7 @@ public class PartyActivitiesAction  implements ServletRequestAware{
 			Date toDate = null;
 			String[] locationarr = null;
 			String[] partyarr = null;
+			String[] categoriesarr = null;
 			
 			if(fromDateStr != null && fromDateStr.trim().length() > 0){
 				fromDate = format.parse(fromDateStr);
@@ -224,7 +225,18 @@ public class PartyActivitiesAction  implements ServletRequestAware{
 					  partyIds.add(new Long(partyarr[i]));
 			  
 			  }
-		partyActivitiesList = partyActivitiesService.getActivitiesStatus(fromDate, toDate, locationType, locationIds, partyIds);
+			  
+			  String categories = jObj.getString("categories");
+			  if(categories != null && categories.trim().length() > 0)
+				  categoriesarr = categories.trim().split(",");
+			  List<Long> categoryIds = new ArrayList<Long>();
+			  if(categoriesarr != null && categoriesarr.length > 0)
+			  {
+				  for(int i=0;i<categoriesarr.length;i++)
+					  categoryIds.add(new Long(categoriesarr[i]));
+			  
+			  }
+		partyActivitiesList = partyActivitiesService.getCategoryWiseActivities(fromDate, toDate, locationType, locationIds, partyIds,categoryIds);
 	 }catch(Exception e){
 		 LOG.error("Exception rised in getActivitiesCount ",e);
 	 }

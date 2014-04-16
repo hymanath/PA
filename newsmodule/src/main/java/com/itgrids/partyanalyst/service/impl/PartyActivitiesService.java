@@ -2,18 +2,22 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import com.itgrids.partyanalyst.dao.ICandidatePartyCategoryDAO;
 import com.itgrids.partyanalyst.dao.ICandidatePartyFileDAO;
 import com.itgrids.partyanalyst.dao.ICandidatePartyKeywordDAO;
-import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IKeywordDAO;
+import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dto.PartyActivitiesVO;
 import com.itgrids.partyanalyst.model.CandidatePartyFile;
 import com.itgrids.partyanalyst.model.CandidatePartyKeyword;
@@ -28,6 +32,10 @@ public class PartyActivitiesService implements IPartyActivitiesService {
 	private IKeywordDAO keywordDAO;
 	private IDistrictDAO districtDAO;
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
+	
+	private ICandidatePartyCategoryDAO candidatePartyCategoryDAO;
+	
+	private IPartyDAO partyDAO;
 	
 	public ICandidatePartyFileDAO getCandidatePartyFileDAO() {
 		return candidatePartyFileDAO;
@@ -71,6 +79,23 @@ public class PartyActivitiesService implements IPartyActivitiesService {
 	public void setDelimitationConstituencyDAO(
 			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
 		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
+	}
+
+	public ICandidatePartyCategoryDAO getCandidatePartyCategoryDAO() {
+		return candidatePartyCategoryDAO;
+	}
+
+	public void setCandidatePartyCategoryDAO(
+			ICandidatePartyCategoryDAO candidatePartyCategoryDAO) {
+		this.candidatePartyCategoryDAO = candidatePartyCategoryDAO;
+	}
+
+	public IPartyDAO getPartyDAO() {
+		return partyDAO;
+	}
+
+	public void setPartyDAO(IPartyDAO partyDAO) {
+		this.partyDAO = partyDAO;
 	}
 
 	public PartyActivitiesVO getNewsToUpdateKeywords(List<Long> categoryIds,Date fromDate,Date toDate,List<Long> districtIds,Integer startIndex,Integer maxIndex){
@@ -205,14 +230,15 @@ public class PartyActivitiesService implements IPartyActivitiesService {
 		return status;
 	}
 	
-	public List<PartyActivitiesVO> getActivitiesStatus(Date fromDate,Date toDate,Long locationType,List<Long> locationIds,List<Long> partyIds){
+	public List<PartyActivitiesVO> getActivitiesStatus(Date fromDate,Date toDate,Long locationType,List<Long> locationIds,List<Long> partyIds,List<Long> categoryIds){
 		List<PartyActivitiesVO> returnList = new ArrayList<PartyActivitiesVO>();
 		try{
 			//0 count,1 partyName,2 keywordid,3 keyword,4 locationId,5 locationName
-		     List<Object[]> newsCountList = candidatePartyFileDAO.getAllPoliticalActivitiesCount(fromDate, toDate, locationIds, locationType,partyIds);
+		     List<Object[]> newsCountList = candidatePartyFileDAO.getAllPoliticalActivitiesCount(fromDate, toDate, locationIds, locationType,partyIds,3991l);
 		     if(newsCountList.size() == 0){
 		    	 return returnList;
 		     }
+		     
 		     //Map<locationId,Map<partyName,keywordCountList>>
 		     LinkedHashMap<Long,LinkedHashMap<String,List<PartyActivitiesVO>>> locationMap = new LinkedHashMap<Long,LinkedHashMap<String,List<PartyActivitiesVO>>>();
 		     //Map<partyName,Map<keywordId,countVO>>
@@ -290,4 +316,241 @@ public class PartyActivitiesService implements IPartyActivitiesService {
 		return returnList;
 	}
 	
+	public Map<Long,Long> getProblemCounts(Date fromDate,Date toDate,Long locationType,List<Long> locationIds){
+		//Map<locationId,count>
+		Map<Long,Long> problemsCount = new HashMap<Long,Long>();
+		try{
+			//0 count,1locationId
+			List<Object[]> problemsCountList = candidatePartyCategoryDAO.getProblemsCount(fromDate, toDate, locationType, locationIds, 7l);
+			for(Object[] count:problemsCountList){
+				problemsCount.put((Long)count[1], (Long)count[0]);
+			}
+		}catch(Exception e){
+			 LOG.error("Exception rised in getProblemCounts ",e);
+		}
+		return problemsCount;
+	}
+	
+	public Map<Long,Map<String,Long>> getElectionIssuesCount(Date fromDate,Date toDate,Long locationType,List<Long> locationIds,List<Long> partyIds){
+		//Map<locationId,Map<partyName,count>>
+		Map<Long,Map<String,Long>> electionIssuesCount = new HashMap<Long,Map<String,Long>>();
+		try{
+			//0 count,1 partyName, 2 locationId
+			List<Object[]> electionIssuesList = candidatePartyCategoryDAO.getElectionIssues(fromDate, toDate, locationType, locationIds, 4015l, partyIds);
+			for(Object[] count:electionIssuesList){
+				Map<String,Long> partyMap = electionIssuesCount.get((Long)count[2]);
+				if(partyMap == null){
+					partyMap = new HashMap<String,Long>();
+					electionIssuesCount.put((Long)count[2], partyMap);
+				}
+				partyMap.put(count[1].toString(), (Long)count[0]);
+			}
+		}catch(Exception e){
+			LOG.error("Exception rised in getElectionIssuesCount ",e);
+		}
+		return electionIssuesCount;
+	}
+	
+	public LinkedHashMap<Long,LinkedHashMap<String,List<PartyActivitiesVO>>> getActivitiesCount(Date fromDate,Date toDate,Long locationType,List<Long> locationIds,List<Long> partyIds,LinkedHashMap<Long,String> locationNames,List<String> partyNamesList){
+		
+	    
+	     
+	     //Map<locationId,Map<partyName,keywordCountList>>
+	     LinkedHashMap<Long,LinkedHashMap<String,List<PartyActivitiesVO>>> locationMap = new LinkedHashMap<Long,LinkedHashMap<String,List<PartyActivitiesVO>>>();
+	     try{
+	     //Map<partyName,Map<keywordId,countVO>>
+	     LinkedHashMap<String,List<PartyActivitiesVO>> partyMap = null;
+	     
+	     List<PartyActivitiesVO> keywordsList = null;
+	   //0 count,1 partyName,2 keywordid,3 keyword,4 locationId,5 locationName
+	     List<Object[]> newsCountList = candidatePartyFileDAO.getAllPoliticalActivitiesCount(fromDate, toDate, locationIds, locationType,partyIds,3991l);
+	     
+	     for(Long locationId:locationNames.keySet()){
+    		 partyMap = new LinkedHashMap<String,List<PartyActivitiesVO>>();
+    		 for(String partyName:partyNamesList){
+    			 keywordsList = new ArrayList<PartyActivitiesVO>();
+	    		 PartyActivitiesVO cadre = new PartyActivitiesVO();
+	    		 cadre.setName("Cadre");
+	    		 cadre.setCount(0l);
+	    		 PartyActivitiesVO mlaIncharge = new PartyActivitiesVO();
+	    		 mlaIncharge.setName("MLA/Incharge");
+	    		 mlaIncharge.setCount(0l);
+	    		 PartyActivitiesVO mpIncharge = new PartyActivitiesVO();
+	    		 mpIncharge.setName("MP/Incharge");
+	    		 mpIncharge.setCount(0l);
+	    		 keywordsList.add(cadre);
+	    		 keywordsList.add(mlaIncharge);
+	    		 keywordsList.add(mpIncharge);
+	    		 partyMap.put(partyName,keywordsList);
+    		 }
+    		 locationMap.put(locationId,partyMap);
+    	 
+	     }
+	     for(Object[] newsCount:newsCountList){
+	    	 partyMap = locationMap.get((Long)newsCount[4]);
+	    	 keywordsList = partyMap.get(newsCount[1].toString());
+	    	 if(keywordsList == null){
+	    		 keywordsList = partyMap.get("All Other Parties");
+	    	 }
+	    	 String keyword = newsCount[3].toString().toLowerCase();
+	    	 if(keyword.contains("cadre")){
+	    		 keywordsList.get(0).setCount((Long)newsCount[0]);
+	    	 }else if(keyword.contains("mla/incharge") || keyword.contains("mla incharge")){
+	    		 keywordsList.get(1).setCount((Long)newsCount[0]);
+	    	 }else if(keyword.contains("mp/incharge") || keyword.contains("mp incharge")){
+	    		 keywordsList.get(2).setCount((Long)newsCount[0]);
+	    	 }
+	     }
+	     }catch(Exception e){
+	    	 LOG.error("Exception rised in getActivitiesCount ",e);
+	     }
+	     return locationMap;
+	}
+	
+	public LinkedHashMap<Long,LinkedHashMap<String,List<PartyActivitiesVO>>> getElecCampionCount(Date fromDate,Date toDate,Long locationType,List<Long> locationIds,List<Long> partyIds,LinkedHashMap<Long,String> locationNames,List<String> partyNamesList){
+		
+	    
+	     
+	     //Map<locationId,Map<partyName,keywordCountList>>
+	     LinkedHashMap<Long,LinkedHashMap<String,List<PartyActivitiesVO>>> locationMap = new LinkedHashMap<Long,LinkedHashMap<String,List<PartyActivitiesVO>>>();
+	     try{
+		     //Map<partyName,Map<keywordId,countVO>>
+		     LinkedHashMap<String,List<PartyActivitiesVO>> partyMap = null;
+		     
+		     List<PartyActivitiesVO> keywordsList = null;
+		   //0 count,1 partyName,2 keywordid,3 keyword,4 locationId,5 locationName
+		     List<Object[]> newsCountList = candidatePartyFileDAO.getAllElectionCampanionCount(fromDate, toDate, locationIds, locationType,partyIds,1l);
+		     
+		     for(Long locationId:locationNames.keySet()){
+	    		 partyMap = new LinkedHashMap<String,List<PartyActivitiesVO>>();
+	    		 for(String partyName:partyNamesList){
+	    			 keywordsList = new ArrayList<PartyActivitiesVO>();
+		    		
+		    		 PartyActivitiesVO mlaIncharge = new PartyActivitiesVO();
+		    		 mlaIncharge.setName("MLA/Incharge");
+		    		 mlaIncharge.setCount(0l);
+		    		 PartyActivitiesVO mpIncharge = new PartyActivitiesVO();
+		    		 mpIncharge.setName("MP/Incharge");
+		    		 mpIncharge.setCount(0l);
+		    		 keywordsList.add(mlaIncharge);
+		    		 keywordsList.add(mpIncharge);
+		    		 partyMap.put(partyName,keywordsList);
+	    		 }
+	    		 locationMap.put(locationId,partyMap);
+	    	 
+		     }
+		     for(Object[] newsCount:newsCountList){
+		    	 partyMap = locationMap.get((Long)newsCount[4]);
+		    	 keywordsList = partyMap.get(newsCount[1].toString());
+		    	 if(keywordsList == null){
+		    		 keywordsList = partyMap.get("All Other Parties");
+		    	 }
+		    	 String keyword = newsCount[3].toString().toLowerCase();
+		    	 if(keyword.contains("mla/incharge") || keyword.contains("mla incharge")){
+		    		 keywordsList.get(0).setCount((Long)newsCount[0]);
+		    	 }else{
+		    		 keywordsList.get(1).setCount((Long)newsCount[0]);
+		    	 }
+		     }
+	     }catch(Exception e){
+	    	 LOG.error("Exception rised in getElecCampionCount ",e);
+	     }
+	     return locationMap;
+	}
+	
+	public List<PartyActivitiesVO> getCategoryWiseActivities(Date fromDate,Date toDate,Long locationType,List<Long> locationIds,List<Long> partyIds,List<Long> categoryIds){
+		List<PartyActivitiesVO> returnList = new ArrayList<PartyActivitiesVO>();
+		Map<Long,Long> problemsCountMap = null;
+		Map<Long,Map<String,Long>> elecIssuesCountMap = null;
+		LinkedHashMap<Long,LinkedHashMap<String,List<PartyActivitiesVO>>> activitiesMap = null;
+		LinkedHashMap<Long,LinkedHashMap<String,List<PartyActivitiesVO>>> elecCampionMap = null;
+		List<Long> sortedLocationIds = new ArrayList<Long>();
+		PartyActivitiesVO initialVO = new PartyActivitiesVO();
+		
+		//Map<partyName,Map<keywordId,countVO>>
+	     LinkedHashMap<String,List<PartyActivitiesVO>> partyMap = null;
+	     
+		List<String> partyNamesList = partyDAO.getPartyShortNames(partyIds);
+		
+		List<Object[]> locationDetails = null;
+	     LinkedHashMap<Long,String> locationNames = new LinkedHashMap<Long,String>();
+	     if(locationType.longValue() == 1l){
+	    	 locationDetails = districtDAO.getDistrictNames(locationIds);
+	     }else{
+	    	 locationDetails = delimitationConstituencyDAO.findConstituencyiOrder(locationIds);
+	     }
+	     for(Object[] location:locationDetails){
+	    	 locationNames.put((Long)location[0],location[1].toString());
+	    	 sortedLocationIds.add((Long)location[0]);
+	     }
+	     
+		if(categoryIds.contains(7l)){
+			//getting problem info
+			problemsCountMap = getProblemCounts(fromDate,toDate,locationType,locationIds);
+			initialVO.setProblemsPresnt("true");
+		}
+		if(categoryIds.contains(4015l)){
+			//getting election issues info
+			elecIssuesCountMap = getElectionIssuesCount(fromDate,toDate,locationType,locationIds,partyIds);
+			initialVO.setElecIssusPresnt("true");
+		}
+		if(categoryIds.contains(3991l)){
+			//getting activities  info
+			activitiesMap = getActivitiesCount(fromDate, toDate, locationType, locationIds, partyIds, locationNames, partyNamesList);
+			initialVO.setActitityPresent("true");
+		}
+		if(categoryIds.contains(1l)){
+			//getting election campaign info
+			elecCampionMap = getElecCampionCount(fromDate, toDate, locationType, locationIds, partyIds, locationNames, partyNamesList);
+			initialVO.setElecCampionPresnt("true");
+		}
+		
+		for(Long locationId:sortedLocationIds){
+	    	 PartyActivitiesVO locationVO = new PartyActivitiesVO();
+	    	 if(returnList.size() == 0){
+	    		 locationVO = initialVO;
+	    	 }
+	    	 locationVO.setName(locationNames.get(locationId));
+	    	 if(initialVO.getProblemsPresnt() != null){
+	    		 Long problemCount = problemsCountMap.get(locationId);
+	    		 if(problemCount != null){
+	    		   locationVO.setCount(problemCount);
+	    		 }else{
+	    			 locationVO.setCount(0l);
+	    		 }
+	    	 }
+	    	 if(initialVO.getElecIssusPresnt() != null || initialVO.getActitityPresent() != null ||  initialVO.getElecCampionPresnt() != null ){
+		    	 List<PartyActivitiesVO> partiesList = new ArrayList<PartyActivitiesVO>();
+		    	 locationVO.setActivitiesList(partiesList);
+		    	 for(String partyName:partyNamesList){
+		    		 PartyActivitiesVO partyVO = new PartyActivitiesVO();
+		    		 partiesList.add(partyVO);
+		    		 partyVO.setName(partyName);
+		    		 if(initialVO.getElecIssusPresnt() != null){
+		    			 Map<String,Long> issueCountMap =  elecIssuesCountMap.get(locationId);
+		    			 if(issueCountMap != null){
+		    				 Long count = issueCountMap.get(partyName);
+		    				 if(count != null){
+		    					 partyVO.setCount(count);
+		    				 }else{
+		    					 partyVO.setCount(0l);
+		    				 }
+		    			 }else{
+		    				 partyVO.setCount(0l);
+		    			 }
+		    		 }
+                     if(initialVO.getActitityPresent() != null){
+                    	 partyMap = activitiesMap.get(locationId);
+                    	 partyVO.setActivitiesList(partyMap.get(partyName));
+		    		 }
+                     if(initialVO.getElecCampionPresnt() != null){
+                    	 partyMap = elecCampionMap.get(locationId);
+                    	 partyVO.setElectionCampanion(partyMap.get(partyName));
+		    		 }
+		    	 }
+		    }
+	    	 returnList.add(locationVO);
+	     }
+		return returnList;
+	}
 }

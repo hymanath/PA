@@ -77,5 +77,7 @@ public interface ICandidatePartyFileDAO extends GenericDao<CandidatePartyFile, L
 	
 	public List<Long> getSourceDetails(Long partyId,Long fileId);
 	
-	public List<Object[]> getAllPoliticalActivitiesCount(Date fromDate,Date toDate,List<Long> locationIds,Long locationType,List<Long> partyIds);
+	public List<Object[]> getAllPoliticalActivitiesCount(Date fromDate,Date toDate,List<Long> locationIds,Long locationType,List<Long> partyIds,Long categoryId);
+	
+	public List<Object[]> getAllElectionCampanionCount(Date fromDate,Date toDate,List<Long> locationIds,Long locationType,List<Long> partyIds,Long categoryId);
 }

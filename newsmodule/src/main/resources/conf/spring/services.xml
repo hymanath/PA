@@ -1794,6 +1794,8 @@
    		<property name="keywordDAO" ref="keywordDAO" />
    		<property name="districtDAO" ref="districtDAO" />
    		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
+   		<property name="partyDAO" ref="partyDAO" />
+   		<property name="candidatePartyCategoryDAO" ref="candidatePartyCategoryDAO" />
    </bean>
 </beans>		
 	
