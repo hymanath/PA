@@ -113,7 +113,7 @@ public class CandidatePartyFileDAOHibernateTest extends BaseDaoTestCase{
 		}*/
 		List<Long> partyIds = new ArrayList<Long>();
 		partyIds.add(872l);
-		List<Object[]> result1 = candidatePartyFileDAO.getAllPoliticalActivitiesCount(c.getTime(), date1,districtIds,1l,partyIds);
+		List<Object[]> result1 = candidatePartyFileDAO.getAllPoliticalActivitiesCount(c.getTime(), date1,districtIds,1l,partyIds,3991l);
 		for(Object[] res:result1){
 			System.out.println(res[0].toString()+" : "+res[1].toString()+" : "+res[2].toString()+" : "+res[3].toString()+" : "+res[4].toString()+" : "+res[5].toString());
 			

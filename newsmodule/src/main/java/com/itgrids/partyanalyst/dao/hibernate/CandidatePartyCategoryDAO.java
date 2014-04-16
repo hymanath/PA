@@ -527,4 +527,96 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 		 return query.list();
 	 }
 	 
+	 public List<Object[]> getProblemsCount(Date fromDate,Date toDate,Long locationType,List<Long> locationIds,Long categoryId){
+		 StringBuilder str = new StringBuilder();
+		 
+		 str.append("select count(distinct cpc.candidatePartyFile.file.fileId)  ");
+		 if(locationType.longValue() == 1l){
+			 str.append(" , ua.district.districtId ");
+		 }else{
+			 str.append(" , ua.constituency.constituencyId ");
+		 }
+		 str.append("from CandidatePartyCategory cpc,UserAddress ua where  cpc.gallary.gallaryId =:categoryId  " +
+		 		" and cpc.candidatePartyFile.file.fileId = ua.file.fileId and ua.file.isDeleted != 'Y'  ");
+		 if(locationType.longValue() == 1l){
+			 str.append(" and ua.district.districtId in (:locationIds)");
+		 }else{
+			 str.append(" and ua.constituency.constituencyId in (:locationIds)");
+		 }
+		 
+		 if(fromDate != null)
+		 {
+			 str.append(" and ua.file.fileDate >= :fromDate ");
+		 }
+		 if(toDate != null)
+		 {
+			 str.append(" and ua.file.fileDate <= :toDate ");
+		 }
+		 
+		 if(locationType.longValue() == 1l){
+			 str.append(" group by ua.district.districtId ");
+		 }else{
+			 str.append(" group by ua.constituency.constituencyId ");
+		 }
+		 Query query = getSession().createQuery(str.toString());	
+		 query.setParameter("categoryId", categoryId);
+		 query.setParameterList("locationIds", locationIds);
+		 if(fromDate != null)
+		 {
+			 query.setDate("fromDate", fromDate);
+		 }
+		 if(toDate != null)
+		 {
+			 query.setDate("toDate", toDate);
+		 }
+		 return query.list();
+	 }
+	 
+	 
+	 public List<Object[]> getElectionIssues(Date fromDate,Date toDate,Long locationType,List<Long> locationIds,Long categoryId,List<Long> partyIds){
+          StringBuilder str = new StringBuilder();
+		 
+		 str.append("select count(distinct cpc.candidatePartyFile.file.fileId),CASE WHEN cpc.candidatePartyFile.sourceParty.partyId is not null THEN sp.shortName ELSE dp.shortName END  ");
+		 if(locationType.longValue() == 1l){
+			 str.append(" , ua.district.districtId ");
+		 }else{
+			 str.append(" , ua.constituency.constituencyId ");
+		 }
+		 str.append("from UserAddress ua,CandidatePartyCategory cpc  Left Join cpc.candidatePartyFile.sourceParty sp Left Join cpc.candidatePartyFile.destinationParty dp where  cpc.gallary.gallaryId =:categoryId  " +
+		 		"  and ((cpc.candidatePartyFile.sourceParty.partyId is not null) or (cpc.candidatePartyFile.sourceParty.partyId is null and cpc.candidatePartyFile.destinationParty.partyId is not null)) and cpc.candidatePartyFile.file.fileId = ua.file.fileId and ua.file.isDeleted != 'Y'  ");
+		 if(locationType.longValue() == 1l){
+			 str.append(" and ua.district.districtId in (:locationIds)");
+		 }else{
+			 str.append(" and ua.constituency.constituencyId in (:locationIds)");
+		 }
+		 
+		 if(fromDate != null)
+		 {
+			 str.append(" and ua.file.fileDate >= :fromDate ");
+		 }
+		 if(toDate != null)
+		 {
+			 str.append(" and ua.file.fileDate <= :toDate ");
+		 }
+		 str.append(" and CASE WHEN cpc.candidatePartyFile.sourceParty.partyId is not null THEN sp.partyId ELSE dp.partyId END  in(:partyIds) ");
+		 if(locationType.longValue() == 1l){
+			 str.append(" group by ua.district.districtId ");
+		 }else{
+			 str.append(" group by ua.constituency.constituencyId ");
+		 }
+		 str.append("  ,CASE WHEN cpc.candidatePartyFile.sourceParty.partyId is not null THEN sp.partyId ELSE dp.partyId END ");
+		 Query query = getSession().createQuery(str.toString());	
+		 query.setParameter("categoryId", categoryId);
+		 query.setParameterList("locationIds", locationIds);
+		 if(fromDate != null)
+		 {
+			 query.setDate("fromDate", fromDate);
+		 }
+		 if(toDate != null)
+		 {
+			 query.setDate("toDate", toDate);
+		 }
+		 query.setParameterList("partyIds", partyIds);
+		 return query.list();
+	 }
 }

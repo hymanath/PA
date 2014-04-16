@@ -22,8 +22,14 @@ public class PartyActivitiesVO implements Serializable {
 	   private Long count;
 	   private Long partyId;
 	   private List<String> keywordsList;
+	   private String actitityPresent;
+	   private String elecCampionPresnt;
+	   private String problemsPresnt;
+	   private String elecIssusPresnt;
 	   
 	   private List<PartyActivitiesVO> activitiesList;
+	   
+	   private List<PartyActivitiesVO> electionCampanion;
 	   
 	public Long getId() {
 		return id;
@@ -127,6 +133,46 @@ public class PartyActivitiesVO implements Serializable {
 
 	public void setKeywordsList(List<String> keywordsList) {
 		this.keywordsList = keywordsList;
+	}
+
+	public List<PartyActivitiesVO> getElectionCampanion() {
+		return electionCampanion;
+	}
+
+	public void setElectionCampanion(List<PartyActivitiesVO> electionCampanion) {
+		this.electionCampanion = electionCampanion;
+	}
+
+	public String getActitityPresent() {
+		return actitityPresent;
+	}
+
+	public void setActitityPresent(String actitityPresent) {
+		this.actitityPresent = actitityPresent;
+	}
+
+	public String getElecCampionPresnt() {
+		return elecCampionPresnt;
+	}
+
+	public void setElecCampionPresnt(String elecCampionPresnt) {
+		this.elecCampionPresnt = elecCampionPresnt;
+	}
+
+	public String getProblemsPresnt() {
+		return problemsPresnt;
+	}
+
+	public void setProblemsPresnt(String problemsPresnt) {
+		this.problemsPresnt = problemsPresnt;
+	}
+
+	public String getElecIssusPresnt() {
+		return elecIssusPresnt;
+	}
+
+	public void setElecIssusPresnt(String elecIssusPresnt) {
+		this.elecIssusPresnt = elecIssusPresnt;
 	}
 	   
 	   

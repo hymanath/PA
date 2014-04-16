@@ -1001,7 +1001,7 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 				query.setParameterList("partyIds", partyIds);
 				return query.list();
 			}*/
-			public List<Object[]> getAllPoliticalActivitiesCount(Date fromDate,Date toDate,List<Long> locationIds,Long locationType,List<Long> partyIds){
+			public List<Object[]> getAllPoliticalActivitiesCount(Date fromDate,Date toDate,List<Long> locationIds,Long locationType,List<Long> partyIds,Long categoryId){
 				StringBuilder str = new StringBuilder();
 				//0 count,1 partyName,2 keywordid,3 keyword,4 locationId,5 locationName
 				str.append("select count(distinct cpk.candidatePartyFile.file.fileId),CASE WHEN cpk.candidatePartyFile.sourceParty.partyId is not null THEN sp.shortName ELSE dp.shortName END ,cpk.keyword.keywordId,cpk.keyword.type, ");
@@ -1011,8 +1011,8 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 				  str.append(" ua.constituency.constituencyId,ua.constituency.name ");
 				}
 				
-				str.append(" from CandidatePartyKeyword cpk Left Join cpk.candidatePartyFile.sourceParty sp Left Join cpk.candidatePartyFile.destinationParty dp,UserAddress ua where cpk.candidatePartyFile.file.fileId = ua.file.fileId and ((cpk.candidatePartyFile.sourceParty.partyId is not null) or (cpk.candidatePartyFile.sourceParty.partyId is null and cpk.candidatePartyFile.destinationParty.partyId is not null)) " +
-						" and cpk.candidatePartyFile.file.isDeleted !='Y' and cpk.keyword.type in('Cadre','MLA/Incharge','MP/Incharge')   ");
+				str.append(" from CandidatePartyCategory cpc, CandidatePartyKeyword cpk Left Join cpk.candidatePartyFile.sourceParty sp Left Join cpk.candidatePartyFile.destinationParty dp,UserAddress ua where cpk.candidatePartyFile.file.fileId = ua.file.fileId and ((cpk.candidatePartyFile.sourceParty.partyId is not null) or (cpk.candidatePartyFile.sourceParty.partyId is null and cpk.candidatePartyFile.destinationParty.partyId is not null)) " +
+						" and cpk.candidatePartyFile.file.isDeleted !='Y' and (cpk.keyword.type in('Cadre','MLA/Incharge','MP/Incharge') or cpk.keyword.type like '%MLA/Incharge%'  or cpk.keyword.type like '%MLA INCHARGE%'  or cpk.keyword.type like '%MP/Incharge%'  or cpk.keyword.type like '%MP incharge%' ) and cpc.candidatePartyFile.candidatePartyFileId = cpk.candidatePartyFile.candidatePartyFileId and  cpc.gallary.gallaryId =:categoryId ");
 				
 				if(locationType.longValue() == 1l){
 				   str.append(" and ua.district.districtId in(:locationIds) ");
@@ -1046,6 +1046,56 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 				}
 				query.setParameterList("locationIds", locationIds);
 				query.setParameterList("partyIds", partyIds);
+				query.setParameter("categoryId",categoryId);
+				return query.list();
+			}
+			
+			public List<Object[]> getAllElectionCampanionCount(Date fromDate,Date toDate,List<Long> locationIds,Long locationType,List<Long> partyIds,Long categoryId){
+				StringBuilder str = new StringBuilder();
+				//0 count,1 partyName,2 keywordid,3 keyword,4 locationId,5 locationName
+				str.append("select count(distinct cpk.candidatePartyFile.file.fileId),CASE WHEN cpk.candidatePartyFile.sourceParty.partyId is not null THEN sp.shortName ELSE dp.shortName END ,cpk.keyword.keywordId,cpk.keyword.type, ");
+				if(locationType.longValue() == 1l){
+				  str.append(" ua.district.districtId,ua.district.districtName ");
+				}else{
+				  str.append(" ua.constituency.constituencyId,ua.constituency.name ");
+				}
+				
+				str.append(" from CandidatePartyCategory cpc, CandidatePartyKeyword cpk Left Join cpk.candidatePartyFile.sourceParty sp Left Join cpk.candidatePartyFile.destinationParty dp,UserAddress ua where cpk.candidatePartyFile.file.fileId = ua.file.fileId and ((cpk.candidatePartyFile.sourceParty.partyId is not null) or (cpk.candidatePartyFile.sourceParty.partyId is null and cpk.candidatePartyFile.destinationParty.partyId is not null)) " +
+						" and cpk.candidatePartyFile.file.isDeleted !='Y' and ( cpk.keyword.type like '%MLA/Incharge%'  or cpk.keyword.type like '%MLA INCHARGE%'  or cpk.keyword.type like '%MP/Incharge%'  or cpk.keyword.type like '%MP incharge%')  and cpc.candidatePartyFile.candidatePartyFileId = cpk.candidatePartyFile.candidatePartyFileId and  cpc.gallary.gallaryId =:categoryId ");
+				
+				if(locationType.longValue() == 1l){
+				   str.append(" and ua.district.districtId in(:locationIds) ");
+				}else{
+				   str.append(" and ua.constituency.constituencyId in(:locationIds) ");
+				}
+				if(fromDate != null && toDate != null){
+					str.append(" and  cpk.candidatePartyFile.file.fileDate between :fromDate and :toDate ");
+				}
+				else if(fromDate != null){
+					str.append(" and  cpk.candidatePartyFile.file.fileDate >= :fromDate ");
+				}
+				else if(toDate != null){
+					str.append(" and  cpk.candidatePartyFile.file.fileDate <= :toDate ");
+				}
+				str.append(" and CASE WHEN cpk.candidatePartyFile.sourceParty.partyId is not null THEN sp.partyId ELSE dp.partyId END  in(:partyIds) group by ");
+				if(locationType.longValue() == 1l){
+					  str.append(" ua.district.districtId, ");
+					}else{
+					  str.append(" ua.constituency.constituencyId, ");
+					}
+				str.append(" CASE WHEN cpk.candidatePartyFile.sourceParty.partyId is not null THEN sp.partyId ELSE dp.partyId END,cpk.keyword.keywordId ");
+
+				Query query = getSession().createQuery(str.toString());
+						
+				if(fromDate != null){
+				  query.setDate("fromDate", fromDate);
+				}
+				if(toDate != null){
+				  query.setDate("toDate", toDate);
+				}
+				query.setParameterList("locationIds", locationIds);
+				query.setParameterList("partyIds", partyIds);
+				query.setParameter("categoryId",categoryId);
 				return query.list();
 			}
 }
