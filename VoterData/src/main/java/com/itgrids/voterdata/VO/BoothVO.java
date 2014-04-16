@@ -20,7 +20,28 @@ public class BoothVO {
 	private String constituencyId;
 	private String constituencyName;
 	private String pincode;
+	private String mailTown;
+	private String district;
+	private List<LocationVO> locations;
 	
+	public List<LocationVO> getLocations() {
+		return locations;
+	}
+	public void setLocations(List<LocationVO> locations) {
+		this.locations = locations;
+	}
+	public String getMailTown() {
+		return mailTown;
+	}
+	public void setMailTown(String mailTown) {
+		this.mailTown = mailTown;
+	}
+	public String getDistrict() {
+		return district;
+	}
+	public void setDistrict(String district) {
+		this.district = district;
+	}
 	public String getPincode() {
 		return pincode;
 	}
