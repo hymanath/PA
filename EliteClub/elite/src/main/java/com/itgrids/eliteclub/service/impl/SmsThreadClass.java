@@ -25,6 +25,7 @@ public class SmsThreadClass
 	 * This Service is used for activating the sms thread
 	 * @author Prasad Thiragabthina
 	 */
+	
 	public void activeteThread(String imeiNo,Integer userId,Integer audioFileId)
 	{
 		try
@@ -33,7 +34,12 @@ public class SmsThreadClass
 			((SmsServiceImpl)smsService).setUserId(userId);
 			((SmsServiceImpl)smsService).setImeiNo(imeiNo);
 			((SmsServiceImpl)smsService).setAudioFileId(audioFileId);
-			smsService.start();
+			SmsServiceImpl smsServiceImpl = new SmsServiceImpl(); 
+		    smsServiceImpl.setUserId(userId);
+			smsServiceImpl.setImeiNo(imeiNo);
+			smsServiceImpl.setAudioFileId(audioFileId);
+			smsServiceImpl.setService((SmsServiceImpl)smsService);
+			smsService.start(smsServiceImpl);
 		} 
 		catch (Exception e)
 		{

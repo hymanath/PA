@@ -18,9 +18,12 @@ public class ContactDetailsDAOImpl extends AbstractDaoImpl<ContactDetails, Integ
 
 	@SuppressWarnings("unchecked")
 	public List<String> getMobileNumbersByUser(String imeiNo,Integer userId) {
-		Query query = getCurrentSession().createQuery("select CD.phoneNumber from ContactDetails CD where CD.user.imeiNo = :imeiNo and CD.user.userId = :userId");
+		Query query = getCurrentSession().createQuery("select distinct CD.phoneNumber from ContactDetails CD where CD.user.imeiNo = :imeiNo and CD.user.userId = :userId");
 		query.setParameter("imeiNo", imeiNo);
 		query.setParameter("userId", userId);
+		query.setFirstResult(0);
+		query.setMaxResults(5);
+		
 		return query.list();
 	}
 

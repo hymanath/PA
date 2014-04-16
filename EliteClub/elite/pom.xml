@@ -23,6 +23,15 @@
 					<path>/Elite</path>
 				</configuration>
 			</plugin>
+			<plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.1</version>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+      </plugin>
 		</plugins>
 		</build>
   <dependencies>
@@ -116,6 +125,18 @@
 		   <version>5.1.26</version>
 		   <scope>runtime</scope>
 		</dependency>
+		
+		<dependency>
+		<groupId>commons-httpclient</groupId>
+		<artifactId>commons-httpclient</artifactId>
+		<version>3.1</version>
+		</dependency>
+		<!-- <dependency>
+	<groupId>org.apache.httpcomponents</groupId>
+	<artifactId>httpclient</artifactId>
+	<version>4.3</version>
+     </dependency> -->
+		
       </dependencies>
       
      
