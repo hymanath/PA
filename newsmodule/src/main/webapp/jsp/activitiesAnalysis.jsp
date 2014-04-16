@@ -449,7 +449,7 @@ function buildCountsTable(myResults,jsObj){
 			 }
 			$("#newsTable").html(str);
 			}catch(e){
-			  alert(e);
+			  //alert(e);
 			}
 		 }
 }
