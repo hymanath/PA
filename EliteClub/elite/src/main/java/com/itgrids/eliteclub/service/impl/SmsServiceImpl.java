@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itgrids.eliteclub.dao.ContactDetailsDAO;
+import com.itgrids.eliteclub.dao.FileDAO;
 import com.itgrids.eliteclub.dao.UserDAO;
+import com.itgrids.eliteclub.model.User;
 import com.itgrids.eliteclub.service.ISmsService;
 import com.itgrids.eliteclub.service.VoiceSmsService;
 import com.itgrids.eliteclub.util.IConstants;
@@ -39,6 +41,18 @@ public class SmsServiceImpl implements ISmsService,Runnable
 	@Autowired
 	UserDAO userDAO;
 	
+	private   SmsServiceImpl service;
+	
+	
+	
+	public SmsServiceImpl getService() {
+		return service;
+	}
+
+	public void setService(SmsServiceImpl service) {
+		this.service = service;
+	}
+
 	public SmsServiceImpl()
 	{
 		 System.out.println("Deafult Constrator"); 
@@ -73,7 +87,7 @@ public class SmsServiceImpl implements ISmsService,Runnable
 		this.audioFileId = audioFileId;
 	}
 
-	public void start ()
+	public void start (SmsServiceImpl objData )
     {
 		Thread textThread = null;
 		Thread audioThread = null;
@@ -81,14 +95,14 @@ public class SmsServiceImpl implements ISmsService,Runnable
 		{
 			String textTread = "textTread";
 			LOG.debug("Starting " +  textTread );
-			textThread = new Thread (this, textTread);
+			textThread = new Thread (objData, textTread);
 			textThread.start ();
 		}
 		if(audioThread == null)
 		{
 			String audioTread = "audioTread";
 			LOG.debug("Starting " +  audioTread );
-			audioThread = new Thread (this, audioTread);
+			audioThread = new Thread (objData, audioTread);
 			audioThread.start ();
 		}
     }
@@ -103,14 +117,20 @@ public class SmsServiceImpl implements ISmsService,Runnable
 				Thread currentThread = Thread.currentThread();
 				if(currentThread.getName().equalsIgnoreCase("textTread"))
 				{
-					List<String> mobileNos = contactDetailsDAO.getMobileNumbersByUser(this.imeiNo,this.userId);
-					String message = userDAO.get(this.userId).getUserName();
-					sendSms(message,false,mobileNos);
+					List<String> mobileNos = this.getService().contactDetailsDAO.getMobileNumbersByUser(this.imeiNo,this.userId);
+					User  user = this.getService().userDAO.get(this.userId);
+					String userName=user.getUserName();
+					if(userName==null)
+						userName=""+this.imeiNo;
+					
+					StringBuilder message= new StringBuilder("This Message Reffered By "+userName);
+					message.append("");
+					sendSms(message.toString(),false,mobileNos);
 				}
 				else
 				{
-					List<String> mobileNumbers = contactDetailsDAO.getMobileNumbersByUser(imeiNo,userId);
-					voiceSmsService.sendVoiceSmsThread(this.audioFileId,mobileNumbers,currentThread);
+					List<String> mobileNumbers = this.getService().contactDetailsDAO.getMobileNumbersByUser(imeiNo,userId);
+					this.getService().voiceSmsService.sendVoiceSmsThread(this.audioFileId,mobileNumbers,currentThread);
 				}
 				
 			}
@@ -151,8 +171,10 @@ public class SmsServiceImpl implements ISmsService,Runnable
 		StringBuilder sb = new StringBuilder();// to append all the mobile n os with comma seperator
 		
 		for (int i = 0; i < phoneNumbers.size(); i++)
-		{
+		{   
+			if(phoneNumbers.get(i).trim().length()==10)
 			sb.append("91");
+			
 			sb.append(phoneNumbers.get(i));
 			if (i < (phoneNumbers.size()-1))
 				sb.append(",");

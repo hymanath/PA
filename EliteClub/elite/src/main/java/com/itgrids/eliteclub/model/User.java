@@ -99,7 +99,7 @@ public class User implements java.io.Serializable {
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "user_creation_time", length = 19)
+	@Column(name = "user_creation_time", length = 19,insertable=false)
 	public Date getUserCreationTime() {
 		return this.userCreationTime;
 	}

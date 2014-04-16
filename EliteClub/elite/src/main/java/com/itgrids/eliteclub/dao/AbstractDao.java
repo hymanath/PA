@@ -17,6 +17,7 @@ public interface AbstractDao<E, I extends Serializable> {
    public List<E> findByCriteria(Criterion criterion);
    public  E save(E e);
    public Session getCurrentSession();
+   public void saveOrUpdateForTrancasction(E e);
 
 
 }
