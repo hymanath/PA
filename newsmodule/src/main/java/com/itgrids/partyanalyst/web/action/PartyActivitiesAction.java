@@ -32,6 +32,7 @@ public class PartyActivitiesAction  implements ServletRequestAware{
 	private String task;
 	private String status;
 	private List<PartyActivitiesVO> partyActivitiesList;
+	private String url;
 	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
@@ -101,6 +102,14 @@ public class PartyActivitiesAction  implements ServletRequestAware{
 
 	public void setAssemblies(List<SelectOptionVO> assemblies) {
 		this.assemblies = assemblies;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
 	public String execute(){
@@ -234,9 +243,15 @@ public class PartyActivitiesAction  implements ServletRequestAware{
 			  {
 				  for(int i=0;i<categoriesarr.length;i++)
 					  categoryIds.add(new Long(categoriesarr[i]));
-			  
 			  }
-		partyActivitiesList = partyActivitiesService.getCategoryWiseActivities(fromDate, toDate, locationType, locationIds, partyIds,categoryIds);
+			  String type = jObj.getString("reportType");
+			  if(type.equalsIgnoreCase("dataTable")){
+		         partyActivitiesList = partyActivitiesService.getCategoryWiseActivities(fromDate, toDate, locationType, locationIds, partyIds,categoryIds);
+		         return Action.SUCCESS;
+			  }else if(type.equalsIgnoreCase("excel")){
+				  url = partyActivitiesService.generateExcelForActivities(fromDate, toDate, locationType, locationIds, partyIds, categoryIds);
+				  return "url";
+			  }
 	 }catch(Exception e){
 		 LOG.error("Exception rised in getActivitiesCount ",e);
 	 }

@@ -129,11 +129,11 @@ color:#333333;
 		 <option value="7">Public Problems</option>
       </select>
    </div>
-   <div class="span3" style="margin-left:3px;"><label style="float: left;"><strong>Select Party<span class="requiredFont">*</span></strong></label><select name="partySelReport" id="partySel"  /></div>
+   <div class="span3" style="margin-left:3px;"><label style="float: left;"><strong>Select Party<span class="requiredFont">*</span></strong></label><select name="partySelReport" id="partySel"></select></div>
   
   </div>   
   <div class="span12">
-   <div class="span3" style="margin-left:240px;"><input class="btn btn-success" id="getNewsButton" style="margin-top:10px;margin-left:-40px;" onclick="getActititiesCountForReport();" type="button" value="Submit"></input><img id="ajaxcallimg" style="display:none;padding-left:10px;padding-top: 10px;" src="images/search.jpg"></div>
+   <div class="span9" style=""><input class="btn btn-success" id="getNewsButton" style="margin-top:10px;margin-left:333px;" onclick="getActititiesCountForReport('dataTable');" type="button" value="Get Data Table"></input><input class="btn btn-success" id="getNewsExcelButton" style="margin-top:10px;margin-left:5px;" onclick="getActititiesCountForReport('excel');" type="button" value="Get Excel"></input><img id="ajaxcallimg" style="display:none;padding-left:10px;padding-top: 10px;" src="images/search.jpg"></div>
   </div>   
   <div class="span12">
    <div class="span12" id="newsTable"></div>
@@ -165,7 +165,7 @@ color:#333333;
   
   $(".ui-multiselect").css("width","220px");
 
-function getActititiesCountForReport(){
+function getActititiesCountForReport(buildType){
     $("#errorMsgDiv").html("");
    $("#newsTable").html("");
   var fromDate = "";
@@ -250,6 +250,7 @@ function getActititiesCountForReport(){
 	   return;
 	 }
 	 $("#getNewsButton").attr("disabled","disabled");
+	 $("#getNewsExcelButton").attr("disabled","disabled");
      $("#ajaxcallimg").show();
     var jsObj =
 		{ 
@@ -259,6 +260,7 @@ function getActititiesCountForReport(){
 			locationIds : locations,
 			partyIds : parties,
 			categories:categories,
+			reportType:buildType,
 			task:"getActivities"
 		};
 
@@ -288,8 +290,13 @@ function callAjax(jsObj,url)
 		 myResults = YAHOO.lang.JSON.parse(o.responseText); 
 		  if(jsObj.task == "getActivities"){
 		    $("#getNewsButton").removeAttr('disabled'); 
+			$("#getNewsExcelButton").removeAttr("disabled");
 			$("#ajaxcallimg").hide();
-		    buildCountsTable(myResults,jsObj);
+			if(jsObj.reportType == "excel"){
+				window.open(myResults);
+			}else{
+		       buildCountsTable(myResults,jsObj);
+			}
 		  }else if(jsObj.task == "getPartyList"){
 		    populateParties(myResults);
 		  }
@@ -298,6 +305,7 @@ function callAjax(jsObj,url)
 		{  
 		   $("#getNewsButton").removeAttr('disabled'); 
 		   $("#ajaxcallimg").hide();
+		   $("#getNewsExcelButton").removeAttr("disabled");
 		}  
 	 },
 	scope : this,
@@ -387,7 +395,7 @@ function buildCountsTable(myResults,jsObj){
 					   
 					   if(activityPresent || campanionPresent){
 						
-						 for(var i in myResults[0].activitiesList){
+						 
 						   if(activityPresent){
 							  str+="  <th colspan='3'>Activities</th>";			     
 						   }
@@ -397,7 +405,7 @@ function buildCountsTable(myResults,jsObj){
 						   if(elecIssuesPresent){
 							 str+="  <th rowspan='2'>Election Issues</th>";
 						   }
-						 }
+						 
 						 
 					   }else{
 						   if(elecIssuesPresent){

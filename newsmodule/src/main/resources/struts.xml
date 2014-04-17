@@ -6254,6 +6254,9 @@
 		   <result type="json" name="success">
 		    	<param name="root">partyActivitiesList</param>
 		   </result> 
+		   <result type="json" name="url">
+		    	<param name="root">url</param>
+		   </result> 
 		</action>
 		
 		<action name="getKeyWordsBySearchCriteria" class="partyManagementAction"  method="getKeyWordsBySearchCriteria">
