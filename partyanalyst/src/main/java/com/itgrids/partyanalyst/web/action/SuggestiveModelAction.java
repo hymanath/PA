@@ -1045,6 +1045,8 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 					return Action.ERROR;
 				Long userId = regVo.getRegistrationID();
 				familyInfo = suggestiveModelService.getFamilyDetailsForConstituency(jObj.getLong("constituencyId"),jObj.getLong("publicationId"),jObj.getLong("minVal"),jObj.getLong("maxVal"),jObj.getInt("startIndex"),jObj.getInt("results"),userId,path,jObj.getString("type"));
+				if(jObj.getString("type") != null && jObj.getString("type").trim().equalsIgnoreCase("district"))
+					familyInfo = null;
 			}
 			catch (Exception e) {
 				e.printStackTrace();
