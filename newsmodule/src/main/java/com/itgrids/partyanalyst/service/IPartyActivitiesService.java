@@ -10,4 +10,5 @@ public interface IPartyActivitiesService {
 	public String updateKeywords(List<PartyActivitiesVO> activities);
 	public List<PartyActivitiesVO> getActivitiesStatus(Date fromDate,Date toDate,Long locationType,List<Long> locationIds,List<Long> partyIds,List<Long> categoryIds);
 	public List<PartyActivitiesVO> getCategoryWiseActivities(Date fromDate,Date toDate,Long locationType,List<Long> locationIds,List<Long> partyIds,List<Long> categoryIds);
+	public String generateExcelForActivities(Date fromDate,Date toDate,Long locationType,List<Long> locationIds,List<Long> partyIds,List<Long> categoryIds);
 }

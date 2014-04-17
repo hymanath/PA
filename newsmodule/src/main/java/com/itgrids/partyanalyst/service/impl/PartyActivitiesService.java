@@ -1,14 +1,23 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.CellRangeAddress;
+import org.apache.poi.ss.usermodel.Cell;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dao.ICandidatePartyCategoryDAO;
@@ -23,6 +32,7 @@ import com.itgrids.partyanalyst.model.CandidatePartyFile;
 import com.itgrids.partyanalyst.model.CandidatePartyKeyword;
 import com.itgrids.partyanalyst.service.IPartyActivitiesService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IWebConstants;
 
 public class PartyActivitiesService implements IPartyActivitiesService {
 	private static final Logger LOG = Logger.getLogger(PartyActivitiesService.class);
@@ -552,5 +562,266 @@ public class PartyActivitiesService implements IPartyActivitiesService {
 	    	 returnList.add(locationVO);
 	     }
 		return returnList;
+	}
+	
+	public String generateExcelForActivities(Date fromDate,Date toDate,Long locationType,List<Long> locationIds,List<Long> partyIds,List<Long> categoryIds){
+		String url="";
+		FileOutputStream fileOut = null;
+	   try{		
+		List<PartyActivitiesVO> activitiesList = getCategoryWiseActivities(fromDate,toDate,locationType,locationIds,partyIds,categoryIds);
+		boolean problemsPresent = false;
+		boolean campanionPresent = false;
+		boolean activityPresent = false;
+		boolean elecIssuesPresent = false;
+		  if(activitiesList.get(0).getElecCampionPresnt() != null && activitiesList.get(0).getElecCampionPresnt().equalsIgnoreCase("true")){
+		    campanionPresent = true;
+		  }
+		  if(activitiesList.get(0).getActitityPresent() != null && activitiesList.get(0).getActitityPresent().equalsIgnoreCase("true") ){
+		    activityPresent = true;
+		  }
+		  if(activitiesList.get(0).getElecIssusPresnt() != null && activitiesList.get(0).getElecIssusPresnt().equalsIgnoreCase("true") ){
+		    elecIssuesPresent = true;
+		  }
+		  if(activitiesList.get(0).getProblemsPresnt() != null && activitiesList.get(0).getProblemsPresnt().equalsIgnoreCase("true") ){
+		    problemsPresent = true;
+		  }
+		  
+		     Random randomNum = new Random();
+			 String filename = "Reports"+"/Activities"+"/"+"report"+randomNum.nextInt(1000000000)+".xls";
+			 url = filename;
+			 String FILE = IWebConstants.STATIC_CONTENT_FOLDER_URL+filename;
+			 java.io.File file  = new java.io.File(FILE);
+			 fileOut =  new FileOutputStream(FILE);
+			 file.createNewFile();
+			 HSSFWorkbook workbook=new HSSFWorkbook();
+			    HSSFFont font1= workbook.createFont();
+			    font1.setBoldweight(org.apache.poi.ss.usermodel.Font.BOLDWEIGHT_BOLD);
+			    font1.setItalic(false);
+			    HSSFFont font= workbook.createFont();
+			    font.setBoldweight(org.apache.poi.ss.usermodel.Font.BOLDWEIGHT_BOLD);
+			    font.setItalic(false);
+			    font.setFontHeight((short)240);
+			    HSSFCellStyle style = workbook.createCellStyle();
+			    style.setFont(font1);
+			    style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+			    HSSFCellStyle style1 = workbook.createCellStyle();
+			    style1.setFont(font1);
+			 HSSFSheet sheet =  workbook.createSheet("Report"); 
+		    int row = 0;
+		   if(problemsPresent && !campanionPresent && !activityPresent && !elecIssuesPresent){
+				HSSFRow rowhead=   sheet.createRow((short)row);
+			    Cell cell = rowhead.createCell(0);
+			    if(locationType.longValue() == 1l){
+				   cell.setCellValue("District");
+			    }else{
+			       cell.setCellValue("Constituency");
+			    }
+				 cell.setCellStyle(style);
+				 cell = rowhead.createCell(1);
+				 cell.setCellValue("Public Issues");
+				 cell.setCellStyle(style);
+				
+				 row = row+1;
+				 for(PartyActivitiesVO vo: activitiesList){
+					 rowhead=   sheet.createRow((short)row);
+					 cell = rowhead.createCell(0);
+					 cell.setCellValue(vo.getName());
+					 cell.setCellStyle(style);
+					 cell = rowhead.createCell(1);
+					 cell.setCellValue(vo.getCount());
+					 cell.setCellStyle(style);	
+					 row = row+1;
+				 }
+				
+			}else{		
+				    HSSFRow rowhead=   sheet.createRow((short)row);
+				    Cell cell = rowhead.createCell(0);
+					if(locationType.longValue() == 1l){
+						cell.setCellValue("District");
+						 cell.setCellStyle(style);
+					  if(activityPresent || campanionPresent){
+						  sheet.addMergedRegion(new CellRangeAddress(row,row+2,0,0));	
+					  }else{
+						  sheet.addMergedRegion(new CellRangeAddress(row,row+1,0,0));
+					  }
+					}else{
+						cell.setCellValue("Constituency");
+						 cell.setCellStyle(style);	
+						if(activityPresent || campanionPresent){
+							sheet.addMergedRegion(new CellRangeAddress(row,row+2,0,0));
+						
+						}else{
+							sheet.addMergedRegion(new CellRangeAddress(row,row+1,0,0));
+						
+						}
+					 }
+					int colum =  1;
+					 if(problemsPresent){
+						  cell = rowhead.createCell(colum);
+						  
+						  cell.setCellValue("Public Issues");
+						  cell.setCellStyle(style);
+					   if(activityPresent || campanionPresent){
+						   sheet.addMergedRegion(new CellRangeAddress(row,row+2,colum,colum));
+					   }else{
+						   sheet.addMergedRegion(new CellRangeAddress(row,row+1,colum,colum));
+					   }
+					   colum=colum+1;
+					  }
+					  int colspanLength = 0;
+					  if(campanionPresent){
+						 colspanLength = colspanLength+2;
+					  }
+					  if(activityPresent){
+						 colspanLength = colspanLength+3;
+					  }
+					  if(elecIssuesPresent){
+						 colspanLength = colspanLength+1;
+					  }
+					for(PartyActivitiesVO vo: activitiesList.get(0).getActivitiesList()){
+						  cell = rowhead.createCell(colum);
+						  
+						  cell.setCellValue(vo.getName());
+						  cell.setCellStyle(style);
+						  if(colspanLength > 0){
+						     sheet.addMergedRegion(new CellRangeAddress(row,row,colum,colum+colspanLength-1));
+						     colum=colum+colspanLength;
+						  }else{
+						     colum=colum+1;
+						  }
+					}
+					 row = row+1;
+					 rowhead=   sheet.createRow((short)row);
+					 if(problemsPresent){
+						 colum = 2;
+					 }else{
+						 colum = 1;
+					 }
+					  for(int i = 0; i<activitiesList.get(0).getActivitiesList().size();i++){
+					   
+					   if(activityPresent || campanionPresent){
+						
+						   if(activityPresent){
+							   cell = rowhead.createCell(colum); 
+							   cell.setCellValue("Activities");
+							   cell.setCellStyle(style);
+							   sheet.addMergedRegion(new CellRangeAddress(row,row,colum,colum+2));
+							   colum = colum+3;	     
+						   }
+							if(campanionPresent){
+								   cell = rowhead.createCell(colum); 
+								   cell.setCellValue("Election Campaign");
+								   cell.setCellStyle(style);
+								   sheet.addMergedRegion(new CellRangeAddress(row,row,colum,colum+1));
+								   colum = colum+2;			     
+						   }
+						   if(elecIssuesPresent){
+							   cell = rowhead.createCell(colum); 
+							   cell.setCellValue("Election Issues");
+							   cell.setCellStyle(style);
+							   sheet.addMergedRegion(new CellRangeAddress(row,row+1,colum,colum));
+							   colum = colum+1; 
+						   }					 
+					   }else{
+						   if(elecIssuesPresent){
+							   cell = rowhead.createCell(colum); 
+							   cell.setCellValue("Election Issues");
+							   cell.setCellStyle(style);
+							   colum = colum+1;
+							
+						   }
+					   }
+					  
+					  }
+					 if(activityPresent || campanionPresent){
+						  row = row+1;
+						  rowhead=   sheet.createRow((short)row);
+						  if(problemsPresent){
+								 colum = 2;
+							 }else{
+								 colum = 1;
+							 }
+						  for(int i = 0; i<activitiesList.get(0).getActivitiesList().size();i++){		  
+								   if(activityPresent){
+									   cell = rowhead.createCell(colum); 
+									   cell.setCellValue("Cadre");
+									   cell.setCellStyle(style);
+									   colum = colum+1;
+									   cell = rowhead.createCell(colum); 
+									   cell.setCellValue("MLA/Incharge");
+									   cell.setCellStyle(style);
+									   colum = colum+1;
+									   cell = rowhead.createCell(colum); 
+									   cell.setCellValue("MP/Incharge");
+									   cell.setCellStyle(style);
+									   colum = colum+1;		     
+								   }
+								   if(campanionPresent){
+									   cell = rowhead.createCell(colum); 
+									   cell.setCellValue("MLA/Incharge");
+									   cell.setCellStyle(style);
+									   colum = colum+1;
+									   cell = rowhead.createCell(colum); 
+									   cell.setCellValue("MP/Incharge");
+									   cell.setCellStyle(style);
+									   colum = colum+1;			     
+								   }
+								   if(elecIssuesPresent){
+									   colum = colum+1;
+								   }
+						  }
+			        }
+					for(PartyActivitiesVO locationVO:activitiesList){//itreating locations
+						row = row+1;
+						colum = 0;
+						 rowhead=   sheet.createRow((short)row);
+						   cell = rowhead.createCell(colum); 
+						   cell.setCellValue(locationVO.getName());
+						   colum=colum+1;
+						   if(problemsPresent){
+							   cell = rowhead.createCell(colum); 
+							   cell.setCellValue(locationVO.getCount());
+							   colum=colum+1;
+						   }
+					  for(PartyActivitiesVO partyVO:locationVO.getActivitiesList()){//iterating parties
+						if(activityPresent){
+							for(PartyActivitiesVO activityVO:partyVO.getActivitiesList()){//iterating activities
+								 cell = rowhead.createCell(colum); 
+								 cell.setCellValue(activityVO.getCount());
+								 colum=colum+1;
+							}
+						}
+						if(campanionPresent){
+							for(PartyActivitiesVO elecCampVO:partyVO.getElectionCampanion()){//iterating electionCampanion
+								cell = rowhead.createCell(colum); 
+								 cell.setCellValue(elecCampVO.getCount());
+								 colum=colum+1;
+							}
+						}
+						if(elecIssuesPresent){
+							cell = rowhead.createCell(colum); 
+							 cell.setCellValue(partyVO.getCount());
+							 colum=colum+1;
+						  }
+					  }
+
+					}
+					
+			 }
+		   workbook.write(fileOut);
+			 fileOut.close();
+	   }catch(Exception e){
+		   LOG.error("Exception rised in generateExcelForActivities ",e);
+	   }
+	   finally{
+			if(fileOut != null){
+				 try{
+				  fileOut.close();
+				 }catch(Exception e1){
+						
+				 }
+			}
+		}
+	 return url;
 	}
 }
