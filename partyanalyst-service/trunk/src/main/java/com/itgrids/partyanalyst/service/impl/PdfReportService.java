@@ -18,6 +18,7 @@ import com.itgrids.partyanalyst.dto.OrderOfPriorityVO;
 import com.itgrids.partyanalyst.dto.PanchayatCountVo;
 import com.itgrids.partyanalyst.dto.PartyPositionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.excel.booth.BoothResultVO;
 import com.itgrids.partyanalyst.service.IPdfReportsService;
 
 public class PdfReportService implements IPdfReportsService
@@ -101,7 +102,7 @@ public class PdfReportService implements IPdfReportsService
 		try
 		{
 			LOG.info("Entered into criticalPanchayatsReport in PdfReportService Service");
-			
+			DecimalFormat f = new DecimalFormat("##.##");
 			PdfPTable table = new PdfPTable(4);
 	    	document.add( new Paragraph(" ") );
 	    	document.add( new Paragraph(" ") );
@@ -145,7 +146,7 @@ public class PdfReportService implements IPdfReportsService
 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			table.addCell(c2);
 	  			
-	  			c2 = new PdfPCell(new Phrase(orderOfPriorityVO.getOpportunityPerc().toString(),SMALLFONT));
+	  			c2 = new PdfPCell(new Phrase(f.format(orderOfPriorityVO.getOpportunityPerc()),SMALLFONT));
 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			table.addCell(c2);
 	  			
@@ -175,7 +176,7 @@ public class PdfReportService implements IPdfReportsService
 		try
 		{
 			LOG.info("Entered into criticalPanchaytsReport2 in PdfReportService Service");
-			
+			 
 			PdfPTable table = new PdfPTable(6);
 	    	document.add( new Paragraph(" ") );
 	    	document.add( new Paragraph(" ") );
@@ -261,7 +262,7 @@ public class PdfReportService implements IPdfReportsService
 	  			table.addCell(c2);
 
 			}
-	 	  	
+	 	  	table.setHeaderRows(1);
 	 	  	document.add(table);
 			
 		}
@@ -1074,6 +1075,106 @@ public class PdfReportService implements IPdfReportsService
 		catch (Exception e)
 		{
 			LOG.error("Exception raised in buildPanchaytWiseReport in PdfReportService Service",e);
+		}
+	}
+	
+	public void generatepdfForBoothResult(Document document , List<BoothResultVO> result)
+	{
+		try
+		{
+			LOG.info("Entered into generatepdfForBoothResult in PdfReportService Service");
+			
+			PdfPTable table = new PdfPTable(8);
+	    	document.add( new Paragraph(" ") );
+	    	document.add( new Paragraph(" ") );
+    		PdfPCell cell;
+	 	  	cell = new PdfPCell(new Phrase("Booth Wise Performance ",BIGFONT));
+	 	  	cell.setColspan(8);
+	 	  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+	 	  	cell.setBackgroundColor(BaseColor.YELLOW);
+	 	  	table.addCell(cell);
+	 	  	
+	 	  	PdfPCell c1 = new PdfPCell(new Phrase("Booth No",BIGFONT));
+	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
+	 	  	table.addCell(c1);
+
+	 	  	c1 = new PdfPCell(new Phrase("Location",BIGFONT));
+	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
+	 	  	table.addCell(c1);
+	 	  	
+	 	  	c1 = new PdfPCell(new Phrase("Villages Covered",BIGFONT));
+	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
+	 	  	table.addCell(c1);
+
+	 	  	c1 = new PdfPCell(new Phrase("Mandal",BIGFONT));
+	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
+	 	  	table.addCell(c1);
+	 	  	
+	 	  	c1 = new PdfPCell(new Phrase("Votes Earned",BIGFONT));
+	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
+	 	  	table.addCell(c1);
+	 	  	
+	 	  	c1 = new PdfPCell(new Phrase("Polled Votes",BIGFONT));
+	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
+	 	  	table.addCell(c1);
+	 	  	
+	 	  	c1 = new PdfPCell(new Phrase("Polling %",BIGFONT));
+	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
+	 	  	table.addCell(c1);
+	 	  	
+	 	  	c1 = new PdfPCell(new Phrase("Votes %",BIGFONT));
+	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
+	 	  	table.addCell(c1);
+	 	  	
+	 	  	for (BoothResultVO boothResultVO : result)
+	 	  	{
+	 	  		PdfPCell c2 = new PdfPCell(new Phrase(boothResultVO.getPartNo(),SMALLFONT));
+				c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+	  			table.addCell(c2);
+	  			
+	  			c2 = new PdfPCell(new Phrase(boothResultVO.getLocation(),SMALLFONT));
+	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+	  			table.addCell(c2);
+	  			
+	  			c2 = new PdfPCell(new Phrase(boothResultVO.getVillagesCovered(),SMALLFONT));
+	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+	  			table.addCell(c2);
+	  			
+	  			c2 = new PdfPCell(new Phrase(boothResultVO.getMandal(),SMALLFONT));
+	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+	  			table.addCell(c2);
+	  			
+	  			c2 = new PdfPCell(new Phrase(Long.valueOf(boothResultVO.getVotesEarned()).toString(),SMALLFONT));
+	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+	  			table.addCell(c2);
+	  			
+	  			c2 = new PdfPCell(new Phrase(Long.valueOf(boothResultVO.getVotesEarned()).toString(),SMALLFONT));
+	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+	  			table.addCell(c2);
+	  			
+	  			c2 = new PdfPCell(new Phrase(boothResultVO.getPollingPercentage().toString(),SMALLFONT));
+	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+	  			table.addCell(c2);
+	  			
+	  			c2 = new PdfPCell(new Phrase(boothResultVO.getPercentage().toString(),SMALLFONT));
+	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+	  			table.addCell(c2);
+			}
+	 	  	
+	 	  	table.setHeaderRows(1);
+	 	  	document.add(table);
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in generatepdfForBoothResult in PdfReportService Service",e);
 		}
 	}
 	

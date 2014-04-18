@@ -6,6 +6,7 @@ import com.itextpdf.text.Document;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.PartyPositionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.excel.booth.BoothResultVO;
 
 public interface IPdfReportsService 
 {
@@ -21,5 +22,7 @@ public interface IPdfReportsService
 	public void voterAvgAgeReport(Document document,SelectOptionVO result);
 	
 	public void buildPanchaytWiseReport(Document document,List<PartyPositionVO> result);
+	
+	public void generatepdfForBoothResult(Document document , List<BoothResultVO> result);
 	
 }

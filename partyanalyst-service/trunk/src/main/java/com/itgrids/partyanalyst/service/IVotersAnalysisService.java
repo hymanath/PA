@@ -340,7 +340,7 @@ public interface IVotersAnalysisService {
 	 public List<SelectOptionVO> getDistrictsList(Long stateId);
 	 
 	 public List<SelectOptionVO> getPublicationList();
-	 public SelectOptionVO getCountList1(Long id,Long publicationDateId,String type);
+	 public SelectOptionVO getCountList1(Long id,Long publicationDateId,String type,String path);
 	 
 	 public List<VoterHouseInfoVO> getVotersOfSearchedCriteria(String voterCardNo,String voterName,Long constituencyId,Long publicationId);
 	 public ResultStatus insertVoterDataIntoVoterNamesTemp(Long constituencyId);
