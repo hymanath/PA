@@ -35,6 +35,13 @@ IUserVoterDetailsDAO{
 		
 	}
 	
+	public UserVoterDetails getUserVoterDetailsByUserIdAndVoterId(Long userId,Long voterId){
+		Query query = getSession().createQuery("select model from UserVoterDetails model where model.voter.voterId = :voterId and model.user.userId = :userId");
+		query.setParameter("userId",voterId);
+		query.setParameter("voterId",userId);
+		return (UserVoterDetails) query.uniqueResult();
+	}
+	
 	public List<Object[]> getUserVoterDetailsByVoterIds(List<Long> voterIds,Long userId){
 		
 		Query query = getSession().createQuery("select model.voter.voterId , model.party.shortName," +
@@ -2909,6 +2916,16 @@ IUserVoterDetailsDAO{
 		return query.list();
 	}
 
+	public Integer updateVoterCasteByPrediction(Long userId,Long casteStateId,Long casteInsertTypeId,List<Long> voterIdsList)
+	{
+		Query query = getSession().createQuery("update UserVoterDetails model set model.casteState.casteStateId = :casteStateId,model.casteInsertType.casteInsertTypeId = :casteInsertTypeId where " +
+				" model.user.userId = :userId and model.voter.voterId in (:voterIdsList) and model.casteState is null "); 
+		query.setParameter("userId",userId);
+		query.setParameter("casteStateId",casteStateId);
+		query.setParameter("casteInsertTypeId",casteInsertTypeId);
+		query.setParameterList("voterIdsList",voterIdsList);
+		return query.executeUpdate();
+	}
 	
 	public List<Object[]> getCasteForVoter(List<Long> voterIds)
 	{
