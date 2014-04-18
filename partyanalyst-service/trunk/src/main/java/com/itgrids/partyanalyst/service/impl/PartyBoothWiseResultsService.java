@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,7 +17,12 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
@@ -54,6 +61,7 @@ import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
+import com.itgrids.partyanalyst.service.IPdfReportsService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.ElectionResultTypeComparator;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -74,6 +82,9 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 	private IBoothConstituencyElectionDAO boothConstituencyElectionDAO;
 	private IStaticDataService staticDataService;
 	private ITehsilDAO tehsilDAO;
+	
+	@Autowired
+	IPdfReportsService pdfReportsService ;
 	
 	public ITehsilDAO getTehsilDAO() {
 		return tehsilDAO;
@@ -1478,7 +1489,7 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 		return sb.toString().substring(1);
 	}
 	
-	public PartyBoothPerformanceVO getVotingPercentageWiseBoothResult(PartyBoothPerformanceVO performanceVO,boolean isPollingPercentage)
+	public PartyBoothPerformanceVO getVotingPercentageWiseBoothResult(PartyBoothPerformanceVO performanceVO,boolean isPollingPercentage,String path)
 	{
 		try
 		{
@@ -1669,6 +1680,45 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 		catch(Exception e){
 			log.error("Exception occured at "+e);
 		}
+			if(path != null)
+			{
+				if(performanceVO != null)
+				{
+					Document document = null;
+					  try
+					  {
+						   document = new Document();
+	
+			    			//Object[] values = constituencyDAO.constituencyName(constituencyId).get(0);
+			    	    	String constituenyName =performanceVO.getConstituencyName().toUpperCase();
+			    	    	//String districtName = values[1].toString().toUpperCase();
+			    	    	//Long constituenyNo = delimitationConstituencyDAO.getConstituencyNo(constituencyId,2009l);
+			    		    String filePath = "VMR"+"/"+constituenyName+" Booth Result.pdf";
+			    		    String FILE = path+filePath;
+			    		    File file  = new File(FILE);
+			    		    file.createNewFile();
+			    		    PdfWriter.getInstance(document, new FileOutputStream(FILE));
+			    			document.open();
+			    			pdfReportsService.generatepdfForBoothResult(document,performanceVO.getBoothResults());
+			    			document.close();
+
+			    			
+			    			performanceVO.setUrl(filePath);
+			    			
+					  } 
+					  catch (Exception e)
+					  {
+						
+					  }
+					  finally
+					  {
+						  if(document != null)
+						  document.close();
+					  }
+				}
+			
+				  
+			}
 		return performanceVO;
 	}
 	

@@ -45,7 +45,7 @@ public interface ISuggestiveModelService {
 	
 	public List<SelectOptionVO> getCasteAvaliableConstituencysService(List<SelectOptionVO> ConstituenciesForUserAccessed,Long electionId,Long electionYear,Long userId);
 	
-	public List<PartyPositionVO> getPollingPercentagesByParty(Long constituenycId,Long partyId,Long electionId,Long electionId1);
+	public List<PartyPositionVO> getPollingPercentagesByParty(Long constituenycId,Long partyId,Long electionId,Long electionId1,String path);
 	 
 	 public List<VoterVO> getAddedVotersDetailsByPartNo(Long ConstituencyId,Long partNo,Integer startIndex,Integer maxIndex);
 
@@ -71,7 +71,7 @@ public interface ISuggestiveModelService {
 	 public List<VoterHouseInfoVO> getFamilyDetailsForConstituency(Long constituencyId,Long publicationId,Long minValue,Long maxValue,Integer startIndex,Integer maxIndex,Long userId,String path,String selType);
 	 
 	// public List<VoterHouseInfoVO> getFamilyDetailsForConstituency(Long constituencyId,Long publicationId,Long minValue,Long maxValue,Integer startIndex,Integer maxIndex,String path);
-	 public List<PartyPositionVO> getPartyPerfromanceStratagicReport(Long constituencyId,Long partyId,Long electionId);
+	 public List<PartyPositionVO> getPartyPerfromanceStratagicReport(Long constituencyId,Long partyId,Long electionId,String path);
 	 public List<SelectOptionVO> getCriticalPanchayatConstituencies();
 	 public List<VoterHouseInfoVO> getFamilyDetailsForPanchayat(VoterVO votervo,Long userId,String path);
 	 

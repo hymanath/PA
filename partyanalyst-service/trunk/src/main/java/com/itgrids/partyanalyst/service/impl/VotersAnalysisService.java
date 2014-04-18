@@ -21221,7 +21221,7 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 		  }
 	  }
 
-	  public SelectOptionVO getCountList1(Long publicationDateId,Long id,String type)
+	  public SelectOptionVO getCountList1(Long publicationDateId,Long id,String type,String path)
 	  {
 		  SelectOptionVO result = new SelectOptionVO();
 		  List<Object[]> mandalwiseDetails = null;
@@ -21270,8 +21270,8 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 			    	String constituenyName = values[0].toString().toUpperCase();
 			    	String districtName = values[1].toString().toUpperCase();
 			    	Long constituenyNo = delimitationConstituencyDAO.getConstituencyNo(id,2009l);
-			    	String path = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\";
-				    String filePath = "VMR"+"/"+""+districtName+"_"+constituenyNo+"_"+constituenyName+".pdf";
+			    	//String path = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\";
+				    String filePath = "VMR"+"/"+""+districtName+"_"+constituenyNo+"_"+constituenyName+" Voter Avg Age Report.pdf";
 				    String FILE = path+filePath;
 				    File file  = new File(FILE);
 				    try {

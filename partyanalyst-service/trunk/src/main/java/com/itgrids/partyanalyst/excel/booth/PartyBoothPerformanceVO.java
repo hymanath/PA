@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.excel.booth;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
-public class PartyBoothPerformanceVO {
+public class PartyBoothPerformanceVO implements Serializable{
 	
 	private String partyName;
 	private String candidateName;
@@ -27,6 +28,7 @@ public class PartyBoothPerformanceVO {
 	private Long rank;
 	private List wonCandidate;
 	private Long marginVotes;
+	private String url;
 	
 	
 	public PartyBoothPerformanceVO(String partyName, String candidateName,
@@ -211,4 +213,17 @@ public class PartyBoothPerformanceVO {
 		this.partyPerWiseboothResults = partyPerWiseboothResults;
 	}
 
+
+
+	public String getUrl() {
+		return url;
+	}
+
+
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	
 }

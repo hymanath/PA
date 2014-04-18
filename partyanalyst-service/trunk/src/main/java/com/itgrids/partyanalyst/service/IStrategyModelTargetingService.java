@@ -44,9 +44,9 @@ public interface IStrategyModelTargetingService {
 	
 	 public void buildChartForPartyPerformanceReort(Document document,List<PartyPositionVO> list,PdfWriter writer,String heading);
 	 
-	 public EffectedBoothsResponse getPanchayatCategoriesForInfectedBooths(Long constituencyId);
+	 public EffectedBoothsResponse getPanchayatCategoriesForInfectedBooths(Long constituencyId,String path);
 	 
-	 public List<Object> getCriticalPanchayats(Long constituencyId);
+	 public List<Object> getCriticalPanchayats(Long constituencyId,String path);
 	 
 	 public List<PartyPositionVO> getPartyPreviousTrends(StrategyVO strategyVO,Long constituencyId,Long partyId,List<Long> electionIds,Map<Long,PartyEffectVO> partyEffect,Long effectPartyId,Long effectElectionId,Map<Long,Double> currentResult);	
 	 

@@ -2079,7 +2079,7 @@ public class StrategyModelTargetingService implements
 		   List<PartyPositionVO> list = null;
 		   try {
 			  if(partyPerformanceReq){
-			    list = suggestiveModelService.getPartyPerfromanceStratagicReport(strategyVO.getConstituencyId(),872l,strategyVO.getEffectElectionId());
+			    list = suggestiveModelService.getPartyPerfromanceStratagicReport(strategyVO.getConstituencyId(),872l,strategyVO.getEffectElectionId(),null);
 			  }
 		} catch (Exception e) {
 			
@@ -3822,7 +3822,7 @@ public class StrategyModelTargetingService implements
 			}
 		
 		}
-	public List<Object> getCriticalPanchayats(Long constituencyId){
+	public List<Object> getCriticalPanchayats(Long constituencyId,String path){
 		StrategyVO strategyVO = getStrategyArguments(constituencyId);
 		List<Object> criticalPanchayats = new ArrayList<Object>();
 		List<Object> priorityList = getPrioritiesToTarget(strategyVO,false);
@@ -3838,8 +3838,8 @@ public class StrategyModelTargetingService implements
 		    	String constituenyName = values[0].toString().toUpperCase();
 		    	String districtName = values[1].toString().toUpperCase();
 		    	Long constituenyNo = delimitationConstituencyDAO.getConstituencyNo(constituencyId,2009l);
-		    	String path = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\";
-			    String filePath = "VMR"+"/"+""+districtName+"_"+constituenyNo+"_"+constituenyName+".pdf";
+		    	//String path = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\";
+			    String filePath = "VMR"+"/"+""+districtName+"_"+constituenyNo+"_"+constituenyName+" criticalPanchayats.pdf";
 			    String FILE = path+filePath;
 			    File file  = new File(FILE);
 			    try {
@@ -3908,7 +3908,7 @@ public class StrategyModelTargetingService implements
 				
 				return strategyVO;
 	}
-		public EffectedBoothsResponse getPanchayatCategoriesForInfectedBooths(Long constituencyId){
+		public EffectedBoothsResponse getPanchayatCategoriesForInfectedBooths(Long constituencyId,String path){
 			StrategyVO strategyVO=new StrategyVO();
 			Map<Long,PartyEffectVO> partyEffect = new HashMap<Long,PartyEffectVO>();
 			Map<Long,Double> currentResult = new HashMap<Long,Double>();
@@ -4078,8 +4078,8 @@ public class StrategyModelTargetingService implements
 			    	String constituenyName = values[0].toString().toUpperCase();
 			    	String districtName = values[1].toString().toUpperCase();
 			    	Long constituenyNo = delimitationConstituencyDAO.getConstituencyNo(constituencyId,2009l);
-			    	String path = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\";
-				    String filePath = "VMR"+"/"+""+districtName+"_"+constituenyNo+"_"+constituenyName+".pdf";
+			    	//String path = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\";
+				    String filePath = "VMR"+"/"+""+districtName+"_"+constituenyNo+"_"+constituenyName+" Infected Booths.pdf";
 				    String FILE = path+filePath;
 				    File file  = new File(FILE);
 				    try {
