@@ -58,7 +58,7 @@ public class VoterNamesTemp extends BaseModel implements Serializable{
 		this.voterNamesTempId = voterNamesTempId;
 	}
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "Ac_No")
+	@JoinColumn(name = "AC_ID")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Constituency getConstituency() {
