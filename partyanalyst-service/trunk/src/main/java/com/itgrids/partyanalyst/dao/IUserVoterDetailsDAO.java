@@ -339,4 +339,8 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	public List<Object[]> getVoterHnoAndBoothsForPanchayatList(List<Long> panchayatIdsList,Long publicationId);
 	
 	public List<Object[]> getCasteForVoterList(List<Long> voterIds,Long userId);
+	
+	public Integer updateVoterCasteByPrediction(Long userId,Long casteStateId,Long casteInsertTypeId,List<Long> voterIdsList);
+	
+	public UserVoterDetails getUserVoterDetailsByUserIdAndVoterId(Long userId,Long voterId);
 }
