@@ -261,6 +261,7 @@
 		<pattern>/articleAction*</pattern>
 		<pattern>/politicalActivitiesAction*</pattern>
 		<pattern>/activitiesAnalysisAction*</pattern>
+		<pattern>/keyWordsMergeAction*</pattern>
     	 </decorator>
 
 </decorators>

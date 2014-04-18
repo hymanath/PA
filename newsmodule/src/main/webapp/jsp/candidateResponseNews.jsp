@@ -201,7 +201,7 @@ function buildPaginatedNews(results,jsObj)
 		  if(length-1 != j)
 			str +=',';
 		} */
-		str +='</p></td><td style="vertical-align: top;width:37%;"><p><span class="text-error" style="margin-left: 45px;font-weight: bold;">Date :</span> '+results[i].fileDate+'</p></td><td style="vertical-align: top;width:33%;"><p ><span class="text-error" style="font-weight: bold; margin-left: 15px;"><img alt="response count" title="Response Count" src="images/responseCountIcon.png" id="responseNewsCountImg" /> </span>'+results[i].responseCount+'</p></td></tr>';
+		str +='</p></td><td style="vertical-align: top;width:37%;"><p><span class="text-error" style="margin-left: 45px;font-weight: bold;">Date :</span> '+results[i].fileDate+'</p></td><td style="vertical-align: top;width:33%;"><p ><span class="text-error" style="font-weight: bold; margin-left: 15px;"><a href="showNewsResponseAction.action?responseContentId ='+results[i].contentId+'"><img alt="response count" title="Response Count" src="images/responseCountIcon.png" id="responseNewsCountImg" /></a> </span>'+results[i].responseCount+'</p></td></tr>';
 		if(results[i].candidateName != null && results[i].candidateName != "")
 		str +='<td colspan="2" style="vertical-align: top;width:37%;"><p><span class="text-error" style="font-weight: bold;">Candidate(s) involved :</span> '+results[i].candidateName+'</p></td>';
 		

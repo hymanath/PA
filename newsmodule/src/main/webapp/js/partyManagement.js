@@ -3732,7 +3732,7 @@ function getTotalNewsWithPagination()
 		var fileId = oRecord.getData("fileId");
 		
 		if(responseFileIdsArray.indexOf(""+fileId+"") != -1)
-		 str +="<input type='checkbox' class='newsResponseCheckId' onchange='cleareErrDiv2(); value='"+fileId+"' checked='checked'/>";
+		 str +="<input type='checkbox' class='newsResponseCheckId' onchange='cleareErrDiv2();' value='"+fileId+"' checked='checked'/>";
 		else
 		 str +="<input type='checkbox' class='newsResponseCheckId' onchange='cleareErrDiv2();'  value='"+fileId+"' />";
 		elLiner.innerHTML=str;

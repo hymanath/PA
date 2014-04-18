@@ -110,6 +110,7 @@ color:#333333;
 </head>
 <body>
  <div class="container">
+  <legend class="boxHeading text-center">Political Activities Analysis</legend>
   <div id="errorMsgDiv"></div>
   <div class="span12">
    <div class="span3" style="margin-left:240px;"><label style="float: left;"><strong>Start Date<span class="requiredFont">*</span></strong></label><input type="text" name="fromDate" class="inpit-block-level  dateField" id="newsFromDateId" readonly="true"/></div>

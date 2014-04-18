@@ -1797,5 +1797,9 @@
    		<property name="partyDAO" ref="partyDAO" />
    		<property name="candidatePartyCategoryDAO" ref="candidatePartyCategoryDAO" />
    </bean>
+   
+    <bean name="keywordsService" class="com.itgrids.partyanalyst.service.impl.KeywordsService">
+   		<property name="keywordDAO" ref="keywordDAO" />  		
+   </bean>
 </beans>		
 	

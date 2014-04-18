@@ -821,7 +821,7 @@ if(resultMap != null)
 	str += "</table>";
 	str += "</div></br>";
 	str += "<div class='span2 ' style='float:right'><br>";
-	str += "<a href='newsPaginationAction.action?level=state'>";
+	str += "<a href='newsPaginationAction.action?level=district'>";
 	str += "<button class='btn btn-mini pull-right' type='button'  style='margin-top: -20px; margin-bottom: 15px;margin-right: 25px;'>More...</button>";
 	str += "</a>";
 	str += "</div>";
