@@ -26,6 +26,7 @@ import org.hibernate.annotations.NotFoundAction;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class VoterNames extends BaseModel implements Serializable{
 	
+	private static final long serialVersionUID = 8830553612367452799L;
 	private Long voterNamesId;
 	private Voter voter;
 	private Language language;
@@ -33,7 +34,7 @@ public class VoterNames extends BaseModel implements Serializable{
 	private String lastName;
 	private String relativeFirstName;
 	private String relativeLastName;
-	
+	private Long voterId;
 	
 	public VoterNames()
 	{
@@ -53,7 +54,7 @@ public class VoterNames extends BaseModel implements Serializable{
 	}
 
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "voterNames")
-	@JoinColumn(name = "voter_names_id")
+	@JoinColumn(name = "voter_names_id",updatable = false, insertable = false)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Voter getVoter() {
 		return voter;
@@ -114,6 +115,15 @@ public class VoterNames extends BaseModel implements Serializable{
 
 	public void setRelativeLastName(String relativeLastName) {
 		this.relativeLastName = relativeLastName;
+	}
+
+	@Column(name = "voter_id")
+	public Long getVoterId() {
+		return voterId;
+	}
+
+	public void setVoterId(Long voterId) {
+		this.voterId = voterId;
 	}
 	
 	
