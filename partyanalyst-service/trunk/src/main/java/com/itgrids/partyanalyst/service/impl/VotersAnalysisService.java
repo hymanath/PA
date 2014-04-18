@@ -21511,74 +21511,98 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 	  public ResultStatus insertVoterDataIntoVoterNamesTemp(Long constituencyId)
 	  {
 		  ResultStatus result = new ResultStatus();
-		  List<VoterVO> list = new ArrayList<VoterVO>();
-		  List<String> voterIdCardNos = new ArrayList<String>();
-		  Map<String,Long> voteIdMap = new HashMap<String, Long>();
-		  Integer maxIndex = 5000;
-		  Integer startIndex = 0;
-		  Long voterCount =  voterNamesTempDAO.getVotersCountACNO(constituencyId);  
+		  try{
+			  List<VoterVO> list = new ArrayList<VoterVO>(0);
+			  List<String> voterIdCardNos = new ArrayList<String>();
+			  Map<String,Long> voteIdMap = new HashMap<String, Long>();
+			  
+			  Integer maxIndex = 1000;
+			  Integer startIndex = 0;
+			  
+			  Long voterCount =  voterNamesTempDAO.getVotersCountACNO(constituencyId);  
+		  
 			  if(voterCount > 0)
-				 {
-					 for(;;)
-					 {
-						 try{
-							if(startIndex >= Integer.valueOf(voterCount.intValue())-1)
-									break;
-							if(maxIndex >= Integer.valueOf(voterCount.intValue()))
-									maxIndex = Integer.valueOf(voterCount.intValue()) - 1;
-				  List<VoterNamesTemp> voterTemp =voterNamesTempDAO.getVotersByACNO(startIndex,maxIndex,constituencyId);
-				  if(voterTemp != null && voterTemp.size() > 0)
+			  {
+				  for(;;)
 				  {
-					 for(VoterNamesTemp data : voterTemp) 
-					 {
-						 if(!voterIdCardNos.contains(data.getVoterIdCardNo()))
-						 voterIdCardNos.add(data.getVoterIdCardNo()); 
-						 VoterVO vo = new VoterVO();
-						 vo.setFirstName(data.getFirstName());
-						 vo.setName(data.getLastName() != null ? data.getLastName().toString() : "");
-						 vo.setRelativeFirstName(data.getRelativeFirstName() != null ?data.getRelativeFirstName() : "");
-						 vo.setRelativeLastName(data.getRelativeLastName() != null ? data.getRelativeLastName(): "");
-						 vo.setVoterIDCardNo(data.getVoterIdCardNo());
-						 list.add(vo);
-						 
-					 }
-				  }
-				  if(voterIdCardNos != null && voterIdCardNos.size() > 0)
-				  {
-					  List<Object[]> voterIds = voterDAO.getVoterIdCardNo(voterIdCardNos);
-					  if(voterIds != null && voterIds.size() > 0)
-					  {
-						  for(Object[] params : voterIds)
-						  voteIdMap.put(params[0].toString(),(Long)params[1]);  
-					  }
-				  }
-				  if(list != null && list.size() > 0)
-				  {
-					  for(VoterVO voter : list)
-					  {
-						  VoterNames voterNames = new VoterNames();
-						  voterNames.setFirstName(voter.getFirstName().trim());
-						  voterNames.setLastName(voter.getName().trim());
-						  voterNames.setRelativeFirstName(voter.getRelativeFirstName().trim());
-						  voterNames.setRelativeLastName(voter.getRelativeLastName().trim());
-						  voterNames.setLanguage(languageDAO.get(3l));
-						  voterNames.setVoter(voterDAO.get(voteIdMap.get(voter.getVoterIDCardNo())));
-						  voterNamesDAO.save(voterNames);
-					  }
-					  result.setResultCode(ResultCodeMapper.SUCCESS);
-				  }
-				 
-					 startIndex = startIndex + 5000;
-					 maxIndex = maxIndex + 5000;
+					try{
+					if(startIndex >= Integer.valueOf(voterCount.intValue())-1)
+						break;
+					if(maxIndex >= Integer.valueOf(voterCount.intValue()))
+						maxIndex = Integer.valueOf(voterCount.intValue()) - 1;
 				  
-			 }
-					 catch (Exception e) {
-					  log.error(" Exception Occured in insertVoterDataIntoVoterNamesTemp() method, Exception - "+e);
-					  result.setResultCode(ResultCodeMapper.FAILURE);
-					 return result;
+					List<VoterNamesTemp> voterTemp = voterNamesTempDAO.getVotersByACNO(startIndex,1000,constituencyId);
+				  
+					if(voterTemp != null && voterTemp.size() > 0)
+					{
+						for(VoterNamesTemp data : voterTemp) 
+						{
+							if(!voterIdCardNos.contains(data.getVoterIdCardNo()))
+								voterIdCardNos.add(data.getVoterIdCardNo());
+						 
+							VoterVO vo = new VoterVO();
+							vo.setFirstName(data.getFirstName());
+							vo.setName(data.getLastName() != null ? data.getLastName().toString() : "");
+							vo.setRelativeFirstName(data.getRelativeFirstName() != null ?data.getRelativeFirstName() : "");
+							vo.setRelativeLastName(data.getRelativeLastName() != null ? data.getRelativeLastName(): "");
+							vo.setVoterIDCardNo(data.getVoterIdCardNo());
+							list.add(vo);
+						}
 					}
-			}
-		   }
-			return result;
-		 }
+					
+					if(voterIdCardNos != null && voterIdCardNos.size() > 0)
+					{
+						List<Object[]> voterIds = voterDAO.getVoterIdCardNo(voterIdCardNos);
+						if(voterIds != null && voterIds.size() > 0)
+						{
+							for(Object[] params : voterIds)
+								voteIdMap.put(params[0].toString(),(Long)params[1]);  
+						}
+					}
+				  
+					if(list != null && list.size() > 0)
+					{
+						for(VoterVO voter : list)
+						{
+							try{
+							VoterNames voterNames = null;
+							voterNames = voterNamesDAO.gerVoterNamesObjByVoterId(voteIdMap.get(voter.getVoterIDCardNo()));
+						  
+							if(voterNames == null)
+								voterNames = new VoterNames();
+						  
+							voterNames.setFirstName(voter.getFirstName().trim());
+							voterNames.setLastName(voter.getName().trim());
+							  voterNames.setRelativeFirstName(voter.getRelativeFirstName().trim());
+							  voterNames.setRelativeLastName(voter.getRelativeLastName().trim());
+							  voterNames.setLanguage(languageDAO.get(3l));
+							  voterNames.setVoterId(voteIdMap.get(voter.getVoterIDCardNo()));
+							  voterNamesDAO.save(voterNames);
+							}catch(Exception e)
+							{
+								log.error(e);
+							}
+						}
+					}
+				 
+					startIndex = startIndex + 1000;
+					maxIndex = maxIndex + 1000;
+				  
+					}catch (Exception e)
+					{
+						log.error(" Exception Occured in insertVoterDataIntoVoterNamesTemp() method, Exception - "+e);
+						result.setResultCode(ResultCodeMapper.FAILURE);
+						return result;
+					}
+				 }
+			  }
+			  result.setResultCode(ResultCodeMapper.SUCCESS);
+			  return result;
+		  }catch(Exception e)
+		  {
+			  log.error(e);
+			  result.setResultCode(ResultCodeMapper.FAILURE);
+			  return result;
+		  }
+		}
 }
