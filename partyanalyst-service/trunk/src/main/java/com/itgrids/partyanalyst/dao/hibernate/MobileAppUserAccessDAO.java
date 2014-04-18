@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -21,9 +20,9 @@ public class MobileAppUserAccessDAO extends GenericDaoHibernate<MobileAppUserAcc
 	@SuppressWarnings("unchecked")
 	public List<Object> getAuthorisedRecords(String uniqueCode,String macAddressId)
 	{
-		Object[] params = {uniqueCode,macAddressId};
+		Object[] params = {uniqueCode};
 		return getHibernateTemplate().find("select model.mobileAppUserAccessId from MobileAppUserAccess model where model.mobileAppUser.uniqueCode =? and " +
-				"model.isAuthorised ='"+IConstants.TRUE+"' and  model.macAddress=?",params);
+				"model.isAuthorised ='"+IConstants.TRUE+"'",params);
 	}
 	
 	
