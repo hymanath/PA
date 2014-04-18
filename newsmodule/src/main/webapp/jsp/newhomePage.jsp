@@ -1663,7 +1663,8 @@ $(".candidateRadioCls").click(function(){
 		 $("#candidateToText").val('');
 		 $("#categoryShowHideDiv").css("display","block");
 		clearOptionsListForSelectElmtId('candidateCategoryId');
-      $("#candidatesListId").val("0");
+		getCandidateSubcategories();
+      //$("#candidatesListId").val("0");
 
 	}
 
@@ -1673,7 +1674,8 @@ $(".candidateRadioCls").click(function(){
 		 $("#candidateToText").val('');
 		 $("#categoryShowHideDiv").css("display","block");
 	       clearOptionsListForSelectElmtId('candidateCategoryId');
-         $("#candidatesListId").val("0");
+	   	   getCandidateKeywords();
+         //$("#candidatesListId").val("0");
 	}
 	
 	});

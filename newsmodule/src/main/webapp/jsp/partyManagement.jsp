@@ -688,7 +688,7 @@ function createNewParty()
 								<li><a data-toggle="tab" id="newKeywordBtn" style="cursor:pointer;color: #005580;" onclick="createPartyKeywordDiv();">Create New Keyword</a></li>
 							</li>
 							<li>
-								<a data-toggle="tab" id="mergeKeywordBtn" style="cursor:pointer;color: #005580;" onClick="createPartyKeywordDiv();reFreshKeywordList();"> Merge Keywords </a>
+								<a data-toggle="tab"  style="cursor:pointer;color: #005580;" onClick="openMergeKeywordWindow();"> Merge Keywords </a>
 							</li>
 							<li>
 								<a data-toggle="tab" id="mergeKeywordBtn" style="cursor:pointer;color: #005580;" onClick="getKeywordsByCount()"> View Keyword Wise Total News </a>
@@ -4349,6 +4349,9 @@ function getStatesForSpecialPage(index)
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "candidatePhotoGallaryAction.action?"+rparam;						
 	callAjax(jsObj,url);
+}
+function openMergeKeywordWindow(){
+	window.open("keyWordsMergeAction.action");
 }
 </script>
 </body>

@@ -119,4 +119,7 @@
 		<property name="partyActivitiesService" ref="partyActivitiesService"/>
 		<property name="staticDataService" ref="staticDataService"/>				
 	</bean>
+	<bean id="keywordMergeAction" class="com.itgrids.partyanalyst.web.action.KeywordMergeAction" singleton="false">
+	 <property name="keywordsService" ref="keywordsService"/>			
+	</bean>	
 	</beans>

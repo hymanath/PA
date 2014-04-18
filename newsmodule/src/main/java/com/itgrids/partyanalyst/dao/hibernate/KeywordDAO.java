@@ -71,4 +71,30 @@ public class KeywordDAO extends GenericDaoHibernate<Keyword, Long> implements IK
 		 
 		 return query.list();
 	}
+	
+	public List<Object[]> getAllKeywordsList(String searchStr,Integer startIndex,Integer maxIndex){
+		StringBuilder queryStr = new StringBuilder(" select model.keywordId,model.type from Keyword model ");
+		
+		if(searchStr != null && searchStr.trim().length() > 0){
+			queryStr.append(" where  model.type like '%"+searchStr+"%' ");
+		}
+		queryStr.append(" order by model.type ");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxIndex);
+		 return query.list();
+	}
+	
+	public Long getAllKeywordsCount(String searchStr){
+		
+        StringBuilder queryStr = new StringBuilder(" select count(*) from Keyword model   ");
+		
+		if(searchStr != null && searchStr.trim().length() > 0){
+			queryStr.append(" where  model.type like '%"+searchStr+"%' ");
+		}
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		 return (Long)query.uniqueResult();
+	}
 }
