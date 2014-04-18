@@ -119,12 +119,20 @@ public class CastePredictionService implements ICastePredictionService {
 		ResultStatus resultStatus = new ResultStatus();
 		try{
 			List<Long> voterIdsList = new ArrayList<Long>(0);
-			List<Integer> voterIdsResultList = predictedVoterCasteDAO.getVoterIdsFromCastePrediction(userId,casteStateId,firstRecord,maxRecords);
+			/*List<Integer> voterIdsResultList = predictedVoterCasteDAO.getVoterIdsFromCastePrediction(userId,casteStateId,firstRecord,maxRecords);
 			
 			if(voterIdsResultList != null && voterIdsResultList.size() > 0)
 			{
 				for(Integer resultId : voterIdsResultList)
 					voterIdsList.add(resultId.longValue());
+			}*/
+			
+			List<Long> voterIdsResultList = predictedVoterCasteDAO.getVoterIdsFromCastePredictionForACaste(casteStateId,firstRecord,maxRecords);
+			
+			if(voterIdsResultList != null && voterIdsResultList.size() > 0)
+			{
+				for(Long resultId : voterIdsResultList)
+					voterIdsList.add(resultId);
 			}
 			
 			if(voterIdsList != null && voterIdsList.size() > 0)
@@ -154,6 +162,9 @@ public class CastePredictionService implements ICastePredictionService {
 						LOG.info("Unmatched Voters --> "+updated);
 					}
 					
+					int updatedCount = userVoterDetailsDAO.updateVoterCasteByPrediction(userId, casteStateId,2l,voterIdsListTemp);
+					LOG.info("Updated Votrs - "+updatedCount);
+					
 					List<Long> availableVotersList = userVoterDetailsDAO.getAvailableVoterIdsList(userId, casteStateId, voterIdsListTemp);
 					final List<Long> insertVoterIdsList = new ArrayList<Long>(0);
 					
@@ -173,14 +184,26 @@ public class CastePredictionService implements ICastePredictionService {
 						for(Long voterId : insertVoterIdsList)
 						{
 							try{
-								
-							UserVoterDetails userVoterDetails = new UserVoterDetails();
-							userVoterDetails.setCasteInsertType(casteInsertType);
-							userVoterDetails.setUser(user);
-							userVoterDetails.setCasteState(casteState);
-							userVoterDetails.setVoter(voterDAO.get(voterId));
-							if(userVoterDetails.getVoter() != null)
+							
+							UserVoterDetails userVoterDetails = null;
+							userVoterDetails = userVoterDetailsDAO.getUserVoterDetailsByUserIdAndVoterId(userId,voterId); 
+							
+							if(userVoterDetails == null)
+							{
+								userVoterDetails = new UserVoterDetails();
+								userVoterDetails.setCasteInsertType(casteInsertType);
+								userVoterDetails.setUser(user);
+								userVoterDetails.setCasteState(casteState);
+								userVoterDetails.setVoter(voterDAO.get(voterId));
+								if(userVoterDetails.getVoter() != null)
+									userVoterDetailsDAO.save(userVoterDetails);
+							}
+							else if(userVoterDetails.getCasteState() == null)
+							{
+								userVoterDetails.setCasteState(casteState);
+								userVoterDetails.setCasteInsertType(casteInsertType);
 								userVoterDetailsDAO.save(userVoterDetails);
+							}
 							}catch(Exception e)
 							{
 								LOG.error(e);
