@@ -297,6 +297,8 @@ str += '</div>';
 
 document.getElementById('innerDiv').innerHTML = str;
 $("#innerDiv").show();
+
+window.open(results.url);
 }
 
 </script>

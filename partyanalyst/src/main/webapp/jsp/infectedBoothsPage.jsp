@@ -166,6 +166,7 @@ input, button, select, textarea {
 			}else{
 			$("#infectedBoothsId").html("<br/><legend>No Panchayats Available</legend>");
 			}
+			window.open(result.url);
 		}
 		
 		function sortAscending(data_A, data_B)

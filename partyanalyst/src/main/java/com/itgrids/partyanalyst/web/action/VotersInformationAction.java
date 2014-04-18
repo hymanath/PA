@@ -13,7 +13,6 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.service.IVotersInformationService;
 import com.itgrids.partyanalyst.util.IWebConstants;
@@ -169,8 +168,8 @@ public class VotersInformationAction extends ActionSupport implements ServletReq
 			Long publicationDateId = 8L;
 			String type = "constituency";
 			Long tehsilId = 0L;
-			
-			countList = votersAnalysisService.getCountList1(publicationDateId,constituencyId,type);
+			String path = IWebConstants.STATIC_CONTENT_FOLDER_URL;
+			countList = votersAnalysisService.getCountList1(publicationDateId,constituencyId,type,path);
 			 //votersInfo = votersAnalysisService.getVotersCount(userId,type,jObj.getLong("id"),jObj.getLong("publicationDateId"),constituencyId,res);
 			}catch (Exception e) {
 				e.printStackTrace();

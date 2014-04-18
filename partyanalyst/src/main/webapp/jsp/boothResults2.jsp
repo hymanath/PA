@@ -295,7 +295,9 @@ a, .reg-form li a:hover, a.change:hover {
 	</tr>
 </table>
 </div>
-
+<div style="float: right; margin-top: 20px;">
+<a class="btn btn-info" onClick="openPdf('${boothResult.url}')">Get Pdf</a>
+</div>
 <div class="boothResultHeadingDiv" style="margin-left:15px;;margin-bottom:15px;clear:both;padding-top:20px;">Booth Wise Performance : </div>
 <div id="boothResultsMarkup" class="yui-skin-sam">
 <display:table id="boothResultsTable"
@@ -333,6 +335,8 @@ a, .reg-form li a:hover, a.change:hover {
 		<p style="font-size:16px;font-weight:bold;"></p>
   </div>
  </div>
+ 
+
 </div>
 <script language="javascript">
 initializeResultsTable();
@@ -400,8 +404,10 @@ function openModal(arr){
 
 
 
-
-
+function openPdf(url)
+{
+	window.open(url);
+}
 </script>
 
 </body>
