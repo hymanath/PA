@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -33,7 +34,8 @@ public class PdfReportService implements IPdfReportsService
 		{
 			LOG.info("Entered into infectedBoothsReport in PdfReportService Service");
 			
-			PdfPTable table = new PdfPTable(3);
+			PdfPTable table = new PdfPTable(2);
+			table.setWidthPercentage(50);
 	    	document.add( new Paragraph(" ") );
 	    	document.add( new Paragraph(" ") );
     		PdfPCell cell;
@@ -53,14 +55,16 @@ public class PdfReportService implements IPdfReportsService
 	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
 	 	  	table.addCell(c1);
 
-	 	  	c1 = new PdfPCell(new Phrase("Effected Count",BIGFONT));
+	 	  	/*c1 = new PdfPCell(new Phrase("Effected Count",BIGFONT));
 	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
-	 	  	table.addCell(c1);
-	 	  	
-	 	  	
-    		 	  	
-	 	  	for (PanchayatCountVo panchayatCountVo : output.getPanchayats())
+	 	  	table.addCell(c1);*/
+			
+			
+			
+			
+			
+				for (PanchayatCountVo panchayatCountVo : output.getPanchayats())
 	 	  	{
 	 	  		PdfPCell c2 = new PdfPCell(new Phrase(panchayatCountVo.getPanchayatName(),SMALLFONT));
   				c2.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -78,11 +82,12 @@ public class PdfReportService implements IPdfReportsService
 	  			c2 = new PdfPCell(new Phrase(sb.toString(),SMALLFONT));
 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			table.addCell(c2);
-	  			c2 = new PdfPCell(new Phrase(Long.valueOf(panchayatCountVo.getEffectedCount()).toString(),SMALLFONT));
-	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-	  			table.addCell(c2);
+	  			//c2 = new PdfPCell(new Phrase(Long.valueOf(panchayatCountVo.getEffectedCount()).toString(),SMALLFONT));
+	  			//c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+	  			//table.addCell(c2);
 			}
-	 	  	
+				float[] widths = new float[] {0.5f,0.5f};
+				table.setWidths(widths);
 	 	  	document.add(table);
 		}
 		catch (Exception e)
@@ -273,6 +278,9 @@ public class PdfReportService implements IPdfReportsService
 			LOG.info("Entered into pollingPercentageReport in PdfReportService Service");
 			
 			PdfPTable table = new PdfPTable(12);
+			 table.setWidthPercentage(100);
+
+			// int padding =4;
 	    	document.add( new Paragraph(" ") );
 	    	document.add( new Paragraph(" ") );
     		PdfPCell cell;
@@ -283,61 +291,73 @@ public class PdfReportService implements IPdfReportsService
 	 	  	table.addCell(cell);
 	 	  	
 	 	  	PdfPCell c1 = new PdfPCell(new Phrase("Booth",BIGFONT));
+	 	  	c1.setPaddingTop(10);
 	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
 	 	  	table.addCell(c1);
 	 	  	
 	 	  	c1 = new PdfPCell(new Phrase("Panchayat",BIGFONT));
+	 	  	c1.setPaddingTop(10);
 	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
 	 	  	table.addCell(c1);
 	 	  	
 	 	  	c1 = new PdfPCell(new Phrase("Location",BIGFONT));
+	 	  	c1.setPaddingTop(10);
 	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
 	 	  	table.addCell(c1);
 	 	  	
 	 	  	c1 = new PdfPCell(new Phrase("Villages Covered",BIGFONT));
+	 	  	c1.setPaddingTop(5);
 	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
 	 	  	table.addCell(c1);
 	 	  	
 	 	  	c1 = new PdfPCell(new Phrase("Total Votes 2009",BIGFONT));
+	 		c1.setPaddingTop(5);
 	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
 	 	  	table.addCell(c1);
 	 	  	
 	 	  	c1 = new PdfPCell(new Phrase("Polled Votes 2009",BIGFONT));
+	 		c1.setPaddingTop(5);
 	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
 	 	  	table.addCell(c1);
 	 	  	
 	 	  	c1 = new PdfPCell(new Phrase("Polling %",BIGFONT));
+	 		c1.setPaddingTop(5);
 	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
 	 	  	table.addCell(c1);
 	 	  	
 	 	  	c1 = new PdfPCell(new Phrase("TDP Votes 2009",BIGFONT));
+	 		c1.setPaddingTop(5);
 	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
 	 	  	table.addCell(c1);
 	 	  	
 	 	  	c1 = new PdfPCell(new Phrase("TDP %",BIGFONT));
+	 		c1.setPaddingTop(5);
 	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
 	 	  	table.addCell(c1);
 	 	  	
 	 	  	c1 = new PdfPCell(new Phrase("To Decrease",BIGFONT));
+	 		c1.setPaddingTop(5);
 	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
 	 	  	table.addCell(c1);
 	 	  	
 	 	  	c1 = new PdfPCell(new Phrase("Polling @70.88",BIGFONT));
+	 		c1.setPaddingTop(5);
 	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
 	 	  	table.addCell(c1);
 	 	  	
 	 	  	c1 = new PdfPCell(new Phrase("Lost Votes",BIGFONT));
+	 		c1.setPaddingTop(5);
 	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
 	 	  	table.addCell(c1);
@@ -345,54 +365,74 @@ public class PdfReportService implements IPdfReportsService
 	 	  	for (PartyPositionVO partyPositionVO : list)
 	 	  	{
 	 	  		PdfPCell c2 = new PdfPCell(new Phrase(partyPositionVO.getName(),SMALLFONT));
+	 	  		c2.setPaddingTop(10);
   				c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			table.addCell(c2);
 	  			
 	  			c2 = new PdfPCell(new Phrase(partyPositionVO.getLocation(),SMALLFONT));
+	  			c2.setPaddingTop(10);
 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			table.addCell(c2);
 	  			
 	  			c2 = new PdfPCell(new Phrase(partyPositionVO.getLocalbodyName(),SMALLFONT));
+	  			c2.setPaddingTop(10);
 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			table.addCell(c2);
 	  			
 	  			c2 = new PdfPCell(new Phrase(partyPositionVO.getVillagesCovered(),SMALLFONT));
+	  			c2.setPaddingTop(10);
 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			table.addCell(c2);
 	  			
 	  			c2 = new PdfPCell(new Phrase(partyPositionVO.getTotalVoters().toString(),SMALLFONT));
+	  			c2.setPaddingTop(10);
 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			table.addCell(c2);
 	  			
 	  			c2 = new PdfPCell(new Phrase(partyPositionVO.getTotalValidVotes().toString(),SMALLFONT));
+	  			c2.setPaddingTop(10);
 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			table.addCell(c2);
 	  			
-	  			c2 = new PdfPCell(new Phrase(partyPositionVO.getPollingPercentage().toString(),SMALLFONT));
+	  			double per=partyPositionVO.getPollingPercentage();
+	  			//c2 = new PdfPCell(new Phrase(partyPositionVO.getPollingPercentage().toString(),SMALLFONT));
+	  			c2 =  new PdfPCell(new Phrase(new DecimalFormat("##.##").format(per),SMALLFONT));
+	  			c2.setPaddingTop(10);
 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			table.addCell(c2);
 	  			
 	  			c2 = new PdfPCell(new Phrase(partyPositionVO.getWeakPollingPercentVOList().get(0).getPartyTotalvotes().toString(),SMALLFONT));
+	  			c2.setPaddingTop(10);
 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			table.addCell(c2);
 	  			
-	  			c2 = new PdfPCell(new Phrase(partyPositionVO.getWeakPollingPercentVOList().get(0).getPartyPercentage().toString(),SMALLFONT));
+	  			double per1=partyPositionVO.getWeakPollingPercentVOList().get(0).getPartyPercentage();
+	  			//c2 = new PdfPCell(new Phrase(partyPositionVO.getWeakPollingPercentVOList().get(0).getPartyPercentage().toString(),SMALLFONT));
+	  			c2 =  new PdfPCell(new Phrase(new DecimalFormat("##.##").format(per1),SMALLFONT));
+	  			c2.setPaddingTop(10);
 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			table.addCell(c2);
 	  			
-	  			c2 = new PdfPCell(new Phrase(partyPositionVO.getMinValue().toString(),SMALLFONT));
+	  			double per2=partyPositionVO.getMinValue();
+	  			//c2 = new PdfPCell(new Phrase(partyPositionVO.getMinValue().toString(),SMALLFONT));
+	  			c2 =  new PdfPCell(new Phrase(new DecimalFormat("##.##").format(per2),SMALLFONT));
+	  			c2.setPaddingTop(10);
 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			table.addCell(c2);
 	  			
 	  			c2 = new PdfPCell(new Phrase(Double.valueOf(partyPositionVO.getRangePercentage()).toString(),SMALLFONT));
+	  			c2.setPaddingTop(10);
 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			table.addCell(c2);
 	  			
 	  			c2 = new PdfPCell(new Phrase(partyPositionVO.getLostSeats().toString(),SMALLFONT));
+	  			c2.setPaddingTop(10);
 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			table.addCell(c2);
 			}
 	 	  	table.setHeaderRows(1);
+	 	  	float[] widths = new float[] {1.1f, 1.7f ,1.7f,1.7f,1.2f, 1.7f,1.2f,1.1f,1.1f,1.3f,1.1f,1.1f};
+			table.setWidths(widths);
 	 	  	document.add(table);
 		}
 		catch (Exception e)
@@ -406,8 +446,9 @@ public class PdfReportService implements IPdfReportsService
 		try
 		{
 			LOG.info("Entered into pollingPercentageReport in PdfReportService Service");
-			
+			document.newPage();
 			PdfPTable table = new PdfPTable(13);
+			 table.setWidthPercentage(100);
 	    	document.add( new Paragraph(" ") );
 	    	document.add( new Paragraph(" ") );
     		PdfPCell cell;
@@ -418,66 +459,79 @@ public class PdfReportService implements IPdfReportsService
 	 	  	table.addCell(cell);
 	 	  	
 	 	  	PdfPCell c1 = new PdfPCell(new Phrase("Booth",BIGFONT));
+	 	  	c1.setPaddingTop(25);
 	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
 	 	  	table.addCell(c1);
 	 	  	
 	 	  	c1 = new PdfPCell(new Phrase("Panchayat",BIGFONT));
+	 	  	c1.setPaddingTop(25);
 	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
 	 	  	table.addCell(c1);
 	 	  	
 	 	  	c1 = new PdfPCell(new Phrase("Location",BIGFONT));
+	 	  	c1.setPaddingTop(25);
 	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
 	 	  	table.addCell(c1);
 	 	  	
 	 	  	c1 = new PdfPCell(new Phrase("Villages Covered",BIGFONT));
+	 	  	c1.setPaddingTop(25);
 	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
 	 	  	table.addCell(c1);
 	 	  	
 	 	  	c1 = new PdfPCell(new Phrase("Total Votes 2009",BIGFONT));
+	 	  	c1.setPaddingTop(15);
 	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
 	 	  	table.addCell(c1);
 	 	  	
 	 	  	c1 = new PdfPCell(new Phrase("Polled Votes 2009",BIGFONT));
+	 	  	c1.setPaddingTop(20);
 	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
 	 	  	table.addCell(c1);
 	 	  	
 	 	  	c1 = new PdfPCell(new Phrase("Polling %",BIGFONT));
+	 	  	c1.setPaddingTop(20);
 	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
 	 	  	table.addCell(c1);
 	 	  	
 	 	  	c1 = new PdfPCell(new Phrase("TDP Votes 2009",BIGFONT));
+	 	  	c1.setPaddingTop(20);
 	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
 	 	  	table.addCell(c1);
 	 	  	
 	 	  	c1 = new PdfPCell(new Phrase("TDP %",BIGFONT));
+	 	  	c1.setPaddingTop(20);
 	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
 	 	  	table.addCell(c1);
 	 	  	
 	 	  	c1 = new PdfPCell(new Phrase("Scope To Improve(Avg Poll%(70.88))",BIGFONT));
+	 	  	c1.setPaddingTop(10);
 	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
 	 	  	table.addCell(c1);
 	 	  	
 	 	  	c1 = new PdfPCell(new Phrase("Polling @70.88",BIGFONT));
+	 	  	c1.setPaddingTop(20);
 	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
 	 	  	table.addCell(c1);
 	 	  	
 	 	  	c1 = new PdfPCell(new Phrase("To Target",BIGFONT));
+	 	  	c1.setPaddingTop(20);
 	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
 	 	  	table.addCell(c1);
 	 	  	
 	 	  	c1 = new PdfPCell(new Phrase("TDP Lost Votes",BIGFONT));
+	 	  	c1.setPaddingTop(20);
 	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
 	 	  	table.addCell(c1);
@@ -485,58 +539,80 @@ public class PdfReportService implements IPdfReportsService
 	 	  	for (PartyPositionVO partyPositionVO : list)
 	 	  	{
 	 	  		PdfPCell c2 = new PdfPCell(new Phrase(partyPositionVO.getName(),SMALLFONT));
+	 	  		c2.setPaddingTop(10);
   				c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			table.addCell(c2);
 	  			
 	  			c2 = new PdfPCell(new Phrase(partyPositionVO.getLocation(),SMALLFONT));
+	  			c2.setPaddingTop(10);
 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			table.addCell(c2);
 	  			
 	  			c2 = new PdfPCell(new Phrase(partyPositionVO.getLocalbodyName(),SMALLFONT));
+	  			c2.setPaddingTop(10);
 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			table.addCell(c2);
 	  			
 	  			c2 = new PdfPCell(new Phrase(partyPositionVO.getVillagesCovered(),SMALLFONT));
+	  			c2.setPaddingTop(10);
 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			table.addCell(c2);
 	  			
 	  			c2 = new PdfPCell(new Phrase(partyPositionVO.getTotalVoters().toString(),SMALLFONT));
+	  			c2.setPaddingTop(10);
 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			table.addCell(c2);
 	  			
 	  			c2 = new PdfPCell(new Phrase(partyPositionVO.getTotalValidVotes().toString(),SMALLFONT));
+	  			c2.setPaddingTop(10);
 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			table.addCell(c2);
 	  			
-	  			c2 = new PdfPCell(new Phrase(partyPositionVO.getPollingPercentage().toString(),SMALLFONT));
+	  			double per3=partyPositionVO.getMaxValue();
+	  			//c2 = new PdfPCell(new Phrase(partyPositionVO.getPollingPercentage().toString(),SMALLFONT));
+	  			c2 =  new PdfPCell(new Phrase(new DecimalFormat("##.##").format(per3),SMALLFONT));
+	  			c2.setPaddingTop(10);
 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			table.addCell(c2);
 	  			
 	  			c2 = new PdfPCell(new Phrase(partyPositionVO.getStrongPollingPercentVOList().get(0).getPartyTotalvotes().toString(),SMALLFONT));
+	  			c2.setPaddingTop(10);
 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			table.addCell(c2);
 	  			
-	  			c2 = new PdfPCell(new Phrase(partyPositionVO.getStrongPollingPercentVOList().get(0).getPartyPercentage().toString(),SMALLFONT));
+	  			double per4=partyPositionVO.getMaxValue();
+	  			//c2 = new PdfPCell(new Phrase(partyPositionVO.getStrongPollingPercentVOList().get(0).getPartyPercentage().toString(),SMALLFONT));
+	  			c2 =  new PdfPCell(new Phrase(new DecimalFormat("##.##").format(per4),SMALLFONT));
+	  			c2.setPaddingTop(10);
 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			table.addCell(c2);
 	  			
-	  			c2 = new PdfPCell(new Phrase(partyPositionVO.getMaxValue().toString(),SMALLFONT));
+	  			double per5=partyPositionVO.getMaxValue();
+	  			//c2 = new PdfPCell(new Phrase(partyPositionVO.getMaxValue().toString(),SMALLFONT));
+	  			c2 =  new PdfPCell(new Phrase(new DecimalFormat("##.##").format(per5),SMALLFONT));
+	  			c2.setPaddingTop(10);
 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			table.addCell(c2);
 	  			
 	  			c2 = new PdfPCell(new Phrase(Double.valueOf(partyPositionVO.getRangePercentage()).toString(),SMALLFONT));
+	  			c2.setPaddingTop(10);
 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			table.addCell(c2);
 	  			
 	  			c2 = new PdfPCell(new Phrase(partyPositionVO.getToTarget().toString(),SMALLFONT));
+	  			c2.setPaddingTop(10);
 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			table.addCell(c2);
 	  			
 	  			c2 = new PdfPCell(new Phrase(partyPositionVO.getToImprove().toString(),SMALLFONT));
+	  			c2.setPaddingTop(10);
 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			table.addCell(c2);
 			}
 	 	  	table.setHeaderRows(1);
+	 	  	float[] widths = new float[] {1.1f, 1.7f ,1.7f,1.7f,1.2f, 1.7f,1.2f,1.1f,1.1f,1.4f,1.3f,1.1f,1.1f};
+			table.setWidths(widths);
+			
 	 	  	document.add(table);
 		}
 		catch (Exception e)
@@ -552,6 +628,7 @@ public class PdfReportService implements IPdfReportsService
 			LOG.info("Entered into voterAvgAgeReport in PdfReportService Service");
 			
 			PdfPTable table = new PdfPTable(3);
+			 table.setWidthPercentage(60);
 	    	document.add( new Paragraph(" ") );
 	    	document.add( new Paragraph(" ") );
     		PdfPCell cell;
@@ -577,17 +654,19 @@ public class PdfReportService implements IPdfReportsService
 	 	  	table.addCell(c1);
  	  		
 	 	  	PdfPCell c2 = new PdfPCell(new Phrase(result.getName(),SMALLFONT));
-			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+	 	  	c2.setPaddingTop(5);
+	 	  	c2.setHorizontalAlignment(Element.ALIGN_CENTER);
   			table.addCell(c2);
   			c2 = new PdfPCell(new Phrase(result.getTotalCount().toString(),SMALLFONT));
+  			c2.setPaddingTop(5);
   			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
   			table.addCell(c2);
   			c2 = new PdfPCell(new Phrase(result.getPerc().toString(),SMALLFONT));
+  			c2.setPaddingTop(5);
   			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
   			table.addCell(c2);
-			
-  			
-  			
+  			float[] widths = new float[] {1.2f, 1.2f ,1.2f};
+			table.setWidths(widths);
 	 	  	document.add(table);
 	 	  	
 	 	  	buildMandalWiseReport(document,result.getSelectOptionsList());
@@ -607,6 +686,7 @@ public class PdfReportService implements IPdfReportsService
 			LOG.info("Entered into buildMandalWiseReport in PdfReportService Service");
 			
 			PdfPTable table = new PdfPTable(3);
+			 table.setWidthPercentage(60);
 	    	document.add( new Paragraph(" ") );
 	    	document.add( new Paragraph(" ") );
     		PdfPCell cell;
@@ -634,16 +714,20 @@ public class PdfReportService implements IPdfReportsService
 	 	  	for (SelectOptionVO selectOptionVO : list)
 	 	  	{
 	 	  		PdfPCell c2 = new PdfPCell(new Phrase(selectOptionVO.getName(),SMALLFONT));
-				c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+	 	  		c2.setPaddingTop(5);
+	 	  		c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			table.addCell(c2);
 	  			c2 = new PdfPCell(new Phrase(selectOptionVO.getTotalCount().toString(),SMALLFONT));
+	  			c2.setPaddingTop(5);
 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			table.addCell(c2);
 	  			c2 = new PdfPCell(new Phrase(selectOptionVO.getPerc().toString(),SMALLFONT));
+	  			c2.setPaddingTop(5);
 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			table.addCell(c2);
 			}
-   			
+	 	   float[] widths = new float[] {1.3f, 1.3f ,1.3f};
+			table.setWidths(widths);
 	 	  	document.add(table);
 		}
 		catch (Exception e)
@@ -659,6 +743,7 @@ public class PdfReportService implements IPdfReportsService
 			LOG.info("Entered into buildMandalWiseReport in PdfReportService Service");
 			document.newPage();
 			PdfPTable table = new PdfPTable(4);
+			 table.setWidthPercentage(70);
 	    	document.add( new Paragraph(" ") );
 	    	document.add( new Paragraph(" ") );
     		PdfPCell cell;
@@ -695,22 +780,28 @@ public class PdfReportService implements IPdfReportsService
 	 	  		PdfPCell c2 = new PdfPCell(new Phrase(selectOptionVO.getName(),SMALLFONT));
 				c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 				c2.setRowspan(selectOptionVO.getSelectOptionsList().size());
-	  			table.addCell(c2);
+				 c2.setPaddingTop(75);
+				table.addCell(c2);
 	 	  		for (SelectOptionVO selectOptionVO1 : selectOptionVO.getSelectOptionsList())
 	 	  		{
 	 	  			c2 = new PdfPCell(new Phrase(selectOptionVO1.getName(),SMALLFONT));
-					c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+	 	  			c2.setPaddingTop(5);
+	 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 		  			table.addCell(c2);
 		  			c2 = new PdfPCell(new Phrase(selectOptionVO1.getTotalCount().toString(),SMALLFONT));
+		  			c2.setPaddingTop(5);
 		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 		  			table.addCell(c2);
 		  			c2 = new PdfPCell(new Phrase(selectOptionVO1.getPerc().toString(),SMALLFONT));
+		  			c2.setPaddingTop(5);
 		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 		  			table.addCell(c2);
 				}
 	 	  		
 			}
 	 	  	table.setHeaderRows(1);
+	 	  	float[] widths = new float[] {1.2f, 1.3f ,1.0f,1.0f};
+			table.setWidths(widths);
 	 	  	document.add(table);
 		}
 		catch (Exception e)
@@ -726,6 +817,7 @@ public class PdfReportService implements IPdfReportsService
 			LOG.info("Entered into buildMandalWiseReport in PdfReportService Service");
 			document.newPage();
 			PdfPTable table = new PdfPTable(4);
+			 table.setWidthPercentage(60);
 	    	document.add( new Paragraph(" ") );
 	    	document.add( new Paragraph(" ") );
     		PdfPCell cell;
@@ -762,22 +854,28 @@ public class PdfReportService implements IPdfReportsService
 	 	  		PdfPCell c2 = new PdfPCell(new Phrase(selectOptionVO.getName(),SMALLFONT));
 				c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 				c2.setRowspan(selectOptionVO.getSelectOptionsList().size());
+			    //c2.setPaddingTop(150);
 	  			table.addCell(c2);
 	 	  		for (SelectOptionVO selectOptionVO1 : selectOptionVO.getSelectOptionsList())
 	 	  		{
 	 	  			c2 = new PdfPCell(new Phrase(selectOptionVO1.getName(),SMALLFONT));
+	 	  			//c2.setPaddingTop(5);
 					c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 		  			table.addCell(c2);
 		  			c2 = new PdfPCell(new Phrase(selectOptionVO1.getTotalCount().toString(),SMALLFONT));
+		  			//c2.setPaddingTop(5);
 		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 		  			table.addCell(c2);
 		  			c2 = new PdfPCell(new Phrase(selectOptionVO1.getPerc().toString(),SMALLFONT));
+		  			//c2.setPaddingTop(5);
 		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 		  			table.addCell(c2);
 				}
 	 	  		
 			}
 	 	  	table.setHeaderRows(1);
+	 	  	float[] widths = new float[] {1.3f, 1.0f ,1.0f,1.0f};
+			table.setWidths(widths);
 	 	  	document.add(table);
 		}
 		catch (Exception e)
