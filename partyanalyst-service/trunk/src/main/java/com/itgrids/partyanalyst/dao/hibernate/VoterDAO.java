@@ -346,6 +346,7 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 				
 			}
 			
+			@SuppressWarnings("unchecked")
 			public List<Long> getVoterIdByVoterIDCardNumber(String voterID)
 			{
 				Query query = getSession().createQuery("select model.voterId from Voter model " +
@@ -358,6 +359,7 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 			}
 			
 			
+			@SuppressWarnings("unchecked")
 			public List<Object[]> getVoterNames(Integer startIndex,Integer maxIndex)
 			{
 				Query query = getSession().createQuery("select model.voterId,model.name,model.relativeName from Voter model ");
@@ -383,6 +385,7 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 				return query.executeUpdate();
 			}
 			
+			@SuppressWarnings("unchecked")
 			public List<Object[]> getVoterIdCardNo(List<String> idCardnos)
 			{
 			   Query query = getSession().createQuery("select model.voterIDCardNo,model.voterId from Voter model where model.voterIDCardNo in( :idCardnos)");
