@@ -246,6 +246,8 @@ function buildTableResult(result,rank)
 		"aLengthMenu": [[25, 50, 100, -1], [25, 50, 100, "All"]],
 		  "aoColumns": [null,null,null,null,null,null,null] 
 		});
+		
+		window.open(result[0].url);
 
 }
 

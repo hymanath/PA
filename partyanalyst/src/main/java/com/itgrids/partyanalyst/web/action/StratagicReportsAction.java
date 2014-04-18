@@ -45,6 +45,7 @@ import com.itgrids.partyanalyst.service.IStratagicReportsServicePdf;
 import com.itgrids.partyanalyst.service.IStrategyModelTargetingService;
 import com.itgrids.partyanalyst.service.ISuggestiveModelService;
 import com.itgrids.partyanalyst.service.IVoterReportService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -1005,8 +1006,8 @@ public void setPanchayatResult(List<PartyPositionVO> panchayatResult) {
 	public String getCriticalPanchayatsToAnalyse(){
 		try{
 			jObj = new JSONObject(getTask());
-		
-		  criticalPanchayats = strategyModelTargetingService.getCriticalPanchayats(jObj.getLong("constituencyId"));
+		String path = IWebConstants.STATIC_CONTENT_FOLDER_URL;
+		  criticalPanchayats = strategyModelTargetingService.getCriticalPanchayats(jObj.getLong("constituencyId"),path);
 		} catch (Exception e) {
 			LOG.error("Exception occured in getCriticalPanchayats() ",e);
 			return Action.ERROR;
@@ -1059,8 +1060,8 @@ public void setPanchayatResult(List<PartyPositionVO> panchayatResult) {
 	public String getPanchayatAssemblyResultDetails(){
 		try{
 			jObj = new JSONObject(getTask());
-		
-			panchayatResult = suggestiveModelService.getPartyPerfromanceStratagicReport(jObj.getLong("constituencyId"),jObj.getLong("partyId"),jObj.getLong("effectElectionId"));
+			String path = IWebConstants.STATIC_CONTENT_FOLDER_URL;
+			panchayatResult = suggestiveModelService.getPartyPerfromanceStratagicReport(jObj.getLong("constituencyId"),jObj.getLong("partyId"),jObj.getLong("effectElectionId"),path);
 		} catch (Exception e) {
 			LOG.error("Exception occured in getPanchayatAssemblyResultDetails() ",e);
 			return Action.ERROR;

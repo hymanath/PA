@@ -14,7 +14,6 @@ import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.json.JSONObject;
 
-import com.googlecode.jsonplugin.annotations.JSON;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.ComparedReportVO;
 import com.itgrids.partyanalyst.dto.ElectionComparisonReportVO;
@@ -152,7 +151,7 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 
 	
 	
-	@JSON (serialize= false )
+	//@JSON (serialize= false )
 	public ComparedReportVO getComparedResultsVO() {
 		return comparedResultsVO;
 	}
@@ -169,7 +168,7 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 		this.partyService = partyService;
 	}
 
-	@JSON (serialize= false )
+	//@JSON (serialize= false )
 	public ElectionComparisonReportVO getElectionComparisonReportVO() {
 		return electionComparisonReportVO;
 	}

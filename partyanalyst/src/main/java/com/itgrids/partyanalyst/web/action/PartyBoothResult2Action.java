@@ -11,6 +11,7 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.excel.booth.PartyBoothPerformanceVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -126,8 +127,9 @@ public class PartyBoothResult2Action extends ActionSupport implements ServletReq
 				
 		System.out.println(" values from ajax -------- partyName:"+partyName+" constituencyName:"+constituencyName+" electionYear:"+electionYear);
 		List<PartyBoothPerformanceVO> boothResults = partyBoothWiseResultsService.getBoothWiseResultsForParty(new Long(partyName), new Long(constituencyName), electionYear);
-		boothResult = partyBoothWiseResultsService.getVotingPercentageWiseBoothResult(boothResults.get(0),true);
-		boothResult = partyBoothWiseResultsService.getVotingPercentageWiseBoothResult(boothResults.get(0),false);
+		String path = IWebConstants.STATIC_CONTENT_FOLDER_URL;
+		boothResult = partyBoothWiseResultsService.getVotingPercentageWiseBoothResult(boothResults.get(0),true,path);
+		boothResult = partyBoothWiseResultsService.getVotingPercentageWiseBoothResult(boothResults.get(0),false,null);
 		
 		return SUCCESS;
 	}

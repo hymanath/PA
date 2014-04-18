@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IInfectedBoothsService;
 import com.itgrids.partyanalyst.service.IStrategyModelTargetingService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -218,7 +219,8 @@ public class InfectedBoothsAction  extends ActionSupport implements ServletReque
 			param = getTask();
 			jObj = new JSONObject(param);
 			Long constituencyId  = jObj.getLong("constituencyId");
-			effectedBooths = strategyModelTargetingService.getPanchayatCategoriesForInfectedBooths(constituencyId);
+			String path = IWebConstants.STATIC_CONTENT_FOLDER_URL;
+			effectedBooths = strategyModelTargetingService.getPanchayatCategoriesForInfectedBooths(constituencyId,path);
 			
 		}catch(Exception e){
 			LOG.error("Exception Raised in getAssemblyConstisForParl of InfectedBoothsAction"+e);

@@ -192,6 +192,8 @@ function buildPollingHighPercentageForBooths(result)
 			"bFilter": false,
 			"bInfo": false,
 			"bAutoWidth": false });
+			
+			window.open(result[0].url);
 }
 
 function buildPollingLowPercentageForBooths(result)
@@ -268,7 +270,7 @@ function buildPollingLowPercentageForBooths(result)
 			"bFilter": false,
 			"bInfo": false,
 			"bAutoWidth": false });
-
+	window.open(result[0].url);
 }
 </script>
 

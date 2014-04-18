@@ -111,9 +111,13 @@ color:#333333;
    });
    }
    function buildCriticalPanchayats(result){
-	   if(result != null && result.length == 2){
+		console.log(result);
+	   if(result != null ){
+		
+		   window.open(result[2]);
 	       buildOrderPriorityGraph(result[0]);
 		   buildOrderPriorityTable(result[1]);
+		  
 	   }else{
 	       $("#ajaxImage").hide();
 		   $("#buildGraph").html("");
