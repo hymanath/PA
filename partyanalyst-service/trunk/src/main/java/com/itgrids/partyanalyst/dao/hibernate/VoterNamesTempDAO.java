@@ -16,6 +16,7 @@ public class VoterNamesTempDAO extends GenericDaoHibernate<VoterNamesTemp, Long>
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<VoterNamesTemp> getVotersByACNO(Integer startIndex,Integer maxIndex,Long constituencyId)
 	{
 		Query query = getSession().createQuery("select model from VoterNamesTemp model where model.constituency.constituencyId =:constituencyId");
