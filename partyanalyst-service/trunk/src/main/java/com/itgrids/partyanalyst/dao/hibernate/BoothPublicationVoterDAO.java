@@ -6436,7 +6436,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 						"P.panchayat_id = B.panchayat_id AND B.booth_id = BPV.booth_id AND " +
 						"V.voter_id = BPV.voter_id AND  " +
 						"B.publication_date_id = 10 AND V.age >= 55 and " +
-						"B.constituency_id = 228 AND D.district_Id = T.district_id " +
+						"B.booth_id = 332344 AND D.district_Id = T.district_id " +
 						" ORDER BY B.booth_id,BPV.serial_no");
 		return query.list();
 	}	
@@ -6754,6 +6754,26 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		query.setParameter("publicationId", publicationId);
 		query.setParameter("boothId", boothId);
 		query.setParameter("houseNo", houseNo);
+		return query.list();
+	}
+	
+	public List<Object[]> getVoterDetaildsByBoothWise(Long boothId)
+	{
+		Query query = getSession().createSQLQuery("select B.part_no,B.address,V.name,V.voter_id_card_no," +
+				"BPV.serial_no,V.gender,V.age, V.house_no,V.relationship_type,V.relative_name  " +
+				"from  booth_publication_voter BPV, Booth B,   voter V where BPV.voter_id = V.voter_id and " +
+				"BPV.booth_id = B.booth_id and B.booth_id = :boothId  and B.publication_date_id = 10");
+		query.setParameter("boothId", boothId);
+		return query.list();
+	}
+	
+	public List<Object[]> getVoterTeluguNames(Long boothId)
+	{
+		Query query = getSession().createSQLQuery("select V.voter_id_card_no ," +
+				" VN.firstname from voter_names VN , booth_publication_voter BPV ,Booth B , " +
+				"voter V   where BPV.voter_id = VN.voter_id and BPV.booth_id = B.booth_id " +
+				"and BPV.voter_id = V.voter_id and B.publication_date_id  = 10 and B.booth_id = :boothId");
+		query.setParameter("boothId", boothId);
 		return query.list();
 	}
 }

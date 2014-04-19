@@ -1,21 +1,23 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
+import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICriticalPanchayatsDAO;
-import com.itgrids.partyanalyst.excel.booth.VoterVO;
 
 public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
 	private ICriticalPanchayatsDAO criticalPanchayatsDAO;
-
+	private IBoothDAO boothDAO;
 	public void setBoothPublicationVoterDAO(
 			IBoothPublicationVoterDAO boothPublicationVoterDAO) {
 		this.boothPublicationVoterDAO = boothPublicationVoterDAO;
@@ -1196,14 +1198,125 @@ List<Long> attrIds = new ArrayList<Long>();
 				e.printStackTrace();
 			}
 		}
-	}*/
+	}
+	*/
 	
+	
+	public void setBoothDAO(IBoothDAO boothDAO) {
+		this.boothDAO = boothDAO;
+	}
+
+
+
+	public void testgetPdfsForVotersList()
+	{
+		List<Long> boothIds = boothDAO.getBoothIdByConstituencyPublication(282l,10l);
+		for (Long boothId : boothIds) {
+		
+			List<Object[]> voterTeluguNames = boothPublicationVoterDAO.getVoterTeluguNames(boothId);
+			Map<String,String> teluguNamesMap = new HashMap<String, String>();
+			if(voterTeluguNames != null && voterTeluguNames.size() > 0)
+			{
+				for (Object[] objects : voterTeluguNames)
+				{
+					if(objects[0] != null && objects[1] != null)
+					{
+						teluguNamesMap.put(objects[0].toString(), objects[1].toString());
+					}
+					
+				}
+			}
+			List<Object[]> values = boothPublicationVoterDAO.getVoterDetaildsByBoothWise(boothId);
+			if(values != null && values.size() > 0 )
+			{
+				System.out.println(values.size());
+				StringBuilder sb  = new StringBuilder();
+				
+				
+				int i =0;
+				int k = 0;
+				sb.append("<html>");
+				sb.append("<head>");
+				sb.append("<meta content='text/html; charset=utf-8' http-equiv='Content-Type'>");
+				sb.append("<title></title>");
+				sb.append("</head>");
+				sb.append("<body>");
+				String partNo = "";
+				for (Object[] parms : values) {
+					partNo = parms[0].toString();
+					if(k == 0)
+					sb.append("<table  style='font-family: arial; font-size: 7px;'>");
+					//System.out.println(k++);
+					i++;
+					k++;
+					if(i == 0)
+					{
+						sb.append("<tr>");
+					}
+					
+					sb.append("<td style='width: 200px; height: 140px;'>");
+					sb.append("<div style='border: 1px solid;'><p style='margin-left: 10px;'>"+parms[1]+"<p>");
+					String voterName = teluguNamesMap.get(parms[3].toString());
+					if(voterName == null)
+					{
+						sb.append("<p style='margin-left: 10px;'>Name : <b>"+replaceSpecialChars(parms[2].toString())+"</b><p>");
+					}
+					else
+					{
+						sb.append("<p style='margin-left: 10px;'>Name : <b>"+voterName+"</b><p>");
+					}
+					sb.append("<p style='margin-left: 10px;'> Voter Card NO : "+parms[3].toString()+"<p>");
+					sb.append(" <p style='margin-left: 10px;'>   Part NO : "+parms[0].toString()+"");
+					sb.append("  &nbsp&nbsp &nbsp&nbsp  Serial NO : "+parms[4].toString()+"<p>");
+					if(parms[5].toString().equalsIgnoreCase("F"))
+					{
+						sb.append("<p style='margin-left: 10px;'>Gender : Female</p>   ");
+					}
+					else
+					{
+						sb.append("<p style='margin-left: 10px;'>Gender : Male</p> ");
+					}
+					sb.append("<p style='margin-left: 10px;'>  Age : "+parms[6].toString()+     "  </p> ");
+					
+					sb.append("<p style='margin-left: 10px;'>H.NO : "+parms[7].toString()+"<p>");
+					sb.append("<p style='margin-left: 10px;'> Relation Type : "+parms[8].toString()+"<p>");
+					sb.append("<p style='margin-left: 10px;'>Relation Name : "+parms[9].toString()+"<p>");
+					
+					sb.append("</div></td>");
+					sb.append("<td></td>");
+					if(i == 4)
+					{
+						sb.append("</tr>");
+						i = 0;
+					}
+					if(k==24)
+					{
+						k = 0;
+						sb.append("</table></br></br></br>");
+					}
+				}
+				sb.append("</table>");
+				sb.append("</body>");
+				sb.append("</html>");
+				try{
+		
+				BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("C:\\Kuppam\\Kuppam_294_Booth "+partNo+".html"),"UTF-8"));
+				out.write(sb.toString());
+				out.close();
+				}catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}
+		
+	}
 	
 	/*public void testGetTotalVotersBoothWise(){
 		List<Object[]> list=boothPublicationVoterDAO.getTotalVotersOfBoothByConstituencyId(228l, 10l);
 		System.out.println(list.size());
 	}
-	
+	*/
 	public String replaceSpecialChars(String str)
   	{
   		try{
@@ -1220,9 +1333,9 @@ List<Long> attrIds = new ArrayList<Long>();
   		{
   			return str;
   		}
-  	}*/
+  	}
 	
-	public ICriticalPanchayatsDAO getCriticalPanchayatsDAO() {
+	/*public ICriticalPanchayatsDAO getCriticalPanchayatsDAO() {
 		return criticalPanchayatsDAO;
 	}
 
@@ -1237,8 +1350,8 @@ List<Long> attrIds = new ArrayList<Long>();
 
 	public void testGetMaxSerialNoOfABooth()
 	{
-		/*Long serialNo = boothPublicationVoterDAO.getMaxSerialNoOfABooth(371092l);
-		System.out.println(serialNo);*/
+		Long serialNo = boothPublicationVoterDAO.getMaxSerialNoOfABooth(371092l);
+		System.out.println(serialNo);
 		VoterVO voterVo = new VoterVO();
 		voterVo.setConstituencyId(181l);
 		voterVo.setPublicationDateId(10l);
@@ -1251,5 +1364,5 @@ List<Long> attrIds = new ArrayList<Long>();
 			 System.out.println(params[0]);
 		 }
 		
-	}
+	}*/
 }
