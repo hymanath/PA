@@ -1874,31 +1874,31 @@ public void generateExcelsForPanchayatReport3(List<AgeRangeVO>  list ,HSSFSheet 
 		    CellStyle style2 = workbook.createCellStyle();
 		    style2.setFont(font2);
 		    
-	    HSSFRow  rowHead= sheet.createRow((short) 0);
-	    Cell cell = rowHead.createCell(1);
+	    /*HSSFRow  rowHead= sheet.createRow((short) 0);
+	    Cell cell = rowHead.createCell(0);
 	    cell.setCellValue("Importannt Familes Report");
 	    cell.setCellStyle(style2);
 	    sheet.addMergedRegion(new CellRangeAddress(0,0,0,15));
 	    
 	    HSSFRow  rowHead1= sheet.createRow((short) 1);
 	    
-	    Cell cell11 = rowHead1.createCell(1);
+	    Cell cell11 = rowHead1.createCell(0);
 	    cell11.setCellValue("");
 	    cell11.setCellStyle(style2);
 	    sheet.addMergedRegion(new CellRangeAddress(1,1,0,7));
 	    
-	   // HSSFRow  rowHead2= sheet.createRow((short) 0);
+
 	     cell11 = rowHead1.createCell(7);
 	     cell11.setCellValue("Elder Person");
 	     cell11.setCellStyle(style2);
 	     sheet.addMergedRegion(new CellRangeAddress(1,1,7,11));
 	    
-	   // HSSFRow  rowHead3= sheet.createRow((short) 0);
+
 	    cell11 = rowHead1.createCell(11);
 	    cell11.setCellValue("Younger Person");
 	    cell11.setCellStyle(style2);
 	    sheet.addMergedRegion(new CellRangeAddress(1,1,11,15));
-	    
+	    */
 	    int i = 0;
 	    Row row1 = sheet.createRow(2);
 	    Cell cell1 = row1.createCell(i);
