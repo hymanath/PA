@@ -14,7 +14,7 @@
 </script>
 <script type="text/javascript" src="js/commonVoterDetails.js"></script>
 
-
+	<script type="text/javascript" src="js/blockui.js"></script>
 
 	<script type="text/javascript" src="js/blockui.js"></script>
 	<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
@@ -93,8 +93,8 @@ background-color: #CDE6FC;
 				<div>
 				   <table>
 				     <tr>
-				        <td><label class="span2" for="firstName">Select District</label></td>
-						<td><s:select cssClass="selectstyle" theme="simple" id="districtListForImp" name="crossVotingYear" list="districtsList" listKey="id" listValue="name" onChange=""/></td>
+				        <td><label class="span2" for="firstName">Select Constituency</label></td>
+						<td><s:select cssClass="selectstyle" theme="simple" id="districtListForImp" name="crossVotingYear" list="constituencyList" listKey="id" listValue="name" onChange=""/></td>
 				        <td><label class="span2" for="firstName">Publication Date</label></td>
 						<td><select id="prevPublicationIdForImp">
 							<option value="0">Select Publication Date</option>
@@ -298,10 +298,24 @@ function callAjax(jsObj,url){
  		               success : function( o ) {
 							try {												
 								myResults = YAHOO.lang.JSON.parse(o.responseText);					
-								if(jsObj.task=="forConstituencies"){
+								if(jsObj.task=="forConstituencies")
+								{
 
 								}
-								
+								else if(jsObj.task == "getFamilyDetails")
+								{
+									
+									if(myResults != null)
+									{
+										$.unblockUI();
+										window.open(myResults[0].influencePartyName);
+									}
+									else
+									{
+										$.unblockUI();
+										alert("Error occured while creating the Report");
+									}
+								}
 								}catch (e) {
 							     
 								}  

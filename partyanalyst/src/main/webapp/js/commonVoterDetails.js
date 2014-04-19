@@ -337,8 +337,8 @@ function getImpFamilyDetails()
 				minVal:fromValue,
 				maxVal:toValue,
 				startIndex:0,
-				results:1000,
-				type : "district",
+				results:50000,
+				type : "constituency",
 				task:"getFamilyDetails"		
 		};
 		

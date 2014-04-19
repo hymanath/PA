@@ -664,6 +664,7 @@ lable{line-height:40px;}
 			</h2>
 		</div>
 
+
 		<div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;">
 			<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5" style="width: 180px;">Importent Family Details</div>
 				<div>
@@ -671,7 +672,6 @@ lable{line-height:40px;}
 				</div>
 			</h2>
 		</div>
-
 		<div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;max-height: 87px;">
 			<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5">Booth Wise Results</div>
 				<div>
