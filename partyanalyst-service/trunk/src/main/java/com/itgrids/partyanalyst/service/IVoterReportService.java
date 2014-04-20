@@ -137,7 +137,7 @@ public interface IVoterReportService {
 	 
 	 public ResultStatus getCasteVotersAvailableConstituencyIds();
 	 
-	 public ResultStatus updateMobileNos();
+	 public ResultStatus updateMobileNos(Long districtId);
 	 
 	
 	 
