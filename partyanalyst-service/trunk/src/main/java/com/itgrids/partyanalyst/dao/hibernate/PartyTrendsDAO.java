@@ -3,12 +3,14 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 import org.springframework.jdbc.object.SqlQuery;
 
 import com.itgrids.partyanalyst.dao.IPartyTrendsDAO;
+import com.itgrids.partyanalyst.dto.VoterFamilyCount;
 import com.itgrids.partyanalyst.model.PartyTrends;
 
 public class PartyTrendsDAO extends GenericDaoHibernate<PartyTrends, Long> implements IPartyTrendsDAO{
@@ -168,7 +170,7 @@ public class PartyTrendsDAO extends GenericDaoHibernate<PartyTrends, Long> imple
     			"where  " +
     			"e.electionScope.electionScopeId=2 and e.electionYear=ce.election.electionYear and "+
     			"dc.constituency.constituencyId= b.constituency.constituencyId and "+
-    			"dc.delimitationConstituency.year=ce.election.electionYear and "+
+    			"dc.delimitationConstituency.year<=ce.election.electionYear and "+
     			"dc.delimitationConstituency.constituency.constituencyId=ce.constituency.constituencyId and "+
     			"be.constituencyElection.constiElecId=ce.constiElecId and " +
     			"b.boothId= be.booth.boothId and " +
@@ -178,7 +180,6 @@ public class PartyTrendsDAO extends GenericDaoHibernate<PartyTrends, Long> imple
     	q.setParameter(0, constId);
     	return q.list();
     }
-    
     
     //getAllVotes
    
@@ -233,6 +234,17 @@ public class PartyTrendsDAO extends GenericDaoHibernate<PartyTrends, Long> imple
     public List<Object[]> getPanchayatIds(Long districtId){
     	Query query = getSession().createQuery("select model.id,model.constituency.constituencyId from PartyTrends model where model.constituency.district.districtId =:districtId and model.type = 'Panchayat' and model.priority < 26");
     	query.setParameter("districtId", districtId);
+    	return query.list();
+    }
+    
+    
+    public List<?> callStoredProcedure()
+    
+    {
+    	Query query = getSession().createSQLQuery("CALL VOTER_FAMILY_Details_Booth7(:constituencyId,:minCount,:maxCount,:uuid,:publicationDateId)")
+    			.addEntity(VoterFamilyCount.class)
+    			.setParameter("constituencyId", 232).setParameter("minCount", 10).setParameter("maxCount", 15).setParameter("uuid", UUID.randomUUID().toString()).setParameter("publicationDateId", 8);
+    	
     	return query.list();
     }
 }
