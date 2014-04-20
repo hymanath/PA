@@ -5802,102 +5802,102 @@ public class VoterReportService implements IVoterReportService{
 		return resultStatus;
 	}
 	
-	public ResultStatus updateMobileNos()
+	public ResultStatus updateMobileNos(Long districtId)
 	{
 		ResultStatus result = new ResultStatus();
 		
 		Map<Long,String> availablemobileNoMap = null;
-		String resultStr = "";
 		Long userId = 1l;
 		try{
-			String districtarr[] = IConstants.DISTRICT_IDS.split(",");
+			String districtarr[] = {districtId.toString()};
 			for(String distictId : districtarr)
 			{
 				
 				availablemobileNoMap = new HashMap<Long, String>();
+				
 				List<Long> constituencyIds = mobileNumbersDAO.getConstituencysByDistictID(Long.parseLong(distictId));
+				
 			    if(constituencyIds != null && constituencyIds.size() > 0)
 				{
-			    for(Long constituencyId : constituencyIds)
-				{
-				List<Object[]> mobileVoters = mobileNumbersDAO.getMobileNoforVoter(constituencyId);
-				if(mobileVoters != null && mobileVoters.size() > 0)
-				{
-				for(Object[] params : mobileVoters)
-				availablemobileNoMap.put((Long)params[1] ,params[0].toString());
-				}
+			    	for(Long constituencyId : constituencyIds)
+			    	{
+			    		List<Object[]> mobileVoters = mobileNumbersDAO.getMobileNoforVoter(constituencyId);
+			    		
+			    		if(mobileVoters != null && mobileVoters.size() > 0)
+			    		{
+			    			for(Object[] params : mobileVoters)
+			    				availablemobileNoMap.put((Long)params[1] ,params[0].toString());
+			    		}
 				
-				List<Long> voterIds = new ArrayList<Long>(availablemobileNoMap.keySet());
+			    		List<Long> voterIds = new ArrayList<Long>(availablemobileNoMap.keySet());
 				
-				if(voterIds != null && voterIds.size() > 0)
-				{
-				List<Object[]>  uvdDetails = mobileNumbersDAO.getUservoterDetailsByUserId(userId,voterIds);
-				List<Long> avilablevoterIds = new ArrayList<Long>();
-				List<VoterVO> mobileList = new ArrayList<VoterVO>();
-				if(uvdDetails !=null && uvdDetails.size() > 0)
-				{
-						for(Object[] uvd : uvdDetails)
-						{
-							VoterVO vo = new VoterVO();
-							BigInteger voterId = (BigInteger)uvd[0];
-							BigInteger uvdId = (BigInteger)uvd[2];
-						    avilablevoterIds.add(voterId.longValue());
-							vo.setMobileNo(uvd[1].toString());
-							vo.setUvdId(uvdId.longValue());
-							mobileList.add(vo);
-						}
+			    		if(voterIds != null && voterIds.size() > 0)
+			    		{
+			    			List<Object[]>  uvdDetails = mobileNumbersDAO.getUservoterDetailsByUserId(userId,voterIds);
+			    			List<Long> avilablevoterIds = new ArrayList<Long>();
+			    			List<VoterVO> mobileList = new ArrayList<VoterVO>();
+			    			
+			    			if(uvdDetails !=null && uvdDetails.size() > 0)
+			    			{
+			    				for(Object[] uvd : uvdDetails)
+			    				{
+			    					VoterVO vo = new VoterVO();
+			    					BigInteger voterId = (BigInteger)uvd[0];
+			    					BigInteger uvdId = (BigInteger)uvd[2];
+			    					avilablevoterIds.add(voterId.longValue());
+			    					vo.setMobileNo(uvd[1].toString());
+			    					vo.setUvdId(uvdId.longValue());
+			    					mobileList.add(vo);
+			    				}
 						
-				}			
-						if(mobileList != null && mobileList.size() > 0)
-						{
-							for(VoterVO vo : mobileList)
-							{
-								if(vo.getMobileNo() == null || vo.getMobileNo().equalsIgnoreCase("N/A") || vo.getMobileNo().contains("99999") || vo.getMobileNo().contains("NA") || vo.getMobileNo().length() <= 5)
-								{
-									mobileNumbersDAO.updateMobileNo(vo.getMobileNo(),vo.getUvdId());
-									
-								}
-							}
-						}
+			    			}			
+			    			
+			    			if(mobileList != null && mobileList.size() > 0)
+			    			{
+			    				for(VoterVO vo : mobileList)
+			    				{
+			    					if(vo.getMobileNo() == null || vo.getMobileNo().equalsIgnoreCase("N/A") || vo.getMobileNo().contains("99999") || vo.getMobileNo().contains("NA") || vo.getMobileNo().length() <= 5)
+			    					{
+			    						mobileNumbersDAO.updateMobileNo(vo.getMobileNo(),vo.getUvdId());
+			    					}
+			    				}
+			    			}
 				
-						for(Map.Entry<Long,String> entry : availablemobileNoMap.entrySet())
-						{
-							try{
-							if(!avilablevoterIds.contains(entry.getKey()))
-							{
-								Long voterId = entry.getKey();
-								String mobileNo = entry.getValue();
-								//String insertQuery = "INSERT INTO user_voter_details(voter_id, constituency_id, user_id, mobile_no) VALUES ("+voterId+","+constituencyId+","+userId+",'"+mobileNo+"')";
-								UserVoterDetails userVoterDetails = new UserVoterDetails();
-								userVoterDetails.setVoter(voterDAO.get(voterId));
-								userVoterDetails.setMobileNo(mobileNo);
-								userVoterDetails.setUser(userDAO.get(userId));
-								userVoterDetails.setConstituency(constituencyDAO.get(constituencyId));
-								userVoterDetailsDAO.save(userVoterDetails);
-								result.setResultCode(ResultCodeMapper.SUCCESS);
-							}
-							}catch(Exception e)
-							{
-								result.setResultCode(ResultCodeMapper.FAILURE);
-								e.printStackTrace();
-							}
-						}
-				}
+			    			for(Map.Entry<Long,String> entry : availablemobileNoMap.entrySet())
+			    			{
+			    				try{
+			    					if(!avilablevoterIds.contains(entry.getKey()))
+			    					{
+										Long voterId = entry.getKey();
+										String mobileNo = entry.getValue();
+										UserVoterDetails userVoterDetails = new UserVoterDetails();
+										userVoterDetails.setVoter(voterDAO.get(voterId));
+										userVoterDetails.setMobileNo(mobileNo);
+										userVoterDetails.setUser(userDAO.get(userId));
+										userVoterDetails.setConstituency(constituencyDAO.get(constituencyId));
+										userVoterDetailsDAO.save(userVoterDetails);
+			    					}
+			    				}catch(Exception e)
+			    				{
+									result.setResultCode(ResultCodeMapper.FAILURE);
+									e.printStackTrace();
+			    				}
+			    			}
+			    			
+			    		}
 				
 					}
 					
 				}
 			}
-			
+			result.setResultCode(ResultCodeMapper.SUCCESS);
+			return result;
+		  }catch(Exception e)
+		  {
+			  System.out.println("Exception Occured in updateMobileNo()");
+			  System.out.println("Exception is -"+e);
+			  return result;
 		  }
-		catch(Exception e)
-		{
-			System.out.println("Exception Occured in updateMobileNo()");
-			System.out.println("Exception is -"+e);
-		}
-		return result;
-		
-		
 	}
 		
 }
