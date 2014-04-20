@@ -168,12 +168,9 @@ public class CastePredictionService implements ICastePredictionService {
 					List<Long> availableVotersList = userVoterDetailsDAO.getAvailableVoterIdsList(userId, casteStateId, voterIdsListTemp);
 					final List<Long> insertVoterIdsList = new ArrayList<Long>(0);
 					
-					if(availableVotersList != null && availableVotersList.size() > 0)
-					{
-						for(Long voterId : voterIdsListTemp)
-							if(!availableVotersList.contains(voterId))
-								insertVoterIdsList.add(voterId);
-					}
+					for(Long voterId : voterIdsListTemp)
+						if(!availableVotersList.contains(voterId))
+							insertVoterIdsList.add(voterId);
 					
 					if(insertVoterIdsList.size() > 0)
 					{
