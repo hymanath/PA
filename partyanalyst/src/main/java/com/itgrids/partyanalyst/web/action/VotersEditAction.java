@@ -1760,7 +1760,7 @@ public String saveLocality()
 	   public String updateMobileNos()
 	   {
 		   try{
-			   result = voterReportService.updateMobileNos(getStartIndex());	   
+			   result = voterReportService.updateMobileNos(getStartIndex().longValue());	   
 		   }
 		   catch(Exception e)
 		   {
