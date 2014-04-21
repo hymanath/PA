@@ -940,14 +940,26 @@ public void buildHelperVoForConst(PartyElectionTrendsReportVO partyVos ,String n
 
 			}
 			   
+			   }	        
+			   PartyElectionTrendsReportHelperVO voh= new PartyElectionTrendsReportHelperVO();
+
+			   if(object[0].toString().trim().equalsIgnoreCase("2009"))
+			   {
+				   vo.setTotalVotesPolled(Long.valueOf(object[1].toString())/2);
+		           voh.setVotesEarned(((Long)object[3]).longValue()/2);
+
+
+			   }else
+			   {
+				   vo.setTotalVotesPolled(Long.valueOf(object[1].toString()));
+		           voh.setVotesEarned(((Long)object[3]).longValue());
+
+  
 			   }
-			   vo.setTotalVotesPolled(Long.valueOf(object[1].toString()));
 	           vo.setDistrictId(Long.valueOf(object[5].toString()));
 	           vo.setElectionId(Long.valueOf(object[8].toString()));
 	           vo.setElectionIdForConst(Long.valueOf(object[11].toString()));
-	           PartyElectionTrendsReportHelperVO voh= new PartyElectionTrendsReportHelperVO();
 	           voh.setPercentage(Double.valueOf(roundTo2DigitsDoubleValue((double)(((double)((Long)object[3]).longValue()/(double)Long.valueOf(object[1].toString()))*100))));
-	           voh.setVotesEarned(((Long)object[3]).longValue());
 	           voh.setRank(((Long)object[6]).longValue());
 		       voh.setName(object[7].toString());
 
@@ -1011,12 +1023,24 @@ public void buildHelperVoForConst(PartyElectionTrendsReportVO partyVos ,String n
 			           vo.setElectionYear(Long.valueOf(object[0].toString()).intValue());
 			     	  if(idMap.containsKey(Long.valueOf(object[0].toString())))
 				       vo.setTotalVoters(idMap.get(Long.valueOf(object[0].toString())));
-			           vo.setTotalVotesPolled(Long.valueOf(object[1].toString()));
-			           vo.setDistrictId(Long.valueOf(object[5].toString()));
+			           PartyElectionTrendsReportHelperVO voh= new PartyElectionTrendsReportHelperVO();
+
+			     	 if(object[0].toString().trim().equalsIgnoreCase("2009"))
+					   {
+						   vo.setTotalVotesPolled(Long.valueOf(object[1].toString())/2);
+				           voh.setVotesEarned(((Long)object[3]).longValue()/2);
+
+
+					   }else
+					   {
+						   vo.setTotalVotesPolled(Long.valueOf(object[1].toString()));
+				           voh.setVotesEarned(((Long)object[3]).longValue());
+
+		  
+					   }			           vo.setDistrictId(Long.valueOf(object[5].toString()));
 			           vo.setElectionId(Long.valueOf(object[8].toString()));
 			           vo.setElectionIdForConst(Long.valueOf(object[11].toString()));
 
-			           PartyElectionTrendsReportHelperVO voh= new PartyElectionTrendsReportHelperVO();
 			           voh.setPercentage(Double.valueOf(roundTo2DigitsDoubleValue((double)(((double)(((Long)object[3]).longValue())/(double)(Long.valueOf(object[1].toString()).longValue()))*100))));
 			           voh.setVotesEarned(((Long)object[3]).longValue());
 			           voh.setRank(((Long)object[6]).longValue());
@@ -1097,6 +1121,8 @@ public void buildHelperVoForConst(PartyElectionTrendsReportVO partyVos ,String n
 			 
 			Long others = vo.getOthersVo().getVotesEarned();
 			
+			if(year.equals(2009L))
+				vo.getOthersVo().setVotesEarned(others/2);
 			Long max=inc;
 			if(prp11!=null && prp11>inc )
 				max=prp11;
