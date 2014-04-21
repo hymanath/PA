@@ -481,7 +481,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	//page-23
 		//Polling Stations – Increase Polling %
 		  defaultFileName="boothPolling"+uidentifier;
-		 List<PartyPositionVO> polling= boothwisePollingStratagicService.getPollingPercentagesByParty(constId, partyId, electionId, electionId1);
+		 List<PartyPositionVO> polling= suggestiveModelService.getPollingPercentagesByParty(constId, partyId, electionId, electionId1,"","");
 		  defaultFileName =   serialize(defaultFileName, polling,strategyVO.isAutoStrategy());
 			maps.put(PdfPages.pollingPercent, defaultFileName);
 		}catch (Exception e) {
@@ -885,7 +885,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
      columnNames.add("P.S#");
      columnNames.add("Panchayat");
      columnNames.add("Location");
-     columnNames.add("Villages Covered");
+     //columnNames.add("Villages Covered");
      columnNames.add("Polling %");
      columnNames.add("TDP Votes 2009");
      columnNames.add("TDP %");
@@ -2212,9 +2212,9 @@ public void buildPdfForPollingStations(PartyPositionVO finalRes,Document documen
 	PdfPCell c1;
 	document.add( new Paragraph(" ") );
 
-	PdfPTable table = new PdfPTable(8);
+	PdfPTable table = new PdfPTable(7);
 	table.setHorizontalAlignment(PdfPTable.ALIGN_LEFT);
-	PdfPTable table1 = new PdfPTable(8);
+	PdfPTable table1 = new PdfPTable(7);
 	table1.setHorizontalAlignment(PdfPTable.ALIGN_LEFT);
 	
 	document.add(new Paragraph(""));
@@ -2234,7 +2234,7 @@ public void buildPdfForPollingStations(PartyPositionVO finalRes,Document documen
 	
 	document.add( new Paragraph(" ") );
 	
-	float[] widths = new float[] {1.0f,2.8f ,2.8f,2.8f,1.2f,1.2f,1.2f, 1.5f };
+	float[] widths = new float[] {1.0f,2.8f ,2.8f,1.2f,1.2f,1.2f, 1.5f };
 	table.setWidths(widths);
   	document.add(table);
   	
@@ -2316,9 +2316,9 @@ public void pollingStationHelper(PartyPositionVO finalRes,PdfPTable table ,List<
 		 c1.setHorizontalAlignment(Element.ALIGN_LEFT);
 	 	 table.addCell(c1);
 		 
-	 	 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getVillagesCovered() != null && prev.getVillagesCovered().trim().length()>0?prev.getVillagesCovered():"-" ),SMALLFONT));
+	 	/* c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getVillagesCovered() != null && prev.getVillagesCovered().trim().length()>0?prev.getVillagesCovered():"-" ),SMALLFONT));
 		 c1.setHorizontalAlignment(Element.ALIGN_LEFT);
-	 	 table.addCell(c1);
+	 	 table.addCell(c1);*/
 		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(roundTo2DigitsDoubleValue(prev.getPollingPercentage())),SMALLFONT));
 		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	 table.addCell(c1);
