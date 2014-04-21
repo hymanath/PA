@@ -349,14 +349,14 @@ StratagicReportServiceForMLASuccess stratagicReportServiceForMLASuccess = new St
 stratagicReportServiceForMLASuccess.partyTrendsDAO = partyTrendsDAO;
 stratagicReportServiceForMLASuccess.voterAgeInfoDAO=voterAgeInfoDAO;
 
-/*List<PartyElectionTrendsReportVO> resForPrevTrends = stratagicReportServiceForMLASuccess.getPreviousTrendsReportParliament(181L);
-StratagicReportsServicePdf val = new StratagicReportsServicePdf();*/
+List<PartyElectionTrendsReportVO> resForPrevTrends = stratagicReportServiceForMLASuccess.getPreviousTrendsReportParliament(232L);
 StratagicReportsServicePdf val = new StratagicReportsServicePdf();
-VoterStratagicReportVo vinfo=stratagicReportServiceForMLASuccess.getFirstTimeVotersInfoByConstituency(1L, 232L, 10L);
+//StratagicReportsServicePdf val = new StratagicReportsServicePdf();
+//VoterStratagicReportVo vinfo=stratagicReportServiceForMLASuccess.getFirstTimeVotersInfoByConstituency(1L, 232L, 10L);
 document.newPage();
 //try{
-/*val.buildPdfForPrevTrends("", resForPrevTrends, document, writer, "Previous Election Results in ");*/
-val.buildPdfForFirstTimeVotersAndVotersByAgeGroup(vinfo, document, writer, "");
+val.buildPdfForPrevTrends("", resForPrevTrends, document, writer, "Previous Election Results in ");
+//val.buildPdfForFirstTimeVotersAndVotersByAgeGroup(vinfo, document, writer, "");
 document.newPage();
 document.add(new Paragraph("fhdhdh"));
 

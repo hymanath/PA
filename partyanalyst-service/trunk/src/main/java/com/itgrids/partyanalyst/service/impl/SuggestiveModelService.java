@@ -82,6 +82,7 @@ import com.itgrids.partyanalyst.dto.SuggestiveModelVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.VoterCountVO;
 import com.itgrids.partyanalyst.dto.VoterDataVO;
+import com.itgrids.partyanalyst.dto.VoterFamilyCount;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.dto.YouthLeaderSelectionVO;
@@ -93,7 +94,6 @@ import com.itgrids.partyanalyst.model.SuggestiveRange;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.model.VoterCastInfo;
-import com.itgrids.partyanalyst.model.VoterFamilyCount;
 import com.itgrids.partyanalyst.model.VoterInfo;
 import com.itgrids.partyanalyst.service.IPdfReportsService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
@@ -5798,7 +5798,16 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 						    	String districtName = values[1].toString().toUpperCase();
 						    	Long constituenyNo = delimitationConstituencyDAO.getConstituencyNo(constituenycId,2009l);
 						    	//String path = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\";
-							    String filePath = "VMR"+"/"+""+districtName+"_"+constituenyNo+"_"+constituenyName+"Party High Low Polling.pdf";
+						    	String filePath = "";
+						    	if(type.equalsIgnoreCase("reducePolling"))
+						  		{
+						    		 filePath = "VMR"+"/"+""+districtName+"_"+constituenyNo+"_"+constituenyName+"Party_Low_Polling.pdf";
+						  		}
+						    	else
+						    	{
+						    		 filePath = "VMR"+"/"+""+districtName+"_"+constituenyNo+"_"+constituenyName+"Party_High_Polling.pdf";
+						    	}
+						    	
 							    String FILE = path+filePath;
 							    File file  = new File(FILE);
 							    try {
@@ -5821,11 +5830,11 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 							  		document.open();
 							  		if(type.equalsIgnoreCase("reducePolling"))
 							  		{
-							  			pdfReportService.pollingPercentageReport(document,result.get(0).getStrongPollingPercentVOList(),"Polling High,TDP Party Weak");
+							  			pdfReportService.pollingPercentageReport(document,result.get(0).getStrongPollingPercentVOList(),"Polling High,TDP Party Weak",result.get(0).getPollingPercentage());
 							  		}
 							  		else
 							  		{
-							  			pdfReportService.pollingPercentageReportForHighPolling(document,result.get(0).getWeakPollingPercentVOList(),"Polling Low,TDP Party Strong");
+							  			pdfReportService.pollingPercentageReportForHighPolling(document,result.get(0).getWeakPollingPercentVOList(),"Polling Low,TDP Party Strong",result.get(0).getPollingPercentage());
 							  			
 							  		}
 
