@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.math.BigDecimal;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -10,8 +11,8 @@ import org.hibernate.Query;
 import org.springframework.jdbc.object.SqlQuery;
 
 import com.itgrids.partyanalyst.dao.IPartyTrendsDAO;
-import com.itgrids.partyanalyst.dto.VoterFamilyCount;
 import com.itgrids.partyanalyst.model.PartyTrends;
+import com.itgrids.partyanalyst.model.VoterFamilyCount;
 
 public class PartyTrendsDAO extends GenericDaoHibernate<PartyTrends, Long> implements IPartyTrendsDAO{
 
@@ -245,7 +246,7 @@ public class PartyTrendsDAO extends GenericDaoHibernate<PartyTrends, Long> imple
     {
     	Query query = getSession().createSQLQuery("CALL VOTER_FAMILY_Details_Booth7(:constituencyId,:minCount,:maxCount,:uuid,:publicationDateId)")
     			.addEntity(VoterFamilyCount.class)
-    			.setParameter("constituencyId", 232).setParameter("minCount", 10).setParameter("maxCount", 15).setParameter("uuid", UUID.randomUUID().toString()).setParameter("publicationDateId", 8);
+    			.setParameter("constituencyId", 232).setParameter("minCount", 3).setParameter("maxCount", 100).setParameter("uuid", UUID.randomUUID().toString()).setParameter("publicationDateId", 8);
     	
     	return query.list();
     }
