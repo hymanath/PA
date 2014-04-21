@@ -885,6 +885,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
      columnNames.add("P.S#");
      columnNames.add("Panchayat");
      columnNames.add("Location");
+     columnNames.add("Villages Covered");
      columnNames.add("Polling %");
      columnNames.add("TDP Votes 2009");
      columnNames.add("TDP %");
@@ -2211,9 +2212,9 @@ public void buildPdfForPollingStations(PartyPositionVO finalRes,Document documen
 	PdfPCell c1;
 	document.add( new Paragraph(" ") );
 
-	PdfPTable table = new PdfPTable(7);
+	PdfPTable table = new PdfPTable(8);
 	table.setHorizontalAlignment(PdfPTable.ALIGN_LEFT);
-	PdfPTable table1 = new PdfPTable(7);
+	PdfPTable table1 = new PdfPTable(8);
 	table1.setHorizontalAlignment(PdfPTable.ALIGN_LEFT);
 	
 	document.add(new Paragraph(""));
@@ -2233,7 +2234,7 @@ public void buildPdfForPollingStations(PartyPositionVO finalRes,Document documen
 	
 	document.add( new Paragraph(" ") );
 	
-	float[] widths = new float[] {1.0f,2.8f ,2.8f,1.2f,1.2f,1.2f, 1.5f };
+	float[] widths = new float[] {1.0f,2.8f ,2.8f,2.8f,1.2f,1.2f,1.2f, 1.5f };
 	table.setWidths(widths);
   	document.add(table);
   	
@@ -2287,7 +2288,7 @@ public void pollingStationHelper(PartyPositionVO finalRes,PdfPTable table ,List<
 	  		if(input.equalsIgnoreCase("Strong"))
 			{
 				
-	  		    c1 = new PdfPCell(new Phrase("Improve                                                                (Avg Poll% "+roundTo2DigitsDoubleValue(prev.getPollingPercentage())+")",calibriBold1));
+	  		    c1 = new PdfPCell(new Phrase("Improve                                                                (Avg Poll% "+roundTo2DigitsDoubleValue(finalRes.getPollingPercentage())+")",calibriBold1));
 	  			c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			c1.setBackgroundColor(BaseColor.YELLOW);
 	  			table.addCell(c1);
@@ -2295,7 +2296,7 @@ public void pollingStationHelper(PartyPositionVO finalRes,PdfPTable table ,List<
 				
 			{ 
 				
-				   c1 = new PdfPCell(new Phrase("To Decrease     (Avg Poll% "+roundTo2DigitsDoubleValue(prev.getPollingPercentage())+")",calibriBold1));
+				   c1 = new PdfPCell(new Phrase("To Decrease     (Avg Poll% "+roundTo2DigitsDoubleValue(finalRes.getPollingPercentage())+")",calibriBold1));
 		  			c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 		  			c1.setBackgroundColor(BaseColor.YELLOW);
 		  			table.addCell(c1);
@@ -2307,15 +2308,17 @@ public void pollingStationHelper(PartyPositionVO finalRes,PdfPTable table ,List<
 	  		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	 	 table.addCell(c1);
 	  		
-	 	 	 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getLocalbodyName().trim().length() != 0 ? prev.getLocalbodyName() : "-"),SMALLFONT));
+	 	 	 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getLocalbodyName().trim().length() > 0 ? prev.getLocalbodyName() : "-"),SMALLFONT));
 			 c1.setHorizontalAlignment(Element.ALIGN_LEFT);
 		 	 table.addCell(c1);
 		 
-		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getLocation()),SMALLFONT));
+		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getLocation() != null && prev.getLocation().trim().length()>0?prev.getLocation():"-" ),SMALLFONT));
 		 c1.setHorizontalAlignment(Element.ALIGN_LEFT);
 	 	 table.addCell(c1);
 		 
-	 	 
+	 	 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getVillagesCovered() != null && prev.getVillagesCovered().trim().length()>0?prev.getVillagesCovered():"-" ),SMALLFONT));
+		 c1.setHorizontalAlignment(Element.ALIGN_LEFT);
+	 	 table.addCell(c1);
 		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(roundTo2DigitsDoubleValue(prev.getPollingPercentage())),SMALLFONT));
 		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	 table.addCell(c1);
@@ -2332,9 +2335,9 @@ public void pollingStationHelper(PartyPositionVO finalRes,PdfPTable table ,List<
 	 	 
 	 	
 	 	if(input.equalsIgnoreCase("Strong"))
-	 		c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(roundTo2DigitsDoubleValue(prev.getPollingPercentage())),SMALLFONT));
+	 		c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(roundTo2DigitsDoubleValue(prev.getWeakPollingPercentVOList().get(0).getPartyPercentage())),SMALLFONT));
 	 	else
-	 		c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(roundTo2DigitsDoubleValue(prev.getPollingPercentage())),SMALLFONT));
+	 		c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(roundTo2DigitsDoubleValue(prev.getStrongPollingPercentVOList().get(0).getPartyPercentage())),SMALLFONT));
 	 	
 	 	 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	 table.addCell(c1);
