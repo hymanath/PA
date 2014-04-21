@@ -504,7 +504,7 @@ List<Object[]> obj=(List<Object[]>) partyTrendsDAO.loadEntitiesForXl(cost);
 		
 		System.out.println(maps);
 	}*/
-	public  void test()
+	/*public  void test()
 	{
 	//List<Object[]> obj=	partyTrendsDAO.getTotalVotersForConst(232L);
 		List<Object[]> obj=new ArrayList<Object[]>();
@@ -517,5 +517,17 @@ List<Object[]> obj=(List<Object[]>) partyTrendsDAO.loadEntitiesForXl(cost);
 	
 	System.out.println(obj.size());
 
+	}*/
+	
+	
+	public void testqueryTest()
+	
+	{
+		List<?> helloList=partyTrendsDAO.callStoredProcedure();
+		
+		System.out.println(helloList.size());
+		
 	}
+	
+	
 }
