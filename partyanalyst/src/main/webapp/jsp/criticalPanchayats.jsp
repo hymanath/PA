@@ -114,7 +114,7 @@ color:#333333;
 	   if(result != null ){ 
 	       buildOrderPriorityGraph(result[0]);
 		   buildOrderPriorityTable(result[1]);
-		   //window.open(result[2]);
+		   window.open(result[2]);
 		  
 	   }else{
 	       $("#ajaxImage").hide();
