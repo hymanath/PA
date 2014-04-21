@@ -96,7 +96,7 @@ function getConstituencyList(){
 	</tr>
 	<tr>
         <td>Cast Weightage :<font class="mandatory">*</font> <a  id="helpbutt" onCLick="popUpForHelp(' As our election is caste based Election, with the top castes in the constituency how many votes can get apart from 2009 votes, as one of the criteria with other aspects, we give certain Weightages to calculate where they can prioritize the Villages to get the votes. Weightage for this category does not less than 50% but will take after giving weightages to all other categories');" value="Help" style="float: right;width: 20px;"  title="Click To View Help"><img alt="" src="./images/help.jpeg"></a></td>
-		<td><input id="totalId" type="text" style="width:176px;"></td>
+		<td><input id="totalId" type="text" value="0" style="width:176px;"></td>
 	</tr>
 	<tr>
          <td>Young Voters Weightage :<font class="mandatory">*</font><a id="helpbutt" onCLick="popUpForHelp('These are First time voters, Party can grab these voters by Various schemes, here we are trying to grab these voters where they are populated highly and targeted them along with Top castes in Constituency, we give least weightage to this category like 2.5 to 5%');" value="Help" style="float: right;width: 20px;"  title="Click To View Help"><img alt="" src="./images/help.jpeg"></a></td>
@@ -221,10 +221,13 @@ $('#errorMsgDiv').html('');
 					$('#errorMsgDiv').html("Caste data for this constituency is not available");
 					$("#castesId").hide();	
 					$("#castePerId").hide();
-                    $("#totalId").attr("disabled","true");					
+                    $("#totalId").attr("disabled","true");		
+                    $("#totalId").val(0);		
 					}
 					else
 					{
+						isCasteDataAvail=true;
+						$('#errorMsgDiv').html("");
 					  $("#totalId").removeAttr("disabled");	
 					  $("#castePerId").show();
 					  $("#castesId").show();
