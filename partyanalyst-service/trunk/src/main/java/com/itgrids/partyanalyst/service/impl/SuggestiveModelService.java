@@ -53,6 +53,7 @@ import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatResultDAO;
 import com.itgrids.partyanalyst.dao.IPartialBoothPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
+import com.itgrids.partyanalyst.dao.IPartyTrendsDAO;
 import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
 import com.itgrids.partyanalyst.dao.ISuggestiveRangeDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
@@ -92,6 +93,7 @@ import com.itgrids.partyanalyst.model.SuggestiveRange;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.model.VoterCastInfo;
+import com.itgrids.partyanalyst.model.VoterFamilyCount;
 import com.itgrids.partyanalyst.model.VoterInfo;
 import com.itgrids.partyanalyst.service.IPdfReportsService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
@@ -147,9 +149,17 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 	private IPanchayatResultDAO panchayatResultDAO;
 	private ICriticalPanchayatsDAO criticalPanchayatsDAO;
 	private IPdfReportsService pdfReportService;
+	private IPartyTrendsDAO partyTrendsDAO;
 	
 	
-	
+
+	public IPartyTrendsDAO getPartyTrendsDAO() {
+		return partyTrendsDAO;
+	}
+
+	public void setPartyTrendsDAO(IPartyTrendsDAO partyTrendsDAO) {
+		this.partyTrendsDAO = partyTrendsDAO;
+	}
 
 	public void setPdfReportService(IPdfReportsService pdfReportService) {
 		this.pdfReportService = pdfReportService;
@@ -6382,6 +6392,98 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		for (Long id : constituencyIds) {
 			result = new ArrayList<VoterHouseInfoVO>();
 			constituencyId = id;
+			
+			List<?> list = partyTrendsDAO.callStoredProcedure();
+			 
+			 String type = null;
+			 for (Object param : list) {
+				 VoterHouseInfoVO voterHouseInfoVO = new VoterHouseInfoVO();
+				 VoterFamilyCount vc=	(VoterFamilyCount)param;
+				 Booth booth = boothDAO.get(vc.getBoothId());
+					Constituency consti = constituencyDAO.get((Long)booth.getConstituency().getConstituencyId());
+					type = consti.getAreaType();
+					
+				  voterHouseInfoVO.setTehsilName(vc.getTehsilName());
+				  if(vc.getTehsilName().contains(IConstants.MUNCIPLE_ELECTION_TYPE))
+					  voterHouseInfoVO.setWardName(vc.getPanchayatName());
+				  else
+					  voterHouseInfoVO.setPanchayatName(vc.getPanchayatName());
+				  voterHouseInfoVO.setHamletName(vc.getHamletName());
+				  voterHouseInfoVO.setPartNo(vc.getBoothNo().toString());
+				  voterHouseInfoVO.setElderCaste(vc.getCaste() != null ? vc.getCaste() : " ");
+				  voterHouseInfoVO.setVoterIdCardNo(vc.getElderVoterIdCardNo());
+				  voterHouseInfoVO.setElder(vc.getElderPersonName());
+				  voterHouseInfoVO.setElderGender(vc.getEldPersomGender());
+				  voterHouseInfoVO.setElderAge(new Long(vc.getElderPersonAge()));
+				  voterHouseInfoVO.setHouseNo(vc.getHouseNo());
+				  voterHouseInfoVO.setCount(vc.getCount());
+				  voterHouseInfoVO.setVoterGroup(vc.getYoungerVoterIdCardNo());
+				  voterHouseInfoVO.setYounger(vc.getYoungerPersonName());
+				  voterHouseInfoVO.setYoungerGender(vc.getYoungPersomGender());
+				  voterHouseInfoVO.setYoungerAge(vc.getYoungerPersonAge());
+				  
+				  result.add(voterHouseInfoVO);
+			  if(list != null && list.size() > 0)
+					result.get(0).setConstituencyType(type);
+				    result.get(0).setTotalHousesCount(new Long(list.size()));
+			 }
+				    try{
+					    Object[] values = constituencyDAO.constituencyName(constituencyId).get(0);
+				    	String constituenyName = values[0].toString().toUpperCase();
+				    	String districtName = values[1].toString().toUpperCase();
+				    	Long constituenyNo = delimitationConstituencyDAO.getConstituencyNo(constituencyId,2009l);
+					    String filePath = "VMR"+"/"+""+districtName+"_"+constituenyNo+"_"+constituenyName+".xls";
+					    String FILE = path+filePath;
+					    //File file  = new File(FILE);
+					    //file.createNewFile();
+					    FileOutputStream out = new FileOutputStream(FILE);
+					    
+						HSSFWorkbook workbook = new HSSFWorkbook(); 
+						HSSFSheet sheet  = workbook.createSheet("report");
+						ageWiseExcelsGenerationService.generateExcelsForImportaneFamiles(result , sheet, workbook,type);
+						workbook.write(out);
+						if(result != null && result.size() > 0)
+						{
+							result.get(0).setInfluencePartyName(filePath);
+						}
+					  }
+					  catch(Exception e)
+					  {
+						  e.printStackTrace();
+					  }
+			
+		}
+		
+	}
+		catch(Exception e)
+		{
+			LOG.error("Exception raised in getFamilyDetailsForConstituency() method in Suggestive Model Service",e);
+			
+		}
+		return result;
+	}
+	
+	/*public List<VoterHouseInfoVO> getFamilyDetailsForConstituency(Long constituencyId,Long publicationId,Long minValue,Long maxValue,Integer startIndex,Integer maxIndex,Long userId,String path,String seltype)
+	{
+		List<VoterHouseInfoVO> result = null;
+		try{
+		List<Long> constituencyIds = new ArrayList<Long>();
+		if(seltype.equalsIgnoreCase("district"))
+		{
+			List<Object[]> constiList =  constituencyDAO.getDistrictConstituencies(constituencyId);
+			for (Object[] parms : constiList) {
+				constituencyIds.add((Long)parms[0]);
+			}
+			startIndex = null;
+			maxIndex = null;
+		}
+		else
+		{
+			constituencyIds.add(constituencyId);
+		}
+		for (Long id : constituencyIds) {
+			result = new ArrayList<VoterHouseInfoVO>();
+			constituencyId = id;
 			List<Object[]> list = boothPublicationVoterDAO.getHouseNosForBooth(constituencyId,publicationId,minValue,maxValue,startIndex,maxIndex);
 			List<Object[]> totalList = boothPublicationVoterDAO.getHouseNosForBooth(constituencyId,publicationId,minValue,maxValue,null,null);
 			Map<Long,List<String>> boothHousesMap = new HashMap<Long, List<String>>();
@@ -6626,7 +6728,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			  {
 				  e.printStackTrace();
 			  }
-			  /*Document document = null;
+			  Document document = null;
 			  try
 			  {
 				   document = new Document();
@@ -6661,7 +6763,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			  {
 				  if(document != null)
 				  document.close();
-			  }*/
+			  }
 			  
 			 }
 		}
@@ -6673,7 +6775,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			
 		}
 		return result;
-	}
+	}*/
 	
 	public List<PartyTrendsVO> calculateOrderOfPriorityForConstituency(Long userId,List<Long> constituencyIds,List<Long> casteIdsList,List<ExceptCastsVO> exceptCasteList,List<SelectOptionVO> groups,List<ExceptCastsVO> exceptCasteMncplList,String party,List<Long> electionIds,Long partyId,SuggestedLocationsVO weigthPerc){
 		//double casteWeigthPerc = weigthPerc.getCasteWeight();
