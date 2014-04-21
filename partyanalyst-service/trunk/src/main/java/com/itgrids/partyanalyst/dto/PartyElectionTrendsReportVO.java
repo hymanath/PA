@@ -11,7 +11,7 @@ public class PartyElectionTrendsReportVO implements Comparable<PartyElectionTren
 	
 	private Integer electionYear;
 	private Long  totalVoters=0L;
-	private Long totalVotesPolled;
+	private Long totalVotesPolled=0L;
 	private String tdpPartyName;
 	//for paliament
 	private Long electionId;
