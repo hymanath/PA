@@ -1807,6 +1807,7 @@
 	  <property name="ageWiseExcelsGenerationService" ref="ageWiseExcelsGenerationService" />
 	  <property name="criticalPanchayatsDAO" ref="criticalPanchayatsDAO" />
 	  <property name="pdfReportService" ref="pdfReportService" />
+	  <property name="partyTrendsDAO" ref="partyTrendsDAO" />
     </bean>
     
     <bean name="mobileService" class="com.itgrids.partyanalyst.service.impl.MobileService">
