@@ -82,7 +82,7 @@ import com.itgrids.partyanalyst.dto.SuggestiveModelVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.VoterCountVO;
 import com.itgrids.partyanalyst.dto.VoterDataVO;
-import com.itgrids.partyanalyst.dto.VoterFamilyCount;
+import com.itgrids.partyanalyst.model.VoterFamilyCount;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.dto.YouthLeaderSelectionVO;
