@@ -44,7 +44,7 @@ public class APVoterDataDownloader {
         
         int numOfDistricts = district.getOptions().size();
         
-        int d = 18;
+        int d = 6;
         //for (; d<=numOfDistricts; d++) {
             district.selectByValue(String.valueOf(d));
             Select constituency = new Select(driver.findElement(By.name("ddlAC")));
@@ -56,7 +56,7 @@ public class APVoterDataDownloader {
             } else {
                 i = 1;
             }
-            i= 222;
+            i= 69;
             //for(; i<=numOfconstituencies; i++){
                 constituency.selectByValue(String.valueOf(i));
                 String constituencyName = constituency.getFirstSelectedOption().getText();
@@ -106,9 +106,9 @@ public class APVoterDataDownloader {
                 	int no = j + 2;
                    
                     if (no < 10) {
-                        downloadLink =  driver.findElement(By.id("GridView1_ctl0"+no+"_lnkTelugu"));
+                        downloadLink =  driver.findElement(By.id("GridView1_ctl0"+no+"_lnkEnglish"));
                     } else {
-                        downloadLink =  driver.findElement(By.id("GridView1_ctl"+no+"_lnkTelugu"));
+                        downloadLink =  driver.findElement(By.id("GridView1_ctl"+no+"_lnkEnglish"));
                     }
                     
                     System.out.println("Downloding Booth - "+(no-1)+" Pdf");
