@@ -6,10 +6,12 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +34,6 @@ import com.itgrids.partyanalyst.dto.PartyElectionTrendsReportVO;
 import com.itgrids.partyanalyst.dto.StrategicCensusVO;
 import com.itgrids.partyanalyst.dto.VoterStratagicReportVo;
 import com.itgrids.partyanalyst.model.Constituency;
-import com.itgrids.partyanalyst.model.ConstituencyCensusDetails;
 import com.itgrids.partyanalyst.service.IStratagicReportServiceForMLASuccess;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -69,7 +70,7 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 		try {
 			Long houseHoldsByNewVoterList = 0L; 
 			Long houseHoldsByCensus = 0L;
-			
+			/*
 			List<Long> yearIds = new ArrayList<Long>();
 			yearIds.add(2011L);
 						
@@ -82,7 +83,7 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 			}
 			
 			
-			/*
+			*/
 			List<Long> tehsilIds = boothDAO.getTehsildByConstituency(constituencyId, publicationDateId);
 			List<Long> houstholdsDetials = censusDAO.getCensusDetailsInConstituency(tehsilIds,2011L);
 			if(houstholdsDetials != null && houstholdsDetials.size()>0){		
@@ -93,7 +94,7 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 					houseHoldsByCensus = houseHoldsByCensus + houseHolds;
 				}
 			}
-			*/
+			
 			List<Object[]> houseHoldsDetails = voterFamilyInfoDAO.getTotalFamiliesByCosntituency(constituencyId,publicationDateId,constituencyId);
 			if(houseHoldsDetails != null && houseHoldsDetails.size()>0){
 				houseHoldsVOList = new ArrayList<HouseHoldsVO>();
