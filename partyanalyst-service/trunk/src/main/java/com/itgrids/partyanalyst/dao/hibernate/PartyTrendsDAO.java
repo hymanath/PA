@@ -240,7 +240,7 @@ public class PartyTrendsDAO extends GenericDaoHibernate<PartyTrends, Long> imple
     }
     
     
-  /*  public List<?> callStoredProcedure()
+ public List<?> callStoredProcedure()
     
     {
     	Query query = getSession().createSQLQuery("CALL VOTER_FAMILY_Details_Booth7(:constituencyId,:minCount,:maxCount,:uuid,:publicationDateId)")
@@ -248,5 +248,5 @@ public class PartyTrendsDAO extends GenericDaoHibernate<PartyTrends, Long> imple
     			.setParameter("constituencyId", 232).setParameter("minCount", 10).setParameter("maxCount", 15).setParameter("uuid", UUID.randomUUID().toString()).setParameter("publicationDateId", 8);
     	
     	return query.list();
-    }*/
+    }
 }
