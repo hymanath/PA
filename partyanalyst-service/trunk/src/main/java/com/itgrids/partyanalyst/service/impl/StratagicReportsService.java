@@ -2825,11 +2825,15 @@ public class StratagicReportsService implements IStratagicReportsService{
 		}
 	  
 	  public String getDensityTypeOfPanchayat(VoterDensityWithPartyVO voterDensityPartyVO,Long panchayatId){
+		  if(panchayatId!=null){
 		  List<VoterDensityWithPartyVO> densitiesList=voterDensityPartyVO.getDensityList();
 		  for(VoterDensityWithPartyVO density:densitiesList){
+			  if(density.getPanchayatIds()!=null && density.getPanchayatIds().size()>0){
 			  if(density.getPanchayatIds().contains(panchayatId.longValue())){
 				  return density.getType();
 			  }
+			  }
+		  }
 		  }
 		  return null;
 	  }
