@@ -5812,7 +5812,7 @@ public class VoterReportService implements IVoterReportService{
 			String districtarr[] = {districtId.toString()};
 			for(String distictId : districtarr)
 			{
-				
+				LOG.warn("Selected District Id is  - "+districtId);
 				availablemobileNoMap = new HashMap<Long, String>();
 				
 				List<Long> constituencyIds = mobileNumbersDAO.getConstituencysByDistictID(Long.parseLong(distictId));
@@ -5821,7 +5821,9 @@ public class VoterReportService implements IVoterReportService{
 				{
 			    	for(Long constituencyId : constituencyIds)
 			    	{
+			    		LOG.warn("Reading Costituency - "+constituencyId+" Data");
 			    		List<Object[]> mobileVoters = mobileNumbersDAO.getMobileNoforVoter(constituencyId);
+			    		LOG.warn("Total "+mobileVoters.size()+" Mobile Nos Selected");
 			    		
 			    		if(mobileVoters != null && mobileVoters.size() > 0)
 			    		{
@@ -5854,6 +5856,7 @@ public class VoterReportService implements IVoterReportService{
 			    			
 			    			if(mobileList != null && mobileList.size() > 0)
 			    			{
+			    				LOG.warn(mobileList.size()+" Mobile Nos are already Existed");
 			    				for(VoterVO vo : mobileList)
 			    				{
 			    					if(vo.getMobileNo() == null || vo.getMobileNo().equalsIgnoreCase("N/A") || vo.getMobileNo().contains("99999") || vo.getMobileNo().contains("NA") || vo.getMobileNo().length() <= 5)
@@ -5885,7 +5888,8 @@ public class VoterReportService implements IVoterReportService{
 			    			}
 			    			
 			    		}
-				
+			    		LOG.warn("Reading Costituency - "+constituencyId+" Data Completed");
+			    		voterDAO.flushAndclearSession();
 					}
 					
 				}
