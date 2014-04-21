@@ -272,7 +272,7 @@ public class PdfReportService implements IPdfReportsService
 		}
 	}
 
-	public void pollingPercentageReport(Document document,List<PartyPositionVO> list,String heading)
+	public void pollingPercentageReport(Document document,List<PartyPositionVO> list,String heading,Double pollingPerc)
 	{
 		try
 		{
@@ -351,7 +351,7 @@ public class PdfReportService implements IPdfReportsService
 	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
 	 	  	table.addCell(c1);
 	 	  	
-	 	  	c1 = new PdfPCell(new Phrase("Polling @70.88",BIGFONT));
+	 	  	c1 = new PdfPCell(new Phrase("Polling @"+pollingPerc+"",BIGFONT));
 	 		c1.setPaddingTop(5);
 	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
@@ -442,7 +442,7 @@ public class PdfReportService implements IPdfReportsService
 		}
 	}
 	
-	public void pollingPercentageReportForHighPolling(Document document,List<PartyPositionVO> list,String heading)
+	public void pollingPercentageReportForHighPolling(Document document,List<PartyPositionVO> list,String heading,Double pollingPerc)
 	{
 		try
 		{
@@ -513,13 +513,13 @@ public class PdfReportService implements IPdfReportsService
 	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
 	 	  	table.addCell(c1);
 	 	  	
-	 	  	c1 = new PdfPCell(new Phrase("Scope To Improve(Avg Poll%(70.88))",BIGFONT));
+	 	  	c1 = new PdfPCell(new Phrase("Scope To Improve(Avg Poll%("+pollingPerc+"))",BIGFONT));
 	 	  	c1.setPaddingTop(10);
 	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
 	 	  	table.addCell(c1);
 	 	  	
-	 	  	c1 = new PdfPCell(new Phrase("Polling @70.88",BIGFONT));
+	 	  	c1 = new PdfPCell(new Phrase("Polling @"+pollingPerc+"",BIGFONT));
 	 	  	c1.setPaddingTop(20);
 	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
@@ -569,8 +569,8 @@ public class PdfReportService implements IPdfReportsService
 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			table.addCell(c2);
 	  			
-	  			double per3=partyPositionVO.getMaxValue();
-	  			//c2 = new PdfPCell(new Phrase(partyPositionVO.getPollingPercentage().toString(),SMALLFONT));
+	  			double per3=partyPositionVO.getPollingPercentage();
+	  			//c2 = new PdfPCell(new Phrase(new DecimalFormat("##.##").format(partyPositionVO.getPollingPercentage()).toString(),SMALLFONT));
 	  			c2 =  new PdfPCell(new Phrase(new DecimalFormat("##.##").format(per3),SMALLFONT));
 	  			c2.setPaddingTop(10);
 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -581,8 +581,8 @@ public class PdfReportService implements IPdfReportsService
 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			table.addCell(c2);
 	  			
-	  			double per4=partyPositionVO.getMaxValue();
-	  			//c2 = new PdfPCell(new Phrase(partyPositionVO.getStrongPollingPercentVOList().get(0).getPartyPercentage().toString(),SMALLFONT));
+	  			double per4=partyPositionVO.getStrongPollingPercentVOList().get(0).getPartyPercentage();
+	  			//c2 = new PdfPCell(new Phrase(new DecimalFormat("##.##").format(partyPositionVO.getStrongPollingPercentVOList().get(0).getPartyPercentage()).toString(),SMALLFONT));
 	  			c2 =  new PdfPCell(new Phrase(new DecimalFormat("##.##").format(per4),SMALLFONT));
 	  			c2.setPaddingTop(10);
 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);

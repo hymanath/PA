@@ -5151,7 +5151,19 @@ public class StratagicReportsService implements IStratagicReportsService{
 		}
 		  
 	  }
+	  
+	  public Comparator<AgeRangeVO> percSort = new Comparator<AgeRangeVO>()
+	  {
+
+		  public int compare(AgeRangeVO filePaths1, AgeRangeVO filePaths2)
+		  {
+			  return filePaths2.getTotalVotersAddedPer().compareTo(filePaths1.getTotalVotersAddedPer());
+		  }
+	  };
+
 	  public void generateBoothWiseAddedDeletedVoters(List<AgeRangeVO> result,Document document){
+		  
+		  Collections.sort(result, percSort);
 		  LOG.debug("Entered Into BoothWiseAddedDeletedVoters For GENERATING PDF");
 		  
 		 // Document document = new Document();
@@ -5674,7 +5686,16 @@ public class StratagicReportsService implements IStratagicReportsService{
 			table.addCell(column);
 			
 			for(SelectOptionVO temp:publications){
-				column = new PdfPCell(new Phrase(temp.getName(),BIGFONT));
+				column = new PdfPCell(new Phrase("Electoral Roll 2014 -Final",BIGFONT));
+				column.setBackgroundColor(bcolor);
+				column.setHorizontalAlignment(Element.ALIGN_CENTER);
+				table.addCell(column);
+				
+				
+			}
+			if(publications.size() == 1)
+			{
+				column = new PdfPCell(new Phrase("Electoral Roll 2014 -Draft",BIGFONT));
 				column.setBackgroundColor(bcolor);
 				column.setHorizontalAlignment(Element.ALIGN_CENTER);
 				table.addCell(column);
@@ -5722,6 +5743,12 @@ public class StratagicReportsService implements IStratagicReportsService{
 				table.addCell(column);
 			}
 			
+			if(publicationsList.size() == 1)
+			{
+				column = new PdfPCell(new Phrase("-",TBCELLSM));
+				column.setHorizontalAlignment(Element.ALIGN_CENTER);
+				table.addCell(column);
+			}
 			
 				column = new PdfPCell(new Phrase(temp1.getAddedCount().toString(),TBCELLSM));
 				column.setHorizontalAlignment(Element.ALIGN_CENTER);

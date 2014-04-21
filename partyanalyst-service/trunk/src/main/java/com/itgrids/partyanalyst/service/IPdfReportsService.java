@@ -15,9 +15,9 @@ public interface IPdfReportsService
 	
 	public void criticalPanchayatsReport(Document document,List<Object> output);
 	
-	public void pollingPercentageReport(Document document,List<PartyPositionVO> list,String heading);
+	public void pollingPercentageReport(Document document,List<PartyPositionVO> list,String heading,Double perc);
 	
-	public void pollingPercentageReportForHighPolling(Document document,List<PartyPositionVO> list,String heading);
+	public void pollingPercentageReportForHighPolling(Document document,List<PartyPositionVO> list,String heading,Double perc);
 	
 	public void voterAvgAgeReport(Document document,SelectOptionVO result);
 	
