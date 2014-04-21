@@ -5561,7 +5561,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				}
 
 				 
-			 public List<PartyPositionVO> getPollingPercentagesByParty(Long constituenycId,Long partyId,Long electionId,Long electionId1,String path)
+			 public List<PartyPositionVO> getPollingPercentagesByParty(Long constituenycId,Long partyId,Long electionId,Long electionId1,String path,String type)
 			 {
 				 Long mainPartyId = partyId;
 				 Long latestPublictaionId = 0l;
@@ -5775,54 +5775,64 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				 if(result != null && result.size() > 0){
 					 result.get(0).setConstituencyType(constituencyDAO.get(constituenycId).getAreaType());
 				 }
-				 
-				 if(result != null && result.size() > 0)
-				 {
-					 Document document = null;
-						try 
-						{
-							document = new Document();
-							Object[] values = constituencyDAO.constituencyName(constituenycId).get(0);
-					    	String constituenyName = values[0].toString().toUpperCase();
-					    	String districtName = values[1].toString().toUpperCase();
-					    	Long constituenyNo = delimitationConstituencyDAO.getConstituencyNo(constituenycId,2009l);
-					    	//String path = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\";
-						    String filePath = "VMR"+"/"+""+districtName+"_"+constituenyNo+"_"+constituenyName+".pdf";
-						    String FILE = path+filePath;
-						    File file  = new File(FILE);
-						    try {
-								file.createNewFile();
-							} catch (IOException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
+				 if(type != null)
+			     {
+					 if(result != null && result.size() > 0)
+					 {
+						 Document document = null;
+							try 
+							{
+								document = new Document();
+								Object[] values = constituencyDAO.constituencyName(constituenycId).get(0);
+						    	String constituenyName = values[0].toString().toUpperCase();
+						    	String districtName = values[1].toString().toUpperCase();
+						    	Long constituenyNo = delimitationConstituencyDAO.getConstituencyNo(constituenycId,2009l);
+						    	//String path = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\";
+							    String filePath = "VMR"+"/"+""+districtName+"_"+constituenyNo+"_"+constituenyName+"Party High Low Polling.pdf";
+							    String FILE = path+filePath;
+							    File file  = new File(FILE);
+							    try {
+									file.createNewFile();
+								} catch (IOException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
+							    result.get(0).setUrl(filePath);
+							  	try {
+							  		PdfWriter.getInstance(document, new FileOutputStream(FILE));
+							  	} catch (FileNotFoundException e) {
+							  		e.printStackTrace();
+							  	} catch (DocumentException e) {
+							  		e.printStackTrace();
+							  	}
+							  	
+							  	
+							  	
+							  		document.open();
+							  		if(type.equalsIgnoreCase("reducePolling"))
+							  		{
+							  			pdfReportService.pollingPercentageReport(document,result.get(0).getStrongPollingPercentVOList(),"Polling High,TDP Party Weak");
+							  		}
+							  		else
+							  		{
+							  			pdfReportService.pollingPercentageReportForHighPolling(document,result.get(0).getWeakPollingPercentVOList(),"Polling Low,TDP Party Strong");
+							  			
+							  		}
+
+							} 
+							catch (Exception e)
+							{
+								
 							}
-						    result.get(0).setUrl(filePath);
-						  	try {
-						  		PdfWriter.getInstance(document, new FileOutputStream(FILE));
-						  	} catch (FileNotFoundException e) {
-						  		e.printStackTrace();
-						  	} catch (DocumentException e) {
-						  		e.printStackTrace();
-						  	}
-						  	
-						  	document.open();
-							pdfReportService.pollingPercentageReport(document,result.get(0).getStrongPollingPercentVOList(),"Polling High,TDP Party Weak");
+							finally
+							{
+								if(document != null)
+								document.close();
+							}
 							
-							pdfReportService.pollingPercentageReportForHighPolling(document,result.get(0).getWeakPollingPercentVOList(),"Polling Low,TDP Party Strong");
-							
-							
-						} 
-						catch (Exception e)
-						{
-							
-						}
-						finally
-						{
-							if(document != null)
-							document.close();
-						}
-						
-				 }
+					 }
+			  	 }
+				
 				return result;
 			 }
 			 
