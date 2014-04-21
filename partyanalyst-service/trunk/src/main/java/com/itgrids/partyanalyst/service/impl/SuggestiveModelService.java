@@ -5713,22 +5713,31 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 						 List<PartyPositionVO> StrongpartyInfo = new ArrayList<PartyPositionVO>();
 						 List<PartyPositionVO> WeakpartyInfo = new ArrayList<PartyPositionVO>();
 						 Map<Long,Long> partyMap =  boothMap.get(boothId);
-						 for(Long partyId1 : partyMap.keySet())
+						 List<SelectOptionVO> partysList = new ArrayList<SelectOptionVO>();
+						 for(Long partyId1 : partyMap.keySet()){
 							 totalValidVotes +=partyMap.get(partyId1);
+							 SelectOptionVO vo = new SelectOptionVO();
+							 vo.setId(partyId1);
+							 vo.setTotalCount(partyMap.get(partyId1));
+							 partysList.add(vo);
+						 }
+						 Collections.sort(partysList,votesSort);
+						  
 						 for(Long partyId1 : partyMap.keySet())
 						 {
 							 if(partyId.equals(partyId1))
 							 {
-							 PartyPositionVO partyVo = new PartyPositionVO();
-							 partyVo.setPartyName(partyDAO.getPartyShortNameById(mainPartyId));
-							 partyVo.setPartyTotalvotes(partyMap.get(partyId1));
-							 partyVo.setPartyPercentage(partyVo.getPartyTotalvotes() * 100.0 /totalValidVotes);
-							 partyVo.setSelectedParty(true);
-							 
-							 if(partyPerInConstituency > partyVo.getPartyPercentage())
-								 WeakpartyInfo.add(partyVo); 
-							if(partyPerInConstituency < partyVo.getPartyPercentage())
-								 StrongpartyInfo.add(partyVo);
+								 PartyPositionVO partyVo = new PartyPositionVO();
+								 partyVo.setPartyName(partyDAO.getPartyShortNameById(mainPartyId));
+								 partyVo.setPartyTotalvotes(partyMap.get(partyId1));
+								 partyVo.setPartyPercentage(partyVo.getPartyTotalvotes() * 100.0 /totalValidVotes);
+								 partyVo.setSelectedParty(true);
+								 if(partysList.get(0).getId().equals(partyId)){
+									 StrongpartyInfo.add(partyVo);
+								 }
+								 else{
+									 WeakpartyInfo.add(partyVo); 
+								 }
 							 }
 						}
 						
@@ -8511,4 +8520,12 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			}
 			return result;
 		}
+		
+		public Comparator<SelectOptionVO> votesSort = new Comparator<SelectOptionVO>()
+			{						  
+			   public int compare(SelectOptionVO vo1, SelectOptionVO vo2)
+				{
+				   return (vo2.getTotalCount().intValue()) - (vo1.getTotalCount().intValue());
+				}
+			};
 }
