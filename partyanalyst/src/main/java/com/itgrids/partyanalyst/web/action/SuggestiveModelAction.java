@@ -906,8 +906,9 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 				Long partyId = jObj.getLong("partyId");
 				Long eleId = jObj.getLong("eleId");
 				Long constituenycId = jObj.getLong("constituencyId");
+				String type = jObj.getString("type");
 				String path = IWebConstants.STATIC_CONTENT_FOLDER_URL;
-				partyPositionVOList = suggestiveModelService.getPollingPercentagesByParty(constituenycId,partyId,eleId,jObj.getLong("eleId1"),path);
+				partyPositionVOList = suggestiveModelService.getPollingPercentagesByParty(constituenycId,partyId,eleId,jObj.getLong("eleId1"),path,type);
 				
 			}
 			catch(Exception e)

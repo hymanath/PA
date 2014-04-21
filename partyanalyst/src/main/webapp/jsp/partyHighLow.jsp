@@ -88,6 +88,7 @@ color:#333333;
 			partyId:872,
 			eleId:38,
 			eleId1:3,
+			type:type,
 			task:"getPollingPercentages"		
 		};
 	$.ajax({
