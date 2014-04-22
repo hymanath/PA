@@ -84,8 +84,8 @@ public class Cadre extends BaseModel{
 	 
 	 private String note;
 	 private String memberShipNo;
-	 private String uniqueId;
-	 private CasteState casteState;
+	// private String uniqueId;
+	// private CasteState casteState;
 	 	
 	 
 	 
@@ -552,7 +552,7 @@ public class Cadre extends BaseModel{
 		this.memberShipNo = memberShipNo;
 	}
 	
-	
+	/*
 	@Column(name="unique_id")
 	public String getUniqueId() {
 		return uniqueId;
@@ -573,5 +573,5 @@ public class Cadre extends BaseModel{
 	public void setCasteState(CasteState casteState) {
 		this.casteState = casteState;
 	}
-	
+	*/
  }
