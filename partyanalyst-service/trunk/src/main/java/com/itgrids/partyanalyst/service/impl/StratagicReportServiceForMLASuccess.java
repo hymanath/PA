@@ -1137,17 +1137,40 @@ public void buildHelperVoForConst(PartyElectionTrendsReportVO partyVos ,String n
 			if(year.equals(2009L))
 			{
 				if(maps.containsKey(2012L))
-				vo.getOthersVo().setVotesEarned(others/2);
-				
+				{  
+					vo.getOthersVo().setVotesEarned(others/2);
+					if(vo.getTotalVotesPolled()>vo.getTotalVoters())
+					{
+						vo.setTotalVotesPolled(vo.getTotalVotesPolled()/2);
+						vo.getOthersVo().setVotesEarned(others/4);
+						vo.getTdpVo().setVotesEarned(tdp/2);
+						vo.getIncVo().setVotesEarned(inc/2);
+						if(vo.getDistrictId()>10)
+						{
+							vo.getPrpVo().setVotesEarned(prp11/2);
+						}
+						else
+						{
+							vo.getTrsVo().setVotesEarned(prp11/2);
+						}
+						
+					}
+				}
 				else
-				{   vo.setTotalVotesPolled(vo.getTotalVotesPolled()/2);
+				{   
+					vo.setTotalVotesPolled(vo.getTotalVotesPolled()/2);
 					vo.getOthersVo().setVotesEarned(others/2);
 					vo.getTdpVo().setVotesEarned(tdp/2);
 					vo.getIncVo().setVotesEarned(inc/2);
 					if(vo.getDistrictId()>10)
+					{
 						vo.getPrpVo().setVotesEarned(prp11/2);
+					}
 					else
+					{
 						vo.getTrsVo().setVotesEarned(prp11/2);
+					}
+						
 					
 				}
 				
