@@ -310,6 +310,7 @@
 		<pattern>/voterModificationReportAction*</pattern>
 		<pattern>/importentFamilyResultsAction*</pattern>	
 		<pattern>/boothWiseResultsAction*</pattern>
+		<pattern>/userEntitlementAction*</pattern>
 		</decorator>
     	 
        <decorator name="tdpHome" page="tdplayout.jsp">

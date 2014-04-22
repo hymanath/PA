@@ -12,12 +12,37 @@
 <title>User Entitlement</title>
 
 	<style type="text/css">
-		#entitlementsMainDiv
-		{
-			margin-left:40px;
-			margin-top:42px;
-			text-align:left;	
-		}	
+	.background
+	{
+		background:url("./images/new_homepage/js-banner-bg1.jpg") repeat scroll 0 0 rgba(0, 0, 0, 0) !important;
+	}
+	 #headingStyle{
+		 background-color: #567AAF;
+		color: #FFFFFF;
+		font-size: 15px;
+		font-weight: bold;
+		margin-top: 11px;
+		text-align: center;
+		width: 172px;
+		margin-bottom: 25px;
+		margin-left:auto;
+		margin-right:auto;
+		float:none;
+		border-radius: 5px;
+		}
+	#entitlementsMainDiv
+	{
+		border: 3px solid #707070;
+		width: 940px;
+		padding: 10px;
+		float: none;
+	    margin-left: auto;
+	    margin-right: auto;
+		background:#FFF;
+		margin-bottom: 15px;
+		border-radius: 3px;
+	}
+		
 		#groupNameID
 		{
 			font-weight:bold;
@@ -42,17 +67,16 @@
 		.f2
 		{
 			border:4px solid #CFD6DF;
-			margin-bottom:10px;
+			margin-bottom:26px;
 			margin-right:42px;
 			padding:10px;
-			width: 377px;
 		}
 		.l2 {
 			background-color:#567AAF;
 			color:#FFFFFF;
 			font-size:12px;
 			font-weight:bold;
-			padding:5px;
+			padding-left:5px;
 		}
 		
 		.button {
@@ -189,7 +213,7 @@
   
 </head>
 <body>
- <h2>User Entitlements</h2> 
+ <h2 id="headingStyle">User Entitlements</h2> 
 <div id="entitlementsMainDiv">
 <table>
 	<tr>
@@ -248,7 +272,7 @@
 		</td>
 		<td>
 			<div id="managingEntitlementMainDiv">
-			<fieldset class="f1">
+			<fieldset class="f1"  style="width: 420px;">
 				<legend class="l2">Create An Entitlement</legend>
 					<table>
 						<tr>
@@ -340,7 +364,10 @@
 											<option value="${allUsers.id}"> ${allUsers.name} </option>	
 										</c:forEach>
 									</select>
-								</td>
+								</td></tr>		
+						</table>  
+						<table>
+						</tr>
 								<td>
 									<input type="button" class="button" value="Manage All Groups" onclick="getAllGroups()"></input>			
 								</td>						
