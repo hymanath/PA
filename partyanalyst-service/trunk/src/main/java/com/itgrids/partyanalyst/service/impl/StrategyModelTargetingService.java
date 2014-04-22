@@ -1259,7 +1259,10 @@ public class StrategyModelTargetingService implements
 				 panchayatVo.setOthrExpctdVotes(((Long)Math.round((panchayatVo.getTotalVoters()*avgPerc)/100)).intValue());//targeted
 				 panchayatVo.setPanchayatName(panchayatNames.get(panchayatId));
 				 panchayatVo.setTotalTargetCount(new Long(panchayatVo.getOthrExpctdVotes()));
-				 panchayatVo.setTargetPerc(new BigDecimal((panchayatVo.getTotalTargetCount()*100)/panchayatVo.getCount().floatValue()).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue());//targeted perc
+				 if(panchayatVo.getCount() != null && panchayatVo.getCount() > 0)
+				   panchayatVo.setTargetPerc(new BigDecimal((panchayatVo.getTotalTargetCount()*100)/panchayatVo.getCount().floatValue()).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue());//targeted perc
+				 else
+					 panchayatVo.setTargetPerc(0d); 
 				 totalPriorityList.add(panchayatVo);
 			 }
 				
@@ -1837,7 +1840,7 @@ public class StrategyModelTargetingService implements
 						 allianceIds.add(alianceParty.getId());
  					  }
     			    if(allianceIds.size() > 0){
-    			    	List<String> alincPartyPerc = candidateResultDAO.getPartyPercentage(constituencyId, electionId, partyIds);
+    			    	List<String> alincPartyPerc = candidateResultDAO.getPartyPercentage(constituencyId, electionId, allianceIds);
     			    	if(alincPartyPerc != null && alincPartyPerc.size()> 0 && alincPartyPerc.get(0) != null){
     		    			   avgPerc = avgPerc+Double.valueOf(alincPartyPerc.get(0).trim());
     		    			   totalYears = totalYears+1;
