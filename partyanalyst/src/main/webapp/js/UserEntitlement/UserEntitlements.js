@@ -58,15 +58,15 @@
 	  	if(results.resultStatus.resultCode==0){
 	  		str+='<table>'; 
 			str+='	<tr>';
-			str+='		<td style="font-weight:bold;"> All User Groups</td>';
+			str+='		<td style="font-weight:bold;font-family: arial;"> All User Groups13</td>';
 			str+='</tr>';			
 	  		for(var i in results.entitlementVO)
 			{		  			
 	  			str+='	<tr>';
 	  			if(results.entitlementVO[i].message=="AVAILABLE"){
-	  				str+='		<td><input name="groupsCheckBox" value="'+results.entitlementVO[i].userId+'" type="checkbox" checked="checked"   id=" '+results.entitlementVO[i].userId+' ">'+ results.entitlementVO[i].name +'</input></td>';
+	  				str+='		<td><input name="groupsCheckBox" style="font-family: arial;" value="'+results.entitlementVO[i].userId+'" type="checkbox" checked="checked"   id=" '+results.entitlementVO[i].userId+' ">&nbsp;&nbsp;'+ results.entitlementVO[i].name +'</input></td>';
 	  			}else{
-	  				str+='		<td><input name="groupsCheckBox" type="checkbox"  value="'+results.entitlementVO[i].userId+'"  id=" '+results.entitlementVO[i].userId+' ">'+ results.entitlementVO[i].name +'</input></td>';	  				
+	  				str+='		<td><input name="groupsCheckBox" style="font-family: arial;" type="checkbox"  value="'+results.entitlementVO[i].userId+'"  id=" '+results.entitlementVO[i].userId+' ">&nbsp;&nbsp;'+ results.entitlementVO[i].name +'</input></td>';	  				
 	  			}
 	  			str+='	</tr>';
 			}	
