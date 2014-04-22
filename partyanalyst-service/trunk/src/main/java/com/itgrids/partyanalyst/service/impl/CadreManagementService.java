@@ -868,10 +868,10 @@ public class CadreManagementService {
 				if(IConstants.UPDATE_EXISTING.equals(task))
 					cadre.setImage(cadre.getImage());
 				
-				if(cadreInfo.getCasteStateId() != null)
+				/*if(cadreInfo.getCasteStateId() != null)
 				 cadre.setCasteState(casteStateDAO.get(cadreInfo.getCasteStateId()));
 				
-				cadre.setUniqueId(cadreInfo.getUniqueId());
+				cadre.setUniqueId(cadreInfo.getUniqueId());*/
 				
 				cadre = cadreDAO.save(cadre);
 					

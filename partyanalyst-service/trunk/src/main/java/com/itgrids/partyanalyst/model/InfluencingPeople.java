@@ -42,8 +42,8 @@ public class InfluencingPeople extends BaseModel{
 	private String fatherOrSpouseName;
 	private Hamlet hamlet;
 	private Voter voter;
-	private String uniqueId;
-	private CasteState casteState;
+	/*private String uniqueId;
+	private CasteState casteState;*/
 	
 	public InfluencingPeople(){
 		
@@ -251,7 +251,7 @@ public class InfluencingPeople extends BaseModel{
 	this.voter = voter;
 	}
 	
-
+/*
 	@Column(name="unique_id")
 	public String getUniqueId() {
 		return uniqueId;
@@ -271,7 +271,7 @@ public class InfluencingPeople extends BaseModel{
 
 	public void setCasteState(CasteState casteState) {
 		this.casteState = casteState;
-	}
+	}*/
 	
 
 
