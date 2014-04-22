@@ -2287,8 +2287,8 @@ public void pollingStationHelper(PartyPositionVO finalRes,PdfPTable table ,List<
 	  		if(count==0){
 	  		if(input.equalsIgnoreCase("Strong"))
 			{
-				
-	  		    c1 = new PdfPCell(new Phrase("Improve                                                                (Avg Poll% "+roundTo2DigitsDoubleValue(finalRes.getPollingPercentage())+")",calibriBold1));
+	  			c1 = new PdfPCell(new Phrase("To Decrease     (Avg Poll% "+roundTo2DigitsDoubleValue(finalRes.getPollingPercentage())+")",calibriBold1));
+	  		    
 	  			c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			c1.setBackgroundColor(BaseColor.YELLOW);
 	  			table.addCell(c1);
@@ -2296,7 +2296,7 @@ public void pollingStationHelper(PartyPositionVO finalRes,PdfPTable table ,List<
 				
 			{ 
 				
-				   c1 = new PdfPCell(new Phrase("To Decrease     (Avg Poll% "+roundTo2DigitsDoubleValue(finalRes.getPollingPercentage())+")",calibriBold1));
+				c1 = new PdfPCell(new Phrase("Improve                                                                (Avg Poll% "+roundTo2DigitsDoubleValue(finalRes.getPollingPercentage())+")",calibriBold1));
 		  			c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 		  			c1.setBackgroundColor(BaseColor.YELLOW);
 		  			table.addCell(c1);
