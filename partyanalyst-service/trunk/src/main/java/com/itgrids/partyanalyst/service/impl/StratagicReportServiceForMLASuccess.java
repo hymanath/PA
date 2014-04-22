@@ -768,6 +768,10 @@ public List<PartyElectionTrendsReportVO> getPreviousTrendsReport(Long constId){
 		for(Long year:maps.keySet())
 		{
 			PartyElectionTrendsReportVO vo=	maps.get(year);
+			if(vo.getTdpVo()==null){
+				PartyElectionTrendsReportHelperVO tdpVo=new PartyElectionTrendsReportHelperVO();
+				vo.setTdpVo(tdpVo);
+			}
 			if(vo.getDistrictId()>10)
 			alliancesCheck(vo, constId,vo.getElectionId());
 			Long votesPolled = vo.getTotalVotesPolled();
