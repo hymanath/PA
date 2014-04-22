@@ -691,7 +691,7 @@ public class MailService implements IMailService{
 			String subject;
 			subject = "";
 			String text = "";
-	    	subject = "PopulateVoterData Job Status";
+	    	subject = "Job Schedular Status";
 	    	text = "<div style='border:1px solid #CCCCCC;background:#EFFFFF;'>"+mailsTemplateService.getHeader()+"" ;
 	    	text += "<div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;'><b>Hi Admin Group,</b></div>";
 	    	text+="<div style='margin-left:45px;margin-bottom:40px;line-height: 1.5em;'>";
@@ -699,7 +699,7 @@ public class MailService implements IMailService{
 	    	text+="</div>";
 	        text+="<div style='margin: -17px 3px 0px 19px; padding-bottom: 18px;'>"+mailsTemplateService.getFooter()+"</div></div>";
 	        String emails = "kamalakardandu@gmail.com";
-	        
+	       // String emails = "nagamani.itgrids.hyd@gmail.com";
 	        String emailArr[] = emails.split(",");
 	        for(String email : emailArr)
 	        {
