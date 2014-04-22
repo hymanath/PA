@@ -4007,8 +4007,8 @@ public class StratagicReportsService implements IStratagicReportsService{
 		  
 		  document.add(Chunk.NEWLINE);
 		  
-		  float[] widths = new float[] {1.2f, 1.2f ,1.5f,1.2f,1.3f, 1.7f ,1.2f,1.2f,1.6f,1.8f };
-			table.setWidths(widths);
+		  //float[] widths = new float[] {1.2f, 1.2f ,1.5f,1.2f,1.3f, 1.7f ,1.2f,1.2f,1.6f,1.8f };
+			//table.setWidths(widths);
 		  document.add(table);
 		  document.add(Chunk.NEWLINE);
 		  }

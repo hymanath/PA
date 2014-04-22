@@ -568,15 +568,19 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
   
 	
 //page-5
-	   document.newPage();
+	   
 	  //previous trends in mptc and zptc
 	   //buildSubHeading(document, "Zilla and Mandal Parishad Elections Results"); 
 	   DeSerialize<PartyResultsVerVO> dmptcZptcResults =new DeSerialize<PartyResultsVerVO>();
 	   PartyResultsVerVO mptcZptcResults =dmptcZptcResults.deSerialize( maps.get(PdfPages.prevMptcZptc),autoStrategy );
+	   if(mptcZptcResults != null)
+	   {
+		   document.newPage();
+		   stratagicReportsService.generatePdfForLocalElectionResults(mptcZptcResults,document);
+		   mptcZptcResults=null;
+		   dmptcZptcResults=null;
+	   }
 	   
-	   stratagicReportsService.generatePdfForLocalElectionResults(mptcZptcResults,document);
-	   mptcZptcResults=null;
-	   dmptcZptcResults=null;
 	   
 //apge-6 
 	//census
