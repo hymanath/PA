@@ -244,7 +244,7 @@ public class PartyTrendsDAO extends GenericDaoHibernate<PartyTrends, Long> imple
  public List<?> callStoredProcedure()
     
     {
-    	Query query = getSession().createSQLQuery("CALL VOTER_FAMILY_Details_Booth7(:constituencyId,:minCount,:maxCount,:uuid,:publicationDateId)")
+    	Query query = getSession().createSQLQuery("CALL VOTER_FAMILY_Details(:constituencyId,:minCount,:maxCount,:uuid,:publicationDateId)")
     			.addEntity(VoterFamilyCount.class)
     			.setParameter("constituencyId", 232).setParameter("minCount", 3).setParameter("maxCount", 100).setParameter("uuid", UUID.randomUUID().toString()).setParameter("publicationDateId", 8);
     	
