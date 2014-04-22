@@ -947,7 +947,7 @@ public void buildHelperVoForConst(PartyElectionTrendsReportVO partyVos ,String n
 			   }	        
 			   PartyElectionTrendsReportHelperVO voh= new PartyElectionTrendsReportHelperVO();
 
-			   if(object[0].toString().trim().equalsIgnoreCase("2009"))
+			   if(object[0].toString().trim().equalsIgnoreCase("2009") && Long.valueOf(object[1].toString() )>vo.getTotalVoters())
 			   {
 				   vo.setTotalVotesPolled(Long.valueOf(object[1].toString())/2);
 		           voh.setVotesEarned(((Long)object[3]).longValue()/2);
@@ -1029,7 +1029,7 @@ public void buildHelperVoForConst(PartyElectionTrendsReportVO partyVos ,String n
 				       vo.setTotalVoters(idMap.get(Long.valueOf(object[0].toString())));
 			           PartyElectionTrendsReportHelperVO voh= new PartyElectionTrendsReportHelperVO();
 
-			     	 if(object[0].toString().trim().equalsIgnoreCase("2009"))
+			     	 if(object[0].toString().trim().equalsIgnoreCase("2009") && Long.valueOf(object[1].toString() )>vo.getTotalVoters() )
 					   {
 						   vo.setTotalVotesPolled(Long.valueOf(object[1].toString())/2);
 				           voh.setVotesEarned(((Long)object[3]).longValue()/2);
@@ -1136,9 +1136,11 @@ public void buildHelperVoForConst(PartyElectionTrendsReportVO partyVos ,String n
 			}
 			if(year.equals(2009L))
 			{
+				vo.getOthersVo().setVotesEarned(others/2);
+
+				if(vo.getTotalVotesPolled()>vo.getTotalVoters())
 				if(maps.containsKey(2012L))
 				{  
-					vo.getOthersVo().setVotesEarned(others/2);
 					if(vo.getTotalVotesPolled()>vo.getTotalVoters())
 					{
 						vo.setTotalVotesPolled(vo.getTotalVotesPolled()/2);
