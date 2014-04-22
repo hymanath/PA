@@ -178,6 +178,7 @@ public class CastePredictionService implements ICastePredictionService {
 						User user = userDAO.get(userId);
 						CasteState casteState = casteStateDAO.get(casteStateId);
 						
+						LOG.info("Total "+insertVoterIdsList.size()+" Records are to be inserted");
 						for(Long voterId : insertVoterIdsList)
 						{
 							try{
@@ -206,6 +207,7 @@ public class CastePredictionService implements ICastePredictionService {
 								LOG.error(e);
 							}
 						}
+						LOG.info("Insetion Completed....");
 						voterDAO.flushAndclearSession();	
 					}
 					
