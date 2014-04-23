@@ -7,7 +7,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<title> Party Analyst - Suggestive Model</title>
+<title> Party Analyst - Voter Tagging</title>
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
  <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
  <script type="text/javascript" src="js/jqueryDataTable/jquery.dataTables.js"></script>
@@ -182,7 +182,7 @@ function buildVoterDetails(results,jsObj)
 	str+='<td>'+results[i].firstName+'</td>';
 	str+='<td>'+results[i].mobileNo+'</td>';
 	str+='<td>'+results[i].flagName+'</td>';
-	str+='<td><span style="background-color:'+results[i].color+'">&nbsp;&nbsp;&nbsp;</td>';
+	str+='<td><span style="background-color:#'+results[i].color+'">&nbsp;&nbsp;&nbsp;</td>';
 	str+='</tr>';
 	   }
 	str+='</tbody>';
