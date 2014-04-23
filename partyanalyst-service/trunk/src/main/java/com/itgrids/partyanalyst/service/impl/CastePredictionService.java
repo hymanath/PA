@@ -179,6 +179,8 @@ public class CastePredictionService implements ICastePredictionService {
 						CasteState casteState = casteStateDAO.get(casteStateId);
 						
 						LOG.info("Total "+insertVoterIdsList.size()+" Records are to be inserted");
+						LOG.info("Inserted Voter Ids -->"+insertVoterIdsList.toString());
+						
 						for(Long voterId : insertVoterIdsList)
 						{
 							try{
