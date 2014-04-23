@@ -22,11 +22,12 @@ public class MobileNumbersDAO extends GenericDaoHibernate<MobileNumbers, Long> i
 		return query.list();
 		
 	}
+	@SuppressWarnings("unchecked")
 	public List<Object[]> getMobileNoforVoter(Long constituencyId)
 	{
 		Query query = getSession().createQuery("Select model1.mobile,BPV.voter.voterId from MobileNumbers model1,BoothPublicationVoter BPV where " +
 			"model1.idcardNO = BPV.voter.voterIDCardNo and " +
-			"BPV.booth.publicationDate.publicationDateId = 10 AND BPV.booth.constituency.constituencyId = :constituencyId");
+			"BPV.booth.publicationDate.publicationDateId = 10 AND model1.acId = :constituencyId");
 		
 		query.setParameter("constituencyId", constituencyId);
 		return query.list();
