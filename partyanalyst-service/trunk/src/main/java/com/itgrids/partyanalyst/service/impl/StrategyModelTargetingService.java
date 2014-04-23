@@ -2055,6 +2055,7 @@ public class StrategyModelTargetingService implements
 				   {
 					   casteNamePercMap.put(casteNameMap.get(casteStateId), strategyVO.getCastePercents().get(casteStateId));
 				   }
+				   casteNamePercMap.put("Others", strategyVO.getCastePercents().get(0l));
 			   }
 		   }
 		    //path = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\";		   
