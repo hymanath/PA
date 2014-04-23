@@ -124,7 +124,6 @@ public class AbuseCommentAction  extends ActionSupport implements ServletRequest
 		try {
 			jObj = new JSONObject(getTask());
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace( );
 		}
 		fromDate = jObj.getString("fromDate");
