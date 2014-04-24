@@ -5694,8 +5694,18 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					 if(panchayatnames !=null &&panchayatnames.size() > 0)
 						 for(Object[] params : panchayatnames)
 							 panchayatMap.put((Long)params[0],params[1].toString()); 
-					 
-					 if(totalVotesForBooth != null && totalVotesForBooth.size() > 0)
+					 Set<Long> pancNameContainBooths  = panchayatMap.keySet();
+					 try{
+						 boothIds.removeAll(pancNameContainBooths);
+						 if(boothIds.size() > 0){
+							 List<Object[]> boothNames = hamletBoothElectionDAO.getMunicipalityNames(boothIds);
+							 for(Object[] params : boothNames)
+								 panchayatMap.put((Long)params[0],params[1].toString());
+						 }
+					 }catch(Exception e){
+						 
+					 }
+  					 if(totalVotesForBooth != null && totalVotesForBooth.size() > 0)
 					 {
 						 for(Object[] params : totalVotesForBooth)
 						 {
