@@ -955,6 +955,22 @@ public void setPanchayatResult(List<PartyPositionVO> panchayatResult) {
 			strategyVO.setTdpPerc(jObj.getLong("partyPerc"));
 			strategyVO.setEffectPartyId(jObj.getLong("effectPartyId"));
 			strategyVO.setEffectElectionId(jObj.getLong("effectElectionId"));
+			String excludePanchysStr = jObj.getString("excludePanchys");
+			List<Long> excludePanchys = new ArrayList<Long>();
+			if(excludePanchysStr.trim().length() > 0){
+				String[] pancStrArr = excludePanchysStr.split(",");
+				for(String panc:pancStrArr){
+				  try{
+					if(panc.trim().length() > 0){
+						excludePanchys.add(Long.parseLong(panc.trim()));
+					}
+				  }catch(Exception e){
+					  LOG.error(" ",e);
+				  }
+				}
+			}
+			strategyVO.setExcludePanchys(excludePanchys);
+			strategyVO.setOnlyPriority(jObj.getBoolean("onlyPriority"));
 			if(jObj.getBoolean("considerRange")){
 				strategyVO.setWorstMin(0d);
 				strategyVO.setWorstMax(jObj.getDouble("worstMax"));

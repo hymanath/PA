@@ -122,8 +122,14 @@ function getConstituencyList(){
 	     <td>Targeted Votes Percentage :<font class="mandatory">*</font><a  id="helpbutt" onCLick="popUpForHelp('  Candidate can provide the Assumed target percentage of   Polling to his Party in Particular Constituency');" value="Help" style="float: right;width: 20px;"  title="Click To View Help"><img alt="" src="./images/help.jpeg"></a></td>
 		 <td><input id="partyPerc" type="text" style="width:176px;"></td>
     </tr>
-    
-    
+    <tr>
+	     <td>Exclude Panchayats :<font class="mandatory">*</font><a  id="helpbutt" onCLick="popUpForHelp('  Candidate can exclude some panchayats by providing panchayat ids with coma(,) seperator');" value="Help" style="float: right;width: 20px;"  title="Click To View Help"><img alt="" src="./images/help.jpeg"></a></td>
+		 <td><input id="excludePanchys" type="text" style="width:176px;"></td>
+    </tr>
+    <tr>
+	     <td>Only Priority Report :<font class="mandatory">*</font><a  id="helpbutt" onCLick="popUpForHelp('  Check To Get Only Priority Report');" value="Help" style="float: right;width: 20px;"  title="Click To View Help"><img alt="" src="./images/help.jpeg"></a></td>
+		 <td><input type="checkbox" id="onlyPriority"></td>
+    </tr>
     
     <tr style="display:none;">
 	     <td>Worst Max :<font class="mandatory">*</font></td>
@@ -551,6 +557,8 @@ function submitDetails()
 				strongMin       :strongMin,
 				strongMax       :strongMax,
 				veryStrongMin   :veryStrongMin,
+				excludePanchys: $("#excludePanchys").val(),
+				onlyPriority:$('#onlyPriority').is(':checked'),
 				task:"saveDetails"						
 			};
 		
