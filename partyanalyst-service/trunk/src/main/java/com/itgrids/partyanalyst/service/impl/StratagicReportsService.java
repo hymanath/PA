@@ -5160,7 +5160,14 @@ public class StratagicReportsService implements IStratagicReportsService{
 			  return filePaths2.getTotalVotersAddedPer().compareTo(filePaths1.getTotalVotersAddedPer());
 		  }
 	  };
+	  public Comparator<AgeRangeVO> percSort1 = new Comparator<AgeRangeVO>()
+			  {
 
+				  public int compare(AgeRangeVO filePaths1, AgeRangeVO filePaths2)
+				  {
+					  return filePaths2.getTotalVotersDeletedPer().compareTo(filePaths1.getTotalVotersDeletedPer());
+				  }
+			  };
 	  public void generateBoothWiseAddedDeletedVoters(List<AgeRangeVO> result,Document document){
 		  
 		  Collections.sort(result, percSort);
@@ -5403,7 +5410,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 		  
 		  document.add(Chunk.NEXTPAGE);
 		  document.add(new Paragraph(result.get(0).getMainHeading2(),TITLE));
-		  
+		  Collections.sort(result, percSort1);
 		  document.add(new Phrase(""));	
 		  PdfPTable table1 = new PdfPTable(17);
 		  table1.setWidthPercentage(100);
@@ -5684,14 +5691,17 @@ public class StratagicReportsService implements IStratagicReportsService{
 			column.setBackgroundColor(bcolor);
 			column.setHorizontalAlignment(Element.ALIGN_CENTER);
 			table.addCell(column);
-			
+			int i = 0;
 			for(SelectOptionVO temp:publications){
+				if(i==1)
+					column = new PdfPCell(new Phrase("Electoral Roll 2014 -Draft",BIGFONT));
+				else
 				column = new PdfPCell(new Phrase("Electoral Roll 2014 -Final",BIGFONT));
 				column.setBackgroundColor(bcolor);
 				column.setHorizontalAlignment(Element.ALIGN_CENTER);
 				table.addCell(column);
 				
-				
+				i=i+1;
 			}
 			if(publications.size() == 1)
 			{

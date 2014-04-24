@@ -291,8 +291,11 @@ public class StrategyModelTargetingService implements
 			if(mandalIds != null && mandalIds.size() > 0){
 				 //getting all panchayats in mandals
 				 panchayatIds =hamletBoothElectionDAO.getPanchayatIdsByEleIdMandalIdConstituencyId(mandalIds,assemblyEleIdsList.get(0),constituencyId);
+				 if(strategyVO.getExcludePanchys() != null && strategyVO.getExcludePanchys().size() > 0)
+				 panchayatIds.removeAll(strategyVO.getExcludePanchys());
 			}
-				
+			 if(localbodyIds != null && strategyVO.getExcludePanchys() != null && strategyVO.getExcludePanchys().size() > 0)
+				 localbodyIds.removeAll(strategyVO.getExcludePanchys());
 			List<PartyPositionVO> prevPancResultList = new ArrayList<PartyPositionVO>();
 			List<PartyPositionVO> currPancResultList = new ArrayList<PartyPositionVO>();
 			
@@ -1289,7 +1292,7 @@ public class StrategyModelTargetingService implements
 			 return totalPriorityList;
 	 }
 	 
-	 public List<Object> getTotalYoungOldVotersEffectWithCaste(StrategyVO strategyVO,Map<Long,Double> currentResult,Map<Long,OrderOfPriorityVO> finalOrder){
+	 public List<Object> getTotalYoungOldVotersEffectWithCaste(List<Long> excludePanchys,StrategyVO strategyVO,Map<Long,Double> currentResult,Map<Long,OrderOfPriorityVO> finalOrder){
 		    List<Object> priorityList = new ArrayList<Object>();
 		    Map<Long,Float> castePercents = strategyVO.getCastePercents();
 		    Long publicationId = strategyVO.getPublicationId();
@@ -1357,7 +1360,7 @@ public class StrategyModelTargetingService implements
 			   populateNames(panchayatIds,lebIds,panchayatNames);
 			   List<Object[]> casteList = voterCastInfoDAO.getVotersCastInfoByCasteIds(locationLvs, constituencyId, publicationId, 1l, new ArrayList<Long>(castePercents.keySet()),allPanchayatIds);
 			   
-			    totalCastesList = getOrderOfPriorUsingCaste(castePercents,casteList,totalVotersList,mergePanchayatMap,mergeCasteMap,currentResult,"totalCaste",panchayatNames,totalVotersMap,strategyVO.getTotalCastWt(),finalOrder);
+			    totalCastesList = getOrderOfPriorUsingCaste(excludePanchys,castePercents,casteList,totalVotersList,mergePanchayatMap,mergeCasteMap,currentResult,"totalCaste",panchayatNames,totalVotersMap,strategyVO.getTotalCastWt(),finalOrder);
 			 //total voters calculation ends  
 			    
 			    
@@ -1452,8 +1455,8 @@ public class StrategyModelTargetingService implements
 							 ageTotal.addAll(totalAgeVoterForMunic);
 						 }
 			   }
-			   youngCastesList = getOrderOfPriorUsingCaste(castePercents,youngCaste,youngTotal,mergePanchayatMap,mergeCasteMap,currentResult,"youngCaste",panchayatNames,totalVotersMap,strategyVO.getYoungWt(),finalOrder);
-			   agedCastesList = getOrderOfPriorUsingCaste(castePercents,ageCaste,ageTotal,mergePanchayatMap,mergeCasteMap,currentResult,"agedCaste",panchayatNames,totalVotersMap,strategyVO.getAgedWt(),finalOrder);
+			   youngCastesList = getOrderOfPriorUsingCaste(excludePanchys,castePercents,youngCaste,youngTotal,mergePanchayatMap,mergeCasteMap,currentResult,"youngCaste",panchayatNames,totalVotersMap,strategyVO.getYoungWt(),finalOrder);
+			   agedCastesList = getOrderOfPriorUsingCaste(excludePanchys,castePercents,ageCaste,ageTotal,mergePanchayatMap,mergeCasteMap,currentResult,"agedCaste",panchayatNames,totalVotersMap,strategyVO.getAgedWt(),finalOrder);
 			
 			
 			priorityList.add(totalCastesList);
@@ -1480,7 +1483,7 @@ public class StrategyModelTargetingService implements
 			   panchayats.add((Long)mergePanchayat[0]);
 			}
 	 }
-	 public List<PanchayatVO> getOrderOfPriorUsingCaste(Map<Long,Float> castePercents, List<Object[]> casteList,List<Object[]> totalVotersList,Map<Long,Set<Long>> mergePanchayatMap,Map<Long,Set<Long>> mergeCasteMap,Map<Long,Double> currentResult,String type,Map<Long,String> panchayatNames,Map<Long,Long> pancTotalVotersList,Double weight,Map<Long,OrderOfPriorityVO> finalOrder){
+	 public List<PanchayatVO> getOrderOfPriorUsingCaste(List<Long> excludePanchys, Map<Long,Float> castePercents, List<Object[]> casteList,List<Object[]> totalVotersList,Map<Long,Set<Long>> mergePanchayatMap,Map<Long,Set<Long>> mergeCasteMap,Map<Long,Double> currentResult,String type,Map<Long,String> panchayatNames,Map<Long,Long> pancTotalVotersList,Double weight,Map<Long,OrderOfPriorityVO> finalOrder){
 		 Map<Long,PanchayatVO> totalCastePriorityMap = new HashMap<Long,PanchayatVO>();
 		 
 		 PanchayatVO panchayatVo = null;
@@ -1489,12 +1492,15 @@ public class StrategyModelTargetingService implements
 			 totalVotersMap = pancTotalVotersList;
 		 }else{
 			 for(Object[] count:totalVotersList){
+				 if(!excludePanchys.contains((Long)count[0]))
 				 totalVotersMap.put((Long)count[0],(Long)count[1]);
 			 }
 		 }
 		 for(Object[] caste:casteList){
+			 if(!excludePanchys.contains((Long)caste[0])){
 			 panchayatVo = totalCastePriorityMap.get((Long)caste[0]);
-			 if(panchayatVo == null){
+			 if(panchayatVo == null || panchayatVo.getCasteMap() == null){
+				 if(panchayatVo == null)
 				 panchayatVo = new PanchayatVO();
 				 panchayatVo.setPanchayatId((Long)caste[0]);
 				 panchayatVo.setPanchayatName(panchayatNames.get((Long)caste[0]));
@@ -1511,9 +1517,17 @@ public class StrategyModelTargetingService implements
 				 totalCastePriorityMap.put((Long)caste[0],panchayatVo);
 			 }
 			 Map<Long,Long> casteMap = panchayatVo.getCasteMap();
-			 casteMap.put((Long)caste[1],(Long)caste[2]);
-			 casteMap.put(0l,casteMap.get(0l)-(Long)caste[2]);
-			
+			 try{
+			 if((Long)caste[2] != null && casteMap != null){
+			    casteMap.put((Long)caste[1],(Long)caste[2]);
+			    casteMap.put(0l,casteMap.get(0l)-(Long)caste[2]);
+			 }else if((Long)caste[1] != null && casteMap != null){
+				 casteMap.put((Long)caste[1],0l);
+			 }
+			 }catch(Exception e){
+				LOG.error(e);
+			 }
+		 }
 		 }
 		 if(mergePanchayatMap != null && mergePanchayatMap.size() > 0){
 		     mergePanchayats(totalCastePriorityMap,mergePanchayatMap);
@@ -2016,7 +2030,13 @@ public class StrategyModelTargetingService implements
 		   List<PanchayatVO> agedCastesList = null;
 		   Map<Long,String> casteNameMap = null;
 		   Map<String,Float> casteNamePercMap = null;
-			
+		   List<Long> excludePanchys = new ArrayList<Long>();
+		   if(strategyVO.getExcludePanchys() != null){
+			   excludePanchys = strategyVO.getExcludePanchys();
+		   }else{
+			   strategyVO.setExcludePanchys(excludePanchys);
+		   }
+		   
 		   List<PartyPositionVO>  previousTrends = getPartyPreviousTrends(strategyVO,strategyVO.getConstituencyId(),strategyVO.getPartyId(),strategyVO.getElectionIds(),partyEffect,strategyVO.getEffectPartyId(),strategyVO.getEffectElectionId(),currentResult);
 		   
 		   calculateWeightsForPreviousTrents(previousTrends.get(0).getSuggestedLocations(),finalOrder,strategyVO.getPrevTrnzWt());
@@ -2024,7 +2044,7 @@ public class StrategyModelTargetingService implements
 		   List<PartyEffectVO> otherPartyEffect = calculateWeightsForPrpImpact(partyEffect,strategyVO.getPublicationId(),finalOrder,strategyVO.getPrpWt());
 		   
 		   if(strategyVO.getCastePercents() != null){
-			   List<Object> castePriorities = getTotalYoungOldVotersEffectWithCaste(strategyVO,currentResult,finalOrder);
+			   List<Object> castePriorities = getTotalYoungOldVotersEffectWithCaste(excludePanchys,strategyVO,currentResult,finalOrder);
 			   totalCastesList = (List<PanchayatVO>)castePriorities.get(0);
 			   youngCastesList = (List<PanchayatVO>)castePriorities.get(1);
 			   agedCastesList  = (List<PanchayatVO>)castePriorities.get(2);
@@ -2703,6 +2723,18 @@ public class StrategyModelTargetingService implements
      	     document.add(new Paragraph(" "));
 			 PdfPCell cell ;
 			 int padding = 6;
+			 cell = new PdfPCell(new Phrase("2009",style1));
+			 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  cell.setBackgroundColor(BaseColor.YELLOW);
+			  cell.setColspan(5);
+			  cell.setPadding(padding);
+		  	  table.addCell(cell);
+		  	cell = new PdfPCell(new Phrase("2013",style1));
+			 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  cell.setBackgroundColor(BaseColor.YELLOW);
+			  cell.setColspan(2);
+			  cell.setPadding(padding);
+		  	  table.addCell(cell);
 			 DecimalFormat df = new DecimalFormat("##.##");
 			 cell = new PdfPCell(new Phrase("Panchayat",style1));
 			 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -2728,20 +2760,20 @@ public class StrategyModelTargetingService implements
 			  cell.setPadding(padding);
 		  	  table.addCell(cell);
 		  	  
-		  	 cell = new PdfPCell(new Phrase("margin",style1));
+		  	 cell = new PdfPCell(new Phrase("margin %",style1));
 			 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			  cell.setBackgroundColor(BaseColor.YELLOW);
 			  cell.setPadding(padding);
 		  	  table.addCell(cell);
 		  	  
-		 	 cell = new PdfPCell(new Phrase("2013 Total Votes",style1));
+		 	 cell = new PdfPCell(new Phrase("Total Votes",style1));
 			 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			  cell.setBackgroundColor(BaseColor.YELLOW);
 			  cell.setPadding(padding);
 		  	  table.addCell(cell);
 		  	  
 		  	  
-		 	 cell = new PdfPCell(new Phrase("Win Party Name",style1));
+		 	 cell = new PdfPCell(new Phrase("Party Won ",style1));
 			 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			  cell.setBackgroundColor(BaseColor.YELLOW);
 			  cell.setPadding(padding);
@@ -2780,17 +2812,24 @@ public class StrategyModelTargetingService implements
 			  	cell.setPadding(padding);
 			  	  table.addCell(cell);
 			  	  
-			  	  
-			  	 cell = new PdfPCell(new Phrase(Long.valueOf(partyPositionVO.getWinPartyTotal()).toString(),style2));
+			  	  if(partyPositionVO.getWinPartyTotal() == null || partyPositionVO.getWinPartyTotal().longValue() == 0l){
+			  		cell = new PdfPCell(new Phrase("-",style2));
+			  	  }else{
+			  	    cell = new PdfPCell(new Phrase(Long.valueOf(partyPositionVO.getWinPartyTotal()).toString(),style2));
+			  	  }
 			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			  	cell.setPadding(padding);
 			  	  table.addCell(cell);  
-			  
+                    if(partyPositionVO.getWinPartyTotal() == null || partyPositionVO.getWinPartyTotal().longValue() == 0l){
+                    	 cell = new PdfPCell(new Phrase("Anonymous",style2));
+			  	 }else{
 			  	  cell = new PdfPCell(new Phrase(partyPositionVO.getWinPartyName(),style2));
+			  	
 			  	  if(rank == 1 && !partyPositionVO.getWinPartyName().equalsIgnoreCase("TDP"))
 				  cell.setBackgroundColor(BaseColor.RED);
 			  	  if(rank == 2 && partyPositionVO.getWinPartyName().equalsIgnoreCase("TDP"))
 					  cell.setBackgroundColor(BaseColor.GREEN);
+			  	 }
 			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			  	cell.setPadding(padding);
 			  	  table.addCell(cell);  
@@ -2901,7 +2940,7 @@ public class StrategyModelTargetingService implements
 			}
 		  }
 		  
-		  public void panchayatWiseTargetYoungVotesTable(Document document,List<PanchayatVO> totalCastesList,String type)
+		  public void panchayatWiseTargetYoungVotesTable(Document document,List<PanchayatVO> totalCastesList,String type,boolean onTotalVoters)
 		  {
 			  try {
 				  	
@@ -2943,8 +2982,11 @@ public class StrategyModelTargetingService implements
 				  	  cell.setBackgroundColor(BaseColor.YELLOW);
 				  	cell.setPadding(padding);
 				  	  table.addCell(cell);
-				  	  
-				  	  cell = new PdfPCell(new Phrase("Targeted %",calibriBold));
+				  	  if(onTotalVoters){
+				  		cell = new PdfPCell(new Phrase("Targeted % On Total Voters",calibriBold));
+				  	  }else{
+				  	    cell = new PdfPCell(new Phrase("Targeted %",calibriBold));
+				  	  }
 				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				  	  cell.setBackgroundColor(BaseColor.YELLOW);
 				  	cell.setPadding(padding);
@@ -3317,7 +3359,7 @@ public class StrategyModelTargetingService implements
 				  		  {
 				  			  break;
 				  		  }*/
-				  		  if(orderOfPriorityVO.getType().equalsIgnoreCase("Highly Critical") || orderOfPriorityVO.getType().equalsIgnoreCase("Critical"))
+				  		  if(orderOfPriorityVO.getType().equalsIgnoreCase("Highly Critical") || orderOfPriorityVO.getType().equalsIgnoreCase("Critical") || count == 0)
 				  		  {
 				  			  cell = new PdfPCell(new Phrase(orderOfPriorityVO.getName(),style2));
 						  	  cell.setHorizontalAlignment(Element.ALIGN_LEFT);

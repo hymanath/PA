@@ -218,7 +218,6 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	public Object buildPdfDelegator(StrategyVO strategyVO) {
 		
 		int noOfPages=29;
-		
 		//serailization of data 
 		
 		 Map<PdfPages,String> maps =new HashMap<PdfPages, String>();
@@ -226,7 +225,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		serializationOfObjects(strategyVO,maps);
 		//deserilization of data
 		
-		Object url = DeserializationOfObjects(maps,strategyVO.getConstituencyId(),strategyVO.isAutoStrategy(),strategyVO.isGoalDataPresent());
+		Object url = DeserializationOfObjects(maps,strategyVO.getConstituencyId(),strategyVO.isAutoStrategy(),strategyVO.isGoalDataPresent(),strategyVO);
 		//build pdf 
 		
 		return url;
@@ -258,7 +257,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		 
 			String uidentifier = new Random().nextInt(100000000)+"";
 		     //previuos ternds in constituency
-		
+	if(!strategyVO.isOnlyPriority()){	
 		maps.put(PdfPages.constId, constId.toString());
 		defaultFileName="prev1"+uidentifier;
 		List<PartyElectionTrendsReportVO> resForPrevTrends=stratagicReportServiceForMLASuccess.getPreviousTrendsReport(constId);	                    
@@ -364,7 +363,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		//targetting key factors
 		
 		//18111s
-		
+	}
 		//page 13 to 23
 		try{
 		List<Object> targetingAreas = strategyModelTargetingService.getPrioritiesToTarget(strategyVO, true);
@@ -436,7 +435,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		}
 		//-->Voters Additions & Deletions
 		 
-		
+		if(!strategyVO.isOnlyPriority()){	
 		   defaultFileName="voterAdditionAndDeletion"+uidentifier;
 		   PDFHeadingAndReturnVO voterAgeRangeVOList = stratagicReportsService.getVoterInfoByPublicationDateList(locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId);
 			defaultFileName =   serialize(defaultFileName, voterAgeRangeVOList,strategyVO.isAutoStrategy());
@@ -484,6 +483,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		 List<PartyPositionVO> polling= suggestiveModelService.getPollingPercentagesByParty(constId, partyId, electionId, electionId1,"","");
 		  defaultFileName =   serialize(defaultFileName, polling,strategyVO.isAutoStrategy());
 			maps.put(PdfPages.pollingPercent, defaultFileName);
+		}
 		}catch (Exception e) {
 			LOG.error("exception rised in serializationOfObjects ",e);
 			//logic delete all created files
@@ -493,7 +493,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		return null;
 	}
 	
-	public Object DeserializationOfObjects(Map<PdfPages,String> maps,Long constituencyId,boolean autoStrategy,boolean goalDataPresent) 
+	public Object DeserializationOfObjects(Map<PdfPages,String> maps,Long constituencyId,boolean autoStrategy,boolean goalDataPresent,StrategyVO strategyVO) 
 	{
 		 //page-4
 	    //previous trends 
@@ -529,7 +529,9 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		     
 		    PdfWriter writer=	PdfWriter.getInstance(document, new FileOutputStream(filePath));
 			 document.open();
-			 
+			 VoterStratagicReportVo vinfo = null;
+			 DeSerialize<VoterStratagicReportVo> dvinfo =new DeSerialize<VoterStratagicReportVo>();
+		if(!strategyVO.isOnlyPriority()){		 
 			 int indentation = 0;
 				
 			   Image image = Image.getInstance(path+pathSeperator+"indeximage.jpg");
@@ -628,8 +630,8 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	
 	//voters
 	 buildSubHeading(document, "Voters");
-	 DeSerialize<VoterStratagicReportVo> dvinfo =new DeSerialize<VoterStratagicReportVo>();
-	 VoterStratagicReportVo vinfo =dvinfo.deSerialize( maps.get(PdfPages.voterInfo),autoStrategy );
+	
+	  vinfo =dvinfo.deSerialize( maps.get(PdfPages.voterInfo),autoStrategy );
 	 buildPdfForVotersInfo(vinfo, document, writer, vinfo.getMessage());
 	
 	//firsttime voters
@@ -715,7 +717,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
         //call to pdf generation 	   
         stratagicReportsService.generatePDFForAssuredTargetVotersBlock(assumptionsVO,document);
        }
-        
+	}    
     
      //page-11
      
@@ -723,6 +725,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
      //page-21
   //targetting key factors starts
     try{
+    	if(!strategyVO.isOnlyPriority()){		
     	document.newPage();
     	Paragraph preface = new Paragraph();
 	    preface.setAlignment(Element.PTABLE);
@@ -761,14 +764,18 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	  if(vinfo !=null)
 	  buildPdfForFirstTimeVotersAndVotersByAgeGroup(vinfo, document, writer, "");
 	  vinfo=null;
-	  
-     DeSerialize<List<PanchayatVO>>  dyoungCastesList=new DeSerialize<List<PanchayatVO>>();
-	  List<PanchayatVO> youngCastesList =dyoungCastesList.deSerialize( maps.get(PdfPages.youngCastes),autoStrategy );
-	  strategyModelTargetingService.panchayatWiseTargetYoungVotesTable(document,youngCastesList,"18-22");//5
-	  youngCastesList=null;
-	  
 	  DeSerialize<List<PanchayatVO>>  dagedCastesList=new DeSerialize<List<PanchayatVO>>();
 	  List<PanchayatVO> agedCastesList =dagedCastesList.deSerialize( maps.get(PdfPages.agedCastes),autoStrategy );
+     DeSerialize<List<PanchayatVO>>  dyoungCastesList=new DeSerialize<List<PanchayatVO>>();
+	  List<PanchayatVO> youngCastesList =dyoungCastesList.deSerialize( maps.get(PdfPages.youngCastes),autoStrategy );
+	  if(agedCastesList != null && agedCastesList.size() > 0){
+	      strategyModelTargetingService.panchayatWiseTargetYoungVotesTable(document,youngCastesList,"18-22",false);//5
+	  }else{
+		  strategyModelTargetingService.panchayatWiseTargetYoungVotesTable(document,youngCastesList,"18-22",true);//5
+	  }
+	  youngCastesList=null;
+	  
+	 
 	   if(agedCastesList != null && agedCastesList.size() > 0){
 		  buildSubHeading(document, "Aged (Above 60) Voters");
 		  Paragraph preface1 = new Paragraph();
@@ -786,7 +793,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		  vinfo=null;
 			 
 	     
-		  strategyModelTargetingService.panchayatWiseTargetYoungVotesTable(document,agedCastesList,"Above 60");//6
+		  strategyModelTargetingService.panchayatWiseTargetYoungVotesTable(document,agedCastesList,"Above 60",false);//6
 		  agedCastesList=null;
 	  }
      DeSerialize<List<PartyEffectVO>>  dotherPartyEffect=new DeSerialize<List<PartyEffectVO>>();
@@ -798,7 +805,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	  List<ImpFamilesVO> impfamilesList =dimpfamilesList.deSerialize( maps.get(PdfPages.impfamilesList),autoStrategy );
 	  strategyModelTargetingService.generateImpFamilesTable(document,impfamilesList,null);//9
 	  impfamilesList=null;
-
+    	}
      DeSerialize<List<OrderOfPriorityVO>>  dpanchayatsClassification=new DeSerialize<List<OrderOfPriorityVO>>();
 	  List<OrderOfPriorityVO> panchayatsClassification =dpanchayatsClassification.deSerialize( maps.get(PdfPages.panchayatsClassification),autoStrategy );
 	  strategyModelTargetingService.buildPiChart(document,panchayatsClassification,writer);//8
@@ -809,9 +816,13 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 
      DeSerialize<List<OrderOfPriorityVO>>  dfinalOrderOfOriority=new DeSerialize<List<OrderOfPriorityVO>>();
 	  List<OrderOfPriorityVO> finalOrderOfOriority =dfinalOrderOfOriority.deSerialize( maps.get(PdfPages.finalOrderOfOriority),autoStrategy );
-	  strategyModelTargetingService.orderOFPriorityTable(document,finalOrderOfOriority,15);//10
+	  if(!strategyVO.isOnlyPriority()){	
+	     strategyModelTargetingService.orderOFPriorityTable(document,finalOrderOfOriority,15);//10
+	  }else{
+		  strategyModelTargetingService.orderOFPriorityTable(document,finalOrderOfOriority,0);//10
+	  }
 	  finalOrderOfOriority=null;	  
-	  
+	  if(!strategyVO.isOnlyPriority()){		
 	  try {
 			DeSerialize<List<PartyPositionVO>>  dpartyPerformance=new DeSerialize<List<PartyPositionVO>>();
 			  String Eleheading="Election Results Comparision Table b/w 2009(TDP @ Top Position) Assembly & 2013 Panchayat";
@@ -834,12 +845,14 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		} catch (Exception e) {
 			// TODO: handle exception
 		} 
+	  }
    }catch (Exception e) {
 	   LOG.error("Exception rised in serializationOfObjects",e);
 	}
 	//targetting key factors ends
     
    //-->Voters Additions & Deletions
+    if(!strategyVO.isOnlyPriority()){		
      document.newPage();
 		
 	  DeSerialize<PDFHeadingAndReturnVO>  dvoterAgeRangeVOList=new DeSerialize<PDFHeadingAndReturnVO>();
@@ -898,7 +911,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
      polling=null;
      dpolling=null;
 
-	 
+    }
 	 document.close();
 	}catch (Exception e) {
 		LOG.error("Exception rised in DeserializationOfObjects",e);
@@ -1119,13 +1132,15 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 			    		 color=runner;
 			    		 isOtherSecond=true;
 			     }
-				
+
 				 addCellTotableWithPadding(prev.getTdpVo().getVotesEarned(), prev.getTdpVo().getPercentage(), table, c1, calibriBold,padding,color);
 
 				if(isOthersFirst)
 				 c1 = new PdfPCell(new Phrase(prev.getTdpVo().getMarginVotes()+"   ("+prev.getTdpVo().getMarginVotesPercentage()+")",calibriBold));
-				else 
-					c1 = new PdfPCell(new Phrase(" -"+prev.getTdpVo().getMarginVotes()+"   ( -" +prev.getTdpVo().getMarginVotesPercentage()+")",calibriBold));
+				else{ 
+				
+					  c1 = new PdfPCell(new Phrase(prev.getTdpVo().getMarginVotes()+"   ("+prev.getTdpVo().getMarginVotesPercentage()+")",calibriBold));
+				  				}
 			c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 			c1.setPadding(padding); 
 				table.addCell(c1);
@@ -1153,7 +1168,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 					rank=0l;
 					color=null;
 					rank=	prev.getPrpVo().getRank();
-				     
+				    
 				     if(rank.equals(1L))
 				     {
 				    	color=winner;
