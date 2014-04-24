@@ -24,7 +24,7 @@ public interface IStrategyModelTargetingService {
 	
 	public void panchayatWiseTargetVotesTable(Document document,List<PanchayatVO> totalCastesList);
 	 
-	public void panchayatWiseTargetYoungVotesTable(Document document,List<PanchayatVO> totalCastesList,String type);
+	public void panchayatWiseTargetYoungVotesTable(Document document,List<PanchayatVO> totalCastesList,String type,boolean onTotalVoters);
 	 
 	public void prpEffectTableTable(Document document,List<PartyEffectVO> list);
 	

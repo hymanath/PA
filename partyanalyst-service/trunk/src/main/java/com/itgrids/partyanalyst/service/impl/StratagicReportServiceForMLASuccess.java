@@ -608,7 +608,8 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 	//start mymethods
 	
 public List<PartyElectionTrendsReportVO> getPreviousTrendsReport(Long constId){
-		
+	List<PartyElectionTrendsReportVO> finalRes= new ArrayList<PartyElectionTrendsReportVO>();
+	try{
 		List<Object[]> ids = (List<Object[]>)partyTrendsDAO.getPreviousTrendsData(null, constId);
 		Map<Long,PartyElectionTrendsReportVO> maps = new HashMap<Long, PartyElectionTrendsReportVO>();
        
@@ -764,7 +765,7 @@ public List<PartyElectionTrendsReportVO> getPreviousTrendsReport(Long constId){
 		}
 		}
 		System.out.println(maps);
-		List<PartyElectionTrendsReportVO> finalRes= new ArrayList<PartyElectionTrendsReportVO>();
+		
 		for(Long year:maps.keySet())
 		{
 			PartyElectionTrendsReportVO vo=	maps.get(year);
@@ -806,6 +807,9 @@ public List<PartyElectionTrendsReportVO> getPreviousTrendsReport(Long constId){
 			finalRes.add(vo);
 		}
 		Collections.sort(finalRes);
+	}catch(Exception e){
+		LOG.error("Exception raised in getPreviousTrendsReport service method",e);
+	}
 		return finalRes;
 	}
 	

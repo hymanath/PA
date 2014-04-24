@@ -1359,6 +1359,22 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					   return (cstVO2.getTotalWt().compareTo(cstVO1.getTotalWt()));
 					}
 			  };
+			  public  Comparator<PartyPositionVO> finalOrderSort = new Comparator<PartyPositionVO>()
+						{
+							  
+						  public int compare(PartyPositionVO cstVO1, PartyPositionVO cstVO2)
+							{
+							   return (cstVO2.getMinValue().compareTo(cstVO1.getMinValue()));
+							}
+					  };
+					  public  Comparator<PartyPositionVO> finalOrderSort1 = new Comparator<PartyPositionVO>()
+								{
+									  
+								  public int compare(PartyPositionVO cstVO1, PartyPositionVO cstVO2)
+									{
+									   return (cstVO2.getMaxValue().compareTo(cstVO1.getMaxValue()));
+									}
+							  };
 	
 	public OptionVO getPartyPerformantForSelectedConstituency(Long constituencyId,Long electionId,Long partyId)
 	{
@@ -5780,10 +5796,14 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					
 					 mainVo.setPartyPercentage(Double.valueOf(decimalFormat.format(partyPerInConstituency)));
 					 mainVo.setPollingPercentage(Double.valueOf(decimalFormat.format(pollingPerForConstituency)));
-					 if(PollingHighboothResultList != null && PollingHighboothResultList.size() >0)
+					 if(PollingHighboothResultList != null && PollingHighboothResultList.size() >0){	 
+						 Collections.sort(PollingHighboothResultList,finalOrderSort);
 					 mainVo.setStrongPollingPercentVOList(PollingHighboothResultList);
-					 if(PollingLowboothResultList != null && PollingLowboothResultList.size() > 0)
+					 }
+					 if(PollingLowboothResultList != null && PollingLowboothResultList.size() > 0){
+						 Collections.sort(PollingLowboothResultList,finalOrderSort1);
 					 mainVo.setWeakPollingPercentVOList(PollingLowboothResultList);
+					 }
 					 result.add(mainVo);
 			 }
 				 catch(Exception e)

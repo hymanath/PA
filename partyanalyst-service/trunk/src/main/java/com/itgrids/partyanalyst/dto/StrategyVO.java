@@ -45,6 +45,8 @@ public class StrategyVO implements Serializable {
 	private boolean autoCalculate;
 	private boolean autoStrategy;
 	private boolean goalDataPresent;
+	private List<Long> excludePanchys;
+	private boolean onlyPriority;
 	
 	public Long getConstituencyId() {
 		return constituencyId;
@@ -237,6 +239,18 @@ public class StrategyVO implements Serializable {
 	}
 	public void setGoalDataPresent(boolean goalDataPresent) {
 		this.goalDataPresent = goalDataPresent;
+	}
+	public List<Long> getExcludePanchys() {
+		return excludePanchys;
+	}
+	public void setExcludePanchys(List<Long> excludePanchys) {
+		this.excludePanchys = excludePanchys;
+	}
+	public boolean isOnlyPriority() {
+		return onlyPriority;
+	}
+	public void setOnlyPriority(boolean onlyPriority) {
+		this.onlyPriority = onlyPriority;
 	}
 	
 	
