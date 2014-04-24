@@ -395,7 +395,13 @@ public class HamletBoothElectionDAO extends GenericDaoHibernate<HamletBoothElect
 		query.setParameterList("boothIds", boothIds);
 		return  query.list(); 
 	}
-	
+	public List<Object[]> getMunicipalityNames(List<Long> boothIds)
+	{
+		Query query = getSession().createQuery("select distinct model.boothId,concat(model.localBody.name,' ',model.localBody.electionType.electionType) from Booth model where " +
+				"  model.boothId in (:boothIds)");
+		query.setParameterList("boothIds", boothIds);
+		return  query.list(); 
+	}
 	public List<Object[]> getElectionYearsForMandal(Long electionTypeId,Long tehsilId){
 		Query query = getSession().createQuery("select distinct hbe.boothConstituencyElection.constituencyElection.election.electionId,hbe.boothConstituencyElection.constituencyElection.election.electionYear " +
 				"  from HamletBoothElection hbe where  hbe.boothConstituencyElection.booth.tehsil.tehsilId = :tehsilId and " +
