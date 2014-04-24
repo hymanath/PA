@@ -570,7 +570,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
   
 	
 //page-5
-	   
+	  
 	  //previous trends in mptc and zptc
 	   //buildSubHeading(document, "Zilla and Mandal Parishad Elections Results"); 
 	   DeSerialize<PartyResultsVerVO> dmptcZptcResults =new DeSerialize<PartyResultsVerVO>();
@@ -972,8 +972,14 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		 Font subHeading = new Font(Font.FontFamily.TIMES_ROMAN,15,Font.BOLD);
 		 subHeading.setColor(BaseColor.MAGENTA); 
 		  
-		
-		
+		boolean prppresent = false;
+		PartyElectionTrendsReportVO prev1 = null;
+		for (PartyElectionTrendsReportVO prev : finalRes) {
+			prev1 = prev;
+			if(prev.getPrpVo() != null && prev.getPrpVo().getVotesEarned() != null && prev.getPrpVo().getVotesEarned() > 0){
+				prppresent = true;
+			}
+		}
 		Paragraph p =   new Paragraph(heading ,SMALLFONT);
 		//p.setFont(subHeading);
 		
@@ -981,8 +987,13 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		
 		PdfPCell c1;
 		document.add( new Paragraph(" ") );
-
-		PdfPTable table = new PdfPTable(12);
+		PdfPTable table = null;
+		if(prev1 != null && prev1.getDistrictId()<=10 && prppresent){
+			 table = new PdfPTable(14);
+			 padding = 3;
+		}else{
+		     table = new PdfPTable(12);
+	    }
 		 table.setWidthPercentage(100);
 		  	c1 = new PdfPCell(new Phrase("Year",calibriBold));
 		  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -1049,7 +1060,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 				{
 					textName="YSRCP/PRP";
 				}
-				if(prev.getDistrictId()>10){
+				if(prppresent){
 			    c1 = new PdfPCell(new Phrase(textName,calibriBold));
 			    c1.setHorizontalAlignment(Element.ALIGN_CENTER);	
 			    c1.setBackgroundColor(BaseColor.YELLOW);
@@ -1063,7 +1074,8 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 			    c1.setBackgroundColor(BaseColor.YELLOW);
 			    c1.setPadding(padding); 
 				table.addCell(c1);
-				}else{
+				}
+				if(prev.getDistrictId().intValue()<=10){
 					 c1 = new PdfPCell(new Phrase("TRS",calibriBold));
 					 c1.setHorizontalAlignment(Element.ALIGN_CENTER);	
 					 c1.setBackgroundColor(BaseColor.YELLOW);
@@ -1164,7 +1176,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 
 			
 				//prp or ysrcp
-				if(prev.getDistrictId()>10){
+				if(prppresent){
 					rank=0l;
 					color=null;
 					rank=	prev.getPrpVo().getRank();
@@ -1181,7 +1193,8 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 				    		 isOtherSecond=true;
 				     }
 					addCellTotableWithPadding(prev.getPrpVo().getVotesEarned(), prev.getPrpVo().getPercentage(), table, c1, calibriBold,padding,color);
-				} else{
+				} 
+				if(prev.getDistrictId()<=10){
 					rank=0l;
 					color=null;
 					rank=	prev.getTrsVo().getRank();
@@ -1224,7 +1237,12 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		
 		  		
 		  	}
-			float[] widths = new float[] {1.1f, 1.5f ,1.5f,1.2f,1.2f, 1.7f ,1.2f,1.2f,1.4f, 1.5f ,1.6f,1.8f};
+			float[] widths = null;
+			if(prev1 != null && prev1.getDistrictId()<=10 && prppresent){
+				widths = new float[] {1.1f, 1.5f ,1.5f,1.2f,1.2f, 1.7f ,1.2f,1.2f,1.4f, 1.5f ,1.4f, 1.5f ,1.6f,1.8f};
+			}else{
+			 widths = new float[] {1.1f, 1.5f ,1.5f,1.2f,1.2f, 1.7f ,1.2f,1.2f,1.4f, 1.5f ,1.6f,1.8f};
+	        }
 			table.setWidths(widths);
 		  	document.add(table);
 			

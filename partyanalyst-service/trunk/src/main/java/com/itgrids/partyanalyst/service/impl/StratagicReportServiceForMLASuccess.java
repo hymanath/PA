@@ -5,6 +5,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -31,6 +32,7 @@ import com.itgrids.partyanalyst.dto.CasteStratagicReportVO;
 import com.itgrids.partyanalyst.dto.HouseHoldsVO;
 import com.itgrids.partyanalyst.dto.PartyElectionTrendsReportHelperVO;
 import com.itgrids.partyanalyst.dto.PartyElectionTrendsReportVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.StrategicCensusVO;
 import com.itgrids.partyanalyst.dto.VoterStratagicReportVo;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -1066,7 +1068,7 @@ public void buildHelperVoForConst(PartyElectionTrendsReportVO partyVos ,String n
 			           {
 			        	   vo.setPrpVo(voh);
 
-			           } else if(Long.valueOf(object[5].toString())<10){
+			           } else if(Long.valueOf(object[5].toString())<=10){
 			           		/*if(((Long)object[2]).equals(163L)){
 			           			vo.setBjpVo(voh);
 			           		}
@@ -1125,11 +1127,12 @@ public void buildHelperVoForConst(PartyElectionTrendsReportVO partyVos ,String n
 			
 			Long inc =vo.getIncVo()!=null ? vo.getIncVo().getVotesEarned():0L;
 			 
-			Long prp11=null;
-			if(vo.getDistrictId()>10)					
-				prp11=vo.getPrpVo()!=null ? vo.getPrpVo().getVotesEarned() :0L;
-				else
-					prp11=vo.getTrsVo()!=null ? vo.getTrsVo().getVotesEarned() :0L;
+			
+						
+			Long prp11=vo.getPrpVo()!=null ? vo.getPrpVo().getVotesEarned() :0L;
+			Long trs = 0l;
+			if(vo.getDistrictId()<11)		
+					trs=vo.getTrsVo()!=null ? vo.getTrsVo().getVotesEarned() :0L;
 			 
 			Long others = vo.getOthersVo().getVotesEarned();
 			
@@ -1153,13 +1156,13 @@ public void buildHelperVoForConst(PartyElectionTrendsReportVO partyVos ,String n
 						vo.getOthersVo().setVotesEarned(others/4);
 						vo.getTdpVo().setVotesEarned(tdp/2);
 						vo.getIncVo().setVotesEarned(inc/2);
-						if(vo.getDistrictId()>10)
-						{
+						
+						
 							vo.getPrpVo().setVotesEarned(prp11/2);
-						}
-						else
+						
+						if(vo.getDistrictId()<11)
 						{
-							vo.getTrsVo().setVotesEarned(prp11/2);
+							vo.getTrsVo().setVotesEarned(trs/2);
 						}
 						
 					}
@@ -1176,7 +1179,7 @@ public void buildHelperVoForConst(PartyElectionTrendsReportVO partyVos ,String n
 					}
 					else
 					{
-						vo.getTrsVo().setVotesEarned(prp11/2);
+						vo.getTrsVo().setVotesEarned(trs/2);
 					}
 						
 					
@@ -1188,22 +1191,79 @@ public void buildHelperVoForConst(PartyElectionTrendsReportVO partyVos ,String n
 			 inc =vo.getIncVo()!=null ? vo.getIncVo().getVotesEarned():0L;
 			 
 			
-			if(vo.getDistrictId()>10)					
+							
 				prp11=vo.getPrpVo()!=null ? vo.getPrpVo().getVotesEarned() :0L;
-				else
-					prp11=vo.getTrsVo()!=null ? vo.getTrsVo().getVotesEarned() :0L;
+				if(vo.getDistrictId()<11)	
+					trs=vo.getTrsVo()!=null ? vo.getTrsVo().getVotesEarned() :0L;
 			 
 			 others = vo.getOthersVo().getVotesEarned();
+			 List<SelectOptionVO> partyList  = new ArrayList<SelectOptionVO>();
+			SelectOptionVO tdpVO = new SelectOptionVO();
+			tdpVO.setName("tdp");
+			if(tdp != null)
+			  tdpVO.setId(tdp);
+			else
+				tdpVO.setId(0l);	
+			partyList.add(tdpVO);
+			SelectOptionVO incVO = new SelectOptionVO();
+			incVO.setName("inc");
+			if(inc != null)
+				incVO.setId(inc);
+				else
+					incVO.setId(0l);	
+			partyList.add(incVO);
+			SelectOptionVO ysrcVO = new SelectOptionVO();
+			ysrcVO.setName("ysrc");
+			if(prp11 != null)
+				ysrcVO.setId(prp11);
+				else
+					ysrcVO.setId(0l);	
+			partyList.add(ysrcVO);
+			SelectOptionVO trsVO = new SelectOptionVO();
+			partyList.add(trsVO);
+			trsVO.setName("trs");
+			if(trs != null)
+				trsVO.setId(trs);
+				else
+					trsVO.setId(0l);	
+				
+			SelectOptionVO otherVO = new SelectOptionVO();
+			partyList.add(otherVO);
+			otherVO.setName("other");
+			if(others != null)
+				otherVO.setId(others);
+				else
+					otherVO.setId(0l);	
+			Collections.sort(partyList,partyResult);
 			
-			Long max=inc;
+			/*Long max=inc;
 			if(prp11!=null && prp11>inc )
 				max=prp11;
 			else if(others !=null && others>inc && (vo.getIncVo() !=null && (vo.getIncVo().getRank()!=1 || vo.getIncVo().getRank()==0)))
 				max=others;
+			*/
 			
+			if(partyList.get(0).getName().equalsIgnoreCase("tdp")){
+				vo.getTdpVo().setMarginVotes(partyList.get(0).getId()-partyList.get(1).getId());
+			}else{
+				for(SelectOptionVO voObj:partyList){
+					if(voObj.getName().equalsIgnoreCase("tdp")){
+						vo.getTdpVo().setMarginVotes(partyList.get(0).getId()-voObj.getId());
+					}
+				}
+			}
+			for(int i = 0;i<partyList.size();i++){
+				 if(partyList.get(i).getName().equalsIgnoreCase("tdp")){
+					 vo.getTdpVo().setRank(new Long(i+1));
+				}else if(partyList.get(i).getName().equalsIgnoreCase("inc")){
+					 vo.getIncVo().setRank(new Long(i+1));
+				}else if(partyList.get(i).getName().equalsIgnoreCase("trs")){
+					 vo.getTrsVo().setRank(new Long(i+1));
+				}else if(partyList.get(i).getName().equalsIgnoreCase("ysrc")){
+					 vo.getPrpVo().setRank(new Long(i+1));
+				}
+			}
 			
-			
-			vo.getTdpVo().setMarginVotes(tdp-max);
 			System.out.println(vo.getTdpVo().getMarginVotes());
 			System.out.println(vo.getTotalVotesPolled());
 			System.out.println((double)(vo.getTdpVo().getMarginVotes()/vo.getTotalVotesPolled())*100); 
@@ -1223,6 +1283,13 @@ public void buildHelperVoForConst(PartyElectionTrendsReportVO partyVos ,String n
 	}
   
  
-  
+  public  Comparator<SelectOptionVO> partyResult = new Comparator<SelectOptionVO>()
+		   {
+				  
+			  public int compare(SelectOptionVO loc1, SelectOptionVO loc2)
+				{
+				   return (loc2.getId().compareTo(loc1.getId()));
+				}
+		   };
   
 }
