@@ -52,7 +52,12 @@
 		margin-left: 12px;
 	}
 	
-	
+	label[for="userTypeFieldParty"],[for="userTypeFieldPolitician"],[for="accessTypeFieldCOUNTRY"],[for="accessTypeFieldSTATE"],[for="accessTypeFieldDISTRICT"],[for="accessTypeFieldMLA"],[for="accessTypeFieldMP"]
+	{
+		margin-left: 18px;
+		margin-top: -17px;
+	}
+
 
 </style>
 <script type="text/javascript">
@@ -70,12 +75,12 @@
 		var thElmt=document.getElementById("thId");
 		var tdElmt=document.getElementById("tdId");
 
-		thElmt.innerHTML='<font class="requiredFont"> * </font> <s:label theme="simple" for="accessValueField" id="accessValueLabel"  value="%{getText(\'accessValue\')}" />';
+		//thElmt.innerHTML='<font class="requiredFont"> * </font> <s:label theme="simple" for="accessValueField" id="accessValueLabel"  value="%{getText(\'accessValue\')}" />';
 
-		var str='';
+		var str=' <s:label theme="simple" for="accessValueField" id="accessValueLabel"  value="%{getText(\'accessValue\')}" style=" margin-top: 5px;margin-left: 0px;"/><b  style="color: red; ">*</b>';
 		if(value=="COUNTRY")
 		{			
-			str+='<select id="accessValueField" name="accessValue"  style="float: left; margin-left: -372px;">';			
+			str+='<select id="accessValueField" name="accessValue"  style="margin-left: 123px; margin-top: -15px;">';			//margin-left: -372px;
 			str+='<option value="1">India</option>';
 			str+='</select>';			
 		}else if(value=="STATE")
@@ -96,7 +101,7 @@
 			ACCESSVALUE="MP";
 			getAList(value,"null");
 		}
-		tdElmt.innerHTML=str;
+		thElmt.innerHTML=str;
 	}
 	function getAList(value,svalue)
 	{
@@ -115,7 +120,7 @@
 	}
 	function buildSelectBox(results,param)
 	{	
-		var tdElmt=document.getElementById("tdId");		
+		var tdElmt=document.getElementById("thId");		//tdId
 		
 		var jsObj=YAHOO.lang.JSON.parse(param.substring(5));
 		
@@ -150,15 +155,15 @@
 			return;
 		}
 
-
-		var str='';
+		var str=' <s:label theme="simple" for="accessValueField" id="accessValueLabel"  value="%{getText(\'accessValue\')}" style=" margin-top: 5px;margin-left: 0px;"/><b  style="color: red;">*</b>';
+		//var str='';
 		if(ACCESSVALUE=="State")
 		{
-			str+='<select name="accessValue" id="stateNameSelect"  style="float: left; margin-left: -372px;">';
+			str+='<select name="accessValue" id="stateNameSelect"  style="margin-left: 123px; margin-top: -15px; ">';//margin-left: -372px;
 		}
 		else
 		{
-			str+='<select name="stateSelect" id="stateNameSelect" onchange="getValues(this.options[this.selectedIndex].value)">';
+			str+='<select name="stateSelect" id="stateNameSelect" onchange="getValues(this.options[this.selectedIndex].value)" style="margin-left: 123px; margin-top: -15px;">';
 		}		
 			str+='<option>Select State</option>';
 			for(var item in results)
@@ -167,19 +172,19 @@
 			
 		if(ACCESSVALUE=="District")
 		{			
-			str+='<select name="accessValue" id="DistrictNameSelect"  style="float: left; margin-left: -372px;">';
+			str+='<select name="accessValue" id="DistrictNameSelect"  style="margin-left: 123px; margin-top: 5px;">';//margin-left: -372px;
 			str+='<option>Select District</option>';
 			str+='</select>';
 		}
 		if(ACCESSVALUE=="MLA")
 		{
-			str+='<select name="accessValue" id="MLANameSelect"  style="float: left; margin-left: -372px;">';
+			str+='<select name="accessValue" id="MLANameSelect"  style="margin-left: 123px; margin-top: 5px;">';//margin-left: -372px;
 			str+='<option>Select Constituency</option>';
 			str+='</select>';
 		}
 		if(ACCESSVALUE=="MP")
 		{
-			str+='<select name="accessValue" id="MPNameSelect"  style="float: left; margin-left: -372px;">';
+			str+='<select name="accessValue" id="MPNameSelect"  style="margin-left: 123px; margin-top: 5px;">';//margin-left: -372px;
 			str+='<option>Select Constituency</option>';
 			str+='</select>';
 		}
@@ -486,7 +491,7 @@ var str = '<font style="color:red;font-size:12px;">';
 					
 					<tr>
 						<td width="100px;"><span>Gender</span><b class="requiredFont" style="color:red"> * </b></td>
-						<td><s:radio theme="simple" id="genderField" name="gender" list="#session.gender" />  </td>
+						<td style="padding-left: 13px;"><s:radio theme="simple" id="genderField" name="gender" list="#session.gender" />  </td>
 						<!--<s:iterator value="#session.gender" var="gender" >
 							<td width="150px;"><input type="radio" id="accessTypeField" name="gender"></input><span style="float: left; margin: -14px 10px 0px 18px;">${gender}</span></td>
 						</s:iterator>		-->				
@@ -530,14 +535,14 @@ var str = '<font style="color:red;font-size:12px;">';
 		<tr style="float: left; margin-left: 1px;">
 			<td ><span>Role Type</span></td>
 
-			<td  style="float: left; margin-left: 130px; margin-top: -22px;"><s:checkbox id="freeuser"  value="freeuser" name ="freeuser" onclick="showAndHide()" /><span style="float: left; margin-left: 9px; margin-top: 2px;">FREE_USER</span></td>
+			<td  style="float: left; margin-left: 130px; margin-top: -22px;width: 90px;"><s:checkbox id="freeuser"  value="freeuser" name ="freeuser" onclick="showAndHide()" /><span style="float: left; margin-left: 9px; margin-top: 2px;">FREE_USER</span></td>
 
 		</tr>
 
 		<tr>
 			<td colspan="2">		
 			
-			<div id="freeuserDiv" style="display:none;color:#926682"><b style="color:red">*</b> Select State<s:select name="stateId" id="stateSelectBox" cssClass="textFieldStyle" headerKey="0" headerValue="Select State" list="#session.states" listKey="id" listValue="name"  onchange="getAllConstituenciesInStateByType(2,this.options[this.selectedIndex].value,'constituency')"  theme="simple"  style="width: 148px; margin-left: 61px;"/>
+			<div id="freeuserDiv" style="display:none;color:#926682;width: 335px;"><b style="color:red">*</b> Select State<s:select name="stateId" id="stateSelectBox" cssClass="textFieldStyle" headerKey="0" headerValue="Select State" list="#session.states" listKey="id" listValue="name"  onchange="getAllConstituenciesInStateByType(2,this.options[this.selectedIndex].value,'constituency')"  theme="simple"  style="width: 148px; margin-left: 61px;"/>
 							
 
 
@@ -567,7 +572,7 @@ var str = '<font style="color:red;font-size:12px;">';
 					<td>
 					<table>
 					<tr>
-						<td>Access Type<b class="requiredFont" style="color: red; margin-right: 119px; margin-bottom: 15px;"> * </b></td>
+						<td><span>Access Type</span><b class="requiredFont" style="color: red; margin-right: 119px; margin-bottom: 15px;"> * </b></td>
 						<!--<s:radio id="accessTypeField" name="accessType" list="#session.type" required="true" onclick="getAccessValuesForSubUser(this.value);" ></s:radio> -->
 						<s:iterator value="#session.type" var="accessType" >
 							<td><input type="radio" id="accessTypeField" name="accessType" onclick="getAccessValuesForSubUser('${accessType}');"></input><span style="float: left; margin: -14px 10px 0px 18px;">${accessType}</span></td>
@@ -579,14 +584,19 @@ var str = '<font style="color:red;font-size:12px;">';
 					</c:if>
 
 					<c:if test="${registrationType == 'mainUser'}">
+					<tr><td>
+					<table>
 					<tr>
-						<td ><font class="requiredFont"> * </font> <s:label for="accessTypeField" id="accessTypeLabel"  value="%{getText('accessType')}" /></td>
-						<td style="padding-left: 10px;"><s:radio id="accessTypeField" name="accessType" list="#session.type" onclick="getAccessValue(this.value);" required="true"></s:radio> </td>
+						<td > <s:label for="accessTypeField" id="accessTypeLabel"  value="%{getText('accessType')}" style="margin-left: 0px;"/><b  style="color: red; float: right; margin-right: -12px; margin-top: -16px; ">*</b></td>
+						<td style="padding-left: 35px;"><s:radio id="accessTypeField" name="accessType" list="#session.type" onclick="getAccessValue(this.value);" required="true"></s:radio> </td>
+					</tr>
+					</table>
+					</td>
 					</tr>
 					</c:if>					
 					<tr>
-						<td id="thId"> </td>
-						<td style="padding-left: 15px;" id="tdId"> </td>
+						<td id="thId" class="form-inline"> </td>
+						<!--<td style="padding-left: 15px;" id="tdId"> </td>-->
 					</tr>
 
 					<tr>
