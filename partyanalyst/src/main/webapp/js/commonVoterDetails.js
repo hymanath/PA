@@ -337,8 +337,9 @@ function getImpFamilyDetails()
 				minVal:fromValue,
 				maxVal:toValue,
 				startIndex:0,
-				results:50000,
+				results:200000,
 				type : "constituency",
+				output : "Excel",
 				task:"getFamilyDetails"		
 		};
 		
