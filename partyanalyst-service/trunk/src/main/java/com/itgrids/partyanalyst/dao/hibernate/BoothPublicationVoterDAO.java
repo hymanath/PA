@@ -6551,7 +6551,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		return query.list();
 	}
 	
-	public List<Object[]> getCasteCount(Set<Long> casteStateIds,Long publicationId,Long constituencyId,List<Long> panchayatIds,Long ageFrom,Long ageTo){
+	public List<Object[]> getCasteCount(Long publicationId,Long constituencyId,List<Long> panchayatIds,Long ageFrom,Long ageTo){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append("select bpv.booth.panchayat.panchayatId,uvd.casteState.casteStateId,count(distinct uvd.voter.voterId) from BoothPublicationVoter bpv,UserVoterDetails uvd where " +
 				" bpv.booth.constituency.constituencyId =:constituencyId and bpv.booth.publicationDate.publicationDateId =:publicationId and bpv.booth.panchayat.panchayatId is not null and bpv.voter.voterId = uvd.voter.voterId ");
@@ -6564,7 +6564,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 				if(ageTo != null){
 					queryStr.append(" and uvd.voter.age <=:ageTo ");
 				}
-				queryStr.append(" and uvd.casteState.casteStateId in(:casteStateIds) group by bpv.booth.panchayat.panchayatId,uvd.casteState.casteStateId");
+				queryStr.append("  group by bpv.booth.panchayat.panchayatId,uvd.casteState.casteStateId");
 				
 	    Query query = getSession().createQuery(queryStr.toString());
 	    query.setParameter("constituencyId", constituencyId);
@@ -6578,11 +6578,11 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 	    if(ageTo != null){
 	      query.setParameter("ageTo", ageTo);
 	    }
-	    query.setParameterList("casteStateIds", casteStateIds);
+	    //query.setParameterList("casteStateIds", casteStateIds);
 	return query.list();
 	}
 	
-	public List<Object[]> getCasteCountForPartial(Set<Long> casteStateIds,Long publicationId,Long constituencyId,List<Long> panchayatIds,Long ageFrom,Long ageTo){
+	public List<Object[]> getCasteCountForPartial(Long publicationId,Long constituencyId,List<Long> panchayatIds,Long ageFrom,Long ageTo){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append("select ph.panchayat.panchayatId,uvd.casteState.casteStateId,count(distinct uvd.voter.voterId) from BoothPublicationVoter bpv,UserVoterDetails uvd,PanchayatHamlet ph where " +
 				" bpv.booth.constituency.constituencyId =:constituencyId and bpv.booth.publicationDate.publicationDateId =:publicationId  and bpv.booth.panchayat.panchayatId is not null  and bpv.voter.voterId = uvd.voter.voterId and uvd.hamlet.hamletId = ph.hamlet.hamletId " +
@@ -6593,7 +6593,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 				if(ageTo != null){
 					queryStr.append(" and uvd.voter.age <=:ageTo ");
 				}
-				queryStr.append(" and uvd.casteState.casteStateId in(:casteStateIds) group by ph.panchayat.panchayatId,uvd.casteState.casteStateId");
+				queryStr.append("  group by ph.panchayat.panchayatId,uvd.casteState.casteStateId");
 				
 	    Query query = getSession().createQuery(queryStr.toString());
 	    query.setParameter("constituencyId", constituencyId);
@@ -6605,7 +6605,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 	    if(ageTo != null){
 	      query.setParameter("ageTo", ageTo);
 	    }
-	    query.setParameterList("casteStateIds", casteStateIds);
+	    //query.setParameterList("casteStateIds", casteStateIds);
 	return query.list();
 	}
 	
@@ -6691,7 +6691,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 	return query.list();
 	}
 	
-	public List<Object[]> getCasteCountForMunicipality(Set<Long> casteStateIds,Long publicationId,Long constituencyId,Long ageFrom,Long ageTo){
+	public List<Object[]> getCasteCountForMunicipality(Long publicationId,Long constituencyId,Long ageFrom,Long ageTo){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append("select bpv.booth.localBody.localElectionBodyId,uvd.casteState.casteStateId,count(distinct uvd.voter.voterId) from BoothPublicationVoter bpv,UserVoterDetails uvd where " +
 				" bpv.booth.constituency.constituencyId =:constituencyId and bpv.booth.publicationDate.publicationDateId =:publicationId and bpv.booth.localBody.localElectionBodyId is not null and bpv.voter.voterId = uvd.voter.voterId ");
@@ -6702,7 +6702,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 				if(ageTo != null){
 					queryStr.append(" and uvd.voter.age <=:ageTo ");
 				}
-				queryStr.append(" and uvd.casteState.casteStateId in(:casteStateIds) group by bpv.booth.localBody.localElectionBodyId,uvd.casteState.casteStateId");
+				queryStr.append("  group by bpv.booth.localBody.localElectionBodyId,uvd.casteState.casteStateId");
 				
 	    Query query = getSession().createQuery(queryStr.toString());
 	    query.setParameter("constituencyId", constituencyId);
@@ -6714,7 +6714,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 	    if(ageTo != null){
 	      query.setParameter("ageTo", ageTo);
 	    }
-	    query.setParameterList("casteStateIds", casteStateIds);
+	    //query.setParameterList("casteStateIds", casteStateIds);
 	return query.list();
 	}
 	

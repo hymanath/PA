@@ -1368,8 +1368,8 @@ public class StrategyModelTargetingService implements
 			  
 			   if(partialIds.size() > 0){
 				   //young voters calculation starts
-				   List<Object[]> youngVotersCaste = boothPublicationVoterDAO.getCasteCount(castePercents.keySet(), publicationId, constituencyId, partialIds, 18l, 22l);
-				   List<Object[]> youngVotersPartialCaste = boothPublicationVoterDAO.getCasteCountForPartial(castePercents.keySet(), publicationId, constituencyId, partialIds, 18l, 22l);
+				   List<Object[]> youngVotersCaste = boothPublicationVoterDAO.getCasteCount( publicationId, constituencyId, partialIds, 18l, 22l);
+				   List<Object[]> youngVotersPartialCaste = boothPublicationVoterDAO.getCasteCountForPartial(publicationId, constituencyId, partialIds, 18l, 22l);
 				   List<Object[]> youngVotersCount = boothPublicationVoterDAO.getTotalVotersByAge(publicationId, constituencyId, partialIds, 18l, 22l);
 				   List<Object[]> youngVotersPartialCount = boothPublicationVoterDAO.getTotalVotersCountForPartial(publicationId, constituencyId, partialIds, 18l, 22l);
 				   if(youngVotersCaste != null && youngVotersCaste.size() > 0){
@@ -1388,8 +1388,8 @@ public class StrategyModelTargetingService implements
 				   //young voters calculation ends
 				  
                    //aged voters calculation starts
-				   List<Object[]> agedVotersCaste = boothPublicationVoterDAO.getCasteCount(castePercents.keySet(), publicationId, constituencyId, partialIds,  61l, 200l);
-				   List<Object[]> agedVotersPartialCaste = boothPublicationVoterDAO.getCasteCountForPartial(castePercents.keySet(), publicationId, constituencyId, partialIds,  61l, 200l);
+				   List<Object[]> agedVotersCaste = boothPublicationVoterDAO.getCasteCount( publicationId, constituencyId, partialIds,  61l, 200l);
+				   List<Object[]> agedVotersPartialCaste = boothPublicationVoterDAO.getCasteCountForPartial( publicationId, constituencyId, partialIds,  61l, 200l);
 				   List<Object[]> agedVotersCount = boothPublicationVoterDAO.getTotalVotersByAge(publicationId, constituencyId, partialIds, 61l, 200l);
 				   List<Object[]> agedVotersPartialCount = boothPublicationVoterDAO.getTotalVotersCountForPartial(publicationId, constituencyId, partialIds, 61l, 200l);
 				   if(agedVotersCaste != null && agedVotersCaste.size() > 0){
@@ -1409,7 +1409,7 @@ public class StrategyModelTargetingService implements
 			   }else{
 
 				   //young voters calculation starts
-				   List<Object[]> youngVotersCaste = boothPublicationVoterDAO.getCasteCount(castePercents.keySet(), publicationId, constituencyId, null, 18l, 22l);
+				   List<Object[]> youngVotersCaste = boothPublicationVoterDAO.getCasteCount( publicationId, constituencyId, null, 18l, 22l);
 				   List<Object[]> youngVotersCount = boothPublicationVoterDAO.getTotalVotersByAge(publicationId, constituencyId, null, 18l, 22l);
 				   if(youngVotersCaste != null && youngVotersCaste.size() > 0){
 					   youngCaste.addAll(youngVotersCaste);
@@ -1422,7 +1422,7 @@ public class StrategyModelTargetingService implements
 				   //young voters calculation ends
 				   
                    //aged voters calculation starts
-				    List<Object[]> agedVotersCaste = boothPublicationVoterDAO.getCasteCount(castePercents.keySet(), publicationId, constituencyId, partialIds, 61l, 200l);  
+				    List<Object[]> agedVotersCaste = boothPublicationVoterDAO.getCasteCount(publicationId, constituencyId, partialIds, 61l, 200l);  
 				    List<Object[]> agedVotersCount = boothPublicationVoterDAO.getTotalVotersByAge(publicationId, constituencyId, partialIds, 61l, 200l);   
 				    if(agedVotersCaste != null && agedVotersCaste.size() > 0){
 						 ageCaste.addAll(agedVotersCaste);
@@ -1438,7 +1438,7 @@ public class StrategyModelTargetingService implements
 				   
 				       List<Object[]> totalYoungVoterForMunic = boothPublicationVoterDAO.getTotalVotersByAgeForMunicipality(publicationId,constituencyId, 18l, 22l);
 					  
-					   List<Object[]> casteYoungVoterForMunic = boothPublicationVoterDAO.getCasteCountForMunicipality(castePercents.keySet(),publicationId,constituencyId, 18l, 22l);
+					   List<Object[]> casteYoungVoterForMunic = boothPublicationVoterDAO.getCasteCountForMunicipality(publicationId,constituencyId, 18l, 22l);
 					   if(casteYoungVoterForMunic != null && casteYoungVoterForMunic.size() > 0){
 						   youngCaste.addAll(casteYoungVoterForMunic);
 					   } 
@@ -1447,7 +1447,7 @@ public class StrategyModelTargetingService implements
 					   }
 					   List<Object[]> totalAgeVoterForMunic = boothPublicationVoterDAO.getTotalVotersByAgeForMunicipality(publicationId,constituencyId, 61l, 200l);
 						  
-					   List<Object[]> casteAgeVoterForMunic = boothPublicationVoterDAO.getCasteCountForMunicipality(castePercents.keySet(),publicationId,constituencyId, 61l, 200l);
+					   List<Object[]> casteAgeVoterForMunic = boothPublicationVoterDAO.getCasteCountForMunicipality(publicationId,constituencyId, 61l, 200l);
 					   if(casteAgeVoterForMunic != null && casteAgeVoterForMunic.size() > 0){
 							 ageCaste.addAll(casteAgeVoterForMunic);
 						 }
@@ -1483,8 +1483,15 @@ public class StrategyModelTargetingService implements
 			   panchayats.add((Long)mergePanchayat[0]);
 			}
 	 }
-	 public List<PanchayatVO> getOrderOfPriorUsingCaste(List<Long> excludePanchys, Map<Long,Float> castePercents, List<Object[]> casteList,List<Object[]> totalVotersList,Map<Long,Set<Long>> mergePanchayatMap,Map<Long,Set<Long>> mergeCasteMap,Map<Long,Double> currentResult,String type,Map<Long,String> panchayatNames,Map<Long,Long> pancTotalVotersList,Double weight,Map<Long,OrderOfPriorityVO> finalOrder){
+	 public List<PanchayatVO> getOrderOfPriorUsingCaste(List<Long> excludePanchys, Map<Long,Float> castePercents, List<Object[]> casteList1,List<Object[]> totalVotersList,Map<Long,Set<Long>> mergePanchayatMap,Map<Long,Set<Long>> mergeCasteMap,Map<Long,Double> currentResult,String type,Map<Long,String> panchayatNames,Map<Long,Long> pancTotalVotersList,Double weight,Map<Long,OrderOfPriorityVO> finalOrder){
 		 Map<Long,PanchayatVO> totalCastePriorityMap = new HashMap<Long,PanchayatVO>();
+		 Set<Long> selectedCasteIds = castePercents.keySet();
+		 List<Object[]> casteList = new ArrayList<Object[]>();
+		 for(Object[] caste:casteList1){
+			 if(selectedCasteIds.contains((Long)caste[1])){
+				 casteList.add(caste);
+			 }
+		 }
 		 
 		 PanchayatVO panchayatVo = null;
 		 Map<Long,Long> totalVotersMap = new HashMap<Long,Long>();
