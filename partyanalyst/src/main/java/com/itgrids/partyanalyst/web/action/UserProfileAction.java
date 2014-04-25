@@ -558,9 +558,10 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 	   	 if(session.getAttribute(IWebConstants.FREE_USER_ROLE) != null && (Boolean)session.getAttribute(IWebConstants.FREE_USER_ROLE))
 			userStatusType = IConstants.FREE_USER;
 	   	dataTransferVO.setUserStatusType(userStatusType);
-		  if(session.getAttribute(IWebConstants.FREE_USER_ROLE) != null && session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE) != null && (Boolean)session.getAttribute(IWebConstants.FREE_USER_ROLE) && (Boolean)session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE))
+		  
+	   	if(session.getAttribute(IWebConstants.FREE_USER_ROLE) != null && session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE) != null && (Boolean)session.getAttribute(IWebConstants.FREE_USER_ROLE) && (Boolean)session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE))
 			userStatusType = IConstants.BOTH;
-		  dataTransferVO.setUserStatusType(userStatusType);
+	   		dataTransferVO.setUserStatusType(userStatusType);
 	   		}
 	      else{
 	        userStatusType = IConstants.NOT_LOGGED_IN;

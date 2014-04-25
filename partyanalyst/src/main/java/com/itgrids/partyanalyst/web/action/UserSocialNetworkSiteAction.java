@@ -12,10 +12,9 @@ import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
-import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.service.IUserSocialNetworkSiteService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
-import com.itgrids.partyanalyst.service.IUserSocialNetworkSiteService;
 
 public class UserSocialNetworkSiteAction extends ActionSupport implements
 ServletRequestAware, ServletResponseAware, ServletContextAware {

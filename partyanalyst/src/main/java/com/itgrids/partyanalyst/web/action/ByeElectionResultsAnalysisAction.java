@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -13,7 +12,6 @@ import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ConstituencyVO;
-import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.service.IBiElectionPageService;
 import com.opensymphony.xwork2.ActionSupport;
 

@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
@@ -17,16 +16,13 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.json.JSONObject;
 import org.springframework.web.context.ServletContextAware;
 
-import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.OpinionPollVO;
 import com.itgrids.partyanalyst.dto.OptionVO;
 import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IOpinionPollService;
 import com.itgrids.partyanalyst.util.IWebConstants;
-import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
-import com.sun.mail.iap.Response;
 
 public class VotesPollAction extends ActionSupport implements ServletRequestAware, ServletContextAware,ServletResponseAware {
 

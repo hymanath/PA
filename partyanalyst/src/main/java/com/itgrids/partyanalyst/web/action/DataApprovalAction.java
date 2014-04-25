@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.text.ParseException;
-import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +14,6 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.ApprovalInfoVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IDataApprovalService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
