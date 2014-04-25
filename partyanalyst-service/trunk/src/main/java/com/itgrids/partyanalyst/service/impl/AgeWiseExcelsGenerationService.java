@@ -1847,8 +1847,6 @@ public void generateExcelsForPanchayatReport3(List<AgeRangeVO>  list ,HSSFSheet 
 	 */
 	public void generateExcelsForImportaneFamiles(List<VoterHouseInfoVO>  list ,HSSFSheet sheet,HSSFWorkbook workbook,String type)
 	{
-		 
-			
 		    Font font = workbook.createFont();
 		    font.setFontName("Calibri");
 		    font.setFontHeightInPoints((short)12);
@@ -1874,33 +1872,8 @@ public void generateExcelsForPanchayatReport3(List<AgeRangeVO>  list ,HSSFSheet 
 		    CellStyle style2 = workbook.createCellStyle();
 		    style2.setFont(font2);
 		    
-	    /*HSSFRow  rowHead= sheet.createRow((short) 0);
-	    Cell cell = rowHead.createCell(0);
-	    cell.setCellValue("Importannt Familes Report");
-	    cell.setCellStyle(style2);
-	    sheet.addMergedRegion(new CellRangeAddress(0,0,0,15));
-	    
-	    HSSFRow  rowHead1= sheet.createRow((short) 1);
-	    
-	    Cell cell11 = rowHead1.createCell(0);
-	    cell11.setCellValue("");
-	    cell11.setCellStyle(style2);
-	    sheet.addMergedRegion(new CellRangeAddress(1,1,0,7));
-	    
-
-	     cell11 = rowHead1.createCell(7);
-	     cell11.setCellValue("Elder Person");
-	     cell11.setCellStyle(style2);
-	     sheet.addMergedRegion(new CellRangeAddress(1,1,7,11));
-	    
-
-	    cell11 = rowHead1.createCell(11);
-	    cell11.setCellValue("Younger Person");
-	    cell11.setCellStyle(style2);
-	    sheet.addMergedRegion(new CellRangeAddress(1,1,11,15));
-	    */
 	    int i = 0;
-	    Row row1 = sheet.createRow(2);
+	    Row row1 = sheet.createRow(0);
 	    Cell cell1 = row1.createCell(i);
 	    cell1.setCellValue("S.NO");
 	    cell1.setCellStyle(style);
@@ -1967,37 +1940,35 @@ public void generateExcelsForPanchayatReport3(List<AgeRangeVO>  list ,HSSFSheet 
 	    cell1.setCellStyle(style);
 	    
 	    cell1 = row1.createCell(i++);
-	    cell1.setCellValue("Voter Id");
+	    cell1.setCellValue("Elder Voter Id");
 	    cell1.setCellStyle(style);
 	    
 	    cell1 = row1.createCell(i++);
-	    cell1.setCellValue("Name");
+	    cell1.setCellValue("Elder Name");
 	    cell1.setCellStyle(style);
 	    
 	    cell1 = row1.createCell(i++);
-	    cell1.setCellValue("Gender");
-	    cell1.setCellStyle(style);
-	    
-	   
-	    
-	    cell1 = row1.createCell(i++);
-	    cell1.setCellValue("Age");
+	    cell1.setCellValue("Elder Gender");
 	    cell1.setCellStyle(style);
 	    
 	    cell1 = row1.createCell(i++);
-	    cell1.setCellValue("VoterId");
+	    cell1.setCellValue("Elder Age");
 	    cell1.setCellStyle(style);
 	    
 	    cell1 = row1.createCell(i++);
-	    cell1.setCellValue("Name");
+	    cell1.setCellValue("Younger VoterId");
 	    cell1.setCellStyle(style);
 	    
 	    cell1 = row1.createCell(i++);
-	    cell1.setCellValue("Gender");
+	    cell1.setCellValue("Younger Name");
 	    cell1.setCellStyle(style);
 	    
 	    cell1 = row1.createCell(i++);
-	    cell1.setCellValue("Age");
+	    cell1.setCellValue("Younger Gender");
+	    cell1.setCellStyle(style);
+	    
+	    cell1 = row1.createCell(i++);
+	    cell1.setCellValue("Younger Age");
 	    cell1.setCellStyle(style);
 	    
 	    Map<Long,List<VoterHouseInfoVO>> map = new HashMap<Long, List<VoterHouseInfoVO>>();
@@ -2017,7 +1988,7 @@ public void generateExcelsForPanchayatReport3(List<AgeRangeVO>  list ,HSSFSheet 
 		  
 		  if(boothIds != null && boothIds.size() > 0)
 		  {
-			  int count3 = 3;
+			  int count3 = 1;
 			  int count = 1;
 			  for (Long boothId : boothIds)
 			  {
