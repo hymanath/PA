@@ -1,9 +1,5 @@
 package com.itgrids.partyanalyst.web.action;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -17,14 +13,10 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
 
+import com.itgrids.partyanalyst.csv.AssemblyConstituency;
+import com.opensymphony.xwork2.ActionSupport;
 //import au.com.bytecode.opencsv.bean.ColumnPositionMappingStrategy;
 //import au.com.bytecode.opencsv.bean.CsvToBean;
-
-import com.itgrids.partyanalyst.csv.Assembly;
-import com.itgrids.partyanalyst.csv.AssemblyConstCandidate;
-import com.itgrids.partyanalyst.csv.AssemblyConstituency;
-import com.itgrids.partyanalyst.helper.Constants;
-import com.opensymphony.xwork2.ActionSupport;
 
 public class UploadCSVAction extends ActionSupport implements ServletResponseAware, ServletRequestAware, ServletContextAware {
 	private static final long serialVersionUID = 1L;

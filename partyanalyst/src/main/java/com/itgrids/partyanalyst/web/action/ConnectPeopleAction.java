@@ -495,12 +495,15 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 	{
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-		List<Long> userId = new ArrayList<Long>(0);
-		userId.add(user.getRegistrationID());
+		
 		if(user == null)
 		{
 			return IConstants.NOT_LOGGED_IN ;
-		}		
+		}
+		
+		List<Long> userId = new ArrayList<Long>(0);
+		userId.add(user.getRegistrationID());
+				
 		connectedUsers = ananymousUserService.getAllPeopleConnectedPeopleForUser(userId);
 		return Action.SUCCESS;
 	}

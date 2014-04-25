@@ -18,14 +18,10 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
-import com.itgrids.partyanalyst.dao.IConstituencyDAO;
-import com.itgrids.partyanalyst.dao.IDistrictDAO;
-import com.itgrids.partyanalyst.dto.EPaperVO;
 import com.itgrids.partyanalyst.dto.NewsPaperURLsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IEPaperService;
-import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
