@@ -1998,11 +1998,13 @@ public void generateExcelsForPanchayatReport3(List<AgeRangeVO>  list ,HSSFSheet 
 				  {
 					  int j = 0;
 					  Row row2 = sheet.createRow(count3);
-					    Cell cell31 = row2.createCell(j);
+					    Cell cell31 = row2.createCell(j++);
 					    cell31.setCellValue(count);
 					   // cell31.setCellStyle(style);
 					    
-					    j++;
+					    cell31 = row2.createCell(j++);
+					    cell31.setCellValue(voterHouseInfoVO.getAddress() != null ? voterHouseInfoVO.getAddress().toString() : "");
+					    
 					   if(type.equalsIgnoreCase("RURAL"))
 					   {
 						    cell31 = row2.createCell(j++);

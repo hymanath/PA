@@ -123,10 +123,17 @@ public class VoterHouseInfoVO implements Comparable<VoterHouseInfoVO>{
     
     private String ownerMobNo;
     private Long leaderId;
+    private String address;
     
     
-    
-    
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
 	public String getOwnerMobNo() {
 		return ownerMobNo;
 	}
