@@ -21511,6 +21511,7 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 	  public ResultStatus insertVoterDataIntoVoterNamesTemp(Long constituencyId)
 	  {
 		  ResultStatus result = new ResultStatus();
+		  log.info("Entered into insertVoterDataIntoVoterNamesTemp() Method");
 		  try{
 			  List<VoterVO> list = new ArrayList<VoterVO>(0);
 			  List<String> voterIdCardNos = new ArrayList<String>();
@@ -21532,6 +21533,7 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 						maxIndex = Integer.valueOf(voterCount.intValue()) - 1;
 				  
 					List<VoterNamesTemp> voterTemp = voterNamesTempDAO.getVotersByACNO(startIndex,1000,constituencyId);
+					log.warn("Start index --> "+startIndex);
 				  
 					if(voterTemp != null && voterTemp.size() > 0)
 					{
@@ -21565,26 +21567,25 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 						for(VoterVO voter : list)
 						{
 							try{
-							VoterNames voterNames = null;
-							voterNames = voterNamesDAO.gerVoterNamesObjByVoterId(voteIdMap.get(voter.getVoterIDCardNo()));
+							VoterNames voterNames = voterNamesDAO.gerVoterNamesObjByVoterId(voteIdMap.get(voter.getVoterIDCardNo()));
 						  
 							if(voterNames == null)
 								voterNames = new VoterNames();
 						  
-							voterNames.setFirstName(voter.getFirstName().trim());
-							voterNames.setLastName(voter.getName().trim());
-							  voterNames.setRelativeFirstName(voter.getRelativeFirstName().trim());
-							  voterNames.setRelativeLastName(voter.getRelativeLastName().trim());
-							  voterNames.setLanguage(languageDAO.get(3l));
-							  voterNames.setVoterId(voteIdMap.get(voter.getVoterIDCardNo()));
-							  voterNamesDAO.save(voterNames);
+								voterNames.setFirstName(voter.getFirstName().trim());
+								voterNames.setLastName(voter.getName().trim());
+								voterNames.setRelativeFirstName(voter.getRelativeFirstName().trim());
+								voterNames.setRelativeLastName(voter.getRelativeLastName().trim());
+								voterNames.setLanguage(languageDAO.get(3l));
+								voterNames.setVoterId(voteIdMap.get(voter.getVoterIDCardNo()));
+								voterNamesDAO.save(voterNames);
 							}catch(Exception e)
 							{
 								log.error(e);
 							}
 						}
 					}
-				 
+					voterDAO.flushAndclearSession();
 					startIndex = startIndex + 1000;
 					maxIndex = maxIndex + 1000;
 				  
@@ -21597,6 +21598,7 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 				 }
 			  }
 			  result.setResultCode(ResultCodeMapper.SUCCESS);
+			  log.info("Executed successfully and existing from insertVoterDataIntoVoterNamesTemp() Method");
 			  return result;
 		  }catch(Exception e)
 		  {
