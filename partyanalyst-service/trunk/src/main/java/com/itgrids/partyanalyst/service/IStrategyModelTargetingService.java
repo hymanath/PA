@@ -48,7 +48,7 @@ public interface IStrategyModelTargetingService {
 	 
 	 public List<Object> getCriticalPanchayats(Long constituencyId,String path);
 	 
-	 public List<PartyPositionVO> getPartyPreviousTrends(StrategyVO strategyVO,Long constituencyId,Long partyId,List<Long> electionIds,Map<Long,PartyEffectVO> partyEffect,Long effectPartyId,Long effectElectionId,Map<Long,Double> currentResult);	
+	 public List<PartyPositionVO> getPartyPreviousTrends(StrategyVO strategyVO,Long constituencyId,Long partyId,List<Long> electionIds,Map<Long,PartyEffectVO> partyEffect,Long effectPartyId,Long effectElectionId,Map<Long,Double> currentResult,Map<Long,Map<Long,Double>> prevResultMap,Map<Long,Map<Long,Double>> currResultMap,Map<Long,String> locationNames);	
 	 
 	 public StrategyVO getStrategyArguments(Long constituencyId);
 }
