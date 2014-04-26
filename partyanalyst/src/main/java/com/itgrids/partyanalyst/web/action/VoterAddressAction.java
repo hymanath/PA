@@ -79,7 +79,8 @@ ServletRequestAware{
 	public String getVoterAddress(){
 		Long districtId = Long.valueOf(request.getParameter("districtId"));
 		Long publicationId  = Long.valueOf(request.getParameter("publicationId"));
-		url = casteReportService.getVoterAddress(districtId,publicationId);
+		String type  = request.getParameter("type");
+		url = casteReportService.getVoterAddress(districtId,publicationId,type);
 		return Action.SUCCESS;
 	}
 }
