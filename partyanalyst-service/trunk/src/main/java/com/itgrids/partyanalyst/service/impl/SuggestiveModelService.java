@@ -6539,7 +6539,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			Map<Long,List<String>> boothHousesMap = new HashMap<Long, List<String>>();
 			Map<Long,String> wardMap = new HashMap<Long, String>();
 			String type = null;
-			
+			String dname = null;
 			if(list != null && list.size() > 0)
 			{
 				for(Object[] params : list)
@@ -6561,6 +6561,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				Booth booth = boothDAO.get(boothId);
 				Constituency consti = constituencyDAO.get((Long)booth.getConstituency().getConstituencyId());
 				type = consti.getAreaType();
+				dname = consti.getDistrict().getDistrictName();
 			
 				if(booth != null)
 				{ //2
@@ -6693,6 +6694,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					vo.setAge(voter.getAge());
 					vo.setGender(voter.getGender());
 					vo.setHouseNo("# " +voter.getHouseNo());
+					vo.setRelationship(voter.getRelationshipType());
 					voterIds.add(voter.getVoterId());
 					voterDetails.add(vo);
 				}
@@ -6717,7 +6719,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					  VoterHouseInfoVO voterHouseInfoVO = new VoterHouseInfoVO();
 					  voterHouseInfoVO.setBoothId(boothId);
 					  voterHouseInfoVO.setPartNo(boothDAO.get(boothId).getPartNo());
-					  voterHouseInfoVO.setHouseNo("#  " +houseNo);
+					  voterHouseInfoVO.setHouseNo("# " +houseNo);
 					  List<VoterHouseInfoVO> voterDetails = resultmap.get(houseNo.toString());
 					 
 					  voterHouseInfoVO.setCount(new Long(voterDetails.size()));
@@ -6725,6 +6727,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					  voterHouseInfoVO.setElderAge((voterDetails.get(voterDetails.size()-1).getAge()));
 					  voterHouseInfoVO.setElderGender(voterDetails.get(voterDetails.size()-1).getGender());
 					  voterHouseInfoVO.setVoterIdCardNo(voterDetails.get(voterDetails.size()-1).getVoterIdCardNo().toString());
+					  voterHouseInfoVO.setRelationship(voterDetails.get(voterDetails.size()-1).getRelationship().toString());
 					  String cast = voterCaste.get(voterDetails.get(voterDetails.size()-1).getVoterId());
 					  String hname = voterHamlet.get(voterDetails.get(voterDetails.size()-1).getVoterId());
 					  voterHouseInfoVO.setElderCaste(cast != null ? cast : " ");
@@ -6763,6 +6766,46 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 							voterHouseInfoVO.setVoterGroup(youngervoterDetails.get(0).getVoterIdCardNo().toString());
 						}
 						
+						String relation = "";
+						if(voterHouseInfoVO.getRelationship() == null)
+				    		   relation = "C/O";
+						
+						 else if(voterHouseInfoVO.getRelationship().equalsIgnoreCase("Mother") || 
+								 voterHouseInfoVO.getRelationship().equalsIgnoreCase("Father"))
+						 {
+			    		   if(voterHouseInfoVO.getElderGender().equalsIgnoreCase(IConstants.MALE))
+			    			   relation = "S/O";
+			    		   else
+			    			   relation = "D/O";
+						 }
+						 else if(voterHouseInfoVO.getRelationship().equalsIgnoreCase("Husband"))
+				    		   relation = "W/O";
+						 else if(voterHouseInfoVO.getRelationship().equalsIgnoreCase("Others"))
+				    		   relation = "C/O";
+				    	   
+				    	   relation = (relation + " " +voterHouseInfoVO.getElder()).trim();
+				    	
+				    	 String addrStr = voterHouseInfoVO.getElder()+",\n";
+				    	 addrStr = addrStr + relation +",\n";
+				    	 addrStr += "H.No: "+voterHouseInfoVO.getHouseNo() +",\n";
+				    	 
+				    	 if(voterHouseInfoVO.getHamletName() != null)
+				    		   addrStr +=voterHouseInfoVO.getHamletName()+",\n";
+				    	 
+				    	 if(voterHouseInfoVO.getPanchayatName() != null)
+				    		   addrStr += voterHouseInfoVO.getPanchayatName()+",\n";
+				    	   
+				    	   if(voterHouseInfoVO.getTehsilName() != null)
+				    		   addrStr += voterHouseInfoVO + " (Mandal),\n";
+				    	   
+				    	   addrStr += dname+" (District)";
+				    	   
+				    	   String pincode = boothDAO.get(boothId).getPincode();
+				    	   
+				    	   if(pincode != null)
+				    		   addrStr += " - "+pincode;
+				    	
+				    	voterHouseInfoVO.setAddress(addrStr);
 						result.add(voterHouseInfoVO);
 						if(totalList != null && totalList.size() > 0)
 						result.get(0).setConstituencyType(type);
