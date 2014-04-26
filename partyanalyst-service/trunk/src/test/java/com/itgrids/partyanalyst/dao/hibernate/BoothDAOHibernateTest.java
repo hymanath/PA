@@ -803,7 +803,7 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(id);
 	}*/
 	
-	public void testGetPincodesForBoothIdsList()
+	/*public void testGetPincodesForBoothIdsList()
 	{
 		List<Long> boothIdsList = new ArrayList<Long>(0);
 		boothIdsList.add(332344l);
@@ -813,5 +813,11 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		
 		for(Object[] params : list)
 			System.out.println(params[1]);
+	}*/
+	
+	public void testGetPanchayatsByConstituencyAndPublication()
+	{
+		List<Object[]> list = boothDAO.getPanchayatsByConstituencyAndPublication(232l,10l);
+		System.out.println(list.size());
 	}
 }
