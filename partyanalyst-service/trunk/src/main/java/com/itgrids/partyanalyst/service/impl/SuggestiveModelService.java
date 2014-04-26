@@ -6796,7 +6796,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				    		   addrStr += voterHouseInfoVO.getPanchayatName()+",\n";
 				    	   
 				    	   if(voterHouseInfoVO.getTehsilName() != null)
-				    		   addrStr += voterHouseInfoVO + " (Mandal),\n";
+				    		   addrStr += voterHouseInfoVO.getTehsilName() + " (Mandal),\n";
 				    	   
 				    	   addrStr += dname+" (District)";
 				    	   

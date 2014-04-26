@@ -48,6 +48,7 @@ import com.itgrids.partyanalyst.dao.IPartyTrendsDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
+import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.PanchayatVO;
 import com.itgrids.partyanalyst.dto.PartyTrendsVO;
@@ -89,7 +90,16 @@ public class CasteReportService implements ICasteReportService{
     private IDistrictDAO districtDAO ;
     private IStrategyModelTargetingService strategyModelTargetingService;
     private IPRPWeightegesDAO prpWeightegesDAO;
+    private IVoterInfoDAO voterInfoDAO;
 	
+	public IVoterInfoDAO getVoterInfoDAO() {
+		return voterInfoDAO;
+	}
+
+	public void setVoterInfoDAO(IVoterInfoDAO voterInfoDAO) {
+		this.voterInfoDAO = voterInfoDAO;
+	}
+
 	public IPartyTrendsDAO getPartyTrendsDAO() {
 		return partyTrendsDAO;
 	}
@@ -952,14 +962,14 @@ public class CasteReportService implements ICasteReportService{
 			//** excel header **//*
 		    HSSFWorkbook workbook = new HSSFWorkbook();
 			HSSFSheet sheet = workbook.createSheet(constituency.getName());
-			HSSFSheet sheet2 = workbook.createSheet("Critical Panchayats");
+			//HSSFSheet sheet2 = workbook.createSheet("Critical Panchayats");
 			
-			Row header2 = sheet2.createRow(0);
-			header2.createCell(0).setCellValue("SNO");
-			header2.createCell(1).setCellValue("Mandal Name");
-		    header2.createCell(2).setCellValue("Panchayat Name");
+			//Row header2 = sheet2.createRow(0);
+			//header2.createCell(0).setCellValue("SNO");
+			//header2.createCell(1).setCellValue("Mandal Name");
+		    //header2.createCell(2).setCellValue("Panchayat Name");
 			
-		    int index = 0;
+			/*int index = 0;
 		    for(PanchayatVO panchayatVO : criticalPanchayatsList)
 		    {
 		    	Row dataRow = sheet2.createRow(++index);
@@ -967,7 +977,7 @@ public class CasteReportService implements ICasteReportService{
 		    	dataRow.createCell(1).setCellValue(panchayatVO.getMuncipalityName());
 		    	dataRow.createCell(2).setCellValue(panchayatVO.getPanchayatName());
 		    }
-		    
+		    */
 			Row header = sheet.createRow(0);
 		    header.createCell(0).setCellValue("SNO");
 		    header.createCell(1).setCellValue("Voter Address");
@@ -1123,9 +1133,10 @@ public class CasteReportService implements ICasteReportService{
 		    }
 		    
 		    try {
+		    	Random randomNum = new Random();
     		   	String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
     	        FileOutputStream out =
-    	                new FileOutputStream(new File(IConstants.STATIC_CONTENT_FOLDER_URL+"Reports"+pathSeperator+constituency.getName()+"_voterAddressExcel.xls"));
+    	                new FileOutputStream(new File(IConstants.STATIC_CONTENT_FOLDER_URL+"Reports"+pathSeperator+constituency.getName()+"_"+randomNum.nextInt(10000)+".xls"));
     	        workbook.write(out);
     	        out.close();
     	         
@@ -2025,10 +2036,13 @@ public void setToVo(List<CastVO> resultList,List<Object[]> list,Long startrange,
 		}
   }
   
-  public String getVoterAddress(Long districtId,Long publicationId){
+  public String getVoterAddress(Long districtId,Long publicationId,String panchayatType)
+  {
 	  List<Object[]> trendsList = partyTrendsDAO.getPanchayatIds(districtId);
 	  Map<Long,List<Long>> panchayatIdsMap = new HashMap<Long,List<Long>>();
-	  for(Object[] trend:trendsList){
+	  
+	  for(Object[] trend:trendsList)
+	  {
 		  List<Long> panchayatIds = panchayatIdsMap.get((Long)trend[1]);
 		  if(panchayatIds == null){
 			  panchayatIds = new ArrayList<Long>();
@@ -2036,70 +2050,53 @@ public void setToVo(List<CastVO> resultList,List<Object[]> list,Long startrange,
 		  }
 		  panchayatIds.add((Long)trend[0]);
 	  }
-	  for(Long constituencyId:panchayatIdsMap.keySet()){
-		  List<Long> panchayatIds = panchayatIdsMap.get(constituencyId);
-		  getVoterAddressDetailsForCriticalPanchayats(constituencyId, panchayatIds, publicationId, 1l);
+	  
+	  for(Long constituencyId:panchayatIdsMap.keySet())
+	  {
+		  List<Long> criticalPanchayatIds = panchayatIdsMap.get(constituencyId);
 		  
-/*		  StrategyVO strategyVO = new StrategyVO();
-		  strategyVO.setConstituencyId(constituencyId);//
-			strategyVO.setPartyId(872l);
-			List<Long> electionIds = new ArrayList<Long>();
-			electionIds.add(38l);
-			electionIds.add(3l);
-			strategyVO.setPublicationId(publicationId);
-			strategyVO.setConsiderRange(true);
-			strategyVO.setElectionIds(electionIds);
-			Double regainVotrsWeigthPerc = null;
-			try{
-			 regainVotrsWeigthPerc = prpWeightegesDAO.getPRPWeightageByConstiId(strategyVO.getConstituencyId());
-			}catch(Exception e){
-				
-			}
-			 if(regainVotrsWeigthPerc == null || regainVotrsWeigthPerc == 0d)
-				  regainVotrsWeigthPerc = 0d;
-			  Double prevTrendWeigthPerc = 90d-regainVotrsWeigthPerc;
-			  
-			strategyVO.setCastePercents(null);
-			strategyVO.setPrevTrnzWt(prevTrendWeigthPerc);
-			strategyVO.setYoungWt(5d);
-			strategyVO.setPrpWt(regainVotrsWeigthPerc);
-			strategyVO.setAgedWt(5d);
-			strategyVO.setTotalCastWt(0d);
-			strategyVO.setAutoCalculate(true);
-			strategyVO.setBase(jObj.getLong("base"));
-			strategyVO.setAssured(jObj.getLong("assured"));
-			strategyVO.setTdpPerc(jObj.getLong("partyPerc"));
-			strategyVO.setEffectPartyId(662l);
-			strategyVO.setEffectElectionId(38l);
-		
-				strategyVO.setWorstMin(0d);
-				strategyVO.setWorstMax(21.12d);
-				strategyVO.setVeryPoorMin(21.13);
-				strategyVO.setVeryPoorMax(29d);
-				strategyVO.setPoorMin(29.01d);
-				strategyVO.setPoorMax(36.87d);
-				strategyVO.setOkMin(36.88d);
-				strategyVO.setOkMax(41.88);
-				strategyVO.setStrongMin(41.89);
-				strategyVO.setStrongMax(49.76);
-				strategyVO.setVeryStrongMin(49.77);
-				strategyVO.setVeryStrongMax(100d);
-				Constituency c = constituencyDAO.get(constituencyId);
-				String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
-		  Document document =  new Document();;
-		  String path = IConstants.STATIC_CONTENT_FOLDER_URL+"Reports"+pathSeperator+c.getName()+"_voterImportantFamily.pdf";
-		  File file = new File(path);
-		   PdfWriter writer = null;
-		   try {
-			   file.createNewFile();
-			   writer = PdfWriter.getInstance(document, new FileOutputStream(path));
-		   } catch (Exception e) {
-			   log.error("Exception Occured in getVoterAddress() Method , Exception - ",e);
-		   }
-		   document.open();
-		  strategyModelTargetingService.getTopPanchayats(strategyVO,document,writer);
-		  document.close();*/
+		  if(panchayatType.equalsIgnoreCase("Critical"))
+			  getVoterAddressDetailsForCriticalPanchayats(constituencyId, criticalPanchayatIds, publicationId, 1l);
+		  else if(panchayatType.equalsIgnoreCase("Normal"))
+		  {
+			  List<Object[]> list = boothDAO.getPanchayatsByConstituencyAndPublication(constituencyId,publicationId);
+			  if(list != null && list.size() > 0)
+			  {
+				  List<Long> normalPanchayatIds = new ArrayList<Long>(0);
+				  for(Object[] params : list)
+				  {
+					  if(!criticalPanchayatIds.contains((Long)params[0]))
+						  normalPanchayatIds.add((Long)params[0]);
+				  }
+				  
+				  List<Object[]> plist = voterInfoDAO.getFamiliesCountInAPanchayats(normalPanchayatIds, publicationId);
+				  long totalHHcount = 0l;
+				  
+				  for(Object[] params : plist)
+					  totalHHcount = totalHHcount + (Long)params[1];
+				  if(totalHHcount <= 65000)
+					  getVoterAddressDetailsForCriticalPanchayats(constituencyId, normalPanchayatIds, publicationId, 1l);
+				  else
+				  {
+					  totalHHcount = 0l;
+					  List<Long> pidsList = new ArrayList<Long>(0);
+					  for(Object[] params : plist)
+					  {
+						  pidsList.add((Long)params[0]);
+						  totalHHcount = totalHHcount + (Long)params[1];
+						  if(totalHHcount > 55000 && totalHHcount < 650000)
+						  {
+							  getVoterAddressDetailsForCriticalPanchayats(constituencyId, pidsList, publicationId, 1l);
+							  pidsList = new ArrayList<Long>(0);
+							  totalHHcount = 0l;
+						  }
+					  }
+					  if(totalHHcount > 0)
+						  getVoterAddressDetailsForCriticalPanchayats(constituencyId, pidsList, publicationId, 1l);
+				  }
+			  }
+		  }
 	  }
-	  return "";
+	  return "SUCCESS";
   }
 }
