@@ -872,6 +872,7 @@ public class CasteReportService implements ICasteReportService{
 		  	Map<Long,String> panchayatMap = new HashMap<Long, String>();
 		  	Map<Long,String> pincodesMap = new HashMap<Long, String>();
 		  	Map<Long,String> voterCasteMap = new HashMap<Long, String>(0);
+		  	Map<Long,String> voterNamesMap = new HashMap<Long, String>(0);
 		  	
 		  	List<Object[]> pincodesInfo = boothDAO.getPincodesForBoothIdsList(boothIds);
 		  	
@@ -899,6 +900,24 @@ public class CasteReportService implements ICasteReportService{
 					BigInteger voterId = (BigInteger)casteName[0];
 					voterCasteMap.put(voterId.longValue(),casteName[1].toString());
 				}
+		  	}
+		  	
+		  	List<Object[]> voterNamesInfo = userVoterDetailsDAO.getVoterNamesByVoterIdsList(voterIds);
+		  	
+		  	if(voterNamesInfo != null && voterNamesInfo.size() > 0)
+		  	{
+		  		for(Object[] voterName : voterNamesInfo)
+		  		{
+		  			try{
+			  			BigInteger voterId = (BigInteger)voterName[0];
+			  			String fname = voterName[0] != null ? voterName[0].toString().trim() : "";
+			  			String lname = voterName[1] != null ? voterName[1].toString().trim() : "";
+			  			voterNamesMap.put(voterId.longValue(), (fname+" "+lname).trim());
+		  			}catch(Exception e)
+		  			{
+		  				log.error(e);
+		  			}
+		  		}
 		  	}
 		  	
 		  	List<Object[]> hamletInfo =  userVoterDetailsDAO.getHamletForVoter(voterIds,userId);
@@ -983,28 +1002,29 @@ public class CasteReportService implements ICasteReportService{
 		    header.createCell(1).setCellValue("Voter Address");
 		    header.createCell(2).setCellValue("Caste Name");
 			header.createCell(3).setCellValue("Voter Name");
-			header.createCell(4).setCellValue("Voter Id Card No");
-		    header.createCell(5).setCellValue("Gender");
-		    header.createCell(6).setCellValue("Relative Name");
-		    header.createCell(7).setCellValue("Relationship");
-		    header.createCell(8).setCellValue("House No");
-		    header.createCell(9).setCellValue("Members Count");
+			header.createCell(4).setCellValue("Voter Name in Telugu");
+			header.createCell(5).setCellValue("Voter Id Card No");
+		    header.createCell(6).setCellValue("Gender");
+		    header.createCell(7).setCellValue("Relative Name");
+		    header.createCell(8).setCellValue("Relationship");
+		    header.createCell(9).setCellValue("House No");
+		    header.createCell(10).setCellValue("Members Count");
 		    if(areaType.equalsIgnoreCase(IConstants.RURAL) || areaType.equalsIgnoreCase(IConstants.RURALURBAN))
 		    {
-			    header.createCell(10).setCellValue("Hamlet Name");
-			    header.createCell(11).setCellValue("Panchayat Name");
+			    header.createCell(11).setCellValue("Hamlet Name");
+			    header.createCell(12).setCellValue("Panchayat Name");
 			    if(areaType.equalsIgnoreCase(IConstants.RURAL))
-			    	header.createCell(12).setCellValue("Mandal Name");
+			    	header.createCell(13).setCellValue("Mandal Name");
 			    else if(areaType.equalsIgnoreCase(IConstants.RURALURBAN))
-			    	header.createCell(12).setCellValue("Mandal/Muncipality");
-			    header.createCell(13).setCellValue("District Name");
-			    header.createCell(14).setCellValue("Pincode");
+			    	header.createCell(13).setCellValue("Mandal/Muncipality");
+			    header.createCell(14).setCellValue("District Name");
+			    header.createCell(15).setCellValue("Pincode");
 		    }
 		    else
 		    {
-			    header.createCell(10).setCellValue("Muncipality");		
-			    header.createCell(11).setCellValue("District Name");
-			    header.createCell(12).setCellValue("Pincode");
+			    header.createCell(11).setCellValue("Muncipality");		
+			    header.createCell(12).setCellValue("District Name");
+			    header.createCell(13).setCellValue("Pincode");
 		    }
 		    
 		    HSSFCellStyle cellStyle = workbook.createCellStyle();
@@ -1066,20 +1086,22 @@ public class CasteReportService implements ICasteReportService{
 	    	   dataRow.createCell(2).setCellValue(voterCasteMap.get(voter.getVoterId()) != null ? 
 	    			   voterCasteMap.get(voter.getVoterId()) : "");
 	    	   dataRow.createCell(3).setCellValue(voter.getName());
-	    	   dataRow.createCell(4).setCellValue(voter.getVoterIdCardNo());
-	    	   dataRow.createCell(5).setCellValue(voter.getGender());
-	    	   dataRow.createCell(6).setCellValue(voter.getElder());
-	    	   dataRow.createCell(7).setCellValue(voter.getRelationship());
-	    	   dataRow.createCell(8).setCellValue(voter.getHouseNo());
-	    	   dataRow.createCell(9).setCellValue(voter.getCount());
+	    	   dataRow.createCell(4).setCellValue(voterNamesMap.get(voter.getVoterId()) != null ? 
+	    			   voterNamesMap.get(voter.getVoterId()) : "");
+	    	   dataRow.createCell(5).setCellValue(voter.getVoterIdCardNo());
+	    	   dataRow.createCell(6).setCellValue(voter.getGender());
+	    	   dataRow.createCell(7).setCellValue(voter.getElder());
+	    	   dataRow.createCell(8).setCellValue(voter.getRelationship());
+	    	   dataRow.createCell(9).setCellValue(voter.getHouseNo());
+	    	   dataRow.createCell(10).setCellValue(voter.getCount());
 	    	   
 	    	   if(areaType.equalsIgnoreCase(IConstants.RURAL) || areaType.equalsIgnoreCase(IConstants.RURALURBAN))
 			   {
-	    		   	dataRow.createCell(10).setCellValue(hamletMap.get(voter.getVoterId()));
-	    		   	dataRow.createCell(11).setCellValue(panchayatMap.get(voter.getBoothId()));
+	    		   	dataRow.createCell(11).setCellValue(hamletMap.get(voter.getVoterId()));
+	    		   	dataRow.createCell(12).setCellValue(panchayatMap.get(voter.getBoothId()));
 	    		   	
 	    		   	if(areaType.equalsIgnoreCase(IConstants.RURAL))
-	    		   		dataRow.createCell(12).setCellValue(tehsilMap.get(voter.getBoothId()));
+	    		   		dataRow.createCell(13).setCellValue(tehsilMap.get(voter.getBoothId()));
 	    		   	
 				    else if(areaType.equalsIgnoreCase(IConstants.RURALURBAN))
 				    {
@@ -1092,15 +1114,15 @@ public class CasteReportService implements ICasteReportService{
 							tehsil = localbody +" Muncipality";
 						else
 							tehsil = booth.getTehsil().getTehsilName();	
-				    	dataRow.createCell(12).setCellValue(tehsil);
+				    	dataRow.createCell(13).setCellValue(tehsil);
 				    }
-	    		   	dataRow.createCell(13).setCellValue(districtName);
+	    		   	dataRow.createCell(14).setCellValue(districtName);
 	    		   	
 	    		   	String pincode = "";
 	    		   	if(pincodesMap.get(voter.getBoothId()) != null)
 	    		   		pincode = pincodesMap.get(voter.getBoothId());
 	    		   	
-	    		   	dataRow.createCell(14).setCellValue(pincode);
+	    		   	dataRow.createCell(15).setCellValue(pincode);
 			    }
 			    else
 			    {
@@ -1121,14 +1143,14 @@ public class CasteReportService implements ICasteReportService{
 					{
 						tehsil = localbody +" Muncipality";
 					}
-			    	dataRow.createCell(10).setCellValue(tehsil);		
-			    	dataRow.createCell(11).setCellValue(districtName);
+			    	dataRow.createCell(11).setCellValue(tehsil);		
+			    	dataRow.createCell(12).setCellValue(districtName);
 			    	
 			    	String pincode = "";
 	    		   	if(pincodesMap.get(voter.getBoothId()) != null)
 	    		   		pincode = pincodesMap.get(voter.getBoothId());
 	    		   	
-	    		   	dataRow.createCell(12).setCellValue(pincode);
+	    		   	dataRow.createCell(13).setCellValue(pincode);
 			    }
 		    }
 		    
@@ -2036,7 +2058,7 @@ public void setToVo(List<CastVO> resultList,List<Object[]> list,Long startrange,
 		}
   }
   
-  public String getVoterAddress(Long districtId,Long publicationId,String panchayatType)
+  public String getVoterAddress(Long districtId,Long publicationId,String panchayatType,List<Long> cIds)
   {
 	  List<Object[]> trendsList = partyTrendsDAO.getPanchayatIds(districtId);
 	  Map<Long,List<Long>> panchayatIdsMap = new HashMap<Long,List<Long>>();
@@ -2054,6 +2076,9 @@ public void setToVo(List<CastVO> resultList,List<Object[]> list,Long startrange,
 	  for(Long constituencyId:panchayatIdsMap.keySet())
 	  {
 		  List<Long> criticalPanchayatIds = panchayatIdsMap.get(constituencyId);
+		  
+		  if(cIds != null && cIds.size() > 0 && !cIds.contains(constituencyId))
+			  continue;
 		  
 		  if(panchayatType.equalsIgnoreCase("Critical"))
 			  getVoterAddressDetailsForCriticalPanchayats(constituencyId, criticalPanchayatIds, publicationId, 1l);
