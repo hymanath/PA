@@ -1659,6 +1659,14 @@ IUserVoterDetailsDAO{
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<Object[]> getVoterNamesByVoterIdsList(List<Long> voterIds)
+	{
+		Query query = getSession().createSQLQuery("SELECT DISTINCT VN.voter_id,VN.firstname,VN.lastname FROM voter_names VN where VN.voter_id in (:voterIds)");
+		query.setParameterList("voterIds",voterIds);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<Long> getWardsCountByLocalEleBodyId(Long localEleBodyId,Long constituencyId,Long userId,Long publicationDateId)
 	{
 		Query query = getSession().createQuery(" select count(distinct model.ward.constituencyId) from UserVoterDetails model, BoothPublicationVoter model2 " +
