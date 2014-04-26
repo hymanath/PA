@@ -23,6 +23,6 @@ public interface ICasteReportService {
 	 public ResultStatus getVoterAddressDetailsForCriticalPanchayats(Long constituencyId,List<Long> panchayatIdsList,Long publicationId,Long userId);
 	 public List<SelectOptionVO> getDistricts(Long stateId);
 	 
-	 public String getVoterAddress(Long districtId,Long publicationId,String panchayatType);
+	 public String getVoterAddress(Long districtId,Long publicationId,String panchayatType,List<Long> cIds);
 	
 }
