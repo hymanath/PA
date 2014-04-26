@@ -343,4 +343,6 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	public Integer updateVoterCasteByPrediction(Long userId,Long casteStateId,Long casteInsertTypeId,List<Long> voterIdsList);
 	
 	public UserVoterDetails getUserVoterDetailsByUserIdAndVoterId(Long userId,Long voterId);
+	
+	public List<Object[]> getVoterNamesByVoterIdsList(List<Long> voterIds);
 }
