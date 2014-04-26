@@ -1068,6 +1068,18 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
     				partyVOs1.add(vo);	
     			}
     		}
+    		List<Long> parties = new ArrayList<Long>();
+    		for (SelectOptionVO selectOptionVO : partyVOs1)
+    		{
+    			parties.add(selectOptionVO.getId());
+			}
+    		if(!parties.contains(872l))
+    		{
+    			SelectOptionVO selectOptionVO = new SelectOptionVO();
+    			selectOptionVO.setId(872l);
+    			selectOptionVO.setName("TDP");
+    			partyVOs1.add(selectOptionVO);
+    		}
     		return partyVOs1;	
     	}
     	catch(Exception e)
