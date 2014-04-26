@@ -719,13 +719,21 @@ for (Object[] objects : list) {
 		}
 	}*/
 	
-	public void testGetCasteForVoterList()
+	/*public void testGetCasteForVoterList()
 	{
 		List<Long> voterIds = new ArrayList<Long>(0);
 		voterIds.add(12456l);
 		voterIds.add(12457l);
 		List<Object[]> list = userVoterDetailsDAO.getCasteForVoterList(voterIds,1l);
 		System.out.println(list.size());
+	}*/
+	
+	public void testGetVoterNamesByVoterIdsList()
+	{
+		List<Long> voterIds = new ArrayList<Long>(0);
+		voterIds.add(1l);
+		List<Object[]> list = userVoterDetailsDAO.getVoterNamesByVoterIdsList(voterIds);
+		System.out.println(list);
 	}
 	
 }
