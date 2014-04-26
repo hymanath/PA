@@ -391,4 +391,14 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 		query.setParameterList("locationIds",locationIds);
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getFamiliesCountInAPanchayats(List<Long> panchayatIds,Long publicationDateId)
+	{
+		Query query = getSession().createQuery("Select DISTINCT model.reportLevelValue,model.totalFamilies from VoterInfo model where model.voterReportLevel.voterReportLevelId = 3 and " +
+				" model.reportLevelValue in (:panchayatIds) and model.publicationDate.publicationDateId = :publicationDateId ");
+		query.setParameterList("panchayatIds",panchayatIds);
+		query.setParameter("publicationDateId",publicationDateId);
+		return query.list();
+	}
 }
