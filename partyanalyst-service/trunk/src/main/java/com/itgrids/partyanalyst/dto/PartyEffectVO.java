@@ -19,6 +19,7 @@ public class PartyEffectVO  implements Serializable{
 	private Double points;
 	private String castes;
 	private Long reportLvl;
+	private Double tdpLostPerc;
 	
 	public Double getTdpPrevPerc() {
 		return tdpPrevPerc;
@@ -106,6 +107,14 @@ public class PartyEffectVO  implements Serializable{
 
 	public void setTdpPrevVotes(Long tdpPrevVotes) {
 		this.tdpPrevVotes = tdpPrevVotes;
+	}
+
+	public Double getTdpLostPerc() {
+		return tdpLostPerc;
+	}
+
+	public void setTdpLostPerc(Double tdpLostPerc) {
+		this.tdpLostPerc = tdpLostPerc;
 	}
 	
 	

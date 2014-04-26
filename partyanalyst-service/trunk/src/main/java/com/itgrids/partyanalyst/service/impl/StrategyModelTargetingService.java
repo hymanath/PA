@@ -83,6 +83,7 @@ import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.SuggestiveRange;
 import com.itgrids.partyanalyst.service.IPdfReportsService;
+import com.itgrids.partyanalyst.service.IPrpEffectCalculateService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IStrategyModelTargetingService;
@@ -124,6 +125,8 @@ public class StrategyModelTargetingService implements
 	private IPRPWeightegesDAO prpWeightegesDAO;
 	
 	private IPdfReportsService pdfReportService;
+	
+	private IPrpEffectCalculateService prpEffectCalculateService;
 	
 	private static Font style6 = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.NORMAL);
 	private static Font style5 = new Font(Font.FontFamily.TIMES_ROMAN, 6,Font.BOLD);
@@ -260,7 +263,16 @@ public class StrategyModelTargetingService implements
 		this.voterFamilyInfoDAO = voterFamilyInfoDAO;
 	}
 
-	public List<PartyPositionVO> getPartyPreviousTrends(StrategyVO strategyVO,Long constituencyId,Long partyId,List<Long> electionIds,Map<Long,PartyEffectVO> partyEffect,Long effectPartyId,Long effectElectionId,Map<Long,Double> currentResult)
+	public IPrpEffectCalculateService getPrpEffectCalculateService() {
+		return prpEffectCalculateService;
+	}
+
+	public void setPrpEffectCalculateService(
+			IPrpEffectCalculateService prpEffectCalculateService) {
+		this.prpEffectCalculateService = prpEffectCalculateService;
+	}
+
+	public List<PartyPositionVO> getPartyPreviousTrends(StrategyVO strategyVO,Long constituencyId,Long partyId,List<Long> electionIds,Map<Long,PartyEffectVO> partyEffect,Long effectPartyId,Long effectElectionId,Map<Long,Double> currentResult,Map<Long,Map<Long,Double>> prevResultMap,Map<Long,Map<Long,Double>> currResultMap,Map<Long,String> locationNames)
 	{
 		List<PartyPositionVO> resultList = null;
 		try{
@@ -270,6 +282,7 @@ public class StrategyModelTargetingService implements
 			List<Long> localbodyIds = new ArrayList<Long>();
 			List<Long> panchayatIds = null;
 			List<Object[]> boothIdsList = null;
+			
 	        //getting mandals and municipalities in that consti
 			List<SelectOptionVO> mandalsList = regionServiceDataImp.getSubRegionsInConstituency(constituencyId,IConstants.PRESENT_YEAR, null);
 			
@@ -345,9 +358,9 @@ public class StrategyModelTargetingService implements
 						if(strategyVO.isAutoCalculate()){
 							partyPositionVO.setWeakPollingPercentVOList(currPancResultList);
 						}
-					    getMandalWisePartyPerformanceReport(constituencyId,eleId, partyPositionVO, partyId,panchayatIds,boothIdsList,partyEffect,effectPartyId,effectElectionId,currentResult,currPancResultList);
+					    getMandalWisePartyPerformanceReport(constituencyId,eleId, partyPositionVO, partyId,panchayatIds,boothIdsList,partyEffect,effectPartyId,effectElectionId,currentResult,currPancResultList,currResultMap,locationNames);
 					}else{
-						getMandalWisePartyPerformanceReport(constituencyId,eleId, partyPositionVO, partyId,panchayatIds,boothIdsList,partyEffect,effectPartyId,effectElectionId,null,prevPancResultList);
+						getMandalWisePartyPerformanceReport(constituencyId,eleId, partyPositionVO, partyId,panchayatIds,boothIdsList,partyEffect,effectPartyId,effectElectionId,null,prevPancResultList,prevResultMap,locationNames);
 						if(strategyVO.isAutoCalculate()){
 						  partyPositionVO.setWeakPollingPercentVOList(prevPancResultList);
 						}
@@ -484,7 +497,7 @@ public class StrategyModelTargetingService implements
 		      }
 	  }
 	
-	public void getMandalWisePartyPerformanceReport(Long constituencyId,Long electionId,PartyPositionVO partyPositionVO,Long partyId,List<Long> panchaytIdsList,List<Object[]> localbodybooths,Map<Long,PartyEffectVO> partyEffect,Long effectPartyId,Long effectElectionId,Map<Long,Double> currentResult,List<PartyPositionVO> pancResultList)
+	public void getMandalWisePartyPerformanceReport(Long constituencyId,Long electionId,PartyPositionVO partyPositionVO,Long partyId,List<Long> panchaytIdsList,List<Object[]> localbodybooths,Map<Long,PartyEffectVO> partyEffect,Long effectPartyId,Long effectElectionId,Map<Long,Double> currentResult,List<PartyPositionVO> pancResultList,Map<Long,Map<Long,Double>> partyResultsMap,Map<Long,String> locationNames)
 	{
 		try{
 		Map<Long,List<Long>> boothIds = new HashMap<Long, List<Long>>();//Map<boothId,List<panchayatId>>
@@ -583,11 +596,11 @@ public class StrategyModelTargetingService implements
 		AlliancePartyResultsVO alliancePartiesVO = staticDataService.getAlliancePartiesByElectionAndParty(electionId,partyId);
 		if(resultMap != null && resultMap.size() > 0){
 			//getting results for panchayats
-			getPartyPerformanceForPanchayat(resultMap,partyPositionVO, partyId,electionId,partyEffect,alliancePartiesVO,effectPartyId,effectElectionId,currentResult,pancResultList); 
+			getPartyPerformanceForPanchayat(resultMap,partyPositionVO, partyId,electionId,partyEffect,alliancePartiesVO,effectPartyId,effectElectionId,currentResult,pancResultList,partyResultsMap,locationNames); 
 		}
 		if(resultMap1 != null && resultMap1.size() > 0){
 			//getting results for municipalities
-		  getPartyPerformanceForLocalBody(partyPositionVO, partyId,resultMap1,boothIdMap,partyEffect,alliancePartiesVO,effectPartyId,effectElectionId,currentResult,pancResultList);
+		  getPartyPerformanceForLocalBody(partyPositionVO, partyId,resultMap1,boothIdMap,partyEffect,alliancePartiesVO,effectPartyId,effectElectionId,currentResult,pancResultList,partyResultsMap,locationNames);
 		}
 		
 		}catch (Exception e) {
@@ -595,7 +608,7 @@ public class StrategyModelTargetingService implements
 		  }
 	}
 	
-	 public void getPartyPerformanceForPanchayat(Map<Long,Map<Long,Long>> resultMap,PartyPositionVO partyPositionVO, Long selectedpartyId, Long electionId,Map<Long,PartyEffectVO> partyEffect,AlliancePartyResultsVO alliancePartiesVO,Long effectPartyId,Long effectElectionId,Map<Long,Double> currentResult,List<PartyPositionVO> pancResultList)
+	 public void getPartyPerformanceForPanchayat(Map<Long,Map<Long,Long>> resultMap,PartyPositionVO partyPositionVO, Long selectedpartyId, Long electionId,Map<Long,PartyEffectVO> partyEffect,AlliancePartyResultsVO alliancePartiesVO,Long effectPartyId,Long effectElectionId,Map<Long,Double> currentResult,List<PartyPositionVO> pancResultList,Map<Long,Map<Long,Double>> partyResultsMap,Map<Long,String> locationNames)
 		{
 			try{
 				
@@ -654,28 +667,33 @@ public class StrategyModelTargetingService implements
 			 for(Long id:resultMap.keySet())
 			 {
 				 if(!mergePanchayatIds.contains(id)){
-				   calculateDifference(panchayatTotalVotersMap,resultMap,id,selectedpartyId,alliancePartiesVO,effectPartyId,effectElectionId,electionId,partyEffect,partyPositionVO,currentResult,pancResultList);
+				   calculateDifference(panchayatTotalVotersMap,resultMap,id,selectedpartyId,alliancePartiesVO,effectPartyId,effectElectionId,electionId,partyEffect,partyPositionVO,currentResult,pancResultList,partyResultsMap,locationNames);
 				 }
 			 } 
 			if(mergePanchayatMap.size() > 0){
-				calculateDifferenceForMergePanchayats(panchayatTotalVotersMap,resultMap,selectedpartyId,alliancePartiesVO,effectPartyId,effectElectionId,electionId,partyEffect,partyPositionVO,mergePanchayatMap,currentResult,pancResultList);
+				calculateDifferenceForMergePanchayats(panchayatTotalVotersMap,resultMap,selectedpartyId,alliancePartiesVO,effectPartyId,effectElectionId,electionId,partyEffect,partyPositionVO,mergePanchayatMap,currentResult,pancResultList,partyResultsMap,locationNames);
 			}
 			}catch (Exception e) {
 			 LOG.error(" Exception Occured in getPartyPerformanceForPanchayat() method, Exception - ",e);
 			}
 		}
 	 
-	 public void calculateDifference(Map<Long,Long> panchayatTotalVotersMap,Map<Long,Map<Long,Long>> resultMap,Long id,Long selectedpartyId,AlliancePartyResultsVO alliancePartiesVO,Long effectPartyId,Long effectElectionId,Long electionId,Map<Long,PartyEffectVO> partyEffect,PartyPositionVO partyPositionVO,Map<Long,Double> currentResult,List<PartyPositionVO> pancResultList){
+	 public void calculateDifference(Map<Long,Long> panchayatTotalVotersMap,Map<Long,Map<Long,Long>> resultMap,Long id,Long selectedpartyId,AlliancePartyResultsVO alliancePartiesVO,Long effectPartyId,Long effectElectionId,Long electionId,Map<Long,PartyEffectVO> partyEffect,PartyPositionVO partyPositionVO,Map<Long,Double> currentResult,List<PartyPositionVO> pancResultList,Map<Long,Map<Long,Double>> partyResultsMap,Map<Long,String> locationNames){
 		 
 
 			Map<Long,Long> partyMap = resultMap.get(id);
 			Long totalVotes = 0L;
-				 
+			Map<Long,Double> partyPercMap = new HashMap<Long,Double>();
+			partyResultsMap.put(id, partyPercMap);
 			for(Long partysId:partyMap.keySet())
 			  totalVotes += partyMap.get(partysId); 
 				 
 			Long selectedPartyTotal = partyMap.get(selectedpartyId);
-			
+			if(totalVotes != null && totalVotes > 0){
+				for(Long partysId:partyMap.keySet()){
+					partyPercMap.put(partysId, partyMap.get(partysId)*100/totalVotes.doubleValue());
+				}
+			}
 			//if party not partispated considering alliance
 			if(selectedPartyTotal == null){
 				 
@@ -743,6 +761,7 @@ public class StrategyModelTargetingService implements
 	    	 {
 	    		 locationVO = new PartyPositionVO();
 	    		 locationVO.setId(id);
+	    		 locationNames.put(id, locationName != null?locationName:" ");
 	    		 locationVO.setName(locationName != null?locationName:" ");
 	    		 locationVO.setPartyPercentage(difference);
 	    		 locationVO.setSelectedPartyTotalVoters(selectedPartyTotal);
@@ -765,7 +784,7 @@ public class StrategyModelTargetingService implements
 		 
 	 }
 	 
-	 public void calculateDifferenceForMergePanchayats(Map<Long,Long> panchayatTotalVotersMap,Map<Long,Map<Long,Long>> resultMap,Long selectedpartyId,AlliancePartyResultsVO alliancePartiesVO,Long effectPartyId,Long effectElectionId,Long electionId,Map<Long,PartyEffectVO> partyEffect,PartyPositionVO partyPositionVO,Map<Long,Set<Long>> mergePanchayatMap,Map<Long,Double> currentResult,List<PartyPositionVO> pancResultList){
+	 public void calculateDifferenceForMergePanchayats(Map<Long,Long> panchayatTotalVotersMap,Map<Long,Map<Long,Long>> resultMap,Long selectedpartyId,AlliancePartyResultsVO alliancePartiesVO,Long effectPartyId,Long effectElectionId,Long electionId,Map<Long,PartyEffectVO> partyEffect,PartyPositionVO partyPositionVO,Map<Long,Set<Long>> mergePanchayatMap,Map<Long,Double> currentResult,List<PartyPositionVO> pancResultList,Map<Long,Map<Long,Double>> partyResultsMap,Map<Long,String> locationNames){
 		 
         for(Long key:mergePanchayatMap.keySet()){
         	Set<Long> panchayatIds = mergePanchayatMap.get(key);
@@ -774,11 +793,18 @@ public class StrategyModelTargetingService implements
 		  Long selectedPartyTotal = 0l;
 		  Long prp = 0l;
 		  Long panchayatTotalVoters = 0l;
+		  Map<Long,Double> partyPercMap = new HashMap<Long,Double>();
+		  partyResultsMap.put(key, partyPercMap);
 		  for(Long id:panchayatIds){	
 			 Map<Long,Long> partyMap = resultMap.get(id);
 			if(partyMap != null) {
 			 for(Long partysId:partyMap.keySet()){
 			  totalVotes += partyMap.get(partysId); 
+			  if(partyPercMap.get(partysId) == null){
+				  partyPercMap.put(partysId, partyMap.get(partysId).doubleValue());
+			  }else{
+				  partyPercMap.put(partysId, partyMap.get(partysId).doubleValue()+partyPercMap.get(partysId));
+			  }
 		     }	
 		  
 		     Long partyTotal = partyMap.get(selectedpartyId);
@@ -814,7 +840,9 @@ public class StrategyModelTargetingService implements
 		  }
          }
          
-			
+			for(Long partyId:partyPercMap.keySet()){
+				partyPercMap.put(partyId, partyPercMap.get(partyPercMap)*100/totalVotes);
+			}
 		  double difference = 0d;
 		  if(totalVotes != null && totalVotes > 0){
 			  difference =  new BigDecimal((selectedPartyTotal*100.0/totalVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
@@ -863,6 +891,7 @@ public class StrategyModelTargetingService implements
 	    	 {
 	    		 locationVO = new PartyPositionVO();
 	    		 locationVO.setId(key);
+	    		 locationNames.put(key, locationName != null?locationName:" ");
 	    		 locationVO.setName(locationName != null?locationName:" ");
 	    		 locationVO.setPartyPercentage(difference);
 	    		 locationVO.setSelectedPartyTotalVoters(selectedPartyTotal);
@@ -884,7 +913,7 @@ public class StrategyModelTargetingService implements
 		 
 	 }
 	 
-	 public void getPartyPerformanceForLocalBody(PartyPositionVO partyPositionVO, Long selectedpartyId,Map<Long,Map<Long,Long>> resultMap1,Map<Long,List<Long>> boothIdMap,Map<Long,PartyEffectVO> partyEffect,AlliancePartyResultsVO alliancePartiesVO,Long effectPartyId,Long effectElectionId,Map<Long,Double> currentResult,List<PartyPositionVO> pancResultList)
+	 public void getPartyPerformanceForLocalBody(PartyPositionVO partyPositionVO, Long selectedpartyId,Map<Long,Map<Long,Long>> resultMap1,Map<Long,List<Long>> boothIdMap,Map<Long,PartyEffectVO> partyEffect,AlliancePartyResultsVO alliancePartiesVO,Long effectPartyId,Long effectElectionId,Map<Long,Double> currentResult,List<PartyPositionVO> pancResultList,Map<Long,Map<Long,Double>> partyResultsMap,Map<Long,String> locationNames)
 	 {
 		 try{
 			 Long localbodytotalVoters = 0l;
@@ -893,6 +922,8 @@ public class StrategyModelTargetingService implements
 			 {
 			 for(Long localbodyId : resultMap1.keySet())
 			 {
+				  Map<Long,Double> partyPercMap = new HashMap<Long,Double>();
+					partyResultsMap.put(localbodyId, partyPercMap);
 				 localbodytotalVoters = boothDAO.getTotalaVotesByBoothIds(boothIdMap.get(localbodyId)).get(0);	
 				 String localbodyName = localElectionBodyDAO.getLocalElectionBodyName1(localbodyId);
 					Map<Long,Long> partyMap1 = resultMap1.get(localbodyId);
@@ -902,7 +933,11 @@ public class StrategyModelTargetingService implements
 					  totalVotes += partyMap1.get(partysId); 
 						 
 					Long selectedPartyTotal = partyMap1.get(selectedpartyId);
-					
+					if(totalVotes != null && totalVotes > 0){
+						for(Long partysId:partyMap1.keySet()){
+							partyPercMap.put(partysId, partyMap1.get(partysId)*100/totalVotes.doubleValue());
+						}
+					}
 					if(selectedPartyTotal == null){
 						 
 						  if(alliancePartiesVO == null || alliancePartiesVO.getAllianceParties() == null)
@@ -968,6 +1003,7 @@ public class StrategyModelTargetingService implements
 			    	 {
 			    		 locationVO = new PartyPositionVO();
 			    		 locationVO.setId(localbodyId);
+			    		 locationNames.put(localbodyId, localbodyName != null?localbodyName:" ");
 			    		 locationVO.setName(localbodyName != null?localbodyName:" ");
 			    		 locationVO.setPartyPercentage(selectedPartyTotalPercent);
 			    		 locationVO.setSelectedPartyTotalVoters(selectedPartyTotal);
@@ -1735,7 +1771,7 @@ public class StrategyModelTargetingService implements
     	   }
        }
        
-       public List<PartyEffectVO> calculateWeightsForPrpImpact(Map<Long,PartyEffectVO> prpEffect,Long publicationId,Map<Long,OrderOfPriorityVO> finalOrder,Double prpWt){
+       public List<PartyEffectVO> calculateWeightsForPrpImpact(Map<Long,PartyEffectVO> prpEffect,Long publicationId,Map<Long,OrderOfPriorityVO> finalOrder,Double prpWt,Map<Long,Double> prpEffectPerc,boolean considerNewEffect){
     	   List<PartyEffectVO> prpList =  new ArrayList<PartyEffectVO>(prpEffect.values());
    		for(Long location:prpEffect.keySet()){
    			PartyEffectVO locationVo = prpEffect.get(location);
@@ -1757,23 +1793,36 @@ public class StrategyModelTargetingService implements
                  if(locationVo.getTdpPrevPerc() != null){
                 	 priority.setPreviousPerc(locationVo.getTdpPrevPerc());
 				}
-   			if(locationVo.getPrpCurrentPerc() != null && locationVo.getTdpCurrentPerc() != null && locationVo.getTdpPrevPerc() != null){
-   				Double prpPerc = locationVo.getPrpCurrentPerc();
-   				Double partyDiff = null;
-   			
-   					
-   					Double partyPrev = locationVo.getTdpPrevPerc();
-   					Double partyCurrent = locationVo.getTdpCurrentPerc();
-   				    partyDiff = partyCurrent-partyPrev;
-   				   if(partyDiff < 0){
-   					partyDiff = partyDiff*(-1);
-   					if(prpPerc > partyDiff){
-   						locationVo.setDifference(partyDiff);
-   					}else{
-   						locationVo.setDifference(prpPerc);
-   					}
-   				}
-   			}
+                 if(considerNewEffect){
+                	 if(prpEffectPerc.get(locationVo.getId()) != null){
+                		 locationVo.setDifference(prpEffectPerc.get(locationVo.getId()));
+                		 try{
+                		 locationVo.setTdpLostPerc(new BigDecimal(locationVo.getTdpPrevPerc()-locationVo.getTdpCurrentPerc()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+                		 }catch(Exception e){
+                			 locationVo.setTdpLostPerc(0d);
+                		 }
+                	 }else{
+                		 locationVo.setDifference(0d);
+                	 }
+                 }else{
+		   			if(locationVo.getPrpCurrentPerc() != null && locationVo.getTdpCurrentPerc() != null && locationVo.getTdpPrevPerc() != null){
+		   				Double prpPerc = locationVo.getPrpCurrentPerc();
+		   				Double partyDiff = null;
+		   			
+		   					
+		   					Double partyPrev = locationVo.getTdpPrevPerc();
+		   					Double partyCurrent = locationVo.getTdpCurrentPerc();
+		   				    partyDiff = partyCurrent-partyPrev;
+		   				   if(partyDiff < 0){
+		   					partyDiff = partyDiff*(-1);
+		   					if(prpPerc > partyDiff){
+		   						locationVo.setDifference(partyDiff);
+		   					}else{
+		   						locationVo.setDifference(prpPerc);
+		   					}
+		   				}
+		   			}
+   		       } 
    		}
    		for(Long location:prpEffect.keySet()){
    			PartyEffectVO locationVo = prpEffect.get(location);
@@ -2032,6 +2081,8 @@ public class StrategyModelTargetingService implements
 		   Map<Long,PartyEffectVO> partyEffect = new HashMap<Long,PartyEffectVO>();
 		   Map<Long,Double> currentResult = new HashMap<Long,Double>();
 		   Map<Long,OrderOfPriorityVO> finalOrder = new HashMap<Long,OrderOfPriorityVO>();
+		   Map<Long,Map<Long,Double>> prevResultMap = new HashMap<Long,Map<Long,Double>>();
+		   Map<Long,Map<Long,Double>> currResultMap = new HashMap<Long,Map<Long,Double>>();
 		   List<PanchayatVO> totalCastesList = null;
 		   List<PanchayatVO> youngCastesList = null;
 		   List<PanchayatVO> agedCastesList = null;
@@ -2043,12 +2094,14 @@ public class StrategyModelTargetingService implements
 		   }else{
 			   strategyVO.setExcludePanchys(excludePanchys);
 		   }
-		   
-		   List<PartyPositionVO>  previousTrends = getPartyPreviousTrends(strategyVO,strategyVO.getConstituencyId(),strategyVO.getPartyId(),strategyVO.getElectionIds(),partyEffect,strategyVO.getEffectPartyId(),strategyVO.getEffectElectionId(),currentResult);
+		   boolean considerNewEffect = true;
+		   Map<Long,String> locationNames = new HashMap<Long,String>();
+		   List<PartyPositionVO>  previousTrends = getPartyPreviousTrends(strategyVO,strategyVO.getConstituencyId(),strategyVO.getPartyId(),strategyVO.getElectionIds(),partyEffect,strategyVO.getEffectPartyId(),strategyVO.getEffectElectionId(),currentResult,prevResultMap,currResultMap,locationNames);
 		   
 		   calculateWeightsForPreviousTrents(previousTrends.get(0).getSuggestedLocations(),finalOrder,strategyVO.getPrevTrnzWt());
 		   
-		   List<PartyEffectVO> otherPartyEffect = calculateWeightsForPrpImpact(partyEffect,strategyVO.getPublicationId(),finalOrder,strategyVO.getPrpWt());
+		   Map<Long,Double> prpEffect = prpEffectCalculateService.calculatePrpEffect(prevResultMap, currResultMap, locationNames);
+		   List<PartyEffectVO> otherPartyEffect = calculateWeightsForPrpImpact(partyEffect,strategyVO.getPublicationId(),finalOrder,strategyVO.getPrpWt(),prpEffect,considerNewEffect);
 		   
 		   if(strategyVO.getCastePercents() != null){
 			   List<Object> castePriorities = getTotalYoungOldVotersEffectWithCaste(excludePanchys,strategyVO,currentResult,finalOrder);
@@ -3054,7 +3107,7 @@ public class StrategyModelTargetingService implements
 				  int padding = 6;
 				  Font subHeading = new Font(Font.FontFamily.TIMES_ROMAN,15,Font.BOLD);
 					subHeading.setColor(new BaseColor(69,109,142));
-				  PdfPTable table = new PdfPTable(4);
+				  PdfPTable table = new PdfPTable(5);
 				  table.setWidthPercentage(100);
 				    Paragraph preface = new Paragraph();
 				    preface.setAlignment(Element.PTABLE);
@@ -3072,6 +3125,12 @@ public class StrategyModelTargetingService implements
 				  	cell.setPadding(padding);
 				  	  table.addCell(cell);
 					  
+				  	  
+				  	 cell = new PdfPCell(new Phrase("TDP Lost %",style1));
+				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	  cell.setBackgroundColor(BaseColor.YELLOW);
+				  	cell.setPadding(padding);
+				  	  table.addCell(cell);
 				  	  
 				  	  cell = new PdfPCell(new Phrase("PRP Gain %",style1));
 				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -3101,6 +3160,11 @@ public class StrategyModelTargetingService implements
 				  			  cell = new PdfPCell(new Phrase(partyEffectVO.getName(),style2));
 						  	  cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 							  	cell.setPadding(padding);
+						  	  table.addCell(cell);
+						  	  
+						  	cell = new PdfPCell(new Phrase(df.format(partyEffectVO.getTdpLostPerc()).toString(),style2));
+						  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+						  	cell.setPadding(padding);
 						  	  table.addCell(cell);
 						  	  
 						  	  cell = new PdfPCell(new Phrase(df.format(partyEffectVO.getPrpCurrentPerc()).toString(),style2));
@@ -3144,7 +3208,7 @@ public class StrategyModelTargetingService implements
 
 					}
 				  	//table.setHorizontalAlignment(Element.ALIGN_LEFT);
-				  	  float[] widths = new float[] {0.8f,0.3f,0.3f,1.4f};
+				  	  float[] widths = new float[] {0.8f,0.3f,0.3f,0.3f,1.4f};
 				  	  table.setWidths(widths);
 				  	   
 				  	  table.setHeaderRows(1);
@@ -3980,8 +4044,10 @@ public class StrategyModelTargetingService implements
 			
 			strategyVO.setAutoCalculate(true);
 			
-			
-			List<PartyPositionVO>  previousTrends = getPartyPreviousTrends(strategyVO,strategyVO.getConstituencyId(),strategyVO.getPartyId(),strategyVO.getElectionIds(),partyEffect,strategyVO.getEffectPartyId(),strategyVO.getEffectElectionId(),currentResult);
+			 Map<Long,Map<Long,Double>> prevResultMap = new HashMap<Long,Map<Long,Double>>();
+			   Map<Long,Map<Long,Double>> currResultMap = new HashMap<Long,Map<Long,Double>>();
+			   Map<Long,String> locationNames = new HashMap<Long,String>();
+			List<PartyPositionVO>  previousTrends = getPartyPreviousTrends(strategyVO,strategyVO.getConstituencyId(),strategyVO.getPartyId(),strategyVO.getElectionIds(),partyEffect,strategyVO.getEffectPartyId(),strategyVO.getEffectElectionId(),currentResult,prevResultMap,currResultMap,locationNames);
 			
 			List<PartyPositionVO> voList=previousTrends.get(0).getPartyPositionVOList();
 			
