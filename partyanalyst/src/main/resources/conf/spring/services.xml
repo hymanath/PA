@@ -2040,6 +2040,8 @@
 	  <property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
 	  <property name="prpWeightegesDAO" ref="prpWeightegesDAO" />
 	  <property name="pdfReportService" ref="pdfReportService" />
+	  <property name="prpEffectCalculateService" ref="prpEffectCalculateService" />
+	  
  </bean>
   
   
@@ -2061,6 +2063,8 @@
    <bean name="infectedBoothsService" class="com.itgrids.partyanalyst.service.impl.InfectedBoothsService"></bean>
    
    <bean name="pdfReportService" class="com.itgrids.partyanalyst.service.impl.PdfReportService"></bean>
+   
+   <bean name="prpEffectCalculateService" class="com.itgrids.partyanalyst.service.impl.PrpEffectCalculateService"></bean>
    
 </beans>		
 	
