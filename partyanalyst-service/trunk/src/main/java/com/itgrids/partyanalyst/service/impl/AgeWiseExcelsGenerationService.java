@@ -1874,10 +1874,14 @@ public void generateExcelsForPanchayatReport3(List<AgeRangeVO>  list ,HSSFSheet 
 		    
 	    int i = 0;
 	    Row row1 = sheet.createRow(0);
-	    Cell cell1 = row1.createCell(i);
+	    Cell cell1 = row1.createCell(i++);
 	    cell1.setCellValue("S.NO");
 	    cell1.setCellStyle(style);
-	    i++;
+	    
+	    cell1 = row1.createCell(i++);
+	    cell1.setCellValue("Address");
+	    cell1.setCellStyle(style);
+	    
 	    if(type.equalsIgnoreCase("RURAL"))
 	    {
 	    	cell1 = row1.createCell(i++);
@@ -2002,7 +2006,10 @@ public void generateExcelsForPanchayatReport3(List<AgeRangeVO>  list ,HSSFSheet 
 					    cell31.setCellValue(count);
 					   // cell31.setCellStyle(style);
 					    
+					    HSSFCellStyle cellStylek = workbook.createCellStyle();
+					    cellStylek.setWrapText(true);
 					    cell31 = row2.createCell(j++);
+					    cell31.setCellStyle(cellStylek);
 					    cell31.setCellValue(voterHouseInfoVO.getAddress() != null ? voterHouseInfoVO.getAddress().toString() : "");
 					    
 					   if(type.equalsIgnoreCase("RURAL"))
