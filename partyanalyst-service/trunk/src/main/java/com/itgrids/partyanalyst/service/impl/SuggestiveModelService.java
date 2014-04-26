@@ -4963,7 +4963,9 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 							  if(selectedPartyTotal == null || selectedPartyTotal.longValue() == 0l)
 							  selectedPartyTotal = partyMap.get(alianceParty.getId());
 				  }
-				  
+				  if(selectedPartyTotal == null){
+					  selectedPartyTotal = 0l;
+				  }
 				  if(comparePartyTotal == null)
 					  comparePartyTotal = 0L;
 				  double selectedPartyTotalPercent = 0d;
