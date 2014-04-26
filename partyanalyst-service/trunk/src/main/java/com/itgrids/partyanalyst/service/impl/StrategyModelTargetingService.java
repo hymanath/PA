@@ -2842,7 +2842,7 @@ public class StrategyModelTargetingService implements
 			  	  table.addCell(cell);  
 				  }
 			 }
-		  	table.setHeaderRows(1);
+		  	table.setHeaderRows(2);
 		  	table.setHorizontalAlignment(Element.ALIGN_LEFT);
 			 document.add(table);
 			 document.newPage();
