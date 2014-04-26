@@ -237,29 +237,33 @@ public class PdfReportService implements IPdfReportsService
 	 	  	
 	 	  	for (OrderOfPriorityVO orderOfPriorityVO : list)
 	 	  	{
-	 	  		PdfPCell c2 = new PdfPCell(new Phrase(orderOfPriorityVO.getName(),SMALLFONT));
-  				c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-	  			table.addCell(c2);
-	  			
-	  			c2 = new PdfPCell(new Phrase(orderOfPriorityVO.getTotalVoters().toString(),SMALLFONT));
-	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-	  			table.addCell(c2);
-	  			
-	  			c2 = new PdfPCell(new Phrase(orderOfPriorityVO.getTotalVoters().toString(),SMALLFONT));
-	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-	  			table.addCell(c2);
-	  			
-	  			c2 = new PdfPCell(new Phrase(orderOfPriorityVO.getPreviousVoters().toString(),SMALLFONT));
-	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-	  			table.addCell(c2);
-	  			
-	  			c2 = new PdfPCell(new Phrase(orderOfPriorityVO.getOpportunity().toString(),SMALLFONT));
-	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-	  			table.addCell(c2);
-	  			
-	  			c2 = new PdfPCell(new Phrase(orderOfPriorityVO.getOpportunityPerc().toString(),SMALLFONT));
-	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-	  			table.addCell(c2);
+	 	  		if(orderOfPriorityVO.getType().equalsIgnoreCase("Highly Critical") || orderOfPriorityVO.getType().equalsIgnoreCase("Critical"))
+	 	  		{
+	 	  			PdfPCell c2 = new PdfPCell(new Phrase(orderOfPriorityVO.getName(),SMALLFONT));
+	  				c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+		  			table.addCell(c2);
+		  			
+		  			c2 = new PdfPCell(new Phrase(orderOfPriorityVO.getTotalVoters().toString(),SMALLFONT));
+		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+		  			table.addCell(c2);
+		  			
+		  			c2 = new PdfPCell(new Phrase(orderOfPriorityVO.getTargetedVoters().toString(),SMALLFONT));
+		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+		  			table.addCell(c2);
+		  			
+		  			c2 = new PdfPCell(new Phrase(orderOfPriorityVO.getPreviousVoters().toString(),SMALLFONT));
+		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+		  			table.addCell(c2);
+		  			
+		  			c2 = new PdfPCell(new Phrase(orderOfPriorityVO.getOpportunity().toString(),SMALLFONT));
+		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+		  			table.addCell(c2);
+		  			
+		  			c2 = new PdfPCell(new Phrase(orderOfPriorityVO.getOpportunityPerc().toString(),SMALLFONT));
+		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+		  			table.addCell(c2);
+	 	  		}
+	 	  		
 
 			}
 	 	  	table.setHeaderRows(1);
