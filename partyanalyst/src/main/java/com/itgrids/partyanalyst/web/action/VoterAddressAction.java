@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -80,7 +81,17 @@ ServletRequestAware{
 		Long districtId = Long.valueOf(request.getParameter("districtId"));
 		Long publicationId  = Long.valueOf(request.getParameter("publicationId"));
 		String type  = request.getParameter("type");
-		url = casteReportService.getVoterAddress(districtId,publicationId,type);
+		String cids = request.getParameter("cids");
+		List<Long> cidsList = null;
+		
+		if(cids != null && cids.length() > 0)
+		{
+			cidsList = new ArrayList<Long>(0);
+			String[] cidArr = cids.split(",");
+			for(String cid :cidArr)
+				cidsList.add(Long.valueOf(cid.trim()));
+		}
+		url = casteReportService.getVoterAddress(districtId,publicationId,type,cidsList);
 		return Action.SUCCESS;
 	}
 }
