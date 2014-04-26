@@ -29,12 +29,12 @@ public class VoterNamesTempDAO extends GenericDaoHibernate<VoterNamesTemp, Long>
 	
 	public Long getVotersCountACNO(Long constituencyId)
 	{
-		Query query = getSession().createQuery("select count(*) from VoterNamesTemp model where model.constituency.constituencyId =:constituencyId");
+		Query query = getSession().createQuery("select count(model.voterNamesTempId) from VoterNamesTemp model where model.constituency.constituencyId =:constituencyId");
 		query.setParameter("constituencyId" ,constituencyId);
-		
 		return (Long) query.uniqueResult();
-		
 	}
+	
+	@SuppressWarnings("unchecked")
 	public List<Object[]> getConstituencies()
 	{
 		return getHibernateTemplate().find("select distinct model.constituency.constituencyId,model.constituency.name from VoterNamesTemp model");
