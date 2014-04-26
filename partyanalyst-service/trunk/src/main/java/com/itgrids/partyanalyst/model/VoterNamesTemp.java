@@ -23,6 +23,7 @@ import org.hibernate.annotations.NotFoundAction;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class VoterNamesTemp extends BaseModel implements Serializable{
 	
+	private static final long serialVersionUID = 5326933174498930228L;
 	private Long voterNamesTempId;
 	private Constituency constituency;
 	private String firstName;
@@ -37,7 +38,7 @@ public class VoterNamesTemp extends BaseModel implements Serializable{
 	}
 	
 	public VoterNamesTemp(Long voterNamesTempId,Constituency constituency,String firstName,
-			String lastName,String relativeFirstName,String voterIdCardNo)
+			String lastName,String relativeFirstName,String voterIdCardNo, String relativeLastName)
 	{
 		
 		this.voterNamesTempId = voterNamesTempId;
