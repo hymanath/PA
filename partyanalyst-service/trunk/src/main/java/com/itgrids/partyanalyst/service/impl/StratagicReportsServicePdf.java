@@ -2389,7 +2389,7 @@ public void pollingStationHelper(PartyPositionVO finalRes,PdfPTable table ,List<
 	 	 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 		 table.addCell(c1);
 		 
-		
+		 table.setHeaderRows(1);
 		 
 		 	
 	  	}
