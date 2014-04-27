@@ -1148,7 +1148,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 				 addCellTotableWithPadding(prev.getTdpVo().getVotesEarned(), prev.getTdpVo().getPercentage(), table, c1, calibriBold,padding,color);
 
 				if(isOthersFirst)
-				 c1 = new PdfPCell(new Phrase(prev.getTdpVo().getMarginVotes()+"   ("+prev.getTdpVo().getMarginVotesPercentage()+")",calibriBold));
+				 c1 = new PdfPCell(new Phrase("-"+prev.getTdpVo().getMarginVotes()+"   (-"+prev.getTdpVo().getMarginVotesPercentage()+")",calibriBold));
 				else{ 
 				
 					  c1 = new PdfPCell(new Phrase(prev.getTdpVo().getMarginVotes()+"   ("+prev.getTdpVo().getMarginVotesPercentage()+")",calibriBold));
