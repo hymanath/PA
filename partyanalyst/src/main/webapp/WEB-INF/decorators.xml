@@ -311,6 +311,9 @@
 		<pattern>/importentFamilyResultsAction*</pattern>	
 		<pattern>/boothWiseResultsAction*</pattern>
 		<pattern>/userEntitlementAction*</pattern>
+		<pattern>/userAccessRegionAction*</pattern>
+		<pattern>/manageUserMessageCreditsAction*</pattern>
+		<pattern>/assigningCandidatesToUserAction*</pattern>
 		</decorator>
     	 
        <decorator name="tdpHome" page="tdplayout.jsp">

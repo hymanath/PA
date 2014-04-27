@@ -31,7 +31,7 @@
 			color:#FFFFFF;
 			font-size:12px;
 			font-weight:bold;
-			padding:5px;
+			padding-left:5px;
 		}
 	.f1
 		{
@@ -821,8 +821,9 @@ function showStateDetailForConstituency(results){
 </script>
 </head>
 <body>
- <h2>User Region Access Info</h2> 
- <table>
+<center>
+ <h2 style="font-size: 17px; ">User Region Access Info</h2> 
+ <table style="margin-bottom: 10px;">
      <tr><div id ="userMessage"></div></tr>
 	<tr>
 		<td class="headingID">
@@ -969,5 +970,6 @@ function showStateDetailForConstituency(results){
 	 </td>
 	</tr>
   </table>
+  </center>
  </body>         
 </html>
