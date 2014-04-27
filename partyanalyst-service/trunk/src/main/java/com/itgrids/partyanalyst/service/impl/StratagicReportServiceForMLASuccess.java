@@ -932,7 +932,7 @@ public void buildHelperVoForConst(PartyElectionTrendsReportVO partyVos ,String n
 		
 		
 		for (Object[] object : ids) {
-			
+			try{
 		if(maps.containsKey(Long.valueOf(object[0].toString())))
 		{
 			PartyElectionTrendsReportVO vo =maps.get(Long.valueOf(object[0].toString()));
@@ -1110,6 +1110,8 @@ public void buildHelperVoForConst(PartyElectionTrendsReportVO partyVos ,String n
 			           }
 			           
 		maps.put(Long.valueOf(object[0].toString()),vo );
+		}
+		}catch(Exception e){
 		}
 		}
 		System.out.println(maps);
