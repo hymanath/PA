@@ -841,7 +841,7 @@ public class StrategyModelTargetingService implements
          }
          
 			for(Long partyId:partyPercMap.keySet()){
-				partyPercMap.put(partyId, partyPercMap.get(partyPercMap)*100/totalVotes);
+				partyPercMap.put(partyId, partyPercMap.get(partyId)*100/totalVotes);
 			}
 		  double difference = 0d;
 		  if(totalVotes != null && totalVotes > 0){
@@ -1715,7 +1715,9 @@ public class StrategyModelTargetingService implements
      public void mergeTotalVoters(Map<Long,Long> totalVotersMap,Map<Long,Set<Long>> mergePanchayatMap){
     	 for(Long key:mergePanchayatMap.keySet()){
 			 for(Long panchayatId:mergePanchayatMap.get(key)){
-				 totalVotersMap.put(key,totalVotersMap.get(key)+totalVotersMap.get(panchayatId));
+				 if(totalVotersMap.get(key) != null && totalVotersMap.get(panchayatId) != null){
+				    totalVotersMap.put(key,totalVotersMap.get(key)+totalVotersMap.get(panchayatId));
+				 }
 				 totalVotersMap.remove(panchayatId);
 			 }
 		 }
