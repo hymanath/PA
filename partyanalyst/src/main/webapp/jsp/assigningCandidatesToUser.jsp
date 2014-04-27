@@ -8,6 +8,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Assign Candidates To User</title>
 <style type="text/css">
+td{
+font-family: arial;
+}
  .buttonStyle {
 	-moz-border-radius:5px 5px 5px 5px;
     background: none repeat scroll 0 0 #0063DC;
@@ -35,6 +38,9 @@ color:navy;
 font-size:12px;
 font-weight:bold;
 padding:5px;
+width: 125px; 
+border: medium none; 
+margin-bottom: 0px;
 }
 .f3 {
 -moz-border-radius:4px 4px 4px 4px;
@@ -171,7 +177,7 @@ function buildResults(results,divId)
 	 {
 	   str+='    <tr>';
 	   str+='       <td class="textAlignStyle">';
-	    str+='        <input type="checkbox" id=\''+i+'\' checked="checked" value=\''+results[i].ids+'\' name="userCandidatesCheckBox" />'+results[i].names;
+	    str+='        <input type="checkbox" id=\''+i+'\' checked="checked" value=\''+results[i].ids+'\' name="userCandidatesCheckBox" />&nbsp;&nbsp;'+results[i].names;
 	   str+='       </td>';
 	   str+='    </tr>';
 	 }
@@ -531,11 +537,12 @@ function clearErrorData()
 </script>
 </head>
 <body>
-    <h2 style="padding-top:10px;">Assign Candidates To User</h2> 
+<center>
+    <h2 style="font-size: 17px; ">Assign Candidates To User</h2> 
 	<table>
             <tr><td><div id="userErrorMessageDiv" /></td></tr>
     </table>
-    <table style="padding-bottom:20px;padding-top:10px">
+    <table style="margin-bottom: 20px; margin-top: 10px;">
 	   <tr>	       
 		     <td style="font-weight:bold;font-size:12px;text-align:left;">All Users &nbsp;&nbsp;</td>
 		     <td>
@@ -560,7 +567,7 @@ function clearErrorData()
    <table class="textAlignStyle">
       <tr>
 	      <td><b>Name</b></td>
-		  <td><input type="text" id="candidateName"  /></td>
+		  <td><input type="text" id="candidateName" style="width: 135px;"  /></td>
 	  </tr>
 	  <tr>
 	      <td><b>Gender</b></td>
@@ -571,13 +578,13 @@ function clearErrorData()
 		  </td>
 	  </tr>
    </table>
-   <table>
+   <table style="margin: 3px;">
 	  <tr>
-	      <td><input type="radio" name="constituency" id="assemblyCons" value="assembly" checked="checked" onclick="showAssemblyData();" />Assembly</td>
-	      <td><input type="radio" name="constituency" id="parliamentCons"  value="parliament"  onclick="showParliamentData();" />Parliament</td>
+	      <td><input type="radio" name="constituency" id="assemblyCons" style="margin-top: 0px;" value="assembly" checked="checked" onclick="showAssemblyData();" />   Assembly</td>
+	      <td><input type="radio" name="constituency" id="parliamentCons" style="margin-left: 7px;margin-top: 0px;"  value="parliament"  onclick="showParliamentData();" />  Parliament</td>
 	  </tr>
    </table>
-   <table>
+   <table style="margin-left: -28px;margin-bottom: 5px;">
       <tr>
 	     <td>
            <div id="constituencySelectDiv" />
@@ -622,5 +629,6 @@ function clearErrorData()
    </table> 
  </fieldset>
 </div>
+</center>
  </body>
 </html>

@@ -8,7 +8,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Manage User Sms Credits</title>
 <style type="text/css">
- 
+ h2 {
+           color: #669900;
+           font-weight: normal;
+           margin: 0 0 15px;
+           padding: 0;
+      }
  .button {
     background: none repeat scroll 0 0 #335291;
     color: #FFFFFF;
@@ -158,14 +163,15 @@ YAHOO.util.Connect.asyncRequest('GET', url, callback);
 </script>
 </head>
 <body>
-   <h2 style="padding-top:10px;">Manage User Sms Credits</h2> 
+<center>
+   <h2 style="font-size: 17px; ">Manage User Sms Credits</h2> 
   <table>
     <tr><div id="userErrorMessageDiv" /> </tr>
   </table>
-  <table style="padding-bottom:20px;">
+  <table style="margin-bottom:20px;">
 	<tr>
 	    <div >
-		  <td style="font-weight:bold;font-size:12px;text-align:left;size:">
+		  <td style="font-weight:bold;font-size:12px;text-align:left; font-family: arial;size:">
 				All Users &nbsp;&nbsp;		
 		  </td>
 		  <td >
@@ -182,36 +188,37 @@ YAHOO.util.Connect.asyncRequest('GET', url, callback);
  <table>
      
      <tr>
-	    <td style="font-weight:bold;font-size:12px;text-align:left;">User Is :</td>
+	    <td style="font-weight:bold;font-size:12px;text-align:left; font-family: arial;">User Is :</td>
 	   <td><div id="showUserName" /></td>
 	 </tr>
 	<tr>
-	   <td style="font-weight:bold;font-size:12px;text-align:left;">Sms User Name :</td>
+	   <td style="font-weight:bold;font-size:12px;text-align:left; font-family: arial;">Sms User Name :</td>
 	   <td><input type="text" id="smsUserName" /></div></td>
 	</tr>   
 	<tr>   
-	   <td style="font-weight:bold;font-size:12px;text-align:left;">Sms Password :</td> 
+	   <td style="font-weight:bold;font-size:12px;text-align:left; font-family: arial;">Sms Password :</td> 
 	   <td><input type="text" id="smsPassword" /></td>
 	</tr>		   	      	   	   
 	<tr>    		
-	   <td style="font-weight:bold;font-size:12px;text-align:left;">Sms Sender Id :</td>
+	   <td style="font-weight:bold;font-size:12px;text-align:left; font-family: arial;">Sms Sender Id :</td>
 	   <td><input type="text" id="smsSenderId" /></td>
 	</tr>
  </table>
- <table style="padding-left:2.79cm;padding-top:10px;"> 
+ <table style="padding-top:10px;margin-left: 25px;"> 
      <tr>	
-       <td style="font-weight:bold;font-size:12px;text-align:left;">Sms Credits :</td>	 
-	   <td><input type="text" size="5" id="smsCredits" onkeyup="ShowTotal();"/> </td>   
-	   <td style="font-weight:bold;font-size:12px;text-align:left;">
-		 &nbsp;Add :&nbsp; <input type="text" id="addVal" size="4"  onkeyup="ShowTotal();"/>
+       <td style="font-weight:bold;font-size:12px;text-align:left; font-family: arial;">Sms Credits :</td>	 
+	   <td><input type="text" size="5" id="smsCredits" onkeyup="ShowTotal();"  style="width: 50px;"/> </td>   
+	   <td style="font-weight:bold;font-size:12px;text-align:left; font-family: arial;">
+		 &nbsp;Add :&nbsp; <input type="text" id="addVal" size="4" style="width: 50px;" onkeyup="ShowTotal();"/>
 	   </td>
-       <td style="font-weight:bold;font-size:12px;text-align:left;">
-	     &nbsp;Total :&nbsp;<input type="text" size="6" id="totalVal" readonly="readonly" value="'+value+'" />
+       <td style="font-weight:bold;font-size:12px;text-align:left; font-family: arial;">
+	     &nbsp;Total :&nbsp;<input type="text" size="6" id="totalVal" style="width: 50px;" readonly="readonly" value="'+value+'" />
 	   </td>
 	 </tr>
  </table>
 <table>
     <input type="button" class="button" value="Save/Update" onclick="updateUserMessageCredits();"/>
-</table> 
+</table>
+</center>
 </body>
 </html>
