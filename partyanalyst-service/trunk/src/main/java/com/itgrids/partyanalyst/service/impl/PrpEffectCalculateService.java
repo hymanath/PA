@@ -109,12 +109,28 @@ public class PrpEffectCalculateService implements IPrpEffectCalculateService {
 				}
 				
 				Double availPerc = incDiff+otherPartiesTotal;
-				if(availPerc > 0){
+				if(availPerc >= 0){
 					Double prpEffect = tdpLost - availPerc;
 					if(prpEffect > 0){
 						if(prpEffect > prpPerc){
 							prpEffect = prpPerc;
 						}
+						if(prpEffect > tdpLost){
+							prpEffect = tdpLost;
+						}
+						prpEffect = new BigDecimal(prpEffect).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+						returnVO.put(panchayatId, prpEffect);
+					}
+				}else{
+					availPerc = (-1)*availPerc;
+					Double availFinalPerc = prpPerc - availPerc;
+					Double prpEffect = null;
+					if(availFinalPerc < tdpLost){
+						prpEffect = availFinalPerc;
+					}else if(availFinalPerc >= tdpLost){
+						prpEffect = tdpLost;
+					}
+					if(prpEffect != null && prpEffect > 0){
 						prpEffect = new BigDecimal(prpEffect).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 						returnVO.put(panchayatId, prpEffect);
 					}
