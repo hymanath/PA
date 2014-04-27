@@ -3110,7 +3110,7 @@ public class StrategyModelTargetingService implements
 				  Font subHeading = new Font(Font.FontFamily.TIMES_ROMAN,15,Font.BOLD);
 					subHeading.setColor(new BaseColor(69,109,142));
 				  PdfPTable table = new PdfPTable(5);
-				  table.setWidthPercentage(100);
+				  table.setWidthPercentage(80);
 				    Paragraph preface = new Paragraph();
 				    preface.setAlignment(Element.PTABLE);
 				    preface.add( new Paragraph("PRP Votes to Regain",subHeading));
@@ -3210,7 +3210,7 @@ public class StrategyModelTargetingService implements
 
 					}
 				  	//table.setHorizontalAlignment(Element.ALIGN_LEFT);
-				  	  float[] widths = new float[] {0.8f,0.3f,0.3f,0.3f,1.4f};
+				  	  float[] widths = new float[] {0.8f,0.5f,0.5f,0.8f,1.4f};
 				  	  table.setWidths(widths);
 				  	   
 				  	  table.setHeaderRows(1);
