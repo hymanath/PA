@@ -314,6 +314,7 @@
 		<pattern>/userAccessRegionAction*</pattern>
 		<pattern>/manageUserMessageCreditsAction*</pattern>
 		<pattern>/assigningCandidatesToUserAction*</pattern>
+		<pattern>/userRegPageAction*</pattern>
 		</decorator>
     	 
        <decorator name="tdpHome" page="tdplayout.jsp">
