@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -8,6 +7,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IConstituencyCensusDetailsDAO;
 import com.itgrids.partyanalyst.model.ConstituencyCensusDetails;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ConstituencyCensusDetailsDAO extends GenericDaoHibernate<ConstituencyCensusDetails,Long> implements IConstituencyCensusDetailsDAO {
 	
@@ -30,7 +30,7 @@ public class ConstituencyCensusDetailsDAO extends GenericDaoHibernate<Constituen
 	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getConstituencyIdsAndPercentages(String censusParam,Long stateId) {
-		return getHibernateTemplate().find("select model.constituencyId, "+ censusParam +" from ConstituencyCensusDetails model where model.stateId = ?",stateId);	
+		return getHibernateTemplate().find("select model.constituencyId, "+ censusParam +" from ConstituencyCensusDetails model where model.stateId = ? and model.year ="+IConstants.censusYear+" ",stateId);	
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -38,7 +38,7 @@ public class ConstituencyCensusDetailsDAO extends GenericDaoHibernate<Constituen
 	{
 		StringBuilder query = new StringBuilder();
 		query.append("select model.constituencyId, "+ censusParam +" from ConstituencyCensusDetails model ");
-		query.append("where model.constituencyId in(:constituencyIds)");
+		query.append("where model.constituencyId in(:constituencyIds)  and model.year ="+IConstants.censusYear+" ");
 		
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameterList("constituencyIds", constituencyIds);
