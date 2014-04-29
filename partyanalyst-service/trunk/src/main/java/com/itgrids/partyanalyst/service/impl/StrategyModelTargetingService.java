@@ -1834,7 +1834,9 @@ public class StrategyModelTargetingService implements
    		}
    		
    		Collections.sort(prpList,prpSort);
-   		
+   		//StringBuilder str = new StringBuilder();
+   		//str.append("<table>");
+   		//str.append("<tr><th>Panchayat</th><th>Tdp Lost %</th><th>Prp %</th><th>Prp Eff</th><th>Castes</th></tr>");
    			for(PartyEffectVO partyEffectVO:prpList){
    				OrderOfPriorityVO priority = finalOrder.get(partyEffectVO.getId());
    				if(priority == null){
@@ -1859,8 +1861,11 @@ public class StrategyModelTargetingService implements
 						 i++;
 					 }
 					 partyEffectVO.setCastes(cast.toString());
+					 //str.append("<tr><th>"+partyEffectVO.getName()+"</th><th>"+partyEffectVO.getTdpLostPerc()+"</th><th>"+partyEffectVO.getPrpCurrentPerc()+"</th><th>"+partyEffectVO.getDifference()+"</th><th>"+cast.toString()+"</th></tr>");
    				}
    		   }
+   			//str.append("</table>");
+   			//System.out.println(str.toString());
    		return prpList;
    	}
        public void calculateWeightsForPreviousTrents(List<PartyPositionVO> orderOfPriority,Map<Long,OrderOfPriorityVO> finalOrder,double prevTrendWeigthPerc){
