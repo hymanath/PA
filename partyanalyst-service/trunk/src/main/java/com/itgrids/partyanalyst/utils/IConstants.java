@@ -742,5 +742,5 @@ public interface IConstants {
     public static final String FORWARD="FORWARD";
     public static final String RESEND="RESEND";
    // public static final String DISTRICT_IDS ="1";
-    
+    public static int censusYear = 2011; 
 }
