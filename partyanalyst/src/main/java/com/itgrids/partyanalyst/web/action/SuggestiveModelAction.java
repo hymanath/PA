@@ -1050,8 +1050,8 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 				
 				if(jObj.getString("type") != null && jObj.getString("type").trim().equalsIgnoreCase("district"))
 					familyInfo = new ArrayList<VoterHouseInfoVO>();
-				if(jObj.getString("output") != null && jObj.getString("output").trim().equalsIgnoreCase("Excel"))
-					familyInfo = new ArrayList<VoterHouseInfoVO>();
+				/*if(jObj.getString("output") != null && jObj.getString("output").trim().equalsIgnoreCase("Excel"))
+					familyInfo = new ArrayList<VoterHouseInfoVO>();*/
 			}
 			catch (Exception e) {
 				e.printStackTrace();
