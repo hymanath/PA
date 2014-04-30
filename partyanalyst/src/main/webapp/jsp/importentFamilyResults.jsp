@@ -330,7 +330,7 @@ function callAjax(jsObj,url){
  	}
  	
  	function getImpFamilyDetails1(){
- 		
+ 		$("#errorDiv").html("");
  		var constituencyId = $("#districtListForImp").val();
  		var publicationId = $("#prevPublicationIdForImp").val();
  		var fromValue =  $.trim($("#fromAgeRange").val());
@@ -348,28 +348,33 @@ function callAjax(jsObj,url){
  			str+='Select Publication<br/>';
  			flag =false;
  		}
- 		if(fromValue == "" || isNaN(fromValue))
+ 		if(fromValue == "")
  		{
- 			str+='Enter From Value Must Be Number<br/>';
+ 			str+='From Value Is Required<br/>';
  			flag =false;
  		}
- 		else if(isNaN(toValue))
+ 		else(isNaN(fromValue))
  		{
- 			str+='Enter To Value Must Be Number<br/>';
+ 			str+='From Value Must Be Number<br/>';
  			flag =false;
  		}
  		if(toValue == "")
  		{
- 	     toValue = 0;
+ 			str+='To Value Is Required<br/>';
+ 			flag =false;
  		}
- 		else
+ 		else(isNaN(toValue))
  		{
+ 			str+='To Value Must Be Number<br/>';
+ 			flag =false;
+ 		}
+ 		
  		 if(toValue < fromValue)
  		{
  	        str+='From Value must be greter than To value<br/>';
  			flag =false;
  		}
- 		}
+ 		
  		
  		if(flag == false)
  		{
