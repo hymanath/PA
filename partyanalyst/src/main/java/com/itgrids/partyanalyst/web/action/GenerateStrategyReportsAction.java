@@ -104,4 +104,13 @@ public class GenerateStrategyReportsAction  extends ActionSupport implements Ser
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getPrpEffect(){
+		try{
+		status = stratagicReportsServicePdf.getPrpEffect(constituencyId);
+		}catch(Exception e){
+			LOG.error(e);
+		}
+		return Action.SUCCESS;
+	}
 }
