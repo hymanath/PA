@@ -111,7 +111,7 @@ background-color: #CDE6FC;
 				    </tr>
 				   </table>
 				</div>
-				<button class="btn btn-small btnStyle" data-dismiss="modal" aria-hidden="true" onclick="getImpFamilyDetails();" style="margin-top:8px;">SUBMIT</button>
+				<button class="btn btn-small btnStyle" data-dismiss="modal" aria-hidden="true" onclick="getImpFamilyDetails1();" style="margin-top:8px;">SUBMIT</button>
 				
 			</div>
 			</div>
@@ -327,6 +327,56 @@ function callAjax(jsObj,url){
  		               };
 
  		YAHOO.util.Connect.asyncRequest('POST', url, callback);
+ 	}
+ 	
+ 	function getImpFamilyDetails1(){
+ 		
+ 		var constituencyId = $("#districtListForImp").val();
+ 		var publicationId = $("#prevPublicationIdForImp").val();
+ 		var fromValue =  $.trim($("#fromAgeRange").val());
+ 		var toValue =  $.trim($("#toAgeRange").val());
+ 		var maxr = null;
+ 		var str ='<font color="red">';
+ 		var flag = true;
+ 		if(constituencyId == 0)
+ 		{
+ 			str+='Select Constituency<br/>';
+ 			flag =false;
+ 		}
+ 		if(publicationId == 0)
+ 		{
+ 			str+='Select Publication<br/>';
+ 			flag =false;
+ 		}
+ 		if(fromValue == "" || isNaN(fromValue))
+ 		{
+ 			str+='Enter From Value Must Be Number<br/>';
+ 			flag =false;
+ 		}
+ 		else if(isNaN(toValue))
+ 		{
+ 			str+='Enter To Value Must Be Number<br/>';
+ 			flag =false;
+ 		}
+ 		if(toValue == "")
+ 		{
+ 	     toValue = 0;
+ 		}
+ 		else
+ 		{
+ 		 if(toValue < fromValue)
+ 		{
+ 	        str+='From Value must be greter than To value<br/>';
+ 			flag =false;
+ 		}
+ 		}
+ 		
+ 		if(flag == false)
+ 		{
+ 				$("#errorDiv").html(str);
+ 				return;
+ 		}
+ 		getImpFamilyDetails();
  	}
 </script>
 </body>
