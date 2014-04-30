@@ -353,7 +353,7 @@ function callAjax(jsObj,url){
  			str+='From Value Is Required<br/>';
  			flag =false;
  		}
- 		else(isNaN(fromValue))
+ 		else if(isNaN(fromValue))
  		{
  			str+='From Value Must Be Number<br/>';
  			flag =false;
@@ -363,19 +363,19 @@ function callAjax(jsObj,url){
  			str+='To Value Is Required<br/>';
  			flag =false;
  		}
- 		else(isNaN(toValue))
+ 		else if(isNaN(toValue))
  		{
  			str+='To Value Must Be Number<br/>';
  			flag =false;
  		}
+ 		if(!isNaN(toValue) && !isNaN(fromValue)){
+	 		 if(toValue < fromValue)
+	 		{
+	 	        str+='From Value must be greter than To value<br/>';
+	 			flag =false;
+	 		}
  		
- 		 if(toValue < fromValue)
- 		{
- 	        str+='From Value must be greter than To value<br/>';
- 			flag =false;
  		}
- 		
- 		
  		if(flag == false)
  		{
  				$("#errorDiv").html(str);
