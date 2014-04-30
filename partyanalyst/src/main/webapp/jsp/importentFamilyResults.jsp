@@ -369,7 +369,7 @@ function callAjax(jsObj,url){
  			flag =false;
  		}
  		if(!isNaN(toValue) && !isNaN(fromValue)){
-	 		 if(toValue < fromValue)
+ 			 if(parseInt(toValue) < parseInt(fromValue))
 	 		{
 	 	        str+='From Value must be greter than To value<br/>';
 	 			flag =false;
