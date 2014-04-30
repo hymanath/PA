@@ -4253,5 +4253,128 @@ public class StrategyModelTargetingService implements
 			}
 			return null;
 		}
-		
+		 public String getPrpEffect(StrategyVO strategyVO){
+			 List<Object> targetingObjects = new ArrayList<Object>();
+			   Map<Long,PartyEffectVO> partyEffect = new HashMap<Long,PartyEffectVO>();
+			   Map<Long,Double> currentResult = new HashMap<Long,Double>();
+			   Map<Long,OrderOfPriorityVO> finalOrder = new HashMap<Long,OrderOfPriorityVO>();
+			   Map<Long,Map<Long,Double>> prevResultMap = new HashMap<Long,Map<Long,Double>>();
+			   Map<Long,Map<Long,Double>> currResultMap = new HashMap<Long,Map<Long,Double>>();
+			   List<PanchayatVO> totalCastesList = null;
+			   List<PanchayatVO> youngCastesList = null;
+			   List<PanchayatVO> agedCastesList = null;
+			   Map<Long,String> casteNameMap = null;
+			   Map<String,Float> casteNamePercMap = null;
+			   List<Long> excludePanchys = new ArrayList<Long>();
+			   if(strategyVO.getExcludePanchys() != null){
+				   excludePanchys = strategyVO.getExcludePanchys();
+			   }else{
+				   strategyVO.setExcludePanchys(excludePanchys);
+			   }
+			   boolean considerNewEffect = true;
+			   Map<Long,String> locationNames = new HashMap<Long,String>();
+			   List<PartyPositionVO>  previousTrends = getPartyPreviousTrends(strategyVO,strategyVO.getConstituencyId(),strategyVO.getPartyId(),strategyVO.getElectionIds(),partyEffect,strategyVO.getEffectPartyId(),strategyVO.getEffectElectionId(),currentResult,prevResultMap,currResultMap,locationNames);
+			   
+			   calculateWeightsForPreviousTrents(previousTrends.get(0).getSuggestedLocations(),finalOrder,strategyVO.getPrevTrnzWt());
+			   
+			   Map<Long,Double> prpEffect = prpEffectCalculateService.calculatePrpEffect(prevResultMap, currResultMap, locationNames);
+			  return calculateWeightsForPrpImpactNew(partyEffect,strategyVO.getPublicationId(),finalOrder,strategyVO.getPrpWt(),prpEffect,considerNewEffect);
+			   
+		 }
+		 
+		 public String calculateWeightsForPrpImpactNew(Map<Long,PartyEffectVO> prpEffect,Long publicationId,Map<Long,OrderOfPriorityVO> finalOrder,Double prpWt,Map<Long,Double> prpEffectPerc,boolean considerNewEffect){
+	    	   List<PartyEffectVO> prpList =  new ArrayList<PartyEffectVO>(prpEffect.values());
+	   		for(Long location:prpEffect.keySet()){
+	   			PartyEffectVO locationVo = prpEffect.get(location);
+	   			OrderOfPriorityVO priority = finalOrder.get(location);
+					if(priority == null){
+						priority = new OrderOfPriorityVO();
+						priority.setPanchayatId(locationVo.getId());
+						priority.setName(locationVo.getName());
+						
+						finalOrder.put(locationVo.getId(), priority);
+					}
+					if(locationVo.getTdpCurrentVotes() != null){
+					  priority.setPreviousVoters(locationVo.getTdpCurrentVotes());
+					}if(locationVo.getTdpPrevVotes() != null){
+					   priority.setPrevElectionVotes(locationVo.getTdpPrevVotes());
+					}if(locationVo.getTdpCurrentPerc() != null){
+						 priority.setCurrentPerc(locationVo.getTdpCurrentPerc());
+					}
+	                 if(locationVo.getTdpPrevPerc() != null){
+	                	 priority.setPreviousPerc(locationVo.getTdpPrevPerc());
+					}
+	                 if(considerNewEffect){
+	                	 if(prpEffectPerc.get(locationVo.getId()) != null){
+	                		 locationVo.setDifference(prpEffectPerc.get(locationVo.getId()));
+	                		 try{
+	                		 locationVo.setTdpLostPerc(new BigDecimal(locationVo.getTdpPrevPerc()-locationVo.getTdpCurrentPerc()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+	                		 }catch(Exception e){
+	                			 locationVo.setTdpLostPerc(0d);
+	                		 }
+	                	 }else{
+	                		 locationVo.setDifference(0d);
+	                	 }
+	                 }else{
+			   			if(locationVo.getPrpCurrentPerc() != null && locationVo.getTdpCurrentPerc() != null && locationVo.getTdpPrevPerc() != null){
+			   				Double prpPerc = locationVo.getPrpCurrentPerc();
+			   				Double partyDiff = null;
+			   			
+			   					
+			   					Double partyPrev = locationVo.getTdpPrevPerc();
+			   					Double partyCurrent = locationVo.getTdpCurrentPerc();
+			   				    partyDiff = partyCurrent-partyPrev;
+			   				   if(partyDiff < 0){
+			   					partyDiff = partyDiff*(-1);
+			   					if(prpPerc > partyDiff){
+			   						locationVo.setDifference(partyDiff);
+			   					}else{
+			   						locationVo.setDifference(prpPerc);
+			   					}
+			   				}
+			   			}
+	   		       } 
+	   		}
+	   		for(Long location:prpEffect.keySet()){
+	   			PartyEffectVO locationVo = prpEffect.get(location);
+	   			if(locationVo.getDifference() == null){
+	   				locationVo.setDifference(0d);
+	   			}
+	   		}
+	   		
+	   		Collections.sort(prpList,prpSort);
+	   		StringBuilder str = new StringBuilder();
+	   		str.append("<table>");
+	   		str.append("<tr><th>Panchayat</th><th>Tdp Lost %</th><th>Prp %</th><th>Prp Eff</th><th>Castes</th></tr>");
+	   			for(PartyEffectVO partyEffectVO:prpList){
+	   				OrderOfPriorityVO priority = finalOrder.get(partyEffectVO.getId());
+	   				if(priority == null){
+	   					priority = new OrderOfPriorityVO();
+	   					priority.setPanchayatId(partyEffectVO.getId());
+	   					priority.setName(partyEffectVO.getName());
+	   					finalOrder.put(partyEffectVO.getId(), priority);
+	   				}
+	   				if(prpList.get(0).getDifference() != null && prpList.get(0).getDifference() > 0){
+	   					partyEffectVO.setPoints(new BigDecimal(partyEffectVO.getDifference()*100/prpList.get(0).getDifference()).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue());
+	   					priority.setPrpWeight(new BigDecimal(partyEffectVO.getPoints()*prpWt/100).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue());
+	   					List<Object[]> panchayatVoterCount = voterCastInfoDAO.getTopThreeCasteForPanchayat(partyEffectVO.getId(),partyEffectVO.getReportLvl(),publicationId,1l);//Long panchayatId,Long reportId,Long publicationId,Long userId
+						int i = 0;
+						StringBuilder cast = new StringBuilder("");
+						 for(Object[] panchayat:panchayatVoterCount){
+							 if(i==3){
+							 break;
+							 }
+							 cast.append("("+panchayat[0].toString());
+							 cast.append(","+panchayat[2].toString());
+							 cast.append(","+panchayat[1].toString()+")");
+							 i++;
+						 }
+						 partyEffectVO.setCastes(cast.toString());
+						 str.append("<tr><th>"+partyEffectVO.getName()+"</th><th>"+partyEffectVO.getTdpLostPerc()+"</th><th>"+partyEffectVO.getPrpCurrentPerc()+"</th><th>"+partyEffectVO.getDifference()+"</th><th>"+cast.toString()+"</th></tr>");
+	   				}
+	   		   }
+	   			str.append("</table>");
+	   			return str.toString();
+	   		
+	   	}
 }
