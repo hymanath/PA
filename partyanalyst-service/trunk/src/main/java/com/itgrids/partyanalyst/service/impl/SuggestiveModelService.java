@@ -6891,7 +6891,9 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				}
 				
 				workbook.write(out);
-			
+				result =  new ArrayList<VoterHouseInfoVO>();
+				VoterHouseInfoVO info = new VoterHouseInfoVO();
+				result.add(info);
 				if(result != null && result.size() > 0)
 				{
 					result.get(0).setInfluencePartyName(filePath);
