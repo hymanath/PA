@@ -3010,5 +3010,19 @@ public String roundTo2DigitsDoubleValue(Double number){
 			 LOG.error("Exception rised in buildTableAndGraph ",e);
 		 }
 	 }
+	 
+	 public String getPrpEffect(Long constituencyId){
+		 StrategyVO strategyVO = strategyModelTargetingService.getStrategyArguments(constituencyId);
+			strategyVO.setAutoStrategy(true);
+			List<StrategyAssumptions> assumptionsList =  strategyAssumptionsDAO.getDataByConstituencyId(constituencyId);
+			if(assumptionsList != null && assumptionsList.size() > 0 && assumptionsList.get(0) != null){
+				StrategyAssumptions model = assumptionsList.get(0);
+				strategyVO.setGoalDataPresent(true);
+				strategyVO.setBase(model.getExceptedPollingPerc());
+				strategyVO.setAssured(model.getVoterBasePerc());
+				strategyVO.setTdpPerc(model.getTargetedVotesPerc());
+			}
+		return strategyModelTargetingService.getPrpEffect(strategyVO);
+	 }
 }
 

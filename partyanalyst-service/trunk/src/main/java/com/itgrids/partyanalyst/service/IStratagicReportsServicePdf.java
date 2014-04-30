@@ -11,4 +11,6 @@ public interface IStratagicReportsServicePdf {
 	public void buildAutoStrategy(Long constituencyId);
 
 	public Long getConstituencyNo(Long constituencyId);
+	
+	 public String getPrpEffect(Long constituencyId);
 }
