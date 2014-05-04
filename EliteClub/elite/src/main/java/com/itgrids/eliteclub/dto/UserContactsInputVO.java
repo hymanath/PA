@@ -1,9 +1,14 @@
 package com.itgrids.eliteclub.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -25,12 +30,49 @@ public class UserContactsInputVO  implements Serializable{
 	private String mobileno;
 	private String imeiNo;
 	private Date userCreationTime;
-	
 	private Map<String,String> contacts = new HashMap<String,String>();
+    private String fileIds;
+    
+   
+
+	public String getFileIds() {
+		return fileIds;
+	}
+
+
+
+
+	public void setFileIds(String fileIds) {
+		this.fileIds = fileIds;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
 
 	public Integer getUserId() {
 		return userId;
 	}
+
+
+
+
+
+
+
+
+
+
+
+
 
 	public void setUserId(Integer userId) {
 		this.userId = userId;

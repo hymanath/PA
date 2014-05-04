@@ -17,10 +17,17 @@ public class AudioFileVo {
 	//private Date created;
 	//private Date updated;
 	//private Character isDeleted;
+	private int contentTypeId;
 	
 	
 	
 	
+	public int getContentTypeId() {
+		return contentTypeId;
+	}
+	public void setContentTypeId(int contentTypeId) {
+		this.contentTypeId = contentTypeId;
+	}
 	public Integer getFileId() {
 		return fileId;
 	}

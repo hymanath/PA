@@ -2,16 +2,29 @@ package com.itgrids.eliteclub.service.impl;
 
 
 
+import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.criterion.CriteriaQuery;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.engine.spi.TypedValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import com.itgrids.eliteclub.dao.ContactDetailsDAO;
 import com.itgrids.eliteclub.dao.FileDAO;
@@ -27,6 +40,7 @@ import com.itgrids.eliteclub.util.IConstants;
  *
  */
 @Service("smsService")
+
 public class SmsServiceImpl implements ISmsService,Runnable
 {
 
@@ -43,8 +57,13 @@ public class SmsServiceImpl implements ISmsService,Runnable
 	
 	private   SmsServiceImpl service;
 	
+	@Autowired 
+	private  FileDAO fileDAO ;
 	
 	
+	
+
+
 	public SmsServiceImpl getService() {
 		return service;
 	}
@@ -61,6 +80,43 @@ public class SmsServiceImpl implements ISmsService,Runnable
 	private  String imeiNo;
 	private  Integer userId;
 	private  Integer audioFileId;
+	private List<Integer> fileIds;
+	
+
+
+	public List<Integer> getFileIds() {
+		return fileIds;
+	}
+
+	public void setFileIds(List<Integer> fileIds) {
+		this.fileIds = fileIds;
+	}
+
+	public ContactDetailsDAO getContactDetailsDAO() {
+		return contactDetailsDAO;
+	}
+
+	public void setContactDetailsDAO(ContactDetailsDAO contactDetailsDAO) {
+		this.contactDetailsDAO = contactDetailsDAO;
+	}
+
+	public VoiceSmsService getVoiceSmsService() {
+		return voiceSmsService;
+	}
+
+	public void setVoiceSmsService(VoiceSmsService voiceSmsService) {
+		this.voiceSmsService = voiceSmsService;
+	}
+
+	public UserDAO getUserDAO() {
+		return userDAO;
+	}
+
+	public void setUserDAO(UserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+
+
 
 
 	public String getImeiNo() {
@@ -86,9 +142,10 @@ public class SmsServiceImpl implements ISmsService,Runnable
 	public void setAudioFileId(Integer audioFileId) {
 		this.audioFileId = audioFileId;
 	}
-
+    
 	public void start (SmsServiceImpl objData )
     {
+		
 		Thread textThread = null;
 		Thread audioThread = null;
 		if (textThread == null)
@@ -117,20 +174,32 @@ public class SmsServiceImpl implements ISmsService,Runnable
 				Thread currentThread = Thread.currentThread();
 				if(currentThread.getName().equalsIgnoreCase("textTread"))
 				{
-					List<String> mobileNos = this.getService().contactDetailsDAO.getMobileNumbersByUser(this.imeiNo,this.userId);
+				/*	List<String> mobileNos = this.getService().contactDetailsDAO.getMobileNumbersByUser(this.imeiNo,this.userId);
 					User  user = this.getService().userDAO.get(this.userId);
 					String userName=user.getUserName();
 					if(userName==null)
 						userName=""+this.imeiNo;
 					
-					StringBuilder message= new StringBuilder("This Message Reffered By "+userName);
+					StringBuilder message= new StringBuilder("Your Friend  "+userName+" has sent this message to convey that Mr.Chandra Babu Naidu garu will speak with you shortly from this number 14001281999 ");
 					message.append("");
-					sendSms(message.toString(),false,mobileNos);
+					List<String> messages=null;
+					if(this.getFileIds()!=null && this.getFileIds().size()>0)
+					{
+					 messages=(List<String>) this.getService().fileDAO.getSmsTextForFileIds(new HashSet<Integer>(this.getFileIds()));
+					}
+					// get  list of messages that we have to send 
+					sendSms(message.toString(),false,mobileNos,messages);*/
+					sendTextMesaagesToContacts();
 				}
 				else
-				{
+				{/*
 					List<String> mobileNumbers = this.getService().contactDetailsDAO.getMobileNumbersByUser(imeiNo,userId);
-					this.getService().voiceSmsService.sendVoiceSmsThread(this.audioFileId,mobileNumbers,currentThread);
+					//ge voiceId for fileId
+				
+					List<?> voiceIds=this.getService().fileDAO.getVoiceIdsForFileIds(new HashSet<Integer>(this.getFileIds()));
+					if(voiceIds !=null && voiceIds.size()>0)
+					this.getService().voiceSmsService.sendVoiceSmsThread(null,mobileNumbers,currentThread,voiceIds);*/
+					sendVoiceMessagesToContacts();
 				}
 				
 			}
@@ -141,6 +210,46 @@ public class SmsServiceImpl implements ISmsService,Runnable
 		}
 	}
 	
+	//send messages method is here
+	/**
+	 * @author  Anilkumar Ravula
+	 * Apr 25, 2014
+	 * 
+	 */
+	//@Transactional
+	public void sendTextMesaagesToContacts()
+	{
+		List<String> mobileNos = this.getService().contactDetailsDAO.getMobileNumbersByUser(this.imeiNo,this.userId);
+		User  user = this.getService().userDAO.get(this.userId);
+		String userName=user.getUserName();
+		if(userName==null)
+			userName=""+this.imeiNo;
+		
+		StringBuilder message= new StringBuilder("Your Friend  "+userName+" has sent this message to convey that Mr.Chandra Babu Naidu garu will speak with you shortly from this number 14001281999 ");
+		message.append("");
+		List<String> messages=null;
+		if(this.getFileIds()!=null && this.getFileIds().size()>0)
+		{
+		 messages=(List<String>) this.getService().fileDAO.getSmsTextForFileIds(new HashSet<Integer>(this.getFileIds()));
+		}
+		// get  list of messages that we have to send 
+		sendSms(message.toString(),false,mobileNos,messages);
+	}
+	
+	//send voice messagesTo Contacts	
+	//@Transactional
+	public void sendVoiceMessagesToContacts()
+	{
+		
+		List<String> mobileNumbers = this.getService().contactDetailsDAO.getMobileNumbersByUser(imeiNo,userId);
+		//ge voiceId for fileId
+	
+		List<?> voiceIds=this.getService().fileDAO.getVoiceIdsForFileIds(new HashSet<Integer>(this.getFileIds()));
+		if(voiceIds !=null && voiceIds.size()>0)
+		this.getService().voiceSmsService.sendVoiceSmsThread(null,mobileNumbers,null,voiceIds);
+		
+	}
+	
 	
 	/**
 	 * This Service is used for sending the sms to the selected mobile numbers
@@ -148,20 +257,18 @@ public class SmsServiceImpl implements ISmsService,Runnable
 	 * @param message
 	 * @param isEnglish
 	 * @param phoneNumbers
+	 * @param messages 
+	 * @param set 
+	 * @param set 
+	 * @version 1.18 by anil
 	 */
 	public void sendSms(String message, boolean isEnglish,
-			List<String> phoneNumbers) 
+			List<String> phoneNumbers, List<String> messages) 
 	{
 
 		HttpClient client = null;
 		PostMethod post = null;
 		
-		/*Long count = getRemainingSmsLeftForUser(userId) - phoneNumbers.length;
-		
-		if(count < 0)
-			return (long)ResultCodeMapper.FAILURE;
-
-		 */		
 		
 		client = new HttpClient(new MultiThreadedHttpConnectionManager());// here we are getting the HttpClient For Sending Sms
 
@@ -182,44 +289,96 @@ public class SmsServiceImpl implements ISmsService,Runnable
 			
 		LOG.debug("Mobile Nos :" + sb.toString());
 	    
-	    post = new PostMethod("http://sms.partyanalyst.com/WebserviceSMS.aspx");
-		
-		post.addParameter("User", IConstants.ADMIN_USERNAME_FOR_SMS);
-		post.addParameter("passwd", IConstants.ADMIN_PASSWORD_FOR_SMS);
-		post.addParameter("sid", IConstants.ADMIN_SENDERID_FOR_SMS);
-		
-	    post.addParameter("mobilenumber", sb.toString());
-		post.addParameter("message", message);
-		post.addParameter("mtype", isEnglish ? "N" : "OL");
-		post.addParameter("DR", "Y");
-		
-		LOG.debug(" Query String :" + post.getQueryString());
+	 
 
 		/* PUSH the URL */
 		try 
-		{
-			int statusCode = client.executeMethod(post);
-			
-			LOG.debug(post.getStatusLine().toString()+"***"+statusCode+"*****"+post.getQueryString());
-			
-			if (statusCode != HttpStatus.SC_OK)
+		{  
+			if(messages !=null && messages.size()>0)
 			{
-				LOG.error("SmsCountrySmsService.sendSMS failed: "+ post.getStatusLine());
-				LOG.debug("SmsCountrySmsService.sendSMS failed: "+ post.getStatusLine());
-			}
+				for (String msgText : messages) {
+					
 			
-			LOG.debug(post.getResponseBodyAsString());
+				    RestTemplate restTemplate = new RestTemplate();
+
+				    MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
+					map.add("User", IConstants.ADMIN_USERNAME_FOR_SMS);
+					map.add("passwd", IConstants.ADMIN_PASSWORD_FOR_SMS);
+					map.add("mobilenumber", sb.toString());
+					map.add("message", msgText);
+					map.add("mtype", "N");
+					 LOG.debug("URL For Text Message "+"http://api.smscountry.com/SMSCwebservice_bulk.aspx"+map.toString());
+					String page = restTemplate.postForObject("http://api.smscountry.com/SMSCwebservice_bulk.aspx", map, String.class);
+						 
+						
+						 LOG.debug("text sms response"+ page);
+					
+						try {
+							Thread.sleep(3000);
+						}catch (Exception e) {
+							LOG.error("exception "+e);
+						}
+				}
+				
+			}else
+			{
+				
+			
+				RestTemplate restTemplate = new RestTemplate();
+
+				  MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
+					map.add("User", IConstants.ADMIN_USERNAME_FOR_SMS);
+					map.add("passwd", IConstants.ADMIN_PASSWORD_FOR_SMS);
+					map.add("mobilenumber", sb.toString());
+					map.add("message", message);
+					map.add("mtype", "N");
+					
+					String page = restTemplate.postForObject("http://api.smscountry.com/SMSCwebservice_bulk.aspx", map, String.class);
+						 
+						 System.out.println(page);
+						 LOG.debug("text sms response"+page);
+			}
+		
 		}
 		catch (Exception e)
 		{
 			LOG.error("Exception Occure in sendSms " , e);
 		} 
 		finally
-		{
+		{   if(post!=null)
 			post.releaseConnection();
 		}
 
 	}
+	
+	public void sendSmsByTakingMessage(String message,PostMethod post,HttpClient client)
+	{
+		
+		int statusCode=0;
+		try {
+		 statusCode = client.executeMethod(post);
+		} catch (HttpException e) {
+			LOG.error("SmsCountrySmsService.sendSMS failed: "+ e.getMessage());
+			e.printStackTrace();
+		} catch (IOException e) {
+			LOG.error("SmsCountrySmsService.sendSMS failed: "+ e.getMessage());
+			e.printStackTrace();
+		}
+		catch (Exception e) {
+			LOG.error("SmsCountrySmsService.sendSMS failed: "+ e.getMessage());
+			e.printStackTrace();
+		}
+		
+		LOG.debug(post.getStatusLine().toString()+"***"+statusCode+"*****"+post.getQueryString());
+		if (statusCode != HttpStatus.SC_OK)
+		{
+			LOG.error("SmsCountrySmsService.sendSMS failed: "+ post.getStatusLine());
+			LOG.debug("SmsCountrySmsService.sendSMS failed: "+ post.getStatusLine());
+		}
+	}
+	
+		
+	
 
 	
 }

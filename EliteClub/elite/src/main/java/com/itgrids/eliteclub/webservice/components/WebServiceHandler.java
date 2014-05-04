@@ -39,7 +39,7 @@ public class WebServiceHandler {
         smsThreadClass.activeteThread("123456",1,1);
         return "helloworld";
     }
-    
+/*    
     @RequestMapping(value="/sendMsgToContacts/{imeiNo}/{fileId}/{userId}",method=RequestMethod.GET,produces="application/json")
     public String sendMsgToContatcts(@PathVariable(value="imeiNo") String imeiNo,@PathVariable(value="fileId") String fileId,@PathVariable(value="userId") int userId,  Model model) {
         //model.addAttribute("name", name);
@@ -54,14 +54,25 @@ public class WebServiceHandler {
     	log.debug(string1);
         smsThreadClass.activeteThread(imeiNo,userId,Integer.valueOf(fileId));
         return "sucess";
+    }*/
+    @RequestMapping(value="/sendMsgToContacts",method=RequestMethod.POST,produces="application/json",consumes="application/json")
+    public String sendMsgToContatcts( @RequestBody UserContactsInputVO  inputVo,  Model model) {
+        //model.addAttribute("name", name);
+    	StringBuilder string1 =new  StringBuilder();
+    	string1.append("request to send msg and voice sms to imei no ");
+    	string1.append(inputVo.getImeiNo());
+    	string1.append("and user id is  ");
+    	string1.append(inputVo.getUserId());
+    	string1.append(" and file ID is   " );
+    	string1.append(inputVo.getFileIds());
+    	
+    	log.debug(string1);
+        smsThreadClass.activeteThread(inputVo);
+        return "sucess";
     }
 
 	
 
-    private StringBuilder StringBuilder() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@RequestMapping(value="/getBase",method=RequestMethod.GET,produces={"application/json"})
     public @ResponseBody BaseObject hello1(@RequestParam(value="name", required=false, defaultValue="World") String name, Model model) {
@@ -88,7 +99,7 @@ public class WebServiceHandler {
     
     @RequestMapping(value="/getCategoriesForUser",method=RequestMethod.GET,produces={"application/json"})
     public @ResponseBody CategoryResponseVo getCategories( UserContactsInputVO userContacts, Model model) {
-      
+      log.debug("hello inside");
     	 UserContactsInputVO user =new UserContactsInputVO();
          
          user.setEmailId("rak");

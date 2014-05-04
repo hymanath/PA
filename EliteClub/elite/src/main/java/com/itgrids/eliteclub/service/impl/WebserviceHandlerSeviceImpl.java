@@ -37,7 +37,7 @@ private UserDAO userDAO;
 @Autowired
 private FileDAO  fileDAO;
 
-	@Override
+//	@Override
 	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=RuntimeException.class)
 	public Object loadCategories(UserContactsInputVO inputVo) {
 		log.debug("saving user contacts ");
@@ -64,7 +64,7 @@ private FileDAO  fileDAO;
 			log.error("exception Occured  while retriving audio files"+ e.getMessage());
            
 			e.printStackTrace();
-			throw e;
+			throw new RuntimeException();
 		}
 		//return new CategoryResponseVo();
 	}
@@ -100,7 +100,7 @@ private FileDAO  fileDAO;
 		log.debug("inside helper method to get Audio files ");
 		return  getAudioFilesBasedOnCategories(null);
 	}
-	
+
 	public CategoryResponseVo  getAudioFilesBasedOnCategories(String imeiNo)
 	{
 		log.debug("find out  different categories for files");
@@ -164,7 +164,7 @@ private FileDAO  fileDAO;
 		af.setFileId(file.getFileId());
 		af.setDescription(file.getDescription());
 		af.setUrl(file.getUrl());
-		
+		af.setContentTypeId(file.getContentType().getContenttypeId());
 		return af;
 	}
 	

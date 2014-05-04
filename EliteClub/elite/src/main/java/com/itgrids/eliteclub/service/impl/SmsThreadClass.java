@@ -1,10 +1,15 @@
 package com.itgrids.eliteclub.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.itgrids.eliteclub.dto.UserContactsInputVO;
 import com.itgrids.eliteclub.service.ISmsService;
 
 /**
@@ -14,6 +19,7 @@ import com.itgrids.eliteclub.service.ISmsService;
  *
  */
 @Service("smsThreadClass")
+
 public class SmsThreadClass
 {
 
@@ -24,6 +30,7 @@ public class SmsThreadClass
 	/**
 	 * This Service is used for activating the sms thread
 	 * @author Prasad Thiragabthina
+	 * @version 1.2 by anil
 	 */
 	
 	public void activeteThread(String imeiNo,Integer userId,Integer audioFileId)
@@ -47,5 +54,53 @@ public class SmsThreadClass
 		}
 		
 	}
+	
+	
+	public void activeteThread(UserContactsInputVO inputs)
+	{
+		try
+		{
+			LOG.debug("Entered into activeteThread  method in SmsThreadClass service");
+		
+			SmsServiceImpl smsServiceImpl = new SmsServiceImpl(); 
+		    smsServiceImpl.setUserId(inputs.getUserId());
+			smsServiceImpl.setImeiNo(inputs.getImeiNo());
+			//smsServiceImpl.setAudioFileId(audioFileId);
+			List<Integer> ids = new ArrayList<Integer>();
+			
+			for (String  fileId : inputs.getFileIds().replace("[", "").replace("]", "").split(",")) {
+				ids.add(Integer.valueOf(fileId.trim()));
+			}
+			
+			smsServiceImpl.setFileIds(ids);
+	     	smsServiceImpl.setService((SmsServiceImpl)smsService);
+			smsService.start(smsServiceImpl);
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception Occure in activeteThread method in SmsThreadClass service" , e);
+		}
+		
+	}
+	
+	/*public void start (SmsServiceImpl objData )
+    {
+		Thread textThread = null;
+		Thread audioThread = null;
+		if (textThread == null)
+		{
+			String textTread = "textTread";
+			LOG.debug("Starting " +  textTread );
+			textThread = new Thread (objData, textTread);
+			textThread.start ();
+		}
+		if(audioThread == null)
+		{
+			String audioTread = "audioTread";
+			LOG.debug("Starting " +  audioTread );
+			audioThread = new Thread (objData, audioTread);
+			audioThread.start ();
+		}
+    }*/
 	
 }
