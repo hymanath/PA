@@ -4,7 +4,7 @@
 <Console name="CONSOLE" target="SYSTEM_OUT">
 <PatternLayout pattern="%d %-5p [%t] %C{2} (%F:%L) - %m%n"/>
 </Console>
-<File name="fileGeneral" fileName="${sys:catalina.home}/logs/eliteClub.log">
+<File name="fileGeneral" fileName="/home/dakavara/tomcat/logs/eliteClub.log">
 <PatternLayout pattern="%d %-5p [%t] %C{2} (%F:%L) - %m%n"/>
 </File>
 <!-- <Async name="ASYNC">
@@ -18,15 +18,19 @@
 			<AppenderRef ref="CONSOLE"/>
 			<AppenderRef ref="fileGeneral"/>
 		 </Logger>
+		 <Logger name="org.springframework.orm.hibernate4.support" level="debug">
+			<AppenderRef ref="CONSOLE"/>
+			<AppenderRef ref="fileGeneral"/>
+		 </Logger>
 		 
 		 <Logger name="com.itgrids" level="debug">
 		 	<AppenderRef ref="CONSOLE"/>
 			<AppenderRef ref="fileGeneral"/> 
 		 </Logger>
 		 
-		 <Logger name="org.hibernate"   level="warn" >
+		<!--  <Logger name="org.hibernate"   level="warn" >
 		</Logger>
-	
+	 -->
 		<Root level="debug">
 		<AppenderRef ref="CONSOLE" level="debug"/>
 		<AppenderRef ref="fileGeneral" level="error" /> 		

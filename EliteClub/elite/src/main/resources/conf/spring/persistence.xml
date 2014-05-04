@@ -20,16 +20,16 @@
 	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
 		<property name="jndiName" value="java:comp/env/jdbc/survey" />
 	</bean> -->
-	<tx:annotation-driven />
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	  <jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/eliteClub"/>
 	
-	
- <bean id="dataSource"
+ <!--  <bean id="dataSource"
             class="org.springframework.jdbc.datasource.DriverManagerDataSource">
             <property name="driverClassName" value="com.mysql.jdbc.Driver" />
             <property name="url" value="jdbc:mysql://localhost:3306/elite_club" />
             <property name="username" value="root" />
             <property name="password" value="root" />
-      </bean>
+      </bean>  -->
 	
 	<bean id="sessionFactory" 			class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<property name="dataSource">
@@ -38,8 +38,8 @@
 		<property name="packagesToScan" value="com.itgrids.eliteclub.model" />       
 		<property name="hibernateProperties">
 			<props>
-
 				  <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<!--    <prop key="hibernate.current_session_context_class">thread</prop> -->
                   <prop key="hibernate.show_sql">true</prop>	       
                   <prop key="hibernate.cache.use_second_level_cache">false</prop>    
        		</props>
@@ -54,13 +54,13 @@
         <jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/datasource"/>
     </beans> -->
     
-     <beans profile="dev">
+<!--     <beans profile="dev">
 		      <bean id="dataSource"
 		            class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		            <property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		            <property name="url" value="jdbc:mysql://localhost:3306/elite_club" />
 		            <property name="username" value="root" />
 		            <property name="password" value="root" />
-		      </bean>
-    </beans>
+		      </bean> 
+    </beans> -->
 </beans>

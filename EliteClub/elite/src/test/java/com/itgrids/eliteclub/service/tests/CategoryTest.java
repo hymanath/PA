@@ -1,6 +1,8 @@
 package com.itgrids.eliteclub.service.tests;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,9 +33,15 @@ public class CategoryTest {
 	@Test
 	public void testLoadFilesByCategory()
 	{
-		List<?> objects=fileDAO.loadFilesByCategory();
+		//List<?> objects=fileDAO.loadFilesByCategory();
 		
-		System.out.println(objects);
+		Set<Integer> fileIds= new HashSet<Integer>();
+		fileIds.add(1);
+		fileIds.add(2);
+		fileIds.add(3);
+		List<?> objects=fileDAO.getVoiceIdsForFileIds(fileIds);
+		System.out.println(objects.toString().replace("[", "").replace("]", "")
+	            .replace(", ", ","));
 		
 	}
 	

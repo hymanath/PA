@@ -5,10 +5,12 @@ package com.itgrids.eliteclub.dao.impl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.itgrids.eliteclub.dao.AbstractDao;
 
@@ -16,7 +18,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.Resource;
-
+@Transactional
 public abstract class AbstractDaoImpl<E, I extends Serializable> implements AbstractDao<E,I> {
     protected final Log log = LogFactory.getLog(getClass());
 
@@ -29,9 +31,23 @@ public abstract class AbstractDaoImpl<E, I extends Serializable> implements Abst
     @Autowired
     //@Resource(name="sessionFactory")
     private SessionFactory sessionFactory;
-
+   @Transactional
     public Session getCurrentSession() {
-        return sessionFactory.openSession();
+    	
+    	 Session session = null;
+    	 try{
+    	     session = sessionFactory.getCurrentSession();
+    	 }catch(HibernateException hex){
+    	     hex.printStackTrace();
+    	 }
+    	 catch(Exception e){
+    	     e.printStackTrace();
+    	 }
+    	 if(session == null ){
+    	     session = sessionFactory.openSession();
+    	 }
+    	 
+    	 return session;
     }
 
     @SuppressWarnings("unchecked")
@@ -51,7 +67,7 @@ public abstract class AbstractDaoImpl<E, I extends Serializable> implements Abst
     public void saveOrUpdate(E e) {
         getCurrentSession().saveOrUpdate(e);
     }
-    @Override
+    //@Override
     public void saveOrUpdateForTrancasction(E e) {
     	sessionFactory.getCurrentSession().saveOrUpdate(e);
     }
