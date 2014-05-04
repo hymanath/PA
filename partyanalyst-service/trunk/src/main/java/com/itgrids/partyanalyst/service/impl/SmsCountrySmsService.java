@@ -199,11 +199,12 @@ public class SmsCountrySmsService implements ISmsService {
 					sb.append(",");
 			}
 			
-			PostMethod post = new PostMethod("http://sms.partyanalyst.com/WebserviceSMS.aspx");
+			//PostMethod post = new PostMethod("http://sms.partyanalyst.com/WebserviceSMS.aspx");
+			PostMethod post = new PostMethod("http://smscountry.com/SMSCwebservice_Bulk.aspx");
 			
 			post.addParameter("User",IConstants.ADMIN_USERNAME_FOR_SMS);
 			post.addParameter("passwd",IConstants.ADMIN_PASSWORD_FOR_SMS);
-			post.addParameter("sid",IConstants.ADMIN_SENDERID_FOR_SMS);
+			//post.addParameter("sid",IConstants.ADMIN_SENDERID_FOR_SMS);
 		    post.addParameter("mobilenumber", sb.toString());
 			post.addParameter("message", message);
 			post.addParameter("mtype", isEnglish ? "N" : "OL");
