@@ -12,6 +12,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
+import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.core.task.TaskExecutor;
@@ -4076,7 +4080,73 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			log.debug(" Inside sendSMSTOSelectedCadreMobileNos Method ..");
 		SmsResultVO smsResult = new SmsResultVO();
 		ResultStatus resultStatus = new ResultStatus();
+		
+		
+		if(IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){
+			int smsCountNos = 0;
+			
+			StringBuilder sb = new StringBuilder();
+			
+			String[] cadreMobileNos = new String[cadreList.size()];
+			int i = -1;
+			for (SmsVO mobileInfo : cadreList) {
+				cadreMobileNos[++i] = mobileInfo.getMobileNO();
+				
+				sb.append(mobileInfo.getMobileNO());
+				sb.append(",");
+				
+				if(mobileInfo.getMobileNO() != null && mobileInfo.getMobileNO().trim().length() >0)
+					smsCountNos = smsCountNos+1;
+			}
+			if (cadreMobileNos != null && cadreMobileNos.length > 0){
+					HttpClient client = new HttpClient(new MultiThreadedHttpConnectionManager());
+					client.getHttpConnectionManager().getParams().setConnectionTimeout(
+						Integer.parseInt("30000"));
+				
+					sb.deleteCharAt(sb.length()-1);
+					boolean isEnglish = true;
+					
+					PostMethod post = new PostMethod("http://smscountry.com/SMSCwebservice_Bulk.aspx");
+					
+					post.addParameter("User",IConstants.ADMIN_USERNAME_FOR_SMS);
+					post.addParameter("passwd",IConstants.ADMIN_PASSWORD_FOR_SMS);
+					//post.addParameter("sid",IConstants.ADMIN_SENDERID_FOR_SMS);
+				    post.addParameter("mobilenumber", sb.toString());
+					post.addParameter("message", message);
+					post.addParameter("mtype", isEnglish ? "N" : "OL");
+					post.addParameter("DR", "Y");
+					
+					/* PUSH the URL */
+					try 
+					{
+						int statusCode = client.executeMethod(post);
+						
+						if (statusCode != HttpStatus.SC_OK) {
+							log.error("SmsCountrySmsService.sendSMS failed: "+ post.getStatusLine());
+							smsResult.setStatus(1l);
+						}
+						else
+							resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+							smsResult.setStatus(0l);
 
+					}catch (Exception e) {
+							log.error(e);
+							resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+							resultStatus.setExceptionEncountered(e);
+					} finally {
+							post.releaseConnection();
+					}
+					
+					return smsResult;
+					
+					
+			}
+				
+				
+		}
+		
+		else{
+		
 		try {
 			Long smsRemainingStatus = 0l;
 			Long smsSentStatus = 0l;
@@ -4152,6 +4222,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			resultStatus.setExceptionMsg(getExceptionMessage(ex.getClass()
 					.toString()));
 			smsResult.setResultStatus(resultStatus);
+		}
 		}
 
 		return smsResult;
