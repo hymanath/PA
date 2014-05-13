@@ -1415,5 +1415,7 @@
 	</bean>
 	
 	<bean id="generateStrategyReportsAction" class="com.itgrids.partyanalyst.web.action.GenerateStrategyReportsAction" singleton="false"></bean>
+	
+	<bean id="acPcWiseElectionResultAction" class="com.itgrids.partyanalyst.web.action.AcPcWiseElectionResultAction" singleton="false"></bean>
 </beans>	
 	
