@@ -215,4 +215,16 @@ IDelimitationConstituencyDAO {
 		//query.setParameter("year", 2009);
 		return query.list();
 	}
+	
+	
+	public List<Object[]> getConstituencyNoByState(Long stateId,Long year,Long electionScopeId)
+	{
+		Query query = getSession().createQuery("select model.constituency.constituencyId,model.constituencyNO,model.constituency.name " +
+				" from DelimitationConstituency model where model.constituency.state.stateId = :stateId " +
+				" and model.year = :year and model.constituency.electionScope.electionScopeId = :electionScopeId");
+		query.setParameter("stateId", stateId);
+		query.setParameter("electionScopeId", electionScopeId);
+		query.setParameter("year", year);
+		return query.list();
+	}
 }
