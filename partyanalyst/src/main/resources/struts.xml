@@ -6927,6 +6927,13 @@
 		 <action name="acPcWiseElectionResultAction" class="acPcWiseElectionResultAction">
 			<result name="success">/jsp/AcPcWiseElectionResult.jsp</result>			
 		</action>
+		
+		 <action name="getElectionResultsAction" class="acPcWiseElectionResultAction" method="getElectionResults">
+			<result type="json" name="success">
+				<param name="root">resultList</param>				
+			</result>		
+		</action>
+		
 </package>
 		
 </struts>      

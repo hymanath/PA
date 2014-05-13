@@ -42,6 +42,8 @@ padding: 4px;
 		line-height: 18px;
 	}
 </style>
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
 </head>
 <body>
 <div align="center" style="margin-bottom: 32px; margin-top: 10px;">
@@ -63,8 +65,23 @@ padding: 4px;
 <div align="center" style="" class="hero-unit">
 <div id="partiesDiv"></div>
 </div>
+
+<div id="resultDiv"></div>
 <script>
 	getConstituenctSelection();
+	
+	var tableToExcel = (function() {
+		var uri = 'data:application/vnd.ms-excel;base64,'
+		, template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+		, base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+		, format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+		return function(table, name) {
+		if (!table.nodeType) table = document.getElementById(table)
+		var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+		window.location.href = uri + base64(format(template, ctx))
+		}
+		})()
+
 	function getConstituenctSelection()
 	{
 		if($("input:radio[name=type]:checked").val() == 'ac')
@@ -164,8 +181,93 @@ padding: 4px;
 				$('#partiesDiv').html(str);
 		});	
 	}	
+	getElectionResult();
+	function getElectionResult()
+	{
+		var electionTypeId = '';
+		if($("input:radio[name=type]:checked").val() == 'ac')
+		{
+			electionTypeId = 2;
+		}
+		else
+		{
+			electionTypeId = 1;
+		}
+		var parties = new Array();
+		parties.push(72);
+		parties.push(163);
+		parties.push(265);
+		parties.push(269);
+		parties.push(362);
+		parties.push(429);
+		parties.push(872);
+		parties.push(886);
+		var jsObj=
+		{
+				electionId : 38,
+				stateId : 1,
+				electionScopeId : 2,
+				parties : parties,
+				task : "getElectionResults"
+		};
+		$.ajax({
+		type: "GET",
+		url: "getElectionResultsAction.action",
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)},
+		})
+		.done(function( result ) {
+			buildResult(result);
+		});	
+	}
+	
+	function buildResult(result)
+	{
+		var str = '';
+		str += '<table class="table table-hover table-bordered" id="subLevelTable">';
+		str += '<thead>';
+		str += '<tr>';
+		str += '<th>DISTRICT</th>';
+		str += '<th>AC NO</th>';
+		str += '<th>AC NAME</th>';
+		for(var i in result[0].selectedCasteDetails)
+		{
+			str += '<th>'+result[0].selectedCasteDetails[i].name+'</th>';
+		}
+		str += '</tr>';
+		str += '</thead><tbody>';
+		for(var i in result)
+		{
+			str += '<tr>';
+			str += '<td>'+result[i].mandalName+'</td>';
+			str += '<td>'+result[i].hamletId+'</td>';
+			str += '<td>'+result[i].name+'</td>';
+			for(var j in result[i].selectedCasteDetails)
+			{
+				str += '<th>'+result[i].selectedCasteDetails[j].count+'</th>';
+			}
+			str += '</tr>';
+		}
+		str+= '</tbody>';
+		str += '</table>';
+		
+		$('#resultDiv').html(str);
+		
+		$('#subLevelTable').dataTable({
+		"aaSorting": [[ 1, "asc" ]],
+		"iDisplayLength": 300,
+		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90]]
+		});
+		
+		generateReport('subLevelTable');
+	}
 	
 	
+		function generateReport(tableId)
+		{
+			tableToExcel(tableId, 'ELECTION RESULT');
+		}
+
 </script>
 </body>
 </html>
