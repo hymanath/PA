@@ -256,7 +256,7 @@ padding: 4px;
 		$('#subLevelTable').dataTable({
 		"aaSorting": [[ 1, "asc" ]],
 		"iDisplayLength": 300,
-		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90]]
+		"aLengthMenu": [[300,200,100, -1], [300,200,100,"All"]]
 		});
 		
 		generateReport('subLevelTable');
