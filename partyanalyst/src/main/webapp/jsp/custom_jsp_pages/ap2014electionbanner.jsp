@@ -203,18 +203,18 @@ table.gujaratTableDiv td:first-child {width:50%;}
 			</tr>
 			<tr>
 				<th>SC Constituencies</th>
-				<th>16</th>
-				<th>14</th>
+				<th>29</th>
+				<th>19</th>
 			</tr>
 			<tr>
 				<th>ST Constituencies</th>
-				<th>1</th>
-				<th>9</th>
+				<th>7</th>
+				<th>12</th>
 			</tr>
 			<tr>
 				<th>General Constituencies</th>
-				<th>158</th>
-				<th>96</th>
+				<th>139</th>
+				<th>88</th>
 			</tr>
 	</tbody>
 	</table>
