@@ -3,8 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,13 +12,20 @@ import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
 import com.itgrids.partyanalyst.dao.ICriticalPanchayatsDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IPartyDAO;
+import com.itgrids.partyanalyst.dto.BasicVO;
 
 public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
 	private ICriticalPanchayatsDAO criticalPanchayatsDAO;
 	private IBoothDAO boothDAO;
+	private ICandidateResultDAO candidateResultDAO;
+	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
+	private IPartyDAO partyDAO;
 	public void setBoothPublicationVoterDAO(
 			IBoothPublicationVoterDAO boothPublicationVoterDAO) {
 		this.boothPublicationVoterDAO = boothPublicationVoterDAO;
@@ -1204,6 +1210,43 @@ List<Long> attrIds = new ArrayList<Long>();
 	*/
 	
 	
+	public ICandidateResultDAO getCandidateResultDAO() {
+		return candidateResultDAO;
+	}
+
+
+
+	public void setCandidateResultDAO(ICandidateResultDAO candidateResultDAO) {
+		this.candidateResultDAO = candidateResultDAO;
+	}
+
+
+
+	public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
+		return delimitationConstituencyDAO;
+	}
+
+
+
+	public void setDelimitationConstituencyDAO(
+			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
+		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
+	}
+
+
+
+	public IPartyDAO getPartyDAO() {
+		return partyDAO;
+	}
+
+
+
+	public void setPartyDAO(IPartyDAO partyDAO) {
+		this.partyDAO = partyDAO;
+	}
+
+
+
 	public void setBoothDAO(IBoothDAO boothDAO) {
 		this.boothDAO = boothDAO;
 	}
@@ -1315,7 +1358,7 @@ List<Long> attrIds = new ArrayList<Long>();
 		
 	}*/
 	
-	public void testgetPdfsForVotersList()
+	/*public void testgetPdfsForVotersList()
 	{
 		List<Long> boothIds = boothDAO.getBoothIdByConstituencyPublication(282l,10l);
 		for (Long boothId : boothIds) {
@@ -1419,7 +1462,7 @@ List<Long> attrIds = new ArrayList<Long>();
 		
 	}
 	
-	
+	*/
 	/*public void testGetTotalVotersBoothWise(){
 		List<Object[]> list=boothPublicationVoterDAO.getTotalVotersOfBoothByConstituencyId(228l, 10l);
 		System.out.println(list.size());
@@ -1473,4 +1516,114 @@ List<Long> attrIds = new ArrayList<Long>();
 		 }
 		
 	}*/
+	
+	public void testResult()
+	{
+		List<Long> partyIds = new ArrayList();
+		partyIds.add(72l);
+		partyIds.add(163l);
+		partyIds.add(265l);
+		partyIds.add(269l);
+		partyIds.add(362l);
+		partyIds.add(429l);
+		partyIds.add(872l);
+		partyIds.add(886l);
+		getPartyWiseComperassionResult(1l,38l,partyIds);
+	}
+	
+	public List<BasicVO> getPartyWiseComperassionResult(Long stateId,Long electionId,List<Long> partyIds)
+	{
+		List<BasicVO> returnList = null;
+		try 
+		{
+			List<Object[]> result = candidateResultDAO.getElectionResultsForSelection(electionId,stateId,partyIds);
+			if(result != null && result.size() > 0)
+			{
+				
+				Map<Long,List<BasicVO>> constituencyWiseMap = new HashMap<Long, List<BasicVO>>();
+				Map<Long,Long> constituencyNosMap = new HashMap<Long, Long>();
+				Map<Long,String> constituencyNameMap = new HashMap<Long, String>();
+				for (Object[] objects : result)
+				{
+					List<BasicVO> constituencyWiseList = constituencyWiseMap.get((Long)objects[0]);
+					if(constituencyWiseList == null)
+					{
+						constituencyWiseList = new ArrayList<BasicVO>();
+						constituencyWiseMap.put((Long)objects[0], constituencyWiseList);
+					}
+					BasicVO basicVO = new BasicVO();
+					basicVO.setId((Long)objects[0]);//constituency Id
+					basicVO.setName(objects[1] != null ? objects[1].toString() : "");//constituency Name
+					basicVO.setMandalName(objects[2] != null ? objects[2].toString() : "");//District Name
+					basicVO.setCount(objects[3] != null ?Double.valueOf(objects[3].toString()).longValue() : 0l);//gained Votes
+					basicVO.setDescription(objects[4] != null ? objects[4].toString() : "0");//votes percentage
+					basicVO.setLevelId((Long)objects[5]);//party Id
+					basicVO.setDescription(objects[6] != null ? objects[6].toString() : "");//party Name
+					basicVO.setCasteName(objects[7] != null ? objects[7].toString() : "");//candidate
+					constituencyWiseList.add(basicVO);
+				}
+				List<Object[]> constituencyDetails = delimitationConstituencyDAO.getConstituencyNoByState(stateId,2009l,2l);
+				if(constituencyDetails != null && constituencyDetails.size() > 0)
+				{
+					for (Object[] objects : constituencyDetails)
+					{
+						constituencyNosMap.put((Long)objects[0], (Long)objects[1]);
+						constituencyNameMap.put((Long)objects[0], objects[2].toString());
+					}
+				}
+				List<Object[]> parties = partyDAO.getPartyShortNameByIds(partyIds);
+				
+				List<Long> constituenctyIds = new ArrayList<Long>(constituencyNosMap.keySet());
+				if(constituenctyIds != null && constituenctyIds.size() > 0)
+				{
+					returnList = new ArrayList<BasicVO>();
+					for (Long constituencyId : constituenctyIds)
+					{
+						BasicVO VO = new BasicVO();
+						VO.setId(constituencyId);
+						VO.setHamletId(constituencyNosMap.get(constituencyId));
+						VO.setName(constituencyNameMap.get(constituencyId));
+						List<BasicVO> constiwiseList = constituencyWiseMap.get(constituencyId);
+						if(constiwiseList != null && constiwiseList.size() > 0)
+						{
+							List<BasicVO> partiesList = new ArrayList<BasicVO>();
+							if(parties != null && parties.size() > 0)
+							{
+								for (Object[] objects : parties)
+								{
+									BasicVO partyVO = new BasicVO();
+									partyVO.setId((Long)objects[0]);
+									partyVO.setName(objects[1].toString());
+									partyVO.setCount(0l);
+									partyVO.setPerc(0.0);
+									partiesList.add(partyVO);
+								}
+							}
+							for (BasicVO subVO : constiwiseList)
+							{
+								VO.setMandalName(subVO.getMandalName());
+								for(BasicVO partyVO : partiesList)
+								{
+									if(partyVO.getId().longValue() == subVO.getLevelId().longValue())
+									{
+										partyVO.setCount(subVO.getCount());
+										partyVO.setDescription(subVO.getDescription());
+									}
+								}
+							}
+							VO.setSelectedCasteDetails(partiesList);
+						}
+						returnList.add(VO);
+					}
+				}
+						
+				
+			}
+		} 
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return returnList;
+	}
 }

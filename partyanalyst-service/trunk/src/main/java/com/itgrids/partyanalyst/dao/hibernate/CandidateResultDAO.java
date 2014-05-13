@@ -230,4 +230,22 @@ public class CandidateResultDAO extends GenericDaoHibernate<CandidateResult, Lon
 		
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getElectionResultsForSelection(Long electionId,Long stateid,List<Long> partyIds)
+	{
+		Query query = getSession().createQuery("select model.nomination.constituencyElection.constituency.constituencyId ," +
+				" model.nomination.constituencyElection.constituency.name," +
+				" model.nomination.constituencyElection.constituency.district.districtName ," +
+				" model.votesEarned , model.votesPercengate ," +
+				" model.nomination.party.partyId , model.nomination.party.shortName," +
+				" model.nomination.candidate.lastname from CandidateResult model where " +
+				" model.nomination.party.partyId in (:partyIds) and model.nomination.constituencyElection.election.electionId = :electionId " +
+				" and model.nomination.constituencyElection.constituency.state.stateId = :stateid " +
+				" order by model.nomination.constituencyElection.constituency.constituencyId");
+		query.setParameter("electionId", electionId);
+		query.setParameter("stateid", stateid);
+		query.setParameterList("partyIds", partyIds);
+		return query.list();
+	}
 }
