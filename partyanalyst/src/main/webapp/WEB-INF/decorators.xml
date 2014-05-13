@@ -315,6 +315,7 @@
 		<pattern>/manageUserMessageCreditsAction*</pattern>
 		<pattern>/assigningCandidatesToUserAction*</pattern>
 		<pattern>/userRegPageAction*</pattern>
+		<pattern>/acPcWiseElectionResultAction*</pattern>
 		</decorator>
     	 
        <decorator name="tdpHome" page="tdplayout.jsp">

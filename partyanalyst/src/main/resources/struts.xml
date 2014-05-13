@@ -6922,6 +6922,11 @@
 				<param name="root">status</param>				
 			</result>		
 		</action>
+		
+		 
+		 <action name="acPcWiseElectionResultAction" class="acPcWiseElectionResultAction">
+			<result name="success">/jsp/AcPcWiseElectionResult.jsp</result>			
+		</action>
 </package>
 		
 </struts>      

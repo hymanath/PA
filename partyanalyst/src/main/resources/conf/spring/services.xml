@@ -2065,6 +2065,8 @@
    <bean name="pdfReportService" class="com.itgrids.partyanalyst.service.impl.PdfReportService"></bean>
    
    <bean name="prpEffectCalculateService" class="com.itgrids.partyanalyst.service.impl.PrpEffectCalculateService"></bean>
+  
+   <bean name="acPcWiseElectionResultService" class="com.itgrids.partyanalyst.service.impl.AcPcWiseElectionResultService"></bean>
    
 </beans>		
 	
