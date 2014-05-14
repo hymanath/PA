@@ -42,12 +42,6 @@ padding: 4px;
 		line-height: 18px;
 	}
 	
-	.results-header {
-		border-bottom-color: #004276 !important;
-		border-bottom-style: solid !important;
-		border-bottom-width: 2px !important;
-		padding-bottom: 0.5em !important;
-		}
 
 </style>
 <script src="js/apElectionResult.js"></script>
@@ -129,19 +123,20 @@ padding: 4px;
 	{
 		var popupContent='';
 
-		popupContent +='<article class="timeline-group" id="stateAK">';
+		popupContent +='<article class="timeline-group" id="stateAK" style="font-family: times new roman,serif,sans-serif;">';
 		popupContent +=' <header class="timeline-header">';
 		popupContent +=' <h3><b aria-hidden="true" class="stateface "></b> Adilabad</a></h3>';
 		popupContent +=' </header>';
 		popupContent +=' <ol class="timeline-list"> ';
 		popupContent +=' <li class="timeline-point is-standard" data-when="future"> ';
 		popupContent +=' <article class="results-group">';
-		popupContent +=' <header class="results-header" style="width: 600px;">';
-		popupContent +=' <div class="title" style="width:550px"> ';
-		popupContent +=' <b style="color:#009900;font-size: 12px;">First Position <span style="color:#434343;"> : XXX </span> Lead <span style="color:#434343;">: 1000 Votes </span> Party: <span style="color:#434343;font-weight:bold;"> TDP/BJP </span></b>';
-		popupContent +=' </div>';
+		popupContent +=' <header class="results-header" style="width: 525px; margin-top: -10px;margin-bottom: 10px;">';
 		popupContent +=' </header>';
+		popupContent +=' <b style="font-size: 12px;">  Reporting : 0 % <span style="font-weight:bold;float:right;">  Leading Party: TDP </span></b>';
 		
+		popupContent +=' <header class="results-header" style="width: 450px; margin-top: -10px;border-bottom-color: #004276;border-bottom-width: 2px;">';
+		popupContent +=' </header>';
+
 		for(var i in electionData)
 		{
 			if(feature.properties.ac == electionData[i].hamletId)
@@ -155,23 +150,57 @@ padding: 4px;
 					popupContent +=' <table class="results-table" style="width:650px">';
 					popupContent +=' <tbody>';
 					popupContent +=' <tr class="type-democrat">';
+					popupContent +=' <td class="results-title" style="width: 200px;">';
+					popupContent +=' <span class="percentage-combo" ><span class="number">'+electionData[i].selectedCasteDetails[j].casteName+'</span>';
+					popupContent +=' </span>';
+					popupContent +=' </td>';
 					popupContent +=' <td class="results-title" style="width: 30px;">';
-					popupContent +=' <span class="percentage-combo" ><span class="number">'+electionData[i].selectedCasteDetails[j].name+'</span>';
+					//popupContent +=' <span class="percentage-combo" ><span class="number">'+electionData[i].selectedCasteDetails[j].name+'</span>';
+					if(electionData[i].selectedCasteDetails[j].name =='TDP'){
+						popupContent +=' <span > <img src="images/party_flags/TDP.PNG" width=125% /></span>';
+					}
+					if(electionData[i].selectedCasteDetails[j].name =='INC'){
+						popupContent +=' <span > <img src="images/party_flags/INC.png" width=125% /></span>';
+					}
+					if(electionData[i].selectedCasteDetails[j].name =='TRS'){
+						popupContent +=' <span > <img src="images/party_flags/TRS.png" width=125% /></span>';
+					}
+					if(electionData[i].selectedCasteDetails[j].name =='BJP'){
+						popupContent +=' <span > <img src="images/party_flags/BJP.png" width=125% /></span>';
+					}
+					if(electionData[i].selectedCasteDetails[j].name =='AIMIM'){
+						popupContent +=' <span > <img src="images/party_flags/AIMIM.png" width=125% /></span>';
+					}
+					if(electionData[i].selectedCasteDetails[j].name =='CPM'){
+						popupContent +=' <span > <img src="images/party_flags/CPM.png" width=125% /></span>';
+					}
+					if(electionData[i].selectedCasteDetails[j].name =='CPI'){
+						popupContent +=' <span > <img src="images/party_flags/CPI.png" width=125% /></span>';
+					}
+					if(electionData[i].selectedCasteDetails[j].name =='LSP'){
+						popupContent +=' <span > <img src="images/party_flags/LSP.png" width=125% /></span>';
+					}
+					
 					popupContent +=' </span>';
 					popupContent +=' </td>';
 					//popupContent +=' <td class="results-title" style="width: 30px;">';
 					//popupContent +=' </td>';
-					popupContent +=' <td class="results-percentage" style="width: 100px;">';
-					popupContent +=' <span class="percentage-combo" ><span class="number">'+electionData[i].selectedCasteDetails[j].perc+'%</span>';
+					popupContent +=' <td class="results-percentage" style="width: 120px; padding-left: 25px;">';
+					if(electionData[i].selectedCasteDetails[j].persent != null){
+					popupContent +=' <span class="percentage-combo" ><span class="number">'+electionData[i].selectedCasteDetails[j].persent+'%</span>';
+					}
+					else{
+					popupContent +=' <span class="percentage-combo" ><span class="number">0 %</span>';
+					}
 					popupContent +=' <span class="graph">';
 					popupContent +=' <span class="bar">';
-					popupContent +=' <span style="width:'+electionData[i].selectedCasteDetails[j].perc+'%;" class="index"></span>';
+					popupContent +=' <span style="width:'+electionData[i].selectedCasteDetails[j].persent+'%;" class="index"></span>';
 					popupContent +=' </span>';
 					popupContent +=' </span>';
 					popupContent +=' </span>';
 					popupContent +=' </td>';
 					popupContent +=' <td style="width: 150px;padding-left:35px;">';
-					popupContent +=' <span style="font-weight:#000000">'+electionData[i].selectedCasteDetails[j].count+'Votes</span>';
+					popupContent +=' <span style="font-weight:#000000">'+electionData[i].selectedCasteDetails[j].count+' </span>';
 					popupContent +=' </td>';
 					popupContent +=' </tr>';
 					popupContent +=' </tbody>';
@@ -186,23 +215,14 @@ padding: 4px;
 			}
 		} 
 		
-		popupContent +=' <footer class="results-footer" style="width: 600px;">';
-		popupContent +=' <div class="text-key">';
-		popupContent +=' <dl>';
-		popupContent +=' <dt> 7250 </dt>';
-		popupContent +=' <dd> </dd>';
-		popupContent +=' <dt> / </dt>';
-		popupContent +=' <dd> 25000 votes </dd>';
-		popupContent +=' </dl>';
-		popupContent +=' </div>';
-		popupContent +=' </footer>';
+
 		popupContent +=' </article>';
 		popupContent +=' </li> ';
 		popupContent +=' </ol>';
 		popupContent +=' </article>';
 
 
-
+		$('.leaflet-popup-close-button').html('');
 		if (feature.properties && feature.properties.popupContent)
 		{
 			popupContent += feature.properties.popupContent;
