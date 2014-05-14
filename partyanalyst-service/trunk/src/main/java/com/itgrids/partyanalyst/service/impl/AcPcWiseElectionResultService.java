@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,6 +114,13 @@ public class AcPcWiseElectionResultService implements IAcPcWiseElectionResultSer
 									}
 								}
 							}
+							Collections.sort(partiesList, new Comparator<BasicVO>() {
+
+								public int compare(BasicVO o1, BasicVO o2) {									
+									return o2.getCount().compareTo(o1.getCount());
+								}
+							});
+							
 							VO.setSelectedCasteDetails(partiesList);
 						}
 						returnList.add(VO);
