@@ -41,12 +41,33 @@ padding: 4px;
 		font-weight: normal;
 		line-height: 18px;
 	}
+	
+	.results-header {
+		border-bottom-color: #004276 !important;
+		border-bottom-style: solid !important;
+		border-bottom-width: 2px !important;
+		padding-bottom: 0.5em !important;
+		}
+
 </style>
+<script src="js/apElectionResult.js"></script>
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
+<script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>
+<script src="http://maps.google.com/maps/api/js?v=3.2&sensor=false"></script>
+<script src="js/GOOGLE.js"></script>
+<script src="js/Permalink.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="styles/politico.css">
+<link rel="stylesheet" type="text/css" href="styles/leaflet.css">
 </head>
 <body>
-<div align="center" style="margin-bottom: 32px; margin-top: 10px;">
+<div>
+<div id="map" style="width: 1000px; height: 500px;cursor: pointer;"></div>
+<div id="result"></div>
+</div>
+<!--<div align="center" style="margin-bottom: 32px; margin-top: 10px;">
 	<input type="radio" name="type" value="ac" style="margin-top: -3px;" onClick="getConstituenctSelection();" checked="checked"/><span style="margin-left: 10px;">AC</span>
 	<input type="radio" name="type" value="pc" style="margin-top: -3px;" onClick="getConstituenctSelection();"/><span style="margin-left: 10px;">PC</span>
 </div>
@@ -65,11 +86,19 @@ padding: 4px;
 <div align="center" style="" class="hero-unit">
 <div id="partiesDiv"></div>
 </div>
-
+-->
 <div id="resultDiv"></div>
 <script>
+
+
+
+
+</script>
+<script>
 	getConstituenctSelection();
-	
+	getElectionResult();
+	var map = "";
+	var electionData = '';
 	var tableToExcel = (function() {
 		var uri = 'data:application/vnd.ms-excel;base64,'
 		, template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
@@ -95,6 +124,142 @@ padding: 4px;
 			getAssemblyElectionYears(1,"Parliament");
 		}
 	}	
+	
+	function onEachFeature(feature, layer)
+	{
+		//console.log(electionData);
+		/* var popupContent = "District :"+feature.properties.DIST_NAME+"";
+		popupContent += "  PC : "+feature.properties.AC_NAME+"";
+		popupContent += "  AC :  "+feature.properties.PC_NAME+"";
+		popupContent += "";
+		for(var i in electionData)
+		{
+			if(feature.properties.AC_NAME.toUpperCase() == electionData[i].name.toUpperCase())
+			{
+				for(var j in electionData[i].selectedCasteDetails)
+				{
+					popupContent += "Party : "+electionData[i].selectedCasteDetails[j].name+"";
+					popupContent += "Count : "+electionData[i].selectedCasteDetails[j].count+"";
+				}
+				
+			}
+		} */
+		var popupContent='';
+
+		popupContent +='<article class="timeline-group" id="stateAK">';
+		popupContent +=' <header class="timeline-header">';
+		popupContent +=' <h3><b aria-hidden="true" class="stateface "></b> Adilabad</a></h3>';
+		popupContent +=' </header>';
+		popupContent +=' <ol class="timeline-list"> ';
+		popupContent +=' <li class="timeline-point is-standard" data-when="future"> ';
+		popupContent +=' <article class="results-group">';
+		popupContent +=' <header class="results-header" style="width: 600px;">';
+		popupContent +=' <div class="title" style="width:550px"> ';
+		popupContent +=' <b style="color:#009900;font-size: 12px;">First Position <span style="color:#434343;"> : XXX </span> Lead <span style="color:#434343;">: 1000 Votes </span> Party: <span style="color:#434343;font-weight:bold;"> TDP/BJP </span></b>';
+		popupContent +=' </div>';
+		popupContent +=' </header>';
+		
+		for(var i in electionData)
+		{
+			if(feature.properties.AC_NAME.toUpperCase() == electionData[i].name.toUpperCase())
+			{
+				for(var j in electionData[i].selectedCasteDetails)
+				{
+					popupContent +=' <div class="results-dataset">';
+					popupContent +=' <div class="results-row layout-full">';
+					popupContent +=' <div class="results-data pos-omega contains-mix is-de-emphasized">';
+					popupContent +=' <div class="results-message">';
+					popupContent +=' <table class="results-table" style="width:650px">';
+					popupContent +=' <tbody>';
+					popupContent +=' <tr class="type-democrat">';
+					popupContent +=' <td class="results-title" style="width: 30px;">';
+					popupContent +=' <span class="percentage-combo" ><span class="number">'+electionData[i].selectedCasteDetails[j].name+'</span>';
+					popupContent +=' </span>';
+					popupContent +=' </td>';
+					//popupContent +=' <td class="results-title" style="width: 30px;">';
+					//popupContent +=' </td>';
+					popupContent +=' <td class="results-percentage" style="width: 100px;">';
+					popupContent +=' <span class="percentage-combo" ><span class="number">'+electionData[i].selectedCasteDetails[j].perc+'%</span>';
+					popupContent +=' <span class="graph">';
+					popupContent +=' <span class="bar">';
+					popupContent +=' <span style="width:'+electionData[i].selectedCasteDetails[j].perc+'%;" class="index"></span>';
+					popupContent +=' </span>';
+					popupContent +=' </span>';
+					popupContent +=' </span>';
+					popupContent +=' </td>';
+					popupContent +=' <td style="width: 150px;padding-left:35px;">';
+					popupContent +=' <span style="font-weight:#000000">'+electionData[i].selectedCasteDetails[j].count+'Votes</span>';
+					popupContent +=' </td>';
+					popupContent +=' </tr>';
+					popupContent +=' </tbody>';
+					popupContent +=' </table>';
+					popupContent +=' </div>';
+					popupContent +=' </div>';
+					popupContent +=' </div>';
+					popupContent +=' </div>';
+		
+				}
+				
+			}
+		} 
+		
+		popupContent +=' <footer class="results-footer" style="width: 600px;">';
+		popupContent +=' <div class="text-key">';
+		popupContent +=' <dl>';
+		popupContent +=' <dt> 7250 </dt>';
+		popupContent +=' <dd> </dd>';
+		popupContent +=' <dt> / </dt>';
+		popupContent +=' <dd> 25000 votes </dd>';
+		popupContent +=' </dl>';
+		popupContent +=' </div>';
+		popupContent +=' </footer>';
+		popupContent +=' </article>';
+		popupContent +=' </li> ';
+		popupContent +=' </ol>';
+		popupContent +=' </article>';
+
+
+
+		if (feature.properties && feature.properties.popupContent)
+		{
+			popupContent += feature.properties.popupContent;
+		}
+		 
+		if(feature.properties.AC_TYPE == 'GEN')
+		{
+			layer.setStyle({
+			color: '#000000', 
+			weight: 1,
+			opacity: 0.6,
+			fillOpacity: 0.65,
+			fillColor: '#00FF00'
+			});
+			layer.bindPopup(popupContent);
+		}
+		else if (feature.properties.AC_TYPE == 'ST')
+		{
+			layer.setStyle({
+			color: '#000000', 
+			weight: 1,
+			opacity: 0.6,
+			fillOpacity: 0.65,
+			fillColor: '#FF00FF'
+			});
+			layer.bindPopup(popupContent);
+		}
+		else
+		{
+			layer.setStyle({
+			color: '#000000', 
+			weight: 1,
+			opacity: 0.6,
+			fillOpacity: 0.65,
+			fillColor: '#FF0000'
+			});
+			layer.bindPopup(popupContent);
+		} 
+				
+	}
 	function getStatesForAssembly()
 	{	
 		var jsObj=
@@ -181,7 +346,6 @@ padding: 4px;
 				$('#partiesDiv').html(str);
 		});	
 	}	
-	getElectionResult();
 	function getElectionResult()
 	{
 		var electionTypeId = '';
@@ -217,12 +381,15 @@ padding: 4px;
 		data: {task:JSON.stringify(jsObj)},
 		})
 		.done(function( result ) {
-			buildResult(result);
+			//buildResult(result);
+			electionData = result;
+			generateMap();
 		});	
 	}
 	
 	function buildResult(result)
 	{
+		
 		var str = '';
 		str += '<table class="table table-hover table-bordered" id="subLevelTable">';
 		str += '<thead>';
@@ -259,14 +426,52 @@ padding: 4px;
 		"aLengthMenu": [[300,200,100, -1], [300,200,100,"All"]]
 		});
 		
-		generateReport('subLevelTable');
+		//generateReport('subLevelTable');
 	}
 	
 	
-		function generateReport(tableId)
-		{
-			tableToExcel(tableId, 'ELECTION RESULT');
+	function generateReport(tableId)
+	{
+		tableToExcel(tableId, 'ELECTION RESULT');
+	}
+	
+	function generateMap()
+	{
+		//console.log(electionData);
+		map = L.map('map', {
+		center: [16.0000,80.0000],
+		zoom: 6
+		});
+
+		var osm = new L.TileLayer('http://{s}.tile.osmosnimki.ru/kosmo/{z}/{x}/{y}.png');
+		var mpn = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+		var qst = new L.TileLayer('http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png', {attribution:'Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">'}).addTo(map);
+		var hyb = new L.TileLayer('http://{s}.tile.osmosnimki.ru/hyb/{z}/{x}/{y}.png');
+		var irs = new L.TileLayer('http://tile.osmosnimki.ru/basesat/{z}/{x}/{y}.jpg');
+		var wms = new L.TileLayer.WMS('http://wms.latlon.org/', {layers:'irs', crs: L.CRS.EPSG4326});
+		var kadastr = new L.TileLayer.WMS('http://maps.rosreestr.ru/arcgis/services/Cadastre/CadastreWMS/MapServer/WMSServer', {format:'image/png', transparent:'true', layers:'16,15,14,13,11,10,9,22,21,20,19,18,7,6', tileSize:512});
+		map.addControl(new L.Control.Scale({width: 10, position: 'bottomleft'}));
+		map.addControl(new L.Control.Layers({ 'Mapnik':mpn, 'MapQuest':qst,  'Google':new L.Google()}
+						   ,{}
+		));
+		
+		L.geoJson(campus, {
+
+		style: function (feature) {
+			return feature.properties && feature.properties.style;
+		},
+		
+		onEachFeature: onEachFeature,
+
+		pointToLayer: function (feature, latlng) {
+			return L.circleMarker(latlng, {
+				
+			});
 		}
+
+		}).addTo(map); 
+	}
+	
 
 </script>
 </body>
