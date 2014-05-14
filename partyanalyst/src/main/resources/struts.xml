@@ -6922,7 +6922,7 @@
 				<param name="root">status</param>				
 			</result>		
 		</action>
-		
+				
 		 
 		 <action name="acPcWiseElectionResultAction" class="acPcWiseElectionResultAction">
 			<result name="success">/jsp/AcPcWiseElectionResult.jsp</result>			
@@ -6934,6 +6934,21 @@
 			</result>		
 		</action>
 		
+		 <action name="electionResults" class="dashBoardElectionResultsAction">
+			<result name="success">/jsp/electionResultsDashBoard.jsp</result>			
+		</action>
+		
+		 <action name="getElectionResultsSummary" class="dashBoardElectionResultsAction" method="getElectionResultsSummary">
+			<result type="json" name="success">
+				<param name="root">resultVO</param>				
+			</result>		
+		</action>
+		
+		 <action name="getConstituenciesDetailsForSubReport" class="dashBoardElectionResultsAction" method="getConstituenciesDetailsForSubReport">
+			<result type="json" name="success">
+				<param name="root">constituencyDetails</param>				
+			</result>		
+		</action>
 </package>
 		
 </struts>      

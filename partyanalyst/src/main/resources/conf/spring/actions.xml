@@ -1415,7 +1415,10 @@
 	</bean>
 	
 	<bean id="generateStrategyReportsAction" class="com.itgrids.partyanalyst.web.action.GenerateStrategyReportsAction" singleton="false"></bean>
-	
 	<bean id="acPcWiseElectionResultAction" class="com.itgrids.partyanalyst.web.action.AcPcWiseElectionResultAction" singleton="false"></bean>
+	
+	<bean id="dashBoardElectionResultsAction" class="com.itgrids.partyanalyst.web.action.DashBoardElectionResultsAction" singleton="false">
+	  <property name="dashBoardElectionResultsService" ref="dashBoardElectionResultsService" />
+   </bean>
 </beans>	
 	

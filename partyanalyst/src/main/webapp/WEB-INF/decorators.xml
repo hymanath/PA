@@ -316,6 +316,7 @@
 		<pattern>/assigningCandidatesToUserAction*</pattern>
 		<pattern>/userRegPageAction*</pattern>
 		<pattern>/acPcWiseElectionResultAction*</pattern>
+		<pattern>/electionResults*</pattern>
 		</decorator>
     	 
        <decorator name="tdpHome" page="tdplayout.jsp">
