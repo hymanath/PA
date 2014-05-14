@@ -155,7 +155,6 @@ public class InfectedBoothsAction  extends ActionSupport implements ServletReque
 	}
 
 
-	@Override
 	public void setServletRequest(HttpServletRequest arg0) {
 		this.request=arg0;
 	}
