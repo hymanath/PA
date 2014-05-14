@@ -127,23 +127,6 @@ padding: 4px;
 	
 	function onEachFeature(feature, layer)
 	{
-		//console.log(electionData);
-		/* var popupContent = "District :"+feature.properties.DIST_NAME+"";
-		popupContent += "  PC : "+feature.properties.AC_NAME+"";
-		popupContent += "  AC :  "+feature.properties.PC_NAME+"";
-		popupContent += "";
-		for(var i in electionData)
-		{
-			if(feature.properties.AC_NAME.toUpperCase() == electionData[i].name.toUpperCase())
-			{
-				for(var j in electionData[i].selectedCasteDetails)
-				{
-					popupContent += "Party : "+electionData[i].selectedCasteDetails[j].name+"";
-					popupContent += "Count : "+electionData[i].selectedCasteDetails[j].count+"";
-				}
-				
-			}
-		} */
 		var popupContent='';
 
 		popupContent +='<article class="timeline-group" id="stateAK">';
@@ -161,7 +144,7 @@ padding: 4px;
 		
 		for(var i in electionData)
 		{
-			if(feature.properties.AC_NAME.toUpperCase() == electionData[i].name.toUpperCase())
+			if(feature.properties.ac == electionData[i].hamletId)
 			{
 				for(var j in electionData[i].selectedCasteDetails)
 				{
@@ -225,7 +208,7 @@ padding: 4px;
 			popupContent += feature.properties.popupContent;
 		}
 		 
-		if(feature.properties.AC_TYPE == 'GEN')
+		/* if(feature.properties.AC_TYPE == 'GEN')
 		{
 			layer.setStyle({
 			color: '#000000', 
@@ -257,8 +240,16 @@ padding: 4px;
 			fillColor: '#FF0000'
 			});
 			layer.bindPopup(popupContent);
-		} 
-				
+		}  */
+			
+		layer.setStyle({
+			color: '#000000', 
+			weight: 1,
+			opacity: 0.6,
+			fillOpacity: 0.65,
+			fillColor: '#FFFFFF'
+			});
+			layer.bindPopup(popupContent);
 	}
 	function getStatesForAssembly()
 	{	
