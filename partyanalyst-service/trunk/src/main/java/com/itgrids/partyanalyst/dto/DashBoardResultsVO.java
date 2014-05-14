@@ -1,14 +1,19 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class DashBoardResultsVO {
 	
 	private Long partyId;
 	private String partyName;
 	private String percent;
-	private Long totalCount;
-	private Long votesCount;
+	private Long totalCount = 0L;
+	private Long votesCount = 0L;
+	private Long count = 0L;
+	
 	private Long parliamentNo;
 	private String parliamentName;
 	private Long assemblyNo;
@@ -16,15 +21,72 @@ public class DashBoardResultsVO {
 	private String firstRankCandidateName;
 	private String secondRankCandidateName;
 	private Long leadBy;
-	private List<DashBoardResultsVO> electionsVotesDetails;
-	private List<DashBoardResultsVO> surveyResults;
-	private List<DashBoardResultsVO> leadingSummaryDetails;
-	private List<DashBoardResultsVO> subReportDetails;
-	private List<DashBoardResultsVO> partyMarginDetails;
-	private List<DashBoardResultsVO> constituencyWiseDetails;
+	private List<DashBoardResultsVO> electionsVotesDetails = new ArrayList<DashBoardResultsVO>();
+	private List<DashBoardResultsVO> surveyResults = new ArrayList<DashBoardResultsVO>();
+	private List<DashBoardResultsVO> leadingSummaryDetails= new ArrayList<DashBoardResultsVO>();
+	private List<DashBoardResultsVO> subReportDetails= new ArrayList<DashBoardResultsVO>();
+	private List<DashBoardResultsVO> partyMarginDetails= new ArrayList<DashBoardResultsVO>();
+	private List<DashBoardResultsVO> constituencyWiseDetails= new ArrayList<DashBoardResultsVO>();
+	private List<DashBoardResultsVO> subList = new ArrayList<DashBoardResultsVO>();
+	private Set<Long> partyIds = new HashSet<Long>();
+	
+	private List<DashBoardResultsVO> reservationDetails = new ArrayList<DashBoardResultsVO>();
+	private List<DashBoardResultsVO> partiesDetails = new ArrayList<DashBoardResultsVO>();
+
+	public List<DashBoardResultsVO> getPartiesDetails() {
+		return partiesDetails;
+	}
+
+
+	public void setPartiesDetails(List<DashBoardResultsVO> partiesDetails) {
+		this.partiesDetails = partiesDetails;
+	}
+
+
+	public List<DashBoardResultsVO> getReservationDetails() {
+		return reservationDetails;
+	}
+
+
+	public void setReservationDetails(List<DashBoardResultsVO> reservationDetails) {
+		this.reservationDetails = reservationDetails;
+	}
+
+
+	public Set<Long> getPartyIds() {
+		return partyIds;
+	}
+
+
+	public void setPartyIds(Set<Long> partyIds) {
+		this.partyIds = partyIds;
+	}
+
+
+	private Long id;
+	private String name;
 	
 	
-	private List<DashBoardResultsVO> subList;
+	public Long getId() {
+		return id;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+	public String getName() {
+		return name;
+	}
+
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
 	
 
 	
@@ -219,4 +281,15 @@ public class DashBoardResultsVO {
 	public void setSubList(List<DashBoardResultsVO> subList) {
 		this.subList = subList;
 	}
+	
+	public Long getCount() {
+		return count;
+	}
+
+
+	public void setCount(Long count) {
+		this.count = count;
+	}
+
+
 }
