@@ -4424,5 +4424,64 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			return query.list();
 		}
 		
+		public List<Object[]> getWinningCandidatesDetailsForConstituenciesByElectionId(Long electionId)
+		{
+			Query query = getSession().createQuery("select " +
+					"model1.stateRegion.stateRegionId,model1.stateRegion.stateRegionId, " +
+					"model.constituencyElection.constituency.district.districtId,model.constituencyElection.constituency.district.districtName," +
+					"model.constituencyElection.constituency.constituencyId,model.constituencyElection.constituency.name," +
+					"model.party.partyId,model.party.shortName,model.constituencyElection.reservationZone ," +
+					"model.constituencyElection.constituency.areaType ," +
+					"model2.delimitationConstituency.constituency.constituencyId,model2.delimitationConstituency.constituency.name " +
+					"from  Nomination model ,StateRegionDistrict model1 , DelimitationConstituencyAssemblyDetails model2 " +
+					" where model.candidateResult.rank = 1 and model.constituencyElection.election.electionId = :electionId and " +
+					"model.constituencyElection.constituency.district.districtId = model1.district.districtId and " +
+					"model2.constituency.constituencyId = model.constituencyElection.constituency.constituencyId and " +
+					"model2.delimitationConstituency.year = :delimitationYear");
+			
+			
+			query.setParameter("electionId", electionId);
+			query.setParameter("delimitationYear", IConstants.DELIMITATION_YEAR);
+			return query.list();
+		}
+		
+		public List<Object[]> getConstituencyDetailsByConstituencyType(String constituencyType,Long partyId,Long electionId)
+		{
+			Query query = getSession().createQuery("select " +
+					"model.constituencyElection.constituency.constituencyId,model.constituencyElection.constituency.name, " +
+					"from  Nomination model ,StateRegionDistrict model1 , DelimitationConstituencyAssemblyDetails model2 " +
+					" where model.candidateResult.rank = 1 and model.constituencyElection.election.electionId = :electionId and " +
+					"model.constituencyElection.constituency.district.districtId = model1.district.districtId and " +
+					"model2.constituency.constituencyId = model.constituencyElection.constituency.constituencyId and " +
+					"model2.delimitationConstituency.year = :delimitationYear and model2.constituency.areaType = :areaType and " +
+					"model.party.partyId = :partyId");
+			
+			query.setParameter("electionId", electionId);
+			query.setParameter("delimitationYear", IConstants.DELIMITATION_YEAR);
+			query.setParameter("partyId", partyId);
+			query.setParameter("areaType", constituencyType);
+			return query.list();
+			
+		}
+		
+		public List<Object[]> getConstituencyDetailsByReservationType(String constituencyType,Long partyId,Long electionId)
+		{
+			Query query = getSession().createQuery("select " +
+					"model.constituencyElection.constituency.constituencyId,model.constituencyElection.constituency.name, " +
+					"from  Nomination model ,StateRegionDistrict model1 , DelimitationConstituencyAssemblyDetails model2 " +
+					" where model.candidateResult.rank = 1 and model.constituencyElection.election.electionId = :electionId and " +
+					"model.constituencyElection.constituency.district.districtId = model1.district.districtId and " +
+					"model2.constituency.constituencyId = model.constituencyElection.constituency.constituencyId and " +
+					"model2.delimitationConstituency.year = :delimitationYear and model2.constituencyElection.reservationZone = :reservationZone and " +
+					"model.party.partyId = :partyId");
+			
+			query.setParameter("electionId", electionId);
+			query.setParameter("delimitationYear", IConstants.DELIMITATION_YEAR);
+			query.setParameter("partyId", partyId);
+			query.setParameter("reservationZone", constituencyType);
+			return query.list();
+			
+		}
+		
 }
 
