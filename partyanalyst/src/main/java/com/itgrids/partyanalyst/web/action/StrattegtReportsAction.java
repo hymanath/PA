@@ -25,7 +25,7 @@ ServletRequestAware{
 	private List<SelectOptionVO> constituenciesList;
 	private Long constituencyId;
 	private ICrossVotingEstimationService crossVotingEstimationService;
-	@Override
+
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
