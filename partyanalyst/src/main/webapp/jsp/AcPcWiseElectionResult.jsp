@@ -44,9 +44,10 @@ padding: 4px;
 	
 
 </style>
-<script src="js/apElectionResult.js"></script>
-<script type="text/javascript" src="js/jquery.dataTables.js"></script>
-<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
+<script src="js/apac.js"></script>
+<!--<script src="js/tgac.js"></script>-->
+<!--<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">-->
 <script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>
 <script src="http://maps.google.com/maps/api/js?v=3.2&sensor=false"></script>
 <script src="js/GOOGLE.js"></script>
@@ -57,9 +58,12 @@ padding: 4px;
 <link rel="stylesheet" type="text/css" href="styles/leaflet.css">
 </head>
 <body>
-<div>
-<div id="map" style="width: 1000px; height: 500px;cursor: pointer;"></div>
+<div class="container">
+<div class="row-fluid">
+<div id="map" class="span6" style=" height: 500px;"></div>
+<div id="map1" class="span6" style="height: 500px;"></div>
 <div id="result"></div>
+</div>
 </div>
 <!--<div align="center" style="margin-bottom: 32px; margin-top: 10px;">
 	<input type="radio" name="type" value="ac" style="margin-top: -3px;" onClick="getConstituenctSelection();" checked="checked"/><span style="margin-left: 10px;">AC</span>
@@ -83,15 +87,10 @@ padding: 4px;
 -->
 <div id="resultDiv"></div>
 <script>
-
-
-
-
-</script>
-<script>
 	getConstituenctSelection();
 	getElectionResult();
 	var map = "";
+	var map1 = "";
 	var electionData = '';
 	var tableToExcel = (function() {
 		var uri = 'data:application/vnd.ms-excel;base64,'
@@ -369,11 +368,6 @@ padding: 4px;
 			electionTypeId = 1;
 		}
 		var parties = new Array();
-		parties.push(72);
-		parties.push(163);
-		parties.push(265);
-		parties.push(269);
-		parties.push(362);
 		parties.push(429);
 		parties.push(872);
 		parties.push(886);
@@ -394,7 +388,8 @@ padding: 4px;
 		.done(function( result ) {
 			//buildResult(result);
 			electionData = result;
-			generateMap();
+			generateMapForAp();
+			generateMapForTg();
 		});	
 	}
 	
@@ -446,7 +441,7 @@ padding: 4px;
 		tableToExcel(tableId, 'ELECTION RESULT');
 	}
 	
-	function generateMap()
+	function generateMapForAp()
 	{
 		//console.log(electionData);
 		map = L.map('map', {
@@ -466,7 +461,7 @@ padding: 4px;
 						   ,{}
 		));
 		
-		L.geoJson(campus, {
+		L.geoJson(apcampus, {
 
 		style: function (feature) {
 			return feature.properties && feature.properties.style;
@@ -481,6 +476,43 @@ padding: 4px;
 		}
 
 		}).addTo(map); 
+	}
+	
+	function generateMapForTg()
+	{
+		//console.log(electionData);
+		map1 = L.map('map1', {
+		center: [16.0000,80.0000],
+		zoom: 6
+		});
+
+		var osm = new L.TileLayer('http://{s}.tile.osmosnimki.ru/kosmo/{z}/{x}/{y}.png');
+		var mpn = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+		var qst = new L.TileLayer('http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png', {attribution:'Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">'}).addTo(map);
+		var hyb = new L.TileLayer('http://{s}.tile.osmosnimki.ru/hyb/{z}/{x}/{y}.png');
+		var irs = new L.TileLayer('http://tile.osmosnimki.ru/basesat/{z}/{x}/{y}.jpg');
+		var wms = new L.TileLayer.WMS('http://wms.latlon.org/', {layers:'irs', crs: L.CRS.EPSG4326});
+		var kadastr = new L.TileLayer.WMS('http://maps.rosreestr.ru/arcgis/services/Cadastre/CadastreWMS/MapServer/WMSServer', {format:'image/png', transparent:'true', layers:'16,15,14,13,11,10,9,22,21,20,19,18,7,6', tileSize:512});
+		map1.addControl(new L.Control.Scale({width: 10, position: 'bottomleft'}));
+		map1.addControl(new L.Control.Layers({ 'Mapnik':mpn, 'MapQuest':qst,  'Google':new L.Google()}
+						   ,{}
+		));
+		
+		L.geoJson(apcampus, {
+
+		style: function (feature) {
+			return feature.properties && feature.properties.style;
+		},
+		
+		onEachFeature: onEachFeature,
+
+		pointToLayer: function (feature, latlng) {
+			return L.circleMarker(latlng, {
+				
+			});
+		}
+
+		}).addTo(map1); 
 	}
 	
 
