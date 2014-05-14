@@ -36,7 +36,7 @@ public class AcPcWiseElectionResultService implements IAcPcWiseElectionResultSer
 		List<BasicVO> returnList = null;
 		try 
 		{
-			List<Object[]> result = candidateResultDAO.getElectionResultsForSelection(electionId,stateId,partyIds);
+			List<Object[]> result = candidateResultDAO.getElectionResultsForSelection(electionId,stateId,partyIds,electionScopeId);
 			if(result != null && result.size() > 0)
 			{
 				
