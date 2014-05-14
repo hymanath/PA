@@ -56,7 +56,7 @@ public class AcPcWiseElectionResultService implements IAcPcWiseElectionResultSer
 					basicVO.setName(objects[1] != null ? objects[1].toString() : "");//constituency Name
 					basicVO.setMandalName(objects[2] != null ? objects[2].toString() : "");//District Name
 					basicVO.setCount(objects[3] != null ?Double.valueOf(objects[3].toString()).longValue() : 0l);//gained Votes
-					basicVO.setDescription(objects[4] != null ? objects[4].toString() : "0");//votes percentage
+					basicVO.setPersent(objects[4] != null ? objects[4].toString() : "0");//votes percentage
 					basicVO.setLevelId((Long)objects[5]);//party Id
 					basicVO.setDescription(objects[6] != null ? objects[6].toString() : "");//party Name
 					basicVO.setCasteName(objects[7] != null ? objects[7].toString() : "");//candidate
@@ -107,7 +107,8 @@ public class AcPcWiseElectionResultService implements IAcPcWiseElectionResultSer
 									if(partyVO.getId().longValue() == subVO.getLevelId().longValue())
 									{
 										partyVO.setCount(subVO.getCount());
-										partyVO.setDescription(subVO.getDescription());
+										partyVO.setPersent(subVO.getPersent());
+										partyVO.setCasteName(subVO.getCasteName());
 									}
 								}
 							}
