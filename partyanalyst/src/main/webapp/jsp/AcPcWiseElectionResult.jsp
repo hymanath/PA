@@ -43,9 +43,29 @@ padding: 4px;
 	}
 	
 
+	.leaflet-popup-content-wrapper {
+    border-bottom-left-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+    border-top-left-radius: 0px !important;
+    border-top-right-radius: 0px !important;
+    padding-bottom: 1px;
+    padding-left: 1px;
+    padding-right: 1px;
+    padding-top: 1px;
+    text-align: left;
+	
+	.leaflet-popup-close-button{ color:red !important;
+	font-size: 30px !important;
+	padding-top: 8px !important;
+	padding-right: 8px !important;
+	
+	}
+	.leaflet-popup-close-button:hover{color:#00f !important;}
+	
+	
 </style>
 <script src="js/apac.js"></script>
-<!--<script src="js/tgac.js"></script>-->
+<script src="js/tgac.js"></script>
 <!--<script type="text/javascript" src="js/jquery.dataTables.js"></script>
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">-->
 <script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>
@@ -58,6 +78,20 @@ padding: 4px;
 <link rel="stylesheet" type="text/css" href="styles/leaflet.css">
 </head>
 <body>
+<div align="center">
+<img src="images/MEnuBG.jpg" width="960" height="32" border="0" usemap="#Map" />
+</div>
+<map name="Map" id="menuMap">
+	<area shape="rect" coords="442,-5,503,31" href="#" title="Telangana"/>
+	<area shape="rect" coords="504,-4,576,30" href="#" title="" />
+	<area shape="rect" coords="577,-8,611,30" href="#" title=""/>
+	<area shape="rect" coords="611,1,693,29" href="#" title=""/>
+	<area shape="rect" coords="693,0,791,33" href="#" title=""/>
+	<area shape="rect" coords="791,1,858,30" href="#" title=""/>
+	<area shape="rect" coords="858,-4,929,29" href="#" title=""/>
+	<area shape="rect" coords="929,0,958,30" href="#" title=""/>
+</map>
+
 <div class="container">
 <div class="row-fluid">
 <div id="map" class="span6" style=" height: 500px;"></div>
@@ -86,7 +120,20 @@ padding: 4px;
 </div>
 -->
 <div id="resultDiv"></div>
+<!--
+
+<div align="center" style="" class="hero-unit">
+<div id="partiesDiv"></div>
+</div>
+-->
+<div id="subTitlesDiv" style="margin-left:200px;margin-top:20px;"></div>
+
+<div id="results1Div" style="margin-left:145px;overflow:scroll;height:900px;"></div>
 <script>
+var stateType = '';
+	$('document').ready(function(){
+		stateType = 'Semandhra';
+	});
 	getConstituenctSelection();
 	getElectionResult();
 	var map = "";
@@ -220,8 +267,6 @@ padding: 4px;
 		popupContent +=' </ol>';
 		popupContent +=' </article>';
 
-
-		$('.leaflet-popup-close-button').html('');
 		if (feature.properties && feature.properties.popupContent)
 		{
 			popupContent += feature.properties.popupContent;
@@ -356,6 +401,7 @@ padding: 4px;
 				$('#partiesDiv').html(str);
 		});	
 	}	
+	
 	function getElectionResult()
 	{
 		var electionTypeId = '';
@@ -386,14 +432,175 @@ padding: 4px;
 		data: {task:JSON.stringify(jsObj)},
 		})
 		.done(function( result ) {
-			//buildResult(result);
-			electionData = result;
-			generateMapForAp();
-			generateMapForTg();
+		electionData = result;
+		generateMapForAp();
+		generateMapForTg();
+		buildResult(result);
 		});	
 	}
 	
-	function buildResult(result)
+	function buildResult(result){
+
+	$('#subTitlesDiv').html('');
+	$('#results1Div').html('');
+	
+	var subMenu = '';
+		if(stateType == 'Semandhra'){
+			subMenu = '<h2 style="font-family:Georgia,Times;font-size:16px;font-size:25px;"> Andhra Pradesh Election Results - 2014 </h2>';
+			//"ff-tisa-web-pro",Georgia,Times,"Times New Roman",serif
+			subMenu +='<ul class="nav nav-pills" style="font-weight: 500;">';
+			subMenu +='	<li style="margin-top:10px;color:#ADADAD;"> Filter Options : </li> ';
+			subMenu +='	<li class="active">';
+			subMenu +='	<a style="margin-left:20px;" onlcick="stateWiseResult();"> State wise Election Result </a>';
+			subMenu +='	</li>';
+			subMenu +='	<li >';
+			subMenu +='	<a style="margin-left:20px;" onlcick="stateWiseResult();"> Parliament wise Election Result </a>';
+			subMenu +='	</li>';
+			subMenu +='	<li><a style="margin-left:20px;"> North Andhra </a></li>';
+			subMenu +='	<li><a style="margin-left:20px;"> South Andhra </a></li>';
+			subMenu +='	<li><a style="margin-left:20px;"> Rayalaseema </a></li>';
+			subMenu +='</ul>';
+		}
+		else if(stateType == 'Telangana'){
+			subMenu = '<h2 style="font-family: times new roman,serif,sans-serif;font-size:16px;font-size:25px;font-weight: 500;"> Telangana Election Results - 2014 </h2>';
+			subMenu +='<ul class="nav nav-pills" style="font-weight:500;">';
+			subMenu +='	<li style="margin-top:10px;color:#ADADAD;"> Filter Options : </li> ';
+			subMenu +='	<li class="active">';
+			subMenu +='	<a style="margin-left:20px;" onlcick="stateWiseResult();"> State wise Election Result </a>';
+			subMenu +='	</li>';
+			subMenu +='	<li >';
+			subMenu +='	<a style="margin-left:20px;" onlcick="stateWiseResult();"> Parliament wise Election Result </a>';
+			subMenu +='	</li>';
+			subMenu +='	<li><a style="margin-left:20px;"> South Telangana </a></li>';
+			subMenu +='	<li><a style="margin-left:20px;"> North Telangana </a></li>';
+			subMenu +='</ul>';
+		}
+
+	$('#subTitlesDiv').html(subMenu);
+	subMenu='';
+	
+	var today=new Date();
+
+    var month=new Array();
+	month[0]="January";
+	month[1]="February";
+	month[2]="March";
+	month[3]="April";
+	month[4]="May";
+	month[5]="June";
+	month[6]="July";
+	month[7]="August";
+	month[8]="September";
+	month[9]="October";
+	month[10]="November";
+	month[11]="December";
+	
+
+	var district = '';
+		for(var i in result)
+			{
+				var popupContent='';
+			popupContent +='<article class="timeline-group" id="stateAK" style="font-family: times new roman,serif,sans-serif;font-size:16px">';
+			if(district.length ==0 || district !=''+result[i].mandalName+''){
+				//popupContent +='<div style="background:#5080A6;">'+result[i].mandalName+'</div>';
+			}
+			
+			popupContent +=' <header class="timeline-header">';
+			popupContent +=' <h3><b aria-hidden="true" class="stateface "></b> '+result[i].name+'</a></h3>';
+			popupContent +=' </header>';
+			popupContent +=' <span style="color:#303030;">'+month[today.getMonth()]+" "+today.getDate()+","+today.getFullYear()+" "+'</span>';
+			popupContent +=' <ol class="timeline-list"> ';
+			popupContent +=' <li class="timeline-point is-standard" data-when="future"> ';
+			popupContent +=' <article class="results-group">';
+			popupContent +=' <header class="results-header" style="width: 950px; margin-top: -10px;margin-bottom: 10px;">';
+			popupContent +=' </header>';
+			popupContent +=' <span style="font-size: 12px;">  Reporting : 0 % <span style="margin-left:150px;float:right;margin-right:490px;font-size:16px;font-weight:bold;">  Leading Party: '+result[i].selectedCasteDetails[0].name+' </span></span>';
+			
+			popupContent +=' <header class="results-header" style="width: 950px; margin-top: -10px;border-bottom-color: #004276;border-bottom-width: 2px;">';
+			popupContent +=' </header>';
+			
+			popupContent +=' <div class="results-dataset">';
+					popupContent +=' <div class="results-row layout-full">';
+					popupContent +=' <div class="results-data pos-omega contains-mix is-de-emphasized">';
+					popupContent +=' <div class="results-message">';
+			for(var j in result[i].selectedCasteDetails)
+			{
+				
+					popupContent +=' <table class="results-table" style="font-weight:bold;font-family:Arial,sans-serif">';
+					popupContent +=' <tbody>';
+					popupContent +=' <tr class="type-democrat">';
+					popupContent +=' <td class="results-title" >';
+					popupContent +=' <span class="percentage-combo" ><span class="number">'+result[i].selectedCasteDetails[j].casteName+'</span>';
+					popupContent +=' </span>';
+					popupContent +=' </td>';
+					popupContent +=' <td class="results-title" style="width:50px;">';
+					if(result[i].selectedCasteDetails[j].name =='TDP'){
+						popupContent +=' <span > <img src="images/party_flags/TDP.PNG" width=125% /></span>';
+					}
+					if(result[i].selectedCasteDetails[j].name =='INC'){
+						popupContent +=' <span > <img src="images/party_flags/INC.png" width=125% /></span>';
+					}
+					if(result[i].selectedCasteDetails[j].name =='TRS'){
+						popupContent +=' <span > <img src="images/party_flags/TRS.png" width=125% /></span>';
+					}
+					if(result[i].selectedCasteDetails[j].name =='BJP'){
+						popupContent +=' <span > <img src="images/party_flags/BJP.png" width=125% /></span>';
+					}
+					if(result[i].selectedCasteDetails[j].name =='AIMIM'){
+						popupContent +=' <span > <img src="images/party_flags/AIMIM.png" width=125% /></span>';
+					}
+					if(result[i].selectedCasteDetails[j].name =='CPM'){
+						popupContent +=' <span > <img src="images/party_flags/CPM.png" width=125% /></span>';
+					}
+					if(result[i].selectedCasteDetails[j].name =='CPI'){
+						popupContent +=' <span > <img src="images/party_flags/CPI.png" width=125% /></span>';
+					}
+					if(result[i].selectedCasteDetails[j].name =='LSP'){
+						popupContent +=' <span > <img src="images/party_flags/LSP.png" width=125% /></span>';
+					}
+					
+					popupContent +=' </td>';
+					//popupContent +=' <td class="results-title" style="width: 30px;">';
+					//popupContent +=' </td>';
+					popupContent +=' <td class="results-percentage" style=" padding-left: 25px;">';
+					if(result[i].selectedCasteDetails[j].persent != null){
+					popupContent +=' <span class="percentage-combo" ><span class="number">'+result[i].selectedCasteDetails[j].persent+'%</span>';
+					}
+					else{
+					popupContent +=' <span class="percentage-combo" ><span class="number">0 %</span>';
+					}
+					popupContent +=' <span class="graph">';
+					popupContent +=' <span class="bar">';
+					popupContent +=' <span style="width:'+result[i].selectedCasteDetails[j].persent+'%;" class="index"></span>';
+					popupContent +=' </span>';
+					popupContent +=' </span>';
+					popupContent +=' </span>';
+					popupContent +=' </td>';
+					popupContent +=' <td style="padding-left:35px;">';
+					popupContent +=' <span style="font-weight:#000000">'+result[i].selectedCasteDetails[j].count+' </span>';
+					popupContent +=' </td>';
+					popupContent +=' </tr>';
+					popupContent +=' </tbody>';
+					popupContent +=' </table>';
+
+			}
+								popupContent +=' </div>';
+					popupContent +=' </div>';
+					popupContent +=' </div>';
+					popupContent +=' </div>';
+		
+			popupContent +=' </article>';
+		popupContent +=' </li> ';
+		popupContent +=' </ol>';
+		popupContent +=' </article>';
+		
+		$('#results1Div').append(popupContent);
+		popupContent='';
+		}
+		
+		
+	}
+	/*function buildResult(result)
 	{
 		
 		var str = '';
@@ -415,16 +622,18 @@ padding: 4px;
 			str += '<td>'+result[i].mandalName+'</td>';
 			str += '<td>'+result[i].hamletId+'</td>';
 			str += '<td>'+result[i].name+'</td>';
+			
 			for(var j in result[i].selectedCasteDetails)
 			{
 				str += '<th>'+result[i].selectedCasteDetails[j].count+'</th>';
 			}
+			
 			str += '</tr>';
 		}
 		str+= '</tbody>';
 		str += '</table>';
 		
-		$('#resultDiv').html(str);
+		$('#results1Div').html(str);
 		
 		$('#subLevelTable').dataTable({
 		"aaSorting": [[ 1, "asc" ]],
@@ -434,7 +643,7 @@ padding: 4px;
 		
 		//generateReport('subLevelTable');
 	}
-	
+	*/
 	
 	function generateReport(tableId)
 	{
@@ -498,7 +707,7 @@ padding: 4px;
 						   ,{}
 		));
 		
-		L.geoJson(apcampus, {
+		L.geoJson(tgcampus, {
 
 		style: function (feature) {
 			return feature.properties && feature.properties.style;
