@@ -32,7 +32,7 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 	private List<BasicVO> resultList;
 	@Autowired
 	IAcPcWiseElectionResultService acPcWiseElectionResultService;
-	@Override
+	
 	public void setServletRequest(HttpServletRequest request)
 	{
 		this.request = request;
