@@ -185,6 +185,7 @@ table.gujaratTableDiv td:first-child {width:50%;}
 <!--<input type="button" class="btn btn-success" value="TestAjax" onClick="getImportantCandidatesInfo()"/>-->
 
 <div class="parliamentResultsDiv" style="background:#ffffff;float:left;width:975px;"></div>
+<div class="partyWiseResultDiv" style="background:#ffffff;float:left;width:975px;"></div>
 <div style="background:#ffffff;float:left;width:975px;"> 
 	
 		
@@ -1050,6 +1051,20 @@ function getStateWideParliamentsSummary()
 	callAjax(jsObj,url);
 }
 
+getPartyWiseWonLeadCountInLive();
+
+function getPartyWiseWonLeadCountInLive()
+{
+	var jsObj = {
+				task:"getPartyWiseWonLeadCountInLive"
+			};
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/getPartyWiseWonLeadCountInLive.action?"+param;
+	
+	callAjax(jsObj,url);
+}
+
+
 
 google.load("visualization", "1", {packages:["corechart"]});
 
@@ -1154,6 +1169,10 @@ function callAjax(jsObj,url){
 									{
 										buildStateWideParliaments(myResults);
 									}
+									else if(jsObj.task == "getPartyWiseWonLeadCountInLive")
+									{
+										buildPartyWideWonLeadCount(myResults);
+									}
 								}
 							catch (e) {   
 							   	//alert("Invalid JSON result" + e);   
@@ -1166,6 +1185,43 @@ function callAjax(jsObj,url){
 		               };
 
 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+
+function buildPartyWideWonLeadCount(results){
+	var str = "";
+		str += "<h2 class='offset3' style='margin-bottom:5px;margin-top:10px;color:#27AFA6;'>Party Wise Won/Lead Counts</h2>";
+		str +="<table class='parlResultTable offset1' width='800' cellspacing='0' cellpadding='2' border='0'>";
+		str +="<tbody style='font-family: Tahoma;font-size: 12px;'>";
+			str+="<tr style='font-weight:bold;color:black;vertical-align:bottom;border-bottom:1px solid #B0BDDA;'>";
+				str+="<td style='border-bottom:1px solid #B0BDDA;'> PARTY </td>";
+				str+="<td style='border-bottom:1px solid #B0BDDA;'> ALLIANCE </td>";
+				str+="<td style='border-bottom:1px solid #B0BDDA;'> WON </td>";
+				str+="<td style='border-bottom:1px solid #B0BDDA;'> LEAD </td>";
+			str+="</tr>";
+			for(var i in results.statesList){
+				str+="<tr class='bodyRows' style='color:black;'>";
+					var path = "images/party_flags/"+results.statesList[i].party+"01.jpg";
+					
+					str+="<td style='border-bottom:1px solid #B0BDDA;height:25px;'><img src="+path+" alt="+results.statesList[i].party+"></td>";
+					str+="<td style='border-bottom:1px solid #B0BDDA;'>"+results.statesList[i].allianceGroup+"</td>";
+					if(results.statesList[i].partyWonCount == null){
+						str+="<td style='border-bottom:1px solid #B0BDDA;'> - </td>";
+					}else{
+						str+="<td style='border-bottom:1px solid #B0BDDA;'>"+results.statesList[i].partyWonCount+"</td>";
+					}
+					if(results.statesList[i].partyLeadCount == null){
+						str+="<td style='border-bottom:1px solid #B0BDDA;'> - </td>";
+					}else{
+						str+="<td style='border-bottom:1px solid #B0BDDA;'>"+results.statesList[i].partyLeadCount+"</td>";
+					}
+				str+="</tr>";
+			}
+			
+		str+="</tbody>";
+	str+="</table>";
+	
+	$(".partyWiseResultDiv").html(str);
+	
 }
 
 function buildStateWideParliaments(results){
