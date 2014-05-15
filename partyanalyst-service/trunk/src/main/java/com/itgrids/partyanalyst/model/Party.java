@@ -51,7 +51,8 @@ public class Party implements java.io.Serializable {
 	private String comments;
 	private String partyRecognization;
 	private String partyLogo;
-	private String partyFlag;	
+	private String partyFlag;
+	private String partyFlagLarge;
 	private State state;
 	private Set<Nomination> nominations = new HashSet<Nomination>(0);
 	private Set<PartyImportantDates> partyImportantDates = new HashSet<PartyImportantDates>(0);
@@ -203,6 +204,15 @@ public class Party implements java.io.Serializable {
 
 	public void setPartyFlag(String partyFlag) {
 		this.partyFlag = partyFlag;
+	}
+	
+	@Column(name = "party_flag_large", length = 25)
+	public String getPartyFlagLarge() {
+		return partyFlagLarge;
+	}
+
+	public void setPartyFlagLarge(String partyFlagLarge) {
+		this.partyFlagLarge = partyFlagLarge;
 	}
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "party")
