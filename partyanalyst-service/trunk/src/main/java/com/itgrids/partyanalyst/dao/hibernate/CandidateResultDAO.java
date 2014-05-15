@@ -231,26 +231,63 @@ public class CandidateResultDAO extends GenericDaoHibernate<CandidateResult, Lon
 		return query.list();
 	}
 	
-	public List<Object[]> getElectionResultsByMargin(Long electionId,List<Long> constituencyIds){
+	public List<Object[]> getElectionResultsByMargin(Long electionId,List<Long> locationIds,Long type){
+		
 		StringBuffer sb = new StringBuffer();
+		if(type.equals(2l)){
 		sb.append("select model.nomination.party.partyId," +//0
 				" model.nomination.party.shortName," +//1
 				" model.nomination.constituencyElection.constituency.constituencyId," +//2
 				" model.nomination.constituencyElection.constituency.name," +//3
-				" model.votesEarned" +//3 
+				" model.votesEarned," +//4
+				" model.marginVotes," +//5
+				" model.marginVotesPercentage" +//6 
 				" from CandidateResult model where  ");
 		
-		sb.append(" model.nomination.constituencyElection.constituency.electionScope.electionType.electionTypeId=2 " +
-					" and model.nomination.constituencyElection.election.electionId =:electionId" +
-					" and model.nomination.constituencyElection.constituency.constituencyId in (:constituencyIds) " +
-					" order by " +
-					" model.nomination.constituencyElection.constituency.constituencyId,model.votesEarned desc ");
+		sb.append(" model.rank = 1 and model.nomination.constituencyElection.constituency.district.districtId in(:locationIds)" +
+				" and model.nomination.constituencyElection.election.electionId =:electionId" +
+				" order by " +
+				" model.nomination.constituencyElection.constituency.constituencyId,model.votesEarned desc ");
+		}
 		
+		if(type.equals(4l)){
+		sb.append("select model.nomination.party.partyId," +//0
+				" model.nomination.party.shortName," +//1
+				" model.nomination.constituencyElection.constituency.constituencyId," +//2
+				" model.nomination.constituencyElection.constituency.name," +//3
+				" model.votesEarned," +//4
+				" model.marginVotes," +//5
+				" model.marginVotesPercentage" +//6 
+				" from CandidateResult model,DelimitationConstituencyAssemblyDetails model2 where  ");
+		
+		sb.append(" model.nomination.constituencyElection.constituency.constituencyId = model2.constituency.constituencyId and" +
+				" model.rank = 1 and model2.delimitationConstituency.constituency.constituencyId in(:locationIds)" +
+				" and model.nomination.constituencyElection.election.electionId =:electionId" +
+				" order by " +
+				" model.nomination.constituencyElection.constituency.constituencyId,model.votesEarned desc ");
+		}
+		
+		if(type.equals(3l)){
+		sb.append("select model.nomination.party.partyId," +//0
+				" model.nomination.party.shortName," +//1
+				" model.nomination.constituencyElection.constituency.constituencyId," +//2
+				" model.nomination.constituencyElection.constituency.name," +//3
+				" model.votesEarned," +//4
+				" model.marginVotes," +//5
+				" model.marginVotesPercentage" +//6 
+				" from CandidateResult model,StateRegionDistrict model2 where  ");
+		
+		sb.append(" model.nomination.constituencyElection.constituency.district.districtId = model2.district.districtId and " +
+				" model.rank = 1 and model2.stateRegion.stateRegionId in(:locationIds)" +
+				" and model.nomination.constituencyElection.election.electionId =:electionId" +
+				" order by " +
+				" model.nomination.constituencyElection.constituency.constituencyId,model.votesEarned desc ");
+		}
 			
 		Query query = getSession().createQuery(sb.toString());
 		
 		query.setParameter("electionId", electionId);
-		query.setParameterList("constituencyIds", constituencyIds);
+		query.setParameterList("locationIds", locationIds);
 		
 		return query.list();
 	}
