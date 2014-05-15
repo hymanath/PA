@@ -878,7 +878,7 @@ function getConstituencyWiseResults()
 </div>
  
 </div>
-<!-- SAMBA END -- >
+<!-- SAMBA END -->
 
 
 
