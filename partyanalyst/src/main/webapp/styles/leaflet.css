@@ -466,3 +466,8 @@
 	-webkit-border-radius: 2px;
 	        border-radius: 2px;
 	}
+	
+.leaflet-control-container
+{
+	display:none;
+}
