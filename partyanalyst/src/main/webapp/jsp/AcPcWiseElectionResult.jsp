@@ -964,7 +964,7 @@ function getConstituencyWiseResults()
 <!-- SAMBA START  -->
 <div class="span12 container hide"  style="border:1px solid #BDA870;margin-left:180px;padding:8px;margin-top:20px;" id="liveResultsDiv">
 
-<h4 style="text-align:center;">Live Results Analysis For Assembly Election</h4>
+<h3 style="text-align:center;">Live Results Analysis For Assembly Election</h3>
 
 
 <!--
