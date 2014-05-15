@@ -748,5 +748,5 @@ public interface IConstants {
     public static int censusYear = 2011; 
     
     public static final Long PREV_PARLIAMENT_ELECTION_ID = 17l;
-    public static final Long PRES_PARLIAMENT_ELECTION_ID = 222l;
+    public static final Long PRES_PARLIAMENT_ELECTION_ID = 258l;
 }
