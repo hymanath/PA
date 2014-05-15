@@ -68,7 +68,7 @@ padding: 4px;
 <script src="js/tgac.js"></script>
 <script src="js/tgpc.js"></script>
 <script src="js/appc.js"></script>
-<script src="js/leaflet-lable.js"></script>
+<!--<script src="js/leaflet-lable.js"></script>-->
 <script src="js/leaflet.js"></script>
 <script src="js/leaflet-google.js"></script>
 <!--<script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>-->
@@ -85,6 +85,8 @@ padding: 4px;
 <!--<div align="center" style="margin-top:20px;">
 <img src="images/MEnuBG.jpg" width="960" height="32" border="0" usemap="#Map" />
 </div>-->
+<div class="container" style="font-family: verdana; font-size: 14px; border: 1px solid rgb(204, 204, 204); padding: 0px 10px 10px; margin-top: 24px;">
+<h4 style="padding: 10px; margin-top: 10px; border-radius: 5px; text-align: center; background: none repeat scroll 0% 0% rgb(73, 175, 205);">LIVE ELECTION RESULTS COMPARISON</h4>
 <div id="btnDivs">
 	<!--<span id="optionsBtn1" class="btn btn-success" style="float:right;margin:10px 100px 10px 0px;"> Parliament Wise Results </span>
 		<span id="optionsBtn2" class="btn btn-success" style="float:right;margin:10px 100px 10px 0px;display;none;"> Assembly Wise Results </span>-->
@@ -100,65 +102,78 @@ padding: 4px;
 	<area shape="rect" coords="858,-4,929,29" href="#" title=""/>
 	<area shape="rect" coords="929,0,958,30" href="#" title=""/>
 </map>
-<div class="container">
-<div class="row-fluid">
-<div class="span4">
-<b>Select State</b>
-<select id="stateId">
-<option value="0">Select State</option>
-<option value="1">SeeamAndhra</option>
-<option value="2">Telangana</option>
-</select>
-</div>
-<div class="span4">
-<a class="btn btn-info" value="Submit" onClick="getElectionDetails();">Submit</a>
-</div>
-</div>
-<div class="row-fluid">
-<div class="span3">
-<b>Select Level</b>
-<select id="levelId1">
-<option value="0">Select Level</option>
-<option value="1">Assembly</option>
-<option value="2">Parliment</option>
-</select>
-</div>
-<div class="span3">
-<b>Select Year</b>
-<select id="yearId1">
-<option value="0">Select Year</option>
-<option value="1">2009</option>
-<option value="2">2004</option>
-</select>
-</div>
-<div class="span3">
-<b>Select Level</b>
-<select id="levelId2">
-<option value="0">Select Level</option>
-<option value="1">Assembly</option>
-<option value="2">Parliment</option>
-</select>
-</div>
-<div class="span3">
-<b>Select Year</b>
-<select id="yearId2">
-<option value="0">Select Year</option>
-<option value="1">2009</option>
-<option value="2">2004</option>
-</select>
-</div>
-</div>
 
+<div class="row-fluid" >
+	<div class="span4 offset4">
+	<b>Select State</b>
+	<select id="stateId">
+	<option value="0">Select State</option>
+	<option value="1">SeeamAndhra</option>
+	<option value="2">Telangana</option>
+	</select>
+	</div>
+</div>
+</br></br>
+<div class="row-fluid ">
+	<div class="span6">
+		<div class="form-inline">
+	
+		
+		<b>From Level</b>
+		<select id="levelId1" class="input-medium">
+		<option value="0">Select Level</option>
+		<option value="1">Assembly</option>
+		<option value="2">Parliment</option>
+		</select>
+		
+		
+		
+		<b>From Year</b>
+		<select id="yearId1" class="input-small">
+		<option value="0">Select Year</option>
+		<option value="1">2009</option>
+		<option value="2">2004</option>
+		</select>
+		</div>
+	</div>
+		
+	<div class="span6">
+		<div class="form-inline">
+		<b>Select Level</b>
+		<select id="levelId2" class="input-medium">
+		<option value="0">Select Level</option>
+		<option value="1">Assembly</option>
+		<option value="2">Parliment</option>
+		</select>
+		
+		
+		
+		<b>Select Year</b>
+		<select id="yearId2" class="input-small">
+		<option value="0">Select Year</option>
+		<option value="1">2009</option>
+		<option value="2">2004</option>
+		</select>
+		
+		</div>
+		</div>
+	</div>
 
+<br/>
+<div class="row-fluid ">
+	<div class="span2 offset5">
+	 <a class="btn btn-info btn-block " value="Submit" onClick="getElectionDetails();" >Submit</a>	
+	</div>
+</div>
+</br></br>
 <div class="row-fluid">
-<div id="weathermap"></div>
-<div id="weathermap1"></div>
-<!--<div id="map" class="span6" style=" height: 500px;"></div>-->
-<!--<div id="map1" class="span6" style="height: 500px;"></div>-->
+	<div id="weathermap"></div>
+	<div id="weathermap1"></div>
+
+</div>
 <div id="result"></div>
-</div>
 <div id="resultDiv"></div>
-</div>
+
 
 <!--
 
@@ -170,12 +185,21 @@ padding: 4px;
 
 <div id="results1Div" style="margin-left:145px;overflow:scroll;height:900px;"></div>
 
+</div>
 <style>
 
 
 </style>
 <script>
+/*
+	Leaflet.label, a plugin that adds labels to markers and vectors for Leaflet powered maps.
+	(c) 2012-2013, Jacob Toye, Smartrak
 
+	https://github.com/Leaflet/Leaflet.label
+	http://leafletjs.com
+	https://github.com/jacobtoye
+*/
+(function(){L.labelVersion="0.2.2-dev",L.Label=L.Class.extend({includes:L.Mixin.Events,options:{className:"",clickable:!1,direction:"right",noHide:!1,offset:[12,-15],opacity:1,zoomAnimation:!0},initialize:function(t,e){L.setOptions(this,t),this._source=e,this._animated=L.Browser.any3d&&this.options.zoomAnimation,this._isOpen=!1},onAdd:function(t){this._map=t,this._pane=this._source instanceof L.Marker?t._panes.markerPane:t._panes.popupPane,this._container||this._initLayout(),this._pane.appendChild(this._container),this._initInteraction(),this._update(),this.setOpacity(this.options.opacity),t.on("moveend",this._onMoveEnd,this).on("viewreset",this._onViewReset,this),this._animated&&t.on("zoomanim",this._zoomAnimation,this),L.Browser.touch&&!this.options.noHide&&L.DomEvent.on(this._container,"click",this.close,this)},onRemove:function(t){this._pane.removeChild(this._container),t.off({zoomanim:this._zoomAnimation,moveend:this._onMoveEnd,viewreset:this._onViewReset},this),this._removeInteraction(),this._map=null},setLatLng:function(t){return this._latlng=L.latLng(t),this._map&&this._updatePosition(),this},setContent:function(t){return this._previousContent=this._content,this._content=t,this._updateContent(),this},close:function(){var t=this._map;t&&(L.Browser.touch&&!this.options.noHide&&L.DomEvent.off(this._container,"click",this.close),t.removeLayer(this))},updateZIndex:function(t){this._zIndex=t,this._container&&this._zIndex&&(this._container.style.zIndex=t)},setOpacity:function(t){this.options.opacity=t,this._container&&L.DomUtil.setOpacity(this._container,t)},_initLayout:function(){this._container=L.DomUtil.create("div","leaflet-label "+this.options.className+" leaflet-zoom-animated"),this.updateZIndex(this._zIndex)},_update:function(){this._map&&(this._container.style.visibility="hidden",this._updateContent(),this._updatePosition(),this._container.style.visibility="")},_updateContent:function(){this._content&&this._map&&this._prevContent!==this._content&&"string"==typeof this._content&&(this._container.innerHTML=this._content,this._prevContent=this._content,this._labelWidth=this._container.offsetWidth)},_updatePosition:function(){var t=this._map.latLngToLayerPoint(this._latlng);this._setPosition(t)},_setPosition:function(t){var e=this._map,i=this._container,n=e.latLngToContainerPoint(e.getCenter()),o=e.layerPointToContainerPoint(t),s=this.options.direction,a=this._labelWidth,l=L.point(this.options.offset);"right"===s||"auto"===s&&o.x<n.x?(L.DomUtil.addClass(i,"leaflet-label-right"),L.DomUtil.removeClass(i,"leaflet-label-left"),t=t.add(l)):(L.DomUtil.addClass(i,"leaflet-label-left"),L.DomUtil.removeClass(i,"leaflet-label-right"),t=t.add(L.point(-l.x-a,l.y))),L.DomUtil.setPosition(i,t)},_zoomAnimation:function(t){var e=this._map._latLngToNewLayerPoint(this._latlng,t.zoom,t.center).round();this._setPosition(e)},_onMoveEnd:function(){this._animated&&"auto"!==this.options.direction||this._updatePosition()},_onViewReset:function(t){t&&t.hard&&this._update()},_initInteraction:function(){if(this.options.clickable){var t=this._container,e=["dblclick","mousedown","mouseover","mouseout","contextmenu"];L.DomUtil.addClass(t,"leaflet-clickable"),L.DomEvent.on(t,"click",this._onMouseClick,this);for(var i=0;e.length>i;i++)L.DomEvent.on(t,e[i],this._fireMouseEvent,this)}},_removeInteraction:function(){if(this.options.clickable){var t=this._container,e=["dblclick","mousedown","mouseover","mouseout","contextmenu"];L.DomUtil.removeClass(t,"leaflet-clickable"),L.DomEvent.off(t,"click",this._onMouseClick,this);for(var i=0;e.length>i;i++)L.DomEvent.off(t,e[i],this._fireMouseEvent,this)}},_onMouseClick:function(t){this.hasEventListeners(t.type)&&L.DomEvent.stopPropagation(t),this.fire(t.type,{originalEvent:t})},_fireMouseEvent:function(t){this.fire(t.type,{originalEvent:t}),"contextmenu"===t.type&&this.hasEventListeners(t.type)&&L.DomEvent.preventDefault(t),"mousedown"!==t.type?L.DomEvent.stopPropagation(t):L.DomEvent.preventDefault(t)}}),L.BaseMarkerMethods={showLabel:function(){return this.label&&this._map&&(this.label.setLatLng(this._latlng),this._map.showLabel(this.label)),this},hideLabel:function(){return this.label&&this.label.close(),this},setLabelNoHide:function(t){this._labelNoHide!==t&&(this._labelNoHide=t,t?(this._removeLabelRevealHandlers(),this.showLabel()):(this._addLabelRevealHandlers(),this.hideLabel()))},bindLabel:function(t,e){var i=this.options.icon?this.options.icon.options.labelAnchor:this.options.labelAnchor,n=L.point(i)||L.point(0,0);return n=n.add(L.Label.prototype.options.offset),e&&e.offset&&(n=n.add(e.offset)),e=L.Util.extend({offset:n},e),this._labelNoHide=e.noHide,this.label||(this._labelNoHide||this._addLabelRevealHandlers(),this.on("remove",this.hideLabel,this).on("move",this._moveLabel,this).on("add",this._onMarkerAdd,this),this._hasLabelHandlers=!0),this.label=new L.Label(e,this).setContent(t),this},unbindLabel:function(){return this.label&&(this.hideLabel(),this.label=null,this._hasLabelHandlers&&(this._labelNoHide||this._removeLabelRevealHandlers(),this.off("remove",this.hideLabel,this).off("move",this._moveLabel,this).off("add",this._onMarkerAdd,this)),this._hasLabelHandlers=!1),this},updateLabelContent:function(t){this.label&&this.label.setContent(t)},getLabel:function(){return this.label},_onMarkerAdd:function(){this._labelNoHide&&this.showLabel()},_addLabelRevealHandlers:function(){this.on("mouseover",this.showLabel,this).on("mouseout",this.hideLabel,this),L.Browser.touch&&this.on("click",this.showLabel,this)},_removeLabelRevealHandlers:function(){this.off("mouseover",this.showLabel,this).off("mouseout",this.hideLabel,this),L.Browser.touch&&this.off("click",this.showLabel,this)},_moveLabel:function(t){this.label.setLatLng(t.latlng)}},L.Icon.Default.mergeOptions({labelAnchor:new L.Point(9,-20)}),L.Marker.mergeOptions({icon:new L.Icon.Default}),L.Marker.include(L.BaseMarkerMethods),L.Marker.include({_originalUpdateZIndex:L.Marker.prototype._updateZIndex,_updateZIndex:function(t){var e=this._zIndex+t;this._originalUpdateZIndex(t),this.label&&this.label.updateZIndex(e)},_originalSetOpacity:L.Marker.prototype.setOpacity,setOpacity:function(t,e){this.options.labelHasSemiTransparency=e,this._originalSetOpacity(t)},_originalUpdateOpacity:L.Marker.prototype._updateOpacity,_updateOpacity:function(){var t=0===this.options.opacity?0:1;this._originalUpdateOpacity(),this.label&&this.label.setOpacity(this.options.labelHasSemiTransparency?this.options.opacity:t)},_originalSetLatLng:L.Marker.prototype.setLatLng,setLatLng:function(t){return this.label&&!this._labelNoHide&&this.hideLabel(),this._originalSetLatLng(t)}}),L.CircleMarker.mergeOptions({labelAnchor:new L.Point(0,0)}),L.CircleMarker.include(L.BaseMarkerMethods),L.Path.include({bindLabel:function(t,e){return this.label&&this.label.options===e||(this.label=new L.Label(e,this)),this.label.setContent(t),this._showLabelAdded||(this.on("mouseover",this._showLabel,this).on("mousemove",this._moveLabel,this).on("mouseout remove",this._hideLabel,this),L.Browser.touch&&this.on("click",this._showLabel,this),this._showLabelAdded=!0),this},unbindLabel:function(){return this.label&&(this._hideLabel(),this.label=null,this._showLabelAdded=!1,this.off("mouseover",this._showLabel,this).off("mousemove",this._moveLabel,this).off("mouseout remove",this._hideLabel,this)),this},updateLabelContent:function(t){this.label&&this.label.setContent(t)},_showLabel:function(t){this.label.setLatLng(t.latlng),this._map.showLabel(this.label)},_moveLabel:function(t){this.label.setLatLng(t.latlng)},_hideLabel:function(){this.label.close()}}),L.Map.include({showLabel:function(t){return this.addLayer(t)}}),L.FeatureGroup.include({clearLayers:function(){return this.unbindLabel(),this.eachLayer(this.removeLayer,this),this},bindLabel:function(t,e){return this.invoke("bindLabel",t,e)},unbindLabel:function(){return this.invoke("unbindLabel")},updateLabelContent:function(t){this.invoke("updateLabelContent",t)}})})(this,document);
 </script>
 <script>
 var stateType = '';
@@ -253,7 +277,7 @@ var stateType = '';
 	{
 		if(type == 1)
 		{
-			document.getElementById('weathermap').innerHTML = "<div id='map' class='span6' style=' height: 500px;'></div>"
+			document.getElementById('weathermap').innerHTML = "<div id='map' class='span6' style='height: 500px; border: 1px solid rgb(51, 51, 51); border-radius: 10px; position: relative; background: none repeat scroll 0% 0% rgb(255, 255, 255);'></div>"
 			map = L.map('map', {
 			center: [16.0000,80.0000],
 			zoom: 6
@@ -261,7 +285,7 @@ var stateType = '';
 		}
 		else
 		{
-			document.getElementById('weathermap1').innerHTML = "<div id='map1' class='span6' style='height: 500px;'></div>"
+			document.getElementById('weathermap1').innerHTML = "<div id='map1' class='span6' style='height: 500px; float: right ! important; left: 0px; position: relative; border: 1px solid rgb(51, 51, 51); border-radius: 10px; background: none repeat scroll 0% 0% rgb(255, 255, 255);'></div>"
 			map1 = L.map('map1', {
 			center: [16.0000,80.0000],
 			zoom: 6
