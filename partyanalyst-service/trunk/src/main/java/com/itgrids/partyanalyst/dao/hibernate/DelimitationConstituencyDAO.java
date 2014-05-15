@@ -230,6 +230,7 @@ IDelimitationConstituencyDAO {
 		{
 			sb.append("select model.constituency.constituencyId,model.constituencyNO,model.constituency.name " +
 					" from DelimitationConstituency model where model.constituency.countryId = :stateId " +
+					" and model.constituency.state.stateId = 1" +
 					" and model.year = :year and model.constituency.electionScope.electionScopeId = :electionScopeId");
 		}
 		Query query = getSession().createQuery(sb.toString());
