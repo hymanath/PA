@@ -316,6 +316,8 @@
 		<pattern>/assigningCandidatesToUserAction*</pattern>
 		<pattern>/userRegPageAction*</pattern>
 		<pattern>/acPcWiseElectionResultAction*</pattern>
+		<pattern>/gettingConstituencyResultsAction*</pattern>
+		
 		<pattern>/electionResults*</pattern>
 		</decorator>
     	 
