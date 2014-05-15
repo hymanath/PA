@@ -863,14 +863,15 @@ function getConstituencyWiseResults()
 	<br><br>
 </div>
 <map name="Map" id="menuMap">
-	<area shape="rect" coords="442,-5,503,31" href="#" title="Telangana"/>
-	<area shape="rect" coords="504,-4,576,30" href="#" title="" />
-	<area shape="rect" coords="577,-8,611,30" href="#" title=""/>
-	<area shape="rect" coords="611,1,693,29" href="javascript:{showResultDiv();}" title=""/>
-	<area shape="rect" coords="693,0,791,33" href="#" title=""/>
-	<area shape="rect" coords="791,1,858,30" href="#" title=""/>
-	<area shape="rect" coords="858,-4,929,29" href="#" title=""/>
+	<area shape="rect" coords="442,-5,503,31" href="javascript:{getRegionWiseResults('Telangana');}" title="Telangana"/>
+	<area shape="rect" coords="504,-4,576,30" href="javascript:{getRegionWiseResults('Semandhra');}" title="Semandhra" />
+	<area shape="rect" coords="577,-8,611,30" href="javascript:{getRegionWiseResults('India');}" title="India"/>
+	<area shape="rect" coords="611,1,693,29" href="javascript:{getRegionWiseResults('StateAnalysis');}" title="State Analysis"/>
+	<area shape="rect" coords="693,0,791,33" href="javascript:{getRegionWiseResults('DistrictAnalysis');}" title="District Analysis "/>
+	<area shape="rect" coords="791,1,858,30" href="javascript:{getRegionWiseResults('CBNEffect');}" title="CBN Effect"/>
+	<area shape="rect" coords="858,-4,929,29" href="javascript:{getRegionWiseResults('ModiEffect');}" title="Modi Effect"/>
 </map>
+
 
 <div align="center" style="margin-bottom: 20px;" >
 	<div class="span4 offset4">
@@ -2347,6 +2348,29 @@ function showResultDiv()
 	$('#liveResultsDiv').show();
 }
 
+function getRegionWiseResults(searchType){
+	if(searchType == 'Telangana'){
+		alert(1);
+	}
+	else if(searchType == 'Semandhra'){
+		alert(2);
+	}
+	else if(searchType == 'India'){
+		alert(3);
+	}
+	else if(searchType == 'StateAnalysis'){
+		$('#liveResultsDiv').show();
+	}
+	else if(searchType == 'DistrictAnalysis'){
+		alert(5);
+	}
+	else if(searchType == 'CBNEffect'){
+		alert(6);
+	}
+	else if(searchType == 'ModiEffect'){
+		alert(7);
+	}
+	
 </script>
 
 
