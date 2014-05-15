@@ -12,8 +12,8 @@ import com.itgrids.partyanalyst.dto.ConstituenciesStatusVO;
 import com.itgrids.partyanalyst.dto.ConstituencyBoothInfoVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
+import com.itgrids.partyanalyst.dto.ConstituencyLiveResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyResultsInElectionVO;
-import com.itgrids.partyanalyst.dto.DataTransferVO;
 import com.itgrids.partyanalyst.dto.DelimitationUploadValidationVO;
 import com.itgrids.partyanalyst.dto.DistrictWisePartyResultVO;
 import com.itgrids.partyanalyst.dto.ElectionBasicInfoVO;
@@ -36,7 +36,6 @@ import com.itgrids.partyanalyst.model.PartyElectionDistrictResult;
 import com.itgrids.partyanalyst.model.PartyElectionResult;
 import com.itgrids.partyanalyst.model.PartyElectionStateResult;
 import com.itgrids.partyanalyst.model.State;
-
 import com.itgrids.partyanalyst.utils.GenericException;
 
 public interface IStaticDataService {
@@ -419,6 +418,10 @@ public interface IStaticDataService {
 		public List<SelectOptionVO> getAssemblyConstiElectionYears(Long userId,Long cosntId);
 		
 		public List<SelectOptionVO> getPartyDEtailsByElectionId(Long userId,List<Long> electionID,Long constituencyId);
+		
+		public ConstituencyLiveResultsVO getStateWideParliamentLiveResults();
+		
+		public ConstituencyLiveResultsVO getConsituencyWiseElectionResultsForLive();
 		
 		
 }
