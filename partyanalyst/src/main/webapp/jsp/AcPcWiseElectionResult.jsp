@@ -10,81 +10,7 @@
 <title>AC AND PC WISE RESULT</title>
 
 <style>
-//sravanthi code
-.chart-gauge1 {
-  width: 360px;
-  margin: auto;
-  height: 200px;
-  text-align:center;
-}
 
-.chart-gauge {
-  width: 360px;
-  margin: auto;
-  height: 200px;
-  text-align:center;
-}
-
-.chart-color1 {
-  fill: #FF3333;
-}
-
-.chart-color2 {
-  fill: #FFCCCC;
-}
-
-.chart-color3 {
-  fill: #CCFFCC;
-}
-.chart-color4 {
-  fill: #33FF33;
-}
-.chart-color5 {
-  fill: #59A2BE;
-}
-.needle ,.needle-center{
-  fill: #9f8868;
-}
-
-
-.d3-slider-handle1 {position: absolute;width: 1.2em;height: 1.2em;border: 1px solid #FFCC00;border-radius: 4px;background: #FFCC99;background: linear-gradient(to bottom, #FFCC99 0%, #FFD2A6 100%);z-index: 3;}
-.d3-slider-handle1:hover {border: 1px solid #F2C100;}
-.d3-slider-horizontal .d3-slider-handle1 {top: -.3em;margin-left: -.6em;}
-.d3-slider-vertical .d3-slider-handle1 {left: -.25em;margin-left: 0;margin-bottom: -.6em;}
-
-
-.d3-slider {position: relative;font-family: Verdana,Arial,sans-serif;font-size: 1.1em;border: 1px solid #aaaaaa;z-index: 2;}
-.d3-slider-horizontal {height: .8em;}
-.d3-slider-vertical {width: .8em;height: 100px;}
-.d3-slider-handle {position: absolute;width: 1.2em;height: 1.2em;border: 1px solid #FFCC00;border-radius: 4px;background: #FFCC99;background: linear-gradient(to bottom, #FFCC99 0%, #FFD2A6 100%);z-index: 3;}
-.d3-slider-handle:hover {border: 1px solid #F2C100;}
-.d3-slider-horizontal .d3-slider-handle {top: -.3em;margin-left: -.6em;}
-.d3-slider-axis {position: relative;z-index: 1;}
-.d3-slider-axis-bottom {top: .8em;}
-.d3-slider-axis-right {left: .8em;}
-.d3-slider-axis path {stroke-width: 0;fill: none;}
-.d3-slider-axis line {fill: none;stroke: #aaa;shape-rendering: crispEdges;}
-.d3-slider-axis text {font-size: 11px;}
-.d3-slider-vertical .d3-slider-handle {left: -.25em;margin-left: 0;margin-bottom: -.6em;}
-.div_sld{width:300px;margin:10px 0 0 50px;}
-.div_sld1{width:300px;margin:10px 0 0 50px;}
-.div_upeffect{width:400px;}
-.map_wrapper{width:100%;padding:5px;max-width:700px;}
-@media only screen and (max-width:767px){
-.map_wrapper{width:99%;padding:0px;}
-#mapswidget{width:98%;}
-.div_upeffect{width:100%;}
-
-.div_sld{width:80%;margin:10px auto;}
-.div_sld1{width:80%;margin:10px auto;}
-}
-@media only screen and (max-width:340px){
-.div_upeffect center{font-size:12px;}
-}
-.ht10{display:block;font-size:1px;height:10px;line-height:10px}
-#slider3{width:333px;margin-bottom: 40px;}
-.div_sld{width:333px;margin:auto;}
-.div_sld1{width:333px;margin:auto;}
 
 
 select {
@@ -1021,8 +947,21 @@ function getConstituencyWiseResults()
 </div>
 </br></br>
 <div class="row-fluid" id="legend" style="display:none;">
-<div><b>TDP : <span style="background: #FFD700 ;font-size: 19px; font-weight: bold; height: 9px; width: 58px; display: inline-block;"></b><b> YSRC : <span style="background: #00CED1; font-size: 19px; font-weight: bold; height: 9px; width: 58px; display: inline-block;"></b><b>INC : <span style="background: #228B22; font-size: 19px; font-weight: bold; height: 9px; width: 58px; display: inline-block;"></b><b>TRS : <span style="background: #FF00FF; font-size: 19px; font-weight: bold; height: 9px; width: 58px; display: inline-block;"></b><b>AIMIM : <span style="background: #006400; font-size: 19px; font-weight: bold; height: 9px; width: 58px; display: inline-block;"></b></div>
-<div><b>BJP : <span style="background:#FF7F50; font-size: 19px; font-weight: bold; height: 9px; width: 58px; display: inline-block;"></b><b>CPM/CPI : <span style="background: #B22222; font-size: 19px; font-weight: bold; height: 9px; width: 58px; display: inline-block;"></b><b>LSP : <span style="background: #4B0082; font-size: 19px; font-weight: bold; height: 9px; width: 58px; display: inline-block;"></b><b>OTHERS : <span style="background: #FF0000; font-size: 19px; font-weight: bold; height: 9px; width: 58px; display: inline-block;"></div>
+<table>
+<tr>
+<td><b>TDP : <span style="background: #FFD700 ;font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
+<td><b> YSRC : <span style="background: #00CED1; font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
+<td><b>INC : <span style="background: #228B22; font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
+<td><b>TRS : <span style="background: #FF00FF; font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
+<td><b>AIMIM : <span style="background: #006400; font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
+<td><b>BJP : <span style="background:#FF7F50; font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
+<td><b>CPM/CPI : <span style="background: #B22222; font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
+<td><b>LSP : <span style="background: #4B0082; font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
+<td><b>OTHERS : <span style="background: #FF0000; font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
+</tr>
+</table>
+<div></div>
+<div></div>
 
 </div>
 </br></br>
@@ -1060,9 +999,9 @@ function getConstituencyWiseResults()
 
 
 
-<!-- <a id="stateButton" class="btn " style="margin-top:0px; background: none repeat scroll 0 0 #0088CC;
+<a id="stateButton" class="btn " style="margin-top:0px; background: none repeat scroll 0 0 #0088CC;
     color: #FFFFFF;font-weight: normal;float:right;" href="javascript:{}" >Show State Wise Report<i class="icon-chevron-up"></i></a>
-<img id="stateAjaxImg" src="./images/icons/search.gif" alt="Processing Image" style="display:none;"/> -->
+<img id="stateAjaxImg" src="./images/icons/search.gif" alt="Processing Image" style="display:none;"/>
 
 
 
@@ -1261,14 +1200,23 @@ function getConstituencyWiseResults()
 </script>
 <script>
 var stateType = '';
-	
 	$('document').ready(function(){
-	$("#unemp_chart").hide();
-	$("#unemp_chart1").hide();
-	$(".div_sld").hide();
-	$(".div_sld1").hide();
-	
 		stateType = 'Semandhra';
+/*$('#optionsBtn2').hide();
+		$('#optionsBtn1').click(function(){
+				$('#map1').show();
+				$('#map').hide();
+				$('#optionsBtn1').hide();
+				$('#optionsBtn2').show();
+				
+		});
+		$('#optionsBtn2').click(function(){
+				$('#map').show();
+				$('#map1').hide();
+				$('#optionsBtn2').hide();
+				$('#optionsBtn1').show();
+				
+		});*/
 	});
 	//getConstituenctSelection();
 	var map = "";
@@ -2837,14 +2785,6 @@ function getRegionWiseResults(searchType)
 		$('#areaSelectionDiv').show();
 		$('#stateSelectDiv').show();
 		$('#submitButtionDiv').show();
-		
-		$("#unemp_chart1").show();
-		$(".div_sld1").show();
-		$("#unemp_chart").hide();
-		$(".div_sld").hide();
-		$("#results1Div").hide();
-		$(".row-fluid ").hide();
-		$("#unemp_chart1").css({"display":"block","width":"360px","margin":"auto"});
 	}
 	else if(searchType == 'ModiEffect')
 	{
@@ -2855,61 +2795,11 @@ function getRegionWiseResults(searchType)
 		$('#areaSelectionDiv').hide();
 		$('#stateSelectDiv').hide();
 		$('#submitButtionDiv').hide();
-		
-		$("#unemp_chart").show();
-		$(".div_sld").show();
-		$("#results1Div").hide();
-		$(".row-fluid ").hide();
-		$("#unemp_chart1").hide();
-		$(".div_sld1").hide();
-		$("#unemp_chart").css({"display":"block","width":"360px","margin":"auto"});
 	}
 	}
 </script>
 
-<script type="text/javascript">
 
-
-/* var un_emp1 = '0.20';
-var elems = document.getElementsByClassName('d3-slider-handle1')[0];
-elems.style.left = '50%';
-if(true)
-{
-		var div_width1 = 420; 
-		var div_height1 = 350;
-		
-		var margin1 = {top: 20, right: 20, bottom: 30, left: 40},
-		width1 = div_width1 - margin1.left - margin1.right,
-		height1 = div_height1 - margin1.top - margin1.bottom;
-} */
-/*
-var un_emp = '0.20';
-var elems = document.getElementsByClassName('d3-slider-handle')[0];
-elems.style.left = '20%';
-if(true)
-{
-		var div_width = 420; 
-		var div_height = 350;
-		
-		var margin = {top: 20, right: 20, bottom: 30, left: 40},
-		width = div_width - margin.left - margin.right,
-		height = div_height - margin.top - margin.bottom;
-}*/
-
-var constituencyArr=[];
-/* <c:forEach var="constituency" items="${resultList}">
-	var ob={
-			id:'${constituency.id}',
-			value:'${constituency.name}'
-			};
-constituencyArr.push(ob);
-</c:forEach> */
-
-
-</script>
-
-<script type="text/javascript" src="js/newTest1.js"></script>
-<!--<script type="text/javascript" src="js/newTest.js"></script>-->
 
 
 </body>
