@@ -638,10 +638,22 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	 public List<Object[]> getElectionyearsByElectionIds(List<Long> electionIds);
 	 public List<Object[]> getWinningCandidatesDetailsForConstituenciesByElectionId(Long electionId);
 		
-		public List<Object[]> getConstituencyDetailsByConstituencyType(String constituencyType,Long partyId,Long electionId);
+		/*public List<Object[]> getConstituencyDetailsByConstituencyType(String constituencyType,Long partyId,Long electionId);
 		
-		public List<Object[]> getConstituencyDetailsByReservationType(String constituencyType,Long partyId,Long electionId);
+		public List<Object[]> getConstituencyDetailsByReservationType(String constituencyType,Long partyId,Long electionId);*/
 
 
-	 public List<Object[]> getPartyWiseResults(Long electionId,String type,String region);
+	    public List<Object[]> getPartyWiseResults(Long electionId,String type,String region);
+	 
+		public List<Object[]> getMatrixReportForElectionResult(Long electionId,List<Long> locationIds,Long scopeId);
+		
+		public List<Object[]> getSubReportForElectionResultByConstituencyReservationType(Long electionId,List<Long> locationIds,Long scopeId);
+		public List<Object[]> getSubReportForElectionResultByConstituencyType(Long electionId,List<Long> locationIds,Long scopeId);
+		
+		public List<Object[]> getConstituencyWiseResults(Long electionId);
+		
+		public List<Object[]> getConstituencyWiseResults1(Long electionId,List<Long> constituencyIds);
+
+		public List<Object[]> getConstituencyDetailsByConstituencyType(String constituencyType,Long partyId,Long electionId,Long locationId,Long scopeId);
+		public List<Object[]> getConstituencyDetailsByReservationType(String constituencyType,Long partyId,Long electionId,Long locationId,Long scopeId);
 }

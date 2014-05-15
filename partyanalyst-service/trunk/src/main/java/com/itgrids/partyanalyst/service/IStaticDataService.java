@@ -423,5 +423,8 @@ public interface IStaticDataService {
 		
 		public ConstituencyLiveResultsVO getConsituencyWiseElectionResultsForLive();
 		
+		public List<SelectOptionVO> getRegionsByStateId(Long stateId);
+
+		
 		
 }
