@@ -852,9 +852,10 @@ function getConstituencyWiseResults()
 	} 
 }
 </script>
-<div align="center" style="margin-top:20px;">
+<!-- <div align="center" style="margin-top:20px;">
 <img src="images/MEnuBG.jpg" width="960" height="32" border="0" usemap="#Map" />
 </div>
+ -->
 <div class="container" style="font-family: verdana; font-size: 14px; border: 1px solid rgb(204, 204, 204); padding: 0px 10px 10px; margin-top: 24px;">
 <h4 style="padding: 10px; margin-top: 10px; border-radius: 5px; text-align: center; background: none repeat scroll 0% 0% rgb(73, 175, 205);">LIVE ELECTION RESULTS COMPARISON</h4>
 <div id="btnDivs">
