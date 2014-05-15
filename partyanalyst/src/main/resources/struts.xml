@@ -6922,13 +6922,25 @@
 				<param name="root">status</param>				
 			</result>		
 		</action>
-				
+		
 		 
 		 <action name="acPcWiseElectionResultAction" class="acPcWiseElectionResultAction">
 			<result name="success">/jsp/AcPcWiseElectionResult.jsp</result>			
 		</action>
 		
-		 <action name="getElectionResultsAction" class="acPcWiseElectionResultAction" method="getElectionResults">
+		<action name="getAssemblyWiseLiveResults" class="constituencyElectionResultsAction" method="getConsituencyWiseElectionResultsForLive">
+			<result type="json" name="success">
+				<param name="root">constListVO</param>				
+			</result>		
+		</action>
+		
+		<action name="getStateWideParliamentLiveResults" class="constituencyElectionResultsAction" method="getStateWideParliamentLiveResults">
+			<result type="json" name="success">
+				<param name="root">statesListVO</param>				
+			</result>		
+		</action>
+		
+		<action name="getElectionResultsAction" class="acPcWiseElectionResultAction" method="getElectionResults">
 			<result type="json" name="success">
 				<param name="root">resultList</param>				
 			</result>		
@@ -6970,6 +6982,7 @@
 			  <param name="root">partyResultList</param>
 			</result>
 		</action>
+		
 </package>
 		
 </struts>      
