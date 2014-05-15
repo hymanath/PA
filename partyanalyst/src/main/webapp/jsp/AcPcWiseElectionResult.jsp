@@ -170,11 +170,20 @@ $('document').ready(function(){
 	 $('.reportType').change(function(){
 		 $('#test,#matridLeadId,#matrixWonSummaryId,#matrixLeadSummaryId').html('');
 	 });
-
+		$('#legend').show();
+		$('#areaSelectionDiv').hide();
+		$('#stateSelectDiv').hide();
+		$('#submitButtionDiv').hide();
+		getElectionResultForAssemblyPrevious(1,"first",1,2);
+		getElectionResultForParlimentPresent(1,"second",2,2);
 	 $('#scopeId').change(function(){
 		 console.log(this);
 		 $('#rgntxt').text("Select "+$('#scopeId  :selected').text());
 	 });
+	/*  setTimeout(function(){
+		getElectionResultForAssemblyPrevious(1,"first",1,2);
+		getElectionResultForParlimentPresent(1,"second",2,2);
+	}, 5000);  */
 });
 </script>
 <script>
@@ -1012,8 +1021,8 @@ function getConstituencyWiseResults()
 </div>
 </br></br>
 <div class="row-fluid" id="legend" style="display:none;">
-<div><b>TDP : <span style="color: #FFD700 ;font-weight: bold; font-size: 19px;">-----</b><b> YSRC : <span style="color: #00CED1; font-weight: bold; font-size: 19px;">-----</b><b>INC : <span style="color: #228B22; font-weight: bold; font-size: 19px;">-----</b><b>TRS : <span style="color: #FF00FF; font-weight: bold; font-size: 19px;">-----</b><b>AIMIM : <span style="color: #006400; font-weight: bold; font-size: 19px;">-----</b></div>
-<div><b>BJP : <span style="#FF7F50; font-weight: bold; font-size: 19px;">-----</b><b>CPM/CPI : <span style="color: #B22222; font-weight: bold; font-size: 19px;">-----</b><b>LSP : <span style="color: #4B0082; font-weight: bold; font-size: 19px;">-----</b><b>OTHERS : <span style="color: #FF0000; font-weight: bold; font-size: 19px;"></div>
+<div><b>TDP : <span style="background: #FFD700 ;font-size: 19px; font-weight: bold; height: 9px; width: 58px; display: inline-block;"></b><b> YSRC : <span style="background: #00CED1; font-size: 19px; font-weight: bold; height: 9px; width: 58px; display: inline-block;"></b><b>INC : <span style="background: #228B22; font-size: 19px; font-weight: bold; height: 9px; width: 58px; display: inline-block;"></b><b>TRS : <span style="background: #FF00FF; font-size: 19px; font-weight: bold; height: 9px; width: 58px; display: inline-block;"></b><b>AIMIM : <span style="background: #006400; font-size: 19px; font-weight: bold; height: 9px; width: 58px; display: inline-block;"></b></div>
+<div><b>BJP : <span style="background:#FF7F50; font-size: 19px; font-weight: bold; height: 9px; width: 58px; display: inline-block;"></b><b>CPM/CPI : <span style="background: #B22222; font-size: 19px; font-weight: bold; height: 9px; width: 58px; display: inline-block;"></b><b>LSP : <span style="background: #4B0082; font-size: 19px; font-weight: bold; height: 9px; width: 58px; display: inline-block;"></b><b>OTHERS : <span style="background: #FF0000; font-size: 19px; font-weight: bold; height: 9px; width: 58px; display: inline-block;"></div>
 
 </div>
 </br></br>
