@@ -9622,11 +9622,20 @@ public boolean removeCadreImage(Long cadreId,Long userId){
 		}
 		}
 		
-		List<Long> upaAlliances = new ArrayList<Long>();
-		List<Long> ndaAlliances = new ArrayList<Long>();
+		List<Long> upaAlliances = null;
+		List<Long> ndaAlliances = null;
 		
-		upaAlliances = alliancesMap.get("UPA");
-		ndaAlliances = alliancesMap.get("NDA");
+		if(alliancesMap.get("UPA") == null){
+			upaAlliances = new ArrayList<Long>();
+		}else{
+			upaAlliances = alliancesMap.get("UPA");
+		}
+		
+		if(alliancesMap.get("NDA") == null){
+			ndaAlliances = new ArrayList<Long>();
+		}else{
+			ndaAlliances = alliancesMap.get("NDA");
+		}
 		
 		Map<Long,ConstituencyLiveResultsVO> statesMap = new HashMap<Long, ConstituencyLiveResultsVO>();
 		
