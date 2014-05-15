@@ -85,7 +85,6 @@ padding: 4px;
 <script src="js/GOOGLE.js"></script>
 <script src="js/Permalink.js"></script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css" href="styles/politico.css">
 <link rel="stylesheet" type="text/css" href="styles/leaflet.css">
 <link rel="stylesheet" type="text/css" href="styles/leaflet-lable.css">
@@ -851,6 +850,61 @@ function getConstituencyWiseResults()
 		$('#constituencyResultsDiv').html(str);
 	} 
 }
+
+getMarginsCountOfParties();
+function getMarginsCountOfParties(){
+		var locations = [];
+		locations.push(18);
+		locations.push(19);
+		
+		var jsObj =	{
+			electionId : 38,
+			type:2,
+			locationIds:locations
+		}
+		
+		$.ajax({
+				type: "POST",
+				url:"getMarginAnalysisOnLiveResultsForAssemblies.action",
+				data:{task :JSON.stringify(jsObj)}
+		  }).done(function(result){
+				if(result.partiesList != null && result.partiesList.length>0){
+					buildPartyWiseMarginCount(result);
+				}
+		  });
+}
+
+function buildPartyWiseMarginCount(result){
+	
+	var str = "<table width='800' cellspacing='0' cellpadding='2' border='0'>";
+		str +="<tbody>";
+			str +="<tr>";
+				str+="<td>PARTY</td>";
+				for(var i in result.partiesList[0].marginsVO){
+					str+="<td>"+result.partiesList[0].marginsVO[i].margin+"</td>";
+				}
+			str +="</tr>";
+		
+			for(var i in result.partiesList){
+			str +="<tr>";
+				str +="<td>"+result.partiesList[i].partyName+"</td>";
+				for(var j in result.partiesList[i].marginsVO){
+					
+						if(result.partiesList[i].marginsVO[j].count == null){
+							str+="<td> - </td>";
+						}else{
+							str+="<td>"+result.partiesList[i].marginsVO[j].count+"</td>";
+						}
+				
+				}
+			str +="</tr>";
+			}
+		str +="</tbody>";
+	str += "</table>";
+	
+	$("#marginAnalysis1").html(str);
+}
+
 </script>
 <div align="center" style="margin-top:20px;">
 <img src="images/MEnuBG.jpg" width="960" height="32" border="0" usemap="#Map" />
@@ -936,6 +990,7 @@ function getConstituencyWiseResults()
 	 <a class="btn btn-info btn-block " value="Submit" onClick="getElectionDetails();" >Submit</a>	
 	</div>
 </div>
+<div id="marginAnalysis"></div>
 </br></br>
 <div class="row-fluid">
 	<div id="weathermap"></div>
@@ -2372,6 +2427,9 @@ function getRegionWiseResults(searchType){
 		console.log(7);
 	}
 	}
+	
+	
+	 
 </script>
 
 
