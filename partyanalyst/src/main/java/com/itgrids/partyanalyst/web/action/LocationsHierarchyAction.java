@@ -50,7 +50,16 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 	private List<Object> constituencies;
 	CadreManagementService cadreManagementService;
 	private IConstituencyDAO constituencyDAO;
+	private List<SelectOptionVO> locations;
 	
+	public List<SelectOptionVO> getLocations() {
+		return locations;
+	}
+
+	public void setLocations(List<SelectOptionVO> locations) {
+		this.locations = locations;
+	}
+
 	public IConstituencyDAO getConstituencyDAO() {
 		return constituencyDAO;
 	}
@@ -650,4 +659,28 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 		}	
 		return Action.SUCCESS;
 	}
-}
+    
+    
+    public String getElectionResultsLocations()
+    {
+    	try {
+			jObj = new JSONObject(getTask());
+		
+    	
+    	if(jObj.getString("task").equalsIgnoreCase("parliament"))
+		 locations = staticDataService.getLatestConstituenciesByStateIdAndType(1L,IConstants.PARLIAMENT_CONSTITUENCY_TYPE);
+    	else if(jObj.getString("task").equalsIgnoreCase("district"))
+    	 locations = regionServiceDataImp.getDistrictsByStateID(1L);	
+    	else if(jObj.getString("task").equalsIgnoreCase("region"))
+    		locations = staticDataService.getRegionsByStateId(1L);
+    	else if(jObj.getString("task").equalsIgnoreCase("assembly"))
+    		 locations = staticDataService.getLatestConstituenciesByStateIdAndType(1L,IConstants.ASSEMBLY_CONSTITUENCY_TYPE);
+    	
+    	} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+    	return Action.SUCCESS;
+    }
+    
+   }

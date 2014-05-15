@@ -6983,6 +6983,40 @@
 			</result>
 		</action>
 		
+		
+		 <action name="getMatrixReportForElectionResult" class="dashBoardElectionResultsAction" method="getMatrixReportForElectionResult">
+			<result type="json" name="success">
+				<param name="root">matrixReport</param>				
+			</result>		
+		</action>
+		
+		<action name="getSubReportForElectionResultByConstituencyReservationType" class="dashBoardElectionResultsAction" method="getSubReportForElectionResultByConstituencyReservationType">
+			<result type="json" name="success">
+				<param name="root">subReport</param>				
+			</result>		
+		</action>
+		
+		<action name="getSubReportForElectionResultByConstituencyType" class="dashBoardElectionResultsAction" method="getSubReportForElectionResultByConstituencyType">
+			<result type="json" name="success">
+				<param name="root">subReport</param>				
+			</result>		
+		</action>
+		
+		
+		
+		 <action name="getElectionResultsLocations" class="locationsHierarchyAction" method="getElectionResultsLocations">
+			<result type="json" name="success">
+				<param name="root">locations</param>				
+			</result>		
+		</action>
+		
+		<action name="getdashBoardConstituencyWiseResults" class="dashBoardElectionResultsAction" method="getdashBoardConstituencyWiseResults">
+			<result type="json" name="success">
+				<param name="root">dashBoardConstiResults</param>				
+		  	</result> 
+		</action>
+		
+		
 </package>
 		
 </struts>      
