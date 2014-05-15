@@ -3,16 +3,9 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.Assert;
-
 import org.appfuse.dao.BaseDaoTestCase;
-import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
-import com.itgrids.partyanalyst.model.Candidate;
-import com.itgrids.partyanalyst.model.CandidateResult;
-import com.itgrids.partyanalyst.model.Nomination;
-import com.itgrids.partyanalyst.utils.IConstants;
 
 
 public class CandidateResultDAOHibernateTest extends BaseDaoTestCase {
