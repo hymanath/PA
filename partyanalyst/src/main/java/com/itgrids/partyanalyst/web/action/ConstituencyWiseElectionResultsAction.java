@@ -74,7 +74,14 @@ public class ConstituencyWiseElectionResultsAction extends ActionSupport impleme
 			} 
 			else
 				return ERROR;
-		    Long stateNo=Long.parseLong(request.getParameter("stateNo"));
+		   String statNo=request.getParameter("stateNo");
+		   Long stateNo=0l;
+		   if(statNo.trim().length()!=0)
+		   {
+			   stateNo=Long.parseLong(statNo);
+			   
+		   }
+		    
 		    Long Level=Long.parseLong(request.getParameter("Level"));
 		    Long constituencyNo=Long.parseLong(request.getParameter("constituencyNo"));
 		    String description=request.getParameter("description");

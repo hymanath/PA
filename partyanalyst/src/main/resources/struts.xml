@@ -4083,8 +4083,8 @@
 			</result>		
 		</action> -->
 		<action name="loginPopUpsAction" class="loginAction" method="ajaxCallForLoginPopup">
-			<result type="json" name="success">
-				<param name="root">resultStatus</param>				
+			<result name="success">
+					
 			</result>		
 		</action>
 		
@@ -6928,99 +6928,18 @@
 			<result name="success">/jsp/AcPcWiseElectionResult.jsp</result>			
 		</action>
 		
-		<action name="getAssemblyWiseLiveResults" class="constituencyElectionResultsAction" method="getConsituencyWiseElectionResultsForLive">
-			<result type="json" name="success">
-				<param name="root">constListVO</param>				
-			</result>		
-		</action>
-		
-		<action name="getStateWideParliamentLiveResults" class="constituencyElectionResultsAction" method="getStateWideParliamentLiveResults">
-			<result type="json" name="success">
-				<param name="root">statesListVO</param>				
-			</result>		
-		</action>
-		
-		<action name="getElectionResultsAction" class="acPcWiseElectionResultAction" method="getElectionResults">
+		 <action name="getElectionResultsAction" class="acPcWiseElectionResultAction" method="getElectionResults">
 			<result type="json" name="success">
 				<param name="root">resultList</param>				
 			</result>		
 		</action>
 		
-		 <action name="electionResults" class="dashBoardElectionResultsAction">
-			<result name="success">/jsp/electionResultsDashBoard.jsp</result>			
-		</action>
-		
-		 <action name="getElectionResultsSummary" class="dashBoardElectionResultsAction" method="getElectionResultsSummary">
-			<result type="json" name="success">
-				<param name="root">resultVO</param>				
-			</result>		
-		</action>
-		
-		 <action name="getConstituenciesDetailsForSubReport" class="dashBoardElectionResultsAction" method="getConstituenciesDetailsForSubReport">
-			<result type="json" name="success">
-				<param name="root">constituencyDetails</param>				
-			</result>		
-		</action>
-
-		<action name="getTelanganaPartyResultAction" class="stratagicReportsAction" method="getPartyResults">
-			<result type="json" name="success">
-			  <param name="root">partyResultList</param>
-			</result>
-		</action>
-		<action name="getAndhraPartyResultAction" class="stratagicReportsAction" method="getPartyResults">
-			<result type="json" name="success">
-			  <param name="root">partyResultList</param>
-			</result>
-		</action>
-		<action name="getTelanganaPartyResultForMuncipalAction" class="stratagicReportsAction" method="getPartyResults">
-			<result type="json" name="success">
-			  <param name="root">partyResultList</param>
-			</result>
-		</action>
-		<action name="getAndhraPartyResultForMuncipal" class="stratagicReportsAction" method="getPartyResults">
-			<result type="json" name="success">
-			  <param name="root">partyResultList</param>
-			</result>
-		</action>
-		
-		
-		 <action name="getMatrixReportForElectionResult" class="dashBoardElectionResultsAction" method="getMatrixReportForElectionResult">
-			<result type="json" name="success">
-				<param name="root">matrixReport</param>				
-			</result>		
-		</action>
-		
-		<action name="getSubReportForElectionResultByConstituencyReservationType" class="dashBoardElectionResultsAction" method="getSubReportForElectionResultByConstituencyReservationType">
-			<result type="json" name="success">
-				<param name="root">subReport</param>				
-			</result>		
-		</action>
-		
-		<action name="getSubReportForElectionResultByConstituencyType" class="dashBoardElectionResultsAction" method="getSubReportForElectionResultByConstituencyType">
-			<result type="json" name="success">
-				<param name="root">subReport</param>				
-			</result>		
-		</action>
-		
-		
-		
-		 <action name="getElectionResultsLocations" class="locationsHierarchyAction" method="getElectionResultsLocations">
-			<result type="json" name="success">
-				<param name="root">locations</param>				
-			</result>		
-		</action>
-		
-		<action name="getdashBoardConstituencyWiseResults" class="dashBoardElectionResultsAction" method="getdashBoardConstituencyWiseResults">
-			<result type="json" name="success">
-				<param name="root">dashBoardConstiResults</param>				
-		  	</result> 
-		</action>
-		<action name="gettingConstituencyResultsAction" class="constituencyWiseElectionResultsAction" method="gettingConstituencyResults">
+		 <action name="gettingConstituencyResultsAction" class="constituencyWiseElectionResultsAction" method="gettingConstituencyResults">
 			<result name="success">/jsp/constituencyWiseResults.jsp</result>			
 		 </action>
 		 
 		  <action name="constiteuncyWiseResults" class="constituencyWiseElectionResultsAction" method="execute">
-			<result name="success">/jsp/constituencyWiseResults.jsp</result>			
+			<result name="success" type="redirect">gettingConstituencyResultsAction.action</result>			
 		 </action>
 		 
 		 <action name="checkingPassword" class="constituencyWiseElectionResultsAction" method="checkingPassword">
