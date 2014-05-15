@@ -1789,7 +1789,7 @@ var stateType = '';
 
 			popupContent +='<article class="timeline-group" id="stateAK" style="font-family: times new roman,serif,sans-serif;margin-left:-40px;">';
 			popupContent +=' <header class="timeline-header">';
-			popupContent +=' <h3><b aria-hidden="true" class="stateface "></b> '+feature.properties.ac_name+'</a> </h3>';
+			popupContent +=' <h3><b aria-hidden="true" class="stateface "></b> '+feature.properties.ac_name+' Assembly Election Result</a> </h3>';
 			popupContent +=' </header>';
 			popupContent +=' <ol class="timeline-list"> ';
 			popupContent +=' <li class="timeline-point is-standard" data-when="future"> ';
@@ -1800,7 +1800,7 @@ var stateType = '';
 			popupContent +=' <table>';
 			popupContent +=' <tr>';
 			popupContent +='<td style="width:700px;"> Candidate Name </td>';
-			popupContent +='<td style="width:300px;padding-left:15px;"> Party </td>';
+			//popupContent +='<td style="width:300px;padding-left:15px;"> Party </td>';
 			popupContent +='<td style="width:600px;"> Votes Percentage  </td>';
 			popupContent +=' </tr">';
 			popupContent +=' <header class="results-header" style="width: 350px; margin-top: -10px;border-bottom-color: #004276;border-bottom-width: 2px;">';
@@ -1830,7 +1830,7 @@ var stateType = '';
 							popupContent +=' <td class="results-title" style="width:120px;">';
 							popupContent +=' <span class="percentage-combo" ><span class="number">'+electionAcData[i].selectedCasteDetails[j].casteName+'</span>';
 							popupContent +=' </span>';
-							popupContent +=' </td>';
+						/* 	popupContent +=' </td>';
 							popupContent +=' <td class="results-title" style="width:40px;">';
 							//popupContent +=' <span class="percentage-combo" ><span class="number">'+electionAcData[i].selectedCasteDetails[j].name+'</span>';
 							if(electionAcData[i].selectedCasteDetails[j].name =='TDP'){
@@ -1859,7 +1859,7 @@ var stateType = '';
 							}
 							
 							popupContent +=' </span>';
-							popupContent +=' </td>';
+							popupContent +=' </td>'; */
 							//popupContent +=' <td class="results-title" style="width: 30px;">';
 							//popupContent +=' </td>';
 							popupContent +=' <td class="results-percentage" style="width:100px;padding-left: 25px;">';
@@ -1948,7 +1948,7 @@ var stateType = '';
 				popupContent +=' <table>';
 			popupContent +=' <tr>';
 			popupContent +='<td style="width:700px;"> Candidate Name </td>';
-			popupContent +='<td style="width:300px;padding-left:15px;"> Party </td>';
+			//popupContent +='<td style="width:300px;padding-left:15px;"> Party </td>';
 			popupContent +='<td style="width:600px;"> Votes Percentage  </td>';
 			popupContent +=' </tr">';
 			popupContent +=' <header class="results-header" style="width: 350px; margin-top: -10px;border-bottom-color: #004276;border-bottom-width: 2px;">';
@@ -1979,7 +1979,7 @@ var stateType = '';
 							popupContent +=' <span class="percentage-combo" ><span class="number">'+electionPcData[i].selectedCasteDetails[j].casteName+'</span>';
 							popupContent +=' </span>';
 							popupContent +=' </td>';
-							popupContent +=' <td class="results-title" style="width: 25px;">';
+							/* popupContent +=' <td class="results-title" style="width: 25px;">';
 							//popupContent +=' <span class="percentage-combo" ><span class="number">'+electionAcData[i].selectedCasteDetails[j].name+'</span>';
 							if(electionPcData[i].selectedCasteDetails[j].name =='TDP'){
 								popupContent +=' <span > <img src="images/party_flags/TDP.PNG" width=125% /></span>';
@@ -2007,7 +2007,7 @@ var stateType = '';
 							}
 							
 							popupContent +=' </span>';
-							popupContent +=' </td>';
+							popupContent +=' </td>'; */
 							//popupContent +=' <td class="results-title" style="width: 30px;">';
 							//popupContent +=' </td>';
 							popupContent +=' <td class="results-percentage" style="width: 100px;padding-left: 25px;">';
@@ -2126,7 +2126,7 @@ var stateType = '';
 			popupContent +=' <table>';
 		popupContent +=' <tr>';
 		popupContent +='<td style="width:700px;"> Candidate Name </td>';
-		popupContent +='<td style="width:300px;padding-left:15px;"> Party </td>';
+		//popupContent +='<td style="width:300px;padding-left:15px;"> Party </td>';
 		popupContent +='<td style="width:600px;"> Votes Percentage  </td>';
 		popupContent +=' </tr">';
 		popupContent +=' <header class="results-header" style="width: 350px; margin-top: -10px;border-bottom-color: #004276;border-bottom-width: 2px;">';
@@ -2158,7 +2158,7 @@ var stateType = '';
 						popupContent +=' <span class="percentage-combo" ><span class="number">'+electionPcData[i].selectedCasteDetails[j].casteName+'</span>';
 						popupContent +=' </span>';
 						popupContent +=' </td>';
-						popupContent +=' <td class="results-title" style="width: 25px;">';
+						/* popupContent +=' <td class="results-title" style="width: 25px;">';
 						//popupContent +=' <span class="percentage-combo" ><span class="number">'+electionAcData[i].selectedCasteDetails[j].name+'</span>';
 						if(electionPcData[i].selectedCasteDetails[j].name =='TDP'){
 							popupContent +=' <span > <img src="images/party_flags/TDP.PNG" width=125% /></span>';
@@ -2186,7 +2186,7 @@ var stateType = '';
 						}
 						
 						popupContent +=' </span>';
-						popupContent +=' </td>';
+						popupContent +=' </td>'; */
 						//popupContent +=' <td class="results-title" style="width: 30px;">';
 						//popupContent +=' </td>';
 						popupContent +=' <td class="results-percentage" style="width: 100px;padding-left: 25px;">';
