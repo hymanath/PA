@@ -2350,25 +2350,25 @@ function showResultDiv()
 
 function getRegionWiseResults(searchType){
 	if(searchType == 'Telangana'){
-		alert(1);
+		console.log(1);
 	}
 	else if(searchType == 'Semandhra'){
-		alert(2);
+		console.log(2);
 	}
 	else if(searchType == 'India'){
-		alert(3);
+		console.log(3);
 	}
 	else if(searchType == 'StateAnalysis'){
 		$('#liveResultsDiv').show();
 	}
 	else if(searchType == 'DistrictAnalysis'){
-		alert(5);
+		console.log(5);
 	}
 	else if(searchType == 'CBNEffect'){
-		alert(6);
+		console.log(6);
 	}
 	else if(searchType == 'ModiEffect'){
-		alert(7);
+		console.log(7);
 	}
 	
 </script>
