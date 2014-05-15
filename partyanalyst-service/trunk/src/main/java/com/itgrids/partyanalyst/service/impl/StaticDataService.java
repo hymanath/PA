@@ -23,6 +23,7 @@ import java.util.TreeSet;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
+import org.jfree.util.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -9423,179 +9424,183 @@ public boolean removeCadreImage(Long cadreId,Long userId){
 		ConstituencyLiveResultsVO statesVO = new ConstituencyLiveResultsVO();
 		
 		
-		statesVO = getConstituencyResultsForPrevElection();
-		List<ConstituencyLiveResultsVO> statesList = null;
-		Map<Long,ConstituencyLiveResultsVO> statesMap = null;
-		if(statesVO!=null){
-			statesList = statesVO.getStatesList();
-			statesMap = statesVO.getConstiMap();
-		}
-		if(statesList == null){
-			statesList = new ArrayList<ConstituencyLiveResultsVO>();
-			statesMap = new HashMap<Long, ConstituencyLiveResultsVO>();
-			statesVO.setStatesList(statesList);
-		}
-			
-		List<Object[]> list = candidateResultDAO.getElectionResultsByParliament(IConstants.PRES_PARLIAMENT_ELECTION_ID);
-		
-		List<Object[]> alliancesList = allianceGroupDAO.getAlliancesAndPartiesForAnElection(IConstants.PRES_PARLIAMENT_ELECTION_ID);
-		
-		Map<String,List<Long>> alliancesMap = new HashMap<String, List<Long>>();
-		if(alliancesList!=null && alliancesList.size()>0){
-		for(Object[] obj:alliancesList){
-			List<Long> alliances = alliancesMap.get(obj[1].toString());
-			if(alliances == null){
-				alliances = new ArrayList<Long>();
+		try {
+			statesVO = getConstituencyResultsForPrevElection();
+			List<ConstituencyLiveResultsVO> statesList = null;
+			Map<Long,ConstituencyLiveResultsVO> statesMap = null;
+			if(statesVO!=null){
+				statesList = statesVO.getStatesList();
+				statesMap = statesVO.getConstiMap();
 			}
-			
-			alliances.add(Long.valueOf(obj[2].toString()));
-			
-			alliancesMap.put(obj[1].toString(), alliances);
-		}
-		}
-		
-		List<Long> upaAlliances = null;
-		List<Long> ndaAlliances = null;
-		
-		if(alliancesMap.get("UPA") == null){
-			upaAlliances = new ArrayList<Long>();
-		}else{
-			upaAlliances = alliancesMap.get("UPA");
-		}
-		
-		if(alliancesMap.get("NDA") == null){
-			ndaAlliances = new ArrayList<Long>();
-		}else{
-			ndaAlliances = alliancesMap.get("NDA");
-		}
-		
-		
-		
-		
-		
-		Long ttlNdaWonCount = 0l;
-		Long ttlUpaWonCount = 0l;
-		Long ttlOthersWonCount =0l;
-		
-		Long ttlNdaLeadCount = 0l;
-		Long ttlUpaLeadCount = 0l;
-		Long ttlOthersLeadCount =0l;
-		
-		if(list!=null && list.size()>0){
-		
-		for(Object[] obj:list){
-			ConstituencyLiveResultsVO cv = statesMap.get(Long.valueOf(obj[4].toString()));
-			if(cv == null){
-				cv = new ConstituencyLiveResultsVO();
+			if(statesList == null){
+				statesList = new ArrayList<ConstituencyLiveResultsVO>();
+				statesMap = new HashMap<Long, ConstituencyLiveResultsVO>();
+				statesVO.setStatesList(statesList);
 			}
-			
-			List<ConstituencyLiveResultsVO> sttsList = statesVO.getStatesList();
-			if(sttsList.size()<=0){
-				if(Long.valueOf(obj[4].toString())!= null){
-				ConstituencyLiveResultsVO stateVO = new ConstituencyLiveResultsVO();
-				stateVO.setStateId(Long.valueOf(obj[4].toString()));
-				stateVO.setState(obj[5].toString());
 				
-				sttsList.add(stateVO);
+			List<Object[]> list = candidateResultDAO.getElectionResultsByParliament(IConstants.PRES_PARLIAMENT_ELECTION_ID);
+			
+			List<Object[]> alliancesList = allianceGroupDAO.getAlliancesAndPartiesForAnElection(IConstants.PRES_PARLIAMENT_ELECTION_ID);
+			
+			Map<String,List<Long>> alliancesMap = new HashMap<String, List<Long>>();
+			if(alliancesList!=null && alliancesList.size()>0){
+			for(Object[] obj:alliancesList){
+				List<Long> alliances = alliancesMap.get(obj[1].toString());
+				if(alliances == null){
+					alliances = new ArrayList<Long>();
 				}
+				
+				alliances.add(Long.valueOf(obj[2].toString()));
+				
+				alliancesMap.put(obj[1].toString(), alliances);
+			}
+			}
+			
+			List<Long> upaAlliances = null;
+			List<Long> ndaAlliances = null;
+			
+			if(alliancesMap.get("UPA") == null){
+				upaAlliances = new ArrayList<Long>();
 			}else{
-				ConstituencyLiveResultsVO matchedState = getMatchedState(sttsList, Long.valueOf(obj[4].toString()));
-				if(matchedState==null){
+				upaAlliances = alliancesMap.get("UPA");
+			}
+			
+			if(alliancesMap.get("NDA") == null){
+				ndaAlliances = new ArrayList<Long>();
+			}else{
+				ndaAlliances = alliancesMap.get("NDA");
+			}
+			
+			
+			
+			
+			
+			Long ttlNdaWonCount = 0l;
+			Long ttlUpaWonCount = 0l;
+			Long ttlOthersWonCount =0l;
+			
+			Long ttlNdaLeadCount = 0l;
+			Long ttlUpaLeadCount = 0l;
+			Long ttlOthersLeadCount =0l;
+			
+			if(list!=null && list.size()>0){
+			
+			for(Object[] obj:list){
+				ConstituencyLiveResultsVO cv = statesMap.get(Long.valueOf(obj[4].toString()));
+				if(cv == null){
+					cv = new ConstituencyLiveResultsVO();
+				}
+				
+				List<ConstituencyLiveResultsVO> sttsList = statesVO.getStatesList();
+				if(sttsList.size()<=0){
+					if(Long.valueOf(obj[4].toString())!= null){
 					ConstituencyLiveResultsVO stateVO = new ConstituencyLiveResultsVO();
 					stateVO.setStateId(Long.valueOf(obj[4].toString()));
 					stateVO.setState(obj[5].toString());
 					
 					sttsList.add(stateVO);
-				}
-			}
-			
-			
-			
-			if(sttsList.size()>0){
-				ConstituencyLiveResultsVO matchedState = getMatchedState(sttsList, Long.valueOf(obj[4].toString()));
-				if(matchedState!=null){
-					if(upaAlliances.contains(Long.valueOf(obj[0].toString()))){
-						if(Integer.parseInt(obj[7].toString()) == 1){
-							Long count = matchedState.getUpaWonCount();
-							ttlUpaWonCount = ttlUpaWonCount + 1;
-							if(count!=null){
-								count = count + 1;
-							}else{
-								count = 1l;
-							}
-							matchedState.setUpaWonCount(count);
-						}else{
-							Long count = matchedState.getUpaLeadCount();
-							ttlUpaLeadCount = ttlUpaLeadCount + 1;
-							
-							if(count!=null){
-								count = count + 1;
-							}else{
-								count = 1l;
-							}
-							matchedState.setUpaLeadCount(count);
-						}
-					}else if(ndaAlliances.contains(Long.valueOf(obj[0].toString()))){
-						if(Integer.parseInt(obj[7].toString()) == 1){
-							Long count = matchedState.getNdaWonCount();
-							ttlNdaWonCount = ttlNdaWonCount + 1;
-							if(count!=null){
-								count = count + 1;
-							}else{
-								count = 1l;
-							}
-							matchedState.setNdaWonCount(count);
-						}else{
-							Long count = matchedState.getNdaLeadCount();
-							ttlNdaLeadCount = ttlNdaLeadCount + 1;
-							
-							if(count!=null){
-								count = count + 1;
-							}else{
-								count = 1l;
-							}
-							matchedState.setNdaLeadCount(count);
-						}
-					}else{
-						if(Integer.parseInt(obj[7].toString()) == 1){
-							Long count = matchedState.getOthersWonCount();
-							ttlOthersWonCount = ttlOthersWonCount + 1;
-							if(count!=null){
-								count = count + 1;
-							}else{
-								count = 1l;
-							}
-							matchedState.setOthersWonCount(count);
-						}else{
-							Long count = matchedState.getOthersLeadCount();
-							ttlOthersLeadCount = ttlOthersLeadCount + 1;
-							if(count!=null){
-								count = count + 1;
-							}else{
-								count = 1l;
-							}
-							matchedState.setOthersLeadCount(count);
-						}
 					}
+				}else{
+					ConstituencyLiveResultsVO matchedState = getMatchedState(sttsList, Long.valueOf(obj[4].toString()));
+					if(matchedState==null){
+						ConstituencyLiveResultsVO stateVO = new ConstituencyLiveResultsVO();
+						stateVO.setStateId(Long.valueOf(obj[4].toString()));
+						stateVO.setState(obj[5].toString());
+						
+						sttsList.add(stateVO);
+					}
+				}
+				
+				
+				
+				if(sttsList.size()>0){
+					ConstituencyLiveResultsVO matchedState = getMatchedState(sttsList, Long.valueOf(obj[4].toString()));
+					if(matchedState!=null){
+						if(upaAlliances.contains(Long.valueOf(obj[0].toString()))){
+							if(Integer.parseInt(obj[7].toString()) == 1){
+								Long count = matchedState.getUpaWonCount();
+								ttlUpaWonCount = ttlUpaWonCount + 1;
+								if(count!=null){
+									count = count + 1;
+								}else{
+									count = 1l;
+								}
+								matchedState.setUpaWonCount(count);
+							}else{
+								Long count = matchedState.getUpaLeadCount();
+								ttlUpaLeadCount = ttlUpaLeadCount + 1;
+								
+								if(count!=null){
+									count = count + 1;
+								}else{
+									count = 1l;
+								}
+								matchedState.setUpaLeadCount(count);
+							}
+						}else if(ndaAlliances.contains(Long.valueOf(obj[0].toString()))){
+							if(Integer.parseInt(obj[7].toString()) == 1){
+								Long count = matchedState.getNdaWonCount();
+								ttlNdaWonCount = ttlNdaWonCount + 1;
+								if(count!=null){
+									count = count + 1;
+								}else{
+									count = 1l;
+								}
+								matchedState.setNdaWonCount(count);
+							}else{
+								Long count = matchedState.getNdaLeadCount();
+								ttlNdaLeadCount = ttlNdaLeadCount + 1;
+								
+								if(count!=null){
+									count = count + 1;
+								}else{
+									count = 1l;
+								}
+								matchedState.setNdaLeadCount(count);
+							}
+						}else{
+							if(Integer.parseInt(obj[7].toString()) == 1){
+								Long count = matchedState.getOthersWonCount();
+								ttlOthersWonCount = ttlOthersWonCount + 1;
+								if(count!=null){
+									count = count + 1;
+								}else{
+									count = 1l;
+								}
+								matchedState.setOthersWonCount(count);
+							}else{
+								Long count = matchedState.getOthersLeadCount();
+								ttlOthersLeadCount = ttlOthersLeadCount + 1;
+								if(count!=null){
+									count = count + 1;
+								}else{
+									count = 1l;
+								}
+								matchedState.setOthersLeadCount(count);
+							}
+						}
+						
+					}
+				
 					
 				}
-			
 				
+				statesMap.put(Long.valueOf(obj[4].toString()), cv);
+			}
 			}
 			
-			statesMap.put(Long.valueOf(obj[4].toString()), cv);
+			//List<Object[]> list = candidateResultDAO.getElectionResultsByParliament(electionId);
+			statesVO.setTtlUpaLeadCount(ttlUpaLeadCount);
+			statesVO.setTtlUpaWonCount(ttlUpaWonCount);
+			
+			statesVO.setTtlNdaLeadCount(ttlNdaLeadCount);
+			statesVO.setTtlNdaWonCount(ttlNdaWonCount);
+			
+			statesVO.setTtlOthersLeadCount(ttlOthersLeadCount);
+			statesVO.setTtlOthersWonCount(ttlOthersWonCount);
+		} catch (NumberFormatException e) {
+			log.debug(" Exception Raised in getStateWideParliamentLiveResults "+e);
 		}
-		}
-		
-		//List<Object[]> list = candidateResultDAO.getElectionResultsByParliament(electionId);
-		statesVO.setTtlUpaLeadCount(ttlUpaLeadCount);
-		statesVO.setTtlUpaWonCount(ttlUpaWonCount);
-		
-		statesVO.setTtlNdaLeadCount(ttlNdaLeadCount);
-		statesVO.setTtlNdaWonCount(ttlNdaWonCount);
-		
-		statesVO.setTtlOthersLeadCount(ttlOthersLeadCount);
-		statesVO.setTtlOthersWonCount(ttlOthersWonCount);
 		
 		return statesVO;
 	}
@@ -9603,149 +9608,153 @@ public boolean removeCadreImage(Long cadreId,Long userId){
 	public ConstituencyLiveResultsVO getConstituencyResultsForPrevElection(){
 		ConstituencyLiveResultsVO statesVO = new ConstituencyLiveResultsVO();
 		
-		List<ConstituencyLiveResultsVO> statesList = new ArrayList<ConstituencyLiveResultsVO>();
-		statesVO.setStatesList(statesList);
-		
-		List<Object[]> list = candidateResultDAO.getElectionResultsByParliament(IConstants.PREV_PARLIAMENT_ELECTION_ID);
-		
-		List<Object[]> alliancesList = allianceGroupDAO.getAlliancesAndPartiesForAnElection(IConstants.PREV_PARLIAMENT_ELECTION_ID);
-		
-		Map<String,List<Long>> alliancesMap = new HashMap<String, List<Long>>();
-		if(alliancesList!=null && alliancesList.size()>0){
-		for(Object[] obj:alliancesList){
-			List<Long> alliances = alliancesMap.get(obj[1].toString());
-			if(alliances == null){
-				alliances = new ArrayList<Long>();
-			}
+		try {
+			List<ConstituencyLiveResultsVO> statesList = new ArrayList<ConstituencyLiveResultsVO>();
+			statesVO.setStatesList(statesList);
 			
-			alliances.add(Long.valueOf(obj[2].toString()));
+			List<Object[]> list = candidateResultDAO.getElectionResultsByParliament(IConstants.PREV_PARLIAMENT_ELECTION_ID);
 			
-			alliancesMap.put(obj[1].toString(), alliances);
-		}
-		}
-		
-		List<Long> upaAlliances = null;
-		List<Long> ndaAlliances = null;
-		
-		if(alliancesMap.get("UPA") == null){
-			upaAlliances = new ArrayList<Long>();
-		}else{
-			upaAlliances = alliancesMap.get("UPA");
-		}
-		
-		if(alliancesMap.get("NDA") == null){
-			ndaAlliances = new ArrayList<Long>();
-		}else{
-			ndaAlliances = alliancesMap.get("NDA");
-		}
-		
-		Map<Long,ConstituencyLiveResultsVO> statesMap = new HashMap<Long, ConstituencyLiveResultsVO>();
-		
-		Long overallUpaCount = 0l;
-		Long overallNdaCount = 0l;
-		Long overallOthersCount = 0l;
-		Long overallStatesCount = 0l;
-		
-		if(list!=null && list.size()>0){
-		for(Object[] obj:list){
-			ConstituencyLiveResultsVO cv = statesMap.get(Long.valueOf(obj[4].toString()));
-			if(cv == null){
-				cv = new ConstituencyLiveResultsVO();
-			}
+			List<Object[]> alliancesList = allianceGroupDAO.getAlliancesAndPartiesForAnElection(IConstants.PREV_PARLIAMENT_ELECTION_ID);
 			
-			List<ConstituencyLiveResultsVO> sttsList = statesVO.getStatesList();
-			if(sttsList.size()<=0){
-				if(Long.valueOf(obj[4].toString())!= null){
-				ConstituencyLiveResultsVO stateVO = new ConstituencyLiveResultsVO();
-				stateVO.setStateId(Long.valueOf(obj[4].toString()));
-				stateVO.setState(obj[5].toString());
-				
-				sttsList.add(stateVO);
+			Map<String,List<Long>> alliancesMap = new HashMap<String, List<Long>>();
+			if(alliancesList!=null && alliancesList.size()>0){
+			for(Object[] obj:alliancesList){
+				List<Long> alliances = alliancesMap.get(obj[1].toString());
+				if(alliances == null){
+					alliances = new ArrayList<Long>();
 				}
+				
+				alliances.add(Long.valueOf(obj[2].toString()));
+				
+				alliancesMap.put(obj[1].toString(), alliances);
+			}
+			}
+			
+			List<Long> upaAlliances = null;
+			List<Long> ndaAlliances = null;
+			
+			if(alliancesMap.get("UPA") == null){
+				upaAlliances = new ArrayList<Long>();
 			}else{
-				ConstituencyLiveResultsVO matchedState = getMatchedState(sttsList, Long.valueOf(obj[4].toString()));
-				if(matchedState==null){
+				upaAlliances = alliancesMap.get("UPA");
+			}
+			
+			if(alliancesMap.get("NDA") == null){
+				ndaAlliances = new ArrayList<Long>();
+			}else{
+				ndaAlliances = alliancesMap.get("NDA");
+			}
+			
+			Map<Long,ConstituencyLiveResultsVO> statesMap = new HashMap<Long, ConstituencyLiveResultsVO>();
+			
+			Long overallUpaCount = 0l;
+			Long overallNdaCount = 0l;
+			Long overallOthersCount = 0l;
+			Long overallStatesCount = 0l;
+			
+			if(list!=null && list.size()>0){
+			for(Object[] obj:list){
+				ConstituencyLiveResultsVO cv = statesMap.get(Long.valueOf(obj[4].toString()));
+				if(cv == null){
+					cv = new ConstituencyLiveResultsVO();
+				}
+				
+				List<ConstituencyLiveResultsVO> sttsList = statesVO.getStatesList();
+				if(sttsList.size()<=0){
+					if(Long.valueOf(obj[4].toString())!= null){
 					ConstituencyLiveResultsVO stateVO = new ConstituencyLiveResultsVO();
 					stateVO.setStateId(Long.valueOf(obj[4].toString()));
 					stateVO.setState(obj[5].toString());
 					
 					sttsList.add(stateVO);
-				}
-			}
-			
-			
-			
-			if(sttsList.size()>0){
-				ConstituencyLiveResultsVO matchedState = getMatchedState(sttsList, Long.valueOf(obj[4].toString()));
-				if(matchedState!=null){
-					
-					Long totalCount = matchedState.getStatesTotalCount();
-					if(totalCount==null){
-						totalCount = 0l;
 					}
-					
-					if(upaAlliances.contains(Long.valueOf(obj[0].toString()))){
-						Long count = matchedState.getUpaAlliancesCount();
-						totalCount = totalCount +1;
-						overallUpaCount = overallUpaCount+1;
-					
-						if(count!=null){
-							count = count + 1;
-						}else{
-							count = 1l;
-						}
-						matchedState.setUpaAlliancesCount(count);
-					}else if(ndaAlliances.contains(Long.valueOf(obj[0].toString()))){
-						Long count = matchedState.getNdaAlliancesCount();
-						totalCount = totalCount +1;
-						overallNdaCount = overallNdaCount+1;
-					
+				}else{
+					ConstituencyLiveResultsVO matchedState = getMatchedState(sttsList, Long.valueOf(obj[4].toString()));
+					if(matchedState==null){
+						ConstituencyLiveResultsVO stateVO = new ConstituencyLiveResultsVO();
+						stateVO.setStateId(Long.valueOf(obj[4].toString()));
+						stateVO.setState(obj[5].toString());
 						
-						if(count!=null){
-							count = count + 1;
-						}else{
-							count = 1l;
-						}
-						
-						matchedState.setNdaAlliancesCount(count);
-					}else{
-						Long count = matchedState.getOthersCount();
-						
-						totalCount = totalCount +1;
-						overallOthersCount = overallOthersCount+1;
-						
-						if(count!=null){
-							count = count + 1;
-						}else{
-							count = 1l;
-						}
-						
-						matchedState.setOthersCount(count);
+						sttsList.add(stateVO);
 					}
-					
-					
-					matchedState.setStatesTotalCount(totalCount);
-					
-					if(statesVO.getOverallStatesCount()==null){
-						statesVO.setOverallStatesCount(0l);
-					}
-					statesVO.setOverallStatesCount(statesVO.getOverallStatesCount()+1);
 				}
 				
 				
 				
-			
+				if(sttsList.size()>0){
+					ConstituencyLiveResultsVO matchedState = getMatchedState(sttsList, Long.valueOf(obj[4].toString()));
+					if(matchedState!=null){
+						
+						Long totalCount = matchedState.getStatesTotalCount();
+						if(totalCount==null){
+							totalCount = 0l;
+						}
+						
+						if(upaAlliances.contains(Long.valueOf(obj[0].toString()))){
+							Long count = matchedState.getUpaAlliancesCount();
+							totalCount = totalCount +1;
+							overallUpaCount = overallUpaCount+1;
+						
+							if(count!=null){
+								count = count + 1;
+							}else{
+								count = 1l;
+							}
+							matchedState.setUpaAlliancesCount(count);
+						}else if(ndaAlliances.contains(Long.valueOf(obj[0].toString()))){
+							Long count = matchedState.getNdaAlliancesCount();
+							totalCount = totalCount +1;
+							overallNdaCount = overallNdaCount+1;
+						
+							
+							if(count!=null){
+								count = count + 1;
+							}else{
+								count = 1l;
+							}
+							
+							matchedState.setNdaAlliancesCount(count);
+						}else{
+							Long count = matchedState.getOthersCount();
+							
+							totalCount = totalCount +1;
+							overallOthersCount = overallOthersCount+1;
+							
+							if(count!=null){
+								count = count + 1;
+							}else{
+								count = 1l;
+							}
+							
+							matchedState.setOthersCount(count);
+						}
+						
+						
+						matchedState.setStatesTotalCount(totalCount);
+						
+						if(statesVO.getOverallStatesCount()==null){
+							statesVO.setOverallStatesCount(0l);
+						}
+						statesVO.setOverallStatesCount(statesVO.getOverallStatesCount()+1);
+					}
+					
+					
+					
 				
+					
+				}
+				
+				statesMap.put(Long.valueOf(obj[4].toString()), cv);
+			}
 			}
 			
-			statesMap.put(Long.valueOf(obj[4].toString()), cv);
+			statesVO.setConstiMap(statesMap);
+			statesVO.setOverAllNdaCount(overallNdaCount);
+			statesVO.setOverAllUpaCount(overallUpaCount);
+			statesVO.setOverAllOthersCount(overallOthersCount);
+		} catch (NumberFormatException e) {
+			Log.error("Exception Raised In getConstituencyResultsForPrevElection" + e);
 		}
-		}
-		
-		statesVO.setConstiMap(statesMap);
-		statesVO.setOverAllNdaCount(overallNdaCount);
-		statesVO.setOverAllUpaCount(overallUpaCount);
-		statesVO.setOverAllOthersCount(overallOthersCount);
 		
 		return statesVO;
 	}
@@ -9754,6 +9763,18 @@ public boolean removeCadreImage(Long cadreId,Long userId){
 		if(statesList != null && statesList.size()>0 && stateId != null ){
 			for(ConstituencyLiveResultsVO st : statesList){
 				if(st.getStateId().equals(stateId)){
+					return st;
+				}
+			}
+		}
+		return null;
+	}
+	
+	
+	public ConstituencyLiveResultsVO getMatchedPartyVO(List<ConstituencyLiveResultsVO> statesList,  Long partyId){
+		if(statesList != null && statesList.size()>0 && partyId != null ){
+			for(ConstituencyLiveResultsVO st : statesList){
+				if(st.getPartyId().equals(partyId)){
 					return st;
 				}
 			}
@@ -9927,6 +9948,138 @@ public boolean removeCadreImage(Long cadreId,Long userId){
 		
 	}
 	
+	
+	public ConstituencyLiveResultsVO getPartyWiseWonLeadCountInLive(){
+		ConstituencyLiveResultsVO statesVO = new ConstituencyLiveResultsVO();
+		try {
+			List<ConstituencyLiveResultsVO> statesList = new ArrayList<ConstituencyLiveResultsVO>();
+			statesVO.setStatesList(statesList);
+			
+			List<Object[]> list = candidateResultDAO.getElectionResultsByParliament(IConstants.PRES_PARLIAMENT_ELECTION_ID);
+			
+			List<Object[]> alliancesList = allianceGroupDAO.getAlliancesAndPartiesForAnElection(IConstants.PRES_PARLIAMENT_ELECTION_ID);
+			
+			Map<String,List<Long>> alliancesMap = new HashMap<String, List<Long>>();
+			if(alliancesList!=null && alliancesList.size()>0){
+			for(Object[] obj:alliancesList){
+				List<Long> alliances = alliancesMap.get(obj[1].toString());
+				if(alliances == null){
+					alliances = new ArrayList<Long>();
+				}
+				
+				alliances.add(Long.valueOf(obj[2].toString()));
+				
+				alliancesMap.put(obj[1].toString(), alliances);
+			}
+			}
+			
+			List<Long> upaAlliances = null;
+			List<Long> ndaAlliances = null;
+			
+			if(alliancesMap.get("UPA") == null){
+				upaAlliances = new ArrayList<Long>();
+			}else{
+				upaAlliances = alliancesMap.get("UPA");
+			}
+			
+			if(alliancesMap.get("NDA") == null){
+				ndaAlliances = new ArrayList<Long>();
+			}else{
+				ndaAlliances = alliancesMap.get("NDA");
+			}
+			
+			Map<Long,ConstituencyLiveResultsVO> statesMap = new HashMap<Long, ConstituencyLiveResultsVO>();
+			
+			if(list!=null && list.size()>0){
+			for(Object[] obj:list){
+				ConstituencyLiveResultsVO cv = statesMap.get(Long.valueOf(obj[0].toString()));
+				if(cv == null){
+					cv = new ConstituencyLiveResultsVO();
+				}
+				
+				List<ConstituencyLiveResultsVO> sttsList = statesVO.getStatesList();
+				if(sttsList.size()<=0){
+					if(Long.valueOf(obj[0].toString())!= null){
+					ConstituencyLiveResultsVO partyVO = new ConstituencyLiveResultsVO();
+					partyVO.setPartyId( Long.valueOf(obj[0].toString()));
+					partyVO.setParty(obj[1].toString());
+					partyVO.setPartyLogoPath(obj[8]!=null ? obj[8].toString() : "");
+					partyVO.setPartyFlagPath(obj[9]!=null ? obj[9].toString() : "");
+					partyVO.setPartyFlagLargePath(obj[10]!=null ? obj[10].toString() : "");
+					
+					sttsList.add(partyVO);
+					}
+				}else{
+					ConstituencyLiveResultsVO matchedState = getMatchedPartyVO(sttsList, Long.valueOf(obj[0].toString()));
+					if(matchedState==null){
+						ConstituencyLiveResultsVO partyVO = new ConstituencyLiveResultsVO();
+						partyVO.setPartyId( Long.valueOf(obj[0].toString()));
+						partyVO.setParty(obj[1].toString());
+						partyVO.setPartyLogoPath(obj[8]!=null ? obj[8].toString() : "");
+						partyVO.setPartyFlagPath(obj[9]!=null ? obj[9].toString() : "");
+						partyVO.setPartyFlagLargePath(obj[10]!=null ? obj[10].toString() : "");
+						
+						sttsList.add(partyVO);
+					}
+				}
+				
+				
+				
+				if(sttsList.size()>0){
+					ConstituencyLiveResultsVO matchedState = getMatchedPartyVO(sttsList, Long.valueOf(obj[0].toString()));
+					if(matchedState!=null){
+						 
+						if(Integer.parseInt(obj[7].toString()) == 1){
+							Long partyWonCount = matchedState.getPartyWonCount();
+							if(partyWonCount == null){
+								partyWonCount = 0l;
+							}
+							partyWonCount = partyWonCount + 1;
+							
+							matchedState.setPartyWonCount(partyWonCount);
+						}else{
+							Long partyLeadCount = matchedState.getPartyLeadCount();
+							if(partyLeadCount == null){
+								partyLeadCount = 0l;
+							}
+							partyLeadCount = partyLeadCount + 1;
+							
+							matchedState.setPartyLeadCount(partyLeadCount);
+						}
+						
+						Long partyCount = matchedState.getPartyCount();
+						if(partyCount==null){
+							partyCount = 0l;
+						}
+						partyCount = partyCount + 1;
+						matchedState.setPartyCount(partyCount);
+						
+						if(matchedState.getAllianceGroup()==null){
+							if(upaAlliances.contains(Long.valueOf(obj[0].toString()))){
+								matchedState.setAllianceGroup("UPA");
+							}else if(ndaAlliances.contains(Long.valueOf(obj[0].toString()))){
+								matchedState.setAllianceGroup("NDA");
+							}else{
+								matchedState.setAllianceGroup("OTHERS");
+							}
+						}
+						
+						
+					}
+				}
+				
+				statesMap.put(Long.valueOf(obj[0].toString()), cv);
+			}
+			}
+			
+			statesVO.setConstiMap(statesMap);
+			
+			
+		} catch (Exception e) {
+			log.error("Exception In getPartyWiseWonLeadCountInLive " + e);
+		}
+		return statesVO;
+	}
 	
 	public List<SelectOptionVO> getAllParliaments(){
 		  
