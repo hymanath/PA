@@ -413,6 +413,9 @@
 				<value>com.itgrids.partyanalyst.model.CasteContainConstituency</value>
 				<value>com.itgrids.partyanalyst.model.StrategyAssumptions</value>
 				<value>com.itgrids.partyanalyst.model.VoterFamilyCount</value>
+				<value>com.itgrids.partyanalyst.model.StateSubRegionDistrict</value>
+				<value>com.itgrids.partyanalyst.model.StateSubRegion</value>
+				
 			</list>
 			
 		</property>
