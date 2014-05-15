@@ -11,7 +11,81 @@
 
 <style>
 
+//sravanthi code
+.chart-gauge1 {
+width: 360px;
+margin: auto;
+height: 200px;
+text-align:center;
+}
 
+.chart-gauge {
+width: 360px;
+margin: auto;
+height: 200px;
+text-align:center;
+}
+
+.chart-color1 {
+fill: #FF3333;
+}
+
+.chart-color2 {
+fill: #FFCCCC;
+}
+
+.chart-color3 {
+fill: #CCFFCC;
+}
+.chart-color4 {
+fill: #33FF33;
+}
+.chart-color5 {
+fill: #59A2BE;
+}
+.needle ,.needle-center{
+fill: #9f8868;
+}
+
+
+.d3-slider-handle1 {position: absolute;width: 1.2em;height: 1.2em;border: 1px solid #FFCC00;border-radius: 4px;background: #FFCC99;background: linear-gradient(to bottom, #FFCC99 0%, #FFD2A6 100%);z-index: 3;}
+.d3-slider-handle1:hover {border: 1px solid #F2C100;}
+.d3-slider-horizontal .d3-slider-handle1 {top: -.3em;margin-left: -.6em;}
+.d3-slider-vertical .d3-slider-handle1 {left: -.25em;margin-left: 0;margin-bottom: -.6em;}
+
+
+.d3-slider {position: relative;font-family: Verdana,Arial,sans-serif;font-size: 1.1em;border: 1px solid #aaaaaa;z-index: 2;}
+.d3-slider-horizontal {height: .8em;}
+.d3-slider-vertical {width: .8em;height: 100px;}
+.d3-slider-handle {position: absolute;width: 1.2em;height: 1.2em;border: 1px solid #FFCC00;border-radius: 4px;background: #FFCC99;background: linear-gradient(to bottom, #FFCC99 0%, #FFD2A6 100%);z-index: 3;}
+.d3-slider-handle:hover {border: 1px solid #F2C100;}
+.d3-slider-horizontal .d3-slider-handle {top: -.3em;margin-left: -.6em;}
+.d3-slider-axis {position: relative;z-index: 1;}
+.d3-slider-axis-bottom {top: .8em;}
+.d3-slider-axis-right {left: .8em;}
+.d3-slider-axis path {stroke-width: 0;fill: none;}
+.d3-slider-axis line {fill: none;stroke: #aaa;shape-rendering: crispEdges;}
+.d3-slider-axis text {font-size: 11px;}
+.d3-slider-vertical .d3-slider-handle {left: -.25em;margin-left: 0;margin-bottom: -.6em;}
+.div_sld{width:300px;margin:10px 0 0 50px;}
+.div_sld1{width:300px;margin:10px 0 0 50px;}
+.div_upeffect{width:400px;}
+.map_wrapper{width:100%;padding:5px;max-width:700px;}
+@media only screen and (max-width:767px){
+.map_wrapper{width:99%;padding:0px;}
+#mapswidget{width:98%;}
+.div_upeffect{width:100%;}
+
+.div_sld{width:80%;margin:10px auto;}
+.div_sld1{width:80%;margin:10px auto;}
+}
+@media only screen and (max-width:340px){
+.div_upeffect center{font-size:12px;}
+}
+.ht10{display:block;font-size:1px;height:10px;line-height:10px}
+#slider3{width:333px;margin-bottom: 40px;}
+.div_sld{width:333px;margin:auto;}
+.div_sld1{width:333px;margin:auto;}
 
 select {
 background-color: #FFFFFF;
@@ -1166,7 +1240,19 @@ function getConstituencyWiseResults()
 	</div>
 
 </div>
- 
+
+<div id="modiDiv display:none;">
+<div class="chart-gauge" id="unemp_chart" style="display: none; width: 360px; margin: auto;"></div>
+<div class="chart-gauge1" id="unemchart1p_" style="display: block; width: 360px; margin: auto;"><svg width="360" height="195"><g transform="translate(180, 170)"><path class="arc chart-color1" d="M-169.78754426714426,-8.496458776015265A170,170 0 0,1 -142.35510191056113,-92.92483500138029L-108.85978381395851,-71.06016794223198A130,130 0 0,0 -129.83753385134563,-6.497292005188144Z" id="chart-color1"/><text style="font-size: 12px; font-family: sans-serif; font-weight: bold;" fill="black" dx="15" dy="22"><textPath href="#chart-color1" style="color: red;">115</textPath></text><path class="arc chart-color2" d="M-132.36691558005566,-106.67239408498534A170,170 0 0,1 -60.547849096098766,-158.8520002072245L-46.301296367604934,-121.4750589819952A130,130 0 0,0 -101.22175897298374,-81.57300724145938Z" id="chart-color2"/><text style="font-size: 12px; font-family: sans-serif; font-weight: bold;" fill="black" dx="15" dy="22"><textPath href="#chart-color2" style="color: red;">135</textPath></text><path class="arc chart-color3" d="M-44.3866241273738,-164.10310051481426A170,170 0 0,1 44.38662412737374,-164.1031005148143L33.942712567991684,-125.49060627603446A130,130 0 0,0 -33.94271256799173,-125.49060627603444Z" id="chart-color3"/><text style="font-size: 12px; font-family: sans-serif; font-weight: bold;" fill="black" dx="15" dy="22"><textPath href="#chart-color3" style="color: red;">155</textPath></text><path class="arc chart-color4" d="M60.54784909609871,-158.8520002072245A170,170 0 0,1 132.36691558005563,-106.6723940849854L101.22175897298371,-81.57300724145942A130,130 0 0,0 46.30129636760489,-121.47505898199522Z" id="chart-color4"/><text style="font-size: 12px; font-family: sans-serif; font-weight: bold;" fill="black" dx="15" dy="22"><textPath href="#chart-color4" style="color: red;">175</textPath></text><path class="arc chart-color5" d="M142.3551019105612,-92.92483500138022A170,170 0 0,1 170,1.0935234017801129e-13L130,8.36223777831851e-14A130,130 0 0,0 108.85978381395857,-71.06016794223193Z" id="chart-color5"/><text style="font-size: 12px; font-family: sans-serif; font-weight: bold;" fill="black" dx="15" dy="22"><textPath href="#chart-color5" style="color: red;">195</textPath></text><circle class="needle-center" cx="0" cy="0" r="15"/><path class="needle" d="M -8.816778784387097 12.135254915624213 L -105.17220926874317 -76.4120827980215 L 8.816778784387095 -12.135254915624213"/><text style="font-size: 12px; font-weight: bold; color: red;" x="-80" y="-50">Seats for CBN Effect</text></g></svg></div>
+
+<div class="div_sld" style="display: none;"><div id="slider3" class="d3-slider d3-slider-horizontal"><a class="d3-slider-handle" xlink:href="#"></a><svg class="d3-slider-axis d3-slider-axis-bottom" style="left: -12px;" width="558" height="32"><g transform="translate(12,0)"><g class="tick" style="opacity: 1;" transform="translate(0,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">0%</text></g><g class="tick" style="opacity: 1;" transform="translate(66.75,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">1%</text></g><g class="tick" style="opacity: 1;" transform="translate(133.5,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">2%</text></g><g class="tick" style="opacity: 1;" transform="translate(200.25,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">3%</text></g><g class="tick" style="opacity: 1;" transform="translate(267,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">4%</text></g><g class="tick" style="opacity: 1;" transform="translate(333.75,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">5%</text></g><path class="domain" d="M0,6V0H534V6"/></g></svg></div>
+</div>
+
+<div class="div_sld1" style="display: block;"><div id="slider3" class="d3-slider d3-slider-horizontal"><a class="d3-slider-handle1" xlink:href="#" style="left: 50%;"></a><svg class="d3-slider-axis d3-slider-axis-bottom" style="left: -12px;" width="558" height="32"><g transform="translate(12,0)"><g class="tick" style="opacity: 1;" transform="translate(0,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">0%</text></g><g class="tick" style="opacity: 1;" transform="translate(66.75,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">1%</text></g><g class="tick" style="opacity: 1;" transform="translate(133.5,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">2%</text></g><g class="tick" style="opacity: 1;" transform="translate(200.25,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">3%</text></g><g class="tick" style="opacity: 1;" transform="translate(267,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">4%</text></g><g class="tick" style="opacity: 1;" transform="translate(333.75,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">5%</text></g><path class="domain" d="M0,6V0H534V6"/></g></svg></div>
+</div>
+
+</div>
+ <div id="weathermap3"></div>
 </div>
 <!-- SAMBA END -->
 
@@ -1781,7 +1867,7 @@ var stateType = '';
 		}
 		else if(areatype  == "totPc")
 		{
-			onEachFeatureForPc(feature, layer);
+			//onEachFeatureForPc(feature, layer);
 		}
 		else
 		{
@@ -2581,12 +2667,12 @@ var stateType = '';
 	function generateMapForTgPCTotal()
 	{
 		type = "totPc";
-		document.getElementById('weathermap').innerHTML = "<div id='map'  style='height: 900px; border: 1px solid rgb(51, 51, 51); border-radius: 10px; position: relative; background: none repeat scroll 0% 0% rgb(255, 255, 255);'></div>"
-		map = L.map('map', {
+		document.getElementById('weathermap3').innerHTML = "<div id='map3'  style='height: 900px; border: 1px solid rgb(51, 51, 51); border-radius: 10px; position: relative; background: none repeat scroll 0% 0% rgb(255, 255, 255);'></div>"
+		map3 = L.map('map3', {
 		center: [18.0000,80.0000],
 		zoom: 5
 		});
-		L.geoJson(pccampus, {
+		L.geoJson(campus, {
 
 		style: function (feature) {
 			return feature.properties && feature.properties.style;
@@ -2600,7 +2686,7 @@ var stateType = '';
 			});
 		}
 
-		}).addTo(map); 
+		}).addTo(map3); 
 	}
 
 	function fillColour(partyName,layer,popupContent)
@@ -2734,6 +2820,7 @@ function getRegionWiseResults(searchType)
 		$('#areaSelectionDiv').hide();
 		$('#stateSelectDiv').hide();
 		$('#submitButtionDiv').hide();
+		$('#modiDiv').hide();
 	}
 	else if(searchType == 'Semandhra')
 	{
@@ -2745,6 +2832,7 @@ function getRegionWiseResults(searchType)
 		$('#areaSelectionDiv').hide();
 		$('#stateSelectDiv').hide();
 		$('#submitButtionDiv').hide();
+		$('#modiDiv').hide();
 	}
 	else if(searchType == 'India')
 	{
@@ -2755,6 +2843,7 @@ function getRegionWiseResults(searchType)
 		$('#areaSelectionDiv').hide();
 		$('#stateSelectDiv').hide();
 		$('#submitButtionDiv').hide();
+		$('#modiDiv').hide();
 	}
 	else if(searchType == 'StateAnalysis')
 	{
@@ -2765,6 +2854,7 @@ function getRegionWiseResults(searchType)
 		$('#areaSelectionDiv').hide();
 		$('#stateSelectDiv').hide();
 		$('#submitButtionDiv').hide();
+		$('#modiDiv').hide();
 	}
 	else if(searchType == 'DistrictAnalysis')
 	{
@@ -2775,6 +2865,7 @@ function getRegionWiseResults(searchType)
 		$('#areaSelectionDiv').hide();
 		$('#stateSelectDiv').hide();
 		$('#submitButtionDiv').hide();
+		$('#modiDiv').hide();
 	}
 	else if(searchType == 'CBNEffect')
 	{
@@ -2785,6 +2876,7 @@ function getRegionWiseResults(searchType)
 		$('#areaSelectionDiv').show();
 		$('#stateSelectDiv').show();
 		$('#submitButtionDiv').show();
+		$('#modiDiv').hide();
 	}
 	else if(searchType == 'ModiEffect')
 	{
@@ -2795,6 +2887,8 @@ function getRegionWiseResults(searchType)
 		$('#areaSelectionDiv').hide();
 		$('#stateSelectDiv').hide();
 		$('#submitButtionDiv').hide();
+		$('#modiDiv').show();
+		getElectionResultForTotalParliment();
 	}
 	}
 </script>
