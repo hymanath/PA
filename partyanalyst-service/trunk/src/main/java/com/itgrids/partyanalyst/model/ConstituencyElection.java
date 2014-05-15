@@ -59,6 +59,7 @@ public class ConstituencyElection extends BaseModel implements java.io.Serializa
 	private Set<ConstituencyLeadCandidate> constituencyLeadCandidates = new HashSet<ConstituencyLeadCandidate>(0);
 	
 	private String hasResults;
+	private int countStatus;
 
 	// Constructors
 
@@ -76,7 +77,7 @@ public class ConstituencyElection extends BaseModel implements java.io.Serializa
 			Constituency constituency, Date electionDate,
 			Set<Nomination> nominations,
 			ConstituencyElectionResult constituencyElectionResult,
-			Set<BoothConstituencyElection> boothConstituencyElections,String hasResults) {
+			Set<BoothConstituencyElection> boothConstituencyElections,String hasResults,int countStatus) {
 		this.constiElecId = constiElecId;
 		this.election = election;
 		this.constituency = constituency;
@@ -85,6 +86,7 @@ public class ConstituencyElection extends BaseModel implements java.io.Serializa
 		this.constituencyElectionResult = constituencyElectionResult;
 		this.boothConstituencyElections = boothConstituencyElections;
 		this.hasResults = hasResults;
+		this.countStatus = countStatus;
 	}
 
 	// Property accessors
@@ -197,6 +199,17 @@ public class ConstituencyElection extends BaseModel implements java.io.Serializa
 			Set<ConstituencyLeadCandidate> constituencyLeadCandidates) {
 		this.constituencyLeadCandidates = constituencyLeadCandidates;
 	}
+
+	@Column(name = "count_status")
+	public int getCountStatus() {
+		return countStatus;
+	}
+
+	public void setCountStatus(int countStatus) {
+		this.countStatus = countStatus;
+	}
+	
+	
 
 	
 }
