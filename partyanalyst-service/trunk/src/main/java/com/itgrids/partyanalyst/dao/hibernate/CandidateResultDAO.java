@@ -330,7 +330,10 @@ public class CandidateResultDAO extends GenericDaoHibernate<CandidateResult, Lon
 				" model.nomination.constituencyElection.constituency.state.stateId," +//4
 				" model.nomination.constituencyElection.constituency.state.stateName," +//5
 				" model.votesEarned," +//6
-				" model.nomination.constituencyElection.countStatus" +//7 
+				" model.nomination.constituencyElection.countStatus," +//7
+				" model.nomination.party.partyLogo," +//8
+				" model.nomination.party.partyFlag," +//9
+				" model.nomination.party.partyFlagLarge" +//10
 				" from CandidateResult model where  ");
 		
 		sb.append("model.rank = 1 and model.nomination.constituencyElection.constituency.electionScope.electionType.electionTypeId=1 " +
