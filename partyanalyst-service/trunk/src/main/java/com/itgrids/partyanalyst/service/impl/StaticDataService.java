@@ -112,6 +112,7 @@ import com.itgrids.partyanalyst.dto.PartyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.PartyPositionsVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVO;
+import com.itgrids.partyanalyst.dto.PartyWiseMarginCountsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.RevenueVillageElectionVO;
@@ -9451,11 +9452,24 @@ public boolean removeCadreImage(Long cadreId,Long userId){
 		}
 		}
 		
-		List<Long> upaAlliances = new ArrayList<Long>();
-		List<Long> ndaAlliances = new ArrayList<Long>();
+		List<Long> upaAlliances = null;
+		List<Long> ndaAlliances = null;
 		
-		upaAlliances = alliancesMap.get("UPA");
-		ndaAlliances = alliancesMap.get("NDA");
+		if(alliancesMap.get("UPA") == null){
+			upaAlliances = new ArrayList<Long>();
+		}else{
+			upaAlliances = alliancesMap.get("UPA");
+		}
+		
+		if(alliancesMap.get("NDA") == null){
+			ndaAlliances = new ArrayList<Long>();
+		}else{
+			ndaAlliances = alliancesMap.get("NDA");
+		}
+		
+		
+		
+		
 		
 		Long ttlNdaWonCount = 0l;
 		Long ttlUpaWonCount = 0l;
@@ -9742,6 +9756,153 @@ public boolean removeCadreImage(Long cadreId,Long userId){
 		return constiVO;
 	}
 	
+	
+	public PartyWiseMarginCountsVO getMarginAnalysisOnLiveResultsForAssemblies(Long electionId,Long type,List<Long> locationIds){
+		PartyWiseMarginCountsVO mainVO = new PartyWiseMarginCountsVO();
+		
+		Map<Long,String> partiesMap = new HashMap<Long, String>();
+		
+		List<Long> partysList = new ArrayList<Long>();
+		
+		partysList.add(872l);
+		partysList.add(362l);
+		partysList.add(1117l);
+		partysList.add(886l);
+		partysList.add(0l);
+		
+		partiesMap.put(872l, "TDP");
+		partiesMap.put(362l, "INC");
+		partiesMap.put(886l, "TRS");
+		partiesMap.put(1117l, "YSRCP");
+		partiesMap.put(163l, "BJP");
+		partiesMap.put(0l, "OTHERS");
+		
+		List<Long> partyIds = new ArrayList<Long>();
+		
+		List<Object[]> list = candidateResultDAO.getElectionResultsByMargin(electionId, locationIds, type);
+		
+		for(Object[] obj:list){
+			if(partysList.contains(Long.valueOf(obj[0].toString()))){
+				if(!partyIds.contains(Long.valueOf(obj[0].toString()))){
+					partyIds.add(Long.valueOf(obj[0].toString()));
+				}
+			}
+		}
+		
+		partyIds.add(0l);
+		
+		List<PartyWiseMarginCountsVO> partiesList = new ArrayList<PartyWiseMarginCountsVO>();
+		for(Long partyId:partyIds){
+			PartyWiseMarginCountsVO pv = new PartyWiseMarginCountsVO();
+			pv.setPartyId(partyId);
+			pv.setPartyName(partiesMap.get(partyId));
+			pv.setMarginsVO(getMarginsRanges());
+			partiesList.add(pv);
+		}
+		mainVO.setPartiesList(partiesList);
+		
+		
+		
+		for(Object[] obj:list){
+			PartyWiseMarginCountsVO partyVO = null;
+			if(partyIds.contains(Long.valueOf(obj[0].toString()))){
+				partyVO = getMatchedParty(mainVO.getPartiesList(),Long.valueOf(obj[0].toString()));
+			}else{
+				partyVO = getMatchedParty(mainVO.getPartiesList(),0l);
+			}
+			
+			if(partyVO!=null){
+				//double value = Double.parseDouble(obj[6].toString());
+				Double value = Double.valueOf(obj[6].toString());
+				
+				if(value!=null){
+					PartyWiseMarginCountsVO marginVO = null;
+					if(value>=0 && value <=5){
+						 marginVO = getMatchedMargin(partyVO.getMarginsVO(), "0-5");
+					}else if(value>5 && value <=10){
+						marginVO = getMatchedMargin(partyVO.getMarginsVO(), "5-10");
+					}else if(value>10 && value <=15){
+						marginVO = getMatchedMargin(partyVO.getMarginsVO(), "10-15");
+					}else if(value>15 && value <=20){
+						marginVO = getMatchedMargin(partyVO.getMarginsVO(), "15-20");
+					}else if(value>20){
+						marginVO = getMatchedMargin(partyVO.getMarginsVO(), "20-Above");
+					}
+					
+					if(marginVO !=null){
+						Long extdCount = marginVO.getCount();
+						if(extdCount==null){
+							extdCount = 0l;
+						}
+						extdCount = extdCount+1;
+						marginVO.setCount(extdCount);
+					}
+				}
+				
+				
+				
+			}
+		}
+		
+		return mainVO;
+	}
+	
+	public PartyWiseMarginCountsVO getMatchedMargin(List<PartyWiseMarginCountsVO> margins,String margin){
+		if(margins!=null && margins.size()>0 && margin!=""){
+			for(PartyWiseMarginCountsVO mrgn:margins){
+				if(mrgn.getMargin().equalsIgnoreCase(margin)){
+					return mrgn;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public PartyWiseMarginCountsVO getMatchedParty(List<PartyWiseMarginCountsVO> partiesList,Long partyId){
+		if(partiesList!=null && partiesList.size()>0 && partyId!=null){
+			for(PartyWiseMarginCountsVO party:partiesList){
+				if(party.getPartyId().equals(partyId)){
+					return party;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public List<PartyWiseMarginCountsVO> getMarginsRanges(){
+		
+		List<String> margins = new ArrayList<String>();
+		margins.add("0-5");
+		margins.add("5-10");
+		margins.add("10-15");
+		margins.add("15-20");
+		margins.add("20-Above");
+		List<PartyWiseMarginCountsVO> marginsList = new ArrayList<PartyWiseMarginCountsVO>();
+		
+		for(String s:margins){
+			
+			PartyWiseMarginCountsVO pv = new PartyWiseMarginCountsVO();
+			
+			if(s.contains("-")){
+				String[] parts = s.split("-");
+				String part1 = parts[0];
+				String part2 = parts[1];
+				pv.setMargin(s);
+				pv.setMarginMin(Long.parseLong(part1));
+				if(!part2.contains("Above")){
+				pv.setMarginMax(Long.valueOf(part2));
+				}
+				
+				marginsList.add(pv);
+			}
+		}
+		
+		
+		
+		
+		return marginsList;
+	}
+	
 	public List<SelectOptionVO> getRegionsByStateId(Long stateId)
 	{
 		List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>();
@@ -9754,4 +9915,5 @@ public boolean removeCadreImage(Long cadreId,Long userId){
 		return resultList;
 		
 	}
+	
 }

@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
+import com.itgrids.partyanalyst.dto.PartyWiseMarginCountsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.RevenueVillageElectionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -423,8 +424,9 @@ public interface IStaticDataService {
 		
 		public ConstituencyLiveResultsVO getConsituencyWiseElectionResultsForLive();
 		
+		public PartyWiseMarginCountsVO getMarginAnalysisOnLiveResultsForAssemblies(Long electionId,Long type,List<Long> locationIds);
+		
 		public List<SelectOptionVO> getRegionsByStateId(Long stateId);
 
-		
 		
 }
