@@ -107,6 +107,189 @@ $('document').ready(function(){
 </script>
 <script>
 
+var showConst=false;
+	
+	$('#stateButton').live('click',function(){
+		
+	if(showConst) {
+			
+			$(this).html('Show State Wise Report<i class="icon-chevron-down"></i>'); 
+			$('#telanganaMainDiv').hide();
+			$('#andhraMainDiv').hide();
+			showConst=false;
+		}
+		else {
+			
+			$(this).html('Hide State Wise Report<i class="icon-chevron-up"></i>');
+			$('#telanganaMainDiv').css("display","block");
+			$('#andhraMainDiv').css("display","block");
+			$("#stateAjaxImg").css("display","inline-block");
+			getAndhraPartyResult('state');
+			getAndhraPartyResultForMuncipal('state');
+			showConst=true;
+		}
+	});
+
+
+
+
+ function getTelanganaPartyResult(type)
+	{
+		$("#telanganaDiv").html('');
+		
+		var constituencyDetails={electionId:38,type:type,region:"telangana",taskToDo:"telangana"
+		,alliance:false};
+	$.ajax({
+          type:'POST',
+          url: 'getTelanganaPartyResultAction.action',
+          dataType: 'json',
+          data: {task:JSON.stringify(constituencyDetails)},
+     	  }).done(function(result){ 
+			  //$("#ajaxLoad").css("display","none");
+			if(result != null){
+				//buildBoothWiseAddedAndDeletedVoters(result);
+				buildResult(result,constituencyDetails,'telanganaDiv');
+			}
+	   });
+	   
+	
+	}
+
+
+	function getAndhraPartyResult(type)
+	{
+		$("#telanganaDiv").html('');
+		$("#andhraDiv").html('');
+		$("#telanganaMuncipaDiv").html('');
+		$("#andhraMuncipalDiv").html('');
+		
+		$("#regionHead").html('');
+		$("#regionHead1").html('');
+		$("#telanganaMainDiv").css("display","none");
+		var constituencyDetails={electionId:38,type:type,region:"andhra",taskToDo:"andhra"
+		,alliance:false};
+	$.ajax({
+          type:'POST',
+          url: 'getAndhraPartyResultAction.action',
+          dataType: 'json',
+          data: {task:JSON.stringify(constituencyDetails)},
+     	  }).done(function(result){ 
+			 
+			if(result != null){
+				
+				buildResult(result,constituencyDetails,'andhraDiv');
+			}
+	   });
+	   
+	
+	}
+
+
+function getTelanganaPartyResultForMuncipal(type)
+	{
+		$("#telanganaMuncipaDiv").html('');
+		var constituencyDetails={electionId:40,type:type,region:"telangana",taskToDo:"telanganamuncipal",alliance:false};
+	$.ajax({
+          type:'POST',
+          url: 'getTelanganaPartyResultForMuncipalAction.action',
+          dataType: 'json',
+          data: {task:JSON.stringify(constituencyDetails)},
+     	  }).done(function(result){ 
+			  //$("#ajaxLoad").css("display","none");
+			if(result != null){
+				//buildBoothWiseAddedAndDeletedVoters(result);
+				buildResult(result,constituencyDetails,'telanganaMuncipaDiv');
+			}
+	   });
+	   
+	
+	}
+
+function getAndhraPartyResultForMuncipal(type)
+	{
+		$("#telanganaDiv").html('');
+		$("#andhraDiv").html('');
+		$("#telanganaMuncipaDiv").html('');
+		$("#andhraMuncipalDiv").html('');
+		$("#regionHead").html('');
+		$("#regionHead1").html('');
+		$("#telanganaMainDiv").css("display","none");
+		var constituencyDetails={electionId:40,type:type,region:"andhra",taskToDo:"andhramuncipal"
+		,alliance:false};
+	$.ajax({
+          type:'POST',
+          url: 'getAndhraPartyResultForMuncipal.action',
+          dataType: 'json',
+          data: {task:JSON.stringify(constituencyDetails)},
+     	  }).done(function(result){ 
+			 
+			if(result != null){
+				//buildBoothWiseAddedAndDeletedVoters(result);
+				buildResult(result,constituencyDetails,'andhraMuncipalDiv');
+				$("#stateAjaxImg").css("display","none");
+				$("#districtAjaxImg").css("display","none");
+			}
+	   });
+	   
+	
+	}
+
+
+
+
+
+
+
+	function buildResult(result,jObj,DivEle)
+	{
+	var str='';
+	if(jObj.type == "district")
+		{
+	$("#telanganaMainDiv").css("display","block");
+		}
+	$("#andhraMainDiv").css("display","block");
+	if(jObj.type == "district" && jObj.region == "andhra" && jObj.taskToDo != "andhramuncipal")
+	$("#regionHead").html("ANDHRA REGION");
+	else if(jObj.type == "district" && jObj.region == "telangana" && jObj.taskToDo != "telanganamuncipal")
+		$("#regionHead1").html("TELANGANA REGION");
+	
+	if(jObj.taskToDo == "andhramuncipal" || jObj.taskToDo == "telanganamuncipal")
+	str+='<h5>'+result[0].year+' - Muncipal Election Results</h5>';
+	else
+	str+='<h5>'+result[0].year+' - Assembly Election Results</h5>';
+	str+='<table class="table table-bordered" style="width:40% !important;">';
+	str+='<thead>';
+	str+='<tr>';
+	if(jObj.type == 'district')
+	str+='<th>District</th>';
+	else
+	str+='<th>State</th>';
+	for(var i in result[0].subList)
+		{
+	str+='<th>'+result[0].subList[i].partyName+' </th>';
+		
+		}
+	str+='</tr>';
+	str+='</thead>';
+	for(var i in result)
+		{
+	
+	str+='<tbody>';
+	str+='<tr>';
+	str+='<td>'+result[i].locationName+'</td>';
+	for(var j in result[i].subList)
+			{
+	str+='<td>'+result[i].subList[j].percent+'</td>';
+	
+			}
+	str+='</tr>';
+	str+='</tbody>';
+	
+		}
+	str+='</table>';
+	$("#"+DivEle).html(str);
+	
+	}
 function testIt()
 {
 	$.ajax({
@@ -780,6 +963,27 @@ function getConstituencyWiseResults()
 <div class="span12 container hide"  style="border:1px solid #BDA870;margin-left:180px;padding:8px;margin-top:20px;" id="liveResultsDiv">
 
 <h4 style="text-align:center;">Live Results Analysis</h4>
+
+
+
+<a id="stateButton" class="btn " style="margin-top:0px;" href="javascript:{}" >Show State Wise Report<i class="icon-chevron-up"></i></a>
+<img id="stateAjaxImg" src="./images/icons/search.gif" alt="Processing Image" style="display:none;"/>
+
+
+
+<div class="span12 " id="telanganaMainDiv" >
+<h5 id="regionHead1"></h5>
+<div id="telanganaDiv" class="span5"></div>
+<div id="telanganaMuncipaDiv" class="span5"></div>
+
+</div>
+<div class="span12 " id="andhraMainDiv" >
+<h5 id="regionHead"></h5>
+<div id="andhraDiv" class="span5"></div>
+<div id="andhraMuncipalDiv" class="span5"></div>
+
+</div>
+
 
   <div class="row-fluid offset2">
    <div class="span10">
@@ -2144,5 +2348,9 @@ function showResultDiv()
 }
 
 </script>
+
+
+
+
 </body>
 </html>
