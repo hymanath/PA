@@ -428,5 +428,5 @@ public interface IStaticDataService {
 		
 		public List<SelectOptionVO> getRegionsByStateId(Long stateId);
 
-		
+		public List<SelectOptionVO> getAllParliaments();
 }

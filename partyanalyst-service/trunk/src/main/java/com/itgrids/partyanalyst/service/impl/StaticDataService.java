@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -13,6 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -9925,4 +9927,46 @@ public boolean removeCadreImage(Long cadreId,Long userId){
 		
 	}
 	
+	
+	public List<SelectOptionVO> getAllParliaments(){
+		  
+		  List<Constituency> allParliaments = constituencyDAO.getAllParliamentConstituenciesInCountry(1L,1L);
+		  List<Long> winParliaments = new ArrayList<Long>();
+		  List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>(); 
+		  List<SelectOptionVO> finalList = new ArrayList<SelectOptionVO>();
+		  
+			ResourceBundle rb = ResourceBundle.getBundle("globalmessages1");
+			Enumeration<String> keysList =   rb.getKeys();
+			
+			while(keysList.hasMoreElements())
+				winParliaments.add(new Long(keysList.nextElement()));
+			
+			  for(Constituency param:allParliaments){
+				  if(!winParliaments.contains(param.getConstituencyId())){
+					  SelectOptionVO selectOptionVO = new SelectOptionVO();
+					  selectOptionVO.setId((Long)param.getConstituencyId());
+					  selectOptionVO.setName(param.getName().toString());
+					  resultList.add(selectOptionVO);
+				  }
+			  }
+		//need to check	  
+		List<Long> presentLeadConstituenciesIds = new ArrayList<Long>(); 
+		presentLeadConstituenciesIds.add(461L);
+		presentLeadConstituenciesIds.add(462L);
+		presentLeadConstituenciesIds.add(463L);
+		presentLeadConstituenciesIds.add(464L);
+		presentLeadConstituenciesIds.add(465L);
+		
+		for(SelectOptionVO val:resultList){
+			if(presentLeadConstituenciesIds.contains(val.getId())){
+				 SelectOptionVO selectOptionVO = new SelectOptionVO();
+				  selectOptionVO.setId((Long)val.getId());
+				  selectOptionVO.setName(val.getName().toString());
+				  finalList.add(selectOptionVO);
+			}
+			
+		}
+		
+	   return finalList;
+	  }
 }
