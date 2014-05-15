@@ -636,13 +636,12 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	 public List getPartyIdAndShortNameForThatParticipatedByElectionIds(List<Long> electionIds,Long constituencyId);
 	 
 	 public List<Object[]> getElectionyearsByElectionIds(List<Long> electionIds);
-	 
-	public List<Object[]> getWinningCandidatesDetailsForConstituenciesByElectionId(Long electionId);
-	
-	public List<Object[]> getConstituencyDetailsByConstituencyType(String constituencyType,Long partyId,Long electionId);
-	
-	public List<Object[]> getConstituencyDetailsByReservationType(String constituencyType,Long partyId,Long electionId);
+	 public List<Object[]> getWinningCandidatesDetailsForConstituenciesByElectionId(Long electionId);
+		
+		public List<Object[]> getConstituencyDetailsByConstituencyType(String constituencyType,Long partyId,Long electionId);
+		
+		public List<Object[]> getConstituencyDetailsByReservationType(String constituencyType,Long partyId,Long electionId);
 
 
-
+	 public List<Object[]> getPartyWiseResults(Long electionId,String type,String region);
 }
