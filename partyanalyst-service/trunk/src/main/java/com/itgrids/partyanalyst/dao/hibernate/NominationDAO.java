@@ -4424,7 +4424,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			return query.list();
 		}
 		
-	public List<Object[]> getPartyWiseResults(Long electionId,String type,String region)
+		public List<Object[]> getPartyWiseResults(Long electionId,String type,String region)
 		{
 			
 			StringBuilder str = new StringBuilder();
@@ -4770,6 +4770,44 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 						
 			return query.list();
 		}
+		 public List<Object[]> getTotalValidVotes(Long electionId,String type,String region)
+			{
+
+			StringBuilder str = new StringBuilder();
+			str.append("select sum(model.validVotes)");
+			if(type.equalsIgnoreCase("state"))
+			{
+			str.append(",model.constituencyElection.constituency.state.stateId,model.constituencyElection.constituency.state.stateName");
+			str.append(" from ConstituencyElectionResult model where model.constituencyElection.constituency.state.stateId = 1");
+
+			}
+			else if(type.equalsIgnoreCase("district"))
+			{
+			str.append(",model.constituencyElection.constituency.district.districtId,model.constituencyElection.constituency.district.districtName");
+			str.append(" from ConstituencyElectionResult model where model.constituencyElection.constituency.state.stateId = 1");
+			}
+
+			str.append(" and model.constituencyElection.election.electionId = :electionId");
+			if(region.equalsIgnoreCase("telangana") && type.equalsIgnoreCase("district")){
+			str.append(" and model.constituencyElection.constituency.district.districtId between 1 and 10");
+			}
+			else if(region.equalsIgnoreCase("andhra") && type.equalsIgnoreCase("district"))
+			{
+			str.append(" and model.constituencyElection.constituency.district.districtId between 11 and 23");
+			}
+
+			if(type.equalsIgnoreCase("district"))
+			{
+			str.append(" group by model.constituencyElection.constituency.district.districtId");
+			}
+
+			Query query = getSession().createQuery(str.toString());
+
+			query.setParameter("electionId", electionId);
+			return query.list();
+
+			}
+
 		
 }
 
