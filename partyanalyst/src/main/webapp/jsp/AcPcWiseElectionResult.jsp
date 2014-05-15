@@ -777,7 +777,7 @@ function getConstituencyWiseResults()
 
 
 <!-- SAMBA START  -->
-<div class="span12 container"  style="border:1px solid #BDA870;margin-left:180px;padding:8px;margin-top:20px;">
+<div class="span12 container hide"  style="border:1px solid #BDA870;margin-left:180px;padding:8px;margin-top:20px;" id="liveResultsDiv">
 
 <h4 style="text-align:center;">Live Results Analysis</h4>
 
@@ -844,7 +844,7 @@ function getConstituencyWiseResults()
 					<div class="row-fluid offset1" style="margin-top:20px;">
 
 						<div class="span1"> 
-						<input type="button" onClick="showSelectedReport()" value="Disply" style="padding:3px;"/>
+						<input type="button" onClick="showSelectedReport()" value="Display" style="padding:3px;"/>
 						</div>
 
 						<div class="span1"> 
@@ -2140,7 +2140,7 @@ var stateType = '';
 	
 function showResultDiv()
 {
-	alert(123);
+	$('#liveResultsDiv').show();
 }
 
 </script>
