@@ -106,7 +106,7 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 			{
 				partyIds.add(new Long(parties.get(i).toString()));
 			}
-			resultList = acPcWiseElectionResultService.getPartyWiseComperassionResult(jObj.getLong("stateId"),jObj.getLong("electionId"),partyIds,jObj.getLong("electionScopeId"));
+			resultList = acPcWiseElectionResultService.getPartyWiseComperassionResult(jObj.getLong("stateId"),jObj.getLong("electionId"),partyIds,jObj.getLong("electionScopeId"),jObj.getString("scope"));
 		} 
 		catch (Exception e)
 		{
