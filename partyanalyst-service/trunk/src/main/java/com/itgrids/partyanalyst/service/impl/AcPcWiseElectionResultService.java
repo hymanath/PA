@@ -33,7 +33,7 @@ public class AcPcWiseElectionResultService implements IAcPcWiseElectionResultSer
 	
 	IPartyDAO partyDAO;
 	
-	public List<BasicVO> getPartyWiseComperassionResult(Long stateId,Long electionId,List<Long> partyIds,Long electionScopeId)
+	public List<BasicVO> getPartyWiseComperassionResult(Long stateId,Long electionId,List<Long> partyIds,Long electionScopeId,String scope)
 	{
 		List<BasicVO> returnList = null;
 		try 
@@ -62,9 +62,10 @@ public class AcPcWiseElectionResultService implements IAcPcWiseElectionResultSer
 					basicVO.setLevelId((Long)objects[5]);//party Id
 					basicVO.setDescription(objects[6] != null ? objects[6].toString() : "");//party Name
 					basicVO.setCasteName(objects[7] != null ? objects[7].toString() : "");//candidate
+					basicVO.setLevelValue((Long)objects[8]);//rank
 					constituencyWiseList.add(basicVO);
 				}
-				List<Object[]> constituencyDetails = delimitationConstituencyDAO.getConstituencyNoByState(stateId,2009l,electionScopeId);
+				List<Object[]> constituencyDetails = delimitationConstituencyDAO.getConstituencyNoByState(stateId,2009l,electionScopeId,scope);
 				if(constituencyDetails != null && constituencyDetails.size() > 0)
 				{
 					for (Object[] objects : constituencyDetails)
@@ -106,6 +107,10 @@ public class AcPcWiseElectionResultService implements IAcPcWiseElectionResultSer
 								VO.setMandalName(subVO.getMandalName());
 								for(BasicVO partyVO : partiesList)
 								{
+									if(subVO.getLevelValue().longValue() == 1l)
+									{
+										partyVO.setLevelValue(1l);
+									}
 									if(partyVO.getId().longValue() == subVO.getLevelId().longValue())
 									{
 										partyVO.setCount(subVO.getCount());

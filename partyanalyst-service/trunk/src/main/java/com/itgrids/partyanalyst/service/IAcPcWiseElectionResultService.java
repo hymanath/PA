@@ -7,5 +7,5 @@ import com.itgrids.partyanalyst.dto.BasicVO;
 public interface IAcPcWiseElectionResultService 
 {
 
-	public List<BasicVO> getPartyWiseComperassionResult(Long stateId,Long electionId,List<Long> partyIds,Long electionScopeId);
+	public List<BasicVO> getPartyWiseComperassionResult(Long stateId,Long electionId,List<Long> partyIds,Long electionScopeId,String scope);
 }
