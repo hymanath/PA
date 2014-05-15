@@ -9590,6 +9590,7 @@ public boolean removeCadreImage(Long cadreId,Long userId){
 			}
 			
 			//List<Object[]> list = candidateResultDAO.getElectionResultsByParliament(electionId);
+			statesVO.setConstiMap(null);
 			statesVO.setTtlUpaLeadCount(ttlUpaLeadCount);
 			statesVO.setTtlUpaWonCount(ttlUpaWonCount);
 			
@@ -10072,7 +10073,7 @@ public boolean removeCadreImage(Long cadreId,Long userId){
 			}
 			}
 			
-			statesVO.setConstiMap(statesMap);
+			statesVO.setConstiMap(null);
 			
 			
 		} catch (Exception e) {
