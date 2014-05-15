@@ -1188,6 +1188,7 @@ function callAjax(jsObj,url){
 }
 
 function buildPartyWideWonLeadCount(results){
+	if(results.statesList.size>0){
 	var str = "";
 		str += "<h2 class='offset3' style='margin-bottom:5px;margin-top:10px;color:#27AFA6;'>Party Wise Won/Lead Counts</h2>";
 		str +="<table class='parlResultTable offset1' width='800' cellspacing='0' cellpadding='2' border='0'>";
@@ -1221,6 +1222,7 @@ function buildPartyWideWonLeadCount(results){
 	str+="</table>";
 	
 	$(".partyWiseResultDiv").html(str);
+	}
 	
 }
 
