@@ -6949,6 +6949,27 @@
 				<param name="root">constituencyDetails</param>				
 			</result>		
 		</action>
+
+		<action name="getTelanganaPartyResultAction" class="stratagicReportsAction" method="getPartyResults">
+			<result type="json" name="success">
+			  <param name="root">partyResultList</param>
+			</result>
+		</action>
+		<action name="getAndhraPartyResultAction" class="stratagicReportsAction" method="getPartyResults">
+			<result type="json" name="success">
+			  <param name="root">partyResultList</param>
+			</result>
+		</action>
+		<action name="getTelanganaPartyResultForMuncipalAction" class="stratagicReportsAction" method="getPartyResults">
+			<result type="json" name="success">
+			  <param name="root">partyResultList</param>
+			</result>
+		</action>
+		<action name="getAndhraPartyResultForMuncipal" class="stratagicReportsAction" method="getPartyResults">
+			<result type="json" name="success">
+			  <param name="root">partyResultList</param>
+			</result>
+		</action>
 </package>
 		
 </struts>      
