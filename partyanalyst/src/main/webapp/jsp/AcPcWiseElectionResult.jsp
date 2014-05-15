@@ -10,6 +10,26 @@
 <title>AC AND PC WISE RESULT</title>
 
 <style>
+.tableClass1  table {border: 3px solid #B6D9E9}
+.tableClass1  thead th,.tableClass1  thead tr,.tableClass1  tbody tr,.tableClass1  tbody td {
+	border: 2px solid #B6D9E9;
+	padding:5px;
+	font-weight:bold;
+	font-size:13px;
+}
+
+.thBorder{
+	border: 2px solid #B6D9E9
+}
+.headingClass{
+	background-color:#8497AD;
+	color:#fff;
+	font-size:15px
+}
+
+
+
+
 
 //sravanthi code
 .chart-gauge1 {
@@ -168,22 +188,13 @@ $('document').ready(function(){
 	 $('#scopeId').trigger('change');
 	 //$('#locaionsId1').multiselect({ noneSelectedText:"Select"});
 	 $('.reportType').change(function(){
-		 $('#test,#matridLeadId,#matrixWonSummaryId,#matrixLeadSummaryId').html('');
+		 $('#test,#matridLeadId,#matrixWonSummaryId,#matrixLeadSummaryId,#marginAnalysis1').html('');
 	 });
-		$('#legend').show();
-		$('#areaSelectionDiv').hide();
-		$('#stateSelectDiv').hide();
-		$('#submitButtionDiv').hide();
-		getElectionResultForAssemblyPrevious(1,"first",1,2);
-		getElectionResultForParlimentPresent(1,"second",2,2);
+
 	 $('#scopeId').change(function(){
 		 console.log(this);
 		 $('#rgntxt').text("Select "+$('#scopeId  :selected').text());
 	 });
-	/*  setTimeout(function(){
-		getElectionResultForAssemblyPrevious(1,"first",1,2);
-		getElectionResultForParlimentPresent(1,"second",2,2);
-	}, 5000);  */
 });
 </script>
 <script>
@@ -303,7 +314,8 @@ function getAndhraPartyResultForMuncipal(type)
           dataType: 'json',
           data: {task:JSON.stringify(constituencyDetails)},
      	  }).done(function(result){ 
-			 
+			$("#stateAjaxImg").css("display","none");
+
 			if(result != null){
 				//buildBoothWiseAddedAndDeletedVoters(result);
 				buildResultForPartyResult(result,constituencyDetails,'andhraMuncipalDiv');
@@ -554,8 +566,9 @@ function buildLocationDetails(result)
 function showSelectedReport()
 {
 
-	$('#matridLeadId,#matrixWonSummaryId,#matrixLeadSummaryId,#errorDiv,#test').html('');
+	$('#matridLeadId,#matrixWonSummaryId,#matrixLeadSummaryId,#errorDiv,#test,#marginAnalysis1').html('');
  
+
 	if($('#locaionsId1').val() == null)
 	{
         $('#errorDiv').html('Please select location(s)');
@@ -570,18 +583,21 @@ function showSelectedReport()
 
 	}
 	else
-	{
-	  
+	{	  
 
-	if($('input:radio[name=report]:checked').val() == "Matrix Report")
-           getMatrixReport();
-	else
-	{
-            getSubReportForElectionResultByConstituencyType();
-            getSubReportForElectionResultByConstituencyReservation();
+		if($('input:radio[name=report]:checked').val() == "Matrix Report")
+		{
+			   getMatrixReport();
+			   getMarginsCountOfParties();
+		}
+		else
+		{
+				getSubReportForElectionResultByConstituencyType();
+				getSubReportForElectionResultByConstituencyReservation();
+		}
 	}
 
-	}
+
 }
 var matrixReportDtls={
 	electionId:'',
@@ -595,6 +611,7 @@ function getMatrixReport()
 	matrixReportDtls.electionId = $('#electionId').val();
 	matrixReportDtls.scopeId = $('#scopeId').val();
 	matrixReportDtls.locationIds = $('#locaionsId1').val();
+	$('#summaryDiv').addClass('offset1');
 
 	$.ajax({
           type:'POST',
@@ -630,9 +647,9 @@ str+='<div class="tableClass1">';
 	str+='<table width="80%" class="" style="clear:both;" style="margin-top:25px;">';
 	 str+='<thead>';
 	  str+='<tr>';
-	   str+='<th>'+status+'</th>';
+	   str+='<th class="thBorder">'+status+'</th>';
 	    $.each(result[0].partiesDetails,function(index,value){
-           str+='<th>'+value.name+'</th>';
+           str+='<th class="thBorder">'+value.name+'</th>';
 		});
 	  str+='</tr>';
 	 str+='</thead>';
@@ -671,9 +688,9 @@ function buildMatrixReportSummaryDetails(result,status)
 		return;
    var str ='';
    if(status == "Won")
-	   str+='<h5  style="margin-top: 10px; margin-bottom: 10px;">Won Summary</h5>';
+	   str+='<label  style="margin-top: 10px; margin-bottom: 10px;padding:2px;" class="headingClass">Won Summary</label>';
    else
-	   str+='<h5  style="margin-top: 10px; margin-bottom: 10px;">Lead Summary</h5>';
+	   str+='<label  style="margin-top: 10px; margin-bottom: 10px;padding:2px;" class="headingClass">Lead Summary</label>';
 	str+='<div class="tableClass1">';
 	str+='<table width="80%" class="" style="clear:both;">';
 	str+='<thead>';
@@ -760,14 +777,16 @@ function buildSubReportByConstituencyType(result,type)
 		 $('#errorDiv').html('<h5>No Data Available..</h5>');
 		 return;
 	 }
-
+	$('#summaryDiv').removeClass('offset1');
 
 	var str ='';
 	str+='<div class="tableClass1" style="margin-top:30px;">';
+
+	str+='<label><b>NOTE:</b>W  - Won , L - Lead</label><br>';
 	  if(type == "reservationType")
-       str+='<h5 style="margin-top: 10px; margin-bottom: 10px;">SC,ST,General Constituencies Analysis</h5>';
+       str+='<label style="margin-top: 10px; margin-bottom: 10px;" class="headingClass">SC,ST,General Constituencies Analysis</label>';
 	  else
-	  str+='<h5 style="margin-top: 10px; margin-bottom: 10px;">Rural,Urban,Rural-Urban Analysis</h5>';
+	  str+='<label style="margin-top: 10px; margin-bottom: 10px;" class="headingClass">Rural,Urban,Rural-Urban Analysis</label>';
 
 	str+='<table width="80%" class="" style="clear:both;" style="margin-top:25px;">';
 	 str+='<thead>';
@@ -776,9 +795,9 @@ function buildSubReportByConstituencyType(result,type)
 		  $.each(result[0].reservationDetails,function(index,value){
 			  var spanCnt = value.partiesDetails.length * 2;
 			  if(value.name == "")
-			   str+='<th colspan="'+spanCnt+'" style="border:1px solid #B6D9E9;">GENERAL</th>'
+			   str+='<th colspan="'+spanCnt+'" class="thBorder">GENERAL</th>'
 		      else
-			   str+='<th colspan="'+spanCnt+'" style="border:1px solid #B6D9E9;">'+value.name+'</th>'
+			   str+='<th colspan="'+spanCnt+'" class="thBorder">'+value.name+'</th>'
 		  });
 	  str+='</tr>';
 	  str+='<tr>';
@@ -885,6 +904,7 @@ var details={
 };
 function getConstituencyWiseResults()
 	 {
+	$('#ajaxImage').hide();
 		details.electionId = $('#electionId').val();
 		details.constituencyIds = $('#locaionsId1').val();
 		$.ajax({
@@ -908,10 +928,10 @@ function getConstituencyWiseResults()
 		str+='<table width="80%" class="" style="clear:both;" style="margin-top:25px;">';
 		//str += '<table class="table table-hover table-bordered" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;margin-left: -15px;">';
 		str += '<tr>';
-		str += '<th>Parliament Id</th>';
-		str += '<th>Parliament Name</th>';
-		str += '<th>Assembly Id</th>';
-		str += '<th>Assembly Name</th>';
+		str += '<th>P #</th>';
+		str += '<th>P Name</th>';
+		str += '<th>A #</th>';
+		str += '<th>A Name</th>';
 		str += '<th>First</th>';
 		str += '<th>Second</th>';
 		str += '<th>Lead By</th>';
@@ -986,7 +1006,7 @@ function getConstituencyWiseResults()
 		<select id="yearId1" class="input-small">
 		<option value="0">Select Year</option>
 		<option value="1">2009</option>
-		<option value="2">2014</option>
+		<!-- <option value="2">2004</option> -->
 		</select>
 		</div>
 	</div>
@@ -1006,7 +1026,7 @@ function getConstituencyWiseResults()
 		<select id="yearId2" class="input-small">
 		<option value="0">Select Year</option>
 		<option value="1">2009</option>
-		<option value="2">2014</option>
+		<!-- <option value="2">2004</option> -->
 		</select>
 		
 		</div>
@@ -1021,21 +1041,8 @@ function getConstituencyWiseResults()
 </div>
 </br></br>
 <div class="row-fluid" id="legend" style="display:none;">
-<table>
-<tr>
-<td><b>TDP : <span style="background: #FFD700 ;font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
-<td><b> YSRC : <span style="background: #00CED1; font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
-<td><b>INC : <span style="background: #228B22; font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
-<td><b>TRS : <span style="background: #FF00FF; font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
-<td><b>AIMIM : <span style="background: #006400; font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
-<td><b>BJP : <span style="background:#FF7F50; font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
-<td><b>CPM/CPI : <span style="background: #B22222; font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
-<td><b>LSP : <span style="background: #4B0082; font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
-<td><b>OTHERS : <span style="background: #FF0000; font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
-</tr>
-</table>
-<div></div>
-<div></div>
+<div><b>TDP : <span style="color: #FFD700 ;font-weight: bold; font-size: 19px;">-----</b><b> YSRC : <span style="color: #00CED1; font-weight: bold; font-size: 19px;">-----</b><b>INC : <span style="color: #228B22; font-weight: bold; font-size: 19px;">-----</b><b>TRS : <span style="color: #FF00FF; font-weight: bold; font-size: 19px;">-----</b><b>AIMIM : <span style="color: #006400; font-weight: bold; font-size: 19px;">-----</b></div>
+<div><b>BJP : <span style="#FF7F50; font-weight: bold; font-size: 19px;">-----</b><b>CPM/CPI : <span style="color: #B22222; font-weight: bold; font-size: 19px;">-----</b><b>LSP : <span style="color: #4B0082; font-weight: bold; font-size: 19px;">-----</b><b>OTHERS : <span style="color: #FF0000; font-weight: bold; font-size: 19px;"></div>
 
 </div>
 </br></br>
@@ -1066,15 +1073,15 @@ function getConstituencyWiseResults()
 
 <!-- SAMBA START  -->
 <!--<div class="span12 container hide"  style="border:1px solid #BDA870;margin-left:180px;padding:8px;margin-top:20px;" id="liveResultsDiv">-->
-<div class="container" style="font-family: verdana; font-size: 14px; border: 1px solid rgb(204, 204, 204); padding: 0px 10px 10px; margin-top: 24px;display:none;" id="liveResultsDiv">
+<div class="container hide" style="font-family: verdana; font-size: 14px; border: 1px solid rgb(204, 204, 204); padding: 0px 10px 10px; margin-top: 24px;" id="liveResultsDiv">
 
 <!--<h4 style="text-align:center;">Live Results Analysis</h4>-->
 <div style="text-align:center;margin-top:10px;"><img src="images/Live AP State Election Results.jpg"></div>
 
 
-
+<!--
 <a id="stateButton" class="btn " style="margin-top:0px; background: none repeat scroll 0 0 #0088CC;
-    color: #FFFFFF;font-weight: normal;float:right;" href="javascript:{}" >Show State Wise Report<i class="icon-chevron-up"></i></a>
+    color: #FFFFFF;font-weight: normal;float:right;" href="javascript:{}" >Show State Wise Report<i class="icon-chevron-up"></i></a>-->
 <img id="stateAjaxImg" src="./images/icons/search.gif" alt="Processing Image" style="display:none;"/>
 
 
@@ -1092,15 +1099,15 @@ function getConstituencyWiseResults()
 
 </div>
 <br/><br/>
-<div style="margin-top:10px;clear:both;">
-<table class="offset1 headingTbl" cellspacing="0" cellpadding="2" bgcolor="#FFFFFF" style="margin-top:35px;width:480px;">
+<div>
+<table class="offset1 headingTbl">
 
-<tr style="border:1px solid #8497AD;"><td>Select Election<select id="electionId" class="input-block-level">
-	  <option value="258">2014 Assembly Election</option>
-	  <option value="38">2009 Assembly Election</option>
-	  <option value="3">2004 Assembly Election</option>
+<tr><td class="span3">Select Election<select id="electionId" class="input-block-level">
+	  <option value="258">2014 Assembly </option>
+	  <option value="38">2009 Assembly </option>
+	  <option value="3">2004 Assembly </option>
 	 </select></td>
-	 <td> Select Level<select onchange="getLocationDetailsForSelectedScope(this.value)" class="input-block-level" id="scopeId" name="scopeId" style="width:99%;">
+	 <td class="span3"> Select Level<select onchange="getLocationDetailsForSelectedScope(this.value)" class="input-block-level" id="scopeId" name="scopeId" style="width:99%;">
 								<option value="3">Region</option>
 								<option value="2">District</option>
 								<option value="4">Parliament</option>
@@ -1108,7 +1115,7 @@ function getConstituencyWiseResults()
 						   </select>	</td>
 			
 
-<td> Select Region<select class="input-block-level" id="locaionsId1" multiple="true" style="width:96%;height:55px;"></select></td>			
+<td class="span3"> Select Region<select class="input-block-level" id="locaionsId1" multiple="true" style="width:96%;height:55px;"></select></td>			
 			
 	<!-- <td></td>-->
 	
@@ -1225,7 +1232,7 @@ function getConstituencyWiseResults()
 					<div id="errorDiv" style="font-weight:bold;color:red;"></div>
 
 
-    <div class="offset1">
+    <div class="offset1" id="summaryDiv">
 	 <div id="matrixWonSummaryId"></div>
 	 <div id="matrixLeadSummaryId"></div>
 	</div>
@@ -1235,14 +1242,15 @@ function getConstituencyWiseResults()
 	<div id="constituencyResultsDiv"></div>
 
 	<div id="test"  class="pull-left offset1"></div>
-	<div id="matridLeadId"  class="pull-right" style="margin-right:100px;"></div>
+	<div id="matridLeadId"  class="pull-right" style="margin-right:100px;margin-bottom:15px;"></div>
+
+	<div id="marginAnalysis1" class="offset1" style="clear:both;"></div>
 
 	</div>
 
-	
-	
-	</div>
-	<!--<div id="modiDiv display:none;">
+</div>
+
+<!--<div id="modiDiv display:none;">
 	<div class="chart-gauge" id="unemp_chart" style="display: none; width: 360px; margin: auto;"></div>
 	<div class="chart-gauge1" id="unemchart1p_" style="display: block; width: 360px; margin: auto;"><svg width="360" height="195"><g transform="translate(180, 170)"><path class="arc chart-color1" d="M-169.78754426714426,-8.496458776015265A170,170 0 0,1 -142.35510191056113,-92.92483500138029L-108.85978381395851,-71.06016794223198A130,130 0 0,0 -129.83753385134563,-6.497292005188144Z" id="chart-color1"/><text style="font-size: 12px; font-family: sans-serif; font-weight: bold;" fill="black" dx="15" dy="22"><textPath href="#chart-color1" style="color: red;">115</textPath></text><path class="arc chart-color2" d="M-132.36691558005566,-106.67239408498534A170,170 0 0,1 -60.547849096098766,-158.8520002072245L-46.301296367604934,-121.4750589819952A130,130 0 0,0 -101.22175897298374,-81.57300724145938Z" id="chart-color2"/><text style="font-size: 12px; font-family: sans-serif; font-weight: bold;" fill="black" dx="15" dy="22"><textPath href="#chart-color2" style="color: red;">135</textPath></text><path class="arc chart-color3" d="M-44.3866241273738,-164.10310051481426A170,170 0 0,1 44.38662412737374,-164.1031005148143L33.942712567991684,-125.49060627603446A130,130 0 0,0 -33.94271256799173,-125.49060627603444Z" id="chart-color3"/><text style="font-size: 12px; font-family: sans-serif; font-weight: bold;" fill="black" dx="15" dy="22"><textPath href="#chart-color3" style="color: red;">155</textPath></text><path class="arc chart-color4" d="M60.54784909609871,-158.8520002072245A170,170 0 0,1 132.36691558005563,-106.6723940849854L101.22175897298371,-81.57300724145942A130,130 0 0,0 46.30129636760489,-121.47505898199522Z" id="chart-color4"/><text style="font-size: 12px; font-family: sans-serif; font-weight: bold;" fill="black" dx="15" dy="22"><textPath href="#chart-color4" style="color: red;">175</textPath></text><path class="arc chart-color5" d="M142.3551019105612,-92.92483500138022A170,170 0 0,1 170,1.0935234017801129e-13L130,8.36223777831851e-14A130,130 0 0,0 108.85978381395857,-71.06016794223193Z" id="chart-color5"/><text style="font-size: 12px; font-family: sans-serif; font-weight: bold;" fill="black" dx="15" dy="22"><textPath href="#chart-color5" style="color: red;">195</textPath></text><circle class="needle-center" cx="0" cy="0" r="15"/><path class="needle" d="M -8.816778784387097 12.135254915624213 L -105.17220926874317 -76.4120827980215 L 8.816778784387095 -12.135254915624213"/><text style="font-size: 12px; font-weight: bold; color: red;" x="-80" y="-50">Seats for CBN Effect</text></g></svg></div>
 
@@ -1255,6 +1263,7 @@ function getConstituencyWiseResults()
 	</div>-->
 
  <div id="weathermap3"></div>
+ 
 </div>
 <!-- SAMBA END -->
 
@@ -1521,7 +1530,7 @@ var stateType = '';
 		parties.push(662);
 		var jsObj=
 		{
-				electionId : 258,
+				electionId : 3,
 				stateId : 1,
 				electionScopeId : 2,
 				parties : parties,
@@ -1636,7 +1645,7 @@ var stateType = '';
 		parties.push(662);
 		var jsObj=
 		{
-				electionId : 260,
+				electionId : 18,
 				stateId : 1,
 				electionScopeId : 1,
 				parties : parties,
@@ -1869,7 +1878,7 @@ var stateType = '';
 		}
 		else if(areatype  == "totPc")
 		{
-			//onEachFeatureForPc(feature, layer);
+			onEachFeatureForPc(feature, layer);
 		}
 		else
 		{
@@ -1877,7 +1886,7 @@ var stateType = '';
 
 			popupContent +='<article class="timeline-group" id="stateAK" style="font-family: times new roman,serif,sans-serif;margin-left:-40px;">';
 			popupContent +=' <header class="timeline-header">';
-			popupContent +=' <h3><b aria-hidden="true" class="stateface "></b> '+feature.properties.ac_name+' Assembly Election Result</a> </h3>';
+			popupContent +=' <h3><b aria-hidden="true" class="stateface "></b> '+feature.properties.ac_name+'</a> </h3>';
 			popupContent +=' </header>';
 			popupContent +=' <ol class="timeline-list"> ';
 			popupContent +=' <li class="timeline-point is-standard" data-when="future"> ';
@@ -1888,7 +1897,7 @@ var stateType = '';
 			popupContent +=' <table>';
 			popupContent +=' <tr>';
 			popupContent +='<td style="width:700px;"> Candidate Name </td>';
-			//popupContent +='<td style="width:300px;padding-left:15px;"> Party </td>';
+			popupContent +='<td style="width:300px;padding-left:15px;"> Party </td>';
 			popupContent +='<td style="width:600px;"> Votes Percentage  </td>';
 			popupContent +=' </tr">';
 			popupContent +=' <header class="results-header" style="width: 350px; margin-top: -10px;border-bottom-color: #004276;border-bottom-width: 2px;">';
@@ -1918,7 +1927,7 @@ var stateType = '';
 							popupContent +=' <td class="results-title" style="width:120px;">';
 							popupContent +=' <span class="percentage-combo" ><span class="number">'+electionAcData[i].selectedCasteDetails[j].casteName+'</span>';
 							popupContent +=' </span>';
-						/* 	popupContent +=' </td>';
+							popupContent +=' </td>';
 							popupContent +=' <td class="results-title" style="width:40px;">';
 							//popupContent +=' <span class="percentage-combo" ><span class="number">'+electionAcData[i].selectedCasteDetails[j].name+'</span>';
 							if(electionAcData[i].selectedCasteDetails[j].name =='TDP'){
@@ -1947,7 +1956,7 @@ var stateType = '';
 							}
 							
 							popupContent +=' </span>';
-							popupContent +=' </td>'; */
+							popupContent +=' </td>';
 							//popupContent +=' <td class="results-title" style="width: 30px;">';
 							//popupContent +=' </td>';
 							popupContent +=' <td class="results-percentage" style="width:100px;padding-left: 25px;">';
@@ -2036,7 +2045,7 @@ var stateType = '';
 				popupContent +=' <table>';
 			popupContent +=' <tr>';
 			popupContent +='<td style="width:700px;"> Candidate Name </td>';
-			//popupContent +='<td style="width:300px;padding-left:15px;"> Party </td>';
+			popupContent +='<td style="width:300px;padding-left:15px;"> Party </td>';
 			popupContent +='<td style="width:600px;"> Votes Percentage  </td>';
 			popupContent +=' </tr">';
 			popupContent +=' <header class="results-header" style="width: 350px; margin-top: -10px;border-bottom-color: #004276;border-bottom-width: 2px;">';
@@ -2067,7 +2076,7 @@ var stateType = '';
 							popupContent +=' <span class="percentage-combo" ><span class="number">'+electionPcData[i].selectedCasteDetails[j].casteName+'</span>';
 							popupContent +=' </span>';
 							popupContent +=' </td>';
-							/* popupContent +=' <td class="results-title" style="width: 25px;">';
+							popupContent +=' <td class="results-title" style="width: 25px;">';
 							//popupContent +=' <span class="percentage-combo" ><span class="number">'+electionAcData[i].selectedCasteDetails[j].name+'</span>';
 							if(electionPcData[i].selectedCasteDetails[j].name =='TDP'){
 								popupContent +=' <span > <img src="images/party_flags/TDP.PNG" width=125% /></span>';
@@ -2095,7 +2104,7 @@ var stateType = '';
 							}
 							
 							popupContent +=' </span>';
-							popupContent +=' </td>'; */
+							popupContent +=' </td>';
 							//popupContent +=' <td class="results-title" style="width: 30px;">';
 							//popupContent +=' </td>';
 							popupContent +=' <td class="results-percentage" style="width: 100px;padding-left: 25px;">';
@@ -2214,7 +2223,7 @@ var stateType = '';
 			popupContent +=' <table>';
 		popupContent +=' <tr>';
 		popupContent +='<td style="width:700px;"> Candidate Name </td>';
-		//popupContent +='<td style="width:300px;padding-left:15px;"> Party </td>';
+		popupContent +='<td style="width:300px;padding-left:15px;"> Party </td>';
 		popupContent +='<td style="width:600px;"> Votes Percentage  </td>';
 		popupContent +=' </tr">';
 		popupContent +=' <header class="results-header" style="width: 350px; margin-top: -10px;border-bottom-color: #004276;border-bottom-width: 2px;">';
@@ -2246,7 +2255,7 @@ var stateType = '';
 						popupContent +=' <span class="percentage-combo" ><span class="number">'+electionPcData[i].selectedCasteDetails[j].casteName+'</span>';
 						popupContent +=' </span>';
 						popupContent +=' </td>';
-						/* popupContent +=' <td class="results-title" style="width: 25px;">';
+						popupContent +=' <td class="results-title" style="width: 25px;">';
 						//popupContent +=' <span class="percentage-combo" ><span class="number">'+electionAcData[i].selectedCasteDetails[j].name+'</span>';
 						if(electionPcData[i].selectedCasteDetails[j].name =='TDP'){
 							popupContent +=' <span > <img src="images/party_flags/TDP.PNG" width=125% /></span>';
@@ -2274,7 +2283,7 @@ var stateType = '';
 						}
 						
 						popupContent +=' </span>';
-						popupContent +=' </td>'; */
+						popupContent +=' </td>';
 						//popupContent +=' <td class="results-title" style="width: 30px;">';
 						//popupContent +=' </td>';
 						popupContent +=' <td class="results-percentage" style="width: 100px;padding-left: 25px;">';
@@ -2921,10 +2930,66 @@ function getRegionWiseResults(searchType)
 		getElectionResultForTotalParliment();
 	}
 	}
+
+var marginDetails =	{
+			electionId : '',
+			type:'',
+			locationIds:[]
+		}
+		
+function getMarginsCountOfParties(){
+
+		marginDetails.electionId = $('#electionId').val();
+		marginDetails.type = $('#scopeId').val();
+		marginDetails.locationIds = $('#locaionsId1').val() ;
+		
+		$.ajax({
+				type: "POST",
+				url:"getMarginAnalysisOnLiveResultsForAssemblies.action",
+				data:{task :JSON.stringify(marginDetails)}
+		  }).done(function(result){
+				if(result.partiesList != null && result.partiesList.length>0){
+					buildPartyWiseMarginCount(result);
+				}
+		  });
+}
+
+function buildPartyWiseMarginCount(result){
+	var str = '';
+	str+='<label style="margin-bottom:3px;"  class="headingClass">Party Wise Margin Analysis</label>';
+
+	str+='<div class="tableClass1">';
+	str+='<table width="80%" class="" style="clear:both;" style="margin-top:25px;">';
+	// str += "<table width='800' cellspacing='0' cellpadding='2' border='0'>";
+		str +="<tbody>";
+			str +="<tr>";
+				str+="<td>PARTY</td>";
+				for(var i in result.partiesList[0].marginsVO){
+					str+="<td>"+result.partiesList[0].marginsVO[i].margin+"</td>";
+				}
+			str +="</tr>";
+		
+			for(var i in result.partiesList){
+			str +="<tr>";
+				str +="<td>"+result.partiesList[i].partyName+"</td>";
+				for(var j in result.partiesList[i].marginsVO){
+					
+						if(result.partiesList[i].marginsVO[j].count == null){
+							str+="<td> - </td>";
+						}else{
+							str+="<td>"+result.partiesList[i].marginsVO[j].count+"</td>";
+						}
+				
+				}
+			str +="</tr>";
+			}
+		str +="</tbody>";
+	str += "</table>";
+	str+='</div>';
+	
+	$("#marginAnalysis1").html(str);
+}
 </script>
-
-
-
 
 </body>
 </html>
