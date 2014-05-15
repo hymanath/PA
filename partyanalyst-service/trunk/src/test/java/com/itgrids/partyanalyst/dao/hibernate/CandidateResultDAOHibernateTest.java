@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -107,11 +108,39 @@ public class CandidateResultDAOHibernateTest extends BaseDaoTestCase {
 	*/
 	
 	public void testGetLastElectionWinner(){
-		List<Object[]> list = candidateResultDAO.getPreviousElectionWinningPartyByConstituency(232l);
+		/*List<Object[]> list = candidateResultDAO.getPreviousElectionWinningPartyByConstituency(232l);
 		if(list.size()>0){
 			System.out.println(list.get(0)[0]+"--"+list.get(0)[1]+"--"+list.get(0)[2]+"--"+list.get(0)[3]);
-		}
+		}*/
+		
+		/*List<Object[]> list = candidateResultDAO.getElectionResultsByConstituency(38l,"telangana");
+		
+		System.out.println(list.size());*/
+		
+		//List<Object[]> list = candidateResultDAO.getElectionResultsByParliament(17l);
+		List<Long> constituencyIds = new ArrayList<Long>();
+//		constituencyIds.add(467l);
+//		constituencyIds.add(474l);
+		
+		constituencyIds.add(18l);
+		constituencyIds.add(19l);
+		
+		
+		
+		
+		
+		
+		List<Object[]> list = candidateResultDAO.getElectionResultsByMargin(38l, constituencyIds,2l);
+		
+		System.out.println(list.size());
 	}
+	
+	/*public void test(Long electionId){
+		
+		List<Object[]> list = candidateResultDAO.getElectionResultsByConstituency(38l);
+		
+		System.out.println(list.size());
+	}*/
 	
 	
 	
