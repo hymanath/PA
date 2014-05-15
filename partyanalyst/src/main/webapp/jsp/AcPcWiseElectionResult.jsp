@@ -990,13 +990,13 @@ function getConstituencyWiseResults()
   <div class="row-fluid offset2">
    <div class="span10">
     <div class="span3">
-	 Select Election
+	 Select Assembly Election Year
 	</div>
 	<div class="span5">
 	 <select id="electionId" style="width:250px;">
-	  <option value="258">2014 Assembly Election</option>
-	  <option value="38">2009 Assembly Election</option>
-	  <option value="3">2004 Assembly Election</option>
+	  <option value="258">2014</option>
+	  <option value="38">2009</option>
+	  <option value="3">2004</option>
 	 </select>
 	</div>
    </div>
