@@ -66,10 +66,74 @@ public class ConstituencyLiveResultsVO implements Serializable {
 	private Long overAllOthersCount;
 	
 	
+	private Long partyId;
+	private String party;
+	private String partyLogoPath;
+	private String partyFlagPath;
+	private String partyFlagLargePath;
+	
+	private Long partyWonCount;
+	private Long partyLeadCount;
+	private Long partyCount;
+	
+	private String allianceGroup;
 	
 	
 	
-	
+	public String getPartyFlagLargePath() {
+		return partyFlagLargePath;
+	}
+	public void setPartyFlagLargePath(String partyFlagLargePath) {
+		this.partyFlagLargePath = partyFlagLargePath;
+	}
+	public Long getPartyWonCount() {
+		return partyWonCount;
+	}
+	public void setPartyWonCount(Long partyWonCount) {
+		this.partyWonCount = partyWonCount;
+	}
+	public Long getPartyLeadCount() {
+		return partyLeadCount;
+	}
+	public void setPartyLeadCount(Long partyLeadCount) {
+		this.partyLeadCount = partyLeadCount;
+	}
+	public String getAllianceGroup() {
+		return allianceGroup;
+	}
+	public void setAllianceGroup(String allianceGroup) {
+		this.allianceGroup = allianceGroup;
+	}
+	public Long getPartyCount() {
+		return partyCount;
+	}
+	public void setPartyCount(Long partyCount) {
+		this.partyCount = partyCount;
+	}
+	public Long getPartyId() {
+		return partyId;
+	}
+	public void setPartyId(Long partyId) {
+		this.partyId = partyId;
+	}
+	public String getParty() {
+		return party;
+	}
+	public void setParty(String party) {
+		this.party = party;
+	}
+	public String getPartyLogoPath() {
+		return partyLogoPath;
+	}
+	public void setPartyLogoPath(String partyLogoPath) {
+		this.partyLogoPath = partyLogoPath;
+	}
+	public String getPartyFlagPath() {
+		return partyFlagPath;
+	}
+	public void setPartyFlagPath(String partyFlagPath) {
+		this.partyFlagPath = partyFlagPath;
+	}
 	public Long getOverAllNdaCount() {
 		return overAllNdaCount;
 	}
@@ -305,6 +369,8 @@ public class ConstituencyLiveResultsVO implements Serializable {
 			List<ConstituencyLiveResultsVO> constituenciesList) {
 		this.constituenciesList = constituenciesList;
 	}
+	
+	
 	
 	
 	
