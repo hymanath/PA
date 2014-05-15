@@ -77,6 +77,7 @@ padding: 4px;
 <script src="js/tgac.js"></script>
 <script src="js/tgpc.js"></script>
 <script src="js/appc.js"></script>
+<script src="js/pc.js"></script>
 <!--<script src="js/leaflet-lable.js"></script>-->
 <script src="js/leaflet.js"></script>
 <script src="js/leaflet-google.js"></script>
@@ -937,11 +938,18 @@ function getConstituencyWiseResults()
 	</div>
 </div>
 </br></br>
+<div class="row-fluid" id="legend" style="display:none;">
+<div><b>TDP : <span style="color: #FFD700 ;font-weight: bold; font-size: 19px;">-----</b><b> YSRC : <span style="color: #00CED1; font-weight: bold; font-size: 19px;">-----</b><b>INC : <span style="color: #228B22; font-weight: bold; font-size: 19px;">-----</b><b>TRS : <span style="color: #FF00FF; font-weight: bold; font-size: 19px;">-----</b><b>AIMIM : <span style="color: #006400; font-weight: bold; font-size: 19px;">-----</b></div>
+<div><b>BJP : <span style="#FF7F50; font-weight: bold; font-size: 19px;">-----</b><b>CPM/CPI : <span style="color: #B22222; font-weight: bold; font-size: 19px;">-----</b><b>LSP : <span style="color: #4B0082; font-weight: bold; font-size: 19px;">-----</b><b>OTHERS : <span style="color: #FF0000; font-weight: bold; font-size: 19px;"></div>
+
+</div>
+</br></br>
 <div class="row-fluid">
 	<div id="weathermap"></div>
 	<div id="weathermap1"></div>
 
 </div>
+
 <div id="result"></div>
 <div id="resultDiv"></div>
 
@@ -1141,6 +1149,7 @@ var stateType = '';
 	var electionPcData = '';
 	function getElectionDetails()
 	{
+		$('#legend').show();
 		var stateVal = $('#stateId option:selected').val();
 		var levelVal1 = $('#levelId1 option:selected').val();
 		var levelVal2 = $('#levelId2 option:selected').val();
@@ -1348,10 +1357,11 @@ var stateType = '';
 		parties.push(662);
 		var jsObj=
 		{
-				electionId : 38,
+				electionId : 3,
 				stateId : 1,
 				electionScopeId : 2,
 				parties : parties,
+				scope : "ac",
 				task : "getElectionResults"
 		};
 		$.ajax({
@@ -1386,10 +1396,11 @@ var stateType = '';
 		parties.push(662);
 		var jsObj=
 		{
-				electionId : 3,
+				electionId : 38,
 				stateId : 1,
 				electionScopeId : 2,
 				parties : parties,
+				scope : "ac",
 				task : "getElectionResults"
 		};
 		$.ajax({
@@ -1427,6 +1438,7 @@ var stateType = '';
 				stateId : 1,
 				electionScopeId : 1,
 				parties : parties,
+				scope : "ac",
 				task : "getElectionResults"
 		};
 		$.ajax({
@@ -1464,6 +1476,7 @@ var stateType = '';
 				stateId : 1,
 				electionScopeId : 1,
 				parties : parties,
+				scope : "ac",
 				task : "getElectionResults"
 		};
 		$.ajax({
@@ -1478,9 +1491,10 @@ var stateType = '';
 		});	
 	}
 	
-	
+	var areatype ;
 	function generateMapForApACPrevious(mapName)
 	{
+		areatype  = "ac";
 		L.geoJson(apaccampus, {
 
 		style: function (feature) {
@@ -1500,6 +1514,7 @@ var stateType = '';
 	
 	function generateMapForApACPresent(mapName)
 	{
+		areatype  = "ac";
 		L.geoJson(apaccampus, {
 
 		style: function (feature) {
@@ -1518,6 +1533,7 @@ var stateType = '';
 	}
 	function generateMapForTgACPrevious(mapName)
 	{
+		areatype  = "ac";
 		L.geoJson(tgaccampus, {
 
 		style: function (feature) {
@@ -1538,6 +1554,7 @@ var stateType = '';
 	
 	function generateMapForTgACPresent(mapName)
 	{
+		areatype  = "ac";
 		L.geoJson(tgaccampus, {
 
 		style: function (feature) {
@@ -1554,15 +1571,9 @@ var stateType = '';
 
 		}).addTo(mapName); 
 	}
-	
-	var type ;
-	
-	
-	
-	
 	function generateMapForApPCPrevious(mapName)
 	{
-		type = "pc";
+		areatype  = "pc";
 		L.geoJson(appccampus, {
 
 		style: function (feature) {
@@ -1582,7 +1593,7 @@ var stateType = '';
 	
 	function generateMapForApPCPresent(mapName)
 	{
-		type = "pc";
+		areatype  = "pc";
 		L.geoJson(appccampus, {
 
 		style: function (feature) {
@@ -1601,7 +1612,7 @@ var stateType = '';
 	}
 	function generateMapForTgPCPrevious(mapName)
 	{
-		type = "pc";
+		areatype  = "pc";
 		L.geoJson(tgpccampus, {
 
 		style: function (feature) {
@@ -1622,7 +1633,7 @@ var stateType = '';
 	
 	function generateMapForTgPCPresent(mapName)
 	{
-		type = "pc";
+		areatype  = "pc";
 		L.geoJson(tgpccampus, {
 
 		style: function (feature) {
@@ -1685,10 +1696,14 @@ var stateType = '';
 	month[10]="November";
 	month[11]="December";
 	
-
-		if(type == "pc")
+		console.log(areatype);
+		if(areatype  == "pc")
 		{
 			onEachFeature1(feature, layer);
+		}
+		else if(areatype  == "totPc")
+		{
+			onEachFeatureForPc(feature, layer);
 		}
 		else
 		{
@@ -1705,20 +1720,20 @@ var stateType = '';
 			popupContent +=' </header>';
 			//popupContent +=' <b style="font-size: 12px;">  Reporting : 0 % <span style="font-weight:bold;float:right;">  Leading Party: TDP </span></b>';
 			popupContent +=' <table>';
-		popupContent +=' <tr>';
-		popupContent +='<td style="width:700px;"> Candidate Name </td>';
-		popupContent +='<td style="width:300px;padding-left:15px;"> Party </td>';
-		popupContent +='<td style="width:600px;"> Votes Percentage  </td>';
-		popupContent +=' </tr">';
-		popupContent +=' <header class="results-header" style="width: 350px; margin-top: -10px;border-bottom-color: #004276;border-bottom-width: 2px;">';
-		popupContent +=' </header>';
-		popupContent +=' <tr class="type-democrat">';
-		popupContent +=' </table>';
-		popupContent +=' <span style="float: right; margin-right: -50px; margin-top: -20px;"> Total Votes </span>';
+			popupContent +=' <tr>';
+			popupContent +='<td style="width:700px;"> Candidate Name </td>';
+			popupContent +='<td style="width:300px;padding-left:15px;"> Party </td>';
+			popupContent +='<td style="width:600px;"> Votes Percentage  </td>';
+			popupContent +=' </tr">';
+			popupContent +=' <header class="results-header" style="width: 350px; margin-top: -10px;border-bottom-color: #004276;border-bottom-width: 2px;">';
+			popupContent +=' </header>';
+			popupContent +=' <tr class="type-democrat">';
+			popupContent +=' </table>';
+			popupContent +=' <span style="float: right; margin-right: -50px; margin-top: -20px;"> Total Votes </span>';
 		
 			popupContent +=' <header class="results-header" style="width: 350px; margin-top: -10px;border-bottom-width: 2px;">';
 			popupContent +=' </header>';
-
+			var partyName ;
 			for(var i in electionAcData)
 			{
 				if(feature.properties.ac == electionAcData[i].hamletId)
@@ -1793,6 +1808,9 @@ var stateType = '';
 							popupContent +=' </div>';
 							popupContent +=' </div>';
 							popupContent +=' </div>';
+
+							partyName = electionAcData[i].selectedCasteDetails[0].name;
+							fillColour(partyName,layer,popupContent);
 						}
 						
 			
@@ -1809,6 +1827,149 @@ var stateType = '';
 
 
 			$('.leaflet-popup-close-button').html('');
+			if (feature.properties && feature.properties.popupContent)
+			{
+				popupContent += feature.properties.popupContent;
+			}
+			 
+			
+			layer.bindLabel(feature.properties.ac_name, {noHide:true});
+		}
+		
+	}
+	function onEachFeatureForPc(feature, layer)
+	{
+		var today=new Date();
+
+		var month=new Array();
+		month[0]="January";
+		month[1]="February";
+		month[2]="March";
+		month[3]="April";
+		month[4]="May";
+		month[5]="June";
+		month[6]="July";
+		month[7]="August";
+		month[8]="September";
+		month[9]="October";
+		month[10]="November";
+		month[11]="December";
+		
+			var popupContent='';
+
+			popupContent +='<article class="timeline-group" id="stateAK" style="font-family: times new roman,serif,sans-serif; margin-left: -40px;">';
+			popupContent +=' <header class="timeline-header">';
+			popupContent +=' <h3><b aria-hidden="true" class="stateface "></b> '+feature.properties.pc_name+'</a> <span style="color:#303030;float:right;">'+month[today.getMonth()]+" "+today.getDate()+","+today.getFullYear()+" "+'</span></h3>';
+			popupContent +=' </header>';
+			popupContent +=' <ol class="timeline-list"> ';
+			popupContent +=' <li class="timeline-point is-standard" data-when="future"> ';
+			popupContent +=' <article class="results-group">';
+			popupContent +=' <header class="results-header" style="width: 350px; margin-top: -10px;margin-bottom: 10px;">';
+			popupContent +=' </header>';
+		//	popupContent +=' <b style="font-size: 12px;">  Reporting : 0 % <span style="font-weight:bold;float:right;">  Leading Party: TDP </span></b>';
+				popupContent +=' <table>';
+			popupContent +=' <tr>';
+			popupContent +='<td style="width:700px;"> Candidate Name </td>';
+			popupContent +='<td style="width:300px;padding-left:15px;"> Party </td>';
+			popupContent +='<td style="width:600px;"> Votes Percentage  </td>';
+			popupContent +=' </tr">';
+			popupContent +=' <header class="results-header" style="width: 350px; margin-top: -10px;border-bottom-color: #004276;border-bottom-width: 2px;">';
+			popupContent +=' </header>';
+			popupContent +=' <tr class="type-democrat">';
+			popupContent +=' </table>';
+			popupContent +=' <span style="float: right; margin-right: -50px; margin-top: -20px;"> Total Votes </span>';
+							
+			popupContent +=' <header class="results-header" style="width: 350px; margin-top: -10px;border-bottom-width: 2px;">';
+			popupContent +=' </header>';
+			//console.log(electionPcData);
+			for(var i in electionPcData)
+			{	
+				if(feature.properties.pc_name.toUpperCase() == electionPcData[i].name.toUpperCase())
+				{
+					for(var j in electionPcData[i].selectedCasteDetails)
+					{
+						if(electionPcData[i].selectedCasteDetails[j].casteName != null)
+						{
+							popupContent +=' <div class="results-dataset">';
+							popupContent +=' <div class="results-row layout-full">';
+							popupContent +=' <div class="results-data pos-omega contains-mix is-de-emphasized">';
+							popupContent +=' <div class="results-message">';
+							popupContent +=' <table class="results-table" style="width:650px">';
+							popupContent +=' <tbody>';
+							popupContent +=' <tr class="type-democrat">';
+							popupContent +=' <td class="results-title" style="width:120px;">';
+							popupContent +=' <span class="percentage-combo" ><span class="number">'+electionPcData[i].selectedCasteDetails[j].casteName+'</span>';
+							popupContent +=' </span>';
+							popupContent +=' </td>';
+							popupContent +=' <td class="results-title" style="width: 25px;">';
+							//popupContent +=' <span class="percentage-combo" ><span class="number">'+electionAcData[i].selectedCasteDetails[j].name+'</span>';
+							if(electionPcData[i].selectedCasteDetails[j].name =='TDP'){
+								popupContent +=' <span > <img src="images/party_flags/TDP.PNG" width=125% /></span>';
+							}
+							if(electionPcData[i].selectedCasteDetails[j].name =='INC'){
+								popupContent +=' <span > <img src="images/party_flags/INC.png" width=125% /></span>';
+							}
+							if(electionPcData[i].selectedCasteDetails[j].name =='TRS'){
+								popupContent +=' <span > <img src="images/party_flags/TRS.png" width=125% /></span>';
+							}
+							if(electionPcData[i].selectedCasteDetails[j].name =='BJP'){
+								popupContent +=' <span > <img src="images/party_flags/BJP.png" width=125% /></span>';
+							}
+							if(electionPcData[i].selectedCasteDetails[j].name =='AIMIM'){
+								popupContent +=' <span > <img src="images/party_flags/AIMIM.png" width=125% /></span>';
+							}
+							if(electionPcData[i].selectedCasteDetails[j].name =='CPM'){
+								popupContent +=' <span > <img src="images/party_flags/CPM.png" width=125% /></span>';
+							}
+							if(electionPcData[i].selectedCasteDetails[j].name =='CPI'){
+								popupContent +=' <span > <img src="images/party_flags/CPI.png" width=125% /></span>';
+							}
+							if(electionPcData[i].selectedCasteDetails[j].name =='LSP'){
+								popupContent +=' <span > <img src="images/party_flags/LSP.png" width=125% /></span>';
+							}
+							
+							popupContent +=' </span>';
+							popupContent +=' </td>';
+							//popupContent +=' <td class="results-title" style="width: 30px;">';
+							//popupContent +=' </td>';
+							popupContent +=' <td class="results-percentage" style="width: 100px;padding-left: 25px;">';
+							if(electionPcData[i].selectedCasteDetails[j].persent != null){
+							popupContent +=' <span class="percentage-combo" ><span class="number">'+electionPcData[i].selectedCasteDetails[j].persent+'%</span>';
+							}
+							else{
+							popupContent +=' <span class="percentage-combo" ><span class="number">0 %</span>';
+							}
+							popupContent +=' <span class="graph">';
+							popupContent +=' <span class="bar">';
+							popupContent +=' <span style="width:'+electionPcData[i].selectedCasteDetails[j].persent+'%;" class="index"></span>';
+							popupContent +=' </span>';
+							popupContent +=' </span>';
+							popupContent +=' </span>';
+							popupContent +=' </td>';
+							popupContent +=' <td style="width: 150px;padding-left:35px;">';
+							popupContent +=' <span style="font-weight:#000000">'+electionPcData[i].selectedCasteDetails[j].count+' </span>';
+							popupContent +=' </td>';
+							popupContent +=' </tr>';
+							popupContent +=' </tbody>';
+							popupContent +=' </table>';
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+						}
+						
+			
+					}
+					
+				}
+			} 
+			
+
+			popupContent +=' </article>';
+			popupContent +=' </li> ';
+			popupContent +=' </ol>';
+			popupContent +=' </article>';
+
 			if (feature.properties && feature.properties.popupContent)
 			{
 				popupContent += feature.properties.popupContent;
@@ -1848,18 +2009,10 @@ var stateType = '';
 				});
 				layer.bindPopup(popupContent);
 			} 
-			layer.bindLabel(feature.properties.ac_name, {noHide:true});
-			/* layer.setStyle({
-				color: '#000000', 
-				weight: 1,
-				opacity: 0.6,
-				fillOpacity: 0.65,
-				fillColor: '#FFFFFF'
-				});
-				layer.bindPopup(popupContent); */
-		}
-		
+				
+			layer.bindLabel(feature.properties.pc_name, {noHide:false});
 	}
+	
 	
 	function onEachFeature1(feature, layer)
 	{
@@ -1981,6 +2134,9 @@ var stateType = '';
 						popupContent +=' </div>';
 						popupContent +=' </div>';
 						popupContent +=' </div>';
+						
+						partyName = electionPcData[i].selectedCasteDetails[0].name;
+						fillColour(partyName,layer,popupContent);
 					}
 					
 		
@@ -2000,40 +2156,7 @@ var stateType = '';
 			popupContent += feature.properties.popupContent;
 		}
 		 
-		if(feature.properties.area_type == 'GEN')
-		{
-			layer.setStyle({
-			color: '#000000', 
-			weight: 1,
-			opacity: 0.6,
-			fillOpacity: 0.65,
-			name : "prasad",
-			fillColor: '#00FF00'
-			});
-			layer.bindPopup(popupContent);
-		}
-		else if (feature.properties.area_type == 'ST')
-		{
-			layer.setStyle({
-			color: '#000000', 
-			weight: 1,
-			opacity: 0.6,
-			fillOpacity: 0.65,
-			fillColor: '#FF00FF'
-			});
-			layer.bindPopup(popupContent);
-		}
-		else
-		{
-			layer.setStyle({
-			color: '#000000', 
-			weight: 1,
-			opacity: 0.6,
-			fillOpacity: 0.65,
-			fillColor: '#FF0000'
-			});
-			layer.bindPopup(popupContent);
-		} 
+		
 			
 		layer.bindLabel(feature.properties.FIRST_pc_n, {noHide:false});
 	}
@@ -2343,7 +2466,177 @@ var stateType = '';
 		tableToExcel(tableId, 'ELECTION RESULT');
 	}
 	 */
+	//getElectionResultForTotalParliment();
+	function getElectionResultForTotalParliment()
+	{
+		
+		var parties = new Array();
+		parties.push(872);
+		parties.push(362);
+		parties.push(163);
+		parties.push(72);
+		parties.push(886);
+		parties.push(662);
+		var jsObj=
+		{
+				electionId : 17,
+				stateId : 1,
+				electionScopeId : 1,
+				parties : parties,
+				scope : "pc",
+				task : "getElectionResults"
+		};
+		$.ajax({
+		type: "GET",
+		url: "getElectionResultsAction.action",
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)},
+		})
+		.done(function( result ) {
+			electionPcData = result;
+			//getLocationRespectiveDetails(stateVal,locationLevel,year,mapNo);
+			generateMapForTgPCPresent();
+		});	
+	}
 	
+	function generateMapForTgPCPresent()
+	{
+		type = "totPc";
+		document.getElementById('weathermap').innerHTML = "<div id='map'  style='height: 900px; border: 1px solid rgb(51, 51, 51); border-radius: 10px; position: relative; background: none repeat scroll 0% 0% rgb(255, 255, 255);'></div>"
+		map = L.map('map', {
+		center: [18.0000,80.0000],
+		zoom: 5
+		});
+		L.geoJson(pccampus, {
+
+		style: function (feature) {
+			return feature.properties && feature.properties.style;
+		},
+		
+		onEachFeature: onEachFeature,
+
+		pointToLayer: function (feature, latlng) {
+			return L.circleMarker(latlng, {
+				
+			});
+		}
+
+		}).addTo(map); 
+	}
+
+	function fillColour(partyName,layer,popupContent)
+	{
+		if(partyName == 'INC')
+		{
+			layer.setStyle({
+			color: '#000000', 
+			weight: 1,
+			opacity: 0.6,
+			fillOpacity: 0.65,
+			fillColor: '#228B22'
+			});
+			layer.bindPopup(popupContent);
+		}
+		else if (partyName == 'TDP')
+		{
+			layer.setStyle({
+			color: '#000000', 
+			weight: 1,
+			opacity: 0.6,
+			fillOpacity: 0.65,
+			fillColor: '#FFD700'
+			});
+			layer.bindPopup(popupContent);
+		}
+		else if (partyName == 'TRS')
+		{
+			layer.setStyle({
+			color: '#000000', 
+			weight: 1,
+			opacity: 0.6,
+			fillOpacity: 0.65,
+			fillColor: '#FF00FF'
+			});
+			layer.bindPopup(popupContent);
+		}
+		else if (partyName == 'BJP')
+		{
+			layer.setStyle({
+			color: '#000000', 
+			weight: 1,
+			opacity: 0.6,
+			fillOpacity: 0.65,
+			fillColor: '#FF7F50'
+			});
+			layer.bindPopup(popupContent);
+		}
+		else if (partyName == 'AIMIM')
+		{
+			layer.setStyle({
+			color: '#000000', 
+			weight: 1,
+			opacity: 0.6,
+			fillOpacity: 0.65,
+			fillColor: '#006400'
+			});
+			layer.bindPopup(popupContent);
+		}
+		else if (partyName == 'CPM' || partyName == 'CPI')
+		{
+			layer.setStyle({
+			color: '#000000', 
+			weight: 1,
+			opacity: 0.6,
+			fillOpacity: 0.65,
+			fillColor: '#B22222'
+			});
+			layer.bindPopup(popupContent);
+		}
+		else if (partyName == 'LSP')
+		{
+			layer.setStyle({
+			color: '#000000', 
+			weight: 1,
+			opacity: 0.6,
+			fillOpacity: 0.65,
+			fillColor: '#4B0082'
+			});
+			layer.bindPopup(popupContent);
+		}
+		else if (partyName == 'PRP')
+		{
+			layer.setStyle({
+			color: '#000000', 
+			weight: 1,
+			opacity: 0.6,
+			fillOpacity: 0.65,
+			fillColor: '#B22222'
+			});
+			layer.bindPopup(popupContent);
+		}
+		else if (partyName == 'YSRC')
+		{
+			layer.setStyle({
+			color: '#000000', 
+			weight: 1,
+			opacity: 0.6,
+			fillOpacity: 0.65,
+			fillColor: '#00CED1'
+			});
+			layer.bindPopup(popupContent);
+		}
+		else
+		{
+			layer.setStyle({
+			color: '#000000', 
+			weight: 1,
+			opacity: 0.6,
+			fillOpacity: 0.65,
+			fillColor: '#FF0000'
+			});
+			layer.bindPopup(popupContent);
+		} 
+	}
 function showResultDiv()
 {
 	$('#liveResultsDiv').show();
@@ -2376,7 +2669,6 @@ function getRegionWiseResults(searchType){
 	else if(searchType == 'CBNEffect'){
 		console.log(6);
 		$('#liveResultsDiv').hide();
-
 	}
 	else if(searchType == 'ModiEffect'){
 		console.log(7);
