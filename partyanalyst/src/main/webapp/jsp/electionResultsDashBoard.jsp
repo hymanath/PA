@@ -348,7 +348,7 @@ function buildLocationDetails(result)
 function showSelectedReport()
 {
 
-	$('#matridLeadId,#matrixWonSummaryId,#matrixLeadSummaryId,#errorDiv').html('');
+	$('#matridLeadId,#matrixWonSummaryId,#matrixLeadSummaryId,#errorDiv,#test').html('');
 
 	if($('#locaionsId1').val() == null)
 	{
