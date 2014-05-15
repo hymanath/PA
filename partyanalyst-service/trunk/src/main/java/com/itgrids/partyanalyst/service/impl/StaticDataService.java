@@ -21,6 +21,7 @@ import java.util.TreeSet;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -68,6 +69,7 @@ import com.itgrids.partyanalyst.dao.IProblemStatusDAO;
 import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
 import com.itgrids.partyanalyst.dao.ISocialCategoryDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.IStateRegionDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
@@ -225,6 +227,9 @@ public class StaticDataService implements IStaticDataService {
 	private IPublicationDateDAO publicationDateDAO;
 	private IPartialBoothPanchayatDAO partialBoothPanchayatDAO;
 	private IVoterInfoDAO voterInfoDAO;
+	
+	@Autowired
+	private IStateRegionDAO stateRegionDAO;
 	
 	
 	public IVoterInfoDAO getVoterInfoDAO() {
@@ -9735,5 +9740,18 @@ public boolean removeCadreImage(Long cadreId,Long userId){
 		ConstituencyLiveResultsVO constiVO = new ConstituencyLiveResultsVO();
 		
 		return constiVO;
+	}
+	
+	public List<SelectOptionVO> getRegionsByStateId(Long stateId)
+	{
+		List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>();
+		
+		List<Object[]> list = stateRegionDAO.getStateRegionByType(stateId);
+		
+		for(Object[] obj:list)
+			resultList.add(new SelectOptionVO(Long.parseLong(obj[1].toString()),obj[0].toString()));
+		
+		return resultList;
+		
 	}
 }

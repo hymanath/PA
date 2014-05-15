@@ -4485,42 +4485,290 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			return query.list();
 		}
 		
-		public List<Object[]> getConstituencyDetailsByConstituencyType(String constituencyType,Long partyId,Long electionId)
+		public List<Object[]> getConstituencyDetailsByConstituencyType(String constituencyType,Long partyId,Long electionId,Long locationId,Long scopeId)
 		{
-			Query query = getSession().createQuery("select " +
-					"model.constituencyElection.constituency.constituencyId,model.constituencyElection.constituency.name, " +
-					"from  Nomination model ,StateRegionDistrict model1 , DelimitationConstituencyAssemblyDetails model2 " +
-					" where model.candidateResult.rank = 1 and model.constituencyElection.election.electionId = :electionId and " +
-					"model.constituencyElection.constituency.district.districtId = model1.district.districtId and " +
-					"model2.constituency.constituencyId = model.constituencyElection.constituency.constituencyId and " +
-					"model2.delimitationConstituency.year = :delimitationYear and model2.constituency.areaType = :areaType and " +
-					"model.party.partyId = :partyId");
+			
+			StringBuffer queryString = new StringBuffer();
+			
+			queryString.append("select " +
+			"model.constituencyElection.constituency.constituencyId,model.constituencyElection.constituency.name,model.party.shortName " +
+			"from  Nomination model ,StateRegionDistrict model1 , DelimitationConstituencyAssemblyDetails model2 " +
+			" where model.candidateResult.rank = 1 and model.constituencyElection.election.electionId = :electionId and " +
+			"model.constituencyElection.constituency.district.districtId = model1.district.districtId and " +
+			"model2.constituency.constituencyId = model.constituencyElection.constituency.constituencyId and " +
+			"model2.delimitationConstituency.year = :delimitationYear and model2.constituency.areaType = :areaType and " +
+			"model.party.partyId = :partyId ");
+			
+			if(scopeId == 1L)
+				queryString.append("and model.constituencyElection.constituency.state.stateId = :locationId");
+			else if(scopeId == 2L)
+				queryString.append("and model.constituencyElection.constituency.district.districtId = :locationId");
+			
+			
+			Query query = getSession().createQuery(queryString.toString());;
+			
+		
 			
 			query.setParameter("electionId", electionId);
 			query.setParameter("delimitationYear", IConstants.DELIMITATION_YEAR);
 			query.setParameter("partyId", partyId);
 			query.setParameter("areaType", constituencyType);
+			query.setParameter("locationId", locationId);
+			
 			return query.list();
 			
 		}
 		
-		public List<Object[]> getConstituencyDetailsByReservationType(String constituencyType,Long partyId,Long electionId)
+		public List<Object[]> getConstituencyDetailsByReservationType(String constituencyType,Long partyId,Long electionId,Long locationId,Long scopeId)
 		{
-			Query query = getSession().createQuery("select " +
-					"model.constituencyElection.constituency.constituencyId,model.constituencyElection.constituency.name, " +
+			
+			StringBuffer queryString = new StringBuffer();
+			
+			queryString.append("select " +
+					"model.constituencyElection.constituency.constituencyId,model.constituencyElection.constituency.name,,model.party.shortName  " +
 					"from  Nomination model ,StateRegionDistrict model1 , DelimitationConstituencyAssemblyDetails model2 " +
 					" where model.candidateResult.rank = 1 and model.constituencyElection.election.electionId = :electionId and " +
 					"model.constituencyElection.constituency.district.districtId = model1.district.districtId and " +
 					"model2.constituency.constituencyId = model.constituencyElection.constituency.constituencyId and " +
-					"model2.delimitationConstituency.year = :delimitationYear and model2.constituencyElection.reservationZone = :reservationZone and " +
-					"model.party.partyId = :partyId");
+					"model2.delimitationConstituency.year = :delimitationYear and model.constituencyElection.reservationZone = :reservationZone and " +
+					"model.party.partyId = :partyId ");
+			
+			if(scopeId == 1L)
+				queryString.append("and model.constituencyElection.constituency.state.stateId = :locationId");
+			else if(scopeId == 2L)
+				queryString.append("and model.constituencyElection.constituency.district.districtId = :locationId");
+			
+			Query query = getSession().createQuery(queryString.toString());;
+
 			
 			query.setParameter("electionId", electionId);
 			query.setParameter("delimitationYear", IConstants.DELIMITATION_YEAR);
 			query.setParameter("partyId", partyId);
 			query.setParameter("reservationZone", constituencyType);
+			query.setParameter("locationId", locationId);
+			
 			return query.list();
 			
+		}
+		
+		
+		public List<Object[]> getMatrixReportForElectionResult(Long electionId,List<Long> locationIds,Long scopeId)
+		{
+			StringBuffer queryString = new StringBuffer();
+			
+			if(scopeId.longValue() == 1)//state
+			{
+				
+				queryString.append("select count(model.party.partyId),model.constituencyElection.constituency.state.stateId,model.constituencyElection.constituency.state.stateName," +
+						" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus " +
+						"from Nomination model  where " +
+						"model.constituencyElection.election.electionId = :electionId and " +
+						"model.constituencyElection.constituency.state.stateId in(:locationIds) and " +
+						"model.candidateResult.rank = 1" +
+						"group by model.constituencyElection.constituency.state.stateId ,model.party.partyId ,model.constituencyElection.countStatus ");
+			}else if(scopeId.longValue() == 2)//district
+			{
+				
+				queryString.append("select count(model.party.partyId),model.constituencyElection.constituency.district.districtId,model.constituencyElection.constituency.district.districtName," +
+						" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus " +
+						"from Nomination model where " +
+						"model.constituencyElection.election.electionId = :electionId and " +
+						"model.constituencyElection.constituency.district.districtId in(:locationIds) and " +
+						"model.candidateResult.rank = 1" +
+						"group by model.constituencyElection.constituency.district.districtId ,model.party.partyId ,model.constituencyElection.countStatus ");
+			}else if(scopeId.longValue() == 3)//region
+			{
+				
+				queryString.append("select count(model.party.partyId),model2.stateRegion.stateRegionId,model2.stateRegion.regionName," +
+						" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus " +
+						"from Nomination model ,StateRegionDistrict model2 where " +
+						"model.constituencyElection.constituency.district.districtId = model2.district.districtId and " +
+						"model.constituencyElection.election.electionId = :electionId and " +
+						"model2.stateRegion.stateRegionId in(:locationIds) and " +
+						"model.candidateResult.rank = 1" +
+						"group by model2.stateRegion.stateRegionId ,model.party.partyId ,model.constituencyElection.countStatus ");
+			}else if(scopeId.longValue() == 4)//parliament
+			{
+				
+				queryString.append("select count(model.party.partyId),model2.delimitationConstituency.constituency.constituencyId,model2.delimitationConstituency.constituency.name," +
+						" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus " +
+						"from Nomination model ,DelimitationConstituencyAssemblyDetails model2 where " +
+						"model.constituencyElection.election.electionId = :electionId and " +
+						"model.constituencyElection.constituency.constituencyId = model2.constituency.constituencyId and " +
+						"model2.delimitationConstituency.constituency.constituencyId in(:locationIds) and  " +
+						"model.candidateResult.rank = 1 and " +
+						"model2.delimitationConstituency.year = 2009 " +
+						"group by model2.delimitationConstituency.constituency.constituencyId,model.party.partyId ,model.constituencyElection.countStatus ");
+			}
+			
+			
+			Query query = getSession().createQuery(queryString.toString());
+			
+			query.setParameter("electionId", electionId);
+			query.setParameterList("locationIds", locationIds);
+			
+			return query.list();
+			
+		}
+		
+		
+		public List<Object[]> getSubReportForElectionResultByConstituencyReservationType(Long electionId,List<Long> locationIds,Long scopeId)
+		{
+			StringBuffer queryString = new StringBuffer();
+			
+			if(scopeId.longValue() == 1)//state
+			{
+				
+				queryString.append("select count(model.party.partyId),model.constituencyElection.constituency.state.stateId,model.constituencyElection.constituency.state.stateName," +
+						" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus ,model.constituencyElection.reservationZone " +
+						"from Nomination model  where " +
+						"model.constituencyElection.election.electionId = :electionId and " +
+						"model.constituencyElection.constituency.state.stateId in(:locationIds) and " +
+						"model.candidateResult.rank = 1" +
+						"group by model.constituencyElection.constituency.state.stateId ,model.constituencyElection.reservationZone, model.party.partyId ,model.constituencyElection.countStatus ");
+			}else if(scopeId.longValue() == 2)//district
+			{
+				
+				queryString.append("select count(model.party.partyId),model.constituencyElection.constituency.district.districtId,model.constituencyElection.constituency.district.districtName," +
+						" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus ,model.constituencyElection.reservationZone " +
+						"from Nomination model where " +
+						"model.constituencyElection.election.electionId = :electionId and " +
+						"model.constituencyElection.constituency.district.districtId in(:locationIds) and " +
+						"model.candidateResult.rank = 1" +
+						"group by model.constituencyElection.constituency.district.districtId ,model.constituencyElection.reservationZone,model.party.partyId ,model.constituencyElection.countStatus ");
+			}else if(scopeId.longValue() == 3)//region
+			{
+				
+				queryString.append("select count(model.party.partyId),model2.stateRegion.stateRegionId,model2.stateRegion.regionName," +
+						" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus ,model.constituencyElection.reservationZone " +
+						"from Nomination model ,StateRegionDistrict model2 where " +
+						"model.constituencyElection.constituency.district.districtId = model2.district.districtId and " +
+						"model.constituencyElection.election.electionId = :electionId and " +
+						"model2.stateRegion.stateRegionId in(:locationIds) and " +
+						"model.candidateResult.rank = 1" +
+						"group by model2.stateRegion.stateRegionId ,model.constituencyElection.reservationZone,model.party.partyId ,model.constituencyElection.countStatus ");
+			}else if(scopeId.longValue() == 4)//parliament
+			{
+				
+				queryString.append("select count(model.party.partyId),model2.delimitationConstituency.constituency.constituencyId,model2.delimitationConstituency.constituency.name," +
+						" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus,model.constituencyElection.reservationZone " +
+						"from Nomination model ,DelimitationConstituencyAssemblyDetails model2 where " +
+						"model.constituencyElection.election.electionId = :electionId and " +
+						"model.constituencyElection.constituency.constituencyId = model2.constituency.constituencyId and " +
+						"model2.delimitationConstituency.constituency.constituencyId in(:locationIds) and  " +
+						"model.candidateResult.rank = 1 and " +
+						"model2.delimitationConstituency.year = 2009 " +
+						"group by model2.delimitationConstituency.constituency.constituencyId,model.constituencyElection.reservationZone,model.party.partyId ,model.constituencyElection.countStatus ");
+			}
+			
+			
+			Query query = getSession().createQuery(queryString.toString());
+			
+			query.setParameter("electionId", electionId);
+			query.setParameterList("locationIds", locationIds);
+			
+			return query.list();
+			
+		}
+		
+		
+		public List<Object[]> getSubReportForElectionResultByConstituencyType(Long electionId,List<Long> locationIds,Long scopeId)
+		{
+			StringBuffer queryString = new StringBuffer();
+			
+			if(scopeId.longValue() == 1)//state
+			{
+				
+				queryString.append("select count(model.party.partyId),model.constituencyElection.constituency.state.stateId,model.constituencyElection.constituency.state.stateName," +
+						" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus,model.constituencyElection.constituency.areaType " +
+						"from Nomination model  where " +
+						"model.constituencyElection.election.electionId = :electionId and " +
+						"model.constituencyElection.constituency.state.stateId in(:locationIds) and " +
+						"model.candidateResult.rank = 1" +
+						"group by model.constituencyElection.constituency.state.stateId ,model.constituencyElection.constituency.areaType,model.party.partyId ,model.constituencyElection.countStatus ");
+			}else if(scopeId.longValue() == 2)//district
+			{
+				
+				queryString.append("select count(model.party.partyId),model.constituencyElection.constituency.district.districtId,model.constituencyElection.constituency.district.districtName," +
+						" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus ,model.constituencyElection.constituency.areaType " +
+						"from Nomination model where " +
+						"model.constituencyElection.election.electionId = :electionId and " +
+						"model.constituencyElection.constituency.district.districtId in(:locationIds) and " +
+						"model.candidateResult.rank = 1" +
+						"group by model.constituencyElection.constituency.district.districtId ,model.constituencyElection.constituency.areaType,model.party.partyId ,model.constituencyElection.countStatus ");
+			}else if(scopeId.longValue() == 3)//region
+			{
+				
+				queryString.append("select count(model.party.partyId),model2.stateRegion.stateRegionId,model2.stateRegion.regionName," +
+						" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus,model.constituencyElection.constituency.areaType " +
+						"from Nomination model ,StateRegionDistrict model2 where " +
+						"model.constituencyElection.constituency.district.districtId = model2.district.districtId and " +
+						"model.constituencyElection.election.electionId = :electionId and " +
+						"model2.stateRegion.stateRegionId in(:locationIds) and " +
+						"model.candidateResult.rank = 1" +
+						"group by model2.stateRegion.stateRegionId ,model.constituencyElection.constituency.areaType,model.party.partyId ,model.constituencyElection.countStatus ");
+			}else if(scopeId.longValue() == 4)//parliament
+			{
+				
+				queryString.append("select count(model.party.partyId),model2.delimitationConstituency.constituency.constituencyId,model2.delimitationConstituency.constituency.name," +
+						" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus,model.constituencyElection.constituency.areaType  " +
+						" from Nomination model ,DelimitationConstituencyAssemblyDetails model2 where " +
+						"model.constituencyElection.election.electionId = :electionId and " +
+						"model.constituencyElection.constituency.constituencyId = model2.constituency.constituencyId and " +
+						"model2.delimitationConstituency.constituency.constituencyId in(:locationIds) and  " +
+						"model.candidateResult.rank = 1 and " +
+						"model2.delimitationConstituency.year = 2009 " +
+						"group by model2.delimitationConstituency.constituency.constituencyId,model.constituencyElection.constituency.areaType,model.party.partyId ,model.constituencyElection.countStatus ");
+			}
+			
+			
+			Query query = getSession().createQuery(queryString.toString());
+			
+			query.setParameter("electionId", electionId);
+			query.setParameterList("locationIds", locationIds);
+			
+			return query.list();
+			
+		}
+		
+		public List<Object[]> getConstituencyWiseResults(Long electionId)
+		{
+			Query query = getSession().createQuery("select model.constituencyElection.constituency.constituencyId," +
+					" model.constituencyElection.constituency.name, model.candidate.lastname,model.candidateResult.marginVotes," +
+					" model.candidateResult.rank,model.party.shortName from Nomination model" +
+					" where  model.constituencyElection.election.electionId = :electionId and model.candidateResult.rank in (1,2)");
+			query.setParameter("electionId", electionId);
+			
+			return query.list();
+		}
+		
+		
+		public List<Object[]> getConstituencyWiseResults1(Long electionId,List<Long> constituencyIds)
+		{
+			
+			Query query = getSession().createQuery("select " +
+					" model.constituencyElection.constituency.constituencyId," +
+					" model.constituencyElection.constituency.name," +
+					" model.candidate.lastname," +
+					" model.candidateResult.marginVotes," +
+					" model.candidateResult.rank," +
+					" model.party.shortName," +
+					" model.party.shortName," +
+					" model1.constituencyNO," +
+					" model2.delimitationConstituency.constituency.name ," +
+					" model2.delimitationConstituency.constituencyNO from " +
+					" Nomination model , DelimitationConstituency model1 ,DelimitationConstituencyAssemblyDetails model2 " +
+					" where  model.constituencyElection.election.electionId = :electionId and model.candidateResult.rank in (1,2) and " +
+					"model.constituencyElection.constituency.constituencyId = model1.constituency.constituencyId and " +
+					"model1.year = 2009 and " +
+					"model.constituencyElection.constituency.constituencyId in(:constituencyIds) and " +
+					"model.constituencyElection.constituency.constituencyId = model2.constituency.constituencyId  " +
+					"order by  model2.delimitationConstituency.constituencyNO");
+			
+			query.setParameter("electionId", electionId);
+			query.setParameterList("constituencyIds", constituencyIds);
+						
+			return query.list();
 		}
 		
 }

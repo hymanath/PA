@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class DashBoardResultsVO {
+public class DashBoardResultsVO  implements Comparable<DashBoardResultsVO>{
 	
 	private Long partyId;
 	private String partyName;
@@ -43,6 +43,65 @@ public class DashBoardResultsVO {
 
 	public void setAllianceIds(List<Long> allianceIds) {
 		this.allianceIds = allianceIds;
+	}
+	
+	private Long winCount = 0L;
+	private Long leadCount = 0L;
+	
+	private Long winTotalCount = 0L;
+	private Long leadTotalCount = 0L;
+	
+	
+	
+	public Long getWinTotalCount() {
+		return winTotalCount;
+	}
+
+
+	public void setWinTotalCount(Long winTotalCount) {
+		this.winTotalCount = winTotalCount;
+	}
+
+
+	public Long getLeadTotalCount() {
+		return leadTotalCount;
+	}
+
+
+	public void setLeadTotalCount(Long leadTotalCount) {
+		this.leadTotalCount = leadTotalCount;
+	}
+
+
+	private List<DashBoardResultsVO> summaryDetails;
+
+	public List<DashBoardResultsVO> getSummaryDetails() {
+		return summaryDetails;
+	}
+
+
+	public void setSummaryDetails(List<DashBoardResultsVO> summaryDetails) {
+		this.summaryDetails = summaryDetails;
+	}
+
+
+	public Long getWinCount() {
+		return winCount;
+	}
+
+
+	public void setWinCount(Long winCount) {
+		this.winCount = winCount;
+	}
+
+
+	public Long getLeadCount() {
+		return leadCount;
+	}
+
+
+	public void setLeadCount(Long leadCount) {
+		this.leadCount = leadCount;
 	}
 
 
@@ -345,6 +404,17 @@ public class DashBoardResultsVO {
 
 	public void setCount(Long count) {
 		this.count = count;
+	}
+
+
+	public int compareTo(DashBoardResultsVO vo) {
+		
+		if(this.parliamentNo < vo.getParliamentNo())
+			return -1;
+		else if(this.parliamentNo > vo.getParliamentNo())
+			return 1;
+		
+		return 0;
 	}
 
 
