@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -28,6 +29,7 @@ import com.itgrids.partyanalyst.dto.PartyPositionResultsVO;
 import com.itgrids.partyanalyst.dto.PartyPositionVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVerVO;
+import com.itgrids.partyanalyst.dto.PartyWiseMarginCountsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -124,13 +126,22 @@ public class StratagicReportsAction extends ActionSupport implements
 	private Long constituencyId;
 	private List<SelectOptionVO> locationIds;
 	private String type;
+	private PartyWiseMarginCountsVO partyResultVO;
 	
 	@Autowired
 	private IStratagicReportsServicePdf stratagicReportsServicePdf;
 	
+	
+	
 private static final Logger log = Logger.getLogger(StratagicReportsAction.class);
 	
 	
+	public PartyWiseMarginCountsVO getPartyResultVO() {
+	return partyResultVO;
+}
+public void setPartyResultVO(PartyWiseMarginCountsVO partyResultVO) {
+	this.partyResultVO = partyResultVO;
+}
 	public List<PartyPositionVO> getPanchayatResult() {
 	return panchayatResult;
 }
@@ -1119,6 +1130,31 @@ public void setPanchayatResult(List<PartyPositionVO> panchayatResult) {
 			String region = jObj.getString("region");
 			boolean isAlliance = jObj.getBoolean("alliance");
 			partyResultList = stratagicReportsService.getPartyResults(electionId,type,region,isAlliance);
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in ajaxHandler() Method, Exception - "+e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String getMarginAnalysisOnLiveResultsForAssemblies(){
+		try{
+			jObj = new JSONObject(getTask());
+			List<Long> locationIds = new ArrayList<Long>(0);
+			
+			Long electionId= jObj.getLong("electionId");
+			Long type = jObj.getLong("type");
+			JSONArray jsonArray = jObj.getJSONArray("locationIds");
+			if(jsonArray != null && jsonArray.length() > 0)
+				for(int i=0 ;i< jsonArray.length() ; i++)
+				{
+					locationIds.add(new Long(jsonArray.get(i).toString()));
+				}
+			
+			partyResultVO = staticDataService.getMarginAnalysisOnLiveResultsForAssemblies(electionId, type, locationIds);
+			
 			
 		}catch (Exception e) {
 			e.printStackTrace();
