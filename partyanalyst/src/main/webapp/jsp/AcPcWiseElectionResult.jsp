@@ -10,12 +10,15 @@
 <title>AC AND PC WISE RESULT</title>
 
 <style>
-.tableClass1  >  table{border: 3px solid #000}
-.tableClass1   td ,tableClass1   tr {
-	border: 2px solid #000;
+.tableClass1 table {border: 3px solid #B6D9E9}
+.tableClass1 table td, tr {
+	border: 2px solid #B6D9E9;
 	padding:5px;
 	font-weight:bold;
 }
+
+
+
 select {
 background-color: #FFFFFF;
 border: 1px solid #CCCCCC;
@@ -252,7 +255,8 @@ function buildResultForPartyResult(result,jObj,DivEle)
 	str+='<h5>'+result[0].year+' - Muncipal Election Results</h5>';
 	else
 	str+='<h5>'+result[0].year+' - Assembly Election Results</h5>';
-	str+='<table class="table table-bordered" style="width:40% !important;">';
+	str+='<div class="tableClass1">';
+	str+='<table class="partyResultTable" style="width:40% !important;">';
 	str+='<thead>';
 	str+='<tr>';
 	if(jObj.type == 'district')
@@ -282,6 +286,7 @@ function buildResultForPartyResult(result,jObj,DivEle)
 	
 		}
 	str+='</table>';
+	str+='</div>';
 	$("#"+DivEle).html(str);
 	
 	}
@@ -589,20 +594,20 @@ function buildMatrixReportSummaryDetails(result,status)
 		return;
    var str ='';
    if(status == "Won")
-	   str+='<h5>Won Summary</h5>';
+	   str+='<h5  style="margin-top: 10px; margin-bottom: 10px;">Won Summary</h5>';
    else
-	   str+='<h5>Lead Summary</h5>';
+	   str+='<h5  style="margin-top: 10px; margin-bottom: 10px;">Lead Summary</h5>';
 	str+='<div class="tableClass1">';
 	str+='<table width="80%" class="" style="clear:both;">';
 	str+='<thead>';
 	str+='<tr>';
 
 	$.each(result[0].summaryDetails,function(index,value){
-		str+='<th style="border:1px solid #000;" class="alert alert-info">'+value.name+'</th>';
+		str+='<th style="border:1px solid #B6D9E9;" class="">'+value.name+'</th>';
 		if(status == "Won")
-		 str+='<th style="border:1px solid #000;" class="alert alert-info">'+value.winTotalCount+'</th>';
+		 str+='<th style="border:1px solid #B6D9E9;" class="">'+value.winTotalCount+'</th>';
 		else
-		 str+='<th style="border:1px solid #000;" class="alert alert-info">'+value.leadTotalCount+'</th>';
+		 str+='<th style="border:1px solid #B6D9E9;" class="">'+value.leadTotalCount+'</th>';
 
 	});
 
@@ -683,9 +688,9 @@ function buildSubReportByConstituencyType(result,type)
 	var str ='';
 	str+='<div class="tableClass1" style="margin-top:30px;">';
 	  if(type == "reservationType")
-       str+='<h5>SC,ST,General Constituencies Analysis</h5>';
+       str+='<h5 style="margin-top: 10px; margin-bottom: 10px;">SC,ST,General Constituencies Analysis</h5>';
 	  else
-	  str+='<h5>Rural,Urban,Rural-Urban Analysis</h5>';
+	  str+='<h5 style="margin-top: 10px; margin-bottom: 10px;">Rural,Urban,Rural-Urban Analysis</h5>';
 
 	str+='<table width="80%" class="" style="clear:both;" style="margin-top:25px;">';
 	 str+='<thead>';
@@ -694,15 +699,15 @@ function buildSubReportByConstituencyType(result,type)
 		  $.each(result[0].reservationDetails,function(index,value){
 			  var spanCnt = value.partiesDetails.length * 2;
 			  if(value.name == "")
-			   str+='<th colspan="'+spanCnt+'" style="border:1px solid #000;">GENERAL</th>'
+			   str+='<th colspan="'+spanCnt+'" style="border:1px solid #B6D9E9;">GENERAL</th>'
 		      else
-			   str+='<th colspan="'+spanCnt+'" style="border:1px solid #000;">'+value.name+'</th>'
+			   str+='<th colspan="'+spanCnt+'" style="border:1px solid #B6D9E9;">'+value.name+'</th>'
 		  });
 	  str+='</tr>';
 	  str+='<tr>';
 		  $.each(result[0].reservationDetails,function(index,value){
 			   $.each(value.partiesDetails,function(index1,value1){
-				   str+='<th colspan="2" style="border:1px solid #000;">'+value1.name+'</th>'
+				   str+='<th colspan="2" style="border:1px solid #B6D9E9;">'+value1.name+'</th>'
 			   });
 		  });
 	  str+='</tr>';
@@ -710,8 +715,8 @@ function buildSubReportByConstituencyType(result,type)
 	  str+='<tr>';
 		  $.each(result[0].reservationDetails,function(index,value){
 			   $.each(value.partiesDetails,function(index1,value1){
-				   str+='<th style="border:1px solid #000;">W</th>'
-   				   str+='<th style="border:1px solid #000;">L</th>'
+				   str+='<th style="border:1px solid #B6D9E9;">W</th>'
+   				   str+='<th style="border:1px solid #B6D9E9;">L</th>'
 			   });
 		  });
 	  str+='</tr>';
@@ -857,6 +862,7 @@ function getConstituencyWiseResults()
 <img src="images/MEnuBG.jpg" width="960" height="32" border="0" usemap="#Map" />
 </div>
 
+
 <div class="container" style="font-family: verdana; font-size: 14px; border: 1px solid rgb(204, 204, 204); padding: 0px 10px 10px; margin-top: 24px;" id="mapDiv">
 <h4 style="padding: 10px; margin-top: 10px; border-radius: 5px; text-align: center; background: none repeat scroll 0% 0% rgb(73, 175, 205);">LIVE ELECTION RESULTS COMPARISON</h4>
 <div id="btnDivs">
@@ -873,7 +879,6 @@ function getConstituencyWiseResults()
 	<area shape="rect" coords="791,1,858,30" href="javascript:{getRegionWiseResults('CBNEffect');}" title="CBN Effect"/>
 	<area shape="rect" coords="858,-4,929,29" href="javascript:{getRegionWiseResults('ModiEffect');}" title="Modi Effect"/>
 </map>
-
 
 <div align="center" style="margin-bottom: 20px;" >
 	<div class="span4 offset4">
@@ -970,14 +975,17 @@ function getConstituencyWiseResults()
 
 
 <!-- SAMBA START  -->
-<div class="span12 container hide"  style="border:1px solid #BDA870;margin-left:180px;padding:8px;margin-top:20px;" id="liveResultsDiv">
+<!--<div class="span12 container hide"  style="border:1px solid #BDA870;margin-left:180px;padding:8px;margin-top:20px;" id="liveResultsDiv">-->
+<div class="container" style="font-family: verdana; font-size: 14px; border: 1px solid rgb(204, 204, 204); padding: 0px 10px 10px; margin-top: 24px;" id="liveResultsDiv">
 
-<h3 style="text-align:center;">Live Results Analysis For Assembly Election</h3>
+<!--<h4 style="text-align:center;">Live Results Analysis</h4>-->
+<div style="text-align:center;margin-top:10px;"><img src="images/Live AP State Election Results.jpg"></div>
 
 
-<!--
-<a id="stateButton" class="btn " style="margin-top:0px;" href="javascript:{}" >Show State Wise Report<i class="icon-chevron-up"></i></a>
-<img id="stateAjaxImg" src="./images/icons/search.gif" alt="Processing Image" style="display:none;"/>-->
+
+<a id="stateButton" class="btn " style="margin-top:0px; background: none repeat scroll 0 0 #0088CC;
+    color: #FFFFFF;font-weight: normal;float:right;" href="javascript:{}" >Show State Wise Report<i class="icon-chevron-up"></i></a>
+<img id="stateAjaxImg" src="./images/icons/search.gif" alt="Processing Image" style="display:none;"/>
 
 
 
@@ -987,32 +995,82 @@ function getConstituencyWiseResults()
 <div id="telanganaMuncipaDiv" class="span5"></div>
 
 </div>
-<div class="span12 " id="andhraMainDiv" >
+<div class="span12 " id="andhraMainDiv" style="margin-bottom:20px;">
 <h5 id="regionHead"></h5>
 <div id="andhraDiv" class="span5"></div>
 <div id="andhraMuncipalDiv" class="span5"></div>
 
 </div>
+<br/><br/>
+<div style="margin-top:10px;clear:both;">
+<table class="offset1 headingTbl" cellspacing="0" cellpadding="2" bgcolor="#FFFFFF" style="margin-top:35px;width:480px;">
+
+<tr style="border:1px solid #8497AD;"><td>Select Election<select id="electionId" class="input-block-level">
+	  <option value="258">2014 Assembly Election</option>
+	  <option value="38">2009 Assembly Election</option>
+	  <option value="3">2004 Assembly Election</option>
+	 </select></td>
+	 <td> Select Level<select onchange="getLocationDetailsForSelectedScope(this.value)" class="input-block-level" id="scopeId" name="scopeId" style="width:99%;">
+								<option value="3">Region</option>
+								<option value="2">District</option>
+								<option value="4">Parliament</option>
+								<option value="5">Assembly</option>
+						   </select>	</td>
+			
+
+<td> Select Region<select class="input-block-level" id="locaionsId1" multiple="true" style="width:96%;height:55px;"></select></td>			
+			
+	<!-- <td></td>-->
+	
+</tr>
+<!--<tr style="border:1px solid #ffffff;">
+<td> Select Level<select onchange="getLocationDetailsForSelectedScope(this.value)" class="input-block-level" id="scopeId" name="scopeId" style="width:50%;">
+								<option value="3">Region</option>
+								<option value="2">District</option>
+								<option value="4">Parliament</option>
+								<option value="5">Assembly</option>
+						   </select>	</td>
+			
+
+<td> Select Region<select class="input-block-level" id="locaionsId1" multiple="true" style="width:115%;height:55px;"></select></td>			
+						   
+						   
+</tr>-->
 
 
-  <div class="row-fluid offset2">
+</table>
+</div>
+ <div  class="offset1" style="clear:both;">
+
+
+<label class="radio inline">
+
+<input type="radio" class="reportType matrixRprt" id="matrixReportId" value="Matrix Report" name="report" checked="true" style="margin-top:-5px;"><span>Matrix Report</span>
+</label>
+
+<label class="radio inline">
+<input type="radio" class="reportType matrixRprt" id="subReportId" value="Sub Report" name="report"  style="margin-top:-5px;"><span>Sub Report</span>
+</label>
+
+</div>
+  <!--<div class="row-fluid offset2">
    <div class="span10">
     <div class="span3">
-	 Select Assembly Election Year
+	 Select Election
 	</div>
 	<div class="span5">
 	 <select id="electionId" style="width:250px;">
-	  <option value="258">2014</option>
-	  <option value="38">2009</option>
-	  <option value="3">2004</option>
+	  <option value="258">2014 Assembly Election</option>
+	  <option value="38">2009 Assembly Election</option>
+	  <option value="3">2004 Assembly Election</option>
 	 </select>
 	</div>
    </div>
-  </div>
+  </div>-->
 
 
 
-					<div class="row-fluid" style="margin-top:27px;">
+					<!--<div class="row-fluid" style="margin-top:20px;">
 					 <div class="span5">
 					   <div class="row-fluid">
 					    <div class="span4">
@@ -1040,34 +1098,36 @@ function getConstituencyWiseResults()
 						 </div>
 					   </div>
 					 </div>
-					</div>
+					</div>-->
 
-					<div class="form-inline " style=" margin-top: 20px;margin-left: 92px;">
-
-					     
-						 <input type="radio" class="reportType matrixRprt" id="matrixReportId" value="Matrix Report" name="report" checked="true" style="margin-top: -5px;">&nbsp<span>Matrix Report</span>&nbsp&nbsp&nbsp&nbsp
-					   
+					<!--<div class="row-fluid offset1">
 
 						
-						<input type="radio" class="reportType matrixRprt" id="subReportId" value="Sub Report" name="report" style="margin-top: -6px;">&nbsp<span>Sub Report</span>
-					 
+						 <input type="radio" class="reportType matrixRprt" id="matrixReportId" value="Matrix Report" name="report" checked="true"><span>Matrix Report</span>
+					
 
-					</div>
+						<label class=" radio inline"> 
+						<input type="radio" class="reportType matrixRprt" id="subReportId" value="Sub Report" name="report"><span>Sub Report</span>
+					   </label>
+
+					</div>-->
 
 
-					<div class="row-fluid offset1" style="margin-top:20px;">
+					<div class="offset1" style="margin-top:20px;">
 
-						<div class="span1 "> 
-						<input type="button"  class="btn btn-info btn-block " onClick="showSelectedReport()" value="Display" style="padding:3px;"/>
-						</div>
+					
+						<a onClick="showSelectedReport()" value="Display" class="btn" style="margin-top:0px; background: none repeat scroll 0 0 #0088CC; color: #FFFFFF;font-weight: normal;">Display</a>
+					
 
-						<div class="span1 "> 
-						<input type="button"  class="btn btn-info btn-block " onClick="clearFields()" value="Clear" style="padding:3px;"/>
-						</div>
+					
+						<a onClick="clearFields()" value="Clear" class="btn" style="margin-top:0px; background: none repeat scroll 0 0 #0088CC;
+    color: #FFFFFF;font-weight: normal;">Clear</a>
+					
 
-						<div class="span2 "> 
-						<input type="button"  class="btn btn-info btn-block " onClick="exportToExcel()" value="Export To Excel" style="padding:3px;"/>
-						</div>
+						
+						<a onClick="exportToExcel()" class="btn" value="Export To Excel" style="margin-top:0px; background: none repeat scroll 0 0 #0088CC;
+    color: #FFFFFF;font-weight: normal;">Export To Excel</a>
+						
 	<img id="ajaxImage" src="./images/icons/search.gif" alt="Processing Image" style="margin-left:70px;display:none;"/>
 
 					</div>
@@ -1510,6 +1570,8 @@ var stateType = '';
 		}
 
 		}).addTo(mapName); 
+		
+			
 	}
 	
 	function generateMapForApACPresent(mapName)
@@ -2060,6 +2122,7 @@ var stateType = '';
 		popupContent +=' <header class="results-header" style="width: 350px; margin-top: -10px;border-bottom-width: 2px;">';
 		popupContent +=' </header>';
 		//console.log(electionPcData);
+
 		for(var i in electionPcData)
 		{	
 			if(feature.properties.pc == electionPcData[i].hamletId)
@@ -2641,6 +2704,7 @@ function showResultDiv()
 {
 	$('#liveResultsDiv').show();
 }
+
 
 function getRegionWiseResults(searchType){
 	if(searchType == 'Telangana'){
