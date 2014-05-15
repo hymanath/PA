@@ -571,6 +571,9 @@ function buildSubReportByConstituencyType(result,type)
 		  str+='<th rowspan="3"></th>';
 		  $.each(result[0].reservationDetails,function(index,value){
 			  var spanCnt = value.partiesDetails.length * 2;
+			  if(value.name == "")
+			   str+='<th colspan="'+spanCnt+'" style="border:1px solid #000;">GENERAL</th>'
+		      else
 			   str+='<th colspan="'+spanCnt+'" style="border:1px solid #000;">'+value.name+'</th>'
 		  });
 	  str+='</tr>';
@@ -596,9 +599,7 @@ function buildSubReportByConstituencyType(result,type)
 
      $.each(result,function(index,value){
 		  str+='<tr>';
-		  if(value.name == "")
-		   str+='<td>GENERAL</td>';
-		  else
+		  
  		   str+='<td>'+value.name+'</td>';
 
 		   $.each(value.reservationDetails,function(index1,value1){
