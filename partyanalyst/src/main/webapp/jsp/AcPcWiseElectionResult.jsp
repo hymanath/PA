@@ -10,12 +10,6 @@
 <title>AC AND PC WISE RESULT</title>
 
 <style>
-.tableClass1 table {border: 3px solid #B6D9E9}
-.tableClass1 table td, tr {
-	border: 2px solid #B6D9E9;
-	padding:5px;
-	font-weight:bold;
-}
 
 
 
@@ -909,7 +903,7 @@ function getConstituencyWiseResults()
 		<select id="yearId1" class="input-small">
 		<option value="0">Select Year</option>
 		<option value="1">2009</option>
-		<!-- <option value="2">2004</option> -->
+		<option value="2">2014</option>
 		</select>
 		</div>
 	</div>
@@ -929,7 +923,7 @@ function getConstituencyWiseResults()
 		<select id="yearId2" class="input-small">
 		<option value="0">Select Year</option>
 		<option value="1">2009</option>
-		<!-- <option value="2">2004</option> -->
+		<option value="2">2014</option>
 		</select>
 		
 		</div>
@@ -1417,7 +1411,7 @@ var stateType = '';
 		parties.push(662);
 		var jsObj=
 		{
-				electionId : 3,
+				electionId : 258,
 				stateId : 1,
 				electionScopeId : 2,
 				parties : parties,
@@ -1532,7 +1526,7 @@ var stateType = '';
 		parties.push(662);
 		var jsObj=
 		{
-				electionId : 18,
+				electionId : 260,
 				stateId : 1,
 				electionScopeId : 1,
 				parties : parties,
