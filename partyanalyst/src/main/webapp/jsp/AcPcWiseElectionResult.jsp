@@ -103,7 +103,7 @@ padding: 4px;
 	<area shape="rect" coords="929,0,958,30" href="#" title=""/>
 </map>
 
-<div class="row-fluid" >
+<div align="center" style="margin-bottom: 20px;">
 	<div class="span4 offset4">
 	<b>Select State</b>
 	<select id="stateId">
