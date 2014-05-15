@@ -312,13 +312,20 @@ margin-top:10px;
 			</div>
 		</li>
 		</c:if></c:if>
-		<li><a href="statePageAction.action?stateId=1"><span>STATE</span></a>
+		<li><a href="acPcWiseElectionResultAction.action?stateId=1"><span>LIVE RESULTS</span></a>
+			<!--<div  style="z-index:8;text-align:left;" >
+			  <ul>		
+				<li><a href="statePageAction.action?stateId=1"><span>Andhra Pradesh</span></a></li>
+			  </ul>
+			</div>-->
+		</li>
+		<!--<li><a href="statePageAction.action?stateId=1"><span>LIVE RESULTS</span></a>
 			<div  style="z-index:8;text-align:left;" >
 			  <ul>		
 				<li><a href="statePageAction.action?stateId=1"><span>Andhra Pradesh</span></a></li>
 			  </ul>
 			</div>
-		</li>
+		</li>-->
 		
 			<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}">   
 		<c:if test="${fn:contains(sessionScope.USER.entitlements, 'VOTER_ANALYSIS' )  || fn:contains(sessionScope.USER.entitlements, 'VOTER_SEARCH_AND_EDIT' ) 
