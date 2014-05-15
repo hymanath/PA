@@ -10,12 +10,12 @@
 <title>AC AND PC WISE RESULT</title>
 
 <style>
-/*.tableClass1 > table {border: 3px solid #000}
+.tableClass1 > table {border: 3px solid #000}
 .tableClass1 > table td, tr {
 	border: 2px solid #000;
 	padding:5px;
 	font-weight:bold;
-}*/
+}
 select {
 background-color: #FFFFFF;
 border: 1px solid #CCCCCC;
