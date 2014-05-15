@@ -180,7 +180,7 @@ margin-top:10px;
 
 
     </div>
-<div id="menu" class="span10" style="border-top:1px solid #fff;border-bottom:1px solid #fff;padding:5px;margin-bottom:5px;">
+<div id="menu" class="span10" style="border-top:1px solid #fff;border-bottom:1px solid #fff;padding:5px;margin-bottom:5px;width:800px;">
       <ul class="menu">
         <li class="active"><a href="newhomePageAction.action"><span><i class="icon-home icon-black"></i></span></a></li>
 	
