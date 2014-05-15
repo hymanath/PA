@@ -746,4 +746,7 @@ public interface IConstants {
     public static final String RESEND="RESEND";
    // public static final String DISTRICT_IDS ="1";
     public static int censusYear = 2011; 
+    
+    public static final Long PREV_PARLIAMENT_ELECTION_ID = 17l;
+    public static final Long PRES_PARLIAMENT_ELECTION_ID = 250l;
 }
