@@ -1420,5 +1420,8 @@
 	<bean id="dashBoardElectionResultsAction" class="com.itgrids.partyanalyst.web.action.DashBoardElectionResultsAction" singleton="false">
 	  <property name="dashBoardElectionResultsService" ref="dashBoardElectionResultsService" />
    </bean>
+   <bean id="constituencyWiseElectionResultsAction" class="com.itgrids.partyanalyst.web.action.ConstituencyWiseElectionResultsAction" singleton="false">
+	   <property name="constituencyWiseElectionResultsService" ref="constituencyWiseElectionResultsService" /> 
+	</bean>
 </beans>	
 	
