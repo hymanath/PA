@@ -5,13 +5,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Live Election Results Analysis</title>
-<script type="text/javascript" src="js/jquery.dataTables.js"></script>
-   <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
+<script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.js"></script>
+<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
+<!--<script type="text/javascript" src="js/jquery.dataTables.js"></script>-->
+ <!--  <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 <script type="text/javascript" src="js/voterAnalysis/voterAnalysis.js"></script>
-<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
+<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>-->
+	<!--<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
 	<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/element-min.js"></script> 
@@ -28,24 +29,18 @@
 	<script type="text/javascript" src="js/yahoo/get-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
-			<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>-->
+	<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+
+
  
- <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.9.0/build/tabview/assets/skins/sam/tabview.css"> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/layout.css">
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css"> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/button.css"> 
- 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/tabview.css">
-	<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css"> 
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">    
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css"> 
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
-</head>
+ </head>
 <body>
 <style>
+.button
+{
+	width:200px;
+}
 .tableClass1 table {border: 3px solid #000}
 .tableClass1 table td, tr {
 	border: 2px solid #000;
@@ -58,6 +53,8 @@
 <script>
  $( document ).ready(function() {
 	 $('#scopeId').trigger('change');
+
+	//$('#locaionsId1').multiselect();
 
 	 $('.reportType').change(function(){
 		 $('#test,#matridLeadId,#matrixWonSummaryId,#matrixLeadSummaryId').html('');
@@ -82,7 +79,7 @@
 	</div>
 	<div class="span5">
 	 <select id="electionId" style="width:250px;">
-	  <option value="38">2014 Assembly Election</option>
+	  <option value="258">2014 Assembly Election</option>
 	  <option value="38">2009 Assembly Election</option>
 	  <option value="3">2004 Assembly Election</option>
 	 </select>
@@ -148,8 +145,11 @@
 						<div class="span1"> 
 						<input type="button" onClick="exportToExcel()" value="Export To Excel" style="padding:3px;"/>
 						</div>
+	<img id="ajaxImage" src="./images/icons/search.gif" alt="Processing Image" style="margin-left:70px;display:none;"/>
 
 					</div>
+
+					<div id="errorDiv" style="font-weight:bold;color:red;"></div>
 
 
     <div class="offset1">
@@ -340,11 +340,24 @@ function buildLocationDetails(result)
 		$('#locaionsId1').append('<option value="'+value.id+'">'+value.name+'</option>');
 	});
 
+		//$('#locaionsId1').multiselect('refresh');
+
+
 }
 
 function showSelectedReport()
 {
-	$('#matridLeadId,#matrixWonSummaryId,#matrixLeadSummaryId').html('');
+
+	$('#matridLeadId,#matrixWonSummaryId,#matrixLeadSummaryId,#errorDiv').html('');
+
+	if($('#locaionsId1').val() == null)
+	{
+        $('#errorDiv').html('Please select location(s)');
+		return;
+	}
+      
+	   $('#ajaxImage').show();
+
 	$('#subReportId').attr('disabled',false);
 
     if($('#scopeId').val() == 5)
@@ -386,6 +399,13 @@ function getMatrixReport()
           data: {task:JSON.stringify(matrixReportDtls)},
 
           success: function(result){ 
+			  	   $('#ajaxImage').hide();
+
+				   if(result == null || result.length == 0)
+			       {
+					   $('#errorDiv').html('<h5>No Data Available..</h5>');
+                     return;
+				   }
 			  $('#matridLeadId,#matrixWonSummaryId,#matrixLeadSummaryId').html('');
 			    buildMatrixReportSummaryDetails(result,"Won");
 				buildMatrixReportSummaryDetails(result,"Lead");
@@ -497,6 +517,7 @@ function getSubReportForElectionResultByConstituencyType()
           data: {task:JSON.stringify(subReportDtls)},
 
           success: function(result){ 
+			   $('#ajaxImage').hide();
 			buildSubReportByConstituencyType(result,"constnType");
          },
           error:function() { 
@@ -517,7 +538,8 @@ function getSubReportForElectionResultByConstituencyReservation()
           dataType: 'json',
           data: {task:JSON.stringify(subReportDtls)},
 
-          success: function(result){ 
+          success: function(result){
+			   $('#ajaxImage').hide();
 			buildSubReportByConstituencyType(result,"reservationType");
          },
           error:function() { 
@@ -530,7 +552,11 @@ function buildSubReportByConstituencyType(result,type)
 {
 
 	 if(result == null || result.length == 0)
+	 {	
+		 $('#errorDiv').html('<h5>No Data Available..</h5>');
 		 return;
+	 }
+
 
 	var str ='';
 	str+='<div class="tableClass1">';
