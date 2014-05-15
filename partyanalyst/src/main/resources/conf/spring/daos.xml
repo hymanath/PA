@@ -1424,4 +1424,12 @@
 	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="StateSubRegionDAO" class="com.itgrids.partyanalyst.dao.hibernate.StateSubRegionDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>	
+	
+	<bean id="StateSubRegionDistrictDAO" class="com.itgrids.partyanalyst.dao.hibernate.StateSubRegionDistrictDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		
