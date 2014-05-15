@@ -43,11 +43,19 @@ public class ConstituencyElectionResultsAction extends ActionSupport implements
 	
 	private ConstituencyLiveResultsVO statesListVO;
 	private ConstituencyLiveResultsVO constListVO;
-	
+	private ConstituencyLiveResultsVO partiesListVO;
 	
 	
 	 
 	
+	
+	public ConstituencyLiveResultsVO getPartiesListVO() {
+		return partiesListVO;
+	}
+
+	public void setPartiesListVO(ConstituencyLiveResultsVO partiesListVO) {
+		this.partiesListVO = partiesListVO;
+	}
 
 	public ConstituencyLiveResultsVO getStatesListVO() {
 		return statesListVO;
@@ -148,6 +156,15 @@ public class ConstituencyElectionResultsAction extends ActionSupport implements
 		log.debug(" In getStateWideParliamentLiveResults method");
 		
 		statesListVO = staticDataService.getStateWideParliamentLiveResults();
+		
+		
+		return Action.SUCCESS;
+	}
+	
+	public String getPartyWiseWonLeadCountInLive(){
+		log.debug(" In getPartyWiseWonLeadCountInLive method");
+		
+		partiesListVO = staticDataService.getPartyWiseWonLeadCountInLive();
 		
 		
 		return Action.SUCCESS;
