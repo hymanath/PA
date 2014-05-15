@@ -132,7 +132,7 @@ padding: 4px;
 		<select id="yearId1" class="input-small">
 		<option value="0">Select Year</option>
 		<option value="1">2009</option>
-		<option value="2">2004</option>
+		<!-- <option value="2">2004</option> -->
 		</select>
 		</div>
 	</div>
@@ -152,7 +152,7 @@ padding: 4px;
 		<select id="yearId2" class="input-small">
 		<option value="0">Select Year</option>
 		<option value="1">2009</option>
-		<option value="2">2004</option>
+		<!-- <option value="2">2004</option> -->
 		</select>
 		
 		</div>
@@ -756,6 +756,23 @@ var stateType = '';
 	function onEachFeature(feature, layer)
 	{
 	
+	var today=new Date();
+
+    var month=new Array();
+	month[0]="January";
+	month[1]="February";
+	month[2]="March";
+	month[3]="April";
+	month[4]="May";
+	month[5]="June";
+	month[6]="July";
+	month[7]="August";
+	month[8]="September";
+	month[9]="October";
+	month[10]="November";
+	month[11]="December";
+	
+
 		if(type == "pc")
 		{
 			onEachFeature1(feature, layer);
@@ -766,7 +783,7 @@ var stateType = '';
 
 			popupContent +='<article class="timeline-group" id="stateAK" style="font-family: times new roman,serif,sans-serif;margin-left:-40px;">';
 			popupContent +=' <header class="timeline-header">';
-			popupContent +=' <h3><b aria-hidden="true" class="stateface "></b> '+feature.properties.ac_name+'</a></h3>';
+			popupContent +=' <h3><b aria-hidden="true" class="stateface "></b> '+feature.properties.ac_name+'</a> <span style="color:#303030;float:right;">'+month[today.getMonth()]+" "+today.getDate()+","+today.getFullYear()+" "+'</span></h3>';
 			popupContent +=' </header>';
 			popupContent +=' <ol class="timeline-list"> ';
 			popupContent +=' <li class="timeline-point is-standard" data-when="future"> ';
@@ -774,8 +791,19 @@ var stateType = '';
 			popupContent +=' <header class="results-header" style="width: 350px; margin-top: -10px;margin-bottom: 10px;">';
 			popupContent +=' </header>';
 			//popupContent +=' <b style="font-size: 12px;">  Reporting : 0 % <span style="font-weight:bold;float:right;">  Leading Party: TDP </span></b>';
-			
-			popupContent +=' <header class="results-header" style="width: 350px; margin-top: -10px;border-bottom-color: #004276;border-bottom-width: 2px;">';
+			popupContent +=' <table>';
+		popupContent +=' <tr>';
+		popupContent +='<td style="width:700px;"> Candidate Name </td>';
+		popupContent +='<td style="width:300px;padding-left:15px;"> Party </td>';
+		popupContent +='<td style="width:600px;"> Votes Percentage  </td>';
+		popupContent +=' </tr">';
+		popupContent +=' <header class="results-header" style="width: 350px; margin-top: -10px;border-bottom-color: #004276;border-bottom-width: 2px;">';
+		popupContent +=' </header>';
+		popupContent +=' <tr class="type-democrat">';
+		popupContent +=' </table>';
+		popupContent +=' <span style="float: right; margin-right: -50px; margin-top: -20px;"> Total Votes </span>';
+		
+			popupContent +=' <header class="results-header" style="width: 350px; margin-top: -10px;border-bottom-width: 2px;">';
 			popupContent +=' </header>';
 
 			for(var i in electionAcData)
@@ -922,11 +950,28 @@ var stateType = '';
 	
 	function onEachFeature1(feature, layer)
 	{
+	
+	var today=new Date();
+
+    var month=new Array();
+	month[0]="January";
+	month[1]="February";
+	month[2]="March";
+	month[3]="April";
+	month[4]="May";
+	month[5]="June";
+	month[6]="July";
+	month[7]="August";
+	month[8]="September";
+	month[9]="October";
+	month[10]="November";
+	month[11]="December";
+	
 		var popupContent='';
 
 		popupContent +='<article class="timeline-group" id="stateAK" style="font-family: times new roman,serif,sans-serif; margin-left: -40px;">';
 		popupContent +=' <header class="timeline-header">';
-		popupContent +=' <h3><b aria-hidden="true" class="stateface "></b> '+feature.properties.FIRST_pc_n+'</a></h3>';
+		popupContent +=' <h3><b aria-hidden="true" class="stateface "></b> '+feature.properties.FIRST_pc_n+'</a> <span style="color:#303030;float:right;">'+month[today.getMonth()]+" "+today.getDate()+","+today.getFullYear()+" "+'</span></h3>';
 		popupContent +=' </header>';
 		popupContent +=' <ol class="timeline-list"> ';
 		popupContent +=' <li class="timeline-point is-standard" data-when="future"> ';
@@ -934,17 +979,17 @@ var stateType = '';
 		popupContent +=' <header class="results-header" style="width: 350px; margin-top: -10px;margin-bottom: 10px;">';
 		popupContent +=' </header>';
 	//	popupContent +=' <b style="font-size: 12px;">  Reporting : 0 % <span style="font-weight:bold;float:right;">  Leading Party: TDP </span></b>';
-		popupContent +=' <table>';
+			popupContent +=' <table>';
 		popupContent +=' <tr>';
 		popupContent +='<td style="width:700px;"> Candidate Name </td>';
 		popupContent +='<td style="width:300px;padding-left:15px;"> Party </td>';
 		popupContent +='<td style="width:600px;"> Votes Percentage  </td>';
-		popupContent +='<td style="width:600px;"> Total Votes </td>';
 		popupContent +=' </tr">';
 		popupContent +=' <header class="results-header" style="width: 350px; margin-top: -10px;border-bottom-color: #004276;border-bottom-width: 2px;">';
 		popupContent +=' </header>';
 		popupContent +=' <tr class="type-democrat">';
 		popupContent +=' </table>';
+		popupContent +=' <span style="float: right; margin-right: -50px; margin-top: -20px;"> Total Votes </span>';
 						
 		popupContent +=' <header class="results-header" style="width: 350px; margin-top: -10px;border-bottom-width: 2px;">';
 		popupContent +=' </header>';
