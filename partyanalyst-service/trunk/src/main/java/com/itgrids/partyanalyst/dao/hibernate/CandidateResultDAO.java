@@ -358,7 +358,7 @@ public class CandidateResultDAO extends GenericDaoHibernate<CandidateResult, Lon
 					" model.nomination.constituencyElection.constituency.district.districtName ," +
 					" model.votesEarned , model.votesPercengate ," +
 					" model.nomination.party.partyId , model.nomination.party.shortName," +
-					" model.nomination.candidate.lastname from CandidateResult model where " +
+					" model.nomination.candidate.lastname , model.rank from CandidateResult model where " +
 					" model.nomination.party.partyId in (:partyIds) and model.nomination.constituencyElection.election.electionId = :electionId " +
 					" and model.nomination.constituencyElection.constituency.state.stateId = :stateid " +
 					" order by model.nomination.constituencyElection.constituency.constituencyId");
@@ -370,7 +370,7 @@ public class CandidateResultDAO extends GenericDaoHibernate<CandidateResult, Lon
 					" model.nomination.constituencyElection.constituency.name," +
 					" model.votesEarned , model.votesPercengate ," +
 					" model.nomination.party.partyId , model.nomination.party.shortName," +
-					" model.nomination.candidate.lastname from CandidateResult model where " +
+					" model.nomination.candidate.lastname,model.rank from CandidateResult model where " +
 					" model.nomination.party.partyId in (:partyIds) and model.nomination.constituencyElection.election.electionId = :electionId " +
 					" and model.nomination.constituencyElection.constituency.countryId = :stateid " +
 					" order by model.nomination.constituencyElection.constituency.constituencyId");
