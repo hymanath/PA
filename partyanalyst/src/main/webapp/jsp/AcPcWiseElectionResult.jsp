@@ -1261,7 +1261,6 @@ function getConstituencyWiseResults()
 </script>
 <script>
 var stateType = '';
-	$('document').ready(function(){
 	
 	$('document').ready(function(){
 	$("#unemp_chart").hide();
@@ -1270,21 +1269,6 @@ var stateType = '';
 	$(".div_sld1").hide();
 	
 		stateType = 'Semandhra';
-/*$('#optionsBtn2').hide();
-		$('#optionsBtn1').click(function(){
-				$('#map1').show();
-				$('#map').hide();
-				$('#optionsBtn1').hide();
-				$('#optionsBtn2').show();
-				
-		});
-		$('#optionsBtn2').click(function(){
-				$('#map').show();
-				$('#map1').hide();
-				$('#optionsBtn2').hide();
-				$('#optionsBtn1').show();
-				
-		});*/
 	});
 	//getConstituenctSelection();
 	var map = "";
@@ -2886,7 +2870,7 @@ function getRegionWiseResults(searchType)
 <script type="text/javascript">
 
 
-var un_emp1 = '0.20';
+/* var un_emp1 = '0.20';
 var elems = document.getElementsByClassName('d3-slider-handle1')[0];
 elems.style.left = '50%';
 if(true)
@@ -2897,7 +2881,7 @@ if(true)
 		var margin1 = {top: 20, right: 20, bottom: 30, left: 40},
 		width1 = div_width1 - margin1.left - margin1.right,
 		height1 = div_height1 - margin1.top - margin1.bottom;
-}
+} */
 /*
 var un_emp = '0.20';
 var elems = document.getElementsByClassName('d3-slider-handle')[0];
@@ -2913,15 +2897,14 @@ if(true)
 }*/
 
 var constituencyArr=[];
-<c:forEach var="constituency" items="${resultList}">
+/* <c:forEach var="constituency" items="${resultList}">
 	var ob={
 			id:'${constituency.id}',
 			value:'${constituency.name}'
 			};
 constituencyArr.push(ob);
-</c:forEach>
+</c:forEach> */
 
-console.log(constituencyArr);
 
 </script>
 
