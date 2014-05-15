@@ -66,11 +66,13 @@ import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
 import com.itgrids.partyanalyst.dto.AgeRangeVO;
 import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
 import com.itgrids.partyanalyst.dto.AssumptionsVO;
+import com.itgrids.partyanalyst.dto.DashBoardResultsVO;
 import com.itgrids.partyanalyst.dto.DelimitationEffectVO;
 import com.itgrids.partyanalyst.dto.PDFHeadingAndReturnVO;
 import com.itgrids.partyanalyst.dto.PartyElectionTrendsReportHelperVO;
 import com.itgrids.partyanalyst.dto.PartyElectionTrendsReportVO;
 import com.itgrids.partyanalyst.dto.PartyPositionResultsVO;
+import com.itgrids.partyanalyst.dto.PartyPositionVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVerVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -1870,6 +1872,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 						 for(Long panchayatId :panchayatIdsList)
 						 {
 							 partyMap = resultMap.get(panchayatId);
+							 
 							 if(partyMap == null)
 							 {
 								 partyMap = new HashMap<Long, Long>(0);
@@ -5840,6 +5843,208 @@ public class StratagicReportsService implements IStratagicReportsService{
                     }
                 }
             };
+            
+            public List<DashBoardResultsVO> getPartyResults(Long electionId,String type,String region,Boolean isAlliance)
+            {
+            	List<DashBoardResultsVO> resultList = new ArrayList<DashBoardResultsVO>();
+            	try{
+            		Map<Long,Map<Long,DashBoardResultsVO>> locationMap = new HashMap<Long, Map<Long,DashBoardResultsVO>>();
+            		
+            		List<Long> staticPartyIds = new ArrayList<Long>();
+            		staticPartyIds.add(872l);staticPartyIds.add(362l);staticPartyIds.add(662l);
+            		
+            		Set<Long> locationIds = new HashSet<Long>();
+            		/*if(isAlliance == true)
+            		{
+            			return alliancePartyResults(staticPartyIds,electionId,type,region);
+            		}*/
+            		if(isAlliance == false)
+            		{
+            		List<Object[]> list = nominationDAO.getPartyWiseResults(electionId,type,region);
+            		for(Object[] params : list)
+            		{
+            			if(locationIds.add((Long)params[5]))
+            			{
+            			DashBoardResultsVO mainVo = new DashBoardResultsVO();
+            			mainVo.setLocationId((Long)params[5]);
+            			mainVo.setLocationName(params[6].toString());
+            			mainVo.setSubList(getPartyList(staticPartyIds));
+            			mainVo.setYear(electionDAO.get(electionId).getElectionYear());
+            			
+            			resultList.add(mainVo);
+            			}
+            		}
+            		
+            		for(Object[] params : list)
+            		{
+            		DashBoardResultsVO locationVo = getLocationVo(resultList,(Long)params[5]);
+	            		if(locationVo != null)
+	            		{
+	            		
+	            			DashBoardResultsVO partyVo = getPartyVo(locationVo.getSubList(),(Long)params[0]);
+	            			//Double percentage =  Double.parseDouble(params[4].toString()) * 100.0 /  Double.parseDouble(params[5].toString());
+	            			Double obj = new Double(params[2].toString());
+	            			Double sumOfvotesEarned = new Double(params[3].toString());
+	            			Double sumOfvotesPolled = new Double(params[4].toString());
+	            			String percentage = new BigDecimal((sumOfvotesEarned*100.0)/sumOfvotesPolled)
+							.setScale(2,BigDecimal.ROUND_HALF_UP).toString();
+	            			
+	            		     	
+	            			if(partyVo == null)
+	            			{
+	            				DashBoardResultsVO otherVo = locationVo.getSubList().get(locationVo.getSubList().size() - 1);
+	            				otherVo.setVotesCount(obj.longValue());	
+	            				otherVo.setPercent(percentage);
+	            			}
+	            			else
+	            			{
+	            			partyVo.setVotesCount(obj.longValue());	
+	            			partyVo.setPercent(percentage);
+	            			
+	            			}
+	            			
+	            			
+	            		}
+            		}
+            		
+            		}
+            	}
+            	catch (Exception e) {
+					
+				}
+				return resultList;
+            }
+            
+            
+            public List<DashBoardResultsVO> getPartyList(List<Long> staticPartyIds)
+            {
+            	List<DashBoardResultsVO> partyList = new ArrayList<DashBoardResultsVO>();
+            	for(Long party : staticPartyIds)
+        		{
+        			
+        		DashBoardResultsVO partyVo = new DashBoardResultsVO();
+        		partyVo.setPartyName(partyDAO.getPartyShortNameById(party));
+        		partyVo.setPartyId(party);
+        		partyVo.setPercent("0.0");
+        		partyVo.setVotesCount(0l);	
+        		partyList.add(partyVo);
+        		
+        		}
+            	DashBoardResultsVO otherParty = new DashBoardResultsVO();
+        		otherParty.setPartyName("OTHERS");
+        		otherParty.setPartyId(0l);
+        		otherParty.setPercent("0.0");
+        		otherParty.setVotesCount(0l);	
+        		partyList.add(otherParty);
+				return partyList;
+            }
+            public List<DashBoardResultsVO> getPartyListForAlliance(Map<String,List<Long>> alliancegroup)
+            {
+            	List<DashBoardResultsVO> partyList = new ArrayList<DashBoardResultsVO>();
+            	for(String party : alliancegroup.keySet())
+        		{
+	        		DashBoardResultsVO partyVo = new DashBoardResultsVO();
+	        		partyVo.setPartyName(party);
+	        		partyVo.setAllianceIds(alliancegroup.get(party));
+	        		partyVo.setPercent("0.0");
+	        		partyVo.setVotesCount(0l);	
+	        		partyList.add(partyVo);
+        		}
+            	DashBoardResultsVO otherParty = new DashBoardResultsVO();
+        		otherParty.setPartyName("OTHERS");
+        		otherParty.setPartyId(0l);
+        		otherParty.setPercent("0.0");
+        		otherParty.setVotesCount(0l);	
+        		partyList.add(otherParty);
+				return partyList;
+            }
+            
+            
+            public DashBoardResultsVO getLocationVo(List<DashBoardResultsVO> result,Long locationId)
+            {
+            	try{
+            		if(result == null || result.size() == 0)
+            		 return null;
+            		for(DashBoardResultsVO vo : result)
+            		 if(vo.getLocationId().longValue() == locationId)
+            		  return vo;
+            		 
+            	   return null;
+            	 }catch (Exception e) {
+                  e.printStackTrace();
+                  LOG.error(" Exception Occured in checkPartyPositionVOExist() method, Exception - "+e);
+                  return null;
+            	 }
+            	
+            }
 			
-	  
+            public DashBoardResultsVO getPartyVo(List<DashBoardResultsVO> partyList,Long partyId)
+            {
+            	try{
+            		if(partyList == null || partyList.size() == 0)
+            		 return null;
+            		for(DashBoardResultsVO vo : partyList)
+            		 if(vo.getPartyId().longValue() == partyId)
+            		  return vo;
+            		 
+            	   return null;
+            	 }catch (Exception e) {
+                  e.printStackTrace();
+                  LOG.error(" Exception Occured in checkPartyPositionVOExist() method, Exception - "+e);
+                  return null;
+            	 }
+            	
+            }
+            
+            
+            public List<DashBoardResultsVO> alliancePartyResults(List<Long> partyIds,Long electionId,String type,String region)
+            {
+            	List<DashBoardResultsVO> resultList = new ArrayList<DashBoardResultsVO>();
+            	try{
+            		Set<Long> alreadyAddedIds = new HashSet<Long>();
+            		
+            		Set<Long> locationIds = new HashSet<Long>();
+        			Election election = electionDAO.get(electionId);
+        		
+            		Map<String,List<Long>> allianceParties = new HashMap<String,List<Long>>();
+        			for(Long id : partyIds){
+        			  if(!alreadyAddedIds.contains(id)){
+        				  AlliancePartyResultsVO allianceGroup = staticDataService.getAlliancePartiesByElectionAndParty(electionId, id);
+        				  List<Long> partyIdsList = new ArrayList<Long>();
+        				  if(allianceGroup == null){
+        					  alreadyAddedIds.add(id);
+        					  partyIdsList.add(id);
+        					  allianceParties.put(partyDAO.get(id).getShortName(), partyIdsList);
+        				  }else{
+        					  for(SelectOptionVO party:allianceGroup.getAllianceParties()){
+        						  alreadyAddedIds.add(party.getId());
+        						  partyIdsList.add(party.getId());
+        					  }
+        					  allianceParties.put(allianceGroup.getAllianceGroupName(), partyIdsList);
+        				  }
+        			  }
+        			}
+        			
+        			List<Object[]> list = nominationDAO.getPartyWiseResults(electionId,type,region);
+            		for(Object[] params : list)
+            		{
+            			if(locationIds.add((Long)params[5]))
+            			{
+            			DashBoardResultsVO mainVo = new DashBoardResultsVO();
+            			mainVo.setLocationId((Long)params[5]);
+            			mainVo.setLocationName(params[6].toString());
+            			mainVo.setSubList(getPartyListForAlliance(allianceParties));
+            			mainVo.setYear(electionDAO.get(electionId).getElectionYear());
+            			resultList.add(mainVo);
+            			}
+            		}
+        			
+            		
+            	}
+            	catch (Exception e) {
+				
+				}
+				return resultList;
+            }
+			
 }

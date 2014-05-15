@@ -32,6 +32,19 @@ public class DashBoardResultsVO {
 	
 	private List<DashBoardResultsVO> reservationDetails = new ArrayList<DashBoardResultsVO>();
 	private List<DashBoardResultsVO> partiesDetails = new ArrayList<DashBoardResultsVO>();
+	private List<Long> allianceIds;
+
+	
+	
+	public List<Long> getAllianceIds() {
+		return allianceIds;
+	}
+
+
+	public void setAllianceIds(List<Long> allianceIds) {
+		this.allianceIds = allianceIds;
+	}
+
 
 	public List<DashBoardResultsVO> getPartiesDetails() {
 		return partiesDetails;
@@ -65,7 +78,10 @@ public class DashBoardResultsVO {
 
 	private Long id;
 	private String name;
-	
+	private Long locationId;
+	private String locationName;
+	private Double percentage;
+	private String year;
 	
 	public Long getId() {
 		return id;
@@ -90,6 +106,46 @@ public class DashBoardResultsVO {
 	
 
 	
+	public String getYear() {
+		return year;
+	}
+
+
+	public void setYear(String year) {
+		this.year = year;
+	}
+
+
+	public Double getPercentage() {
+		return percentage;
+	}
+
+
+	public void setPercentage(Double percentage) {
+		this.percentage = percentage;
+	}
+
+
+	public Long getLocationId() {
+		return locationId;
+	}
+
+
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
+	}
+
+
+	public String getLocationName() {
+		return locationName;
+	}
+
+
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
+
+
 	public Long getPartyId() {
 		return partyId;
 	}
