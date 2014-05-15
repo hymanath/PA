@@ -77,8 +77,9 @@
 		<class>com.itgrids.partyanalyst.model.HouseHolds</class>
 		<class>com.itgrids.partyanalyst.model.HHSurveyAnswers</class>
 		<class>com.itgrids.partyanalyst.model.voterNames</class>
-		
-		
+		<class>com.itgrids.partyanalyst.model.StateSubRegionDistrict</class>
+		<class>com.itgrids.partyanalyst.model.StateSubRegion</class>
+				
 		 <properties> 
 			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
 			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/party_analyst_schema" />
