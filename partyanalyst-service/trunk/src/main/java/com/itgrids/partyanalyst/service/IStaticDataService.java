@@ -427,6 +427,8 @@ public interface IStaticDataService {
 		public PartyWiseMarginCountsVO getMarginAnalysisOnLiveResultsForAssemblies(Long electionId,Long type,List<Long> locationIds);
 		
 		public List<SelectOptionVO> getRegionsByStateId(Long stateId);
+		
+		public ConstituencyLiveResultsVO getPartyWiseWonLeadCountInLive();
 
 		public List<SelectOptionVO> getAllParliaments();
 }
