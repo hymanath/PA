@@ -148,7 +148,7 @@ var showConst=false;
 			  //$("#ajaxLoad").css("display","none");
 			if(result != null){
 				//buildBoothWiseAddedAndDeletedVoters(result);
-				buildResult(result,constituencyDetails,'telanganaDiv');
+				buildResultForPartyResult(result,constituencyDetails,'telanganaDiv');
 			}
 	   });
 	   
@@ -177,7 +177,7 @@ var showConst=false;
 			 
 			if(result != null){
 				
-				buildResult(result,constituencyDetails,'andhraDiv');
+				buildResultForPartyResult(result,constituencyDetails,'andhraDiv');
 			}
 	   });
 	   
@@ -198,7 +198,7 @@ function getTelanganaPartyResultForMuncipal(type)
 			  //$("#ajaxLoad").css("display","none");
 			if(result != null){
 				//buildBoothWiseAddedAndDeletedVoters(result);
-				buildResult(result,constituencyDetails,'telanganaMuncipaDiv');
+				buildResultForPartyResult(result,constituencyDetails,'telanganaMuncipaDiv');
 			}
 	   });
 	   
@@ -225,7 +225,7 @@ function getAndhraPartyResultForMuncipal(type)
 			 
 			if(result != null){
 				//buildBoothWiseAddedAndDeletedVoters(result);
-				buildResult(result,constituencyDetails,'andhraMuncipalDiv');
+				buildResultForPartyResult(result,constituencyDetails,'andhraMuncipalDiv');
 				$("#stateAjaxImg").css("display","none");
 				$("#districtAjaxImg").css("display","none");
 			}
@@ -234,13 +234,7 @@ function getAndhraPartyResultForMuncipal(type)
 	
 	}
 
-
-
-
-
-
-
-	function buildResult(result,jObj,DivEle)
+function buildResultForPartyResult(result,jObj,DivEle)
 	{
 	var str='';
 	if(jObj.type == "district")
@@ -290,6 +284,12 @@ function getAndhraPartyResultForMuncipal(type)
 	$("#"+DivEle).html(str);
 	
 	}
+
+
+
+
+
+	
 function testIt()
 {
 	$.ajax({
