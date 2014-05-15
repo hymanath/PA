@@ -10,8 +10,8 @@
 <title>AC AND PC WISE RESULT</title>
 
 <style>
-.tableClass1 > table {border: 3px solid #000}
-.tableClass1 > table td, tr {
+.tableClass1  >  table{border: 3px solid #000}
+.tableClass1   td ,tableClass1   tr {
 	border: 2px solid #000;
 	padding:5px;
 	font-weight:bold;
@@ -679,7 +679,7 @@ function buildSubReportByConstituencyType(result,type)
 
 
 	var str ='';
-	str+='<div class="tableClass1">';
+	str+='<div class="tableClass1" style="margin-top:30px;">';
 	  if(type == "reservationType")
        str+='<h5>SC,ST,General Constituencies Analysis</h5>';
 	  else
@@ -910,7 +910,7 @@ function buildPartyWiseMarginCount(result){
 <img src="images/MEnuBG.jpg" width="960" height="32" border="0" usemap="#Map" />
 </div>
 
-<div class="container" style="font-family: verdana; font-size: 14px; border: 1px solid rgb(204, 204, 204); padding: 0px 10px 10px; margin-top: 24px;">
+<div class="container" style="font-family: verdana; font-size: 14px; border: 1px solid rgb(204, 204, 204); padding: 0px 10px 10px; margin-top: 24px;" id="mapDiv">
 <h4 style="padding: 10px; margin-top: 10px; border-radius: 5px; text-align: center; background: none repeat scroll 0% 0% rgb(73, 175, 205);">LIVE ELECTION RESULTS COMPARISON</h4>
 <div id="btnDivs">
 	<!--<span id="optionsBtn1" class="btn btn-success" style="float:right;margin:10px 100px 10px 0px;"> Parliament Wise Results </span>
@@ -1019,12 +1019,12 @@ function buildPartyWiseMarginCount(result){
 <!-- SAMBA START  -->
 <div class="span12 container hide"  style="border:1px solid #BDA870;margin-left:180px;padding:8px;margin-top:20px;" id="liveResultsDiv">
 
-<h4 style="text-align:center;">Live Results Analysis</h4>
+<h4 style="text-align:center;">Live Results Analysis For Assembly Election</h4>
 
 
-
+<!--
 <a id="stateButton" class="btn " style="margin-top:0px;" href="javascript:{}" >Show State Wise Report<i class="icon-chevron-up"></i></a>
-<img id="stateAjaxImg" src="./images/icons/search.gif" alt="Processing Image" style="display:none;"/>
+<img id="stateAjaxImg" src="./images/icons/search.gif" alt="Processing Image" style="display:none;"/>-->
 
 
 
@@ -2406,25 +2406,35 @@ function showResultDiv()
 
 function getRegionWiseResults(searchType){
 	if(searchType == 'Telangana'){
-		console.log(1);
+		$('#liveResultsDiv').hide();
+		$('#mapDiv').show();
 	}
 	else if(searchType == 'Semandhra'){
-		console.log(2);
+		$('#liveResultsDiv').hide();
+		$('#mapDiv').show();
 	}
 	else if(searchType == 'India'){
 		console.log(3);
+		$('#liveResultsDiv').hide();
 	}
 	else if(searchType == 'StateAnalysis'){
 		$('#liveResultsDiv').show();
+		$('#mapDiv').hide();
+		
 	}
 	else if(searchType == 'DistrictAnalysis'){
 		console.log(5);
+		$('#liveResultsDiv').hide();
+
 	}
 	else if(searchType == 'CBNEffect'){
 		console.log(6);
+		$('#liveResultsDiv').hide();
+
 	}
 	else if(searchType == 'ModiEffect'){
 		console.log(7);
+		$('#liveResultsDiv').hide();
 	}
 	}
 	
