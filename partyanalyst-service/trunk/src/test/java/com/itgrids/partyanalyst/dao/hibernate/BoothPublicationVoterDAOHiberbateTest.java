@@ -1528,7 +1528,7 @@ List<Long> attrIds = new ArrayList<Long>();
 		partyIds.add(429l);
 		partyIds.add(872l);
 		partyIds.add(886l);
-		getPartyWiseComperassionResult(1l,17l,partyIds);
+		getPartyWiseComperassionResult(1l,258l,partyIds);
 	}
 	
 	public List<BasicVO> getPartyWiseComperassionResult(Long stateId,Long electionId,List<Long> partyIds)
@@ -1562,7 +1562,7 @@ List<Long> attrIds = new ArrayList<Long>();
 					basicVO.setCasteName(objects[7] != null ? objects[7].toString() : "");//candidate
 					constituencyWiseList.add(basicVO);
 				}
-				List<Object[]> constituencyDetails = delimitationConstituencyDAO.getConstituencyNoByState(stateId,2009l,1l);
+				List<Object[]> constituencyDetails = delimitationConstituencyDAO.getConstituencyNoByState(stateId,2009l,1l,"ac");
 				if(constituencyDetails != null && constituencyDetails.size() > 0)
 				{
 					for (Object[] objects : constituencyDetails)
