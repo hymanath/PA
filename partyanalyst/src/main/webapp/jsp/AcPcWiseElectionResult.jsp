@@ -18,6 +18,17 @@
 	font-size:13px;
 }
 
+.parlResultTable{background:#ffffff;}
+	.parlResultTable tbody tr:nth-child(even){
+		background:#F7FAFD;
+	}
+
+	.exitPolls tbody tr:nth-child(even){
+		background:#F7FAFD;
+	}
+	.exitPolls tr{font-family: Tahoma;font-size: 12px;color:black;}
+	.prevResults a{margin:10px;}
+
 .thBorder{
 	border: 2px solid #B6D9E9
 }
@@ -1069,6 +1080,74 @@ function getConstituencyWiseResults()
 </div>
 
 
+<div class="parliamentCls offset2">
+	<div class="parliamentResultsDiv" style="background:#ffffff;float:left;width:975px;"></div>
+	<div class="partyWiseResultDiv" style="background:#ffffff;float:left;width:975px;"></div>
+	<div style="background:#ffffff;float:left;width:975px;"> 
+	
+		
+		<h2 class='offset2' style="margin-bottom:5px;color:#27AFA6;">Exit Polls From Different Sources</h2>
+		<table width='800' cellspacing='0' cellpadding='2' border='0' class='exitPolls offset1'>
+			<tbody>
+				<tr style='font-weight:bold;'>
+					<td style='border-bottom:1px solid #B0BDDA;'>CHANNEL</td>
+					<td style='border-bottom:1px solid #B0BDDA;'>NDA</td>
+					<td style='border-bottom:1px solid #B0BDDA;'>UPA</td>
+					<td style='border-bottom:1px solid #B0BDDA;'>OTHERS</td>
+				</tr>
+			
+				<tr>
+					<td>Today's Chanakya</td>
+					<td>340</td>
+					<td>70</td>
+					<td>133</td>
+				</tr>
+				<tr>
+					<td>Times Now</td>
+					<td>249</td>
+					<td>148</td>
+					<td>146</td>
+				</tr>
+				<tr>
+					<td>CNN-IBN</td>
+					<td>270 - 282</td>
+					<td>92 - 102</td>
+					<td>150 - 160</td>
+				</tr>
+				<tr>
+					<td>HeadLines Today</td>
+					<td>272(+/- 11)</td>
+					<td>115(+/- 5)</td>
+					<td>156</td>
+				</tr>
+				<tr>
+					<td>ABP News</td>
+					<td>281</td>
+					<td>97</td>
+					<td>161</td>
+				</tr>
+				<tr>
+					<td>C-Voter</td>
+					<td>289</td>
+					<td>101</td>
+					<td>153</td>
+				</tr>
+				<tr>
+					<td>Aaj tdak</td>
+					<td>272</td>
+					<td>115</td>
+					<td> - </td>
+				</tr>
+				<tr>
+					<td>India TV</td>
+					<td>289</td>
+					<td>101</td>
+					<td> - </td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+</div>
 
 
 <!-- SAMBA START  -->
@@ -2855,7 +2934,7 @@ function getRegionWiseResults(searchType)
 	}
 	else if(searchType == 'India')
 	{
-		console.log(3);
+		$(".parliamentCls").show();
 		$('#liveResultsDiv').hide();
 		$('#mapDiv').hide();
 		$('#legend').hide();
@@ -2930,6 +3009,203 @@ function getRegionWiseResults(searchType)
 		getElectionResultForTotalParliment();
 	}
 	}
+	
+	<!-- From SASI -->
+	
+	getStateWideParliamentsSummary();
+	getPartyWiseWonLeadCountInLive();
+
+	function getStateWideParliamentsSummary(){
+		var jsObj={};
+		$.ajax(
+		  {
+				type: "POST",
+				url:"getStateWideParliamentLiveResults.action",
+				data:{task :JSON.stringify(jsObj)}
+		  }
+		  ).done(function(result){
+				buildStateWideParliaments(result);
+		  });
+	}
+
+	function getPartyWiseWonLeadCountInLive(){
+		var jsObj={};
+		$.ajax(
+		  {
+				type: "POST",
+				url:"getPartyWiseWonLeadCountInLive.action",
+				data:{task :JSON.stringify(jsObj)}
+		  }
+		  ).done(function(result){
+				buildPartyWideWonLeadCount(result);
+		  });
+	}
+	
+	function buildPartyWideWonLeadCount(results){
+	if(results.statesList.length>0){
+	var str = "";
+		str += "<h2 class='offset3' style='margin-bottom:5px;margin-top:10px;color:#27AFA6;'>Party Wise Won/Lead Counts</h2>";
+		str +="<table class='parlResultTable offset1' width='800' cellspacing='0' cellpadding='2' border='0'>";
+		str +="<tbody style='font-family: Tahoma;font-size: 12px;'>";
+			str+="<tr style='font-weight:bold;color:black;vertical-align:bottom;border-bottom:1px solid #B0BDDA;'>";
+				str+="<td style='border-bottom:1px solid #B0BDDA;'> PARTY </td>";
+				str+="<td style='border-bottom:1px solid #B0BDDA;'> ALLIANCE </td>";
+				str+="<td style='border-bottom:1px solid #B0BDDA;'> WON </td>";
+				str+="<td style='border-bottom:1px solid #B0BDDA;'> LEAD </td>";
+			str+="</tr>";
+			for(var i in results.statesList){
+				str+="<tr class='bodyRows' style='color:black;'>";
+					var path = "images/party_flags/"+results.statesList[i].party+"01.jpg";
+					
+					str+="<td style='border-bottom:1px solid #B0BDDA;height:25px;'><img src="+path+" alt="+results.statesList[i].party+"></td>";
+					str+="<td style='border-bottom:1px solid #B0BDDA;'>"+results.statesList[i].allianceGroup+"</td>";
+					if(results.statesList[i].partyWonCount == null){
+						str+="<td style='border-bottom:1px solid #B0BDDA;'> - </td>";
+					}else{
+						str+="<td style='border-bottom:1px solid #B0BDDA;'>"+results.statesList[i].partyWonCount+"</td>";
+					}
+					if(results.statesList[i].partyLeadCount == null){
+						str+="<td style='border-bottom:1px solid #B0BDDA;'> - </td>";
+					}else{
+						str+="<td style='border-bottom:1px solid #B0BDDA;'>"+results.statesList[i].partyLeadCount+"</td>";
+					}
+				str+="</tr>";
+			}
+			
+		str+="</tbody>";
+	str+="</table>";
+	
+	$(".partyWiseResultDiv").html(str);
+	}
+	
+}
+
+function buildStateWideParliaments(results){
+	var str = "";
+	str +="<table class='parlResultTable offset1' width='800' cellspacing='0' cellpadding='2' border='0'>";
+		str +="<tbody style='font-family: Tahoma;font-size: 12px;'>";
+			str +="<tr>";
+				str +="<td colspan='5'><img width='300' height='130' src='images/specialPage/2014Ele.png'></td>";
+				str +="<td colspan='3'><img width='140' height='150' src='images/specialPage/Modi.png'></td>";
+				str +="<td colspan='3'><img width='140' height='150' src='images/specialPage/Rahul.png'></td>";
+			str +="</tr>";
+			str +="<tr><td bgcolor='#AACAEA' style='padding: 0px;' colspan='14'><img width='1' height='1' src='images/specialPage/spacer.gif'></td></tr>";
+			str +="<tr>";
+				str +="<td rowspan='3' style='font-weight:bold;color:black;vertical-align:bottom;border-bottom:1px solid #B0BDDA;'>STATE</td>";
+				str +="<td rowspan='3' align='center' style='font-weight:bold;color:black;vertical-align:bottom;border-bottom:1px solid #B0BDDA;'>TOTAL</td>";
+				str +="<td colspan='6' style='font-weight:bold;color:black;text-align:center;border-bottom:1px solid #B0BDDA;'>2014</td>";
+				str +="<td width='4%'> </td>";
+				str +="<td colspan='4' style='font-weight:bold;color:black;text-align:center;border-bottom:1px solid #B0BDDA'>2009</td>";
+			str +="</tr>";
+			
+			
+			str +="<tr>";
+				
+				str +="<td colspan='2' align='center' style='font-weight:bold;color:black;border-bottom:1px solid #B0BDDA;background:#f2be8e;'>NDA</td>";
+				str +="<td colspan='2' align='center' style='font-weight:bold;color:black;border-bottom:1px solid #B0BDDA;background:#8dbfa0;'>UPA</td>";
+				str +="<td colspan='2' align='center' style='font-weight:bold;color:black;border-bottom:1px solid #B0BDDA;background:#f4f4a4'>OTHERS</td>";
+				str +="<td width='4%'> </td>";
+				str +="<td  align='center' style='font-weight:bold;color:black;border-bottom:1px solid #B0BDDA;background:#f2be8e;'>NDA</td>";
+				str +="<td  align='center' style='font-weight:bold;color:black;border-bottom:1px solid #B0BDDA;background:#8dbfa0'>UPA</td>";
+				str +="<td  align='center' style='font-weight:bold;color:black;border-bottom:1px solid #B0BDDA ;background:#f4f4a4'>OTHERS</td>";
+			str +="</tr>";
+			str +="<tr style='color:black;'>";
+				str +="<td align='right' style='background:#f2be8e;border-bottom:1px solid #B0BDDA;'>WON</td>";
+				str +="<td align='right' style='background:#f2be8e;border-bottom:1px solid #B0BDDA;'>LEAD</td>";
+				str +="<td align='right' style='background:#8dbfa0;border-bottom:1px solid #B0BDDA;'>WON</td>";
+				str +="<td align='right' style='background:#8dbfa0;border-bottom:1px solid #B0BDDA;'>LEAD</td>";
+				str +="<td align='right' style='background:#f4f4a4;border-bottom:1px solid #B0BDDA;'>WON</td>";
+				str +="<td align='right' style='background:#f4f4a4;border-bottom:1px solid #B0BDDA;'>LEAD</td>";
+				str +="<td width='4%'> </td>";
+				str +="<td align='right' style='background:#f2be8e;border-bottom:1px solid #B0BDDA;'>WON</td>";
+				str +="<td align='right' style='background:#8dbfa0;border-bottom:1px solid #B0BDDA;'>WON</td>";
+				str +="<td align='right' style='background:#f4f4a4;border-bottom:1px solid #B0BDDA;'>WON</td>";
+			str +="</tr>";
+			
+		
+			
+			for(var i in results.statesList){
+				
+			str +="<tr class='bodyRows' style='color:black;'>";
+				str +="<td align='left' style='color:#000066'>"+results.statesList[i].state+"</td>";
+				str +="<td align='center' >"+results.statesList[i].statesTotalCount+"</td>";
+				if(results.statesList[i].ndaWonCount !=  null){
+					str +="<td align='right' style='background:#f2be8e'>"+results.statesList[i].ndaWonCount+"</td>";
+				}else{
+					str +="<td align='right' style='background:#f2be8e'> 0 </td>";
+				}
+				if(results.statesList[i].ndaLeadCount !=  null){
+					str +="<td align='right' style='background:#f2be8e'>"+results.statesList[i].ndaLeadCount+"</td>";
+				}else{
+					str +="<td align='right' style='background:#f2be8e'> 0 </td>";
+				}
+				if(results.statesList[i].upaWonCount !=  null){
+					str +="<td align='right' style='background:#8dbfa0'>"+results.statesList[i].upaWonCount+"</td>";
+				}else{
+					str +="<td align='right' style='background:#8dbfa0'> 0 </td>";
+				}
+				if(results.statesList[i].upaLeadCount !=  null){
+					str +="<td align='right' style='background:#8dbfa0'>"+results.statesList[i].upaLeadCount+"</td>";
+				}else{
+					str +="<td align='right' style='background:#8dbfa0'> 0 </td>";
+				}
+				
+				if(results.statesList[i].othersWonCount !=  null){
+					str +="<td align='right' style='background:#f4f4a4'>"+results.statesList[i].othersWonCount+"</td>";
+				}else{
+					str +="<td align='right' style='background:#f4f4a4'> 0 </td>";
+				}
+				
+				if(results.statesList[i].othersLeadCount !=  null){
+					str +="<td align='right' style='background:#f4f4a4'>"+results.statesList[i].othersLeadCount+"</td>";
+				}else{
+					str +="<td align='right' style='background:#f4f4a4'> 0 </td>";
+				}
+				
+				str +="<td width='4%'> </td>";
+				
+				if(results.statesList[i].ndaAlliancesCount !=  null){
+					str +="<td align='right' style='background:#f2be8e'>"+results.statesList[i].ndaAlliancesCount+"</td>";
+				}else{
+					str +="<td align='right' style='background:#f2be8e'> 0 </td>";
+				}
+				
+				if(results.statesList[i].upaAlliancesCount !=  null){
+					str +="<td align='right' style='background:#8dbfa0'>"+results.statesList[i].upaAlliancesCount+"</td>";
+				}else{
+					str +="<td align='right' style='background:#8dbfa0'> 0 </td>";
+				}
+				
+				if(results.statesList[i].othersCount !=  null){
+					str +="<td align='right' style='background:#f4f4a4'>"+results.statesList[i].othersCount+"</td>";
+				}else{
+					str +="<td align='right' style='background:#f4f4a4'> 0 </td>";
+				}
+			str +="</tr>";
+			
+			}
+			
+			str +="<tr><td bgcolor='#AACAEA' style='padding: 0px;' colspan='12'><img width='1' height='1' src='images/specialPage/spacer.gif'></td></tr>";
+			str+="<tr style='font-weight:bold;color:black;'>";
+				str +="<td>Totals</td>";
+				str +="<td align='center'>"+results.overallStatesCount+"</td>";
+				str +="<td align='right'>"+results.ttlNdaWonCount+"</td>";
+				str +="<td align='right'>"+results.ttlNdaLeadCount+"</td>";
+				str +="<td align='right'>"+results.ttlUpaWonCount+"</td>";
+				str +="<td align='right'>"+results.ttlUpaLeadCount+"</td>";
+				str +="<td align='right'>"+results.ttlOthersWonCount+"</td>";
+				str +="<td align='right'>"+results.ttlOthersLeadCount+"</td>";
+				str +="<td width='4%'> </td>";
+				str +="<td align='right'>"+results.overAllNdaCount+"</td>";
+				str +="<td align='right'>"+results.overAllUpaCount+"</td>";
+				str +="<td align='right'>"+results.overAllOthersCount+"</td>";
+			str+="</tr>";
+			str +="<tr><td bgcolor='#AACAEA' style='padding: 0px;' colspan='12'><img width='1' height='1' src='images/specialPage/spacer.gif'></td></tr>";
+		str +="</tbody>";
+	str +="</table>";
+	
+	$(".parliamentResultsDiv").html(str);
+}
 
 var marginDetails =	{
 			electionId : '',
