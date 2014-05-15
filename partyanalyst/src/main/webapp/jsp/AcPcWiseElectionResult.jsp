@@ -992,7 +992,7 @@ function getConstituencyWiseResults()
 
 <!-- SAMBA START  -->
 <!--<div class="span12 container hide"  style="border:1px solid #BDA870;margin-left:180px;padding:8px;margin-top:20px;" id="liveResultsDiv">-->
-<div class="container" style="font-family: verdana; font-size: 14px; border: 1px solid rgb(204, 204, 204); padding: 0px 10px 10px; margin-top: 24px;" id="liveResultsDiv">
+<div class="container" style="font-family: verdana; font-size: 14px; border: 1px solid rgb(204, 204, 204); padding: 0px 10px 10px; margin-top: 24px;display:none;" id="liveResultsDiv">
 
 <!--<h4 style="text-align:center;">Live Results Analysis</h4>-->
 <div style="text-align:center;margin-top:10px;"><img src="images/Live AP State Election Results.jpg"></div>
