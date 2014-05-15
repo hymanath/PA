@@ -15,6 +15,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
+import com.itgrids.partyanalyst.dto.ConstituencyLiveResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyResultsInElectionVO;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.opensymphony.xwork2.Action;
@@ -39,8 +40,30 @@ public class ConstituencyElectionResultsAction extends ActionSupport implements
 	
 	HttpServletRequest request;
 	HttpServletResponse response;
+	
+	private ConstituencyLiveResultsVO statesListVO;
+	private ConstituencyLiveResultsVO constListVO;
+	
+	
+	
 	 
 	
+
+	public ConstituencyLiveResultsVO getStatesListVO() {
+		return statesListVO;
+	}
+
+	public void setStatesListVO(ConstituencyLiveResultsVO statesListVO) {
+		this.statesListVO = statesListVO;
+	}
+
+	public ConstituencyLiveResultsVO getConstListVO() {
+		return constListVO;
+	}
+
+	public void setConstListVO(ConstituencyLiveResultsVO constListVO) {
+		this.constListVO = constListVO;
+	}
 
 	public String getElectionType() {
 		return electionType;
@@ -109,6 +132,24 @@ public class ConstituencyElectionResultsAction extends ActionSupport implements
 		if(constituencyResultsInElectionVO == null)
 			return Action.ERROR;
 		log.debug("All election years in action"+constituencyResultsInElectionVO.getElectionYears().size());
+		return Action.SUCCESS;
+	}
+	
+	public String getConsituencyWiseElectionResultsForLive(){
+		log.debug(" In getConsituencyWiseElectionResultsForLive method");
+		
+		//statesListVO = staticDataService
+		
+		
+		return Action.SUCCESS;
+	}
+	
+	public String getStateWideParliamentLiveResults(){
+		log.debug(" In getStateWideParliamentLiveResults method");
+		
+		statesListVO = staticDataService.getStateWideParliamentLiveResults();
+		
+		
 		return Action.SUCCESS;
 	}
 
