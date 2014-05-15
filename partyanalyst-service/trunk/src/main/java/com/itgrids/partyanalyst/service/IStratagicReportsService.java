@@ -5,6 +5,7 @@ import java.util.List;
 import com.itextpdf.text.Document;
 import com.itgrids.partyanalyst.dto.AgeRangeVO;
 import com.itgrids.partyanalyst.dto.AssumptionsVO;
+import com.itgrids.partyanalyst.dto.DashBoardResultsVO;
 import com.itgrids.partyanalyst.dto.DelimitationEffectVO;
 import com.itgrids.partyanalyst.dto.PDFHeadingAndReturnVO;
 import com.itgrids.partyanalyst.dto.PartyElectionTrendsReportVO;
@@ -65,4 +66,5 @@ public interface IStratagicReportsService {
 	 public ResultStatus getRecordsCountToCasteContainConsti(Long constituencyId);
 	 public void buildAutoStrategy(Long constituencyId);
 	 public Long getConstituencyNo(Long constituencyId);
+	 public List<DashBoardResultsVO> getPartyResults(Long electionId,String type,String region,Boolean isAlliance);
 }
