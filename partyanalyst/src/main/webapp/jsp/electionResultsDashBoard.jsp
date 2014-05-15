@@ -53,9 +53,7 @@
 <script>
  $( document ).ready(function() {
 	 $('#scopeId').trigger('change');
-
-	//$('#locaionsId1').multiselect();
-
+	 $('#locaionsId1').multiselect({ noneSelectedText:"Select"});
 	 $('.reportType').change(function(){
 		 $('#test,#matridLeadId,#matrixWonSummaryId,#matrixLeadSummaryId').html('');
 	 });
@@ -112,7 +110,7 @@
                           <label class="pull-left" id="rgntxt">Select Region</label>			  
 						</div>
 						 <div class="span8">
-						   <select class="input-block-level" id="locaionsId1" multiple="true"></select>
+						   <select class="input-block-level" id="locaionsId1" style="width:25px;" multiple="true"></select>
 
 						 </div>
 					   </div>
@@ -316,6 +314,13 @@ var locationDtls={
 };
 function getLocationDetailsForSelectedScope()
 {
+	
+	$('#subReportId').attr('disabled',false); 
+    if($('#scopeId').val() == 5)
+	{
+		$('#subReportId').attr('disabled',true);
+	}
+    
 	locationDtls.task =$('#scopeId :selected').text();
 
 	$.ajax({
@@ -340,7 +345,7 @@ function buildLocationDetails(result)
 		$('#locaionsId1').append('<option value="'+value.id+'">'+value.name+'</option>');
 	});
 
-		//$('#locaionsId1').multiselect('refresh');
+	$("#locaionsId1").multiselect('refresh'); 
 
 
 }
@@ -358,12 +363,10 @@ function showSelectedReport()
       
 	   $('#ajaxImage').show();
 
-	$('#subReportId').attr('disabled',false);
-
     if($('#scopeId').val() == 5)
 	{
 		getConstituencyWiseResults();
-		$('#subReportId').attr('disabled',true);
+
 	}
 	else
 	{
