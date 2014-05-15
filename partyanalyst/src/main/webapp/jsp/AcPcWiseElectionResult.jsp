@@ -1051,9 +1051,9 @@ function getConstituencyWiseResults()
 
 
 
-<a id="stateButton" class="btn " style="margin-top:0px; background: none repeat scroll 0 0 #0088CC;
+<!-- <a id="stateButton" class="btn " style="margin-top:0px; background: none repeat scroll 0 0 #0088CC;
     color: #FFFFFF;font-weight: normal;float:right;" href="javascript:{}" >Show State Wise Report<i class="icon-chevron-up"></i></a>
-<img id="stateAjaxImg" src="./images/icons/search.gif" alt="Processing Image" style="display:none;"/>
+<img id="stateAjaxImg" src="./images/icons/search.gif" alt="Processing Image" style="display:none;"/> -->
 
 
 
