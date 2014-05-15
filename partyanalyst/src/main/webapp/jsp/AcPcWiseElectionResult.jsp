@@ -10,12 +10,12 @@
 <title>AC AND PC WISE RESULT</title>
 
 <style>
-.tableClass1 table {border: 3px solid #000}
-.tableClass1 table td, tr {
+/*.tableClass1 > table {border: 3px solid #000}
+.tableClass1 > table td, tr {
 	border: 2px solid #000;
 	padding:5px;
 	font-weight:bold;
-}
+}*/
 select {
 background-color: #FFFFFF;
 border: 1px solid #CCCCCC;
@@ -852,10 +852,10 @@ function getConstituencyWiseResults()
 	} 
 }
 </script>
-<!-- <div align="center" style="margin-top:20px;">
+<div align="center" style="margin-top:20px;">
 <img src="images/MEnuBG.jpg" width="960" height="32" border="0" usemap="#Map" />
 </div>
- -->
+
 <div class="container" style="font-family: verdana; font-size: 14px; border: 1px solid rgb(204, 204, 204); padding: 0px 10px 10px; margin-top: 24px;">
 <h4 style="padding: 10px; margin-top: 10px; border-radius: 5px; text-align: center; background: none repeat scroll 0% 0% rgb(73, 175, 205);">LIVE ELECTION RESULTS COMPARISON</h4>
 <div id="btnDivs">
@@ -1696,7 +1696,7 @@ var stateType = '';
 
 			popupContent +='<article class="timeline-group" id="stateAK" style="font-family: times new roman,serif,sans-serif;margin-left:-40px;">';
 			popupContent +=' <header class="timeline-header">';
-			popupContent +=' <h3><b aria-hidden="true" class="stateface "></b> '+feature.properties.ac_name+'</a> <span style="color:#303030;float:right;">'+month[today.getMonth()]+" "+today.getDate()+","+today.getFullYear()+" "+'</span></h3>';
+			popupContent +=' <h3><b aria-hidden="true" class="stateface "></b> '+feature.properties.ac_name+'</a> </h3>';
 			popupContent +=' </header>';
 			popupContent +=' <ol class="timeline-list"> ';
 			popupContent +=' <li class="timeline-point is-standard" data-when="future"> ';
@@ -1884,7 +1884,7 @@ var stateType = '';
 
 		popupContent +='<article class="timeline-group" id="stateAK" style="font-family: times new roman,serif,sans-serif; margin-left: -40px;">';
 		popupContent +=' <header class="timeline-header">';
-		popupContent +=' <h3><b aria-hidden="true" class="stateface "></b> '+feature.properties.FIRST_pc_n+'</a> <span style="color:#303030;float:right;">'+month[today.getMonth()]+" "+today.getDate()+","+today.getFullYear()+" "+'</span></h3>';
+		popupContent +=' <h3><b aria-hidden="true" class="stateface "></b> '+feature.properties.FIRST_pc_n+'</a></h3>';
 		popupContent +=' </header>';
 		popupContent +=' <ol class="timeline-list"> ';
 		popupContent +=' <li class="timeline-point is-standard" data-when="future"> ';
@@ -2371,7 +2371,7 @@ function getRegionWiseResults(searchType){
 	else if(searchType == 'ModiEffect'){
 		console.log(7);
 	}
-	
+	}
 </script>
 
 
