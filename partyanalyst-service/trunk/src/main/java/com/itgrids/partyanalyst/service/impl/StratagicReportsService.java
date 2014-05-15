@@ -5849,6 +5849,7 @@ public class StratagicReportsService implements IStratagicReportsService{
             	List<DashBoardResultsVO> resultList = new ArrayList<DashBoardResultsVO>();
             	try{
             		Map<Long,Map<Long,DashBoardResultsVO>> locationMap = new HashMap<Long, Map<Long,DashBoardResultsVO>>();
+            		Map<Long,Long> totalVotes = new HashMap<Long, Long>();
             		
             		List<Long> staticPartyIds = new ArrayList<Long>();
             		staticPartyIds.add(872l);staticPartyIds.add(362l);staticPartyIds.add(662l);
@@ -5861,6 +5862,16 @@ public class StratagicReportsService implements IStratagicReportsService{
             		if(isAlliance == false)
             		{
             		List<Object[]> list = nominationDAO.getPartyWiseResults(electionId,type,region);
+            		List<Object[]> totalVaildVotesList = nominationDAO.getTotalValidVotes(electionId,type,region);
+            		if(totalVaildVotesList != null && totalVaildVotesList.size() > 0)
+            			
+            			for(Object[] params1 : totalVaildVotesList)
+            			{
+            				Double sumOfvotesPolled = new Double(params1[0].toString());
+            				totalVotes.put((Long)params1[1], sumOfvotesPolled.longValue());	
+            				
+            			}
+            		
             		for(Object[] params : list)
             		{
             			if(locationIds.add((Long)params[5]))
@@ -5885,16 +5896,22 @@ public class StratagicReportsService implements IStratagicReportsService{
 	            			//Double percentage =  Double.parseDouble(params[4].toString()) * 100.0 /  Double.parseDouble(params[5].toString());
 	            			Double obj = new Double(params[2].toString());
 	            			Double sumOfvotesEarned = new Double(params[3].toString());
-	            			Double sumOfvotesPolled = new Double(params[4].toString());
-	            			String percentage = new BigDecimal((sumOfvotesEarned*100.0)/sumOfvotesPolled)
+	            			//Double sumOfvotesPolled = new Double(params[4].toString());
+	            			//Double sumOfvotesPolled = new Double(totalVotes.get(locationVo.getLocationId()));
+	            			Long totalvotes = 0l;
+	            			totalvotes = totalVotes.get(locationVo.getLocationId());
+	            			String percentage = "0.0";
+	            			if(totalvotes > 0)
+	            			{
+	            			 percentage = new BigDecimal((sumOfvotesEarned*100.0)/totalvotes)
 							.setScale(2,BigDecimal.ROUND_HALF_UP).toString();
 	            			
-	            		     	
+	            			}
 	            			if(partyVo == null)
 	            			{
 	            				DashBoardResultsVO otherVo = locationVo.getSubList().get(locationVo.getSubList().size() - 1);
-	            				otherVo.setVotesCount(obj.longValue());	
-	            				otherVo.setPercent(percentage);
+	            				otherVo.setVotesCount(otherVo.getVotesCount()+sumOfvotesEarned.longValue());	
+	            				//otherVo.setPercent(percentage);
 	            			}
 	            			else
 	            			{
@@ -5907,6 +5924,30 @@ public class StratagicReportsService implements IStratagicReportsService{
 	            		}
             		}
             		
+            		
+	            		for(DashBoardResultsVO vo : resultList)
+	            		{
+	            			
+	            			DashBoardResultsVO locationVo = getLocationVo(resultList,vo.getLocationId());
+		            		if(locationVo != null)
+		            		{
+		            			Long totalvotes = 0l;
+		            			totalvotes = totalVotes.get(locationVo.getLocationId());
+		            			String percentage = "0.0";
+		            			DashBoardResultsVO otherVo = locationVo.getSubList().get(locationVo.getSubList().size() - 1);
+		            			if(totalvotes > 0)
+		            			{
+		            			 percentage = new BigDecimal((otherVo.getVotesCount()*100.0)/totalvotes)
+								.setScale(2,BigDecimal.ROUND_HALF_UP).toString();
+		            			
+		            			}
+		            		
+		            			otherVo.setPercent(percentage);
+		            			
+		            			
+		            		}
+	            			
+	            		}
             		}
             	}
             	catch (Exception e) {
@@ -6046,5 +6087,8 @@ public class StratagicReportsService implements IStratagicReportsService{
 				}
 				return resultList;
             }
+            
+            
+            
 			
 }
