@@ -880,7 +880,7 @@ function getConstituencyWiseResults()
 	<area shape="rect" coords="858,-4,929,29" href="javascript:{getRegionWiseResults('ModiEffect');}" title="Modi Effect"/>
 </map>
 
-<div align="center" style="margin-bottom: 20px;" >
+<div id="stateSelectDiv" align="center" style="margin-bottom: 20px;" >
 	<div class="span4 offset4">
 	<b>Select State</b>
 	<select id="stateId">
@@ -891,7 +891,7 @@ function getConstituencyWiseResults()
 	</div>
 </div>
 </br></br>
-<div class="row-fluid ">
+<div class="row-fluid " id="areaSelectionDiv">
 	<div class="span6">
 		<div class="form-inline">
 	
@@ -937,7 +937,7 @@ function getConstituencyWiseResults()
 	</div>
 
 <br/>
-<div class="row-fluid ">
+<div class="row-fluid " id="submitButtionDiv">
 	<div class="span2 offset5">
 	 <a class="btn btn-info btn-block " value="Submit" onClick="getElectionDetails();" >Submit</a>	
 	</div>
@@ -2558,11 +2558,11 @@ var stateType = '';
 		.done(function( result ) {
 			electionPcData = result;
 			//getLocationRespectiveDetails(stateVal,locationLevel,year,mapNo);
-			generateMapForTgPCPresent();
+			generateMapForTgPCTotal();
 		});	
 	}
 	
-	function generateMapForTgPCPresent()
+	function generateMapForTgPCTotal()
 	{
 		type = "totPc";
 		document.getElementById('weathermap').innerHTML = "<div id='map'  style='height: 900px; border: 1px solid rgb(51, 51, 51); border-radius: 10px; position: relative; background: none repeat scroll 0% 0% rgb(255, 255, 255);'></div>"
@@ -2706,37 +2706,79 @@ function showResultDiv()
 }
 
 
-function getRegionWiseResults(searchType){
-	if(searchType == 'Telangana'){
+function getRegionWiseResults(searchType)
+{
+	if(searchType == 'Telangana')
+	{
+		getElectionResultForAssemblyPrevious(2,"first",1,2);
+		getElectionResultForParlimentPresent(2,"second",2,2);
 		$('#liveResultsDiv').hide();
 		$('#mapDiv').show();
+		$('#legend').show();
+		$('#areaSelectionDiv').hide();
+		$('#stateSelectDiv').hide();
+		$('#submitButtionDiv').hide();
 	}
-	else if(searchType == 'Semandhra'){
+	else if(searchType == 'Semandhra')
+	{
+		getElectionResultForAssemblyPrevious(1,"first",1,2);
+		getElectionResultForParlimentPresent(1,"second",2,2);
 		$('#liveResultsDiv').hide();
 		$('#mapDiv').show();
+		$('#legend').show();
+		$('#areaSelectionDiv').hide();
+		$('#stateSelectDiv').hide();
+		$('#submitButtionDiv').hide();
 	}
-	else if(searchType == 'India'){
+	else if(searchType == 'India')
+	{
 		console.log(3);
 		$('#liveResultsDiv').hide();
+		$('#mapDiv').hide();
+		$('#legend').hide();
+		$('#areaSelectionDiv').hide();
+		$('#stateSelectDiv').hide();
+		$('#submitButtionDiv').hide();
 	}
-	else if(searchType == 'StateAnalysis'){
+	else if(searchType == 'StateAnalysis')
+	{
 		$('#matridLeadId,#matrixWonSummaryId,#matrixLeadSummaryId,#errorDiv,#test').html('');
 		$('#liveResultsDiv').show();
 		$('#mapDiv').hide();
-		
+		$('#legend').hide();
+		$('#areaSelectionDiv').hide();
+		$('#stateSelectDiv').hide();
+		$('#submitButtionDiv').hide();
 	}
-	else if(searchType == 'DistrictAnalysis'){
+	else if(searchType == 'DistrictAnalysis')
+	{
 		console.log(5);
 		$('#liveResultsDiv').hide();
-
+		$('#mapDiv').hide();
+		$('#legend').hide();
+		$('#areaSelectionDiv').hide();
+		$('#stateSelectDiv').hide();
+		$('#submitButtionDiv').hide();
 	}
-	else if(searchType == 'CBNEffect'){
+	else if(searchType == 'CBNEffect')
+	{
 		console.log(6);
 		$('#liveResultsDiv').hide();
+		$('#mapDiv').show();
+		$('#legend').show();
+		$('#areaSelectionDiv').show();
+		$('#stateSelectDiv').show();
+		$('#submitButtionDiv').show();
 	}
-	else if(searchType == 'ModiEffect'){
+	else if(searchType == 'ModiEffect')
+	{
 		console.log(7);
 		$('#liveResultsDiv').hide();
+		$('#mapDiv').hide();
+		$('#legend').hide();
+		$('#areaSelectionDiv').hide();
+		$('#stateSelectDiv').hide();
+		$('#submitButtionDiv').hide();
 	}
 	}
 </script>
