@@ -2363,6 +2363,7 @@ function getRegionWiseResults(searchType){
 		$('#liveResultsDiv').hide();
 	}
 	else if(searchType == 'StateAnalysis'){
+		$('#matridLeadId,#matrixWonSummaryId,#matrixLeadSummaryId,#errorDiv,#test').html('');
 		$('#liveResultsDiv').show();
 		$('#mapDiv').hide();
 		
@@ -2383,6 +2384,9 @@ function getRegionWiseResults(searchType){
 	}
 	}
 </script>
+
+
+
 
 </body>
 </html>
