@@ -2069,6 +2069,6 @@
    <bean name="acPcWiseElectionResultService" class="com.itgrids.partyanalyst.service.impl.AcPcWiseElectionResultService"></bean>
    
     <bean name="dashBoardElectionResultsService" class="com.itgrids.partyanalyst.service.impl.DashBoardElectionResultsService"></bean>
-   
+     <bean name="constituencyWiseElectionResultsService" class="com.itgrids.partyanalyst.service.impl.ConstituencyWiseElectionResultsService"></bean>
 </beans>		
 	
