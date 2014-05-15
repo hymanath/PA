@@ -324,6 +324,7 @@
        <decorator name="tdpHome" page="tdplayout.jsp">
              <pattern>/newhomePageAction*</pattern>
              <pattern>/smsAction*</pattern>
+             <pattern>/acPcWiseElectionResultAction*</pattern>
             <!--  <pattern>/dashBoardAction*</pattern> -->
        </decorator>
        
