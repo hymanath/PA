@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dto.AgeRangeVO;
 import com.itgrids.partyanalyst.dto.CasteStratagicReportVO;
+import com.itgrids.partyanalyst.dto.DashBoardResultsVO;
 import com.itgrids.partyanalyst.dto.HouseHoldsVO;
 import com.itgrids.partyanalyst.dto.PDFHeadingAndReturnVO;
 import com.itgrids.partyanalyst.dto.PartyEffectVO;
@@ -64,7 +65,14 @@ public class StratagicReportsAction extends ActionSupport implements
 	private ResultStatus status;
 	private IStratagicReportsService stratagicReportsService;
 	private IVoterReportService voterReportService;
+	private List<DashBoardResultsVO> partyResultList;
 	
+	public List<DashBoardResultsVO> getPartyResultList() {
+		return partyResultList;
+	}
+	public void setPartyResultList(List<DashBoardResultsVO> partyResultList) {
+		this.partyResultList = partyResultList;
+	}
 	public IVoterReportService getVoterReportService() {
 		return voterReportService;
 	}
@@ -1094,6 +1102,27 @@ public void setPanchayatResult(List<PartyPositionVO> panchayatResult) {
 		} catch (Exception e) {
 			LOG.error("Exception occured in getCasteContainConstituency() ",e);
 			return Action.ERROR;
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String getPartyResults()
+	{
+		String param;
+		param = getTask();
+		
+		try{
+			jObj = new JSONObject(param);	
+			Long electionId= jObj.getLong("electionId");
+			String type = jObj.getString("type");
+			String region = jObj.getString("region");
+			boolean isAlliance = jObj.getBoolean("alliance");
+			partyResultList = stratagicReportsService.getPartyResults(electionId,type,region,isAlliance);
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Occured in ajaxHandler() Method, Exception - "+e);
 		}
 		
 		return Action.SUCCESS;
