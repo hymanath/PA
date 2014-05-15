@@ -1545,6 +1545,58 @@ function buildGujaratElectionResult(myResults)
 
  getSpecialPageHighLights();
 
+ 
+ getMarginsCountOfParties();
+function getMarginsCountOfParties(){
+		var locations = [];
+		locations.push(18);
+		locations.push(17);
+		
+		var jsObj =	{
+			electionId : 38,
+			type:2,
+			locationIds:locations
+		}
+		
+		$.ajax(
+		  {
+				type: "POST",
+				url:"getMarginAnalysisOnLiveResultsForAssemblies.action",
+				data:{task :JSON.stringify(jsObj)}
+		  }
+		  ).done(function(result){
+				console.log(result);
+				if(result.partiesList != null && result.partiesList>0){
+					buildPartyWiseMarginCount(result);
+				}
+		  });
+}
 
+function buildPartyWiseMarginCount(result){
+	
+	var str = "<table class='table table-striped'>";
+		str +="<thead>";
+			str +="<tr>";
+				str+="<td>PARTY</td>";
+				for(var i in result.partiesList[0].marginsVO){
+					str+="<td>"+result.partiesList[0].marginsVO[i].margin+"</td>";
+				}
+			str +="</tr>";
+		str +="</thead>";
+		str +="<tbody>";
+			for(var i in result.partiesList){
+				for(var j in result.partiesList[i].marginsVO){
+					str +="<tr>";
+						if(result.partiesList[i].marginsVO[j].count == null){
+							str+="<td> - </td>";
+						}else{
+							str+="<td>"+result.partiesList[i].marginsVO[j].count+"</td>";
+						}
+					str +="</tr>";
+				}
+			}
+		str +="</tbody>";
+	str += "</table>";
+	}
 
 </script>
