@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IAcPcWiseElectionResultService;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -32,7 +34,29 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 	private List<BasicVO> resultList;
 	@Autowired
 	IAcPcWiseElectionResultService acPcWiseElectionResultService;
+	List<SelectOptionVO> resultLists; 
+	private IStaticDataService staticDataService;
 	
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
+
+
+	public List<SelectOptionVO> getResultLists() {
+		return resultLists;
+	}
+
+
+	public void setResultLists(List<SelectOptionVO> resultLists) {
+		this.resultLists = resultLists;
+	}
+
+
 	public void setServletRequest(HttpServletRequest request)
 	{
 		this.request = request;
@@ -73,6 +97,9 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 			} 
 			else
 				return ERROR;
+			
+			
+			resultLists = staticDataService.getAllParliaments();
 			
 		} 
 		catch (Exception e)
