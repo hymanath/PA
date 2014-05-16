@@ -516,6 +516,7 @@ public class DashBoardElectionResultsService implements
 			prtyIds.add(1117L);
 			prtyIds.add(886L);
 			prtyIds.add(163L);
+			prtyIds.add(662L);
 			prtyIds.add(9999L);
 			
 			Map<Long,String> partyMap = new HashMap<Long, String>();
@@ -526,6 +527,7 @@ public class DashBoardElectionResultsService implements
 			partyMap.put(1117L, "YCP");
 			partyMap.put(886L, "TRS");
 			partyMap.put(163L, "BJP");
+			partyMap.put(662L, "PRP");
 			partyMap.put(9999L, "OTH"); //for others we considered id as 9999
 			
 			
@@ -570,19 +572,19 @@ public class DashBoardElectionResultsService implements
 					 partyVO = getMacthedVO(locVO.getPartiesDetails(),9999L);
 					 partyVO.setName("OTH");
 					 
-					 if(Long.parseLong(obj[1].toString()) == 0L)
-							partyVO.setLeadCount(partyVO.getLeadCount() + Long.parseLong(obj[0].toString()));
+					 if(Long.parseLong(obj[5].toString()) == 1L)
+							partyVO.setWinCount(partyVO.getLeadCount() + Long.parseLong(obj[0].toString()));
 						else
-							partyVO.setWinCount(partyVO.getWinCount() + Long.parseLong(obj[0].toString()));
+							partyVO.setLeadCount(partyVO.getWinCount() + Long.parseLong(obj[0].toString()));
 					 
 				 }else
 				 {
 				    partyVO.setName(obj[4].toString());
 
-					if(Long.parseLong(obj[1].toString()) == 0L)
-						partyVO.setLeadCount(Long.parseLong(obj[0].toString()));
-					else
+					if(Long.parseLong(obj[5].toString()) == 0L)
 						partyVO.setWinCount(Long.parseLong(obj[0].toString()));
+					else
+						partyVO.setLeadCount(Long.parseLong(obj[0].toString()));
 				 }
 			}
 			
@@ -650,6 +652,7 @@ public class DashBoardElectionResultsService implements
 			prtyIds.add(1117L);
 			prtyIds.add(886L);
 			prtyIds.add(163L);
+			prtyIds.add(662L);
 			prtyIds.add(9999L);
 			
 			Map<Long,String> partyMap = new HashMap<Long, String>();
@@ -660,6 +663,7 @@ public class DashBoardElectionResultsService implements
 			partyMap.put(1117L, "YCP");
 			partyMap.put(886L, "TRS");
 			partyMap.put(163L, "BJP");
+			partyMap.put(662L, "PRP");
 			partyMap.put(9999L, "OTH"); //for others we considered id as 9999
 			
 			
@@ -720,19 +724,19 @@ public class DashBoardElectionResultsService implements
 				 partyVO = getMacthedVO(typeVO.getPartiesDetails(),9999L);
 				 partyVO.setName("OTH");
 				 
-				 if(Long.parseLong(obj[1].toString()) == 0L)
-						partyVO.setLeadCount(partyVO.getLeadCount() + Long.parseLong(obj[0].toString()));
+				 if(Long.parseLong(obj[5].toString()) == 1L)
+						partyVO.setWinCount(partyVO.getLeadCount() + Long.parseLong(obj[0].toString()));
 					else
-						partyVO.setWinCount(partyVO.getWinCount() + Long.parseLong(obj[0].toString()));
+						partyVO.setLeadCount(partyVO.getWinCount() + Long.parseLong(obj[0].toString()));
 				 
 			 }else
 			 {
 			  //  partyVO.setName(obj[4].toString());
 
-				if(Long.parseLong(obj[1].toString()) == 0L)
-					partyVO.setLeadCount(Long.parseLong(obj[0].toString()));
-				else
+				if(Long.parseLong(obj[5].toString()) == 0L)
 					partyVO.setWinCount(Long.parseLong(obj[0].toString()));
+				else
+					partyVO.setLeadCount(Long.parseLong(obj[0].toString()));
 			 }
 
 		}
@@ -760,6 +764,7 @@ public class DashBoardElectionResultsService implements
 			prtyIds.add(1117L);
 			prtyIds.add(886L);
 			prtyIds.add(163L);
+			prtyIds.add(662L);
 			prtyIds.add(9999L);
 			
 			Map<Long,String> partyMap = new HashMap<Long, String>();
@@ -770,6 +775,7 @@ public class DashBoardElectionResultsService implements
 			partyMap.put(1117L, "YCP");
 			partyMap.put(886L, "TRS");
 			partyMap.put(163L, "BJP");
+			partyMap.put(662L, "PRP");
 			partyMap.put(9999L, "OTH"); //for others we considered id as 9999
 			
 			
@@ -848,19 +854,19 @@ public class DashBoardElectionResultsService implements
 				 partyVO = getMacthedVO(typeVO.getPartiesDetails(),9999L);
 				 partyVO.setName("OTH");
 				 
-				 if(Long.parseLong(obj[1].toString()) == 0L)
-						partyVO.setLeadCount(partyVO.getLeadCount() + Long.parseLong(obj[0].toString()));
+				 if(Long.parseLong(obj[5].toString()) == 1L)
+						partyVO.setWinCount(partyVO.getLeadCount() + Long.parseLong(obj[0].toString()));
 					else
-						partyVO.setWinCount(partyVO.getWinCount() + Long.parseLong(obj[0].toString()));
+						partyVO.setLeadCount(partyVO.getWinCount() + Long.parseLong(obj[0].toString()));
 				 
 			 }else
 			 {
 			   // partyVO.setName(obj[4].toString());
 
-				if(Long.parseLong(obj[1].toString()) == 0L)
-					partyVO.setLeadCount(Long.parseLong(obj[0].toString()));
-				else
+				if(Long.parseLong(obj[5].toString()) == 0L)
 					partyVO.setWinCount(Long.parseLong(obj[0].toString()));
+				else
+					partyVO.setLeadCount(Long.parseLong(obj[0].toString()));
 			 }
 
 		}
@@ -980,5 +986,115 @@ public class DashBoardElectionResultsService implements
 		  }
  		  return resultList;
   }
+	 
+	 
+	 public  List<DashBoardResultsVO> getWonAndLeadCountPartyWise(Long electionId,List<Long> locationIds,Long scopeId)
+	 {
+		 List<DashBoardResultsVO> resultList = new ArrayList<DashBoardResultsVO>();
+		 try
+		 {
+			 List<Object[]> list = nominationDAO.getWonAndLeadCountPartyWise(electionId, locationIds, scopeId);
+			 
+			 
+			 List<Long> locationsIds = new ArrayList<Long>();
+				List<Long> partyIds = new ArrayList<Long>();
+				
+				List<Long> prtyIds = new ArrayList<Long>();
+					
+				prtyIds.add(872L);
+				prtyIds.add(362L);
+				prtyIds.add(1117L);
+				prtyIds.add(886L);
+				prtyIds.add(163L);
+				prtyIds.add(662L);
+				prtyIds.add(9999L);
+				
+				Map<Long,String> partyMap = new HashMap<Long, String>();
+				
+				
+				partyMap.put(872L, "TDP");
+				partyMap.put(362L, "INC");
+				partyMap.put(1117L,"YCP");
+				partyMap.put(886L, "TRS");
+				partyMap.put(163L, "BJP");
+				partyMap.put(662L, "PRP");
+				partyMap.put(9999L,"OTH"); //for others we considered id as 9999
+				
+				
+				for(Object[] obj:list)
+				{
+					if(!locationsIds.contains(Long.parseLong(obj[1].toString())))
+						locationsIds.add(Long.parseLong(obj[1].toString()));
+					
+					if(prtyIds.contains(Long.parseLong(obj[3].toString())) && !partyIds.contains(Long.parseLong(obj[3].toString())))
+						partyIds.add(Long.parseLong(obj[3].toString()));
+				}
+				partyIds.add(9999L);
+				
+				
+				for(Long locationId:locationsIds)
+				{
+					DashBoardResultsVO locationVO = new DashBoardResultsVO();
+					locationVO.setId(locationId);
+					
+					for(Long partyId:partyIds)
+					{
+						DashBoardResultsVO partyVO = new DashBoardResultsVO();
+						partyVO.setId(partyId);
+						
+						locationVO.getPartiesDetails().add(partyVO);
+						
+					}
+					resultList.add(locationVO);
+				}
+				
+				
+				for(Object[] obj:list)
+				{
+					DashBoardResultsVO locationVO =  getMacthedVO(resultList,Long.parseLong(obj[1].toString()));
+					locationVO.setName(obj[2].toString());
+					
+					DashBoardResultsVO partyVO = null;
+					if(partyIds.contains(Long.parseLong(obj[3].toString())))
+					 partyVO =  getMacthedVO(locationVO.getPartiesDetails(),Long.parseLong(obj[3].toString()));
+					
+					
+					 if(partyVO == null)
+					 {
+						 partyVO = getMacthedVO(locationVO.getPartiesDetails(),9999L);
+						 partyVO.setName("OTH");
+						 
+						 if(Long.parseLong(obj[5].toString()) == 1L)
+								partyVO.setWinCount(partyVO.getLeadCount() + Long.parseLong(obj[0].toString()));
+							else
+								partyVO.setLeadCount(partyVO.getWinCount() + Long.parseLong(obj[0].toString()));
+						 
+					 }else
+					 {
+					    partyVO.setName(obj[4].toString());
+
+						if(Long.parseLong(obj[5].toString()) == 1L)
+							partyVO.setWinCount(Long.parseLong(obj[0].toString()));
+						else
+							partyVO.setLeadCount(Long.parseLong(obj[0].toString()));
+					 }
+
+					/*if(Long.parseLong(obj[5].toString()) == 1L)
+						partyVO.setWinCount(Long.parseLong(obj[0].toString()));
+					else
+						partyVO.setLeadCount(Long.parseLong(obj[0].toString()));*/
+					
+				}
+				
+				
+		 }catch(Exception e)
+		 {
+			 e.printStackTrace();
+			 
+		 }
+		 
+		 
+		 return resultList;
+	 }
 	 
 }

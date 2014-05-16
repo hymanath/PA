@@ -4551,6 +4551,42 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			
 		}
 		
+		public List<Object[]> getWonAndLeadCountPartyWise(Long electionId,List<Long> locationIds,Long scopeId)
+		{
+			StringBuffer queryString = new StringBuffer();
+			
+			 if(scopeId.longValue() == 2)//district
+			{
+				
+				queryString.append("select count(model.party.partyId),model.constituencyElection.constituency.district.districtId,model.constituencyElection.constituency.district.districtName," +
+						" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus " +
+						"from Nomination model where " +
+						"model.constituencyElection.election.electionId = :electionId and " +
+						"model.constituencyElection.constituency.district.districtId in(:locationIds) and " +
+						"model.candidateResult.rank = 1" +
+						"group by model.constituencyElection.constituency.district.districtId ,model.party.partyId ,model.constituencyElection.countStatus ");
+			}else if(scopeId.longValue() == 3)//region
+			{
+				
+				queryString.append("select count(model.party.partyId),model2.stateRegion.stateRegionId,model2.stateRegion.regionName," +
+						" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus " +
+						"from Nomination model ,StateRegionDistrict model2 where " +
+						"model.constituencyElection.constituency.district.districtId = model2.district.districtId and " +
+						"model.constituencyElection.election.electionId = :electionId and " +
+						"model2.stateRegion.stateRegionId in(:locationIds) and " +
+						"model.candidateResult.rank = 1" +
+						"group by model2.stateRegion.stateRegionId ,model.party.partyId ,model.constituencyElection.countStatus ");
+			}
+			
+			Query query = getSession().createQuery(queryString.toString());
+			
+			query.setParameter("electionId", electionId);
+			query.setParameterList("locationIds", locationIds);
+			
+			return query.list();
+			
+		}
+		
 		
 		public List<Object[]> getMatrixReportForElectionResult(Long electionId,List<Long> locationIds,Long scopeId)
 		{
