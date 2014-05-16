@@ -2080,9 +2080,9 @@ var stateType = '';
 							popupContent +=' <span class="percentage-combo" ><span class="number">'+electionAcData[i].selectedCasteDetails[j].casteName+'</span>';
 							popupContent +=' </span>';
 							popupContent +=' </td>';
-							popupContent +=' <td class="results-title" style="width:40px;">';
+							popupContent +=' <td class="results-title" style="width:40px;">'+electionAcData[i].selectedCasteDetails[j].name+'';
 							//popupContent +=' <span class="percentage-combo" ><span class="number">'+electionAcData[i].selectedCasteDetails[j].name+'</span>';
-							if(electionAcData[i].selectedCasteDetails[j].name =='TDP'){
+							/* if(electionAcData[i].selectedCasteDetails[j].name =='TDP'){
 								popupContent +=' <span > <img src="images/party_flags2/TDP.PNG" width=125% alt="TDP"/></span>';
 							}
 							if(electionAcData[i].selectedCasteDetails[j].name =='YSRC'){
@@ -2108,7 +2108,7 @@ var stateType = '';
 							}
 							if(electionAcData[i].selectedCasteDetails[j].name =='LSP'){
 								popupContent +=' <span > <img src="images/party_flags2/LSP.png" width=125% alt="LSP"/></span>';
-							}
+							} */
 							
 							popupContent +=' </span>';
 							popupContent +=' </td>';
@@ -2316,9 +2316,9 @@ var stateType = '';
 						popupContent +=' <span class="percentage-combo" ><span class="number">'+electionPcData[i].selectedCasteDetails[j].casteName+'</span>';
 						popupContent +=' </span>';
 						popupContent +=' </td>';
-						popupContent +=' <td class="results-title" style="width: 25px;">';
+						popupContent +=' <td class="results-title" style="width: 25px;">'+electionPcData[i].selectedCasteDetails[j].name+'';
 						//popupContent +=' <span class="percentage-combo" ><span class="number">'+electionAcData[i].selectedCasteDetails[j].name+'</span>';
-						if(electionPcData[i].selectedCasteDetails[j].name =='TDP'){
+						/* if(electionPcData[i].selectedCasteDetails[j].name =='TDP'){
 							popupContent +=' <span > <img src="images/party_flags2/TDP.PNG" width=125% alt="TDP"/></span>';
 						}
 						if(electionPcData[i].selectedCasteDetails[j].name =='YSRC'){
@@ -2344,7 +2344,7 @@ var stateType = '';
 						}
 						if(electionPcData[i].selectedCasteDetails[j].name =='LSP'){
 							popupContent +=' <span > <img src="images/party_flags2/LSP.png" width=125% alt="LSP"/></span>';
-						}
+						} */
 						
 						popupContent +=' </span>';
 						popupContent +=' </td>';
