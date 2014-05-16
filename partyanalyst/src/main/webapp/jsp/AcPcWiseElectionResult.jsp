@@ -199,7 +199,7 @@ $('document').ready(function(){
 	 $('#scopeId').trigger('change');
 	 //$('#locaionsId1').multiselect({ noneSelectedText:"Select"});
 	 $('.reportType').change(function(){
-		 $('#test,#matridLeadId,#matrixWonSummaryId,#matrixLeadSummaryId,#marginAnalysis1').html('');
+		 $('#test,#matridLeadId,#matrixWonSummaryId,#matrixLeadSummaryId,#marginAnalysis1,#constituencyResultsDiv').html('');
 	 });
 
 	 $('#scopeId').change(function(){
@@ -577,7 +577,7 @@ function buildLocationDetails(result)
 function showSelectedReport()
 {
 
-	$('#matridLeadId,#matrixWonSummaryId,#matrixLeadSummaryId,#errorDiv,#test,#marginAnalysis1').html('');
+	$('#matridLeadId,#matrixWonSummaryId,#matrixLeadSummaryId,#errorDiv,#test,#marginAnalysis1,#constituencyResultsDiv').html('');
  
 
 	if($('#locaionsId1').val() == null)
@@ -905,7 +905,7 @@ function exportToExcel()
 
 function clearFields()
 {
- 	$('#test,#matridLeadId,#matrixWonSummaryId,#matrixLeadSummaryId').html('');
+ 	$('#test,#matridLeadId,#matrixWonSummaryId,#matrixLeadSummaryId,#constituencyResultsDiv').html('');
 }
 </script>
 <script>
@@ -2919,7 +2919,7 @@ function getRegionWiseResults(searchType)
 	}
 	else if(searchType == 'StateAnalysis')
 	{
-		$('#matridLeadId,#matrixWonSummaryId,#matrixLeadSummaryId,#errorDiv,#test').html('');
+		$('#matridLeadId,#matrixWonSummaryId,#matrixLeadSummaryId,#errorDiv,#test,#constituencyResultsDiv').html('');
 		$('#bannerDiv').show();
 		$('#liveResultsDiv').show();
 		$('#mapDiv').hide();
