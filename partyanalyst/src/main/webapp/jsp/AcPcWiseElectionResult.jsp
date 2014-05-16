@@ -206,6 +206,21 @@ $('document').ready(function(){
 		 console.log(this);
 		 $('#rgntxt').text("Select "+$('#scopeId  :selected').text());
 	 });
+	 
+	 $('#legend').show();
+	 $('#areaSelectionDiv').hide();
+	 $('#stateSelectDiv').hide();
+	 $('#submitButtionDiv').hide();
+	 getElectionResultForAssemblyPrevious(1,"first",1,2);
+	 getElectionResultForParlimentPresent(1,"second",2,2);
+	 $('#scopeId').change(function(){
+	 console.log(this);
+	 $('#rgntxt').text("Select "+$('#scopeId :selected').text());
+	 });
+	 setTimeout(function(){
+	 getElectionResultForAssemblyPrevious(1,"first",1,2);
+	 getElectionResultForParlimentPresent(1,"second",2,2);
+	 }, 500000);
 });
 </script>
 <script>
@@ -1036,7 +1051,7 @@ function getConstituencyWiseResults()
 		<select id="yearId1" class="input-small">
 		<option value="0">Select Year</option>
 		<option value="1">2009</option>
-		<!-- <option value="2">2004</option> -->
+		<option value="2">2014</option>
 		</select>
 		</div>
 	</div>
@@ -1056,7 +1071,7 @@ function getConstituencyWiseResults()
 		<select id="yearId2" class="input-small">
 		<option value="0">Select Year</option>
 		<option value="1">2009</option>
-		<!-- <option value="2">2004</option> -->
+		<option value="2">2014</option> 
 		</select>
 		
 		</div>
@@ -1656,7 +1671,7 @@ var stateType = '';
 		parties.push(1117);
 		var jsObj=
 		{
-				electionId : 3,
+				electionId : 258,
 				stateId : 1,
 				electionScopeId : 2,
 				parties : parties,
@@ -1696,7 +1711,7 @@ var stateType = '';
 		parties.push(1117);
 		var jsObj=
 		{
-				electionId : 258,
+				electionId : 38,
 				stateId : 1,
 				electionScopeId : 2,
 				parties : parties,
