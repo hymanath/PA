@@ -20,9 +20,10 @@ public class OpenSessionInViewAutoFlushFilter extends OpenSessionInViewFilter {
 
     @Override
     protected void closeSession( Session session , SessionFactory sessionFactory ) {
+    	if(session!=null) {
         session.flush();
         super.closeSession( session, sessionFactory );
-       
+    	}
     }
    
 }
