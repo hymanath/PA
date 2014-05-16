@@ -1124,7 +1124,7 @@ function getConstituencyWiseResults()
 <div id="overviewDivId2" class="span5"></div>
 <div id="subTitlesDiv" style="margin-left:40px;margin-top:20px;"></div>
 
-<div id="results1Div" ></div>
+<div id="results1Div" style="overflow:scroll;height:500px;" ></div>
 
 </div>
 
@@ -1437,6 +1437,702 @@ function getConstituencyWiseResults()
 </script>
 <script>
 var stateType = '';
+	
+	var semandhra = new Array();
+	var rayalaseemaConsti  = new Array();
+					var southAnshraConsti = new Array();
+	var northAnshraConsti = new Array();
+	
+	var telangana = new Array(); 
+	var southTelangana = new Array();
+	var northTelanganaConsti = new Array();
+	
+	var telanganaPA = new Array();
+	var SemamndhraPA = new Array();
+
+	
+	
+	telanganaPA.push(461);
+telanganaPA.push(469);
+telanganaPA.push(471);
+telanganaPA.push(477);
+telanganaPA.push(480);
+telanganaPA.push(481);
+telanganaPA.push(484);
+telanganaPA.push(485);
+telanganaPA.push(486);
+telanganaPA.push(487);
+telanganaPA.push(489);
+telanganaPA.push(490);
+telanganaPA.push(496);
+telanganaPA.push(499);
+telanganaPA.push(502);
+telanganaPA.push(510);
+telanganaPA.push(511);
+
+SemamndhraPA.push(494);
+SemamndhraPA.push(495);
+SemamndhraPA.push(493);
+SemamndhraPA.push(491);
+SemamndhraPA.push(472);
+SemamndhraPA.push(473);
+SemamndhraPA.push(474);
+SemamndhraPA.push(478);
+SemamndhraPA.push(479);
+SemamndhraPA.push(482);
+SemamndhraPA.push(483);
+SemamndhraPA.push(504);
+SemamndhraPA.push(506);
+SemamndhraPA.push(507);
+SemamndhraPA.push(508);
+SemamndhraPA.push(509);
+SemamndhraPA.push(497);
+SemamndhraPA.push(499);
+SemamndhraPA.push(500);
+SemamndhraPA.push(501);
+SemamndhraPA.push(463);
+SemamndhraPA.push(464);
+SemamndhraPA.push(465);
+SemamndhraPA.push(466);
+SemamndhraPA.push(467);
+
+
+northTelanganaConsti.push(1);
+northTelanganaConsti.push(2);
+northTelanganaConsti.push(3);
+northTelanganaConsti.push(4);
+northTelanganaConsti.push(5);
+northTelanganaConsti.push(6);
+northTelanganaConsti.push(7);
+northTelanganaConsti.push(8);
+northTelanganaConsti.push(10);
+northTelanganaConsti.push(11);
+northTelanganaConsti.push(12);
+northTelanganaConsti.push(13);
+northTelanganaConsti.push(15);
+northTelanganaConsti.push(16);
+northTelanganaConsti.push(18);
+northTelanganaConsti.push(20);
+northTelanganaConsti.push(21);
+northTelanganaConsti.push(23);
+northTelanganaConsti.push(24);
+northTelanganaConsti.push(26);
+northTelanganaConsti.push(30);
+northTelanganaConsti.push(31);
+northTelanganaConsti.push(32);
+northTelanganaConsti.push(34);
+northTelanganaConsti.push(35);
+northTelanganaConsti.push(36);
+northTelanganaConsti.push(37);
+northTelanganaConsti.push(39);
+northTelanganaConsti.push(40);
+northTelanganaConsti.push(41);
+northTelanganaConsti.push(86);
+northTelanganaConsti.push(87);
+northTelanganaConsti.push(89);
+northTelanganaConsti.push(91);
+northTelanganaConsti.push(92);
+northTelanganaConsti.push(93);
+northTelanganaConsti.push(94);
+northTelanganaConsti.push(97);
+northTelanganaConsti.push(295);
+northTelanganaConsti.push(296);
+northTelanganaConsti.push(318);
+northTelanganaConsti.push(319);
+northTelanganaConsti.push(320);
+northTelanganaConsti.push(321);
+northTelanganaConsti.push(322);
+northTelanganaConsti.push(323);
+northTelanganaConsti.push(336);
+northTelanganaConsti.push(337);
+northTelanganaConsti.push(342);
+northTelanganaConsti.push(343);
+northTelanganaConsti.push(362);
+northTelanganaConsti.push(363);
+northTelanganaConsti.push(364);
+northTelanganaConsti.push(365);
+
+
+
+southTelangana.push(43);
+southTelangana.push(44);
+southTelangana.push(46);
+southTelangana.push(47);
+southTelangana.push(49);
+southTelangana.push(50);
+southTelangana.push(51);
+southTelangana.push(52);
+southTelangana.push(53);
+southTelangana.push(54);
+southTelangana.push(55);
+southTelangana.push(56);
+southTelangana.push(57);
+southTelangana.push(58);
+southTelangana.push(59);
+southTelangana.push(60);
+southTelangana.push(61);
+southTelangana.push(62);
+southTelangana.push(63);
+southTelangana.push(64);
+southTelangana.push(65);
+southTelangana.push(66);
+southTelangana.push(67);
+southTelangana.push(68);
+southTelangana.push(69);
+southTelangana.push(70);
+southTelangana.push(71);
+southTelangana.push(73);
+southTelangana.push(74);
+southTelangana.push(75);
+southTelangana.push(77);
+southTelangana.push(78);
+southTelangana.push(79);
+southTelangana.push(80);
+southTelangana.push(81);
+southTelangana.push(82);
+southTelangana.push(84);
+southTelangana.push(85);
+southTelangana.push(100);
+southTelangana.push(101);
+southTelangana.push(102);
+southTelangana.push(103);
+southTelangana.push(104);
+southTelangana.push(105);
+southTelangana.push(107);
+southTelangana.push(313);
+southTelangana.push(314);
+southTelangana.push(315);
+southTelangana.push(316);
+southTelangana.push(317);
+southTelangana.push(324);
+southTelangana.push(325);
+southTelangana.push(326);
+southTelangana.push(335);
+southTelangana.push(338);
+southTelangana.push(339);
+southTelangana.push(345);
+southTelangana.push(346);
+southTelangana.push(347);
+southTelangana.push(348);
+southTelangana.push(349);
+southTelangana.push(350);
+southTelangana.push(351);
+southTelangana.push(367);
+southTelangana.push(369);
+
+	
+telangana.push(43);
+telangana.push(44);
+telangana.push(46);
+telangana.push(47);
+telangana.push(49);
+telangana.push(50);
+telangana.push(51);
+telangana.push(52);
+telangana.push(53);
+telangana.push(54);
+telangana.push(55);
+telangana.push(56);
+telangana.push(57);
+telangana.push(58);
+telangana.push(59);
+telangana.push(60);
+telangana.push(61);
+telangana.push(62);
+telangana.push(63);
+telangana.push(64);
+telangana.push(65);
+telangana.push(66);
+telangana.push(67);
+telangana.push(68);
+telangana.push(69);
+telangana.push(70);
+telangana.push(71);
+telangana.push(73);
+telangana.push(74);
+telangana.push(75);
+telangana.push(77);
+telangana.push(78);
+telangana.push(79);
+telangana.push(80);
+telangana.push(81);
+telangana.push(82);
+telangana.push(84);
+telangana.push(85);
+telangana.push(100);
+telangana.push(101);
+telangana.push(102);
+telangana.push(103);
+telangana.push(104);
+telangana.push(105);
+telangana.push(107);
+telangana.push(313);
+telangana.push(314);
+telangana.push(315);
+telangana.push(316);
+telangana.push(317);
+telangana.push(324);
+telangana.push(325);
+telangana.push(326);
+telangana.push(335);
+telangana.push(338);
+telangana.push(339);
+telangana.push(345);
+telangana.push(346);
+telangana.push(347);
+telangana.push(348);
+telangana.push(349);
+telangana.push(350);
+telangana.push(351);
+telangana.push(367);
+telangana.push(369);
+telangana.push(1);
+telangana.push(2);
+telangana.push(3);
+telangana.push(4);
+telangana.push(5);
+telangana.push(6);
+telangana.push(7);
+telangana.push(8);
+telangana.push(10);
+telangana.push(11);
+telangana.push(12);
+telangana.push(13);
+telangana.push(15);
+telangana.push(16);
+telangana.push(18);
+telangana.push(20);
+telangana.push(21);
+telangana.push(23);
+telangana.push(24);
+telangana.push(26);
+telangana.push(30);
+telangana.push(31);
+telangana.push(32);
+telangana.push(34);
+telangana.push(35);
+telangana.push(36);
+telangana.push(37);
+telangana.push(39);
+telangana.push(40);
+telangana.push(41);
+telangana.push(86);
+telangana.push(87);
+telangana.push(89);
+telangana.push(91);
+telangana.push(92);
+telangana.push(93);
+telangana.push(94);
+telangana.push(97);
+telangana.push(295);
+telangana.push(296);
+telangana.push(318);
+telangana.push(319);
+telangana.push(320);
+telangana.push(321);
+telangana.push(322);
+telangana.push(323);
+telangana.push(336);
+telangana.push(337);
+telangana.push(342);
+telangana.push(343);
+telangana.push(362);
+telangana.push(363);
+telangana.push(364);
+telangana.push(365);
+
+	
+northAnshraConsti.push(108);
+northAnshraConsti.push(109);
+northAnshraConsti.push(111);
+northAnshraConsti.push(112);
+northAnshraConsti.push(113);
+northAnshraConsti.push(114);
+northAnshraConsti.push(116);
+northAnshraConsti.push(117);
+northAnshraConsti.push(120);
+northAnshraConsti.push(121);
+northAnshraConsti.push(122);
+northAnshraConsti.push(124);
+northAnshraConsti.push(125);
+northAnshraConsti.push(127);
+northAnshraConsti.push(129);
+northAnshraConsti.push(133);
+northAnshraConsti.push(134);
+northAnshraConsti.push(135);
+northAnshraConsti.push(136);
+northAnshraConsti.push(137);
+northAnshraConsti.push(138);
+northAnshraConsti.push(140);
+northAnshraConsti.push(141);
+northAnshraConsti.push(146);
+northAnshraConsti.push(147);
+northAnshraConsti.push(149);
+northAnshraConsti.push(152);
+northAnshraConsti.push(153);
+northAnshraConsti.push(155);
+northAnshraConsti.push(156);
+northAnshraConsti.push(157);
+northAnshraConsti.push(159);
+northAnshraConsti.push(160);
+northAnshraConsti.push(163);
+northAnshraConsti.push(303);
+northAnshraConsti.push(304);
+northAnshraConsti.push(305);
+northAnshraConsti.push(306);
+northAnshraConsti.push(307);
+northAnshraConsti.push(308);
+northAnshraConsti.push(309);
+northAnshraConsti.push(310);
+northAnshraConsti.push(352);
+northAnshraConsti.push(353);
+northAnshraConsti.push(354);
+northAnshraConsti.push(355);
+northAnshraConsti.push(356);
+northAnshraConsti.push(357);
+northAnshraConsti.push(358);
+northAnshraConsti.push(359);
+northAnshraConsti.push(360);
+northAnshraConsti.push(361);
+northAnshraConsti.push(368);
+northAnshraConsti.push(338);
+northAnshraConsti.push(339);
+northAnshraConsti.push(345);
+northAnshraConsti.push(346);
+northAnshraConsti.push(347);
+northAnshraConsti.push(348);
+northAnshraConsti.push(349);
+northAnshraConsti.push(350);
+northAnshraConsti.push(351);
+northAnshraConsti.push(367);
+northAnshraConsti.push(369);
+
+
+	
+southAnshraConsti.push(167);
+southAnshraConsti.push(168);
+southAnshraConsti.push(169);
+southAnshraConsti.push(170);
+southAnshraConsti.push(171);
+southAnshraConsti.push(172);
+southAnshraConsti.push(173);
+southAnshraConsti.push(174);
+southAnshraConsti.push(176);
+southAnshraConsti.push(177);
+southAnshraConsti.push(178);
+southAnshraConsti.push(179);
+southAnshraConsti.push(180);
+southAnshraConsti.push(181);
+southAnshraConsti.push(182);
+southAnshraConsti.push(184);
+southAnshraConsti.push(185);
+southAnshraConsti.push(186);
+southAnshraConsti.push(187);
+southAnshraConsti.push(191);
+southAnshraConsti.push(192);
+southAnshraConsti.push(193);
+southAnshraConsti.push(194);
+southAnshraConsti.push(195);
+southAnshraConsti.push(196);
+southAnshraConsti.push(199);
+southAnshraConsti.push(203);
+southAnshraConsti.push(205);
+southAnshraConsti.push(206);
+southAnshraConsti.push(207);
+southAnshraConsti.push(208);
+southAnshraConsti.push(209);
+southAnshraConsti.push(210);
+southAnshraConsti.push(211);
+southAnshraConsti.push(212);
+southAnshraConsti.push(213);
+southAnshraConsti.push(214);
+southAnshraConsti.push(215);
+southAnshraConsti.push(216);
+southAnshraConsti.push(217);
+southAnshraConsti.push(218);
+southAnshraConsti.push(219);
+southAnshraConsti.push(221);
+southAnshraConsti.push(222);
+southAnshraConsti.push(223);
+southAnshraConsti.push(224);
+southAnshraConsti.push(225);
+southAnshraConsti.push(226);
+southAnshraConsti.push(227);
+southAnshraConsti.push(228);
+southAnshraConsti.push(229);
+southAnshraConsti.push(231);
+southAnshraConsti.push(232);
+southAnshraConsti.push(233);
+southAnshraConsti.push(236);
+southAnshraConsti.push(237);
+southAnshraConsti.push(238);
+southAnshraConsti.push(239);
+southAnshraConsti.push(241);
+southAnshraConsti.push(311);
+southAnshraConsti.push(312);
+southAnshraConsti.push(327);
+southAnshraConsti.push(328);
+southAnshraConsti.push(329);
+southAnshraConsti.push(330);
+	
+
+
+	
+semandhra.push(108);
+semandhra.push(109);
+semandhra.push(111); 
+semandhra.push(112);
+semandhra.push(113);
+semandhra.push(114);
+semandhra.push(116);
+semandhra.push(117);
+semandhra.push(120);
+semandhra.push(121);
+semandhra.push(122);
+semandhra.push(124);
+semandhra.push(125);
+semandhra.push(127);
+semandhra.push(129);
+semandhra.push(133);
+semandhra.push(134);
+semandhra.push(135);
+semandhra.push(136);
+semandhra.push(137);
+semandhra.push(138);
+semandhra.push(140);
+semandhra.push(141);
+semandhra.push(146);
+semandhra.push(147);
+semandhra.push(149);
+semandhra.push(152);
+semandhra.push(153);
+semandhra.push(155);
+semandhra.push(156);
+semandhra.push(157);
+semandhra.push(159);
+semandhra.push(160);
+semandhra.push(163);
+semandhra.push(303);
+semandhra.push(304);
+semandhra.push(305);
+semandhra.push(306);
+semandhra.push(307);
+semandhra.push(308);
+semandhra.push(309);
+semandhra.push(310);
+semandhra.push(352);
+semandhra.push(353);
+semandhra.push(354);
+semandhra.push(355);
+semandhra.push(356);
+semandhra.push(357);
+semandhra.push(358);
+semandhra.push(359);
+semandhra.push(360);
+semandhra.push(361);
+semandhra.push(368);
+semandhra.push(338);
+semandhra.push(339);
+semandhra.push(345);
+semandhra.push(346);
+semandhra.push(347);
+semandhra.push(348);
+semandhra.push(349);
+semandhra.push(350);
+semandhra.push(351);
+semandhra.push(367);
+semandhra.push(369);
+semandhra.push(167);
+semandhra.push(168);
+semandhra.push(169);
+semandhra.push(170);
+semandhra.push(171);
+semandhra.push(172);
+semandhra.push(173);
+semandhra.push(174);
+semandhra.push(176);
+semandhra.push(177);
+semandhra.push(178);
+semandhra.push(179);
+semandhra.push(180);
+semandhra.push(181);
+semandhra.push(182);
+semandhra.push(184);
+semandhra.push(185);
+semandhra.push(186);
+semandhra.push(187);
+semandhra.push(191);
+semandhra.push(192);
+semandhra.push(193);
+semandhra.push(194);
+semandhra.push(195);
+semandhra.push(196);
+semandhra.push(199);
+semandhra.push(203);
+semandhra.push(205);
+semandhra.push(206);
+semandhra.push(207);
+semandhra.push(208);
+semandhra.push(209);
+semandhra.push(210);
+semandhra.push(211);
+semandhra.push(212);
+semandhra.push(213);
+semandhra.push(214);
+semandhra.push(215);
+semandhra.push(216);
+semandhra.push(217);
+semandhra.push(218);
+semandhra.push(219);
+semandhra.push(221);
+semandhra.push(222);
+semandhra.push(223);
+semandhra.push(224);
+semandhra.push(225);
+semandhra.push(226);
+semandhra.push(227);
+semandhra.push(228);
+semandhra.push(229);
+semandhra.push(231);
+semandhra.push(232);
+semandhra.push(233);
+semandhra.push(236);
+semandhra.push(237);
+semandhra.push(238);
+semandhra.push(239);
+semandhra.push(241);
+semandhra.push(311);
+semandhra.push(312);
+semandhra.push(327);
+semandhra.push(328);
+semandhra.push(329);
+semandhra.push(330);
+semandhra.push(242);
+semandhra.push(243);
+semandhra.push(244);
+semandhra.push(245);
+semandhra.push(246);
+semandhra.push(248);
+semandhra.push(249);
+semandhra.push(250);
+semandhra.push(251);
+semandhra.push(252);
+semandhra.push(253);
+semandhra.push(254);
+semandhra.push(255);
+semandhra.push(257);
+semandhra.push(258);
+semandhra.push(260);
+semandhra.push(261);
+semandhra.push(262);
+semandhra.push(263);
+semandhra.push(264);
+semandhra.push(265);
+semandhra.push(267);
+semandhra.push(270);
+semandhra.push(271);
+semandhra.push(272);
+semandhra.push(273);
+semandhra.push(275);
+semandhra.push(276);
+semandhra.push(277);
+semandhra.push(278);
+semandhra.push(279);
+semandhra.push(280);
+semandhra.push(281);
+semandhra.push(282);
+semandhra.push(283);
+semandhra.push(284);
+semandhra.push(285);
+semandhra.push(286);
+semandhra.push(288);
+semandhra.push(289);
+semandhra.push(290);
+semandhra.push(291);
+semandhra.push(294);
+semandhra.push(297);
+semandhra.push(298);
+semandhra.push(299);
+semandhra.push(300);
+semandhra.push(301);
+semandhra.push(302);
+semandhra.push(332);
+semandhra.push(333);
+semandhra.push(334);
+semandhra.push(232);
+semandhra.push(233);
+semandhra.push(236);
+semandhra.push(237);
+semandhra.push(238);
+semandhra.push(239);
+semandhra.push(241);
+semandhra.push(311);
+semandhra.push(312);
+semandhra.push(327);
+semandhra.push(328);
+semandhra.push(329);
+semandhra.push(330);
+		
+rayalaseemaConsti.push(242);
+rayalaseemaConsti.push(243);
+rayalaseemaConsti.push(244);
+rayalaseemaConsti.push(245);
+rayalaseemaConsti.push(246);
+rayalaseemaConsti.push(248);
+rayalaseemaConsti.push(249);
+rayalaseemaConsti.push(250);
+rayalaseemaConsti.push(251);
+rayalaseemaConsti.push(252);
+rayalaseemaConsti.push(253);
+rayalaseemaConsti.push(254);
+rayalaseemaConsti.push(255);
+rayalaseemaConsti.push(257);
+rayalaseemaConsti.push(258);
+rayalaseemaConsti.push(260);
+rayalaseemaConsti.push(261);
+rayalaseemaConsti.push(262);
+rayalaseemaConsti.push(263);
+rayalaseemaConsti.push(264);
+rayalaseemaConsti.push(265);
+rayalaseemaConsti.push(267);
+rayalaseemaConsti.push(270);
+rayalaseemaConsti.push(271);
+rayalaseemaConsti.push(272);
+rayalaseemaConsti.push(273);
+rayalaseemaConsti.push(275);
+rayalaseemaConsti.push(276);
+rayalaseemaConsti.push(277);
+rayalaseemaConsti.push(278);
+rayalaseemaConsti.push(279);
+rayalaseemaConsti.push(280);
+rayalaseemaConsti.push(281);
+rayalaseemaConsti.push(282);
+rayalaseemaConsti.push(283);
+rayalaseemaConsti.push(284);
+rayalaseemaConsti.push(285);
+rayalaseemaConsti.push(286);
+rayalaseemaConsti.push(288);
+rayalaseemaConsti.push(289);
+rayalaseemaConsti.push(290);
+rayalaseemaConsti.push(291);
+rayalaseemaConsti.push(294);
+rayalaseemaConsti.push(297);
+rayalaseemaConsti.push(298);
+rayalaseemaConsti.push(299);
+rayalaseemaConsti.push(300);
+rayalaseemaConsti.push(301);
+rayalaseemaConsti.push(302);
+rayalaseemaConsti.push(332);
+rayalaseemaConsti.push(333);
+rayalaseemaConsti.push(334);
+rayalaseemaConsti.push(241);
+rayalaseemaConsti.push(311);
+rayalaseemaConsti.push(312);
+rayalaseemaConsti.push(327);
+rayalaseemaConsti.push(328);
+rayalaseemaConsti.push(329);
+rayalaseemaConsti.push(330);
+
 	$('document').ready(function(){
 		stateType = 'Semandhra';
 		$('#indiaBannerId').hide();
@@ -1457,6 +2153,7 @@ var stateType = '';
          console.log(this);
          $('#rgntxt').text("Select "+$('#scopeId  :selected').text());
      });
+	 
 	 
 	});
 	//getConstituenctSelection();
@@ -1675,7 +2372,7 @@ var stateType = '';
 		parties.push(1117);
 		var jsObj=
 		{
-				electionId : 258,
+				electionId : 38,//258,
 				stateId : 1,
 				electionScopeId : 2,
 				parties : parties,
@@ -1793,7 +2490,7 @@ var stateType = '';
 		parties.push(1117);
 		var jsObj=
 		{
-				electionId : 260,
+				electionId : 17,//260,
 				stateId : 1,
 				electionScopeId : 1,
 				parties : parties,
@@ -2082,33 +2779,33 @@ var stateType = '';
 							popupContent +=' </td>';
 							popupContent +=' <td class="results-title" style="width:40px;">'+electionAcData[i].selectedCasteDetails[j].name+'';
 							//popupContent +=' <span class="percentage-combo" ><span class="number">'+electionAcData[i].selectedCasteDetails[j].name+'</span>';
-							/* if(electionAcData[i].selectedCasteDetails[j].name =='TDP'){
-								popupContent +=' <span > <img src="images/party_flags2/TDP.PNG" width=125% alt="TDP"/></span>';
+							 if(electionAcData[i].selectedCasteDetails[j].name =='TDP'){
+								popupContent +=' <span > TDP </span>';
 							}
 							if(electionAcData[i].selectedCasteDetails[j].name =='YSRC'){
-								popupContent +=' <span > <img src="images/party_flags2/YSRC.PNG" width=125% alt="YSRC"/></span>';
+								popupContent +=' <span > YSRC </span>';
 							}
 							if(electionAcData[i].selectedCasteDetails[j].name =='INC'){
-								popupContent +=' <span > <img src="images/party_flags2/INC.png" width=125% alt"INC"/></span>';
+								popupContent +=' <span > INC </span>';
 							}
 							if(electionAcData[i].selectedCasteDetails[j].name =='TRS'){
-								popupContent +=' <span > <img src="images/party_flags2/TRS.png" width=125% alt="TRS"/></span>';
+								popupContent +=' <span > TRS </span>';
 							}
 							if(electionAcData[i].selectedCasteDetails[j].name =='BJP'){
-								popupContent +=' <span > <img src="images/party_flags2/BJP.png" width=125% alt="BJP"/></span>';
+								popupContent +=' <span > BJP </span>';
 							}
 							if(electionAcData[i].selectedCasteDetails[j].name =='AIMIM'){
-								popupContent +=' <span > <img src="images/party_flags2/AIMIM.png" width=125% alt="AIMIM"/></span>';
+								popupContent +=' <span > AIMIM </span>';
 							}
 							if(electionAcData[i].selectedCasteDetails[j].name =='CPM'){
-								popupContent +=' <span > <img src="images/party_flags2/CPM.png" width=125% alt="CPM"/></span>';
+								popupContent +=' <span > CPM </span>';
 							}
 							if(electionAcData[i].selectedCasteDetails[j].name =='CPI'){
-								popupContent +=' <span > <img src="images/party_flags2/CPI.png" width=125% alt="CPI"/></span>';
+								popupContent +=' <span > CPI </span>';
 							}
 							if(electionAcData[i].selectedCasteDetails[j].name =='LSP'){
-								popupContent +=' <span > <img src="images/party_flags2/LSP.png" width=125% alt="LSP"/></span>';
-							} */
+								popupContent +=' <span > LSP</span>';
+							} 
 							
 							popupContent +=' </span>';
 							popupContent +=' </td>';
@@ -2317,34 +3014,34 @@ var stateType = '';
 						popupContent +=' </span>';
 						popupContent +=' </td>';
 						popupContent +=' <td class="results-title" style="width: 25px;">'+electionPcData[i].selectedCasteDetails[j].name+'';
-						//popupContent +=' <span class="percentage-combo" ><span class="number">'+electionAcData[i].selectedCasteDetails[j].name+'</span>';
-						/* if(electionPcData[i].selectedCasteDetails[j].name =='TDP'){
-							popupContent +=' <span > <img src="images/party_flags2/TDP.PNG" width=125% alt="TDP"/></span>';
+						popupContent +=' <span class="percentage-combo" ><span class="number">'+electionAcData[i].selectedCasteDetails[j].name+'</span>';
+						 if(electionPcData[i].selectedCasteDetails[j].name =='TDP'){
+							popupContent +=' <span > TDP </span>';
 						}
 						if(electionPcData[i].selectedCasteDetails[j].name =='YSRC'){
-							popupContent +=' <span > <img src="images/party_flags2/YSRC.PNG" width=125% alt="YSRC"/></span>';
+							popupContent +=' <span > YSRC </span>';
 						}
 						if(electionPcData[i].selectedCasteDetails[j].name =='INC'){
-							popupContent +=' <span > <img src="images/party_flags2/INC.png" width=125% alt"INC"/></span>';
+							popupContent +=' <span > INC </span>';
 						}
 						if(electionPcData[i].selectedCasteDetails[j].name =='TRS'){
-							popupContent +=' <span > <img src="images/party_flags2/TRS.png" width=125% alt="TRS"/></span>';
+							popupContent +=' <span > TRS </span>';
 						}
 						if(electionPcData[i].selectedCasteDetails[j].name =='BJP'){
-							popupContent +=' <span > <img src="images/party_flags2/BJP.png" width=125% alt="BJP"/></span>';
+							popupContent +=' <span > BJP </span>';
 						}
 						if(electionPcData[i].selectedCasteDetails[j].name =='AIMIM'){
-							popupContent +=' <span > <img src="images/party_flags2/AIMIM.png" width=125% alt="AIMIM"/></span>';
+							popupContent +=' <span > AIMIM </span>';
 						}
 						if(electionPcData[i].selectedCasteDetails[j].name =='CPM'){
-							popupContent +=' <span > <img src="images/party_flags2/CPM.png" width=125% alt="CPM"/></span>';
+							popupContent +=' <span > CPM </span>';
 						}
 						if(electionPcData[i].selectedCasteDetails[j].name =='CPI'){
-							popupContent +=' <span > <img src="images/party_flags2/CPI.png" width=125% alt="CPI"/></span>';
+							popupContent +=' <span > CPI</span>';
 						}
 						if(electionPcData[i].selectedCasteDetails[j].name =='LSP'){
-							popupContent +=' <span > <img src="images/party_flags2/LSP.png" width=125% alt="LSP"/></span>';
-						} */
+							popupContent +=' <span > LSP </span>';
+						} 
 						
 						popupContent +=' </span>';
 						popupContent +=' </td>';
@@ -2415,93 +3112,6 @@ var stateType = '';
 			
 		layer.bindLabel(feature.properties.FIRST_pc_n, {noHide:false});
 	}
-	/* function getStatesForAssembly()
-	{	
-		var jsObj=
-		{
-			electionType:2,
-			task:"getStates"						
-		};
-		$.ajax({
-		type: "GET",
-		url: "getStatesForHomepage.action",
-		dataType: 'json',
-		data: {task:JSON.stringify(jsObj)},
-		})
-		.done(function( result ) {
-			$('#state').find('option').remove();
-			$('#state').append('<option value="0">Select State </option>');
-			$.each(result,function(index,value){
-				$('#state').append('<option value="'+value.id+'">'+value.name+'</option>');
-			});
-
-
-		});		
-	} */
-	
-	
-	/* function getAssemblyElectionYears(id,electionType)
-	{
-		var jsObj=
-		{
-				stateId:id,
-				electionType:electionType,
-				task:"getElectionYearsForAState"						
-		};
-		$.ajax({
-		type: "GET",
-		url: "electionYearsForstateAndElectionTypeAction.action",
-		dataType: 'json',
-		data: {task:JSON.stringify(jsObj)},
-		})
-		.done(function( result ) {
-			$('#electionYear').find('option').remove();
-			$.each(result,function(index,value){
-				$('#electionYear').append('<option value="'+value.id+'">'+value.name+'</option>');
-			});
-
-
-		});		
-	}
-	function getPartiesForSelection()
-	{
-		var electionTypeId = '';
-		if($("input:radio[name=type]:checked").val() == 'ac')
-		{
-			electionTypeId = 2;
-		}
-		else
-		{
-			electionTypeId = 1;
-		}
-		var jsObj=
-		{
-				elmtId : "electionScopeSelect",
-				stateId : $('#state option:selected').val(),
-				electionTypeId : electionTypeId,
-				task : "getPartiesInState"
-		};
-		$.ajax({
-		type: "GET",
-		url: "getPartiesInState.action",
-		dataType: 'json',
-		data: {task:JSON.stringify(jsObj)},
-		})
-		.done(function( result ) {
-		
-				var str='';
-				str+='<table><tr><th align="left">Parties : </th><td>';
-				for(var i in result){
-				if(result[i].id != 366)
-				str+='<input id="parties-'+i+'"  class="partySelForPanc" type="checkbox" value="'+result[i].id+'" name="parties"><label class="checkboxLabel" for="parties-'+i+'">'+result[i].name+'</label>';
-				}
-				str+='</td></tr>';
-				str+='<table>';
-				
-				$('#partiesDiv').html(str);
-		});	
-	}	 */
-	
 	
 	function buildResult(result){
 
@@ -2581,7 +3191,7 @@ var stateType = '';
 			popupContent +=' <article class="results-group">';
 			popupContent +=' <header class="results-header" style="width: 950px; margin-top: -10px;margin-bottom: 10px;">';
 			popupContent +=' </header>';
-			popupContent +=' <span style="font-size: 12px;">  Reporting : 0 % <span style="margin-left:150px;font-size:16px;font-weight:bold;">  Leading Party: '+result[i].selectedCasteDetails[0].name+' </span> <span style="color:#303030;margin-left:300px">'+month[today.getMonth()]+" "+today.getDate()+",  "+today.getFullYear()+" "+'</span></span>';
+			popupContent +=' <span style="font-size: 12px;">  Reporting : 0 % <span style="font-size:16px;font-weight:bold;">  Leading Party: '+result[i].selectedCasteDetails[0].name+' </span> <span style="color:#303030;margin-left:300px">'+month[today.getMonth()]+" "+today.getDate()+",  "+today.getFullYear()+" "+'</span></span>';
 			popupContent +=' <header class="results-header" style="width: 950px; border-bottom-color: #004276;border-bottom-width: 2px;">';
 			popupContent +=' </header>';
 			
@@ -2671,57 +3281,7 @@ var stateType = '';
 		}
 		
 	}
-	/*function buildResult(result)
-	{
-		
-		var str = '';
-		str += '<table class="table table-hover table-bordered" id="subLevelTable">';
-		str += '<thead>';
-		str += '<tr>';
-		str += '<th>DISTRICT</th>';
-		str += '<th>AC NO</th>';
-		str += '<th>AC NAME</th>';
-		for(var i in result[0].selectedCasteDetails)
-		{
-			str += '<th>'+result[0].selectedCasteDetails[i].name+'</th>';
-		}
-		str += '</tr>';
-		str += '</thead><tbody>';
-		for(var i in result)
-		{
-			str += '<tr>';
-			str += '<td>'+result[i].mandalName+'</td>';
-			str += '<td>'+result[i].hamletId+'</td>';
-			str += '<td>'+result[i].name+'</td>';
-			
-			for(var j in result[i].selectedCasteDetails)
-			{
-				str += '<th>'+result[i].selectedCasteDetails[j].count+'</th>';
-			}
-			
-			str += '</tr>';
-		}
-		str+= '</tbody>';
-		str += '</table>';
-		
-		$('#results1Div').html(str);
-		
-		$('#subLevelTable').dataTable({
-		"aaSorting": [[ 1, "asc" ]],
-		"iDisplayLength": 300,
-		"aLengthMenu": [[300,200,100, -1], [300,200,100,"All"]]
-		});
-		
-		//generateReport('subLevelTable');
-	}
-	*/
 	
-	/* function generateReport(tableId)
-	{
-		tableToExcel(tableId, 'ELECTION RESULT');
-	}
-	 */
-	//getElectionResultForTotalParliment();
 	function getElectionResultForTotalParliment()
 	{
 		
@@ -2893,12 +3453,6 @@ var stateType = '';
 			layer.bindPopup(popupContent);
 		} 
 	}
-function showResultDiv()
-{
-	$('#liveResultsDiv').show();
-}
-
-
 
 function getRegionWiseResults(searchType)
 {
@@ -2923,6 +3477,28 @@ function getRegionWiseResults(searchType)
 		$('.parliamentCls').hide();
 		$('#weathermap4').hide();
 		$('#indiaBannerId').hide();
+		
+		$('#subTitlesDiv').html('');
+		$('#results1Div').html('');
+		
+		subMenu = '<h2 style="font-family: times new roman,serif,sans-serif;font-size:16px;font-size:25px;font-weight: 500;"> Telangana Election Results - 2014 </h2>';
+			subMenu +='<ul class="nav nav-pills" style="font-weight:500;">';
+			subMenu +='	<li style="margin-top:10px;color:#ADADAD;"> Filter Options : </li> ';
+			subMenu +='	<li class="active">';
+			subMenu +='	<button onclick="buildTelanganaStateWiseResult();" class="btn btn-info"> State wise Result </button>';
+			subMenu +='	</li>';
+			subMenu +='	<li >';
+			subMenu +='	<button onclick="buildTelanganaPCWiseResult();" class="btn btn-info"  style="margin-left:20px;">  Parliament wise Result </button>';
+			subMenu +='	</li>';
+			subMenu +='<button onclick="buildSouthTelangana();" class="btn btn-info"  style="margin-left:20px;">  South Telangana </button>';
+			subMenu +='<button onclick="buildNortTelangana();" class="btn btn-info"  style="margin-left:20px;">  North Telangana </button>';
+			
+			
+			subMenu +='</ul>';
+			
+				$('#subTitlesDiv').html(subMenu);
+				
+				
 	}
 	else if(searchType == 'Semandhra')
 	{
@@ -2945,6 +3521,31 @@ function getRegionWiseResults(searchType)
 			$('.parliamentCls').hide();
 			$('#weathermap4').hide();
 			$('#indiaBannerId').hide();
+			
+				$('#results1Div').html('');
+		
+		$('#subTitlesDiv').html('');
+		
+		subMenu = '<h2 style="font-family:Georgia,Times;font-size:16px;font-size:25px;"> Andhra Pradesh Election Results - 2014 </h2>';
+			//"ff-tisa-web-pro",Georgia,Times,"Times New Roman",serif
+			subMenu +='<ul class="nav nav-pills" style="font-weight: 500;">';
+			subMenu +='	<li style="margin-top:10px;color:#ADADAD;"> Filter Options : </li> ';
+			
+			subMenu +='	<li>';
+			subMenu +='	<button onclick="buildSemandhraStateWiseResult();" class="btn btn-info" style="margin-left:20px;"> State wise Result </button>';
+			subMenu +='	</li>';
+			subMenu +='	<li >';
+			subMenu +='	<button onclick="buildSemandhraPCWiseResult();" class="btn btn-info"  style="margin-left:20px;">  Parliament wise Result </button>';
+			subMenu +='	</li>';
+			subMenu +='<button onclick="buildNortSemandhraWiseReport();" class="btn btn-info"  style="margin-left:20px;">  North Andhra</button>';
+			subMenu +='<button onclick="buildSouthAndhraREport();" class="btn btn-info"  style="margin-left:20px;">  South Andhra</button>';
+			subMenu +='<button onclick="buildRayalasemaWiseResult();" class="btn btn-info"  style="margin-left:20px;">  Rayalaseema</button>';
+			subMenu +='</ul>';
+			
+			
+				$('#subTitlesDiv').html(subMenu);
+				
+				
 	}
 	else if(searchType == 'India')
 	{
@@ -3113,7 +3714,7 @@ function getRegionWiseResults(searchType)
 		function getMapForAssembly()
 		{
 			areatype = "totac";
-			document.getElementById('weathermap4').innerHTML = "<div  id='map4'  style='height: 500px; border: 1px solid rgb(51, 51, 51); border-radius: 10px; position: relative; background: none repeat scroll 0% 0% rgb(255, 255, 255); width:600px;margin-left:auto;margin-right:auto;'></div>"
+			document.getElementById('weathermap4').innerHTML = "<div  id='map4'  style='height: 500px; border: 1px solid rgb(51, 51, 51); border-radius: 10px; position: relative; background: none repeat scroll 0% 0% rgb(255, 255, 255); width:600px;'></div>"
 			map4 = L.map('map4', {
 			center: [18.0000,80.0000],
 			zoom: 6
@@ -3211,9 +3812,9 @@ function buildStateWideParliaments(results){
 	str +="<table class='parlResultTable offset1' width='800' cellspacing='0' cellpadding='2' border='0'>";
 		str +="<tbody style='font-family: Tahoma;font-size: 12px;'>";
 			str +="<tr>";
-				//str +="<td colspan='5'><img width='300' height='130' src='images/specialPage/2014Ele.png'></td>";
-				//str +="<td colspan='3'><img width='140' height='150' src='images/specialPage/Modi.png'></td>";
-				//str +="<td colspan='3'><img width='140' height='150' src='images/specialPage/Rahul.png'></td>";
+				str +="<td colspan='5'><img width='300' height='130' src='images/specialPage/2014Ele.png'></td>";
+				str +="<td colspan='3'><img width='140' height='150' src='images/specialPage/Modi.png'></td>";
+				str +="<td colspan='3'><img width='140' height='150' src='images/specialPage/Rahul.png'></td>";
 			str +="</tr>";
 			str +="<tr><td bgcolor='#AACAEA' style='padding: 0px;' colspan='14'><img width='1' height='1' src='images/specialPage/spacer.gif'></td></tr>";
 			str +="<tr>";
@@ -3577,6 +4178,1760 @@ var matrixReportDtls1={
 	  else
 	    $('#overviewDivId2').html(str);
 	}
+	
+	
+	
+	
+	function buildTelanganaStateWiseResult(){
+
+	var result = electionAcData;
+	//console.log(result);
+	$('#results1Div').html('');
+	var today=new Date();
+
+    var month=new Array();
+	month[0]="January";
+	month[1]="February";
+	month[2]="March";
+	month[3]="April";
+	month[4]="May";
+	month[5]="June";
+	month[6]="July";
+	month[7]="August";
+	month[8]="September";
+	month[9]="October";
+	month[10]="November";
+	month[11]="December";
+
+	var district = '';
+			for(var i in result)
+			{
+			for(var m in  telangana){
+				if( telangana[m] == result[i].id){
+						if(result[i].selectedCasteDetails[0]  != undefined){
+						var popupContent='';
+					popupContent +='<article class="timeline-group" id="stateAK" style="font-family: times new roman,serif,sans-serif;font-size:16px">';
+						/*
+							if(district.length ==0 || district !=''+result[i].mandalName+''){
+							district = result[i].mandalName;
+								popupContent +='<div style="background:#5080A6;">'+result[i].mandalName+'</div>';
+							}
+						*/
+					popupContent +=' <header class="timeline-header">';
+					popupContent +=' <h3 style="font-size:17px;color:#FF0000;"><b aria-hidden="true" class="stateface "></b> '+result[i].name+'</a></h3>';
+					popupContent +=' </header>';
+					//popupContent +=' <span style="color:#303030;">'+month[today.getMonth()]+" "+today.getDate()+","+today.getFullYear()+" "+'</span>';
+					popupContent +=' <ol class="timeline-list"> ';
+					popupContent +=' <li class="timeline-point is-standard" data-when="future"> ';
+					popupContent +=' <article class="results-group">';
+					popupContent +=' <header class="results-header" style="width: 700px; margin-top: -10px;margin-bottom: 10px;">';
+					popupContent +=' </header>';
+					popupContent +=' <span style="font-size: 12px;"> <span style="margin-left:150px;font-size:16px;font-weight:bold;">  Leading Party: '+result[i].selectedCasteDetails[0].name+' </span> <span style="color:#303030;margin-left:300px">'+month[today.getMonth()]+" "+today.getDate()+",  "+today.getFullYear()+" "+'</span></span>';
+					popupContent +=' <header class="results-header" style="width: 700px; border-bottom-color: #004276;border-bottom-width: 2px;">';
+					popupContent +=' </header>';
+					
+					popupContent +=' <div class="results-dataset">';
+							popupContent +=' <div class="results-row layout-full">';
+							popupContent +=' <div class="results-data pos-omega contains-mix is-de-emphasized">';
+							popupContent +=' <div class="results-message">';
+							if(result[i].selectedCasteDetails.length >0){
+							
+								for(var j in result[i].selectedCasteDetails)
+								{
+									
+									if(result[i].selectedCasteDetails[j].casteName != null ){
+										popupContent +=' <table class="results-table" style="font-weight:bold;font-family:Arial,sans-serif">';
+										popupContent +=' <tbody>';
+										popupContent +=' <tr class="type-democrat">';
+										popupContent +=' <td class="results-title" style="width:200px;">';
+										popupContent +=' <span class="percentage-combo" ><span class="number">'+result[i].selectedCasteDetails[j].casteName+'</span>';
+										popupContent +=' </span>';
+										popupContent +=' </td>';
+										popupContent +=' <td class="results-title" style="width:200px;">';
+										if(result[i].selectedCasteDetails[j].name =='TDP'){
+											popupContent +=' <span > TDP </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='INC'){
+											popupContent +=' <span > INC </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='TRS'){
+											popupContent +=' <span > TRS </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='BJP'){
+											popupContent +=' <span > BJP </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='AIMIM'){
+											popupContent +=' <span > AIMIM </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='CPM'){
+											popupContent +=' <span >CPM </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='CPI'){
+											popupContent +=' <span > CPI</span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='LSP'){
+											popupContent +=' <span > LSP </span>';
+										}
+										
+										popupContent +=' </td>';
+										//popupContent +=' <td class="results-title" style="width: 30px;">';
+										//popupContent +=' </td>';
+										popupContent +=' <td class="results-percentage" style=" padding-left: 25px;width: 200px;">';
+										if(result[i].selectedCasteDetails[j].persent != null){
+										popupContent +=' <span class="percentage-combo" ><span class="number">'+result[i].selectedCasteDetails[j].persent+'%</span>';
+										}
+										else{
+										popupContent +=' <span class="percentage-combo" ><span class="number">0 %</span>';
+										}
+										popupContent +=' <span class="graph">';
+										popupContent +=' <span class="bar">';
+										popupContent +=' <span style="width:'+result[i].selectedCasteDetails[j].persent+'%;" class="index"></span>';
+										popupContent +=' </span>';
+										popupContent +=' </span>';
+										popupContent +=' </span>';
+										popupContent +=' </td>';
+										popupContent +=' <td style="padding-left:35px;">';
+										popupContent +=' <span style="font-weight:#000000">'+result[i].selectedCasteDetails[j].count+' </span>';
+										popupContent +=' </td>';
+										popupContent +=' </tr>';
+										popupContent +=' </tbody>';
+										popupContent +=' </table>';
+									
+									}
+								}
+							}
+					
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+				
+					popupContent +=' </article>';
+				popupContent +=' </li> ';
+				popupContent +=' </ol>';
+				popupContent +=' </article>';
+				
+				$('#results1Div').append(popupContent);
+				popupContent='';				
+				
+				}
+			}
+			
+			
+		}
+		}
+		
+	}
+	
+	function buildSouthTelangana(){
+
+	var result = electionAcData;
+	//console.log(result);
+	$('#results1Div').html('');
+	var today=new Date();
+
+    var month=new Array();
+	month[0]="January";
+	month[1]="February";
+	month[2]="March";
+	month[3]="April";
+	month[4]="May";
+	month[5]="June";
+	month[6]="July";
+	month[7]="August";
+	month[8]="September";
+	month[9]="October";
+	month[10]="November";
+	month[11]="December";
+	
+	
+	var district = '';
+
+	var countArr = new Array();	
+	
+		for(var i in result)
+			{
+			countArr.push(result[i].id);
+			for(var m in  southTelangana){
+				if( southTelangana[m] == result[i].id){
+						if(result[i].selectedCasteDetails[0]  != undefined){
+						var popupContent='';
+					popupContent +='<article class="timeline-group" id="stateAK" style="font-family: times new roman,serif,sans-serif;font-size:16px">';
+						/*
+							if(district.length ==0 || district !=''+result[i].mandalName+''){
+							district = result[i].mandalName;
+								popupContent +='<div style="background:#5080A6;">'+result[i].mandalName+'</div>';
+							}
+						*/
+					popupContent +=' <header class="timeline-header">';
+					popupContent +=' <h3 style="font-size:17px;color:#FF0000;"><b aria-hidden="true" class="stateface "></b> '+result[i].name+'</a></h3>';
+					popupContent +=' </header>';
+					//popupContent +=' <span style="color:#303030;">'+month[today.getMonth()]+" "+today.getDate()+","+today.getFullYear()+" "+'</span>';
+					popupContent +=' <ol class="timeline-list"> ';
+					popupContent +=' <li class="timeline-point is-standard" data-when="future"> ';
+					popupContent +=' <article class="results-group">';
+					popupContent +=' <header class="results-header" style="width: 700px; margin-top: -10px;margin-bottom: 10px;">';
+					popupContent +=' </header>';
+					popupContent +=' <span style="font-size: 12px;"> <span style="margin-left:150px;font-size:16px;font-weight:bold;">  Leading Party: '+result[i].selectedCasteDetails[0].name+' </span> <span style="color:#303030;margin-left:300px">'+month[today.getMonth()]+" "+today.getDate()+",  "+today.getFullYear()+" "+'</span></span>';
+					popupContent +=' <header class="results-header" style="width: 700px; border-bottom-color: #004276;border-bottom-width: 2px;">';
+					popupContent +=' </header>';
+					
+					popupContent +=' <div class="results-dataset">';
+							popupContent +=' <div class="results-row layout-full">';
+							popupContent +=' <div class="results-data pos-omega contains-mix is-de-emphasized">';
+							popupContent +=' <div class="results-message">';
+							if(result[i].selectedCasteDetails.length >0){
+							
+								for(var j in result[i].selectedCasteDetails)
+								{
+									
+									if(result[i].selectedCasteDetails[j].casteName != null ){
+										popupContent +=' <table class="results-table" style="font-weight:bold;font-family:Arial,sans-serif">';
+										popupContent +=' <tbody>';
+										popupContent +=' <tr class="type-democrat">';
+										popupContent +=' <td class="results-title" style="width:200px;">';
+										popupContent +=' <span class="percentage-combo" ><span class="number">'+result[i].selectedCasteDetails[j].casteName+'</span>';
+										popupContent +=' </span>';
+										popupContent +=' </td>';
+										popupContent +=' <td class="results-title" style="width:200px;">';
+										if(result[i].selectedCasteDetails[j].name =='TDP'){
+											popupContent +=' <span > TDP </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='INC'){
+											popupContent +=' <span > INC </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='TRS'){
+											popupContent +=' <span > TRS </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='BJP'){
+											popupContent +=' <span > BJP </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='AIMIM'){
+											popupContent +=' <span > AIMIM </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='CPM'){
+											popupContent +=' <span >CPM </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='CPI'){
+											popupContent +=' <span > CPI</span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='LSP'){
+											popupContent +=' <span > LSP </span>';
+										}
+										
+										popupContent +=' </td>';
+										//popupContent +=' <td class="results-title" style="width: 30px;">';
+										//popupContent +=' </td>';
+										popupContent +=' <td class="results-percentage" style=" padding-left: 25px;width: 200px;">';
+										if(result[i].selectedCasteDetails[j].persent != null){
+										popupContent +=' <span class="percentage-combo" ><span class="number">'+result[i].selectedCasteDetails[j].persent+'%</span>';
+										}
+										else{
+										popupContent +=' <span class="percentage-combo" ><span class="number">0 %</span>';
+										}
+										popupContent +=' <span class="graph">';
+										popupContent +=' <span class="bar">';
+										popupContent +=' <span style="width:'+result[i].selectedCasteDetails[j].persent+'%;" class="index"></span>';
+										popupContent +=' </span>';
+										popupContent +=' </span>';
+										popupContent +=' </span>';
+										popupContent +=' </td>';
+										popupContent +=' <td style="padding-left:35px;">';
+										popupContent +=' <span style="font-weight:#000000">'+result[i].selectedCasteDetails[j].count+' </span>';
+										popupContent +=' </td>';
+										popupContent +=' </tr>';
+										popupContent +=' </tbody>';
+										popupContent +=' </table>';
+									
+									}
+								}
+							}
+					
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+				
+					popupContent +=' </article>';
+				popupContent +=' </li> ';
+				popupContent +=' </ol>';
+				popupContent +=' </article>';
+				
+				$('#results1Div').append(popupContent);
+				popupContent='';				
+				
+				}
+			}
+			
+			
+		}
+		}
+
+}	
+
+		
+
+function buildREgionWiseReport(){
+
+	var result = electionAcData;
+	//console.log(result);
+	$('#results1Div').html('');
+	var today=new Date();
+
+    var month=new Array();
+	month[0]="January";
+	month[1]="February";
+	month[2]="March";
+	month[3]="April";
+	month[4]="May";
+	month[5]="June";
+	month[6]="July";
+	month[7]="August";
+	month[8]="September";
+	month[9]="October";
+	month[10]="November";
+	month[11]="December";
+	
+	
+	var district = '';
+
+	var countArr = new Array();
+	
+	
+		for(var i in result)
+			{
+			countArr.push(result[i].id);
+			for(var m in  southTelangana){
+			
+				if( southTelangana[m] == result[i].id){
+						if(result[i].selectedCasteDetails[0]  != undefined){
+						var popupContent='';
+					popupContent +='<article class="timeline-group" id="stateAK" style="font-family: times new roman,serif,sans-serif;font-size:16px">';
+						/*
+							if(district.length ==0 || district !=''+result[i].mandalName+''){
+							district = result[i].mandalName;
+								popupContent +='<div style="background:#5080A6;">'+result[i].mandalName+'</div>';
+							}
+						*/
+					popupContent +=' <header class="timeline-header">';
+					popupContent +=' <h3 style="font-size:17px;color:#FF0000;"><b aria-hidden="true" class="stateface "></b> '+result[i].name+'</a></h3>';
+					popupContent +=' </header>';
+					//popupContent +=' <span style="color:#303030;">'+month[today.getMonth()]+" "+today.getDate()+","+today.getFullYear()+" "+'</span>';
+					popupContent +=' <ol class="timeline-list"> ';
+					popupContent +=' <li class="timeline-point is-standard" data-when="future"> ';
+					popupContent +=' <article class="results-group">';
+					popupContent +=' <header class="results-header" style="width: 700px; margin-top: -10px;margin-bottom: 10px;">';
+					popupContent +=' </header>';
+					popupContent +=' <span style="font-size: 12px;"> <span style="margin-left:150px;font-size:16px;font-weight:bold;">  Leading Party: '+result[i].selectedCasteDetails[0].name+' </span> <span style="color:#303030;margin-left:300px">'+month[today.getMonth()]+" "+today.getDate()+",  "+today.getFullYear()+" "+'</span></span>';
+					popupContent +=' <header class="results-header" style="width: 700px; border-bottom-color: #004276;border-bottom-width: 2px;">';
+					popupContent +=' </header>';
+					
+					popupContent +=' <div class="results-dataset">';
+							popupContent +=' <div class="results-row layout-full">';
+							popupContent +=' <div class="results-data pos-omega contains-mix is-de-emphasized">';
+							popupContent +=' <div class="results-message">';
+							if(result[i].selectedCasteDetails.length >0){
+							
+								for(var j in result[i].selectedCasteDetails)
+								{
+									
+									if(result[i].selectedCasteDetails[j].casteName != null ){
+										popupContent +=' <table class="results-table" style="font-weight:bold;font-family:Arial,sans-serif">';
+										popupContent +=' <tbody>';
+										popupContent +=' <tr class="type-democrat">';
+										popupContent +=' <td class="results-title" style="width:200px;">';
+										popupContent +=' <span class="percentage-combo" ><span class="number">'+result[i].selectedCasteDetails[j].casteName+'</span>';
+										popupContent +=' </span>';
+										popupContent +=' </td>';
+										popupContent +=' <td class="results-title" style="width:200px;">';
+										if(result[i].selectedCasteDetails[j].name =='TDP'){
+											popupContent +=' <span > TDP </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='INC'){
+											popupContent +=' <span > INC </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='TRS'){
+											popupContent +=' <span > TRS </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='BJP'){
+											popupContent +=' <span > BJP </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='AIMIM'){
+											popupContent +=' <span > AIMIM </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='CPM'){
+											popupContent +=' <span >CPM </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='CPI'){
+											popupContent +=' <span > CPI</span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='LSP'){
+											popupContent +=' <span > LSP </span>';
+										}
+										
+										popupContent +=' </td>';
+										//popupContent +=' <td class="results-title" style="width: 30px;">';
+										//popupContent +=' </td>';
+										popupContent +=' <td class="results-percentage" style=" padding-left: 25px;width: 200px;">';
+										if(result[i].selectedCasteDetails[j].persent != null){
+										popupContent +=' <span class="percentage-combo" ><span class="number">'+result[i].selectedCasteDetails[j].persent+'%</span>';
+										}
+										else{
+										popupContent +=' <span class="percentage-combo" ><span class="number">0 %</span>';
+										}
+										popupContent +=' <span class="graph">';
+										popupContent +=' <span class="bar">';
+										popupContent +=' <span style="width:'+result[i].selectedCasteDetails[j].persent+'%;" class="index"></span>';
+										popupContent +=' </span>';
+										popupContent +=' </span>';
+										popupContent +=' </span>';
+										popupContent +=' </td>';
+										popupContent +=' <td style="padding-left:35px;">';
+										popupContent +=' <span style="font-weight:#000000">'+result[i].selectedCasteDetails[j].count+' </span>';
+										popupContent +=' </td>';
+										popupContent +=' </tr>';
+										popupContent +=' </tbody>';
+										popupContent +=' </table>';
+									
+									}
+								}
+							}
+					
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+				
+					popupContent +=' </article>';
+				popupContent +=' </li> ';
+				popupContent +=' </ol>';
+				popupContent +=' </article>';
+				
+				$('#results1Div').append(popupContent);
+				popupContent='';				
+				
+				}
+			}
+			
+			
+		}
+		}		
+		
+}		
+
+
+function buildTelanganaPCWiseResult(){
+	var result = electionPcData;
+	//console.log(result);
+	$('#results1Div').html('');
+	var today=new Date();
+
+    var month=new Array();
+	month[0]="January";
+	month[1]="February";
+	month[2]="March";
+	month[3]="April";
+	month[4]="May";
+	month[5]="June";
+	month[6]="July";
+	month[7]="August";
+	month[8]="September";
+	month[9]="October";
+	month[10]="November";
+	month[11]="December";
+	
+	
+	var district = '';
+	var countArr = new Array();
+	
+		for(var i in result)
+			{
+			if(result[i].mandalName != 'Hindupur'){
+			for(var m in  telanganaPA){
+			
+				if( telanganaPA[m] == result[i].id){
+						if(result[i].selectedCasteDetails[0]  != undefined){
+						var popupContent='';
+					popupContent +='<article class="timeline-group" id="stateAK" style="font-family: times new roman,serif,sans-serif;font-size:16px">';
+						/*
+							if(district.length ==0 || district !=''+result[i].mandalName+''){
+							district = result[i].mandalName;
+								popupContent +='<div style="background:#5080A6;">'+result[i].mandalName+'</div>';
+							}
+						*/
+					popupContent +=' <header class="timeline-header">';
+					popupContent +=' <h3 style="font-size:17px;color:#FF0000;"><b aria-hidden="true" class="stateface "></b> '+result[i].name+'</a></h3>';
+					popupContent +=' </header>';
+					//popupContent +=' <span style="color:#303030;">'+month[today.getMonth()]+" "+today.getDate()+","+today.getFullYear()+" "+'</span>';
+					popupContent +=' <ol class="timeline-list"> ';
+					popupContent +=' <li class="timeline-point is-standard" data-when="future"> ';
+					popupContent +=' <article class="results-group">';
+					popupContent +=' <header class="results-header" style="width: 700px; margin-top: -10px;margin-bottom: 10px;">';
+					popupContent +=' </header>';
+					popupContent +=' <span style="font-size: 12px;"> <span style="margin-left:150px;font-size:16px;font-weight:bold;">  Leading Party: '+result[i].selectedCasteDetails[0].name+' </span> <span style="color:#303030;margin-left:300px">'+month[today.getMonth()]+" "+today.getDate()+",  "+today.getFullYear()+" "+'</span></span>';
+					popupContent +=' <header class="results-header" style="width: 700px; border-bottom-color: #004276;border-bottom-width: 2px;">';
+					popupContent +=' </header>';
+					
+					popupContent +=' <div class="results-dataset">';
+							popupContent +=' <div class="results-row layout-full">';
+							popupContent +=' <div class="results-data pos-omega contains-mix is-de-emphasized">';
+							popupContent +=' <div class="results-message">';
+							if(result[i].selectedCasteDetails.length >0){
+							
+								for(var j in result[i].selectedCasteDetails)
+								{
+									
+									if(result[i].selectedCasteDetails[j].casteName != null ){
+										popupContent +=' <table class="results-table" style="font-weight:bold;font-family:Arial,sans-serif">';
+										popupContent +=' <tbody>';
+										popupContent +=' <tr class="type-democrat">';
+										popupContent +=' <td class="results-title" style="width:200px;">';
+										popupContent +=' <span class="percentage-combo" ><span class="number">'+result[i].selectedCasteDetails[j].casteName+'</span>';
+										popupContent +=' </span>';
+										popupContent +=' </td>';
+										popupContent +=' <td class="results-title" style="width:200px;">';
+										if(result[i].selectedCasteDetails[j].name =='TDP'){
+											popupContent +=' <span > TDP </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='INC'){
+											popupContent +=' <span > INC </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='TRS'){
+											popupContent +=' <span > TRS </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='BJP'){
+											popupContent +=' <span > BJP </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='AIMIM'){
+											popupContent +=' <span > AIMIM </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='CPM'){
+											popupContent +=' <span >CPM </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='CPI'){
+											popupContent +=' <span > CPI</span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='LSP'){
+											popupContent +=' <span > LSP </span>';
+										}
+										
+										popupContent +=' </td>';
+										//popupContent +=' <td class="results-title" style="width: 30px;">';
+										//popupContent +=' </td>';
+										popupContent +=' <td class="results-percentage" style=" padding-left: 25px;width: 200px;">';
+										if(result[i].selectedCasteDetails[j].persent != null){
+										popupContent +=' <span class="percentage-combo" ><span class="number">'+result[i].selectedCasteDetails[j].persent+'%</span>';
+										}
+										else{
+										popupContent +=' <span class="percentage-combo" ><span class="number">0 %</span>';
+										}
+										popupContent +=' <span class="graph">';
+										popupContent +=' <span class="bar">';
+										popupContent +=' <span style="width:'+result[i].selectedCasteDetails[j].persent+'%;" class="index"></span>';
+										popupContent +=' </span>';
+										popupContent +=' </span>';
+										popupContent +=' </span>';
+										popupContent +=' </td>';
+										popupContent +=' <td style="padding-left:35px;">';
+										popupContent +=' <span style="font-weight:#000000">'+result[i].selectedCasteDetails[j].count+' </span>';
+										popupContent +=' </td>';
+										popupContent +=' </tr>';
+										popupContent +=' </tbody>';
+										popupContent +=' </table>';
+									
+									}
+								}
+							}
+					
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+				
+					popupContent +=' </article>';
+				popupContent +=' </li> ';
+				popupContent +=' </ol>';
+				popupContent +=' </article>';
+				
+				$('#results1Div').append(popupContent);
+				popupContent='';				
+				
+				}
+			}
+			
+			
+		}
+		}
+		}	
+	}
+		
+	function buildSemandhraPCWiseResult(){
+	var result = electionPcData;
+	//console.log(result);
+	$('#results1Div').html('');
+	var today=new Date();
+
+    var month=new Array();
+	month[0]="January";
+	month[1]="February";
+	month[2]="March";
+	month[3]="April";
+	month[4]="May";
+	month[5]="June";
+	month[6]="July";
+	month[7]="August";
+	month[8]="September";
+	month[9]="October";
+	month[10]="November";
+	month[11]="December";
+	
+	
+	var district = '';
+
+	var countArr = new Array();
+	
+	
+		for(var i in result)
+			{
+			countArr.push(result[i].id);
+			for(var m in  SemamndhraPA){
+				if( SemamndhraPA[m] == result[i].id){
+						if(result[i].selectedCasteDetails[0]  != undefined){
+						var popupContent='';
+					popupContent +='<article class="timeline-group" id="stateAK" style="font-family: times new roman,serif,sans-serif;font-size:16px">';
+						/*
+							if(district.length ==0 || district !=''+result[i].mandalName+''){
+							district = result[i].mandalName;
+								popupContent +='<div style="background:#5080A6;">'+result[i].mandalName+'</div>';
+							}
+						*/
+					popupContent +=' <header class="timeline-header">';
+					popupContent +=' <h3 style="font-size:17px;color:#FF0000;"><b aria-hidden="true" class="stateface "></b> '+result[i].name+'</a></h3>';
+					popupContent +=' </header>';
+					//popupContent +=' <span style="color:#303030;">'+month[today.getMonth()]+" "+today.getDate()+","+today.getFullYear()+" "+'</span>';
+					popupContent +=' <ol class="timeline-list"> ';
+					popupContent +=' <li class="timeline-point is-standard" data-when="future"> ';
+					popupContent +=' <article class="results-group">';
+					popupContent +=' <header class="results-header" style="width: 700px; margin-top: -10px;margin-bottom: 10px;">';
+					popupContent +=' </header>';
+					popupContent +=' <span style="font-size: 12px;"> <span style="margin-left:150px;font-size:16px;font-weight:bold;">  Leading Party: '+result[i].selectedCasteDetails[0].name+' </span> <span style="color:#303030;margin-left:300px">'+month[today.getMonth()]+" "+today.getDate()+",  "+today.getFullYear()+" "+'</span></span>';
+					popupContent +=' <header class="results-header" style="width: 700px; border-bottom-color: #004276;border-bottom-width: 2px;">';
+					popupContent +=' </header>';
+					
+					popupContent +=' <div class="results-dataset">';
+							popupContent +=' <div class="results-row layout-full">';
+							popupContent +=' <div class="results-data pos-omega contains-mix is-de-emphasized">';
+							popupContent +=' <div class="results-message">';
+							if(result[i].selectedCasteDetails.length >0){
+							
+								for(var j in result[i].selectedCasteDetails)
+								{
+									
+									if(result[i].selectedCasteDetails[j].casteName != null ){
+										popupContent +=' <table class="results-table" style="font-weight:bold;font-family:Arial,sans-serif">';
+										popupContent +=' <tbody>';
+										popupContent +=' <tr class="type-democrat">';
+										popupContent +=' <td class="results-title" style="width:200px;">';
+										popupContent +=' <span class="percentage-combo" ><span class="number">'+result[i].selectedCasteDetails[j].casteName+'</span>';
+										popupContent +=' </span>';
+										popupContent +=' </td>';
+										popupContent +=' <td class="results-title" style="width:200px;">';
+										if(result[i].selectedCasteDetails[j].name =='TDP'){
+											popupContent +=' <span > TDP </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='INC'){
+											popupContent +=' <span > INC </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='TRS'){
+											popupContent +=' <span > TRS </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='BJP'){
+											popupContent +=' <span > BJP </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='AIMIM'){
+											popupContent +=' <span > AIMIM </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='CPM'){
+											popupContent +=' <span >CPM </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='CPI'){
+											popupContent +=' <span > CPI</span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='LSP'){
+											popupContent +=' <span > LSP </span>';
+										}
+										
+										popupContent +=' </td>';
+										//popupContent +=' <td class="results-title" style="width: 30px;">';
+										//popupContent +=' </td>';
+										popupContent +=' <td class="results-percentage" style=" padding-left: 25px;width: 200px;">';
+										if(result[i].selectedCasteDetails[j].persent != null){
+										popupContent +=' <span class="percentage-combo" ><span class="number">'+result[i].selectedCasteDetails[j].persent+'%</span>';
+										}
+										else{
+										popupContent +=' <span class="percentage-combo" ><span class="number">0 %</span>';
+										}
+										popupContent +=' <span class="graph">';
+										popupContent +=' <span class="bar">';
+										popupContent +=' <span style="width:'+result[i].selectedCasteDetails[j].persent+'%;" class="index"></span>';
+										popupContent +=' </span>';
+										popupContent +=' </span>';
+										popupContent +=' </span>';
+										popupContent +=' </td>';
+										popupContent +=' <td style="padding-left:35px;">';
+										popupContent +=' <span style="font-weight:#000000">'+result[i].selectedCasteDetails[j].count+' </span>';
+										popupContent +=' </td>';
+										popupContent +=' </tr>';
+										popupContent +=' </tbody>';
+										popupContent +=' </table>';
+									
+									}
+								}
+							}
+					
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+				
+					popupContent +=' </article>';
+				popupContent +=' </li> ';
+				popupContent +=' </ol>';
+				popupContent +=' </article>';
+				
+				$('#results1Div').append(popupContent);
+				popupContent='';				
+				
+				}
+			}
+			
+			
+		}
+		}	
+		}
+		
+		
+		function buildSemandhraStateWiseResult(){
+		
+		var result = electionAcData;
+	//console.log(result);
+	$('#results1Div').html('');
+	var today=new Date();
+
+    var month=new Array();
+	month[0]="January";
+	month[1]="February";
+	month[2]="March";
+	month[3]="April";
+	month[4]="May";
+	month[5]="June";
+	month[6]="July";
+	month[7]="August";
+	month[8]="September";
+	month[9]="October";
+	month[10]="November";
+	month[11]="December";
+	
+	
+	var district = '';
+
+	var countArr = new Array();
+	
+	
+		for(var i in result)
+			{
+			countArr.push(result[i].id);
+			for(var m in  semandhra){
+				if( semandhra[m] == result[i].id){
+						if(result[i].selectedCasteDetails[0]  != undefined){
+						var popupContent='';
+					popupContent +='<article class="timeline-group" id="stateAK" style="font-family: times new roman,serif,sans-serif;font-size:16px">';
+						/*
+							if(district.length ==0 || district !=''+result[i].mandalName+''){
+							district = result[i].mandalName;
+								popupContent +='<div style="background:#5080A6;">'+result[i].mandalName+'</div>';
+							}
+						*/
+					popupContent +=' <header class="timeline-header">';
+					popupContent +=' <h3 style="font-size:17px;color:#FF0000;"><b aria-hidden="true" class="stateface "></b> '+result[i].name+'</a></h3>';
+					popupContent +=' </header>';
+					//popupContent +=' <span style="color:#303030;">'+month[today.getMonth()]+" "+today.getDate()+","+today.getFullYear()+" "+'</span>';
+					popupContent +=' <ol class="timeline-list"> ';
+					popupContent +=' <li class="timeline-point is-standard" data-when="future"> ';
+					popupContent +=' <article class="results-group">';
+					popupContent +=' <header class="results-header" style="width: 700px; margin-top: -10px;margin-bottom: 10px;">';
+					popupContent +=' </header>';
+					popupContent +=' <span style="font-size: 12px;"> <span style="margin-left:150px;font-size:16px;font-weight:bold;">  Leading Party: '+result[i].selectedCasteDetails[0].name+' </span> <span style="color:#303030;margin-left:300px">'+month[today.getMonth()]+" "+today.getDate()+",  "+today.getFullYear()+" "+'</span></span>';
+					popupContent +=' <header class="results-header" style="width: 700px; border-bottom-color: #004276;border-bottom-width: 2px;">';
+					popupContent +=' </header>';
+					
+					popupContent +=' <div class="results-dataset">';
+							popupContent +=' <div class="results-row layout-full">';
+							popupContent +=' <div class="results-data pos-omega contains-mix is-de-emphasized">';
+							popupContent +=' <div class="results-message">';
+							if(result[i].selectedCasteDetails.length >0){
+							
+								for(var j in result[i].selectedCasteDetails)
+								{
+									
+									if(result[i].selectedCasteDetails[j].casteName != null ){
+										popupContent +=' <table class="results-table" style="font-weight:bold;font-family:Arial,sans-serif">';
+										popupContent +=' <tbody>';
+										popupContent +=' <tr class="type-democrat">';
+										popupContent +=' <td class="results-title" style="width:200px;">';
+										popupContent +=' <span class="percentage-combo" ><span class="number">'+result[i].selectedCasteDetails[j].casteName+'</span>';
+										popupContent +=' </span>';
+										popupContent +=' </td>';
+										popupContent +=' <td class="results-title" style="width:200px;">';
+										if(result[i].selectedCasteDetails[j].name =='TDP'){
+											popupContent +=' <span > TDP </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='INC'){
+											popupContent +=' <span > INC </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='TRS'){
+											popupContent +=' <span > TRS </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='BJP'){
+											popupContent +=' <span > BJP </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='AIMIM'){
+											popupContent +=' <span > AIMIM </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='CPM'){
+											popupContent +=' <span >CPM </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='CPI'){
+											popupContent +=' <span > CPI</span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='LSP'){
+											popupContent +=' <span > LSP </span>';
+										}
+										
+										popupContent +=' </td>';
+										//popupContent +=' <td class="results-title" style="width: 30px;">';
+										//popupContent +=' </td>';
+										popupContent +=' <td class="results-percentage" style=" padding-left: 25px;width: 200px;">';
+										if(result[i].selectedCasteDetails[j].persent != null){
+										popupContent +=' <span class="percentage-combo" ><span class="number">'+result[i].selectedCasteDetails[j].persent+'%</span>';
+										}
+										else{
+										popupContent +=' <span class="percentage-combo" ><span class="number">0 %</span>';
+										}
+										popupContent +=' <span class="graph">';
+										popupContent +=' <span class="bar">';
+										popupContent +=' <span style="width:'+result[i].selectedCasteDetails[j].persent+'%;" class="index"></span>';
+										popupContent +=' </span>';
+										popupContent +=' </span>';
+										popupContent +=' </span>';
+										popupContent +=' </td>';
+										popupContent +=' <td style="padding-left:35px;">';
+										popupContent +=' <span style="font-weight:#000000">'+result[i].selectedCasteDetails[j].count+' </span>';
+										popupContent +=' </td>';
+										popupContent +=' </tr>';
+										popupContent +=' </tbody>';
+										popupContent +=' </table>';
+									
+									}
+								}
+							}
+					
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+				
+					popupContent +=' </article>';
+				popupContent +=' </li> ';
+				popupContent +=' </ol>';
+				popupContent +=' </article>';
+				
+				$('#results1Div').append(popupContent);
+				popupContent='';				
+				
+				}
+			}
+			
+			
+		}
+		}	
+		
+		}
+		
+		function buildPCWiseResult1(){
+		
+		var result = electionPcData;
+	//console.log(result);
+	$('#results1Div').html('');
+	var today=new Date();
+
+    var month=new Array();
+	month[0]="January";
+	month[1]="February";
+	month[2]="March";
+	month[3]="April";
+	month[4]="May";
+	month[5]="June";
+	month[6]="July";
+	month[7]="August";
+	month[8]="September";
+	month[9]="October";
+	month[10]="November";
+	month[11]="December";
+	
+	
+	var district = '';
+
+	var countArr = new Array();
+	
+	
+		for(var i in result)
+			{
+			countArr.push(result[i].id);
+			for(var m in  SemamndhraPA){
+				if( SemamndhraPA[m] == result[i].id){
+						if(result[i].selectedCasteDetails[0]  != undefined){
+						var popupContent='';
+					popupContent +='<article class="timeline-group" id="stateAK" style="font-family: times new roman,serif,sans-serif;font-size:16px">';
+						/*
+							if(district.length ==0 || district !=''+result[i].mandalName+''){
+							district = result[i].mandalName;
+								popupContent +='<div style="background:#5080A6;">'+result[i].mandalName+'</div>';
+							}
+						*/
+					popupContent +=' <header class="timeline-header">';
+					popupContent +=' <h3 style="font-size:17px;color:#FF0000;"><b aria-hidden="true" class="stateface "></b> '+result[i].name+'</a></h3>';
+					popupContent +=' </header>';
+					//popupContent +=' <span style="color:#303030;">'+month[today.getMonth()]+" "+today.getDate()+","+today.getFullYear()+" "+'</span>';
+					popupContent +=' <ol class="timeline-list"> ';
+					popupContent +=' <li class="timeline-point is-standard" data-when="future"> ';
+					popupContent +=' <article class="results-group">';
+					popupContent +=' <header class="results-header" style="width: 700px; margin-top: -10px;margin-bottom: 10px;">';
+					popupContent +=' </header>';
+					popupContent +=' <span style="font-size: 12px;"> <span style="margin-left:150px;font-size:16px;font-weight:bold;">  Leading Party: '+result[i].selectedCasteDetails[0].name+' </span> <span style="color:#303030;margin-left:300px">'+month[today.getMonth()]+" "+today.getDate()+",  "+today.getFullYear()+" "+'</span></span>';
+					popupContent +=' <header class="results-header" style="width: 700px; border-bottom-color: #004276;border-bottom-width: 2px;">';
+					popupContent +=' </header>';
+					
+					popupContent +=' <div class="results-dataset">';
+							popupContent +=' <div class="results-row layout-full">';
+							popupContent +=' <div class="results-data pos-omega contains-mix is-de-emphasized">';
+							popupContent +=' <div class="results-message">';
+							if(result[i].selectedCasteDetails.length >0){
+							
+								for(var j in result[i].selectedCasteDetails)
+								{
+									
+									if(result[i].selectedCasteDetails[j].casteName != null ){
+										popupContent +=' <table class="results-table" style="font-weight:bold;font-family:Arial,sans-serif">';
+										popupContent +=' <tbody>';
+										popupContent +=' <tr class="type-democrat">';
+										popupContent +=' <td class="results-title" style="width:200px;">';
+										popupContent +=' <span class="percentage-combo" ><span class="number">'+result[i].selectedCasteDetails[j].casteName+'</span>';
+										popupContent +=' </span>';
+										popupContent +=' </td>';
+										popupContent +=' <td class="results-title" style="width:200px;">';
+										if(result[i].selectedCasteDetails[j].name =='TDP'){
+											popupContent +=' <span > TDP </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='INC'){
+											popupContent +=' <span > INC </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='TRS'){
+											popupContent +=' <span > TRS </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='BJP'){
+											popupContent +=' <span > BJP </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='AIMIM'){
+											popupContent +=' <span > AIMIM </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='CPM'){
+											popupContent +=' <span >CPM </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='CPI'){
+											popupContent +=' <span > CPI</span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='LSP'){
+											popupContent +=' <span > LSP </span>';
+										}
+										
+										popupContent +=' </td>';
+										//popupContent +=' <td class="results-title" style="width: 30px;">';
+										//popupContent +=' </td>';
+										popupContent +=' <td class="results-percentage" style=" padding-left: 25px;width: 200px;">';
+										if(result[i].selectedCasteDetails[j].persent != null){
+										popupContent +=' <span class="percentage-combo" ><span class="number">'+result[i].selectedCasteDetails[j].persent+'%</span>';
+										}
+										else{
+										popupContent +=' <span class="percentage-combo" ><span class="number">0 %</span>';
+										}
+										popupContent +=' <span class="graph">';
+										popupContent +=' <span class="bar">';
+										popupContent +=' <span style="width:'+result[i].selectedCasteDetails[j].persent+'%;" class="index"></span>';
+										popupContent +=' </span>';
+										popupContent +=' </span>';
+										popupContent +=' </span>';
+										popupContent +=' </td>';
+										popupContent +=' <td style="padding-left:35px;">';
+										popupContent +=' <span style="font-weight:#000000">'+result[i].selectedCasteDetails[j].count+' </span>';
+										popupContent +=' </td>';
+										popupContent +=' </tr>';
+										popupContent +=' </tbody>';
+										popupContent +=' </table>';
+									
+									}
+								}
+							}
+					
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+				
+					popupContent +=' </article>';
+				popupContent +=' </li> ';
+				popupContent +=' </ol>';
+				popupContent +=' </article>';
+				
+				$('#results1Div').append(popupContent);
+				popupContent='';				
+				
+				}
+			}
+			
+			
+		}
+		}	
+		
+		}
+		
+		function buildNortTelangana(){
+		
+		var result = electionAcData;
+	//console.log(result);
+	$('#results1Div').html('');
+	var today=new Date();
+
+    var month=new Array();
+	month[0]="January";
+	month[1]="February";
+	month[2]="March";
+	month[3]="April";
+	month[4]="May";
+	month[5]="June";
+	month[6]="July";
+	month[7]="August";
+	month[8]="September";
+	month[9]="October";
+	month[10]="November";
+	month[11]="December";
+	
+	
+	var district = '';
+
+	var countArr = new Array();
+	
+	
+		for(var i in result)
+			{
+			countArr.push(result[i].id);
+			for(var m in  northTelanganaConsti){
+				if( northTelanganaConsti[m] == result[i].id){
+						if(result[i].selectedCasteDetails[0]  != undefined){
+						var popupContent='';
+					popupContent +='<article class="timeline-group" id="stateAK" style="font-family: times new roman,serif,sans-serif;font-size:16px">';
+						/*
+							if(district.length ==0 || district !=''+result[i].mandalName+''){
+							district = result[i].mandalName;
+								popupContent +='<div style="background:#5080A6;">'+result[i].mandalName+'</div>';
+							}
+						*/
+					popupContent +=' <header class="timeline-header">';
+					popupContent +=' <h3 style="font-size:17px;color:#FF0000;"><b aria-hidden="true" class="stateface "></b> '+result[i].name+'</a></h3>';
+					popupContent +=' </header>';
+					//popupContent +=' <span style="color:#303030;">'+month[today.getMonth()]+" "+today.getDate()+","+today.getFullYear()+" "+'</span>';
+					popupContent +=' <ol class="timeline-list"> ';
+					popupContent +=' <li class="timeline-point is-standard" data-when="future"> ';
+					popupContent +=' <article class="results-group">';
+					popupContent +=' <header class="results-header" style="width: 700px; margin-top: -10px;margin-bottom: 10px;">';
+					popupContent +=' </header>';
+					popupContent +=' <span style="font-size: 12px;"> <span style="margin-left:150px;font-size:16px;font-weight:bold;">  Leading Party: '+result[i].selectedCasteDetails[0].name+' </span> <span style="color:#303030;margin-left:300px">'+month[today.getMonth()]+" "+today.getDate()+",  "+today.getFullYear()+" "+'</span></span>';
+					popupContent +=' <header class="results-header" style="width: 700px; border-bottom-color: #004276;border-bottom-width: 2px;">';
+					popupContent +=' </header>';
+					
+					popupContent +=' <div class="results-dataset">';
+							popupContent +=' <div class="results-row layout-full">';
+							popupContent +=' <div class="results-data pos-omega contains-mix is-de-emphasized">';
+							popupContent +=' <div class="results-message">';
+							if(result[i].selectedCasteDetails.length >0){
+							
+								for(var j in result[i].selectedCasteDetails)
+								{
+									
+									if(result[i].selectedCasteDetails[j].casteName != null ){
+										popupContent +=' <table class="results-table" style="font-weight:bold;font-family:Arial,sans-serif">';
+										popupContent +=' <tbody>';
+										popupContent +=' <tr class="type-democrat">';
+										popupContent +=' <td class="results-title" style="width:200px;">';
+										popupContent +=' <span class="percentage-combo" ><span class="number">'+result[i].selectedCasteDetails[j].casteName+'</span>';
+										popupContent +=' </span>';
+										popupContent +=' </td>';
+										popupContent +=' <td class="results-title" style="width:200px;">';
+										if(result[i].selectedCasteDetails[j].name =='TDP'){
+											popupContent +=' <span > TDP </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='INC'){
+											popupContent +=' <span > INC </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='TRS'){
+											popupContent +=' <span > TRS </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='BJP'){
+											popupContent +=' <span > BJP </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='AIMIM'){
+											popupContent +=' <span > AIMIM </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='CPM'){
+											popupContent +=' <span >CPM </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='CPI'){
+											popupContent +=' <span > CPI</span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='LSP'){
+											popupContent +=' <span > LSP </span>';
+										}
+										
+										popupContent +=' </td>';
+										//popupContent +=' <td class="results-title" style="width: 30px;">';
+										//popupContent +=' </td>';
+										popupContent +=' <td class="results-percentage" style=" padding-left: 25px;width: 200px;">';
+										if(result[i].selectedCasteDetails[j].persent != null){
+										popupContent +=' <span class="percentage-combo" ><span class="number">'+result[i].selectedCasteDetails[j].persent+'%</span>';
+										}
+										else{
+										popupContent +=' <span class="percentage-combo" ><span class="number">0 %</span>';
+										}
+										popupContent +=' <span class="graph">';
+										popupContent +=' <span class="bar">';
+										popupContent +=' <span style="width:'+result[i].selectedCasteDetails[j].persent+'%;" class="index"></span>';
+										popupContent +=' </span>';
+										popupContent +=' </span>';
+										popupContent +=' </span>';
+										popupContent +=' </td>';
+										popupContent +=' <td style="padding-left:35px;">';
+										popupContent +=' <span style="font-weight:#000000">'+result[i].selectedCasteDetails[j].count+' </span>';
+										popupContent +=' </td>';
+										popupContent +=' </tr>';
+										popupContent +=' </tbody>';
+										popupContent +=' </table>';
+									
+									}
+								}
+							}
+					
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+				
+					popupContent +=' </article>';
+				popupContent +=' </li> ';
+				popupContent +=' </ol>';
+				popupContent +=' </article>';
+				
+				$('#results1Div').append(popupContent);
+				popupContent='';				
+				
+				}
+			}
+			
+			
+		}
+		}	
+		
+		}
+		
+		function buildSouthAndhraREport(){
+		
+		var result = electionAcData;
+	//console.log(result);
+	$('#results1Div').html('');
+	var today=new Date();
+
+    var month=new Array();
+	month[0]="January";
+	month[1]="February";
+	month[2]="March";
+	month[3]="April";
+	month[4]="May";
+	month[5]="June";
+	month[6]="July";
+	month[7]="August";
+	month[8]="September";
+	month[9]="October";
+	month[10]="November";
+	month[11]="December";
+	
+	
+	var district = '';
+
+	var countArr = new Array();
+	
+	
+		for(var i in result)
+			{
+			countArr.push(result[i].id);
+			for(var m in  southAnshraConsti){
+				if( southAnshraConsti[m] == result[i].id){
+						if(result[i].selectedCasteDetails[0]  != undefined){
+						var popupContent='';
+					popupContent +='<article class="timeline-group" id="stateAK" style="font-family: times new roman,serif,sans-serif;font-size:16px">';
+						/*
+							if(district.length ==0 || district !=''+result[i].mandalName+''){
+							district = result[i].mandalName;
+								popupContent +='<div style="background:#5080A6;">'+result[i].mandalName+'</div>';
+							}
+						*/
+					popupContent +=' <header class="timeline-header">';
+					popupContent +=' <h3 style="font-size:17px;color:#FF0000;"><b aria-hidden="true" class="stateface "></b> '+result[i].name+'</a></h3>';
+					popupContent +=' </header>';
+					//popupContent +=' <span style="color:#303030;">'+month[today.getMonth()]+" "+today.getDate()+","+today.getFullYear()+" "+'</span>';
+					popupContent +=' <ol class="timeline-list"> ';
+					popupContent +=' <li class="timeline-point is-standard" data-when="future"> ';
+					popupContent +=' <article class="results-group">';
+					popupContent +=' <header class="results-header" style="width: 700px; margin-top: -10px;margin-bottom: 10px;">';
+					popupContent +=' </header>';
+					popupContent +=' <span style="font-size: 12px;"> <span style="margin-left:150px;font-size:16px;font-weight:bold;">  Leading Party: '+result[i].selectedCasteDetails[0].name+' </span> <span style="color:#303030;margin-left:300px">'+month[today.getMonth()]+" "+today.getDate()+",  "+today.getFullYear()+" "+'</span></span>';
+					popupContent +=' <header class="results-header" style="width: 700px; border-bottom-color: #004276;border-bottom-width: 2px;">';
+					popupContent +=' </header>';
+					
+					popupContent +=' <div class="results-dataset">';
+							popupContent +=' <div class="results-row layout-full">';
+							popupContent +=' <div class="results-data pos-omega contains-mix is-de-emphasized">';
+							popupContent +=' <div class="results-message">';
+							if(result[i].selectedCasteDetails.length >0){
+							
+								for(var j in result[i].selectedCasteDetails)
+								{
+									
+									if(result[i].selectedCasteDetails[j].casteName != null ){
+										popupContent +=' <table class="results-table" style="font-weight:bold;font-family:Arial,sans-serif">';
+										popupContent +=' <tbody>';
+										popupContent +=' <tr class="type-democrat">';
+										popupContent +=' <td class="results-title" style="width:200px;">';
+										popupContent +=' <span class="percentage-combo" ><span class="number">'+result[i].selectedCasteDetails[j].casteName+'</span>';
+										popupContent +=' </span>';
+										popupContent +=' </td>';
+										popupContent +=' <td class="results-title" style="width:200px;">';
+										if(result[i].selectedCasteDetails[j].name =='TDP'){
+											popupContent +=' <span > TDP </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='INC'){
+											popupContent +=' <span > INC </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='TRS'){
+											popupContent +=' <span > TRS </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='BJP'){
+											popupContent +=' <span > BJP </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='AIMIM'){
+											popupContent +=' <span > AIMIM </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='CPM'){
+											popupContent +=' <span >CPM </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='CPI'){
+											popupContent +=' <span > CPI</span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='LSP'){
+											popupContent +=' <span > LSP </span>';
+										}
+										
+										popupContent +=' </td>';
+										//popupContent +=' <td class="results-title" style="width: 30px;">';
+										//popupContent +=' </td>';
+										popupContent +=' <td class="results-percentage" style=" padding-left: 25px;width: 200px;">';
+										if(result[i].selectedCasteDetails[j].persent != null){
+										popupContent +=' <span class="percentage-combo" ><span class="number">'+result[i].selectedCasteDetails[j].persent+'%</span>';
+										}
+										else{
+										popupContent +=' <span class="percentage-combo" ><span class="number">0 %</span>';
+										}
+										popupContent +=' <span class="graph">';
+										popupContent +=' <span class="bar">';
+										popupContent +=' <span style="width:'+result[i].selectedCasteDetails[j].persent+'%;" class="index"></span>';
+										popupContent +=' </span>';
+										popupContent +=' </span>';
+										popupContent +=' </span>';
+										popupContent +=' </td>';
+										popupContent +=' <td style="padding-left:35px;">';
+										popupContent +=' <span style="font-weight:#000000">'+result[i].selectedCasteDetails[j].count+' </span>';
+										popupContent +=' </td>';
+										popupContent +=' </tr>';
+										popupContent +=' </tbody>';
+										popupContent +=' </table>';
+									
+									}
+								}
+							}
+					
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+				
+					popupContent +=' </article>';
+				popupContent +=' </li> ';
+				popupContent +=' </ol>';
+				popupContent +=' </article>';
+				
+				$('#results1Div').append(popupContent);
+				popupContent='';				
+				
+				}
+			}
+			
+			
+		}
+		}	
+		
+		}
+		
+		
+		function buildRayalasemaWiseResult(){
+		
+		var result = electionAcData;
+	//console.log(result);
+	$('#results1Div').html('');
+	var today=new Date();
+
+    var month=new Array();
+	month[0]="January";
+	month[1]="February";
+	month[2]="March";
+	month[3]="April";
+	month[4]="May";
+	month[5]="June";
+	month[6]="July";
+	month[7]="August";
+	month[8]="September";
+	month[9]="October";
+	month[10]="November";
+	month[11]="December";
+	
+	
+	var district = '';
+
+	var countArr = new Array();
+	//console.log(rayalaseemaConsti);
+		
+		for(var i in result)
+			{
+			for(var m in  rayalaseemaConsti){
+				if( rayalaseemaConsti[m] == result[i].id){
+						if(result[i].selectedCasteDetails[0]  != undefined){
+						var popupContent='';
+					popupContent +='<article class="timeline-group" id="stateAK" style="font-family: times new roman,serif,sans-serif;font-size:16px">';
+						/*
+							if(district.length ==0 || district !=''+result[i].mandalName+''){
+							district = result[i].mandalName;
+								popupContent +='<div style="background:#5080A6;">'+result[i].mandalName+'</div>';
+							}
+						*/
+					popupContent +=' <header class="timeline-header">';
+					popupContent +=' <h3 style="font-size:17px;color:#FF0000;"><b aria-hidden="true" class="stateface "></b> '+result[i].name+'</a></h3>';
+					popupContent +=' </header>';
+					//popupContent +=' <span style="color:#303030;">'+month[today.getMonth()]+" "+today.getDate()+","+today.getFullYear()+" "+'</span>';
+					popupContent +=' <ol class="timeline-list"> ';
+					popupContent +=' <li class="timeline-point is-standard" data-when="future"> ';
+					popupContent +=' <article class="results-group">';
+					popupContent +=' <header class="results-header" style="width: 700px; margin-top: -10px;margin-bottom: 10px;">';
+					popupContent +=' </header>';
+					popupContent +=' <span style="font-size: 12px;"> <span style="margin-left:150px;font-size:16px;font-weight:bold;">  Leading Party: '+result[i].selectedCasteDetails[0].name+' </span> <span style="color:#303030;margin-left:300px">'+month[today.getMonth()]+" "+today.getDate()+",  "+today.getFullYear()+" "+'</span></span>';
+					popupContent +=' <header class="results-header" style="width: 700px; border-bottom-color: #004276;border-bottom-width: 2px;">';
+					popupContent +=' </header>';
+					
+					popupContent +=' <div class="results-dataset">';
+							popupContent +=' <div class="results-row layout-full">';
+							popupContent +=' <div class="results-data pos-omega contains-mix is-de-emphasized">';
+							popupContent +=' <div class="results-message">';
+							if(result[i].selectedCasteDetails.length >0){
+							
+								for(var j in result[i].selectedCasteDetails)
+								{
+									
+									if(result[i].selectedCasteDetails[j].casteName != null ){
+										popupContent +=' <table class="results-table" style="font-weight:bold;font-family:Arial,sans-serif">';
+										popupContent +=' <tbody>';
+										popupContent +=' <tr class="type-democrat">';
+										popupContent +=' <td class="results-title" style="width:200px;">';
+										popupContent +=' <span class="percentage-combo" ><span class="number">'+result[i].selectedCasteDetails[j].casteName+'</span>';
+										popupContent +=' </span>';
+										popupContent +=' </td>';
+										popupContent +=' <td class="results-title" style="width:200px;">';
+										if(result[i].selectedCasteDetails[j].name =='TDP'){
+											popupContent +=' <span > TDP </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='INC'){
+											popupContent +=' <span > INC </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='TRS'){
+											popupContent +=' <span > TRS </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='BJP'){
+											popupContent +=' <span > BJP </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='AIMIM'){
+											popupContent +=' <span > AIMIM </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='CPM'){
+											popupContent +=' <span >CPM </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='CPI'){
+											popupContent +=' <span > CPI</span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='LSP'){
+											popupContent +=' <span > LSP </span>';
+										}
+										
+										popupContent +=' </td>';
+										//popupContent +=' <td class="results-title" style="width: 30px;">';
+										//popupContent +=' </td>';
+										popupContent +=' <td class="results-percentage" style=" padding-left: 25px;width: 200px;">';
+										if(result[i].selectedCasteDetails[j].persent != null){
+										popupContent +=' <span class="percentage-combo" ><span class="number">'+result[i].selectedCasteDetails[j].persent+'%</span>';
+										}
+										else{
+										popupContent +=' <span class="percentage-combo" ><span class="number">0 %</span>';
+										}
+										popupContent +=' <span class="graph">';
+										popupContent +=' <span class="bar">';
+										popupContent +=' <span style="width:'+result[i].selectedCasteDetails[j].persent+'%;" class="index"></span>';
+										popupContent +=' </span>';
+										popupContent +=' </span>';
+										popupContent +=' </span>';
+										popupContent +=' </td>';
+										popupContent +=' <td style="padding-left:35px;">';
+										popupContent +=' <span style="font-weight:#000000">'+result[i].selectedCasteDetails[j].count+' </span>';
+										popupContent +=' </td>';
+										popupContent +=' </tr>';
+										popupContent +=' </tbody>';
+										popupContent +=' </table>';
+									
+									}
+								}
+							}
+					
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+				
+					popupContent +=' </article>';
+				popupContent +=' </li> ';
+				popupContent +=' </ol>';
+				popupContent +=' </article>';
+				
+				$('#results1Div').append(popupContent);
+				popupContent='';				
+				
+				}
+			}
+		}
+		}	
+		
+		}
+		
+		function buildREgionWiseReport13(){
+		
+		var result = electionAcData;
+	//console.log(result);
+	$('#results1Div').html('');
+	var today=new Date();
+
+    var month=new Array();
+	month[0]="January";
+	month[1]="February";
+	month[2]="March";
+	month[3]="April";
+	month[4]="May";
+	month[5]="June";
+	month[6]="July";
+	month[7]="August";
+	month[8]="September";
+	month[9]="October";
+	month[10]="November";
+	month[11]="December";
+	
+	
+	var district = '';
+
+	var countArr = new Array();
+	console.log(rayalaseemaConsti);
+		
+		for(var i in result)
+			{
+			for(var m in  rayalaseemaConsti){
+				if( rayalaseemaConsti[m] == result[i].id){
+						if(result[i].selectedCasteDetails[0]  != undefined){
+						var popupContent='';
+					popupContent +='<article class="timeline-group" id="stateAK" style="font-family: times new roman,serif,sans-serif;font-size:16px">';
+						/*
+							if(district.length ==0 || district !=''+result[i].mandalName+''){
+							district = result[i].mandalName;
+								popupContent +='<div style="background:#5080A6;">'+result[i].mandalName+'</div>';
+							}
+						*/
+					popupContent +=' <header class="timeline-header">';
+					popupContent +=' <h3 style="font-size:17px;color:#FF0000;"><b aria-hidden="true" class="stateface "></b> '+result[i].name+'</a></h3>';
+					popupContent +=' </header>';
+					//popupContent +=' <span style="color:#303030;">'+month[today.getMonth()]+" "+today.getDate()+","+today.getFullYear()+" "+'</span>';
+					popupContent +=' <ol class="timeline-list"> ';
+					popupContent +=' <li class="timeline-point is-standard" data-when="future"> ';
+					popupContent +=' <article class="results-group">';
+					popupContent +=' <header class="results-header" style="width: 700px; margin-top: -10px;margin-bottom: 10px;">';
+					popupContent +=' </header>';
+					popupContent +=' <span style="font-size: 12px;"> <span style="margin-left:150px;font-size:16px;font-weight:bold;">  Leading Party: '+result[i].selectedCasteDetails[0].name+' </span> <span style="color:#303030;margin-left:300px">'+month[today.getMonth()]+" "+today.getDate()+",  "+today.getFullYear()+" "+'</span></span>';
+					popupContent +=' <header class="results-header" style="width: 700px; border-bottom-color: #004276;border-bottom-width: 2px;">';
+					popupContent +=' </header>';
+					
+					popupContent +=' <div class="results-dataset">';
+							popupContent +=' <div class="results-row layout-full">';
+							popupContent +=' <div class="results-data pos-omega contains-mix is-de-emphasized">';
+							popupContent +=' <div class="results-message">';
+							if(result[i].selectedCasteDetails.length >0){
+							
+								for(var j in result[i].selectedCasteDetails)
+								{
+									
+									if(result[i].selectedCasteDetails[j].casteName != null ){
+										popupContent +=' <table class="results-table" style="font-weight:bold;font-family:Arial,sans-serif">';
+										popupContent +=' <tbody>';
+										popupContent +=' <tr class="type-democrat">';
+										popupContent +=' <td class="results-title" style="width:200px;">';
+										popupContent +=' <span class="percentage-combo" ><span class="number">'+result[i].selectedCasteDetails[j].casteName+'</span>';
+										popupContent +=' </span>';
+										popupContent +=' </td>';
+										popupContent +=' <td class="results-title" style="width:200px;">';
+										if(result[i].selectedCasteDetails[j].name =='TDP'){
+											popupContent +=' <span > TDP </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='INC'){
+											popupContent +=' <span > INC </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='TRS'){
+											popupContent +=' <span > TRS </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='BJP'){
+											popupContent +=' <span > BJP </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='AIMIM'){
+											popupContent +=' <span > AIMIM </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='CPM'){
+											popupContent +=' <span >CPM </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='CPI'){
+											popupContent +=' <span > CPI</span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='LSP'){
+											popupContent +=' <span > LSP </span>';
+										}
+										
+										popupContent +=' </td>';
+										//popupContent +=' <td class="results-title" style="width: 30px;">';
+										//popupContent +=' </td>';
+										popupContent +=' <td class="results-percentage" style=" padding-left: 25px;width: 200px;">';
+										if(result[i].selectedCasteDetails[j].persent != null){
+										popupContent +=' <span class="percentage-combo" ><span class="number">'+result[i].selectedCasteDetails[j].persent+'%</span>';
+										}
+										else{
+										popupContent +=' <span class="percentage-combo" ><span class="number">0 %</span>';
+										}
+										popupContent +=' <span class="graph">';
+										popupContent +=' <span class="bar">';
+										popupContent +=' <span style="width:'+result[i].selectedCasteDetails[j].persent+'%;" class="index"></span>';
+										popupContent +=' </span>';
+										popupContent +=' </span>';
+										popupContent +=' </span>';
+										popupContent +=' </td>';
+										popupContent +=' <td style="padding-left:35px;">';
+										popupContent +=' <span style="font-weight:#000000">'+result[i].selectedCasteDetails[j].count+' </span>';
+										popupContent +=' </td>';
+										popupContent +=' </tr>';
+										popupContent +=' </tbody>';
+										popupContent +=' </table>';
+									
+									}
+								}
+							}
+					
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+				
+					popupContent +=' </article>';
+				popupContent +=' </li> ';
+				popupContent +=' </ol>';
+				popupContent +=' </article>';
+				
+				$('#results1Div').append(popupContent);
+				popupContent='';				
+				
+				}
+			}
+		}
+		}	
+		
+		}
+	
+	function buildNortSemandhraWiseReport(){
+		
+		var result = electionAcData;
+	//console.log(result);
+	$('#results1Div').html('');
+	var today=new Date();
+
+    var month=new Array();
+	month[0]="January";
+	month[1]="February";
+	month[2]="March";
+	month[3]="April";
+	month[4]="May";
+	month[5]="June";
+	month[6]="July";
+	month[7]="August";
+	month[8]="September";
+	month[9]="October";
+	month[10]="November";
+	month[11]="December";
+	
+	
+	var district = '';
+
+	var countArr = new Array();
+
+		for(var i in result)
+			{
+			for(var m in  northAnshraConsti){
+				if( northAnshraConsti[m] == result[i].id){
+						if(result[i].selectedCasteDetails[0]  != undefined){
+						var popupContent='';
+					popupContent +='<article class="timeline-group" id="stateAK" style="font-family: times new roman,serif,sans-serif;font-size:16px">';
+						/*
+							if(district.length ==0 || district !=''+result[i].mandalName+''){
+							district = result[i].mandalName;
+								popupContent +='<div style="background:#5080A6;">'+result[i].mandalName+'</div>';
+							}
+						*/
+					popupContent +=' <header class="timeline-header">';
+					popupContent +=' <h3 style="font-size:17px;color:#FF0000;"><b aria-hidden="true" class="stateface "></b> '+result[i].name+'</a></h3>';
+					popupContent +=' </header>';
+					//popupContent +=' <span style="color:#303030;">'+month[today.getMonth()]+" "+today.getDate()+","+today.getFullYear()+" "+'</span>';
+					popupContent +=' <ol class="timeline-list"> ';
+					popupContent +=' <li class="timeline-point is-standard" data-when="future"> ';
+					popupContent +=' <article class="results-group">';
+					popupContent +=' <header class="results-header" style="width: 700px; margin-top: -10px;margin-bottom: 10px;">';
+					popupContent +=' </header>';
+					popupContent +=' <span style="font-size: 12px;"> <span style="margin-left:150px;font-size:16px;font-weight:bold;">  Leading Party: '+result[i].selectedCasteDetails[0].name+' </span> <span style="color:#303030;margin-left:300px">'+month[today.getMonth()]+" "+today.getDate()+",  "+today.getFullYear()+" "+'</span></span>';
+					popupContent +=' <header class="results-header" style="width: 700px; border-bottom-color: #004276;border-bottom-width: 2px;">';
+					popupContent +=' </header>';
+					
+					popupContent +=' <div class="results-dataset">';
+							popupContent +=' <div class="results-row layout-full">';
+							popupContent +=' <div class="results-data pos-omega contains-mix is-de-emphasized">';
+							popupContent +=' <div class="results-message">';
+							if(result[i].selectedCasteDetails.length >0){
+							
+								for(var j in result[i].selectedCasteDetails)
+								{
+									
+									if(result[i].selectedCasteDetails[j].casteName != null ){
+										popupContent +=' <table class="results-table" style="font-weight:bold;font-family:Arial,sans-serif">';
+										popupContent +=' <tbody>';
+										popupContent +=' <tr class="type-democrat">';
+										popupContent +=' <td class="results-title" style="width:200px;">';
+										popupContent +=' <span class="percentage-combo" ><span class="number">'+result[i].selectedCasteDetails[j].casteName+'</span>';
+										popupContent +=' </span>';
+										popupContent +=' </td>';
+										popupContent +=' <td class="results-title" style="width:200px;">';
+										if(result[i].selectedCasteDetails[j].name =='TDP'){
+											popupContent +=' <span > TDP </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='INC'){
+											popupContent +=' <span > INC </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='TRS'){
+											popupContent +=' <span > TRS </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='BJP'){
+											popupContent +=' <span > BJP </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='AIMIM'){
+											popupContent +=' <span > AIMIM </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='CPM'){
+											popupContent +=' <span >CPM </span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='CPI'){
+											popupContent +=' <span > CPI</span>';
+										}
+										if(result[i].selectedCasteDetails[j].name =='LSP'){
+											popupContent +=' <span > LSP </span>';
+										}
+										
+										popupContent +=' </td>';
+										//popupContent +=' <td class="results-title" style="width: 30px;">';
+										//popupContent +=' </td>';
+										popupContent +=' <td class="results-percentage" style=" padding-left: 25px;width: 200px;">';
+										if(result[i].selectedCasteDetails[j].persent != null){
+										popupContent +=' <span class="percentage-combo" ><span class="number">'+result[i].selectedCasteDetails[j].persent+'%</span>';
+										}
+										else{
+										popupContent +=' <span class="percentage-combo" ><span class="number">0 %</span>';
+										}
+										popupContent +=' <span class="graph">';
+										popupContent +=' <span class="bar">';
+										popupContent +=' <span style="width:'+result[i].selectedCasteDetails[j].persent+'%;" class="index"></span>';
+										popupContent +=' </span>';
+										popupContent +=' </span>';
+										popupContent +=' </span>';
+										popupContent +=' </td>';
+										popupContent +=' <td style="padding-left:35px;">';
+										popupContent +=' <span style="font-weight:#000000">'+result[i].selectedCasteDetails[j].count+' </span>';
+										popupContent +=' </td>';
+										popupContent +=' </tr>';
+										popupContent +=' </tbody>';
+										popupContent +=' </table>';
+									
+									}
+								}
+							}
+					
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+							popupContent +=' </div>';
+				
+					popupContent +=' </article>';
+				popupContent +=' </li> ';
+				popupContent +=' </ol>';
+				popupContent +=' </article>';
+				
+				$('#results1Div').append(popupContent);
+				popupContent='';				
+				
+				}
+			}
+		}
+		}	
+		
+		}
+	
+	
 </script>
 
 </body>
