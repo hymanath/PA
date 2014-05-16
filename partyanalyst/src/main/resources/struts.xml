@@ -7035,6 +7035,19 @@
 			</result>		
 		</action>
 		
+		<action name="getMarginAnalysisOnLiveResultsForAssemblies" class="stratagicReportsAction" method="getMarginAnalysisOnLiveResultsForAssemblies">
+		<result type="json" name="success">
+		<param name="root">partyResultVO</param>
+		</result>
+		</action>
+		
+		 <action name="getWonAndLeadCountPartyWise" class="dashBoardElectionResultsAction" method="getWonAndLeadCountPartyWise">
+			<result type="json" name="success">
+				<param name="root">matrixReport</param>				
+			</result>		
+		</action>
+		
+		
 </package>
 		
 </struts>      

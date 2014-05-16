@@ -147,6 +147,35 @@ public class DashBoardElectionResultsAction extends ActionSupport implements Ser
 		return Action.SUCCESS;
 	}
 	
+	
+	public String getWonAndLeadCountPartyWise()
+	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			
+			
+			Long electionId = jObj.getLong("electionId");
+			Long scopeId = jObj.getLong("scopeId");
+			
+			 JSONArray jArray = jObj.getJSONArray("locationIds");
+			 List<Long> locationIds = new ArrayList<Long>();
+			 
+			   for (int i = 0; i < jArray.length(); i++) 
+			   {
+				   locationIds.add(new Long(jArray.get(i).toString()));
+			   }
+			   
+			matrixReport = dashBoardElectionResultsService.getWonAndLeadCountPartyWise(electionId,locationIds,scopeId);
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			
+		}
+		return Action.SUCCESS;
+	}
+	
 	public String getSubReportForElectionResultByConstituencyReservationType()
 	{
 		try
