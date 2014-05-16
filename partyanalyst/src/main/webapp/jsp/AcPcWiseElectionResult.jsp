@@ -1061,7 +1061,7 @@ function getConstituencyWiseResults()
 	</div>
 </div>
 </br></br>
-div class="row-fluid" id="legend" style="display:none;">
+<div class="row-fluid" id="legend" style="display:none;">
 <table>
 <tr>
 <td><b>TDP : <span style="background: #FFD700 ;font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
