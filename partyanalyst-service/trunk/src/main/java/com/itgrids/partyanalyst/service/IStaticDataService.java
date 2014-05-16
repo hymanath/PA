@@ -431,4 +431,7 @@ public interface IStaticDataService {
 		public ConstituencyLiveResultsVO getPartyWiseWonLeadCountInLive();
 
 		public List<SelectOptionVO> getAllParliaments();
+		
+		public List<SelectOptionVO> getLatestConstituenciesByStateIdAndTypeForRegion(Long stateId,String locationType,String region);
+		public List<SelectOptionVO> getRegionsByStateIdForRegion(Long stateId,String region);
 }
