@@ -158,7 +158,7 @@ public class DashBoardElectionResultsService implements
 			}
 			
 			
-		List<Object[]> winningCandidatesList = nominationDAO.getWinningCandidatesDetailsForConstituenciesByElectionId(38L);
+		List<Object[]> winningCandidatesList = nominationDAO.getWinningCandidatesDetailsForConstituenciesByElectionId(258L);
 			
 		//0 - regionId 1-regionName  2 - districtId 3 - districtName 4 - constituencyId 5 - constituencyName 6 - partyid 7 - partyName 8- reservation
 		// 9 -areatype 10- parliamentId 11 - parliamentName
@@ -1041,6 +1041,7 @@ public class DashBoardElectionResultsService implements
 					{
 						DashBoardResultsVO partyVO = new DashBoardResultsVO();
 						partyVO.setId(partyId);
+						partyVO.setName(partyMap.get(partyId));
 						
 						locationVO.getPartiesDetails().add(partyVO);
 						
@@ -1066,7 +1067,7 @@ public class DashBoardElectionResultsService implements
 						 
 						 if(Long.parseLong(obj[5].toString()) == 1L)
 								partyVO.setWinCount(partyVO.getWinCount() + Long.parseLong(obj[0].toString()));
-							else
+						else 
 								partyVO.setLeadCount(partyVO.getLeadCount() + Long.parseLong(obj[0].toString()));
 						 
 					 }else
