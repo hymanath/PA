@@ -211,6 +211,8 @@ $('document').ready(function(){
 	 $('#areaSelectionDiv').hide();
 	 $('#stateSelectDiv').hide();
 	 $('#submitButtionDiv').hide();
+	 $('#andhraImageDiv').show();
+	 $('#telanganaImageDiv').hide();
 	 //getElectionResultForAssemblyPrevious(1,"first",1,2);
 	 //getElectionResultForParlimentPresent(1,"second",2,2);
 	 $('#scopeId').change(function(){
@@ -1010,8 +1012,10 @@ function getConstituencyWiseResults()
 <div class="container" style="font-family: verdana; font-size: 14px; border: 1px solid rgb(204, 204, 204); padding: 0px 10px 10px; margin-top: 24px;" id="mapDiv">
 
 
-<h4 style="padding: 10px; margin-top: 10px; border-radius: 5px; text-align: center; background: none repeat scroll 0% 0% rgb(73, 175, 205);">LIVE ELECTION RESULTS COMPARISON</h4> 
-
+<!--<h4 style="padding: 10px; margin-top: 10px; border-radius: 5px; text-align: center; background: none repeat scroll 0% 0% rgb(73, 175, 205);">LIVE ELECTION RESULTS COMPARISON</h4> -->
+ <div id="andhraImageDiv" style="text-align:center;margin-top:10px;" style="display:none;"><img src="images/Interactive-Seemandhra-Live-Election-Results-Comparision.png"></div>
+ 
+ <div id="telanganaImageDiv" style="text-align:center;margin-top:10px;" style="display:none;"><img src="images/Interactive-Telangana-Live-Election-Results-Comparision.png"></div>
 
 <map name="Map" id="menuMap">
 	<area shape="rect" coords="442,-5,503,31" href="javascript:{getRegionWiseResults('Telangana');}" title="Telangana"/>
@@ -1085,8 +1089,8 @@ function getConstituencyWiseResults()
 	 <a class="btn btn-info btn-block " value="Submit" onClick="getElectionDetails();" >Submit</a>	
 	</div>
 </div>
-</br></br>
-<div class="row-fluid" id="legend" style="display:none;">
+</br>
+<div class="row-fluid" id="legend" style="display:none;margin-bottom:-20px;">
 <table>
 <tr>
 <td><b>TDP : <span style="background: #FFD700 ;font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
@@ -1120,8 +1124,8 @@ function getConstituencyWiseResults()
 <div id="partiesDiv"></div>
 </div>
 -->
-<div id="overviewDivId1" class="span5"></div>
-<div id="overviewDivId2" class="span5"></div>
+<div id="overviewDivId1" class="span5" style="margin: 12px 48px 0px 49px;"></div>
+<div id="overviewDivId2" class="span5" style="margin:12px 10px 10px 39px"></div>
 <div id="subTitlesDiv" style="margin-left:40px;margin-top:20px;"></div>
 
 <div id="results1Div" ></div>
@@ -2934,7 +2938,9 @@ function getRegionWiseResults(searchType)
 		telanganaDistrict();
 		 telanganaRegion();
 		$('#liveResultsDiv').hide();
-		$('#mapDiv').show();
+		$('#mapDiv').show();		
+		$('#andhraImageDiv').hide();
+		$('#telanganaImageDiv').show();
 		$('#legend').show();
 		$('#bannerDiv').show();
 		$('#areaSelectionDiv').hide();
@@ -2948,6 +2954,7 @@ function getRegionWiseResults(searchType)
 		$('.parliamentCls').hide();
 		$('#weathermap4').hide();
 		$('#indiaBannerId').hide();
+		$('#legend').css("margin-top","-65px");
 	}
 	else if(searchType == 'Semandhra')
 	{
@@ -2958,6 +2965,8 @@ function getRegionWiseResults(searchType)
 		$('#liveResultsDiv').hide();
 			$('#bannerDiv').show();
 		$('#mapDiv').show();
+		$('#andhraImageDiv').show();
+		$('#telanganaImageDiv').hide();
 		$('#legend').show();
 		$('#areaSelectionDiv').hide();
 		$('#stateSelectDiv').hide();
@@ -2970,13 +2979,15 @@ function getRegionWiseResults(searchType)
 			$('.parliamentCls').hide();
 			$('#weathermap4').hide();
 			$('#indiaBannerId').hide();
+			$('#legend').css("margin-top","-65px");
 	}
 	else if(searchType == 'India')
 	{
 		$('#bannerDiv').hide();
 		$(".parliamentCls").show();
 		$('#liveResultsDiv').hide();
-		
+		$('#telanganaImageDiv').hide();
+		$('#andhraImageDiv').hide();
 		$('#mapDiv').hide();
 		$('#legend').hide();
 		$('#areaSelectionDiv').hide();
@@ -2989,6 +3000,7 @@ function getRegionWiseResults(searchType)
 		$('#slider3').hide();
 		$('#weathermap4').hide();
 		$('#indiaBannerId').hide();
+		$('#legend').css("margin-top","0px");
 	}
 	else if(searchType == 'StateAnalysis')
 	{
@@ -2997,6 +3009,8 @@ function getRegionWiseResults(searchType)
 		$('#liveResultsDiv').show();
 		$('#mapDiv').hide();
 		$('#legend').hide();
+		$('#telanganaImageDiv').hide();
+		$('#andhraImageDiv').hide();
 		$('#areaSelectionDiv').hide();
 		$('#stateSelectDiv').hide();
 		$('#submitButtionDiv').hide();
@@ -3008,7 +3022,7 @@ function getRegionWiseResults(searchType)
 			$('.parliamentCls').hide();
 					$('#weathermap4').hide();
 			$('#indiaBannerId').hide();
-			
+		$('#legend').css("margin-top","0px");	
 	}
 	else if(searchType == 'DistrictAnalysis')
 	{
@@ -3017,6 +3031,8 @@ function getRegionWiseResults(searchType)
 		$('#liveResultsDiv').hide();
 		$('#mapDiv').hide();
 		$('#legend').hide();
+		$('#telanganaImageDiv').hide();
+		$('#andhraImageDiv').hide();
 		$('#areaSelectionDiv').hide();
 		$('#stateSelectDiv').hide();
 		$('#submitButtionDiv').hide();
@@ -3028,6 +3044,7 @@ function getRegionWiseResults(searchType)
 			$('.parliamentCls').hide();
 			$('#weathermap4').hide();
 			$('#indiaBannerId').hide();
+			$('#legend').css("margin-top","0px");
 	}
 	else if(searchType == 'CBNEffect')
 	{
@@ -3036,6 +3053,8 @@ function getRegionWiseResults(searchType)
 		$('#bannerDiv').show();
 		$('#mapDiv').show();
 		$('#legend').show();
+		$('#telanganaImageDiv').hide();
+		$('#andhraImageDiv').hide();
 		$('#areaSelectionDiv').show();
 		$('#stateSelectDiv').show();
 		$('#submitButtionDiv').show();
@@ -3049,6 +3068,7 @@ function getRegionWiseResults(searchType)
 		getParliments(1,258,872,2);
 			$('.parliamentCls').hide();
 			$('#indiaBannerId').hide();
+			$('#legend').css("margin-top","0px");
 	}
 	else if(searchType == 'ModiEffect')
 	{
@@ -3059,6 +3079,8 @@ function getRegionWiseResults(searchType)
 		$('#liveResultsDiv').hide();
 		$('#mapDiv').hide();
 		$('#legend').hide();
+		$('#telanganaImageDiv').hide();
+		$('#andhraImageDiv').hide();
 		$('#areaSelectionDiv').hide();
 		$('#stateSelectDiv').hide();
 		$('#submitButtionDiv').hide();
@@ -3067,6 +3089,7 @@ function getRegionWiseResults(searchType)
 		$('#unemchart1p_').show();
 		$('#div_sld1').show();
 		$('#slider3').show();
+		$('#legend').css("margin-top","0px");
 		getElectionResultForTotalParliment();
 		$('#weathermap4').hide();
 		getParliments(1,260,163,1);
@@ -3558,26 +3581,26 @@ var matrixReportDtls1={
 	  var str ='';
 	  
 	  if(type == "district")  
-	   str+='<h5>District Wise Analysis</h5>';
+	   str+='<h5 style="margin-top: 20px; margin-bottom: 10px; margin-left:-11px" class="headingClass">District Wise Analysis</h5>';
 	  else
-	   str+='<h5>Region Wise Analysis</h5>';
+	   str+='<h5 style="margin-top: 20px;margin-bottom: 10px; margin-left:-11px" class="headingClass">Region Wise Analysis</h5>';
 	  
 	  
-	  str+='<table border="1">';
+	  str+='<table style=" margin:26px 10px 0 -10px;"  cellpadding="5">';
 	   str+='<thead>';
 	    str+='<tr>';
-		 str+='<th rowspan="2"></th>';
+		 str+='<th rowspan="2" class="thBorder"></th>';
 		
 		$.each(result[0].partiesDetails,function(index,value){
-		 str+='<th colspan="2">'+value.name+'</th>';
+		 str+='<th colspan="2" class="thBorder">'+value.name+'</th>';
 		});
 		 
 		str+='</tr>';
 		
 		 str+='<tr>';	
 		$.each(result[0].partiesDetails,function(index,value){
-		 str+='<th>W</th>';
-		 str+='<th>L</th>';
+		 str+='<th class="thBorder">W</th>';
+		 str+='<th class="thBorder">L</th>';
 		});
 		 
 		str+='</tr>';
@@ -3585,10 +3608,10 @@ var matrixReportDtls1={
 	  str+='<tbody>';
 	  $.each(result,function(index,value){
 		  str+='<tr>';
-		   str+='<td>'+value.name+'</td>';
+		   str+='<td class="thBorder">'+value.name+'</td>';
 		   $.each(value.partiesDetails,function(index1,value1){
-			   str+='<td>'+value1.winCount+'</td>';
-			   str+='<td>'+value1.leadCount+'</td>';
+			   str+='<td class="thBorder">'+value1.winCount+'</td>';
+			   str+='<td class="thBorder">'+value1.leadCount+'</td>';
 		   });
 		  str+='</tr>';  
 	  });
