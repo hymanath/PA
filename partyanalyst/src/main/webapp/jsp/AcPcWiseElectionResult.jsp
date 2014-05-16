@@ -2045,7 +2045,7 @@ var stateType = '';
 			popupContent +=' <table>';
 			popupContent +=' <tr>';
 			popupContent +='<td style="width:700px;"> Candidate Name </td>';
-			//popupContent +='<td style="width:300px;padding-left:15px;"> Party </td>';
+			popupContent +='<td style="width:300px;padding-left:15px;"> Party </td>';
 			popupContent +='<td style="width:600px;"> Votes Percentage  </td>';
 			popupContent +=' </tr">';
 			popupContent +=' <header class="results-header" style="width: 350px; margin-top: -10px;border-bottom-color: #004276;border-bottom-width: 2px;">';
@@ -2076,38 +2076,38 @@ var stateType = '';
 							popupContent +=' <span class="percentage-combo" ><span class="number">'+electionAcData[i].selectedCasteDetails[j].casteName+'</span>';
 							popupContent +=' </span>';
 							popupContent +=' </td>';
-						/*	popupContent +=' <td class="results-title" style="width:40px;">';
+							popupContent +=' <td class="results-title" style="width:40px;">';
 							//popupContent +=' <span class="percentage-combo" ><span class="number">'+electionAcData[i].selectedCasteDetails[j].name+'</span>';
 							if(electionAcData[i].selectedCasteDetails[j].name =='TDP'){
-								popupContent +=' <span > <img src="images/party_flags/TDP.PNG" width=125% /></span>';
+								popupContent +=' <span > <img src="images/party_flags2/TDP.PNG" width=125% alt="TDP"/></span>';
 							}
 							if(electionAcData[i].selectedCasteDetails[j].name =='YSRC'){
-								popupContent +=' <span > <img src="images/party_flags/YSRC.PNG" width=125% /></span>';
+								popupContent +=' <span > <img src="images/party_flags2/YSRC.PNG" width=125% alt="YSRC"/></span>';
 							}
 							if(electionAcData[i].selectedCasteDetails[j].name =='INC'){
-								popupContent +=' <span > <img src="images/party_flags/INC.png" width=125% /></span>';
+								popupContent +=' <span > <img src="images/party_flags2/INC.png" width=125% alt"INC"/></span>';
 							}
 							if(electionAcData[i].selectedCasteDetails[j].name =='TRS'){
-								popupContent +=' <span > <img src="images/party_flags/TRS.png" width=125% /></span>';
+								popupContent +=' <span > <img src="images/party_flags2/TRS.png" width=125% alt="TRS"/></span>';
 							}
 							if(electionAcData[i].selectedCasteDetails[j].name =='BJP'){
-								popupContent +=' <span > <img src="images/party_flags/BJP.png" width=125% /></span>';
+								popupContent +=' <span > <img src="images/party_flags2/BJP.png" width=125% alt="BJP"/></span>';
 							}
 							if(electionAcData[i].selectedCasteDetails[j].name =='AIMIM'){
-								popupContent +=' <span > <img src="images/party_flags/AIMIM.png" width=125% /></span>';
+								popupContent +=' <span > <img src="images/party_flags2/AIMIM.png" width=125% alt="AIMIM"/></span>';
 							}
 							if(electionAcData[i].selectedCasteDetails[j].name =='CPM'){
-								popupContent +=' <span > <img src="images/party_flags/CPM.png" width=125% /></span>';
+								popupContent +=' <span > <img src="images/party_flags2/CPM.png" width=125% alt="CPM"/></span>';
 							}
 							if(electionAcData[i].selectedCasteDetails[j].name =='CPI'){
-								popupContent +=' <span > <img src="images/party_flags/CPI.png" width=125% /></span>';
+								popupContent +=' <span > <img src="images/party_flags2/CPI.png" width=125% alt="CPI"/></span>';
 							}
 							if(electionAcData[i].selectedCasteDetails[j].name =='LSP'){
-								popupContent +=' <span > <img src="images/party_flags/LSP.png" width=125% /></span>';
+								popupContent +=' <span > <img src="images/party_flags2/LSP.png" width=125% alt="LSP"/></span>';
 							}
 							
 							popupContent +=' </span>';
-							popupContent +=' </td>';*/
+							popupContent +=' </td>';
 							//popupContent +=' <td class="results-title" style="width: 30px;">';
 							//popupContent +=' </td>';
 							popupContent +=' <td class="results-percentage" style="width:100px;padding-left: 25px;">';
@@ -2135,8 +2135,23 @@ var stateType = '';
 							popupContent +=' </div>';
 							popupContent +=' </div>';
 
-							partyName = electionAcData[i].selectedCasteDetails[0].name;
-							fillColour(partyName,layer,popupContent);
+							if(electionAcData[i].selectedCasteDetails[0].count == 0)
+							{
+								layer.setStyle({
+								color: '#000000',
+								weight: 1,
+								opacity: 0.6,
+								fillOpacity: 0.65,
+								fillColor: '#FFFFFF'
+								});
+								layer.bindPopup(popupContent);
+								}
+								else
+								{
+								partyName = electionAcData[i].selectedCasteDetails[0].name;
+								fillColour(partyName,layer,popupContent);
+							}
+
 						}
 						
 			
@@ -2265,7 +2280,7 @@ var stateType = '';
 			popupContent +=' <table>';
 		popupContent +=' <tr>';
 		popupContent +='<td style="width:700px;"> Candidate Name </td>';
-		//popupContent +='<td style="width:300px;padding-left:15px;"> Party </td>';
+		popupContent +='<td style="width:300px;padding-left:15px;"> Party </td>';
 		popupContent +='<td style="width:600px;"> Votes Percentage  </td>';
 		popupContent +=' </tr">';
 		popupContent +=' <header class="results-header" style="width: 350px; margin-top: -10px;border-bottom-color: #004276;border-bottom-width: 2px;">';
@@ -2297,39 +2312,39 @@ var stateType = '';
 						popupContent +=' <span class="percentage-combo" ><span class="number">'+electionPcData[i].selectedCasteDetails[j].casteName+'</span>';
 						popupContent +=' </span>';
 						popupContent +=' </td>';
-						/*popupContent +=' <td class="results-title" style="width: 25px;">';
+						popupContent +=' <td class="results-title" style="width: 25px;">';
 						//popupContent +=' <span class="percentage-combo" ><span class="number">'+electionAcData[i].selectedCasteDetails[j].name+'</span>';
 						if(electionPcData[i].selectedCasteDetails[j].name =='TDP'){
-							popupContent +=' <span > <img src="images/party_flags/TDP.PNG" width=125% /></span>';
+							popupContent +=' <span > <img src="images/party_flags2/TDP.PNG" width=125% alt="TDP"/></span>';
 						}
 						if(electionPcData[i].selectedCasteDetails[j].name =='YSRC'){
-							popupContent +=' <span > <img src="images/party_flags/YSRC.PNG" width=125% /></span>';
+							popupContent +=' <span > <img src="images/party_flags2/YSRC.PNG" width=125% alt="YSRC"/></span>';
 						}
 						if(electionPcData[i].selectedCasteDetails[j].name =='INC'){
-							popupContent +=' <span > <img src="images/party_flags/INC.png" width=125% /></span>';
+							popupContent +=' <span > <img src="images/party_flags2/INC.png" width=125% alt"INC"/></span>';
 						}
 						if(electionPcData[i].selectedCasteDetails[j].name =='TRS'){
-							popupContent +=' <span > <img src="images/party_flags/TRS.png" width=125% /></span>';
+							popupContent +=' <span > <img src="images/party_flags2/TRS.png" width=125% alt="TRS"/></span>';
 						}
 						if(electionPcData[i].selectedCasteDetails[j].name =='BJP'){
-							popupContent +=' <span > <img src="images/party_flags/BJP.png" width=125% /></span>';
+							popupContent +=' <span > <img src="images/party_flags2/BJP.png" width=125% alt="BJP"/></span>';
 						}
 						if(electionPcData[i].selectedCasteDetails[j].name =='AIMIM'){
-							popupContent +=' <span > <img src="images/party_flags/AIMIM.png" width=125% /></span>';
+							popupContent +=' <span > <img src="images/party_flags2/AIMIM.png" width=125% alt="AIMIM"/></span>';
 						}
 						if(electionPcData[i].selectedCasteDetails[j].name =='CPM'){
-							popupContent +=' <span > <img src="images/party_flags/CPM.png" width=125% /></span>';
+							popupContent +=' <span > <img src="images/party_flags2/CPM.png" width=125% alt="CPM"/></span>';
 						}
 						if(electionPcData[i].selectedCasteDetails[j].name =='CPI'){
-							popupContent +=' <span > <img src="images/party_flags/CPI.png" width=125% /></span>';
+							popupContent +=' <span > <img src="images/party_flags2/CPI.png" width=125% alt="CPI"/></span>';
 						}
 						if(electionPcData[i].selectedCasteDetails[j].name =='LSP'){
-							popupContent +=' <span > <img src="images/party_flags/LSP.png" width=125% /></span>';
+							popupContent +=' <span > <img src="images/party_flags2/LSP.png" width=125% alt="LSP"/></span>';
 						}
 						
 						popupContent +=' </span>';
 						popupContent +=' </td>';
-						*/
+						
 						//popupContent +=' <td class="results-title" style="width: 30px;">';
 						//popupContent +=' </td>';
 						popupContent +=' <td class="results-percentage" style="width: 100px;padding-left: 25px;">';
@@ -2357,8 +2372,22 @@ var stateType = '';
 						popupContent +=' </div>';
 						popupContent +=' </div>';
 						
-						partyName = electionPcData[i].selectedCasteDetails[0].name;
-						fillColour(partyName,layer,popupContent);
+						if(electionPcData[i].selectedCasteDetails[0].count == 0)
+						{
+							layer.setStyle({
+							color: '#000000',
+							weight: 1,
+							opacity: 0.6,
+							fillOpacity: 0.65,
+							fillColor: '#FFFFFF'
+							});
+							layer.bindPopup(popupContent);
+							}
+							else
+							{
+							partyName = electionPcData[i].selectedCasteDetails[0].name;
+							fillColour(partyName,layer,popupContent);
+						}
 					}
 					
 		
