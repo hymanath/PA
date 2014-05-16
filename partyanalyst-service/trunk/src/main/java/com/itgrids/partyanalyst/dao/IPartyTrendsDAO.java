@@ -56,6 +56,20 @@ public interface IPartyTrendsDAO extends GenericDao<PartyTrends, Long> {
 
     public List<?> callStoredProcedure();
 
+//2014 results  anil
+    
+    public List<?> loadConStituencyIdsWithNo(Long electionId,Long stateId,Long electionScopeId,Long year) ;
+    public int updateCandidateReult(Long partyId,Long  electionId,Double votesEarned,Long constituencyId,String votesPercentage,Double marginVotes,String marginPercentage);
+    public int updateCandidateReultForIndependents(String lastname,Long  electionId,Double votesEarned,Long constituencyId,String votesPercentage,Double marginVotes,String marginPercentage);
+    public List<Object[]> getVotesPolledForConst(Long  electionId,Long stateId);
+    public int updateCandidateElection(Long  electionId,int status,Long constituencyId);
+    public int updateNotaVotesInConstElectResult(Long  electionId,long notaVotes,Long constituencyId);
+    public List<Object[]> getVotesPolledForConstForParliament(Long  electionId);
+
+
+
+
+
 
 
 
