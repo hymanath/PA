@@ -1002,7 +1002,8 @@ function getConstituencyWiseResults()
 </div>
 
 <div align="center" id="indiaBannerId">
-<img src="images/India-Page-Banner.jpg" width="960" height="32" border="0" />
+<img src="images/India-Page-Banner.png" width="960" height="32" border="0" />
+<!--<img width="960" height="32" border="0" usemap="#Maps22" src="images/India-Page-Banner.png">-->
 </div>
 
 
@@ -1128,7 +1129,10 @@ function getConstituencyWiseResults()
 </div>
 
 
-<div class="parliamentCls offset2">
+<div class="parliamentCls offset2 container">
+<div id="bannerDiv" align="center" style="display: block;">
+<img width="960" height="32" border="0" usemap="#Maps22" src="images/India-Page-Banner.jpg">
+</div>
 	<div class="parliamentResultsDiv" style="background:#ffffff;float:left;width:975px;"></div>
 	<div class="partyWiseResultDiv" style="background:#ffffff;float:left;width:975px;"></div>
 	<div style="background:#ffffff;float:left;width:975px;"> 
@@ -3207,9 +3211,9 @@ function buildStateWideParliaments(results){
 	str +="<table class='parlResultTable offset1' width='800' cellspacing='0' cellpadding='2' border='0'>";
 		str +="<tbody style='font-family: Tahoma;font-size: 12px;'>";
 			str +="<tr>";
-				str +="<td colspan='5'><img width='300' height='130' src='images/specialPage/2014Ele.png'></td>";
-				str +="<td colspan='3'><img width='140' height='150' src='images/specialPage/Modi.png'></td>";
-				str +="<td colspan='3'><img width='140' height='150' src='images/specialPage/Rahul.png'></td>";
+				//str +="<td colspan='5'><img width='300' height='130' src='images/specialPage/2014Ele.png'></td>";
+				//str +="<td colspan='3'><img width='140' height='150' src='images/specialPage/Modi.png'></td>";
+				//str +="<td colspan='3'><img width='140' height='150' src='images/specialPage/Rahul.png'></td>";
 			str +="</tr>";
 			str +="<tr><td bgcolor='#AACAEA' style='padding: 0px;' colspan='14'><img width='1' height='1' src='images/specialPage/spacer.gif'></td></tr>";
 			str +="<tr>";
