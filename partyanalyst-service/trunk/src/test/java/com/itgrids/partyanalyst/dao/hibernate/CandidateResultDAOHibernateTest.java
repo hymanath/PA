@@ -100,15 +100,15 @@ public class CandidateResultDAOHibernateTest extends BaseDaoTestCase {
 		}
 	*/
 	
-	public void testGetLastElectionWinner(){
-		/*List<Object[]> list = candidateResultDAO.getPreviousElectionWinningPartyByConstituency(232l);
+	/*public void testGetLastElectionWinner(){
+		List<Object[]> list = candidateResultDAO.getPreviousElectionWinningPartyByConstituency(232l);
 		if(list.size()>0){
 			System.out.println(list.get(0)[0]+"--"+list.get(0)[1]+"--"+list.get(0)[2]+"--"+list.get(0)[3]);
-		}*/
+		}
 		
-		/*List<Object[]> list = candidateResultDAO.getElectionResultsByConstituency(38l,"telangana");
+		List<Object[]> list = candidateResultDAO.getElectionResultsByConstituency(38l,"telangana");
 		
-		System.out.println(list.size());*/
+		System.out.println(list.size());
 		
 		//List<Object[]> list = candidateResultDAO.getElectionResultsByParliament(17l);
 		List<Long> constituencyIds = new ArrayList<Long>();
@@ -126,7 +126,7 @@ public class CandidateResultDAOHibernateTest extends BaseDaoTestCase {
 		List<Object[]> list = candidateResultDAO.getElectionResultsByMargin(38l, constituencyIds,2l);
 		
 		System.out.println(list.size());
-	}
+	}*/
 	
 	/*public void test(Long electionId){
 		
@@ -134,6 +134,19 @@ public class CandidateResultDAOHibernateTest extends BaseDaoTestCase {
 		
 		System.out.println(list.size());
 	}*/
+	
+	public void testgetElectionResultsForCBNORMODIEffect()
+	{
+		List<Long> parties = new ArrayList<Long>();
+		parties.add(872l);
+		parties.add(362l);
+		parties.add(163l);
+		parties.add(72l);
+		parties.add(886l);
+		parties.add(662l);
+		parties.add(1117l);
+		System.out.println(candidateResultDAO.getElectionResultsForCBNORMODIEffect(17l,1l,parties,1l).size());;
+	}
 	
 	
 	

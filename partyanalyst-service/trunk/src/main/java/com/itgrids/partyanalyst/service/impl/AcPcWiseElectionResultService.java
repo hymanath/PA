@@ -143,7 +143,7 @@ public class AcPcWiseElectionResultService implements IAcPcWiseElectionResultSer
 		return returnList;
 	}
 	
-	public List<GenericVO> cbnOrModiEffect(Long electionId,Long stateid,Long partyId,Long electionScopeId)
+	public List<GenericVO> cbnOrModiEffect(Long electionId,Long stateid,List<Long> partyId,Long electionScopeId)
 	{
 		List<GenericVO> returnList = null;
 		try
