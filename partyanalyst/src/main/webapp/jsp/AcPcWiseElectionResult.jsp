@@ -929,6 +929,8 @@ function getConstituencyWiseResults()
 	 }
 	 function buildConstituencyResults(result)
 	 {
+		 
+	   $('#constituencyResultsDiv').html('');
 	   $('#constituencyResultsDiv').show();
 	   $('#constituencyResultsDiv').show();
 	   if(result != null)
@@ -954,10 +956,21 @@ function getConstituencyWiseResults()
 			str += '<td>'+result[i].parliamentNo+'</td>';
 			str += '<td>'+result[i].parliamentName+'</td>';  
 			str += '<td>'+result[i].assemblyNo+'</td>';
-			str += '<td>'+result[i].assemblyName+'</td>';			
-			str += '<td>'+result[i].firstRankCandidateName+'</td>';
-			str += '<td>'+result[i].secondRankCandidateName+'</td>';
-			str += '<td>'+result[i].leadBy+'</td>';
+			str += '<td>'+result[i].assemblyName+'</td>';	
+			if(firstRankCandidateName != null)
+			 str += '<td>'+result[i].firstRankCandidateName+'</td>';
+			else
+			 str += '<td>---</td>';
+				
+			 if(secondRankCandidateName != null)
+			  str += '<td>'+result[i].secondRankCandidateName+'</td>';
+			 else
+			  str += '<td>---</td>';
+				
+			  if(result[i].leadBy != null)
+			   str += '<td>'+result[i].leadBy+'</td>';
+			  else
+			   str += '<td>---</td>';
 			str += '</tr>';
 		}
 		str += '</table>';
