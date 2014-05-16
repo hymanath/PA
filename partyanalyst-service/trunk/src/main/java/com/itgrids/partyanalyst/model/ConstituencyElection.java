@@ -200,7 +200,7 @@ public class ConstituencyElection extends BaseModel implements java.io.Serializa
 		this.constituencyLeadCandidates = constituencyLeadCandidates;
 	}
 
-	@Column(name = "count_status")
+	@Column(name = "count_status",insertable=false)
 	public int getCountStatus() {
 		return countStatus;
 	}
