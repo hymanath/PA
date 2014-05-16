@@ -116,6 +116,7 @@ static
 	map.put("Bharatiya Bahujan Party",140);
 	map.put("Communist Party of India (Marxist-Leninist) Red Star",1711);
 	map.put("Chattisgarh Swabhiman Manch",1710);*/
+	map.put("None of the Above",232323);
 	map.put("Telangana Rashtra Samithi",886);
 	map.put("Indian National Congress",362);
 	map.put("Telugu Desam",872);
