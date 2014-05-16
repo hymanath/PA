@@ -7029,6 +7029,14 @@
 			</result>		
 		</action>
 		
+		 
+		 <action name="cbnOrModiEffectAction" class="acPcWiseElectionResultAction" method="cbnOrModiEffect">
+			<result type="json" name="success">
+				<param name="root">returnList</param>				
+			</result>		
+		</action>
+		
+		 		
 		<action name="getPartyWiseWonLeadCountInLive" class="constituencyElectionResultsAction" method="getPartyWiseWonLeadCountInLive">
 			<result type="json" name="success">
 				<param name="root">partiesListVO</param>				
