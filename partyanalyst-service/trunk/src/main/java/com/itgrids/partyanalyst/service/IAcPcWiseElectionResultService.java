@@ -10,5 +10,5 @@ public interface IAcPcWiseElectionResultService
 
 	public List<BasicVO> getPartyWiseComperassionResult(Long stateId,Long electionId,List<Long> partyIds,Long electionScopeId,String scope);
 	
-	public List<GenericVO> cbnOrModiEffect(Long electionId,Long stateid,List<Long> partyId,Long electionScopeId);
+	public List<GenericVO> cbnOrModiEffect(Long electionId,Long stateid,Long partyId,Long electionScopeId);
 }
