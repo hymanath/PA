@@ -1122,7 +1122,7 @@ function getConstituencyWiseResults()
 -->
 <div id="overviewDivId1" class="span5"></div>
 <div id="overviewDivId2" class="span5"></div>
-<div id="subTitlesDiv" style="margin-left:40px;margin-top:20px;"></div>
+<div id="subTitlesDiv" style="margin-left:40px;margin-top:20px;clear:both;"></div>
 
 <div id="results1Div" style="overflow:scroll;height:500px;" ></div>
 
@@ -2372,7 +2372,7 @@ rayalaseemaConsti.push(330);
 		parties.push(1117);
 		var jsObj=
 		{
-				electionId : 38,//258,
+				electionId : 258,
 				stateId : 1,
 				electionScopeId : 2,
 				parties : parties,
@@ -2490,7 +2490,7 @@ rayalaseemaConsti.push(330);
 		parties.push(1117);
 		var jsObj=
 		{
-				electionId : 17,//260,
+				electionId : 260,
 				stateId : 1,
 				electionScopeId : 1,
 				parties : parties,
@@ -3692,7 +3692,7 @@ function getRegionWiseResults(searchType)
 		parties.push(1117);
 		var jsObj=
 		{
-				electionId : 38,
+				electionId : 258,
 				stateId : 1,
 				electionScopeId : 2,
 				parties : parties,
