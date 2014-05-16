@@ -957,12 +957,12 @@ function getConstituencyWiseResults()
 			str += '<td>'+result[i].parliamentName+'</td>';  
 			str += '<td>'+result[i].assemblyNo+'</td>';
 			str += '<td>'+result[i].assemblyName+'</td>';	
-			if(firstRankCandidateName != null)
+			if(result[i].firstRankCandidateName != null)
 			 str += '<td>'+result[i].firstRankCandidateName+'</td>';
 			else
 			 str += '<td>---</td>';
 				
-			 if(secondRankCandidateName != null)
+			 if(result[i].secondRankCandidateName != null)
 			  str += '<td>'+result[i].secondRankCandidateName+'</td>';
 			 else
 			  str += '<td>---</td>';
