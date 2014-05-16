@@ -1129,7 +1129,7 @@ function getConstituencyWiseResults()
 <div id="overviewDivId2" class="span5" style="margin:12px 10px 10px 39px"></div>
 <div id="subTitlesDiv" style="margin-left:40px;margin-top:20px;"></div>
 
-<div id="results1Div" ></div>
+<div id="results1Div" style="overflow:scroll;height:600px;"></div>
 
 </div>
 
