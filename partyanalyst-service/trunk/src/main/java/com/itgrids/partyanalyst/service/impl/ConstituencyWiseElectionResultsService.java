@@ -364,7 +364,7 @@ public class ConstituencyWiseElectionResultsService implements
 				{
 			   //update candidate result  by using partyId and electionId if his not not independent
 					//constIdsMap.get(constId);
-				int updatesCount =partyTrendsDAO.updateCandidateReult(partyId, electionId, baseCandidateResultVO.getCount().doubleValue(),constituencyId,baseCandidateResultVO.getVotesPercengate(),baseCandidateResultVO.getMarginVotes(),baseCandidateResultVO.getMarginVotesPercentage());
+				int updatesCount =partyTrendsDAO.updateCandidateReult(partyId, electionId, baseCandidateResultVO.getCount().doubleValue(),constituencyId,baseCandidateResultVO.getVotesPercengate(),baseCandidateResultVO.getMarginVotes(),baseCandidateResultVO.getMarginVotesPercentage(),baseCandidateResultVO.getRank());
 
 				System.out.println(updatesCount);
 				if(updatesCount!=1)
@@ -375,7 +375,7 @@ public class ConstituencyWiseElectionResultsService implements
 				}else {
 					if(partyId.equals(366L)) {
 				//here update independent
-					int updated =partyTrendsDAO.updateCandidateReultForIndependents(baseCandidateResultVO.getCandidateName(), electionId, baseCandidateResultVO.getCount().doubleValue(),constituencyId,baseCandidateResultVO.getVotesPercengate(),baseCandidateResultVO.getMarginVotes(),baseCandidateResultVO.getMarginVotesPercentage());
+					int updated =partyTrendsDAO.updateCandidateReultForIndependents(baseCandidateResultVO.getCandidateName(), electionId, baseCandidateResultVO.getCount().doubleValue(),constituencyId,baseCandidateResultVO.getVotesPercengate(),baseCandidateResultVO.getMarginVotes(),baseCandidateResultVO.getMarginVotesPercentage(),baseCandidateResultVO.getRank());
 					System.out.println(updated);
 						if(updated!=1)
 						{
@@ -595,7 +595,7 @@ public class ConstituencyWiseElectionResultsService implements
 				{
 			   //update candidate result  by using partyId and electionId if his not not independent
 					//constIdsMap.get(constId);
-				int updatesCount =partyTrendsDAO.updateCandidateReult(partyId, electionId, baseCandidateResultVO.getCount().doubleValue(),constituencyId,baseCandidateResultVO.getVotesPercengate(),baseCandidateResultVO.getMarginVotes(),baseCandidateResultVO.getMarginVotesPercentage());
+				int updatesCount =partyTrendsDAO.updateCandidateReult(partyId, electionId, baseCandidateResultVO.getCount().doubleValue(),constituencyId,baseCandidateResultVO.getVotesPercengate(),baseCandidateResultVO.getMarginVotes(),baseCandidateResultVO.getMarginVotesPercentage(),baseCandidateResultVO.getRank());
 
 				System.out.println(updatesCount);
 				if(updatesCount!=1)
@@ -606,7 +606,7 @@ public class ConstituencyWiseElectionResultsService implements
 				}else {
 					if(partyId.equals(366L)) {
 				//here update independent
-					int updated =partyTrendsDAO.updateCandidateReultForIndependents(baseCandidateResultVO.getCandidateName(), electionId, baseCandidateResultVO.getCount().doubleValue(),constituencyId,baseCandidateResultVO.getVotesPercengate(),baseCandidateResultVO.getMarginVotes(),baseCandidateResultVO.getMarginVotesPercentage());
+					int updated =partyTrendsDAO.updateCandidateReultForIndependents(baseCandidateResultVO.getCandidateName(), electionId, baseCandidateResultVO.getCount().doubleValue(),constituencyId,baseCandidateResultVO.getVotesPercengate(),baseCandidateResultVO.getMarginVotes(),baseCandidateResultVO.getMarginVotesPercentage(),baseCandidateResultVO.getRank());
 					System.out.println(updated);
 						if(updated!=1)
 						{
@@ -906,7 +906,7 @@ public class ConstituencyWiseElectionResultsService implements
 			{
 		   //update candidate result  by using partyId and electionId if his not not independent
 				//constIdsMap.get(constId);
-			int updatesCount =partyTrendsDAO.updateCandidateReult(partyId, electionId, baseCandidateResultVO.getCount().doubleValue(),constituencyId,baseCandidateResultVO.getVotesPercengate(),baseCandidateResultVO.getMarginVotes(),baseCandidateResultVO.getMarginVotesPercentage());
+			int updatesCount =partyTrendsDAO.updateCandidateReult(partyId, electionId, baseCandidateResultVO.getCount().doubleValue(),constituencyId,baseCandidateResultVO.getVotesPercengate(),baseCandidateResultVO.getMarginVotes(),baseCandidateResultVO.getMarginVotesPercentage(),baseCandidateResultVO.getRank());
 
 			System.out.println(updatesCount);
 			if(updatesCount!=1)
@@ -917,7 +917,7 @@ public class ConstituencyWiseElectionResultsService implements
 			}else {
 				if(partyId.equals(366L)) {
 			//here update independent
-				int updated =partyTrendsDAO.updateCandidateReultForIndependents(baseCandidateResultVO.getCandidateName(), electionId, baseCandidateResultVO.getCount().doubleValue(),constituencyId,baseCandidateResultVO.getVotesPercengate(),baseCandidateResultVO.getMarginVotes(),baseCandidateResultVO.getMarginVotesPercentage());
+				int updated =partyTrendsDAO.updateCandidateReultForIndependents(baseCandidateResultVO.getCandidateName(), electionId, baseCandidateResultVO.getCount().doubleValue(),constituencyId,baseCandidateResultVO.getVotesPercengate(),baseCandidateResultVO.getMarginVotes(),baseCandidateResultVO.getMarginVotesPercentage(),baseCandidateResultVO.getRank());
 				System.out.println(updated);
 					if(updated!=1)
 					{
