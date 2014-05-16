@@ -573,15 +573,15 @@ public class DashBoardElectionResultsService implements
 					 partyVO.setName("OTH");
 					 
 					 if(Long.parseLong(obj[5].toString()) == 1L)
-							partyVO.setWinCount(partyVO.getLeadCount() + Long.parseLong(obj[0].toString()));
+							partyVO.setWinCount(partyVO.getWinCount() + Long.parseLong(obj[0].toString()));
 						else
-							partyVO.setLeadCount(partyVO.getWinCount() + Long.parseLong(obj[0].toString()));
+							partyVO.setLeadCount(partyVO.getLeadCount() + Long.parseLong(obj[0].toString()));
 					 
 				 }else
 				 {
 				    partyVO.setName(obj[4].toString());
 
-					if(Long.parseLong(obj[5].toString()) == 0L)
+					if(Long.parseLong(obj[5].toString()) == 1L)
 						partyVO.setWinCount(Long.parseLong(obj[0].toString()));
 					else
 						partyVO.setLeadCount(Long.parseLong(obj[0].toString()));
@@ -725,15 +725,15 @@ public class DashBoardElectionResultsService implements
 				 partyVO.setName("OTH");
 				 
 				 if(Long.parseLong(obj[5].toString()) == 1L)
-						partyVO.setWinCount(partyVO.getLeadCount() + Long.parseLong(obj[0].toString()));
+						partyVO.setWinCount(partyVO.getWinCount() + Long.parseLong(obj[0].toString()));
 					else
-						partyVO.setLeadCount(partyVO.getWinCount() + Long.parseLong(obj[0].toString()));
+						partyVO.setLeadCount(partyVO.getLeadCount() + Long.parseLong(obj[0].toString()));
 				 
 			 }else
 			 {
 			  //  partyVO.setName(obj[4].toString());
 
-				if(Long.parseLong(obj[5].toString()) == 0L)
+				if(Long.parseLong(obj[5].toString()) == 1L)
 					partyVO.setWinCount(Long.parseLong(obj[0].toString()));
 				else
 					partyVO.setLeadCount(Long.parseLong(obj[0].toString()));
@@ -855,15 +855,15 @@ public class DashBoardElectionResultsService implements
 				 partyVO.setName("OTH");
 				 
 				 if(Long.parseLong(obj[5].toString()) == 1L)
-						partyVO.setWinCount(partyVO.getLeadCount() + Long.parseLong(obj[0].toString()));
+						partyVO.setWinCount(partyVO.getWinCount() + Long.parseLong(obj[0].toString()));
 					else
-						partyVO.setLeadCount(partyVO.getWinCount() + Long.parseLong(obj[0].toString()));
+						partyVO.setLeadCount(partyVO.getLeadCount() + Long.parseLong(obj[0].toString()));
 				 
 			 }else
 			 {
 			   // partyVO.setName(obj[4].toString());
 
-				if(Long.parseLong(obj[5].toString()) == 0L)
+				if(Long.parseLong(obj[5].toString()) == 1L)
 					partyVO.setWinCount(Long.parseLong(obj[0].toString()));
 				else
 					partyVO.setLeadCount(Long.parseLong(obj[0].toString()));
@@ -1065,9 +1065,9 @@ public class DashBoardElectionResultsService implements
 						 partyVO.setName("OTH");
 						 
 						 if(Long.parseLong(obj[5].toString()) == 1L)
-								partyVO.setWinCount(partyVO.getLeadCount() + Long.parseLong(obj[0].toString()));
+								partyVO.setWinCount(partyVO.getWinCount() + Long.parseLong(obj[0].toString()));
 							else
-								partyVO.setLeadCount(partyVO.getWinCount() + Long.parseLong(obj[0].toString()));
+								partyVO.setLeadCount(partyVO.getLeadCount() + Long.parseLong(obj[0].toString()));
 						 
 					 }else
 					 {
