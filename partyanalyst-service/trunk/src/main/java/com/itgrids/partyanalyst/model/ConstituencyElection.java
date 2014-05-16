@@ -208,8 +208,4 @@ public class ConstituencyElection extends BaseModel implements java.io.Serializa
 	public void setCountStatus(int countStatus) {
 		this.countStatus = countStatus;
 	}
-	
-	
-
-	
 }
