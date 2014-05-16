@@ -1512,23 +1512,48 @@ var stateType = '';
 		
 	}
 	
-	function getMapType(type)
+	function getMapType(stateVal,type)
 	{
+		
 		if(type == 1)
 		{
-			document.getElementById('weathermap').innerHTML = "<div id='map' class='span6' style='height: 500px; border: 1px solid rgb(51, 51, 51); border-radius: 10px; position: relative; background: none repeat scroll 0% 0% rgb(255, 255, 255);'></div>"
-			map = L.map('map', {
-			center: [16.0000,80.0000],
-			zoom: 6
-			});
+			if(stateVal == 1)
+			{
+				document.getElementById('weathermap').innerHTML = "<div id='map' class='span6' style='height: 421px; border: 1px solid rgb(51, 51, 51); border-radius: 10px; position: relative; background: none repeat scroll 0% 0% rgb(255, 255, 255);'></div>"
+				map = L.map('map', {
+				center: [16.0000,80.0000],
+				zoom: 6
+				});
+			}
+			if(stateVal == 2)
+			{
+		              document.getElementById('weathermap').innerHTML = "<div id='map' class='span6' style='height: 275px; border: 1px solid rgb(51, 51, 51); border-radius: 10px; position: relative; background: none repeat scroll 0% 0% rgb(255, 255, 255);'></div>"
+						map = L.map('map', {
+						center: [16.0000,80.0000],
+						zoom: 7
+						});
+			}
 		}
 		else
 		{
-			document.getElementById('weathermap1').innerHTML = "<div id='map1' class='span6' style='height: 500px; float: right ! important; left: 0px; position: relative; border: 1px solid rgb(51, 51, 51); border-radius: 10px; background: none repeat scroll 0% 0% rgb(255, 255, 255);'></div>"
-			map1 = L.map('map1', {
-			center: [16.0000,80.0000],
-			zoom: 6
-			});
+			if(stateVal == 1)
+			{
+
+				document.getElementById('weathermap1').innerHTML = "<div id='map1' class='span6' style='height: 421px; float: right ! important; left: 0px; position: relative; border: 1px solid rgb(51, 51, 51); border-radius: 10px; background: none repeat scroll 0% 0% rgb(255, 255, 255);'></div>"
+				map1 = L.map('map1', {
+				center: [16.0000,80.0000],
+				zoom: 6
+				});
+			}
+			if(stateVal == 2)
+			{
+                document.getElementById('weathermap1').innerHTML = "<div id='map1' class='span6' style='height: 275px; float: right ! important; left: 0px; position: relative; border: 1px solid rgb(51, 51, 51); border-radius: 10px; background: none repeat scroll 0% 0% rgb(255, 255, 255);'></div>"
+				map1 = L.map('map1', {
+				center: [16.0000,80.0000],
+				zoom: 7
+				});
+			}
+
 		}
 		
 	}
@@ -1659,11 +1684,11 @@ var stateType = '';
 	{
 		if(mapNo == "first") 
 		{
-			getMapType(1);
+			getMapType(stateVal,1);
 		}
 		else
 		{
-			getMapType(2);
+			getMapType(stateVal,2);
 		}
 		var parties = new Array();
 		parties.push(872);
@@ -1699,11 +1724,11 @@ var stateType = '';
 	{
 		if(mapNo == "first") 
 		{
-			getMapType(1);
+			getMapType(stateVal,1);
 		}
 		else
 		{
-			getMapType(2);
+			getMapType(stateVal,2);
 		}
 		var parties = new Array();
 		parties.push(872);
@@ -1738,11 +1763,11 @@ var stateType = '';
 	{
 		if(mapNo == "first") 
 		{
-			getMapType(1);
+			getMapType(stateVal,1);
 		}
 		else
 		{
-			getMapType(2);
+			getMapType(stateVal,2);
 		}
 		var parties = new Array();
 		parties.push(872);
@@ -1777,11 +1802,11 @@ var stateType = '';
 	{
 		if(mapNo == "first") 
 		{
-			getMapType(1);
+			getMapType(stateVal,1);
 		}
 		else
 		{
-			getMapType(2);
+			getMapType(stateVal,2);
 		}
 		var parties = new Array();
 		parties.push(872);
@@ -3020,6 +3045,7 @@ function getRegionWiseResults(searchType)
 		$('#div_sld1').hide();
 		$('#slider3').hide();
 		$('#weathermap4').show();
+
 		getParliments(1,258,872,2);
 			$('.parliamentCls').hide();
 			$('#indiaBannerId').hide();
@@ -3211,9 +3237,9 @@ function buildStateWideParliaments(results){
 	str +="<table class='parlResultTable offset1' width='800' cellspacing='0' cellpadding='2' border='0'>";
 		str +="<tbody style='font-family: Tahoma;font-size: 12px;'>";
 			str +="<tr>";
-				str +="<td colspan='5'><img width='300' height='130' src='images/specialPage/2014Ele.png'></td>";
-				str +="<td colspan='3'><img width='140' height='150' src='images/specialPage/Modi.png'></td>";
-				str +="<td colspan='3'><img width='140' height='150' src='images/specialPage/Rahul.png'></td>";
+				//str +="<td colspan='5'><img width='300' height='130' src='images/specialPage/2014Ele.png'></td>";
+				//str +="<td colspan='3'><img width='140' height='150' src='images/specialPage/Modi.png'></td>";
+				//str +="<td colspan='3'><img width='140' height='150' src='images/specialPage/Rahul.png'></td>";
 			str +="</tr>";
 			str +="<tr><td bgcolor='#AACAEA' style='padding: 0px;' colspan='14'><img width='1' height='1' src='images/specialPage/spacer.gif'></td></tr>";
 			str +="<tr>";
