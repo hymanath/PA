@@ -1399,6 +1399,7 @@ var stateType = '';
 	$('document').ready(function(){
 		stateType = 'Semandhra';
 		$('#indiaBannerId').hide();
+		$('.parliamentCls ').hide();
 /*$('#optionsBtn2').hide();
 		$('#optionsBtn1').click(function(){
 				$('#map1').show();
