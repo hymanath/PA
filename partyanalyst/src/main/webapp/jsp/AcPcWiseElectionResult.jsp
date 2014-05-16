@@ -3219,7 +3219,7 @@ function getRegionWiseResults(searchType)
 	function buildPartyWideWonLeadCount(results){
 	if(results.statesList.length>0){
 	var str = "";
-		str += "<h2 class='offset3' style='margin-bottom:5px;margin-top:10px;color:#27AFA6;'>Party Wise Won/Lead Counts</h2>";
+		str += "<h2 class='offset1' style='margin-bottom:5px;margin-top:10px;color:#27AFA6;'>Party Wise Won/Lead Counts</h2>";
 		str +="<table class='parlResultTable offset2' width='500' cellspacing='0' cellpadding='2' border='0'>";
 		str +="<tbody style='font-family: Tahoma;font-size: 12px;'>";
 			str+="<tr style='font-weight:bold;color:black;vertical-align:bottom;border-bottom:1px solid #B0BDDA;'>";
