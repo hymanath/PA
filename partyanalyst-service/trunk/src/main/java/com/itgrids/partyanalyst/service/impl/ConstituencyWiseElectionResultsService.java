@@ -40,8 +40,7 @@ public class ConstituencyWiseElectionResultsService implements
 	private IPartyTrendsDAO partyTrendsDAO;
 	@Autowired
 	private  IDelimitationConstituencyDAO delimitationConstituencyDAO;
-    @Override
-	public Object constituencyResults(String stateNo,Long assemblylevel,Long constituencyNo,String description)
+    public Object constituencyResults(String stateNo,Long assemblylevel,Long constituencyNo,String description)
 	{
 		String insertFor="";
 		if(!assemblylevel.equals(1L))
@@ -261,7 +260,6 @@ public class ConstituencyWiseElectionResultsService implements
 		
 		Comparator<BaseCandidateResultVO> countComp=new Comparator<BaseCandidateResultVO>() {
 
-			@Override
 			public int compare(BaseCandidateResultVO o1, BaseCandidateResultVO o2) {
 			
 				return o2.getCount().compareTo(o1.getCount());
@@ -492,7 +490,6 @@ public class ConstituencyWiseElectionResultsService implements
 		
 		Comparator<BaseCandidateResultVO> countComp=new Comparator<BaseCandidateResultVO>() {
 
-			@Override
 			public int compare(BaseCandidateResultVO o1, BaseCandidateResultVO o2) {
 			
 				return o2.getCount().compareTo(o1.getCount());
@@ -798,7 +795,6 @@ public class ConstituencyWiseElectionResultsService implements
 	
 	Comparator<BaseCandidateResultVO> countComp=new Comparator<BaseCandidateResultVO>() {
 
-		@Override
 		public int compare(BaseCandidateResultVO o1, BaseCandidateResultVO o2) {
 		
 			return o2.getCount().compareTo(o1.getCount());
