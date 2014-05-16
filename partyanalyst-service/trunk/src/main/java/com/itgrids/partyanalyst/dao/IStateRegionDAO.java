@@ -13,5 +13,6 @@ public interface IStateRegionDAO extends GenericDao<StateRegion, Long> {
 	public List getStateRegionByType(Long stateId) ;
 
     public Long getTotalRegionsInAState(Long stateId);
+    public List getStateRegionByTypeForRegion(Long stateId,String region);
 
 }

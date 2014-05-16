@@ -57,4 +57,5 @@ public interface IDelimitationConstituencyAssemblyDetailsDAO extends GenericDao<
 	public List<Object[]> findLatestParliamentsByAssemblyIds(List<Long> assemblyIds,List<Long> notIds);
 	
 	public List<Object[]> findAssParlIdsForAListOfParlConstis(List<Long> parliamentConstituencyIds,List<Long> notIds);
+	public List getLatestParConstituenciesByStateIdForregion(String electionType , Long stateID,String region);
 }

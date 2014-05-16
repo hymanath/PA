@@ -750,4 +750,30 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		query.setParameter("stateId", stateId);
 		return query.list();
 	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List getLatestConstituenciesByStateIdForregion(String electionType , Long stateID,String region)
+	{
+		/*Object[] params = {electionType, stateID};
+		return getHibernateTemplate().find("select model.constituencyId , model.name from Constituency model" +
+				" where model.electionScope.electionType.electionType = ?" +
+				" and model.state.stateId=? and model.deformDate is null order by model.name",params);*/
+		StringBuilder str = new StringBuilder();
+		str.append("select model.constituencyId , model.name from Constituency model" +
+				" where model.electionScope.electionType.electionType = :electionType" +
+				" and model.state.stateId = :stateID and model.deformDate is null  ");
+		if(region.equalsIgnoreCase("Telangana"))
+		str.append("and model.district.districtId between 1 and 10 order by model.name");
+		else
+		{
+			str.append("and model.district.districtId between 11 and 23 order by model.name");	
+		}
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("stateID", stateID);
+		query.setParameter("electionType", electionType);
+		return query.list();
+		
+	}
+	
 }
