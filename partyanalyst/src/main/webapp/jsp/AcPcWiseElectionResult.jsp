@@ -995,11 +995,7 @@ function getConstituencyWiseResults()
 
 
 <h4 style="padding: 10px; margin-top: 10px; border-radius: 5px; text-align: center; background: none repeat scroll 0% 0% rgb(73, 175, 205);">LIVE ELECTION RESULTS COMPARISON</h4> 
-<div id="btnDivs">
-	<!--<span id="optionsBtn1" class="btn btn-success" style="float:right;margin:10px 100px 10px 0px;"> Parliament Wise Results </span>
-		<span id="optionsBtn2" class="btn btn-success" style="float:right;margin:10px 100px 10px 0px;display;none;"> Assembly Wise Results </span>-->
-	<br><br>
-</div>
+
 
 <map name="Map" id="menuMap">
 	<area shape="rect" coords="442,-5,503,31" href="javascript:{getRegionWiseResults('Telangana');}" title="Telangana"/>
@@ -1110,7 +1106,7 @@ function getConstituencyWiseResults()
 -->
 <div id="overviewDivId1" class="span5"></div>
 <div id="overviewDivId2" class="span5"></div>
-<div id="subTitlesDiv" style="margin-left:200px;margin-top:20px;"></div>
+<div id="subTitlesDiv" style="margin-left:40px;margin-top:20px;"></div>
 
 <div id="results1Div" ></div>
 
@@ -2034,7 +2030,7 @@ var stateType = '';
 			popupContent +=' <table>';
 			popupContent +=' <tr>';
 			popupContent +='<td style="width:700px;"> Candidate Name </td>';
-			popupContent +='<td style="width:300px;padding-left:15px;"> Party </td>';
+			//popupContent +='<td style="width:300px;padding-left:15px;"> Party </td>';
 			popupContent +='<td style="width:600px;"> Votes Percentage  </td>';
 			popupContent +=' </tr">';
 			popupContent +=' <header class="results-header" style="width: 350px; margin-top: -10px;border-bottom-color: #004276;border-bottom-width: 2px;">';
@@ -2065,7 +2061,7 @@ var stateType = '';
 							popupContent +=' <span class="percentage-combo" ><span class="number">'+electionAcData[i].selectedCasteDetails[j].casteName+'</span>';
 							popupContent +=' </span>';
 							popupContent +=' </td>';
-							popupContent +=' <td class="results-title" style="width:40px;">';
+						/*	popupContent +=' <td class="results-title" style="width:40px;">';
 							//popupContent +=' <span class="percentage-combo" ><span class="number">'+electionAcData[i].selectedCasteDetails[j].name+'</span>';
 							if(electionAcData[i].selectedCasteDetails[j].name =='TDP'){
 								popupContent +=' <span > <img src="images/party_flags/TDP.PNG" width=125% /></span>';
@@ -2096,7 +2092,7 @@ var stateType = '';
 							}
 							
 							popupContent +=' </span>';
-							popupContent +=' </td>';
+							popupContent +=' </td>';*/
 							//popupContent +=' <td class="results-title" style="width: 30px;">';
 							//popupContent +=' </td>';
 							popupContent +=' <td class="results-percentage" style="width:100px;padding-left: 25px;">';
@@ -2254,7 +2250,7 @@ var stateType = '';
 			popupContent +=' <table>';
 		popupContent +=' <tr>';
 		popupContent +='<td style="width:700px;"> Candidate Name </td>';
-		popupContent +='<td style="width:300px;padding-left:15px;"> Party </td>';
+		//popupContent +='<td style="width:300px;padding-left:15px;"> Party </td>';
 		popupContent +='<td style="width:600px;"> Votes Percentage  </td>';
 		popupContent +=' </tr">';
 		popupContent +=' <header class="results-header" style="width: 350px; margin-top: -10px;border-bottom-color: #004276;border-bottom-width: 2px;">';
@@ -2286,7 +2282,7 @@ var stateType = '';
 						popupContent +=' <span class="percentage-combo" ><span class="number">'+electionPcData[i].selectedCasteDetails[j].casteName+'</span>';
 						popupContent +=' </span>';
 						popupContent +=' </td>';
-						popupContent +=' <td class="results-title" style="width: 25px;">';
+						/*popupContent +=' <td class="results-title" style="width: 25px;">';
 						//popupContent +=' <span class="percentage-combo" ><span class="number">'+electionAcData[i].selectedCasteDetails[j].name+'</span>';
 						if(electionPcData[i].selectedCasteDetails[j].name =='TDP'){
 							popupContent +=' <span > <img src="images/party_flags/TDP.PNG" width=125% /></span>';
@@ -2318,6 +2314,7 @@ var stateType = '';
 						
 						popupContent +=' </span>';
 						popupContent +=' </td>';
+						*/
 						//popupContent +=' <td class="results-title" style="width: 30px;">';
 						//popupContent +=' </td>';
 						popupContent +=' <td class="results-percentage" style="width: 100px;padding-left: 25px;">';
@@ -2975,7 +2972,7 @@ function getRegionWiseResults(searchType)
 		$('#div_sld1').hide();
 		$('#slider3').hide();
 		$('#weathermap4').show();
-		getParliments(1,38,872,2);
+		getParliments(1,258,872,2);
 			$('.parliamentCls').hide();
 			$('#indiaBannerId').hide();
 	}
@@ -2998,7 +2995,7 @@ function getRegionWiseResults(searchType)
 		$('#slider3').show();
 		getElectionResultForTotalParliment();
 		$('#weathermap4').hide();
-		getParliments(1,18,163,1);
+		getParliments(1,260,163,1);
 	}
 	}
 
@@ -3532,7 +3529,6 @@ var matrixReportDtls1={
 	  else
 	    $('#overviewDivId2').html(str);
 	}
-
 </script>
 
 </body>
