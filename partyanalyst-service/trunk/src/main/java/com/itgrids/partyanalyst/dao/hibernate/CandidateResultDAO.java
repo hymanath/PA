@@ -386,15 +386,15 @@ public class CandidateResultDAO extends GenericDaoHibernate<CandidateResult, Lon
 		return query.list();
 	}
 	
-	public List<Object[]> getElectionResultsForCBNORMODIEffect(Long electionId,Long stateid,Long partyId,Long electionScopeId)
+	public List<Object[]> getElectionResultsForCBNORMODIEffect(Long electionId,Long stateid,List<Long> partyIds,Long electionScopeId)
 	{
 		StringBuffer sb = new StringBuffer();
 		if(electionScopeId.longValue() == 2l)
 		{
 			sb.append("select model.nomination.constituencyElection.constituency.constituencyId ," +
 					" model.nomination.constituencyElection.constituency.name from CandidateResult model where " +
-					" model.nomination.party.partyId =:partyId and model.nomination.constituencyElection.election.electionId = :electionId " +
-					" and model.nomination.constituencyElection.constituency.state.stateId = :stateid " +
+					" model.nomination.party.partyId in (:partyIds) and model.nomination.constituencyElection.election.electionId = :electionId " +
+					"  " +
 					" and model.rank = 1 " +
 					" order by model.nomination.constituencyElection.constituency.constituencyId");
 		}
@@ -403,16 +403,16 @@ public class CandidateResultDAO extends GenericDaoHibernate<CandidateResult, Lon
 			sb.append("select model.nomination.constituencyElection.constituency.constituencyId ," +
 					" model.nomination.constituencyElection.constituency.name" +
 					" from CandidateResult model where " +
-					" model.nomination.party.partyId =:partyId and model.nomination.constituencyElection.election.electionId = :electionId " +
-					" and model.nomination.constituencyElection.constituency.countryId = :stateid " +
+					" model.nomination.party.partyId in (:partyIds) and model.nomination.constituencyElection.election.electionId = :electionId " +
+					" " +
 					" and model.rank = 1" +
 					" order by model.nomination.constituencyElection.constituency.constituencyId");
 		}
 		
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("electionId", electionId);
-		query.setParameter("stateid", stateid);
-		query.setParameter("partyId", partyId);
+		//query.setParameter("stateid", stateid);
+		query.setParameterList("partyIds", partyIds);
 		return query.list();
 	}
 }
