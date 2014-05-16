@@ -270,21 +270,21 @@ public class PartyTrendsDAO extends GenericDaoHibernate<PartyTrends, Long> imple
 	
   }
  
- public int updateCandidateReult(Long partyId,Long  electionId,Double votesEarned,Long constituencyId,String votesPercentage,Double marginVotes,String marginPercentage)
+ public int updateCandidateReult(Long partyId,Long  electionId,Double votesEarned,Long constituencyId,String votesPercentage,Double marginVotes,String marginPercentage,Long rank)
  
  { //update CandidateResult cr set cr.votesEarned=:votesEarned  where cr.nomination.party.partyId=:partyId and  cr.nomination.constituencyElection.election.electionId=:electionId 
- 	Query query = getSession().createQuery("update CandidateResult cr set cr.votesEarned=:votesEarned,cr.votesPercengate=:votesPercengate,cr.marginVotesPercentage=:marginVotesPercentage,cr.marginVotes=:marginVotes  where cr.nomination.nominationId=(select n.nominationId from Nomination n where n.party.partyId=:partyId and  n.constituencyElection.election.electionId=:electionId and  n.constituencyElection.constituency.constituencyId=:constituencyId )   ")
+ 	Query query = getSession().createQuery("update CandidateResult cr set cr.votesEarned=:votesEarned,cr.votesPercengate=:votesPercengate,cr.marginVotesPercentage=:marginVotesPercentage,cr.marginVotes=:marginVotes,cr.rank=:rank  where cr.nomination.nominationId=(select n.nominationId from Nomination n where n.party.partyId=:partyId and  n.constituencyElection.election.electionId=:electionId and  n.constituencyElection.constituency.constituencyId=:constituencyId )   ")
  		
- 			.setParameter("partyId", partyId).setParameter("electionId", electionId).setParameter("votesEarned", votesEarned).setParameter("constituencyId", constituencyId).setParameter("votesPercengate", votesPercentage).setParameter("marginVotesPercentage", marginPercentage).setParameter("marginVotes", marginVotes);
+ 			.setParameter("partyId", partyId).setParameter("electionId", electionId).setParameter("votesEarned", votesEarned).setParameter("constituencyId", constituencyId).setParameter("votesPercengate", votesPercentage).setParameter("marginVotesPercentage", marginPercentage).setParameter("marginVotes", marginVotes).setParameter("rank", rank);
  	
  	return query.executeUpdate();
  }
- public int updateCandidateReultForIndependents(String lastname,Long  electionId,Double votesEarned,Long constituencyId,String votesPercentage,Double marginVotes,String marginPercentage)
+ public int updateCandidateReultForIndependents(String lastname,Long  electionId,Double votesEarned,Long constituencyId,String votesPercentage,Double marginVotes,String marginPercentage,Long rank)
  
  { //update CandidateResult cr set cr.votesEarned=:votesEarned  where cr.nomination.party.partyId=:partyId and  cr.nomination.constituencyElection.election.electionId=:electionId 
- 	Query query = getSession().createQuery("update CandidateResult cr set cr.votesEarned=:votesEarned,cr.votesPercengate=:votesPercengate,cr.marginVotesPercentage=:marginVotesPercentage,cr.marginVotes=:marginVotes  where cr.nomination.nominationId=(select n.nominationId from Nomination n where n.candidate.lastname=:lastname and  n.constituencyElection.election.electionId=:electionId and n.constituencyElection.constituency.constituencyId=:constituencyId )  ")
+ 	Query query = getSession().createQuery("update CandidateResult cr set cr.votesEarned=:votesEarned,cr.votesPercengate=:votesPercengate,cr.marginVotesPercentage=:marginVotesPercentage,cr.marginVotes=:marginVotes,cr.rank=:rank  where cr.nomination.nominationId=(select n.nominationId from Nomination n where n.candidate.lastname=:lastname and  n.constituencyElection.election.electionId=:electionId and n.constituencyElection.constituency.constituencyId=:constituencyId )  ")
  		
- 			.setParameter("lastname", lastname).setParameter("electionId", electionId).setParameter("votesEarned", votesEarned).setParameter("constituencyId", constituencyId).setParameter("votesPercengate", votesPercentage).setParameter("marginVotesPercentage", marginPercentage).setParameter("marginVotes", marginVotes);
+ 			.setParameter("lastname", lastname).setParameter("electionId", electionId).setParameter("votesEarned", votesEarned).setParameter("constituencyId", constituencyId).setParameter("votesPercengate", votesPercentage).setParameter("marginVotesPercentage", marginPercentage).setParameter("marginVotes", marginVotes).setParameter("rank", rank);;
  	
  	return query.executeUpdate();
  }
