@@ -981,12 +981,13 @@ function getConstituencyWiseResults()
 <div class="container" style="font-family: verdana; font-size: 14px; border: 1px solid rgb(204, 204, 204); padding: 0px 10px 10px; margin-top: 24px;" id="mapDiv">
 
 
-<h4 style="padding: 10px; margin-top: 10px; border-radius: 5px; text-align: center; background: none repeat scroll 0% 0% rgb(73, 175, 205);">LIVE ELECTION RESULTS COMPARISON</h4>
+<h4 style="padding: 10px; margin-top: 10px; border-radius: 5px; text-align: center; background: none repeat scroll 0% 0% rgb(73, 175, 205);">LIVE ELECTION RESULTS COMPARISON</h4> 
 <div id="btnDivs">
 	<!--<span id="optionsBtn1" class="btn btn-success" style="float:right;margin:10px 100px 10px 0px;"> Parliament Wise Results </span>
 		<span id="optionsBtn2" class="btn btn-success" style="float:right;margin:10px 100px 10px 0px;display;none;"> Assembly Wise Results </span>-->
 	<br><br>
 </div>
+
 <map name="Map" id="menuMap">
 	<area shape="rect" coords="442,-5,503,31" href="javascript:{getRegionWiseResults('Telangana');}" title="Telangana"/>
 	<area shape="rect" coords="504,-4,576,30" href="javascript:{getRegionWiseResults('Semandhra');}" title="Semandhra" />
@@ -1060,11 +1061,23 @@ function getConstituencyWiseResults()
 	</div>
 </div>
 </br></br>
-<div class="row-fluid" id="legend" style="display:none;">
-<div><b>TDP : <span style="color: #FFD700 ;font-weight: bold; font-size: 19px;">-----</b><b> YSRC : <span style="color: #00CED1; font-weight: bold; font-size: 19px;">-----</b><b>INC : <span style="color: #228B22; font-weight: bold; font-size: 19px;">-----</b><b>TRS : <span style="color: #FF00FF; font-weight: bold; font-size: 19px;">-----</b><b>AIMIM : <span style="color: #006400; font-weight: bold; font-size: 19px;">-----</b></div>
-<div><b>BJP : <span style="#FF7F50; font-weight: bold; font-size: 19px;">-----</b><b>CPM/CPI : <span style="color: #B22222; font-weight: bold; font-size: 19px;">-----</b><b>LSP : <span style="color: #4B0082; font-weight: bold; font-size: 19px;">-----</b><b>OTHERS : <span style="color: #FF0000; font-weight: bold; font-size: 19px;"></div>
+div class="row-fluid" id="legend" style="display:none;">
+<table>
+<tr>
+<td><b>TDP : <span style="background: #FFD700 ;font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
+<td><b> YSRC : <span style="background: #00CED1; font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
+<td><b>INC : <span style="background: #228B22; font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
+<td><b>TRS : <span style="background: #FF00FF; font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
+<td><b>AIMIM : <span style="background: #006400; font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
+<td><b>BJP : <span style="background:#FF7F50; font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
+<td><b>CPM/CPI : <span style="background: #B22222; font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
+<td><b>LSP : <span style="background: #4B0082; font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
+<td><b>OTHERS : <span style="background: #FF0000; font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
+</tr>
+</table>
 
-</div>
+</div> 
+
 </br></br>
 <div class="row-fluid">
 	<div id="weathermap"></div>
@@ -1400,21 +1413,23 @@ var stateType = '';
 		stateType = 'Semandhra';
 		$('#indiaBannerId').hide();
 		$('.parliamentCls ').hide();
-/*$('#optionsBtn2').hide();
-		$('#optionsBtn1').click(function(){
-				$('#map1').show();
-				$('#map').hide();
-				$('#optionsBtn1').hide();
-				$('#optionsBtn2').show();
-				
-		});
-		$('#optionsBtn2').click(function(){
-				$('#map').show();
-				$('#map1').hide();
-				$('#optionsBtn2').hide();
-				$('#optionsBtn1').show();
-				
-		});*/
+
+		 setTimeout(function(){
+        getElectionResultForAssemblyPrevious(1,"first",1,2);
+        getElectionResultForParlimentPresent(1,"second",2,2);
+    }, 500000);
+
+	$('#legend').show();
+        $('#areaSelectionDiv').hide();
+        $('#stateSelectDiv').hide();
+        $('#submitButtionDiv').hide();
+        getElectionResultForAssemblyPrevious(1,"first",1,2);
+        getElectionResultForParlimentPresent(1,"second",2,2);
+     $('#scopeId').change(function(){
+         console.log(this);
+         $('#rgntxt').text("Select "+$('#scopeId  :selected').text());
+     });
+	 
 	});
 	//getConstituenctSelection();
 	var map = "";
@@ -1629,6 +1644,7 @@ var stateType = '';
 		parties.push(72);
 		parties.push(886);
 		parties.push(662);
+		parties.push(1117);
 		var jsObj=
 		{
 				electionId : 3,
@@ -1668,6 +1684,7 @@ var stateType = '';
 		parties.push(72);
 		parties.push(886);
 		parties.push(662);
+		parties.push(1117);
 		var jsObj=
 		{
 				electionId : 38,
@@ -1706,6 +1723,7 @@ var stateType = '';
 		parties.push(72);
 		parties.push(886);
 		parties.push(662);
+		parties.push(1117);
 		var jsObj=
 		{
 				electionId : 17,
@@ -1744,6 +1762,7 @@ var stateType = '';
 		parties.push(72);
 		parties.push(886);
 		parties.push(662);
+		parties.push(1117);
 		var jsObj=
 		{
 				electionId : 260,
@@ -2038,6 +2057,9 @@ var stateType = '';
 							if(electionAcData[i].selectedCasteDetails[j].name =='TDP'){
 								popupContent +=' <span > <img src="images/party_flags/TDP.PNG" width=125% /></span>';
 							}
+							if(electionAcData[i].selectedCasteDetails[j].name =='YSRC'){
+								popupContent +=' <span > <img src="images/party_flags/YSRC.PNG" width=125% /></span>';
+							}
 							if(electionAcData[i].selectedCasteDetails[j].name =='INC'){
 								popupContent +=' <span > <img src="images/party_flags/INC.png" width=125% /></span>';
 							}
@@ -2255,6 +2277,9 @@ var stateType = '';
 						//popupContent +=' <span class="percentage-combo" ><span class="number">'+electionAcData[i].selectedCasteDetails[j].name+'</span>';
 						if(electionPcData[i].selectedCasteDetails[j].name =='TDP'){
 							popupContent +=' <span > <img src="images/party_flags/TDP.PNG" width=125% /></span>';
+						}
+						if(electionPcData[i].selectedCasteDetails[j].name =='YSRC'){
+							popupContent +=' <span > <img src="images/party_flags/YSRC.PNG" width=125% /></span>';
 						}
 						if(electionPcData[i].selectedCasteDetails[j].name =='INC'){
 							popupContent +=' <span > <img src="images/party_flags/INC.png" width=125% /></span>';
@@ -2649,6 +2674,7 @@ var stateType = '';
 		parties.push(72);
 		parties.push(886);
 		parties.push(662);
+		parties.push(1117);
 		var jsObj=
 		{
 				electionId : 17,
@@ -3004,6 +3030,7 @@ function getRegionWiseResults(searchType)
 		parties.push(72);
 		parties.push(886);
 		parties.push(662);
+		parties.push(1117);
 		var jsObj=
 		{
 				electionId : 38,
@@ -3028,7 +3055,7 @@ function getRegionWiseResults(searchType)
 		function getMapForAssembly()
 		{
 			areatype = "totac";
-			document.getElementById('weathermap4').innerHTML = "<div id='map4'  style='height: 500px; border: 1px solid rgb(51, 51, 51); border-radius: 10px; position: relative; background: none repeat scroll 0% 0% rgb(255, 255, 255);'></div>"
+			document.getElementById('weathermap4').innerHTML = "<div  id='map4'  style='height: 500px; border: 1px solid rgb(51, 51, 51); border-radius: 10px; position: relative; background: none repeat scroll 0% 0% rgb(255, 255, 255); width:600px;'></div>"
 			map4 = L.map('map4', {
 			center: [18.0000,80.0000],
 			zoom: 6
