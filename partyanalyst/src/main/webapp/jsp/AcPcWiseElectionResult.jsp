@@ -208,12 +208,13 @@ $('document').ready(function(){
 	 });
 	 
 	 $('#legend').show();
-	 $('#legend').css("margin-top","-65px");
+	 
 	 $('#areaSelectionDiv').hide();
 	 $('#stateSelectDiv').hide();
 	 $('#submitButtionDiv').hide();
 	 $('#telanganaImageDiv').hide();
-	 $('#andhraImageDiv').show();	 
+	 $('#andhraImageDiv').show();
+	 $('#legend').css("margin-top","-65px");	 
 	 //getElectionResultForAssemblyPrevious(1,"first",1,2);
 	 //getElectionResultForParlimentPresent(1,"second",2,2);
 	 $('#scopeId').change(function(){
@@ -3742,7 +3743,10 @@ function getRegionWiseResults(searchType)
 		 telanganaRegion();
 		$('#liveResultsDiv').hide();
 		$('#mapDiv').show();
-		$('#legend').show();
+		$('#legend').show();		
+		$('#andhraImageDiv').hide();
+		$('#telanganaImageDiv').show();
+		$('#legend').css("margin-top","-65px");	
 		$('#bannerDiv').show();
 		$('#areaSelectionDiv').hide();
 		$('#stateSelectDiv').hide();
@@ -3788,6 +3792,9 @@ function getRegionWiseResults(searchType)
 			$('#bannerDiv').show();
 		$('#mapDiv').show();
 		$('#legend').show();
+		$('#telanganaImageDiv').hide();
+		$('#andhraImageDiv').show();		
+		$('#legend').css("margin-top","-65px");
 		$('#areaSelectionDiv').hide();
 		$('#stateSelectDiv').hide();
 		$('#submitButtionDiv').hide();
@@ -3831,7 +3838,8 @@ function getRegionWiseResults(searchType)
 		$('#bannerDiv').hide();
 		$(".parliamentCls").show();
 		$('#liveResultsDiv').hide();
-		
+		$('#telanganaImageDiv').hide();
+		$('#andhraImageDiv').hide();		
 		$('#mapDiv').hide();
 		$('#legend').hide();
 		$('#areaSelectionDiv').hide();
@@ -3854,6 +3862,8 @@ function getRegionWiseResults(searchType)
 		$('#legend').hide();
 		$('#areaSelectionDiv').hide();
 		$('#stateSelectDiv').hide();
+		$('#telanganaImageDiv').hide();
+		$('#andhraImageDiv').hide();		
 		$('#submitButtionDiv').hide();
 		$('#modiDiv').hide();
 		$('#weathermap3').hide();
@@ -3880,6 +3890,8 @@ function getRegionWiseResults(searchType)
 		$('#unemchart1p_').hide();
 		$('#div_sld1').hide();
 		$('#slider3').hide();
+		$('#andhraImageDiv').hide();
+		$('#telanganaImageDiv').hide();
 			$('.parliamentCls').hide();
 			$('#weathermap4').hide();
 			$('#indiaBannerId').hide();
@@ -3895,6 +3907,8 @@ function getRegionWiseResults(searchType)
 		$('#stateSelectDiv').show();
 		$('#submitButtionDiv').show();
 		$('#modiDiv').hide();
+		$('#andhraImageDiv').hide();
+		$('#telanganaImageDiv').hide();
 		$('#weathermap3').hide();
 		$('#unemchart1p_').hide();
 		$('#div_sld1').hide();
@@ -3903,6 +3917,7 @@ function getRegionWiseResults(searchType)
 		getParliments(1,258,872,2);
 			$('.parliamentCls').hide();
 			$('#indiaBannerId').hide();
+			$('#legend').css("margin-top","0px");
 	}
 	else if(searchType == 'ModiEffect')
 	{
@@ -3917,6 +3932,8 @@ function getRegionWiseResults(searchType)
 		$('#stateSelectDiv').hide();
 		$('#submitButtionDiv').hide();
 		$('#modiDiv').hide();
+		$('#andhraImageDiv').hide();
+		$('#telanganaImageDiv').hide();
 		$('#weathermap3').show();
 		$('#unemchart1p_').show();
 		$('#div_sld1').show();
@@ -4411,26 +4428,26 @@ var matrixReportDtls1={
 	  var str ='';
 	  
 	  if(type == "district")  
-	   str+='<h5>District Wise Analysis</h5>';
+	   str+='<h5 style="margin-top: 20px; margin-bottom: 10px; margin-left:-11px" class="headingClass">District Wise Analysis</h5>';
 	  else
-	   str+='<h5>Region Wise Analysis</h5>';
+	   str+='<h5 style="margin-top: 20px;margin-bottom: 10px; margin-left:-11px" class="headingClass">Region Wise Analysis</h5>';
 	  
 	  
-	  str+='<table border="1">';
+	  str+='<table style=" margin:26px 10px 0 -10px;"  cellpadding="5">';
 	   str+='<thead>';
 	    str+='<tr>';
-		 str+='<th rowspan="2"></th>';
+		 str+='<th rowspan="2" class="thBorder"></th>';
 		
 		$.each(result[0].partiesDetails,function(index,value){
-		 str+='<th colspan="2">'+value.name+'</th>';
+		 str+='<th colspan="2" class="thBorder">'+value.name+'</th>';
 		});
 		 
 		str+='</tr>';
 		
 		 str+='<tr>';	
 		$.each(result[0].partiesDetails,function(index,value){
-		 str+='<th>W</th>';
-		 str+='<th>L</th>';
+		 str+='<th class="thBorder">W</th>';
+		 str+='<th class="thBorder">L</th>';
 		});
 		 
 		str+='</tr>';
@@ -4438,10 +4455,10 @@ var matrixReportDtls1={
 	  str+='<tbody>';
 	  $.each(result,function(index,value){
 		  str+='<tr>';
-		   str+='<td>'+value.name+'</td>';
+		   str+='<td class="thBorder">'+value.name+'</td>';
 		   $.each(value.partiesDetails,function(index1,value1){
-			   str+='<td>'+value1.winCount+'</td>';
-			   str+='<td>'+value1.leadCount+'</td>';
+			   str+='<td class="thBorder">'+value1.winCount+'</td>';
+			   str+='<td class="thBorder">'+value1.leadCount+'</td>';
 		   });
 		  str+='</tr>';  
 	  });
