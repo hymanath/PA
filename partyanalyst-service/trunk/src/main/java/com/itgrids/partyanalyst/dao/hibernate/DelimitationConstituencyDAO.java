@@ -10,6 +10,7 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import org.hibernate.Query;
+import org.hibernate.Session;
 
 public class DelimitationConstituencyDAO extends GenericDaoHibernate<DelimitationConstituency, Long> implements
 IDelimitationConstituencyDAO {
@@ -249,5 +250,22 @@ IDelimitationConstituencyDAO {
 		query.setParameter("electionScopeId", electionScopeId);
 		query.setParameter("year", year);
 		return query.list();
+	}
+	public List<Object[]> getConstituencyNoByCountry(Long stateId,Long year,Long electionScopeId)
+	{
+		StringBuffer sb = new StringBuffer();
+		
+			sb.append("select model.constituency.constituencyId,model.constituencyNO,model.constituency.name " +
+				" from DelimitationConstituency model where model.constituency.state.stateId = :stateId " +
+				" and model.year = :year and model.constituency.electionScope.electionScopeId = :electionScopeId");
+	
+			Session session=getSession();
+		Query query = session.createQuery(sb.toString());
+		query.setParameter("stateId", stateId);
+		query.setParameter("electionScopeId", electionScopeId);
+		query.setParameter("year", year);
+		 List<Object[]> obj=query.list();
+		 session.close();
+		 return obj;
 	}
 }

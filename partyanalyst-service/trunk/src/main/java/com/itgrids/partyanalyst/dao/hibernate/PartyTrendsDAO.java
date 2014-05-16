@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.springframework.jdbc.object.SqlQuery;
 
 import com.itgrids.partyanalyst.dao.IPartyTrendsDAO;
@@ -25,6 +26,7 @@ public class PartyTrendsDAO extends GenericDaoHibernate<PartyTrends, Long> imple
 		Query query= getSession().createQuery("select model.constituency.constituencyId,model.constituency.name from   PartyTrends model  group by  model.constituency.constituencyId order by model.constituency.name ");
 		return query.list();
 		//Query query= getSession().createQuery("select model.constituency.constituencyId,model.constituency.name from   PartyTrends model  group by  model.constituency.constituencyId order by model.constituency.name ");
+		
 	}
 	
 	public List<?> loadEntitiesForXl(List<Long> constIds) {
@@ -250,4 +252,100 @@ public class PartyTrendsDAO extends GenericDaoHibernate<PartyTrends, Long> imple
     	
     	return query.list();
     }
+ //get not completed constituencies from constituency election
+ public List<?> loadConStituencyIdsWithNo(Long electionId,Long stateId,Long electionScopeId,Long year) {
+	 Session session=getSession();
+		Query query= session.createQuery("select model2.constituencyNO  from   ConstituencyElection  model,DelimitationConstituency model2   where  model.constituency.constituencyId =model2.constituency.constituencyId  " +
+				"   and model.election.electionId=:electionId and model.countStatus=0 and model2.constituency.state.stateId = :stateId " +
+				" and model2.year = :year and model2.constituency.electionScope.electionScopeId = :electionScopeId");
+		//query.setParameterList("constIds", constIds);
+		query.setParameter("electionId", electionId);
+		query.setParameter("stateId", stateId);
+		query.setParameter("electionScopeId", electionScopeId);
+		query.setParameter("year", year);
+		 List<?> obj=query.list();
+		 session.close();
+		 return obj;
+		//Query query= getSession().createQuery("select model.constituency.constituencyId,model.constituency.name from   PartyTrends model  group by  model.constituency.constituencyId order by model.constituency.name ");
+	
+  }
+ 
+ public int updateCandidateReult(Long partyId,Long  electionId,Double votesEarned,Long constituencyId,String votesPercentage,Double marginVotes,String marginPercentage)
+ 
+ { //update CandidateResult cr set cr.votesEarned=:votesEarned  where cr.nomination.party.partyId=:partyId and  cr.nomination.constituencyElection.election.electionId=:electionId 
+ 	Query query = getSession().createQuery("update CandidateResult cr set cr.votesEarned=:votesEarned,cr.votesPercengate=:votesPercengate,cr.marginVotesPercentage=:marginVotesPercentage,cr.marginVotes=:marginVotes  where cr.nomination.nominationId=(select n.nominationId from Nomination n where n.party.partyId=:partyId and  n.constituencyElection.election.electionId=:electionId and  n.constituencyElection.constituency.constituencyId=:constituencyId )   ")
+ 		
+ 			.setParameter("partyId", partyId).setParameter("electionId", electionId).setParameter("votesEarned", votesEarned).setParameter("constituencyId", constituencyId).setParameter("votesPercengate", votesPercentage).setParameter("marginVotesPercentage", marginPercentage).setParameter("marginVotes", marginVotes);
+ 	
+ 	return query.executeUpdate();
+ }
+ public int updateCandidateReultForIndependents(String lastname,Long  electionId,Double votesEarned,Long constituencyId,String votesPercentage,Double marginVotes,String marginPercentage)
+ 
+ { //update CandidateResult cr set cr.votesEarned=:votesEarned  where cr.nomination.party.partyId=:partyId and  cr.nomination.constituencyElection.election.electionId=:electionId 
+ 	Query query = getSession().createQuery("update CandidateResult cr set cr.votesEarned=:votesEarned,cr.votesPercengate=:votesPercengate,cr.marginVotesPercentage=:marginVotesPercentage,cr.marginVotes=:marginVotes  where cr.nomination.nominationId=(select n.nominationId from Nomination n where n.candidate.lastname=:lastname and  n.constituencyElection.election.electionId=:electionId and n.constituencyElection.constituency.constituencyId=:constituencyId )  ")
+ 		
+ 			.setParameter("lastname", lastname).setParameter("electionId", electionId).setParameter("votesEarned", votesEarned).setParameter("constituencyId", constituencyId).setParameter("votesPercengate", votesPercentage).setParameter("marginVotesPercentage", marginPercentage).setParameter("marginVotes", marginVotes);
+ 	
+ 	return query.executeUpdate();
+ }
+ //get Votes Polled For Constituency
+ public List<Object[]> getVotesPolledForConst(Long  electionId,Long stateId)
+ 
+ { //update CandidateResult cr set cr.votesEarned=:votesEarned  where cr.nomination.party.partyId=:partyId and  cr.nomination.constituencyElection.election.electionId=:electionId 
+ 	Session session=getSession();
+	 Query query = session.createQuery(" select cer.constituencyElection.constituency.constituencyId,cer.totalVotesPolled  from ConstituencyElectionResult cer where  cer.constituencyElection.election.electionId=:electionId and cer.constituencyElection.constituency.state.stateId=:stateId group by cer.constituencyElection.constituency.constituencyId ")
+ 		
+ 			.setParameter("electionId", electionId).setParameter("stateId", stateId);
+ 	
+	 List<Object[]> obj=query.list();
+	 session.close();
+	 return obj;
+ }
+ 
+ 
+ //update ConstituencyElection To It Is Completed
+public int updateCandidateElection(Long  electionId,int status,Long constituencyId)
+ 
+ { //update CandidateResult cr set cr.votesEarned=:votesEarned  where cr.nomination.party.partyId=:partyId and  cr.nomination.constituencyElection.election.electionId=:electionId 
+	Session session=getSession();
+	Query query = session.createQuery("update ConstituencyElection constituencyElection  set constituencyElection.countStatus=:status   where constituencyElection.election.electionId=:electionId and constituencyElection.constituency.constituencyId=:constituencyId ")
+ 		
+ 			.setParameter("electionId", electionId).setParameter("constituencyId", constituencyId).setParameter("status", status);
+ 	
+ 	int res= query.executeUpdate();
+ 	
+ 	session.close();
+ 	return res;
+ }
+
+
+//update nota votes 
+
+public int updateNotaVotesInConstElectResult(Long  electionId,long notaVotes,Long constituencyId)
+
+{ //update CandidateResult cr set cr.votesEarned=:votesEarned  where cr.nomination.party.partyId=:partyId and  cr.nomination.constituencyElection.election.electionId=:electionId 
+	Session session=getSession();
+	Query query = session.createQuery("update ConstituencyElectionResult  cer  set cer.notaVotes=:notaVotes   where  cer.constituencyElection.constiElecId=(select  constituencyElection.constiElecId from ConstituencyElection constituencyElection where constituencyElection.election.electionId=:electionId and constituencyElection.constituency.constituencyId=:constituencyId) ")
+		
+			.setParameter("electionId", electionId).setParameter("constituencyId", constituencyId).setParameter("notaVotes", notaVotes);
+	
+int res= query.executeUpdate();
+ 	
+ 	session.close();
+ 	return res;
+}
+
+//get Votes Polled For Constituency
+public List<Object[]> getVotesPolledForConstForParliament(Long  electionId)
+
+{ //update CandidateResult cr set cr.votesEarned=:votesEarned  where cr.nomination.party.partyId=:partyId and  cr.nomination.constituencyElection.election.electionId=:electionId 
+	Session session=getSession();
+	Query query = session.createQuery(" select cer.constituencyElection.constituency.constituencyId,cer.totalVotesPolled  from ConstituencyElectionResult cer where  cer.constituencyElection.election.electionId=:electionId  group by cer.constituencyElection.constituency.constituencyId ")
+		
+			.setParameter("electionId", electionId);
+	
+	List<Object[]> obj=query.list();
+	 session.close();
+	 return obj;
+}
 }
