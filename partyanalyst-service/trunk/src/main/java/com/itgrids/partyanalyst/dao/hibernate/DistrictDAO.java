@@ -153,4 +153,23 @@ public List<Object[]> getDistrictList()
 public List<Object[]> getDistrictIdAndNameByConstituency(Long constituencyId){
 	return getHibernateTemplate().find("select model.district.districtId,model.district.districtName from Constituency model where model.constituencyId = ?",constituencyId);
 }
+
+
+@SuppressWarnings("unchecked")
+public List getDistrictIdAndNameByStateForRegion(Long stateId,String region){
+	StringBuilder str = new StringBuilder();
+	str.append("select model.districtId,model.districtName from District model where model.state.stateId = :stateId ");
+	if(region.equalsIgnoreCase("Telangana"))
+	str.append("and model.districtId between 1 and 10 order by model.districtName");
+	else
+	{
+		str.append("and model.districtId between 11 and 23 order by model.districtName");	
+	}
+	Query query = getSession().createQuery(str.toString());
+	query.setParameter("stateId", stateId);
+	return query.list();
+	
+	
+}
+
 }
