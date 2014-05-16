@@ -1696,7 +1696,7 @@ var stateType = '';
 		parties.push(1117);
 		var jsObj=
 		{
-				electionId : 38,
+				electionId : 258,
 				stateId : 1,
 				electionScopeId : 2,
 				parties : parties,
