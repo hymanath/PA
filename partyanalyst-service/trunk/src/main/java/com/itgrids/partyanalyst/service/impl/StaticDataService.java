@@ -10123,4 +10123,40 @@ public boolean removeCadreImage(Long cadreId,Long userId){
 		
 	   return finalList;
 	  }
+	
+	public List<SelectOptionVO> getLatestConstituenciesByStateIdAndTypeForRegion(Long stateId,String locationType,String region) {
+		List<SelectOptionVO> data = new ArrayList<SelectOptionVO>();
+		List result = null;
+		try {
+			if(locationType.equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE))
+			 result = constituencyDAO.getLatestConstituenciesByStateIdForregion(
+					locationType, stateId,region);
+			else
+				result = delimitationConstituencyAssemblyDetailsDAO.getLatestParConstituenciesByStateIdForregion(locationType, stateId,region);
+			for (int i = 0; i < result.size(); i++) {
+				Object[] parms = (Object[]) result.get(i);
+				SelectOptionVO vo = new SelectOptionVO();
+				vo.setId((Long) parms[0]);
+				vo.setName(parms[1].toString());
+				data.add(vo);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return data;
+	}
+	
+	public List<SelectOptionVO> getRegionsByStateIdForRegion(Long stateId,String region)
+	{
+		List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>();
+		
+		List<Object[]> list = stateRegionDAO.getStateRegionByTypeForRegion(stateId,region);
+		
+		for(Object[] obj:list)
+			resultList.add(new SelectOptionVO(Long.parseLong(obj[1].toString()),obj[0].toString()));
+		
+		return resultList;
+		
+	}
+	
 }
