@@ -211,8 +211,8 @@ $('document').ready(function(){
 	 $('#areaSelectionDiv').hide();
 	 $('#stateSelectDiv').hide();
 	 $('#submitButtionDiv').hide();
-	 getElectionResultForAssemblyPrevious(1,"first",1,2);
-	 getElectionResultForParlimentPresent(1,"second",2,2);
+	 //getElectionResultForAssemblyPrevious(1,"first",1,2);
+	 //getElectionResultForParlimentPresent(1,"second",2,2);
 	 $('#scopeId').change(function(){
 	 console.log(this);
 	 $('#rgntxt').text("Select "+$('#scopeId :selected').text());
@@ -3211,9 +3211,9 @@ function buildStateWideParliaments(results){
 	str +="<table class='parlResultTable offset1' width='800' cellspacing='0' cellpadding='2' border='0'>";
 		str +="<tbody style='font-family: Tahoma;font-size: 12px;'>";
 			str +="<tr>";
-				//str +="<td colspan='5'><img width='300' height='130' src='images/specialPage/2014Ele.png'></td>";
-				//str +="<td colspan='3'><img width='140' height='150' src='images/specialPage/Modi.png'></td>";
-				//str +="<td colspan='3'><img width='140' height='150' src='images/specialPage/Rahul.png'></td>";
+				str +="<td colspan='5'><img width='300' height='130' src='images/specialPage/2014Ele.png'></td>";
+				str +="<td colspan='3'><img width='140' height='150' src='images/specialPage/Modi.png'></td>";
+				str +="<td colspan='3'><img width='140' height='150' src='images/specialPage/Rahul.png'></td>";
 			str +="</tr>";
 			str +="<tr><td bgcolor='#AACAEA' style='padding: 0px;' colspan='14'><img width='1' height='1' src='images/specialPage/spacer.gif'></td></tr>";
 			str +="<tr>";
