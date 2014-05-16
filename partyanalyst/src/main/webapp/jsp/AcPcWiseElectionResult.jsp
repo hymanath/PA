@@ -973,6 +973,10 @@ function getConstituencyWiseResults()
 <img src="images/TDP_portal_Banner.jpg" width="960" height="32" border="0" usemap="#Maps22" />
 </div>
 
+<div align="center" id="indiaBannerId">
+<img src="images/India-Page-Banner.jpg" width="960" height="32" border="0" />
+</div>
+
 
 <div class="container" style="font-family: verdana; font-size: 14px; border: 1px solid rgb(204, 204, 204); padding: 0px 10px 10px; margin-top: 24px;" id="mapDiv">
 
@@ -1394,6 +1398,7 @@ function getConstituencyWiseResults()
 var stateType = '';
 	$('document').ready(function(){
 		stateType = 'Semandhra';
+		$('#indiaBannerId').hide();
 /*$('#optionsBtn2').hide();
 		$('#optionsBtn1').click(function(){
 				$('#map1').show();
@@ -2809,6 +2814,7 @@ function showResultDiv()
 }
 
 
+
 function getRegionWiseResults(searchType)
 {
 	if(searchType == 'Telangana')
@@ -2829,8 +2835,9 @@ function getRegionWiseResults(searchType)
 		$('#unemchart1p_').hide();
 		$('#div_sld1').hide();
 		$('#slider3').hide();
-		$('#weathermap4').hide();
 		$('.parliamentCls').hide();
+		$('#weathermap4').hide();
+		$('#indiaBannerId').hide();
 	}
 	else if(searchType == 'Semandhra')
 	{
@@ -2851,7 +2858,8 @@ function getRegionWiseResults(searchType)
 		$('#div_sld1').hide();
 		$('#slider3').hide();
 			$('.parliamentCls').hide();
-		$('#weathermap4').hide();
+			$('#weathermap4').hide();
+			$('#indiaBannerId').hide();
 	}
 	else if(searchType == 'India')
 	{
@@ -2870,10 +2878,12 @@ function getRegionWiseResults(searchType)
 		$('#div_sld1').hide();
 		$('#slider3').hide();
 		$('#weathermap4').hide();
+		$('#indiaBannerId').hide();
 	}
 	else if(searchType == 'StateAnalysis')
 	{
 		$('#matridLeadId,#matrixWonSummaryId,#matrixLeadSummaryId,#errorDiv,#test').html('');
+		$('#bannerDiv').show();
 		$('#liveResultsDiv').show();
 		$('#mapDiv').hide();
 		$('#legend').hide();
@@ -2886,7 +2896,9 @@ function getRegionWiseResults(searchType)
 		$('#div_sld1').hide();
 		$('#slider3').hide();
 			$('.parliamentCls').hide();
-		$('#weathermap4').hide();
+					$('#weathermap4').hide();
+			$('#indiaBannerId').hide();
+			
 	}
 	else if(searchType == 'DistrictAnalysis')
 	{
@@ -2904,7 +2916,8 @@ function getRegionWiseResults(searchType)
 		$('#div_sld1').hide();
 		$('#slider3').hide();
 			$('.parliamentCls').hide();
-		$('#weathermap4').hide();
+			$('#weathermap4').hide();
+			$('#indiaBannerId').hide();
 	}
 	else if(searchType == 'CBNEffect')
 	{
@@ -2924,10 +2937,12 @@ function getRegionWiseResults(searchType)
 		$('#weathermap4').show();
 		getParliments(1,38,872,2);
 			$('.parliamentCls').hide();
+			$('#indiaBannerId').hide();
 	}
 	else if(searchType == 'ModiEffect')
 	{
 		console.log(7);
+		$('#indiaBannerId').show();
 		$('#bannerDiv').hide();
 		$('.parliamentCls').hide();
 		$('#liveResultsDiv').hide();
@@ -2946,6 +2961,7 @@ function getRegionWiseResults(searchType)
 		getParliments(1,18,163,1);
 	}
 	}
+
 	
 	var psDetails ;
 	function getParliments(stateId,electionId,partyId,electionScopeId)
