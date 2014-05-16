@@ -46,7 +46,7 @@ public class ConstituencyElectionResult extends BaseModel implements java.io.Ser
 	private Double totalVotesPolled;
 	private Double tenderedVotes;
 	private String votingPercentage;
-
+    private Long  notaVotes;
 	// Constructors
 
 	/** default constructor */
@@ -159,6 +159,16 @@ public class ConstituencyElectionResult extends BaseModel implements java.io.Ser
 	public void setVotingPercentage(String votingPercentage) {
 		this.votingPercentage = votingPercentage;
 	}
+	
+	@Column(name = "nota_votes")
+	public Long getNotaVotes() {
+		return notaVotes;
+	}
+
+	public void setNotaVotes(Long notaVotes) {
+		this.notaVotes = notaVotes;
+	}
+	
 
 /*	 (non-Javadoc)
 	 * @see java.lang.Object#toString()
