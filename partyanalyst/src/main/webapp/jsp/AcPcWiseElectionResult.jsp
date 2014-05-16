@@ -3714,7 +3714,7 @@ function getRegionWiseResults(searchType)
 		function getMapForAssembly()
 		{
 			areatype = "totac";
-			document.getElementById('weathermap4').innerHTML = "<div  id='map4'  style='height: 500px; border: 1px solid rgb(51, 51, 51); border-radius: 10px; position: relative; background: none repeat scroll 0% 0% rgb(255, 255, 255); width:600px;'></div>"
+			document.getElementById('weathermap4').innerHTML = "<div  id='map4'  style='height: 500px; border: 1px solid rgb(51, 51, 51); border-radius: 10px; position: relative; background: none repeat scroll 0% 0% rgb(255, 255, 255); width:600px;margin-left:auto;margin-right:auto;''></div>"
 			map4 = L.map('map4', {
 			center: [18.0000,80.0000],
 			zoom: 6
@@ -3812,9 +3812,9 @@ function buildStateWideParliaments(results){
 	str +="<table class='parlResultTable offset1' width='800' cellspacing='0' cellpadding='2' border='0'>";
 		str +="<tbody style='font-family: Tahoma;font-size: 12px;'>";
 			str +="<tr>";
-				str +="<td colspan='5'><img width='300' height='130' src='images/specialPage/2014Ele.png'></td>";
-				str +="<td colspan='3'><img width='140' height='150' src='images/specialPage/Modi.png'></td>";
-				str +="<td colspan='3'><img width='140' height='150' src='images/specialPage/Rahul.png'></td>";
+				//str +="<td colspan='5'><img width='300' height='130' src='images/specialPage/2014Ele.png'></td>";
+				//str +="<td colspan='3'><img width='140' height='150' src='images/specialPage/Modi.png'></td>";
+				//str +="<td colspan='3'><img width='140' height='150' src='images/specialPage/Rahul.png'></td>";
 			str +="</tr>";
 			str +="<tr><td bgcolor='#AACAEA' style='padding: 0px;' colspan='14'><img width='1' height='1' src='images/specialPage/spacer.gif'></td></tr>";
 			str +="<tr>";
