@@ -1628,6 +1628,26 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> getDistrictsByStateIDForRegion(Long stateID,String regionType) {
+		try
+		{
+			List<SelectOptionVO> formattedDistricts = new ArrayList<SelectOptionVO>();
+			List<Object[]> param = districtDAO.getDistrictIdAndNameByStateForRegion(stateID,regionType);
+			for(Object[] obj : param){
+				SelectOptionVO objVO = new SelectOptionVO();
+				objVO.setId((Long)obj[0]);
+				objVO.setName(WordUtils.capitalize(obj[1].toString().toLowerCase()));
+				formattedDistricts.add(objVO);
+			}
+		return formattedDistricts;
+		}
+		catch(Exception e){
+			log.error("Exception Occured During fetching Districts from state with stateId = "+ stateID + " Exception is -- "+e);
+			return null;
+		}
+	}
+	
 }
 	
  
