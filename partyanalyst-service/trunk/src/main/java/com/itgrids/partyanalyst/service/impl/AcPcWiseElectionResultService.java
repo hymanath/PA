@@ -14,6 +14,7 @@ import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.service.IAcPcWiseElectionResultService;
 
 public class AcPcWiseElectionResultService implements IAcPcWiseElectionResultService{
@@ -138,6 +139,31 @@ public class AcPcWiseElectionResultService implements IAcPcWiseElectionResultSer
 		catch (Exception e)
 		{
 			e.printStackTrace();
+		}
+		return returnList;
+	}
+	
+	public List<GenericVO> cbnOrModiEffect(Long electionId,Long stateid,Long partyId,Long electionScopeId)
+	{
+		List<GenericVO> returnList = null;
+		try
+		{
+			List<Object[]> result = candidateResultDAO.getElectionResultsForCBNORMODIEffect(electionId,stateid,partyId,electionScopeId);
+			if(result != null && result.size() > 0)
+			{
+				returnList = new ArrayList<GenericVO>();
+				for (Object[] objects : result) 
+				{
+					GenericVO genericVO = new GenericVO();
+					genericVO.setId((Long)objects[0]);
+					genericVO.setName(objects[1].toString());
+					returnList.add(genericVO);
+				}
+			}
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception Raised In modiEffect", e);
 		}
 		return returnList;
 	}
