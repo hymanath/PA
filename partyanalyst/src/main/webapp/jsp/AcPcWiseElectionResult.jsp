@@ -208,11 +208,12 @@ $('document').ready(function(){
 	 });
 	 
 	 $('#legend').show();
+	 $('#legend').css("margin-top","-65px");
 	 $('#areaSelectionDiv').hide();
 	 $('#stateSelectDiv').hide();
 	 $('#submitButtionDiv').hide();
-	 $('#andhraImageDiv').show();
 	 $('#telanganaImageDiv').hide();
+	 $('#andhraImageDiv').show();	 
 	 //getElectionResultForAssemblyPrevious(1,"first",1,2);
 	 //getElectionResultForParlimentPresent(1,"second",2,2);
 	 $('#scopeId').change(function(){
@@ -1523,7 +1524,7 @@ var stateType = '';
 		{
 			if(stateVal == 1)
 			{
-				document.getElementById('weathermap').innerHTML = "<div id='map' class='span6' style='height: 421px; border: 1px solid rgb(51, 51, 51); border-radius: 10px; position: relative; background: none repeat scroll 0% 0% rgb(255, 255, 255);'></div>"
+				document.getElementById('weathermap').innerHTML = "<div id='map' class='span6' style='height: 384px; border: 1px solid rgb(51, 51, 51); border-radius: 10px; position: relative; background: none repeat scroll 0% 0% rgb(255, 255, 255);'></div>"
 				map = L.map('map', {
 				center: [16.0000,80.0000],
 				zoom: 6
@@ -1543,7 +1544,7 @@ var stateType = '';
 			if(stateVal == 1)
 			{
 
-				document.getElementById('weathermap1').innerHTML = "<div id='map1' class='span6' style='height: 421px; float: right ! important; left: 0px; position: relative; border: 1px solid rgb(51, 51, 51); border-radius: 10px; background: none repeat scroll 0% 0% rgb(255, 255, 255);'></div>"
+				document.getElementById('weathermap1').innerHTML = "<div id='map1' class='span6' style='height: 384px; float: right ! important; left: 0px; position: relative; border: 1px solid rgb(51, 51, 51); border-radius: 10px; background: none repeat scroll 0% 0% rgb(255, 255, 255);'></div>"
 				map1 = L.map('map1', {
 				center: [16.0000,80.0000],
 				zoom: 6
@@ -3162,7 +3163,7 @@ function getRegionWiseResults(searchType)
 		function getMapForAssembly()
 		{
 			areatype = "totac";
-			document.getElementById('weathermap4').innerHTML = "<div  id='map4'  style='height: 500px; border: 1px solid rgb(51, 51, 51); border-radius: 10px; position: relative; background: none repeat scroll 0% 0% rgb(255, 255, 255); width:600px;'></div>"
+			document.getElementById('weathermap4').innerHTML = "<div  id='map4'  style='height: 500px; border: 1px solid rgb(51, 51, 51); border-radius: 10px; position: relative; background: none repeat scroll 0% 0% rgb(255, 255, 255); width:600px;margin-left:auto;margin-right:auto;'></div>"
 			map4 = L.map('map4', {
 			center: [18.0000,80.0000],
 			zoom: 6
