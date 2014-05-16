@@ -1303,6 +1303,10 @@ function getConstituencyWiseResults()
 						
 						<a onClick="exportToExcel()" class="btn" value="Export To Excel" style="margin-top:0px; background: none repeat scroll 0 0 #0088CC;
     color: #FFFFFF;font-weight: normal;">Export To Excel</a>
+
+	<!--<a onClick="testIt()" class="btn" value="Export To Excel" style="margin-top:0px; background: none repeat scroll 0 0 #0088CC;
+    color: #FFFFFF;font-weight: normal;">testIt</a>-->
+	
 						
 	<img id="ajaxImage" src="./images/icons/search.gif" alt="Processing Image" style="margin-left:70px;display:none;"/>
 
@@ -3264,6 +3268,34 @@ function buildPartyWiseMarginCount(result){
 	str+='</div>';
 	
 	$("#marginAnalysis1").html(str);
+}
+
+var matrixReportDtls1={
+	electionId:'',
+    scopeId:'',
+    locationIds:[]
+		
+};
+function testIt()
+{
+	matrixReportDtls1.electionId = $('#electionId').val();
+	matrixReportDtls1.scopeId = $('#scopeId').val();
+	matrixReportDtls1.locationIds = $('#locaionsId1').val();
+
+	$.ajax({
+          type:'POST',
+          url: 'getWonAndLeadCountPartyWise.action',
+          dataType: 'json',
+          data: {task:JSON.stringify(matrixReportDtls1)},
+
+          success: function(result){ 
+			   console.log(result);
+         },
+          error:function() { 
+           console.log('error', arguments);
+         }
+    });
+
 }
 </script>
 
