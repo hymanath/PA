@@ -1346,7 +1346,7 @@ function getConstituencyWiseResults()
 	</div>-->
 
  <div id="weathermap3"></div>
- 
+ <div id="weathermap4"></div>
 </div>
 <!-- SAMBA END -->
 
@@ -1728,7 +1728,7 @@ var stateType = '';
 		parties.push(662);
 		var jsObj=
 		{
-				electionId : 18,
+				electionId : 260,
 				stateId : 1,
 				electionScopeId : 1,
 				parties : parties,
@@ -1954,7 +1954,7 @@ var stateType = '';
 	month[10]="November";
 	month[11]="December";
 	
-		console.log(areatype);
+		//console.log(areatype);
 		if(areatype  == "pc")
 		{
 			onEachFeature1(feature, layer);
@@ -1962,6 +1962,10 @@ var stateType = '';
 		else if(areatype  == "totPc")
 		{
 			onEachFeatureForPc(feature, layer);
+		}
+		else if(areatype  == "totac")
+		{
+			onEachFeatureForAc(feature, layer);
 		}
 		else
 		{
@@ -2095,180 +2099,71 @@ var stateType = '';
 		}
 		
 	}
+	function onEachFeatureForAc(feature, layer)
+	{
+		layer.setStyle({
+		color: '#000000', 
+		weight: 1,
+		opacity: 0.6,
+		fillOpacity: 0.65,
+		fillColor: '#FFFAF0'
+		});
+		for(var i in psDetails)
+		{
+			if(psDetails[i].name.toUpperCase() == feature.properties.ac_name.toUpperCase())
+			{
+				layer.setStyle({
+				color: '#000000', 
+				weight: 1,
+				opacity: 0.6,
+				fillOpacity: 0.65,
+				fillColor: '#FFD700'
+				});
+			}
+			/* else
+			{
+				layer.setStyle({
+				color: '#000000', 
+				weight: 1,
+				opacity: 0.6,
+				fillOpacity: 0.65,
+				fillColor: '#FFFAF0'
+				});
+			} */
+		}
+	}
 	function onEachFeatureForPc(feature, layer)
 	{
-		var today=new Date();
-
-		var month=new Array();
-		month[0]="January";
-		month[1]="February";
-		month[2]="March";
-		month[3]="April";
-		month[4]="May";
-		month[5]="June";
-		month[6]="July";
-		month[7]="August";
-		month[8]="September";
-		month[9]="October";
-		month[10]="November";
-		month[11]="December";
-		
-			var popupContent='';
-
-			popupContent +='<article class="timeline-group" id="stateAK" style="font-family: times new roman,serif,sans-serif; margin-left: -40px;">';
-			popupContent +=' <header class="timeline-header">';
-			popupContent +=' <h3><b aria-hidden="true" class="stateface "></b> '+feature.properties.pc_name+'</a> <span style="color:#303030;float:right;">'+month[today.getMonth()]+" "+today.getDate()+","+today.getFullYear()+" "+'</span></h3>';
-			popupContent +=' </header>';
-			popupContent +=' <ol class="timeline-list"> ';
-			popupContent +=' <li class="timeline-point is-standard" data-when="future"> ';
-			popupContent +=' <article class="results-group">';
-			popupContent +=' <header class="results-header" style="width: 350px; margin-top: -10px;margin-bottom: 10px;">';
-			popupContent +=' </header>';
-		//	popupContent +=' <b style="font-size: 12px;">  Reporting : 0 % <span style="font-weight:bold;float:right;">  Leading Party: TDP </span></b>';
-				popupContent +=' <table>';
-			popupContent +=' <tr>';
-			popupContent +='<td style="width:700px;"> Candidate Name </td>';
-			popupContent +='<td style="width:300px;padding-left:15px;"> Party </td>';
-			popupContent +='<td style="width:600px;"> Votes Percentage  </td>';
-			popupContent +=' </tr">';
-			popupContent +=' <header class="results-header" style="width: 350px; margin-top: -10px;border-bottom-color: #004276;border-bottom-width: 2px;">';
-			popupContent +=' </header>';
-			popupContent +=' <tr class="type-democrat">';
-			popupContent +=' </table>';
-			popupContent +=' <span style="float: right; margin-right: -50px; margin-top: -20px;"> Total Votes </span>';
-							
-			popupContent +=' <header class="results-header" style="width: 350px; margin-top: -10px;border-bottom-width: 2px;">';
-			popupContent +=' </header>';
-			//console.log(electionPcData);
-			for(var i in electionPcData)
-			{	
-				if(feature.properties.pc_name.toUpperCase() == electionPcData[i].name.toUpperCase())
-				{
-					for(var j in electionPcData[i].selectedCasteDetails)
-					{
-						if(electionPcData[i].selectedCasteDetails[j].casteName != null)
-						{
-							popupContent +=' <div class="results-dataset">';
-							popupContent +=' <div class="results-row layout-full">';
-							popupContent +=' <div class="results-data pos-omega contains-mix is-de-emphasized">';
-							popupContent +=' <div class="results-message">';
-							popupContent +=' <table class="results-table" style="width:650px">';
-							popupContent +=' <tbody>';
-							popupContent +=' <tr class="type-democrat">';
-							popupContent +=' <td class="results-title" style="width:120px;">';
-							popupContent +=' <span class="percentage-combo" ><span class="number">'+electionPcData[i].selectedCasteDetails[j].casteName+'</span>';
-							popupContent +=' </span>';
-							popupContent +=' </td>';
-							popupContent +=' <td class="results-title" style="width: 25px;">';
-							//popupContent +=' <span class="percentage-combo" ><span class="number">'+electionAcData[i].selectedCasteDetails[j].name+'</span>';
-							if(electionPcData[i].selectedCasteDetails[j].name =='TDP'){
-								popupContent +=' <span > <img src="images/party_flags/TDP.PNG" width=125% /></span>';
-							}
-							if(electionPcData[i].selectedCasteDetails[j].name =='INC'){
-								popupContent +=' <span > <img src="images/party_flags/INC.png" width=125% /></span>';
-							}
-							if(electionPcData[i].selectedCasteDetails[j].name =='TRS'){
-								popupContent +=' <span > <img src="images/party_flags/TRS.png" width=125% /></span>';
-							}
-							if(electionPcData[i].selectedCasteDetails[j].name =='BJP'){
-								popupContent +=' <span > <img src="images/party_flags/BJP.png" width=125% /></span>';
-							}
-							if(electionPcData[i].selectedCasteDetails[j].name =='AIMIM'){
-								popupContent +=' <span > <img src="images/party_flags/AIMIM.png" width=125% /></span>';
-							}
-							if(electionPcData[i].selectedCasteDetails[j].name =='CPM'){
-								popupContent +=' <span > <img src="images/party_flags/CPM.png" width=125% /></span>';
-							}
-							if(electionPcData[i].selectedCasteDetails[j].name =='CPI'){
-								popupContent +=' <span > <img src="images/party_flags/CPI.png" width=125% /></span>';
-							}
-							if(electionPcData[i].selectedCasteDetails[j].name =='LSP'){
-								popupContent +=' <span > <img src="images/party_flags/LSP.png" width=125% /></span>';
-							}
-							
-							popupContent +=' </span>';
-							popupContent +=' </td>';
-							//popupContent +=' <td class="results-title" style="width: 30px;">';
-							//popupContent +=' </td>';
-							popupContent +=' <td class="results-percentage" style="width: 100px;padding-left: 25px;">';
-							if(electionPcData[i].selectedCasteDetails[j].persent != null){
-							popupContent +=' <span class="percentage-combo" ><span class="number">'+electionPcData[i].selectedCasteDetails[j].persent+'%</span>';
-							}
-							else{
-							popupContent +=' <span class="percentage-combo" ><span class="number">0 %</span>';
-							}
-							popupContent +=' <span class="graph">';
-							popupContent +=' <span class="bar">';
-							popupContent +=' <span style="width:'+electionPcData[i].selectedCasteDetails[j].persent+'%;" class="index"></span>';
-							popupContent +=' </span>';
-							popupContent +=' </span>';
-							popupContent +=' </span>';
-							popupContent +=' </td>';
-							popupContent +=' <td style="width: 150px;padding-left:35px;">';
-							popupContent +=' <span style="font-weight:#000000">'+electionPcData[i].selectedCasteDetails[j].count+' </span>';
-							popupContent +=' </td>';
-							popupContent +=' </tr>';
-							popupContent +=' </tbody>';
-							popupContent +=' </table>';
-							popupContent +=' </div>';
-							popupContent +=' </div>';
-							popupContent +=' </div>';
-							popupContent +=' </div>';
-						}
-						
-			
-					}
-					
-				}
-			} 
-			
-
-			popupContent +=' </article>';
-			popupContent +=' </li> ';
-			popupContent +=' </ol>';
-			popupContent +=' </article>';
-
-			if (feature.properties && feature.properties.popupContent)
-			{
-				popupContent += feature.properties.popupContent;
-			}
-			 
-			if(feature.properties.area_type == 'GEN')
+		layer.setStyle({
+		color: '#000000', 
+		weight: 1,
+		opacity: 0.6,
+		fillOpacity: 0.65,
+		fillColor: '#FFFAF0'
+		});
+		for(var i in psDetails)
+		{
+			if(psDetails[i].name.toUpperCase() == feature.properties.pc_name.toUpperCase())
 			{
 				layer.setStyle({
 				color: '#000000', 
 				weight: 1,
 				opacity: 0.6,
 				fillOpacity: 0.65,
-				name : "prasad",
-				fillColor: '#00FF00'
+				fillColor: '#FF4500'
 				});
-				layer.bindPopup(popupContent);
 			}
-			else if (feature.properties.area_type == 'ST')
+			/* else
 			{
 				layer.setStyle({
 				color: '#000000', 
 				weight: 1,
 				opacity: 0.6,
 				fillOpacity: 0.65,
-				fillColor: '#FF00FF'
+				fillColor: '#FFFAF0'
 				});
-				layer.bindPopup(popupContent);
-			}
-			else
-			{
-				layer.setStyle({
-				color: '#000000', 
-				weight: 1,
-				opacity: 0.6,
-				fillOpacity: 0.65,
-				fillColor: '#FF0000'
-				});
-				layer.bindPopup(popupContent);
-			} 
-				
-			layer.bindLabel(feature.properties.pc_name, {noHide:false});
+			} */
+		}
 	}
 	
 	
@@ -2760,7 +2655,7 @@ var stateType = '';
 	
 	function generateMapForTgPCTotal()
 	{
-		type = "totPc";
+		areatype = "totPc";
 		document.getElementById('weathermap3').innerHTML = "<div id='map3'  style='height: 900px; border: 1px solid rgb(51, 51, 51); border-radius: 10px; position: relative; background: none repeat scroll 0% 0% rgb(255, 255, 255);'></div>"
 		map3 = L.map('map3', {
 		center: [18.0000,80.0000],
@@ -2919,6 +2814,7 @@ function getRegionWiseResults(searchType)
 		$('#unemchart1p_').hide();
 		$('#div_sld1').hide();
 		$('#slider3').hide();
+		$('#weathermap4').hide();
 	}
 	else if(searchType == 'Semandhra')
 	{
@@ -2935,6 +2831,7 @@ function getRegionWiseResults(searchType)
 		$('#unemchart1p_').hide();
 		$('#div_sld1').hide();
 		$('#slider3').hide();
+		$('#weathermap4').hide();
 	}
 	else if(searchType == 'India')
 	{
@@ -2950,6 +2847,7 @@ function getRegionWiseResults(searchType)
 		$('#unemchart1p_').hide();
 		$('#div_sld1').hide();
 		$('#slider3').hide();
+		$('#weathermap4').hide();
 	}
 	else if(searchType == 'StateAnalysis')
 	{
@@ -2965,6 +2863,7 @@ function getRegionWiseResults(searchType)
 		$('#unemchart1p_').hide();
 		$('#div_sld1').hide();
 		$('#slider3').hide();
+		$('#weathermap4').hide();
 	}
 	else if(searchType == 'DistrictAnalysis')
 	{
@@ -2980,6 +2879,7 @@ function getRegionWiseResults(searchType)
 		$('#unemchart1p_').hide();
 		$('#div_sld1').hide();
 		$('#slider3').hide();
+		$('#weathermap4').hide();
 	}
 	else if(searchType == 'CBNEffect')
 	{
@@ -2995,6 +2895,8 @@ function getRegionWiseResults(searchType)
 		$('#unemchart1p_').hide();
 		$('#div_sld1').hide();
 		$('#slider3').hide();
+		$('#weathermap4').show();
+		getParliments(1,38,872,2);
 	}
 	else if(searchType == 'ModiEffect')
 	{
@@ -3010,8 +2912,97 @@ function getRegionWiseResults(searchType)
 		$('#unemchart1p_').show();
 		$('#div_sld1').show();
 		$('#slider3').show();
-		getElectionResultForTotalParliment();
+		$('#weathermap4').hide();
+		getParliments(1,18,163,1);
+		
 	}
+	}
+	var psDetails ;
+	function getParliments(stateId,electionId,partyId,electionScopeId)
+	{
+		var jsObj=
+		{
+				electionId : stateId,
+				stateId : electionId,
+				electionScopeId : electionScopeId,
+				partyId : partyId,
+				task : "getElectionResults"
+		};
+		$.ajax({
+		type: "GET",
+		url: "cbnOrModiEffectAction.action",
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)},
+		})
+		.done(function( result ) {
+			psDetails = result;
+			if(electionScopeId == 1)
+			{
+				getElectionResultForTotalParliment();
+			}
+			
+			else
+			{
+				getElectionResultForTotalAssembly();
+			}
+		});	
+	}
+	
+	function getElectionResultForTotalAssembly()
+	{
+		var parties = new Array();
+		parties.push(872);
+		parties.push(362);
+		parties.push(163);
+		parties.push(72);
+		parties.push(886);
+		parties.push(662);
+		var jsObj=
+		{
+				electionId : 38,
+				stateId : 1,
+				electionScopeId : 2,
+				parties : parties,
+				scope : "ac",
+				task : "getElectionResults"
+		};
+		$.ajax({
+		type: "GET",
+		url: "getElectionResultsAction.action",
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)},
+		})
+		.done(function( result ) {
+			//electionAcData = result;
+			getMapForAssembly();
+			
+		});	
+		
+		function getMapForAssembly()
+		{
+			areatype = "totac";
+			document.getElementById('weathermap4').innerHTML = "<div id='map4'  style='height: 500px; border: 1px solid rgb(51, 51, 51); border-radius: 10px; position: relative; background: none repeat scroll 0% 0% rgb(255, 255, 255);'></div>"
+			map4 = L.map('map4', {
+			center: [18.0000,80.0000],
+			zoom: 6
+			});
+			L.geoJson(apaccampus, {
+
+			style: function (feature) {
+				return feature.properties && feature.properties.style;
+			},
+			
+			onEachFeature: onEachFeature,
+
+			pointToLayer: function (feature, latlng) {
+				return L.circleMarker(latlng, {
+					
+				});
+			}
+
+			}).addTo(map4); 
+		}
+
 	}
 	
 	<!-- From SASI -->
