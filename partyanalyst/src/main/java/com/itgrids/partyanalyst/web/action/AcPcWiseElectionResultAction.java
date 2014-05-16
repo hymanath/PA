@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IAcPcWiseElectionResultService;
@@ -36,6 +37,7 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 	IAcPcWiseElectionResultService acPcWiseElectionResultService;
 	List<SelectOptionVO> resultLists; 
 	private IStaticDataService staticDataService;
+	List<GenericVO> returnList;
 	
 	public IStaticDataService getStaticDataService() {
 		return staticDataService;
@@ -80,6 +82,17 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 
 	public void setResultList(List<BasicVO> resultList) {
 		this.resultList = resultList;
+	}
+
+	
+
+	public List<GenericVO> getReturnList() {
+		return returnList;
+	}
+
+
+	public void setReturnList(List<GenericVO> returnList) {
+		this.returnList = returnList;
 	}
 
 
@@ -134,6 +147,39 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 				partyIds.add(new Long(parties.get(i).toString()));
 			}
 			resultList = acPcWiseElectionResultService.getPartyWiseComperassionResult(jObj.getLong("stateId"),jObj.getLong("electionId"),partyIds,jObj.getLong("electionScopeId"),jObj.getString("scope"));
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception Raised In getElectionResults method in AcPcWiseElectionResultAction Action", e);
+			return Action.ERROR;
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String cbnOrModiEffect()
+	{
+		try
+		{
+			LOG.debug("Entered Into getElectionResults method in AcPcWiseElectionResultAction Action");
+			session = request.getSession();
+			RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
+			if (registrationVO != null) 
+			{
+				if (!registrationVO.getIsAdmin().equals("true"))
+					  return ERROR;
+			} 
+			else
+				return ERROR;
+			
+			jObj = new JSONObject(getTask());
+						
+			/*JSONArray parties = jObj.getJSONArray("parties");
+			List<Long> partyIds = new ArrayList<Long>();
+			for(int i = 0 ; i < parties.length() ; i++)
+			{
+				partyIds.add(new Long(parties.get(i).toString()));
+			}*/
+			returnList = acPcWiseElectionResultService.cbnOrModiEffect(jObj.getLong("stateId"),jObj.getLong("electionId"),jObj.getLong("partyId"),jObj.getLong("electionScopeId"));
 		} 
 		catch (Exception e)
 		{
