@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@taglib prefix="s" uri="/struts-tags" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -10,6 +12,83 @@
 <title>AC AND PC WISE RESULT</title>
 
 <style>
+//sravanthi code
+.chart-gauge1 {
+  width: 360px;
+  margin: auto;
+  height: 200px;
+  text-align:center;
+}
+
+.chart-gauge {
+  width: 360px;
+  margin: auto;
+  height: 200px;
+  text-align:center;
+}
+
+.chart-color1 {
+  fill: #FF3333;
+}
+
+.chart-color2 {
+  fill: #FFCCCC;
+}
+
+.chart-color3 {
+  fill: #CCFFCC;
+}
+.chart-color4 {
+  fill: #33FF33;
+}
+.chart-color5 {
+  fill: #59A2BE;
+}
+.needle ,.needle-center{
+  fill: #9f8868;
+}
+
+
+.d3-slider-handle1 {position: absolute;width: 1.2em;height: 1.2em;border: 1px solid #FFCC00;border-radius: 4px;background: #FFCC99;background: linear-gradient(to bottom, #FFCC99 0%, #FFD2A6 100%);z-index: 3;}
+.d3-slider-handle1:hover {border: 1px solid #F2C100;}
+.d3-slider-horizontal .d3-slider-handle1 {top: -.3em;margin-left: -.6em;}
+.d3-slider-vertical .d3-slider-handle1 {left: -.25em;margin-left: 0;margin-bottom: -.6em;}
+
+
+.d3-slider {position: relative;font-family: Verdana,Arial,sans-serif;font-size: 1.1em;border: 1px solid #aaaaaa;z-index: 2;}
+.d3-slider-horizontal {height: .8em;}
+.d3-slider-vertical {width: .8em;height: 100px;}
+.d3-slider-handle {position: absolute;width: 1.2em;height: 1.2em;border: 1px solid #FFCC00;border-radius: 4px;background: #FFCC99;background: linear-gradient(to bottom, #FFCC99 0%, #FFD2A6 100%);z-index: 3;}
+.d3-slider-handle:hover {border: 1px solid #F2C100;}
+.d3-slider-horizontal .d3-slider-handle {top: -.3em;margin-left: -.6em;}
+.d3-slider-axis {position: relative;z-index: 1;}
+.d3-slider-axis-bottom {top: .8em;}
+.d3-slider-axis-right {left: .8em;}
+.d3-slider-axis path {stroke-width: 0;fill: none;}
+.d3-slider-axis line {fill: none;stroke: #aaa;shape-rendering: crispEdges;}
+.d3-slider-axis text {font-size: 11px;}
+.d3-slider-vertical .d3-slider-handle {left: -.25em;margin-left: 0;margin-bottom: -.6em;}
+.div_sld{width:300px;margin:10px 0 0 50px;}
+.div_sld1{width:300px;margin:10px 0 0 50px;}
+.div_upeffect{width:400px;}
+.map_wrapper{width:100%;padding:5px;max-width:700px;}
+@media only screen and (max-width:767px){
+.map_wrapper{width:99%;padding:0px;}
+#mapswidget{width:98%;}
+.div_upeffect{width:100%;}
+
+.div_sld{width:80%;margin:10px auto;}
+.div_sld1{width:80%;margin:10px auto;}
+}
+@media only screen and (max-width:340px){
+.div_upeffect center{font-size:12px;}
+}
+.ht10{display:block;font-size:1px;height:10px;line-height:10px}
+#slider3{width:333px;margin-bottom: 40px;}
+.div_sld{width:333px;margin:auto;}
+.div_sld1{width:333px;margin:auto;}
+
+
 .tableClass1  table {border: 3px solid #B6D9E9}
 .tableClass1  thead th,.tableClass1  thead tr,.tableClass1  tbody tr,.tableClass1  tbody td {
 	border: 2px solid #B6D9E9;
@@ -196,7 +275,13 @@ padding: 4px;
 <body>
 <script>
 $('document').ready(function(){
-	 $('#scopeId').trigger('change');
+	 
+	 	$("#unemp_chart").hide();
+		$("#unemp_chart1").hide();
+		$(".div_sld").hide();
+		$(".div_sld1").hide();
+		
+		$('#scopeId').trigger('change');
 	 //$('#locaionsId1').multiselect({ noneSelectedText:"Select"});
 	 $('.reportType').change(function(){
 		 $('#test,#matridLeadId,#matrixWonSummaryId,#matrixLeadSummaryId,#marginAnalysis1,#constituencyResultsDiv').html('');
@@ -3918,6 +4003,15 @@ function getRegionWiseResults(searchType)
 			$('.parliamentCls').hide();
 			$('#indiaBannerId').hide();
 			$('#legend').css("margin-top","0px");
+			
+			$("#unemp_chart1").show();
+			$(".div_sld1").show();
+			$("#unemp_chart").hide();
+			$(".div_sld").hide();
+			$("#results1Div").hide();
+			$(".row-fluid ").hide();
+			$("#unemp_chart1").css({"display":"block","width":"360px","margin":"auto"});
+			
 	}
 	else if(searchType == 'ModiEffect')
 	{
@@ -3941,6 +4035,15 @@ function getRegionWiseResults(searchType)
 		getElectionResultForTotalParliment();
 		$('#weathermap4').hide();
 		getParliments(1,260,163,1);
+		
+		$("#unemp_chart").show();
+		$(".div_sld").show();
+		$("#results1Div").hide();
+		$(".row-fluid ").hide();
+		$("#unemp_chart1").hide();
+		$(".div_sld1").hide();
+		$("#unemp_chart").css({"display":"block","width":"360px","margin":"auto"});
+		
 	}
 	}
 	
@@ -5938,6 +6041,51 @@ function buildPCWiseResult(){
 		}
 	
 </script>
+
+<script type="text/javascript">
+
+
+var un_emp1 = '0.20';
+var elems = document.getElementsByClassName('d3-slider-handle1')[0];
+elems.style.left = '50%';
+if(true)
+{
+		var div_width1 = 420; 
+		var div_height1 = 350;
+		
+		var margin1 = {top: 20, right: 20, bottom: 30, left: 40},
+		width1 = div_width1 - margin1.left - margin1.right,
+		height1 = div_height1 - margin1.top - margin1.bottom;
+}
+
+var un_emp = '0.20';
+var elems = document.getElementsByClassName('d3-slider-handle')[0];
+elems.style.left = '20%';
+if(true)
+{
+		var div_width = 420; 
+		var div_height = 350;
+		
+		var margin = {top: 20, right: 20, bottom: 30, left: 40},
+		width = div_width - margin.left - margin.right,
+		height = div_height - margin.top - margin.bottom;
+}
+
+var constituencyArr=new Array();
+
+<c:forEach var="constituency" items="${resultLists}">
+	var ob={
+			id:'${constituency.id}',
+			value:'${constituency.name}'
+			};
+constituencyArr.push(ob);
+</c:forEach>
+console.log(constituencyArr);
+
+</script>
+
+<script type="text/javascript" src="js/newTest1.js"></script>
+<script type="text/javascript" src="js/newTest.js"></script>
 
 </body>
 </html>
