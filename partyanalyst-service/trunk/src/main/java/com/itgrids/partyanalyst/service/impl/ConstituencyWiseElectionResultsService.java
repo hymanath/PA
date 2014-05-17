@@ -113,7 +113,7 @@ public class ConstituencyWiseElectionResultsService implements
 						System.out.print("======="+matcher1.group(1).toString());
 						
 						String data=matcher1.group(1).toString().trim();
-						String data1=data+"";
+						String data1=data.replaceAll("  ", " ");
 						log.debug("==="+data);
 						data=data.replaceAll("\\.", " ").replaceAll("  ", " ").replaceAll("[â?]", "");
 					if(flagCount==0)
