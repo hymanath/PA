@@ -946,6 +946,9 @@ var tableToExcel = (function() {
 })()
 function exportToExcel()
 {
+	if($('#constituencyResultsDiv').val() == 5)
+	 tableToExcel('reportDiv', 'Assembly Wise Results');
+	else
 	  tableToExcel('reportDiv', 'Election Results');
 }
 
