@@ -4796,7 +4796,8 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 					" Nomination model , DelimitationConstituency model1 ,DelimitationConstituencyAssemblyDetails model2 " +
 					" where  model.constituencyElection.election.electionId = :electionId and model.candidateResult.rank in (1,2) and " +
 					"model.constituencyElection.constituency.constituencyId = model1.constituency.constituencyId and " +
-					"model1.year = 2009 and " +
+					"model2.delimitationConstituency.year = 2009 and " +
+					"model2.delimitationConstituency.constituency.deformDate is null and " +
 					"model.constituencyElection.constituency.constituencyId in(:constituencyIds) and " +
 					"model.constituencyElection.constituency.constituencyId = model2.constituency.constituencyId  " +
 					"order by  model2.delimitationConstituency.constituencyNO");
