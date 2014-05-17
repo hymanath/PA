@@ -1306,7 +1306,10 @@ function getConstituencyWiseResults()
 						   
 			
 
-<td class="span3"> Select Region<img src="./images/icons/search.gif" alt="Processing Image" id="processImg" style="display:none;"/><select class="input-block-level" id="locaionsId1" multiple="true" style="width:96%;height:55px;"></select></td>			
+<td class="span3"  id="regionSelect"> <span id="selectText">Select Region</span><img src="./images/icons/search.gif" alt="Processing Image" id="processImg" style="display:none;"/><select class="input-block-level" id="locaionsId1" multiple="true" style="width:96%;height:55px;"></select></td>	
+
+
+
 			
 	<!-- <td></td>-->
 	
@@ -2427,7 +2430,7 @@ northTelanganaConsti.push(365);
 		parties.push(1117);
 		var jsObj=
 		{
-				electionId : 38,//258,
+				electionId : 258,
 				stateId : 1,
 				electionScopeId : 2,
 				parties : parties,
@@ -2546,7 +2549,7 @@ northTelanganaConsti.push(365);
 		parties.push(1117);
 		var jsObj=
 		{
-				electionId : 17,//260,
+				electionId : 260,
 				stateId : 1,
 				electionScopeId : 1,
 				parties : parties,
@@ -3881,7 +3884,7 @@ function getRegionWiseResults(searchType)
 		$('#indiaBannerId').hide();
 		$('#andhraImageDiv').hide();
 		$('#telanganaImageDiv').hide();
-		$('#legend').css("margin-top","0px");
+		$('#legend').css("margin-top","-20px");
 		$('#weathermap5').hide();		
 	}
 	else if(searchType == 'ModiEffect')
@@ -6305,7 +6308,7 @@ function buildTelanganaPCWiseResult(){
 										popupContent +=' <table class="results-table" style="font-weight:bold;font-family:Arial,sans-serif">';
 										popupContent +=' <tbody>';
 										popupContent +=' <tr class="type-democrat">';
-										popupContent +=' <td class="results-title" style="width:200px;">';
+										popupContent +=' <td claass="results-title" style="width:200px;">';
 										popupContent +=' <span class="percentage-combo" ><span class="number">'+result[i].selectedCasteDetails[j].casteName+'</span>';
 										popupContent +=' </span>';
 										popupContent +=' </td>';
@@ -6389,6 +6392,29 @@ function buildTelanganaPCWiseResult(){
 	function getLocationDetailsForSelectedScope1()
 {
 	
+
+var scope = $("#scopeId").val();
+	
+if(scope == 3)
+	{
+	$("#selectText").html("Select Region");
+	
+	}
+else if(scope == 2)
+	{
+	$("#selectText").html("Select District");
+	
+	}
+else if(scope == 4)
+	{
+	$("#selectText").html("Select Parliament");
+	
+	}
+else if(scope == 5)
+	{
+		$("#selectText").html("Select Assembly");
+	
+	}
 	$("#processImg").css("display","inline-block");
 	$('#subReportId').attr('disabled',false); 
     if($('#scopeId').val() == 5)
