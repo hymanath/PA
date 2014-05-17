@@ -214,7 +214,7 @@ $('document').ready(function(){
 	 $('#areaSelectionDiv').hide();
 	 $('#stateSelectDiv').hide();
 	 $('#submitButtionDiv').hide();
-	 //getElectionResultForAssemblyPrevious(1,"first",1,2);
+	  //getElectionResultForAssemblyPrevious(1,"first",1,2);
 	 //getElectionResultForParlimentPresent(1,"second",2,2);
 	 $('#scopeId').change(function(){
 	 console.log(this);
@@ -1271,15 +1271,31 @@ function getConstituencyWiseResults()
 	  <option value="38">2009 Assembly </option>
 	  <option value="3">2004 Assembly </option>
 	 </select></td>
-	 <td class="span3"> Select Level<select onchange="getLocationDetailsForSelectedScope(this.value)" class="input-block-level" id="scopeId" name="scopeId" style="width:99%;">
+	<!-- <td class="span3"> Select Level<select onchange="getLocationDetailsForSelectedScope(this.value)" class="input-block-level" id="scopeId" name="scopeId" style="width:99%;">
+								<option value="3">Region</option>
+								<option value="2">District</option>
+								<option value="4">Parliament</option>
+								<option value="5">Assembly</option>
+						   </select>	</td>-->
+
+						    <td class="span3"> Select State<select class="input-block-level" id="stateScope" name="stateScope" style="width:99%;" onchange="getLocationDetailsForSelectedScope1()" class="input-block-level">
+							<option value="0">All</option>
+								<option value="1">Andhra</option>
+								<option value="2">Telangana</option>
+								
+						   </select>	</td>
+
+	 <td class="span3"> Select Level<select class="input-block-level" id="scopeId" name="scopeId" style="width:99%;" onchange="getLocationDetailsForSelectedScope1()" >
 								<option value="3">Region</option>
 								<option value="2">District</option>
 								<option value="4">Parliament</option>
 								<option value="5">Assembly</option>
 						   </select>	</td>
+
+						   
 			
 
-<td class="span3"> Select Region<select class="input-block-level" id="locaionsId1" multiple="true" style="width:96%;height:55px;"></select></td>			
+<td class="span3"> Select Region<img src="./images/icons/search.gif" alt="Processing Image" id="processImg" style="display:none;"/><select class="input-block-level" id="locaionsId1" multiple="true" style="width:96%;height:55px;"></select></td>			
 			
 	<!-- <td></td>-->
 	
@@ -3627,7 +3643,7 @@ function getRegionWiseResults(searchType)
 			$('#indiaBannerId').hide();
 			$('#andhraImageDiv').hide();
 		$('#telanganaImageDiv').hide();
-		
+		getLocationDetailsForSelectedScope1();
 	}
 	else if(searchType == 'DistrictAnalysis')
 	{
@@ -4192,7 +4208,7 @@ var matrixReportDtls1={
 	  str+='<table style=" margin:26px 10px 0 -10px;"  cellpadding="5">';
 	   str+='<thead>';
 	    str+='<tr>';
-		 str+='<th rowspan="2"></th>';
+		 str+='<th rowspan="2" class="thBorder"></th>';
 		
 		$.each(result[0].partiesDetails,function(index,value){
 		 str+='<th colspan="2" class="thBorder">'+value.name+'</th>';
@@ -6029,7 +6045,34 @@ function buildTelanganaPCWiseResult(){
 		}	
 		
 		}
+	function getLocationDetailsForSelectedScope1()
+{
 	
+	$("#processImg").css("display","inline-block");
+	$('#subReportId').attr('disabled',false); 
+    if($('#scopeId').val() == 5)
+	{
+		$('#subReportId').attr('disabled',true);
+	}
+    
+	locationDtls.task =$('#scopeId :selected').text();
+	locationDtls.stateType = $('#stateScope :selected').text();
+	
+	$.ajax({
+          type:'POST',
+          url: 'getElectionResultsLocations.action',
+          dataType: 'json',
+          data: {task:JSON.stringify(locationDtls)},
+
+          success: function(result){ 
+			  $("#processImg").css("display","none");
+			   buildLocationDetails(result);
+         },
+          error:function() { 
+           console.log('error', arguments);
+         }
+    });
+}
 	
 </script>
 
