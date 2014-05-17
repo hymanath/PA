@@ -233,10 +233,12 @@ $('document').ready(function(){
 		$('#andhraImageDiv').show();
 		$('#telanganaImageDiv').hide();
 		$('#legend').css("margin-top","-85px");	
+		
+		
 		var subMenu = '';
 		subMenu = '<h2 style="font-family:Georgia,Times;font-size:16px;font-size:25px;"> Andhra Pradesh Election Results - 2014 </h2>';
 			//"ff-tisa-web-pro",Georgia,Times,"Times New Roman",serif
-			subMenu +='<ul class="nav nav-pills" style="font-weight: 500;">';
+		/*	subMenu +='<ul class="nav nav-pills" style="font-weight: 500;">';
 			subMenu +='	<li style="margin-top:10px;color:#ADADAD;"> Filter Options : </li> ';
 			
 			subMenu +='	<li>';
@@ -252,7 +254,25 @@ $('document').ready(function(){
 			
 			
 				$('#subTitlesDiv').html(subMenu);
+*/
 
+			//"ff-tisa-web-pro",Georgia,Times,"Times New Roman",serif
+			subMenu +='<ul class="nav nav-pills" style="font-weight: 500;">';
+			subMenu +='	<li style="margin-top:10px;color:#ADADAD;"> Filter Options : </li> ';
+			subMenu +='	<li class="active btnCls btnCls1">';
+
+			subMenu +='	<span style="display:none;"> <button id="seemandraStateId" onclick="buildSemandhraStateWiseResult();" class="btn btn-info" style="margin-left:20px;"> electin reslts</button> </span>';
+			subMenu +='	<a style="margin-left:20px;" href="javascript:{buildSemandhraStateWiseResult();}" > State Wise Result </a>';
+			subMenu +='	</li>';
+			subMenu +='	<li  class="btnCls btnCls2">';
+			subMenu +='	<a style="margin-left:20px;" href="javascript:{buildSemandhraPCWiseResult();}"> Parliament wise  Result </a>';
+			subMenu +='	</li>';
+			subMenu +='	<li  class="btnCls btnCls3"><a style="margin-left:20px;" href="javascript:{buildNortSemandhraWiseReport();}"> North Andhra </a></li>';
+			subMenu +='	<li  class="btnCls btnCls4"><a style="margin-left:20px;" href="javascript:{buildSouthAndhraREport();}"> South Andhra </a></li>';
+			subMenu +='	<li  class="btnCls btnCls5"><a style="margin-left:20px;" href="javascript:{buildRayalasemaWiseResult();}"> Rayalaseema </a></li>';
+			subMenu +='</ul>';
+			
+			$('#subTitlesDiv').html(subMenu);
 });
 </script>
 <script>
@@ -1166,7 +1186,7 @@ function getConstituencyWiseResults()
 -->
 <div id="overviewDivId1" class="span5" style="margin: 12px 48px 0px 49px;"></div>
 <div id="overviewDivId2" class="span5" style="margin:12px 10px 10px 39px"></div>
-<div id="subTitlesDiv" style="margin-left:40px;margin-top:20px;clear:both;"></div>
+<div id="subTitlesDiv" style="margin-top:20px;clear:both;"></div>
 
 <div id="results1Div" style="overflow:scroll;height:500px;" ></div>
 
@@ -3720,7 +3740,7 @@ function getRegionWiseResults(searchType)
 		$('#results1Div').html('');
 		var subMenu ='';
 		subMenu = '<h2 style="font-family: times new roman,serif,sans-serif;font-size:16px;font-size:25px;font-weight: 500;"> Telangana Election Results - 2014 </h2>';
-		subMenu +='<ul class="nav nav-pills" style="font-weight:500;">';
+		/*subMenu +='<ul class="nav nav-pills" style="font-weight:500;">';
 		subMenu +='	<li style="margin-top:10px;color:#ADADAD;"> Filter Options : </li> ';
 		subMenu +='	<li class="active">';
 		subMenu +='	<button onclick="buildTelanganaStateWiseResult();" class="btn btn-info" id="seemandraStateId"> State wise Result </button>';
@@ -3730,7 +3750,25 @@ function getRegionWiseResults(searchType)
 		subMenu +='	</li>';
 		subMenu +='<button onclick="buildSouthTelangana();" class="btn btn-info"  style="margin-left:20px;">  South Telangana </button>';
 		subMenu +='<button onclick="buildNortTelangana();" class="btn btn-info"  style="margin-left:20px;">  North Telangana </button>';
-		subMenu +='</ul>';
+		subMenu +='</ul>';*/
+
+			//"ff-tisa-web-pro",Georgia,Times,"Times New Roman",serif
+			subMenu +='<ul class="nav nav-pills" style="font-weight: 500;">';
+			subMenu +='	<li style="margin-top:10px;color:#ADADAD;"> Filter Options : </li> ';
+			subMenu +='	<li class="active btnCls btnCls1">';
+			subMenu +='	<span style="display:none;"> <button id="seemandraStateId" onclick="buildTelanganaStateWiseResult();" class="btn btn-info" style="margin-left:20px;"> electin reslts</button> </span>';
+			subMenu +='	<a style="margin-left:20px;" href="javascript:{buildTelanganaStateWiseResult();}"> State wise Result </a>';
+			subMenu +='	</li>';
+			subMenu +='	<li  class="btnCls btnCls2">';
+			subMenu +='	<a style="margin-left:20px;" href="javascript:{buildTelanganaPCWiseResult();}"> Parliament wise  Result </a>';
+			subMenu +='	</li>';
+			subMenu +='	<li  class="btnCls btnCls4"><a style="margin-left:20px;" href="javascript:{buildNortTelangana();}">  North Telangana  </a></li>';
+			subMenu +='	<li  class="btnCls btnCls3"><a style="margin-left:20px;" href="javascript:{buildSouthTelangana();}"> South Telangana </a></li>';
+
+
+			subMenu +='</ul>';
+			
+			
 		$('#subTitlesDiv').html(subMenu);
 		$('#weathermap5').hide();
 	}
@@ -3762,9 +3800,10 @@ function getRegionWiseResults(searchType)
 		$('#telanganaImageDiv').hide();
 		$('#legend').css("margin-top","-85px");	
 		var subMenu ='';
+		
 		subMenu = '<h2 style="font-family:Georgia,Times;font-size:16px;font-size:25px;"> Andhra Pradesh Election Results - 2014 </h2>';
 		//"ff-tisa-web-pro",Georgia,Times,"Times New Roman",serif
-		subMenu +='<ul class="nav nav-pills" style="font-weight: 500;">';
+		/*subMenu +='<ul class="nav nav-pills" style="font-weight: 500;">';
 		subMenu +='	<li style="margin-top:10px;color:#ADADAD;"> Filter Options : </li> ';
 		subMenu +='	<li>';
 		subMenu +='	<button onclick="buildSemandhraStateWiseResult();" class="btn btn-info" style="margin-left:20px;" id="seemandraStateId"> State wise Result </button>';
@@ -3776,6 +3815,24 @@ function getRegionWiseResults(searchType)
 		subMenu +='<button onclick="buildSouthAndhraREport();" class="btn btn-info"  style="margin-left:20px;">  South Andhra</button>';
 		subMenu +='<button onclick="buildRayalasemaWiseResult();" class="btn btn-info"  style="margin-left:20px;">  Rayalaseema</button>';
 		subMenu +='</ul>';
+		*/
+
+			//"ff-tisa-web-pro",Georgia,Times,"Times New Roman",serif
+			subMenu +='<ul class="nav nav-pills" style="font-weight: 500;">';
+			subMenu +='	<li style="margin-top:10px;color:#ADADAD;"> Filter Options : </li> ';
+			subMenu +='	<li class="active btnCls btnCls1">';
+			subMenu +='	<span style="display:none;"> <button id="seemandraStateId" onclick="buildSemandhraStateWiseResult();" class="btn btn-info" style="margin-left:20px;"> electin reslts</button> </span>';
+			subMenu +='	<a style="margin-left:20px;" href="javascript:{buildSemandhraStateWiseResult();}"> State Election Result </a>';
+			subMenu +='	</li>';
+			subMenu +='	<li  class="btnCls btnCls2">';
+			subMenu +='	<a style="margin-left:20px;" href="javascript:{buildSemandhraPCWiseResult();}"> Parliament wise  Result </a>';
+			subMenu +='	</li>';
+			subMenu +='	<li  class="btnCls btnCls3"><a style="margin-left:20px;" href="javascript:{buildNortSemandhraWiseReport();}"> North Andhra </a></li>';
+			subMenu +='	<li  class="btnCls btnCls4"><a style="margin-left:20px;" href="javascript:{buildSouthAndhraREport();}"> South Andhra </a></li>';
+			subMenu +='	<li  class="btnCls btnCls5"><a style="margin-left:20px;" href="javascript:{buildRayalasemaWiseResult();}"> Rayalaseema </a></li>';
+			subMenu +='</ul>';
+			
+			
 		$('#subTitlesDiv').html(subMenu);
 		$('#weathermap5').hide();
 
@@ -4546,7 +4603,9 @@ var matrixReportDtls1={
 	
 	
 	function buildTelanganaStateWiseResult(){
-
+		$('.btnCls').removeClass('active');
+		$('.btnCls1').addClass('active');
+		
 	var result = electionAcData;
 	//console.log(result);
 	$('#results1Div').html('');
@@ -4695,7 +4754,8 @@ var matrixReportDtls1={
 	}
 	
 	function buildSouthTelangana(){
-
+		$('.btnCls').removeClass('active');
+		$('.btnCls3').addClass('active');
 	var result = electionAcData;
 	//console.log(result);
 	$('#results1Div').html('');
@@ -5008,6 +5068,9 @@ function buildREgionWiseReport(){
 
 
 function buildTelanganaPCWiseResult(){
+		$('.btnCls').removeClass('active');
+		$('.btnCls2').addClass('active');
+		
 	var result = electionPcData;
 	//console.log(result);
 	$('#results1Div').html('');
@@ -5161,6 +5224,8 @@ function buildTelanganaPCWiseResult(){
 	}
 		
 	function buildSemandhraPCWiseResult(){
+			$('.btnCls').removeClass('active');
+		$('.btnCls2').addClass('active');
 	var result = electionPcData;
 	//console.log(result);
 	$('#results1Div').html('');
@@ -5315,6 +5380,9 @@ function buildTelanganaPCWiseResult(){
 		
 		
 		function buildSemandhraStateWiseResult(){
+
+		$('.btnCls').removeClass('active');
+		$('.btnCls1').addClass('active');
 		
 		var result = electionAcData;
 	//console.log(result);
@@ -5626,6 +5694,9 @@ function buildTelanganaPCWiseResult(){
 		
 		function buildNortTelangana(){
 		
+		$('.btnCls').removeClass('active');
+		$('.btnCls4').addClass('active');
+		
 		var result = electionAcData;
 	//console.log(result);
 	$('#results1Div').html('');
@@ -5780,7 +5851,9 @@ function buildTelanganaPCWiseResult(){
 		}
 		
 		function buildSouthAndhraREport(){
-		
+		$('.btnCls').removeClass('active');
+		$('.btnCls4').addClass('active');
+
 		var result = electionAcData;
 	//console.log(result);
 	$('#results1Div').html('');
@@ -5936,7 +6009,9 @@ function buildTelanganaPCWiseResult(){
 		
 		
 		function buildRayalasemaWiseResult(){
-		
+				$('.btnCls').removeClass('active');
+		$('.btnCls5').addClass('active');
+
 		var result = electionAcData;
 	//console.log(result);
 	$('#results1Div').html('');
@@ -6240,7 +6315,8 @@ function buildTelanganaPCWiseResult(){
 		}
 	
 	function buildNortSemandhraWiseReport(){
-		
+		$('.btnCls').removeClass('active');
+		$('.btnCls3').addClass('active');
 		var result = electionAcData;
 	//console.log(result);
 	$('#results1Div').html('');
