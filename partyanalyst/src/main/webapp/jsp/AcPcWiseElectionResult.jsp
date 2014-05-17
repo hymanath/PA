@@ -214,9 +214,6 @@ $('document').ready(function(){
 	 $('#areaSelectionDiv').hide();
 	 $('#stateSelectDiv').hide();
 	 $('#submitButtionDiv').hide();
-	 $('#telanganaImageDiv').hide();
-	 $('#andhraImageDiv').show();
-	 $('#legend').css("margin-top","-65px");
 	 //getElectionResultForAssemblyPrevious(1,"first",1,2);
 	 //getElectionResultForParlimentPresent(1,"second",2,2);
 	 $('#scopeId').change(function(){
@@ -234,7 +231,7 @@ $('document').ready(function(){
 		$('#subTitlesDiv').html('');
 		$('#andhraImageDiv').show();
 		$('#telanganaImageDiv').hide();
-		$('#legend').css("margin-top","-65px");	
+		$('#legend').css("margin-top","-85px");	
 		var subMenu = '';
 		subMenu = '<h2 style="font-family:Georgia,Times;font-size:16px;font-size:25px;"> Andhra Pradesh Election Results - 2014 </h2>';
 			//"ff-tisa-web-pro",Georgia,Times,"Times New Roman",serif
@@ -2816,7 +2813,7 @@ rayalaseemaConsti.push(330);
 							popupContent +=' </td>';
 							popupContent +=' <td class="results-title" style="width:40px;">'+electionAcData[i].selectedCasteDetails[j].name+'';
 							//popupContent +=' <span class="percentage-combo" ><span class="number">'+electionAcData[i].selectedCasteDetails[j].name+'</span>';
-							 if(electionAcData[i].selectedCasteDetails[j].name =='TDP'){
+						/*	 if(electionAcData[i].selectedCasteDetails[j].name =='TDP'){
 								popupContent +=' <span > TDP </span>';
 							}
 							if(electionAcData[i].selectedCasteDetails[j].name =='YSRC'){
@@ -2844,7 +2841,8 @@ rayalaseemaConsti.push(330);
 								popupContent +=' <span > LSP</span>';
 							} 
 							
-							popupContent +=' </span>';
+							popupContent +=' </span>';*/
+							
 							popupContent +=' </td>';
 							//popupContent +=' <td class="results-title" style="width: 30px;">';
 							//popupContent +=' </td>';
@@ -3051,8 +3049,8 @@ rayalaseemaConsti.push(330);
 						popupContent +=' </span>';
 						popupContent +=' </td>';
 						popupContent +=' <td class="results-title" style="width: 25px;">'+electionPcData[i].selectedCasteDetails[j].name+'';
-						popupContent +=' <span class="percentage-combo" ><span class="number">'+electionAcData[i].selectedCasteDetails[j].name+'</span>';
-						 if(electionPcData[i].selectedCasteDetails[j].name =='TDP'){
+						/*
+						if(electionPcData[i].selectedCasteDetails[j].name =='TDP'){
 							popupContent +=' <span > TDP </span>';
 						}
 						if(electionPcData[i].selectedCasteDetails[j].name =='YSRC'){
@@ -3080,7 +3078,7 @@ rayalaseemaConsti.push(330);
 							popupContent +=' <span > LSP </span>';
 						} 
 						
-						popupContent +=' </span>';
+						popupContent +=' </span>';*/
 						popupContent +=' </td>';
 						
 						//popupContent +=' <td class="results-title" style="width: 30px;">';
@@ -3516,7 +3514,7 @@ function getRegionWiseResults(searchType)
 		$('#indiaBannerId').hide();
 		$('#andhraImageDiv').hide();
 		$('#telanganaImageDiv').show();
-		$('#legend').css("margin-top","-65px");	
+		$('#legend').css("margin-top","-85px");	
 		$('#subTitlesDiv').html('');
 		$('#results1Div').html('');
 		
@@ -3566,7 +3564,7 @@ function getRegionWiseResults(searchType)
 		$('#subTitlesDiv').html('');
 		$('#andhraImageDiv').show();
 		$('#telanganaImageDiv').hide();
-		$('#legend').css("margin-top","-65px");	
+		$('#legend').css("margin-top","-85px");	
 		subMenu = '<h2 style="font-family:Georgia,Times;font-size:16px;font-size:25px;"> Andhra Pradesh Election Results - 2014 </h2>';
 			//"ff-tisa-web-pro",Georgia,Times,"Times New Roman",serif
 			subMenu +='<ul class="nav nav-pills" style="font-weight: 500;">';
@@ -3627,7 +3625,7 @@ function getRegionWiseResults(searchType)
 			$('.parliamentCls').hide();
 					$('#weathermap4').hide();
 			$('#indiaBannerId').hide();
-			$('#andhraImageDiv').show();
+			$('#andhraImageDiv').hide();
 		$('#telanganaImageDiv').hide();
 		
 	}
@@ -3649,7 +3647,7 @@ function getRegionWiseResults(searchType)
 			$('.parliamentCls').hide();
 			$('#weathermap4').hide();
 			$('#indiaBannerId').hide();
-			$('#andhraImageDiv').show();
+			$('#andhraImageDiv').hide();
 		$('#telanganaImageDiv').hide();
 	}
 	else if(searchType == 'CBNEffect')
@@ -3671,7 +3669,7 @@ function getRegionWiseResults(searchType)
 		getParliments(1,258,872,2);
 			$('.parliamentCls').hide();
 			$('#indiaBannerId').hide();
-			$('#andhraImageDiv').show();
+			$('#andhraImageDiv').hide();
 		$('#telanganaImageDiv').hide();
 		$('#legend').css("margin-top","0px");	
 	}
@@ -3695,7 +3693,7 @@ function getRegionWiseResults(searchType)
 		getElectionResultForTotalParliment();
 		$('#weathermap4').hide();
 		getParliments(1,260,163,1);
-		$('#andhraImageDiv').show();
+		$('#andhraImageDiv').hide();
 		$('#telanganaImageDiv').hide();
 		
 	}
@@ -4301,7 +4299,8 @@ var matrixReportDtls1={
 										popupContent +=' </span>';
 										popupContent +=' </td>';
 										popupContent +=' <td class="results-title" style="width:200px;">';
-										if(result[i].selectedCasteDetails[j].name =='TDP'){
+										popupContent +=''+result[i].selectedCasteDetails[j].name+'';
+									/*	if(result[i].selectedCasteDetails[j].name =='TDP'){
 											popupContent +=' <span > TDP </span>';
 										}
 										if(result[i].selectedCasteDetails[j].name =='INC'){
@@ -4325,7 +4324,10 @@ var matrixReportDtls1={
 										if(result[i].selectedCasteDetails[j].name =='LSP'){
 											popupContent +=' <span > LSP </span>';
 										}
-										
+										if(result[i].selectedCasteDetails[j].name =='LSP'){
+											popupContent +=' <span > LSP </span>';
+										}
+										*/
 										popupContent +=' </td>';
 										//popupContent +=' <td class="results-title" style="width: 30px;">';
 										//popupContent +=' </td>';
@@ -4447,7 +4449,8 @@ var matrixReportDtls1={
 										popupContent +=' </span>';
 										popupContent +=' </td>';
 										popupContent +=' <td class="results-title" style="width:200px;">';
-										if(result[i].selectedCasteDetails[j].name =='TDP'){
+										popupContent +=''+result[i].selectedCasteDetails[j].name+'';
+									/*	if(result[i].selectedCasteDetails[j].name =='TDP'){
 											popupContent +=' <span > TDP </span>';
 										}
 										if(result[i].selectedCasteDetails[j].name =='INC'){
@@ -4471,7 +4474,10 @@ var matrixReportDtls1={
 										if(result[i].selectedCasteDetails[j].name =='LSP'){
 											popupContent +=' <span > LSP </span>';
 										}
-										
+										if(result[i].selectedCasteDetails[j].name =='LSP'){
+											popupContent +=' <span > LSP </span>';
+										}
+										*/
 										popupContent +=' </td>';
 										//popupContent +=' <td class="results-title" style="width: 30px;">';
 										//popupContent +=' </td>';
@@ -4597,7 +4603,8 @@ function buildREgionWiseReport(){
 										popupContent +=' </span>';
 										popupContent +=' </td>';
 										popupContent +=' <td class="results-title" style="width:200px;">';
-										if(result[i].selectedCasteDetails[j].name =='TDP'){
+										popupContent +=''+result[i].selectedCasteDetails[j].name+'';
+									/*	if(result[i].selectedCasteDetails[j].name =='TDP'){
 											popupContent +=' <span > TDP </span>';
 										}
 										if(result[i].selectedCasteDetails[j].name =='INC'){
@@ -4621,7 +4628,10 @@ function buildREgionWiseReport(){
 										if(result[i].selectedCasteDetails[j].name =='LSP'){
 											popupContent +=' <span > LSP </span>';
 										}
-										
+										if(result[i].selectedCasteDetails[j].name =='LSP'){
+											popupContent +=' <span > LSP </span>';
+										}
+										*/
 										popupContent +=' </td>';
 										//popupContent +=' <td class="results-title" style="width: 30px;">';
 										//popupContent +=' </td>';
@@ -4743,7 +4753,8 @@ function buildTelanganaPCWiseResult(){
 										popupContent +=' </span>';
 										popupContent +=' </td>';
 										popupContent +=' <td class="results-title" style="width:200px;">';
-										if(result[i].selectedCasteDetails[j].name =='TDP'){
+										popupContent +=''+result[i].selectedCasteDetails[j].name+'';
+									/*	if(result[i].selectedCasteDetails[j].name =='TDP'){
 											popupContent +=' <span > TDP </span>';
 										}
 										if(result[i].selectedCasteDetails[j].name =='INC'){
@@ -4767,7 +4778,10 @@ function buildTelanganaPCWiseResult(){
 										if(result[i].selectedCasteDetails[j].name =='LSP'){
 											popupContent +=' <span > LSP </span>';
 										}
-										
+										if(result[i].selectedCasteDetails[j].name =='LSP'){
+											popupContent +=' <span > LSP </span>';
+										}
+										*/
 										popupContent +=' </td>';
 										//popupContent +=' <td class="results-title" style="width: 30px;">';
 										//popupContent +=' </td>';
@@ -4889,7 +4903,8 @@ function buildTelanganaPCWiseResult(){
 										popupContent +=' </span>';
 										popupContent +=' </td>';
 										popupContent +=' <td class="results-title" style="width:200px;">';
-										if(result[i].selectedCasteDetails[j].name =='TDP'){
+										popupContent +=''+result[i].selectedCasteDetails[j].name+'';
+									/*	if(result[i].selectedCasteDetails[j].name =='TDP'){
 											popupContent +=' <span > TDP </span>';
 										}
 										if(result[i].selectedCasteDetails[j].name =='INC'){
@@ -4913,7 +4928,10 @@ function buildTelanganaPCWiseResult(){
 										if(result[i].selectedCasteDetails[j].name =='LSP'){
 											popupContent +=' <span > LSP </span>';
 										}
-										
+										if(result[i].selectedCasteDetails[j].name =='LSP'){
+											popupContent +=' <span > LSP </span>';
+										}
+										*/
 										popupContent +=' </td>';
 										//popupContent +=' <td class="results-title" style="width: 30px;">';
 										//popupContent +=' </td>';
@@ -5036,7 +5054,8 @@ function buildTelanganaPCWiseResult(){
 										popupContent +=' </span>';
 										popupContent +=' </td>';
 										popupContent +=' <td class="results-title" style="width:200px;">';
-										if(result[i].selectedCasteDetails[j].name =='TDP'){
+										popupContent +=''+result[i].selectedCasteDetails[j].name+'';
+									/*	if(result[i].selectedCasteDetails[j].name =='TDP'){
 											popupContent +=' <span > TDP </span>';
 										}
 										if(result[i].selectedCasteDetails[j].name =='INC'){
@@ -5060,7 +5079,10 @@ function buildTelanganaPCWiseResult(){
 										if(result[i].selectedCasteDetails[j].name =='LSP'){
 											popupContent +=' <span > LSP </span>';
 										}
-										
+										if(result[i].selectedCasteDetails[j].name =='LSP'){
+											popupContent +=' <span > LSP </span>';
+										}
+										*/
 										popupContent +=' </td>';
 										//popupContent +=' <td class="results-title" style="width: 30px;">';
 										//popupContent +=' </td>';
@@ -5183,7 +5205,8 @@ function buildTelanganaPCWiseResult(){
 										popupContent +=' </span>';
 										popupContent +=' </td>';
 										popupContent +=' <td class="results-title" style="width:200px;">';
-										if(result[i].selectedCasteDetails[j].name =='TDP'){
+										popupContent +=''+result[i].selectedCasteDetails[j].name+'';
+									/*	if(result[i].selectedCasteDetails[j].name =='TDP'){
 											popupContent +=' <span > TDP </span>';
 										}
 										if(result[i].selectedCasteDetails[j].name =='INC'){
@@ -5207,7 +5230,10 @@ function buildTelanganaPCWiseResult(){
 										if(result[i].selectedCasteDetails[j].name =='LSP'){
 											popupContent +=' <span > LSP </span>';
 										}
-										
+										if(result[i].selectedCasteDetails[j].name =='LSP'){
+											popupContent +=' <span > LSP </span>';
+										}
+										*/
 										popupContent +=' </td>';
 										//popupContent +=' <td class="results-title" style="width: 30px;">';
 										//popupContent +=' </td>';
@@ -5330,7 +5356,8 @@ function buildTelanganaPCWiseResult(){
 										popupContent +=' </span>';
 										popupContent +=' </td>';
 										popupContent +=' <td class="results-title" style="width:200px;">';
-										if(result[i].selectedCasteDetails[j].name =='TDP'){
+										popupContent +=''+result[i].selectedCasteDetails[j].name+'';
+									/*	if(result[i].selectedCasteDetails[j].name =='TDP'){
 											popupContent +=' <span > TDP </span>';
 										}
 										if(result[i].selectedCasteDetails[j].name =='INC'){
@@ -5354,7 +5381,10 @@ function buildTelanganaPCWiseResult(){
 										if(result[i].selectedCasteDetails[j].name =='LSP'){
 											popupContent +=' <span > LSP </span>';
 										}
-										
+										if(result[i].selectedCasteDetails[j].name =='LSP'){
+											popupContent +=' <span > LSP </span>';
+										}
+										*/
 										popupContent +=' </td>';
 										//popupContent +=' <td class="results-title" style="width: 30px;">';
 										//popupContent +=' </td>';
@@ -5477,7 +5507,8 @@ function buildTelanganaPCWiseResult(){
 										popupContent +=' </span>';
 										popupContent +=' </td>';
 										popupContent +=' <td class="results-title" style="width:200px;">';
-										if(result[i].selectedCasteDetails[j].name =='TDP'){
+										popupContent +=''+result[i].selectedCasteDetails[j].name+'';
+									/*	if(result[i].selectedCasteDetails[j].name =='TDP'){
 											popupContent +=' <span > TDP </span>';
 										}
 										if(result[i].selectedCasteDetails[j].name =='INC'){
@@ -5501,7 +5532,10 @@ function buildTelanganaPCWiseResult(){
 										if(result[i].selectedCasteDetails[j].name =='LSP'){
 											popupContent +=' <span > LSP </span>';
 										}
-										
+										if(result[i].selectedCasteDetails[j].name =='LSP'){
+											popupContent +=' <span > LSP </span>';
+										}
+										*/
 										popupContent +=' </td>';
 										//popupContent +=' <td class="results-title" style="width: 30px;">';
 										//popupContent +=' </td>';
@@ -5624,7 +5658,8 @@ function buildTelanganaPCWiseResult(){
 										popupContent +=' </span>';
 										popupContent +=' </td>';
 										popupContent +=' <td class="results-title" style="width:200px;">';
-										if(result[i].selectedCasteDetails[j].name =='TDP'){
+										popupContent +=''+result[i].selectedCasteDetails[j].name+'';
+									/*	if(result[i].selectedCasteDetails[j].name =='TDP'){
 											popupContent +=' <span > TDP </span>';
 										}
 										if(result[i].selectedCasteDetails[j].name =='INC'){
@@ -5648,7 +5683,10 @@ function buildTelanganaPCWiseResult(){
 										if(result[i].selectedCasteDetails[j].name =='LSP'){
 											popupContent +=' <span > LSP </span>';
 										}
-										
+										if(result[i].selectedCasteDetails[j].name =='LSP'){
+											popupContent +=' <span > LSP </span>';
+										}
+										*/
 										popupContent +=' </td>';
 										//popupContent +=' <td class="results-title" style="width: 30px;">';
 										//popupContent +=' </td>';
@@ -5768,7 +5806,8 @@ function buildTelanganaPCWiseResult(){
 										popupContent +=' </span>';
 										popupContent +=' </td>';
 										popupContent +=' <td class="results-title" style="width:200px;">';
-										if(result[i].selectedCasteDetails[j].name =='TDP'){
+										popupContent +=''+result[i].selectedCasteDetails[j].name+'';
+									/*	if(result[i].selectedCasteDetails[j].name =='TDP'){
 											popupContent +=' <span > TDP </span>';
 										}
 										if(result[i].selectedCasteDetails[j].name =='INC'){
@@ -5792,7 +5831,10 @@ function buildTelanganaPCWiseResult(){
 										if(result[i].selectedCasteDetails[j].name =='LSP'){
 											popupContent +=' <span > LSP </span>';
 										}
-										
+										if(result[i].selectedCasteDetails[j].name =='LSP'){
+											popupContent +=' <span > LSP </span>';
+										}
+										*/
 										popupContent +=' </td>';
 										//popupContent +=' <td class="results-title" style="width: 30px;">';
 										//popupContent +=' </td>';
@@ -5911,7 +5953,8 @@ function buildTelanganaPCWiseResult(){
 										popupContent +=' </span>';
 										popupContent +=' </td>';
 										popupContent +=' <td class="results-title" style="width:200px;">';
-										if(result[i].selectedCasteDetails[j].name =='TDP'){
+										popupContent +=''+result[i].selectedCasteDetails[j].name+'';
+									/*	if(result[i].selectedCasteDetails[j].name =='TDP'){
 											popupContent +=' <span > TDP </span>';
 										}
 										if(result[i].selectedCasteDetails[j].name =='INC'){
@@ -5935,7 +5978,10 @@ function buildTelanganaPCWiseResult(){
 										if(result[i].selectedCasteDetails[j].name =='LSP'){
 											popupContent +=' <span > LSP </span>';
 										}
-										
+										if(result[i].selectedCasteDetails[j].name =='LSP'){
+											popupContent +=' <span > LSP </span>';
+										}
+										*/
 										popupContent +=' </td>';
 										//popupContent +=' <td class="results-title" style="width: 30px;">';
 										//popupContent +=' </td>';
