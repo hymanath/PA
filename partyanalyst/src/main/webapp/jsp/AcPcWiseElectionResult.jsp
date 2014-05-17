@@ -2304,7 +2304,7 @@ northTelanganaConsti.push(365);
 				map1.scrollWheelZoom.disable();
 			}			
 		}		
-			$("#stateAjaxImg1").css("display","none");
+			
 			$('#results1Div,#subTitlesDiv').show();
 	}
 	
@@ -2491,7 +2491,7 @@ northTelanganaConsti.push(365);
 		parties.push(1117);
 		var jsObj=
 		{
-				electionId : 38,
+				electionId : 258,
 				stateId : 1,
 				electionScopeId : 2,
 				parties : parties,
@@ -2607,7 +2607,7 @@ northTelanganaConsti.push(365);
 		}
 
 		}).addTo(mapName); 
-		
+		$("#stateAjaxImg1").css("display","none");
 			
 	}
 	
@@ -2629,6 +2629,7 @@ northTelanganaConsti.push(365);
 		}
 
 		}).addTo(mapName); 
+		$("#stateAjaxImg1").css("display","none");
 	}
 	function generateMapForTgACPrevious(mapName)
 	{
@@ -2648,6 +2649,7 @@ northTelanganaConsti.push(365);
 		}
 
 		}).addTo(mapName); 
+		$("#stateAjaxImg1").css("display","none");
 	}
 	
 	
@@ -2669,6 +2671,8 @@ northTelanganaConsti.push(365);
 		}
 
 		}).addTo(mapName); 
+		
+		$("#stateAjaxImg1").css("display","none");
 	}
 	function generateMapForApPCPrevious(mapName)
 	{
@@ -2688,6 +2692,7 @@ northTelanganaConsti.push(365);
 		}
 
 		}).addTo(mapName); 
+		$("#stateAjaxImg1").css("display","none");
 	}
 	
 	function generateMapForApPCPresent(mapName)
@@ -2708,6 +2713,7 @@ northTelanganaConsti.push(365);
 		}
 
 		}).addTo(mapName); 
+		$("#stateAjaxImg1").css("display","none");
 	}
 	function generateMapForTgPCPrevious(mapName)
 	{
@@ -2727,6 +2733,7 @@ northTelanganaConsti.push(365);
 		}
 
 		}).addTo(mapName); 
+		$("#stateAjaxImg1").css("display","none");
 	}
 	
 	
@@ -2748,6 +2755,7 @@ northTelanganaConsti.push(365);
 		}
 
 		}).addTo(mapName); 
+		$("#stateAjaxImg1").css("display","none");
 	}
 	
 	/* var tableToExcel = (function() {
@@ -3567,7 +3575,7 @@ northTelanganaConsti.push(365);
 	{
 	   
 		areatype = "totPc";
-		document.getElementById('weathermap3').innerHTML = "<div id='map3'  style='height: 900px; border: 1px solid rgb(51, 51, 51); border-radius: 10px; position: relative; background: none repeat scroll 0% 0% rgb(255, 255, 255);width:956px;margin-left:190px;margin-top:20px;'></div>"
+		document.getElementById('weathermap3').innerHTML = "<div id='map3'  style='height: 900px; border: 1px solid rgb(51, 51, 51); border-radius: 10px; position: relative; background: none repeat scroll 0% 0% rgb(255, 255, 255);width:956px;margin-top:20px;'></div>"
 		map3 = L.map('map3', {
 		center: [20.0000,81.0000],
 		zoom: 5
@@ -4034,7 +4042,7 @@ function getRegionWiseResults(searchType)
 	{
 
 		areatype = "indpc";
-		document.getElementById('weathermap5').innerHTML = "<div id='map5'   style='height: 900px; border: 1px solid rgb(51, 51, 51); border-radius: 10px; position: relative; background: none repeat scroll 0% 0% rgb(255, 255, 255);width:956px;margin-left:190px;margin-top:20px;'></div>"
+		document.getElementById('weathermap5').innerHTML = "<div id='map5'   style='height: 900px; border: 1px solid rgb(51, 51, 51); border-radius: 10px; position: relative; background: none repeat scroll 0% 0% rgb(255, 255, 255);width:956px;margin-top:20px;'></div>"
 		map5 = L.map('map5', {
 		center: [20.0000,81.0000],
 		zoom: 5
@@ -6384,7 +6392,7 @@ function buildTelanganaPCWiseResult(){
 										popupContent +=' <table class="results-table" style="font-weight:bold;font-family:Arial,sans-serif">';
 										popupContent +=' <tbody>';
 										popupContent +=' <tr class="type-democrat">';
-										popupContent +=' <td claass="results-title" style="width:200px;">';
+										popupContent +=' <td class="results-title" style="width:200px;">';
 										popupContent +=' <span class="percentage-combo" ><span class="number">'+result[i].selectedCasteDetails[j].casteName+'</span>';
 										popupContent +=' </span>';
 										popupContent +=' </td>';
