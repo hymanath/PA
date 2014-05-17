@@ -678,7 +678,10 @@ public class DashBoardElectionResultsService implements
 			if(prtyIds.contains(Long.parseLong(obj[3].toString())) && !partyIds.contains(Long.parseLong(obj[3].toString())))
 				partyIds.add(Long.parseLong(obj[3].toString()));
 			
-			if(!types.contains(obj[6].toString()))
+			if(obj[6] == null && !types.contains(""))
+				types.add("");
+			
+			if((obj[6] != null && !types.contains(obj[6].toString())))
 				types.add(obj[6].toString());
 		}
 		
@@ -716,7 +719,11 @@ public class DashBoardElectionResultsService implements
 			DashBoardResultsVO locationVO = getMacthedVO(resultList,Long.parseLong(obj[1].toString()));
 			locationVO.setName(obj[2].toString());
 
-			DashBoardResultsVO typeVO = getMacthedVoByName(locationVO.getReservationDetails(),obj[6].toString());
+			DashBoardResultsVO typeVO = null;
+			if(obj[6]  != null)
+			 typeVO = getMacthedVoByName(locationVO.getReservationDetails(),obj[6].toString());
+			else
+				typeVO = 	getMacthedVoByName(locationVO.getReservationDetails(),"");
 			DashBoardResultsVO partyVO = getMacthedVO(typeVO.getPartiesDetails(),Long.parseLong(obj[3].toString()));
 
 			 if(partyVO == null)
