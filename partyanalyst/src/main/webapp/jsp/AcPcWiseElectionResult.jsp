@@ -1402,11 +1402,11 @@ function getConstituencyWiseResults()
 					
 
 						
-						<!--<a onClick="exportToExcel()" class="btn" value="Export To Excel" style="margin-top:0px; background: none repeat scroll 0 0 #0088CC;
-    color: #FFFFFF;font-weight: normal;">Export To Excel</a>-->
-	
-	<a onClick="telanganaDistrict()" class="btn" value="Export To Excel" style="margin-top:0px; background: none repeat scroll 0 0 #0088CC;
+						<a onClick="exportToExcel()" class="btn" value="Export To Excel" style="margin-top:0px; background: none repeat scroll 0 0 #0088CC;
     color: #FFFFFF;font-weight: normal;">Export To Excel</a>
+	
+	<!--<a onClick="telanganaDistrict()" class="btn" value="Export To Excel" style="margin-top:0px; background: none repeat scroll 0 0 #0088CC;
+    color: #FFFFFF;font-weight: normal;">Export To Excel</a>-->
 	
 	
 
