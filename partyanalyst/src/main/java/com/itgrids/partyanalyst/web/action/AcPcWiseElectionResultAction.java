@@ -173,13 +173,13 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 			
 			jObj = new JSONObject(getTask());
 						
-			/*JSONArray parties = jObj.getJSONArray("parties");
+			JSONArray parties = jObj.getJSONArray("parties");
 			List<Long> partyIds = new ArrayList<Long>();
 			for(int i = 0 ; i < parties.length() ; i++)
 			{
 				partyIds.add(new Long(parties.get(i).toString()));
-			}*/
-			returnList = acPcWiseElectionResultService.cbnOrModiEffect(jObj.getLong("stateId"),jObj.getLong("electionId"),jObj.getLong("partyId"),jObj.getLong("electionScopeId"));
+			}
+			returnList = acPcWiseElectionResultService.cbnOrModiEffect(jObj.getLong("stateId"),jObj.getLong("electionId"),partyIds,jObj.getLong("electionScopeId"));
 		} 
 		catch (Exception e)
 		{
