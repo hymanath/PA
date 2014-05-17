@@ -1139,7 +1139,7 @@ function getConstituencyWiseResults()
 <br/>
 <div class="row-fluid " id="submitButtionDiv">
 	<div class="span2 offset5">
-	 <a class="btn btn-info btn-block " value="Submit" onClick="getElectionDetails();" >Submit</a>	
+	 <a class="btn btn-info btn-block " value="Submit" onClick="getElectionDetails();getElectionResultForTotalAssembly();" >Submit</a>	
 	</div>
 </div>
 </br></br>
@@ -4146,19 +4146,40 @@ function getRegionWiseResults(searchType)
 			map1.touchZoom.disable();
 			map1.doubleClickZoom.disable();
 			map1.scrollWheelZoom.disable();
-			L.geoJson(apaccampus, {
-
-			style: function (feature) {
-				return feature.properties && feature.properties.style;
-			},
 			
-			onEachFeature: onEachFeature,
+			if(#('#stateId option:selected').val() == 1)
+			{
+				L.geoJson(apaccampus, {
 
-			pointToLayer: function (feature, latlng) {
-				return L.circleMarker(latlng, {
-					
-				});
+				style: function (feature) {
+					return feature.properties && feature.properties.style;
+				},
+				
+				onEachFeature: onEachFeature,
+
+				pointToLayer: function (feature, latlng) {
+					return L.circleMarker(latlng, {
+						
+					});
+				}
 			}
+			else
+			{
+				L.geoJson(tgaccampus, {
+
+				style: function (feature) {
+					return feature.properties && feature.properties.style;
+				},
+				
+				onEachFeature: onEachFeature,
+
+				pointToLayer: function (feature, latlng) {
+					return L.circleMarker(latlng, {
+						
+					});
+				}
+			}
+			
 
 			}).addTo(map4); 
 		$("#stateAjaxImg4").css("display","none");
