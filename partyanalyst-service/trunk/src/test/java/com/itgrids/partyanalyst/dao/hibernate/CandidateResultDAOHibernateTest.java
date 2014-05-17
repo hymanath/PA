@@ -135,7 +135,7 @@ public class CandidateResultDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(list.size());
 	}*/
 	
-	public void testgetElectionResultsForCBNORMODIEffect()
+	/*public void testgetElectionResultsForCBNORMODIEffect()
 	{
 		List<Long> parties = new ArrayList<Long>();
 		parties.add(872l);
@@ -146,7 +146,7 @@ public class CandidateResultDAOHibernateTest extends BaseDaoTestCase {
 		parties.add(662l);
 		parties.add(1117l);
 		System.out.println(candidateResultDAO.getElectionResultsForCBNORMODIEffect(17l,1l,parties,1l).size());;
-	}
+	}*/
 	
 	
 	
