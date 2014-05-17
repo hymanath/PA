@@ -256,7 +256,7 @@ public class PartyTrendsDAO extends GenericDaoHibernate<PartyTrends, Long> imple
  public List<?> loadConStituencyIdsWithNo(Long electionId,Long stateId,Long electionScopeId,Long year) {
 	 Session session=getSession();
 		Query query= session.createQuery("select model2.constituencyNO  from   ConstituencyElection  model,DelimitationConstituency model2   where  model.constituency.constituencyId =model2.constituency.constituencyId  " +
-				"   and model.election.electionId=:electionId and model.countStatus=0 and model2.constituency.state.stateId = :stateId " +
+				"   and model.election.electionId=:electionId and model.countStatusin(1,0) and model2.constituency.state.stateId = :stateId " +
 				" and model2.year = :year and model2.constituency.electionScope.electionScopeId = :electionScopeId");
 		//query.setParameterList("constIds", constIds);
 		query.setParameter("electionId", electionId);
