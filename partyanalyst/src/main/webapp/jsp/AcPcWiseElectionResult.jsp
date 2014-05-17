@@ -199,7 +199,8 @@ $('document').ready(function(){
 
 		seemandraDistrict();
 		seemandraRegion();
-		$('#results1Div,#subTitlesDiv').hide();
+		
+	//	$('#results1Div,#subTitlesDiv').hide();
 	 $('#scopeId').trigger('change');
 	 //$('#locaionsId1').multiselect({ noneSelectedText:"Select"});
 	 $('.reportType').change(function(){
@@ -215,16 +216,16 @@ $('document').ready(function(){
 	 $('#areaSelectionDiv').hide();
 	 $('#stateSelectDiv').hide();
 	 $('#submitButtionDiv').hide();
-	  //getElectionResultForAssemblyPrevious(1,"first",1,2);
-	 //getElectionResultForParlimentPresent(1,"second",2,2);
+	 getElectionResultForAssemblyPrevious(1,"first",1,2);
+	 getElectionResultForParlimentPresent(1,"second",2,2);
 	 $('#scopeId').change(function(){
 	 console.log(this);
 	 $('#rgntxt').text("Select "+$('#scopeId :selected').text());
 	 });
-	 setTimeout(function(){
+	 /*setTimeout(function(){
 	 getElectionResultForAssemblyPrevious(1,"first",1,2);
 	 getElectionResultForParlimentPresent(1,"second",2,2);
-	 }, 500000);
+	 }, 500000);*/
 	 
 	 
 				$('#results1Div').html('');
@@ -2174,17 +2175,17 @@ northTelanganaConsti.push(365);
 		$('#indiaBannerId').hide();
 		$('.parliamentCls ').hide();
 
-		 setTimeout(function(){
+	  /* setTimeout(function(){
         getElectionResultForAssemblyPrevious(1,"first",1,2);
         getElectionResultForParlimentPresent(1,"second",2,2);
-    }, 500000);
+		}, 500000);*/
 
 	$('#legend').show();
         $('#areaSelectionDiv').hide();
         $('#stateSelectDiv').hide();
         $('#submitButtionDiv').hide();
-        getElectionResultForAssemblyPrevious(1,"first",1,2);
-        getElectionResultForParlimentPresent(1,"second",2,2);
+       // getElectionResultForAssemblyPrevious(1,"first",1,2);
+        //getElectionResultForParlimentPresent(1,"second",2,2);
      $('#scopeId').change(function(){
          console.log(this);
          $('#rgntxt').text("Select "+$('#scopeId  :selected').text());
@@ -2305,7 +2306,7 @@ northTelanganaConsti.push(365);
 			}			
 		}		
 			
-			$('#results1Div,#subTitlesDiv').show();
+			//$('#results1Div,#subTitlesDiv').show();
 	}
 	
 	function getLocationRespectiveDetails(stateVal,locationLevel,year,mapNo)
@@ -2491,7 +2492,7 @@ northTelanganaConsti.push(365);
 		parties.push(1117);
 		var jsObj=
 		{
-				electionId : 258,
+				electionId : 38,
 				stateId : 1,
 				electionScopeId : 2,
 				parties : parties,
@@ -3848,7 +3849,7 @@ function getRegionWiseResults(searchType)
 	else if(searchType == 'India')
 	{
 		$('#results1Div,#subTitlesDiv').html('');
-		$('#results1Div,#subTitlesDiv').hide();
+		$('#results1Div,#subTitlesDiv').css('display','none');
 		$('#bannerDiv').hide();
 		$(".parliamentCls").show();
 		$('#liveResultsDiv').hide();
@@ -3880,7 +3881,7 @@ function getRegionWiseResults(searchType)
 	else if(searchType == 'StateAnalysis')
 	{
 		$('#results1Div,#subTitlesDiv').html('');
-		$('#results1Div,#subTitlesDiv').hide();
+		$('#results1Div,#subTitlesDiv').css('display','none');
 		$('#matridLeadId,#matrixWonSummaryId,#matrixLeadSummaryId,#errorDiv,#test,#constituencyResultsDiv').html('');
 		$('#bannerDiv').show();
 		$('#liveResultsDiv').show();
@@ -3905,7 +3906,7 @@ function getRegionWiseResults(searchType)
 	else if(searchType == 'DistrictAnalysis')
 	{
 		$('#results1Div,#subTitlesDiv').html('');
-		$('#results1Div,#subTitlesDiv').hide();
+		$('#results1Div,#subTitlesDiv').css('display','none');
 		$('#bannerDiv').hide();
 		$('#liveResultsDiv').hide();
 		$('#mapDiv').hide();
@@ -3928,7 +3929,7 @@ function getRegionWiseResults(searchType)
 	else if(searchType == 'CBNEffect')
 	{
 		$('#results1Div,#subTitlesDiv').html('');
-		$('#results1Div,#subTitlesDiv').hide();
+		$('#results1Div,#subTitlesDiv').css('display','none');
 		$('#liveResultsDiv').hide();
 		$('#bannerDiv').show();
 		$('#mapDiv').show();
@@ -3951,11 +3952,20 @@ function getRegionWiseResults(searchType)
 		$('#telanganaImageDiv').hide();
 		$('#legend').css("margin-top","-20px");
 		$('#weathermap5').hide();		
+		$('#stateId').val(0);
+		$('#levelId1').val(0);
+		$('#yearId1').val(0);
+		$('#levelId2').val(0),
+		$('#yearId2').val(0);
+		$('#overviewDivId2').html('');
+		$('#overviewDivId1').html('');
+		$('#weathermap').html('');
+		$('#weathermap1').html('');
 	}
 	else if(searchType == 'ModiEffect')
 	{
 		$('#results1Div,#subTitlesDiv').html('');
-		$('#results1Div,#subTitlesDiv').hide();
+		$('#results1Div,#subTitlesDiv').css('display','none');
 		$('#indiaBannerId').show();
 		$('#bannerDiv').hide();
 		$('.parliamentCls').hide();
@@ -4147,7 +4157,7 @@ function getRegionWiseResults(searchType)
 			map1.doubleClickZoom.disable();
 			map1.scrollWheelZoom.disable();
 			
-			if(#('#stateId option:selected').val() == 1)
+			if($('#stateId option:selected').val() == 1 || $('#stateId option:selected').val() == 0 )
 			{
 				L.geoJson(apaccampus, {
 
@@ -4162,7 +4172,8 @@ function getRegionWiseResults(searchType)
 						
 					});
 				}
-			}
+				}).addTo(map4); 
+		    }
 			else
 			{
 				L.geoJson(tgaccampus, {
@@ -4178,10 +4189,10 @@ function getRegionWiseResults(searchType)
 						
 					});
 				}
-			}
-			
-
 			}).addTo(map4); 
+			}
+
+			
 		$("#stateAjaxImg4").css("display","none");
 		}
 
