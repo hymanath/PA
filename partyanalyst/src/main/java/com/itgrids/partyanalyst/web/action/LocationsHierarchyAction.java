@@ -665,17 +665,41 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
     {
     	try {
 			jObj = new JSONObject(getTask());
+		String stateType = jObj.getString("stateType");
+		
 		
     	
     	if(jObj.getString("task").equalsIgnoreCase("parliament"))
-		 locations = staticDataService.getLatestConstituenciesByStateIdAndType(1L,IConstants.PARLIAMENT_CONSTITUENCY_TYPE);
+    		if(stateType.equalsIgnoreCase("All"))
+    		{
+		locations = staticDataService.getLatestConstituenciesByStateIdAndType(1L,IConstants.PARLIAMENT_CONSTITUENCY_TYPE);
+    		}
+    		else
+    		locations = staticDataService.getLatestConstituenciesByStateIdAndTypeForRegion(1L,IConstants.PARLIAMENT_CONSTITUENCY_TYPE,stateType);	
     	else if(jObj.getString("task").equalsIgnoreCase("district"))
-    	 locations = regionServiceDataImp.getDistrictsByStateID(1L);	
+    	{
+    		
+    		if(stateType.equalsIgnoreCase("All"))
+    		{
+    	locations = regionServiceDataImp.getDistrictsByStateID(1L);	
+    		}
+    		else
+    		locations = regionServiceDataImp.getDistrictsByStateIDForRegion(1L,stateType);	
+    	}
     	else if(jObj.getString("task").equalsIgnoreCase("region"))
+    		if(stateType.equalsIgnoreCase("All"))
+    		{
     		locations = staticDataService.getRegionsByStateId(1L);
+    		}
+    		else
+    		locations = staticDataService.getRegionsByStateIdForRegion(1L,stateType);
     	else if(jObj.getString("task").equalsIgnoreCase("assembly"))
-    		 locations = staticDataService.getLatestConstituenciesByStateIdAndType(1L,IConstants.ASSEMBLY_CONSTITUENCY_TYPE);
-    	
+    		if(stateType.equalsIgnoreCase("All"))
+    		{
+    		locations = staticDataService.getLatestConstituenciesByStateIdAndType(1L,IConstants.ASSEMBLY_CONSTITUENCY_TYPE);
+    		}
+    		else
+    		locations = staticDataService.getLatestConstituenciesByStateIdAndTypeForRegion(1L,IConstants.ASSEMBLY_CONSTITUENCY_TYPE,stateType);
     	} catch (ParseException e) {
 			e.printStackTrace();
 		}
