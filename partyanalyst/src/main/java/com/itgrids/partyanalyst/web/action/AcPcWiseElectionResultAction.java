@@ -16,6 +16,7 @@ import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IAcPcWiseElectionResultService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -38,7 +39,18 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 	List<SelectOptionVO> resultLists; 
 	private IStaticDataService staticDataService;
 	List<GenericVO> returnList;
+	private EntitlementsHelper entitlementsHelper;
 	
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
+
 	public IStaticDataService getStaticDataService() {
 		return staticDataService;
 	}
@@ -103,6 +115,11 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 			LOG.debug("Entered Into execute method in AcPcWiseElectionResultAction Action");
 			session = request.getSession();
 			RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
+			if(session.getAttribute(IConstants.USER) == null && 
+					!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.VOTER_ANALYSIS))
+				return INPUT;
+			if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.VOTER_ANALYSIS))
+				return ERROR;
 			if (registrationVO != null) 
 			{
 				if (!registrationVO.getIsAdmin().equals("true"))
