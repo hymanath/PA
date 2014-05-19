@@ -711,9 +711,9 @@ function getMatrixReport()
 				   }
 			  $('#matridLeadId,#matrixWonSummaryId,#matrixLeadSummaryId').html('');
 			    buildMatrixReportSummaryDetails(result,"Won");
-				buildMatrixReportSummaryDetails(result,"Lead");
+				//buildMatrixReportSummaryDetails(result,"Lead");
 			    buildMatrixReport(result,"Won");
-			    buildMatrixReport(result,"Lead");
+			   // buildMatrixReport(result,"Lead");
          },
           error:function() { 
            console.log('error', arguments);
@@ -726,10 +726,12 @@ function  buildMatrixReport(result,status)
 	var str ='';
 
 str+='<div class="tableClass1">';
+    str+='<label style="margin-top: 10px; margin-bottom: 10px;" class="headingClass"> '+$('#scopeId :selected').text()+'&nbsp; Wise Won Summary</label>';
 	str+='<table width="80%" class="" style="clear:both;" style="margin-top:25px;">';
 	 str+='<thead>';
 	  str+='<tr>';
-	   str+='<th class="thBorder">'+status+'</th>';
+	 //  str+='<th class="thBorder">'+status+'</th>';
+	   str+='<th class="thBorder"></th>';
 	    $.each(result[0].partiesDetails,function(index,value){
            str+='<th class="thBorder">'+value.name+'</th>';
 		});
@@ -864,7 +866,7 @@ function buildSubReportByConstituencyType(result,type)
 	var str ='';
 	str+='<div class="tableClass1" style="margin-top:30px;">';
 
-	str+='<label><b>NOTE:</b>W  - Won , L - Lead</label><br>';
+	//str+='<label><b>NOTE:</b>W  - Won , L - Lead</label><br>';
 	  if(type == "reservationType")
        str+='<label style="margin-top: 10px; margin-bottom: 10px;" class="headingClass">SC,ST,General Constituencies Analysis</label>';
 	  else
@@ -875,17 +877,23 @@ function buildSubReportByConstituencyType(result,type)
 	  str+='<tr>';
 		  str+='<th rowspan="3"></th>';
 		  $.each(result[0].reservationDetails,function(index,value){
-			  var spanCnt = value.partiesDetails.length * 2;
+			 /* var spanCnt = value.partiesDetails.length * 2;
 			  if(value.name == "")
 			   str+='<th colspan="'+spanCnt+'" class="thBorder">GENERAL</th>'
 		      else
-			   str+='<th colspan="'+spanCnt+'" class="thBorder">'+value.name+'</th>'
+			   str+='<th colspan="'+spanCnt+'" class="thBorder">'+value.name+'</th>'*/
+
+			  if(value.name == "")
+			   str+='<th colspan="'+value.partiesDetails.length+'" class="thBorder">GENERAL</th>';
+		      else
+			   str+='<th colspan="'+value.partiesDetails.length+'" class="thBorder">'+value.name+'</th>';
 		  });
 	  str+='</tr>';
 	  str+='<tr>';
 		  $.each(result[0].reservationDetails,function(index,value){
 			   $.each(value.partiesDetails,function(index1,value1){
-				   str+='<th colspan="2" style="border:1px solid #B6D9E9;">'+value1.name+'</th>'
+				  // str+='<th colspan="2" style="border:1px solid #B6D9E9;">'+value1.name+'</th>';
+				   str+='<th style="border:1px solid #B6D9E9;">'+value1.name+'</th>'
 			   });
 		  });
 	  str+='</tr>';
@@ -893,8 +901,8 @@ function buildSubReportByConstituencyType(result,type)
 	  str+='<tr>';
 		  $.each(result[0].reservationDetails,function(index,value){
 			   $.each(value.partiesDetails,function(index1,value1){
-				   str+='<th style="border:1px solid #B6D9E9;">W</th>'
-   				   str+='<th style="border:1px solid #B6D9E9;">L</th>'
+				  // str+='<th style="border:1px solid #B6D9E9;">W</th>'
+   				   //str+='<th style="border:1px solid #B6D9E9;">L</th>'
 			   });
 		  });
 	  str+='</tr>';
@@ -910,7 +918,7 @@ function buildSubReportByConstituencyType(result,type)
 		   $.each(value.reservationDetails,function(index1,value1){
 			    $.each(value1.partiesDetails,function(index2,value2){
 					str+='<td>'+value2.winCount+'</td>';
-					str+='<td>'+value2.leadCount+'</td>';
+					//str+='<td>'+value2.leadCount+'</td>';
 				 });
 		   });
 
@@ -1460,7 +1468,7 @@ function getConstituencyWiseResults()
 					<div id="errorDiv" style="font-weight:bold;color:red;"></div>
 
 
-    <div class="offset1" id="summaryDiv">
+    <div class="offset1" id="summaryDiv" style="margin-top:20px;">
 	 <div id="matrixWonSummaryId"></div>
 	 <div id="matrixLeadSummaryId"></div>
 	</div>
@@ -1469,10 +1477,10 @@ function getConstituencyWiseResults()
 
 	<div id="constituencyResultsDiv"></div>
 
-	<div id="test"  class="pull-left offset1"></div>
+	<div id="test"  class="pull-left offset1" style="margin-bottom:10px;"></div>
 	<div id="matridLeadId"  class="pull-right" style="margin-right:100px;margin-bottom:15px;"></div>
 
-	<div id="marginAnalysis1" class="offset1" style="clear:both;"></div>
+	<div id="marginAnalysis1" class="offset1" style="clear:both;margin-top:20px;"></div>
 
 	</div>
 
