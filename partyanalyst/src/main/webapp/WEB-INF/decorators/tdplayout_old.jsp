@@ -358,11 +358,11 @@ a.tdp-text-error:hover {
 		
 		
 		
-	
+	<c:if test="${sessionScope.loginStatus == 'out'}">  
 		<li id="dashBoardBtn">
 			<a href="dashBoardAction.action"><span>DASHBOARD</span></a> 
 		</li>
-					
+		</c:if>			
 			
     </ul>
 	
