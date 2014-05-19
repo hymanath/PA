@@ -979,10 +979,15 @@ var tableToExcel = (function() {
 })()
 function exportToExcel()
 {
+	 if($('input:radio[name=report]:checked').val() == "Matrix Report")
+   {
 	if($('#constituencyResultsDiv').val() == 5)
 	 tableToExcel('reportDiv', 'Assembly Wise Results');
 	else
 	  tableToExcel('reportDiv', 'Election Results');
+   }
+  else
+	   tableToExcel('summaryDiv', 'Election Results');
 }
 
 function clearFields()
