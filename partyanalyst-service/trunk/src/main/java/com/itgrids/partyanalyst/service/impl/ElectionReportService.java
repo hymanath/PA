@@ -917,11 +917,12 @@ public class ElectionReportService implements IElectionReportService {
 			partyResults.setTotalSeatsParticipated((Long)(Long)params[3]);
 			if(!castWiseSeatsCount.isEmpty()){
 				for(Object[] castWiseCount:castWiseSeatsCount){
-					if(castWiseCount[1].toString().trim().equalsIgnoreCase("")){
+					
+					if(castWiseCount[1] != null && castWiseCount[1].toString().trim().equalsIgnoreCase("")){
 						partyResults.setGeneralCount((Long)castWiseCount[0]);
-					}else if(castWiseCount[1].toString().trim().equalsIgnoreCase("SC")){
+					}else if(castWiseCount[1] != null && castWiseCount[1].toString().trim().equalsIgnoreCase("SC")){
 						partyResults.setScCoutn((Long)castWiseCount[0]);
-					}else if(castWiseCount[1].toString().trim().equalsIgnoreCase("ST")){
+					}else if(castWiseCount[1] != null && castWiseCount[1].toString().trim().equalsIgnoreCase("ST")){
 						partyResults.setStCount((Long)castWiseCount[0]);
 					}
 				}
