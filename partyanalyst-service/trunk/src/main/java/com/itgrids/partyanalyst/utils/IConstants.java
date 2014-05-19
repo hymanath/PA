@@ -295,6 +295,8 @@ public interface IConstants {
     public final static String HOUSEHOLDS_SURVEY_ENTITLEMENT = "HOUSEHOLDS_SURVEY_ENTITLEMENT";
     public final static String INFORMATION_MONITOTING_SYSTEM = "INFORMATION_MONITOTING_SYSTEM";
     
+    public final static String NEW_LIVE_RESULTS = "NEW_LIVE_RESULTS"; 
+    
     
     public static final String NULL_POINTER_EXCEPTION = "NULL_POINTER_EXCEPTION";
     public static final String ARRAY_INDEX_OUT_OF_BOUNDS_EXCEPTION = "ARRAY_INDEX_OUT_OF_BOUNDS_EXCEPTION";
