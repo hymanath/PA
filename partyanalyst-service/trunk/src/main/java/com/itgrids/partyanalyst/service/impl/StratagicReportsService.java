@@ -5864,13 +5864,14 @@ public class StratagicReportsService implements IStratagicReportsService{
             		List<Object[]> list = nominationDAO.getPartyWiseResults(electionId,type,region);
             		List<Object[]> totalVaildVotesList = nominationDAO.getTotalValidVotes(electionId,type,region);
             		if(totalVaildVotesList != null && totalVaildVotesList.size() > 0)
-            			
+            		{
             			for(Object[] params1 : totalVaildVotesList)
             			{
             				Double sumOfvotesPolled = new Double(params1[0].toString());
             				totalVotes.put((Long)params1[1], sumOfvotesPolled.longValue());	
             				
             			}
+            		}
             		
             		for(Object[] params : list)
             		{
@@ -5899,6 +5900,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 	            			//Double sumOfvotesPolled = new Double(params[4].toString());
 	            			//Double sumOfvotesPolled = new Double(totalVotes.get(locationVo.getLocationId()));
 	            			Long totalvotes = 0l;
+	            			if(totalVotes != null)
 	            			totalvotes = totalVotes.get(locationVo.getLocationId());
 	            			String percentage = "0.0";
 	            			if(totalvotes > 0)
