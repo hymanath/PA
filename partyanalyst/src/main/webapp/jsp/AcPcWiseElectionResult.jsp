@@ -189,9 +189,12 @@ padding: 4px;
 <script src="js/Permalink.js"></script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <link rel="stylesheet" type="text/css" href="styles/politico.css">
 <link rel="stylesheet" type="text/css" href="styles/leaflet.css">
 <link rel="stylesheet" type="text/css" href="styles/leaflet-lable.css">
+<script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.css' rel='stylesheet' />
 </head>
 <body>
 <script>
@@ -1188,6 +1191,7 @@ function getConstituencyWiseResults()
 <div id="overviewDivId1" class="span5" style="margin: 12px 48px 0px 49px;"></div>
 <div id="overviewDivId2" class="span5" style="margin:12px 10px 10px 39px"></div>
 <div id="subTitlesDiv" style="margin-top:20px;clear:both;"></div>
+<div id="popupDiv"></div>
 
 <div id="results1Div" style="overflow:scroll;height:500px;" ></div>
 
@@ -2258,7 +2262,7 @@ northTelanganaConsti.push(365);
 				center: [16.0000,80.0000],
 				zoom: 6
 				});
-				//map.dragging.disable();
+				map.dragging.disable();
 				map.touchZoom.disable();
 				map.doubleClickZoom.disable();
 				map.scrollWheelZoom.disable();
@@ -2270,7 +2274,7 @@ northTelanganaConsti.push(365);
 				center: [17.9000,79.0000],
 				zoom: 7
 				});
-				//map.dragging.disable();
+				map.dragging.disable();
 				map.touchZoom.disable();
 				map.doubleClickZoom.disable();
 				map.scrollWheelZoom.disable();
@@ -2287,7 +2291,7 @@ northTelanganaConsti.push(365);
 				center: [16.0000,80.0000],
 				zoom: 6
 				});
-				//map1.dragging.disable();
+				map1.dragging.disable();
 				map1.touchZoom.disable();
 				map1.doubleClickZoom.disable();
 				map1.scrollWheelZoom.disable();
@@ -2299,7 +2303,7 @@ northTelanganaConsti.push(365);
 				center: [17.9000,79.0000],
 				zoom: 7
 				});
-				//map1.dragging.disable();
+				map1.dragging.disable();
 				map1.touchZoom.disable();
 				map1.doubleClickZoom.disable();
 				map1.scrollWheelZoom.disable();
@@ -2608,6 +2612,7 @@ northTelanganaConsti.push(365);
 		}
 
 		}).addTo(mapName); 
+		
 		$("#stateAjaxImg1").css("display","none");
 			
 	}
@@ -2788,23 +2793,7 @@ northTelanganaConsti.push(365);
 	function onEachFeature(feature, layer)
 	{
 	
-	var today=new Date();
-
-    var month=new Array();
-	month[0]="January";
-	month[1]="February";
-	month[2]="March";
-	month[3]="April";
-	month[4]="May";
-	month[5]="June";
-	month[6]="July";
-	month[7]="August";
-	month[8]="September";
-	month[9]="October";
-	month[10]="November";
-	month[11]="December";
 	
-		//console.log(areatype);
 		if(areatype  == "pc")
 		{
 			onEachFeature1(feature, layer);
@@ -2826,7 +2815,7 @@ northTelanganaConsti.push(365);
 			var popupContent='';
 
 			popupContent +='<article class="timeline-group" id="stateAK" style="font-family: times new roman,serif,sans-serif;margin-left:-40px;">';
-			popupContent +=' <header class="timeline-header">';
+			popupContent +=' <header class="timeline-header" style="width:500px;">';
 			popupContent +=' <h3><b aria-hidden="true" class="stateface "></b> '+feature.properties.ac_name+'</a> </h3>';
 			popupContent +=' </header>';
 			popupContent +=' <ol class="timeline-list"> ';
@@ -2835,20 +2824,17 @@ northTelanganaConsti.push(365);
 			popupContent +=' <header class="results-header" style="width: 350px; margin-top: -10px;margin-bottom: 10px;">';
 			popupContent +=' </header>';
 			//popupContent +=' <b style="font-size: 12px;">  Reporting : 0 % <span style="font-weight:bold;float:right;">  Won Party: TDP </span></b>';
-			popupContent +=' <table>';
+			popupContent +=' <table class="table">';
+			popupContent +=' <thead>';
+			
 			popupContent +=' <tr>';
-			popupContent +='<td style="width:700px;"> Candidate Name </td>';
-			popupContent +='<td style="width:300px;padding-left:15px;"> Party </td>';
-			popupContent +='<td style="width:600px;"> Votes Percentage  </td>';
+			popupContent +='<th style="width:125px;"> Candidate Name </th>';
+			popupContent +='<th > Party </th>';
+			popupContent +='<th> Votes Percentage  </th>';
+			popupContent +='<th> Gained Votes  </th>';
 			popupContent +=' </tr">';
-			popupContent +=' <header class="results-header" style="width: 350px; margin-top: -10px;border-bottom-color: #004276;border-bottom-width: 2px;">';
-			popupContent +=' </header>';
-			popupContent +=' <tr class="type-democrat">';
-			popupContent +=' </table>';
-			popupContent +=' <span style="float: right; margin-right: -50px; margin-top: -20px;"> Total Votes </span>';
-		
-			popupContent +=' <header class="results-header" style="width: 350px; margin-top: -10px;border-bottom-width: 2px;">';
-			popupContent +=' </header>';
+			popupContent +=' </thead>';
+
 			var partyName ;
 			for(var i in electionAcData)
 			{
@@ -2858,53 +2844,20 @@ northTelanganaConsti.push(365);
 					{
 						if(electionAcData[i].selectedCasteDetails[j].casteName != null)
 						{
-							popupContent +=' <div class="results-dataset">';
-							popupContent +=' <div class="results-row layout-full">';
-							popupContent +=' <div class="results-data pos-omega contains-mix is-de-emphasized">';
-							popupContent +=' <div class="results-message">';
-							popupContent +=' <table class="results-table" style="width:650px">';
+
+							popupContent +=' <table class="results-table" >';
 							popupContent +=' <tbody>';
 							popupContent +=' <tr class="type-democrat">';
 							popupContent +=' <td class="results-title" style="width:120px;">';
 							popupContent +=' <span class="percentage-combo" ><span class="number">'+electionAcData[i].selectedCasteDetails[j].casteName+'</span>';
 							popupContent +=' </span>';
 							popupContent +=' </td>';
-							popupContent +=' <td class="results-title" style="width:40px;">'+electionAcData[i].selectedCasteDetails[j].name+'';
-							//popupContent +=' <span class="percentage-combo" ><span class="number">'+electionAcData[i].selectedCasteDetails[j].name+'</span>';
-						/*	 if(electionAcData[i].selectedCasteDetails[j].name =='TDP'){
-								popupContent +=' <span > TDP </span>';
-							}
-							if(electionAcData[i].selectedCasteDetails[j].name =='YSRC'){
-								popupContent +=' <span > YSRC </span>';
-							}
-							if(electionAcData[i].selectedCasteDetails[j].name =='INC'){
-								popupContent +=' <span > INC </span>';
-							}
-							if(electionAcData[i].selectedCasteDetails[j].name =='TRS'){
-								popupContent +=' <span > TRS </span>';
-							}
-							if(electionAcData[i].selectedCasteDetails[j].name =='BJP'){
-								popupContent +=' <span > BJP </span>';
-							}
-							if(electionAcData[i].selectedCasteDetails[j].name =='AIMIM'){
-								popupContent +=' <span > AIMIM </span>';
-							}
-							if(electionAcData[i].selectedCasteDetails[j].name =='CPM'){
-								popupContent +=' <span > CPM </span>';
-							}
-							if(electionAcData[i].selectedCasteDetails[j].name =='CPI'){
-								popupContent +=' <span > CPI </span>';
-							}
-							if(electionAcData[i].selectedCasteDetails[j].name =='LSP'){
-								popupContent +=' <span > LSP</span>';
-							} 
-							
-							popupContent +=' </span>';*/
+							popupContent +=' <td class="results-title" style="width:40px;">'+electionAcData[i].selectedCasteDetails[j].name+'';				
 							
 							popupContent +=' </td>';
 							//popupContent +=' <td class="results-title" style="width: 30px;">';
 							//popupContent +=' </td>';
-							popupContent +=' <td class="results-percentage" style="width:100px;padding-left: 25px;">';
+							popupContent +=' <td class="results-percentage" style="width:100px;">';
 							if(electionAcData[i].selectedCasteDetails[j].persent != null){
 							popupContent +=' <span class="percentage-combo" ><span class="number">'+electionAcData[i].selectedCasteDetails[j].persent+'%</span>';
 							}
@@ -2918,16 +2871,13 @@ northTelanganaConsti.push(365);
 							popupContent +=' </span>';
 							popupContent +=' </span>';
 							popupContent +=' </td>';
-							popupContent +=' <td style="width: 100px;padding-left:35px;">';
+							popupContent +=' <td style="width: 100px;">';
 							popupContent +=' <span style="font-weight:#000000">'+electionAcData[i].selectedCasteDetails[j].count+' </span>';
 							popupContent +=' </td>';
 							popupContent +=' </tr>';
 							popupContent +=' </tbody>';
-							popupContent +=' </table>';
-							popupContent +=' </div>';
-							popupContent +=' </div>';
-							popupContent +=' </div>';
-							popupContent +=' </div>';
+
+
 
 							if(electionAcData[i].selectedCasteDetails[0].count == 0)
 							{
@@ -2954,7 +2904,7 @@ northTelanganaConsti.push(365);
 				}
 			} 
 			
-
+			popupContent +=' </table>';
 			popupContent +=' </article>';
 			popupContent +=' </li> ';
 			popupContent +=' </ol>';
@@ -2969,8 +2919,22 @@ northTelanganaConsti.push(365);
 			 
 			
 			layer.bindLabel(feature.properties.ac_name, {noHide:true});
+			layer.on('click', function(e) {
+				onClickForMap(popupContent);
+			});
 		}
+			
 		
+	}
+	function onClickForMap(popupContent)
+	{
+		console.log(popupContent);
+		$('#popupDiv').html(popupContent);
+		$('#popupDiv').dialog(
+		{
+			width:600
+		}
+		);
 	}
 	
 	function onEachFeatureForIndPC(feature, layer)
@@ -3364,6 +3328,10 @@ northTelanganaConsti.push(365);
 		
 			
 		layer.bindLabel(feature.properties.FIRST_pc_n, {noHide:false});
+		
+		layer.on('click', function(e) {
+				onClickForMap(popupContent);
+		});
 	}
 	
 	function buildResult(result){
@@ -3581,7 +3549,7 @@ northTelanganaConsti.push(365);
 		center: [20.0000,81.0000],
 		zoom: 5
 		});
-		//map1.dragging.disable();
+		map1.dragging.disable();
 		map1.touchZoom.disable();
 		map1.doubleClickZoom.disable();
 		map1.scrollWheelZoom.disable();
@@ -3614,7 +3582,7 @@ northTelanganaConsti.push(365);
 			fillOpacity: 0.65,
 			fillColor: '#228B22'
 			});
-			layer.bindPopup(popupContent);
+			//layer.bindPopup(popupContent);
 		}
 		else if (partyName == 'TDP')
 		{
@@ -3625,7 +3593,7 @@ northTelanganaConsti.push(365);
 			fillOpacity: 0.65,
 			fillColor: '#FFD700'
 			});
-			layer.bindPopup(popupContent);
+			//layer.bindPopup(popupContent);
 		}
 		else if (partyName == 'TRS')
 		{
@@ -3636,7 +3604,7 @@ northTelanganaConsti.push(365);
 			fillOpacity: 0.65,
 			fillColor: '#FF00FF'
 			});
-			layer.bindPopup(popupContent);
+			//layer.bindPopup(popupContent);
 		}
 		else if (partyName == 'BJP')
 		{
@@ -3647,7 +3615,7 @@ northTelanganaConsti.push(365);
 			fillOpacity: 0.65,
 			fillColor: '#FF7F50'
 			});
-			layer.bindPopup(popupContent);
+			//layer.bindPopup(popupContent);
 		}
 		else if (partyName == 'AIMIM')
 		{
@@ -3658,7 +3626,7 @@ northTelanganaConsti.push(365);
 			fillOpacity: 0.65,
 			fillColor: '#006400'
 			});
-			layer.bindPopup(popupContent);
+			//layer.bindPopup(popupContent);
 		}
 		else if (partyName == 'CPM' || partyName == 'CPI')
 		{
@@ -3669,7 +3637,7 @@ northTelanganaConsti.push(365);
 			fillOpacity: 0.65,
 			fillColor: '#B22222'
 			});
-			layer.bindPopup(popupContent);
+			//layer.bindPopup(popupContent);
 		}
 		else if (partyName == 'LSP')
 		{
@@ -3680,7 +3648,7 @@ northTelanganaConsti.push(365);
 			fillOpacity: 0.65,
 			fillColor: '#4B0082'
 			});
-			layer.bindPopup(popupContent);
+			//layer.bindPopup(popupContent);
 		}
 		else if (partyName == 'PRP')
 		{
@@ -3691,7 +3659,7 @@ northTelanganaConsti.push(365);
 			fillOpacity: 0.65,
 			fillColor: '#B22222'
 			});
-			layer.bindPopup(popupContent);
+			//layer.bindPopup(popupContent);
 		}
 		else if (partyName == 'YSRC')
 		{
@@ -3702,7 +3670,7 @@ northTelanganaConsti.push(365);
 			fillOpacity: 0.65,
 			fillColor: '#00CED1'
 			});
-			layer.bindPopup(popupContent);
+			//layer.bindPopup(popupContent);
 		}
 		else
 		{
@@ -3713,7 +3681,7 @@ northTelanganaConsti.push(365);
 			fillOpacity: 0.65,
 			fillColor: '#FF0000'
 			});
-			layer.bindPopup(popupContent);
+			//layer.bindPopup(popupContent);
 		} 
 	}
 
@@ -4057,7 +4025,7 @@ function getRegionWiseResults(searchType)
 		center: [20.0000,81.0000],
 		zoom: 5
 		});
-		//map5.dragging.disable();
+		map5.dragging.disable();
 		map5.touchZoom.disable();
 		map5.doubleClickZoom.disable();
 		map5.scrollWheelZoom.disable();
@@ -4152,7 +4120,7 @@ function getRegionWiseResults(searchType)
 			center: [16.0000,80.0000],
 			zoom: 6
 			});
-			//map1.dragging.disable();
+			map1.dragging.disable();
 			map1.touchZoom.disable();
 			map1.doubleClickZoom.disable();
 			map1.scrollWheelZoom.disable();
