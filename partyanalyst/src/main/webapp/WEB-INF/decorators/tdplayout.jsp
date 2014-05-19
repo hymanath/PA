@@ -312,6 +312,7 @@ margin-top:10px;
 			</div>
 		</li>
 		</c:if></c:if>
+		<c:if test="${fn:contains(sessionScope.USER.entitlements, 'NEW_LIVE_RESULTS' ) }">
 		<li><a href="acPcWiseElectionResultAction.action?stateId=1"><span>LIVE RESULTS</span></a>
 			<!--<div  style="z-index:8;text-align:left;" >
 			  <ul>		
@@ -319,6 +320,7 @@ margin-top:10px;
 			  </ul>
 			</div>-->
 		</li>
+		</c:if>
 		<!--<li><a href="statePageAction.action?stateId=1"><span>LIVE RESULTS</span></a>
 			<div  style="z-index:8;text-align:left;" >
 			  <ul>		
