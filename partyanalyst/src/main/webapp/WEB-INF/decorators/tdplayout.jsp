@@ -357,10 +357,11 @@ margin-top:10px;
 		
 		
 	
+			<c:if test="${sessionScope.loginStatus == 'out'}">  
 		<li id="dashBoardBtn">
 			<a href="dashBoardAction.action"><span>DASHBOARD</span></a> 
 		</li>
-					
+		</c:if>			
 			
     </ul>
 	
