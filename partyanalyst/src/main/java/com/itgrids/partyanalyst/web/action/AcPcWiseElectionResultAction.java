@@ -116,9 +116,9 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 			session = request.getSession();
 			RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
 			if(session.getAttribute(IConstants.USER) == null && 
-					!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.VOTER_ANALYSIS))
+					!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.NEW_LIVE_RESULTS))
 				return INPUT;
-			if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.VOTER_ANALYSIS))
+			if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.NEW_LIVE_RESULTS))
 				return ERROR;
 			if (registrationVO != null) 
 			{
