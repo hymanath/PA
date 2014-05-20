@@ -42,6 +42,8 @@ public class PartyResultVO {
 	private Integer totalSeatsOwn;
 	private List<Long> boothIds;
 	private Long boothId;
+	private Long totalVotes;
+	private String partyVotes;
 	
 	
 	private List<SelectOptionVO> votesRange;
@@ -49,6 +51,64 @@ public class PartyResultVO {
 	private String range;
 	private String chartName;
 		
+	private Long acNo;
+	private String pcName;
+	private Long pcNo;
+	
+	private List<PartyResultVO> constiList;
+	private String ttlVts;
+	private String validVts;
+	
+	
+	
+	public String getTtlVts() {
+		return ttlVts;
+	}
+	public void setTtlVts(String ttlVts) {
+		this.ttlVts = ttlVts;
+	}
+	public String getValidVts() {
+		return validVts;
+	}
+	public void setValidVts(String validVts) {
+		this.validVts = validVts;
+	}
+	public String getPartyVotes() {
+		return partyVotes;
+	}
+	public void setPartyVotes(String partyVotes) {
+		this.partyVotes = partyVotes;
+	}
+	public List<PartyResultVO> getConstiList() {
+		return constiList;
+	}
+	public void setConstiList(List<PartyResultVO> constiList) {
+		this.constiList = constiList;
+	}
+	public Long getAcNo() {
+		return acNo;
+	}
+	public void setAcNo(Long acNo) {
+		this.acNo = acNo;
+	}
+	public String getPcName() {
+		return pcName;
+	}
+	public void setPcName(String pcName) {
+		this.pcName = pcName;
+	}
+	public Long getPcNo() {
+		return pcNo;
+	}
+	public void setPcNo(Long pcNo) {
+		this.pcNo = pcNo;
+	}
+	public Long getTotalVotes() {
+		return totalVotes;
+	}
+	public void setTotalVotes(Long totalVotes) {
+		this.totalVotes = totalVotes;
+	}
 	public Long getBoothId() {
 		return boothId;
 	}

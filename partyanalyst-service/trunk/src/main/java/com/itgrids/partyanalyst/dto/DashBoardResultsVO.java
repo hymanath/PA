@@ -33,9 +33,34 @@ public class DashBoardResultsVO  implements Comparable<DashBoardResultsVO>{
 	private List<DashBoardResultsVO> reservationDetails = new ArrayList<DashBoardResultsVO>();
 	private List<DashBoardResultsVO> partiesDetails = new ArrayList<DashBoardResultsVO>();
 	private List<Long> allianceIds;
+	private String totalVotes;
+	private String validVotes;
 
 	
 	
+	
+
+
+	public String getTotalVotes() {
+		return totalVotes;
+	}
+
+
+	public void setTotalVotes(String totalVotes) {
+		this.totalVotes = totalVotes;
+	}
+
+
+	public String getValidVotes() {
+		return validVotes;
+	}
+
+
+	public void setValidVotes(String validVotes) {
+		this.validVotes = validVotes;
+	}
+
+
 	public List<Long> getAllianceIds() {
 		return allianceIds;
 	}
