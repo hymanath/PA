@@ -706,7 +706,7 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 
 	public List<Object[]> getPartianValue() {
 		
-		return getHibernateTemplate().find("select model.electionScope.state.stateId,model.electionScope.state.stateName from Election model where model.isPartial = 1 and model.electionScope.electionType.electionTypeId = 2");
+		return getHibernateTemplate().find("select distinct model.electionScope.state.stateId,model.electionScope.state.stateName from Election model where model.isPartial = 1 and model.electionScope.electionType.electionTypeId = 2");
 	}
 	
 	public List<Long> getPreviousMainElectionByStateIdYear(Long stateId,String year){
