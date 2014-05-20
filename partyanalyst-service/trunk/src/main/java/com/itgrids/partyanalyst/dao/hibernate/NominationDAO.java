@@ -4792,7 +4792,9 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 					" model.party.shortName," +
 					" model1.constituencyNO," +
 					" model2.delimitationConstituency.constituency.name ," +
-					" model2.delimitationConstituency.constituencyNO from " +
+					" model2.delimitationConstituency.constituencyNO," +
+					" model.constituencyElection.constituencyElectionResult.totalVotes," +
+					" model.constituencyElection.constituencyElectionResult.validVotes from " +
 					" Nomination model , DelimitationConstituency model1 ,DelimitationConstituencyAssemblyDetails model2 " +
 					" where  model.constituencyElection.election.electionId = :electionId and model.candidateResult.rank in (1,2) and " +
 					"model.constituencyElection.constituency.constituencyId = model1.constituency.constituencyId and " +
@@ -4843,6 +4845,49 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			query.setParameter("electionId", electionId);
 			return query.list();
 
+			}
+		 
+		 	public List<Object[]> getPartysInfoForAParticularElectionYearInConsitutencies(Long electionId,List<Long> constituencyIds){
+			 	Query query = getSession().createQuery("select model.party.shortName,model.party.partyId " +
+						" from Nomination model where model.constituencyElection.election.electionId = :electionId" +
+						" and model.constituencyElection.constituency.constituencyId in(:constituencyIds) " +
+						" group by model.party.partyId" );
+				
+				query.setParameter("electionId", electionId);
+				query.setParameterList("constituencyIds", constituencyIds);
+				return query.list();
+			}
+		 	
+		 	public List<Object[]> partysVotesShareInConstituenciesOfElection(Long electionId,List<Long> constituencyIds,List<Long> partyIds){
+		 		Query query = getSession().createQuery("select " +
+						" model.constituencyElection.constituency.constituencyId," + //0
+						" model.constituencyElection.constituency.name," +//1
+						" model.candidate.lastname," +//2
+						" model.party.shortName," +//3
+						" model.party.partyId," +//4
+						" model1.constituencyNO," +//5 -- AC NO
+						" model2.delimitationConstituency.constituency.name ," +//6 -- PC NAME
+						" model2.delimitationConstituency.constituencyNO," + // 7 -- PC NO
+						" model.constituencyElection.constituencyElectionResult.totalVotes," + //8
+						" model.constituencyElection.constituencyElectionResult.validVotes, " +//9
+						" model.candidateResult.votesEarned " +//10
+						" from" +
+						" Nomination model , DelimitationConstituency model1 ,DelimitationConstituencyAssemblyDetails model2 " +
+						" where  model.constituencyElection.election.electionId = :electionId and " +
+						" model.constituencyElection.constituency.constituencyId = model1.constituency.constituencyId and " +
+						" model2.delimitationConstituency.year = 2009 and " +
+						" model2.delimitationConstituency.constituency.deformDate is null and " +
+						" model.constituencyElection.constituency.constituencyId in(:constituencyIds) and " +
+						" model.party.partyId in (:partyIds) and "+
+						" model.constituencyElection.constituency.constituencyId = model2.constituency.constituencyId " +
+						" group by model.candidate.candidateId,model.constituencyElection.constituency.constituencyId " +
+						" order by  model2.delimitationConstituency.constituencyNO");
+				
+				query.setParameter("electionId", electionId);
+				query.setParameterList("constituencyIds", constituencyIds);
+				query.setParameterList("partyIds", partyIds);
+				
+				return query.list();
 			}
 
 		
