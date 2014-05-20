@@ -1144,7 +1144,8 @@ function getConstituencyWiseResults()
 </div>
 </br></br>
 <div class="row-fluid" id="legend" style="display:none;margin-bottom:-20px;">
-<table>
+<img id="legendImg" src="./images/icons/Party-colors-banner.png" alt="Processing Image" />
+<!--<table>
 <tr>
 <td><b>TDP : <span style="background: #FFD700 ;font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
 <td><b> YSRC : <span style="background: #00CED1; font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
@@ -1156,7 +1157,7 @@ function getConstituencyWiseResults()
 <td><b>LSP : <span style="background: #4B0082; font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
 <td><b>OTHERS : <span style="background: #FF0000; font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
 </tr>
-</table>
+</table>-->
 
 </div> 
 
@@ -3162,7 +3163,7 @@ popupContent +=' </table>';
 			weight: 1,
 			opacity: 0.6,
 			fillOpacity: 0.65,
-			fillColor: '#228B22'
+			fillColor: '#66ccff'
 			});
 			//layer.bindPopup(popupContent);
 		}
@@ -3173,7 +3174,7 @@ popupContent +=' </table>';
 			weight: 1,
 			opacity: 0.6,
 			fillOpacity: 0.65,
-			fillColor: '#FFD700'
+			fillColor: '#FFCC00'
 			});
 			//layer.bindPopup(popupContent);
 		}
@@ -3184,7 +3185,7 @@ popupContent +=' </table>';
 			weight: 1,
 			opacity: 0.6,
 			fillOpacity: 0.65,
-			fillColor: '#FF00FF'
+			fillColor: '#ff66cc'
 			});
 			//layer.bindPopup(popupContent);
 		}
@@ -3195,7 +3196,7 @@ popupContent +=' </table>';
 			weight: 1,
 			opacity: 0.6,
 			fillOpacity: 0.65,
-			fillColor: '#FF7F50'
+			fillColor: '#ff6600'
 			});
 			//layer.bindPopup(popupContent);
 		}
@@ -3206,7 +3207,7 @@ popupContent +=' </table>';
 			weight: 1,
 			opacity: 0.6,
 			fillOpacity: 0.65,
-			fillColor: '#006400'
+			fillColor: '#006600'
 			});
 			//layer.bindPopup(popupContent);
 		}
@@ -3217,7 +3218,7 @@ popupContent +=' </table>';
 			weight: 1,
 			opacity: 0.6,
 			fillOpacity: 0.65,
-			fillColor: '#B22222'
+			fillColor: '#cc0000'
 			});
 			//layer.bindPopup(popupContent);
 		}
@@ -3228,7 +3229,7 @@ popupContent +=' </table>';
 			weight: 1,
 			opacity: 0.6,
 			fillOpacity: 0.65,
-			fillColor: '#4B0082'
+			fillColor: '#0066ff'
 			});
 			//layer.bindPopup(popupContent);
 		}
@@ -3261,7 +3262,7 @@ popupContent +=' </table>';
 			weight: 1,
 			opacity: 0.6,
 			fillOpacity: 0.65,
-			fillColor: '#FF0000'
+			fillColor: '#666666'
 			});
 			//layer.bindPopup(popupContent);
 		} 
@@ -3675,10 +3676,10 @@ function getRegionWiseResults(searchType)
 			center: [16.0000,80.0000],
 			zoom: 6
 			});
-			map1.dragging.disable();
-			map1.touchZoom.disable();
-			map1.doubleClickZoom.disable();
-			map1.scrollWheelZoom.disable();
+			map4.dragging.disable();
+			map4.touchZoom.disable();
+			map4.doubleClickZoom.disable();
+			map4.scrollWheelZoom.disable();
 			
 			if($('#stateId option:selected').val() == 1 || $('#stateId option:selected').val() == 0 )
 			{
