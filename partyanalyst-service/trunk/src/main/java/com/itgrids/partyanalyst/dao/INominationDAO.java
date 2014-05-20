@@ -659,5 +659,9 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 		 public List<Object[]> getTotalValidVotes(Long electionId,String type,String region);
 		 
 	public List<Object[]> getWonAndLeadCountPartyWise(Long electionId,List<Long> locationIds,Long scopeId);
+	
+	public List<Object[]> getPartysInfoForAParticularElectionYearInConsitutencies(Long electionId,List<Long> constituencyIds);
+	
+	public List<Object[]> partysVotesShareInConstituenciesOfElection(Long electionId,List<Long> constituencyIds,List<Long> partyIds);
 
 }
