@@ -3,6 +3,8 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.DashBoardResultsVO;
+import com.itgrids.partyanalyst.dto.GenericVO;
+import com.itgrids.partyanalyst.dto.PartyResultVO;
 
 public interface IDashBoardElectionResultsService {
 	
@@ -13,5 +15,7 @@ public interface IDashBoardElectionResultsService {
 	public List<DashBoardResultsVO> getSubReportForElectionResultByConstituencyType(Long electionId,List<Long> locationIds,Long scopeId);
 	public List<DashBoardResultsVO> getConstituencyWiseLiveResults(Long electionId,List<Long> constituencyIds);
 	public  List<DashBoardResultsVO> getWonAndLeadCountPartyWise(Long electionId,List<Long> locationIds,Long scopeId);
+	public List<GenericVO> getPartiesInConsituenciesOfElection(Long electionId,List<Long> constituencyIds);
+	public List<PartyResultVO> partysVotesShareInConstituenciesOfElection(Long electionId,List<Long> constituencyIds,List<Long> partyIds);
 
 }
