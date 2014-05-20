@@ -2,12 +2,15 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.apache.velocity.util.StringUtils;
+import org.jfree.util.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
@@ -16,9 +19,11 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionAllianceDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
+import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dto.DashBoardResultsVO;
-import com.itgrids.partyanalyst.model.ElectionAlliance;
+import com.itgrids.partyanalyst.dto.GenericVO;
+import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.service.IDashBoardElectionResultsService;
 
 public class DashBoardElectionResultsService implements
@@ -48,6 +53,9 @@ public class DashBoardElectionResultsService implements
 	
 	@Autowired
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
+	
+	@Autowired
+	private IPartyDAO partyDAO;
 	
 	public DashBoardResultsVO getElectionResultsSummary()
 	{
@@ -935,6 +943,15 @@ public class DashBoardElectionResultsService implements
  					Double lead = new Double(obj[3].toString());
  	 				
  					constituencyVO.setLeadBy(lead.longValue());
+ 					
+ 					String ttlVotes = obj[10].toString();
+					String ttlVotesEarn[] = StringUtils.split(ttlVotes, ".");
+					
+					String validVts = obj[11].toString();
+					String validVotesEarn[] = StringUtils.split(validVts, ".");
+ 					
+ 					constituencyVO.setTotalVotes(ttlVotesEarn[0]);
+ 					constituencyVO.setValidVotes(validVotesEarn[0]);
  				  
  			  }
  			  Collections.sort(resultList);
@@ -1104,5 +1121,140 @@ public class DashBoardElectionResultsService implements
 		 
 		 return resultList;
 	 }
+	 
+	 public List<GenericVO> getPartiesInConsituenciesOfElection(Long electionId,List<Long> constituencyIds){
+		  LOG.debug("Entered Into getPartiesInConsituenciesOfElection"); 
+		  List<GenericVO> resultList  = new ArrayList<GenericVO>();
+		  try {
+			  
+			  List<Object[]> list =  nominationDAO.getPartysInfoForAParticularElectionYearInConsitutencies(electionId,constituencyIds);
+			  if(list!=null && list.size()>0){
+				  for(Object[] lst:list){
+					  GenericVO gv = new GenericVO();
+					  gv.setId(Long.valueOf(lst[1].toString()));
+					  gv.setName(lst[0].toString());				  
+					  
+					  resultList.add(gv);
+				  }
+			  }
+		  }catch (Exception e) {
+			  Log.error("Exception Raised in getPartiesInConsituenciesOfElection"+e);
+		}
+		return resultList;
+	 }
+	 
+	 public List<PartyResultVO> partysVotesShareInConstituenciesOfElection(Long electionId,List<Long> constituencyIds,List<Long> partyIds){
+		  LOG.debug("Entered Into partysVotesShareInConstituenciesOfElection"); 
+		  List<PartyResultVO> resultList  = new ArrayList<PartyResultVO>();
+		  try {
+			  
+			  List<Object[]> list =  nominationDAO.partysVotesShareInConstituenciesOfElection(electionId,constituencyIds,partyIds);
+			  
+			  Map<Long,PartyResultVO> constiMap = new HashMap<Long, PartyResultVO>();
+			  
+			  List<Object[]> parties = partyDAO.getPartyShortNameByIds(partyIds);
+			  
+			  if(list!=null && list.size()>0){
+				  for(Object[] param:list){
+					  PartyResultVO  pv = constiMap.get(Long.valueOf(param[0].toString()));
+					  if(pv == null){
+						  pv = new PartyResultVO();
+						  pv.setConstituencyId(Long.valueOf(param[0].toString()));
+						  pv.setConstituencyName(param[1].toString());
+						  pv.setAcNo(Long.valueOf(param[5].toString()));
+						  pv.setPcName(param[6].toString());
+						  pv.setPcNo(Long.valueOf(param[7].toString()));
+						  pv.setPartyResultVo(getPartiesForConstituency(parties));
+						  
+						  String ttlVotes = param[8].toString();
+						  String ttlVotesEarn[] = StringUtils.split(ttlVotes, ".");
+							
+						  String validVotes = param[9].toString();
+						  String VldvotesEarn[] = StringUtils.split(validVotes, ".");
+						  
+						  pv.setTtlVts(ttlVotesEarn[0]);
+						  pv.setValidVts(VldvotesEarn[0]);
+						  
+					  }
+					  
+					  	List<PartyResultVO> partyResults = pv.getPartyResultVo();
+					  	if(partyResults!=null && partyResults.size()>=0){
+					  		
+					  		PartyResultVO party = getMatchedParty(partyResults, Long.valueOf(param[4].toString()));
+					  		
+					  		String votes = param[10].toString();
+							String votesEarn[] = StringUtils.split(votes, ".");
+							
+					  		if(party.getPartyVotes()==null){
+					  			party.setPartyVotes(votesEarn[0]);
+					  		}else{
+					  			Double vtsEarned = Double.parseDouble(param[10].toString());
+					  			Double vtsAlrdyErned  = Double.parseDouble(party.getPartyVotes());
+					  			
+					  			String votes1 = String.valueOf(vtsEarned+vtsAlrdyErned);
+								String votesEarn1[] = StringUtils.split(votes1, ".");
+					  			
+					  			party.setPartyVotes(votesEarn1[0]);
+					  		}
+					  		
+					  	}
+					  	
+					  	 Collections.sort(partyResults, sortByPartyId);
+					  	 pv.setPartyResultVo(partyResults);
+					  	 
+					  	constiMap.put(Long.valueOf(param[0].toString()), pv);
+				  }
+			  }
+			  
+			  resultList = new ArrayList<PartyResultVO>(constiMap.values());
+			  
+		  }catch (Exception e) {
+			  Log.error("Exception Raised in partysVotesShareInConstituenciesOfElection"+e);
+		}
+		return resultList;
+	 }
+	 
+	 public List<PartyResultVO> getPartiesForConstituency(List<Object[]> prtyRslts){
+		 List<PartyResultVO> partyResults = new ArrayList<PartyResultVO>();
+		 
+		 if(prtyRslts!=null && prtyRslts.size()>0){
+			 for(Object[] obj:prtyRslts){
+				 PartyResultVO pv = new PartyResultVO();
+				 pv.setPartyId(Long.valueOf(obj[0].toString()));
+				 pv.setPartyName(obj[1].toString());
+				 
+				 partyResults.add(pv);
+			 }
+		 }
+		 
+		 Collections.sort(partyResults, sortByPartyId);
+		 return partyResults;
+	 }
+	 
+	 public PartyResultVO getMatchedParty(List<PartyResultVO> partyResults,Long partyId){
+		 if(partyResults!=null && partyResults.size()>0 && partyId!=null){
+			 for(PartyResultVO party:partyResults){
+				 if(party.getPartyId().equals(partyId)){
+					 return party;
+				 }
+			 }
+		 }
+		 
+		 return null;
+	 }
+	 
+	 public static Comparator<PartyResultVO> sortByPartyId = new Comparator<PartyResultVO>()
+     {
+   
+         public int compare(PartyResultVO resultList1, PartyResultVO resultList2)
+         {
+             if(resultList1.getPartyId() == null || resultList2.getPartyId() == null){
+                 return 0;
+             }
+             else{
+            	 return (resultList1.getPartyId()).compareTo(resultList2.getPartyId());
+             }
+         }
+     };
 	 
 }
