@@ -263,6 +263,7 @@ public class CandidateResultDAO extends GenericDaoHibernate<CandidateResult, Lon
 		sb.append(" model.nomination.constituencyElection.constituency.constituencyId = model2.constituency.constituencyId and" +
 				" model.rank = 1 and model2.delimitationConstituency.constituency.constituencyId in(:locationIds)" +
 				" and model.nomination.constituencyElection.election.electionId =:electionId" +
+				" and model2.delimitationConstituency.year = 2009 " +
 				" order by " +
 				" model.nomination.constituencyElection.constituency.constituencyId,model.votesEarned desc ");
 		}
