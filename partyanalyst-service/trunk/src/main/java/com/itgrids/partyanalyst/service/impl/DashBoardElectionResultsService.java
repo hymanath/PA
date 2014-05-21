@@ -815,11 +815,11 @@ List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId,
 			resultList.get(0).setSubList(reservationDetails);
 		
 		
-		List<DashBoardResultsVO> reservationTypVoterShare = getTotalVoterShareByReservationType(electionId,
+	/*	List<DashBoardResultsVO> reservationTypVoterShare = getTotalVoterShareByReservationType(electionId,
 				locationIds, scopeId);
 		
 		if(resultList != null && resultList.size() >0)
-			resultList.get(0).setReservationTypeVoterShare(reservationTypVoterShare);
+			resultList.get(0).setReservationTypeVoterShare(reservationTypVoterShare);*/
 		
 		
 		
@@ -1029,11 +1029,11 @@ List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId,
 			resultList.get(0).setSubList(constnTypeDetails);
 		
 		
-		List<DashBoardResultsVO> constnTypeVoterShare = getTotalVoterShareByConstituencyType(electionId,
+	/*	List<DashBoardResultsVO> constnTypeVoterShare = getTotalVoterShareByConstituencyType(electionId,
 				locationIds, scopeId);
 		
 		if(resultList != null && resultList.size() >0)
-			resultList.get(0).setConstnTypeVoterShare(constnTypeVoterShare);
+			resultList.get(0).setConstnTypeVoterShare(constnTypeVoterShare);*/
 
 			
 		
@@ -1102,10 +1102,10 @@ List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId,
 					DashBoardResultsVO partyVO = getMacthedVO(voterShareDetails,Long.parseLong(obj[1].toString()));
 					
 					partyVO.setName(obj[2].toString());
-					DashBoardResultsVO typeVO = getMacthedVO(partyVO.getSubList(),Long.parseLong(obj[1].toString()));
+					DashBoardResultsVO typeVO = getMacthedVoByName(partyVO.getSubList(),obj[0].toString());
 					typeVO.setName(obj[0].toString());
 					
-					typeVO.setGainedVotes(Long.parseLong(obj[3].toString()));
+					typeVO.setGainedVotes((long)Double.parseDouble(obj[3].toString()));
 					typeVO.setPercent((long)Double.parseDouble(obj[4].toString()) != 0 ? roundTo2DigitsFloatValue((float) (long)Double.parseDouble(obj[3].toString())
 							* 100f
 							/(long) Double.parseDouble(obj[4].toString())) : "0.00");
@@ -1142,7 +1142,7 @@ List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId,
 				prtyIds.add(886L);
 				prtyIds.add(163L);
 				prtyIds.add(662L);
-				prtyIds.add(9999L);
+				//prtyIds.add(9999L);
 				
 				List<Long> partyIds = new ArrayList<Long>();
 				
@@ -1156,6 +1156,7 @@ List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId,
 					if(!types.contains(obj[0].toString()))
 					types.add(obj[0].toString());
 				
+				partyIds.add(9999L);
 				
 				for(Long partyId:partyIds)
 				{
@@ -1176,13 +1177,19 @@ List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId,
 				
 				for(Object[] obj:voterShareByConstnType)
 				{
-					DashBoardResultsVO partyVO = getMacthedVO(voterShareDetails,Long.parseLong(obj[1].toString()));
+					DashBoardResultsVO partyVO = null;
+					if(prtyIds.contains(Long.parseLong(obj[1].toString())))
+					   partyVO = getMacthedVO(voterShareDetails,Long.parseLong(obj[1].toString()));
+					else
+						partyVO = getMacthedVO(voterShareDetails,9999L);
+						
 					
 					partyVO.setName(obj[2].toString());
-					DashBoardResultsVO typeVO = getMacthedVO(partyVO.getSubList(),Long.parseLong(obj[1].toString()));
+					//DashBoardResultsVO typeVO = getMacthedVO(partyVO.getSubList(),Long.parseLong(obj[1].toString()));
+					DashBoardResultsVO typeVO = getMacthedVoByName(partyVO.getSubList(),obj[0].toString());
 					typeVO.setName(obj[0].toString());
 					
-					typeVO.setGainedVotes(Long.parseLong(obj[3].toString()));
+					typeVO.setGainedVotes((long)Double.parseDouble(obj[3].toString()));
 					typeVO.setPercent((long)Double.parseDouble(obj[4].toString()) != 0 ? roundTo2DigitsFloatValue((float) (long)Double.parseDouble(obj[3].toString())
 							* 100f
 							/(long) Double.parseDouble(obj[4].toString())) : "0.00");
