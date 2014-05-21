@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@taglib prefix="s" uri="/struts-tags" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -10,6 +12,7 @@
 <title>AC AND PC WISE RESULT</title>
 
 <style>
+#indiaBannerId,#andhraImageDiv,.parliamentCls{display:none;}
 .ui-widget-header{
  background-color: #FFFFFF !important;
  background-image: none !important;
@@ -47,10 +50,7 @@
 }
 
 
-
-
-
-//sravanthi code
+<!--sravanthi code start-->
 .chart-gauge1 {
 width: 360px;
 margin: auto;
@@ -126,6 +126,24 @@ fill: #9f8868;
 .div_sld{width:333px;margin:auto;}
 .div_sld1{width:333px;margin:auto;}
 
+#unemp_chart_img{
+  margin-top: 36px;
+}
+.div_sld_img{
+    margin-bottom: 16px;
+    margin-top: 25px;
+}
+#unemp_chart1_img{
+    margin-top: 15px;
+}
+.div_sld1_img{
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+<!--sravanthi code end-->
+
+
+
 select {
 background-color: #FFFFFF;
 border: 1px solid #CCCCCC;
@@ -181,7 +199,9 @@ padding: 4px;
 	}
 	.leaflet-popup-close-button:hover{color:#00f !important;}
 	
-	
+	#unemp_chart1,#unemp_chart{
+	  margin-top:15px;
+	}
 </style>
 <script src="js/apac.js"></script> 
 <script src="js/tgac.js"></script>
@@ -206,6 +226,8 @@ padding: 4px;
 </head>
 <body>
 <script>
+var sliderModiWave = 0;
+var sliderCbnWave = 0;
 $('document').ready(function(){
 
 
@@ -225,10 +247,19 @@ $('document').ready(function(){
 
 			}
 		});
-
-
-		seemandraDistrict();
-		seemandraRegion();
+//sravanthi start
+		$('#modiDiv').hide();
+		$("#unemp_chart").hide();
+		$("#unemp_chart_img").hide();
+		$("#unemp_chart1").hide();
+		$("#unemp_chart1_img").hide();
+		$(".div_sld").hide();
+		$(".div_sld1").hide();
+		$(".div_sld_img").hide();
+		$(".div_sld1_img").hide();
+//sravanthi end
+		//seemandraDistrict();
+		//seemandraRegion();
 		
 	//	$('#results1Div,#subTitlesDiv').hide();
 	 $('#scopeId').trigger('change');
@@ -238,7 +269,7 @@ $('document').ready(function(){
 	 });
 
 	 $('#scopeId').change(function(){
-		 console.log(this);
+		// console.log(this);
 		 $('#rgntxt').text("Select "+$('#scopeId  :selected').text());
 	 });
 	 
@@ -246,39 +277,20 @@ $('document').ready(function(){
 	 $('#areaSelectionDiv').hide();
 	 $('#stateSelectDiv').hide();
 	 $('#submitButtionDiv').hide();
-	 getElectionResultForAssemblyPrevious(1,"first",1,2);
-	 getElectionResultForParlimentPresent(1,"second",2,2);
+	 //getElectionResultForAssemblyPrevious(1,"first",1,2);
+	 //getElectionResultForParlimentPresent(1,"second",2,2);
 	 $('#scopeId').change(function(){
-	 console.log(this);
+	 
 	 $('#rgntxt').text("Select "+$('#scopeId :selected').text());
 	 });
 		$('#results1Div').html('');
 		
 		$('#subTitlesDiv').html('');
-		$('#andhraImageDiv').show();
-		$('#telanganaImageDiv').hide();
+		$('#andhraImageDiv').hide();
+		$('#telanganaImageDiv').show();
 		$('#legend').css("margin-top","-85px");	
 		
-		
-		var subMenu = '';
-		subMenu = '<h2 style="font-family:Georgia,Times;font-size:16px;font-size:25px;"> Andhra Pradesh Election Results - 2014 </h2>';
-			
-			subMenu +='<ul class="nav nav-pills" style="font-weight: 500;">';
-			subMenu +='	<li style="margin-top:10px;color:#ADADAD;"> Filter Options : </li> ';
-			subMenu +='	<li class="active btnCls btnCls1">';
-			subMenu +='	<span style="display:none;"> <button id="seemandraStateId" onclick="buildTelanganaStateWiseResult(\'AllSemandhra\',\'btnCls1\');" class="btn btn-info" style="margin-left:20px;"> electin reslts</button> </span>';
-			subMenu +='	<a style="margin-left:20px;" href="javascript:{buildTelanganaStateWiseResult(\'AllSemandhra\',\'btnCls1\');}"> State Election Result </a>';
-			subMenu +='	</li>';
-			subMenu +='	<li  class="btnCls btnCls2">';
-			subMenu +='	<a style="margin-left:20px;" href="javascript:{buildTelanganaStateWiseResult(\'SParliament\',\'btnCls2\');}"> Parliament wise  Result </a>';
-			subMenu +='	</li>';
-			subMenu +='	<li  class="btnCls btnCls3"><a style="margin-left:20px;" href="javascript:{buildTelanganaStateWiseResult(\'NorthSemandhra\',\'btnCls3\');}"> North Andhra </a></li>';
-			subMenu +='	<li  class="btnCls btnCls4"><a style="margin-left:20px;" href="javascript:{buildTelanganaStateWiseResult(\'SouthSemandhra\',\'btnCls4\');}"> South Andhra </a></li>';
-			subMenu +='	<li  class="btnCls btnCls5"><a style="margin-left:20px;" href="javascript:{buildTelanganaStateWiseResult(\'Rayalaseema\',\'btnCls5\');}"> Rayalaseema </a></li>';
-			subMenu +='</ul>';
-			subMenu +=' <span style="margin-left:600px"> <input type="text"  id="searchNameId"/> <input type="button" value="Search" onclick="searchByConstituencyName()" style="width:75px;height:30px;margin-top:-10px" class="btn btn-primary"/> </span>'
-
-			$('#subTitlesDiv').html(subMenu);
+		getRegionWiseResults("Telangana");
 });
 </script>
 <script>
@@ -1435,14 +1447,38 @@ function getConstituencyWiseResults()
 
 </div>
 
+
+   <!--sravanthi code start-->
+<center>
+<div id="modiDiv">
+<img id="unemp_chart_img" src="images/results/bjpseatstally.jpg" />
+<div class="chart-gauge" id="unemp_chart" style="display: none; width: 360px; margin: auto;margin-top: 20px;"></div>
+<img id="unemp_chart1_img" src="images/results/tdpseatstally.jpg" />
+<div class="chart-gauge1" id="unemp_chart1" style="display: block; width: 360px; margin: auto;margin-top: 20px;"></div>
+
+<img class="div_sld_img" src="images/results/bjpeffect.jpg" />
+<div class="div_sld" style="display: none;"><div id="slider3" class="d3-slider d3-slider-horizontal"><a class="d3-slider-handle" xlink:href="#"></a><svg class="d3-slider-axis d3-slider-axis-bottom" style="left: -12px;" width="558" height="32"><g transform="translate(12,0)"><g class="tick" style="opacity: 1;" transform="translate(0,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">0%</text></g><g class="tick" style="opacity: 1;" transform="translate(66.75,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">1%</text></g><g class="tick" style="opacity: 1;" transform="translate(133.5,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">2%</text></g><g class="tick" style="opacity: 1;" transform="translate(200.25,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">3%</text></g><g class="tick" style="opacity: 1;" transform="translate(267,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">4%</text></g><g class="tick" style="opacity: 1;" transform="translate(333.75,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">5%</text></g><path class="domain" d="M0,6V0H534V6"/></g></svg></div>
+</div>
+
+<img class="div_sld1_img" src="images/results/tdpeffect.jpg" />
+<div class="div_sld1" style="display: block;"><div id="slider3" class="d3-slider d3-slider-horizontal"><a class="d3-slider-handle1" xlink:href="#" style="left: 50%;"></a><svg class="d3-slider-axis d3-slider-axis-bottom" style="left: -12px;" width="558" height="32"><g transform="translate(12,0)"><g class="tick" style="opacity: 1;" transform="translate(0,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">0%</text></g><g class="tick" style="opacity: 1;" transform="translate(66.75,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">1%</text></g><g class="tick" style="opacity: 1;" transform="translate(133.5,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">2%</text></g><g class="tick" style="opacity: 1;" transform="translate(200.25,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">3%</text></g><g class="tick" style="opacity: 1;" transform="translate(267,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">4%</text></g><g class="tick" style="opacity: 1;" transform="translate(333.75,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">5%</text></g><path class="domain" d="M0,6V0H534V6"/></g></svg></div>
+</div>
+
+</div>
+</center>
+ <!--sravanthi code end-->
  <img id="stateAjaxImg3" src="./images/icons/barloader.gif" alt="Processing Image" style=" display: none; margin-left: 600px;padding-bottom: 10px;" />
- <div id="weathermap3"> </div>
+
+ <center><div id="weathermap3"> </div></center>
  
   <img id="stateAjaxImg4" src="./images/icons/barloader.gif" alt="Processing Image" style=" display: none; margin-left: 600px;padding-bottom: 10px;" />
  <div id="weathermap4"> </div>
  <img id="stateAjaxImg5" src="./images/icons/barloader.gif" alt="Processing Image" style=" display: none; margin-left: 600px;padding-bottom: 10px;" />
   <div id="weathermap5"> </div>
 <!-- SAMBA END -->
+
+
+
 <style>
 </style>
 <script>
@@ -1468,7 +1504,8 @@ var stateType = '';
          $('#rgntxt').text("Select "+$('#scopeId  :selected').text());
      });
 	 
-	 
+	    $(".d3-slider-handle").attr("style","left:"+sliderModiWave+"%");
+		$(".d3-slider-handle1").attr("style","left:"+sliderCbnWave+"%");
 	});
 	//getConstituenctSelection();
 	var map = "";
@@ -2178,7 +2215,6 @@ popupContent +=' </table>';
 	
 	function onClickForMap(popupContent,name,id)
 	{
-	console.log(id);
 		$('#popupDiv').html(popupContent);
 		$('#popupDiv').dialog(
 		{
@@ -2694,6 +2730,7 @@ function getRegionWiseResults(searchType)
 		$('#weathermap3').hide();
 		$('#unemchart1p_').hide();
 		$('#div_sld1').hide();
+		$('#div_sld1_img').hide();
 		$('#slider3').hide();
 		$('.parliamentCls').hide();
 		$('#weathermap4').hide();
@@ -2744,6 +2781,7 @@ function getRegionWiseResults(searchType)
 		$('#weathermap3').hide();
 		$('#unemchart1p_').hide();
 		$('#div_sld1').hide();
+		$('#div_sld1_img').hide();
 		$('#slider3').hide();
 		$('.parliamentCls').hide();
 		$('#weathermap4').hide();
@@ -2792,6 +2830,7 @@ function getRegionWiseResults(searchType)
 		$('#weathermap3').hide();
 		$('#unemchart1p_').hide();
 		$('#div_sld1').hide();
+		$('#div_sld1_img').hide();
 		$('#slider3').hide();
 		$('#weathermap4').hide();
 		$('#indiaBannerId').hide();
@@ -2824,6 +2863,7 @@ function getRegionWiseResults(searchType)
 		$('#weathermap3').hide();
 		$('#unemchart1p_').hide();
 		$('#div_sld1').hide();
+		$('#div_sld1_img').hide();
 		$('#slider3').hide();
 		$('.parliamentCls').hide();
 		$('#weathermap4').hide();
@@ -2848,6 +2888,7 @@ function getRegionWiseResults(searchType)
 		$('#weathermap3').hide();
 		$('#unemchart1p_').hide();
 		$('#div_sld1').hide();
+		$('#div_sld1_img').hide();
 		$('#slider3').hide();
 		$('.parliamentCls').hide();
 		$('#weathermap4').hide();
@@ -2867,10 +2908,11 @@ function getRegionWiseResults(searchType)
 		$('#areaSelectionDiv').show();
 		$('#stateSelectDiv').show();
 		$('#submitButtionDiv').show();
-		$('#modiDiv').hide();
+		//$('#modiDiv').hide();
 		$('#weathermap3').hide();
 		$('#unemchart1p_').hide();
 		$('#div_sld1').hide();
+		$('#div_sld1_img').hide();
 		$('#slider3').hide();
 		$('#weathermap4').show();
 		var parties = new Array();
@@ -2891,6 +2933,21 @@ function getRegionWiseResults(searchType)
 		$('#overviewDivId1').html('');
 		$('#weathermap').html('');
 		$('#weathermap1').html('');
+
+		//sravanthi code
+		$('#modiDiv').show();
+		$("#unemp_chart1").show();
+		$("#unemp_chart1_img").show();
+		$(".div_sld1").show();
+		$('.div_sld1_img').show();
+		$("#unemp_chart").hide();
+		$("#unemp_chart_img").hide();
+		$(".div_sld").hide();
+		$(".div_sld_img").hide();
+		$("#results1Div").hide();
+		$("#unemp_chart1").html("");
+		$("#unemp_chart").html("");
+		
 	}
 	else if(searchType == 'ModiEffect')
 	{
@@ -2905,10 +2962,11 @@ function getRegionWiseResults(searchType)
 		$('#areaSelectionDiv').hide();
 		$('#stateSelectDiv').hide();
 		$('#submitButtionDiv').hide();
-		$('#modiDiv').hide();
+		//$('#modiDiv').hide();
 		$('#weathermap3').show();
 		$('#unemchart1p_').show();
 		$('#div_sld1').show();
+		$('#div_sld1_img').show();
 		$('#slider3').show();
 		getElectionResultForTotalParliment();
 		$('#weathermap4').hide();
@@ -2918,6 +2976,21 @@ function getRegionWiseResults(searchType)
 		$('#andhraImageDiv').hide();
 		$('#telanganaImageDiv').hide();
 		$('#weathermap5').hide();
+
+		//sravanthi code
+		$('#modiDiv').show();
+		$("#unemp_chart").show();
+		$("#unemp_chart_img").show();
+		$(".div_sld").show();
+		$(".div_sld_img").show();
+		$("#results1Div").hide();
+		$("#unemp_chart1").hide();
+		$("#unemp_chart1_img").hide();
+		$(".div_sld1").hide();
+		$(".div_sld1_img").hide();
+		$("#unemp_chart1").html("");
+		$("#unemp_chart").html("");
+		
 	}
 	}
 
@@ -3031,11 +3104,134 @@ function getRegionWiseResults(searchType)
 			psDetails = result;
 			if(electionScopeId == 1)
 			{
+			 un_emp = 0.0;
+			 if(result != null && result.length > 0){ 
+			  var totalSeats = result.length;			  
+					 if(totalSeats <= 115){
+						 if(totalSeats <= 0){
+						  un_emp = 0.0;
+						 }else if(totalSeats <= 23){
+						   un_emp = 0.05;
+						 }else if(totalSeats <= 46){
+						   un_emp = 0.10;
+						 }else if(totalSeats <= 69){
+						   un_emp = 0.15;
+						 }else if(totalSeats <= 92){
+						   un_emp = 0.20;
+						 }else if(totalSeats > 92){
+						   un_emp = 0.25;
+						 }
+						 
+					 }
+					 else if(totalSeats <= 175){
+					   if(totalSeats <= 127){
+						   un_emp = 0.30;
+						 }else if(totalSeats <= 139){
+						   un_emp = 0.35;
+						 }else if(totalSeats <= 151){
+						   un_emp = 0.40;
+						 }else if(totalSeats <= 163){
+						   un_emp = 0.45;
+						 }else if(totalSeats > 163){
+						   un_emp = 0.50;
+						 }
+					 }
+					 else if(totalSeats <= 275){
+					   if(totalSeats <= 195){
+						   un_emp = 0.55;
+						 }else if(totalSeats <= 215){
+						   un_emp = 0.60;
+						 }else if(totalSeats <= 235){
+						   un_emp = 0.65;
+						 }else if(totalSeats <= 255){
+						   un_emp = 0.70;
+						 }else if(totalSeats > 255){
+						   un_emp = 0.75;
+						 }
+					 }
+					 else if(totalSeats > 275){
+					  if(totalSeats <= 290){
+						   un_emp = 0.80;
+						 }else if(totalSeats <= 305){
+						   un_emp = 0.85;
+						 }else if(totalSeats <= 320){
+						   un_emp = 0.90;
+						 }else if(totalSeats <= 335){
+						   un_emp = 0.95;
+						 }else if(totalSeats > 335){
+						   un_emp = 1;
+						 }
+					 }
+ 			    }
+			    callModiMeter();
+				
+				$(".d3-slider-handle").attr("style","left:"+sliderModiWave+"%");
 				getElectionResultForTotalParliment();
 			}
 			
 			else
 			{
+			     un_emp1 = 0.0;
+				 if(result != null && result.length > 0){ 
+				     var totalSeats = result[0].totalCount;			  
+					 if(totalSeats <= 55){
+						 if(totalSeats <= 0){
+						  un_emp1 = 0.0;
+						 }else if(totalSeats <= 11){
+						   un_emp1 = 0.05;
+						 }else if(totalSeats <= 22){
+						   un_emp1 = 0.10;
+						 }else if(totalSeats <= 33){
+						   un_emp1 = 0.15;
+						 }else if(totalSeats <= 44){
+						   un_emp1 = 0.20;
+						 }else if(totalSeats > 44){
+						   un_emp1 = 0.25;
+						 }
+						 
+					 }
+					 else if(totalSeats <= 85){
+					   if(totalSeats <= 61){
+						   un_emp1 = 0.30;
+						 }else if(totalSeats <= 67){
+						   un_emp1 = 0.35;
+						 }else if(totalSeats <= 73){
+						   un_emp1 = 0.40;
+						 }else if(totalSeats <= 79){
+						   un_emp1 = 0.45;
+						 }else if(totalSeats > 79){
+						   un_emp1 = 0.50;
+						 }
+					 }
+					 else if(totalSeats <= 110){
+					   if(totalSeats <= 92){
+						   un_emp1 = 0.55;
+						 }else if(totalSeats <= 99){
+						   un_emp1 = 0.60;
+						 }else if(totalSeats <= 106){
+						   un_emp1 = 0.65;
+						 }else if(totalSeats <= 113){
+						   un_emp1 = 0.70;
+						 }else if(totalSeats > 113){
+						   un_emp1 = 0.75;
+						 }
+					 }
+					 else if(totalSeats > 110){
+					  if(totalSeats <= 116){
+						   un_emp1 = 0.80;
+						 }else if(totalSeats <= 122){
+						   un_emp1 = 0.85;
+						 }else if(totalSeats <= 128){
+						   un_emp1 = 0.90;
+						 }else if(totalSeats <= 134){
+						   un_emp1 = 0.95;
+						 }else if(totalSeats > 134){
+						   un_emp1 = 1;
+						 }
+					 }
+					}
+					 $(".d3-slider-handle1").attr("style","left:"+sliderCbnWave+"%");
+					 callCBNMeter();
 				getElectionResultForTotalAssembly();
 			}
 		});	
@@ -3872,5 +4068,43 @@ function searchByConstituencyName(){
 
 </script>
 
+<!--sravanthi code start-->
+<script type="text/javascript">
+
+
+var un_emp1 = '0.60';
+var elems = document.getElementsByClassName('d3-slider-handle1')[0];
+elems.style.left = '50%';
+var width2;
+var width1;
+if(true)
+{
+var div_width1 = 420;
+var div_height1 = 350;
+
+var margin1 = {top: 20, right: 20, bottom: 30, left: 40},
+width1 = div_width1 - margin1.left - margin1.right,
+height1 = div_height1 - margin1.top - margin1.bottom;
+}
+
+var un_emp = '0.60';
+var elems = document.getElementsByClassName('d3-slider-handle')[0];
+elems.style.left = '20%';
+if(true)
+{
+var div_width = 420;
+var div_height = 350;
+
+var margin = {top: 20, right: 20, bottom: 30, left: 40},
+width2 = div_width - margin.left - margin.right,
+height = div_height - margin.top - margin.bottom;
+}
+
+
+</script>
+
+<script type="text/javascript" src="js/newTest1.js"></script>
+<script type="text/javascript" src="js/newTest.js"></script>
+<!--sravanthi code end-->
 </body>
 </html>

@@ -38,7 +38,7 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 	IAcPcWiseElectionResultService acPcWiseElectionResultService;
 	List<SelectOptionVO> resultLists; 
 	private IStaticDataService staticDataService;
-	List<GenericVO> returnList;
+	List<SelectOptionVO> returnList;
 	private EntitlementsHelper entitlementsHelper;
 	
 	public EntitlementsHelper getEntitlementsHelper() {
@@ -98,12 +98,12 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 
 	
 
-	public List<GenericVO> getReturnList() {
+	public List<SelectOptionVO> getReturnList() {
 		return returnList;
 	}
 
 
-	public void setReturnList(List<GenericVO> returnList) {
+	public void setReturnList(List<SelectOptionVO> returnList) {
 		this.returnList = returnList;
 	}
 
