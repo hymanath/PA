@@ -4940,8 +4940,8 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 						 		    " sum(N.constituencyElection.constituencyElectionResult.validVotes) from " +
 						 		    "Nomination N ,  DelimitationConstituencyAssemblyDetails DCA " +
 									"where " +
-									"CE.constituency.district.districtId  = DCA.constituency.constituencyId and " +
-									"N.constituencyElection..candidateResult.rank = 1 and " +
+									"N.constituencyElection.constituency.district.districtId  = DCA.constituency.constituencyId and " +
+									"N.candidateResult.rank = 1 and " +
 									"DCA.delimitationConstituency.year = :delimitationYear and " +
 									"DCA.delimitationConstituency.constituency.constituencyId in(:locationIds) and " +
 									"N.constituencyElection.election.electionId = :electionId  group by " +
@@ -4990,10 +4990,10 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 						 queryString.append("select N.constituencyElection.constituency.areaType,N.party.partyId,N.party.shortName," +
 						 		    "sum(N.candidateResult.votesEarned)," +
 						 		    " sum(N.constituencyElection.constituencyElectionResult.validVotes) " +
-						 		    "from Nomination N " +
+						 		    "from Nomination N ,DelimitationConstituencyAssemblyDetails DCA " +
 									"where " +
 									"N.constituencyElection.constituency.district.districtId  = DCA.constituency.constituencyId and " +
-									"N.candidateResult.rank = 1 and" +
+									"N.candidateResult.rank = 1 and " +
 									"DCA.delimitationConstituency.year = :delimitationYear and " +
 									"DCA.delimitationConstituency.constituency.constituencyId in(:locationIds) and " +
 									"N.constituencyElection.election.electionId = :electionId  group by " +
