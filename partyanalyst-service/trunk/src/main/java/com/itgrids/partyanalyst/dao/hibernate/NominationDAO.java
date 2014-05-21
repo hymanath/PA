@@ -4596,7 +4596,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			{
 				
 				queryString.append("select count(model.party.partyId),model.constituencyElection.constituency.state.stateId,model.constituencyElection.constituency.state.stateName," +
-						" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus " +
+						" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus,sum(model.constituencyElection.constituencyElectionResult.validVotes)" +
 						"from Nomination model  where " +
 						"model.constituencyElection.election.electionId = :electionId and " +
 						"model.constituencyElection.constituency.state.stateId in(:locationIds) and " +
@@ -4604,9 +4604,9 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 						"group by model.constituencyElection.constituency.state.stateId ,model.party.partyId ,model.constituencyElection.countStatus ");
 			}else if(scopeId.longValue() == 2)//district
 			{
-				
+				  
 				queryString.append("select count(model.party.partyId),model.constituencyElection.constituency.district.districtId,model.constituencyElection.constituency.district.districtName," +
-						" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus " +
+				" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus,sum(model.candidateResult.votesEarned),sum(model.constituencyElection.constituencyElectionResult.validVotes)" +
 						"from Nomination model where " +
 						"model.constituencyElection.election.electionId = :electionId and " +
 						"model.constituencyElection.constituency.district.districtId in(:locationIds) and " +
@@ -4616,7 +4616,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			{
 				
 				queryString.append("select count(model.party.partyId),model2.stateRegion.stateRegionId,model2.stateRegion.regionName," +
-						" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus " +
+			" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus,sum(model.candidateResult.votesEarned),sum(model.constituencyElection.constituencyElectionResult.validVotes)" +
 						"from Nomination model ,StateRegionDistrict model2 where " +
 						"model.constituencyElection.constituency.district.districtId = model2.district.districtId and " +
 						"model.constituencyElection.election.electionId = :electionId and " +
@@ -4627,7 +4627,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			{
 				
 				queryString.append("select count(model.party.partyId),model2.delimitationConstituency.constituency.constituencyId,model2.delimitationConstituency.constituency.name," +
-						" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus " +
+				" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus,sum(model.candidateResult.votesEarned),sum(model.constituencyElection.constituencyElectionResult.validVotes)" +
 						"from Nomination model ,DelimitationConstituencyAssemblyDetails model2 where " +
 						"model.constituencyElection.election.electionId = :electionId and " +
 						"model.constituencyElection.constituency.constituencyId = model2.constituency.constituencyId and " +
