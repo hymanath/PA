@@ -686,6 +686,8 @@ function showSelectedReport()
 		{
 			   getMatrixReport();
 			   getMarginsCountOfParties();
+			   $('#percentDiv').show();
+			   $('#bothId').attr('checked',true);
 		}
 		else
 		{
@@ -763,7 +765,10 @@ str+='<div class="tableClass1">';
             $.each(value.partiesDetails,function(index1,value1){
 				if(status == "Won")
                  //str+='<td><a href="javascript:{getConstituencyDetails('+value.id+','+value1.id+',1);}">'+value1.winCount+'</a></td>';
-				str+='<td>'+value1.winCount+'</td>';
+				if(value1.winCount != 0 && value1.percent != null)
+					 str+='<td><span class="cntClass">'+value1.winCount+'</span><span class="prcntClass">(</span><span class="prcntClass1">'+value1.percent+'</span><span class="prcntClass">)</span></td>';
+					else
+					 str+='<td>'+value1.winCount+'</td>';
 				else
 				 //str+='<td><a href="javascript:{getConstituencyDetails('+value.id+','+value1.id+',0);}">'+value1.leadCount+'</td>';
 				str+='<td>'+value1.leadCount+'</td>';
@@ -1413,7 +1418,7 @@ function getConstituencyWiseResults()
 <div  class="offset1 hide" style="clear:both;" id="percentDiv">
 
 	<label class="radio inline">
-	<input type="radio" class="percentTypeClass" id="" value="Both" name="percentTypeClass"  style="margin-top:-5px;" checked="true"><span>Seats Count & Votes Percentage</span>
+	<input type="radio" class="percentTypeClass" id="bothId" value="Both" name="percentTypeClass"  style="margin-top:-5px;" checked="true"><span>Seats Count & Votes Percentage</span>
 	</label>
 
 	<label class="radio inline">
