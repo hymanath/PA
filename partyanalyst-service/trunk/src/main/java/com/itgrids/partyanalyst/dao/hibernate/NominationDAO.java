@@ -4920,7 +4920,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 									" from Nomination N " +
 									"where " +
 									"N.constituencyElection.election.electionId =:electionId and " +
-									"N.candidateResult.rank = 1 and" +
+									"N.candidateResult.rank = 1 and " +
 									"N.constituencyElection.constituency.district.districtId in(:locationIds) group by " +
 									"N.constituencyElection.reservationZone,N.party.partyId");
 					else if(scopeId.longValue() == 3L) //region
