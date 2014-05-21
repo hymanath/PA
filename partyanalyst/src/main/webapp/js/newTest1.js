@@ -11,8 +11,8 @@ var width = width1;
  {
 	  var Needle, arc, arcEndRad, arcStartRad, barWidth, chart, chartInset, degToRad, el, endPadRad, margin, needle, numSections, padRad, percToDeg, percToRad, percent, radius, sectionIndx, sectionPerc, startPadRad, svg, totalPercent, _i;
 	  //var lvl_arr1 = new Array("115","135","155","175","195");
-var lvl_arr1 = new Array("No CBN wave","CBN wave","CBN High tide","CBN Tsunami");
-var seat_arr = new Array("55 seats","85 seats","110 seats","140 seats"); 
+var lvl_arr1 = new Array("No CBN Wave","CBN Wave","CBN High Tide","CBN Tsunami");
+var seat_arr = new Array("55 Seats","85 Seats","110 Seats","140 Seats"); 
 	  percent = un_emp1;
 
 	  barWidth = 40;
@@ -36,7 +36,7 @@ var seat_arr = new Array("55 seats","85 seats","110 seats","140 seats");
 		left: 0
 	  };
 
-	  height = 170;
+	  height = 220;
 
 	  radius = width/2 ;
 
@@ -51,11 +51,11 @@ var seat_arr = new Array("55 seats","85 seats","110 seats","140 seats");
 	  degToRad = function(deg) {
 		return deg * Math.PI / 180;
 	  };
-		var fontsz = 12+"px";
+		var fontsz = 14+"px";
 		if(width < 300){
 			fontsz = 9;
 		}
-	  svg = el.append('svg').attr('width', (width+10) + margin.left + margin.right).attr('height', (height+35) + margin.top + margin.bottom).attr('style', "over-flow:auto;");
+	  svg = el.append('svg').attr('width', (width+60) + margin.left + margin.right).attr('height', (height+70) + margin.top + margin.bottom).attr('style', "over-flow:auto;");
 
 	  chart = svg.append('g').attr('transform', "translate(" + ((width + margin.left) /2) + ", " + ((height + margin.top)) + ")");
 	  for (sectionIndx = _i = 1; 1 <= numSections ? _i <= numSections : _i >= numSections; sectionIndx = 1 <= numSections ? ++_i : --_i) {
@@ -70,7 +70,7 @@ var seat_arr = new Array("55 seats","85 seats","110 seats","140 seats");
 		chart.append('path').attr('class', "arc chart-color" + sectionIndx).attr('d', arc).attr("id","chart-color" + sectionIndx);
 		chart.append("text")
 	  .style("font-size",fontsz)
-	  .style("font-family","sans-serif")
+	  .style("font-family","cursive")
 	  .style("font-weight","bold")
 	  .attr("fill","black")
 	  .attr("dx","15")
@@ -81,10 +81,11 @@ var seat_arr = new Array("55 seats","85 seats","110 seats","140 seats");
 	   .text(lvl_arr1[sectionIndx-1])
 	   .style("color","red");
 	   chart.append("text").style("font-size",fontsz)
+	   .style("font-family","cursive")
        .style("font-weight","bold")
 		.attr("fill","black")
 		.attr("dx","38")
-		.attr("dy","1")
+		.attr("dy","0")
 		.append("textPath")
 		.attr("xlink:href","#chart-color" + sectionIndx)
 		.text(seat_arr[sectionIndx-1])
