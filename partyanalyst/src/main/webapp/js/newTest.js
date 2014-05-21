@@ -158,7 +158,7 @@ var seat_arr = new Array("115 seats","175 seats","275 seats","350 seats");
  }
  else
  {
-	var no_res_msg = '<div style="height:150px;padding:10px 0;font-size:14px;font-weight:bold">Analysis for this constituency is not available</div>';
+	var no_res_msg = '<div style="height:150px;padding:10px 0;font-size:14px;font-weight:bold">Data not available</div>';
 	document.getElementById('unemp_chart').innerHTML = no_res_msg;
  }
 
