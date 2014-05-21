@@ -58,7 +58,6 @@
 <!--sravanthi code start-->
 .chart-gauge1 {
 width: 360px;
-margin: auto;
 height: 200px;
 text-align:center;
 }
@@ -196,16 +195,17 @@ padding: 4px;
     padding-top: 1px;
     text-align: left;
 	
-	.leaflet-popup-close-button{ color:red !important;
+	
 	font-size: 30px !important;
 	padding-top: 8px !important;
 	padding-right: 8px !important;
 	
 	}
+	.leaflet-popup-close-button{ color:red !important;}
 	.leaflet-popup-close-button:hover{color:#00f !important;}
 	
-	#unemp_chart1,#unemp_chart{
-	  margin-top:15px;
+	.div_sld_img{
+	  margin-top:60px;
 	}
 	.tableClass2  table {border: 3px solid #B6D9E9}
 	.tableClass2  thead th,.tableClass2  thead tr,.tableClass2  tbody tr,.tableClass2  tbody td {
@@ -1506,9 +1506,9 @@ function getConstituencyWiseResults()
 <center>
 <div id="modiDiv">
 <img id="unemp_chart_img" src="images/results/bjpseatstally.jpg" />
-<div class="chart-gauge" id="unemp_chart" style="display: none; width: 360px; margin: auto;margin-top: 20px;"></div>
+<div class="chart-gauge" id="unemp_chart" style="display: none; width: 394px;"></div>
 <img id="unemp_chart1_img" src="images/results/tdpseatstally.jpg" />
-<div class="chart-gauge1" id="unemp_chart1" style="display: block; width: 360px; margin: auto;margin-top: 20px;"></div>
+<div class="chart-gauge1" id="unemp_chart1" style="display: block; width: 394px;"></div>
 
 <img class="div_sld_img" src="images/results/bjpeffect.jpg" />
 <div class="div_sld" style="display: none;"><div id="slider3" class="d3-slider d3-slider-horizontal"><a class="d3-slider-handle" xlink:href="#"></a><svg class="d3-slider-axis d3-slider-axis-bottom" style="left: -12px;" width="558" height="32"><g transform="translate(12,0)"><g class="tick" style="opacity: 1;" transform="translate(0,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">0%</text></g><g class="tick" style="opacity: 1;" transform="translate(66.75,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">1%</text></g><g class="tick" style="opacity: 1;" transform="translate(133.5,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">2%</text></g><g class="tick" style="opacity: 1;" transform="translate(200.25,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">3%</text></g><g class="tick" style="opacity: 1;" transform="translate(267,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">4%</text></g><g class="tick" style="opacity: 1;" transform="translate(333.75,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">5%</text></g><path class="domain" d="M0,6V0H534V6"/></g></svg></div>
@@ -4252,8 +4252,8 @@ var width2;
 var width1;
 if(true)
 {
-var div_width1 = 420;
-var div_height1 = 350;
+var div_width1 = 465;
+var div_height1 = 370;
 
 var margin1 = {top: 20, right: 20, bottom: 30, left: 40},
 width1 = div_width1 - margin1.left - margin1.right,
@@ -4265,8 +4265,8 @@ var elems = document.getElementsByClassName('d3-slider-handle')[0];
 elems.style.left = '20%';
 if(true)
 {
-var div_width = 420;
-var div_height = 350;
+var div_width = 465;
+var div_height = 370;
 
 var margin = {top: 20, right: 20, bottom: 30, left: 40},
 width2 = div_width - margin.left - margin.right,
