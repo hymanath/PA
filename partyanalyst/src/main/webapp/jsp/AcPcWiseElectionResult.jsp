@@ -208,6 +208,25 @@ padding: 4px;
 <script>
 $('document').ready(function(){
 
+
+		$('.percentTypeClass').change(function(){
+			$('.prcntClass1,.prcntClass,.cntClass').hide();
+			if(this.value =="Both")
+			{
+				$('.prcntClass1,.prcntClass,.cntClass').show();
+
+			}else if(this.value =="Seats")
+			{
+				$('.cntClass').show();
+
+			}else if(this.value =="Votes")
+			{
+				$('.prcntClass1').show();
+
+			}
+		});
+
+
 		seemandraDistrict();
 		seemandraRegion();
 		
@@ -630,6 +649,7 @@ function buildLocationDetails(result)
 
 function showSelectedReport()
 {
+	$('#percentDiv').hide();
 
 	$('#matridLeadId,#matrixWonSummaryId,#matrixLeadSummaryId,#errorDiv,#test,#marginAnalysis1,#constituencyResultsDiv').html('');
  
@@ -659,6 +679,7 @@ function showSelectedReport()
 		{
 				getSubReportForElectionResultByConstituencyType();
 				getSubReportForElectionResultByConstituencyReservation();
+				$('#percentDiv').show();
 		}
 	}
 
@@ -851,9 +872,28 @@ function buildSubReportByConstituencyType(result,type)
 
 	//str+='<label><b>NOTE:</b>W  - Won , L - Lead</label><br>';
 	  if(type == "reservationType")
-       str+='<label style="margin-top: 10px; margin-bottom: 10px;" class="headingClass">SC,ST,General Constituencies Analysis</label>';
+		   str+='<label style="margin-top: 10px; margin-bottom: 10px;" class="headingClass">SC,ST,General Constituencies Analysis</label>';
 	  else
 	  str+='<label style="margin-top: 10px; margin-bottom: 10px;" class="headingClass">Rural,Urban,Rural-Urban Analysis</label>';
+
+	  
+          str+='<div class="tableClass1">';
+		   str+='<table style="margin-bottom:13px;">';
+			  str+='<thead>';
+			   str+='<tr>';
+				$.each(result[0].subList,function(index,value){
+
+					if(value.name == "")
+					   str+='<th>GENERAL</th>';
+					else
+					   str+='<th>'+value.name+'</th>';
+					 str+='<th>'+value.count+'</th>';
+				});
+				
+			   str+='</tr>';
+			  str+='</thead>';
+			str+='</table>';
+			str+='</div>';
 
 	str+='<table width="80%" class="" style="clear:both;" style="margin-top:25px;">';
 	 str+='<thead>';
@@ -900,7 +940,10 @@ function buildSubReportByConstituencyType(result,type)
 
 		   $.each(value.reservationDetails,function(index1,value1){
 			    $.each(value1.partiesDetails,function(index2,value2){
-					str+='<td>'+value2.winCount+'</td>';
+					if(value2.winCount != 0 && value2.percent != null)
+					 str+='<td><span class="cntClass">'+value2.winCount+'</span><span class="prcntClass">(</span><span class="prcntClass1">'+value2.percent+'</span><span class="prcntClass">)</span></td>';
+					else
+					 str+='<td>'+value2.winCount+'</td>';
 					//str+='<td>'+value2.leadCount+'</td>';
 				 });
 		   });
@@ -1353,6 +1396,23 @@ function getConstituencyWiseResults()
 	<img id="ajaxImage" src="./images/icons/search.gif" alt="Processing Image" style="margin-left:70px;display:none;"/>
 
 					</div>
+
+
+<div  class="offset1 hide" style="clear:both;" id="percentDiv">
+
+	<label class="radio inline">
+	<input type="radio" class="percentTypeClass" id="" value="Both" name="percentTypeClass"  style="margin-top:-5px;" checked="true"><span>Seats Count & Votes Percentage</span>
+	</label>
+
+	<label class="radio inline">
+	<input type="radio" class="percentTypeClass" id="" value="Seats" name="percentTypeClass"  style="margin-top:-5px;"><span>Seats Count</span>
+	</label>
+
+	<label class="radio inline">
+	<input type="radio" class="percentTypeClass" id="" value="Votes" name="percentTypeClass"  style="margin-top:-5px;"><span>Votes Percentage</span>
+	</label>	
+
+</div>
 
 					<div id="errorDiv" style="font-weight:bold;color:red;"></div>
 
