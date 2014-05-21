@@ -393,7 +393,7 @@ public class CandidateResultDAO extends GenericDaoHibernate<CandidateResult, Lon
 		if(electionScopeId.longValue() == 2l)
 		{
 			sb.append("select model.nomination.constituencyElection.constituency.constituencyId ," +
-					" model.nomination.constituencyElection.constituency.name from CandidateResult model where " +
+					" model.nomination.constituencyElection.constituency.name,model.nomination.constituencyElection.constituency.district.districtId from CandidateResult model where " +
 					" model.nomination.party.partyId in(:partyId) and model.nomination.constituencyElection.election.electionId = :electionId " +
 					"  " +
 					" and model.rank = 1 " +
