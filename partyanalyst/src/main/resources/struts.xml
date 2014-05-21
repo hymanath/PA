@@ -7067,6 +7067,17 @@
 			</result>		
 		</action>
 		
+		<action name="getPartiesInConsituenciesOfElectionAction" class="dashBoardElectionResultsAction" method="getPartiesInConsituenciesOfElection">
+			<result type="json" name="success">
+				<param name="root">partiesList</param>				
+			</result>		
+		</action>
+		
+		<action name="partysVotesShareInConstituenciesOfElection" class="dashBoardElectionResultsAction" method="partysVotesShareInConstituenciesOfElection">
+			<result type="json" name="success">
+				<param name="root">constiList</param>
+			</result>
+		</action>
 		
 </package>
 		
