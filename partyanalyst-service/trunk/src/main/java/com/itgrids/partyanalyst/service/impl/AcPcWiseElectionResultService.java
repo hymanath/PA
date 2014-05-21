@@ -10,6 +10,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
 import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
@@ -19,6 +20,7 @@ import com.itgrids.partyanalyst.dao.IStateSubRegionDistrictDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IAcPcWiseElectionResultService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class AcPcWiseElectionResultService implements IAcPcWiseElectionResultService{
 
@@ -46,11 +48,44 @@ public class AcPcWiseElectionResultService implements IAcPcWiseElectionResultSer
 	@Autowired
 	INominationDAO nominationDAO;
 	
+	@Autowired IAllianceGroupDAO allianceGroupDAO;
+	
 	public List<BasicVO> getPartyWiseComperassionResult(Long stateId,Long electionId,List<Long> partyIds,Long electionScopeId,String scope)
 	{
 		List<BasicVO> returnList = null;
 		try 
 		{
+			List<Object[]> alliancesList = allianceGroupDAO.getAlliancesAndPartiesForAnElection(IConstants.PRES_PARLIAMENT_ELECTION_ID);
+			
+			Map<String,List<Long>> alliancesMap = new HashMap<String, List<Long>>();
+			if(alliancesList!=null && alliancesList.size()>0){
+			for(Object[] obj:alliancesList){
+				List<Long> alliances = alliancesMap.get(obj[1].toString());
+				if(alliances == null){
+					alliances = new ArrayList<Long>();
+				}
+				
+				alliances.add(Long.valueOf(obj[2].toString()));
+				
+				alliancesMap.put(obj[1].toString(), alliances);
+			}
+			}
+			
+			List<Long> upaAlliances = null;
+			List<Long> ndaAlliances = null;
+			
+			if(alliancesMap.get("UPA") == null){
+				upaAlliances = new ArrayList<Long>();
+			}else{
+				upaAlliances = alliancesMap.get("UPA");
+			}
+			
+			if(alliancesMap.get("NDA") == null){
+				ndaAlliances = new ArrayList<Long>();
+			}else{
+				ndaAlliances = alliancesMap.get("NDA");
+			}
+			
 			List<Object[]> result = candidateResultDAO.getElectionResultsForSelection(electionId,stateId,partyIds,electionScopeId);
 			if(result != null && result.size() > 0)
 			{
@@ -75,6 +110,15 @@ public class AcPcWiseElectionResultService implements IAcPcWiseElectionResultSer
 					basicVO.setLevelId((Long)objects[5]);//party Id
 					basicVO.setDescription(objects[6] != null ? objects[6].toString() : "");//party Name
 					basicVO.setCasteName(objects[7] != null ? objects[7].toString() : "");//candidate
+					
+					if(upaAlliances.contains((Long)objects[5])){
+						basicVO.setAliancedWith("UPA");
+					}else if(ndaAlliances.contains((Long)objects[5])){
+						basicVO.setAliancedWith("NDA");
+					}else{
+						basicVO.setAliancedWith("OTHERS");
+					}
+					
 					basicVO.setLevelValue((Long)objects[8]);//rank
 					constituencyWiseList.add(basicVO);
 				}
@@ -125,7 +169,9 @@ public class AcPcWiseElectionResultService implements IAcPcWiseElectionResultSer
 									partyVO.setCount(subVO.getCount());
 									partyVO.setPersent(subVO.getPersent());
 									partyVO.setCasteName(subVO.getCasteName());
-									
+									if(subVO.getAliancedWith()!=null){
+										partyVO.setAliancedWith(subVO.getAliancedWith());
+									}
 									partiesList.add(partyVO);
 								} catch (Exception e) {}
 								
