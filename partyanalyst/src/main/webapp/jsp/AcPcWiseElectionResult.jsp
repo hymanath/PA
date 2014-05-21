@@ -1752,7 +1752,7 @@ var stateType = '';
 	
 	function getMapType(type,stateVal)
 	{
-		$("#stateAjaxImg1").css("display","block");
+		//$("#stateAjaxImg1").css("display","block");
 		if(type == 1)
 		{
 			if(stateVal == 1)
