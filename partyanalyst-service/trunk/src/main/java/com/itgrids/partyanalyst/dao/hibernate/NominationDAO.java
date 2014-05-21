@@ -4890,6 +4890,19 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				return query.list();
 			}
 
-		
+			 public List<Object[]>  getAllPartyDetailsForAllElectionYearsInAState(Long stateId,Long electionId){
+				 
+				 StringBuilder queryString = new StringBuilder();			 
+				 queryString.append(" select distinct model.party.partyId, model.party.shortName from  Nomination model ");
+				 queryString.append(" where model.constituencyElection.constituency.state.stateId = :stateId and " );
+				 queryString.append(" model.constituencyElection.election.electionId = :electionId  order by ");
+				 queryString.append("  model.party.shortName ");
+				 
+				 Query query = getSession().createQuery(queryString.toString());	
+				 query.setParameter("stateId", stateId);
+				 query.setParameter("electionId", electionId);
+				 return query.list();
+				 
+				}
 }
 
