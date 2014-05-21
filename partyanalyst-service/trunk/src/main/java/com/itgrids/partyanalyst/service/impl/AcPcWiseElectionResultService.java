@@ -497,14 +497,15 @@ public class AcPcWiseElectionResultService implements IAcPcWiseElectionResultSer
 					}
 				}
 						
+				if(returnList != null && returnList.size()>0){
+					Collections.sort(returnList, new Comparator<BasicVO>() {
+						public int compare(BasicVO o1, BasicVO o2) {									
+							return o1.getName().compareTo(o2.getName());
+						}
+					});
+				}
 				
 			}
-			Collections.sort(returnList, new Comparator<BasicVO>() {
-				public int compare(BasicVO o1, BasicVO o2) {									
-					return o1.getName().compareTo(o2.getName());
-				}
-			});
-			
 		} 
 		catch (Exception e)
 		{
