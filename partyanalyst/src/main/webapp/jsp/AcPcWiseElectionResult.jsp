@@ -265,6 +265,7 @@ $('document').ready(function(){
 	 $('#scopeId').trigger('change');
 	 //$('#locaionsId1').multiselect({ noneSelectedText:"Select"});
 	 $('.reportType').change(function(){
+		 $('#percentDiv').hide();
 		 $('#test,#matridLeadId,#matrixWonSummaryId,#matrixLeadSummaryId,#marginAnalysis1,#constituencyResultsDiv').html('');
 	 });
 
