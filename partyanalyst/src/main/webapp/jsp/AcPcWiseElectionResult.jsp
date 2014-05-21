@@ -2108,7 +2108,22 @@ var stateType = '';
 			popupContent +=' <ol class="timeline-list"> ';
 			popupContent +=' <li class="timeline-point is-standard" data-when="future"> ';
 			popupContent +=' <article class="results-group">';
-		popupContent +=' <header class="results-header" style="width: 515px;margin-top:-25px;">';
+			for(var i in electionAcData)
+			{
+				if(feature.properties.ac == electionAcData[i].hamletId)
+				{
+			if(i>0){
+				popupContent +=' <span style="font-size: 12px;"> <span style="font-size:16px;font-weight:bold;">  Won Party: '+electionAcData[i].selectedCasteDetails[0].name+' ';
+			
+				var leadby = electionAcData[i].selectedCasteDetails[0].count - electionAcData[i].selectedCasteDetails[1].count;
+				popupContent +=' <span style="margin-left:235px;"> Won By :  '+leadby+' Votes</span>';
+	
+			}
+			
+			}
+		}
+		
+		popupContent +=' <header class="results-header" style="width: 515px;">';
 		popupContent +=' </header>';
 
 			popupContent +=' <table class="table">';
@@ -2116,7 +2131,7 @@ var stateType = '';
 		popupContent +=' <tr>';
 		popupContent +='<th> Candidate Name </th>';
 		popupContent +='<th> Party </td>';
-		popupContent +='<th> Votes Percentage  </th>';
+		popupContent +='<th> Votes Percentage </th>';
 		popupContent +='<th> Gained Votes </th>';
 		popupContent +=' </tr">';
 			popupContent +=' </thead>';
@@ -2211,14 +2226,14 @@ popupContent +=' </table>';
 			
 			layer.bindLabel(feature.properties.ac_name, {noHide:true});
 			layer.on('click', function(e) {
-				onClickForMap(popupContent,feature.properties.ac_name+' Assembly Constituency ',999);
+				onClickForMap(popupContent,feature.properties.ac_name+' Assembly Constituency ');
 			});
 		}
 			
 		
 	}
 	
-	function onClickForMap(popupContent,name,id)
+	function onClickForMap(popupContent,name)
 	{
 		$('#popupDiv').html(popupContent);
 		$('#popupDiv').dialog(
@@ -2241,9 +2256,23 @@ popupContent +=' </table>';
 			popupContent +=' <ol class="timeline-list"> ';
 			popupContent +=' <li class="timeline-point is-standard" data-when="future"> ';
 			popupContent +=' <article class="results-group">';
-			popupContent +=' <header class="results-header" style="width: 515px;margin-top:-25px;">';
-			popupContent +=' </header>';
-			popupContent +=' </header>';
+			
+			for(var i in electionPcData)
+			{
+				if(feature.properties.pc_name == electionPcData[i].name)
+				{
+					if(electionPcData[i].selectedCasteDetails[0] != undefined){
+					popupContent +=' <span style="font-size: 12px;"> <span style="font-size:16px;font-weight:bold;">  Won Party: '+electionPcData[i].selectedCasteDetails[0].name+' ';					
+					
+					var leadby = electionPcData[i].selectedCasteDetails[0].count - electionPcData[i].selectedCasteDetails[1].count;
+					popupContent +=' <span style="margin-left:235px;"> Won By :  '+leadby+' Votes</span>';
+					break;					
+					}
+			}
+		}
+		
+		popupContent +=' <header class="results-header" style="width: 515px;">';
+		popupContent +=' </header>';
 
 		popupContent +=' <table class="table">';
 			
@@ -2351,7 +2380,7 @@ popupContent +=' </table>';
 			
 			//layer.bindLabel(feature.properties.ac_name, {noHide:true});
 			layer.on('click', function(e) {
-			onClickForMap(popupContent,feature.properties.pc_name+' Parliament Constituency ',888);
+			onClickForMap(popupContent,feature.properties.pc_name+' Parliament Constituency ');
 			});
 	}
 	
@@ -2435,7 +2464,22 @@ popupContent +=' </table>';
 		popupContent +=' <li class="timeline-point is-standard" data-when="future"> ';
 		popupContent +=' <article class="results-group">';
 		
-		popupContent +=' <header class="results-header" style="width: 515px;margin-top:-25px;">';
+		for(var i in electionPcData)
+		{	
+			if(feature.properties.pc == electionPcData[i].hamletId)
+			{
+			if(i>0){
+				popupContent +=' <span style="font-size: 12px;"> <span style="font-size:16px;font-weight:bold;">  Won Party: '+electionPcData[i].selectedCasteDetails[0].name+' ';
+			
+				var leadby = electionPcData[i].selectedCasteDetails[0].count - electionPcData[i].selectedCasteDetails[1].count;
+				popupContent +=' <span style="margin-left:235px;"> Won By :  '+leadby+' Votes</span>';
+	
+			}
+			
+			}
+		}
+		
+		popupContent +=' <header class="results-header" style="width: 515px;">';
 		popupContent +=' </header>';
 		popupContent +=' <table class="table">';
 			
@@ -2443,7 +2487,7 @@ popupContent +=' </table>';
 		popupContent +=' <tr>';
 		popupContent +='<th> Candidate Name </th>';
 		popupContent +='<th> Party </td>';
-		popupContent +='<th> Votes Percentage  </th>';
+		popupContent +='<th> Votes Percentage </th>';
 		popupContent +='<th> Gained Votes </th>';
 		popupContent +=' </tr">';
 			popupContent +=' </thead>';
@@ -2532,7 +2576,7 @@ popupContent +=' </table>';
 		layer.bindLabel(feature.properties.FIRST_pc_n, {noHide:false});
 		
 		layer.on('click', function(e) {
-				onClickForMap(popupContent,feature.properties.FIRST_pc_n+' Parliament Constituency ',777);
+				onClickForMap(popupContent,feature.properties.FIRST_pc_n+' Parliament Constituency ');
 		});
 	}
 	
@@ -2632,7 +2676,7 @@ popupContent +=' </table>';
 			weight: 1,
 			opacity: 0.6,
 			fillOpacity: 0.65,
-			fillColor: '#ff66cc'
+			fillColor: '#FF66CC' 
 			});
 			//layer.bindPopup(popupContent);
 		}
@@ -2665,7 +2709,7 @@ popupContent +=' </table>';
 			weight: 1,
 			opacity: 0.6,
 			fillOpacity: 0.65,
-			fillColor: '#cc0000'
+			fillColor: '#CC0000'
 			});
 			//layer.bindPopup(popupContent);
 		}
@@ -2676,7 +2720,7 @@ popupContent +=' </table>';
 			weight: 1,
 			opacity: 0.6,
 			fillOpacity: 0.65,
-			fillColor: '#0066ff'
+			fillColor: '#0066FF'
 			});
 			//layer.bindPopup(popupContent);
 		}
@@ -2698,7 +2742,7 @@ popupContent +=' </table>';
 			weight: 1,
 			opacity: 0.6,
 			fillOpacity: 0.65,
-			fillColor: '#00CED1'
+			fillColor: '#99FF66'
 			});
 			//layer.bindPopup(popupContent);
 		}
