@@ -206,4 +206,86 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 		return Action.SUCCESS;
 	}
 
+	public String filterAndGetElectionResults()
+	{
+		try
+		{
+			LOG.debug("Entered Into getElectionResults method in AcPcWiseElectionResultAction Action");
+			session = request.getSession();
+			RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
+			if (registrationVO != null) 
+			{
+				if (!registrationVO.getIsAdmin().equals("true"))
+					  return ERROR;
+			} 
+			else
+				return ERROR;
+			
+			jObj = new JSONObject(getTask());
+						
+			JSONArray parties = jObj.getJSONArray("parties");
+			List<Long> partyIds = new ArrayList<Long>();
+			for(int i = 0 ; i < parties.length() ; i++)
+			{
+				partyIds.add(new Long(parties.get(i).toString()));
+			}
+			
+			JSONArray regions = jObj.getJSONArray("regionIds");
+			List<Long> regionsIds = new ArrayList<Long>();
+			for(int i = 0 ; i < regions.length() ; i++)
+			{
+				regionsIds.add(new Long(regions.get(i).toString()));
+			}
+			
+			resultList = acPcWiseElectionResultService.filterToGetPartyWiseComperassionResult(jObj.getLong("stateId"),jObj.getLong("electionId"),partyIds,jObj.getLong("electionScopeId"),jObj.getString("scope"),regionsIds);
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception Raised In getElectionResults method in AcPcWiseElectionResultAction Action", e);
+			return Action.ERROR;
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String searchAndGetElectionResults()
+	{
+		try
+		{
+			LOG.debug("Entered Into getElectionResults method in AcPcWiseElectionResultAction Action");
+			session = request.getSession();
+			RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
+			if (registrationVO != null) 
+			{
+				if (!registrationVO.getIsAdmin().equals("true"))
+					  return ERROR;
+			} 
+			else
+				return ERROR;
+			
+			jObj = new JSONObject(getTask());
+						
+			JSONArray parties = jObj.getJSONArray("parties");
+			List<Long> partyIds = new ArrayList<Long>();
+			for(int i = 0 ; i < parties.length() ; i++)
+			{
+				partyIds.add(new Long(parties.get(i).toString()));
+			}
+			
+			JSONArray regions = jObj.getJSONArray("regionIds");
+			List<Long> regionsIds = new ArrayList<Long>();
+			for(int i = 0 ; i < regions.length() ; i++)
+			{
+				regionsIds.add(new Long(regions.get(i).toString()));
+			}
+			String searchName  = jObj.getString("searchName");
+			resultList = acPcWiseElectionResultService.searchPartyWiseComparissionResult(jObj.getLong("stateId"),jObj.getLong("electionId"),partyIds,jObj.getLong("electionScopeId"),jObj.getString("scope"),regionsIds,searchName);
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception Raised In getElectionResults method in AcPcWiseElectionResultAction Action", e);
+			return Action.ERROR;
+		}
+		return Action.SUCCESS;
+	}
+	
 }
