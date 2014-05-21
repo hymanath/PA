@@ -207,6 +207,14 @@ padding: 4px;
 	#unemp_chart1,#unemp_chart{
 	  margin-top:15px;
 	}
+	.tableClass2  table {border: 3px solid #B6D9E9}
+	.tableClass2  thead th,.tableClass2  thead tr,.tableClass2  tbody tr,.tableClass2  tbody td {
+		border: 2px solid #B6D9E9;
+		font-weight:bold;
+		font-size:13px;
+		border-left:2px solid #c3c3c3;
+	}
+	
 </style>
 <script src="js/apac.js"></script> 
 <script src="js/tgac.js"></script>
@@ -293,6 +301,8 @@ $('document').ready(function(){
 	 $('#scopeId').change(function(){
 		// console.log(this);
 		 $('#rgntxt').text("Select "+$('#scopeId  :selected').text());
+		 
+		 checkForPartyShareReport();
 	 });
 	 
 	 $('#legend').show();
@@ -698,7 +708,12 @@ function showSelectedReport()
 
     if($('#scopeId').val() == 5)
 	{
-		getConstituencyWiseResults();
+		var val= $('input[name="inrReport"]:checked').val();
+		if(val == "Party Report"){
+			getParyWiseVotesShare();
+		}else{
+			getConstituencyWiseResults();
+		}
 
 	}
 	else
@@ -1338,10 +1353,10 @@ function getConstituencyWiseResults()
 					<td> - </td>
 				</tr>
 				<tr>
-					<td>India TV</td>
-					<td>289</td>
-					<td>101</td>
-					<td> - </td>
+					<td style='border-bottom:1px solid #B0BDDA;'>India TV</td>
+					<td style='border-bottom:1px solid #B0BDDA;'>289</td>
+					<td style='border-bottom:1px solid #B0BDDA;'>101</td>
+					<td style='border-bottom:1px solid #B0BDDA;'> - </td>
 				</tr>
 			</tbody>
 		</table>
@@ -1415,6 +1430,18 @@ function getConstituencyWiseResults()
 </label>
 
 </div>
+
+<div  class="offset1 inrReportDivCls" style="clear:both;display:none;">
+	<label class="radio inline">
+		<input type="radio" class="inrRprtType" id="mainReportId" value="Main Report" name="inrReport" checked="true" style="margin-top:-5px;"><span>Main Report</span>
+	</label>
+
+	<label class="radio inline">
+		<input type="radio" class="inrRprtType" id="partyReportId" value="Party Report" name="inrReport"  style="margin-top:-5px;"><span>Party Report</span>
+	</label>
+</div>
+
+<div  class="offset1 parties" style="clear:both;"></div>
   
 					<div class="offset1" style="margin-top:20px;">
 
@@ -1453,7 +1480,7 @@ function getConstituencyWiseResults()
 
 </div>
 
-					<div id="errorDiv" style="font-weight:bold;color:red;"></div>
+					<div id="errorDiv" class="offset1" style="font-weight:bold;color:red;"></div>
 
 
     <div class="offset1" id="summaryDiv" style="margin-top:20px;">
@@ -1501,7 +1528,7 @@ function getConstituencyWiseResults()
   <img id="stateAjaxImg4" src="./images/icons/barloader.gif" alt="Processing Image" style=" display: none; margin-left: 600px;padding-bottom: 10px;" />
  <div id="weathermap4"> </div>
  <img id="stateAjaxImg5" src="./images/icons/barloader.gif" alt="Processing Image" style=" display: none; margin-left: 600px;padding-bottom: 10px;" />
-  <div id="weathermap5"> </div>
+  <div id="weathermap5" class="offset2"> </div>
 <!-- SAMBA END -->
 
  <div id="processingDialogue"></div>
@@ -2371,7 +2398,7 @@ popupContent +=' </table>';
 								}
 								else
 								{
-								partyName = electionPcData[i].selectedCasteDetails[0].name;
+								partyName = electionPcData[i].selectedCasteDetails[0].aliancedWith;
 								fillColour(partyName,layer,popupContent);
 							}
 
@@ -2399,7 +2426,7 @@ popupContent +=' </table>';
 				popupContent += feature.properties.popupContent;
 			}			 
 			
-			//layer.bindLabel(feature.properties.ac_name, {noHide:true});
+			layer.bindLabel(feature.properties.pc_name, {noHide:true});
 			layer.on('click', function(e) {
 			onClickForMap(popupContent,feature.properties.pc_name+' Parliament Constituency ');
 			});
@@ -2769,6 +2796,39 @@ popupContent +=' </table>';
 			opacity: 0.6,
 			fillOpacity: 0.65,
 			fillColor: '#99FF66'
+			});
+			//layer.bindPopup(popupContent);
+		}
+		else if (partyName == 'NDA')
+		{
+			layer.setStyle({
+			color: '#000000', 
+			weight: 1,
+			opacity: 0.6,
+			fillOpacity: 0.65,
+			fillColor: '#934500'
+			});
+			//layer.bindPopup(popupContent);
+		}
+		else if (partyName == 'UPA')
+		{
+			layer.setStyle({
+			color: '#000000', 
+			weight: 1,
+			opacity: 0.6,
+			fillOpacity: 0.65,
+			fillColor: '#004276'
+			});
+			//layer.bindPopup(popupContent);
+		}
+		else if (partyName == 'OTHERS')
+		{
+			layer.setStyle({
+			color: '#000000', 
+			weight: 1,
+			opacity: 0.6,
+			fillOpacity: 0.65,
+			fillColor: '#7C7C00'
 			});
 			//layer.bindPopup(popupContent);
 		}
@@ -3157,7 +3217,7 @@ function getRegionWiseResults(searchType)
 	{
 
 		areatype = "indpc";
-		document.getElementById('weathermap5').innerHTML = "<div id='map5'   style='height: 900px; border: 1px solid rgb(51, 51, 51); border-radius: 10px; position: relative; background: none repeat scroll 0% 0% rgb(255, 255, 255);width:956px;margin-top:20px;'></div>"
+		document.getElementById('weathermap5').innerHTML = "<h2 class='offset3'> 2014 Parliament Election Result Overview </h2><img class='offset4' src='images/specialPage/parlicolorcodes.png'> <div id='map5'   style='height: 900px; border: 1px solid rgb(51, 51, 51); border-radius: 10px; position: relative; background: none repeat scroll 0% 0% rgb(255, 255, 255);width:956px;margin-top:20px;'></div>"
 		map5 = L.map('map5', {
 		center: [20.0000,81.0000],
 		zoom: 5
@@ -3467,31 +3527,31 @@ function getRegionWiseResults(searchType)
 	function buildPartyWideWonLeadCount(results){
 	if(results.statesList.length>0){
 	var str = "";
-		str += "<h2 class='offset3' style='margin-bottom:5px;margin-top:10px;color:#27AFA6;'>Party Wise Won/Lead Counts</h2>";
-		str +="<table class='parlResultTable offset2' width='500' cellspacing='0' cellpadding='2' border='0'>";
+		str += "<h2 class='offset2' style='margin-bottom:5px;margin-top:10px;color:#27AFA6;'>Party Wise Won/Lead Counts</h2>";
+		str +="<table class='parlResultTable offset1' width='500' cellspacing='0' cellpadding='2' border='0'>";
 		str +="<tbody style='font-family: Tahoma;font-size: 12px;'>";
-			str+="<tr style='font-weight:bold;color:black;vertical-align:bottom;border-bottom:1px solid #B0BDDA;'>";
-				str+="<td style='border-bottom:1px solid #B0BDDA;'> PARTY </td>";
-				str+="<td style='border-bottom:1px solid #B0BDDA;'> ALLIANCE </td>";
-				str+="<td style='border-bottom:1px solid #B0BDDA;'> WON </td>";
-				str+="<td style='border-bottom:1px solid #B0BDDA;'> LEAD </td>";
+			str+="<tr style='font-weight:bold;color:black;vertical-align:bottom;border-bottom:1px solid #004276;'>";
+				str+="<td style='border-bottom:1px solid #004276;'> PARTY </td>";
+				str+="<td style='border-bottom:1px solid #004276;'> ALLIANCE </td>";
+				str+="<td style='border-bottom:1px solid #004276;'> WON </td>";
+				<!--str+="<td style='border-bottom:1px solid #004276;'> LEAD </td>";-->
 			str+="</tr>";
 			for(var i in results.statesList){
 				str+="<tr class='bodyRows' style='color:black;'>";
 					var path = "images/party_flags/"+results.statesList[i].party+"01.jpg";
 					
-					str+="<td style='border-bottom:1px solid #B0BDDA;height:25px;'><img src="+path+" alt="+results.statesList[i].party+"></td>";
-					str+="<td style='border-bottom:1px solid #B0BDDA;'>"+results.statesList[i].allianceGroup+"</td>";
+					str+="<td style='border-bottom:1px solid #004276;height:25px;'><img src="+path+" alt="+results.statesList[i].party+"></td>";
+					str+="<td style='border-bottom:1px solid #004276;'>"+results.statesList[i].allianceGroup+"</td>";
 					if(results.statesList[i].partyWonCount == null){
-						str+="<td style='border-bottom:1px solid #B0BDDA;'> - </td>";
+						str+="<td style='border-bottom:1px solid #004276;'> - </td>";
 					}else{
-						str+="<td style='border-bottom:1px solid #B0BDDA;'>"+results.statesList[i].partyWonCount+"</td>";
+						str+="<td style='border-bottom:1px solid #004276;'>"+results.statesList[i].partyWonCount+"</td>";
 					}
-					if(results.statesList[i].partyLeadCount == null){
-						str+="<td style='border-bottom:1px solid #B0BDDA;'> - </td>";
+					/*if(results.statesList[i].partyLeadCount == null){
+						str+="<td style='border-bottom:1px solid #004276;'> - </td>";
 					}else{
-						str+="<td style='border-bottom:1px solid #B0BDDA;'>"+results.statesList[i].partyLeadCount+"</td>";
-					}
+						str+="<td style='border-bottom:1px solid #004276;'>"+results.statesList[i].partyLeadCount+"</td>";
+					}*/
 				str+="</tr>";
 			}
 			
@@ -3509,37 +3569,37 @@ function buildStateWideParliaments(results){
 		str +="<tbody style='font-family: Tahoma;font-size: 12px;'>";
 			str +="<tr>";
 			str +="</tr>";
-			str +="<tr><td bgcolor='#AACAEA' style='padding: 0px;' colspan='14'><img width='1' height='1' src='images/specialPage/spacer.gif'></td></tr>";
+			str +="<tr><td bgcolor='#AACAEA' style='padding: 0px;' colspan='14'></td></tr>";
 			str +="<tr>";
-				str +="<td rowspan='3' style='font-weight:bold;color:black;vertical-align:bottom;border-bottom:1px solid #B0BDDA;'>STATE</td>";
-				str +="<td rowspan='3' align='center' style='font-weight:bold;color:black;vertical-align:bottom;border-bottom:1px solid #B0BDDA;'>TOTAL</td>";
-				str +="<td colspan='6' style='font-weight:bold;color:black;text-align:center;border-bottom:1px solid #B0BDDA;'>2014</td>";
+				str +="<td rowspan='3' style='font-weight:bold;color:black;vertical-align:bottom;border-bottom:1px solid #004276;'>STATE</td>";
+				str +="<td rowspan='3' align='center' style='font-weight:bold;color:black;vertical-align:bottom;border-bottom:1px solid #004276;'>TOTAL</td>";
+				str +="<td colspan='6' style='font-weight:bold;color:black;text-align:center;border-bottom:1px solid #004276;border-bottom-width:1px;'>2014</td>";
 				str +="<td width='4%'> </td>";
-				str +="<td colspan='4' style='font-weight:bold;color:black;text-align:center;border-bottom:1px solid #B0BDDA'>2009</td>";
+				str +="<td colspan='4' style='font-weight:bold;color:black;text-align:center;border-bottom:1px solid #004276;border-bottom-width:1px;'>2009</td>";
 			str +="</tr>";
 			
 			
 			str +="<tr>";
 				
-				str +="<td colspan='2' align='center' style='font-weight:bold;color:black;border-bottom:1px solid #B0BDDA;background:#f2be8e;'>NDA</td>";
-				str +="<td colspan='2' align='center' style='font-weight:bold;color:black;border-bottom:1px solid #B0BDDA;background:#8dbfa0;'>UPA</td>";
-				str +="<td colspan='2' align='center' style='font-weight:bold;color:black;border-bottom:1px solid #B0BDDA;background:#f4f4a4'>OTHERS</td>";
+				str +="<td colspan='2' align='center' style='font-weight:bold;color:black;border-bottom:1px solid #004276;background:#f2be8e;border-right:1px solid #934500;border-right-width:2px;border-left:1px solid #934500;border-left-width:2px;'>NDA</td>";
+				str +="<td colspan='2' align='center' style='font-weight:bold;color:black;border-bottom:1px solid #004276;background:#8dbfa0;'>UPA</td>";
+				str +="<td colspan='2' align='center' style='font-weight:bold;color:black;border-bottom:1px solid #004276;background:#f4f4a4;border-right:1px solid #7c7c00;border-right-width:2px;border-left:1px solid #7c7c00;border-left-width:2px;'>OTHERS</td>";
 				str +="<td width='4%'> </td>";
-				str +="<td  align='center' style='font-weight:bold;color:black;border-bottom:1px solid #B0BDDA;background:#f2be8e;'>NDA</td>";
-				str +="<td  align='center' style='font-weight:bold;color:black;border-bottom:1px solid #B0BDDA;background:#8dbfa0'>UPA</td>";
-				str +="<td  align='center' style='font-weight:bold;color:black;border-bottom:1px solid #B0BDDA ;background:#f4f4a4'>OTHERS</td>";
+				str +="<td  align='center' style='font-weight:bold;color:black;border-bottom:1px solid #004276;border-left:1px solid #934500;border-left-width:2px;border-right:1px solid #934500;border-right-width:2px;background:#f2be8e;'>NDA</td>";
+				str +="<td  align='center' style='font-weight:bold;color:black;border-bottom:1px solid #004276;background:#8dbfa0'>UPA</td>";
+				str +="<td  align='center' style='font-weight:bold;color:black;border-bottom:1px solid #004276;background:#f4f4a4;border-right:1px solid #7c7c00;border-right-width:2px;border-left:1px solid #7c7c00;border-left-width:2px;'>OTHERS</td>";
 			str +="</tr>";
 			str +="<tr style='color:black;'>";
-				str +="<td align='right' style='background:#f2be8e;border-bottom:1px solid #B0BDDA;'>WON</td>";
-				str +="<td align='right' style='background:#f2be8e;border-bottom:1px solid #B0BDDA;'>LEAD</td>";
-				str +="<td align='right' style='background:#8dbfa0;border-bottom:1px solid #B0BDDA;'>WON</td>";
-				str +="<td align='right' style='background:#8dbfa0;border-bottom:1px solid #B0BDDA;'>LEAD</td>";
-				str +="<td align='right' style='background:#f4f4a4;border-bottom:1px solid #B0BDDA;'>WON</td>";
-				str +="<td align='right' style='background:#f4f4a4;border-bottom:1px solid #B0BDDA;'>LEAD</td>";
+				str +="<td align='right' style='background:#f2be8e;border-bottom:1px solid #004276;border-left:1px solid #934500;border-left-width:2px;'>WON</td>";
+				str +="<td align='right' style='background:#f2be8e;border-bottom:1px solid #004276;border-right:1px solid #934500;border-right-width:2px;'>LEAD</td>";
+				str +="<td align='right' style='background:#8dbfa0;border-bottom:1px solid #004276;'>WON</td>";
+				str +="<td align='right' style='background:#8dbfa0;border-bottom:1px solid #004276;'>LEAD</td>";
+				str +="<td align='right' style='background:#f4f4a4;border-bottom:1px solid #004276;border-left:1px solid #7c7c00;border-left-width:2px;'>WON</td>";
+				str +="<td align='right' style='background:#f4f4a4;border-bottom:1px solid #004276;border-right:1px solid #7c7c00;border-right-width:2px;'>LEAD</td>";
 				str +="<td width='4%'> </td>";
-				str +="<td align='right' style='background:#f2be8e;border-bottom:1px solid #B0BDDA;'>WON</td>";
-				str +="<td align='right' style='background:#8dbfa0;border-bottom:1px solid #B0BDDA;'>WON</td>";
-				str +="<td align='right' style='background:#f4f4a4;border-bottom:1px solid #B0BDDA;'>WON</td>";
+				str +="<td align='right' style='background:#f2be8e;border-bottom:1px solid #004276;border-right-width:2px;border-left:1px solid #934500;border-left-width:2px;border-right:1px solid #934500;border-right-width:2px;'>WON</td>";
+				str +="<td align='right' style='background:#8dbfa0;border-bottom:1px solid #004276;'>WON</td>";
+				str +="<td align='right' style='background:#f4f4a4;border-bottom:1px solid #004276;border-right:1px solid #7c7c00;border-right-width:2px;border-left:1px solid #7c7c00;border-left-width:2px;'>WON</td>";
 			str +="</tr>";
 			
 		
@@ -3547,59 +3607,59 @@ function buildStateWideParliaments(results){
 			for(var i in results.statesList){
 				
 			str +="<tr class='bodyRows' style='color:black;'>";
-				str +="<td align='left' style='color:#000066'>"+results.statesList[i].state+"</td>";
-				str +="<td align='center' >"+results.statesList[i].statesTotalCount+"</td>";
+				str +="<td align='left' style='color:#000066;border-bottom:1px solid #004276;border-bottom-width:1px;'>"+results.statesList[i].state+"</td>";
+				str +="<td align='center' style='border-bottom:1px solid #004276;border-bottom-width:1px;' >"+results.statesList[i].statesTotalCount+"</td>";
 				if(results.statesList[i].ndaWonCount !=  null){
-					str +="<td align='right' style='background:#f2be8e'>"+results.statesList[i].ndaWonCount+"</td>";
+					str +="<td align='right' style='background:#f2be8e;border-left:1px solid #934500;border-left-width:2px;border-bottom:1px solid #004276;border-bottom-width:1px;'>"+results.statesList[i].ndaWonCount+"</td>";
 				}else{
-					str +="<td align='right' style='background:#f2be8e'> 0 </td>";
+					str +="<td align='right' style='background:#f2be8e;border-left:1px solid #934500;border-left-width:2px;border-bottom:1px solid #004276;border-bottom-width:1px;'> 0 </td>";
 				}
 				if(results.statesList[i].ndaLeadCount !=  null){
-					str +="<td align='right' style='background:#f2be8e'>"+results.statesList[i].ndaLeadCount+"</td>";
+					str +="<td align='right' style='background:#f2be8e;border-right:1px solid #934500;border-right-width:2px;border-bottom:1px solid #004276;border-bottom-width:1px;'>"+results.statesList[i].ndaLeadCount+"</td>";
 				}else{
-					str +="<td align='right' style='background:#f2be8e'> 0 </td>";
+					str +="<td align='right' style='background:#f2be8e;border-right:1px solid #934500;border-right-width:2px;border-bottom:1px solid #004276;border-bottom-width:1px;'> 0 </td>";
 				}
 				if(results.statesList[i].upaWonCount !=  null){
-					str +="<td align='right' style='background:#8dbfa0'>"+results.statesList[i].upaWonCount+"</td>";
+					str +="<td align='right' style='background:#8dbfa0;border-bottom:1px solid #004276;border-bottom-width:1px;'>"+results.statesList[i].upaWonCount+"</td>";
 				}else{
-					str +="<td align='right' style='background:#8dbfa0'> 0 </td>";
+					str +="<td align='right' style='background:#8dbfa0;border-bottom:1px solid #004276;border-bottom-width:1px;'> 0 </td>";
 				}
 				if(results.statesList[i].upaLeadCount !=  null){
-					str +="<td align='right' style='background:#8dbfa0'>"+results.statesList[i].upaLeadCount+"</td>";
+					str +="<td align='right' style='background:#8dbfa0;border-bottom:1px solid #004276;border-bottom-width:1px;'>"+results.statesList[i].upaLeadCount+"</td>";
 				}else{
-					str +="<td align='right' style='background:#8dbfa0'> 0 </td>";
+					str +="<td align='right' style='background:#8dbfa0;border-bottom:1px solid #004276;border-bottom-width:1px;'> 0 </td>";
 				}
 				
 				if(results.statesList[i].othersWonCount !=  null){
-					str +="<td align='right' style='background:#f4f4a4'>"+results.statesList[i].othersWonCount+"</td>";
+					str +="<td align='right' style='background:#f4f4a4;border-left:1px solid #7c7c00;border-left-width:2px;border-bottom:1px solid #004276;border-bottom-width:1px;'>"+results.statesList[i].othersWonCount+"</td>";
 				}else{
-					str +="<td align='right' style='background:#f4f4a4'> 0 </td>";
+					str +="<td align='right' style='background:#f4f4a4;border-left:1px solid #7c7c00;border-left-width:2px;border-bottom:1px solid #004276;border-bottom-width:1px;'> 0 </td>";
 				}
 				
 				if(results.statesList[i].othersLeadCount !=  null){
-					str +="<td align='right' style='background:#f4f4a4'>"+results.statesList[i].othersLeadCount+"</td>";
+					str +="<td align='right' style='background:#f4f4a4;border-right:1px solid #7c7c00;border-right-width:2px;border-bottom:1px solid #004276;border-bottom-width:1px;'>"+results.statesList[i].othersLeadCount+"</td>";
 				}else{
-					str +="<td align='right' style='background:#f4f4a4'> 0 </td>";
+					str +="<td align='right' style='background:#f4f4a4;border-right:1px solid #7c7c00;border-right-width:2px;border-bottom:1px solid #004276;border-bottom-width:1px;'> 0 </td>";
 				}
 				
 				str +="<td width='4%'> </td>";
 				
 				if(results.statesList[i].ndaAlliancesCount !=  null){
-					str +="<td align='right' style='background:#f2be8e'>"+results.statesList[i].ndaAlliancesCount+"</td>";
+					str +="<td align='right' style='background:#f2be8e;border-left:1px solid #934500;border-left-width:2px;border-right:1px solid #934500;border-right-width:2px;border-bottom:1px solid #004276;border-bottom-width:1px;'>"+results.statesList[i].ndaAlliancesCount+"</td>";
 				}else{
-					str +="<td align='right' style='background:#f2be8e'> 0 </td>";
+					str +="<td align='right' style='background:#f2be8e;border-left:1px solid #934500;;border-left-width:2px;border-right:1px solid #934500;border-right-width:2px;border-bottom:1px solid #004276;border-bottom-width:1px;'> 0 </td>";
 				}
 				
 				if(results.statesList[i].upaAlliancesCount !=  null){
-					str +="<td align='right' style='background:#8dbfa0'>"+results.statesList[i].upaAlliancesCount+"</td>";
+					str +="<td align='right' style='background:#8dbfa0;border-bottom:1px solid #004276;border-bottom-width:1px;'>"+results.statesList[i].upaAlliancesCount+"</td>";
 				}else{
-					str +="<td align='right' style='background:#8dbfa0'> 0 </td>";
+					str +="<td align='right' style='background:#8dbfa0;border-bottom:1px solid #004276;border-bottom-width:1px;'> 0 </td>";
 				}
 				
 				if(results.statesList[i].othersCount !=  null){
-					str +="<td align='right' style='background:#f4f4a4'>"+results.statesList[i].othersCount+"</td>";
+					str +="<td align='right' style='background:#f4f4a4;border-right:1px solid #7c7c00;border-right-width:2px;border-left:1px solid #7c7c00;border-left-width:2px;border-bottom:1px solid #004276;border-bottom-width:1px;'>"+results.statesList[i].othersCount+"</td>";
 				}else{
-					str +="<td align='right' style='background:#f4f4a4'> 0 </td>";
+					str +="<td align='right' style='background:#f4f4a4;border-right:1px solid #7c7c00;border-right-width:2px;border-left:1px solid #7c7c00;border-left-width:2px;border-bottom:1px solid #004276;border-bottom-width:1px;'> 0 </td>";
 				}
 			str +="</tr>";
 			
@@ -3937,7 +3997,7 @@ else if(scope == 5)
 					popupContent +=' <span style="font-size: 12px;"> <span style="font-size:16px;font-weight:bold;">  Won Party: '+result.selectedCasteDetails[0].name+' ';
 					var leadby = result.selectedCasteDetails[0].count - result.selectedCasteDetails[1].count;
 					popupContent +=' <span style="margin-left:300px;"> Won By :  '+leadby+' Votes</span>';
-					popupContent +=' <header class="results-header" style="width: 750px; border-bottom-color: #004276;border-bottom-width: 2px;">';
+					popupContent +=' <header class="results-header" style="width: 750px; border-bottom-color: #004276;border-bottom-width:1px;">';
 					popupContent +=' </header>';
 					popupContent +=' <div style="overflow:scroll;height:200px;">';	
 							popupContent +=' <table class="results-table" style="font-weight:bold;font-family:Arial,sans-serif">';
@@ -4239,6 +4299,161 @@ $('.ui-dialog').css({left:378 ,width:512});
 $('#processingDialogue').closest('.ui-icon').css("display","none");
  $("#processingDialogue").dialog('open').html("<img src='images/ajaxImg2.gif' id='mainajaximg' style='width:40px;'/>");
  $("#mainajaximg").attr("style","width:40px;margin-top:"+$(window).height()/2+"px");
+}
+
+$(".matrixRprt").click(function() { 
+		checkForPartyShareReport();
+	});
+	
+	
+	function checkForPartyShareReport(){
+		var val= $('input[name="report"]:checked').val();
+		var scope = $("#scopeId").val();
+		
+		if(val=="Matrix Report" && scope ==5){
+			$(".inrReportDivCls").css("display","block");
+		}else{
+			$(".inrReportDivCls").css("display","none");
+		}
+	}
+	
+	$("#partyReportId").click(function(){
+		if($('#locaionsId1').val() == null){
+			$("#errorDiv").html("Please Select Constituencies");
+		}
+	});
+	
+	$(".inrRprtType").click(function() { 
+		var val= $('input[name="inrReport"]:checked').val();
+		var scope = $("#scopeId").val();
+		if(scope == 5 && val == "Party Report"){
+			$(".parties").css("display","block");
+		}else{
+			$(".parties").css("display","none");
+		}
+	});
+	
+	$("#electionId").change(function(){
+		$("#errorDiv").html("");
+		getPartiesInConsituenciesOfElection();
+	});
+	
+	
+
+$("#locaionsId1").change(function(){
+	var val= $('input[name="inrReport"]:checked').val();
+	if(val == "Party Report"){
+		getPartiesInConsituenciesOfElection();
+	}
+});
+
+$(".inrRprtType").live("click",function() { 
+	var val= $('input[name="inrReport"]:checked').val();
+	if(val == "Party Report"){
+		getPartiesInConsituenciesOfElection();
+	}
+});
+
+
+function getPartiesInConsituenciesOfElection(){
+	var constituencyDetails={electionId:"",constituencyIds:[]};
+	
+	constituencyDetails.electionId = $("#electionId").val();
+	constituencyDetails.constituencyIds = $("#locaionsId1").val();
+	
+$.ajax({
+          type:'POST',
+          url: 'getPartiesInConsituenciesOfElectionAction.action',
+          dataType: 'json',
+          data: {task:JSON.stringify(constituencyDetails)},
+     	  }).done(function(result){ 
+			if(result != null && result.length>0){
+				buildPartiesInConstituencies(result);
+			}else{
+				$("#errorDiv").html(" No Parties For Selected Constituencies");
+			}
+	   });
+}
+
+function buildPartiesInConstituencies(result){
+	$(".parties").html("");
+	var str = "";
+	str += "Select Parties  <select id='partiesId' style='width:250px;' multiple='true'>";
+		for(var i in result){
+			str +="<option value="+result[i].id+">"+result[i].name+"</option>";
+		}
+	str +="</select>";
+	
+	
+	
+	$(".parties").html(str);
+	
+}
+
+function getParyWiseVotesShare(){
+	$("#errorDiv").html("");
+	
+	var constituencyDetails={electionId:"",constituencyIds:[],partyIds:[]};
+	
+	constituencyDetails.electionId = $("#electionId").val();
+	constituencyDetails.constituencyIds = $("#locaionsId1").val();
+	constituencyDetails.partyIds = $("#partiesId").val();
+	
+	
+	if($("#partiesId").val() == null){
+		$("#errorDiv").html(" Please Select Parties");
+		$("#ajaxImage").hide();
+		return;
+	}
+	
+	
+	$.ajax({
+          type:'POST',
+          url: 'partysVotesShareInConstituenciesOfElection.action',
+          dataType: 'json',
+          data: {task:JSON.stringify(constituencyDetails)},
+     	  }).done(function(result){ 
+			  if(result != null){
+				buildPartyVotesShareTable(result);
+			}
+	   });
+}
+
+function buildPartyVotesShareTable(results){
+	$("#ajaxImage").hide();
+	$("#constituencyResultsDiv").html("");
+	var str = '';
+	str+= '<div class="tableClass2 offset1">'
+	str += '<table  class="table table-bordered table-striped">';
+		str +="<tbody>";
+		str +='<tr>';
+			str +='<td> A# </td>';
+			str +='<td> ASSEMBLY </td>';
+			str +='<td>Total Voters</td>';
+			str +='<td>Valid Votes</td>';
+			for(var i in results[0].partyResultVo){
+				str +='<td>'+results[0].partyResultVo[i].partyName+'</td>';
+			}
+		str +='</tr>';
+		for(var i in results){
+			str +='<tr>';
+			str +='<td>'+results[i].acNo+'</td>';
+			str +='<td>'+results[i].constituencyName+'</td>';
+			str +='<td>'+results[i].ttlVts+'</td>';
+			str +='<td>'+results[i].validVts+'</td>';
+			for(var j in results[i].partyResultVo){
+				if(results[i].partyResultVo[j].partyVotes!=null){
+					str +='<td>'+results[i].partyResultVo[j].partyVotes+'</td>';
+				}else{
+					str +='<td> - </td>';
+				}
+			}
+			str +='</tr>';
+		}
+		str +="</tbody>";
+	str += '</table>';
+	str += '</div>';
+	$("#constituencyResultsDiv").html(str);
 }
 
 </script>
