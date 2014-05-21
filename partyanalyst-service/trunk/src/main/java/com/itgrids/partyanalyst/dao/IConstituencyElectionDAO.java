@@ -184,5 +184,10 @@ public interface IConstituencyElectionDAO extends GenericDao<ConstituencyElectio
     public List<Long> getLatestConstituenciesByElectionIds(Long stateId,List<Long> elecIds);
     
     public List<Object[]> getZptcMptcResultsOfConstituency(List<Long> tehsilIds,List<Long> electionIds);
+    
+	public List<Object[]> getConstituenciesCountByReservationCategory(Long electionId,List<Long> locationIds,Long scopeId);
+	public List<Object[]> getTotalConstituenciesCountByConstituencyType(Long electionId,List<Long> locationIds,Long scopeId);
+
+
 
 }

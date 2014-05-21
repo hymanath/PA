@@ -4656,7 +4656,8 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			{
 				
 				queryString.append("select count(model.party.partyId),model.constituencyElection.constituency.state.stateId,model.constituencyElection.constituency.state.stateName," +
-						" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus ,model.constituencyElection.reservationZone " +
+						" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus ,model.constituencyElection.reservationZone," +
+						"sum(model.candidateResult.votesEarned),sum(model.constituencyElection.constituencyElectionResult.validVotes)" +
 						"from Nomination model  where " +
 						"model.constituencyElection.election.electionId = :electionId and " +
 						"model.constituencyElection.constituency.state.stateId in(:locationIds) and " +
@@ -4666,7 +4667,8 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			{
 				
 				queryString.append("select count(model.party.partyId),model.constituencyElection.constituency.district.districtId,model.constituencyElection.constituency.district.districtName," +
-						" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus ,model.constituencyElection.reservationZone " +
+						" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus ,model.constituencyElection.reservationZone, " +
+						"sum(model.candidateResult.votesEarned),sum(model.constituencyElection.constituencyElectionResult.validVotes)" +
 						"from Nomination model where " +
 						"model.constituencyElection.election.electionId = :electionId and " +
 						"model.constituencyElection.constituency.district.districtId in(:locationIds) and " +
@@ -4676,18 +4678,20 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			{
 				
 				queryString.append("select count(model.party.partyId),model2.stateRegion.stateRegionId,model2.stateRegion.regionName," +
-						" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus ,model.constituencyElection.reservationZone " +
+						" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus ,model.constituencyElection.reservationZone, " +
+						"sum(model.candidateResult.votesEarned),sum(model.constituencyElection.constituencyElectionResult.validVotes)" +
 						"from Nomination model ,StateRegionDistrict model2 where " +
 						"model.constituencyElection.constituency.district.districtId = model2.district.districtId and " +
 						"model.constituencyElection.election.electionId = :electionId and " +
 						"model2.stateRegion.stateRegionId in(:locationIds) and " +
-						"model.candidateResult.rank = 1" +
+						"model.candidateResult.rank = 1 " +
 						"group by model2.stateRegion.stateRegionId ,model.constituencyElection.reservationZone,model.party.partyId ,model.constituencyElection.countStatus ");
 			}else if(scopeId.longValue() == 4)//parliament
 			{
 				
 				queryString.append("select count(model.party.partyId),model2.delimitationConstituency.constituency.constituencyId,model2.delimitationConstituency.constituency.name," +
-						" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus,model.constituencyElection.reservationZone " +
+						" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus,model.constituencyElection.reservationZone, " +
+						"sum(model.candidateResult.votesEarned),sum(model.constituencyElection.constituencyElectionResult.validVotes)" +
 						"from Nomination model ,DelimitationConstituencyAssemblyDetails model2 where " +
 						"model.constituencyElection.election.electionId = :electionId and " +
 						"model.constituencyElection.constituency.constituencyId = model2.constituency.constituencyId and " +
@@ -4716,7 +4720,8 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			{
 				
 				queryString.append("select count(model.party.partyId),model.constituencyElection.constituency.state.stateId,model.constituencyElection.constituency.state.stateName," +
-						" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus,model.constituencyElection.constituency.areaType " +
+						" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus,model.constituencyElection.constituency.areaType, " +
+						"sum(model.candidateResult.votesEarned),sum(model.constituencyElection.constituencyElectionResult.validVotes)" +
 						"from Nomination model  where " +
 						"model.constituencyElection.election.electionId = :electionId and " +
 						"model.constituencyElection.constituency.state.stateId in(:locationIds) and " +
@@ -4726,7 +4731,8 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			{
 				
 				queryString.append("select count(model.party.partyId),model.constituencyElection.constituency.district.districtId,model.constituencyElection.constituency.district.districtName," +
-						" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus ,model.constituencyElection.constituency.areaType " +
+						" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus ,model.constituencyElection.constituency.areaType, " +
+						"sum(model.candidateResult.votesEarned),sum(model.constituencyElection.constituencyElectionResult.validVotes)" +
 						"from Nomination model where " +
 						"model.constituencyElection.election.electionId = :electionId and " +
 						"model.constituencyElection.constituency.district.districtId in(:locationIds) and " +
@@ -4736,7 +4742,8 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			{
 				
 				queryString.append("select count(model.party.partyId),model2.stateRegion.stateRegionId,model2.stateRegion.regionName," +
-						" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus,model.constituencyElection.constituency.areaType " +
+						" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus,model.constituencyElection.constituency.areaType, " +
+						"sum(model.candidateResult.votesEarned),sum(model.constituencyElection.constituencyElectionResult.validVotes)" +
 						"from Nomination model ,StateRegionDistrict model2 where " +
 						"model.constituencyElection.constituency.district.districtId = model2.district.districtId and " +
 						"model.constituencyElection.election.electionId = :electionId and " +
@@ -4747,7 +4754,8 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			{
 				
 				queryString.append("select count(model.party.partyId),model2.delimitationConstituency.constituency.constituencyId,model2.delimitationConstituency.constituency.name," +
-						" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus,model.constituencyElection.constituency.areaType  " +
+						" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus,model.constituencyElection.constituency.areaType,  " +
+						"sum(model.candidateResult.votesEarned),sum(model.constituencyElection.constituencyElectionResult.validVotes)" +
 						" from Nomination model ,DelimitationConstituencyAssemblyDetails model2 where " +
 						"model.constituencyElection.election.electionId = :electionId and " +
 						"model.constituencyElection.constituency.constituencyId = model2.constituency.constituencyId and " +
@@ -4792,9 +4800,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 					" model.party.shortName," +
 					" model1.constituencyNO," +
 					" model2.delimitationConstituency.constituency.name ," +
-					" model2.delimitationConstituency.constituencyNO," +
-					" model.constituencyElection.constituencyElectionResult.totalVotes," +
-					" model.constituencyElection.constituencyElectionResult.validVotes from " +
+					" model2.delimitationConstituency.constituencyNO from " +
 					" Nomination model , DelimitationConstituency model1 ,DelimitationConstituencyAssemblyDetails model2 " +
 					" where  model.constituencyElection.election.electionId = :electionId and model.candidateResult.rank in (1,2) and " +
 					"model.constituencyElection.constituency.constituencyId = model1.constituency.constituencyId and " +
@@ -4846,8 +4852,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			return query.list();
 
 			}
-		 
-		 	public List<Object[]> getPartysInfoForAParticularElectionYearInConsitutencies(Long electionId,List<Long> constituencyIds){
+		 public List<Object[]> getPartysInfoForAParticularElectionYearInConsitutencies(Long electionId,List<Long> constituencyIds){
 			 	Query query = getSession().createQuery("select model.party.shortName,model.party.partyId " +
 						" from Nomination model where model.constituencyElection.election.electionId = :electionId" +
 						" and model.constituencyElection.constituency.constituencyId in(:constituencyIds) " +
@@ -4857,8 +4862,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				query.setParameterList("constituencyIds", constituencyIds);
 				return query.list();
 			}
-		 	
-		 	public List<Object[]> partysVotesShareInConstituenciesOfElection(Long electionId,List<Long> constituencyIds,List<Long> partyIds){
+		 public List<Object[]> partysVotesShareInConstituenciesOfElection(Long electionId,List<Long> constituencyIds,List<Long> partyIds){
 		 		Query query = getSession().createQuery("select " +
 						" model.constituencyElection.constituency.constituencyId," + //0
 						" model.constituencyElection.constituency.name," +//1
@@ -4904,5 +4908,109 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				 return query.list();
 				 
 				}
+				public List<Object[]> getVoterShareByReservationCategory(Long electionId,List<Long> locationIds,Long scopeId)
+				{
+					StringBuffer queryString = new StringBuffer();
+					
+					
+					if(scopeId.longValue() == 2L) //district
+							queryString.append("select N.constituencyElection.reservationZone,N.party.partyId,N.party.shortName, " +
+									" sum(N.candidateResult.votesEarned)," +
+						 		    " sum(N.constituencyElection.constituencyElectionResult.validVotes) " +
+									" from Nomination N " +
+									"where " +
+									"N.constituencyElection.election.electionId =:electionId and " +
+									"N.candidateResult.rank = 1 and" +
+									"N.constituencyElection.constituency.district.districtId in(:locationIds) group by " +
+									"N.constituencyElection.reservationZone,N.party.partyId");
+					else if(scopeId.longValue() == 3L) //region
+						 queryString.append("select N.constituencyElection.reservationZone,N.party.partyId,N.party.shortName, " +
+								 	" sum(N.candidateResult.votesEarned)," +
+						 		    " sum(N.constituencyElection.constituencyElectionResult.validVotes) from " +
+						 		    "Nomination N , StateRegionDistrict SRD " +
+									"where " +
+									"N.constituencyElection.constituency.district.districtId  = SRD.district.districtId and " +
+									"SRD.stateRegion.stateRegionId in(:locationIds) and " +
+									"N.candidateResult.rank = 1 and " +
+									"N.constituencyElection.election.electionId = :electionId  group by " +
+									"N.constituencyElection.reservationZone,N.party.partyId");
+					else if(scopeId.longValue() == 4L) // parliament
+						 queryString.append("select N.constituencyElection.reservationZone,N.party.partyId,N.party.shortName," +
+						 		    "sum(N.candidateResult.votesEarned)," +
+						 		    " sum(N.constituencyElection.constituencyElectionResult.validVotes) from " +
+						 		    "Nomination N ,  DelimitationConstituencyAssemblyDetails DCA " +
+									"where " +
+									"CE.constituency.district.districtId  = DCA.constituency.constituencyId and " +
+									"N.constituencyElection..candidateResult.rank = 1 and " +
+									"DCA.delimitationConstituency.year = :delimitationYear and " +
+									"DCA.delimitationConstituency.constituency.constituencyId in(:locationIds) and " +
+									"N.constituencyElection.election.electionId = :electionId  group by " +
+									"N.constituencyElection.reservationZone,N.party.partyId ");
+					
+					Query query = getSession().createQuery(queryString.toString());
+					
+					if(scopeId.longValue() == 4L)
+					query.setParameter("delimitationYear", IConstants.DELIMITATION_YEAR);
+					
+					query.setParameterList("locationIds", locationIds);
+					query.setParameter("electionId", electionId);
+					
+					return query.list();
+					
+				}
+				
+				
+				public List<Object[]> getVoterShareByConstituencyType(Long electionId,List<Long> locationIds,Long scopeId)
+				{
+					StringBuffer queryString = new StringBuffer();
+					
+					
+					if(scopeId.longValue() == 2L) //district
+							queryString.append("select N.constituencyElection.constituency.areaType,N.party.partyId,N.party.shortName, " +
+									" sum(N.candidateResult.votesEarned)," +
+						 		    " sum(N.constituencyElection.constituencyElectionResult.validVotes) " +
+									" from Nomination N " +
+									"where " +
+									"N.constituencyElection.election.electionId =:electionId and " +
+									"N.candidateResult.rank = 1 and " +
+									"N.constituencyElection.constituency.district.districtId in(:locationIds) group by " +
+									"N.constituencyElection.constituency.areaType,N.party.partyId");
+					else if(scopeId.longValue() == 3L) //region
+						 queryString.append("select N.constituencyElection.constituency.areaType,N.party.partyId,N.party.shortName, " +
+								 	" sum(N.candidateResult.votesEarned)," +
+						 		    " sum(N.constituencyElection.constituencyElectionResult.validVotes) " +
+						 		    "from Nomination N,StateRegionDistrict SRD " +
+									"where " +
+									"N.constituencyElection.constituency.district.districtId  = SRD.district.districtId and " +
+									"SRD.stateRegion.stateRegionId in(:locationIds) and " +
+									"N.candidateResult.rank = 1 and " +
+									"N.constituencyElection.election.electionId = :electionId  group by " +
+									"N.constituencyElection.constituency.areaType,N.party.partyId");
+					else if(scopeId.longValue() == 4L) // parliament
+						 queryString.append("select N.constituencyElection.constituency.areaType,N.party.partyId,N.party.shortName," +
+						 		    "sum(N.candidateResult.votesEarned)," +
+						 		    " sum(N.constituencyElection.constituencyElectionResult.validVotes) " +
+						 		    "from Nomination N " +
+									"where " +
+									"N.constituencyElection.constituency.district.districtId  = DCA.constituency.constituencyId and " +
+									"N.candidateResult.rank = 1 and" +
+									"DCA.delimitationConstituency.year = :delimitationYear and " +
+									"DCA.delimitationConstituency.constituency.constituencyId in(:locationIds) and " +
+									"N.constituencyElection.election.electionId = :electionId  group by " +
+									"N.constituencyElection.constituency.areaType,N.party.partyId ");
+					
+					Query query = getSession().createQuery(queryString.toString());
+					
+					if(scopeId.longValue() == 4L)
+					query.setParameter("delimitationYear", IConstants.DELIMITATION_YEAR);
+					
+					query.setParameterList("locationIds", locationIds);
+					query.setParameter("electionId", electionId);
+					
+					return query.list();
+					
+				}
+			 
+
 }
 

@@ -729,6 +729,79 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 	}
 	
 	
+	public List<Object[]> getConstituenciesCountByReservationCategory(Long electionId,List<Long> locationIds,Long scopeId)
+	{
+		StringBuffer queryString = new StringBuffer();
+		
+		
+		if(scopeId.longValue() == 2L)
+				queryString.append("select count(CE.constiElecId),CE.reservationZone from ConstituencyElection CE " +
+				"where " +
+				"CE.constituency.district.districtId in(:locationIds) and CE.election.electionId = :electionId  " +
+				"group by CE.reservationZone ");
+		else if(scopeId.longValue() == 3L)
+			 queryString.append("select count(CE.constiElecId),CE.reservationZone from ConstituencyElection CE ,StateRegionDistrict SRD " +
+						"where " +
+						"CE.constituency.district.districtId  = SRD.district.districtId and " +
+						"SRD.stateRegion.stateRegionId in(:locationIds) and " +
+						"CE.election.electionId = :electionId  group by CE.reservationZone ");
+		else if(scopeId.longValue() == 4L)
+			 queryString.append("select count(CE.constiElecId),CE.reservationZone from ConstituencyElection CE ,DelimitationConstituencyAssemblyDetails DCA " +
+						"where " +
+						"CE.constituency.district.districtId  = DCA.constituency.constituencyId and " +
+						"DCA.delimitationConstituency.year = :delimitationYear and " +
+						"DCA.delimitationConstituency.constituency.constituencyId in(:locationIds) and " +
+						"CE.election.electionId = :electionId  group by CE.reservationZone ");
+		
+		Query query = getSession().createQuery(queryString.toString());
+		
+		if(scopeId.longValue() == 4L)
+		query.setParameter("delimitationYear", IConstants.DELIMITATION_YEAR);
+		
+		query.setParameterList("locationIds", locationIds);
+		query.setParameter("electionId", electionId);
+		
+		return query.list();
+		
+	}
+	
+	
+	public List<Object[]> getTotalConstituenciesCountByConstituencyType(Long electionId,List<Long> locationIds,Long scopeId)
+	{
+		StringBuffer queryString = new StringBuffer();
+		
+		
+		if(scopeId.longValue() == 2L)
+				queryString.append("select count(CE.constiElecId),CE.constituency.areaType from ConstituencyElection CE " +
+				"where " +
+				"CE.constituency.district.districtId in(:locationIds) and CE.election.electionId = :electionId  " +
+				"group by CE.constituency.areaType ");
+		else if(scopeId.longValue() == 3L)
+			 queryString.append("select count(CE.constiElecId),CE.constituency.areaType from ConstituencyElection CE ,StateRegionDistrict SRD " +
+						"where " +
+						"CE.constituency.district.districtId  = SRD.district.districtId and " +
+						"SRD.stateRegion.stateRegionId in(:locationIds) and " +
+						"CE.election.electionId = :electionId  group by CE.constituency.areaType ");
+		else if(scopeId.longValue() == 4L)
+			 queryString.append("select count(CE.constiElecId),CE.constituency.areaType from ConstituencyElection CE ,DelimitationConstituencyAssemblyDetails DCA " +
+						"where " +
+						"CE.constituency.district.districtId  = DCA.constituency.constituencyId and " +
+						"DCA.delimitationConstituency.year = :delimitationYear and " +
+						"DCA.delimitationConstituency.constituency.constituencyId in(:locationIds) and " +
+						"CE.election.electionId = :electionId  group by CE.constituency.areaType ");
+		
+		Query query = getSession().createQuery(queryString.toString());
+		
+		if(scopeId.longValue() == 4L)
+		query.setParameter("delimitationYear", IConstants.DELIMITATION_YEAR);
+		
+		query.setParameterList("locationIds", locationIds);
+		query.setParameter("electionId", electionId);
+		
+		return query.list();
+		
+	}
+	
 }
 
 
