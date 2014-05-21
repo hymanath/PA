@@ -4800,7 +4800,9 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 					" model.party.shortName," +
 					" model1.constituencyNO," +
 					" model2.delimitationConstituency.constituency.name ," +
-					" model2.delimitationConstituency.constituencyNO from " +
+					" model2.delimitationConstituency.constituencyNO," +
+					" model.constituencyElection.constituencyElectionResult.totalVotes," +
+					" model.constituencyElection.constituencyElectionResult.validVotes from " +
 					" Nomination model , DelimitationConstituency model1 ,DelimitationConstituencyAssemblyDetails model2 " +
 					" where  model.constituencyElection.election.electionId = :electionId and model.candidateResult.rank in (1,2) and " +
 					"model.constituencyElection.constituency.constituencyId = model1.constituency.constituencyId and " +
