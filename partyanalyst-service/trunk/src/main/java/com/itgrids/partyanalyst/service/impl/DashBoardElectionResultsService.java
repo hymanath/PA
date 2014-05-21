@@ -518,7 +518,7 @@ public class DashBoardElectionResultsService implements
 			
 			
 			
-			List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId, locationIds, scopeId);
+List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId, locationIds, scopeId);
 			
 			List<Long> locationsIds = new ArrayList<Long>();
 			List<Long> partyIds = new ArrayList<Long>();
@@ -591,6 +591,16 @@ public class DashBoardElectionResultsService implements
 						else
 							partyVO.setLeadCount(partyVO.getLeadCount() + Long.parseLong(obj[0].toString()));
 					 
+					 
+					 
+					 partyVO.setGainedVotes((long)Double.parseDouble(obj[6].toString()));
+
+					 partyVO.setPercent((long)Double.parseDouble(obj[7].toString()) != 0 ? roundTo2DigitsFloatValue((float) (long)Double.parseDouble(obj[6].toString())
+					 * 100f
+					 /(long) Double.parseDouble(obj[7].toString())) : "0.00");
+
+
+					 
 				 }else
 				 {
 				    partyVO.setName(obj[4].toString());
@@ -599,6 +609,15 @@ public class DashBoardElectionResultsService implements
 						partyVO.setWinCount(Long.parseLong(obj[0].toString()));
 					else
 						partyVO.setLeadCount(Long.parseLong(obj[0].toString()));
+					
+					
+					partyVO.setGainedVotes((long)Double.parseDouble(obj[6].toString()));
+
+					partyVO.setPercent((long)Double.parseDouble(obj[7].toString()) != 0 ? roundTo2DigitsFloatValue((float) (long)Double.parseDouble(obj[6].toString())
+					* 100f
+					/(long) Double.parseDouble(obj[7].toString())) : "0.00");
+
+
 				 }
 			}
 			
