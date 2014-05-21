@@ -268,4 +268,39 @@ IDelimitationConstituencyDAO {
 		 session.close();
 		 return obj;
 	}
+	
+	public List<Object[]> getConstituencyNoByConstituency(List<Long> constitIds,Long year,Long electionScopeId,String scope)
+	{
+		StringBuffer sb = new StringBuffer();
+		if(scope.equalsIgnoreCase("pc"))
+		{
+			sb.append("select model.constituency.constituencyId,model.constituencyNO,model.constituency.name " +
+					" from DelimitationConstituency model where model.constituency.countryId in (:constitIds) " +
+					" " +
+					" and model.year = :year and model.constituency.electionScope.electionScopeId = :electionScopeId");
+		}
+		else
+		{
+			if(electionScopeId.longValue() == 2l)
+			{
+				sb.append("select model.constituency.constituencyId,model.constituencyNO,model.constituency.name " +
+					" from DelimitationConstituency model where model.constituency.constituencyId in (:constitIds) " +
+					" and model.year = :year and model.constituency.electionScope.electionScopeId = :electionScopeId");
+			}
+			else
+			{
+				sb.append("select model.constituency.constituencyId,model.constituencyNO,model.constituency.name " +
+						" from DelimitationConstituency model where model.constituency.countryId in (:constitIds) " +
+						" and model.constituency.state.stateId = 1" +
+						" and model.year = :year and model.constituency.electionScope.electionScopeId = :electionScopeId");
+			}
+		}
+		
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameterList("constitIds", constitIds);
+		query.setParameter("electionScopeId", electionScopeId);
+		query.setParameter("year", year);
+		return query.list();
+	}
+	
 }
