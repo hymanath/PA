@@ -31,6 +31,15 @@ public class BasicVO implements Serializable{
 	private BasicVO afterDelimationDetails;
 	private BasicVO beforeDelimationDetails;
 	private Long totalVoters;
+	private String aliancedWith;
+	
+		
+	public String getAliancedWith() {
+		return aliancedWith;
+	}
+	public void setAliancedWith(String aliancedWith) {
+		this.aliancedWith = aliancedWith;
+	}
 	public List<BasicVO> getSelectedCasteDetails() {
 		return selectedCasteDetails;
 	}
