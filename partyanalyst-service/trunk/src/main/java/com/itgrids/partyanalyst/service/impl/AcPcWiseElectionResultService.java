@@ -16,9 +16,8 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IStateSubRegionDistrictDAO;
-import com.itgrids.partyanalyst.dao.hibernate.NominationDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
-import com.itgrids.partyanalyst.dto.GenericVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IAcPcWiseElectionResultService;
 
 public class AcPcWiseElectionResultService implements IAcPcWiseElectionResultService{
@@ -168,22 +167,29 @@ public class AcPcWiseElectionResultService implements IAcPcWiseElectionResultSer
 		return returnList;
 	}
 	
-	public List<GenericVO> cbnOrModiEffect(Long electionId,Long stateid,List<Long> partyId,Long electionScopeId)
+	public List<SelectOptionVO> cbnOrModiEffect(Long electionId,Long stateid,List<Long> partyId,Long electionScopeId)
 	{
-		List<GenericVO> returnList = null;
+		List<SelectOptionVO> returnList = null;
+		Long effect = 0l;
 		try
 		{
 			List<Object[]> result = candidateResultDAO.getElectionResultsForCBNORMODIEffect(electionId,stateid,partyId,electionScopeId);
 			if(result != null && result.size() > 0)
 			{
-				returnList = new ArrayList<GenericVO>();
+				returnList = new ArrayList<SelectOptionVO>();
 				for (Object[] objects : result) 
 				{
-					GenericVO genericVO = new GenericVO();
+					SelectOptionVO genericVO = new SelectOptionVO();
 					genericVO.setId((Long)objects[0]);
 					genericVO.setName(objects[1].toString());
 					returnList.add(genericVO);
+					if(electionScopeId.longValue() == 2l && objects[2] !=null && ((Long)objects[2]).longValue()  > 10){
+						effect=effect+1;
+					}
 				}
+			}
+			if(returnList != null && returnList.size() > 0){
+				returnList.get(0).setTotalCount(effect);
 			}
 		} 
 		catch (Exception e)
