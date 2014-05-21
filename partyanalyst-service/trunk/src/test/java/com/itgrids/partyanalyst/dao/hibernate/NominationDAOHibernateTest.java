@@ -1448,8 +1448,8 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 			System.out.println(parms[0] +":"+parms[1] +":"+ parms[2]);
 		}
 	}*/
-/*	
-	public void test(){
+	
+	/*public void test(){
 		List<Long> electionIds=new ArrayList<Long>();
 		electionIds.add(40l);
 		electionIds.add(42l);
@@ -1463,11 +1463,11 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		List<Object[]> li=nominationDAO.findMuncipalOrCorpResultsInaConstituency(31l,electionIds);
 		List<Object[]> li1=nominationDAO.findMuncipalOrCorpResultsInaConstituencyPartyWise(31l, electionIds);
 		
-		*/
-		/*List<Object[]> li=nominationDAO.findMuncipalOrCorpResultsOfGMCInaConstituency(315l, electionIds);
-		List<Object[]> li1=nominationDAO.findMuncipalOrCorpResultsOfGMCInaConstituencyPartyWise(315l, electionIds);*/
 		
-/*		
+		List<Object[]> li=nominationDAO.findMuncipalOrCorpResultsOfGMCInaConstituency(315l, electionIds);
+		List<Object[]> li1=nominationDAO.findMuncipalOrCorpResultsOfGMCInaConstituencyPartyWise(315l, electionIds);
+		
+		
 		List<PartyResultsVO> electionList=new ArrayList<PartyResultsVO>();
 		Map<Long,List<PartyResultsVO>> eleMap=new HashMap<Long, List<PartyResultsVO>>();
 		
@@ -1690,10 +1690,20 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		  return result;
 	  }*/
 	
-	public void testGetAllDtails(){
-		List<Object[]> list = nominationDAO.getAllPartyDetailsForAllElectionYearsInAState(1L,260L);
-		System.out.println(list);
+	public void test(){
+		List<Long> constiIds = new ArrayList<Long>();
+		//constiIds.add(228l);
+		constiIds.add(156l);
+		
+		List<Long> partyIds = new ArrayList<Long>();
+		partyIds.add(362l);
+		partyIds.add(872l);
+		partyIds.add(366l);
+		
+		
+		//List<Object[]> list = nominationDAO.getPartysInfoForAParticularElectionYearInConsitutencies(38l,constiIds);
+		List<Object[]> list = nominationDAO.partysVotesShareInConstituenciesOfElection(38l,constiIds,partyIds);
+		System.out.println(list.size());
 	}
-	
 }	
 	
