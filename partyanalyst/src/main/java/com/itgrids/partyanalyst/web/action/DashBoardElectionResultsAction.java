@@ -10,6 +10,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.DashBoardResultsVO;
+import com.itgrids.partyanalyst.dto.GenericVO;
+import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.service.IDashBoardElectionResultsService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -25,8 +27,26 @@ public class DashBoardElectionResultsAction extends ActionSupport implements Ser
 	private List<DashBoardResultsVO> matrixReport;
 	private List<DashBoardResultsVO> subReport;
 	private List<DashBoardResultsVO> dashBoardConstiResults;
+	private List<GenericVO> partiesList;
+	private List<PartyResultVO> constiList;
 	
 	
+	public List<PartyResultVO> getConstiList() {
+		return constiList;
+	}
+
+	public void setConstiList(List<PartyResultVO> constiList) {
+		this.constiList = constiList;
+	}
+
+	public List<GenericVO> getPartiesList() {
+		return partiesList;
+	}
+
+	public void setPartiesList(List<GenericVO> partiesList) {
+		this.partiesList = partiesList;
+	}
+
 	public List<DashBoardResultsVO> getDashBoardConstiResults() {
 		return dashBoardConstiResults;
 	}
@@ -251,4 +271,55 @@ public class DashBoardElectionResultsAction extends ActionSupport implements Ser
 		}		
 		return Action.SUCCESS;
 	}
+	
+	public String getPartiesInConsituenciesOfElection(){
+		try{
+			jObj = new JSONObject(getTask());
+			Long electionId= jObj.getLong("electionId");
+			
+			 JSONArray jArray = jObj.getJSONArray("constituencyIds");
+			 List<Long> locationIds = new ArrayList<Long>();
+			 
+			   for (int i = 0; i < jArray.length(); i++) 
+			   { 
+				   locationIds.add(new Long(jArray.get(i).toString()));
+			   }
+			
+			   partiesList  = dashBoardElectionResultsService.getPartiesInConsituenciesOfElection(electionId,locationIds);
+		} catch (Exception e) {
+			LOG.error("Exception occured in getConstituencyWiseResults() ",e);
+			return Action.ERROR;
+		}		
+		return Action.SUCCESS;
+	}
+	
+	public String partysVotesShareInConstituenciesOfElection(){
+		try{
+			jObj = new JSONObject(getTask());
+			Long electionId= jObj.getLong("electionId");
+			
+			 JSONArray jArray = jObj.getJSONArray("constituencyIds");
+			 List<Long> locationIds = new ArrayList<Long>();
+			 
+			   for (int i = 0; i < jArray.length(); i++) 
+			   { 
+				   locationIds.add(new Long(jArray.get(i).toString()));
+			   }
+			   
+			   JSONArray jArrayPrty = jObj.getJSONArray("partyIds");
+				 List<Long> partyIds = new ArrayList<Long>();
+				 
+				   for (int i = 0; i < jArrayPrty.length(); i++) 
+				   { 
+					   partyIds.add(new Long(jArrayPrty.get(i).toString()));
+				   }
+			
+			   constiList  = dashBoardElectionResultsService.partysVotesShareInConstituenciesOfElection(electionId,locationIds,partyIds);
+		} catch (Exception e) {
+			LOG.error("Exception occured in getConstituencyWiseResults() ",e);
+			return Action.ERROR;
+		}		
+		return Action.SUCCESS;
+	}
+
 }
