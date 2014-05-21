@@ -1,10 +1,12 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionAllianceDAO;
@@ -56,6 +59,9 @@ public class DashBoardElectionResultsService implements
 	
 	@Autowired
 	private IPartyDAO partyDAO;
+	
+	@Autowired
+	private IConstituencyElectionDAO constituencyElectionDAO;
 	
 	public DashBoardResultsVO getElectionResultsSummary()
 	{
@@ -628,6 +634,9 @@ public class DashBoardElectionResultsService implements
 				}
 				
 			//}
+				
+				Collections.sort(resultList,sortByLocation);
+				
 			
 			if(resultList != null && resultList.size() >0)
 				resultList.get(0).setSummaryDetails(summaryDetails);
@@ -638,9 +647,16 @@ public class DashBoardElectionResultsService implements
 			e.printStackTrace();
 		}
 		
-		
 		return resultList;
 	}
+	
+	public static Comparator<DashBoardResultsVO> sortByLocation = new Comparator<DashBoardResultsVO>()
+    {
+        public int compare(DashBoardResultsVO locationVO1, DashBoardResultsVO locationVO2)
+        {
+            return locationVO1.getName().compareTo(locationVO2.getName());
+        }
+    };
 	
 	
 	public List<DashBoardResultsVO> getSubReportForElectionResultByConstituencyReservationType(Long electionId,List<Long> locationIds,Long scopeId)
@@ -744,6 +760,13 @@ public class DashBoardElectionResultsService implements
 					else
 						partyVO.setLeadCount(partyVO.getLeadCount() + Long.parseLong(obj[0].toString()));
 				 
+				 partyVO.setGainedVotes((long)Double.parseDouble(obj[7].toString()));
+				 
+					partyVO.setPercent((long)Double.parseDouble(obj[8].toString()) != 0 ? roundTo2DigitsFloatValue((float) (long)Double.parseDouble(obj[7].toString())
+							* 100f
+							/(long) Double.parseDouble(obj[8].toString())) : "0.00");
+				 
+				 
 			 }else
 			 {
 			  //  partyVO.setName(obj[4].toString());
@@ -752,15 +775,95 @@ public class DashBoardElectionResultsService implements
 					partyVO.setWinCount(Long.parseLong(obj[0].toString()));
 				else
 					partyVO.setLeadCount(Long.parseLong(obj[0].toString()));
+				
+				partyVO.setGainedVotes((long)Double.parseDouble(obj[7].toString()));
+				 
+				partyVO.setPercent((long)Double.parseDouble(obj[8].toString()) != 0 ? roundTo2DigitsFloatValue((float) (long)Double.parseDouble(obj[7].toString())
+							* 100f
+							/(long) Double.parseDouble(obj[8].toString())) : "0.00");
+				 
 			 }
 
 		}
+		
+		Collections.sort(resultList,sortByLocation);
+		
+		
+		List<DashBoardResultsVO> reservationDetails = getTotalConstituenciesCountByReservationCategory(electionId,
+				locationIds, scopeId);
+		
+		if(resultList != null && resultList.size() >0)
+			resultList.get(0).setSubList(reservationDetails);
+		
+		
+		List<DashBoardResultsVO> reservationTypVoterShare = getTotalVoterShareByReservationType(electionId,
+				locationIds, scopeId);
+		
+		if(resultList != null && resultList.size() >0)
+			resultList.get(0).setReservationTypeVoterShare(reservationTypVoterShare);
+		
+		
+		
+		
 		}catch(Exception e)
 		{
 			e.printStackTrace();
 		}
 		return resultList;
 	}
+	
+	public String roundTo2DigitsFloatValue(Float number){
+		  
+		LOG.debug("Entered into the roundTo2DigitsFloatValue service method");
+		  
+		  String result = "";
+		  try
+		  {
+			  
+			
+			NumberFormat f = NumberFormat.getInstance(Locale.ENGLISH);  
+			f.setMaximumFractionDigits(2);  
+			f.setMinimumFractionDigits(2);
+			
+			result =  f.format(number);
+		  }catch(Exception e)
+		  {
+			  LOG.error("Exception raised in roundTo2DigitsFloatValue service method");
+			  e.printStackTrace();
+		  }
+		  return result;
+	  }
+	
+	public List<DashBoardResultsVO> getTotalConstituenciesCountByReservationCategory(Long electionId,List<Long> locationIds,Long scopeId)
+	{
+		LOG.debug("Entered into the getTotalConstituenciesCountByReservationCategory service method");
+		
+			List<DashBoardResultsVO> reservationDetails = new ArrayList<DashBoardResultsVO>();
+			
+			try
+			{
+	
+				List<Object[]> reservationTypesList = constituencyElectionDAO
+						.getConstituenciesCountByReservationCategory(electionId,
+								locationIds, scopeId);	
+				
+				for(Object[] obj:reservationTypesList)
+				{
+					DashBoardResultsVO vo = new DashBoardResultsVO();
+					
+					vo.setName(obj[1].toString());
+					vo.setCount(Long.parseLong(obj[0].toString()));
+					
+					reservationDetails.add(vo);
+				}
+			}catch(Exception e)
+			{
+				e.printStackTrace();
+				LOG.error("Exception occured in getTotalConstituenciesCountByReservationCategory service method");
+			}
+			return reservationDetails;
+	}
+	
 	
 	public List<DashBoardResultsVO> getSubReportForElectionResultByConstituencyType(Long electionId,List<Long> locationIds,Long scopeId)
 	{
@@ -874,6 +977,12 @@ public class DashBoardElectionResultsService implements
 					else
 						partyVO.setLeadCount(partyVO.getLeadCount() + Long.parseLong(obj[0].toString()));
 				 
+				 partyVO.setGainedVotes((long)Double.parseDouble(obj[7].toString()));
+				 
+					partyVO.setPercent((long)Double.parseDouble(obj[8].toString()) != 0 ? roundTo2DigitsFloatValue((float) (long)Double.parseDouble(obj[7].toString())
+							* 100f
+							/(long) Double.parseDouble(obj[8].toString())) : "0.00");
+				 
 			 }else
 			 {
 			   // partyVO.setName(obj[4].toString());
@@ -882,14 +991,219 @@ public class DashBoardElectionResultsService implements
 					partyVO.setWinCount(Long.parseLong(obj[0].toString()));
 				else
 					partyVO.setLeadCount(Long.parseLong(obj[0].toString()));
+				
+				 partyVO.setGainedVotes((long)Double.parseDouble(obj[7].toString()));
+				 
+					partyVO.setPercent((long)Double.parseDouble(obj[8].toString()) != 0 ? roundTo2DigitsFloatValue((float) (long)Double.parseDouble(obj[7].toString())
+							* 100f
+							/(long) Double.parseDouble(obj[8].toString())) : "0.00");
 			 }
 
 		}
+		
+		
+		
+		List<DashBoardResultsVO> constnTypeDetails = getTotalConstituenciesCountByConstituencyType(electionId,
+				locationIds, scopeId);
+		
+		if(resultList != null && resultList.size() >0)
+			resultList.get(0).setSubList(constnTypeDetails);
+		
+		
+		List<DashBoardResultsVO> constnTypeVoterShare = getTotalVoterShareByConstituencyType(electionId,
+				locationIds, scopeId);
+		
+		if(resultList != null && resultList.size() >0)
+			resultList.get(0).setConstnTypeVoterShare(constnTypeVoterShare);
+
+			
+		
 		}catch(Exception e)
 		{
 			e.printStackTrace();
 		}
 		return resultList;
+	}
+	
+	public List<DashBoardResultsVO> getTotalVoterShareByConstituencyType(Long electionId,List<Long> locationIds,Long scopeId)
+	{
+		LOG.debug("Entered into the getTotalVoterShareByConstituencyType service method");
+		
+			List<DashBoardResultsVO> voterShareDetails = new ArrayList<DashBoardResultsVO>();
+			
+			try
+			{
+				
+				List<Long> prtyIds = new ArrayList<Long>();
+				
+				prtyIds.add(872L);
+				prtyIds.add(362L);
+				prtyIds.add(1117L);
+				prtyIds.add(886L);
+				prtyIds.add(163L);
+				prtyIds.add(662L);
+				prtyIds.add(9999L);
+	
+				List<Object[]> voterShareByConstnType = nominationDAO
+						.getVoterShareByConstituencyType(electionId,
+								locationIds, scopeId);
+				
+				List<Long> partyIds = new ArrayList<Long>();
+				
+				for(Object[] obj:voterShareByConstnType)
+					if(prtyIds.contains(Long.parseLong(obj[1].toString())) && !partyIds.contains(Long.parseLong(obj[1].toString())))
+					partyIds.add(Long.parseLong(obj[1].toString()));
+				
+				List<String> types = new ArrayList<String>();
+				
+				for(Object[] obj:voterShareByConstnType)
+					if(!types.contains(obj[0].toString()))
+					types.add(obj[0].toString());
+				
+				
+				for(Long partyId:partyIds)
+				{
+					DashBoardResultsVO partyVO = new DashBoardResultsVO();
+					partyVO.setId(partyId);
+					
+					for(String type:types)
+					{
+						DashBoardResultsVO typeVO =new DashBoardResultsVO();
+						typeVO.setName(type);
+						
+						partyVO.getSubList().add(typeVO);
+						
+					}
+					voterShareDetails.add(partyVO);
+					
+				}
+				
+				for(Object[] obj:voterShareByConstnType)
+				{
+					DashBoardResultsVO partyVO = getMacthedVO(voterShareDetails,Long.parseLong(obj[1].toString()));
+					
+					partyVO.setName(obj[2].toString());
+					DashBoardResultsVO typeVO = getMacthedVO(partyVO.getSubList(),Long.parseLong(obj[1].toString()));
+					typeVO.setName(obj[0].toString());
+					
+					typeVO.setGainedVotes(Long.parseLong(obj[3].toString()));
+					typeVO.setPercent((long)Double.parseDouble(obj[4].toString()) != 0 ? roundTo2DigitsFloatValue((float) (long)Double.parseDouble(obj[3].toString())
+							* 100f
+							/(long) Double.parseDouble(obj[4].toString())) : "0.00");
+				}
+				
+			}catch(Exception e)
+			{
+				e.printStackTrace();
+				LOG.error("Exception occured in getTotalVoterShareByConstituencyType service method");
+			}
+			return voterShareDetails;
+	}
+	
+	
+	public List<DashBoardResultsVO> getTotalVoterShareByReservationType(Long electionId,List<Long> locationIds,Long scopeId)
+	{
+		LOG.debug("Entered into the getTotalVoterShareByReservationType service method");
+		
+			List<DashBoardResultsVO> voterShareDetails = new ArrayList<DashBoardResultsVO>();
+			
+			try
+			{
+	
+				List<Object[]> voterShareByConstnType = nominationDAO
+						.getVoterShareByReservationCategory(electionId,
+								locationIds, scopeId);
+				
+				
+				List<Long> prtyIds = new ArrayList<Long>();
+				
+				prtyIds.add(872L);
+				prtyIds.add(362L);
+				prtyIds.add(1117L);
+				prtyIds.add(886L);
+				prtyIds.add(163L);
+				prtyIds.add(662L);
+				prtyIds.add(9999L);
+				
+				List<Long> partyIds = new ArrayList<Long>();
+				
+				for(Object[] obj:voterShareByConstnType)
+					if(prtyIds.contains(Long.parseLong(obj[1].toString())) && !partyIds.contains(Long.parseLong(obj[1].toString())))
+					partyIds.add(Long.parseLong(obj[1].toString()));
+				
+				List<String> types = new ArrayList<String>();
+				
+				for(Object[] obj:voterShareByConstnType)
+					if(!types.contains(obj[0].toString()))
+					types.add(obj[0].toString());
+				
+				
+				for(Long partyId:partyIds)
+				{
+					DashBoardResultsVO partyVO = new DashBoardResultsVO();
+					partyVO.setId(partyId);
+					
+					for(String type:types)
+					{
+						DashBoardResultsVO typeVO =new DashBoardResultsVO();
+						typeVO.setName(type);
+						
+						partyVO.getSubList().add(typeVO);
+						
+					}
+					voterShareDetails.add(partyVO);
+					
+				}
+				
+				for(Object[] obj:voterShareByConstnType)
+				{
+					DashBoardResultsVO partyVO = getMacthedVO(voterShareDetails,Long.parseLong(obj[1].toString()));
+					
+					partyVO.setName(obj[2].toString());
+					DashBoardResultsVO typeVO = getMacthedVO(partyVO.getSubList(),Long.parseLong(obj[1].toString()));
+					typeVO.setName(obj[0].toString());
+					
+					typeVO.setGainedVotes(Long.parseLong(obj[3].toString()));
+					typeVO.setPercent((long)Double.parseDouble(obj[4].toString()) != 0 ? roundTo2DigitsFloatValue((float) (long)Double.parseDouble(obj[3].toString())
+							* 100f
+							/(long) Double.parseDouble(obj[4].toString())) : "0.00");
+				}
+				
+			}catch(Exception e)
+			{
+				e.printStackTrace();
+				LOG.error("Exception occured in getTotalVoterShareByReservationType service method");
+			}
+			return voterShareDetails;
+	}
+	public List<DashBoardResultsVO> getTotalConstituenciesCountByConstituencyType(Long electionId,List<Long> locationIds,Long scopeId)
+	{
+		LOG.debug("Entered into the getTotalConstituenciesCountByConstituencyType service method");
+		
+			List<DashBoardResultsVO> reservationDetails = new ArrayList<DashBoardResultsVO>();
+			
+			try
+			{
+	
+				List<Object[]> reservationTypesList = constituencyElectionDAO
+						.getTotalConstituenciesCountByConstituencyType(electionId,
+								locationIds, scopeId);	
+				
+				for(Object[] obj:reservationTypesList)
+				{
+					DashBoardResultsVO vo = new DashBoardResultsVO();
+					
+					vo.setName(obj[1].toString());
+					vo.setCount(Long.parseLong(obj[0].toString()));
+					
+					reservationDetails.add(vo);
+				}
+			}catch(Exception e)
+			{
+				e.printStackTrace();
+				LOG.error("Exception occured in getTotalConstituenciesCountByConstituencyType service method");
+			}
+			return reservationDetails;
 	}
 	
 	 public List<DashBoardResultsVO> getConstituencyWiseLiveResults(Long electionId,List<Long> constituencyIds){
@@ -1117,11 +1431,8 @@ public class DashBoardElectionResultsService implements
 			 e.printStackTrace();
 			 
 		 }
-		 
-		 
 		 return resultList;
 	 }
-	 
 	 public List<GenericVO> getPartiesInConsituenciesOfElection(Long electionId,List<Long> constituencyIds){
 		  LOG.debug("Entered Into getPartiesInConsituenciesOfElection"); 
 		  List<GenericVO> resultList  = new ArrayList<GenericVO>();
@@ -1244,17 +1555,17 @@ public class DashBoardElectionResultsService implements
 	 }
 	 
 	 public static Comparator<PartyResultVO> sortByPartyId = new Comparator<PartyResultVO>()
-     {
-   
-         public int compare(PartyResultVO resultList1, PartyResultVO resultList2)
-         {
-             if(resultList1.getPartyId() == null || resultList2.getPartyId() == null){
-                 return 0;
-             }
-             else{
-            	 return (resultList1.getPartyId()).compareTo(resultList2.getPartyId());
-             }
-         }
-     };
-	 
+    {
+  
+        public int compare(PartyResultVO resultList1, PartyResultVO resultList2)
+        {
+            if(resultList1.getPartyId() == null || resultList2.getPartyId() == null){
+                return 0;
+            }
+            else{
+           	 return (resultList1.getPartyId()).compareTo(resultList2.getPartyId());
+            }
+        }
+    };
+	
 }

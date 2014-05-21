@@ -35,9 +35,54 @@ public class DashBoardResultsVO  implements Comparable<DashBoardResultsVO>{
 	private List<Long> allianceIds;
 	private String totalVotes;
 	private String validVotes;
+	private Long gainedVotes;
+	private String gainedPercent;
+	
+	private List<DashBoardResultsVO> constnTypeVoterShare;
+	private List<DashBoardResultsVO> reservationTypeVoterShare;
 
-	
-	
+	public List<DashBoardResultsVO> getConstnTypeVoterShare() {
+		return constnTypeVoterShare;
+	}
+
+
+	public void setConstnTypeVoterShare(
+			List<DashBoardResultsVO> constnTypeVoterShare) {
+		this.constnTypeVoterShare = constnTypeVoterShare;
+	}
+
+
+	public List<DashBoardResultsVO> getReservationTypeVoterShare() {
+		return reservationTypeVoterShare;
+	}
+
+
+	public void setReservationTypeVoterShare(
+			List<DashBoardResultsVO> reservationTypeVoterShare) {
+		this.reservationTypeVoterShare = reservationTypeVoterShare;
+	}
+
+
+	public String getGainedPercent() {
+		return gainedPercent;
+	}
+
+
+	public void setGainedPercent(String gainedPercent) {
+		this.gainedPercent = gainedPercent;
+	}
+
+
+	public Long getGainedVotes() {
+		return gainedVotes;
+	}
+
+
+	public void setGainedVotes(Long gainedVotes) {
+		this.gainedVotes = gainedVotes;
+	}
+
+
 	
 
 
@@ -59,8 +104,7 @@ public class DashBoardResultsVO  implements Comparable<DashBoardResultsVO>{
 	public void setValidVotes(String validVotes) {
 		this.validVotes = validVotes;
 	}
-
-
+	
 	public List<Long> getAllianceIds() {
 		return allianceIds;
 	}
