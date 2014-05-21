@@ -4,14 +4,18 @@
 <div class="whitegloss">
 <div>	
 								
-								  <div class="modal-header ">
+								  <!--<div class="modal-header ">
 									<h3 style="font-size:18px;color:#5B5B5B;"> Lot of New Functionalities are available as <span style="color:green;">Online</span> & <span style="color:red;">Offline</span> Application in PartyAnalyst to Earn 3%-5% more Votes</h3>
-									</div>
+									</div>-->
 								  
-								  <div class="modal-body "><div class="row-fluid">
-									    
+								  <div class="modal-body ">
+								  <div class="row-fluid">
+									   
+<div class="span12">
+<img src="images/new_homepage/PB-02.PNG" title="Click To View Results & Analysis Of 2014 Elections" height='550' width='750' onClick="goSpecialPage();"/>
+</div>
 
-<div class="span8">
+<!--<div class="span8">
 <img src="images/new_homepage/Popup.png" height='350' width='400' style="margin-left:55px;"/></div>
 <form class=" span4">
 										  <h2 style="font-size: 24px;line-height: 36px;"><small>For our Product</small> DEMO</h2><span id="errorMsg" style="display:none;color:red;font-family:verdana;"></span>
@@ -54,15 +58,15 @@
 											
 											
 										  </fieldset>	
-										</form>
+										</form>-->
 								  </div></div>
 								  
-								  <div class="modal-footer">
+								  <!--<div class="modal-footer">
 								  <div id="textMsg" style="text-align:center;display:none;font-family:verdana;"></div>
 								  <img id='AjaxImg' style='width: 20px; padding-left: 30px; display: none;' src='images/icons/loading.gif'>
 									<a href="#" class="btn btn-primary" id="sendMailToAdminGroup" onclick="validate()">Submit</a>
 									<a href="#" class="btn " id="skipId" onclick="closeDialogue();">Skip</a>
-								  </div>
+								  </div>-->
 								</div>
 </div>
 <script>
@@ -72,9 +76,9 @@ $(location).attr('href',$(this).find("a").attr("href"));
 
  });
 setTimeout(function(){
-$("#fancybox-wrap").css({"width":"880px","margin-left":"auto","margin-right":"auto"});
+$("#fancybox-wrap").css({"width":"685px","margin-left":"auto","margin-right":"auto"});
 $("#fancybox-wrap").addClass("centerdiv");
-$("#fancybox-content").css({"width":"860px"});
+$("#fancybox-content").css({"width":"665px"});
 },0);
 
 });
@@ -113,6 +117,12 @@ $("#errorMsg").html("");
 	ajaxResultInPopUpPage(jsObj,url);
 	setTimeout("$.fancybox.close();",3000);
 }
+
+function goSpecialPage()
+{
+  window.open("specialPageAction.action?specialPageId=23");
+}
+
 function closeDialogue()
 {
   $.fancybox.close();
