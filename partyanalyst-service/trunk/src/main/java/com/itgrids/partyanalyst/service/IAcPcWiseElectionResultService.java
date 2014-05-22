@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.CasteWiseResultVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
 public interface IAcPcWiseElectionResultService 
@@ -15,5 +16,6 @@ public interface IAcPcWiseElectionResultService
 	public List<BasicVO> filterToGetPartyWiseComperassionResult(Long stateId,Long electionId,List<Long> partyIds,Long electionScopeId,String scope,List<Long> subRegionId);
 	
 	public List<BasicVO> searchPartyWiseComparissionResult(Long stateId,Long electionId,List<Long> partyIds,Long electionScopeId,String scope,List<Long> subRegionId,String searchName);
-	
+
+	public List<CasteWiseResultVO> getCasteWiseDataForElection(Long electionId);
 }
