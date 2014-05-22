@@ -29,8 +29,18 @@ public class DashBoardElectionResultsAction extends ActionSupport implements Ser
 	private List<DashBoardResultsVO> dashBoardConstiResults;
 	private List<GenericVO> partiesList;
 	private List<PartyResultVO> constiList;
+	private List<DashBoardResultsVO> partyWiseCountDetails;
 	
 	
+	public List<DashBoardResultsVO> getPartyWiseCountDetails() {
+		return partyWiseCountDetails;
+	}
+
+	public void setPartyWiseCountDetails(
+			List<DashBoardResultsVO> partyWiseCountDetails) {
+		this.partyWiseCountDetails = partyWiseCountDetails;
+	}
+
 	public List<PartyResultVO> getConstiList() {
 		return constiList;
 	}
@@ -321,5 +331,38 @@ public class DashBoardElectionResultsAction extends ActionSupport implements Ser
 		}		
 		return Action.SUCCESS;
 	}
+	
+	public String getPartyWiseWinningSeatsCount()
+	{
+		LOG.debug("Entered into the getPartyWiseWinningSeatsCount method");
+		try
+		{
+			
+			jObj = new JSONObject(getTask());
 
+			Long electionId = jObj.getLong("electionId");
+			Long scopeId = jObj.getLong("scopeId");
+			Long partyId = jObj.getLong("partyId");
+			Long percent = jObj.getLong("percent");
+			
+			 JSONArray jArray = jObj.getJSONArray("locationIds");
+			 List<Long> locationIds = new ArrayList<Long>();
+			 
+			   for (int i = 0; i < jArray.length(); i++) 
+			   {
+				   locationIds.add(new Long(jArray.get(i).toString()));
+			   }
+			   
+			   partyWiseCountDetails = dashBoardElectionResultsService.getPartyWiseWinningSeatsCount(
+					electionId,locationIds, scopeId,
+					percent,partyId);
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Exception raised in getPartyWiseWinningSeatsCount method");
+
+		}
+		return Action.SUCCESS;
+	}
 }

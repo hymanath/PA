@@ -7083,6 +7083,11 @@
 			  <param name="root">casteData</param>
 			</result>
 		</action>
+		<action name="partyWiseCountDetailsAction" class="dashBoardElectionResultsAction" method="getPartyWiseWinningSeatsCount">
+			<result type="json" name="success">
+				<param name="root">partyWiseCountDetails</param>
+			</result>
+		</action>
 </package>
 		
 </struts>      
