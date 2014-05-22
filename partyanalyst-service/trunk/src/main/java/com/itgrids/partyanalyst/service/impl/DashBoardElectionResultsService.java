@@ -1465,13 +1465,25 @@ List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId,
 		  try {
 			  
 			  List<Object[]> list =  nominationDAO.getPartysInfoForAParticularElectionYearInConsitutencies(electionId,constituencyIds);
+			  
+			  List<Long> partyIds = new ArrayList<Long>();
+			  
+			    partyIds.add(872L);
+				partyIds.add(362L);
+				partyIds.add(1117L);
+				partyIds.add(886L);
+				partyIds.add(163L);
+				
 			  if(list!=null && list.size()>0){
 				  for(Object[] lst:list){
 					  GenericVO gv = new GenericVO();
 					  gv.setId(Long.valueOf(lst[1].toString()));
 					  gv.setName(lst[0].toString());				  
 					  
-					  resultList.add(gv);
+					  if(partyIds.contains(Long.valueOf(lst[1].toString())))
+						  resultList.add(0,gv);
+					  else
+					      resultList.add(gv);
 				  }
 			  }
 		  }catch (Exception e) {
@@ -1545,11 +1557,34 @@ List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId,
 			  
 			  resultList = new ArrayList<PartyResultVO>(constiMap.values());
 			  
+			  for(PartyResultVO mainVO:resultList)
+			  {
+				  for(PartyResultVO partyVO:mainVO.getPartyResultVo())
+				  {
+					  if(partyVO.getPartyVotes() != null)
+					partyVO.setPercent(Long.parseLong(mainVO.getValidVts()) != 0L ? roundTo2DigitsFloatValue((float) Long
+							.parseLong(partyVO.getPartyVotes())
+							* 100
+							/ Long.parseLong(mainVO.getValidVts())) : "0.00");
+				  }
+				  
+			  }
+			  
 		  }catch (Exception e) {
 			  Log.error("Exception Raised in partysVotesShareInConstituenciesOfElection"+e);
 		}
+		  
+		  Collections.sort(resultList,sortByConstieucnyName);
 		return resultList;
 	 }
+	 
+	 public static Comparator<PartyResultVO> sortByConstieucnyName = new Comparator<PartyResultVO>()
+			    {
+			        public int compare(PartyResultVO locationVO1, PartyResultVO locationVO2)
+			        {
+			            return locationVO1.getConstituencyName().compareTo(locationVO2.getConstituencyName());
+			        }
+			    };
 	 
 	 public List<PartyResultVO> getPartiesForConstituency(List<Object[]> prtyRslts){
 		 List<PartyResultVO> partyResults = new ArrayList<PartyResultVO>();
