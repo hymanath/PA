@@ -18,7 +18,7 @@ public class StateSubRegionDistrictDAO extends GenericDaoHibernate<StateSubRegio
 		
 		StringBuilder queryString = new StringBuilder();
 		queryString.append(" select model1.constituencyId,model1.name from StateSubRegionDistrict model2 ,Constituency model1 where model2.district.districtId = model1.district.districtId and " +
-				" model1.deformDate is null and model1.electionScope.electionScopeId = 2 and model2.stateSubRegion.stateSubRegionId in (:subRegionId) ");
+				" model1.deformDate is null and model1.electionScope.electionScopeId = 2 and model2.stateSubRegion.stateSubRegionId in (:subRegionId) order by model1.name asc ");
 		Query query = getSession().createQuery(queryString.toString());
 		//query.setParameter("electionScopeId", electionScopeId);
 		query.setParameterList("subRegionId", subRegionId);
