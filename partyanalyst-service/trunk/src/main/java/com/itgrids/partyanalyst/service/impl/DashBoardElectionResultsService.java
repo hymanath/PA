@@ -1684,8 +1684,8 @@ List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId,
     		
     		for(Entry<String, Long> entry:partyCountBefore.entrySet())
     		{
-    			 beforeCount = entry.getValue();
-    			 afterCount = partyCountAfter.get(entry.getKey());
+    			 beforeCount = entry.getValue() != null ?entry.getValue():0;
+    			 afterCount = partyCountAfter.get(entry.getKey()) != null ? partyCountAfter.get(entry.getKey()):0;
     			
     			resultMap.put(entry.getKey(),(int)( afterCount - beforeCount ));
     		}
