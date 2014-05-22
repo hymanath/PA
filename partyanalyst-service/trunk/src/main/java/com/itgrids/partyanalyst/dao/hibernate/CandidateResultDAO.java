@@ -469,7 +469,7 @@ public class CandidateResultDAO extends GenericDaoHibernate<CandidateResult, Lon
 					" model.nomination.candidate.lastname , model.rank from CandidateResult model where " +
 					" model.nomination.constituencyElection.election.electionId = :electionId " +
 					" and model.nomination.constituencyElection.constituency.constituencyId in (:constiIds ) " +
-					" and model.nomination.constituencyElection.constituency.name like '%"+searchName+"%' "+
+					" and model.nomination.constituencyElection.constituency.name like '"+searchName+"' "+
 					" order by model.nomination.constituencyElection.constituency.name asc");
 		}
 		else
@@ -483,7 +483,7 @@ public class CandidateResultDAO extends GenericDaoHibernate<CandidateResult, Lon
 					" model.nomination.constituencyElection.election.electionId = :electionId " +
 					//" and model.nomination.constituencyElection.constituency.countryId = :stateid " +
 					" and model.nomination.constituencyElection.constituency.constituencyId in (:constiIds ) " +
-					" and model.nomination.constituencyElection.constituency.name like '%"+searchName+"%' "+
+					" and model.nomination.constituencyElection.constituency.name like '"+searchName+"' "+
 					" order by model.nomination.constituencyElection.constituency.name");
 		}
 		
