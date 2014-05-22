@@ -187,6 +187,11 @@ public class DashBoardElectionResultsAction extends ActionSupport implements Ser
 			
 			Long electionId = jObj.getLong("electionId");
 			Long scopeId = jObj.getLong("scopeId");
+			Long electionScopeId = null;
+			
+			if(scopeId.longValue() == 4L){
+				electionScopeId = jObj.getLong("electionScopeId");
+			}
 			
 			 JSONArray jArray = jObj.getJSONArray("locationIds");
 			 List<Long> locationIds = new ArrayList<Long>();
@@ -196,7 +201,7 @@ public class DashBoardElectionResultsAction extends ActionSupport implements Ser
 				   locationIds.add(new Long(jArray.get(i).toString()));
 			   }
 			   
-			matrixReport = dashBoardElectionResultsService.getWonAndLeadCountPartyWise(electionId,locationIds,scopeId);
+			matrixReport = dashBoardElectionResultsService.getWonAndLeadCountPartyWise(electionId,locationIds,scopeId,electionScopeId);
 			
 		}catch(Exception e)
 		{
