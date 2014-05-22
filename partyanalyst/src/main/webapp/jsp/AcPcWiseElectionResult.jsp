@@ -1340,18 +1340,18 @@ $('#ajaxImage').show();
 <div class="chart-gauge1" id="unemp_chart1" style="display: block; width: 394px;"></div>
 
 <img class="div_sld_img" src="images/results/bjpeffect.jpg" />
-<div class="div_sld" style="display: none;"><div id="slider3" class="d3-slider d3-slider-horizontal"><a class="d3-slider-handle" xlink:href="#"></a><svg class="d3-slider-axis d3-slider-axis-bottom" style="left: -12px;" width="558" height="32"><g transform="translate(12,0)"><g class="tick" style="opacity: 1;" transform="translate(0,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">0%</text></g><g class="tick" style="opacity: 1;" transform="translate(66.75,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">1%</text></g><g class="tick" style="opacity: 1;" transform="translate(133.5,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">2%</text></g><g class="tick" style="opacity: 1;" transform="translate(200.25,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">3%</text></g><g class="tick" style="opacity: 1;" transform="translate(267,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">4%</text></g><g class="tick" style="opacity: 1;" transform="translate(333.75,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">5%</text></g><path class="domain" d="M0,6V0H534V6"/></g></svg></div>
+<div class="div_sld" style="display: none;"><div id="slider3" style="z-index:0;" class="d3-slider d3-slider-horizontal"><a class="d3-slider-handle" xlink:href="#"></a><svg class="d3-slider-axis d3-slider-axis-bottom" style="left: -12px;" width="558" height="32"><g transform="translate(12,0)"><g class="tick" style="opacity: 1;" transform="translate(0,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">0%</text></g><g class="tick" style="opacity: 1;" transform="translate(66.75,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">1%</text></g><g class="tick" style="opacity: 1;" transform="translate(133.5,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">2%</text></g><g class="tick" style="opacity: 1;" transform="translate(200.25,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">3%</text></g><g class="tick" style="opacity: 1;" transform="translate(267,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">4%</text></g><g class="tick" style="opacity: 1;" transform="translate(333.75,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">5%</text></g><path class="domain" d="M0,6V0H534V6"/></g></svg></div>
 </div>
 
 <img class="div_sld1_img" src="images/results/tdpeffect.jpg" />
-<div class="div_sld1" style="display: block;"><div id="slider3" style="width:375px;-20px" class="d3-slider d3-slider-horizontal"><a class="d3-slider-handle1" xlink:href="#" style="left: 50%;"></a><svg class="d3-slider-axis d3-slider-axis-bottom" style="left: -12px;" width="558" height="32"><g transform="translate(12,0)"><g class="tick" style="opacity: 1;" transform="translate(0,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">0%</text></g><g class="tick" style="opacity: 1;" transform="translate(37.25,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">1%</text></g><g class="tick" style="opacity: 1;" transform="translate(74.5,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">2%</text></g><g class="tick" style="opacity: 1;" transform="translate(111.75,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">3%</text></g><g class="tick" style="opacity: 1;" transform="translate(149,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">4%</text></g><g class="tick" style="opacity: 1;" transform="translate(186.25,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">5%</text></g><g class="tick" style="opacity: 1;" transform="translate(223.5,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">6%</text></g><g class="tick" style="opacity: 1;" transform="translate(260.75,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">7%</text></g><g class="tick" style="opacity: 1;" transform="translate(298,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">8%</text></g><g class="tick" style="opacity: 1;" transform="translate(335.25,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">9%</text></g><g class="tick" style="opacity: 1;" transform="translate(372.5,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">10%</text></g><path class="domain" d="M0,6V0H298V6"/></g></svg></div>
+<div class="div_sld1" style="display: block;"><div id="slider3" style="width:375px;-20px; z-index:0;" class="d3-slider d3-slider-horizontal"><a class="d3-slider-handle1" xlink:href="#" style="left: 50%;"></a><svg class="d3-slider-axis d3-slider-axis-bottom" style="left: -12px;" width="558" height="32"><g transform="translate(12,0)"><g class="tick" style="opacity: 1;" transform="translate(0,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">0%</text></g><g class="tick" style="opacity: 1;" transform="translate(37.25,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">1%</text></g><g class="tick" style="opacity: 1;" transform="translate(74.5,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">2%</text></g><g class="tick" style="opacity: 1;" transform="translate(111.75,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">3%</text></g><g class="tick" style="opacity: 1;" transform="translate(149,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">4%</text></g><g class="tick" style="opacity: 1;" transform="translate(186.25,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">5%</text></g><g class="tick" style="opacity: 1;" transform="translate(223.5,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">6%</text></g><g class="tick" style="opacity: 1;" transform="translate(260.75,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">7%</text></g><g class="tick" style="opacity: 1;" transform="translate(298,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">8%</text></g><g class="tick" style="opacity: 1;" transform="translate(335.25,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">9%</text></g><g class="tick" style="opacity: 1;" transform="translate(372.5,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">10%</text></g><path class="domain" d="M0,6V0H298V6"/></g></svg></div>
 </div>
 
 </div>
 </center>
  <!--sravanthi code end-->
-<div id="weathermap4"> </div>
-<div class="container" style="display:none;margin-bottom:10px;font-family: verdana; font-size: 14px; border: 1px solid rgb(204, 204, 204); padding: 15px 10px 10px; margin-top: 24px;" id="mapDiv">
+<div id="weathermap4" style="padding-bottom: 15px;"> </div>
+<div class="container" style="display:none;margin-bottom:10px;font-family: verdana; font-size: 14px; border: 1px solid rgb(204, 204, 204); padding: 0px 10px 10px;" id="mapDiv">
 
 
 <!--<h4 style="padding: 10px; margin-top: 10px; border-radius: 5px; text-align: center; background: none repeat scroll 0% 0% rgb(73, 175, 205);">LIVE ELECTION RESULTS COMPARISON</h4> -->
@@ -1370,7 +1370,7 @@ $('#ajaxImage').show();
 </map>
   
 <div id="stateSelectDiv" align="center" style="margin-bottom: 20px;" >
-	<div class="span4 offset4">
+	<div class="span4 offset4" style="margin-top: 10px;">
 	<b>Select State</b>
 	<select id="stateId">
 	<option value="0">Select State</option>
@@ -1697,7 +1697,7 @@ $('#ajaxImage').show();
 
  <img id="stateAjaxImg3" src="./images/icons/barloader.gif" alt="Processing Image" style=" display: none; margin-left: 600px;padding-bottom: 10px;" />
 
- <center><div id="weathermap3"> </div></center>
+ <center><img id="effectClrImg" style="display:none;" src="images/specialPage/parlicolorcodes.png"><div id="weathermap3"> </div></center>
  
   
  
@@ -2065,7 +2065,6 @@ var stateType = '';
 		data: {task:JSON.stringify(jsObj)},
 		})
 		.done(function( result ) {
-		    $('#seemandraStateId').trigger('click');
 			electionAcData = result;
 			getLocationRespectiveDetails(stateVal,locationLevel,year,mapNo);
 			
@@ -2185,6 +2184,7 @@ var stateType = '';
 		data: {task:JSON.stringify(jsObj)},
 		})
 		.done(function( result ) {
+		    $('#seemandraStateId').trigger('click');
 			electionPcData = result;
 			getLocationRespectiveDetails(stateVal,locationLevel,year,mapNo);
 		});	
@@ -2362,14 +2362,14 @@ var stateType = '';
 	}	
 	
 	function onEachFeature(feature, layer)
-	{
+	{  
 		if(areatype  == "pc")
 		{
 			onEachFeature1(feature, layer);
 		}
 		else if(areatype  == "totPc")
 		{
-			onEachFeatureForPc(feature, layer);
+			onEachFeatureForIndPC1(feature, layer);
 		}
 		else if(areatype  == "totac")
 		{
@@ -2666,38 +2666,289 @@ popupContent +=' </table>';
 			});
 	}
 	
+	function onEachFeatureForIndPC1(feature, layer)
+	{
+
+		var popupContent='';
+        var presnt = false;
+			popupContent +='<article class="timeline-group" id="stateAK" style="font-family: times new roman,serif,sans-serif;margin-left:-40px;">';
+			popupContent +=' <header class="timeline-header">';
+		//	popupContent +=' <h3><b aria-hidden="true" class="stateface "></b> '+feature.properties.pc_name+'</a> </h3>';
+			popupContent +=' </header>';
+			popupContent +=' <ol class="timeline-list"> ';
+			popupContent +=' <li class="timeline-point is-standard" data-when="future"> ';
+			popupContent +=' <article class="results-group">';
+			
+			for(var i in electionPcData)
+			{
+				if(feature.properties.pc_name == electionPcData[i].name)
+				{
+					if(electionPcData[i].selectedCasteDetails[0] != undefined){
+					popupContent +=' <span style="font-size: 12px;"> <span style="font-size:16px;font-weight:bold;">  Won Party: '+electionPcData[i].selectedCasteDetails[0].name+' ';					
+					
+					var leadby = electionPcData[i].selectedCasteDetails[0].count - electionPcData[i].selectedCasteDetails[1].count;
+					popupContent +=' <span style="margin-left:235px;"> Won By :  '+leadby+' Votes</span>';
+					break;					
+					}
+			}
+		}
+		
+		popupContent +=' <header class="results-header" style="width: 515px;">';
+		popupContent +=' </header>';
+
+		popupContent +=' <table class="table">';
+			
+		popupContent +=' <thead>';
+		popupContent +=' <tr>';
+		popupContent +='<th> Candidate Name </th>';
+		popupContent +='<th> Party </td>';
+		popupContent +='<th> Votes Percentage  </th>';
+		popupContent +='<th> Gained Votes </th>';
+		popupContent +=' </tr">';
+			popupContent +=' </thead>';
+
+popupContent +=' </table>';
+		popupContent +=' <header class="results-header" style="width: 515px; margin-top: -30px;border-bottom-color: #004276;">';
+		popupContent +=' </header>';
+			popupContent +=' <div style="overflow:scroll;height:200px;">';	
+	popupContent +=' <table class="results-table">';
+	
+	popupContent +=' <tbody>';
+			var partyName ;
+			layer.setStyle({
+			color: '#000000', 
+			weight: 1,
+			opacity: 0.6,
+			fillOpacity: 0.65,
+			fillColor: '#FFFFFF'
+			});
+			//layer.bindPopup(popupContent);
+
+			for(var i in electionPcData)
+			{
+				if(feature.properties.pc_name == electionPcData[i].name)
+				{
+					for(var j in electionPcData[i].selectedCasteDetails)
+					{
+						if(electionPcData[i].selectedCasteDetails[j].casteName != null)
+						{ presnt = true;
+							popupContent +=' <tr class="type-democrat">';
+						popupContent +=' <td class="results-title">';
+						popupContent +=' <span class="percentage-combo" ><span class="number">'+electionPcData[i].selectedCasteDetails[j].casteName+'</span>';
+						popupContent +=' </span>';
+						popupContent +=' </td>';
+						popupContent +=' <td style="width:50px;padding-left:10px;">'+electionPcData[i].selectedCasteDetails[j].name+'';					
+						popupContent +=' </td>';
+						popupContent +=' <td class="results-percentage" >';
+						if(electionPcData[i].selectedCasteDetails[j].persent != null){
+						popupContent +=' <span class="percentage-combo" ><span class="number">'+electionPcData[i].selectedCasteDetails[j].persent+'%</span>';
+						}
+						else{
+						popupContent +=' <span class="percentage-combo" ><span class="number">0 %</span>';
+						}
+						popupContent +=' <span class="graph">';
+						popupContent +=' <span class="bar">';
+						popupContent +=' <span style="width:'+electionPcData[i].selectedCasteDetails[j].persent+'%;" class="index"></span>';
+						popupContent +=' </span>';
+						popupContent +=' </span>';
+						popupContent +=' </span>';
+						popupContent +=' </td>';
+						popupContent +=' <td>';
+						popupContent +=' <span style="font-weight:#000000;margin-left:35px;">'+electionPcData[i].selectedCasteDetails[j].count+' </span>';
+						popupContent +=' </td>';
+						popupContent +=' </tr>';
+
+
+							if(electionPcData[i].selectedCasteDetails[0].count == 0)
+							{
+								layer.setStyle({
+								color: '#000000',
+								weight: 1,
+								opacity: 0.6,
+								fillOpacity: 0.65,
+								fillColor: '#FFFFFF'
+								});
+								//layer.bindPopup(popupContent);
+								}
+								else
+								{
+								partyName = electionPcData[i].selectedCasteDetails[0].aliancedWith;
+								fillColour(partyName,layer,popupContent);
+							}
+
+						}
+						
+			
+					}
+					
+				}
+					
+			} 
+			
+			popupContent +=' </tbody>';
+			popupContent +=' </table>';
+			popupContent +=' </div>';
+			popupContent +=' </article>';
+			popupContent +=' </li> ';
+			popupContent +=' </ol>';
+			popupContent +=' </article>';
+
+
+			$('.leaflet-popup-close-button').html('');
+			if (feature.properties && feature.properties.popupContent)
+			{
+				popupContent += feature.properties.popupContent;
+			}			 
+			
+			layer.bindLabel(feature.properties.pc_name, {noHide:true});
+			if(presnt){
+			layer.on('click', function(e) {
+			onClickForMap(popupContent,feature.properties.pc_name+' Parliament Constituency ');
+			});
+			}
+	}
+	
 	function onEachFeatureForAc(feature, layer)
 	{
-		layer.setStyle({
-		color: '#000000', 
-		weight: 1,
-		opacity: 0.6,
-		fillOpacity: 0.65,
-		fillColor: '#FFFAF0'
-		});
-		for(var i in psDetails)
-		{
-			if(psDetails[i].name.toUpperCase() == feature.properties.ac_name.toUpperCase())
+		var popupContent='';
+        var prsnt = false;
+			popupContent +='<article class="timeline-group" id="stateAK" style="font-family: times new roman,serif,sans-serif;margin-left:-40px;">';
+			popupContent +=' <header class="timeline-header" style="width:500px;">';
+			//popupContent +=' <h3><b aria-hidden="true" class="stateface "></b> '+feature.properties.ac_name+'</a> </h3>';
+			popupContent +=' </header>';
+			popupContent +=' <ol class="timeline-list"> ';
+			popupContent +=' <li class="timeline-point is-standard" data-when="future"> ';
+			popupContent +=' <article class="results-group">';
+			for(var i in electionAcData)
 			{
-				layer.setStyle({
-				color: '#000000', 
-				weight: 1,
-				opacity: 0.6,
-				fillOpacity: 0.65,
-				fillColor: '#FFD700'
-				});
+				if(feature.properties.ac == electionAcData[i].hamletId)
+				{
+			if(i>0){
+				popupContent +=' <span style="font-size: 12px;"> <span style="font-size:16px;font-weight:bold;">  Won Party: '+electionAcData[i].selectedCasteDetails[0].name+' ';
+			
+				var leadby = electionAcData[i].selectedCasteDetails[0].count - electionAcData[i].selectedCasteDetails[1].count;
+				popupContent +=' <span style="margin-left:235px;"> Won By :  '+leadby+' Votes</span>';
+	
 			}
-			/* else
-			{
-				layer.setStyle({
-				color: '#000000', 
-				weight: 1,
-				opacity: 0.6,
-				fillOpacity: 0.65,
-				fillColor: '#FFFAF0'
-				});
-			} */
+			
+			}
 		}
+		
+		popupContent +=' <header class="results-header" style="width: 515px;">';
+		popupContent +=' </header>';
+
+			popupContent +=' <table class="table">';
+			popupContent +=' <thead>';
+		popupContent +=' <tr>';
+		popupContent +='<th> Candidate Name </th>';
+		popupContent +='<th> Party </td>';
+		popupContent +='<th> Votes Percentage </th>';
+		popupContent +='<th> Gained Votes </th>';
+		popupContent +=' </tr">';
+			popupContent +=' </thead>';
+
+popupContent +=' </table>';
+		popupContent +=' <header class="results-header" style="width: 515px; margin-top: -30px;border-bottom-color: #004276;">';
+		popupContent +=' </header>';
+			popupContent +=' <div style="overflow:scroll;height:200px;">';	
+	popupContent +=' <table class="results-table">';
+	
+	popupContent +=' <tbody>';
+	
+			var partyName ;
+			for(var i in electionAcData)
+			{
+				if(feature.properties.ac == electionAcData[i].hamletId)
+				{
+					for(var j in electionAcData[i].selectedCasteDetails)
+					{
+						if(electionAcData[i].selectedCasteDetails[j].casteName != null)
+						{
+                           prsnt = true;
+							popupContent +=' <tr class="type-democrat">';
+						popupContent +=' <td class="results-title">';
+						popupContent +=' <span class="percentage-combo" ><span class="number">'+electionAcData[i].selectedCasteDetails[j].casteName+'</span>';
+						popupContent +=' </span>';
+						popupContent +=' </td>';
+						popupContent +=' <td style="width:50px;padding-left:10px;">'+electionAcData[i].selectedCasteDetails[j].name+'';					
+						popupContent +=' </td>';
+						popupContent +=' <td class="results-percentage" >';
+						if(electionAcData[i].selectedCasteDetails[j].persent != null){
+						popupContent +=' <span class="percentage-combo" ><span class="number">'+electionAcData[i].selectedCasteDetails[j].persent+'%</span>';
+						}
+						else{
+						popupContent +=' <span class="percentage-combo" ><span class="number">0 %</span>';
+						}
+						popupContent +=' <span class="graph">';
+						popupContent +=' <span class="bar">';
+						popupContent +=' <span style="width:'+electionAcData[i].selectedCasteDetails[j].persent+'%;" class="index"></span>';
+						popupContent +=' </span>';
+						popupContent +=' </span>';
+						popupContent +=' </span>';
+						popupContent +=' </td>';
+						popupContent +=' <td>';
+						popupContent +=' <span style="font-weight:#000000;margin-left:35px;">'+electionAcData[i].selectedCasteDetails[j].count+' </span>';
+						popupContent +=' </td>';
+						popupContent +=' </tr>';
+
+
+
+
+							if(electionAcData[i].selectedCasteDetails[0].count == 0)
+							{
+								layer.setStyle({
+								color: '#000000',
+								weight: 1,
+								opacity: 0.6,
+								fillOpacity: 0.65,
+								fillColor: '#FFFFFF'
+								});
+								layer.bindPopup(popupContent);
+								}
+								else
+								{
+								partyName = electionAcData[i].selectedCasteDetails[0].name;
+								fillColour(partyName,layer,popupContent);
+							}
+
+						}
+						
+			
+					}
+					
+				}
+			} 
+			
+			popupContent +=' </tbody>';
+			popupContent +=' </table>';
+			popupContent +=' </div>';
+			popupContent +=' </article>';
+			popupContent +=' </li> ';
+			popupContent +=' </ol>';
+			popupContent +=' </article>';
+			if(!prsnt){
+                  layer.setStyle({
+								color: '#000000',
+								weight: 1,
+								opacity: 0.6,
+								fillOpacity: 0.65,
+								fillColor: '#FFFFFF'
+								});
+			}
+
+			$('.leaflet-popup-close-button').html('');
+			if (feature.properties && feature.properties.popupContent)
+			{
+				popupContent += feature.properties.popupContent;
+			}
+			 
+			
+			layer.bindLabel(feature.properties.ac_name, {noHide:true});
+			if(prsnt){
+			layer.on('click', function(e) {
+				onClickForMap(popupContent,feature.properties.ac_name+' Assembly Constituency ');
+			});
+			}
 	}
 	function onEachFeatureForPc(feature, layer)
 	{
@@ -2867,16 +3118,16 @@ popupContent +=' </table>';
 	{
 		 //$("#stateAjaxImg3").css("display","block");
 		var parties = new Array();
-		parties.push(872);
-		parties.push(362);
+		//parties.push(872);
+		//parties.push(362);
 		parties.push(163);
-		parties.push(72);
-		parties.push(886);
-		parties.push(662);
-		parties.push(1117);
+		//parties.push(72);
+		//parties.push(886);
+		//parties.push(662);
+		//parties.push(1117);
 		var jsObj=
 		{
-				electionId : 17,
+				electionId : 260,
 				stateId : 1,
 				electionScopeId : 1,
 				parties : parties,
@@ -2891,7 +3142,74 @@ popupContent +=' </table>';
 		})
 		.done(function( result ) {
 		  try{
-			electionPcData = result;
+		    var resArr = new Array();
+		    for(var i in result){
+			
+			  if(result[i].selectedCasteDetails != null && result[i].selectedCasteDetails.length > 0 &&  result[i].selectedCasteDetails[0].aliancedWith =="NDA"){
+			   resArr.push(result[i]);
+			  }
+			}
+			electionPcData = resArr;
+						 un_emp = 0.0;
+			 if(resArr != null && resArr.length > 0){ 
+			  var totalSeats = resArr.length;			  
+					 if(totalSeats <= 115){
+						 if(totalSeats <= 0){
+						  un_emp = 0.0;
+						 }else if(totalSeats <= 23){
+						   un_emp = 0.05;
+						 }else if(totalSeats <= 46){
+						   un_emp = 0.10;
+						 }else if(totalSeats <= 69){
+						   un_emp = 0.15;
+						 }else if(totalSeats <= 92){
+						   un_emp = 0.20;
+						 }else if(totalSeats > 92){
+						   un_emp = 0.25;
+						 }
+						 
+					 }
+					 else if(totalSeats <= 175){
+					   if(totalSeats <= 127){
+						   un_emp = 0.30;
+						 }else if(totalSeats <= 139){
+						   un_emp = 0.35;
+						 }else if(totalSeats <= 151){
+						   un_emp = 0.40;
+						 }else if(totalSeats <= 163){
+						   un_emp = 0.45;
+						 }else if(totalSeats > 163){
+						   un_emp = 0.50;
+						 }
+					 }
+					 else if(totalSeats <= 275){
+					   if(totalSeats <= 195){
+						   un_emp = 0.55;
+						 }else if(totalSeats <= 215){
+						   un_emp = 0.60;
+						 }else if(totalSeats <= 235){
+						   un_emp = 0.65;
+						 }else if(totalSeats <= 255){
+						   un_emp = 0.70;
+						 }else if(totalSeats > 255){
+						   un_emp = 0.75;
+						 }
+					 }
+					 else if(totalSeats > 275){
+					  if(totalSeats <= 290){
+						   un_emp = 0.80;
+						 }else if(totalSeats <= 305){
+						   un_emp = 0.85;
+						 }else if(totalSeats <= 320){
+						   un_emp = 0.90;
+						 }else if(totalSeats <= 335){
+						   un_emp = 0.95;
+						 }else if(totalSeats > 335){
+						   un_emp = 1;
+						 }
+					 }
+ 			    }
+			    callModiMeter();
 			//getLocationRespectiveDetails(stateVal,locationLevel,year,mapNo);
 			generateMapForTgPCTotal();
 			$( "#processingDialogue" ).dialog('close');
@@ -2910,10 +3228,10 @@ popupContent +=' </table>';
 		center: [20.0000,81.0000],
 		zoom: 5
 		});
-		map1.dragging.disable();
-		map1.touchZoom.disable();
-		map1.doubleClickZoom.disable();
-		map1.scrollWheelZoom.disable();
+		map3.dragging.disable();
+		map3.touchZoom.disable();
+		map3.doubleClickZoom.disable();
+		map3.scrollWheelZoom.disable();
 		L.geoJson(campus, {
 
 		style: function (feature) {
@@ -3085,7 +3403,7 @@ function getRegionWiseResults(searchType)
 	if(searchType == 'Telangana')
 	{
 	    //makeClickedFalse(1);
-		
+		$('#effectClrImg').hide();
 		getElectionResultForAssemblyPrevious(2,"first",1,2);
 		getElectionResultForParlimentPresent(2,"second",2,2);
 		telanganaDistrict();
@@ -3138,6 +3456,7 @@ function getRegionWiseResults(searchType)
 	}
 	else if(searchType == 'Semandhra')
 	{
+	    $('#effectClrImg').hide();
 		getElectionResultForAssemblyPrevious(1,"first",1,2);
 		getElectionResultForParlimentPresent(1,"second",2,2);
 		seemandraDistrict();
@@ -3190,6 +3509,7 @@ function getRegionWiseResults(searchType)
 	}
 	else if(searchType == 'India')
 	{
+	    $('#effectClrImg').hide();
 		$('#results1Div,#subTitlesDiv').html('');
 		$('#results1Div,#subTitlesDiv').css('display','none');
 		$('#bannerDiv').hide();
@@ -3224,6 +3544,7 @@ function getRegionWiseResults(searchType)
 	}
 	else if(searchType == 'StateAnalysis')
 	{
+	    $('#effectClrImg').hide();
 		$('#results1Div,#subTitlesDiv').html('');
 		$('#results1Div,#subTitlesDiv').css('display','none');
 		$('#matridLeadId,#matrixWonSummaryId,#matrixLeadSummaryId,#errorDiv,#test,#constituencyResultsDiv').html('');
@@ -3252,6 +3573,7 @@ function getRegionWiseResults(searchType)
 	}
 	else if(searchType == 'DistrictAnalysis')
 	{
+	    $('#effectClrImg').hide();
 		$('#results1Div,#subTitlesDiv').html('');
 		$('#results1Div,#subTitlesDiv').css('display','none');
 		$('#bannerDiv').hide();
@@ -3279,6 +3601,7 @@ function getRegionWiseResults(searchType)
 	}
 	else if(searchType == 'CBNEffect')
 	{
+	    $('#effectClrImg').hide();
 	    $("#modiDiv").show();
 		$('#results1Div,#subTitlesDiv').html('');
 		$('#results1Div,#subTitlesDiv').css('display','none');
@@ -3332,6 +3655,7 @@ function getRegionWiseResults(searchType)
 	}
 	else if(searchType == 'ModiEffect')
 	{
+	    $('#effectClrImg').show();
 	    $("#modiDiv").show();
 		$('#results1Div,#subTitlesDiv').html('');
 		$('#results1Div,#subTitlesDiv').css('display','none');
@@ -3511,66 +3835,6 @@ function getRegionWiseResults(searchType)
 			psDetails = result;
 			if(electionScopeId == 1)
 			{
-			 un_emp = 0.0;
-			 if(result != null && result.length > 0){ 
-			  var totalSeats = result.length;			  
-					 if(totalSeats <= 115){
-						 if(totalSeats <= 0){
-						  un_emp = 0.0;
-						 }else if(totalSeats <= 23){
-						   un_emp = 0.05;
-						 }else if(totalSeats <= 46){
-						   un_emp = 0.10;
-						 }else if(totalSeats <= 69){
-						   un_emp = 0.15;
-						 }else if(totalSeats <= 92){
-						   un_emp = 0.20;
-						 }else if(totalSeats > 92){
-						   un_emp = 0.25;
-						 }
-						 
-					 }
-					 else if(totalSeats <= 175){
-					   if(totalSeats <= 127){
-						   un_emp = 0.30;
-						 }else if(totalSeats <= 139){
-						   un_emp = 0.35;
-						 }else if(totalSeats <= 151){
-						   un_emp = 0.40;
-						 }else if(totalSeats <= 163){
-						   un_emp = 0.45;
-						 }else if(totalSeats > 163){
-						   un_emp = 0.50;
-						 }
-					 }
-					 else if(totalSeats <= 275){
-					   if(totalSeats <= 195){
-						   un_emp = 0.55;
-						 }else if(totalSeats <= 215){
-						   un_emp = 0.60;
-						 }else if(totalSeats <= 235){
-						   un_emp = 0.65;
-						 }else if(totalSeats <= 255){
-						   un_emp = 0.70;
-						 }else if(totalSeats > 255){
-						   un_emp = 0.75;
-						 }
-					 }
-					 else if(totalSeats > 275){
-					  if(totalSeats <= 290){
-						   un_emp = 0.80;
-						 }else if(totalSeats <= 305){
-						   un_emp = 0.85;
-						 }else if(totalSeats <= 320){
-						   un_emp = 0.90;
-						 }else if(totalSeats <= 335){
-						   un_emp = 0.95;
-						 }else if(totalSeats > 335){
-						   un_emp = 1;
-						 }
-					 }
- 			    }
-			    callModiMeter();
 				
 				$(".d3-slider-handle").attr("style","left:"+sliderModiWave+"%");
 				getElectionResultForTotalParliment();
@@ -3677,8 +3941,18 @@ function getRegionWiseResults(searchType)
 		})
 		.done(function( result ) {
 		  try{
-			//electionAcData = result;
-			getMapForAssembly();
+			var resArr = new Array();
+		    for(var i in result){
+			
+			  if(result[i].selectedCasteDetails != null && result[i].selectedCasteDetails.length > 0 &&  result[i].selectedCasteDetails[0].name =="TDP"){
+			   resArr.push(result[i]);
+			  }
+			}
+			electionAcData = resArr;
+			 if(level == 0){
+			   getMapForAssembly();
+			   }
+			   $("#stateAjaxImg4").css("display","none");
 			$( "#processingDialogue" ).dialog('close');
 		  }catch(e){
 		   $( "#processingDialogue" ).dialog('close');
@@ -3692,7 +3966,7 @@ function getRegionWiseResults(searchType)
 			document.getElementById('weathermap4').innerHTML = "<div  id='map4'  style='height: 400px; border: 1px solid rgb(51, 51, 51); border-radius: 10px; position: relative; background: none repeat scroll 0% 0% rgb(255, 255, 255); width:956px;margin-left:auto;margin-right:auto;''></div>"
 			map4 = L.map('map4', {
 			center: [16.0000,80.0000],
-			zoom: 6
+			zoom: 6.4
 			});
 			map4.dragging.disable();
 			map4.touchZoom.disable();
@@ -4556,8 +4830,8 @@ $('#processingDialogue').addClass("customclass1");
 $('#processingDialogue').removeClass("ui-widget-content ui-dialog-content");
 $('.ui-dialog').css({left:378 ,width:512});
 $('#processingDialogue').closest('.ui-icon').css("display","none");
- $("#processingDialogue").dialog('open').html("<img src='images/Loading-data.gif' id='mainajaximg' style='height:100px;width:114px;'/>");
- $("#mainajaximg").attr("style","height:100px;width:114px;margin-top:"+$(window).height()/2+"px");
+ $("#processingDialogue").dialog('open').html("<img src='images/Loading-data.gif' id='mainajaximg' style='height:84px;width:93px;'/>");
+ $("#mainajaximg").attr("style","height:84px;width:93px;margin-top:"+$(window).height()/2+"px");
 }
 
 $(".matrixRprt").click(function() { 
