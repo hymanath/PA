@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.dao.IElectionAllianceDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.IStateSubRegionDistrictDAO;
 import com.itgrids.partyanalyst.dto.DashBoardResultsVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
@@ -61,6 +62,9 @@ public class DashBoardElectionResultsService implements
 	
 	@Autowired
 	private IPartyDAO partyDAO;
+	
+	@Autowired
+	IStateSubRegionDistrictDAO stateSubRegionDistrictDAO;
 	
 	@Autowired
 	private IConstituencyElectionDAO constituencyElectionDAO;
@@ -1354,19 +1358,14 @@ List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId,
   }
 	 
 	 
-	 public  List<DashBoardResultsVO> getWonAndLeadCountPartyWise(Long electionId,List<Long> locationIds,Long scopeId)
+	 public  List<DashBoardResultsVO> getWonAndLeadCountPartyWise(Long electionId,List<Long> locationIds,Long scopeId,Long electionScopeId)
 	 {
 		 List<DashBoardResultsVO> resultList = new ArrayList<DashBoardResultsVO>();
 		 try
 		 {
-			 List<Object[]> list = nominationDAO.getWonAndLeadCountPartyWise(electionId, locationIds, scopeId);
 			 
-			 
-			 List<Long> locationsIds = new ArrayList<Long>();
-				List<Long> partyIds = new ArrayList<Long>();
+			 List<Long> prtyIds = new ArrayList<Long>();
 				
-				List<Long> prtyIds = new ArrayList<Long>();
-					
 				prtyIds.add(872L);
 				prtyIds.add(362L);
 				prtyIds.add(1117L);
@@ -1376,7 +1375,7 @@ List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId,
 				prtyIds.add(9999L);
 				
 				Map<Long,String> partyMap = new HashMap<Long, String>();
-				
+				List<Long> partyIds = new ArrayList<Long>();
 				
 				partyMap.put(872L, "TDP");
 				partyMap.put(362L, "INC");
@@ -1386,72 +1385,195 @@ List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId,
 				partyMap.put(662L, "PRP");
 				partyMap.put(9999L,"OTH"); //for others we considered id as 9999
 				
-				
-				for(Object[] obj:list)
-				{
-					if(!locationsIds.contains(Long.parseLong(obj[1].toString())))
-						locationsIds.add(Long.parseLong(obj[1].toString()));
+				Map<Long,Long> locationwiseMap = new HashMap<Long, Long>();
+			 if(scopeId.longValue() == 4L){ // for  parliament wise win and lead report
+				 
+				 List<Object[]> constiList =  stateSubRegionDistrictDAO.getAssemblyConstituenciesBySubRegionIds(locationIds);
+					List<Long> constiIds = null;
 					
-					if(prtyIds.contains(Long.parseLong(obj[3].toString())) && !partyIds.contains(Long.parseLong(obj[3].toString())))
-						partyIds.add(Long.parseLong(obj[3].toString()));
-				}
-				partyIds.add(9999L);
-				
-				
-				for(Long locationId:locationsIds)
-				{
-					DashBoardResultsVO locationVO = new DashBoardResultsVO();
-					locationVO.setId(locationId);
-					
-					for(Long partyId:partyIds)
-					{
-						DashBoardResultsVO partyVO = new DashBoardResultsVO();
-						partyVO.setId(partyId);
-						partyVO.setName(partyMap.get(partyId));
-						
-						locationVO.getPartiesDetails().add(partyVO);
-						
+					if(constiList != null && constiList.size()>0){
+						constiIds = new ArrayList<Long>();
+						for (Object[] constituency : constiList) {
+							constiIds.add((Long)constituency[0]);
+						}
 					}
-					resultList.add(locationVO);
-				}
-				
-				
-				for(Object[] obj:list)
-				{
-					DashBoardResultsVO locationVO =  getMacthedVO(resultList,Long.parseLong(obj[1].toString()));
-					locationVO.setName(obj[2].toString());
 					
-					DashBoardResultsVO partyVO = null;
-					if(partyIds.contains(Long.parseLong(obj[3].toString())))
-					 partyVO =  getMacthedVO(locationVO.getPartiesDetails(),Long.parseLong(obj[3].toString()));
+					List<Object[]> parliaments = null ;
+					if(electionScopeId.longValue() == 1L){
+						parliaments = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(constiIds);
+						if(parliaments != null && parliaments.size()>0){
+							locationIds.clear();
+							for (Object[] constituency : parliaments) {
+								if(!locationIds.contains((Long)constituency[0]))
+									locationIds.add((Long)constituency[0]);
+							}					
+						}
+					}
 					
 					
-					 if(partyVO == null)
-					 {
-						 partyVO = getMacthedVO(locationVO.getPartiesDetails(),9999L);
-						 partyVO.setName("OTH");
+					 List<Object[]> list = nominationDAO.getWonAndLeadCountPartyWise(electionId, locationIds, scopeId);
+					 
+					 
+					 if(list != null && list.size()>0){
 						 
-						 if(Long.parseLong(obj[5].toString()) == 1L)
-								partyVO.setWinCount(partyVO.getWinCount() + Long.parseLong(obj[0].toString()));
-						else 
+						 for (Object[] param : list) {
+							 DashBoardResultsVO locationVO = new DashBoardResultsVO();
+							 locationVO.setId((Long)param[1]);
+							 locationVO.setName(partyMap.get((Long)param[1]) != null? partyMap.get((Long)param[1]).toString() :"OTH");
+							 locationVO.setWinTotalCount((Long)param[0]);	
+							 
+							 if(Long.parseLong(param[3].toString()) == 1L)
+								 locationVO.setWinCount(Long.parseLong(param[0].toString()));
+								else
+									locationVO.setLeadCount(Long.parseLong(param[0].toString()));
+							 
+							 resultList.add(locationVO);
+						}
+					 }
+					 
+			 }
+			 else{
+				 List<Object[]> list = nominationDAO.getWonAndLeadCountPartyWise(electionId, locationIds, scopeId);
+				 
+				 
+				 List<Long> locationsIds = new ArrayList<Long>();
+					
+					for(Object[] obj:list)
+					{
+						if(!locationsIds.contains(Long.parseLong(obj[1].toString())))
+							locationsIds.add(Long.parseLong(obj[1].toString()));
+						
+						if(prtyIds.contains(Long.parseLong(obj[3].toString())) && !partyIds.contains(Long.parseLong(obj[3].toString())))
+							partyIds.add(Long.parseLong(obj[3].toString()));
+					}
+					partyIds.add(9999L);
+					
+					
+					for(Long locationId:locationsIds)
+					{
+						DashBoardResultsVO locationVO = new DashBoardResultsVO();
+						locationVO.setId(locationId);
+						
+						for(Long partyId:partyIds)
+						{
+							DashBoardResultsVO partyVO = new DashBoardResultsVO();
+							partyVO.setId(partyId);
+							partyVO.setName(partyMap.get(partyId));
+							
+							locationVO.getPartiesDetails().add(partyVO);
+							
+						}
+						resultList.add(locationVO);
+					}
+					
+					Long winCount1 = 0L;
+					for(Object[] obj:list)
+					{
+						DashBoardResultsVO locationVO =  getMacthedVO(resultList,Long.parseLong(obj[1].toString()));
+						locationVO.setName(obj[2].toString());
+						
+						DashBoardResultsVO partyVO = null;
+						if(partyIds.contains(Long.parseLong(obj[3].toString())))
+						 partyVO =  getMacthedVO(locationVO.getPartiesDetails(),Long.parseLong(obj[3].toString()));
+						
+					
+						
+						 if(partyVO == null)
+						 {
+							 partyVO = getMacthedVO(locationVO.getPartiesDetails(),9999L);
+							 partyVO.setName("OTH");
+							 
+							 if(Long.parseLong(obj[5].toString()) == 1L){
+								 
+								Long winCount2 = locationVO.getWinCount()!=null?locationVO.getWinCount():0L;
+								 
+								 winCount1 = winCount1 + Long.parseLong(obj[0].toString());
+								 winCount2 = winCount2 + Long.parseLong(obj[0].toString());
+								 
+								// if(scopeId.longValue() == 2L){
+									 locationVO.setWinCount(winCount2);
+									 locationVO.setWinTotalCount(winCount1);
+								// }
+								 partyVO.setWinCount(partyVO.getWinCount() + Long.parseLong(obj[0].toString()));
+							 }
+							else{ 
 								partyVO.setLeadCount(partyVO.getLeadCount() + Long.parseLong(obj[0].toString()));
-						 
-					 }else
-					 {
-					    partyVO.setName(obj[4].toString());
+							}
+							 
+						 }else
+						 {
+						    partyVO.setName(obj[4].toString());
 
-						if(Long.parseLong(obj[5].toString()) == 1L)
+							if(Long.parseLong(obj[5].toString()) == 1L){
+								 
+								Long winCount2 = locationVO.getWinCount()!=null?locationVO.getWinCount():0L;
+								 
+								 winCount1 = winCount1 + Long.parseLong(obj[0].toString());
+								 winCount2 = winCount2 + Long.parseLong(obj[0].toString());
+								 
+								// if(scopeId.longValue() == 2L){
+									 locationVO.setWinCount(winCount2);
+									 locationVO.setWinTotalCount(winCount1);
+								// }
+								 
+								partyVO.setWinCount(Long.parseLong(obj[0].toString()));
+							}
+							else{
+								partyVO.setLeadCount(Long.parseLong(obj[0].toString()));
+							}
+						 }
+
+						/*if(Long.parseLong(obj[5].toString()) == 1L)
 							partyVO.setWinCount(Long.parseLong(obj[0].toString()));
 						else
-							partyVO.setLeadCount(Long.parseLong(obj[0].toString()));
-					 }
-
-					/*if(Long.parseLong(obj[5].toString()) == 1L)
-						partyVO.setWinCount(Long.parseLong(obj[0].toString()));
-					else
-						partyVO.setLeadCount(Long.parseLong(obj[0].toString()));*/
+							partyVO.setLeadCount(Long.parseLong(obj[0].toString()));*/
+						
+					}
 					
-				}
+				
+					LinkedHashMap<Long,DashBoardResultsVO> countMap = new LinkedHashMap<Long, DashBoardResultsVO>();
+					
+					if(resultList != null && resultList.size()>0){
+						for (DashBoardResultsVO locationVO : resultList) {	
+							
+								for(Long partyId:partyIds)
+								{	
+									DashBoardResultsVO vo1 = new DashBoardResultsVO();
+									DashBoardResultsVO vo = getMacthedVO(locationVO.getPartiesDetails(),partyId); //tdp 									
+									Long winCount = 0L;
+									vo1.setName(vo.getName());
+									vo1.setId(vo.getId());
+									
+									if(countMap.get(partyId) != null){
+										vo1 = countMap.get(partyId);
+										winCount = vo1.getWinCount();
+									}
+									
+									winCount = winCount + vo.getWinCount();
+										
+									vo1.setWinCount(winCount);
+									vo1.setWinTotalCount(winCount1); // total count
+									countMap.put(partyId, vo1);	
+								}									
+						}
+					}
+					
+					
+					if(countMap != null && countMap.size()>0){
+						DashBoardResultsVO partyWiseCountVO = new DashBoardResultsVO();	
+						partyWiseCountVO.setName("TOTAL");
+						List<DashBoardResultsVO> partyVOList = new ArrayList<DashBoardResultsVO>();
+						for (Long partyId : countMap.keySet()) {							
+							DashBoardResultsVO partyVO = countMap.get(partyId);
+							partyVOList.add(partyVO);
+						}
+						partyWiseCountVO.setPartiesDetails(partyVOList);
+						resultList.add(partyWiseCountVO);
+					}
+					
+					
+			 }
+			 
 				
 				
 		 }catch(Exception e)

@@ -253,9 +253,13 @@ public class AcPcWiseElectionResultService implements IAcPcWiseElectionResultSer
 	
 	public List<BasicVO> filterToGetPartyWiseComperassionResult(Long stateId,Long electionId,List<Long> partyIds,Long electionScopeId,String scope,List<Long> subRegionId)
 	{
-		List<BasicVO> returnList = null;
+		List<BasicVO> returnList = new ArrayList<BasicVO>();
+		BasicVO returnVO = new BasicVO();
+		
 		try 
 		{
+			List<BasicVO> consituencyList = new ArrayList<BasicVO>();
+			List<BasicVO> returnList1 = null;
 			
 			List<Object[]> constiList =  stateSubRegionDistrictDAO.getAssemblyConstituenciesBySubRegionIds(subRegionId);
 			List<Long> constiIds = null;	 
@@ -263,6 +267,11 @@ public class AcPcWiseElectionResultService implements IAcPcWiseElectionResultSer
 				constiIds = new ArrayList<Long>();
 				for (Object[] constituency : constiList) {
 					constiIds.add((Long)constituency[0]);
+					
+					BasicVO vo = new BasicVO();
+					vo.setId((Long)constituency[0]);
+					vo.setName(constituency[1].toString());
+					consituencyList.add(vo);
 				}
 				
 			}
@@ -270,10 +279,19 @@ public class AcPcWiseElectionResultService implements IAcPcWiseElectionResultSer
 			if(electionScopeId.longValue() == 1L){
 				parliaments = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(constiIds);
 				if(parliaments != null && parliaments.size()>0){
+					
 					constiIds.clear();
+					consituencyList.clear();
+					
 					for (Object[] constituency : parliaments) {
-						if(!constiIds.contains((Long)constituency[0]))
+						if(!constiIds.contains((Long)constituency[0])){
 						constiIds.add((Long)constituency[0]);
+						
+						BasicVO vo = new BasicVO();
+						vo.setId((Long)constituency[0]);
+						vo.setName(constituency[2].toString());
+						consituencyList.add(vo);
+						}
 					}					
 				}
 			}
@@ -331,7 +349,7 @@ public class AcPcWiseElectionResultService implements IAcPcWiseElectionResultSer
 				List<Long> constituenctyIds = new ArrayList<Long>(constituencyNosMap.keySet());
 				if(constituenctyIds != null && constituenctyIds.size() > 0)
 				{
-					returnList = new ArrayList<BasicVO>();
+					returnList1 = new ArrayList<BasicVO>();
 					for (Long constituencyId : constituenctyIds)
 					{
 						BasicVO VO = new BasicVO();
@@ -392,16 +410,21 @@ public class AcPcWiseElectionResultService implements IAcPcWiseElectionResultSer
 							
 							VO.setSelectedCasteDetails(partiesList);
 						}
-						returnList.add(VO);
+						returnList1.add(VO);
 					}
 				}					
 				
 			}
-			Collections.sort(returnList, new Comparator<BasicVO>() {
+			Collections.sort(returnList1, new Comparator<BasicVO>() {
 				public int compare(BasicVO o1, BasicVO o2) {									
 					return o1.getName().compareTo(o2.getName());
 				}
 			});
+			
+			returnVO.setHamletCasteInfo(consituencyList);
+			returnVO.setHamletVoterInfo(returnList1);
+			
+			returnList.add(returnVO);
 			
 		} 
 		catch (Exception e)
