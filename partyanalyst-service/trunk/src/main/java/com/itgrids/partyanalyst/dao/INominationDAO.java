@@ -669,6 +669,8 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	public List<Object[]> getVoterShareByConstituencyType(Long electionId,List<Long> locationIds,Long scopeId);
 	public List<Object[]> getVoterShareByReservationCategory(Long electionId,List<Long> locationIds,Long scopeId);
 
+	public List<Object[]> getConstituencyResultDetailsByElectionId(Long electionId,List<Long> locationIds,Long scopeId);
+
 	  public List<Object[]> getCandidateCasteResult(Long electionId);
 
 }
