@@ -375,7 +375,7 @@ $('document').ready(function(){
 	 //$('#scopeId').trigger('change');
 	 //$('#locaionsId1').multiselect({ noneSelectedText:"Select"});
 	 $('.reportType').change(function(){
-		 $('#percentDiv').hide();
+		// $('#percentDiv').hide();
 		 $('#test,#matridLeadId,#matrixWonSummaryId,#matrixLeadSummaryId,#marginAnalysis1,#constituencyResultsDiv').html('');
 	 });
 
@@ -763,6 +763,7 @@ function buildLocationDetails(result)
 {
 	$('#locaionsId1').find('option').remove();
 
+	$('#locaionsId1').append('<option value="0">ALL</option>');
 	$.each(result,function(index,value){
 		$('#locaionsId1').append('<option value="'+value.id+'">'+value.name+'</option>');
 	});
@@ -774,7 +775,7 @@ function buildLocationDetails(result)
 
 function showSelectedReport()
 {
-	$('#percentDiv').hide();
+	//$('#percentDiv').hide();
 
 	$('#matridLeadId,#matrixWonSummaryId,#matrixLeadSummaryId,#errorDiv,#test,#marginAnalysis1,#constituencyResultsDiv').html('');
  
@@ -804,14 +805,14 @@ function showSelectedReport()
 		{
 			   getMatrixReport();
 			   getMarginsCountOfParties();
-			   $('#percentDiv').show();
+			 //  $('#percentDiv').show();
 			   $('#bothId').attr('checked',true);
 		}
 		else
 		{
 				getSubReportForElectionResultByConstituencyType();
 				getSubReportForElectionResultByConstituencyReservation();
-				$('#percentDiv').show();
+				//$('#percentDiv').show();
 		}
 	}
 
@@ -828,7 +829,15 @@ function getMatrixReport()
 {
 	matrixReportDtls.electionId = $('#electionId').val();
 	matrixReportDtls.scopeId = $('#scopeId').val();
-	matrixReportDtls.locationIds = $('#locaionsId1').val();
+
+	if($('#locaionsId1').val() == 0)
+	{
+         $('#locaionsId1 option').each(function(index,value){
+			 matrixReportDtls.locationIds.push(this.value);
+		 })
+	}else
+	 matrixReportDtls.locationIds = $('#locaionsId1').val();
+
 	$('#summaryDiv').addClass('offset1');
 
 	$.ajax({
@@ -883,9 +892,9 @@ str+='<div class="tableClass1">';
             $.each(value.partiesDetails,function(index1,value1){
 				if(status == "Won")
                  //str+='<td><a href="javascript:{getConstituencyDetails('+value.id+','+value1.id+',1);}">'+value1.winCount+'</a></td>';
-				if(value1.winCount != 0 && value1.percent != null)
+				/*if(value1.winCount != 0 && value1.percent != null)
 					 str+='<td><span class="cntClass">'+value1.winCount+'</span><span class="prcntClass">(</span><span class="prcntClass1">'+value1.percent+'</span><span class="prcntClass">)</span></td>';
-					else
+					else*/
 					 str+='<td>'+value1.winCount+'</td>';
 				else
 				 //str+='<td><a href="javascript:{getConstituencyDetails('+value.id+','+value1.id+',0);}">'+value1.leadCount+'</td>';
@@ -952,6 +961,13 @@ function getSubReportForElectionResultByConstituencyType()
 {
 	subReportDtls.electionId = $('#electionId').val();
 	subReportDtls.scopeId = $('#scopeId').val();
+
+	if($('#locaionsId1').val() == 0)
+	{
+         $('#locaionsId1 option').each(function(index,value){
+			 subReportDtls.locationIds.push(this.value);
+		 })
+	}else
 	subReportDtls.locationIds = $('#locaionsId1').val();
 
 	$.ajax({
@@ -974,7 +990,15 @@ function getSubReportForElectionResultByConstituencyReservation()
 {
 	subReportDtls.electionId = $('#electionId').val();
 	subReportDtls.scopeId = $('#scopeId').val();
-	subReportDtls.locationIds = $('#locaionsId1').val();
+
+
+	if($('#locaionsId1').val() == 0)
+	{
+         $('#locaionsId1 option').each(function(index,value){
+			 subReportDtls.locationIds.push(this.value);
+		 })
+	}else
+	 subReportDtls.locationIds = $('#locaionsId1').val();
 
 	$.ajax({
           type:'POST',
@@ -1075,9 +1099,9 @@ function buildSubReportByConstituencyType(result,type)
 
 		   $.each(value.reservationDetails,function(index1,value1){
 			    $.each(value1.partiesDetails,function(index2,value2){
-					if(value2.winCount != 0 && value2.percent != null)
+					/*if(value2.winCount != 0 && value2.percent != null)
 					 str+='<td><span class="cntClass">'+value2.winCount+'</span><span class="prcntClass">(</span><span class="prcntClass1">'+value2.percent+'</span><span class="prcntClass">)</span></td>';
-					else
+					else*/
 					 str+='<td>'+value2.winCount+'</td>';
 					//str+='<td>'+value2.leadCount+'</td>';
 				 });
@@ -1165,7 +1189,16 @@ function getConstituencyWiseResults()
 	 {
 	$('#ajaxImage').hide();
 		details.electionId = $('#electionId').val();
+
+		if($('#locaionsId1').val() == 0)
+		{
+         $('#locaionsId1 option').each(function(index,value){
+			 details.constituencyIds.push(this.value);
+		 })
+		}else
 		details.constituencyIds = $('#locaionsId1').val();
+
+$('#ajaxImage').show();
 		$.ajax({
 	          type:'POST',
 	          url: 'getdashBoardConstituencyWiseResults.action',
@@ -1173,6 +1206,7 @@ function getConstituencyWiseResults()
 	          data: {task:JSON.stringify(details)},
 	     	  }).done(function(result){ 
 				  buildConstituencyResults(result);
+				  $('#ajaxImage').hide();
 		   });
 	 }
 	 function buildConstituencyResults(result)
@@ -1513,7 +1547,7 @@ function getConstituencyWiseResults()
 
 </div>
 
-<div  class="offset1 inrReportDivCls" style="clear:both;display:none;">
+<div  class="offset4 inrReportDivCls" style="clear:both;display:none;">
 	<label class="radio inline">
 		<input type="radio" class="inrRprtType" id="mainReportId" value="Main Report" name="inrReport" checked="true" style="margin-top:-5px;"><span>Main Report</span>
 	</label>
@@ -1523,7 +1557,7 @@ function getConstituencyWiseResults()
 	</label>
 </div>
 
-<div  class="offset1 parties" style="clear:both;"></div>
+<div  class="offset3 parties" style="clear:both;"></div>
   
 					<div class="offset1" style="margin-top:20px;">
 
@@ -1541,12 +1575,12 @@ function getConstituencyWiseResults()
     color: #FFFFFF;font-weight: normal;">Export To Excel</a>
 	
 						
-	<img id="ajaxImage" src="./images/icons/search.gif" alt="Processing Image" style="margin-left:70px;display:none;"/>
+	<img id="ajaxImage" src="./images/Loading-data.gif" alt="Processing Image" style="margin-left:70px;display:none;"/>
 
 					</div>
 
 
-<div  class="offset1 hide" style="clear:both;" id="percentDiv">
+<!--<div  class="offset1 hide" style="clear:both;" id="percentDiv">
 
 	<label class="radio inline">
 	<input type="radio" class="percentTypeClass" id="bothId" value="Both" name="percentTypeClass"  style="margin-top:-5px;" checked="true"><span>Seats Count & Votes Percentage</span>
@@ -1560,7 +1594,7 @@ function getConstituencyWiseResults()
 	<input type="radio" class="percentTypeClass" id="" value="Votes" name="percentTypeClass"  style="margin-top:-5px;"><span>Votes Percentage</span>
 	</label>	
 
-</div>
+</div>-->
 
 					<div id="errorDiv" class="offset1" style="font-weight:bold;color:red;"></div>
 
@@ -3830,7 +3864,15 @@ function getMarginsCountOfParties(){
 
 		marginDetails.electionId = $('#electionId').val();
 		marginDetails.type = $('#scopeId').val();
-		marginDetails.locationIds = $('#locaionsId1').val() ;
+
+		if($('#locaionsId1').val() == 0)
+		{
+         $('#locaionsId1 option').each(function(index,value){
+			 marginDetails.locationIds.push(this.value);
+		 })
+		}else
+		marginDetails.locationIds = $('#locaionsId1').val();
+
 		
 		$.ajax({
 				type: "POST",
@@ -4449,9 +4491,9 @@ $(".matrixRprt").click(function() {
 		var scope = $("#scopeId").val();
 		
 		if(val=="Matrix Report" && scope ==5){
-			$(".inrReportDivCls").css("display","block");
+			$(".inrReportDivCls,.parties").css("display","block");
 		}else{
-			$(".inrReportDivCls").css("display","none");
+			$(".inrReportDivCls,.parties").css("display","none");
 		}
 	}
 	
@@ -4461,7 +4503,8 @@ $(".matrixRprt").click(function() {
 		}
 	});
 	
-	$(".inrRprtType").click(function() { 
+	$(".inrRprtType").change(function() { 
+		$('#constituencyResultsDiv').html('');
 		var val= $('input[name="inrReport"]:checked').val();
 		var scope = $("#scopeId").val();
 		if(scope == 5 && val == "Party Report"){
@@ -4473,6 +4516,7 @@ $(".matrixRprt").click(function() {
 	
 	$("#electionId").change(function(){
 		$("#errorDiv").html("");
+		 if( $('#scopeId').val() == 5 && $('input[name="inrReport"]:checked').val() == "Party Report")
 		getPartiesInConsituenciesOfElection();
 	});
 	
@@ -4497,7 +4541,16 @@ function getPartiesInConsituenciesOfElection(){
 	var constituencyDetails={electionId:"",constituencyIds:[]};
 	
 	constituencyDetails.electionId = $("#electionId").val();
-	constituencyDetails.constituencyIds = $("#locaionsId1").val();
+
+
+		if($('#locaionsId1').val() == 0)
+		{
+         $('#locaionsId1 option').each(function(index,value){
+			 constituencyDetails.constituencyIds.push(this.value);
+		 })
+		}else
+		constituencyDetails.constituencyIds = $('#locaionsId1').val();
+
 	
 $.ajax({
           type:'POST',
@@ -4520,9 +4573,7 @@ function buildPartiesInConstituencies(result){
 		for(var i in result){
 			str +="<option value="+result[i].id+">"+result[i].name+"</option>";
 		}
-	str +="</select>";
-	
-	
+	str +="</select>";	
 	
 	$(".parties").html(str);
 	
@@ -4534,7 +4585,17 @@ function getParyWiseVotesShare(){
 	var constituencyDetails={electionId:"",constituencyIds:[],partyIds:[]};
 	
 	constituencyDetails.electionId = $("#electionId").val();
-	constituencyDetails.constituencyIds = $("#locaionsId1").val();
+
+	if($('#locaionsId1').val() == 0)
+	{
+         $('#locaionsId1 option').each(function(index,value){
+			 constituencyDetails.constituencyIds.push(this.value);
+		 })
+	}else
+	 constituencyDetails.constituencyIds = $('#locaionsId1').val();
+
+
+	//constituencyDetails.constituencyIds = $("#locaionsId1").val();
 	constituencyDetails.partyIds = $("#partiesId").val();
 	
 	
@@ -4558,6 +4619,7 @@ function getParyWiseVotesShare(){
 }
 
 function buildPartyVotesShareTable(results){
+
 	$("#ajaxImage").hide();
 	$("#constituencyResultsDiv").html("");
 	var str = '';
@@ -4581,7 +4643,8 @@ function buildPartyVotesShareTable(results){
 			str +='<td>'+results[i].validVts+'</td>';
 			for(var j in results[i].partyResultVo){
 				if(results[i].partyResultVo[j].partyVotes!=null){
-					str +='<td>'+results[i].partyResultVo[j].partyVotes+'</td>';
+					//str +='<td>'+results[i].partyResultVo[j].partyVotes+'('+results[i].partyResultVo[j].percent+')</td>';
+					str +='<td>'+results[i].partyResultVo[j].percent+'</td>';
 				}else{
 					str +='<td> - </td>';
 				}
