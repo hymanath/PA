@@ -17,5 +17,7 @@ public interface IDashBoardElectionResultsService {
 	public  List<DashBoardResultsVO> getWonAndLeadCountPartyWise(Long electionId,List<Long> locationIds,Long scopeId);
 	public List<GenericVO> getPartiesInConsituenciesOfElection(Long electionId,List<Long> constituencyIds);
 	public List<PartyResultVO> partysVotesShareInConstituenciesOfElection(Long electionId,List<Long> constituencyIds,List<Long> partyIds);
-
+	public List<DashBoardResultsVO> getPartyWiseWinningSeatsCount(
+			Long electionId, List<Long> locationIds, Long scopeId,
+			Long percent, Long partyId);
 }

@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -1628,5 +1630,194 @@ List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId,
             }
         }
     };
+    
+	public List<DashBoardResultsVO> getPartyWiseWinningSeatsCount(
+			Long electionId, List<Long> locationIds, Long scopeId,
+			Long percent, Long partyId)    {
+    	LOG.debug("Entered into the getConstituencyResultDetailsByElectionId service method");
+
+    	List<DashBoardResultsVO> resultList = new ArrayList<DashBoardResultsVO>();
+    	Map<String,Long> partyCountBefore = null;
+    	Map<String,Long> partyCountAfter = null;
+    	try
+    	{
+    		List<Object[]> list = nominationDAO.getConstituencyResultDetailsByElectionId(electionId, locationIds, scopeId);
+    		
+    		Set<Long> constituencyIds = new HashSet<Long>();
+    		for(Object[] obj:list)
+    			constituencyIds.add(Long.parseLong(obj[2].toString()));
+    		
+    		for(Long constituencyId:constituencyIds)
+    		{
+    			DashBoardResultsVO constituency = new DashBoardResultsVO();
+    			constituency.setId(constituencyId);
+    			resultList.add(constituency);
+    		}
+    		
+    		for(Object[] obj:list)
+    		{
+    			DashBoardResultsVO constituencyVO = getMacthedVO(resultList, Long.parseLong(obj[2].toString()));
+    			constituencyVO.setName(obj[3].toString());
+    			
+    			DashBoardResultsVO partyVO = new DashBoardResultsVO();
+    			
+    			partyVO.setId(Long.parseLong(obj[0].toString()));
+    			partyVO.setName(obj[1].toString());
+    			partyVO.setRank(Long.parseLong(obj[4].toString()));
+    			partyVO.setGainedVotes((long)Double.parseDouble(obj[5].toString()));
+    			
+    			constituencyVO.getSubList().add(partyVO);
+    		}
+    		
+    		 partyCountBefore = getPartyWiseWinningCount(resultList);
+    		
+    		caluculateValidVotesForConstituency(resultList);//this method calculates all the valid votes of a constituency
+    		removeVotesFromSelectedPartyBySelectedPercent(resultList,partyId,percent);//this method minus the votes for selected party
+    		setRankByGainedVotes(resultList);//this method sets the rank for parties after voters decrease
+    		
+    		 partyCountAfter = getPartyWiseWinningCount(resultList);
+    		
+    		
+    		Map<String,Integer> resultMap = new HashMap<String, Integer>(); 
+    		Long beforeCount = 0L;
+			Long afterCount  = 0L;
+    		
+    		for(Entry<String, Long> entry:partyCountBefore.entrySet())
+    		{
+    			 beforeCount = entry.getValue();
+    			 afterCount = partyCountAfter.get(entry.getKey());
+    			
+    			resultMap.put(entry.getKey(),(int)( afterCount - beforeCount ));
+    		}
+    		
+    		if(resultList != null && resultList.size() >0)
+    		{
+    			resultList.get(0).setPartyWiseCountAfter(partyCountAfter);
+    			resultList.get(0).setPartyWiseCountBefore(partyCountBefore);
+    			resultList.get(0).setResultMap(resultMap);
+    		}
+    		
+    	}catch(Exception e)
+    	{
+    		e.printStackTrace();
+    		LOG.error("Exception raised in getConstituencyResultDetailsByElectionId service method");
+    	}
+    	return resultList;
+    }
+    
+    private Map<String,Long> getPartyWiseWinningCount(List<DashBoardResultsVO> resultList)
+    {
+    	LOG.debug("Entered into the getPartyWiseWinningCount service method");
+    	Map<String,Long> countMap = null;
+    	try
+    	{
+    		countMap = new HashMap<String, Long>();
+	    	for(DashBoardResultsVO constituency:resultList)
+			{
+				for(DashBoardResultsVO party:constituency.getSubList())
+				{
+					if(party.getRank().longValue() == 1L)
+					if(countMap.get(party.getName()) == null)
+					{
+						countMap.put(party.getName(), 1L);
+					}
+					else
+					{
+						countMap.put(party.getName(), countMap.get(party.getName()) +1);
+					}
+				}
+			}
+	    	
+    	}catch(Exception e)
+    	{
+    		e.printStackTrace();
+    		LOG.error("Exception raised in getPartyWiseWinningCount service method");
+    	}
+    	
+    	return countMap;
+    }
 	
+    public void removeVotesFromSelectedPartyBySelectedPercent(List<DashBoardResultsVO> resultList,Long partyId,Long percent)
+    {
+    	LOG.debug("Entered into the removeVotesFromSelectedPartyBySelectedPercent service method");
+    	try
+    	{
+    		for(DashBoardResultsVO constituency:resultList)
+    		{
+    			Long totalValidVotes = constituency.getVotesCount();
+    			
+    			Long votesToRemove = (long)percent*totalValidVotes/100;
+    			
+    			for(DashBoardResultsVO party:constituency.getSubList())
+    			{
+    				if(party.getId().equals(partyId))
+    					party.setGainedVotes(party.getGainedVotes() - votesToRemove);
+    			}
+    			
+    			Collections.sort(constituency.getSubList(),sortByValidVotes);
+    		}
+    		
+    		
+    	}catch(Exception e)
+    	{
+    		e.printStackTrace();
+    		LOG.error("Exception raised in removeVotesFromSelectedPartyBySelectedPercent service method");
+    	}
+    }
+    
+    public void setRankByGainedVotes(List<DashBoardResultsVO> resultList)
+    {
+    	LOG.debug("Entered into the setRankByGainedVotes service method");
+    	try
+    	{
+    		for(DashBoardResultsVO constituency:resultList)
+    		{
+    			for(int i=0;i<constituency.getSubList().size();i++)
+    			{
+    				constituency.getSubList().get(i).setRank((long)i+1);
+    			}
+    		}
+    	}catch(Exception e)
+    	{
+    		e.printStackTrace();
+    		LOG.error("Exception raised in setRankByGainedVotes service method");
+    	}
+    }
+    
+    public void caluculateValidVotesForConstituency(List<DashBoardResultsVO> resultList)
+    {
+    	LOG.debug("Entered into the caluculateValidVotesForConstituency service method");
+    	try
+    	{
+    		for(DashBoardResultsVO constituency:resultList)
+    		{
+    			Long totalValidVotes = 0L;
+    			
+    			for(DashBoardResultsVO party:constituency.getSubList())
+    				totalValidVotes = totalValidVotes + party.getGainedVotes();
+    			
+    			constituency.setVotesCount(totalValidVotes);
+    		}
+    	}catch(Exception e)
+    	{
+    		e.printStackTrace();
+    		LOG.error("Exception raised in caluculateValidVotesForConstituency service method");
+    	}
+    }
+    
+    public static Comparator<DashBoardResultsVO> sortByValidVotes = new Comparator<DashBoardResultsVO>()
+    {
+        public int compare(DashBoardResultsVO locationVO1, DashBoardResultsVO locationVO2)
+        {
+
+    		
+    		if(locationVO1.getGainedVotes() > locationVO2.getGainedVotes())
+    			return -1;
+    		else if(locationVO1.getGainedVotes() < locationVO2.getGainedVotes())
+    			return 1;
+    		
+    		return 0;
+        }
+        
+    };
 }

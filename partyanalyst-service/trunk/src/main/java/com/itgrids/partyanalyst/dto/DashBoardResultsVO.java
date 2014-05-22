@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dto;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class DashBoardResultsVO  implements Comparable<DashBoardResultsVO>{
@@ -37,7 +38,51 @@ public class DashBoardResultsVO  implements Comparable<DashBoardResultsVO>{
 	private String validVotes;
 	private Long gainedVotes;
 	private String gainedPercent;
+	private Long rank;
 	
+	private Map<String,Long> partyWiseCountBefore;
+	private Map<String,Long> partyWiseCountAfter;
+	private Map<String,Integer> resultMap;
+	
+	public Map<String, Integer> getResultMap() {
+		return resultMap;
+	}
+
+
+	public void setResultMap(Map<String, Integer> resultMap) {
+		this.resultMap = resultMap;
+	}
+
+
+	public Map<String, Long> getPartyWiseCountBefore() {
+		return partyWiseCountBefore;
+	}
+
+
+	public void setPartyWiseCountBefore(Map<String, Long> partyWiseCountBefore) {
+		this.partyWiseCountBefore = partyWiseCountBefore;
+	}
+
+
+	public Map<String, Long> getPartyWiseCountAfter() {
+		return partyWiseCountAfter;
+	}
+
+
+	public void setPartyWiseCountAfter(Map<String, Long> partyWiseCountAfter) {
+		this.partyWiseCountAfter = partyWiseCountAfter;
+	}
+
+
+	public Long getRank() {
+		return rank;
+	}
+
+
+	public void setRank(Long rank) {
+		this.rank = rank;
+	}
+
 	private List<DashBoardResultsVO> constnTypeVoterShare;
 	private List<DashBoardResultsVO> reservationTypeVoterShare;
 
