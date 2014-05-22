@@ -1431,5 +1431,13 @@
 	<bean id="StateSubRegionDistrictDAO" class="com.itgrids.partyanalyst.dao.hibernate.StateSubRegionDistrictDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+		
+	<bean id="constiCasteGroupPercDAO" class="com.itgrids.partyanalyst.dao.hibernate.ConstiCasteGroupPercDAO">
+		<property name="sessionFactory" ref="sessionFactory2" />
+	</bean>
+			
+	<bean id="casteGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.CasteGroupDAO">
+		<property name="sessionFactory" ref="sessionFactory2" />
+	</bean>
 	
 </beans>		
