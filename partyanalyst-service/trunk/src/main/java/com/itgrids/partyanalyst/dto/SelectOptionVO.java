@@ -34,6 +34,17 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	private SelectOptionVO panchatsList;
 	private Double perc;
 	
+	private String percentage;
+	
+	
+	public String getPercentage() {
+		return percentage;
+	}
+
+	public void setPercentage(String percentage) {
+		this.percentage = percentage;
+	}
+
 	public List<SelectOptionVO> getSelectOptionsList2() {
 		return selectOptionsList2;
 	}
