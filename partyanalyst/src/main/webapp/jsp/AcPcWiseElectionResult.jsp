@@ -1241,7 +1241,7 @@ function getConstituencyWiseResults()
 
  <!--sravanthi code start-->
 <center>
-<div id="modiDiv">
+<div id="modiDiv" style="display:none;">
 <img id="unemp_chart_img" src="images/results/bjpseatstally.jpg" />
 <div class="chart-gauge" id="unemp_chart" style="display: none; width: 394px;"></div>
 <img id="unemp_chart1_img" src="images/results/tdpseatstally.jpg" />
@@ -1259,7 +1259,7 @@ function getConstituencyWiseResults()
 </center>
  <!--sravanthi code end-->
 <div id="weathermap4"> </div>
-<div class="container" style="margin-bottom:10px;font-family: verdana; font-size: 14px; border: 1px solid rgb(204, 204, 204); padding: 15px 10px 10px; margin-top: 24px;" id="mapDiv">
+<div class="container" style="display:none;margin-bottom:10px;font-family: verdana; font-size: 14px; border: 1px solid rgb(204, 204, 204); padding: 15px 10px 10px; margin-top: 24px;" id="mapDiv">
 
 
 <!--<h4 style="padding: 10px; margin-top: 10px; border-radius: 5px; text-align: center; background: none repeat scroll 0% 0% rgb(73, 175, 205);">LIVE ELECTION RESULTS COMPARISON</h4> -->
@@ -1596,7 +1596,7 @@ function getConstituencyWiseResults()
 <!-- SAMBA END -->
 
  <div id="processingDialogue"></div>
-<div id="districtWiseAnalysis" class="container">
+<div id="districtWiseAnalysis" style="display:none;" class="container">
 <div style="width:998px;padding-left:5px;">
    <div style="padding-left:5px;"><div class="main-mbg">District Wise Party Performance</div></div>
    <div style="background-color:#FFFFFF;min-height:360px;">
@@ -3166,6 +3166,7 @@ function getRegionWiseResults(searchType)
 	}
 	else if(searchType == 'CBNEffect')
 	{
+	    $("#modiDiv").show();
 		$('#results1Div,#subTitlesDiv').html('');
 		$('#results1Div,#subTitlesDiv').css('display','none');
 		$('#liveResultsDiv').hide();
@@ -3218,6 +3219,7 @@ function getRegionWiseResults(searchType)
 	}
 	else if(searchType == 'ModiEffect')
 	{
+	    $("#modiDiv").show();
 		$('#results1Div,#subTitlesDiv').html('');
 		$('#results1Div,#subTitlesDiv').css('display','none');
 		$('#indiaBannerId').show();
