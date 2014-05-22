@@ -3436,6 +3436,7 @@ function getRegionWiseResults(searchType)
 		telanganaRegion();
 		$('#results1Div,#subTitlesDiv').show();
 		$('#liveResultsDiv').hide();
+		$('#overviewDivId3').show();
 		$('#mapDiv').show();
 		$('#legend').show();
 		$('#bannerDiv').show();
@@ -3491,6 +3492,7 @@ function getRegionWiseResults(searchType)
 		seemandraDistrict();
 		seemandraRegion();
 		parliamentWiseResult('Semandhra');
+		$('#overviewDivId3').show();
 		$('#results1Div,#subTitlesDiv').show();
 		$('#liveResultsDiv').hide();
 		$('#bannerDiv').show();
@@ -3541,6 +3543,7 @@ function getRegionWiseResults(searchType)
 	}
 	else if(searchType == 'India')
 	{
+		$('#overviewDivId3').hide();
 	    $('#effectClrImg').hide();
 		$('#results1Div,#subTitlesDiv').html('');
 		$('#results1Div,#subTitlesDiv').css('display','none');
@@ -3576,6 +3579,7 @@ function getRegionWiseResults(searchType)
 	}
 	else if(searchType == 'StateAnalysis')
 	{
+		$('#overviewDivId3').hide();
 	    $('#effectClrImg').hide();
 		$('#results1Div,#subTitlesDiv').html('');
 		$('#results1Div,#subTitlesDiv').css('display','none');
@@ -3605,6 +3609,7 @@ function getRegionWiseResults(searchType)
 	}
 	else if(searchType == 'DistrictAnalysis')
 	{
+		$('#overviewDivId3').hide();
 	    $('#effectClrImg').hide();
 		$('#results1Div,#subTitlesDiv').html('');
 		$('#results1Div,#subTitlesDiv').css('display','none');
@@ -3633,6 +3638,7 @@ function getRegionWiseResults(searchType)
 	}
 	else if(searchType == 'CBNEffect')
 	{
+		$('#overviewDivId3').hide();
 	    $('#effectClrImg').hide();
 	    $("#modiDiv").show();
 		$('#results1Div,#subTitlesDiv').html('');
@@ -3687,6 +3693,7 @@ function getRegionWiseResults(searchType)
 	}
 	else if(searchType == 'ModiEffect')
 	{
+		$('#overviewDivId3').hide();
 	    $('#effectClrImg').show();
 	    $("#modiDiv").show();
 		$('#results1Div,#subTitlesDiv').html('');
