@@ -13,4 +13,17 @@ public class StateSubRegionDAO extends GenericDaoHibernate<StateSubRegion, Long>
 	public StateSubRegionDAO() {
 		super(StateSubRegion.class);
 	}
+	
+	public List<Object[]> getStateRegionsBySubRegionIds(List<Long> subRegionIds){		
+		Query query = getSession().createQuery(" select distinct model.stateRegion.stateRegionId ,model.stateRegion.regionName from StateSubRegion model where model.stateSubRegionId in (:subRegionIds)");
+		query.setParameterList("subRegionIds", subRegionIds);
+		return query.list();
+	}
+	
+	public List<Object[]> getStateSubRegionsByRegionId(Long stateRegionId){		
+		Query query = getSession().createQuery(" select distinct model.stateSubRegionId ,model.name from StateSubRegion model where  model.stateRegion.stateRegionId in (:stateRegionId)");
+		query.setParameter("stateRegionId", stateRegionId);
+		return query.list();
+	}
+	
 }
