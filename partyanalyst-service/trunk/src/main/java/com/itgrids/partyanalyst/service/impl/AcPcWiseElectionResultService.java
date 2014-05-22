@@ -1,23 +1,27 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
 import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
+import com.itgrids.partyanalyst.dao.IConstiCasteGroupPercDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IStateSubRegionDistrictDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.CasteWiseResultVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IAcPcWiseElectionResultService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -49,6 +53,7 @@ public class AcPcWiseElectionResultService implements IAcPcWiseElectionResultSer
 	INominationDAO nominationDAO;
 	
 	@Autowired IAllianceGroupDAO allianceGroupDAO;
+	@Autowired IConstiCasteGroupPercDAO constiCasteGroupPercDAO;
 	
 	public List<BasicVO> getPartyWiseComperassionResult(Long stateId,Long electionId,List<Long> partyIds,Long electionScopeId,String scope)
 	{
@@ -565,5 +570,106 @@ public class AcPcWiseElectionResultService implements IAcPcWiseElectionResultSer
 		}
 		return returnList;
 	}
+
+public List<CasteWiseResultVO> getCasteWiseDataForElection(Long electionId)
+{
+
+List<CasteWiseResultVO>  resultList = new ArrayList<CasteWiseResultVO>();
+try{
+	
+	List<Object[]> list = nominationDAO.getCandidateCasteResult(electionId);
+	Set<Long> constituencyIds = new java.util.HashSet<Long>();
+	if(list != null && list.size() > 0)
+	{
+	
+		for(Object[] params : list)
+		{
+			CasteWiseResultVO mainVo = new CasteWiseResultVO();
+			if(constituencyIds.add((Long)params[0]))
+			{
+			mainVo.setId((Long)params[0]);
+			mainVo.setName(params[1].toString());
+			resultList.add(mainVo);
+			}
+		}
+		//List<CasteWiseResultVO> candidatesList = new ArrayList<CasteWiseResultVO>();
+		for(Object[] params : list)
+		{
+			CasteWiseResultVO constituency = getConstituencyVo(resultList,(Long)params[0]);
+			if(constituency != null && constituency.getCandidateList().size() < 3)
+			{
+				CasteWiseResultVO candidateVo = new CasteWiseResultVO();
+				candidateVo.setId((Long)params[2]);
+				candidateVo.setName(params[3] != null ? params[3].toString() : "" +" "+ params[4] != null ? params[4].toString() : "");
+				
+				candidateVo.setPartyId((Long)params[5]);
+				candidateVo.setParty(params[6].toString());
+				if((Long)params[7] == 1)
+				{
+				candidateVo.setStatus("WINNER");
+				}
+				else if((Long)params[7] != 1)
+				{
+					candidateVo.setStatus("RUNNER - "+((Long)params[7] - 1));	
+				}
+				if(params[8] != null)
+				{
+				Double votes = new Double(params[8].toString());
+				candidateVo.setVotes(votes.longValue());
+				}
+				constituency.getCandidateList().add(candidateVo);
+			}
+		}
+		
+	}
+	
+	List<Object[]> list1 = constiCasteGroupPercDAO.getConstituencyCastePer();
+	if(list1 != null && list1.size() > 0)
+	{
+		for(Object[] params : list1)
+		{
+			CasteWiseResultVO constituency = getConstituencyVo(resultList,(Long)params[0]);
+			if(constituency != null && constituency.getCasteList().size() < 5)
+			{
+				SelectOptionVO castVo = new SelectOptionVO();
+				castVo.setId((Long)params[1]);
+				castVo.setName(params[2] != null ? params[2].toString() : "");
+				Double votesPerc = new Double(params[3].toString());
+				String percentage = new BigDecimal(votesPerc)
+					.setScale(2,BigDecimal.ROUND_HALF_UP).toString();	
+				castVo.setPercentage(percentage !=null ? percentage :"0.0");
+			
+				constituency.getCasteList().add(castVo);
+			}
+		}
+	}
+	
+}
+catch (Exception e) {
+	e.printStackTrace();
+}
+return resultList;
+}
+
+public CasteWiseResultVO getConstituencyVo(List<CasteWiseResultVO> resultList,Long constituencyId)
+{
+
+try{
+	if(resultList == null || resultList.size() == 0)
+	 return null;
+	for(CasteWiseResultVO vo : resultList)
+	 if(vo.getId().longValue() == constituencyId)
+	  return vo;
+	 
+   return null;
+ }catch (Exception e) {
+  e.printStackTrace();
+  LOG.error(" Exception Occured in checkPartyPositionVOExist() method, Exception - "+e);
+  return null;
+ }
+
+}
+
+
 }
 
