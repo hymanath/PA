@@ -221,7 +221,6 @@ fill: #9f8868;
 }
 .div_sld1_img{
     margin-bottom: 15px;
-    margin-top: 15px;
 }
 <!--sravanthi code end-->
 
@@ -1240,8 +1239,27 @@ function getConstituencyWiseResults()
 <!--<img width="960" height="32" border="0" usemap="#Maps22" src="images/India-Page-Banner.png">-->
 </div>
 
+ <!--sravanthi code start-->
+<center>
+<div id="modiDiv">
+<img id="unemp_chart_img" src="images/results/bjpseatstally.jpg" />
+<div class="chart-gauge" id="unemp_chart" style="display: none; width: 394px;"></div>
+<img id="unemp_chart1_img" src="images/results/tdpseatstally.jpg" />
+<div class="chart-gauge1" id="unemp_chart1" style="display: block; width: 394px;"></div>
 
-<div class="container" style="font-family: verdana; font-size: 14px; border: 1px solid rgb(204, 204, 204); padding: 0px 10px 10px; margin-top: 24px;" id="mapDiv">
+<img class="div_sld_img" src="images/results/bjpeffect.jpg" />
+<div class="div_sld" style="display: none;"><div id="slider3" class="d3-slider d3-slider-horizontal"><a class="d3-slider-handle" xlink:href="#"></a><svg class="d3-slider-axis d3-slider-axis-bottom" style="left: -12px;" width="558" height="32"><g transform="translate(12,0)"><g class="tick" style="opacity: 1;" transform="translate(0,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">0%</text></g><g class="tick" style="opacity: 1;" transform="translate(66.75,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">1%</text></g><g class="tick" style="opacity: 1;" transform="translate(133.5,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">2%</text></g><g class="tick" style="opacity: 1;" transform="translate(200.25,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">3%</text></g><g class="tick" style="opacity: 1;" transform="translate(267,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">4%</text></g><g class="tick" style="opacity: 1;" transform="translate(333.75,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">5%</text></g><path class="domain" d="M0,6V0H534V6"/></g></svg></div>
+</div>
+
+<img class="div_sld1_img" src="images/results/tdpeffect.jpg" />
+<div class="div_sld1" style="display: block;"><div id="slider3" style="width:375px;-20px" class="d3-slider d3-slider-horizontal"><a class="d3-slider-handle1" xlink:href="#" style="left: 50%;"></a><svg class="d3-slider-axis d3-slider-axis-bottom" style="left: -12px;" width="558" height="32"><g transform="translate(12,0)"><g class="tick" style="opacity: 1;" transform="translate(0,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">0%</text></g><g class="tick" style="opacity: 1;" transform="translate(37.25,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">1%</text></g><g class="tick" style="opacity: 1;" transform="translate(74.5,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">2%</text></g><g class="tick" style="opacity: 1;" transform="translate(111.75,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">3%</text></g><g class="tick" style="opacity: 1;" transform="translate(149,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">4%</text></g><g class="tick" style="opacity: 1;" transform="translate(186.25,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">5%</text></g><g class="tick" style="opacity: 1;" transform="translate(223.5,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">6%</text></g><g class="tick" style="opacity: 1;" transform="translate(260.75,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">7%</text></g><g class="tick" style="opacity: 1;" transform="translate(298,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">8%</text></g><g class="tick" style="opacity: 1;" transform="translate(335.25,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">9%</text></g><g class="tick" style="opacity: 1;" transform="translate(372.5,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">10%</text></g><path class="domain" d="M0,6V0H298V6"/></g></svg></div>
+</div>
+
+</div>
+</center>
+ <!--sravanthi code end-->
+<div id="weathermap4"> </div>
+<div class="container" style="margin-bottom:10px;font-family: verdana; font-size: 14px; border: 1px solid rgb(204, 204, 204); padding: 15px 10px 10px; margin-top: 24px;" id="mapDiv">
 
 
 <!--<h4 style="padding: 10px; margin-top: 10px; border-radius: 5px; text-align: center; background: none repeat scroll 0% 0% rgb(73, 175, 205);">LIVE ELECTION RESULTS COMPARISON</h4> -->
@@ -1258,7 +1276,7 @@ function getConstituencyWiseResults()
 	<area shape="rect" coords="791,1,858,30" href="javascript:{getRegionWiseResults('CBNEffect');}" title="CBN Effect"/>
 	<area shape="rect" coords="858,-4,929,29" href="javascript:{getRegionWiseResults('ModiEffect');}" title="Modi Effect"/>
 </map>
-
+  
 <div id="stateSelectDiv" align="center" style="margin-bottom: 20px;" >
 	<div class="span4 offset4">
 	<b>Select State</b>
@@ -1318,32 +1336,19 @@ function getConstituencyWiseResults()
 <br/>
 <div class="row-fluid " id="submitButtionDiv">
 	<div class="span2 offset5">
-	 <a class="btn btn-info btn-block " value="Submit" onClick="getElectionDetails();getElectionResultForTotalAssembly();" >Submit</a>	
+	 <a class="btn btn-info btn-block " value="Submit" onClick="getElectionDetails();getElectionResultForTotalAssembly(1);" >Submit</a>	
 	</div>
 </div>
 </br></br>
 <div class="row-fluid" id="legend" style="display:none;margin-bottom:-20px;">
 <img id="legendImg" src="./images/icons/Party-colors-banner.png" alt="Processing Image" />
-<!--<table>
-<tr>
-<td><b>TDP : <span style="background: #FFD700 ;font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
-<td><b> YSRC : <span style="background: #00CED1; font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
-<td><b>INC : <span style="background: #228B22; font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
-<td><b>TRS : <span style="background: #FF00FF; font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
-<td><b>AIMIM : <span style="background: #006400; font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
-<td><b>BJP : <span style="background:#FF7F50; font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
-<td><b>CPM/CPI : <span style="background: #B22222; font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
-<td><b>LSP : <span style="background: #4B0082; font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
-<td><b>OTHERS : <span style="background: #FF0000; font-size: 19px; font-weight: bold; height: 9px; width: 40px; display: inline-block;"></b></td>
-</tr>
-</table>-->
-
 </div> 
 
 </br></br>
 
 <div class="row-fluid">
 	<img id="stateAjaxImg1" src="./images/icons/barloader.gif" alt="Processing Image" style=" display: none; margin-left: 360px;padding-bottom: 10px;"/>
+	<img id="stateAjaxImg4" src="./images/icons/barloader.gif" alt="Processing Image" style=" display: none; margin-left: 360px;padding-bottom: 10px;" />
 	<div id="weathermap">
 	
 	</div>
@@ -1358,12 +1363,7 @@ function getConstituencyWiseResults()
 <div id="resultDiv"></div>
 
 
-<!--
 
-<div align="center" style="" class="hero-unit">
-<div id="partiesDiv"></div>
-</div>
--->
 <div id="overviewDivId1" class="span5" style="margin: 12px 48px 0px 49px;"></div>
 <div id="overviewDivId2" class="span5" style="margin:12px 10px 10px 39px"></div>
 <div id="subTitlesDiv" style="margin-top:20px;clear:both;"></div>
@@ -1584,31 +1584,13 @@ function getConstituencyWiseResults()
 </div>
 
 
-   <!--sravanthi code start-->
-<center>
-<div id="modiDiv">
-<img id="unemp_chart_img" src="images/results/bjpseatstally.jpg" />
-<div class="chart-gauge" id="unemp_chart" style="display: none; width: 394px;"></div>
-<img id="unemp_chart1_img" src="images/results/tdpseatstally.jpg" />
-<div class="chart-gauge1" id="unemp_chart1" style="display: block; width: 394px;"></div>
 
-<img class="div_sld_img" src="images/results/bjpeffect.jpg" />
-<div class="div_sld" style="display: none;"><div id="slider3" class="d3-slider d3-slider-horizontal"><a class="d3-slider-handle" xlink:href="#"></a><svg class="d3-slider-axis d3-slider-axis-bottom" style="left: -12px;" width="558" height="32"><g transform="translate(12,0)"><g class="tick" style="opacity: 1;" transform="translate(0,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">0%</text></g><g class="tick" style="opacity: 1;" transform="translate(66.75,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">1%</text></g><g class="tick" style="opacity: 1;" transform="translate(133.5,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">2%</text></g><g class="tick" style="opacity: 1;" transform="translate(200.25,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">3%</text></g><g class="tick" style="opacity: 1;" transform="translate(267,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">4%</text></g><g class="tick" style="opacity: 1;" transform="translate(333.75,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">5%</text></g><path class="domain" d="M0,6V0H534V6"/></g></svg></div>
-</div>
-
-<img class="div_sld1_img" src="images/results/tdpeffect.jpg" />
-<div class="div_sld1" style="display: block;"><div id="slider3" style="width:375px;-20px" class="d3-slider d3-slider-horizontal"><a class="d3-slider-handle1" xlink:href="#" style="left: 50%;"></a><svg class="d3-slider-axis d3-slider-axis-bottom" style="left: -12px;" width="558" height="32"><g transform="translate(12,0)"><g class="tick" style="opacity: 1;" transform="translate(0,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">0%</text></g><g class="tick" style="opacity: 1;" transform="translate(37.25,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">1%</text></g><g class="tick" style="opacity: 1;" transform="translate(74.5,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">2%</text></g><g class="tick" style="opacity: 1;" transform="translate(111.75,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">3%</text></g><g class="tick" style="opacity: 1;" transform="translate(149,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">4%</text></g><g class="tick" style="opacity: 1;" transform="translate(186.25,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">5%</text></g><g class="tick" style="opacity: 1;" transform="translate(223.5,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">6%</text></g><g class="tick" style="opacity: 1;" transform="translate(260.75,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">7%</text></g><g class="tick" style="opacity: 1;" transform="translate(298,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">8%</text></g><g class="tick" style="opacity: 1;" transform="translate(335.25,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">9%</text></g><g class="tick" style="opacity: 1;" transform="translate(372.5,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">10%</text></g><path class="domain" d="M0,6V0H298V6"/></g></svg></div>
-</div>
-
-</div>
-</center>
- <!--sravanthi code end-->
  <img id="stateAjaxImg3" src="./images/icons/barloader.gif" alt="Processing Image" style=" display: none; margin-left: 600px;padding-bottom: 10px;" />
 
  <center><div id="weathermap3"> </div></center>
  
-  <img id="stateAjaxImg4" src="./images/icons/barloader.gif" alt="Processing Image" style=" display: none; margin-left: 600px;padding-bottom: 10px;" />
- <div id="weathermap4"> </div>
+  
+ 
  <img id="stateAjaxImg5" src="./images/icons/barloader.gif" alt="Processing Image" style=" display: none; margin-left: 600px;padding-bottom: 10px;" />
   <div id="weathermap5" class="offset2"> </div>
 <!-- SAMBA END -->
@@ -2770,7 +2752,7 @@ popupContent +=' </table>';
 	
 	function getElectionResultForTotalParliment()
 	{
-		 $("#stateAjaxImg3").css("display","block");
+		 //$("#stateAjaxImg3").css("display","block");
 		var parties = new Array();
 		parties.push(872);
 		parties.push(362);
@@ -3153,7 +3135,7 @@ function getRegionWiseResults(searchType)
 		$('#districtWiseAnalysis').hide();
 		getLocationDetailsForSelectedScope1();
 		$('#weathermap5').hide();
-		$( "#processingDialogue" ).dialog('close');
+		
 	}
 	else if(searchType == 'DistrictAnalysis')
 	{
@@ -3298,7 +3280,7 @@ function getRegionWiseResults(searchType)
 	}
 	function buildPartyWiseResultForParliment(stateId,electionId,parties,electionScopeId)
 	{
-		$("#stateAjaxImg5").css("display","block");
+		//$("#stateAjaxImg5").css("display","block");
 		var jsObj=
 		{
 				electionId : stateId,
@@ -3542,7 +3524,7 @@ function getRegionWiseResults(searchType)
 					}
 					 $(".d3-slider-handle1").attr("style","left:"+sliderCbnWave+"%");
 					 callCBNMeter();
-				getElectionResultForTotalAssembly();
+				getElectionResultForTotalAssembly(0);
 			}
 		  }catch(e){
 		    $( "#processingDialogue" ).dialog('close');
@@ -3550,9 +3532,11 @@ function getRegionWiseResults(searchType)
 		});	
 	}
 	
-	function getElectionResultForTotalAssembly()
+	function getElectionResultForTotalAssembly(level)
 	{
-	 $("#stateAjaxImg4").css("display","block");
+	  if(level == 1){
+	   $("#stateAjaxImg4").css("display","block");
+	  }
 		var parties = new Array();
 		parties.push(872);
 		parties.push(362);
@@ -4104,7 +4088,10 @@ else if(scope == 5)
 		$("#selectText").html("Select Assembly");
 	
 	}
-	$("#processImg").css("display","inline-block");
+	
+	if(!$("#processingDialogue").is(':visible')) { 
+      $("#processImg").css("display","inline-block");
+     }
 	$('#subReportId').attr('disabled',false); 
     if($('#scopeId').val() == 5)
 	{
@@ -4122,9 +4109,11 @@ else if(scope == 5)
 
           success: function(result){ 
 			  $("#processImg").css("display","none");
+			  $( "#processingDialogue" ).dialog('close');
 			   buildLocationDetails(result);
          },
           error:function() { 
+		  $( "#processingDialogue" ).dialog('close');
            console.log('error', arguments);
          }
     });
@@ -4444,8 +4433,8 @@ $('#processingDialogue').addClass("customclass1");
 $('#processingDialogue').removeClass("ui-widget-content ui-dialog-content");
 $('.ui-dialog').css({left:378 ,width:512});
 $('#processingDialogue').closest('.ui-icon').css("display","none");
- $("#processingDialogue").dialog('open').html("<img src='images/ajaxImg2.gif' id='mainajaximg' style='width:40px;'/>");
- $("#mainajaximg").attr("style","width:40px;margin-top:"+$(window).height()/2+"px");
+ $("#processingDialogue").dialog('open').html("<img src='images/Loading-data.gif' id='mainajaximg' style='height:100px;width:114px;'/>");
+ $("#mainajaximg").attr("style","height:100px;width:114px;margin-top:"+$(window).height()/2+"px");
 }
 
 $(".matrixRprt").click(function() { 
