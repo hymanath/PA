@@ -1550,7 +1550,7 @@ $('#ajaxImage').show();
 </ul>
 </div>
 <!-- start Caste Wise Analysis -->
-<div style="margin-left:400px;margin-top:20px;display:none;" id="casteAnalysisAjax"><img src="images/icons/goldAjaxLoad.gif" /></div>
+<div style="margin-left:400px;margin-top:20px;display:none;" id="casteAnalysisAjax"><img src="./images/Loading-data.gif" alt="Processing Image" /></div>
 <div id="casteAnalysisDiv" style="display:none;margin-top:20px;">
 
 </div>
