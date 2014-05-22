@@ -372,7 +372,7 @@ $('document').ready(function(){
 		//seemandraRegion();
 		
 	//	$('#results1Div,#subTitlesDiv').hide();
-	 $('#scopeId').trigger('change');
+	 //$('#scopeId').trigger('change');
 	 //$('#locaionsId1').multiselect({ noneSelectedText:"Select"});
 	 $('.reportType').change(function(){
 		 $('#percentDiv').hide();
