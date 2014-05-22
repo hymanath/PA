@@ -1,41 +1,17 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.math.BigDecimal;
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import org.appfuse.dao.BaseDaoTestCase;
-import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyRebelCandidateDAO;
-import com.itgrids.partyanalyst.dto.ConstituencyElectionResults;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
-import com.itgrids.partyanalyst.dto.PartiesDetailsVO;
-import com.itgrids.partyanalyst.dto.PartyResultsVO;
-import com.itgrids.partyanalyst.dto.PartyResultsVerVO;
-import com.itgrids.partyanalyst.dto.ResultCodeMapper;
-import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.model.CandidateResult;
-import com.itgrids.partyanalyst.model.ConstituencyElection;
-import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
-import com.itgrids.partyanalyst.utils.IConstants;
 
 public class NominationDAOHibernateTest extends BaseDaoTestCase {
 	
@@ -1689,7 +1665,29 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		  }
 		  return result;
 	  }*/
-	
+	/*
+	public void testGetAllDtails(){
+		List<Long> listIds = new ArrayList<Long>();
+		listIds.add(461L);
+		listIds.add(469L);
+		listIds.add(471L);
+		listIds.add(477L);
+		listIds.add(480L);
+		listIds.add(481L);
+		listIds.add(484L);
+		listIds.add(485L);
+		listIds.add(486L);
+		listIds.add(487L);
+		listIds.add(489L);
+		listIds.add(490L);
+		listIds.add(496L);
+		listIds.add(499L);
+		listIds.add(502L);
+		listIds.add(510L);
+		listIds.add(511L);
+		
+		List<Object[]> list = nominationDAO.getWonAndLeadCountPartyWise(260L,listIds,4L);
+		System.out.println(list);
 	public void test(){
 		List<Long> constiIds = new ArrayList<Long>();
 		//constiIds.add(228l);
@@ -1705,5 +1703,6 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		List<Object[]> list = nominationDAO.partysVotesShareInConstituenciesOfElection(38l,constiIds,partyIds);
 		System.out.println(list.size());
 	}
+	*/
 }	
 	
