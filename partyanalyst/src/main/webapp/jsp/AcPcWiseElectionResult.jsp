@@ -4808,7 +4808,7 @@ function buildCasteData(result)
 {
 	var str = '';
 	$("#casteAnalysisAjax").hide();
-	str+='<table class="table table-bordered" style="font-size:12px;" id="casteTable">';
+	str+='<table class="table table-bordered" style="font-size:11px;" id="casteTable">';
 	str+='<tr>';
 	str+='<th>CONSTITUENCY</th>';
 	str+='<th>TOP-5 CASTE</th>';
@@ -4839,21 +4839,21 @@ function buildCasteData(result)
 		str+='</td>';
 		
 		str += '<td>'+result[i].candidateList[0].name+'</td>';
-		str += '<td>'+result[i].candidateList[0].status+'</td>';
+		str += '<td style="display:inherit !important;">'+result[i].candidateList[0].status+'</td>';
 		str += '<td>'+result[i].candidateList[0].party+'</td>';
 		str += '<td>'+result[i].candidateList[0].votes+'</td>';
 		str += '</tr>';
 
 		str += '<tr>';
 		str += '<td>'+result[i].candidateList[1].name+'</td>';
-		str += '<td>'+result[i].candidateList[1].status+'</td>';
+		str += '<td style="display:inherit !important;">'+result[i].candidateList[1].status+'</td>';
 		str += '<td>'+result[i].candidateList[1].party+'</td>';
 		str += '<td>'+result[i].candidateList[1].votes+'</td>';
 		str += '</tr>';
 
 		str += '<tr>';
 		str += '<td>'+result[i].candidateList[2].name+'</td>';
-		str += '<td>'+result[i].candidateList[2].status+'</td>';
+		str += '<td style="display:inherit !important;">'+result[i].candidateList[2].status+'</td>';
 		str += '<td>'+result[i].candidateList[2].party+'</td>';
 		str += '<td>'+result[i].candidateList[2].votes+' </td>';
 		str+='</tr>';
