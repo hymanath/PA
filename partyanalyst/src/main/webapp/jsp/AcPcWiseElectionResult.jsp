@@ -21,6 +21,64 @@
 <link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
 <title>AC AND PC WISE RESULT</title>
+<!-- harish start -->
+
+
+<style>
+#navcontainer{width:960px; height:33px; background: #429b9b;
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzQyOWI5YiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjE2JSIgc3RvcC1jb2xvcj0iIzZhYmVjMCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjgwJSIgc3RvcC1jb2xvcj0iIzQyOWI5YiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMzMzliOWMiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+background: -moz-linear-gradient(top,  #429b9b 0%, #6abec0 16%, #429b9b 80%, #339b9c 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#429b9b), color-stop(16%,#6abec0), color-stop(80%,#429b9b), color-stop(100%,#339b9c));
+background: -webkit-linear-gradient(top,  #429b9b 0%,#6abec0 16%,#429b9b 80%,#339b9c 100%);
+background: -o-linear-gradient(top,  #429b9b 0%,#6abec0 16%,#429b9b 80%,#339b9c 100%);
+background: -ms-linear-gradient(top,  #429b9b 0%,#6abec0 16%,#429b9b 80%,#339b9c 100%);
+background: linear-gradient(to bottom,  #429b9b 0%,#6abec0 16%,#429b9b 80%,#339b9c 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#429b9b', endColorstr='#339b9c',GradientType=0 );
+}
+#navcontainer ul{margin: 0;padding: 10;list-style-type: none;text-transform:uppercase;text-weight:bold;font-size:12px;line-height: 38px;}
+#navcontainer ul li { display: inline; }
+#navcontainer ul li a{text-decoration: none;padding: .6em 1em;color: #333;/*background-color: #036;*/}
+#navcontainer ul li a:hover{color: #fff;
+background: #e5ba0b;
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2U1YmEwYiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEyJSIgc3RvcC1jb2xvcj0iI2Y2ZTAyOCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjQ1JSIgc3RvcC1jb2xvcj0iI2U3YmUwYyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkOWE3MDgiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+background: -moz-linear-gradient(top,  #e5ba0b 0%, #f6e028 12%, #e7be0c 45%, #d9a708 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e5ba0b), color-stop(12%,#f6e028), color-stop(45%,#e7be0c), color-stop(100%,#d9a708));
+background: -webkit-linear-gradient(top,  #e5ba0b 0%,#f6e028 12%,#e7be0c 45%,#d9a708 100%);
+background: -o-linear-gradient(top,  #e5ba0b 0%,#f6e028 12%,#e7be0c 45%,#d9a708 100%);
+background: -ms-linear-gradient(top,  #e5ba0b 0%,#f6e028 12%,#e7be0c 45%,#d9a708 100%);
+background: linear-gradient(to bottom,  #e5ba0b 0%,#f6e028 12%,#e7be0c 45%,#d9a708 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e5ba0b', endColorstr='#d9a708',GradientType=0 );
+}
+
+#navcontainer ul li a.Tabactive{color: #fff;
+background: #e5ba0b;
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2U1YmEwYiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEyJSIgc3RvcC1jb2xvcj0iI2Y2ZTAyOCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjQ1JSIgc3RvcC1jb2xvcj0iI2U3YmUwYyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkOWE3MDgiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+background: -moz-linear-gradient(top,  #e5ba0b 0%, #f6e028 12%, #e7be0c 45%, #d9a708 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e5ba0b), color-stop(12%,#f6e028), color-stop(45%,#e7be0c), color-stop(100%,#d9a708));
+background: -webkit-linear-gradient(top,  #e5ba0b 0%,#f6e028 12%,#e7be0c 45%,#d9a708 100%);
+background: -o-linear-gradient(top,  #e5ba0b 0%,#f6e028 12%,#e7be0c 45%,#d9a708 100%);
+background: -ms-linear-gradient(top,  #e5ba0b 0%,#f6e028 12%,#e7be0c 45%,#d9a708 100%);
+background: linear-gradient(to bottom,  #e5ba0b 0%,#f6e028 12%,#e7be0c 45%,#d9a708 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e5ba0b', endColorstr='#d9a708',GradientType=0 );
+}
+  .hrwidth {
+
+    width: 109%;
+	 color: #000;
+	background-color: #000;
+	height: 3px !important;
+	 margin: 0 0 0 -8px;
+
+	}
+	#casteTable th{color:#5FB9B9;background-color: #DDDDDD;border:1px solid black !important;}
+#casteTable td
+{
+border:1px solid black !important;
+}
+
+</style>
+
+<!-- harish end -->
 <style>
 div:focus {outline:none}
 #seats{
@@ -338,7 +396,7 @@ var stateAnalysTabCount = 0;
 var distAnalysTabCount = 0;
 var cbnEffTabCount = 0;
 var modiEffTabCount = 0;
-
+var casteAnalysisDivFlag = false;
 $('document').ready(function(){
 
 		$('.percentTypeClass').change(function(){
@@ -1482,8 +1540,26 @@ $('#ajaxImage').show();
 
 <!-- SAMBA START  -->
 <div class="container hide" style="font-family: verdana; font-size: 14px; border: 1px solid rgb(204, 204, 204); padding: 0px 10px 10px; margin-top: 24px;" id="liveResultsDiv">
+<div id="navcontainer" style="margin-left:-10px;">
+<ul>
+<li><a href="#" class="Tabactive highLight" onclick="buildMenuForStateAnalysis('partyWiseStatsDiv')" class="partyWiseStatsDiv">Party Wise Statistics Analysis</a></li>
+<li><a href="#" class="InteractiveMapDiv highLight" onclick="buildMenuForStateAnalysis('InteractiveMapDiv')" >Interactive Map Analysis</a></li>
+<li><a href="#" class="regionWiseAnalysisDiv highLight" onclick="buildMenuForStateAnalysis('regionWiseAnalysisDiv')">Region Wise Analysis</a></li>
+<li><a href="#" class="casteAnalysisDiv highLight" onclick="buildMenuForStateAnalysis('casteAnalysisDiv')">Caste Wise Analysis</a></li>
+<li><a href="#" class="partyRebelsEffect highLight" onclick="buildMenuForStateAnalysis('partyRebelsEffect')">Party Rebels Effect</a></li>
+</ul>
+</div>
+<!-- start Caste Wise Analysis -->
+<div style="margin-left:400px;margin-top:20px;display:none;" id="casteAnalysisAjax"><img src="images/icons/goldAjaxLoad.gif" /></div>
+<div id="casteAnalysisDiv" style="display:none;margin-top:20px;">
 
-<div style="text-align:center;margin-top:10px;"><img src="images/Live AP State Election Results.jpg"></div>
+</div>
+<!-- end Caste wise Analysis-->
+<!-- start Region wise Analysis -->
+<div class="container hide" style="font-family: verdana; font-size: 14px; border: 1px solid rgb(204, 204, 204); padding: 0px 10px 10px; margin-top: 24px;width:920px !important;" id="regionWiseAnalysisDiv">
+<div  style="text-align:center;margin-top:10px;display:none;"><img src="images/Live AP State Election Results.jpg"></div>
+
+
 
 <img id="stateAjaxImg" src="./images/icons/search.gif" alt="Processing Image" style="display:none;"/>
 
@@ -1627,6 +1703,9 @@ $('#ajaxImage').show();
  
  <img id="stateAjaxImg5" src="./images/icons/barloader.gif" alt="Processing Image" style=" display: none; margin-left: 600px;padding-bottom: 10px;" />
   <div id="weathermap5" class="offset2"> </div>
+  
+  
+  </div>
 <!-- SAMBA END -->
 
  <div id="processingDialogue"></div>
@@ -4656,6 +4735,140 @@ function buildPartyVotesShareTable(results){
 	str += '</div>';
 	$("#constituencyResultsDiv").html(str);
 }
+function buildMenuForStateAnalysis(searchType)
+{
+	if(searchType == 'partyWiseStatsDiv')
+	{
+	$("#partyRebelsEffect").hide();
+	$("#casteAnalysisDiv").hide();
+	$("#regionWiseAnalysisDiv").hide();
+	$("#InteractiveMapDiv").hide();
+	$("#partyWiseStatsDiv").show();
+	}
+	else if(searchType == 'InteractiveMapDiv')
+	{
+	$("#partyWiseStatsDiv").hide();
+	$("#casteAnalysisDiv").hide();
+	$("#regionWiseAnalysisDiv").hide();
+	$("#partyRebelsEffect").hide();
+	$("#InteractiveMapDiv").show();
+	}
+	else if(searchType == 'regionWiseAnalysisDiv')
+	{
+	$("#partyWiseStatsDiv").hide();
+	$("#InteractiveMapDiv").hide();
+	$("#casteAnalysisDiv").hide();
+	$("#partyRebelsEffect").hide();
+	$("#regionWiseAnalysisDiv").show();
+	}
+	else if(searchType == 'casteAnalysisDiv')
+	{
+	$("#partyWiseStatsDiv").hide();
+	$("#InteractiveMapDiv").hide();
+	$("#regionWiseAnalysisDiv").hide();
+	$("#partyRebelsEffect").hide();
+	$("#casteAnalysisDiv").show();
+	
+		if(!casteAnalysisDivFlag)
+		{
+			$("#casteAnalysisDiv").html('');
+			getTopCasteData();
+		}
+	}
+	else if(searchType == 'partyRebelsEffect')
+	{
+	$("#partyWiseStatsDiv").hide();
+	$("#InteractiveMapDiv").hide();
+	$("#regionWiseAnalysisDiv").hide();
+	$("#casteAnalysisDiv").hide();
+	$("#partyRebelsEffect").show();
+	}
+}
+function getTopCasteData(){
+	$("#casteAnalysisAjax").show();
+	var jsObj = 
+	{
+		electionId:258,
+		task:"getData"
+	}
+	$.ajax({
+          type:'GET',
+          url: 'getCasteWiseDataAction.action',
+          dataType: 'json',
+          data: {task:JSON.stringify(jsObj)},
+     	  }).done(function(result){ 
+			  if(result != null){
+				casteAnalysisDivFlag = true;
+				buildCasteData(result);
+				//buildPartyVotesShareTable(result);
+			}
+	   });
+}
+function buildCasteData(result)
+{
+	var str = '';
+	$("#casteAnalysisAjax").hide();
+	str+='<table class="table table-bordered" style="font-size:12px;" id="casteTable">';
+	str+='<tr>';
+	str+='<th>CONSTITUENCY</th>';
+	str+='<th>TOP-5 CASTE</th>';
+	str+='<th>CANDIDATE NAME</th>';
+	str+='<th>STATUS</th>';
+	str+='<th>PARTY</th>';
+	str+='<th>VOTES</th>';
+	str+='</tr>';
+	
+	for(var i in result)
+	{
+		str+='<tr>';
+		str+='<td rowspan="3">'+result[i].name+'</td>';
+		str+='<td rowspan="3">';
+		
+		for(var j in result[i].casteList)
+		{
+			var tempVar = result[i].casteList.length - 1;
+			str+=''+ result[i].casteList[j].name+'  '   +result[i].casteList[j].percentage+'%';
+			
+			if(j != tempVar)
+			{
+			str+='<hr class="hrwidth" />';
+			}
+		
+		}
+		
+		str+='</td>';
+		
+		str += '<td>'+result[i].candidateList[0].name+'</td>';
+		str += '<td>'+result[i].candidateList[0].status+'</td>';
+		str += '<td>'+result[i].candidateList[0].party+'</td>';
+		str += '<td>'+result[i].candidateList[0].votes+'</td>';
+		str += '</tr>';
+
+		str += '<tr>';
+		str += '<td>'+result[i].candidateList[1].name+'</td>';
+		str += '<td>'+result[i].candidateList[1].status+'</td>';
+		str += '<td>'+result[i].candidateList[1].party+'</td>';
+		str += '<td>'+result[i].candidateList[1].votes+'</td>';
+		str += '</tr>';
+
+		str += '<tr>';
+		str += '<td>'+result[i].candidateList[2].name+'</td>';
+		str += '<td>'+result[i].candidateList[2].status+'</td>';
+		str += '<td>'+result[i].candidateList[2].party+'</td>';
+		str += '<td>'+result[i].candidateList[2].votes+' </td>';
+		str+='</tr>';
+	}
+	
+	str+='</table>';
+	$("#casteAnalysisDiv").html(str);
+}
+$(".highLight").live( "click", function() {
+
+	$(".highLight").removeClass("Tabactive");
+	$(this).addClass("Tabactive");
+
+});
+
 
 </script>
 
