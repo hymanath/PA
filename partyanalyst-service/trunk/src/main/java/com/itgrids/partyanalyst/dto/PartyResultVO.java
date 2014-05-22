@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 @SuppressWarnings("unused")
-public class PartyResultVO {
+public class PartyResultVO implements Comparable<PartyResultsVO> {
 
 	private Long partyId;
 	private String partyName;
@@ -44,8 +44,16 @@ public class PartyResultVO {
 	private Long boothId;
 	private Long totalVotes;
 	private String partyVotes;
+	private String percent;
 	
 	
+	public String getPercent() {
+		return percent;
+	}
+	public void setPercent(String percent) {
+		this.percent = percent;
+	}
+
 	private List<SelectOptionVO> votesRange;
 	
 	private String range;
@@ -312,5 +320,9 @@ public class PartyResultVO {
 
 	public void setBoothIds(List<Long> boothIds) {
 		this.boothIds = boothIds;
+	}
+	public int compareTo(PartyResultsVO o) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

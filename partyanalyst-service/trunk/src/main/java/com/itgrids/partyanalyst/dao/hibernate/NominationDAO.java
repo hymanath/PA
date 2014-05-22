@@ -4646,8 +4646,6 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			return query.list();
 			
 		}
-		
-		
 		public List<Object[]> getSubReportForElectionResultByConstituencyReservationType(Long electionId,List<Long> locationIds,Long scopeId)
 		{
 			StringBuffer queryString = new StringBuffer();
@@ -4858,7 +4856,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			 	Query query = getSession().createQuery("select model.party.shortName,model.party.partyId " +
 						" from Nomination model where model.constituencyElection.election.electionId = :electionId" +
 						" and model.constituencyElection.constituency.constituencyId in(:constituencyIds) " +
-						" group by model.party.partyId" );
+						" group by model.party.partyId order by model.party.shortName" );
 				
 				query.setParameter("electionId", electionId);
 				query.setParameterList("constituencyIds", constituencyIds);
