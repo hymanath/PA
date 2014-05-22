@@ -1727,10 +1727,11 @@ $('#ajaxImage').show();
   
  
  <img id="stateAjaxImg5" src="./images/icons/barloader.gif" alt="Processing Image" style=" display: none; margin-left: 600px;padding-bottom: 10px;" />
-  <div id="weathermap5" class="offset2"> </div>
+ 
   
   
   </div>
+   <div id="weathermap5" class="offset2"> </div>
 <!-- SAMBA END -->
 
  <div id="processingDialogue"></div>
