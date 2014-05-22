@@ -22,6 +22,7 @@
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
 <title>AC AND PC WISE RESULT</title>
 <style>
+div:focus {outline:none}
 #seats{
 height:0px;
 }
