@@ -25,8 +25,7 @@ public class ConstituencyWiseElectionResultsAction extends ActionSupport impleme
 	private HttpSession session;
 	HttpServletRequest request=null;
 
-	
-	@Override
+
 	public void setServletRequest(HttpServletRequest request) {
 		this.request=request;
 		
