@@ -1,7 +1,5 @@
 package com.itgrids.partyanalyst.service;
 
-import java.util.ArrayList;
-
 import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,10 +7,7 @@ import org.junit.Test;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.excel.booth.BoothInfo;
-import com.itgrids.partyanalyst.model.Constituency;
-import com.itgrids.partyanalyst.model.ConstituencyElection;
 import com.itgrids.partyanalyst.service.impl.BoothDataValidationService;
-import com.itgrids.partyanalyst.util.DummyPartyResultsData;
 import com.itgrids.partyanalyst.util.MockData;
 
 public class BoothDataValidationServiceTest {

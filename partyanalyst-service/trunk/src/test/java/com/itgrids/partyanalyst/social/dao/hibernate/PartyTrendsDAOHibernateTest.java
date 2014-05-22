@@ -683,7 +683,7 @@ List<Object[]> obj=(List<Object[]>) partyTrendsDAO.loadEntitiesForXl(cost);
 			
 			Comparator<BaseCandidateResultVO> countComp=new Comparator<BaseCandidateResultVO>() {
 
-				@Override
+				//@Override
 				public int compare(BaseCandidateResultVO o1, BaseCandidateResultVO o2) {
 				
 					return o2.getCount().compareTo(o1.getCount());
@@ -786,7 +786,7 @@ List<Object[]> obj=(List<Object[]>) partyTrendsDAO.loadEntitiesForXl(cost);
 					{
 				   //update candidate result  by using partyId and electionId if his not not independent
 						//constIdsMap.get(constId);
-					int updatesCount =partyTrendsDAO.updateCandidateReult(partyId, electionId, baseCandidateResultVO.getCount().doubleValue(),constituencyId,baseCandidateResultVO.getVotesPercengate(),baseCandidateResultVO.getMarginVotes(),baseCandidateResultVO.getMarginVotesPercentage());
+					int updatesCount =0;//partyTrendsDAO.updateCandidateReult(partyId, electionId, baseCandidateResultVO.getCount().doubleValue(),constituencyId,baseCandidateResultVO.getVotesPercengate(),baseCandidateResultVO.getMarginVotes(),baseCandidateResultVO.getMarginVotesPercentage());
 
 					System.out.println(updatesCount);
 					if(updatesCount!=1)
@@ -797,7 +797,7 @@ List<Object[]> obj=(List<Object[]>) partyTrendsDAO.loadEntitiesForXl(cost);
 					}else {
 						if(partyId.equals(366L)) {
 					//here update independent
-						int updated =partyTrendsDAO.updateCandidateReultForIndependents(baseCandidateResultVO.getCandidateName(), electionId, baseCandidateResultVO.getCount().doubleValue(),constituencyId,baseCandidateResultVO.getVotesPercengate(),baseCandidateResultVO.getMarginVotes(),baseCandidateResultVO.getMarginVotesPercentage());
+						int updated =0;//partyTrendsDAO.updateCandidateReultForIndependents(baseCandidateResultVO.getCandidateName(), electionId, baseCandidateResultVO.getCount().doubleValue(),constituencyId,baseCandidateResultVO.getVotesPercengate(),baseCandidateResultVO.getMarginVotes(),baseCandidateResultVO.getMarginVotesPercentage());
 						System.out.println(updated);
 							if(updated!=1)
 							{
