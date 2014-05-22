@@ -4577,7 +4577,16 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 						"model.candidateResult.rank = 1" +
 						"group by model2.stateRegion.stateRegionId ,model.party.partyId ,model.constituencyElection.countStatus ");
 			}
-			
+			else if(scopeId.longValue() == 4)//parliaments
+			{				
+				queryString.append("select count(model.party.partyId)," +
+						" model.party.partyId,model.party.shortName,model.constituencyElection.countStatus " +
+						"from Nomination model where " +
+						"model.constituencyElection.election.electionId = :electionId and " +
+						"model.constituencyElection.constituency.constituencyId in(:locationIds)  and " +
+						"model.candidateResult.rank = 1" +
+						" group by model.party.partyId order by count(model.party.partyId) desc ");
+			}
 			Query query = getSession().createQuery(queryString.toString());
 			
 			query.setParameter("electionId", electionId);
