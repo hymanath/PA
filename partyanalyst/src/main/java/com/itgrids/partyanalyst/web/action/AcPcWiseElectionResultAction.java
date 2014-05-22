@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.CasteWiseResultVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -40,7 +41,18 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 	private IStaticDataService staticDataService;
 	List<SelectOptionVO> returnList;
 	private EntitlementsHelper entitlementsHelper;
+	private List<CasteWiseResultVO> casteData;
 	
+	public List<CasteWiseResultVO> getCasteData() {
+		return casteData;
+	}
+
+
+	public void setCasteData(List<CasteWiseResultVO> casteData) {
+		this.casteData = casteData;
+	}
+
+
 	public EntitlementsHelper getEntitlementsHelper() {
 		return entitlementsHelper;
 	}
@@ -287,5 +299,33 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 		}
 		return Action.SUCCESS;
 	}
+	public String getCasteWiseData()
+	{
+		try
+		{
+			LOG.debug("Entered Into getElectionResults method in AcPcWiseElectionResultAction Action");
+			session = request.getSession();
+			RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
+			if (registrationVO != null) 
+			{
+				if (!registrationVO.getIsAdmin().equals("true"))
+					  return ERROR;
+			} 
+			else
+				return ERROR;
+			
+			jObj = new JSONObject(getTask());
+						
+			
+			casteData = acPcWiseElectionResultService.getCasteWiseDataForElection(jObj.getLong("electionId"));
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception Raised In getElectionResults method in AcPcWiseElectionResultAction Action", e);
+			return Action.ERROR;
+		}
+		return Action.SUCCESS;
+	}
+
 	
 }
