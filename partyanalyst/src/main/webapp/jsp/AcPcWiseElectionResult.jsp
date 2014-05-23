@@ -1722,7 +1722,7 @@ $('#ajaxImage').show();
 
  <img id="stateAjaxImg3" src="./images/icons/barloader.gif" alt="Processing Image" style=" display: none; margin-left: 600px;padding-bottom: 10px;" />
 
- <center><img id="effectClrImg" style="display:none;" src="images/specialPage/parlicolorcodes.png"><div id="weathermap3"> </div></center>
+ 
  
   
  
@@ -1732,6 +1732,7 @@ $('#ajaxImage').show();
   
   </div>
    <div id="weathermap5" class="offset2"> </div>
+   <center><img id="effectClrImg" style="display:none;" src="images/specialPage/parlicolorcodes.png"><div id="weathermap3"> </div></center>
 <!-- SAMBA END -->
 
  <div id="processingDialogue"></div>
