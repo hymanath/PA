@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -1788,13 +1789,82 @@ List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId,
     			partyVO.setName(obj[1].toString());
     			partyVO.setRank(Long.parseLong(obj[4].toString()));
     			partyVO.setGainedVotes((long)Double.parseDouble(obj[5].toString()));
+    			partyVO.getPartyIds().add(Long.parseLong(obj[0].toString()));
     			
     			constituencyVO.getSubList().add(partyVO);
     		}
     		
+    		
+    		Iterator<DashBoardResultsVO> itr = resultList.iterator();
+    		
+    		while(itr.hasNext())
+    		{
+    			DashBoardResultsVO constituencyVO = itr.next();
+    			
+    			if(!constituencyVO.getPartyIds().contains(partyId))
+    				itr.remove();
+    		}
+    		
+    		
+    		
     		 partyCountBefore = getPartyWiseWinningCount(resultList);
     		
-    		caluculateValidVotesForConstituency(resultList);//this method calculates all the valid votes of a constituency
+    		caluculateValidVotesForConstituency(resultList);//this method calculates all the valid votes of constituencies
+    		
+    		Map<String,Long> voterCountMap = new HashMap<String, Long>();
+    		
+    		Long totalValidVotersCount = 0L;
+    		
+    		for(DashBoardResultsVO constituencyVO:resultList)
+    		{
+    			totalValidVotersCount  = totalValidVotersCount + constituencyVO.getVotesCount();
+    		}
+    		
+    		
+    		for(DashBoardResultsVO constituencyVO:resultList)
+    		{
+    			for(DashBoardResultsVO partyVO:constituencyVO.getSubList())
+        		{
+    				if(voterCountMap.get(partyVO.getName()) == null)
+    				{
+    					voterCountMap.put(partyVO.getName()+","+partyVO.getPartyId(), partyVO.getGainedVotes());
+    				}else
+    				{
+    					voterCountMap.put(partyVO.getName()+","+partyVO.getPartyId(), voterCountMap.get(partyVO.getName()+","+partyVO.getPartyId()) + partyVO.getGainedVotes());
+    				}
+        		}
+    		}
+    		
+    		List<Long> partyIds = new ArrayList<Long>();
+			
+    			partyIds.add(72L);
+				partyIds.add(872L);
+				partyIds.add(362L);
+				partyIds.add(1117L);
+				partyIds.add(886L);
+				partyIds.add(163L);
+				partyIds.add(9999L);
+				
+			List<DashBoardResultsVO> percentList = new ArrayList<DashBoardResultsVO>();
+			
+			for(Entry<String, Long> entry:voterCountMap.entrySet())
+    		{
+				if(partyIds.contains(Long.parseLong(entry.getKey().split(",")[1])))
+				{
+					DashBoardResultsVO party = new DashBoardResultsVO();
+					
+					party.setPercent(entry.getValue() != 0L ? roundTo2DigitsFloatValue((float) entry.getValue()
+							* 100f
+							/totalValidVotersCount) : "0.00");
+					
+					party.setName(entry.getKey().split(",")[0]);
+					party.setGainedVotes(entry.getValue());
+					
+					percentList.add(party);
+				}
+    		}
+    			
+    		
     		removeVotesFromSelectedPartyBySelectedPercent(resultList,partyId,percent);//this method minus the votes for selected party
     		setRankByGainedVotes(resultList);//this method sets the rank for parties after voters decrease
     		
@@ -1818,6 +1888,7 @@ List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId,
     			resultList.get(0).setPartyWiseCountAfter(partyCountAfter);
     			resultList.get(0).setPartyWiseCountBefore(partyCountBefore);
     			resultList.get(0).setResultMap(resultMap);
+    			resultList.get(0).setPartiesDetails(percentList);
     		}
     		
     	}catch(Exception e)
