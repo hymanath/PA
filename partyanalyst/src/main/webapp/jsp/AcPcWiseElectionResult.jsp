@@ -117,15 +117,24 @@ height:0px;
     white-space: nowrap;
 }
 .main-mbg {
-    background-color: #06ABEA;
-    border-radius: 7px 7px 7px 7px;
-    color: #FFFFFF;
-    font: bold 14px/35px "Trebuchet MS",Arial,Helvetica,sans-serif;
-    height: 35px;
+   background: #6d839a;
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzZkODM5YSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjExJSIgc3RvcC1jb2xvcj0iI2IyYzBjYiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjcyJSIgc3RvcC1jb2xvcj0iIzgyOTZhZSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM2NTdkOTciIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+background: -moz-linear-gradient(top,  #6d839a 0%, #b2c0cb 11%, #8296ae 72%, #657d97 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#6d839a), color-stop(11%,#b2c0cb), color-stop(72%,#8296ae), color-stop(100%,#657d97));
+background: -webkit-linear-gradient(top,  #6d839a 0%,#b2c0cb 11%,#8296ae 72%,#657d97 100%);
+background: -o-linear-gradient(top,  #6d839a 0%,#b2c0cb 11%,#8296ae 72%,#657d97 100%);
+background: -ms-linear-gradient(top,  #6d839a 0%,#b2c0cb 11%,#8296ae 72%,#657d97 100%);
+background: linear-gradient(to bottom,  #6d839a 0%,#b2c0cb 11%,#8296ae 72%,#657d97 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6d839a', endColorstr='#657d97',GradientType=0 );
+     color: #FFFFFF;
+   font: bold 14px/35px "Trebuchet MS",Arial,Helvetica,sans-serif;
+    height: 18px;
     padding-left: 13px;
-    text-align: left;
-    text-transform: uppercase;
-    width: 977px;
+	padding-bottom:9px;
+	  width: 220px;
+   <!-- text-align: left;-->
+   <!-- text-transform: uppercase;-->
+    width: 220px;
 }
 
 table.searchresultsTable th {
@@ -1736,9 +1745,9 @@ $('#ajaxImage').show();
 <!-- SAMBA END -->
 
  <div id="processingDialogue"></div>
-<div id="districtWiseAnalysis" style="display:none;" class="container">
+<div id="districtWiseAnalysis" class="container">
 <div style="width:998px;padding-left:5px;">
-   <div style="padding-left:5px;"><div class="main-mbg">District Wise Party Performance</div></div>
+   <div style="padding-left:371px;padding-top:7px;"><div class="main-mbg">District Wise Party Performance</div></div>
    <div style="background-color:#FFFFFF;min-height:360px;">
          
    <div style="padding-top:10px;padding-left:100px;width:80%;text-align:center;">
