@@ -63,7 +63,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e5ba0b', end
 }
   .hrwidth {
 
-    width: 109%;
+    width: 108%;
 	 color: #000;
 	background-color: #000;
 	height: 3px !important;
@@ -5266,21 +5266,21 @@ function buildCasteData(result)
 		
 		str+='</td>';
 		
-		str += '<td>'+result[i].candidateList[0].name+'</td>';
+		str += '<td style="width:275px;">'+result[i].candidateList[0].name+'</td>';
 		str += '<td>'+result[i].candidateList[0].status+'</td>';
 		str += '<td>'+result[i].candidateList[0].party+'</td>';
 		str += '<td>'+result[i].candidateList[0].votes+'</td>';
 		str += '</tr>';
 
 		str += '<tr>';
-		str += '<td>'+result[i].candidateList[1].name+'</td>';
+		str += '<td style="width:275px;">'+result[i].candidateList[1].name+'</td>';
 		str += '<td>'+result[i].candidateList[1].status+'</td>';
 		str += '<td>'+result[i].candidateList[1].party+'</td>';
 		str += '<td>'+result[i].candidateList[1].votes+'</td>';
 		str += '</tr>';
 
 		str += '<tr>';
-		str += '<td>'+result[i].candidateList[2].name+'</td>';
+		str += '<td style="width:275px;">'+result[i].candidateList[2].name+'</td>';
 		str += '<td>'+result[i].candidateList[2].status+'</td>';
 		str += '<td>'+result[i].candidateList[2].party+'</td>';
 		str += '<td>'+result[i].candidateList[2].votes+' </td>';
