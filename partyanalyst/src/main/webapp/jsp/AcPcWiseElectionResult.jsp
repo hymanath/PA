@@ -2491,7 +2491,13 @@ popupContent +=' </table>';
 						}
 						popupContent +=' <span class="graph">';
 						popupContent +=' <span class="bar">';
-						popupContent +=' <span style="width:'+electionAcData[i].selectedCasteDetails[j].persent+'%;" class="index"></span>';
+						if(electionAcData[i].selectedCasteDetails[j].persent > 2)
+							popupContent +=' <span style="width:'+electionAcData[i].selectedCasteDetails[j].persent+'%;" class="index"></span>';
+						else if(electionAcData[i].selectedCasteDetails[j].persent > 0 && electionAcData[i].selectedCasteDetails[j].persent < 2)
+							popupContent +=' <span style="width:1.60%;" class="index"></span>';
+						else if(electionAcData[i].selectedCasteDetails[j].persent== 0)
+							popupContent +=' <span style="width:0%;" class="index"></span>';
+							
 						popupContent +=' </span>';
 						popupContent +=' </span>';
 						popupContent +=' </span>';
@@ -2647,7 +2653,14 @@ popupContent +=' </table>';
 						}
 						popupContent +=' <span class="graph">';
 						popupContent +=' <span class="bar">';
-						popupContent +=' <span style="width:'+electionPcData[i].selectedCasteDetails[j].persent+'%;" class="index"></span>';
+						
+						if(electionPcData[i].selectedCasteDetails[j].persent > 2)
+							popupContent +=' <span style="width:'+electionPcData[i].selectedCasteDetails[j].persent+'%;" class="index"></span>';
+						else if(electionPcData[i].selectedCasteDetails[j].persent > 0 && electionPcData[i].selectedCasteDetails[j].persent < 2)
+							popupContent +=' <span style="width:1.60%;" class="index"></span>';
+						else if(electionPcData[i].selectedCasteDetails[j].persent == 0 )
+							popupContent +=' <span style="width:0%;" class="index"></span>';
+							
 						popupContent +=' </span>';
 						popupContent +=' </span>';
 						popupContent +=' </span>';
@@ -2787,7 +2800,14 @@ popupContent +=' </table>';
 						}
 						popupContent +=' <span class="graph">';
 						popupContent +=' <span class="bar">';
-						popupContent +=' <span style="width:'+electionPcData[i].selectedCasteDetails[j].persent+'%;" class="index"></span>';
+						
+						if(electionPcData[i].selectedCasteDetails[j].persent > 2)
+							popupContent +=' <span style="width:'+electionPcData[i].selectedCasteDetails[j].persent+'%;" class="index"></span>';
+						else if(electionPcData[i].selectedCasteDetails[j].persent > 0 && electionPcData[i].selectedCasteDetails[j].persent < 2)
+							popupContent +=' <span style="width:1.60%;" class="index"></span>';
+						else if(electionPcData[i].selectedCasteDetails[j].persent == 0)
+							popupContent +=' <span style="width:0%;" class="index"></span>';
+							
 						popupContent +=' </span>';
 						popupContent +=' </span>';
 						popupContent +=' </span>';
@@ -2920,7 +2940,14 @@ popupContent +=' </table>';
 						}
 						popupContent +=' <span class="graph">';
 						popupContent +=' <span class="bar">';
-						popupContent +=' <span style="width:'+electionAcData[i].selectedCasteDetails[j].persent+'%;" class="index"></span>';
+						
+						if(electionAcData[i].selectedCasteDetails[j].persent > 2)
+							popupContent +=' <span style="width:'+electionAcData[i].selectedCasteDetails[j].persent+'%;" class="index"></span>';
+						else if(electionAcData[i].selectedCasteDetails[j].persent > 0 && electionAcData[i].selectedCasteDetails[j].persent < 2)
+							popupContent +=' <span style="width:1.60%;" class="index"></span>';
+						else if(electionAcData[i].selectedCasteDetails[j].persent == 0)
+							popupContent +=' <span style="width:0%;" class="index"></span>';
+						
 						popupContent +=' </span>';
 						popupContent +=' </span>';
 						popupContent +=' </span>';
@@ -3097,7 +3124,13 @@ popupContent +=' </table>';
 						}
 						popupContent +=' <span class="graph">';
 						popupContent +=' <span class="bar">';
-						popupContent +=' <span style="width:'+electionPcData[i].selectedCasteDetails[j].persent+'%;" class="index"></span>';
+						if(electionPcData[i].selectedCasteDetails[j].persent > 2)
+							popupContent +=' <span style="width:'+electionPcData[i].selectedCasteDetails[j].persent+'%;" class="index"></span>';
+						else if(electionPcData[i].selectedCasteDetails[j].persent >0 && electionPcData[i].selectedCasteDetails[j].persent < 2)
+							popupContent +=' <span style="width:1.60%;" class="index"></span>';
+						else if(electionPcData[i].selectedCasteDetails[j].persent == 0)
+							popupContent +=' <span style="width:0%;" class="index"></span>';
+							
 						popupContent +=' </span>';
 						popupContent +=' </span>';
 						popupContent +=' </span>';
@@ -4711,7 +4744,14 @@ else if(scope == 5)
 										}
 										popupContent +=' <span class="graph">';
 										popupContent +=' <span class="bar">';
-										popupContent +=' <span style="width:'+result.selectedCasteDetails[j].persent+'%;" class="index"></span>';
+										
+										if(result.selectedCasteDetails[j].persent > 2)
+											popupContent +=' <span style="width:'+result.selectedCasteDetails[j].persent+'%;" class="index"></span>';
+										else if(result.selectedCasteDetails[j].persent > 0 && result.selectedCasteDetails[j].persent < 2)
+											popupContent +=' <span style="width:1.60%;" class="index"></span>';
+										else if(result.selectedCasteDetails[j].persent == 0 )
+											popupContent +=' <span style="width:0%;" class="index"></span>';
+											
 										popupContent +=' </span>';
 										popupContent +=' </span>';
 										popupContent +=' </span>';
@@ -4737,7 +4777,8 @@ else if(scope == 5)
 	}	
 	
 		function buildTelanganaStateWiseResult(searchType,btnId){
-		$('#stateAjaxImgg1').show();
+		//$('#stateAjaxImgg1').show();
+		ajaxProcessing();
 		$('#constiLists').find('option').remove().end().append('<option id="0"> Select Constituency </option>');	
 		
 		typeOfSerarch = searchType;
@@ -4832,8 +4873,8 @@ else if(scope == 5)
 				}							
 			}		
 		}
-		
-			$('#stateAjaxImgg1').hide();
+		$( "#processingDialogue" ).dialog('close');
+			//$('#stateAjaxImgg1').hide();
          }catch(e){
             $( "#processingDialogue" ).dialog('close');
          }		 
@@ -4842,10 +4883,12 @@ else if(scope == 5)
 	
 function searchByConstituencyName(){
 
+
 	var constiId = $('#constiLists  option:selected').val();	
 	$('#results1Div').html('').append('<span style="font-weight:bold;margin-left:400px" > No data available...</span>');
 	if(constiId != 'Select Constituency'){
-		$('#stateAjaxImgg1').show();
+	ajaxProcessing();
+		//$('#stateAjaxImgg1').show();
 		var value1 = $('#constiLists option:selected').text();	
 	//		console.log(value1);
 			$('#results1Div').html('');
@@ -4916,7 +4959,8 @@ function searchByConstituencyName(){
 			data: {task:JSON.stringify(jsObj)},
 			})
 			.done(function( result ) {
-			$('#stateAjaxImgg1').hide();
+			//$('#stateAjaxImgg1').hide();
+			$( "#processingDialogue" ).dialog('close');
 			if(result  != null){
 				for(var i in result)
 					{
