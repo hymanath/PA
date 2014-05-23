@@ -1754,7 +1754,7 @@ List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId,
         }
     };
     
-	public List<DashBoardResultsVO> getPartyWiseWinningSeatsCount(
+	public DashBoardResultsVO getPartyWiseWinningSeatsCount(
 			Long electionId, List<Long> locationIds, Long scopeId,
 			Long percent, Long partyId)    {
     	LOG.debug("Entered into the getConstituencyResultDetailsByElectionId service method");
@@ -1825,7 +1825,9 @@ List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId,
     		e.printStackTrace();
     		LOG.error("Exception raised in getConstituencyResultDetailsByElectionId service method");
     	}
-    	return resultList;
+    	if(resultList != null && resultList.size() > 0 )
+    	  return resultList.get(0);
+    	return null;
     }
     
     private Map<String,Long> getPartyWiseWinningCount(List<DashBoardResultsVO> resultList)
