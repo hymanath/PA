@@ -2218,6 +2218,9 @@ var stateType = '';
 		url: "getElectionResultsAction.action",
 		dataType: 'json',
 		data: {task:JSON.stringify(jsObj)},
+		 error:function() { 
+	           $( "#processingDialogue" ).dialog('close');
+	         }
 		})
 		.done(function( result ) {
 		    $('#seemandraStateId').trigger('click');
@@ -3783,6 +3786,9 @@ function getRegionWiseResults(searchType)
 		url: "cbnOrModiEffectAction.action",
 		dataType: 'json',
 		data: {task:JSON.stringify(jsObj)},
+		 error:function() { 
+	           $( "#processingDialogue" ).dialog('close');
+	         }
 		})
 		.done(function( result ) {
 			psDetails = result;
@@ -3879,6 +3885,9 @@ function getRegionWiseResults(searchType)
 		url: "cbnOrModiEffectAction.action",
 		dataType: 'json',
 		data: {task:JSON.stringify(jsObj)},
+	          error:function() { 
+	           $( "#processingDialogue" ).dialog('close');
+	         }
 		})
 		.done(function( result ) {
 		  try{
