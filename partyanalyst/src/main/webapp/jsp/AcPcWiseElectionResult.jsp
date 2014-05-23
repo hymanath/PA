@@ -81,6 +81,100 @@ border:1px solid black !important;
 
 <!-- harish end -->
 <style>
+.yui-skin-sam.yui-dt table th {
+		background-color: #CDE6FC;
+		font-size: 13px;
+		font-weight: bold;
+		padding: 7px;
+		text-align: left;
+		border-collapse :collapse;
+}
+.yui-skin-sam.yui-dt table  {
+		
+		border-collapse :collapse;
+}
+.yui-skin-sam.yui-dt tbody{
+border: 1px solid #CDCDCD;
+}
+ .yui-skin-sam.yui-dt td {
+	font-weight: normal;
+	padding: 8px 8px 8px 10px;
+}
+#partyOldResultsDiv table tr:nth-child(2n) {
+background: none repeat scroll 0 0 #F9F9F9;
+}
+#partyNewResultsDiv table tr:nth-child(2n),#genderAnalysis table tr:nth-child(2n){
+background: none repeat scroll 0 0 #F9F9F9;
+}
+#candidatesDiv table tr:nth-child(2n) {
+background: none repeat scroll 0 0 #F9F9F9;
+}
+#partyWiseTable table tr:nth-child(2n),#partyGainedAnalysisDiv table tr:nth-child(2n),.resultDiv table tr:nth-child(2n){
+background: none repeat scroll 0 0 #F9F9F9;
+}
+#partyWiseTable > table * th,#partyGainedAnalysisDiv table * th,.resultDiv > table * th{background-color: #CDE6FC;}
+.SeatsFlownToOtherPartiesTable td
+{
+	valign : top;
+}
+.yui-dt-sortable{
+	color:#000;
+}
+.partyOldResults
+{
+width: 900px;
+height: auto;
+display: inline-block;
+border: 1px solid rgb(204, 204, 204); 
+margin-top: 42px; 
+background: none repeat scroll 0pt 0pt rgb(255, 255, 255);
+}
+.partyNewResults{
+border: 1px solid rgb(204, 204, 204); 
+width: 900px;
+height: auto; 
+display: inline-block;
+margin-top: 25px; 
+background: none repeat scroll 0% 0% rgb(255, 255, 255);
+}
+.partyWonResults{
+border: 1px solid rgb(204, 204, 204); 
+width: 900px;
+height: auto; 
+display: inline-block;
+margin-top: 25px; 
+background: none repeat scroll 0% 0% rgb(255, 255, 255);
+}
+.wonContainer {
+    -moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.25), 0 1px 5px 3px rgba(0, 0, 0, 0.05), 0 5px 4px -3px rgba(0, 0, 0, 0.06);
+    background-color: #FFFFFF;
+    margin: 0px 0px 13px 14px;
+    max-width: 456px;
+    padding: 10px;
+}
+.lostContainer {
+    -moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.25), 0 1px 5px 3px rgba(0, 0, 0, 0.05), 0 5px 4px -3px rgba(0, 0, 0, 0.06);
+    background-color: #FFFFFF;
+    margin: 0px 0px 13px 14px;
+    max-width: 456px;
+    padding: 10px;
+}
+
+.grad{background: #0f4b93; border-radius:5px;/* Old browsers */
+background: -moz-linear-gradient(top,  #5189c6 0%, #0f4b93 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#5189c6), color-stop(100%,#0f4b93)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #5189c6 0%,#0f4b93 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #5189c6 0%,#0f4b93 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #5189c6 0%,#0f4b93 100%); /* IE10+ */
+background: linear-gradient(top,  #5189c6 0%,#0f4b93 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', endColorstr='#0f4b93',GradientType=0 ); /* IE6-9 */
+-moz-border-radius:5px;
+}
+
+hr
+{
+    border: 1px solid #C0C0C0;
+}
 div:focus {outline:none}
 #seats{
 height:0px;
@@ -137,6 +231,27 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6d839a', end
    <!-- text-transform: uppercase;-->
     width: 220px;
 }
+.headingstyle
+{
+	background:  background: #6d839a;
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzZkODM5YSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjExJSIgc3RvcC1jb2xvcj0iI2IyYzBjYiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjcyJSIgc3RvcC1jb2xvcj0iIzgyOTZhZSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM2NTdkOTciIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+background: -moz-linear-gradient(top,  #6d839a 0%, #b2c0cb 11%, #8296ae 72%, #657d97 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#6d839a), color-stop(11%,#b2c0cb), color-stop(72%,#8296ae), color-stop(100%,#657d97));
+background: -webkit-linear-gradient(top,  #6d839a 0%,#b2c0cb 11%,#8296ae 72%,#657d97 100%);
+background: -o-linear-gradient(top,  #6d839a 0%,#b2c0cb 11%,#8296ae 72%,#657d97 100%);
+background: -ms-linear-gradient(top,  #6d839a 0%,#b2c0cb 11%,#8296ae 72%,#657d97 100%);
+background: linear-gradient(to bottom,  #6d839a 0%,#b2c0cb 11%,#8296ae 72%,#657d97 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6d839a', endColorstr='#657d97',GradientType=0 );
+	color: white;
+	font-weight: bold;
+	font-family: verdana;
+	width: 98px;
+	padding-right: 10px;
+	padding-left: 10px;
+	padding-top: 6px;
+	padding-bottom: 6px;
+}
+
 
 table.searchresultsTable th {
     background-color: #C4DEFF;
@@ -1591,6 +1706,48 @@ $('#ajaxImage').show();
 
 </div>
 <!-- end Caste wise Analysis-->
+
+<!--  start PartyWise -->
+<div id="partyWiseStatsDiv">
+
+<div style="font-weight:bold;font-family:verdana;font-size:12px;text-align: left; margin-bottom:19px;margin-top:20px;" id="overViewDiv">
+ </div>
+ <div id="tableDiv"></div>
+<div id="partyWonOrLeadResult" style="text-align:left;margin-top:25px;"></div>
+<div id="partyAnalysisHeading" style="margin-bottom:15px;margin-top:15px;width:100%;"></div>
+<div id="partyGainedAnalysisDiv" style="text-align:left;"></div>
+<div id="partiesSeatsFlownToOtherPartiesDiv" style="text-align:left;margin-top:20px;width:925px;"></div>
+<div id="genderAnalysisHeading"></div>
+<div id="genderAnalysis" class="yui-skin-sam" style="width: 79%;"></div>
+<div id="candidatesDivHeading" style="margin: 16px;"></div>
+<div id="candidatesDiv" class="yui-skin-sam" style="width: 79%;"></div>
+
+<div>
+<div id="partyOldResults">
+ <div id="partyOldResultsDiv" class="yui-skin-sam" style="float: left;margin-left:110px;margin-top: 18px;"></div><span id="oldResultHeading" style="font-weight:bold;float: left;font-family:verdana;margin:10px;"></span>
+   <div id="partyOldResultsChart" style="margin-top: 60px;"></div>
+ </div>
+
+<div id="partyNewResults">
+ <div id="partyNewResultsDiv" class="yui-skin-sam"  style="width:241px; clear: both; margin-top:18px; float:left; margin-left:107px;">
+ </div><span id="newResultHeading" style="font-weight:bold;float: left;font-family:verdana;margin:10px;"></span>
+ <div id="partyNewResultsChart" style="margin-top:60px;">
+ </div>
+</div>
+
+<div id="partyWonResults">
+ <div id="partyWonResultsDiv" class="yui-skin-sam" style="float: left;margin-left:110px; margin-top:18px; ">
+ </div><span id="wonResultHeading" style="font-weight:bold;float: left;font-family:verdana;margin:10px;"></span>
+ <div id="partyWonResultsChart" style="position: relative; margin-top: 35px;">
+ </div>
+</div>
+
+<div id="partyLostAnalysisDiv"></div>
+</div>
+
+</div>
+
+<!-- End PartyWise-->
 
 <!-- HIGHCHARTS -- SASI -->
 <div id="InteractiveMapDiv" style="display:none;margin-top:20px;">
@@ -5248,6 +5405,7 @@ function buildMenuForStateAnalysis(searchType)
 	$("#regionWiseAnalysisDiv").hide();
 	$("#InteractiveMapDiv").hide();
 	$("#partyWiseStatsDiv").show();
+	   getPartiesGainAndLossInfo();
 	}
 	else if(searchType == 'InteractiveMapDiv')
 	{
@@ -5307,6 +5465,291 @@ function getTopCasteData(){
 				//buildPartyVotesShareTable(result);
 			}
 	   });
+}
+
+function getPartiesGainAndLossInfo(){
+	//$("#casteAnalysisAjax").show();
+	var jsObj = 
+	{
+		electionId:38,
+		task:"getPartiesGainAndLossInfo"
+	}
+	$.ajax({
+          type:'GET',
+          url: 'getPartyWonOrLeadConstituenciesCountAction.action',
+          dataType: 'json',
+          data: {task:JSON.stringify(jsObj)},
+     	  }).done(function(result){ 
+			  if(result != null){
+				//casteAnalysisDivFlag = true;
+			showPartyGainedResults(result);
+			buildPartiesSeatsFlownToOtherPartiesDiv(result);
+			}
+	   });
+}
+function showPartyGainedResults(myResults){
+	var data= new Array();
+	var stateName = '';
+	var electionYear ='';
+
+	//document.getElementById("mainHeading").innerHTML ='Live Election Results For  '+stateName+'  In '+electionYear+'';
+
+	var partyGainedAnalysisDivElmt = document.getElementById("partyGainedAnalysisDiv");
+	partyGainedAnalysisDivElmt.innerHTML ='';
+	var str ='';
+	var headstr='';
+	if(myResults !=null && myResults.length >0)
+	headstr+='<span class="headingstyle">Party wise Seats Gained / Lost Analysis</span>';
+	document.getElementById("partyAnalysisHeading").innerHTML =headstr;
+
+  if(myResults !=null && myResults.length >0)
+	{
+	  data = checkForWonCountInNew(myResults);
+
+	 str+='<table cellspacing="2px" cellpadding="2px" style="border:1px solid #cdcdcd;border-collapse:collapse;width:97%;">';
+	for(var i in myResults)
+	{
+		
+	if(myResults[i].totalSeatsParticipated != null && 
+		myResults[i].totalSeatsParticipated > 0){
+	if(i==0)
+	{
+		str+='<tr style="text-align:center;background:#dddddd;color:#000;font-family: verdana;font-size: 11px;">';
+		str+='<th>Party</th>';
+		str+='<th>No.of Seats Participated</th>';
+		str+='<th>Won/Lead Count</th>';
+		
+		if(myResults[i].isFirstElectionAfterDelimtation)
+			str+='<th>Won/Lead in old Constituency</th>';
+		
+		str+='<th>Retained Seats</th>';
+		str+='<th>Seats Gained From Other Parties</th>';
+		
+		if(myResults[i].isFirstElectionAfterDelimtation)
+			str+='<th>Won/Lead in New Constituency</th>';
+
+		//str+='<th>Lost/Trail Seats</th>';
+		str+='<th>Lost To Other Parties</th>';
+		//str+='<th>Lost Count In Prev Lost</th>';
+		//str+='<th>Lost Count In Prev Won</th>';
+
+		
+		str+='</tr>';
+	}
+	str+='<tr style="text-align:center;">';
+	str+='<td style="color:#05A8E9;">'+myResults[i].partyName+'</td>';
+	str+='<td>'+myResults[i].totalSeatsParticipated+'</td>';
+	str+='<td>' +myResults[i].wonOrLeadCount+'</td>';
+	
+	if(myResults[i].isFirstElectionAfterDelimtation)
+		str+='<td>'+myResults[i].wonOrLeadCountInOld+'</td>';
+	
+	str+='<td>'+myResults[i].retainedCount+'</td>';
+
+	if(myResults[i].wonFromOtherParties != null)
+	{
+		var count=0;
+		for(var j=0;j<myResults[i].wonFromOtherParties.length;j++)
+			{
+			  count+= myResults[i].wonFromOtherParties[j].id;
+							
+			}
+		str+='<td>'+count+'</td>';
+	}
+	else
+	{
+		str+='<td>0</td>';
+	}
+	
+	if(myResults[i].isFirstElectionAfterDelimtation)
+	{
+		if(myResults[i].wonCountInNew !=null || myResults[i].leadCountInNew !=null)
+		{
+			var wonOrLeadCountInNew = myResults[i].wonCountInNew + myResults[i].leadCountInNew;
+			str+='<td>' +wonOrLeadCountInNew+'</td>';
+		}
+		else
+			str+='<td>0</td>';
+	}
+
+	//str+='<td>' +myResults[i].lostCount+'</td>';
+
+	if(myResults[i].lostToOtherParties != null)
+	{
+		var count=0;
+		for(var j=0;j<myResults[i].lostToOtherParties.length;j++)
+			{
+			  count+= myResults[i].lostToOtherParties[j].id;
+							
+			}
+		str+='<td>'+count+'</td>';
+		
+	}
+	else
+	{
+		str+='<td>0</td>';
+	}
+	//str+='<td>'+myResults[i].lostCountInPrevLost+'</td>';
+	//str+='<td>'+myResults[i].lostCountInPrevWon+'</td>';
+	str+='</tr>';
+
+	}
+   }
+	str+='</table>';
+	partyGainedAnalysisDivElmt.innerHTML =str;
+	
+	
+  }
+}
+function checkForWonCountInNew(myResults) {
+
+var checkForWonCountInNew =new Array();
+     for(var i in myResults){
+		if(myResults[i].wonCountInNew !=null){
+		var checkForWonCountInNewObj ={
+				wonCountInNew :myResults[i].wonCountInNew
+		};
+		checkForWonCountInNew.push(checkForWonCountInNewObj);
+	  }
+	 }
+	 return checkForWonCountInNew;
+  } 
+function buildPartiesSeatsFlownToOtherPartiesDiv(myResults)
+{
+	var seatsFlownDivEle = document.getElementById('partiesSeatsFlownToOtherPartiesDiv');
+	
+	if(myResults == null || myResults.length == 0)
+	{
+	    if(seatsFlownDivEle != null)
+	    seatsFlownDivEle.innerHTML = '';
+		seatsFlownDivEle.style.display = 'none';
+		return;
+	}
+
+	var str = '';
+	str += '<span class="headingstyle" style="margin-bottom:10px;">Party wise Seats Win & Lost from other Parties in Previous Election to Present Election</span>';
+	
+	str += '<div style="margin-top:15px;margin-bottom:20px;">';
+
+	str += '<table class="SeatsFlownToOtherPartiesTable" cellspacing="2px" cellpadding="6px" style="border:1px solid #cdcdcd;border-collapse:collapse;width:100%;margin-top:15px;" rules="all">';
+	str+='<tr style="text-align:center;background:#dddddd;color:#000;font-family: verdana;font-size: 11px;">';
+	
+	str += '<th width="50px"><font color="blue">Party</font></th>';
+	str += '<th width="60px"><font color="blue">Seats Info</font></th>';
+	str += '<th align="left"><font color="blue">Gained Info</font></th>';
+	str += '<th><font color="blue">Gained Info Graph</font></th>';
+	str += '<th><font color="blue">Lost Info </font></th>';
+	str += '<th><font color="blue">Lost Info Graph</font></th>';
+	str += '</tr>';
+
+
+	for(var i in myResults)
+	{
+			var lostSeatsCount = 0;
+
+			for(var k=0;k<myResults[i].lostSeatsInPrevWonToOtherParties.length;k++)
+			{
+				lostSeatsCount += myResults[i].lostSeatsInPrevWonToOtherParties[k].id;
+			}
+
+			str += '<tr style="text-align:center;font-family:arial;font-weight:bold">';
+			str += '<td><a href="partyPageAction.action?partyId='+myResults[i].partyId+'" style="color:#05A8E9" target="_blank">'+myResults[i].partyName+'</a></td>';
+			str += '<td align="left" width="169">';
+			str +='<table width="100">';
+			str += '<tr><td align="left" width="60">Participated </td><td width="10">: </td><td align="right" width="30">'+myResults[i].totalSeatsParticipated+'</td></tr>';
+			str += '<tr><td align="left" width="60">Won/Lead </td><td  width="10">:</td><td align="right" width="30"> '+myResults[i].wonOrLeadCount+'</td></tr>';
+			str += '<tr><td align="left" width="60">Retained </td><td  width="10">:</td><td align="right" width="30">'+myResults[i].retainedCount+'</td></tr>';
+			str += '<tr><td align="left" width="60" style="color:green;">Gained </td><td width="10" style="color:green;">:</td><td align="right" width="30" style="color:green;"> '+myResults[i].wonFromOtherPartiesCount+'</td></tr>';
+			var newConsi = myResults[i].wonOrLeadCount - (myResults[i].retainedCount + myResults[i].wonFromOtherPartiesCount);
+			str +='<tr>';
+			if ($("#assemblyId").is(":checked"))
+			str +='<td align="left" width="60">Won in New Ac*</td>';
+			else
+			str +='<td align="left" width="60">Won in New Pc*</td>';
+			str +='<td width="10">:</td><td align="right" width="30">'+newConsi+' </td></tr>';
+			str += '<tr><td align="left" width="60" style="color:red;">Lost Seats</td><td width="10" style="color:red;">:</td><td align="right" width="30" style="color:red;"> '+lostSeatsCount+'';
+			str += '</td></tr></table></td>';
+			str += '<td align="left"><table width="80">';
+			
+			for(var j in myResults[i].wonFromOtherParties)
+			{
+				str += '<tr><td align="left" width="40" style="color:green">'+myResults[i].wonFromOtherParties[j].name +'</td><td width="10" style="color:green"> :</td><td align="right" width="30" style="color:green"> '+myResults[i].wonFromOtherParties[j].id+'</td></tr>';
+				
+			}
+			if(myResults[i].wonFromOtherPartiesCount > 0)
+			str+='<tr><td colspan="10"><div style="margin-top:-18px;margin-bottom:-18px;"><hr/></div></td></tr>';
+			str +='<tr><td style="color:green"> Total</td><td style="color:green"> - </td><td align="right" style="color:green">'+myResults[i].wonFromOtherPartiesCount+'</td></tr>';
+			
+			str += '</td></table>';
+			
+			str += '<td><div id="wonFromOtherPartiesGraphdiv_'+myResults[i].partyName+'"/></td>';
+			
+			str += '<td align="left"><table width="80">';
+			
+			for(var j=0;j<myResults[i].lostSeatsInPrevWonToOtherParties.length;j++)
+			{
+				str += '<tr><td align="left" width="40" style="color:red">'+myResults[i].lostSeatsInPrevWonToOtherParties[j].name +' </td><td width="10" style="color:red">:</td><td align="right" width="30" style="color:red"> '+myResults[i].lostSeatsInPrevWonToOtherParties[j].id+'</td></tr>';
+			}
+			if(lostSeatsCount > 0)
+			str+='<tr><td colspan="10"><div style="margin-top:-18px;margin-bottom:-18px;"><hr/></div></td></tr>';
+			str +='<tr> <td style="color:red"> Total</td><td style="color:red"> - </td><td align="right" style="color:red">'+lostSeatsCount+'</td></tr>'
+			str += '</td></table>';
+
+			
+
+			str += '<td><div id="lostToOtherPartiesGraphdiv_'+myResults[i].partyName+'"/></td>';
+		
+
+	}
+	str += '</table>';
+	str += '</div>';
+
+	seatsFlownDivEle.innerHTML = str;
+
+	for(var i in myResults)
+	{
+		if(myResults[i].wonFromOtherPartiesCount > 0)
+		{
+			var data = new google.visualization.DataTable();
+			data.addColumn('string','partyName');
+			data.addColumn('number','Seats Won From Other Party');
+			data.addRows(myResults[i].wonFromOtherParties.length);
+
+			for(var j=0; j<myResults[i].wonFromOtherParties.length; j++)
+			{
+				data.setValue(j,0,myResults[i].wonFromOtherParties[j].name);
+				data.setValue(j,1,myResults[i].wonFromOtherParties[j].id);
+			}
+			var chart = new google.visualization.PieChart(document.getElementById('wonFromOtherPartiesGraphdiv_'+myResults[i].partyName)); 
+			chart.draw(data,{width: 250, height: 200, title: myResults[i].partyName+' Party Won Seats From Other Parties Info'});
+		}
+	}
+
+	for(var i in myResults)
+	{
+		var lostSeatsCount = 0;
+
+		for(var k=0;k<myResults[i].lostSeatsInPrevWonToOtherParties.length;k++)
+		{
+			lostSeatsCount += myResults[i].lostSeatsInPrevWonToOtherParties[k].id;
+		}
+
+		if(lostSeatsCount > 0)
+		{
+			var data = new google.visualization.DataTable();
+			data.addColumn('string','partyName');
+			data.addColumn('number','Seats Lost To Other Party');
+			data.addRows(myResults[i].lostSeatsInPrevWonToOtherParties.length);
+
+			for(var j=0; j<myResults[i].lostSeatsInPrevWonToOtherParties.length; j++)
+			{
+				data.setValue(j,0,myResults[i].lostSeatsInPrevWonToOtherParties[j].name);
+				data.setValue(j,1,myResults[i].lostSeatsInPrevWonToOtherParties[j].id);
+			}
+			var chart = new google.visualization.PieChart(document.getElementById('lostToOtherPartiesGraphdiv_'+myResults[i].partyName)); 
+			chart.draw(data,{width: 250, height: 200, title: myResults[i].partyName+' Party Lost Seats To Other Parties Info'});
+		}
+	}
 }
 function buildCasteData(result)
 {
