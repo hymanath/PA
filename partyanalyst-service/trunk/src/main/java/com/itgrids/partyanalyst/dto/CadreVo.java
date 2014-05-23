@@ -34,7 +34,7 @@ public class CadreVo implements Serializable{
 	private Long Income;
 	private Long education;
 	
-	private List<SelectOptionVO> partyDesignationList,govtDesignationList;
+	private List<Long> partyDesignationList,govtDesignationList;
 
 	public String getFirstName() {
 		return firstName;
@@ -244,22 +244,22 @@ public class CadreVo implements Serializable{
 		this.education = education;
 	}
 
-	public List<SelectOptionVO> getPartyDesignationList() {
+	public List<Long> getPartyDesignationList() {
 		return partyDesignationList;
 	}
 
-	public void setPartyDesignationList(List<SelectOptionVO> partyDesignationList) {
+	public void setPartyDesignationList(List<Long> partyDesignationList) {
 		this.partyDesignationList = partyDesignationList;
 	}
 
-	public List<SelectOptionVO> getGovtDesignationList() {
+	public List<Long> getGovtDesignationList() {
 		return govtDesignationList;
 	}
 
-	public void setGovtDesignationList(List<SelectOptionVO> govtDesignationList) {
+	public void setGovtDesignationList(List<Long> govtDesignationList) {
 		this.govtDesignationList = govtDesignationList;
 	}
-	
+
 	
 	
 }
