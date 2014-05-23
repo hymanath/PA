@@ -5471,7 +5471,7 @@ function getPartiesGainAndLossInfo(){
 	//$("#casteAnalysisAjax").show();
 	var jsObj = 
 	{
-		electionId:38,
+		electionId:258,
 		task:"getPartiesGainAndLossInfo"
 	}
 	$.ajax({
