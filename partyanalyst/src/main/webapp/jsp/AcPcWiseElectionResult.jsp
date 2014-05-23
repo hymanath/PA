@@ -1607,7 +1607,7 @@ $('#ajaxImage').show();
 		<div id="seatsGraph" style="width:60%;float:left;"></div>
 		<div id="seatsGraphDonut" style="width:38%;float:right;"></div>
 		
-		<div id="seatsCount" style="position:absolute;left:700px;font-size:8px;"></div>
+		<div id="errorInGraph" class="offset3" style="width:500px;color:red;"></div>
 		
 </div>
 <!-- MAP DIV'S END -->
@@ -5380,9 +5380,14 @@ $(".highLight").live( "click", function() {
 function buildHighChartsForPartyPerformances(result,partywinCount){
 	var donut = [];
 	
+	if(result == null){
+		$("#errorInGraph").html("<h3> No Data Available </h3>");
+		return;
+	}
+	
 	for (var i in result.partyWiseCountBefore){
 		var obj={name:i,y:result.partyWiseCountBefore[i]}
-		donut.push(obj);
+		donut.push(obj); 
 	} 
 	
 	var graph3d = [];
