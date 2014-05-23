@@ -20,6 +20,7 @@
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></script>
 <link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+<link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 <title>AC AND PC WISE RESULT</title>
 <!-- harish start -->
 
@@ -402,8 +403,9 @@ google.load("visualization", "1", {packages:["corechart"]});
 <script src="js/GOOGLE.js"></script>
 <script src="js/Permalink.js"></script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script type="text/javascript" src="js/highcharts4.1/js/highcharts.js"></script>
+<script type="text/javascript" src="js/highcharts4.1/js/highcharts-3d.js"></script>
+
 <link rel="stylesheet" type="text/css" href="styles/politico.css">
 <link rel="stylesheet" type="text/css" href="styles/leaflet.css">
 <link rel="stylesheet" type="text/css" href="styles/leaflet-lable.css">
@@ -1589,6 +1591,27 @@ $('#ajaxImage').show();
 
 </div>
 <!-- end Caste wise Analysis-->
+
+<!-- HIGHCHARTS -- SASI -->
+<div id="InteractiveMapDiv" style="display:none;margin-top:20px;">
+	
+		<div id="rangeSliderDiv" style="width:400px;margin-left:auto;margin-right:auto;border:1px solid #ccc;padding:5px 20px;margin-top:50px;" >
+			<h5 style="text-align:center;">Drag Slider To Change Votes Percentage </h5>
+				<div id="slider" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a>
+				</div>
+				<p style="padding-bottom:2px;">
+					<input type="text" id="amount" readonly style="border: 0; color: #f6931f; font-weight: bold;background-color:#ffffff;" />
+				</p>
+		</div>
+
+		<div id="seatsGraph" style="width:60%;float:left;"></div>
+		<div id="seatsGraphDonut" style="width:38%;float:right;"></div>
+		
+		<div id="seatsCount" style="position:absolute;left:700px;font-size:8px;"></div>
+		
+</div>
+<!-- MAP DIV'S END -->
+
 <!-- start Region wise Analysis -->
 <div class="container hide" style="font-family: verdana; font-size: 14px; border: 1px solid rgb(204, 204, 204); padding: 0px 10px 10px; margin-top: 24px;width:920px !important;" id="regionWiseAnalysisDiv">
 <div  style="text-align:center;margin-top:10px;display:none;"><img src="images/Live AP State Election Results.jpg"></div>
@@ -5349,6 +5372,202 @@ $(".highLight").live( "click", function() {
 	$(this).addClass("Tabactive");
 
 });
+
+
+<!-- HIGHCHART FUNCTIONS-->
+
+
+function buildHighChartsForPartyPerformances(result,partywinCount){
+	var donut = [];
+	
+	for (var i in result.partyWiseCountBefore){
+		var obj={name:i,y:result.partyWiseCountBefore[i]}
+		donut.push(obj);
+	} 
+	
+	var graph3d = [];
+	
+	if(partywinCount.percent==0){
+		for (var i in result.partyWiseCountBefore){
+			var seats = [];
+			seats.push(result.partyWiseCountBefore[i]);
+			var obj={name:i +" : "+result.partyWiseCountBefore[i],data:seats}
+			graph3d.push(obj);
+		}
+	}else{
+		for (var i in result.resultMap){
+			var seats = [];
+			seats.push(result.resultMap[i]);
+			var obj={name:i +" : "+result.resultMap[i],data:seats}
+			graph3d.push(obj);
+		}
+	}
+	
+	for(var i in result.resultMap){
+		var str = "";
+			str += "<table>";
+				str +="<tr>";
+					str +="<td>Party</td>";
+					str +="<td>Seats</td>";
+				str +="</tr>";
+				for (var i in result.resultMap){
+					str +="<tr style='background:#F0F0F0'>";
+						str +="<td>"+i+"</td>";
+						str +="<td>"+result.resultMap[i]+"</td>";
+					str +="</tr>";
+				}
+			str += "</table>";
+			
+		//$("#seatsCount").html(str);
+	}
+	
+	$('#seatsGraphDonut').highcharts({
+        chart: {
+            type: 'pie',
+            options3d: {
+				enabled: true,
+                alpha: 55,
+			}
+        },
+        title: {
+            text: 'Party Wise Seats Share '
+        },
+        subtitle: {
+            text: ''
+        },
+        plotOptions: {
+            pie: {
+                innerSize: 100,
+                depth: 45
+            }
+        },tooltip: {
+                pointFormat: 'Seats: <b>{point.y}</b>',
+            },
+		
+        series: [{
+            name: '',
+            data: donut
+        }]
+    });
+	
+	
+	$('#seatsGraph').highcharts({
+        chart: {
+            type: 'column',
+            margin: 75,
+            options3d: {
+				enabled: true,
+                alpha: 6,
+                beta: 15,
+                depth: 100
+            }
+        },
+		plotOptions: {
+		candlestick: {
+			lineColor: '#404048'
+			}
+		},
+		
+		legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle',
+                borderWidth: 0,
+            },
+
+		// General
+		background2: '#F0F0EA',
+		tooltip: {
+                pointFormat: '<b>{series.name}</b>',
+            },
+        title: {
+            text: "Party's Performance"
+        },
+        subtitle: {
+            text: ''
+        },
+        plotOptions: {
+            column: {
+                depth: 25
+            }
+        },
+        xAxis: {
+            categories: ["PARTIES"]
+        },
+        yAxis: {
+		   min :null,
+		    title: {
+                    text: '	SEATS'
+                }
+	    },
+        series: graph3d
+    });
+	
+}
+
+	var partyWinCount={
+		electionId:'',
+	    scopeId:'3',
+	    locationIds:[],
+		partyId:'',
+        percent:''		
+	};
+
+	
+	var votesRange = 1;	
+	$(function() {
+		$( "#slider" ).slider({
+			value:1,
+			min: 0,
+			max: 10,
+			step: 1,
+			slide: function( event, ui ) {
+				$( "#amount" ).val( " Votes Percentage : " + ui.value +" %");
+			},
+			change: function( event, ui ) {
+				$( "#amount" ).val( " Votes Percentage  : " + ui.value +" %");
+				votesRange=ui.value;
+				getPartyVotesShareAndSeatsGraphically();
+			}
+		});
+	votesRange=$( "#amount" ).val( "Percentage of Voters Caste: " + $( "#slider" ).slider( "value" ) +" %");
+	votesRange=$( "#slider" ).slider( "value" );
+	});
+	
+getPartyVotesShareAndSeatsGraphically();
+function getPartyVotesShareAndSeatsGraphically()
+{
+
+	$("#seatsGraph").html("");
+	$("#seatsGraphDonut").html("");
+
+	partyWinCount.electionId = 38;
+	partyWinCount.scopeId = $('#scopeId').val();
+
+	 partyWinCount.locationIds.push(1);
+	 partyWinCount.locationIds.push(2);
+	 partyWinCount.locationIds.push(3);
+
+	partyWinCount.partyId = 872;
+	partyWinCount.percent = votesRange;
+
+	$.ajax({
+          type:'POST',
+          url: 'partyWiseCountDetailsAction.action',
+          dataType: 'json',
+          data: {task:JSON.stringify(partyWinCount)},
+
+          success: function(result){ 
+			buildHighChartsForPartyPerformances(result,partyWinCount);
+         },
+          error:function() { 
+           console.log('error', arguments);
+         }
+    });
+}
+
+
+
 
 
 </script>
