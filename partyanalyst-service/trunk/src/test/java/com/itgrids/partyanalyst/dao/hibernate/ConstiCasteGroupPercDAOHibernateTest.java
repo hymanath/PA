@@ -19,6 +19,6 @@ public class ConstiCasteGroupPercDAOHibernateTest extends BaseDaoTestCase{
 	
 	public void test()
 	{
-		
+		constiCasteGroupPercDAO.getAll();
 	}
 }
