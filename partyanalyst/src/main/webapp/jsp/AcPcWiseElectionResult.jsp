@@ -5541,7 +5541,7 @@ function getPartyVotesShareAndSeatsGraphically()
 	$("#seatsGraph").html("");
 	$("#seatsGraphDonut").html("");
 
-	partyWinCount.electionId = 38;
+	partyWinCount.electionId = 258;
 	partyWinCount.scopeId = $('#scopeId').val();
 
 	 partyWinCount.locationIds.push(1);
