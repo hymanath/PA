@@ -1789,7 +1789,7 @@ List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId,
     			partyVO.setName(obj[1].toString());
     			partyVO.setRank(Long.parseLong(obj[4].toString()));
     			partyVO.setGainedVotes((long)Double.parseDouble(obj[5].toString()));
-    			partyVO.getPartyIds().add(Long.parseLong(obj[0].toString()));
+    			constituencyVO.getPartyIds().add(Long.parseLong(obj[0].toString()));
     			
     			constituencyVO.getSubList().add(partyVO);
     		}
@@ -1825,12 +1825,12 @@ List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId,
     		{
     			for(DashBoardResultsVO partyVO:constituencyVO.getSubList())
         		{
-    				if(voterCountMap.get(partyVO.getName()) == null)
+    				if(voterCountMap.get(partyVO.getName()+","+partyVO.getId()) == null)
     				{
-    					voterCountMap.put(partyVO.getName()+","+partyVO.getPartyId(), partyVO.getGainedVotes());
+    					voterCountMap.put(partyVO.getName()+","+partyVO.getId(), partyVO.getGainedVotes());
     				}else
     				{
-    					voterCountMap.put(partyVO.getName()+","+partyVO.getPartyId(), voterCountMap.get(partyVO.getName()+","+partyVO.getPartyId()) + partyVO.getGainedVotes());
+    					voterCountMap.put(partyVO.getName()+","+partyVO.getId(), voterCountMap.get(partyVO.getName()+","+partyVO.getId()) + partyVO.getGainedVotes());
     				}
         		}
     		}
@@ -1863,6 +1863,18 @@ List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId,
 					percentList.add(party);
 				}
     		}
+			
+			Double totalPercent = 0.0;
+			for(DashBoardResultsVO partyVO:percentList)
+			{
+				totalPercent = totalPercent + Double.parseDouble(partyVO.getPercent());
+			}
+			
+			DashBoardResultsVO other = new DashBoardResultsVO();
+			other.setName("OTHERS");
+			
+			Double remainingPercent = 100 - totalPercent; 
+			other.setPercent(remainingPercent.toString());
     			
     		
     		removeVotesFromSelectedPartyBySelectedPercent(resultList,partyId,percent);//this method minus the votes for selected party
