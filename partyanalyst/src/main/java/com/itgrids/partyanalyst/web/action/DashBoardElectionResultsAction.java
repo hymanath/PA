@@ -29,15 +29,15 @@ public class DashBoardElectionResultsAction extends ActionSupport implements Ser
 	private List<DashBoardResultsVO> dashBoardConstiResults;
 	private List<GenericVO> partiesList;
 	private List<PartyResultVO> constiList;
-	private List<DashBoardResultsVO> partyWiseCountDetails;
+	private DashBoardResultsVO partyWiseCountDetails;
 	
 	
-	public List<DashBoardResultsVO> getPartyWiseCountDetails() {
+	public DashBoardResultsVO getPartyWiseCountDetails() {
 		return partyWiseCountDetails;
 	}
 
 	public void setPartyWiseCountDetails(
-			List<DashBoardResultsVO> partyWiseCountDetails) {
+			DashBoardResultsVO partyWiseCountDetails) {
 		this.partyWiseCountDetails = partyWiseCountDetails;
 	}
 
