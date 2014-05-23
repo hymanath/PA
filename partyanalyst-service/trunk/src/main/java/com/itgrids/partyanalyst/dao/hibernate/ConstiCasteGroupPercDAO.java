@@ -23,13 +23,7 @@ public class ConstiCasteGroupPercDAO extends GenericDaoHibernate<ConstiCasteGrou
 		return query.list();
 	}
 	
-	/*public List<Object[]> getConstituencyCastePer()
-	{
-		Query query = getSession().createSQLQuery("select CCG.constituency_id,CG.caste_group_name,CCG.group_perc from consti_caste_group_perc CCG,caste_group CG" +
-				" where CCG.caste_group_id = CG.caste_group_id order by CCG.group_perc desc;");
-		
-		return query.list();	
-	}*/
+
 	
 	public List<Object[]> getConstituencyCastePer()
 	{
