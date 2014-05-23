@@ -1596,7 +1596,7 @@ $('#ajaxImage').show();
 <div id="InteractiveMapDiv" style="display:none;margin-top:20px;">
 	
 		<div id="rangeSliderDiv" style="width:400px;margin-left:auto;margin-right:auto;border:1px solid #ccc;padding:5px 20px;margin-top:50px;" >
-			<h5 style="text-align:center;">Drag Slider To Change Votes Percentage </h5>
+			<h5 style="text-align:center;">Seat Change based on TDP Votes % Decrease </h5>
 				<div id="slider" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a>
 				</div>
 				<p style="padding-bottom:2px;">
