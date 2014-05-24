@@ -7,9 +7,11 @@ import java.util.StringTokenizer;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.ICadreDAO;
+import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.columns.enums.CadreColumnNames;
 import com.itgrids.partyanalyst.dao.columns.enums.EducationQualificationColumnNames;
+import com.itgrids.partyanalyst.dto.CadreVo;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -19,7 +21,16 @@ import com.itgrids.partyanalyst.utils.IConstants;
 public class CadreDAOHibernateTest extends BaseDaoTestCase {
 	ICadreDAO cadreDAO;
 	IUserAddressDAO userAddressDAO;
-		
+	ILocalElectionBodyDAO localElectionBodyDAO;
+	
+	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
+		return localElectionBodyDAO;
+	}
+
+	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
+		this.localElectionBodyDAO = localElectionBodyDAO;
+	}
+
 	public void setUserAddressDAO(IUserAddressDAO userAddressDAO) {
 		this.userAddressDAO = userAddressDAO;
 	}
@@ -524,11 +535,54 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 	  cadreDAO.getCadreList();	
 	}*/
 	
-	public void testGetCadreDetailsInAConstituency(Long userId, Long constituencyId)
+	/*public void testGetCadreDetailsInAConstituency(Long userId, Long constituencyId)
 	{
 		List<Cadre> list = cadreDAO.getCadreDetailsInAConstituency(1l,232l);
 		System.out.println(list.size());
-	}
+	}*/
+	
+	/*public void testDetails(){
+		
+		 CadreVo returnVo = new CadreVo();
+		 List<CadreVo> returnList = new ArrayList<CadreVo>();
+		 try {
+			 String queryStr = null;
+			// if(searchType.equalsIgnoreCase("firstName")){
+				 queryStr = " model.firstName like '%a%' ";
+			
+			List<Object[]> cadreInfo1 =  cadreDAO.searchCadreInfoByConstidAndNameORMobile(232L,"asc","firstName",1,10,queryStr,"count");
+			List<Object[]> cadreInfo =  cadreDAO.searchCadreInfoByConstidAndNameORMobile(232L,"asc","firstName",1,10,queryStr,null);
+			
+			System.out.println(cadreInfo);
+			 
+			if(cadreInfo != null && cadreInfo.size()>0){
+				
+				for (Object[] cadre : cadreInfo) {
+					CadreVo vo = new CadreVo();
+					vo.setFirstName(cadre[0] != null?cadre[0].toString():"");
+					vo.setLastName(cadre[1] != null?cadre[1].toString():"");
+					vo.setMobileNo(cadre[2] != null?cadre[2].toString():"");
+					vo.setMemberType(cadre[3] != null?cadre[3].toString():"");
+					vo.setImage(cadre[4] != null?cadre[4].toString():"human.jpg");
+					vo.setDistrictName(cadre[6] != null?cadre[6].toString():"");
+					vo.setConstituencyName(cadre[7] != null?cadre[7].toString():"");					
+					if(cadre[10] == null){
+						vo.setMandalName(cadre[8] != null?cadre[8].toString():"");
+						vo.setVillageName(cadre[9] != null?cadre[9].toString():"");
+					}
+					else{
+						vo.setLocalelectionName(localElectionBodyDAO.getLocalElectionBodyName(83L)+" Muncipality ");
+					}
+					
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		}
+		 returnList.add(null);
+	}*/
 }
 	
 
