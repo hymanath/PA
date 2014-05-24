@@ -302,22 +302,30 @@ public void setBoothDAO(IBoothDAO boothDAO) {
 				
 				cadre.setFirstName(cadreInfo.getFirstName());
 				cadre.setLastName(cadreInfo.getLastName());
+				
 				cadre.setGender(cadreInfo.getGender());
+				if(cadreInfo.getAge() != null && (!StringUtils.isBlank(cadreInfo.getAge().toString())))
 				cadre.setAge(cadreInfo.getAge());
+				if(cadreInfo.getFatherName() != null && (!StringUtils.isBlank(cadreInfo.getFatherName())))
 				cadre.setFatherOrSpouseName(cadreInfo.getFatherName());
 				cadre.setBloodGroupId(cadreInfo.getBloodGroupId() != 0 ? cadreInfo.getBloodGroupId()  : null);
+				if(cadreInfo.getNoOfFamilyMembers() != null && (!StringUtils.isBlank(cadreInfo.getNoOfFamilyMembers())))
 				cadre.setNoOfFamilyMembers(cadreInfo.getNoOfFamilyMembers());
+				if(cadreInfo.getNoOfVoters() != null && (!StringUtils.isBlank(cadreInfo.getNoOfVoters())))
 				cadre.setNoOfVoters(cadreInfo.getNoOfVoters());
+				
 				cadre.setMobile(cadreInfo.getMobileNo());
+				if(cadreInfo.getLandNo() != null && (!StringUtils.isBlank(cadreInfo.getLandNo())))
 				cadre.setTelephone(cadreInfo.getLandNo());
+				if(cadreInfo.getEmailId() != null && (!StringUtils.isBlank(cadreInfo.getEmailId())))
 				cadre.setEmail(cadreInfo.getEmailId());
 				cadre.setIsMahanadu("Y");
 				if (!cadreInfo.getEducationId().equals(new Long(0)))
 					cadre.setEducation(educationalQualificationsDAO.get(cadreInfo.getEducationId()));
 					
-				if(cadreInfo.getProfessionId() != null)
+				if(cadreInfo.getProfessionId() != null && cadreInfo.getProfessionId() > 0)
 				cadre.setOccupation(occupationDAO.get(cadreInfo.getProfessionId()));
-				if(cadreInfo.getCasteCategory() != null)
+				if(cadreInfo.getCasteCategory() != null && cadreInfo.getCasteCategory() > 0)
 				cadre.setCasteCategory(socialCategoryDAO.get(cadreInfo.getCasteCategory()));
 				Double annunaIncome = 0d;
 				if (cadreInfo.getAnnualIncome() != null && (!StringUtils.isBlank(cadreInfo.getAnnualIncome())))
@@ -330,10 +338,11 @@ public void setBoothDAO(IBoothDAO boothDAO) {
 				cadre.setSourceIncome(sourceIncome);
 				
 				SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_PATTERN);
-				if (cadreInfo.getActiveDateField() != null) {
+				if (cadreInfo.getActiveDateField() != null && (!StringUtils.isBlank(cadreInfo.getActiveDateField()))) {
 					cadre.setActiveDateField(format.parse(cadreInfo.getActiveDateField()));
 				} 
 				cadre.setMemberType(cadreInfo.getMemberType());
+				if(cadreInfo.getAddress() != null && (!StringUtils.isBlank(cadreInfo.getAddress())))
 				cadre.setAddress(cadreInfo.getAddress());
 				// Current Address
 				
