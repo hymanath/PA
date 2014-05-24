@@ -7096,6 +7096,11 @@
 				<param name="root">boothsList</param>
 			</result>
 		</action>
+		<action name="uploadCadreForMahanadu" class="mahaNaduAction" method="saveOrUpdataCadre">
+		  <result name="success" type="stream">			   
+			    <param name="inputName">inputStream</param>
+		  </result>	
+		</action>
 </package>
 		
 </struts>      

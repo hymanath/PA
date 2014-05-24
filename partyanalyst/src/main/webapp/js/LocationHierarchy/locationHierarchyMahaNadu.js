@@ -14,6 +14,10 @@ function hideBusyImgWithId(elmtId)
 }
 function getLocationHierarchies(selectedId, task, module, elementId, addressType, areaType, constituencyId,parl)
 {	
+  if(task == "boothsInTehsilOrMunicipality"){
+    getLocationHierarchies1(selectedId, task, module, elementId, addressType, areaType, constituencyId,parl)
+    return;
+  }
 	var isParliament = null;
 	if(parl == true)
 	  isParliament = "true";
