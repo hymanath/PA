@@ -72,6 +72,7 @@
 	</style>
 </head>
 <body  class="mahanadubg">
+ <form id="uploadCadreForm" method="post" enctype="multipart/form-data" action="uploadCadreForMahanadu.action" name="uploadCadreForm">
     <div class="container">	
 		<!----Header Div--------->
 		<div class="row">
@@ -120,40 +121,40 @@
 					<div class="row-fluid">
 						<div class="span5">	
 							<label>First Name<span class="text-error">* </span>&nbsp&nbsp&nbsp</label>             
-							<input  type="text" name="firstName" id="firstNameId">
+							<input  type="text" name="cadreVo.firstName"  id="firstNameId">
 							
 							<label class="m_top20">Last Name<span class="text-error">* </span> &nbsp&nbsp&nbsp</label>             
-							<input type="text" name="lastName" id="lastNameId">  
+							<input type="text" name="cadreVo.lastName"  id="lastNameId">  
 							
 							<div class="row-fluid m_top20">
 								<div class="span3">									
 									<label>Gender <span class="text-error">* </span></label>
 								</div>
 								<div class="span3">
-									<label style="margin-top: -10px;"><input type="radio" checked="" value="Male" id="optionsRadios" name="gender">
+									<label style="margin-top: -10px;"><input type="radio" checked="" value="Male" id="optionsRadios" name="cadreVo.gender">
 									Male </label>
 								</div>
                                 <div class="span4 form-inline">
 									<label style="margin-top: -10px;">
-									  <input type="radio" checked="" value="Female" id="optionsRadios1" name="gender">
+									  <input type="radio" checked="" value="Female" id="optionsRadios1" name="cadreVo.gender">
 									  Female
 									</label>
 								</div>  	
 							</div>
 							<label>Father Name &nbsp;</label>             
-							<input type="text" name="fatherName">  
+							<input type="text" name="cadreVo.fatherName">  
 						</div>
 						<div class="span5">	
 							<label>Blood Group &nbsp&nbsp &nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp &nbsp</label>             
-							<s:select id="bloodGroupId" cssClass="regionSelect input-medium" name="bloodGroupId" list="#session.bloodGroups" listKey="id" listValue="name" headerKey="0" headerValue="Select Group" ></s:select>
+							<s:select id="bloodGroupId" cssClass="regionSelect input-medium" name="cadreVo.bloodGroupId" list="#session.bloodGroups" listKey="id" listValue="name" headerKey="0" headerValue="Select Group" ></s:select>
 							<br/><label class="m_top20">Age&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp &nbsp&nbsp&nbsp &nbsp&nbsp&nbsp	 </label>             
-							<input type="text" class="input-medium" name="age">  
+							<input type="text" class="input-medium" name="cadreVo.age">  
 							
 							<br/><label class="m_top20">No of Family Members &nbsp</label>             
-							<input type="text" class="input-medium" name="noOfFamilyMembers"> 
+							<input type="text" class="input-medium" name="cadreVo.noOfFamilyMembers"> 
 							
 							<br>	<label class="m_top20">No of Voters &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span></label>             
-							<input type="text" class="input-medium" name="noOfVoters"> 
+							<input type="text" class="input-medium" name="cadreVo.noOfVoters"> 
 						</div>
 						<div class="span2">	
 							<a class="thumbnail" href="#">
@@ -169,13 +170,13 @@
 				<div class="well well-small mahanadu-well form-inline">
 				
 				  <label>Mobile No<span class="text-error"><span class="text-error">* </span> </span></label>             
-					<input type="text" name="mobileNo" id="mobileNoId">      
+					<input type="text" name="cadreVo.mobileNo"  id="mobileNoId">      
 				
 				  <label>&nbsp&nbsp&nbsp&nbsp&nbsp Land No</label>              
-					<input type="text" name="landNo">
+					<input type="text" name="cadreVo.landNo">
 					
 				  <label >&nbsp&nbsp&nbsp&nbsp&nbsp Email Id</label>              
-					<input  type="text" name="emailId"> 
+					<input  type="text" name="cadreVo.emailId"> 
 				</div>
 				
 				<!-----Current Address----->
@@ -183,37 +184,20 @@
 					<div class="well well-small mahanadu-well form-inline">				
 					<div class="row-fluid">
 						<div class="span6">	
-
-
-
-						<label>Address<span class="text-error">* </span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
+						    <label>Address<span class="text-error">* </span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
 							
 							<textarea rows="4" cols="50"  name="address" class="input-xlarge" id="addressId">
 							</textarea>
-							
-						<br/><label class="m_top20">House No&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
-							<input type="text" class="input-xlarge" name="hno">
-
-							<br/><label class="m_top20">Street Name &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
-							<input type="text" class="input-xlarge" name="street">  
-							
 							<br/><label class="m_top20">District<span class="text-error">* </span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
-							<s:select id="districtField" cssClass="regionSelect input-xlarge" name="districtId" list="#session.districtsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'constituenciesInDistrict','cadreReg','constituencyField','currentAdd');cleanOptionsList('district')" ></s:select>
+							<s:select id="districtField" cssClass="regionSelect input-xlarge" name="cadreVo.districtId" list="#session.districtsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'constituenciesInDistrict','cadreReg','constituencyField','currentAdd');cleanOptionsList('district')" ></s:select>
 							
-							<br/><label class="m_top20">Constituency<span class="text-error">* </span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
-							<s:select id="constituencyField" cssClass="regionSelect input-xlarge" name="constituencyId" list="#session.constituenciesList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'subRegionsInConstituency','cadreReg','mandalField','currentAdd', 'null');cleanOptionsList('constituency')"></s:select> 
-						</div>
+							</div>
 						<div class="span6">	
-							<label>Mandal<span class="text-error">* </span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;</label>             
-							<s:select id="mandalField" cssClass="regionSelect input-xlarge" name="mandalId" list="#session.mandalsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'hamletsOrWardsInRegion','cadreReg','villageField','currentAdd','null');getBooths('currentAdd','constituencyField','boothField',this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreReg','boothsInTehsilOrMunicipality')"></s:select>	
-							
-							<br><label class="m_top20">Village<span class="text-error">* </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;	 </label>             
-							<s:select id="villageField" cssClass="regionSelect input-xlarge" name="villageId" list="#session.villagesList" listKey="id" listValue="name" onchange="getBoothsInWard('currentAdd','constituencyField','boothField',this.options[this.selectedIndex].value,'cadreReg','mandalField')"></s:select>	
-							<br><label class="m_top20">Pin Code &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
-							<input type="text" class="input-xlarge" name="pinCode"> 
-							
-							<br>	<label class="m_top20">Booth No &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
-							<s:select id="boothField" cssClass="regionSelect input-xlarge" name="boothNo" list="#session.boothsList" listKey="id" listValue="name"></s:select>
+							<br/><label class="m_top20">Constituency<span class="text-error">* </span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
+							<s:select id="constituencyField" cssClass="regionSelect input-xlarge" name="cadreVo.constituencyId" list="#session.constituenciesList" listKey="id" listValue="name" onchange="getBooths('currentAdd','constituencyField','boothField',this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreReg','boothsInTehsilOrMunicipality');"></s:select> 
+						
+							<label class="m_top20">Booth No &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
+							<s:select id="boothField" cssClass="regionSelect input-xlarge" name="cadreVo.boothNo" list="#session.boothsList" listKey="id" listValue="name"></s:select>
 						</div>						
 					</div>
 				</div>
@@ -224,17 +208,17 @@
 					<div class="row-fluid">
 						<div class="span6">	
 							<label>Education&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
-							<s:select id="educationField" cssClass="regionSelect input-xlarge" name="educationId" list="#session.eduQualsList" listKey="id" listValue="name"  headerKey="0" headerValue="Select Education"></s:select>
+							<s:select id="educationField" cssClass="regionSelect input-xlarge" name="cadreVo.educationId" list="#session.eduQualsList" listKey="id" listValue="name"  headerKey="0" headerValue="Select Education"></s:select>
 							<br><label class="m_top20">Profession &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
-                            <s:select id="professionField" cssClass="regionSelect input-xlarge" name="professionId"list="#session.occupationsList" listKey="id" listValue="name"  headerKey="0" headerValue="Select Occupation"></s:select>							
+                            <s:select id="professionField" cssClass="regionSelect input-xlarge" name="cadreVo.professionId"list="#session.occupationsList" listKey="id" listValue="name"  headerKey="0" headerValue="Select Occupation"></s:select>							
 						</div>
 						<div class="span6">	
 							<label>Annual Income&nbsp;&nbsp;</label>  
-                            <input type="text" class="input-small" name="annualIncome"></input> 							
+                            <input type="text" class="input-small" name="cadreVo.annualIncome"></input> 							
 							<label>&nbsp;&nbsp;Income Source</label>             
-							<s:select id="incomeSource" cssClass="regionSelect input-small" name="sourceIncome" list="#session.incSource" listKey="id" listValue="name" headerKey="0" headerValue="Select Group" ></s:select>
+							<s:select id="incomeSource" cssClass="regionSelect input-small" name="cadreVo.sourceIncome" list="#session.incSource" listKey="id" listValue="name" headerKey="0" headerValue="Select Group" ></s:select>
 							<br><label class="m_top20">Cast Category &nbsp;&nbsp;</label>             
-                            <s:select id="casteCateg" cssClass="regionSelect span8 xlarge" name="casteCategory" list="#session.casteCategory" listKey="id" listValue="name" headerKey="0" headerValue="Select Group" ></s:select>							
+                            <s:select id="casteCateg" cssClass="regionSelect span8 xlarge" name="cadreVo.casteCategory" list="#session.casteCategory" listKey="id" listValue="name" headerKey="0" headerValue="Select Group" ></s:select>							
 						</div>						
 					</div>
 				</div>
@@ -244,12 +228,12 @@
 					<div class="well well-small mahanadu-well form-inline">
 										
 					<label>Member Type<span class="text-error"><span class="text-error">* </span> </span></label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<label><input type="radio" name="memberType" id="optionsRadios3" value="Active" >
+					<label><input type="radio" name="cadreVo.memberType" id="optionsRadios3" value="Active" >
 									Active </label> &nbsp;&nbsp;
 						<input type="text" class="input-medium" name="activeDateField"></input>  
 					
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<label><input type="radio" name="memberType" id="optionsRadios4" value="Normal" >
+					<label><input type="radio" name="cadreVo.memberType" id="optionsRadios4" value="Normal" >
 									Inactive </label> &nbsp;&nbsp;
 					      
 				
@@ -294,7 +278,7 @@
 					</div>
 					
 					<!-----Register Button----->
-					<button class="btn btn-large pull-right btn-success" type="submit" onclick="validatefields()">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp; Register &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</button>
+					<button class="btn btn-large pull-right btn-success" id="cadreSaveBth" type="button" onclick="uploadCadre();">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp; Register &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</button>
 			</div><!----Form Div End--------->
 		</div>
 		
@@ -308,6 +292,35 @@
 				</div>
 			<!---Footer End---->
 	</div>
+</form>
+<script type="text/javascript">
+function uploadCadre()
+{
+	
+ if(validatefields())
+ {
+	
+  
+    $("#cadreSaveBth").attr("disabled","disabled");	
+ var uploadHandler = {
+				upload: function(o) {
+					uploadResult = o.responseText;
+					showUploadStatus(uploadResult);	
+					 $("#cadreSaveBth").removeAttr('disabled'); 
+				}
+			};
+
+		
+		YAHOO.util.Connect.setForm('uploadCadreForm',true);
+		YAHOO.util.Connect.asyncRequest('POST','uploadCadreForMahanadu.action',uploadHandler);
+	}
+	else
+		return;
+}
+function showUploadStatus(){
+
+}
+</script>
 </body>
 
 <script>
@@ -319,26 +332,26 @@ var flag = true;
 var str = '';
 var firstName = $.trim($("#firstNameId").val());
 var lastName = $.trim($("#lastNameId").val());
-var isgenderChecked = jQuery("input[name=gender]:checked");
+var isgenderChecked = jQuery("input[name='cadreVo.gender']:checked");
 var mobileNo =  $.trim($("#mobileNoId").val());
 var districtId = $("#districtField").val();
 var constituencyId = $("#constituencyField").val();
-var ismemberTypeChecked = jQuery("input[name=memberType]:checked");
+var ismemberTypeChecked = jQuery("input[name='cadreVo.memberType']:checked");
 var address = $.trim($("#addressId").val());
 var str='';
 if(firstName.length == 0 )
 	{
-	str+='FirstName is required<br/>';
+	str+='firstName is required<br/>';
 	flag = false;
 	}
 	if(lastName.length == 0 )
 	{
-	str+='LastName is required<br/>';
+	str+='lastName is required<br/>';
 	flag = false;
 	}
 	if(address.length == 0 )
 	{
-	str+='Address is required<br/>';
+	str+='address is required<br/>';
 	flag = false;
 	}
 	if(districtId == 0 )

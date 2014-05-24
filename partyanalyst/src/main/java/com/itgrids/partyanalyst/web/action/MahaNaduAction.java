@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.io.InputStream;
+import java.io.StringBufferInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,8 +16,11 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
+import com.itgrids.partyanalyst.dto.CadreVo;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IMahaNaduService;
@@ -39,10 +44,11 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 	private static final long serialVersionUID = 2018627765397943688L;
 	private CadreManagementService cadreManagementService;
 	private static final Logger log = Logger.getLogger(MahaNaduAction.class);
-	
+	InputStream inputStream;
 	private ServletContext context;
 	private HttpServletRequest request;
 	private HttpSession session;
+	private CadreVo cadreVo;
 	JSONObject jObj = null;
 	private String task = null;
 	/**
@@ -99,6 +105,22 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 	
 	private IConstituencyDAO constituencyDAO;
 	
+	public InputStream getInputStream() {
+		return inputStream;
+	}
+
+	public void setInputStream(InputStream inputStream) {
+		this.inputStream = inputStream;
+	}
+
+	public CadreVo getCadreVo() {
+		return cadreVo;
+	}
+
+	public void setCadreVo(CadreVo cadreVo) {
+		this.cadreVo = cadreVo;
+	}
+
 	public List<SelectOptionVO> getBoothsList() {
 		return boothsList;
 	}
@@ -501,8 +523,8 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 	    if(!(cadreId != null && (new Long(cadreId)) > 0)){
 	    	
 		    session.setAttribute(ISessionConstants.CONSTITUENCIES,new ArrayList<SelectOptionVO>());
-			session.setAttribute(ISessionConstants.MANDALS,new ArrayList<SelectOptionVO>());	
-			session.setAttribute(ISessionConstants.VILLAGES, new ArrayList<SelectOptionVO>());
+			//session.setAttribute(ISessionConstants.MANDALS,new ArrayList<SelectOptionVO>());	
+			//session.setAttribute(ISessionConstants.VILLAGES, new ArrayList<SelectOptionVO>());
 			session.setAttribute(ISessionConstants.BOOTHS,new ArrayList<SelectOptionVO>());	
 		
 	    }
@@ -561,7 +583,6 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
     {
     		session = request.getSession();
     		System.out.println("inside method populate const");
-    		List<SelectOptionVO> pConstituencyList = new ArrayList<SelectOptionVO>();
     		
     		//get districts
     		List<SelectOptionVO> districtNames_c = new ArrayList<SelectOptionVO>();
@@ -580,15 +601,14 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
     			constituencynames_c.add(0, obj1);        		
     		}
     		
-    			pConstituencyList = staticDataService.getLatestConstituenciesByStateIdAndType(new Long(cadreInfo.getState().trim()),IConstants.PARLIAMENT_CONSTITUENCY_TYPE);
-    			pConstituencyList.add(0, new SelectOptionVO(0l,"Select Location"));
+    			
     			constituencynames_c = staticDataService.getLatestConstituenciesByStateIdAndType(new Long(cadreInfo.getState().trim()),IConstants.ASSEMBLY_ELECTION_TYPE);
     			constituencynames_c.add(0, new SelectOptionVO(0l,"Select Location"));
-    			session.setAttribute(ISessionConstants.P_CONSTITUENCIES, pConstituencyList);
+    			
     			session.setAttribute(ISessionConstants.CONSTITUENCIES, constituencynames_c);
     		
 			
-			List<SelectOptionVO> mandals_c=regionServiceDataImp.getSubRegionsInConstituency(new Long(cadreInfo.getConstituencyID()),IConstants.PRESENT_YEAR,null);
+			/*List<SelectOptionVO> mandals_c=regionServiceDataImp.getSubRegionsInConstituency(new Long(cadreInfo.getConstituencyID()),IConstants.PRESENT_YEAR,null);
 			SelectOptionVO obj2 = new SelectOptionVO(0L,"Select Mandal");
 			mandals_c.add(0, obj2);
 			
@@ -609,40 +629,51 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 				localElecId = id;
 			}else{
 				tehsilId = id;
-			}
-			List<SelectOptionVO> boothsList_c = mahaNaduService.getBoothsInAConstituency(new Long(cadreInfo.getConstituencyID()),10l,tehsilId,localElecId);
+			}*/
+			List<SelectOptionVO> boothsList_c = mahaNaduService.getBoothsInAConstituency(new Long(cadreInfo.getConstituencyID()),10l,null,null);
 			if(boothsList_c != null){
-				 obj = new SelectOptionVO(0L,"Select Location");
+				 obj = new SelectOptionVO(0L,"Select Booth");
 				boothsList_c.add(0, obj);
 			}
 			session.setAttribute(ISessionConstants.BOOTHS, boothsList_c);
-
-		if(cadreInfo.getDesignation() != null)
-			designationsList = cadreManagementService.getDesignationsInCommittee(cadreInfo.getPartyCommittee());
-		
 		
 	}
 
     public String getBooths(){
       try{
     	jObj = new JSONObject(getTask());
-    	Long locationId = jObj.getLong("id");
+    	//Long locationId = jObj.getLong("id");
 		Long constituencyId = jObj.getLong("constId");
-		String areaFlag = locationId.toString().substring(0,1);
-		Long id = new Long(locationId.toString().substring(1));
-		Long localElecId = null;
-		Long tehsilId = null;
-		if(areaFlag.equalsIgnoreCase(IConstants.URBAN_TYPE)){
-			localElecId = id;
-		}else{
-			tehsilId = id;
-		}
+		//String areaFlag = locationId.toString().substring(0,1);
+		//Long id = new Long(locationId.toString().substring(1));
+		//Long localElecId = null;
+		// tehsilId = null;
+		//if(areaFlag.equalsIgnoreCase(IConstants.URBAN_TYPE)){
+		//	localElecId = id;
+		//}else{
+		//	tehsilId = id;
+		//}
 			
-		boothsList =mahaNaduService.getBoothsInAConstituency(constituencyId,10l,tehsilId,localElecId);
+		boothsList =mahaNaduService.getBoothsInAConstituency(constituencyId,10l,null,null);
       }catch(Exception e){
     	  LOG.error("Exception rised in getBooths", e);
       }
       return Action.SUCCESS;
     }
 
+    public String saveOrUpdataCadre(){
+      try{
+    	ResultStatus result = mahaNaduService.saveCadreInfoForMahaNadu(cadreVo);
+    	
+		if(result.getResultCode() == ResultCodeMapper.SUCCESS){
+			log.debug("fileuploades is sucess Method");
+			inputStream = new StringBufferInputStream(SUCCESS);
+		}
+		else
+			inputStream = new StringBufferInputStream("fail");
+      }catch(Exception e){
+    	  LOG.error("Exception rised in saveOrUpdataCadre", e);
+      }
+    	return Action.SUCCESS;
+    }
 }
