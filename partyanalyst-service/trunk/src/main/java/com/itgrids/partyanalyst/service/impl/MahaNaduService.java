@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -22,13 +23,25 @@ import com.itgrids.partyanalyst.dao.ISocialCategoryDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
+import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.CadreVo;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.CadreGovtDesignation;
+import com.itgrids.partyanalyst.model.CadreLanguageEfficiency;
+import com.itgrids.partyanalyst.model.CadreParticipatedTrainingCamps;
 import com.itgrids.partyanalyst.model.CadrePartyDesignation;
+import com.itgrids.partyanalyst.model.CadreSkills;
+import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.District;
+import com.itgrids.partyanalyst.model.Hamlet;
+import com.itgrids.partyanalyst.model.LocalElectionBody;
+import com.itgrids.partyanalyst.model.State;
+import com.itgrids.partyanalyst.model.Tehsil;
+import com.itgrids.partyanalyst.model.Township;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IMahaNaduService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -324,9 +337,9 @@ public void setBoothDAO(IBoothDAO boothDAO) {
 				cadre.setAddress(cadreInfo.getAddress());
 				// Current Address
 				
-				currentAddress.setHouseNo(cadreInfo.getHno());
-				currentAddress.setStreet(cadreInfo.getStreet());
-				currentAddress.setPinCode(cadreInfo.getPinCode());
+				//currentAddress.setHouseNo(cadreInfo.getHno());
+				//currentAddress.setStreet(cadreInfo.getStreet());
+				//currentAddress.setPinCode(cadreInfo.getPinCode());
 				
 				if(cadreInfo.getDistrictId() != null)
 					 currentAddress.setDistrict(districtDAO.get(new Long(cadreInfo.getDistrictId())));
@@ -366,4 +379,118 @@ public void setBoothDAO(IBoothDAO boothDAO) {
 			} });
 		return cadreObj;
 		}
+	
+public CadreVo getCadreCompleteInfo(Long cadreId) {
+		
+	CadreVo cadreInfo = new CadreVo();
+		try
+		{
+			Cadre cadre = cadreDAO.get(cadreId);
+			cadreInfo = convertCadreToCadreVo(cadre);
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return cadreInfo;
+	}
+
+@SuppressWarnings("deprecation")
+public CadreVo convertCadreToCadreVo(Cadre cadre) {
+	
+	CadreVo cadreInfo = new CadreVo();
+	SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
+	UserAddress currentAddress;
+	
+	cadreInfo.setCadreId(cadre.getCadreId());
+	cadreInfo.setFirstName(cadre.getFirstName());
+	cadreInfo.setLastName(cadre.getLastName());
+	cadreInfo.setBloodGroupId(cadre.getBloodGroup() != null ? cadre.getBloodGroup().getBloodGroupId() : null);
+	cadreInfo.setBloodGroupStr(cadre.getBloodGroup() != null ? cadre.getBloodGroup().getBloodGroup() : "");
+	cadreInfo.setFatherName(cadre.getFatherOrSpouseName()!=null?cadre.getFatherOrSpouseName():"");
+	cadreInfo.setNoOfFamilyMembers(cadre.getNoOfFamilyMembers()!=null?cadre.getNoOfFamilyMembers():"");
+	cadreInfo.setNoOfVoters(cadre.getNoOfVoters() != null ? cadre.getNoOfVoters() : "");
+	cadreInfo.setAge(cadre.getAge());
+	cadreInfo.setGender(cadre.getGender() != null ? cadre.getGender() : "");
+	cadreInfo.setMobileNo(cadre.getMobile() != null ? cadre.getMobile() : "");
+	cadreInfo.setLandNo(cadre.getTelephone() != null ? cadre.getTelephone() : "");
+	cadreInfo.setEmailId(cadre.getEmail() != null ? cadre.getEmail() : "");
+	currentAddress = cadre.getCurrentAddress();
+	if(currentAddress != null)
+	{
+	//cadreInfo.setHno(currentAddress.getHouseNo() != null ? currentAddress.getHouseNo() :"");
+	//cadreInfo.setStreet(currentAddress.getStreet() != null ? currentAddress.getStreet() : "");
+	//cadreInfo.setPinCode(currentAddress.getPinCode() != null ? currentAddress.getPinCode() : "");
+	// retrieving current address(CA) locations
+	//State stateCA = currentAddress.getState();
+	District districtCA = currentAddress.getDistrict();
+	Constituency constituencyCA = currentAddress.getConstituency();
+	Booth boothCA = currentAddress.getBooth();
+	
+	if(districtCA != null)
+	{
+		cadreInfo.setDistrictId(districtCA.getDistrictId());
+		cadreInfo.setDistrictName(districtCA.getDistrictName()+" (Dt.)");
+	}
+	if(constituencyCA != null)
+	{
+	cadreInfo.setConstituencyId(constituencyCA.getConstituencyId());
+	cadreInfo.setConstituencyName(constituencyCA.getName());
+	}
+	
+	if(boothCA != null)
+	{
+		cadreInfo.setBoothNo(boothCA.getBoothId());
+		cadreInfo.setBoothName("Booth No"+boothCA.getPartNo()+" - "+boothCA.getLocation());
+	}
+	
+	}
+	
+	Long  edu= 0L;
+	cadreInfo.setEducation(edu = cadre.getEducation() != null ? cadre.getEducation().getEduQualificationId() : null);
+	String eduStr = "";
+	cadreInfo.setEducationStr(eduStr = cadre.getEducation() != null ? cadre.getEducation().getQualification() : "");
+	Long professn = 0L;
+	cadreInfo.setProfessionId(professn = cadre.getOccupation() != null ? cadre.getOccupation().getOccupationId() : null);
+	String profsnStr = "";
+	cadreInfo.setProfessionStr(profsnStr = cadre.getOccupation() != null ? cadre.getOccupation().getOccupation() : "");
+	
+	if(cadre.getAnnualIncome() != null)
+	cadreInfo.setAnnualIncome(new Long(cadre.getAnnualIncome().longValue()).toString());
+	if(cadre.getSourceIncome() != null)
+		cadreInfo.setSourceIncome(new Long(cadre.getSourceIncome().longValue()).toString());
+		
+	if(cadre.getCasteCategory() != null){
+		cadreInfo.setCasteCategory(cadre.getCasteCategory().getSocialCategoryId());
+		cadreInfo.setCasteCategoryName(cadre.getCasteCategory().getCategory());
+	}
+	
+	cadreInfo.setMemberType(cadre.getMemberType());
+	cadreInfo.setActiveDateField(cadre.getActiveDateField() != null ? cadre.getActiveDateField().toString() : "");
+	List<Object[]> partyDesignations=cadrePartyDesignationDAO.getPartyDesignationsByCadreId(cadre.getCadreId());
+	List<Long> partyDesignationList = new ArrayList<Long>();
+	List<Long> govtDesignationList = new ArrayList<Long>();
+	if(partyDesignations != null && partyDesignations.size() > 0)
+	{
+		for(Object[] params : partyDesignations)
+		{
+			if(!partyDesignationList.contains((Long)params[0]))
+			partyDesignationList.add((Long)params[0]);
+		}
+	}
+	
+	List<Object[]> govtDesignations=cadreGovtDesignationDAO.findByCadreId(cadre.getCadreId());
+	if(govtDesignations != null && govtDesignations.size() > 0)
+	{
+		for(Object[] params1 : partyDesignations)
+		{
+			if(!govtDesignationList.contains((Long)params1[0]))
+			govtDesignationList.add((Long)params1[0]);
+		}
+	}
+	cadreInfo.setPartyDesignationList(partyDesignationList);
+	cadreInfo.setGovtDesignationList(govtDesignationList);
+	return cadreInfo;
+}
 }
