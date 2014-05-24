@@ -194,33 +194,39 @@ public ICadrePartyDesignationDAO getCadrePartyDesignationDAO() {
 	 return returnList;
  }
  
- public CadreVo searchCadreDetails(Long userId,Long constiId, String searchBy,String searchType,String sort,String sortBy,int startIndex,int maxResult)
+ public CadreVo searchCadreDetails(Long userId,Long constiId, String searchEle,String searchType,String sort,String sortBy,int startIndex,int maxResult)
  { 
 	 CadreVo returnVo = new CadreVo();
 	 List<CadreVo> returnList = new ArrayList<CadreVo>();
 	 try {
-		 String queryStr = null;
-		 if(searchType.equalsIgnoreCase("all")){
-			 queryStr = " model.firstName like '%"+searchBy+"%' and model.lastName like '%"+searchBy+"%'  and  model.mobile like '"+searchBy+"' ";
+		 String queryStr = " ";
+		 
+		 String[] searchBy = searchEle.split(",");
+		 
+		 if(searchEle.length()>0){
+			 if(searchType.equalsIgnoreCase("all")){
+				 queryStr = " model.firstName like '%"+searchBy[0].toString()+"%' and model.lastName like '%"+searchBy[1].toString()+"%'  and  model.mobile like '"+searchBy[2].toString()+"' ";
+			 }
+			 else if(searchType.equalsIgnoreCase("firstTwo")){
+				 queryStr = " model.firstName like '%"+searchBy[0].toString()+"%' and model.lastName like '%"+searchBy[1].toString()+"%' ";
+			 }
+			 else if(searchType.equalsIgnoreCase("secondTwo")){
+				 queryStr = " model.lastName like '%"+searchBy[0].toString()+"%'  and  model.mobile like '"+searchBy[1].toString()+"' ";
+			 }
+			 else if(searchType.equalsIgnoreCase("firstLast")){
+				 queryStr = " model.firstName like '%"+searchBy[0].toString()+"%'  and  model.mobile like '"+searchBy[1].toString()+"' ";
+			 }
+			 else if(searchType.equalsIgnoreCase("firstone")){
+				 queryStr = " model.firstName like '%"+searchBy[0].toString()+"%' ";
+			 }
+			 else if(searchType.equalsIgnoreCase("secondone")){
+				 queryStr = " model.lastName like '%"+searchBy[0].toString()+"%' ";
+			 }
+			 else if(searchType.equalsIgnoreCase("thirdone")){
+				 queryStr = " model.mobile like '"+searchBy[0].toString()+"' ";
+			 }
 		 }
-		 else if(searchType.equalsIgnoreCase("firstTwo")){
-			 queryStr = " model.firstName like '%"+searchBy+"%' and model.lastName like '%"+searchBy+"%' ";
-		 }
-		 else if(searchType.equalsIgnoreCase("secondTwo")){
-			 queryStr = " model.lastName like '%"+searchBy+"%'  and  model.mobile like '"+searchBy+"' ";
-		 }
-		 else if(searchType.equalsIgnoreCase("firstLast")){
-			 queryStr = " model.firstName like '%"+searchBy+"%'  and  model.mobile like '"+searchBy+"' ";
-		 }
-		 else if(searchType.equalsIgnoreCase("firstone")){
-			 queryStr = " model.firstName like '%"+searchBy+"%' ";
-		 }
-		 else if(searchType.equalsIgnoreCase("secondone")){
-			 queryStr = " model.lastName like '%"+searchBy+"%' ";
-		 }
-		 else if(searchType.equalsIgnoreCase("thirdone")){
-			 queryStr = " model.mobile like '"+searchBy+"' ";
-		 }
+		 
 		 
 		 	List<Object[]> cadreInfo1 =  cadreDAO.searchCadreInfoByConstidAndNameORMobile(constiId,"asc","firstName",startIndex,maxResult,queryStr,"count");
 			
