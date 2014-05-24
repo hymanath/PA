@@ -417,10 +417,10 @@ public CadreVo convertCadreToCadreVo(Cadre cadre) {
 	cadreInfo.setLastName(cadre.getLastName());
 	cadreInfo.setBloodGroupId(cadre.getBloodGroup() != null ? cadre.getBloodGroup().getBloodGroupId() : null);
 	cadreInfo.setBloodGroupStr(cadre.getBloodGroup() != null ? cadre.getBloodGroup().getBloodGroup() : "");
-	cadreInfo.setFatherName(cadre.getFatherOrSpouseName()!=null?cadre.getFatherOrSpouseName():"");
-	cadreInfo.setNoOfFamilyMembers(cadre.getNoOfFamilyMembers()!=null?cadre.getNoOfFamilyMembers():"");
+	cadreInfo.setFatherName(cadre.getFatherOrSpouseName()!=null ? cadre.getFatherOrSpouseName():"");
+	cadreInfo.setNoOfFamilyMembers(cadre.getNoOfFamilyMembers()!=null ? cadre.getNoOfFamilyMembers() : "");
 	cadreInfo.setNoOfVoters(cadre.getNoOfVoters() != null ? cadre.getNoOfVoters() : "");
-	cadreInfo.setAge(cadre.getAge());
+	cadreInfo.setAge(cadre.getAge() != null ? cadre.getAge() : null);
 	cadreInfo.setGender(cadre.getGender() != null ? cadre.getGender() : "");
 	cadreInfo.setMobileNo(cadre.getMobile() != null ? cadre.getMobile() : "");
 	cadreInfo.setLandNo(cadre.getTelephone() != null ? cadre.getTelephone() : "");
