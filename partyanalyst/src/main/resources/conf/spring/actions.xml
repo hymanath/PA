@@ -1428,7 +1428,10 @@
 	   <property name="constituencyWiseElectionResultsService" ref="constituencyWiseElectionResultsService" /> 
 	</bean>
 	<bean id="mahaNaduAction" class="com.itgrids.partyanalyst.web.action.MahaNaduAction" singleton="false"> 
-	   <property name="mahaNaduService" ref="mahaNaduService" /> 	
+	   <property name="cadreManagementService" ref="cadreManagementService" /> 	
+	   <property name="staticDataService" ref="staticDataService" /> 
+	   <property name="mahaNaduService" ref="mahaNaduService" /> 
+	   <property name="regionServiceDataImp" ref="regionServiceDataImp" /> 
 	</bean>
 </beans>	
 	
