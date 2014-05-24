@@ -7,7 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>MAHANADU</title>
- <script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>
+ <script type="text/javascript" src="js/LocationHierarchy/locationHierarchyMahaNadu.js"></script>
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
  <!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
