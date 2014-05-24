@@ -328,17 +328,17 @@ var address = $.trim($("#addressId").val());
 var str='';
 if(firstName.length == 0 )
 	{
-	str+='firstName is required<br/>';
+	str+='FirstName is required<br/>';
 	flag = false;
 	}
 	if(lastName.length == 0 )
 	{
-	str+='lastName is required<br/>';
+	str+='LastName is required<br/>';
 	flag = false;
 	}
 	if(address.length == 0 )
 	{
-	str+='address is required<br/>';
+	str+='Address is required<br/>';
 	flag = false;
 	}
 	if(districtId == 0 )
