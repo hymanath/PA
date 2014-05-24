@@ -11,10 +11,10 @@ public class CadreVo implements Serializable{
 	private String gender;
 	private Long age;
 	private String bloodGroup;
-	private Long noOfFamilyMembers;
+	private String noOfFamilyMembers;
 	private String fatherName;
 	private Long bloodGroupId;
-	private Long noOfVoters;
+	private String noOfVoters;
 	private String landNo;
 	
 	private String emailId;
@@ -24,16 +24,16 @@ public class CadreVo implements Serializable{
 	private Long districtId;
 	private Long constituencyId;
 	private Long boothNo;
-	private Long pinCode;
+	private String pinCode;
 	private Long villageId;
 	private Long casteCategory;
 	private String memberType;
 	private Long professionId;
 	private Long educationId;
-	private Long sourceId;
-	private Long Income;
+	private String sourceIncome;
+	private String annualIncome;
 	private Long education;
-	
+	private String activeDateField;
 	private List<Long> partyDesignationList,govtDesignationList;
 
 	public String getFirstName() {
@@ -84,11 +84,13 @@ public class CadreVo implements Serializable{
 		this.bloodGroup = bloodGroup;
 	}
 
-	public Long getNoOfFamilyMembers() {
+	
+
+	public String getNoOfFamilyMembers() {
 		return noOfFamilyMembers;
 	}
 
-	public void setNoOfFamilyMembers(Long noOfFamilyMembers) {
+	public void setNoOfFamilyMembers(String noOfFamilyMembers) {
 		this.noOfFamilyMembers = noOfFamilyMembers;
 	}
 
@@ -100,11 +102,12 @@ public class CadreVo implements Serializable{
 		this.fatherName = fatherName;
 	}
 
-	public Long getNoOfVoters() {
+	
+	public String getNoOfVoters() {
 		return noOfVoters;
 	}
 
-	public void setNoOfVoters(Long noOfVoters) {
+	public void setNoOfVoters(String noOfVoters) {
 		this.noOfVoters = noOfVoters;
 	}
 
@@ -172,11 +175,12 @@ public class CadreVo implements Serializable{
 		this.boothNo = boothNo;
 	}
 
-	public Long getPinCode() {
+
+	public String getPinCode() {
 		return pinCode;
 	}
 
-	public void setPinCode(Long pinCode) {
+	public void setPinCode(String pinCode) {
 		this.pinCode = pinCode;
 	}
 
@@ -220,20 +224,24 @@ public class CadreVo implements Serializable{
 		this.educationId = educationId;
 	}
 
-	public Long getSourceId() {
-		return sourceId;
+	
+
+	
+
+	public String getSourceIncome() {
+		return sourceIncome;
 	}
 
-	public void setSourceId(Long sourceId) {
-		this.sourceId = sourceId;
+	public void setSourceIncome(String sourceIncome) {
+		this.sourceIncome = sourceIncome;
 	}
 
-	public Long getIncome() {
-		return Income;
+	public String getAnnualIncome() {
+		return annualIncome;
 	}
 
-	public void setIncome(Long income) {
-		Income = income;
+	public void setAnnualIncome(String annualIncome) {
+		this.annualIncome = annualIncome;
 	}
 
 	public Long getEducation() {
@@ -266,6 +274,14 @@ public class CadreVo implements Serializable{
 
 	public void setBloodGroupId(Long bloodGroupId) {
 		this.bloodGroupId = bloodGroupId;
+	}
+
+	public String getActiveDateField() {
+		return activeDateField;
+	}
+
+	public void setActiveDateField(String activeDateField) {
+		this.activeDateField = activeDateField;
 	}
 
 	
