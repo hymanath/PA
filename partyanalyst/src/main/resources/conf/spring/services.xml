@@ -567,6 +567,7 @@
 		<property name="taskExecutor" ref="taskExecutor" />	
 		<property name="panchayatHamletDAO" ref="panchayatHamletDAO"></property>
 		<property name="casteStateDAO" ref="casteStateDAO" />
+		
 	</bean>
 	
 	<bean name="boothPopulationService" class="com.itgrids.partyanalyst.service.impl.BoothPopulationService" >
@@ -2074,6 +2075,21 @@
    <bean name="mahaNaduService" class="com.itgrids.partyanalyst.service.impl.MahaNaduService" >
    
          <property name="boothDAO" ref="boothDAO"/>
+         
+         <property name="districtDAO" ref="districtDAO" />
+		<property name="tehsilDAO" ref="tehsilDAO" />
+		<property name="townshipDAO" ref="townshipDAO" />
+		<property name="constituencyDAO" ref="constituencyDAO" />
+		<property name="hamletDAO" ref="hamletDAO" />
+		<property name="transactionTemplate" ref="transactionTemplate" />
+		<property name="educationalQualificationsDAO" ref="educationalQualificationsDAO" />
+		<property name="occupationDAO" ref="occupationDAO" />
+		<property name="socialCategoryDAO" ref="socialCategoryDAO" />
+		 <property name="userAddressDAO" ref="userAddressDAO" />
+		 <property name="cadreGovtDesignationDAO" ref="cadreGovtDesignationDAO" />
+		 <property name="cadrePartyDesignationDAO" ref="cadrePartyDesignationDAO" />
+		 <property name="cadreDAO" ref="cadreDAO" />
+		 
   
    </bean>
 </beans>		

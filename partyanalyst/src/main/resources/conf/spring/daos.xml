@@ -1431,6 +1431,30 @@
 	<bean id="StateSubRegionDistrictDAO" class="com.itgrids.partyanalyst.dao.hibernate.StateSubRegionDistrictDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	
+	<bean id="annualIncomeDAO" class="com.itgrids.partyanalyst.dao.hibernate.AnnualIncomeDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="sourceIncomeDAO" class="com.itgrids.partyanalyst.dao.hibernate.SourceIncomeDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="govtDesignationDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtDesignationDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="partyDesignationDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyDesignationDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		<bean id="cadrePartyDesignationDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadrePartyDesignationDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		<bean id="cadreGovtDesignationDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreGovtDesignationDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<!--  survey -->
+	
 		
 	<bean id="constiCasteGroupPercDAO" class="com.itgrids.partyanalyst.dao.hibernate.ConstiCasteGroupPercDAO">
 		<property name="sessionFactory" ref="sessionFactory2" />
@@ -1439,5 +1463,5 @@
 	<bean id="casteGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.CasteGroupDAO">
 		<property name="sessionFactory" ref="sessionFactory2" />
 	</bean>
-	
+	<!--  end -->
 </beans>		
