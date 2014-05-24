@@ -37,9 +37,82 @@ public class CadreVo implements Serializable{
 	private List<Long> partyDesignationList,govtDesignationList;
 	private String address;
 	private Long cadreId;
+	private String bloodGroupStr;
+	
+	private String constituencyName;
+	private String districtName;
+	private String booth;
+	private String boothName;
+	private String educationStr;
+	private String professionStr;
+	private String casteCategoryName;
 	
 	
 	
+	public String getCasteCategoryName() {
+		return casteCategoryName;
+	}
+
+	public void setCasteCategoryName(String casteCategoryName) {
+		this.casteCategoryName = casteCategoryName;
+	}
+
+	public String getEducationStr() {
+		return educationStr;
+	}
+
+	public void setEducationStr(String educationStr) {
+		this.educationStr = educationStr;
+	}
+
+	public String getProfessionStr() {
+		return professionStr;
+	}
+
+	public void setProfessionStr(String professionStr) {
+		this.professionStr = professionStr;
+	}
+
+	public String getBooth() {
+		return booth;
+	}
+
+	public void setBooth(String booth) {
+		this.booth = booth;
+	}
+
+	public String getBoothName() {
+		return boothName;
+	}
+
+	public void setBoothName(String boothName) {
+		this.boothName = boothName;
+	}
+
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
+	}
+
+	public String getDistrictName() {
+		return districtName;
+	}
+
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+
+	public String getBloodGroupStr() {
+		return bloodGroupStr;
+	}
+
+	public void setBloodGroupStr(String bloodGroupStr) {
+		this.bloodGroupStr = bloodGroupStr;
+	}
+
 	public Long getCadreId() {
 		return cadreId;
 	}
