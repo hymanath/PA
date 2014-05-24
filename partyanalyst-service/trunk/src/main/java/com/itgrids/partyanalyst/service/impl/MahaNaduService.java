@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -47,7 +48,8 @@ import com.itgrids.partyanalyst.service.IMahaNaduService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class MahaNaduService implements IMahaNaduService{
-private ICadrePartyDesignationDAO cadrePartyDesignationDAO;
+	private static final Logger LOG = Logger.getLogger(MahaNaduService.class);
+	private ICadrePartyDesignationDAO cadrePartyDesignationDAO;
 	private ICadreGovtDesignationDAO cadreGovtDesignationDAO;
 	private IUserAddressDAO userAddressDAO;
 	private IEducationalQualificationsDAO educationalQualificationsDAO;
@@ -60,6 +62,7 @@ private ICadrePartyDesignationDAO cadrePartyDesignationDAO;
 	private IHamletDAO hamletDAO;
 	private TransactionTemplate transactionTemplate = null;
 	private ICadreDAO cadreDAO;
+	private IBoothDAO boothDAO;
 	
 	
 	public ICadreDAO getCadreDAO() {
@@ -168,15 +171,13 @@ public ICadrePartyDesignationDAO getCadrePartyDesignationDAO() {
 		this.hamletDAO = hamletDAO;
 	}
 
- private IBoothDAO boothDAO;
- private static final Logger LOG = Logger.getLogger(MahaNaduService.class);
-public IBoothDAO getBoothDAO() {
-	return boothDAO;
-}
-
-public void setBoothDAO(IBoothDAO boothDAO) {
-	this.boothDAO = boothDAO;
-}
+	public IBoothDAO getBoothDAO() {
+		return boothDAO;
+	}
+	
+	public void setBoothDAO(IBoothDAO boothDAO) {
+		this.boothDAO = boothDAO;
+	}
  
  public List<SelectOptionVO> getBoothsInAConstituency(Long constituencyId,Long publicationID,Long tehsilId,Long localElecBodyId){
 	 List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
@@ -191,6 +192,83 @@ public void setBoothDAO(IBoothDAO boothDAO) {
 		 LOG.error("Exception rised in getBoothsInAConstituency ",e);
 	 }
 	 return returnList;
+ }
+ 
+ public CadreVo searchCadreDetails(Long userId,Long constiId, String searchBy,String searchType,String sort,String sortBy,int startIndex,int maxResult)
+ { 
+	 CadreVo returnVo = new CadreVo();
+	 List<CadreVo> returnList = new ArrayList<CadreVo>();
+	 try {
+		 String queryStr = null;
+		 if(searchType.equalsIgnoreCase("all")){
+			 queryStr = " model.firstName like '%"+searchBy+"%' and model.lastName like '%"+searchBy+"%'  and  model.mobile like '"+searchBy+"' ";
+		 }
+		 else if(searchType.equalsIgnoreCase("firstTwo")){
+			 queryStr = " model.firstName like '%"+searchBy+"%' and model.lastName like '%"+searchBy+"%' ";
+		 }
+		 else if(searchType.equalsIgnoreCase("secondTwo")){
+			 queryStr = " model.lastName like '%"+searchBy+"%'  and  model.mobile like '"+searchBy+"' ";
+		 }
+		 else if(searchType.equalsIgnoreCase("firstLast")){
+			 queryStr = " model.firstName like '%"+searchBy+"%'  and  model.mobile like '"+searchBy+"' ";
+		 }
+		 else if(searchType.equalsIgnoreCase("firstone")){
+			 queryStr = " model.firstName like '%"+searchBy+"%' ";
+		 }
+		 else if(searchType.equalsIgnoreCase("secondone")){
+			 queryStr = " model.lastName like '%"+searchBy+"%' ";
+		 }
+		 else if(searchType.equalsIgnoreCase("thirdone")){
+			 queryStr = " model.mobile like '"+searchBy+"' ";
+		 }
+		 
+		 	List<Object[]> cadreInfo1 =  cadreDAO.searchCadreInfoByConstidAndNameORMobile(constiId,"asc","firstName",startIndex,maxResult,queryStr,"count");
+			
+		 	List<Object[]> cadreInfo =  cadreDAO.searchCadreInfoByConstidAndNameORMobile(constiId,"asc","firstName",startIndex,maxResult,queryStr,null);
+			
+			System.out.println(cadreInfo);
+			 
+			if(cadreInfo != null && cadreInfo.size()>0){
+				
+				for (Object[] cadre : cadreInfo) {
+					CadreVo vo = new CadreVo();
+					vo.setCadreId(cadre[11] != null?(Long)cadre[11]:0L);
+					vo.setFirstName(cadre[0] != null?cadre[0].toString():"");
+					vo.setLastName(cadre[1] != null?cadre[1].toString():"");
+					vo.setMobileNo(cadre[2] != null && cadre[2].toString().trim().length()>0 ?cadre[2].toString():" - ");
+					vo.setMemberType(cadre[3] != null && cadre[3].toString().trim().length()>0 ? cadre[3].toString():" - ");
+					vo.setImage(cadre[4] != null && cadre[4].toString().trim().length()>0 ?cadre[4].toString():"human.jpg");
+				//	vo.setDistrictName(cadre[6] != null?cadre[6].toString():"");
+					//vo.setConstituencyName(cadre[7] != null?cadre[7].toString():"");
+					
+				 /*	if(cadre[10] == null){
+						vo.setMandalName(cadre[8] != null?tehsilDAO.get((Long)cadre[8]).getTehsilName()+" Mandal":"");
+						vo.setVillageName(cadre[9] != null?hamletDAO.get((Long)cadre[9]).getHamletName():"");
+					}
+					else{
+						vo.setMandalName(localElectionBodyDAO.getLocalElectionBodyName(83L)+" Muncipality ");
+					}
+					*/
+					
+					vo.setBoothNo(cadre[12] != null?Long.valueOf(boothDAO.get((Long)cadre[12]).getPartNo().toString()):0L);
+					
+					returnList.add(vo);
+				}
+				
+				returnVo.setCadreVOList(returnList);
+				if(cadreInfo1 != null && cadreInfo1.size()>0){
+					for (Object[] couints : cadreInfo1) {
+						returnVo.setCount((Long) couints[0]);
+					}
+				}
+				
+			} 
+	} catch (Exception e) {
+		e.printStackTrace();
+		 LOG.error("Exception rised in searchCadreDetails() in mahanaduService class. ",e);
+	}
+	 return returnVo;
+	 
  }
  
  public List<SelectOptionVO> getIncomeSources(){
