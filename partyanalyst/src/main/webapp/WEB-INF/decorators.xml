@@ -120,7 +120,7 @@
 		<pattern>/votersFlagAction.action*</pattern>
 		<pattern>/mobileAppUserInfo.action*</pattern>
 		<pattern>/flaggedvoterDetailsAction*</pattern>
-		
+		<pattern>/mahaNadu*</pattern>
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
@@ -319,6 +319,7 @@
 		<pattern>/gettingConstituencyResultsAction*</pattern>
 		
 		<pattern>/electionResults*</pattern>
+		
 		</decorator>
     	 
        <decorator name="tdpHome" page="tdplayout.jsp">
