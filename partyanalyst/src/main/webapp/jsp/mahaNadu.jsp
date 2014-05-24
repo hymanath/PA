@@ -182,12 +182,12 @@ border:1px solid #000000;
 			<div class="span12 containerBorder">
 				<p> * Please Submit First Name, Last Name and Mobile No to Generate Party Cadre Details</p>
 				<div class="well well-small mahanadu-well form-inline">
-				
+					
 				 <label>Constituency <span class="text-error"><span class="text-error">* </span> </span></label>             
 					
 					<s:select id="constitList"  list="constituencyList" listKey="id" listValue="name"  ></s:select>
 							
-							
+					<span id="errodiv" style="color:red;"> </span>		
 					<br><br>
 				  <label>First Name<span class="text-error"><span class="text-error"> </span> </span></label>             
 					<input class="input-medium searchCls" type="text" id="firstName">      
@@ -500,7 +500,22 @@ if(firstName.length == 0 )
 }
 
 function searchCadre(){
-		 $('#dialogueTab').dialog({
+		
+		
+	var cosntiId = document.getElementById("constitList").value;
+	var searchType = "";
+	var searchBy = '';
+	
+	var firstNameVal = $('#firstName').val();
+	var lastNameVal = $('#lastName').val();
+	var mobileVal = $('#mobileId').val();
+	$('#errodiv').html('');
+	if(firstNameVal.trim().length == 0 && lastNameVal.trim().length == 0 && mobileVal.trim().length == 0){
+		$('#errodiv').html('<b>Plese Enter Any Search Criteria Value.</b>');
+		return;
+	}
+	
+	 $('#dialogueTab').dialog({
             autoOpen: true,
 			width:950,
 			title:"Cadre Details ",
@@ -508,13 +523,36 @@ function searchCadre(){
 			resizable: false
         });
 		$('#buildDataTable').html('');
-	var cosntiId = document.getElementById("constitList").value;
-	var searchType = "firstName";
-	var searchBy = '';
-	
-	var firstNameVal = $('#firstName').val();
-	var lastNameVal = $('#lastName').val();
-	var mobileVal = $('#mobileId').val();
+		
+		
+	if(firstNameVal.trim().length > 0 && lastNameVal.trim().length > 0 && mobileVal.trim().length > 0){
+		searchType = "all";
+		searchBy = firstNameVal+","+lastNameVal+","+mobileVal;
+	}
+	else if(firstNameVal.trim().length > 0 && lastNameVal.trim().length > 0 ){
+		searchType = "firstTwo";
+		searchBy = firstNameVal+","+lastNameVal;
+	}
+	else if(lastNameVal.trim().length > 0 && mobileVal.trim().length > 0){
+		searchType = "secondTwo";
+		searchBy = lastNameVal+","+mobileVal;
+	}	
+	else if(firstNameVal.trim().length > 0  && mobileVal.trim().length > 0){
+		searchType = "firstLast";
+		searchBy = firstNameVal+","+mobileVal;
+	}
+	else if(firstNameVal.trim().length > 0 && lastNameVal.trim().length == 0 && mobileVal.trim().length == 0){
+		searchType = "firstone";
+		searchBy = firstNameVal;
+	}
+	else if(firstNameVal.trim().length == 0 && lastNameVal.trim().length > 0 && mobileVal.trim().length == 0){
+		searchType = "secondone";
+		searchBy = lastNameVal;
+	}	
+	else if(firstNameVal.trim().length == 0 && lastNameVal.trim().length == 0 && mobileVal.trim().length > 0){
+		searchType = "thirdone";
+		searchBy = mobileVal;
+	}
 	
 	
 	YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
@@ -568,7 +606,7 @@ var votersByLocBoothColumnDefs = [
 {key:"lastName", label: " Edit ", width:50,formatter:YAHOO.widget.DataTable.Type,sortable: true}
 ];
 //parentLocationId
-var urlStr = "searchCadreInfoAction.action?searchBy="+firstNameVal+"&cosntituencyId="+cosntiId+"&searchType=firstone&";
+var urlStr = "searchCadreInfoAction.action?searchBy="+searchBy+"&cosntituencyId="+cosntiId+"&searchType="+searchType+"&";
 $("#commentsData_outer").show();
 var votersByLocBoothDataSource = new YAHOO.util.DataSource(urlStr);
 
