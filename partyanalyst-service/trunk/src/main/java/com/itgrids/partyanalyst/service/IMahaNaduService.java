@@ -2,6 +2,8 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.CadreVo;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
 public interface IMahaNaduService {
@@ -14,4 +16,5 @@ public interface IMahaNaduService {
 	 public List<SelectOptionVO> getPartyDesignations();
 	 
 	 public List<SelectOptionVO> getgovernmentDesignations();
+	 public ResultStatus saveCadreInfoForMahaNadu(CadreVo CadreVoToSave);
 }
