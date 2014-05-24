@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
+import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
@@ -42,6 +43,8 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 	private ServletContext context;
 	private HttpServletRequest request;
 	private HttpSession session;
+	JSONObject jObj = null;
+	private String task = null;
 	/**
 	 * lists used to populate address select dropdowns
 	 */
@@ -93,8 +96,25 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 	private String name;
 	private Long onlineRegId;
 	//private RegistrationVO registrationVO;
+	
 	private IConstituencyDAO constituencyDAO;
 	
+	public List<SelectOptionVO> getBoothsList() {
+		return boothsList;
+	}
+
+	public void setBoothsList(List<SelectOptionVO> boothsList) {
+		this.boothsList = boothsList;
+	}
+
+	public String getTask() {
+		return task;
+	}
+
+	public void setTask(String task) {
+		this.task = task;
+	}
+
 	public IConstituencyDAO getConstituencyDAO() {
 		return constituencyDAO;
 	}
@@ -581,7 +601,16 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 			villageNames_c.add(0, obj3);
 			
 			session.setAttribute(ISessionConstants.VILLAGES, villageNames_c);
-			List<SelectOptionVO> boothsList_c = mahaNaduService.getBoothsInAConstituency(new Long(cadreInfo.getConstituencyID()),10l);
+			String areaFlag = cadreInfo.getMandal().substring(0,1);
+			Long id = new Long(cadreInfo.getMandal().substring(1));
+			Long localElecId = null;
+			Long tehsilId = null;
+			if(areaFlag.equalsIgnoreCase(IConstants.URBAN_TYPE)){
+				localElecId = id;
+			}else{
+				tehsilId = id;
+			}
+			List<SelectOptionVO> boothsList_c = mahaNaduService.getBoothsInAConstituency(new Long(cadreInfo.getConstituencyID()),10l,tehsilId,localElecId);
 			if(boothsList_c != null){
 				 obj = new SelectOptionVO(0L,"Select Location");
 				boothsList_c.add(0, obj);
@@ -594,6 +623,26 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 		
 	}
 
-    
+    public String getBooths(){
+      try{
+    	jObj = new JSONObject(getTask());
+    	Long locationId = jObj.getLong("id");
+		Long constituencyId = jObj.getLong("constId");
+		String areaFlag = locationId.toString().substring(0,1);
+		Long id = new Long(locationId.toString().substring(1));
+		Long localElecId = null;
+		Long tehsilId = null;
+		if(areaFlag.equalsIgnoreCase(IConstants.URBAN_TYPE)){
+			localElecId = id;
+		}else{
+			tehsilId = id;
+		}
+			
+		boothsList =mahaNaduService.getBoothsInAConstituency(constituencyId,10l,tehsilId,localElecId);
+      }catch(Exception e){
+    	  LOG.error("Exception rised in getBooths", e);
+      }
+      return Action.SUCCESS;
+    }
 
 }

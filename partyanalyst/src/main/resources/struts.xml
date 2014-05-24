@@ -7091,6 +7091,11 @@
 		<action name="mahaNaduAction" class="mahaNaduAction">
 			<result name="success">/jsp/mahaNadu.jsp</result>			
 		</action>
+		<action name="getBoothsInPublication" class="mahaNaduAction" method="getBooths">
+			<result type="json" name="success">
+				<param name="root">boothsList</param>
+			</result>
+		</action>
 </package>
 		
 </struts>      
