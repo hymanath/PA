@@ -81,12 +81,18 @@ public class Cadre extends BaseModel{
 	 private Set<AssignedProblemProgress> problemProgress = new HashSet<AssignedProblemProgress>(0);
 	 private Set<CadreProblems> cadreProblems = new HashSet<CadreProblems>(0);
 	 private Set<ProblemAssignedCadre> problemAssignedCadres = new HashSet<ProblemAssignedCadre>(0);
-	 
+	 private Set<CadreGovtDesignation> cadreGovtDesignation = new HashSet<CadreGovtDesignation>(0);
+	 private Set<CadrePartyDesignation> cadrePartyDesignation = new HashSet<CadrePartyDesignation>(0);
 	 private String note;
 	 private String memberShipNo;
+
 	// private String uniqueId;
 	// private CasteState casteState;
-	 	
+	 private String biometricKey;
+	 
+	 private String activeDateField;
+	 
+	 private Long age; 
 	 
 	 
 
@@ -551,6 +557,62 @@ public class Cadre extends BaseModel{
 	public void setMemberShipNo(String memberShipNo) {
 		this.memberShipNo = memberShipNo;
 	}
+	@Column(name = "biometric_key")
+	public String getBiometricKey() {
+		return biometricKey;
+	}
+
+	public void setBiometricKey(String biometricKey) {
+		this.biometricKey = biometricKey;
+	}
+	@Column(name = "active_date_field")
+	public String getActiveDateField() {
+		return activeDateField;
+	}
+
+	public void setActiveDateField(String activeDateField) {
+		this.activeDateField = activeDateField;
+	}
+	@Column(name = "age")
+	public Long getAge() {
+		return age;
+	}
+
+	public void setAge(Long age) {
+		this.age = age;
+	}
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "cadre")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<CadreGovtDesignation> getCadreGovtDesignation() {
+		return cadreGovtDesignation;
+	}
+
+	public void setCadreGovtDesignation(
+			Set<CadreGovtDesignation> cadreGovtDesignation) {
+		this.cadreGovtDesignation = cadreGovtDesignation;
+	}
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "cadre")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<CadrePartyDesignation> getCadrePartyDesignation() {
+		return cadrePartyDesignation;
+	}
+
+	public void setCadrePartyDesignation(
+			Set<CadrePartyDesignation> cadrePartyDesignation) {
+		this.cadrePartyDesignation = cadrePartyDesignation;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	/*
 	@Column(name="unique_id")
@@ -574,4 +636,11 @@ public class Cadre extends BaseModel{
 		this.casteState = casteState;
 	}
 	*/
+	
+	
+	
+	
+	
+	
+	
  }
