@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CadreVo implements Serializable{
@@ -33,14 +34,21 @@ public class CadreVo implements Serializable{
 	private String sourceIncome;
 	private String annualIncome;
 	private Long education;
+	private String image;
+	private List<CadreVo> cadreVOList = new ArrayList<CadreVo>();
+	
+	private String mandalName;
+	private String districtName;
+	private String constituencyName;
+	private String villageName;
+	private String localelectionName;
+	private Long count;	
 	private String activeDateField;
 	private List<Long> partyDesignationList,govtDesignationList;
 	private String address;
 	private Long cadreId;
 	private String bloodGroupStr;
 	
-	private String constituencyName;
-	private String districtName;
 	private String booth;
 	private String boothName;
 	private String educationStr;
@@ -89,21 +97,6 @@ public class CadreVo implements Serializable{
 		this.boothName = boothName;
 	}
 
-	public String getConstituencyName() {
-		return constituencyName;
-	}
-
-	public void setConstituencyName(String constituencyName) {
-		this.constituencyName = constituencyName;
-	}
-
-	public String getDistrictName() {
-		return districtName;
-	}
-
-	public void setDistrictName(String districtName) {
-		this.districtName = districtName;
-	}
 
 	public String getBloodGroupStr() {
 		return bloodGroupStr;
@@ -128,7 +121,7 @@ public class CadreVo implements Serializable{
 	public void setAddress(String address) {
 		this.address = address;
 	}
-
+	
 	public String getFirstName() {
 		return firstName;
 	}
@@ -377,6 +370,69 @@ public class CadreVo implements Serializable{
 		this.activeDateField = activeDateField;
 	}
 
+	public List<CadreVo> getCadreVOList() {
+		return cadreVOList;
+	}
+
+	public void setCadreVOList(List<CadreVo> cadreVOList) {
+		this.cadreVOList = cadreVOList;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public String getMandalName() {
+		return mandalName;
+	}
+
+	public void setMandalName(String mandalName) {
+		this.mandalName = mandalName;
+	}
+
+	public String getDistrictName() {
+		return districtName;
+	}
+
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
+	}
+
+	public String getVillageName() {
+		return villageName;
+	}
+
+	public void setVillageName(String villageName) {
+		this.villageName = villageName;
+	}
+
+	public String getLocalelectionName() {
+		return localelectionName;
+	}
+
+	public void setLocalelectionName(String localelectionName) {
+		this.localelectionName = localelectionName;
+	}
+
+	public Long getCount() {
+		return count;
+	}
+
+	public void setCount(Long count) {
+		this.count = count;
+	}
 	
 	
 }
