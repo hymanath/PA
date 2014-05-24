@@ -7088,6 +7088,9 @@
 				<param name="root">partyWiseCountDetails</param>
 			</result>
 		</action>
+		<action name="mahaNadu" class="mahaNaduAction">
+			<result name="success">/jsp/mahaNadu.jsp</result>			
+		</action>
 </package>
 		
 </struts>      
