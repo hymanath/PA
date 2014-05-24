@@ -34,4 +34,24 @@ public void setBoothDAO(IBoothDAO boothDAO) {
 	 }
 	 return returnList;
  }
+ 
+ public List<SelectOptionVO> getIncomeSources(){
+	 List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
+	 return returnList;
+ }
+ 
+ public List<SelectOptionVO> getCasteCategories(){
+	 List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
+	 return returnList;
+ }
+ 
+ public List<SelectOptionVO> getPartyDesignations(){
+	 List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
+	 return returnList;
+ }
+ 
+ public List<SelectOptionVO> getgovernmentDesignations(){
+	 List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
+	 return returnList;
+ }
 }
