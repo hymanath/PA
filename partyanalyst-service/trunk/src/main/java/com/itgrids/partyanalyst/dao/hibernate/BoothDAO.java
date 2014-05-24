@@ -1845,7 +1845,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 	{
 		 StringBuilder queryStr = new StringBuilder();
 		 queryStr.append("select model.boothId,model.partNo from Booth model where model.constituency.constituencyId = :constituencyId and model.publicationDate.publicationDateId = :publicationDateId and model.refBooth is null ");
-		Query query = getSession().createQuery("select model.boothId,model.partNo from Booth model where model.constituency.constituencyId = :constituencyId and model.publicationDate.publicationDateId = :publicationDateId and model.refBooth is null ");
+		
 		if(tehsilId != null && tehsilId.longValue() > 0){
 			 queryStr.append(" and model.tehsil.tehsilId =:tehsilId");
 		}
@@ -1853,6 +1853,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			 queryStr.append(" and model.localBody.localElectionBodyId =:localElecBodyId");
 		}
 		queryStr.append(" order by model.partNo");
+		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameter("constituencyId",constituencyId);
 		query.setParameter("publicationDateId",publicationDateId);
 		if(tehsilId != null && tehsilId.longValue() > 0){
