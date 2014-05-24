@@ -574,12 +574,13 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 		cadreId = request.getParameter("cadreId");
        if(cadreId != null && (new Long(cadreId)) > 0)
         {	
-        	cadreInfo = cadreManagementService.getCadreCompleteInfo(new Long(cadreId));
-            prepopulateLocations(cadreInfo);
+        	//cadreInfo = cadreManagementService.getCadreCompleteInfo(new Long(cadreId));
+    	   cadreVo = mahaNaduService.getCadreCompleteInfo(new Long(cadreId));
+            prepopulateLocations(cadreVo);
         }  
 	}    
      
-    public void prepopulateLocations(CadreInfo  cadreInfo)
+    public void prepopulateLocations(CadreVo  cadreVo)
     {
     		session = request.getSession();
     		System.out.println("inside method populate const");
