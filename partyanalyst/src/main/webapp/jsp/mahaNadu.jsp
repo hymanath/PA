@@ -118,40 +118,40 @@
 					<div class="row-fluid">
 						<div class="span5">	
 							<label>First Name<span class="text-error">* </span>&nbsp&nbsp&nbsp</label>             
-							<input  type="text">
+							<input  type="text" name="firstName">
 							
 							<label class="m_top20">Last Name<span class="text-error">* </span> &nbsp&nbsp&nbsp</label>             
-							<input type="text">  
+							<input type="text" name="lastName">  
 							
 							<div class="row-fluid m_top20">
 								<div class="span3">									
 									<label>Gender <span class="text-error">* </span></label>
 								</div>
 								<div class="span3">
-									<label style="margin-top: -10px;"><input type="radio" checked="" value="option1" id="optionsRadios1" name="optionsRadios">
+									<label style="margin-top: -10px;"><input type="radio" checked="" value="Male" id="optionsRadios" name="gender">
 									Male </label>
 								</div>
                                 <div class="span4 form-inline">
 									<label style="margin-top: -10px;">
-									  <input type="radio" checked="" value="option1" id="optionsRadios1" name="optionsRadios">
+									  <input type="radio" checked="" value="Female" id="optionsRadios1" name="gender">
 									  Female
 									</label>
 								</div>  	
 							</div>
 							<label>Father Name &nbsp;</label>             
-							<input type="text">  
+							<input type="text" name="fatherName">  
 						</div>
 						<div class="span5">	
 							<label>Blood Group &nbsp&nbsp &nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp &nbsp</label>             
-							<s:select id="bloodGroupId" cssClass="regionSelect input-medium" name="bloodGroup" list="#session.bloodGroups" listKey="id" listValue="name" headerKey="0" headerValue="Select Group" ></s:select>
+							<s:select id="bloodGroupId" cssClass="regionSelect input-medium" name="bloodGroupId" list="#session.bloodGroups" listKey="id" listValue="name" headerKey="0" headerValue="Select Group" ></s:select>
 							<br/><label class="m_top20">Age&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp &nbsp&nbsp&nbsp &nbsp&nbsp&nbsp	 </label>             
-							<input type="text" class="input-medium">  
+							<input type="text" class="input-medium" name="age">  
 							
 							<br/><label class="m_top20">No of Family Members &nbsp</label>             
-							<input type="text" class="input-medium"> 
+							<input type="text" class="input-medium" name="noOfFamilyMembers"> 
 							
 							<br>	<label class="m_top20">No of Voters &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span></label>             
-							<input type="text" class="input-medium"> 
+							<input type="text" class="input-medium" name="noOfVoters"> 
 						</div>
 						<div class="span2">	
 							<a class="thumbnail" href="#">
@@ -167,13 +167,13 @@
 				<div class="well well-small mahanadu-well form-inline">
 				
 				  <label>Mobile No<span class="text-error"><span class="text-error">* </span> </span></label>             
-					<input type="text">      
+					<input type="text" name="mobileNo">      
 				
 				  <label>&nbsp&nbsp&nbsp&nbsp&nbsp Land No</label>              
-					<input type="text">
+					<input type="text" name="landNo">
 					
 				  <label >&nbsp&nbsp&nbsp&nbsp&nbsp Email Id</label>              
-					<input  type="text"> 
+					<input  type="text" name="emailId"> 
 				</div>
 				
 				<!-----Current Address----->
@@ -182,28 +182,28 @@
 					<div class="row-fluid">
 						<div class="span6">	
 							<label>House No&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
-							<input type="text" class="input-xlarge">
+							<input type="text" class="input-xlarge" name="hno">
 							
 							<br/><label class="m_top20">Street Name &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
-							<input type="text" class="input-xlarge">  
+							<input type="text" class="input-xlarge" name="street">  
 							
 							<br/><label class="m_top20">District<span class="text-error">* </span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
-							<s:select id="districtField" cssClass="regionSelect input-xlarge" name="district" list="#session.districtsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'constituenciesInDistrict','cadreReg','constituencyField','currentAdd');cleanOptionsList('district')" ></s:select>
+							<s:select id="districtField" cssClass="regionSelect input-xlarge" name="districtId" list="#session.districtsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'constituenciesInDistrict','cadreReg','constituencyField','currentAdd');cleanOptionsList('district')" ></s:select>
 							
 							<br/><label class="m_top20">Constituency<span class="text-error">* </span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
-							<s:select id="constituencyField" cssClass="regionSelect input-xlarge" name="constituencyID" list="#session.constituenciesList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'subRegionsInConstituency','cadreReg','mandalField','currentAdd', 'null');cleanOptionsList('constituency')"></s:select> 
+							<s:select id="constituencyField" cssClass="regionSelect input-xlarge" name="constituencyId" list="#session.constituenciesList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'subRegionsInConstituency','cadreReg','mandalField','currentAdd', 'null');cleanOptionsList('constituency')"></s:select> 
 						</div>
 						<div class="span6">	
 							<label>Mandal<span class="text-error">* </span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;</label>             
-							<s:select id="mandalField" cssClass="regionSelect input-xlarge" name="mandal" list="#session.mandalsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'hamletsOrWardsInRegion','cadreReg','villageField','currentAdd','null');getBooths('currentAdd','constituencyField','boothField',this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreReg','boothsInTehsilOrMunicipality')"></s:select>	
+							<s:select id="mandalField" cssClass="regionSelect input-xlarge" name="mandalId" list="#session.mandalsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'hamletsOrWardsInRegion','cadreReg','villageField','currentAdd','null');getBooths('currentAdd','constituencyField','boothField',this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreReg','boothsInTehsilOrMunicipality')"></s:select>	
 							
 							<br><label class="m_top20">Village<span class="text-error">* </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;	 </label>             
-							<s:select id="villageField" cssClass="regionSelect input-xlarge" name="village" list="#session.villagesList" listKey="id" listValue="name" onchange="getBoothsInWard('currentAdd','constituencyField','boothField',this.options[this.selectedIndex].value,'cadreReg','mandalField')"></s:select>	
+							<s:select id="villageField" cssClass="regionSelect input-xlarge" name="villageId" list="#session.villagesList" listKey="id" listValue="name" onchange="getBoothsInWard('currentAdd','constituencyField','boothField',this.options[this.selectedIndex].value,'cadreReg','mandalField')"></s:select>	
 							<br><label class="m_top20">Pin Code &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
-							<input type="text" class="input-xlarge"> 
+							<input type="text" class="input-xlarge" name="pinCode"> 
 							
 							<br>	<label class="m_top20">Booth No &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
-							<s:select id="boothField" cssClass="regionSelect input-xlarge" name="booth" list="#session.boothsList" listKey="id" listValue="name"></s:select>
+							<s:select id="boothField" cssClass="regionSelect input-xlarge" name="boothNo" list="#session.boothsList" listKey="id" listValue="name"></s:select>
 						</div>						
 					</div>
 				</div>
@@ -214,17 +214,17 @@
 					<div class="row-fluid">
 						<div class="span6">	
 							<label>Education&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
-							<s:select id="educationField" cssClass="regionSelect input-xlarge" name="education" list="#session.eduQualsList" listKey="id" listValue="name"  headerKey="0" headerValue="Select Education"></s:select>
+							<s:select id="educationField" cssClass="regionSelect input-xlarge" name="educationId" list="#session.eduQualsList" listKey="id" listValue="name"  headerKey="0" headerValue="Select Education"></s:select>
 							<br><label class="m_top20">Profession &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
-                            <s:select id="professionField" cssClass="regionSelect input-xlarge" name="profession"list="#session.occupationsList" listKey="id" listValue="name"  headerKey="0" headerValue="Select Occupation"></s:select>							
+                            <s:select id="professionField" cssClass="regionSelect input-xlarge" name="professionId"list="#session.occupationsList" listKey="id" listValue="name"  headerKey="0" headerValue="Select Occupation"></s:select>							
 						</div>
 						<div class="span6">	
 							<label>Annual Income&nbsp;&nbsp;</label>  
-                            <input type="text" class="input-small"></input> 							
+                            <input type="text" class="input-small" name="annualIncome"></input> 							
 							<label>&nbsp;&nbsp;Income Source</label>             
-							<s:select id="incomeSource" cssClass="regionSelect input-small" name="incomeSource" list="#session.incSource" listKey="id" listValue="name" headerKey="0" headerValue="Select Group" ></s:select>
+							<s:select id="incomeSource" cssClass="regionSelect input-small" name="sourceIncome" list="#session.incSource" listKey="id" listValue="name" headerKey="0" headerValue="Select Group" ></s:select>
 							<br><label class="m_top20">Cast Category &nbsp;&nbsp;</label>             
-                            <s:select id="casteCateg" cssClass="regionSelect span8 xlarge" name="casteCateg" list="#session.casteCategory" listKey="id" listValue="name" headerKey="0" headerValue="Select Group" ></s:select>							
+                            <s:select id="casteCateg" cssClass="regionSelect span8 xlarge" name="casteCategory" list="#session.casteCategory" listKey="id" listValue="name" headerKey="0" headerValue="Select Group" ></s:select>							
 						</div>						
 					</div>
 				</div>
@@ -234,12 +234,12 @@
 					<div class="well well-small mahanadu-well form-inline">
 										
 					<label>Member Type<span class="text-error"><span class="text-error">* </span> </span></label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<label><input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
+					<label><input type="radio" name="memberType" id="optionsRadios3" value="Active" >
 									Active </label> &nbsp;&nbsp;
-						<input type="text" class="input-medium"></input>  
+						<input type="text" class="input-medium" name="activeDateField"></input>  
 					
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<label><input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
+					<label><input type="radio" name="memberType" id="optionsRadios4" value="Normal" >
 									Inactive </label> &nbsp;&nbsp;
 					      
 				
