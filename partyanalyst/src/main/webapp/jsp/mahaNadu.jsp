@@ -5,6 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>MAHANADU</title>
+<link href="styles/mahanadu/bootstrap.min.css" rel="stylesheet" media="screen">
   <style>
 		body{color:#333333!important;}
 		input{height:40px !important;box-shadow: 1px 0 5px rgba(0, 0, 0, 0.28) inset!important; border-radius:10px!important;border:1px solid #ccc!important;}
@@ -14,7 +15,7 @@
 		.container{margin-bottom:20px;}
 		.text-error{color:red!important;}
 		.text-center{color:#000000!important; }
-		.mahanadubg{background:#fff url(IMages/Mahanadu_bg.gif) repeat-x;}
+		.mahanadubg{background:#fff url(images/mahaNadu/Mahanadu_bg.gif) repeat-x;}
 		.m_top10{margin-top:10px;}
 		.m_top15{margin-top:15px;}
 		.m_top20{margin-top:20px;}
@@ -41,7 +42,7 @@
 		<div class="row">
 			<div class="span12 text-center">
 				<a href="#" title="Telugu Desam Mahanadu 2014" >
-					<img src="IMages/MahanaduLogo.png" alt="Telugu Desam Mahanadu 2014" />
+					<img src="images/mahaNadu/MahanaduLogo.png" alt="Telugu Desam Mahanadu 2014" />
 				</a>
 			</div>
 		</div><!----Header Div End--------->
@@ -49,7 +50,7 @@
 		<!----Mahanadu Banner Div--------->
 		<div class="row">
 			<div class="span12 containerBorder m_top10">
-				<img src="IMages/MahanaduBanner.png" title="Telugu Desam Mahanadu 2014" alt="Telugu Desam Mahanadu 2014" />
+				<img src="images/mahaNadu/MahanaduBanner.png" title="Telugu Desam Mahanadu 2014" alt="Telugu Desam Mahanadu 2014" />
 			</div>
 		</div><!----Mahanadu Banner Div End--------->
 		
@@ -120,7 +121,7 @@
 						</div>
 						<div class="span2">	
 							<a class="thumbnail" href="#">
-								<img  style="width: 140px; height: 120px;" src="IMages/user image.jpg">
+								<img  style="width: 140px; height: 120px;" src="images/mahaNadu/user image.jpg">
 							</a>
 							<button type="submit" class="btn ">Click Here to Upload Image</button>	
 						</div>	
@@ -261,7 +262,7 @@
 			
 				<div class="row-fluid"> 
 					<div style="border-top:2px solid #ffdc2d;" class="m_top20">
-				   <div class="span12"><img class="pull-right" src="Images/PA_LOGO.png"></div>
+				   <div class="span12"><img class="pull-right" src="images/mahaNadu/PA_LOGO.png"></div>
 				</div>
 				  <!--COPYRIGHT SECTION END--> 
 				</div>

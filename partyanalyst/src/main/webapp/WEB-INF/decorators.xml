@@ -120,7 +120,7 @@
 		<pattern>/votersFlagAction.action*</pattern>
 		<pattern>/mobileAppUserInfo.action*</pattern>
 		<pattern>/flaggedvoterDetailsAction*</pattern>
-		<pattern>/mahaNadu*</pattern>
+		<pattern>/mahaNaduAction*</pattern>
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
