@@ -2070,5 +2070,11 @@
    <bean name="multiThreadRunner" class="com.itgrids.partyanalyst.utils.MultiThreadRunner"/>
     <bean name="dashBoardElectionResultsService" class="com.itgrids.partyanalyst.service.impl.DashBoardElectionResultsService"></bean>
      <bean name="constituencyWiseElectionResultsService" class="com.itgrids.partyanalyst.service.impl.ConstituencyWiseElectionResultsService"></bean>
+     
+   <bean name="mahaNaduService" class="com.itgrids.partyanalyst.service.impl.MahaNaduService" >
+   
+         <property name="boothDAO" ref="boothDAO"/>
+  
+   </bean>
 </beans>		
 	

@@ -1427,5 +1427,8 @@
    <bean id="constituencyWiseElectionResultsAction" class="com.itgrids.partyanalyst.web.action.ConstituencyWiseElectionResultsAction" singleton="false">
 	   <property name="constituencyWiseElectionResultsService" ref="constituencyWiseElectionResultsService" /> 
 	</bean>
+	<bean id="mahaNaduAction" class="com.itgrids.partyanalyst.web.action.MahaNaduAction" singleton="false"> 
+	   <property name="mahaNaduService" ref="mahaNaduService" /> 	
+	</bean>
 </beans>	
 	
