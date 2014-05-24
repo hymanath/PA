@@ -35,6 +35,26 @@ public class CadreVo implements Serializable{
 	private Long education;
 	private String activeDateField;
 	private List<Long> partyDesignationList,govtDesignationList;
+	private String address;
+	private Long cadreId;
+	
+	
+	
+	public Long getCadreId() {
+		return cadreId;
+	}
+
+	public void setCadreId(Long cadreId) {
+		this.cadreId = cadreId;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
 	public String getFirstName() {
 		return firstName;
