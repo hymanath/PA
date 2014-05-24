@@ -17,7 +17,6 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.CadreVo;
-import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -565,6 +564,7 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 			session.setAttribute("govDesig",govDesig);	
 		}
 			
+		constituencyList = staticDataService.getLatestConstituenciesByStateId(1L);
 				
 		return Action.SUCCESS;
 	}
@@ -637,7 +637,7 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 				boothsList_c.add(0, obj);
 			}
 			session.setAttribute(ISessionConstants.BOOTHS, boothsList_c);
-		
+			
 	}
 
     public String getBooths(){
@@ -677,4 +677,30 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
       }
     	return Action.SUCCESS;
     }
+    
+
+
+    public String searchCadreInfo(){
+    try {
+		HttpSession session = request.getSession();
+		RegistrationVO userDetls = (RegistrationVO) session.getAttribute("USER");
+		if(userDetls == null){
+			return Action.ERROR;
+		}
+    	    	
+    	String constituencyId = request.getParameter("cosntituencyId");
+    	String searchBy = request.getParameter("searchBy");
+    	String sort = request.getParameter("dir");
+    	String sortBy = request.getParameter("sort");
+    	String startIndex = request.getParameter("startIndex");
+    	String maxResult = request.getParameter("results");
+    	String searchType = request.getParameter("searchType");
+    	
+    	cadreVo =  mahaNaduService.searchCadreDetails(userDetls.getRegistrationID(),Long.valueOf(constituencyId),searchBy.trim(),searchType,sort,sortBy,Integer.valueOf(startIndex),Integer.valueOf(maxResult));
+	} catch (Exception e) {
+		log.error(" exception occured in searchCadreInfo() in mahanaduAction class.");
+	}    
+    return Action.SUCCESS;
+    }
+    
 }
