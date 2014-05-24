@@ -7,7 +7,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
 public interface IMahaNaduService {
-	 public List<SelectOptionVO> getBoothsInAConstituency(Long constituencyId,Long publicationID);
+	 public List<SelectOptionVO> getBoothsInAConstituency(Long constituencyId,Long publicationID,Long tehsilId,Long localElecBodyId);
 	
 	 public List<SelectOptionVO> getIncomeSources();
 	

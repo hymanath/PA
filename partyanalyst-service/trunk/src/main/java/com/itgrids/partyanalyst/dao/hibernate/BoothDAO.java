@@ -1841,11 +1841,26 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		return query.list();
 	}
 	
-	public List<Object[]> getBoothOfAConstituencyByPublication(Long constituencyId, Long publicationDateId)
+	public List<Object[]> getBoothOfAConstituencyByPublication(Long constituencyId, Long publicationDateId,Long tehsilId,Long localElecBodyId)
 	{
-		Query query = getSession().createQuery("select model.boothId,model.partNo from Booth model where model.constituency.constituencyId = :constituencyId and model.publicationDate.publicationDateId = :publicationDateId ");
+		 StringBuilder queryStr = new StringBuilder();
+		 queryStr.append("select model.boothId,model.partNo from Booth model where model.constituency.constituencyId = :constituencyId and model.publicationDate.publicationDateId = :publicationDateId and model.refBooth is null ");
+		Query query = getSession().createQuery("select model.boothId,model.partNo from Booth model where model.constituency.constituencyId = :constituencyId and model.publicationDate.publicationDateId = :publicationDateId and model.refBooth is null ");
+		if(tehsilId != null && tehsilId.longValue() > 0){
+			 queryStr.append(" and model.tehsil.tehsilId =:tehsilId");
+		}
+		if(localElecBodyId != null && localElecBodyId.longValue() > 0){
+			 queryStr.append(" and model.localBody.localElectionBodyId =:localElecBodyId");
+		}
+		queryStr.append(" order by model.partNo");
 		query.setParameter("constituencyId",constituencyId);
 		query.setParameter("publicationDateId",publicationDateId);
+		if(tehsilId != null && tehsilId.longValue() > 0){
+			query.setParameter("tehsilId",tehsilId);
+		}
+		if(localElecBodyId != null && localElecBodyId.longValue() > 0){
+			query.setParameter("localElecBodyId",localElecBodyId);
+		}
 		return query.list();
 	}
 }

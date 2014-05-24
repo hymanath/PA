@@ -165,10 +165,10 @@ public void setBoothDAO(IBoothDAO boothDAO) {
 	this.boothDAO = boothDAO;
 }
  
- public List<SelectOptionVO> getBoothsInAConstituency(Long constituencyId,Long publicationID){
+ public List<SelectOptionVO> getBoothsInAConstituency(Long constituencyId,Long publicationID,Long tehsilId,Long localElecBodyId){
 	 List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
 	 try{
-		 List<Object[]> boothsList = boothDAO.getBoothOfAConstituencyByPublication(constituencyId, publicationID);
+		 List<Object[]> boothsList = boothDAO.getBoothOfAConstituencyByPublication(constituencyId, publicationID,tehsilId,localElecBodyId);
 		 for(Object[] boothInfo:boothsList){
 			 SelectOptionVO vo = new SelectOptionVO();
 			 vo.setId((Long)boothInfo[0]);
