@@ -377,7 +377,7 @@ if(firstName.length == 0 )
 		{
 			str+='Enter valid MobileNo';
 			flag =false;
-			return;
+		
 		}
 	if(!flag)
 	{
