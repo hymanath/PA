@@ -1115,4 +1115,43 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		
 		return query.list();
 	}
+	
+public List<Object[]> searchCadreInfoByConstidAndNameORMobile(Long constiId,String sort,String sortBy,int startIndex,int maxResult,String queryStr,String querytype){
+	StringBuilder queryString = new StringBuilder();
+	String selectQuery = "select model.firstName " + //0
+			" ,model.lastName " + 					// 1
+			" ,model.mobile " +						// 2
+			" ,model.memberType " +					// 3
+			" ,model.image " +						// 4
+			" ,model2.userAddressId " +				// 5
+			" ,model2.district.districtName " +		// 6
+			" ,model2.constituency.name " +			// 7
+			" ,model2.tehsil.tehsilId " +			// 8
+			" ,model2.hamlet.hamletId " +			// 9
+			" ,model2.localElectionBody.localElectionBodyId " + //10
+			" ,model.cadreId " + //11
+			" ,model2.booth.boothId" ; //12
+	
+			//" ,model2.ward.name ";
+	if(querytype != null){
+		queryString.append(" select count(distinct model.cadreId),model.firstName ");
+	}else{
+		queryString.append(selectQuery);
+	}
+	
+	queryString.append(" from Cadre model, UserAddress model2 where ");
+	queryString.append(queryStr);
+	queryString.append(" and model.currentAddress.userAddressId = model2.userAddressId  and model2.constituency.constituencyId = :constiId ");
+	queryString.append(" order by model.firstName asc ");
+	
+	Query query = getSession().createQuery(queryString.toString());
+	
+	query.setParameter("constiId", constiId);
+	if(querytype == null){
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxResult);
+	}
+	
+	return query.list();
+}
 }
