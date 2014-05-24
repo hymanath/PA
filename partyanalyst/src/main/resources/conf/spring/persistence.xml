@@ -420,7 +420,10 @@
 				<value>com.itgrids.partyanalyst.model.VoterFamilyCount</value>
 				<value>com.itgrids.partyanalyst.model.StateSubRegionDistrict</value>
 				<value>com.itgrids.partyanalyst.model.StateSubRegion</value>
-			
+				<value>com.itgrids.partyanalyst.model.CadreGovtDesignation</value>
+			    <value>com.itgrids.partyanalyst.model.GovtDesignation</value>
+			    <value>com.itgrids.partyanalyst.model.PartyDesignation</value>
+			    <value>com.itgrids.partyanalyst.model.CadrePartyDesignation</value>
 			</list>
 			
 		</property>
