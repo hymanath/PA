@@ -6934,6 +6934,12 @@
 			</result>		
 		</action>
 		
+		<action name="getreservationSeatsDetailsAction" class="acPcWiseElectionResultAction" method="getreservationSeatsDetails">
+			<result type="json" name="success">
+				<param name="root">resultList</param>				
+			</result>		
+		</action>
+		
 		<action name="searchAndGetElectionResultsAction" class="acPcWiseElectionResultAction" method="searchAndGetElectionResults">
 			<result type="json" name="success">
 				<param name="root">resultList</param>				
@@ -7091,6 +7097,13 @@
 		<action name="mahaNaduAction" class="mahaNaduAction">
 			<result name="success">/jsp/mahaNadu.jsp</result>			
 		</action>
+		
+		<action name="searchCadreInfoAction" class="mahaNaduAction" method="searchCadreInfo">
+			<result type="json" name="success">
+				<param name="root">cadreVo</param>
+			</result>
+		</action>
+		
 		<action name="getBoothsInPublication" class="mahaNaduAction" method="getBooths">
 			<result type="json" name="success">
 				<param name="root">boothsList</param>
