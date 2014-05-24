@@ -105,12 +105,14 @@
 					<input class="input-medium" type="text">
 					
 				  &nbsp&nbsp&nbsp
-				  <button type="submit" class="btn btn-success">&nbsp Submit &nbsp</button>				 
+				  <button type="submit" class="btn btn-success" >&nbsp Submit &nbsp</button>				 
 				</div>
 				
 				<!----Heading Div------->
 				<div class="text-center MahanaduHeading"><h3>Party Cadre</h3></div><!----Heading Div END------->
 				
+
+				<div id="errorMsgDiv"></div>
 				<!---- Personal Details ------>
 				<h3>Personal Details</h3>
 				<p class="text-right" style="margin-top:-40px;">Fields marked with <span class="text-error">* </span> are mandatory</p>
@@ -118,10 +120,10 @@
 					<div class="row-fluid">
 						<div class="span5">	
 							<label>First Name<span class="text-error">* </span>&nbsp&nbsp&nbsp</label>             
-							<input  type="text" name="firstName">
+							<input  type="text" name="firstName" id="firstNameId">
 							
 							<label class="m_top20">Last Name<span class="text-error">* </span> &nbsp&nbsp&nbsp</label>             
-							<input type="text" name="lastName">  
+							<input type="text" name="lastName" id="lastNameId">  
 							
 							<div class="row-fluid m_top20">
 								<div class="span3">									
@@ -167,7 +169,7 @@
 				<div class="well well-small mahanadu-well form-inline">
 				
 				  <label>Mobile No<span class="text-error"><span class="text-error">* </span> </span></label>             
-					<input type="text" name="mobileNo">      
+					<input type="text" name="mobileNo" id="mobileNoId">      
 				
 				  <label>&nbsp&nbsp&nbsp&nbsp&nbsp Land No</label>              
 					<input type="text" name="landNo">
@@ -181,9 +183,17 @@
 					<div class="well well-small mahanadu-well form-inline">				
 					<div class="row-fluid">
 						<div class="span6">	
-							<label>House No&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
-							<input type="text" class="input-xlarge" name="hno">
+
+
+
+						<label>Address<span class="text-error">* </span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
 							
+							<textarea rows="4" cols="50"  name="address" class="input-xlarge" id="addressId">
+							</textarea>
+							
+						<br/><label class="m_top20">House No&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
+							<input type="text" class="input-xlarge" name="hno">
+
 							<br/><label class="m_top20">Street Name &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
 							<input type="text" class="input-xlarge" name="street">  
 							
@@ -284,7 +294,7 @@
 					</div>
 					
 					<!-----Register Button----->
-					<button class="btn btn-large pull-right btn-success" type="submit">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp; Register &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</button>
+					<button class="btn btn-large pull-right btn-success" type="submit" onclick="validatefields()">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp; Register &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</button>
 			</div><!----Form Div End--------->
 		</div>
 		
@@ -299,4 +309,84 @@
 			<!---Footer End---->
 	</div>
 </body>
+
+<script>
+function validatefields()
+{
+
+$("#errorMsgDiv").html('');
+var flag = true;
+var str = '';
+var firstName = $.trim($("#firstNameId").val());
+var lastName = $.trim($("#lastNameId").val());
+var isgenderChecked = jQuery("input[name=gender]:checked");
+var mobileNo =  $.trim($("#mobileNoId").val());
+var districtId = $("#districtField").val();
+var constituencyId = $("#constituencyField").val();
+var ismemberTypeChecked = jQuery("input[name=memberType]:checked");
+var address = $.trim($("#addressId").val());
+var str='';
+if(firstName.length == 0 )
+	{
+	str+='firstName is required<br/>';
+	flag = false;
+	}
+	if(lastName.length == 0 )
+	{
+	str+='lastName is required<br/>';
+	flag = false;
+	}
+	if(address.length == 0 )
+	{
+	str+='address is required<br/>';
+	flag = false;
+	}
+	if(districtId == 0 )
+	{
+	str+='Select District<br/>';
+	flag = false;
+	}
+	if(constituencyId == null || constituencyId == 0)
+	{
+	str+='Select Constituency<br/>';
+	flag = false;
+	}
+	if(ismemberTypeChecked.length == 0)
+	{
+	str+='Member Type is required<br/>';
+	flag = false;
+	}
+	if(isgenderChecked.length == 0)
+	{
+	str+='gender is required<br/>';
+	flag = false;
+	}
+	if(mobileNo.length == 0 )
+	{
+	str+='mobileNo is required<br/>';
+	flag = false;
+	}
+	if(isNaN(mobileNo)) {
+			
+			str+='Enter valid MobileNo';
+			
+			flag =false;
+			
+			}
+	else if(!(mobileNo.length == 0 || (mobileNo.length >=10 && mobileNo.length<=12)))
+		{
+			str+='Enter valid MobileNo';
+			flag =false;
+			return;
+		}
+	if(!flag)
+	{
+	$("#errorMsgDiv").html(str).css("color","red");
+	$('html, body').animate({ scrollTop: $("#errorMsgDiv").offset().top }, "slow");
+	}
+	if(flag)
+	$("#errorMsgDiv").html('');
+	return flag;
+}
+</script>
 </html>
