@@ -90,14 +90,14 @@ public class Cadre extends BaseModel{
 	// private CasteState casteState;
 	 private String biometricKey;
 	 
-	 private String activeDateField;
+	 private Date activeDateField;
 	 
 	 private Long age; 
 	 
 	 private String isMahanadu;
 	 	
 	 
-	 
+	 private Double sourceIncome;
 
 	@Id
 	 @GeneratedValue(strategy = GenerationType.AUTO)
@@ -560,7 +560,6 @@ public class Cadre extends BaseModel{
 	public void setMemberShipNo(String memberShipNo) {
 		this.memberShipNo = memberShipNo;
 	}
-
 	@Column(name = "is_mahanadu")
 	public String getIsMahanadu() {
 		return isMahanadu;
@@ -578,18 +577,20 @@ public class Cadre extends BaseModel{
 		this.biometricKey = biometricKey;
 	}
 	@Column(name = "active_date_field")
-	public String getActiveDateField() {
+	public Date getActiveDateField() {
 		return activeDateField;
 	}
 
-	public void setActiveDateField(String activeDateField) {
+	public void setActiveDateField(Date activeDateField) {
 		this.activeDateField = activeDateField;
 	}
+
 	@Column(name = "age")
 	public Long getAge() {
 		return age;
 	}
 
+	
 	public void setAge(Long age) {
 		this.age = age;
 	}
@@ -612,6 +613,14 @@ public class Cadre extends BaseModel{
 	public void setCadrePartyDesignation(
 			Set<CadrePartyDesignation> cadrePartyDesignation) {
 		this.cadrePartyDesignation = cadrePartyDesignation;
+	}
+	@Column(name = "source_income", precision = 2, scale = 0)
+	public Double getSourceIncome() {
+		return sourceIncome;
+	}
+
+	public void setSourceIncome(Double sourceIncome) {
+		this.sourceIncome = sourceIncome;
 	}
 	
 	
