@@ -65,14 +65,12 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 	 * Boleans for displaying only the required options in the form.
 	 *
 	 */
-	private Boolean partyCommittees_flag = false;
-	private Boolean cadreSkills_flag = false;
-	private Boolean partyTrainingCamps_flag = false;
+	
 	
 	//to display or hide official address form inputs.if set to true, the form inputs are hidden, if set to false form inputs are shown
-	private Boolean sameAsCAFlag;	
+	
 	private String cadreId;
-	private String windowTask;  
+ 
 	private CadreInfo cadreInfo;
 	/**
 	 * Select options for cadre level regional data
@@ -255,14 +253,6 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 		this.request = request;
 	}
 
-	public String getWindowTask() {
-		return windowTask;
-	}
-
-	public void setWindowTask(String windowTask) {
-		this.windowTask = windowTask;
-	}	
-
 	public RegionServiceDataImp getRegionServiceDataImp() {
 		return regionServiceDataImp;
 	}
@@ -389,14 +379,6 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 		this.defaultCadreLevelId = defaultCadreLevelId;
 	}	
 
-	public Boolean getSameAsCAFlag() {
-		return sameAsCAFlag;
-	}
-
-	public void setSameAsCAFlag(Boolean sameAsCAFlag) {
-		this.sameAsCAFlag = sameAsCAFlag;
-	}
-
 	public List<SelectOptionVO> getRelationshipList() {
 		return relationshipList;
 	}
@@ -467,258 +449,81 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 	}
 
 	public String execute(){
-		/*if(log.isDebugEnabled())
-			log.debug("CadreRegisterPageAction.execute() start");
+		if(log.isDebugEnabled())
+			log.debug("MahaNaduAction.execute() start");
 		
 		session = request.getSession();
 		
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		if(regVO==null)
 			return ERROR;
-		String accessType =regVO.getAccessType();
-		boolean isCadreParliamentWise = regVO.isCadreParliamentWise();
-		Long accessValue= new Long(regVO.getAccessValue());
-		relationshipList = cadreManagementService.getAllRelationships();
-		cadreRolesList = new ArrayList<SelectOptionVO>(0);
 		
-		cadreRolesList = cadreManagementService.getCadreRoles();
-		bloodGroupTypes = cadreManagementService.getAllBloodGroupTypes();
 		
-		//all states in country
-		//stateList_o = regionServiceDataImp.getStatesByCountry(1l);
-		stateList_o = partyStrengthService.getAllStatesHavinElectionData("Assembly");
-		stateList_o.add(0,new SelectOptionVO(0l,"Select State"));
-		//initialize all the required lists with empty array
-		//current address
-		stateList = new ArrayList<SelectOptionVO>(0);
-		districtList = new ArrayList<SelectOptionVO>(0);
-		constituencyList = new ArrayList<SelectOptionVO>(0);
-		parliamentConstituencyList  = new ArrayList<SelectOptionVO>(0);
-		mandalList = new ArrayList<SelectOptionVO>(0);
-		//cadre level regions select variables		
-		districtList_c = new ArrayList<SelectOptionVO>(0);
-		constituencyList_c = new ArrayList<SelectOptionVO>(0);
-		// add elements in to language options
-		language_options = new ArrayList<String>();
-		language_options.add(IConstants.SPEAK_LANGUAGE);
-		language_options.add(IConstants.READ_LANGUAGE);
-		language_options.add(IConstants.WRITE_LANGUAGE);
 		
-		gender = new ArrayList<String>();
-		gender.add("Male");
-		gender.add("Female");
 		
-		dobOptionsList= new ArrayList<String>();
-		dobOptionsList.add("Date Of Birth");
-		dobOptionsList.add("Age");
 		
-		cadreType = new ArrayList<String>();
-		cadreType.add(IConstants.CADRE_MEMBER_TYPE_ACTIVE);
-		cadreType.add(IConstants.CADRE_MEMBER_TYPE_NORMAL);
-				
-		//add elements in to cadre level elements
-		cadreLevelsList = new ArrayList<SelectOptionVO>();
-		cadreLevelsList.add(new SelectOptionVO(2l,"STATE"));
-		cadreLevelsList.add(new SelectOptionVO(3l,"DISTRICT"));
-		cadreLevelsList.add(new SelectOptionVO(10l,"PARLIAMENT CONSTITUENCY"));
-		cadreLevelsList.add(new SelectOptionVO(4l,"CONSTITUENCY"));
-		cadreLevelsList.add(new SelectOptionVO(5l,"MANDAL"));
-		cadreLevelsList.add(new SelectOptionVO(6l,"VILLAGE"));
-		cadreLevelsList.add(new SelectOptionVO(7l,"MUNICIPAL-CORP-GMC"));
-		cadreLevelsList.add(new SelectOptionVO(8l,"WARD"));
-		cadreLevelsList.add(new SelectOptionVO(9l,"BOOTH"));
+		if(session.getAttribute(ISessionConstants.BLOOD_GROUPS) == null){
+			  bloodGroupTypes = cadreManagementService.getAllBloodGroupTypes();
+		      session.setAttribute(ISessionConstants.BLOOD_GROUPS,bloodGroupTypes);
+		}
 		
-		if(windowTask.equals(IConstants.CREATE_NEW))
-		{	
-			if("MLA".equals(accessType))
-			{
-				log.debug("Access Type = MLA ****");
-				List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByConstituencyID(accessValue);
-				
-				stateList.add(list.get(0));			
-				districtList.add(list.get(1));
-				constituencyList.add(list.get(2));
-				mandalList = regionServiceDataImp.getSubRegionsInConstituency(accessValue, IConstants.PRESENT_YEAR, null);
-				mandalList.add(0,new SelectOptionVO(0l,"Select Location"));
-				parliamentConstituencyList = cadreManagementService.findLatestParliamentForAssembly(accessValue);
-				districtList_c = regionServiceDataImp.getDistrictsByStateID(list.get(0).getId());
-				constituencyList_c = regionServiceDataImp.getConstituenciesByDistrictID(list.get(1).getId());
-				//session.setAttribute(ISessionConstants.STATES, stateList);
-				//default state element to be selected in cadre level selection for active cadre
-				setDefaultStateId(list.get(0).getId());
-				//default district element to be selected in cadre level selection for active cadre
-				setDefaultDistId(list.get(1).getId());
-				//default constituency element to be selected in cadre level selection for active cadre
-				setDefaultConstId(list.get(2).getId());
-				//default cadre level element to be selected in cadre level selection for active cadre
-				setDefaultCadreLevelId(4l);				
-							
-			}else if("COUNTRY".equals(accessType))
-			{
-				log.debug("Access Type = Country ****");
-				stateList = cadreManagementService.findStatesByCountryID(accessValue.toString());
-				stateList.add(0,new SelectOptionVO(0l,"Select State"));
-				//session.setAttribute(ISessionConstants.STATES, stateList);
-				//default cadre level element to be selected in cadre level selection for active cadre
-				setDefaultCadreLevelId(0l);				
-				
-			}else if("STATE".equals(accessType)){
-				log.debug("Access Type = State ****");
-				
-				String name = cadreManagementService.getStateName(accessValue);
-				SelectOptionVO obj2 = new SelectOptionVO();
-				obj2.setId(accessValue);
-				obj2.setName(name);
-				stateList.add(obj2);
-				districtList = staticDataService.getDistricts(accessValue);
-				districtList.add(0,new SelectOptionVO(0l,"Select District"));
-				constituencyList = new ArrayList<SelectOptionVO>(0);
-				parliamentConstituencyList  = new ArrayList<SelectOptionVO>(0);
-				if(isCadreParliamentWise){
-					parliamentConstituencyList = staticDataService.getLatestConstituenciesByStateIdAndType(accessValue,IConstants.PARLIAMENT_CONSTITUENCY_TYPE);
-					constituencyList = staticDataService.getLatestConstituenciesByStateIdAndType(accessValue,IConstants.ASSEMBLY_ELECTION_TYPE);
-					parliamentConstituencyList.add(0,new SelectOptionVO(0l,"Select Location"));
-					constituencyList.add(0,new SelectOptionVO(0l,"Select Location"));
-				}
-				//session.setAttribute(ISessionConstants.STATES, stateList);
-				//default state element to be selected in cadre level selection for active cadre
-				setDefaultStateId(accessValue);
-				//default cadre level element to be selected in cadre level selection for active cadre
-				setDefaultCadreLevelId(2l);
-				
-			}else if("DISTRICT".equals(accessType)){
-				log.debug("Access Type = District ****");			
-
-				List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByDistrictID(accessValue);
-				stateList.add(list.get(0));
-				districtList.add(list.get(1));
-				parliamentConstituencyList = cadreManagementService.getParliamentConstituenciesInADistrict(accessValue.toString());
-				//parliamentConstituencyList.add(0,new SelectOptionVO(0l,"Select Location"));
-				constituencyList = regionServiceDataImp.getConstituenciesByDistrictID(accessValue);
-				constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));
-				districtList_c = regionServiceDataImp.getDistrictsByStateID(list.get(0).getId());
-				//session.setAttribute(ISessionConstants.STATES, stateList);
-				//default state element to be selected in cadre level selection for active cadre
-				setDefaultStateId(list.get(0).getId());
-				//default district element to be selected in cadre level selection for active cadre
-				setDefaultDistId(list.get(1).getId());
-				//default cadre level element to be selected in cadre level selection for active cadre
-				setDefaultCadreLevelId(3l);	
-				
-			} else if("MP".equals(accessType)){
-				log.debug("Access Type = MP ****");
-				
-				ConstituencyInfoVO constituencyInfoVO = new ConstituencyInfoVO();
-				stateList = regionServiceDataImp.getStateByParliamentConstituencyID(accessValue);
-				constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(accessValue);
-				constituencyList = constituencyInfoVO.getAssembyConstituencies();
-				constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));
-				parliamentConstituencyList.add(new SelectOptionVO(constituencyInfoVO.getConstituencyId(),constituencyInfoVO.getConstituencyName())); 
-				//session.setAttribute(ISessionConstants.STATES, stateList);
-				
-				setDefaultCadreLevelId(3l);
-			}			
-			setSameAsCAFlag(true);
-			//contact details current address
-			session.setAttribute(ISessionConstants.STATES, stateList);
-			session.setAttribute(ISessionConstants.DISTRICTS,districtList);
-			session.setAttribute(ISessionConstants.CONSTITUENCIES,constituencyList);
-			session.setAttribute(ISessionConstants.P_CONSTITUENCIES, parliamentConstituencyList);
-			session.setAttribute(ISessionConstants.MANDALS,mandalList);	
+		if(session.getAttribute(ISessionConstants.DISTRICTS) == null){
+		    List<SelectOptionVO> districtNames_c = new ArrayList<SelectOptionVO>();
+ 		    districtNames_c=cadreManagementService.findDistrictsByState("1");			
+ 		    SelectOptionVO obj = new SelectOptionVO(0L,"Select District");
+ 		    districtNames_c.add(0, obj);
+		
+		    session.setAttribute(ISessionConstants.DISTRICTS, districtNames_c);
+		}
+		
+		 cadreId = request.getParameter("cadreId");
+		 
+	    if(!(cadreId != null && (new Long(cadreId)) > 0)){
+	    	
+		    session.setAttribute(ISessionConstants.CONSTITUENCIES,new ArrayList<SelectOptionVO>());
+			session.setAttribute(ISessionConstants.MANDALS,new ArrayList<SelectOptionVO>());	
 			session.setAttribute(ISessionConstants.VILLAGES, new ArrayList<SelectOptionVO>());
-			session.setAttribute(ISessionConstants.BOOTHS,new ArrayList<SelectOptionVO>());		
-			// contact details official address
-			session.setAttribute(ISessionConstants.STATES_O, stateList_o);
-			session.setAttribute(ISessionConstants.DISTRICTS_O, new ArrayList<SelectOptionVO>());
-			session.setAttribute(ISessionConstants.CONSTITUENCIES_O, new ArrayList<SelectOptionVO>());
-			session.setAttribute(ISessionConstants.P_CONSTITUENCIES_O,new ArrayList<SelectOptionVO>());
-			session.setAttribute(ISessionConstants.MANDALS_O, new ArrayList<SelectOptionVO>());
-			session.setAttribute(ISessionConstants.VILLAGES_O, new ArrayList<SelectOptionVO>());
-			session.setAttribute(ISessionConstants.BOOTHS_O,new ArrayList<SelectOptionVO>());
+			session.setAttribute(ISessionConstants.BOOTHS,new ArrayList<SelectOptionVO>());	
+		
+	    }
 			
-		} else if(windowTask.equals(IConstants.UPDATE_EXISTING))
-		{
-			 session.setAttribute(ISessionConstants.STATES_O, stateList_o);
-			if("COUNTRY".equals(accessType)){
-			  session.setAttribute(ISessionConstants.STATES, stateList_o);	
-			 
-			}else{
-				if(cadreInfo.getState() != null){
-					String name = cadreManagementService.getStateName(new Long(cadreInfo.getState()));
-					SelectOptionVO obj2 = new SelectOptionVO();
-					obj2.setId(new Long(cadreInfo.getState()));
-					obj2.setName(name);
-					stateList = new ArrayList<SelectOptionVO>();
-					stateList.add(obj2);
-				    session.setAttribute(ISessionConstants.STATES, stateList);	
-				}else{
-					session.setAttribute(ISessionConstants.STATES, stateList_o);	
-				}
-			}
-			setDefaultCadreLevelId(cadreInfo.getCadreLevel());
-			setSameAsCAFlag(cadreInfo.getSameAsCA());			
-		}
-		socialStatus = staticDataService.getAllSocialCategories(); 
-		eduStatus = staticDataService.getAllEducationalQualifications();
-		occupationsList = staticDataService.getAllOccupations();
-		languagesList = staticDataService.getAllLanguages();
-		if(IConstants.USER_TYPE_PARTY.equals(regVO.getUserType()))
-		{
-			partyCommitteesList = new ArrayList<SelectOptionVO>(0);
-			partyTrainingCampsList = new ArrayList<SelectOptionVO>(0);
-			cadreSkillsList = new ArrayList<SelectOptionVO>(0);
-						
-			partyCommitteesList = cadreManagementService.getCommitteesForAParty(regVO.getParty());
-			if(partyCommitteesList.size()>0)
-				partyCommittees_flag = true;
-			partyTrainingCampsList = cadreManagementService.getPartyTrainingCamps(regVO.getParty()); 
-			if(partyTrainingCampsList.size()>0)
-				partyTrainingCamps_flag = true;
-			cadreSkillsList = cadreManagementService.getPartyCadreSkills(regVO.getParty()); 
-			if(cadreSkillsList.size()>0)
-				cadreSkills_flag = true;
-						
-			session.setAttribute(ISessionConstants.PARTY_COMMITTEES,partyCommitteesList);
-			//if(windowTask.equals(IConstants.CREATE_NEW))
-				designationsList = new ArrayList<SelectOptionVO>(0);
-			session.setAttribute(ISessionConstants.COMMITTEE_DESIGNATIONS,designationsList);
-			session.setAttribute(ISessionConstants.PARTY_TRAINING_CAMPS,partyTrainingCampsList);
-			session.setAttribute(ISessionConstants.CADRE_SKILLS,cadreSkillsList);
 			
+			gender = new ArrayList<String>();
+			gender.add("Male");
+			gender.add("Female");
+			session.setAttribute(ISessionConstants.GENDERS, gender);
+			
+		if(session.getAttribute(ISessionConstants.EDU_QUALIFICATIONS) == null){
+			eduStatus = staticDataService.getAllEducationalQualifications();
+			session.setAttribute(ISessionConstants.EDU_QUALIFICATIONS, eduStatus);
+		}	
+		
+		if(session.getAttribute(ISessionConstants.OCCUPATIONS) == null){
+			occupationsList = staticDataService.getAllOccupations();
+			session.setAttribute(ISessionConstants.OCCUPATIONS, occupationsList);
 		}
+		
+		if(session.getAttribute("incSource") == null){
+			List<SelectOptionVO> incSource = mahaNaduService.getIncomeSources();
+			session.setAttribute("incSource", incSource);
+		}
+		
+		if(session.getAttribute("casteCategory") == null){
+			List<SelectOptionVO> casteCategory = mahaNaduService.getCasteCategories();
+			session.setAttribute("casteCategory", casteCategory);
+		}
+		
+		if(session.getAttribute("partyDesig") == null){
+			List<SelectOptionVO> partyDesig = mahaNaduService.getPartyDesignations();
+			session.setAttribute("partyDesig",partyDesig);
+		}
+		
+		if(session.getAttribute("govDesig") == null){
+			List<SelectOptionVO> govDesig = mahaNaduService.getgovernmentDesignations();
+			session.setAttribute("govDesig",govDesig);	
+		}
+			
 				
-		//place the variables in to session where these are referenced when validation fails in and control comes back to form
-			
-		// personal info		
-		session.setAttribute(ISessionConstants.GENDERS, gender);
-		session.setAttribute(ISessionConstants.DOB_OPTIONS, dobOptionsList);
-		session.setAttribute(ISessionConstants.FAMILY_RELATIONS,relationshipList);
-		session.setAttribute(ISessionConstants.BLOOD_GROUPS,bloodGroupTypes);
-		
-		//social status		
-		session.setAttribute(ISessionConstants.LANGUAGES, languagesList);
-		session.setAttribute(ISessionConstants.LANGUAGE_OPTIONS,language_options);
-		session.setAttribute(ISessionConstants.EDU_QUALIFICATIONS, eduStatus);
-		session.setAttribute(ISessionConstants.OCCUPATIONS, occupationsList);
-		session.setAttribute(ISessionConstants.SOCIALCATEGORIES,socialStatus);
-		//cadre levels variables
-		session.setAttribute(ISessionConstants.CADRETYPES, cadreType);
-		session.setAttribute(ISessionConstants.CADRE_LEVELS_LIST,cadreLevelsList);
-		
-		//cadre level regions select variables
-		session.setAttribute(ISessionConstants.STATES_C, stateList_o);
-		session.setAttribute(ISessionConstants.DISTRICTS_C, districtList_c);
-		session.setAttribute(ISessionConstants.CONSTITUENCIES_C, constituencyList_c);
-		session.setAttribute(ISessionConstants.MANDALS_C, new ArrayList<SelectOptionVO>());
-		session.setAttribute(ISessionConstants.VILLAGES_C, new ArrayList<SelectOptionVO>());
-		session.setAttribute(ISessionConstants.BOOTHS_C,new ArrayList<SelectOptionVO>());
-		//party specific variables		
-		session.setAttribute(ISessionConstants.PARTY_COMMITTEES_FLAG, partyCommittees_flag);
-		//session.setAttribute(ISessionConstants.COMMITTEE_DESIGNATIONS, new ArrayList<SelectOptionVO>());
-		session.setAttribute(ISessionConstants.CADRE_SKILLS_FLAG, cadreSkills_flag);
-		session.setAttribute(ISessionConstants.PARTY_TRAINING_CAMPS_FLAG, partyTrainingCamps_flag);
-		session.setAttribute(ISessionConstants.CADRE_ROLES_LIST,cadreRolesList);
-				*/
 		return Action.SUCCESS;
 	}
 
