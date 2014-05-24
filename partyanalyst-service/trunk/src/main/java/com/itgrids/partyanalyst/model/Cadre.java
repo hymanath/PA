@@ -96,7 +96,7 @@ public class Cadre extends BaseModel{
 	 
 	 private String isMahanadu;
 	 	
-	 
+	 private String address;
 	 private Double sourceIncome;
 
 	@Id
@@ -621,6 +621,14 @@ public class Cadre extends BaseModel{
 
 	public void setSourceIncome(Double sourceIncome) {
 		this.sourceIncome = sourceIncome;
+	}
+	@Column(name = "address")
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 	
 	

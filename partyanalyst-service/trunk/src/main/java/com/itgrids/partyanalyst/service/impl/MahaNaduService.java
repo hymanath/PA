@@ -279,7 +279,11 @@ public void setBoothDAO(IBoothDAO boothDAO) {
 
 			UserAddress currentAddress = new UserAddress();
 			
-			Cadre cadre = new Cadre();
+			Cadre cadre = null;
+			if(cadreInfo.getCadreId() != null && cadreInfo.getCadreId() > 0)
+				cadre = cadreDAO.get(cadreInfo.getCadreId());
+			else
+				cadre = new Cadre();
 			try {
 				
 				
@@ -317,7 +321,7 @@ public void setBoothDAO(IBoothDAO boothDAO) {
 					cadre.setActiveDateField(format.parse(cadreInfo.getActiveDateField()));
 				} 
 				cadre.setMemberType(cadreInfo.getMemberType());
-				
+				cadre.setAddress(cadreInfo.getAddress());
 				// Current Address
 				
 				currentAddress.setHouseNo(cadreInfo.getHno());
@@ -328,7 +332,12 @@ public void setBoothDAO(IBoothDAO boothDAO) {
 					 currentAddress.setDistrict(districtDAO.get(new Long(cadreInfo.getDistrictId())));
 				if(cadreInfo.getConstituencyId() != null)
 				currentAddress.setConstituency(constituencyDAO.get(cadreInfo.getConstituencyId()));
-				if(cadreInfo.getMandalId()!= null){
+				if(cadreInfo.getBoothNo() != null && !cadreInfo.getBoothNo().equals("0"))
+				{
+					currentAddress.setBooth(boothDAO.get(cadreInfo.getBoothNo()));
+				}
+				
+				/*if(cadreInfo.getMandalId()!= null){
 					currentAddress.setTehsil(tehsilDAO.get(new Long(cadreInfo.getMandalId())));
 				}
 				if(cadreInfo.getVillageId()!=null ){
@@ -341,12 +350,9 @@ public void setBoothDAO(IBoothDAO boothDAO) {
 					else
 						currentAddress.setTownship(townshipDAO.get(new Long(cadreInfo.getVillageId())));
 					
-				}
+				}*/
 				
-				if(cadreInfo.getBoothNo() != null && !cadreInfo.getBoothNo().equals("0"))
-				{
-					currentAddress.setBooth(boothDAO.get(cadreInfo.getBoothNo()));
-				}
+				
 				currentAddress = userAddressDAO.save(currentAddress);
 				cadre.setCurrentAddress(currentAddress);
 				cadreDAO.save(cadre);
