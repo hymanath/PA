@@ -40,8 +40,43 @@
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css">      
 
 	<!-- YUI Dependency files (End) -->
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+
 <link href="styles/mahanadu/bootstrap.min.css" rel="stylesheet" media="screen">
+
+
   <style>
+  .yui-skin-sam.yui-dt table th {
+		background-color: #CDE6FC;
+		font-size: 13px;
+		font-weight: bold;
+		padding: 7px;
+		text-align: left;
+		border-collapse :collapse;
+}
+.yui-skin-sam.yui-dt table  {
+		
+		border-collapse :collapse;
+}
+.yui-skin-sam.yui-dt tbody{
+border: 1px solid #CDCDCD;
+}
+ .yui-skin-sam.yui-dt td {
+	font-weight: normal;
+	padding: 8px 8px 8px 10px;
+}
+#buildDataTable table tr:nth-child(2n){
+background: none repeat scroll 0 0 #F9F9F9;
+}
+
+
+.yui-dt-sortable{
+	color:#000;
+}
+.yui-dt-sortable>td{
+border:1px solid #000000;
+}
 		body{color:#333333!important;}
 		input{height:40px !important;box-shadow: 1px 0 5px rgba(0, 0, 0, 0.28) inset!important; border-radius:10px!important;border:1px solid #ccc!important;}
 		select{height:40px; box-shadow: 1px 0 5px rgba(0, 0, 0, 0.28) inset!important;border-radius:10px!important;border:1px solid #ccc!important;}		
@@ -69,6 +104,58 @@
 		.multySelect{border: 1px solid rgb(204, 204, 204); border-radius: 4px; background: none repeat scroll 0% 0% rgb(255, 255, 255); padding: 5px 10px; height: 100px; overflow: auto;box-shadow: 1px 0 5px rgba(0, 0, 0, 0.28) inset!important; border-radius:10px!important;}
 		.multySelect ul li{height:26px;}
 		.multySelect ul li input{margin-top: 0px;}
+		
+		#searchResultsDiv_body table {
+    width: 100%;
+}
+.yui-skin-sam .yui-dt table {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-bottom-color: #7F7F7F;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-collapse: separate;
+    border-image-outset: 0 0 0 0;
+    border-image-repeat: stretch stretch;
+    border-image-slice: 100% 100% 100% 100%;
+    border-image-source: none;
+    border-image-width: 1 1 1 1;
+    border-left-color-ltr-source: physical;
+    border-left-color-rtl-source: physical;
+    border-left-color-value: #7F7F7F;
+    border-left-style-ltr-source: physical;
+    border-left-style-rtl-source: physical;
+    border-left-style-value: solid;
+    border-left-width-ltr-source: physical;
+    border-left-width-rtl-source: physical;
+    border-left-width-value: 1px;
+    border-right-color-ltr-source: physical;
+    border-right-color-rtl-source: physical;
+    border-right-color-value: #7F7F7F;
+    border-right-style-ltr-source: physical;
+    border-right-style-rtl-source: physical;
+    border-right-style-value: solid;
+    border-right-width-ltr-source: physical;
+    border-right-width-rtl-source: physical;
+    border-right-width-value: 1px;
+    border-spacing: 0;
+    border-top-color: #7F7F7F;
+    border-top-style: solid;
+    border-top-width: 1px;
+    font-family: arial;
+    font-size: inherit;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+}
+
 	</style>
 </head>
 <body  class="mahanadubg">
@@ -96,17 +183,23 @@
 				<p> * Please Submit First Name, Last Name and Mobile No to Generate Party Cadre Details</p>
 				<div class="well well-small mahanadu-well form-inline">
 				
-				  <label>First Name<span class="text-error"><span class="text-error">* </span> </span></label>             
-					<input class="input-medium" type="text">      
-				
-				  <label>&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp Last Name<span class="text-error">* </span></label>              
-					<input class="input-medium" type="text">
+				 <label>Constituency <span class="text-error"><span class="text-error">* </span> </span></label>             
 					
-				  <label >&nbsp&nbsp&nbsp&nbsp&nbsp Mobile No<span class="text-error">* </span></label>              
-					<input class="input-medium" type="text">
+					<s:select id="constitList"  list="constituencyList" listKey="id" listValue="name"  ></s:select>
+							
+							
+					<br><br>
+				  <label>First Name<span class="text-error"><span class="text-error"> </span> </span></label>             
+					<input class="input-medium searchCls" type="text" id="firstName">      
+				
+				  <label>&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp Last Name<span class="text-error"> </span></label>              
+					<input class="input-medium searchCls" type="text" id="lastName">
+					
+				  <label >&nbsp&nbsp&nbsp&nbsp&nbsp Mobile No<span class="text-error"> </span></label>              
+					<input class="input-medium searchCls" type="text" id="mobileId">
 					
 				  &nbsp&nbsp&nbsp
-				  <button type="submit" class="btn btn-success" >&nbsp Submit &nbsp</button>				 
+				  <button type="button" class="btn btn-success" onclick="searchCadre();">&nbsp Submit &nbsp</button>				 
 				</div>
 				
 				<!----Heading Div------->
@@ -293,6 +386,10 @@
 			<!---Footer End---->
 	</div>
 </form>
+<div id="dialogueTab" align="center" style="width:900px;">
+		<div id="buildDataTable"  class="yui-skin-sam"></div>	
+	</div>
+	
 <script type="text/javascript">
 function uploadCadre()
 {
@@ -401,5 +498,119 @@ if(firstName.length == 0 )
 	$("#errorMsgDiv").html('');
 	return flag;
 }
+
+function searchCadre(){
+		 $('#dialogueTab').dialog({
+            autoOpen: true,
+			width:950,
+			title:"Cadre Details ",
+            modal: true,
+			resizable: false
+        });
+		$('#buildDataTable').html('');
+	var cosntiId = document.getElementById("constitList").value;
+	var searchType = "firstName";
+	var searchBy = '';
+	
+	var firstNameVal = $('#firstName').val();
+	var lastNameVal = $('#lastName').val();
+	var mobileVal = $('#mobileId').val();
+	
+	
+	YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
+	{		
+		var cadreId = oRecord.getData("cadreId");
+		var str ="<a href='javascript:{editCadreInfo("+cadreId+")}'> <img src='images/icons/edit.png' style='text-decoration: none; border: 0px none;'></a>";
+		elLiner.innerHTML =str;
+	}
+	
+	YAHOO.widget.DataTable.CadreName = function(elLiner, oRecord, oColumn, oData)
+	{		
+		var firstName = oRecord.getData("firstName");
+		var lastName = oRecord.getData("lastName");
+		var str =""+firstName+" "+lastName+"";
+		elLiner.innerHTML =str;
+	}
+	
+	YAHOO.widget.DataTable.Area = function(elLiner, oRecord, oColumn, oData)
+	{		
+		var boothId = oRecord.getData("boothNo");
+		var str ='';
+		if(boothId > 0)
+			str +="Booth No - "+boothId+"";	
+		else
+			str +="<span  style='margin-left:50px;'> -  </span>";	
+		elLiner.innerHTML =str;
+	}
+	
+	
+	YAHOO.widget.DataTable.CadreImage = function(elLiner, oRecord, oColumn, oData)
+	{		
+		var cadreImg = oRecord.getData("image");
+		var str ="";
+		if(cadreImg != "human.jsp"){
+		str +="<img height='85px' width='85px' src='images/cadre_images/"+cadreImg+"'/>";
+		}
+		else{
+		str +="<img height='85px' width='85px' src='images/cadre_images/human.jpg'/>";
+		}
+		
+		elLiner.innerHTML =str;
+	}
+	
+var votersByLocBoothColumnDefs = [
+
+{key:"firstName", label: " Cadre Name ",width:200,formatter:YAHOO.widget.DataTable.CadreName,sortable: true},
+{key:"mobileNo",label:" Contact No ",width:100,sortable: true},
+{key:"districtName",label:" Booth No ",width:150,formatter:YAHOO.widget.DataTable.Area,sortable: true},
+{key:"memberType",label:" Cadre Type ",width:100,sortable: true},
+{key:"lastName",label:" Photo ",width:150,formatter:YAHOO.widget.DataTable.CadreImage,sortable: true},
+{key:"lastName", label: " Edit ", width:50,formatter:YAHOO.widget.DataTable.Type,sortable: true}
+];
+//parentLocationId
+var urlStr = "searchCadreInfoAction.action?searchBy="+firstNameVal+"&cosntituencyId="+cosntiId+"&searchType=firstone&";
+$("#commentsData_outer").show();
+var votersByLocBoothDataSource = new YAHOO.util.DataSource(urlStr);
+
+votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
+votersByLocBoothDataSource.responseSchema = {
+resultsList: "cadreVOList",
+fields: ["firstName","lastName","mobileNo","boothNo","cadreId","image","memberType"],
+
+metaFields: {
+totalRecords: "count" // Access to value in the server response
+},
+};
+
+var myConfigs = {
+initialRequest: "sort=firstName&dir=asc&startIndex=0&results=10", // Initial request for first page of data
+sortedBy : {key:"firstName", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
+dynamicData: true, // Enables dynamic server-driven data
+   paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 10 
+			    })  // Enables pagination
+};
+
+var votersByLocBoothDataTable = new YAHOO.widget.DataTable("buildDataTable",
+votersByLocBoothColumnDefs, votersByLocBoothDataSource, myConfigs);
+
+votersByLocBoothDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
+oPayload.totalRecords = oResponse.meta.totalRecords;
+return oPayload;
+}
+
+
+return {
+oDS: votersByLocBoothDataSource,
+oDT: votersByLocBoothDataTable
+};
+
+return ;
+}
+	
+function editCadreInfo(cadreId){
+	alert(cadreId);
+}
+
 </script>
 </html>
