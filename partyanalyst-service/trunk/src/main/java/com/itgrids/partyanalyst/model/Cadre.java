@@ -94,6 +94,9 @@ public class Cadre extends BaseModel{
 	 
 	 private Long age; 
 	 
+	 private String isMahanadu;
+	 	
+	 
 	 
 
 	@Id
@@ -556,6 +559,15 @@ public class Cadre extends BaseModel{
 
 	public void setMemberShipNo(String memberShipNo) {
 		this.memberShipNo = memberShipNo;
+	}
+
+	@Column(name = "is_mahanadu")
+	public String getIsMahanadu() {
+		return isMahanadu;
+	}
+
+	public void setIsMahanadu(String isMahanadu) {
+		this.isMahanadu = isMahanadu;
 	}
 	@Column(name = "biometric_key")
 	public String getBiometricKey() {
