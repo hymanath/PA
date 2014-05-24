@@ -439,7 +439,12 @@
 		<value>com.itgrids.partyanalyst.model.StateSubRegionDistrict</value>
 		<value>com.itgrids.partyanalyst.model.StateSubRegion</value>
 				<value>com.itgrids.partyanalyst.model.CasteContainConstituency</value>
-				
+			<value>com.itgrids.partyanalyst.model.AnnualIncome</value>
+				<value>com.itgrids.partyanalyst.model.SourceIncome</value>
+				<value>com.itgrids.partyanalyst.model.GovtDesignation</value>
+				<value>com.itgrids.partyanalyst.model.PartyDesignation</value>
+				<value>com.itgrids.partyanalyst.model.CadrePartyDesignation</value>
+				<value>com.itgrids.partyanalyst.model.CadreGovtDesignation</value>		
 				
 				
 		
@@ -1094,6 +1099,7 @@
 	</bean>
 	<bean id="boothDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
+		
 	</bean>
 	<bean id="boothConstituencyElectionDAO"
 		class="com.itgrids.partyanalyst.dao.hibernate.BoothConstituencyElectionDAO">
@@ -1411,6 +1417,32 @@
 		<property name="partyImportantDatesDAO" ref="partyImportantDatesDAO" />
 		<property name="userImpDatesDAO" ref="userImpDatesDAO" />
 	</bean>
+
+
+
+
+
+
+ <bean name="mahaNaduService" class="com.itgrids.partyanalyst.service.impl.MahaNaduService" >
+   
+         <property name="boothDAO" ref="boothDAO"/>
+         
+         <property name="districtDAO" ref="districtDAO" />
+		<property name="tehsilDAO" ref="tehsilDAO" />
+		<property name="townshipDAO" ref="townshipDAO" />
+		<property name="constituencyDAO" ref="constituencyDAO" />
+		<property name="hamletDAO" ref="hamletDAO" />
+		<property name="transactionTemplate" ref="transactionTemplate" />
+		<property name="educationalQualificationsDAO" ref="educationalQualificationsDAO" />
+		<property name="occupationDAO" ref="occupationDAO" />
+		<property name="socialCategoryDAO" ref="socialCategoryDAO" />
+		 <property name="userAddressDAO" ref="userAddressDAO" />
+		 <property name="cadreGovtDesignationDAO" ref="cadreGovtDesignationDAO" />
+		 <property name="cadrePartyDesignationDAO" ref="cadrePartyDesignationDAO" />
+		 	 <property name="cadreDAO" ref="cadreDAO" />
+  
+   </bean>
+
 
 	<bean name="biElectionPageService"
 		class="com.itgrids.partyanalyst.service.impl.BiElectionPageService">
@@ -2312,5 +2344,24 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+		
+	<bean id="annualIncomeDAO" class="com.itgrids.partyanalyst.dao.hibernate.AnnualIncomeDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
+	<bean id="sourceIncomeDAO" class="com.itgrids.partyanalyst.dao.hibernate.SourceIncomeDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="govtDesignationDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtDesignationDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="partyDesignationDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyDesignationDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		<bean id="cadrePartyDesignationDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadrePartyDesignationDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		<bean id="cadreGovtDesignationDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreGovtDesignationDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>
