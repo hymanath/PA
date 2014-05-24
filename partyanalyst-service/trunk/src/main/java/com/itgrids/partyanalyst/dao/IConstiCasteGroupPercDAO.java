@@ -10,4 +10,6 @@ public interface IConstiCasteGroupPercDAO extends GenericDao<ConstiCasteGroupPer
 	public List<Object[]> getData();
 	
 	public List<Object[]> getConstituencyCastePer();
+	
+	public List<Object[]> getConstituencyCastePerByConstiId(Long constituencyId);
 }

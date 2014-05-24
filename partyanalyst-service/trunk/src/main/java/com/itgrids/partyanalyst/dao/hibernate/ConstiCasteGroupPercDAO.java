@@ -34,4 +34,14 @@ public class ConstiCasteGroupPercDAO extends GenericDaoHibernate<ConstiCasteGrou
 		return query.list();	
 	}
 	
+	public List<Object[]> getConstituencyCastePerByConstiId(Long constituencyId)
+	{
+		//0 casteGroupId, 1 casteGroupName,2 groupPerc,3 rank
+		Query query = getSession().createQuery("select CCG.casteGroup.casteGroupId,CCG.casteGroup.casteGroupName,CCG.groupPerc,CCG.rank from ConstiCasteGroupPerc CCG where CCG.constituency =:constituencyId " +
+		
+				" order by CCG.rank ");
+		query.setParameter("constituencyId",constituencyId);
+		return query.list();	
+	}
+	
 }

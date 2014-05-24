@@ -693,6 +693,31 @@ try{
 
 }
 
+	public SelectOptionVO getTopCastesInALocation(Long electionId,Long constituencyId){
+		SelectOptionVO returnVo = new SelectOptionVO();
+		
+		List<SelectOptionVO> castesList = new ArrayList<SelectOptionVO>();
+		List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>();
+		
+		returnVo.setSelectOptionsList(castesList);
+		returnVo.setSelectOptionsList1(resultList);
+		
+		SelectOptionVO vo = null;
+		
+		//0 casteGroupId, 1 casteGroupName,2 groupPerc,3 rank
+		List<Object[]> castesResults = constiCasteGroupPercDAO.getConstituencyCastePerByConstiId(constituencyId);
+		for(Object[] caste:castesResults){
+			vo = new SelectOptionVO();
+			vo.setName(caste[1].toString());
+			vo.setPerc((Double)caste[2]);
+			vo.setOrderId((Long)caste[3]);
+			castesList.add(vo);
+		}
+		List<Long> constituencyIds = new ArrayList<Long>(); 
+		constituencyIds.add(constituencyId);
+		nominationDAO.getConstituencyWiseResults1(electionId, constituencyIds);
+		return returnVo;
+	}
 
 }
 
