@@ -13,7 +13,7 @@ public class CadreVo implements Serializable{
 	private String bloodGroup;
 	private Long noOfFamilyMembers;
 	private String fatherName;
-	
+	private Long bloodGroupId;
 	private Long noOfVoters;
 	private String landNo;
 	
@@ -258,6 +258,14 @@ public class CadreVo implements Serializable{
 
 	public void setGovtDesignationList(List<Long> govtDesignationList) {
 		this.govtDesignationList = govtDesignationList;
+	}
+
+	public Long getBloodGroupId() {
+		return bloodGroupId;
+	}
+
+	public void setBloodGroupId(Long bloodGroupId) {
+		this.bloodGroupId = bloodGroupId;
 	}
 
 	
