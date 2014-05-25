@@ -97,7 +97,8 @@ public class Cadre extends BaseModel{
 	 private String isMahanadu;
 	 	
 	 private String address;
-	 private Double incomeSource;
+	 private String incomeSource;
+	 private String isVerified;
 
 	@Id
 	 @GeneratedValue(strategy = GenerationType.AUTO)
@@ -615,12 +616,12 @@ public class Cadre extends BaseModel{
 		this.cadrePartyDesignation = cadrePartyDesignation;
 	}
 	
-	@Column(name = "income_source", precision = 2, scale = 0)
-	public Double getIncomeSource() {
+	@Column(name = "income_source")
+	public String getIncomeSource() {
 		return incomeSource;
 	}
 
-	public void setIncomeSource(Double incomeSource) {
+	public void setIncomeSource(String incomeSource) {
 		this.incomeSource = incomeSource;
 	}
 
@@ -632,19 +633,7 @@ public class Cadre extends BaseModel{
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	@Column(name="unique_id")
 	public String getUniqueId() {
@@ -665,6 +654,15 @@ public class Cadre extends BaseModel{
 
 	public void setCasteState(CasteState casteState) {
 		this.casteState = casteState;
+	}
+
+	@Column(name="is_verified")
+	public String getIsVerified() {
+		return isVerified;
+	}
+
+	public void setIsVerified(String isVerified) {
+		this.isVerified = isVerified;
 	}
 	
 	
