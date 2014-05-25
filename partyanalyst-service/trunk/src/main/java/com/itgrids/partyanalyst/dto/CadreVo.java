@@ -60,7 +60,26 @@ public class CadreVo implements Serializable{
 	private String educationStr;
 	private String professionStr;
 	private String casteCategoryName;
+	private String voterCardId;
+	private Long isVerified;
 	
+
+	
+	public Long getIsVerified() {
+		return isVerified;
+	}
+
+	public void setIsVerified(Long isVerified) {
+		this.isVerified = isVerified;
+	}
+
+	public String getVoterCardId() {
+		return voterCardId;
+	}
+
+	public void setVoterCardId(String voterCardId) {
+		this.voterCardId = voterCardId;
+	}
 
 	public String getPath() {
 		return path;

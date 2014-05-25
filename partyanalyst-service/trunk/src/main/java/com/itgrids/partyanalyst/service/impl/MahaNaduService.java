@@ -17,6 +17,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IBloodGroupDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.ICadreGovtDesignationDAO;
@@ -34,6 +35,7 @@ import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dto.CadreVo;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -68,8 +70,26 @@ public class MahaNaduService implements IMahaNaduService{
 	private IGovtDesignationDAO govtDesignationDAO;
 	private CadreManagementService cadreManagementService;
 	private IUserDAO userDAO;
+	private IBloodGroupDAO bloodGroupDAO;
+	private IVoterDAO voterDAO;
 	
 	
+	public IVoterDAO getVoterDAO() {
+		return voterDAO;
+	}
+
+	public void setVoterDAO(IVoterDAO voterDAO) {
+		this.voterDAO = voterDAO;
+	}
+
+	public IBloodGroupDAO getBloodGroupDAO() {
+		return bloodGroupDAO;
+	}
+
+	public void setBloodGroupDAO(IBloodGroupDAO bloodGroupDAO) {
+		this.bloodGroupDAO = bloodGroupDAO;
+	}
+
 	public IUserDAO getUserDAO() {
 		return userDAO;
 	}
@@ -422,7 +442,7 @@ public List<SelectOptionVO> getBoothsInAConstituency(Long constituencyId,Long pu
 				cadre = cadreDAO.get(cadreInfo.getCadreId());
 			else{
 				cadre = new Cadre();
-				cadre.setUser(userDAO.get(cadreInfo.getCadreId()));
+				cadre.setUser(userDAO.get(cadreInfo.getUserId()));
 			}
 			try {
 				
@@ -435,7 +455,10 @@ public List<SelectOptionVO> getBoothsInAConstituency(Long constituencyId,Long pu
 				cadre.setAge(cadreInfo.getAge());
 				if(cadreInfo.getFatherName() != null && (!StringUtils.isBlank(cadreInfo.getFatherName())))
 				cadre.setFatherOrSpouseName(cadreInfo.getFatherName());
-				cadre.setBloodGroupId(cadreInfo.getBloodGroupId() != 0 ? cadreInfo.getBloodGroupId()  : null);
+				if(cadreInfo.getBloodGroupId() != null && cadreInfo.getBloodGroupId() != 0){
+				   cadre.setBloodGroup(cadreInfo.getBloodGroupId() != 0 ? bloodGroupDAO.get(cadreInfo.getBloodGroupId())  : null);
+				   cadre.setBloodGroupId(cadreInfo.getBloodGroupId());
+			    }
 				if(cadreInfo.getNoOfFamilyMembers() != null && (!StringUtils.isBlank(cadreInfo.getNoOfFamilyMembers())))
 				cadre.setNoOfFamilyMembers(cadreInfo.getNoOfFamilyMembers());
 				if(cadreInfo.getNoOfVoters() != null && (!StringUtils.isBlank(cadreInfo.getNoOfVoters())))
@@ -450,6 +473,17 @@ public List<SelectOptionVO> getBoothsInAConstituency(Long constituencyId,Long pu
 				if (!cadreInfo.getEducationId().equals(new Long(0)))
 					cadre.setEducation(educationalQualificationsDAO.get(cadreInfo.getEducationId()));
 					
+				if(cadreInfo.getVoterCardId()!= null && cadreInfo.getVoterCardId().trim().length() > 0){
+					List<Long> voterIds = voterDAO.getVoterId(cadreInfo.getVoterCardId().trim());
+					if(voterIds != null && voterIds.size() > 0 && voterIds.get(0) != null){
+						cadre.setVoter(voterDAO.get(voterIds.get(0)));
+					}
+				}
+				if(cadreInfo.getIsVerified().longValue() == 1l){
+					cadre.setIsVerified("N");
+				}else{
+					cadre.setIsVerified("Y");
+				}
 				if(cadreInfo.getProfessionId() != null && cadreInfo.getProfessionId() > 0)
 				cadre.setOccupation(occupationDAO.get(cadreInfo.getProfessionId()));
 				if(cadreInfo.getCasteCategory() != null && cadreInfo.getCasteCategory() > 0)
@@ -459,11 +493,11 @@ public List<SelectOptionVO> getBoothsInAConstituency(Long constituencyId,Long pu
 					annunaIncome = new Double(cadreInfo.getAnnualIncome().trim());
 
 				cadre.setAnnualIncome(annunaIncome);
-				Double sourceIncome = null;
-				if (cadreInfo.getSourceIncome() != null && (!StringUtils.isBlank(cadreInfo.getSourceIncome())))
-					
-				cadre.setIncomeSource(sourceIncome);
-				
+	
+				if (cadreInfo.getSourceIncome() != null && cadreInfo.getSourceIncome().trim().length() > 0)
+				{	
+				  cadre.setIncomeSource(cadreInfo.getSourceIncome());
+				}
 				SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_PATTERN);
 				if (cadreInfo.getActiveDateField() != null && (!StringUtils.isBlank(cadreInfo.getActiveDateField()))) {
 					cadre.setActiveDateField(format.parse(cadreInfo.getActiveDateField()));
@@ -636,7 +670,20 @@ public CadreVo convertCadreToCadreVo(Cadre cadre) {
 	cadreInfo.setMobileNo(cadre.getMobile() != null ? cadre.getMobile() : "");
 	cadreInfo.setLandNo(cadre.getTelephone() != null ? cadre.getTelephone() : "");
 	cadreInfo.setEmailId(cadre.getEmail() != null ? cadre.getEmail() : "");
+	if(cadre.getVoter() != null){
+		cadreInfo.setVoterCardId(cadre.getVoter().getVoterIDCardNo());
+	}
+	if(cadre.getIsVerified().equalsIgnoreCase("N")){
+		cadreInfo.setIsVerified(1l);
+	}else{
+		cadreInfo.setIsVerified(2l);
+	}
 	currentAddress = cadre.getCurrentAddress();
+	if(cadre.getAddress() != null){
+		cadreInfo.setAddress(cadre.getAddress());
+	}else{
+		cadreInfo.setAddress("");
+	}
 	if(currentAddress != null)
 	{
 	//cadreInfo.setHno(currentAddress.getHouseNo() != null ? currentAddress.getHouseNo() :"");
@@ -667,15 +714,14 @@ public CadreVo convertCadreToCadreVo(Cadre cadre) {
 	
 	}
 	
-	Long  edu= 0L;
-	cadreInfo.setEducation(edu = cadre.getEducation() != null ? cadre.getEducation().getEduQualificationId() : null);
-	String eduStr = "";
-	cadreInfo.setEducationStr(eduStr = cadre.getEducation() != null ? cadre.getEducation().getQualification() : "");
-	Long professn = 0L;
-	cadreInfo.setProfessionId(professn = cadre.getOccupation() != null ? cadre.getOccupation().getOccupationId() : null);
-	String profsnStr = "";
-	cadreInfo.setProfessionStr(profsnStr = cadre.getOccupation() != null ? cadre.getOccupation().getOccupation() : "");
-	
+	if(cadre.getEducation() != null){
+		cadreInfo.setEducationId(cadre.getEducation().getEduQualificationId());
+		cadreInfo.setEducationStr(cadre.getEducation().getQualification());
+	}
+	if(cadre.getOccupation() != null){
+		cadreInfo.setProfessionId(cadre.getOccupation().getOccupationId());
+		cadreInfo.setProfessionStr(cadre.getOccupation().getOccupation());		
+	}
 	if(cadre.getAnnualIncome() != null)
 	cadreInfo.setAnnualIncome(new Long(cadre.getAnnualIncome().longValue()).toString());
 	if(cadre.getIncomeSource() != null)
@@ -694,7 +740,7 @@ public CadreVo convertCadreToCadreVo(Cadre cadre) {
 		c.setTime(date);
 		String dateStr = "";
 		int day =c.get(Calendar.DAY_OF_MONTH);
-		int month = c.get(Calendar.MONTH)+1;
+		int month = c.get(Calendar.MONTH);
 		int year = c.get(Calendar.YEAR);
 		dateStr=dateStr+day+"/"+month+"/"+year;
 		cadreInfo.setActiveDateField(dateStr);
