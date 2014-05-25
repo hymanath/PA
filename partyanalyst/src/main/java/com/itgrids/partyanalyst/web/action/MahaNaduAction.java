@@ -679,6 +679,10 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 
     public String saveOrUpdataCadre(){
       try{
+    	  session = request.getSession();
+  		
+  		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+    	  cadreVo.setUserId(regVO.getRegistrationID());
     	  if(partyDesigIds != null && partyDesigIds.length() > 0){
     		  List<Long> pIds = new ArrayList<Long>();
     		  String[] ids = partyDesigIds.split(",");
