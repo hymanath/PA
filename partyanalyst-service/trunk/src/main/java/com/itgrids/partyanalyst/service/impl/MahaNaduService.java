@@ -678,8 +678,8 @@ public CadreVo convertCadreToCadreVo(Cadre cadre) {
 	}else{
 		cadreInfo.setIsVerified(2l);
 	}
-	if(cadreInfo.getImage() != null && cadreInfo.getImage().trim().length() > 0){
-		cadreInfo.setPath(cadreInfo.getImage());
+	if(cadre.getImage() != null && cadre.getImage().trim().length() > 0){
+		cadreInfo.setPath(cadre.getImage());
 	}
 	currentAddress = cadre.getCurrentAddress();
 	if(cadre.getAddress() != null){
