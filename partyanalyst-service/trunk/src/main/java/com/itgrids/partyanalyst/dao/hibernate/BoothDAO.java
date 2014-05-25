@@ -1852,7 +1852,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		if(localElecBodyId != null && localElecBodyId.longValue() > 0){
 			 queryStr.append(" and model.localBody.localElectionBodyId =:localElecBodyId");
 		}
-		queryStr.append(" order by model.partNo");
+		queryStr.append(" order by  cast(model.partNo , int)");
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameter("constituencyId",constituencyId);
 		query.setParameter("publicationDateId",publicationDateId);

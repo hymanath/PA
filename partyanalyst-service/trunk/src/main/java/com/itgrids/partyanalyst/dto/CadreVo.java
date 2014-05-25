@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +48,10 @@ public class CadreVo implements Serializable{
 	private List<Long> partyDesignationList,govtDesignationList;
 	private String address;
 	private Long cadreId;
+	private File uploadImage;
+	private String uploadImageContentType;
+	private String uploadImageFileName;
+	private String path;
 	private String bloodGroupStr;
 	
 	private String booth;
@@ -55,8 +60,39 @@ public class CadreVo implements Serializable{
 	private String professionStr;
 	private String casteCategoryName;
 	
-	
-	
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
+
+	public File getUploadImage() {
+		return uploadImage;
+	}
+
+	public void setUploadImage(File uploadImage) {
+		this.uploadImage = uploadImage;
+	}
+
+	public String getUploadImageContentType() {
+		return uploadImageContentType;
+	}
+
+	public void setUploadImageContentType(String uploadImageContentType) {
+		this.uploadImageContentType = uploadImageContentType;
+	}
+
+	public String getUploadImageFileName() {
+		return uploadImageFileName;
+	}
+
+	public void setUploadImageFileName(String uploadImageFileName) {
+		this.uploadImageFileName = uploadImageFileName;
+	}
+
 	public String getCasteCategoryName() {
 		return casteCategoryName;
 	}

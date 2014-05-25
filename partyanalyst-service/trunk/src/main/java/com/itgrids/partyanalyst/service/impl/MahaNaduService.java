@@ -1,25 +1,35 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+import javax.imageio.stream.FileImageOutputStream;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
-import org.apache.commons.lang.StringUtils;
+
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.ICadreGovtDesignationDAO;
 import com.itgrids.partyanalyst.dao.ICadrePartyDesignationDAO;
+import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
+import com.itgrids.partyanalyst.dao.IGovtDesignationDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
+import com.itgrids.partyanalyst.dao.IPartyDesignationDAO;
 import com.itgrids.partyanalyst.dao.ISocialCategoryDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
@@ -62,9 +72,37 @@ public class MahaNaduService implements IMahaNaduService{
 	private IHamletDAO hamletDAO;
 	private TransactionTemplate transactionTemplate = null;
 	private ICadreDAO cadreDAO;
-	private IBoothDAO boothDAO;
+	private ICasteStateDAO casteStateDAO;
+	private IPartyDesignationDAO partyDesignationDAO;
+	private IGovtDesignationDAO govtDesignationDAO;
+	private CadreManagementService cadreManagementService;
 	
 	
+	public CadreManagementService getCadreManagementService() {
+		return cadreManagementService;
+	}
+
+	public void setCadreManagementService(
+			CadreManagementService cadreManagementService) {
+		this.cadreManagementService = cadreManagementService;
+	}
+
+	public IGovtDesignationDAO getGovtDesignationDAO() {
+		return govtDesignationDAO;
+	}
+
+	public void setGovtDesignationDAO(IGovtDesignationDAO govtDesignationDAO) {
+		this.govtDesignationDAO = govtDesignationDAO;
+	}
+
+	public IPartyDesignationDAO getPartyDesignationDAO() {
+		return partyDesignationDAO;
+	}
+
+	public void setPartyDesignationDAO(IPartyDesignationDAO partyDesignationDAO) {
+		this.partyDesignationDAO = partyDesignationDAO;
+	}
+
 	public ICadreDAO getCadreDAO() {
 		return cadreDAO;
 	}
@@ -171,15 +209,24 @@ public ICadrePartyDesignationDAO getCadrePartyDesignationDAO() {
 		this.hamletDAO = hamletDAO;
 	}
 
-	public IBoothDAO getBoothDAO() {
-		return boothDAO;
-	}
-	
-	public void setBoothDAO(IBoothDAO boothDAO) {
-		this.boothDAO = boothDAO;
-	}
+ private IBoothDAO boothDAO;
+ IBoothDAO getBoothDAO() {
+	return boothDAO;
+}
+
+public void setBoothDAO(IBoothDAO boothDAO) {
+	this.boothDAO = boothDAO;
+}
  
- public List<SelectOptionVO> getBoothsInAConstituency(Long constituencyId,Long publicationID,Long tehsilId,Long localElecBodyId){
+ public ICasteStateDAO getCasteStateDAO() {
+	return casteStateDAO;
+}
+
+public void setCasteStateDAO(ICasteStateDAO casteStateDAO) {
+	this.casteStateDAO = casteStateDAO;
+}
+
+public List<SelectOptionVO> getBoothsInAConstituency(Long constituencyId,Long publicationID,Long tehsilId,Long localElecBodyId){
 	 List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
 	 try{
 		 List<Object[]> boothsList = boothDAO.getBoothOfAConstituencyByPublication(constituencyId, publicationID,tehsilId,localElecBodyId);
@@ -187,6 +234,7 @@ public ICadrePartyDesignationDAO getCadrePartyDesignationDAO() {
 			 SelectOptionVO vo = new SelectOptionVO();
 			 vo.setId((Long)boothInfo[0]);
 			 vo.setName(boothInfo[1].toString());
+			 returnList.add(vo);
 		 }
 	 }catch(Exception e){
 		 LOG.error("Exception rised in getBoothsInAConstituency ",e);
@@ -284,16 +332,45 @@ public ICadrePartyDesignationDAO getCadrePartyDesignationDAO() {
  
  public List<SelectOptionVO> getCasteCategories(){
 	 List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
+	 try{
+	 List<Object[]> casteDetails = casteStateDAO.getAllCasteDetailsForVoters(1l);
+	 for(Object[] casteData:casteDetails){
+		 SelectOptionVO vo = new SelectOptionVO();
+		 vo.setId((Long)casteData[0]);
+		 vo.setName(casteData[1].toString());
+		 returnList.add(vo);
+	 }
+	 }catch(Exception e){
+		 LOG.error("Exception rised in getCasteCategories ",e);
+	 }
 	 return returnList;
  }
  
  public List<SelectOptionVO> getPartyDesignations(){
 	 List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
+	 try{
+		 List<Object[]> partyDesigDetails = partyDesignationDAO.getAllPartyDesignation();
+		 for(Object[] partyDesig:partyDesigDetails){
+			 SelectOptionVO vo = new SelectOptionVO();
+			 vo.setId((Long)partyDesig[0]);
+			 vo.setName(partyDesig[1].toString());
+			 returnList.add(vo);
+		 }
+	 }catch(Exception e){
+		 LOG.error("Exception rised in getPartyDesignations ",e);
+	 }
 	 return returnList;
  }
  
  public List<SelectOptionVO> getgovernmentDesignations(){
 	 List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
+	 List<Object[]> govDesigDetails = govtDesignationDAO.getAllGovtDesignation();
+	 for(Object[] govDesig:govDesigDetails){
+		 SelectOptionVO vo = new SelectOptionVO();
+		 vo.setId((Long)govDesig[0]);
+		 vo.setName(govDesig[1].toString());
+		 returnList.add(vo);
+	 }
 	 return returnList;
  }
 
@@ -304,6 +381,8 @@ public ICadrePartyDesignationDAO getCadrePartyDesignationDAO() {
 		ResultStatus rs = new ResultStatus();
 		try{
 		Cadre cadreObj = saveCadreDetails(CadreVoToSave);
+		cadrePartyDesignationDAO.deleteExisting(cadreObj.getCadreId());
+		cadreGovtDesignationDAO.deleteExisting(cadreObj.getCadreId());
 		if (cadreObj != null)
 		{
 			LOG.debug("inside cadre obj block");
@@ -312,10 +391,12 @@ public ICadrePartyDesignationDAO getCadrePartyDesignationDAO() {
 			{
 				for(Long partyDesgId : CadreVoToSave.getPartyDesignationList())
 				{
-				CadrePartyDesignation cadrePartyDesignation = new CadrePartyDesignation();
-				cadrePartyDesignation.setCadre(cadreObj);
-				cadrePartyDesignation.setCadrePartyDesignationId(partyDesgId);
-				cadrePartyDesignationDAO.save(cadrePartyDesignation);
+					if(partyDesgId != null){
+						CadrePartyDesignation cadrePartyDesignation = new CadrePartyDesignation();
+						cadrePartyDesignation.setCadre(cadreObj);
+						cadrePartyDesignation.setPartyDesignation(partyDesignationDAO.get(partyDesgId));
+						cadrePartyDesignationDAO.save(cadrePartyDesignation);
+					}
 				}
 			}
 			
@@ -323,10 +404,12 @@ public ICadrePartyDesignationDAO getCadrePartyDesignationDAO() {
 			{
 				for(Long govtDesgId : CadreVoToSave.getGovtDesignationList())
 				{
+				 if(govtDesgId != null){
 					CadreGovtDesignation cadreGovtDesignation = new CadreGovtDesignation();
 					cadreGovtDesignation.setCadre(cadreObj);
-					cadreGovtDesignation.setCadreGovtDesignationId(govtDesgId);
+					cadreGovtDesignation.setGovtDesignation(govtDesignationDAO.get(govtDesgId));
 					cadreGovtDesignationDAO.save(cadreGovtDesignation);
+				 }
 				}
 			}
 			
@@ -410,16 +493,16 @@ public ICadrePartyDesignationDAO getCadrePartyDesignationDAO() {
 				if(cadreInfo.getProfessionId() != null && cadreInfo.getProfessionId() > 0)
 				cadre.setOccupation(occupationDAO.get(cadreInfo.getProfessionId()));
 				if(cadreInfo.getCasteCategory() != null && cadreInfo.getCasteCategory() > 0)
-				cadre.setCasteCategory(socialCategoryDAO.get(cadreInfo.getCasteCategory()));
-				Double annunaIncome = 0d;
+				cadre.setCasteState(casteStateDAO.get(cadreInfo.getCasteCategory()));
+				Double annunaIncome = null;
 				if (cadreInfo.getAnnualIncome() != null && (!StringUtils.isBlank(cadreInfo.getAnnualIncome())))
-					annunaIncome = new Double(cadreInfo.getAnnualIncome());
+					annunaIncome = new Double(cadreInfo.getAnnualIncome().trim());
 
 				cadre.setAnnualIncome(annunaIncome);
-				Double sourceIncome = 0d;
+				Double sourceIncome = null;
 				if (cadreInfo.getSourceIncome() != null && (!StringUtils.isBlank(cadreInfo.getSourceIncome())))
-					sourceIncome = new Double(cadreInfo.getSourceIncome());
-				cadre.setSourceIncome(sourceIncome);
+					
+				cadre.setIncomeSource(sourceIncome);
 				
 				SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_PATTERN);
 				if (cadreInfo.getActiveDateField() != null && (!StringUtils.isBlank(cadreInfo.getActiveDateField()))) {
@@ -434,11 +517,11 @@ public ICadrePartyDesignationDAO getCadrePartyDesignationDAO() {
 				//currentAddress.setStreet(cadreInfo.getStreet());
 				//currentAddress.setPinCode(cadreInfo.getPinCode());
 				
-				if(cadreInfo.getDistrictId() != null)
+				if(cadreInfo.getDistrictId() != null && cadreInfo.getDistrictId().longValue() > 0)
 					 currentAddress.setDistrict(districtDAO.get(new Long(cadreInfo.getDistrictId())));
-				if(cadreInfo.getConstituencyId() != null)
-				currentAddress.setConstituency(constituencyDAO.get(cadreInfo.getConstituencyId()));
-				if(cadreInfo.getBoothNo() != null && !cadreInfo.getBoothNo().equals("0"))
+				if(cadreInfo.getConstituencyId() != null && cadreInfo.getConstituencyId().longValue() > 0)
+				  currentAddress.setConstituency(constituencyDAO.get(cadreInfo.getConstituencyId()));
+				if(cadreInfo.getBoothNo() != null && cadreInfo.getBoothNo().longValue() > 0)
 				{
 					currentAddress.setBooth(boothDAO.get(cadreInfo.getBoothNo()));
 				}
@@ -461,8 +544,15 @@ public ICadrePartyDesignationDAO getCadrePartyDesignationDAO() {
 				
 				currentAddress = userAddressDAO.save(currentAddress);
 				cadre.setCurrentAddress(currentAddress);
-				cadreDAO.save(cadre);
-				
+				cadre = cadreDAO.save(cadre);
+				if(cadreInfo.getUploadImage() != null){
+					String result = uploadCadreImage(cadre.getCadreId(), cadreInfo.getPath(), cadreInfo.getUploadImageContentType(), cadreInfo.getUploadImage());
+					if(result != null){
+						cadreManagementService.updateCadreImage(cadre.getCadreId(),cadre.getCadreId().toString()+"."+cadreInfo.getUploadImageContentType().split("/")[1]);
+					}else{
+						cadreManagementService.updateCadreImage(cadre.getCadreId(),"human.jpg");
+					}
+				}
 			}
 			catch(Exception e)
 			{
@@ -472,6 +562,40 @@ public ICadrePartyDesignationDAO getCadrePartyDesignationDAO() {
 			} });
 		return cadreObj;
 		}
+	
+	
+	public String uploadCadreImage(Long cadreId,String url,String uploadImageContentType,File uploadImage)
+	{
+		try{
+			String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+			
+			String filePath = url + "images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator;
+			
+			LOG.info("Cadre File Path -- "+filePath);
+			
+			BufferedImage image = ImageIO.read(uploadImage);
+			
+			
+			if(image == null)
+				return null;
+			LOG.info("Image is Read");
+			String constiName[] = uploadImageContentType.split("/");
+			String fileName = filePath+cadreId.toString()+"."+constiName[1];
+			LOG.info("file name -- "+fileName);
+			//String imageName =  cadreId.toString()+"."+constiName[1];
+			
+			FileImageOutputStream filName = new FileImageOutputStream(new File(fileName));
+			
+			ImageIO.write(image, constiName[1],filName);
+			LOG.info("file uploaded");
+            filName.close();
+            return "success";
+		}
+		catch(Exception e)
+		{
+			return null;
+		}
+	}
 	
 public CadreVo getCadreCompleteInfo(Long cadreId) {
 		
@@ -551,16 +675,30 @@ public CadreVo convertCadreToCadreVo(Cadre cadre) {
 	
 	if(cadre.getAnnualIncome() != null)
 	cadreInfo.setAnnualIncome(new Long(cadre.getAnnualIncome().longValue()).toString());
-	if(cadre.getSourceIncome() != null)
-		cadreInfo.setSourceIncome(new Long(cadre.getSourceIncome().longValue()).toString());
-		
-	if(cadre.getCasteCategory() != null){
-		cadreInfo.setCasteCategory(cadre.getCasteCategory().getSocialCategoryId());
-		cadreInfo.setCasteCategoryName(cadre.getCasteCategory().getCategory());
+	if(cadre.getIncomeSource() != null)
+		cadreInfo.setSourceIncome(cadre.getIncomeSource().toString());
+	else
+		cadreInfo.setSourceIncome("");
+	if(cadre.getCasteState() != null){
+		cadreInfo.setCasteCategory(cadre.getCasteState().getCasteStateId());
+		cadreInfo.setCasteCategoryName(cadre.getCasteState().getCaste().getCasteName());
 	}
 	
 	cadreInfo.setMemberType(cadre.getMemberType());
-	cadreInfo.setActiveDateField(cadre.getActiveDateField() != null ? cadre.getActiveDateField().toString() : "");
+	if(cadre.getActiveDateField() != null){
+	    Date date = cadre.getActiveDateField();
+		Calendar c = Calendar.getInstance(); 
+		c.setTime(date);
+		String dateStr = "";
+		int day =c.get(Calendar.DAY_OF_MONTH);
+		int month = c.get(Calendar.MONTH)+1;
+		int year = c.get(Calendar.YEAR);
+		dateStr=dateStr+day+"/"+month+"/"+year;
+		cadreInfo.setActiveDateField(dateStr);
+	}else{
+		cadreInfo.setActiveDateField("");
+	}
+	
 	List<Object[]> partyDesignations=cadrePartyDesignationDAO.getPartyDesignationsByCadreId(cadre.getCadreId());
 	List<Long> partyDesignationList = new ArrayList<Long>();
 	List<Long> govtDesignationList = new ArrayList<Long>();

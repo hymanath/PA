@@ -53,7 +53,7 @@ public List<Object[]> getAllCasteInfoDetails(){
 	
     public List<Object[]> getAllCasteDetailsForVoters(Long stateId){
 		
-		Query query = getSession().createQuery("select model.casteStateId , model.caste.casteName from CasteState model where model.state.stateId = :stateId");
+		Query query = getSession().createQuery("select model.casteStateId , model.caste.casteName from CasteState model where model.state.stateId = :stateId order by model.caste.casteName");
 		query.setParameter("stateId", stateId);
 		return query.list();
 		
