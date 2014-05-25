@@ -13,7 +13,6 @@ import javax.imageio.stream.FileImageOutputStream;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -34,7 +33,7 @@ import com.itgrids.partyanalyst.dao.ISocialCategoryDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
-import com.itgrids.partyanalyst.dto.CadreInfo;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dto.CadreVo;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -42,17 +41,9 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.CadreGovtDesignation;
-import com.itgrids.partyanalyst.model.CadreLanguageEfficiency;
-import com.itgrids.partyanalyst.model.CadreParticipatedTrainingCamps;
 import com.itgrids.partyanalyst.model.CadrePartyDesignation;
-import com.itgrids.partyanalyst.model.CadreSkills;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.District;
-import com.itgrids.partyanalyst.model.Hamlet;
-import com.itgrids.partyanalyst.model.LocalElectionBody;
-import com.itgrids.partyanalyst.model.State;
-import com.itgrids.partyanalyst.model.Tehsil;
-import com.itgrids.partyanalyst.model.Township;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IMahaNaduService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -76,8 +67,17 @@ public class MahaNaduService implements IMahaNaduService{
 	private IPartyDesignationDAO partyDesignationDAO;
 	private IGovtDesignationDAO govtDesignationDAO;
 	private CadreManagementService cadreManagementService;
+	private IUserDAO userDAO;
 	
 	
+	public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+
 	public CadreManagementService getCadreManagementService() {
 		return cadreManagementService;
 	}
@@ -378,54 +378,12 @@ public List<SelectOptionVO> getBoothsInAConstituency(Long constituencyId,Long pu
  public ResultStatus saveCadreInfoForMahaNadu(CadreVo CadreVoToSave)
 	{
 		
-		ResultStatus rs = new ResultStatus();
-		try{
-		Cadre cadreObj = saveCadreDetails(CadreVoToSave);
-		cadrePartyDesignationDAO.deleteExisting(cadreObj.getCadreId());
-		cadreGovtDesignationDAO.deleteExisting(cadreObj.getCadreId());
-		if (cadreObj != null)
-		{
-			LOG.debug("inside cadre obj block");
-			
-			if(CadreVoToSave.getPartyDesignationList() != null && CadreVoToSave.getPartyDesignationList().size() > 0)
-			{
-				for(Long partyDesgId : CadreVoToSave.getPartyDesignationList())
-				{
-					if(partyDesgId != null){
-						CadrePartyDesignation cadrePartyDesignation = new CadrePartyDesignation();
-						cadrePartyDesignation.setCadre(cadreObj);
-						cadrePartyDesignation.setPartyDesignation(partyDesignationDAO.get(partyDesgId));
-						cadrePartyDesignationDAO.save(cadrePartyDesignation);
-					}
-				}
-			}
-			
-			if(CadreVoToSave.getGovtDesignationList() != null && CadreVoToSave.getGovtDesignationList().size() > 0)
-			{
-				for(Long govtDesgId : CadreVoToSave.getGovtDesignationList())
-				{
-				 if(govtDesgId != null){
-					CadreGovtDesignation cadreGovtDesignation = new CadreGovtDesignation();
-					cadreGovtDesignation.setCadre(cadreObj);
-					cadreGovtDesignation.setGovtDesignation(govtDesignationDAO.get(govtDesgId));
-					cadreGovtDesignationDAO.save(cadreGovtDesignation);
-				 }
-				}
-			}
-			
-			
-			
-		}
-		rs.setResultCode(ResultCodeMapper.SUCCESS);
-	}catch(Exception e){
-		LOG.debug(e);
-		rs.setExceptionEncountered(e);
-		rs.setExceptionClass(e.getClass().toString());
-		rs.setExceptionMsg(getExceptionMessage(e.getClass().toString()));
-		rs.setResultCode(ResultCodeMapper.FAILURE);
-		rs.setResultPartial(true);
 		
-	}
+		
+			ResultStatus rs = saveCadreDetails(CadreVoToSave);
+		
+		
+	
 		return rs;	
 	}
 	public final String getExceptionMessage(String expClass) {
@@ -452,18 +410,20 @@ public List<SelectOptionVO> getBoothsInAConstituency(Long constituencyId,Long pu
 		
 	 return false;
 	}
-	public Cadre saveCadreDetails (final CadreVo cadreInfo) 
+	public ResultStatus saveCadreDetails (final CadreVo cadreInfo) 
 	{
-		Cadre cadreObj = (Cadre) transactionTemplate.execute(new TransactionCallback() {
+		ResultStatus rs = (ResultStatus) transactionTemplate.execute(new TransactionCallback() {
 			public Object doInTransaction(TransactionStatus status) {
 
 			UserAddress currentAddress = new UserAddress();
-			
+			ResultStatus rs = new ResultStatus();
 			Cadre cadre = null;
 			if(cadreInfo.getCadreId() != null && cadreInfo.getCadreId() > 0)
 				cadre = cadreDAO.get(cadreInfo.getCadreId());
-			else
+			else{
 				cadre = new Cadre();
+				cadre.setUser(userDAO.get(cadreInfo.getCadreId()));
+			}
 			try {
 				
 				
@@ -553,14 +513,57 @@ public List<SelectOptionVO> getBoothsInAConstituency(Long constituencyId,Long pu
 						cadreManagementService.updateCadreImage(cadre.getCadreId(),"human.jpg");
 					}
 				}
+				cadrePartyDesignationDAO.deleteExisting(cadre.getCadreId());
+				cadreGovtDesignationDAO.deleteExisting(cadre.getCadreId());
+				if (cadre != null)
+				{
+					LOG.debug("inside cadre obj block");
+					
+					if(cadreInfo.getPartyDesignationList() != null && cadreInfo.getPartyDesignationList().size() > 0)
+					{
+						for(Long partyDesgId : cadreInfo.getPartyDesignationList())
+						{
+							if(partyDesgId != null){
+								CadrePartyDesignation cadrePartyDesignation = new CadrePartyDesignation();
+								cadrePartyDesignation.setCadre(cadre);
+								cadrePartyDesignation.setPartyDesignation(partyDesignationDAO.get(partyDesgId));
+								cadrePartyDesignationDAO.save(cadrePartyDesignation);
+							}
+						}
+					}
+					
+					if(cadreInfo.getGovtDesignationList() != null && cadreInfo.getGovtDesignationList().size() > 0)
+					{
+						for(Long govtDesgId : cadreInfo.getGovtDesignationList())
+						{
+						 if(govtDesgId != null){
+							CadreGovtDesignation cadreGovtDesignation = new CadreGovtDesignation();
+							cadreGovtDesignation.setCadre(cadre);
+							cadreGovtDesignation.setGovtDesignation(govtDesignationDAO.get(govtDesgId));
+							cadreGovtDesignationDAO.save(cadreGovtDesignation);
+						 }
+						}
+					}
+					
+					
+					
+				}
+				rs.setResultCode(ResultCodeMapper.SUCCESS);
 			}
 			catch(Exception e)
 			{
+				rs.setExceptionEncountered(e);
+				rs.setExceptionClass(e.getClass().toString());
+				rs.setExceptionMsg(getExceptionMessage(e.getClass().toString()));
+				rs.setResultCode(ResultCodeMapper.FAILURE);
+				rs.setResultPartial(true);
 				e.printStackTrace();
+				LOG.error("Exception saveCadreDetails ", e);
+				LOG.debug(e);
 			}
-				return cadre;
+				return rs;
 			} });
-		return cadreObj;
+		return rs;
 		}
 	
 	

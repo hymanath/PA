@@ -25,6 +25,7 @@ public class CadrePartyDesignationDAO extends GenericDaoHibernate<CadrePartyDesi
 	public void deleteExisting(Long cadreId)
 	{
 		 Query query = getSession().createQuery("delete from CadrePartyDesignation model where model.cadre.cadreId =:cadreId ");
+		 query.setParameter("cadreId", cadreId);
 		 query.executeUpdate();
 	}
 }
