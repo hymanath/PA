@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.service.impl.RegionServiceDataImp;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.ISessionConstants;
 import com.opensymphony.xwork2.Action;
@@ -100,10 +101,28 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 	private IMahaNaduService mahaNaduService;
 	private String name;
 	private Long onlineRegId;
+	private String partyDesigIds="";
+	private String govtDesigIds="";
 	//private RegistrationVO registrationVO;
 	
 	private IConstituencyDAO constituencyDAO;
 	
+	public String getPartyDesigIds() {
+		return partyDesigIds;
+	}
+
+	public void setPartyDesigIds(String partyDesigIds) {
+		this.partyDesigIds = partyDesigIds;
+	}
+
+	public String getGovtDesigIds() {
+		return govtDesigIds;
+	}
+
+	public void setGovtDesigIds(String govtDesigIds) {
+		this.govtDesigIds = govtDesigIds;
+	}
+
 	public InputStream getInputStream() {
 		return inputStream;
 	}
@@ -499,10 +518,6 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 		if(regVO==null)
 			return ERROR;
 		
-		
-		
-		
-		
 		if(session.getAttribute(ISessionConstants.BLOOD_GROUPS) == null){
 			  bloodGroupTypes = cadreManagementService.getAllBloodGroupTypes();
 		      session.setAttribute(ISessionConstants.BLOOD_GROUPS,bloodGroupTypes);
@@ -664,6 +679,24 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 
     public String saveOrUpdataCadre(){
       try{
+    	  if(partyDesigIds != null && partyDesigIds.length() > 0){
+    		  List<Long> pIds = new ArrayList<Long>();
+    		  String[] ids = partyDesigIds.split(",");
+    		  for(String id:ids){
+    			  pIds.add(Long.parseLong(id));
+    		  }
+    		  cadreVo.setPartyDesignationList(pIds);
+    	  }
+    	  
+    	  if(govtDesigIds != null && govtDesigIds.length() > 0){
+    		  List<Long> govIds = new ArrayList<Long>();
+    		  String[] ids = govtDesigIds.split(",");
+    		  for(String id:ids){
+    			  govIds.add(Long.parseLong(id));
+    		  }
+    		  cadreVo.setGovtDesignationList(govIds);
+    	  }
+    	  cadreVo.setPath(IWebConstants.STATIC_CONTENT_FOLDER_URL);
     	ResultStatus result = mahaNaduService.saveCadreInfoForMahaNadu(cadreVo);
     	
 		if(result.getResultCode() == ResultCodeMapper.SUCCESS){
