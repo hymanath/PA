@@ -23,6 +23,7 @@ public class CadreGovtDesignationDAO extends GenericDaoHibernate<CadreGovtDesign
 	public void deleteExisting(Long cadreId)
 	{
 		 Query query = getSession().createQuery("delete from CadreGovtDesignation model where model.cadre.cadreId =:cadreId ");
+		 query.setParameter("cadreId", cadreId);
 		 query.executeUpdate();
 	}
 }

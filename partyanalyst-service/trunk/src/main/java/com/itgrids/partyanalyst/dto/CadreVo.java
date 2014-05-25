@@ -7,6 +7,7 @@ import java.util.List;
 
 public class CadreVo implements Serializable{
 	
+	private Long userId;
 	private String firstName;
 	private String lastName;
 	private String mobileNo;
@@ -468,6 +469,14 @@ public class CadreVo implements Serializable{
 
 	public void setCount(Long count) {
 		this.count = count;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 	
 	
