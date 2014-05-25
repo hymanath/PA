@@ -286,16 +286,16 @@ border:1px solid #000000;
 							<s:textfield type="text" id="cadreVo_fatherName" name="cadreVo.fatherName"/>  
 						</div>
 						<div class="span5">	
-							<label>Blood Group &nbsp&nbsp &nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp &nbsp</label>             
+							<label>Blood Group &nbsp&nbsp &nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp</label>             
 							<s:select id="bloodGroupId" cssClass="regionSelect input-medium" name="cadreVo.bloodGroupId" list="#session.bloodGroups" listKey="id" listValue="name" headerKey="0" headerValue="Select Group" ></s:select>
 							<br/><label class="m_top20">Age&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp &nbsp&nbsp&nbsp &nbsp&nbsp&nbsp	 </label>             
-							<s:textfield type="text" class="input-medium" id="cadreVo_age" name="cadreVo.age"/>  
+							<s:textfield type="text" cssClass="input-medium" id="cadreVo_age" name="cadreVo.age"/>  
 							
 							<br/><label class="m_top20">No of Family Members &nbsp</label>             
-							<s:textfield type="text" class="input-medium" id="cadreVo_noOfFamilyMembers" name="cadreVo.noOfFamilyMembers" /> 
+							<s:textfield type="text" cssClass="input-medium" id="cadreVo_noOfFamilyMembers" name="cadreVo.noOfFamilyMembers" /> 
 							
 							<br>	<label class="m_top20">No of Voters &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span></label>             
-							<s:textfield type="text" class="input-medium" id="cadreVo_noOfVoters" name="cadreVo.noOfVoters" /> 
+							<s:textfield type="text" cssClass="input-medium" id="cadreVo_noOfVoters" name="cadreVo.noOfVoters" /> 
 						</div>
 						<div class="span2">	
 							<a class="thumbnail" href="#">
@@ -320,14 +320,14 @@ border:1px solid #000000;
 				<h3>Contact Details</h3>
 				<div class="well well-small mahanadu-well form-inline">
 				
-				  <label>Mobile No<span class="text-error"><span class="text-error">* </span> </span></label>             
+				  <label>Mobile No&nbsp&nbsp<span class="text-error"><span class="text-error">* </span> </span></label>             
 					<s:textfield type="text" name="cadreVo.mobileNo"  id="mobileNoId"/>      
 				
-				  <label>&nbsp&nbsp&nbsp&nbsp&nbsp Land No</label>              
-					<s:textfield type="text" id="cadreVo_landNo" name="cadreVo.landNo"/>
+				  <label>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Land No&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</label>              
+					<s:textfield type="text" id="cadreVo_landNo" name="cadreVo.landNo"/><br/>
 					
 				  <label >&nbsp&nbsp&nbsp&nbsp&nbsp Email Id</label>              
-					<s:textfield  type="text" id="cadreVo_emailId" name="cadreVo.emailId"/> 
+					<s:textfield  cssStyle="margin-top:7px;" type="text" id="cadreVo_emailId" name="cadreVo.emailId"/> 
 					
 					<label >&nbsp&nbsp&nbsp&nbsp&nbsp Is Cadre Verified</label>              
 					<s:select id="cadreVerifId" cssClass="regionSelect input-xlarge" name="cadreVo.isVerified" list="#session.cadreVerified" listKey="id" listValue="name"  ></s:select>
@@ -355,9 +355,9 @@ border:1px solid #000000;
 							<br/><label class="m_top20">Constituency<span class="text-error">* </span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
 							<s:select id="constituencyField" cssClass="regionSelect input-xlarge" name="cadreVo.constituencyId" list="#session.constituenciesList" listKey="id" listValue="name" onchange="getBooths('currentAdd','constituencyField','boothField',this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreReg','boothsInTehsilOrMunicipality');"></s:select> 
 						
-							<label class="m_top20">Booth No &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
+							<label class="m_top20">Booth No &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
 							<s:select id="boothField" cssClass="regionSelect input-xlarge" name="cadreVo.boothNo" list="#session.boothsList" listKey="id" listValue="name"></s:select>
-							<label class="m_top20">VoterId &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
+							<label class="m_top20">VoterId &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
 							<s:textfield  type="text" id="cadreVo_voterCardId" name="cadreVo.voterCardId"/>
 						</div>						
 					</div>
@@ -372,15 +372,16 @@ border:1px solid #000000;
 							<s:select id="educationField" cssClass="regionSelect input-xlarge" name="cadreVo.educationId" list="#session.eduQualsList" listKey="id" listValue="name"  headerKey="0" headerValue="Select Education"></s:select>
 							<br><label class="m_top20">Profession &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
                             <s:select id="professionField" cssClass="regionSelect input-xlarge" name="cadreVo.professionId"list="#session.occupationsList" listKey="id" listValue="name"  headerKey="0" headerValue="Select Occupation"></s:select>							
+						    <br><label class="m_top20">Cast Category &nbsp;&nbsp;&nbsp;</label>             
+                            <s:select id="casteCateg" cssClass="regionSelect input-xlarge" name="cadreVo.casteCategory" list="#session.casteCategory" listKey="id" listValue="name" headerKey="0" headerValue="Select Group" ></s:select>					
 						</div>
 						<div class="span6">	
 							<label>Annual Income&nbsp;&nbsp;</label>  
                             <s:textfield type="text" class="input-small" id="cadreVo_annualIncome" name="cadreVo.annualIncome"/>					
-							<label>&nbsp;&nbsp;Income Source</label>  
-                             <s:textfield type="text" id="incomeSource" cssClass="regionSelect input-small" name="cadreVo.sourceIncome" />							
+							<label>&nbsp;Income Source</label>  
+                             <s:textfield type="text" id="incomeSource" cssStyle="margin-top:5px;" name="cadreVo.sourceIncome" />							
 							<!--<s:select id="incomeSource" cssClass="regionSelect input-small" name="cadreVo.sourceIncome" list="#session.incSource" listKey="id" listValue="name" headerKey="0" headerValue="Select Group" ></s:select>-->
-							<br><label class="m_top20">Cast Category &nbsp;&nbsp;</label>             
-                            <s:select id="casteCateg" cssClass="regionSelect span8 xlarge" name="cadreVo.casteCategory" list="#session.casteCategory" listKey="id" listValue="name" headerKey="0" headerValue="Select Group" ></s:select>							
+									
 						</div>						
 					</div>
 				</div>
