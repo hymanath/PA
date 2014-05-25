@@ -169,6 +169,7 @@
 			<result type="redirect" name="hamletBoothMapperAction">hamletBoothMapperAction.action</result>
 			<result type="redirect" name="profileManagePageAction">profileManagePageAction.action</result>
 			<result type="redirect" name="voterAnalysisAction">votersAnalysisAction.action</result>
+			<result type="redirect" name="mahaNaduAction">mahaNaduAction.action</result>
 			<result type="redirect" name="casteAndElectionResultsComparisonAction">casteAndElectionResultsComparisonAction.action</result>
 			<result type="redirect" name="votersAnalysisNewAction">votersAnalysisNewAction.action</result>
 			<result type="redirect" name="votersSearchAndEditAction">votersSearchAction.action</result>
@@ -7095,7 +7096,9 @@
 			</result>
 		</action>
 		<action name="mahaNaduAction" class="mahaNaduAction">
-			<result name="success">/jsp/mahaNadu.jsp</result>			
+			<result name="success">/jsp/mahaNadu.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=mahaNaduAction</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>			
 		</action>
 		
 		<action name="searchCadreInfoAction" class="mahaNaduAction" method="searchCadreInfo">

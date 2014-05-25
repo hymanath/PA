@@ -15,12 +15,12 @@ import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
-import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.CadreVo;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IMahaNaduService;
 import com.itgrids.partyanalyst.service.IPartyStrengthService;
@@ -51,6 +51,7 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 	private CadreVo cadreVo;
 	JSONObject jObj = null;
 	private String task = null;
+	 private EntitlementsHelper entitlementsHelper;
 	/**
 	 * lists used to populate address select dropdowns
 	 */
@@ -80,7 +81,6 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 	
 	private String cadreId;
  
-	private CadreInfo cadreInfo;
 	/**
 	 * Select options for cadre level regional data
 	 * 
@@ -107,6 +107,14 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 	
 	private IConstituencyDAO constituencyDAO;
 	
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
 	public String getPartyDesigIds() {
 		return partyDesigIds;
 	}
@@ -287,14 +295,6 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 
 	public void setCadreId(String cadreId) {
 		this.cadreId = cadreId;
-	}
-
-	public CadreInfo getCadreInfo() {
-		return cadreInfo;
-	}
-
-	public void setCadreInfo(CadreInfo cadreInfo) {
-		this.cadreInfo = cadreInfo;
 	}
 	
 	public List<String> getCadreType() {
@@ -511,13 +511,15 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 	public String execute(){
 		if(log.isDebugEnabled())
 			log.debug("MahaNaduAction.execute() start");
-		
+	  try{
 		session = request.getSession();
 		
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		if(regVO==null)
+			return INPUT;
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"MAHANADU")){
 			return ERROR;
-		
+		}
 		if(session.getAttribute(ISessionConstants.BLOOD_GROUPS) == null){
 			  bloodGroupTypes = cadreManagementService.getAllBloodGroupTypes();
 		      session.setAttribute(ISessionConstants.BLOOD_GROUPS,bloodGroupTypes);
@@ -548,6 +550,20 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 			gender.add("Male");
 			gender.add("Female");
 			session.setAttribute(ISessionConstants.GENDERS, gender);
+			
+			List<SelectOptionVO> cadreVerified = new ArrayList<SelectOptionVO>();
+			SelectOptionVO no = new SelectOptionVO();
+			SelectOptionVO yes = new SelectOptionVO();
+			cadreVerified.add(no);
+			cadreVerified.add(yes);
+			no.setId(1l);
+			no.setName("NO");
+			
+			yes.setId(2l);
+			yes.setName("YES");
+			
+			session.setAttribute("cadreVerified", cadreVerified);
+			
 			
 		if(session.getAttribute(ISessionConstants.EDU_QUALIFICATIONS) == null){
 			eduStatus = staticDataService.getAllEducationalQualifications();
@@ -580,23 +596,30 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 		}
 			
 		constituencyList = staticDataService.getLatestConstituenciesByStateId(1L);
-				
+	  }catch(Exception e){
+		  log.error(" exception occured in execute() in mahanaduAction class.",e);
+	  }
 		return Action.SUCCESS;
 	}
 
 	public void prepare() throws Exception {
-		
-		cadreId = request.getParameter("cadreId");
-       if(cadreId != null && (new Long(cadreId)) > 0)
-        {	
-        	//cadreInfo = cadreManagementService.getCadreCompleteInfo(new Long(cadreId));
-    	   cadreVo = mahaNaduService.getCadreCompleteInfo(new Long(cadreId));
-            prepopulateLocations(cadreVo);
-        }  
+	 try{	
+		   cadreId = request.getParameter("cadreId");
+	       if(cadreId != null && (new Long(cadreId)) > 0)
+	        {	
+	        	//cadreInfo = cadreManagementService.getCadreCompleteInfo(new Long(cadreId));
+	    	   cadreVo = mahaNaduService.getCadreCompleteInfo(new Long(cadreId));
+	            prepopulateLocations(cadreVo);
+	        } 
+		}catch(Exception e){
+			log.error(" exception occured in prepare() in mahanaduAction class.",e);
+		}
 	}    
      
     public void prepopulateLocations(CadreVo  cadreVo)
     {
+    	
+    
     		session = request.getSession();
     		System.out.println("inside method populate const");
     		
@@ -610,18 +633,17 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 			
     		//get constituencies
     		List<SelectOptionVO> constituencynames_c = new ArrayList<SelectOptionVO>();
-    		if(cadreInfo.getDistrict() != null)
+    		if(cadreVo.getDistrictId() != null)
     		{
-    			constituencynames_c=regionServiceDataImp.getConstituenciesByDistrictID(new Long(cadreInfo.getDistrict()));	
+    			constituencynames_c=regionServiceDataImp.getConstituenciesByDistrictID(cadreVo.getDistrictId());	
     			SelectOptionVO obj1 = new SelectOptionVO(0L,"Select Constituency");
-    			constituencynames_c.add(0, obj1);        		
+    			constituencynames_c.add(0, obj1);      
+    			
+    			session.setAttribute(ISessionConstants.CONSTITUENCIES, constituencynames_c);
     		}
     		
     			
-    			constituencynames_c = staticDataService.getLatestConstituenciesByStateIdAndType(new Long(cadreInfo.getState().trim()),IConstants.ASSEMBLY_ELECTION_TYPE);
-    			constituencynames_c.add(0, new SelectOptionVO(0l,"Select Location"));
     			
-    			session.setAttribute(ISessionConstants.CONSTITUENCIES, constituencynames_c);
     		
 			
 			/*List<SelectOptionVO> mandals_c=regionServiceDataImp.getSubRegionsInConstituency(new Long(cadreInfo.getConstituencyID()),IConstants.PRESENT_YEAR,null);
@@ -646,13 +668,15 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 			}else{
 				tehsilId = id;
 			}*/
-			List<SelectOptionVO> boothsList_c = mahaNaduService.getBoothsInAConstituency(new Long(cadreInfo.getConstituencyID()),10l,null,null);
-			if(boothsList_c != null){
-				 obj = new SelectOptionVO(0L,"Select Booth");
-				boothsList_c.add(0, obj);
-			}
-			session.setAttribute(ISessionConstants.BOOTHS, boothsList_c);
-			
+    		if(cadreVo.getConstituencyId() != null){
+				List<SelectOptionVO> boothsList_c = mahaNaduService.getBoothsInAConstituency(cadreVo.getConstituencyId(),10l,null,null);
+				if(boothsList_c != null){
+					 obj = new SelectOptionVO(0L,"Select Booth");
+					boothsList_c.add(0, obj);
+				}
+				session.setAttribute(ISessionConstants.BOOTHS, boothsList_c);
+    		}
+    	
 	}
 
     public String getBooths(){
@@ -682,6 +706,14 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
     	  session = request.getSession();
   		
   		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+  		if(regVO == null){
+  			inputStream = new StringBufferInputStream("logout");
+  			return Action.SUCCESS;
+  		}
+  		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"MAHANADU")){
+  			inputStream = new StringBufferInputStream("noaccess");
+  			return Action.SUCCESS;
+		}
     	  cadreVo.setUserId(regVO.getRegistrationID());
     	  if(partyDesigIds != null && partyDesigIds.length() > 0){
     		  List<Long> pIds = new ArrayList<Long>();
@@ -705,11 +737,16 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
     	
 		if(result.getResultCode() == ResultCodeMapper.SUCCESS){
 			log.debug("fileuploades is sucess Method");
-			inputStream = new StringBufferInputStream(SUCCESS);
+			if(cadreVo.getCadreId() != null && cadreVo.getCadreId().longValue() > 0 ){
+				 inputStream = new StringBufferInputStream("update");
+			}else{
+			  inputStream = new StringBufferInputStream(SUCCESS);
+			}
 		}
 		else
 			inputStream = new StringBufferInputStream("fail");
       }catch(Exception e){
+    	  inputStream = new StringBufferInputStream("fail");
     	  LOG.error("Exception rised in saveOrUpdataCadre", e);
       }
     	return Action.SUCCESS;
@@ -722,9 +759,15 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 		HttpSession session = request.getSession();
 		RegistrationVO userDetls = (RegistrationVO) session.getAttribute("USER");
 		if(userDetls == null){
-			return Action.ERROR;
+			cadreVo = new CadreVo();
+			cadreVo.setFirstName("logout");
+			return Action.SUCCESS;
 		}
-    	    	
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"MAHANADU")){
+			cadreVo = new CadreVo();
+			cadreVo.setFirstName("noaccess");
+  			return Action.SUCCESS;
+		}   	
     	String constituencyId = request.getParameter("cosntituencyId");
     	String searchBy = request.getParameter("searchBy");
     	String sort = request.getParameter("dir");
@@ -735,7 +778,7 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
     	
     	cadreVo =  mahaNaduService.searchCadreDetails(userDetls.getRegistrationID(),Long.valueOf(constituencyId),searchBy.trim(),searchType,sort,sortBy,Integer.valueOf(startIndex),Integer.valueOf(maxResult));
 	} catch (Exception e) {
-		log.error(" exception occured in searchCadreInfo() in mahanaduAction class.");
+		log.error(" exception occured in searchCadreInfo() in mahanaduAction class.",e);
 	}    
     return Action.SUCCESS;
     }

@@ -7,10 +7,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>MAHANADU</title>
+<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/TDP.gif">
  <script type="text/javascript" src="js/LocationHierarchy/locationHierarchyMahaNadu.js"></script>
 	<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
 	<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 	<link type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" rel="stylesheet" />
+	<script type="text/javascript" src="js/md5.js"></script>
+	<script type="text/javascript" src="js/loginpopup1.js"> </script>
  <!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
@@ -170,7 +173,9 @@ border:1px solid #000000;
 </head>
 <body  class="mahanadubg">
  <form id="uploadCadreForm" method="post" enctype="multipart/form-data" action="uploadCadreForMahanadu.action" name="uploadCadreForm">
+    <s:hidden name="cadreVo.cadreId" id="cadreMainId" />
     <div class="container">	
+	    
 		<!----Header Div--------->
 		<div class="row">
 			<div class="span12 text-center">
@@ -222,13 +227,45 @@ border:1px solid #000000;
 				<p class="text-right" style="margin-top:-40px;">Fields marked with <span class="text-error">* </span> are mandatory</p>
 				<div class="well well-small mahanadu-well form-inline">				
 					<div class="row-fluid">
+						
 						<div class="span5">	
 							<label>First Name<span class="text-error">* </span>&nbsp&nbsp&nbsp</label>             
 							<s:textfield  type="text" name="cadreVo.firstName"  id="firstNameId" />
 							
 							<label class="m_top20">Last Name<span class="text-error">* </span> &nbsp&nbsp&nbsp</label>             
-							<input type="text" name="cadreVo.lastName"  id="lastNameId">  
-							
+							<s:textfield type="text" name="cadreVo.lastName"  id="lastNameId" />  
+							<s:if test="cadreVo != null">
+							  <div class="row-fluid m_top20">
+								<div class="span3">									
+									<label>Gender <span class="text-error">* </span></label>
+								</div>
+								<div class="span3">
+								  <s:if test="cadreVo.gender == 'Male'">
+									<label style="margin-top: -10px;"><input type="radio" checked="checked" value="Male" id="optionsRadios" name="cadreVo.gender">
+									Male </label>
+								  </s:if>
+								  <s:else>
+								   <label style="margin-top: -10px;"><input type="radio"  value="Male" id="optionsRadios" name="cadreVo.gender">
+									Male </label>
+								  </s:else>
+								</div>
+                                <div class="span4 form-inline">
+								   <s:if test="cadreVo.gender == 'Female'">
+									<label style="margin-top: -10px;">
+									  <input type="radio" value="Female" checked="checked" id="optionsRadios1" name="cadreVo.gender">
+									  Female
+									</label>
+								   </s:if>
+								   <s:else>
+								       <label style="margin-top: -10px;">
+									    <input type="radio" value="Female" id="optionsRadios1" name="cadreVo.gender">
+									      Female
+									   </label>
+								    </s:else>
+								</div>  	
+							</div>
+							</s:if>
+							<s:else>
 							<div class="row-fluid m_top20">
 								<div class="span3">									
 									<label>Gender <span class="text-error">* </span></label>
@@ -244,20 +281,21 @@ border:1px solid #000000;
 									</label>
 								</div>  	
 							</div>
+							</s:else>
 							<label>Father Name &nbsp;</label>             
-							<input type="text" name="cadreVo.fatherName">  
+							<s:textfield type="text" id="cadreVo_fatherName" name="cadreVo.fatherName"/>  
 						</div>
 						<div class="span5">	
 							<label>Blood Group &nbsp&nbsp &nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp &nbsp</label>             
 							<s:select id="bloodGroupId" cssClass="regionSelect input-medium" name="cadreVo.bloodGroupId" list="#session.bloodGroups" listKey="id" listValue="name" headerKey="0" headerValue="Select Group" ></s:select>
 							<br/><label class="m_top20">Age&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp &nbsp&nbsp&nbsp &nbsp&nbsp&nbsp	 </label>             
-							<input type="text" class="input-medium" name="cadreVo.age">  
+							<s:textfield type="text" class="input-medium" id="cadreVo_age" name="cadreVo.age"/>  
 							
 							<br/><label class="m_top20">No of Family Members &nbsp</label>             
-							<input type="text" class="input-medium" name="cadreVo.noOfFamilyMembers"> 
+							<s:textfield type="text" class="input-medium" id="cadreVo_noOfFamilyMembers" name="cadreVo.noOfFamilyMembers" /> 
 							
 							<br>	<label class="m_top20">No of Voters &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span></label>             
-							<input type="text" class="input-medium" name="cadreVo.noOfVoters"> 
+							<s:textfield type="text" class="input-medium" id="cadreVo_noOfVoters" name="cadreVo.noOfVoters" /> 
 						</div>
 						<div class="span2">	
 							<a class="thumbnail" href="#">
@@ -273,13 +311,16 @@ border:1px solid #000000;
 				<div class="well well-small mahanadu-well form-inline">
 				
 				  <label>Mobile No<span class="text-error"><span class="text-error">* </span> </span></label>             
-					<input type="text" name="cadreVo.mobileNo"  id="mobileNoId">      
+					<s:textfield type="text" name="cadreVo.mobileNo"  id="mobileNoId"/>      
 				
 				  <label>&nbsp&nbsp&nbsp&nbsp&nbsp Land No</label>              
-					<input type="text" name="cadreVo.landNo">
+					<s:textfield type="text" id="cadreVo_landNo" name="cadreVo.landNo"/>
 					
 				  <label >&nbsp&nbsp&nbsp&nbsp&nbsp Email Id</label>              
-					<input  type="text" name="cadreVo.emailId"> 
+					<s:textfield  type="text" id="cadreVo_emailId" name="cadreVo.emailId"/> 
+					
+					<label >&nbsp&nbsp&nbsp&nbsp&nbsp Is Cadre Verified</label>              
+					<s:select id="cadreVerifId" cssClass="regionSelect input-xlarge" name="cadreVo.isVerified" list="#session.cadreVerified" listKey="id" listValue="name"  ></s:select>
 				</div>
 				
 				<!-----Current Address----->
@@ -288,9 +329,14 @@ border:1px solid #000000;
 					<div class="row-fluid">
 						<div class="span6">	
 						    <label>Address<span class="text-error">* </span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
-							
-							<textarea rows="4" cols="50"  name="address" class="input-xlarge" id="addressId">
+							<s:if test="{cadreVo != null}">
+							<textarea rows="4" cols="50"  name="cadreVo.address" class="input-xlarge" id="addressId">${cadreVo.address}
 							</textarea>
+							</s:if>
+							<s:else>
+							 <textarea rows="4" cols="50"  name="cadreVo.address" class="input-xlarge" id="addressId">
+							</textarea>
+							</s:else>
 							<br/><label class="m_top20">District<span class="text-error">* </span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
 							<s:select id="districtField" cssClass="regionSelect input-xlarge" name="cadreVo.districtId" list="#session.districtsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'constituenciesInDistrict','cadreReg','constituencyField','currentAdd');" ></s:select>
 							
@@ -301,6 +347,8 @@ border:1px solid #000000;
 						
 							<label class="m_top20">Booth No &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
 							<s:select id="boothField" cssClass="regionSelect input-xlarge" name="cadreVo.boothNo" list="#session.boothsList" listKey="id" listValue="name"></s:select>
+							<label class="m_top20">VoterId &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
+							<s:textfield  type="text" id="cadreVo_voterCardId" name="cadreVo.voterCardId"/>
 						</div>						
 					</div>
 				</div>
@@ -317,9 +365,9 @@ border:1px solid #000000;
 						</div>
 						<div class="span6">	
 							<label>Annual Income&nbsp;&nbsp;</label>  
-                            <input type="text" class="input-small" name="cadreVo.annualIncome"></input> 							
+                            <s:textfield type="text" class="input-small" id="cadreVo_annualIncome" name="cadreVo.annualIncome"/>					
 							<label>&nbsp;&nbsp;Income Source</label>  
-                             <input type="text" id="incomeSource" cssClass="regionSelect input-small" name="cadreVo.sourceIncome" >							
+                             <s:textfield type="text" id="incomeSource" cssClass="regionSelect input-small" name="cadreVo.sourceIncome" />							
 							<!--<s:select id="incomeSource" cssClass="regionSelect input-small" name="cadreVo.sourceIncome" list="#session.incSource" listKey="id" listValue="name" headerKey="0" headerValue="Select Group" ></s:select>-->
 							<br><label class="m_top20">Cast Category &nbsp;&nbsp;</label>             
                             <s:select id="casteCateg" cssClass="regionSelect span8 xlarge" name="cadreVo.casteCategory" list="#session.casteCategory" listKey="id" listValue="name" headerKey="0" headerValue="Select Group" ></s:select>							
@@ -337,14 +385,14 @@ border:1px solid #000000;
 								<label> Party Designation </label>
 							</div>
 						<div class="span4">
-						    <s:select id="partyDesig"  list="#session.partyDesig" multiple="true" listKey="id" listValue="name"  ></s:select>	
+						    <s:select id="partyDesig"  value="cadreVo.partyDesignationList" list="#session.partyDesig" multiple="true" listKey="id" listValue="name"  ></s:select>	
 							
 						</div>
 						<div class="span2">
 						<label> &nbsp; Govt Designation </label>
 						</div>
 						<div class="span4">
-						    <s:select id="govDesig"  list="#session.govDesig" multiple="true" listKey="id" listValue="name"  ></s:select>	
+						    <s:select id="govDesig"  value="cadreVo.govtDesignationList" list="#session.govDesig" multiple="true" listKey="id" listValue="name"  ></s:select>	
 						</div>
 					</div>
 					</div>
@@ -356,19 +404,36 @@ border:1px solid #000000;
 					<div class="well well-small mahanadu-well form-inline">
 										
 					<label>Member Type<span class="text-error"><span class="text-error">* </span> </span></label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<label><input type="radio" name="cadreVo.memberType" id="optionsRadios3" value="Active" >
-									Active </label> &nbsp;&nbsp;
-						<input type="text" class="input-medium" name="activeDateField" readonly="true" id="activeDateField" ></input>  
-					
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<label><input type="radio" name="cadreVo.memberType" id="optionsRadios4" value="Normal" >
-									Inactive </label> &nbsp;&nbsp;
-					      
-				
-				                
-					
-					
-				                
+					<s:if test="cadreVo != null">
+					  <s:if test="cadreVo.memberType == 'Active'"> 
+						<label><input type="radio" name="cadreVo.memberType" checked="checked" id="optionsRadios3" value="Active" >
+										Active </label> &nbsp;&nbsp;
+					  </s:if>				
+					  <s:else>
+                        <label><input type="radio" name="cadreVo.memberType" id="optionsRadios3" value="Active" >
+										Active </label> &nbsp;&nbsp;
+                      </s:else>					  
+							<input type="text" class="input-medium" name="cadreVo.activeDateField" readonly="true" id="activeDateField" ></input>  
+						
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					  <s:if test="cadreVo.memberType == 'Normal'"> 
+						<label><input type="radio" name="cadreVo.memberType" checked="checked" id="optionsRadios4" value="Normal" >
+										Inactive </label> &nbsp;&nbsp;
+					  </s:if>				
+					  <s:else>
+					   <label><input type="radio" name="cadreVo.memberType" id="optionsRadios4" onclick="removeDate();" value="Normal" >
+										Inactive </label> &nbsp;&nbsp;
+					   </s:else>	
+					</s:if>
+                    <s:else>
+					    <label><input type="radio" name="cadreVo.memberType" id="optionsRadios3" value="Active" >
+										Active </label> &nbsp;&nbsp;
+							<input type="text" class="input-medium" name="cadreVo.activeDateField" readonly="true" id="activeDateField" ></input>  
+						
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<label><input type="radio" name="cadreVo.memberType" id="optionsRadios4" onclick="removeDate();" value="Normal" >
+										Inactive </label> &nbsp;&nbsp;
+				    </s:else>           
 					</div>					
 					<!-----Register Button----->
 					<button class="btn btn-large pull-right btn-success" id="cadreSaveBth" type="button" onclick="uploadCadre();">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp; Register &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</button>
@@ -385,13 +450,19 @@ border:1px solid #000000;
 				</div>
 			<!---Footer End---->
 	</div>
+	
 </form>
+<div id="login_window" style="display:none;">
+	<div id="login_window_inner"></div>
+</div>
 <div id="dialogueTab" align="center" style="width:900px;">
 		<div id="buildDataTable"  class="yui-skin-sam"></div>	
 	</div>
 	
 <script type="text/javascript">
+var actionType="";
 $(document).ready(function(){
+   var date = '${cadreVo.activeDateField}';
    $('#activeDateField').datepicker({
             changeMonth: true,
             changeYear: true,
@@ -399,7 +470,11 @@ $(document).ready(function(){
 			maxDate: new Date(),
 			yearRange: "-100:+0"
         });
-		
+		if(date.length > 0){
+		    var res = date.split("/"); 
+		    var myDate = new Date(res[2],res[1],res[0]);
+		    $("#activeDateField").datepicker("setDate", myDate);
+		}
 		 $('#partyDesig').multiselect({	
 			multiple: true,
 			selectedList: 1,
@@ -414,6 +489,9 @@ $(document).ready(function(){
 	}).multiselectfilter({ });
 	
 });
+function removeDate(){
+  $("#activeDateField").val("");
+}
 function uploadCadre()
 {
 	
@@ -458,6 +536,96 @@ function uploadCadre()
 	}
 	else
 		return;
+}
+function showUploadStatus(myResult){
+  var result = (String)(myResult);
+	var errorDivEle = document.getElementById('errorMsgDiv');
+	var str = '';
+
+	if(result.search('success') != -1)
+	{
+		clearAllOptions();
+		str += '<font color="green"><b>Cadre Added Successfully.</b>';
+	}
+	else if(result.search('update') != -1)
+	{
+		clearAllOptions();
+		str += '<font color="green"><b>Cadre Updated Successfully.</b>';
+	}
+	else if(result.search('logout') != -1)
+	{
+	    actionType ="submit";
+		openDialogForLoginWindow();
+		return;
+	}
+	else if(result.search('noaccess') != -1){
+     window.location.reload();
+    }
+	else if(result.search('fail') != -1) 
+	{
+		str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
+	}
+	else
+	{
+		str += '<font color="red"><b>'+result+'</b>';
+	}
+	errorDivEle.innerHTML = str;
+	$('html, body').animate({ scrollTop: $("#errorMsgDiv").offset().top }, "slow");
+	setInterval(function(){  
+	       $("#errorMsgDiv").html("");
+	 },6000);
+}
+
+function clearAllOptions(){
+$("#cadreMainId").val("");
+
+
+$("#firstNameId").val("");
+$("#lastNameId").val("");
+$("#cadreVo_fatherName").val("");
+$("#cadreVo_age").val("");
+$("#cadreVo_noOfFamilyMembers").val("");
+$("#cadreVo_noOfVoters").val("");
+$("#bloodGroupId").val(0);
+
+
+$("#mobileNoId").val("");
+$("#cadreVo_landNo").val("");
+$("#cadreVo_emailId").val("");
+$("#cadreVerifId").val(1);
+
+$("#addressId").val("");
+$("#districtField").val(0);
+$("#constituencyField option").remove();
+$("#boothField option").remove();
+
+
+$("#educationField").val(0);
+$("#professionField").val(0);
+$("#cadreVo_annualIncome").val("");
+$("#incomeSource").val("");
+$("#casteCateg").val(0);
+
+
+  $("#partyDesig").val([]);
+  $("#govDesig").val([]);
+  $('#partyDesig').multiselect({	
+			multiple: true,
+			selectedList: 1,
+			hide: "explode"	,
+			noneSelectedText:"Select Designation"
+	}).multiselectfilter({ });
+	 $('#govDesig').multiselect({	
+			multiple: true,
+			selectedList: 1,
+			hide: "explode",
+			noneSelectedText:"Select Designation"
+	}).multiselectfilter({ });
+  
+  
+  $("#activeDateField").val("");
+  $("#optionsRadios3").removeAttr('checked'); 
+  $("#optionsRadios4").removeAttr('checked'); 
 }
 function validatefields()
 {
@@ -661,7 +829,8 @@ resultsList: "cadreVOList",
 fields: ["firstName","lastName","mobileNo","boothNo","cadreId","image","memberType"],
 
 metaFields: {
-totalRecords: "count" // Access to value in the server response
+totalRecords: "count", // Access to value in the server response
+status:"firstName"
 },
 };
 
@@ -679,6 +848,14 @@ votersByLocBoothColumnDefs, votersByLocBoothDataSource, myConfigs);
 
 votersByLocBoothDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
 oPayload.totalRecords = oResponse.meta.totalRecords;
+  var status = oResponse.meta.status;
+  if(status == "logout"){
+     $('#dialogueTab').dialog("close");
+	 actionType ="";
+		openDialogForLoginWindow();
+  }else if(status == "noaccess"){
+     window.location.reload();
+  }
 return oPayload;
 }
 
@@ -692,7 +869,7 @@ return ;
 }
 	
 function editCadreInfo(cadreId){
-	alert(cadreId);
+	window.location = "mahaNaduAction.action?cadreId="+cadreId;
 }
 </script>
 </body>

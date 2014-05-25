@@ -2093,8 +2093,10 @@
 		 <property name="partyDesignationDAO" ref="partyDesignationDAO" />
          <property name="cadreManagementService" ref="cadreManagementService" />
          <property name="govtDesignationDAO" ref="govtDesignationDAO" />
-          <property name="userDAO" ref="userDAO" />
-  
+         <property name="userDAO" ref="userDAO" />
+         <property name="bloodGroupDAO" ref="bloodGroupDAO" />
+         <property name="voterDAO" ref="voterDAO" />
+         
    </bean>
 </beans>		
 	
