@@ -86,8 +86,8 @@ public class Cadre extends BaseModel{
 	 private String note;
 	 private String memberShipNo;
 
-	// private String uniqueId;
-	// private CasteState casteState;
+	 private String uniqueId;
+	 private CasteState casteState;
 	 private String biometricKey;
 	 
 	 private Date activeDateField;
@@ -97,7 +97,7 @@ public class Cadre extends BaseModel{
 	 private String isMahanadu;
 	 	
 	 private String address;
-	 private Double sourceIncome;
+	 private Double incomeSource;
 
 	@Id
 	 @GeneratedValue(strategy = GenerationType.AUTO)
@@ -614,14 +614,16 @@ public class Cadre extends BaseModel{
 			Set<CadrePartyDesignation> cadrePartyDesignation) {
 		this.cadrePartyDesignation = cadrePartyDesignation;
 	}
-	@Column(name = "source_income", precision = 2, scale = 0)
-	public Double getSourceIncome() {
-		return sourceIncome;
+	
+	@Column(name = "income_source", precision = 2, scale = 0)
+	public Double getIncomeSource() {
+		return incomeSource;
 	}
 
-	public void setSourceIncome(Double sourceIncome) {
-		this.sourceIncome = sourceIncome;
+	public void setIncomeSource(Double incomeSource) {
+		this.incomeSource = incomeSource;
 	}
+
 	@Column(name = "address")
 	public String getAddress() {
 		return address;
@@ -643,7 +645,7 @@ public class Cadre extends BaseModel{
 	
 	
 	
-	/*
+	
 	@Column(name="unique_id")
 	public String getUniqueId() {
 		return uniqueId;
@@ -664,7 +666,7 @@ public class Cadre extends BaseModel{
 	public void setCasteState(CasteState casteState) {
 		this.casteState = casteState;
 	}
-	*/
+	
 	
 	
 	
