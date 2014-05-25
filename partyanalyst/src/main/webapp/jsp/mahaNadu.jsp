@@ -263,7 +263,7 @@ border:1px solid #000000;
 							<a class="thumbnail" href="#">
 								<span id="uploadImg"><img  style="width: 140px; height: 120px;" id="" src="images/mahaNadu/user image.jpg"></span>
 							</a>
-							<input type="file" style="width: 225px;" id="uploadFileId" onchange="changeImg();" name="uploadImage" class="m_top10">	
+							<input type="file" style="width: 225px;" id="uploadFileId" onchange="changeImg();" name="cadreVo.uploadImage" class="m_top10">	
 						</div>	
 					</div>
 				</div>

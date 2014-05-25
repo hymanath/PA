@@ -2093,7 +2093,7 @@
 		 <property name="partyDesignationDAO" ref="partyDesignationDAO" />
          <property name="cadreManagementService" ref="cadreManagementService" />
          <property name="govtDesignationDAO" ref="govtDesignationDAO" />
-         
+          <property name="userDAO" ref="userDAO" />
   
    </bean>
 </beans>		
