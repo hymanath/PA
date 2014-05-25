@@ -299,7 +299,17 @@ border:1px solid #000000;
 						</div>
 						<div class="span2">	
 							<a class="thumbnail" href="#">
-								<span id="uploadImg"><img  style="width: 140px; height: 120px;" id="" src="images/mahaNadu/user image.jpg"></span>
+							   <s:if test="cadreVo != null">
+							       <s:if test="cadreVo.path != null">
+								       <span id="uploadImg"><img  style="width: 140px; height: 120px;" id="actuploadImg" src="images/cadre_images/${cadreVo.path}"></span>
+								   </s:if>
+								   <s:else>
+									  <span id="uploadImg"><img  style="width: 140px; height: 120px;" id="actuploadImg" src="images/mahaNadu/user image.jpg"></span>
+								   </s:else>
+							   </s:if>
+							   <s:else>
+								  <span id="uploadImg"><img  style="width: 140px; height: 120px;" id="actuploadImg" src="images/mahaNadu/user image.jpg"></span>
+							   </s:else>
 							</a>
 							<input type="file" style="width: 225px;" id="uploadFileId" onchange="changeImg();" name="cadreVo.uploadImage" class="m_top10">	
 						</div>	
@@ -587,7 +597,8 @@ $("#cadreVo_age").val("");
 $("#cadreVo_noOfFamilyMembers").val("");
 $("#cadreVo_noOfVoters").val("");
 $("#bloodGroupId").val(0);
-
+$("#uploadFileId").val("");
+$("#uploadImg").html('<img  style="width: 140px; height: 120px;" id="actuploadImg" src="images/mahaNadu/user image.jpg">');
 
 $("#mobileNoId").val("");
 $("#cadreVo_landNo").val("");
@@ -709,9 +720,19 @@ if(firstName.length == 0 )
 	return flag;
 }
 function changeImg(){
-  //uploadFileId
-}
 
+   var photoElmt = document.getElementById("uploadFileId");
+  var file = photoElmt.files[0];
+  var reader = new FileReader();
+   reader.onloadend = handleReaderLoadEnd;
+    reader.readAsDataURL(file);
+ 
+}
+function handleReaderLoadEnd(evt) {
+var img = document.getElementById("actuploadImg");
+img.src = evt.target.result;
+evt=null;
+} 
 function searchCadre(){
 		
 		
