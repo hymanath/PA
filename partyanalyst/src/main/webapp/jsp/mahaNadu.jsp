@@ -8,7 +8,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>MAHANADU</title>
  <script type="text/javascript" src="js/LocationHierarchy/locationHierarchyMahaNadu.js"></script>
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+	<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+	<link type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" rel="stylesheet" />
  <!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
@@ -40,12 +42,13 @@
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css">      
 
 	<!-- YUI Dependency files (End) -->
-<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
-<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
-
 <link href="styles/mahanadu/bootstrap.min.css" rel="stylesheet" media="screen">
 
+<script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.js"></script>
+<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
 
+<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.filter.css" />
+<script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.filter.js"></script>
   <style>
   .yui-skin-sam.yui-dt table th {
 		background-color: #CDE6FC;
@@ -103,7 +106,14 @@ border:1px solid #000000;
 		}
 		.multySelect{border: 1px solid rgb(204, 204, 204); border-radius: 4px; background: none repeat scroll 0% 0% rgb(255, 255, 255); padding: 5px 10px; height: 100px; overflow: auto;box-shadow: 1px 0 5px rgba(0, 0, 0, 0.28) inset!important; border-radius:10px!important;}
 		.multySelect ul li{height:26px;}
-		.multySelect ul li input{margin-top: 0px;}
+		
+		.ui-multiselect{
+		  height:40px;
+		}
+		.ui-multiselect-filter input[type="search"] { width: 130px;}
+		#ui-datepicker-div{
+		  display:none;
+		}
 		
 		#searchResultsDiv_body table {
     width: 100%;
@@ -214,7 +224,7 @@ border:1px solid #000000;
 					<div class="row-fluid">
 						<div class="span5">	
 							<label>First Name<span class="text-error">* </span>&nbsp&nbsp&nbsp</label>             
-							<input  type="text" name="cadreVo.firstName"  id="firstNameId">
+							<s:textfield  type="text" name="cadreVo.firstName"  id="firstNameId" />
 							
 							<label class="m_top20">Last Name<span class="text-error">* </span> &nbsp&nbsp&nbsp</label>             
 							<input type="text" name="cadreVo.lastName"  id="lastNameId">  
@@ -224,12 +234,12 @@ border:1px solid #000000;
 									<label>Gender <span class="text-error">* </span></label>
 								</div>
 								<div class="span3">
-									<label style="margin-top: -10px;"><input type="radio" checked="" value="Male" id="optionsRadios" name="cadreVo.gender">
+									<label style="margin-top: -10px;"><input type="radio" checked="checked" value="Male" id="optionsRadios" name="cadreVo.gender">
 									Male </label>
 								</div>
                                 <div class="span4 form-inline">
 									<label style="margin-top: -10px;">
-									  <input type="radio" checked="" value="Female" id="optionsRadios1" name="cadreVo.gender">
+									  <input type="radio" value="Female" id="optionsRadios1" name="cadreVo.gender">
 									  Female
 									</label>
 								</div>  	
@@ -251,9 +261,9 @@ border:1px solid #000000;
 						</div>
 						<div class="span2">	
 							<a class="thumbnail" href="#">
-								<img  style="width: 140px; height: 120px;" src="images/mahaNadu/user image.jpg">
+								<span id="uploadImg"><img  style="width: 140px; height: 120px;" id="" src="images/mahaNadu/user image.jpg"></span>
 							</a>
-							<button type="submit" class="btn ">Click Here to Upload Image</button>	
+							<input type="file" style="width: 225px;" id="uploadFileId" onchange="changeImg();" name="uploadImage" class="m_top10">	
 						</div>	
 					</div>
 				</div>
@@ -282,7 +292,7 @@ border:1px solid #000000;
 							<textarea rows="4" cols="50"  name="address" class="input-xlarge" id="addressId">
 							</textarea>
 							<br/><label class="m_top20">District<span class="text-error">* </span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
-							<s:select id="districtField" cssClass="regionSelect input-xlarge" name="cadreVo.districtId" list="#session.districtsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'constituenciesInDistrict','cadreReg','constituencyField','currentAdd');cleanOptionsList('district')" ></s:select>
+							<s:select id="districtField" cssClass="regionSelect input-xlarge" name="cadreVo.districtId" list="#session.districtsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'constituenciesInDistrict','cadreReg','constituencyField','currentAdd');" ></s:select>
 							
 							</div>
 						<div class="span6">	
@@ -308,14 +318,39 @@ border:1px solid #000000;
 						<div class="span6">	
 							<label>Annual Income&nbsp;&nbsp;</label>  
                             <input type="text" class="input-small" name="cadreVo.annualIncome"></input> 							
-							<label>&nbsp;&nbsp;Income Source</label>             
-							<s:select id="incomeSource" cssClass="regionSelect input-small" name="cadreVo.sourceIncome" list="#session.incSource" listKey="id" listValue="name" headerKey="0" headerValue="Select Group" ></s:select>
+							<label>&nbsp;&nbsp;Income Source</label>  
+                             <input type="text" id="incomeSource" cssClass="regionSelect input-small" name="cadreVo.sourceIncome" >							
+							<!--<s:select id="incomeSource" cssClass="regionSelect input-small" name="cadreVo.sourceIncome" list="#session.incSource" listKey="id" listValue="name" headerKey="0" headerValue="Select Group" ></s:select>-->
 							<br><label class="m_top20">Cast Category &nbsp;&nbsp;</label>             
                             <s:select id="casteCateg" cssClass="regionSelect span8 xlarge" name="cadreVo.casteCategory" list="#session.casteCategory" listKey="id" listValue="name" headerKey="0" headerValue="Select Group" ></s:select>							
 						</div>						
 					</div>
 				</div>
 				
+
+				
+				<!-----Member Designation----->
+				<h3>Member Designation</h3>
+					<div class="well well-small mahanadu-well form-inline">
+						<div class="row-fluid">
+							<div class="span2">
+								<label> Party Designation </label>
+							</div>
+						<div class="span4">
+						    <s:select id="partyDesig"  list="#session.partyDesig" multiple="true" listKey="id" listValue="name"  ></s:select>	
+							
+						</div>
+						<div class="span2">
+						<label> &nbsp; Govt Designation </label>
+						</div>
+						<div class="span4">
+						    <s:select id="govDesig"  list="#session.govDesig" multiple="true" listKey="id" listValue="name"  ></s:select>	
+						</div>
+					</div>
+					</div>
+					<input type="hidden" name="partyDesigIds" id="partyDesigIds">
+					<input type="hidden" name="govtDesigIds" id="govtDesigIds">
+					
 				<!-----Member Type----->
 				<h3>Member Type</h3>
 					<div class="well well-small mahanadu-well form-inline">
@@ -323,7 +358,7 @@ border:1px solid #000000;
 					<label>Member Type<span class="text-error"><span class="text-error">* </span> </span></label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<label><input type="radio" name="cadreVo.memberType" id="optionsRadios3" value="Active" >
 									Active </label> &nbsp;&nbsp;
-						<input type="text" class="input-medium" name="activeDateField"></input>  
+						<input type="text" class="input-medium" name="activeDateField" readonly="true" id="activeDateField" ></input>  
 					
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<label><input type="radio" name="cadreVo.memberType" id="optionsRadios4" value="Normal" >
@@ -334,42 +369,7 @@ border:1px solid #000000;
 					
 					
 				                
-					</div>
-				
-				<!-----Member Designation----->
-				<h3>Member Designation</h3>
-					<div class="well well-small mahanadu-well form-inline">
-						<div class="row-fluid">
-							<div class="span2">
-								<label> Party Designation </label>
-							</div>
-						<div class="span4">
-							<div class="multySelect">
-								<ul class="unstyled">    
-									<li><input type="checkbox"> Politburo</li>
-									<li><input type="checkbox"> State Vice President</li>
-									<li><input type="checkbox"> State General Secretary</li>
-									<li><input type="checkbox"> State Official Spokesmen</li>
-								</ul>
-							</div>
-						</div>
-						<div class="span2">
-						<label> &nbsp; Govt Designation </label>
-						</div>
-						<div class="span4">
-							<div class="multySelect">
-								<ul class="unstyled">    
-									<li><input type="checkbox"> MLA</li>
-									<li><input type="checkbox"> MP</li>
-									<li><input type="checkbox"> TTD Member </li>
-									<li><input type="checkbox"> ZPTC</li>
-									<li><input type="checkbox"> MPTC</li>
-								</ul>
-							</div>
-						</div>
-					</div>
-					</div>
-					
+					</div>					
 					<!-----Register Button----->
 					<button class="btn btn-large pull-right btn-success" id="cadreSaveBth" type="button" onclick="uploadCadre();">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  &nbsp; Register &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</button>
 			</div><!----Form Div End--------->
@@ -391,13 +391,58 @@ border:1px solid #000000;
 	</div>
 	
 <script type="text/javascript">
+$(document).ready(function(){
+   $('#activeDateField').datepicker({
+            changeMonth: true,
+            changeYear: true,
+			dateFormat: 'dd/mm/yy',
+			maxDate: new Date(),
+			yearRange: "-100:+0"
+        });
+		
+		 $('#partyDesig').multiselect({	
+			multiple: true,
+			selectedList: 1,
+			hide: "explode"	,
+			noneSelectedText:"Select Designation"
+	}).multiselectfilter({ });
+	 $('#govDesig').multiselect({	
+			multiple: true,
+			selectedList: 1,
+			hide: "explode",
+			noneSelectedText:"Select Designation"
+	}).multiselectfilter({ });
+	
+});
 function uploadCadre()
 {
 	
  if(validatefields())
  {
-	
-  
+    var partyDesigIds ="";
+	var govtDesigIds ="";
+	var selectedPartyDesig = $("#partyDesig").multiselect("getChecked").map(function(){
+			return this.value;    
+		}).get();
+	 for(var i in selectedPartyDesig)
+	 {
+		partyDesigIds = partyDesigIds+""+selectedPartyDesig[i]+",";
+	 }
+	 if(partyDesigIds!=0 && partyDesigIds.length > 0){
+	   partyDesigIds = partyDesigIds.substring(0,partyDesigIds.length - 1);
+	 }
+	 $("#partyDesigIds").val(partyDesigIds);
+	 var selectedGovtDesig = $("#govDesig").multiselect("getChecked").map(function(){
+			return this.value;    
+		}).get();
+	 for(var i in selectedGovtDesig)
+	 {
+		govtDesigIds = govtDesigIds+""+selectedGovtDesig[i]+",";
+	 }
+	 if(govtDesigIds!=0 && govtDesigIds.length > 0){
+	   govtDesigIds = govtDesigIds.substring(0,govtDesigIds.length - 1);
+	 }
+   $("#govtDesigIds").val(govtDesigIds);
     $("#cadreSaveBth").attr("disabled","disabled");	
  var uploadHandler = {
 				upload: function(o) {
@@ -414,16 +459,8 @@ function uploadCadre()
 	else
 		return;
 }
-function showUploadStatus(){
-
-}
-</script>
-</body>
-
-<script>
 function validatefields()
 {
-
 $("#errorMsgDiv").html('');
 var flag = true;
 var str = '';
@@ -465,6 +502,11 @@ if(firstName.length == 0 )
 	{
 	str+='Member Type is required<br/>';
 	flag = false;
+	}else{
+	   if($("#optionsRadios3").is(':checked') && $("#activeDateField").val().length == 0){
+	      str+='In Member Type, Active Date is required<br/>';
+	      flag = false;
+	   }
 	}
 	if(isgenderChecked.length == 0)
 	{
@@ -497,6 +539,9 @@ if(firstName.length == 0 )
 	if(flag)
 	$("#errorMsgDiv").html('');
 	return flag;
+}
+function changeImg(){
+  //uploadFileId
 }
 
 function searchCadre(){
@@ -649,6 +694,7 @@ return ;
 function editCadreInfo(cadreId){
 	alert(cadreId);
 }
-
 </script>
+</body>
+
 </html>

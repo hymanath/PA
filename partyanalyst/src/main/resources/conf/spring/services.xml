@@ -2089,7 +2089,11 @@
 		 <property name="cadreGovtDesignationDAO" ref="cadreGovtDesignationDAO" />
 		 <property name="cadrePartyDesignationDAO" ref="cadrePartyDesignationDAO" />
 		 <property name="cadreDAO" ref="cadreDAO" />
-		 
+		 <property name="casteStateDAO" ref="casteStateDAO" />
+		 <property name="partyDesignationDAO" ref="partyDesignationDAO" />
+         <property name="cadreManagementService" ref="cadreManagementService" />
+         <property name="govtDesignationDAO" ref="govtDesignationDAO" />
+         
   
    </bean>
 </beans>		
