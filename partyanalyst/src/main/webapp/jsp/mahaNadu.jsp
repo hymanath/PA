@@ -311,7 +311,7 @@ border:1px solid #000000;
 								  <span id="uploadImg"><img  style="width: 140px; height: 120px;" id="actuploadImg" src="images/mahaNadu/user image.jpg"></span>
 							   </s:else>
 							</a>
-							<input type="file" style="width: 225px;" id="uploadFileId" onchange="changeImg();" name="cadreVo.uploadImage" class="m_top10">	
+							<input type="file" style="width: 79px;margin-left: 20px;" id="uploadFileId" onchange="changeImg();" name="cadreVo.uploadImage" class="m_top10">	
 						</div>	
 					</div>
 				</div>
