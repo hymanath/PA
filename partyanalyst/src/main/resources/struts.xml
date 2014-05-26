@@ -7120,9 +7120,21 @@
 			    <param name="inputName">inputStream</param>
 		  </result>	
 		</action>
+		
+		<action name="searchVoterInfoAction" class="mahaNaduAction" method="searchVoterInfo">
+			<result type="json" name="success">
+				<param name="root">cadreVo</param>
+			</result>
+		</action>
+				
 		<action name="getDetailToPopulateByVoterIdCardNoAction" class="mahaNaduAction" method="getDetailToPopulateByVoterIdCardNo">
 		 <result type="json" name="success">
 				<param name="root">populateVo</param>
+			</result>
+		</action>
+		<action name="getPanchayatsByCosntituencyAction" class="mahaNaduAction" method="getPanchayatsByCosntiId">
+		 <result type="json" name="success">
+				<param name="root">designationsList</param>
 			</result>
 		</action>
 		
