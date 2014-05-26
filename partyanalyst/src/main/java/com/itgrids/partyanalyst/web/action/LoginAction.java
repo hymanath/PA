@@ -547,6 +547,9 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 	
      private String finalResultString() {
     	System.out.print("URL"+url);
+    	if(userRoles.contains("MAHANADU")){
+    		return "mahanadu";
+    	}
     	if(src != null && !"null".equalsIgnoreCase(src))
     	{
     		log.debug(src);

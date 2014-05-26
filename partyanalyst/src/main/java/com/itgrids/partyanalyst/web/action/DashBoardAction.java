@@ -15,6 +15,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.CrossVotingVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.IConstituencySearchService;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
@@ -42,6 +43,7 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 	private IVotersAnalysisService votersAnalysisService;
 	private CadreManagementService cadreManagementService;
 	private SelectOptionVO boothAnalysisData;
+	private EntitlementsHelper entitlementsHelper;
 	private boolean party;
 	JSONObject jObj;
 	private String task;
@@ -71,6 +73,16 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 	private List<SelectOptionVO> publicationDatesList;
 	private boolean infoManager;
 	
+
+
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
 
 
 	public String getProfileUserName() {
@@ -517,7 +529,9 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 	{	
 	  try{
 		session = request.getSession();
-		
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"MAHANADU")){
+			return "mahanadu";
+		}
 		statesList = staticDataService.getParticipatedStatesForAnElectionType(new Long(2));
 		
 		//electionYearsList=staticDataService.getElectionYearsForBooths(1l,2l);

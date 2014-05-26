@@ -170,6 +170,7 @@
 			<result type="redirect" name="profileManagePageAction">profileManagePageAction.action</result>
 			<result type="redirect" name="voterAnalysisAction">votersAnalysisAction.action</result>
 			<result type="redirect" name="mahaNaduAction">mahaNaduAction.action</result>
+			<result type="redirect" name="mahanadu">mahaNaduAction.action</result>
 			<result type="redirect" name="casteAndElectionResultsComparisonAction">casteAndElectionResultsComparisonAction.action</result>
 			<result type="redirect" name="votersAnalysisNewAction">votersAnalysisNewAction.action</result>
 			<result type="redirect" name="votersSearchAndEditAction">votersSearchAction.action</result>
@@ -5556,6 +5557,8 @@
 		    <result name="success">/jsp/dashBoard.jsp</result>
 		    <result name="input">/jsp/loginForm.jsp?src=dashBoardAction</result>
 		    <result name="userProfile" type="redirect">userProfile.action</result>
+		    <result name="mahanadu" type="redirect">mahaNaduAction.action</result>
+		    
 		</action>
 		
 		<action name="getPariesForAssemplyAction" class="dashBoardAction" method="ajaxHandler">
