@@ -1130,7 +1130,8 @@ public List<Object[]> searchCadreInfoByConstidAndNameORMobile(Long constiId,Stri
 			" ,model2.hamlet.hamletId " +			// 9
 			" ,model2.localElectionBody.localElectionBodyId " + //10
 			" ,model.cadreId " + //11
-			" ,model2.booth.boothId" ; //12
+			" ,model2.booth.boothId " + //12
+			" ,model.voter.voterId" ; //13
 	
 			//" ,model2.ward.name ";
 	if(querytype != null){
@@ -1141,8 +1142,8 @@ public List<Object[]> searchCadreInfoByConstidAndNameORMobile(Long constiId,Stri
 	
 	queryString.append(" from Cadre model, UserAddress model2 where ");
 	queryString.append(queryStr);
-	queryString.append(" and model.currentAddress.userAddressId = model2.userAddressId  and model2.constituency.constituencyId = :constiId ");
-	queryString.append(" order by model.firstName asc ");
+	queryString.append(" and model.currentAddress.userAddressId = model2.userAddressId  and model2.constituency.constituencyId = :constiId and ");
+	queryString.append(" model.isMahanadu = 'Y'  order by model.firstName asc ");
 	
 	Query query = getSession().createQuery(queryString.toString());
 	
