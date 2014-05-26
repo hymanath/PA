@@ -795,6 +795,34 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
     return Action.SUCCESS;
     }
     
+    public String searchVoterInfo(){
+    	 try {
+    	HttpSession session = request.getSession();
+		RegistrationVO userDetls = (RegistrationVO) session.getAttribute("USER");
+		if(userDetls == null){
+			cadreVo = new CadreVo();
+			cadreVo.setFirstName("logout");
+			return Action.SUCCESS;
+		}
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"MAHANADU")){
+			cadreVo = new CadreVo();
+			cadreVo.setFirstName("noaccess");
+  			return Action.SUCCESS;
+		}   	
+    	String boothId = request.getParameter("boothId");
+    	String searchBy = request.getParameter("searchName");
+    	String sort = request.getParameter("dir");
+    	String sortBy = request.getParameter("sort");
+    	String startIndex = request.getParameter("startIndex");
+    	String maxResult = request.getParameter("results");
+    	String searchType  =  request.getParameter("searchType");
+    	
+    	cadreVo =  mahaNaduService.searchVoterInfo(userDetls.getRegistrationID(),Long.valueOf(boothId),searchBy.trim(),searchType,sort,sortBy,Integer.valueOf(startIndex),Integer.valueOf(maxResult));
+	} catch (Exception e) {
+		log.error(" exception occured in searchVoterInfo() in mahanaduAction class.",e);
+	}    
+    return Action.SUCCESS;
+    }    
     
     public String getDetailToPopulateByVoterIdCardNo()
     {
@@ -830,5 +858,18 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
     	}
     	return Action.SUCCESS;
     }
-    
+
+    public String getPanchayatsByCosntiId(){
+    	
+    	try{
+    		jObj = new JSONObject(getTask());
+        	designationsList = staticDataService.getPanchayatiesByConstituencyId(jObj.getLong("constiId"));
+    	}
+    	catch(Exception e)
+    	{
+    		e.printStackTrace();
+    	}
+    	return Action.SUCCESS;
+    	
+    }
 }
