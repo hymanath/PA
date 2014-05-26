@@ -2096,7 +2096,10 @@
          <property name="userDAO" ref="userDAO" />
          <property name="bloodGroupDAO" ref="bloodGroupDAO" />
          <property name="voterDAO" ref="voterDAO" />
+         <property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" />
          
    </bean>
+   
+   
 </beans>		
 	
