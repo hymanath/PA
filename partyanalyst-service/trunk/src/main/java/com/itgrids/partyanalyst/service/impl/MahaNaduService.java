@@ -806,12 +806,11 @@ public CadreVo searchVoterInfo(Long userId,Long boothId, String searchName,Strin
 	 try {
 		 
 		 	Long publicationDateId = Long.valueOf(IConstants.STRATAGIC_REPORT_PUBLICATION_DATE_ID);
-		 	List<Object[]> count = boothPublicationVoterDAO.searchVoterdetailsByBoothAndName(boothId,searchName,searchType,publicationDateId,startIndex,maxResult,"count");
+		 	Long count = boothPublicationVoterDAO.searchVoterdetailsByBoothAndNameCount(boothId,searchName,searchType,publicationDateId,startIndex,maxResult,"count");
 		 	
-		 	if(count !=null && count.size()>0){
-		 		for (Object[] objects : count) {
-		 			returnVo.setCount((Long) objects[0]);
-				}
+		 	if(count !=null ){
+		 		
+		 			returnVo.setCount(count);
 		 	}
 		 	
 		 	
@@ -824,7 +823,7 @@ public CadreVo searchVoterInfo(Long userId,Long boothId, String searchName,Strin
 						vo.setCadreId(voter[0] !=null ? (Long)voter[0] :0L);
 						vo.setFirstName(voter[1] != null ? voter[1].toString():"");
 						vo.setAddress(voter[2] != null ? voter[2].toString():"");
-						vo.setBooth(voter[3] != null ? boothDAO.get((Long)voter[3]).getPartNo():"");
+						vo.setBooth(voter[3] != null ? voter[3].toString():"");
 						vo.setVoterCardId(voter[4] != null ? voter[4].toString():"");
 						returnList.add(vo);						
 				}
@@ -832,7 +831,7 @@ public CadreVo searchVoterInfo(Long userId,Long boothId, String searchName,Strin
 			
 			returnVo.setCadreVOList(returnList);
 	} catch (Exception e) {
-		e.printStackTrace();
+		//e.printStackTrace();
 		 LOG.error("Exception rised in searchVoterInfo() in mahanaduService class. ",e);
 	}
 	 return returnVo;
