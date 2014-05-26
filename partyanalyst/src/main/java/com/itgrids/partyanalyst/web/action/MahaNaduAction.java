@@ -580,10 +580,10 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 			session.setAttribute("incSource", incSource);
 		}
 		
-		if(session.getAttribute("casteCategory") == null){
+		
 			List<SelectOptionVO> casteCategory = mahaNaduService.getCasteCategories();
 			session.setAttribute("casteCategory", casteCategory);
-		}
+		
 		
 		if(session.getAttribute("partyDesig") == null){
 			List<SelectOptionVO> partyDesig = mahaNaduService.getPartyDesignations();
