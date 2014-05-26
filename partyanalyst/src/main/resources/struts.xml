@@ -7117,6 +7117,12 @@
 			    <param name="inputName">inputStream</param>
 		  </result>	
 		</action>
+		<action name="getDetailToPopulateByVoterIdCardNoAction" class="mahaNaduAction" method="getDetailToPopulateByVoterIdCardNo">
+		 <result type="json" name="success">
+				<param name="root">populateVo</param>
+			</result>
+		</action>
+		
 </package>
 		
 </struts>      

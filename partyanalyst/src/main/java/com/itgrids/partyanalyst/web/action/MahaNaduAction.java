@@ -48,7 +48,7 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 	private ServletContext context;
 	private HttpServletRequest request;
 	private HttpSession session;
-	private CadreVo cadreVo;
+	private CadreVo cadreVo,populateVo;
 	JSONObject jObj = null;
 	private String task = null;
 	 private EntitlementsHelper entitlementsHelper;
@@ -107,6 +107,14 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 	
 	private IConstituencyDAO constituencyDAO;
 	
+	public CadreVo getPopulateVo() {
+		return populateVo;
+	}
+
+	public void setPopulateVo(CadreVo populateVo) {
+		this.populateVo = populateVo;
+	}
+
 	public EntitlementsHelper getEntitlementsHelper() {
 		return entitlementsHelper;
 	}
@@ -785,6 +793,42 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 		log.error(" exception occured in searchCadreInfo() in mahanaduAction class.",e);
 	}    
     return Action.SUCCESS;
+    }
+    
+    
+    public String getDetailToPopulateByVoterIdCardNo()
+    {
+    	try{
+    		jObj = new JSONObject(getTask());
+    		populateVo = mahaNaduService.getDetailToPopulate(jObj.getString("voterIdCardNo"),10l);
+    	List<SelectOptionVO> districtNames_c = new ArrayList<SelectOptionVO>();
+   		districtNames_c=cadreManagementService.findDistrictsByState("1");			
+   		SelectOptionVO obj = new SelectOptionVO(0L,"Select District");
+   		districtNames_c.add(0, obj);
+   		List<SelectOptionVO> constituencynames_c = new ArrayList<SelectOptionVO>();
+   		if(populateVo.getDistrictId() != null)
+		{
+			constituencynames_c=regionServiceDataImp.getConstituenciesByDistrictID(populateVo.getDistrictId());	
+			SelectOptionVO obj1 = new SelectOptionVO(0L,"Select Constituency");
+			constituencynames_c.add(0, obj1);    
+    	}
+   		List<SelectOptionVO> boothsList_c  = new ArrayList<SelectOptionVO>();
+   		if(populateVo.getConstituencyId() != null){
+			 boothsList_c = mahaNaduService.getBoothsInAConstituency(populateVo.getConstituencyId(),10l,null,null);
+			if(boothsList_c != null){
+				 obj = new SelectOptionVO(0L,"Select Booth");
+				boothsList_c.add(0, obj);
+			}
+   		}
+   		populateVo.setDistricts(districtNames_c);
+   		populateVo.setConstituencies(constituencynames_c);
+   		populateVo.setBooths(boothsList_c);
+    	}
+    	catch(Exception e)
+    	{
+    		e.printStackTrace();
+    	}
+    	return Action.SUCCESS;
     }
     
 }

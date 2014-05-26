@@ -223,6 +223,22 @@ border:1px solid #000000;
 
 				<div id="errorMsgDiv"></div>
 				<!---- Personal Details ------>
+
+<div class="well well-small mahanadu-well form-inline" style="margin-top:10px;">				
+					<div class="row-fluid">
+					<div id="errorMsgForPopulate"></div>
+					<div class="span8">	
+							<label>VoterIdCardNo&nbsp&nbsp&nbsp</label>             
+							<input type="text" name="voterIdCardNo"  id="voterIdCardNoId" />
+							
+							<input type="button" class="btn btn-success" onclick="getDetailsByVoterIdCardNo()" value="getDetails"/ >
+							<img src="./images/icons/search.gif" alt="Processing Image" id="populateAjax" style="display:none;"/>
+							</div>
+					</div>
+		</div>
+
+
+
 				<h3>Personal Details</h3>
 				<p class="text-right" style="margin-top:-40px;">Fields marked with <span class="text-error">* </span> are mandatory</p>
 				<div class="well well-small mahanadu-well form-inline">				
@@ -237,7 +253,7 @@ border:1px solid #000000;
 							<s:if test="cadreVo != null">
 							  <div class="row-fluid m_top20">
 								<div class="span3">									
-									<label>Gender <span class="text-error">* </span></label>
+									<label>Gender </label>
 								</div>
 								<div class="span3">
 								  <s:if test="cadreVo.gender == 'Male'">
@@ -268,7 +284,7 @@ border:1px solid #000000;
 							<s:else>
 							<div class="row-fluid m_top20">
 								<div class="span3">									
-									<label>Gender <span class="text-error">* </span></label>
+									<label>Gender </label>
 								</div>
 								<div class="span3">
 									<label style="margin-top: -10px;"><input type="radio" checked="checked" value="Male" id="optionsRadios" name="cadreVo.gender">
@@ -500,6 +516,80 @@ $(document).ready(function(){
 	}).multiselectfilter({ });
 	
 });
+
+
+function getDetailsByVoterIdCardNo()
+{
+	$("#errorMsgForPopulate").html('');
+	var voterIdCardNo = $.trim($("#voterIdCardNoId").val());
+	if(voterIdCardNo.length == 0)
+		return;
+	$("#populateAjax").css("display","inline-block");
+	var jsObj = {
+	voterIdCardNo : voterIdCardNo,
+		task : "getDetails"
+	};
+
+	$.ajax({
+          type:'GET',
+          url: 'getDetailToPopulateByVoterIdCardNoAction.action',
+          dataType: 'json',
+          data: {task:JSON.stringify(jsObj)},
+     	  }).done(function(result){ 
+			  $("#populateAjax").css("display","none");
+			   if(result.voterCardId == null)
+			  {
+	$("#errorMsgForPopulate").html("No data found").css("color","red");
+			  }
+			 else {
+			$("#errorMsgForPopulate").html('');
+			$("#populateAjax").css("display","none");
+			$("#districtField option[value="+result.districtId+"]").attr('selected', 'selected');
+				   
+			populateSelect(result.constituencies,'constituencyField');
+			  $("#constituencyField option[value="+result.constituencyId+"]").attr('selected', 'selected');
+			populateSelect(result.booths,'boothField');	
+			  $("#boothField option[value="+result.boothNo+"]").attr('selected', 'selected');
+			 // $("#cadreVo_voterCardId").val(result.voterCardId);
+			  document.getElementById("cadreVo_voterCardId").value = result.voterCardId;
+				document.getElementById("firstName").value = result.firstName;
+				  
+			}
+			
+	   });
+
+}
+
+
+function populateSelect(results,selectedElmt)
+{
+	var selectedElmt=document.getElementById(''+selectedElmt+'');
+	removeSelectElements(selectedElmt);
+	for(var val in results)
+	{	
+		var opElmt = document.createElement('option');
+		opElmt.value=results[val].id;
+		opElmt.text=results[val].name;
+
+		try
+		{
+			selectedElmt.add(opElmt,null); // standards compliant
+		}
+		catch(ex)
+		{
+			selectedElmt.add(opElmt); // IE only
+		}	
+	}
+
+}
+	function removeSelectElements(selectedElmt)
+	{
+		var len = selectedElmt.length;
+		for(var i=len-1;i>=0;i--)
+		{
+			selectedElmt.remove(i);
+		}
+	}
 function removeDate(){
   $("#activeDateField").val("");
 }
@@ -706,12 +796,12 @@ if(firstName.length == 0 )
 	      flag = false;
 	   }
 	}*/
-	if(isgenderChecked.length == 0)
+	/*if(isgenderChecked.length == 0)
 	{
 	str+='gender is required<br/>';
 	flag = false;
 	}
-
+*/
 	if(!flag)
 	{
 	$("#errorMsgDiv").html(str).css("color","red");
@@ -894,6 +984,7 @@ return ;
 function editCadreInfo(cadreId){
 	window.location = "mahaNaduAction.action?cadreId="+cadreId;
 }
+
 </script>
 </body>
 
