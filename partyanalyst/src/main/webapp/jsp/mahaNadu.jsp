@@ -552,7 +552,7 @@ function getDetailsByVoterIdCardNo()
 			  $("#boothField option[value="+result.boothNo+"]").attr('selected', 'selected');
 			 // $("#cadreVo_voterCardId").val(result.voterCardId);
 			  document.getElementById("cadreVo_voterCardId").value = result.voterCardId;
-				document.getElementById("firstName").value = result.firstName;
+				document.getElementById("firstNameId").value = result.firstName;
 				  
 			}
 			
