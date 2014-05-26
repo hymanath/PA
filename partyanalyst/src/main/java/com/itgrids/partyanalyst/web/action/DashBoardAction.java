@@ -529,7 +529,7 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 	{	
 	  try{
 		session = request.getSession();
-		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"MAHANADU")){
+		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"MAHANADU")){
 			return "mahanadu";
 		}
 		statesList = staticDataService.getParticipatedStatesForAnElectionType(new Long(2));
