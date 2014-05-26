@@ -386,7 +386,8 @@ border:1px solid #000000;
 							<s:select id="boothField" cssClass="regionSelect input-xlarge" name="cadreVo.boothNo" list="#session.boothsList" listKey="id" listValue="name"></s:select>
 							<label class="m_top20">VoterId <span class="text-error">* </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
 							<s:textfield  type="text" id="cadreVo_voterCardId" name="cadreVo.voterCardId"/>
-						</div>						
+						</div>	
+							<!-- <input type="button" onclick="getPanchayats();" value="Get VoterId"/> -->
 					</div>
 				</div>
 				
@@ -499,6 +500,14 @@ border:1px solid #000000;
 	<div id="wrapper">
 			<div id="example"></div>
 		</div>
+		
+<div id="voterInfoDiv" align="center" style="width:900px;">
+		Voter Name : <input type="text" id="searchName1" />
+		Panchayat : <select id="pacnhayatsList"></select>
+		<input type="button" value="Get VoterId" onclick="searchBoothVeoters(0);"/>
+		<div id="voterInfoDivTab"  class="yui-skin-sam"></div>	
+</div>
+
 <script type="text/javascript">
 var actionType="";
 $(document).ready(function(){
@@ -997,6 +1006,112 @@ return ;
 function editCadreInfo(cadreId){
 	window.location = "mahaNaduAction.action?cadreId="+cadreId;
 }
+function showTakeImage(){
+  $('#wrapper').dialog({
+            autoOpen: true,
+			width:600,
+			title:"Take Image",
+            modal: true,
+			resizable: false
+        });
+}
+var typeNew = "booth";
+function getPanchayats(){
+	var constiId = $('#constituencyField').val();
+	var boothId = $('#boothField').val();
+	
+	$('#voterInfoDiv').dialog({
+            autoOpen: true,
+			width:950,
+			title:"Cadre Details ",
+            modal: true,
+			resizable: false
+        });
+		$('#buildDataTable').html('');
+		
+		
+	if(boothId != 0){
+	
+		searchBoothVeoters(boothId);
+	}
+	else{
+	
+	typeNew = "panchayat";
+		var jObj={constiId:constiId};
+		$.ajax({
+			  type:'POST',
+			  url: 'getPanchayatsByCosntituencyAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jObj)},
+			  }).done(function(result){ 			  
+			  
+			  $('#pacnhayatsList').find('option').remove();
+				if(result != null){
+				
+					for(var i in result){
+						$('#pacnhayatsList').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+					}
+				}
+		   });	
+	}
+}
+function searchBoothVeoters(boothId){
+var boothId = boothId;
+var searchName = $('#searchName1').val();
+var searchType = "booth";
+if(typeNew == "panchayat"){
+	boothId = $('#pacnhayatsList').val();
+	searchType = "panchayat";
+}
+	 
+	  
+		
+
+	var votersByLocBoothColumnDefs = [
+	{key:"voterCardId",label:" Voter Id ",width:80,sortable: true},
+	{key:"firstName",label:" Voter Name",width:90,sortable: true},
+	{key:"address",label:" House No ",width:100,sortable: true},
+	{key:"booth",label:" Booth No ",width:100,sortable: true}
+	];
+	//parentLocationId
+	var urlStr = "searchVoterInfoAction.action?searchName="+searchName.trim()+"&boothId="+boothId+"&searchType="+searchType+"&";
+
+	var votersByLocBoothDataSource = new YAHOO.util.DataSource(urlStr);
+
+	votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
+	votersByLocBoothDataSource.responseSchema = {
+	resultsList: "cadreVOList",
+	fields: ["firstName","booth","cadreId","address","voterCardId"],
+
+	metaFields: {
+	totalRecords: "count", // Access to value in the server response
+	status:"firstName"
+	},
+	};
+
+	var myConfigs = {
+	initialRequest: "sort=name&dir=asc&startIndex=0&results=500", // Initial request for first page of data
+	sortedBy : {key:"name", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
+	dynamicData: true, // Enables dynamic server-driven data
+	   paginator : new YAHOO.widget.Paginator({ 
+					rowsPerPage    : 500
+					})  // Enables pagination
+	};
+
+	var votersByLocBoothDataTable = new YAHOO.widget.DataTable("voterInfoDivTab",
+	votersByLocBoothColumnDefs, votersByLocBoothDataSource, myConfigs);
+
+	votersByLocBoothDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
+	oPayload.totalRecords = oResponse.meta.totalRecords;
+	return oPayload;
+	}
+	return {
+	oDS: votersByLocBoothDataSource,
+	oDT: votersByLocBoothDataTable
+	};
+
+}
+
 function showTakeImage(){
   $('#wrapper').dialog({
             autoOpen: true,
