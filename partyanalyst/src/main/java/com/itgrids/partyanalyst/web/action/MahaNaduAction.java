@@ -695,6 +695,10 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 		//}
 			
 		boothsList =mahaNaduService.getBoothsInAConstituency(constituencyId,10l,null,null);
+		if(boothsList != null){
+			SelectOptionVO obj = new SelectOptionVO(0L,"Select Booth");
+			boothsList.add(0, obj);
+		}
       }catch(Exception e){
     	  LOG.error("Exception rised in getBooths", e);
       }
