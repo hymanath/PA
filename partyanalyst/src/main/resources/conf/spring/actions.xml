@@ -1244,6 +1244,8 @@
 		<property name="cadreManagementService" ref="cadreManagementService" />
 		<property name="constituencySearchService" ref="constituencySearchService" />
 		<property name="ananymousUserService" ref="ananymousUserService" />
+		<property name="entitlementsHelper" ref="entitlementsHelper" />
+		
 	</bean>
 	
 	<bean id="surveyorProfileSaveAction" class="com.itgrids.partyanalyst.web.action.SurveyorProfileSaveAction" singleton="false">
