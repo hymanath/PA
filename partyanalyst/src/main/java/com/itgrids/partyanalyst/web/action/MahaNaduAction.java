@@ -866,7 +866,7 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
         	designationsList = staticDataService.getPanchayatiesByConstituencyId(jObj.getLong("constiId"));
         	if(designationsList != null){
         	
-        		SelectOptionVO obj = new SelectOptionVO(0L,"Select Booth");
+        		SelectOptionVO obj = new SelectOptionVO(0L,"Select Panchayat");
         		designationsList.add(0, obj);
    			
         	}

@@ -548,6 +548,7 @@ $(document).ready(function(){
 
 function getDetailsByVoterIdCardNo()
 {
+    clearAllOptions();
 	$("#errorMsgForPopulate").html('');
 	var voterIdCardNo = $.trim($("#voterIdCardNoId").val());
 	if(voterIdCardNo.length == 0)
@@ -581,7 +582,13 @@ function getDetailsByVoterIdCardNo()
 			 // $("#cadreVo_voterCardId").val(result.voterCardId);
 			  document.getElementById("cadreVo_voterCardId").value = jsObj.voterIdCardNo;
 				document.getElementById("firstNameId").value = result.firstName;
-				  
+				$("#cadreVo_age").val(result.age);
+				  $("#cadreVo_fatherName").val(result.fatherName);
+				  if(result.gender =="M" || result.gender =="Male"){
+				    $("#optionsRadios").attr("checked","checked");	
+				  }else{
+				    $("#optionsRadios1").attr("checked","checked");	
+				  }
 			}
 			
 	   });
@@ -735,7 +742,7 @@ $("#professionField").val(0);
 $("#cadreVo_annualIncome").val("");
 $("#incomeSource").val("");
 $("#casteCateg").val(0);
-
+$("#cadreVo_voterCardId").val("");
 
   $("#partyDesig").val([]);
   $("#govDesig").val([]);
@@ -1023,6 +1030,8 @@ function showTakeImage(){
 }
 var typeNew = "booth";
 function getPanchayats(){
+     
+	 $("#pacnhayatsList option").remove();
      typeNew ="booth";
 	 var lboothId = $('#boothField').val();
 	 var lConstiId = $('#constituencyField').val();
@@ -1079,7 +1088,7 @@ function getPanchayats(){
 	}
 }
 function searchBoothVeoters(boothId){
-var boothId = boothId;
+var boothId = $('#boothField').val();
 var searchName = $('#searchName1').val();
 var searchType = "booth";
 if(typeNew == "panchayat"){
@@ -1097,6 +1106,7 @@ if(typeNew == "panchayat"){
 	var votersByLocBoothColumnDefs1 = [
 	{key:"voterCardId",label:" Voter Id ",width:80,sortable: false},
 	{key:"firstName",label:" Voter Name",width:90,sortable: false},
+	{key:"fatherName",label:" Relative Name",width:90,sortable: false},
 	{key:"address",label:" House No ",width:100,sortable: false},
 	{key:"booth",label:" Booth No ",width:100,sortable: false}
 	];
@@ -1108,7 +1118,7 @@ if(typeNew == "panchayat"){
 	votersByLocBoothDataSource1.responseType = YAHOO.util.DataSource.TYPE_JSON;
 	votersByLocBoothDataSource1.responseSchema = {
 	resultsList: "cadreVOList",
-	fields: ["firstName","booth","cadreId","address","voterCardId"],
+	fields: ["firstName","booth","cadreId","address","voterCardId","fatherName"],
 
 	metaFields: {
 	totalRecords: "count"// Access to value in the server response
