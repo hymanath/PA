@@ -1023,7 +1023,7 @@ function showTakeImage(){
 }
 var typeNew = "booth";
 function getPanchayats(){
-     
+     typeNew ="booth";
 	 var lboothId = $('#boothField').val();
 	 var lConstiId = $('#constituencyField').val();
 	 var lboothIdb = false;
