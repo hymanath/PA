@@ -631,5 +631,7 @@ public interface IBoothPublicationVoterDAO extends
 	  
 	  public List<Object[]> getVoterTeluguNames(Long boothId);
 	  
+	 public List<Object[]> searchVoterdetailsByBoothAndName(Long boothId,String searchName,String searchType,Long publicationDateId,int firstRecord,int maxResult,String queryType);
+	  
 	  public List<Object[]> getDetailsByVoterIdCardNo(String voterIdCard,Long publicationId);
 }
