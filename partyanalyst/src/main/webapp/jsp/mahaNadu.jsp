@@ -231,7 +231,7 @@ border:1px solid #000000;
 							<label>VoterIdCardNo&nbsp&nbsp&nbsp</label>             
 							<input type="text" name="voterIdCardNo"  id="voterIdCardNoId" />
 							
-							<input type="button" class="btn btn-success" onclick="getDetailsByVoterIdCardNo()" value="getDetails"/ >
+							<input type="button" class="btn btn-success" onclick="getDetailsByVoterIdCardNo()" value="GetDetails"/ >
 							<img src="./images/icons/search.gif" alt="Processing Image" id="populateAjax" style="display:none;"/>
 							</div>
 					</div>
