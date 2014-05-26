@@ -630,4 +630,6 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<Object[]> getVoterDetaildsByBoothWise(Long boothId);
 	  
 	  public List<Object[]> getVoterTeluguNames(Long boothId);
+	  
+	  public List<Object[]> getDetailsByVoterIdCardNo(String voterIdCard,Long publicationId);
 }

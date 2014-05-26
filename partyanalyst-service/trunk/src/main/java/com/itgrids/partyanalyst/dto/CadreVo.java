@@ -62,9 +62,34 @@ public class CadreVo implements Serializable{
 	private String casteCategoryName;
 	private String voterCardId;
 	private Long isVerified;
+	private List<SelectOptionVO> districts,constituencies,booths;
 	
 
 	
+	public List<SelectOptionVO> getDistricts() {
+		return districts;
+	}
+
+	public void setDistricts(List<SelectOptionVO> districts) {
+		this.districts = districts;
+	}
+
+	public List<SelectOptionVO> getConstituencies() {
+		return constituencies;
+	}
+
+	public void setConstituencies(List<SelectOptionVO> constituencies) {
+		this.constituencies = constituencies;
+	}
+
+	public List<SelectOptionVO> getBooths() {
+		return booths;
+	}
+
+	public void setBooths(List<SelectOptionVO> booths) {
+		this.booths = booths;
+	}
+
 	public Long getIsVerified() {
 		return isVerified;
 	}
