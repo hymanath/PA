@@ -188,11 +188,12 @@ border:1px solid #000000;
 	    
 		<!----Header Div--------->
 		<div class="row">
-			<div class="span12 text-center">
-				<a href="#" title="Telugu Desam Mahanadu 2014" >
-					<img src="images/mahaNadu/MahanaduLogo.png" alt="Telugu Desam Mahanadu 2014" />
+			<div class="span6 offset3 text-center">
+				<a title="Telugu Desam Mahanadu 2014" href="#">
+					<img alt="Telugu Desam Mahanadu 2014" src="images/mahaNadu/MahanaduLogo.png">
 				</a>
 			</div>
+<div class="span3" style="font-weight:bold;"><a href="logoutAction.action" class="btn btn-mini pull-right m_top10">LOGOUT</a></div>
 		</div><!----Header Div End--------->
 		
 		<!----Mahanadu Banner Div--------->
