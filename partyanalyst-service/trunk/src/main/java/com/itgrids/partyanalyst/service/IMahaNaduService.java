@@ -20,4 +20,6 @@ public interface IMahaNaduService {
 	 public List<SelectOptionVO> getgovernmentDesignations();
 	 public ResultStatus saveCadreInfoForMahaNadu(CadreVo CadreVoToSave);
 	 public CadreVo getCadreCompleteInfo(Long cadreId);
+	 
+	 public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId);
 }

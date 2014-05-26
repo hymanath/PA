@@ -13,12 +13,15 @@ import javax.imageio.stream.FileImageOutputStream;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.jfree.util.Log;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IBloodGroupDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.ICadreGovtDesignationDAO;
 import com.itgrids.partyanalyst.dao.ICadrePartyDesignationDAO;
@@ -72,7 +75,8 @@ public class MahaNaduService implements IMahaNaduService{
 	private IUserDAO userDAO;
 	private IBloodGroupDAO bloodGroupDAO;
 	private IVoterDAO voterDAO;
-	
+	@Autowired
+	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
 	
 	public IVoterDAO getVoterDAO() {
 		return voterDAO;
@@ -775,5 +779,31 @@ public CadreVo convertCadreToCadreVo(Cadre cadre) {
 	cadreInfo.setPartyDesignationList(partyDesignationList);
 	cadreInfo.setGovtDesignationList(govtDesignationList);
 	return cadreInfo;
+}
+
+public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
+{
+	CadreVo result = new CadreVo();
+	try{
+		List<Object[]> list = boothPublicationVoterDAO.getDetailsByVoterIdCardNo(voterIdCardNo,publicationId);
+		if(list != null && list.size() > 0)
+		{
+			for(Object[] params : list)
+			{
+				result.setBoothNo((Long)params[0]);
+				result.setBooth(params[1].toString());
+				result.setVoterCardId(params[2].toString());
+				result.setDistrictId((Long)params[4]);
+				result.setConstituencyId((Long)params[3]);
+				result.setFirstName(params[5] !=null ? params[5].toString() : " ");
+			}
+		}
+		
+		
+	}
+	catch (Exception e) {
+	Log.error("Exception in getDetailToPopulate()");
+	}
+	return result;
 }
 }
