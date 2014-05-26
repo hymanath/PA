@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -11,6 +12,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageOutputStream;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.jfree.util.Log;
@@ -551,6 +553,12 @@ public List<SelectOptionVO> getBoothsInAConstituency(Long constituencyId,Long pu
 						cadreManagementService.updateCadreImage(cadre.getCadreId(),"human.jpg");
 					}
 				}
+				if(cadreInfo.getBase64Image() != null && cadreInfo.getBase64Image().trim().length() > 0){
+					String result = convertBase64StringToImage(cadreInfo.getBase64Image(),cadre.getCadreId().toString(),cadreInfo.getPath());
+					if(result.equalsIgnoreCase("success")){
+						cadreManagementService.updateCadreImage(cadre.getCadreId(),cadre.getCadreId().toString()+".jpg");
+					}
+				}
 				cadrePartyDesignationDAO.deleteExisting(cadre.getCadreId());
 				cadreGovtDesignationDAO.deleteExisting(cadre.getCadreId());
 				if (cadre != null)
@@ -806,4 +814,27 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 	}
 	return result;
 }
+
+ public String convertBase64StringToImage(String imageDataString,String cadreId,String url){
+	   FileOutputStream imageOutFile = null;
+	 try {       
+		 byte[] imageByteArray = Base64.decodeBase64(imageDataString.getBytes());
+		 String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+		 String filePath = url + "images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator;
+		 String fileName = filePath+cadreId.toString()+".jpg";
+		  imageOutFile = new FileOutputStream(fileName);
+	     imageOutFile.write(imageByteArray);
+	    return "success";
+	 }catch(Exception e){
+		 Log.error("Exception rised in convertBase64StringToImage()",e);
+		 if(imageOutFile != null){
+			 try{
+			 imageOutFile.close();
+			 }catch(Exception e1){
+				 Log.error("Exception rised in convertBase64StringToImage() while closing write operation",e1);
+			 }
+		 }
+	 }
+	 return "fail";
+ }
 }

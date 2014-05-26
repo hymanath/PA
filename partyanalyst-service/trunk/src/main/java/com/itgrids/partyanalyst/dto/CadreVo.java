@@ -63,6 +63,7 @@ public class CadreVo implements Serializable{
 	private String voterCardId;
 	private Long isVerified;
 	private List<SelectOptionVO> districts,constituencies,booths;
+	private String base64Image;
 	
 
 	
@@ -521,6 +522,14 @@ public class CadreVo implements Serializable{
 
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}
+
+	public String getBase64Image() {
+		return base64Image;
+	}
+
+	public void setBase64Image(String base64Image) {
+		this.base64Image = base64Image;
 	}
 	
 	
