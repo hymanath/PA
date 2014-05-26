@@ -52,6 +52,11 @@
 
 <link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.filter.css" />
 <script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.filter.js"></script>
+
+<script type="text/javascript" src="js/photobooth/photobooth_min.js"></script>
+		<script type="text/javascript" src="js/photobooth/website/js/script.js"></script>
+		<link href='http://fonts.googleapis.com/css?family=Abel' rel='stylesheet' type='text/css'>
+		<link type="text/css" rel="stylesheet" media="screen" href="js/photobooth/website/css/page.css" />
   <style>
   .yui-skin-sam.yui-dt table th {
 		background-color: #CDE6FC;
@@ -168,12 +173,17 @@ border:1px solid #000000;
     padding-right: 0;
     padding-top: 0;
 }
-
+#takePicture{
+    margin-left: 5px;
+    margin-top: 10px;
+	cursor: pointer;
+}
 	</style>
 </head>
 <body  class="mahanadubg">
  <form id="uploadCadreForm" method="post" enctype="multipart/form-data" action="uploadCadreForMahanadu.action" name="uploadCadreForm">
     <s:hidden name="cadreVo.cadreId" id="cadreMainId" />
+	<s:hidden name="cadreVo.base64Image" id="base64Image" />
     <div class="container">	
 	    
 		<!----Header Div--------->
@@ -232,6 +242,7 @@ border:1px solid #000000;
 							<input type="text" name="voterIdCardNo"  id="voterIdCardNoId" />
 							
 							<input type="button" class="btn btn-success" onclick="getDetailsByVoterIdCardNo()" value="GetDetails"/ >
+							<input type="button" class="btn btn-success" onclick="clearAllOptions();" value="Clear All Below Fields"/ >
 							<img src="./images/icons/search.gif" alt="Processing Image" id="populateAjax" style="display:none;"/>
 							</div>
 					</div>
@@ -327,7 +338,7 @@ border:1px solid #000000;
 								  <span id="uploadImg"><img  style="width: 140px; height: 120px;" id="actuploadImg" src="images/mahaNadu/user image.jpg"></span>
 							   </s:else>
 							</a>
-							<input type="file" style="width: 79px;margin-left: 20px;" id="uploadFileId" onchange="changeImg();" name="cadreVo.uploadImage" class="m_top10">	
+							<span><img id="takePicture" onclick="showTakeImage();" src="images/candidatePage/camera.png" title="Take Picture" /></span><input type="file" style="width: 79px;margin-left: 10px;" id="uploadFileId" onchange="changeImg();" name="cadreVo.uploadImage" class="m_top10">	
 						</div>	
 					</div>
 				</div>
@@ -485,7 +496,9 @@ border:1px solid #000000;
 <div id="dialogueTab" align="center" style="width:900px;">
 		<div id="buildDataTable"  class="yui-skin-sam"></div>	
 	</div>
-	
+	<div id="wrapper">
+			<div id="example"></div>
+		</div>
 <script type="text/javascript">
 var actionType="";
 $(document).ready(function(){
@@ -514,7 +527,7 @@ $(document).ready(function(){
 			hide: "explode",
 			noneSelectedText:"Select Designation"
 	}).multiselectfilter({ });
-	
+	$("#wrapper").hide();
 });
 
 
@@ -679,7 +692,7 @@ function showUploadStatus(myResult){
 
 function clearAllOptions(){
 $("#cadreMainId").val("");
-
+$("#base64Image").val("");
 
 $("#firstNameId").val("");
 $("#lastNameId").val("");
@@ -984,7 +997,15 @@ return ;
 function editCadreInfo(cadreId){
 	window.location = "mahaNaduAction.action?cadreId="+cadreId;
 }
-
+function showTakeImage(){
+  $('#wrapper').dialog({
+            autoOpen: true,
+			width:600,
+			title:"Take Image",
+            modal: true,
+			resizable: false
+        });
+}
 </script>
 </body>
 
