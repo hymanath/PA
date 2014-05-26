@@ -77,9 +77,18 @@ public class MahaNaduService implements IMahaNaduService{
 	private IUserDAO userDAO;
 	private IBloodGroupDAO bloodGroupDAO;
 	private IVoterDAO voterDAO;
-	@Autowired
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
+
 	
+	public IBoothPublicationVoterDAO getBoothPublicationVoterDAO() {
+		return boothPublicationVoterDAO;
+	}
+
+	public void setBoothPublicationVoterDAO(
+			IBoothPublicationVoterDAO boothPublicationVoterDAO) {
+		this.boothPublicationVoterDAO = boothPublicationVoterDAO;
+	}
+
 	public IVoterDAO getVoterDAO() {
 		return voterDAO;
 	}
@@ -279,16 +288,16 @@ public List<SelectOptionVO> getBoothsInAConstituency(Long constituencyId,Long pu
 		 
 		 if(searchEle.length()>0){
 			 if(searchType.equalsIgnoreCase("all")){
-				 queryStr = " model.firstName like '%"+searchBy[0].toString()+"%' and model.lastName like '%"+searchBy[1].toString()+"%'  and  model.mobile like '"+searchBy[2].toString()+"' ";
+				 queryStr = " model.firstName like '%"+searchBy[0].toString()+"%' and model.lastName like '%"+searchBy[1].toString()+"%'  and  model.mobile like '%"+searchBy[2].toString()+"%' ";
 			 }
 			 else if(searchType.equalsIgnoreCase("firstTwo")){
 				 queryStr = " model.firstName like '%"+searchBy[0].toString()+"%' and model.lastName like '%"+searchBy[1].toString()+"%' ";
 			 }
 			 else if(searchType.equalsIgnoreCase("secondTwo")){
-				 queryStr = " model.lastName like '%"+searchBy[0].toString()+"%'  and  model.mobile like '"+searchBy[1].toString()+"' ";
+				 queryStr = " model.lastName like '%"+searchBy[0].toString()+"%'  and  model.mobile like '%"+searchBy[1].toString()+"%' ";
 			 }
 			 else if(searchType.equalsIgnoreCase("firstLast")){
-				 queryStr = " model.firstName like '%"+searchBy[0].toString()+"%'  and  model.mobile like '"+searchBy[1].toString()+"' ";
+				 queryStr = " model.firstName like '%"+searchBy[0].toString()+"%'  and  model.mobile like '%"+searchBy[1].toString()+"%' ";
 			 }
 			 else if(searchType.equalsIgnoreCase("firstone")){
 				 queryStr = " model.firstName like '%"+searchBy[0].toString()+"%' ";
@@ -297,7 +306,7 @@ public List<SelectOptionVO> getBoothsInAConstituency(Long constituencyId,Long pu
 				 queryStr = " model.lastName like '%"+searchBy[0].toString()+"%' ";
 			 }
 			 else if(searchType.equalsIgnoreCase("thirdone")){
-				 queryStr = " model.mobile like '"+searchBy[0].toString()+"' ";
+				 queryStr = " model.mobile like '%"+searchBy[0].toString()+"%' ";
 			 }
 		 }
 		 
@@ -331,6 +340,7 @@ public List<SelectOptionVO> getBoothsInAConstituency(Long constituencyId,Long pu
 					*/
 					
 					vo.setBoothNo(cadre[12] != null?Long.valueOf(boothDAO.get((Long)cadre[12]).getPartNo().toString()):0L);
+					vo.setVoterCardId(cadre[13] != null? voterDAO.get((Long)cadre[13]).getVoterIDCardNo().toString():"");
 					
 					returnList.add(vo);
 				}
@@ -788,6 +798,47 @@ public CadreVo convertCadreToCadreVo(Cadre cadre) {
 	cadreInfo.setGovtDesignationList(govtDesignationList);
 	return cadreInfo;
 }
+
+public CadreVo searchVoterInfo(Long userId,Long boothId, String searchName,String searchType,String sort,String sortBy,int startIndex,int maxResult)
+{ 
+	 CadreVo returnVo = new CadreVo();
+	 List<CadreVo> returnList = new ArrayList<CadreVo>();
+	 try {
+		 
+		 	Long publicationDateId = Long.valueOf(IConstants.STRATAGIC_REPORT_PUBLICATION_DATE_ID);
+		 	List<Object[]> count = boothPublicationVoterDAO.searchVoterdetailsByBoothAndName(boothId,searchName,searchType,publicationDateId,startIndex,maxResult,"count");
+		 	
+		 	if(count !=null && count.size()>0){
+		 		for (Object[] objects : count) {
+		 			returnVo.setCount((Long) objects[0]);
+				}
+		 	}
+		 	
+		 	
+			List<Object[]> votersList = boothPublicationVoterDAO.searchVoterdetailsByBoothAndName(boothId,searchName,searchType,publicationDateId,startIndex,maxResult,null);
+			
+			if(votersList != null && votersList.size()>0){
+				for (Object[] voter : votersList) {
+						CadreVo vo = new CadreVo();
+						
+						vo.setCadreId(voter[0] !=null ? (Long)voter[0] :0L);
+						vo.setFirstName(voter[1] != null ? voter[1].toString():"");
+						vo.setAddress(voter[2] != null ? voter[2].toString():"");
+						vo.setBooth(voter[3] != null ? boothDAO.get((Long)voter[3]).getPartNo():"");
+						vo.setVoterCardId(voter[4] != null ? voter[4].toString():"");
+						returnList.add(vo);						
+				}
+			}
+			
+			returnVo.setCadreVOList(returnList);
+	} catch (Exception e) {
+		e.printStackTrace();
+		 LOG.error("Exception rised in searchVoterInfo() in mahanaduService class. ",e);
+	}
+	 return returnVo;
+	 
+}
+
 
 public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 {
