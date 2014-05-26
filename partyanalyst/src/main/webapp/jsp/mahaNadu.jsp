@@ -178,6 +178,11 @@ border:1px solid #000000;
     margin-top: 10px;
 	cursor: pointer;
 }
+#wrapper{
+	width: 470px;
+	margin: 10px auto 30px;
+	position: relative;
+}
 	</style>
 </head>
 <body  class="mahanadubg">
@@ -388,7 +393,7 @@ border:1px solid #000000;
 							<label class="m_top20">VoterId <span class="text-error">* </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
 							<s:textfield  type="text" id="cadreVo_voterCardId" name="cadreVo.voterCardId"/>
 						</div>	
-							<!-- <input type="button" onclick="getPanchayats();" value="Get VoterId"/> -->
+							<input type="button" onclick="getPanchayats();" value="Get VoterId"/> 
 					</div>
 				</div>
 				
@@ -502,7 +507,7 @@ border:1px solid #000000;
 			<div id="example"></div>
 		</div>
 		
-<div id="voterInfoDiv" align="center" style="width:900px;">
+<div id="voterInfoDiv" align="center" style="display:none;width:900px;">
 		Voter Name : <input type="text" id="searchName1" />
 		Panchayat : <select id="pacnhayatsList"></select>
 		<input type="button" value="Get VoterId" onclick="searchBoothVeoters(0);"/>
@@ -669,12 +674,12 @@ function showUploadStatus(myResult){
 	if(result.search('success') != -1)
 	{
 		clearAllOptions();
-		str += '<font color="green"><b>Cadre Added Successfully.</b>';
+		str += '<font color="green"><b>Cadre Added Successfully.</b></font>';
 	}
 	else if(result.search('update') != -1)
 	{
 		clearAllOptions();
-		str += '<font color="green"><b>Cadre Updated Successfully.</b>';
+		str += '<font color="green"><b>Cadre Updated Successfully.</b></font>';
 	}
 	else if(result.search('logout') != -1)
 	{
@@ -687,11 +692,11 @@ function showUploadStatus(myResult){
     }
 	else if(result.search('fail') != -1) 
 	{
-		str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
+		str += '<font color="red"><b>Error Ocuured, Try Again.</b></font>';
 	}
 	else
 	{
-		str += '<font color="red"><b>'+result+'</b>';
+		str += '<font color="red"><b>'+result+'</b></font>';
 	}
 	errorDivEle.innerHTML = str;
 	$('html, body').animate({ scrollTop: $("#errorMsgDiv").offset().top }, "slow");
@@ -947,12 +952,12 @@ function searchCadre(){
 	
 var votersByLocBoothColumnDefs = [
 
-{key:"firstName", label: " Cadre Name ",width:200,formatter:YAHOO.widget.DataTable.CadreName,sortable: true},
-{key:"mobileNo",label:" Contact No ",width:100,sortable: true},
-{key:"districtName",label:" Booth No ",width:150,formatter:YAHOO.widget.DataTable.Area,sortable: true},
-{key:"memberType",label:" Cadre Type ",width:100,sortable: true},
-{key:"lastName",label:" Photo ",width:150,formatter:YAHOO.widget.DataTable.CadreImage,sortable: true},
-{key:"lastName", label: " Edit ", width:50,formatter:YAHOO.widget.DataTable.Type,sortable: true}
+{key:"firstName", label: " Cadre Name ",width:200,formatter:YAHOO.widget.DataTable.CadreName,sortable: false},
+{key:"mobileNo",label:" Contact No ",width:100,sortable: false},
+{key:"districtName",label:" Booth No ",width:150,formatter:YAHOO.widget.DataTable.Area,sortable: false},
+{key:"memberType",label:" Cadre Type ",width:100,sortable: false},
+{key:"lastName",label:" Photo ",width:150,formatter:YAHOO.widget.DataTable.CadreImage,sortable: false},
+{key:"lastName", label: " Edit ", width:50,formatter:YAHOO.widget.DataTable.Type,sortable: false}
 ];
 //parentLocationId
 var urlStr = "searchCadreInfoAction.action?searchBy="+searchBy+"&cosntituencyId="+cosntiId+"&searchType="+searchType+"&";
@@ -1018,6 +1023,23 @@ function showTakeImage(){
 }
 var typeNew = "booth";
 function getPanchayats(){
+     
+	 var lboothId = $('#boothField').val();
+	 var lConstiId = $('#constituencyField').val();
+	 var lboothIdb = false;
+	 var lConstiIdb = false;
+	 if(lboothId != null && lboothId > 0){
+	   lboothIdb = true;
+	 }
+	  if(lConstiId != null && lConstiId > 0){
+	   lConstiIdb = true;
+	 }
+	 if(lboothIdb == false && lConstiIdb == false){
+	      alert("Please select constituency or booth");
+	   return;
+	 }
+     $("#voterInfoDivTab").html("");
+	  $('#searchName1').val($('#firstNameId').val());
 	var constiId = $('#constituencyField').val();
 	var boothId = $('#boothField').val();
 	
@@ -1032,7 +1054,7 @@ function getPanchayats(){
 		
 		
 	if(boothId != 0){
-	
+	   
 		searchBoothVeoters(boothId);
 	}
 	else{
@@ -1063,52 +1085,55 @@ var searchType = "booth";
 if(typeNew == "panchayat"){
 	boothId = $('#pacnhayatsList').val();
 	searchType = "panchayat";
+	if(boothId == null || boothId == 0){
+	searchType="";
+	boothId = $('#constituencyField').val();
+	}
 }
 	 
 	  
 		
 
-	var votersByLocBoothColumnDefs = [
-	{key:"voterCardId",label:" Voter Id ",width:80,sortable: true},
-	{key:"firstName",label:" Voter Name",width:90,sortable: true},
-	{key:"address",label:" House No ",width:100,sortable: true},
-	{key:"booth",label:" Booth No ",width:100,sortable: true}
+	var votersByLocBoothColumnDefs1 = [
+	{key:"voterCardId",label:" Voter Id ",width:80,sortable: false},
+	{key:"firstName",label:" Voter Name",width:90,sortable: false},
+	{key:"address",label:" House No ",width:100,sortable: false},
+	{key:"booth",label:" Booth No ",width:100,sortable: false}
 	];
 	//parentLocationId
 	var urlStr = "searchVoterInfoAction.action?searchName="+searchName.trim()+"&boothId="+boothId+"&searchType="+searchType+"&";
 
-	var votersByLocBoothDataSource = new YAHOO.util.DataSource(urlStr);
+	var votersByLocBoothDataSource1 = new YAHOO.util.DataSource(urlStr);
 
-	votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
-	votersByLocBoothDataSource.responseSchema = {
+	votersByLocBoothDataSource1.responseType = YAHOO.util.DataSource.TYPE_JSON;
+	votersByLocBoothDataSource1.responseSchema = {
 	resultsList: "cadreVOList",
 	fields: ["firstName","booth","cadreId","address","voterCardId"],
 
 	metaFields: {
-	totalRecords: "count", // Access to value in the server response
-	status:"firstName"
-	},
+	totalRecords: "count"// Access to value in the server response
+	}
 	};
 
-	var myConfigs = {
+	var myConfigs1 = {
 	initialRequest: "sort=name&dir=asc&startIndex=0&results=500", // Initial request for first page of data
-	sortedBy : {key:"name", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
+	sortedBy : {key:"firstName", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
 	dynamicData: true, // Enables dynamic server-driven data
 	   paginator : new YAHOO.widget.Paginator({ 
-					rowsPerPage    : 500
+					rowsPerPage    : 100
 					})  // Enables pagination
 	};
 
-	var votersByLocBoothDataTable = new YAHOO.widget.DataTable("voterInfoDivTab",
-	votersByLocBoothColumnDefs, votersByLocBoothDataSource, myConfigs);
+	var votersByLocBoothDataTable1 = new YAHOO.widget.DataTable("voterInfoDivTab",
+	votersByLocBoothColumnDefs1, votersByLocBoothDataSource1, myConfigs1);
 
-	votersByLocBoothDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
+	votersByLocBoothDataTable1.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
 	oPayload.totalRecords = oResponse.meta.totalRecords;
 	return oPayload;
 	}
 	return {
-	oDS: votersByLocBoothDataSource,
-	oDT: votersByLocBoothDataTable
+	oDS: votersByLocBoothDataSource1,
+	oDT: votersByLocBoothDataTable1
 	};
 
 }
