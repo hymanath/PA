@@ -338,7 +338,7 @@ border:1px solid #000000;
 					<div class="well well-small mahanadu-well form-inline">				
 					<div class="row-fluid">
 						<div class="span6">	
-						    <label>Address<span class="text-error">* </span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
+						    <label>Address &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
 							<s:if test="{cadreVo != null}">
 							<textarea rows="4" cols="50"  name="cadreVo.address" class="input-xlarge" id="addressId">${cadreVo.address}
 							</textarea>
@@ -357,7 +357,7 @@ border:1px solid #000000;
 						
 							<label class="m_top20">Booth No &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
 							<s:select id="boothField" cssClass="regionSelect input-xlarge" name="cadreVo.boothNo" list="#session.boothsList" listKey="id" listValue="name"></s:select>
-							<label class="m_top20">VoterId &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
+							<label class="m_top20">VoterId <span class="text-error">* </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
 							<s:textfield  type="text" id="cadreVo_voterCardId" name="cadreVo.voterCardId"/>
 						</div>						
 					</div>
@@ -368,7 +368,7 @@ border:1px solid #000000;
 					<div class="well well-small mahanadu-well form-inline">				
 					<div class="row-fluid">
 						<div class="span6">	
-							<label>Education&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
+							<label>Education&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
 							<s:select id="educationField" cssClass="regionSelect input-xlarge" name="cadreVo.educationId" list="#session.eduQualsList" listKey="id" listValue="name"  headerKey="0" headerValue="Select Education"></s:select>
 							<br><label class="m_top20">Profession &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>             
                             <s:select id="professionField" cssClass="regionSelect input-xlarge" name="cadreVo.professionId"list="#session.occupationsList" listKey="id" listValue="name"  headerKey="0" headerValue="Select Occupation"></s:select>							
@@ -414,7 +414,7 @@ border:1px solid #000000;
 				<h3>Member Type</h3>
 					<div class="well well-small mahanadu-well form-inline">
 										
-					<label>Member Type<span class="text-error"><span class="text-error">* </span> </span></label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<label>Member Type</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<s:if test="cadreVo != null">
 					  <s:if test="cadreVo.memberType == 'Active'"> 
 						<label><input type="radio" name="cadreVo.memberType" checked="checked" id="optionsRadios3" value="Active" >
@@ -651,7 +651,7 @@ var mobileNo =  $.trim($("#mobileNoId").val());
 var districtId = $("#districtField").val();
 var constituencyId = $("#constituencyField").val();
 var ismemberTypeChecked = jQuery("input[name='cadreVo.memberType']:checked");
-var address = $.trim($("#addressId").val());
+var voterId =  $.trim($("#cadreVo_voterCardId").val());
 var str='';
 if(firstName.length == 0 )
 	{
@@ -663,37 +663,7 @@ if(firstName.length == 0 )
 	str+='lastName is required<br/>';
 	flag = false;
 	}
-	if(address.length == 0 )
-	{
-	str+='address is required<br/>';
-	flag = false;
-	}
-	if(districtId == 0 )
-	{
-	str+='Select District<br/>';
-	flag = false;
-	}
-	if(constituencyId == null || constituencyId == 0)
-	{
-	str+='Select Constituency<br/>';
-	flag = false;
-	}
-	if(ismemberTypeChecked.length == 0)
-	{
-	str+='Member Type is required<br/>';
-	flag = false;
-	}else{
-	   if($("#optionsRadios3").is(':checked') && $("#activeDateField").val().length == 0){
-	      str+='In Member Type, Active Date is required<br/>';
-	      flag = false;
-	   }
-	}
-	if(isgenderChecked.length == 0)
-	{
-	str+='gender is required<br/>';
-	flag = false;
-	}
-	if(mobileNo.length == 0 )
+		if(mobileNo.length == 0 )
 	{
 	str+='mobileNo is required<br/>';
 	flag = false;
@@ -711,6 +681,37 @@ if(firstName.length == 0 )
 			flag =false;
 		
 		}
+	if(districtId == 0 )
+	{
+	str+='Select District<br/>';
+	flag = false;
+	}
+	if(constituencyId == null || constituencyId == 0)
+	{
+	str+='Select Constituency<br/>';
+	flag = false;
+	}
+	if(voterId.length == 0)
+	{
+	str+='voterId Is Required<br/>';
+	flag = false;
+	}
+	/*if(ismemberTypeChecked.length == 0)
+	{
+	str+='Member Type is required<br/>';
+	flag = false;
+	}else{
+	   if($("#optionsRadios3").is(':checked') && $("#activeDateField").val().length == 0){
+	      str+='In Member Type, Active Date is required<br/>';
+	      flag = false;
+	   }
+	}*/
+	if(isgenderChecked.length == 0)
+	{
+	str+='gender is required<br/>';
+	flag = false;
+	}
+
 	if(!flag)
 	{
 	$("#errorMsgDiv").html(str).css("color","red");
