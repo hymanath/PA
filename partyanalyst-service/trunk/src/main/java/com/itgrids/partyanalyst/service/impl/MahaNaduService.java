@@ -788,7 +788,7 @@ public CadreVo convertCadreToCadreVo(Cadre cadre) {
 	List<Object[]> govtDesignations=cadreGovtDesignationDAO.findByCadreId(cadre.getCadreId());
 	if(govtDesignations != null && govtDesignations.size() > 0)
 	{
-		for(Object[] params1 : partyDesignations)
+		for(Object[] params1 : govtDesignations)
 		{
 			if(!govtDesignationList.contains((Long)params1[0]))
 			govtDesignationList.add((Long)params1[0]);
@@ -825,6 +825,7 @@ public CadreVo searchVoterInfo(Long userId,Long boothId, String searchName,Strin
 						vo.setAddress(voter[2] != null ? voter[2].toString():"");
 						vo.setBooth(voter[3] != null ? voter[3].toString():"");
 						vo.setVoterCardId(voter[4] != null ? voter[4].toString():"");
+						vo.setFatherName(voter[5] != null ? voter[5].toString():"");
 						returnList.add(vo);						
 				}
 			}
@@ -854,6 +855,12 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 				result.setDistrictId((Long)params[4]);
 				result.setConstituencyId((Long)params[3]);
 				result.setFirstName(params[5] !=null ? params[5].toString() : " ");
+				result.setAge((Long)params[6]);
+				if(params[7] !=null && params[7].toString().trim().equalsIgnoreCase("Father"))
+				   result.setFatherName(params[8] !=null ? params[8].toString() : " ");
+				else
+					 result.setFatherName("");
+				result.setGender(params[9].toString());
 			}
 		}
 		

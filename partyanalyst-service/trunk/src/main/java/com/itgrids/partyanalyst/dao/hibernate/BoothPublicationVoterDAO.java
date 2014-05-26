@@ -6804,7 +6804,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		}else{
 			
 			if(searchType.equalsIgnoreCase("booth")){
-				query = getSession().createQuery("select  BPV.voter.voterId,BPV.voter.name,BPV.voter.houseNo,BPV.booth.partNo,BPV.voter.voterIDCardNo from BoothPublicationVoter BPV where BPV.booth.boothId = :boothId and " +
+				query = getSession().createQuery("select  BPV.voter.voterId,BPV.voter.name,BPV.voter.houseNo,BPV.booth.partNo,BPV.voter.voterIDCardNo,BPV.voter.relativeName from BoothPublicationVoter BPV where BPV.booth.boothId = :boothId and " +
 						" BPV.booth.publicationDate.publicationDateId = :publicationDateId and  BPV.voter.name like '%"+searchName+"%' order by BPV.voter.name ");
 				query.setParameter("boothId", boothId);
 			}			
@@ -6859,7 +6859,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 	public List<Object[]> getDetailsByVoterIdCardNo(String voterIdCard,Long publicationId)
 	{
 		Query query = getSession().createQuery("select model.booth.boothId, model.booth.partNo,model.voter.voterId,model.booth.constituency.constituencyId" +
-				" ,model.booth.constituency.district.districtId,model.voter.name from BoothPublicationVoter model where model.voter.voterIDCardNo = :voterIdCard and model.booth.publicationDate.publicationDateId = :publicationId");
+				" ,model.booth.constituency.district.districtId,model.voter.name,model.voter.age,model.voter.relationshipType,model.voter.relativeName,model.voter.gender from BoothPublicationVoter model where model.voter.voterIDCardNo = :voterIdCard and model.booth.publicationDate.publicationDateId = :publicationId");
 		query.setParameter("voterIdCard", voterIdCard);
 		query.setParameter("publicationId", publicationId);
 		return query.list();
