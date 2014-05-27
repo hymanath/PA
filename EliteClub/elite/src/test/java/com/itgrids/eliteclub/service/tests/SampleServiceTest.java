@@ -66,7 +66,7 @@ public class SampleServiceTest {
 		 
 		 System.out.println(page);
 	}
-	public static void main(String[] args) throws IOException {
+	/*public static void main(String[] args) throws IOException {
 		ArrayList<String> list= new ArrayList<String>();
 
 		list.add("4bce787a-f486-44f9-ae2f-11eedbb9ad4e");
@@ -1232,7 +1232,7 @@ System.out.println("=============list2 size==="+list.size());
 			}
 			
 		
-	}
+	}*/
 	
 	
 	public static  void  callWebService(String string2,List<String> exceptionOccuredList1)
@@ -1343,5 +1343,62 @@ System.out.println("=============list2 size==="+list.size());
 		}
 	}
 	
+	public static void main(String[] args) {
+
+		 RestTemplate restTemplate = new RestTemplate();
+		// String url="http://103.241.182.18/ConVoxBCT/VoiceApp.php?calluid="+calluid+"&phoneno="+phoneno+"&voiceid="+voiceid;
+		 String url="http://eciresults.ap.nic.in/ConstituencywiseS2654.htm?ac=54";
+		 String sb = restTemplate.getForObject(url, String.class);
 	
+	// System.out.println(sb);
+		 
+		 
+		 
+		// String patern="(com.itgrids.survey.webServices.WebServiceHandler.saveSurveyResponseData\\(WebServiceHandler.java:113\\) - Saving survey response data from app:)(\\{\"results.*?\"uniqueId\":\"(.*?)\",\"districtId\".*?regionId\":[0-9]\\}\\]\\})";
+		// String patern="<div id=\"div1\"[\\s\\S]*?<table.*?>([\\s\\S]*?)</table>";
+		// String patern="(<div id=\"div1\"[\\s\\S]*?<table.*?>(<tr.*?>([\\s\\S])*?</tr>)</table>)"; 
+		 String patern="<div id=\"div1\"[\\s\\S]*?<table.*?>(<tr.*?>(<td.*?>.*</td>)*</tr>)</table>"; 
+		 String pattern2="<td.*?>([\\s\\S]+?)</td>";
+		 
+		    List<String> urlsList=new ArrayList<String>();
+		    Pattern pat =    Pattern.compile(patern, Pattern.CASE_INSENSITIVE);
+			Matcher matcher=pat.matcher(sb);
+			String str=null;
+			 while (matcher.find()) {
+			   System.out.println("inside matcher==================");
+			
+			 //  System.out.println(matcher.group(0).toString());
+		//	System.out.println("===="+  matcher.group(1).toString());
+			//System.out.println("======="+matcher.group(2).toString());
+		//	System.out.println("======="+matcher.group(3).toString());
+				// System.out.println(matcher.group(3));
+			str=matcher.group(2).toString();
+			    }
+			 Pattern pat1 =    Pattern.compile(pattern2, Pattern.CASE_INSENSITIVE);
+				Matcher matcher1=pat1.matcher(str);
+				
+				
+				
+				
+				int count=1;
+				
+				 int flagCount=0;
+				 while (matcher1.find()) {
+			
+					 System.out.print("======="+matcher1.group(1).toString());
+				/*	if(count>2)
+					{
+						if(flagCount<=2)
+						//System.out.print("======="+matcher1.group(1).toString());
+						else {
+							System.out.println();
+							flagCount=0;
+						}
+						flagCount++;
+					}
+					count++;*/
+					    }
+				 System.out.println();
+			 
+	}
 }
