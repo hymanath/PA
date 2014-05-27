@@ -21,6 +21,7 @@
 <link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
+<script type="text/javascript" src="js/highcharts/js/highchartColorPicker.js"></script>
 <title>AC AND PC WISE RESULT</title>
 <!-- harish start -->
 
@@ -1752,6 +1753,14 @@ $('#ajaxImage').show();
 <!-- HIGHCHARTS -- SASI -->
 <div id="InteractiveMapDiv" style="display:none;margin-top:20px;">
 	
+
+	<ul class="nav nav-pills">
+    <li class="active regionhighLight" id="regionSemandhra">
+    <a href="#"  onclick="getPartyVotesShareAndSeatsGraphically('andhra')">Semandhra</a>
+    </li>
+    <li class="regionhighLight" id="telanganaSemandhra"><a href="#" onclick="getPartyVotesShareAndSeatsGraphically('telangana')">Telangana</a></li>
+   
+    </ul>
 		<div id="rangeSliderDiv" style="width:400px;margin-left:auto;margin-right:auto;border:1px solid #ccc;padding:5px 20px;margin-top:50px;" >
 			<h5 style="text-align:center;">Seat Change based on TDP Votes % Decrease </h5>
 				<div id="slider" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a>
@@ -5818,38 +5827,91 @@ $(".highLight").live( "click", function() {
 
 });
 
+$(".regionhighLight").live( "click", function() {
 
+	$(".regionhighLight").removeClass("active");
+	$(this).addClass("active");
+
+});
 <!-- HIGHCHART FUNCTIONS-->
+
 
 
 function buildHighChartsForPartyPerformances(result,partywinCount){
 	var donut = [];
-	
+	var colorsarr = new Array();
 	if(result == null){
 		$("#errorInGraph").html("<h3> No Data Available </h3>");
 		return;
 	}
 	
 	for (var i in result.partyWiseCountBefore){
+		
+		var color = getColorCodeForParty(i);
 		var obj={name:i,y:result.partyWiseCountBefore[i]}
-		donut.push(obj); 
+		donut.push(obj);
+		colorsarr.push(color.toString());
+		
 	} 
+
+		
 	
 	var graph3d = [];
-	
+	var colorsarrForColumn = [];
 	if(partywinCount.percent==0){
+		
+			
 		for (var i in result.partyWiseCountBefore){
+			if(i !='AIMIM')
+			{
+			var color1 = getColorCodeForParty(i);
 			var seats = [];
 			seats.push(result.partyWiseCountBefore[i]);
 			var obj={name:i +" : "+result.partyWiseCountBefore[i],data:seats}
 			graph3d.push(obj);
+			colorsarrForColumn.push(color1.toString());
+			}
+		}
+
+
+		for (var i in result.partyWiseCountBefore){
+			if(i =='AIMIM')
+			{
+			var color1 = getColorCodeForParty(i);
+			var seats = [];
+			seats.push(result.partyWiseCountBefore[i]);
+			var obj={name:i +" : "+result.partyWiseCountBefore[i],data:seats}
+			graph3d.push(obj);
+			colorsarrForColumn.push(color1.toString());
+			}
 		}
 	}else{
+		
 		for (var i in result.resultMap){
+			if(i != 'AIMIM')
+			{
+			var color1 = getColorCodeForParty(i);
+			var seats = [];
 			var seats = [];
 			seats.push(result.resultMap[i]);
 			var obj={name:i +" : "+result.resultMap[i],data:seats}
 			graph3d.push(obj);
+			colorsarrForColumn.push(color1.toString());
+			}
+		}
+
+
+		for (var i in result.resultMap){
+			if(i == 'AIMIM')
+			{
+			var color1 = getColorCodeForParty(i);
+			var seats = [];
+			var seats = [];
+			seats.push(result.resultMap[i]);
+			var obj={name:i +" : "+result.resultMap[i],data:seats}
+			graph3d.push(obj);
+			colorsarrForColumn.push(color1.toString());
+			}
 		}
 	}
 	
@@ -5871,7 +5933,17 @@ function buildHighChartsForPartyPerformances(result,partywinCount){
 		//$("#seatsCount").html(str);
 	}
 	
+	 /* Highcharts.setOptions({
+        colors: ['#058DC7', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4','#6AF9C4']
+    });*/
+
+
+buildPieChart(donut,colorsarr);
+	/*Highcharts.setOptions({
+	 colors:colorsarr
+		 });
 	$('#seatsGraphDonut').highcharts({
+		
         chart: {
             type: 'pie',
             options3d: {
@@ -5888,7 +5960,8 @@ function buildHighChartsForPartyPerformances(result,partywinCount){
         plotOptions: {
             pie: {
                 innerSize: 100,
-                depth: 45
+                depth: 45,
+			
             }
         },tooltip: {
                 pointFormat: 'Seats: <b>{point.y}</b>',
@@ -5898,10 +5971,10 @@ function buildHighChartsForPartyPerformances(result,partywinCount){
             name: '',
             data: donut
         }]
-    });
+    });*/
+	buildColumnChart(graph3d,colorsarrForColumn);
 	
-	
-	$('#seatsGraph').highcharts({
+	/*$('#seatsGraph').highcharts({
         chart: {
             type: 'column',
             margin: 75,
@@ -5951,7 +6024,7 @@ function buildHighChartsForPartyPerformances(result,partywinCount){
                 }
 	    },
         series: graph3d
-    });
+    });*/
 	
 }
 
@@ -5977,15 +6050,22 @@ function buildHighChartsForPartyPerformances(result,partywinCount){
 			change: function( event, ui ) {
 				$( "#amount" ).val( " Votes Percentage  : " + ui.value +" %");
 				votesRange=ui.value;
-				getPartyVotesShareAndSeatsGraphically();
+				if($("#regionSemandhra").hasClass("active"))
+				{
+				getPartyVotesShareAndSeatsGraphically('andhra');
+				}
+				else
+				{
+					getPartyVotesShareAndSeatsGraphically('telangana');
+				}
 			}
 		});
 	votesRange=$( "#amount" ).val( "Percentage of Voters Caste: " + $( "#slider" ).slider( "value" ) +" %");
 	votesRange=$( "#slider" ).slider( "value" );
 	});
 	
-getPartyVotesShareAndSeatsGraphically();
-function getPartyVotesShareAndSeatsGraphically()
+getPartyVotesShareAndSeatsGraphically('andhra');
+function getPartyVotesShareAndSeatsGraphically(btnType)
 {
 
 	$("#seatsGraph").html("");
@@ -5993,10 +6073,20 @@ function getPartyVotesShareAndSeatsGraphically()
 
 	partyWinCount.electionId = 258;
 	partyWinCount.scopeId = $('#scopeId').val();
-
-	 partyWinCount.locationIds.push(1);
+if(btnType == 'andhra')
+	{
+	 partyWinCount.locationIds = [];
 	 partyWinCount.locationIds.push(2);
 	 partyWinCount.locationIds.push(3);
+	}
+	else
+	{
+	partyWinCount.locationIds = [];
+	  partyWinCount.locationIds.push(1);
+	}
+	/* partyWinCount.locationIds.push(1);
+	 partyWinCount.locationIds.push(2);
+	 partyWinCount.locationIds.push(3);*/
 
 	partyWinCount.partyId = 872;
 	partyWinCount.percent = votesRange;
@@ -6018,7 +6108,111 @@ function getPartyVotesShareAndSeatsGraphically()
 
 
 
+function buildPieChart(donut,colorsarr)
+{
+	Highcharts.setOptions({
+	 colors:colorsarr
+		 });
+	$('#seatsGraphDonut').highcharts({
+		
+        chart: {
+            type: 'pie',
+            options3d: {
+				enabled: true,
+                alpha: 55,
+			}
+        },
+        title: {
+            text: 'Party Wise Seats Share '
+        },
+        subtitle: {
+            text: ''
+        },
+        plotOptions: {
+            pie: {
+                innerSize: 100,
+                depth: 45,
+			
+            }
+        },tooltip: {
+                pointFormat: 'Seats: <b>{point.y}</b>',
+            },
+		
+        series: [{
+            name: '',
+            data: donut
+        }]
+    });
+}
+function buildColumnChart(graph3d,colorsarrForColumn)
+{
+	Highcharts.setOptions({
+	 colors:colorsarrForColumn
+		 });
+$('#seatsGraph').highcharts({
+        chart: {
+            type: 'column',
+            margin: 75,
+            options3d: {
+				enabled: true,
+                alpha: 6,
+                beta: 15,
+                depth: 100
+            }
+        },
+		plotOptions: {
+		candlestick: {
+			lineColor: '#404048'
+			}
+		},
+		
+		/*legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle',
+                borderColor: '#CCC',
+                borderWidth: 1,
+            },*/
+			legend: {
+                align: 'right',
+                x: 0,
+                verticalAlign: 'top',
+                y: 20,
+                floating: true,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+                borderColor: '#CCC',
+                borderWidth: 1,
+                shadow: false
+            },
 
+		// General
+		background2: '#F0F0EA',
+		tooltip: {
+                pointFormat: '<b>{series.name}</b>',
+            },
+        title: {
+            text: "Party's Performance"
+        },
+        subtitle: {
+            text: ''
+        },
+        plotOptions: {
+            column: {
+                depth: 25
+            }
+        },
+        xAxis: {
+            categories: ["PARTIES"]
+        },
+        yAxis: {
+		   min :null,
+		    title: {
+                    text: '	SEATS'
+                }
+	    },
+        series: graph3d
+    });
+}
 
 </script>
 
