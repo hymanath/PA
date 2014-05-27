@@ -5964,10 +5964,10 @@ function buildHighChartsForPartyPerformances(result,partywinCount){
 	};
 
 	
-	var votesRange = 1;	
+	var votesRange = 0;	
 	$(function() {
 		$( "#slider" ).slider({
-			value:1,
+			value:0,
 			min: 0,
 			max: 10,
 			step: 1,
