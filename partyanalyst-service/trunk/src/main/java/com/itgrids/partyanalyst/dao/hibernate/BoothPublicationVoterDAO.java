@@ -6809,12 +6809,12 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 				query.setParameter("boothId", boothId);
 			}			
 			else if(searchType.equalsIgnoreCase("panchayat")){
-				query = getSession().createQuery("select BPV.voter.voterId,BPV.voter.name,BPV.voter.houseNo,BPV.booth.partNo,BPV.voter.voterIDCardNo from BoothPublicationVoter BPV where BPV.booth.panchayat.panchayatId = :boothId and " +
+				query = getSession().createQuery("select BPV.voter.voterId,BPV.voter.name,BPV.voter.houseNo,BPV.booth.partNo,BPV.voter.voterIDCardNo,BPV.voter.relativeName from BoothPublicationVoter BPV where BPV.booth.panchayat.panchayatId = :boothId and " +
 						" BPV.booth.publicationDate.publicationDateId = :publicationDateId and  BPV.voter.name like '%"+searchName+"%' order by BPV.voter.name ");
 				query.setParameter("boothId", boothId);
 			}
 			else{
-				query = getSession().createQuery("select BPV.voter.voterId,BPV.voter.name,BPV.voter.houseNo,BPV.booth.partNo,BPV.voter.voterIDCardNo from BoothPublicationVoter BPV where BPV.booth.constituency.constituencyId = :boothId = :boothId and " +
+				query = getSession().createQuery("select BPV.voter.voterId,BPV.voter.name,BPV.voter.houseNo,BPV.booth.partNo,BPV.voter.voterIDCardNo,BPV.voter.relativeName from BoothPublicationVoter BPV where BPV.booth.constituency.constituencyId = :boothId  and " +
 						" BPV.booth.publicationDate.publicationDateId = :publicationDateId and  BPV.voter.name like '%"+searchName+"%' order by BPV.voter.name ");
 				query.setParameter("boothId", boothId);
 			}
