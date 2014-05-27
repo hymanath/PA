@@ -198,7 +198,7 @@ border:1px solid #000000;
 					<img alt="Telugu Desam Mahanadu 2014" src="images/mahaNadu/MahanaduLogo.png">
 				</a>
 			</div>
-<div class="span3" style="font-weight:bold;"><a href="logoutAction.action" class="btn btn-mini pull-right m_top10">LOGOUT</a></div>
+<div class="span3" style="font-weight:bold;"><a href="newlogoutAction.action" class="btn btn-mini pull-right m_top10">LOGOUT</a></div>
 		</div><!----Header Div End--------->
 		
 		<!----Mahanadu Banner Div--------->
