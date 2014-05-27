@@ -5,13 +5,19 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IPartyTrendsDAO;
 import com.itgrids.partyanalyst.service.IConstituencyWiseElectionResultsService;
+import com.itgrids.partyanalyst.service.impl.ConstituencyWiseElectionResultsService;
 
 
 public class MultiThreadRunner  {
 	@Autowired
-   private IConstituencyWiseElectionResultsService constituencyWiseElectionResultsService;
+   public IConstituencyWiseElectionResultsService constituencyWiseElectionResultsService;
   
    public static Timer timer  = new Timer();
    public static Timer timer1  = new Timer();
@@ -45,7 +51,7 @@ public class MultiThreadRunner  {
     public static void main(String args[]) throws InterruptedException {
         System.out.println("Java timer is about to start");
        
-        System.out.println("Remindertask is scheduled with Java timer.");
+    /*    System.out.println("Remindertask is scheduled with Java timer.");
         MultiThreadRunner runner =new MultiThreadRunner();
         runner.startTask(2, 5,"parliament");
         Thread.sleep(10000);
@@ -57,6 +63,21 @@ public class MultiThreadRunner  {
         Thread.sleep(10000);
         timer.cancel();
         //timer.purge();
+*/        
+        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext-resources.xml");
+        AutowireCapableBeanFactory  context1= context.getAutowireCapableBeanFactory();
+        MultiThreadRunner runner    =       (MultiThreadRunner) context1.getBean("multiThreadRunner");
+       
+        IConstituencyWiseElectionResultsService obj=  (IConstituencyWiseElectionResultsService) context1.getBean("constituencyWiseElectionResultsService");
+        IPartyTrendsDAO obj1=  (IPartyTrendsDAO) context1.getBean("partyTrendsDAO");
+        IDelimitationConstituencyDAO obj2=  (IDelimitationConstituencyDAO) context1.getBean("delimitationConstituencyDAO");
+        ((ConstituencyWiseElectionResultsService)obj).delimitationConstituencyDAO=obj2;
+        ((ConstituencyWiseElectionResultsService)obj).partyTrendsDAO=obj1;
+        runner.constituencyWiseElectionResultsService=obj;
+        runner.startTaskForParliament(2, 30,"Constituency");
+        runner.startTask(2, 30,"Parliament");
+        System.out.println(runner);
+        
     }
     
 	
