@@ -37,9 +37,9 @@ public class ConstituencyWiseElectionResultsService implements
 	private final static Logger log = Logger.getLogger(ConstituencyWiseElectionResultsService.class);
 
 	@Autowired
-	private IPartyTrendsDAO partyTrendsDAO;
+	public IPartyTrendsDAO partyTrendsDAO;
 	@Autowired
-	private  IDelimitationConstituencyDAO delimitationConstituencyDAO;
+	public  IDelimitationConstituencyDAO delimitationConstituencyDAO;
     public Object constituencyResults(String stateNo,Long assemblylevel,Long constituencyNo,String description)
 	{
 		String insertFor="";
