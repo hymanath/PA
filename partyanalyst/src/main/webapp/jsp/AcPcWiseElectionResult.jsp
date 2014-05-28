@@ -377,6 +377,10 @@ fill: #59A2BE;
 .needle ,.needle-center{
 fill: #9f8868;
 }
+.d3-slider-handle123 {position: absolute;width: 1.2em;height: 1.2em;border: 1px solid #FFCC00;border-radius: 4px;background: #FFCC99;background: linear-gradient(to bottom, #FFCC99 0%, #FFD2A6 100%);z-index: 3;}
+.d3-slider-handle123:hover {border: 1px solid #F2C100;}
+.d3-slider-horizontal .d3-slider-handle123 {top: -.3em;margin-left: -.6em;}
+.d3-slider-vertical .d3-slider-handle123 {left: -.25em;margin-left: 0;margin-bottom: -.6em;}
 
 
 .d3-slider-handle1 {position: absolute;width: 1.2em;height: 1.2em;border: 1px solid #FFCC00;border-radius: 4px;background: #FFCC99;background: linear-gradient(to bottom, #FFCC99 0%, #FFD2A6 100%);z-index: 3;}
@@ -398,6 +402,7 @@ fill: #9f8868;
 .d3-slider-axis line {fill: none;stroke: #aaa;shape-rendering: crispEdges;}
 .d3-slider-axis text {font-size: 11px;}
 .d3-slider-vertical .d3-slider-handle {left: -.25em;margin-left: 0;margin-bottom: -.6em;}
+.div_sld12{width:300px;margin:10px 0px 0px 0px;}
 .div_sld{width:300px;margin:10px 0 0 50px;}
 .div_sld1{width:300px;margin:10px 0 0 50px;}
 .div_upeffect{width:400px;}
@@ -415,6 +420,7 @@ fill: #9f8868;
 }
 .ht10{display:block;font-size:1px;height:10px;line-height:10px}
 #slider3{width:333px;margin-bottom: 40px;}
+#slider13{width:333px;margin:0px 0px 22px 33px;}
 .div_sld{width:333px;margin:auto;}
 .div_sld1{width:333px;margin:auto;}
 
@@ -505,6 +511,8 @@ padding: 4px;
 </style>
 <script type="text/javascript">
 google.load("visualization", "1", {packages:["corechart"]});
+var tempVotesRange = null;
+var votesRange= 0;
 </script>
 <script src="js/apac.js"></script> 
 <script src="js/tgac.js"></script>
@@ -1763,14 +1771,14 @@ $('#ajaxImage').show();
     <li class="regionhighLight" id="telanganaSemandhra"><a href="#" onclick="getPartyVotesShareAndSeatsGraphically('telangana')">Telangana</a></li>
    
     </ul>
-		<div id="rangeSliderDiv" style="width:400px;margin-left:auto;margin-right:auto;border:1px solid #ccc;padding:5px 20px;margin-top:50px;" >
+		<!-- <div id="rangeSliderDiv" style="width:400px;margin-left:auto;margin-right:auto;border:1px solid #ccc;padding:5px 20px;margin-top:50px;" >
 			<h5 style="text-align:center;">Seat Change based on TDP Votes % Decrease </h5>
 				<div id="slider" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a>
-				</div>
-				<p style="padding-bottom:2px;">
-					<input type="text" id="amount" readonly style="border: 0; color: #f6931f; font-weight: bold;background-color:#ffffff;" />
-				</p>
-		</div>
+				</div></div>-->
+		<div id="md_effect_wrapper" style="width:400px;margin-left:auto;margin-right:auto;border:1px solid #ccc;padding:5px 0px 4px 0px"><h5 style="text-align:center;">Seat Change based on TDP Votes % Decrease </h5>	
+			<div class="div_sld12"><div class="d3-slider d3-slider-horizontal" id="slider13"></div>		
+		<p style="margin-left:16px;margin-bottom:-20px;"><input type="text" id="amount" readonly style="border: none; font-weight: bold;background-color:#ffffff;" /></p></div>
+	</div>		
 
 		<div id="seatsGraph" style="width:60%;float:left;"></div>
 		<div id="seatsGraphDonut" style="width:38%;float:right;"></div>
@@ -6112,7 +6120,7 @@ buildPieChart(donut,colorsarr);
 	};
 
 	
-	var votesRange = 0;	
+	/*var votesRange = 0;	
 	$(function() {
 		$( "#slider" ).slider({
 			value:0,
@@ -6137,9 +6145,30 @@ buildPieChart(donut,colorsarr);
 		});
 	votesRange=$( "#amount" ).val( "Percentage of Voters Caste: " + $( "#slider" ).slider( "value" ) +" %");
 	votesRange=$( "#slider" ).slider( "value" );
-	});
+	});*/
 	
 getPartyVotesShareAndSeatsGraphically('andhra');
+function getPartyVotesShareBtnType()
+{
+	if($("#regionSemandhra").hasClass("active"))
+	{
+		
+		if(tempVotesRange != null && tempVotesRange == votesRange)
+		return;
+	else
+		tempVotesRange = votesRange;
+		getPartyVotesShareAndSeatsGraphically('andhra');
+	}
+	else
+	{
+	if(tempVotesRange != null && tempVotesRange == votesRange)
+		return;
+	else
+		tempVotesRange = votesRange;
+		getPartyVotesShareAndSeatsGraphically('telangana');
+	}
+}
+
 function getPartyVotesShareAndSeatsGraphically(btnType)
 {
 
@@ -6288,12 +6317,50 @@ $('#seatsGraph').highcharts({
         series: graph3d
     });
 }
+</script>
+<script type="text/javascript" src="js/d3_md.js"></script>
+<script type="text/javascript" src="js/d3.js"></script>
+<script type="text/javascript">
+function supportsSvg() {
+	return !! document.createElementNS && !! document.createElementNS ('http://www.w3.org/2000/svg',"svg").createSVGRect;
+}
+if(supportsSvg())
+{
+	if(document.getElementById("md_effect_wrapper").offsetWidth < 400)
+	{
+		var div_width = document.getElementById("md_effect_wrapper").offsetWidth
+	}
+	else
+	{
+		var div_width = 400; 
+	}
+	var div_height = 350;	 
+	var margin = {top: 20, right: 10, bottom: 30, left: 35},
+	width = div_width - margin.left - margin.right,
+	height = div_height - margin.top - margin.bottom;
+	
+		d3.select('#slider13').call(d3.slider().axis(d3.svg.axis().ticks(10).tickFormat(function(d) { return d+"%" }))
+		.on("slide", function(event, value) {			
+			votesRange=value;
+			$( "#amount" ).val( " Votes Percentage : " + votesRange +" %");
+			}));
+		$("#slider13").click(function(votesRange){
+			getPartyVotesShareBtnType();
+		});	
+		
+		$("#slider13").mouseup(function(votesRange){	
+			getPartyVotesShareBtnType();	
+         
+		});	
+		
+					
+}
 
 
 </script>
 
-<script type="text/javascript" src="js/newTest1.js"></script>
-<script type="text/javascript" src="js/newTest.js"></script>
+<!--<script type="text/javascript" src="js/newTest1.js"></script>
+<script type="text/javascript" src="js/newTest.js"></script>-->
 <!--sravanthi code end-->
 </body>
 </html>
