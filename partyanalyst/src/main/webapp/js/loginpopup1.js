@@ -133,7 +133,7 @@ function showLoginStatus(results)
   {
     $('#ajaxcallimage').html('Login Successfull,Window is closing Please wait...');
     
-	 setInterval(function(){  
+    setTimeout(function(){  
 	       $("#ajaxcallimage").hide();
 		   $("#login_window").dialog('close'); 
 		   if(actionType =="submit"){
