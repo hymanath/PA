@@ -783,11 +783,7 @@ if(firstName.length == 0 )
 	str+='firstName is required<br/>';
 	flag = false;
 	}
-	if(lastName.length == 0 )
-	{
-	str+='lastName is required<br/>';
-	flag = false;
-	}
+	
 		if(mobileNo.length == 0 )
 	{
 	str+='mobileNo is required<br/>';
