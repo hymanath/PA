@@ -707,7 +707,7 @@ function showUploadStatus(myResult){
 	}
 	errorDivEle.innerHTML = str;
 	$('html, body').animate({ scrollTop: $("#errorMsgDiv").offset().top }, "slow");
-	setInterval(function(){  
+	setTimeout(function(){  
 	       $("#errorMsgDiv").html("");
 	 },6000);
 }
