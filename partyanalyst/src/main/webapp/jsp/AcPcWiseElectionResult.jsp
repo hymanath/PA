@@ -1591,12 +1591,14 @@ $('#ajaxImage').show();
 </br></br>
 
 <div class="row-fluid">
-	<img id="stateAjaxImg1" src="./images/icons/barloader.gif" alt="Processing Image" style=" display: none; margin-left: 360px;padding-bottom: 10px;"/>
+<!--	<img id="stateAjaxImg1" src="./images/icons/barloader.gif" alt="Processing Image" style=" display: none; margin-left: 360px;padding-bottom: 10px;"/>
 	<img id="stateAjaxImg4" src="./images/icons/barloader.gif" alt="Processing Image" style=" display: none; margin-left: 360px;padding-bottom: 10px;" />
+	-->
+	<div id="button1" class="span11"><a onclick="refreshMap('presentAC');"  > <i class="icon-refresh" title="Refresh Map" style="cursor:pointer;"></i>  </a></div>
 	<div id="weathermap">
 	
 	</div>
-	
+	<div id="button2"  style="float:right;margin-top:-30px" class="span1"><a onclick="refreshMap('presentPC');" title="Refresh Map"> <i class="icon-refresh" style="cursor:pointer;"></i> </a></div>
 	<div id="weathermap1">
 	
 	</div>
@@ -1929,8 +1931,12 @@ $('#ajaxImage').show();
   
   
   </div>
+  <div id="button4"  class="span1" style="float:right;margin-right:150px;margin-top:40px;"><a onclick="getElectionResultForTotalParliment123();"  > <i class="icon-refresh" title="Refresh Map" style="cursor:pointer;"></i>  </a></div>
    <div id="weathermap5" class="offset2"> </div>
-   <center><img id="effectClrImg" style="display:none;" src="images/specialPage/parlicolorcodes.png"><div id="weathermap3"> </div></center>
+   <center><img id="effectClrImg" style="display:none;" src="images/specialPage/parlicolorcodes.png">
+	<div id="button3"  class="span1" style="float:right;margin-right:150px;margin-top:40px;"><a onclick="getElectionResultForTotalParliment();"  > <i class="icon-refresh" title="Refresh Map" style="cursor:pointer;"></i>  </a></div>   
+   <div id="weathermap3"> </div>    
+   </center>
 <!-- SAMBA END -->
 
  <div id="processingDialogue"></div>
@@ -2078,6 +2084,7 @@ var stateType = '';
 		{
 			if(stateVal == 1)
 			{
+				$('#button1').show();
 				document.getElementById('weathermap').innerHTML = "<div id='map' class='span6' style='height: 400px; border: 1px solid rgb(51, 51, 51); border-radius: 10px; position: relative; background: none repeat scroll 0% 0% rgb(255, 255, 255);'></div>"
 				map = L.map('map', {
 				center: [16.0000,80.0000],
@@ -2090,6 +2097,7 @@ var stateType = '';
 			}
 			else
 			{
+				$('#button1').show();
 				document.getElementById('weathermap').innerHTML = "<div id='map' class='span6' style='height: 400px; border: 1px solid rgb(51, 51, 51); border-radius: 10px; position: relative; background: none repeat scroll 0% 0% rgb(255, 255, 255);'></div>"
 				map = L.map('map', {
 				center: [17.9000,79.0000],
@@ -2107,6 +2115,7 @@ var stateType = '';
 		{
 			if(stateVal == 1)
 			{
+			$('#button2').show();
 				document.getElementById('weathermap1').innerHTML = "<div id='map1' class='span6' style='height: 400px; float: right ! important; left: 0px; position: relative; border: 1px solid rgb(51, 51, 51); border-radius: 10px; background: none repeat scroll 0% 0% rgb(255, 255, 255);'></div>"
 				map1 = L.map('map1', {
 				center: [16.0000,80.0000],
@@ -2119,6 +2128,7 @@ var stateType = '';
 			}
 			else
 			{
+			$('#button2').show();
 				document.getElementById('weathermap1').innerHTML = "<div id='map1' class='span6' style='height: 400px; float: right ! important; left: 0px; position: relative; border: 1px solid rgb(51, 51, 51); border-radius: 10px; background: none repeat scroll 0% 0% rgb(255, 255, 255);'></div>"
 				map1 = L.map('map1', {
 				center: [17.9000,79.0000],
@@ -2255,17 +2265,27 @@ var stateType = '';
 			}
 			
 		}
+		
+			 $( "#processingDialogue" ).dialog('close');
 	}
 	function getElectionResultForAssemblyPrevious(stateVal,mapNo,locationLevel,year)
 	{
+		ajaxProcessing();
 		if(mapNo == "first") 
 		{
+			$('#button1').html('');
+			$('#button1').html('<a onclick="getElectionResultForAssemblyPrevious('+stateVal+',\''+mapNo+'\','+locationLevel+','+year+');"  > <i class="icon-refresh" title="Refresh Map" style="cursor:pointer;"></i>  </a>');
+			
 			getMapType(1,stateVal);
 		}
 		else
 		{
+			$('#button2').html('');
+			$('#button2').html('<a onclick="getElectionResultForAssemblyPrevious('+stateVal+',\''+mapNo+'\','+locationLevel+','+year+');"  > <i class="icon-refresh" title="Refresh Map" style="cursor:pointer;"></i>  </a>');
+			
 			getMapType(2,stateVal);
 		}
+		
 		var parties = new Array();
 		parties.push(872);
 		parties.push(362);
@@ -2295,16 +2315,24 @@ var stateType = '';
 			
 			
 		});	
+	
 	}
 	
 	function getElectionResultForAssemblyPresent(stateVal,mapNo,locationLevel,year)
 	{
+		ajaxProcessing();
 		if(mapNo == "first") 
 		{
+			$('#button1').html('');
+			$('#button1').html('<a onclick="getElectionResultForAssemblyPresent('+stateVal+',\''+mapNo+'\','+locationLevel+','+year+');"  > <i class="icon-refresh" title="Refresh Map" style="cursor:pointer;"></i>  </a>');
+			
 			getMapType(1,stateVal);
 		}
 		else
 		{
+			$('#button2').html('');
+			$('#button2').html('<a onclick="getElectionResultForAssemblyPresent('+stateVal+',\''+mapNo+'\','+locationLevel+','+year+');"  > <i class="icon-refresh" title="Refresh Map" style="cursor:pointer;"></i>  </a>');
+			
 			getMapType(2,stateVal);
 		}
 		var parties = new Array();
@@ -2340,10 +2368,16 @@ var stateType = '';
 	{
 		if(mapNo == "first") 
 		{
+			$('#button1').html('');
+			$('#button1').html('<a onclick="getElectionResultForParlimentPrevious('+stateVal+',\''+mapNo+'\','+locationLevel+','+year+');"  > <i class="icon-refresh" title="Refresh Map" style="cursor:pointer;"></i>  </a>');
+			
 			getMapType(1,stateVal);
 		}
 		else
 		{
+			$('#button2').html('');
+			$('#button2').html('<a onclick="getElectionResultForParlimentPrevious('+stateVal+',\''+mapNo+'\','+locationLevel+','+year+');"  > <i class="icon-refresh" title="Refresh Map" style="cursor:pointer;"></i>  </a>');
+			
 			getMapType(2,stateVal);
 		}
 		var parties = new Array();
@@ -2377,12 +2411,19 @@ var stateType = '';
 	
 	function getElectionResultForParlimentPresent(stateVal,mapNo,locationLevel,year)
 	{
+		ajaxProcessing();
 		if(mapNo == "first") 
 		{
+			$('#button1').html('');
+			$('#button1').html('<a onclick="getElectionResultForParlimentPresent('+stateVal+',\''+mapNo+'\','+locationLevel+','+year+');"  > <i class="icon-refresh" title="Refresh Map" style="cursor:pointer;"></i>  </a>');
+			
 			getMapType(1,stateVal);
 		}
 		else
 		{
+			$('#button2').html('');
+			$('#button2').html('<a onclick="getElectionResultForParlimentPresent('+stateVal+',\''+mapNo+'\','+locationLevel+','+year+');"  > <i class="icon-refresh" title="Refresh Map" style="cursor:pointer;"></i>  </a>');
+			
 			getMapType(2,stateVal);
 		}
 		var parties = new Array();
@@ -3482,8 +3523,8 @@ popupContent +=' </table>';
 	
 	function generateMapForTgPCTotal()
 	{
-	   
 		areatype = "totPc";
+		//$('#button3').show();
 		document.getElementById('weathermap3').innerHTML = "<div id='map3'  style='height: 900px; border: 1px solid rgb(51, 51, 51); border-radius: 10px; position: relative; background: none repeat scroll 0% 0% rgb(255, 255, 255);width:956px;margin-top:20px;'></div>"
 		map3 = L.map('map3', {
 		center: [20.0000,81.0000],
@@ -3658,12 +3699,37 @@ popupContent +=' </table>';
 		} 
 	}
 
+function refreshMap(type){
+
+console.log(type);
+	if(type == "presentAC"){
+		if(searchFlag == 'Telangana'){
+			getElectionResultForAssemblyPrevious(2,"first",1,2);		
+		}
+		else{
+			getElectionResultForAssemblyPrevious(1,"first",1,2);
+		}
+		
+	}
+	else if(type == "presentPC"){
+		if(searchFlag == 'Telangana'){
+			getElectionResultForParlimentPresent(2,"second",2,2);
+		}
+		else{
+			getElectionResultForParlimentPresent(1,"second",2,2);
+		}
+	}
+	
+}
+var searchFlag = '';
 function getRegionWiseResults(searchType)
 {
+	searchFlag = searchType;
     ajaxProcessing();
 	if(searchType == 'Telangana')
 	{
 	    //makeClickedFalse(1);
+		$('#button1,#button2,#button3,#button4').hide();
 		$('#effectClrImg').hide();
 		getElectionResultForAssemblyPrevious(2,"first",1,2);
 		getElectionResultForParlimentPresent(2,"second",2,2);
@@ -3722,6 +3788,7 @@ function getRegionWiseResults(searchType)
 	}
 	else if(searchType == 'Semandhra')
 	{
+		$('#button1,#button2,#button3,#button4').hide();
 	    $('#effectClrImg').hide();
 		getElectionResultForAssemblyPrevious(1,"first",1,2);
 		getElectionResultForParlimentPresent(1,"second",2,2);
@@ -3803,6 +3870,9 @@ function getRegionWiseResults(searchType)
 		$('#telanganaImageDiv').hide();
 		$('#districtWiseAnalysis').hide();
 		$('#weathermap5').show();
+		$('#button1,#button2,#button3,#button4').hide();
+		
+		
 		var parties = new Array();
 		parties.push(872);
 		parties.push(362);
@@ -3815,6 +3885,7 @@ function getRegionWiseResults(searchType)
 	}
 	else if(searchType == 'StateAnalysis')
 	{
+		$('#button1,#button2,#button3,#button4').hide();
 		$('#overviewDivId3').hide();
 	    $('#effectClrImg').hide();
 		$('#results1Div,#subTitlesDiv').html('');
@@ -3847,6 +3918,7 @@ function getRegionWiseResults(searchType)
 	}
 	else if(searchType == 'DistrictAnalysis')
 	{
+		$('#button1,#button2,#button3,#button4').hide();
 		$('#overviewDivId3').hide();
 	    $('#effectClrImg').hide();
 		$('#results1Div,#subTitlesDiv').html('');
@@ -3876,6 +3948,7 @@ function getRegionWiseResults(searchType)
 	}
 	else if(searchType == 'CBNEffect')
 	{
+		$('#button1,#button2,#button3,#button4').hide();
 		$('#overviewDivId3').hide();
 	    $('#effectClrImg').hide();
 	    $("#modiDiv").show();
@@ -3931,6 +4004,7 @@ function getRegionWiseResults(searchType)
 	}
 	else if(searchType == 'ModiEffect')
 	{
+		$('#button1,#button2,#button3,#button4').hide();
 		$('#overviewDivId3').hide();
 	    $('#effectClrImg').show();
 	    $("#modiDiv").show();
@@ -4053,6 +4127,7 @@ function getRegionWiseResults(searchType)
 		  try{
 			electionPcData = result;
 			//getLocationRespectiveDetails(stateVal,locationLevel,year,mapNo);
+			document.getElementById('weathermap5').innerHTML = "";
 			generateMapForTgPCTotal123();
 			$( "#processingDialogue" ).dialog('close');
 			}catch(e){
@@ -4063,8 +4138,8 @@ function getRegionWiseResults(searchType)
 	
 	function generateMapForTgPCTotal123()
 	{
-
 		areatype = "indpc";
+		//$('#button4').show();
 		document.getElementById('weathermap5').innerHTML = "<h2 class='offset3'> 2014 Parliament Election Result Overview </h2><img class='offset4' src='images/specialPage/parlicolorcodes.png'> <div id='map5'   style='height: 900px; border: 1px solid rgb(51, 51, 51); border-radius: 10px; position: relative; background: none repeat scroll 0% 0% rgb(255, 255, 255);width:956px;margin-top:20px;'></div>"
 		map5 = L.map('map5', {
 		center: [20.0000,81.0000],
@@ -4245,7 +4320,7 @@ function getRegionWiseResults(searchType)
 		function getMapForAssembly()
 		{
 	
-			areatype = "totac";
+			areatype = "totac";			
 			document.getElementById('weathermap4').innerHTML = "<div  id='map4'  style='height: 400px; border: 1px solid rgb(51, 51, 51); border-radius: 10px; position: relative; background: none repeat scroll 0% 0% rgb(255, 255, 255); width:956px;margin-left:auto;margin-right:auto;''></div>"
 			map4 = L.map('map4', {
 			center: [16.0000,80.0000],
@@ -6213,6 +6288,7 @@ $('#seatsGraph').highcharts({
         series: graph3d
     });
 }
+
 
 </script>
 
