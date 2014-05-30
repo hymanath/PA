@@ -31,9 +31,18 @@ public class DashBoardElectionResultsAction extends ActionSupport implements Ser
 	private List<GenericVO> partiesList;
 	private List<PartyResultVO> constiList;
 	private DashBoardResultsVO partyWiseCountDetails;
+	private GenericVO genericVO;
 	private List<OptionVO> casteResult;
 	
 	
+	public GenericVO getGenericVO() {
+		return genericVO;
+	}
+
+	public void setGenericVO(GenericVO genericVO) {
+		this.genericVO = genericVO;
+	}
+
 	public DashBoardResultsVO getPartyWiseCountDetails() {
 		return partyWiseCountDetails;
 	}
@@ -380,6 +389,68 @@ public class DashBoardElectionResultsAction extends ActionSupport implements Ser
 		}
 		return Action.SUCCESS;
 	}
+	
+	
+	public String getParticiaptedPartyList()
+	{
+		LOG.debug("Entered into the getParticiaptedPartyList method");
+		try
+		{
+			
+			jObj = new JSONObject(getTask());
+
+			Long electionId = jObj.getLong("electionId");
+			Long scopeId = jObj.getLong("scopeId");
+			Long electionScopeId = jObj.getLong("electionScopeId");
+			 JSONArray jArray = jObj.getJSONArray("locationIds");
+			 List<Long> locationIds = new ArrayList<Long>();
+			 
+			   for (int i = 0; i < jArray.length(); i++) 
+			   {
+				   locationIds.add(new Long(jArray.get(i).toString()));
+			   }
+			   
+			   genericVO = dashBoardElectionResultsService.getparticipatedPartiesInLocation(electionId,locationIds,electionScopeId,scopeId);
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Exception raised in getPartyWiseWinningSeatsCount method");
+
+		}
+		return Action.SUCCESS;
+	}
+
+	public String getReservedConstiList()
+	{
+		LOG.debug("Entered into the getParticiaptedPartyList method");
+		try
+		{
+			
+			jObj = new JSONObject(getTask());
+
+			Long electionId = jObj.getLong("electionId");
+			Long scopeId = jObj.getLong("scopeId");
+			Long electionScopeId = jObj.getLong("electionScopeId");
+			 JSONArray jArray = jObj.getJSONArray("locationIds");
+			 List<Long> locationIds = new ArrayList<Long>();
+			 
+			   for (int i = 0; i < jArray.length(); i++) 
+			   {
+				   locationIds.add(new Long(jArray.get(i).toString()));
+			   }
+			   
+			   genericVO = dashBoardElectionResultsService.getReservedConstiList(electionId,locationIds,electionScopeId,scopeId);
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Exception raised in getPartyWiseWinningSeatsCount method");
+
+		}
+		return Action.SUCCESS;
+	}
+	
 	
 	public String getTop5CastePeopleOpnionOnParty(){
 			try{
