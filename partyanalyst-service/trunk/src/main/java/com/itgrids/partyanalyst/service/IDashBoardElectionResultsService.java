@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.DashBoardResultsVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
@@ -25,4 +26,10 @@ public interface IDashBoardElectionResultsService {
 	public DashBoardResultsVO getPartyWiseWinningSeatsPercentage(Long electionId, List<Long> locationIds, Long scopeId,
 			Long percent, Long partyId);
 	public List<OptionVO> getTop5CastePeopleOpnionOnParty(Long constituencyId,List<Long> surveyIds);
+	
+    public String getWinningCandidateInfoForAConstituency(Long constituencyId);
+    
+    public DashBoardResultsVO getPartyWiseCountDetailsByConstituencyIdAndSurveyIds(Long constituencyId,List<Long> surveyIds,Long electionId);
+    public Map<String,String> getConstituencyDetaisByRegionid(Long regionId);
+
 }

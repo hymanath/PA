@@ -1,13 +1,16 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IRegionWiseSurveysDAO;
 import com.itgrids.partyanalyst.dao.ISurveyAccessUsersDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDAO;
 import com.itgrids.partyanalyst.dao.IUpdationDetailsDAO;
@@ -29,8 +32,17 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 	private IUserDAO userDAO;
 	private ISurveyAccessUsersDAO surveyAccessUsersDAO;
 	private DateUtilService dateUtilService = new DateUtilService();
+	private IRegionWiseSurveysDAO regionWiseSurveysDAO;
 
 	
+	public IRegionWiseSurveysDAO getRegionWiseSurveysDAO() {
+		return regionWiseSurveysDAO;
+	}
+
+	public void setRegionWiseSurveysDAO(IRegionWiseSurveysDAO regionWiseSurveysDAO) {
+		this.regionWiseSurveysDAO = regionWiseSurveysDAO;
+	}
+
 	public ISurveyAccessUsersDAO getSurveyAccessUsersDAO() {
 		return surveyAccessUsersDAO;
 	}
@@ -131,5 +143,27 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 			return resultStatus;
 		}	
 	}
+	
+	
+	public Map<String,String> getSurveyDetailsByRegion(Long regionId)
+	{
+		log.debug("Entered into the getSurveyDetailsByRegion service method");
+
+		Map<String,String> surveyDetailsMap = new HashMap<String, String>();
+		try
+		{
+			List<Object[]> list = regionWiseSurveysDAO.getSurveyDetailsByRegion(regionId);
+			
+			for(Object[] obj:list)
+				surveyDetailsMap.put(obj[0].toString(), obj[1].toString());
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			log.error("Exception raised in  getSurveyDetailsByRegion service method");
+		}
+		return surveyDetailsMap;
+	}
+	
 	
 }

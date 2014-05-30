@@ -12,6 +12,14 @@ public class GenericVO {
     private String desc;
     private Long count;
     private List<GenericVO> genericVOList = new ArrayList<GenericVO>();
+    private String percent;
+    
+    public String getPercent() {
+		return percent;
+	}
+	public void setPercent(String percent) {
+		this.percent = percent;
+	}
       
     public GenericVO()
     {

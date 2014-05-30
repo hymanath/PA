@@ -5101,7 +5101,41 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 						return query.list();
 						
 					}
-			 
-
+					
+		public List<Object[]> getWinningCandidateInfoForAConstituency(Long constituencyId,Long electionId)
+		{
+			Query query = getSession().createQuery("select N.candidate.lastname,N.party.shortName " +
+					"from " +
+					"Nomination N " +
+					"where " +
+					"N.constituencyElection.election.electionId = :electionId and " +
+					"N.constituencyElection.constituency.constituencyId = :constituencyId and " +
+					"N.candidateResult.rank = 1 ");
+			
+			return query.list();
+			
+		}
+		
+		public List<Object[]> getVoteShareByConstituencyIdAndElectionId(Long constituencyId,Long electionId)
+		{
+			Query query = getSession().createQuery("select " +
+					"N.candidate.lastname," +
+					"N.party.partyId," +
+					"N.party.shortName," +
+					"N.candidateResult.rank," +
+					"N.candidateResult.votesEarned " +
+					"from " +
+					"Nomination N " +
+					"where " +
+					"N.constituencyElection.election.electionId = :electionId and " +
+					"N.constituencyElection.constituency.constituencyId = :constituencyId  ");
+			
+			query.setParameter("electionId", electionId);
+			query.setParameter("constituencyId", constituencyId);
+			
+			return query.list();
+			
+		}
+		
 }
 

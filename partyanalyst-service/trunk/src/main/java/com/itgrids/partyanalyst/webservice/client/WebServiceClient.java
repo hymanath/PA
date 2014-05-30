@@ -3,8 +3,8 @@ package com.itgrids.partyanalyst.webservice.client;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-
 import com.itgrids.survey.soa.endpoints.GenericVO;
+import com.itgrids.survey.soa.endpoints.ElectionComparisonVO;
 import com.itgrids.survey.soa.endpoints.OptionVO;
 import com.itgrids.survey.soa.endpoints.impl.SOAPWebServiceEndPoint;
 import com.itgrids.survey.soa.endpoints.impl.SOAPWebServiceEndPointImplService;
@@ -62,4 +62,20 @@ public class WebServiceClient {
 		  return returnList;
 	  }
 	  
+	  
+	  
+	  public ElectionComparisonVO getOptionWiseCountDetailsForSelectedSurveysByConstituencyId(Long constituencyId,List<Long> surveyIds){
+		  ElectionComparisonVO result = null;
+		  try{
+			  SOAPWebServiceEndPoint main=service.getSOAPWebServiceEndPointPort();
+			  
+			  result =   main.getPartyWiseCountDetailsForSelectedSurveys(surveyIds, constituencyId);
+				  
+				System.out.println(result);
+	
+			}catch(Exception e){
+				LOG.error("exception rised in getOptionWiseCountDetailsForSelectedSurveysByConstituencyId",e);
+			}
+			return result;
+	  }
 }
