@@ -35,7 +35,9 @@ import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.service.IDashBoardElectionResultsService;
 import com.itgrids.partyanalyst.webservice.client.WebServiceClient;
+import com.itgrids.survey.soa.endpoints.ElectionComparisonVO;
 import com.itgrids.survey.soa.endpoints.OptionVO;
+import com.itgrids.survey.soa.endpoints.SurveyReportVO;
 
 public class DashBoardElectionResultsService implements
 		IDashBoardElectionResultsService {
@@ -2595,11 +2597,185 @@ public GenericVO getparticipatedPartiesInLocation(Long electionId,List<Long> reg
 				
 			}
 			
-			
 			returnVO.setGenericVOList(resultList);		
 		} catch (Exception e) {
 			 LOG.error(" Exception Occured in getReservedConstiList() method, Exception - ",e);
 		}
 		return returnVO;
 	}
+	
+
+    public String getWinningCandidateInfoForAConstituency(Long constituencyId)
+    {    	
+    	LOG.debug("Entered into the getWinningCandidateInfoForAConstituency service method");
+    	try
+    	{
+    		List<Object[]> list = nominationDAO.getWinningCandidateInfoForAConstituency(constituencyId,38L);
+    		
+    		if(list != null && list.size() > 0 )
+    			return list.get(0)[0].toString()+"-"+list.get(0)[1].toString();
+    		
+    	}catch(Exception e)
+    	{
+    		e.printStackTrace();
+    		LOG.error("Exception raised in getWinningCandidateInfoForAConstituency service method");
+    	}
+		return null;
+    }
+    
+    
+    public DashBoardResultsVO getPartyWiseCountDetailsByConstituencyIdAndSurveyIds(Long constituencyId,List<Long> surveyIds,Long electionId)
+    {
+    	DashBoardResultsVO mainResult = new DashBoardResultsVO();
+    	try
+    	{
+			
+    	            
+    		ElectionComparisonVO result  =  webServiceClient.getOptionWiseCountDetailsForSelectedSurveysByConstituencyId(constituencyId,surveyIds);
+            
+    		
+    		List<SurveyReportVO> partiesResult = result.getPartyWiseResult();
+    		
+    		List<Long> partyIds = new ArrayList<Long>();
+    		
+    		for(SurveyReportVO partyVO:partiesResult)
+    		{
+    			if(partyVO.getName().equalsIgnoreCase("OTHERS"))
+    				partyVO.setPartyId(0L);
+    		}
+    		
+    		for(SurveyReportVO partyVO:partiesResult)
+    		{
+    			partyIds.add(partyVO.getPartyId());
+    		}
+    		
+    		//partyIds.add(0L);
+    		
+    		List<DashBoardResultsVO>  constiResultDetails = getVoteShareByConstituencyIdAndElectionId(constituencyId,electionId,partyIds);
+    		
+    		
+    		for(SurveyReportVO party:partiesResult)
+    		{
+    			DashBoardResultsVO partyVO = getMacthedVO(constiResultDetails, party.getPartyId());
+    			
+    			partyVO.setSurveyCount(party.getCount());
+    			partyVO.setSurveyPercent(party.getPercent());
+    		}
+    		
+    		mainResult.setSubList(constiResultDetails);
+    		
+    		Double castePercent =0.0;
+    		for( com.itgrids.survey.soa.endpoints.GenericVO caste:result.getCasteResult())
+    		{
+    			castePercent = castePercent + Double.parseDouble(caste.getPercent());
+    		}
+    		
+    		com.itgrids.survey.soa.endpoints.GenericVO others = new com.itgrids.survey.soa.endpoints.GenericVO();
+    		
+    		others.setName("OTHERS");
+    		Double remainPercent = 100 - castePercent;
+    		others.setPercent(remainPercent.toString());
+    		
+    		result.getCasteResult().add(others);
+    		
+    		mainResult.setCasteDetails(result.getCasteResult());
+    		
+    		
+    	}catch(Exception e)
+    	{
+    		e.printStackTrace();
+    	}
+    	
+    	return mainResult;
+    }
+    
+    public List<DashBoardResultsVO> getVoteShareByConstituencyIdAndElectionId(Long constituencyId,Long electionId,List<Long> partyIds)
+	{
+		LOG.debug("Entered into the getVoteShareByConstituencyIdAndElectionId service method");
+		List<DashBoardResultsVO> resultList = new ArrayList<DashBoardResultsVO>();
+		try
+		{
+				List<Object[]> list = nominationDAO.getVoteShareByConstituencyIdAndElectionId(constituencyId,electionId);
+				
+				Long totalValidVotes = 0L;
+				
+				for(Long partyId:partyIds)
+				{
+					DashBoardResultsVO party = new DashBoardResultsVO();
+					party.setPartyId(partyId);
+					party.setId(partyId);
+					
+					if(partyId == 0L)
+						party.setName("OTHERS");
+					
+					resultList.add(party);
+				}
+		
+				for(Object[] obj:list)
+				{
+					DashBoardResultsVO partyVO = null;
+					if(partyIds.contains((Long)obj[1]))
+					 partyVO = getMacthedVO(resultList, (Long)obj[1]);
+					else
+					 partyVO = getMacthedVO(resultList, 0L);
+					
+					if((Long)obj[1] != 0L)
+						partyVO.setName(obj[2].toString());
+					
+					partyVO.setCount(partyVO.getCount() + (long)Double.parseDouble(obj[4].toString()));
+					if((!partyIds.contains((Long)obj[1]) && (Long)obj[3] == 1L) || partyVO.getRank() !=1L)
+					{
+					  partyVO.setRank((Long)obj[3]);
+					  partyVO.setCandidateName(obj[0].toString());
+					  partyVO.setName(obj[2].toString());
+					}
+					totalValidVotes =totalValidVotes +  (long)Double.parseDouble(obj[4].toString());
+				}
+				
+				for(DashBoardResultsVO partyVO:resultList)
+				{
+					
+					 partyVO.setPercent(partyVO.getCount()!= 0 ? roundTo2DigitsFloatValue(partyVO.getCount()
+							 * 100f
+							 /totalValidVotes) : "0.00");
+				}
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Exception raised in  getVoteShareByConstituencyIdAndElectionId service method");
+		}
+		return resultList;
+	}
+    
+    public Map<String,String> getConstituencyDetaisByRegionid(Long regionId)
+    {
+		LOG.debug("Entered into the getConstituencyDetaisByRegionid service method");
+		Map<String,String> constituenciesMap = new HashMap<String, String>();
+    	
+    	try {
+        	List<Long> regionIds = new ArrayList<Long>();
+
+			if(regionId == 1L)
+			{
+				regionIds.add(1L);
+			}else
+			{
+				regionIds.add(2L);
+				regionIds.add(3L);
+			}
+				
+		List<Object[]> list = 	constituencyDAO.getConstituencyDetaisByRegionid(regionIds);
+		
+		for(Object[] obj:list)
+			constituenciesMap.put(obj[0].toString(), obj[1].toString());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception raised in  getConstituencyDetaisByRegionid service method");
+		}
+    	
+    	return constituenciesMap;
+    	
+    }
 }

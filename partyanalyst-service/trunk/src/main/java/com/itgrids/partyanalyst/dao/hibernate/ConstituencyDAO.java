@@ -776,4 +776,18 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		
 	}
 	
+	public List<Object[]> getConstituencyDetaisByRegionid(List<Long> regionIds)
+	{
+		Query query = getSession().createQuery("select C.constituencyId,C.name from Constituency C,StateRegionDistrict SRD " +
+				"where " +
+				"C.district.districtId = SRD.district.districtId and " +
+				"SRD.stateRegion.stateRegionId in(:regionIds) and C.electionScope.electionScopeId =2 and C.deformDate is null order by C.name");
+		
+		query.setParameterList("regionIds", regionIds);
+		
+		return query.list();
+		
+		
+	}
+	
 }

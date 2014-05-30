@@ -209,4 +209,7 @@ public interface IConstituencyDAO extends GenericDao<Constituency, Long>{
 	
 	public List<Object[]> getConstituencyByState(Long stateId);
 	public List getLatestConstituenciesByStateIdForregion(String electionType , Long stateID,String region);
+	
+	public List<Object[]> getConstituencyDetaisByRegionid(List<Long> regionIds);
+
 }

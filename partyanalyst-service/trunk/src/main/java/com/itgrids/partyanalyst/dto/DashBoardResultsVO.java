@@ -38,12 +38,17 @@ public class DashBoardResultsVO  implements Comparable<DashBoardResultsVO>{
 	private String validVotes;
 	private Long gainedVotes;
 	private String gainedPercent;
-	private Long rank;
+	private Long rank = 0L;
 	
 	private Map<String,Long> partyWiseCountBefore;
 	private Map<String,Long> partyWiseCountAfter;
 	private Map<String,Integer> resultMap;
 	private Map<String,String> percentageMap,percentageMap1;
+	
+	private Long surveyCount = 0L;	
+	private String surveyPercent;
+	private List<com.itgrids.survey.soa.endpoints.GenericVO> casteDetails;
+	private String candidateName;
 	
 	
 	public Map<String, String> getPercentageMap1() {
@@ -565,6 +570,38 @@ public class DashBoardResultsVO  implements Comparable<DashBoardResultsVO>{
 
 	public void setParticipantsList(List<GenericVO> participantsList) {
 		this.participantsList = participantsList;
+	}
+	
+	public String getCandidateName() {
+		return candidateName;
+	}
+
+	public void setCandidateName(String candidateName) {
+		this.candidateName = candidateName;
+	}
+	
+	public List<com.itgrids.survey.soa.endpoints.GenericVO> getCasteDetails() {
+		return casteDetails;
+	}
+
+	public void setCasteDetails(List<com.itgrids.survey.soa.endpoints.GenericVO> list) {
+		this.casteDetails = list;
+	}
+	
+	public Long getSurveyCount() {
+		return surveyCount;
+	}
+
+	public void setSurveyCount(Long surveyCount) {
+		this.surveyCount = surveyCount;
+	}
+
+	public String getSurveyPercent() {
+		return surveyPercent;
+	}
+
+	public void setSurveyPercent(String surveyPercent) {
+		this.surveyPercent = surveyPercent;
 	}
 
 
