@@ -1617,6 +1617,10 @@ $('#ajaxImage').show();
 <div id="resultDiv"></div>
 
 
+<div id="overviewDivId6" class="span5" style="margin: 12px 48px 0px 49px"></div>
+<div id="overviewDivId7" class="span5" style="margin:12px 10px 10px 39px"></div>
+<div id="overviewDivId4" class="span5" style="margin: 12px 48px 0px 49px;"></div>
+<div id="overviewDivId5" class="span5" style="margin:12px 10px 10px 39px"></div>
 
 <div id="overviewDivId1" class="span5" style="margin: 12px 48px 0px 49px;"></div>
 <div id="overviewDivId3" class="span5" style="margin:12px 10px 10px 39px"></div>
@@ -3734,6 +3738,8 @@ function getRegionWiseResults(searchType)
 {
 	searchFlag = searchType;
     ajaxProcessing();
+	var regions = new Array();
+	regions =[];
 	if(searchType == 'Telangana')
 	{
 	    //makeClickedFalse(1);
@@ -3744,6 +3750,16 @@ function getRegionWiseResults(searchType)
 		telanganaDistrict();
 		parliamentWiseResult('Telangana');
 		telanganaRegion();
+		//electionScopeId,electionId,scopeId
+		
+		regions.push(3);
+		regions.push(4);
+			particiaptedPartyList(2,258,4,regions);
+			reservedConstiList(2,258,4,regions);
+	
+			particiaptedPartyListForParliament(1,260,4,regions);
+			reservedConstiListForParliament(1,260,4,regions);
+			
 		$('#results1Div,#subTitlesDiv').show();
 		$('#liveResultsDiv').hide();
 		$('#overviewDivId3').show();
@@ -3793,6 +3809,7 @@ function getRegionWiseResults(searchType)
 			
 		$('#subTitlesDiv').html(subMenu);
 		$('#weathermap5').hide();
+		$('#overviewDivId6,#overviewDivId7,#overviewDivId4,#overviewDivId5').show();
 	}
 	else if(searchType == 'Semandhra')
 	{
@@ -3803,6 +3820,16 @@ function getRegionWiseResults(searchType)
 		seemandraDistrict();
 		seemandraRegion();
 		parliamentWiseResult('Semandhra');
+
+		regions.push(1);
+		regions.push(2);
+		regions.push(5);
+		particiaptedPartyList(2,258,4,regions);
+		reservedConstiList(2,258,4,regions);
+
+		particiaptedPartyListForParliament(1,260,4,regions);
+		reservedConstiListForParliament(1,260,4,regions);
+			
 		$('#overviewDivId3').show();
 		$('#results1Div,#subTitlesDiv').show();
 		$('#liveResultsDiv').hide();
@@ -3850,10 +3877,12 @@ function getRegionWiseResults(searchType)
 			
 		$('#subTitlesDiv').html(subMenu);
 		$('#weathermap5').hide();
+		$('#overviewDivId6,#overviewDivId7,#overviewDivId4,#overviewDivId5').show();
 
 	}
 	else if(searchType == 'India')
 	{
+	$('#overviewDivId6,#overviewDivId7,#overviewDivId4,#overviewDivId5').hide();
 		$('#overviewDivId3').hide();
 	    $('#effectClrImg').hide();
 		$('#results1Div,#subTitlesDiv').html('');
@@ -3893,6 +3922,7 @@ function getRegionWiseResults(searchType)
 	}
 	else if(searchType == 'StateAnalysis')
 	{
+		$('#overviewDivId6,#overviewDivId7,#overviewDivId4,#overviewDivId5').hide();
 		$('#button1,#button2,#button3,#button4').hide();
 		$('#overviewDivId3').hide();
 	    $('#effectClrImg').hide();
@@ -3926,6 +3956,7 @@ function getRegionWiseResults(searchType)
 	}
 	else if(searchType == 'DistrictAnalysis')
 	{
+		$('#overviewDivId6,#overviewDivId7,#overviewDivId4,#overviewDivId5').hide();
 		$('#button1,#button2,#button3,#button4').hide();
 		$('#overviewDivId3').hide();
 	    $('#effectClrImg').hide();
@@ -3956,6 +3987,7 @@ function getRegionWiseResults(searchType)
 	}
 	else if(searchType == 'CBNEffect')
 	{
+		$('#overviewDivId6,#overviewDivId7,#overviewDivId4,#overviewDivId5').hide();
 		$('#button1,#button2,#button3,#button4').hide();
 		$('#overviewDivId3').hide();
 	    $('#effectClrImg').hide();
@@ -4012,6 +4044,7 @@ function getRegionWiseResults(searchType)
 	}
 	else if(searchType == 'ModiEffect')
 	{
+		$('#overviewDivId6,#overviewDivId7,#overviewDivId4,#overviewDivId5').hide();
 		$('#button1,#button2,#button3,#button4').hide();
 		$('#overviewDivId3').hide();
 	    $('#effectClrImg').show();
@@ -4775,7 +4808,7 @@ var matrixReportDtls1={
 	{
 	  $('#overviewDivId3').html('');
 	  var str ='';
-	   str+='<h5 style="margin-top: 20px; margin-bottom: 10px; margin-left:-11px" class="headingClass">Parliament Wise Analysis</h5>';
+	   str+='<h5 style="margin-top: 20px; margin-bottom: 10px; margin-left:-11px;padding-left:5px;width:430px;" class="headingClass">Parliament Wise  Won Seats  Analysis</h5>';
 	  
 	  str+='<table style=" margin:26px 10px 0 -10px;"  cellpadding="5">';
 	   str+='<thead>';
@@ -4856,9 +4889,9 @@ var matrixReportDtls1={
 	  var str ='';
 	  
 	  if(type == "district")  
-	   str+='<h5 style="margin-top: 20px; margin-bottom: 10px; margin-left:-11px;width:400px" class="headingClass">District Wise Analysis</h5>';
+	   str+='<h5 style="margin-top: 20px; margin-bottom: 10px; margin-left:-11px;padding-left:5px;width:430px;" class="headingClass">District Wise Won Seats Analysis</h5>';
 	  else
-	   str+='<h5 style="margin-top: 20px; margin-bottom: 10px; margin-left:-11px" class="headingClass">Region Wise Analysis</h5>';
+	   str+='<h5 style="margin-top: 20px; margin-bottom: 10px; margin-left:-11px;padding-left:5px;width:430px;" class="headingClass">Region Wise  Won Seats  Analysis</h5>';
 	  
 	  
 	  str+='<table style=" margin:26px 10px 0 -10px;"  cellpadding="5">';
@@ -6356,6 +6389,326 @@ if(supportsSvg())
 					
 }
 
+
+
+
+function particiaptedPartyList(electionScopeId,electionId,scopeId,regions)
+	{
+	    matrixReportDtls1.electionId = '';
+	    matrixReportDtls1.electionScopeId = '';
+	    matrixReportDtls1.scopeId = '';
+	    matrixReportDtls1.locationIds = [];
+		
+		matrixReportDtls1.electionId = electionId;
+		 matrixReportDtls1.electionScopeId = electionScopeId;
+		matrixReportDtls1.scopeId = scopeId;//region
+		
+		if(regions.length >0){
+			for(var i in regions){
+				matrixReportDtls1.locationIds.push(regions[i]);
+			}
+		}	
+		
+		$.ajax({
+	          type:'POST',
+	          url: 'getParticiaptedPartyListAction.action',
+	          dataType: 'json',
+	          data: {task:JSON.stringify(matrixReportDtls1)},
+	          success: function(result){ 
+				   if(result != null && result.genericVOList.length>0){
+						  
+						  $('#overviewDivId4').html('');
+						  var str ='';
+						   str+='<h5 style="margin-top: 20px; margin-bottom: 10px; margin-left:-11px; padding-left: 5px; width: 420px;" class="headingClass">Assembly  wise Particiapted Seats </h5>';						  
+	  
+						 str+='<table style=" margin:26px 10px 0 -10px;"  cellpadding="5">';
+						   str+='<thead>';
+														 
+								$.each(result.genericVOList,function(index,value){
+								if(index <1){
+								str+='<tr>';								
+								str+='<th class="thBorder" ></th>';														
+									$.each(result.genericVOList[0].genericVOList,function(index1,value1){
+										str+='<th class="thBorder">'+value1.name+'</th>';		
+									});		
+								str+='<th class="thBorder"> TOTAL </th>';						
+								str+='</tr>';
+								}																	
+								});
+								  
+							
+						   str+='</thead>';
+						  str+='<tbody>';
+						
+						  $.each(result.genericVOList,function(index,value){
+						  str+='<tr>';
+									str+='<th class="thBorder" >'+value.name+'</th>';
+						var count = 0;
+									$.each(value.genericVOList,function(index1,value1){
+										str+='<td class="thBorder">'+value1.count+'</td>';	
+										count = count + value1.count;	
+									});
+							 str+='<td class="thBorder">'+count+'</td>';							 
+							str+='</tr>';	
+								});
+						 											 
+							 
+							  
+						  str+='</tbody>';
+						  str+='</table>';
+						  
+						  $('#overviewDivId4').html(str);
+						  
+				   }
+				   
+				   
+	         },
+	          error:function() { 
+	           console.log('error', arguments);
+	         }
+	    });
+	}
+	
+
+function particiaptedPartyListForParliament(electionScopeId,electionId,scopeId,regions)
+	{
+	   matrixReportDtls1.electionId = '';
+	    matrixReportDtls1.electionScopeId = '';
+	    matrixReportDtls1.scopeId = '';
+	    matrixReportDtls1.locationIds = [];
+		
+		matrixReportDtls1.electionId = electionId;
+		 matrixReportDtls1.electionScopeId = electionScopeId;
+		matrixReportDtls1.scopeId = scopeId;//region
+		
+		if(regions.length >0){
+			for(var i in regions){
+				matrixReportDtls1.locationIds.push(regions[i]);
+			}
+		}	
+		$.ajax({
+	          type:'POST',
+	          url: 'getParticiaptedPartyListAction.action',
+	          dataType: 'json',
+	          data: {task:JSON.stringify(matrixReportDtls1)},
+	          success: function(result){ 
+				   
+				   if(result != null && result.genericVOList.length>0){
+						  
+						  $('#overviewDivId5').html('');
+						  var str ='';
+						   str+='<h5 style="margin-top: 20px; margin-bottom: 10px; margin-left:-11px; padding-left: 5px; width: 420px;" class="headingClass">Parliament wise Particiapted Seats </h5>';						  
+	  
+						 str+='<table style=" margin:26px 10px 0 -10px;"  cellpadding="5">';
+						   str+='<thead>';
+														 
+								$.each(result.genericVOList,function(index,value){
+								if(index <1){
+								str+='<tr>';								
+								str+='<th class="thBorder" ></th>';														
+									$.each(result.genericVOList[0].genericVOList,function(index1,value1){
+										str+='<th class="thBorder">'+value1.name+'</th>';		
+									});		
+								str+='<th class="thBorder"> TOTAL </th>';						
+								str+='</tr>';
+								}																	
+								});
+								  
+							
+						   str+='</thead>';
+						  str+='<tbody>';
+						var count = 0;
+						  $.each(result.genericVOList,function(index,value){
+						  str+='<tr>';
+									str+='<th class="thBorder" >'+searchFlag+'</th>';
+						
+									$.each(value.genericVOList,function(index1,value1){
+										str+='<td class="thBorder">'+value1.count+'</td>';	
+										count = count + value1.count;	
+									});
+							 str+='<td class="thBorder">'+count+'</td>';
+					 
+							str+='</tr>';	
+								});
+						 											 
+							 
+							  
+						  str+='</tbody>';
+						  str+='</table>';
+						  
+						  $('#overviewDivId5').html(str);
+						  
+				   }
+				   
+				   
+	         },
+	          error:function() { 
+	           console.log('error', arguments);
+	         }
+	    });
+		
+	}
+	
+
+	function reservedConstiList(electionScopeId,electionId,scopeId,regions)
+	{
+	    matrixReportDtls1.electionId = '';
+	    matrixReportDtls1.electionScopeId = '';
+	    matrixReportDtls1.scopeId = '';
+	    matrixReportDtls1.locationIds = [];
+		
+		matrixReportDtls1.electionId = electionId;
+		 matrixReportDtls1.electionScopeId = electionScopeId;
+		matrixReportDtls1.scopeId = scopeId;//region
+		
+		if(regions.length >0){
+			for(var i in regions){
+				matrixReportDtls1.locationIds.push(regions[i]);
+			}
+		}	
+
+		$.ajax({
+	          type:'POST',
+	          url: 'getReservedConstiListAction.action',
+	          dataType: 'json',
+	          data: {task:JSON.stringify(matrixReportDtls1)},
+
+	          success: function(result){ 
+			
+				  if(result != null && result.genericVOList.length>0){
+						  
+						  $('#overviewDivId6').html('');
+						  var str ='';
+						   str+='<h5 style="margin-top: 20px; margin-bottom: 10px; margin-left:-11px; padding-left: 5px; width: 420px;" class="headingClass">Assembly  wise Reservation Seats </h5>';						  
+	  
+						 str+='<table style=" margin:26px 10px 0 -10px;"  cellpadding="5">';
+						   str+='<thead>';
+														 
+								$.each(result.genericVOList,function(index,value){
+								if(index <1){
+								str+='<tr>';								
+								str+='<th class="thBorder" ></th>';														
+									$.each(result.genericVOList[0].genericVOList,function(index1,value1){
+									if(value1.name.length>0)
+										str+='<th class="thBorder">'+value1.name+'</th>';		
+									else
+										str+='<th class="thBorder">GENERAL</th>';	
+									});		
+								str+='<th class="thBorder"> TOTAL </th>';						
+								str+='</tr>';
+								}																	
+								});
+								  
+						   str+='</thead>';
+						  str+='<tbody>';
+						
+						  $.each(result.genericVOList,function(index,value){
+						  str+='<tr>';
+									str+='<th class="thBorder" >'+value.name+'</th>';
+						var count = 0;
+									$.each(value.genericVOList,function(index1,value1){
+										str+='<td class="thBorder">'+value1.count+'</td>';	
+										count = count + value1.count;	
+									});
+							 str+='<td class="thBorder">'+count+'</td>';							 
+							str+='</tr>';	
+								});
+						 											 
+							 
+							  
+						  str+='</tbody>';
+						  str+='</table>';
+						  
+						  $('#overviewDivId6').html(str);
+						  
+				   }
+	         },
+	          error:function() { 
+	           console.log('error', arguments);
+	         }
+	    });
+	}
+	
+	
+	function reservedConstiListForParliament(electionScopeId,electionId,scopeId,regions)
+	{
+	   matrixReportDtls1.electionId = '';
+	    matrixReportDtls1.electionScopeId = '';
+	    matrixReportDtls1.scopeId = '';
+	    matrixReportDtls1.locationIds = [];
+		
+		matrixReportDtls1.electionId = electionId;
+		 matrixReportDtls1.electionScopeId = electionScopeId;
+		matrixReportDtls1.scopeId = scopeId;//region
+		
+		if(regions.length >0){
+			for(var i in regions){
+				matrixReportDtls1.locationIds.push(regions[i]);
+			}
+		}	
+
+		$.ajax({
+	          type:'POST',
+	          url: 'getReservedConstiListAction.action',
+	          dataType: 'json',
+	          data: {task:JSON.stringify(matrixReportDtls1)},
+
+	          success: function(result){ 
+			
+				   if(result != null && result.genericVOList.length>0){
+						  
+						  $('#overviewDivId7').html('');
+						  var str ='';
+						   str+='<h5 style="margin-top: 20px; margin-bottom: 10px; margin-left:-11px; padding-left: 5px; width: 420px;" class="headingClass">Parliament wise Reservation Seats </h5>';						  
+	  
+						 str+='<table style=" margin:26px 10px 0 -10px;"  cellpadding="5">';
+						   str+='<thead>';
+														 
+								$.each(result.genericVOList,function(index,value){
+								if(index <1){
+								str+='<tr>';								
+								str+='<th class="thBorder" ></th>';														
+									$.each(result.genericVOList[0].genericVOList,function(index1,value1){
+										str+='<th class="thBorder">'+value1.name+'</th>';		
+									});		
+								str+='<th class="thBorder"> TOTAL </th>';						
+								str+='</tr>';
+								}																	
+								});
+								  
+							
+						   str+='</thead>';
+						  str+='<tbody>';
+						
+						  $.each(result.genericVOList,function(index,value){
+						  str+='<tr>';
+									str+='<th class="thBorder" >'+searchFlag+'</th>';
+						var count = 0;
+									$.each(value.genericVOList,function(index1,value1){
+										str+='<td class="thBorder">'+value1.count+'</td>';	
+										count = count + value1.count;	
+									});
+							 str+='<td class="thBorder">'+count+'</td>';							 
+							str+='</tr>';	
+								});
+						 											 
+							 
+							  
+						  str+='</tbody>';
+						  str+='</table>';
+						  
+						  $('#overviewDivId7').html(str);
+						  
+				   }
+	         },
+	          error:function() { 
+	           console.log('error', arguments);
+	         }
+	    });
+	}
+	
+	
+	
 
 </script>
 
