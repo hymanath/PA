@@ -2099,18 +2099,27 @@ List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId,
     			//constituencyVO.getPartyIds().add(0l);
     		}
     		
-    		caluculateValidVotesForConstituency(resultList);//this method calculates all the valid votes of constituencies
+    		/*caluculateValidVotesForConstituency(resultList);//this method calculates all the valid votes of constituencies
     		
-    		Map<String,Long> voterCountMap = new HashMap<String, Long>();
+    	
     		
-    		Long totalValidVotersCount = 0L;
     		
     		for(DashBoardResultsVO constituencyVO:resultList)
     		{
     			totalValidVotersCount  = totalValidVotersCount + constituencyVO.getVotesCount();
+    		}*/
+    	Map<String,Long> voterCountMap = new HashMap<String, Long>();
+    	Long totalValidVotersCount = 0L;
+    	List<Object[]> countList =nominationDAO.getConstituencyResultDetailsByElectionIdCount(electionId, locationIds, scopeId);
+    	if(countList != null && countList.size() > 0)
+    	{
+    		for(Object[] params : countList)
+    		{
+    		Double total = new Double(params[0].toString());
+    		totalValidVotersCount = total.longValue();
     		}
     		
-    		
+    	}	
     		for(DashBoardResultsVO constituencyVO:resultList)
     		{
     			for(DashBoardResultsVO partyVO:constituencyVO.getSubList())
