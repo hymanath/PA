@@ -387,6 +387,20 @@ public class CandidateResultDAO extends GenericDaoHibernate<CandidateResult, Lon
 		return query.list();
 	}
 	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getElectionResultForCbnEffect(Long electionId,Long partyId)
+	{
+		Query query = getSession().createQuery("select  model.nomination.constituencyElection.constituency.constituencyId," +
+				"  model.votesPercengate,model.rank from CandidateResult model " +
+				"  where model.nomination.constituencyElection.election.electionId = :electionId " +
+				"  and model.nomination.party.partyId = :partyId " +
+				"  ");
+		query.setParameter("electionId", electionId);
+		query.setParameter("partyId", partyId);
+		//query.setParameter("rank", rank);
+		return query.list();
+	}
 	public List<Object[]> getElectionResultsForCBNORMODIEffect(Long electionId,Long stateid,List<Long> partyId,Long electionScopeId)
 	{
 		StringBuffer sb = new StringBuffer();

@@ -27,7 +27,9 @@ public class ObjectFactory {
     private final static QName _GetPartyWiseCountDetailsForSelectedSurveys_QNAME = new QName("http://endpoints.soa.survey.itgrids.com/", "getPartyWiseCountDetailsForSelectedSurveys");
     private final static QName _GetPartyWiseCountDetailsForSelectedSurveysResponse_QNAME = new QName("http://endpoints.soa.survey.itgrids.com/", "getPartyWiseCountDetailsForSelectedSurveysResponse");
     private final static QName _GetTop5CastePeopleOpnionOnPartyResponse_QNAME = new QName("http://endpoints.soa.survey.itgrids.com/", "getTop5CastePeopleOpnionOnPartyResponse");
+    private final static QName _GetGenderWiseReportForSurveyAnalysisResponse_QNAME = new QName("http://endpoints.soa.survey.itgrids.com/", "getGenderWiseReportForSurveyAnalysisResponse");
     private final static QName _GetTop5CastePeopleOpnionOnParty_QNAME = new QName("http://endpoints.soa.survey.itgrids.com/", "getTop5CastePeopleOpnionOnParty");
+    private final static QName _GetGenderWiseReportForSurveyAnalysis_QNAME = new QName("http://endpoints.soa.survey.itgrids.com/", "getGenderWiseReportForSurveyAnalysis");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: com.itgrids.survey.soa.endpoints
@@ -69,11 +71,27 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link GetGenderWiseReportForSurveyAnalysis }
+     * 
+     */
+    public GetGenderWiseReportForSurveyAnalysis createGetGenderWiseReportForSurveyAnalysis() {
+        return new GetGenderWiseReportForSurveyAnalysis();
+    }
+
+    /**
      * Create an instance of {@link GetTop5CastePeopleOpnionOnParty }
      * 
      */
     public GetTop5CastePeopleOpnionOnParty createGetTop5CastePeopleOpnionOnParty() {
         return new GetTop5CastePeopleOpnionOnParty();
+    }
+
+    /**
+     * Create an instance of {@link GetGenderWiseReportForSurveyAnalysisResponse }
+     * 
+     */
+    public GetGenderWiseReportForSurveyAnalysisResponse createGetGenderWiseReportForSurveyAnalysisResponse() {
+        return new GetGenderWiseReportForSurveyAnalysisResponse();
     }
 
     /**
@@ -184,12 +202,30 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetGenderWiseReportForSurveyAnalysisResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://endpoints.soa.survey.itgrids.com/", name = "getGenderWiseReportForSurveyAnalysisResponse")
+    public JAXBElement<GetGenderWiseReportForSurveyAnalysisResponse> createGetGenderWiseReportForSurveyAnalysisResponse(GetGenderWiseReportForSurveyAnalysisResponse value) {
+        return new JAXBElement<GetGenderWiseReportForSurveyAnalysisResponse>(_GetGenderWiseReportForSurveyAnalysisResponse_QNAME, GetGenderWiseReportForSurveyAnalysisResponse.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link GetTop5CastePeopleOpnionOnParty }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://endpoints.soa.survey.itgrids.com/", name = "getTop5CastePeopleOpnionOnParty")
     public JAXBElement<GetTop5CastePeopleOpnionOnParty> createGetTop5CastePeopleOpnionOnParty(GetTop5CastePeopleOpnionOnParty value) {
         return new JAXBElement<GetTop5CastePeopleOpnionOnParty>(_GetTop5CastePeopleOpnionOnParty_QNAME, GetTop5CastePeopleOpnionOnParty.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetGenderWiseReportForSurveyAnalysis }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://endpoints.soa.survey.itgrids.com/", name = "getGenderWiseReportForSurveyAnalysis")
+    public JAXBElement<GetGenderWiseReportForSurveyAnalysis> createGetGenderWiseReportForSurveyAnalysis(GetGenderWiseReportForSurveyAnalysis value) {
+        return new JAXBElement<GetGenderWiseReportForSurveyAnalysis>(_GetGenderWiseReportForSurveyAnalysis_QNAME, GetGenderWiseReportForSurveyAnalysis.class, null, value);
     }
 
 }

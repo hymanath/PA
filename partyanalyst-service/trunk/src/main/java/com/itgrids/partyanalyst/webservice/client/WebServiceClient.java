@@ -2,10 +2,9 @@ package com.itgrids.partyanalyst.webservice.client;
 
 import java.util.List;
 
-import javax.xml.ws.WebServiceRef;
-
 import org.apache.log4j.Logger;
 
+import com.itgrids.survey.soa.endpoints.GenericVO;
 import com.itgrids.survey.soa.endpoints.OptionVO;
 import com.itgrids.survey.soa.endpoints.impl.SOAPWebServiceEndPoint;
 import com.itgrids.survey.soa.endpoints.impl.SOAPWebServiceEndPointImplService;
@@ -45,4 +44,22 @@ public class WebServiceClient {
 			}
 			return result;
 	  }
+	  
+	  public List<GenericVO> buildGenderWiseDetails(Long partyId,Long constituencyId,List<Long> surveyIds)
+	  {
+		  List<GenericVO> returnList = null;
+		  try
+		  {
+			    SOAPWebServiceEndPoint main=service.getSOAPWebServiceEndPointPort();
+			    returnList = main.getGenderWiseReportForSurveyAnalysis(partyId, constituencyId, surveyIds);
+			    System.out.println(returnList.size());
+		  } 
+		  catch (Exception e)
+		  {
+			  LOG.error("exception rised in buildGenderWiseDetails",e);
+		  }
+		  
+		  return returnList;
+	  }
+	  
 }

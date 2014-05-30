@@ -7,9 +7,12 @@ public class GenericVO {
 	
 	private Long id;
     private String name;
+    private Double perc;
+    private Long rank;
+    private String desc;
     private Long count;
     private List<GenericVO> genericVOList = new ArrayList<GenericVO>();
-    
+      
     public GenericVO()
     {
     	
@@ -34,6 +37,24 @@ public class GenericVO {
 	public void setName(String name) {
 		this.name = name;
 	}
+	public Double getPerc() {
+		return perc;
+	}
+	public void setPerc(Double perc) {
+		this.perc = perc;
+	}
+	public Long getRank() {
+		return rank;
+	}
+	public void setRank(Long rank) {
+		this.rank = rank;
+	}
+	public String getDesc() {
+		return desc;
+	}
+	public void setDesc(String desc) {
+		this.desc = desc;
+	}
 	public Long getCount() {
 		return count;
 	}
@@ -46,6 +67,9 @@ public class GenericVO {
 	public void setGenericVOList(List<GenericVO> genericVOList) {
 		this.genericVOList = genericVOList;
 	}
+	
+	
+	
 	
 	
 }
