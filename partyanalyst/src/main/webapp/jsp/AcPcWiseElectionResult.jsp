@@ -6870,7 +6870,108 @@ function particiaptedPartyListForParliament(electionScopeId,electionId,scopeId,r
 	
 	
 
+	function getCasteData(){
+
+        var jsObj=
+	{
+			constituencyId : 232,
+			surveyIds :"124,138,150,158,162,163"
+			
+	};
+	$.ajax({
+	type: "GET",
+	url: "getTop5CastePartySupport.action",
+	dataType: 'json',
+	data: {task:JSON.stringify(jsObj)},
+	 error:function() { 
+           
+         }
+	})
+	.done(function( result ) {
+		buildChartForTopCaste(result);
+		try{
+		 
+		}catch(e){
+		  
+		}
+	});
+}
+
+function buildChartForTopCaste(result){
+var colorsArray = new Array();
+colorsArray.push("#F93535");
+colorsArray.push("#4CF935");
+colorsArray.push("#F9F235");
+colorsArray.push("#3553F9");
+colorsArray.push("#E935F9");
+
+var surveyArray = new Array();
+var casteArray = new Array();
+for(var i in result){
+surveyArray.push(result[i].name);
+}
+for(var i =0;i<result[0].optionsList.length;i++){
+  var obj={};
+  obj['type'] = 'column';
+  obj['name'] = result[0].optionsList[i];
+  var dataArray = new Array();
+  for(var j in result){
+    dataArray.push(result[j].percents[i]);
+  }
+  obj['data'] = dataArray;
+  obj['color']= colorsArray[i] ;
+  obj['tooltip']= {
+			valueSuffix:'%'
+        };
+  casteArray.push(obj);
+ // console.log(casteArray);
+}
+
+var obj={};
+
+        obj['type']= 'pie';
+        obj['name']= 'Avg Percent';
+		var casteSubArray = new Array();
+		 for(var i =0;i<result[0].optionsList.length;i++){
+		    var obj1={};
+			  obj1['name']= result[0].optionsList[i];
+            obj1['y']= result[0].avgPercs[i];
+            obj1['color']= colorsArray[i] ;
+			casteSubArray.push(obj1);
+		}
+        obj['data'] =  casteSubArray;
+        obj['center']= [100, 80];
+        obj['size']= 100;
+        obj['showInLegend']= false;
+        obj['dataLabels']= {
+            enabled: false
+        };
+    casteArray.push(obj);
+
+$('#containeradsd').highcharts({
+    title: {
+        text: 'Top 5 Castes Support To TDP'
+    },
+    xAxis: {
+        categories: surveyArray
+    },
+    labels: {
+        items: [{
+            html: 'Average',
+            style: {
+                left: '50px',
+                top: '18px',
+                color: (Highcharts.theme && Highcharts.theme.textColor) || 'black'
+            }
+        }]
+    },
+    series: casteArray
+});
+
+}
+
 </script>
+<div id="containeradsd"></div>
 
 <!--<script type="text/javascript" src="js/newTest1.js"></script>
 <script type="text/javascript" src="js/newTest.js"></script>-->
