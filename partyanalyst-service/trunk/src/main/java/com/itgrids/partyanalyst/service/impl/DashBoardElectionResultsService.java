@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.dao.IElectionAllianceDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.IStateSubRegionDAO;
 import com.itgrids.partyanalyst.dao.IStateSubRegionDistrictDAO;
 import com.itgrids.partyanalyst.dto.DashBoardResultsVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
@@ -73,21 +74,18 @@ public class DashBoardElectionResultsService implements
 	@Autowired
 	private IConstituencyElectionDAO constituencyElectionDAO;
 	
-
-	private WebServiceClient webServiceClient;
+	@Autowired
+	private IStateSubRegionDAO stateSubRegionDAO;
 	
+	private WebServiceClient webServiceClient;
 	
 	public WebServiceClient getWebServiceClient() {
 		return webServiceClient;
 	}
 
-
-
 	public void setWebServiceClient(WebServiceClient webServiceClient) {
 		this.webServiceClient = webServiceClient;
 	}
-
-
 
 	public DashBoardResultsVO getElectionResultsSummary()
 	{
@@ -1593,13 +1591,11 @@ List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId,
 					
 					
 			 }
-			 
-				
-				
+										
 		 }catch(Exception e)
 		 {
-			 e.printStackTrace();
-			 
+			  e.printStackTrace();	
+			  LOG.error("Entered Into getWonAndLeadCountPartyWise() in DashboardElectionResultsService class."); 
 		 }
 		 return resultList;
 	 }
@@ -2050,4 +2046,411 @@ List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId,
     public List<OptionVO> getTop5CastePeopleOpnionOnParty(Long constituencyId,List<Long> surveyIds){
     	return webServiceClient.getTop5CastePeopleOpnionOnParty(constituencyId,surveyIds);
     }
+    
+    
+
+public GenericVO getparticipatedPartiesInLocation(Long electionId,List<Long> regionIds,Long electionScopeId,Long scope){
+	List<GenericVO> resultList = new ArrayList<GenericVO>();
+	List<Long> constiIds = null;
+	GenericVO returnVO = new GenericVO();
+	try {
+		 List<Long> prtyIds = new ArrayList<Long>();
+			prtyIds.add(872L);
+			prtyIds.add(362L);
+			prtyIds.add(1117L);
+			prtyIds.add(886L);
+			prtyIds.add(163L);
+			prtyIds.add(662L);
+			prtyIds.add(9999L);
+	
+			
+			if(electionScopeId.longValue() == 1L){
+				GenericVO genercVO = new GenericVO();
+				List<GenericVO> returnList = null;
+				List<Object[]> regions = stateSubRegionDAO.getStateRegionsBySubRegionIds(regionIds);
+				if(regions != null && regions.size()>0){
+					for (Object[] regionName : regions) {
+						genercVO.setId(regionName[0] != null ? (Long) regionName[0]:0L);
+						genercVO.setName(regionName[1] != null ? regionName[1].toString():"");
+					}
+				}
+				List<Object[]> constiList =  stateSubRegionDistrictDAO.getAssemblyConstituenciesBySubRegionIds(regionIds);
+				
+				
+				
+				if(constiList != null && constiList.size()>0){
+					constiIds = new ArrayList<Long>();
+					for (Object[] constituency : constiList) {
+						constiIds.add((Long)constituency[0]);
+					}
+				}
+				
+				List<Object[]> parliaments = null ;
+				if(electionScopeId != null){
+					if(electionScopeId.longValue() == 1L){
+						parliaments = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(constiIds);
+						if(parliaments != null && parliaments.size()>0){
+							constiIds.clear();
+							for (Object[] constituency : parliaments) {
+								if(!constiIds.contains((Long)constituency[0]))
+									constiIds.add((Long)constituency[0]);
+							}					
+						}
+					}
+				}
+				
+				List<Object[]> participants  = nominationDAO.getPartiwiseParticipatedCountInAElection(electionId,constiIds);
+				
+				LinkedHashMap<Long,GenericVO> participantsMap = new LinkedHashMap<Long, GenericVO>();
+				if(participants != null && participants.size()>0){
+					
+					for (Object[] party : participants) {
+						if(prtyIds.contains((Long) party[0])){
+							GenericVO vo = new GenericVO();
+							vo.setId((Long) party[0]);
+							vo.setName(party[1].toString());
+							vo.setCount((Long) party[2]);						
+							participantsMap.put((Long) party[0], vo);
+						}
+						else{
+							GenericVO vo = new GenericVO();
+							if(participantsMap.get(9999L) != null){
+								vo = participantsMap.get(9999L) ;
+							}
+							
+							vo.setId(9999L);
+							vo.setName("OTH");
+							Long partyCount = vo.getCount()!= null ?vo.getCount():0L;
+							Long count = partyCount + (Long) party[2];
+							vo.setCount(count);						
+							participantsMap.put(9999L, vo);
+							
+						}					
+					}
+					
+					if(participantsMap != null && participantsMap.size()>0){
+						 returnList = new ArrayList<GenericVO>();
+						for (Long partyId : prtyIds) {							
+							GenericVO partyVO = participantsMap.get(partyId);
+							if(partyVO != null)
+								returnList.add(partyVO);
+						}								
+						genercVO.setGenericVOList(returnList);								
+						resultList.add(genercVO);
+					}
+				}
+				
+			}
+			else
+			{
+				List<Object[]> regions = stateSubRegionDAO.getStateRegionsBySubRegionIds(regionIds);
+				
+				if(regions != null && regions.size()>0){
+					for (Object[] region : regions) {
+						GenericVO genercVO = new GenericVO();
+						List<GenericVO> returnList = null;
+						genercVO.setName(region[1] != null ?region[1].toString():"");
+						genercVO.setId(region[0] != null ?(Long)region[0]:0L);
+						
+						List<Object[]> regionsList = stateSubRegionDAO.getStateSubRegionsByRegionId((Long)region[0]);
+						
+						if(regionsList != null && regionsList.size()>0){
+							regionIds.clear();
+							for (Object[] stateSubRegions : regionsList) {
+								regionIds.add((Long)stateSubRegions[0]);
+							}
+						}
+						
+						if(scope.longValue() == 4L){
+							List<Object[]> constiList =  stateSubRegionDistrictDAO.getAssemblyConstituenciesBySubRegionIds(regionIds);
+							
+							
+							if(constiList != null && constiList.size()>0){
+								constiIds = new ArrayList<Long>();
+								for (Object[] constituency : constiList) {
+									constiIds.add((Long)constituency[0]);
+								}
+							}
+						}			
+						else{
+							List<Object[]> constiList = stateSubRegionDistrictDAO.getAssemblyConstituenciesBydistricts(regionIds);
+							
+							if(constiList != null && constiList.size()>0){
+								constiIds = new ArrayList<Long>();
+								for (Object[] constituency : constiList) {
+									constiIds.add((Long)constituency[0]);
+								}
+							}
+							
+						}
+							List<Object[]> parliaments = null ;
+							if(electionScopeId != null){
+								if(electionScopeId.longValue() == 1L){
+									parliaments = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(constiIds);
+									if(parliaments != null && parliaments.size()>0){
+										constiIds.clear();
+										for (Object[] constituency : parliaments) {
+											if(!constiIds.contains((Long)constituency[0]))
+												constiIds.add((Long)constituency[0]);
+										}					
+									}
+								}
+							}
+							
+							List<Object[]> participants  = nominationDAO.getPartiwiseParticipatedCountInAElection(electionId,constiIds);
+							
+							LinkedHashMap<Long,GenericVO> participantsMap = new LinkedHashMap<Long, GenericVO>();
+							if(participants != null && participants.size()>0){
+								
+								for (Object[] party : participants) {
+									if(prtyIds.contains((Long) party[0])){
+										GenericVO vo = new GenericVO();
+										vo.setId((Long) party[0]);
+										vo.setName(party[1].toString());
+										vo.setCount((Long) party[2]);						
+										participantsMap.put((Long) party[0], vo);
+									}
+									else{
+										GenericVO vo = new GenericVO();
+										if(participantsMap.get(9999L) != null){
+											vo = participantsMap.get(9999L) ;
+										}
+										
+										vo.setId(9999L);
+										vo.setName("OTH");
+										Long partyCount = vo.getCount()!= null ?vo.getCount():0L;
+										Long count = partyCount + (Long) party[2];
+										vo.setCount(count);						
+										participantsMap.put(9999L, vo);
+										
+									}					
+								}
+								
+								if(participantsMap != null && participantsMap.size()>0){
+									 returnList = new ArrayList<GenericVO>();
+									for (Long partyId : prtyIds) {							
+										GenericVO partyVO = participantsMap.get(partyId);
+										if(partyVO != null)
+											returnList.add(partyVO);
+									}								
+									genercVO.setGenericVOList(returnList);								
+									resultList.add(genercVO);
+								}
+							}
+					}
+				}
+			}
+			
+			
+			returnVO.setGenericVOList(resultList);
+	} catch (Exception e) {
+		  e.printStackTrace();
+		  LOG.error(" Exception Occured in getparticipatedPartiesInLocation() method, Exception - "+e);
+	}
+	return returnVO;
+}
+
+	public GenericVO getMatchedGenericVOByName(List<GenericVO> resultList,String name){
+		GenericVO returnVO = null;
+		try {
+			if(resultList != null && resultList.size()>0){
+				for (GenericVO vo : resultList) {
+					if(vo.getName().trim().equalsIgnoreCase(name.trim())){
+						return vo;
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error(" Exception Occured in getMatchedVOByName() method, Exception - ",e);
+		}
+		
+		return returnVO;
+	}
+	public GenericVO getReservedConstiList(Long electionId,List<Long> regionIds,Long electionScopeId,Long scope){
+		List<GenericVO> resultList =  new ArrayList<GenericVO>();		
+		List<Long> constiIds = null;
+		GenericVO returnVO = new GenericVO();
+		try {
+			List<String> castes = new ArrayList<String>();
+			castes.add("SC");
+			castes.add("ST");
+			castes.add("");
+			
+			
+			if(electionScopeId.longValue() == 1L){
+				GenericVO genercVO = new GenericVO();
+			
+				List<Object[]> regions = stateSubRegionDAO.getStateRegionsBySubRegionIds(regionIds);
+				if(regions != null && regions.size()>0){
+					for (Object[] regionName : regions) {
+						genercVO.setId(regionName[0] != null ? (Long) regionName[0]:0L);
+						genercVO.setName(regionName[1] != null ? regionName[1].toString():"");
+					}
+				}
+				List<Object[]> constiList =  stateSubRegionDistrictDAO.getAssemblyConstituenciesBySubRegionIds(regionIds);
+					if(constiList != null && constiList.size()>0){
+						constiIds = new ArrayList<Long>();
+						for (Object[] constituency : constiList) {
+							constiIds.add((Long)constituency[0]);
+						}
+					}
+				
+					List<Object[]> parliaments = null ;
+					if(electionScopeId != null){
+						if(electionScopeId.longValue() == 1L){
+							parliaments = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(constiIds);
+							if(parliaments != null && parliaments.size()>0){
+								constiIds.clear();
+								for (Object[] constituency : parliaments) {
+									if(!constiIds.contains((Long)constituency[0]))
+										constiIds.add((Long)constituency[0]);
+								}					
+							}
+						}
+					}
+					List<GenericVO> returnList = new ArrayList<GenericVO>();
+					if(castes != null && castes.size()>0){						
+						for (String caste : castes) {
+							GenericVO vo = new GenericVO();
+							vo.setName(caste);
+							vo.setCount(0L);					
+							returnList.add(vo);
+						}
+					}
+					
+					List<Object[]> reservationList = constituencyElectionDAO.getLatestReservationZoneDetailsByConstuIds(electionId,constiIds);
+									
+					if(reservationList != null && reservationList.size()>0){
+						for (Object[] category : reservationList) {
+							GenericVO vo = getMatchedGenericVOByName(returnList,category[0] != null?category[0].toString():"");
+							if(vo != null){
+								if(category[0].toString().trim().length()==0){
+									vo.setName("GENERAL");
+								}
+								Long prviousCount = vo.getCount();
+								Long presentCount1 = category[1] != null && category[1].toString().trim().length()>0 ? (Long) category[1]:0L;
+								prviousCount = prviousCount + presentCount1;
+								vo.setCount(prviousCount);
+							}
+						}
+					}
+					
+					genercVO.setGenericVOList(returnList);
+					resultList.add(genercVO);	
+				
+			}
+			else{
+				List<Object[]> regions = stateSubRegionDAO.getStateRegionsBySubRegionIds(regionIds);
+				
+				if(regions != null && regions.size()>0){
+					for (Object[] region : regions) {
+						GenericVO genercVO = new GenericVO();
+						genercVO.setName(region[1] != null ?region[1].toString():"");
+						genercVO.setId(region[0] != null ?(Long)region[0]:0L);
+						
+						List<Object[]> regionsList = stateSubRegionDAO.getStateSubRegionsByRegionId((Long)region[0]);
+						
+						if(regionsList != null && regionsList.size()>0){
+							regionIds.clear();
+							for (Object[] stateSubRegions : regionsList) {
+								regionIds.add((Long)stateSubRegions[0]);
+							}
+						}
+						
+						if(scope.longValue() == 4L){
+							List<Object[]> constiList =  stateSubRegionDistrictDAO.getAssemblyConstituenciesBySubRegionIds(regionIds);
+							
+							
+							if(constiList != null && constiList.size()>0){
+								constiIds = new ArrayList<Long>();
+								for (Object[] constituency : constiList) {
+									constiIds.add((Long)constituency[0]);
+								}
+							}
+						}			
+						else{
+							List<Object[]> constiList = stateSubRegionDistrictDAO.getAssemblyConstituenciesBydistricts(regionIds);
+							
+							if(constiList != null && constiList.size()>0){
+								constiIds = new ArrayList<Long>();
+								for (Object[] constituency : constiList) {
+									constiIds.add((Long)constituency[0]);
+								}
+							}
+							
+						}
+							
+						List<GenericVO> returnList = new ArrayList<GenericVO>();
+						if(castes != null && castes.size()>0){						
+							for (String caste : castes) {
+								GenericVO vo = new GenericVO();
+								vo.setName(caste);
+								vo.setCount(0L);					
+								returnList.add(vo);
+							}
+						}
+						
+							List<Object[]> reservationList = constituencyElectionDAO.getLatestReservationZoneDetailsByConstuIds(electionId,constiIds);
+											
+							if(reservationList != null && reservationList.size()>0){
+								for (Object[] category : reservationList) {
+									GenericVO vo = getMatchedGenericVOByName(returnList,category[0] != null?category[0].toString():"");
+									if(vo != null){
+										Long prviousCount = vo.getCount();
+										Long presentCount1 = category[1] != null && category[1].toString().trim().length()>0 ? (Long) category[1]:0L;
+										prviousCount = prviousCount + presentCount1;
+										vo.setCount(prviousCount);
+									}
+								}
+							}
+
+															
+							genercVO.setGenericVOList(returnList);
+							resultList.add(genercVO);	
+					}
+				}
+				
+				if(resultList != null && resultList.size()>0){
+					GenericVO countVO = new GenericVO();
+					countVO.setName("TOTAL");
+					
+					List<GenericVO> returnList = new ArrayList<GenericVO>();
+					if(castes != null && castes.size()>0){						
+						for (String caste : castes) {
+							GenericVO genercVO = new GenericVO();
+							genercVO.setName(caste);
+							genercVO.setCount(0L);					
+							returnList.add(genercVO);
+						}
+					}
+					
+					for (GenericVO vo : resultList) {						
+						
+							if(vo.getGenericVOList() != null && vo.getGenericVOList().size()>0){
+								for (GenericVO innerVO : vo.getGenericVOList()) {
+									GenericVO genericVo = getMatchedGenericVOByName(returnList, innerVO.getName());
+									if(genericVo != null){
+										Long previousCont =genericVo.getCount();
+										Long presentCount = innerVO.getCount();										
+										previousCont = previousCont+presentCount;
+										genericVo.setCount(previousCont);
+									}									
+								}
+							}
+					}
+					
+					countVO.setGenericVOList(returnList);
+					resultList.add(countVO);
+					
+				}
+				
+			}
+			
+			
+			returnVO.setGenericVOList(resultList);		
+		} catch (Exception e) {
+			 LOG.error(" Exception Occured in getReservedConstiList() method, Exception - ",e);
+		}
+		return returnVO;
+	}
 }
