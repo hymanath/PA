@@ -21,5 +21,8 @@ public interface IDashBoardElectionResultsService {
 	public DashBoardResultsVO getPartyWiseWinningSeatsCount(Long electionId, List<Long> locationIds, Long scopeId,Long percent, Long partyId);
 	public GenericVO getparticipatedPartiesInLocation(Long electionId,List<Long> regionIds,Long electionScopeId,Long scope);
 	public GenericVO getReservedConstiList(Long electionId,List<Long> regionIds,Long electionScopeId,Long scope);
+	
+	public DashBoardResultsVO getPartyWiseWinningSeatsPercentage(Long electionId, List<Long> locationIds, Long scopeId,
+			Long percent, Long partyId);
 	public List<OptionVO> getTop5CastePeopleOpnionOnParty(Long constituencyId,List<Long> surveyIds);
 }
