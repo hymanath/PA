@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,6 +14,7 @@ import com.itgrids.partyanalyst.dto.DashBoardResultsVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.service.IDashBoardElectionResultsService;
+import com.itgrids.partyanalyst.service.impl.SurveyDetailsService;
 import com.itgrids.survey.soa.endpoints.OptionVO;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -34,6 +36,51 @@ public class DashBoardElectionResultsAction extends ActionSupport implements Ser
 	private GenericVO genericVO;
 	private List<OptionVO> casteResult;
 	
+	private Long regionId;
+	private SurveyDetailsService surveyDetailsService;
+	private Map<String,String> surveyDetailsMap;
+	private String wonCandidateInfo;
+	private Long electionId;
+	
+	public Long getElectionId() {
+		return electionId;
+	}
+
+	public void setElectionId(Long electionId) {
+		this.electionId = electionId;
+	}
+
+	public String getWonCandidateInfo() {
+		return wonCandidateInfo;
+	}
+
+	public void setWonCandidateInfo(String wonCandidateInfo) {
+		this.wonCandidateInfo = wonCandidateInfo;
+	}
+
+	public SurveyDetailsService getSurveyDetailsService() {
+		return surveyDetailsService;
+	}
+
+	public void setSurveyDetailsService(SurveyDetailsService surveyDetailsService) {
+		this.surveyDetailsService = surveyDetailsService;
+	}
+
+	public Map<String, String> getSurveyDetailsMap() {
+		return surveyDetailsMap;
+	}
+
+	public void setSurveyDetailsMap(Map<String, String> surveyDetailsMap) {
+		this.surveyDetailsMap = surveyDetailsMap;
+	}	
+	
+	public Long getRegionId() {
+		return regionId;
+	}
+
+	public void setRegionId(Long regionId) {
+		this.regionId = regionId;
+	}
 	
 	public GenericVO getGenericVO() {
 		return genericVO;
@@ -496,4 +543,104 @@ public class DashBoardElectionResultsAction extends ActionSupport implements Ser
 		}
 			return Action.SUCCESS;
 	}
+	
+	
+	public String getSurveyDetailsByRegion()
+	{
+		LOG.debug("Entered into the getSurveyDetailsByRegion action method");
+		try
+		{
+			surveyDetailsMap = surveyDetailsService.getSurveyDetailsByRegion(regionId);
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Entered into the getSurveyDetailsByRegion action method");
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getWinningCandidateInfoForAConstituency()
+	{
+		LOG.debug("Entered into the getWinningCandidateInfoForAConstituency action method");
+		try
+		{
+			wonCandidateInfo = dashBoardElectionResultsService.getWinningCandidateInfoForAConstituency(Long.parseLong(request.getParameter("constituencyId")));
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Entered into the getWinningCandidateInfoForAConstituency action method");
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	
+	/*public String getVoteShareByConstituencyIdAndElectionId()
+	{
+		LOG.debug("Entered into the getVoteShareByConstituencyIdAndElectionId action method");
+		try
+		{
+			dashBoardConstiResults = dashBoardElectionResultsService.getVoteShareByConstituencyIdAndElectionId(Long.parseLong(request.getParameter("constituencyId")),electionId);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Entered into the getVoteShareByConstituencyIdAndElectionId action method");
+		}
+		
+		return Action.SUCCESS;
+	}*/
+	
+	public String getPartyWiseCountDetailsByConstituencyIdAndSurveyIds()
+	{
+		LOG.debug("Entered into the getPartyWiseCountDetailsByConstituencyIdAndSurveyIds action method");
+		try
+		{
+			jObj = new JSONObject(getTask());
+
+			Long electionId = jObj.getLong("electionId");
+			Long constituencyId = jObj.getLong("constituencyId");
+			
+			 JSONArray jArray = jObj.getJSONArray("surveyIds");
+			 List<Long> surveyIds = new ArrayList<Long>();
+			 
+			   for (int i = 0; i < jArray.length(); i++) 
+			   {
+				   surveyIds.add(new Long(jArray.get(i).toString()));
+			   }
+			   
+			   resultVO = dashBoardElectionResultsService.getPartyWiseCountDetailsByConstituencyIdAndSurveyIds(constituencyId,surveyIds,electionId);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Entered into the getPartyWiseCountDetailsByConstituencyIdAndSurveyIds action method");
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String getConstituencyDetaisByRegionid()
+	{
+		LOG.debug("Entered into the getConstituencyDetaisByRegionid action method");
+		try
+		{
+			surveyDetailsMap = dashBoardElectionResultsService.getConstituencyDetaisByRegionid(regionId);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Entered into the getConstituencyDetaisByRegionid action method");
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String casteWiseSurveyResultComparison()
+	{
+		return Action.SUCCESS;
+	}
+
 }
