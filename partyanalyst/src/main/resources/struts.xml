@@ -7093,11 +7093,25 @@
 			  <param name="root">casteData</param>
 			</result>
 		</action>
+		
 		<action name="partyWiseCountDetailsAction" class="dashBoardElectionResultsAction" method="getPartyWiseWinningSeatsCount">
 			<result type="json" name="success">
 				<param name="root">partyWiseCountDetails</param>
 			</result>
 		</action>
+		
+		<action name="getParticiaptedPartyListAction" class="dashBoardElectionResultsAction" method="getParticiaptedPartyList">
+			<result type="json" name="success">
+				<param name="root">genericVO</param>
+			</result>
+		</action>
+		
+		<action name="getReservedConstiListAction" class="dashBoardElectionResultsAction" method="getReservedConstiList">
+			<result type="json" name="success">
+				<param name="root">genericVO</param>
+			</result>
+		</action>
+		
 		<action name="mahaNaduAction" class="mahaNaduAction">
 			<result name="success">/jsp/mahaNadu.jsp</result>
 			<result name="input">/jsp/loginForm.jsp?src=mahaNaduAction</result>
