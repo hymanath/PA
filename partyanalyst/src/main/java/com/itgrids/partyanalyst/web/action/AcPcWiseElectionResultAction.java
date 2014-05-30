@@ -40,8 +40,10 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 	List<SelectOptionVO> resultLists; 
 	private IStaticDataService staticDataService;
 	List<SelectOptionVO> returnList;
+	List<GenericVO> returnList1;
 	private EntitlementsHelper entitlementsHelper;
 	private List<CasteWiseResultVO> casteData;
+	private List<com.itgrids.survey.soa.endpoints.GenericVO> genderWiseDetails;
 	
 	public List<CasteWiseResultVO> getCasteData() {
 		return casteData;
@@ -117,6 +119,32 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 
 	public void setReturnList(List<SelectOptionVO> returnList) {
 		this.returnList = returnList;
+	}
+
+
+	
+
+	public List<GenericVO> getReturnList1() {
+		return returnList1;
+	}
+
+
+	public void setReturnList1(List<GenericVO> returnList1) {
+		this.returnList1 = returnList1;
+	}
+
+
+	
+
+
+	public List<com.itgrids.survey.soa.endpoints.GenericVO> getGenderWiseDetails() {
+		return genderWiseDetails;
+	}
+
+
+	public void setGenderWiseDetails(
+			List<com.itgrids.survey.soa.endpoints.GenericVO> genderWiseDetails) {
+		this.genderWiseDetails = genderWiseDetails;
 	}
 
 
@@ -213,6 +241,32 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 		catch (Exception e)
 		{
 			LOG.error("Exception Raised In getElectionResults method in AcPcWiseElectionResultAction Action", e);
+			return Action.ERROR;
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getCbnEffect()
+	{
+		try
+		{
+			LOG.debug("Entered Into getElectionResults method in AcPcWiseElectionResultAction Action");
+			session = request.getSession();
+			RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
+			if (registrationVO != null) 
+			{
+				if (!registrationVO.getIsAdmin().equals("true"))
+					  return ERROR;
+			} 
+			else
+				return ERROR;
+			
+			returnList1 = acPcWiseElectionResultService.cbnEffectCalucation();
+			
+		}
+		catch (Exception e)
+		{
+			LOG.error("Exception Raised In getCbnEffect method in AcPcWiseElectionResultAction Action", e);
 			return Action.ERROR;
 		}
 		return Action.SUCCESS;
@@ -325,6 +379,41 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 			return Action.ERROR;
 		}
 		return Action.SUCCESS;
+	}
+	
+	public String getGenderWiseReport()
+	{
+		try
+		{
+			LOG.debug("Entered Into getElectionResults method in AcPcWiseElectionResultAction Action");
+			session = request.getSession();
+			RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
+			if (registrationVO != null) 
+			{
+				if (!registrationVO.getIsAdmin().equals("true"))
+					  return ERROR;
+			} 
+			else
+				return ERROR;
+			
+			jObj = new JSONObject(getTask());
+			List<Long> surveyIds = new ArrayList<Long>();
+			JSONArray surveyArray = jObj.getJSONArray("surveyIds");
+			List<Long> regionsIds = new ArrayList<Long>();
+			for(int i = 0 ; i < surveyArray.length() ; i++)
+			{
+				surveyIds.add(new Long(surveyArray.get(i).toString()));
+			}
+			
+			genderWiseDetails = acPcWiseElectionResultService.getGenderWiseSurveyReport(jObj.getLong("partyId"),jObj.getLong("constituencyId"),surveyIds);
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception Raised In getGenderWiseReport method in AcPcWiseElectionResultAction Action", e);
+			return Action.ERROR;
+		}
+		return Action.SUCCESS;
+		
 	}
 
 	
