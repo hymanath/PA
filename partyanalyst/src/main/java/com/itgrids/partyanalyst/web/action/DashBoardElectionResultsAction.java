@@ -390,6 +390,36 @@ public class DashBoardElectionResultsAction extends ActionSupport implements Ser
 		return Action.SUCCESS;
 	}
 	
+	public String getPartyWiseWinningSeatsPercentage()
+	{
+		LOG.debug("Entered into the getPartyWiseWinningSeatsPercentage method");
+		try{
+			jObj = new JSONObject(getTask());
+			Long electionId = jObj.getLong("electionId");
+			Long scopeId = jObj.getLong("scopeId");
+			Long partyId = jObj.getLong("partyId");
+			Long percent = jObj.getLong("percent");
+			JSONArray jArray = jObj.getJSONArray("locationIds");
+			List<Long> locationIds = new ArrayList<Long>();
+			for(int i=0;i<jArray.length();i++)
+			{
+				locationIds.add(new Long(jArray.get(i).toString()));	
+			}
+			 
+			  partyWiseCountDetails = dashBoardElectionResultsService.getPartyWiseWinningSeatsPercentage(
+						electionId,locationIds, scopeId,
+						percent,partyId);
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception raised in getPartyWiseWinningSeatsPercentage method");
+			LOG.error("Exception raised in getPartyWiseWinningSeatsCount method",e);
+
+		}
+		return Action.SUCCESS;
+	}
+	
 	
 	public String getParticiaptedPartyList()
 	{
