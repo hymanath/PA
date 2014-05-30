@@ -43,8 +43,32 @@ public class DashBoardResultsVO  implements Comparable<DashBoardResultsVO>{
 	private Map<String,Long> partyWiseCountBefore;
 	private Map<String,Long> partyWiseCountAfter;
 	private Map<String,Integer> resultMap;
+	private Map<String,String> percentageMap,percentageMap1;
 	
+	
+	public Map<String, String> getPercentageMap1() {
+		return percentageMap1;
+	}
+
+
+	public void setPercentageMap1(Map<String, String> percentageMap1) {
+		this.percentageMap1 = percentageMap1;
+	}
+
+
+	public Map<String, String> getPercentageMap() {
+		return percentageMap;
+	}
+
+
+	public void setPercentageMap(Map<String, String> percentageMap) {
+		this.percentageMap = percentageMap;
+	}
+
+
 	private List<GenericVO> participantsList = new ArrayList<GenericVO>();
+	
+	
 	
 	public Map<String, Integer> getResultMap() {
 		return resultMap;
