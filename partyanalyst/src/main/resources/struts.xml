@@ -7159,6 +7159,42 @@
 				<param name="root">partyWiseCountDetails</param>
 			</result>
 		</action>
+				<action name="getSurveyDetailsByRegion" class="dashBoardElectionResultsAction" method="getSurveyDetailsByRegion">
+		 	<result type="json" name="success">
+				<param name="root">surveyDetailsMap</param>
+			</result>
+		</action>
+		
+		<action name="getWinningCandidateInfoForAConstituency" class="dashBoardElectionResultsAction" method="getWinningCandidateInfoForAConstituency">
+		 	<result type="json" name="success">
+				<param name="root">wonCandidateInfo</param>
+			</result>
+		</action>
+		
+		<action name="getVoteShareByConstituencyIdAndElectionId" class="dashBoardElectionResultsAction" method="getVoteShareByConstituencyIdAndElectionId">
+		 	<result type="json" name="success">
+				<param name="root">dashBoardConstiResults</param>
+			</result>
+		</action>
+		
+		
+		<action name="getPartyWiseCountDetailsByConstituencyIdAndSurveyIds" class="dashBoardElectionResultsAction" method="getPartyWiseCountDetailsByConstituencyIdAndSurveyIds">
+		 	<result type="json" name="success">
+				<param name="root">resultVO</param>
+			</result>
+		</action>
+		
+		<action name="getConstituencyDetaisByRegionid" class="dashBoardElectionResultsAction" method="getConstituencyDetaisByRegionid">
+		 	<result type="json" name="success">
+				<param name="root">surveyDetailsMap</param>
+			</result>
+		</action>
+		
+		
+		<action name="casteWiseSurveyResultComparison" class="dashBoardElectionResultsAction" method="casteWiseSurveyResultComparison">
+		  			<result name="success">/jsp/surveyResults.jsp</result>
+		</action>
+		
 </package>
 		
 </struts>      

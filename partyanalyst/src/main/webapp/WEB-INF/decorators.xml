@@ -317,7 +317,7 @@
 		<pattern>/userRegPageAction*</pattern>
 		<pattern>/acPcWiseElectionResultAction*</pattern>
 		<pattern>/gettingConstituencyResultsAction*</pattern>
-		
+		<pattern>/casteWiseSurveyResultComparison*</pattern>
 		<pattern>/electionResults*</pattern>
 		
 		</decorator>
