@@ -18,4 +18,7 @@ public interface IAcPcWiseElectionResultService
 	public List<BasicVO> searchPartyWiseComparissionResult(Long stateId,Long electionId,List<Long> partyIds,Long electionScopeId,String scope,List<Long> subRegionId,String searchName);
 
 	public List<CasteWiseResultVO> getCasteWiseDataForElection(Long electionId);
+	
+	public List<BasicVO> getCompleteStatewiseReservationSeats(Long electionId,List<Long> regionIds,Long electionScopeId);
+	
 }

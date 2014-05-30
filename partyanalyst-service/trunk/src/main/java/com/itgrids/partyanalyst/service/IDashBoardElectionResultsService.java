@@ -18,8 +18,8 @@ public interface IDashBoardElectionResultsService {
 	public  List<DashBoardResultsVO> getWonAndLeadCountPartyWise(Long electionId,List<Long> locationIds,Long scopeId,Long electionScopeId);
 	public List<GenericVO> getPartiesInConsituenciesOfElection(Long electionId,List<Long> constituencyIds);
 	public List<PartyResultVO> partysVotesShareInConstituenciesOfElection(Long electionId,List<Long> constituencyIds,List<Long> partyIds);
-	public DashBoardResultsVO getPartyWiseWinningSeatsCount(
-			Long electionId, List<Long> locationIds, Long scopeId,
-			Long percent, Long partyId);
+	public DashBoardResultsVO getPartyWiseWinningSeatsCount(Long electionId, List<Long> locationIds, Long scopeId,Long percent, Long partyId);
+	public GenericVO getparticipatedPartiesInLocation(Long electionId,List<Long> regionIds,Long electionScopeId,Long scope);
+	public GenericVO getReservedConstiList(Long electionId,List<Long> regionIds,Long electionScopeId,Long scope);
 	public List<OptionVO> getTop5CastePeopleOpnionOnParty(Long constituencyId,List<Long> surveyIds);
 }
