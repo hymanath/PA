@@ -802,6 +802,20 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 		
 	}
 	
+	public List<Object[]> getLatestReservationZoneDetailsByConstuIds(Long electionId, List<Long> cosntituencyIds){
+		
+		StringBuilder queryString = new StringBuilder();
+		queryString.append("select model.reservationZone, count(model.reservationZone) from ConstituencyElection model where ");
+		queryString.append(" model.election.electionId =:electionId and model.constituency.constituencyId in (:cosntituencyIds) ");
+		queryString.append(" group by model.reservationZone order by model.reservationZone desc ");
+		
+		Query query = getSession().createQuery(queryString.toString());
+		query.setParameter("electionId", electionId);
+		query.setParameterList("cosntituencyIds", cosntituencyIds);
+		
+		return query.list();
+	}
+	
 }
 
 

@@ -24,5 +24,17 @@ public class StateSubRegionDistrictDAO extends GenericDaoHibernate<StateSubRegio
 		query.setParameterList("subRegionId", subRegionId);
 		return query.list();
 	}
+
 	
+public List<Object[]> getAssemblyConstituenciesBydistricts(List<Long> districts){
+		
+		StringBuilder queryString = new StringBuilder();
+		queryString.append(" select model1.constituencyId,model1.name from StateSubRegionDistrict model2 ,Constituency model1 where model2.district.districtId = model1.district.districtId and " +
+				" model1.deformDate is null and model1.electionScope.electionScopeId = 2 and model2.district.districtId in (:districts) order by model1.name asc ");
+		Query query = getSession().createQuery(queryString.toString());
+		//query.setParameter("electionScopeId", electionScopeId);
+		query.setParameterList("districts", districts);
+		return query.list();
+	}
+
 }

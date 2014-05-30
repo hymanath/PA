@@ -3418,6 +3418,27 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<Object[]> getPartiwiseParticipatedCountInAElection(Long electionId,List<Long> constituenciesList)
+	{
+		/*return getHibernateTemplate().find("select model.party.partyId,count(model.candidate.candidateId) from Nomination model " +
+				" where model.constituencyElection.election.electionId = ? and " +
+				" and model.constituencyElection.constituency.constituencyId in (:constituenciesList)" +
+				" group by model.party.partyId",electionId);
+		*/
+		
+		Query query = getSession().createQuery("select model.party.partyId, model.party.shortName,count(model.candidate.candidateId) from Nomination model " +
+				" where model.constituencyElection.election.electionId = ? and  " +
+				" model.constituencyElection.constituency.constituencyId in (:constituenciesList) " +
+				" group by model.party.partyId order by count(model.candidate.candidateId) desc  ");
+		
+		query.setParameter(0,electionId);
+		query.setParameterList("constituenciesList",constituenciesList);
+		
+		return query.list();
+		
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<Object[]> getPartywiseWonCount(Long electionId,List<Long> constituenciesList)
 	{
 		Query query = getSession().createQuery("select model.party.shortName,count(model.candidateResult.rank) from Nomination model " +
