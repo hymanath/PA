@@ -13,6 +13,7 @@ import com.itgrids.partyanalyst.dto.DashBoardResultsVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.service.IDashBoardElectionResultsService;
+import com.itgrids.survey.soa.endpoints.OptionVO;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -30,6 +31,7 @@ public class DashBoardElectionResultsAction extends ActionSupport implements Ser
 	private List<GenericVO> partiesList;
 	private List<PartyResultVO> constiList;
 	private DashBoardResultsVO partyWiseCountDetails;
+	private List<OptionVO> casteResult;
 	
 	
 	public DashBoardResultsVO getPartyWiseCountDetails() {
@@ -124,6 +126,14 @@ public class DashBoardElectionResultsAction extends ActionSupport implements Ser
 		this.jObj = jObj;
 	}
 	
+	public List<OptionVO> getCasteResult() {
+		return casteResult;
+	}
+
+	public void setCasteResult(List<OptionVO> casteResult) {
+		this.casteResult = casteResult;
+	}
+
 	public String execute()
 	{
 		return Action.SUCCESS;
@@ -365,9 +375,24 @@ public class DashBoardElectionResultsAction extends ActionSupport implements Ser
 		}catch(Exception e)
 		{
 			e.printStackTrace();
-			LOG.error("Exception raised in getPartyWiseWinningSeatsCount method");
+			LOG.error("Exception raised in getPartyWiseWinningSeatsCount method",e);
 
 		}
 		return Action.SUCCESS;
+	}
+	
+	public String getTop5CastePeopleOpnionOnParty(){
+			try{
+			jObj = new JSONObject(getTask());
+			String[] surveyIds = jObj.getString("surveyIds").split(",");
+			List<Long> ids = new ArrayList<Long>();
+			for(int i =0;i<surveyIds.length;i++){
+				ids.add(Long.parseLong(surveyIds[i]));
+			}
+			 casteResult = dashBoardElectionResultsService.getTop5CastePeopleOpnionOnParty( jObj.getLong("constituencyId") ,ids);
+		}catch(Exception e){
+			LOG.error("Exception raised in getTop5CastePeopleOpnionOnParty method",e);
+		}
+			return Action.SUCCESS;
 	}
 }

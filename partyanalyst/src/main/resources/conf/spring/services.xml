@@ -2069,7 +2069,10 @@
   
    <bean name="acPcWiseElectionResultService" class="com.itgrids.partyanalyst.service.impl.AcPcWiseElectionResultService"></bean>
    <bean name="multiThreadRunner" class="com.itgrids.partyanalyst.utils.MultiThreadRunner"/>
-    <bean name="dashBoardElectionResultsService" class="com.itgrids.partyanalyst.service.impl.DashBoardElectionResultsService"></bean>
+    <bean name="dashBoardElectionResultsService" class="com.itgrids.partyanalyst.service.impl.DashBoardElectionResultsService">
+    
+    <property name="webServiceClient" ref="webServiceClient" />
+    </bean>
      <bean name="constituencyWiseElectionResultsService" class="com.itgrids.partyanalyst.service.impl.ConstituencyWiseElectionResultsService"></bean>
      
    <bean name="mahaNaduService" class="com.itgrids.partyanalyst.service.impl.MahaNaduService" >
@@ -2099,7 +2102,9 @@
          <property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" />
          
    </bean>
+   <bean name="webServiceClient" class="com.itgrids.partyanalyst.webservice.client.WebServiceClient" >
    
+   </bean>
    
 </beans>		
 	
