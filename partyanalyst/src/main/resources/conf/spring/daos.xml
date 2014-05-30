@@ -1453,6 +1453,10 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="regionWiseSurveysDAO" class="com.itgrids.partyanalyst.dao.hibernate.RegionWiseSurveysDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<!--  survey -->
 	
 		

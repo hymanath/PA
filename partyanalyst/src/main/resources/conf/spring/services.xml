@@ -1762,6 +1762,7 @@
 		<property name="surveyAccessUsersDAO" ref="surveyAccessUsersDAO"></property>
 		<property name="transactionTemplate" ref="transactionTemplate" />
 		<property name="updationDetailsDAO" ref="updationDetailsDAO"></property>
+		<property name="regionWiseSurveysDAO" ref="regionWiseSurveysDAO"></property>
 		
     </bean>
     
