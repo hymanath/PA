@@ -11,6 +11,7 @@ import javax.xml.ws.Action;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 import com.itgrids.survey.soa.endpoints.ElectionComparisonVO;
+import com.itgrids.survey.soa.endpoints.GenericVO;
 import com.itgrids.survey.soa.endpoints.ObjectFactory;
 import com.itgrids.survey.soa.endpoints.OptionVO;
 
@@ -63,5 +64,26 @@ public interface SOAPWebServiceEndPoint {
         Long arg0,
         @WebParam(name = "arg1", targetNamespace = "")
         List<Long> arg1);
+
+    /**
+     * 
+     * @param arg2
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns java.util.List<com.itgrids.survey.soa.endpoints.GenericVO>
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getGenderWiseReportForSurveyAnalysis", targetNamespace = "http://endpoints.soa.survey.itgrids.com/", className = "com.itgrids.survey.soa.endpoints.GetGenderWiseReportForSurveyAnalysis")
+    @ResponseWrapper(localName = "getGenderWiseReportForSurveyAnalysisResponse", targetNamespace = "http://endpoints.soa.survey.itgrids.com/", className = "com.itgrids.survey.soa.endpoints.GetGenderWiseReportForSurveyAnalysisResponse")
+    @Action(input = "http://endpoints.soa.survey.itgrids.com/SOAPWebServiceEndPoint/getGenderWiseReportForSurveyAnalysisRequest", output = "http://endpoints.soa.survey.itgrids.com/SOAPWebServiceEndPoint/getGenderWiseReportForSurveyAnalysisResponse")
+    public List<GenericVO> getGenderWiseReportForSurveyAnalysis(
+        @WebParam(name = "arg0", targetNamespace = "")
+        Long arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        Long arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        List<Long> arg2);
 
 }
