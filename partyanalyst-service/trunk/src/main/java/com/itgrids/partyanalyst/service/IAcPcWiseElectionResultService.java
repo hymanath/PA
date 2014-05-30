@@ -23,7 +23,5 @@ public interface IAcPcWiseElectionResultService
 
 	public List<CasteWiseResultVO> getCasteWiseDataForElection(Long electionId);
 	
-	public List<BasicVO> getCompleteStatewiseReservationSeats(Long electionId,List<Long> regionIds,Long electionScopeId);
-	
 	public List<com.itgrids.survey.soa.endpoints.GenericVO> getGenderWiseSurveyReport(Long partyId,Long constituencyId,List<Long> surveyIds);
 }
