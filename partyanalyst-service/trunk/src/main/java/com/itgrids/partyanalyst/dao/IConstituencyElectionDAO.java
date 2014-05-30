@@ -188,6 +188,6 @@ public interface IConstituencyElectionDAO extends GenericDao<ConstituencyElectio
 	public List<Object[]> getConstituenciesCountByReservationCategory(Long electionId,List<Long> locationIds,Long scopeId);
 	public List<Object[]> getTotalConstituenciesCountByConstituencyType(Long electionId,List<Long> locationIds,Long scopeId);
 
-
+	public List<Object[]> getLatestReservationZoneDetailsByConstuIds(Long electionId, List<Long> cosntituencyIds);
 
 }

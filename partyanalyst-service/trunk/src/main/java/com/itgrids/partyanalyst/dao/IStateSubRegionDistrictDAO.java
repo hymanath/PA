@@ -8,4 +8,7 @@ import com.itgrids.partyanalyst.model.StateSubRegionDistrict;
 
 public interface IStateSubRegionDistrictDAO extends GenericDao<StateSubRegionDistrict, Long>{
 	public List<Object[]> getAssemblyConstituenciesBySubRegionIds(List<Long> subRegionId);
+	
+	public List<Object[]> getAssemblyConstituenciesBydistricts(List<Long> districts);
+	
 }
