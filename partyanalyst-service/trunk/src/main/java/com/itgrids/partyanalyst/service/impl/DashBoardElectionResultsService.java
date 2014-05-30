@@ -33,6 +33,8 @@ import com.itgrids.partyanalyst.dto.DashBoardResultsVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.service.IDashBoardElectionResultsService;
+import com.itgrids.partyanalyst.webservice.client.WebServiceClient;
+import com.itgrids.survey.soa.endpoints.OptionVO;
 
 public class DashBoardElectionResultsService implements
 		IDashBoardElectionResultsService {
@@ -71,6 +73,22 @@ public class DashBoardElectionResultsService implements
 	@Autowired
 	private IConstituencyElectionDAO constituencyElectionDAO;
 	
+
+	private WebServiceClient webServiceClient;
+	
+	
+	public WebServiceClient getWebServiceClient() {
+		return webServiceClient;
+	}
+
+
+
+	public void setWebServiceClient(WebServiceClient webServiceClient) {
+		this.webServiceClient = webServiceClient;
+	}
+
+
+
 	public DashBoardResultsVO getElectionResultsSummary()
 	{
 		LOG.debug("Entered into the getElectionResultsSummary service method");
@@ -2028,4 +2046,8 @@ List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId,
         }
         
     };
+    
+    public List<OptionVO> getTop5CastePeopleOpnionOnParty(Long constituencyId,List<Long> surveyIds){
+    	return webServiceClient.getTop5CastePeopleOpnionOnParty(constituencyId,surveyIds);
+    }
 }

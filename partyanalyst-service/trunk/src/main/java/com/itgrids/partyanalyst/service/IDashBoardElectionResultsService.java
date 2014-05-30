@@ -5,6 +5,7 @@ import java.util.List;
 import com.itgrids.partyanalyst.dto.DashBoardResultsVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
+import com.itgrids.survey.soa.endpoints.OptionVO;
 
 public interface IDashBoardElectionResultsService {
 	
@@ -20,4 +21,5 @@ public interface IDashBoardElectionResultsService {
 	public DashBoardResultsVO getPartyWiseWinningSeatsCount(
 			Long electionId, List<Long> locationIds, Long scopeId,
 			Long percent, Long partyId);
+	public List<OptionVO> getTop5CastePeopleOpnionOnParty(Long constituencyId,List<Long> surveyIds);
 }
