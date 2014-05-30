@@ -28,6 +28,28 @@
           		</excludes>
         		</configuration>
       		</plugin> 
+      		<!-- jax-ws plugins -->
+      		 <plugin>
+     <groupId>org.codehaus.mojo</groupId>
+            <artifactId>jaxws-maven-plugin</artifactId>
+            <version>1.10</version>
+            <executions>
+              <execution>
+                 <id>generate-stubs</id>                 
+                 <phase>install</phase>
+                 <goals>
+                     <goal>wsimport</goal>
+                 </goals>
+                 <configuration>
+                 <wsdlUrls>
+                 <wsdlUrl>http://74.208.7.129:8080/Survey1/SOAWebService?wsdl</wsdlUrl>
+                 </wsdlUrls>
+                 <sourceDestDir>src/main/java</sourceDestDir>
+                 <verbose>true</verbose>
+                 </configuration>
+              </execution>    
+           </executions>    
+        </plugin> 
 		</plugins>
 	</build>
 
