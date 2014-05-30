@@ -5101,6 +5101,49 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 						return query.list();
 						
 					}
+
+					
+					
+					
+					public List<Object[]> getConstituencyResultDetailsByElectionIdCount(Long electionId,List<Long> locationIds,Long scopeId)
+					{
+						StringBuffer queryString = new StringBuffer();
+						
+						 if(scopeId.longValue() == 2)//district
+						{
+							  
+							queryString.append("select sum(model.validVotes),model.constituencyElection.election.electionId from ConstituencyElectionResult model where " +
+									"model.constituencyElection.election.electionId = :electionId and " +
+									"model.constituencyElection.constituency.district.districtId in(:locationIds)");
+						}else if(scopeId.longValue() == 3)//region
+						{
+							
+							queryString.append("select sum(model.validVotes),model.constituencyElection.election.electionId from ConstituencyElectionResult model ,StateRegionDistrict model2 where " +
+									"model.constituencyElection.constituency.district.districtId = model2.district.districtId and " +
+									"model.constituencyElection.election.electionId = :electionId and " +
+									"model2.stateRegion.stateRegionId in(:locationIds)  " );
+						}else if(scopeId.longValue() == 4)//parliament
+						{
+							
+							queryString.append("select sum(model.validVotes),model.constituencyElection.election.electionId from ConstituencyElectionResult model ,DelimitationConstituencyAssemblyDetails model2 where " +
+									"model.constituencyElection.election.electionId = :electionId and " +
+									"model.constituencyElection.constituency.constituencyId = model2.constituency.constituencyId and " +
+									"model2.delimitationConstituency.constituency.constituencyId in(:locationIds) and "+
+									"model2.delimitationConstituency.year = 2009 " );
+						}
+						
+						
+						Query query = getSession().createQuery(queryString.toString());
+						
+						query.setParameter("electionId", electionId);
+						query.setParameterList("locationIds", locationIds);
+						
+						return query.list();
+						
+					}
+			 
+			 
+
 					
 		public List<Object[]> getWinningCandidateInfoForAConstituency(Long constituencyId,Long electionId)
 		{
@@ -5137,5 +5180,6 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			
 		}
 		
+
 }
 
