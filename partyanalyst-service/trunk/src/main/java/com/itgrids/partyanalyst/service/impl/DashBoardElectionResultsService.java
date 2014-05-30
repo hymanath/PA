@@ -468,7 +468,13 @@ public class DashBoardElectionResultsService implements
 				return vo;
 		return null;
 	}
-	
+	public DashBoardResultsVO getPartyVo(List<DashBoardResultsVO> parties,Long id)
+	{
+		for(DashBoardResultsVO vo:parties)
+			if(vo.getId().longValue() == id)
+				return vo;
+		return null;
+	}
 	
 	public List<Object[]> getConstituenciesDetailsForSubReport(String type,Long partyId,Long locationId,Long scopeId )
 	{
@@ -2031,9 +2037,7 @@ List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId,
     {
         public int compare(DashBoardResultsVO locationVO1, DashBoardResultsVO locationVO2)
         {
-
-    		
-    		if(locationVO1.getGainedVotes() > locationVO2.getGainedVotes())
+        	if(locationVO1.getGainedVotes() > locationVO2.getGainedVotes())
     			return -1;
     		else if(locationVO1.getGainedVotes() < locationVO2.getGainedVotes())
     			return 1;
@@ -2042,10 +2046,155 @@ List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId,
         }
         
     };
+   
+    
     
     public List<OptionVO> getTop5CastePeopleOpnionOnParty(Long constituencyId,List<Long> surveyIds){
     	return webServiceClient.getTop5CastePeopleOpnionOnParty(constituencyId,surveyIds);
     }
+    
+    
+    public DashBoardResultsVO getPartyWiseWinningSeatsPercentage(
+			Long electionId, List<Long> locationIds, Long scopeId,
+			Long percent, Long partyId)    {
+    	LOG.debug("Entered into the getConstituencyResultDetailsByElectionId service method");
+    	List<DashBoardResultsVO> resultList = new ArrayList<DashBoardResultsVO>();
+    	try
+    	{
+    		List<Object[]> list = nominationDAO.getConstituencyResultDetailsByElectionId(electionId, locationIds, scopeId);
+    		
+    		Set<Long> constituencyIds = new HashSet<Long>();
+    	
+    		for(Object[] obj:list)
+    		{
+    			if(constituencyIds.add(Long.parseLong(obj[2].toString())))
+    			{
+    			DashBoardResultsVO constituency = new DashBoardResultsVO();
+    			constituency.setId(Long.parseLong(obj[2].toString()));
+    			constituency.setSubList(getStaticParties());
+    			resultList.add(constituency);
+    			}
+    		}
+    		for(Object[] obj:list)
+    		{
+    			DashBoardResultsVO constituencyVO = getMacthedVO(resultList, Long.parseLong(obj[2].toString()));
+    			constituencyVO.setName(obj[3].toString());
+    			DashBoardResultsVO partyVo = getPartyVo(constituencyVO.getSubList(),Long.parseLong(obj[0].toString()));
+    			if(partyVo != null)
+    			{
+    				partyVo.setRank(Long.parseLong(obj[4].toString()));
+        			partyVo.setGainedVotes(partyVo.getGainedVotes() + (long)Double.parseDouble(obj[5].toString()));
+        		//	constituencyVO.getPartyIds().add(Long.parseLong(obj[0].toString()));
+    				
+    			}
+    			else
+    			{
+    				DashBoardResultsVO otherPartyVo = constituencyVO.getSubList().get(constituencyVO.getSubList().size() - 1);
+    				Long votes = constituencyVO.getSubList().get(constituencyVO.getSubList().size() - 1).getGainedVotes();
+    				otherPartyVo.setGainedVotes((long)Double.parseDouble(obj[5].toString()) + votes);
+    				
+    			}
+    			//constituencyVO.getPartyIds().add(0l);
+    		}
+    		
+    		caluculateValidVotesForConstituency(resultList);//this method calculates all the valid votes of constituencies
+    		
+    		Map<String,Long> voterCountMap = new HashMap<String, Long>();
+    		
+    		Long totalValidVotersCount = 0L;
+    		
+    		for(DashBoardResultsVO constituencyVO:resultList)
+    		{
+    			totalValidVotersCount  = totalValidVotersCount + constituencyVO.getVotesCount();
+    		}
+    		
+    		
+    		for(DashBoardResultsVO constituencyVO:resultList)
+    		{
+    			for(DashBoardResultsVO partyVO:constituencyVO.getSubList())
+        		{
+    				if(voterCountMap.get(partyVO.getName()+","+partyVO.getId()) == null)
+    				{
+    					voterCountMap.put(partyVO.getName()+","+partyVO.getId(), partyVO.getGainedVotes());
+    				}else
+    				{
+    					voterCountMap.put(partyVO.getName()+","+partyVO.getId(), voterCountMap.get(partyVO.getName()+","+partyVO.getId()) + partyVO.getGainedVotes());
+    				}
+        		}
+    		}
+    		
+    		
+			List<DashBoardResultsVO> percentList = new ArrayList<DashBoardResultsVO>();
+			for(Entry<String, Long> entry:voterCountMap.entrySet())
+    		{
+				
+					DashBoardResultsVO party = new DashBoardResultsVO();
+				    party.setPercent(entry.getValue() != 0L ? roundTo2DigitsFloatValue((float) entry.getValue()
+							* 100f
+							/totalValidVotersCount) : "0.00");
+					party.setName(entry.getKey().split(",")[0]);
+					party.setGainedVotes(entry.getValue());
+					party.setPartyId(Long.parseLong(entry.getKey().split(",")[1]));
+					percentList.add(party);
+				
+    		}
+			Map<String,String> resultMap = new HashMap<String, String>(); 
+			for(DashBoardResultsVO vo : percentList)
+			{
+				resultMap.put(vo.getName(), vo.getPercent());
+			
+			}
+		
+    		if(resultList != null && resultList.size() >0)
+    		{
+    			resultList.get(0).setPartiesDetails(percentList);
+    			resultList.get(0).setPercentageMap(resultMap);//before
+    		
+    		}
+    		
+    	}catch(Exception e)
+    	{
+    		e.printStackTrace();
+    		LOG.error("Exception raised in getConstituencyResultDetailsByElectionId service method");
+    	}
+    	if(resultList != null && resultList.size() > 0 )
+    	  return resultList.get(0);
+    	return null;
+    }
+    
+    
+    public List<DashBoardResultsVO> getStaticParties()
+    {
+    	List<Long> partyIds = new ArrayList<Long>();
+		partyIds.add(72L);
+		partyIds.add(872L);
+		partyIds.add(362L);
+		partyIds.add(1117L);
+		partyIds.add(886L);
+		partyIds.add(163L);
+		partyIds.add(239L);
+		List<DashBoardResultsVO> parties = new ArrayList<DashBoardResultsVO>();
+    	try{
+    		for(Long partyId : partyIds)
+    		{
+    			DashBoardResultsVO party = new DashBoardResultsVO();
+    			party.setId(partyId);
+    			party.setName(partyDAO.getPartyShortNameById(partyId));
+    			party.setGainedVotes(0l);
+    			parties.add(party);
+    		}
+    		DashBoardResultsVO oterParty = new DashBoardResultsVO();
+    		oterParty.setId(0l);
+    		oterParty.setName("OTHERS");
+    		oterParty.setGainedVotes(0l);
+			parties.add(oterParty);
+    	}
+    	catch (Exception e) {
+			e.printStackTrace();
+		}
+		return parties;
+    }
+    
     
     
 
