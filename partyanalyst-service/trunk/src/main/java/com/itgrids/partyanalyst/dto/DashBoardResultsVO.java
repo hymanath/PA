@@ -44,6 +44,8 @@ public class DashBoardResultsVO  implements Comparable<DashBoardResultsVO>{
 	private Map<String,Long> partyWiseCountAfter;
 	private Map<String,Integer> resultMap;
 	
+	private List<GenericVO> participantsList = new ArrayList<GenericVO>();
+	
 	public Map<String, Integer> getResultMap() {
 		return resultMap;
 	}
@@ -529,6 +531,16 @@ public class DashBoardResultsVO  implements Comparable<DashBoardResultsVO>{
 			return 1;
 		
 		return 0;
+	}
+
+
+	public List<GenericVO> getParticipantsList() {
+		return participantsList;
+	}
+
+
+	public void setParticipantsList(List<GenericVO> participantsList) {
+		this.participantsList = participantsList;
 	}
 
 
