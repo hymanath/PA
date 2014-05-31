@@ -9,7 +9,13 @@
 <script src="http://code.highcharts.com/modules/funnel.js"></script>
 <!--<script src="http://code.highcharts.com/modules/exporting.js"></script>-->
 
-
+<style>
+	#casteTable1 th{color:#5FB9B9;background-color: #DDDDDD;border:1px solid black !important;}
+#casteTable1 td
+{
+border:1px solid black !important;
+}
+</style>
 
 <!-- start chart Analysis tab -->
 
@@ -52,6 +58,8 @@
 	</div>
 	<!-- Mahesh start -->
 	<div id="containeradsd" style="clear:both;margin-top:10px;margin-bottom:10px;"></div>
+	<div id="containeradsdres" style="clear:both;margin-top:10px;margin-bottom:10px;"></div>
+	
 	<!-- end -->
 	<!-- prasad -->
 	<div id="genderWiseChart" style="margin-top:10px;margin-bottom:10px;"></div>
@@ -458,6 +466,7 @@ function buildOptions(result,id)
 /* mahesh start */
 function getCasteData(){
 $("#containeradsd").html('');
+$("#containeradsdres").html('');
 var surveyIDs = $("#surveyIdForChart").val();
 if(surveyIDs == null)
 	return;
@@ -490,14 +499,15 @@ var constituencyID = $("#constituencyIdForChart").val();
 
 
 
-function buildChartForTopCaste(result){
+function buildChartForTopCaste(result1){
+var result = result1[0];
 var colorsArray = new Array();
 colorsArray.push("#F93535");
 colorsArray.push("#4CF935");
 colorsArray.push("#F9F235");
 colorsArray.push("#3553F9");
 colorsArray.push("#E935F9");
-
+colorsArray.push("#090404");
 var surveyArray = new Array();
 var casteArray = new Array();
 for(var i in result){
@@ -596,7 +606,38 @@ color: '#E00000'
 			},
     series: casteArray
 });
+var votsResult = result1[1];
 
+var str="";
+    str+="<table id='casteTable1' class='table table-bordered'>";
+	str+="<tr>";
+	str+="<th>Survey</th>";
+	for(var i =0;i<result[0].optionsList.length;i++){
+      str+="<th>"+result[0].optionsList[i]+"</th>";
+    }
+	str+="<th>Total</th>";
+	str+="<th>Party Secured In 2014 AC</th>";
+	str+="</tr>";
+	for(var i in votsResult){
+	var total = 0;
+	str+="<tr>";
+	 str+="<td>"+votsResult[i].name+"</td>";
+	 for(var j =0;j<votsResult[i].locationValuesList.length;j++){
+	   if(votsResult[i].locationValuesList[j] != null){
+         str+="<td>"+votsResult[i].locationValuesList[j]+"</td>";
+		 total =total+votsResult[i].locationValuesList[j];
+		}else{
+		  str+="<td>-</td>";
+		}
+     }
+	 str+="<td>"+total+"</td>";
+	 if(i == 0){
+	      str+="<td rowspan='"+votsResult.length+"'>"+votsResult[0].totalCount+"</td>";
+	 }
+	 str+="</tr>";
+	}
+	str+="</table>";
+	$("#containeradsdres").html(str);
 }
 
 /* end */
