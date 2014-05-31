@@ -529,7 +529,7 @@ var votesRange= 0;
 
 <script type="text/javascript" src="js/highcharts4.1/js/highcharts.js"></script>
 <script type="text/javascript" src="js/highcharts4.1/js/highcharts-3d.js"></script>
-
+<script src="http://code.highcharts.com/modules/funnel.js"></script>
 <link rel="stylesheet" type="text/css" href="styles/politico.css">
 <link rel="stylesheet" type="text/css" href="styles/leaflet.css">
 <link rel="stylesheet" type="text/css" href="styles/leaflet-lable.css">
@@ -1712,7 +1712,7 @@ $('#ajaxImage').show();
 <li><a href="#" class="InteractiveMapDiv highLight" onclick="buildMenuForStateAnalysis('InteractiveMapDiv')" >Interactive Map Analysis</a></li>
 <li><a href="#" class="regionWiseAnalysisDiv highLight" onclick="buildMenuForStateAnalysis('regionWiseAnalysisDiv')">Region Wise Analysis</a></li>
 <li><a href="#" class="casteAnalysisDiv highLight" onclick="buildMenuForStateAnalysis('casteAnalysisDiv')">Caste Wise Analysis</a></li>
-<li><a href="#" class="partyRebelsEffect highLight" onclick="buildMenuForStateAnalysis('partyRebelsEffect')">Party Rebels Effect</a></li>
+<li><a href="#" class="chartAnalysisTab highLight" onclick="buildMenuForStateAnalysis('chartAnalysisTab')">Chart Analysis </a></li>
 </ul>
 </div>
 <!-- start Caste Wise Analysis -->
@@ -1722,6 +1722,13 @@ $('#ajaxImage').show();
 </div>
 <!-- end Caste wise Analysis-->
 
+
+<!-- start chart Analysis tab -->
+<div class="container" style="display:none;margin-top:20px;" id="chartAnalysisTab" >
+<jsp:include page="surveyResults.jsp" flush="true"/>
+	
+</div>
+<!-- end -->
 <!--  start PartyWise -->
 <div id="partyWiseStatsDiv">
 
@@ -5529,7 +5536,7 @@ function buildMenuForStateAnalysis(searchType)
 {
 	if(searchType == 'partyWiseStatsDiv')
 	{
-	$("#partyRebelsEffect").hide();
+	$("#chartAnalysisTab").hide();
 	$("#casteAnalysisDiv").hide();
 	$("#regionWiseAnalysisDiv").hide();
 	$("#InteractiveMapDiv").hide();
@@ -5541,7 +5548,7 @@ function buildMenuForStateAnalysis(searchType)
 	$("#partyWiseStatsDiv").hide();
 	$("#casteAnalysisDiv").hide();
 	$("#regionWiseAnalysisDiv").hide();
-	$("#partyRebelsEffect").hide();
+	$("#chartAnalysisTab").hide();
 	$("#InteractiveMapDiv").show();
 	}
 	else if(searchType == 'regionWiseAnalysisDiv')
@@ -5549,7 +5556,7 @@ function buildMenuForStateAnalysis(searchType)
 	$("#partyWiseStatsDiv").hide();
 	$("#InteractiveMapDiv").hide();
 	$("#casteAnalysisDiv").hide();
-	$("#partyRebelsEffect").hide();
+	$("#chartAnalysisTab").hide();
 	$("#regionWiseAnalysisDiv").show();
 	}
 	else if(searchType == 'casteAnalysisDiv')
@@ -5557,7 +5564,7 @@ function buildMenuForStateAnalysis(searchType)
 	$("#partyWiseStatsDiv").hide();
 	$("#InteractiveMapDiv").hide();
 	$("#regionWiseAnalysisDiv").hide();
-	$("#partyRebelsEffect").hide();
+	$("#chartAnalysisTab").hide();
 	$("#casteAnalysisDiv").show();
 	
 		if(!casteAnalysisDivFlag)
@@ -5566,13 +5573,13 @@ function buildMenuForStateAnalysis(searchType)
 			getTopCasteData();
 		}
 	}
-	else if(searchType == 'partyRebelsEffect')
+	else if(searchType == 'chartAnalysisTab')
 	{
 	$("#partyWiseStatsDiv").hide();
 	$("#InteractiveMapDiv").hide();
 	$("#regionWiseAnalysisDiv").hide();
 	$("#casteAnalysisDiv").hide();
-	$("#partyRebelsEffect").show();
+	$("#chartAnalysisTab").show();
 	}
 }
 function getTopCasteData(){
@@ -6870,108 +6877,12 @@ function particiaptedPartyListForParliament(electionScopeId,electionId,scopeId,r
 	
 	
 
-	function getCasteData(){
-
-        var jsObj=
-	{
-			constituencyId : 232,
-			surveyIds :"124,138,150,158,162,163"
-			
-	};
-	$.ajax({
-	type: "GET",
-	url: "getTop5CastePartySupport.action",
-	dataType: 'json',
-	data: {task:JSON.stringify(jsObj)},
-	 error:function() { 
-           
-         }
-	})
-	.done(function( result ) {
-		buildChartForTopCaste(result);
-		try{
-		 
-		}catch(e){
-		  
-		}
-	});
-}
-
-function buildChartForTopCaste(result){
-var colorsArray = new Array();
-colorsArray.push("#F93535");
-colorsArray.push("#4CF935");
-colorsArray.push("#F9F235");
-colorsArray.push("#3553F9");
-colorsArray.push("#E935F9");
-
-var surveyArray = new Array();
-var casteArray = new Array();
-for(var i in result){
-surveyArray.push(result[i].name);
-}
-for(var i =0;i<result[0].optionsList.length;i++){
-  var obj={};
-  obj['type'] = 'column';
-  obj['name'] = result[0].optionsList[i];
-  var dataArray = new Array();
-  for(var j in result){
-    dataArray.push(result[j].percents[i]);
-  }
-  obj['data'] = dataArray;
-  obj['color']= colorsArray[i] ;
-  obj['tooltip']= {
-			valueSuffix:'%'
-        };
-  casteArray.push(obj);
- // console.log(casteArray);
-}
-
-var obj={};
-
-        obj['type']= 'pie';
-        obj['name']= 'Avg Percent';
-		var casteSubArray = new Array();
-		 for(var i =0;i<result[0].optionsList.length;i++){
-		    var obj1={};
-			  obj1['name']= result[0].optionsList[i];
-            obj1['y']= result[0].avgPercs[i];
-            obj1['color']= colorsArray[i] ;
-			casteSubArray.push(obj1);
-		}
-        obj['data'] =  casteSubArray;
-        obj['center']= [100, 80];
-        obj['size']= 100;
-        obj['showInLegend']= false;
-        obj['dataLabels']= {
-            enabled: false
-        };
-    casteArray.push(obj);
-
-$('#containeradsd').highcharts({
-    title: {
-        text: 'Top 5 Castes Support To TDP'
-    },
-    xAxis: {
-        categories: surveyArray
-    },
-    labels: {
-        items: [{
-            html: 'Average',
-            style: {
-                left: '50px',
-                top: '18px',
-                color: (Highcharts.theme && Highcharts.theme.textColor) || 'black'
-            }
-        }]
-    },
-    series: casteArray
-});
-
-}
+	
 
 </script>
-<div id="containeradsd"></div>
+
+
+<!--<div id="containeradsd"></div>-->
 
 <!--<script type="text/javascript" src="js/newTest1.js"></script>
 <script type="text/javascript" src="js/newTest.js"></script>-->
