@@ -21,6 +21,7 @@ import javax.xml.bind.annotation.XmlType;
  *       &lt;sequence>
  *         &lt;element name="casteResult" type="{http://endpoints.soa.survey.itgrids.com/}genericVO" maxOccurs="unbounded" minOccurs="0"/>
  *         &lt;element name="partyWiseResult" type="{http://endpoints.soa.survey.itgrids.com/}surveyReportVO" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="surveyWiseResult" type="{http://endpoints.soa.survey.itgrids.com/}surveyReportVO" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -32,7 +33,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "electionComparisonVO", propOrder = {
     "casteResult",
-    "partyWiseResult"
+    "partyWiseResult",
+    "surveyWiseResult"
 })
 public class ElectionComparisonVO {
 
@@ -40,6 +42,8 @@ public class ElectionComparisonVO {
     protected List<GenericVO> casteResult;
     @XmlElement(nillable = true)
     protected List<SurveyReportVO> partyWiseResult;
+    @XmlElement(nillable = true)
+    protected List<SurveyReportVO> surveyWiseResult;
 
     /**
      * Gets the value of the casteResult property.
@@ -97,6 +101,35 @@ public class ElectionComparisonVO {
             partyWiseResult = new ArrayList<SurveyReportVO>();
         }
         return this.partyWiseResult;
+    }
+
+    /**
+     * Gets the value of the surveyWiseResult property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the surveyWiseResult property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getSurveyWiseResult().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link SurveyReportVO }
+     * 
+     * 
+     */
+    public List<SurveyReportVO> getSurveyWiseResult() {
+        if (surveyWiseResult == null) {
+            surveyWiseResult = new ArrayList<SurveyReportVO>();
+        }
+        return this.surveyWiseResult;
     }
 
 }

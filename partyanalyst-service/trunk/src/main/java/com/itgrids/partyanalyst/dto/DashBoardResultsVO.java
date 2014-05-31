@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.itgrids.survey.soa.endpoints.SurveyReportVO;
+
 public class DashBoardResultsVO  implements Comparable<DashBoardResultsVO>{
 	
 	private Long partyId;
@@ -49,10 +51,21 @@ public class DashBoardResultsVO  implements Comparable<DashBoardResultsVO>{
 	private String surveyPercent;
 	private List<com.itgrids.survey.soa.endpoints.GenericVO> casteDetails;
 	private String candidateName;
+	private List<SurveyReportVO> surveyWiseResult;
 	
 	
 	public Map<String, String> getPercentageMap1() {
 		return percentageMap1;
+	}
+
+
+	public List<SurveyReportVO> getSurveyWiseResult() {
+		return surveyWiseResult;
+	}
+
+
+	public void setSurveyWiseResult(List<SurveyReportVO> surveyWiseResult) {
+		this.surveyWiseResult = surveyWiseResult;
 	}
 
 
