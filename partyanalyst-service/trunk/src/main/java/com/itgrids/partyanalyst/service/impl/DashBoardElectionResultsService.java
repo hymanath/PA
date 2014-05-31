@@ -20,8 +20,10 @@ import org.jfree.util.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
+import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyElectionResultDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionAllianceDAO;
@@ -33,6 +35,7 @@ import com.itgrids.partyanalyst.dao.IStateSubRegionDistrictDAO;
 import com.itgrids.partyanalyst.dto.DashBoardResultsVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IDashBoardElectionResultsService;
 import com.itgrids.partyanalyst.webservice.client.WebServiceClient;
 import com.itgrids.survey.soa.endpoints.ElectionComparisonVO;
@@ -78,6 +81,12 @@ public class DashBoardElectionResultsService implements
 	
 	@Autowired
 	private IStateSubRegionDAO stateSubRegionDAO;
+	
+	@Autowired
+	private ICandidateResultDAO candidateResultDAO;
+	
+	@Autowired
+	private IConstituencyElectionResultDAO constituencyElectionResultDAO;
 	
 	private WebServiceClient webServiceClient;
 	
@@ -2051,8 +2060,69 @@ List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId,
    
     
     
-    public List<OptionVO> getTop5CastePeopleOpnionOnParty(Long constituencyId,List<Long> surveyIds){
-    	return webServiceClient.getTop5CastePeopleOpnionOnParty(constituencyId,surveyIds);
+    public Object[] getTop5CastePeopleOpnionOnParty(Long constituencyId,List<Long> surveyIds){
+    	Object[] returnArray = new Object[2];
+    	List<Long> partyIds = new ArrayList<Long>();
+    	List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>();
+    	partyIds.add(163l);
+    	partyIds.add(872l);
+    	//0 partyId,1 votesearned
+    	List<Object[]> candidateResult = candidateResultDAO.getResultByPartyIds(partyIds,constituencyId,258l);
+    	Double totalValidVotes = constituencyElectionResultDAO.getTotalValidVotes(258l, constituencyId);
+    	Long totalVotes = null;
+    	if(candidateResult.size() == 1){
+    		totalVotes = ((Double)candidateResult.get(0)[1]).longValue();
+    	}else{
+    		for(Object[] result:candidateResult){
+    			if(((Long)result[0]).longValue() == 872l){
+    				totalVotes = ((Double)result[1]).longValue();
+    			}
+    		}
+    	}
+    	List<OptionVO> surveyDataCasteWise = webServiceClient.getTop5CastePeopleOpnionOnParty(constituencyId,surveyIds);
+    	OptionVO.CastePercs values = surveyDataCasteWise.get(0).getCastePercs();
+    	LinkedHashMap<Long,Double> castePercs = new LinkedHashMap<Long,Double>();
+    	LinkedHashMap<Long,Long> casteVoters = new LinkedHashMap<Long,Long>();
+    	for(OptionVO.CastePercs.Entry enter:values.getEntry()){
+    		castePercs.put(enter.getKey(), enter.getValue());
+    	}
+    	for(Long key:castePercs.keySet()){
+    		casteVoters.put(key, ((Double)(totalValidVotes*castePercs.get(key)/100)).longValue());
+    	}
+    	List<Double> avgperc = surveyDataCasteWise.get(0).getAvgPercs();
+    	SelectOptionVO cumulativeVo = new SelectOptionVO();
+    	cumulativeVo.setName("Cumulative Of All Surveys");
+    	List<Long> cumulativeVotes = new ArrayList<Long>();
+    	List<Long> topCastes = surveyDataCasteWise.get(0).getAverageBoothIdsList();
+    	for(int i=0;i<avgperc.size();i++){
+    		if(avgperc.get(i) != null){
+    			cumulativeVotes.add(((Double)(casteVoters.get(topCastes.get(i))*avgperc.get(i)/100)).longValue());
+    		}else{
+    			cumulativeVotes.add(null);
+    		}
+    	}
+    	cumulativeVo.setLocationValuesList(cumulativeVotes);
+    	cumulativeVo.setTotalCount(totalVotes.longValue());
+    	resultList.add(cumulativeVo);
+    	for(OptionVO survey:surveyDataCasteWise){
+    		survey.setCastePercs(null);
+    		SelectOptionVO surveyVo = new SelectOptionVO();
+    		surveyVo.setName(survey.getName());
+    		List<Long> surveyVotes = new ArrayList<Long>();
+    		List<Double> surveyperc = survey.getPercents();
+        	for(int i=0;i<surveyperc.size();i++){
+        		if(surveyperc.get(i) != null){
+        			surveyVotes.add(((Double)(casteVoters.get(topCastes.get(i))*surveyperc.get(i)/100)).longValue());
+        		}else{
+        			surveyVotes.add(null);
+        		}
+        	}
+        	surveyVo.setLocationValuesList(surveyVotes);
+        	resultList.add(surveyVo);
+    	}
+    	returnArray[0]=surveyDataCasteWise;
+    	returnArray[1]=resultList;
+    	return returnArray;
     }
     
     
