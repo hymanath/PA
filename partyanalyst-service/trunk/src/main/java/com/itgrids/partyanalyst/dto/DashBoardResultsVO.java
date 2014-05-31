@@ -53,7 +53,30 @@ public class DashBoardResultsVO  implements Comparable<DashBoardResultsVO>{
 	private String candidateName;
 	private List<SurveyReportVO> surveyWiseResult;
 	
+	private String marginPercent;
+	private String votesPercentage;
 	
+	
+	public String getMarginPercent() {
+		return marginPercent;
+	}
+
+
+	public void setMarginPercent(String marginPercent) {
+		this.marginPercent = marginPercent;
+	}
+
+
+	public String getVotesPercentage() {
+		return votesPercentage;
+	}
+
+
+	public void setVotesPercentage(String votesPercentage) {
+		this.votesPercentage = votesPercentage;
+	}
+
+
 	public Map<String, String> getPercentageMap1() {
 		return percentageMap1;
 	}
