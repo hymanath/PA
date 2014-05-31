@@ -2688,6 +2688,7 @@ public GenericVO getparticipatedPartiesInLocation(Long electionId,List<Long> reg
     		result.getCasteResult().add(others);
     		
     		mainResult.setCasteDetails(result.getCasteResult());
+    		mainResult.setSurveyWiseResult(result.getSurveyWiseResult());
     		
     		
     	}catch(Exception e)
