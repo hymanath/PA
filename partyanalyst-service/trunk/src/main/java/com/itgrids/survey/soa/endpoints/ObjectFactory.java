@@ -39,139 +39,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link SurveyReportVO.SubFieldsMap.Entry }
-     * 
-     */
-    public SurveyReportVO.SubFieldsMap.Entry createSurveyReportVOSubFieldsMapEntry() {
-        return new SurveyReportVO.SubFieldsMap.Entry();
-    }
-
-    /**
-     * Create an instance of {@link OptionVO.CastePercs.Entry }
-     * 
-     */
-    public OptionVO.CastePercs.Entry createOptionVOCastePercsEntry() {
-        return new OptionVO.CastePercs.Entry();
-    }
-
-    /**
-     * Create an instance of {@link ElectionComparisonVO }
-     * 
-     */
-    public ElectionComparisonVO createElectionComparisonVO() {
-        return new ElectionComparisonVO();
-    }
-
-    /**
-     * Create an instance of {@link OptionVO.CastePercs }
-     * 
-     */
-    public OptionVO.CastePercs createOptionVOCastePercs() {
-        return new OptionVO.CastePercs();
-    }
-
-    /**
-     * Create an instance of {@link OptionVO }
-     * 
-     */
-    public OptionVO createOptionVO() {
-        return new OptionVO();
-    }
-
-    /**
-     * Create an instance of {@link GenericVO }
-     * 
-     */
-    public GenericVO createGenericVO() {
-        return new GenericVO();
-    }
-
-    /**
-     * Create an instance of {@link SurveyReportVO.SubFieldsMap }
-     * 
-     */
-    public SurveyReportVO.SubFieldsMap createSurveyReportVOSubFieldsMap() {
-        return new SurveyReportVO.SubFieldsMap();
-    }
-
-    /**
      * Create an instance of {@link GetGenderWiseReportForSurveyAnalysisResponse }
      * 
      */
     public GetGenderWiseReportForSurveyAnalysisResponse createGetGenderWiseReportForSurveyAnalysisResponse() {
         return new GetGenderWiseReportForSurveyAnalysisResponse();
-    }
-
-    /**
-     * Create an instance of {@link SurveyVO }
-     * 
-     */
-    public SurveyVO createSurveyVO() {
-        return new SurveyVO();
-    }
-
-    /**
-     * Create an instance of {@link GetPartyWiseCountDetailsForSelectedSurveys }
-     * 
-     */
-    public GetPartyWiseCountDetailsForSelectedSurveys createGetPartyWiseCountDetailsForSelectedSurveys() {
-        return new GetPartyWiseCountDetailsForSelectedSurveys();
-    }
-
-    /**
-     * Create an instance of {@link GetTop5CastePeopleOpnionOnPartyResponse }
-     * 
-     */
-    public GetTop5CastePeopleOpnionOnPartyResponse createGetTop5CastePeopleOpnionOnPartyResponse() {
-        return new GetTop5CastePeopleOpnionOnPartyResponse();
-    }
-
-    /**
-     * Create an instance of {@link SurveyReportVO.SurveyMap1 .Entry }
-     * 
-     */
-    public SurveyReportVO.SurveyMap1 .Entry createSurveyReportVOSurveyMap1Entry() {
-        return new SurveyReportVO.SurveyMap1 .Entry();
-    }
-
-    /**
-     * Create an instance of {@link GetGenderWiseReportForSurveyAnalysis }
-     * 
-     */
-    public GetGenderWiseReportForSurveyAnalysis createGetGenderWiseReportForSurveyAnalysis() {
-        return new GetGenderWiseReportForSurveyAnalysis();
-    }
-
-    /**
-     * Create an instance of {@link SurveyReportVO }
-     * 
-     */
-    public SurveyReportVO createSurveyReportVO() {
-        return new SurveyReportVO();
-    }
-
-    /**
-     * Create an instance of {@link SurveyReportVO.SurveyMap.Entry }
-     * 
-     */
-    public SurveyReportVO.SurveyMap.Entry createSurveyReportVOSurveyMapEntry() {
-        return new SurveyReportVO.SurveyMap.Entry();
-    }
-
-    /**
-     * Create an instance of {@link SurveyReportVO.SurveyMap1 }
-     * 
-     */
-    public SurveyReportVO.SurveyMap1 createSurveyReportVOSurveyMap1() {
-        return new SurveyReportVO.SurveyMap1();
-    }
-
-    /**
-     * Create an instance of {@link GetTop5CastePeopleOpnionOnParty }
-     * 
-     */
-    public GetTop5CastePeopleOpnionOnParty createGetTop5CastePeopleOpnionOnParty() {
-        return new GetTop5CastePeopleOpnionOnParty();
     }
 
     /**
@@ -183,11 +55,139 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link SurveyReportVO.SurveyMap1 }
+     * 
+     */
+    public SurveyReportVO.SurveyMap1 createSurveyReportVOSurveyMap1() {
+        return new SurveyReportVO.SurveyMap1();
+    }
+
+    /**
+     * Create an instance of {@link GetGenderWiseReportForSurveyAnalysis }
+     * 
+     */
+    public GetGenderWiseReportForSurveyAnalysis createGetGenderWiseReportForSurveyAnalysis() {
+        return new GetGenderWiseReportForSurveyAnalysis();
+    }
+
+    /**
+     * Create an instance of {@link SurveyReportVO.SubFieldsMap }
+     * 
+     */
+    public SurveyReportVO.SubFieldsMap createSurveyReportVOSubFieldsMap() {
+        return new SurveyReportVO.SubFieldsMap();
+    }
+
+    /**
+     * Create an instance of {@link OptionVO.CastePercs }
+     * 
+     */
+    public OptionVO.CastePercs createOptionVOCastePercs() {
+        return new OptionVO.CastePercs();
+    }
+
+    /**
+     * Create an instance of {@link GenericVO }
+     * 
+     */
+    public GenericVO createGenericVO() {
+        return new GenericVO();
+    }
+
+    /**
+     * Create an instance of {@link GetPartyWiseCountDetailsForSelectedSurveys }
+     * 
+     */
+    public GetPartyWiseCountDetailsForSelectedSurveys createGetPartyWiseCountDetailsForSelectedSurveys() {
+        return new GetPartyWiseCountDetailsForSelectedSurveys();
+    }
+
+    /**
+     * Create an instance of {@link SurveyReportVO.SurveyMap1 .Entry }
+     * 
+     */
+    public SurveyReportVO.SurveyMap1 .Entry createSurveyReportVOSurveyMap1Entry() {
+        return new SurveyReportVO.SurveyMap1 .Entry();
+    }
+
+    /**
+     * Create an instance of {@link OptionVO }
+     * 
+     */
+    public OptionVO createOptionVO() {
+        return new OptionVO();
+    }
+
+    /**
+     * Create an instance of {@link SurveyVO }
+     * 
+     */
+    public SurveyVO createSurveyVO() {
+        return new SurveyVO();
+    }
+
+    /**
+     * Create an instance of {@link GetTop5CastePeopleOpnionOnPartyResponse }
+     * 
+     */
+    public GetTop5CastePeopleOpnionOnPartyResponse createGetTop5CastePeopleOpnionOnPartyResponse() {
+        return new GetTop5CastePeopleOpnionOnPartyResponse();
+    }
+
+    /**
+     * Create an instance of {@link OptionVO.CastePercs.Entry }
+     * 
+     */
+    public OptionVO.CastePercs.Entry createOptionVOCastePercsEntry() {
+        return new OptionVO.CastePercs.Entry();
+    }
+
+    /**
      * Create an instance of {@link GetPartyWiseCountDetailsForSelectedSurveysResponse }
      * 
      */
     public GetPartyWiseCountDetailsForSelectedSurveysResponse createGetPartyWiseCountDetailsForSelectedSurveysResponse() {
         return new GetPartyWiseCountDetailsForSelectedSurveysResponse();
+    }
+
+    /**
+     * Create an instance of {@link SurveyReportVO.SubFieldsMap.Entry }
+     * 
+     */
+    public SurveyReportVO.SubFieldsMap.Entry createSurveyReportVOSubFieldsMapEntry() {
+        return new SurveyReportVO.SubFieldsMap.Entry();
+    }
+
+    /**
+     * Create an instance of {@link SurveyReportVO.SurveyMap.Entry }
+     * 
+     */
+    public SurveyReportVO.SurveyMap.Entry createSurveyReportVOSurveyMapEntry() {
+        return new SurveyReportVO.SurveyMap.Entry();
+    }
+
+    /**
+     * Create an instance of {@link GetTop5CastePeopleOpnionOnParty }
+     * 
+     */
+    public GetTop5CastePeopleOpnionOnParty createGetTop5CastePeopleOpnionOnParty() {
+        return new GetTop5CastePeopleOpnionOnParty();
+    }
+
+    /**
+     * Create an instance of {@link SurveyReportVO }
+     * 
+     */
+    public SurveyReportVO createSurveyReportVO() {
+        return new SurveyReportVO();
+    }
+
+    /**
+     * Create an instance of {@link ElectionComparisonVO }
+     * 
+     */
+    public ElectionComparisonVO createElectionComparisonVO() {
+        return new ElectionComparisonVO();
     }
 
     /**

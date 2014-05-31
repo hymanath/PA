@@ -2364,4 +2364,6 @@
 		<bean id="cadreGovtDesignationDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreGovtDesignationDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="webServiceClient" class="com.itgrids.partyanalyst.webservice.client.WebServiceClient">
+	</bean>
 </beans>
