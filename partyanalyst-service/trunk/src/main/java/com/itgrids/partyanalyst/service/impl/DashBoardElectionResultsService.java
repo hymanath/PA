@@ -2738,7 +2738,19 @@ public GenericVO getparticipatedPartiesInLocation(Long electionId,List<Long> reg
 					  partyVO.setRank((Long)obj[3]);
 					  partyVO.setCandidateName(obj[0].toString());
 					  partyVO.setName(obj[2].toString());
+					  partyVO.setVotesPercentage(obj[5].toString());
+					  partyVO.setMarginPercent(obj[6].toString());
 					}
+					
+					if(partyIds.contains((Long)obj[1]))
+					{
+					  partyVO.setRank((Long)obj[3]);
+					  partyVO.setCandidateName(obj[0].toString());
+					  partyVO.setName(obj[2].toString());
+					  partyVO.setVotesPercentage(obj[5].toString());
+					  partyVO.setMarginPercent(obj[6].toString());
+					}
+					
 					totalValidVotes =totalValidVotes +  (long)Double.parseDouble(obj[4].toString());
 				}
 				

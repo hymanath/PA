@@ -5166,7 +5166,9 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 					"N.party.partyId," +
 					"N.party.shortName," +
 					"N.candidateResult.rank," +
-					"N.candidateResult.votesEarned " +
+					"N.candidateResult.votesEarned ," +
+					"N.candidateResult.votesPercengate," +
+					"N.candidateResult.marginVotesPercentage " +
 					"from " +
 					"Nomination N " +
 					"where " +
