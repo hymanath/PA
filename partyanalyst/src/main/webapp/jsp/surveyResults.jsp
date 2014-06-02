@@ -834,6 +834,19 @@ function genderWiseTable(result)
 	str1 += '<th>18 to 25</th>';
 	str1 += '<th>Above 60</th>';
 	str1 += '</tr>';
+
+
+	var str2 = '';
+	str2+='<h4 style="color: #0088CC;fontWeight:bold;font-family:verdana;font-size:12px">Constituency Survey Summary Table</h4>';
+	
+	str2 += '<table class="table table-bordered" style="margin-left:64px;width:50%;">';
+	str2 += '<tr>';
+	
+	str2 += '<th>Male</th>';
+	str2 += '<th>Female</th>';
+	str2 += '<th>18 to 25</th>';
+	str2 += '<th>Above 60</th>';
+	str2 += '</tr>';
 	
 	for(var i in result)
 	{
@@ -846,12 +859,25 @@ function genderWiseTable(result)
 	str1 += '<td>'+result[i].actualYoungVoters+'</td>';	
 	str1 += '<td>'+result[i].actualYelderVoters+'</td>';
 	str1 += '</tr>';
+
+
+
+	 
+	str2 += '<tr>';
+	
+	str2 += '<td>'+result[i].middleageMaleVotersCumm+'</td>';
+	str2 += '<td>'+result[i].middleAgeFemaleVotersCumm+'</td>';
+	str2 += '<td>'+result[i].youngVOtersCumm+'</td>';	
+	str2 += '<td>'+result[i].yeldervotersCumm+'</td>';
+	str2 += '</tr>';
+
 	break;
 	}
+	str2 += '</table>';
 	str1 += '</table>';
-	
+
 	$("#genderWiseConstSummary").html(str1);
-	
+		$("#genderWiseConstSurveySummary").html(str2);
 	
 	
 	
