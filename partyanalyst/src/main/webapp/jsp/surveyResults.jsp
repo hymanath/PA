@@ -54,7 +54,7 @@ border:1px solid black !important;
 	<div class="span12" style="margin-bottom:30px"> 
 		<div id="container1" style=" height:300px;float:left;" class="span5"></div>
 		<div id="container2" style=" height:300px;" class="span6"></div>
-		<div id="winningCandidateInfo" style="float:left;" class="span4"></div>
+		<div id="winningCandidateInfo" style="margin-top:10px;float:left;" class="span"></div>
 	</div>
 	<!-- Mahesh start -->
 	<div id="containeradsd" style="clear:both;margin-top:10px;margin-bottom:10px;"></div>
@@ -226,7 +226,7 @@ $.each(result.subList,function(index,value){
 	{
 		var str='';
 
-		str+='<table border="1">';
+		str+='<table class="table table-bordered">';
 		 str+='<thead>';
 			str+='<tr>';
 				str+='<th>Candidate</th>';
@@ -701,7 +701,7 @@ for(var i in surveyIDs)
 					var femalePer = (result[i].femaleCount * 100/ total).toFixed(2);
 					var youngPer = (result[i].youngerCount * 100/ total).toFixed(2);
 					var oldPer = (result[i].olderCount * 100/ total).toFixed(2);
-					console.log(parseFloat(malePer));
+					
 					maleArray.push(parseFloat(malePer));
 					femaleArray.push(parseFloat(femalePer));
 					youngArray.push(parseFloat(youngPer));
@@ -720,7 +720,7 @@ for(var i in surveyIDs)
 
 function buildChartForGenderWise(names,maleArray,femaleArray,youngArray,oldArray)
 {
-console.log(maleArray);
+
 		//$('#liveResultsDiv').show();
         $('#genderWiseChart').highcharts({
             chart: {
