@@ -17,7 +17,7 @@ public class WebServiceClient {
 		  List<OptionVO> result = null;
 		  try{
 			  SOAPWebServiceEndPoint main=service.getSOAPWebServiceEndPointPort();
-				  result = main.getTop5CastePeopleOpnionOnParty(232l, surveyIds);
+				  result = main.getTop5CastePeopleOpnionOnParty(constituencyId, surveyIds);
 				System.out.println(result.size());
 		/*	SOAPWebServiceEndPointProxy proxy=new SOAPWebServiceEndPointProxy();
 			SOAPWebServiceEndPoint  mainobj=proxy.getSOAPWebServiceEndPoint();
