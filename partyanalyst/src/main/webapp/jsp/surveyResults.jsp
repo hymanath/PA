@@ -64,6 +64,11 @@ border:1px solid black !important;
 	<!-- prasad -->
 	<div id="genderWiseChart" style="margin-top:10px;margin-bottom:10px;"></div>
 	<div id="genderWiseTable" style="margin-top:10px;margin-bottom:10px"></div>
+		<div id="genderWiseConstSummary" style="margin-top:10px;margin-bottom:10px;margin-left:30px;"></div>
+	    <div id="genderWiseConstSurveySummary" style="margin-top:10px;margin-bottom:10px;margin-left:30px;"></div>
+	    
+		<div id="genderWiseTableIndividual" style="margin-top:10px;margin-bottom:10px;margin-left:30px;"></div>
+	
 	
 	<!-- end -->
 
@@ -609,10 +614,12 @@ color: '#E00000'
 					series: {
 						dataLabels: {
 							enabled: true,
+						
 							format: '{point.y:.1f}%',
 								 style: {
 							fontSize: '11px',
 							fontFamily: 'Verdana, sans-serif'
+						
 
 							}
 
@@ -693,26 +700,26 @@ for(var i in surveyIDs)
 				var oldArray = new Array();
 				for(var i in result)
 				{
-			var total = 0;
+			/*var total = 0;
 				total = result[i].maleCount + result[i].femaleCount + result[i].youngerCount + result[i].olderCount;
 					names.push(result[i].name);
 					var malePer = (result[i].maleCount * 100/ total).toFixed(2);
 					
 					var femalePer = (result[i].femaleCount * 100/ total).toFixed(2);
 					var youngPer = (result[i].youngerCount * 100/ total).toFixed(2);
-					var oldPer = (result[i].olderCount * 100/ total).toFixed(2);
+					var oldPer = (result[i].olderCount * 100/ total).toFixed(2);*/
 					
-					maleArray.push(parseFloat(malePer));
-					femaleArray.push(parseFloat(femalePer));
-					youngArray.push(parseFloat(youngPer));
-					oldArray.push(parseFloat(oldPer));
+					maleArray.push(result[i].malePercent);
+					femaleArray.push(result[i].femalePercent);
+					youngArray.push(result[i].youngerPercent);
+					oldArray.push(result[i].elderPercent);
 				}
 				
 				
 				
 				buildChartForGenderWise(names,maleArray,femaleArray,youngArray,oldArray);
 
-				//genderWiseTable(result);
+				genderWiseTable(result);
 			}
 	   });
 }
@@ -727,7 +734,7 @@ function buildChartForGenderWise(names,maleArray,femaleArray,youngArray,oldArray
                 type: 'column'
             },
             title: {
-                text: 'Gender Wise Surey Details'
+                text: 'Age Wise Surey Details'
 				,
 				 style: {
             color: '#0088CC',
@@ -814,30 +821,73 @@ color: '#E00000'
 
 function genderWiseTable(result)
 {
-	var str = '';
-	str += '<table class="table table-bordered" style="margin-left:64px;width:50%;">';
-	str += '<tr>';
-	str += '<th>Name</th>';
-	str += '<th>Male</th>';
-	str += '<th>FeMale</th>';
-	str += '<th>18 to 25</th>';
-	str += '<th>Above 60</th>';
-	str += '</tr>';
+
+	//actual summary
+	var str1 = '';
+	str1+='<h4 style="color: #0088CC;fontWeight:bold;font-family:verdana;font-size:12px">Constituency Summary Table</h4>';
+	
+	str1 += '<table class="table table-bordered" style="margin-left:64px;width:50%;">';
+	str1 += '<tr>';
+	str1 += '<th>Total</th>';
+	str1 += '<th>Male</th>';
+	str1 += '<th>Female</th>';
+	str1 += '<th>18 to 25</th>';
+	str1 += '<th>Above 60</th>';
+	str1 += '</tr>';
+	
 	for(var i in result)
 	{
-		var maleFor = result[i].maleCount-(result[i].youngerCount+result[i].olderCount);
-	var femaleFor = result[i].femaleCount-(result[i].youngerCount+result[i].olderCount); 
-	str += '<tr>';
-	str += '<td></td>';
-	str += '<td>'+maleFor+'</td>';
-	str += '<td>'+femaleFor+'</td>';
-	str += '<td>'+result[i].youngerCount+'</td>';
-	
-	str += '<td>'+result[i].olderCount+'</td>';
-	str += '</tr>';
+	 console.log(result[i].actualTotal);
+	 
+	str1 += '<tr>';
+	str1 += '<td>'+result[i].actualTotal+'</td>';
+	str1 += '<td>'+result[i].actualmaleCount+'</td>';
+	str1 += '<td>'+result[i].actualFemaleCount+'</td>';
+	str1 += '<td>'+result[i].actualYoungVoters+'</td>';	
+	str1 += '<td>'+result[i].actualYelderVoters+'</td>';
+	str1 += '</tr>';
+	break;
 	}
+	str1 += '</table>';
+	
+	$("#genderWiseConstSummary").html(str1);
+	
+	
+	
+	
+	for(var i in result)
+	{
+		var str = '';
+		if(i == 0)
+			
+		str+='<h4 style="color: #0088CC;fontWeight:bold;font-family:verdana;font-size:12px">Individual Survey Summary Table(s)</h4>';
+		str += '<table class="table table-bordered" style="margin-left:64px;width:50%;">';
+		str += '<tr>';
+		str += '<th>Survey Name</th>';
+		str += '<th>Male</th>';
+		str += '<th>Female</th>';
+		str += '<th>18 to 25</th>';
+		str += '<th>Above 60</th>';
+		str += '</tr>';
+
+	str += '<tr>';
+	str += '<td>'+result[i].name+'</td>';
+	str += '<td>'+result[i].maleFromTotal+'</td>';
+	str += '<td>'+result[i].femaleFromTotal+'</td>';
+	str += '<td>'+result[i].youngerFromTotal+'</td>';
+	str += '<td>'+result[i].olderFromTotal+'</td>';
+	
+	str += '</tr>';
 	str += '</table>';
-	$("#genderWiseTable").html(str);
+	//$("#genderWiseConstSummary").html(str);
+	var strId="individual"+i;
+	
+	$("#genderWiseTableIndividual").append("<div id="+strId+"></div>")
+	$("#"+strId).html(str);
+	}
+	
+	
+	
 }
 /* end */
 </script>
