@@ -496,7 +496,7 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 				" model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType = ? and " +
 				" model.boothConstituencyElection.booth.localBody is null " +
 				" group by model.boothConstituencyElection.booth.tehsil.tehsilId, " +
-				" model.nomination.nominationId",params);
+				" model.nomination.nominationId order by model.boothConstituencyElection.booth.tehsil.tehsilName,model.nomination.candidateResult.rank",params);
 	}
 	@SuppressWarnings("unchecked")
 	public List getCandidatesResultsForElectionAndConstituencyByMandalWise(Long constituencyId, String electionYear, String electionType){
