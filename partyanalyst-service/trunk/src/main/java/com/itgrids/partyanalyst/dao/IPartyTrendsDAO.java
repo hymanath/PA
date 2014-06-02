@@ -65,6 +65,11 @@ public interface IPartyTrendsDAO extends GenericDao<PartyTrends, Long> {
     public int updateCandidateElection(Long  electionId,int status,Long constituencyId);
     public int updateNotaVotesInConstElectResult(Long  electionId,long notaVotes,Long constituencyId);
     public List<Object[]> getVotesPolledForConstForParliament(Long  electionId);
+    
+    public List<Object[]> getVotesPolledAndTotalVotesForConst(Long  electionId,Long stateId,Long constituencyId);
+    public List<Object[]> getGendercountBetweenAgeGroup(Long constituencyId,Long publicationDateId,long minAge ,long maxAge);
+
+
 
 
 

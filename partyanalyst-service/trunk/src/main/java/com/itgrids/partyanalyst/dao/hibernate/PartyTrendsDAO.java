@@ -348,4 +348,33 @@ public List<Object[]> getVotesPolledForConstForParliament(Long  electionId)
 	 session.close();
 	 return obj;
 }
+
+//get Votes Polled And Total Votes  For Constituency
+public List<Object[]> getVotesPolledAndTotalVotesForConst(Long  electionId,Long stateId,Long constituencyId)
+
+{ //update CandidateResult cr set cr.votesEarned=:votesEarned  where cr.nomination.party.partyId=:partyId and  cr.nomination.constituencyElection.election.electionId=:electionId 
+	Session session=getSession();
+	 Query query = session.createQuery(" select cer.constituencyElection.constituency.constituencyId,cer.totalVotesPolled,cer.totalVotes  from ConstituencyElectionResult cer where  cer.constituencyElection.election.electionId=:electionId and cer.constituencyElection.constituency.state.stateId=:stateId  and cer.constituencyElection.constituency.constituencyId =:constituencyId group by cer.constituencyElection.constituency.constituencyId ")
+		
+			.setParameter("electionId", electionId).setParameter("stateId", stateId).setParameter("constituencyId", constituencyId);
+	
+	 List<Object[]> obj=query.list();
+	 session.close();
+	 return obj;
+}
+
+
+//get genders count between age groups 
+
+public List<Object[]> getGendercountBetweenAgeGroup(Long constituencyId,Long publicationDateId,	long minAge ,long  maxAge)
+{
+	
+	 Query query = getSession().createQuery("select bpv.voter.gender,count(distinct  bpv.voter.voterId) from BoothPublicationVoter bpv where bpv.booth.constituency.constituencyId=:constituencyId and bpv.booth.publicationDate.publicationDateId=:publicationDateId and  bpv.voter.age between :minAge  and :maxAge group by  bpv.voter.gender ").setParameter("minAge", minAge) .setParameter("maxAge", maxAge).setParameter("publicationDateId", publicationDateId).setParameter("constituencyId", constituencyId);
+	
+	return query.list();
+	
+	
+	
+}
+
 }
