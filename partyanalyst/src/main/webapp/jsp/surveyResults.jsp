@@ -222,7 +222,6 @@ electionData.push(parseFloat(value.percent));
 
 $.each(result.subList,function(index,value){
 
-	console.log(value.rank == 1);
 	if(value.rank == 1)
 	{
 		var str='';
