@@ -219,20 +219,36 @@ surveyData.push(parseFloat(value.surveyPercent));
 electionData.push(parseFloat(value.percent));
 });
 
+
 $.each(result.subList,function(index,value){
-if(value.rank == 1)
-{
-var str='';
 
-str+='<table border="1">';
-str+='<tr>';
-str+='<th>'+value.candidateName+'</th>';
-str+='<th>'+value.name+'</th>';
-str+='</tr>';
-str+='</table>';
+	console.log(value.rank == 1);
+	if(value.rank == 1)
+	{
+		var str='';
 
-$('#winningCandidateInfo').html(str);
-}
+		str+='<table border="1">';
+		 str+='<thead>';
+			str+='<tr>';
+				str+='<th>Candidate</th>';
+				str+='<th>Party</th>';
+				str+='<th>Votes(%)</th>';
+				str+='<th>Margin(%)</th>';
+			str+='</tr>';
+		str+='</thead>';
+		str+='<tbody>';
+			str+='<tr>';
+				str+='<td>'+value.candidateName+'</td>';
+				str+='<td>'+value.name+'</td>';
+				str+='<td>'+value.percent+'</td>';
+				str+='<td>'+value.marginPercent+'</td>';
+			str+='</tr>';
+		str+='</tbody>';
+		
+		str+='</table>';
+
+		$('#winningCandidateInfo').html(str);
+	}
 });
 
 
