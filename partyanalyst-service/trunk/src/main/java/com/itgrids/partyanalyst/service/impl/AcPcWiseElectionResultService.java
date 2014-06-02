@@ -17,6 +17,7 @@ import org.jfree.util.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
+import com.itgrids.partyanalyst.dao.ICandidateCasteDAO;
 import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
 import com.itgrids.partyanalyst.dao.IConstiCasteGroupPercDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
@@ -63,7 +64,10 @@ public class AcPcWiseElectionResultService implements IAcPcWiseElectionResultSer
 	@Autowired IAllianceGroupDAO allianceGroupDAO;
 	@Autowired IConstiCasteGroupPercDAO constiCasteGroupPercDAO;
 	
+	
 	@Autowired WebServiceClient webServiceClient;
+	
+	
 	
 	@Autowired 	private IVoterAgeInfoDAO voterAgeInfoDAO;
     
@@ -824,85 +828,85 @@ public class AcPcWiseElectionResultService implements IAcPcWiseElectionResultSer
 		return returnList;
 	}
 
-public List<CasteWiseResultVO> getCasteWiseDataForElection(Long electionId)
-{
-
-List<CasteWiseResultVO>  resultList = new ArrayList<CasteWiseResultVO>();
-try{
-	
-	List<Object[]> list = nominationDAO.getCandidateCasteResult(electionId);
-	Set<Long> constituencyIds = new java.util.HashSet<Long>();
-	if(list != null && list.size() > 0)
+	public List<CasteWiseResultVO> getCasteWiseDataForElection(Long electionId)
 	{
-	
-		for(Object[] params : list)
+
+	List<CasteWiseResultVO>  resultList = new ArrayList<CasteWiseResultVO>();
+	try{
+		
+		List<Object[]> list = nominationDAO.getCandidateCasteResult(electionId);
+		Set<Long> constituencyIds = new java.util.HashSet<Long>();
+		if(list != null && list.size() > 0)
 		{
-			CasteWiseResultVO mainVo = new CasteWiseResultVO();
-			if(constituencyIds.add((Long)params[0]))
+		
+			for(Object[] params : list)
 			{
-			mainVo.setId((Long)params[0]);
-			mainVo.setName(params[1].toString());
-			resultList.add(mainVo);
+				CasteWiseResultVO mainVo = new CasteWiseResultVO();
+				if(constituencyIds.add((Long)params[0]))
+				{
+				mainVo.setId((Long)params[0]);
+				mainVo.setName(params[1].toString());
+				resultList.add(mainVo);
+				}
 			}
-		}
-		//List<CasteWiseResultVO> candidatesList = new ArrayList<CasteWiseResultVO>();
-		for(Object[] params : list)
-		{
-			CasteWiseResultVO constituency = getConstituencyVo(resultList,(Long)params[0]);
-			if(constituency != null && constituency.getCandidateList().size() < 3)
+			//List<CasteWiseResultVO> candidatesList = new ArrayList<CasteWiseResultVO>();
+			for(Object[] params : list)
 			{
-				CasteWiseResultVO candidateVo = new CasteWiseResultVO();
-				candidateVo.setId((Long)params[2]);
-				candidateVo.setName(params[3] != null ? params[3].toString() : "" +" "+ params[4] != null ? params[4].toString() : "");
+				CasteWiseResultVO constituency = getConstituencyVo(resultList,(Long)params[0]);
+				if(constituency != null && constituency.getCandidateList().size() < 3)
+				{
+					CasteWiseResultVO candidateVo = new CasteWiseResultVO();
+					candidateVo.setId((Long)params[2]);
+					candidateVo.setName(params[3] != null ? params[3].toString() : "" +" "+ params[4] != null ? params[4].toString() : "");
+					
+					candidateVo.setPartyId((Long)params[5]);
+					candidateVo.setParty(params[6].toString());
+					if((Long)params[7] == 1)
+					{
+					candidateVo.setStatus("WINNER");
+					}
+					else if((Long)params[7] != 1)
+					{
+						candidateVo.setStatus("RUNNER - "+((Long)params[7] - 1));	
+					}
+					if(params[8] != null)
+					{
+					Double votes = new Double(params[8].toString());
+					candidateVo.setVotes(votes.longValue());
+					}
+					constituency.getCandidateList().add(candidateVo);
+				}
+			}
+			
+		}
+		
+		List<Object[]> list1 = constiCasteGroupPercDAO.getConstituencyCastePer();
+		if(list1 != null && list1.size() > 0)
+		{
+			for(Object[] params : list1)
+			{
+				CasteWiseResultVO constituency = getConstituencyVo(resultList,(Long)params[0]);
+				if(constituency != null && constituency.getCasteList().size() < 5)
+				{
+					SelectOptionVO castVo = new SelectOptionVO();
+					castVo.setId((Long)params[1]);
+					castVo.setName(params[2] != null ? params[2].toString() : "");
+					Double votesPerc = new Double(params[3].toString());
+					String percentage = new BigDecimal(votesPerc)
+						.setScale(2,BigDecimal.ROUND_HALF_UP).toString();	
+					castVo.setPercentage(percentage !=null ? percentage :"0.0");
 				
-				candidateVo.setPartyId((Long)params[5]);
-				candidateVo.setParty(params[6].toString());
-				if((Long)params[7] == 1)
-				{
-				candidateVo.setStatus("WINNER");
+					constituency.getCasteList().add(castVo);
 				}
-				else if((Long)params[7] != 1)
-				{
-					candidateVo.setStatus("RUNNER - "+((Long)params[7] - 1));	
-				}
-				if(params[8] != null)
-				{
-				Double votes = new Double(params[8].toString());
-				candidateVo.setVotes(votes.longValue());
-				}
-				constituency.getCandidateList().add(candidateVo);
 			}
 		}
 		
 	}
-	
-	List<Object[]> list1 = constiCasteGroupPercDAO.getConstituencyCastePer();
-	if(list1 != null && list1.size() > 0)
-	{
-		for(Object[] params : list1)
-		{
-			CasteWiseResultVO constituency = getConstituencyVo(resultList,(Long)params[0]);
-			if(constituency != null && constituency.getCasteList().size() < 5)
-			{
-				SelectOptionVO castVo = new SelectOptionVO();
-				castVo.setId((Long)params[1]);
-				castVo.setName(params[2] != null ? params[2].toString() : "");
-				Double votesPerc = new Double(params[3].toString());
-				String percentage = new BigDecimal(votesPerc)
-					.setScale(2,BigDecimal.ROUND_HALF_UP).toString();	
-				castVo.setPercentage(percentage !=null ? percentage :"0.0");
-			
-				constituency.getCasteList().add(castVo);
-			}
-		}
+	catch (Exception e) {
+		e.printStackTrace();
 	}
-	
-}
-catch (Exception e) {
-	e.printStackTrace();
-}
-return resultList;
-}
+	return resultList;
+	}
 
 public CasteWiseResultVO getConstituencyVo(List<CasteWiseResultVO> resultList,Long constituencyId)
 {
@@ -1049,10 +1053,16 @@ try{
 					    int totalcount=older+younger+female+male;
 					    
 					    //calculate percentages 
-					    float olderPer=Float.valueOf(roundTo2DigitsFloatValue(((float)older*100)/(float)totalcount));
+					   /* float olderPer=Float.valueOf(roundTo2DigitsFloatValue(((float)older*100)/(float)totalcount));
 					    float youngerPer= Float.valueOf(roundTo2DigitsFloatValue(((float)younger*100)/(float)totalcount));
 					    float femalePer=Float.valueOf(roundTo2DigitsFloatValue(((float)female*100)/(float)totalcount));
-					    float malePer=Float.valueOf(roundTo2DigitsFloatValue(((float)male*100)/(float)totalcount));
+					    float malePer=Float.valueOf(roundTo2DigitsFloatValue(((float)male*100)/(float)totalcount));*/
+					    float olderPer=genericVO.getElderPercent();
+					    
+					    float youngerPer= genericVO.getYoungerPercent();
+					    float femalePer=genericVO.getFemalePercent();
+					    float malePer=genericVO.getMalePercent();
+					    
 					    
 					    //calculate count from percentages middleageMaleVoters+middleAgeFemaleVoters+youngVOters+yeldervoters;
 					  
