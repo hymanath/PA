@@ -5042,15 +5042,16 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 				    			 resultFileVO.setCount(0);
 				    		 }		
 			    	}
-			    	else
-			       list = fileDAO.getAllTheNewsForAUserBasedByUserIdForALocation(type, fileVO.getUserId(), fromDate, toDate, fileVO.getLocationId(), fileVO.getLocationVal(),ids,fileVO.getImportanceId(),fileVO.getStartIndex(),fileVO.getMaxResult());
-			       
-			    	Long count = fileDAO.getAllTheNewsForAUserBasedByUserIdForALocationCount(type, fileVO.getUserId(), fromDate, toDate, fileVO.getLocationId(), fileVO.getLocationVal(),ids);
-			    	if(count != null){
-			    		   resultFileVO.setCount(count.intValue());
-			    		 }else{
-			    			 resultFileVO.setCount(0);
-			    		 }	
+			    	else{
+				       list = fileDAO.getAllTheNewsForAUserBasedByUserIdForALocation(type, fileVO.getUserId(), fromDate, toDate, fileVO.getLocationId(), fileVO.getLocationVal(),ids,fileVO.getImportanceId(),fileVO.getStartIndex(),fileVO.getMaxResult());
+				       
+				    	Long count = fileDAO.getAllTheNewsForAUserBasedByUserIdForALocationCount(type, fileVO.getUserId(), fromDate, toDate, fileVO.getLocationId(), fileVO.getLocationVal(),ids);
+				    	if(count != null){
+				    		   resultFileVO.setCount(count.intValue());
+				    		 }else{
+				    			 resultFileVO.setCount(0);
+				    		 }	
+			    	}
 			    }
 				resultList = setDataForAllLocations(list,fileVO.getUserId());
 				 resultFileVO.setFileVOList(resultList);
