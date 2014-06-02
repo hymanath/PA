@@ -2843,7 +2843,7 @@ public GenericVO getparticipatedPartiesInLocation(Long electionId,List<Long> reg
     public Map<String,String> getConstituencyDetaisByRegionid(Long regionId)
     {
 		LOG.debug("Entered into the getConstituencyDetaisByRegionid service method");
-		Map<String,String> constituenciesMap = new HashMap<String, String>();
+		Map<String,String> constituenciesMap = new LinkedHashMap<String, String>();
     	
     	try {
         	List<Long> regionIds = new ArrayList<Long>();
