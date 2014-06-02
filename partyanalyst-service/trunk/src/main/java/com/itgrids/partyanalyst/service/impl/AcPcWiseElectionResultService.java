@@ -1,16 +1,19 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.jfree.util.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
@@ -20,7 +23,9 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
+import com.itgrids.partyanalyst.dao.IPartyTrendsDAO;
 import com.itgrids.partyanalyst.dao.IStateSubRegionDistrictDAO;
+import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CasteWiseResultVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
@@ -59,6 +64,11 @@ public class AcPcWiseElectionResultService implements IAcPcWiseElectionResultSer
 	@Autowired IConstiCasteGroupPercDAO constiCasteGroupPercDAO;
 	
 	@Autowired WebServiceClient webServiceClient;
+	
+	@Autowired 	private IVoterAgeInfoDAO voterAgeInfoDAO;
+    
+	@Autowired 	private IPartyTrendsDAO partyTrendsDAO;
+
 	
 	public List<BasicVO> getPartyWiseComperassionResult(Long stateId,Long electionId,List<Long> partyIds,Long electionScopeId,String scope)
 	{
@@ -945,15 +955,174 @@ try{
 		try 
 		{
 			returnList = webServiceClient.buildGenderWiseDetails(partyId, constituencyId, surveyIds);
+			try {
+			setGendersTables(returnList, constituencyId);
+			}catch (Exception e) {
+				 LOG.error(" Exception Occured in getGenderWiseSurveyReport() method setting table dta, Exception - ",e);
+			}
 		} 
 		catch (Exception e)
 		{
 			 LOG.error(" Exception Occured in getGenderWiseSurveyReport() method, Exception - ",e);
 		}
 		
-		return returnList;
+		return returnList;	//List<Object[]> voterAgeInfoList = voterAgeInfoDAO.getVoterAgeInfoListByconstituency(181L, 10l);
+
 		
 	}
 	
+	// get total votes ,votes pollled , male count,femalecount,young voter count and elder voters count 
+	
+	//
+	public void setGendersTables(List<com.itgrids.survey.soa.endpoints.GenericVO> vo,Long constId)
+	{
+		
+			  Long totalVoters=0L;     
+			  Long youngVOters=0L;
+			  Long yeldervoters=0L;
+			  Long middleageMaleVoters=0L;
+			  Long middleAgeFemaleVoters=0L;
+			 
+		       Long totalVotersCumm=0L;     
+			  Long youngVOtersCumm=0L;
+			  Long yeldervotersCumm=0L;
+			  Long middleageMaleVotersCumm=0L;
+			  Long middleAgeFemaleVotersCumm=0L;
+			  
+			  
+			//constitituency voter details
+				
+				
+				
+				//get totalvotes and votes polled
+				List<Object[]> objs=partyTrendsDAO.getVotesPolledAndTotalVotesForConst(258L, 1L, constId);
+				
+				List<Object[]> voterAgeInfoList = voterAgeInfoDAO.getVoterAgeInfoListByconstituency(constId, 10l);
+				List<Object[]>  middleagegenders =partyTrendsDAO.getGendercountBetweenAgeGroup(constId, 10l, 23, 60);
+				
+				
+				for (Object[] objects : voterAgeInfoList) {
+					 long ageId=Long.valueOf(objects[0].toString());
+				     long longAgeValue=Long.valueOf(objects[2].toString());
+				/*	
+				     if(ageId==1L ||ageId==6L)
+					total=total+longAgeValue;*/
+					
+					if(ageId==1L)
+						youngVOters=longAgeValue;
+					if(ageId==6L)
+						yeldervoters=longAgeValue;
+				}
+		      for (Object[] objects : middleagegenders) {
+		    	  
+		    	  System.out.println(objects[1]+"==="+objects[0]);
+		    	  if(objects[0].toString().equalsIgnoreCase("M"))
+		    		  middleageMaleVoters=Long.valueOf(objects[1].toString());
+		    	  else
+		    		  middleAgeFemaleVoters=Long.valueOf(objects[1].toString());
+				
+			}
+				//System.out.println(total);
+				System.out.println(objs.get(0)[2]+"==="+objs.get(0)[1]);
+				System.out.println(middleageMaleVoters+"=="+middleAgeFemaleVoters+"="+youngVOters+"=="+yeldervoters);
+				long total=middleageMaleVoters+middleAgeFemaleVoters+youngVOters+yeldervoters;
+				
+/*				//124","138","150","158"
+				ArrayList<Long> al= new ArrayList<Long>();
+				al.add(124L);
+				al.add(138L);
+				al.add(150L);
+				al.add(158L);
+				//set these data to genricvo
+				List<GenericVO>  vo = new WebServiceClient().buildGenderWiseDetails(872L, 232L, al);
+				System.out.println(vo.size());*/
+				
+				    for (com.itgrids.survey.soa.endpoints.GenericVO genericVO : vo) {
+				    	
+					     System.out.println(genericVO);
+					  
+					    int older= genericVO.getOlderCount().intValue();
+					    int younger= genericVO.getYoungerCount().intValue();
+					    int female= genericVO.getFemaleCount().intValue();
+					    int male= genericVO.getMaleCount().intValue();
+					    
+					    int totalcount=older+younger+female+male;
+					    
+					    //calculate percentages 
+					    float olderPer=Float.valueOf(roundTo2DigitsFloatValue(((float)older*100)/(float)totalcount));
+					    float youngerPer= Float.valueOf(roundTo2DigitsFloatValue(((float)younger*100)/(float)totalcount));
+					    float femalePer=Float.valueOf(roundTo2DigitsFloatValue(((float)female*100)/(float)totalcount));
+					    float malePer=Float.valueOf(roundTo2DigitsFloatValue(((float)male*100)/(float)totalcount));
+					    
+					    //calculate count from percentages middleageMaleVoters+middleAgeFemaleVoters+youngVOters+yeldervoters;
+					  
+					    int olderFromTotal= (int)(olderPer*yeldervoters)/100;
+					    int youngerFromTotal=  (int)(youngerPer*youngVOters)/100;
+					    int femaleFromTotal=  (int)(femalePer*middleAgeFemaleVoters)/100;
+					    int maleFromTotal= (int)(malePer*middleageMaleVoters)/100;
+					    
+					    //survey based total 
+					    
+					    genericVO.setOlderFromTotal(olderFromTotal);
+					    genericVO.setYoungerFromTotal(youngerFromTotal);
+					    genericVO.setFemaleFromTotal(femaleFromTotal);
+					    genericVO.setMaleFromTotal(maleFromTotal);
+					    
+					    
+					    //actual counts from booth publication voter
+					    genericVO.setActualTotal(total);
+					    genericVO.setActualYelderVoters(yeldervoters);
+					    genericVO.setActualYoungVoters(youngVOters);
+					    genericVO.setActualFemaleCount(middleAgeFemaleVoters);
+					    genericVO.setActualmaleCount(middleageMaleVoters);
+					    
+					    
+					    youngVOtersCumm=youngVOtersCumm+youngerFromTotal;
+					    yeldervotersCumm=yeldervotersCumm+olderFromTotal;
+					    middleageMaleVotersCumm=middleageMaleVotersCumm+maleFromTotal;
+					    middleAgeFemaleVotersCumm=middleAgeFemaleVotersCumm+femaleFromTotal;
+					    
+					    //set to vo
+					    
+				          }
+				    int avg=vo.size();
+				    youngVOtersCumm=youngVOtersCumm/avg;
+				    yeldervotersCumm=yeldervotersCumm/avg;
+				    middleageMaleVotersCumm=middleageMaleVotersCumm/avg;
+				    middleAgeFemaleVotersCumm=middleAgeFemaleVotersCumm/avg;
+				    for (com.itgrids.survey.soa.endpoints.GenericVO genericVO : vo) {
+				  
+				    genericVO.setYeldervotersCumm(yeldervotersCumm);
+				    genericVO.setYoungVOtersCumm(youngVOtersCumm);
+				    genericVO.setMiddleAgeFemaleVotersCumm(middleAgeFemaleVotersCumm);
+				    genericVO.setMiddleageMaleVotersCumm(middleageMaleVotersCumm);
+				    
+				    }
+				    
+					System.out.println(vo.size());
+	}
+	public static String roundTo2DigitsFloatValue(Float number){
+		  
+		  Log.debug("Entered into the roundTo2DigitsFloatValue service method");
+		  
+		  String result = "";
+		  try
+		  {
+			  
+			
+			NumberFormat f = NumberFormat.getInstance(Locale.ENGLISH);  
+			f.setMaximumFractionDigits(2);  
+			f.setMinimumFractionDigits(2);
+			
+			result =  f.format(number);
+		  }catch(Exception e)
+		  {
+			  Log.error("Exception raised in roundTo2DigitsFloatValue service method");
+			  e.printStackTrace();
+		  }
+		  return result;
+	}
+
+
 }
 
