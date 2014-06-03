@@ -879,40 +879,70 @@ function genderWiseTable(result)
 	$("#genderWiseConstSummary").html(str1);
 		$("#genderWiseConstSurveySummary").html(str2);
 	
-	
-	
-	for(var i in result)
-	{
 		var str = '';
-		if(i == 0)
 			
 		str+='<h4 style="color: #0088CC;fontWeight:bold;font-family:verdana;font-size:12px">Individual Survey Summary Table(s)</h4>';
 		str += '<table class="table table-bordered" style="margin-left:64px;width:50%;">';
-		str += '<tr>';
+		str += '<th>';
+		str += '<th></th>';
+		str += '<th colspan="3">Male</th>';
+		str += '<th colspan="3">Female</th>';
+		str += '<th colspan="3">Youngers</th>';
+		str += '<th colspan="3">Elders</th>';
+		str += '<th>Total</th>';
+		str += '</th>';
+		str += '<th>';
 		str += '<th>Survey Name</th>';
-		str += '<th>Male</th>';
-		str += '<th>Female</th>';
-		str += '<th>18 to 25</th>';
-		str += '<th>Above 60</th>';
-		str += '</tr>';
+		str += '<th >Total Male Samples</th>';
+		str += '<th >Tdp Male Samples</th>';
+		str += '<th >Male Count</th>';
+		str += '<th >Total Female Samples</th>';
+		str += '<th >Tdp Female Samples</th>';
+		str += '<th >Female</th>';
+		str += '<th >Total Youngers Samples</th>';
+		str += '<th >Tdp Youngers Samples</th>';
+		str += '<th >Youngers</th>';
+		str += '<th >Total Elders Samples</th>';
+		str += '<th >Tdp Elders Samples</th>';
+		str += '<th>Elders</th>';
+		str += '<th>Total</th>';
+		str += '</th>';
+	
+	for(var i in result)
+	{
+	
 
 	str += '<tr>';
 	str += '<td>'+result[i].name+'</td>';
+	
+	str += '<td>'+result[i].actualmaleCountPercentage+'('+result[i].surveyMalePercent+')</td>';
+	str += '<td>'+result[i].maleCount+'('+result[i].malePercent+')</td>';
 	str += '<td>'+result[i].maleFromTotal+'</td>';
+	
+	str += '<td>'+result[i].actualFemaleCountPercentage+'('+result[i].surveyFemalePercent+')</td>';
+	str += '<td>'+result[i].femaleCount+'('+result[i].femalePercent+')</td>';
 	str += '<td>'+result[i].femaleFromTotal+'</td>';
+	
+	
+	str += '<td>'+result[i].actualYoungVotersPercentage+'('+result[i].surveyYoungerPercent+')</td>';
+	str += '<td>'+result[i].youngerCount+'('+result[i].youngerPercent+')</td>';
 	str += '<td>'+result[i].youngerFromTotal+'</td>';
+	
+	str += '<td>'+result[i].actualYelderVotersPercentage+'('+result[i].surveyElderPercent+')</td>';
+	str += '<td>'+result[i].olderCount+'('+result[i].elderPercent+')</td>';
 	str += '<td>'+result[i].olderFromTotal+'</td>';
 	
+	str += '<td>'+result[i].totalFromTotal+'</td>';
 	str += '</tr>';
-	str += '</table>';
+	
 	//$("#genderWiseConstSummary").html(str);
-	var strId="individual"+i;
+	//var strId="individual"+i;
 	
-	$("#genderWiseTableIndividual").append("<div id="+strId+"></div>")
-	$("#"+strId).html(str);
+	//$("#genderWiseTableIndividual").append("<div id="+strId+"></div>")
+	//$("#"+strId).html(str);
 	}
-	
-	
+	str += '</table>';
+	$("#genderWiseTableIndividual").html(str);
 	
 }
 /* end */
