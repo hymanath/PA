@@ -1674,7 +1674,7 @@ function getAllMptcYears()
 		electionYearSelect+="<b>Select a Election Year :&nbsp;&nbsp;&nbsp; </b>";
 		electionYearSelect+='<select class="selectWidth" style="width:70px;" id="staticGrpSelectBox" name="mptcYears" onchange="funChangeReq();getMptcPartyDetails(this.options[this.selectedIndex].text)">';	   
 
-		for(var i in tehsilElections.zptcElectionYears)
+		for(var i in tehsilElections.mptcElectionYears)
 		{			   
 			electionYearSelect+='<option value='+tehsilElections.mptcElectionYears[i].id+'>'+tehsilElections.mptcElectionYears[i].value+'</option>';
 		}
