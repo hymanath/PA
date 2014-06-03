@@ -1108,7 +1108,7 @@ try{
 					    genericVO.setYoungerFromTotal(youngerFromTotal);
 					    genericVO.setFemaleFromTotal(femaleFromTotal);
 					    genericVO.setMaleFromTotal(maleFromTotal);
-					    genericVO.setTotalFromTotal((long)olderFromTotal+youngerFromTotal+femaleFromTotal+maleFromTotal);
+					    genericVO.setTotalFromTotal(olderFromTotal+youngerFromTotal+femaleFromTotal+maleFromTotal);
 					    
 					    //actual counts from booth publication voter
 					    genericVO.setActualTotal(total);
