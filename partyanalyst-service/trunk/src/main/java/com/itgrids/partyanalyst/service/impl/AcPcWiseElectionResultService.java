@@ -1108,7 +1108,7 @@ try{
 					    genericVO.setYoungerFromTotal(youngerFromTotal);
 					    genericVO.setFemaleFromTotal(femaleFromTotal);
 					    genericVO.setMaleFromTotal(maleFromTotal);
-					    
+					    genericVO.setTotalFromTotal((long)olderFromTotal+youngerFromTotal+femaleFromTotal+maleFromTotal);
 					    
 					    //actual counts from booth publication voter
 					    genericVO.setActualTotal(total);
@@ -1163,6 +1163,8 @@ try{
 					    
 				          }
 				    int avg=vo.size();
+				    if(avg==0)
+				    	return;
 				    youngVOtersCumm=youngVOtersCumm/avg;
 				    yeldervotersCumm=yeldervotersCumm/avg;
 				    middleageMaleVotersCumm=middleageMaleVotersCumm/avg;
@@ -1173,7 +1175,7 @@ try{
 				    genericVO.setYoungVOtersCumm(youngVOtersCumm);
 				    genericVO.setMiddleAgeFemaleVotersCumm(middleAgeFemaleVotersCumm);
 				    genericVO.setMiddleageMaleVotersCumm(middleageMaleVotersCumm);
-				    
+				    genericVO.setTotalVotersCumm(yeldervotersCumm+youngVOtersCumm+middleAgeFemaleVotersCumm+middleageMaleVotersCumm);
 				    }
 				    
 					System.out.println(vo.size());
