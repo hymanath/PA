@@ -1052,13 +1052,44 @@ try{
 					    
 					    int totalcount=older+younger+female+male;
 					    
+					    // Count of Male/Female Younger/Elder
+					    
+					    int genMaleCount = 0;
+					    int genFemaleCount = 0;
+					    int yngerCount = 0;
+					    int eldersCount = 0;
+					    
+					    if(genericVO.getActualmaleCountPercentage()!=null){
+					    	genMaleCount = genericVO.getActualmaleCountPercentage().intValue();
+					    }
+					    if(genericVO.getActualFemaleCountPercentage()!=null){
+					    	genFemaleCount = genericVO.getActualFemaleCountPercentage().intValue();
+					    }
+					    if(genericVO.getActualYoungVotersPercentage()!=null){
+					    	yngerCount = genericVO.getActualYoungVotersPercentage().intValue();
+					    }
+					    if(genericVO.getActualYelderVotersPercentage()!=null){
+					    	eldersCount = genericVO.getActualYelderVotersPercentage().intValue();
+					    }
+					    
+					    int ttlCount = genMaleCount + genFemaleCount + yngerCount + eldersCount;
+					    
+					    float genMalePercent = Float.valueOf(roundTo2DigitsFloatValue(((float)genMaleCount*100)/(float)ttlCount));
+					    float genFemalePercent = Float.valueOf(roundTo2DigitsFloatValue(((float)genFemaleCount*100)/(float)ttlCount));
+					    float yngerPercent = Float.valueOf(roundTo2DigitsFloatValue(((float)yngerCount*100)/(float)ttlCount));
+					    float elderPercent = Float.valueOf(roundTo2DigitsFloatValue(((float)eldersCount*100)/(float)ttlCount));
+					    
+					    genericVO.setSurveyMalePercent(genMalePercent);
+					    genericVO.setSurveyFemalePercent(genFemalePercent);
+					    genericVO.setSurveyYoungerPercent(yngerPercent);
+					    genericVO.setSurveyElderPercent(elderPercent);
+					    
 					    //calculate percentages 
 					   /* float olderPer=Float.valueOf(roundTo2DigitsFloatValue(((float)older*100)/(float)totalcount));
 					    float youngerPer= Float.valueOf(roundTo2DigitsFloatValue(((float)younger*100)/(float)totalcount));
 					    float femalePer=Float.valueOf(roundTo2DigitsFloatValue(((float)female*100)/(float)totalcount));
 					    float malePer=Float.valueOf(roundTo2DigitsFloatValue(((float)male*100)/(float)totalcount));*/
 					    float olderPer=genericVO.getElderPercent();
-					    
 					    float youngerPer= genericVO.getYoungerPercent();
 					    float femalePer=genericVO.getFemalePercent();
 					    float malePer=genericVO.getMalePercent();
@@ -1086,6 +1117,42 @@ try{
 					    genericVO.setActualFemaleCount(middleAgeFemaleVoters);
 					    genericVO.setActualmaleCount(middleageMaleVoters);
 					    
+					    float actlMalePercent = Float.valueOf(roundTo2DigitsFloatValue(((float)genericVO.getActualmaleCount()*100)/(float)genericVO.getActualTotal()));
+					    float actlFemalePercent = Float.valueOf(roundTo2DigitsFloatValue(((float)genericVO.getActualFemaleCount()*100)/(float)genericVO.getActualTotal()));
+					    float actlYngerPercent = Float.valueOf(roundTo2DigitsFloatValue(((float)genericVO.getActualYoungVoters()*100)/(float)genericVO.getActualTotal()));
+					    float actlElderPercent = Float.valueOf(roundTo2DigitsFloatValue(((float)genericVO.getActualYelderVoters()*100)/(float)genericVO.getActualTotal()));
+					    
+					    
+					    
+					    if( genMalePercent < actlMalePercent){
+					    	Double per = calculateErrorPerc(genericVO.getActualmaleCount(),(long)male,(double)((float)male*100/(float)genMaleCount));
+					    	float prevMaleper=genericVO.getMalePercent();
+					    	genericVO.setMalePercent(Float.valueOf(roundTo2DigitsFloatValue(prevMaleper+per.floatValue())));
+					    	
+					    	
+						    
+						    
+						    
+					    }
+					    
+					    if( genFemalePercent < actlFemalePercent){
+					    	Double per = calculateErrorPerc(genericVO.getActualFemaleCount(),(long)female,(double)((float)female*100/(float)genFemaleCount));
+					    	float prevFemalePer=genericVO.getFemalePercent();
+					    	genericVO.setFemalePercent(Float.valueOf(roundTo2DigitsFloatValue(prevFemalePer+per.floatValue())));
+					    	
+					    }
+					    
+					    if( yngerPercent < actlYngerPercent){
+					    	Double per = calculateErrorPerc(genericVO.getActualYoungVoters(),(long)younger,(double)((float)younger*100/(float)yngerCount));
+					    	float prevYoungerPer= genericVO.getYoungerPercent();
+					    	genericVO.setYoungerPercent(Float.valueOf(roundTo2DigitsFloatValue(prevYoungerPer+per.floatValue())));
+					    }
+					    
+					    if( elderPercent < actlElderPercent){
+					    	Double per = calculateErrorPerc(genericVO.getActualYelderVoters(),(long)older,(double)((float)older*100/(float)eldersCount));
+					    	float prevElderPer=genericVO.getElderPercent();
+					    	genericVO.setElderPercent(Float.valueOf(roundTo2DigitsFloatValue(prevElderPer+per.floatValue())));
+					    }
 					    
 					    youngVOtersCumm=youngVOtersCumm+youngerFromTotal;
 					    yeldervotersCumm=yeldervotersCumm+olderFromTotal;
@@ -1111,6 +1178,19 @@ try{
 				    
 					System.out.println(vo.size());
 	}
+	
+	
+	// Example : NN -- 80000( Males )  nn -- 5000 ( in 10000 Samples Males Supporting to TDP ) pp -- (5000*100/10000) =50% 
+	public Double calculateErrorPerc(Long NN,Long nn,Double pp){
+		try{
+			Double moe=(196000*Math.sqrt((NN-nn)/(NN-1))*Math.sqrt(pp*(1-pp)/nn))/1000;
+			return moe;
+		}catch(Exception e){
+			LOG.error("Exception rised in calculateErrorPerc",e);
+		}
+			return 0d;
+		}
+	
 	public static String roundTo2DigitsFloatValue(Float number){
 		  
 		  Log.debug("Entered into the roundTo2DigitsFloatValue service method");
