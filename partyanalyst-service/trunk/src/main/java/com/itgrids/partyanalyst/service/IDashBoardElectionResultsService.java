@@ -25,7 +25,7 @@ public interface IDashBoardElectionResultsService {
 	
 	public DashBoardResultsVO getPartyWiseWinningSeatsPercentage(Long electionId, List<Long> locationIds, Long scopeId,
 			Long percent, Long partyId);
-	public  Object[] getTop5CastePeopleOpnionOnParty(Long constituencyId,List<Long> surveyIds);
+	public  List<OptionVO> getTop5CastePeopleOpnionOnParty(Long constituencyId,List<Long> surveyIds);
 	
     public String getWinningCandidateInfoForAConstituency(Long constituencyId);
     

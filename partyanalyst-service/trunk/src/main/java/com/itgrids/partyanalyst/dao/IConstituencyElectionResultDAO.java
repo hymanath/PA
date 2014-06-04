@@ -81,5 +81,5 @@ public interface IConstituencyElectionResultDAO extends GenericDao<ConstituencyE
 	
 	 public List<Object[]> findTotalVotesAndPolledVotesAndVotesPercentage(Long electionId,Long constituencyId);
 
-	 public Double getTotalValidVotes(Long electionId,Long constituencyId);
+	 public List<Object[]> getTotalValidVotes(Long electionId,Long constituencyId);
 }
