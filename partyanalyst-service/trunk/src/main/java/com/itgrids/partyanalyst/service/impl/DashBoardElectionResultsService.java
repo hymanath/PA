@@ -2060,15 +2060,17 @@ List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId,
    
     
     
-    public Object[] getTop5CastePeopleOpnionOnParty(Long constituencyId,List<Long> surveyIds){
-    	Object[] returnArray = new Object[2];
+    public List<OptionVO> getTop5CastePeopleOpnionOnParty(Long constituencyId,List<Long> surveyIds){
+     List<OptionVO> surveyDataCasteWise = null;
+     try{
     	List<Long> partyIds = new ArrayList<Long>();
-    	List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>();
     	partyIds.add(163l);
     	partyIds.add(872l);
     	//0 partyId,1 votesearned
     	List<Object[]> candidateResult = candidateResultDAO.getResultByPartyIds(partyIds,constituencyId,258l);
-    	Double totalValidVotes = constituencyElectionResultDAO.getTotalValidVotes(258l, constituencyId);
+    	List<Object[]> totalValidVotesDetails = constituencyElectionResultDAO.getTotalValidVotes(258l, constituencyId);
+    	Double constituencyTotalVoters = (Double)totalValidVotesDetails.get(0)[0];
+    	Double totalValidVotes = (Double)totalValidVotesDetails.get(0)[1];
     	Long totalVotes = null;
     	if(candidateResult.size() == 1){
     		totalVotes = ((Double)candidateResult.get(0)[1]).longValue();
@@ -2079,8 +2081,9 @@ List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId,
     			}
     		}
     	}
-    	List<OptionVO> surveyDataCasteWise = webServiceClient.getTop5CastePeopleOpnionOnParty(constituencyId,surveyIds);
+    	 surveyDataCasteWise = webServiceClient.getTop5CastePeopleOpnionOnParty(constituencyId,surveyIds,constituencyTotalVoters.longValue());
     	OptionVO.CastePercs values = surveyDataCasteWise.get(0).getCastePercs();
+    	surveyDataCasteWise.get(0).setTotal(totalVotes);
     	LinkedHashMap<Long,Double> castePercs = new LinkedHashMap<Long,Double>();
     	LinkedHashMap<Long,Long> casteVoters = new LinkedHashMap<Long,Long>();
     	for(OptionVO.CastePercs.Entry enter:values.getEntry()){
@@ -2089,11 +2092,12 @@ List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId,
     	for(Long key:castePercs.keySet()){
     		casteVoters.put(key, ((Double)(totalValidVotes*castePercs.get(key)/100)).longValue());
     	}
-    	List<Double> avgperc = surveyDataCasteWise.get(0).getAvgPercs();
+    	List<Long> topCastes = surveyDataCasteWise.get(0).getAverageBoothIdsList();
+      /*List<Double> avgperc = surveyDataCasteWise.get(0).getAvgPercs();
     	SelectOptionVO cumulativeVo = new SelectOptionVO();
     	cumulativeVo.setName("Cumulative Of All Surveys");
     	List<Long> cumulativeVotes = new ArrayList<Long>();
-    	List<Long> topCastes = surveyDataCasteWise.get(0).getAverageBoothIdsList();
+    	
     	for(int i=0;i<avgperc.size();i++){
     		if(avgperc.get(i) != null){
     			cumulativeVotes.add(((Double)(casteVoters.get(topCastes.get(i))*avgperc.get(i)/100)).longValue());
@@ -2103,26 +2107,30 @@ List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId,
     	}
     	cumulativeVo.setLocationValuesList(cumulativeVotes);
     	cumulativeVo.setTotalCount(totalVotes.longValue());
-    	resultList.add(cumulativeVo);
+    	resultList.add(cumulativeVo);*/
     	for(OptionVO survey:surveyDataCasteWise){
     		survey.setCastePercs(null);
-    		SelectOptionVO surveyVo = new SelectOptionVO();
-    		surveyVo.setName(survey.getName());
-    		List<Long> surveyVotes = new ArrayList<Long>();
-    		List<Double> surveyperc = survey.getPercents();
+    		List<OptionVO> surveyperc = survey.getPercents();
         	for(int i=0;i<surveyperc.size();i++){
-        		if(surveyperc.get(i) != null){
-        			surveyVotes.add(((Double)(casteVoters.get(topCastes.get(i))*surveyperc.get(i)/100)).longValue());
+        		if(surveyperc.get(i).getPercentage() != null && surveyperc.get(i).getPercentage()>0){
+        			surveyperc.get(i).setGoodBoothCount(((Double)(casteVoters.get(topCastes.get(i))*surveyperc.get(i).getPercentage()/100)).longValue());
         		}else{
-        			surveyVotes.add(null);
+        			surveyperc.get(i).setGoodBoothCount(0l);
         		}
         	}
-        	surveyVo.setLocationValuesList(surveyVotes);
-        	resultList.add(surveyVo);
+            surveyperc = survey.getCorrectionPercs();
+        	for(int i=0;i<surveyperc.size();i++){
+        		if(surveyperc.get(i).getPercentage() != null && surveyperc.get(i).getPercentage()>0){
+        			surveyperc.get(i).setGoodBoothCount(((Double)(casteVoters.get(topCastes.get(i))*surveyperc.get(i).getPercentage()/100)).longValue());
+        		}else{
+        			surveyperc.get(i).setGoodBoothCount(0l);
+        		}
+        	}
     	}
-    	returnArray[0]=surveyDataCasteWise;
-    	returnArray[1]=resultList;
-    	return returnArray;
+     }catch(Exception e){
+    	 LOG.error("Exception rised in  getTop5CastePeopleOpnionOnParty",e);
+     }
+    	return surveyDataCasteWise;
     }
     
     

@@ -13,11 +13,11 @@ public class WebServiceClient {
 	private static final Logger LOG = Logger.getLogger(WebServiceClient.class);
 	//@WebServiceRef(wsdlLocation ="http://74.208.7.129/Survey1/SOAWebService?wsdl")
 	private  SOAPWebServiceEndPointImplService service=new SOAPWebServiceEndPointImplService();
-	  public List<OptionVO> getTop5CastePeopleOpnionOnParty(Long constituencyId,List<Long> surveyIds){
+	  public List<OptionVO> getTop5CastePeopleOpnionOnParty(Long constituencyId,List<Long> surveyIds,Long totalVoters){
 		  List<OptionVO> result = null;
 		  try{
 			  SOAPWebServiceEndPoint main=service.getSOAPWebServiceEndPointPort();
-				  result = main.getTop5CastePeopleOpnionOnParty(constituencyId, surveyIds);
+				  result = main.getTop5CastePeopleOpnionOnParty(constituencyId, surveyIds,totalVoters);
 				System.out.println(result.size());
 		/*	SOAPWebServiceEndPointProxy proxy=new SOAPWebServiceEndPointProxy();
 			SOAPWebServiceEndPoint  mainobj=proxy.getSOAPWebServiceEndPoint();

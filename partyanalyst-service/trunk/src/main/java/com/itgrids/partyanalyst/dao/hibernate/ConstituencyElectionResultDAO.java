@@ -244,12 +244,12 @@ public class ConstituencyElectionResultDAO extends GenericDaoHibernate<Constitue
 				" from ConstituencyElectionResult model where model.constituencyElection.election.electionId = ? and model.constituencyElection.constituency.constituencyId = ? " 
 				, params); 
 	}
-	public Double getTotalValidVotes(Long electionId,Long constituencyId){
+	public List<Object[]> getTotalValidVotes(Long electionId,Long constituencyId){
 		
-		Query query = getSession().createQuery("select model.validVotes from ConstituencyElectionResult model where  "+
+		Query query = getSession().createQuery("select model.totalVotes,model.validVotes from ConstituencyElectionResult model where  "+
 				" model.constituencyElection.election.electionId = :electionId and model.constituencyElection.constituency.constituencyId = :constituencyId "); 
 		query.setParameter("electionId", electionId);
 		query.setParameter("constituencyId", constituencyId);
-		return (Double)query.uniqueResult();
+		return query.list();
 	}
 }
