@@ -674,8 +674,8 @@ var str="";
 		 totalPerc =totalPerc+votsResult[i].percents[j].percentage;
 		errorPerc =errorPerc+votsResult[i].percents[j].correctionPerc;
      }
-	 str+="<td>"+totalPerc.toFixed(2)+"</td>";
-	 str+="<td>"+errorPerc.toFixed(2)+"</td>";
+	 str+="<td>"+totalPerc.toFixed(2)+"%</td>";
+	 str+="<td>"+errorPerc.toFixed(2)+"%</td>";
 	 if(i == 0){
 	      str+="<td rowspan='"+votsResult.length+"'>"+votsResult[0].totalPercentage+"%</td>";
 	 }
