@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -2092,7 +2093,9 @@ List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId,
     	for(Long key:castePercs.keySet()){
     		casteVoters.put(key, ((Double)(totalValidVotes*castePercs.get(key)/100)).longValue());
     	}
-    	List<Long> topCastes = surveyDataCasteWise.get(0).getAverageBoothIdsList();
+    	Double partyPerc = Double.parseDouble((new BigDecimal(totalVotes*100/totalValidVotes.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString());
+    	surveyDataCasteWise.get(0).setTotalPercentage(partyPerc);
+    	//List<Long> topCastes = surveyDataCasteWise.get(0).getAverageBoothIdsList();
       /*List<Double> avgperc = surveyDataCasteWise.get(0).getAvgPercs();
     	SelectOptionVO cumulativeVo = new SelectOptionVO();
     	cumulativeVo.setName("Cumulative Of All Surveys");
@@ -2108,7 +2111,7 @@ List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId,
     	cumulativeVo.setLocationValuesList(cumulativeVotes);
     	cumulativeVo.setTotalCount(totalVotes.longValue());
     	resultList.add(cumulativeVo);*/
-    	for(OptionVO survey:surveyDataCasteWise){
+    	/*for(OptionVO survey:surveyDataCasteWise){
     		survey.setCastePercs(null);
     		List<OptionVO> surveyperc = survey.getPercents();
         	for(int i=0;i<surveyperc.size();i++){
@@ -2126,7 +2129,7 @@ List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId,
         			surveyperc.get(i).setGoodBoothCount(0l);
         		}
         	}
-    	}
+    	}*/
      }catch(Exception e){
     	 LOG.error("Exception rised in  getTop5CastePeopleOpnionOnParty",e);
      }

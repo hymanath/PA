@@ -32,9 +32,11 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="boothOrWard" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *         &lt;element name="count" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
  *         &lt;element name="elderPercent" type="{http://www.w3.org/2001/XMLSchema}float"/>
+ *         &lt;element name="elderPercentFnl" type="{http://www.w3.org/2001/XMLSchema}float"/>
  *         &lt;element name="femaleCount" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
  *         &lt;element name="femaleFromTotal" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="femalePercent" type="{http://www.w3.org/2001/XMLSchema}float"/>
+ *         &lt;element name="femalePercentFnl" type="{http://www.w3.org/2001/XMLSchema}float"/>
  *         &lt;element name="genericVO" type="{http://endpoints.soa.survey.itgrids.com/}genericVO" minOccurs="0"/>
  *         &lt;element name="genericVOList" type="{http://endpoints.soa.survey.itgrids.com/}genericVO" maxOccurs="unbounded" minOccurs="0"/>
  *         &lt;element name="genericVOList1" type="{http://endpoints.soa.survey.itgrids.com/}genericVO" maxOccurs="unbounded" minOccurs="0"/>
@@ -42,6 +44,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="maleCount" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
  *         &lt;element name="maleFromTotal" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="malePercent" type="{http://www.w3.org/2001/XMLSchema}float"/>
+ *         &lt;element name="malePercentFnl" type="{http://www.w3.org/2001/XMLSchema}float"/>
  *         &lt;element name="middleAgeFemaleVotersCumm" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
  *         &lt;element name="middleageMaleVotersCumm" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
@@ -66,6 +69,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="youngerCount" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
  *         &lt;element name="youngerFromTotal" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="youngerPercent" type="{http://www.w3.org/2001/XMLSchema}float"/>
+ *         &lt;element name="youngerPercentFnl" type="{http://www.w3.org/2001/XMLSchema}float"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -89,9 +93,11 @@ import javax.xml.bind.annotation.XmlType;
     "boothOrWard",
     "count",
     "elderPercent",
+    "elderPercentFnl",
     "femaleCount",
     "femaleFromTotal",
     "femalePercent",
+    "femalePercentFnl",
     "genericVO",
     "genericVOList",
     "genericVOList1",
@@ -99,6 +105,7 @@ import javax.xml.bind.annotation.XmlType;
     "maleCount",
     "maleFromTotal",
     "malePercent",
+    "malePercentFnl",
     "middleAgeFemaleVotersCumm",
     "middleageMaleVotersCumm",
     "name",
@@ -122,7 +129,8 @@ import javax.xml.bind.annotation.XmlType;
     "youngVOtersCumm",
     "youngerCount",
     "youngerFromTotal",
-    "youngerPercent"
+    "youngerPercent",
+    "youngerPercentFnl"
 })
 public class GenericVO {
 
@@ -139,9 +147,11 @@ public class GenericVO {
     protected boolean boothOrWard;
     protected Long count;
     protected float elderPercent;
+    protected float elderPercentFnl;
     protected Long femaleCount;
     protected int femaleFromTotal;
     protected float femalePercent;
+    protected float femalePercentFnl;
     protected GenericVO genericVO;
     @XmlElement(nillable = true)
     protected List<GenericVO> genericVOList;
@@ -151,6 +161,7 @@ public class GenericVO {
     protected Long maleCount;
     protected int maleFromTotal;
     protected float malePercent;
+    protected float malePercentFnl;
     protected Long middleAgeFemaleVotersCumm;
     protected Long middleageMaleVotersCumm;
     protected String name;
@@ -177,6 +188,7 @@ public class GenericVO {
     protected Long youngerCount;
     protected int youngerFromTotal;
     protected float youngerPercent;
+    protected float youngerPercentFnl;
 
     /**
      * Gets the value of the actualFemaleCount property.
@@ -475,6 +487,22 @@ public class GenericVO {
     }
 
     /**
+     * Gets the value of the elderPercentFnl property.
+     * 
+     */
+    public float getElderPercentFnl() {
+        return elderPercentFnl;
+    }
+
+    /**
+     * Sets the value of the elderPercentFnl property.
+     * 
+     */
+    public void setElderPercentFnl(float value) {
+        this.elderPercentFnl = value;
+    }
+
+    /**
      * Gets the value of the femaleCount property.
      * 
      * @return
@@ -528,6 +556,22 @@ public class GenericVO {
      */
     public void setFemalePercent(float value) {
         this.femalePercent = value;
+    }
+
+    /**
+     * Gets the value of the femalePercentFnl property.
+     * 
+     */
+    public float getFemalePercentFnl() {
+        return femalePercentFnl;
+    }
+
+    /**
+     * Sets the value of the femalePercentFnl property.
+     * 
+     */
+    public void setFemalePercentFnl(float value) {
+        this.femalePercentFnl = value;
     }
 
     /**
@@ -690,6 +734,22 @@ public class GenericVO {
      */
     public void setMalePercent(float value) {
         this.malePercent = value;
+    }
+
+    /**
+     * Gets the value of the malePercentFnl property.
+     * 
+     */
+    public float getMalePercentFnl() {
+        return malePercentFnl;
+    }
+
+    /**
+     * Sets the value of the malePercentFnl property.
+     * 
+     */
+    public void setMalePercentFnl(float value) {
+        this.malePercentFnl = value;
     }
 
     /**
@@ -1212,6 +1272,22 @@ public class GenericVO {
      */
     public void setYoungerPercent(float value) {
         this.youngerPercent = value;
+    }
+
+    /**
+     * Gets the value of the youngerPercentFnl property.
+     * 
+     */
+    public float getYoungerPercentFnl() {
+        return youngerPercentFnl;
+    }
+
+    /**
+     * Sets the value of the youngerPercentFnl property.
+     * 
+     */
+    public void setYoungerPercentFnl(float value) {
+        this.youngerPercentFnl = value;
     }
 
 }
