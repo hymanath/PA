@@ -27,7 +27,7 @@ public class WebServiceClientTest  extends BaseDaoTestCase{
 		surveyIds.add(158l);
 		surveyIds.add(162l);
 		surveyIds.add(163l);
-		List<OptionVO> results = webServiceClient.getTop5CastePeopleOpnionOnParty(232l, surveyIds);
+		List<OptionVO> results = webServiceClient.getTop5CastePeopleOpnionOnParty(232l, surveyIds,200000l);
 		System.out.println(results.size());
 	}
 }

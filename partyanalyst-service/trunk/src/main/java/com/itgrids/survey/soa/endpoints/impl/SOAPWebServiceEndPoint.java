@@ -47,6 +47,7 @@ public interface SOAPWebServiceEndPoint {
 
     /**
      * 
+     * @param arg2
      * @param arg1
      * @param arg0
      * @return
@@ -60,7 +61,9 @@ public interface SOAPWebServiceEndPoint {
         @WebParam(name = "arg0", targetNamespace = "")
         Long arg0,
         @WebParam(name = "arg1", targetNamespace = "")
-        List<Long> arg1);
+        List<Long> arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        Long arg2);
 
     /**
      * 

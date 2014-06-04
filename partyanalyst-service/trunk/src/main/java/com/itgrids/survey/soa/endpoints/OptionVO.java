@@ -48,6 +48,7 @@ import javax.xml.bind.annotation.XmlType;
  *             &lt;/complexContent>
  *           &lt;/complexType>
  *         &lt;/element>
+ *         &lt;element name="correctionPercs" type="{http://endpoints.soa.survey.itgrids.com/}optionVO" maxOccurs="unbounded" minOccurs="0"/>
  *         &lt;element name="count" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
  *         &lt;element name="criteriaMatched" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *         &lt;element name="goodBoothCount" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
@@ -66,7 +67,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="partyMappingOptionId" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
  *         &lt;element name="percent" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="percentage" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/>
- *         &lt;element name="percents" type="{http://www.w3.org/2001/XMLSchema}double" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="percents" type="{http://endpoints.soa.survey.itgrids.com/}optionVO" maxOccurs="unbounded" minOccurs="0"/>
  *         &lt;element name="question" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="questionId" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
  *         &lt;element name="statusId" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
@@ -74,6 +75,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="subquestion" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="subquestionType" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="total" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
+ *         &lt;element name="totalPercentage" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/>
  *         &lt;element name="veryBadBoothCount" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
  *         &lt;element name="veryBadBoothIdsList" type="{http://www.w3.org/2001/XMLSchema}long" maxOccurs="unbounded" minOccurs="0"/>
  *         &lt;element name="veryGoodBoothCount" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
@@ -97,6 +99,7 @@ import javax.xml.bind.annotation.XmlType;
     "badBoothIdsList",
     "caste",
     "castePercs",
+    "correctionPercs",
     "count",
     "criteriaMatched",
     "goodBoothCount",
@@ -123,6 +126,7 @@ import javax.xml.bind.annotation.XmlType;
     "subquestion",
     "subquestionType",
     "total",
+    "totalPercentage",
     "veryBadBoothCount",
     "veryBadBoothIdsList",
     "veryGoodBoothCount",
@@ -143,6 +147,8 @@ public class OptionVO {
     protected String caste;
     @XmlElement(required = true)
     protected OptionVO.CastePercs castePercs;
+    @XmlElement(nillable = true)
+    protected List<OptionVO> correctionPercs;
     protected Long count;
     protected boolean criteriaMatched;
     protected Long goodBoothCount;
@@ -164,7 +170,7 @@ public class OptionVO {
     protected String percent;
     protected Double percentage;
     @XmlElement(nillable = true)
-    protected List<Double> percents;
+    protected List<OptionVO> percents;
     protected String question;
     protected Long questionId;
     protected Long statusId;
@@ -173,6 +179,7 @@ public class OptionVO {
     protected String subquestion;
     protected String subquestionType;
     protected Long total;
+    protected Double totalPercentage;
     protected Long veryBadBoothCount;
     @XmlElement(nillable = true)
     protected List<Long> veryBadBoothIdsList;
@@ -386,6 +393,35 @@ public class OptionVO {
      */
     public void setCastePercs(OptionVO.CastePercs value) {
         this.castePercs = value;
+    }
+
+    /**
+     * Gets the value of the correctionPercs property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the correctionPercs property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getCorrectionPercs().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link OptionVO }
+     * 
+     * 
+     */
+    public List<OptionVO> getCorrectionPercs() {
+        if (correctionPercs == null) {
+            correctionPercs = new ArrayList<OptionVO>();
+        }
+        return this.correctionPercs;
     }
 
     /**
@@ -840,13 +876,13 @@ public class OptionVO {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link Double }
+     * {@link OptionVO }
      * 
      * 
      */
-    public List<Double> getPercents() {
+    public List<OptionVO> getPercents() {
         if (percents == null) {
-            percents = new ArrayList<Double>();
+            percents = new ArrayList<OptionVO>();
         }
         return this.percents;
     }
@@ -1022,6 +1058,30 @@ public class OptionVO {
      */
     public void setTotal(Long value) {
         this.total = value;
+    }
+
+    /**
+     * Gets the value of the totalPercentage property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Double }
+     *     
+     */
+    public Double getTotalPercentage() {
+        return totalPercentage;
+    }
+
+    /**
+     * Sets the value of the totalPercentage property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Double }
+     *     
+     */
+    public void setTotalPercentage(Double value) {
+        this.totalPercentage = value;
     }
 
     /**
