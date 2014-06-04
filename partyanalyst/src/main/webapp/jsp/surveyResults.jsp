@@ -59,7 +59,7 @@ border:1px solid black !important;
 	<!-- Mahesh start -->
 	<div id="containeradsd" style="clear:both;margin-top:10px;margin-bottom:10px;"></div>
 	<div id="containeradsdres" style="overflow-x:scroll;clear:both;margin-top:10px;margin-bottom:10px;"></div>
-	<div id="containeradsdres1" style="overflow-x:scroll;clear:both;margin-top:10px;margin-bottom:10px;"></div>
+	<!--<div id="containeradsdres1" style="overflow-x:scroll;clear:both;margin-top:10px;margin-bottom:10px;"></div> -->
 	<!-- end -->
 	<!-- prasad -->
 	<div id="genderWiseChart" style="margin-top:10px;margin-bottom:10px;"></div>
@@ -487,7 +487,7 @@ function buildOptions(result,id)
 function getCasteData(){
 $("#containeradsd").html('');
 $("#containeradsdres").html('');
-$("#containeradsdres1").html('');
+//$("#containeradsdres1").html('');
 var surveyIDs = $("#surveyIdForChart").val();
 if(surveyIDs == null)
 	return;
@@ -547,7 +547,23 @@ for(var i =0;i<result[0].optionsList.length;i++){
 			valueSuffix:'%'
         };
   casteArray.push(obj);
- // console.log(casteArray);
+  
+  
+ var obj={};
+  obj['type'] = 'column';
+ 
+  
+  obj['name'] = result[0].optionsList[i]+"(Corrected)";
+  var dataArray = new Array();
+  for(var j in result){
+    dataArray.push(result[j].percents[i].correctionPerc);
+  }
+  obj['data'] = dataArray;
+  obj['color']= colorsArray[i] ;
+  obj['tooltip']= {
+			valueSuffix:'%'
+        };
+  casteArray.push(obj);
 }
 
 var obj={};
@@ -634,75 +650,39 @@ var str="";
     str+="<table id='casteTable1' class='table table-bordered'>";
 	str+="<tr>";
 	str+="<th rowspan='2'>Survey</th>";
-	str+="<th rowspan='2'>Total Samples</th>";
 	for(var i =0;i<result[0].optionsList.length;i++){
-      str+="<th colspan='3'>"+result[0].optionsList[i]+"</th>";
+      str+="<th colspan='2'>"+result[0].optionsList[i]+"</th>";
     }
-	str+="<th rowspan='2'>Total</th>";
-	str+="<th rowspan='2'>Party Secured In 2014 AC</th>";
+	str+="<th rowspan='2'>Cumulative %</th>";
+	str+="<th rowspan='2'>Cumulative % With Correction</th>";
+	str+="<th rowspan='2'>Party Secured % In 2014 AC</th>";
 	str+="</tr>";
 	str+="<tr>";
 	for(var i =0;i<result[0].optionsList.length;i++){
-      str+="<th>Caste Samples</th>";
-	  str+="<th>TDP Support</th>";
-	   str+="<th>TDP Votes</th>";
+	  str+="<th>TDP Support %</th>";
+	   str+="<th>TDP Support % With Correction</th>";
     }
 	str+="</tr>";
 	for(var i in votsResult){
-	var total = 0;
+	var totalPerc = 0;
+	var errorPerc = 0;
 	str+="<tr>";
 	 str+="<td>"+votsResult[i].name+"</td>";
-	 str+="<td>"+votsResult[i].count+"</td>";
 	 for(var j =0;j<votsResult[i].percents.length;j++){  
-	     str+="<td>"+votsResult[i].percents[j].total+"("+votsResult[i].percents[j].totalPercentage+"%)</td>";
-	     str+="<td>"+votsResult[i].percents[j].votesObtained+"("+votsResult[i].percents[j].percentage+"%)</td>";
-         str+="<td>"+votsResult[i].percents[j].goodBoothCount+"</td>";
-		 total =total+votsResult[i].percents[j].goodBoothCount;
-		
+	     str+="<td>"+votsResult[i].percents[j].percentage+"%</td>";
+	     str+="<td>"+votsResult[i].percents[j].correctionPerc+"%</td>";
+		 totalPerc =totalPerc+votsResult[i].percents[j].percentage;
+		errorPerc =errorPerc+votsResult[i].percents[j].correctionPerc;
      }
-	 str+="<td>"+total+"</td>";
+	 str+="<td>"+totalPerc.toFixed(2)+"</td>";
+	 str+="<td>"+errorPerc.toFixed(2)+"</td>";
 	 if(i == 0){
-	      str+="<td rowspan='"+votsResult.length+"'>"+votsResult[0].total+"</td>";
+	      str+="<td rowspan='"+votsResult.length+"'>"+votsResult[0].totalPercentage+"%</td>";
 	 }
 	 str+="</tr>";
 	}
 	str+="</table>";
 	$("#containeradsdres").html(str);
-	
-	var str="";
-    str+="<table id='casteTable1' class='table table-bordered'>";
-	str+="<tr>";
-	str+="<th rowspan='2'>Survey</th>";
-	for(var i =0;i<result[0].optionsList.length;i++){
-      str+="<th colspan='2'>"+result[0].optionsList[i]+"</th>";
-    }
-	str+="<th rowspan='2'>Total</th>";
-	str+="<th rowspan='2'>Party Secured In 2014 AC</th>";
-	str+="</tr>";
-	str+="<tr>";
-	for(var i =0;i<result[0].optionsList.length;i++){
-	  str+="<th>TDP Support %</th>";
-	   str+="<th>TDP Votes</th>";
-    }
-	str+="</tr>";
-	for(var i in votsResult){
-	var total = 0;
-	str+="<tr>";
-	 str+="<td>"+votsResult[i].name+"</td>";
-	 for(var j =0;j<votsResult[i].correctionPercs.length;j++){  
-	     str+="<td>"+votsResult[i].correctionPercs[j].percentage+"</td>";
-         str+="<td>"+votsResult[i].correctionPercs[j].goodBoothCount+"</td>";
-		 total =total+votsResult[i].correctionPercs[j].goodBoothCount;
-		
-     }
-	 str+="<td>"+total+"</td>";
-	 if(i == 0){
-	      str+="<td rowspan='"+votsResult.length+"'>"+votsResult[0].total+"</td>";
-	 }
-	 str+="</tr>";
-	}
-	str+="</table>";
-	$("#containeradsdres1").html(str);
 }
 
 /* end */
