@@ -31,10 +31,13 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *         &lt;element name="code" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="considerDates" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *         &lt;element name="considerProfileFields" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+ *         &lt;element name="constituenctTypeCountList" type="{http://endpoints.soa.survey.itgrids.com/}surveyReportVO" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="constituenctTypeResult" type="{http://endpoints.soa.survey.itgrids.com/}surveyReportVO" maxOccurs="unbounded" minOccurs="0"/>
  *         &lt;element name="constituency" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="constituencyId" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
  *         &lt;element name="constituencyName" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="constituencyNo" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
+ *         &lt;element name="constituencyType" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="constnNo" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
  *         &lt;element name="count" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
  *         &lt;element name="credPercentage" type="{http://www.w3.org/2001/XMLSchema}double"/>
@@ -75,8 +78,11 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *         &lt;element name="questionList" type="{http://endpoints.soa.survey.itgrids.com/}genericVO" maxOccurs="unbounded" minOccurs="0"/>
  *         &lt;element name="questionsList" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded" minOccurs="0"/>
  *         &lt;element name="rangeVal" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
+ *         &lt;element name="rank" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="regionId" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
  *         &lt;element name="regionIds" type="{http://www.w3.org/2001/XMLSchema}long" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="reservationTypeResult" type="{http://endpoints.soa.survey.itgrids.com/}surveyReportVO" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="reservationypeCountList" type="{http://endpoints.soa.survey.itgrids.com/}surveyReportVO" maxOccurs="unbounded" minOccurs="0"/>
  *         &lt;element name="scope" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="scopeId" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
  *         &lt;element name="spanCount" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
@@ -193,10 +199,13 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "code",
     "considerDates",
     "considerProfileFields",
+    "constituenctTypeCountList",
+    "constituenctTypeResult",
     "constituency",
     "constituencyId",
     "constituencyName",
     "constituencyNo",
+    "constituencyType",
     "constnNo",
     "count",
     "credPercentage",
@@ -237,8 +246,11 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "questionList",
     "questionsList",
     "rangeVal",
+    "rank",
     "regionId",
     "regionIds",
+    "reservationTypeResult",
+    "reservationypeCountList",
     "scope",
     "scopeId",
     "spanCount",
@@ -286,10 +298,15 @@ public class SurveyReportVO {
     protected String code;
     protected boolean considerDates;
     protected boolean considerProfileFields;
+    @XmlElement(nillable = true)
+    protected List<SurveyReportVO> constituenctTypeCountList;
+    @XmlElement(nillable = true)
+    protected List<SurveyReportVO> constituenctTypeResult;
     protected String constituency;
     protected Long constituencyId;
     protected String constituencyName;
     protected Long constituencyNo;
+    protected String constituencyType;
     protected Long constnNo;
     protected Long count;
     protected double credPercentage;
@@ -339,9 +356,14 @@ public class SurveyReportVO {
     @XmlElement(nillable = true)
     protected List<String> questionsList;
     protected Long rangeVal;
+    protected int rank;
     protected Long regionId;
     @XmlElement(nillable = true)
     protected List<Long> regionIds;
+    @XmlElement(nillable = true)
+    protected List<SurveyReportVO> reservationTypeResult;
+    @XmlElement(nillable = true)
+    protected List<SurveyReportVO> reservationypeCountList;
     protected String scope;
     protected Long scopeId;
     protected Long spanCount;
@@ -611,6 +633,64 @@ public class SurveyReportVO {
     }
 
     /**
+     * Gets the value of the constituenctTypeCountList property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the constituenctTypeCountList property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getConstituenctTypeCountList().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link SurveyReportVO }
+     * 
+     * 
+     */
+    public List<SurveyReportVO> getConstituenctTypeCountList() {
+        if (constituenctTypeCountList == null) {
+            constituenctTypeCountList = new ArrayList<SurveyReportVO>();
+        }
+        return this.constituenctTypeCountList;
+    }
+
+    /**
+     * Gets the value of the constituenctTypeResult property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the constituenctTypeResult property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getConstituenctTypeResult().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link SurveyReportVO }
+     * 
+     * 
+     */
+    public List<SurveyReportVO> getConstituenctTypeResult() {
+        if (constituenctTypeResult == null) {
+            constituenctTypeResult = new ArrayList<SurveyReportVO>();
+        }
+        return this.constituenctTypeResult;
+    }
+
+    /**
      * Gets the value of the constituency property.
      * 
      * @return
@@ -704,6 +784,30 @@ public class SurveyReportVO {
      */
     public void setConstituencyNo(Long value) {
         this.constituencyNo = value;
+    }
+
+    /**
+     * Gets the value of the constituencyType property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getConstituencyType() {
+        return constituencyType;
+    }
+
+    /**
+     * Sets the value of the constituencyType property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setConstituencyType(String value) {
+        this.constituencyType = value;
     }
 
     /**
@@ -1643,6 +1747,22 @@ public class SurveyReportVO {
     }
 
     /**
+     * Gets the value of the rank property.
+     * 
+     */
+    public int getRank() {
+        return rank;
+    }
+
+    /**
+     * Sets the value of the rank property.
+     * 
+     */
+    public void setRank(int value) {
+        this.rank = value;
+    }
+
+    /**
      * Gets the value of the regionId property.
      * 
      * @return
@@ -1693,6 +1813,64 @@ public class SurveyReportVO {
             regionIds = new ArrayList<Long>();
         }
         return this.regionIds;
+    }
+
+    /**
+     * Gets the value of the reservationTypeResult property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the reservationTypeResult property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getReservationTypeResult().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link SurveyReportVO }
+     * 
+     * 
+     */
+    public List<SurveyReportVO> getReservationTypeResult() {
+        if (reservationTypeResult == null) {
+            reservationTypeResult = new ArrayList<SurveyReportVO>();
+        }
+        return this.reservationTypeResult;
+    }
+
+    /**
+     * Gets the value of the reservationypeCountList property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the reservationypeCountList property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getReservationypeCountList().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link SurveyReportVO }
+     * 
+     * 
+     */
+    public List<SurveyReportVO> getReservationypeCountList() {
+        if (reservationypeCountList == null) {
+            reservationypeCountList = new ArrayList<SurveyReportVO>();
+        }
+        return this.reservationypeCountList;
     }
 
     /**

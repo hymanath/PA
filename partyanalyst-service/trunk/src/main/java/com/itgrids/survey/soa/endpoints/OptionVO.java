@@ -48,6 +48,7 @@ import javax.xml.bind.annotation.XmlType;
  *             &lt;/complexContent>
  *           &lt;/complexType>
  *         &lt;/element>
+ *         &lt;element name="correctionPerc" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/>
  *         &lt;element name="correctionPercs" type="{http://endpoints.soa.survey.itgrids.com/}optionVO" maxOccurs="unbounded" minOccurs="0"/>
  *         &lt;element name="count" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
  *         &lt;element name="criteriaMatched" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
@@ -99,6 +100,7 @@ import javax.xml.bind.annotation.XmlType;
     "badBoothIdsList",
     "caste",
     "castePercs",
+    "correctionPerc",
     "correctionPercs",
     "count",
     "criteriaMatched",
@@ -147,6 +149,7 @@ public class OptionVO {
     protected String caste;
     @XmlElement(required = true)
     protected OptionVO.CastePercs castePercs;
+    protected Double correctionPerc;
     @XmlElement(nillable = true)
     protected List<OptionVO> correctionPercs;
     protected Long count;
@@ -393,6 +396,30 @@ public class OptionVO {
      */
     public void setCastePercs(OptionVO.CastePercs value) {
         this.castePercs = value;
+    }
+
+    /**
+     * Gets the value of the correctionPerc property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Double }
+     *     
+     */
+    public Double getCorrectionPerc() {
+        return correctionPerc;
+    }
+
+    /**
+     * Sets the value of the correctionPerc property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Double }
+     *     
+     */
+    public void setCorrectionPerc(Double value) {
+        this.correctionPerc = value;
     }
 
     /**
