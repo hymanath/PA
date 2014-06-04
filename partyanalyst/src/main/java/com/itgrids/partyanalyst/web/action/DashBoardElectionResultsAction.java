@@ -34,7 +34,7 @@ public class DashBoardElectionResultsAction extends ActionSupport implements Ser
 	private List<PartyResultVO> constiList;
 	private DashBoardResultsVO partyWiseCountDetails;
 	private GenericVO genericVO;
-	private  Object[] casteResult;
+	private List<OptionVO> casteResult;
 	
 	private Long regionId;
 	private SurveyDetailsService surveyDetailsService;
@@ -182,13 +182,11 @@ public class DashBoardElectionResultsAction extends ActionSupport implements Ser
 		this.jObj = jObj;
 	}
 	
-	
-
-	public Object[] getCasteResult() {
+	public List<OptionVO> getCasteResult() {
 		return casteResult;
 	}
 
-	public void setCasteResult(Object[] casteResult) {
+	public void setCasteResult(List<OptionVO> casteResult) {
 		this.casteResult = casteResult;
 	}
 
