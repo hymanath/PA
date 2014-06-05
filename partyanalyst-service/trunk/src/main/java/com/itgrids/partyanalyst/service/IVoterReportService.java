@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service;
 
 import java.util.List;
+
 import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.FlagVO;
@@ -17,6 +18,8 @@ import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
+import com.itgrids.partyanalyst.webservice.utils.VoterTagVO;
+
 
 public interface IVoterReportService {
 	
@@ -138,6 +141,9 @@ public interface IVoterReportService {
 	 public ResultStatus getCasteVotersAvailableConstituencyIds();
 	 
 	 public ResultStatus updateMobileNos(Long districtId);
+	 public VoterTagVO getCmsAdminReportData();
+	 public List<VoterTagVO> getCmsAdminReportDrtails(String isType,String typeOfData);
+	 public ResultStatus saveTaggedVoterDetails(String type,List<VoterTagVO> inputList,Long userId);
 	 
 	
 	 
