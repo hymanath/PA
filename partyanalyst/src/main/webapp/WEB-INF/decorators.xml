@@ -319,6 +319,8 @@
 		<pattern>/gettingConstituencyResultsAction*</pattern>
 		<pattern>/casteWiseSurveyResultComparison*</pattern>
 		<pattern>/electionResults*</pattern>
+		<pattern>/cmsAdminAction*</pattern>
+		
 		
 		</decorator>
     	 
