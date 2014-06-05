@@ -99,7 +99,7 @@ public class Cadre extends BaseModel{
 	 private String address;
 	 private String incomeSource;
 	 private String isVerified;
-
+	 private String insertType;
 	@Id
 	 @GeneratedValue(strategy = GenerationType.AUTO)
 	 @Column(name = "cadre_id", unique = true, nullable = false)
@@ -121,7 +121,7 @@ public class Cadre extends BaseModel{
 		this.cadreLevel = cadreLevel;
 	 }
 	
-	 @Column(name = "first_name", length = 40)
+	 @Column(name = "first_name")
 	 public String getFirstName() {
 		return firstName;
 	 }
@@ -663,6 +663,14 @@ public class Cadre extends BaseModel{
 
 	public void setIsVerified(String isVerified) {
 		this.isVerified = isVerified;
+	}
+	@Column(name="insert_type")
+	public String getInsertType() {
+		return insertType;
+	}
+
+	public void setInsertType(String insertType) {
+		this.insertType = insertType;
 	}
 	
 	
