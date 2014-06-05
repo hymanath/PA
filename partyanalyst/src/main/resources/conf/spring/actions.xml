@@ -1437,5 +1437,6 @@
 	   <property name="regionServiceDataImp" ref="regionServiceDataImp" /> 
 	   <property name="entitlementsHelper" ref="entitlementsHelper" />   
 	</bean>
+	<bean id="cmsAdminAction" class="com.itgrids.partyanalyst.web.action.CmsAdminAction" singleton="false"></bean>
 </beans>	
 	
