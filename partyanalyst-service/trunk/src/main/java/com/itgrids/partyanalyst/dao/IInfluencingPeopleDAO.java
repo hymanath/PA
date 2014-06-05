@@ -176,6 +176,8 @@ public interface IInfluencingPeopleDAO extends GenericDao<InfluencingPeople, Lon
 	
 	public List<InfluencingPeople> getInfluencingPeopleInAConstituencyForAUser(Long userId, Long constituencyId);
 	public List<Long> checkVoterExistAsInfluencePeopleByVoterId(Long voterId);
+	
+	public List checkVoterExistByVoterId(Long voterId);
 
 }
 
