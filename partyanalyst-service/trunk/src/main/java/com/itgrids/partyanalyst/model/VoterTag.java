@@ -44,7 +44,11 @@ public class VoterTag extends BaseModel implements Serializable{
 	private Long voterId;
 	private Long partyId;
 	private Long casteStateId;
-
+	private String isTaggedInserted;
+	private String isCadreInserted;
+	private String isInfluenceInserted;
+	
+	
 	public VoterTag(){}
 	
 	public VoterTag(Voter voter,String isCadre,String isInfluencingPeople,String tags,
@@ -229,5 +233,31 @@ public class VoterTag extends BaseModel implements Serializable{
 	public void setCasteStateId(Long casteStateId) {
 		this.casteStateId = casteStateId;
 	}
+	@Column(name="is_tagged_inserted")
+	public String getIsTaggedInserted() {
+		return isTaggedInserted;
+	}
+
+	public void setIsTaggedInserted(String isTaggedInserted) {
+		this.isTaggedInserted = isTaggedInserted;
+	}
+	@Column(name="is_cadre_inserted")
+	public String getIsCadreInserted() {
+		return isCadreInserted;
+	}
+
+	public void setIsCadreInserted(String isCadreInserted) {
+		this.isCadreInserted = isCadreInserted;
+	}
+	@Column(name="is_influence_inserted")
+	public String getIsInfluenceInserted() {
+		return isInfluenceInserted;
+	}
+
+	public void setIsInfluenceInserted(String isInfluenceInserted) {
+		this.isInfluenceInserted = isInfluenceInserted;
+	}
+	
+	
 	
 }

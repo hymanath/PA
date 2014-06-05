@@ -92,7 +92,7 @@ public class InfluencingPeople extends BaseModel{
 		this.user = user;
 	}
 
-	@Column(name = "first_name", length = 250)
+	@Column(name = "first_name")
 	public String getFirstName() {
 		return firstName;
 	}
