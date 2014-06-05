@@ -7194,6 +7194,27 @@
 		<action name="casteWiseSurveyResultComparison" class="dashBoardElectionResultsAction" method="casteWiseSurveyResultComparison">
 		  			<result name="success">/jsp/surveyResults.jsp</result>
 		</action>
+			<action name="cmsAdminAction" class="cmsAdminAction">
+		<result name="success">/jsp/cmsAdminPage.jsp</result>
+		</action>
+		
+		<action name="getCmsAdminReport" class="cmsAdminAction" method="getCmsAdminReport">
+			<result type="json" name="success">
+			<param name="root">voterVO</param>
+			</result>
+		</action>
+		
+			
+		<action name="getCmsAdminReportDetailsAction" class="cmsAdminAction" method="getCmsAdminReportDetails">
+			<result type="json" name="success">
+			<param name="root">voterDetails</param>
+			</result>
+		</action>
+		<action name="saveVoterTaggedDetailsAction" class="cmsAdminAction" method="saveTaggedVoterDetails">
+		<result type="json" name="success">
+		<param name="root">resultStatus</param>
+		</result>
+		</action>
 		
 </package>
 		
