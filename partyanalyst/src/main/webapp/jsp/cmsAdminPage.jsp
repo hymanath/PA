@@ -98,7 +98,7 @@ function buildReport(result)
 	str+='<th></th>';
 	str+='<th>Total</th>';
 	str+='<th>Inserted</th>';
-	str+='<th>NotInserted</th>';
+	str+='<th>Not inserted</th>';
 	str+='</tr>';
 	
 	str+='<tr>';
