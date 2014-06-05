@@ -1155,4 +1155,13 @@ public List<Object[]> searchCadreInfoByConstidAndNameORMobile(Long constiId,Stri
 	
 	return query.list();
 }
+
+
+	public List getCadreByVoter(Long voterId)
+	{
+		Query query = getSession().createQuery("select model.cadreId from Cadre model where model.voter.voterId = :voterId");
+		query.setParameter("voterId", voterId);
+		return query.list();
+		
+	}
 }

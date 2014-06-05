@@ -853,4 +853,16 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		
 		return query.list();
 	}
+	
+	public List checkVoterExistByVoterId(Long voterId)
+	{
+		Query query = getSession().createQuery("select model.influencingPeopleId from InfluencingPeople model " +
+				"where model.voter.voterId = :voterId");
+		
+		query.setParameter("voterId", voterId);
+		
+		return query.list();
+	}	
+	
+	
 }
