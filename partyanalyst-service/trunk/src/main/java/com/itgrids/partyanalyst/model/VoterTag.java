@@ -249,7 +249,7 @@ public class VoterTag extends BaseModel implements Serializable{
 	public void setIsCadreInserted(String isCadreInserted) {
 		this.isCadreInserted = isCadreInserted;
 	}
-	@Column(name="is_influence_inserted")
+	@Column(name="is_ip_inserted")
 	public String getIsInfluenceInserted() {
 		return isInfluenceInserted;
 	}
