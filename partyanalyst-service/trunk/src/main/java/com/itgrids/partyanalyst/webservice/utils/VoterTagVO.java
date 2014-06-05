@@ -19,7 +19,51 @@ public class VoterTagVO implements Serializable{
 	private String insertTime;
 	private Long boothActivitiesId;
 	private Long boothId;
-	
+	private Long totalTagged;
+	private Long totalCadre;
+	private Long totalInfluencePeople;
+	private Long totalInserted;
+	private Long cadreInserted;
+	private Long influencePeopleInserted;
+	private Long constituencyId;
+	private String name;
+	private String constituency;
+	private String gender;
+	private String age;
+	private Long totalNotInserted;
+	private Long cadreNotInserted;
+	private Long influencePeopleNotInserted;
+	private String voterIdCardNo;
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getConstituency() {
+		return constituency;
+	}
+	public void setConstituency(String constituency) {
+		this.constituency = constituency;
+	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	public String getAge() {
+		return age;
+	}
+	public void setAge(String age) {
+		this.age = age;
+	}
 	public Long getBoothId() {
 		return boothId;
 	}
@@ -99,5 +143,66 @@ public class VoterTagVO implements Serializable{
 	public void setInsertTime(String insertTime) {
 		this.insertTime = insertTime;
 	}
+	public Long getTotalTagged() {
+		return totalTagged;
+	}
+	public void setTotalTagged(Long totalTagged) {
+		this.totalTagged = totalTagged;
+	}
+	public Long getTotalCadre() {
+		return totalCadre;
+	}
+	public void setTotalCadre(Long totalCadre) {
+		this.totalCadre = totalCadre;
+	}
+	public Long getTotalInfluencePeople() {
+		return totalInfluencePeople;
+	}
+	public void setTotalInfluencePeople(Long totalInfluencePeople) {
+		this.totalInfluencePeople = totalInfluencePeople;
+	}
+	public Long getTotalInserted() {
+		return totalInserted;
+	}
+	public void setTotalInserted(Long totalInserted) {
+		this.totalInserted = totalInserted;
+	}
+	public Long getCadreInserted() {
+		return cadreInserted;
+	}
+	public void setCadreInserted(Long cadreInserted) {
+		this.cadreInserted = cadreInserted;
+	}
+	public Long getInfluencePeopleInserted() {
+		return influencePeopleInserted;
+	}
+	public void setInfluencePeopleInserted(Long influencePeopleInserted) {
+		this.influencePeopleInserted = influencePeopleInserted;
+	}
+	public Long getTotalNotInserted() {
+		return totalNotInserted;
+	}
+	public void setTotalNotInserted(Long totalNotInserted) {
+		this.totalNotInserted = totalNotInserted;
+	}
+	public Long getCadreNotInserted() {
+		return cadreNotInserted;
+	}
+	public void setCadreNotInserted(Long cadreNotInserted) {
+		this.cadreNotInserted = cadreNotInserted;
+	}
+	public Long getInfluencePeopleNotInserted() {
+		return influencePeopleNotInserted;
+	}
+	public void setInfluencePeopleNotInserted(Long influencePeopleNotInserted) {
+		this.influencePeopleNotInserted = influencePeopleNotInserted;
+	}
+	public String getVoterIdCardNo() {
+		return voterIdCardNo;
+	}
+	public void setVoterIdCardNo(String voterIdCardNo) {
+		this.voterIdCardNo = voterIdCardNo;
+	}
+	
 
 }
