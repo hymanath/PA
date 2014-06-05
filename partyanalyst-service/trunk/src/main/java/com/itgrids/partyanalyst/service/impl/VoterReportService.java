@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
+
 import java.math.BigInteger;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -18,6 +19,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -64,6 +66,7 @@ import com.itgrids.partyanalyst.dao.IVoterModificationDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterPartyInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
+import com.itgrids.partyanalyst.dao.IVoterTagDAO;
 import com.itgrids.partyanalyst.dao.IVotingTrendzDAO;
 import com.itgrids.partyanalyst.dao.IVotingTrendzPartiesResultDAO;
 import com.itgrids.partyanalyst.dao.IWardBoothDAO;
@@ -115,6 +118,7 @@ import com.itgrids.partyanalyst.model.VoterFlag;
 import com.itgrids.partyanalyst.model.VoterInfo;
 import com.itgrids.partyanalyst.model.VoterPartyInfo;
 import com.itgrids.partyanalyst.model.VoterReportLevel;
+import com.itgrids.partyanalyst.model.VoterTag;
 import com.itgrids.partyanalyst.model.VotingTrendz;
 import com.itgrids.partyanalyst.model.VotingTrendzPartiesResult;
 import com.itgrids.partyanalyst.model.WardBooth;
@@ -122,7 +126,9 @@ import com.itgrids.partyanalyst.service.IMobileService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IVoterReportService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.webservice.utils.VoterTagVO;
 
 
 public class VoterReportService implements IVoterReportService{
@@ -185,7 +191,8 @@ public class VoterReportService implements IVoterReportService{
     private IMobileService mobileService;
     private IMobileNumbersDAO mobileNumbersDAO;
     
-    
+    @Autowired
+    private IVoterTagDAO voterTagDAO;
 	public IMobileNumbersDAO getMobileNumbersDAO() {
 		return mobileNumbersDAO;
 	}
@@ -5903,5 +5910,208 @@ public class VoterReportService implements IVoterReportService{
 			  return result;
 		  }
 	}
+	
+	public VoterTagVO getCmsAdminReportData()
+	{
+		VoterTagVO voterVO = new VoterTagVO();
+		Long totalTaggedVoters = 0l;
+		Long totalCadre = 0l;
+		Long totalInfluencePeople = 0l;
+		Long insertedTaggedVoters = 0l;
+		Long insertedCadre = 0l;
+		Long insertedInfluencePeople = 0l;
+		Long notInsertedTaggedVoters = 0l;
+		Long notInsertedCadre = 0l;
+		Long notInsertedInfluencePeople = 0l;
 		
+		try{
+			totalTaggedVoters = voterTagDAO.getTotalTaggedVoters();
+			totalCadre = voterTagDAO.getVotersByType("cadre");
+			totalInfluencePeople = voterTagDAO.getVotersByType("influencePeople");
+			
+			insertedTaggedVoters =  voterTagDAO.getTotalInsertedTaggedVoters("inserted");
+			insertedCadre =  voterTagDAO.getInsertedVotersByType("cadre","inserted");
+			insertedInfluencePeople =  voterTagDAO.getInsertedVotersByType("influencePeople","inserted");
+			
+			notInsertedTaggedVoters =  voterTagDAO.getTotalInsertedTaggedVoters("notInserted");
+			notInsertedCadre =  voterTagDAO.getInsertedVotersByType("cadre","notInserted");
+			notInsertedInfluencePeople =  voterTagDAO.getInsertedVotersByType("influencePeople","notInserted");
+			
+			
+			voterVO.setTotalTagged(totalTaggedVoters);
+			voterVO.setTotalCadre(totalCadre);
+			voterVO.setTotalInfluencePeople(totalInfluencePeople);
+			
+			voterVO.setInfluencePeopleInserted(insertedInfluencePeople);
+			voterVO.setCadreInserted(insertedCadre);
+			voterVO.setTotalInserted(insertedTaggedVoters);
+			
+			voterVO.setTotalNotInserted(notInsertedTaggedVoters);
+			voterVO.setCadreNotInserted(notInsertedCadre);
+			voterVO.setInfluencePeopleNotInserted(notInsertedInfluencePeople);
+			
+		}
+		catch (Exception e) {
+			LOG.error("Exception Occured in getCmsAdminReportData() method in VoteReportService", e);
+		}
+		return voterVO;
+	}
+		
+	/** type as cadre,influencePeople,tagged and  typeOfData - total or inserted**/
+	public List<VoterTagVO> getCmsAdminReportDrtails(String isType,String typeOfData)
+	{
+		List<VoterTagVO> resultList = new ArrayList<VoterTagVO>();
+	try{
+		List<Object[]> list = voterTagDAO.getTotalTaggedVoterDetails(isType, typeOfData);
+		if(list != null && list.size() > 0)
+			for(Object[] params : list)
+			{
+				VoterTagVO voterTagVO = new VoterTagVO();
+				voterTagVO.setVoterId((Long)params[0]);
+				voterTagVO.setConstituencyId((Long)params[1]);
+				voterTagVO.setConstituency(params[2] != null ? params[2].toString() : "");
+				voterTagVO.setName(params[3] != null ? params[3].toString() : "");
+				voterTagVO.setGender(params[4] != null ? params[4].toString() : "");
+				voterTagVO.setAge(params[5] != null ? params[5].toString() : "");
+				voterTagVO.setMobileNo(params[6] != null ? params[6].toString() : "");
+				voterTagVO.setVoterIdCardNo(params[7] != null ? params[7].toString() : "");
+				resultList.add(voterTagVO);
+				
+			}
+		
+		
+	}
+	catch (Exception e) {
+		LOG.error("Exception Occured in getCmsAdminReportDrtails() method in VoteReportService", e);	
+	}
+	return resultList;
+	}
+	
+	public ResultStatus saveTaggedVoterDetails(String type,List<VoterTagVO> inputList,Long userId)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			if(type.equalsIgnoreCase("cadre"))
+			{
+			saveCadre(inputList,userId);
+			}
+			else if(type.equalsIgnoreCase("influencePeople"))
+				saveInfluencePeople(inputList,userId);
+			else if(type.equalsIgnoreCase("tagged"))
+				saveTaggedVoters(inputList,userId);
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		}
+		catch (Exception e) {
+			LOG.error("Exception Occured in .() method in VoteReportService", e);	
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		}
+		return resultStatus;
+	}
+	
+	public void saveCadre(List<VoterTagVO> inputList,Long userId)
+	{
+	
+		DateUtilService dateService = new DateUtilService();
+		try{
+			for(VoterTagVO vo : inputList)
+			{
+				Long voter = voterDAO.getVoterIdByIdCardNo(vo.getVoterIdCardNo().toString());
+				List cadreExist = cadreDAO.getCadreByVoter(voter);
+				if(cadreExist == null || cadreExist.size() == 0)
+				{
+				Cadre cadre = new Cadre();
+				UserAddress currentAddress = new UserAddress();
+				cadre.setFirstName(vo.getName());
+				cadre.setMobile(vo.getMobileNo());
+				cadre.setGender(vo.getGender());
+				cadre.setVoter(voterDAO.get(voter));
+				cadre.setUser(userDAO.get(userId));
+				cadre.setAge(new Long(vo.getAge()));
+				cadre.setInsertType("CMS");
+				//cadre.setActiveDateField(dateService.getCurrentDateAndTime());
+				{
+				if(vo.getConstituencyId() != null && vo.getConstituencyId().longValue() > 0)
+						  currentAddress.setConstituency(constituencyDAO.get(vo.getConstituencyId()));
+				currentAddress = userAddressDAO.save(currentAddress);
+				cadre.setCurrentAddress(currentAddress);
+				}
+				cadre = cadreDAO.save(cadre);
+				}
+				Long voterTagId = voterTagDAO.getVoterTagId(voter);
+				VoterTag voterTag = voterTagDAO.get(voterTagId);
+				voterTag.setIsCadreInserted("Y");
+				voterTagDAO.save(voterTag);
+			}
+		}
+		catch (Exception e) {
+			LOG.error("Exception Occured in saveCadre() method in VoteReportService", e);	
+		}
+	}
+	public void saveInfluencePeople(List<VoterTagVO> inputList,Long userId)
+	{
+		try{
+			for(VoterTagVO vo : inputList)
+			{
+				Long voter = voterDAO.getVoterIdByIdCardNo(vo.getVoterIdCardNo().toString());
+				List influencePeopleExist = influencingPeopleDAO.checkVoterExistByVoterId(voter);
+				if(influencePeopleExist == null || influencePeopleExist.size() == 0)
+				{
+				UserAddress address = new UserAddress();
+				InfluencingPeople influencingPeople = new InfluencingPeople();
+				influencingPeople.setFirstName(vo.getName());
+				influencingPeople.setPhoneNo(vo.getMobileNo());
+				influencingPeople.setGender(vo.getGender());
+				influencingPeople.setInfluencingScope("CONSTITUENCY");
+				influencingPeople.setInfluencingScopeValue(vo.getConstituencyId().toString());
+				influencingPeople.setVoter(voterDAO.get(voter));
+				{
+					if(vo.getConstituencyId() != null && vo.getConstituencyId().longValue() > 0)
+						address.setConstituency(constituencyDAO.get(vo.getConstituencyId()));
+					address = userAddressDAO.save(address);
+					influencingPeople.setUserAddress(address);
+				}
+				influencingPeople.setUser(userDAO.get(userId));
+				influencingPeopleDAO.save(influencingPeople);
+				}
+				Long voterTagId = voterTagDAO.getVoterTagId(voter);
+				VoterTag voterTag = voterTagDAO.get(voterTagId);
+				voterTag.setIsInfluenceInserted("Y");
+				voterTagDAO.save(voterTag);
+			}
+			
+		}
+		catch (Exception e) {
+			LOG.error("Exception Occured in saveInfluencePeople() method in VoteReportService", e);
+		}
+	}
+	
+	
+	public void saveTaggedVoters(List<VoterTagVO> inputList,Long userId)
+	{
+		try{
+			for(VoterTagVO vo : inputList)
+			{
+				Long defaultFlag = 1l;
+				Long voter = voterDAO.getVoterIdByIdCardNo(vo.getVoterIdCardNo().toString());
+				List flagPeopleExist = voterFlagDAO.getFlagsByVoterIds(voter);
+				if(flagPeopleExist == null || flagPeopleExist.size() ==0)
+				{
+				VoterFlag voterFlag = new VoterFlag();
+				voterFlag.setVoter(voterDAO.get(voter));
+				voterFlag.setUser(userDAO.get(userId));
+				voterFlag.setFlag(flagDAO.get(defaultFlag));//defaultFlag
+				voterFlagDAO.save(voterFlag);
+				}
+				Long voterTagId = voterTagDAO.getVoterTagId(voter);
+				VoterTag voterTag = voterTagDAO.get(voterTagId);
+				voterTag.setIsTaggedInserted("Y");
+				voterTagDAO.save(voterTag);
+			}
+		}
+		catch (Exception e) {
+			LOG.error("Exception Occured in saveTaggedVoters() method in VoteReportService", e);
+		}
+	}
+	
+	
 }
