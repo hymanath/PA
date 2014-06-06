@@ -487,7 +487,7 @@ function partialBoothsInPanchayat(){
 	}
 	else if(buildType =="hamlet" || buildType =="Hamlet"){
 		pType = "boothHamlets";
-		mainname =mainname+" Hamlet";
+		//mainname =mainname+" Hamlet";
 	}
  getPartialBoothsDetails(id,publicationId,constituencyId,pType);
 }
@@ -530,7 +530,7 @@ var urlStr = "voterBasicInfoAction.action?id="+id+"&publicationDateId="+publicat
  window.location.href = urlStr;	
 });
 function getvotersBasicInfo(buttonType,id,publicationId,type){
-  // var ajaxImageDiv =  document.getElementById('ImpFamwiseAjaxDiv');
+// var ajaxImageDiv =  document.getElementById('ImpFamwiseAjaxDiv');
     var level = $("#reportLevel").val();
 	var flag =true;
 	var typename=mainname;
@@ -642,7 +642,10 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 	
 	  $("#votersBasicInfoSubChartDiv").html('');
 	  $("#votersBasicInfoSubDiv").html('');
-	  $("#votersBasicInfoSubHeading").html(votersbasicinfo.votersInfoForMandalVOList[0].type+' Wise Voters Information in '+mainname+'');
+	  if(jsObj.type=="constituency")
+	     $("#votersBasicInfoSubHeading").html(votersbasicinfo.votersInfoForMandalVOList[0].type+' Wise Voters Information in '+mainname+' CONSTITUENCY');
+	  else
+	    $("#votersBasicInfoSubHeading").html(votersbasicinfo.votersInfoForMandalVOList[0].type+' Wise Voters Information in '+mainname+'');
 	  }
 	  $("#ajaxImageDiv").css('display','none');
 	//var ajaxImageDiv =  document.getElementById('ajaxImageDiv');
@@ -656,7 +659,7 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 	if(votersbasicinfo.votersInfoForMandalVOList != null && votersbasicinfo.votersInfoForMandalVOList.length > 0)
 	{
 		if(jsObj.type == "constituency"){
-			title = ""+votersbasicinfo.votersInfoForMandalVOList[0].type+"/Muncipality Wise Voters Information in "+jsObj.typename+" Constituency";
+		    title = ""+votersbasicinfo.votersInfoForMandalVOList[0].type+"/Muncipality Wise Voters Information in "+jsObj.typename+" Constituency";
 		$("#votersBasicInfoTitleDiv").append('<h4 style="color: rgb(255, 255, 255);text-transform:uppercase; border-radius: 5px 5px 5px 5px; text-align: center; margin: 10px; border-top-width: 40px; height: 13px; font-family: arial; font-size: 13px; background:#05A8E9; padding: 5px 5px 15px;">'+title+'</h4>');
 		}
 		else{
@@ -816,7 +819,7 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 		str = '';
 		if(votersbasicinfo.subLevelExists && votersbasicinfo.votersInfoForMandalVOList != null && votersbasicinfo.votersInfoForMandalVOList.length > 0){
        
-		buildVotersChart(votersbasicinfo.votersInfoForMandalVOList,jsObj.typename);
+		buildVotersChart(votersbasicinfo.votersInfoForMandalVOList,jsObj.typename,jsObj.type);
 
 	    var areaType = votersbasicinfo.votersInfoForMandalVOList[0].type;
 			if(areaType == 'Mandal')
@@ -854,8 +857,12 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 	}
 }
 
-function buildVotersChart(chartInfo,reqTitle)
-{
+function buildVotersChart(chartInfo,reqTitle,type)
+{       
+        if(type=="constituency")
+		{$('#votersBasicInfoSubChartHeading').html(chartInfo[0].type+' Wise Voters Information Chart In '+mainname+' CONSTITUENCY');
+        }
+		else
 		$('#votersBasicInfoSubChartHeading').html(chartInfo[0].type+' Wise Voters Information Chart In '+mainname+'');
  // Create the data table.
         var data = new google.visualization.DataTable();
@@ -870,7 +877,12 @@ function buildVotersChart(chartInfo,reqTitle)
 		  data.setValue(i,1,val);
 		}
         // Set chart options
-		var title = chartInfo[0].type+' Wise Voters % Share In '+reqTitle; 
+		 if(type=="constituency")
+		 {
+		  var title = (chartInfo[0].type.toUpperCase())+' WISE VOTERS % SHARE IN '+reqTitle+' CONSTITUENCY'; 
+		  }
+		 else 
+		   var title = (chartInfo[0].type.toUpperCase())+' WISE VOTERS % SHARE IN '+reqTitle; 
         var options = {'title':title,
                        'width':800,
                        'height':300};
@@ -2274,8 +2286,8 @@ function buildVotersInfoForCustomVoterGroups(myResults,jsObj)
 
 }
 function buildVotersChartForCustomVoterGroups(chartInfo,reqTitle)
-{
-		$('#votersBasicInfoSubChartHeading').html('Custom Voter Group Wise Voters Information Chart In ${typename}');
+{       
+  $('#votersBasicInfoSubChartHeading').html('Custom Voter Group Wise Voters Information Chart In ${typename}');
  // Create the data table.
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'type');
@@ -2289,7 +2301,8 @@ function buildVotersChartForCustomVoterGroups(chartInfo,reqTitle)
 		  data.setValue(i,1,val);
 		}	
         // Set chart options
-		var title = 'Custom Voter Group Wise Voters % Share in ${typename}'; 
+		
+		var title = 'Custom Voter Group Wise Voters % Share in ${typename}';
         var options = {'title':title,
                        'width':800,
                        'height':300};
