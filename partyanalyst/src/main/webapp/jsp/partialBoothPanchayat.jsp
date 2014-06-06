@@ -530,36 +530,42 @@ function validateTheFields()
 {
 	$('#errorMsg').html('');
 	var flag = true;
+	var constituencyId=$('#constituencyList option:selected').val();
 	var boothId       = $('#booth option:selected').val();
 	var description   = $('#descriptionId').val();
 	var panchayatId   = $('#partialPanchayat option:selected').val();
 	var pdescription  = $('#PartialDescription').val();
 	var phamlet = $('#hamlet option:selected').val();
 	var str = '';
+	if(constituencyId==0)
+	{
+	   flag="false";
+	   str += '<b style="color:red">Please select the Constituency.</b></br>';
+	}
 	if(boothId == 0)
 	{
 		flag = false;
-		str += '<b style="color:red">Please select the booth</b></br>';
+		str += '<b style="color:red">Please select the Booth.</b></br>';
 	}
 	if(description == '' || pdescription == '')
 	{
 		flag = false;
-		str += '<b style="color:red">Please enter the description</b></br>';
+		str += '<b style="color:red">Please enter the Description.</b></br>';
 	}
 	else if(description.trim().length == 0 || pdescription.trim().length == 0)
 	{
 		flag = false;
-		str += '<b style="color:red">Please enter the description</b></br>';
+		str += '<b style="color:red">Please enter the Description.</b></br>';
 	}
 	if(panchayatId == 0 )
 	{
 		flag = false;
-		str += '<b style="color:red">Please select the Panchayat</b></br>';
+		str += '<b style="color:red">Please select the Panchayat.</b></br>';
 	}		
 	if(phamlet == undefined)
 	{
 		flag = false;
-		str += '<b style="color:red">Please select the Hamlet</b></br>';
+		str += '<b style="color:red">Please select the Hamlet.</b></br>';
 	}	
 	if(flag)
 	{
@@ -618,16 +624,16 @@ function validateTheFieldsForEdit()
 	<div id="bodyDiv" style="float: left; margin-left: 258px; margin-top: 18px;">
 	<div id="successMsg" style="color: green; font-family: verdana; font-size: 14px; font-weight: bold;"></div>
 	<div id="errorMsg" style="color: red; font-family: verdana; font-size: 12px; font-weight: bold;"></div>
-	<div><b>Constituency : </b><s:select theme="simple" cssClass="selectWidth" label="Select Your State" name="userAccessConstituencyList" id="constituencyList" list="userAccessConstituencyList" listKey="id" listValue="name"  class="selectWidth" onChange="getPublicationDate('add');" style="margin-left: 100px;width: 192px;"/></div>
+	<div><b>Constituency : </b><b style="color:red">*</b><s:select theme="simple" cssClass="selectWidth" label="Select Your State" name="userAccessConstituencyList" id="constituencyList" list="userAccessConstituencyList" listKey="id" listValue="name"  class="selectWidth" onChange="getPublicationDate('add');" style="margin-left: 95px;width: 192px;"/></div>
 	<div><b>Publication Date : </b><select id="publicationDate" name="publicationDate"style="margin-left: 79px;width: 192px;" onChange="getMandals('add');"><option value="0">Publication Date</option></select></div>
 	<div><b>Mandal : </b><select id="mandal" name="mandal" style="margin-left: 141px;width: 192px;"onChange="getPanchayts();"><option value="0">Select Mandal</option></select></div>
 	<div><b>Panchayat : </b><select id="panchayat" name="panchayatsList" style="margin-left: 121px;width: 192px;" onChange="getBooths();"><option value="0">Select Panchayat</option></select></div>
 	<div><b>Booth : </b><b style="color:red">*</b><select id="booth" name="boothsList" style="margin-left: 145px;width: 192px;" ><option value="0">Select Booth</option></select></div>
-	<div><b>Description : </b><b style="color:red">*</b><textarea name="description" id="descriptionId" style="margin-left: 105px;width: 181px;resize:none;" rows="2" cols="20" maxlength="200"></textarea></div>
+	<div><b>Description : </b><b style="color:red">*</b><textarea name="description" id="descriptionId" style="margin-left: 105px;width: 181px;resize:none;" rows="2" cols="20" maxlength="100"></textarea></div>
 	<div><b>Panchayat : </b><b style="color:red">*</b><select id="partialPanchayat" name="partialPanchayatsList" style="margin-left: 116px;width: 196px;" onChange="getHamlets();"><option value="0">Select Panchayat</option></select></div>
 	<div><b>Hamlet : </b><b style="color:red">*</b><select id="hamlet" name="hamletList" style="margin-left: 140px;width: 197px;" multiple ><option value="0">Select Hamlet</option></select></div>
 	<!--<div><b>Booth : </b><select id="PartialBooth" name="PartialBooth" style="margin-left: 145px;"><option value="0">Select Booth</option></select></div>-->
-	<div><b>Description : </b><b style="color:red">*</b><textarea name="PartialDescription" id="PartialDescription" style="margin-left: 106px;width: 188px;resize:none;" rows="2" cols="20" maxlength="200"></textarea></div>
+	<div><b>Description : </b><b style="color:red">*</b><textarea name="PartialDescription" id="PartialDescription" style="margin-left: 106px;width: 188px;resize:none;" rows="2" cols="20" maxlength="100"></textarea></div>
 	<div id="submitButton" style="float: left; margin-left: 200px; margin-bottom: 10px;"><input type="submit" value="Submit" class="btn btn-success" onClick="validateTheFields();"></input></div>
 	</div>
 	</div>
