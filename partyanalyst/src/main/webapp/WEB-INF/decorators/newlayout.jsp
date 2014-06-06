@@ -24,6 +24,7 @@
 <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/connection/connection-min.js&2.8.2r1/build/datasource/datasource-min.js&2.8.2r1/build/autocomplete/autocomplete-min.js&2.8.2r1/build/element/element-min.js&2.8.2r1/build/container/container-min.js&2.8.2r1/build/menu/menu-min.js&2.8.2r1/build/button/button-min.js&2.8.2r1/build/paginator/paginator-min.js&2.8.2r1/build/datatable/datatable-min.js&2.8.2r1/build/json/json-min.js&2.8.2r1/build/tabview/tabview-min.js"></script> 
 <!--  BootStrap Stating and pasted 'assert' folder in webapp folder-->
 <link href="styles/assets/css/bootstrap.css" rel="stylesheet">
+
 <!--  BootStrap Ending -->
 <!--  BootStrap Stating -->
  <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -1096,7 +1097,7 @@ function callQuickViewAjax(jsObj, url){
 }
 
 	function showArticles(){
-
+$.noConflict();
 			jQuery(document).ready( function(){       
 				//	jQuery("#contactLink").click( showDialog );
 
@@ -1150,6 +1151,7 @@ elmt.innerHTML = str;
 }
 
 function showBlogs(){
+ $.noConflict();
 
 			jQuery(document).ready( function(){       
 				//	jQuery("#contactLink").click( showDialog );
