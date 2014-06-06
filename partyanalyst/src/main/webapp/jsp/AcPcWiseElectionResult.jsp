@@ -1602,11 +1602,15 @@ $('#ajaxImage').show();
 <!--	<img id="stateAjaxImg1" src="./images/icons/barloader.gif" alt="Processing Image" style=" display: none; margin-left: 360px;padding-bottom: 10px;"/>
 	<img id="stateAjaxImg4" src="./images/icons/barloader.gif" alt="Processing Image" style=" display: none; margin-left: 360px;padding-bottom: 10px;" />
 	-->
-	<div id="button1" class="span11"><a onclick="refreshMap('presentAC');"  > <i class="icon-refresh" title="Refresh Map" style="cursor:pointer;"></i>  </a></div>
+	<div id="heading1" align="center" style="background:#80D1F1;padding : 5px;font-weight:bold;border-radius:5px;" class="span6" > Assembly Wise Election Results Map </div>
+	<div id="heading2" align="center" style="background:#80D1F1;padding : 5px;font-weight:bold;border-radius:5px;margin-left:0px;" class="span6" > Assembly Wise Election Results  Map  </div>
+	<div id="button1" class="span7"> <a onclick="refreshMap('presentAC');"  style="float:right;"> Refresh Map : <i class="icon-refresh" title="Refresh Map" style="cursor:pointer;"></i>  </a></div>
 	<div id="weathermap">
 	
 	</div>
-	<div id="button2"  style="float:right;margin-top:-30px" class="span1"><a onclick="refreshMap('presentPC');" title="Refresh Map"> <i class="icon-refresh" style="cursor:pointer;"></i> </a></div>
+	<div id="headings2" align="center" style="background:#80D1F1;padding : 5px;font-weight:bold;border-radius:5px;float: right; position: relative; margin-bottom: 30px;" class="span6" > Parliament Wise  </div>
+	<div id="headings1" align="center" style="background:#80D1F1;padding : 5px;font-weight:bold;border-radius:5px;margin-top:-60px;" class="span6" > Parliament  Wise Election Results  Map  </div>
+	<div id="button2"  style="float:right;margin-top:-30px" class="span6">   <a onclick="refreshMap('presentPC');" title="Refresh Map" > Refresh Map : <i class="icon-refresh" style="cursor:pointer;"></i> </a></div>
 	<div id="weathermap1">
 	
 	</div>
@@ -2059,39 +2063,61 @@ var stateType = '';
 		var year1 = $('#yearId1 option:selected').val();
 		var year2 = $('#yearId2 option:selected').val();
 
+			$('#heading1').html('');
+			$('#headings2').html('');
 		if(levelVal1 == 1 && year1 == 1)
 		{
+			$('#heading1').html('Assembly Wise Election Results  Map - 2009');
+			$('#heading1').show();
+			document.getElementById("headings2").setAttribute("style", "background:#80D1F1;padding : 5px;font-weight:bold;border-radius:5px;margin-top:-60px;");
 			getElectionResultForAssemblyPresent(stateVal,"first",levelVal1,year1);
 		}
 		if (levelVal1 == 1 && year1 == 2)
 		{
+			$('#heading1').show();
+			document.getElementById("headings2").setAttribute("style", "background:#80D1F1;padding : 5px;font-weight:bold;border-radius:5px;margin-top:-60px;");
+			$('#heading1').html('Assembly Wise Election Results  Map - 2014');
 			getElectionResultForAssemblyPrevious(stateVal,"first",levelVal1,year1);
 		}
 		
 		if(levelVal1 == 2 && year1 == 1)
 		{
+			$('#heading1').show();	
+			document.getElementById("headings2").setAttribute("style", "background:#80D1F1;padding : 5px;font-weight:bold;border-radius:5px;margin-top:-60px;");
+			$('#heading1').html('Parliament Wise Election Results Map - 2009');
 			getElectionResultForParlimentPrevious(stateVal,"first",levelVal1,year1);
 		}
 		if (levelVal1 == 2 && year1 == 2)
 		{
+			$('#heading1').html('Parliament Wise Election Results Map - 2014');
+			$('#heading1').show();
+			document.getElementById("headings2").setAttribute("style", "background:#80D1F1;padding : 5px;font-weight:bold;border-radius:5px;margin-top:-60px;");
 			getElectionResultForParlimentPresent(stateVal,"first",levelVal1,year1);
 		}
 		
 		if(levelVal2 == 1 && year2 == 1)
 		{
+			$('#headings2').html('Assembly Wise Election Results Map - 2009');
+			$('#headings2').show();
 			getElectionResultForAssemblyPresent(stateVal,"second",levelVal2,year2);
 		}
 		if(levelVal2 == 1 && year2 == 2)
 		{
+			$('#headings2').show();
+			$('#headings2').html('Assembly Wise Election Results Map - 2014');
 			getElectionResultForAssemblyPrevious(stateVal,"second",levelVal2,year2);
 		}
 		
 		if(levelVal2 == 2 && year2 == 1)
 		{
+			$('#headings2').show();
+			$('#headings2').html('Parliament Wise Election Results Map - 2009');
 			getElectionResultForParlimentPrevious(stateVal,"second",levelVal2,year2);
 		}
 		if(levelVal2 == 2 && year2 == 2)
 		{
+			$('#headings2').show();
+			$('#headings2').html('Parliament Wise Election Results Map - 2014');
 			getElectionResultForParlimentPresent(stateVal,"second",levelVal2,year2);
 		}
 		
@@ -2288,21 +2314,24 @@ var stateType = '';
 		}
 		
 			 $( "#processingDialogue" ).dialog('close');
+			 isRunning = false;
 	}
+	
+	var isRunning = false;
 	function getElectionResultForAssemblyPrevious(stateVal,mapNo,locationLevel,year)
 	{
 		ajaxProcessing();
 		if(mapNo == "first") 
 		{
 			$('#button1').html('');
-			$('#button1').html('<a onclick="getElectionResultForAssemblyPrevious('+stateVal+',\''+mapNo+'\','+locationLevel+','+year+');"  > <i class="icon-refresh" title="Refresh Map" style="cursor:pointer;"></i>  </a>');
+			$('#button1').html('<span style="float:right;margin-right:100px;">Refresh Map :  <a onclick="getElectionResultForAssemblyPrevious('+stateVal+',\''+mapNo+'\','+locationLevel+','+year+');"  > <i class="icon-refresh" title="Refresh Map" style="cursor:pointer;"></i>  </a> </span>');
 			
 			getMapType(1,stateVal);
 		}
 		else
 		{
 			$('#button2').html('');
-			$('#button2').html('<a onclick="getElectionResultForAssemblyPrevious('+stateVal+',\''+mapNo+'\','+locationLevel+','+year+');"  > <i class="icon-refresh" title="Refresh Map" style="cursor:pointer;"></i>  </a>');
+			$('#button2').html('<span style="float:right;margin-right:10px;">Refresh Map :  <a onclick="getElectionResultForAssemblyPrevious('+stateVal+',\''+mapNo+'\','+locationLevel+','+year+');"  > <i class="icon-refresh" title="Refresh Map" style="cursor:pointer;"></i>  </a></span>');
 			
 			getMapType(2,stateVal);
 		}
@@ -2345,14 +2374,14 @@ var stateType = '';
 		if(mapNo == "first") 
 		{
 			$('#button1').html('');
-			$('#button1').html('<a onclick="getElectionResultForAssemblyPresent('+stateVal+',\''+mapNo+'\','+locationLevel+','+year+');"  > <i class="icon-refresh" title="Refresh Map" style="cursor:pointer;"></i>  </a>');
+			$('#button1').html('<span style="float:right;margin-right:100px;">Refresh Map : <a onclick="getElectionResultForAssemblyPresent('+stateVal+',\''+mapNo+'\','+locationLevel+','+year+');"  > <i class="icon-refresh" title="Refresh Map" style="cursor:pointer;"></i>  </a></span>');
 			
 			getMapType(1,stateVal);
 		}
 		else
 		{
 			$('#button2').html('');
-			$('#button2').html('<a onclick="getElectionResultForAssemblyPresent('+stateVal+',\''+mapNo+'\','+locationLevel+','+year+');"  > <i class="icon-refresh" title="Refresh Map" style="cursor:pointer;"></i>  </a>');
+			$('#button2').html('<span style="float:right;margin-right:10px;">Refresh Map : <a onclick="getElectionResultForAssemblyPresent('+stateVal+',\''+mapNo+'\','+locationLevel+','+year+');"  > <i class="icon-refresh" title="Refresh Map" style="cursor:pointer;"></i>  </a></span>');
 			
 			getMapType(2,stateVal);
 		}
@@ -2390,14 +2419,14 @@ var stateType = '';
 		if(mapNo == "first") 
 		{
 			$('#button1').html('');
-			$('#button1').html('<a onclick="getElectionResultForParlimentPrevious('+stateVal+',\''+mapNo+'\','+locationLevel+','+year+');"  > <i class="icon-refresh" title="Refresh Map" style="cursor:pointer;"></i>  </a>');
+			$('#button1').html('<span style="float:right;margin-right:100px;">Refresh Map : <a onclick="getElectionResultForParlimentPrevious('+stateVal+',\''+mapNo+'\','+locationLevel+','+year+');"  > <i class="icon-refresh" title="Refresh Map" style="cursor:pointer;"></i>  </a></span>');
 			
 			getMapType(1,stateVal);
 		}
 		else
 		{
 			$('#button2').html('');
-			$('#button2').html('<a onclick="getElectionResultForParlimentPrevious('+stateVal+',\''+mapNo+'\','+locationLevel+','+year+');"  > <i class="icon-refresh" title="Refresh Map" style="cursor:pointer;"></i>  </a>');
+			$('#button2').html('<span style="float:right;margin-right:10px;">Refresh Map : <a onclick="getElectionResultForParlimentPrevious('+stateVal+',\''+mapNo+'\','+locationLevel+','+year+');"  > <i class="icon-refresh" title="Refresh Map" style="cursor:pointer;"></i>  </a></span>');
 			
 			getMapType(2,stateVal);
 		}
@@ -2436,14 +2465,14 @@ var stateType = '';
 		if(mapNo == "first") 
 		{
 			$('#button1').html('');
-			$('#button1').html('<a onclick="getElectionResultForParlimentPresent('+stateVal+',\''+mapNo+'\','+locationLevel+','+year+');"  > <i class="icon-refresh" title="Refresh Map" style="cursor:pointer;"></i>  </a>');
+			$('#button1').html('<span style="float:right;margin-right:100px;">Refresh Map : <a onclick="getElectionResultForParlimentPresent('+stateVal+',\''+mapNo+'\','+locationLevel+','+year+');"  > <i class="icon-refresh" title="Refresh Map" style="cursor:pointer;"></i>  </a></span>');
 			
 			getMapType(1,stateVal);
 		}
 		else
 		{
 			$('#button2').html('');
-			$('#button2').html('<a onclick="getElectionResultForParlimentPresent('+stateVal+',\''+mapNo+'\','+locationLevel+','+year+');"  > <i class="icon-refresh" title="Refresh Map" style="cursor:pointer;"></i>  </a>');
+			$('#button2').html('<span style="float:right;margin-right:10px;">Refresh Map : <a onclick="getElectionResultForParlimentPresent('+stateVal+',\''+mapNo+'\','+locationLevel+','+year+');"  > <i class="icon-refresh" title="Refresh Map" style="cursor:pointer;"></i>  </a></span>');
 			
 			getMapType(2,stateVal);
 		}
@@ -3696,6 +3725,18 @@ popupContent +=' </table>';
 			});
 			//layer.bindPopup(popupContent);
 		}
+		else if (partyName == 'BSP')
+		{
+			layer.setStyle({
+			color: '#000000', 
+			weight: 1,
+			opacity: 0.6,
+			fillOpacity: 0.65,
+			fillColor: '#3300CC'
+			});
+			//layer.bindPopup(popupContent);
+		}
+		
 		else if (partyName == 'OTHERS')
 		{
 			layer.setStyle({
@@ -3751,143 +3792,155 @@ function getRegionWiseResults(searchType)
 	regions =[];
 	if(searchType == 'Telangana')
 	{
-	    //makeClickedFalse(1);
-		$('#button1,#button2,#button3,#button4').hide();
-		$('#effectClrImg').hide();
-		getElectionResultForAssemblyPrevious(2,"first",1,2);
-		getElectionResultForParlimentPresent(2,"second",2,2);
-		telanganaDistrict();
-		parliamentWiseResult('Telangana');
-		telanganaRegion();
-		//electionScopeId,electionId,scopeId
-		
-		regions.push(3);
-		regions.push(4);
-			particiaptedPartyList(2,258,4,regions);
-			reservedConstiList(2,258,4,regions);
-	
-			particiaptedPartyListForParliament(1,260,4,regions);
-			reservedConstiListForParliament(1,260,4,regions);
+		if(!isRunning){
+			isRunning = true;
+			//makeClickedFalse(1);
+			$('#heading1,#headings2').hide();
+			$('#heading2,#headings1').show();
+			$('#button1,#button2,#button3,#button4').hide();
+			$('#effectClrImg').hide();
+			getElectionResultForAssemblyPrevious(2,"first",1,2);
+			getElectionResultForParlimentPresent(2,"second",2,2);
+			telanganaDistrict();
+			parliamentWiseResult('Telangana');
+			telanganaRegion();
+			//electionScopeId,electionId,scopeId
 			
-		$('#results1Div,#subTitlesDiv').show();
-		$('#liveResultsDiv').hide();
-		$('#overviewDivId3').show();
-		$('#mapDiv').show();
-		$('#legend').show();
-		$('#bannerDiv').show();
-		$('#areaSelectionDiv').hide();
-		$('#stateSelectDiv').hide();
-		$('#submitButtionDiv').hide();
-		$('#modiDiv').hide();
-		$('#weathermap3').hide();
-		$('#unemchart1p_').hide();
-		$('#div_sld1').hide();
-		$('#div_sld1_img').hide();
-		$('#slider3').hide();
-		$('.parliamentCls').hide();
-		$('#weathermap4').hide();
-		$('#indiaBannerId').hide();
-		$('#andhraImageDiv').hide();
-		$('#telanganaImageDiv').show();
-		$('#districtWiseAnalysis').hide();
-		$('#legend').css("margin-top","-85px");	
+			regions.push(3);
+			regions.push(4);
+				particiaptedPartyList(2,258,4,regions);
+				reservedConstiList(2,258,4,regions);
 		
-		$('#subTitlesDiv').html('');
-		$('#results1Div').html('');
-		var subMenu ='';
-		subMenu = '<h2 style="font-family: times new roman,serif,sans-serif;font-size:16px;font-size:25px;font-weight: 500;"> Telangana Election Results - 2014 </h2>';
-		
-			subMenu +='<ul class="nav nav-pills" style="font-weight: 500;">';
-			subMenu +='	<li style="margin-top:10px;color:#ADADAD;"> Filter Options : </li> ';
-			subMenu +='	<li class="active btnCls btnCls1">';
-			subMenu +='	<span style="display:none;"> <button id="seemandraStateId" onclick="buildTelanganaStateWiseResult(\'AllTelangana\',\'btnCls1\');" class="btn btn-info" style="margin-left:20px;"> electin reslts</button> </span>';
-			subMenu +='	<a style="margin-left:20px;" href="javascript:{buildTelanganaStateWiseResult(\'AllTelangana\',\'btnCls1\');}"> State wise Result </a>';
-			subMenu +='	</li>';
-			subMenu +='	<li  class="btnCls btnCls2">';
-			subMenu +='	<a style="margin-left:20px;" href="javascript:{buildTelanganaStateWiseResult(\'TParliament\',\'btnCls2\');}"> Parliament wise  Result </a>';
-			subMenu +='	</li>';
-			subMenu +='	<li  class="btnCls btnCls4"><a style="margin-left:20px;" href="javascript:{buildTelanganaStateWiseResult(\'NorthTelangana\',\'btnCls4\');}">  North Telangana  </a></li>';
-			subMenu +='	<li  class="btnCls btnCls3"><a style="margin-left:20px;" href="javascript:{buildTelanganaStateWiseResult(\'SouthTelangana\',\'btnCls3\');}"> South Telangana </a></li>';
+				particiaptedPartyListForParliament(1,260,4,regions);
+				reservedConstiListForParliament(1,260,4,regions);
+				
+			$('#results1Div,#subTitlesDiv').show();
+			$('#liveResultsDiv').hide();
+			$('#overviewDivId3').show();
+			$('#mapDiv').show();
+			$('#legend').show();
+			$('#bannerDiv').show();
+			$('#areaSelectionDiv').hide();
+			$('#stateSelectDiv').hide();
+			$('#submitButtionDiv').hide();
+			$('#modiDiv').hide();
+			$('#weathermap3').hide();
+			$('#unemchart1p_').hide();
+			$('#div_sld1').hide();
+			$('#div_sld1_img').hide();
+			$('#slider3').hide();
+			$('.parliamentCls').hide();
+			$('#weathermap4').hide();
+			$('#indiaBannerId').hide();
+			$('#andhraImageDiv').hide();
+			$('#telanganaImageDiv').show();
+			$('#districtWiseAnalysis').hide();
+			$('#legend').css("margin-top","-85px");	
+			
+			$('#subTitlesDiv').html('');
+			$('#results1Div').html('');
+			var subMenu ='';
+			subMenu = '<h2 style="font-family: times new roman,serif,sans-serif;font-size:16px;font-size:25px;font-weight: 500;"> Telangana Election Results - 2014 </h2>';
+			
+				subMenu +='<ul class="nav nav-pills" style="font-weight: 500;">';
+				subMenu +='	<li style="margin-top:10px;color:#ADADAD;"> Filter Options : </li> ';
+				subMenu +='	<li class="active btnCls btnCls1">';
+				subMenu +='	<span style="display:none;"> <button id="seemandraStateId" onclick="buildTelanganaStateWiseResult(\'AllTelangana\',\'btnCls1\');" class="btn btn-info" style="margin-left:20px;"> electin reslts</button> </span>';
+				subMenu +='	<a style="margin-left:20px;" href="javascript:{buildTelanganaStateWiseResult(\'AllTelangana\',\'btnCls1\');}"> State wise Result </a>';
+				subMenu +='	</li>';
+				subMenu +='	<li  class="btnCls btnCls2">';
+				subMenu +='	<a style="margin-left:20px;" href="javascript:{buildTelanganaStateWiseResult(\'TParliament\',\'btnCls2\');}"> Parliament wise  Result </a>';
+				subMenu +='	</li>';
+				subMenu +='	<li  class="btnCls btnCls4"><a style="margin-left:20px;" href="javascript:{buildTelanganaStateWiseResult(\'NorthTelangana\',\'btnCls4\');}">  North Telangana  </a></li>';
+				subMenu +='	<li  class="btnCls btnCls3"><a style="margin-left:20px;" href="javascript:{buildTelanganaStateWiseResult(\'SouthTelangana\',\'btnCls3\');}"> South Telangana </a></li>';
 
 
-			subMenu +='</ul>';
-			//subMenu +=' <span style="margin-left:600px" id="constiLists"> <input type="text"  id="searchNameId"/> <input type="button" value="Search" onclick="searchByConstituencyName()" style="width:75px;height:30px;margin-top:-10px" class="btn btn-primary"/> </span>'
-			
-			subMenu +=' <span style="margin-left:600px" >  Search :  <select id="constiLists" onchange="searchByConstituencyName();" style="padding: 5px; height: 28px;"> </select>  <img id="stateAjaxImgg1" src="./images/icons/search.gif" alt="Processing Image" style="display:none;"/></span>'
-			
-			
-		$('#subTitlesDiv').html(subMenu);
-		$('#weathermap5').hide();
-		$('#overviewDivId6,#overviewDivId7,#overviewDivId4,#overviewDivId5').show();
+				subMenu +='</ul>';
+				//subMenu +=' <span style="margin-left:600px" id="constiLists"> <input type="text"  id="searchNameId"/> <input type="button" value="Search" onclick="searchByConstituencyName()" style="width:75px;height:30px;margin-top:-10px" class="btn btn-primary"/> </span>'
+				
+				subMenu +=' <span style="margin-left:600px" >  Search :  <select id="constiLists" onchange="searchByConstituencyName();" style="padding: 5px; height: 28px;"> </select>  <img id="stateAjaxImgg1" src="./images/icons/search.gif" alt="Processing Image" style="display:none;"/></span>'
+				
+				
+			$('#subTitlesDiv').html(subMenu);
+			$('#weathermap5').hide();
+			$('#overviewDivId6,#overviewDivId7,#overviewDivId4,#overviewDivId5').show();
+		
+		}
+		
 	}
 	else if(searchType == 'Semandhra')
 	{
-		$('#button1,#button2,#button3,#button4').hide();
-	    $('#effectClrImg').hide();
-		getElectionResultForAssemblyPrevious(1,"first",1,2);
-		getElectionResultForParlimentPresent(1,"second",2,2);
-		seemandraDistrict();
-		seemandraRegion();
-		parliamentWiseResult('Semandhra');
+	
+		if(!isRunning){
+			isRunning = true;
+			$('#heading1,#headings2').hide();
+			$('#heading2,#headings1').show();
+			$('#button1,#button2,#button3,#button4').hide();
+			$('#effectClrImg').hide();
+			getElectionResultForAssemblyPrevious(1,"first",1,2);
+			getElectionResultForParlimentPresent(1,"second",2,2);
+			seemandraDistrict();
+			seemandraRegion();
+			parliamentWiseResult('Semandhra');
 
-		regions.push(1);
-		regions.push(2);
-		regions.push(5);
-		particiaptedPartyList(2,258,4,regions);
-		reservedConstiList(2,258,4,regions);
+			regions.push(1);
+			regions.push(2);
+			regions.push(5);
+			particiaptedPartyList(2,258,4,regions);
+			reservedConstiList(2,258,4,regions);
 
-		particiaptedPartyListForParliament(1,260,4,regions);
-		reservedConstiListForParliament(1,260,4,regions);
+			particiaptedPartyListForParliament(1,260,4,regions);
+			reservedConstiListForParliament(1,260,4,regions);
+				
+			$('#overviewDivId3').show();
+			$('#results1Div,#subTitlesDiv').show();
+			$('#liveResultsDiv').hide();
+			$('#bannerDiv').show();
+			$('#mapDiv').show();
+			$('#legend').show();
+			$('#areaSelectionDiv').hide();
+			$('#stateSelectDiv').hide();
+			$('#submitButtionDiv').hide();
+			$('#modiDiv').hide();
+			$('#weathermap3').hide();
+			$('#unemchart1p_').hide();
+			$('#div_sld1').hide();
+			$('#div_sld1_img').hide();
+			$('#slider3').hide();
+			$('.parliamentCls').hide();
+			$('#weathermap4').hide();
+			$('#indiaBannerId').hide();
+			$('#results1Div').html('');
+			$('#subTitlesDiv').html('');
+			$('#andhraImageDiv').show();
+			$('#telanganaImageDiv').hide();
+			$('#districtWiseAnalysis').hide();
+			$('#legend').css("margin-top","-85px");	
+			var subMenu ='';
 			
-		$('#overviewDivId3').show();
-		$('#results1Div,#subTitlesDiv').show();
-		$('#liveResultsDiv').hide();
-		$('#bannerDiv').show();
-		$('#mapDiv').show();
-		$('#legend').show();
-		$('#areaSelectionDiv').hide();
-		$('#stateSelectDiv').hide();
-		$('#submitButtionDiv').hide();
-		$('#modiDiv').hide();
-		$('#weathermap3').hide();
-		$('#unemchart1p_').hide();
-		$('#div_sld1').hide();
-		$('#div_sld1_img').hide();
-		$('#slider3').hide();
-		$('.parliamentCls').hide();
-		$('#weathermap4').hide();
-		$('#indiaBannerId').hide();
-		$('#results1Div').html('');
-		$('#subTitlesDiv').html('');
-		$('#andhraImageDiv').show();
-		$('#telanganaImageDiv').hide();
-		$('#districtWiseAnalysis').hide();
-		$('#legend').css("margin-top","-85px");	
-		var subMenu ='';
-		
-		subMenu = '<h2 style="font-family:Georgia,Times;font-size:16px;font-size:25px;"> Andhra Pradesh Election Results - 2014 </h2>';
-		
-			subMenu +='<ul class="nav nav-pills" style="font-weight: 500;">';
-			subMenu +='	<li style="margin-top:10px;color:#ADADAD;"> Filter Options : </li> ';
-			subMenu +='	<li class="active btnCls btnCls1">';
-			subMenu +='	<span style="display:none;"> <button id="seemandraStateId" onclick="buildTelanganaStateWiseResult(\'AllSemandhra\',\'btnCls1\');" class="btn btn-info" style="margin-left:20px;"> electin reslts</button> </span>';
-			subMenu +='	<a style="margin-left:20px;" href="javascript:{buildTelanganaStateWiseResult(\'AllSemandhra\',\'btnCls1\');}"> State Election Result </a>';
-			subMenu +='	</li>';
-			subMenu +='	<li  class="btnCls btnCls2">';
-			subMenu +='	<a style="margin-left:20px;" href="javascript:{buildTelanganaStateWiseResult(\'SParliament\',\'btnCls2\');;}"> Parliament wise  Result </a>';
-			subMenu +='	</li>';
-			subMenu +='	<li  class="btnCls btnCls3"><a style="margin-left:20px;" href="javascript:{buildTelanganaStateWiseResult(\'NorthSemandhra\',\'btnCls3\');}"> North Andhra </a></li>';
-			subMenu +='	<li  class="btnCls btnCls4"><a style="margin-left:20px;" href="javascript:{buildTelanganaStateWiseResult(\'SouthSemandhra\',\'btnCls4\');}"> South Andhra </a></li>';
-			subMenu +='	<li  class="btnCls btnCls5"><a style="margin-left:20px;" href="javascript:{buildTelanganaStateWiseResult(\'Rayalaseema\',\'btnCls5\');}"> Rayalaseema </a></li>';
-			subMenu +='</ul>';
-			//subMenu +=' <span style="margin-left:600px" id="constiLists"> <input type="text"  id="searchNameId"/> <input type="button" value="Search" onclick="searchByConstituencyName()" style="width:75px;height:30px;margin-top:-10px" class="btn btn-primary"/> </span>'
+			subMenu = '<h2 style="font-family:Georgia,Times;font-size:16px;font-size:25px;"> Andhra Pradesh Election Results - 2014 </h2>';
 			
-			subMenu +=' <span style="margin-left:600px" > Search : <select id="constiLists" onchange="searchByConstituencyName();" style="padding: 5px; height: 28px;"> </select> <img id="stateAjaxImgg1" src="./images/icons/search.gif" alt="Processing Image" style="display:none;"/> </span>'
-			
-		$('#subTitlesDiv').html(subMenu);
-		$('#weathermap5').hide();
-		$('#overviewDivId6,#overviewDivId7,#overviewDivId4,#overviewDivId5').show();
-
+				subMenu +='<ul class="nav nav-pills" style="font-weight: 500;">';
+				subMenu +='	<li style="margin-top:10px;color:#ADADAD;"> Filter Options : </li> ';
+				subMenu +='	<li class="active btnCls btnCls1">';
+				subMenu +='	<span style="display:none;"> <button id="seemandraStateId" onclick="buildTelanganaStateWiseResult(\'AllSemandhra\',\'btnCls1\');" class="btn btn-info" style="margin-left:20px;"> electin reslts</button> </span>';
+				subMenu +='	<a style="margin-left:20px;" href="javascript:{buildTelanganaStateWiseResult(\'AllSemandhra\',\'btnCls1\');}"> State Election Result </a>';
+				subMenu +='	</li>';
+				subMenu +='	<li  class="btnCls btnCls2">';
+				subMenu +='	<a style="margin-left:20px;" href="javascript:{buildTelanganaStateWiseResult(\'SParliament\',\'btnCls2\');;}"> Parliament wise  Result </a>';
+				subMenu +='	</li>';
+				subMenu +='	<li  class="btnCls btnCls3"><a style="margin-left:20px;" href="javascript:{buildTelanganaStateWiseResult(\'NorthSemandhra\',\'btnCls3\');}"> North Andhra </a></li>';
+				subMenu +='	<li  class="btnCls btnCls4"><a style="margin-left:20px;" href="javascript:{buildTelanganaStateWiseResult(\'SouthSemandhra\',\'btnCls4\');}"> South Andhra </a></li>';
+				subMenu +='	<li  class="btnCls btnCls5"><a style="margin-left:20px;" href="javascript:{buildTelanganaStateWiseResult(\'Rayalaseema\',\'btnCls5\');}"> Rayalaseema </a></li>';
+				subMenu +='</ul>';
+				//subMenu +=' <span style="margin-left:600px" id="constiLists"> <input type="text"  id="searchNameId"/> <input type="button" value="Search" onclick="searchByConstituencyName()" style="width:75px;height:30px;margin-top:-10px" class="btn btn-primary"/> </span>'
+				
+				subMenu +=' <span style="margin-left:600px" > Search : <select id="constiLists" onchange="searchByConstituencyName();" style="padding: 5px; height: 28px;"> </select> <img id="stateAjaxImgg1" src="./images/icons/search.gif" alt="Processing Image" style="display:none;"/> </span>'
+				
+			$('#subTitlesDiv').html(subMenu);
+			$('#weathermap5').hide();
+			$('#overviewDivId6,#overviewDivId7,#overviewDivId4,#overviewDivId5').show();
+		}
 	}
 	else if(searchType == 'India')
 	{
@@ -3917,6 +3970,8 @@ function getRegionWiseResults(searchType)
 		$('#districtWiseAnalysis').hide();
 		$('#weathermap5').show();
 		$('#button1,#button2,#button3,#button4').hide();
+		$('#heading1,#headings2').hide();
+		$('#button1,#button2,#button3,#button4').hide();
 		
 		
 		var parties = new Array();
@@ -3933,6 +3988,8 @@ function getRegionWiseResults(searchType)
 	{
 		$('#overviewDivId6,#overviewDivId7,#overviewDivId4,#overviewDivId5').hide();
 		$('#button1,#button2,#button3,#button4').hide();
+		$('#heading1,#headings2').hide();
+		$('#heading2,#headings1').hide();
 		$('#overviewDivId3').hide();
 	    $('#effectClrImg').hide();
 		$('#results1Div,#subTitlesDiv').html('');
@@ -3965,8 +4022,10 @@ function getRegionWiseResults(searchType)
 	}
 	else if(searchType == 'DistrictAnalysis')
 	{
+		$('#heading1,#headings2').style('display','none');
 		$('#overviewDivId6,#overviewDivId7,#overviewDivId4,#overviewDivId5').hide();
 		$('#button1,#button2,#button3,#button4').hide();
+		$('#heading2,#headings1').hide();
 		$('#overviewDivId3').hide();
 	    $('#effectClrImg').hide();
 		$('#results1Div,#subTitlesDiv').html('');
@@ -3998,6 +4057,9 @@ function getRegionWiseResults(searchType)
 	{
 		$('#overviewDivId6,#overviewDivId7,#overviewDivId4,#overviewDivId5').hide();
 		$('#button1,#button2,#button3,#button4').hide();
+		$('#heading1').hide();
+		$('#headings2').hide();
+		$('#heading2,#headings1').hide();
 		$('#overviewDivId3').hide();
 	    $('#effectClrImg').hide();
 	    $("#modiDiv").show();
@@ -4055,6 +4117,8 @@ function getRegionWiseResults(searchType)
 	{
 		$('#overviewDivId6,#overviewDivId7,#overviewDivId4,#overviewDivId5').hide();
 		$('#button1,#button2,#button3,#button4').hide();
+		$('#heading1,#headings2').hide();
+		$('#heading2,#headings1').hide();
 		$('#overviewDivId3').hide();
 	    $('#effectClrImg').show();
 	    $("#modiDiv").show();
@@ -4321,6 +4385,7 @@ function getRegionWiseResults(searchType)
 	
 	function getElectionResultForTotalAssembly(level)
 	{
+
 	  if(level == 1){
 	   $("#stateAjaxImg4").css("display","block");
 	  }
@@ -4455,12 +4520,12 @@ function getRegionWiseResults(searchType)
 	function buildPartyWideWonLeadCount(results){
 	if(results.statesList.length>0){
 	var str = "";
-		str += "<h2 class='offset2' style='margin-bottom:5px;margin-top:10px;color:#27AFA6;'>Party Wise Won/Lead Counts</h2>";
+		str += "<h2 class='offset2' style='margin-bottom:5px;margin-top:10px;color:#27AFA6;'>Party Wise Won/Lead Seats </h2>";
 		str +="<table class='parlResultTable offset1' width='500' cellspacing='0' cellpadding='2' border='0'>";
 		str +="<tbody style='font-family: Tahoma;font-size: 12px;'>";
 			str+="<tr style='font-weight:bold;color:black;vertical-align:bottom;border-bottom:1px solid #004276;'>";
 				str+="<td style='border-bottom:1px solid #004276;'> PARTY </td>";
-				str+="<td style='border-bottom:1px solid #004276;'> ALLIANCE </td>";
+				str+="<td style='border-bottom:1px solid #004276;'> ALLIANCE PARTY </td>";
 				str+="<td style='border-bottom:1px solid #004276;'> WON </td>";
 				<!--str+="<td style='border-bottom:1px solid #004276;'> LEAD </td>";-->
 			str+="</tr>";
@@ -4493,6 +4558,7 @@ function getRegionWiseResults(searchType)
 
 function buildStateWideParliaments(results){
 	var str = "";
+	str = "<div style='margin-top:35px;background:#00ff00;font-weight:bold;padding:5px;border-radius:5px;width: 935px;' align='center'> STATE WISE WON PARLIAMENT SEATS COMPARISON BETWEEN 2014 AND 2009 ELECTION </div>";
 	str +="<table class='parlResultTable offset1' width='800' cellspacing='0' cellpadding='2' border='0'>";
 		str +="<tbody style='font-family: Tahoma;font-size: 12px;'>";
 			str +="<tr>";
@@ -4500,7 +4566,7 @@ function buildStateWideParliaments(results){
 			str +="<tr><td bgcolor='#AACAEA' style='padding: 0px;' colspan='14'></td></tr>";
 			str +="<tr>";
 				str +="<td rowspan='3' style='font-weight:bold;color:black;vertical-align:bottom;border-bottom:1px solid #004276;'>STATE</td>";
-				str +="<td rowspan='3' align='center' style='font-weight:bold;color:black;vertical-align:bottom;border-bottom:1px solid #004276;'>TOTAL</td>";
+				str +="<td rowspan='3' align='center' style='font-weight:bold;color:black;vertical-align:bottom;border-bottom:1px solid #004276;'>TOTAL SEATS </td>";
 				str +="<td colspan='6' style='font-weight:bold;color:black;text-align:center;border-bottom:1px solid #004276;border-bottom-width:1px;'>2014</td>";
 				str +="<td width='4%'> </td>";
 				str +="<td colspan='4' style='font-weight:bold;color:black;text-align:center;border-bottom:1px solid #004276;border-bottom-width:1px;'>2009</td>";
@@ -4595,7 +4661,7 @@ function buildStateWideParliaments(results){
 			
 			str +="<tr><td bgcolor='#AACAEA' style='padding: 0px;' colspan='12'><img width='1' height='1' src='images/specialPage/spacer.gif'></td></tr>";
 			str+="<tr style='font-weight:bold;color:black;'>";
-				str +="<td>Totals</td>";
+				str +="<td>Total </td>";
 				str +="<td align='center'>"+results.overallStatesCount+"</td>";
 				str +="<td align='right'>"+results.ttlNdaWonCount+"</td>";
 				str +="<td align='right'>"+results.ttlNdaLeadCount+"</td>";
