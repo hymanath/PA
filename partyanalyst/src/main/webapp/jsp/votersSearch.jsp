@@ -2959,7 +2959,7 @@ function showAlert()
 	   <a id="updateBtnInNewWndow" style="position: fixed; left :0px; top: 320px;" href="javascript:{getAllSelectedVotersDetails1();}" class="btn btn-primary">Update voter details</a>
  </div>
 
-      <div class="titleHeading">VOTERS SEARCH</div>
+      <div class="titleHeading">VOTER SEARCH</div>
      
 	 <c:if test="${isVoterDataTools != null && isVoterDataTools == true}">
 	  <div style="margin-left: auto; margin-bottom: -12px; width: 200px;"><a href="voterDataToolsAction.action?" class="btn btn-info">Voter Data Tools</a></div>
