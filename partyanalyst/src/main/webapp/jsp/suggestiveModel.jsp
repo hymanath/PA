@@ -1190,7 +1190,7 @@ function panchayatMatrx(result)
 			</td>	
 </tr>
 <tr><td></td>
-		<td><input type="checkbox" name="expCaste" id="expCaste" value="expCaste" onclick="showExpCasteDetailsButton();" style="margin-top: 0px;"><span id="ecpCheckBox" style="margin-left:10px;">Please Check Here For Excepted Castes</span></td>
+		<td><input type="checkbox" name="expCaste" id="expCaste" value="expCaste" onclick="showExpCasteDetailsButton();" style="margin-top: 0px;"><span id="ecpCheckBox" style="margin-left:10px;">Please Check Here For Expected Castes</span></td>
 		
 		</tr>
 	</table>
@@ -2016,8 +2016,8 @@ function buildLeadersTableWithExpPercForMuncipal(results)
 			for(var b in results[0].exceptdCateDetails)
 			{
 				str += '<th>'+results[0].exceptdCateDetails[b].name+'</th>';
-				str += '<th>Excepted Perc</th>';
-				str += '<th>Excepted Votes</th>';
+				str += '<th>Expected Perc</th>';
+				str += '<th>Expected Votes</th>';
 			}
 
 		str += '</tr>'; */
@@ -2068,8 +2068,8 @@ function buildLeadersTableWithExpPercForUrban(results)
 		for(var c in results[0].boothLevelLeadersList[0].exceptdCateDetails)
 		{
 			str += '<th>'+results[0].boothLevelLeadersList[0].exceptdCateDetails[c].name+'</th>';
-			str += '<th>Excepted Perc</th>';
-			str += '<th>Excepted Votes</th>';
+			str += '<th>Expected Perc</th>';
+			str += '<th>Expected Votes</th>';
 		}
 
 		str += '</tr></thead><tbody>';
@@ -2147,8 +2147,8 @@ function buildLeadersTableWithExpPerc(results)
 			for(var b in results[0].exceptdCateDetails)
 			{
 				str += '<th>'+results[0].exceptdCateDetails[b].name+'</th>';
-				str += '<th>Excepted Perc</th>';
-				str += '<th>Excepted Votes</th>';
+				str += '<th>Expected Perc</th>';
+				str += '<th>Expected Votes</th>';
 			}
 
 		str += '</tr>';
