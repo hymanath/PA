@@ -544,6 +544,20 @@ public class DashBoardElectionResultsAction extends ActionSupport implements Ser
 			return Action.SUCCESS;
 	}
 	
+	public String getTop5CastePeopleOpnionOnPartyStateWide(){
+		try{
+		jObj = new JSONObject(getTask());
+		String[] surveyIds = jObj.getString("surveyIds").split(",");
+		List<Long> ids = new ArrayList<Long>();
+		for(int i =0;i<surveyIds.length;i++){
+			ids.add(Long.parseLong(surveyIds[i]));
+		}
+		 casteResult = dashBoardElectionResultsService.getTop5CastePeopleOpnionOnPartyStateWide( jObj.getLong("stateType") ,ids);
+	}catch(Exception e){
+		LOG.error("Exception raised in getTop5CastePeopleOpnionOnParty method",e);
+	}
+		return Action.SUCCESS;
+}
 	
 	public String getSurveyDetailsByRegion()
 	{
