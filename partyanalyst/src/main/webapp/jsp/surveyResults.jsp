@@ -4,9 +4,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
-<script type="text/javascript" src="js/highcharts4.1/js/highcharts.js"></script>
-<script type="text/javascript" src="js/highcharts4.1/js/highcharts-3d.js"></script>
-<script src="http://code.highcharts.com/modules/funnel.js"></script>
+
 <!--<script src="http://code.highcharts.com/modules/exporting.js"></script>-->
 
 <style>
@@ -19,15 +17,19 @@ border:1px solid black !important;
 
 <!-- start chart Analysis tab -->
 
+<div class="span10 offset2">
+	<table><tr><td><span><input type="radio" class="reportTypeClass" name="reportType" value="entire"></input></span></td><td><span>Entire State Wise Analysis</span></td>
+	<td><span> &nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" class="reportTypeClass" name="reportType" checked="checked" value="individual">  </input></span></td><td><span>Individual Constituency Wise Analysis</span></td></tr></table>
+</div>
 
-<div>
+<div id="" class="span12">
 <table class="offset1 headingTbl">
 
 <tr><td class="span3">Select State<select id="stateIdForChart" class="input-block-level">
 	 <option value="1">Telangana</option>
 	 <option value="2">Seemandra</option>
 	 </select></td>
-						    <td class="span3"> Select Constituency<img src="./images/icons/search.gif" alt="Processing Image" id="constituencyIdForChartImg" style="display:none;"/><select class="input-block-level" id="constituencyIdForChart" style="width:96%;">
+						    <td class="span3" id="individualConstId"> &nbsp;Select Constituency<img src="./images/icons/search.gif" alt="Processing Image" id="constituencyIdForChartImg" style="display:none;"/> &nbsp;<select class="input-block-level" id="constituencyIdForChart" style="width:96%;">
 							
 						   </select>	</td>
 
@@ -38,11 +40,14 @@ border:1px solid black !important;
 						   
 			
 
-<td class="span3"> 
+<td class="span3" id="showconsticaste"> 
 
-<a onClick="getPartyWiseCountDetailsForSelectedSurveys();genderWiseReport();getCasteData();" value="Submit" class="btn" style="margin-top:0px; background: none repeat scroll 0 0 #0088CC; color: #FFFFFF;font-weight: normal;">Submit</a>
+<a onClick="getPartyWiseCountDetailsForSelectedSurveys();getCasteData();" value="Submit" class="btn" style="margin-top:0px; background: none repeat scroll 0 0 #0088CC; color: #FFFFFF;font-weight: normal;">Submit</a>
 </td>	
+<td class="span3" style="display:none;" id="showstatecaste"> 
 
+<a onClick="getCasteDataStateWide();" value="Submit" class="btn" style="margin-top:0px; background: none repeat scroll 0 0 #0088CC; color: #FFFFFF;font-weight: normal;">Submit</a>
+</td>	
 	
 </tr>
 </table>
@@ -59,7 +64,7 @@ border:1px solid black !important;
 	<!-- Mahesh start -->
 	<div id="containeradsd" style="clear:both;margin-top:10px;margin-bottom:10px;"></div>
 	<div id="containeradsdres" style="overflow-x:scroll;clear:both;margin-top:10px;margin-bottom:10px;"></div>
-	<!--<div id="containeradsdres1" style="overflow-x:scroll;clear:both;margin-top:10px;margin-bottom:10px;"></div> -->
+	<div id="containeradsdres1" style="overflow-x:scroll;clear:both;margin-top:10px;margin-bottom:10px;"></div>
 	<!-- end -->
 	<!-- prasad -->
 	<div id="genderWiseChart" style="margin-top:10px;margin-bottom:10px;"></div>
@@ -84,6 +89,23 @@ $('document').ready(function(){
 	});
  
 });
+$(".reportTypeClass").click(function(){
+	manageReportTypeDisplay();
+});
+
+function manageReportTypeDisplay(){
+	var radVal= $('input[name=reportType]:checked').val();
+	$("#individualConstId").attr("style","margin-top: 9px;");
+	if(radVal == "entire"){
+		$("#individualConstId").hide();
+		$("#showconsticaste").hide();
+        $("#showstatecaste").show();
+	}else{
+		$("#individualConstId").show();
+		$("#showconsticaste").show();
+        $("#showstatecaste").hide();
+	}
+}
 var partyWiseCountDtls = {
 	electionId:'',
     constituencyId:'',
@@ -94,7 +116,8 @@ function getPartyWiseCountDetailsForSelectedSurveys()
 	$('#winningCandidateInfo').html('');
 	$('#container2').html('');
 	$('#container1').html('');
-	
+	$('#container2').show();
+	$('#container1').show();
 	partyWiseCountDtls.electionId = 258;
 	partyWiseCountDtls.constituencyId = $('#constituencyIdForChart').val();
 	partyWiseCountDtls.surveyIds = $('#surveyIdForChart').val();
@@ -487,7 +510,7 @@ function buildOptions(result,id)
 function getCasteData(){
 $("#containeradsd").html('');
 $("#containeradsdres").html('');
-//$("#containeradsdres1").html('');
+$("#containeradsdres1").html('');
 var surveyIDs = $("#surveyIdForChart").val();
 if(surveyIDs == null)
 	return;
@@ -518,7 +541,50 @@ var constituencyID = $("#constituencyIdForChart").val();
 	});
 }
 
-
+function getCasteDataStateWide(){
+   	
+    $('#winningCandidateInfo').html('');
+	$('#container2').html('');
+	$('#container1').html('');
+	$('#container2').hide();
+	$('#container1').hide();
+   $("#containeradsd").html('');
+   $("#containeradsdres").html('');
+	$("#containeradsdres1").html('');
+	//$("#containeradsdres1").html('');
+	var surveyIDs = $("#surveyIdForChart").val();
+	if(surveyIDs == null)
+	{
+	$("#errorDivForChartAnalysis").html('Select atleast one survey').css("color","red");
+	return;
+	}
+    ajaxProcessing();
+	var stateType = $("#stateIdForChart").val();
+	if(stateType == 2){
+	  stateType =1;
+	}else{
+	  stateType =2;
+	}
+	        var jsObj=
+		{
+	        		stateType : stateType,
+				surveyIds :surveyIDs.toString()
+				
+		};
+		$.ajax({
+		type: "GET",
+		url: "getTop5CastePeopleOpnionOnPartyStateWide.action",
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)},
+		 error:function() { 
+	            $( "#processingDialogue" ).dialog('close');
+	         }
+		})
+		.done(function( result ) {
+		 $( "#processingDialogue" ).dialog('close');
+			buildTableForTopCasteStateWide(result);
+		});
+	}
 
 function buildChartForTopCaste(result){
 var colorsArray = new Array();
@@ -685,6 +751,40 @@ var str="";
 	$("#containeradsdres").html(str);
 }
 
+function buildTableForTopCasteStateWide(result){
+	
+	var str1="";
+    str1+="<table id='casteTable1' class='table table-bordered'>";
+	str1+="<tr>";
+	str1+="  <th rowspan='2'>Constituency</th>";
+	for(var i in result[0].subOptionList){
+		str1+="  <th colspan='2'>"+result[0].subOptionList[i].name+"</th>";
+	}
+	str1+="</tr>";
+	str1+="<tr>";
+	for(var i in result[0].subOptionList){
+		str1+="  <th>Actual %</th>";
+		str1+="  <th>With Correction %</th>";
+	}
+	str1+="</tr>";
+	for(var i in result){
+		str1+="<tr>";
+		str1+="  <td>"+result[i].name+"</td>";
+		for(var j in result[i].subOptionList){
+			str1+="  <td>"+result[i].subOptionList[j].percentage.toFixed(2)+"</td>";
+			str1+="  <td>"+result[i].subOptionList[j].correctionPerc.toFixed(2)+"</td>";
+		}
+		str1+="</tr>";
+	}
+	str1+="<tr>";
+	str1+="  <td>Total Won Seats</td>";
+	for(var j in result[0].subOptionList){
+		str1+="  <td>"+result[0].subOptionList[j].badBoothCount+"</td>";
+		str1+="  <td>"+result[0].subOptionList[j].veryBadBoothCount+"</td>";
+	}
+	str1+="</tr>";
+	$("#containeradsdres1").html(str1);
+}
 /* end */
 
 
