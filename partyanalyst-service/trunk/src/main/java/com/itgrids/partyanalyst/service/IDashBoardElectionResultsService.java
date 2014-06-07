@@ -32,4 +32,5 @@ public interface IDashBoardElectionResultsService {
     public DashBoardResultsVO getPartyWiseCountDetailsByConstituencyIdAndSurveyIds(Long constituencyId,List<Long> surveyIds,Long electionId);
     public Map<String,String> getConstituencyDetaisByRegionid(Long regionId);
 
+    public List<OptionVO> getTop5CastePeopleOpnionOnPartyStateWide(Long stateType,List<Long> surveyIds);
 }

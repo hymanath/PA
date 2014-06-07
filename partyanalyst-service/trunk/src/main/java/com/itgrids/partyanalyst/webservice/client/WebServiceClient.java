@@ -44,7 +44,23 @@ public class WebServiceClient {
 			}
 			return result;
 	  }
-	  
+	  public List<OptionVO> getTop5CastePeopleOpnionOnPartyStateWide(Long stateType,List<Long> surveyIds){
+		  List<OptionVO> result = null;
+		  try{
+			  SOAPWebServiceEndPoint main=service.getSOAPWebServiceEndPointPort();
+				  result = main.getTop5CastePeopleOpnionOnPartyStateWide(stateType, surveyIds);
+				  for(OptionVO constituency:result){
+					  for(int i = 0;i<constituency.getSubOptionList().size();i++){
+						  result.get(0).getSubOptionList().get(i).setBadBoothCount(result.get(0).getSubOptionList().get(i).getBadBoothCount()+constituency.getSubOptionList().get(i).getGoodBoothCount());
+						  result.get(0).getSubOptionList().get(i).setVeryBadBoothCount(result.get(0).getSubOptionList().get(i).getVeryBadBoothCount()+constituency.getSubOptionList().get(i).getVeryGoodBoothCount());
+					  }
+				  }
+				System.out.println(result.size());
+			}catch(Exception e){
+				LOG.error("exception rised in getTop5CastePeopleOpnionOnPartyStateWide",e);
+			}
+			return result;
+	  }
 	  public List<GenericVO> buildGenderWiseDetails(Long partyId,Long constituencyId,List<Long> surveyIds)
 	  {
 		  List<GenericVO> returnList = null;

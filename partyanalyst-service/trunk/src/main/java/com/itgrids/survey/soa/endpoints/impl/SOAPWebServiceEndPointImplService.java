@@ -17,7 +17,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.1
  * 
  */
-@WebServiceClient(name = "SOAPWebServiceEndPointImplService", targetNamespace = "http://impl.endpoints.soa.survey.itgrids.com/", wsdlLocation = "http://74.208.7.129:8080/Survey1/SOAWebService?wsdl")
+@WebServiceClient(name = "SOAPWebServiceEndPointImplService", targetNamespace = "http://impl.endpoints.soa.survey.itgrids.com/", wsdlLocation = "http://192.168.3.74:8080/Survey/SOAWebService?wsdl")
 public class SOAPWebServiceEndPointImplService
     extends Service
 {
@@ -30,9 +30,9 @@ public class SOAPWebServiceEndPointImplService
         try {
             URL baseUrl;
             baseUrl = com.itgrids.survey.soa.endpoints.impl.SOAPWebServiceEndPointImplService.class.getResource(".");
-            url = new URL(baseUrl, "http://74.208.7.129:8080/Survey1/SOAWebService?wsdl");
+            url = new URL(baseUrl, "http://74.208.7.129:8080/Survey/SOAWebService?wsdl");
         } catch (MalformedURLException e) {
-            logger.warning("Failed to create URL for the wsdl Location: 'http://74.208.7.129:8080/Survey1/SOAWebService?wsdl', retrying as a local file");
+            logger.warning("Failed to create URL for the wsdl Location: 'http://localhost:8080/Survey/SOAWebService?wsdl', retrying as a local file");
             logger.warning(e.getMessage());
         }
         SOAPWEBSERVICEENDPOINTIMPLSERVICE_WSDL_LOCATION = url;
