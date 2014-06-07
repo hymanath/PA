@@ -507,7 +507,11 @@ padding: 4px;
 		font-size:13px;
 		border-left:2px solid #c3c3c3;
 	}
-	
+
+	.requiredFont{
+	color:red;
+	font-size:13px;
+	}
 </style>
 <script type="text/javascript">
 google.load("visualization", "1", {packages:["corechart"]});
@@ -594,7 +598,8 @@ $('document').ready(function(){
 	 //$('#locaionsId1').multiselect({ noneSelectedText:"Select"});
 	 $('.reportType').change(function(){
 		// $('#percentDiv').hide();
-		 $('#test,#matridLeadId,#matrixWonSummaryId,#matrixLeadSummaryId,#marginAnalysis1,#constituencyResultsDiv').html('');
+		 $('#test,#matridLeadId,#matrixWonSummaryId,#matrixLeadSummaryId,#marginAnalysis1,#constituencyResultsDiv,#errorDiv').html('');
+		  $("#excelReportId").hide();
 	 });
 
 	 $('#scopeId').change(function(){
@@ -996,11 +1001,21 @@ function showSelectedReport()
 	//$('#percentDiv').hide();
 
 	$('#matridLeadId,#matrixWonSummaryId,#matrixLeadSummaryId,#errorDiv,#test,#marginAnalysis1,#constituencyResultsDiv').html('');
- 
-
-	if($('#locaionsId1').val() == null)
+	var data=$("#selectText").text();
+	if($("#electionId").val() == 0)
 	{
-        $('#errorDiv').html('Please select location(s)');
+		$('#errorDiv').html('Please Select Election Year');
+		return;
+	}
+	else if($('#stateScope').val() < 0)
+	{
+        $('#errorDiv').html('Please Select State');
+		return;
+	}
+	
+	else if($('#locaionsId1').val() == null)
+	{
+        $('#errorDiv').html('Please ' + data+'(s)');
 		return;
 	}
       
@@ -1073,7 +1088,8 @@ function getMatrixReport()
                      return;
 				   }
 			  $('#matridLeadId,#matrixWonSummaryId,#matrixLeadSummaryId').html('');
-			    buildMatrixReportSummaryDetails(result,"Won");
+			    $('#excelReportId').show();
+				buildMatrixReportSummaryDetails(result,"Won");
 				//buildMatrixReportSummaryDetails(result,"Lead");
 			    buildMatrixReport(result,"Won");
 			   // buildMatrixReport(result,"Lead");
@@ -1243,7 +1259,7 @@ function buildSubReportByConstituencyType(result,type)
 		 return;
 	 }
 	$('#summaryDiv').removeClass('offset1');
-
+	 $('#excelReportId').show();
 	var str ='';
 	str+='<div class="tableClass1" style="margin-top:30px;">';
 
@@ -1434,7 +1450,8 @@ $('#ajaxImage').show();
 	   $('#constituencyResultsDiv').show();
 	   $('#constituencyResultsDiv').show();
 	   if(result != null)
-	   {		
+	   {	
+		$('#excelReportId').show();	   
 		var str = '';
 		//str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">CONSTITUENCY WISE LIVE RESULTS</h4>';
 		str+='<div class="tableClass1 offset1">';
@@ -1480,30 +1497,30 @@ $('#ajaxImage').show();
 }
 </script>
 <div align="center" style="margin-top:20px;">
-<img src="images/MEnuBG.jpg" width="960" height="32" border="0" usemap="#Map" />
+<img src="images/MEnuBG.jpg" width="960" height="32" border="0" usemap="#Map" style="cursor:auto;"/>
 </div>
 <div align="center" id="bannerDiv">
-<img src="images/TDP_portal_Banner.jpg" width="960" height="32" border="0" usemap="#Maps22" />
+<img src="images/TDP_portal_Banner.jpg" width="960" height="32" border="0" usemap="#Maps22" style="cursor:auto;"/>
 </div>
 
 <div align="center" id="indiaBannerId">
-<img src="images/India-Page-Banner.png" width="960" height="32" border="0" />
+<img src="images/India-Page-Banner.png" width="960" height="32" border="0" style="cursor:auto;"/>
 <!--<img width="960" height="32" border="0" usemap="#Maps22" src="images/India-Page-Banner.png">-->
 </div>
 
  <!--sravanthi code start-->
 <center>
 <div id="modiDiv" style="display:none;">
-<img id="unemp_chart_img" src="images/results/bjpseatstally.jpg" />
-<div class="chart-gauge" id="unemp_chart" style="display: none; width: 394px;"></div>
-<img id="unemp_chart1_img" src="images/results/tdpseatstally.jpg" />
-<div class="chart-gauge1" id="unemp_chart1" style="display: block; width: 394px;"></div>
+<img id="unemp_chart_img" src="images/results/bjpseatstally.jpg" style="cursor:auto;"/>
+<div class="chart-gauge" id="unemp_chart" style="display: none; width: 394px;cursor:auto;"></div>
+<img id="unemp_chart1_img" src="images/results/tdpseatstally.jpg" style="cursor:auto;"/>
+<div class="chart-gauge1" id="unemp_chart1" style="display: block; width: 394px;cursor:auto;"></div>
 
-<img class="div_sld_img" src="images/results/bjpeffect.jpg" />
+<img class="div_sld_img" src="images/results/bjpeffect.jpg" style="cursor:auto;"/>
 <div class="div_sld" style="display: none;"><div id="slider3" style="z-index:0;" class="d3-slider d3-slider-horizontal"><a class="d3-slider-handle" xlink:href="#"></a><svg class="d3-slider-axis d3-slider-axis-bottom" style="left: -12px;" width="558" height="32"><g transform="translate(12,0)"><g class="tick" style="opacity: 1;" transform="translate(0,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">0%</text></g><g class="tick" style="opacity: 1;" transform="translate(66.75,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">1%</text></g><g class="tick" style="opacity: 1;" transform="translate(133.5,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">2%</text></g><g class="tick" style="opacity: 1;" transform="translate(200.25,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">3%</text></g><g class="tick" style="opacity: 1;" transform="translate(267,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">4%</text></g><g class="tick" style="opacity: 1;" transform="translate(333.75,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">5%</text></g><path class="domain" d="M0,6V0H534V6"/></g></svg></div>
 </div>
 
-<img class="div_sld1_img" src="images/results/tdpeffect.jpg" />
+<img class="div_sld1_img" src="images/results/tdpeffect.jpg" style="cursor:auto;"/>
 <div class="div_sld1" style="display: block;"><div id="slider3" style="width:375px;-20px; z-index:0;" class="d3-slider d3-slider-horizontal"><a class="d3-slider-handle1" xlink:href="#" style="left: 50%;"></a><svg class="d3-slider-axis d3-slider-axis-bottom" style="left: -12px;" width="558" height="32"><g transform="translate(12,0)"><g class="tick" style="opacity: 1;" transform="translate(0,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">0%</text></g><g class="tick" style="opacity: 1;" transform="translate(37.25,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">1%</text></g><g class="tick" style="opacity: 1;" transform="translate(74.5,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">2%</text></g><g class="tick" style="opacity: 1;" transform="translate(111.75,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">3%</text></g><g class="tick" style="opacity: 1;" transform="translate(149,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">4%</text></g><g class="tick" style="opacity: 1;" transform="translate(186.25,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">5%</text></g><g class="tick" style="opacity: 1;" transform="translate(223.5,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">6%</text></g><g class="tick" style="opacity: 1;" transform="translate(260.75,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">7%</text></g><g class="tick" style="opacity: 1;" transform="translate(298,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">8%</text></g><g class="tick" style="opacity: 1;" transform="translate(335.25,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">9%</text></g><g class="tick" style="opacity: 1;" transform="translate(372.5,0)"><line y2="6" x2="0"/><text y="9" x="0" dy=".71em" style="text-anchor: middle;">10%</text></g><path class="domain" d="M0,6V0H298V6"/></g></svg></div>
 </div>
 
@@ -1515,9 +1532,9 @@ $('#ajaxImage').show();
 
 
 <!--<h4 style="padding: 10px; margin-top: 10px; border-radius: 5px; text-align: center; background: none repeat scroll 0% 0% rgb(73, 175, 205);">LIVE ELECTION RESULTS COMPARISON</h4> -->
-<div id="andhraImageDiv" style="text-align:center;margin-top:10px;" style="display:none;"><img src="images/Interactive-Seemandhra-Live-Election-Results-Comparision.png"></div>
+<div id="andhraImageDiv" style="text-align:center;margin-top:10px;" style="display:none;"><img src="images/Interactive-Seemandhra-Live-Election-Results-Comparision.png" style="cursor:auto;"/></div>
  
- <div id="telanganaImageDiv" style="text-align:center;margin-top:10px;" style="display:none;"><img src="images/Interactive-Telangana-Live-Election-Results-Comparision.png"></div>
+ <div id="telanganaImageDiv" style="text-align:center;margin-top:10px;" style="display:none;"><img src="images/Interactive-Telangana-Live-Election-Results-Comparision.png" style="cursor:auto;"/></div>
 
 <map name="Map" id="menuMap">
 	<area shape="rect" coords="442,-5,503,31" href="javascript:{getRegionWiseResults('Telangana');}" title="Telangana"/>
@@ -1593,7 +1610,7 @@ $('#ajaxImage').show();
 </div>
 </br></br>
 <div class="row-fluid" id="legend" style="display:none;margin-bottom:-20px;">
-<img id="legendImg" src="./images/icons/Party-colors-banner.png" alt="Processing Image" />
+<img id="legendImg" src="./images/icons/Party-colors-banner.png" alt="Processing Image" style="cursor:auto;"/>
 </div> 
 
 </br></br>
@@ -1828,22 +1845,24 @@ $('#ajaxImage').show();
 
 </div>
 <br/><br/>
-<div>
-<table class="offset1 headingTbl">
+<div><div id="noteId" style="color:red;font-size:11px;"></div>
+<table class="offset headingTbl">
 
-<tr><td class="span3">Select Election<select id="electionId" class="input-block-level">
+<tr><td class="span3">Select Election Year<font class="requiredFont">*</font><select id="electionId" class="input-block-level">
+	  <option value="0">Select Election Year</option>
 	  <option value="258">2014 Assembly </option>
 	  <option value="38">2009 Assembly </option>
 	  <option value="3">2004 Assembly </option>
 	 </select></td>
-						    <td class="span3"> Select State<select class="input-block-level" id="stateScope" name="stateScope" style="width:99%;" onchange="getLocationDetailsForSelectedScope1()" class="input-block-level">
-							<option value="0">All</option>
+						    <td class="span3"> Select State<font class="requiredFont">*</font><select class="input-block-level" id="stateScope" name="stateScope" style="width:99%;" onchange="getLocationDetailsForSelectedScope1()" class="input-block-level">
+								<option value="-1">Select State</option>
+								<option value="0">All</option>
 								<option value="1">Andhra</option>
 								<option value="2">Telangana</option>
 								
 						   </select>	</td>
 
-	 <td class="span3"> Select Level<select class="input-block-level" id="scopeId" name="scopeId" style="width:99%;" onchange="getLocationDetailsForSelectedScope1()" >
+	 <td class="span3"> Select Level<font class="requiredFont">*</font><select class="input-block-level" id="scopeId" name="scopeId" style="width:99%;" onchange="getLocationDetailsForSelectedScope1()" >
 								<option value="3">Region</option>
 								<option value="2">District</option>
 								<option value="4">Parliament</option>
@@ -1853,13 +1872,13 @@ $('#ajaxImage').show();
 						   
 			
 
-<td class="span3"  id="regionSelect"> <span id="selectText">Select Region</span><img src="./images/icons/search.gif" alt="Processing Image" id="processImg" style="display:none;"/><select class="input-block-level" id="locaionsId1" multiple="true" style="width:96%;height:55px;"></select></td>	
+<td class="span3"  id="regionSelect"> <span id="selectText">Select Region</span><font class="requiredFont">*</font><img src="./images/icons/search.gif" alt="Processing Image" id="processImg" style="display:none;"/><select class="input-block-level" id="locaionsId1" multiple="true" style="width:96%;height:55px;"></select></td>	
 
 	
 </tr>
 </table>
 </div>
- <div  class="offset1" style="clear:both;">
+ <div  class="offset" style="clear:both;">
 
 
 <label class="radio inline">
@@ -1873,7 +1892,7 @@ $('#ajaxImage').show();
 
 </div>
 
-<div  class="offset4 inrReportDivCls" style="clear:both;display:none;">
+<div  class="offset inrReportDivCls" style="clear:both;display:none;">
 	<label class="radio inline">
 		<input type="radio" class="inrRprtType" id="mainReportId" value="Main Report" name="inrReport" checked="true" style="margin-top:-5px;"><span>Main Report</span>
 	</label>
@@ -1883,9 +1902,9 @@ $('#ajaxImage').show();
 	</label>
 </div>
 
-<div  class="offset3 parties" style="clear:both;"></div>
+<div  class="offset parties" style="clear:both;"></div>
   
-					<div class="offset1" style="margin-top:20px;">
+					<div class="offset" style="margin-top:10px;">
 
 					
 						<a onClick="showSelectedReport()" value="Display" class="btn" style="margin-top:0px; background: none repeat scroll 0 0 #0088CC; color: #FFFFFF;font-weight: normal;">Display</a>
@@ -1897,8 +1916,8 @@ $('#ajaxImage').show();
 					
 
 						
-						<a onClick="exportToExcel()" class="btn" value="Export To Excel" style="margin-top:0px; background: none repeat scroll 0 0 #0088CC;
-    color: #FFFFFF;font-weight: normal;">Export To Excel</a>
+						<a onClick="exportToExcel()" id="excelReportId" class="btn" value="Export To Excel" style="margin-top:0px; background: none repeat scroll 0 0 #0088CC;
+    color: #FFFFFF;font-weight: normal;display:none">Export To Excel</a>
 	
 						
 	<img id="ajaxImage" src="./images/Loading-data.gif" alt="Processing Image" style="margin-left:70px;display:none;"/>
@@ -1922,7 +1941,7 @@ $('#ajaxImage').show();
 
 </div>-->
 
-					<div id="errorDiv" class="offset1" style="font-weight:bold;color:red;"></div>
+					<div id="errorDiv" class="offset" style="font-weight:bold;color:red;"></div>
 
 
     <div class="offset1" id="summaryDiv" style="margin-top:20px;">
@@ -1945,20 +1964,20 @@ $('#ajaxImage').show();
 
 
 
- <img id="stateAjaxImg3" src="./images/icons/barloader.gif" alt="Processing Image" style=" display: none; margin-left: 600px;padding-bottom: 10px;" />
+ <img id="stateAjaxImg3" src="./images/icons/barloader.gif" alt="Processing Image" style=" display: none; margin-left: 600px;padding-bottom: 10px;cursor:auto;" />
 
  
  
   
  
- <img id="stateAjaxImg5" src="./images/icons/barloader.gif" alt="Processing Image" style=" display: none; margin-left: 600px;padding-bottom: 10px;" />
+ <img id="stateAjaxImg5" src="./images/icons/barloader.gif" alt="Processing Image" style=" display: none; margin-left: 600px;padding-bottom: 10px;cursor:auto;" />
  
   
   
   </div>
   <div id="button4"  class="span1" style="float:right;margin-right:150px;margin-top:40px;"><a onclick="getElectionResultForTotalParliment123();"  > <i class="icon-refresh" title="Refresh Map" style="cursor:pointer;"></i>  </a></div>
    <div id="weathermap5" class="offset2"> </div>
-   <center><img id="effectClrImg" style="display:none;" src="images/specialPage/parlicolorcodes.png">
+   <center><img id="effectClrImg" style="display:none;" src="images/specialPage/parlicolorcodes.png" style="cursor:auto;"/>
 	<div id="button3"  class="span1" style="float:right;margin-right:150px;margin-top:40px;"><a onclick="getElectionResultForTotalParliment();"  > <i class="icon-refresh" title="Refresh Map" style="cursor:pointer;"></i>  </a></div>   
    <div id="weathermap3"> </div>    
    </center>
@@ -3971,7 +3990,7 @@ function getRegionWiseResults(searchType)
 		$('#weathermap5').show();
 		$('#button1,#button2,#button3,#button4').hide();
 		$('#heading1,#headings2').hide();
-		$('#button1,#button2,#button3,#button4').hide();
+		$('#heading2,#headings1').hide();
 		
 		
 		var parties = new Array();
@@ -4558,7 +4577,7 @@ function getRegionWiseResults(searchType)
 
 function buildStateWideParliaments(results){
 	var str = "";
-	str = "<div style='margin-top:35px;background:#00ff00;font-weight:bold;padding:5px;border-radius:5px;width: 935px;' align='center'> STATE WISE WON PARLIAMENT SEATS COMPARISON BETWEEN 2014 AND 2009 ELECTION </div>";
+	str = "<div style='margin-top:35px;background:#00ff00;font-weight:bold;padding:5px;border-radius:5px;width: 935px;' align='center'> STATE WISE PARLIAMENT WON SEATS COMPARISON BETWEEN 2014 AND 2009 ELECTION </div>";
 	str +="<table class='parlResultTable offset1' width='800' cellspacing='0' cellpadding='2' border='0'>";
 		str +="<tbody style='font-family: Tahoma;font-size: 12px;'>";
 			str +="<tr>";
@@ -4713,6 +4732,7 @@ function getMarginsCountOfParties(){
 }
 
 function buildPartyWiseMarginCount(result){
+	$('#excelReportId').show();
 	var str = '';
 	str+='<label style="margin-bottom:3px;"  class="headingClass">Party Wise Margin Analysis</label>';
 
@@ -5027,9 +5047,9 @@ var matrixReportDtls1={
 	}
 function getLocationDetailsForSelectedScope1()
 {	
-
+$('#excelReportId').hide();
 var scope = $("#scopeId").val();
-	
+$("#noteId").html('');	
 if(scope == 3)
 	{
 	$("#selectText").html("Select Region");
@@ -5050,38 +5070,50 @@ else if(scope == 5)
 		$("#selectText").html("Select Assembly");
 	
 	}
-	
-	if(!$("#processingDialogue").is(':visible')) { 
-      $("#processImg").css("display","inline-block");
-     }
 	$('#subReportId').attr('disabled',false); 
     if($('#scopeId').val() == 5)
 	{
+	$('#noteId').html('Sub Report is not available for Region Level');
 		$('#subReportId').attr('disabled',true);
+		$( "#subReportId" ).prop( "checked", false );
 	}
-    
+  
+	var searchsType = $('#stateScope :selected').text();
 	locationDtls.task =$('#scopeId :selected').text();
-	locationDtls.stateType = $('#stateScope :selected').text();
-	
-	$.ajax({
-          type:'POST',
-          url: 'getElectionResultsLocations.action',
-          dataType: 'json',
-          data: {task:JSON.stringify(locationDtls)},
+	locationDtls.stateType = searchsType;
+	if(searchsType != 'Select State'){
+		if(!$("#processingDialogue").is(':visible')) { 
+				$("#processImg").css("display","inline-block");
+		}
+		$.ajax({
+			  type:'POST',
+			  url: 'getElectionResultsLocations.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(locationDtls)},
 
-          success: function(result){ 
-			  $("#processImg").css("display","none");
+			  success: function(result){ 
+				  $("#processImg").css("display","none");
+				  $( "#processingDialogue" ).dialog('close');
+				   buildLocationDetails(result);
+			 },
+			  error:function() { 
 			  $( "#processingDialogue" ).dialog('close');
-			   buildLocationDetails(result);
-         },
-          error:function() { 
-		  $( "#processingDialogue" ).dialog('close');
-           console.log('error', arguments);
-         }
-    });
+			   console.log('error', arguments);
+			 }
+		});
+
+	}
+	else{
+	$('#locaionsId1').find('option').remove();
+		$('#scopeId').val(3);
+		$('#noteId').html('');
+	}
+	
+	$( "#processingDialogue" ).dialog('close');
+	
 }
 	
-	function buildCAndidateDetails(result){
+function buildCAndidateDetails(result){
 
 		var popupContent = '';
 		popupContent +='<article class="timeline-group" id="stateAK" style="font-family: times new roman,serif,sans-serif;font-size:16px">';
@@ -5447,6 +5479,7 @@ $(".matrixRprt").click(function() {
 	
 	$(".inrRprtType").change(function() { 
 		$('#constituencyResultsDiv').html('');
+		$("#excelReportId").hide();
 		var val= $('input[name="inrReport"]:checked').val();
 		var scope = $("#scopeId").val();
 		if(scope == 5 && val == "Party Report"){
@@ -5458,6 +5491,7 @@ $(".matrixRprt").click(function() {
 	
 	$("#electionId").change(function(){
 		$("#errorDiv").html("");
+		$("#excelReportId").hide();
 		 if( $('#scopeId').val() == 5 && $('input[name="inrReport"]:checked').val() == "Party Report")
 		getPartiesInConsituenciesOfElection();
 	});
@@ -5564,6 +5598,7 @@ function buildPartyVotesShareTable(results){
 
 	$("#ajaxImage").hide();
 	$("#constituencyResultsDiv").html("");
+	$('#excelReportId').show();
 	var str = '';
 	str+= '<div class="tableClass2 offset1">'
 	str += '<table  class="table table-bordered table-striped">';
