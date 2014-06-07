@@ -1825,7 +1825,7 @@ function buildgetDelimationEffect(result)
 	var str = '';
 	str+='<div class="widget blue">';
 	str+='<div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;overflow:scroll;" class="widget-block">';
-	str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">Delimation Effect With Out Alliance</h4>';
+	str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">Delimitation Effect With Out Alliance</h4>';
 	str += '<table class="table table-hover table-bordered" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;margin-left: -15px;">';
 	str += '<tr>';
 	str += '<th rowspan="2">Election Year</th>';
@@ -1870,7 +1870,7 @@ function buildgetDelimationEffect(result)
 	str += '</tr>';
 	str += '</table>';
 	
-	str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">Delimation Effect With Alliance</h4>';
+	str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">Delimitation Effect With Alliance</h4>';
 	str += '<table class="table table-hover table-bordered" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;margin-left: -15px;">';
 	str += '<tr>';
 	str += '<th rowspan="2">Election Year</th>';
@@ -3381,7 +3381,10 @@ var count=0;
 		area=" Booth"
 	}
 	var constituencyName = $('#listConstituencyNames option:selected').text().toUpperCase();
+	if(constituencyName != '')
 	$('#title'+tableId).html('<h4> '+constituencyName+' Constituency '+area+' Wise Voters Analysis Based On Age Range - '+result.ageRange+'</h4>');
+	else
+$('#title'+tableId).html('<h4> ${constituencyName} Constituency '+area+' Wise Voters Analysis Based On Age Range - '+result.ageRange+'</h4>');
 	
 	var allSlctedCastes=[];
 	for(var i in result.panchayatList[0].allSelectedCastes){
