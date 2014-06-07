@@ -2135,8 +2135,15 @@ List<Object[]> list = nominationDAO.getMatrixReportForElectionResult(electionId,
      }
     	return surveyDataCasteWise;
     }
-    
-    
+    public List<OptionVO> getTop5CastePeopleOpnionOnPartyStateWide(Long stateType,List<Long> surveyIds){
+        List<OptionVO> surveyDataCasteWise = null;
+        try{
+        	surveyDataCasteWise = webServiceClient.getTop5CastePeopleOpnionOnPartyStateWide(stateType,surveyIds);
+        }catch(Exception e){
+       	 LOG.error("Exception rised in  getTop5CastePeopleOpnionOnPartyStateWide",e);
+        }
+       	return surveyDataCasteWise;
+       }
     public DashBoardResultsVO getPartyWiseWinningSeatsPercentage(
 			Long electionId, List<Long> locationIds, Long scopeId,
 			Long percent, Long partyId)    {

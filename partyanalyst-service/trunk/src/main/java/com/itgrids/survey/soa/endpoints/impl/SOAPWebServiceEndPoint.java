@@ -85,4 +85,21 @@ public interface SOAPWebServiceEndPoint {
         @WebParam(name = "arg2", targetNamespace = "")
         List<Long> arg2);
 
+    /**
+     * 
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns java.util.List<com.itgrids.survey.soa.endpoints.OptionVO>
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getTop5CastePeopleOpnionOnPartyStateWide", targetNamespace = "http://endpoints.soa.survey.itgrids.com/", className = "com.itgrids.survey.soa.endpoints.GetTop5CastePeopleOpnionOnPartyStateWide")
+    @ResponseWrapper(localName = "getTop5CastePeopleOpnionOnPartyStateWideResponse", targetNamespace = "http://endpoints.soa.survey.itgrids.com/", className = "com.itgrids.survey.soa.endpoints.GetTop5CastePeopleOpnionOnPartyStateWideResponse")
+    public List<OptionVO> getTop5CastePeopleOpnionOnPartyStateWide(
+        @WebParam(name = "arg0", targetNamespace = "")
+        Long arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        List<Long> arg1);
+
 }
