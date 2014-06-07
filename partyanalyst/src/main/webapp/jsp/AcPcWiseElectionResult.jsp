@@ -4035,7 +4035,7 @@ function getRegionWiseResults(searchType)
 		$('#districtWiseAnalysis').hide();
 		getLocationDetailsForSelectedScope1();
 		$('#weathermap5').hide();
-		$("#partyWiseStatsDiv").show();
+		//$("#partyWiseStatsDiv").show();
 		 getPartiesGainAndLossInfo();
 		
 	}
