@@ -1176,7 +1176,7 @@ function panchayatMatrx(result)
 		</tr>
 	</table>
 </div>
-<div style=" margin-bottom: 5px;float: left; margin-left: 82px;">
+<div style=" margin-bottom: 5px;float: left; margin-left: 82px;" id="casteInfoDiv">
 	
 	<table>
 		<tr>
@@ -1194,7 +1194,7 @@ function panchayatMatrx(result)
 		
 		</tr>
 	</table>
-	<input type="button" id="expCasteButton" value="CASTE PERCENTAGES" class="btn-success" onClick="ckeckForExpCasteDetails()"  style="border-radius: 4px 4px 4px 4px; height: 21px; margin-top: -19px; margin-left: 470px;display:none;"></input>
+	<input type="button" id="expCasteButton" value="Add Expected Votes Percentage Caste Wise" class="btn-success" onClick="ckeckForExpCasteDetails()"  style="border-radius: 4px 4px 4px 4px; height: 21px; margin-top: 7px; margin-left: 348px;display:none;"></input>
 </div>
 <div style=" margin-bottom: 5px;float: left; margin-left: 82px;">
 <div id="ageGroupWiseId" style="display:none;">
@@ -1990,11 +1990,13 @@ function showExpCasteDetailsButton()
 	var checkStatus = $('#expCaste').is(":checked");
 	if(checkStatus == true)
 	{
+		$("#casteInfoDiv").css({ 'margin-top': '-172px', 'margin-left': '128px'});
 		$('#expCasteButton').show();
 	}
 	else
 	{
 		$('#expCasteButton').hide();
+			$("#casteInfoDiv").css({ 'margin-top': '0px', 'margin-left': '82px'});
 	}
 }
 function buildLeadersTableWithExpPercForMuncipal(results)
