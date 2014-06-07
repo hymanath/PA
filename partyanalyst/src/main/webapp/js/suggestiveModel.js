@@ -439,12 +439,12 @@ if(cast != null && cast.length > 0)
 	
 $("#basicCasteInfoDiv").css("display","block");
 	str+='<div class="widget-block" style="padding:10px;">';
-	str+='<h4>'+jObj.typename+' Constituency Voters By Caste </h4>';
+	str+='<h4>'+jObj.typename+' Constituency Voters Caste wise Voter Details </h4>';
 	str+='<table id="Castetable" class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;">';
 	str+='<tr>';
 	str+='<th>Caste</th>';
 	str+='<th>Caste Category</th>';
-	str+='<th>Voters</th>';
+	str+='<th>Total Voters</th>';
 	str+='<th>Male Voters</th>';
 	str+='<th>Female Voters</th>';
 	str+='<th>Caste Percentage</th>';
