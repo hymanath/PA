@@ -366,6 +366,7 @@ function getPartyDetails(mandalId){
 		$('#errorMsgDiv').html('Please Select Mandal');
 		return;
 	}
+	$("#ajaxImgForParty").css("display","block");
 	var jsObj = 
 	{
 	mandalId : mandalId,
@@ -392,7 +393,8 @@ function getPartyDetails(mandalId){
 		$('#errorMsgDiv').html('Please Select Party Name');
 		return;
 		}
-
+		$("#ajaxImgFromYear").css("display","block");
+		$("#ajaxImgToYear").css("display","block");
 		var jsObj=
 			{
 				electionScopeId:2,
@@ -569,6 +571,7 @@ var jsObj=
 }
 
 function getCandidateCastes(constituencyIds){
+	$("#ajaxImgForCaste").css("display","block");
 	var constituencyId = $('#listConstituencyNames').val();
 	var publicationId = $('#listPublicationValues').val();
 	var jsObj ={
@@ -636,16 +639,19 @@ function callAjax(param,jsObj,url){
 						}
 						if(jsObj.task == "getElectionYears")
 						{
+							$("#ajaxImgFromYear").css("display","none");
+							$("#ajaxImgToYear").css("display","none");
 							populateElectionYearDropdown(myResults);
 						}
 						else if(jsObj.task == "getPublicationDate")
 								{
-								$('#publicationAjaxImage').css('display','none');
+								$("#ajaxImgForPublication").css("display","none");
 
 									buildPublicationDateList(myResults);
 								}
 						else if(jsObj.task == "getPartyDetails")
 						{
+							$("#ajaxImgForParty").css("display","none");
 							populatePartiesDropdown(myResults);
 						}								
 						else if(jsObj.task == "getConstituencies")
@@ -696,6 +702,7 @@ function callAjax(param,jsObj,url){
 							buildnewPartyEffectResults(myResults);
 						}
 						else if(jsObj.task== "getUserAssignedVoterCastes"){
+							$("#ajaxImgForCaste").css("display","none");
 							buildUserAssignedVotersCastes(myResults);
 						}
 						else if(jsObj.task== "getConstituencyType"){
@@ -1132,7 +1139,7 @@ function panchayatMatrx(result)
 			<td><select id="listPublicationValues" class="selectWidth"  name="listPublicationValues" onchange="getConstituencyBasicCountInfo();">
 			<option value="0">Select Publication Date</option>
 			</select>
-			</td>
+			</td><td><img id="ajaxImgForPublication" src="images/icons/search.gif" style="display:none;"/></td>
 			</tr>
 </table>
 </div>
@@ -1147,7 +1154,7 @@ function panchayatMatrx(result)
 				<select id="partySelectEl" onchange="getElectionYears(this.options[this.selectedIndex].value)">
 				<option value="0"> Select Party </option>
 				</select>
-			</td>
+			</td><td><img id="ajaxImgForParty" src="images/icons/search.gif" style="display:none;"/></td>
 			</tr>
 </table>
 </div>
@@ -1162,7 +1169,7 @@ function panchayatMatrx(result)
 				<select id="electionYearSelectEl1" onchange="validateYear1(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text);">
 				<option value="0"> Select Year </option>
 				</select>
-			</td>
+			</td><td><img id="ajaxImgFromYear" src="images/icons/search.gif" style="display:none;"/></td>
 		</tr>
 		<tr>
 		<td id="tdWidth">
@@ -1172,7 +1179,7 @@ function panchayatMatrx(result)
 				<select id="electionYearSelectEl2" onchange="validateYear2(this.options[this.selectedIndex].value)">
 				<option value="0"> Select Year </option>
 				</select>
-			</td>
+			</td><td><img id="ajaxImgToYear" src="images/icons/search.gif" style="display:none;"/></td>
 		</tr>
 	</table>
 </div>
@@ -1187,7 +1194,7 @@ function panchayatMatrx(result)
 				<select id="candidateCastes" multiple="multiple" >
 				<option value="0"> Select Caste </option>
 				</select>
-			</td>	
+			</td>	<td><img id="ajaxImgForCaste" src="images/icons/search.gif" style="display:none;"/></td>
 </tr>
 <tr><td></td>
 		<td><input type="checkbox" name="expCaste" id="expCaste" value="expCaste" onclick="showExpCasteDetailsButton();" style="margin-top: 0px;"><span id="ecpCheckBox" style="margin-left:10px;">Please Check Here For Expected Castes</span></td>
@@ -4565,6 +4572,7 @@ function redirectTopanchayatFamilyInfo()
 
 function getPublicationDate()
 	{
+	$("#ajaxImgForPublication").css("display","block");
 	var constituencyID = document.getElementById("listConstituencyNames");
 	var name=constituencyID.options[constituencyID.selectedIndex].name;
 	var value=constituencyID.options[constituencyID.selectedIndex].value;
