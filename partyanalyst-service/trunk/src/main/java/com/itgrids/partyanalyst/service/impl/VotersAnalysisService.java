@@ -10489,7 +10489,10 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 					for(SelectOptionVO selectOptionVO : userAccessConstituencyList)
 					{
 						if(constituencyIds.contains(selectOptionVO.getId()))
+						{
+							selectOptionVO.setName(selectOptionVO.getName().toUpperCase());
 							constituencyList.add(selectOptionVO);
+						}
 					}
 				}
 				
