@@ -740,6 +740,7 @@ public List<UserProfileVO> getPartyAnalystLatestUpdates(Date fromDate,Date toDat
 		   {
 			  if(!subscribedCandidates.contains((Long)vo[0]))
 				{
+				 
 				  candidateIds1.add((Long)vo[0]);
 				}
 		   }
@@ -755,9 +756,36 @@ public List<UserProfileVO> getPartyAnalystLatestUpdates(Date fromDate,Date toDat
 			   }
 		   }
 		   }
+		   if(candidateIds1.size()>0)
+			   candiates.get(0).setTotalSearchCount(new Long(candidateIds1.size()));
 		}
-	   if(candidateIds1.size()>0)
-	   candiates.get(0).setTotalSearchCount(new Long(candidateIds1.size()));
+	   
+	   else
+	   {
+		   candiates = new ArrayList<CandidateVO>();
+		   if(cadidateList1.size() > 0){
+			   for(Object[] vo:cadidateList1)
+			   {
+				   candidateIds1.add((Long)vo[0]);
+				
+			   }
+		   }
+		   if(cadidateList.size() > 0){
+		   for(Object[] vo:cadidateList)
+		   {
+			  
+			   CandidateVO candidate = new CandidateVO();
+			   candidate.setCandidateId((Long)vo[0]) ;
+			   candidate.setCandidateName(vo[1].toString());
+			   candiates.add(candidate);
+			  
+		   }
+		   }
+		   if(candidateIds1.size()>0)
+			   candiates.get(0).setTotalSearchCount(new Long(candidateIds1.size()));   
+	   }
+	   
+	   
 	   return candiates;
    }
    
