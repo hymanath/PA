@@ -1765,7 +1765,8 @@
 									</tr>
 								</table>
 							</div>
-							<div id="noDataDiv" style="display:none;font-weight:bold;font-size:13px;border: 2px solid #CFD6DF;color:red;"><span style="margin-left:40px"> No Data Available </span></div>
+							<div id="noDataDiv" style="display:none;font-weight:bold;font-size:12px;border: 2px solid #CFD6DF;color:red;"><span style="margin-left:40px">Party doesn't exist for the elections
+happened before 2009.</span></div>
 							<div id="required_const_body">
 									<div id="newConstAncSpan" class="mandalNamesDiv">		
 									<table>		
