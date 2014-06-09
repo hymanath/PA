@@ -5201,7 +5201,10 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 		if(cadre.getCurrentAddress().getLocalElectionBody() != null)
 			address += cadre.getCurrentAddress().getLocalElectionBody().getName()+" ";
 		else
+		{
+			if(cadre.getCurrentAddress().getTehsil() != null)
 			address += cadre.getCurrentAddress().getTehsil().getTehsilName()+" ";
+		}
 		if(cadre.getCurrentAddress().getDistrict() != null)
 		address += cadre.getCurrentAddress().getDistrict().getDistrictName()+"(Dt)";
 		
