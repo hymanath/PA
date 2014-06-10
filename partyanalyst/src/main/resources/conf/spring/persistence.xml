@@ -429,6 +429,8 @@
 				<value>com.itgrids.partyanalyst.model.CadrePartyDesignation</value>
 				<value>com.itgrids.partyanalyst.model.CadreGovtDesignation</value>
 				<value>com.itgrids.partyanalyst.model.RegionWiseSurveys</value>
+				<value>com.itgrids.partyanalyst.model.FieldVoterData</value>
+				
 				
 			</list>
 			
