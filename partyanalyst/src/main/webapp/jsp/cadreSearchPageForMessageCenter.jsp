@@ -395,6 +395,12 @@ window.open(urlStr,"addNewCadrePeople","scrollbars=yes,height=570,width=1300,lef
 			<div id="searchResult"></div>
 		</div>		
 		
+		<div style="float:right;">
+<!-- <input type="button" class="btnClass" onClick="addNewCandidate();" value="Click Here To Add Cadre"/> -->
+<input type="button" class="btnClass" onClick="closeWindow();" value="Click here to close the window"/>
+
+</div>
+		
 		<div id="searchResultsDiv_footer" style="text-align:center;"></div>
 		<div id="cadreProblemSelectErrorDiv" style="text-align:center;"><span id="addSelectedCadreErrorMsg"></span></div>
 		<div id="cadreProblemSelectDiv" style="text-align:center;"></div>
