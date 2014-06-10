@@ -26,6 +26,8 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import javassist.bytecode.Descriptor.Iterator;
+
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -20863,6 +20865,31 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 			log.error("Exception Occured in getConstituencyList1() Method, Exception - "+e);
 			return constituencyList;
 		}
+	}
+	
+	public List<SelectOptionVO> getPartilaBoothsMappedConstituencies(List<SelectOptionVO> userAccessConstituencyList)
+	{
+		try
+		{
+			List<Long> constituencyIds = partialBoothPanchayatDAO.getPartilaBoothsMappedConstituencies();
+
+			java.util.Iterator<SelectOptionVO> itr = userAccessConstituencyList.iterator();
+			
+			while(itr.hasNext())
+			{
+				SelectOptionVO vo = itr.next();
+				
+				if(!constituencyIds.contains(vo.getId()))
+					itr.remove();
+				
+			}
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			log.error("Exception Occured in getPartilaBoothsMappedConstituencies() Method, Exception - "+e);
+		}
+		return userAccessConstituencyList;
 	}
 	
 	public List<VoterVO> getFlagVoterDetails(Long constituneycId,Long locationId,

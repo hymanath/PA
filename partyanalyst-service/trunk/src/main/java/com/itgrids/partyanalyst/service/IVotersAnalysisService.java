@@ -346,5 +346,8 @@ public interface IVotersAnalysisService {
 	 public ResultStatus insertVoterDataIntoVoterNamesTemp(Long constituencyId);
 	 
 	 public List<SelectOptionVO> getVoterNamestempConstituencies();
+	 
+	public List<SelectOptionVO> getPartilaBoothsMappedConstituencies(List<SelectOptionVO> userAccessConstituencyList);
+
 	
 }
