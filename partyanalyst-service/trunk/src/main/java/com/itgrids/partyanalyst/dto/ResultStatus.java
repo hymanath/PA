@@ -18,8 +18,17 @@ public class ResultStatus implements Serializable{
     private String exceptionClass;
     private String exceptionMsg;
     private String message;
+    private String host;
     
-    public String getMessage() {
+    
+    
+    public String getHost() {
+		return host;
+	}
+	public void setHost(String host) {
+		this.host = host;
+	}
+	public String getMessage() {
 		return message;
 	}
 	public void setMessage(String message) {
