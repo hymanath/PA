@@ -165,7 +165,7 @@ a.tdp-text-error:hover {
 										</c:if>
 									<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
 									
-									<a href="javascript:{}" onClick="openDialogForLoginWindow()" class="btn btn-mini"><i class="icon-user"></i><b> Login</b></a>
+									<!--<a href="javascript:{}" onClick="openDialogForLoginWindow()" class="btn btn-mini"><i class="icon-user"></i><b> Login</b></a>-->
 										<!--<span>|</span>
 										<a href="<c:out value="${pageContext.request.contextPath}/freeUserRegistration.action" />">Register</a>-->
 										
@@ -193,7 +193,10 @@ a.tdp-text-error:hover {
     </div>
 <div id="menu" class="span10" style="border-top:1px solid #fff;border-bottom:1px solid #fff;padding:5px;margin-bottom:5px;">
     <ul class="menu">
-        <li class="active"><a href="newhomePageAction.action"><span><i class="icon-home icon-black"></i></span></a></li>
+        <li class="active">
+		<!--<a href="newhomePageAction.action"><span><i class="icon-home icon-black"></i></span></a>-->
+		<a href="home.action"><span><i class="icon-home icon-black"></i></span></a>
+		</li>
 	
     <c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}">   
 		<c:if test="${fn:contains(sessionScope.USER.entitlements, 'PARTY_PERFORMANCE_REPORT' ) || fn:contains(sessionScope.USER.entitlements, 'ELECTION_COMPARISION_REPORT' ) ||
@@ -424,7 +427,7 @@ a.tdp-text-error:hover {
 
 	<div class="container" style="border-top:2px solid #ffdc2d;">
 <div class="row-fluid"> 
-    <div class="span12"><img src="./images/TDP/PA_LOGO.jpg" class="pull-right"/></div>
+    <div class="span12"><img src="./images/TDP/TDP footer Logo.jpg" class="pull-right"/></div>
 </div>
   <!--COPYRIGHT SECTION END--> 
 </div>
