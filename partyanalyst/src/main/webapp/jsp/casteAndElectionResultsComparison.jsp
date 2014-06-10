@@ -2027,8 +2027,14 @@ input, button, select, textarea {
 		<td><div id="userSelCatgListHeading" ></div></td>
 		<td><div id="userSelCatgListValue" style="margin-bottom:15px;" ></div></td>
 		<td id="selectAndUnselectCastes" style="display:none;padding-bottom: 20px;">
-		<input type="button" class="btn btn-info" name="selectAndUnselectCastes" onclick="selectAllCastes();" id="selectAllCastes" value="Select All"/>
-		<input type="button" class="btn btn-info" name="selectAndUnselectCastes"  onclick="unSelectAllCastes();"  id="unSelectAllCastes" value="UnSelect All"/></td>
+		<!--<input type="button" class="btn btn-info" name="selectAndUnselectCastes" onclick="selectAllCastes();" id="selectAllCastes" value="Select All"/>
+		<input type="button" class="btn btn-info" name="selectAndUnselectCastes"  onclick="unSelectAllCastes();"  id="unSelectAllCastes" value="UnSelect All"/>-->
+
+		
+		<input type="radio" class="btn btn-info" name="selectAllCastes" onclick="selectAllCastes();" id="selectAllCastes" value="Select All"/><b>Select All</b>
+		<input type="radio" class="btn btn-info" name="selectAllCastes"  onclick="unSelectAllCastes();"  id="unSelectAllCastes" value="UnSelect All"/><b>UnSelect All</b>
+		
+		</td>
 		</tr>
 		
 		</table>

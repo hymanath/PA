@@ -129,9 +129,31 @@ function callHomePageAjax11(jsObj,url){
 
 function showLoginStatus(results)
 {
+
   if(results.resultCode == 0)
   {
-    $('#ajaxcallimage').html('Login Successfull,Window is closing Please wait...');
+
+		var tempStr = window.location.href;
+	
+		if(results.host == 'tdpserver')
+		  {
+			
+				if(tempStr.indexOf("login") != -1 && results.message == "PARTY_ANALYST_USER")
+				 {
+				  
+					  $('#ajaxcallimage').html('Login Successfull,Page is refreshing Please wait...');
+					   window.location.href = "dashBoardAction.action";
+				 }
+				else
+				  {
+				$('#ajaxcallimage').html('Login Successfull,Window is closing Please wait...');
+				window.location.reload();
+				  }
+		  }
+
+else
+	  {
+$('#ajaxcallimage').html('Login Successfull,Window is closing Please wait...');
     
     setTimeout(function(){  
 	       $("#ajaxcallimage").hide();
@@ -142,6 +164,7 @@ function showLoginStatus(results)
 		      searchCadre();
 		   }
 	 },3000);
+	  }
 	 
 	  
   }
@@ -153,6 +176,7 @@ function showLoginStatus(results)
 	$("#LoginErrorMessageDiv").html('Invalid username or password! Please try again!');
   }
 }
+
 
 
 // starting validations for username and password

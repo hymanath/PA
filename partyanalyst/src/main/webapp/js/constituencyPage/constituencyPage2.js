@@ -581,7 +581,7 @@ function buildAssetsAndLiabilities(myResults)
 		var candidateName = oData;
 		var candidateId = oRecord.getData("candidateId");
 		//elLiner.innerHTML ="<a href='candidateElectionResultsAction.action?candidateId="+candidateId+"'>"+candidateName+"</a>";		
-		elLiner.innerHTML ='<a id='+candidateName+' href="candidateElectionResultsAction.action?candidateId='+candidateId+'" onmouseover="displayImage(\''+candidateName+'\');" onmouseout="return nd();">'+candidateName+'</a>';		
+		elLiner.innerHTML ='<a id='+candidateName+' href="candidateElectionResultsAction.action?candidateId='+candidateId+'" onmouseover="displayImageById(\''+candidateId+'\',\''+candidateName+'\');" onmouseout="return nd();">'+candidateName+'</a>';		
 	};
 
    if(myResults.candidateNominations != null && myResults.candidateNominations.length > 0)

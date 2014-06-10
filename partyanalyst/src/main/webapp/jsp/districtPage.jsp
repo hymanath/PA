@@ -2169,8 +2169,11 @@ var queryString='';
 								</td>
 								<td>
 								<span id="districtAncSpan">
-										<a id='${candidate.candidateName}' href="candidateElectionResultsAction.action?candidateId=${candidate.candidateId}" class="districtAnc" title="Click here to view ${candidate.candidateName} Profile,News,Photos,Videos" style="text-decoration:none;" onmouseover="displayImage(this.id);javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{removeImage(this.id);}">${candidate.candidateName}
+										<!--<a id='${candidate.candidateName}' href="candidateElectionResultsAction.action?candidateId=${candidate.candidateId}" class="districtAnc" title="Click here to view ${candidate.candidateName} Profile,News,Photos,Videos" style="text-decoration:none;" onmouseover="displayImage(this.id);javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{removeImage(this.id);}">${candidate.candidateName}
+										</a>-->
+										<a id='${candidate.candidateName}' href="candidateElectionResultsAction.action?candidateId=${candidate.candidateId}" class="districtAnc" title="Click here to view ${candidate.candidateName} Profile,News,Photos,Videos" style="text-decoration:none;" onmouseover="displayImageById(${candidate.candidateId},this.id);javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{removeImage(this.id);}">${candidate.candidateName}
 										</a>
+
 									</span>
 								 &nbsp </td>
 								<td><a href="partyPageAction.action?partyId=${candidate.partyId}" title="Click here to view ${candidate.partyName} Party Profile ,Election results,News,Photos,Manifestoes,Videos and Asses your Party Leader"><img src="<%=request.getContextPath()%>/images/party_flags/${candidate.partyFlag}" height="30" width="40"/></a></td>

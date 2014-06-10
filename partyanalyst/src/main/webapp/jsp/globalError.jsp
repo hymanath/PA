@@ -26,7 +26,7 @@
 				<c:choose>       
 			      <c:when test="${fn:contains(theString, 'tdpserver')}">
 			      <c:set var="theString" value='<%=IConstants.DEPLOYED_HOST%>'/>
-				     <a href="newhomePageAction.action">Click here</a>
+				     <a href="home.action">Click here</a>
 			     </c:when>
 				 <c:otherwise>
 			     	<a href="homePage.action">Click here</a>
