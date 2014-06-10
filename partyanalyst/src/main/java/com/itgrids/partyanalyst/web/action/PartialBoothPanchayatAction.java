@@ -36,6 +36,8 @@ public class PartialBoothPanchayatAction extends ActionSupport implements Servle
 	private static final Logger LOG = Logger.getLogger(PartialBoothPanchayatAction.class);
 	private ICrossVotingEstimationService crossVotingEstimationService;
 	private List<SelectOptionVO> userAccessConstituencyList;
+	private List<SelectOptionVO> userAccessConstituencyList1;
+	
 	private ResultStatus resultStatus;
 	private IPartialBoothPanchayatService partialBoothPanchayatService;
 	private String task;
@@ -45,6 +47,16 @@ public class PartialBoothPanchayatAction extends ActionSupport implements Servle
 	private IVotersAnalysisService votersAnalysisService;
 	private EntitlementsHelper entitlementsHelper;
 	private String isAdmin ;
+	
+	public List<SelectOptionVO> getUserAccessConstituencyList1() {
+		return userAccessConstituencyList1;
+	}
+
+	public void setUserAccessConstituencyList1(
+			List<SelectOptionVO> userAccessConstituencyList1) {
+		this.userAccessConstituencyList1 = userAccessConstituencyList1;
+	}
+
 	public void setServletContext(ServletContext context) {
 		this.context = context;
 	}
@@ -173,6 +185,8 @@ public class PartialBoothPanchayatAction extends ActionSupport implements Servle
 		userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(regVO.getRegistrationID(),electionYear,electionTypeId);
 		//userAccessConstituencyList = votersAnalysisService.getConstituencyList(userAccessConstituencyList);
 		userAccessConstituencyList = votersAnalysisService.getConstituencyList1(userAccessConstituencyList);
+		
+		userAccessConstituencyList1 = votersAnalysisService.getPartilaBoothsMappedConstituencies(userAccessConstituencyList);
 		//userAccessConstituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
 		//constituencies = suggestiveModelService.getConstituenciesForUserAccessByStateId(userAccessConstituencyList,electionTypeId,electionYear);
 		userAccessConstituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
