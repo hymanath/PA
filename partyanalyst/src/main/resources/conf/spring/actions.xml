@@ -1225,7 +1225,7 @@
 		<property name="staticDataService" ref="staticDataService" />
 	</bean>-->
 	
-	<bean id="newhomePageAction" class="com.itgrids.partyanalyst.web.action.NewHomePageAction" singleton="false">	
+	<bean id="home" class="com.itgrids.partyanalyst.web.action.NewHomePageAction" singleton="false">	
 	<property name="staticDataService" ref="staticDataService" />
 		<property name="statePageService" ref="statePageService" />
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />	
