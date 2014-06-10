@@ -1456,6 +1456,9 @@
 	<bean id="regionWiseSurveysDAO" class="com.itgrids.partyanalyst.dao.hibernate.RegionWiseSurveysDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="fieldVoterDataDAO" class="com.itgrids.partyanalyst.dao.hibernate.FieldVoterDataDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<!--  survey -->
 	
