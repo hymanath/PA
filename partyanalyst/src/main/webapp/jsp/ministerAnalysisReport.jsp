@@ -746,7 +746,7 @@ function removeDataDIV()
 </head>
 <body>
 <div style="width:998px;padding-left:5px;margin-left:auto;margin-right:auto;float:none;">
-   <div style="padding-left:5px;"><div class="main-mbg" style="margin-top:20px">Results Analysis For Ministers</div></div>
+   <div style="padding-left:5px;"><div class="main-mbg" style="margin-top:20px">Results Analysis For Ministers / Important Candidates</div></div>
    <div style="background-color:#F5F5F5;min-height:360px;">
          <div class="dashBoardtabsDiv" style="align:left;">
 	           <a  id="minisPerf" onclick="showMinisPerf(this.id);">Ministers Performance</a>

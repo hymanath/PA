@@ -73,7 +73,7 @@
 		-webkit-box-shadow: inset 0 2px 4px rgba(0,0,0,0.15),0 1px 2px rgba(0,0,0,0.05);
 		-moz-box-shadow: inset 0 2px 4px rgba(0,0,0,0.15),0 1px 2px rgba(0,0,0,0.05);
 		box-shadow: inset 0 2px 4px rgba(0,0,0,0.15),0 1px 2px rgba(0,0,0,0.05);
-			background-color:#0082A3;
+			background-color:#006DCC;
 			color:#ffffff;
 	}
 </style>
@@ -1358,7 +1358,7 @@ clearOptionsListForSelectElmtId("pollingStationField");
 
     <div class="selectDiv radioSpecial" id="ssmTypeDiv" style="margin:0px 0px 9px 413px;">
 		 <input type="radio" id="textSMS"  name="smsType" value="text"  class="smsType" checked>
-		   <label for="textSMS">Text SMS</label>
+		   <label for="textSMS" >Text SMS</label>
 		<input type="radio" id="voiceSMS" name="smsType" value="voice" class="smsType">
 		   <label for="voiceSMS">Voice SMS</label>	
 	 </div>
@@ -3223,8 +3223,9 @@ function sendTextSms()
  
   }
 
+if(otherNumbers.length >0){
 
-	var jsObj=
+var jsObj=
 			{
 				task:"sendTextSms",
                 cadreDetails:cadreDetails,
@@ -3249,14 +3250,15 @@ function sendTextSms()
 					   showSuccessMessage('Text');
 
 				    }
-
-
-			          		
+	          		
 			}
 		};
 	
 	YAHOO.util.Connect.setForm('sendTextSMS',false);
 	YAHOO.util.Connect.asyncRequest('POST','sendTextSMS.action',uploadHandler);
+	
+}
+	
 
 		/*	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "sendTextSMS.action?"+rparam;	
