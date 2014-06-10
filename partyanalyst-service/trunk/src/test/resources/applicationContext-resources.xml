@@ -444,7 +444,9 @@
 				<value>com.itgrids.partyanalyst.model.GovtDesignation</value>
 				<value>com.itgrids.partyanalyst.model.PartyDesignation</value>
 				<value>com.itgrids.partyanalyst.model.CadrePartyDesignation</value>
-				<value>com.itgrids.partyanalyst.model.CadreGovtDesignation</value>		
+				<value>com.itgrids.partyanalyst.model.CadreGovtDesignation</value>
+				<value>com.itgrids.partyanalyst.model.FieldVoterData</value>	
+					
 				
 				
 		
@@ -2365,5 +2367,8 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="webServiceClient" class="com.itgrids.partyanalyst.webservice.client.WebServiceClient">
+	</bean>
+	<bean id="fieldVoterDataDAO" class="com.itgrids.partyanalyst.dao.hibernate.FieldVoterDataDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 </beans>
