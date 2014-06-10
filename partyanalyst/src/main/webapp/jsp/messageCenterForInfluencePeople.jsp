@@ -184,6 +184,11 @@ function unSelectAllCheckBoxes(){
 
 	<div id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable" style="margin-top:30px;width:900px;"></div>
 	</div>
+	
+	<div style="float:right;margin:0px 35px 12px 5px;">
+<!--<input type="button" class="btnClass" onClick="addNewCandidate()" value="Click Here To Add Influencing People"/> -->
+<input type="button" class="btnClass" onClick="window.close();" value="Click here to close the window"/>
+</div>
 </div>
 
 
