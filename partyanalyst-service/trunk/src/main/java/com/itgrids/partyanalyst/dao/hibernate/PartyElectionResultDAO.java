@@ -77,7 +77,7 @@ public class PartyElectionResultDAO extends GenericDaoHibernate<PartyElectionRes
 	public List<PartyElectionResult> getPartyElectionResultsBasedOnPartyId(Long partyId,String electionType,boolean includeBielections)
 	{
 		StringBuilder query = new StringBuilder();
-		query.append("select model from PartyElectionResult model where model.party.partyId=:partyId " +
+		query.append("select distinct model from PartyElectionResult model where model.party.partyId=:partyId " +
 				" and model.election.electionScope.electionType.electionType = :electionType  ");
 		if(!includeBielections)
 		{
@@ -94,7 +94,7 @@ public class PartyElectionResultDAO extends GenericDaoHibernate<PartyElectionRes
 	public List<PartyElectionResult> getPartyElectionResultsBasedOnPartyIdAndElecId(Long partyId,String electionType,Long electionId)
 	{
 		Object[] params ={partyId,electionId,electionType};
-		return getHibernateTemplate().find("select model from PartyElectionResult model where model.party.partyId=? and model.election.electionId = ? " +
+		return getHibernateTemplate().find("select distinct model from PartyElectionResult model where model.party.partyId=? and model.election.electionId = ? " +
 				" and model.election.electionScope.electionType.electionType =? and " +
 				" model.election.elecSubtype = '"+IConstants.ELECTION_SUBTYPE_MAIN+"' ",params);
 	}
