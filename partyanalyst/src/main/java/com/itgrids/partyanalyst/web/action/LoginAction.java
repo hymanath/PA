@@ -497,7 +497,10 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 			session.setAttribute("loginStatus", "in");
 			addActionError("Invalid username or password! Please try again!");
 			session.setAttribute("checkedTypeValue", userType);
-			return INPUT;
+			if(IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver"))
+				return "tdpLogin";
+			else
+				return INPUT;
 		}	
 		
 		if(!userIpCheck(regVO))
@@ -505,6 +508,9 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 			session.setAttribute("loginStatus", "in");
 			addActionError(" You do not have Permission to Access Site From this Network  ");
 			session.setAttribute("checkedTypeValue", userType);
+			if(IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver"))
+				return "tdpLogin";
+			else
 			return INPUT;
 		}
 		
@@ -623,6 +629,7 @@ public String ajaxCallForLoginPopup(){
 		 resultStatus = new ResultStatus();
 		//jObj = new JSONObject(param);
 		//System.out.println(jObj);
+		 resultStatus.setHost(IConstants.DEPLOYED_HOST);
 		if(getTask().equalsIgnoreCase("validateUserForLogin"))
 		{
 			userName = getUserName();
@@ -668,6 +675,7 @@ public String ajaxCallForLoginPopup(){
 				hasPartyAnalystUserRole = true;
 				session.setAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE, true);
 				session.setAttribute("UserType", "PartyAnalyst");
+			
 				
 				if(userRoles.contains(IConstants.FREE_USER))
 				{
