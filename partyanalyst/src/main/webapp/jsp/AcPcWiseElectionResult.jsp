@@ -1625,7 +1625,7 @@ $('#ajaxImage').show();
 	<div id="weathermap">
 	
 	</div>
-	<div id="headings2" align="center" style="background:#80D1F1;padding : 5px;font-weight:bold;border-radius:5px;float: right; position: relative; margin-bottom: 30px;" class="span6" > Parliament Wise  </div>
+	<div id="headings2" align="center" style="background:#80D1F1;padding : 5px;font-weight:bold;border-radius:5px;float: right; position: relative; margin-bottom: 30px;" class="span5" > Parliament Wise  </div>
 	<div id="headings1" align="center" style="background:#80D1F1;padding : 5px;font-weight:bold;border-radius:5px;margin-top:-60px;" class="span6" > Parliament  Wise Election Results  Map  </div>
 	<div id="button2"  style="float:right;margin-top:-30px" class="span6">   <a onclick="refreshMap('presentPC');" title="Refresh Map" > Refresh Map : <i class="icon-refresh" style="cursor:pointer;"></i> </a></div>
 	<div id="weathermap1">
