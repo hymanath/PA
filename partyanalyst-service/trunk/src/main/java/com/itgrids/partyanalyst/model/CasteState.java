@@ -37,7 +37,7 @@ public class CasteState extends BaseModel implements Serializable{
 	private Set<SurveyorProfile> surveyorProfile=new HashSet<SurveyorProfile>();
 	private String isGlobal;
 	private User user;
-	
+	private Set<FieldVoterData> fieldVoterData = new HashSet<FieldVoterData>(0);
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="caste_category_group_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
@@ -137,6 +137,14 @@ public class CasteState extends BaseModel implements Serializable{
 
 	public void setSurveyorProfile(Set<SurveyorProfile> surveyorProfile) {
 		this.surveyorProfile = surveyorProfile;
+	}
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "casteState")
+	public Set<FieldVoterData> getFieldVoterData() {
+		return fieldVoterData;
+	}
+
+	public void setFieldVoterData(Set<FieldVoterData> fieldVoterData) {
+		this.fieldVoterData = fieldVoterData;
 	}
 	
 	

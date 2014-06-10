@@ -135,7 +135,7 @@ public class User extends BaseModel implements Serializable{
 	private String passwordHash;
 	private String passwordSalt;
 	//private String infoManager;
-	
+	private Set<FieldVoterData> fieldVoterData = new HashSet<FieldVoterData>(0);
 	public User(){}
 	 
 	 public User(String firstName, String middleName, String lastName, String gender,
@@ -1096,7 +1096,17 @@ public class User extends BaseModel implements Serializable{
 	public void setUserSmsSent(Set<UserSmsSent> userSmsSent) {
 		this.userSmsSent = userSmsSent;
 	}
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	public Set<FieldVoterData> getFieldVoterData() {
+		return fieldVoterData;
+	}
 
+	public void setFieldVoterData(Set<FieldVoterData> fieldVoterData) {
+		this.fieldVoterData = fieldVoterData;
+	}
+
+	
+	
 	/*@Column(name="is_info_manager")
 	public String getInfoManager() {
 		return infoManager;
