@@ -87,7 +87,7 @@ public interface IPartyDetailsService {
 	
 	public Map<String,List<PartyInfoVO>> getPartyElectionResults(Long partyId,boolean includeAlliances,boolean includeBielections);
 	
-	public List<PartyInfoVO> getPartyElectionProfile(List<PartyElectionResult> electionResultList,boolean includeAlliances);
+	public List<PartyInfoVO> getPartyElectionProfile(List<PartyElectionResult> electionResultList,boolean includeAlliances,String electionType);
     
 	public List<SelectOptionVO> getStateDetails(Long partyId);
 	
