@@ -329,6 +329,7 @@
              <pattern>/home*</pattern>
              <pattern>/smsAction*</pattern>
 			 <pattern>/subUserRegPageAction*</pattern>
+			 <pattern>/login*</pattern>
             <!--  <pattern>/dashBoardAction*</pattern> -->
        </decorator>
        
