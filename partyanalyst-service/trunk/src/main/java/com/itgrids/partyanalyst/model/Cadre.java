@@ -664,7 +664,7 @@ public class Cadre extends BaseModel{
 	public void setIsVerified(String isVerified) {
 		this.isVerified = isVerified;
 	}
-	@Column(name="insert_type")
+	/*@Column(name="insert_type")
 	public String getInsertType() {
 		return insertType;
 	}
@@ -673,7 +673,7 @@ public class Cadre extends BaseModel{
 		this.insertType = insertType;
 	}
 	
-	
+	*/
 	
 	
 	

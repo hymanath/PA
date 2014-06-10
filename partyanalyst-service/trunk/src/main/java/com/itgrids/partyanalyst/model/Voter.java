@@ -49,7 +49,7 @@ public class Voter extends BaseModel implements Serializable {
 	private Set<Respondent> respondent = new HashSet<Respondent>(0);
 	private VoterAgeRange voterAgeRange;
 	private VoterNames voterNames;
-	
+	private Set<FieldVoterData> fieldVoterData = new HashSet<FieldVoterData>(0);
 	public Voter(){
 		
 	}
@@ -216,5 +216,14 @@ public class Voter extends BaseModel implements Serializable {
 	public void setVoterNames(VoterNames voterNames) {
 		this.voterNames = voterNames;
 	}
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "voter")
+	public Set<FieldVoterData> getFieldVoterData() {
+		return fieldVoterData;
+	}
+
+	public void setFieldVoterData(Set<FieldVoterData> fieldVoterData) {
+		this.fieldVoterData = fieldVoterData;
+	}
+	
 	
 }

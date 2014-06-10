@@ -48,7 +48,7 @@ public class Ward implements Serializable {
 	private Set<ProblemLocation> problemLocations = new HashSet<ProblemLocation>(0);
 	private Set<DelimitationWard> delimitationWard = new HashSet<DelimitationWard>(0);
 	private Set<Block> block = new HashSet<Block>(0);
-
+	private Set<FieldVoterData> fieldVoterData = new HashSet<FieldVoterData>(0);
 	// Constructors
 	
 	/** default constructor */
@@ -136,6 +136,15 @@ public class Ward implements Serializable {
 
 	public void setBlock(Set<Block> block) {
 		this.block = block;
+	}
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "ward")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<FieldVoterData> getFieldVoterData() {
+		return fieldVoterData;
+	}
+
+	public void setFieldVoterData(Set<FieldVoterData> fieldVoterData) {
+		this.fieldVoterData = fieldVoterData;
 	}
 
 	
