@@ -659,7 +659,7 @@ function buildDataTable(rparam)
 		var candidateName = oData;
 		var candidateId = oRecord.getData("candidateId");
 		//elLiner.innerHTML ="<a href='candidateElectionResultsAction.action?candidateId="+candidateId+"'>"+candidateName+"</a>";		
-		elLiner.innerHTML ='<a id='+candidateName+' onmouseover="displayImage(\''+candidateName+'\');" onmouseout="return nd();">'+candidateName+'</a>';		
+		elLiner.innerHTML ='<a id='+candidateName+' onmouseover="displayImageById(\''+candidateId+'\',\''+candidateName+'\');" onmouseout="return nd();">'+candidateName+'</a>';		
 	};
 
 	

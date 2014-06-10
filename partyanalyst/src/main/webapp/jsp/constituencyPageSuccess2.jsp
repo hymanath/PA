@@ -572,7 +572,10 @@ var queryString='';
 				   <div style="background-color: #FFF9E1;border: 1px solid #F4EED5;width:100%;">
 				    <table style="width:100%">
 				     <tr>
-				        <td rowspan="2" style="width:20%;text-align:center;background-color: #FFF5CE;"><a title="Click here to view ${candidateDetailsForConstituency.assemblyCandidateInfo[0].candidateName} Profile - News, Photos and Videos" href="candidateElectionResultsAction.action?candidateId=${candidateDetailsForConstituency.assemblyCandidateInfo[0].candidateId}"><img  onerror="setImage(this)"  src="images/candidates/${candidateDetailsForConstituency.assemblyCandidateInfo[0].candidateName}.jpg" height="65" width="60"/></a> </td>                    
+				        <td rowspan="2" style="width:20%;text-align:center;background-color: #FFF5CE;"><a title="Click here to view ${candidateDetailsForConstituency.assemblyCandidateInfo[0].candidateName} Profile - News, Photos and Videos" href="candidateElectionResultsAction.action?candidateId=${candidateDetailsForConstituency.assemblyCandidateInfo[0].candidateId}">
+						<!--<img  onerror="setImage(this)"  src="images/candidates/${candidateDetailsForConstituency.assemblyCandidateInfo[0].candidateName}.jpg" height="65" width="60"/>-->
+						<img  onerror="setImage(this)"  src="images/candidates/${candidateDetailsForConstituency.assemblyCandidateInfo[0].candidateId}.jpg" height="65" width="60"/>
+						</a> </td>                    
 						<td style="width:35%;text-align:center;background-color: #FFF5CE;color: #C20000;"><b>Member Of Legislative Assembly :</b></td>
 						<td style="width:20%;text-align:center;background-color: #FFF5CE; color: #C20000;;"><b>Party :</b></td>
 						<td style="width:20%;text-align:left;background-color: #FFF5CE;"> </td>
@@ -631,7 +634,10 @@ var queryString='';
 				<div style="background-color: #FFF9E1;border: 1px solid #F4EED5;width:100%;">
 				    <table style="width:100%">
 				     <tr>
-				        <td rowspan="2" style="width:20%;text-align:center;background-color: #FFF5CE;"><a title="Click here to view ${candidateDetailsForConstituency.parliamentCandidateInfo.candidateName} Profile - News, Photos and Videos" href="candidateElectionResultsAction.action?candidateId=${candidateDetailsForConstituency.parliamentCandidateInfo.candidateId}"><img  onerror="setImage(this)"  src="images/candidates/${candidateDetailsForConstituency.parliamentCandidateInfo.candidateName}.jpg" height="65" width="60"/></a> </td>                    
+				        <td rowspan="2" style="width:20%;text-align:center;background-color: #FFF5CE;"><a title="Click here to view ${candidateDetailsForConstituency.parliamentCandidateInfo.candidateName} Profile - News, Photos and Videos" href="candidateElectionResultsAction.action?candidateId=${candidateDetailsForConstituency.parliamentCandidateInfo.candidateId}">
+						<!--<img  onerror="setImage(this)"  src="images/candidates/${candidateDetailsForConstituency.parliamentCandidateInfo.candidateName}.jpg" height="65" width="60"/>-->
+						<img  onerror="setImage(this)"  src="images/candidates/${candidateDetailsForConstituency.parliamentCandidateInfo.candidateId}.jpg" height="65" width="60"/>
+						</a> </td>                    
 						<td style="width:30%;text-align:center;background-color: #FFF5CE;color: #C20000;"><b>Member Of Parliament :</b></td>
 						<td style="width:30%;text-align:center;background-color: #FFF5CE; color: #C20000;"><b>Party :</b></td>
 						<td style="width:20%;text-align:left;background-color: #FFF5CE;"> </td>
@@ -1439,7 +1445,7 @@ var defDate = constituencyPageMainObj.constituencyInfo.deformDate;
 						deformDate:'${cInfo.deformDate}',
 						candidateId : '${cInfo.candidateId}',
 						//candidateName:'<a href="candidateElectionResultsAction.action?candidateId=${cInfo.candidateId}"> ${cInfo.candidateName}</a>',	
-						candidateName:'<a id="${cInfo.candidateName}" onmouseover="displayImage(this.id)" onmouseout="return nd();" href="candidateElectionResultsAction.action?candidateId=${cInfo.candidateId}"> ${cInfo.candidateName}</a>',	
+						candidateName:'<a id="${cInfo.candidateName}" onmouseover="displayImageById(${cInfo.candidateId},this.id)" onmouseout="return nd();" href="candidateElectionResultsAction.action?candidateId=${cInfo.candidateId}"> ${cInfo.candidateName}</a>',	
 						partyId:' ${cInfo.partyId}',
 						party : '${cInfo.party}',
 						partyFlag : '<img src="<%=request.getContextPath()%>/images/party_flags/${cInfo.partyFlag}" height="30" width="40"/>',

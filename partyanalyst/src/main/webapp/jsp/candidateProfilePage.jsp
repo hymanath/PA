@@ -2816,7 +2816,8 @@ function candidateInfo()
     var str='';
 	
     str+='<div class="ptd-sec">';
-	str+='<img height="250" width="180" onerror="setDefaultImage(this)" src="images/candidates/${candidateVO.candidateName}.jpg"><span class="tc-tf pa-fi">';
+	//str+='<img height="250" width="180" onerror="setDefaultImage(this)" src="images/candidates/${candidateVO.candidateName}.jpg"><span class="tc-tf pa-fi">';
+	str+='<img height="250" width="180" onerror="setDefaultImage(this)" src="images/candidates/${candidateId}.jpg"><span class="tc-tf pa-fi">';
 	str+='<label class="c-red"><a href="candidateElectionResultsAction.action?candidateId=${candidateId} ">${candidateVO.candidateName}</a></label></span><br />';
 	
 	str += '<span style="font-weight:bold;font-family:arial;">${candidateElectionDetails[0].candidateRole}</span><br />';
