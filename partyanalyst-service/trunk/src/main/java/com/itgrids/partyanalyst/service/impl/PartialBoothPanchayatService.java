@@ -189,6 +189,19 @@ public class PartialBoothPanchayatService implements IPartialBoothPanchayatServi
 		}		
 		return particlPanchayatDetails;
 	}
+	
+	public Long getPanchayatDetailsWithDescription(Long panchayatId, Long boothId,Long hamletId,String description)
+	{
+		Long particlPanchayatDetails = 0l;
+		try {
+			LOG.debug("enterd into getPanchayatBoothDetals() method in PartialBoothPanchayatService Class");
+			particlPanchayatDetails = partialBoothPanchayatDAO.getBoothPanchayatDetails(panchayatId,boothId,hamletId,description);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in getPanchayatBoothDetals() method in PartialBoothPanchayatService Class",e);
+		}		
+		return particlPanchayatDetails;
+	}
 
 	
 	public List<PartialBoothPanchayatVO> getAllPartialBoothsInASelectedMandal(Long mandalId,Long publicationId)
@@ -303,7 +316,7 @@ public class PartialBoothPanchayatService implements IPartialBoothPanchayatServi
 				PartialBoothPanchayat partialBoothPanchayat = partialBoothPanchayatDAO.get(id);
 				if(partialBoothPanchayat != null)
 				{
-					Long boothPanchayatDetailsId = getPanchayatDetails(partialPanchayatId,boothId,hamletId);
+					Long boothPanchayatDetailsId = getPanchayatDetailsWithDescription(partialPanchayatId,boothId,hamletId , partialDescription);
 					if(boothPanchayatDetailsId == null)
 					{
 						if(boothDAO.get(boothId) != null)

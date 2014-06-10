@@ -83,13 +83,28 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getGenderWiseVoterModificationsBetweenPublications(String locationType,Long locationValue,Long constituencyId,List<Long> publicationIdsList)
 	{
+		Query query = null;
 		
-		Query query = getSession().createQuery("select count(model.voter.voterId),model.voterStatus.status,model.voter.gender from VoterModification model " +
+		if(locationType.equalsIgnoreCase("booth"))
+		 query = getSession().createQuery("select count(model.voter.voterId),model.voterStatus.status,model.voter.gender from VoterModification model , " +
+		 		"BoothPublicationVoter model1 where " +
+		 		"model1.voter.voterId  = model.voter.voterId and " +
+		 		"  model.constituency.constituencyId = :constituencyId " +
+				" and model.publicationDate.publicationDateId in (:publicationIdsList) and model1.booth.boothId = :locationValue" +
+				" group by model.voterStatus.voterStatusId,model.voter.gender");
+
+		else				
+		 query = getSession().createQuery("select count(model.voter.voterId),model.voterStatus.status,model.voter.gender from VoterModification model " +
 				" where model.constituency.constituencyId = :constituencyId " +
 				" and model.publicationDate.publicationDateId in (:publicationIdsList) " +
 				" group by model.voterStatus.voterStatusId,model.voter.gender");
 		query.setParameterList("publicationIdsList",publicationIdsList);
 		query.setParameter("constituencyId",constituencyId);
+		
+		if(locationType.equalsIgnoreCase("booth"))
+			query.setParameter("locationValue",locationValue);
+
+
 		return query.list();
 	}
 	@SuppressWarnings("unchecked")
@@ -168,7 +183,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 	public List<Object[]> getAgeWiseAddedAndDeletedVotersCountInBetweenPublicationsInALocation(String locationType,Long locationValue,Long constituencyId,List<Long> publicationIdsList,Long ageFrom, Long ageTo)
 	{
 		StringBuilder str = new StringBuilder();
-		str.append(" select count(model.voter.voterId),model.status from VoterModification model, BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and ");
+		str.append(" select count(model.voter.voterId),model.voterStatus.status from VoterModification model, BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and ");
 		str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) and model.partNo = model2.booth.partNo and ");
 		
 		if(ageTo == null)
@@ -593,7 +608,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 	     else if(type.equalsIgnoreCase(IConstants.MANDAL))
 	    	 str.append(" model2.booth.tehsil.tehsilId = :locationValue ");
 	     else if(type.equalsIgnoreCase(IConstants.LOCALELECTIONBODY) || type.equalsIgnoreCase("localElectionBody"))
-	    	 str.append(" model2.booth.localBody.localElectionBodyId = :locationValue ");
+	    	 str.append(" model2.booth.localBody.localElectionBodyId = :locationValue  and model2.booth.constituency.constituencyId = :constituencyId ");
 	     else if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
 	    	 str.append(" model2.booth.panchayat.panchayatId = :locationValue ");
 	     else if(type.equalsIgnoreCase(IConstants.BOOTH))
@@ -608,6 +623,10 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 	     query.setParameter("locationValue", locationValue);
 	     query.setParameterList("publicationIdsList", publicationIdsList);
 	     
+	     
+	     if(type.equalsIgnoreCase(IConstants.LOCALELECTIONBODY) || type.equalsIgnoreCase("localElectionBody"))
+	    	 query.setParameter("constituencyId", constituencyId);
+	    	 
 	     //query.setFirstResult(0);
 	     //query.setMaxResults(100);
 			
