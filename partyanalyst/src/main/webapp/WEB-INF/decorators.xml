@@ -121,6 +121,7 @@
 		<pattern>/mobileAppUserInfo.action*</pattern>
 		<pattern>/flaggedvoterDetailsAction*</pattern>
 		<pattern>/mahaNaduAction*</pattern>
+	
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
@@ -139,7 +140,7 @@
 		<pattern>/partyPageAction*</pattern>
 		<pattern>/specialPageAction*</pattern>
 		<pattern>/index*</pattern>
-		<pattern>/newsDisplayAction*</pattern>
+		<!--<pattern>/newsDisplayAction*</pattern>-->
 		<!--<pattern>/districtPageAction*</pattern>-->
 		<pattern>/electionDetailsReportAction*</pattern>
 		<pattern>/constituencyPageAction*</pattern>
@@ -173,7 +174,7 @@
 		<pattern>/completeProblemDetailsAction*</pattern>
 		<pattern>/assigningPartyToUserAction*</pattern>
 		<pattern>/adminUpload*</pattern>
-		<pattern>/profileManagePageAction*</pattern>
+		<!--<pattern>/profileManagePageAction*</pattern>-->
 		<pattern>/initailConstituencyManagementAction*</pattern>
 		<pattern>/partyPerformanceReport*</pattern>
 		<pattern>/abuseCommentaction*</pattern>
@@ -189,7 +190,7 @@
 		<pattern>/specialPageInfoAction*</pattern>
 		<pattern>/removeVideosAction*</pattern>
 		<pattern>/createThumbNailsAction*</pattern>
-		<pattern>/generatePdfForGallaryAction*</pattern>
+		<!--<pattern>/generatePdfForGallaryAction*</pattern>-->
 		<pattern>/sendUpdatesByemailAction*</pattern>
 		<!-- <pattern>/missingVotersSearchAction*</pattern> -->
 		<pattern>/assigningCandidatesToVoterAction*</pattern>
@@ -276,7 +277,7 @@
 		<pattern>/dashBoardAction*</pattern>
 		<pattern>/searchInfluencePeopleForSmsAction*</pattern>		
 		<pattern>/demoRequestAction*</pattern>
-		<pattern>/subUserRegPageAction*</pattern>
+		<!--<pattern>/subUserRegPageAction*</pattern>-->
 		<pattern>/advVideoSaveAction*</pattern>
 		<pattern>/advVideoActionForSave*</pattern>
 		<pattern>/partialBoothPanchayatAction*</pattern>
@@ -325,11 +326,15 @@
 		</decorator>
     	 
        <decorator name="tdpHome" page="tdplayout.jsp">
-             <pattern>/newhomePageAction*</pattern>
+             <pattern>/home*</pattern>
              <pattern>/smsAction*</pattern>
+			 <pattern>/subUserRegPageAction*</pattern>
             <!--  <pattern>/dashBoardAction*</pattern> -->
        </decorator>
        
        <decorator name="tdpHome_old" page="tdplayout_old.jsp">
+	   <pattern>/profileManagePageAction*</pattern>
+	   <pattern>/newsDisplayAction*</pattern>
+	   <pattern>/generatePdfForGallaryAction*</pattern>
        </decorator>
 </decorators>
