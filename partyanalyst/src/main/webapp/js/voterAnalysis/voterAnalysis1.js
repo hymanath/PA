@@ -429,6 +429,8 @@ function buildVotersByLocBoothDataTable(id)
 var boothId = mainreqid;
 var publicationDateId = mainpublicationId;
 
+mainname = "Booth - "+ mainreqid ;
+
 var urlstr = "getVoterDetailsInitialRequest.action?constituencyId="+constituencyId+"&publicationId="+publicationDateId+"&name="+mainname+"&boothId="+boothId+"&sort=voterId&dir=asc&startIndex=0&results=100&maintype=booth";
 
 var browser1 = window.open(urlstr,"familyWiseDetails","scrollbars=yes,height=600,width=1050,left=200,top=200");	
@@ -6326,6 +6328,10 @@ function buildPreviousVotersDetails(myResults,jsObj){
 
 		$('#votersShareBtnss').live("click",function(){
 		var hresult="";
+	
+
+		if(maintype == "constituency")
+			buildType="";
 
 		if(maintype == "booth"){
 			buildType="hamlet";
@@ -6338,7 +6344,6 @@ function buildPreviousVotersDetails(myResults,jsObj){
 			type="hamlet";
 			hresult="localArea";
 		}
-
 		var urlStr="voterBasicInfoAction.action?id="+mainreqid+"&publicationDateId="+$("#publicationDateList").val()+"&publicationYear="+publicationYear+"&typeName="+mainname+"&constituencyId="+$("#constituencyList").val()+"&buildType="+buildType+"&resultFor="+hresult+"&type="+maintype+" ";
 		var updateBrowser = window.open(urlStr,"editAnnouncement","scrollbars=yes,height=600,width=850,left=200,top=200");	
 		updateBrowser.focus();	

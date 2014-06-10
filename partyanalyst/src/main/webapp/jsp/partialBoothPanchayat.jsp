@@ -472,10 +472,10 @@ var panchayatId;
 		str += '<div><b>Booth : </b> <span  style="margin-left: 138px;">'+result[0].boothName+' </span></div></br>';
 		//str += '<div><b>Panchayat: </b> <select id="panchayatEdit"  style="margin-left: 100px;"></select></div>';
 		//str += '<div><b>Booth: </b> <select id="BoothEdit"  style="margin-left: 138px;"></select></div>';
-		str += '<div><b>Description : </b><textarea    id="descriptionEdit" style="margin-left: 89px;">'+result[0].description+'</textarea></div>'
+		str += '<div><b>Description : </b><textarea    id="descriptionEdit" style="margin-left: 89px;">'+result[0].partialDescription+'</textarea></div>'
 		str += '<div><b>Panchayat: </b> <select id="partialPanchayatEdit"  style="margin-left: 100px;" onClick="getHamletsForEditSenerion();"></select></div>';
 		str += '<div><b>Hamlet: </b> <select id="hamletEdit"  style="margin-left: 125px;"></select></div>';
-		str += '<div><b>Description : </b><textarea    id="PartialDescriptionEdit" style="margin-left: 89px;">'+result[0].partialDescription+'</textarea></div>';
+		str += '<div><b>Description : </b><textarea    id="PartialDescriptionEdit" style="margin-left: 89px;">'+result[0].description+'</textarea></div>';
 		str += '<div id="updateButtonDiv" style="margin-left: 170px; margin-top: 12px; float: left;"><input type="submit" value="Update" class="btn btn-success" onClick="updateDetails('+result[0].partialBoothPanchayatId+','+panchayatId+','+result[0].boothId+','+result[0].hamletId+');"></input></div>';
 		$('#editDetailsDiv').html(str);
 		getPanchayatsForEdit(constituencyId,publicationId,mandalId,result[0].panchayatId);
@@ -523,7 +523,10 @@ function buildUdatePartianBoothDetails(result)
 	{
 		$('#updateStatusDiv').html('<b style="color:red">'+result.message+'</b>');
 	}
-	
+		getSelectedDetails();
+		$('#editDetailsDiv').dialog('close');
+
+
 }
 
 function validateTheFields()
