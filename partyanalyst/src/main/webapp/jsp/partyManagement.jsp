@@ -2,12 +2,12 @@
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>  
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@page import="com.itgrids.partyanalyst.utils.IConstants"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Party Analyst-Know | Analyze | Act</title>
+
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <SCRIPT type="text/javascript" src="js/AddNewProblem/addNewProblem.js"></SCRIPT>
 <script type="text/javascript" src="js/specialPage/specialPage.js"></script>
@@ -239,6 +239,14 @@ font-size:18px;
 </style>
 
 <script type="text/javascript">
+$(document).ready(function ()
+{
+	 var host = "<%=IConstants.DEPLOYED_HOST%>";
+	 if(host != "tdpserver")
+    document.title = "Party Analyst-Know | Analyze | Act";
+	 else
+    document.title = "TDP Party's Election Analysis &amp; Management Platform";
+});
 var gGallaryId;
 google.load("elements", "1", {packages : ["newsshow"]});
 		var timeST = new Date().getTime();
