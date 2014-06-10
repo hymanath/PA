@@ -1498,10 +1498,10 @@ public class PartyDetailsService implements IPartyDetailsService {
 		Map<String,List<PartyInfoVO>> resultMap = new HashMap<String, List<PartyInfoVO>>();
 		List<PartyInfoVO> partyInfoList = new ArrayList<PartyInfoVO>();
 		List<PartyElectionResult> electionResultList = partyElectionResultDAO.getPartyElectionResultsBasedOnPartyId(partyId,IConstants.PARLIAMENT_ELECTION_TYPE,includeBielections);
-		partyInfoList = getPartyElectionProfile(electionResultList,includeAlliances);
+		partyInfoList = getPartyElectionProfile(electionResultList,includeAlliances,IConstants.PARLIAMENT_ELECTION_TYPE);
 		resultMap.put("Parliament", partyInfoList);
 		electionResultList = partyElectionResultDAO.getPartyElectionResultsBasedOnPartyId(partyId,IConstants.ASSEMBLY_ELECTION_TYPE,includeBielections);
-		partyInfoList = getPartyElectionProfile(electionResultList,includeAlliances);
+		partyInfoList = getPartyElectionProfile(electionResultList,includeAlliances,IConstants.ASSEMBLY_ELECTION_TYPE);
 		resultMap.put("Assembly", partyInfoList);
 		return resultMap;
 		}catch(Exception e){
@@ -1509,13 +1509,16 @@ public class PartyDetailsService implements IPartyDetailsService {
 			return null;
 		}
 	}
-	public List<PartyInfoVO> getPartyElectionProfile(List<PartyElectionResult> electionResultList,boolean includeAlliances)
+	public List<PartyInfoVO> getPartyElectionProfile(List<PartyElectionResult> electionResultList,boolean includeAlliances,String electionType)
 	{
 		List<PartyInfoVO> partyInfoList = new ArrayList<PartyInfoVO>();
 		PartyInfoVO partyInfoVO = new PartyInfoVO();
 		DecimalFormat dformat = new DecimalFormat("##.00");
 	 try
 		{
+		 
+		 List<Long> electionYears  = new ArrayList<Long>();
+		 List<Long> electionIds = new ArrayList<Long>(); 
 		 if(log.isDebugEnabled())
 			 log.debug("Entered Into getPartyElectionProfile().........");
 		  if(electionResultList !=null && electionResultList.size()>0)
@@ -1536,6 +1539,7 @@ public class PartyDetailsService implements IPartyDetailsService {
 				   partyInfoVO.setElectionYear(partyElectionResult.getElection().getElectionYear());
 				else
 					partyInfoVO.setElectionYear(partyElectionResult.getElection().getElectionYear()+"(Bi)");
+				
 				partyInfoVO.setElectionType(partyElectionResult.getElection().getElectionScope().getElectionType().getElectionType());
 				partyInfoVO.setElectionScopeId(partyElectionResult.getElection().getElectionScope().getElectionScopeId());
 				partyInfoVO.setPartyTotalVotes(partyElectionResult.getTotalValidVotes().longValue());
@@ -1585,8 +1589,16 @@ public class PartyDetailsService implements IPartyDetailsService {
 					 partyInfoVO.setParticipatedPercentage(new BigDecimal(dformat.format(votesPerc)));
 				}
 				
-								
-				partyInfoList.add(partyInfoVO);
+				if(electionType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)){
+					if(!(electionYears.contains(Long.valueOf(partyElectionResult.getElection().getElectionYear())) && electionIds.contains(partyElectionResult.getElection().getElectionId())))
+						partyInfoList.add(partyInfoVO);
+				}	
+				else if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
+						partyInfoList.add(partyInfoVO);
+				}
+				
+				electionYears.add(Long.valueOf(partyElectionResult.getElection().getElectionYear()));
+				electionIds.add(partyElectionResult.getElection().getElectionId());
 			}
 		  }
 	 }catch (Exception e) {

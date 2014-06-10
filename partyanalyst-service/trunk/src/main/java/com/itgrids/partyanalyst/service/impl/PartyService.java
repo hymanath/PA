@@ -648,7 +648,10 @@ public class PartyService implements IPartyService {
 			votesPercentage = (totalVotesEarnedByParty*100)/totalValidVotes ;
 		}
 		String percentageOfVotesEarned1=staticDataService.getPartyVotesPercentage(partyPerformanceReportVO.getElectionId(),selectedParty.getPartyId());
-		partyPerformanceReportVO.setTotalPercentageOfVotesWon1(new BigDecimal(percentageOfVotesEarned1).setScale(2, BigDecimal.ROUND_HALF_UP));
+		if(percentageOfVotesEarned1 !=null)
+		{
+			partyPerformanceReportVO.setTotalPercentageOfVotesWon1(new BigDecimal(percentageOfVotesEarned1).setScale(2, BigDecimal.ROUND_HALF_UP));
+		}
 		partyPerformanceReportVO.setTotalPercentageOfVotesWon(new BigDecimal(votesPercentage).setScale(2,BigDecimal.ROUND_HALF_UP));
 		partyPerformanceReportVO.setVotesFlown(votesFlow);
 		partyPerformanceReportVO.setPositionDistribution(positionDistribution);
