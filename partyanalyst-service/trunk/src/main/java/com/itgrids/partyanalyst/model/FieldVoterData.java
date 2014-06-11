@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
+
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -166,13 +167,14 @@ public class FieldVoterData extends BaseModel implements Serializable{
 	public void setUniqueCode(String uniqueCode) {
 		this.uniqueCode = uniqueCode;
 	}
-	public Hamlet getHamlet() {
-		return hamlet;
-	}
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="hamlet_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Hamlet getHamlet() {
+		return hamlet;
+	}
+	
 	public void setHamlet(Hamlet hamlet) {
 		this.hamlet = hamlet;
 	}
