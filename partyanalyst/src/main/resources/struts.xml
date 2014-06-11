@@ -7236,9 +7236,13 @@
 		<param name="root">resultStatus</param>
 		</result>
 		</action>
-			<action name="login" class="mahaNaduAction" method="loginView">
+		<action name="login" class="mahaNaduAction" method="loginView">
 			<result name="success">/jsp/login.jsp</result>
-			</action>
+		</action>
+		<action name="fieldVoterDataAction" class="fieldVoterDataAction">
+			<result name="success">/jsp/fieldVoterData.jsp</result>
+		</action>
+			
 </package>
 		
 </struts>      

@@ -321,7 +321,7 @@
 		<pattern>/casteWiseSurveyResultComparison*</pattern>
 		<pattern>/electionResults*</pattern>
 		<pattern>/cmsAdminAction*</pattern>
-		
+		<pattern>/fieldVoterDataAction*</pattern>
 		
 		</decorator>
     	 
@@ -330,6 +330,7 @@
              <pattern>/smsAction*</pattern>
 			 <pattern>/subUserRegPageAction*</pattern>
 			 <pattern>/login*</pattern>
+			
             <!--  <pattern>/dashBoardAction*</pattern> -->
        </decorator>
        

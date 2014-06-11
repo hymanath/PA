@@ -1438,5 +1438,7 @@
 	   <property name="entitlementsHelper" ref="entitlementsHelper" />   
 	</bean>
 	<bean id="cmsAdminAction" class="com.itgrids.partyanalyst.web.action.CmsAdminAction" singleton="false"></bean>
+	
+	<bean id="fieldVoterDataAction" class="com.itgrids.partyanalyst.web.action.FieldVoterDataAction" singleton="false"></bean>
 </beans>	
 	
