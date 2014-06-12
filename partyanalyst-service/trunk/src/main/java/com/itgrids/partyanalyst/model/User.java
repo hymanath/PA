@@ -136,6 +136,8 @@ public class User extends BaseModel implements Serializable{
 	private String passwordSalt;
 	//private String infoManager;
 	private Set<FieldVoterData> fieldVoterData = new HashSet<FieldVoterData>(0);
+	private Set<UserSurveyBooths> userSurveyBooths = new HashSet<UserSurveyBooths>(0);
+	private String uniqueCode;
 	public User(){}
 	 
 	 public User(String firstName, String middleName, String lastName, String gender,
@@ -1104,7 +1106,24 @@ public class User extends BaseModel implements Serializable{
 	public void setFieldVoterData(Set<FieldVoterData> fieldVoterData) {
 		this.fieldVoterData = fieldVoterData;
 	}
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	public Set<UserSurveyBooths> getUserSurveyBooths() {
+		return userSurveyBooths;
+	}
 
+	public void setUserSurveyBooths(Set<UserSurveyBooths> userSurveyBooths) {
+		this.userSurveyBooths = userSurveyBooths;
+	}
+   @Column(name = "unique_code")
+	public String getUniqueCode() {
+		return uniqueCode;
+	}
+
+	public void setUniqueCode(String uniqueCode) {
+		this.uniqueCode = uniqueCode;
+	}
+
+	
 	
 	
 	/*@Column(name="is_info_manager")
