@@ -304,9 +304,9 @@ public interface IConstants {
     public static final String GENERAL_EXCEPTION = "GENERAL_EXCEPTION";
     public static final String CREATE_NEW = "new";
     public static final String UPDATE_EXISTING = "update_existing";
-    public static final String SPEAK_LANGUAGE = "Able To Speak";
-    public static final String READ_LANGUAGE = "Able To  Read"; 
-    public static final String WRITE_LANGUAGE = "Able To  Write";
+    public static final String SPEAK_LANGUAGE = "Speak";
+    public static final String READ_LANGUAGE = "Read"; 
+    public static final String WRITE_LANGUAGE = "Write";
     public static final String CONST_TYPE_URBAN = "URBAN";
     public static final String CONST_TYPE_RURAL = "RURAL";	
     public static final String CONST_TYPE_RURAL_URBAN = "RURAL-URBAN";
