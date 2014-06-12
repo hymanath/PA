@@ -1040,9 +1040,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 				
 				boolean validated = pb.validatePWD(md5Pwd, hash, salt);
 				if(validated){
-					
 					wsResultVO.setUniqueCode(user.getUniqueCode() != null ? user.getUniqueCode() : "");
-					
 					wsResultVO.setUserId(user.getUserId());
 					wsResultVO.setUserName(user.getFirstName() +" " +user.getLastName());
 					wsResultVO.setPwd(pwd);
