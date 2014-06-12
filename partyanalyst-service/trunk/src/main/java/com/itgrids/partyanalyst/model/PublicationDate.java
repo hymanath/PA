@@ -40,7 +40,8 @@ public class PublicationDate implements Serializable{
 	 private Set<PublicationElection> publicationElections = new HashSet<PublicationElection>(0);
 	 private Set<VoterDataAvailableConstituencies> voterDataAvailableConstituencies = new HashSet<VoterDataAvailableConstituencies>(0);
 	 private String name;
-	 
+	 private Set<UserSurveyBooths> userSurveyBooths = new HashSet<UserSurveyBooths>(0);
+
 	 @Id
 	 @GeneratedValue(strategy=GenerationType.AUTO)
 	 @Column(name="publication_date_id", unique=true, nullable=false)
@@ -143,6 +144,13 @@ public class PublicationDate implements Serializable{
 	public void setVoterDataAvailableConstituencies(
 			Set<VoterDataAvailableConstituencies> voterDataAvailableConstituencies) {
 		this.voterDataAvailableConstituencies = voterDataAvailableConstituencies;
+	}
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publicationDate")
+	public Set<UserSurveyBooths> getUserSurveyBooths() {
+		return userSurveyBooths;
+	}
+	public void setUserSurveyBooths(Set<UserSurveyBooths> userSurveyBooths) {
+		this.userSurveyBooths = userSurveyBooths;
 	}
 	
 	

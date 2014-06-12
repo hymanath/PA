@@ -80,7 +80,7 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 	private Set<CasteContainConstituency> casteContainConstituency = new HashSet<CasteContainConstituency>(0);
 	//private Set<ConstiCasteGroupPerc> constiCasteGroupPerc = new HashSet<ConstiCasteGroupPerc>(0);
 	// Constructors
-
+	private Set<UserSurveyBooths> userSurveyBooths = new HashSet<UserSurveyBooths>(0);
 
 	
 
@@ -444,6 +444,24 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 			Set<CasteContainConstituency> casteContainConstituency) {
 		this.casteContainConstituency = casteContainConstituency;
 	}
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "constituency")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserSurveyBooths> getUserSurveyBooths() {
+		return userSurveyBooths;
+	}
+
+	public void setUserSurveyBooths(Set<UserSurveyBooths> userSurveyBooths) {
+		this.userSurveyBooths = userSurveyBooths;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 /*	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "constituency")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Set<ConstiCasteGroupPerc> getConstiCasteGroupPerc() {
