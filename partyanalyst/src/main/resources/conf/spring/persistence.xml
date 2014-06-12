@@ -430,7 +430,7 @@
 				<value>com.itgrids.partyanalyst.model.CadreGovtDesignation</value>
 				<value>com.itgrids.partyanalyst.model.RegionWiseSurveys</value>
 				<value>com.itgrids.partyanalyst.model.FieldVoterData</value>
-				
+				<value>com.itgrids.partyanalyst.model.UserSurveyBooths</value>
 				
 			</list>
 			
