@@ -76,6 +76,8 @@ if(request.getParameter("tempVar")!=null){
     <link rel="stylesheet" type="text/css" href="styles/jQuery/jquery.datepick.css">
 <script type="text/javascript" src="js/jQuery/jquery.datepick.min.js"></script>
 <script type="text/javascript" src="js/jQuery/jquery.datepick-en-GB.js"></script>
+<link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
+
 <style type="text/css">
 
 #genderFieldFemale,#genderFieldMale{
