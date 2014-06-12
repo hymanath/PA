@@ -14,6 +14,8 @@ import com.itgrids.partyanalyst.dao.IMobileAppUserAccessKeyDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserProfileDAO;
 import com.itgrids.partyanalyst.dao.IPingingTypeDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.IUserSurveyBoothsDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoiceRecordingDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterBoothActivitiesDAO;
@@ -31,9 +33,11 @@ import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.MobileAppPinging;
 import com.itgrids.partyanalyst.model.MobileAppUser;
 import com.itgrids.partyanalyst.model.MobileAppUserAccessKey;
+import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.VoterBoothActivities;
 import com.itgrids.partyanalyst.model.VoterTag;
+import com.itgrids.partyanalyst.security.PBKDF2;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.itgrids.partyanalyst.service.ILoginService;
 import com.itgrids.partyanalyst.service.IMailService;
@@ -45,6 +49,7 @@ import com.itgrids.partyanalyst.service.IVoterReportService;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.Util;
 import com.itgrids.partyanalyst.webservice.utils.VoterTagVO;
 
 
@@ -78,9 +83,9 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	private IVoterTagDAO voterTagDAO;
 	private IVoterBoothActivitiesDAO voterBoothActivitiesDAO;
 	private DateUtilService dateUtilService = new DateUtilService();
-	
+	@Autowired IUserDAO userDAO;
 	@Autowired IStrategyModelTargetingService strategyModelTargetingService;
-
+    @Autowired IUserSurveyBoothsDAO userSurveyBoothsDAO ;
 	public IVoterBoothActivitiesDAO getVoterBoothActivitiesDAO() {
 		return voterBoothActivitiesDAO;
 	}
@@ -1014,6 +1019,51 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		effectedResponse.setPanchayats(list);
 		
 		return effectedResponse;
+	}
+	
+	public WSResultVO getLoginFieldDataUser(String uname,String pwd)
+	{
+		WSResultVO wsResultVO = new WSResultVO();
+		try{
+			User user = null;
+			List<User> userObj=userDAO.getModelByUserName(uname);
+			
+			if(userObj.size()==0){
+				return null;
+			}
+			if(userObj.get(0).getPasswordHash() !=null && userObj.get(0).getPasswordSalt()!=null){
+				user=userObj.get(0);
+				String salt = userObj.get(0).getPasswordSalt();
+				String hash = userObj.get(0).getPasswordHash();
+				String md5Pwd=Util.MD5(Util.MD5(user.getUserName())+ Util.MD5(pwd));
+				PBKDF2 pb= new PBKDF2();
+				
+				boolean validated = pb.validatePWD(md5Pwd, hash, salt);
+				if(validated){
+					
+					wsResultVO.setUniqueCode(user.getUniqueCode() != null ? user.getUniqueCode() : "");
+					
+					wsResultVO.setUserId(user.getUserId());
+					wsResultVO.setUserName(user.getFirstName() +" " +user.getLastName());
+					wsResultVO.setPwd(pwd);
+					List<Object[]> list = userSurveyBoothsDAO.getPublicationIdByUserId(user.getUserId());
+					if(list != null && list.size() > 0)
+					{
+						for(Object[] params : list)
+						{
+					wsResultVO.setConstituencyId((Long)params[0]);
+					wsResultVO.setPublicationDateId((Long)params[1]);
+						}
+					}
+				}
+				
+			}
+		}
+		catch(Exception e)
+		{
+		return null;  	
+		}
+		return wsResultVO;
 	}
 }
 

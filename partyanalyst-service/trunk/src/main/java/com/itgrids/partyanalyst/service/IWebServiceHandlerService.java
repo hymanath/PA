@@ -55,5 +55,6 @@ public interface IWebServiceHandlerService {
 	public String verificationForAuthorisationAccessKey(String uniqueCode,String accesskey);
 	
 	public EffectedBoothsResponse getInfectedBoothsOfConstituency(Long constituencyId);
+	public WSResultVO getLoginFieldDataUser(String uname,String pwd);
 
 }
