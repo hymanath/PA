@@ -1460,6 +1460,10 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="userSurveyBoothsDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserSurveyBoothsDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<!--  survey -->
 	
 		

@@ -27,8 +27,17 @@ public class WebServiceHandler {
 	private IWebServiceHandlerService  webServiceHandlerService;
 	private ResultStatus resultStatus;
 	private List<WSResultVO> wSResultVO;
+	private WSResultVO wSResult;
 	private final static Logger LOG = Logger.getLogger(WebServiceHandler.class);
 	
+
+	public WSResultVO getwSResult() {
+		return wSResult;
+	}
+
+	public void setwSResult(WSResultVO wSResult) {
+		this.wSResult = wSResult;
+	}
 
 	public List<WSResultVO> getwSResultVO() {
 		return wSResultVO;
@@ -509,5 +518,23 @@ public class WebServiceHandler {
  
 	}
 	
+	
+	@GET
+	@Path("/loginFieldDataUser/{userName}/{passWord}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public WSResultVO loginFieldDataUser (@PathParam("userName") String uname,@PathParam("passWord") String pwd)
+	{
+		try{
+			
+			wSResult =  webServiceHandlerService.getLoginFieldDataUser(uname,pwd);
+			return wSResult;
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in loginFieldDataUser() Method,Exception is ",e);
+		    return null;
+		}
+		
+	}
 	
 }
