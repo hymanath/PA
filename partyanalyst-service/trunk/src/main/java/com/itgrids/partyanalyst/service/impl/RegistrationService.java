@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -301,6 +302,8 @@ public class RegistrationService implements IRegistrationService{
 				user.setParentUser(userDAO.get(values.getParentUserId()));
 			if(values.getMainAccountId() != null)
 				user.setMainAccountUser(userDAO.get(values.getMainAccountId()));
+			String uniqueCode = RandomStringUtils.randomAlphanumeric(10).toUpperCase();
+			user.setUniqueCode(uniqueCode);
 		}
 		catch(Exception e)
 		{

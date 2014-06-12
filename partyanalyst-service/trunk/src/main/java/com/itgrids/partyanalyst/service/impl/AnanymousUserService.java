@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
@@ -505,6 +506,8 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 					{	
 						user.setProfileImg(userDetails.getUserProfilePic());
 					}
+					String uniqueCode = RandomStringUtils.randomAlphanumeric(10).toUpperCase();
+					user.setUniqueCode(uniqueCode);
 					user = userDAO.save(user);
 					
 					if(!isUpdate && userDetails.getUserProfilePic()!= null)
