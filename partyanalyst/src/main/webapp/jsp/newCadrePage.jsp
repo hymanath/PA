@@ -1540,10 +1540,10 @@ function refreshingParentWindow()
 		</table>
 	</FIELDSET>			
 	<fieldset>
-		<legend><strong>Social Status</strong></legend>
+		<legend><strong>Cadre's Profile</strong></legend>
 		<table class="cadreDetailsTable" width="100%">
 		<tr>
-			<th colspan="4"><s:label for="languageField" id="languageLabel"  value="%{getText('languageEff')}" /></th>
+			<th colspan="4"><label id="languageLabel"  value="Languages Known"></label></th>
 		</tr>	
 		<tr>
 			<td><label>English</label></td>
@@ -1552,6 +1552,10 @@ function refreshingParentWindow()
 		<tr>
 			<td><label>Hindi</label></td>
 			<td colspan="3"><s:checkboxlist list="#session.language_options" name="languageOptions_Hindi"/></td>			
+		</tr>
+		<tr>
+			<td><label>Telugu</label></td>
+			<td colspan="3"><s:checkboxlist list="#session.language_options" name="languageOptions_Telugu"/></td>			
 		</tr>
 		<tr>
 			<td width="130"><s:label for="educationField" id="educationLabel"  value="%{getText('education')}" /><font class="requiredFont"> * </font></td>
