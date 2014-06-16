@@ -466,7 +466,13 @@ function getAssembly(assemblyId,partyId)
 					str+='</tr>';
 					str+='<tr><th>Rank : </th><td>'+result.acCandidateData.rank+' &nbsp;&nbsp;&nbsp; <b>Party:</b> '+ result.acCandidateData.party +'</td></tr>';
 					
-					str+='<tr><th>Votes Gained : </th><td>'+result.acCandidateData.votesEarned+' ('+result.acCandidateData.votesPercentage+' %)</td></tr>';
+
+					str+='<tr><th>Votes Gained : </th>';
+					if(result.acCandidateData.votesPercentage != null)
+					str+='<td>'+result.acCandidateData.votesEarned+' ('+result.acCandidateData.votesPercentage+' %)</td>';
+					else
+				str+='<td>'+result.acCandidateData.votesEarned+'</td>';
+					str+='</tr>';
 					str+='<tr><td colspan="3"><table cellpadding="0" cellspacing="0"><tr><th>Total Voters (AC<font color="red">*</font>) :</th><td>'+result.totalVotersInAC+' </td><th>Total Polled Votes : </th><td>'+ result.acCandidateData.polledVotes +'</td></tr></table></td></tr>';
 					str+='</table>';		
 				str+='</div></td>';
@@ -479,7 +485,12 @@ function getAssembly(assemblyId,partyId)
 				    str+='</tr>';
 					str+='<tr><th>Rank : </th><td>'+result.pcCandidateData.rank+' &nbsp;&nbsp;&nbsp;<b>Party:</b> '+ result.pcCandidateData.party+'</td></tr>';
 
-					str+='<tr><th>Votes Gained : </th><td>'+result.pcCandidateData.votesEarned+' ('+result.pcCandidateData.votesPercentage+' %)</td></tr>';
+					str+='<tr><th>Votes Gained : </th>';
+					if(result.pcCandidateData.votesPercentage != null)
+					str+='<td>'+result.pcCandidateData.votesEarned+' ('+result.pcCandidateData.votesPercentage+' %)</td>';
+					else
+				str+='<td>'+result.pcCandidateData.votesEarned+'</td>';
+					str+='</tr>';
 					str+='<tr><td colspan="3"><table cellpadding="0" cellspacing="0"><tr><th>Total Voters (PC<font color="red">*</font>) :</th><td>'+result.totalVotersInPC+' </td><th>Total Polled Votes</th><td>'+ result.pcCandidateData.polledVotes +'</td></tr></table></td></tr>';
 					str+='</table>';	
 				str+='</div></td></tr></table>';		
@@ -488,18 +499,23 @@ function getAssembly(assemblyId,partyId)
 					str+='<div id="constDetailsHead">Cross Voting & Impact Details </div>'
 					
 					str+='<table>';
+					if(result.differenceInACAndPC == null )
+					result.differenceInACAndPC = "0.00";
 					str+='<tr><td colspan="2"><br><b>Votes Percentage Difference between Assembly Candidate and Parlament Candidate: '+result.differenceInACAndPC+'%</b></td></tr>';
 					str+='<tr><td colspan="2"><br><b>Votes Percentage Difference in Assembly Impact On Parliament: '+result.impactOfAssemblyOnParliament+'%</b></td></tr>';	
 					str+='</table>';
 					
 				str+='</div>';
+				
+				if(result.mandals.length > 0)
+			{
 				str+='<div id="treeDiv">';
 				str+='	<span><h4><u>Voting Details in Mandal/s:</u></h4></span>';
 				str+='	<div id="treeDataDiv" class="yui-skin-sam"></div>';
 				str+='	<div  id="indexDataDiv"> AC* - Assembly Candidate, PC* - Parliament Candidate, IC* - Impact On Constituency</div>';
 				str+='</div>';
 			str+='</div>';
-
+			}
 
 			resultDiv.innerHTML=str;
 			
