@@ -299,6 +299,7 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 	
 	public List<CrossVotedMandalVO> getTehsilsForConstituency(CrossVotingConsolidateVO crossVotingConsolidateVO, 
 			String electionYear, Long acId, Long pcId, Long acNominationId, Long pcNominationId){
+		try{
 		List<CrossVotedMandalVO> crossVotedMandalVOs = new ArrayList<CrossVotedMandalVO>();
 		List tehsils = boothDAO.findTehsilsByElectionAndConstituency(electionYear, acId);
 		if(tehsils.size() > 0)
@@ -346,19 +347,29 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 
 		crossVotingConsolidateVO.getAcCandidateData().setVotesEarned(acVotesEarnedInConstituency);
 		crossVotingConsolidateVO.getAcCandidateData().setPolledVotes(acValidVotesInConstituency);
+		
+		if(acValidVotesInConstituency > 0)
 		crossVotingConsolidateVO.getAcCandidateData().setVotesPercentage(new BigDecimal(acVotesEarnedInConstituency*100.0/acValidVotesInConstituency).
 				setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 		crossVotingConsolidateVO.getPcCandidateData().setVotesEarned(pcVotesEarnedInConstituency);
 		crossVotingConsolidateVO.getPcCandidateData().setPolledVotes(pcValidVotesInConstituency);
+		if(pcValidVotesInConstituency > 0)
 		crossVotingConsolidateVO.getPcCandidateData().setVotesPercentage(new BigDecimal(pcVotesEarnedInConstituency*100.0/pcValidVotesInConstituency).
 				setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		if(acValidVotesInConstituency > 0)
 		crossVotingConsolidateVO.setDifferenceInACAndPC(new BigDecimal(acpcDiffenceInConstituency*100.0/acValidVotesInConstituency).
 				setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		if(crossVotingConsolidateVO.getTotalPCPolledVotesInConstituency() > 0)
 		crossVotingConsolidateVO.setImpactOfAssemblyOnParliament(new BigDecimal(acpcDiffenceInConstituency*100.0/crossVotingConsolidateVO.getTotalPCPolledVotesInConstituency()).
 				setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 		
 		
 		return crossVotedMandalVOs;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	private void calculateUnmappedBoothsResults(
