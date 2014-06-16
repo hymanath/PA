@@ -37,6 +37,9 @@
 <link rel="stylesheet" type="text/css" href="styles/userGroups/userGroups.css">
 <style type="text/css">
 .uLEleStyle{font-family: verdana;font-size: 11px;}
+p{padding : 0px;}
+.link{margin-top:10px;}
+#contenttable{margin-left:auto;margin-right:auto;width:995px;}
 </style>
 <script type="text/javascript">
 var hidden=1;
@@ -1541,10 +1544,11 @@ var userGrpsObj={
 	</table>
 	</div>
 	<div id="userGroupsLeftDiv">
-		<div id="leftNavLinksDiv"><p id="systemGroups" class="link"><a href="javascript:{}" onclick="getSubGroupsCountInSystemGrpsForUser()"><b>System Groups</b></a></p>
-		<p id="myGroups" class="link"><a href="#groupDetails" onclick="getSubGroupsCountInMyGroupsForUser()"><b>My Groups</b></a></p>		
-		<p id="createNewGrpDiv" class="link"><a href="javascript:{}" onclick="buildCreateGroupPopup()"><b>Create New Group</b></a></p>
-		<p id="manageGrpDiv" class="link"><a href="javascript:{}" onclick=""><b>Manage Groups</b></a></p>
+		<div id="leftNavLinksDiv">
+		<p id="systemGroups" class="link"><a href="javascript:{}" onclick="getSubGroupsCountInSystemGrpsForUser()"><b>System Groups</b></a></p>
+		<p id="myGroups" class="link"><a href="#groupDetails" onclick="getSubGroupsCountInMyGroupsForUser()">&nbsp;<b>My Groups</b></a></p>		
+		<p id="createNewGrpDiv" class="link"><a href="javascript:{}" onclick="buildCreateGroupPopup()">&nbsp;<b>Create New Group</b></a></p>
+		<p id="manageGrpDiv" class="link"><a href="javascript:{}" onclick="">&nbsp;<b>Manage Groups</b></a></p>
 		</div>
 		<div id="groupsList"><a name="groupDetails"></a>
 		<fieldset>
