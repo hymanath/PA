@@ -3213,6 +3213,11 @@ function sendTextSms()
 
 		error = true;
 	}
+	else if($('#mobileNumber').val().trim().length == 0)
+	{
+$('#errorMsg').html("<font style='font-weight:bold;color:red;'>Please Enter Mobile No</font>");
+error = true;
+	}
   if($('#mobileNumber').val().trim() != "")
   {
 
