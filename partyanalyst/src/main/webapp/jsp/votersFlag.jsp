@@ -9,7 +9,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title> Voters </title>
+<title> Flag Maintenance </title>
 <!-- YUI Dependency files (Start)
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
@@ -112,7 +112,7 @@
 <body>
  <br>
 <div id="mainDiv" class="contenttable widget"> 
-<h3 style="background:#05A8E9;border-radius:3px;text-align:center;">FLAG MAINTENENCE</h3>
+<h3 style="background:#05A8E9;border-radius:3px;text-align:center;">FLAG MAINTENANCE</h3>
 <div id="outerDiv" style="margin-left:20px;">
 <input type="button" onclick="createFlag();"class="btn btn-success" value="Create Flag">
 <input type="button" onclick=" getFlags();" class="btn btn-success" value="View Flags">
@@ -341,17 +341,17 @@ $("#viewFlags").html(str);
 	var color=$.trim($("#picker1").val());
 	if(flagName == "")
 	{
-		str+='Flag Name is required<br/>';
+		str+='Flag Name is Required<br/>';
 		flag=true;
 	}
 	if(flagDescription == "")
 	{
-		str+='Description Name is required<br/>';
+		str+='Description is Required<br/>';
 		flag=true;
 	}
 	if(color == "")
 	{
-	str+='Flag Color is required';
+	str+='Flag Color is Required';
 	flag=true;
 	}
 	if(flag ==true)

@@ -1224,7 +1224,7 @@ $('.castDivs').hover(
 <div id="categoeryCreationDiv" style="float:right;">
 	
 	<a href="javascript:{}" class="btn" id="createNewGroupId" onclick="openNewWindow();">Create Custom Groups</a>
-	<a href="javascript:{}" class="btn" id="flagId" onclick="openFlagWindow();">Flag Maintenence</a>
+	<a href="javascript:{}" class="btn" id="flagId" onclick="openFlagWindow();">Flag Maintenance</a>
 </div>
 <div id="AlertMsg"></div>
 <div id="ConstituencyDiv" class="selectDiv">
