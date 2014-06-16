@@ -881,7 +881,7 @@ $(document).ready(function(){
 						<s:select cssClass="selectstyle" theme="simple" id="AssemblySelect" name="AssemblySelect" list="aConstituencyList" listKey="id" listValue="name"  onchange="getParty('')"></s:select>
 						</td>
 						<td><img id="ajaxImg3" style="display:none;" height="15" width="15" src="<%=request.getContextPath()%>/images/icons/arrows.gif"/></td>
-						<td><input type="checkbox" name="includeAliance" id="allianceCheck" value="alliance" onclick="forGetCrossVoting()"/><span id="checkBoxStyle">Include Aliance Parties</span>
+						<td><input type="checkbox" name="includeAliance" id="allianceCheck" value="alliance" onclick="forGetCrossVoting()"/><span id="checkBoxStyle">Include Alliance Parties</span>
 					</td>
 					
 					<td align="left" class="tdStyle" style="padding-left:10px;">Party<font color="red">*</font></td>
