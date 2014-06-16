@@ -636,16 +636,18 @@ function callAjax(jsObj,url)
   }
 function buildVotersBasicInfo(votersbasicinfo,jsObj)
 {
+
 	if(votersbasicinfo.votersInfoForMandalVOList != null && votersbasicinfo.votersInfoForMandalVOList.length > 0){
 	$("#votersBasicInfoSubChartDiv_head").css("display","inline-block");
 	$("#votersBasicInfoSubDiv_head").css("display","inline-block");
 	
 	  $("#votersBasicInfoSubChartDiv").html('');
 	  $("#votersBasicInfoSubDiv").html('');
-	  if(jsObj.type=="constituency")
-	     $("#votersBasicInfoSubHeading").html(votersbasicinfo.votersInfoForMandalVOList[0].type+' Wise Voters Information in '+mainname+' CONSTITUENCY');
+	   if(jsObj.type=="constituency")
+	     $("#votersBasicInfoSubHeading").html('${checkAreaType}'+' Wise Voters Information in '+mainname+' CONSTITUENCY');
 	  else
-	    $("#votersBasicInfoSubHeading").html(votersbasicinfo.votersInfoForMandalVOList[0].type+' Wise Voters Information in '+mainname+'');
+	    $("#votersBasicInfoSubHeading").html('${checkAreaType}'+' Wise Voters Information in '+mainname+''); 
+
 	  }
 	  $("#ajaxImageDiv").css('display','none');
 	//var ajaxImageDiv =  document.getElementById('ajaxImageDiv');
@@ -659,13 +661,14 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 	if(votersbasicinfo.votersInfoForMandalVOList != null && votersbasicinfo.votersInfoForMandalVOList.length > 0)
 	{
 		if(jsObj.type == "constituency"){
-		    title = ""+votersbasicinfo.votersInfoForMandalVOList[0].type+"/Muncipality Wise Voters Information in "+jsObj.typename+" Constituency";
+		    title = "${checkAreaType} Wise Voters Information in "+jsObj.typename+" Constituency";
 		$("#votersBasicInfoTitleDiv").append('<h4 style="color: rgb(255, 255, 255);text-transform:uppercase; border-radius: 5px 5px 5px 5px; text-align: center; margin: 10px; border-top-width: 40px; height: 13px; font-family: arial; font-size: 13px; background:#05A8E9; padding: 5px 5px 15px;">'+title+'</h4>');
 		}
 		else{
-		 title = ""+votersbasicinfo.votersInfoForMandalVOList[0].type+" Wise Voters Information in "+jsObj.typename+" ";
+		 title = "${checkAreaType} Wise Voters Information in "+jsObj.typename+" ";
 		 $("#votersBasicInfoTitleDiv").append('<h4 style="color: rgb(255, 255, 255); border-radius: 5px 5px 5px 5px; text-align: center; margin: 10px; border-top-width: 40px; height: 13px; font-family: arial; font-size: 13px; background:#05A8E9; padding: 5px 5px 15px;">'+title+'</h4>');
 		}
+		
 	}
 
 	 if(votersbasicinfo.votersInfoForMandalVOList == null || votersbasicinfo.votersInfoForMandalVOList.length == 0)
@@ -860,10 +863,10 @@ function buildVotersBasicInfo(votersbasicinfo,jsObj)
 function buildVotersChart(chartInfo,reqTitle,type)
 {       
         if(type=="constituency")
-		{$('#votersBasicInfoSubChartHeading').html(chartInfo[0].type+' Wise Voters Information Chart In '+mainname+' CONSTITUENCY');
+		{$('#votersBasicInfoSubChartHeading').html( '${checkAreaType} Wise Voters Information Chart In '+mainname+' CONSTITUENCY');
         }
 		else
-		$('#votersBasicInfoSubChartHeading').html(chartInfo[0].type+' Wise Voters Information Chart In '+mainname+'');
+		$('#votersBasicInfoSubChartHeading').html( '${checkAreaType} Wise Voters Information Chart In '+mainname+'');
  // Create the data table.
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'type');
@@ -2039,9 +2042,17 @@ var urlStr="allVotersInAcasteAction.action?hamletId="+hamletId+"&mainId="+id+"&p
 	updateBrowser.focus();
 }
 </script>
-<c:if test="${type == 'constituency'}">
+<title> ${checkAreaType} Wise Voters Information </title>
+<!--<c:if test="${type == 'constituency'}">
+
+<c:if test="${checkAreaType == 'Ward'}">
+<title><c:out value='WARD'/> WISE VOTERS INFORMATION</title>
+</c:if>
+<c:if test="${checkAreaType != 'Ward'}">
 <title><c:out value='MANDAL'/> WISE VOTERS INFORMATION</title>
 </c:if>
+</c:if>
+
 <c:if test="${type == 'mandal'}">
 
 <c:set var="theString" value='${typeName}'/>
@@ -2070,7 +2081,7 @@ var urlStr="allVotersInAcasteAction.action?hamletId="+hamletId+"&mainId="+id+"&p
 <c:if test="${type == 'wardBooth'}">
 <title><c:out value='BOOTH'/> WISE VOTERS INFORMATION</title>
 </c:if>
-
+-->
 </head>
 <body>
 

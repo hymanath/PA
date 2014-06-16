@@ -5962,6 +5962,7 @@ var jsObj=
 
 }
 var resultDataForNav=null;
+var checkAreaType = '';
 function buildCountData(results,jsObj)
 {
 document.getElementById("showHideDiv").style.display = "block";
@@ -5978,6 +5979,7 @@ areatype=results[0].areaType;
 		  area='Mandal/Muncipality/Corporation';
 		  }
 		  $("#areaId").text(area);
+		   checkAreaType = area;
 		  $('#votersShareBtn1').css('display','block');
 		  var btnAgeLnk='View '+area+' Wise Age Details';
 		  var btnFmlyLnk='View '+area+' Wise Family Details' ;
@@ -6344,7 +6346,7 @@ function buildPreviousVotersDetails(myResults,jsObj){
 			type="hamlet";
 			hresult="localArea";
 		}
-		var urlStr="voterBasicInfoAction.action?id="+mainreqid+"&publicationDateId="+$("#publicationDateList").val()+"&publicationYear="+publicationYear+"&typeName="+mainname+"&constituencyId="+$("#constituencyList").val()+"&buildType="+buildType+"&resultFor="+hresult+"&type="+maintype+" ";
+		var urlStr="voterBasicInfoAction.action?id="+mainreqid+"&publicationDateId="+$("#publicationDateList").val()+"&publicationYear="+publicationYear+"&typeName="+mainname+"&constituencyId="+$("#constituencyList").val()+"&buildType="+buildType+"&resultFor="+hresult+"&type="+maintype+"&checkAreaType="+checkAreaType+" ";
 		var updateBrowser = window.open(urlStr,"editAnnouncement","scrollbars=yes,height=600,width=850,left=200,top=200");	
 		updateBrowser.focus();	
 		});

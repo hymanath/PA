@@ -75,10 +75,14 @@ ServletRequestAware ,ServletContextAware{
 	
 	private List<SelectOptionVO> resultList;
 	private String attributeIds;
-	
-	
-	
-	
+	private String checkAreaType;
+		
+	public String getCheckAreaType() {
+		return checkAreaType;
+	}
+	public void setCheckAreaType(String checkAreaType) {
+		this.checkAreaType = checkAreaType;
+	}
 	public Long getLclBodyId() {
 		return lclBodyId;
 	}
