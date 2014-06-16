@@ -40,6 +40,7 @@
 p{padding : 0px;}
 .link{margin-top:10px;}
 #contenttable{margin-left:auto;margin-right:auto;width:995px;}
+textarea{background-color:#ffffff;}
 </style>
 <script type="text/javascript">
 var hidden=1;
@@ -90,6 +91,8 @@ function callAjax(param,jsObj,url){
 										showGroupCreationConfirmation(myResults,jsObj);										
 									} else if(jsObj.task == "checkAvailability")
 									{
+										$("#counter").html('');
+										
 										showExistingGroupAlert(myResults, jsObj);										
 									}else if(jsObj.task == "addMemberToAGroup")
 									{
@@ -834,6 +837,10 @@ var userGrpsObj={
 		createGroupContentStr+='<td colspan="3">Fields marked with * are mandatory</td>';		
 		createGroupContentStr+='</tr>';
 		createGroupContentStr+='<tr>';
+		createGroupContentStr+='<td colspan="3" id="counter"></td>';
+		createGroupContentStr+='</tr>';
+
+		createGroupContentStr+='<tr>';
 		createGroupContentStr+='<th><%=groupName%>*</th>'; 
 		createGroupContentStr+='<td style="padding-left: 15px;"><input type="text" style="width:400px;" id="groupNameText" onkeypress="showAvailabilityBtn()"/></td>';
 		createGroupContentStr+='<td style="padding-left: 15px;"><input type="button" id="checkAvailabilityBtn" value="Check Availability!" onclick="checkAvailability(document.getElementById(\'groupNameText\').value)" style="display:none;" /></td>';
@@ -1313,6 +1320,7 @@ var userGrpsObj={
 
 	function showExistingGroupAlert(results, jsObj)	
 	{
+		
 		confirmation = results.groupAlreadyExists;
 		var groupName = jsObj.groupName;
 		var groupExistsAlertEl = document.getElementById("groupExistsAlert");
@@ -1655,6 +1663,29 @@ userGrpsObj.myGroupsListBoxArr.push(ob);
 </c:forEach>*/
 buildLayout();
 
+</script>
+<script>
+$(document).ready(function()  {
+	
+   var characters = 90;
+    $("#counter").append("You have <strong>"+  characters+"</strong> characters remaining");
+    $("#groupNameText").live("keyup",function(){
+		
+        if($(this).val().length > characters){
+        $(this).val($(this).val().substr(0, characters));
+        }
+    var remaining = characters -  $(this).val().length;
+    $("#counter").html("You have <strong>"+  remaining+"</strong> characters remaining");
+    if(remaining <= 10)
+    {
+        $("#counter").css("color","red");
+    }
+    else
+    {
+        $("#counter").css("color","green");
+    }
+    });
+});
 </script>
 </body>
 </html>
