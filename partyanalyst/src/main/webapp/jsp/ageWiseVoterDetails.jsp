@@ -610,7 +610,7 @@ var YDataObjectTemp = new Object();
 		if((innerResults[i].tehsilName).contains('MUNCIPALITY')!=0)
 			str+='<td>'+innerResults[i].tehsilName+'</td>';
 		else
-			str+='<td>'+innerResults[i].tehsilName+' Mandal</td>';
+			str+='<td>'+innerResults[i].tehsilName+' </td>';
 	 }
 	else if(type == "mandal")
 	 str+='<td>'+innerResults[i].panchayatname+'</td>';
@@ -822,7 +822,7 @@ for(var i=0;i<innerResults.length;i++){
 		if((innerResults[i].tehsilName).contains('MUNCIPALITY')!=0)
 			str+='<td>'+innerResults[i].tehsilName+'</td>';
 		else
-			str+='<td>'+innerResults[i].tehsilName+' Mandal</td>';
+			str+='<td>'+innerResults[i].tehsilName+' </td>';
 	 }
 	else if(type == "mandal")
 	str+='<td>'+innerResults[i].panchayatname+'</td>';
@@ -996,7 +996,7 @@ for(var i=0;i<innerResults.length;i++){
 		if((innerResults[i].tehsilName).contains('MUNCIPALITY')!=0)
 			str+='<td>'+innerResults[i].tehsilName+'</td>';
 		else
-			str+='<td>'+innerResults[i].tehsilName+' Mandal</td>';
+			str+='<td>'+innerResults[i].tehsilName+'</td>';
 	 }
 	else if(type == "mandal")
 	str+='<td>'+innerResults[i].panchayatname+'</td>';
