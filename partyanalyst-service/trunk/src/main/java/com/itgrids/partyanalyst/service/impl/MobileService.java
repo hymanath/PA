@@ -739,6 +739,7 @@ public List<SelectOptionVO> getConstituencyList()
 			List<Object[]> constituenyAreaTypesList = constituencyDAO.getAreaTypesOfAConstituencyByElectionScope(2l);
 			
 			List<Constituency> acList = delimitationConstituencyAssemblyDetailsDAO.findAssemblyConstituencies(pconstituencyId,2009l);
+			List<Object[]> hamletsList = panchayatHamletDAO.getHamletsListByConstituency(pconstituencyId,publicationId);
 			
 			for(Constituency ac : acList)
 			{
@@ -1021,6 +1022,40 @@ public List<SelectOptionVO> getConstituencyList()
 					}
 				}
 				
+				
+				
+				
+				
+				if(hamletsList != null && hamletsList.size() > 0)
+				{
+					try{
+					connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_CMS"+pathSeperator+ac.getName()+".sqlite");
+					connection.setAutoCommit(false);
+					statement = connection.createStatement();
+					int records = 0;
+					for(Object[] params : hamletsList)
+					{
+						records++;
+						try{
+						statement.executeUpdate("INSERT INTO hamlet(hamlet_id,hamlet_name,panchayat_id,tehsil_id)" +
+								" VALUES ('"+params[0].toString()+"','"+params[1].toString().trim()+"','"+params[2].toString().trim()+"','"+params[3].toString()+"')");
+						}catch(Exception e)
+						{
+							LOG.error(e);
+						}
+					}
+					LOG.error(ac.getName()+" Constituency "+records+" hamlet Records Inserted");
+					connection.commit();
+					statement.close();
+					connection.close();
+					}catch(Exception e)
+					{
+						LOG.error(e);
+					}
+				}
+				
+				
+				
 				}catch(Exception e)
 				{
 					LOG.error("Exception Occured for "+ac.getName()+" Constituency, Exception is - ",e);
@@ -1129,6 +1164,39 @@ public List<SelectOptionVO> getConstituencyList()
 			
 			outPut2.write(str.toString());
 			outPut2.close();
+			str = new StringBuilder();
+			try{
+				
+					List<Object[]> list = panchayatHamletDAO.getHamletsListByConstituency(constituencyId,publicationId);
+					
+					if(list != null && list.size() > 0)
+					{
+						
+						for(Object[] params : list)
+						{
+							try{
+							str.append("INSERT INTO hamlet(hamlet_id,hamlet_name,panchayat_id,tehsil_id) VALUES (");
+							str.append(params[0].toString()+","+params[1].toString()+","+params[2].toString()+",");
+							str.append(params[3].toString());
+							str.append(");\n");
+							
+						}
+							catch (Exception e) {
+								LOG.error("Error Occured in inserting records in hamlet - "+e);
+							}
+						}
+						str.append("\n");
+					}
+				
+			}
+			
+			catch (Exception e) {
+				LOG.info(" hamlet table completed......");
+			}
+			
+			
+			
+			
 			
 			try{
 				 for(File rf : destDir.listFiles())
