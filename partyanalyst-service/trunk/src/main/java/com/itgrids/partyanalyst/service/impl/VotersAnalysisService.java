@@ -9093,7 +9093,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 											Object[] obj =(Object[]) nominationResult.get(0);
 											
 											Double d  =(Double)obj[13];
-										   partyVotesEarnedVO.setTotalVotes(Math.round(d));
+										  // partyVotesEarnedVO.setTotalVotes(Math.round(d));
 										}
 										
 										
@@ -12437,10 +12437,14 @@ public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByWardId(Long id,Long p
 			
 	         try{
 					if(type.equalsIgnoreCase("constituency")){
-						if(voterVO.getElectionType() != null && voterVO.getElectionType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
+						List<Long> boothIdsList =  boothConstituencyElectionDAO.getBoothIdsByConstituencyId(constituencyId, voterVO.getElectionId());
+						 if(boothIdsList != null && boothIdsList.size() > 0)
+						votersCountDetails = boothDAO.getTotalaVotesByBooths(boothIdsList);
+						
+						/*if(voterVO.getElectionType() != null && voterVO.getElectionType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
 							votersCountDetails = boothConstituencyElectionDAO.getVotersCountInAConstituency(voterVO.getElectionId(), voterVO.getAssemblyConstituencyId());
 						else if(voterVO.getElectionType() != null && voterVO.getElectionType().equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE))
-							votersCountDetails = boothConstituencyElectionDAO.getVotersCountInAConstituencyByParliamentConsId(voterVO.getElectionId(), constituencyId, voterVO.getParliamentConstituencyId());
+							votersCountDetails = boothConstituencyElectionDAO.getVotersCountInAConstituencyByParliamentConsId(voterVO.getElectionId(), constituencyId, voterVO.getParliamentConstituencyId());*/
 					}else if(type.equalsIgnoreCase("mandal")){
 						
 						if (mandalId.toString().substring(0, 1).trim()
