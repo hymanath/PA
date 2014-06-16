@@ -204,4 +204,15 @@ public class PanchayatHamletDAO extends GenericDaoHibernate<PanchayatHamlet,Long
 	return query.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getHamletsListByConstituency(Long constituencyId,Long publicationDateId)
+	{
+		Query query = getSession().createQuery("select distinct model.hamlet.hamletId,model.hamlet.hamletName,model.panchayat.panchayatId,model2.tehsil.tehsilId from PanchayatHamlet model, Booth model2 where model.panchayat.panchayatId =model2.panchayat.panchayatId and  " +
+				" model2.constituency.constituencyId =:constituencyId and model2.publicationDate.publicationDateId =:publicationDateId  )");
+		
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationDateId", publicationDateId);
+		return query.list();
+	}
+	
 }
