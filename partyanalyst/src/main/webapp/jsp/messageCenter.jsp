@@ -3205,20 +3205,36 @@ function sendTextSms()
     });
 
 	var error = false;
-
+	var mobileNo = $("#mobileNumber").val();
     if($('#textSmsDescription').val().trim() == "")
 	{
 		$('#errorMsg').html("<font style='font-weight:bold;color:red;'>Please Enter The Message To Send.</font>");
-		//$('html,body').animate({scrollTop: $("#errorMsg").offset().top}, 2000);
-
+		
 		error = true;
 	}
-	else if($('#mobileNumber').val().trim().length == 0)
+	else if(mobileNo.length == 0)
 	{
 $('#errorMsg').html("<font style='font-weight:bold;color:red;'>Please Enter Mobile No</font>");
 error = true;
 	}
-  if($('#mobileNumber').val().trim() != "")
+ else if(isNaN(mobileNo)) {
+			
+$('#errorMsg').html("<font style='font-weight:bold;color:red;'>Please Enter valid MobileNo</font>");
+error = true;
+	}
+	
+ else if(!(mobileNo.length >=10 && mobileNo.length<=12))
+			{
+	
+	$('#errorMsg').html("<font style='font-weight:bold;color:red;'>Please Enter valid MobileNo</font>");
+			error = true;
+			}
+	if(error == true)
+	return;
+	else
+	{
+		$('#errorMsg').html("");
+   if($('#mobileNumber').val().trim() != "")
   {
 
 	  var othrNums= $('#mobileNumber').val().split(",");
@@ -3264,7 +3280,7 @@ var jsObj=
 	
 }
 	
-
+	}
 		/*	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "sendTextSMS.action?"+rparam;	
 
