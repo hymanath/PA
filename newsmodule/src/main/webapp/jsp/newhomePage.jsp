@@ -142,7 +142,7 @@ width: 92px;
 }
 
 #candidatesListId,#candidateCategoryId,#categoryGallarySelect{width:190px;}
-
+#listValue,#userAccessConstituencyList,#userAccessDistrictList{width:170px;}
 #existingFromText, #existingToText {
     width: 90px;
 	cursor: text;
@@ -563,16 +563,16 @@ getCategoryNews();
 						
 						
 
-						<table style="margin-top:15px;">
+						<table style="margin-top:15px;margin-left:-14px;">
 							<tr id="tableRowS">
-								<td id="tdWidth" style="width:190px;">
+								<td id="tdWidth" style="width:200px;">
 								<select id="candidatesListId"></select>
 						</td>
 							</tr>
 						</table>
 						
 						
-						 <div id="candidateNewsShowHideDatesDiv" style="display:block;width:220px;margin-left:-24px;">
+						 <div id="candidateNewsShowHideDatesDiv" style="display:block;width:210px;margin-left:-20px;">
 						 <span id="fromParaId">From: </span><input type="text" size="20" name="fileDate" readonly="true" class="dateField " id="existingFromText"  style="margin-left:-4px"/><br>
 						 <span id="fromParaId">To </span><span>:</span><input type="text" size="20" name="fileDate" readonly="true" class="dateField " id="existingToText"  style="margin-right:16px;margin-left:16px" />
 						 <span title="Clear From Date" onclick="clearDate();" class="icon-remove-sign"  style="margin-left: -14px; margin-top: -1px;"></span>
@@ -587,7 +587,7 @@ getCategoryNews();
 						  <select id="gallaryId" multiple="multiple" style="width:190px;"></select>
 						</div>
 						 
-						 <div id="categoryShowHideDiv" style="display:none;">
+						 <div id="categoryShowHideDiv" style="display:none;margin-left: -14px;">
 						   <select id="candidateCategoryId" multiple="multiple"></select><br>
 
 						    <!-- <input type="checkbox" value="categoryGallaries" id="categoryGallary"/>Gallery -->
@@ -598,7 +598,7 @@ getCategoryNews();
 						</div>
 
 						<button id="sendButton" class="btn btn-warning btn-mini" onclick="getCandidatesNews1()" style="margin-bottom: 15px; margin-left: 20px;font-weight:bold;margin-top:4px" > View News</button> 
-						<div class="errorDiv"></div>
+						<div class="errorDiv"  style="width:195px;"></div>
 						</div>
 
 						
@@ -606,8 +606,8 @@ getCategoryNews();
 						<!--DIV for Constituency Select Filter-->
 						<h4 id="headingDiiv" style="text-align:center;font-weight:bold;background:#F9F9F9;color:#337DEB;">View  Constituency News</h4>
 						<div class="">
-						<div id="errorMsgDiv"></div>
-						<table style="margin-top:15px;">
+						<div id="errorMsgDiv"  style="margin-left:100px;"></div>
+						<table style="margin-top:15px;>
 							<tr id="tableRowS">
 								<!--<td id="tdWidth" style="padding-right: 32px;">
 								<!--	Location:<font id="requiredValue" class="requiredFont">*</font>
@@ -627,9 +627,9 @@ getCategoryNews();
 							</tr>
 						</table>
 						<div id="showScopeSubsD" style="margin-bottom: 10px;" style="margin-top:15px;"></div>
-						<table  id="showScopeSubsC" style="margin-left:-20px;">	
+						<table  id="showScopeSubsC">	
 								<tr>
-								<td><select id="userAccessConstituencyList" class="selectWidth" name="userAccessConstituencyList" onchange="addCssStyle();" style="margin-left:20px;" ><!-- onchange="getMandalList(this.options[this.selectedIndex].value);">-->
+								<td><select id="userAccessConstituencyList" class="selectWidth" name="userAccessConstituencyList" onchange="addCssStyle();"><!-- onchange="getMandalList(this.options[this.selectedIndex].value);">-->
 								</select></td>	 
 							</tr>
 						</table>
@@ -1343,7 +1343,7 @@ function getCandidatesNews1(){
       categoryIds = $("#candidateCategoryId").val(); //multiselectbox options
 	  if(categoryIds == null || categoryIds == "null")
 	  {
-		$(".errorDiv").html('<span class="text-error" style="margin-left:10px;">Please Select Category.</span>');
+		$(".errorDiv").html('<span class="text-error" style="margin-left:0px;">Please Select Category.</span>');
           return;
 	  }
 
@@ -1354,7 +1354,7 @@ function getCandidatesNews1(){
     keywordIds= $("#candidateCategoryId").val();
 	if(keywordIds == null || keywordIds == "null")
 	  {
-		$(".errorDiv").html('<span class="text-error" style="margin-left:10px;">Please Select Keyword.</span>');
+		$(".errorDiv").html('<span class="text-error" style="margin-left:0px;">Please Select Keyword.</span>');
           return;
 	  }
 
@@ -1368,12 +1368,12 @@ function getCandidatesNews1(){
 	   
 	    if(fromDate =="" && toDate != "")
 	    {
-	     $(".errorDiv").html('<span class="text-error" style="margin-left:10px;">Please Select From Date</span>');
+	     $(".errorDiv").html('<span class="text-error" style="margin-left:0px;">Please Select From Date</span>');
 		 return;
 	    }
 	    else if(toDate ==""&& fromDate !="")
 	    {
-	      $(".errorDiv").html('<span class="text-error" style="margin-left:10px;">Please Select To Date</span>');
+	      $(".errorDiv").html('<span class="text-error" style="margin-left:0px;">Please Select To Date</span>');
 		  return;
 	    }
 	    else if(fromDate !="" && toDate != "")
@@ -1385,7 +1385,7 @@ function getCandidatesNews1(){
 		  
 		  if (datefrom > dateto)
 		  {
-            $(".errorDiv").html('<span class="text-error" style="margin-left:10px;">Invalid Date Selection.</span>');
+            $(".errorDiv").html('<span class="text-error" style="margin-left:0px;">Invalid Date Selection.</span>');
             return;
 		  }
 	    }
@@ -1867,7 +1867,7 @@ function getLocationList()
 			var str =''; 
 			str +='<table style="margin-top:5px">';
 			str +='<tr id="tableRowC">';
-			str+='<td><select id="userAccessConstituencyList" class="selectWidth" name="userAccessConstituencyList" onchange="addCssStyle();" style="margin-left:20px;">';
+			str+='<td><select id="userAccessConstituencyList" class="selectWidth" name="userAccessConstituencyList" onchange="addCssStyle();">';
 			//onchange="getMandalList(this.options[this.selectedIndex].value);">';
 			str+='</select></td>';	 
 			str +='</tr>';
@@ -1963,6 +1963,7 @@ function buildCandidateNamesInHomePage(results,jsObj){
 	$("#candidatesListId").find('option').remove();
 		for(var i in results)
 			$("#candidatesListId").append('<option value='+results[i].id+'>'+results[i].name+'</option>');
+			$("#sendButton").removeAttr('disabled');		
 }
 
 </script>
