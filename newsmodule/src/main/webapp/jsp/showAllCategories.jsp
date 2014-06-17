@@ -143,7 +143,8 @@
  	for(var i in results)
   	{	
 		str+='<div class="span3 thumbnail galleriesListClass" style=" background: none repeat scroll 0% 0% palegoldenrod;height:100px;margin:4px;">';
-	    str+='<h6><a href="javascript:{showCategoerys('+results[i].gallaryId+')}" style="text-transform: capitalize" class="galName" title="'+results[i].gallaryName+'">'+results[i].description+'</a></h6>';
+	   // str+='<h6><a href="javascript:{showCategoerys('+results[i].gallaryId+')}" style="text-transform: capitalize" class="galName" title="'+results[i].gallaryName+'">'+results[i].description+'</a></h6>';
+		str+='<h6><a href="showCategoryAction.action?galleryId='+results[i].gallaryId+'" style="text-transform: capitalize" class="galName" title="'+results[i].gallaryName+'">'+results[i].description+'</a></h6>';
 		
 		str+='<span class="badge badge-info pull-right" style="margin-top:10px;"> CATEGOERY COUNT: '+results[i].count+'</span>';
 		
@@ -153,7 +154,7 @@
 	}
   $("#categoryDivId").html(str);
  }
- 
+ /*
  function showCategoerys(id)
  {
 	var urlstr = "showCategoryAction.action?galleryId="+id;
@@ -161,6 +162,7 @@
      var browser1 = window.open(urlstr,"subRegionsWiseAnalysis","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();
  }
+ */
 </script>
 
  
