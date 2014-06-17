@@ -561,6 +561,7 @@ var distAnalysTabCount = 0;
 var cbnEffTabCount = 0;
 var modiEffTabCount = 0;
 var casteAnalysisDivFlag = false;
+var partyWiseStatsDivFlag = false;
 $('document').ready(function(){
 
 		$('.percentTypeClass').change(function(){
@@ -627,6 +628,7 @@ $('document').ready(function(){
 		$('#legend').css("margin-top","-85px");	
 		
 		getRegionWiseResults("Telangana");
+		getPartiesGainAndLossInfo();
 });
 </script>
 <script type="text/javascript">
@@ -1411,7 +1413,7 @@ function exportToExcel()
 
 function clearFields()
 {
- 	$('#test,#matridLeadId,#matrixWonSummaryId,#matrixLeadSummaryId,#constituencyResultsDiv').html('');
+ 	$('#test,#matridLeadId,#matrixWonSummaryId,#matrixLeadSummaryId,#constituencyResultsDiv,#marginAnalysis1').html('');
 }
 </script>
 <script type="text/javascript">
@@ -1812,10 +1814,10 @@ $('#ajaxImage').show();
 		<p style="margin-left:16px;margin-bottom:-20px;"><input type="text" id="amount" readonly style="border: none; font-weight: bold;background-color:#ffffff;" /></p></div>
 	</div>		
 
-		<div id="seatsGraph" style="width:60%;float:left;"></div>
-		<div id="seatsGraphDonut" style="width:38%;float:right;"></div>
-		<div id="seatsGraph1" style="width:60%;float:left;"></div>
-		<div id="seatsGraphDonut1" style="width:38%;float:right;"></div>
+		<div id="seatsGraph" style="width:570px;float:left;"></div>
+		<div id="seatsGraphDonut" style="width:360px;float:right;"></div>
+		<div id="seatsGraph1" style="width:570px;float:left;margin-top:20px;"></div>
+		<div id="seatsGraphDonut1" style="width:360px;float:right;"></div>
 		
 		<div id="errorInGraph" class="offset3" style="width:500px;color:red;"></div>
 		
@@ -4036,7 +4038,7 @@ function getRegionWiseResults(searchType)
 		getLocationDetailsForSelectedScope1();
 		$('#weathermap5').hide();
 		//$("#partyWiseStatsDiv").show();
-		 getPartiesGainAndLossInfo();
+		//getPartiesGainAndLossInfo();
 		
 	}
 	else if(searchType == 'DistrictAnalysis')
@@ -5640,9 +5642,13 @@ function buildMenuForStateAnalysis(searchType)
 	$("#chartAnalysisTab").hide();
 	$("#casteAnalysisDiv").hide();
 	$("#regionWiseAnalysisDiv").hide();
-	$("#InteractiveMapDiv").hide();
-	$("#partyWiseStatsDiv").show();
-	   getPartiesGainAndLossInfo();
+	$("#InteractiveMapDiv").hide();	
+	$("#partyWiseStatsDiv").show();  
+	if(!partyWiseStatsDivFlag)
+		{
+			$("#partyWiseStatsDiv").html('');
+			getPartiesGainAndLossInfo();
+		}	 
 	}
 	else if(searchType == 'InteractiveMapDiv')
 	{
@@ -5681,6 +5687,8 @@ function buildMenuForStateAnalysis(searchType)
 	$("#regionWiseAnalysisDiv").hide();
 	$("#casteAnalysisDiv").hide();
 	$("#chartAnalysisTab").show();
+	getConstituencyDetaisByRegionid(2);
+	getSurveyDetaisByRegionid(2);
 	}
 }
 function getTopCasteData(){
@@ -5719,6 +5727,7 @@ function getPartiesGainAndLossInfo(){
      	  }).done(function(result){ 
 			  if(result != null){
 				//casteAnalysisDivFlag = true;
+				 partyWiseStatsDivFlag = true;
 			showPartyGainedResults(result);
 			buildPartiesSeatsFlownToOtherPartiesDiv(result);
 			}
@@ -6565,7 +6574,7 @@ $('#seatsGraph1').highcharts({
                 align: 'right',
                 x: 0,
                 verticalAlign: 'top',
-                y: 20,
+                y: 4,
                 floating: true,
                 backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
                 borderColor: '#CCC',
@@ -6580,7 +6589,8 @@ $('#seatsGraph1').highcharts({
                 pointFormat: '<b>{series.name} %</b>',
             },
         title: {
-            text: "Party's Performance Based On Votes",
+            text: "Party's Performance Based On Votes Percentage",
+            y: 1,
 				style: {
             color: '#0088CC',
             fontWeight: 'bold',

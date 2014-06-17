@@ -25,9 +25,9 @@ border:1px solid black !important;
 <div id="" class="span12">
 <table class="offset1 headingTbl">
 
-<tr><td class="span3">Select State<select id="stateIdForChart" class="input-block-level">
-	 <option value="1">Telangana</option>
+<tr><td class="span3">Select State<select id="stateIdForChart" class="input-block-level">	
 	 <option value="2">Seemandra</option>
+	  <option value="1">Telangana</option>
 	 </select></td>
 						    <td class="span3" id="individualConstId"> &nbsp;Select Constituency<img src="./images/icons/search.gif" alt="Processing Image" id="constituencyIdForChartImg" style="display:none;"/> &nbsp;<select class="input-block-level" id="constituencyIdForChart" style="width:96%;">
 							
@@ -81,8 +81,8 @@ border:1px solid black !important;
 
 <script>
 $('document').ready(function(){
-	getConstituencyDetaisByRegionid(1);
-	getSurveyDetaisByRegionid(1);
+	//getConstituencyDetaisByRegionid(2);
+	//getSurveyDetaisByRegionid(2);
 	$('#stateIdForChart').change(function(){
 		getSurveyDetaisByRegionid(this.value);
 		getConstituencyDetaisByRegionid(this.value);
