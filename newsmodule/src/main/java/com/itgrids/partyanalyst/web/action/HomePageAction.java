@@ -626,6 +626,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 			for(SelectOptionVO vo:candidatesList1)
 				candidatesMap.put(vo.getId(), vo.getName());
 			
+			candidatesList1.add(new SelectOptionVO(0L," Select Candidate "));
 			
 		} catch (Exception e) {
 			log.debug("Exception in HomePageAction's getCandidates -"+e);
