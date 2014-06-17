@@ -533,11 +533,15 @@ function createNewDesignation()
 		$('#statusDivForDesignation').html('<b style="color:red">Desgination should not contain #,$,%,& Special charactors</b>');
 		return false;
 	}
-	if( designationId == ""){
+	else if( designationId == ""){
 		$('#statusDivForDesignation').html('<b style="color:red">Please Enter Desgination Description</b>');
 		//$('#statusDivForDesignation').delay(1000);
 		//$('#statusDivForDesignation').show();
 		//$('#statusDivForDesignation').hide();
+	}
+	else if(designationId.trim().length < 2 ){
+		$('#statusDivForDesignation').html('<b style="color:red"> Desgination should contains minimum 2 Charactors.</b>');
+		return false;		
 	}
 	else
 	{
@@ -573,6 +577,11 @@ function createNewParty()
 		//$('#statusForParty').delay(1000);
 		//$('#statusForParty').show();
 		//$('#statusForParty').hide();
+		return false;
+	}
+	if(partyShortName.trim().length < 2 || partyLongName.trim().length < 2){
+		$('#statusForParty').html('<b style="color:red"> Party Details should contains  minimum  2 Charactors.</b>');
+		return false;		
 	}
 	else
 	{
@@ -2190,6 +2199,10 @@ function saveNewSourceDetails()
 		$('#errorDiv').html('Source Name Should not be empty');
 		$('#errorDiv').css('color','red')
 		return false;
+	}
+	if(sourceName.trim().length < 5){
+		$('#errorDiv').html('<b style="color:red"> Source Name should contains minimum 5 Charactors.</b>');
+		return false;		
 	}
 	var jsObj=
 	{
@@ -3964,6 +3977,11 @@ $("#createCandidateId1").live("click",function(){
 	 $("#errorMsgDiv1").html("Please Select Candidate");
 	  return;
 	}
+	if(candidateName.trim().length < 5 ){
+		$('#errorMsgDiv1').html('<b style="color:red"> Candidate Name should contains minimum 5 Charactors.</b>');
+		return false;		
+	}
+	
 	if(designationId == 0)
 	{
 	 $("#errorMsgDiv1").html("Please Select Designation");
