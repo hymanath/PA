@@ -8312,10 +8312,16 @@ public class StaticDataService implements IStaticDataService {
 			getAllElectionIds(list,elections);
 			list = boothConstituencyElectionDAO.findElectionsHappendInConstituency(parliamentConstiId);
 			getAllElectionIds(list,elections);
-			list = electionDAO.findElectionYearsForElectionTypeAndState(4l, 1l);//Zptc Elections
-			getAllElectionIds(list,elections);
-			list = electionDAO.findElectionYearsForElectionTypeAndState(3l, 1l);//Mptc Elections
-			getAllElectionIds(list,elections);
+			
+			Constituency constituency = constituencyDAO.get(constituencyId);
+			
+			if(!constituency.getAreaType().equalsIgnoreCase("URBAN"))
+			{
+				list = electionDAO.findElectionYearsForElectionTypeAndState(4l, 1l);//Zptc Elections
+				getAllElectionIds(list,elections);
+				list = electionDAO.findElectionYearsForElectionTypeAndState(3l, 1l);//Mptc Elections
+				getAllElectionIds(list,elections);
+			}
 		
 		}
 		catch(Exception e)
@@ -8881,6 +8887,7 @@ public class StaticDataService implements IStaticDataService {
 		 partiesList = candidateBoothResultDAO.getPartiesForElection(electionId,id);	
 		}
 		else
+			if(tehsilIds != null && tehsilIds.size() >0)
 		partiesList = nominationDAO.getPartiesForElection(electionId,tehsilIds);
 		}
 		else if(type.equalsIgnoreCase("mandal"))
@@ -8892,6 +8899,7 @@ public class StaticDataService implements IStaticDataService {
 			partiesList = hamletBoothElectionDAO.getParticipatedPartiesByEleId(id,electionId);
 		}	
 		SelectOptionVO party = null;
+		if(partiesList != null && partiesList.size() >0)
 		for (Object[] parties : partiesList) {
 			party = new SelectOptionVO((Long)parties[0],parties[1].toString());
 			list.add(party);

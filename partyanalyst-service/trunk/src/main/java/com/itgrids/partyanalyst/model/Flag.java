@@ -31,7 +31,7 @@ public class Flag extends BaseModel implements Serializable {
 	private String description;
 	private String color;
 	private User user;
-	private String uniqueId;
+	//private String uniqueId;
 
 	
 	
@@ -87,12 +87,12 @@ public class Flag extends BaseModel implements Serializable {
 		this.user = user;
 	}
 	
-	@Column(name="unique_id")
+/*	@Column(name="unique_id")
 	public String getUniqueId() {
 		return uniqueId;
 	}
 	public void setUniqueId(String uniqueId) {
 		this.uniqueId = uniqueId;
 	}
-	
+	*/
 }

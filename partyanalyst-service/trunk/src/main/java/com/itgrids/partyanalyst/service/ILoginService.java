@@ -35,4 +35,6 @@ public interface ILoginService {
 	
 	public List<String> deActivateAllOtherSimultaneousSessions(Long userId);
 	
+
+	
 }

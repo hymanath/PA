@@ -5360,8 +5360,10 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			tehsilIds.add(new Long(mandalId.getId().toString().substring(1)));
 		}
 		for(String party : partiesarr)
+			if(!party.equalsIgnoreCase(""))
 			partyIds.add(new Long(party));
 		for(String election : electionsArr)
+			if(!election.equalsIgnoreCase(""))
 			electionIds.add(new Long(election));
 		
 			Constituency constituency = constituencyDAO.get(new Long(constituencyId));
@@ -5369,13 +5371,16 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			 //count= candidateBoothResultDAO.getMandalValidvotes(constituencyId,electionIds);
 			
 			//count= candidateBoothResultDAO.getMandalValidvotesByTehsilIds(tehsilIds,electionIds);
+			if(tehsilIds != null && tehsilIds.size() >0)
 			count= candidateBoothResultDAO.getMandalValidvotesByTehsilIds1(tehsilIds,electionIds);
 			 
 			 
 			//list = candidateBoothResultDAO.getMandalResultsForElectionAndConstituency(constituencyId,electionIds,partyIds);
+			if(tehsilIds != null && tehsilIds.size() >0)
 			 list = candidateBoothResultDAO.getMandalResultsForElectionAndConstituencyByTehsilIds(tehsilIds,electionIds,partyIds);
 			//getsublevelsForConstituency(list,"mandal",result,count);
 			 
+			if(list != null)
 			 getsublevelsForConstituency1(list,"mandal",result,count);
 			
 			//Muncipality
@@ -5408,8 +5413,10 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			}
 			//Zptc
 			
+			if(tehsilIds != null && tehsilIds.size() >0){
 			list = nominationDAO.findAllMptcAndZptcElectionsInfoInMandal1(electionIds,tehsilIds,partyIds);
 			getsublevelsForConstituency(list,"zptc",result,count);
+			}
 		}
 	catch(Exception e)
 	{
