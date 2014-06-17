@@ -178,7 +178,7 @@
 				<!---View your Constituency News Div--->
 				<div class="span9">
 					<div class="row-fluid widget">
-						<div class="span12 boxHeading" style="text-transform: capitalize;"><h4>${candidateName} Wise Latest News Updates  </h4></div>
+						<div class="span12 boxHeading" style="text-transform: capitalize;"><h4>${candidateName} Latest News Updates  </h4></div>
 						<div id="imageForMail"  class = "span3"  style="display:none;font-weight:bold;color: #0174DF;height:20px;width:500px;">
 							<font>Please wait...</font>
 							<img src="images/icons/goldAjaxLoad.gif" style="width: 150px; height: 15px;" width="18" height="11"/>
