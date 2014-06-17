@@ -1797,8 +1797,8 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		 		}
 				 
 			 if(level.equalsIgnoreCase("district")||level.equalsIgnoreCase("")){
-				 List<Long> distIds = districtDAO.getAllDistrictByStateIds(1l);
-				 List <Object[]> newsDetailsForDist =  partyGalleryDAO.getAllNewsDetailsForDistrict(872l,startIndex,maxResults,newsType,3l,distIds);
+				 List<Long> distIds = districtDAO.getAllDistrictByStateIds(1L);
+				 List <Object[]> newsDetailsForDist =  partyGalleryDAO.getAllNewsDetailsForDistrict(872l,startIndex,maxResults,newsType,3L,distIds);
 				 
 				/* if(newsDetailsForDist == null || newsDetailsForDist.isEmpty() )
 					 return null;
