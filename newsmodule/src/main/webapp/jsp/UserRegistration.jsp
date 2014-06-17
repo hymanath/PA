@@ -402,6 +402,10 @@ function validateFirstName()
 		fstEleErr.innerHTML = "<span class='errorClass'>&nbsp;Please Enter First Name.</span>";
 	    return false;
 	}
+	if(fstEle.value.trim().length <4){
+		fstEleErr.innerHTML = "<span class='errorClass'>&nbsp;First Name must contain minimum 4 Charactors.</span>";
+		return false;
+	 }
 	if(fstEle.value.match(r[spvar])){
 		fstEleErr.innerHTML = "<span class='errorClass'>Should Not Contain Special Characters</span>";
 	    return false;
@@ -447,8 +451,12 @@ function isPwdSpclChar(){
    var pwd = document.getElementById("passwordField").value;
 	if(pwd == "")
 	 {
-	 $("#pwdId").html("Please Enter PassWord").addClass("errorClass");
+	 $("#pwdId").html("Please Enter Password").addClass("errorClass");
 	 return false;
+	 }
+	 if(pwd.trim().length <6 ){
+		$("#pwdId").html("Password must contain minimum 6 Charactors.").addClass("errorClass");
+		return false;
 	 }
 	if (pwd.match(/[^a-zA-Z0-9 ]/g)) {
 	$("#pwdId").html("Password should not contain special characters").addClass("errorClass");
@@ -467,6 +475,10 @@ function validateLastName()
 		lstEleErr.innerHTML = "<span class='errorClass'>&nbsp;Please Enter Last Name.</span>";
 	    return false;
 	}
+	if(lstEle.value.trim().length <4){
+		lstEleErr.innerHTML = "<span class='errorClass'>&nbsp;Last Name must contain minimum 4 Charactors.</span>";
+		return false;
+	 }
 	if(lstEle.value.match(r[spvar])){
 		lstEleErr.innerHTML = "<span class='errorClass'>Should Not Contain Special Characters</span>";
 		 return false;
@@ -482,12 +494,27 @@ function validateUserType()
 	var usrEleErr=document.getElementById("usrTypeId");
 	usrEleErr.innerHTML = "";
 	$('#subuserAddressDiv').css("display","none");
+	$("#districtDIV").hide();
+	$("#parliamentDIV").hide();
+	$("#assemblyDIV").hide();
+  
+	$('#selectLocLvl').find('option').remove();
+	$('#selectLocLvl').append('<option value="0"> Select Access Level </option>');
+	$('#selectLocLvl').append('<option value="1"> State </option>');
+	$('#selectLocLvl').append('<option value="2"> District </option>');
+	$('#selectLocLvl').append('<option value="3"> Parliament Constituency </option>');
+	$('#selectLocLvl').append('<option value="4"> Assembly Constituency </option>');
     if(usrEle.value== 0){
 		usrEleErr.innerHTML = "<span class='errorClass'>&nbsp;Please Select User Type.</span>";
 	    return false;
 	}
-	else if(usrEle.value== 2 || usrEle.value== 4){
-	$('#subuserAddressDiv').css("display","block");
+	else if(usrEle.value== 2 || usrEle.value == 4){
+		$('#subuserAddressDiv').css("display","block");
+		if(usrEle.value == 4){
+			$('#selectLocLvl').find('option').remove();
+			$('#selectLocLvl').append('<option value="0"> Select Access Level </option>');
+			$('#selectLocLvl').append('<option value="3"> Parliament Constituency </option>');
+		}
 	}	
 	else
 	 return true;
@@ -498,14 +525,7 @@ function validatefields()
 	
 	var flag = true;
 	
-	if(!validateLastName())
-	{
-		flag = false;
-	}
-	if(!validateFirstName())
-	{
-		flag = false;
-	}
+	
 	if(!validateEmail())
 	{
 		flag = false;
@@ -518,6 +538,15 @@ function validatefields()
 	{
 		$("#mobileDiv").html("Username is not available").css("color","red");	
 	    
+		flag = false;
+	}
+	
+	if(!validateFirstName())
+	{
+		flag = false;
+	}
+	if(!validateLastName())
+	{
 		flag = false;
 	}
 	if($("#userTypeId").val() == 2){
