@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +34,7 @@ public class PoliticalFeedBackAction extends ActionSupport implements ServletReq
 	private final static Logger LOG            = Logger.getLogger(PoliticalFeedBackAction.class); 
 	
 	private IPoliticalFeedBackService       politicalFeedBackService;
-	@Override
+	//@Override
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
@@ -124,6 +125,8 @@ public class PoliticalFeedBackAction extends ActionSupport implements ServletReq
 		{
 			return Action.ERROR;
 		}
+		
+		constituencysList = new  ArrayList<SelectOptionVO>();
 		if(regVO.getUserAccessType().equalsIgnoreCase("pfb"))
 		{
 			constituencysList = politicalFeedBackService.getAccessParliments(regVO.getRegistrationID());
