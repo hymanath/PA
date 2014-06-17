@@ -115,7 +115,22 @@
 <script>
   
 
+  	var fromDateEdit 		= '${fromDate}';
+	var toDateEdit 			= '${toDate}';
+	var channelEdit			= '${channel}';
+	var partyIdEdit 		= '${partyId}';
+	var candidateIdEdit 	= '${candidateId}';
 
+function buildDebateDetailsAfterEdit(){
+	$('#fromDateId').val(fromDateEdit);
+	$('#toDateId').val(toDateEdit);
+	$('#channelSelecction').val(channelEdit);
+	$('#partySelecction').val(partyIdEdit);
+	getCandidatesForSelectedParty(partyIdEdit);
+	if(fromDateEdit.trim().length >0 && toDateEdit.trim().length > 0){
+		getDebateDetailsBetwinDates(fromDateEdit,toDateEdit,channelEdit,partyIdEdit,candidateIdEdit)
+	}
+}
 $(function () {
     
 	$('#startTime').datetimepicker({
@@ -152,6 +167,7 @@ $( document ).ready(function() {
 		$('#acConstituencyRow').hide();
 		getValues();
 		getRespectiveSelection();
+		buildDebateDetailsAfterEdit();
 	$("#createCandidateId").live("click",function(){
 		
 		$("#errorMsgDiv").html('');
