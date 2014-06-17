@@ -39,6 +39,17 @@ font-size:20px;
 #errorMsgDiv{font-size:12px; margin-left:0px;margin-bottom: 1px;}
 .fontStyle{color:#000;font-size:21px;}
 #responseNewsCountImg{height: 30px; width: 40px; margin-right: 3px;cursor: pointer;}
+
+.border
+ { 
+  list-style-type:none;
+  border: 1px solid black;
+  margin-top:46px;
+  padding:10px;
+   height: 233px;
+   margin-bottom: -31px;
+ }
+ 
 </style>
 
 </head>
@@ -163,7 +174,8 @@ function buildPaginatedNews(results,jsObj){
 	var str="";
 	str+="<ul class='unstyled pad10'>";
 	for(var i in results){
-		str+="<li>";
+		str+="<li class='border'>";
+	
 		var source = results[i].eenadu;
 		var descSource = results[i].descEenadu;
 		if(source)
