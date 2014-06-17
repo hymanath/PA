@@ -1281,9 +1281,14 @@ clearOptionsListForSelectElmtId("pollingStationField");
 	  </div>
 	   <div class="selectDiv" style="margin-bottom: 10px;display:none;" id="casteDiv">
 	    Caste  <span style="margin-left:109px;">:</span><!--<input type="text" id="searchCaste" style="width:154px;margin-left: 25px;">-->
-		<select multiple="true" id="casteId">
+		<select  id="casteId" class="multipleSelect" multiple>
+	       
 		
 		</select>
+		
+	<!--<input type="radio" name="selectAndUnselectCastes" onclick="selectall();" id="selectAllCastes"/><b>Select All</b><input type="radio" name="selectAndUnselectCastes"  onclick="deselectall();"  id="unSelectAllCastes"/><b>UnSelect All</b>-->
+	<button type='button' id='selectall' style="margin-left:155px;">Select All</button>
+    <button type='button' id='deselectall' style="margin-left:10px;">UnSelect All</button>
 	  </div>	  
     <div class="selectDiv" style="margin-bottom: 10px;display:none;" id="houseDiv">
 	    House No  <span style="margin-left:86px;">:</span><input type="text" id="searchHouseNo" style="width:154px;margin-left: 2px;">
@@ -3730,6 +3735,14 @@ function buildReportLevelValues()
 	}
 }
 
+
+$('#selectall').click(function() {
+    $('select#casteId option').attr("selected","selected");
+});   
+
+$('#deselectall').click(function() {
+    $('select#casteId option').removeAttr("selected");
+});
 function populateConstituencies()
 {
 
