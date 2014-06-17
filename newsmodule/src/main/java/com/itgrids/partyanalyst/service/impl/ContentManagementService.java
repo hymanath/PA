@@ -5,10 +5,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.HashSet;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
@@ -39,8 +40,8 @@ import com.itgrids.partyanalyst.model.FileGallary;
 import com.itgrids.partyanalyst.model.FilePaths;
 import com.itgrids.partyanalyst.model.FileSourceLanguage;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
-import com.itgrids.partyanalyst.service.IReportService;
 import com.itgrids.partyanalyst.service.IContentManagementService;
+import com.itgrids.partyanalyst.service.IReportService;
 import com.itgrids.partyanalyst.utils.CommonStringUtils;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -327,7 +328,7 @@ public class ContentManagementService implements IContentManagementService{
 								}
 							 */
 							 
-							 List<FileVO> fileVOPathsList = new ArrayList<FileVO>();
+							 LinkedList<FileVO> fileVOPathsList = new LinkedList<FileVO>();
 							 
 							 Set<FilePaths> filePathsSet = fileSourceLanguage.getFilePaths();
 							 fileVOSourceLanguage.setMultipleNews(filePathsSet.size());
@@ -351,7 +352,7 @@ public class ContentManagementService implements IContentManagementService{
 								 tempPartNo = tempPartNo+1;
 								 fileVOPathsList.add(fileVOPath);
 							 }
-							 Collections.sort(fileVOPathsList,CandidateDetailsService.sortData);
+							// Collections.sort(fileVOPathsList,CandidateDetailsService.sortData);
 							 fileVOSourceLanguage.setDescription(fileSourceLanguage.getNewsDetailedDescription() != null ?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileSourceLanguage.getNewsDetailedDescription())):"");
 							 if(fileSourceLanguage.getFont() != null)
 							 fileVOSourceLanguage.setEenadu(true);
