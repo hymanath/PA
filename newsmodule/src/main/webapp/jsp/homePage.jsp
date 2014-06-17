@@ -55,6 +55,13 @@
 
 	</style>
 </head>
+
+<script>
+window.location.hash="no-back-button";
+window.location.hash="Again-No-back-button";//again because google chrome don't insert first hash into history
+window.onhashchange=function(){window.location.hash="no-back-button";}
+</script>
+
 <body>
 	<div class="container-fluid headerBg" style="padding-left: 0px; padding-right: 0px;">
 		<!---Header----->
