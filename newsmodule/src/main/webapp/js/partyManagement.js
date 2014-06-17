@@ -325,6 +325,7 @@ function callAjax(jsObj,url)
 						$('#errorDiv').html('<span>Created Successfully</span>');
 						$('#errorDiv').css('color','green');
 					}
+					$('#sourceName').val('');
 				}
 		else if(jsObj.task == "getLocationScope")
 		{
@@ -361,6 +362,7 @@ function callAjax(jsObj,url)
 			 {
 			
 			 showCandidateSaveStatus1(myResults,jsObj);
+			 $('#newCandidateName1').val('');
 			 }
 			  else if(jsObj.task == "updateCandidateDetails"){
 			   showCandidateEditStatus(myResults,jsObj);
@@ -390,6 +392,7 @@ function callAjax(jsObj,url)
 				{
 					$('#statusDivForDesignation').html('<b style="color:red">Designation already exists</b>');
 				}
+				$('#designationId').val('');
 			}
 			else if(jsObj.task == "createNewParty")
 			{
@@ -401,6 +404,8 @@ function callAjax(jsObj,url)
 				{
 					$('#statusForParty').html('<b style="color:red">Party already exists</b>');
 				}
+				$('#partyLongName').val('');
+				$('#partyShortName').val('');
 			}
 			else if(jsObj.task == "getEditCandidatesListByPartyId")
 			 buildCandidatesList(myResults,jsObj);
@@ -1144,6 +1149,10 @@ function getDistricts1(stateId,index){
     if(isValid(newsCatrgoryName)){
 		$('#CErrMsgDiv').html('<b style="color:red">Category Name should not contain #,$,%,& Special charactors</b>');
 		return false;
+	}
+	if(newsCatrgoryName.trim().length < 5 ){
+		$('#CErrMsgDiv').html('<b style="color:red"> Category Name should contains minimum 5 Charactors.</b>');
+		return false;		
 	}
 	if(isValid(newsCatrgoryDesc)){
 		$('#CErrMsgDiv').html('<b style="color:red">Description should not contain #,$,%,& Special charactors</b>');
@@ -3619,7 +3628,7 @@ function showCandidateSaveStatus(result,jsObj)
    return;
   }
 
-  else if(result.resultCode == 0 && result.message != "Candidate is already exist.")
+  else if(result.resultCode == 0 )
   {
    $("#errorMsgDiv").html('Candidate Created Successfully.').css("color","green");
    setTimeout(function(){$("#errorMsgDiv").html('').css("color","red");},3000);
@@ -3650,7 +3659,7 @@ function showCandidateSaveStatus1(result,jsObj)
    return;
   }
 
-  else if(result.resultCode == 0 && result.message == null)
+  else if(result.resultCode == 0 )
   {
    $("#errorMsgDiv1").html('Candidate created Successfully.').css("color","green");
    setTimeout(function(){$("#errorMsgDiv1").html('').css("color","red");},3000); 
@@ -4678,6 +4687,10 @@ function updateExistingCandidate(){
 	{
 	 $("#errorMsgDiv2").html("Please Select Candidate");
 	  return;
+	}
+	if(candidateName.trim().length < 5 ){
+		$('#errorMsgDiv2').html('<b style="color:red"> Candidate Name should contains minimum 5 Charactors.</b>');
+		return ;		
 	}
 	if(isValid(candidateName)){
 		$('#errorMsgDiv2').html('<b style="color:red">Candidate Name should not contain #,$,%,& Special charactors</b>');
