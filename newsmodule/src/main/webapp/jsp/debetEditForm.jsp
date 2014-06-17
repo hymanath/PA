@@ -96,7 +96,12 @@
 <script>
 
 var debateId = '${debateId}';
-
+	var fromDateEdit 		= '${fromDate}';
+	var toDateEdit 			= '${toDate}';
+	var channelEdit			= '${channel}';
+	var partyIdEdit 		= '${partyId}';
+	var candidateIdEdit 	= '${candidateId}';
+	
 $( document ).ready(function() {
 
 		$('#pcConstituencyRow').hide();
