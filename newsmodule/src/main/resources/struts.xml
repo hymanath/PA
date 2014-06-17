@@ -6233,6 +6233,16 @@
 		  <result name="error" type="redirect">loginPageAction.action</result>
 		</action>
 		
+		<action name="activituWiseNewsDetlsAction" class="partyActivitiesAction" method="activituWiseNewsDetls">
+		  <result name="success">/jsp/activityWiseCategoryDtls.jsp</result>
+		</action>
+		
+		<action name="getActivituWiseNewsAction" class="partyActivitiesAction"  method="getActivituWiseNews">
+		   <result type="json" name="success">
+		    	<param name="root">fileSourceVO</param>
+		   </result>
+		</action>
+		
 		<action name="getNewsToUpdateKeywordsAction" class="partyActivitiesAction"  method="getNewsToUpdateKeywords">
 		   <result type="json" name="success">
 		    	<param name="root">activities</param>
