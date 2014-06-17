@@ -123,7 +123,7 @@ public List<Object[]> getAllDistrictInfoDetails(){
 
 */
 	@SuppressWarnings("unchecked")
-	public List<Long> getAllDistrictByStateIds(long stateIds) {	
+	public List<Long> getAllDistrictByStateIds(Long stateIds) {	
 		StringBuilder query = new StringBuilder();
 		query.append("select model.districtId from District model where model.state.stateId = :stateIds");		
 		Query queryObject = getSession().createQuery(query.toString());

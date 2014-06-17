@@ -335,16 +335,16 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 		
 		return queryObj.list();
 	}
-	public List<Object[]> getAllNewsDetailsForDistrict(Long partyId,int firstResult,int maxResult,String queryType,long stateId ,List<Long> districtIds){
+	public List<Object[]> getAllNewsDetailsForDistrict(Long partyId,int firstResult,int maxResult,String queryType,Long distScope ,List<Long> districtIds){
 		   
 	     StringBuilder query = new StringBuilder("select distinct model.file.fileId,model.file.fileDate,model.file.fileTitle,model.file.fileDescription,model.file.font.fontId,model.file.fileName,model.file.filePath,model.file.descFont.fontId from UserAddress model where ");
-			query.append(" ");			
+		
 			if(queryType.equalsIgnoreCase("Public"))
 					query.append(" model.file.isPrivate != 'Y'  and ");
 			query.append(" model.locationValue in (:locId)  and model.regionScopes.regionScopesId = :locationValue and model.file.isDeleted != 'Y' ");
 			query.append("  order by model.file.fileDate desc,model.file.updatedDate desc ");
 			Query queryObject = getSession().createQuery(query.toString());			
-			queryObject.setLong("locationValue", stateId);
+			queryObject.setLong("locationValue", distScope);
 			queryObject.setParameterList("locId", districtIds);
 			queryObject.setFirstResult(firstResult);
 			queryObject.setMaxResults(maxResult);									
