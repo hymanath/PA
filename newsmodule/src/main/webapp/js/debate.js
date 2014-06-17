@@ -487,7 +487,8 @@ var debateDetails={
 								 scrollTop: $("#successMsg").offset().top
 							 }, 2000);
 							 
-							 setTimeout('window.location = "debateAction.action"',5000);
+						//	 setTimeout('window.location = "debateAction.action"',5000);							
+							 setTimeout('window.location = "debateAction.action?fromDate='+fromDateEdit+'&toDate='+toDateEdit+'&channel='+channelEdit+'&partyId='+partyIdEdit+'&candidateId='+candidateIdEdit+'&"',5000);
 						}
 						else
 						{
@@ -698,6 +699,7 @@ function fillSelectOptionsVO(results,selectedVal)
 		{
 			$('#'+selectedVal+'').append('<option value="'+results[i].id+'">'+results[i].name+'</option>');	
 		}		
+	$('#'+selectedVal+'').val(candidateIdEdit);	
 	}
 	var name1 = candidteName.trim().toLowerCase();
 	var designtion = $("#designationsList option :selected").text();
@@ -1188,7 +1190,13 @@ function openDebateReport(debateId)
 
 function editDebateReport(debateId)
 {
-	window.open("debateEditAction.action?debateId="+debateId+"");
+	var fromDate = $('#fromDateId').val();
+	var toDate = $('#toDateId').val();
+	var channel = $('#channelSelecction').val();
+	var partyId = $('#partySelecction').val();
+	var candidateId = $('#candidateSelecction').val();
+	
+	window.location="debateEditAction.action?debateId="+debateId+"&fromDate="+fromDate+"&toDate="+toDate+"&channel="+channel+"&partyId="+partyId+"&candidateId="+candidateId+"&";
 }
 
 function deleteDebateReport(debateId)
