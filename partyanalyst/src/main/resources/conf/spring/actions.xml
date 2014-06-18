@@ -1439,6 +1439,9 @@
 	</bean>
 	<bean id="cmsAdminAction" class="com.itgrids.partyanalyst.web.action.CmsAdminAction" singleton="false"></bean>
 	
-	<bean id="fieldVoterDataAction" class="com.itgrids.partyanalyst.web.action.FieldVoterDataAction" singleton="false"></bean>
+	<bean id="fieldVoterDataAction" class="com.itgrids.partyanalyst.web.action.FieldVoterDataAction" singleton="false">
+	 <property name="fieldVoterDataService" ref="fieldVoterDataService" /> 
+	 <property name="soundexService" ref="soundexService"/>
+	</bean>
 </beans>	
 	

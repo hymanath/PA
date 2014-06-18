@@ -2107,5 +2107,16 @@
    
    </bean>
    
+   <bean name="fieldVoterDataService" class="com.itgrids.partyanalyst.service.impl.FieldVoterDataService" >
+   	<property name="fieldVoterDataDAO" ref="fieldVoterDataDAO"></property>
+   </bean>
+   
+   
+    <bean name="soundexService" class="com.itgrids.partyanalyst.service.impl.SoundexService" >
+          <property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" />
+          <property name="tdMemberDAO" ref="tdMemberDAO" />
+          <property name="panchayatDAO" ref="panchayatDAO"></property>
+   </bean>
+   
 </beans>		
 	

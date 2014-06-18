@@ -7242,6 +7242,20 @@
 		<action name="fieldVoterDataAction" class="fieldVoterDataAction">
 			<result name="success">/jsp/fieldVoterData.jsp</result>
 		</action>
+		
+		<action name="getfieldVoterDataAction" class="fieldVoterDataAction" method="testAction">
+		<result type="json" name="success">
+		<param name="root">fieldVoterDetailsList</param>
+		</result>
+		</action>
+		
+		<action name="getMappedVoterDetailsByUsingSoundexByPanchayatId" class="fieldVoterDataAction" method="getMappedVoterDetailsByUsingSoundexByPanchayatId">
+		<result type="json" name="success">
+		<param name="root">fieldVoterDetailsList</param>
+		</result>
+		</action>
+		
+		
 			
 </package>
 		

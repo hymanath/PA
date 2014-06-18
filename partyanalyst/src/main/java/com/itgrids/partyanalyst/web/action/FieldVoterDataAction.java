@@ -9,9 +9,12 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.itgrids.partyanalyst.dto.FieldVoterDataVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
+import com.itgrids.partyanalyst.service.IFieldVoterDataService;
+import com.itgrids.partyanalyst.service.ISoundexService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -28,6 +31,41 @@ public class FieldVoterDataAction extends ActionSupport implements ServletReques
 	private ICrossVotingEstimationService crossVotingEstimationService;
 	@Autowired
 	private IVotersAnalysisService votersAnalysisService;
+	
+    private List<FieldVoterDataVO> fieldVoterDetailsList;
+    
+    private IFieldVoterDataService fieldVoterDataService;
+    private ISoundexService soundexService;
+    
+    
+    
+    public ISoundexService getSoundexService() {
+		return soundexService;
+	}
+
+	public void setSoundexService(ISoundexService soundexService) {
+		this.soundexService = soundexService;
+	}
+    
+    
+    
+    public IFieldVoterDataService getFieldVoterDataService() {
+		return fieldVoterDataService;
+	}
+
+	public void setFieldVoterDataService(
+			IFieldVoterDataService fieldVoterDataService) {
+		this.fieldVoterDataService = fieldVoterDataService;
+	}
+
+	public List<FieldVoterDataVO> getFieldVoterDetailsList() {
+		return fieldVoterDetailsList;
+	}
+
+	public void setFieldVoterDetailsList(
+			List<FieldVoterDataVO> fieldVoterDetailsList) {
+		this.fieldVoterDetailsList = fieldVoterDetailsList;
+	}
 	public List<SelectOptionVO> getConstituencyList() {
 		return constituencyList;
 	}
@@ -92,5 +130,26 @@ public class FieldVoterDataAction extends ActionSupport implements ServletReques
 		return SUCCESS;
 		
 	}
+	
+	public String testAction()
+	{
+		try{
+		fieldVoterDetailsList = fieldVoterDataService.getFieldVoterDataByBoothId(Long.parseLong(request.getParameter("boothId")));
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+		
+	}
+	
+	public String getMappedVoterDetailsByUsingSoundexByPanchayatId()
+	{
+		soundexService.getMappedVoterDetailsByUsingSoundexByPanchayatId(Long.parseLong(request.getParameter("panchayatId")));
+		return Action.SUCCESS;
+		
+	}
+
+
+
 	
 }
