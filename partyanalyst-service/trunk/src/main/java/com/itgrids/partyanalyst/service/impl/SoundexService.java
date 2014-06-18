@@ -195,34 +195,6 @@ public class SoundexService implements ISoundexService {
 			LOG.error("Exception raised in getMappedVoterDetailsByUsingSoundexByPanchayatId service method");
 		}
 		
-		
-	/*	for(SoundexVO  member:resultList)
-		{
-			if(member.getExactMatchList().size() == 1)
-			{
-				System.out.println("EXACT MATCH ::"+member.getId()+"-"+
-			                                        member.getName()+"-"+
-			                                        member.getExactMatchList().get(0).getName()+"-"+
-			                                        member.getExactMatchList().get(0).isAgeMatched()+"-"+
-			                                        member.getExactMatchList().get(0).isGenderMatch()+"-"+
-			                                        member.getExactMatchList().get(0).isRelativeNameMatch()
-			                                        );
-				
-			}else if(member.getSoundexMatchList().size() == 1)
-			{
-				for(SoundexVO soundex:member.getSoundexMatchList())
-				{
-					System.out.println("SOUNDEX MATCH"+member.getName()+"-"+soundex.getName());
-				}
-			}else if(member.getExactMatchList().size() == 0 && member.getSoundexMatchList().size() == 0)
-			{
-				
-				System.out.println("NO MATCH FOUND:"+member.getName());
-
-			}
-		}*/
-		
-		
 		for(SoundexVO  member:resultList)
 		{
 			 if(member.getExactMatchList().size() == 1 && member.getSoundexMatchList().size() == 0)
@@ -277,7 +249,6 @@ public class SoundexService implements ISoundexService {
 		
 		for(SoundexVO  member:resultList)
 		{
-			 //if(member.getSoundexMatchList().size() >= 1 && member.getExactMatchList().size() != 1)
 			if(member.getExactMatchList().size() != 1 && member.getSoundexMatchList().size() >=0 )
 			{
 				
@@ -306,13 +277,7 @@ public class SoundexService implements ISoundexService {
 																												 
 														 soundex.getVoterIDCardNo()+"-"+
 														 soundex.getVoterId());
-														  
-														/*  soundex.isGenderMatch()+"-"+
-														  soundex.getVoterIDCardNo()+"-"+
-														  soundex.getVoterId()+"-"+
-														  soundex.getAge()+"-"+
-														  member.getAge()+"-"+
-														  soundex.isRelativeNameMatch());*/
+													
 					else
 						System.out.println("           ::"+member.getId()+"-"+
 								  member.getName()+"-"+
@@ -340,21 +305,6 @@ public class SoundexService implements ISoundexService {
 				}
 				
 				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
 				int i=0;
 				for(SoundexVO soundex:member.getSoundexMatchList())
 				{
@@ -380,12 +330,7 @@ public class SoundexService implements ISoundexService {
 														 soundex.getVoterIDCardNo()+"-"+
 														 soundex.getVoterId());
 														  
-														/*  soundex.isGenderMatch()+"-"+
-														  soundex.getVoterIDCardNo()+"-"+
-														  soundex.getVoterId()+"-"+
-														  soundex.getAge()+"-"+
-														  member.getAge()+"-"+
-														  soundex.isRelativeNameMatch());*/
+													
 					else
 						System.out.println("           ::"+member.getId()+"-"+
 								  member.getName()+"-"+
