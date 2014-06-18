@@ -57,12 +57,12 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 	private IStaticDataService staticDataService;
 	private List<PartyPositionVO> partyPositionVOList;
 	private List<PanchayatVO> panchayatVOs;
-	private List<YouthLeaderSelectionVO> LeaderSelectionList;
+	private List<YouthLeaderSelectionVO> leaderSelectionList;
 	private ICrossVotingEstimationService crossVotingEstimationService;
 	private List userAccessConstituencyList;
 	private List<VoterVO> deletedVoters;
 	private List<SelectOptionVO> castesList;
-	private List<YouthLeaderSelectionVO> LeaderSelectionLists;
+	private List<YouthLeaderSelectionVO> leaderSelectionLists;
 	private Map<String,Map<String,PartyImpactVO>> resultMap;
 	private List<BasicVO> hamletDetails;
 	private EntitlementsHelper entitlementsHelper;
@@ -81,12 +81,12 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 	private String constituencyName;
 	private List<VoterDataVO> mandalPanchayatList;
 	private MandalVO paricipatedPartyList;
-	private List<VoterCountVO> VoterCountVOList;
+	private List<VoterCountVO> voterCountVOList;
 	private List<SelectOptionVO> pachayatsList;
 	private IElectionService electionService;
 	private DelimitationEffectVO delimitationEffectVO;
 	private CensusVO constituencyCensusResultVO;
-	private static final Logger log = Logger.getLogger(SuggestiveModelAction.class);
+	private static final Logger LOG = Logger.getLogger(SuggestiveModelAction.class);
 	private VotersInfoForMandalVO votersInfoForMandalVO;
 	private Long latestPublicationId;
 	private List<VoterHouseInfoVO> familyInfo;
@@ -141,11 +141,11 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 	}
 
 	public List<VoterCountVO> getVoterCountVOList() {
-		return VoterCountVOList;
+		return voterCountVOList;
 	}
 
 	public void setVoterCountVOList(List<VoterCountVO> voterCountVOList) {
-		VoterCountVOList = voterCountVOList;
+		this.voterCountVOList = voterCountVOList;
 	}
 
 	public MandalVO getParicipatedPartyList() {
@@ -182,12 +182,12 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 	
 	
 	public List<YouthLeaderSelectionVO> getLeaderSelectionLists() {
-		return LeaderSelectionLists;
+		return leaderSelectionLists;
 	}
 
 	public void setLeaderSelectionLists(
 			List<YouthLeaderSelectionVO> leaderSelectionLists) {
-		LeaderSelectionLists = leaderSelectionLists;
+		this.leaderSelectionLists = leaderSelectionLists;
 	}
 
 	public List<SelectOptionVO> getCastesList() {
@@ -303,12 +303,12 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 	}
 	
 	public List<YouthLeaderSelectionVO> getLeaderSelectionList() {
-		return LeaderSelectionList;
+		return leaderSelectionList;
 	}
 
 	public void setLeaderSelectionList(
 			List<YouthLeaderSelectionVO> leaderSelectionList) {
-		LeaderSelectionList = leaderSelectionList;
+		this.leaderSelectionList = leaderSelectionList;
 	}
 	public ICrossVotingEstimationService getCrossVotingEstimationService() {
 		return crossVotingEstimationService;
@@ -478,7 +478,7 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 			
 		}catch (Exception e) {
 		 e.printStackTrace();
-		// Log.error(" Exception Occured in getPartyPerformanceForSelectedLocation() method, Exception - "+e);
+		// LOG.error(" Exception Occured in getPartyPerformanceForSelectedLocation() method, Exception - "+e);
 		}
 		return Action.SUCCESS;
 	}
@@ -491,8 +491,8 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
-		Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
+		Long electionYear = Long.valueOf(IConstants.PRESENT_ELECTION_YEAR);
+		Long electionTypeId = Long.valueOf(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
 		userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(regVO.getRegistrationID(),electionYear,electionTypeId);
 		constituencies = suggestiveModelService.getConstituenciesForUserAccessByStateId(userAccessConstituencyList,electionTypeId,electionYear);
 		constituencies.add(0, new SelectOptionVO(0L,"Select Constituency"));
@@ -675,11 +675,11 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 			
 			if(constituencyType.equalsIgnoreCase(IConstants.URBAN))
 			{
-				LeaderSelectionList = suggestiveModelService.getLeadersInUrbanConstituencyes(userId,constituencyId,castesIdsList,exceptCasteList,checkStatus,publicationId);
+				leaderSelectionList = suggestiveModelService.getLeadersInUrbanConstituencyes(userId,constituencyId,castesIdsList,exceptCasteList,checkStatus,publicationId);
 			}
 			else
 			{
-				LeaderSelectionList = suggestiveModelService.findingBoothInchargesForBoothLevel(userId,constituencyId,castesIdsList,casteMap,exceptCasteList,checkStatus,publicationId,exceptCasteListForMuncipal);
+				leaderSelectionList = suggestiveModelService.findingBoothInchargesForBoothLevel(userId,constituencyId,castesIdsList,casteMap,exceptCasteList,checkStatus,publicationId,exceptCasteListForMuncipal);
 			}
 		}catch(Exception e){
 			e.printStackTrace();
@@ -696,7 +696,7 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 			if(arr != null && arr.length() > 0)
 				for(int i=0 ;i< arr.length() ; i++)
 				{
-				 panchayatIds.add(new Long(arr.get(i).toString()));
+				 panchayatIds.add(Long.valueOf(arr.get(i).toString()));
 				}
 			//deletedVoters = suggestiveModelService.getDeletedVoterInfo(panchayatIds);
 		}
@@ -711,7 +711,7 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 			if(task != null){
 				try{
 					jObj = new JSONObject(getTask());
-					System.out.println("Result From JSON:"+jObj);
+					LOG.info("Result From JSON:"+jObj);
 				}catch(Exception e){
 					e.printStackTrace();
 				}
@@ -720,7 +720,7 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 					
 					String cnstncyType=suggestiveModelService.getConstituencyType(jObj.getLong("constituencyId"));
 					electionsYears = staticDataService.getElectionIdsAndYearsByElectionScopeId(jObj.getLong("electionScopeId"),jObj.getLong("partyId"),jObj.getLong("constituencyId"),cnstncyType);
-					log.debug("getElectionScopes......"+electionsYears.size());
+					LOG.debug("getElectionScopes......"+electionsYears.size());
 				}
 			}
 			
@@ -767,7 +767,7 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 				for(String casteId:strArray)
 					castesIdsList.add(Long.parseLong(casteId));
 
-				LeaderSelectionLists = suggestiveModelService.findingBoothInchargesForBoothLevelForMincipality(userId,constituencyId,castesIdsList,exceptCasteList,checkStatus,publicationId);
+				leaderSelectionLists = suggestiveModelService.findingBoothInchargesForBoothLevelForMincipality(userId,constituencyId,castesIdsList,exceptCasteList,checkStatus,publicationId);
 			}catch(Exception e){
 				e.printStackTrace();
 			}
@@ -842,7 +842,7 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 			if(arr != null && arr.length() > 0)
 				for(int i=0 ;i< arr.length() ; i++)
 				{
-					candidateCastes.add(new Long(arr.get(i).toString()));
+					candidateCastes.add(Long.valueOf(arr.get(i).toString()));
 				}
 			
 			//Long candidateCastes= jObj.getLong("candidateCastes");
@@ -871,8 +871,8 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 			{
 			  userId = regVO.getRegistrationID();
 			}
-			Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
-			Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
+			Long electionYear = Long.valueOf(IConstants.PRESENT_ELECTION_YEAR);
+			Long electionTypeId = Long.valueOf(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
 			userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(regVO.getRegistrationID(),electionYear,electionTypeId);
 			constituencies = suggestiveModelService.getCasteAvaliableConstituencysService(userAccessConstituencyList,electionTypeId,electionYear,userId);
 			Collections.sort(constituencies);
@@ -951,13 +951,13 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 		public String getVoterscountInPanchayats()
 		{
 			try{
-				log.debug("Entered into getVoterscountInPanchayats() method in Suggestive Model Action");
+				LOG.debug("Entered into getVoterscountInPanchayats() method in Suggestive Model Action");
 				jObj = new JSONObject(getTask());
 				Long constituencyId = jObj.getLong("constituencyId");
 				Long publicationId = jObj.getLong("publicationId");
-				VoterCountVOList = suggestiveModelService.getVotersCountInPanchayats(constituencyId,publicationId);
+				voterCountVOList = suggestiveModelService.getVotersCountInPanchayats(constituencyId,publicationId);
 			}catch(Exception e){
-				log.error("Exception raised in getVoterscountInPanchayats() method in Suggestive Model Action",e);
+				LOG.error("Exception raised in getVoterscountInPanchayats() method in Suggestive Model Action",e);
 			}
 			return Action.SUCCESS;
 		}
@@ -965,7 +965,7 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 		public String getSelectedCountPAnchayatsDetails()
 		{
 			try{
-				log.debug("Entered into getSelectedCountPAnchayatsDetails() method in Suggestive Model Action");
+				LOG.debug("Entered into getSelectedCountPAnchayatsDetails() method in Suggestive Model Action");
 				jObj = new JSONObject(getTask());
 				Long constituencyId = jObj.getLong("constituencyId");
 				//Long publicationId  = jObj.getLong("publicatinId");
@@ -973,7 +973,7 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 				Long maxValue       = jObj.getLong("maxValue");
 				pachayatsList = suggestiveModelService.getSelectedCountPAnchayatsDetails(constituencyId,minValue,maxValue);
 			}catch(Exception e){
-				log.error("Exception raised in getSelectedCountPAnchayatsDetails() method in Suggestive Model Action",e);
+				LOG.error("Exception raised in getSelectedCountPAnchayatsDetails() method in Suggestive Model Action",e);
 			}
 			return Action.SUCCESS;
 		}
@@ -981,11 +981,11 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 		public String getDelimationEffect()
 		{
 			try{
-				log.debug("Entered into getDelimationEffect() method in Suggestive Model Action");
+				LOG.debug("Entered into getDelimationEffect() method in Suggestive Model Action");
 				jObj = new JSONObject(getTask());
 				delimitationEffectVO = suggestiveModelService.getDelimationEffectOnConstituency(jObj.getLong("constituencyId"),jObj.getLong("partyId"));
 			}catch(Exception e){
-				log.error("Exception raised in getDelimationEffect() method in Suggestive Model Action",e);
+				LOG.error("Exception raised in getDelimationEffect() method in Suggestive Model Action",e);
 			}
 			return Action.SUCCESS;
 		}
@@ -993,14 +993,14 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 		public String getVoterAgeGroupResults()
 		{
 			try{
-				log.debug("Entered into getVoterAgeGroupResults() method in Suggestive Model Action");
+				LOG.debug("Entered into getVoterAgeGroupResults() method in Suggestive Model Action");
 				jObj = new JSONObject(getTask());
 				Long constituencyId = jObj.getLong("constituencyId");
 				Long publicationDateId = jObj.getLong("publicationDateId");
 				
 				votersInfoForMandalVO = suggestiveModelService.getVotersCount(constituencyId,publicationDateId,"constituency");
 			}catch(Exception e){
-				log.error("Exception raised in getVoterAgeGroupResults() method in Suggestive Model Action",e);
+				LOG.error("Exception raised in getVoterAgeGroupResults() method in Suggestive Model Action",e);
 			}
 			return Action.SUCCESS;
 		}

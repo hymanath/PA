@@ -9,7 +9,6 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.jfree.util.Log;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CompleteProblemDetailsVO;
@@ -28,7 +27,7 @@ import com.itgrids.partyanalyst.utils.ISessionConstants;
 import com.opensymphony.xwork2.Action;
 
  public class CompleteProblemDetailsAction implements ServletRequestAware{
-   private final static Logger log = Logger.getLogger(CompleteProblemDetailsAction.class);
+   private final static Logger LOG = Logger.getLogger(CompleteProblemDetailsAction.class);
    private Long problemId;
    private HttpServletRequest request;
    private HttpSession session;
@@ -151,8 +150,8 @@ import com.opensymphony.xwork2.Action;
   }
   
   public String execute(){
-	   if(log.isDebugEnabled())
-		   log.debug("Enter into execute method");
+	   if(LOG.isDebugEnabled())
+		   LOG.debug("Enter into execute method");
 	   try{
 	     RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 	     Long userId = null;
@@ -167,14 +166,14 @@ import com.opensymphony.xwork2.Action;
 				userStatus = IConstants.BOTH;
 
             if(regVO.getAccessType() != null && regVO.getAccessValue() != null)
-			getLocationAccess( regVO.getAccessType(),new Long(regVO.getAccessValue()));
+			getLocationAccess( regVO.getAccessType(),Long.valueOf(regVO.getAccessValue()));
 			
 		}else{
 			userStatus = IConstants.NOT_LOGGED_IN;
 		}
 		completeProblemDetailsVO = completeProblemDetailsService.getProblemCompleteDetails(problemId, userId, userStatus,null);
 	   }catch(Exception e){
-		   log.error("Exception rised in execute method ",e);
+		   LOG.error("Exception rised in execute method ",e);
 	   }
 	   return Action.SUCCESS;
    }
@@ -273,7 +272,7 @@ import com.opensymphony.xwork2.Action;
 		  }
 		  completeProblemDetailsVO = completeProblemDetailsService.getProblemCompleteDetails(jObj.getLong("problemId"), userId, userStatus,reqTask);
 	  }catch(Exception e){
-		  log.error("Exception rised in getProblemUpdatedDetails method ",e);
+		  LOG.error("Exception rised in getProblemUpdatedDetails method ",e);
 	  }
 	  return Action.SUCCESS;
   }
@@ -286,7 +285,7 @@ import com.opensymphony.xwork2.Action;
 		  jObj = new JSONObject(param);
 	  }catch (Exception e) {
 		e.printStackTrace();
-		log.error("Exception Occured in editProbleFileDetails() Method, Exception - "+e);
+		LOG.error("Exception Occured in editProbleFileDetails() Method, Exception - "+e);
 	}
 	  fileVO = completeProblemDetailsService.getProbleFileDetailsByProblemFileId(jObj.getLong("problemFileId"));
 	  return Action.SUCCESS;
@@ -301,7 +300,7 @@ import com.opensymphony.xwork2.Action;
 		  resultStatus = completeProblemDetailsService.upDateProbleFileDetails(jObj.getLong("fileId"),jObj.getString("fileTitle"),jObj.getString("fileDescription"));
 	  }catch (Exception e) {
 		e.printStackTrace();
-		Log.error("Exception Occured in saveProbleFileDetailsAction() Method, Exception - "+e);
+		LOG.error("Exception Occured in saveProbleFileDetailsAction() Method, Exception - "+e);
 	}
 	  return Action.SUCCESS;
   }

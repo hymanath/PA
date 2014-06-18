@@ -59,7 +59,7 @@ public class PoliticalChangesRegistrationAction extends ActionSupport implements
 	}
 
 	public void setLocalPoliticalChangeId(String localPoliticalChangeId) {
-		this.politicalChangesVO.setLocalPoliticalChangeId(new Long(localPoliticalChangeId));
+		this.politicalChangesVO.setLocalPoliticalChangeId(Long.valueOf(localPoliticalChangeId));
 	}
 
 	public String getRange() {
@@ -75,7 +75,7 @@ public class PoliticalChangesRegistrationAction extends ActionSupport implements
 	}
 
 	public void setRangeId(String rangeId) {
-		this.politicalChangesVO.setRangeId(new Long(rangeId));
+		this.politicalChangesVO.setRangeId(Long.valueOf(rangeId));
 	}
 
 	public String getInformationSource() {
@@ -200,7 +200,7 @@ public class PoliticalChangesRegistrationAction extends ActionSupport implements
 	}
 
 	public void setParty(String party) {
-		this.politicalChangesVO.setParty(new Long(party));
+		this.politicalChangesVO.setParty(Long.valueOf(party));
 	}
 
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Select Effected Range is required",shortCircuit=true)

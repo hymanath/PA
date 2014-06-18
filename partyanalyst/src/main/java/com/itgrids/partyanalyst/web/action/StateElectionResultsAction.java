@@ -110,7 +110,7 @@ public class StateElectionResultsAction extends ActionSupport implements
 	}
 
 	public String getJSON() throws JRException {
-		//log.debug("partyPerformanceAjax action started...");
+		//LOG.debug("partyPerformanceAjax action started...");
 		return execute();
 	}
 }

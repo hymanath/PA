@@ -38,7 +38,7 @@ public class CandidateUpdateFormAction extends ActionSupport implements
 ServletRequestAware, ServletResponseAware, ServletContextAware , Preparable,ModelDriven<CandidateDetailsVO>{
 	
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(CandidateUpdateFormAction.class);
+	private static final Logger LOG = Logger.getLogger(CandidateUpdateFormAction.class);
 	JSONObject jObj = null;
 	private String task = null;
 	private List<SocialNetworkVO> casteCategory;
@@ -594,7 +594,7 @@ try{
 catch (Exception e) 
 {
 	//inputStream = new StringBufferInputStream("fail");
-	log.error("Exception Occured in uploadFile() method, Exception is - "+e); 
+	LOG.error("Exception Occured in uploadFile() method, Exception is - "+e); 
 }
 			return Action.SUCCESS;
 }
@@ -643,7 +643,7 @@ public void prepare() throws Exception {
 		
 		candidateDetailsVO=new CandidateDetailsVO();
 		
-		candidateDetailsVO=socialService.getcandidateFullInformation(new Long(candidateId));
+		candidateDetailsVO=socialService.getcandidateFullInformation(Long.valueOf(candidateId));
 		statesList = socialService.getAllStateDetails();
 		statesList.add(0, new SelectOptionVO(0l,"select state"));
 		//fresh application
@@ -727,7 +727,7 @@ public String callAjaxHandler(){
 	param = getTask();
 	try {
 		jObj = new JSONObject(param);
-		System.out.println(jObj);
+		LOG.info(jObj);
 	} catch (ParseException e) {
 		e.printStackTrace();
 	}
@@ -751,15 +751,15 @@ public String callAjaxHandlerCasteGroupNames(){
 	
 	try {
 		jObj = new JSONObject(param);
-		System.out.println(jObj);
+		LOG.info(jObj);
 	} catch (ParseException e) {
 		e.printStackTrace();
 	}
 	if(jObj.getString("task").equalsIgnoreCase("getCasteCategoryGroupNames")){
-		System.out.println("with in the action");
-		Long casteCategoryId=new Long(jObj.getString("categoryId"));
+		LOG.info("with in the action");
+		Long casteCategoryId=Long.valueOf(jObj.getString("categoryId"));
 		casteCategoryGroupNames = socialService.getCasteCategoryGroupNames(casteCategoryId);
-		System.out.println("casteCategoryGroupNames value is:"+casteCategoryGroupNames);
+		LOG.info("casteCategoryGroupNames value is:"+casteCategoryGroupNames);
 	}
 	return Action.SUCCESS;
 }
@@ -771,13 +771,13 @@ public String callAjaxHandlerCasteNames(){
 	param=getTask();
 	try{
 		jObj = new JSONObject(param);
-		System.out.println(jObj);
+		LOG.info(jObj);
 	} catch (ParseException e) {
 		e.printStackTrace();
 	}
 	
 	if(jObj.getString("task").equalsIgnoreCase("getCasteNames")){
-		Long casteGroupId=new Long(jObj.getString("casteGroupId"));
+		Long casteGroupId=Long.valueOf(jObj.getString("casteGroupId"));
 		
 		casteNames=socialService.getCasteName(casteGroupId);
 	}
@@ -789,14 +789,14 @@ public String callAjaxHandlerMandalNames(){
 	param=getTask();
 	try{
 		jObj = new JSONObject(param);
-		System.out.println(jObj);
+		LOG.info(jObj);
 	} catch (ParseException e) {
 		e.printStackTrace();
 	}
 	
 	if(jObj.getString("task").equalsIgnoreCase("getMandalNames")){
 		//String name, Long districtId
-		Long districtId=new Long(jObj.getString("districtId"));
+		Long districtId=Long.valueOf(jObj.getString("districtId"));
 		
 		mandalNames=socialService.findByTehsilNameAndDistrict(districtId);
 	}
@@ -810,16 +810,16 @@ public String callAjaxHandlerCasteNamesByAutoPopulate(){
 	param=getTask();
 	try{
 		jObj = new JSONObject(param);
-		System.out.println(jObj);
+		LOG.info(jObj);
 	} catch (ParseException e) {
 		e.printStackTrace();
 	}
 	
 	if(jObj.getString("task").equalsIgnoreCase("getCasteNamesByUsingAutoPopuate")){
 		
-		Long stateId=new Long(jObj.getString("stateId"));
+		Long stateId=Long.valueOf(jObj.getString("stateId"));
 		String letters=jObj.getString("letters");
-	resultNames=socialService.getCasteNamesByAutoPopulate(new Long(stateId),letters);
+	resultNames=socialService.getCasteNamesByAutoPopulate(Long.valueOf(stateId),letters);
 	
 	}
 	return Action.SUCCESS;

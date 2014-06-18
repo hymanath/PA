@@ -108,8 +108,8 @@ public class ApproveMessageAction extends ActionSupport implements ServletReques
 		String selectstatus=null;
 		String decidestatus=null;
 		
-		if(Log.isDebugEnabled())
-			Log.debug("getMessages()..............");
+		if(LOG.isDebugEnabled())
+			LOG.debug("getMessages()..............");
 
 		try {
 			jObj = new JSONObject(getTask());
@@ -138,8 +138,8 @@ public class ApproveMessageAction extends ActionSupport implements ServletReques
 		candidateCommentsList =new ArrayList<CandidateCommentsVO>();
 	
 		try {
-			if(Log.isDebugEnabled())
-				Log.debug("controlMessages().......");
+			if(LOG.isDebugEnabled())
+				LOG.debug("controlMessages().......");
 			
 			jObj = new JSONObject(getTask());
 			

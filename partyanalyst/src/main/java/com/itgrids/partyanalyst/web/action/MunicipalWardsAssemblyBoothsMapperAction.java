@@ -33,7 +33,7 @@ public class MunicipalWardsAssemblyBoothsMapperAction extends ActionSupport impl
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(LocationsHierarchyAction.class);
+	private static final Logger LOG = Logger.getLogger(LocationsHierarchyAction.class);
 	private HttpServletRequest request;
 	private ServletContext context;
 	private HttpSession session;
@@ -202,12 +202,12 @@ public class MunicipalWardsAssemblyBoothsMapperAction extends ActionSupport impl
 				parliamentConstituencyList = new ArrayList<SelectOptionVO>(0);
 				
 				String accessType =regVO.getAccessType();
-				Long accessValue= new Long(regVO.getAccessValue());
+				Long accessValue= Long.valueOf(regVO.getAccessValue());
 				
 				
 				if("MLA".equals(accessType))
 				{
-					log.debug("Access Type = MLA ****");
+					LOG.debug("Access Type = MLA ****");
 					List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByConstituencyID(accessValue);
 					stateList.add(list.get(0));			
 					districtList.add(list.get(1));
@@ -215,12 +215,12 @@ public class MunicipalWardsAssemblyBoothsMapperAction extends ActionSupport impl
 								
 				}else if("COUNTRY".equals(accessType))
 				{
-					log.debug("Access Type = Country ****");
+					LOG.debug("Access Type = Country ****");
 					stateList = regionServiceDataImp.getStatesByCountry(accessValue);
 					stateList.add(0,new SelectOptionVO(0l,"Select State"));			
 					
 				}else if("STATE".equals(accessType)){
-					log.debug("Access Type = State ****");
+					LOG.debug("Access Type = State ****");
 					
 					String name = cadreManagementService.getStateName(accessValue);
 					SelectOptionVO obj2 = new SelectOptionVO();
@@ -231,7 +231,7 @@ public class MunicipalWardsAssemblyBoothsMapperAction extends ActionSupport impl
 					districtList.add(0,new SelectOptionVO(0l,"Select District"));
 					
 				}else if("DISTRICT".equals(accessType)){
-					log.debug("Access Type = District ****");			
+					LOG.debug("Access Type = District ****");			
 		
 					List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByDistrictID(accessValue);
 					stateList.add(list.get(0));
@@ -240,7 +240,7 @@ public class MunicipalWardsAssemblyBoothsMapperAction extends ActionSupport impl
 					constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));			
 					
 				} else if("MP".equals(accessType)){
-					log.debug("Access Type = MP ****");
+					LOG.debug("Access Type = MP ****");
 					
 					ConstituencyInfoVO constituencyInfoVO = new ConstituencyInfoVO();
 					stateList = regionServiceDataImp.getStateByParliamentConstituencyID(accessValue);
@@ -265,7 +265,7 @@ public class MunicipalWardsAssemblyBoothsMapperAction extends ActionSupport impl
 		
 		try {
 			jObj = new JSONObject(param);
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -285,7 +285,7 @@ public class MunicipalWardsAssemblyBoothsMapperAction extends ActionSupport impl
 			return ERROR;
 		try {
 			jObj = new JSONObject(param);
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -305,10 +305,10 @@ public class MunicipalWardsAssemblyBoothsMapperAction extends ActionSupport impl
 		List<Long> mappedIdsListToModify = new ArrayList<Long>();
 		
 		for(int i=0; i < boothsOrWardsOrLEBIds.length(); i++)
-			mappedIdsList.add(new Long((String)boothsOrWardsOrLEBIds.get(i)));
+			mappedIdsList.add(Long.valueOf((String)boothsOrWardsOrLEBIds.get(i)));
 		if(boothsOrWardsOrLEBIdsToModify.length()>0)
 			for(int j=0; j < boothsOrWardsOrLEBIdsToModify.length(); j++)
-				mappedIdsListToModify.add(new Long((String)boothsOrWardsOrLEBIdsToModify.get(j)));
+				mappedIdsListToModify.add(Long.valueOf((String)boothsOrWardsOrLEBIdsToModify.get(j)));
 		
 		
 		if(isBoothLevelMap)

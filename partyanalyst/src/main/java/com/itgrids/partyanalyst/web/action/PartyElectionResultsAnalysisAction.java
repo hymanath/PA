@@ -32,7 +32,7 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(PartyElectionResultsAnalysisAction.class);
+	private static final Logger LOG = Logger.getLogger(PartyElectionResultsAnalysisAction.class);
 	private HttpServletRequest request;	
 	private HttpSession session;
 	private ServletContext context;
@@ -310,22 +310,22 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 		param = getTask();
 		try {
 			jObj = new JSONObject(param);
-			if(log.isDebugEnabled())
-				log.debug(jObj);			
+			if(LOG.isDebugEnabled())
+				LOG.debug(jObj);			
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		
 		if(jObj.getString("task").equalsIgnoreCase("getCandidateComments"))
 		{
-			Long electionId = new Long(jObj.getString("electionId"));
-			Long partyId = new Long(jObj.getString("partyId"));
-			Long stateId = new Long(jObj.getString("stateId"));
-			if(log.isDebugEnabled())
+			Long electionId = Long.valueOf(jObj.getString("electionId"));
+			Long partyId = Long.valueOf(jObj.getString("partyId"));
+			Long stateId = Long.valueOf(jObj.getString("stateId"));
+			if(LOG.isDebugEnabled())
 			{
-				log.debug("Entered in to Action");
-				log.debug("electionId::::::::::::"+electionId);
-				log.debug("partyId:::::::::::"+partyId);			
+				LOG.debug("Entered in to Action");
+				LOG.debug("electionId::::::::::::"+electionId);
+				LOG.debug("partyId:::::::::::"+partyId);			
 			}
 		
 		
@@ -343,15 +343,15 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 		param = getTask();
 		try {
 			jObj = new JSONObject(param);
-			if(log.isDebugEnabled())
-				log.debug(jObj);			
+			if(LOG.isDebugEnabled())
+				LOG.debug(jObj);			
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		
-		Long electionId = new Long(jObj.getString("electionId"));
-		Long partyId = new Long(jObj.getString("partyId"));
-		Long stateId = new Long(jObj.getString("stateId"));
+		Long electionId = Long.valueOf(jObj.getString("electionId"));
+		Long partyId = Long.valueOf(jObj.getString("partyId"));
+		Long stateId = Long.valueOf(jObj.getString("stateId"));
 		
 		if(jObj.getString("status").equalsIgnoreCase("notAnalyzed"))
 		{			
@@ -367,16 +367,16 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 		param = getTask();
 		try {
 			jObj = new JSONObject(param);
-			if(log.isDebugEnabled())
-				log.debug(jObj);			
+			if(LOG.isDebugEnabled())
+				LOG.debug(jObj);			
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		
-		Long electionId = new Long(jObj.getString("electionId"));
-		Long partyId = new Long(jObj.getString("partyId"));
+		Long electionId = Long.valueOf(jObj.getString("electionId"));
+		Long partyId = Long.valueOf(jObj.getString("partyId"));
 		String position = jObj.getString("position");
-		Long stateId = new Long(jObj.getString("stateId"));
+		Long stateId = Long.valueOf(jObj.getString("stateId"));
 		
 		String category = null;
 		if(position.equals("Won"))
@@ -384,7 +384,7 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 		else if(position.equals("Lost"))
 			category = IConstants.CANDIDATE_COMMENTS_LOST;
 			
-		electionBasicCommentsVOList = analysisReportService.getCandidateCommentDetailsInAnElection(electionId, partyId,category,new Long(0),stateId);
+		electionBasicCommentsVOList = analysisReportService.getCandidateCommentDetailsInAnElection(electionId, partyId,category,Long.valueOf(0),stateId);
 		return Action.SUCCESS;
 	}
 	
@@ -396,15 +396,15 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 		param = getTask();
 		try {
 			jObj = new JSONObject(param);
-			if(log.isDebugEnabled())
-				log.debug(jObj);			
+			if(LOG.isDebugEnabled())
+				LOG.debug(jObj);			
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		
-		Long electionId = new Long(jObj.getString("electionId"));
-		Long partyId = new Long(jObj.getString("partyId"));
-		Long stateId = new Long(jObj.getString("stateId"));
+		Long electionId = Long.valueOf(jObj.getString("electionId"));
+		Long partyId = Long.valueOf(jObj.getString("partyId"));
+		Long stateId = Long.valueOf(jObj.getString("stateId"));
 		String position = jObj.getString("position");
 		
 		String category = null;
@@ -427,17 +427,17 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 		param = getTask();
 		try {
 			jObj = new JSONObject(param);
-			if(log.isDebugEnabled())
-				log.debug(jObj);			
+			if(LOG.isDebugEnabled())
+				LOG.debug(jObj);			
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		
-		Long electionId = new Long(jObj.getString("electionId"));
-		Long partyId = new Long(jObj.getString("partyId"));
-		Long stateId = new Long(jObj.getString("stateId"));
+		Long electionId = Long.valueOf(jObj.getString("electionId"));
+		Long partyId = Long.valueOf(jObj.getString("partyId"));
+		Long stateId = Long.valueOf(jObj.getString("stateId"));
 		String position = jObj.getString("position");
-		Long categoryTypeId = new Long(jObj.getString("categoryId"));
+		Long categoryTypeId = Long.valueOf(jObj.getString("categoryId"));
 		
 		String category = null;
 		if(position.equals("Won"))
@@ -456,24 +456,24 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 		param = getTask();
 		try {
 			jObj = new JSONObject(param);
-			if(log.isDebugEnabled())
-				log.debug(jObj);			
+			if(LOG.isDebugEnabled())
+				LOG.debug(jObj);			
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		List<Long> constituencyIds=new ArrayList<Long>();
-		Long electionId = new Long(jObj.getString("electionId"));
-		Long partyId = new Long(jObj.getString("partyId"));
-		Long stateId = new Long(jObj.getString("stateId"));
+		Long electionId = Long.valueOf(jObj.getString("electionId"));
+		Long partyId = Long.valueOf(jObj.getString("partyId"));
+		Long stateId = Long.valueOf(jObj.getString("stateId"));
 		String position = jObj.getString("position");
-		Long categoryTypeId = new Long(jObj.getString("categoryId"));
+		Long categoryTypeId = Long.valueOf(jObj.getString("categoryId"));
 		JSONArray jsonArray = jObj.getJSONArray("constituencyId");
 		if(jsonArray != null && jsonArray.length() > 0)
 			for(int i = 0 ; i < jsonArray.length() ; i++)
 			{
 				if(jsonArray.get(i) != null)
 				{
-					constituencyIds.add(new Long(jsonArray.get(i).toString()));
+					constituencyIds.add(Long.valueOf(jsonArray.get(i).toString()));
 				}
 			}
 		String category = null;
@@ -494,8 +494,8 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 		param = getTask();
 		try {
 			jObj = new JSONObject(param);
-			if(log.isDebugEnabled())
-				log.debug(jObj);			
+			if(LOG.isDebugEnabled())
+				LOG.debug(jObj);			
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -503,21 +503,21 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 		
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		Long userId =  regVO.getRegistrationID();
-		Long partyId = new Long(jObj.getString("partyId"));
-		Long electionId = new Long(jObj.getString("electionId"));
+		Long partyId = Long.valueOf(jObj.getString("partyId"));
+		Long electionId = Long.valueOf(jObj.getString("electionId"));
 		String resultStatus = jObj.getString("resultStatus");
-		Long clickIndex = new Long(jObj.getString("clickIndex"));	
-		Long locationId= new Long(jObj.getString("locationId"));
-		Long reportLevel = new Long(jObj.getString("reportLevel"));
-		Long stateId = new Long(jObj.getString("stateId"));;
-		Long districtId = new Long(0);
+		Long clickIndex = Long.valueOf(jObj.getString("clickIndex"));	
+		Long locationId= Long.valueOf(jObj.getString("locationId"));
+		Long reportLevel = Long.valueOf(jObj.getString("reportLevel"));
+		Long stateId = Long.valueOf(jObj.getString("stateId"));;
+		Long districtId = Long.valueOf(0);
 		
 		if(reportLevel != null && reportLevel.equals(1L))
 			stateId = locationId;
 		else if(reportLevel != null && reportLevel.equals(2L))
 			districtId = locationId;
 		
-		System.out.println(" Report Type :" + reportLevel + " Location ID :" + locationId);
+		LOG.info(" Report Type :" + reportLevel + " Location ID :" + locationId);
 		
 		String category = null;
 		if(resultStatus.equalsIgnoreCase("WON"))
@@ -537,16 +537,16 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 		param = getTask();
 		try {
 			jObj = new JSONObject(param);
-			if(log.isDebugEnabled())
-				log.debug(jObj);			
+			if(LOG.isDebugEnabled())
+				LOG.debug(jObj);			
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		
-		Long partyId = new Long(jObj.getString("partyId"));
-		Long electionId = new Long(jObj.getString("electionId"));
+		Long partyId = Long.valueOf(jObj.getString("partyId"));
+		Long electionId = Long.valueOf(jObj.getString("electionId"));
 		String resultStatus = jObj.getString("resultStatus");
-		Long clickIndex = new Long(jObj.getString("clickIndex"));		
+		Long clickIndex = Long.valueOf(jObj.getString("clickIndex"));		
 		
 		String category = null;
 		if(resultStatus.equalsIgnoreCase("WON"))
@@ -554,8 +554,8 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 		else if(resultStatus.equalsIgnoreCase("LOST"))
 			category = IConstants.CANDIDATE_COMMENTS_LOST;
 		
-		electionBasicCommentsVOList = analysisReportService.getCandidateCommentsForAnPartyInAnElectionForParticularVotesMargin(electionId, partyId, category, clickIndex, new Long(0));
-		//electionBasicCommentsVOList = analysisReportService.getCandidateCommentsFromNominationIds(partyId, nominationIdsList, new Long(0));
+		electionBasicCommentsVOList = analysisReportService.getCandidateCommentsForAnPartyInAnElectionForParticularVotesMargin(electionId, partyId, category, clickIndex, Long.valueOf(0));
+		//electionBasicCommentsVOList = analysisReportService.getCandidateCommentsFromNominationIds(partyId, nominationIdsList, Long.valueOf(0));
 		return Action.SUCCESS;
 	}
 	
@@ -566,17 +566,17 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 		param = getTask();
 		try {
 			jObj = new JSONObject(param);
-			if(log.isDebugEnabled())
-				log.debug(jObj);			
+			if(LOG.isDebugEnabled())
+				LOG.debug(jObj);			
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		
-		Long partyId = new Long(jObj.getString("partyId"));
-		Long electionId = new Long(jObj.getString("electionId"));
+		Long partyId = Long.valueOf(jObj.getString("partyId"));
+		Long electionId = Long.valueOf(jObj.getString("electionId"));
 		String resultStatus = jObj.getString("resultStatus");
-		Long clickIndex = new Long(jObj.getString("clickIndex"));		
-		Long categoryId = new Long(jObj.getString("categoryId"));
+		Long clickIndex = Long.valueOf(jObj.getString("clickIndex"));		
+		Long categoryId = Long.valueOf(jObj.getString("categoryId"));
 		
 		String category = null;
 		if(resultStatus.equalsIgnoreCase("WON"))
@@ -595,13 +595,13 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 		param = getTask();
 		try {
 			jObj = new JSONObject(param);
-			if(log.isDebugEnabled())
-				log.debug(jObj);			
+			if(LOG.isDebugEnabled())
+				LOG.debug(jObj);			
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		
-		Long nominationId = new Long(jObj.getString("nominationId"));
+		Long nominationId = Long.valueOf(jObj.getString("nominationId"));
 		
 		candidateComments = commentsDataService.getAnalyzedResonsWithRatingsForConstituencyInAnElection(true,nominationId);
 		

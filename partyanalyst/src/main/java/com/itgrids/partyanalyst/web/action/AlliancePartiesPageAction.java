@@ -10,7 +10,11 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class AlliancePartiesPageAction extends ActionSupport implements ServletRequestAware{
 
-	private HttpServletRequest request;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1785514915993862303L;
+	transient private HttpServletRequest request;
 	private IStaticDataService staticDataService;
 	private DistrictWisePartyResultVO alliancePartiesInDistrict;
 	
@@ -18,7 +22,7 @@ public class AlliancePartiesPageAction extends ActionSupport implements ServletR
 		return alliancePartiesInDistrict;
 	}
 
-	public void setAlliancePartiesInDistrict(
+	public void setAlliancePartiesInDistrict(final 
 			DistrictWisePartyResultVO alliancePartiesInDistrict) {
 		this.alliancePartiesInDistrict = alliancePartiesInDistrict;
 	}
@@ -27,17 +31,17 @@ public class AlliancePartiesPageAction extends ActionSupport implements ServletR
 		return staticDataService;
 	}
 
-	public void setStaticDataService(IStaticDataService staticDataService) {
+	public void setStaticDataService(final IStaticDataService staticDataService) {
 		this.staticDataService = staticDataService;
 	}
 
-	public void setServletRequest(HttpServletRequest request) {
+	public void setServletRequest(final HttpServletRequest request) {
 		this.request = request;
 	}
 
-	public String execute()throws Exception{
-		Long districtId = new Long(request.getParameter("districtId"));
-		String districtName = request.getParameter("districtName");
+	public String execute(){
+		final Long districtId = Long.valueOf(request.getParameter("districtId"));
+		final String districtName = request.getParameter("districtName");
 		
 		alliancePartiesInDistrict = staticDataService.getAllianceGroupsForElections(districtId);
 		alliancePartiesInDistrict.setDistrictId(districtId);

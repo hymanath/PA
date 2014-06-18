@@ -41,7 +41,7 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 	private static final long serialVersionUID = 1L;
 	
 	private HttpServletRequest request;
-	private static final Logger log = Logger.getLogger(TownshipElectionResultsAction.class);
+	private static final Logger LOG = Logger.getLogger(TownshipElectionResultsAction.class);
 	private List<ConstituencyRevenueVillagesVO> townshipWiseElectionResults;
 	private IConstituencyPageService constituencyPageService;
 	private String electionType;
@@ -196,8 +196,8 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 
 	public String execute() {
 		String cPath = request.getContextPath();
-		Long mandalId = new Long(request.getParameter("mandalId"));
-		Long electionId = new Long(request.getParameter("electionId"));
+		Long mandalId = Long.valueOf(request.getParameter("mandalId"));
+		Long electionId = Long.valueOf(request.getParameter("electionId"));
 		request.setAttribute("electionId", electionId);
 		Long electionTypeId = 0l;
 		electionType = request.getParameter("electionType");
@@ -210,7 +210,7 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 		if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
 			electionTypeId = 2l;
 			
-		log.debug("Result::mandalId="+mandalId+" electionId="+electionId);
+		LOG.debug("Result::mandalId="+mandalId+" electionId="+electionId);
 		
 		if(resultFor != null && resultFor.equalsIgnoreCase(IWebConstants.PANCHAYATS))
 			townshipWiseElectionResults = constituencyPageService.getPartiesResultsInPanchayatsGroupByMandal(mandalId, electionId);
@@ -264,7 +264,7 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 		else
 			townshipBoothDetailsVO = staticDataService.getRevenueVillageVotingTrendsByMandalAndElectionIds(tehsilId,electionId.toString());		
 		
-		//createPieChartsForTownshipVotingTrends(new Long(tehsilId),electionId.toString());	
+		//createPieChartsForTownshipVotingTrends(Long.valueOf(tehsilId),electionId.toString());	
 		return SUCCESS;
 	}
 	
@@ -330,7 +330,7 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 		
 		try {
 			jObj = new JSONObject(param);
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -342,7 +342,7 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 		String electionYear = jObj.getString("electionYear");
 		Boolean isPanchayatWise = jObj.getBoolean("isPanchayatWise");
 		
-		partyVillageLevelAnalysisVO = biElectionPageService.villageLevelPArtyAnalysis(new Long(mandalId), electionType, electionYear, Integer.parseInt(rank),isPanchayatWise);
+		partyVillageLevelAnalysisVO = biElectionPageService.villageLevelPArtyAnalysis(Long.valueOf(mandalId), electionType, electionYear, Integer.parseInt(rank),isPanchayatWise);
 		
 		return Action.SUCCESS;
 	}
@@ -354,13 +354,13 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 		
 		try {
 			jObj = new JSONObject(param);
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Long mandalId = new Long(jObj.getLong("mandalId"));
-		Long electionId = new Long(jObj.getLong("electionId"));
+		Long mandalId = Long.valueOf(jObj.getLong("mandalId"));
+		Long electionId = Long.valueOf(jObj.getLong("electionId"));
 		
 		if(jObj.getString("resultFor").equalsIgnoreCase("panchayat"))
 			townshipWiseElectionResults = constituencyPageService.getPartiesResultsInPanchayatsGroupByMandal(mandalId, electionId);

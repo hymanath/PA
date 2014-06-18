@@ -26,8 +26,6 @@ import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.ISessionConstants;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.validator.annotations.RegexFieldValidator;
-import com.opensymphony.xwork2.validator.annotations.RequiredFieldValidator;
-import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.ValidatorType;
 
@@ -37,14 +35,14 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(AddNewProblemSubmitAction.class);
+	private static final Logger LOG = Logger.getLogger(AddNewProblemSubmitAction.class);
 	private HttpServletRequest request;
 	private IProblemManagementService problemManagementService;
 	private HttpSession session;
 	private ProblemBeanVO problemBeanFromDB;
 	private Boolean isSuccessfullyInserted;
-	ProblemBeanVO problemBeanVO = new ProblemBeanVO();
-	FileVO fileVO=new FileVO();
+	private ProblemBeanVO problemBeanVO = new ProblemBeanVO();
+	transient final private FileVO fileVO=new FileVO();
 	
 	//form inputs
 	private String problem;
@@ -97,7 +95,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return hasFreeUserRole;
 	}
 
-	public void setHasFreeUserRole(Boolean hasFreeUserRole) {
+	public void setHasFreeUserRole(final Boolean hasFreeUserRole) {
 		this.hasFreeUserRole = hasFreeUserRole;
 	}
 
@@ -105,7 +103,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return hasPartyAnalystUserRole;
 	}
 
-	public void setHasPartyAnalystUserRole(Boolean hasPartyAnalystUserRole) {
+	public void setHasPartyAnalystUserRole(final Boolean hasPartyAnalystUserRole) {
 		this.hasPartyAnalystUserRole = hasPartyAnalystUserRole;
 	}
 
@@ -113,11 +111,11 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return fileNameList;
 	}
 
-	public void setFileNameList(List<String> fileNameList) {
+	public void setFileNameList(final List<String> fileNameList) {
 		this.fileNameList = fileNameList;
 	}
 
-	public void setServletContext(ServletContext context) {
+	public void setServletContext(final ServletContext context) {
 		this.context = context;
 	}
 
@@ -129,7 +127,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return problemBeanVO.getWindowTask();
 	}
 
-	public void setWindowTask(String windowTask) {
+	public void setWindowTask(final String windowTask) {
 		problemBeanVO.setWindowTask(windowTask);
 	}
 
@@ -137,7 +135,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return problemBeanVO.getProblemId();
 	}
 
-	public void setProblemId(Long announcementId) {
+	public void setProblemId(final Long announcementId) {
 		problemBeanVO.setProblemId(announcementId);
 	}
 
@@ -145,7 +143,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return userImage;
 	}
 
-	public void setUserImage(List<File> userImage) {
+	public void setUserImage(final List<File> userImage) {
 		this.userImage = userImage;
 	}
 
@@ -153,7 +151,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return userImageContentType;
 	}
 
-	public void setUserImageContentType(List<String> userImageContentType) {
+	public void setUserImageContentType(final List<String> userImageContentType) {
 		this.userImageContentType = userImageContentType;
 	}
 
@@ -161,7 +159,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return userImageFileName;
 	}
 
-	public void setUserImageFileName(List<String> userImageFileName) {
+	public void setUserImageFileName(final List<String> userImageFileName) {
 		this.userImageFileName = userImageFileName;
 	}
 
@@ -173,11 +171,11 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return problemFilePathList;
 	}
 
-	public void setProblemFilePathList(List<String> problemFilePathList) {
+	public void setProblemFilePathList(final List<String> problemFilePathList) {
 		this.problemFilePathList = problemFilePathList;
 	}
 
-	public void setContentType(List<String> contentType) {
+	public void setContentType(final List<String> contentType) {
 		this.contentType = contentType;
 	}
 
@@ -185,7 +183,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return fileTitle;
 	}
 
-	public void setFileTitle(List<String> fileTitle) {
+	public void setFileTitle(final List<String> fileTitle) {
 		this.fileTitle = fileTitle;
 	}
 
@@ -193,11 +191,11 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return fileDescription;
 	}
 
-	public void setFileDescription(List<String> fileDescription) {
+	public void setFileDescription(final List<String> fileDescription) {
 		this.fileDescription = fileDescription;
 	}
 
-	public void setServletRequest(HttpServletRequest request) {
+	public void setServletRequest(final HttpServletRequest request) {
 		this.request = request;		
 	}	
 	
@@ -205,7 +203,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return request;
 	}
 
-	public void setRequest(HttpServletRequest request) {
+	public void setRequest(final HttpServletRequest request) {
 		this.request = request;
 	}
 	
@@ -213,7 +211,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return problemBeanVO;
 	}
 
-	public void setProblemBeanVO(ProblemBeanVO problemBeanVO) {
+	public void setProblemBeanVO(final ProblemBeanVO problemBeanVO) {
 		this.problemBeanVO = problemBeanVO;
 	}
 
@@ -221,7 +219,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return problemManagementService;
 	}
 
-	public void setProblemManagementService(
+	public void setProblemManagementService(final 
 			IProblemManagementService problemManagementService) {
 		this.problemManagementService = problemManagementService;
 	}
@@ -230,7 +228,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return session;
 	}
 
-	public void setSession(HttpSession session) {
+	public void setSession(final HttpSession session) {
 		this.session = session;
 	}
 	
@@ -238,7 +236,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return problemBeanFromDB;
 	}
 
-	public void setProblemBeanFromDB(ProblemBeanVO problemBeanFromDB) {
+	public void setProblemBeanFromDB(final ProblemBeanVO problemBeanFromDB) {
 		this.problemBeanFromDB = problemBeanFromDB;
 	}
 	
@@ -246,7 +244,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return isSuccessfullyInserted;
 	}
 
-	public void setIsSuccessfullyInserted(Boolean isSuccessfullyInserted) {
+	public void setIsSuccessfullyInserted(final Boolean isSuccessfullyInserted) {
 		this.isSuccessfullyInserted = isSuccessfullyInserted;
 	}
 
@@ -254,7 +252,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return problemManagementReportService;
 	}
 
-	public void setProblemManagementReportService(
+	public void setProblemManagementReportService(final 
 			IProblemManagementReportService problemManagementReportService) {
 		this.problemManagementReportService = problemManagementReportService;
 	}
@@ -266,7 +264,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return problemVisibility;
 	}
 
-	public void setProblemVisibility(String problemVisibility) {
+	public void setProblemVisibility(final String problemVisibility) {
 		this.problemVisibility = problemVisibility;
 	}
 	
@@ -274,9 +272,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return problemBeanVO.getProblem();
 	}
 	
-	//@RequiredStringValidator(type = ValidatorType.FIELD, message = "Problem field is mandatory",shortCircuit=true)
-	//@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z ]+$", message = "Problem field should not contain special characters and numbers", shortCircuit = true)
-	public void setProblem(String problem) {
+	public void setProblem(final String problem) {
 		this.problemBeanVO.setProblem(problem);
 	}
 
@@ -284,9 +280,8 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return problemBeanVO.getDescription();
 	}
 	
-	//@RequiredStringValidator(type = ValidatorType.FIELD, message = "Description field is mandatory",shortCircuit=true)
 	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Description Should be below 500 characters ", maxLength = "500")	
-	public void setDescription(String description) {
+	public void setDescription(final String description) {
 		this.problemBeanVO.setDescription(description);
 	}
 
@@ -294,7 +289,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return problemBeanVO.getState();
 	}
 	
-	public void setState(String state) {
+	public void setState(final String state) {
 		this.problemBeanVO.setState(state);
 	}
 
@@ -302,7 +297,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return problemBeanVO.getDistrict();
 	}	
 	
-	public void setDistrict(String district) {
+	public void setDistrict(final String district) {
 		this.problemBeanVO.setDistrict(district);
 	}
 
@@ -310,7 +305,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return parliamentConstituency;
 	}
 	
-	public void setParliamentConstituency(String parliamentConstituency) {
+	public void setParliamentConstituency(final String parliamentConstituency) {
 		this.parliamentConstituency = parliamentConstituency;
 	}
 
@@ -318,7 +313,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return problemBeanVO.getConstituency();
 	}	
 	
-	public void setConstituency(String constituency) {
+	public void setConstituency(final String constituency) {
 		this.problemBeanVO.setConstituency(constituency);
 	}
 
@@ -326,7 +321,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return problemBeanVO.getTehsil();
 	}	
 	
-	public void setMandal(String mandal) {
+	public void setMandal(final String mandal) {
 		this.problemBeanVO.setTehsil(mandal);
 	}
 
@@ -334,7 +329,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return problemBeanVO.getVillage();
 	}	
 	
-	public void setVillage(String village) {
+	public void setVillage(final String village) {
 		this.problemBeanVO.setVillage(village);
 	}
 	
@@ -342,7 +337,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return problemBeanVO.getBooth();
 	}
 
-	public void setBooth(String booth) {
+	public void setBooth(final String booth) {
 		this.problemBeanVO.setBooth(booth);
 	}
 
@@ -350,31 +345,23 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return problemBeanVO.getReportedDate();
 	}
 
-	public void setReportedDate(String reportedDate) {
+	public void setReportedDate(final String reportedDate) {
 		this.problemBeanVO.setReportedDate(reportedDate);
 	}
-	//@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select Existing From Date",shortCircuit=true)
+	
 	public String getExistingFrom() {
 		return problemBeanVO.getExistingFrom();
 	}
 
-	public void setExistingFrom(String existingFromDate) {
+	public void setExistingFrom(final String existingFromDate) {
 		this.problemBeanVO.setExistingFrom(existingFromDate);
 	}
 
-	/*public String getProbSource() {
-		return probSource;
-	}
-	
-	public void setProbSource(String probSource) {
-		this.probSource = probSource;
-		this.problemBeanVO.setProbSourceId(Long.parseLong(probSource));
-	}*/
 	public String getProblemSourceScopeId() {
 		return probSource;
 	}
 	
-	public void setProblemSourceScopeId(Long problemSourceScopeId) {
+	public void setProblemSourceScopeId(final Long problemSourceScopeId) {
 		this.problemSourceScopeId = problemSourceScopeId;
 		this.problemBeanVO.setProbSourceId(problemSourceScopeId);
 	}
@@ -384,8 +371,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return name;
 	}
 	
-	//@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z ]+$", message = "Complained Person Name field should not contain special characters and numbers", shortCircuit = true)
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 	
@@ -393,23 +379,23 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return mobile;
 	}
 	
-	//@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([789]{1})([0123456789]{1})([0-9]{8})$", message = "Mobile Number Should Not Contain Special Characters in Complained Person Details.", shortCircuit = true)
-	public void setMobile(String mobile) {
+
+	public void setMobile(final String mobile) {
 		this.mobile = mobile;
 	}
 
 	public String getPhone() {
 		return phone;
 	}
-	//@RegexFieldValidator(type = ValidatorType.FIELD, expression ="^[0-9 ]+[0-9]*$", message = "Invalid Telephone Number", shortCircuit = true)
-	public void setPhone(String phone) {
+	
+	public void setPhone(final String phone) {
 		this.phone = phone;
 	}
 
 	public String getEmail() {
 		return email;
 	}
-	public void setEmail(String email) {
+	public void setEmail(final String email) {
 		this.email = email;
 	}
 	
@@ -417,7 +403,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return address;
 	}
 
-	public void setAddress(String address) {
+	public void setAddress(final String address) {
 		this.address = address;
 	}	
 	
@@ -425,7 +411,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return problemBeanVO.getProblemStatusId();
 	}
 
-	public void setStatus(Long status) {
+	public void setStatus(final Long status) {
 		this.problemBeanVO.setProblemStatusId(status);
 	}	
 
@@ -435,11 +421,11 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return problemBeanVO.getProblemImpactLevelId();
 	}
 
-	public void setProblemScope(Long problemScopeId) {
+	public void setProblemScope(final Long problemScopeId) {
 		this.problemBeanVO.setProblemImpactLevelId(problemScopeId);
 	}
 	
-	public void setProblemTypeId(Long problemTypeId) {
+	public void setProblemTypeId(final Long problemTypeId) {
 		this.problemBeanVO.setProblemTypeId(problemTypeId);
 	}
 
@@ -451,7 +437,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return defaultStateId;
 	}
 
-	public void setDefaultStateId(String defaultStateId) {
+	public void setDefaultStateId(final String defaultStateId) {
 		this.defaultStateId = defaultStateId;
 	}
 
@@ -459,7 +445,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return defaultDistId;
 	}
 
-	public void setDefaultDistId(String defaultDistId) {
+	public void setDefaultDistId(final String defaultDistId) {
 		this.defaultDistId = defaultDistId;
 	}
 
@@ -467,26 +453,28 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return defaultConstId;
 	}
 
-	public void setDefaultConstId(String defaultConstId) {
+	public void setDefaultConstId(final String defaultConstId) {
 		this.defaultConstId = defaultConstId;
 	}
 
 	public String getDefaultState() {
-		if(this.problemBeanVO.getState() != null && !this.problemBeanVO.getState().isEmpty())
+		if(this.problemBeanVO.getState() != null && !this.problemBeanVO.getState().isEmpty()){
 			return this.problemBeanVO.getState();
+		}
 		return getDefaultStateId();
 	}
 	
 	public String getDefaultDistrict() {
-		if(this.problemBeanVO.getDistrict() != null && !this.problemBeanVO.getDistrict().isEmpty())
+		if(this.problemBeanVO.getDistrict() != null && !this.problemBeanVO.getDistrict().isEmpty()){
 			return this.problemBeanVO.getDistrict();		
+		}
 		return getDefaultDistId();
 	}	
 
 	public String getDefaultConstituency() {
-		if(this.problemBeanVO.getConstituency() != null && !this.problemBeanVO.getConstituency().isEmpty())
+		if(this.problemBeanVO.getConstituency() != null && !this.problemBeanVO.getConstituency().isEmpty()){
 			return this.problemBeanVO.getConstituency();
-		
+		}
 		return getDefaultConstId();
 	}
 
@@ -494,9 +482,8 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return problemBeanVO.getProblemImpactLevelValue();
 	}
 	
-	//@RequiredFieldValidator(type = ValidatorType.FIELD, message = "Problem Location is Mandatory",shortCircuit=true)
 	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Select valid Problem Location")	
-	public void setProblemLocationId(Long problemLocationId) {
+	public void setProblemLocationId(final Long problemLocationId) {
 		this.problemBeanVO.setProblemImpactLevelValue(problemLocationId);
 	}	
 
@@ -504,14 +491,15 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return defaultScopeId;
 	}
 
-	public void setDefaultScopeId(String defaultScopeId) {
+	public void setDefaultScopeId(final String defaultScopeId) {
 		this.defaultScopeId = defaultScopeId;
 	}
 	
 	public String getDefaultScope()
 	{
-		if(this.problemBeanVO.getProblemImpactLevelId() != null)
+		if(this.problemBeanVO.getProblemImpactLevelId() != null){
 			return problemBeanVO.getProblemImpactLevelId().toString();
+		}
 		return this.defaultScopeId;
 	}	
 
@@ -519,7 +507,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return isParliament;
 	}
 
-	public void setIsParliament(Boolean isParliament) {
+	public void setIsParliament(final Boolean isParliament) {
 		this.isParliament = isParliament;
 	}	
 
@@ -527,7 +515,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return pConstituencyId;
 	}
 
-	public void setPConstituencyId(Long constituencyId) {
+	public void setPConstituencyId(final Long constituencyId) {
 		pConstituencyId = constituencyId;
 	}
 	
@@ -535,7 +523,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return 	this.problemBeanVO.getCadreId();
 	}
 
-	public void setCadreId(Long cadreId) {
+	public void setCadreId(final Long cadreId) {
 		this.problemBeanVO.setCadreId(cadreId);
 	}
 
@@ -548,37 +536,32 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return callTracking;
 	}
 
-	public void setCallTracking(String callTracking) {
+	public void setCallTracking(final String callTracking) {
 		this.callTracking = callTracking;
 	}
 	
-	public String execute() throws Exception
+	public String execute()
 	{
 		session = request.getSession();
-		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		final RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		hasFreeUserRole = (Boolean)session.getAttribute("hasFreeUserRole"); 
 		hasPartyAnalystUserRole = (Boolean)session.getAttribute("hasPartyAnalystUserRole");
 		
 		
-		if(user==null)
+		if(user==null){
 			return ERROR;
+		}
 		problemBeanVO.setHasFreeUserRole(hasFreeUserRole);
 		problemBeanVO.setHasPartyAnalystUserRole(hasPartyAnalystUserRole);
 		
-		/*if(user.getParentUserId() == null || user.getParentUserId() == 0)
-		{*/
-			problemBeanVO.setUserID(user.getRegistrationID());
-			problemBeanVO.setSubUserId(user.getRegistrationID());
-		/*}
-		else
-		{
-			problemBeanVO.setUserID(user.getMainAccountId());
-			problemBeanVO.setSubUserId(user.getRegistrationID());
-		}*/
+	
+		problemBeanVO.setUserID(user.getRegistrationID());
+		problemBeanVO.setSubUserId(user.getRegistrationID());
 		
-		if(user.getUserStatus().equals(IConstants.PARTY_ANALYST_USER))
+		
+		if(user.getUserStatus().equals(IConstants.PARTY_ANALYST_USER)){
 			problemBeanVO.setProblemPostedBy(IConstants.PARTY_ANALYST_USER);
-		else
+		}else
 		{
 			problemBeanVO.setProblemPostedBy(IConstants.FREE_USER);
 			problemBeanVO.setProbSourceId(0L);
@@ -598,47 +581,10 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		fileVO.setFileDescription(getFileDescription());
 		
 		try {
-			String fileName;
-			
-			String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
-			
-			String filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + IConstants.UPLOADED_FILES +pathSeperator+"Problem_Files"+pathSeperator;
-			
-			problemFilePathList = new ArrayList<String>();
-			
-			fileNameList = new ArrayList<String>();
-			for (int i = 0; i < userImage.size(); i++) 
-			{
-				Random random = new Random();
-				int randomNumber = random.nextInt(10000000);
-				Long systime = System.currentTimeMillis();
-				
-				StringTokenizer st = new StringTokenizer(userImageContentType.get(i), "/");
-				
-				while(st.hasMoreTokens()) 
-				{
-				String key = st.nextToken();
-				String val = st.nextToken();
-				
-				if(userImageContentType.get(i).equalsIgnoreCase("text/plain"))
-					fileName = systime.toString()+randomNumber+"."+key;
-				else
-				  fileName = systime.toString()+randomNumber+"."+val;
-				
-				fileNameList.add(fileName);
-				problemFilePathList.add(IWebConstants.UPLOADED_FILES+"/Problem_Files/"+fileName);
-				
-				File fileToCreate = new File(filePath, fileName);
-				FileUtils.copyFile(userImage.get(i), fileToCreate);
-				contentType.add(val);
-				}
-			}
-			
-			fileVO.setFileContentType(getContentType());
-			fileVO.setFileName(fileNameList);
-			
+			copyFiles();
 		} catch (Exception e) {
 			addActionError(e.getMessage());
+			LOG.error("Exception rised in execute ",e);
 		}
 		fileVO.setFilePath(problemFilePathList);
 		problemBeanVO.setFileVO(fileVO);
@@ -668,58 +614,101 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 			 }
 			 problemBeanVO = new ProblemBeanVO();
 			 
-		 } else 
+		 } else{ 
 			 isSuccessfullyInserted = false;
+		 }
 		 request.setAttribute("callTracking", getCallTracking());
 		return SUCCESS;
 	}
 	
+	private void copyFiles() throws Exception{
+
+		String fileName;
+		
+		final String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+		
+		final String filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + IConstants.UPLOADED_FILES +pathSeperator+"Problem_Files"+pathSeperator;
+		
+		problemFilePathList = new ArrayList<String>();
+		
+		fileNameList = new ArrayList<String>();
+		final Random random = new Random();
+		for (int i = 0; i < userImage.size(); i++) 
+		{
+			
+			final int randomNumber = random.nextInt(10000000);
+			final Long systime = System.currentTimeMillis();
+			
+			final StringTokenizer tokens = new StringTokenizer(userImageContentType.get(i), "/");
+			
+			while(tokens.hasMoreTokens()) 
+			{
+			final String key = tokens.nextToken();
+			final String val = tokens.nextToken();
+			
+			if(userImageContentType.get(i).equalsIgnoreCase("text/plain")){
+				fileName = systime.toString()+randomNumber+"."+key;
+			}else{
+			  fileName = systime.toString()+randomNumber+"."+val;
+			}
+			fileNameList.add(fileName);
+			problemFilePathList.add(IWebConstants.UPLOADED_FILES+"/Problem_Files/"+fileName);
+			
+			final File fileToCreate = new File(filePath, fileName);
+			FileUtils.copyFile(userImage.get(i), fileToCreate);
+			contentType.add(val);
+			}
+		}
+		
+		fileVO.setFileContentType(getContentType());
+		fileVO.setFileName(fileNameList);
+		
+	
+	}
 	public void validate()
 	{
 		session = request.getSession();
-		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		final RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
 		if(user.getUserStatus().equals(IConstants.PARTY_ANALYST_USER))
 		{
-			if(problemBeanVO.getProbSourceId() == 0)
-				addFieldError("sourceInput","Please Select Problem Source.");
-			
-			if(problemBeanVO.getProbSourceId() == 2 || problemBeanVO.getProbSourceId() == 3)
-			{
-				if(getName() == null || getName().trim().length() == 0)
-					addFieldError("nameInput","Please Enter Name in Complained Person Details.");
-			/*	if(getMobile() == null || getMobile().trim().length() == 0)
-					addFieldError("mobileInput","Please Enter Mobile Number in Complained Person Details.");*/
-				if(getMobile().equalsIgnoreCase(""))
-					addFieldError("mobileInput","Please Enter Mobile Number.");
-				if(getAddress() == null || getAddress().trim().length() == 0)
-					addFieldError("addressInput","Please Enter Address.");
-				
-				if(getEmail() != null && getEmail().trim().length() > 0)
-				{
-					if(getEmail().contains("@") && getEmail().contains(".") )
-					{													
-						 int x = getEmail().lastIndexOf("@");
-						 int y = getEmail().lastIndexOf(".");
-						 if(y<x || (x+1)== y )
-							addFieldError("emailInput","Please Enter Valid Email in Complained Person Details."); 
-					}
-					else
-					{
-						 addFieldError("emailInput","Please Enter Valid Email in Complained Person Details.");
-					}
-				}
-			}
-			
-			if(problemBeanVO.getProbSourceId() == 4 && (problemBeanVO.getCadreId() == null ||
+			if(problemBeanVO.getProbSourceId() == 0){
+				addFieldError("sourceInput","Please Select Problem Source.");	
+			}else if(problemBeanVO.getProbSourceId() == 2 || problemBeanVO.getProbSourceId() == 3){
+				validateDetails();
+			}else if(problemBeanVO.getProbSourceId() == 4 && (problemBeanVO.getCadreId() == null ||
 					problemBeanVO.getCadreId() == 0l))
 			{
 				addFieldError("cadreInput","Please Select Cadre From cadre Search.");
 			}
 		}
 		
-		user = null;
 	 }
 	
-	
+	private void validateDetails(){
+		if(getName() == null || getName().trim().length() == 0){
+			addFieldError("nameInput","Please Enter Name in Complained Person Details.");
+		}
+		if(getMobile().equalsIgnoreCase("")){
+			addFieldError("mobileInput","Please Enter Mobile Number.");
+		}
+		if(getAddress() == null || getAddress().trim().length() == 0){
+			addFieldError("addressInput","Please Enter Address.");
+		}
+		if(getEmail() != null && getEmail().trim().length() > 0)
+		{
+			if(getEmail().contains("@") && getEmail().contains(".") )
+			{													
+				final int atIndec = getEmail().lastIndexOf("@");
+				final int dotIndec = getEmail().lastIndexOf(".");
+				 if(dotIndec<atIndec || (atIndec+1)== dotIndec ){
+					addFieldError("emailInput","Please Enter Valid Email in Complained Person Details.");
+				 }
+			}
+			else
+			{
+				 addFieldError("emailInput","Please Enter Valid Email in Complained Person Details.");
+			}
+		}
+	}
 }

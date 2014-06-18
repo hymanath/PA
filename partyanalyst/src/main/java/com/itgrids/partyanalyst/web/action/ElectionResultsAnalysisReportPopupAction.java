@@ -30,7 +30,7 @@ public class ElectionResultsAnalysisReportPopupAction extends ActionSupport impl
 	 */
 	private static final long serialVersionUID = 1L;
 	private ServletContext context;
-	private static final Logger log = Logger.getLogger(ElectionResultsAnalysisReportPopupAction.class);
+	private static final Logger LOG = Logger.getLogger(ElectionResultsAnalysisReportPopupAction.class);
 	private HttpServletRequest request;
 	private IStaticDataService staticDataService; 
 	private HttpSession session;
@@ -204,8 +204,8 @@ public class ElectionResultsAnalysisReportPopupAction extends ActionSupport impl
 		param = getTask();
 		try {
 			jObj = new JSONObject(param);
-			if(log.isDebugEnabled())
-				log.debug(jObj);			
+			if(LOG.isDebugEnabled())
+				LOG.debug(jObj);			
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -216,9 +216,9 @@ public class ElectionResultsAnalysisReportPopupAction extends ActionSupport impl
 			partyAnalysisReportVO = new PartyAnalysisReportVO();
 			String electionType = jObj.getString("electionType");
 			String electionYear = jObj.getString("electionYear");
-			Long stateId = new Long(jObj.getString("stateId"));
-			Long partyId = new Long(jObj.getString("partyId"));
-			Long electionTypeId = new Long(jObj.getString("electionTypeId"));
+			Long stateId = Long.valueOf(jObj.getString("stateId"));
+			Long partyId = Long.valueOf(jObj.getString("partyId"));
+			Long electionTypeId = Long.valueOf(jObj.getString("electionTypeId"));
 			List<SelectOptionVO> parties = new ArrayList<SelectOptionVO>();
 			List<SelectOptionVO> years = new ArrayList<SelectOptionVO>();
 			Long electionId = jObj.getLong("electionId");
@@ -233,7 +233,7 @@ public class ElectionResultsAnalysisReportPopupAction extends ActionSupport impl
 	/*//Method To Create Chart for Analysis Results
 	public void createChartForAnalysisResults(PartyAnalysisReportVO partyAnalysisReportVO){
 		
-		log.debug("Inside createChartForAnalysisResults Method....");
+		LOG.debug("Inside createChartForAnalysisResults Method....");
 		session = request.getSession();
 		String cPath = request.getContextPath();
 		
@@ -309,14 +309,14 @@ public class ElectionResultsAnalysisReportPopupAction extends ActionSupport impl
 			}
 			catch(Exception ex){
 				ex.printStackTrace();
-				log.debug("Exception Raised :" + ex);
+				LOG.debug("Exception Raised :" + ex);
 			}
 		}
 	}*/
 	
 	/*private CategoryDataset createDatasetForPartyAnalysisResults(PartyAnalysisBasicVO partyBasicAnalysisVO) {
 		
-		  log.debug("Inside createDatasetForPartyAnalysisResults Method....");
+		  LOG.debug("Inside createDatasetForPartyAnalysisResults Method....");
 		  String analVal = partyBasicAnalysisVO.getAnalyzedConsti().toString();
 		  String notAnalVal = partyBasicAnalysisVO.getNotAnalyzedConsti().toString();
 		  final String category3 = "Analyzed".concat("(").concat(analVal).concat(")");
@@ -334,7 +334,7 @@ public class ElectionResultsAnalysisReportPopupAction extends ActionSupport impl
 	
 	private CategoryDataset createDatasetForPartyElectionResults(PartyAnalysisBasicVO partyBasicAnalysisVO) {
 		
-		  log.debug("Inside createDatasetForPartyElectionResults Method....");
+		  LOG.debug("Inside createDatasetForPartyElectionResults Method....");
 		  String wonVal = partyBasicAnalysisVO.getSeatsWon().toString();
 		  String losVal = partyBasicAnalysisVO.getSeatsLost().toString();
 		  final String category1 = "Won".concat("(").concat(wonVal).concat(")");
@@ -353,8 +353,8 @@ public class ElectionResultsAnalysisReportPopupAction extends ActionSupport impl
 		param = getTask();
 		try {
 			jObj = new JSONObject(param);
-			if(log.isDebugEnabled())
-				log.debug(jObj);			
+			if(LOG.isDebugEnabled())
+				LOG.debug(jObj);			
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -362,10 +362,10 @@ public class ElectionResultsAnalysisReportPopupAction extends ActionSupport impl
 		{
 			partyPositionAnalysisResultVO = new PartyPositionAnalysisResultVO();
 			String electionType = jObj.getString("electionType");
-			Long electionId = new Long(jObj.getString("electionId"));
-			Long stateId = new Long(jObj.getString("stateId"));
+			Long electionId = Long.valueOf(jObj.getString("electionId"));
+			Long stateId = Long.valueOf(jObj.getString("stateId"));
 			String electionYear = jObj.getString("electionYear");
-			Long partyId = new Long(jObj.getString("partyId"));
+			Long partyId = Long.valueOf(jObj.getString("partyId"));
 			partyPositionAnalysisResultVO = analysisReportService.getAnalysisCategoryResultForAPartyInAnElection(electionType,electionYear,electionId,stateId,partyId,IConstants.CANDIDATE_COMMENTS_WON,false);
 			
 		}
@@ -373,10 +373,10 @@ public class ElectionResultsAnalysisReportPopupAction extends ActionSupport impl
 		{
 			partyPositionAnalysisResultVO = new PartyPositionAnalysisResultVO();
 			String electionType = jObj.getString("electionType");
-			Long electionId = new Long(jObj.getString("electionId"));
-			Long stateId = new Long(jObj.getString("stateId"));
+			Long electionId = Long.valueOf(jObj.getString("electionId"));
+			Long stateId = Long.valueOf(jObj.getString("stateId"));
 			String electionYear = jObj.getString("electionYear");
-			Long partyId = new Long(jObj.getString("partyId"));
+			Long partyId = Long.valueOf(jObj.getString("partyId"));
 			partyPositionAnalysisResultVO = analysisReportService.getAnalysisCategoryResultForAPartyInAnElection(electionType,electionYear,electionId,stateId,partyId,IConstants.CANDIDATE_COMMENTS_LOST,false);
 		}
 		return Action.SUCCESS;
@@ -388,14 +388,14 @@ public class ElectionResultsAnalysisReportPopupAction extends ActionSupport impl
 		param = getTask();
 		try {
 			jObj = new JSONObject(param);
-			if(log.isDebugEnabled())
-				log.debug(jObj);			
+			if(LOG.isDebugEnabled())
+				LOG.debug(jObj);			
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		
-		Long electionId = new Long(jObj.getString("electionId"));
-		Long partyId = new Long(jObj.getString("partyId"));
+		Long electionId = Long.valueOf(jObj.getString("electionId"));
+		Long partyId = Long.valueOf(jObj.getString("partyId"));
 		String status = jObj.getString("status");
 		
 		String category = null;

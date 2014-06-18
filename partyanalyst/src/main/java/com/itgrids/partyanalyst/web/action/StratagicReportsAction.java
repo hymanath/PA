@@ -112,7 +112,6 @@ public class StratagicReportsAction extends ActionSupport implements
 	private PartyPositionResultsVO locationsList;
 	private IStaticDataService staticDataService;
 	private VoterModificationVO voterModificationVO;
-	private List<VoterCountVO> VoterCountVOList;
 	private VoterDensityWithPartyVO voterDensityWithPartyVO;
 	
 	private PDFHeadingAndReturnVO voterAgeRangeVOList;
@@ -133,7 +132,7 @@ public class StratagicReportsAction extends ActionSupport implements
 	
 	
 	
-private static final Logger log = Logger.getLogger(StratagicReportsAction.class);
+private static final Logger LOG = Logger.getLogger(StratagicReportsAction.class);
 	
 	
 	public PartyWiseMarginCountsVO getPartyResultVO() {
@@ -262,14 +261,6 @@ public void setPanchayatResult(List<PartyPositionVO> panchayatResult) {
 	public void setVoterDensityWithPartyVO(
 			VoterDensityWithPartyVO voterDensityWithPartyVO) {
 		this.voterDensityWithPartyVO = voterDensityWithPartyVO;
-	}
-
-	public List<VoterCountVO> getVoterCountVOList() {
-		return VoterCountVOList;
-	}
-
-	public void setVoterCountVOList(List<VoterCountVO> voterCountVOList) {
-		VoterCountVOList = voterCountVOList;
 	}
 
 	public VoterModificationVO getVoterModificationVO() {
@@ -465,8 +456,8 @@ public void setPanchayatResult(List<PartyPositionVO> panchayatResult) {
 		
 		RegistrationVO regVO = (RegistrationVO)session.getAttribute(IConstants.USER);
 		
-		Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
-		Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
+		Long electionYear = Long.valueOf(IConstants.PRESENT_ELECTION_YEAR);
+		Long electionTypeId = Long.valueOf(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
 		userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(regVO.getRegistrationID(),electionYear,electionTypeId);
  		constituenciesList = suggestiveModelService.getConstituenciesForUserAccessByStateId(userAccessConstituencyList,electionTypeId,electionYear);
 		constituenciesList.add(0, new SelectOptionVO(0L,"Select Constituency"));
@@ -570,7 +561,7 @@ public void setPanchayatResult(List<PartyPositionVO> panchayatResult) {
 	}
 	
 	public String getVariationOfVotersOverParty(){
-			log.debug(" Entered Into getChangeByParty in StratagicReportsAction");
+			LOG.debug(" Entered Into getChangeByParty in StratagicReportsAction");
 		try{
 			jObj = new JSONObject(getTask());
 			Long constituencyId=jObj.getLong("constituencyId");
@@ -601,22 +592,19 @@ public void setPanchayatResult(List<PartyPositionVO> panchayatResult) {
 			locationsList=stratagicReportsService.getPartyChanges(constituencyId,electionIDS,partyidsList);
 			
 		}catch(Exception e){
-			log.error(" Exception Raised In getChangeByParty in StratagicReportsAction"+e);
+			LOG.error(" Exception Raised In getChangeByParty in StratagicReportsAction"+e);
 			return Action.ERROR;
 		}
 		return Action.SUCCESS;
 	}
 	
 	private String replaceString(String stringStr){
-    	stringStr = stringStr.replace("\"", "");
-    	stringStr = stringStr.replace("[", "");
-    	stringStr = stringStr.replace("]", "");;
-    	return stringStr;
+    	return stringStr.replace("\"", "").replace("[", "").replace("]", "");
     }
 	
 	
 	 public String getPartyWiseELecitonDetails(){
-	    	log.info(" entered into getPartyWiseELecitonDetails() of ElectionResultsAnalysisReportAction class.");
+	    	LOG.info(" entered into getPartyWiseELecitonDetails() of ElectionResultsAnalysisReportAction class.");
 	    	try {
 	    		session = request.getSession();
 	    		RegistrationVO regVO =(RegistrationVO) session.getAttribute("USER");
@@ -630,7 +618,7 @@ public void setPanchayatResult(List<PartyPositionVO> panchayatResult) {
 	    		
 	    		
 			} catch (Exception e) {
-				log.error(" Exception occured in  getPartyWiseELecitonDetails() of ElectionResultsAnalysisReportAction class.",e);
+				LOG.error(" Exception occured in  getPartyWiseELecitonDetails() of ElectionResultsAnalysisReportAction class.",e);
 			}
 	    	
 	    	return Action.SUCCESS;
@@ -645,7 +633,7 @@ public void setPanchayatResult(List<PartyPositionVO> panchayatResult) {
 				jObj = new JSONObject(param);		
 			}catch (Exception e) {
 				e.printStackTrace();
-				log.error("Exception Occured in getAllVoterInformationInALocation() Method, Exception - "+e);
+				LOG.error("Exception Occured in getAllVoterInformationInALocation() Method, Exception - "+e);
 			}
 			
 			Long constituencyId = jObj.getLong("constituencyId");
@@ -676,10 +664,10 @@ public void setPanchayatResult(List<PartyPositionVO> panchayatResult) {
 	 	 * 
 	 	 * */
 	 	public String getVoterDensityPanchayatWiseWithPartyResult(){
-	 		log.debug("Entered Into getVoterDensityPanchayatWiseWithPartyResult()");
+	 		LOG.debug("Entered Into getVoterDensityPanchayatWiseWithPartyResult()");
 			
 			try{
-				log.debug("Entered into getVoterscountInPanchayats() method in Suggestive Model Action");
+				LOG.debug("Entered into getVoterscountInPanchayats() method in Suggestive Model Action");
 				jObj = new JSONObject(getTask());
 				Long constituencyId = jObj.getLong("constituencyId");
 				Long publicationId = jObj.getLong("publicationId");
@@ -687,7 +675,7 @@ public void setPanchayatResult(List<PartyPositionVO> panchayatResult) {
 				
 				//stratagicReportsService.generatePDFForDensity(voterDensityWithPartyVO);
 			}catch(Exception e){
-				log.error("Exception raised in getVoterDensityPanchayatWiseWithPartyResult() method in StratagicReportAction",e);
+				LOG.error("Exception raised in getVoterDensityPanchayatWiseWithPartyResult() method in StratagicReportAction",e);
 			}
 			return Action.SUCCESS;
 	 	}
@@ -1030,7 +1018,7 @@ public void setPanchayatResult(List<PartyPositionVO> panchayatResult) {
 	}
 	/*public String buildStrategicPdf()
 	{
-		System.out.println("inside==========================================");
+		LOG.info("inside==========================================");
 		StratagicReportInputVO inputs = new StratagicReportInputVO();
 		
 		stratagicReportsServicePdf.buildPdfDelegator(inputs);
@@ -1067,8 +1055,8 @@ public void setPanchayatResult(List<PartyPositionVO> panchayatResult) {
 			constituencyVo.setId(constiId);
 			userAccessConstiList.add(constituencyVo);
 		}else if("STATE".equalsIgnoreCase(regvo.getAccessType()) || "MP".equalsIgnoreCase(regvo.getAccessType()) || "DISTRICT".equalsIgnoreCase(regvo.getAccessType()) || "COUNTRY".equalsIgnoreCase(regvo.getAccessType())){
-			Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
-			Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
+			Long electionYear = Long.valueOf(IConstants.PRESENT_ELECTION_YEAR);
+			Long electionTypeId = Long.valueOf(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
 			userAccessConstiList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(regvo.getRegistrationID(),electionYear,electionTypeId);
 		}else{
 			return Action.ERROR;
@@ -1150,7 +1138,7 @@ public void setPanchayatResult(List<PartyPositionVO> panchayatResult) {
 			if(jsonArray != null && jsonArray.length() > 0)
 				for(int i=0 ;i< jsonArray.length() ; i++)
 				{
-					locationIds.add(new Long(jsonArray.get(i).toString()));
+					locationIds.add(Long.valueOf(jsonArray.get(i).toString()));
 				}
 			
 			partyResultVO = staticDataService.getMarginAnalysisOnLiveResultsForAssemblies(electionId, type, locationIds);

@@ -516,7 +516,7 @@ public class MessageCenterAction  extends ActionSupport implements ServletReques
 		}
 		
 		accessType=registrationVO.getAccessType();
-		accessValue=new Long(registrationVO.getAccessValue());
+		accessValue=Long.valueOf(registrationVO.getAccessValue());
 		
 		Long userId = registrationVO.getRegistrationID();
 		sublevelsList=influencingPeopleService.getInfluenceRange();
@@ -572,7 +572,7 @@ public class MessageCenterAction  extends ActionSupport implements ServletReques
 			
 		}
 		
-		 areaType = regionServiceDataImp.getConstituencyAreaType(new Long(accessValue));
+		 areaType = regionServiceDataImp.getConstituencyAreaType(Long.valueOf(accessValue));
 		
 		
 		//districtList = regionServiceDataImp.getDistrictsByStateID(statesList.get(0).getId());
@@ -580,8 +580,8 @@ public class MessageCenterAction  extends ActionSupport implements ServletReques
 		
 		districtList.add(0, new SelectOptionVO(0L,"Select District"));
 		
-		Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
-		Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
+		Long electionYear = Long.valueOf(IConstants.PRESENT_ELECTION_YEAR);
+		Long electionTypeId = Long.valueOf(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
 		userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userId,electionYear,electionTypeId);
 		constituencyList = votersAnalysisService.getConstituencyList(userAccessConstituencyList);
 		constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));*/
@@ -614,7 +614,7 @@ public class MessageCenterAction  extends ActionSupport implements ServletReques
 				constituenciesList = regionServiceDataImp.getConstituenciesByAreaTypeInDistrict(locationId, areaType);
 			}
 			else{
-				constituenciesList = regionServiceDataImp.getConstituenciesByDistrictID(new Long(jObj.getString("locationId")));
+				constituenciesList = regionServiceDataImp.getConstituenciesByDistrictID(Long.valueOf(jObj.getString("locationId")));
 			}
 			constituenciesList.add(0,new SelectOptionVO(0l,"Select Constituencies"));
 			nameReturned="constituencies";
@@ -634,7 +634,7 @@ public class MessageCenterAction  extends ActionSupport implements ServletReques
 		{
 			
 			Long constituencyId = jObj.getLong("constId");
-			booths = getRegionServiceDataImp().getBoothsInTehsilOrMunicipality(locationId, new Long(IConstants.PRESENT_ELECTION_YEAR), constituencyId);
+			booths = getRegionServiceDataImp().getBoothsInTehsilOrMunicipality(locationId, Long.valueOf(IConstants.PRESENT_ELECTION_YEAR), constituencyId);
 			nameReturned="booths";
 		} else if(jObj.getString("task").equalsIgnoreCase("hamletsOrWardsInRegion"))
 		{

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
@@ -23,12 +24,13 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class CadreSearchAction extends ActionSupport implements ServletRequestAware 
 {
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-	
-	private HttpServletRequest request;
+	private static final long serialVersionUID = 8240423820642334020L;
+	private static final Logger LOG = Logger.getLogger(CadreSearchAction.class);
+	private transient HttpServletRequest request;
 	private List<SelectOptionVO> socialStatus = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> eduStatus = new ArrayList<SelectOptionVO>();
 	private Boolean isPartyCommitee;
@@ -50,13 +52,8 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 	private List<SelectOptionVO> parliamentConstituencies;
 	private List<SelectOptionVO> bloodGroupList;
 	private Long voterId;
-	JSONObject jObj = null;
 	private EntitlementsHelper entitlementsHelper;
 	private String fromParent;
-	
-	private Boolean partyCommittees_flag = false;
-	private Boolean cadreSkills_flag = false;
-	private Boolean partyTrainingCamps_flag = false;
 	
 	private List<SelectOptionVO>  designationsList ;
 
@@ -64,7 +61,7 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 		return designationsList;
 	}
 
-	public void setDesignationsList(List<SelectOptionVO> designationsList) {
+	public void setDesignationsList(final List<SelectOptionVO> designationsList) {
 		this.designationsList = designationsList;
 	}
 
@@ -72,7 +69,7 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 		return bloodGroupList;
 	}
 
-	public void setBloodGroupList(List<SelectOptionVO> bloodGroupList) {
+	public void setBloodGroupList(final List<SelectOptionVO> bloodGroupList) {
 		this.bloodGroupList = bloodGroupList;
 	}
 	
@@ -80,7 +77,7 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 		return windowTask;
 	}
 
-	public void setWindowTask(String windowTask) {
+	public void setWindowTask(final String windowTask) {
 		this.windowTask = windowTask;
 	}
 
@@ -88,7 +85,7 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 		return occupationsList;
 	}
 
-	public void setOccupationsList(List<SelectOptionVO> occupationsList) {
+	public void setOccupationsList(final List<SelectOptionVO> occupationsList) {
 		this.occupationsList = occupationsList;
 	}
 
@@ -96,7 +93,7 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 		return session;
 	}
 
-	public void setSession(HttpSession session) {
+	public void setSession(final HttpSession session) {
 		this.session = session;
 	}
 
@@ -105,7 +102,7 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 	}
 
 	public void setCadreManagementService(
-			CadreManagementService cadreManagementService) {
+			final CadreManagementService cadreManagementService) {
 		this.cadreManagementService = cadreManagementService;
 	}
 
@@ -113,7 +110,7 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 		return staticDataService;
 	}
 
-	public void setStaticDataService(IStaticDataService staticDataService) {
+	public void setStaticDataService(final IStaticDataService staticDataService) {
 		this.staticDataService = staticDataService;
 	}
 
@@ -121,7 +118,7 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 		return socialStatus;
 	}
 
-	public void setSocialStatus(List<SelectOptionVO> socialStatus) {
+	public void setSocialStatus(final List<SelectOptionVO> socialStatus) {
 		this.socialStatus = socialStatus;
 	}
 
@@ -129,7 +126,7 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 		return eduStatus;
 	}
 
-	public void setEduStatus(List<SelectOptionVO> eduStatus) {
+	public void setEduStatus(final List<SelectOptionVO> eduStatus) {
 		this.eduStatus = eduStatus;
 	}
 
@@ -137,7 +134,7 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 		return partyCommitteesList;
 	}
 
-	public void setPartyCommitteesList(List<SelectOptionVO> partyCommitteesList) {
+	public void setPartyCommitteesList(final List<SelectOptionVO> partyCommitteesList) {
 		this.partyCommitteesList = partyCommitteesList;
 	}
 
@@ -145,7 +142,7 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 		return cadreSkillsList;
 	}
 
-	public void setCadreSkillsList(List<SelectOptionVO> cadreSkillsList) {
+	public void setCadreSkillsList(final List<SelectOptionVO> cadreSkillsList) {
 		this.cadreSkillsList = cadreSkillsList;
 	}
 
@@ -154,7 +151,7 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 	}
 
 	public void setPartyTrainingCampsList(
-			List<SelectOptionVO> partyTrainingCampsList) {
+			final List<SelectOptionVO> partyTrainingCampsList) {
 		this.partyTrainingCampsList = partyTrainingCampsList;
 	}
 
@@ -162,7 +159,7 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 		return isPartyCommitee;
 	}
 
-	public void setIsPartyCommitee(Boolean isPartyCommitee) {
+	public void setIsPartyCommitee(final Boolean isPartyCommitee) {
 		this.isPartyCommitee = isPartyCommitee;
 	}
 
@@ -170,7 +167,7 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 		return isCadreSkills;
 	}
 
-	public void setIsCadreSkills(Boolean isCadreSkills) {
+	public void setIsCadreSkills(final Boolean isCadreSkills) {
 		this.isCadreSkills = isCadreSkills;
 	}
 
@@ -178,11 +175,11 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 		return isTrainingCamps;
 	}
 
-	public void setIsTrainingCamps(Boolean isTrainingCamps) {
+	public void setIsTrainingCamps(final Boolean isTrainingCamps) {
 		this.isTrainingCamps = isTrainingCamps;
 	}
 
-	public void setServletRequest(HttpServletRequest request) {
+	public void setServletRequest(final HttpServletRequest request) {
 		this.request = request;		
 	}	
 	
@@ -262,30 +259,34 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 		this.fromParent = fromParent;
 	}
 
-	public String execute() throws Exception
+	public String execute() 
 	{
 		session = request.getSession();
-		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
-		if(regVO==null)
+		final RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		if(regVO==null){
 			return ERROR;
+		}
 		if(session.getAttribute(IConstants.USER) == null && 
-				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.CADRE_MANAGEMENT_ENTITLEMENT))
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.CADRE_MANAGEMENT_ENTITLEMENT)){
 			return INPUT;
-		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CADRE_MANAGEMENT_ENTITLEMENT))
+		}
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CADRE_MANAGEMENT_ENTITLEMENT)){
 			return ERROR;
+		}
 		windowTask = request.getParameter("windowTask");
-		String accessType = regVO.getAccessType();
-		Long accessValue= new Long(regVO.getAccessValue());
+		final String all = "All";
+		final String accessType = regVO.getAccessType();
+		final Long accessValue= Long.valueOf(regVO.getAccessValue());
 		socialStatus = staticDataService.getAllSocialCategories(); 
-		socialStatus.add(0, new SelectOptionVO(0L,"All"));
+		socialStatus.add(0, new SelectOptionVO(0L,all));
 		bloodGroupList = cadreManagementService.getAllBloodGroupTypes();
-		bloodGroupList.add(0, new SelectOptionVO(0L,"All"));
+		bloodGroupList.add(0, new SelectOptionVO(0L,all));
 		
 		eduStatus = staticDataService.getAllEducationalQualifications();
-		eduStatus.add(0, new SelectOptionVO(0L,"All"));
+		eduStatus.add(0, new SelectOptionVO(0L,all));
 		
 		occupationsList = staticDataService.getAllOccupations();
-		occupationsList.add(0, new SelectOptionVO(0L,"All"));
+		occupationsList.add(0, new SelectOptionVO(0L,all));
 		//prepopulate locations based on accesstype and access values
 		stateList = new ArrayList<SelectOptionVO>();
 		districtList = new ArrayList<SelectOptionVO>();
@@ -293,7 +294,7 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 		parliamentConstituencies = regionServiceDataImp.getAllParliamentConstituenciesForAState(1l,accessValue);
 		if("MLA".equals(accessType))
 		{
-			List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByConstituencyID(accessValue);
+			final List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByConstituencyID(accessValue);
 			stateList.add(list.get(0));			
 			districtList.add(list.get(1));			
 			constituencyList.add(list.get(2));
@@ -305,8 +306,8 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 			
 		}else if("STATE".equals(accessType)){
 			
-			String name = cadreManagementService.getStateName(accessValue);
-			SelectOptionVO obj2 = new SelectOptionVO();
+			final String name = cadreManagementService.getStateName(accessValue);
+			final SelectOptionVO obj2 = new SelectOptionVO();
 			obj2.setId(accessValue);
 			obj2.setName(name);			
 			stateList.add(obj2);
@@ -315,7 +316,7 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 			
 		}else if("DISTRICT".equals(accessType)){
 						
-			List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByDistrictID(accessValue);
+			final List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByDistrictID(accessValue);
 			stateList.add(list.get(0));			
 			districtList.add(list.get(1));
 			constituencyList = regionServiceDataImp.getConstituenciesByDistrictID(accessValue);
@@ -323,46 +324,17 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 			
 		} else if("MP".equals(accessType)){
 			
-			ConstituencyInfoVO constituencyInfoVO = new ConstituencyInfoVO();
 			stateList = regionServiceDataImp.getStateByParliamentConstituencyID(accessValue);
-			constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(accessValue);
+			final ConstituencyInfoVO constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(accessValue);
 			constituencyList = constituencyInfoVO.getAssembyConstituencies();
 			constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));
-			if(parliamentConstituencyList == null)
-			parliamentConstituencyList = new ArrayList<SelectOptionVO>();
+			if(parliamentConstituencyList == null){
+			   parliamentConstituencyList = new ArrayList<SelectOptionVO>();
+			}
 			parliamentConstituencyList.add(new SelectOptionVO(constituencyInfoVO.getConstituencyId(),constituencyInfoVO.getConstituencyName())); 
 			
 		}
-		/*
-		// party specific input selection criteria
-		if("Party".equals(regVO.getUserType()))
-		{
-			//party commitee details
-			partyCommitteesList = cadreManagementService.getCommitteesForAParty(regVO.getParty());
-			if(partyCommitteesList != null && partyCommitteesList.size() > 0){
-			    partyCommitteesList.add(0, new SelectOptionVO(0L,"All"));
-			    isPartyCommitee = true;
-			}
-			else if(partyCommitteesList == null || partyCommitteesList.size() == 0)
-				isPartyCommitee = false;
-			
-			//party training camp details
-			partyTrainingCampsList = cadreManagementService.getPartyTrainingCamps(regVO.getParty());
-			if(partyTrainingCampsList != null && partyTrainingCampsList.size() > 0){
-			    partyTrainingCampsList.add(0, new SelectOptionVO(0L,"All"));
-			    isTrainingCamps = true;
-			}else if(partyTrainingCampsList == null || partyTrainingCampsList.size() == 0)
-				isTrainingCamps = false;
-			
-			//cadre skill details
-			cadreSkillsList = cadreManagementService.getPartyCadreSkills(regVO.getParty());
-			if(cadreSkillsList != null && cadreSkillsList.size() > 0){
-			    cadreSkillsList.add(0, new SelectOptionVO(0L,"All"));
-			    isCadreSkills = true;
-			}else if(cadreSkillsList == null || cadreSkillsList.size() == 0)
-				isCadreSkills = false;
-		}
-		*/
+		
 	 if(IConstants.USER_TYPE_PARTY.equals(regVO.getUserType())) 
 		{
 			partyCommitteesList = new ArrayList<SelectOptionVO>(0);
@@ -370,18 +342,15 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 			cadreSkillsList = new ArrayList<SelectOptionVO>(0);
 						
 			partyCommitteesList = cadreManagementService.getCommitteesForAParty(regVO.getParty());
-			if(partyCommitteesList.size()>0)
-				partyCommittees_flag = true;
+			
 			partyTrainingCampsList = cadreManagementService.getPartyTrainingCamps(regVO.getParty()); 
-			if(partyTrainingCampsList.size()>0)
-				partyTrainingCamps_flag = true;
+			
 			cadreSkillsList = cadreManagementService.getPartyCadreSkills(regVO.getParty()); 
-			if(cadreSkillsList.size()>0)
-				cadreSkills_flag = true;
-						
+			
 			session.setAttribute(ISessionConstants.PARTY_COMMITTEES,partyCommitteesList);
-			if(windowTask.equals(IConstants.CREATE_NEW))
+			if(windowTask.equals(IConstants.CREATE_NEW)){
 				designationsList = new ArrayList<SelectOptionVO>(0);
+			}
 			session.setAttribute(ISessionConstants.COMMITTEE_DESIGNATIONS,designationsList);
 			session.setAttribute(ISessionConstants.PARTY_TRAINING_CAMPS,partyTrainingCampsList);
 			session.setAttribute(ISessionConstants.CADRE_SKILLS,cadreSkillsList);
@@ -393,12 +362,12 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 	public String getParliamentConstis(){
 		
 		try{
-			jObj = new JSONObject(request.getParameter("task"));
+			final JSONObject jObj = new JSONObject(request.getParameter("task"));
 			if(jObj.getString("task").equalsIgnoreCase("getPariamentConstituencies")){
 				parliamentConstituencies = regionServiceDataImp.getAllParliamentConstituenciesForAState(1l,jObj.getLong("stateId"));	
 			}
 		}catch(Exception e){
-			
+			LOG.error("Exception rised in getParliamentConstis",e);
 		}
 		return Action.SUCCESS;
 	}

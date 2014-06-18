@@ -248,7 +248,7 @@ public class SubRegionsWiseAnalysisAction extends ActionSupport implements Servl
 		
 		/*if(type.equalsIgnoreCase("mandal")){
 		
-		ElectionWiseMandalPartyResultListVO mptcZptcResultListVO = partyBoothWiseResultsService.getAllMPTCAndZPTCElectionsInfoInTehsil(new Long(id.toString().substring(1)));
+		ElectionWiseMandalPartyResultListVO mptcZptcResultListVO = partyBoothWiseResultsService.getAllMPTCAndZPTCElectionsInfoInTehsil(Long.valueOf(id.toString().substring(1)));
 		mptcZptcElectionResultsVO = mptcZptcResultListVO.getPartyWiseElectionResultsVOList();
 		}*/
 		//latest Parliament ConstituencyId
@@ -274,7 +274,7 @@ public class SubRegionsWiseAnalysisAction extends ActionSupport implements Servl
 		mandalInfoVOsList = userVoterService.getCensusReportForSubLevels(jObj.getString("type"),jObj.getLong("id"),jObj.getLong("constituencyId"));	
 		}catch (Exception e) {
 			e.printStackTrace();
-			Log.error("Exception Occured in getCensusReportForSubLevels() method, Exception - "+e);
+			LOG.error("Exception Occured in getCensusReportForSubLevels() method, Exception - "+e);
 		}
 		return Action.SUCCESS;
 	}
@@ -309,14 +309,14 @@ public class SubRegionsWiseAnalysisAction extends ActionSupport implements Servl
 			 else if(jObj.getString("task").equalsIgnoreCase("getPanchayatsByMandalId"))
 			 {
 				
-				 resultList = staticDataService.getPanchayatiesByMandalId(new Long(jObj.getString("mandalId")));
+				 resultList = staticDataService.getPanchayatiesByMandalId(Long.valueOf(jObj.getString("mandalId")));
 			 }
 			 else if(jObj.getString("task").equalsIgnoreCase("getCustomWards"))
 			 {
 				 String lclElecBodyId =jObj.getString("id").substring(1);
 				 Long publicationDateId = jObj.getLong("publicationDateId");
 				 Long constituencyId = jObj.getLong("constituencyId");
-				 resultList = votersAnalysisService.getWardsMunicipality(new Long(lclElecBodyId),publicationDateId,constituencyId ,userId);
+				 resultList = votersAnalysisService.getWardsMunicipality(Long.valueOf(lclElecBodyId),publicationDateId,constituencyId ,userId);
 			 }
 		   }
 		   catch(Exception e)

@@ -45,7 +45,7 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 	private List<SelectOptionVO> zeroCadresRegion;
 	private List<StateToHamletVO> zeroCadresRegion1;	
 	private CadreDetailsInfoVO cadreDetailsInfoVO;
-	private static final Logger log = Logger.getLogger(CadresInfoAjaxAction.class);
+	private static final Logger LOG = Logger.getLogger(CadresInfoAjaxAction.class);
 	JSONObject jObj = null;
 	private String task = null;
 	private CadreManagementService cadreManagementService;
@@ -147,7 +147,7 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 	}
 
 	public String execute() throws Exception{
-		log.debug("CadresInfoAjaxAction.execute() started");
+		LOG.debug("CadresInfoAjaxAction.execute() started");
 		session=request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		Long userID = user.getRegistrationID();
@@ -164,32 +164,32 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 		
 		cadreRegionInfo = new ArrayList<CadreRegionInfoVO>();
 		cadreInfo = new ArrayList<CadreInfo>();
-		log.debug("region::"+region);
+		LOG.debug("region::"+region);
 		if(cadreType.equalsIgnoreCase("TotalCadre"))
 		{
-			log.debug("In if total cadre");
+			LOG.debug("In if total cadre");
 			if(region.equalsIgnoreCase("Country"))
 			{
-				log.debug("Inside if block level = "+region);			
+				LOG.debug("Inside if block level = "+region);			
 				
-				cadreRegionInfo = cadreManagementService.getCountryAllStatesCadres(new Long(regionId), userID);
+				cadreRegionInfo = cadreManagementService.getCountryAllStatesCadres(Long.valueOf(regionId), userID);
 				
 				this.setCadreRegionInfo(cadreRegionInfo);
 			}
 			else if(region.equalsIgnoreCase("State"))
 			{
-				log.debug("Inside if block level = "+region);
+				LOG.debug("Inside if block level = "+region);
 				
-				cadreRegionInfo = cadreManagementService.getStateAllDistrictsCadres(new Long(regionId), userID);
+				cadreRegionInfo = cadreManagementService.getStateAllDistrictsCadres(Long.valueOf(regionId), userID);
 				
 				this.setCadreRegionInfo(cadreRegionInfo);
 			}
 			else if(region.equalsIgnoreCase("District"))
 			{		
-				log.debug("Inside if block level = "+region);
-				cadreRegionInfo = cadreManagementService.getDistrictAllConstCadres(new Long(regionId), userID);
-				//cadreRegionInfo = cadreManagementService.getDistrictAllMandalsCadres(new Long(regionId), userID);
-				//cadreRegionInfo = cadreManagementService.getConstituencyAllMandalsCadres(new Long(regionId), userID);
+				LOG.debug("Inside if block level = "+region);
+				cadreRegionInfo = cadreManagementService.getDistrictAllConstCadres(Long.valueOf(regionId), userID);
+				//cadreRegionInfo = cadreManagementService.getDistrictAllMandalsCadres(Long.valueOf(regionId), userID);
+				//cadreRegionInfo = cadreManagementService.getConstituencyAllMandalsCadres(Long.valueOf(regionId), userID);
 				
 				this.setCadreRegionInfo(cadreRegionInfo);
 				
@@ -197,16 +197,16 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 			}
 			else if(region.equalsIgnoreCase("MLA") || region.equalsIgnoreCase("Constituency"))
 			{
-				log.debug("Inside if block level = "+region);
-				ConstituencyInfoVO constituencyDetails = constituencyPageService.getConstituencyDetails(new Long(regionId));
+				LOG.debug("Inside if block level = "+region);
+				ConstituencyInfoVO constituencyDetails = constituencyPageService.getConstituencyDetails(Long.valueOf(regionId));
 				if(constituencyDetails != null && constituencyDetails.getArea_type().equalsIgnoreCase(IConstants.CONST_TYPE_RURAL))
-					cadreRegionInfo = cadreManagementService.getConstituencyAllMandalsCadres(new Long(regionId), userID);
+					cadreRegionInfo = cadreManagementService.getConstituencyAllMandalsCadres(Long.valueOf(regionId), userID);
 				if(constituencyDetails != null && constituencyDetails.getArea_type().equalsIgnoreCase(IConstants.CONST_TYPE_URBAN))
-					cadreRegionInfo = cadreManagementService.getConstituencySubRegionalCadres(new Long(regionId), userID);
+					cadreRegionInfo = cadreManagementService.getConstituencySubRegionalCadres(Long.valueOf(regionId), userID);
 				if(constituencyDetails != null && constituencyDetails.getArea_type().equalsIgnoreCase(IConstants.CONST_TYPE_RURAL_URBAN))
 				{
-					cadreRegionInfo = cadreManagementService.getConstituencyAllMandalsCadres(new Long(regionId), userID);
-					List<CadreRegionInfoVO> subRegionRegionCadreInfo = cadreManagementService.getConstituencySubRegionalCadres(new Long(regionId), userID);
+					cadreRegionInfo = cadreManagementService.getConstituencyAllMandalsCadres(Long.valueOf(regionId), userID);
+					List<CadreRegionInfoVO> subRegionRegionCadreInfo = cadreManagementService.getConstituencySubRegionalCadres(Long.valueOf(regionId), userID);
 					if(subRegionRegionCadreInfo.size() != 0)
 						cadreRegionInfo.addAll(subRegionRegionCadreInfo);
 				}	
@@ -215,44 +215,44 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 			}
 			else if(region.equalsIgnoreCase("Mandal"))
 			{
-				log.debug("Inside if block level = "+region);
+				LOG.debug("Inside if block level = "+region);
 
-				//cadreRegionInfo = cadreManagementService.getMandalAllVillagesCadres(new Long(regionId), userID);
+				//cadreRegionInfo = cadreManagementService.getMandalAllVillagesCadres(Long.valueOf(regionId), userID);
 				
 				this.setCadreRegionInfo(cadreRegionInfo);
 			}
 			/*else if(region.equalsIgnoreCase("Village"))
 			{
 				
-				cadreInfo = cadreManagementService.getCadresByVillage(new Long(regionId), userID);
+				cadreInfo = cadreManagementService.getCadresByVillage(Long.valueOf(regionId), userID);
 				
 				this.setCadreInfo(cadreInfo);
 			}*/
 			else if(region.equalsIgnoreCase("T"))
 			{
-				log.debug("region:"+region);
-				cadreInfo = cadreManagementService.getCadresByVillage(new Long(regionId), userID);
+				LOG.debug("region:"+region);
+				cadreInfo = cadreManagementService.getCadresByVillage(Long.valueOf(regionId), userID);
 				
 				this.setCadreInfo(cadreInfo);
 			}
 			else if(region.equalsIgnoreCase("V"))
 			{
-				log.debug("region:"+region);
-				cadreRegionInfo = cadreManagementService.getCadreSizeByHamlet(new Long(regionId), userID);
+				LOG.debug("region:"+region);
+				cadreRegionInfo = cadreManagementService.getCadreSizeByHamlet(Long.valueOf(regionId), userID);
 				
 				this.setCadreInfo(cadreInfo);
 			}
 			/*else if(region.equalsIgnoreCase("HAMLET"))
 			{
-				log.debug("region:"+region);
-				cadreInfo = cadreManagementService.getCadresByHamlet(new Long(regionId), userID);
+				LOG.debug("region:"+region);
+				cadreInfo = cadreManagementService.getCadresByHamlet(Long.valueOf(regionId), userID);
 				
 				this.setCadreInfo(cadreInfo);
 			}*/
 		}
 		else if(cadreType.equalsIgnoreCase("ZeroLevelCadre"))
 		{
-			log.debug("In if Zero level cadre");
+			LOG.debug("In if Zero level cadre");
 			UserCadresInfoVO userCadresInfoVo = (UserCadresInfoVO) session.getAttribute("USERCADRESINFOVO");
 			List<SelectOptionVO> regions = new ArrayList<SelectOptionVO>();
 			Map<Long, String> zeroLevelCadres = new HashMap<Long, String>();
@@ -302,8 +302,8 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 		}
 		else if(cadreType.equalsIgnoreCase("RegionLevelCadre"))
 		{
-			log.debug("In if Region level cadre");
-			cadreInfo = cadreManagementService.getCadresByCadreLevel(region, userID, isParent, user.getAccessType(), new Long(user.getAccessValue()));
+			LOG.debug("In if Region level cadre");
+			cadreInfo = cadreManagementService.getCadresByCadreLevel(region, userID, isParent, user.getAccessType(), Long.valueOf(user.getAccessValue()));
 			
 			this.setCadreInfo(cadreInfo);
 		}
@@ -328,54 +328,54 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 		
 		cadreRegionInfo = new ArrayList<CadreRegionInfoVO>();
 		cadreInfo = new ArrayList<CadreInfo>();
-		log.debug("region::"+region);
+		LOG.debug("region::"+region);
 		
 		if(region.equalsIgnoreCase("Country"))
 		{
-			log.debug("Inside if block level = "+region);			
+			LOG.debug("Inside if block level = "+region);			
 			
-			cadreRegionInfo = cadreManagementService.getCountryAllStatesCadres(new Long(regionId), userID);
+			cadreRegionInfo = cadreManagementService.getCountryAllStatesCadres(Long.valueOf(regionId), userID);
 			
 			cadreDetailsInfoVO.setCadreRegionInfo(cadreRegionInfo);
 			cadreDetailsInfoVO.setCadreInfo(cadreInfo);
 		}
 		else if(region.equalsIgnoreCase("State"))
 		{
-			log.debug("Inside if block level = "+region);
+			LOG.debug("Inside if block level = "+region);
 			
-			cadreRegionInfo = cadreManagementService.getStateAllDistrictsCadres(new Long(regionId), userID);
+			cadreRegionInfo = cadreManagementService.getStateAllDistrictsCadres(Long.valueOf(regionId), userID);
 			
 			cadreDetailsInfoVO.setCadreRegionInfo(cadreRegionInfo);
 			cadreDetailsInfoVO.setCadreInfo(cadreInfo);
 		}
 		else if(region.equalsIgnoreCase("District"))
 		{		
-			log.debug("Inside if block level = "+region);
-			cadreRegionInfo = cadreManagementService.getDistrictAllConstCadres(new Long(regionId), userID);
+			LOG.debug("Inside if block level = "+region);
+			cadreRegionInfo = cadreManagementService.getDistrictAllConstCadres(Long.valueOf(regionId), userID);
 			cadreDetailsInfoVO.setCadreRegionInfo(cadreRegionInfo);
 			cadreDetailsInfoVO.setCadreInfo(cadreInfo);
 			
 		}
 		else if(region.equalsIgnoreCase("MP"))
 		{		
-			log.debug("Inside if block level = "+region);
-			cadreRegionInfo = cadreManagementService.getParliamentAllConstCadres(new Long(regionId), userID);
+			LOG.debug("Inside if block level = "+region);
+			cadreRegionInfo = cadreManagementService.getParliamentAllConstCadres(Long.valueOf(regionId), userID);
 			cadreDetailsInfoVO.setCadreRegionInfo(cadreRegionInfo);
 			cadreDetailsInfoVO.setCadreInfo(cadreInfo);
 			
 		}
 		else if(region.equalsIgnoreCase("MLA") || region.equalsIgnoreCase("Constituency"))
 		{
-			log.debug("Inside if block level = "+region);
-			ConstituencyInfoVO constituencyDetails = constituencyPageService.getConstituencyDetails(new Long(regionId));
+			LOG.debug("Inside if block level = "+region);
+			ConstituencyInfoVO constituencyDetails = constituencyPageService.getConstituencyDetails(Long.valueOf(regionId));
 			if(constituencyDetails != null && constituencyDetails.getArea_type().equalsIgnoreCase(IConstants.CONST_TYPE_RURAL))
-				cadreRegionInfo = cadreManagementService.getConstituencyAllMandalsCadres(new Long(regionId), userID);
+				cadreRegionInfo = cadreManagementService.getConstituencyAllMandalsCadres(Long.valueOf(regionId), userID);
 			if(constituencyDetails != null && constituencyDetails.getArea_type().equalsIgnoreCase(IConstants.CONST_TYPE_URBAN))
-				cadreRegionInfo = cadreManagementService.getConstituencySubRegionalCadres(new Long(regionId), userID);
+				cadreRegionInfo = cadreManagementService.getConstituencySubRegionalCadres(Long.valueOf(regionId), userID);
 			if(constituencyDetails != null && constituencyDetails.getArea_type().equalsIgnoreCase(IConstants.CONST_TYPE_RURAL_URBAN))
 			{
-				cadreRegionInfo = cadreManagementService.getConstituencyAllMandalsCadres(new Long(regionId), userID);
-				List<CadreRegionInfoVO> subRegionRegionCadreInfo = cadreManagementService.getConstituencySubRegionalCadres(new Long(regionId), userID);
+				cadreRegionInfo = cadreManagementService.getConstituencyAllMandalsCadres(Long.valueOf(regionId), userID);
+				List<CadreRegionInfoVO> subRegionRegionCadreInfo = cadreManagementService.getConstituencySubRegionalCadres(Long.valueOf(regionId), userID);
 				if(subRegionRegionCadreInfo.size() != 0)
 					cadreRegionInfo.addAll(subRegionRegionCadreInfo);
 				
@@ -390,17 +390,17 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 			
 			if (IConstants.URBAN_TYPE.equals(regionId.substring(0,1)))
 			{
-				cadreRegionInfo = cadreManagementService.getLocalElectionBodyCadresByWardsCount(new Long(regionId.substring(1)), userID);
+				cadreRegionInfo = cadreManagementService.getLocalElectionBodyCadresByWardsCount(Long.valueOf(regionId.substring(1)), userID);
 				if(!"Greater Municipal Corp".equalsIgnoreCase(region))
-					cadreBoothRegionInfo = cadreManagementService.getLocalElectionBodyAllBoothsCadresCount(new Long(regionId.substring(1)), userID);
+					cadreBoothRegionInfo = cadreManagementService.getLocalElectionBodyAllBoothsCadresCount(Long.valueOf(regionId.substring(1)), userID);
 				if(cadreBoothRegionInfo.size()>0)
 					cadreRegionInfo.addAll(cadreBoothRegionInfo);
 				
 			}
 			if (IConstants.RURAL_TYPE.equals(regionId.substring(0,1)))
 			{
-				cadreRegionInfo = cadreManagementService.getMandalAllHamletsCadresCount(new Long(regionId.substring(1)), userID);
-				cadreBoothRegionInfo = cadreManagementService.getMandalAllBoothsCadresCount(new Long(regionId.substring(1)), userID);
+				cadreRegionInfo = cadreManagementService.getMandalAllHamletsCadresCount(Long.valueOf(regionId.substring(1)), userID);
+				cadreBoothRegionInfo = cadreManagementService.getMandalAllBoothsCadresCount(Long.valueOf(regionId.substring(1)), userID);
 				if(cadreBoothRegionInfo.size()>0)
 					cadreRegionInfo.addAll(cadreBoothRegionInfo);
 			}
@@ -408,16 +408,16 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 			cadreDetailsInfoVO.setCadreInfo(cadreInfo);
 			
 			
-			/*log.debug("Inside if block level = "+region);
+			/*LOG.debug("Inside if block level = "+region);
 			//contains booth level cadre if a booth details exists for cadre
 			List<CadreRegionInfoVO> cadreBoothRegionInfo = new ArrayList<CadreRegionInfoVO>(0);
 			//contains cadre booth details does not exists for cadre
 			List<CadreRegionInfoVO> nonBoothRegionInfo = new ArrayList<CadreRegionInfoVO>(0);
-			//cadreRegionInfo = cadreManagementService.getMandalAllVillagesCadres(new Long(regionId), userID);
+			//cadreRegionInfo = cadreManagementService.getMandalAllVillagesCadres(Long.valueOf(regionId), userID);
 			if (IConstants.URBAN_TYPE.equals(regionId.substring(0,1)))
 			{
-			cadreRegionInfo = cadreManagementService.getLocalElectionBodyCadresByWards(new Long(regionId.substring(1)), userID);
-			cadreBoothRegionInfo = cadreManagementService.getLocalElectionBodyAllBoothsCadres(new Long(regionId.substring(1)), userID);
+			cadreRegionInfo = cadreManagementService.getLocalElectionBodyCadresByWards(Long.valueOf(regionId.substring(1)), userID);
+			cadreBoothRegionInfo = cadreManagementService.getLocalElectionBodyAllBoothsCadres(Long.valueOf(regionId.substring(1)), userID);
 			//nonBoothRegionInfo = cadreManagementService.getAllNonAssignedBoothCadres(userID);
 			if(cadreBoothRegionInfo.size()>0)
 				cadreRegionInfo.addAll(cadreBoothRegionInfo);
@@ -427,8 +427,8 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 			}
 			if (IConstants.RURAL_TYPE.equals(regionId.substring(0,1)))
 			{
-				cadreRegionInfo = cadreManagementService.getMandalAllHamletsCadres(new Long(regionId.substring(1)), userID);
-				cadreBoothRegionInfo = cadreManagementService.getMandalAllBoothsCadres(new Long(regionId.substring(1)), userID);
+				cadreRegionInfo = cadreManagementService.getMandalAllHamletsCadres(Long.valueOf(regionId.substring(1)), userID);
+				cadreBoothRegionInfo = cadreManagementService.getMandalAllBoothsCadres(Long.valueOf(regionId.substring(1)), userID);
 				//nonBoothRegionInfo = cadreManagementService.getAllNonAssignedBoothCadres(userID);
 				if(cadreBoothRegionInfo.size()>0)
 					cadreRegionInfo.addAll(cadreBoothRegionInfo);
@@ -443,7 +443,7 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 		//previous working method
 		/*else if(region.equalsIgnoreCase("WARD") || region.equalsIgnoreCase("VILLAGE"))
 		{
-			log.debug("region:"+region);
+			LOG.debug("region:"+region);
 			cadreInfo = cadreManagementService.getCadresByHamlet(regionId.toString(), userID);
 			
 			cadreDetailsInfoVO.setCadreInfo(cadreInfo);
@@ -453,13 +453,13 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 		{
 			if (IConstants.RURAL_TYPE.equals(regionId.substring(0,1)))
 			{
-				cadreRegionInfo = cadreManagementService.getMandalAllHamletsCadres(new Long(regionId.substring(1)), userID);				
+				cadreRegionInfo = cadreManagementService.getMandalAllHamletsCadres(Long.valueOf(regionId.substring(1)), userID);				
 				//nonBoothRegionInfo = cadreManagementService.getAllNonAssignedBoothCadres(userID);
 				
 			}
 			cadreDetailsInfoVO.setCadreRegionInfo(cadreRegionInfo);
 			cadreDetailsInfoVO.setCadreInfo(cadreInfo);
-			/*log.debug("region:"+region);
+			/*LOG.debug("region:"+region);
 			cadreInfo = cadreManagementService.getCadresByHamlet(regionId.toString(), userID);
 			
 			cadreDetailsInfoVO.setCadreInfo(cadreInfo);*/
@@ -467,7 +467,7 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 		
 		else if(region.equalsIgnoreCase("WARD") || region.equalsIgnoreCase("VILLAGE"))
 		{
-			log.debug("region:"+region);
+			LOG.debug("region:"+region);
 			//contains booth level cadre if a booth details exists for cadre
 			List<CadreRegionInfoVO> cadreBoothRegionInfo = new ArrayList<CadreRegionInfoVO>(0);
 			//contains cadre booth details does not exists for cadre
@@ -475,11 +475,11 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 			Boolean flag = false;
 			cadreInfo = cadreManagementService.getCadresByHamlet(regionId.toString(), userID);
 			if(region.equalsIgnoreCase("WARD"))
-				flag = cadreManagementService.getLocalBodyElectionType(new Long(regionId.substring(1)));					
+				flag = cadreManagementService.getLocalBodyElectionType(Long.valueOf(regionId.substring(1)));					
 			if(flag == true)
 			{
-				cadreRegionInfo = cadreManagementService.getWardAllBoothsCadresCount(new Long(regionId.substring(1)), userID);
-				nonBoothRegionInfo = cadreManagementService.getAllNonAssignedBoothCadresByWard(new Long(regionId.substring(1)), userID);
+				cadreRegionInfo = cadreManagementService.getWardAllBoothsCadresCount(Long.valueOf(regionId.substring(1)), userID);
+				nonBoothRegionInfo = cadreManagementService.getAllNonAssignedBoothCadresByWard(Long.valueOf(regionId.substring(1)), userID);
 				if(nonBoothRegionInfo.size()>0)
 					cadreRegionInfo.addAll(nonBoothRegionInfo);					
 			}
@@ -491,13 +491,13 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 		{
 			if (IConstants.URBAN_TYPE.equals(regionId.substring(0,1)))
 			{
-				cadreRegionInfo = cadreManagementService.getLocalElectionBodyCadresByWards(new Long(regionId.substring(1)), userID);
+				cadreRegionInfo = cadreManagementService.getLocalElectionBodyCadresByWards(Long.valueOf(regionId.substring(1)), userID);
 				
 			}			
 			cadreDetailsInfoVO.setCadreRegionInfo(cadreRegionInfo);
 			cadreDetailsInfoVO.setCadreInfo(cadreInfo);
 			
-			/*log.debug("region:"+region);
+			/*LOG.debug("region:"+region);
 			cadreInfo = cadreManagementService.getCadresByHamlet(regionId.toString(), userID);
 			
 			cadreDetailsInfoVO.setCadreInfo(cadreInfo);*/
@@ -507,37 +507,37 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 			List<CadreRegionInfoVO> nonBoothRegionInfo = new ArrayList<CadreRegionInfoVO>(0);
 			if (IConstants.URBAN_TYPE.equals(regionId.substring(0,1)))
 			{
-				cadreRegionInfo = cadreManagementService.getLocalElectionBodyAllBoothsCadres(new Long(regionId.substring(1)), userID);
-				nonBoothRegionInfo = cadreManagementService.getAllNonAssignedBoothCadresByLocalBody(new Long(regionId.substring(1)),userID);
+				cadreRegionInfo = cadreManagementService.getLocalElectionBodyAllBoothsCadres(Long.valueOf(regionId.substring(1)), userID);
+				nonBoothRegionInfo = cadreManagementService.getAllNonAssignedBoothCadresByLocalBody(Long.valueOf(regionId.substring(1)),userID);
 				if(nonBoothRegionInfo.size()>0)
 					cadreRegionInfo.addAll(nonBoothRegionInfo);
 			}
 			if (IConstants.RURAL_TYPE.equals(regionId.substring(0,1)))
 			{
-				cadreRegionInfo = cadreManagementService.getMandalAllBoothsCadres(new Long(regionId.substring(1)), userID);	
-				nonBoothRegionInfo = cadreManagementService.getAllNonAssignedBoothCadresByTehsil(new Long(regionId.substring(1)),userID);
+				cadreRegionInfo = cadreManagementService.getMandalAllBoothsCadres(Long.valueOf(regionId.substring(1)), userID);	
+				nonBoothRegionInfo = cadreManagementService.getAllNonAssignedBoothCadresByTehsil(Long.valueOf(regionId.substring(1)),userID);
 				if(nonBoothRegionInfo.size()>0)
 					cadreRegionInfo.addAll(nonBoothRegionInfo);
 			}			
 			cadreDetailsInfoVO.setCadreRegionInfo(cadreRegionInfo);
 			cadreDetailsInfoVO.setCadreInfo(cadreInfo);
 			
-			/*log.debug("region:"+region);
+			/*LOG.debug("region:"+region);
 			cadreInfo = cadreManagementService.getCadresByHamlet(regionId.toString(), userID);
 			
 			cadreDetailsInfoVO.setCadreInfo(cadreInfo);*/
 		}
 		else if(region.equalsIgnoreCase("BOOTH"))
 		{
-			log.debug("region:"+region);
+			LOG.debug("region:"+region);
 			cadreInfo = cadreManagementService.getCadresByBooth(regionId.toString(), userID.toString());
 			
 			cadreDetailsInfoVO.setCadreInfo(cadreInfo);
 		}
 		else if(region.equalsIgnoreCase("Not Assigned To Any Booth"))
 		{
-			log.debug("region:"+region);
-			cadreInfo = cadreManagementService.getCadresNotAssignedWithBooth(new Long(regionId.toString()),userID.toString());
+			LOG.debug("region:"+region);
+			cadreInfo = cadreManagementService.getCadresNotAssignedWithBooth(Long.valueOf(regionId.toString()),userID.toString());
 			
 			cadreDetailsInfoVO.setCadreInfo(cadreInfo);
 		}
@@ -556,7 +556,7 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 				
 		try {
 			jObj = new JSONObject(param);
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -568,14 +568,14 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 		String cadreType = jObj.getString("cadreType");
 		
 		cadreInfo = new ArrayList<CadreInfo>();
-		log.debug("region::"+region);
+		LOG.debug("region::"+region);
 		
 		
 		if("CADRES BY BOOTHS IN WARD".equalsIgnoreCase(taskType))
 		{
 			String regionStr = regionId.toString();
 			String subStr = regionStr.substring(1);
-			cadreInfo = cadreManagementService.getCadresAssignedWithBoothInWard(new Long(subStr),userID.toString());
+			cadreInfo = cadreManagementService.getCadresAssignedWithBoothInWard(Long.valueOf(subStr),userID.toString());
 			
 			cadreDetailsInfoVO.setCadreInfo(cadreInfo);
 			
@@ -584,7 +584,7 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 		{
 			String regionStr = regionId.toString();
 			String subStr = regionStr.substring(1);
-			cadreInfo = cadreManagementService.getCadresNotAssignedWithBoothInWard(new Long(subStr),userID.toString());
+			cadreInfo = cadreManagementService.getCadresNotAssignedWithBoothInWard(Long.valueOf(subStr),userID.toString());
 			
 			cadreDetailsInfoVO.setCadreInfo(cadreInfo);			
 		}
@@ -615,7 +615,7 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 			isParent = false;
 		
 		Long userID = user.getParentUserId() == null ? user.getRegistrationID() : user.getParentUserId();
-		log.debug("In if Zero level cadre");
+		LOG.debug("In if Zero level cadre");
 		UserCadresInfoVO userCadresInfoVo = (UserCadresInfoVO) session.getAttribute("USERCADRESINFOVO");
 		List<SelectOptionVO> regions = new ArrayList<SelectOptionVO>();
 		Map<Long, String> zeroLevelCadres = new HashMap<Long, String>();
@@ -712,8 +712,8 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 			 cadreDetailsInfoVO.setZeroCadresRegion(regions);			
 		}else if(cadreType.equalsIgnoreCase("RegionLevelCadre"))
 			{
-				log.debug("In if Region level cadre");	
-				cadreInfo = cadreManagementService.getCadresByCadreLevel(region, userID, isParent, user.getAccessType(), new Long(user.getAccessValue()));
+			LOG.debug("In if Region level cadre");	
+				cadreInfo = cadreManagementService.getCadresByCadreLevel(region, userID, isParent, user.getAccessType(), Long.valueOf(user.getAccessValue()));
 				cadreDetailsInfoVO.setCadreInfo(cadreInfo);
 			}
 		 return Action.SUCCESS;
@@ -738,7 +738,7 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 			Entry<Long, String> entry = iterator.next();
 			sb.append(IConstants.COMMA).append(entry.getKey());
 		}
-		String result = new String();
+		String result = "";
 		if(sb.length()>0)
 			result = sb.substring(1);
 		return result;

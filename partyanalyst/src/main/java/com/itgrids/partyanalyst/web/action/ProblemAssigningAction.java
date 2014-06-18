@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
@@ -35,6 +36,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class ProblemAssigningAction extends ActionSupport implements ServletRequestAware,ServletContextAware  {
 
 	private static final long serialVersionUID = -2691859423522316985L;
+	private static final Logger LOG = Logger.getLogger(ProblemAssigningAction.class);
 	private HttpServletRequest request;
 	JSONObject jObj = null;
 	private String task;
@@ -389,15 +391,15 @@ public class ProblemAssigningAction extends ActionSupport implements ServletRequ
 		else if(resolvingDeptScope == 7 || resolvingDeptScope == 8)
 			resolvingDeptScopeValue = village;
 		
-		System.out.println("========================");
-		System.out.println("probHistoryId---"+probHistoryId);
-		System.out.println("problemType---"+problemType);
-		System.out.println("resolvingDeptScope---"+resolvingDeptScope);
-		System.out.println("resolvingDeptScopeValue---"+resolvingDeptScopeValue);
-		System.out.println("dept---"+dept);
-		System.out.println("cadreId---"+cadreId);
-		System.out.println("comments---"+comments);
-		System.out.println("========================");
+		LOG.info("========================");
+		LOG.info("probHistoryId---"+probHistoryId);
+		LOG.info("problemType---"+problemType);
+		LOG.info("resolvingDeptScope---"+resolvingDeptScope);
+		LOG.info("resolvingDeptScopeValue---"+resolvingDeptScopeValue);
+		LOG.info("dept---"+dept);
+		LOG.info("cadreId---"+cadreId);
+		LOG.info("comments---"+comments);
+		LOG.info("========================");
 		cadreId = cadreId != null? cadreId:0l;
 		
 		problemManagementService.changePostedProblemStatusForAnUser(probHistoryId, problemType, resolvingDeptScope, dept, cadreId, resolvingDeptScopeValue, comments, statusToChange);

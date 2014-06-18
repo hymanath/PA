@@ -79,7 +79,7 @@ ServletRequestAware, ServletResponseAware, ServletContextAware{
 		return SUCCESS;
 	}
 	
-	public String AjaxHandler()
+	public String ajaxHandler()
 	{
 		try {
 			jObj = new JSONObject(getTask());

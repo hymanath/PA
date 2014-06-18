@@ -29,7 +29,7 @@ public class VillageBoothElectionMapAction extends ActionSupport implements Serv
 	private Boolean isValidate;
 	JSONObject jObj = null;
 	private VillageBoothElectionVO villageBoothElectionVO;
-	private static final Logger log = Logger.getLogger(VillageBoothElectionMapAction.class);
+	private static final Logger LOG = Logger.getLogger(VillageBoothElectionMapAction.class);
 	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
@@ -118,13 +118,13 @@ public class VillageBoothElectionMapAction extends ActionSupport implements Serv
 		if(task != null){
 			try{
 				jObj = new JSONObject(getTask());
-				System.out.println("Result From JSON:"+jObj);
+				LOG.info("Result From JSON:"+jObj);
 			}catch(Exception e){
 				e.printStackTrace();
 			}
 			
 			if(jObj.getString("task").equals("getElectionYears")){
-				log.debug("getElectionYears......");
+				LOG.debug("getElectionYears......");
 				electionSelectVO = staticDataService.getElectionIdsAndYearsInfo(jObj.getLong("electionTypeId"), 1l);
 			}
 		}

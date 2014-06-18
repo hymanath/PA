@@ -49,7 +49,7 @@ public class CadreRegisterAction extends ActionSupport implements
 	private ServletContext context;
     private IDateService dateService;
 	private CadreManagementService cadreManagementService;
-	private final static Logger log = Logger.getLogger(CadreRegisterAction.class);
+	private final static Logger LOG = Logger.getLogger(CadreRegisterAction.class);
 
 	public void setCadreManagementService(CadreManagementService cadreManagementService) {
 		this.cadreManagementService = cadreManagementService;
@@ -112,8 +112,8 @@ public class CadreRegisterAction extends ActionSupport implements
 	private List<Long> skills;
 	private List<Long> cadreRoles;
 	private List<Long> trainingCamps;
-	private List<String> languageOptions_English;
-	private List<String> languageOptions_Hindi;
+	private List<String> languageOptionsEnglish;
+	private List<String> languageOptionsHindi;
 	private String cadreLevelState;
 	private String cadreLevelDistrict;
 	private String cadreLevelConstituency;	
@@ -122,7 +122,7 @@ public class CadreRegisterAction extends ActionSupport implements
 	private String booth;
 	private String pBooth;
 	private Long partyCommittee;
-	private Long VoterId;
+	private Long voterId;
 	private File uploadImage;
     private String uploadImageContentType;
     private String uploadImageFileName;
@@ -202,7 +202,7 @@ public class CadreRegisterAction extends ActionSupport implements
 	}
 
 	public void setTrainingCamps(List<Long> trainingCamps) {
-		log.error("inside setting method of training camps"+trainingCamps.size());
+		LOG.error("inside setting method of training camps"+trainingCamps.size());
 		this.cadreInfo.setTrainingCamps(trainingCamps);
 	}
 
@@ -347,7 +347,7 @@ public class CadreRegisterAction extends ActionSupport implements
 
 	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Select Valid Education")
 	public void setEducation(String education) {
-		this.cadreInfo.setEducation(new Long(education));
+		this.cadreInfo.setEducation(Long.valueOf(education));
 	}
 
 	public String getProfession() {
@@ -356,7 +356,7 @@ public class CadreRegisterAction extends ActionSupport implements
 
 	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Select Valid Profession/Occupation")
 	public void setProfession(String profession) {
-		this.cadreInfo.setProfession(new Long(profession));
+		this.cadreInfo.setProfession(Long.valueOf(profession));
 	}
 
 	public String getSocialStatus() {
@@ -365,7 +365,7 @@ public class CadreRegisterAction extends ActionSupport implements
 
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Caste Category is Mandatory")
 	public void setSocialStatus(String socialStatus) {
-		this.cadreInfo.setSocialStatus(new Long(socialStatus));
+		this.cadreInfo.setSocialStatus(Long.valueOf(socialStatus));
 	}
 	
 	public String getState() {
@@ -392,7 +392,7 @@ public class CadreRegisterAction extends ActionSupport implements
 
 	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Constituency Selection in Current Address")
 	public void setConstituencyID(String constituencyID) {
-		this.cadreInfo.setConstituencyID(new Long(constituencyID));
+		this.cadreInfo.setConstituencyID(Long.valueOf(constituencyID));
 	}
 
 	public String getMandal() {
@@ -463,7 +463,7 @@ public class CadreRegisterAction extends ActionSupport implements
 	}
 		
 	public void setDesignation(String designation) {
-		this.cadreInfo.setDesignation(new Long(designation));
+		this.cadreInfo.setDesignation(Long.valueOf(designation));
 	}
 
 	// permanenet addr fields
@@ -491,7 +491,7 @@ public class CadreRegisterAction extends ActionSupport implements
 
 	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Constituency Selection in Official Address")
 	public void setPconstituencyID(String pconstituencyID) {
-		this.cadreInfo.setPconstituencyID(new Long(pconstituencyID));
+		this.cadreInfo.setPconstituencyID(Long.valueOf(pconstituencyID));
 	}
 
 	public String getPmandal() {
@@ -588,11 +588,11 @@ public class CadreRegisterAction extends ActionSupport implements
 		this.cadreInfo.setCadreRoles(cadreRoles);
 	}
 
-	public List<String> getLanguageOptions_English() {
+	public List<String> getLanguageOptionsEnglish() {
 		return cadreInfo.getLanguageOptions_English();
 	}
 
-	public void setLanguageOptions_English(List<String> languageOptions_English) {
+	public void setLanguageOptionsEnglish(List<String> languageOptions_English) {
 		this.cadreInfo.setLanguageOptions_English(languageOptions_English);
 	}
 
@@ -620,12 +620,12 @@ public class CadreRegisterAction extends ActionSupport implements
 		this.cadreInfo.setThirdFamilyMemberRelationId(thirdFamilyMemberRelationId);
 	}
 
-	public List<String> getLanguageOptions_Hindi() {
+	public List<String> getLanguageOptionsHindi() {
 		return cadreInfo.getLanguageOptions_Hindi();
 	}
 
-	public void setLanguageOptions_Hindi(List<String> languageOptions_Hindi) {
-		log.error("inside setter hindi method:"+languageOptions_Hindi.size());
+	public void setLanguageOptionsHindi(List<String> languageOptions_Hindi) {
+		LOG.error("inside setter hindi method:"+languageOptions_Hindi.size());
 		this.cadreInfo.setLanguageOptions_Hindi(languageOptions_Hindi);
 	}	
 
@@ -914,7 +914,7 @@ public class CadreRegisterAction extends ActionSupport implements
 	}
 
 	public String execute() throws Exception {
-		log.debug("In The Excecute For Cader");
+		LOG.debug("In The Excecute For Cader");
 		session = request.getSession();
 		
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
@@ -950,7 +950,7 @@ public class CadreRegisterAction extends ActionSupport implements
 			
 			if("MLA".equals(regVO.getAccessType()))
 			{
-				log.debug("Access Type = MLA ****");
+				LOG.debug("Access Type = MLA ****");
 				session.setAttribute(ISessionConstants.VILLAGES, new ArrayList<SelectOptionVO>());
 				session.setAttribute(ISessionConstants.BOOTHS, new ArrayList<SelectOptionVO>());
 				session.setAttribute(ISessionConstants.MANDALS_C, new ArrayList<SelectOptionVO>());
@@ -961,7 +961,7 @@ public class CadreRegisterAction extends ActionSupport implements
 							
 			}else if("COUNTRY".equals(regVO.getAccessType()))
 			{
-				log.debug("Access Type = Country ****");
+				LOG.debug("Access Type = Country ****");
 				session.setAttribute(ISessionConstants.DISTRICTS,new ArrayList<SelectOptionVO>());
 				session.setAttribute(ISessionConstants.CONSTITUENCIES,new ArrayList<SelectOptionVO>());
 				session.setAttribute(ISessionConstants.MANDALS,new ArrayList<SelectOptionVO>());	
@@ -977,7 +977,7 @@ public class CadreRegisterAction extends ActionSupport implements
 				setDefaultCadreLevelId(0l);				
 				
 			}else if("STATE".equals(regVO.getAccessType())){
-				log.debug("Access Type = State ****");
+				LOG.debug("Access Type = State ****");
 				if(!isCadreParliamentWise)
 				session.setAttribute(ISessionConstants.CONSTITUENCIES,new ArrayList<SelectOptionVO>());
 				session.setAttribute(ISessionConstants.MANDALS,new ArrayList<SelectOptionVO>());	
@@ -993,7 +993,7 @@ public class CadreRegisterAction extends ActionSupport implements
 				setDefaultCadreLevelId(2l);				
 				
 			}else if("DISTRICT".equals(regVO.getAccessType())){
-				log.debug("Access Type = District ****");			
+				LOG.debug("Access Type = District ****");			
 
 				session.setAttribute(ISessionConstants.MANDALS,new ArrayList<SelectOptionVO>());	
 				session.setAttribute(ISessionConstants.VILLAGES, new ArrayList<SelectOptionVO>());	
@@ -1027,23 +1027,23 @@ public class CadreRegisterAction extends ActionSupport implements
 			
 			String filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + "images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator;
 			
-			log.info("Cadre File Path -- "+filePath);
+			LOG.info("Cadre File Path -- "+filePath);
 			
 			BufferedImage image = ImageIO.read(this.uploadImage);
 			
 			
 			if(image == null)
 				return null;
-			log.info("Image is Read");
+			LOG.info("Image is Read");
 			String constiName[] = uploadImageContentType.split("/");
 			String fileName = filePath+cadreId.toString()+"."+constiName[1];
-			log.info("file name -- "+fileName);
+			LOG.info("file name -- "+fileName);
 			//String imageName =  cadreId.toString()+"."+constiName[1];
 			
 			FileImageOutputStream filName = new FileImageOutputStream(new File(fileName));
 			
 			ImageIO.write(image, constiName[1],filName);
-			log.info("file uploaded");
+			LOG.info("file uploaded");
             filName.close();
             return SUCCESS;
 		}
@@ -1066,7 +1066,7 @@ public class CadreRegisterAction extends ActionSupport implements
 		int year1 = Integer.parseInt(year);
 		int day1 = Integer.parseInt(day);
 		int month1 = Integer.parseInt(month)-1;
-		//System.out.println(cadreInfo.getMemberType());
+		//LOG.info(cadreInfo.getMemberType());
 		if(cadreInfo.getMemberType().equalsIgnoreCase("Active") && cadreInfo.getStrCadreLevelValue().isEmpty())
 		{
 			addFieldError("cadreLevelValue","Please Select The Cadre Level Value");
@@ -1136,15 +1136,15 @@ public class CadreRegisterAction extends ActionSupport implements
 			
 		}
 		if(regVO.isCadreParliamentWise()){
-			Long parliamentId = new Long(getParliament().trim());
-			Long assemblyId = new Long(getConstituencyID().trim());
+			Long parliamentId = Long.parseLong(getParliament().trim());
+			Long assemblyId = Long.parseLong(getConstituencyID().trim());
 			 boolean status = cadreManagementService.checkAssemblyBelongsToParliament(assemblyId,parliamentId);
 			 if(!status){
 				 addFieldError("constituencyID","Please Select valid assembly constituency for parliament constituency");
 			 }
 			 if(!getSameAsCA()){
-				     parliamentId = new Long(getPParliament().trim());
-					 assemblyId = new Long(getPconstituencyID().trim());
+				     parliamentId = Long.parseLong(getPParliament().trim());
+					 assemblyId = Long.parseLong(getPconstituencyID().trim());
 					  status = cadreManagementService.checkAssemblyBelongsToParliament(assemblyId,parliamentId);
 					 if(!status){
 						 addFieldError("pconstituencyID","Please Select valid assembly constituency for parliament constituency in Official Address ");

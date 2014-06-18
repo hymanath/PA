@@ -74,8 +74,8 @@ ServletRequestAware{
 			constituencyVo.setId(constiId);
 			userAccessConstiList.add(constituencyVo);
 		}else if("STATE".equalsIgnoreCase(regvo.getAccessType()) || "MP".equalsIgnoreCase(regvo.getAccessType()) || "DISTRICT".equalsIgnoreCase(regvo.getAccessType()) || "COUNTRY".equalsIgnoreCase(regvo.getAccessType())){
-			Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
-			Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
+			Long electionYear = Long.valueOf(IConstants.PRESENT_ELECTION_YEAR);
+			Long electionTypeId = Long.valueOf(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
 			userAccessConstiList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(regvo.getRegistrationID(),electionYear,electionTypeId);
 		}else{
 			return Action.ERROR;

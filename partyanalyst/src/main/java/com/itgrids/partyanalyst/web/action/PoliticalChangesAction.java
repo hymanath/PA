@@ -275,7 +275,7 @@ public class PoliticalChangesAction extends ActionSupport implements
         	politicalChangesVO = new PoliticalChangesVO();
         } else if(localPoliticalChangeId != null)
         {	
-        	politicalChangesVO = politicalChangesService.getDetailsBylocalPoliticalChangeId(new Long(localPoliticalChangeId));
+        	politicalChangesVO = politicalChangesService.getDetailsBylocalPoliticalChangeId(Long.valueOf(localPoliticalChangeId));
         	
         }
 		

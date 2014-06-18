@@ -31,7 +31,7 @@ public class ProblemCompleteInfoAction extends ActionSupport implements ServletR
 	private HttpSession session;
 	private IProblemManagementService problemManagementService;
 	private ProblemBeanVO problemBeanVO;
-	private static final Logger log = Logger.getLogger(ProblemCompleteInfoAction.class);
+	private static final Logger LOG = Logger.getLogger(ProblemCompleteInfoAction.class);
 	private Long problemHistoryId;
 	private Boolean logInStatus = false;
 	private String userType = null;
@@ -193,7 +193,7 @@ public class ProblemCompleteInfoAction extends ActionSupport implements ServletR
 				return ERROR;
 			
 			}catch (Exception e){
-				log.error("Exception occured in getProblemCompleteInfo() method , Exception is - "+e);
+				LOG.error("Exception occured in getProblemCompleteInfo() method , Exception is - "+e);
 				return ERROR;
 			}
 	}
@@ -206,7 +206,7 @@ public class ProblemCompleteInfoAction extends ActionSupport implements ServletR
 			jObj = new JSONObject(getTask());
 		}catch (ParseException e) {
 			e.printStackTrace();
-			log.error("Exception Occured in ajaxCallHandler() Method in ProblemCompleteInfoAction," +
+			LOG.error("Exception Occured in ajaxCallHandler() Method in ProblemCompleteInfoAction," +
 					" Exception - "+e);
 		}
 		if(jObj.getString("task").equals("saveProblemRatingDetails"))

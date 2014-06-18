@@ -28,7 +28,7 @@ public class ElectionResultsUpdateAction  extends ActionSupport implements Servl
 	private List<SelectOptionVO> selectOptionsList;
 	private IStaticDataService staticDataService;
 	private EntitlementsHelper entitlementsHelper;
-    private static final Logger log = Logger.getLogger(ElectionResultsUpdateAction.class);
+    private static final Logger LOG = Logger.getLogger(ElectionResultsUpdateAction.class);
 	
 	public String getTask() {
 		return task;
@@ -92,8 +92,8 @@ public class ElectionResultsUpdateAction  extends ActionSupport implements Servl
 	}
 	public String getUpdateElectionResults()
 	{
-		if(log.isDebugEnabled())
-			log.debug("Enter into getUpdateElectionResults method of ElectionResultsUpdateAction ");
+		if(LOG.isDebugEnabled())
+			LOG.debug("Enter into getUpdateElectionResults method of ElectionResultsUpdateAction ");
 		try
 		{
 			jObj = new JSONObject(getTask());
@@ -108,14 +108,14 @@ public class ElectionResultsUpdateAction  extends ActionSupport implements Servl
 		}
 		catch(Exception e)
 		{
-			log.error("Exception rised in getUpdateElectionResults method of ElectionResultsUpdateAction ",e);
+			LOG.error("Exception rised in getUpdateElectionResults method of ElectionResultsUpdateAction ",e);
 		}
 		return Action.SUCCESS;
 	}
 	public String getConstituenciesOrYears()
 	{
-		if(log.isDebugEnabled())
-			log.debug("Enter into getConstituenciesOrYears method of ElectionResultsUpdateAction ");
+		if(LOG.isDebugEnabled())
+			LOG.debug("Enter into getConstituenciesOrYears method of ElectionResultsUpdateAction ");
 		try
 		{
 			jObj = new JSONObject(getTask());
@@ -134,7 +134,7 @@ public class ElectionResultsUpdateAction  extends ActionSupport implements Servl
 		}
 		catch(Exception e)
 		{
-			log.error("Exception rised in getConstituenciesOrYears method of ElectionResultsUpdateAction ",e);
+			LOG.error("Exception rised in getConstituenciesOrYears method of ElectionResultsUpdateAction ",e);
 		}
 		return Action.SUCCESS;
 	}

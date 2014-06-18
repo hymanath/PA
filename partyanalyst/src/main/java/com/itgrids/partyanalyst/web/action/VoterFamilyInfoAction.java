@@ -35,7 +35,7 @@ public class VoterFamilyInfoAction  extends ActionSupport implements ServletRequ
 	private String publicationYear;
     private String requestFor;
 	
-	private static final Logger log = Logger.getLogger(VoterFamilyInfoAction.class);
+	private static final Logger LOG = Logger.getLogger(VoterFamilyInfoAction.class);
 	private String task;
 	JSONObject jObj;
 	private ConstituencyManagementVO constituencyManagementVO;
@@ -47,7 +47,6 @@ public class VoterFamilyInfoAction  extends ActionSupport implements ServletRequ
 	private int results;
 	private Long publicationId;
 	private Long boothId;
-	private Long PanchaytId;
 	private Long hamletId;
 	private List<Long> count;
 	private Long customwardId;
@@ -140,15 +139,6 @@ public class VoterFamilyInfoAction  extends ActionSupport implements ServletRequ
 		this.boothId = boothId;
 	}
 
-	public Long getPanchaytId() {
-		return PanchaytId;
-	}
-
-	public void setPanchaytId(Long panchaytId) {
-		PanchaytId = panchaytId;
-	}
-
-	
 	
 	public Long getHamletId() {
 		return hamletId;
@@ -303,8 +293,8 @@ public class VoterFamilyInfoAction  extends ActionSupport implements ServletRequ
 	
 	public String getVoterDetails(){
 		
-		if(log.isDebugEnabled())	
-		log.debug("Executing getVoterDetails() Method");	
+		if(LOG.isDebugEnabled())	
+		LOG.debug("Executing getVoterDetails() Method");	
 		try{
 			
 		
@@ -332,7 +322,7 @@ public class VoterFamilyInfoAction  extends ActionSupport implements ServletRequ
 			Long hamletId = 0L;
 			
 			if(request.getParameter("hamletId") != null)
-				hamletId = new Long(request.getParameter("hamletId"));
+				hamletId = Long.valueOf(request.getParameter("hamletId"));
 			
 				votersList = new ArrayList<VoterVO>();
 				
@@ -362,7 +352,7 @@ public class VoterFamilyInfoAction  extends ActionSupport implements ServletRequ
 		}catch(Exception e){
 			
 			e.printStackTrace();
-			log.error("Exception Occured in getVoterDetails() Method,Exception is- "+e);
+			LOG.error("Exception Occured in getVoterDetails() Method,Exception is- "+e);
 			
 		}
 			
@@ -373,14 +363,14 @@ public class VoterFamilyInfoAction  extends ActionSupport implements ServletRequ
 	public String getHamletAndBoothCount()
 	{
 		try {
-			log.debug("Executing getVoterDetails() Method");
+			LOG.debug("Executing getVoterDetails() Method");
 			
 			String param;
 			param = getTask();
 			jObj = new JSONObject(param);
 			count = votersAnalysisService.getCountOfHamletAndBoothsInAPanchayat(jObj.getLong("panchaytId"));
 		} catch (Exception e) {
-			log.error("Error Occured in the getHamletAndBoothCount() method in VoterFamilyInfo", e);
+			LOG.error("Error Occured in the getHamletAndBoothCount() method in VoterFamilyInfo", e);
 		}
 		
 		return Action.SUCCESS;

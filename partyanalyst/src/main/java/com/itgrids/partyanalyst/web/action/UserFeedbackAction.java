@@ -28,7 +28,7 @@ public class UserFeedbackAction extends ActionSupport implements ServletRequestA
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(UserFeedbackAction.class);
+	private static final Logger LOG = Logger.getLogger(UserFeedbackAction.class);
 	private HttpServletRequest request;
 	private HttpSession session;
 	private OpinionPollService opinionPollService;
@@ -127,7 +127,7 @@ public class UserFeedbackAction extends ActionSupport implements ServletRequestA
 			}
 		 }
 		catch(Exception e){
-			log.error("Exception occured while Saving User Feedback, - "+e);
+			LOG.error("Exception occured while Saving User Feedback, - "+e);
 			return ERROR;
 		}
 		return Action.SUCCESS;

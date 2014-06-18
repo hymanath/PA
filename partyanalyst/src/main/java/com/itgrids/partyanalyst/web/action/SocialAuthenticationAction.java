@@ -18,7 +18,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class SocialAuthenticationAction extends ActionSupport implements ServletRequestAware,ServletContextAware{
 
 	private static final long serialVersionUID = 2366948100321158997L;
-	private static final Logger log = Logger.getLogger(SocialAuthenticationAction.class);
+	private static final Logger LOG = Logger.getLogger(SocialAuthenticationAction.class);
 	
 	private HttpServletRequest request;
 	private ServletContext context;
@@ -82,7 +82,7 @@ public class SocialAuthenticationAction extends ActionSupport implements Servlet
         redirectURL = socialAuthManager.getAuthenticationUrl(id, returnToUrl);
     	
         session.setAttribute("SocialAuthManager", socialAuthManager);
-        log.debug("Redirecting to: " + redirectURL);
+        LOG.debug("Redirecting to: " + redirectURL);
         
 		return SUCCESS;
 		}
@@ -97,7 +97,7 @@ public class SocialAuthenticationAction extends ActionSupport implements Servlet
 
 		String path = requestURL.replace(actionURL, "");
 
-		 log.info("Path for invitation link :" + path);
+		 LOG.info("Path for invitation link :" + path);
 
 		return path;
 	}

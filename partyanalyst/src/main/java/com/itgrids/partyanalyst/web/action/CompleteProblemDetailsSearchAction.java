@@ -29,7 +29,7 @@ import com.opensymphony.xwork2.Action;
 public class CompleteProblemDetailsSearchAction implements ServletRequestAware {
 	private HttpServletRequest request;
 	private HttpSession session;
-	private final static Logger Log = Logger.getLogger(CompleteProblemDetailsSearchAction.class);
+	private final static Logger LOG = Logger.getLogger(CompleteProblemDetailsSearchAction.class);
 	JSONObject jObj = null;
 	private String task = null;
 	private ProblemManagementChartVO problemManagementChartVO;
@@ -161,8 +161,8 @@ public class CompleteProblemDetailsSearchAction implements ServletRequestAware {
 	}
 
 	public String execute(){
-		if(Log.isDebugEnabled()){
-			Log.debug("Enter into execute method ");
+		if(LOG.isDebugEnabled()){
+			LOG.debug("Enter into execute method ");
 		}
 	  try{
 		statusList = problemManagementReportService.getAllProblemStatusInfo();
@@ -173,14 +173,14 @@ public class CompleteProblemDetailsSearchAction implements ServletRequestAware {
 		myProblemsCountVO = completeProblemDetailsSearchService.getUserRelatedProblemsCount(myProblemsCountVO);
 		
 	  }catch(Exception e){
-		  Log.error("Exception rised in execute method ",e);
+		  LOG.error("Exception rised in execute method ",e);
 	  }
 		return Action.SUCCESS;
 	}
 	
 	public String getRequiredDetails(){
-		if(Log.isDebugEnabled()){
-			Log.debug("Enter into getRequiredDetails method ");
+		if(LOG.isDebugEnabled()){
+			LOG.debug("Enter into getRequiredDetails method ");
 		}
 		try{
 			SelectOptionVO  selectOptionVO = getUserStatus();
@@ -191,7 +191,7 @@ public class CompleteProblemDetailsSearchAction implements ServletRequestAware {
 				}
 			}
 		}catch(Exception e){
-			Log.error("Exception rised in getRequiredDetails method ",e);
+			LOG.error("Exception rised in getRequiredDetails method ",e);
 		}
 		return Action.SUCCESS;
 	}
@@ -218,13 +218,13 @@ public class CompleteProblemDetailsSearchAction implements ServletRequestAware {
 		 selectOptionVO.setId(userId);
 		 selectOptionVO.setName(userStatus);
 	    }catch(Exception e){
-		  Log.error("Exception rised in getUserStatus method ",e);
+	    	LOG.error("Exception rised in getUserStatus method ",e);
 	    }
 		return selectOptionVO;
 	 }
    public String getGraphDetails(){
-	   if(Log.isDebugEnabled()){
-			Log.debug("Enter into getGraphDetails method ");
+	   if(LOG.isDebugEnabled()){
+		   LOG.debug("Enter into getGraphDetails method ");
 		}
 	   try{
 	   jObj = new JSONObject(getTask());
@@ -246,13 +246,13 @@ public class CompleteProblemDetailsSearchAction implements ServletRequestAware {
          }
          
 	   }catch(Exception e){
-		   Log.error("Exception rised in getGraphDetails method ",e);
+		   LOG.error("Exception rised in getGraphDetails method ",e);
 	   }
 	   return Action.SUCCESS;
    }
    public String getDetailsForProblems(){
-	   if(Log.isDebugEnabled()){
-			Log.debug("Enter into getDetailsForProblems method ");
+	   if(LOG.isDebugEnabled()){
+		   LOG.debug("Enter into getDetailsForProblems method ");
 		}
 	   try{
 		   jObj = new JSONObject(getTask());
@@ -269,14 +269,14 @@ public class CompleteProblemDetailsSearchAction implements ServletRequestAware {
 			   selectOptions = completeProblemDetailsSearchService.getDepartmentsByStateId(jObj.getLong("stateId"));
 		   }
 		 }catch(Exception e){
-		   Log.error("Exception rised in getDetailsForProblems method ",e);
+			 LOG.error("Exception rised in getDetailsForProblems method ",e);
 	   }
 	   return Action.SUCCESS;
    }
    
    public String getLocationDetails(){
-	   if(Log.isDebugEnabled()){
-			Log.debug("Enter into getLocationDetails method ");
+	   if(LOG.isDebugEnabled()){
+		   LOG.debug("Enter into getLocationDetails method ");
 		}
 	   try{
 		   jObj = new JSONObject(getTask());
@@ -299,20 +299,20 @@ public class CompleteProblemDetailsSearchAction implements ServletRequestAware {
 			   selectOptions =  completeProblemDetailsSearchService.getAllProblemContainWards(jObj.getLong("localElection"),setValuesToVO());
 		   }
 		 }catch(Exception e){
-		   Log.error("Exception rised in getLocationDetails method ",e);
+			 LOG.error("Exception rised in getLocationDetails method ",e);
 	   }
 	   return Action.SUCCESS;
    }
    
    public String getProblemsByFilterInputs(){
-	   if(Log.isDebugEnabled()){
-			Log.debug("Enter into getProblemsByFilterInputs method ");
+	   if(LOG.isDebugEnabled()){
+		   LOG.debug("Enter into getProblemsByFilterInputs method ");
 		}
 	   try{		   
 		   problemDetails = completeProblemDetailsSearchService.getProblemsByFilterOptions(setValuesToVO());
 		   
 		 }catch(Exception e){
-		   Log.error("Exception rised in getProblemsByFilterInputs method ",e);
+			 LOG.error("Exception rised in getProblemsByFilterInputs method ",e);
 	   }
 	   return Action.SUCCESS;
    }
@@ -349,7 +349,7 @@ public class CompleteProblemDetailsSearchAction implements ServletRequestAware {
 	   setInitialConditionsToVO(problemSearchFilterOptionsVO);
 	   
 	 }catch(Exception e){
-		   Log.error("Exception rised in setValuesToVO method ",e);
+		 LOG.error("Exception rised in setValuesToVO method ",e);
 	  }
 	   return problemSearchFilterOptionsVO;
    }
@@ -376,7 +376,7 @@ public class CompleteProblemDetailsSearchAction implements ServletRequestAware {
 		   problemSearchFilterOptionsVO.setToDate(calendar.getTime());
 	   }
 	}catch(Exception e){
-		Log.error("Exception rised in setDateConditions method ",e);
+		LOG.error("Exception rised in setDateConditions method ",e);
 	}
    }
    

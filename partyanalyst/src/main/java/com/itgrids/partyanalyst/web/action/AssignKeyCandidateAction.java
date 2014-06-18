@@ -134,11 +134,11 @@ public class AssignKeyCandidateAction extends ActionSupport implements ServletRe
 		try{
 			jObj = new JSONObject(getTask());
 			if(jObj.getString("task").equalsIgnoreCase("getStates")){
-				Long electionTypeId = new Long(jObj.getString("electionTypeId"));
+				Long electionTypeId = Long.valueOf(jObj.getString("electionTypeId"));
 				optionVOList = staticDataService.getStatesAndCountryBasedOnElectionType(electionTypeId);
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getParties")){
-				Long stateId = new Long(jObj.getString("stateId"));
+				Long stateId = Long.valueOf(jObj.getString("stateId"));
 				String electionType = jObj.getString("electionType");
 				if(electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE)){
 					optionVOList = staticDataService.getAllNationalParties();
@@ -151,13 +151,13 @@ public class AssignKeyCandidateAction extends ActionSupport implements ServletRe
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getCandidates")){
 				String candidatename = jObj.getString("candidateName");
-				Long stateId = new Long(jObj.getString("stateId"));
-				Long partyId = new Long(jObj.getString("partyId"));
+				Long stateId = Long.valueOf(jObj.getString("stateId"));
+				Long partyId = Long.valueOf(jObj.getString("partyId"));
 				optionVOList = electionLiveResultsAnalysisService.getCandidatesBasedOnSelection(candidatename,stateId,partyId);
 				}
 			else if(jObj.getString("task").equalsIgnoreCase("assignKeyCandidate")){
 				assignKeyCandidateVO = new AssignKeyCandidateVO();
-				Long candidateId = new Long(jObj.getString("candidateId"));
+				Long candidateId = Long.valueOf(jObj.getString("candidateId"));
 				//String candidateName = jObj.getString("candidateName");
 				assignKeyCandidateVO.setKeyCandidateId(candidateId);
 				assignKeyCandidateVO.setDescription(jObj.getString("description"));

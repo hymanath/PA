@@ -48,7 +48,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class UserProfileAction extends ActionSupport implements ServletRequestAware {
 
 	private static final long serialVersionUID = -4620729281316958397L;
-	private static final Logger log = Logger.getLogger(UserProfileAction.class);
+	private static final Logger LOG = Logger.getLogger(UserProfileAction.class);
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 	private HttpSession session;
@@ -533,7 +533,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
 		if(user == null || ((RegistrationVO)user).getRegistrationID() == null){
-			log.error(" No User Log In .....");			
+			LOG.error(" No User Log In .....");			
 			return "error";
 		}
 		 List<Long> userId = new ArrayList<Long>(0);
@@ -592,7 +592,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 			specialPageVOList = specialPageService.getSpecialPageListForHomePage();
 			cadreManagementVO = userCadreManagementService.getUserData(user);
 			if(cadreManagementVO!=null && cadreManagementVO.getExceptionEncountered()!=null)
-				log.error(cadreManagementVO.getExceptionEncountered().getMessage());
+				LOG.error(cadreManagementVO.getExceptionEncountered().getMessage());
 		return Action.SUCCESS;
 	  }else{
 
@@ -672,7 +672,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 			
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception Occured in getRequestMessagesForUser() Method,Exception is- "+e);
+			LOG.error("Exception Occured in getRequestMessagesForUser() Method,Exception is- "+e);
 		}
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
@@ -700,7 +700,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 			
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception Occured in getRequestMessagesForUser() Method,Exception is- "+e);
+			LOG.error("Exception Occured in getRequestMessagesForUser() Method,Exception is- "+e);
 		}
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
@@ -724,7 +724,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 			jObj = new JSONObject(param);
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception Occured in getSpecialPages() method, Exception- "+e);
+			LOG.error("Exception Occured in getSpecialPages() method, Exception- "+e);
 		}
 		specialPageVOList = specialPageService.getAllSpecialPageListForHomePage();
 		return Action.SUCCESS;
@@ -742,7 +742,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 		
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception Occured in getUserSubScription() Method, Exception- "+e);
+			LOG.error("Exception Occured in getUserSubScription() Method, Exception- "+e);
 		}
 		//subscriptionsMainVO = specialPageService.getAllProfileSubScriptions(user.getRegistrationID(), jObj.getLong("profileId"));
 		
@@ -751,7 +751,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 		return Action.SUCCESS;
 	}
 	
-	public String AjaxHandler()
+	public String ajaxHandler()
 	{
 		try {
 			jObj = new JSONObject(getTask());
@@ -800,7 +800,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 			
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception Occured in getPostedReasonsDataForProfilePage() Method,Exception is- "+e);
+			LOG.error("Exception Occured in getPostedReasonsDataForProfilePage() Method,Exception is- "+e);
 		}
 		Integer startIndex = jObj.getInt("startIndex");
 		Integer results = jObj.getInt("maxIndex");
@@ -860,7 +860,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 			
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception Occured in getRequestMessagesForUser() Method,Exception is- "+e);
+			LOG.error("Exception Occured in getRequestMessagesForUser() Method,Exception is- "+e);
 		}
 		
 		
@@ -890,7 +890,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 			
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception Occured in getPostedProblemsForProfilePage() Method,Exception is- "+e);
+			LOG.error("Exception Occured in getPostedProblemsForProfilePage() Method,Exception is- "+e);
 		}
 		Integer startIndex = jObj.getInt("startIndex");
 		Integer results = jObj.getInt("maxIndex");
@@ -937,7 +937,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 			
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception Occured in removeFavouriteLinkAction() Method,Exception is- "+e);
+			LOG.error("Exception Occured in removeFavouriteLinkAction() Method,Exception is- "+e);
 		}
 		
 		session = request.getSession();
@@ -968,7 +968,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 			
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception Occured in removeFavouriteLinkAction() Method,Exception is- "+e);
+			LOG.error("Exception Occured in removeFavouriteLinkAction() Method,Exception is- "+e);
 		}
 		
 		Long favouriteLinkId = jObj.getLong("linkId");
@@ -989,7 +989,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 			
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception Occured in saveUserFavouriteLink() Method,Exception is- "+e);
+			LOG.error("Exception Occured in saveUserFavouriteLink() Method,Exception is- "+e);
 		}
 		
 		String link = jObj.getString("link");
@@ -1020,7 +1020,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 			
 			if(user == null || ((RegistrationVO)user).getRegistrationID() == null){
-				log.error(" No User Log In .....");			
+				LOG.error(" No User Log In .....");			
 				return "error";
 			}
 			jObj = new JSONObject(param);
@@ -1081,7 +1081,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception Occured in getSubscriptions() method, Exception- "+e);
+			LOG.error("Exception Occured in getSubscriptions() method, Exception- "+e);
 		}
 		
 		return Action.SUCCESS;
@@ -1095,7 +1095,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 			jObj = new JSONObject(param);	
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception occured in getFriendsList() Method, Exception - " +e); 
+			LOG.error("Exception occured in getFriendsList() Method, Exception - " +e); 
 		}
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
@@ -1118,7 +1118,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 			
 			if(user == null || ((RegistrationVO)user).getRegistrationID() == null){
-				log.error(" No User Log In .....");			
+				LOG.error(" No User Log In .....");			
 				return "error";
 			}
 			Long  viewId = userProfileService.getUserAcessViw(userId);
@@ -1183,7 +1183,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 			
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception occured in getStreamingDataForPublicProfileByProfileId() Method, Exception - " +e); 
+			LOG.error("Exception occured in getStreamingDataForPublicProfileByProfileId() Method, Exception - " +e); 
 		}
 		//streamList = userProfileService.getStreamingDataForPublicProfileByProfileId(jObj.getLong("profileId"),jObj.getInt("startIndex"),jObj.getInt("maxIndex"));
 		return Action.SUCCESS;
@@ -1206,10 +1206,10 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 			jObj = new JSONObject(param);	
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception occured in connectToSelectedUser() Method, Exception - " +e); 
+			LOG.error("Exception occured in connectToSelectedUser() Method, Exception - " +e); 
 		}
 		
-		Long userId = new Long(jObj.getString("userId"));
+		Long userId = Long.valueOf(jObj.getString("userId"));
 		String subject = jObj.getString("connectMessage");
 		List<Long> senderIds = new ArrayList<Long>();
 		senderIds.add(userId);
@@ -1221,7 +1221,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 		
 		for(int j=0;j<size;j++)
 		{			
-			connectUserIdsList.add(new Long(connectUserIds.getString(j)));
+			connectUserIdsList.add(Long.valueOf(connectUserIds.getString(j)));
 		}	
 		
 		resultStatus = ananymousUserService.saveCommunicationDataBetweenUsers(senderIds, connectUserIdsList, IConstants.FRIEND_REQUEST, subject, senderName);
@@ -1235,7 +1235,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 			jObj = new JSONObject(param);	
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception occured in getBlockRequestDetails() Method, Exception - " +e); 
+			LOG.error("Exception occured in getBlockRequestDetails() Method, Exception - " +e); 
 		}
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
@@ -1253,7 +1253,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 			jObj = new JSONObject(param);	
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception occured in getBlockRequestDetails() Method, Exception - " +e); 
+			LOG.error("Exception occured in getBlockRequestDetails() Method, Exception - " +e); 
 		}
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");

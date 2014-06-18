@@ -146,11 +146,11 @@ public class VoterInfoAction extends ActionSupport implements ServletRequestAwar
 		String param=null;
 		
 		param=getTask();
-		System.out.println("param:"+param);		
+		LOG.info("param:"+param);		
 		
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -162,12 +162,12 @@ public class VoterInfoAction extends ActionSupport implements ServletRequestAwar
 			
 			String constituencyId=jObj.getString("MANDAL");
 			constituencyManagementVO = new ConstituencyManagementVO();
-			//constituencyManagementVO.setVoterDetails(constituencyManagementService.getVoterInfo(new Long(hamletId), "2009", 0l, 20000, false));
-			/*constituencyManagementVO.setVotersByHouseNos(constituencyManagementService.getVoterHouseDetails(new Long(hamletId), "2009"));*/
+			//constituencyManagementVO.setVoterDetails(constituencyManagementService.getVoterInfo(Long.valueOf(hamletId), "2009", 0l, 20000, false));
+			/*constituencyManagementVO.setVotersByHouseNos(constituencyManagementService.getVoterHouseDetails(Long.valueOf(hamletId), "2009"));*/
 			
 		
 			
-			/*VoterCastInfoVO votersByCast  = constituencyManagementService.getVotersCastInfoForHamlet(new Long(hamletId), "2009");
+			/*VoterCastInfoVO votersByCast  = constituencyManagementService.getVotersCastInfoForHamlet(Long.valueOf(hamletId), "2009");
 			constituencyManagementVO.setVoterCastInfodetails(votersByCast);		
 			*/
 			
@@ -175,25 +175,25 @@ public class VoterInfoAction extends ActionSupport implements ServletRequestAwar
 			//added for Local Cast statics
 			if(checkedEle.equalsIgnoreCase("Panchayat"))
 			{
-			VoterCastInfoVO votersByCast  = constituencyManagementService.getVotersCastInfoForPanchayat(new Long(hamletId), "2009");
+			VoterCastInfoVO votersByCast  = constituencyManagementService.getVotersCastInfoForPanchayat(Long.valueOf(hamletId), "2009");
 			constituencyManagementVO.setVoterCastInfodetails(votersByCast);
 			}
 			if(checkedEle.equalsIgnoreCase("Pollingstation"))
 			{
-				VoterCastInfoVO votersByCast  = constituencyManagementService.getVotersCastInfoForPollingStation(new Long(hamletId), "2009");
+				VoterCastInfoVO votersByCast  = constituencyManagementService.getVotersCastInfoForPollingStation(Long.valueOf(hamletId), "2009");
 				constituencyManagementVO.setVoterCastInfodetails(votersByCast);
 			}
 			
 			
-			problemManagementDataVO = problemManagementService.getProblemsForAHamlet(new Long(hamletId), "2009");
+			problemManagementDataVO = problemManagementService.getProblemsForAHamlet(Long.valueOf(hamletId), "2009");
 			ResultStatus resultStatus = problemManagementDataVO.getResultStatus();
 			if(resultStatus.getResultCode() == 0)
 				constituencyManagementVO.setHamletProblems(problemManagementDataVO.getHamletProblems());
 			for(HamletProblemVO problems:problemManagementDataVO.getHamletProblems()){
-				Log.debug("Problems" + problems.getProblemDesc());
+				LOG.debug("Problems" + problems.getProblemDesc());
 			}
 			if(resultStatus.getResultCode() == 1)
-				Log.debug("No Problems Data Found....");
+				LOG.debug("No Problems Data Found....");
 						
 			PoliticalChangesVO politicalChangesVO1 = new PoliticalChangesVO();
 			//PoliticalChangesVO politicalChangesVO2 = new PoliticalChangesVO();
@@ -214,7 +214,7 @@ public class VoterInfoAction extends ActionSupport implements ServletRequestAwar
 			
 			String mandalID = jObj.getString("MANDAL");
 			
-			TotalMPTCMandalLeaderVO   mptcMandalLeaders = constituencyManagementService.getMPTCElectionResultForMandal(new Long(mandalID));
+			TotalMPTCMandalLeaderVO   mptcMandalLeaders = constituencyManagementService.getMPTCElectionResultForMandal(Long.valueOf(mandalID));
 			constituencyManagementVO.setTotalMPTCMandalLeaderVO(mptcMandalLeaders);
 		}
 		
@@ -226,19 +226,19 @@ public class VoterInfoAction extends ActionSupport implements ServletRequestAwar
 			String flag = jObj.getString("flag");
 			if(checkedEle.equalsIgnoreCase("Assembly"))
 			{
-				VoterCastInfoVO votersByCast  = constituencyManagementService.getVotersCastInfoForAssembly(new Long(constituencyId), "2009");
+				VoterCastInfoVO votersByCast  = constituencyManagementService.getVotersCastInfoForAssembly(Long.valueOf(constituencyId), "2009");
 				constituencyManagementVO.setVoterCastInfodetails(votersByCast);
 			}
-			if(checkedEle.equalsIgnoreCase("Mandal") && new Long(flag)== -1)
+			if(checkedEle.equalsIgnoreCase("Mandal") && Long.valueOf(flag)== -1)
 			{
-				VoterCastInfoVO votersByCast  = constituencyManagementService.getVotersCastInfoForMandal(new Long(constituencyId), "2009");
+				VoterCastInfoVO votersByCast  = constituencyManagementService.getVotersCastInfoForMandal(Long.valueOf(constituencyId), "2009");
 				constituencyManagementVO.setVoterCastInfodetails(votersByCast);
 			}
 			//urban
-			if(checkedEle.equalsIgnoreCase("Mandal") && new Long(flag)!= -1)
+			if(checkedEle.equalsIgnoreCase("Mandal") && Long.valueOf(flag)!= -1)
 			{
 				
-				VoterCastInfoVO votersByCast  = constituencyManagementService.getVotersCastInfoForUrban(new Long(constituencyId), "2009");
+				VoterCastInfoVO votersByCast  = constituencyManagementService.getVotersCastInfoForUrban(Long.valueOf(constituencyId), "2009");
 				constituencyManagementVO.setVoterCastInfodetails(votersByCast);
 			}
 			
@@ -253,9 +253,9 @@ public class VoterInfoAction extends ActionSupport implements ServletRequestAwar
 			String constituencyId=jObj.getString("MANDAL");
 			constituencyManagementVO = new ConstituencyManagementVO();
 			//added for Important Families
-			constituencyManagementVO.setVotersByHouseNos(constituencyManagementService.getVoterHouseInfoDetails(new Long(hamletId), "2009",checkedEle));
-			constituencyManagementVO.setVotersCount(constituencyManagementService.getVoterHouseDetailsForPanchayat(new Long(hamletId), "2009",checkedEle));
-			constituencyManagementVO.setAgewisevotersCount(constituencyManagementService.getVoterAgeDetailsForPanchayat(new Long(hamletId), "2009",checkedEle));
+			constituencyManagementVO.setVotersByHouseNos(constituencyManagementService.getVoterHouseInfoDetails(Long.valueOf(hamletId), "2009",checkedEle));
+			constituencyManagementVO.setVotersCount(constituencyManagementService.getVoterHouseDetailsForPanchayat(Long.valueOf(hamletId), "2009",checkedEle));
+			constituencyManagementVO.setAgewisevotersCount(constituencyManagementService.getVoterAgeDetailsForPanchayat(Long.valueOf(hamletId), "2009",checkedEle));
 			
 			
 			
@@ -332,7 +332,7 @@ public class VoterInfoAction extends ActionSupport implements ServletRequestAwar
 		Long constituencyId = jObj.getLong("constituencyId");
 		String checkedele = jObj.getString("checkedele");
 		String flag = jObj.getString("flag");
-		 votersInfoForMandalVO = constituencyManagementService.getBasicVotersInfo(constituencyId,"2009",checkedele,new Long(flag));
+		 votersInfoForMandalVO = constituencyManagementService.getBasicVotersInfo(constituencyId,"2009",checkedele,Long.valueOf(flag));
 		
 		return SUCCESS;
 	}

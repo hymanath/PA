@@ -96,8 +96,8 @@ public class PartyBoothResultAction extends ActionSupport implements ServletRequ
 			
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 		Long userId = user.getRegistrationID();
-		Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
-		Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
+		Long electionYear = Long.valueOf(IConstants.PRESENT_ELECTION_YEAR);
+		Long electionTypeId = Long.valueOf(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
 		
 		assemblyConstis = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userId,electionYear,electionTypeId);
 		parlConstis = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userId,electionYear,1l);
@@ -108,7 +108,7 @@ public class PartyBoothResultAction extends ActionSupport implements ServletRequ
 		if(assemblyConstis != null && assemblyConstis.size() > 0)
 		{
 			SelectOptionVO electionType2 = new SelectOptionVO();
-			electionType2.setId(new Long(2));
+			electionType2.setId(Long.valueOf(2));
 			electionType2.setName("Assembly");
 			electionTypes.add(electionType2);
 			
@@ -121,7 +121,7 @@ public class PartyBoothResultAction extends ActionSupport implements ServletRequ
 		if(parlConstis != null && parlConstis.size() > 0)
 		{
 			SelectOptionVO electionType1 = new SelectOptionVO();
-			electionType1.setId(new Long(1));
+			electionType1.setId(Long.valueOf(1));
 			electionType1.setName("Parliament");
 			electionTypes.add(electionType1);
 			
@@ -144,7 +144,7 @@ public class PartyBoothResultAction extends ActionSupport implements ServletRequ
 		setElectionYears(electionYears);*/
 		
 		electionYears = crossVotingEstimationService.getElectionYearsForBoothResult();
-		System.out.println("before success party Booth results action");
+		LOG.info("before success party Booth results action");
 		return SUCCESS;	
 		
 	}

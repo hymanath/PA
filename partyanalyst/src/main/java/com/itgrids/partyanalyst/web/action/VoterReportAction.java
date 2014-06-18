@@ -26,7 +26,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class VoterReportAction extends ActionSupport implements ServletRequestAware{
 
 	private HttpServletRequest request;
-	private static final Logger log = Logger.getLogger(VoterReportAction.class);
+	private static final Logger LOG = Logger.getLogger(VoterReportAction.class);
 	private HttpSession session;
 	private List<SelectOptionVO> stateList;
 	private List<SelectOptionVO> districtList;
@@ -132,7 +132,7 @@ public class VoterReportAction extends ActionSupport implements ServletRequestAw
 			if(regVO==null)
 				return ERROR;
 			String accessType = regVO.getAccessType();
-			Long accessValue= new Long(regVO.getAccessValue());
+			Long accessValue= Long.valueOf(regVO.getAccessValue());
 			
 			stateList = new ArrayList<SelectOptionVO>();
 			districtList = new ArrayList<SelectOptionVO>();
@@ -180,7 +180,7 @@ public class VoterReportAction extends ActionSupport implements ServletRequestAw
 			
 		}catch(Exception e)
 		{
-			log.error("Error Occured in the execute() of VoterReportAction class and Error is -- "+e);
+			LOG.error("Error Occured in the execute() of VoterReportAction class and Error is -- "+e);
 			return null;
 		}
 		return SUCCESS;

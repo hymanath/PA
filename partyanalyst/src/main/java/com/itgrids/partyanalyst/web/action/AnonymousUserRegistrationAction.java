@@ -14,7 +14,6 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.RequestUtils;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
-import org.jfree.util.Log;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -41,9 +40,9 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private HttpServletRequest request;
+	transient private HttpServletRequest request;
 	private String task;
-	org.json.JSONObject jObj;
+	private org.json.JSONObject jObj;
 	
 	private Long registrationId;
 	private String userName;
@@ -68,14 +67,14 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	private IMailService mailService;
 	private String uname;
 	
-	private static final org.apache.log4j.Logger log = Logger.getLogger(AnonymousUserRegistrationAction.class);
+	private static final org.apache.log4j.Logger LOG = Logger.getLogger(AnonymousUserRegistrationAction.class);
    
 	//For UserImage
     private File uploadImage;
     private String uploadImageContentType;
     private String uploadImageFileName;
     private HttpSession session;
-    private ServletContext context;
+    transient private ServletContext context;
     
     private List<SelectOptionVO> districts;
     private List<SelectOptionVO> constituencies;
@@ -88,77 +87,77 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	public String getUname() {
 		return uname;
 	}
-	public void setUname(String uname) {
+	public void setUname(final String uname) {
 		this.uname = uname;
 	}
 	public IMailService getMailService() {
 		return mailService;
 	}
-	public void setMailService(IMailService mailService) {
+	public void setMailService(final IMailService mailService) {
 		this.mailService = mailService;
 	}
 	public IRegionServiceData getRegionServiceDataImp() {
 		return regionServiceDataImp;
 	}
-	public void setRegionServiceDataImp(IRegionServiceData regionServiceDataImp) {
+	public void setRegionServiceDataImp(final IRegionServiceData regionServiceDataImp) {
 		this.regionServiceDataImp = regionServiceDataImp;
 	}
 	public List<SelectOptionVO> getDistricts() {
 		return districts;
 	}
-	public void setDistricts(List<SelectOptionVO> districts) {
+	public void setDistricts(final List<SelectOptionVO> districts) {
 		this.districts = districts;
 	}
 	public List<SelectOptionVO> getConstituencies() {
 		return constituencies;
 	}
-	public void setConstituencies(List<SelectOptionVO> constituencies) {
+	public void setConstituencies(final List<SelectOptionVO> constituencies) {
 		this.constituencies = constituencies;
 	}
 	public String getUploadImageContentType() {
 		return regVO.getUserProfilePic();
 	}
-	public void setUploadImageContentType(String uploadImageContentType) {
+	public void setUploadImageContentType(final String uploadImageContentType) {
 				this.regVO.setUserProfilePic(uploadImageContentType);
 				this.uploadImageContentType=uploadImageContentType;
 	}
 	public String getUploadImageFileName() {
 		return uploadImageFileName;
 	}
-	public void setUploadImageFileName(String uploadImageFileName) {
+	public void setUploadImageFileName(final String uploadImageFileName) {
 		this.uploadImageFileName = uploadImageFileName;
 	}
 	public File getUploadImage() {
 		return uploadImage;
 	}
-	public void setUploadImage(File uploadImage) {
+	public void setUploadImage(final File uploadImage) {
 		this.uploadImage = uploadImage;
 	}
 	public ServletContext getContext() {
 		return context;
 	}
-	public void setServletContext(ServletContext context) {
+	public void setServletContext(final ServletContext context) {
 		this.context = context;
 	}
 	
 	public IAnanymousUserService getAnanymousUserService() {
 		return ananymousUserService;
 	}
-	public void setAnanymousUserService(IAnanymousUserService ananymousUserService) {
+	public void setAnanymousUserService(final IAnanymousUserService ananymousUserService) {
 		this.ananymousUserService = ananymousUserService;
 	}
 	
 	public HttpSession getSession() {
 		return session;
 	}
-	public void setSession(HttpSession session) {
+	public void setSession(final HttpSession session) {
 		this.session = session;
 	}
 	public RegistrationVO getRegVO() {
 		return regVO;
 	}
 	
-	public void setRegVO(RegistrationVO regVO) {
+	public void setRegVO(final RegistrationVO regVO) {
 		this.regVO = regVO;
 	}
 		
@@ -166,7 +165,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	//User Details Validation
 	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z ]+$", message = "Username Should not Contain Special characters and Numbers.", shortCircuit = true)
 	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Please enter Username below 20 characters ", minLength = "1", maxLength = "20")	
-	public void setUserName(String userName) {
+	public void setUserName(final String userName) {
 		this.userName = userName;
 		this.regVO.setUserName(userName);
 	}	
@@ -174,7 +173,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		return regVO.getUserName();
 	}
 	
-	public void setPassword(String password) {
+	public void setPassword(final String password) {
 		this.password = password;
 		this.regVO.setPassword(password);
 	}
@@ -183,7 +182,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		return regVO.getPassword();
 	}
 	
-	public void setReEnteredPassword(String reEnteredPassword) {
+	public void setReEnteredPassword(final String reEnteredPassword) {
 		this.reEnteredPassword = reEnteredPassword;
 	}	
 	public String getReEnteredPassword() {
@@ -197,7 +196,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		return regVO.getRegistrationID();
 	}
 	
-	public void setRegistrationId(Long registrationId) {
+	public void setRegistrationId(final Long registrationId) {
 		this.registrationId = registrationId;
 		regVO.setRegistrationID(registrationId);
 	}
@@ -205,7 +204,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "First Name is Mandatory",  shortCircuit = true)
 	@RegexFieldValidator(type = ValidatorType.FIELD,expression = "^[a-zA-Z ]+$", message = "First name Should not contain Special Characters and Numbers.", shortCircuit = true)
 	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Please enter First Name below 20 characters ", minLength = "1", maxLength = "20")	
-	public void setFirstName(String firstName) {
+	public void setFirstName(final String firstName) {
 		this.regVO.setFirstName(firstName);
 	}
 	public String getFirstName() {
@@ -215,7 +214,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Last Name is Mandatory")
 	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z ]+$", message = "Last name Should not Contain Special Characters and Numbers.", shortCircuit = true)
 	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Please enter Last Name below 20 characters", minLength = "1", maxLength = "20")	
-	public void setLastName(String lastName) {
+	public void setLastName(final String lastName) {
 		this.regVO.setLastName(lastName);
 	}
 	
@@ -223,7 +222,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		return regVO.getLastName();
 	}
 	
-	public void setGender(String gender) {
+	public void setGender(final String gender) {
 		this.regVO.setGender(gender);
 	}
 	
@@ -235,14 +234,14 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		return regVO.getDateOfBirth();
 	}
 	
-	public void setDateOfBirth(String dateOfBirth) {
+	public void setDateOfBirth(final String dateOfBirth) {
 		this.regVO.setDateOfBirth(dateOfBirth);
 	}
 	
 	//User Contact Details validation
 	//@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([789]{1})([012346789]{1})([0-9]{8})$", message = "Invalid Mobile Number", shortCircuit = true)
 	//@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Invalid Mobile number", minLength = "10", maxLength = "12")	
-	public void setMobile(String mobile) {
+	public void setMobile(final String mobile) {
 		this.regVO.setMobile(mobile);
 	}
 	
@@ -250,7 +249,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		return regVO.getMobile();
 	}
 	
-	public void setAddress(String address) {
+	public void setAddress(final String address) {
 		this.regVO.setAddress(address);
 	}
 	public String getAddress() {
@@ -261,7 +260,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		return regVO.getEmail();
 	}
 	@EmailValidator(type = ValidatorType.FIELD , message = " Enter a valid email.")
-	public void setEmail(String email) {
+	public void setEmail(final String email) {
 		this.regVO.setEmail(email);
 	}
 	
@@ -270,11 +269,11 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	}
 	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([0123456789]{6})$", message = "Invalid Pincode", shortCircuit = true)
 	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Invalid Pincode", minLength = "6", maxLength = "7")	
-	public void setPincode(String pincode) {
+	public void setPincode(final String pincode) {
 		this.regVO.setPincode(pincode);
 	}
 	
-	public void setState(String state) {
+	public void setState(final String state) {
 		this.state = state;
 		this.regVO.setState(state);
 	}
@@ -282,7 +281,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		return regVO.getState();
 	}
 		
-	public void setDistrict(String district) {
+	public void setDistrict(final String district) {
 		this.district = district;
 		this.regVO.setDistrict(district);
 	}
@@ -291,7 +290,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		return regVO.getDistrict();
 	}
 		
-	public void setConstituency(String constituency) {
+	public void setConstituency(final String constituency) {
 		this.constituency = constituency;
 		this.regVO.setConstituency(constituency);
 	}
@@ -305,7 +304,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	}
 	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([789]{1})([012346789]{1})([0-9]{8})$", message = "Invalid Telephone Number", shortCircuit = true)
 	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Invalid Telephone number", minLength = "10", maxLength = "12")	
-	public void setPhone(String phone) {
+	public void setPhone(final String phone) {
 		this.regVO.setPhone(phone);
 	}
 	
@@ -313,7 +312,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		return task;
 	}
 	
-	public void setTask(String task) {
+	public void setTask(final String task) {
 		this.task = task;
 	}
 	
@@ -321,106 +320,95 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		return jObj;
 	}
 	
-	public void setJObj(org.json.JSONObject obj) {
+	public void setJObj(final org.json.JSONObject obj) {
 		jObj = obj;
 	}
 	
-	public void setServletRequest(HttpServletRequest request) {
+	public void setServletRequest(final HttpServletRequest request) {
 		this.request = request;
 	}
 
 	public String getRedirectLoc() {
 		return redirectLoc;
 	}
-	public void setRedirectLoc(String redirectLoc) {
+	public void setRedirectLoc(final String redirectLoc) {
 		this.redirectLoc = redirectLoc;
 	}
 	public Long getStateId() {
 		return stateId;
 	}
-	public void setStateId(Long stateId) {
+	public void setStateId(final Long stateId) {
 		this.stateId = stateId;
 	}
 	public Long getDistrictId() {
 		return districtId;
 	}
-	public void setDistrictId(Long districtId) {
+	public void setDistrictId(final Long districtId) {
 		this.districtId = districtId;
 	}
 	public Long getLocalBodyId() {
 		return localBodyId;
 	}
-	public void setLocalBodyId(Long localBodyId) {
+	public void setLocalBodyId(final Long localBodyId) {
 		this.localBodyId = localBodyId;
 	}
 	public Long getConstituencyId() {
 		return constituencyId;
 	}
-	public void setConstituencyId(Long constituencyId) {
+	public void setConstituencyId(final Long constituencyId) {
 		this.constituencyId = constituencyId;
 	}
 	public Long getLocalBodyElectionTypeId() {
 		return localBodyElectionTypeId;
 	}
-	public void setLocalBodyElectionTypeId(Long localBodyElectionTypeId) {
+	public void setLocalBodyElectionTypeId(final Long localBodyElectionTypeId) {
 		this.localBodyElectionTypeId = localBodyElectionTypeId;
 	}
 	public List<Long> getProfileOpts() {
 		return regVO.getProfileOpts();
 	}
-	public void setProfileOpts(List<Long> profileOpts) {
+	public void setProfileOpts(final List<Long> profileOpts) {
 		regVO.setProfileOpts(profileOpts);
 	}
 	
 	public List<String> getAccept() {
 		return accept;
 	}
-	public void setAccept(List<String> accept) {
+	public void setAccept(final List<String> accept) {
 		this.accept = accept;
 	}
 	
 	public ILoginService getLoginService() {
 		return loginService;
 	}
-	public void setLoginService(ILoginService loginService) {
+	public void setLoginService(final ILoginService loginService) {
 		this.loginService = loginService;
 	}
 	
 	public String getStatus() {
 		return status;
 	}
-	public void setStatus(String status) {
+	public void setStatus(final String status) {
 		this.status = status;
 	}
 	public String getTempVar() {
 		return tempVar;
 	}
-	public void setTempVar(String tempVar) {
+	public void setTempVar(final String tempVar) {
 		this.tempVar = tempVar;
 	}
 	
 	public String execute()
 	{
 		session = request.getSession();
-		String sPath = (String)session.getAttribute("imagePath");
+		
 		Boolean savedSuccessfully;
-		BufferedImage imageFile = null;
 		String  imageName=null;
 		String constiName[]=null; 
-		String fileName=null;; 
 		
 		try
 		{
-			if(this.uploadImage != null)
-				imageFile = ImageIO.read(this.uploadImage);
-			
-			String filePath = "";
 			 
-			if(sPath != null)
-				filePath = sPath;
-			else
-				filePath = context.getRealPath("/")+"pictures\\"+IConstants.PROFILE_PIC+"\\";				 
-				 
             if(uploadImageContentType!=null)
             {
             	constiName = uploadImageContentType.split("/");
@@ -439,111 +427,110 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
             else
             {
             	savedSuccessfully = ananymousUserService.saveAnonymousUserDetails(regVO, false);
-            	//saveUserLogInDetails(regVO , session.getId());
             }
             
-            String requestURL= request.getRequestURL().toString();
-			String requestFrom = "";
 			
-			if(requestURL.contains("www.partyanalyst.com"))
-				requestFrom = IConstants.SERVER;
-			else
-				requestFrom = IConstants.LOCALHOST;
-			
-			if(!(registrationId != null && registrationId > 0) && savedSuccessfully)
-				 mailService.sendRegistrationNotification(regVO,requestFrom);
-			
-            
-            try
-            {
-            	if(this.uploadImage !=null)
-            	{
-                    fileName = filePath+regVO.getRegistrationID()+"."+constiName[1];
-                    imageName =  regVO.getRegistrationID()+"."+constiName[1];
-	                FileImageOutputStream filName = new FileImageOutputStream(new File(fileName));
-	                ImageIO.write(imageFile, constiName[1],filName);
-	                filName.close();
-            	}
-
+			if(!(registrationId != null && registrationId > 0) && savedSuccessfully){
+				 String requestFrom = IConstants.LOCALHOST;
+				 if( request.getRequestURL().toString().contains("www.partyanalyst.com")){
+					requestFrom = IConstants.SERVER;
+				 }		
+				 mailService.sendRegistrationNotification(regVO,requestFrom);			
 			}
-            catch (Exception e)
-            {
-				log.error(e);
-			}
+			uploadImage(constiName);
 			
             if(savedSuccessfully)
-            {	
-            	if(registrationId != null && registrationId > 0)
-            	{
-            		SelectOptionVO optionVO = loginService.getUserNameAndPWDByUserId(registrationId);
-            		regVO = loginService.checkForValidUser(optionVO.getName(), optionVO.getUrl());
-            	}
-            	else
-            	{
-					HttpSession session = request.getSession();			
-					String userFullName = regVO.getFirstName() + " " + regVO.getLastName(); 
-					String userName = regVO.getFirstName() + " " + regVO.getLastName();
-					uname = regVO.getFirstName() + " " + regVO.getLastName();
-					regVO.setUserStatus(IConstants.FREE_USER);
-					session.setAttribute("userName",regVO.getEmail());
-					session.setAttribute("userFullName",userFullName);
-					/*session.setAttribute(IWebConstants.FREE_USER_ROLE, true);
-					session.setAttribute("UserType", "FreeUser");
-					session.setAttribute("loginStatus", "out");
-					
-					session.setAttribute("HiddenCount", 0);
-					//session.removeAttribute("districts");
-					//session.removeAttribute("constituencies");
-					session.setAttribute("userName",regVO.getEmail());
-					*/
-            	}
-            	//session.setAttribute(IConstants.USER,regVO);
-			}
+            {
+            	getUpdatedData();
+            }
 			 
 		 }
 		 catch(Exception e)
 		 {
-			 e.printStackTrace();
+			 LOG.error(e);
 			 return "failure";
 		 }
 		
+			
+		return getReturnUrl(savedSuccessfully);
+	}
+	
+	private String getReturnUrl(final Boolean savedSuccessfully){
 		if(!(registrationId != null && registrationId > 0) && savedSuccessfully)
 		{
 			return "CHANGE_PASSWORD_PAGE";
-		}
-		
-		if(redirectLoc != null && !"".equalsIgnoreCase(redirectLoc))
+		}else if(redirectLoc != null && !"".equalsIgnoreCase(redirectLoc)){
 			return getRedirectPageDetails();
 		
-		else if("".equalsIgnoreCase(redirectLoc))
+		}else if("".equalsIgnoreCase(redirectLoc))
 		{
 			
 			status = "success";
 			session.setAttribute("status", status);
 			
-			if(tempVar != null && tempVar.equalsIgnoreCase("dashBoard"))
+			if(tempVar != null && tempVar.equalsIgnoreCase("dashBoard")){
 				return "dashBoard";
-			else
+			}else{
 			 return "connect";
-			
-			/*if(IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver"))
-			return "dashBoard";
-			else
-			return "connect";*/
-			
-		}
-			
-			
+			}
+		}		
 		return SUCCESS;
 	}
 	
-	public String saveUserLogInDetails(RegistrationVO regVO , String sessionId)
+	
+	private void uploadImage(final String constiName[]){
+		try
+        {
+        	if(this.uploadImage !=null)
+        	{
+        		String filePath = (String)session.getAttribute("imagePath");
+   			 
+    			if(filePath == null){
+    				filePath = context.getRealPath("/")+"pictures\\"+IConstants.PROFILE_PIC+"\\";				
+    			}	
+        		final BufferedImage imageFile = ImageIO.read(this.uploadImage);
+        		final String fileName = filePath+regVO.getRegistrationID()+"."+constiName[1];
+                final FileImageOutputStream filName = new FileImageOutputStream(new File(fileName));
+                ImageIO.write(imageFile, constiName[1],filName);
+                filName.close();
+        	}
+
+		}
+        catch (Exception e)
+        {
+        	LOG.error("Exception rised in uploadImage",e);
+		}
+		
+	}
+	
+	
+	private void getUpdatedData(){
+		
+    	if(registrationId != null && registrationId > 0)
+    	{
+    		final SelectOptionVO optionVO = loginService.getUserNameAndPWDByUserId(registrationId);
+    		regVO = loginService.checkForValidUser(optionVO.getName(), optionVO.getUrl());
+    	}
+    	else
+    	{
+			final HttpSession session = request.getSession();			
+			final String userFullName = regVO.getFirstName() + " " + regVO.getLastName(); 
+			uname = regVO.getFirstName() + " " + regVO.getLastName();
+			regVO.setUserStatus(IConstants.FREE_USER);
+			session.setAttribute("userName",regVO.getEmail());
+			session.setAttribute("userFullName",userFullName);
+			
+    	}
+    	
+	
+	}
+	public String saveUserLogInDetails(final RegistrationVO regVO ,final String sessionId)
 	{
 		try{
-			if(regVO == null  || sessionId == null)
+			if(regVO == null  || sessionId == null){
 				return null;
-			
-			UserTrackingVO userTrackingVO = new UserTrackingVO();
+			}
+			final UserTrackingVO userTrackingVO = new UserTrackingVO();
 			
 			userTrackingVO.setRegistrationId(regVO.getRegistrationID());
 			userTrackingVO.setRemoteAddress(request.getRemoteAddr());
@@ -554,7 +541,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 			return SUCCESS;
 			
 		}catch (Exception e) {
-			log.error("Exception occured in saveUserLogInDetails() method , Exception -"+e);
+			LOG.error("Exception occured in saveUserLogInDetails() method , Exception -",e);
 			return IWebConstants.FAILURE;
 		}
 	}
@@ -562,18 +549,19 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	public void validate() 
 	{		       
 				
-		if(state == null || state.equalsIgnoreCase("0"))
+		if(state == null || state.equalsIgnoreCase("0")){
 			addFieldError("state","Please select a State.");
-		
-		if(constituency == null || constituency.equalsIgnoreCase("0"))
+		}
+		if(constituency == null || constituency.equalsIgnoreCase("0")){
 			addFieldError("constituency","Please select a Constituency.");
-		
+		}
 		if(registrationId == null || registrationId == 0)
 		{	
-			Long result = new Long(ananymousUserService.checkForUserNameAvalilability(getEmail()).getResultCode());
+			final Long result = Long.valueOf(ananymousUserService.checkForUserNameAvalilability(getEmail()).getResultCode());
 			
-			if(result != 121L)
+			if(result != 121L){
 				addFieldError("userName","UserName does not exist.");
+			}
 		}
 		
 	}
@@ -598,14 +586,14 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		return loginUserId;
 	 }
 	
-	 public void setLoginUserId(Long loginUserId) {
+	 public void setLoginUserId(final Long loginUserId) {
 		this.loginUserId = loginUserId;
 	 }
 	public String getPath(){
-		String requestURL = request.getRequestURL().toString();
-        String actionURL = RequestUtils.getServletPath(request);
+		final String requestURL = request.getRequestURL().toString();
+        final String actionURL = RequestUtils.getServletPath(request);
 
-        String path = requestURL.replace(actionURL, "");
+        final String path = requestURL.replace(actionURL, "");
 
 
         return path;

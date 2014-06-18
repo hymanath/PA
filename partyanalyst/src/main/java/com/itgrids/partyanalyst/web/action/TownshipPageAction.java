@@ -36,7 +36,7 @@ public class TownshipPageAction extends ActionSupport implements ServletRequestA
 	private Long townshipId;
 	private Set<SelectOptionVO> partiesInTownship;
 	private IStaticDataService staticDataService;
-	private static final Logger log = Logger.getLogger(RevenueVillageReportAction.class);
+	private static final Logger LOG = Logger.getLogger(RevenueVillageReportAction.class);
 
 	public IStaticDataService getStaticDataService() {
 		return staticDataService;
@@ -94,13 +94,13 @@ public class TownshipPageAction extends ActionSupport implements ServletRequestA
 	
 	public String execute() throws Exception{
 		String cPath = request.getContextPath();
-		townshipId = new Long(request.getParameter("TOWNSHIP_ID"));
+		townshipId = Long.valueOf(request.getParameter("TOWNSHIP_ID"));
 		townshipName = request.getParameter("TOWNSHIP_NAME");
 		electionWiseMandalPartyResultListVO = partyBoothWiseResultsService.getPartyGenderWiseBoothVotesForMandal(townshipId, "Township");
 		List<PartyResultVO> acPcElectionResultsForParties = electionWiseMandalPartyResultListVO.getAllPartiesAllElectionResults();
 		
 		partiesInTownship = staticDataService.getAllPartiesParticipatedInRevenueVillage(townshipId);
-		log.debug("Total Parties In Revenue Village::"+partiesInTownship.size());
+		LOG.debug("Total Parties In Revenue Village::"+partiesInTownship.size());
 		String chartName = "allPartiesPerformanceInAllRVElections_"+townshipId+"_"+townshipName+".png";
 		String chartPath = "";
 		

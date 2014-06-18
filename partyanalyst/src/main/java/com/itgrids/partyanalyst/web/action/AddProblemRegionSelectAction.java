@@ -32,46 +32,39 @@ public class AddProblemRegionSelectAction extends ActionSupport implements
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private static final Logger log = Logger.getLogger(AddProblemRegionSelectAction.class);
+	private static final Logger LOG = Logger.getLogger(AddProblemRegionSelectAction.class);
 	
-	private HttpServletRequest request;
-	private HttpServletResponse response;
-	private ServletContext context;
+	transient private HttpServletRequest request;
+	transient private HttpServletResponse response;
+	transient private ServletContext context;
     private HttpSession session;
 
 	private String regionType;
 	private String regionValue;
-	
-	/* (non-Javadoc)
-	 * @see org.apache.struts2.interceptor.ServletRequestAware#setServletRequest(javax.servlet.http.HttpServletRequest)
-	 */
+
 	public HttpServletRequest getRequest() {
 		return request;
 	}
 
-	public void setServletRequest(HttpServletRequest request) {
+	public void setServletRequest(final HttpServletRequest request) {
 		this.request = request;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.apache.struts2.interceptor.ServletResponseAware#setServletResponse(javax.servlet.http.HttpServletResponse)
-	 */
+	
 	public HttpServletResponse getResponse() {
 		return response;
 	}
 
-	public void setServletResponse(HttpServletResponse response) {
+	public void setServletResponse(final HttpServletResponse response) {
 		this.response = response;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.apache.struts2.util.ServletContextAware#setServletContext(javax.servlet.ServletContext)
-	 */
+	
 	public ServletContext getContext() {
 		return context;
 	}
 
-	public void setServletContext(ServletContext context) {
+	public void setServletContext(final ServletContext context) {
 		this.context = context;
 	}
 
@@ -79,7 +72,7 @@ public class AddProblemRegionSelectAction extends ActionSupport implements
 		return session;
 	}
 
-	public void setSession(HttpSession session) {
+	public void setSession(final HttpSession session) {
 		this.session = session;
 	}
 	
@@ -87,7 +80,7 @@ public class AddProblemRegionSelectAction extends ActionSupport implements
 		return regionType;
 	}
 
-	public void setRegionType(String regionType) {
+	public void setRegionType(final String regionType) {
 		this.regionType = regionType;
 	}
 
@@ -95,7 +88,7 @@ public class AddProblemRegionSelectAction extends ActionSupport implements
 		return regionValue;
 	}
 
-	public void setRegionValue(String regionValue) {
+	public void setRegionValue(final String regionValue) {
 		this.regionValue = regionValue;
 	}
 
@@ -105,7 +98,7 @@ public class AddProblemRegionSelectAction extends ActionSupport implements
 		return Action.SUCCESS;
 	}
 	
-	public void getRegionsDataForConstituency(Long constituencyId){
+	public void getRegionsDataForConstituency(final Long constituencyId){
 		
 	}
 

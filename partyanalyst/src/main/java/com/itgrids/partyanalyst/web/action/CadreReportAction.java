@@ -32,7 +32,6 @@ public class CadreReportAction extends ActionSupport implements ServletContextAw
 	private HttpSession session;
 	
 	private List<UserEventVO> userEventList = new ArrayList<UserEventVO>();
-	private List<ImportantDatesVO> ImpDatesList = new ArrayList<ImportantDatesVO>();
 	private CadreManagementVO cadreManagementVO = new CadreManagementVO();
 	private EntitlementsHelper entitlementsHelper;
 	
@@ -89,19 +88,19 @@ public class CadreReportAction extends ActionSupport implements ServletContextAw
 			userCadresInfoVO.setIsParent(user.getParentUserId() == null ? true : false);
 			if("MLA".equalsIgnoreCase(user.getAccessType())
 					|| "MP".equalsIgnoreCase(user.getAccessType())){
-				String constituencyName = cadreManagementService.getConstituencyName(new Long(user.getAccessValue()));
+				String constituencyName = cadreManagementService.getConstituencyName(Long.valueOf(user.getAccessValue()));
 				userCadresInfoVO.setUserAccessDisplayValue(constituencyName);
 			}else if("COUNTRY".equalsIgnoreCase(user.getAccessType())){
-				String countryName = cadreManagementService.getCountryName(new Long(user.getAccessValue()));
+				String countryName = cadreManagementService.getCountryName(Long.valueOf(user.getAccessValue()));
 				userCadresInfoVO.setUserAccessDisplayValue(countryName);
 			}else if("STATE".equalsIgnoreCase(user.getAccessType())){
-				String stateName = cadreManagementService.getStateName(new Long(user.getAccessValue()));
+				String stateName = cadreManagementService.getStateName(Long.valueOf(user.getAccessValue()));
 				userCadresInfoVO.setUserAccessDisplayValue(stateName);
 			}else if("DISTRICT".equalsIgnoreCase(user.getAccessType())){
-				String districtName = cadreManagementService.getDistrictName(new Long(user.getAccessValue()));
+				String districtName = cadreManagementService.getDistrictName(Long.valueOf(user.getAccessValue()));
 				userCadresInfoVO.setUserAccessDisplayValue(districtName);
 			}else if("MANDAL".equalsIgnoreCase(user.getAccessType())){
-				String mandalName = cadreManagementService.getMandalName(new Long(user.getAccessValue()));
+				String mandalName = cadreManagementService.getMandalName(Long.valueOf(user.getAccessValue()));
 				userCadresInfoVO.setUserAccessDisplayValue(mandalName);
 			}
 			userCadresInfoVO = cadreManagementService.getUserCadresInfo(userCadresInfoVO);

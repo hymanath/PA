@@ -25,7 +25,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class FeedbackAdminApprovalAction extends ActionSupport implements ServletRequestAware, ServletContextAware {
 	
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(FeedbackAdminApprovalAction.class);
+	private static final Logger LOG = Logger.getLogger(FeedbackAdminApprovalAction.class);
 	private HttpServletRequest request;
 	private HttpSession session;
 	private String task;

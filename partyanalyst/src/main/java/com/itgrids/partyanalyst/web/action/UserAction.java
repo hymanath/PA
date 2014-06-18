@@ -174,8 +174,8 @@ public class UserAction extends ActionSupport implements ServletRequestAware {
 	{
 		RegistrationVO registrationVO = (RegistrationVO) request.getSession().getAttribute(IConstants.USER);
 		
-		states = staticDataService.getParticipatedStatesForAnElectionType(new Long(2));
-		//constituencies = staticDataService.getConstituenciesByElectionTypeAndStateId(new Long(2), Long.parseLong(registrationVO.getState())).getConstituencies();
+		states = staticDataService.getParticipatedStatesForAnElectionType(Long.valueOf(2));
+		//constituencies = staticDataService.getConstituenciesByElectionTypeAndStateId(Long.valueOf(2), Long.parseLong(registrationVO.getState())).getConstituencies();
 		districts = new ArrayList<SelectOptionVO>(0);
 		 //constituencies = new ArrayList<SelectOptionVO>(0);
 		 HttpSession session = request.getSession();	
@@ -248,7 +248,7 @@ public class UserAction extends ActionSupport implements ServletRequestAware {
 		
 		userAccessType = regVO.getAccessType();
 		userAccessValue = regVO.getAccessValue();
-		userAccessLocation = regionServiceDataImp.getRegionNameByRegionId(new Long(userAccessValue), userAccessType);
+		userAccessLocation = regionServiceDataImp.getRegionNameByRegionId(Long.valueOf(userAccessValue), userAccessType);
 		
 		if("COUNTRY".equalsIgnoreCase(regVO.getAccessType()))
 		{
@@ -282,7 +282,7 @@ public class UserAction extends ActionSupport implements ServletRequestAware {
 			type.add(IConstants.PARLIAMENT_ELECTION_TYPE);
 		}
 		
-		states = staticDataService.getParticipatedStatesForAnElectionType(new Long(2));
+		states = staticDataService.getParticipatedStatesForAnElectionType(Long.valueOf(2));
 		
 		session.setAttribute("states", states);
 		session.setAttribute("type", type);
@@ -304,19 +304,19 @@ public class UserAction extends ActionSupport implements ServletRequestAware {
 		
 		if(jObj.getString("reportLevel").equalsIgnoreCase(IConstants.STATE))
 		{
-			regionList = regionServiceDataImp.getStatesByCountry(new Long(jObj.getString("mainUserLocationId")));
+			regionList = regionServiceDataImp.getStatesByCountry(Long.valueOf(jObj.getString("mainUserLocationId")));
 		}
 		else if(jObj.getString("reportLevel").equalsIgnoreCase(IConstants.DISTRICT))
 		{
-			regionList = regionServiceDataImp.getDistrictsByStateID(new Long(jObj.getString("mainUserLocationId")));
+			regionList = regionServiceDataImp.getDistrictsByStateID(Long.valueOf(jObj.getString("mainUserLocationId")));
 		}
 		else if(jObj.getString("reportLevel").equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
 		{
-			regionList = regionServiceDataImp.getConstituenciesByDistrictID(new Long(jObj.getString("mainUserLocationId")));
+			regionList = regionServiceDataImp.getConstituenciesByDistrictID(Long.valueOf(jObj.getString("mainUserLocationId")));
 		}
 		else if(jObj.getString("reportLevel").equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE))
 		{
-			regionList = regionServiceDataImp.getParliamentConstituenciesByDistrict(new Long(jObj.getString("mainUserLocationId")));
+			regionList = regionServiceDataImp.getParliamentConstituenciesByDistrict(Long.valueOf(jObj.getString("mainUserLocationId")));
 		}
 		
 		return Action.SUCCESS;

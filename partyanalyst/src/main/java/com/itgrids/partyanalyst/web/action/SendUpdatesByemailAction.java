@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.json.JSONObject;
@@ -30,7 +31,7 @@ public class SendUpdatesByemailAction extends ActionSupport implements ServletRe
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+	private static final Logger LOG = Logger.getLogger(SendUpdatesByemailAction.class);
 	private ServletContext context;
 	private HttpServletRequest request;
 	private HttpServletResponse response;
@@ -282,7 +283,7 @@ public class SendUpdatesByemailAction extends ActionSupport implements ServletRe
 		
 		try {
 			jObj = new JSONObject(param);
-			System.out.println(jObj);
+			LOG.info(jObj);
 			
 			if(jObj.getString("task").equalsIgnoreCase("getStateNames"))
 			{

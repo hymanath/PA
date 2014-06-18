@@ -24,7 +24,7 @@ public class PartyElectionResultsAction extends ActionSupport implements Servlet
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(PartyElectionResultsAction.class);
+	private static final Logger LOG = Logger.getLogger(PartyElectionResultsAction.class);
 	private HttpServletRequest request;	
 	private ServletContext context;
 	private IStaticDataService staticDataService;
@@ -234,8 +234,8 @@ public String ajaxCallHandler() throws Exception{
 		param = getTask();
 		try {
 			jObj = new JSONObject(param);
-			if(log.isDebugEnabled())
-				log.debug(jObj);			
+			if(LOG.isDebugEnabled())
+				LOG.debug(jObj);			
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -243,16 +243,16 @@ public String ajaxCallHandler() throws Exception{
 		
 		if(jObj.getString("task").equalsIgnoreCase("getConstituencyResults"))
 		{
-			Long electionId = new Long(jObj.getString("electionId"));
-			Long partyId = new Long(jObj.getString("partyId"));
-			Long rank = new Long(jObj.getString("rank"));
-			Long stateId = new Long(jObj.getString("stateId"));
-			if(log.isInfoEnabled())
+			Long electionId = Long.valueOf(jObj.getString("electionId"));
+			Long partyId = Long.valueOf(jObj.getString("partyId"));
+			Long rank = Long.valueOf(jObj.getString("rank"));
+			Long stateId = Long.valueOf(jObj.getString("stateId"));
+			if(LOG.isInfoEnabled())
 			{
-				log.debug("Entered in to Action");
-				log.debug("electionId::::::::::::"+electionId);
-				log.debug("partyId:::::::::::"+partyId);
-				log.debug("rank:::::::::::"+rank);
+				LOG.debug("Entered in to Action");
+				LOG.debug("electionId::::::::::::"+electionId);
+				LOG.debug("partyId:::::::::::"+partyId);
+				LOG.debug("rank:::::::::::"+rank);
 				
 			}
 			
@@ -268,24 +268,24 @@ public String getAllElectionYears() throws Exception	{
 	param = getTask();
 	try {
 		jObj = new JSONObject(param);
-		if(log.isDebugEnabled())
-			log.debug(jObj);			
+		if(LOG.isDebugEnabled())
+			LOG.debug(jObj);			
 	} catch (ParseException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
 		String electionType = jObj.getString("electionType");
-		Long electionTypeId = new Long(jObj.getString("electionTypeId"));
-		Long stateID = new Long(jObj.getString("stateID"));
+		Long electionTypeId = Long.valueOf(jObj.getString("electionTypeId"));
+		Long stateID = Long.valueOf(jObj.getString("stateID"));
 		if(electionType.equals(IConstants.ASSEMBLY_ELECTION_TYPE) || electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE))
 		{
 			try{
-				electionYears = staticDataService.getElectionIdsAndYearsInfo(electionTypeId,new Long(stateID));
+				electionYears = staticDataService.getElectionIdsAndYearsInfo(electionTypeId,Long.valueOf(stateID));
 				electionYears.add(0, new SelectOptionVO(0l,"Select Year"));
 				
 			}catch(Exception e){
 				electionYears = null;
-				log.debug("Error occured in retriving the data in ElectionDetailsReportAction ");
+				LOG.debug("Error occured in retriving the data in ElectionDetailsReportAction ");
 			}	
 		} else 	if(electionType.equals(IConstants.ZPTC) || electionType.equals(IConstants.MPTC))
 		{
@@ -295,7 +295,7 @@ public String getAllElectionYears() throws Exception	{
 				
 			}catch(Exception e){
 				electionYears = null;
-				log.debug("Error occured in retriving the data in ElectionDetailsReportAction ");
+				LOG.debug("Error occured in retriving the data in ElectionDetailsReportAction ");
 			}
 		}
 	

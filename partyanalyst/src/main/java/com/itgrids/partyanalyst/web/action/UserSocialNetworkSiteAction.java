@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
@@ -22,7 +23,7 @@ ServletRequestAware, ServletResponseAware, ServletContextAware {
 	
 	private HttpServletRequest request;
 	private HttpSession session;
-	
+	private static final Logger LOG = Logger.getLogger(UserSocialNetworkSiteAction.class);
 	
 	public HttpServletRequest getRequest() {
 		return request;
@@ -132,7 +133,7 @@ ServletRequestAware, ServletResponseAware, ServletContextAware {
 		
 		try {
 			jObj = new JSONObject(param);
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

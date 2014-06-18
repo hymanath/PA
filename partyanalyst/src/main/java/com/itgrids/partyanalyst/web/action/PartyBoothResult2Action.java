@@ -122,11 +122,11 @@ public class PartyBoothResult2Action extends ActionSupport implements ServletReq
 			return INPUT;
 		
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_BOOTHWISE_RESULTS_REPORT) 
-			|| !entitlementsHelper.checkForRegionToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CONSTITUENCY_LEVEL, new Long(constituencyName)))
+			|| !entitlementsHelper.checkForRegionToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CONSTITUENCY_LEVEL, Long.valueOf(constituencyName)))
 			return ERROR;
 				
-		System.out.println(" values from ajax -------- partyName:"+partyName+" constituencyName:"+constituencyName+" electionYear:"+electionYear);
-		List<PartyBoothPerformanceVO> boothResults = partyBoothWiseResultsService.getBoothWiseResultsForParty(new Long(partyName), new Long(constituencyName), electionYear);
+		LOG.info(" values from ajax -------- partyName:"+partyName+" constituencyName:"+constituencyName+" electionYear:"+electionYear);
+		List<PartyBoothPerformanceVO> boothResults = partyBoothWiseResultsService.getBoothWiseResultsForParty(Long.valueOf(partyName), Long.valueOf(constituencyName), electionYear);
 		String path = IWebConstants.STATIC_CONTENT_FOLDER_URL;
 		boothResult = partyBoothWiseResultsService.getVotingPercentageWiseBoothResult(boothResults.get(0),true,path);
 		boothResult = partyBoothWiseResultsService.getVotingPercentageWiseBoothResult(boothResults.get(0),false,null);

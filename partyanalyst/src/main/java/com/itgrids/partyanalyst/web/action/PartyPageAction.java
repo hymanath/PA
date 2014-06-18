@@ -46,7 +46,7 @@ public class PartyPageAction extends ActionSupport implements
 	 * 
 	 */
 	private static final long serialVersionUID = -4697694648631810338L;
-	private static final Logger log = Logger.getLogger(PartyPageAction.class);
+	private static final Logger LOG = Logger.getLogger(PartyPageAction.class);
 	private HttpServletRequest request;
 	private HttpSession session;
 	private Long partyId;
@@ -287,7 +287,7 @@ public class PartyPageAction extends ActionSupport implements
 			constituencyId=null;
 	    }
 
-		log.debug("Entered into party page action");
+		LOG.debug("Entered into party page action");
 		request.setAttribute("partyId", partyId);
 		partyVO = partyDetailsService.getPartyDetails(partyId);
 		descriptions = partyDetailsService.getPartyProfileDescriptionById(partyId);
@@ -399,8 +399,8 @@ public class PartyPageAction extends ActionSupport implements
 	public String getPartyManifestoBasedOnStateId(){
 		try {
 			jObj = new JSONObject(getTask());
-			Long stateId = new Long(jObj.getString("stateId"));
-			Long partyId = new Long(jObj.getString("partyId"));
+			Long stateId = Long.valueOf(jObj.getString("stateId"));
+			Long partyId = Long.valueOf(jObj.getString("partyId"));
 			fileVO = partyDetailsService.getPartyManifestoBasedOnStateIdAndPartyd(stateId,partyId);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -415,10 +415,10 @@ public class PartyPageAction extends ActionSupport implements
 		try {
 			PartyPageVO partyPageVO = new PartyPageVO();
 			jObj = new JSONObject(getTask());
-			Long electionId = new Long(jObj.getString("electionId"));
-			Long electionTypeId = new Long(jObj.getString("electionTypeId"));
-			Long partyId = new Long(jObj.getString("partyId"));
-			Long stateId = new Long(jObj.getString("stateId"));
+			Long electionId = Long.valueOf(jObj.getString("electionId"));
+			Long electionTypeId = Long.valueOf(jObj.getString("electionTypeId"));
+			Long partyId = Long.valueOf(jObj.getString("partyId"));
+			Long stateId = Long.valueOf(jObj.getString("stateId"));
 			partyPageVO.setPartyId(partyId);
 			if(electionId !=0)
 			partyPageVO.setElectionId(electionId);
@@ -439,7 +439,7 @@ public class PartyPageAction extends ActionSupport implements
 	{
 		try {
 			jObj = new JSONObject(getTask());
-			Long partyId = new Long(jObj.getString("partyId"));
+			Long partyId = Long.valueOf(jObj.getString("partyId"));
 			resultMap = partyDetailsService.getPartyElectionResults(partyId,jObj.getBoolean("includeAlliances"),jObj.getBoolean("includeBielections"));
 		} 
 		catch (ParseException e) {

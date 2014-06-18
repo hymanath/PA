@@ -23,7 +23,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class VoterDataManageAction extends ActionSupport implements ServletRequestAware{
 
 	private static final long serialVersionUID = 64316195191123277L;
-	private static final Logger log = Logger.getLogger(VoterDataManageAction.class);
+	private static final Logger LOG = Logger.getLogger(VoterDataManageAction.class);
 	private HttpServletRequest request;
 	private Long constituencyId;
 	private Long publicationDateId;
@@ -210,7 +210,7 @@ public class VoterDataManageAction extends ActionSupport implements ServletReque
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
 		if(user == null || ((RegistrationVO)user).getRegistrationID() == null){
-			log.error(" No User Log In .....");			
+			LOG.error(" No User Log In .....");			
 			return "error";
 		}
 		
@@ -226,8 +226,8 @@ public class VoterDataManageAction extends ActionSupport implements ServletReque
 		allConstituenciesList = user.getUserAccessVoterConstituencies();
 		if(constituencyList == null || constituencyList.isEmpty()){
 			Long userID = user.getRegistrationID();
-			Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
-			Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
+			Long electionYear = Long.valueOf(IConstants.PRESENT_ELECTION_YEAR);
+			Long electionTypeId = Long.valueOf(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
 			allConstituenciesList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userID,electionYear,electionTypeId);
 		}
 		constituencyList = staticDataService.getConstituencies(1l);
@@ -238,7 +238,7 @@ public class VoterDataManageAction extends ActionSupport implements ServletReque
 		return ActionSupport.SUCCESS;
 	}
 	
-	public String AjaxHandler()
+	public String ajaxHandler()
 	{
 		try {
 			jObj = new JSONObject(getTask());

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 
 import com.itgrids.partyanalyst.dto.CrossVotingConsolidateVO;
@@ -16,6 +17,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class CrossVotingReportAjaxAction extends ActionSupport implements ServletRequestAware{
 
 	private static final long serialVersionUID = 1L;
+	private static final Logger LOG = Logger.getLogger(CrossVotingReportAjaxAction.class);
 	private String electionYear;
 	private String parliamentValue;
 	private String assemblyValue;
@@ -108,7 +110,7 @@ public class CrossVotingReportAjaxAction extends ActionSupport implements Servle
 	
 	public String execute()throws Exception{
 		
-		System.out.println("In Execute of ajax");
+		LOG.info("In Execute of ajax");
 		
 		electionYear = request.getParameter("election");
 		party = request.getParameter("party");
@@ -117,39 +119,39 @@ public class CrossVotingReportAjaxAction extends ActionSupport implements Servle
 		includeAliance = request.getParameter("includeAliance");
 		resultObjectVO = new ResultObjectVO();
 		
-		System.out.println("year == "+electionYear+",party == "+party+",parliament = "+parliamentValue+",assembly = "+assemblyValue+", alliance = "+includeAliance);
+		LOG.info("year == "+electionYear+",party == "+party+",parliament = "+parliamentValue+",assembly = "+assemblyValue+", alliance = "+includeAliance);
 		if(electionYear != null && party == null && parliamentValue == null && assemblyValue == null){
-			System.out.println("IN parliament if");
-			parliamentList = crossVotingEstimationService.getConstituenciesForElectionYearAndScopeForBoothData(electionYear.trim(), new Long(1));
-			System.out.println("Parliament Constituencies Size::"+parliamentList.size());
+			LOG.info("IN parliament if");
+			parliamentList = crossVotingEstimationService.getConstituenciesForElectionYearAndScopeForBoothData(electionYear.trim(), Long.valueOf(1));
+			LOG.info("Parliament Constituencies Size::"+parliamentList.size());
 			resultObjectVO.setDataList(parliamentList);	
 		}
 		
 		if(electionYear != null && party == null && parliamentValue != null && assemblyValue == null)
 		{
-			System.out.println("IN election year");
-			parliamentList = crossVotingEstimationService.getAssembliesForParliament(new Long(parliamentValue.trim()), new Long(electionYear.trim()));
-			System.out.println("Assemblies Consties List Size $$$$$$$$$"+parliamentList.size());			
+			LOG.info("IN election year");
+			parliamentList = crossVotingEstimationService.getAssembliesForParliament(Long.valueOf(parliamentValue.trim()), Long.valueOf(electionYear.trim()));
+			LOG.info("Assemblies Consties List Size $$$$$$$$$"+parliamentList.size());			
 			resultObjectVO.setDataList(parliamentList);				
 		}
 		else if(electionYear != null && party == null && parliamentValue == null && assemblyValue != null)
 		{
-			System.out.println("IN parliament value");
-			parliamentList = crossVotingEstimationService.getPartiesForConstituencyAndElectionYearForBoothData(new Long(assemblyValue), electionYear);
-			System.out.println("Parties List Size $$$$$$$$$"+parliamentList.size());
+			LOG.info("IN parliament value");
+			parliamentList = crossVotingEstimationService.getPartiesForConstituencyAndElectionYearForBoothData(Long.valueOf(assemblyValue), electionYear);
+			LOG.info("Parties List Size $$$$$$$$$"+parliamentList.size());
 			resultObjectVO.setDataList(parliamentList);	
 		}
 		else if(electionYear != null && party == null && parliamentValue != null && assemblyValue != null)
 		{
-			System.out.println(" For Participated Parties In both Assembly and Parliament Elections");
-			parliamentList = crossVotingEstimationService.getPartiesForAcAndPcElections(new Long(assemblyValue), electionYear, new Long(parliamentValue.trim()));
-			System.out.println("Parties List Size $$$$$$$$$"+parliamentList.size());
+			LOG.info(" For Participated Parties In both Assembly and Parliament Elections");
+			parliamentList = crossVotingEstimationService.getPartiesForAcAndPcElections(Long.valueOf(assemblyValue), electionYear, Long.valueOf(parliamentValue.trim()));
+			LOG.info("Parties List Size $$$$$$$$$"+parliamentList.size());
 			resultObjectVO.setDataList(parliamentList);	
 		}
 		else if(electionYear != null && party != null && parliamentValue != null && assemblyValue != null && includeAliance != null)
 		{
-			System.out.println("IN assembly values = "+electionYear+"**"+party+"**"+parliamentValue+"**"+assemblyValue);
-			crossVotingConsolidateVO = crossVotingEstimationService.getConsolidatedCrossVotingDetails(electionYear, new Long(party.trim()), new Long(assemblyValue.trim()), new Long(parliamentValue.trim()), includeAliance);
+			LOG.info("IN assembly values = "+electionYear+"**"+party+"**"+parliamentValue+"**"+assemblyValue);
+			crossVotingConsolidateVO = crossVotingEstimationService.getConsolidatedCrossVotingDetails(electionYear, Long.valueOf(party.trim()), Long.valueOf(assemblyValue.trim()), Long.valueOf(parliamentValue.trim()), includeAliance);
 			resultObjectVO.setCrossVotingConsolidateVO(crossVotingConsolidateVO);	
 		}		
 				

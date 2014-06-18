@@ -16,7 +16,7 @@ public class AllBoothsResultsInTehsilAction extends ActionSupport implements Ser
 	 */ 
 	private static final long serialVersionUID = 1L;
 	private HttpServletRequest request;
-	private static final Logger log = Logger.getLogger(AllBoothsResultsInTehsilAction.class);
+	private static final Logger LOG = Logger.getLogger(AllBoothsResultsInTehsilAction.class);
 	private IBiElectionPageService biElectionPageService; 
 	private String constituencyId;
 	private String partyId;
@@ -26,7 +26,7 @@ public class AllBoothsResultsInTehsilAction extends ActionSupport implements Ser
 	private AllBoothsResultsForAPartyInAMandal allBoothsResultsForAPartyInAMandal;
 	private String mandalName;
 	
-	public void setServletRequest(HttpServletRequest request) {
+	public void setServletRequest(final HttpServletRequest request) {
 		this.request = request;		
 	}
 
@@ -34,7 +34,7 @@ public class AllBoothsResultsInTehsilAction extends ActionSupport implements Ser
 		return request;
 	}
 
-	public void setRequest(HttpServletRequest request) {
+	public void setRequest(final HttpServletRequest request) {
 		this.request = request;
 	}
 
@@ -42,7 +42,7 @@ public class AllBoothsResultsInTehsilAction extends ActionSupport implements Ser
 		return biElectionPageService;
 	}
 
-	public void setBiElectionPageService(
+	public void setBiElectionPageService(final 
 			IBiElectionPageService biElectionPageService) {
 		this.biElectionPageService = biElectionPageService;
 	}
@@ -51,7 +51,7 @@ public class AllBoothsResultsInTehsilAction extends ActionSupport implements Ser
 		return constituencyId;
 	}
 
-	public void setConstituencyId(String constituencyId) {
+	public void setConstituencyId(final String constituencyId) {
 		this.constituencyId = constituencyId;
 	}
 
@@ -59,7 +59,7 @@ public class AllBoothsResultsInTehsilAction extends ActionSupport implements Ser
 		return partyId;
 	}
 
-	public void setPartyId(String partyId) {
+	public void setPartyId(final String partyId) {
 		this.partyId = partyId;
 	}
 
@@ -67,7 +67,7 @@ public class AllBoothsResultsInTehsilAction extends ActionSupport implements Ser
 		return tehsilId;
 	}
 
-	public void setTehsilId(String tehsilId) {
+	public void setTehsilId(final String tehsilId) {
 		this.tehsilId = tehsilId;
 	}
 
@@ -75,7 +75,7 @@ public class AllBoothsResultsInTehsilAction extends ActionSupport implements Ser
 		return electionType;
 	}
 
-	public void setElectionType(String electionType) {
+	public void setElectionType(final String electionType) {
 		this.electionType = electionType;
 	}
 
@@ -83,7 +83,7 @@ public class AllBoothsResultsInTehsilAction extends ActionSupport implements Ser
 		return electionYear;
 	}
 
-	public void setElectionYear(String electionYear) {
+	public void setElectionYear(final String electionYear) {
 		this.electionYear = electionYear;
 	}	
 	
@@ -91,12 +91,12 @@ public class AllBoothsResultsInTehsilAction extends ActionSupport implements Ser
 		return allBoothsResultsForAPartyInAMandal;
 	}
 
-	public void setAllBoothsResultsForAPartyInAMandal(
+	public void setAllBoothsResultsForAPartyInAMandal(final 
 			AllBoothsResultsForAPartyInAMandal allBoothsResultsForAPartyInAMandal) {
 		this.allBoothsResultsForAPartyInAMandal = allBoothsResultsForAPartyInAMandal;
 	}
 
-	public void setMandalName(String mandalName) {
+	public void setMandalName(final String mandalName) {
 		this.mandalName = mandalName;
 	}
 
@@ -106,9 +106,9 @@ public class AllBoothsResultsInTehsilAction extends ActionSupport implements Ser
 
 	public String execute () 
 	{
-		log.debug("Entered in to execute method");
-		allBoothsResultsForAPartyInAMandal = biElectionPageService.getAllBoothsResultsInAConstituency(new Long(tehsilId), new Long(partyId), new Long(constituencyId), electionYear, electionType);
-		log.debug("results Size:::"+ allBoothsResultsForAPartyInAMandal.getBoothResults().size());
+		LOG.debug("Entered in to execute method");
+		allBoothsResultsForAPartyInAMandal = biElectionPageService.getAllBoothsResultsInAConstituency(Long.valueOf(tehsilId),Long.valueOf(partyId),Long.valueOf(constituencyId), electionYear, electionType);
+		LOG.debug("results Size:::"+ allBoothsResultsForAPartyInAMandal.getBoothResults().size());
 		return SUCCESS;
 	}
 	

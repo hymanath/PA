@@ -221,7 +221,7 @@ public class CnCSearchResultsAction extends ActionSupport implements ServletRequ
 			if(nameAndId.getName().equalsIgnoreCase(searchText))
 				return nameAndId;
 		SelectOptionVO notExist = new SelectOptionVO();
-		notExist.setId(new Long(0));
+		notExist.setId(0l);
 		notExist.setName(searchText);
 		selectOptionVO = notExist;	
 		return selectOptionVO;	

@@ -29,7 +29,7 @@ public class ConstituencyElectionResultsAction extends ActionSupport implements
 	 */
 	private static final long serialVersionUID = -3337107781995690081L;
 	
-	private static final Logger log = Logger.getLogger(ConstituencyElectionResultsAction.class);
+	private static final Logger LOG = Logger.getLogger(ConstituencyElectionResultsAction.class);
 	
 	private String electionType;
 	private String electionYear;
@@ -133,18 +133,18 @@ public class ConstituencyElectionResultsAction extends ActionSupport implements
 	
 	public String execute(){
 		
-		log.info("Inside Execute Method ..");
+		LOG.info("Inside Execute Method ..");
 		
-		//constituencyElectionResultsVO = staticDataService.getAllCandidatesDetailsForConstituency(new Long(constituencyId), electionYear, electionType);
-		constituencyResultsInElectionVO = staticDataService.getAllCandidatesResultsInConstituency(new Long(constituencyId), electionYear, electionType);
+		//constituencyElectionResultsVO = staticDataService.getAllCandidatesDetailsForConstituency(Long.valueOf(constituencyId), electionYear, electionType);
+		constituencyResultsInElectionVO = staticDataService.getAllCandidatesResultsInConstituency(Long.valueOf(constituencyId), electionYear, electionType);
 		if(constituencyResultsInElectionVO == null)
 			return Action.ERROR;
-		log.debug("All election years in action"+constituencyResultsInElectionVO.getElectionYears().size());
+		LOG.debug("All election years in action"+constituencyResultsInElectionVO.getElectionYears().size());
 		return Action.SUCCESS;
 	}
 	
 	public String getConsituencyWiseElectionResultsForLive(){
-		log.debug(" In getConsituencyWiseElectionResultsForLive method");
+		LOG.debug(" In getConsituencyWiseElectionResultsForLive method");
 		
 		//statesListVO = staticDataService
 		
@@ -153,7 +153,7 @@ public class ConstituencyElectionResultsAction extends ActionSupport implements
 	}
 	
 	public String getStateWideParliamentLiveResults(){
-		log.debug(" In getStateWideParliamentLiveResults method");
+		LOG.debug(" In getStateWideParliamentLiveResults method");
 		
 		statesListVO = staticDataService.getStateWideParliamentLiveResults();
 		
@@ -162,7 +162,7 @@ public class ConstituencyElectionResultsAction extends ActionSupport implements
 	}
 	
 	public String getPartyWiseWonLeadCountInLive(){
-		log.debug(" In getPartyWiseWonLeadCountInLive method");
+		LOG.debug(" In getPartyWiseWonLeadCountInLive method");
 		
 		partiesListVO = staticDataService.getPartyWiseWonLeadCountInLive();
 		

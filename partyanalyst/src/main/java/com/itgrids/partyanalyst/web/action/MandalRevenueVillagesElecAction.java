@@ -263,19 +263,19 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 	}
 
 	public String execute(){
-		mandalVO = staticDataService.findListOfElectionsAndPartiesInMandal(new Long(tehsilId));
+		mandalVO = staticDataService.findListOfElectionsAndPartiesInMandal(Long.valueOf(tehsilId));
 		String cPath = request.getContextPath();
 		String chartLocation="";
-		tehsilName = staticDataService.getTehsilNameByTehsilId(new Long(tehsilId));
+		tehsilName = staticDataService.getTehsilNameByTehsilId(Long.valueOf(tehsilId));
 		if(parties != null){
 			//List<PartyResultVO> partiesResults = null;
 			if("panchayat".equalsIgnoreCase(resultType)){
 			 partiesResults = constituencyPageService.
-					findPanchayatsWiseResultsInElectionsOfMandal(new Long(tehsilId), parties, elections, new Boolean(includeAlliance));
+					findPanchayatsWiseResultsInElectionsOfMandal(Long.valueOf(tehsilId), parties, elections, Boolean.valueOf(includeAlliance));
 			 chartPath = "allParties_"+parties+"_AllElections_"+elections+"VillagesWisePerformanceInAllElections_"+tehsilId+"P.png";
 			}else{
 			 partiesResults = biElectionPageService.
-					findRevenueVillageswiseResultsInElectionsOfMandal(new Long(tehsilId), parties, elections, new Boolean(includeAlliance));
+					findRevenueVillageswiseResultsInElectionsOfMandal(Long.valueOf(tehsilId), parties, elections, Boolean.valueOf(includeAlliance));
 			 chartPath = "allParties_"+parties+"_AllElections_"+elections+"VillagesWisePerformanceInAllElections_"+tehsilId+"RV.png";
 			}		
 			request.setAttribute("checkedType",resultType);
@@ -347,7 +347,7 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 			String electionsIDS="";
 			while (st.hasMoreElements()) electionsIDS += st.nextElement();
 			  
-			createPieChartsForTownshipVotingTrends(new Long(tehsilId),electionsIDS);	
+			createPieChartsForTownshipVotingTrends(Long.valueOf(tehsilId),electionsIDS);	
 		}
 		return SUCCESS;
 	}
@@ -357,7 +357,7 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 		String chartPath="";
 		String elecId = staticDataService.getLatestAssemblyElectionId();
 		if("panchayat".equalsIgnoreCase(resultType)){
-			townshipBoothDetailsVO = staticDataService.getPanchayatVotingTrendsByMandal(tehsilId,elecId,constituencyPageService.getPartiesResultsInPanchayatsGroupByMandal(tehsilId,new Long(elecId.trim())).get(0).getRevenueVillageElectionVO());	
+			townshipBoothDetailsVO = staticDataService.getPanchayatVotingTrendsByMandal(tehsilId,elecId,constituencyPageService.getPartiesResultsInPanchayatsGroupByMandal(tehsilId,Long.valueOf(elecId.trim())).get(0).getRevenueVillageElectionVO());	
 		}else{			
 			townshipBoothDetailsVO = staticDataService.getRevenueVillageVotingTrendsByMandalAndElectionIds(tehsilId,elecId);	
 		}
@@ -436,7 +436,7 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 		  return "mandalVO";
 		}else{
 			electionResults = new ArrayList<Object>();
-			partiesResults = constituencyPageService.findPanchayatsWiseResultsInElectionsOfMandal(new Long(tehsilId), jObj.getString("parties"),jObj.getString("elections"), new Boolean(jObj.getString("includeAlliance")));
+			partiesResults = constituencyPageService.findPanchayatsWiseResultsInElectionsOfMandal(Long.valueOf(tehsilId), jObj.getString("parties"),jObj.getString("elections"), Boolean.valueOf(jObj.getString("includeAlliance")));
 			electionResults.add(partiesResults);
 			partyResultMap=new HashMap<String, List<PartyResultVO>>();
 			
@@ -490,7 +490,7 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 			  return "mandalVO";
 			}else{
 				electionResults = new ArrayList<Object>();
-				partiesResults = constituencyPageService.findBoothsWiseResultsInElectionsOfPanchayat(new Long(tehsilId), jObj.getString("parties"),jObj.getString("elections"), new Boolean(jObj.getString("includeAlliance")));
+				partiesResults = constituencyPageService.findBoothsWiseResultsInElectionsOfPanchayat(Long.valueOf(tehsilId), jObj.getString("parties"),jObj.getString("elections"), Boolean.valueOf(jObj.getString("includeAlliance")));
 				electionResults.add(partiesResults);
 				partyResultMap=new HashMap<String, List<PartyResultVO>>();
 			        
@@ -559,7 +559,7 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 					
 				}
 						
-				partiesResults = constituencyPageService.getMandalwiseEleInfoOfConstituency(jObj.getLong("constituencyId"), jObj.getString("parties"),jObj.getString("elections"), new Boolean(jObj.getString("includeAlliance")),resultType);
+				partiesResults = constituencyPageService.getMandalwiseEleInfoOfConstituency(jObj.getLong("constituencyId"), jObj.getString("parties"),jObj.getString("elections"), Boolean.valueOf(jObj.getString("includeAlliance")),resultType);
 				electionResults.add(partiesResults);
 				partyResultMap=new HashMap<String, List<PartyResultVO>>();
 			        

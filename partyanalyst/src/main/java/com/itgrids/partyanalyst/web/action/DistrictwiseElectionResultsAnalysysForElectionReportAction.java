@@ -33,7 +33,7 @@ public class DistrictwiseElectionResultsAnalysysForElectionReportAction extends 
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(DistrictwiseElectionResultsAnalysysForElectionReportAction.class);
+	private static final Logger LOG = Logger.getLogger(DistrictwiseElectionResultsAnalysysForElectionReportAction.class);
 	private HttpServletRequest request;
 	private String electionId;
 	private String stateID;
@@ -193,8 +193,8 @@ public class DistrictwiseElectionResultsAnalysysForElectionReportAction extends 
 		param = getTask();
 		try {
 			jObj = new JSONObject(param);
-			if(log.isDebugEnabled())
-				log.debug(jObj);			
+			if(LOG.isDebugEnabled())
+				LOG.debug(jObj);			
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -202,7 +202,7 @@ public class DistrictwiseElectionResultsAnalysysForElectionReportAction extends 
 		if(jObj.getString("task").equalsIgnoreCase("getSelectedYearElectionResults"))
 		{
 			electionCompleteDetailsVO = new ElectionResultsReportVO();
-			Long stateId = new Long(jObj.getString("stateID"));
+			Long stateId = Long.valueOf(jObj.getString("stateID"));
 			String electionType = jObj.getString("electionType");
 			String year = jObj.getString("year");
 			Long electionId = jObj.getLong("electionId");
@@ -264,7 +264,7 @@ public class DistrictwiseElectionResultsAnalysysForElectionReportAction extends 
 			chartName = partyDistrictResultsChartName;
 		}catch(Exception ex){
 			ex.printStackTrace();
-			log.debug("Exception Raised :" + ex);
+			LOG.debug("Exception Raised :" + ex);
 		}
 	 return chartName;
 	}
@@ -290,7 +290,7 @@ public class DistrictwiseElectionResultsAnalysysForElectionReportAction extends 
 		chartName = alliancePartiesChartName;
 		}catch(Exception ex){
 			ex.printStackTrace();
-			log.debug("Exception Raised :" + ex);
+			LOG.debug("Exception Raised :" + ex);
 		}
 		return chartName;
 	}

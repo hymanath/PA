@@ -63,7 +63,7 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	
 	private List<SelectOptionVO> namesList;
 	
-	private static final Logger log = Logger.getLogger(VotersAnalysisAction.class);
+	private static final Logger LOG = Logger.getLogger(VotersAnalysisAction.class);
 
 	private VotersInfoForMandalVO votersInfo;
 	
@@ -595,8 +595,8 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 		constituencyList = user.getUserAccessVoterConstituencies();
 		if(constituencyList == null || constituencyList.isEmpty()){
 			Long userID = user.getRegistrationID();
-			Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
-			Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
+			Long electionYear = Long.valueOf(IConstants.PRESENT_ELECTION_YEAR);
+			Long electionTypeId = Long.valueOf(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
 			userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userID,electionYear,electionTypeId);
 			constituencyList = votersAnalysisService.getConstituencyList(userAccessConstituencyList);
 			constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
@@ -606,7 +606,7 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 		
 	}
 	
-	public String AjaxHandler()
+	public String ajaxHandler()
 	{
 		String param;
 		param = getTask();
@@ -623,12 +623,12 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 			
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception Occured in getRequestMessagesForUser() Method,Exception is- "+e);
+			LOG.error("Exception Occured in getRequestMessagesForUser() Method,Exception is- "+e);
 		}
 		if(jObj.getString("task").equalsIgnoreCase("getMandalList"))
 		{
 			String selectedVal=jObj.getString("selected");
-			namesList = regionServiceDataImp.getSubRegionsInConstituency(new Long(selectedVal), IConstants.PRESENT_YEAR, null);
+			namesList = regionServiceDataImp.getSubRegionsInConstituency(Long.valueOf(selectedVal), IConstants.PRESENT_YEAR, null);
 			namesList.add(0, new SelectOptionVO(0L,"Select Mandal"));
 		}
 		else if(jObj.getString("task").equalsIgnoreCase("getPublicationDate") || jObj.getString("task").equalsIgnoreCase("getPublicationDateForCast")
@@ -690,8 +690,8 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 
 public String getVoterDetails(){
 	
-	if(log.isDebugEnabled())	
-	log.debug("Executing getVoterDetails() Method");	
+	if(LOG.isDebugEnabled())	
+	LOG.debug("Executing getVoterDetails() Method");	
 	try{
 		
 	
@@ -728,7 +728,7 @@ public String getVoterDetails(){
 		Long hamletId = 0L;
 		
 		if(request.getParameter("hamletId") != null)
-			hamletId = new Long(request.getParameter("hamletId"));
+			hamletId = Long.valueOf(request.getParameter("hamletId"));
 		
 			votersList = new ArrayList<VoterVO>();
 			
@@ -763,7 +763,7 @@ public String getVoterDetails(){
 	}catch(Exception e){
 		
 		e.printStackTrace();
-		log.error("Exception Occured in getVoterDetails() Method,Exception is- "+e);
+		LOG.error("Exception Occured in getVoterDetails() Method,Exception is- "+e);
 		
 	}
 		
@@ -805,7 +805,7 @@ public String getVoterDetails(){
 			
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception Occured in getVotersCount() Method,Exception is- "+e);
+			LOG.error("Exception Occured in getVotersCount() Method,Exception is- "+e);
 		}
 		
 		// votersInfo = votersAnalysisService.getVotersCount(loggedUserId,jObj.getString("type"),jObj.getLong("id"),jObj.getLong("publicationDateId"),constituencyId,jObj.getString("buildType"));
@@ -824,7 +824,7 @@ public String getVoterDetails(){
 			
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception Occured in getVotersCount() Method,Exception is- "+e);
+			LOG.error("Exception Occured in getVotersCount() Method,Exception is- "+e);
 		}
 		
 		
@@ -872,11 +872,11 @@ public String getVotersCastInfoByConstituency()
 	String param=null;
 	
 	param=getTask();
-	System.out.println("param:"+param);		
+	LOG.info("param:"+param);		
 	
 	try {
 		jObj=new JSONObject(param);
-		System.out.println("jObj = "+jObj);
+		LOG.info("jObj = "+jObj);
 	} catch (ParseException e) {
 		e.printStackTrace();
 	}
@@ -899,7 +899,7 @@ public String getVotersCastInfoByConstituency()
 		String type = jObj.getString("type");
 		Long publicationId = jObj.getLong("publicationDateId");
 		
-		//VoterCastInfoVO votersByCast  = votersAnalysisService.getVotersCastDetails(new Long(id), new Long(publicationId),type);
+		//VoterCastInfoVO votersByCast  = votersAnalysisService.getVotersCastDetails(Long.valueOf(id), Long.valueOf(publicationId),type);
 		
 		VoterCastInfoVO votersByCast  = votersAnalysisService.getVotersCastWiseDetailsInALocation(userId,type,id,publicationId,jObj.getLong("constituencyId"),jObj.getString("queryType"));
 		constituencyManagementVO.setVoterCastInfodetails(votersByCast);
@@ -938,7 +938,7 @@ public String getVotersCastInfoByConstituency()
 				buildType=res;
 			else buildType="localArea";
 		}
-		List<VoterCastInfoVO> sublevelCastDetails  = votersAnalysisService.getVotersCastDetailsForSubLevels(new Long(id), new Long(publicationId),type,userId,jObj.getLong("constituencyId"),buildType,jObj.getString("queryType"));
+		List<VoterCastInfoVO> sublevelCastDetails  = votersAnalysisService.getVotersCastDetailsForSubLevels(Long.valueOf(id), Long.valueOf(publicationId),type,userId,jObj.getLong("constituencyId"),buildType,jObj.getString("queryType"));
 		constituencyManagementVO.setCastPercent(votersAnalysisService.getCasteWisePercentage(sublevelCastDetails));
 		constituencyManagementVO.setCastVosList(sublevelCastDetails);
 		constituencyManagementVO.setConstituencyManagementVO(votersAnalysisService.getCasteWisePercentsInLocations(sublevelCastDetails));
@@ -963,7 +963,7 @@ public String getVotersCastInfoByConstituency()
 		{
 			e.printStackTrace();
 		}
-		List<VoterHouseInfoVO> votersByHouseNos=votersAnalysisService.getVoterDetailsByCaste(new Long(id),new Long(publicationDateId),new Long(casteStateId),type,buildType,userId,hamletId,constituencyId);
+		List<VoterHouseInfoVO> votersByHouseNos=votersAnalysisService.getVoterDetailsByCaste(Long.valueOf(id),Long.valueOf(publicationDateId),Long.valueOf(casteStateId),type,buildType,userId,hamletId,constituencyId);
 		constituencyManagementVO.setVotersByHouseNos(votersByHouseNos);
 		
 		
@@ -1095,7 +1095,7 @@ public String getVotersCastInfoByConstituency()
 		
 	}catch (Exception e) {
 		e.printStackTrace();
-		log.error("Exception Occured in getRequestMessagesForUser() Method,Exception is- "+e);
+		LOG.error("Exception Occured in getRequestMessagesForUser() Method,Exception is- "+e);
 	}
   
   return Action.SUCCESS;
@@ -1111,7 +1111,7 @@ public String getImportantFamaliesDetails(){
 		
 	}catch (Exception e) {
 		e.printStackTrace();
-		log.error("Exception Occured in getImportantFamaliesDetails() Method,Exception is- "+e);
+		LOG.error("Exception Occured in getImportantFamaliesDetails() Method,Exception is- "+e);
 	}
 	
 	session = request.getSession();
@@ -1141,7 +1141,7 @@ public String getImportantFamaliesDetailsForHamlet(){
 		
 	}catch (Exception e) {
 		e.printStackTrace();
-		log.error("Exception Occured in getImportantFamaliesDetails() Method,Exception is- "+e);
+		LOG.error("Exception Occured in getImportantFamaliesDetails() Method,Exception is- "+e);
 	}
 	
 	session = request.getSession();
@@ -1184,7 +1184,7 @@ public String getVotersFamilyDetails(){
 		else
 			votersFamilyInfo = votersAnalysisService.getFamilyInformation(null,jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getString("hno"),userId,null);
 	}catch(Exception e){
-		log.error("Exception Occured in getVotersFamilyDetails() Method,Exception is- ",e);
+		LOG.error("Exception Occured in getVotersFamilyDetails() Method,Exception is- ",e);
 	}
 	
 	return SUCCESS;
@@ -1296,7 +1296,7 @@ public String getPreviousEleVotingTrends()
 		partyVotesEarnedVOList = votersAnalysisService.getPreviousElectionVotingTrends(id,publicationDateId,constituencyId,type);
 	}catch (Exception e) {
 		e.printStackTrace();
-		log.error("Exception Occured in getPreviousEleVotingTrends() Method, Exception - "+e);
+		LOG.error("Exception Occured in getPreviousEleVotingTrends() Method, Exception - "+e);
 	}
 return Action.SUCCESS;
 }
@@ -1342,7 +1342,7 @@ public String getProblemsByLocation()
 	}
 	catch (Exception e) {
 		e.printStackTrace();
-		log.error("Exception Occured in getProblemsByLocation() Method, Exception - "+e);
+		LOG.error("Exception Occured in getProblemsByLocation() Method, Exception - "+e);
 	}
 return Action.SUCCESS;
 }
@@ -1488,7 +1488,7 @@ return Action.SUCCESS;
 		
 		}catch (Exception e) {
 		e.printStackTrace();
-		log.error("Exception Occured in getRequestMessagesForUser() Method,Exception is- ",e);
+		LOG.error("Exception Occured in getRequestMessagesForUser() Method,Exception is- ",e);
 		}
 		
 		return Action.SUCCESS;
@@ -1506,7 +1506,7 @@ return Action.SUCCESS;
 	
 		}catch (Exception e) {
 		e.printStackTrace();
-		log.error("Exception Occured in getElectionYearsByMandalId() Method, Exception - "+e);
+		LOG.error("Exception Occured in getElectionYearsByMandalId() Method, Exception - "+e);
 		}
 		return Action.SUCCESS;
 	}
@@ -1524,7 +1524,7 @@ return Action.SUCCESS;
 			
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception Occured in getCrossVotingReportByMandalId() Method, Exception - "+e);
+			LOG.error("Exception Occured in getCrossVotingReportByMandalId() Method, Exception - "+e);
 		}
 		return Action.SUCCESS;
 	}
@@ -1536,7 +1536,7 @@ return Action.SUCCESS;
 			jObj = new JSONObject(getTask());
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception Occured in getParliamentConstituencyId() Method, Exception - "+e); 
+			LOG.error("Exception Occured in getParliamentConstituencyId() Method, Exception - "+e); 
 		}
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
@@ -1553,7 +1553,7 @@ return Action.SUCCESS;
 			jObj = new JSONObject(getTask());
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception Occured in getInfluencingPeopleBySearch() Method, Exception - "+e); 
+			LOG.error("Exception Occured in getInfluencingPeopleBySearch() Method, Exception - "+e); 
 		}
 		
 		InfluencingPeopleVO influencingPeopleVO = new InfluencingPeopleVO();
@@ -1587,7 +1587,7 @@ return Action.SUCCESS;
 			userCategoriesList = votersAnalysisService.getBoothBasicInfo(jObj.getLong("boothId"));
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception Occured in getBoothBasicInfo() Method, Exception ",e); 
+			LOG.error("Exception Occured in getBoothBasicInfo() Method, Exception ",e); 
 		}
 		return Action.SUCCESS;
 	}
@@ -1601,11 +1601,11 @@ return Action.SUCCESS;
 		String param;
 		param = getTask();
 		try {
-			log.debug("Entered into The checkForVoter() method");
+			LOG.debug("Entered into The checkForVoter() method");
 			jObj = new JSONObject(getTask());
 			
 		} catch (Exception e) {
-			log.error("Exception Occured in checkForVoter() Method, Exception - "+e); 
+			LOG.error("Exception Occured in checkForVoter() Method, Exception - "+e); 
 		}
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
@@ -1623,7 +1623,7 @@ return Action.SUCCESS;
 			jObj = new JSONObject(getTask());
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception Occured in mapVoterAsInfluencingPerson() Method, Exception - "+e); 
+			LOG.error("Exception Occured in mapVoterAsInfluencingPerson() Method, Exception - "+e); 
 		}
 		
 		
@@ -1654,7 +1654,7 @@ return Action.SUCCESS;
 			  return "error";
 			task = cadreManagementService.updateCadreVoterId(jObj.getLong("cadreId"),jObj.getLong("voterId"),userId);
 		}catch (Exception e) {
-			log.error("Exception Occured in addVoterToCadre() Method, Exception - ",e);
+			LOG.error("Exception Occured in addVoterToCadre() Method, Exception - ",e);
 			task =  "error";
 		}
 		return Action.SUCCESS;
@@ -1687,7 +1687,7 @@ return Action.SUCCESS;
 		
 		}catch (Exception e) {
 		e.printStackTrace();
-		log.error("Exception Occured in getVotersCount() Method,Exception is- "+e);
+		LOG.error("Exception Occured in getVotersCount() Method,Exception is- "+e);
 		}
 	
 	
@@ -1743,8 +1743,8 @@ return Action.SUCCESS;
 	
 	public String getInfluencingPeopleVotersDetails()
 	{
-		if(log.isDebugEnabled())	
-		log.debug("Executing getVoterDetails() Method");	
+		if(LOG.isDebugEnabled())	
+		LOG.debug("Executing getVoterDetails() Method");	
 		try{
 			String param;
 			param = getTask();
@@ -1780,7 +1780,7 @@ return Action.SUCCESS;
 		}catch(Exception e){
 			
 			e.printStackTrace();
-			log.error("Exception Occured in getVoterDetails() Method,Exception is- "+e);
+			LOG.error("Exception Occured in getVoterDetails() Method,Exception is- "+e);
 			
 		}
 			
@@ -1801,7 +1801,7 @@ return Action.SUCCESS;
 			
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception Occured in getAssemblyLocalEleBodyIdByLocalEleBodyId() Method,Exception is- "+e);
+			LOG.error("Exception Occured in getAssemblyLocalEleBodyIdByLocalEleBodyId() Method,Exception is- "+e);
 		}
 		return Action.SUCCESS;
 	}
@@ -1829,7 +1829,7 @@ return Action.SUCCESS;
 			votersFamilyInfo = votersAnalysisService.getVotersFamilyDetailsByConstituencyId(jObj.getLong("fromPublication"),jObj.getLong("ToPublication"),jObj.getLong("partNo"),jObj.getString("hno"),userId,constituencyId);
 			
 		}catch(Exception e){
-			log.error("Exception Occured in getVotersFamilyDetails() Method,Exception is- "+e);
+			LOG.error("Exception Occured in getVotersFamilyDetails() Method,Exception is- "+e);
 		}
 		
 		return SUCCESS;
@@ -1857,7 +1857,7 @@ return Action.SUCCESS;
 			isLocalityExist = votersAnalysisService.checkLocalityDataExist(jObj.getLong("id"),userId,jObj.getString("type"),jObj.getLong("publicationDateId"));
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception Occured in checkLocalityDataExist() Method, Exception - "+e);
+			LOG.error("Exception Occured in checkLocalityDataExist() Method, Exception - "+e);
 		}
 		return Action.SUCCESS;
 	}
@@ -1874,7 +1874,7 @@ return Action.SUCCESS;
 		String[] ids = jObj.getString("attributeIds").split(",");
 		List<Long> attributeIds = new ArrayList<Long>();
 		for(String id:ids){
-			attributeIds.add(new Long(id.trim()));
+			attributeIds.add(Long.valueOf(id.trim()));
 		}
 		castList = voterReportService.getVoterAttributeDetails(userId,attributeIds,jObj.getString("locationType"),jObj.getLong("locationId"),jObj.getLong("constituencyId"),jObj.getLong("publicationId"));
 		}else if(jObj.getString("task").equalsIgnoreCase("getCategoryWiseSubDetails")){
@@ -1890,7 +1890,7 @@ return Action.SUCCESS;
 		}
 		
 	  }catch(Exception e){
-		  log.error("Exception Occured in getCategoryWiseDetails() Method, Exception - ",e);
+		  LOG.error("Exception Occured in getCategoryWiseDetails() Method, Exception - ",e);
 	  }
 		return Action.SUCCESS;
 	}
@@ -1920,7 +1920,7 @@ return Action.SUCCESS;
 		String[] ids = jObj.getString("attributeIds").split(",");
 		List<Long> attributeIds = new ArrayList<Long>();
 		for(String id:ids){
-			attributeIds.add(new Long(id.trim()));
+			attributeIds.add(Long.valueOf(id.trim()));
 		}
 		ageRangeList = userVoterService.getAgeRangeByUserVoterCategory(userId,attributeIds,jObj.getString("locationType"),jObj.getLong("locationId"),jObj.getLong("constituencyId"),jObj.getLong("publicationId"));
 		for(int i=0;i<ageRangeList.size();i++)
@@ -1932,7 +1932,7 @@ return Action.SUCCESS;
 	}
 	catch(Exception e)
 	{
-		log.error("Exception Occured in getAgeWiseWiseDetails() Method, Exception - ",e);	
+		LOG.error("Exception Occured in getAgeWiseWiseDetails() Method, Exception - ",e);	
 	}
 	return Action.SUCCESS;
 	}
@@ -1949,14 +1949,14 @@ return Action.SUCCESS;
 		String[] ids = jObj.getString("attributeIds").split(",");
 		List<Long> attributeIds = new ArrayList<Long>();
 		for(String id:ids){
-			attributeIds.add(new Long(id.trim()));
+			attributeIds.add(Long.valueOf(id.trim()));
 		}
 		casteDetailsVO = userVoterService.getCasteWiseUserVoterCategory(userId,attributeIds,jObj.getString("locationType"),jObj.getLong("locationId"),jObj.getLong("constituencyId"),jObj.getLong("publicationId"));
 		
 	}
 	catch(Exception e)
 	{
-		log.error("Exception Occured in getAgeWiseWiseDetails() Method, Exception - ",e);	
+		LOG.error("Exception Occured in getAgeWiseWiseDetails() Method, Exception - ",e);	
 	}
 	return Action.SUCCESS;
 	}
@@ -1993,7 +1993,7 @@ return Action.SUCCESS;
 			
 			mandalInfoVOsList = userVoterService.getCensusDetailsInALocation(jObj.getString("type"),jObj.getLong("id"),jObj.getLong("constituencyId"));
 		}catch (Exception e) {
-			log.error("Exception Occured in getCensusDetailsInALocation() Method, Exception - ",e);
+			LOG.error("Exception Occured in getCensusDetailsInALocation() Method, Exception - ",e);
 		}
 		return Action.SUCCESS;
 	}
@@ -2012,7 +2012,7 @@ return Action.SUCCESS;
 				namesList = voterReportService.getBoothsByPanchayatIDConstiId(jObj.getLong("panchayatId"),jObj.getLong("constituencyId"));
 			
 		}catch (Exception e) {
-			log.error("Exception Occured in getPanchayatAndBoothDetails() Method, Exception - ",e);
+			LOG.error("Exception Occured in getPanchayatAndBoothDetails() Method, Exception - ",e);
 		}
 		return Action.SUCCESS;
 	}
@@ -2020,7 +2020,7 @@ return Action.SUCCESS;
 	public String getUserCategoeryValues()
 	{
 		try {
-			log.debug("entered into getUserCategoeryValues() method in VotersAnalysisAction Action Class");
+			LOG.debug("entered into getUserCategoeryValues() method in VotersAnalysisAction Action Class");
 			jObj = new JSONObject(getTask());
 			/*session = request.getSession();
 			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
@@ -2092,14 +2092,14 @@ return Action.SUCCESS;
 			}
 		
 		} catch (Exception e) {
-			log.error("Exception raised in getUserCategoeryValues() method in VotersAnalysisAction Action Class",e);
+			LOG.error("Exception raised in getUserCategoeryValues() method in VotersAnalysisAction Action Class",e);
 		}
 		return Action.SUCCESS;
 	}
 	
 	public String getTotalVotersDetailsbyLocation(){		
 		try {
-			log.debug("entered into getTotalVotersDetailsbyLocation() method in VotersAnalysisAction Action Class");
+			LOG.debug("entered into getTotalVotersDetailsbyLocation() method in VotersAnalysisAction Action Class");
 			jObj = new JSONObject(getTask());
 			session = request.getSession();
 			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
@@ -2118,7 +2118,7 @@ return Action.SUCCESS;
 
 			voterInfo = votersAnalysisService.getTotalVotersDetailsbyLocation(userId,jObj.getLong("id"),jObj.getString("reportLevel"),jObj.getLong("publicationDateId"),jObj.getLong("constituencyId"));
 		} catch (ParseException e) {
-			log.error("Exception raised in getTotalVotersDetailsbyLocation() method in VotersAnalysisAction Action Class",e);
+			LOG.error("Exception raised in getTotalVotersDetailsbyLocation() method in VotersAnalysisAction Action Class",e);
 		}
 		
 		return Action.SUCCESS;
@@ -2138,7 +2138,7 @@ return Action.SUCCESS;
 			
 		}catch (Exception e) {
 		 e.printStackTrace();
-		 log.error("Exception Occured in getCustomWardAgeDetails() method,Exception - "+e);
+		 LOG.error("Exception Occured in getCustomWardAgeDetails() method,Exception - "+e);
 		}
 		return Action.SUCCESS;
 	}
@@ -2157,7 +2157,7 @@ return Action.SUCCESS;
 			
 		}catch (Exception e) {
 		 e.printStackTrace();
-		 log.error("Exception Occured in getMandalOrMuncipalityListForVotersAnalysis() method,Exception - "+e);
+		 LOG.error("Exception Occured in getMandalOrMuncipalityListForVotersAnalysis() method,Exception - "+e);
 		}
 		
 		return Action.SUCCESS;
@@ -2182,7 +2182,7 @@ return Action.SUCCESS;
 			
 		}catch (Exception e) {
 			e.printStackTrace();
-			 log.error("Exception Occured in getWardsListForMuncipality() method,Exception - "+e);
+			 LOG.error("Exception Occured in getWardsListForMuncipality() method,Exception - "+e);
 		}
 		return Action.SUCCESS;
 	}
@@ -2208,7 +2208,7 @@ return Action.SUCCESS;
 		 }
 		}catch (Exception e) {
 			
-			 log.error("Exception Occured in getWardsListForMuncipality() method,Exception - ",e);
+			 LOG.error("Exception Occured in getWardsListForMuncipality() method,Exception - ",e);
 		}
 		return Action.SUCCESS;
 	}

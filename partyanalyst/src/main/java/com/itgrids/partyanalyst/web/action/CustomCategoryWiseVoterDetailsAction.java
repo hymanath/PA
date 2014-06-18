@@ -232,7 +232,7 @@ public class CustomCategoryWiseVoterDetailsAction extends ActionSupport implemen
 			    		voterDataVO.setCastePresent(true);
 			    	}
 			    	else{
-			    		categories.add(new Long(id));
+			    		categories.add(Long.valueOf(id));
 			    	}
 			    }
 			} 

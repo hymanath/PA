@@ -3,6 +3,8 @@ package com.itgrids.partyanalyst.web.action;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import com.opensymphony.xwork2.Action;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -11,6 +13,7 @@ import com.itgrids.partyanalyst.service.IRegionServiceData;
 
 public class PartyResultScopeAction {
 
+	private static final Logger LOG = Logger.getLogger(PartyResultScopeAction.class);
 	private List<SelectOptionVO> namesList;
 	JSONObject jObj = null,respObj=null;
 	private String task = null;
@@ -27,12 +30,12 @@ public class PartyResultScopeAction {
 	
 
 	public String getTask() {
-		System.out.println("In getTask");
+		LOG.info("In getTask");
 		return task;
 	}
 
 	public void setTask(String task) {
-		System.out.println("In setTask");
+		LOG.info("In setTask");
 		this.task = task;
 	}
 
@@ -55,23 +58,23 @@ public class PartyResultScopeAction {
 	
 	public String execute() 
 	{
-		System.out.println("In execute method + Election scope level action");	
+		LOG.info("In execute method + Election scope level action");	
 		if(regionServiceDataImp==null){
-			System.out.println("regionServiceData is null Narender");
+			LOG.info("regionServiceData is null Narender");
 		}
 		if(constituencySearchService==null){
-			System.out.println("constituencySearchService is null Narender");
+			LOG.info("constituencySearchService is null Narender");
 		}
 		String param=null;
 		
 		param=getTask();
-		System.out.println("param:"+param);
+		LOG.info("param:"+param);
 		
 		
 		
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -82,19 +85,19 @@ public class PartyResultScopeAction {
 				|| jObj.getString("reportLevel").equalsIgnoreCase("MP")) 
 				&& jObj.getString("selected").equalsIgnoreCase("null"))
 		{
-			System.out.println("Search criteria = State");				
+			LOG.info("Search criteria = State");				
 			List<SelectOptionVO> stateNames=new ArrayList<SelectOptionVO>();			
 			SelectOptionVO stateSelectOptionVO1 = new SelectOptionVO();
 			SelectOptionVO stateSelectOptionVO2 = new SelectOptionVO();
 			SelectOptionVO stateSelectOptionVO3 = new SelectOptionVO();
 			
-			stateSelectOptionVO1.setId(new Long(1));
+			stateSelectOptionVO1.setId(Long.valueOf(1));
 			stateSelectOptionVO1.setName("Andhra Pradesh");
 			
-			stateSelectOptionVO3.setId(new Long(12));
+			stateSelectOptionVO3.setId(Long.valueOf(12));
 			stateSelectOptionVO3.setName("Karnataka");
 			
-			stateSelectOptionVO2.setId(new Long(24));
+			stateSelectOptionVO2.setId(Long.valueOf(24));
 			stateSelectOptionVO2.setName("Tamil Nadu");
 			
 			
@@ -105,11 +108,11 @@ public class PartyResultScopeAction {
 		}		
 		else if (jObj.getString("reportLevel").equalsIgnoreCase("District") && jObj.getString("selected")!="null")
 		{
-				System.out.println("Search criteria = District and not null");
+				LOG.info("Search criteria = District and not null");
 				String selectedVal=jObj.getString("selected");
 				
 
-				List<SelectOptionVO> districtNames= regionServiceDataImp.getDistrictsByStateID(new Long(selectedVal));	
+				List<SelectOptionVO> districtNames= regionServiceDataImp.getDistrictsByStateID(Long.valueOf(selectedVal));	
 					
 				
 				setNamesList(districtNames);								
@@ -119,13 +122,13 @@ public class PartyResultScopeAction {
 			Long countryID = 1L;
 			Long stateID = 1L;
 			String selectedVal=jObj.getString("selected");
-			Long elecTypeId = new Long(selectedVal);
+			Long elecTypeId = Long.valueOf(selectedVal);
 			
 			List<SelectOptionVO> selectOptionList = constituencySearchService.getConstituencyNamesByElectionScope(countryID,stateID,elecTypeId);
 			
 			for(SelectOptionVO selectOptionVO:selectOptionList)
 			{
-				System.out.println(selectOptionVO.getId()+ " " + selectOptionVO.getName());
+				LOG.info(selectOptionVO.getId()+ " " + selectOptionVO.getName());
 			}			
 			setNamesList(selectOptionList);
 		}
@@ -138,7 +141,7 @@ public class PartyResultScopeAction {
 			
 			for(SelectOptionVO selectOptionVO:selectOptionList)
 			{
-				System.out.println(selectOptionVO.getId()+ " " + selectOptionVO.getName());
+				LOG.info(selectOptionVO.getId()+ " " + selectOptionVO.getName());
 			}			
 			setNamesList(selectOptionList);
 		}
@@ -148,25 +151,25 @@ public class PartyResultScopeAction {
 			Long stateID = 1L;//AP
 			Long typeID = 1L;// Parliamentary
 			List<SelectOptionVO> selectOptionList = regionServiceDataImp.getAllConstituenciesByElectionTypeInState(typeID,stateID);
-			System.out.println("selectOptionList.size in action"+selectOptionList.size());
+			LOG.info("selectOptionList.size in action"+selectOptionList.size());
 			for(SelectOptionVO selectOptionVO:selectOptionList)
 			{
-				System.out.println(selectOptionVO.getId()+ " " + selectOptionVO.getName());
+				LOG.info(selectOptionVO.getId()+ " " + selectOptionVO.getName());
 			}			
 			setNamesList(selectOptionList);
 		}
 		
-		System.out.println("param = "+param);
+		LOG.info("param = "+param);
         
 		 return Action.SUCCESS;		
 	}
 	
 	  public String getJSON(){
-		  System.out.println("In r getjson....");
+		  LOG.info("In r getjson....");
 	    	return execute();
 	    }
 	  public String getAccessValue(){
-		  System.out.println("**************In get Access value***********....");
+		  LOG.info("**************In get Access value***********....");
 	    	return Action.SUCCESS;
 	    }
 	  

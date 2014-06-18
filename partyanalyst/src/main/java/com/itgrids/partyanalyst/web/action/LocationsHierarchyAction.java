@@ -35,7 +35,7 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 	 * 
 	 */
 	private static final long serialVersionUID = 2319254812860276099L;
-	private static final Logger log = Logger.getLogger(LocationsHierarchyAction.class);
+	private static final Logger LOG = Logger.getLogger(LocationsHierarchyAction.class);
 	private HttpServletRequest request;
 	private ServletContext context;
 	private HttpSession session;
@@ -189,7 +189,7 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 		
 		try {
 			jObj = new JSONObject(param);
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -230,7 +230,7 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 		{
 			Long locationId = jObj.getLong("id");
 			Long constituencyId = jObj.getLong("constId");
-			List<SelectOptionVO> booths = getRegionServiceDataImp().getBoothsInTehsilOrMunicipality(locationId, new Long(IConstants.PRESENT_ELECTION_YEAR), constituencyId);
+			List<SelectOptionVO> booths = getRegionServiceDataImp().getBoothsInTehsilOrMunicipality(locationId, Long.valueOf(IConstants.PRESENT_ELECTION_YEAR), constituencyId);
 			setRegionsList(booths);
 		
 		}
@@ -271,12 +271,12 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 		
 		try {
 			jObj = new JSONObject(param);
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
-		log.debug("Task::"+jObj.getString("task"));
+		LOG.debug("Task::"+jObj.getString("task"));
 		   
 			if(jObj.getString("task").equalsIgnoreCase("statesInCountry"))
 			{
@@ -461,7 +461,7 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 			//to get all booths in tehsil or municipality  
 			Long locationId = jObj.getLong("id");
 			Long constituencyId = jObj.getLong("constId");
-			List<SelectOptionVO> booths = getRegionServiceDataImp().getBoothsInTehsilOrMunicipality(locationId, new Long(IConstants.PRESENT_ELECTION_YEAR), constituencyId);
+			List<SelectOptionVO> booths = getRegionServiceDataImp().getBoothsInTehsilOrMunicipality(locationId, Long.valueOf(IConstants.PRESENT_ELECTION_YEAR), constituencyId);
 			booths.add(0, new SelectOptionVO(0l, "Select Location"));	
 			setRegionsList(booths);
 			if(jObj.getString("address").equalsIgnoreCase("OfficialAdd") && jObj.getString("taskType").equalsIgnoreCase("cadreReg"))
@@ -485,7 +485,7 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 			//to get all booths in ward  
 			Long locationId = jObj.getLong("id");
 			Long constituencyId = jObj.getLong("constId");
-			List<SelectOptionVO> booths = getRegionServiceDataImp().getboothsInWard(locationId, new Long(IConstants.PRESENT_ELECTION_YEAR), constituencyId);
+			List<SelectOptionVO> booths = getRegionServiceDataImp().getboothsInWard(locationId, Long.valueOf(IConstants.PRESENT_ELECTION_YEAR), constituencyId);
 			booths.add(0, new SelectOptionVO(0l, "Select Location"));
 			setRegionsList(booths);
 			if(jObj.getString("address").equalsIgnoreCase("currentAdd") && jObj.getString("taskType").equalsIgnoreCase("newProblemPost"))
@@ -513,12 +513,12 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 		
 		try {
 			jObj = new JSONObject(param);
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
-		log.debug("Task::"+jObj.getString("task"));
+		LOG.debug("Task::"+jObj.getString("task"));
 		String boothIds = jObj.getString("boothIds");
 		String areaType = jObj.getString("areaType");
 		
@@ -538,12 +538,12 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 		
 		try {
 			jObj = new JSONObject(param);
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
-		log.debug("Task::"+jObj.getString("task"));
+		LOG.debug("Task::"+jObj.getString("task"));
 		Long distId = jObj.getLong("districtId");
 		Long constId = jObj.getLong("constituencyId");
 		String year = jObj.getString("year");
@@ -564,12 +564,12 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 		
 		try {
 			jObj = new JSONObject(param);
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
-		log.debug("Task::"+jObj.getString("task"));
+		LOG.debug("Task::"+jObj.getString("task"));
 		Long localBodyId = jObj.getLong("localBodyId");
 		Long constituencyId = jObj.getLong("constituencyId");
 		String year = jObj.getString("year");
@@ -590,12 +590,12 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 		
 		try {
 			jObj = new JSONObject(param);
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
-		log.debug("Task::"+jObj.getString("task"));
+		LOG.debug("Task::"+jObj.getString("task"));
 		Long localBodyId = jObj.getLong("localBodyId");
 		Long constituencyId = jObj.getLong("constituencyId");
 		String year = jObj.getString("year");
@@ -610,12 +610,12 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 		
 		try {
 			jObj = new JSONObject(param);
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
-		log.debug("Task::"+jObj.getString("task"));
+		LOG.debug("Task::"+jObj.getString("task"));
 		Long wardId = jObj.getLong("wardId");
 		Long constituencyId = jObj.getLong("constituencyId");
 		String year = jObj.getString("year");
@@ -628,14 +628,14 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 		
 		try {
 			jObj = new JSONObject(getTask());
-			System.out.println(jObj);
+			LOG.info(jObj);
 		 if(jObj.getString("task").equalsIgnoreCase("getParliamentConstituenciesInADistrict")){
 			regionsList = cadreManagementService.getParliamentConstituenciesInADistrict(jObj.getString("districtId"));
 		 }else{
 			 regionsList = cadreManagementService.getAssemblyConstiForParlInADistrict(jObj.getString("districtId"),jObj.getLong("parliamentId")); 
 		 }
 		} catch (ParseException e) {
-			log.error("Exception rised in getParlmentAndAssemblyConstis ",e);
+			LOG.error("Exception rised in getParlmentAndAssemblyConstis ",e);
 		}	
 		return Action.SUCCESS;
 	}
@@ -655,7 +655,7 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 			constituencies.add(constituencyList);
 			
 		} catch (Exception e) {
-			log.error("Exception rised in getParlmentAndAssemblyConstisByStateId ",e);
+			LOG.error("Exception rised in getParlmentAndAssemblyConstisByStateId ",e);
 		}	
 		return Action.SUCCESS;
 	}

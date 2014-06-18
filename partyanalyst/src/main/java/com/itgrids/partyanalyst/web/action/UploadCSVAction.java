@@ -20,7 +20,7 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class UploadCSVAction extends ActionSupport implements ServletResponseAware, ServletRequestAware, ServletContextAware {
 	private static final long serialVersionUID = 1L;
-	private final static Logger log = Logger.getLogger(UploadCSVAction.class);
+	private final static Logger LOG = Logger.getLogger(UploadCSVAction.class);
 
     private HttpServletResponse response;
     private HttpServletRequest request; 
@@ -41,7 +41,7 @@ public class UploadCSVAction extends ActionSupport implements ServletResponseAwa
     
     public String execute() throws JRException {/*
 		
-		log.debug("excute started...");
+		LOG.debug("excute started...");
 		String contextPath = context.getRealPath("/");
 		String csvFile = request.getParameter("uploadFile");
 		
@@ -64,7 +64,7 @@ public class UploadCSVAction extends ActionSupport implements ServletResponseAwa
 		            CsvToBean csv = new CsvToBean();
 		            List list = csv.parse(strat, new FileReader(csvFile));
 		            
-		            System.out.println("list size:" + list.size());
+		            LOG.info("list size:" + list.size());
 		            
 		            boolean isConstituency = false;
 	            	boolean endOfConstituency = true;
@@ -91,7 +91,7 @@ public class UploadCSVAction extends ActionSupport implements ServletResponseAwa
 			            		isConstituency = true;
 			            		endOfCandidateDetails = false;
 			            		endOfConstituency = false;
-			            		System.out.println("Const Name:" + constituency.getName());
+			            		LOG.info("Const Name:" + constituency.getName());
 			            	} 
 			            	else if(bean.getConstituency() == null || bean.getConstituency().trim().length() == 0) {
 			            		long votes = (bean.getVotesPolled().trim().length() == 0) ? 0 : Long.parseLong(bean.getVotesPolled()); 
@@ -123,19 +123,19 @@ public class UploadCSVAction extends ActionSupport implements ServletResponseAwa
 				            	candidateDetails.setVotesPolled(bean.getVotesPolled());
 				            	candidateDetailsList.add(candidateDetails);
 			            	}
-			            	//System.out.println(bean.getConstituency() + " " + bean.getParty() + " " + isConstituency + " " + endOfCandidateDetails + " " + endOfConstituency);
+			            	//LOG.info(bean.getConstituency() + " " + bean.getParty() + " " + isConstituency + " " + endOfCandidateDetails + " " + endOfConstituency);
 		            	}
 		            	
 		            	i++;
 		            }
 		            processAssemblyData(constituencyList);
-		            System.out.println("No. of records:" + i + " " + constituencyList.size() + " " + candidateDetailsList.size());
+		            LOG.info("No. of records:" + i + " " + constituencyList.size() + " " + candidateDetailsList.size());
 		    }
 		   
 		} catch (FileNotFoundException e) {
-			log.error("File Not Found" + e.getStackTrace());
+			LOG.error("File Not Found" + e.getStackTrace());
 		} catch (IOException e) {
-			log.error("IOException while reading data from csv " + e.getStackTrace());
+			LOG.error("IOException while reading data from csv " + e.getStackTrace());
 		}
 		*/
 		return SUCCESS;
@@ -145,7 +145,7 @@ public class UploadCSVAction extends ActionSupport implements ServletResponseAwa
 	private void processAssemblyData(List<AssemblyConstituency> constituencyList) {
 		
 		for(AssemblyConstituency constituency: constituencyList) {
-			System.out.println(constituency.getName() + ": " + constituency.getCandidateDetails().size() );
+			LOG.info(constituency.getName() + ": " + constituency.getCandidateDetails().size() );
 		}
 		/*List<Constituency> constList = new ArrayList<Constituency>();
 		List<Party> partyList = new ArrayList<Party>();

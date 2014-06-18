@@ -86,7 +86,7 @@ public class RevenueVillagePartyAllElecAction extends ActionSupport implements S
 	public String execute() throws Exception{
 		String cPath = request.getContextPath();
 		constituencyRevenueVillagesVO = constituencyPageService.
-		getRevenuevillagesWiseElectionResultsOfPartyInMandal(new Long(partyId), new Long(tehsilId));
+		getRevenuevillagesWiseElectionResultsOfPartyInMandal(Long.valueOf(partyId), Long.valueOf(tehsilId));
 		
 		String chartName = "partyPerformanceInOneMandalInAllElectionsByRevenueVillages_partyId"+partyId+"_terhsilId_"+tehsilId+".png";
 		String chartPath = "";

@@ -33,7 +33,7 @@ public class StatewiseElectionResultsComparisionToolAction extends ActionSupport
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(StatewiseElectionResultsComparisionToolAction.class);
+	private static final Logger LOG = Logger.getLogger(StatewiseElectionResultsComparisionToolAction.class);
 	private HttpServletRequest request;
 	private String electionId;
 	private String stateID;
@@ -169,8 +169,8 @@ public class StatewiseElectionResultsComparisionToolAction extends ActionSupport
 		param = getTask();
 		try {
 			jObj = new JSONObject(param);
-			if(log.isDebugEnabled())
-				log.debug(jObj);			
+			if(LOG.isDebugEnabled())
+				LOG.debug(jObj);			
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -178,7 +178,7 @@ public class StatewiseElectionResultsComparisionToolAction extends ActionSupport
 		if(jObj.getString("task").equalsIgnoreCase("getSelectedYearElectionResults"))
 		{
 			electionCompleteDetailsVO = new ElectionResultsReportVO();
-			Long stateId = new Long(jObj.getString("stateID"));
+			Long stateId = Long.valueOf(jObj.getString("stateID"));
 			String electionType = jObj.getString("electionType");
 			String year = jObj.getString("year");
 			Long electionId = jObj.getLong("electionId");
@@ -187,7 +187,7 @@ public class StatewiseElectionResultsComparisionToolAction extends ActionSupport
 			try{
 			//charts for alliance parties state level
 			if(electionCompleteDetailsVO.getElectionBasicResultsVO().getAlliancePartiesList() != null && electionCompleteDetailsVO.getElectionBasicResultsVO().getAlliancePartiesList().size() > 0){
-				System.out.println("0");
+				LOG.info("0");
 				for(AlliancePartyResultsVO alliancParties:electionCompleteDetailsVO.getElectionBasicResultsVO().getAlliancePartiesList()){
 					String chartName = createLineChartForAlliancParties(alliancParties);
 					if(chartName != null)
@@ -198,7 +198,7 @@ public class StatewiseElectionResultsComparisionToolAction extends ActionSupport
 			
 			//state Level results line chart
 			if(electionCompleteDetailsVO.getElectionBasicResultsVO().getAllPartiesResults() != null && electionCompleteDetailsVO.getElectionBasicResultsVO().getAllPartiesResults().size() > 0){
-		     System.out.println("1");
+		     LOG.info("1");
 				String stateLevelLineChart = createLineChartForStateLevelResults(electionCompleteDetailsVO.getElectionBasicResultsVO().getAllPartiesResults(),"With_Alliance","All Parties Election Results With Alliance Parties");
 			electionCompleteDetailsVO.setStatewiseResultsLineChartName(stateLevelLineChart);
 			}
@@ -224,10 +224,10 @@ public class StatewiseElectionResultsComparisionToolAction extends ActionSupport
 		    request.setAttribute("partyResultsChartName1", partyResultsChartName);
 			session.setAttribute("partyResultsChartName1", partyResultsChartName);
 			electionCompleteDetailsVO.setStatewiseElectionResultsChartName(partyResultsChartName);
-			System.out.println("3");
+			LOG.info("3");
 			}catch(Exception ex){
 				ex.printStackTrace();
-				log.debug("Exception Raised :" + ex);
+				LOG.debug("Exception Raised :" + ex);
 			}
 		}
 		return Action.SUCCESS;
@@ -238,8 +238,8 @@ public class StatewiseElectionResultsComparisionToolAction extends ActionSupport
 	 */
 	public String createLineChartForAlliancParties(AlliancePartyResultsVO alliancParties){
 		String cPath = request.getContextPath();
-		log.debug("Inside createLineChartForAlliancParties...");
-		System.out.println("1.1");
+		LOG.debug("Inside createLineChartForAlliancParties...");
+		LOG.info("1.1");
 		String chartName = null;
 		try{
 		String alliancePartiesChartId = electionCompleteDetailsVO.getElectionType().concat(electionCompleteDetailsVO.getElectionYear()).concat(alliancParties.getAllianceGroupName()).concat("Election_Results").concat("LineChart");
@@ -257,9 +257,9 @@ public class StatewiseElectionResultsComparisionToolAction extends ActionSupport
 		chartName = alliancePartiesChartName;
 		}catch(Exception ex){
 			ex.printStackTrace();
-			log.debug("Exception Raised :" + ex);
+			LOG.debug("Exception Raised :" + ex);
 		}
-		log.debug("Inside createLineChartForAlliancParties... Chart Name :" + chartName);
+		LOG.debug("Inside createLineChartForAlliancParties... Chart Name :" + chartName);
 		return chartName;
 	}
 	
@@ -268,7 +268,7 @@ public class StatewiseElectionResultsComparisionToolAction extends ActionSupport
 	 */
 	public String createLineChartForStateLevelResults(List<PartyPositionsVO> allPartiesResults,String chartType,String title){
 		String cPath = request.getContextPath();
-		log.debug("Inside createLineChartForStateLevelResults...");
+		LOG.debug("Inside createLineChartForStateLevelResults...");
 		
 		String chartName = null;
 		try{
@@ -287,9 +287,9 @@ public class StatewiseElectionResultsComparisionToolAction extends ActionSupport
 			
 		}catch(Exception ex){
 			ex.printStackTrace();
-			log.debug("Exception Raised :" + ex);
+			LOG.debug("Exception Raised :" + ex);
 		}
-		log.debug("Inside createLineChartForStateLevelResults... Chart Name :" + chartName);
+		LOG.debug("Inside createLineChartForStateLevelResults... Chart Name :" + chartName);
 		return chartName;
 	}
 	
@@ -298,8 +298,8 @@ public class StatewiseElectionResultsComparisionToolAction extends ActionSupport
      */
 	private CategoryDataset createDatasetForPartyResults(List<PartyPositionsVO> allPartiesResults) {
 		
-		log.debug("Inside createDatasetForPartyResults...");
-		System.out.println("1.3");
+		LOG.debug("Inside createDatasetForPartyResults...");
+		LOG.info("1.3");
 		  int i=0;
 		  final String category1 = "Seats Won";
 		  final String category2 = "2nd Pos";  
@@ -324,7 +324,7 @@ public class StatewiseElectionResultsComparisionToolAction extends ActionSupport
 	 */
 	private CategoryDataset createDataSetForAlliancPartyOverallResults(List<PartyPositionsVO> alliancPartiesResults,String chartType){
 		
-		log.debug("Inside createDataSetForAlliancPartyOverallResults...");
+		LOG.debug("Inside createDataSetForAlliancPartyOverallResults...");
 	
 		final String series1 = "Seats Won";
 		final String series2 = "2nd Pos";
@@ -337,11 +337,11 @@ public class StatewiseElectionResultsComparisionToolAction extends ActionSupport
 			final String category = parties.getPartyName();
 			if(chartType.equals("LineChart") && category.equals("IND"))
 			continue;
-			dataset.addValue(new Long(parties.getTotalSeatsWon()), category, series1);
-			dataset.addValue(new Long(parties.getSecondPosWon()), category, series2);
-			dataset.addValue(new Long(parties.getThirdPosWon()), category, series3);
-			dataset.addValue(new Long(parties.getFourthPosWon()), category, series4);
-			dataset.addValue(new Long(parties.getNthPosWon()), category, series5);
+			dataset.addValue(Long.valueOf(parties.getTotalSeatsWon()), category, series1);
+			dataset.addValue(Long.valueOf(parties.getSecondPosWon()), category, series2);
+			dataset.addValue(Long.valueOf(parties.getThirdPosWon()), category, series3);
+			dataset.addValue(Long.valueOf(parties.getFourthPosWon()), category, series4);
+			dataset.addValue(Long.valueOf(parties.getNthPosWon()), category, series5);
 		}
 		return dataset;
 	}

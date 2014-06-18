@@ -132,7 +132,7 @@ public class MinistersPageAction extends ActionSupport implements ServletRequest
 		return SUCCESS;
 	}
 	
-	public String AjaxHandler()
+	public String ajaxHandler()
 	{
 		try {
 			jObj = new JSONObject(getTask());

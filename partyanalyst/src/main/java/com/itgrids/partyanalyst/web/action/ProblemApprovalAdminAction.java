@@ -25,7 +25,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class ProblemApprovalAdminAction extends ActionSupport implements ServletRequestAware, ServletContextAware {
 	
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(ProblemApprovalAdminAction.class);
+	private static final Logger LOG = Logger.getLogger(ProblemApprovalAdminAction.class);
 	private HttpServletRequest request;
 	private HttpSession session;
 	private String task;
@@ -120,7 +120,7 @@ public class ProblemApprovalAdminAction extends ActionSupport implements Servlet
 			}
 		}
 		
-		log.debug("Task::"+jObj.getString("task"));
+		LOG.debug("Task::"+jObj.getString("task"));
 		String fromDate = jObj.getString("fromDate");
 		String toDate = jObj.getString("toDate");
 		
@@ -129,8 +129,8 @@ public class ProblemApprovalAdminAction extends ActionSupport implements Servlet
 	
 		
 		approvalInfovo= dataApprovalService.userApprovalDetailsbetweenDates(fromDate,toDate);
-		if(log.isInfoEnabled())
-			log.info("userapprovaldetailsSize:"+approvalInfovo.size());
+		if(LOG.isInfoEnabled())
+			LOG.info("userapprovaldetailsSize:"+approvalInfovo.size());
 
 		
 		return Action.SUCCESS;
@@ -156,7 +156,7 @@ public class ProblemApprovalAdminAction extends ActionSupport implements Servlet
 			
 		for (int i = 0; i < jArray.length(); i++) 
 		{
-			approvalDetailsIds.add(new Long(jArray.getString(i)));		
+			approvalDetailsIds.add(Long.valueOf(jArray.getString(i)));		
 		}
 		
 		approvalInfovo = dataApprovalService.scrutinizePostedApprovals(approvalDetailsIds, approvedStatus);

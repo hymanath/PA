@@ -48,7 +48,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class PartyPerformanceAction extends ActionSupport implements ServletRequestAware, ServletResponseAware, ServletContextAware {
 
 	private static final long serialVersionUID = 1L;
-	private final static Logger log = Logger.getLogger(PartyPerformanceAction.class);
+	private final static Logger LOG = Logger.getLogger(PartyPerformanceAction.class);
 
     private HttpServletRequest request;
     private HttpServletResponse response;
@@ -292,20 +292,20 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_PERFORMANCE_REPORT))
 			return ERROR;
 		
-		log.debug("partyPerformance excute started...");
+		LOG.debug("partyPerformance excute started...");
 	
 		Map<String, String> params = request.getParameterMap();
 		String year = null;
 		Long partyId = null;
 		
 		String param = null;
-		electionTypeId = new Long(2);
+		electionTypeId = Long.valueOf(2);
 		
 		if(params.containsKey("type"))
 			param = request.getParameter("type");
 		
 		if(param != null) 
-			electionTypeId = new Long(param);
+			electionTypeId = Long.valueOf(param);
 		
 		//setStates(getStaticDataService().getStates(electionTypeId));
 		List<SelectOptionVO> statesListDetails = new ArrayList<SelectOptionVO>();
@@ -338,10 +338,10 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		Map<String, String> params = request.getParameterMap();
 		
 		if(params.containsKey("allianceWith")){
-			partyId = new Long(request.getParameter("allianceWith"));
+			partyId = Long.valueOf(request.getParameter("allianceWith"));
 			year = request.getParameter("year");
 			electionYear = year;
-			electionType = new Long(request.getParameter("elecType"));
+			electionType = Long.valueOf(request.getParameter("elecType"));
 		}
 		
 		boolean t = getStaticDataService().hasAlliances(year, electionType, partyId);
@@ -351,8 +351,8 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 	}
 	private List<SelectOptionVO> getReportLevels() {
 		List<SelectOptionVO>levels = new ArrayList<SelectOptionVO>();
-	    levels.add(new SelectOptionVO(new Long(1), "State Level"));
-	    levels.add(new SelectOptionVO(new Long(2), "District Level"));
+	    levels.add(new SelectOptionVO(Long.valueOf(1), "State Level"));
+	    levels.add(new SelectOptionVO(Long.valueOf(2), "District Level"));
 	    
 	    
 		return levels;
@@ -360,20 +360,20 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 	
 	private List<SelectOptionVO> getReportLevelsParliament() {
 		List<SelectOptionVO>levels = new ArrayList<SelectOptionVO>();
-	    levels.add(new SelectOptionVO(new Long(1), "State Level"));
-	    levels.add(new SelectOptionVO(new Long(3), "Country Level"));
+	    levels.add(new SelectOptionVO(Long.valueOf(1), "State Level"));
+	    levels.add(new SelectOptionVO(Long.valueOf(3), "Country Level"));
 	    return levels;
 	}
 
 	public String getJSON() throws JRException {
-		log.debug("partyPerformanceAjax action started...");
+		LOG.debug("partyPerformanceAjax action started...");
 		return execute();
 	}
 	
 	public String getDistrictsList(){
 		String stateId = request.getParameter("stateId");
 		/*
-		districts = getStaticDataService().getDistricts(new Long(param));
+		districts = getStaticDataService().getDistricts(Long.valueOf(param));
 		*/
 		String electionYear= request.getParameter("electionYear");
 		String partyId = request.getParameter("partyId");
@@ -386,13 +386,13 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 
 		Map<String, String> params = request.getParameterMap();
 		String param = null;
-		electionTypeId = new Long(2);
+		electionTypeId = Long.valueOf(2);
 		
 		if(params.containsKey("type")){
 			param = request.getParameter("type");
 		}
 		if(param != null) {
-			electionTypeId = new Long(param);
+			electionTypeId = Long.valueOf(param);
 		}
 		
 		List<SelectOptionVO> statesList = new ArrayList<SelectOptionVO>();
@@ -402,7 +402,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		statesYearList.put("STATES", statesList);
 		statesYearList.put("YEARS", staticDataService.getElectionYears(electionTypeId,false));
 		
-		if(electionTypeId.equals(new Long(1)))
+		if(electionTypeId.equals(Long.valueOf(1)))
 			statesYearList.put("LEVELS", getReportLevelsParliament());
 		else
 			statesYearList.put("LEVELS", getReportLevels());
@@ -419,13 +419,13 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		
 		String cPath = request.getContextPath();
 		
-		log.debug("partyPerformanceReport action started...");
+		LOG.debug("partyPerformanceReport action started...");
 		String param = null;
 		param = getTask();
 		try {
 			jObj = new JSONObject(param);
-			if(log.isDebugEnabled())
-				log.debug(jObj);			
+			if(LOG.isDebugEnabled())
+				LOG.debug(jObj);			
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -436,12 +436,12 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		String electionType = jObj.getString("electionType");
 		String year = jObj.getString("year");
 		String state = jObj.getString("state");
-		Boolean alliances = new Boolean(jObj.getString("alliances"));
+		Boolean alliances = Boolean.valueOf(jObj.getString("alliances"));
 		
 		if("2".equals(reportLevel)){
 			district = jObj.getString("district");
 		}
-		log.debug("Report Level :: " + reportLevel);
+		LOG.debug("Report Level :: " + reportLevel);
 		
 		if(state == null)
 			state="0";
@@ -461,7 +461,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		
 		String cPath = request.getContextPath();
 		
-		log.debug("partyPerformanceReport action started...");
+		LOG.debug("partyPerformanceReport action started...");
 		String district = "0";
 		String country = request.getParameter("country");
 		String reportLevel = request.getParameter("1");
@@ -469,51 +469,51 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		String electionType = request.getParameter("electionType");
 		String year = request.getParameter("year");
 		String state = request.getParameter("state");
-		Boolean alliances = new Boolean(request.getParameter("alliances"));
+		Boolean alliances = Boolean.valueOf(request.getParameter("alliances"));
 		
 		if("2".equals(reportLevel)){
 			district = request.getParameter("district");
 		}
-		log.debug("Report Level :: " + reportLevel);
+		LOG.debug("Report Level :: " + reportLevel);
 		
 		if(state == null)
 			state="0";
 		reportVO = getPartyService().getPartyPerformanceReport(state, district, party, year, electionType, country, 0, new BigDecimal(Constants.MAJAR_BRAND), new BigDecimal(Constants.MINOR_BRAND), alliances,reportLevel);
-		reportVO.setElectionTypeId(new Long(electionType));
-		reportVO.setStateId(new Long(state));
-		reportVO.setPartyId(new Long(party));
+		reportVO.setElectionTypeId(Long.valueOf(electionType));
+		reportVO.setStateId(Long.valueOf(state));
+		reportVO.setPartyId(Long.valueOf(party));
 		reportVO.setHasAlliances(alliances);
 		reportVO.setReportLevel(reportLevel);
 		
 		if(district!=null)
-			reportVO.setDistrictId(new Long(district));
+			reportVO.setDistrictId(Long.valueOf(district));
 		
 		String reportLevelLiteral = "";
 		String partyNameLiteral = reportVO.getParty();
 		String reportLoc = "";
 		
-		if(Long.valueOf(electionType).equals(new Long(1)))
+		if(Long.valueOf(electionType).equals(Long.valueOf(1)))
 			electionTypeLiteral = "Parliament";
-		else if(Long.valueOf(electionType).equals(new Long(2))){
+		else if(Long.valueOf(electionType).equals(Long.valueOf(2))){
 			electionTypeLiteral = "Assembly";
 			
 		}
-		if(Long.valueOf(reportLevel).equals(new Long(1))){
+		if(Long.valueOf(reportLevel).equals(Long.valueOf(1))){
 			reportLevelLiteral = "StateLevel";
 			
 			reportLoc = reportVO.getState();
 		}
-		else if(Long.valueOf(reportLevel).equals(new Long(2))){
+		else if(Long.valueOf(reportLevel).equals(Long.valueOf(2))){
 			reportLevelLiteral = "DistrictLevel";
 			reportLoc = reportVO.getDistrict();
 		}
-		else if(Long.valueOf(reportLevel).equals(new Long(3))){
+		else if(Long.valueOf(reportLevel).equals(Long.valueOf(3))){
 			reportLevelLiteral = "CountryLevel";
 			reportLoc = "India";
 		}
-		if(log.isDebugEnabled()){
-			log.debug("Election Type -->" + electionTypeLiteral);
-			log.debug("Report Level -->" + reportLevelLiteral);
+		if(LOG.isDebugEnabled()){
+			LOG.debug("Election Type -->" + electionTypeLiteral);
+			LOG.debug("Report Level -->" + reportLevelLiteral);
 		}
 		
 		//Check for report success or failure
@@ -530,8 +530,8 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		
 		reportTitle =  partyNameLiteral +" " + electionTypeLiteral + "(" + reportLoc + ")" + "  Performance Report for the year " + year;
 		
-		if(log.isDebugEnabled())
-			log.debug("Report Title -->" + reportTitle);
+		if(LOG.isDebugEnabled())
+			LOG.debug("Report Title -->" + reportTitle);
 		
 		SortedMap<String, Integer> positions = reportVO.getPositionDistribution();
 		try{
@@ -600,14 +600,14 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 	//@JSON (serialize= false )   
 	public String getJasper() throws JRException {
 		
-		log.debug("Party Performance Jasper execution started...");
+		LOG.debug("Party Performance Jasper execution started...");
 		String contextPath = context.getRealPath("/");
 		
 		session = request.getSession();
 		
        
        	String jasperXML = contextPath + request.getParameter("jasperFile");	
-       	log.debug(jasperXML);
+       	LOG.debug(jasperXML);
 		Map<String, Object> params = new HashMap<String, Object>();
 		//params.put("REPORT_DIR", "charts\\partyPositionsChart_" + request.getSession().getId() + ".png");
 		params.put("REPORT_DIR", "charts\\" + session.getAttribute("chartName"));
@@ -638,11 +638,11 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		
 		String param=null;		
 		param=request.getParameter("task");
-		System.out.println("param:"+param);
+		LOG.info("param:"+param);
 		
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			
 			e.printStackTrace();
@@ -656,11 +656,11 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		String rank = jObj.getString("positionValue");
 		String reportLevel = jObj.getString("reportLevel");
 		
-		log.debug("Report Level Inside getpartyPosition method (Action) :" + reportLevel);
+		LOG.debug("Report Level Inside getpartyPosition method (Action) :" + reportLevel);
 		
-		partyPositionDisplayVO = partyService.getNthPositionPartyDetails(new Long(electionTypeID),new Long (stateID),new Long (districtID),new Long (year),new Long (partyID),new Boolean (alliances).booleanValue(),new Integer (rank).intValue(),reportLevel);
+		partyPositionDisplayVO = partyService.getNthPositionPartyDetails(Long.valueOf(electionTypeID),Long.valueOf (stateID),Long.valueOf (districtID),Long.valueOf (year),Long.valueOf (partyID),Boolean.valueOf (alliances).booleanValue(),Integer.valueOf(rank).intValue(),reportLevel);
 		
-		System.out.println("Length = "+partyPositionDisplayVO.size());
+		LOG.info("Length = "+partyPositionDisplayVO.size());
 		return Action.SUCCESS;
 	}
 	
@@ -668,11 +668,11 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		
 		String param=null;		
 		param=request.getParameter("task");
-		System.out.println("param:"+param);
+		LOG.info("param:"+param);
 		
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			
 			e.printStackTrace();
@@ -686,11 +686,11 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		String rank = jObj.getString("positionValue");
 		String reportLevel = jObj.getString("reportLevel");
 		
-		log.debug("Report Level Inside getpartyPosition method (Action) :" + reportLevel);
+		LOG.debug("Report Level Inside getpartyPosition method (Action) :" + reportLevel);
 		
-		partyPositionDisplayVO = partyService.getPartyPositionDetailsForAnElection(new Long(electionTypeID),new Long (stateID),new Long (districtID),new Long (year),new Long (partyID),new Boolean (alliances).booleanValue(),new Integer (rank).intValue(),reportLevel);
+		partyPositionDisplayVO = partyService.getPartyPositionDetailsForAnElection(Long.valueOf(electionTypeID),Long.valueOf (stateID),Long.valueOf (districtID),Long.valueOf (year),Long.valueOf (partyID),Boolean.valueOf (alliances).booleanValue(),Integer.valueOf(rank).intValue(),reportLevel);
 		
-		log.debug("Size = "+partyPositionDisplayVO.size());
+		LOG.debug("Size = "+partyPositionDisplayVO.size());
 		return Action.SUCCESS;
 	}
 
@@ -718,9 +718,9 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
         final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for(PartyPositionsVO result: partyPositionsVO){
         	final String series =  result.getPartyName();
-        	dataset.addValue(new Long(result.getTotalSeatsWon()), category1,series );
-        	dataset.addValue(new Long(result.getSecondPosWon()), category2, series);
-        	dataset.addValue(new Long(result.getThirdPosWon()), category3, series);
+        	dataset.addValue(Long.valueOf(result.getTotalSeatsWon()), category1,series );
+        	dataset.addValue(Long.valueOf(result.getSecondPosWon()), category2, series);
+        	dataset.addValue(Long.valueOf(result.getThirdPosWon()), category3, series);
         }
         return dataset;
         
@@ -764,20 +764,20 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		param = getTask();
 		try {
 			jObj = new JSONObject(param);
-			if(log.isDebugEnabled())
-				log.debug(jObj);			
+			if(LOG.isDebugEnabled())
+				LOG.debug(jObj);			
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		Long electionId = new Long(jObj.getString("electionId"));
-		Long partyId = new Long(jObj.getString("partyId"));
+		Long electionId = Long.valueOf(jObj.getString("electionId"));
+		Long partyId = Long.valueOf(jObj.getString("partyId"));
 		String status = jObj.getString("status");
 		String reportLevel = jObj.getString("reportLevel");
-		Long locationId = new Long(jObj.getString("locationId"));
-		Long stateId = new Long(0);
-		Long districtId = new Long(0);
+		Long locationId = Long.valueOf(jObj.getString("locationId"));
+		Long stateId = Long.valueOf(0);
+		Long districtId = Long.valueOf(0);
 		
 		String category = null;
 		if(status.equalsIgnoreCase("WON"))
@@ -800,14 +800,14 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		if(task != null){
 			try{
 				jObj = new JSONObject(getTask());
-				System.out.println("Result From JSON:"+jObj);
+				LOG.info("Result From JSON:"+jObj);
 			}catch(Exception e){
 				e.printStackTrace();
 			}
 			
 			String elecType = jObj.getString("elecTypeId");
-			Long partyId = new Long(jObj.getString("partyId"));
-			Long stateId = new Long(jObj.getString("stateId"));
+			Long partyId = Long.valueOf(jObj.getString("partyId"));
+			Long stateId = Long.valueOf(jObj.getString("stateId"));
 			
 			Long countryId = 1l;
 			String electionType = null;
@@ -835,12 +835,12 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		if(task != null){
 			try{
 				jObj = new JSONObject(getTask());
-				System.out.println("Result From JSON:"+jObj);
+				LOG.info("Result From JSON:"+jObj);
 			}catch(Exception e){
 				e.printStackTrace();
 			}
 						
-			Long stateID = new Long(jObj.getString("stateId"));
+			Long stateID = Long.valueOf(jObj.getString("stateId"));
 			String electionType = jObj.getString("elecTypeId");
 			String reportLevel = jObj.getString("reportLevel");
 			
@@ -865,7 +865,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		try{
 			jObj = new JSONObject(getTask());
 		}catch(Exception e){
-			log.error("Exception Occured in AjaxHandler() Method, Exception is - "+e);
+			LOG.error("Exception Occured in AjaxHandler() Method, Exception is - "+e);
 			return SUCCESS;
 		}
 		
@@ -879,13 +879,13 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 	public String getStatesList()
 	{
 		try {
-			log.debug("Entered into getStatesList() Method in PartyPerformanceAction Action");
+			LOG.debug("Entered into getStatesList() Method in PartyPerformanceAction Action");
 			jObj = new JSONObject(getTask());
 			Long electionTypeId = jObj.getLong("electionTypeId");
 			states = getStaticDataService().getParticipatedStatesForAnElectionType(electionTypeId);
 			//states.add(new SelectOptionVO(0l,"Select State"));
 		} catch (Exception e) {
-			log.error("Exception Occured in getStatesList() Method, Exception is - "+e);
+			LOG.error("Exception Occured in getStatesList() Method, Exception is - "+e);
 		}
 		return SUCCESS;
 	}

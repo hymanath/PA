@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 
@@ -16,6 +17,7 @@ public class CandidateSearchAction
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
+		private static final Logger LOG = Logger.getLogger(CandidateSearchAction.class);
 		HttpServletRequest request;
 		HttpServletResponse response;
 		HttpSession session;
@@ -38,10 +40,10 @@ public class CandidateSearchAction
 		
 		public String execute() {
 				
-			System.out.println("In candidate search result action + execute method...........");
-			//System.out.println("Name = "+request.getParameter("name"));
-			System.out.println("Name = "+getName());
-			System.out.println("party = "+getParty());
+			LOG.info("In candidate search result action + execute method...........");
+			//LOG.info("Name = "+request.getParameter("name"));
+			LOG.info("Name = "+getName());
+			LOG.info("party = "+getParty());
 						
 			return SUCCESS;
 			

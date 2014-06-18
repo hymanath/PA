@@ -33,7 +33,7 @@ public class ElectionComparisonAction extends ActionSupport implements ServletRe
 	private HttpSession session;
 	private String task = null;
 	JSONObject jObj = null;
-	private static final Logger log = Logger.getLogger(ElectionComparisonAction.class);
+	private static final Logger LOG = Logger.getLogger(ElectionComparisonAction.class);
 	private EntitlementsHelper entitlementsHelper;
 	
 	public List<SelectOptionVO> getPartyList() {
@@ -117,7 +117,7 @@ public class ElectionComparisonAction extends ActionSupport implements ServletRe
 		if(task != null){
 			try{
 				jObj = new JSONObject(getTask());
-				System.out.println("Result From JSON:"+jObj);
+				LOG.info("Result From JSON:"+jObj);
 			}catch(Exception e){
 				e.printStackTrace();
 			}
@@ -125,7 +125,7 @@ public class ElectionComparisonAction extends ActionSupport implements ServletRe
 			if(jObj.getString("task").equals("getElectionScopes")){
 				electionScopes = staticDataService.getElectionScopesByElectionType(jObj.getLong("electionTypeId"));
 				Collections.sort(electionScopes);
-				log.debug("getElectionScopes......"+electionScopes.size());
+				LOG.debug("getElectionScopes......"+electionScopes.size());
 			}
 		}
 		return SUCCESS;
@@ -135,14 +135,14 @@ public class ElectionComparisonAction extends ActionSupport implements ServletRe
 		if(task != null){
 			try{
 				jObj = new JSONObject(getTask());
-				System.out.println("Result From JSON:"+jObj);
+				LOG.info("Result From JSON:"+jObj);
 			}catch(Exception e){
 				e.printStackTrace();
 			}
 			
 			if(jObj.getString("task").equals("getElectionYears")){
 				yearsList = staticDataService.getElectionIdsAndYearsByElectionScope(jObj.getLong("electionScopeId"),jObj.getLong("partyId"));
-				log.debug("getElectionScopes......"+yearsList.size());
+				LOG.debug("getElectionScopes......"+yearsList.size());
 			}
 		}
 		return SUCCESS;
@@ -153,7 +153,7 @@ public class ElectionComparisonAction extends ActionSupport implements ServletRe
 		if(task != null){
 			try{
 				jObj = new JSONObject(getTask());
-				System.out.println("Result From JSON:"+jObj);
+				LOG.info("Result From JSON:"+jObj);
 			}catch(Exception e){
 				e.printStackTrace();
 			}
@@ -175,7 +175,7 @@ public class ElectionComparisonAction extends ActionSupport implements ServletRe
 		if(task != null){
 			try{
 				jObj = new JSONObject(getTask());
-				System.out.println("Result From JSON:"+jObj);
+				LOG.info("Result From JSON:"+jObj);
 			}catch(Exception e){
 				e.printStackTrace();
 			}

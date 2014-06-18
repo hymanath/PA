@@ -40,7 +40,7 @@ public class HamletBoothMapperAction extends ActionSupport implements ServletReq
 	private List<VillageBoothInfoVO> villageBooths;
 	private String requestStatus;
 	private BoothPanelVO boothPanelVO;
-	private static final Logger log = Logger.getLogger(PartyBoothWiseResultsService.class);
+	private static final Logger LOG = Logger.getLogger(PartyBoothWiseResultsService.class);
 	
 	public String getRequestStatus() {
 		return requestStatus;
@@ -138,21 +138,21 @@ public class HamletBoothMapperAction extends ActionSupport implements ServletReq
 				if(task != null){
 					try{
 						jObj = new JSONObject(getTask());
-						System.out.println("Result From JSON:"+jObj);
+						LOG.info("Result From JSON:"+jObj);
 					}catch(Exception e){
 						e.printStackTrace();
 					}
 					
 					if(jObj.getString("task").equals("getDistricts")){
-						System.out.println("For Districts Of State");
+						LOG.info("For Districts Of State");
 						result = staticDataService.getDistricts(jObj.getLong("locationId"));
 						result.add(0,new SelectOptionVO(0l,"Select District"));
 					}else if(jObj.getString("task").equals("getMandals")){
-						System.out.println("For Mandals Of District");
+						LOG.info("For Mandals Of District");
 						mandals = staticDataService.getMandalsForDistrict(jObj.getLong("locationId"));
 						mandals.add(0,new MandalVO(0l,"Select Mandal"));
 					}else if(jObj.getString("task").equals("getRevenueVillagesAndBooths")){
-						System.out.println("For REVENUE VILLAGES Of Mandal");
+						LOG.info("For REVENUE VILLAGES Of Mandal");
 						hamletsAndBoothsVO = new HamletsAndBoothsVO();
 						result = staticDataService.findTownshipsByTehsilID(jObj.getLong("locationId"));
 						result.add(0,new SelectOptionVO(0l,"Select Revenue Village"));
@@ -164,7 +164,7 @@ public class HamletBoothMapperAction extends ActionSupport implements ServletReq
 						List<Long> boothElecIds = new ArrayList<Long>();
 						
 						for(int i=0; i < boothJsonIds.length(); i++){
-							boothElecIds.add(new Long((String)boothJsonIds.get(i)));
+							boothElecIds.add(Long.valueOf((String)boothJsonIds.get(i)));
 						}
 						ResultWithExceptionVO resultVO = constituencyPageService.saveAndUpdateHamletAndBoothInfo(new HamletAndBoothVO(hamletId, boothElecIds));
 						if(resultVO.getExceptionEncountered() == null){

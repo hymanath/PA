@@ -42,7 +42,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(ConstituencyManagementAction.class);
+	private static final Logger LOG = Logger.getLogger(ConstituencyManagementAction.class);
 	private CadreManagementService cadreManagementService;
 	private IProblemManagementService problemManagementService;
 	private CrossVotingEstimationService crossVotingEstimationService;
@@ -480,7 +480,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 
 	public String execute() throws Exception{
 		
-		log.debug("In execute of Constituency Management Action ********");
+		LOG.debug("In execute of Constituency Management Action ********");
 
 		SelectOptionVO probSource1 = new SelectOptionVO(2L, IConstants.CALL_CENTER);
 		SelectOptionVO probSource2 = new SelectOptionVO(3L, IConstants.USER);
@@ -499,7 +499,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 			return ERROR;
 				
 		accessType =user.getAccessType();
-		accessValue= new Long(user.getAccessValue());		
+		accessValue= Long.valueOf(user.getAccessValue());		
 		
 		Long userID = user.getRegistrationID();
 		remainingSms = smsCountrySmsService.getRemainingSmsLeftForUser(userID);
@@ -513,7 +513,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		parliamentConstituencyList = new ArrayList<SelectOptionVO>();
 		if("MLA".equals(accessType))
 		{
-			log.debug("Access Type = MLA ****");
+			LOG.debug("Access Type = MLA ****");
 			List<SelectOptionVO> list = regionServiceData.getStateDistrictByConstituencyID(accessValue);
 			
 			stateList.add(list.get(0));			
@@ -524,12 +524,12 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 						
 		}else if("COUNTRY".equals(accessType))
 		{
-			log.debug("Access Type = Country ****");
+			LOG.debug("Access Type = Country ****");
 			stateList = cadreManagementService.findStatesByCountryID(accessValue.toString());
 			stateList.add(0,new SelectOptionVO(0L, "Select State"));
 			
 		}else if("STATE".equals(accessType)){
-			log.debug("Access Type = State ****");
+			LOG.debug("Access Type = State ****");
 			
 			String name = cadreManagementService.getStateName(accessValue);
 			SelectOptionVO obj2 = new SelectOptionVO();
@@ -540,7 +540,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 			districtList.add(0,new SelectOptionVO(0l,"Select District"));
 			
 		}else if("DISTRICT".equals(accessType)){
-			log.debug("Access Type = District ****");			
+			LOG.debug("Access Type = District ****");			
 
 			List<SelectOptionVO> list = regionServiceData.getStateDistrictByDistrictID(accessValue);
 			stateList.add(list.get(0));
@@ -549,7 +549,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 			constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));
 			
 		} else if("MP".equals(accessType)){
-			log.debug("Access Type = MP ****");
+			LOG.debug("Access Type = MP ****");
 			ConstituencyInfoVO constituencyInfoVO = new ConstituencyInfoVO();
 			stateList = regionServiceData.getStateByParliamentConstituencyID(accessValue);
 			constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(accessValue);
@@ -557,7 +557,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 			constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));
 			parliamentConstituencyList.add(new SelectOptionVO(constituencyInfoVO.getConstituencyId(),constituencyInfoVO.getConstituencyName()));		
 				
-			log.debug("constituencyList.size():"+constituencyList.size());		
+			LOG.debug("constituencyList.size():"+constituencyList.size());		
 		}
 		
 		//problemStatus = staticDataService.getAllProblemStatus(); 
@@ -587,7 +587,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 			}
 		}
 		
-		Long regionId = new Long(jObj.getString("regionId"));
+		Long regionId = Long.valueOf(jObj.getString("regionId"));
 		String regionName = jObj.getString("regionName");
 		String regionType = jObj.getString("regionType");
 		String selectType = jObj.getString("selectType");
@@ -641,10 +641,10 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 				e.printStackTrace();
 			}
 		}
-		Long regionId = new Long(jObj.getString("regionId"));
+		Long regionId = Long.valueOf(jObj.getString("regionId"));
 		String regionName = jObj.getString("regionName");
 		String regionType = jObj.getString("regionType");
-		Long regionTitleId = new Long(jObj.getString("regionTitleId"));
+		Long regionTitleId = Long.valueOf(jObj.getString("regionTitleId"));
 		String regionTitle = jObj.getString("regionTitle");
 		String areaType = jObj.getString("areaType");
 		
@@ -666,10 +666,10 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 				e.printStackTrace();
 			}
 		}
-		Long regionId = new Long(jObj.getString("regionId"));
+		Long regionId = Long.valueOf(jObj.getString("regionId"));
 		String regionName = jObj.getString("regionName");
 		String regionType = jObj.getString("regionType");
-		Long regionTitleId = new Long(jObj.getString("regionTitleId"));
+		Long regionTitleId = Long.valueOf(jObj.getString("regionTitleId"));
 		String regionTitle = jObj.getString("regionTitle");
 		String areaType = jObj.getString("areaType");
 		
@@ -684,8 +684,8 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
 		Long userId = regVO.getRegistrationID();
 		
-		Long parentRegionId = new Long(request.getParameter("parentRegionId"));
-		Long regionId = new Long(request.getParameter("regionId"));
+		Long parentRegionId = Long.valueOf(request.getParameter("parentRegionId"));
+		Long regionId = Long.valueOf(request.getParameter("regionId"));
 		regionName = request.getParameter("regionName");
 		regionType = request.getParameter("regionType");
 		scopeType = request.getParameter("scopeType");
@@ -705,8 +705,8 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
 		Long userId = regVO.getRegistrationID();
 		
-		//Long parentRegionId = new Long(request.getParameter("parentRegionId"));
-		Long regionId = new Long(request.getParameter("regionId"));
+		//Long parentRegionId = Long.valueOf(request.getParameter("parentRegionId"));
+		Long regionId = Long.valueOf(request.getParameter("regionId"));
 		regionType = request.getParameter("regionType");
 		int startIndex = Integer.valueOf(request.getParameter("startIndex"));
 		int maxIndex = Integer.valueOf(request.getParameter("results"));
@@ -756,7 +756,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
 		Long userId = regVO.getRegistrationID();
 		
-		Long personId = new Long(request.getParameter("personId"));
+		Long personId = Long.valueOf(request.getParameter("personId"));
 		
 		influencingPersonVO = influencingPeopleService.getMoreResultsForInfluencingPeopleById(personId);
 		
@@ -791,10 +791,10 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
 		Long userId = regVO.getRegistrationID();
 		
-		Long regionId = new Long(request.getParameter("regionId"));
+		Long regionId = Long.valueOf(request.getParameter("regionId"));
 		regionName = request.getParameter("regionName");
 		regionType = request.getParameter("regionType");
-		Long regionTitleId = new Long(request.getParameter("regionTitleId"));
+		Long regionTitleId = Long.valueOf(request.getParameter("regionTitleId"));
 		regionTitle = request.getParameter("regionTitle");
 		
 		localGroupsPeople = influencingPeopleService.getLocalUserGroupDetails(userId,regionId,regionType,regionTitleId,regionTitle);
@@ -818,7 +818,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		Long localUserGroupIdId = jObj.getLong("localUserGroupIdId");
 		
 		Integer rows = influencingPeopleService.deleteLocalUserGroup(localUserGroupIdId);
-		Log.debug("rows:"+rows);
+		LOG.debug("rows:"+rows);
 	}
 	
 	/*
@@ -828,7 +828,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		
 		//--
 		InfluencingPeopleDetailsVO p1 = new InfluencingPeopleDetailsVO();
-		p1.setRegionId(new Long(1));
+		p1.setRegionId(Long.valueOf(1));
 		p1.setRegionName("Kavali");
 		p1.setRegionType("Assembly");
 		
@@ -876,7 +876,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		
 		//--
 		InfluencingPeopleDetailsVO p2 = new InfluencingPeopleDetailsVO();
-		p2.setRegionId(new Long(1));
+		p2.setRegionId(Long.valueOf(1));
 		p2.setRegionName("Allur");
 		p2.setRegionType("Assembly");
 		
@@ -924,7 +924,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		
 		//--
 		InfluencingPeopleDetailsVO p3 = new InfluencingPeopleDetailsVO();
-		p3.setRegionId(new Long(1));
+		p3.setRegionId(Long.valueOf(1));
 		p3.setRegionName("Atmakur");
 		p3.setRegionType("Assembly");
 		
@@ -982,36 +982,36 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		
 		//--
 		ConstituencyManagementRegionWiseOverviewVO region = new ConstituencyManagementRegionWiseOverviewVO();
-		region.setRegionId(new Long(1));
+		region.setRegionId(Long.valueOf(1));
 		region.setRegionName("Allur");
 		region.setRegionType("Mandal");
-		region.setCountValue(new Long(100));
+		region.setCountValue(Long.valueOf(100));
 		
 		List<ConstituencyManagementSubRegionWiseOverviewVO> subRegions = new ArrayList<ConstituencyManagementSubRegionWiseOverviewVO>();
 		
 		ConstituencyManagementSubRegionWiseOverviewVO sub1 = new ConstituencyManagementSubRegionWiseOverviewVO();
-		sub1.setSubRegionId(new Long(1));
+		sub1.setSubRegionId(Long.valueOf(1));
 		sub1.setSubRegionName("Allur");
 		sub1.setSubRegionType("Village");
-		sub1.setCountValue(new Long(25));
+		sub1.setCountValue(Long.valueOf(25));
 		
 		ConstituencyManagementSubRegionWiseOverviewVO sub2 = new ConstituencyManagementSubRegionWiseOverviewVO();
-		sub2.setSubRegionId(new Long(2));
+		sub2.setSubRegionId(Long.valueOf(2));
 		sub2.setSubRegionName("Allurpeta");
 		sub2.setSubRegionType("Village");
-		sub2.setCountValue(new Long(25));
+		sub2.setCountValue(Long.valueOf(25));
 		
 		ConstituencyManagementSubRegionWiseOverviewVO sub3 = new ConstituencyManagementSubRegionWiseOverviewVO();
-		sub3.setSubRegionId(new Long(3));
+		sub3.setSubRegionId(Long.valueOf(3));
 		sub3.setSubRegionName("Beeramgunta");
 		sub3.setSubRegionType("Village");
-		sub3.setCountValue(new Long(30));
+		sub3.setCountValue(Long.valueOf(30));
 		
 		ConstituencyManagementSubRegionWiseOverviewVO sub4 = new ConstituencyManagementSubRegionWiseOverviewVO();
-		sub4.setSubRegionId(new Long(4));
+		sub4.setSubRegionId(Long.valueOf(4));
 		sub4.setSubRegionName("Gogulapalli");
 		sub4.setSubRegionType("Village");
-		sub4.setCountValue(new Long(20));
+		sub4.setCountValue(Long.valueOf(20));
 		
 		subRegions.add(sub1);
 		subRegions.add(sub2);
@@ -1023,36 +1023,36 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		
 		//--
 		ConstituencyManagementRegionWiseOverviewVO region2 = new ConstituencyManagementRegionWiseOverviewVO();
-		region2.setRegionId(new Long(1));
+		region2.setRegionId(Long.valueOf(1));
 		region2.setRegionName("Bogole");
 		region2.setRegionType("Mandal");
-		region2.setCountValue(new Long(200));
+		region2.setCountValue(Long.valueOf(200));
 		
 		List<ConstituencyManagementSubRegionWiseOverviewVO> subRegions2 = new ArrayList<ConstituencyManagementSubRegionWiseOverviewVO>();
 		
 		ConstituencyManagementSubRegionWiseOverviewVO sub21 = new ConstituencyManagementSubRegionWiseOverviewVO();
-		sub21.setSubRegionId(new Long(1));
+		sub21.setSubRegionId(Long.valueOf(1));
 		sub21.setSubRegionName("Allur");
 		sub21.setSubRegionType("Village");
-		sub21.setCountValue(new Long(50));
+		sub21.setCountValue(Long.valueOf(50));
 		
 		ConstituencyManagementSubRegionWiseOverviewVO sub22 = new ConstituencyManagementSubRegionWiseOverviewVO();
-		sub22.setSubRegionId(new Long(2));
+		sub22.setSubRegionId(Long.valueOf(2));
 		sub22.setSubRegionName("Allurpeta");
 		sub22.setSubRegionType("Village");
-		sub22.setCountValue(new Long(50));
+		sub22.setCountValue(Long.valueOf(50));
 		
 		ConstituencyManagementSubRegionWiseOverviewVO sub23 = new ConstituencyManagementSubRegionWiseOverviewVO();
-		sub23.setSubRegionId(new Long(3));
+		sub23.setSubRegionId(Long.valueOf(3));
 		sub23.setSubRegionName("Beeramgunta");
 		sub23.setSubRegionType("Village");
-		sub23.setCountValue(new Long(25));
+		sub23.setCountValue(Long.valueOf(25));
 		
 		ConstituencyManagementSubRegionWiseOverviewVO sub24 = new ConstituencyManagementSubRegionWiseOverviewVO();
-		sub24.setSubRegionId(new Long(4));
+		sub24.setSubRegionId(Long.valueOf(4));
 		sub24.setSubRegionName("Gogulapalli");
 		sub24.setSubRegionType("Village");
-		sub24.setCountValue(new Long(75));
+		sub24.setCountValue(Long.valueOf(75));
 		
 		subRegions2.add(sub21);
 		subRegions2.add(sub22);
@@ -1064,36 +1064,36 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		
 		//--
 		ConstituencyManagementRegionWiseOverviewVO region3 = new ConstituencyManagementRegionWiseOverviewVO();
-		region3.setRegionId(new Long(1));
+		region3.setRegionId(Long.valueOf(1));
 		region3.setRegionName("Kavali");
 		region3.setRegionType("Municipality");
-		region3.setCountValue(new Long(100));
+		region3.setCountValue(Long.valueOf(100));
 		
 		List<ConstituencyManagementSubRegionWiseOverviewVO> subRegions3 = new ArrayList<ConstituencyManagementSubRegionWiseOverviewVO>();
 		
 		ConstituencyManagementSubRegionWiseOverviewVO sub31 = new ConstituencyManagementSubRegionWiseOverviewVO();
-		sub31.setSubRegionId(new Long(1));
+		sub31.setSubRegionId(Long.valueOf(1));
 		sub31.setSubRegionName("Anantapuram");
 		sub31.setSubRegionType("ward");
-		sub31.setCountValue(new Long(20));
+		sub31.setCountValue(Long.valueOf(20));
 		
 		ConstituencyManagementSubRegionWiseOverviewVO sub32 = new ConstituencyManagementSubRegionWiseOverviewVO();
-		sub32.setSubRegionId(new Long(2));
+		sub32.setSubRegionId(Long.valueOf(2));
 		sub32.setSubRegionName("Laxmipuram");
 		sub32.setSubRegionType("Ward");
-		sub32.setCountValue(new Long(50));
+		sub32.setCountValue(Long.valueOf(50));
 		
 		ConstituencyManagementSubRegionWiseOverviewVO sub33 = new ConstituencyManagementSubRegionWiseOverviewVO();
-		sub33.setSubRegionId(new Long(3));
+		sub33.setSubRegionId(Long.valueOf(3));
 		sub33.setSubRegionName("Beeramgunta");
 		sub33.setSubRegionType("ward");
-		sub33.setCountValue(new Long(10));
+		sub33.setCountValue(Long.valueOf(10));
 		
 		ConstituencyManagementSubRegionWiseOverviewVO sub34 = new ConstituencyManagementSubRegionWiseOverviewVO();
-		sub34.setSubRegionId(new Long(4));
+		sub34.setSubRegionId(Long.valueOf(4));
 		sub34.setSubRegionName("Gogulapalli");
 		sub34.setSubRegionType("Ward");
-		sub34.setCountValue(new Long(20));
+		sub34.setCountValue(Long.valueOf(20));
 		
 		subRegions3.add(sub31);
 		subRegions3.add(sub32);
@@ -1105,36 +1105,36 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		
 		//--
 		ConstituencyManagementRegionWiseOverviewVO region4 = new ConstituencyManagementRegionWiseOverviewVO();
-		region4.setRegionId(new Long(1));
+		region4.setRegionId(Long.valueOf(1));
 		region4.setRegionName("Dagadarthi");
 		region4.setRegionType("mandal");
-		region4.setCountValue(new Long(100));
+		region4.setCountValue(Long.valueOf(100));
 		
 		List<ConstituencyManagementSubRegionWiseOverviewVO> subRegions4 = new ArrayList<ConstituencyManagementSubRegionWiseOverviewVO>();
 		
 		ConstituencyManagementSubRegionWiseOverviewVO sub41 = new ConstituencyManagementSubRegionWiseOverviewVO();
-		sub41.setSubRegionId(new Long(1));
+		sub41.setSubRegionId(Long.valueOf(1));
 		sub41.setSubRegionName("Allur");
 		sub41.setSubRegionType("Village");
-		sub41.setCountValue(new Long(20));
+		sub41.setCountValue(Long.valueOf(20));
 		
 		ConstituencyManagementSubRegionWiseOverviewVO sub42 = new ConstituencyManagementSubRegionWiseOverviewVO();
-		sub42.setSubRegionId(new Long(2));
+		sub42.setSubRegionId(Long.valueOf(2));
 		sub42.setSubRegionName("Allurpeta");
 		sub42.setSubRegionType("Village");
-		sub42.setCountValue(new Long(30));
+		sub42.setCountValue(Long.valueOf(30));
 		
 		ConstituencyManagementSubRegionWiseOverviewVO sub43 = new ConstituencyManagementSubRegionWiseOverviewVO();
-		sub43.setSubRegionId(new Long(3));
+		sub43.setSubRegionId(Long.valueOf(3));
 		sub43.setSubRegionName("Beeramgunta");
 		sub43.setSubRegionType("Village");
-		sub43.setCountValue(new Long(20));
+		sub43.setCountValue(Long.valueOf(20));
 		
 		ConstituencyManagementSubRegionWiseOverviewVO sub44 = new ConstituencyManagementSubRegionWiseOverviewVO();
-		sub44.setSubRegionId(new Long(4));
+		sub44.setSubRegionId(Long.valueOf(4));
 		sub44.setSubRegionName("Gogulapalli");
 		sub44.setSubRegionType("Village");
-		sub44.setCountValue(new Long(30));
+		sub44.setCountValue(Long.valueOf(30));
 		
 		subRegions4.add(sub41);
 		subRegions4.add(sub42);
@@ -1159,36 +1159,36 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		ConstituencyManagementDataVO constVO = new ConstituencyManagementDataVO();
 		
 		ConstituencyManagementRegionWiseOverviewVO region = new ConstituencyManagementRegionWiseOverviewVO();
-		region.setRegionId(new Long(1));
+		region.setRegionId(Long.valueOf(1));
 		region.setRegionName("Kavali");
 		region.setRegionType("Assembly");
-		region.setCountValue(new Long(500));
+		region.setCountValue(Long.valueOf(500));
 		
 		List<ConstituencyManagementSubRegionWiseOverviewVO> subRegions = new ArrayList<ConstituencyManagementSubRegionWiseOverviewVO>();
 		
 		ConstituencyManagementSubRegionWiseOverviewVO sub1 = new ConstituencyManagementSubRegionWiseOverviewVO();
-		sub1.setSubRegionId(new Long(1));
+		sub1.setSubRegionId(Long.valueOf(1));
 		sub1.setSubRegionName("Allur");
 		sub1.setSubRegionType("Mandal");
-		sub1.setCountValue(new Long(100));
+		sub1.setCountValue(Long.valueOf(100));
 		
 		ConstituencyManagementSubRegionWiseOverviewVO sub2 = new ConstituencyManagementSubRegionWiseOverviewVO();
-		sub2.setSubRegionId(new Long(2));
+		sub2.setSubRegionId(Long.valueOf(2));
 		sub2.setSubRegionName("Bogole");
 		sub2.setSubRegionType("Mandal");
-		sub2.setCountValue(new Long(200));
+		sub2.setCountValue(Long.valueOf(200));
 		
 		ConstituencyManagementSubRegionWiseOverviewVO sub3 = new ConstituencyManagementSubRegionWiseOverviewVO();
-		sub3.setSubRegionId(new Long(3));
+		sub3.setSubRegionId(Long.valueOf(3));
 		sub3.setSubRegionName("Kavali");
 		sub3.setSubRegionType("Municipality");
-		sub3.setCountValue(new Long(100));
+		sub3.setCountValue(Long.valueOf(100));
 		
 		ConstituencyManagementSubRegionWiseOverviewVO sub4 = new ConstituencyManagementSubRegionWiseOverviewVO();
-		sub4.setSubRegionId(new Long(4));
+		sub4.setSubRegionId(Long.valueOf(4));
 		sub4.setSubRegionName("Dagadarthi");
 		sub4.setSubRegionType("Mandal");
-		sub4.setCountValue(new Long(100));
+		sub4.setCountValue(Long.valueOf(100));
 		
 		subRegions.add(sub1);
 		subRegions.add(sub2);
@@ -1202,14 +1202,14 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		//--
 		ConstituencyManagementInfluenceScopeOverviewVO scope1 = new ConstituencyManagementInfluenceScopeOverviewVO();
 		scope1.setInfluenceScope("State");
-		scope1.setCountValue(new Long(50));
+		scope1.setCountValue(Long.valueOf(50));
 		
 		List<ConstituencyManagementInfluenceScopeDetailsVO> subScopeList1 = new ArrayList<ConstituencyManagementInfluenceScopeDetailsVO>();
 		
 		ConstituencyManagementInfluenceScopeDetailsVO subScope11 = new ConstituencyManagementInfluenceScopeDetailsVO();
-		subScope11.setInfluenceScopeRegionId(new Long(1));
+		subScope11.setInfluenceScopeRegionId(Long.valueOf(1));
 		subScope11.setInfluenceScopeRegion("Andhra Pradesh");		
-		subScope11.setCountValue(new Long(50));
+		subScope11.setCountValue(Long.valueOf(50));
 		
 		subScopeList1.add(subScope11);
 		scope1.setInfluenceScopeDetails(subScopeList1);
@@ -1218,24 +1218,24 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		//--
 		ConstituencyManagementInfluenceScopeOverviewVO scope2 = new ConstituencyManagementInfluenceScopeOverviewVO();
 		scope2.setInfluenceScope("District");
-		scope2.setCountValue(new Long(100));
+		scope2.setCountValue(Long.valueOf(100));
 		
 		List<ConstituencyManagementInfluenceScopeDetailsVO> subScopeList2 = new ArrayList<ConstituencyManagementInfluenceScopeDetailsVO>();
 		
 		ConstituencyManagementInfluenceScopeDetailsVO subScope21 = new ConstituencyManagementInfluenceScopeDetailsVO();
-		subScope21.setInfluenceScopeRegionId(new Long(1));
+		subScope21.setInfluenceScopeRegionId(Long.valueOf(1));
 		subScope21.setInfluenceScopeRegion("Nellore");		
-		subScope21.setCountValue(new Long(50));
+		subScope21.setCountValue(Long.valueOf(50));
 		
 		ConstituencyManagementInfluenceScopeDetailsVO subScope22 = new ConstituencyManagementInfluenceScopeDetailsVO();
-		subScope22.setInfluenceScopeRegionId(new Long(2));
+		subScope22.setInfluenceScopeRegionId(Long.valueOf(2));
 		subScope22.setInfluenceScopeRegion("Prakasam");		
-		subScope22.setCountValue(new Long(20));
+		subScope22.setCountValue(Long.valueOf(20));
 		
 		ConstituencyManagementInfluenceScopeDetailsVO subScope23 = new ConstituencyManagementInfluenceScopeDetailsVO();
-		subScope23.setInfluenceScopeRegionId(new Long(3));
+		subScope23.setInfluenceScopeRegionId(Long.valueOf(3));
 		subScope23.setInfluenceScopeRegion("Chittor");		
-		subScope23.setCountValue(new Long(30));
+		subScope23.setCountValue(Long.valueOf(30));
 		
 		subScopeList2.add(subScope21);
 		subScopeList2.add(subScope22);
@@ -1247,24 +1247,24 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		//--
 		ConstituencyManagementInfluenceScopeOverviewVO scope3 = new ConstituencyManagementInfluenceScopeOverviewVO();
 		scope3.setInfluenceScope("Constituency");
-		scope3.setCountValue(new Long(250));
+		scope3.setCountValue(Long.valueOf(250));
 		
 		List<ConstituencyManagementInfluenceScopeDetailsVO> subScopeList3 = new ArrayList<ConstituencyManagementInfluenceScopeDetailsVO>();
 		
 		ConstituencyManagementInfluenceScopeDetailsVO subScope31 = new ConstituencyManagementInfluenceScopeDetailsVO();
-		subScope31.setInfluenceScopeRegionId(new Long(1));
+		subScope31.setInfluenceScopeRegionId(Long.valueOf(1));
 		subScope31.setInfluenceScopeRegion("Kavali");		
-		subScope31.setCountValue(new Long(50));
+		subScope31.setCountValue(Long.valueOf(50));
 		
 		ConstituencyManagementInfluenceScopeDetailsVO subScope32 = new ConstituencyManagementInfluenceScopeDetailsVO();
-		subScope32.setInfluenceScopeRegionId(new Long(2));
+		subScope32.setInfluenceScopeRegionId(Long.valueOf(2));
 		subScope32.setInfluenceScopeRegion("Gudur");		
-		subScope32.setCountValue(new Long(100));
+		subScope32.setCountValue(Long.valueOf(100));
 		
 		ConstituencyManagementInfluenceScopeDetailsVO subScope33 = new ConstituencyManagementInfluenceScopeDetailsVO();
-		subScope33.setInfluenceScopeRegionId(new Long(3));
+		subScope33.setInfluenceScopeRegionId(Long.valueOf(3));
 		subScope33.setInfluenceScopeRegion("Ongole");		
-		subScope33.setCountValue(new Long(100));
+		subScope33.setCountValue(Long.valueOf(100));
 		
 		subScopeList3.add(subScope31);
 		subScopeList3.add(subScope32);

@@ -43,7 +43,7 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 	private JSONObject jsonObj = null;
 	private String task = null;
 
-	private static final Logger log = Logger.getLogger(MandalPageAction.class);
+	private static final Logger LOG = Logger.getLogger(MandalPageAction.class);
 	private IPartyBoothWiseResultsService partyBoothWiseResultsService;
 	private MandalDataWithChartVO mandalDataWithChartVO;
 	private HttpSession session;
@@ -179,44 +179,44 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 			mandalInfoVO.setMandalName(mandalName);
 			Throwable ex = mandalInfoVO.getExceptionEncountered();
 			if(ex!=null){
-				log.error("exception raised while retrieving mandal details ", ex);
+				LOG.error("exception raised while retrieving mandal details ", ex);
 				return ERROR;
 			}
 			setMandalInfoVO(mandalInfoVO);
 			break;
 		}
-		villageDetailsVO = delimitationConstituencyMandalService.getVillagesFormMandal(new Long(mandalID));
+		villageDetailsVO = delimitationConstituencyMandalService.getVillagesFormMandal(Long.valueOf(mandalID));
 		villageDetailsVO.setMandalName(mandalName);
 		Throwable ex = villageDetailsVO.getExceptionEncountered();
 		if(ex!=null){
-			log.error("exception raised while retrieving mandal details ", ex);
+			LOG.error("exception raised while retrieving mandal details ", ex);
 		}
-		partyElectionVotersHeaderDataVO = delimitationConstituencyMandalService.getPartyElectionVotersForMandal(new Long(mandalID), IConstants.MANDAL);
+		partyElectionVotersHeaderDataVO = delimitationConstituencyMandalService.getPartyElectionVotersForMandal(Long.valueOf(mandalID), IConstants.MANDAL);
 		ex = partyElectionVotersHeaderDataVO.getExceptionEncountered();
 		if(ex!=null){
-			log.error("exception raised while retrieving mandal voters party wise ", ex);
+			LOG.error("exception raised while retrieving mandal voters party wise ", ex);
 		}
 
-		castWiseElectionVoters = delimitationConstituencyMandalService.findCastWiseVotersForMandal(new Long(mandalID));
+		castWiseElectionVoters = delimitationConstituencyMandalService.findCastWiseVotersForMandal(Long.valueOf(mandalID));
 		ex = castWiseElectionVoters.getExceptionEncountered();
 		if(ex!=null){
-			log.error("exception raised while retrieving mandal voters cast wise ", ex);
+			LOG.error("exception raised while retrieving mandal voters cast wise ", ex);
 		}
-		genderAgeWiseVoters = delimitationConstituencyMandalService.findGenderAgeWiseVotersForMandal(new Long(mandalID));
+		genderAgeWiseVoters = delimitationConstituencyMandalService.findGenderAgeWiseVotersForMandal(Long.valueOf(mandalID));
 		
-		if(log.isDebugEnabled()){
-			log.debug("size============================================"+mandalInfo.size());
-			log.debug("size============================================"+(villageDetailsVO.getVillageCensusList()).size());
-			log.debug("size============================================"+castWiseElectionVoters.getCasteVoters().size());
-			log.debug("size============================================"+genderAgeWiseVoters.getVoterAgeRangeVOList().size());
-			log.debug("end of MandalPageAction.execute()");
+		if(LOG.isDebugEnabled()){
+			LOG.debug("size============================================"+mandalInfo.size());
+			LOG.debug("size============================================"+(villageDetailsVO.getVillageCensusList()).size());
+			LOG.debug("size============================================"+castWiseElectionVoters.getCasteVoters().size());
+			LOG.debug("size============================================"+genderAgeWiseVoters.getVoterAgeRangeVOList().size());
+			LOG.debug("end of MandalPageAction.execute()");
 		}
 		
-		ResultWithExceptionVO influencingPeopleInMandalVO = constituencyPageService.getAllMandalLevelLeaders(new Long(mandalID));
+		ResultWithExceptionVO influencingPeopleInMandalVO = constituencyPageService.getAllMandalLevelLeaders(Long.valueOf(mandalID));
 		if(influencingPeopleInMandalVO.getExceptionEncountered() == null){
 			influencingPeopleInMandal = (List<InfluencingPeopleVO>)influencingPeopleInMandalVO.getFinalResult();
 		}
-		/*//ResultWithExceptionVO boothDataOfRevenueVillagesInMandal = constituencyPageService.getTownshipWiseBoothDetailsForTehsil(new Long(mandalID), 2l);
+		/*//ResultWithExceptionVO boothDataOfRevenueVillagesInMandal = constituencyPageService.getTownshipWiseBoothDetailsForTehsil(Long.valueOf(mandalID), 2l);
 		if(boothDataOfRevenueVillagesInMandal.getResultStatus().getExceptionEncountered() == null){
 			townshipWiseBoothDataInMandal = (List<LocationWiseBoothDetailsVO>)boothDataOfRevenueVillagesInMandal.getFinalResult();
 		}*/
@@ -250,7 +250,7 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
      	List<String> electionYears =new ArrayList<String>(0);
      	Map<String,Map<String,Double>> resultMap = new HashMap<String, Map<String,Double>>();
         mandalDataWithChartVO = new MandalDataWithChartVO();
-		List<MandalAllElectionDetailsVO> mandalAllElectionDetailsVO = partyBoothWiseResultsService.getMandalAllElectionDetails(new Long(mandalId), new Long(partyId),new Boolean(alliance).booleanValue());
+		List<MandalAllElectionDetailsVO> mandalAllElectionDetailsVO = partyBoothWiseResultsService.getMandalAllElectionDetails(Long.valueOf(mandalId), Long.valueOf(partyId),Boolean.valueOf(alliance).booleanValue());
 		if(mandalAllElectionDetailsVO != null && mandalAllElectionDetailsVO.size() > 0)
 		{
 		for(MandalAllElectionDetailsVO list : mandalAllElectionDetailsVO)

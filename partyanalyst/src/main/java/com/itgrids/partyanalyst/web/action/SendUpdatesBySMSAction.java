@@ -56,7 +56,7 @@ public class SendUpdatesBySMSAction  extends ActionSupport implements ServletReq
 	private IVoterReportService voterReportService;
 	private ConstituencyManagementVO constituencyManagementVO;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
-	private static final Logger log = Logger.getLogger(SendUpdatesBySMSAction.class);
+	private static final Logger LOG = Logger.getLogger(SendUpdatesBySMSAction.class);
 	private VoterVO voterVO;
 	private EntitlementsHelper entitlementsHelper;
 	
@@ -248,8 +248,8 @@ public class SendUpdatesBySMSAction  extends ActionSupport implements ServletReq
 		userAccessConstituencyList = user.getUserAccessVoterConstituencies();
 		if(userAccessConstituencyList == null || userAccessConstituencyList.isEmpty()){
 		Long userID = user.getRegistrationID();
-		Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
-		Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
+		Long electionYear = Long.valueOf(IConstants.PRESENT_ELECTION_YEAR);
+		Long electionTypeId = Long.valueOf(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
 		constituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userID,electionYear,electionTypeId);
 		userAccessConstituencyList = votersAnalysisService.getConstituencyList(constituencyList);
 		userAccessConstituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
@@ -272,7 +272,7 @@ public class SendUpdatesBySMSAction  extends ActionSupport implements ServletReq
 		String scope=jObj.getString("scope");
 		String scopeId=jObj.getString("scopeId");
 		String content=jObj.getString("content");
-		result = sendUpdatesService.sendSMSToSelectedPeople(user.getRegistrationID(),scope,new Long(scopeId),content,type);
+		result = sendUpdatesService.sendSMSToSelectedPeople(user.getRegistrationID(),scope,Long.valueOf(scopeId),content,type);
 		 return SUCCESS;
 	}
 	
@@ -297,7 +297,7 @@ public class SendUpdatesBySMSAction  extends ActionSupport implements ServletReq
 			String checkedVal =jObj.getString("checkedele"); 
 			if(checkedVal.equalsIgnoreCase("panchayat"))
 			{
-			designationsList = staticDataService.getPanchayatiesByMandalId(new Long(selectedVal));
+			designationsList = staticDataService.getPanchayatiesByMandalId(Long.valueOf(selectedVal));
 			designationsList.add(0,new SelectOptionVO(0l,"Select Panchayat"));
 			}
 		}
@@ -306,7 +306,7 @@ public class SendUpdatesBySMSAction  extends ActionSupport implements ServletReq
 				Long locationId = jObj.getLong("id");
 				if(locationId !=0){
 					Long publicationDateId = sendUpdatesService.getLatestPublicationDateId();
-					designationsList = voterReportService.getWardsInMunicipality(new Long(locationId.toString().substring(1)),publicationDateId);
+					designationsList = voterReportService.getWardsInMunicipality(Long.valueOf(locationId.toString().substring(1)),publicationDateId);
 					designationsList.add(0,new SelectOptionVO(0l,"Select Ward"));
 				}
 			}
@@ -315,7 +315,7 @@ public class SendUpdatesBySMSAction  extends ActionSupport implements ServletReq
 				Long locationId = jObj.getLong("id");
 				Long publicationDateId = jObj.getLong("publicationDateId");
 				if(locationId !=0){
-					designationsList = voterReportService.getWardsInMunicipality(new Long(locationId.toString().substring(1)),publicationDateId);
+					designationsList = voterReportService.getWardsInMunicipality(Long.valueOf(locationId.toString().substring(1)),publicationDateId);
 					designationsList.add(0,new SelectOptionVO(0l,"Select Ward"));
 				}
 			}
@@ -408,7 +408,7 @@ public class SendUpdatesBySMSAction  extends ActionSupport implements ServletReq
 
 	}catch (Exception e) {
 		e.printStackTrace();
-		log.error("Exception Occured in getVoterDetailsBasedOnBoothId() Method,Exception is- "+e);
+		LOG.error("Exception Occured in getVoterDetailsBasedOnBoothId() Method,Exception is- "+e);
 		}
 	}
 	return Action.SUCCESS;
@@ -477,7 +477,7 @@ public class SendUpdatesBySMSAction  extends ActionSupport implements ServletReq
 				   voterVO = voterReportService.saveVoterSearchDetailsList(votersList,userId);
 			   }
 		}catch (Exception e) {
-				log.error("Exception Occured in getMultipleFamilesInfoForEdit() Method, Exception - ",e);
+				LOG.error("Exception Occured in getMultipleFamilesInfoForEdit() Method, Exception - ",e);
 			}
 			 return Action.SUCCESS;
 	}

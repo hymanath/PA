@@ -24,7 +24,7 @@ public class CadreManagementAction extends ActionSupport implements ServletReque
 	private IUserCadreManagementService userCadreManagementService;
 	private HttpServletRequest request;
 	private CadreManagementVO cadreManagementVO = null;
-	private final static Logger log = Logger.getLogger(CadreManagementAction.class);
+	private final static Logger LOG  = Logger.getLogger(CadreManagementAction.class);
 	private ISmsService smsCountrySmsService;
 	private Long remainingSms;
 	private EntitlementsHelper entitlementsHelper;
@@ -148,7 +148,7 @@ public class CadreManagementAction extends ActionSupport implements ServletReque
 
 	public String execute() throws Exception{
 		
-		log.debug("In execute of Cadre Management Action ********");
+		LOG.debug("In execute of Cadre Management Action ********");
 		
 		HttpSession session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
@@ -175,7 +175,7 @@ public class CadreManagementAction extends ActionSupport implements ServletReque
 		
 		cadreManagementVO = userCadreManagementService.getUserData(user);
 		if(cadreManagementVO!=null && cadreManagementVO.getExceptionEncountered()!=null)
-			log.error(cadreManagementVO.getExceptionEncountered().getMessage());
+			LOG.error(cadreManagementVO.getExceptionEncountered().getMessage());
 		
 		if(user.getParentUserId() != null && ((user != null && !entitlementsHelper.checkForEntitlementToViewReport(user, IConstants.CADRE_VIEW)) ||
 				(user == null && !entitlementsHelper.checkForEntitlementToViewReport(null,  IConstants.CADRE_VIEW))))

@@ -29,7 +29,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class UserTrackingReportAction extends ActionSupport implements ServletRequestAware , ServletContextAware{
 	
 	private static final long serialVersionUID = 5437549265219239930L;
-	private static final Logger log = Logger.getLogger(UserTrackingReportAction.class);
+	private static final Logger LOG = Logger.getLogger(UserTrackingReportAction.class);
 	private HttpServletRequest request;
 	private ServletContext context;
 	private HttpSession session;
@@ -170,7 +170,7 @@ public class UserTrackingReportAction extends ActionSupport implements ServletRe
 			    }	
 		  }
 		  catch(Exception e){
-			  log.error("Exception rised in getTotalUniqueVisitors Method of UserTrackingReportAction ",e); 
+			  LOG.error("Exception rised in getTotalUniqueVisitors Method of UserTrackingReportAction ",e); 
 		  }
 		 return Action.SUCCESS;
 	}

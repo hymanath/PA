@@ -42,7 +42,7 @@ public class PartyManagementAction extends ActionSupport implements ServletReque
 
 	
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(PartyManagementAction.class);
+	private static final Logger LOG = Logger.getLogger(PartyManagementAction.class);
 	private List<SelectOptionVO> partyList = new ArrayList<SelectOptionVO>(0);
 	private HttpServletRequest request;
 	private HttpServletResponse response;
@@ -364,7 +364,7 @@ public String execute()
  	// TODO Auto-generated method stub
  	this.context=context;
  }
- public String AjaxHandler()
+ public String ajaxHandler()
 	{
 		try {
 			jObj = new JSONObject(getTask());
@@ -476,9 +476,9 @@ public String execute()
 			try{
 			    
 			    for (int i = 0; i < jOrderNo.length(); i++) {
-				    orderNo.add(new Long(jOrderNo.get(i).toString()));
+				    orderNo.add(Long.valueOf(jOrderNo.get(i).toString()));
 				    description.add(jDescription.get(i).toString());
-				    condiProfDescId.add(new Long(jprofDescId.get(i).toString()));
+				    condiProfDescId.add(Long.valueOf(jprofDescId.get(i).toString()));
 			      }
 			    for (int i = 0; i < jOrderNo.length(); i++) {
 				   GallaryVO gallary = new GallaryVO();
@@ -508,8 +508,8 @@ public String execute()
 	 try {
 		jObj = new JSONObject(getTask());
 		if(jObj.getString("task").equalsIgnoreCase("UpdatePartyGallary")){
-			Long galleryId = new Long(jObj.getString("gallaryId"));
-			Long partyId = new Long(jObj.getString("partyId"));
+			Long galleryId = Long.valueOf(jObj.getString("gallaryId"));
+			Long partyId = Long.valueOf(jObj.getString("partyId"));
 			gallaryVO = partyDetailsService.getPartyGalleryDetails(galleryId,partyId); 
 		}
 		
@@ -613,8 +613,8 @@ public String execute()
 	  
 	  try {
 		jObj = new JSONObject(getTask());
-		Long stateId = new Long(jObj.getString("stateId"));
-		Long partyId = new Long(jObj.getString("partyId"));
+		Long stateId = Long.valueOf(jObj.getString("stateId"));
+		Long partyId = Long.valueOf(jObj.getString("partyId"));
 		electionTypesList = partyDetailsService.getElectionTypesBasedOnStateIdAndPartyId(partyId , stateId);
 		
 		
@@ -629,9 +629,9 @@ public String execute()
 	  
 	  try {
 		jObj = new JSONObject(getTask());
-		Long electionTypeId = new Long(jObj.getString("electionTypeId"));
-		Long stateId = new Long(jObj.getString("stateId"));
-		Long partyId = new Long(jObj.getString("partyId"));
+		Long electionTypeId = Long.valueOf(jObj.getString("electionTypeId"));
+		Long stateId = Long.valueOf(jObj.getString("stateId"));
+		Long partyId = Long.valueOf(jObj.getString("partyId"));
 		electionYearsList = partyDetailsService.getElectionYearsBasedOnElectionTypeIdAndPartyId(electionTypeId, partyId, stateId);
 	} 
 	  catch (ParseException e) {
@@ -644,9 +644,9 @@ public String execute()
  /* public String getPartyRelatedManifestoFileBasedOnElectionYear(){
 	  try {
 		jObj = new JSONObject(getTask());
-		Long electionId = new Long(jObj.getString("electionId"));
-		Long partyId = new Long(jObj.getString("partyId"));
-		Long stateId = new Long(jObj.getString("stateId"));
+		Long electionId = Long.valueOf(jObj.getString("electionId"));
+		Long partyId = Long.valueOf(jObj.getString("partyId"));
+		Long stateId = Long.valueOf(jObj.getString("stateId"));
 		fileVO = partyDetailsService.getPartyRelatedManifestoBasedOnYear(electionId,partyId,stateId);
 			
 		

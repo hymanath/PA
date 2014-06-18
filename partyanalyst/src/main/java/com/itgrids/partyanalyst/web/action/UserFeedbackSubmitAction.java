@@ -20,7 +20,7 @@ import com.opensymphony.xwork2.validator.annotations.ValidatorType;
 public class UserFeedbackSubmitAction extends ActionSupport implements ServletRequestAware{
 
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(UserFeedbackSubmitAction.class);
+	private static final Logger LOG = Logger.getLogger(UserFeedbackSubmitAction.class);
 	private HttpServletRequest request;
 	private HttpSession session;
 	private String task = null;
@@ -95,9 +95,7 @@ public class UserFeedbackSubmitAction extends ActionSupport implements ServletRe
 	public String getTask() {
 		return task;
 	}
-	public static Logger getLog() {
-		return log;
-	}
+	
 	public void setTask(String task) {
 		this.task = task;
 	}

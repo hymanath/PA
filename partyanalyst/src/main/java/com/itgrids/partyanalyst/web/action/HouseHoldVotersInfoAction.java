@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 
 import org.json.JSONArray;
@@ -39,6 +40,7 @@ public class HouseHoldVotersInfoAction  extends ActionSupport implements Servlet
 	 * 
 	 */
 	private static final long serialVersionUID = -8900996662457488196L;
+	private static final Logger LOG = Logger.getLogger(HouseHoldVotersInfoAction.class);
 	private IVotersAnalysisService votersAnalysisService;
 	JSONObject jObj = null;
 	private String task = null;
@@ -455,8 +457,8 @@ public class HouseHoldVotersInfoAction  extends ActionSupport implements Servlet
 		userAccessStates = staticDataService.getUserAccessStates(userId);
 		
 		
-		Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
-		Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
+		Long electionYear = Long.valueOf(IConstants.PRESENT_ELECTION_YEAR);
+		Long electionTypeId = Long.valueOf(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
 		userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userId,electionYear,electionTypeId);
 		constituencyList = votersAnalysisService.getConstituencyList(userAccessConstituencyList);
 		constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
@@ -473,7 +475,7 @@ public class HouseHoldVotersInfoAction  extends ActionSupport implements Servlet
 			if(session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE) !=null && session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE).equals(true))
 			{
 				String accessType =user.getAccessType();
-				Long accessValue= new Long(user.getAccessValue());
+				Long accessValue= Long.valueOf(user.getAccessValue());
 				
 			}*/
 		
@@ -497,9 +499,9 @@ public String saveVoterDetails(){
 	String voterId = request.getParameter("voterId");
 	String boothId = request.getParameter("boothId");
 	if(voterId != null && voterId.trim().length() > 0)
-	 voterHouseInfoVO.setVoterId(new Long(voterId));
+	 voterHouseInfoVO.setVoterId(Long.valueOf(voterId));
 	if(boothId != null && boothId.trim().length() > 0)
-		 voterHouseInfoVO.setBoothId(new Long(boothId));
+		 voterHouseInfoVO.setBoothId(Long.valueOf(boothId));
 	 votersAnalysisService.updateVoterDetails(voterHouseInfoVO,"all",false);
 	request.setAttribute("voterId", voterHouseInfoVO.getVoterId());
 	resultStr = SUCCESS;
@@ -520,8 +522,8 @@ public String saveVoterDetails(){
 	//List<SelectOptionVO> partyGroupList=null;
 	if(voterId !=null)
 	{
-		voterHouseInfoVO1=votersAnalysisService.getBoothDetailsForVoter(new Long(boothId));
-		voterHouseInfoVO= votersAnalysisService.getVoterPersonalDetailsByVoterId(new Long(voterId),userId);
+		voterHouseInfoVO1=votersAnalysisService.getBoothDetailsForVoter(Long.valueOf(boothId));
+		voterHouseInfoVO= votersAnalysisService.getVoterPersonalDetailsByVoterId(Long.valueOf(voterId),userId);
 		
 		voterHouseInfoVO.setBoothName(voterHouseInfoVO1.getBoothName());
 		voterHouseInfoVO.setVilliageCovered(voterHouseInfoVO1.getVilliageCovered());
@@ -541,17 +543,17 @@ public String saveVoterDetails(){
 		param = getTask();
 		try {
 			jObj = new JSONObject(param);
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		
 		if(jObj.getString("task").equalsIgnoreCase("getVoterCategories")){
-			System.out.println("with in the action");
-			Long voterCategoryId=new Long(jObj.getString("voterCategory"));
+			LOG.info("with in the action");
+			Long voterCategoryId=Long.valueOf(jObj.getString("voterCategory"));
 			String letters=jObj.getString("letters");
 			voterCategoryValues = votersAnalysisService.getVoterCategoryValues(voterCategoryId,letters);
-			System.out.println("voterCategoryValues value is:"+voterCategoryValues);
+			LOG.info("voterCategoryValues value is:"+voterCategoryValues);
 		}
 		else if(jObj.getString("task").equalsIgnoreCase("storeValues"))
 		{
@@ -815,8 +817,8 @@ public String saveLocality()
 							for(int j=0;j<totalCategCount;j++){
 								category = new VoterHouseInfoVO();
 								String[] categVal = jSONObject.getString("categ"+j).split(",");
-								category.setUserCategoryValueId(new Long(categVal[0]));
-								category.setCategoryValuesId(new Long(categVal[1]));
+								category.setUserCategoryValueId(Long.valueOf(categVal[0]));
+								category.setCategoryValuesId(Long.valueOf(categVal[1]));
 								categoriesList.add(category);
 							}
 							
@@ -899,7 +901,7 @@ public String saveLocality()
 			    		searchInfo.setGroupPresent(true);
 			    		
 			    	else{
-			    		categories.add(new Long(id));
+			    		categories.add(Long.valueOf(id));
 			    	}
 			    }
 			} 
@@ -970,8 +972,8 @@ public String saveLocality()
 					for(int j=0;j<totalCategoriesCount;j++){
 						category = new VoterHouseInfoVO();
 						String[] categVal = jSONObject.getString("categ"+j).split("-");
-						category.setUserCategoryValueId(new Long(categVal[0]));
-						category.setCategoryValuesId(new Long(categVal[1]));
+						category.setUserCategoryValueId(Long.valueOf(categVal[0]));
+						category.setCategoryValuesId(Long.valueOf(categVal[1]));
 						categoriesList.add(category);					
 					}
 					
@@ -1111,7 +1113,7 @@ public String saveLocality()
 					    		parameters.setGroupPresent(true);
 					    	}
 					    	else{
-					    		categories.add(new Long(id));
+					    		categories.add(Long.valueOf(id));
 					    	}
 					    }
 					    
@@ -1224,8 +1226,8 @@ public String saveLocality()
 								for(int j=0;j<totalCategCount;j++){
 									category = new VoterHouseInfoVO();
 									String[] categVal = jSONObject.getString("categ"+j).split(",");
-									category.setUserCategoryValueId(new Long(categVal[0]));
-									category.setCategoryValuesId(new Long(categVal[1]));
+									category.setUserCategoryValueId(Long.valueOf(categVal[0]));
+									category.setCategoryValuesId(Long.valueOf(categVal[1]));
 									categoriesList.add(category);
 								}
 								
@@ -1323,8 +1325,8 @@ public String saveLocality()
 								for(int j=0;j<totalCategCount;j++){
 									category = new VoterHouseInfoVO();
 									String[] categVal = jSONObject.getString("categ"+j).split(",");
-									category.setUserCategoryValueId(new Long(categVal[0]));
-									category.setCategoryValuesId(new Long(categVal[1]));
+									category.setUserCategoryValueId(Long.valueOf(categVal[0]));
+									category.setCategoryValuesId(Long.valueOf(categVal[1]));
 									categoriesList.add(category);
 								}
 								
@@ -1381,7 +1383,7 @@ public String saveLocality()
 			try {
 				jObj = new JSONObject(param);
 				userAccessStates = votersAnalysisService.getAllElectionsInAConsti(2l,jObj.getLong("constituencyId"));
-				System.out.println(jObj);
+				LOG.info(jObj);
 			} catch (ParseException e) {
 				LOG.error("Exception Occured in getElectionsInAConsti() Method, Exception - ",e);
 				e.printStackTrace();
@@ -1404,7 +1406,7 @@ public String saveLocality()
 					
 				hamlets = regionServiceDataImp.getWardsInALocalElectionBodyByID(jObj.getLong("tehsilId"));
 				}
-				System.out.println(jObj);
+				LOG.info(jObj);
 			} catch (ParseException e) {
 				LOG.error("Exception Occured in getElectionsInAConsti() Method, Exception - ",e);
 				e.printStackTrace();
@@ -1454,7 +1456,7 @@ public String saveLocality()
 				    		voterDataVO.setCastePresent(true);
 				    	}
 				    	else{
-				    		categories.add(new Long(id));
+				    		categories.add(Long.valueOf(id));
 				    	}
 				    }
 				} 
@@ -1663,10 +1665,10 @@ public String saveLocality()
 				JSONArray arr1 = jObj.getJSONArray("uncheckedflags");
 				if(arr.length() > 0)
 					for(int i=0;i<arr.length();i++)
-						checkedflagIds.add(new Long(arr.get(i).toString()));
+						checkedflagIds.add(Long.valueOf(arr.get(i).toString()));
 				if(arr1.length() > 0)
 					for(int j=0;j<arr1.length();j++)
-						uncheckedflags.add(new Long(arr1.get(j).toString()));
+						uncheckedflags.add(Long.valueOf(arr1.get(j).toString()));
 				result = voterReportService.addFlagToVoter(jObj.getLong("voterId"),checkedflagIds,uncheckedflags,userId);
 				
 		   }

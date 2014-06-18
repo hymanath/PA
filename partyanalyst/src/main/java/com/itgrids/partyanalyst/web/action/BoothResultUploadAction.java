@@ -23,7 +23,7 @@ public class BoothResultUploadAction extends ActionSupport implements ServletReq
 	private File filePath;
 	private String isValidate;
 	private List<ConstituencyInfoVO> uploadInfo;
-	private static final Logger log = Logger.getLogger(BoothResultUploadAction.class);
+	private static final Logger LOG = Logger.getLogger(BoothResultUploadAction.class);
 
 	public void setFilePath(File filePath) {
 		this.filePath = filePath;
@@ -78,10 +78,10 @@ public class BoothResultUploadAction extends ActionSupport implements ServletReq
 	public String execute() throws Exception{
 		
 		ResultWithExceptionVO resultVO = boothPopulationService.readExcelAndPopulateBoothResult(electionYear, 
-				new Long(electionScopeId.trim()), filePath, Boolean.parseBoolean(isValidate));
+				Long.valueOf(electionScopeId.trim()), filePath, Boolean.parseBoolean(isValidate));
 		Throwable ex = resultVO.getExceptionEncountered();
 		if(ex!=null){
-			log.error("exception raised while Uploading Booth Result ", ex);
+			LOG.error("exception raised while Uploading Booth Result ", ex);
 			return ERROR;
 		}	
 

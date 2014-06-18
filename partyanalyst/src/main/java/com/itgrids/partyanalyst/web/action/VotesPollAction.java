@@ -31,7 +31,7 @@ public class VotesPollAction extends ActionSupport implements ServletRequestAwar
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(VotesPollAction.class);
+	private static final Logger LOG = Logger.getLogger(VotesPollAction.class);
 	
 	private HttpServletRequest request;
 	private HttpServletResponse response;
@@ -137,7 +137,7 @@ public class VotesPollAction extends ActionSupport implements ServletRequestAwar
 		if(task != null){
 			try{
 				jObj = new JSONObject(getTask());
-				log.debug("Result From JSON:"+jObj);
+				LOG.debug("Result From JSON:"+jObj);
 			}catch(Exception e){
 				e.printStackTrace();
 			}
@@ -191,7 +191,7 @@ public class VotesPollAction extends ActionSupport implements ServletRequestAwar
 		if(task != null){
 			try{
 				jObj = new JSONObject(getTask());
-				log.debug("Result From JSON:"+jObj);
+				LOG.debug("Result From JSON:"+jObj);
 			}catch(Exception e){
 				e.printStackTrace();
 			}

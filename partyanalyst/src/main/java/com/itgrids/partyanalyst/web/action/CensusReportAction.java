@@ -64,7 +64,7 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 		this.yearList = yearList;
 	}
 
-	private static final Logger log = Logger.getLogger(CensusReportAction.class);
+	private static final Logger LOG = Logger.getLogger(CensusReportAction.class);
 	
 	public String getChartName() {
 		return chartName;
@@ -264,7 +264,7 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 		JSONArray jArray = jObj.getJSONArray("idsList");
 		Integer cansusTypeId = jObj.getInt("censusTypeId");		
 		for (int i = 0; i < jArray.length(); i++) {
-			locationIds.add(new Long(jArray.get(i).toString()));
+			locationIds.add(Long.valueOf(jArray.get(i).toString()));
 			sb.append(jArray.get(i)).append(",");
 		}
 		
@@ -294,15 +294,15 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 		JSONArray jPartyIds = jObj.getJSONArray("partyIds");
 		
 		for (int i = 0; i < jArray.length(); i++) {
-			locationIds.add(new Long(jArray.get(i).toString()));
+			locationIds.add(Long.valueOf(jArray.get(i).toString()));
 			sb.append(jArray.get(i)).append(",");
 		}
 
 		for (int i = 0; i < jDistrictIds.length(); i++) 
-			districtIds.add(new Long(jDistrictIds.get(i).toString()));
+			districtIds.add(Long.valueOf(jDistrictIds.get(i).toString()));
 			
 		for (int i = 0; i < jPartyIds.length(); i++) 
-			partyIds.add(new Long(jPartyIds.get(i).toString()));
+			partyIds.add(Long.valueOf(jPartyIds.get(i).toString()));
 			
 		electionDataVO = electionService.findAssemblyConstituenciesResultsByConstituencyIds(electionYear, locationIds, partyIds, districtIds, 
 				cnsusTypId, isAll, true);
@@ -311,7 +311,7 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 
 	}
 	
-	public String AjaxHandler()
+	public String ajaxHandler()
 	{
 		try {
 			jObj = new JSONObject(getTask());

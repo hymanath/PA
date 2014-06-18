@@ -64,7 +64,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(CandidateElectionResultsAction.class);
+	private static final Logger LOG = Logger.getLogger(CandidateElectionResultsAction.class);
 	private Long candidateId;
 	private List<CandidateDetailsVO> candidateElectionDetails;
 	private CandidateVO candidateVO;
@@ -1095,7 +1095,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		
 	}
 	
-	public String AjaxHandler()
+	public String ajaxHandler()
 	{
 		try {
 			jObj = new JSONObject(getTask());
@@ -1154,9 +1154,9 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			try{
 			    
 			    for (int i = 0; i < jOrderNo.length(); i++) {
-				    orderNo.add(new Long(jOrderNo.get(i).toString()));
+				    orderNo.add(Long.valueOf(jOrderNo.get(i).toString()));
 				    description.add(jDescription.get(i).toString());
-				    condiProfDescId.add(new Long(jprofDescId.get(i).toString()));
+				    condiProfDescId.add(Long.valueOf(jprofDescId.get(i).toString()));
 			      }
 			    for (int i = 0; i < jOrderNo.length(); i++) {
 				   GallaryVO gallary = new GallaryVO();
@@ -1204,30 +1204,30 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			}
 			for(int i=0;i<sourceIds.length();i++)
 			{
-				videoSourceIds.add(new Long(sourceIds.get(i).toString()));
+				videoSourceIds.add(Long.valueOf(sourceIds.get(i).toString()));
 			}
 			for(int i=0;i<srcLangIds.length();i++)
 			{
-				videoSourceLangIds.add(new Long(srcLangIds.get(i).toString()));
+				videoSourceLangIds.add(Long.valueOf(srcLangIds.get(i).toString()));
 			}
 			if(!jObj.getString("SPGalleryId").equalsIgnoreCase("") && jObj.getString("SPGalleryId").length()>0)
 			{
 				JSONArray spGalIds = jObj.getJSONArray("SPGalleryId");
 				for(int i=0;i<spGalIds.length();i++)
-				galleryIds.add(new Long(spGalIds.get(i).toString()));
+				galleryIds.add(Long.valueOf(spGalIds.get(i).toString()));
 			}
 							
 			if(!jObj.getString("partyGalleryId").equalsIgnoreCase("") && jObj.getString("partyGalleryId").length()>0)
 			{
 				JSONArray partyGalIds = jObj.getJSONArray("partyGalleryId");
 				for(int i=0;i<partyGalIds.length();i++)
-				galleryIds.add(new Long(partyGalIds.get(i).toString()));
+				galleryIds.add(Long.valueOf(partyGalIds.get(i).toString()));
 			}
 			if(!jObj.getString("canGalleryId").equalsIgnoreCase("") && jObj.getString("canGalleryId").length()>0)
 			{
 				JSONArray canGalIds = jObj.getJSONArray("canGalleryId");
 				for(int i=0;i<canGalIds.length();i++)
-				galleryIds.add(new Long(canGalIds.get(i).toString()));
+				galleryIds.add(Long.valueOf(canGalIds.get(i).toString()));
 			}
 			fileVOObj.setFilePath(filePathList);
 			fileVOObj.setUploadOtherProfileGalleryIds(galleryIds);
@@ -1326,10 +1326,10 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	public String uploadFiles()
 	{
 		
-		System.out.println(context.getRealPath("/"));
+		LOG.info(context.getRealPath("/"));
 		
 		
-		log.debug("Enter into uploadFiles() Method");
+		LOG.debug("Enter into uploadFiles() Method");
 		session = request.getSession();
 
 			
@@ -1511,7 +1511,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			result = candidateDetailsService.uploadAFile(fileVO);
 			
 			if(result.getResultCode() == ResultCodeMapper.SUCCESS){
-				log.debug("fileuploades is sucess Method");
+				LOG.debug("fileuploades is sucess Method");
 				inputStream = new StringBufferInputStream(SUCCESS);
 			//logic to create tumbnails and resizing images
 			   thumbnailService.crateThumnailDynamically(filepaths,IWebConstants.STATIC_CONTENT_FOLDER_URL,0,0);
@@ -1523,7 +1523,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		catch (Exception e) 
 		{
 			inputStream = new StringBufferInputStream("fail");
-			log.error("Exception Occured in uploadFile() method, Exception is - "+e); 
+			LOG.error("Exception Occured in uploadFile() method, Exception is - "+e); 
 		}
 		return Action.SUCCESS;
 	}
@@ -1782,7 +1782,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	
 	public String callAjaxToGeneratePdfFileForAgallary(){
 		
-		log.debug("Entered into the callAjaxToGeneratePdfFileForAgallary method");
+		LOG.debug("Entered into the callAjaxToGeneratePdfFileForAgallary method");
 		
 		try{	 
 			 jObj = new JSONObject(getTask());  
@@ -1842,7 +1842,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		
 		
 		 }catch(Exception e){
-			 log.error("Exception raised in callAjaxToGeneratePdfFileForAgallary method :"+e);
+			 LOG.error("Exception raised in callAjaxToGeneratePdfFileForAgallary method :"+e);
 			 e.printStackTrace(); 
 		}
 		
@@ -1853,7 +1853,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	
 	public String generatePdfForAGallary() throws Exception{
 		
-		log.debug("Entered into thegeneratePdfForAGallary method ");
+		LOG.debug("Entered into thegeneratePdfForAGallary method ");
 		
 		try{	 
 		
@@ -1882,7 +1882,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	
 		}catch(Exception e){
 			
-			log.error("Exception raised in generatePdfForAGallary method :"+e);
+			LOG.error("Exception raised in generatePdfForAGallary method :"+e);
 			e.printStackTrace();
 			
 		}
@@ -2034,7 +2034,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	
 	public String saveContentNotesByContentId(){
 		
-		log.debug("Entered into the saveCommentBYContentId method");
+		LOG.debug("Entered into the saveCommentBYContentId method");
 		
 		try{
 			try{	 
@@ -2052,7 +2052,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			
 		}catch(Exception e){
 			e.printStackTrace();
-			log.error("Exception raised in saveCommentByContentId method :"+e);
+			LOG.error("Exception raised in saveCommentByContentId method :"+e);
 		}
 		
 		return Action.SUCCESS;
@@ -2060,7 +2060,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	
 	public String removeContentNotes(){
 		
-		log.debug("Entered into the removeCommentByContentId method");
+		LOG.debug("Entered into the removeCommentByContentId method");
 		try{
 			
 			try{	 
@@ -2075,7 +2075,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			status = newsMonitoringService.removeContentNotes(conentNotesId);
 			
 		}catch(Exception e){
-			log.debug("Exception raised in removeCommentByContentId method :"+e);
+			LOG.debug("Exception raised in removeCommentByContentId method :"+e);
 			e.printStackTrace();			
 		}
 		
@@ -2086,7 +2086,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	
 	public String getContentNotesByContentId(){
 		
-		log.debug("Entered into the getCommnetsByContentId method");
+		LOG.debug("Entered into the getCommnetsByContentId method");
 		
 		try{		
 			try{	 
@@ -2101,7 +2101,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			 
 			 commentsList = newsMonitoringService.getContentNotesByContentId(contentId,regVO.getRegistrationID());
 		}catch(Exception e){
-			log.error("Exception raised in getCommnetsByContentId method :"+e);
+			LOG.error("Exception raised in getCommnetsByContentId method :"+e);
 			e.printStackTrace();			
 		}
 		return Action.SUCCESS;
@@ -2111,7 +2111,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	
 	public String addFlagToNews(){
 		
-		log.debug("Entered into the addFlagToNews method");
+		LOG.debug("Entered into the addFlagToNews method");
 		try{
 			
 			try{	 
@@ -2129,7 +2129,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			
 			
 		}catch(Exception e){
-			log.error("Exception raised in addFlagToNews method");
+			LOG.error("Exception raised in addFlagToNews method");
 			e.printStackTrace();
 		}
 		
@@ -2139,7 +2139,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	
 	
 	public String checkForFlag(){
-		log.debug("Entered into the checkForFlag method");
+		LOG.debug("Entered into the checkForFlag method");
 		
 		try{
 			
@@ -2157,7 +2157,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			status = newsMonitoringService.checkForFlag(contentId);
 			
 		}catch(Exception e){
-		log.error("Exception raised in checkForFlag method");
+			LOG.error("Exception raised in checkForFlag method");
 			e.printStackTrace();
 			
 		}
@@ -2166,7 +2166,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	}
 	
 	public String removeFlagForNews(){
-		log.debug("Entered into the removeFlagForNews method");
+		LOG.debug("Entered into the removeFlagForNews method");
 		
 		try{
 			try{	 
@@ -2181,7 +2181,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			status = newsMonitoringService.removeFlagForNews(contentId);
 			
 		}catch(Exception e){
-		log.error("Exception raised in removeFlagForNews method");
+			LOG.error("Exception raised in removeFlagForNews method");
 			e.printStackTrace();
 			
 		}
@@ -2190,7 +2190,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	}
 	
 	public String updateVisibility(){
-		log.debug("Entered into the updateVisibility method");
+		LOG.debug("Entered into the updateVisibility method");
 		
 		try{
 			try{	 
@@ -2206,7 +2206,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			status = newsMonitoringService.updateVisibility(contentId , visibility);
 			
 		}catch(Exception e){
-		log.error("Exception raised in updateVisibility method");
+			LOG.error("Exception raised in updateVisibility method");
 			e.printStackTrace();
 			
 		}
@@ -2216,7 +2216,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	
 	
 	public String checkForVisibilityStatus(){
-		log.debug("Entered into the checkForVisibilityStatus method");
+		LOG.debug("Entered into the checkForVisibilityStatus method");
 		
 		try{
 			try{	 
@@ -2231,7 +2231,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			status = newsMonitoringService.checkForVisibilityStatus(contentId);
 			
 		}catch(Exception e){
-		log.error("Exception raised in checkForVisibilityStatus method");
+			LOG.error("Exception raised in checkForVisibilityStatus method");
 			e.printStackTrace();
 			
 		}

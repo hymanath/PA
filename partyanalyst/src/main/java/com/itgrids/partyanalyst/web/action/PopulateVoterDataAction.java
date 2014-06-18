@@ -26,7 +26,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class PopulateVoterDataAction extends ActionSupport implements ServletRequestAware{
 	
 	private static final long serialVersionUID = -2193964229664094993L;
-	private static final Logger Log = Logger.getLogger(PopulateVoterDataAction.class);
+	private static final Logger LOG = Logger.getLogger(PopulateVoterDataAction.class);
 	private HttpServletRequest request;
 	private ConstituencyManagementVO constituencyManagementVO;
 	private IVotersAnalysisService votersAnalysisService;
@@ -161,8 +161,8 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 			allConstituenciesList = user.getUserAccessVoterConstituencies();
 			if(constituencyList == null || constituencyList.isEmpty()){
 				Long userID = user.getRegistrationID();
-				Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
-				Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
+				Long electionYear = Long.valueOf(IConstants.PRESENT_ELECTION_YEAR);
+				Long electionTypeId = Long.valueOf(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
 				allConstituenciesList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userID,electionYear,electionTypeId);
 			}
 			//constituencyList = votersAnalysisService.getConstituenciesFromBoothPublicationVoter();
@@ -180,7 +180,7 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 				
 			}catch (Exception e) {
 				e.printStackTrace();
-				Log.error("Exception Occured in insertVotersDataToIntermediateTables() Method, Exception - "+e);
+				LOG.error("Exception Occured in insertVotersDataToIntermediateTables() Method, Exception - "+e);
 			}
 			HttpSession session = request.getSession();
 			RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
@@ -201,7 +201,7 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 				
 			}catch (Exception e) {
 				e.printStackTrace();
-				Log.error("Exception Occured in insertVotersDataToIntermediateTables() Method, Exception - "+e);
+				LOG.error("Exception Occured in insertVotersDataToIntermediateTables() Method, Exception - "+e);
 			}
 			HttpSession session = request.getSession();
 			RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
@@ -219,7 +219,7 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 			}
 			catch(Exception e)
 			{
-				Log.error("Exception Occured in insertVotersDataToIntermediateTables() Method, Exception - "+e);
+				LOG.error("Exception Occured in insertVotersDataToIntermediateTables() Method, Exception - "+e);
 			}
 			HttpSession session = request.getSession();
 			RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
@@ -244,7 +244,7 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 			}
 			catch(Exception e)
 			{
-				Log.error("Exception Occured in insertVotersDataToIntermediateTables() Method, Exception - "+e);
+				LOG.error("Exception Occured in insertVotersDataToIntermediateTables() Method, Exception - "+e);
 			}
 			HttpSession session = request.getSession();
 			RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
@@ -262,7 +262,7 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 				jObj = new JSONObject(getTask());
 			}catch (Exception e) {
 				e.printStackTrace();
-				Log.error("Exception Occured in deleteVotersDataInIntermediateTables() Method, Exception - "+e);
+				LOG.error("Exception Occured in deleteVotersDataInIntermediateTables() Method, Exception - "+e);
 			}
 			HttpSession session = request.getSession();
 			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
@@ -280,7 +280,7 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 				jObj = new JSONObject(getTask());
 			}catch (Exception e) {
 				e.printStackTrace();
-				Log.error("Exception Occured in deleteVotersCastDataFromIntermediateTables() Method, Exception - "+e);
+				LOG.error("Exception Occured in deleteVotersCastDataFromIntermediateTables() Method, Exception - "+e);
 			}
 			HttpSession session = request.getSession();
 			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
@@ -297,7 +297,7 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 			}
 			catch(Exception e)
 			{
-				Log.error("Exception Occured in deleteVotersDataInIntermediateTables() Method, Exception -"+e);
+				LOG.error("Exception Occured in deleteVotersDataInIntermediateTables() Method, Exception -"+e);
 			}
 			HttpSession session = request.getSession();
 			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
@@ -315,7 +315,7 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 			}
 			catch(Exception e)
 			{
-				Log.error("Exception Occured in deletevotermodificationFromIntermediateTables() Method, Exception -"+e);
+				LOG.error("Exception Occured in deletevotermodificationFromIntermediateTables() Method, Exception -"+e);
 			}
 			HttpSession session = request.getSession();
 			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
@@ -331,7 +331,7 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 				jObj = new JSONObject(getTask());
 			}catch (Exception e) {
 				e.printStackTrace();
-				Log.error("Exception Occured in insertGenderWiseVoterModifInfoInVoterModificationInfoTable() Method, Exception - "+e);
+				LOG.error("Exception Occured in insertGenderWiseVoterModifInfoInVoterModificationInfoTable() Method, Exception - "+e);
 			}
 			HttpSession session = request.getSession();
 			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
@@ -349,7 +349,7 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 			}
 			catch(Exception e)
 			{
-				Log.error("Exception Occured in deletevotermodificationFromIntermediateTables() Method, Exception -"+e);
+				LOG.error("Exception Occured in deletevotermodificationFromIntermediateTables() Method, Exception -"+e);
 			}
 			HttpSession session = request.getSession();
 			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
@@ -366,7 +366,7 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 			}
 			catch(Exception e)
 			{
-				Log.error("Exception Occured in insertVotersCasteAndPartyDataToIntermediateTables() Method, Exception - ",e);
+				LOG.error("Exception Occured in insertVotersCasteAndPartyDataToIntermediateTables() Method, Exception - ",e);
 			}
 			HttpSession session = request.getSession();
 			RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
@@ -394,7 +394,7 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 				jObj = new JSONObject(getTask());
 			}catch (Exception e) {
 				e.printStackTrace();
-				Log.error("Exception Occured in getPublicationListForVoterData() method, Exception - "+e);
+				LOG.error("Exception Occured in getPublicationListForVoterData() method, Exception - "+e);
 			}
 			HttpSession session = request.getSession();
 			RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
@@ -417,7 +417,7 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 			catch(Exception e)
 			{
 				e.printStackTrace();
-				Log.error("Exception Occured in deleteVotersBasicInfoFromIntermediateTables() method, Exception - "+e);	
+				LOG.error("Exception Occured in deleteVotersBasicInfoFromIntermediateTables() method, Exception - "+e);	
 			}
 			HttpSession session = request.getSession();
 			RegistrationVO regVo = (RegistrationVO) session.getAttribute(IConstants.USER);
@@ -435,7 +435,7 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 				
 			}catch (Exception e) {
 				e.printStackTrace();
-				Log.error("Exception Occured in insertVotersDataToIntermediateTables() Method, Exception - "+e);
+				LOG.error("Exception Occured in insertVotersDataToIntermediateTables() Method, Exception - "+e);
 			}
 			HttpSession session = request.getSession();
 			RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
@@ -454,7 +454,7 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 			catch(Exception e)
 			{
 				e.printStackTrace();
-				Log.error("Exception Occured in deletePreviousEleVotingIntoIntermediateTables() method, Exception - "+e);	
+				LOG.error("Exception Occured in deletePreviousEleVotingIntoIntermediateTables() method, Exception - "+e);	
 			}
 			HttpSession session = request.getSession();
 			RegistrationVO regVo = (RegistrationVO) session.getAttribute(IConstants.USER);
@@ -484,7 +484,7 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 				
 			}catch (Exception e) {
 			 e.printStackTrace();
-			 Log.error(" Exception Occured in insertConstituencyBasicData() method, Exception - "+e);
+			 LOG.error(" Exception Occured in insertConstituencyBasicData() method, Exception - "+e);
 			}
 			return Action.SUCCESS;
 		}
@@ -502,7 +502,7 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 			  
 		  }catch (Exception e) {
 			e.printStackTrace();
-			Log.error("Exception Occured in getModifiedVotersBetweenTwoPublications() method, Exception - "+e);
+			LOG.error("Exception Occured in getModifiedVotersBetweenTwoPublications() method, Exception - "+e);
 		  }
 		  return Action.SUCCESS;
 		}
@@ -514,7 +514,7 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 				
 			}catch (Exception e) {
 				e.printStackTrace();
-				Log.error("Exception Occured in insertVotersDataToIntermediateTablesForDistrict() Method, Exception - "+e);
+				LOG.error("Exception Occured in insertVotersDataToIntermediateTablesForDistrict() Method, Exception - "+e);
 			}
 			HttpSession session = request.getSession();
 			RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
@@ -533,7 +533,7 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 				
 			}catch (Exception e) {
 				e.printStackTrace();
-				Log.error("Exception Occured in deleteVotersDataToIntermediateTablesForDistrict() Method, Exception - "+e);
+				LOG.error("Exception Occured in deleteVotersDataToIntermediateTablesForDistrict() Method, Exception - "+e);
 			}
 			HttpSession session = request.getSession();
 			RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
@@ -551,7 +551,7 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 			}
 			catch(Exception e)
 			{
-				Log.error("Exception Occured in districtdeletevotermodificationFromIntermediateTables() Method, Exception -"+e);
+				LOG.error("Exception Occured in districtdeletevotermodificationFromIntermediateTables() Method, Exception -"+e);
 			}
 			HttpSession session = request.getSession();
 			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
@@ -566,7 +566,7 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 				jObj = new JSONObject(getTask());
 			}catch (Exception e) {
 				e.printStackTrace();
-				Log.error("Exception Occured in insertVoterModificationDataToIntermediateTablesForDistrict() Method, Exception - "+e);
+				LOG.error("Exception Occured in insertVoterModificationDataToIntermediateTablesForDistrict() Method, Exception - "+e);
 			}
 			HttpSession session = request.getSession();
 			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");

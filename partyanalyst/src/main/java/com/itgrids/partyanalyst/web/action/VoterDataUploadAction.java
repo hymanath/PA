@@ -30,7 +30,7 @@ public class VoterDataUploadAction extends ActionSupport implements ServletReque
 	private List<SelectOptionVO> publicationDatesList;
 	
 
-	private static final Logger log = Logger.getLogger(VoterDataUploadAction.class);
+	private static final Logger LOG = Logger.getLogger(VoterDataUploadAction.class);
 	
 	public List<SelectOptionVO> getPublicationDatesList() {
 		return publicationDatesList;
@@ -121,14 +121,14 @@ public class VoterDataUploadAction extends ActionSupport implements ServletReque
 	public String execute()throws Exception{
 				
 		if(validateData.equals("true")){
-			UploadDataErrorMessageVO errors = boothDataValidationService.readVoterExcelDataAndValidate(filePath, electionYear, new Long(stateId), new Long(electionTypeId) , publicationDate);
+			UploadDataErrorMessageVO errors = boothDataValidationService.readVoterExcelDataAndValidate(filePath, electionYear, Long.valueOf(stateId), Long.valueOf(electionTypeId) , publicationDate);
 			corrections = errors.getCorrections();
 			return SUCCESS;
 		}
-		ResultStatus result = voterDataUploadService.readExcelAndInsertData(filePath, electionYear, new Long(stateId), new Long(electionTypeId) , publicationDate);
+		ResultStatus result = voterDataUploadService.readExcelAndInsertData(filePath, electionYear, Long.valueOf(stateId), Long.valueOf(electionTypeId) , publicationDate);
 		if(result.getExceptionEncountered() != null){
-			if(log.isDebugEnabled())
-				log.debug("Exception Raised------",result.getExceptionEncountered());
+			if(LOG.isDebugEnabled())
+				LOG.debug("Exception Raised------",result.getExceptionEncountered());
 			return ERROR;
 		}
 		else

@@ -600,7 +600,7 @@ public class LocalBodyElectionResultsAction extends ActionSupport implements Ser
 			}
 				
 		} catch (Exception e) {
-		Log.error("Exception Raised in ajaxHandler() method In LocalBodyElectionResultsAction", e);
+		LOG.error("Exception Raised in ajaxHandler() method In LocalBodyElectionResultsAction", e);
 		}
 		return SUCCESS;
 		

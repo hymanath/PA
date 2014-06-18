@@ -184,8 +184,8 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		statesListForACountry = regionServiceDataImp.getStatesByCountry(new Long(jObj.getString("countryId")));
-		//statesListForACountry = staticDataService.getParticipatedStatesForAnElectionType(new Long(2));
+		statesListForACountry = regionServiceDataImp.getStatesByCountry(Long.valueOf(jObj.getString("countryId")));
+		//statesListForACountry = staticDataService.getParticipatedStatesForAnElectionType(Long.valueOf(2));
 		
 		if(statesListForACountry != null && statesListForACountry.size() > 0)
 			statesListForACountry.add(0, new SelectOptionVO(0L,"Select State"));
@@ -204,7 +204,7 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		districtsListForACountry = regionServiceDataImp.getDistrictsByStateID(new Long(jObj.getString("stateId")));
+		districtsListForACountry = regionServiceDataImp.getDistrictsByStateID(Long.valueOf(jObj.getString("stateId")));
 		
 		if(districtsListForACountry != null && districtsListForACountry.size() > 1)
 			districtsListForACountry.add(0, new SelectOptionVO(0L,"Select District"));
@@ -223,7 +223,7 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		constituenciesListForADistrict = regionServiceDataImp.getConstituenciesByDistrictID(new Long(jObj.getString("districtId")));
+		constituenciesListForADistrict = regionServiceDataImp.getConstituenciesByDistrictID(Long.valueOf(jObj.getString("districtId")));
 		/*
 		 * Modified by ravi 
 		 * please refer previous version to check for original code.
@@ -248,7 +248,7 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		mandalsListForAConstituency = regionServiceDataImp.getMandalsByConstituencyID(new Long(jObj.getString("constituencyId")));
+		mandalsListForAConstituency = regionServiceDataImp.getMandalsByConstituencyID(Long.valueOf(jObj.getString("constituencyId")));
 		return Action.SUCCESS;
 	}
 	
@@ -309,7 +309,7 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 			{
 				SmsVO smsvo = new SmsVO(); 
 				JSONObject cadreObj = cadresArray.getJSONObject(i);
-				smsvo.setCadreId(new Long(cadreObj.getString("cadreId")));
+				smsvo.setCadreId(Long.valueOf(cadreObj.getString("cadreId")));
 				smsvo.setCadreName(cadreObj.getString("cadreName"));
 				smsvo.setMobileNO(cadreObj.getString("cadreMobile"));
 				
@@ -391,8 +391,8 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 
 		}
 		
-		partyCadreDetailsVO.setCadreLevelId(new Long(jObj.getString("reportLevel")));
-		partyCadreDetailsVO.setCadreLocationId(new Long(jObj.getString("reportLocationValue")));
+		partyCadreDetailsVO.setCadreLevelId(Long.valueOf(jObj.getString("reportLevel")));
+		partyCadreDetailsVO.setCadreLocationId(Long.valueOf(jObj.getString("reportLocationValue")));
 		partyCadreDetailsVO.setIsSocialStatus(jObj.getBoolean("socialStatus"));
 		partyCadreDetailsVO.setGenderSearchType(jObj.getString("gender"));
 		partyCadreDetailsVO.setBloodGroupId(jObj.getLong("bloodGroupId"));
@@ -420,7 +420,7 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 				for(int j=0;j<categoryArray.length();j++)
 				{	
 					String cValue = categoryArray.getString(j);
-					categoryList.add(new CadreCategoryVO(new Long(cValue)));
+					categoryList.add(new CadreCategoryVO(Long.valueOf(cValue)));
 				}
 				if(categoryValue.equalsIgnoreCase("resevation"))
 					partyCadreDetailsVO.setCadreCasteCategory(categoryList);
@@ -446,10 +446,10 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 				for(int j=0;j<categoryArray.length();j++)
 				{	
 					String cValue = categoryArray.getString(j);
-					criteriaList.add(new CadreCategoryVO(new Long(cValue)));
+					criteriaList.add(new CadreCategoryVO(Long.valueOf(cValue)));
 				}
 				
-				Long sCriteriaValue = new Long(jObj.getString("searchCriteriaValue"));
+				Long sCriteriaValue = Long.valueOf(jObj.getString("searchCriteriaValue"));
 				if(categoryValue.equalsIgnoreCase("committe"))
 					partyCadreDetailsVO.setCadreWorkingCommittee(criteriaList);
 				else if(categoryValue.equalsIgnoreCase("skills"))
@@ -504,9 +504,9 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 		cadreInfo = cadreManagementService.getCadreDetailsForSMS(registrationId,setPartyCadreDetails(jObj),windowTask,sortOption,order,startIndex,maxResult);
 		
 		if(cadreInfo != null && cadreInfo.size()>0){
-		searchListVO.setTotalSearchCount(new Long(cadreInfo.get(0).getPinCode()));
+		searchListVO.setTotalSearchCount(Long.valueOf(cadreInfo.get(0).getPinCode()));
 		
-		if(new Long(cadreInfo.get(0).getPinCode()) !=0){
+		if(Long.valueOf(cadreInfo.get(0).getPinCode()) !=0){
 			searchListVO.setCadreInfo(cadreInfo);
 		}
 		
@@ -517,7 +517,7 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 		}
 		}
 		else 
-			searchListVO.setTotalSearchCount(new Long(0L));
+			searchListVO.setTotalSearchCount(0L);
 		return SUCCESS;
 	}
 

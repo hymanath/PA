@@ -85,7 +85,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(ConstituencyVotingTrendzAction.class);
+	private static final Logger LOG = Logger.getLogger(ConstituencyVotingTrendzAction.class);
 	HttpServletRequest request;
 	HttpServletResponse response;
 	HttpSession session;
@@ -591,12 +591,12 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		param = getTask();
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}	
 	
-		Long constiId =  new Long(jObj.getString("constituencyId"));	
+		Long constiId =   Long.valueOf(jObj.getString("constituencyId"));	
 		localMuncipalElections = staticDataService.getLocalElectionDetailsForAConstituency(constiId,IConstants.MUNCIPLE_ELECTION_TYPE);	
 		return SUCCESS;
 	}
@@ -606,12 +606,12 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		param = getTask();
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}	
 	
-		Long constiId =  new Long(jObj.getString("constituencyId"));		
+		Long constiId =  Long.valueOf(jObj.getString("constituencyId"));		
 		localCorporationElections = staticDataService.getLocalElectionDetailsForAConstituency(constiId,IConstants.CORPORATION_ELECTION_TYPE);	
 		return SUCCESS;
 	}
@@ -624,11 +624,11 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		param = getTask();
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}	
-		Long constiId =  new Long(jObj.getString("constituencyId"));
+		Long constiId =  Long.valueOf(jObj.getString("constituencyId"));
 		String constiName = jObj.getString("constiName");
 		
 		String selectedChoices[];
@@ -637,13 +637,13 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		String getAllString = (String)jObj.getString("getAll");
 		if(getAllString.equals("all")){
 			
-			log.debug(" Inside All Elections Block ...");
+			LOG.debug(" Inside All Elections Block ...");
 			selectdElections = new ArrayList<SelectOptionVO>();
-			selectdElections.add(new SelectOptionVO(new Long(1),IConstants.ASSEMBLY_ELECTION_TYPE));
-			selectdElections.add(new SelectOptionVO(new Long(2),IConstants.PARLIAMENT_ELECTION_TYPE));
+			selectdElections.add(new SelectOptionVO(Long.valueOf(1),IConstants.ASSEMBLY_ELECTION_TYPE));
+			selectdElections.add(new SelectOptionVO(Long.valueOf(2),IConstants.PARLIAMENT_ELECTION_TYPE));
 			
-			selectdElections.add(new SelectOptionVO(new Long(3),IConstants.MPTC_ELECTION_TYPE));
-			selectdElections.add(new SelectOptionVO(new Long(4),IConstants.ZPTC_ELECTION_TYPE));
+			selectdElections.add(new SelectOptionVO(Long.valueOf(3),IConstants.MPTC_ELECTION_TYPE));
+			selectdElections.add(new SelectOptionVO(Long.valueOf(4),IConstants.ZPTC_ELECTION_TYPE));
 			
 			chartNam = chartNam + "_" + "ALL";
 			selectedChoices = null;
@@ -653,20 +653,20 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 			selectedChoices = new String[choices.length()];
 			
 			
-				log.debug(" Inside Some Elections Block ...");
+				LOG.debug(" Inside Some Elections Block ...");
 				selectdElections = new ArrayList<SelectOptionVO>();
 				for(int i=0; i<choices.length(); i++){
 					selectedChoices[i] = (String)choices.get(i);
 					
 					String electionType = (String)choices.get(i);
 					if(electionType.equalsIgnoreCase("AC"))
-						selectdElections.add(new SelectOptionVO(new Long(i),IConstants.ASSEMBLY_ELECTION_TYPE));
+						selectdElections.add(new SelectOptionVO(Long.valueOf(i),IConstants.ASSEMBLY_ELECTION_TYPE));
 					else if(electionType.equalsIgnoreCase("PC"))
-						selectdElections.add(new SelectOptionVO(new Long(i),IConstants.PARLIAMENT_ELECTION_TYPE));
+						selectdElections.add(new SelectOptionVO(Long.valueOf(i),IConstants.PARLIAMENT_ELECTION_TYPE));
 					else if(electionType.equalsIgnoreCase("MPTC"))
-						selectdElections.add(new SelectOptionVO(new Long(i),IConstants.MPTC_ELECTION_TYPE));
+						selectdElections.add(new SelectOptionVO(Long.valueOf(i),IConstants.MPTC_ELECTION_TYPE));
 					else if(electionType.equalsIgnoreCase("ZPTC"))
-						selectdElections.add(new SelectOptionVO(new Long(i),IConstants.ZPTC_ELECTION_TYPE));
+						selectdElections.add(new SelectOptionVO(Long.valueOf(i),IConstants.ZPTC_ELECTION_TYPE));
 					
 					chartNam = chartNam + "_" + electionType;
 				}	
@@ -680,7 +680,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 				
 		//for chart changes
 		
-		List<ElectionResultPartyVO> electionResList = getConstituencyElectionResultsChart(new Long(constiId));
+		List<ElectionResultPartyVO> electionResList = getConstituencyElectionResultsChart(Long.valueOf(constiId));
         
         if(electionResList != null && electionResList.size() > 0){
 			
@@ -710,12 +710,12 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}	
 		
-		Long constiId =  new Long(jObj.getString("constituencyId"));
+		Long constiId =  Long.valueOf(jObj.getString("constituencyId"));
 		String constiName = jObj.getString("constiName");
 		List <ConstituencyElectionResultsVO> electionResultsVO;
 		
@@ -738,7 +738,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	 * Method to create chart for constituency results
 	 */
 	public void getConstituencyResultCharts(List<ConstituencyElectionResultsVO> electionResultsVO,String constiName){
-		log.debug("Inside chart building method...");
+		LOG.debug("Inside chart building method...");
 		Set<String> partiesInChart = new LinkedHashSet<String>();
 		try{ 
 			String chartPath;
@@ -759,7 +759,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 						for(CandidateOppositionVO candRes:candResList){
 							String partyName = candRes.getPartyName(); 
 							Double votesPercent = new Double(candRes.getVotesPercentage());
-							log.debug(" party Name ==== "+partyName+", votes Percent = "+votesPercent);	
+							LOG.debug(" party Name ==== "+partyName+", votes Percent = "+votesPercent);	
 							partiesInChart.add(partyName);					
 							dataset.setValue(partyName+" ["+votesPercent.toString()+"%]",votesPercent);
 						}
@@ -774,7 +774,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		}
 		catch(Exception ex){
 			ex.printStackTrace();
-			log.debug("Exception Raised :" +ex);
+			LOG.debug("Exception Raised :" +ex);
 		}
 	}
 	
@@ -834,13 +834,13 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}	
 		
-		Long districtId = new Long(jObj.getString("districtId"));
-		Long constiId =  new Long(jObj.getString("constituencyId"));
+		Long districtId = Long.valueOf(jObj.getString("districtId"));
+		Long constiId =  Long.valueOf(jObj.getString("constituencyId"));
 		String constiName = jObj.getString("constiName");
 		
 		biElectionResultsMainVO  = biElectionPageService.getMandalWiseResultsForSelectedPartiesInConstituency(constiId);		
@@ -979,41 +979,41 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		{		
 			String partyName = partiesReslts.get(i).getPartyShortName(); 
 			Double votesPercent = new Double(partiesReslts.get(i).getPercentageOfVotes().toString());
-			log.debug(" party Name ==== "+partyName+", votes Percent = "+votesPercent);	
+			LOG.debug(" party Name ==== "+partyName+", votes Percent = "+votesPercent);	
 								
 				if(partyName.equals(IConstants.INC))
 				{
 					colors[j++]=IConstants.INC_COLOR;
-					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+					LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 				}				
 				else
 				if(partyName.equals(IConstants.PRP))
 				{
 					colors[j++]=IConstants.PRP_COLOR;
-					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+					LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 				}			
 				else
 				if(partyName.equals(IConstants.TDP))
 				{
 					colors[j++]=IConstants.TDP_COLOR;
-					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+					LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 				}	
 				else
 				if(partyName.equals(IConstants.TRS))
 				{
 					colors[j++]=IConstants.TRS_COLOR;
-					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+					LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 				}										
 				else
 				if(partyName.equals(IConstants.BJP))
 				{
 					colors[j++]=IConstants.BJP_COLOR;
-					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+					LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 				}else
 				if(partyName.equals(IConstants.OTHERS))
 				{
 					colors[j++]=IConstants.IND_COLOR;
-					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+					LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 				}					
 					
 				dataset.setValue(partyName+" ["+votesPercent.toString()+"%]",votesPercent);	
@@ -1055,41 +1055,41 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 				else
 			        votesPercent = new BigDecimal(resultsForDataset.get(i).getPercentageOfVotesWonByParty()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 				
-			    log.debug(" party Name ==== "+partyName+", votes Percent = "+votesPercent);	
+			    LOG.debug(" party Name ==== "+partyName+", votes Percent = "+votesPercent);	
 								
 				if(partyName.equals(IConstants.INC))
 				{
 					colors[j++]=IConstants.INC_COLOR;
-					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+					LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 				}				
 				else
 				if(partyName.equals(IConstants.PRP))
 				{
 					colors[j++]=IConstants.PRP_COLOR;
-					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+					LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 				}			
 				else
 				if(partyName.equals(IConstants.TDP))
 				{
 					colors[j++]=IConstants.TDP_COLOR;
-					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+					LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 				}	
 				else
 				if(partyName.equals(IConstants.TRS))
 				{
 					colors[j++]=IConstants.TRS_COLOR;
-					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+					LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 				}										
 				else
 				if(partyName.equals(IConstants.BJP))
 				{
 					colors[j++]=IConstants.BJP_COLOR;
-					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+					LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 				}else
 				if(partyName.equals(IConstants.OTHERS))
 				{
 					colors[j++]=IConstants.IND_COLOR;
-					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+					LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 				}					
 					
 				dataset.setValue(partyName+" ["+votesPercent.toString()+"%]",votesPercent);	
@@ -1143,13 +1143,13 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		
 		if(chartType.equalsIgnoreCase("selectedParties"))
 			colors = new Color[result.getPartyResultsSum().size()];
-		log.debug(" results size ==== "+result.getPartyResultsSum());		
+		LOG.debug(" results size ==== "+result.getPartyResultsSum());		
 		int j=0;
 		for(int i=0; i<result.getPartyResultsSum().size(); i++ )
 		{		
 			String partyName = result.getPartyResultsSum().get(i).getPartyName(); 
 			Double votesPercent = Double.valueOf(result.getPartyResultsSum().get(i).getPercentage());
-			log.debug(" party Name ==== "+partyName+", votes Percent = "+votesPercent);	
+			LOG.debug(" party Name ==== "+partyName+", votes Percent = "+votesPercent);	
 						
 			 if(chartType.equalsIgnoreCase("selectedParties"))
 			{
@@ -1159,31 +1159,31 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 					if(partyName.equals(IConstants.INC))
 					{
 						colors[j++]=IConstants.INC_COLOR;
-						log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+						LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 					}				
 					else
 					if(partyName.equals(IConstants.PRP))
 					{
 						colors[j++]=IConstants.PRP_COLOR;
-						log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+						LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 					}			
 					else
 					if(partyName.equals(IConstants.TDP))
 					{
 						colors[j++]=IConstants.TDP_COLOR;
-						log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+						LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 					}	
 					else
 					if(partyName.equals(IConstants.TRS))
 					{
 						colors[j++]=IConstants.TRS_COLOR;
-						log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+						LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 					}										
 					else
 					if(partyName.equals(IConstants.BJP))
 					{
 						colors[j++]=IConstants.BJP_COLOR;
-						log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+						LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 					}					
 					
 					dataset.setValue(partyName+" ["+votesPercent.toString()+"%]",votesPercent);	
@@ -1215,7 +1215,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	
 	public List<ElectionResultPartyVO> getConstituencyElectionResultsChart(Long constiId){
 		
-		log.debug(" Inside getConstituencyElectionResultsChart Method ");
+		LOG.debug(" Inside getConstituencyElectionResultsChart Method ");
 		
 		List<ElectionResultPartyVO> resultsList = staticDataService.getAllMandalElectionInformationForAConstituency(constiId,0);
 		List<ElectionResultPartyVO> resultsMainList = new ArrayList<ElectionResultPartyVO>();
@@ -1238,10 +1238,10 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 			electionResult.setElectionType(elecResult.getElectionType());
 			electionResult.setElectionYear(elecResult.getElectionYear());
 			
-			Long votesEarned = new Long(0);
-			Long validVotes = new Long(0);
+			Long votesEarned = Long.valueOf(0);
+			Long validVotes = Long.valueOf(0);
 			Double votesPercent = new Double(0);
-			Long totVotesEarned = new Long(0);
+			Long totVotesEarned = Long.valueOf(0);
 			List<CandidateElectionResultVO> candResultsInElection = new ArrayList<CandidateElectionResultVO>();
 			
 			for(CandidateElectionResultVO candResult:elecResult.getCandidateElectionResultsVO()){
@@ -1268,7 +1268,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 			}
 			
 			//others results
-			if(!votesEarned.equals(new Long(0))){
+			if(!votesEarned.equals(Long.valueOf(0))){
 				CandidateElectionResultVO candResForOthers = new CandidateElectionResultVO();
 				candResForOthers.setPartyName("Others");
 				candResForOthers.setTotalVotesEarned(votesEarned);
@@ -1322,7 +1322,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		   }
 		   }catch(Exception ex){
 			   ex.printStackTrace();
-			   log.debug(" Exception Raised :" + ex);
+			   LOG.debug(" Exception Raised :" + ex);
 		   }
 		   
 		  	   for(ElectionDataVO electionData:elecdetails){
@@ -1331,7 +1331,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 					   CandidateElectionResultVO candidateElecResults = null;
 					   Boolean flag = false;
 					   if(includeAllianc == true){						   
-						 log.debug(" Allianc True ..." + party + " ... " + electionData.getElectionYear() + " .... " + electionData.getElectionType());
+						 LOG.debug(" Allianc True ..." + party + " ... " + electionData.getElectionYear() + " .... " + electionData.getElectionType());
 						 if(electionData.getAllianceParties() != null && electionData.getAllianceParties().size() > 0){
 						 AlliancePartiesInElection alliancPartysGrp = getPartiesInAlliance(party,electionData.getAllianceParties());
 						 if(alliancPartysGrp != null && alliancPartysGrp.getParties().size() > 0)
@@ -1348,7 +1348,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 					  
 					   if(includeAllianc == false || flag == false){
 						   
-						   log.debug(" Allianc False ..." + party + " ... " + electionData.getElectionYear() + " .... " + electionData.getElectionType());
+						   LOG.debug(" Allianc False ..." + party + " ... " + electionData.getElectionYear() + " .... " + electionData.getElectionType());
 					      candidateElecResults = getCandidateResultsForChartData(elecResultsList,party,electionData.getElectionYear(),electionData.getElectionType());
 					   
 					    if(candidateElecResults != null && candidateElecResults.getVotesPercentage() != null && candidateElecResults.getPartyName() != null && electionData.getElectionYear() != null && electionData.getElectionType() != null){
@@ -1356,23 +1356,23 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 						  
 						  if(IConstants.TDP.equalsIgnoreCase(candidateElecResults.getPartyName()))
   						  {	colorsSet.add(IConstants.TDP_COLOR);
-  							log.debug("TDP ADDED");
+  							LOG.debug("TDP ADDED");
   						  }else if(IConstants.INC.equalsIgnoreCase(candidateElecResults.getPartyName())){
   							colorsSet.add(IConstants.INC_COLOR);
-  							log.debug("INC ADDED");
+  							LOG.debug("INC ADDED");
   						  }
   						  else if(IConstants.TRS.equalsIgnoreCase(candidateElecResults.getPartyName())){
   							colorsSet.add(IConstants.TRS_COLOR);
-  							log.debug("TRS ADDED");
+  							LOG.debug("TRS ADDED");
   						  }else if(IConstants.BJP.equalsIgnoreCase(candidateElecResults.getPartyName())){
     							colorsSet.add(IConstants.BJP_COLOR);
-      							log.debug("BJP ADDED");
+      							LOG.debug("BJP ADDED");
       					  } else if(IConstants.PRP.equalsIgnoreCase(candidateElecResults.getPartyName())){
   							colorsSet.add(IConstants.PRP_COLOR);
-  							log.debug("BJP ADDED");
+  							LOG.debug("BJP ADDED");
       					  } else if("Others".equalsIgnoreCase(candidateElecResults.getPartyName())){
   							colorsSet.add(Color.BLACK);
-  							log.debug("Others ADDED");
+  							LOG.debug("Others ADDED");
       					  }
 					   }
 					   }
@@ -1480,7 +1480,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 				   
 				   }catch(Exception ex){
 					   ex.printStackTrace();
-					   log.debug("Exception Raised :" + ex);
+					   LOG.debug("Exception Raised :" + ex);
 				   }
 				   for(ElectionResultPartyVO resList:resultList){
 				   for(ElectionResultPartyVO res:chartResMap.get(resList)){
@@ -1492,23 +1492,23 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 						  
 						  if(IConstants.TDP.equalsIgnoreCase(res.getPartyShortName()))
 						  {	colorsSet.add(IConstants.TDP_COLOR);
-							log.debug("TDP ADDED");
+							LOG.debug("TDP ADDED");
 						  }else if(IConstants.INC.equalsIgnoreCase(res.getPartyShortName())){
 							colorsSet.add(IConstants.INC_COLOR);
-							log.debug("INC ADDED");
+							LOG.debug("INC ADDED");
 						  }
 						  else if(IConstants.TRS.equalsIgnoreCase(res.getPartyShortName())){
 							colorsSet.add(IConstants.TRS_COLOR);
-							log.debug("TRS ADDED");
+							LOG.debug("TRS ADDED");
 						  }else if(IConstants.BJP.equalsIgnoreCase(res.getPartyShortName())){
 							colorsSet.add(IConstants.BJP_COLOR);
-							log.debug("BJP ADDED");
+							LOG.debug("BJP ADDED");
 	 					  } else if(IConstants.PRP.equalsIgnoreCase(res.getPartyShortName())){
 								colorsSet.add(IConstants.PRP_COLOR);
-								log.debug("BJP ADDED");
+								LOG.debug("BJP ADDED");
 	 					  } else if("Others".equalsIgnoreCase(res.getPartyShortName())){
 								colorsSet.add(Color.BLACK);
-								log.debug("Others ADDED");
+								LOG.debug("Others ADDED");
 	 					  }
 						  
 						  
@@ -1538,7 +1538,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	
 	public CandidateElectionResultVO getCandidateResultsForChartData(List<ElectionResultPartyVO> elecResultsList,String party,String elecYear,String elecType){
 		
-		log.debug(" Inside getCandidateResultsForChartData method ...");
+		LOG.debug(" Inside getCandidateResultsForChartData method ...");
 		
 		CandidateElectionResultVO candidateResults = null;
 		if(elecResultsList != null && party != null && elecYear != null && elecType != null){
@@ -1561,7 +1561,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	//for chart manipulation based on selection of AC or PC or MPTC or ZPTC
     public CandidateElectionResultVO getCandidateResultsForChartData(List<ElectionResultPartyVO> elecResultsList,String party,String elecType){
 		
-		log.debug(" Inside getCandidateResultsForChartData method ...");
+		LOG.debug(" Inside getCandidateResultsForChartData method ...");
 		
 		CandidateElectionResultVO candidateResults = null;
 		if(elecResultsList != null && party != null && elecType != null){
@@ -1584,7 +1584,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	public String getLineChartForMandalsAndPartiesInElection(){
 		try {
 			jObj=new JSONObject(getTask());
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -1613,11 +1613,11 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 				CategoryDataset dataset = createDataSetForLineChart(resultsInMandals, partiesInChart);
 				if(dataset.getColumnCount()>1)
 				{
-					log.debug("dataset.getColumnCount():::::::::::::::::::::::"+dataset.getColumnCount());
+					LOG.debug("dataset.getColumnCount():::::::::::::::::::::::"+dataset.getColumnCount());
 					ChartProducer.createLineChartWithThickness(title,"Mandals", "Percentages",dataset, chartPath,chartHeight,chartWidth,ChartUtils.getLineChartColors(partiesInChart),true);
 				} else 	
 					{
-						log.debug("dataset.getColumnCount():::::::::::::::::::::::"+dataset.getColumnCount());
+						LOG.debug("dataset.getColumnCount():::::::::::::::::::::::"+dataset.getColumnCount());
 						ChartProducer.create3DBarChartWithInputParams(title, null, "Mandal","Percentages", null, dataset, chartPath, chartWidth, chartHeight, ChartUtils.getLineChartColors(partiesInChart),true);
 					}
 			}	
@@ -1647,7 +1647,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -1679,7 +1679,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 			
 			electnDataList.add(elecData);
 			//chartNam = chartNam + "_" + elecType + "_" + elecYear;
-			log.debug("Election Type " + elecType + "Year " + elecYear);
+			LOG.debug("Election Type " + elecType + "Year " + elecYear);
 		}	
 		
         JSONArray partyArr = jObj.getJSONArray("partiesArr");
@@ -1694,23 +1694,23 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		}
 		for(int j=0;j<partyNames.length;j++){
 			partys.add(partyNames[j]);
-			log.debug("Party :" + partyNames[j]);
+			LOG.debug("Party :" + partyNames[j]);
 			chartNam = chartNam + "_" + partyNames[j];
 		}
 		chartNam = chartNam + "_and_" + electnDataList.size() +" Elections" + "IncludeAlliance" + includeAlliance.toString();
 		
-        List<ElectionResultPartyVO> electionResList = getConstituencyElectionResultsChart(new Long(constiId));
+        List<ElectionResultPartyVO> electionResList = getConstituencyElectionResultsChart(Long.valueOf(constiId));
         
         if(electionResList != null && electionResList.size() > 0){
 			
         	  String chartTitle = "";
-        	  if(new Boolean(includeAlliance) == true)
+        	  if(Boolean.valueOf(includeAlliance) == true)
         		  chartTitle = " All Parties Performance In "+constiName + " Constituency With Alliances";
-        	  else if(new Boolean(includeAlliance) == false)
+        	  else if(Boolean.valueOf(includeAlliance) == false)
         		  chartTitle = " All Parties Performance In "+constiName + " Constituency ";
 			  String chartName = "constituencyElectionsResults"+"_"+constiName+"_"+constiId+"_"+chartNam+".png";
 			  String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
-			  chartColorsAndDataSetVO = createDatasetForChart(electnDataList,partys,electionResList,new Boolean(includeAlliance));
+			  chartColorsAndDataSetVO = createDatasetForChart(electnDataList,partys,electionResList,Boolean.valueOf(includeAlliance));
 			  ChartProducer.createLineChartWithThickness(chartTitle, "Election", "Percentages", (DefaultCategoryDataset)chartColorsAndDataSetVO.getDataSet(), chartPath,550,950,new ArrayList<Color>(chartColorsAndDataSetVO.getColorsSet()),true);
 			  
 			  chartColorsAndDataSetVO.setChartName(chartName);
@@ -1737,7 +1737,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		for(VotersWithDelimitationInfoVO votersInMandalOrAC:constituencyVO.getAssembliesOfParliamentInfo()){
 			if(votersInMandalOrAC.getVotersInfoForMandalVO().size() == 0)
 				continue;
-			log.debug("Mandal Id in Action::::::::::::::::::::::::::"+votersInMandalOrAC.getVotersInfoForMandalVO().get(0).getMandalId());
+			LOG.debug("Mandal Id in Action::::::::::::::::::::::::::"+votersInMandalOrAC.getVotersInfoForMandalVO().get(0).getMandalId());
 			
 			pieChart = votersInMandalOrAC.getYear()+"_Voters Info for Constituency_"+constituencyVO.getId()+"In Bi-Elections"+".png";
 			pieChartPath = context.getRealPath("/")+ "charts\\" + pieChart;
@@ -1780,10 +1780,10 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		Long totalVotes = 0l;
 		BigDecimal percentage;
 		for(VotersInfoForMandalVO votersInMandalOrAC:votersInfoForMandalVO)
-			totalVotes += new Long(votersInMandalOrAC.getTotalVoters());
+			totalVotes += Long.valueOf(votersInMandalOrAC.getTotalVoters());
 
 		for(VotersInfoForMandalVO votersInMandalOrAC:votersInfoForMandalVO){
-			percentage = new BigDecimal(new Long(votersInMandalOrAC.getTotalVoters())*100.0/totalVotes).setScale(2,BigDecimal.ROUND_HALF_UP);
+			percentage = new BigDecimal(Long.valueOf(votersInMandalOrAC.getTotalVoters())*100.0/totalVotes).setScale(2,BigDecimal.ROUND_HALF_UP);
 			dataset.setValue(votersInMandalOrAC.getMandalName()+" ["+percentage.toString()+"%]",percentage);
 		}
 			
@@ -1801,10 +1801,10 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
     		votersInfo.setYear(year);
     		List<VotersInfoForMandalVO> votersInfoForMandal = new ArrayList<VotersInfoForMandalVO>();
     		for(VotersInfoForMandalVO votersInMandalOrAC:votersInfoForMandalVO)
-    			totalVotes += new Long(votersInMandalOrAC.getTotalVoters());
+    			totalVotes += Long.valueOf(votersInMandalOrAC.getTotalVoters());
 
     		for(VotersInfoForMandalVO votersInMandalOrAC:votersInfoForMandalVO){
-    			percentage = new BigDecimal(new Long(votersInMandalOrAC.getTotalVoters())*100.0/totalVotes).setScale(2,BigDecimal.ROUND_HALF_UP);
+    			percentage = new BigDecimal(Long.valueOf(votersInMandalOrAC.getTotalVoters())*100.0/totalVotes).setScale(2,BigDecimal.ROUND_HALF_UP);
     			//dataset.setValue(votersInMandalOrAC.getMandalName()+" ["+percentage.toString()+"%]",percentage);
     			VotersInfoForMandalVO votersInf = new VotersInfoForMandalVO();
     			votersInf.setMandalId(votersInMandalOrAC.getMandalId());
@@ -1826,7 +1826,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		
     	try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -1992,7 +1992,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		
     	try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -2010,7 +2010,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
     public String getUrbanRuralResults(){
     	try {
 			jObj=new JSONObject(getTask());
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -2090,7 +2090,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	public String buildBoothwiseElectionsResultsForConstituency(){
 		try {
 			jObj=new JSONObject(getTask());
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

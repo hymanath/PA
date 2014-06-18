@@ -152,7 +152,7 @@ public class CustomPagesAction extends ActionSupport implements ServletRequestAw
 		
 		return Action.SUCCESS;
 	}
-	public String AjaxHandler()
+	public String ajaxHandler()
 	{
 		try {
 			jObj = new JSONObject(getTask());

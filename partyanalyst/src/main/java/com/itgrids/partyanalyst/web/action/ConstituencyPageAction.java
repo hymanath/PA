@@ -107,7 +107,7 @@ public class ConstituencyPageAction extends ActionSupport implements
 	 private ElectionBasicInfoVO electionBasicInfoVO;
 	 private IElectionTrendzService electionTrendzService;
 	 private List<SelectOptionVO> electionIdsAndYears;
-	 private static final Logger log = Logger.getLogger(ConstituencyPageAction.class);
+	 private static final Logger LOG = Logger.getLogger(ConstituencyPageAction.class);
 	 private List<SelectOptionVO> zptcElectionYears;
 	 private List<SelectOptionVO> mptcElectionYears;  
 	 private List<SelectOptionVO> electionTypes;
@@ -488,9 +488,6 @@ public class ConstituencyPageAction extends ActionSupport implements
 		this.constituencyWiseAllPartyTrends = constituencyWiseAllPartyTrends;
 	}
 
-	public static Logger getLog() {
-		return log;
-	}
 
 	public Long getConstituencyId() {
 		return constituencyId;
@@ -784,11 +781,11 @@ public class ConstituencyPageAction extends ActionSupport implements
 		
 		Throwable ex = delimitationConstituencyMandalResultVO.getExceptionEncountered();
 		if(ex!=null){
-			log.error("exception raised while retrieving mandal details ", ex);
+			LOG.error("exception raised while retrieving mandal details ", ex);
 		}
 		
-		log.info("delimitationConstituencyMandalResultVO.getMandals().size()::::"+delimitationConstituencyMandalResultVO.getPresentMandals().size());
-		log.info("delimitationConstituencyMandalResultVO..getConstituencyType()::::"+delimitationConstituencyMandalResultVO.getConstituencyType());
+		LOG.info("delimitationConstituencyMandalResultVO.getMandals().size()::::"+delimitationConstituencyMandalResultVO.getPresentMandals().size());
+		LOG.info("delimitationConstituencyMandalResultVO..getConstituencyType()::::"+delimitationConstituencyMandalResultVO.getConstituencyType());
 		setDelimitationConstituencyMandalResultVO(delimitationConstituencyMandalResultVO);
 		Set<String> partiesInChart = null;
 		constituencyVO = constituencyPageService.getVotersInfoInMandalsForConstituency(constituencyId);
@@ -838,16 +835,16 @@ public class ConstituencyPageAction extends ActionSupport implements
 		problemBean = problemManagementReportService.getAllProblemsForGivenLocation(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL).getApprovalProblems();
 		
 	
-		System.out.println("electionTrendzReportVO ============ "+electionTrendzReportVO);
+		LOG.info("electionTrendzReportVO ============ "+electionTrendzReportVO);
 		
 		if(problemBean != null)
-			System.out.println("problemBean === "+problemBean.size());
+			LOG.info("problemBean === "+problemBean.size());
 		
 		electionBasicInfoVO = electionTrendzService.getBasicElectionInfoFromConstituencyId(constituencyId);
 		
            if(electionBasicInfoVO.getElectionId() != null){
 			
-			System.out.println("Inside trendz service call ....");
+			LOG.info("Inside trendz service call ....");
 			electionTrendzReportVO = electionTrendzService.getVotingTrendzForAConstituency(electionBasicInfoVO.getElectionId(),electionBasicInfoVO.
 					getElectionTypeId(),electionBasicInfoVO.getElectionYear(),constituencyId,IConstants.MALETRENDZ,IConstants.FEMALETRENDZ);
 			/*if(electionTrendzReportVO != null)
@@ -1024,11 +1021,11 @@ public class ConstituencyPageAction extends ActionSupport implements
 
 		String param=null;		
 		param=request.getParameter("task");
-		log.debug("param:"+param);
+		LOG.debug("param:"+param);
 		
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -1046,7 +1043,7 @@ public class ConstituencyPageAction extends ActionSupport implements
 	   		}
 		}else if(jObj.getString("type").equalsIgnoreCase("partyWise")){
 			if(allLocalBodyIds!=null && allLocalBodyIds.size()!=0){
-	   			greaterInfo = localBodyElectionService.findConstituencywiseGreaterElectionResults(allLocalBodyIds.get(0).getId(),constituencyId,new Long(jObj.getLong("value")),0l);
+	   			greaterInfo = localBodyElectionService.findConstituencywiseGreaterElectionResults(allLocalBodyIds.get(0).getId(),constituencyId,Long.valueOf(jObj.getLong("value")),0l);
 	   		}else{  
 	   			greaterInfo = new ConstituencyVO();
 	   			greaterInfo.setListOfParties(getSelectOptionData());
@@ -1054,7 +1051,7 @@ public class ConstituencyPageAction extends ActionSupport implements
 	   		}
 		}else if(jObj.getString("type").equalsIgnoreCase("wardWise")){
 			if(allLocalBodyIds!=null && allLocalBodyIds.size()!=0){
-	   			greaterInfo = localBodyElectionService.findConstituencywiseGreaterElectionResults(allLocalBodyIds.get(0).getId(),constituencyId,new Long(0l),new Long(jObj.getLong("value")));
+	   			greaterInfo = localBodyElectionService.findConstituencywiseGreaterElectionResults(allLocalBodyIds.get(0).getId(),constituencyId,Long.valueOf(0l),Long.valueOf(jObj.getLong("value")));
 	   		}else{  
 	   			greaterInfo = new ConstituencyVO();
 	   			greaterInfo.setListOfParties(getSelectOptionData());
@@ -1077,11 +1074,11 @@ public class ConstituencyPageAction extends ActionSupport implements
 		
 		String param=null;		
 		param=request.getParameter("task");
-		log.debug("param:"+param);
+		LOG.debug("param:"+param);
 		
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -1094,11 +1091,11 @@ public class ConstituencyPageAction extends ActionSupport implements
 	public String getPartiesPerformanceInDiffElectionsAjax(){
 		String param=null;		
 		param=request.getParameter("task");
-		log.debug("param:"+param);
+		LOG.debug("param:"+param);
 		
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -1113,10 +1110,10 @@ public class ConstituencyPageAction extends ActionSupport implements
 		Long totalVotes = 0l;
 		BigDecimal percentage;
 		for(VotersInfoForMandalVO votersInMandalOrAC:votersInfoForMandalVO)
-			totalVotes += new Long(votersInMandalOrAC.getTotalVoters());
+			totalVotes += Long.valueOf(votersInMandalOrAC.getTotalVoters());
 
 		for(VotersInfoForMandalVO votersInMandalOrAC:votersInfoForMandalVO){
-			percentage = new BigDecimal(new Long(votersInMandalOrAC.getTotalVoters())*100.0/totalVotes).setScale(2,BigDecimal.ROUND_HALF_UP);
+			percentage = new BigDecimal(Long.valueOf(votersInMandalOrAC.getTotalVoters())*100.0/totalVotes).setScale(2,BigDecimal.ROUND_HALF_UP);
 			dataset.setValue(votersInMandalOrAC.getMandalName()+" ["+percentage.toString()+"%]",percentage);
 		}
 			
@@ -1363,11 +1360,11 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 	  
 	    String param=null;		
 		param=request.getParameter("task");
-		log.debug("param:"+param);
+		LOG.debug("param:"+param);
 		
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -1394,7 +1391,7 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 		
 		try {
 			jObj = new JSONObject(param);
-			log.debug("Params :" + jObj);
+			LOG.debug("Params :" + jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -1409,7 +1406,7 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 		femaleVotesPercentInConstiVotes = jObj.getString("femaleVotesPercentInConstiVotes");
 		maleOrFemaleVotesPercentInConstiVotes = jObj.getString("maleOrFemaleVotesPercentInConstiVotes");
 		
-		log.debug("Creating Charts For " + candName);
+		LOG.debug("Creating Charts For " + candName);
 		
 		/*String wonCandChartIdNew = candName.concat("VotingTrendz").concat("PieChart");
  		String wonCandChartNameNew = "candOverallVotesPercentChart_" + wonCandChartIdNew + session.getId() +".png";
@@ -1458,16 +1455,16 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 		
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		
-		electionBasicInfoVO = electionTrendzService.getBasicElectionInfoFromConstituencyId(new Long(232));
+		electionBasicInfoVO = electionTrendzService.getBasicElectionInfoFromConstituencyId(Long.valueOf(232));
 		if(electionBasicInfoVO.getElectionId() != null){
 			
-			System.out.println("Inside trendz service call ....");
-			electionTrendzReportVO = electionTrendzService.getVotingTrendzForAConstituency(electionBasicInfoVO.getElectionId(),electionBasicInfoVO.getElectionTypeId(),electionBasicInfoVO.getElectionYear(),new Long(232),IConstants.MALETRENDZ,IConstants.FEMALETRENDZ);
+			LOG.info("Inside trendz service call ....");
+			electionTrendzReportVO = electionTrendzService.getVotingTrendzForAConstituency(electionBasicInfoVO.getElectionId(),electionBasicInfoVO.getElectionTypeId(),electionBasicInfoVO.getElectionYear(),Long.valueOf(232),IConstants.MALETRENDZ,IConstants.FEMALETRENDZ);
 			
 			/*if(electionTrendzReportVO != null)
 				getMapsForVotingTrendz(electionTrendzReportVO);*/
@@ -1482,7 +1479,7 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 		
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -1497,21 +1494,21 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 	    param = getTask();		
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 			
 			if(jObj.getString("task").equalsIgnoreCase("getZptcElectionResults")){
 				try{
 					constituencyWiseAllPartyTrends = constituencyPageService.getPartyWiseZptcOrMptcElectionDataForAConstituency(jObj.getLong("constituencyId"),jObj.getString("electionYear"),IConstants.ZPTC_ELECTION_TYPE,jObj.getString("constituencyType"));
 					//createPieChartForElectionTypeNElectionYear(constituencyWiseAllPartyTrends,jObj.getString("electionYear"),IConstants.ZPTC_ELECTION_TYPE);
 					}catch(Exception ex){
-					log.debug("No data is available...");
+					LOG.debug("No data is available...");
 				}
 			}else if(jObj.getString("task").equalsIgnoreCase("getMptcElectionResults")){
 				try{
 					constituencyWiseAllPartyTrends = constituencyPageService.getPartyWiseZptcOrMptcElectionDataForAConstituency(jObj.getLong("constituencyId"),jObj.getString("electionYear"),IConstants.MPTC_ELECTION_TYPE,jObj.getString("constituencyType"));
 					//createPieChartForElectionTypeNElectionYear(constituencyWiseAllPartyTrends,jObj.getString("electionYear"),IConstants.MPTC_ELECTION_TYPE);
 					}catch(Exception ex){
-					log.debug("No data is available...");
+					LOG.debug("No data is available...");
 				}
 			}			
 			}catch(ParseException e) {
@@ -1547,7 +1544,7 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 		{		
 			String partyName = result.get(i).getPartyName(); 
 			Double votesPercent = Double.valueOf(result.get(i).getPercentageOfVotesWonByParty());
-			log.debug(" party Name ==== "+partyName+", votes Percent = "+votesPercent);	
+			LOG.debug(" party Name ==== "+partyName+", votes Percent = "+votesPercent);	
 						
 			 if(chartType.equalsIgnoreCase("selectedParties"))
 			{
@@ -1557,31 +1554,31 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 					if(partyName.equals(IConstants.INC))
 					{
 						colors[j++]=IConstants.INC_COLOR;
-						log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+						LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 					}				
 					else
 					if(partyName.equals(IConstants.PRP))
 					{
 						colors[j++]=IConstants.PRP_COLOR;
-						log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+						LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 					}			
 					else
 					if(partyName.equals(IConstants.TDP))
 					{
 						colors[j++]=IConstants.TDP_COLOR;
-						log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+						LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 					}	
 					else
 					if(partyName.equals(IConstants.TRS))
 					{
 						colors[j++]=IConstants.TRS_COLOR;
-						log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+						LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 					}										
 					else
 					if(partyName.equals(IConstants.BJP))
 					{
 						colors[j++]=IConstants.BJP_COLOR;
-						log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+						LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 					}	
 					dataset.setValue(partyName+" ["+new BigDecimal(votesPercent).setScale(2, BigDecimal.ROUND_HALF_UP).toString()+"%]",Double.parseDouble(new BigDecimal(votesPercent).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));	
 			
@@ -1611,36 +1608,36 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 	    if(task != null){
 			try {
 				jObj = new JSONObject(getTask());
-				System.out.println(jObj);
+				LOG.info(jObj);
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}	
-			log.debug("Task::"+jObj.getString("task"));
+			LOG.debug("Task::"+jObj.getString("task"));
 
 		if(jObj.getString("task").equalsIgnoreCase("getAllCandidates")){
 			try{				
 				mandalAllElectionDetailsVO = constituencyPageService.getAllTehsilElectionLevelWinnersForAConstituency(jObj.getLong("constituencyId"),jObj.getString("candidateDetailsType") ,jObj.getLong("partyId"),jObj.getString("electionType"),jObj.getString("electionYear"),jObj.getString("constTYPE"));			
 				}catch(Exception ex){
-				System.out.println("Error.. ");
-				log.debug("No data is available...");
+				LOG.info("Error.. ");
+				LOG.debug("No data is available...");
 			}
 		}else if(jObj.getString("task").equalsIgnoreCase("getWinners")){
 			try{
 				mandalAllElectionDetailsVO = constituencyPageService.getAllTehsilElectionLevelWinnersForAConstituency(jObj.getLong("constituencyId"),jObj.getString("candidateDetailsType") ,jObj.getLong("partyId"),jObj.getString("electionType"),jObj.getString("electionYear"),jObj.getString("constTYPE"));
 				}catch(Exception ex){
-				log.debug("No data is available...");
+				LOG.debug("No data is available...");
 			}
 		}else if(jObj.getString("task").equalsIgnoreCase("getPartyWise")){
 			try{
 				mandalAllElectionDetailsVO = constituencyPageService.getAllTehsilElectionLevelWinnersForAConstituency(jObj.getLong("constituencyId"),jObj.getString("candidateDetailsType") ,jObj.getLong("partyId"),jObj.getString("electionType"),jObj.getString("electionYear"),jObj.getString("constTYPE"));
 				}catch(Exception ex){
-				log.debug("No data is available...");
+				LOG.debug("No data is available...");
 			}
 		}else if(jObj.getString("task").equalsIgnoreCase("getParties")){
 			try{
 				mandalAllElectionDetailsVO = constituencyPageService.getAllTehsilElectionLevelWinnersForAConstituency(jObj.getLong("constituencyId"),jObj.getString("candidateDetailsType") ,jObj.getLong("partyId"),jObj.getString("electionType"),jObj.getString("electionYear"),jObj.getString("constTYPE"));
 				}catch(Exception ex){
-				log.debug("No data is available...");
+				LOG.debug("No data is available...");
 			}
 		}	
 	    }
@@ -1702,7 +1699,7 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 		    }
 		   }
 			catch(Exception ex){
-			log.debug("No data is available...");
+			LOG.debug("No data is available...");
 		  }
 	   }
 	   
@@ -1713,7 +1710,7 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 		 
 		 try {
 			 jObj = new JSONObject(getTask());
-				System.out.println("jObj = "+jObj);
+				LOG.info("jObj = "+jObj);
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
@@ -1729,7 +1726,7 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 	  
 	  try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -1742,7 +1739,7 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 		String includeOthers = (String)jObj.getString("others");
 				
 		constituencyRevenueVillagesVO = constituencyPageService.getConstituencyElecResults(jObj.getLong("constituencyId")
-				, jObj.getString("electionYear"),new Boolean(includeOthers));
+				, jObj.getString("electionYear"),Boolean.valueOf(includeOthers));
 		if(constituencyRevenueVillagesVO != null && constituencyRevenueVillagesVO.getCandidateNamePartyAndStatus() != null && constituencyRevenueVillagesVO.getCandidateNamePartyAndStatus().size() > 0 &&
 				constituencyRevenueVillagesVO.getConstituencyOrMandalWiseElectionVO() != null && constituencyRevenueVillagesVO.getConstituencyOrMandalWiseElectionVO().size() > 0){
 		/*if(constituencyRevenueVillagesVO.getElectionType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
@@ -1813,7 +1810,7 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 	   
 	  try{
 		  jObj = new JSONObject(getTask());
-		  System.out.println("jObj = "+jObj);
+		  LOG.info("jObj = "+jObj);
 	  }catch (ParseException e) {
 		e.printStackTrace();
 	  }
@@ -1826,14 +1823,14 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 		String censusSelectedIndex = jObj.getString("seletedIndex");
 		String censusText        = jObj.getString("seletedText");
 		if(delimitationYear != null && delimitationYear.trim().length()>0 && censusYear != null && censusYear.trim().length() > 0){
-	      censusVO = constituencyPageService.getCensusDetailsForAssemblyConstituency(jObj.getLong("constituencyId"),new Long(delimitationYear),new Long(censusYear));
+	      censusVO = constituencyPageService.getCensusDetailsForAssemblyConstituency(jObj.getLong("constituencyId"),Long.valueOf(delimitationYear),Long.valueOf(censusYear));
 	      constituencyRevenueVillagesVO = constituencyPageService.getMandalElectionInfoForAConstituencyForCensus(jObj.getLong("constituencyId"),jObj.getString("electionYear"),IConstants.PARLIAMENT_ELECTION_TYPE, false);
 	      List<String> censusFieldList = new ArrayList<String>();
 			censusFieldList.add(censusText);
 			if(censusVO != null && censusVO.size() > 0)
 			{
 				censusVO.get(0).setCensusFields(censusFieldList);
-				censusVO.get(0).setCensusSelectedIndex(new Long(censusSelectedIndex));
+				censusVO.get(0).setCensusSelectedIndex(Long.valueOf(censusSelectedIndex));
 			}
 			constituencyRevenueVillagesVO.setCensusVO(censusVO);
 			 return SUCCESS;
@@ -1874,7 +1871,7 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 	  
 	  try{
 		  jObj = new JSONObject(getTask());
-		  System.out.println("jObj = "+jObj);
+		  LOG.info("jObj = "+jObj);
 	  }catch (ParseException e) {
 		e.printStackTrace();
 	  }
@@ -1891,7 +1888,7 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 	  
 	  try{
 		  jObj = new JSONObject(getTask());
-		  System.out.println("jObj = "+jObj);
+		  LOG.info("jObj = "+jObj);
 	  }catch (ParseException e) {
 		e.printStackTrace();
 	  }
@@ -1908,7 +1905,7 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 	  
 	  try{
 		  jObj = new JSONObject(getTask());
-		  System.out.println("jObj = "+jObj);
+		  LOG.info("jObj = "+jObj);
 	  }catch (ParseException e) {
 		e.printStackTrace();
 	  }

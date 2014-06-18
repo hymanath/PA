@@ -318,8 +318,8 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 		
 		optiontypes = houseHoldSurveyReportService.getAllOptionTypes();
 		
-		Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
-		Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
+		Long electionYear = Long.valueOf(IConstants.PRESENT_ELECTION_YEAR);
+		Long electionTypeId = Long.valueOf(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
 		userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(1l,electionYear,electionTypeId);
 		
 		
@@ -437,8 +437,8 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 			votersFamilyInfo = votersAnalysisService.getFamilyInformationForHHSurvey(null,jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getString("hno"),1l,null,voterId);
 			
 		}catch(Exception e){
-			//log.error("Exception Occured in getVotersFamilyDetails() Method,Exception is- ",e);
-			System.out.println("Exception Raised"+e);
+			//LOG.error("Exception Occured in getVotersFamilyDetails() Method,Exception is- ",e);
+			LOG.error("Exception Raised",e);
 		}
 		
 		return SUCCESS;

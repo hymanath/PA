@@ -180,8 +180,8 @@ public class PartialBoothPanchayatAction extends ActionSupport implements Servle
 		
 		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ADMIN_PAGE))
 				isAdmin = "true";
-		Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
-		Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
+		Long electionYear = Long.valueOf(IConstants.PRESENT_ELECTION_YEAR);
+		Long electionTypeId = Long.valueOf(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
 		userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(regVO.getRegistrationID(),electionYear,electionTypeId);
 		//userAccessConstituencyList = votersAnalysisService.getConstituencyList(userAccessConstituencyList);
 		userAccessConstituencyList = votersAnalysisService.getConstituencyList1(userAccessConstituencyList);
@@ -204,12 +204,12 @@ public class PartialBoothPanchayatAction extends ActionSupport implements Servle
 		   JSONArray jArray = jObj.getJSONArray("hamletsIds");
 		   for (int i = 0; i < jArray.length(); i++) 
 		   {
-			   hamletIds.add(new Long(jArray.get(i).toString()));
+			   hamletIds.add(Long.valueOf(jArray.get(i).toString()));
 		   }
 			resultStatus = partialBoothPanchayatService.savePartialBoothPanchayaDetails(jObj.getLong("panchayatId"),jObj.getLong("boothId"),jObj.getLong("ppanchayatId"),jObj.getString("description"),jObj.getString("pdescription"),hamletIds);
 			
 		} catch (Exception e) {
-			Log.error("exception raised in savePartialBoothDetails() in PartialBoothPanchayatAction Class" , e);
+			LOG.error("exception raised in savePartialBoothDetails() in PartialBoothPanchayatAction Class" , e);
 		}
 		return Action.SUCCESS;
 	}
@@ -223,7 +223,7 @@ public class PartialBoothPanchayatAction extends ActionSupport implements Servle
 			jObj = new JSONObject(param);
 			partialBoothPanchayatList = partialBoothPanchayatService.getAllPartialBoothsInASelectedMandal(jObj.getLong("mandalId"),jObj.getLong("publicationId"));
 		} catch (Exception e) {
-			Log.error("exception raised in getPartialBoothDetails() in PartialBoothPanchayatAction Class" , e);
+			LOG.error("exception raised in getPartialBoothDetails() in PartialBoothPanchayatAction Class" , e);
 		}
 		return Action.SUCCESS;
 	}
@@ -249,7 +249,7 @@ public class PartialBoothPanchayatAction extends ActionSupport implements Servle
 				returnString = "delete";
 			}
 		} catch (Exception e) {
-			Log.error("exception raised in editOrDeleteSelectedPartialBooth() in PartialBoothPanchayatAction Class" , e);
+			LOG.error("exception raised in editOrDeleteSelectedPartialBooth() in PartialBoothPanchayatAction Class" , e);
 		}
 		return returnString;
 	}
@@ -264,7 +264,7 @@ public class PartialBoothPanchayatAction extends ActionSupport implements Servle
 			resultStatus = partialBoothPanchayatService.updatePartialBoothPanchayaDetails(jObj.getLong("id"),jObj.getLong("panchayatId"),jObj.getLong("boothId"),jObj.getLong("ppanchayatId"),jObj.getString("description"),jObj.getString("pdescription"),jObj.getLong("hamletId"));
 			
 		} catch (Exception e) {
-			Log.error("exception raised in updatePartialBoothDetails() in PartialBoothPanchayatAction Class" , e);
+			LOG.error("exception raised in updatePartialBoothDetails() in PartialBoothPanchayatAction Class" , e);
 		}
 		return Action.SUCCESS;
 	}
@@ -278,7 +278,7 @@ public class PartialBoothPanchayatAction extends ActionSupport implements Servle
 			jObj = new JSONObject(param);
 			hamletsList = partialBoothPanchayatService.getHamletsIaAPanchaya(jObj.getLong("panchaytId"));
 		} catch (Exception e) {
-			Log.error("exception raised in getHamletsInaPanchayat() in PartialBoothPanchayatAction Class" , e);
+			LOG.error("exception raised in getHamletsInaPanchayat() in PartialBoothPanchayatAction Class" , e);
 		}
 		return Action.SUCCESS;
 	}

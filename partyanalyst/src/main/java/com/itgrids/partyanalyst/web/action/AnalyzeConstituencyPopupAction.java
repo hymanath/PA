@@ -7,14 +7,12 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
-import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICommentsDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -26,9 +24,9 @@ public class AnalyzeConstituencyPopupAction extends ActionSupport implements Ser
 	private static final long serialVersionUID = 2257011258025761934L;
 	private HttpServletRequest request;
 	private HttpSession session;
-	private static final Logger log = Logger.getLogger(AnalyzeConstituencyPopupAction.class);
+	private static final Logger LOG = Logger.getLogger(AnalyzeConstituencyPopupAction.class);
 	
-	JSONObject jObj = null;
+	transient private JSONObject jObj = null;
 	private String task = null;
 	private String constituencyId;
 	private String redirectLoc;
@@ -50,7 +48,7 @@ public class AnalyzeConstituencyPopupAction extends ActionSupport implements Ser
 		return candidateComments;
 	}
 
-	public void setCandidateComments(List<CandidateCommentsVO> candidateComments) {
+	public void setCandidateComments(final List<CandidateCommentsVO> candidateComments) {
 		this.candidateComments = candidateComments;
 	}
 
@@ -58,7 +56,7 @@ public class AnalyzeConstituencyPopupAction extends ActionSupport implements Ser
 		return taskType;
 	}
 
-	public void setTaskType(String taskType) {
+	public void setTaskType(final String taskType) {
 		this.taskType = taskType;
 	}
 
@@ -66,7 +64,7 @@ public class AnalyzeConstituencyPopupAction extends ActionSupport implements Ser
 		return userId;
 	}
 
-	public void setUserId(String userId) {
+	public void setUserId(final String userId) {
 		this.userId = userId;
 	}
 
@@ -76,7 +74,7 @@ public class AnalyzeConstituencyPopupAction extends ActionSupport implements Ser
 		return userStatus;
 	}
 
-	public void setUserStatus(String userStatus) {
+	public void setUserStatus(final String userStatus) {
 		this.userStatus = userStatus;
 	}
 
@@ -84,7 +82,7 @@ public class AnalyzeConstituencyPopupAction extends ActionSupport implements Ser
 		return session;
 	}
 
-	public void setSession(HttpSession session) {
+	public void setSession(final HttpSession session) {
 		this.session = session;
 	}
 	
@@ -92,7 +90,7 @@ public class AnalyzeConstituencyPopupAction extends ActionSupport implements Ser
 		return constituencyName;
 	}
 
-	public void setConstituencyName(String constituencyName) {
+	public void setConstituencyName(final String constituencyName) {
 		this.constituencyName = constituencyName;
 	}
 
@@ -100,7 +98,7 @@ public class AnalyzeConstituencyPopupAction extends ActionSupport implements Ser
 		return parliamentConstiId;
 	}
 
-	public void setParliamentConstiId(String parliamentConstiId) {
+	public void setParliamentConstiId(final String parliamentConstiId) {
 		this.parliamentConstiId = parliamentConstiId;
 	}
 
@@ -108,7 +106,7 @@ public class AnalyzeConstituencyPopupAction extends ActionSupport implements Ser
 		return candidateVO;
 	}
 
-	public void setCandidateVO(List<CandidateVO> candidateVO) {
+	public void setCandidateVO(final List<CandidateVO> candidateVO) {
 		this.candidateVO = candidateVO;
 	}
 	
@@ -116,7 +114,7 @@ public class AnalyzeConstituencyPopupAction extends ActionSupport implements Ser
 		return task;
 	}
 
-	public void setTask(String task) {
+	public void setTask(final String task) {
 		this.task = task;
 	}
 
@@ -124,14 +122,14 @@ public class AnalyzeConstituencyPopupAction extends ActionSupport implements Ser
 		return request;
 	}
 
-	public void setRequest(HttpServletRequest request) {
+	public void setRequest(final HttpServletRequest request) {
 		this.request = request;
 	}
 	public ICommentsDataService getCommentsDataService() {
 		return commentsDataService;
 	}
 
-	public void setCommentsDataService(ICommentsDataService commentsDataService) {
+	public void setCommentsDataService(final ICommentsDataService commentsDataService) {
 		this.commentsDataService = commentsDataService;
 	}
 
@@ -139,7 +137,7 @@ public class AnalyzeConstituencyPopupAction extends ActionSupport implements Ser
 		return electionYears;
 	}
 
-	public void setElectionYears(java.util.List<SelectOptionVO> electionYears) {
+	public void setElectionYears(final java.util.List<SelectOptionVO> electionYears) {
 		this.electionYears = electionYears;
 	}
 
@@ -147,12 +145,12 @@ public class AnalyzeConstituencyPopupAction extends ActionSupport implements Ser
 		return redirectLoc;
 	}
 
-	public void setRedirectLoc(String redirectLoc) {
+	public void setRedirectLoc(final String redirectLoc) {
 		this.redirectLoc = redirectLoc;
 	}
 
 	
-	public void setServletRequest(HttpServletRequest request) {
+	public void setServletRequest(final HttpServletRequest request) {
 		this.request = request;		
 	}
 	
@@ -160,7 +158,7 @@ public class AnalyzeConstituencyPopupAction extends ActionSupport implements Ser
 		return constituencyId;
 	}
 
-	public void setConstituencyId(String constituencyId) {
+	public void setConstituencyId(final String constituencyId) {
 		this.constituencyId = constituencyId;
 	}	
 
@@ -168,7 +166,7 @@ public class AnalyzeConstituencyPopupAction extends ActionSupport implements Ser
 		return parliamentConstiName;
 	}
 
-	public void setParliamentConstiName(String parliamentConstiName) {
+	public void setParliamentConstiName(final String parliamentConstiName) {
 		this.parliamentConstiName = parliamentConstiName;
 	}
     
@@ -176,7 +174,7 @@ public class AnalyzeConstituencyPopupAction extends ActionSupport implements Ser
 		return parlchecked;
 	}
 
-	public void setParlchecked(String parlchecked) {
+	public void setParlchecked(final String parlchecked) {
 		this.parlchecked = parlchecked;
 	}
 
@@ -184,33 +182,12 @@ public class AnalyzeConstituencyPopupAction extends ActionSupport implements Ser
 		return constiElecId;
 	}
 
-	public void setConstiElecId(Long constiElecId) {
+	public void setConstiElecId(final Long constiElecId) {
 		this.constiElecId = constiElecId;
 	}
 
 	public String execute()
 	{	
-		/*session = request.getSession();
-		Object regVO = session.getAttribute(IConstants.USER);
-		
-		if(regVO == null){
-			log.error(" No User Log In .....");
-			userStatus = IConstants.PROBLEM_MANAGEMENT_LOGIN;
-			return IConstants.NOT_LOGGED_IN;
-		}
-		
-		else if(regVO != null){
-			
-			RegistrationVO userVO = (RegistrationVO)regVO;
-			if(userVO.getUserStatus().equals(IConstants.PARTY_ANALYST_USER)){
-				return IConstants.PARTY_ANALYST_USER;
-			}else if(userVO.getUserStatus().equals(IConstants.FREE_USER)){
-				//task = "pm_redirect";
-				electionYears = commentsDataService.getElectionYearsForConstituency(Long.parseLong(constituencyId));
-				return getRedirectPageDetails();
-			}
-				
-		}*/
 		
 		electionYears = commentsDataService.getElectionYearsForConstituency(Long.parseLong(constituencyId), false);
 		request.setAttribute("parlsel", parlchecked);
@@ -223,11 +200,10 @@ public class AnalyzeConstituencyPopupAction extends ActionSupport implements Ser
 		try {
 			jObj = new JSONObject(getTask());
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("Exception rised in getCandidateResults ",e);
 		} 
 		
-		Long constiElectionId = Long.parseLong(jObj.getString("constElecId"));
+		final Long constiElectionId = Long.parseLong(jObj.getString("constElecId"));
 		
 		candidateVO = commentsDataService.getCandidateResultsForConstiElectionId(constiElectionId);
 		
@@ -239,12 +215,11 @@ public class AnalyzeConstituencyPopupAction extends ActionSupport implements Ser
 		try {
 			jObj = new JSONObject(getTask());
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("Exception rised in getElectionYearsForConstituency ",e);
 		} 
 		
-		Long constituencyId = Long.parseLong(jObj.getString("constituencyId"));
-		Boolean onlyAssets = jObj.getBoolean("onlyAssets");
+		final Long constituencyId = Long.parseLong(jObj.getString("constituencyId"));
+		final Boolean onlyAssets = jObj.getBoolean("onlyAssets");
 		electionYears = commentsDataService.getElectionYearsForConstituency(constituencyId, onlyAssets);
 		
 		return Action.SUCCESS;
@@ -255,11 +230,10 @@ public class AnalyzeConstituencyPopupAction extends ActionSupport implements Ser
 		try {
 			jObj = new JSONObject(getTask());
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("Exception rised in getCommentsResults ",e);
 		} 
 		
-		Long constiElectionId = Long.parseLong(jObj.getString("constElecId"));
+		final Long constiElectionId = Long.parseLong(jObj.getString("constElecId"));
 		
 		candidateComments = commentsDataService.getAnalyzedResonsWithRatingsForConstituencyInAnElection(false,constiElectionId);
 		

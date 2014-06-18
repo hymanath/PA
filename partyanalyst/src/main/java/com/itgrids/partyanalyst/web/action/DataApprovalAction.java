@@ -24,7 +24,7 @@ public class DataApprovalAction extends ActionSupport implements ServletRequestA
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(DataApprovalAction.class);
+	private static final Logger LOG = Logger.getLogger(DataApprovalAction.class);
 	private HttpServletRequest request;
 	private ServletContext context;
 	private HttpSession session;
@@ -110,12 +110,12 @@ public class DataApprovalAction extends ActionSupport implements ServletRequestA
 			
 		try {
 			jObj = new JSONObject(param);
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
-		log.debug("Task::"+jObj.getString("task"));
+		LOG.debug("Task::"+jObj.getString("task"));
 		ApprovalInfoVO approvalInfoVO = new ApprovalInfoVO();
 		if(jObj.getString("task").equalsIgnoreCase("saveProblemApprovalData"))
 		{			

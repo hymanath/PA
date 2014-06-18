@@ -18,7 +18,7 @@ public class BoothResultsForAllElectionsPopupAction extends ActionSupport implem
 	 */
 	private static final long serialVersionUID = 1L;
 	private HttpServletRequest request;
-	private static final Logger log = Logger.getLogger(BoothResultsForAllElectionsPopupAction.class);
+	private static final Logger LOG = Logger.getLogger(BoothResultsForAllElectionsPopupAction.class);
 	private BoothPanelVO boothPanelVO;
 	private IPartyBoothWiseResultsService partyBoothWiseResultsService;
 	private String boothId;
@@ -54,11 +54,11 @@ public class BoothResultsForAllElectionsPopupAction extends ActionSupport implem
 
 	public String execute () 
 	{
-		ResultWithExceptionVO resultOfBoothPage = partyBoothWiseResultsService.getBoothPageInfo(new Long(boothId));
+		ResultWithExceptionVO resultOfBoothPage = partyBoothWiseResultsService.getBoothPageInfo(Long.valueOf(boothId));
 		if(resultOfBoothPage.getExceptionEncountered() == null){
 			boothPanelVO = (BoothPanelVO) resultOfBoothPage.getFinalResult();
 			boothPanelVO.setResultPartial(false);
-			log.debug("All Elections Info In Booths::"+boothPanelVO.getElections().size());			
+			LOG.debug("All Elections Info In Booths::"+boothPanelVO.getElections().size());			
 		} else {
 				boothPanelVO.setResultPartial(true);
 			}

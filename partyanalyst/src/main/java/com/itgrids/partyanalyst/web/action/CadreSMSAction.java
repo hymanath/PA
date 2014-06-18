@@ -38,7 +38,7 @@ public class CadreSMSAction extends ActionSupport implements ServletRequestAware
 	private List<SelectOptionVO> parliamentConstituencies;
 	private IStaticDataService staticDataService; 
 
-	private static final Logger log = Logger.getLogger(CadreSMSAction.class);
+	private static final Logger LOG = Logger.getLogger(CadreSMSAction.class);
 	
 	public void setCadreManagementService(
 			CadreManagementService cadreManagementService) {
@@ -100,8 +100,8 @@ public class CadreSMSAction extends ActionSupport implements ServletRequestAware
 	}
 
 	public String execute() throws Exception{
-		if(log.isDebugEnabled())
-			log.debug("CadreSMSMessage.execute() started");
+		if(LOG.isDebugEnabled())
+			LOG.debug("CadreSMSMessage.execute() started");
 		HttpSession session = request.getSession();
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 		cadreSMSVO = new CadreSMSVO();
@@ -111,17 +111,17 @@ public class CadreSMSAction extends ActionSupport implements ServletRequestAware
 	}
 	
 	public String getUserLocationWiseData(){
-		if(log.isDebugEnabled())
-			log.debug("CadreSMSMessage.getuserLocationWiseData() started");
+		if(LOG.isDebugEnabled())
+			LOG.debug("CadreSMSMessage.getuserLocationWiseData() started");
 		HttpSession session = request.getSession();
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 		String accessType = user.getAccessType();
 		String accessValue = user.getAccessValue();
 		Long userID = user.getRegistrationID();
-		Long id = new Long(accessValue);
+		Long id = Long.valueOf(accessValue);
 		cadreSMSVO = new CadreSMSVO();
-		if(log.isDebugEnabled())
-			log.debug("cadre access type:"+accessType);
+		if(LOG.isDebugEnabled())
+			LOG.debug("cadre access type:"+accessType);
 		if("COUNTRY".equals(accessType)){
 			List<SelectOptionVO> regions = new ArrayList<SelectOptionVO>();
 			List<SelectOptionVO> states = new ArrayList<SelectOptionVO>();
@@ -136,7 +136,7 @@ public class CadreSMSAction extends ActionSupport implements ServletRequestAware
 			regions.add(new SelectOptionVO(10L,"PARLIAMENT CONSTITUENCY"));
 			cadreSMSVO.setRegions(regions);
 			//states = cadreManagementService.getUserAccessStates(userID);
-			states = regionServiceDataImp.getStatesByCountry(new Long(1));
+			states = regionServiceDataImp.getStatesByCountry(1l);
 			states.add(0,new SelectOptionVO(0L,"Select State"));
 			cadreSMSVO.setStates(states);
 		}else if("STATE".equals(accessType)){
@@ -155,7 +155,7 @@ public class CadreSMSAction extends ActionSupport implements ServletRequestAware
 			
 			cadreSMSVO.setRegions(regions);
 			SelectOptionVO object = new SelectOptionVO();
-			String name = cadreManagementService.getStateName(new Long(accessValue));
+			String name = cadreManagementService.getStateName(Long.valueOf(accessValue));
 			object.setId(id);
 			object.setName(name);
 			states.add(object);
@@ -192,7 +192,7 @@ public class CadreSMSAction extends ActionSupport implements ServletRequestAware
 			List<SelectOptionVO> districts = new ArrayList<SelectOptionVO>();
 			List<SelectOptionVO> constituencies = new ArrayList<SelectOptionVO>();
 			List<SelectOptionVO> mandals = new ArrayList<SelectOptionVO>();
-			String areaType = regionServiceDataImp.getConstituencyAreaType(new Long(accessValue));
+			String areaType = regionServiceDataImp.getConstituencyAreaType(Long.valueOf(accessValue));
 			if(areaType != null && areaType.equals(IConstants.CONST_TYPE_URBAN))
 			{
 				regions.add(new SelectOptionVO(4L,"ASSEMBLY CONSTITUENCY"));
@@ -234,59 +234,59 @@ public class CadreSMSAction extends ActionSupport implements ServletRequestAware
 					regions.add(new SelectOptionVO(8L,"WARD"));
 					regions.add(new SelectOptionVO(9L,"BOOTH"));
 					cadreSMSVO.setRegions(regions);
-				cadreSMSVO.setStates(regionServiceDataImp.getStateByParliamentConstituencyID(new Long(accessValue)));
-				ConstituencyInfoVO constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(new Long(accessValue));
+				cadreSMSVO.setStates(regionServiceDataImp.getStateByParliamentConstituencyID(Long.valueOf(accessValue)));
+				ConstituencyInfoVO constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(Long.valueOf(accessValue));
 				 if(constituencyInfoVO != null){
 				     cadreSMSVO.setConstituencies(constituencyInfoVO.getAssembyConstituencies());
 				     cadreSMSVO.getParliamentConstituencys().add(new SelectOptionVO(constituencyInfoVO.getConstituencyId(),constituencyInfoVO.getConstituencyName())); 
 				 }
 			  }
 			}catch(Exception e){
-				log.error("Exception rised in getUserLocationWiseData",e);
+				LOG.error("Exception rised in getUserLocationWiseData",e);
 			}
 		}
 		return SUCCESS;
 	}
 	
 	public String sendSMS() throws Exception{
-		if(log.isDebugEnabled())
-			log.debug("CadreSMSMessage.sendSMS() started");
+		if(LOG.isDebugEnabled())
+			LOG.debug("CadreSMSMessage.sendSMS() started");
 		String param=request.getParameter("task");
 		JSONObject jsonObject = new JSONObject(param);
-		System.out.println("In json object = "+jsonObject);
+		LOG.info("In json object = "+jsonObject);
 		HttpSession session = request.getSession();
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 		Long userID = user.getRegistrationID();
 		String type = jsonObject.getString("SMS_LEVEL_TYPE");
-		Long value = new Long(jsonObject.getString("SMS_LEVEL_VALUE"));
+		Long value = Long.valueOf(jsonObject.getString("SMS_LEVEL_VALUE"));
 		String message = jsonObject.getString("SMS_MESSAGE");
 		String includeCadreName = jsonObject.getString("SMS_INCLUDE_CADRE_NAME");
 
-		if(log.isDebugEnabled())
-			log.debug("cadre type:"+type);
+		if(LOG.isDebugEnabled())
+			LOG.debug("cadre type:"+type);
 		totalCadres = cadreManagementService.sendSMSMessage(userID,type,value, message, includeCadreName);
 		return SUCCESS;
 	}
 	
 
 	public String getRegionsByCadreScope() throws Exception{
-		if(log.isDebugEnabled())
-			log.debug("CadreSMSMessage.getRegionsByCadreScope() started");
+		if(LOG.isDebugEnabled())
+			LOG.debug("CadreSMSMessage.getRegionsByCadreScope() started");
 		HttpSession session = request.getSession();
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 		Long userID = user.getRegistrationID();
-		Long regionID = new Long(request.getParameter("REGION_ID"));
+		Long regionID = Long.valueOf(request.getParameter("REGION_ID"));
 		String region = request.getParameter("REGION");
 
-		if(log.isDebugEnabled())
-			log.debug("region scope:"+region);
+		if(LOG.isDebugEnabled())
+			LOG.debug("region scope:"+region);
 		list = cadreManagementService.findRegionByCadreScope(userID,regionID,region);
 		return SUCCESS;
 	}
 	
 	public String getUsersCadreLevelData(){
-		if(log.isDebugEnabled())
-			log.debug("CadreSMSMessage.getuserLocationWiseData() started");
+		if(LOG.isDebugEnabled())
+			LOG.debug("CadreSMSMessage.getuserLocationWiseData() started");
 		HttpSession session = request.getSession();
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 		String accessType = user.getAccessType();

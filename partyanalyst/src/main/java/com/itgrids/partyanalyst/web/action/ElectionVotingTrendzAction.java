@@ -7,8 +7,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.jfree.util.Log;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ElectionTrendzReportVO;
@@ -27,7 +27,7 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class ElectionVotingTrendzAction extends ActionSupport implements ServletRequestAware{
 	
-	
+	private static final Logger LOG = Logger.getLogger(ElectionVotingTrendzAction.class);
 	private HttpServletRequest request;
 	private List<SelectOptionVO> stateList;
 	private List<SelectOptionVO> districtList;
@@ -206,7 +206,7 @@ public class ElectionVotingTrendzAction extends ActionSupport implements Servlet
 	
 	public String execute() throws Exception{
 		
-		Log.debug("Entered into election voting trendz action");
+		LOG.debug("Entered into election voting trendz action");
 		
 		stateList = new ArrayList<SelectOptionVO>(2);
 		stateList.add(0,new SelectOptionVO(0l,"Select State"));
@@ -262,7 +262,7 @@ public class ElectionVotingTrendzAction extends ActionSupport implements Servlet
 		
 		try {
 			jObj = new JSONObject(param);			
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -271,7 +271,7 @@ public class ElectionVotingTrendzAction extends ActionSupport implements Servlet
 		if(jObj.getString("stateId") != null && jObj.getString("task").equalsIgnoreCase("getDistricts"))
 		{
 			stateId = jObj.getString("stateId");		
-			districtList = staticDataService.getDistricts(new Long(stateId));
+			districtList = staticDataService.getDistricts(Long.valueOf(stateId));
 		}
 		return Action.SUCCESS;
 	}
@@ -295,7 +295,7 @@ public class ElectionVotingTrendzAction extends ActionSupport implements Servlet
 			stateId = jObj.getString("stateId");
 		}
 		
-		constituenciesList = staticDataService.getConstituenciesByElectionTypeAndStateId(new Long(electionTypeId), new Long(stateId)).getConstituencies();
+		constituenciesList = staticDataService.getConstituenciesByElectionTypeAndStateId(Long.valueOf(electionTypeId), Long.valueOf(stateId)).getConstituencies();
 		if(constituenciesList!=null && constituenciesList.size()>1){
 			SelectOptionVO selectOptionVO = new SelectOptionVO();
 			selectOptionVO.setId(0l);
@@ -315,7 +315,7 @@ public class ElectionVotingTrendzAction extends ActionSupport implements Servlet
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		resultStr = new Long(registrationService.checkForUserNameAvalilability(jObj.getString("userName")).getResultCode());
+		resultStr = Long.valueOf(registrationService.checkForUserNameAvalilability(jObj.getString("userName")).getResultCode());
 		return SUCCESS;
 	}
 	
@@ -323,12 +323,12 @@ public class ElectionVotingTrendzAction extends ActionSupport implements Servlet
 
 		try {
 			jObj = new JSONObject(getTask());
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		resultStr =  new Long(registrationService.checkForUserNameAvailabilityForFreashUser(jObj.getString("userName")).getResultCode());
+		resultStr =  Long.valueOf(registrationService.checkForUserNameAvailabilityForFreashUser(jObj.getString("userName")).getResultCode());
 		 
 		return SUCCESS;
 	}
@@ -385,7 +385,7 @@ public class ElectionVotingTrendzAction extends ActionSupport implements Servlet
 		if(jObj.getString("districtId") != null && jObj.getString("task").equalsIgnoreCase("getMandals"))
 			districtId = jObj.getString("districtId");
 		
-		mandalVO = staticDataService.getMandalsForDistrict(new Long(districtId));
+		mandalVO = staticDataService.getMandalsForDistrict(Long.valueOf(districtId));
 		return Action.SUCCESS;
 	}
 	
@@ -396,7 +396,7 @@ public class ElectionVotingTrendzAction extends ActionSupport implements Servlet
 		
 		try {
 			jObj = new JSONObject(param);	
-			System.out.println("jObj================"+jObj);
+			LOG.info("jObj================"+jObj);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -407,7 +407,7 @@ public class ElectionVotingTrendzAction extends ActionSupport implements Servlet
 		String electionTypeId = jObj.getString("electionTypeId");	
 		
 		electionTrendzReportVO = new ElectionTrendzReportVO();
-		electionTrendzReportVO = electionTrendzService.getVotingTrendzForAnElection(new Long(0), new Long(electionTypeId), "0", new Long(stateId), new Long(1), new Long(constituencyId), new Long(0), new Long(0));
+		electionTrendzReportVO = electionTrendzService.getVotingTrendzForAnElection(Long.valueOf(0), Long.valueOf(electionTypeId), "0", Long.valueOf(stateId), Long.valueOf(1), Long.valueOf(constituencyId), Long.valueOf(0), Long.valueOf(0));
 		
 		
 		return Action.SUCCESS;

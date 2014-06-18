@@ -106,7 +106,7 @@ public class DailyUpdatesAction  extends ActionSupport implements ServletRequest
 		    	  String[] specialPageIds = specialPage.split(",");
 		    	  for(String id :specialPageIds){
 		    		  if(id != null && id.length() > 0)
-		    		  specialPageIdsList.add(new Long(id));
+		    		  specialPageIdsList.add(Long.valueOf(id));
 		    	  }
 		      }
 		      
@@ -114,7 +114,7 @@ public class DailyUpdatesAction  extends ActionSupport implements ServletRequest
             	  String[] partyIds = partyPage.split(",");
             	  for(String id :partyIds){
 		    		  if(id != null && id.length() > 0)
-		    			  partyIdsList.add(new Long(id));
+		    			  partyIdsList.add(Long.valueOf(id));
 		    	  }
 		      }
               
@@ -122,7 +122,7 @@ public class DailyUpdatesAction  extends ActionSupport implements ServletRequest
             	  String[] candidateIds = candidatePage.split(",");
             	  for(String id :candidateIds){
 		    		  if(id != null && id.length() > 0)
-		    			  candidateIdsList.add(new Long(id));
+		    			  candidateIdsList.add(Long.valueOf(id));
 		    	  }
 		      }
               dailyUpdatesVO.setAll(all);

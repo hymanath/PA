@@ -51,7 +51,7 @@ public class PartyStrengthAction extends ActionSupport implements
 	private PartiesDetailsVO alliancesYears;
 	private int errorCode = 0;
 	private EntitlementsHelper entitlementsHelper;
-	private static final org.apache.log4j.Logger log = Logger.getLogger(PartyStrengthAction.class);
+	private static final org.apache.log4j.Logger LOG = Logger.getLogger(PartyStrengthAction.class);
 	private String task = null;
 	JSONObject jObj = null;
 		
@@ -233,7 +233,7 @@ public class PartyStrengthAction extends ActionSupport implements
 		
 		}catch(Exception ex){
 			
-			log.error("Exception Raised :",ex);
+			LOG.error("Exception Raised :",ex);
 		 return "failure";
 		}
 		
@@ -246,7 +246,7 @@ public class PartyStrengthAction extends ActionSupport implements
 		param=request.getParameter("task");
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}	
@@ -269,7 +269,7 @@ public class PartyStrengthAction extends ActionSupport implements
 		param=request.getParameter("task");
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}		
@@ -280,7 +280,7 @@ public class PartyStrengthAction extends ActionSupport implements
 			Long stateId = 0l;
 			String electionType = jObj.getString("electionType");	
 			if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
-				stateId =  new Long(jObj.getString("stateId"));	
+				stateId =  Long.valueOf(jObj.getString("stateId"));	
 			}
 			years = partyStrengthService.getCountOfElectionYears(stateId,electionType);
 			
@@ -297,15 +297,15 @@ public class PartyStrengthAction extends ActionSupport implements
 		param=request.getParameter("task");
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		try {
-			Long stateId = new Long(jObj.getString("stateId"));	
+			Long stateId = Long.valueOf(jObj.getString("stateId"));	
 			String electionType = jObj.getString("electionType");	
-			Long countOfElectionYears  = new Long(jObj.getString("electionYears"));
-			Long partyId = new Long(jObj.getString("party"));	
+			Long countOfElectionYears  = Long.valueOf(jObj.getString("electionYears"));
+			Long partyId = Long.valueOf(jObj.getString("party"));	
 			
 			jObj = new JSONObject(getTask());	
 			electionInfo = partyStrengthService.getPartiesData(electionType,stateId,countOfElectionYears,partyId,IConstants.FALSE,0l,"");			
@@ -321,12 +321,12 @@ public class PartyStrengthAction extends ActionSupport implements
 		param=request.getParameter("task");
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		try {
-			Long stateId = new Long(jObj.getString("stateId"));	
+			Long stateId = Long.valueOf(jObj.getString("stateId"));	
 			String electionType = jObj.getString("electionType");
 			
 			allParties = partyStrengthService.getAllPartiesData1(stateId,electionType);
@@ -341,16 +341,16 @@ public class PartyStrengthAction extends ActionSupport implements
 		param=request.getParameter("task");
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		try {
-			Long count = new Long(jObj.getString("count"));	
+			Long count = Long.valueOf(jObj.getString("count"));	
 			String partyName = jObj.getString("partyName");
 			String electionType = jObj.getString("electionType");
-			Long stateId = new Long(jObj.getString("stateId"));	
-			Long totalElectionYears = new Long(jObj.getString("elecYears"));	
+			Long stateId = Long.valueOf(jObj.getString("stateId"));	
+			Long totalElectionYears = Long.valueOf(jObj.getString("elecYears"));	
 			requiredConstituencyDetails = partyStrengthService.getAllConstituenciesData(electionType,stateId,partyName,totalElectionYears,count,null);        
 
 		}catch(Exception e){
@@ -365,15 +365,15 @@ public class PartyStrengthAction extends ActionSupport implements
 		param=request.getParameter("task");
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		try {				
 			Long partyId = jObj.getLong("partyId");
 			String electionType = jObj.getString("electionType");
-			Long stateId = new Long(jObj.getString("stateId"));	
-			Long totalElectionYears = new Long(jObj.getString("elecYears"));	
+			Long stateId = Long.valueOf(jObj.getString("stateId"));	
+			Long totalElectionYears = Long.valueOf(jObj.getString("elecYears"));	
 			Long  electionId = jObj.getLong("electionId"); 
 			String partyName = jObj.getString("partyName");
 			includingAlliance = partyStrengthService.getIncludingAllianceDetailsForAParty1(electionType,stateId,partyId,totalElectionYears,electionId,partyName);
@@ -391,15 +391,15 @@ public class PartyStrengthAction extends ActionSupport implements
 		param=request.getParameter("task");
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		try {
 			Long partyId = jObj.getLong("partyName");
 			String electionType = jObj.getString("electionType");
-			Long stateId = new Long(jObj.getString("stateId"));	
-			Long totalElectionYears = new Long(jObj.getString("elecYears"));
+			Long stateId = Long.valueOf(jObj.getString("stateId"));	
+			Long totalElectionYears = Long.valueOf(jObj.getString("elecYears"));
 			String partyName = jObj.getString("partyShortName");			
 			
 			excludingAlliance = partyStrengthService.getPartiesData(electionType,stateId,totalElectionYears,partyId,IConstants.FALSE,0l,partyName);
@@ -414,7 +414,7 @@ public class PartyStrengthAction extends ActionSupport implements
 		param=request.getParameter("task");
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -435,7 +435,7 @@ public class PartyStrengthAction extends ActionSupport implements
 		param=request.getParameter("task");
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

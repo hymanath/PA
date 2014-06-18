@@ -23,7 +23,7 @@ public class LandingAction extends ActionSupport implements ServletRequestAware,
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(LandingAction.class);
+	private static final Logger LOG = Logger.getLogger(LandingAction.class);
 	private HttpServletRequest request;	
 	private ServletContext context;
 	JSONObject jObj;

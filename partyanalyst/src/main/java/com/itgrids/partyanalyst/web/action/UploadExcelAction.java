@@ -23,7 +23,7 @@ import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 
 public class UploadExcelAction extends ActionSupport implements ServletResponseAware, ServletRequestAware, ServletContextAware {
 	private static final long serialVersionUID = 1L;
-	private final static Logger log = Logger.getLogger(UploadExcelAction.class);
+	private final static Logger LOG = Logger.getLogger(UploadExcelAction.class);
 
     private HttpServletResponse response;
     private HttpServletRequest request; 
@@ -43,17 +43,17 @@ public class UploadExcelAction extends ActionSupport implements ServletResponseA
     
     public String execute() throws JRException {
     	String contextPath = context.getRealPath("/");
-		System.out.println("FilePath -->" +inputFile);
-		System.out.println("fileName -->" + inputFileFileName);
-		System.out.println("ContentType -->" + inputFileContentType);
+		LOG.info("FilePath -->" +inputFile);
+		LOG.info("fileName -->" + inputFileFileName);
+		LOG.info("ContentType -->" + inputFileContentType);
 		 try{
 			 BeanUtils.populate(uploadFormVo , request.getParameterMap());
-			 System.out.println("InputFileName ="+uploadFormVo.getInputFile());
-			 System.out.println("electionType ="+uploadFormVo.getElectionType());
-			 System.out.println("electionScope ="+uploadFormVo.getElectionScope());
-			 System.out.println("electionYear ="+uploadFormVo.getElectionYear());
-			 System.out.println("country "+uploadFormVo.getCountry());
-			 System.out.println("district ="+uploadFormVo.getDistrict());
+			 LOG.info("InputFileName ="+uploadFormVo.getInputFile());
+			 LOG.info("electionType ="+uploadFormVo.getElectionType());
+			 LOG.info("electionScope ="+uploadFormVo.getElectionScope());
+			 LOG.info("electionYear ="+uploadFormVo.getElectionYear());
+			 LOG.info("country "+uploadFormVo.getCountry());
+			 LOG.info("district ="+uploadFormVo.getDistrict());
 			 Boolean isResults = false;
 			 if(isElectionResults.equalsIgnoreCase(IConstants.ELECTION_RESULTS))
 				 isResults = true;

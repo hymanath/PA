@@ -114,7 +114,7 @@ public class InfluencingPersonInfoAction extends ActionSupport implements Servle
 		influencingPersonId = request.getParameter("influencingPersonId");
 		
 		influencingPeopleBeanVO = new InfluencingPeopleBeanVO();
-		influencingPeopleBeanVO = influencingPeopleService.getDetailsByInfluencingPersonId(new Long(influencingPersonId));
+		influencingPeopleBeanVO = influencingPeopleService.getDetailsByInfluencingPersonId(Long.valueOf(influencingPersonId));
 				
 		return SUCCESS;
 	}

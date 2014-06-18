@@ -25,7 +25,7 @@ public class PartyBoothResult1Action extends ActionSupport  implements ServletRe
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(PartyBoothResult1Action.class);
+	private static final Logger LOG = Logger.getLogger(PartyBoothResult1Action.class);
 	private String task = null;
 	private String partyName;
 	private String electionType;
@@ -138,17 +138,17 @@ public class PartyBoothResult1Action extends ActionSupport  implements ServletRe
 		session = request.getSession();
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		
-		System.out.println("In execute = "+electionType+" ,election year =  "+electionYear);
-		constituencyVOs = crossVotingEstimationService.getConstituenciesForElectionYearAndScopeForBoothData(electionYear, new Long(electionType));
-		//constituencyVOs = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(regVO.getRegistrationID(),new Long(electionYear), new Long(electionType));
+		LOG.info("In execute = "+electionType+" ,election year =  "+electionYear);
+		constituencyVOs = crossVotingEstimationService.getConstituenciesForElectionYearAndScopeForBoothData(electionYear, Long.valueOf(electionType));
+		//constituencyVOs = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(regVO.getRegistrationID(),Long.valueOf(electionYear), Long.valueOf(electionType));
 
 		return Action.SUCCESS;
 	}
 	
 	public String getParty() throws Exception{
 	
-		System.out.println("In get party = ");
-		constituencyVOs = crossVotingEstimationService.getPartiesForConstituencyAndElectionYearForBoothData(new Long(constituencyName), electionYear);
+		LOG.info("In get party = ");
+		constituencyVOs = crossVotingEstimationService.getPartiesForConstituencyAndElectionYearForBoothData(Long.valueOf(constituencyName), electionYear);
 		return Action.SUCCESS;
 	}
 
@@ -192,7 +192,7 @@ public class PartyBoothResult1Action extends ActionSupport  implements ServletRe
 			  }
 		}catch(Exception e){
 			
-			log.error("Exception rised in getAllOptions action method"+e);
+			LOG.error("Exception rised in getAllOptions action method"+e);
 			
 		}
 		return Action.SUCCESS;

@@ -43,7 +43,7 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 	 */
 	private static final long serialVersionUID = 2018627765397943688L;
 	private CadreManagementService cadreManagementService;
-	private static final Logger log = Logger.getLogger(MahaNaduAction.class);
+	private static final Logger LOG = Logger.getLogger(MahaNaduAction.class);
 	InputStream inputStream;
 	private ServletContext context;
 	private HttpServletRequest request;
@@ -81,15 +81,7 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 	
 	private String cadreId;
  
-	/**
-	 * Select options for cadre level regional data
-	 * 
-	 */
-	private List<SelectOptionVO> districtList_c, constituencyList_c;
-	/**
-	 * varibales used to pre select the required select boxes in cadre level
-	 * 
-	 */
+	
 	private Long defaultStateId = 0l;
 	private Long defaultDistId = 0l;
 	private Long defaultConstId = 0l;	
@@ -369,22 +361,6 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 	public void setDobOptionsList(List<String> dobOptionsList) {
 		this.dobOptionsList = dobOptionsList;
 	}	
-
-	public List<SelectOptionVO> getDistrictList_c() {
-		return districtList_c;
-	}
-
-	public void setDistrictList_c(List<SelectOptionVO> districtList_c) {
-		this.districtList_c = districtList_c;
-	}
-
-	public List<SelectOptionVO> getConstituencyList_c() {
-		return constituencyList_c;
-	}
-
-	public void setConstituencyList_c(List<SelectOptionVO> constituencyList_c) {
-		this.constituencyList_c = constituencyList_c;
-	}	
 	
 	public Long getDefaultStateId() {
 		return defaultStateId;
@@ -517,8 +493,8 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 	}
 
 	public String execute(){
-		if(log.isDebugEnabled())
-			log.debug("MahaNaduAction.execute() start");
+		if(LOG.isDebugEnabled())
+			LOG.debug("MahaNaduAction.execute() start");
 	  try{
 		session = request.getSession();
 		
@@ -544,7 +520,7 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 		
 		 cadreId = request.getParameter("cadreId");
 		 
-	    if(!(cadreId != null && (new Long(cadreId)) > 0)){
+	    if(!(cadreId != null && (Long.valueOf(cadreId)) > 0)){
 	    	
 		    session.setAttribute(ISessionConstants.CONSTITUENCIES,new ArrayList<SelectOptionVO>());
 			//session.setAttribute(ISessionConstants.MANDALS,new ArrayList<SelectOptionVO>());	
@@ -605,7 +581,7 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 			
 		constituencyList = staticDataService.getLatestConstituenciesByStateId(1L);
 	  }catch(Exception e){
-		  log.error(" exception occured in execute() in mahanaduAction class.",e);
+		  LOG.error(" exception occured in execute() in mahanaduAction class.",e);
 	  }
 		return Action.SUCCESS;
 	}
@@ -613,14 +589,14 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 	public void prepare() throws Exception {
 	 try{	
 		   cadreId = request.getParameter("cadreId");
-	       if(cadreId != null && (new Long(cadreId)) > 0)
+	       if(cadreId != null && (Long.valueOf(cadreId)) > 0)
 	        {	
-	        	//cadreInfo = cadreManagementService.getCadreCompleteInfo(new Long(cadreId));
-	    	   cadreVo = mahaNaduService.getCadreCompleteInfo(new Long(cadreId));
+	        	//cadreInfo = cadreManagementService.getCadreCompleteInfo(Long.valueOf(cadreId));
+	    	   cadreVo = mahaNaduService.getCadreCompleteInfo(Long.valueOf(cadreId));
 	            prepopulateLocations(cadreVo);
 	        } 
 		}catch(Exception e){
-			log.error(" exception occured in prepare() in mahanaduAction class.",e);
+			LOG.error(" exception occured in prepare() in mahanaduAction class.",e);
 		}
 	}    
      
@@ -629,7 +605,7 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
     	
     
     		session = request.getSession();
-    		System.out.println("inside method populate const");
+    		LOG.info("inside method populate const");
     		
     		//get districts
     		List<SelectOptionVO> districtNames_c = new ArrayList<SelectOptionVO>();
@@ -654,7 +630,7 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
     			
     		
 			
-			/*List<SelectOptionVO> mandals_c=regionServiceDataImp.getSubRegionsInConstituency(new Long(cadreInfo.getConstituencyID()),IConstants.PRESENT_YEAR,null);
+			/*List<SelectOptionVO> mandals_c=regionServiceDataImp.getSubRegionsInConstituency(Long.valueOf(cadreInfo.getConstituencyID()),IConstants.PRESENT_YEAR,null);
 			SelectOptionVO obj2 = new SelectOptionVO(0L,"Select Mandal");
 			mandals_c.add(0, obj2);
 			
@@ -662,13 +638,13 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 			session.setAttribute(ISessionConstants.MANDALS, mandals_c);
 			
 			//get villages
-			List<SelectOptionVO> villageNames_c = regionServiceDataImp.getHamletsOrWards(new Long(cadreInfo.getMandal()),IConstants.PRESENT_YEAR);
+			List<SelectOptionVO> villageNames_c = regionServiceDataImp.getHamletsOrWards(Long.valueOf(cadreInfo.getMandal()),IConstants.PRESENT_YEAR);
 			SelectOptionVO obj3 = new SelectOptionVO(0L,"Select Village");
 			villageNames_c.add(0, obj3);
 			
 			session.setAttribute(ISessionConstants.VILLAGES, villageNames_c);
 			String areaFlag = cadreInfo.getMandal().substring(0,1);
-			Long id = new Long(cadreInfo.getMandal().substring(1));
+			Long id = Long.valueOf(cadreInfo.getMandal().substring(1));
 			Long localElecId = null;
 			Long tehsilId = null;
 			if(areaFlag.equalsIgnoreCase(IConstants.URBAN_TYPE)){
@@ -693,7 +669,7 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
     	//Long locationId = jObj.getLong("id");
 		Long constituencyId = jObj.getLong("constId");
 		//String areaFlag = locationId.toString().substring(0,1);
-		//Long id = new Long(locationId.toString().substring(1));
+		//Long id = Long.valueOf(locationId.toString().substring(1));
 		//Long localElecId = null;
 		// tehsilId = null;
 		//if(areaFlag.equalsIgnoreCase(IConstants.URBAN_TYPE)){
@@ -748,7 +724,7 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
     	ResultStatus result = mahaNaduService.saveCadreInfoForMahaNadu(cadreVo);
     	
 		if(result.getResultCode() == ResultCodeMapper.SUCCESS){
-			log.debug("fileuploades is sucess Method");
+			LOG.debug("fileuploades is sucess Method");
 			if(cadreVo.getCadreId() != null && cadreVo.getCadreId().longValue() > 0 ){
 				 inputStream = new StringBufferInputStream("update");
 			}else{
@@ -790,7 +766,7 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
     	
     	cadreVo =  mahaNaduService.searchCadreDetails(userDetls.getRegistrationID(),Long.valueOf(constituencyId),searchBy.trim(),searchType,sort,sortBy,Integer.valueOf(startIndex),Integer.valueOf(maxResult));
 	} catch (Exception e) {
-		log.error(" exception occured in searchCadreInfo() in mahanaduAction class.",e);
+		LOG.error(" exception occured in searchCadreInfo() in mahanaduAction class.",e);
 	}    
     return Action.SUCCESS;
     }
@@ -819,7 +795,7 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
     	
     	cadreVo =  mahaNaduService.searchVoterInfo(userDetls.getRegistrationID(),Long.valueOf(boothId),searchBy.trim(),searchType,sort,sortBy,Integer.valueOf(startIndex),Integer.valueOf(maxResult));
 	} catch (Exception e) {
-		log.error(" exception occured in searchVoterInfo() in mahanaduAction class.",e);
+		LOG.error(" exception occured in searchVoterInfo() in mahanaduAction class.",e);
 	}    
     return Action.SUCCESS;
     }    

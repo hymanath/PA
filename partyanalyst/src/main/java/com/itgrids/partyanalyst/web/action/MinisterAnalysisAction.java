@@ -144,7 +144,7 @@ public class MinisterAnalysisAction extends ActionSupport implements ServletRequ
 				List<Long> partyIdsList = new ArrayList<Long>();
 				 for(String partyId:partyArray)
 				 {
-					 partyIdsList.add(new Long(partyId));
+					 partyIdsList.add(Long.valueOf(partyId));
 				 }
 			  results = electionLiveResultsAnalysisService.getDistrictWisePartyPerfDetailsNew(jObj.getLong("electionId"),jObj.getLong("stateId"),partyIdsList);	
 			}
@@ -163,7 +163,7 @@ public class MinisterAnalysisAction extends ActionSupport implements ServletRequ
 			  List<Long> partiesList = new ArrayList<Long>();
 			  for(String party:partiesArray)
 			  {
-				  partiesList.add(new Long(party));
+				  partiesList.add(Long.valueOf(party));
 			  }
 			  results = electionLiveResultsAnalysisService.getAllPartiesPerfoDistWiseForPartialEle(jObj.getLong("electionId"),partiesList);
 			}
@@ -179,7 +179,7 @@ public class MinisterAnalysisAction extends ActionSupport implements ServletRequ
 				  List<Long> partiesList = new ArrayList<Long>();
 				  for(String party:partiesArray)
 				  {
-					  partiesList.add(new Long(party));
+					  partiesList.add(Long.valueOf(party));
 				  }
 				  results = electionLiveResultsAnalysisService.getAllPartyCountsDistrictWise(jObj.getLong("electionId"),partiesList,jObj.getBoolean("includeAlliances"),jObj.getString("type"));
 			}

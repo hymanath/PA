@@ -132,7 +132,7 @@ public class ConstituencyWiseElectionResultsAction extends ActionSupport impleme
 				/* runner.startTask(2, 5,"parliament");
 			        Thread.sleep(10000);
 			        //timer.cancel();
-			        System.out.println("now");
+			        LOG.info("now");
 			        //timer=new Timer();
 			        
 			        runner.startTaskForParliament(2, 5,"hello");

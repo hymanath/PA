@@ -100,7 +100,7 @@ public class SendUpdatesAction extends ActionSupport implements ServletRequestAw
 	}
 	
 	
-	public String AjaxHandler()
+	public String ajaxHandler()
 	{
 		try {
 			jObj = new JSONObject(getTask());

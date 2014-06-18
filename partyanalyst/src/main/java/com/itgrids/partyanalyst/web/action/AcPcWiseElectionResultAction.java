@@ -29,28 +29,33 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 	
 	
 	private static final long serialVersionUID = -8021304666056628316L;
-	HttpServletRequest request;
-	private HttpSession session;
+	transient private HttpServletRequest request;
+	transient private HttpSession session;
 	private static final Logger LOG = Logger.getLogger(AcPcWiseElectionResultAction.class);
 	private String task;
-	JSONObject jObj;
+	transient private JSONObject jObj;
 	private List<BasicVO> resultList;
 	@Autowired
-	IAcPcWiseElectionResultService acPcWiseElectionResultService;
-	List<SelectOptionVO> resultLists; 
+	transient private IAcPcWiseElectionResultService acPcWiseElectionResultService;
+	private List<SelectOptionVO> resultLists; 
 	private IStaticDataService staticDataService;
-	List<SelectOptionVO> returnList;
-	List<GenericVO> returnList1;
+	private List<SelectOptionVO> returnList;
+	private List<GenericVO> returnList1;
 	private EntitlementsHelper entitlementsHelper;
 	private List<CasteWiseResultVO> casteData;
 	private List<com.itgrids.survey.soa.endpoints.GenericVO> genderWiseDetails;
+	private static final String TRUE = "true";
+	private static final String PARTIES = "parties";
+	private static final String STATEID = "stateId";
+	private static final String ELECTIONID = "electionId";
+	private static final String ELECTIONSCOPEID = "electionScopeId";
 	
 	public List<CasteWiseResultVO> getCasteData() {
 		return casteData;
 	}
 
 
-	public void setCasteData(List<CasteWiseResultVO> casteData) {
+	public void setCasteData(final List<CasteWiseResultVO> casteData) {
 		this.casteData = casteData;
 	}
 
@@ -60,7 +65,7 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 	}
 
 
-	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+	public void setEntitlementsHelper(final EntitlementsHelper entitlementsHelper) {
 		this.entitlementsHelper = entitlementsHelper;
 	}
 
@@ -70,7 +75,7 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 	}
 
 
-	public void setStaticDataService(IStaticDataService staticDataService) {
+	public void setStaticDataService(final IStaticDataService staticDataService) {
 		this.staticDataService = staticDataService;
 	}
 
@@ -80,12 +85,12 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 	}
 
 
-	public void setResultLists(List<SelectOptionVO> resultLists) {
+	public void setResultLists(final List<SelectOptionVO> resultLists) {
 		this.resultLists = resultLists;
 	}
 
 
-	public void setServletRequest(HttpServletRequest request)
+	public void setServletRequest(final HttpServletRequest request)
 	{
 		this.request = request;
 	}
@@ -96,7 +101,7 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 	}
 
 
-	public void setTask(String task) {
+	public void setTask(final String task) {
 		this.task = task;
 	}
 
@@ -106,7 +111,7 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 	}
 
 
-	public void setResultList(List<BasicVO> resultList) {
+	public void setResultList(final List<BasicVO> resultList) {
 		this.resultList = resultList;
 	}
 
@@ -117,7 +122,7 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 	}
 
 
-	public void setReturnList(List<SelectOptionVO> returnList) {
+	public void setReturnList(final List<SelectOptionVO> returnList) {
 		this.returnList = returnList;
 	}
 
@@ -129,7 +134,7 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 	}
 
 
-	public void setReturnList1(List<GenericVO> returnList1) {
+	public void setReturnList1(final List<GenericVO> returnList1) {
 		this.returnList1 = returnList1;
 	}
 
@@ -142,7 +147,7 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 	}
 
 
-	public void setGenderWiseDetails(
+	public void setGenderWiseDetails(final 
 			List<com.itgrids.survey.soa.endpoints.GenericVO> genderWiseDetails) {
 		this.genderWiseDetails = genderWiseDetails;
 	}
@@ -154,20 +159,18 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 		{
 			LOG.debug("Entered Into execute method in AcPcWiseElectionResultAction Action");
 			session = request.getSession();
-			RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
+			final RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
 			if(session.getAttribute(IConstants.USER) == null && 
-					!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.NEW_LIVE_RESULTS))
+					!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.NEW_LIVE_RESULTS)){
 				return INPUT;
-			if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.NEW_LIVE_RESULTS))
+			}
+			if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.NEW_LIVE_RESULTS)){
 				return ERROR;
-			if (registrationVO != null) 
-			{
-				if (!registrationVO.getIsAdmin().equals("true"))
-					  return ERROR;
-			} 
-			else
-				return ERROR;
+			}
 			
+			if (!registrationVO.getIsAdmin().equals(TRUE)){
+			  return ERROR;
+			}
 			
 			resultLists = staticDataService.getAllParliaments();
 			
@@ -186,24 +189,26 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 		{
 			LOG.debug("Entered Into getElectionResults method in AcPcWiseElectionResultAction Action");
 			session = request.getSession();
-			RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
-			if (registrationVO != null) 
+			final RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
+			if (registrationVO == null) 
 			{
-				if (!registrationVO.getIsAdmin().equals("true"))
-					  return ERROR;
-			} 
-			else
 				return ERROR;
+			} 
+			else{
+				if (!registrationVO.getIsAdmin().equals(TRUE)){
+				   return ERROR;
+				}
+			}
 			
 			jObj = new JSONObject(getTask());
 						
-			JSONArray parties = jObj.getJSONArray("parties");
-			List<Long> partyIds = new ArrayList<Long>();
+			final JSONArray parties = jObj.getJSONArray(PARTIES);
+			final List<Long> partyIds = new ArrayList<Long>();
 			for(int i = 0 ; i < parties.length() ; i++)
 			{
-				partyIds.add(new Long(parties.get(i).toString()));
+				partyIds.add(Long.valueOf(parties.get(i).toString()));
 			}
-			resultList = acPcWiseElectionResultService.getPartyWiseComperassionResult(jObj.getLong("stateId"),jObj.getLong("electionId"),partyIds,jObj.getLong("electionScopeId"),jObj.getString("scope"));
+			resultList = acPcWiseElectionResultService.getPartyWiseComperassionResult(jObj.getLong(STATEID),jObj.getLong(ELECTIONID),partyIds,jObj.getLong(ELECTIONSCOPEID),jObj.getString("scope"));
 		} 
 		catch (Exception e)
 		{
@@ -217,30 +222,32 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 	{
 		try
 		{
-			LOG.debug("Entered Into getElectionResults method in AcPcWiseElectionResultAction Action");
+			LOG.debug("Entered Into cbnOrModiEffect method in AcPcWiseElectionResultAction Action");
 			session = request.getSession();
-			RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
-			if (registrationVO != null) 
+			final RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
+			if (registrationVO == null) 
 			{
-				if (!registrationVO.getIsAdmin().equals("true"))
-					  return ERROR;
-			} 
-			else
 				return ERROR;
+			} 
+			else{
+				if (!registrationVO.getIsAdmin().equals(TRUE)){
+				   return ERROR;
+				}
+			}
 			
 			jObj = new JSONObject(getTask());
 						
-			JSONArray parties = jObj.getJSONArray("parties");
-			List<Long> partyIds = new ArrayList<Long>();
+			final JSONArray parties = jObj.getJSONArray(PARTIES);
+			final List<Long> partyIds = new ArrayList<Long>();
 			for(int i = 0 ; i < parties.length() ; i++)
 			{
-				partyIds.add(new Long(parties.get(i).toString()));
+				partyIds.add(Long.valueOf(parties.get(i).toString()));
 			}
-			returnList = acPcWiseElectionResultService.cbnOrModiEffect(jObj.getLong("stateId"),jObj.getLong("electionId"),partyIds,jObj.getLong("electionScopeId"));
+			returnList = acPcWiseElectionResultService.cbnOrModiEffect(jObj.getLong(STATEID),jObj.getLong(ELECTIONID),partyIds,jObj.getLong(ELECTIONSCOPEID));
 		} 
 		catch (Exception e)
 		{
-			LOG.error("Exception Raised In getElectionResults method in AcPcWiseElectionResultAction Action", e);
+			LOG.error("Exception Raised In cbnOrModiEffect method in AcPcWiseElectionResultAction Action", e);
 			return Action.ERROR;
 		}
 		return Action.SUCCESS;
@@ -250,16 +257,18 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 	{
 		try
 		{
-			LOG.debug("Entered Into getElectionResults method in AcPcWiseElectionResultAction Action");
+			LOG.debug("Entered Into getCbnEffect method in AcPcWiseElectionResultAction Action");
 			session = request.getSession();
-			RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
-			if (registrationVO != null) 
+			final RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
+			if (registrationVO == null) 
 			{
-				if (!registrationVO.getIsAdmin().equals("true"))
-					  return ERROR;
-			} 
-			else
 				return ERROR;
+			} 
+			else{
+				if (!registrationVO.getIsAdmin().equals(TRUE)){
+				   return ERROR;
+				}
+			}
 			
 			returnList1 = acPcWiseElectionResultService.cbnEffectCalucation();
 			
@@ -276,38 +285,40 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 	{
 		try
 		{
-			LOG.debug("Entered Into getElectionResults method in AcPcWiseElectionResultAction Action");
+			LOG.debug("Entered Into filterAndGetElectionResults method in AcPcWiseElectionResultAction Action");
 			session = request.getSession();
-			RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
-			if (registrationVO != null) 
+			final RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
+			if (registrationVO == null) 
 			{
-				if (!registrationVO.getIsAdmin().equals("true"))
-					  return ERROR;
-			} 
-			else
 				return ERROR;
+			} 
+			else{
+				if (!registrationVO.getIsAdmin().equals(TRUE)){
+				   return ERROR;
+				}
+			}
 			
 			jObj = new JSONObject(getTask());
 						
-			JSONArray parties = jObj.getJSONArray("parties");
-			List<Long> partyIds = new ArrayList<Long>();
+			final JSONArray parties = jObj.getJSONArray(PARTIES);
+			final List<Long> partyIds = new ArrayList<Long>();
 			for(int i = 0 ; i < parties.length() ; i++)
 			{
-				partyIds.add(new Long(parties.get(i).toString()));
+				partyIds.add(Long.valueOf(parties.get(i).toString()));
 			}
 			
-			JSONArray regions = jObj.getJSONArray("regionIds");
-			List<Long> regionsIds = new ArrayList<Long>();
+			final JSONArray regions = jObj.getJSONArray("regionIds");
+			final List<Long> regionsIds = new ArrayList<Long>();
 			for(int i = 0 ; i < regions.length() ; i++)
 			{
-				regionsIds.add(new Long(regions.get(i).toString()));
+				regionsIds.add(Long.valueOf(regions.get(i).toString()));
 			}
 			
-			resultList = acPcWiseElectionResultService.filterToGetPartyWiseComperassionResult(jObj.getLong("stateId"),jObj.getLong("electionId"),partyIds,jObj.getLong("electionScopeId"),jObj.getString("scope"),regionsIds);
+			resultList = acPcWiseElectionResultService.filterToGetPartyWiseComperassionResult(jObj.getLong(STATEID),jObj.getLong(ELECTIONID),partyIds,jObj.getLong(ELECTIONSCOPEID),jObj.getString("scope"),regionsIds);
 		} 
 		catch (Exception e)
 		{
-			LOG.error("Exception Raised In getElectionResults method in AcPcWiseElectionResultAction Action", e);
+			LOG.error("Exception Raised In filterAndGetElectionResults method in AcPcWiseElectionResultAction Action", e);
 			return Action.ERROR;
 		}
 		return Action.SUCCESS;
@@ -317,38 +328,40 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 	{
 		try
 		{
-			LOG.debug("Entered Into getElectionResults method in AcPcWiseElectionResultAction Action");
+			LOG.debug("Entered Into searchAndGetElectionResults method in AcPcWiseElectionResultAction Action");
 			session = request.getSession();
-			RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
-			if (registrationVO != null) 
+			final RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
+			if (registrationVO == null) 
 			{
-				if (!registrationVO.getIsAdmin().equals("true"))
-					  return ERROR;
-			} 
-			else
 				return ERROR;
+			} 
+			else{
+				if (!registrationVO.getIsAdmin().equals(TRUE)){
+				   return ERROR;
+				}
+			}
 			
 			jObj = new JSONObject(getTask());
 						
-			JSONArray parties = jObj.getJSONArray("parties");
-			List<Long> partyIds = new ArrayList<Long>();
+			final JSONArray parties = jObj.getJSONArray(PARTIES);
+			final List<Long> partyIds = new ArrayList<Long>();
 			for(int i = 0 ; i < parties.length() ; i++)
 			{
-				partyIds.add(new Long(parties.get(i).toString()));
+				partyIds.add(Long.valueOf(parties.get(i).toString()));
 			}
 			
-			JSONArray regions = jObj.getJSONArray("regionIds");
-			List<Long> regionsIds = new ArrayList<Long>();
+			final JSONArray regions = jObj.getJSONArray("regionIds");
+			final List<Long> regionsIds = new ArrayList<Long>();
 			for(int i = 0 ; i < regions.length() ; i++)
 			{
-				regionsIds.add(new Long(regions.get(i).toString()));
+				regionsIds.add(Long.valueOf(regions.get(i).toString()));
 			}
-			String searchName  = jObj.getString("searchName");
-			resultList = acPcWiseElectionResultService.searchPartyWiseComparissionResult(jObj.getLong("stateId"),jObj.getLong("electionId"),partyIds,jObj.getLong("electionScopeId"),jObj.getString("scope"),regionsIds,searchName);
+			final String searchName  = jObj.getString("searchName");
+			resultList = acPcWiseElectionResultService.searchPartyWiseComparissionResult(jObj.getLong(STATEID),jObj.getLong(ELECTIONID),partyIds,jObj.getLong(ELECTIONSCOPEID),jObj.getString("scope"),regionsIds,searchName);
 		} 
 		catch (Exception e)
 		{
-			LOG.error("Exception Raised In getElectionResults method in AcPcWiseElectionResultAction Action", e);
+			LOG.error("Exception Raised In searchAndGetElectionResults method in AcPcWiseElectionResultAction Action", e);
 			return Action.ERROR;
 		}
 		return Action.SUCCESS;
@@ -357,25 +370,27 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 	{
 		try
 		{
-			LOG.debug("Entered Into getElectionResults method in AcPcWiseElectionResultAction Action");
+			LOG.debug("Entered Into getCasteWiseData method in AcPcWiseElectionResultAction Action");
 			session = request.getSession();
-			RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
-			if (registrationVO != null) 
+			final RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
+			if (registrationVO == null) 
 			{
-				if (!registrationVO.getIsAdmin().equals("true"))
-					  return ERROR;
-			} 
-			else
 				return ERROR;
+			} 
+			else{
+				if (!registrationVO.getIsAdmin().equals(TRUE)){
+				   return ERROR;
+				}
+			}
 			
 			jObj = new JSONObject(getTask());
 						
 			
-			casteData = acPcWiseElectionResultService.getCasteWiseDataForElection(jObj.getLong("electionId"));
+			casteData = acPcWiseElectionResultService.getCasteWiseDataForElection(jObj.getLong(ELECTIONID));
 		} 
 		catch (Exception e)
 		{
-			LOG.error("Exception Raised In getElectionResults method in AcPcWiseElectionResultAction Action", e);
+			LOG.error("Exception Raised In getCasteWiseData method in AcPcWiseElectionResultAction Action", e);
 			return Action.ERROR;
 		}
 		return Action.SUCCESS;
@@ -385,24 +400,26 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 	{
 		try
 		{
-			LOG.debug("Entered Into getElectionResults method in AcPcWiseElectionResultAction Action");
+			LOG.debug("Entered Into getGenderWiseReport method in AcPcWiseElectionResultAction Action");
 			session = request.getSession();
-			RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
-			if (registrationVO != null) 
+			final RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
+			if (registrationVO == null) 
 			{
-				if (!registrationVO.getIsAdmin().equals("true"))
-					  return ERROR;
-			} 
-			else
 				return ERROR;
+			} 
+			else{
+				if (!registrationVO.getIsAdmin().equals(TRUE)){
+				   return ERROR;
+				}
+			}
 			
 			jObj = new JSONObject(getTask());
-			List<Long> surveyIds = new ArrayList<Long>();
-			JSONArray surveyArray = jObj.getJSONArray("surveyIds");
-			List<Long> regionsIds = new ArrayList<Long>();
+			final List<Long> surveyIds = new ArrayList<Long>();
+			final JSONArray surveyArray = jObj.getJSONArray("surveyIds");
+			
 			for(int i = 0 ; i < surveyArray.length() ; i++)
 			{
-				surveyIds.add(new Long(surveyArray.get(i).toString()));
+				surveyIds.add(Long.valueOf(surveyArray.get(i).toString()));
 			}
 			
 			genderWiseDetails = acPcWiseElectionResultService.getGenderWiseSurveyReport(jObj.getLong("partyId"),jObj.getLong("constituencyId"),surveyIds);

@@ -147,7 +147,7 @@ public class CadreInfoAction extends ActionSupport implements ServletRequestAwar
 		
 		
 		rows = cadreManagementService.deleteCadre(cadreId, regVO);
-		Log.debug("rows:"+rows);
+		LOG.debug("rows:"+rows);
 		return Action.SUCCESS;
 	}
 

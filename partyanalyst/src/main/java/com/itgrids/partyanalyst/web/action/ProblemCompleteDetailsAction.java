@@ -34,7 +34,7 @@ ServletRequestAware, ServletContextAware  {
 	private ProblemBeanVO problemBeanVO;
 	JSONObject jObj = null;
 	private String task;
-	private static final Logger log = Logger.getLogger(ProblemCompleteDetailsAction.class);
+	private static final Logger LOG = Logger.getLogger(ProblemCompleteDetailsAction.class);
 	private Long problemHistoryId;
 	private Boolean logInStatus = null;
 	private String userType = null; 
@@ -205,7 +205,7 @@ ServletRequestAware, ServletContextAware  {
 		
 		try {
 			jObj = new JSONObject(param);
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();			
 		}
@@ -222,11 +222,11 @@ ServletRequestAware, ServletContextAware  {
 		
 		try {
 			jObj = new JSONObject(param);
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}	
-		log.debug("Task::"+jObj.getString("task"));
+		LOG.debug("Task::"+jObj.getString("task"));
 		
 		int resultsCount = Integer.parseInt(request.getParameter("resultsCount"));
 		int startIndex = Integer.parseInt(request.getParameter("startIndex"));
@@ -248,7 +248,7 @@ ServletRequestAware, ServletContextAware  {
 			
 		 problemBeanVOList = problemManagementService.getProblemDetailsForHomePage(startIndex,resultsCount);
 		} catch (ParseException e) {
-			log.error("Exception rised in getProblemDetailsForHomePage method",e);
+			LOG.error("Exception rised in getProblemDetailsForHomePage method",e);
 		}	
 		return Action.SUCCESS;
 	}
@@ -266,7 +266,7 @@ ServletRequestAware, ServletContextAware  {
 			problemBeanVO = problemManagementService.getProblemDetailsByProblemReferenceId(jObj.getString("problemRefId").toUpperCase(),userId);
 			
 		}catch (Exception e) {
-			log.error("Exception Occured in getProblemDetailsByProblemReferenceId() , Exception - "+e);
+			LOG.error("Exception Occured in getProblemDetailsByProblemReferenceId() , Exception - "+e);
 		}
 		return Action.SUCCESS;
 	}

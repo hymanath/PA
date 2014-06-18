@@ -48,7 +48,7 @@ public class MandalVotingTrendzForBiElectionAction extends ActionSupport
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(BiElectionAction.class);
+	private static final Logger LOG = Logger.getLogger(BiElectionAction.class);
 	HttpServletRequest request;
 	HttpServletResponse response;
 	HttpSession session;
@@ -363,13 +363,13 @@ public class MandalVotingTrendzForBiElectionAction extends ActionSupport
 		
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}	
 		
-		Long districtId = new Long(jObj.getString("districtId"));
-		Long constiId =  new Long(jObj.getString("constituencyId"));
+		Long districtId = Long.valueOf(jObj.getString("districtId"));
+		Long constiId =  Long.valueOf(jObj.getString("constituencyId"));
 		String constiName = jObj.getString("constiName");
 		
 		
@@ -381,7 +381,7 @@ public class MandalVotingTrendzForBiElectionAction extends ActionSupport
 		biElectionResultsMainVO.setAssemblyResultsChartForPresentYear(presentYearResultsChartName);
 		biElectionResultsMainVO.setAssemblyResultsChartForPreviousYear(previousYearResultsChartName);
 		biElectionResultsMainVO.setElectionResultsChart(getElectionResultsPieChart(constiId,constiName));
-		if(constiId != null && constiId != new Long(0))
+		if(constiId != null && constiId != Long.valueOf(0))
 			biElectionResultsMainVO.setConstituencyVO(getVotersShareInMandalsPieChart(constiId));
 		
 		return Action.SUCCESS;
@@ -442,67 +442,67 @@ public class MandalVotingTrendzForBiElectionAction extends ActionSupport
 			colors = new Color[result.getCandidateElectionResultsVO().size()];
 		if(chartType.equalsIgnoreCase("selectedParties"))
 			colors = new Color[7];
-		log.debug(" results size ==== "+result.getCandidateElectionResultsVO().size());		
+		LOG.debug(" results size ==== "+result.getCandidateElectionResultsVO().size());		
 		int j=0;
 		for(int i=0; i<result.getCandidateElectionResultsVO().size(); i++ )
 		{		
 			String partyName = result.getCandidateElectionResultsVO().get(i).getPartyName(); 
 			Double votesPercent = Double.valueOf(result.getCandidateElectionResultsVO().get(i).getVotesPercentage());
-			log.debug(" party Name ==== "+partyName+", votes Percent = "+votesPercent);	
+			LOG.debug(" party Name ==== "+partyName+", votes Percent = "+votesPercent);	
 						
 			if(chartType.equalsIgnoreCase("allparties"))
 			{	
 				if(partyName.equals(IConstants.INC))
 				{
 					colors[i]=IConstants.INC_COLOR;
-					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+					LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 				}				
 				else
 				if(partyName.equals(IConstants.IND))
 				{
 					colors[i]=IConstants.IND_COLOR;
-					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+					LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 				}				
 				else
 				if(partyName.equals(IConstants.PRP))
 				{
 					colors[i]=IConstants.PRP_COLOR;
-					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+					LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 				}			
 				else
 				if(partyName.equals(IConstants.TDP))
 				{
 					colors[i]=IConstants.TDP_COLOR;
-					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+					LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 				}	
 				else
 				if(partyName.equals(IConstants.TRS))
 				{
 					colors[i]=IConstants.TRS_COLOR;
-					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+					LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 				}
 				else
 				if(partyName.equals(IConstants.CPI))
 				{
 					colors[i]=IConstants.CPI_COLOR;
-					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+					LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 				}						
 				else
 				if(partyName.equals(IConstants.CPM))
 				{
 					colors[i]=IConstants.CPM_COLOR;
-					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+					LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 				}					
 				else
 				if(partyName.equals(IConstants.BJP))
 				{
 					colors[i]=IConstants.BJP_COLOR;
-					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+					LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 				}					
 				else
 				{
 					colors[i] = null;
-					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+					LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 				}
 				
 				dataset.setValue(partyName+" ["+votesPercent.toString()+"%]",votesPercent);	
@@ -513,43 +513,43 @@ public class MandalVotingTrendzForBiElectionAction extends ActionSupport
 					if(partyName.equals(IConstants.INC))
 					{
 						colors[j++]=IConstants.INC_COLOR;
-						log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+						LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 					}				
 					else
 					if(partyName.equals(IConstants.PRP))
 					{
 						colors[j++]=IConstants.PRP_COLOR;
-						log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+						LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 					}			
 					else
 					if(partyName.equals(IConstants.TDP))
 					{
 						colors[j++]=IConstants.TDP_COLOR;
-						log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+						LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 					}	
 					else
 					if(partyName.equals(IConstants.TRS))
 					{
 						colors[j++]=IConstants.TRS_COLOR;
-						log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+						LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 					}
 					else
 					if(partyName.equals(IConstants.CPI))
 					{
 						colors[j++]=IConstants.CPI_COLOR;
-						log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+						LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 					}						
 					else
 					if(partyName.equals(IConstants.CPM))
 					{
 						colors[j++]=IConstants.CPM_COLOR;
-						log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+						LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 					}					
 					else
 					if(partyName.equals(IConstants.BJP))
 					{
 						colors[j++]=IConstants.BJP_COLOR;
-						log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+						LOG.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 					}					
 					
 					dataset.setValue(partyName+" ["+votesPercent.toString()+"%]",votesPercent);	
@@ -656,45 +656,45 @@ public class MandalVotingTrendzForBiElectionAction extends ActionSupport
 			    			  
 			    					if(IConstants.TDP.equalsIgnoreCase(value.getPartyName()))
 			    						{	colorsSet.add(IConstants.TDP_COLOR);
-			    							log.debug("TDP ADDED");
+			    							LOG.debug("TDP ADDED");
 			    						}
 			    						
 			    			        	else
 			    			        		if(IConstants.INC.equalsIgnoreCase(value.getPartyName()))
 			    			        		{	colorsSet.add(IConstants.INC_COLOR);
-			    			        		log.debug("INC ADDEd");
+			    			        		LOG.debug("INC ADDEd");
 			    			        		}
 			    			            	else
 			    			            		if(IConstants.BJP.equalsIgnoreCase(value.getPartyName()))
 			    			            		{	colorsSet.add(IConstants.BJP_COLOR);
-			    			            			log.debug("BJP ADDEd");
+			    			            			LOG.debug("BJP ADDEd");
 			    			            		}
 			    			                	else
 			    			                		if(IConstants.PRP.equalsIgnoreCase(value.getPartyName()))
 			    			                    		{colorsSet.add(IConstants.PRP_COLOR);
-			    			                    		log.debug("PRP ADDEd");
+			    			                    		LOG.debug("PRP ADDEd");
 			    			                    		}
 			    			                    	else
 			    			                    		if(IConstants.TRS.equalsIgnoreCase(value.getPartyName()))
 			    			                        		{
 			    			                    			colorsSet.add(IConstants.TRS_COLOR);
-			    			                    			log.debug("TRS ADDEd");
+			    			                    			LOG.debug("TRS ADDEd");
 			    			                    			}
 			    			                    		else
 			    				                    		if(IConstants.AIMIM.equalsIgnoreCase(value.getPartyName()))
 			    				                        		{
 			    				                    			colorsSet.add(IConstants.AIMIM_COLOR);
-			    				                    			log.debug("AIMIM ADDEd");
+			    				                    			LOG.debug("AIMIM ADDEd");
 			    				                    			}
 			    				                    		else
 			    					                    		if(IConstants.CPI.equalsIgnoreCase(value.getPartyName()))
 			    					                        		{
 			    					                    			colorsSet.add(IConstants.CPI_COLOR);
-			    					                    			log.debug("CPI ADDEd");
+			    					                    			LOG.debug("CPI ADDEd");
 			    					                    			}
 			    			                    		else
 			    					                    	{colorsSet.add(null);
-			    					                    	log.debug("Default ADDEd");
+			    					                    	LOG.debug("Default ADDEd");
 			    					                    	}   
 			    		   
 			    		    dataset.addValue(new BigDecimal(value.getVotesPercentage()), value.getPartyName(), electionResultPartyVO.getElectionType()+" "+electionResultPartyVO.getElectionYear());
@@ -713,10 +713,10 @@ public class MandalVotingTrendzForBiElectionAction extends ActionSupport
 			Long totalVotes = 0l;
 			BigDecimal percentage;
 			for(VotersInfoForMandalVO votersInMandalOrAC:votersInfoForMandalVO)
-				totalVotes += new Long(votersInMandalOrAC.getTotalVoters());
+				totalVotes += Long.valueOf(votersInMandalOrAC.getTotalVoters());
 
 			for(VotersInfoForMandalVO votersInMandalOrAC:votersInfoForMandalVO){
-				percentage = new BigDecimal(new Long(votersInMandalOrAC.getTotalVoters())*100.0/totalVotes).setScale(2,BigDecimal.ROUND_HALF_UP);
+				percentage = new BigDecimal(Long.valueOf(votersInMandalOrAC.getTotalVoters())*100.0/totalVotes).setScale(2,BigDecimal.ROUND_HALF_UP);
 				dataset.setValue(votersInMandalOrAC.getMandalName()+" ["+percentage.toString()+"%]",percentage);
 			}
 				

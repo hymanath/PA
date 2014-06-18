@@ -36,7 +36,7 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class ProblemManagementAction extends ActionSupport implements ServletRequestAware{
 	
-	private final static Logger log = Logger.getLogger(ProblemManagementAction.class);
+	private final static Logger LOG = Logger.getLogger(ProblemManagementAction.class);
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -289,11 +289,11 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 			
 			try {
 				jObj = new JSONObject(param);
-				System.out.println(jObj);
+				LOG.info(jObj);
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}	
-			log.debug("Task::"+jObj.getString("task"));
+			LOG.debug("Task::"+jObj.getString("task"));
 			if(jObj.getString("task").equalsIgnoreCase("addNewProblem"))
 			{
 				problemBeanVO = new ProblemBeanVO();
@@ -308,36 +308,36 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 				problemBeanVO.setHamlet(jObj.getString("hamlet"));
 				problemBeanVO.setReportedDate(jObj.getString("reportedDate"));
 				problemBeanVO.setExistingFrom(jObj.getString("existingFrom"));
-				problemBeanVO.setProbSourceId(new Long(jObj.getString("probSource").trim()));
+				problemBeanVO.setProbSourceId(Long.valueOf(jObj.getString("probSource").trim()));
 				problemBeanVO.setName(jObj.getString("name"));
 				problemBeanVO.setMobile(jObj.getString("mobile"));
 				problemBeanVO.setPhone(jObj.getString("phone"));
 				problemBeanVO.setEmail(jObj.getString("email"));
-				problemBeanVO.setProblemStatusId(new Long(jObj.getString("status")));
+				problemBeanVO.setProblemStatusId(Long.valueOf(jObj.getString("status")));
 				problemBeanVO.setAddress(jObj.getString("address"));
 				problemBeanVO.setYear(IConstants.PRESENT_YEAR);
 							
-				 log.debug(problemBeanVO.getProblem());
-				 log.debug(problemBeanVO.getDescription());
-				 log.debug(problemBeanVO.getState());
-				 log.debug(problemBeanVO.getDistrict());
-				 log.debug(problemBeanVO.getConstituency());
-				 log.debug(problemBeanVO.getTehsil());
-				 log.debug(problemBeanVO.getHamlet());
-				 log.debug(problemBeanVO.getReportedDate());
-				 log.debug(problemBeanVO.getExistingFrom());
-				 log.debug(problemBeanVO.getProbSource());
-				 log.debug(problemBeanVO.getName());
-				 log.debug(problemBeanVO.getMobile());
-				 log.debug(problemBeanVO.getPhone());
-				 log.debug(problemBeanVO.getEmail());
-				 log.debug(problemBeanVO.getAddress());
+				 LOG.debug(problemBeanVO.getProblem());
+				 LOG.debug(problemBeanVO.getDescription());
+				 LOG.debug(problemBeanVO.getState());
+				 LOG.debug(problemBeanVO.getDistrict());
+				 LOG.debug(problemBeanVO.getConstituency());
+				 LOG.debug(problemBeanVO.getTehsil());
+				 LOG.debug(problemBeanVO.getHamlet());
+				 LOG.debug(problemBeanVO.getReportedDate());
+				 LOG.debug(problemBeanVO.getExistingFrom());
+				 LOG.debug(problemBeanVO.getProbSource());
+				 LOG.debug(problemBeanVO.getName());
+				 LOG.debug(problemBeanVO.getMobile());
+				 LOG.debug(problemBeanVO.getPhone());
+				 LOG.debug(problemBeanVO.getEmail());
+				 LOG.debug(problemBeanVO.getAddress());
 				 problemManagementDataVO.setProblemBeanVO(problemManagementService.saveNewProblemData(problemBeanVO));
 				 return Action.SUCCESS;
 			} 
 			if(jObj.getString("task").equalsIgnoreCase("newProblemsByUserID"))
 			{
-				//ProblemsOfUserVO obj = problemManagementService.getNewProblemsForUser(user.getRegistrationID(), new Long(1));
+				//ProblemsOfUserVO obj = problemManagementService.getNewProblemsForUser(user.getRegistrationID(), Long.valueOf(1));
 				
 				String startIndex    = request.getParameter("startIndex");
 				String resultsCount  = request.getParameter("resultsCount");
@@ -349,7 +349,7 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 			}
 			if(jObj.getString("task").equalsIgnoreCase("classifyProblem"))
 			{
-				log.debug("Task::"+jObj.getString("task"));
+				LOG.debug("Task::"+jObj.getString("task"));
 				JSONArray classifiedProblems = jObj.getJSONArray("prob");
 				List<ProblemBeanVO> clsfdProbsList = new ArrayList<ProblemBeanVO>();
 				int clsfyProbsSize = classifiedProblems.length();
@@ -370,42 +370,42 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 					String status = clsfyProbsObj.getString("status");
 					String problemHistoryId = clsfyProbsObj.getString("probHistoryId");
 					problemBeanVO = new ProblemBeanVO();
-					//problemBeanVO.setProblemId(new Long(probID));
+					//problemBeanVO.setProblemId(Long.valueOf(probID));
 					problemBeanVO.setProblem(problemTitle);
 					problemBeanVO.setDescription(description);
 					problemBeanVO.setReportedDate(identifiedDate);
 					problemBeanVO.setExistingFrom(existingFrom);
-					//problemBeanVO.setHamletId(new Long(hamletId));
-					problemBeanVO.setProblemLocationId(new Long(locationId));
+					//problemBeanVO.setHamletId(Long.valueOf(hamletId));
+					problemBeanVO.setProblemLocationId(Long.valueOf(locationId));
 					problemBeanVO.setProbSource(probSource);
 					problemBeanVO.setProblemSourceScope(probScope);
 					problemBeanVO.setProblemClassification(probType);
-					problemBeanVO.setProblemStatusId(new Long(status));
-					problemBeanVO.setProblemHistoryId(new Long(problemHistoryId));
+					problemBeanVO.setProblemStatusId(Long.valueOf(status));
+					problemBeanVO.setProblemHistoryId(Long.valueOf(problemHistoryId));
 					
 					clsfdProbsList.add(problemBeanVO);
-					 log.debug(problemBeanVO.getProblemId());
-					 log.debug(problemBeanVO.getProblem());
-					 log.debug(problemBeanVO.getDescription());
-					 log.debug(problemBeanVO.getHamlet());
-					 log.debug(problemBeanVO.getReportedDate());
-					 log.debug(problemBeanVO.getExistingFrom());
-					 log.debug(problemBeanVO.getProbSource());
-					 log.debug(problemBeanVO.getHamletId());
-					 log.debug(problemBeanVO.getProblemLocationId());
-					 log.debug(problemBeanVO.getProbSource());
-					 log.debug(problemBeanVO.getProblemSourceScope());
-					 log.debug(problemBeanVO.getProblemType());
-					 //log.debug(problemBeanVO.getStatus());
+					 LOG.debug(problemBeanVO.getProblemId());
+					 LOG.debug(problemBeanVO.getProblem());
+					 LOG.debug(problemBeanVO.getDescription());
+					 LOG.debug(problemBeanVO.getHamlet());
+					 LOG.debug(problemBeanVO.getReportedDate());
+					 LOG.debug(problemBeanVO.getExistingFrom());
+					 LOG.debug(problemBeanVO.getProbSource());
+					 LOG.debug(problemBeanVO.getHamletId());
+					 LOG.debug(problemBeanVO.getProblemLocationId());
+					 LOG.debug(problemBeanVO.getProbSource());
+					 LOG.debug(problemBeanVO.getProblemSourceScope());
+					 LOG.debug(problemBeanVO.getProblemType());
+					 //LOG.debug(problemBeanVO.getStatus());
 				}		
 				List<ProblemBeanVO> obj1 = problemManagementService.updateAndGetClassifiedProblemDataIntoDB(clsfdProbsList);
-				log.debug("obj-------------------------------->>>>>>>>>>>>>>>>>>>>>>"+obj1.size()+"<<<<<<<<<<-------------------"+obj1.size()+"\n\n\n\n");
+				LOG.debug("obj-------------------------------->>>>>>>>>>>>>>>>>>>>>>"+obj1.size()+"<<<<<<<<<<-------------------"+obj1.size()+"\n\n\n\n");
 				problemManagementDataVO.setClassifiedProblems(obj1);
 			} 
 			if(jObj.getString("task").equalsIgnoreCase("classifiedProblemsByUserID"))
 			{	
 				String statusID = jObj.getString("status"); 
-				List <ProblemBeanVO> obj = problemManagementService.getClassifiedProblemsOfUser(user.getRegistrationID(), new Long(statusID));
+				List <ProblemBeanVO> obj = problemManagementService.getClassifiedProblemsOfUser(user.getRegistrationID(), Long.valueOf(statusID));
 				problemManagementDataVO.setClassifiedProblems(obj);
 			} 
 			if(jObj.getString("task").equalsIgnoreCase("departmentsByScope"))
@@ -415,7 +415,7 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 			}
 			if(jObj.getString("task").equalsIgnoreCase("assignProblem"))
 			{
-				log.debug("Task::"+jObj.getString("task"));
+				LOG.debug("Task::"+jObj.getString("task"));
 				JSONArray assignedProblems = jObj.getJSONArray("assignedProblemsArray");
 				List<ProblemBeanVO> assignedProbsList = new ArrayList<ProblemBeanVO>();
 				int assignedProbsSize= assignedProblems.length();
@@ -436,10 +436,10 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 					problemBeanVO.setReportedDate(identifiedDate);
 					problemBeanVO.setProblemSourceScope(scope);
 					problemBeanVO.setProblemType(problemType);
-					problemBeanVO.setProblemStatusId(new Long(statusId));
-					problemBeanVO.setProblemHistoryId(new Long(problemHistoryId));
+					problemBeanVO.setProblemStatusId(Long.valueOf(statusId));
+					problemBeanVO.setProblemHistoryId(Long.valueOf(problemHistoryId));
 					problemBeanVO.setDepartment(department);
-					problemBeanVO.setProbAssignedDeptId(new Long(departmentId));
+					problemBeanVO.setProbAssignedDeptId(Long.valueOf(departmentId));
 					assignedProbsList.add(problemBeanVO);					
 				}
 				List<ProblemBeanVO> obj2 = problemManagementService.updateAndGetAssignedProblems(assignedProbsList);
@@ -448,14 +448,14 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 			}
 			if(jObj.getString("task").equalsIgnoreCase("assignedProblemsByUserID"))
 			{
-				log.debug("Task::"+jObj.getString("task"));
+				LOG.debug("Task::"+jObj.getString("task"));
 				String statusID = jObj.getString("status"); 
-				List <ProblemBeanVO> obj = problemManagementService.getAssignedProblems(user.getRegistrationID(), new Long(statusID));
+				List <ProblemBeanVO> obj = problemManagementService.getAssignedProblems(user.getRegistrationID(), Long.valueOf(statusID));
 				problemManagementDataVO.setAssignedProblems(obj);
 			}
 			if(jObj.getString("task").equalsIgnoreCase("moveAssignedProblemsToProgress"))
 			{
-				log.debug("Task::"+jObj.getString("task"));
+				LOG.debug("Task::"+jObj.getString("task"));
 				JSONArray progressProblems = jObj.getJSONArray("progressProblemsArray");
 				List<ProblemBeanVO> progressProblemsList = new ArrayList<ProblemBeanVO>();
 				int progressProblemsSize = progressProblems.length();
@@ -480,8 +480,8 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 					problemBeanVO.setDepartmentConcernedPersonName(name);
 					problemBeanVO.setDepartmentConcernedPersonPhoneNumber(contactNumber);
 					problemBeanVO.setComments(comments);
-					problemBeanVO.setAssignedProblemProgressId(new Long(assignedProblemProgressId));
-					problemBeanVO.setProblemStatusId(new Long(status));	
+					problemBeanVO.setAssignedProblemProgressId(Long.valueOf(assignedProblemProgressId));
+					problemBeanVO.setProblemStatusId(Long.valueOf(status));	
 					
 					progressProblemsList.add(problemBeanVO);
 				}
@@ -491,15 +491,15 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 			}
 			if(jObj.getString("task").equalsIgnoreCase("progressedProblemsByUserID"))
 			{
-				log.debug("Task::"+jObj.getString("task"));
+				LOG.debug("Task::"+jObj.getString("task"));
 				String statusID = jObj.getString("status"); 
-				List <ProblemBeanVO> obj = problemManagementService.getProblemsUnderProgress(user.getRegistrationID(), new Long(statusID));
+				List <ProblemBeanVO> obj = problemManagementService.getProblemsUnderProgress(user.getRegistrationID(), Long.valueOf(statusID));
 				problemManagementDataVO.setProgressedProblems(obj);
 				
 			}
 			if(jObj.getString("task").equalsIgnoreCase("moveProgressProblemsToPending"))
 			{
-				log.debug("Task::"+jObj.getString("task"));
+				LOG.debug("Task::"+jObj.getString("task"));
 				JSONArray pendingProblems = jObj.getJSONArray("pendingProbArray");
 				List<ProblemBeanVO> pendingProblemsList = new ArrayList<ProblemBeanVO>();
 				
@@ -515,8 +515,8 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 					problemBeanVO.setDepartmentConcernedPersonName(pendingProblemsObj.getString("name"));
 					problemBeanVO.setDepartmentConcernedPersonPhoneNumber(pendingProblemsObj.getString("contactNumber"));
 					problemBeanVO.setReasonForPending(pendingProblemsObj.getString("comments"));
-					problemBeanVO.setAssignedProblemProgressId(new Long(pendingProblemsObj.getString("assignedProblemProgressId")));
-					problemBeanVO.setProblemStatusId(new Long(pendingProblemsObj.getString("status")));	
+					problemBeanVO.setAssignedProblemProgressId(Long.valueOf(pendingProblemsObj.getString("assignedProblemProgressId")));
+					problemBeanVO.setProblemStatusId(Long.valueOf(pendingProblemsObj.getString("status")));	
 					problemBeanVO.setReportedDate(pendingProblemsObj.getString("identifiedDate"));
 					problemBeanVO.setUpdatedDate(pendingProblemsObj.getString("updatedDate"));
 					problemBeanVO.setComments(pendingProblemsObj.getString("comments"));
@@ -527,7 +527,7 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 			}
 			if(jObj.getString("task").equalsIgnoreCase("moveProgressProblemsToFixed"))
 			{
-				log.debug("Task::"+jObj.getString("task"));
+				LOG.debug("Task::"+jObj.getString("task"));
 				JSONArray fixedProblems = jObj.getJSONArray("fixedProblemsArray");
 				List<ProblemBeanVO> fixedProblemsList = new ArrayList<ProblemBeanVO>();
 				
@@ -544,8 +544,8 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 					problemBeanVO.setDepartmentConcernedPersonName(fixedProblemsObj.getString("name"));
 					problemBeanVO.setDepartmentConcernedPersonPhoneNumber(fixedProblemsObj.getString("contactNumber"));
 					problemBeanVO.setComments(fixedProblemsObj.getString("comments"));
-					problemBeanVO.setAssignedProblemProgressId(new Long(fixedProblemsObj.getString("assignedProblemProgressId")));
-					problemBeanVO.setProblemStatusId(new Long(fixedProblemsObj.getString("status")));	
+					problemBeanVO.setAssignedProblemProgressId(Long.valueOf(fixedProblemsObj.getString("assignedProblemProgressId")));
+					problemBeanVO.setProblemStatusId(Long.valueOf(fixedProblemsObj.getString("status")));	
 					problemBeanVO.setReportedDate(fixedProblemsObj.getString("identifiedDate"));
 					problemBeanVO.setUpdatedDate(fixedProblemsObj.getString("updatedDate"));
 					
@@ -557,21 +557,21 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 			} 
 			if(jObj.getString("task").equalsIgnoreCase("pendingProblemsByUserID"))
 			{
-				log.debug("Task::"+jObj.getString("task"));
+				LOG.debug("Task::"+jObj.getString("task"));
 				String statusID = jObj.getString("status"); 
-				List <ProblemBeanVO> obj = problemManagementService.getPendingProblemsForAnUser(user.getRegistrationID(), new Long(statusID));
+				List <ProblemBeanVO> obj = problemManagementService.getPendingProblemsForAnUser(user.getRegistrationID(), Long.valueOf(statusID));
 				problemManagementDataVO.setPendingProblems(obj);
 			}
 			if(jObj.getString("task").equalsIgnoreCase("fixedProblemsByUserID"))
 			{
-				log.debug("Task::"+jObj.getString("task"));
+				LOG.debug("Task::"+jObj.getString("task"));
 				String statusID = jObj.getString("status"); 
-				List <ProblemBeanVO> obj = problemManagementService.getFixedProblemsForUser(user.getRegistrationID(), new Long(statusID));
+				List <ProblemBeanVO> obj = problemManagementService.getFixedProblemsForUser(user.getRegistrationID(), Long.valueOf(statusID));
 				problemManagementDataVO.setFixedProblems(obj);
 			}
 			if(jObj.getString("task").equalsIgnoreCase("movePendingProblemsToProgress"))
 			{
-				log.debug("Task::"+jObj.getString("task"));
+				LOG.debug("Task::"+jObj.getString("task"));
 				JSONArray pendingToProgressProblems = jObj.getJSONArray("progressedProblemsArray");
 				List<ProblemBeanVO> progressProblemsList = new ArrayList<ProblemBeanVO>();
 				
@@ -598,8 +598,8 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 					problemBeanVO.setDepartmentConcernedPersonName(name);
 					problemBeanVO.setDepartmentConcernedPersonPhoneNumber(contactNumber);
 					problemBeanVO.setComments(comments);
-					problemBeanVO.setAssignedProblemProgressId(new Long(assignedProblemProgressId)); //check this line......
-					problemBeanVO.setProblemStatusId(new Long(status));	
+					problemBeanVO.setAssignedProblemProgressId(Long.valueOf(assignedProblemProgressId)); //check this line......
+					problemBeanVO.setProblemStatusId(Long.valueOf(status));	
 					
 					progressProblemsList.add(problemBeanVO);
 				}
@@ -625,7 +625,7 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 		
 		try {
 			jObj = new JSONObject(param);
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}	
@@ -681,7 +681,7 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 			userId = regVO.getRegistrationID();
 		
 		String accessType =regVO.getAccessType();
-		Long accessValue= new Long(regVO.getAccessValue());
+		Long accessValue= Long.valueOf(regVO.getAccessValue());
 		
 		stateListForProb        = new ArrayList<SelectOptionVO>(0);
 		districtListForProb     = new ArrayList<SelectOptionVO>(0);
@@ -746,11 +746,11 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 		
 		try {
 			jObj = new JSONObject(param);
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}	
-		log.debug("Task::"+jObj.getString("task"));
+		LOG.debug("Task::"+jObj.getString("task"));
 		Long problemHistoryId = jObj.getLong("problemHistoryId");
 		problemBeanVO = problemManagementService.getProblemCompleteInfo(problemHistoryId);
 		return Action.SUCCESS;
@@ -770,7 +770,7 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 		
 		try {
 			jObj = new JSONObject(param);
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}	
@@ -897,7 +897,7 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 			
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception Occured in freeUserProblemAssignedToCustomer() Method, Exception - "+e);
+			LOG.error("Exception Occured in freeUserProblemAssignedToCustomer() Method, Exception - "+e);
 		}
 		return SUCCESS;
 	}

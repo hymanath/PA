@@ -55,7 +55,7 @@ public class BiElectionAction extends ActionSupport implements
 	
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger log = Logger.getLogger(BiElectionAction.class);
+	private static final Logger LOG = Logger.getLogger(BiElectionAction.class);
 	private IBiElectionPageService biElectionPageService;
 	private IConstituencyPageService constituencyPageService;
 	private List<BiElectionDistrictVO> districtsAndConsts;
@@ -381,7 +381,7 @@ public class BiElectionAction extends ActionSupport implements
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.BIEELECTION_ENTITLEMENT))
 			return ERROR;
 		
-		log.debug(" Inside Action ..");
+		LOG.debug(" Inside Action ..");
 		mptcElectionType = IConstants.MPTC_ELECTION_TYPE;
 		zptcElectionType = IConstants.ZPTC_ELECTION_TYPE;
 		partiesList = new ArrayList<SelectOptionVO>();
@@ -447,7 +447,7 @@ public class BiElectionAction extends ActionSupport implements
 	
 		}catch(Exception ex){
 			ex.printStackTrace();
-			log.debug("Exception Raised :" + ex);
+			LOG.debug("Exception Raised :" + ex);
 		}
 		return chartName;
 		
@@ -475,7 +475,7 @@ public class BiElectionAction extends ActionSupport implements
 
 		}catch(Exception ex){
 			ex.printStackTrace();
-			log.debug("Exception Raised :" + ex);
+			LOG.debug("Exception Raised :" + ex);
 		}
 		return enlargedLineChartName;
 		
@@ -500,13 +500,13 @@ public class BiElectionAction extends ActionSupport implements
 		
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}	
 		
-		Long districtId = new Long(jObj.getString("districtId"));
-		Long constiId =  new Long(jObj.getString("constituencyId"));
+		Long districtId = Long.valueOf(jObj.getString("districtId"));
+		Long constiId =  Long.valueOf(jObj.getString("constituencyId"));
 		String constiName = jObj.getString("constiName");
 		
 		
@@ -519,7 +519,7 @@ public class BiElectionAction extends ActionSupport implements
 		biElectionResultsMainVO.setAssemblyResultsChartForPresentYear(presentYearResultsChartName);
 		biElectionResultsMainVO.setAssemblyResultsChartForPreviousYear(previousYearResultsChartName);
 		
-		if(constiId != null && constiId != new Long(0))
+		if(constiId != null && constiId.longValue() != 0l)
 			biElectionResultsMainVO.setConstituencyVO(getVotersShareInMandalsPieChart(constiId));
 		
 		return Action.SUCCESS;
@@ -645,10 +645,10 @@ public class BiElectionAction extends ActionSupport implements
 		Long totalVotes = 0l;
 		BigDecimal percentage;
 		for(VotersInfoForMandalVO votersInMandalOrAC:votersInfoForMandalVO)
-			totalVotes += new Long(votersInMandalOrAC.getTotalVoters());
+			totalVotes += Long.valueOf(votersInMandalOrAC.getTotalVoters());
 
 		for(VotersInfoForMandalVO votersInMandalOrAC:votersInfoForMandalVO){
-			percentage = new BigDecimal(new Long(votersInMandalOrAC.getTotalVoters())*100.0/totalVotes).setScale(2,BigDecimal.ROUND_HALF_UP);
+			percentage = new BigDecimal(Long.valueOf(votersInMandalOrAC.getTotalVoters())*100.0/totalVotes).setScale(2,BigDecimal.ROUND_HALF_UP);
 			dataset.setValue(votersInMandalOrAC.getMandalName()+" ["+percentage.toString()+"%]",percentage);
 		}
 			

@@ -25,7 +25,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class SocialAuthSuccessAction extends ActionSupport implements ServletRequestAware,ServletContextAware{
 
 	private static final long serialVersionUID = 4043816144609356125L;
-	private static final Logger log = Logger.getLogger(SocialAuthSuccessAction.class);
+	private static final Logger LOG = Logger.getLogger(SocialAuthSuccessAction.class);
 	private HttpServletRequest request;
 	private ServletContext context;
 	private SocialAuthManager socialAuthManager;
@@ -99,7 +99,7 @@ public class SocialAuthSuccessAction extends ActionSupport implements ServletReq
 		socialAuthManager = (SocialAuthManager)session.getAttribute("SocialAuthManager");
 		if (socialAuthManager != null)
 		{
-			log.debug("socialAuthManager object is created");
+			LOG.debug("socialAuthManager object is created");
             contactsList = new ArrayList<Contact>(0);
             try {
                 Map<String, String> paramsMap = new HashMap<String, String>();
@@ -112,16 +112,16 @@ public class SocialAuthSuccessAction extends ActionSupport implements ServletReq
                 }
                 
                 AuthProvider provider = socialAuthManager.connect(paramsMap);
-                log.debug(provider+"Provider object is created");
+                LOG.debug(provider+"Provider object is created");
                 profile = provider.getUserProfile();
                 contactsList = provider.getContactList();
-                log.debug("Profile & Contact objs created");
+                LOG.debug("Profile & Contact objs created");
                 if (contactsList != null && contactsList.size() > 0) {
                     for (Contact p : contactsList) {
                         if (StringUtils.isEmpty(p.getFirstName())
                                         && StringUtils.isEmpty(p.getLastName())) {
                                 p.setFirstName(p.getDisplayName());
-                                log.debug(p.getDisplayName());
+                                LOG.debug(p.getDisplayName());
                         }
                     }
                 }

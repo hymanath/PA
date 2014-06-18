@@ -44,7 +44,7 @@ public class SaveLocalGroupMembersAction extends ActionSupport implements
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(SaveLocalGroupMembersAction.class);
+	private static final Logger LOG = Logger.getLogger(SaveLocalGroupMembersAction.class);
 	
 	private HttpServletRequest request;
 	private HttpServletResponse response;
@@ -240,8 +240,8 @@ public class SaveLocalGroupMembersAction extends ActionSupport implements
 		userGroupMemberVO.setEmailId(email);
 		userGroupMemberVO.setMobileNumber(mobile);
 		userGroupMemberVO.setLocation(city);
-		userGroupMemberVO.setDesignationId(new Long(designations));
-		userGroupMemberVO.setGroupId(new Long(groupName));
+		userGroupMemberVO.setDesignationId(Long.valueOf(designations));
+		userGroupMemberVO.setGroupId(Long.valueOf(groupName));
 		userGroupMemberVO.setWindowTask("save");
 				
 		userGroupMemberVO = influencingPeopleService.saveUserGroupMemberDetails(userGroupMemberVO);
