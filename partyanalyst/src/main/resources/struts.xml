@@ -94,7 +94,7 @@
 			</result> 
 		</action>
 		
-		<action name="getAnnouncementDetailsOfAConstituency" class="announcementPageAction" method="AjaxHandler" >
+		<action name="getAnnouncementDetailsOfAConstituency" class="announcementPageAction" method="ajaxHandler" >
 			<result type="json" name="success">
 				<param name="root">announcementInfo</param>
 			</result> 
@@ -2747,7 +2747,7 @@
                         
         </action>
 		
-		<action name="getLatestElectionYearsAction" class="censusReportAction" method="AjaxHandler">
+		<action name="getLatestElectionYearsAction" class="censusReportAction" method="ajaxHandler">
 			<result type="json" name="success">
 				<param name="root">yearList</param>				
 			</result>		
@@ -2844,7 +2844,7 @@
 			</result>	
 		</action>
 		
-		<action name="createNewGallaryAction" class="candidateElectionResultsAction" method="AjaxHandler">
+		<action name="createNewGallaryAction" class="candidateElectionResultsAction" method="ajaxHandler">
 			<result type="json" name="success">
            		<param name="root">result</param>
         	</result>	
@@ -2860,7 +2860,7 @@
 			</result>					
 		</action>
 		
-		<action name="getCandidateGallariesForUplaodAction" class="candidateElectionResultsAction" method="AjaxHandler">
+		<action name="getCandidateGallariesForUplaodAction" class="candidateElectionResultsAction" method="ajaxHandler">
 			<result type="json" name="success">
            		<param name="root">selectOptionList</param>
         	</result>	
@@ -2873,23 +2873,23 @@
 		</action>
 		
 		
-		<action name="getCandidatesAjaxAction" class="candidateElectionResultsAction" method="AjaxHandler">
+		<action name="getCandidatesAjaxAction" class="candidateElectionResultsAction" method="ajaxHandler">
 			<result type="json" name="success">
            		<param name="root">selectOptionList</param>
         	</result>	
 		</action>
 		
-		<action name="getNewsGalleryForUplaodAction" class="candidateElectionResultsAction" method="AjaxHandler">
+		<action name="getNewsGalleryForUplaodAction" class="candidateElectionResultsAction" method="ajaxHandler">
 			<result type="json" name="success">
            		<param name="root">selectOptionList</param>
         	</result>	
 		</action>
-		<action name="getCandiadteGallariesForUplaodAction" class="candidateElectionResultsAction" method="AjaxHandler">
+		<action name="getCandiadteGallariesForUplaodAction" class="candidateElectionResultsAction" method="ajaxHandler">
 			<result type="json" name="success">
            		<param name="root">gallaryList</param>
         	</result>	
 		</action>
-		<action name="getCandidateLatestVideosAction" class="candidateElectionResultsAction" method="AjaxHandler">
+		<action name="getCandidateLatestVideosAction" class="candidateElectionResultsAction" method="ajaxHandler">
 			<result type="json" name="success">
            		<param name="root">fileVO</param>
         	</result>	
@@ -2942,7 +2942,7 @@
 		<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp?src=partyManagementAction</result>
 		</action>
 		
-		<action name="partyManageAction" class="partyManagementAction" method="AjaxHandler">
+		<action name="partyManageAction" class="partyManagementAction" method="ajaxHandler">
 		<result type="json" name="success">
            		<param name="root">result</param>
 			</result>
@@ -2954,25 +2954,25 @@
 			</result>
 		</action>
 		
-		<action name="partyPhotoGallaryUpdateAction" class="partyManagementAction" method="AjaxHandler">
+		<action name="partyPhotoGallaryUpdateAction" class="partyManagementAction" method="ajaxHandler">
 			<result type="json" name="success">
            		<param name="root">gallaryVO</param>
 			</result>
 		</action>
 		
-		<action name="getPartyGallariesForUplaodAction" class="partyManagementAction" method="AjaxHandler">
+		<action name="getPartyGallariesForUplaodAction" class="partyManagementAction" method="ajaxHandler">
 			<result type="json" name="success">
            		<param name="root">gallaryList</param>
         	</result>	
 		</action>
 		
-		<action name="getPartyGallariesForUplaodPhotoAction" class="partyManagementAction" method="AjaxHandler">
+		<action name="getPartyGallariesForUplaodPhotoAction" class="partyManagementAction" method="ajaxHandler">
 			<result type="json" name="success">
            		<param name="root">selectOptionList</param>
         	</result>	
 		</action>
 		
-		<action name="getElectionTypeAction" class="partyManagementAction" method="AjaxHandler">
+		<action name="getElectionTypeAction" class="partyManagementAction" method="ajaxHandler">
 		<result type="json" name="success">
            		<param name="root">fileVO</param>
 		</result>
@@ -3006,13 +3006,13 @@
            		<param name="root">result</param>
         	</result>	
 		</action>
-		<action name="createNewPartyGallaryAction" class="partyManagementAction" method="AjaxHandler">
+		<action name="createNewPartyGallaryAction" class="partyManagementAction" method="ajaxHandler">
 			<result type="json" name="success">
            		<param name="root">result</param>
         	</result>	
 		</action>
 		
-		<action name="createUpdateGallaryAction" class="partyManagementAction" method="AjaxHandler">
+		<action name="createUpdateGallaryAction" class="partyManagementAction" method="ajaxHandler">
 			<result type="json" name="success">
            		<param name="root">result</param>
         	</result>	
@@ -3056,7 +3056,7 @@
            		<param name="root">fileVOList</param>
         	</result>	
 		</action>
-		<action name="getSpecialPagesAjaxAction" class="specialPageManageAction" method="AjaxHandler">
+		<action name="getSpecialPagesAjaxAction" class="specialPageManageAction" method="ajaxHandler">
 			<result type="json" name="success">
            		<param name="root">selectOptionList</param>
         	</result>	
@@ -3097,41 +3097,41 @@
 				<param name="root">result</param></result>
 		</action>
 		
-		<action name="createNewEventGallaryAction" class="specialPageManageAction" method="AjaxHandler">
+		<action name="createNewEventGallaryAction" class="specialPageManageAction" method="ajaxHandler">
 			<result type="json" name="success">
 				<param name="root">result</param>
 			</result>
 		</action>
 		
-		<action name="getEventsGallariesForUplaodAction" class="specialPageManageAction" method="AjaxHandler">
+		<action name="getEventsGallariesForUplaodAction" class="specialPageManageAction" method="ajaxHandler">
 			<result type="json" name="success">
 				<param name="root">selectOptionList</param>
 			</result>
 		</action>
 		
-		<action name="eventManageAction" class="specialPageManageAction" method="AjaxHandler">
+		<action name="eventManageAction" class="specialPageManageAction" method="ajaxHandler">
 			<result type="json" name="success">
 				<param name="root">result</param>
 			</result>
 		</action>
 		
-		<action name="getEventGallariesForUplaodPhotoAction" class="specialPageManageAction" method="AjaxHandler">
+		<action name="getEventGallariesForUplaodPhotoAction" class="specialPageManageAction" method="ajaxHandler">
 			<result type="json" name="success">
 				<param name="root">selectOptionList</param>
 			</result>
 		</action>
 			
-        <action name="createEventGallaryAction" class="specialPageManageAction" method="AjaxHandler">
+        <action name="createEventGallaryAction" class="specialPageManageAction" method="ajaxHandler">
 			<result type="json" name="success">
 				<param name="root">result</param>
 			</result>
 		</action>
-		<action name="getPartiesAjaxAction" class="partyManagementAction" method="AjaxHandler">
+		<action name="getPartiesAjaxAction" class="partyManagementAction" method="ajaxHandler">
 			<result type="json" name="success">
 				<param name="root">selectOptionList</param>
 			</result>
 		</action>
-		<action name="getEventGallariesForUplaodPhotoAction" class="specialPageManageAction" method="AjaxHandler">
+		<action name="getEventGallariesForUplaodPhotoAction" class="specialPageManageAction" method="ajaxHandler">
 			<result type="json" name="success">
            		<param name="root">selectOptionList</param>
         	</result>	
@@ -3183,7 +3183,7 @@
 			</result>
         </action>
         
-		<action name="candidateMessagesAction" class="candidateElectionResultsAction" method="AjaxHandler">
+		<action name="candidateMessagesAction" class="candidateElectionResultsAction" method="ajaxHandler">
 			<result type="json" name="success">
 				<param name="root">candidateCommentsVO</param>				
 			</result>		
@@ -3298,7 +3298,7 @@
 			</result>
 	 	</action>
 	 		 		 	
-        <action name="createPhotoGallaryAction" class="specialPageManageAction" method="AjaxHandler">
+        <action name="createPhotoGallaryAction" class="specialPageManageAction" method="ajaxHandler">
 			<result type="json" name="success">
 				<param name="root">result</param>
 			</result>
@@ -3324,13 +3324,13 @@
         	</result>	
 		</action>
 		
-		<action name="partyManageVisibilityAction" class="partyManagementAction" method="AjaxHandler">
+		<action name="partyManageVisibilityAction" class="partyManagementAction" method="ajaxHandler">
 		<result type="json" name="success">
            		<param name="root">gallaryVO</param>
 			</result>
 		</action>
 		
-		<action name="partyMessagesAction" class="candidateElectionResultsAction" method="AjaxHandler">
+		<action name="partyMessagesAction" class="candidateElectionResultsAction" method="ajaxHandler">
 			<result type="json" name="success">
            		<param name="root">candidateCommentsVO</param>
         	</result>	
@@ -3341,19 +3341,19 @@
 				<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp</result>
 		</action>
 		
-		<action name="getMinisterDataAvailableYearsForAState" class="ministersPageAction" method="AjaxHandler">
+		<action name="getMinisterDataAvailableYearsForAState" class="ministersPageAction" method="ajaxHandler">
 			<result type="json" name="success">
 				<param name="root">years</param>
 			</result>
 		</action>
 		
-		<action name="getElectionYearsForParliamentAction" class="ministersPageAction" method="AjaxHandler">
+		<action name="getElectionYearsForParliamentAction" class="ministersPageAction" method="ajaxHandler">
 			<result type="json" name="success">
 				<param name="root">years</param>
 			</result>
 		</action>
 		
-		<action name="getSelectedContentAndRelatedGalleriesAction" class="contentManagementAction" method="AjaxHandler">
+		<action name="getSelectedContentAndRelatedGalleriesAction" class="contentManagementAction" method="ajaxHandler">
 			<result type="json" name="success">
 				<param name="root">contentDetailsVO</param>
 			</result>
@@ -3366,7 +3366,7 @@
 		</action>
 		
 		
-		<action name="saveUserEmailAction" class="anonymousUserAction" method="AjaxHandler">
+		<action name="saveUserEmailAction" class="anonymousUserAction" method="ajaxHandler">
 			<result type="json" name="success">
 				<param name="root">results</param>				
 			</result>		
@@ -3452,19 +3452,19 @@
 			<result name="error">/jsp/loginForm.jsp</result> 
 		</action>
 		
-		<action name="customPagesTypeAction" class="customPagesAction" method="AjaxHandler">
+		<action name="customPagesTypeAction" class="customPagesAction" method="ajaxHandler">
 			<result type="json" name="success">
            		<param name="root">fileVO</param>
         	</result>	
 		</action>	
 		
-		<action name="createCustomPagesAction" class="customPagesAction" method="AjaxHandler">
+		<action name="createCustomPagesAction" class="customPagesAction" method="ajaxHandler">
 			<result type="json" name="success">
            		<param name="root">result</param>
         	</result>	
 		</action>
 		
-		<action name="getCustomPageNameAndTypeAction" class="customPagesAction" method="AjaxHandler">
+		<action name="getCustomPageNameAndTypeAction" class="customPagesAction" method="ajaxHandler">
 			<result type="json" name="success">
            		<param name="root">customPageVO</param>
         	</result>	
@@ -3512,7 +3512,7 @@
 			<result name="success">/jsp/sendUpdates.jsp</result>
 		</action>
 			
-		<action name="sendSMSForSelectedUsersAction" class="sendUpdatesAction" method="AjaxHandler">
+		<action name="sendSMSForSelectedUsersAction" class="sendUpdatesAction" method="ajaxHandler">
 			<result type="json" name="success">
 				<param name="success">resultstatus</param>
 			</result>
@@ -3526,7 +3526,7 @@
 			<result name="success">/jsp/problemSearchPage.jsp</result>
 		</action>
 		
-		<action name="getScopesForAProblemSearch" class="problemSearchAction" method="AjaxHandler">
+		<action name="getScopesForAProblemSearch" class="problemSearchAction" method="ajaxHandler">
 			<result type="json" name="success">
            		<param name="root">selectOptionList</param>
         	</result>	
@@ -3540,7 +3540,7 @@
 	   	<action name="changePasswordAction" class="changePasswordAction">
 			<result name="SUCCESS">/jsp/changePassword.jsp</result>	   	
 	   	</action>
-	   	<action name="changeNewUserPasswordAction" class="changePasswordAction" method="AjaxHandler">
+	   	<action name="changeNewUserPasswordAction" class="changePasswordAction" method="ajaxHandler">
 	   	<result type="json" name="success">
 			<param name="root">resuStatus</param>				
 		</result>	
@@ -3579,7 +3579,7 @@
 	   	 <result type="redirect" name="changePassword">changePasswordAction.action?pwdVal=${pwdVal}</result>
 	   	</action>
 	   	
-	   	<action name="checkCurrentPasswordAction" class="changePasswordAction" method="AjaxHandler">
+	   	<action name="checkCurrentPasswordAction" class="changePasswordAction" method="ajaxHandler">
 		    <result type="json" name="success">
 			<param name="root">pwdVal</param>				
 			</result>	
@@ -3680,22 +3680,22 @@
 				<param name="root">resultStatus</param>		
 			</result>
         </action>
-        <action name="deleteProblemDetailsAction" class="problemSearchAction" method="AjaxHandler">
+        <action name="deleteProblemDetailsAction" class="problemSearchAction" method="ajaxHandler">
 			<result type="json" name="success">
            		<param name="root">resultStatus</param>
         	</result>	
 	   </action>
-	   <action name="deletePartyGallaryAction" class="candidateElectionResultsAction" method="AjaxHandler">
+	   <action name="deletePartyGallaryAction" class="candidateElectionResultsAction" method="ajaxHandler">
 			<result type="json" name="success">
            		<param name="root">result</param>
         	</result>	
 		</action>
-		<action name="getProblemDetailsForUpdateAction" class="problemSearchAction" method="AjaxHandler">
+		<action name="getProblemDetailsForUpdateAction" class="problemSearchAction" method="ajaxHandler">
 		<result type="json" name="success">
          <param name="root">problemDetails</param>
         	</result>	
 		</action>
-		<action name="updateProblemDetailsAction" class="problemSearchAction" method="AjaxHandler">
+		<action name="updateProblemDetailsAction" class="problemSearchAction" method="ajaxHandler">
 		<result type="json" name="success">
            		<param name="root">resultStatus</param>
         	</result>	
@@ -3782,7 +3782,7 @@
 			</result>
 		</action>
 
-		<action name="getSpecialPageInfoAction" class="specialPageManageAction" method="AjaxHandler">
+		<action name="getSpecialPageInfoAction" class="specialPageManageAction" method="ajaxHandler">
 			<result type="json" name="success">
 				<param name="root">specialPageVOList</param>
 			</result>
@@ -3795,7 +3795,7 @@
 		<action name="specialPageInfoAction" class="specialPageInfoAction">
 			<result>/jsp/specialPageInfo.jsp</result>
 		</action>
-		<action name="getPanchayatByConstituencyAction" class="cadreRegisterAjaxAction" method="AjaxHandler">
+		<action name="getPanchayatByConstituencyAction" class="cadreRegisterAjaxAction" method="ajaxHandler">
 			<result type="json" name="success">
 				<param name="root">designationsList</param>				
 			</result>		
@@ -3833,7 +3833,7 @@
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 		</action>
 		
-         <action name="voterAnalysisAjaxAction" class="votersAnalysisAction" method="AjaxHandler">
+         <action name="voterAnalysisAjaxAction" class="votersAnalysisAction" method="ajaxHandler">
            <result type="json" name="success">
            		<param name="root">namesList</param>
         	</result>
@@ -3913,13 +3913,13 @@
 		    </result>
 		</action> 
 		
-		<action name="getLatestFriendsListAction" class="userProfileAction" method="AjaxHandler">
+		<action name="getLatestFriendsListAction" class="userProfileAction" method="ajaxHandler">
 		  <result type="json" name="success">
            		<param name="root">connectedUsers</param>
 			</result>
 		</action>
 		
-		<action name="getReqMessagesForUserAction" class="userProfileAction" method="AjaxHandler">
+		<action name="getReqMessagesForUserAction" class="userProfileAction" method="ajaxHandler">
 		  <result type="json" name="success">
            		<param name="root">userDetails</param>
 			</result>
@@ -4226,7 +4226,7 @@
 		    	<param name="root">resultStatus</param>
 		   </result>
 		</action>
-		<action name="insertVoterDataAction" class="voterDataManageAction" method="AjaxHandler">
+		<action name="insertVoterDataAction" class="voterDataManageAction" method="ajaxHandler">
 			<result type="json" name="success">
 		    	<param name="root">resultStatus</param>
 		   </result>
@@ -4995,7 +4995,7 @@
 		</action>
 		<action name="getAllIpAddressForUserAction" class="setUserRestrictionAction" method="getAllIpAddressForUser" >
 			<result type="json" name="success">
-				 <param name="root">IpList</param> 
+				 <param name="root">ipList</param> 
 			</result>
 		</action>
 		
@@ -5238,7 +5238,7 @@
 				 <param name="root">resultList</param>
 			</result>
 		</action> -->
-		<action name="getSubLevelInfoAction" class="voterDataToolsAction" method="AjaxHandler">
+		<action name="getSubLevelInfoAction" class="voterDataToolsAction" method="ajaxHandler">
 			 <result type="json" name="success">
 				 <param name="root">resultList</param>
 			</result>
@@ -5252,7 +5252,7 @@
 				<param name="root">"notLogged"</param>				
 			</result>		
 		</action>
-		<action name="checkVotersBasicInfoAction" class="validationToolsAction" method="AjaxHandler">
+		<action name="checkVotersBasicInfoAction" class="validationToolsAction" method="ajaxHandler">
 		  <result type="json" name="success">
 				 <param name="root">dataVerificationVO</param>
 			</result>
@@ -5273,7 +5273,7 @@
 			</result>
 		</action>
 		
-		<action name="validateEleResultsAction" class="validationToolsAction" method="AjaxHandler">
+		<action name="validateEleResultsAction" class="validationToolsAction" method="ajaxHandler">
 		 <result type="json" name="success">
 		   <param name="root">electionResultsVerificationVO</param>
 		 </result>
@@ -5284,7 +5284,7 @@
 			<result name="error">jsp/globalError.jsp</result>		
 		</action>
 		
-		<action name="validatePanchayatHamletMappingDataAction" class="validationToolsAction" method="AjaxHandler">
+		<action name="validatePanchayatHamletMappingDataAction" class="validationToolsAction" method="ajaxHandler">
 		  <result type="json" name="success">
 		   <param name="root">mappingVerificationVOList</param>
 		 </result>
@@ -5295,13 +5295,13 @@
 			</result>
 		</action> 
 		
-		<action name="getEleYearsForConstituencyAction" class="validationToolsAction" method="AjaxHandler">
+		<action name="getEleYearsForConstituencyAction" class="validationToolsAction" method="ajaxHandler">
 		<result type="json" name="success">
 		   <param name="root">eleYearsList</param>
 		 </result>
 		</action>
 		
-		<action name="getConstituenciesByEleIdAction" class="validationToolsAction" method="AjaxHandler">
+		<action name="getConstituenciesByEleIdAction" class="validationToolsAction" method="ajaxHandler">
 		 <result type="json" name="success">
 		   <param name="root">selectOptionVOsList</param>
 		 </result>
@@ -5313,7 +5313,7 @@
 		 </result>
 		</action>
 		
-		<action name="validateElePanchayatMappingDataAction" class="validationToolsAction" method="AjaxHandler">
+		<action name="validateElePanchayatMappingDataAction" class="validationToolsAction" method="ajaxHandler">
 		  <result type="json" name="success">
 		   <param name="root">panchayatMappingList</param>
 		  </result>
@@ -5329,7 +5329,7 @@
 		  </result>
 		</action>
 
-		<action name="getunMappedBoothsAction" class="validationToolsAction" method="AjaxHandler">
+		<action name="getunMappedBoothsAction" class="validationToolsAction" method="ajaxHandler">
 		 <result type="json" name="success">
 		   <param name="root">unMappedBoothsList</param>
 		 </result>
@@ -5606,7 +5606,7 @@
 			<result name="success">/jsp/surveyorProfileSavePage.jsp</result>
 		</action>
 		
-		<action name="getVilliageListAction" class="surveyorProfileSaveAction" method="AjaxHandler">
+		<action name="getVilliageListAction" class="surveyorProfileSaveAction" method="ajaxHandler">
 			<result type="json" name="success">
 				<param name="root">villagesList</param>				
 			</result>		
@@ -5780,7 +5780,7 @@
 		 
 		 <action name="getLeadersDataAction" class="suggestiveModelAction" method="getLeadersData">
 		  <result type="json" name="success">
-		   <param name="root">LeaderSelectionList</param>
+		   <param name="root">leaderSelectionList</param>
 		 </result>
 		 </action>
 		<action name="getAgeGroupWiseReportAction" class="suggestiveModelAction" method="getAgeWiseGroupReport">
@@ -5803,7 +5803,7 @@
 		
 		<action name="getLeadersListInRuralUrbansAction" class="suggestiveModelAction" method="getLeadersListInRuralUrbans">
 		  	<result type="json" name="success">
-		   	<param name="root">LeaderSelectionLists</param>
+		   	<param name="root">leaderSelectionLists</param>
 		 	</result>		 
 		</action>
 		
@@ -6051,13 +6051,13 @@
 		  </result>
 		 </action>
 		 
-		 <action name="getUnsubscribedPartiesAction" class="userProfileAction" method="AjaxHandler">
+		 <action name="getUnsubscribedPartiesAction" class="userProfileAction" method="ajaxHandler">
 		  <result type="json" name="success">
 		     <param name="root">subscriptionsVOList</param>
 		  </result>
 		 </action>
 		 
-		 <action name="getUnsubscribedConstituenciesAction" class="userProfileAction" method="AjaxHandler">
+		 <action name="getUnsubscribedConstituenciesAction" class="userProfileAction" method="ajaxHandler">
 		  <result type="json" name="success">
 		     <param name="root">selectOptionVOList</param>
 		  </result>
@@ -6074,7 +6074,7 @@
 		  </result>
 		 </action>
 		 
-		 <action name="getAllUnsubscribedNationalPartiesAction" class="userProfileAction" method="AjaxHandler">
+		 <action name="getAllUnsubscribedNationalPartiesAction" class="userProfileAction" method="ajaxHandler">
 		   <result type="json" name="success">
 		    <param name="root">subscriptionsVOList</param>
 		   </result>
@@ -6178,7 +6178,7 @@
 
 		<action name="getVoterscountInPanchayatsAction" class="suggestiveModelAction" method="getVoterscountInPanchayats">
 			<result type="json" name="success">
-			  	<param name="root">VoterCountVOList</param>
+			  	<param name="root">voterCountVOList</param>
 			 </result>
 		 </action>
 		 
@@ -6608,13 +6608,13 @@
 			<result name="success">/jsp/mergePanchayats.jsp</result>			
 		</action>
 		
-		<action name="insertVoterDataForDisAction" class="voterDataManageAction" method="AjaxHandler">
+		<action name="insertVoterDataForDisAction" class="voterDataManageAction" method="ajaxHandler">
            <result type="json" name="success">
            		<param name="root">publicationDateList</param>
         	</result>
         </action>
         
-         <action name="voterAnalysisAjaxForDisAction" class="votersAnalysisAction" method="AjaxHandler">
+         <action name="voterAnalysisAjaxForDisAction" class="votersAnalysisAction" method="ajaxHandler">
            <result type="json" name="success">
            		<param name="root">namesList</param>
         	</result>
@@ -6635,14 +6635,14 @@
 		</action>
 
 		<action name="gettingVotersBasedOnCasteAndAgeAjaxAction" class="votersAnalysisAction"
-			method="AjaxHandler">
+			method="ajaxHandler">
 			<result type="json" name="success">
 				<param name="root">namesList</param>
 			</result>
 		</action>
 
 		<action name="votersInfoAjaxAction" class="votersInformationAction"
-			method="AjaxHandler">
+			method="ajaxHandler">
 			<result type="json" name="success">
 				<param name="root">rs</param>
 			</result>

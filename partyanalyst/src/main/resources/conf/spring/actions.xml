@@ -293,7 +293,7 @@
 		<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>
 	
-	<bean id="partyInfluenceAction" class="com.itgrids.partyanalyst.web.action.partyInfluenceAction" singleton="false">
+	<bean id="partyInfluenceAction" class="com.itgrids.partyanalyst.web.action.PartyInfluenceAction" singleton="false">
 	   <property name="partyInfluenceService" ref="partyInfluenceService" />
 	 </bean>
 	

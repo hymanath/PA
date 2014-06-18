@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
@@ -25,6 +26,7 @@ public class TwitterAction extends ActionSupport implements
 ServletRequestAware, ServletResponseAware, ServletContextAware  {
 	
 	private static final long serialVersionUID = -4119321096803350183L;
+	private static final Logger LOG = Logger.getLogger(TwitterAction.class);
 	private String task = null;
 	//private List<SelectOptionVO> partyNames;
 	private List<SocialNetworkVO> partyNamesList;
@@ -84,15 +86,15 @@ ServletRequestAware, ServletResponseAware, ServletContextAware  {
 		
 		try {
 			jObj = new JSONObject(param);
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		if(jObj.getString("task").equalsIgnoreCase("getPartyNames"))
 		{
-			System.out.println("with in the action of twitter");
+			LOG.info("with in the action of twitter");
 			partyNamesList = socialService.getPartyNames();
-			System.out.println("partyNamesList value is:"+partyNamesList);
+			LOG.info("partyNamesList value is:"+partyNamesList);
 		}else if(jObj.getString("task").equalsIgnoreCase("getCandidateNames")){
 			
 				partyNamesList = socialService.getCandidateNames();
