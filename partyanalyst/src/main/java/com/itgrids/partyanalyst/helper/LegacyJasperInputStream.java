@@ -53,7 +53,7 @@ import org.xml.sax.SAXException;
  */
 public class LegacyJasperInputStream extends FilterInputStream
 {
-	private final static Logger log = Logger.getLogger(LegacyJasperInputStream.class);
+	private final static Logger LOG = Logger.getLogger(LegacyJasperInputStream.class);
 	
     /**
      * @param is        The InputStream with the modern XSD based Jasper design
@@ -81,15 +81,15 @@ public class LegacyJasperInputStream extends FilterInputStream
             builder = factory.newDocumentBuilder();
         }
         catch (ParserConfigurationException ex) {
-            log.error(ex.getMessage(), ex);
+        	LOG.error(ex.getMessage(), ex);
         }
 
         try {
             document = builder.parse(bis);
         } catch (SAXException ex) {
-            log.error(ex.getMessage(), ex);
+        	LOG.error(ex.getMessage(), ex);
         } catch (IOException ex) {
-            log.error(ex.getMessage(), ex);
+        	LOG.error(ex.getMessage(), ex);
         }
 
         return document;
@@ -102,7 +102,7 @@ public class LegacyJasperInputStream extends FilterInputStream
         try {
             trans = transfac.newTransformer();
         } catch (TransformerConfigurationException ex) {
-            log.error(ex.getMessage(), ex);
+        	LOG.error(ex.getMessage(), ex);
         }
 
         trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
@@ -115,7 +115,7 @@ public class LegacyJasperInputStream extends FilterInputStream
         try {
             trans.transform(source, result);
         } catch (TransformerException ex) {
-            log.error(ex.getMessage(), ex);
+        	LOG.error(ex.getMessage(), ex);
         }
 
         return sw.toString();
@@ -126,7 +126,7 @@ public class LegacyJasperInputStream extends FilterInputStream
         try {
             is = new ByteArrayInputStream(template.getBytes("UTF-8"));
         } catch (UnsupportedEncodingException ex) {
-           log.debug(ex.getMessage(), ex);
+        	LOG.debug(ex.getMessage(), ex);
         }
         return is;
     }

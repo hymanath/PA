@@ -35,7 +35,7 @@ import com.itgrids.partyanalyst.jasper.dataSource.BeanDataSourceProvider;
 
 public class JasperProducer {
 
-	private final static Logger log = Logger.getLogger(JasperProducer.class);
+	private final static Logger LOG  = Logger.getLogger(JasperProducer.class);
 	
 	public static byte[] createJasperReport(String jasperXML, Map<String, Object> params, PartyPerformanceReportVO partyReportVO) throws JRException {
 		JasperDesign jasperDesign = null;
@@ -43,7 +43,7 @@ public class JasperProducer {
 		try {
 			jasperDesign = JRXmlLoader.load(new LegacyJasperInputStream(new FileInputStream(jasperXML)));
 		} catch (FileNotFoundException e1) {
-			log.error("File Not found error");
+			LOG.error("File Not found error");
 		}
 		
 		JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);

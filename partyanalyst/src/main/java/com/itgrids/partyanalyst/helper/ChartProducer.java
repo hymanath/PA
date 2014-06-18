@@ -12,7 +12,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GradientPaint;
 import java.io.File;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.SortedMap;
 
@@ -40,7 +39,6 @@ import org.jfree.chart.renderer.category.BarRenderer3D;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.data.category.CategoryDataset;
-import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 import org.jfree.util.SortOrder;
@@ -53,7 +51,7 @@ import org.jfree.util.SortOrder;
 
 public class ChartProducer {
 
-	private final static Logger log =  Logger.getLogger(ChartProducer.class);
+	private final static Logger LOG =  Logger.getLogger(ChartProducer.class);
 
 	public static void createPie3DChart(SortedMap<String, Integer> positions, String filename, String chartTitle) {
 		
@@ -83,9 +81,9 @@ public class ChartProducer {
 		 }
 		 catch (java.io.IOException exc)
 		 {
-	            System.out.println("Exception while creating the chart" );
-	            exc.printStackTrace();
-	            System.out.println("Temp Directory:"+System.getProperty("java.io.tmpdir"));
+			     LOG.info("Exception while creating the chart" );
+			     LOG.error(exc);
+	            LOG.info("Temp Directory:"+System.getProperty("java.io.tmpdir"));
 
 		 }
 
@@ -93,7 +91,7 @@ public class ChartProducer {
 	
 	public static void createLineChart(String title, final List<CategoryDataset> dataset, String categoryAxisLabel, 
 			String valueAxisLabel, String fileName) {
-		log.debug("creating Line chart....");
+		LOG.debug("creating Line chart....");
 		
 		final NumberAxis seatsRangeAxis = new NumberAxis("No. of Seats");
         seatsRangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
@@ -109,7 +107,6 @@ public class ChartProducer {
         final BarRenderer votesRenderer = new BarRenderer();
         votesRenderer.setDrawBarOutline(true);
         votesRenderer.setAutoPopulateSeriesFillPaint(true);
-        final BarPainter painter = votesRenderer.getBarPainter();
         votesRenderer.setBaseToolTipGenerator(new StandardCategoryToolTipGenerator());
         final CategoryPlot votesPlot = new CategoryPlot(dataset.get(1), null, votesRangeAxis, votesRenderer);
         votesPlot.setDomainGridlinesVisible(true);
@@ -131,10 +128,10 @@ public class ChartProducer {
 		}
 		catch (java.io.IOException exc)
 		{
-            System.out.println("Exception while creating the chart" );
-            exc.printStackTrace();
-            System.out.println("Temp Directory:"+System.getProperty("java.io.tmpdir"));
-            log.error("Error Raised While Creating chart :" + exc);
+			LOG.info("Exception while creating the chart" );
+           LOG.error(exc);
+            LOG.info("Temp Directory:"+System.getProperty("java.io.tmpdir"));
+            LOG.error("Error Raised While Creating chart :" + exc);
 
 		}
 	}
@@ -142,7 +139,7 @@ public class ChartProducer {
 	
 	public static void createLineChartForPolling(String title, final List<CategoryDataset> dataset, String categoryAxisLabel, 
 			String valueAxisLabel, String fileName) {
-		log.debug("creating Line chart....");
+		LOG.debug("creating Line chart....");
 		
 			
         final NumberAxis seatsRangeAxis = new NumberAxis("Polling Trendz");
@@ -159,7 +156,6 @@ public class ChartProducer {
         final BarRenderer votesRenderer = new BarRenderer();
         votesRenderer.setDrawBarOutline(true);
         votesRenderer.setAutoPopulateSeriesFillPaint(true);
-        final BarPainter painter = votesRenderer.getBarPainter();
         votesRenderer.setBaseToolTipGenerator(new StandardCategoryToolTipGenerator());
         final CategoryPlot votesPlot = new CategoryPlot(dataset.get(1), null, votesRangeAxis, votesRenderer);
         votesPlot.setDomainGridlinesVisible(true);
@@ -181,15 +177,15 @@ public class ChartProducer {
 		}
 		catch (java.io.IOException exc)
 		{
-            System.out.println("Exception while creating the chart" );
-            exc.printStackTrace();
-            System.out.println("Temp Directory:"+System.getProperty("java.io.tmpdir"));
+			LOG.info("Exception while creating the chart" );
+			LOG.error(exc);
+            LOG.info("Temp Directory:"+System.getProperty("java.io.tmpdir"));
 
 		}
 	}
 		
 	public static void createBarChart(String title, String domainAxisL, String rangeAxisL, CategoryDataset dataset, String fileName) {
-		log.debug("in bar chart create method");
+		LOG.debug("in bar chart create method");
 		JFreeChart chart = ChartFactory.createBarChart("", domainAxisL, rangeAxisL, dataset, PlotOrientation.VERTICAL, true, true, false );
 		//chart.setBackgroundPaint(new Color(0xBBBBDD));
 		chart.setBackgroundPaint(Color.WHITE);
@@ -220,15 +216,14 @@ public class ChartProducer {
 
 			if(title.contains("By Revenue Villages")){
 				ChartUtilities.saveChartAsPNG(image, chart, 1200, 400, info);
-			}else
+			}else{
 				ChartUtilities.saveChartAsPNG(image, chart, 400, 350, info);
-
+			}
 		}
 		catch (Exception exc)
 		{
-			exc.printStackTrace();
-		log.error("Error writing image to file" + exc);
-		log.error("Error writing image to file" + exc.getMessage());
+			LOG.error("Error writing image to file" , exc);
+			LOG.error("Error writing image to file" + exc.getMessage());
 		}
 		
 	}
@@ -258,7 +253,7 @@ public class ChartProducer {
 		}
 		catch (java.io.IOException exc)
 		{
-		log.error("Error writing image to file");
+			LOG.error("Error writing image to file");
 		}
 		
 	}
@@ -291,16 +286,16 @@ public class ChartProducer {
 			}
 			catch (java.io.IOException exc)
 			{
-	            System.out.println("Exception while creating the chart" );
-	            exc.printStackTrace();
-	            System.out.println("Temp Directory:"+System.getProperty("java.io.tmpdir"));
+				LOG.info("Exception while creating the chart" );
+	            LOG.error(exc);
+	            LOG.info("Temp Directory:"+System.getProperty("java.io.tmpdir"));
 
 			}
 	       
 		
 	}
 	
-	public static void ForVotingTrendz(String title, String domainAxisL, String rangeAxisL, CategoryDataset dataset, String fileName) {
+	public static void forVotingTrendz(String title, String domainAxisL, String rangeAxisL, CategoryDataset dataset, String fileName) {
 		JFreeChart chart = ChartFactory.createBarChart(title, domainAxisL, rangeAxisL, dataset, PlotOrientation.VERTICAL, true, true, false );
 		//chart.setBackgroundPaint(new Color(0xBBBBDD));
 		chart.setBackgroundPaint(Color.WHITE);
@@ -326,9 +321,9 @@ public class ChartProducer {
 		}
 		catch (java.io.IOException exc)
 		{
-            System.out.println("Exception while creating the chart" );
-            exc.printStackTrace();
-            System.out.println("Temp Directory:"+System.getProperty("java.io.tmpdir"));
+			LOG.info("Exception while creating the chart" );
+			LOG.error(exc);
+            LOG.info("Temp Directory:"+System.getProperty("java.io.tmpdir"));
 
 		}
 		
@@ -360,7 +355,7 @@ public class ChartProducer {
 			}
 			catch (java.io.IOException exc)
 			{
-			log.error("Error writing image to file");
+				LOG.error("Error writing image to file");
 			}
 	}
 	
@@ -395,7 +390,7 @@ public class ChartProducer {
 		}
 		catch (java.io.IOException exc)
 		{
-		log.error("Error writing image to file");
+			LOG.error("Error writing image to file");
 		}
 	}
 	
@@ -416,7 +411,7 @@ public class ChartProducer {
 		}
 		catch (java.io.IOException exc)
 		{
-		log.error("Error writing image to file");
+			LOG.error("Error writing image to file");
 		exc.printStackTrace();
 		}
 	}
@@ -445,10 +440,11 @@ public class ChartProducer {
         GradientPaint gp;
         
         if(colors != null){
-        	log.debug("Colors Size::"+colors.size());
+        	LOG.debug("Colors Size::"+colors.size());
         	for(int i=0; i<colors.size(); i++){
-            	if(colors.get(i) == null)
+            	if(colors.get(i) == null){
             		continue;
+            	}
             	gp = new GradientPaint(0.0f, 0.0f, colors.get(i), 0.0f, 0.0f, colors.get(i));
             	seatsRenderer.setSeriesPaint(i, gp);
             }
@@ -456,7 +452,7 @@ public class ChartProducer {
         
         //for thick lines
         if(thickLines){
-        log.debug(" Partys Count in Dataset -- " + dataset.getRowCount());
+        	LOG.debug(" Partys Count in Dataset -- " + dataset.getRowCount());
         
         for(int i=0;i<dataset.getRowCount();i++){
         	seatsRenderer.setSeriesStroke(
@@ -479,9 +475,9 @@ public class ChartProducer {
 		}
 		catch (java.io.IOException exc)
 		{
-			log.error("Error writing image to file" + exc);
+			LOG.error("Error writing image to file" + exc);
 			exc.printStackTrace();
-			log.error("Error writing image to file" + exc.getMessage());
+			LOG.error("Error writing image to file" + exc.getMessage());
 			
 		}
 	}
@@ -509,10 +505,11 @@ public class ChartProducer {
         GradientPaint gp;
         
         if(colors != null){
-        	log.debug("Colors Size::"+colors.size());
+        	LOG.debug("Colors Size::"+colors.size());
         	for(int i=0; i<colors.size(); i++){
-            	if(colors.get(i) == null)
+            	if(colors.get(i) == null){
             		continue;
+            	}
             	gp = new GradientPaint(0.0f, 0.0f, colors.get(i), 0.0f, 0.0f, Color.lightGray);
             	seatsRenderer.setSeriesPaint(i, gp);
             }
@@ -520,7 +517,7 @@ public class ChartProducer {
         
         //for thick lines
         if(thickLines){
-        log.debug(" Partys Count in Dataset -- " + dataset.getRowCount());
+        	LOG.debug(" Partys Count in Dataset -- " + dataset.getRowCount());
         
         for(int i=0;i<dataset.getRowCount();i++){
         	seatsRenderer.setSeriesStroke(
@@ -544,7 +541,7 @@ public class ChartProducer {
 		}
 		catch (java.io.IOException exc)
 		{
-		log.error("Error writing image to file");
+			LOG.error("Error writing image to file");
 		}
 	}
 	
@@ -588,7 +585,7 @@ public class ChartProducer {
 				}
 				catch (java.io.IOException exc)
 				{
-				log.error("Error writing image to file");
+					LOG.error("Error writing image to file");
 				}
 	}
 	
@@ -612,19 +609,17 @@ public class ChartProducer {
 				NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
 				
 				rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-				
-				CategoryAxis domainAxis = (CategoryAxis) plot.getDomainAxis();
-		       // domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
 		        
 				// disable bar outlines...
 				BarRenderer renderer = (BarRenderer) plot.getRenderer();
 				renderer.setDrawBarOutline(false);
 				if(colors != null){
 		        	GradientPaint gp;
-		        	log.debug("Colors Size::"+colors.size());
+		        	LOG.debug("Colors Size::"+colors.size());
 		        	for(int i=0; i<colors.size(); i++){
-		            	if(colors.get(i) == null)
+		            	if(colors.get(i) == null){
 		            		continue;
+		            	}
 		            	gp = new GradientPaint(0.0f, 0.0f, colors.get(i), 0.0f, 0.0f, colors.get(i));
 		            	renderer.setSeriesPaint(i, gp);
 		            }
@@ -657,8 +652,8 @@ public class ChartProducer {
 				}
 				catch (java.io.IOException exc)
 				{
-				log.error("Error writing image to file");
-				log.debug("Exception Raised :" + exc);
+					LOG.error("Error writing image to file");
+					LOG.debug("Exception Raised :" + exc);
 				}
 	}
 	
@@ -688,9 +683,9 @@ public class ChartProducer {
         }
         catch (Exception e)
         {
-            System.out.println("Exception while creating the chart");
-            e.printStackTrace();
-            System.out.println(System.getProperty("java.io.tmpdir"));
+        	LOG.info("Exception while creating the chart");
+        	 LOG.error(e);
+            LOG.info(System.getProperty("java.io.tmpdir"));
         }
 		
 	}
@@ -718,8 +713,6 @@ public class ChartProducer {
 				
 				rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 				
-				CategoryAxis domainAxis = (CategoryAxis) plot.getDomainAxis();
-		       // domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
 		        
 				// disable bar outlines...
 				BarRenderer renderer = (BarRenderer) plot.getRenderer();
@@ -742,8 +735,8 @@ public class ChartProducer {
 				}
 				catch (java.io.IOException exc)
 				{
-				log.error("Error writing image to file");
-				log.debug("Exception Raised :" + exc);
+					LOG.error("Error writing image to file");
+					LOG.debug("Exception Raised :" + exc);
 				}
 	}
 	
@@ -784,9 +777,9 @@ public static void createLabeledPieChart(String title,final DefaultPieDataset da
         }
         catch (Exception e)
         {
-            System.out.println("Exception while creating the chart" );
-            e.printStackTrace();
-            System.out.println("Temp Directory:"+System.getProperty("java.io.tmpdir"));
+        	LOG.info("Exception while creating the chart" );
+        	LOG.error(e);
+            LOG.info("Temp Directory:"+System.getProperty("java.io.tmpdir"));
         }
 	}
 
