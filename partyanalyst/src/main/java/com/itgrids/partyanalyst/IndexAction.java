@@ -34,7 +34,6 @@ import com.opensymphony.xwork2.ActionSupport;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
-import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -80,7 +79,7 @@ public class IndexAction extends ActionSupport implements ServletRequestAware {
 	private String changedUserName = "false";
 	private String loginUserProfilePic;
 	private boolean hasProfileManagement = false;	
-	private final static Logger log = Logger.getLogger(CadreManagementAction.class);
+	private final static Logger LOG = Logger.getLogger(CadreManagementAction.class);
 
 	public void setJObj(JSONObject jObj) {
 		this.jObj = jObj;
@@ -275,28 +274,29 @@ public class IndexAction extends ActionSupport implements ServletRequestAware {
     	session = request.getSession();
 		user = (RegistrationVO) session.getAttribute("USER");
 		
-		if(user == null)
+		if(user == null){
 			return ERROR;
-		else 
-			System.out.print(user.getUserName());
+		}else{ 
+			LOG.info(user.getUserName());
+		}
         now = new Date(System.currentTimeMillis());
         
-        /*mlaConstituenciesList = staticDataService.getConstituenciesByElectionTypeAndStateId(new Long(2), new Long(1)).getConstituencies();
-        mpConstituenciesList = staticDataService.getConstituenciesByElectionTypeAndStateId(new Long(1), new Long(1)).getConstituencies();*/
+        /*mlaConstituenciesList = staticDataService.getConstituenciesByElectionTypeAndStateId(Long.valueOf(2), Long.valueOf(1)).getConstituencies();
+        mpConstituenciesList = staticDataService.getConstituenciesByElectionTypeAndStateId(Long.valueOf(1), Long.valueOf(1)).getConstituencies();*/
         
-        /*System.out.println("Title: " + cadreManagementVO.getUserEvents().get(0).getEventDisplayTitle());
-        System.out.println("ImpDate: " + cadreManagementVO.getUserImpDates().get(0).getTitle());*/
+        /*LOG.info("Title: " + cadreManagementVO.getUserEvents().get(0).getEventDisplayTitle());
+        LOG.info("ImpDate: " + cadreManagementVO.getUserImpDates().get(0).getTitle());*/
         
         /*userGroups = userGroupService.getAllMyGroupsCreatedByUser(user.getRegistrationID()).size();
         systemGroups = userGroupService.subGrpsCountInSystemGrpsForUser(user.getRegistrationID()).size();*/
-        /*System.out.println("EventCount: "  + eventCount + "User groups:" + userGroups + "System Groups:" + systemGroups);
+        /*LOG.info("EventCount: "  + eventCount + "User groups:" + userGroups + "System Groups:" + systemGroups);
         for(Entry<String, Long> s: cadreManagementVO.getCadresByCadreLevel().entrySet()) {
-        	System.out.println(s.getKey() + " :" + s.getValue());
+        	LOG.info(s.getKey() + " :" + s.getValue());
         }*/
         loginUserProfilePic = ananymousUserService.getUserProfileImageByUserId(user.getRegistrationID());
         
 		if(cadreManagementVO!=null && cadreManagementVO.getExceptionEncountered()!=null)
-			log.error(cadreManagementVO.getExceptionEncountered().getMessage());
+			LOG.error(cadreManagementVO.getExceptionEncountered().getMessage());
 		
        if(user!=null && entitlementsHelper.checkForEntitlementToViewReport(user, IConstants.NEWS_MONITORING_ENTITLEMENT)){
         	hasNewsMonitoring = true;
