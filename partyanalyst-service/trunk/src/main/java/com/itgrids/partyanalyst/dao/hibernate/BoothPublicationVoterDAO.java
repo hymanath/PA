@@ -75,25 +75,22 @@ public class BoothPublicationVoterDAO extends
 		 
 	 }  
 
-		/*public List<Voter> getVotersDetailsForPanchayatByPublicationId(
-				Long panchayatId, Long publicationDateId, Integer startIndex,
-				Integer maxRecords, String order, String columnName) {
-			
+		public List<Object[]> getVotersDetailsForPanchayatByPublicationIdAndPAnchayatId(
+				Long panchayatId, Long publicationDateId) {
+		
 			Query query = getSession()
-					.createQuery(
-							"select model.voter from BoothPublicationVoter model where " +
-							"model.booth.publicationDate.publicationDateId = :publicationDateId and "+
-							" model.booth.boothId in(select distinct model1.booth.boothId from " +
-							" HamletBoothPublication model1 where model1.booth.publicationDate.publicationDateId = :publicationDateId " +
-							"and  model1.hamlet.hamletId in(select distinct model2.hamlet.hamletId from " +
-							"PanchayatHamlet model2 where model2.panchayat.panchayatId =:panchayatId )) order by model.voter."+columnName+" "+order);
+					.createQuery("select " +
+							"BPV.voter.voterId,BPV.voter.relationshipType," +
+							"BPV.voter.relativeName,BPV.voter.gender , " +
+							"BPV.voter.age,BPV.voter.voterIDCardNo,BPV.voter.name " +
+							" from " +
+							"BoothPublicationVoter BPV where BPV.booth.publicationDate.publicationDateId = :publicationDateId and " +
+							" BPV.booth.panchayat.panchayatId = :panchayatId");
 			
 			query.setParameter("publicationDateId", publicationDateId);
 			query.setParameter("panchayatId", panchayatId);
-			query.setFirstResult(startIndex);
-			query.setMaxResults(maxRecords);
 			return query.list();
-		}*/
+		}
 	  public List<Object[]> getVotersDetailsForPanchayatByPublicationId(
 				Long panchayatId, Long publicationDateId, Integer startIndex,
 				Integer maxRecords, String order, String columnName) {
