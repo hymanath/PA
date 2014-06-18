@@ -348,7 +348,7 @@ var host = "<%=IConstants.DEPLOYED_HOST%>";
 		  var popupPanel;
 		  var initialProbs = new Array();
 		  var smsHidden = 1;
-		  var externalPerson = '${EXTERNAL_PERSON}';
+		  var externalPerson = '${externalPerson}';
 		  var hidden = '${sessionScope.HiddenCount}';
 		  
 		  <c:forEach var="prob" items="${problemsList}">

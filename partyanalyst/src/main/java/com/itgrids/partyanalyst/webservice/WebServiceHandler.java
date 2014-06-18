@@ -175,7 +175,7 @@ public class WebServiceHandler {
     {
 		try{
 			wSResultVO = webServiceHandlerService.getUserVoiceRecordedFiles(uniqueCode);
-		 if(wSResultVO == null && wSResultVO.size() == 0)
+		 if(wSResultVO == null || wSResultVO.size() == 0)
 			return null;
 		 else 
 			return wSResultVO;
@@ -216,22 +216,22 @@ public class WebServiceHandler {
 	public String sendSMS(@PathParam("uniqueCode") String uniqueCode , @PathParam("mobileNos") String mobileNos, @PathParam("message") String message)
 
     {
-		message = message.replace("_"," ");
+		String messageInfo = message.replace("_"," ");
 		try{
-			resultStatus = webServiceHandlerService.sendSMS(uniqueCode,mobileNos,message);
+			resultStatus = webServiceHandlerService.sendSMS(uniqueCode,mobileNos,messageInfo);
 			 if(resultStatus.getResultCode() == 0)
-				 message = "OK :your sms send successfully";
+				 messageInfo = "OK :your sms send successfully";
 			if(resultStatus.getResultCode() == 1)
-				 message =  "FAIL : Fail to send sms";
+				messageInfo =  "FAIL : Fail to send sms";
 			if(resultStatus.getResultCode() == 121)
-				 message =  "FAIL : Register User Not avilable,Contact our Support center.";
+				messageInfo =  "FAIL : Register User Not avilable,Contact our Support center.";
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 			return "Failure";
 		}
-		return message;
+		return messageInfo;
 	
     }
 	

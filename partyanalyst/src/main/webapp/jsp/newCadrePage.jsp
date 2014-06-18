@@ -1547,11 +1547,11 @@ function refreshingParentWindow()
 		</tr>	
 		<tr>
 			<td><label>English</label></td>
-			<td colspan="3"><s:checkboxlist list="#session.language_options" name="languageOptions_English"/></td>			
+			<td colspan="3"><s:checkboxlist list="#session.language_options" name="languageOptionsEnglish"/></td>			
 		</tr>
 		<tr>
 			<td><label>Hindi</label></td>
-			<td colspan="3"><s:checkboxlist list="#session.language_options" name="languageOptions_Hindi"/></td>			
+			<td colspan="3"><s:checkboxlist list="#session.language_options" name="languageOptionsHindi"/></td>			
 		</tr>
 		<tr>
 			<td><label>Telugu</label></td>

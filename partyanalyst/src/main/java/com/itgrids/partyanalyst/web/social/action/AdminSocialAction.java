@@ -8,6 +8,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
@@ -22,7 +23,7 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class AdminSocialAction extends ActionSupport implements
 ServletRequestAware, ServletResponseAware, ServletContextAware  {
-
+	private static final Logger LOG = Logger.getLogger(AdminSocialAction.class);
 	private  String category;
 	private  String name;
 	private  String profileID;
@@ -174,7 +175,7 @@ ServletRequestAware, ServletResponseAware, ServletContextAware  {
 		
 		try {
 			jObj = new JSONObject(param);
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
