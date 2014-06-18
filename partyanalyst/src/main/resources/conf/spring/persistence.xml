@@ -431,6 +431,7 @@
 				<value>com.itgrids.partyanalyst.model.RegionWiseSurveys</value>
 				<value>com.itgrids.partyanalyst.model.FieldVoterData</value>
 				<value>com.itgrids.partyanalyst.model.UserSurveyBooths</value>
+				<value>com.itgrids.partyanalyst.model.TdMember</value>
 				
 			</list>
 			

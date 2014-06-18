@@ -11,10 +11,12 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 
+import com.itgrids.partyanalyst.dto.FieldVoterDataVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserTrackingVO;
 import com.itgrids.partyanalyst.service.ILoginService;
+import com.itgrids.partyanalyst.service.ISoundexService;
 import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -87,10 +89,19 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
     private String resultForAjax;
     private ResultStatus resultStatus;
     private String status;
-    
-    
-    
-    public String getStatus() {
+    private List<FieldVoterDataVO> fieldVoterDetailsList;
+   
+
+	public List<FieldVoterDataVO> getFieldVoterDetailsList() {
+		return fieldVoterDetailsList;
+	}
+
+	public void setFieldVoterDetailsList(
+			List<FieldVoterDataVO> fieldVoterDetailsList) {
+		this.fieldVoterDetailsList = fieldVoterDetailsList;
+	}
+
+	public String getStatus() {
 		return status;
 	}
 
@@ -730,7 +741,7 @@ public String ajaxCallForLoginPopup(){
 		}catch (Exception e) {
 			return false;
 		}
-	}
-
-
+	}	
+	
+	
 }

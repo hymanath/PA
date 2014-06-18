@@ -216,6 +216,31 @@ body {
 
 <script type="text/javascript">
 
+ $(document).ready(function(){
+
+	 $('.fields').live("change",function(){
+		
+		 var value = $(this).val().trim();
+				
+		 var indextoShow = $('#fieldVotersDetailsTable  th').filter(
+           function(){
+           return $(this).text().trim() == value;
+          }).index();
+		 if($(this).is(":checked")){	
+            $('#fieldVotersDetailsTable  tr  th').eq(indextoShow).show();
+			$('#fieldVotersDetailsTable  tr').each(function() {
+                $(this).find("td").eq(indextoShow).show();            
+            });
+			
+		 }else{
+			  $('#fieldVotersDetailsTable   tr th').eq(indextoShow).hide();
+			 $('#fieldVotersDetailsTable  tr').each(function() {
+                $(this).find("td").eq(indextoShow).hide();            
+            });
+		 }			  
+	 });
+ });
+
 
 	
 function getCategoriesForAUser(){
@@ -299,7 +324,14 @@ function getCategoriesForAUser(){
 	  
 	  <input style="margin-left:240px;margin-bottom:10px;"  class="btn btn-success" type="button" id="searchbtnId" value="Search"/>
 
+	  
+	  <input style="margin-left:240px;margin-bottom:10px;"  class="btn btn-success" type="button" id="searchbtnId1" value="Test" onClick="testIt()"/>
+
+
 	  <div id="noteDiv" style="float: right;"></div>
+
+	  <div id="resultDiv">	   
+	  </div>
 	   </fieldset>
 
 	</div>
@@ -309,47 +341,47 @@ function getCategoriesForAUser(){
   //getCategoriesForAUserInital();
 function buildCategoriesListInit(){
 	  var str ='';
-	    str+='<table style="margin-left:5px;"><tr>';
-		str+='   <td style=""><input type="checkbox" id="mandalNameColum" />  mandal Name&nbsp;&nbsp;</td>';
-		str+='   <td style=""><input type="checkbox" id="boothColum" />  booth&nbsp;&nbsp;</td>';
-		str+='   <td style=""><input type="checkbox" id="voterIdColum" />  voterId&nbsp;&nbsp;</td>';
+	    str+='<table style="margin-left:5px;"><tr>'; 
+		str+='   <td style=""><label><input type="checkbox" id="mandalNameColum" value="Mandal Name" class="fields"/>  mandal Name&nbsp;&nbsp;</label></td>';
+		str+='   <td style=""><label><input type="checkbox" id="boothColum" value="Booth" class="fields"/>  booth&nbsp;&nbsp;</label></td>';
+		str+='   <td style=""><label><input type="checkbox" id="voterIdColum" value="VoterID" class="fields"/>  voterId&nbsp;&nbsp;</label></td>';
 		
 		
 		str+='</tr>';
 		str+='<tr>';
-		str+='   <td style=""><input type="checkbox" id="voterNameColum" />  Voter Name&nbsp;&nbsp;</td>';
-		str+='   <td style=""><input type="checkbox" id="ageCol" />  Age&nbsp;&nbsp;</td>';
-		str+='   <td style=""><input type="checkbox" id="genderColum" />  Gender&nbsp;&nbsp;</td>';
+		str+='   <td style=""><label><input type="checkbox" id="voterNameColum" value="Voter Name" class="fields"/>  Voter Name&nbsp;&nbsp;</label></td>';
+		str+='   <td style=""><label><input type="checkbox" id="ageCol" value="Age" class="fields"/>  Age&nbsp;&nbsp;</label></td>';
+		str+='   <td style=""><label><input type="checkbox" id="genderColum" value="Gender" class="fields"/>  Gender&nbsp;&nbsp;</label></td>';
 		
 		
 		str+='</tr>';
 		str+='<tr>';
-		str+='   <td style=""><input type="checkbox" id="relativeNameColum" />  relative Name&nbsp;&nbsp;</td>';
+		str+='   <td style=""><label><input type="checkbox" id="relativeNameColum" value="RelativeName" class="fields"/>  relative Name&nbsp;&nbsp;</label></td>';
 		
-		str+='   <td style=""><input type="checkbox" id="relationshipColum" />  relationship&nbsp;&nbsp;</td>';
-		str+='   <td style=""><input type="checkbox" id="mobileNoColum" />  mobile No&nbsp;&nbsp;</td>';
+		str+='   <td style=""><label><input type="checkbox" id="relationshipColum" value="Relationship" class="fields"/>  relationship&nbsp;&nbsp;</label></td>';
+		str+='   <td style=""><label><input type="checkbox" id="mobileNoColum" value="MobileNo" class="fields"/>  mobile No&nbsp;&nbsp;</label></td>';
 		str+='</tr>';
 		str+='<tr>';
-		str+='   <td style=""><input type="checkbox" id="casteCol" />  caste&nbsp;&nbsp;</td>';
-		str+='   <td style=""><input type="checkbox" id="hamletColum" />  hamlet&nbsp;&nbsp;</td>';
-		str+='   <td style=""><input type="checkbox" id="cadreColum" />  cadre&nbsp;&nbsp;</td>';
+		str+='   <td style=""><label><input type="checkbox" id="casteCol" value="Caste" class="fields"/>caste</label>  </td>';
+		str+='   <td style=""><label><input type="checkbox" id="hamletColum" value="Hamlet" class="fields"/>  hamlet</label></td>';
+		str+='   <td style=""><label><input type="checkbox" id="cadreColum" value="IsCadre" class="fields"/>  cadre</></td>';
 		
 		
 		
 		str+='</tr>';
 		str+='<tr>';
-		str+='   <td style=""><input type="checkbox" id="localityColum" />  Locality&nbsp;&nbsp;</td>';
-		str+='   <td style=""><input type="checkbox" id="influencingPeopleColum" />  Influencing People&nbsp;&nbsp;</td>';
-		str+='   <td style=""><input type="checkbox" id="dataCollectorCol" />  Data Collector&nbsp;&nbsp;</td>';
+		str+='   <td style=""><label><input type="checkbox" id="localityColum" value="Locality" class="fields"/>  Locality&nbsp;&nbsp;</label></td>';
+		str+='   <td style=""><label><input type="checkbox" id="influencingPeopleColum" value="IsInfleuncePerson" class="fields"/>  Influencing People&nbsp;&nbsp;</label></td>';
+		str+='   <td style=""><label><input type="checkbox" id="dataCollectorCol" value="Data Collector" class="fields"/>  Data Collector&nbsp;&nbsp;</label></td>';
 		str+='</tr>';
 		str+='<tr>';
-		str+='   <td style=""><input type="checkbox" id="verifierColum" />  verifier&nbsp;&nbsp;</td>';
-		str+='   <td style=""><input type="checkbox" id="verifiedCasteColum" />  verified Caste&nbsp;&nbsp;</td>';
-		str+='   <td style=""><input type="checkbox" id="verifiedHamletColum" />  verified Hamlet&nbsp;&nbsp;</td>';
+		str+='   <td style=""><label><input type="checkbox" id="verifierColum" value="Verifier" class="fields"/>  verifier&nbsp;&nbsp;</label></td>';
+		str+='   <td style=""><label><input type="checkbox" id="verifiedCasteColum" value="Verified Caste" class="fields"/>  verified Caste&nbsp;&nbsp;</label></td>';
+		str+='   <td style=""><label><input type="checkbox" id="verifiedHamletColum" value="Verified Hamlet" class="fields"/>  verified Hamlet&nbsp;&nbsp;</label></td>';
 		str+='</tr>';
 		str+='<tr>';
-		str+='   <td style=""><input type="checkbox" id="verifiedMobileNoColum" />  verified MobileNo&nbsp;&nbsp;</td>';
-		str+='   <td style=""><input type="checkbox" id="verifiedLocalityCol" /> verified Locality&nbsp;&nbsp;</td>';
+		str+='   <td style=""><label><input type="checkbox" id="verifiedMobileNoColum" value="Verified MobileNo" class="fields"/>  verified MobileNo&nbsp;&nbsp;</label></td>';
+		str+='   <td style=""><label><input type="checkbox" id="verifiedLocalityCol" value="Verified Locality" class="fields"/> verified Locality&nbsp;&nbsp;</label></td>';
 	    str+='</tr></table>';
 	    $("#requiredFieldsToCheck").html(str);
 	  }
@@ -423,8 +455,88 @@ function getBoothsforFieldVoters(checkedele,selectedEle)
 		callAjax(jsObj,url);
 	
 	}
+
+function  testIt()
+{
+	$.ajaxSetup({
+	   jsonp: null,
+	   jsonpCallback: null
+	});
+
+	    $.ajax({
+		  type:'POST',
+		  url: 'getfieldVoterDataAction.action',
+		  dataType: 'json',
+		  data: {boothId:383457},
+			 
+		  success: function(result){  
+			buildResult(result);
+		 },
+		  error:function() { 
+			//  alert("failure");
+		  }
+	});
+}
+
+function buildResult(result)
+{
+	var str = '';
+
+	 str+='<table border="1" id="fieldVotersDetailsTable">';
+	  str+='<thead>';
+	   str+='<tr>';
+			str+='<th>Mandal Name</th>';
+			//str+='<th>Booth </th>';
+			str+='<th>VoterID </th>';
+			str+='<th>Voter Name</th>';
+			str+='<th>Age</th>';
+			str+='<th>Gender</th>';
+			str+='<th>RelativeName </th>';
+			str+='<th>Relationship </th>';
+			str+='<th>MobileNo </th>';
+			str+='<th>Caste</th>';
+			str+='<th>Hamlet </th>';
+			str+='<th>IsCadre? </th>';
+			str+='<th>IsInfleuncePerson? </th>';
+			str+='<th>Data Collector </th>';
+			str+='<th>Verifier </th>';
+			str+='<th>Verified Caste </th>';
+			str+='<th>Verified Hamlet </th>';
+			str+='<th>Verified MobileNo </th>';
+			str+='<th>Verified Locality </th>';
+	   str+='</tr>';
+	  str+='</thead>';
+
+		 $.each(result,function(index,value){
+			str+='<tr>';
+				str+='<td>'+value.mandalName+'</td>';
+				//str+='<td>'+value.boothNo+'</td>';
+				str+='<td>'+value.voterIdcardNo+'</td>';
+				str+='<td>'+value.voterName+'</td>';
+				str+='<td>'+value.age+'</td>';
+				str+='<td>'+value.gender+'</td>';
+				str+='<td>'+value.relativeName+'</td>';
+				str+='<td>'+value.relation+'</td>';
+				str+='<td>'+value.mobileNo+'</td>';
+				str+='<td>'+value.surveyCaste+'</td>';
+				str+='<td>'+value.surveyHamletName+'</td>';
+				str+='<td>'+value.cadre+'</td>';
+				str+='<td>'+value.influencePeople+'</td>';
+				str+='<td>'+value.dataCollectorName+'</td>';
+				str+='<td>'+value.verifierName+'</td>';
+				str+='<td>'+value.verifierCaste+'</td>';
+				str+='<td>'+value.verifierHamletName+'</td>';
+				str+='<td>--</td>';
+				str+='<td>--</td>';
+		   str+='</tr>';
+		 });	  
+	 str+='</table>';
+
+	 $('#resultDiv').html(str);
+}
 	
 </script>
+
 
 </body>
 </html>
