@@ -61,7 +61,6 @@ public class SoundexService implements ISoundexService {
 
 		try
 		{
-			
 			List<Object[]> panchayatDEtails = panchayatDAO.getPanchayatsByConstituencyId(constituewcyId);
 			
 			for(Object[] panchayatList:panchayatDEtails)
@@ -78,7 +77,6 @@ public class SoundexService implements ISoundexService {
 			
 			List<SoundexVO> votersDetails = new ArrayList<SoundexVO>();
 			setVotersDetails(votersDetails,list);
-		
 			
 			RefinedSoundex soundex = new RefinedSoundex();
 			
@@ -102,9 +100,6 @@ public class SoundexService implements ISoundexService {
 
 					}
 					
-					/*if(name)
-					{*/
-						
 						boolean gender = voterVO.getGender().equalsIgnoreCase(memberVO.getGender());
 						
 						if(gender)
@@ -119,35 +114,27 @@ public class SoundexService implements ISoundexService {
 							voterVO.setRelativeNameMatch(true);
 						}
 						
-						
 						long low = memberVO.getAge() - 4;
 						long high = memberVO.getAge() + 4;
 						
 						boolean age = (voterVO.getAge() >= low) &&( voterVO.getAge() <= high);
 						
-						
-						if(age)
-						{
+						 if(age)
+						 {
 							voterVO.setAgeMatched(true);
-							
 						}
-					//}
 				}
 				
 				if(memberVO.getExactMatchList().size() == 0 && memberVO.getSoundexMatchList().size() == 0)
 				{
 					memberVO.setUnMatched(true);
 				}
-				
 			}
-			
-			resultList.addAll(membersList);
+			 resultList.addAll(membersList);
 			
 			}
 			
 			displayMemberMatchingDetails(resultList);
-			
-			
 			
 		}catch(Exception e)
 		{
