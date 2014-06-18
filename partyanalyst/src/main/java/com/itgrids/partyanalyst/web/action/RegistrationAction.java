@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
@@ -23,6 +24,7 @@ public class RegistrationAction extends ActionSupport implements
 		ServletRequestAware{
 
 	private static final long serialVersionUID = -2526485695057725966L;
+	private static final Logger LOG = Logger.getLogger(RegistrationAction.class);
 	private HttpServletRequest request;
 	private IRegistrationService registrationService;
 	private IStaticDataService staticDataService;
@@ -185,7 +187,7 @@ public class RegistrationAction extends ActionSupport implements
 		String requestStatus = null;
 		Long userId = null;
 		
-	/* states = staticDataService.getParticipatedStatesForAnElectionType(new Long(2));
+	/* states = staticDataService.getParticipatedStatesForAnElectionType(Long.valueOf(2));
 		districts = new ArrayList<SelectOptionVO>(0);
 		 constituencies = new ArrayList<SelectOptionVO>(0);*/
 		
@@ -234,15 +236,15 @@ public class RegistrationAction extends ActionSupport implements
 	
 	public String checkForRegisteredUserNameAvailability()
 	{
-		System.out.println("=================");
+		LOG.info("=================");
 		try {
 			jObj = new JSONObject(getTask());
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		resltval = new Long(registrationService.checkForUserNameAvalilability(jObj.getString("userName")).getResultCode());
+		resltval = Long.valueOf(registrationService.checkForUserNameAvalilability(jObj.getString("userName")).getResultCode());
 		resultStr = SUCCESS;
 		return SUCCESS;
 	}
@@ -261,7 +263,7 @@ public class RegistrationAction extends ActionSupport implements
 				}
 			/*	else{
 				 email = regVO.getEmail();
-				 System.out.println("email"+email);
+				 LOG.info("email"+email);
 					String requestURL= request.getRequestURL().toString();
 					String requestFrom = "";
 					if(requestURL.contains("www.partyanalyst.com"))

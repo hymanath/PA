@@ -1,38 +1,36 @@
 package com.itgrids.partyanalyst.web.action;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.apache.struts2.util.ServletContextAware;
 
 import com.itgrids.partyanalyst.dto.AnnouncementVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
-import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IAnnouncementService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.ISessionConstants;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.validator.annotations.RegexFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
-import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.ValidatorType;
 
-public class AnnouncementSaveAction extends ActionSupport implements ServletContextAware, ServletRequestAware{
+public class AnnouncementSaveAction extends ActionSupport implements  ServletRequestAware{
 	
-	private static final Logger log = Logger.getLogger(AnnouncementSaveAction.class);
-    public HttpServletRequest request;
-    public ServletContext context;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5287542481348195016L;
+	private static final Logger LOG = Logger.getLogger(AnnouncementSaveAction.class);
+	transient public HttpServletRequest request;
     private IAnnouncementService announcementService;
-    private HttpSession session;
     private AnnouncementVO announcementVO = new AnnouncementVO();
     private AnnouncementVO resultVO;
     
     @RequiredStringValidator(type = ValidatorType.FIELD, message = "Title field is mandatory",shortCircuit=true)
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
     	announcementVO.setTitle(title);
 	}
    
@@ -45,7 +43,7 @@ public class AnnouncementSaveAction extends ActionSupport implements ServletCont
 	}
 	
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Announcement field is mandatory",shortCircuit=true)
-	public void setMessage(String message) {
+	public void setMessage(final String message) {
 		announcementVO.setMessage(message);
 	}
     
@@ -54,7 +52,7 @@ public class AnnouncementSaveAction extends ActionSupport implements ServletCont
 	}
 	
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "FromDate is mandatory",shortCircuit=true)
-	public void setFromDate(String fromDate) {
+	public void setFromDate(final String fromDate) {
 		announcementVO.setFromDate(fromDate);
 	}
 		
@@ -63,7 +61,7 @@ public class AnnouncementSaveAction extends ActionSupport implements ServletCont
 	}
 	
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "ToDate is mandatory",shortCircuit=true)
-	public void setToDate(String toDate) {
+	public void setToDate(final String toDate) {
 		announcementVO.setToDate(toDate);
 	}
 		
@@ -72,7 +70,7 @@ public class AnnouncementSaveAction extends ActionSupport implements ServletCont
 	}
 	
 	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Constituency Selection")
-	public void setConstituency(Long constituency) {
+	public void setConstituency(final Long constituency) {
 		announcementVO.setConstituency(constituency);
 	}
 	
@@ -80,7 +78,7 @@ public class AnnouncementSaveAction extends ActionSupport implements ServletCont
 		return announcementVO.getWindowTask();
 	}
 
-	public void setWindowTask(String windowTask) {
+	public void setWindowTask(final String windowTask) {
 		announcementVO.setWindowTask(windowTask);
 	}
 	
@@ -88,7 +86,7 @@ public class AnnouncementSaveAction extends ActionSupport implements ServletCont
 		return announcementVO.getAnnouncementId();
 	}
 
-	public void setAnnouncementId(Long announcementId) {
+	public void setAnnouncementId(final Long announcementId) {
 		announcementVO.setAnnouncementId(announcementId);
 	}
 
@@ -96,7 +94,7 @@ public class AnnouncementSaveAction extends ActionSupport implements ServletCont
 		return announcementService;
 	}
 
-	public void setAnnouncementService(IAnnouncementService announcementService) {
+	public void setAnnouncementService(final IAnnouncementService announcementService) {
 		this.announcementService = announcementService;
 	}
 	
@@ -104,14 +102,11 @@ public class AnnouncementSaveAction extends ActionSupport implements ServletCont
 		return announcementVO;
 	}
 
-	public void setAnnouncementVO(AnnouncementVO announcementVO) {
+	public void setAnnouncementVO(final AnnouncementVO announcementVO) {
 		this.announcementVO = announcementVO;
 	}
 	
-	public void setServletContext(ServletContext context) {
-		this.context = context;
-	}
-	public void setServletRequest(HttpServletRequest request) {
+	public void setServletRequest(final HttpServletRequest request) {
 		this.request = request;
 	}
 	
@@ -119,16 +114,16 @@ public class AnnouncementSaveAction extends ActionSupport implements ServletCont
 		return resultVO;
 	}
 
-	public void setResultVO(AnnouncementVO resultVO) {
+	public void setResultVO(final AnnouncementVO resultVO) {
 		this.resultVO = resultVO;
 	}
 
 	public String execute()
 	{
-		log.debug("Entered into execute method of Announcement Action:");
+		LOG.debug("Entered into execute method of Announcement Action:");
 	
-		session = request.getSession();
-		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		final HttpSession session = request.getSession();
+		final RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		
 		if(regVO == null){
 			return "failure" ;
@@ -143,11 +138,11 @@ public class AnnouncementSaveAction extends ActionSupport implements ServletCont
 		}
 		resultVO = announcementService.saveAnnouncement(announcementVO);
 		
-		if(resultVO != null && resultVO.getResultStatus().getResultCode() == ResultCodeMapper.FAILURE)
+		if(resultVO != null && resultVO.getResultStatus().getResultCode() == ResultCodeMapper.FAILURE){
 			return "failure" ;
-		else
+		}else{
 			announcementVO = new AnnouncementVO();
-		
+		}
 		return "success";
 	}
 	

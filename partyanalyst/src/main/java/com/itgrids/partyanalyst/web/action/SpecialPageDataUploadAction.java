@@ -63,7 +63,7 @@ public class SpecialPageDataUploadAction extends ActionSupport implements Servle
 		this.specialPagesList = specialPagesList;
 	}
 
-	private static final Logger log = Logger.getLogger(SpecialPageDataUploadAction.class);
+	private static final Logger LOG = Logger.getLogger(SpecialPageDataUploadAction.class);
 
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;

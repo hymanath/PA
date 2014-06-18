@@ -31,7 +31,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class DashBoardAction extends ActionSupport implements ServletRequestAware{
 
 	
-	private static final org.apache.log4j.Logger log = Logger.getLogger(DashBoardAction.class); 
+	private static final org.apache.log4j.Logger LOG = Logger.getLogger(DashBoardAction.class); 
 	
 	private HttpServletRequest request;
 	private List<SelectOptionVO> statesList,statesListForLocalBodyElection;
@@ -532,11 +532,11 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"MAHANADU")){
 			return "mahanadu";
 		}
-		statesList = staticDataService.getParticipatedStatesForAnElectionType(new Long(2));
+		statesList = staticDataService.getParticipatedStatesForAnElectionType(Long.valueOf(2));
 		
 		//electionYearsList=staticDataService.getElectionYearsForBooths(1l,2l);
 		
-		statesListForLocalBodyElection = staticDataService.getParticipatedStatesForAnElectionType(new Long(5)); 
+		statesListForLocalBodyElection = staticDataService.getParticipatedStatesForAnElectionType(Long.valueOf(5)); 
 		
 		if(statesListForLocalBodyElection == null || statesListForLocalBodyElection.size() == 0)
 			statesListForLocalBodyElection.add(new SelectOptionVO(0L,"Select State"));
@@ -574,8 +574,8 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		Map<Long,List<SelectOptionVO>> assembliesForParl = (Map<Long,List<SelectOptionVO>>)session.getAttribute("assembliesForParl");
 		parliaments = (List<SelectOptionVO>)session.getAttribute("parliaments");
 		Long userID = user.getRegistrationID();
-		Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
-		Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
+		Long electionYear = Long.valueOf(IConstants.PRESENT_ELECTION_YEAR);
+		Long electionTypeId = Long.valueOf(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
 		
 		if(constituencyList == null || constituencyList.isEmpty()){
 			
@@ -723,10 +723,10 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 			  crossVotingParty = 872l;
 
 		}catch(Exception e){
-			log.error("Exception is ",e);
+			LOG.error("Exception is ",e);
 		}
 	  }catch(Exception e){
-		  log.error("Exception rised in execute method ",e);
+		  LOG.error("Exception rised in execute method ",e);
 		  return "userProfile";
 	  }
 		return Action.SUCCESS;
@@ -801,7 +801,7 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 			constituencyList=new ArrayList<SelectOptionVO>(); 
 			for (int i=0; i<constituencyList1.size(); i++) {
 			    if (constlist.contains(constituencyList1.get(i).getId())) {
-			        //System.out.println("Equals..: " + Alist.get(i));
+			        //LOG.info("Equals..: " + Alist.get(i));
 			    	constituencyList.add(constituencyList1.get(i));
 			    }
 			}
@@ -828,7 +828,7 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 				
 			}catch (Exception e) {
 				e.printStackTrace();
-				log.error("Exception Occured in getRequestMessagesForUser() Method,Exception is- ",e);
+				LOG.error("Exception Occured in getRequestMessagesForUser() Method,Exception is- ",e);
 			}
 			assemblyConstis = assembliesForParl.get(jObj.getLong("constituencyId"));
 		}
@@ -877,7 +877,7 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 			param = getTask();
 			jObj = new JSONObject(param);
 			Long year  = jObj.getLong("electionYear");
-			pConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndScopeForBoothData(String.valueOf(year), new Long(1));
+			pConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndScopeForBoothData(String.valueOf(year), Long.valueOf(1));
 		}catch(Exception e)
 		{
 			
@@ -911,7 +911,7 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 			
 		}catch(Exception e)
 		{
-			log.error("Exception rised in getConstituenciesAndParties", e);
+			LOG.error("Exception rised in getConstituenciesAndParties", e);
 		}
 		
 		return Action.SUCCESS;

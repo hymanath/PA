@@ -43,7 +43,7 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 	private IStaticDataService staticDataService;
 	private HttpSession session;
 	private List<SelectOptionVO> resultList;
-	private static final Logger log = Logger.getLogger(CadreRegisterAjaxAction.class);
+	private static final Logger LOG = Logger.getLogger(CadreRegisterAjaxAction.class);
 	
 	
 	public IStaticDataService getStaticDataService() {
@@ -128,18 +128,18 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 
 	public String execute() throws Exception
 	{
-		if(log.isDebugEnabled())			
-			log.debug("In CadreRegisterAjaxAction execute");
+		if(LOG.isDebugEnabled())			
+			LOG.debug("In CadreRegisterAjaxAction execute");
 		String param=null;
 		
 		param=getTask();
-		if(log.isDebugEnabled())			
-			log.debug("param:"+param);		
+		if(LOG.isDebugEnabled())			
+			LOG.debug("param:"+param);		
 		session = request.getSession();
 		try {
 			jObj=new JSONObject(param);
-			if(log.isDebugEnabled())			
-				log.debug("jObj = "+jObj);
+			if(LOG.isDebugEnabled())			
+				LOG.debug("jObj = "+jObj);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -147,8 +147,8 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 		
 		if(jObj.getString("reportLevel").equalsIgnoreCase("state") && jObj.getString("type").equalsIgnoreCase("cadreDetails"))
 		{
-			if(log.isDebugEnabled())
-				log.debug("In report level state");
+			if(LOG.isDebugEnabled())
+				LOG.debug("In report level state");
 			String selectedVal=jObj.getString("selected");
 			List<SelectOptionVO> districtNames=cadreManagementService.findDistrictsByState(selectedVal);			
 			SelectOptionVO obj = new SelectOptionVO(0L,"Select District");
@@ -168,14 +168,14 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 			} catch(NoSuchElementException e)
 			{
 				e.printStackTrace();
-				log.error(e);
+				LOG.error(e);
 			}
 			
 		}		
 		else if(jObj.getString("reportLevel").equalsIgnoreCase("district") && jObj.getString("type").equalsIgnoreCase("cadreDetails"))
 		{
-			if(log.isDebugEnabled())
-				log.debug("In report level District");
+			if(LOG.isDebugEnabled())
+				LOG.debug("In report level District");
 			String selectedVal=jObj.getString("selected");
 			
 			List<SelectOptionVO> mandalsNames=cadreManagementService.findMandalsByDistrict(selectedVal);	
@@ -191,17 +191,17 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 			}catch(NoSuchElementException e)
 			{
 				e.printStackTrace();
-				log.error(e);
+				LOG.error(e);
 			}
 			
 		}
 		else if(jObj.getString("reportLevel").equalsIgnoreCase("constituency") && jObj.getString("type").equalsIgnoreCase("cadreDetails"))
 		{
-			if(log.isDebugEnabled())
-				log.debug("In report level Constituency");
+			if(LOG.isDebugEnabled())
+				LOG.debug("In report level Constituency");
 			String selectedVal=jObj.getString("selected");
 			
-			List<SelectOptionVO> constituencynames=regionServiceDataImp.getConstituenciesByDistrictID(new Long(selectedVal));	
+			List<SelectOptionVO> constituencynames=regionServiceDataImp.getConstituenciesByDistrictID(Long.valueOf(selectedVal));	
 			SelectOptionVO obj = new SelectOptionVO(0L,"Select Constituency");
 			constituencynames.add(0, obj);
 			setNamesList(constituencynames);
@@ -220,14 +220,14 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 			}catch(NoSuchElementException e)
 			{
 				e.printStackTrace();
-				log.error(e);
+				LOG.error(e);
 			}
 			
 		}
 		else if(jObj.getString("reportLevel").equalsIgnoreCase("mandal") && jObj.getString("type").equalsIgnoreCase("cadreDetails"))
 		{
-			if(log.isDebugEnabled())
-				log.debug("In report level Mandal");
+			if(LOG.isDebugEnabled())
+				LOG.debug("In report level Mandal");
 			String selectedVal=jObj.getString("selected");
 			
 			List<SelectOptionVO> villageNames = cadreManagementService.findVillagesByTehsilID(selectedVal);
@@ -249,26 +249,26 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 			} catch(NoSuchElementException e)
 			{
 				e.printStackTrace();
-				log.error(e);
+				LOG.error(e);
 			}
 			
 		}
 		else if(jObj.getString("reportLevel").equalsIgnoreCase("village") && jObj.getString("type").equalsIgnoreCase("cadreDetails"))
 		{
-			if(log.isDebugEnabled())
-				log.debug("In report level Mandal");
+			if(LOG.isDebugEnabled())
+				LOG.debug("In report level Mandal");
 			String selectedVal=jObj.getString("selected");
 			String selectedradioEle = jObj.getString("checkedele");
 			if(selectedradioEle.equalsIgnoreCase("village"))
 			{
-			List<SelectOptionVO> hamletNames = staticDataService.getHamletsForTownship(new Long(selectedVal));
+			List<SelectOptionVO> hamletNames = staticDataService.getHamletsForTownship(Long.valueOf(selectedVal));
 			SelectOptionVO obj = new SelectOptionVO(0L,"Select Hamlet");
 			hamletNames.add(0, obj);
 			setNamesList(hamletNames);	
 			}
 			if(selectedradioEle.equalsIgnoreCase("panchayat"))
 			{
-			List<SelectOptionVO> hamletNames = staticDataService.getHamletsForPanchayath(new Long(selectedVal));
+			List<SelectOptionVO> hamletNames = staticDataService.getHamletsForPanchayath(Long.valueOf(selectedVal));
 			SelectOptionVO obj = new SelectOptionVO(0L,"Select Hamlet");
 			hamletNames.add(0, obj);
 			setNamesList(hamletNames);	
@@ -277,13 +277,13 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 		}
 		else if(jObj.getString("reportLevel").equalsIgnoreCase("Constituencies") && jObj.getString("type").equalsIgnoreCase("cadreDetails"))
 		{
-			if(log.isDebugEnabled())
-				log.debug("In report level Constituencies");
+			if(LOG.isDebugEnabled())
+				LOG.debug("In report level Constituencies");
 			String selectedVal=jObj.getString("selected");
 			
-			//List<SelectOptionVO> mandals=regionServiceDataImp.getMandalsByConstituencyID(new Long(selectedVal));
+			//List<SelectOptionVO> mandals=regionServiceDataImp.getMandalsByConstituencyID(Long.valueOf(selectedVal));
 			
-			List<SelectOptionVO> mandals= regionServiceDataImp.getSubRegionsInConstituency(new Long(selectedVal), IConstants.PRESENT_YEAR, null);
+			List<SelectOptionVO> mandals= regionServiceDataImp.getSubRegionsInConstituency(Long.valueOf(selectedVal), IConstants.PRESENT_YEAR, null);
 			SelectOptionVO obj = new SelectOptionVO(0L,"Select Mandal");
 			mandals.add(0, obj);
 			setNamesList(mandals);
@@ -299,7 +299,7 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 			} catch(NoSuchElementException e)
 			{
 				e.printStackTrace();
-				log.error(e);
+				LOG.error(e);
 			}	
 			
 		}
@@ -311,7 +311,7 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 		{
 			String value=jObj.getString("reportLevel");
 			String id=jObj.getString("type");
-			System.out.println("value = "+value+"id = "+id);
+			LOG.info("value = "+value+"id = "+id);
 			
 						
 				List<SelectOptionVO> stateNames=cadreManagementService.findStatesByCountryID("1");	
@@ -327,7 +327,7 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 				}catch(NoSuchElementException e)
 				{
 					e.printStackTrace();
-					log.error(e);
+					LOG.error(e);
 				}
 			
 		}//cadreLevelDistrict
@@ -344,16 +344,16 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 		
 		return Action.SUCCESS;
 	}
-	public String AjaxHandler()
+	public String ajaxHandler()
 	{
 		String param=null;
 		
 		param=getTask();
-		System.out.println("param:"+param);		
+		LOG.info("param:"+param);		
 		
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -365,26 +365,26 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 				if(checkedVal.equalsIgnoreCase("panchayat"))
 				{
 					/*//constituencyWise
-				designationsList = staticDataService.getPanchayatiesByConstituencyId(new Long(selectedVal));*/
+				designationsList = staticDataService.getPanchayatiesByConstituencyId(Long.valueOf(selectedVal));*/
 				//mandalwise
-				designationsList = staticDataService.getPanchayatiesByMandalId(new Long(selectedVal));
+				designationsList = staticDataService.getPanchayatiesByMandalId(Long.valueOf(selectedVal));
 				designationsList.add(0,new SelectOptionVO(0l,"Select Panchayat"));
 				}
 				if(checkedVal.equalsIgnoreCase("pollingstation"))
 				{
 					/*//constituency
-				designationsList = staticDataService.getBoothsByConstituencyId(new Long(selectedVal));*/
+				designationsList = staticDataService.getBoothsByConstituencyId(Long.valueOf(selectedVal));*/
 				//mandal wise polling station
-				designationsList = staticDataService.getBoothsByMandalId(new Long(selectedVal),jObj.getLong("constituencyId"));
+				designationsList = staticDataService.getBoothsByMandalId(Long.valueOf(selectedVal),jObj.getLong("constituencyId"));
 				designationsList.add(0,new SelectOptionVO(0l,"Select Polling Station"));
 				}
 				
 				if(checkedVal.equalsIgnoreCase("pollingstationByPublication"))
 				{
 					if(jObj.getString("type").equalsIgnoreCase("mandal"))
-					   designationsList = staticDataService.getBoothsInAMandalIdByPublication(new Long(selectedVal),jObj.getLong("publicationValue"),jObj.getLong("constituencyId"));
+					   designationsList = staticDataService.getBoothsInAMandalIdByPublication(Long.valueOf(selectedVal),jObj.getLong("publicationValue"),jObj.getLong("constituencyId"));
 					else
-					   designationsList = votersAnalysisService.getBoothsInMunicipality(new Long(selectedVal),jObj.getLong("publicationValue"),jObj.getLong("constituencyId"));
+					   designationsList = votersAnalysisService.getBoothsInMunicipality(Long.valueOf(selectedVal),jObj.getLong("publicationValue"),jObj.getLong("constituencyId"));
 					designationsList.add(0,new SelectOptionVO(0l,"Select Polling Station"));
 				}
 			}
@@ -395,11 +395,11 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 		String param=null;
 		
 		param=getTask();
-		System.out.println("param:"+param);		
+		LOG.info("param:"+param);		
 		
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -410,12 +410,12 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 			String selectedradioEle = jObj.getString("checkedele");
 			if(selectedradioEle.equalsIgnoreCase("village"))
 			{
-			namesList = staticDataService.findTownshipsByTehsilID(new Long(mandalId));
+			namesList = staticDataService.findTownshipsByTehsilID(Long.valueOf(mandalId));
 			namesList.add(0,new SelectOptionVO(0L,"Select Village"));
 			}
 			if(selectedradioEle.equalsIgnoreCase("panchayat"))
 			{
-			namesList = staticDataService.getPanchayathiesByTehsilId(new Long(mandalId));
+			namesList = staticDataService.getPanchayathiesByTehsilId(Long.valueOf(mandalId));
 			namesList.add(0,new SelectOptionVO(0L,"Select Panchayath"));
 			}
 		}
@@ -429,7 +429,7 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 		
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -437,7 +437,7 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 		if(jObj.getString("task").equalsIgnoreCase("designations"))
 		{
 			String id = jObj.getString("id");
-			designationsList = cadreManagementService.getDesignationsInCommittee(new Long(id));
+			designationsList = cadreManagementService.getDesignationsInCommittee(Long.valueOf(id));
 			designationsList.add(0,new SelectOptionVO(0L,"Select Designation"));
 			session.setAttribute(ISessionConstants.COMMITTEE_DESIGNATIONS, designationsList);
 		}
@@ -453,7 +453,7 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 		session = request.getSession();
 		
 		try {
-			log.debug("entered into getConstiReltaedData() in CadreRegistrationAjaxAction");
+			LOG.debug("entered into getConstiReltaedData() in CadreRegistrationAjaxAction");
 			jObj=new JSONObject(param);
 			if(jObj.getString("task").equalsIgnoreCase("getReportLevelDetails"))
 			{
@@ -492,7 +492,7 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 			
 		}
 		catch (Exception e) {
-			log.error("exception raised in getConstiReltaedData() in CadreRegistrationAjaxAction", e);
+			LOG.error("exception raised in getConstiReltaedData() in CadreRegistrationAjaxAction", e);
 		}
 		return SUCCESS;
 	}

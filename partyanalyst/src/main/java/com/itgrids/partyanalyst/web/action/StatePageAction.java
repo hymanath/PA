@@ -37,7 +37,7 @@ public class StatePageAction extends ActionSupport implements
 		
 	private static final long serialVersionUID = 1L;
 	
-	private final static Logger log = Logger.getLogger(StatePageAction.class);
+	private final static Logger LOG = Logger.getLogger(StatePageAction.class);
 	
 	private String stateId;
 	private List<StateElectionsVO> stateElections;

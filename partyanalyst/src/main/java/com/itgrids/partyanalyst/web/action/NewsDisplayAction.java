@@ -25,7 +25,7 @@ import com.opensymphony.xwork2.Action;
 
 public class NewsDisplayAction implements ServletRequestAware{
 	
-	private static final Logger log = Logger.getLogger(NewsDisplayAction.class);
+	private static final Logger LOG = Logger.getLogger(NewsDisplayAction.class);
 	private INewsMonitoringService newsMonitoringService;
 	private HttpServletRequest request;
 	private HttpSession session;
@@ -244,7 +244,7 @@ public class NewsDisplayAction implements ServletRequestAware{
         sdf.setTimeZone(TimeZone.getTimeZone("Asia/Calcutta"));
         String strDateNew = sdf.format(now);        
 			now = sdf.parse(strDateNew);
-			System.out.println("todayDate = "+now);
+			LOG.info("todayDate = "+now);
 			return now;
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -286,8 +286,8 @@ public class NewsDisplayAction implements ServletRequestAware{
 	  return cal.getTime();
   }
   public String getDetails(){
-		if(log.isDebugEnabled())
-		log.debug("Enter into getGraphDetails Method of NewsDisplayAction ");
+		if(LOG.isDebugEnabled())
+		LOG.debug("Enter into getGraphDetails Method of NewsDisplayAction ");
 	  try{ 
 		 jObj = new JSONObject(getTask());
 		 session = request.getSession();
@@ -350,13 +350,13 @@ public class NewsDisplayAction implements ServletRequestAware{
 		 }
 	  }
 	  catch(Exception e){
-		  log.error("Exception rised in getGraphDetails Method of NewsDisplayAction ",e); 
+		  LOG.error("Exception rised in getGraphDetails Method of NewsDisplayAction ",e); 
 	  }
 		 return Action.SUCCESS;
 	 }
    public String updateDeleteNews(){
-	   if(log.isDebugEnabled())
-			log.debug("Enter into updateDeleteNews Method of NewsDisplayAction ");
+	   if(LOG.isDebugEnabled())
+			LOG.debug("Enter into updateDeleteNews Method of NewsDisplayAction ");
 	   try{ 
 		    jObj = new JSONObject(getTask()); 
 		    
@@ -396,8 +396,8 @@ public class NewsDisplayAction implements ServletRequestAware{
 		    for(String source : sourceStrArr){
 		    	String[] sourceAr = source.split(",");
 		    	FileVO  sourceFileVO = new FileVO();
-		    	sourceFileVO.setSourceId(new Long(sourceAr[0]));
-		    	sourceFileVO.setFileSourceLanguageId(new Long(sourceAr[1]));
+		    	sourceFileVO.setSourceId(Long.valueOf(sourceAr[0]));
+		    	sourceFileVO.setFileSourceLanguageId(Long.valueOf(sourceAr[1]));
 		    	sourceFilesList.add(sourceFileVO);
 		    }
 		    
@@ -405,8 +405,8 @@ public class NewsDisplayAction implements ServletRequestAware{
 		    for(String language : languageStrArr){
 		    	String[] languageAr = language.split(",");
 		    	FileVO  languageFileVO = new FileVO();
-		    	languageFileVO.setLanguegeId(new Long(languageAr[0]));
-		    	languageFileVO.setFileSourceLanguageId(new Long(languageAr[1]));
+		    	languageFileVO.setLanguegeId(Long.valueOf(languageAr[0]));
+		    	languageFileVO.setFileSourceLanguageId(Long.valueOf(languageAr[1]));
 		    	languageFilesList.add(languageFileVO);
 		    }
 		   } 
@@ -418,7 +418,7 @@ public class NewsDisplayAction implements ServletRequestAware{
 		    savedDetails =  fileVO;
 	    }
 	   catch(Exception e){
-		   log.error("Exception rised in updateDeleteNews Method of NewsDisplayAction ",e); 
+		   LOG.error("Exception rised in updateDeleteNews Method of NewsDisplayAction ",e); 
 		   resultStatus = new ResultStatus();
 		   resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 	   }
@@ -432,8 +432,8 @@ public class NewsDisplayAction implements ServletRequestAware{
     */
    public String getFlagOrNotesNews()
    {
-	   if(log.isDebugEnabled())
-			log.debug("Enter into getFlagOrNotesNews Method of NewsDisplayAction ");
+	   if(LOG.isDebugEnabled())
+			LOG.debug("Enter into getFlagOrNotesNews Method of NewsDisplayAction ");
 	  try
 	  {
 		  jObj = new JSONObject(getTask()); 
@@ -472,7 +472,7 @@ public class NewsDisplayAction implements ServletRequestAware{
 	  } 
 	  catch (Exception e)
 	  {
-		log.error("Exception raised in getFlagOrNotesNews in NewsDisplatAction", e);
+		LOG.error("Exception raised in getFlagOrNotesNews in NewsDisplatAction", e);
 	  } 
 		    
 	   return Action.SUCCESS; 
@@ -516,17 +516,17 @@ public class NewsDisplayAction implements ServletRequestAware{
 				    fileVO.setFileType(request.getParameter("fileType"));
 				
 			    if(request.getParameter("sourceId") !=null && request.getParameter("sourceId").trim().length()>0)
-					fileVO.setSourceId(new Long(request.getParameter("sourceId")));
+					fileVO.setSourceId(Long.valueOf(request.getParameter("sourceId")));
 			    if(request.getParameter("languegeId") !=null && request.getParameter("languegeId").trim().length()>0)
-				    fileVO.setLanguegeId(new Long(request.getParameter("languegeId")));
+				    fileVO.setLanguegeId(Long.valueOf(request.getParameter("languegeId")));
 			    if(request.getParameter("categoryId") !=null && request.getParameter("categoryId").trim().length()>0)
-				    fileVO.setCategoryId(new Long(request.getParameter("categoryId")));
+				    fileVO.setCategoryId(Long.valueOf(request.getParameter("categoryId")));
 			    if(request.getParameter("newsImportanceId") !=null && request.getParameter("newsImportanceId").trim().length()>0)
-				    fileVO.setNewsImportanceId(new Long(request.getParameter("newsImportanceId")));
+				    fileVO.setNewsImportanceId(Long.valueOf(request.getParameter("newsImportanceId")));
 			    if(request.getParameter("locationScope") !=null && request.getParameter("locationScope").trim().length()>0)
-				    fileVO.setLocationScope(new Long(request.getParameter("locationScope")));
+				    fileVO.setLocationScope(Long.valueOf(request.getParameter("locationScope")));
 			    if(request.getParameter("location") !=null && request.getParameter("location").trim().length()>0)
-				    fileVO.setLocation(new Long(request.getParameter("location")));
+				    fileVO.setLocation(Long.valueOf(request.getParameter("location")));
 			    
 				 String direction =   request.getParameter("dir");
 				 String columnName = request.getParameter("sort");
@@ -539,7 +539,7 @@ public class NewsDisplayAction implements ServletRequestAware{
 		   }
 	   }
 	   catch(Exception e){
-			  log.error("Exception rised in getGraphDetails Method of NewsDisplayAction ",e); 
+			  LOG.error("Exception rised in getGraphDetails Method of NewsDisplayAction ",e); 
 		  }
 			 return Action.SUCCESS;
    }

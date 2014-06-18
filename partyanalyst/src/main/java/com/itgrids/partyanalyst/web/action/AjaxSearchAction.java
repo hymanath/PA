@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.web.action;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,12 +19,10 @@ import com.opensymphony.xwork2.Action;
 public class AjaxSearchAction implements ServletRequestAware{
 
 	private List<String> namesList;
-	JSONObject jObj = null,respObj=null;
 	private String task = null;
 	private IConstituencySearchService constituencySearchService;
 	private ICandidateSearchService candidateSearchService;
-	private HttpServletRequest request;
-	private HttpSession session;
+	transient private HttpServletRequest request;
 	private String stateId;
 	private String searchCriteria;
 	private String constituencyType;
@@ -36,7 +33,7 @@ public class AjaxSearchAction implements ServletRequestAware{
 		return letters;
 	}
 
-	public void setLetters(String letters) {
+	public void setLetters(final String letters) {
 		this.letters = letters;
 	}
 
@@ -44,7 +41,7 @@ public class AjaxSearchAction implements ServletRequestAware{
 		return resultNames;
 	}
 
-	public void setResultNames(List<SelectOptionVO> resultNames) {
+	public void setResultNames(final List<SelectOptionVO> resultNames) {
 		this.resultNames = resultNames;
 	}
 
@@ -52,7 +49,7 @@ public class AjaxSearchAction implements ServletRequestAware{
 		return stateId;
 	}
 
-	public void setStateId(String stateId) {
+	public void setStateId(final String stateId) {
 		this.stateId = stateId;
 	}
 
@@ -60,7 +57,7 @@ public class AjaxSearchAction implements ServletRequestAware{
 		return searchCriteria;
 	}
 
-	public void setSearchCriteria(String searchCriteria) {
+	public void setSearchCriteria(final String searchCriteria) {
 		this.searchCriteria = searchCriteria;
 	}
 
@@ -68,7 +65,7 @@ public class AjaxSearchAction implements ServletRequestAware{
 		return constituencyType;
 	}
 
-	public void setConstituencyType(String constituencyType) {
+	public void setConstituencyType(final String constituencyType) {
 		this.constituencyType = constituencyType;
 	}
 
@@ -76,7 +73,7 @@ public class AjaxSearchAction implements ServletRequestAware{
 		return candidateSearchService;
 	}
 
-	public void setCandidateSearchService(
+	public void setCandidateSearchService(final 
 			ICandidateSearchService candidateSearchService) {
 		this.candidateSearchService = candidateSearchService;
 	}
@@ -85,7 +82,7 @@ public class AjaxSearchAction implements ServletRequestAware{
 		return constituencySearchService;
 	}
 
-	public void setConstituencySearchService(
+	public void setConstituencySearchService(final 
 			IConstituencySearchService constituencySearchService) {
 		this.constituencySearchService = constituencySearchService;
 	}
@@ -94,7 +91,7 @@ public class AjaxSearchAction implements ServletRequestAware{
 		return namesList;
 	}
 
-	public void setNamesList(List<String> namesList) {
+	public void setNamesList(final List<String> namesList) {
 		this.namesList = namesList;
 	}
 
@@ -102,7 +99,7 @@ public class AjaxSearchAction implements ServletRequestAware{
 		return task;
 	}
 
-	public void setTask(String task) {
+	public void setTask(final String task) {
 		this.task = task;
 	}
 	
@@ -114,13 +111,13 @@ public class AjaxSearchAction implements ServletRequestAware{
 		String param=null;
 		
 		param=getTask();
-		System.out.println("param:"+param);
+		LOG.info("param:"+param);
 		
 		
 		
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -153,41 +150,37 @@ public class AjaxSearchAction implements ServletRequestAware{
 		 return Action.SUCCESS;
 	}
 	
-	public String getNames()throws Exception
+	public String getNames()
 	{
-		session = request.getSession();
+		final HttpSession session = request.getSession();
 		String electionType = null;
 		if(searchCriteria.equalsIgnoreCase("Candidate"))
 		{
-			if("MLA".equalsIgnoreCase(constituencyType))
+			if("MLA".equalsIgnoreCase(constituencyType)){
 				electionType = IConstants.ASSEMBLY_ELECTION_TYPE;
-			if("MP".equalsIgnoreCase(constituencyType))
+			}
+			if("MP".equalsIgnoreCase(constituencyType)){
 				electionType = IConstants.PARLIAMENT_ELECTION_TYPE;
+			}
 			
-			resultNames = candidateSearchService.getCandidateNamesAndIds(electionType, new Long(stateId),letters);
+			resultNames = candidateSearchService.getCandidateNamesAndIds(electionType, Long.valueOf(stateId),letters);
 			session.setAttribute("candidateNamesAndIds", resultNames);
 		}
 		else if(searchCriteria.equalsIgnoreCase("Constituency"))
 		{
 			Long electionTypeId= 0l;
-			if("MLA".equalsIgnoreCase(constituencyType))
+			if("MLA".equalsIgnoreCase(constituencyType)){
 				electionTypeId = 2l;
-			if("MP".equalsIgnoreCase(constituencyType))
+			}if("MP".equalsIgnoreCase(constituencyType)){
 				electionTypeId = 1l;
-			
-			resultNames = constituencySearchService.getConstituencyNamesAndIds(electionTypeId,new Long(stateId),letters);
+			}
+			resultNames = constituencySearchService.getConstituencyNamesAndIds(electionTypeId,Long.valueOf(stateId),letters);
 		}
 		
 		return Action.SUCCESS; 
 	}
-	private List<String> getNamesFromSelectOptionVos(List<SelectOptionVO> namesAndIds){
-			List<String> names = new ArrayList<String>();
-			for(SelectOptionVO nameAndId:namesAndIds)
-				names.add(nameAndId.getName());
-			return names;
-		}
 
-	public void setServletRequest(HttpServletRequest request) {
+	public void setServletRequest(final HttpServletRequest request) {
 		this.request = request;
 	}
 

@@ -54,7 +54,7 @@ public class LocalBodyElectionAction extends ActionSupport implements
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(LocalBodyElectionAction.class);
+	private static final Logger LOG = Logger.getLogger(LocalBodyElectionAction.class);
 	private IStaticDataService staticDataService;
 	private ILocalBodyElectionService localBodyElectionService;
 	
@@ -248,14 +248,14 @@ public class LocalBodyElectionAction extends ActionSupport implements
 		
 		try {
 			jObj = new JSONObject(param);
-			if(log.isDebugEnabled())
-				log.debug(jObj);			
+			if(LOG.isDebugEnabled())
+				LOG.debug(jObj);			
 		}catch (ParseException e) {
 			e.printStackTrace();
-			log.error("Exception Raised :" + e);
+			LOG.error("Exception Raised :" + e);
 		}
 		
-		Long stateId = new Long(jObj.getString("stateId"));
+		Long stateId = Long.valueOf(jObj.getString("stateId"));
 		localBodyTypes = staticDataService.getLocalBodyElectionTypesInAState(stateId);                                          
 				
 		return Action.SUCCESS;
@@ -269,15 +269,15 @@ public class LocalBodyElectionAction extends ActionSupport implements
 		
 		try {
 			jObj = new JSONObject(param);
-			if(log.isDebugEnabled())
-				log.debug(jObj);			
+			if(LOG.isDebugEnabled())
+				LOG.debug(jObj);			
 		}catch (ParseException e) {
 			e.printStackTrace();
-			log.error("Exception Raised :" + e);
+			LOG.error("Exception Raised :" + e);
 		}
 		
-		Long stateId = new Long(jObj.getString("stateId"));
-		Long typeId = new Long(jObj.getString("electionTypeId"));
+		Long stateId = Long.valueOf(jObj.getString("stateId"));
+		Long typeId = Long.valueOf(jObj.getString("electionTypeId"));
 		localBodys = staticDataService.getLocalBodysInAStateByType(stateId, typeId);
 		
 		return Action.SUCCESS;
@@ -290,17 +290,17 @@ public class LocalBodyElectionAction extends ActionSupport implements
 		
 		try {
 			jObj = new JSONObject(param);
-			if(log.isDebugEnabled())
-				log.debug(jObj);			
+			if(LOG.isDebugEnabled())
+				LOG.debug(jObj);			
 		}catch (ParseException e) {
 			e.printStackTrace();
-			log.error("Exception Raised :" + e);
+			LOG.error("Exception Raised :" + e);
 		}
 		
-		Long stateId = new Long(jObj.getString("stateId"));
-		Long localBodyId = new Long(jObj.getString("localBodyId"));
-		Long localBodyElectionId = new Long(jObj.getString("localBodyElectionId"));
-		Long elmtId = new Long(jObj.getString("elmtId"));
+		Long stateId = Long.valueOf(jObj.getString("stateId"));
+		Long localBodyId = Long.valueOf(jObj.getString("localBodyId"));
+		Long localBodyElectionId = Long.valueOf(jObj.getString("localBodyElectionId"));
+		Long elmtId = Long.valueOf(jObj.getString("elmtId"));
 		
 		String taskType = jObj.getString("taskType");
 		
@@ -315,8 +315,8 @@ public class LocalBodyElectionAction extends ActionSupport implements
 	}
 	public String generateChartForResultsInElection(List<TeshilPartyInfoVO> partyResultsVO,String localBodyName,String electionYear,String localBodyType,Long localBodyId){
 		
-		if(log.isDebugEnabled())
-			log.debug(" Inside generateChartForResultsInElection Method ..");
+		if(LOG.isDebugEnabled())
+			LOG.debug(" Inside generateChartForResultsInElection Method ..");
 		
 		session = request.getSession();
 		String cPath = request.getContextPath();
@@ -362,11 +362,11 @@ public class LocalBodyElectionAction extends ActionSupport implements
 		
 		try {
 			jObj = new JSONObject(param);
-			if(log.isDebugEnabled())
-				log.debug(jObj);			
+			if(LOG.isDebugEnabled())
+				LOG.debug(jObj);			
 		}catch (ParseException e) {
 			e.printStackTrace();
-			log.error("Exception Raised :" + e);
+			LOG.error("Exception Raised :" + e);
 		}
 		
 		Long constituencyId = jObj.getLong("constituencyId");
@@ -405,11 +405,11 @@ public class LocalBodyElectionAction extends ActionSupport implements
 		String chartPath;
 		try {
 			jObj = new JSONObject(param);
-			if(log.isDebugEnabled())
-				log.debug(jObj);			
+			if(LOG.isDebugEnabled())
+				LOG.debug(jObj);			
 		}catch (ParseException e) {
 			e.printStackTrace();
-			log.error("Exception Raised :" + e);
+			LOG.error("Exception Raised :" + e);
 		}
 		Set<String> partiesInChart = null;
 		Long constituencyId = jObj.getLong("constituencyId");
@@ -461,18 +461,18 @@ public class LocalBodyElectionAction extends ActionSupport implements
 		
 		try {
 			jObj = new JSONObject(param);
-			if(log.isDebugEnabled())
-				log.debug(jObj);			
+			if(LOG.isDebugEnabled())
+				LOG.debug(jObj);			
 		}catch (ParseException e) {
 			e.printStackTrace();
-			log.error("Exception Raised :" + e);
+			LOG.error("Exception Raised :" + e);
 		}
 		
 		List<Long> constituencyIds = new ArrayList<Long>();
 		JSONArray constituencyId = jObj.getJSONArray("constituencyId");
 		for(int i = 0; i < constituencyId.length(); i++)
 		{
-			constituencyIds.add(new Long(constituencyId.get(i).toString()));
+			constituencyIds.add(Long.valueOf(constituencyId.get(i).toString()));
 		}
 		Long localBodyElectionId = jObj.getLong("localBodyElectionId");
 		if(localBodyElectionId == null || localBodyElectionId.longValue() == 0){

@@ -32,7 +32,7 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger log = Logger.getLogger(AnanymousUserAction.class);
+	private static final Logger LOG = Logger.getLogger(AnanymousUserAction.class);
 	private Long registrationId;
 	private HttpServletRequest request;
 	private String task;
@@ -41,7 +41,7 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 	private Long result;
 	private ResultStatus results;
 	//for problem management login
-	private Boolean prepopulate = false;
+	transient private Boolean prepopulate = false;
     private String redirectLoc = null;
     private String name = null;
     private Long stateId = null;
@@ -50,29 +50,31 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
     private Long constituencyId = null;
     private Long localBodyElectionTypeId = null;
     private RegistrationVO regVO = null;
-    private HttpSession session;
+    transient private HttpSession session;
     private Integer resultValue;
     private String tempVar;
+    public final static String TASK = "task";
+    public final static String USERNAME = "userName";
         
    	public ResultStatus getResults() {
 		return results;
 	}
-	public void setResults(ResultStatus results) {
+	public void setResults(final ResultStatus results) {
 		this.results = results;
 	}
 	public Integer getResultValue() {
 		return resultValue;
 	}
-	public void setResultValue(Integer resultValue) {
+	public void setResultValue(final Integer resultValue) {
 		this.resultValue = resultValue;
 	}
-	public void setSession(HttpSession session) {
+	public void setSession(final HttpSession session) {
 		this.session = session;
 	}
 	public RegistrationVO getRegVO() {
 		return regVO;
 	}
-	public void setRegVO(RegistrationVO regVO) {
+	public void setRegVO(final RegistrationVO regVO) {
 		this.regVO = regVO;
 	}
 
@@ -90,72 +92,72 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 	public Long getRegistrationId() {
 		return registrationId;
 	}
-	public void setRegistrationId(Long registrationId) {
+	public void setRegistrationId(final Long registrationId) {
 		this.registrationId = registrationId;
 	}
-	public void setResult(Long result) {
+	public void setResult(final Long result) {
 		this.result = result;
 	}
 	
 	public IAnanymousUserService getAnanymousUserService() {
 		return ananymousUserService;
 	}
-	public void setAnanymousUserService(IAnanymousUserService ananymousUserService) {
+	public void setAnanymousUserService(final IAnanymousUserService ananymousUserService) {
 		this.ananymousUserService = ananymousUserService;
 	}
 	
 	public HttpServletRequest getRequest() {
 		return request;
 	}
-	public void setRequest(HttpServletRequest request) {
+	public void setRequest(final HttpServletRequest request) {
 		this.request = request;
 	}
 	
 	public String getTask() {
 		return task;
 	}
-	public void setTask(String task) {
+	public void setTask(final String task) {
 		this.task = task;
 	}
 	public org.json.JSONObject getJObj() {
 		return jObj;
 	}
-	public void setJObj(org.json.JSONObject obj) {
+	public void setJObj(final org.json.JSONObject obj) {
 		jObj = obj;
 	}
-	public void setServletRequest(HttpServletRequest request) {
+	public void setServletRequest(final HttpServletRequest request) {
 		this.request = request;
 	}
 
 	public List<String> getGender() {
 		return gender;
 	}
-	public void setGender(List<String> gender) {
+	public void setGender(final List<String> gender) {
 		this.gender = gender;
 	}
 	
 	public String getRedirectLoc() {
 		return redirectLoc;
 	}
-	public void setRedirectLoc(String redirectLoc) {
+	public void setRedirectLoc(final String redirectLoc) {
 		this.redirectLoc = redirectLoc;
 	}
 	public String getName() {
 		return name;
 	}
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 	public Long getStateId() {
 		return stateId;
 	}
-	public void setStateId(Long stateId) {
+	public void setStateId(final Long stateId) {
 		this.stateId = stateId;
 	}
 	public Long getDistrictId() {
 		return districtId;
 	}
-	public void setDistrictId(Long districtId) {
+	public void setDistrictId(final Long districtId) {
 		this.districtId = districtId;
 	}
 	public Long getLocalBodyId() {
@@ -164,22 +166,22 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 	public String getEmail() {
 		return email;
 	}
-	public void setEmail(String email) {
+	public void setEmail(final String email) {
 		this.email = email;
 	}
-	public void setLocalBodyId(Long localBodyId) {
+	public void setLocalBodyId(final Long localBodyId) {
 		this.localBodyId = localBodyId;
 	}
 	public Long getConstituencyId() {
 		return constituencyId;
 	}
-	public void setConstituencyId(Long constituencyId) {
+	public void setConstituencyId(final Long constituencyId) {
 		this.constituencyId = constituencyId;
 	}
 	public Long getLocalBodyElectionTypeId() {
 		return localBodyElectionTypeId;
 	}
-	public void setLocalBodyElectionTypeId(Long localBodyElectionTypeId) {
+	public void setLocalBodyElectionTypeId(final Long localBodyElectionTypeId) {
 		this.localBodyElectionTypeId = localBodyElectionTypeId;
 	}
 	
@@ -187,47 +189,46 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 	public IMailService getMailService() {
 		return mailService;
 	}
-	public void setMailService(IMailService mailService) {
+	public void setMailService(final IMailService mailService) {
 		this.mailService = mailService;
 	}
 	public IRegionServiceData getRegionServiceDataImp() {
 		return regionServiceDataImp;
 	}
 	
-	public void setRegionServiceDataImp(IRegionServiceData regionServiceDataImp) {
+	public void setRegionServiceDataImp(final IRegionServiceData regionServiceDataImp) {
 		this.regionServiceDataImp = regionServiceDataImp;
 	}
 	
 	public IStaticDataService getStaticDataService() {
 		return staticDataService;
 	}
-	public void setStaticDataService(IStaticDataService staticDataService) {
+	public void setStaticDataService(final IStaticDataService staticDataService) {
 		this.staticDataService = staticDataService;
 	}
 	
 	public String getTempVar() {
 		return tempVar;
 	}
-	public void setTempVar(String tempVar) {
+	public void setTempVar(final String tempVar) {
 		this.tempVar = tempVar;
 	}
 	public String execute(){
 		
-		if(prepopulate)
+		if(prepopulate){
 			return Action.SUCCESS;
-		
-		if(gender.size() == 0){
+		}
+		if(gender.isEmpty()){
 			gender.add("Male");
 			gender.add("Female");
 		}		
 		
-		List<SelectOptionVO> profileOpts = ananymousUserService.findAllProfileOptsAvailableInDB();
-		//List<SelectOptionVO> states = regionServiceDataImp.getStatesByCountry(1l);
-		List<SelectOptionVO> states = staticDataService.getParticipatedStatesForAnElectionType(new Long(2));
-		List<SelectOptionVO> districts = new ArrayList<SelectOptionVO>(0);
-		List<SelectOptionVO> constituencies = new ArrayList<SelectOptionVO>(0);
+		final List<SelectOptionVO> profileOpts = ananymousUserService.findAllProfileOptsAvailableInDB();
+		final List<SelectOptionVO> states = staticDataService.getParticipatedStatesForAnElectionType(2l);
+		final List<SelectOptionVO> districts = new ArrayList<SelectOptionVO>(0);
+		final List<SelectOptionVO> constituencies = new ArrayList<SelectOptionVO>(0);
 		
-		HttpSession session = request.getSession();
+		final HttpSession session = request.getSession();
 		session.setAttribute("gender", gender);
 		session.setAttribute("profileOpts", profileOpts);
 		session.setAttribute("states", states);
@@ -238,21 +239,21 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 	}
 	
 	
-	public String AjaxHandler()
+	public String ajaxHandler()
 	{
 		try {
 			jObj = new JSONObject(getTask());
 		} catch (ParseException e) {
-			e.printStackTrace();
+			LOG.error("Exception rised in ajaxHandler",e);
 		}
 		
-		if(jObj.getString("task").equalsIgnoreCase("saveUserEmailAndSendPwd"))
+		if(jObj.getString(TASK).equalsIgnoreCase("saveUserEmailAndSendPwd"))
 		{
-			results = ananymousUserService.saveEmailForAUser(jObj.getString("userName"),jObj.getString("email"));
+			results = ananymousUserService.saveEmailForAUser(jObj.getString(USERNAME),jObj.getString("email"));
 		}
-		else if(jObj.getString("task").equalsIgnoreCase("saveUserEmailAndsetAsUserName"))
+		else if(jObj.getString(TASK).equalsIgnoreCase("saveUserEmailAndsetAsUserName"))
 		{
-			results = ananymousUserService.saveEmailAndSetAsUserName(jObj.getString("userName"),jObj.getString("email"));
+			results = ananymousUserService.saveEmailAndSetAsUserName(jObj.getString(USERNAME),jObj.getString("email"));
 		}
 		
 		
@@ -262,13 +263,12 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 
 		try {
 			jObj = new JSONObject(getTask());
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Exception rised in checkForUserNameAvailability",e);
 		}
-		
-		//result = new Long(ananymousUserService.checkForUserNameAvalilability(jObj.getString("userName")).getResultCode());
-		result = new Long(ananymousUserService.changeForUserNameAsEmail(jObj.getString("userName")).getResultCode());
+	
+		result = Long.valueOf(ananymousUserService.changeForUserNameAsEmail(jObj.getString(USERNAME)).getResultCode());
 		return SUCCESS;
 	}
 	
@@ -276,12 +276,12 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 
 		try {
 			jObj = new JSONObject(getTask());
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Exception rised in checkForUserNameAvailabilityForFreashUser",e);
 		}
 		
-		result =  new Long(ananymousUserService.checkForUserNameAvailabilityForFreashUser(jObj.getString("userName")).getResultCode());
+		result =  Long.valueOf(ananymousUserService.checkForUserNameAvailabilityForFreashUser(jObj.getString(USERNAME)).getResultCode());
 		 
 		return SUCCESS;
 	}
@@ -289,36 +289,35 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 		regVO = new RegistrationVO();
 		try {
 			jObj = new JSONObject(getTask());
-			if(jObj.getString("task").equalsIgnoreCase("forgotPassword"))
+			if(jObj.getString(TASK).equalsIgnoreCase("forgotPassword"))
 			{
 				
-				regVO = ananymousUserService.getUserDetailsToRecoverPassword(jObj.getString("userName"));	
+				regVO = ananymousUserService.getUserDetailsToRecoverPassword(jObj.getString(USERNAME));	
 				
-				if(regVO.getEmail()== null || regVO.getEmail() == " ")
-					return SUCCESS;
-				
-				else
+				if(regVO.getEmail()== null || regVO.getEmail().equals(" ")){
+					return SUCCESS;				
+				}else
 				{
 					email = regVO.getEmail();
-				 	String requestURL= request.getRequestURL().toString();
+				 	final String requestURL= request.getRequestURL().toString();
 					String requestFrom = null;
 					
-					if(requestURL.contains(IConstants.PARTYANALYST_SITE))
+					if(requestURL.contains(IConstants.PARTYANALYST_SITE)){
 						requestFrom = IConstants.SERVER;
-					else
+					}else{
 						requestFrom = IConstants.LOCALHOST;
-					
-					ResultStatus rs = mailService.sendMailToUserToRecoverPassword(regVO,requestFrom);
+					}
+					final ResultStatus resultStatus = mailService.sendMailToUserToRecoverPassword(regVO,requestFrom);
 				 
-					if(rs.getResultCode() == 1)
-					 regVO = null;
-
+					if(resultStatus.getResultCode() == 1){
+					   regVO = null;
+					}
 					return SUCCESS;
 				}
 			}
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Exception rised in recoverPasswordUsingLink",e);
 		}
 		return SUCCESS;
 		
@@ -328,36 +327,35 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 		regVO = new RegistrationVO();
 		try {
 			jObj = new JSONObject(getTask());
-			if(jObj.getString("task").equalsIgnoreCase("forgotPassword"))
+			if(jObj.getString(TASK).equalsIgnoreCase("forgotPassword"))
 			{
 				
-				regVO = ananymousUserService.getUserDetailsToRecoverPassword(jObj.getString("userName"));	
+				regVO = ananymousUserService.getUserDetailsToRecoverPassword(jObj.getString(USERNAME));	
 				
-				if(regVO.getEmail()== null || regVO.getEmail() == " ")
-					return SUCCESS;
-				
-				else
+				if(regVO.getEmail()== null || regVO.getEmail().equals(" ")){
+					return SUCCESS;				
+				}else
 				{
 					email = regVO.getEmail();
-				 	String requestURL= request.getRequestURL().toString();
+				 	final String requestURL= request.getRequestURL().toString();
 					String requestFrom = null;
 					
-					if(requestURL.contains(IConstants.PARTYANALYST_SITE))
+					if(requestURL.contains(IConstants.PARTYANALYST_SITE)){
 						requestFrom = IConstants.SERVER;
-					else
+					}else{
 						requestFrom = IConstants.LOCALHOST;
-					
-					ResultStatus rs = mailService.sendMailToUserToRecoverPassword(regVO,requestFrom);
+					}
+					final ResultStatus resultStatus = mailService.sendMailToUserToRecoverPassword(regVO,requestFrom);
 				 
-					if(rs.getResultCode() == 1)
+					if(resultStatus.getResultCode() == 1){
 					 regVO = null;
-
+					}
 					return SUCCESS;
 				}
 			}
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Exception rised in recoverPassword",e);
 		}
 		return SUCCESS;
 	}
@@ -369,36 +367,36 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 		regVO = new RegistrationVO();
 		try {
 			jObj = new JSONObject(getTask());
-			if(jObj.getString("task").equalsIgnoreCase("recoverPassword"))
+			if(jObj.getString(TASK).equalsIgnoreCase("recoverPassword"))
 			{
 				
-				regVO = ananymousUserService.getUserDetailsToRecoverPassword(jObj.getString("userName"));	
+				regVO = ananymousUserService.getUserDetailsToRecoverPassword(jObj.getString(USERNAME));	
 				
-				if(regVO.getEmail()== null || regVO.getEmail() == " ")
+				if(regVO.getEmail()== null || regVO.getEmail().equals(" ")){
 					return SUCCESS;
 				
-				else
+				}else
 				{
 					email = regVO.getEmail();
-				 	String requestURL= request.getRequestURL().toString();
+					final String requestURL= request.getRequestURL().toString();
 					String requestFrom = null;
 					
-					if(requestURL.contains(IConstants.PARTYANALYST_SITE))
+					if(requestURL.contains(IConstants.PARTYANALYST_SITE)){
 						requestFrom = IConstants.SERVER;
-					else
+					}else{
 						requestFrom = IConstants.LOCALHOST;
-					
-					ResultStatus rs = mailService.sendMailToUserToRecoverPassword(regVO,requestFrom);
+					}
+					final ResultStatus resultStatus = mailService.sendMailToUserToRecoverPassword(regVO,requestFrom);
 				 
-					if(rs.getResultCode() == 1)
+					if(resultStatus.getResultCode() == 1){
 					 regVO = null;
-
+					}
 					return SUCCESS;
 				}
 			}
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Exception rised in recoverPasswordForUser",e);
 		}
 		return SUCCESS;
 	}
@@ -407,26 +405,26 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 	public String changeUserNameToEmail(){
 		regVO = new RegistrationVO();
 		regVO=(RegistrationVO)session.getAttribute("USER");
-		Long userId=regVO.getRegistrationID();
+		final Long userId=regVO.getRegistrationID();
 		
 		try {
 			jObj = new JSONObject(getTask());
-			if(jObj.getString("task").equalsIgnoreCase("changeAnanymousUserNameToEmail")){
+			if(jObj.getString(TASK).equalsIgnoreCase("changeAnanymousUserNameToEmail")){
 				
-				resultValue=ananymousUserService.saveUserDetailsToChangeUserNameToEmail(userId,jObj.getString("userName"));	
-				regVO = ananymousUserService.getUserDetailsToRecoverPassword(jObj.getString("userName"));
+				resultValue=ananymousUserService.saveUserDetailsToChangeUserNameToEmail(userId,jObj.getString(USERNAME));	
+				regVO = ananymousUserService.getUserDetailsToRecoverPassword(jObj.getString(USERNAME));
 				 email = regVO.getEmail();
-				 System.out.println("email"+email);
-					String requestURL= request.getRequestURL().toString();
+				 LOG.info("email"+email);
+					final String requestURL= request.getRequestURL().toString();
 					String requestFrom = "";
-					if(requestURL.contains("www.partyanalyst.com"))
+					if(requestURL.contains("www.partyanalyst.com")){
 						requestFrom = IConstants.SERVER;
-					else
+					}else{
 						requestFrom = IConstants.LOCALHOST;
-					
-					ResultStatus rs = mailService.sendMailToUserToRecoverPassword(regVO,requestFrom);
+					}
+					final ResultStatus resultStatus = mailService.sendMailToUserToRecoverPassword(regVO,requestFrom);
 				 
-				 if(rs.getResultCode() == 1){
+				 if(resultStatus.getResultCode() == 1){
 					 regVO = null;
 				 }
 				return SUCCESS;
@@ -435,24 +433,24 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 			
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Exception rised in changeUserNameToEmail",e);
 		}
 		return SUCCESS;
 	
 	}
 	
-	public void prepare() throws Exception {
+	public void prepare() {
 		
 		registrationId = 0l;
 		session = request.getSession();
 		regVO = (RegistrationVO) session.getAttribute("USER");
 		
-		if(regVO != null)
+		if(regVO != null){
 			registrationId = regVO.getRegistrationID();
-		
-        if( registrationId.intValue() == 0) 
+		}
+        if( registrationId.intValue() == 0) {
         	regVO = new RegistrationVO();
-        else 
+        }else 
 		{	
         	regVO = ananymousUserService.getDetailsOfUserByUserId(registrationId);
         	
@@ -468,18 +466,18 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
         return regVO;
     }
 		     
-    public void prepopulateLocations(RegistrationVO  regVO){
+    public void prepopulateLocations(final RegistrationVO  regVO){
     	
-    	HttpSession session = request.getSession();
+    	final HttpSession session = request.getSession();
     	
-		List<String> gender = new ArrayList<String>();
-		List<SelectOptionVO> profileOpts = ananymousUserService.findAllProfileOptsAvailableInDB(); 
-		List<SelectOptionVO> states = regionServiceDataImp.getStatesByCountry(1l);
+    	final List<String> gender = new ArrayList<String>();
+    	final List<SelectOptionVO> profileOpts = ananymousUserService.findAllProfileOptsAvailableInDB(); 
+    	final List<SelectOptionVO> states = regionServiceDataImp.getStatesByCountry(1l);
 		//List<SelectOptionVO> districts = regionServiceDataImp.getDistrictsByStateID(Long.parseLong(regVO.getState()));
 		List<SelectOptionVO> constituencies = new ArrayList<SelectOptionVO>();
-		if(regVO.getState() != null)
-	     constituencies = staticDataService.getConstituenciesByElectionTypeAndStateId(new Long(2), Long.parseLong(regVO.getState())).getConstituencies();		
-		
+		if(regVO.getState() != null){
+	     constituencies = staticDataService.getConstituenciesByElectionTypeAndStateId(2l, Long.parseLong(regVO.getState())).getConstituencies();		
+		}
 		gender.add("Male");
 		gender.add("Female");
 		
@@ -491,18 +489,19 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
     }
     
     public String removeCadreImage(){
-    	log.debug("entered into removeCadreImage() business method in AnanymousUserAction class");
+    	LOG.debug("entered into removeCadreImage() business method in AnanymousUserAction class");
     	session = request.getSession();
-    	RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
-    	String param = null;
-		param = getTask();
+    	final RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+  
+    	 final String param = getTask();
 		try{
 			jObj = new JSONObject(param);
-			if(jObj.getString("task").equalsIgnoreCase("removeCadreImage"))
+			if(jObj.getString(TASK).equalsIgnoreCase("removeCadreImage")){
 				prepopulate = staticDataService.removeCadreImage(jObj.getLong("cadreId"),regVO.getRegistrationID());
+			}
 		}catch(Exception e){
-			log.debug("error occured in removeCadreImage() business method in AnanymousUserAction class");
-			e.printStackTrace();			
+			LOG.debug("error occured in removeCadreImage() business method in AnanymousUserAction class");
+			LOG.error("Exception rised in removeCadreImage",e);	
 		}
     	return Action.SUCCESS;
     }

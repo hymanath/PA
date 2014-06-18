@@ -31,7 +31,7 @@ ServletRequestAware, ServletContextAware{
 	private ServletContext context;
 	private ComparedReportVO comparedResultsVO;
 	private IElectionComparisonReportService electionComparisonReportService;
-	public static final Logger logger = Logger.getLogger(ECRComparedResultsAction.class);
+	public static final Logger LOG = Logger.getLogger(ECRComparedResultsAction.class);
 	private Long elecIdOne;
 	private Long elecIdTwo;
 	private Long stateOrDistrictId;
@@ -180,7 +180,7 @@ ServletRequestAware, ServletContextAware{
 			
 			try {
 				jObj=new JSONObject(param);
-				System.out.println("jObj = "+jObj);
+				LOG.info("jObj = "+jObj);
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}		
@@ -191,13 +191,13 @@ ServletRequestAware, ServletContextAware{
 			Long partyId = jObj.getLong("partyId");
 			String hasAlliances = jObj.getString("hasAlliance");
 			
-			logger.debug("Year One:"+elecIdOne);
-			logger.debug("Year Two:"+elecIdTwo);
-			logger.debug("District Id:"+stateOrDistrictId);
-			logger.debug("PartyId Id:"+partyId);
-			logger.debug("Has Alliances:"+hasAlliances);
+			LOG.debug("Year One:"+elecIdOne);
+			LOG.debug("Year Two:"+elecIdTwo);
+			LOG.debug("District Id:"+stateOrDistrictId);
+			LOG.debug("PartyId Id:"+partyId);
+			LOG.debug("Has Alliances:"+hasAlliances);
 				
-			comparedResultsVO = electionComparisonReportService.getComparedElectionResults(new Long(partyId), elecIdOne, elecIdTwo, stateOrDistrictId, new Boolean(hasAlliances));
+			comparedResultsVO = electionComparisonReportService.getComparedElectionResults(Long.valueOf(partyId), elecIdOne, elecIdTwo, stateOrDistrictId, Boolean.valueOf(hasAlliances));
 			locationName = comparedResultsVO.getLocName();
 			
 			return Action.SUCCESS;

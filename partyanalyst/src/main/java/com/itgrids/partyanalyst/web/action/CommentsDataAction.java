@@ -25,7 +25,7 @@ public class CommentsDataAction extends ActionSupport implements ServletRequestA
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(CommentsDataAction.class);
+	private static final Logger LOG = Logger.getLogger(CommentsDataAction.class);
 	private HttpServletRequest request;
 	private String task = null;
 	JSONObject jObj = null;
@@ -110,8 +110,8 @@ public class CommentsDataAction extends ActionSupport implements ServletRequestA
 		param = getTask();
 		try {
 			jObj = new JSONObject(param);
-			if(log.isDebugEnabled())
-				log.debug(jObj);			
+			if(LOG.isDebugEnabled())
+				LOG.debug(jObj);			
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -137,47 +137,47 @@ public class CommentsDataAction extends ActionSupport implements ServletRequestA
 			String electionType = jObj.getString("electionType");
 			String commentedBy =  jObj.getString("postedBy");
 			String commentDesc = jObj.getString("commentDesc");
-			Long electionId = new Long(jObj.getString("electionId"));
-			Long  partyId = new Long(jObj.getString("partyId"));
-			Long candidateId = new Long(jObj.getString("candidateId"));
-			Long constituencyId = new Long(jObj.getString("constituencyId"));
+			Long electionId = Long.valueOf(jObj.getString("electionId"));
+			Long  partyId = Long.valueOf(jObj.getString("partyId"));
+			Long candidateId = Long.valueOf(jObj.getString("candidateId"));
+			Long constituencyId = Long.valueOf(jObj.getString("constituencyId"));
 			String category = jObj.getString("category");
-			Long commentCategoryId = new Long(jObj.getString("commentCategoryId"));
+			Long commentCategoryId = Long.valueOf(jObj.getString("commentCategoryId"));
 			Long severity = jObj.getLong("reasonSeverityvalue");
-			if(log.isDebugEnabled())
+			if(LOG.isDebugEnabled())
 			{	
-				log.debug("electionYear:"+electionYear);
-				log.debug("electionType:"+electionType);
-				log.debug("commentedBy:"+commentedBy);
-				log.debug("commentDesc:"+commentDesc);
-				log.debug("electionId:"+electionId);
-				log.debug("partyId:"+partyId);
-				log.debug("category:"+category);
+				LOG.debug("electionYear:"+electionYear);
+				LOG.debug("electionType:"+electionType);
+				LOG.debug("commentedBy:"+commentedBy);
+				LOG.debug("commentDesc:"+commentDesc);
+				LOG.debug("electionId:"+electionId);
+				LOG.debug("partyId:"+partyId);
+				LOG.debug("category:"+category);
 			} 
 			
 			if(category.equals("party"))
 			{			
-				log.debug(category+"block:");
+				LOG.debug(category+"block:");
 				electionCommentsVO.setPartyCommentsSaved(commentsDataService.savePartyCommentsToDB(electionType, electionYear, electionId, 
 						partyId, commentDesc, commentedBy, commentCategoryId,hasFreeUserRole,hasPartyAnalystUserRole));
-				log.debug("After Save!!!!!!!!!!!!!!!!");
-				log.debug("Saved Party Comments Obj::::::::::::::"+electionCommentsVO.getPartyCommentsSaved());				
+				LOG.debug("After Save!!!!!!!!!!!!!!!!");
+				LOG.debug("Saved Party Comments Obj::::::::::::::"+electionCommentsVO.getPartyCommentsSaved());				
 				
 			} if(category.equals("candidate"))
 			{
-				log.debug(category+"block:");				
+				LOG.debug(category+"block:");				
 				/*electionCommentsVO.setCandidateCommentsSaved(commentsDataService.saveCandidateCommentsToDB(electionType, electionYear, 
 						electionId,constituencyId, candidateId,commentDesc,commentedBy,commentCategoryId, registrationId, userType, severity));*/
 				
 				electionCommentsVO.setCandidateCommentsSaved(commentsDataService.saveCandidateCommentsToDB(electionType, electionYear, 
 						electionId,constituencyId, candidateId,commentDesc,commentedBy,commentCategoryId, registrationId, userType, severity,hasFreeUserRole,hasPartyAnalystUserRole));
 				
-				log.debug("After Save!!!!!!!!!!!!!!!!");
-				log.debug("Saved Candidate Comments Obj::::::::::::::"+electionCommentsVO.getCandidateCommentsSaved());
+				LOG.debug("After Save!!!!!!!!!!!!!!!!");
+				LOG.debug("Saved Candidate Comments Obj::::::::::::::"+electionCommentsVO.getCandidateCommentsSaved());
 				
 			} if(category.equals("constituency"))
 			{
-				log.debug(category+"block:");
+				LOG.debug(category+"block:");
 			}
 		}
 		if(jObj.getString("task").equalsIgnoreCase("getPreviousComments"))
@@ -187,17 +187,17 @@ public class CommentsDataAction extends ActionSupport implements ServletRequestA
 			
 			String electionYear = jObj.getString("year");
 			String electionType = jObj.getString("electionType");
-			Long electionId = new Long(jObj.getString("electionId"));
-			Long constituencyId = new Long(jObj.getString("constituencyId"));
-			Long candidateId = new Long(jObj.getString("candidateId"));
+			Long electionId = Long.valueOf(jObj.getString("electionId"));
+			Long constituencyId = Long.valueOf(jObj.getString("constituencyId"));
+			Long candidateId = Long.valueOf(jObj.getString("candidateId"));
 			
-			if(log.isDebugEnabled())
+			if(LOG.isDebugEnabled())
 			{	
-				log.debug("electionYear:"+electionYear);
-				log.debug("electionType:"+electionType);
-				log.debug("candidateId:"+candidateId);
-				log.debug("electionId:"+electionId);
-				log.debug("constituencyId:"+constituencyId);
+				LOG.debug("electionYear:"+electionYear);
+				LOG.debug("electionType:"+electionType);
+				LOG.debug("candidateId:"+candidateId);
+				LOG.debug("electionId:"+electionId);
+				LOG.debug("constituencyId:"+constituencyId);
 				
 			}
 			
@@ -219,8 +219,8 @@ public class CommentsDataAction extends ActionSupport implements ServletRequestA
 		param = getTask();
 		try {
 			jObj = new JSONObject(param);
-			if(log.isDebugEnabled())
-				log.debug(jObj);			
+			if(LOG.isDebugEnabled())
+				LOG.debug(jObj);			
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -229,8 +229,8 @@ public class CommentsDataAction extends ActionSupport implements ServletRequestA
 		{
 			commentsClassificationList = new ArrayList<SelectOptionVO>();
 			String rank = jObj.getString("rank");
-			commentsClassificationList = commentsDataService.getCandidateCommentsCategoryStatics(new Long(rank));
-			log.debug("commentsClassificationList Size::::::::::::::::" + commentsClassificationList.size());
+			commentsClassificationList = commentsDataService.getCandidateCommentsCategoryStatics(Long.valueOf(rank));
+			LOG.debug("commentsClassificationList Size::::::::::::::::" + commentsClassificationList.size());
 		}	
 		
 		return Action.SUCCESS;

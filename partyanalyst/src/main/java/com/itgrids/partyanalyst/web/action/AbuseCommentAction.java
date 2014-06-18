@@ -7,8 +7,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.jfree.util.Log;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -21,10 +21,15 @@ import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class AbuseCommentAction  extends ActionSupport implements ServletRequestAware  {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7220092157888269387L;
+	private static final Logger LOG = Logger.getLogger(AbuseCommentAction.class);
 	private HttpServletRequest request;
 	private HttpSession session;
 	private String task;
-	JSONObject jObj;
+	public  transient JSONObject jObj;
 	private ICandidateDetailsService candidateDetailsService; 
 	private List<CandidateCommentsVO> candidateCommentsList;
 	private ResultStatus resultStatus;
@@ -35,7 +40,7 @@ public class AbuseCommentAction  extends ActionSupport implements ServletRequest
 	}
 
 
-	public void setResultStatus(ResultStatus resultStatus) {
+	public void setResultStatus(final ResultStatus resultStatus) {
 		this.resultStatus = resultStatus;
 	}
 
@@ -45,7 +50,7 @@ public class AbuseCommentAction  extends ActionSupport implements ServletRequest
 	}
 
 
-	public void setCandidateDetailsService(
+	public void setCandidateDetailsService(final 
 			ICandidateDetailsService candidateDetailsService) {
 		this.candidateDetailsService = candidateDetailsService;
 	}
@@ -56,7 +61,7 @@ public class AbuseCommentAction  extends ActionSupport implements ServletRequest
 	}
 
 
-	public void setCandidateCommentsList(
+	public void setCandidateCommentsList(final 
 			List<CandidateCommentsVO> candidateCommentsList) {
 		this.candidateCommentsList = candidateCommentsList;
 	}
@@ -67,7 +72,7 @@ public class AbuseCommentAction  extends ActionSupport implements ServletRequest
 	}
 
 
-	public void setRequest(HttpServletRequest request) {
+	public void setRequest(final HttpServletRequest request) {
 		this.request = request;
 	}
 
@@ -77,7 +82,7 @@ public class AbuseCommentAction  extends ActionSupport implements ServletRequest
 	}
 
 
-	public void setSession(HttpSession session) {
+	public void setSession(final HttpSession session) {
 		this.session = session;
 	}
 
@@ -87,54 +92,47 @@ public class AbuseCommentAction  extends ActionSupport implements ServletRequest
 	}
 
 
-	public void setTask(String task) {
+	public void setTask(final String task) {
 		this.task = task;
 	}
     //override
-	public void setServletRequest(HttpServletRequest request) {
+	public void setServletRequest(final HttpServletRequest request) {
 		this.request = request;
 		
 	}
-	public String execute()throws Exception
+	public String execute()
 	{
 		session = request.getSession();
-		RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
+		final RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
 		if (registrationVO != null) 
 		{
-			if (!registrationVO.getIsAdmin().equals("true"))
+			if (!registrationVO.getIsAdmin().equals("true")){
 				  return ERROR;
+			}
 		} 
-		else
+		else{
 			return ERROR;
-		
+		}
 		return Action.SUCCESS;
 		
 	}
 	public String getAbuseComment()
 	{
-		String fromDate = null;
-		String toDate = null;
-		String task = null;
-		String selectstatus=null;
 		
-		
-		if(Log.isDebugEnabled())
-			Log.debug("Enterd into getAbuseComment() of AbuseCommentAction..............");
-
+		if(LOG.isDebugEnabled()){
+			LOG.debug("Enterd into getAbuseComment() of AbuseCommentAction..............");
+		}
 		try {
 			jObj = new JSONObject(getTask());
 		} catch (ParseException e) {
-			e.printStackTrace( );
+			LOG.error(e);
 		}
-		fromDate = jObj.getString("fromDate");
-		toDate = jObj.getString("toDate");
-		task = jObj.getString("task");
-		selectstatus = jObj.getString("selectstaus");
+		final String task = jObj.getString("task");
 		
 		if(task.equalsIgnoreCase("getAllNewPostedReasons") || task.equalsIgnoreCase("getAllNewPostedReasonsBetweenDates"))
 		{
 			
-			candidateCommentsList = candidateDetailsService.getAbuseComment(fromDate, toDate,selectstatus);
+			candidateCommentsList = candidateDetailsService.getAbuseComment(jObj.getString("fromDate"), jObj.getString("toDate"),jObj.getString("selectstaus"));
 		}
 		
 		return Action.SUCCESS;
@@ -142,38 +140,34 @@ public class AbuseCommentAction  extends ActionSupport implements ServletRequest
 	public String controlAbuseComments()
 	{
 	
-		List<Long> id = new ArrayList<Long>();
-		List<String> rejectStatus = new ArrayList<String>();
 		candidateCommentsList =new ArrayList<CandidateCommentsVO>();
 	
 		try {
-			if(Log.isDebugEnabled())
-				Log.debug("controlAbuseComments().......");
-			
+			if(LOG.isDebugEnabled()){
+				LOG.debug("controlAbuseComments().......");
+			}
 			jObj = new JSONObject(getTask());
 			
-		    String task = jObj.getString("task");
-	        JSONArray jArray = jObj.getJSONArray("checkedElmts");
+		   final String task = jObj.getString("task");
+	       final JSONArray jArray = jObj.getJSONArray("checkedElmts");
 	        
 	        String actionType = "";
-			if(task.equalsIgnoreCase("approved"))
-				actionType+= IConstants.APPROVED;
-				
-			else if(task.equalsIgnoreCase("rejected"))
-				actionType+= IConstants.REJECTED;
-					
+			if(task.equalsIgnoreCase("approved")){
+				actionType = IConstants.APPROVED;
+			}	
+			else if(task.equalsIgnoreCase("rejected")){
+				actionType = IConstants.REJECTED;
+			}
+			CandidateCommentsVO commentsVO = null;		
 			for (int i = 0; i < jArray.length(); i++) 
 			{
-				CandidateCommentsVO candidateCommentsVO  = new CandidateCommentsVO();
+				commentsVO  = new CandidateCommentsVO();
 				jObj= (JSONObject)jArray.get(i);
 					
+				commentsVO.setMessageToCandidateId(jObj.getLong("message_candidate_id"));
+				commentsVO.setMessage(jObj.getString("updated_message"));
 				
-				id.add(jObj.getLong("message_candidate_id"));
-				rejectStatus.add(jObj.getString("updated_message"));
-		    	candidateCommentsVO.setMessageToCandidateId(id.get(i));
-		    	candidateCommentsVO.setMessage(rejectStatus.get(i));
-				
-				candidateCommentsList.add(candidateCommentsVO);
+				candidateCommentsList.add(commentsVO);
 					
 			}
 			
@@ -182,7 +176,7 @@ public class AbuseCommentAction  extends ActionSupport implements ServletRequest
 				
 	     } catch (ParseException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+	    	 LOG.error("Exception rised in controlAbuseComments",e);
 			resultStatus = new ResultStatus();
 			resultStatus.setResultState(0l);
 			resultStatus.setExceptionEncountered(e);

@@ -47,7 +47,7 @@ public class PartyResultsAction extends ActionSupport implements ServletRequestA
 	private Long selectedPartyId;
 	private String host = IConstants.DEPLOYED_HOST;
 	
-	private static final org.apache.log4j.Logger log = Logger.getLogger(PartyResultsAction.class);
+	private static final org.apache.log4j.Logger LOG = Logger.getLogger(PartyResultsAction.class);
 	
 	public String getSelectedLocationName() {
 		return selectedLocationName;
@@ -175,7 +175,7 @@ public class PartyResultsAction extends ActionSupport implements ServletRequestA
 		ResourceBundle rb = ResourceBundle.getBundle("global_ErrorMessages");
 		String reportError = rb.getString("noResults");
 		
-		System.out.println("IN Party Results action ");
+		LOG.info("IN Party Results action ");
 		setCountrySelectName("India");
 		
 		ElectionScopeLevelEnum level = ElectionScopeLevelEnum.CONSTITUENCY_LEVEL;
@@ -183,9 +183,9 @@ public class PartyResultsAction extends ActionSupport implements ServletRequestA
 		if(partySelectName == null || electionType == null)
 			return "dashBoard";
 			
-		Long partyId = new Long(partySelectName);
-		Long electionId = new Long(electionType);
-		Long countryId = new Long(1);
+		Long partyId = Long.valueOf(partySelectName);
+		Long electionId = Long.valueOf(electionType);
+		Long countryId = Long.valueOf(1);
 
 		Long stateId = null;		
 		Long districtId = null;
@@ -201,24 +201,24 @@ public class PartyResultsAction extends ActionSupport implements ServletRequestA
 		}
 		else if(reportLevel.equals("State")){
 			level = ElectionScopeLevelEnum.STATE_LEVEL;
-			stateId = new Long(getStateSelectName());
+			stateId = Long.valueOf(getStateSelectName());
 			chartId.append("S" + stateId.toString());
 		}
 		else if(reportLevel.equals("District")){
 			level = ElectionScopeLevelEnum.DISTRICT_LEVEL;
-			stateId = new Long(getStateSelectName());
-			districtId = new Long(districtSelectName);
+			stateId = Long.valueOf(getStateSelectName());
+			districtId = Long.valueOf(districtSelectName);
 			chartId.append("D" + districtId.toString());
 		}
 		else if(reportLevel.equals("Constituency")){
 			level = ElectionScopeLevelEnum.CONSTITUENCY_LEVEL;
-			stateId = new Long(getStateSelectName());
-			constituencyId = new Long(constituencySelectName);
+			stateId = Long.valueOf(getStateSelectName());
+			constituencyId = Long.valueOf(constituencySelectName);
 			chartId.append("C" + constituencyId.toString());
 		}
 		
-		Boolean alliances = new Boolean(request.getParameter("alliances"));
-		System.out.println("Alliances :" + alliances);
+		Boolean alliances = Boolean.valueOf(request.getParameter("alliances"));
+		LOG.info("Alliances :" + alliances);
 		//Boolean hasAlliances = true;
 		//List<PartyResultInfoVO> partyResultInfoVOList = partyResultService.getPartyResultsInfo(partySelectName, electionType, "1", stateSelectName, 
 		//		districtSelectName, constituencySelectName, level);
@@ -261,7 +261,7 @@ public class PartyResultsAction extends ActionSupport implements ServletRequestA
 		}
 		catch(Exception ex){
 			
-			log.error("Exception Raised :" + ex);
+			LOG.error("Exception Raised :" + ex);
 			return "failure";
 			
 		}

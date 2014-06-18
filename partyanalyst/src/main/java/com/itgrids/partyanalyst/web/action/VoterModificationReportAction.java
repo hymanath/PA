@@ -362,7 +362,7 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 			jObj = new JSONObject(param);		
 		}catch (Exception e) {
 			e.printStackTrace();
-			Log.error("Exception Occured in getAllVoterInformationInALocation() Method, Exception - "+e);
+			LOG.error("Exception Occured in getAllVoterInformationInALocation() Method, Exception - "+e);
 		}
 		
 		Long constituencyId = jObj.getLong("constituencyId");
@@ -395,7 +395,7 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 			jObj = new JSONObject(param);		
 		}catch (Exception e) {
 			e.printStackTrace();
-			Log.error("Exception Occured in getAllVoterInformationInALocation() Method, Exception - "+e);
+			LOG.error("Exception Occured in getAllVoterInformationInALocation() Method, Exception - "+e);
 		}
 		
 		Long constituencyId = jObj.getLong("constituencyId");
@@ -425,7 +425,7 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 			jObj = new JSONObject(param);		
 		}catch (Exception e) {
 			e.printStackTrace();
-			Log.error("Exception Occured in getAllVoterInformationInALocation() Method, Exception - "+e);
+			LOG.error("Exception Occured in getAllVoterInformationInALocation() Method, Exception - "+e);
 		}
 		
 		String locationType = jObj.getString("locationType");

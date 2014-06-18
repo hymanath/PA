@@ -55,9 +55,9 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 	private IElectionComparisonReportService electionComparisonReportService;
 	private IPartyService partyService;
 	private IStaticDataService staticDataService;
-	private Boolean hasECRPage = new Boolean(false);
+	private Boolean hasECRPage = false;
 	private Long electionType,electionYears2,electionYears1,state;//variables comes from  electionComparisonReportPopUp
-	public static final Logger logger = Logger.getLogger(ElectionComparisonReportAction.class);
+	public static final Logger LOG = Logger.getLogger(ElectionComparisonReportAction.class);
 	private EntitlementsHelper entitlementsHelper;
 	
 	public EntitlementsHelper getEntitlementsHelper() {
@@ -272,9 +272,9 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 		
 		try{
 			
-		Boolean hasAlliances = new Boolean(allianceCheck);
-		if(logger.isDebugEnabled())
-			logger.debug("alliance-->" + allianceCheck);	
+		Boolean hasAlliances = Boolean.valueOf(allianceCheck);
+		if(LOG.isDebugEnabled())
+			LOG.debug("alliance-->" + allianceCheck);	
 		
 		HttpSession session = request.getSession();
 		session = request.getSession();
@@ -297,7 +297,7 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 				}
 			}
 		}
-		electionComparisonReportVO = electionComparisonReportService.getDistrictWiseElectionResultsForAParty(Long.parseLong(getParty()), new Long(electionId1), new Long(electionId2), hasAlliances);
+		electionComparisonReportVO = electionComparisonReportService.getDistrictWiseElectionResultsForAParty(Long.parseLong(getParty()), Long.valueOf(electionId1), Long.valueOf(electionId2), hasAlliances);
 		
 		String yearOne = electionComparisonReportVO.getYearOne();
 		String yearTwo = electionComparisonReportVO.getYearTwo();
@@ -308,7 +308,7 @@ public class ElectionComparisonReportAction extends ActionSupport implements
         	
         	//String sPath = (String)session.getAttribute("chartPath");
         	
-        	//logger.warn("Path To Save Charts :" + sPath);
+        	//LOG.warn("Path To Save Charts :" + sPath);
         	
         	//String seatsLineChartPath = "";
         	//String totalPercentLineChartPath = "";
@@ -340,7 +340,7 @@ public class ElectionComparisonReportAction extends ActionSupport implements
             else
             	seatsLineChartPath = context.getRealPath("/") + "charts\\" + seatsLineChartName;
             
-            logger.warn("Created Seats Line Chart Path :" + seatsLineChartPath);
+            LOG.warn("Created Seats Line Chart Path :" + seatsLineChartPath);
                      */  
             //String totalPercentChartId = party.concat(electionType).concat(yearOne).concat("Comparing_with").concat(yearTwo).concat("LineChartTotalPercent");
             //String totalPercentLineChartName = "electionsComparisonChart_" + totalPercentChartId + session.getId()+".png";
@@ -350,7 +350,7 @@ public class ElectionComparisonReportAction extends ActionSupport implements
             //else
             //	 totalPercentLineChartPath = context.getRealPath("/") + "charts\\" + totalPercentLineChartName;
             
-           // logger.warn("Created Percentage Line Chart Path :" + totalPercentLineChartPath);
+           // LOG.warn("Created Percentage Line Chart Path :" + totalPercentLineChartPath);
                       
          //   if(electionComparisonReportVO.getPositionsForYearOne() != null && electionComparisonReportVO.getPositionsForYearTwo() != null){
             //	if(hasAlliances==false){
@@ -510,11 +510,11 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 		
 		String param=null;		
 		param=request.getParameter("task");
-		logger.debug("param:"+param);
+		LOG.debug("param:"+param);
 		
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}		
@@ -525,13 +525,13 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 		Long partyId = jObj.getLong("partyId");
 		String hasAlliances = jObj.getString("hasAlliance");
 		
-		logger.debug("Year One:"+elecIdOne);
-		logger.debug("Year Two:"+elecIdTwo);
-		logger.debug("District Id:"+stateOrDistrictId);
-		logger.debug("PartyId Id:"+partyId);
-		logger.debug("Has Alliances:"+hasAlliances);
+		LOG.debug("Year One:"+elecIdOne);
+		LOG.debug("Year Two:"+elecIdTwo);
+		LOG.debug("District Id:"+stateOrDistrictId);
+		LOG.debug("PartyId Id:"+partyId);
+		LOG.debug("Has Alliances:"+hasAlliances);
 			
-		comparedResultsVO = electionComparisonReportService.getComparedElectionResults(new Long(partyId), elecIdOne, elecIdTwo, stateOrDistrictId, new Boolean(hasAlliances));
+		comparedResultsVO = electionComparisonReportService.getComparedElectionResults(Long.valueOf(partyId), elecIdOne, elecIdTwo, stateOrDistrictId, Boolean.valueOf(hasAlliances));
 		
 		return Action.SUCCESS;
 	}
@@ -541,11 +541,11 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 		
 		String param=null;		
 		param=request.getParameter("task");
-		logger.debug("param:"+param);
+		LOG.debug("param:"+param);
 		
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("getPartyPositionDetails ********* jObj = "+jObj);
+			LOG.info("getPartyPositionDetails ********* jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -563,11 +563,11 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 		
 		String param=null;		
 		param=request.getParameter("task");
-		logger.debug("param:"+param);
+		LOG.debug("param:"+param);
 		
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -576,11 +576,11 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 		String electionId = jObj.getString("electionId");
 		String partyId = jObj.getString("partyId");
 		
-		logger.debug("ConstituencyId :" + constituencyId);
-		logger.debug("electionId :" + electionId);
-		logger.debug("partyId :" + partyId);
+		LOG.debug("ConstituencyId :" + constituencyId);
+		LOG.debug("electionId :" + electionId);
+		LOG.debug("partyId :" + partyId);
 		
-		constiElecResults  = staticDataService.getCompleteElectionResultsForAConstituency(new Long(constituencyId), new Long(electionId), new Long(partyId));
+		constiElecResults  = staticDataService.getCompleteElectionResultsForAConstituency(Long.valueOf(constituencyId), Long.valueOf(electionId), Long.valueOf(partyId));
 		
 		return Action.SUCCESS;
 	}

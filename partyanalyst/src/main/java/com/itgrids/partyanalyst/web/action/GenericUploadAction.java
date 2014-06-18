@@ -46,7 +46,7 @@ public class GenericUploadAction extends ActionSupport implements
 	private String countryId;
 	private String module;
 	
-	private static final Logger log = Logger.getLogger(GenericUploadAction.class);
+	private static final Logger LOG = Logger.getLogger(GenericUploadAction.class);
 	
 	private IGenericUploadService genericUploadService;
 	private UploadDataErrorMessageVO uploadResultsVO;
@@ -203,8 +203,8 @@ public class GenericUploadAction extends ActionSupport implements
 
 	public String execute(){
 		
-		if(log.isDebugEnabled())
-			log.debug("Started Executing Upload Action Request ..");
+		if(LOG.isDebugEnabled())
+			LOG.debug("Started Executing Upload Action Request ..");
 		
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");

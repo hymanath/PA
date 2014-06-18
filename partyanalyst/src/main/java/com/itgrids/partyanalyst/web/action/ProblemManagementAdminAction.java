@@ -35,7 +35,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class ProblemManagementAdminAction extends ActionSupport implements ServletRequestAware, ServletContextAware{
 
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(ProblemManagementAdminAction.class);
+	private static final Logger LOG = Logger.getLogger(ProblemManagementAdminAction.class);
 	
 	private HttpServletRequest request;
 	private HttpSession session;

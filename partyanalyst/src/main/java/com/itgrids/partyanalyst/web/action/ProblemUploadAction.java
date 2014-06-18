@@ -40,7 +40,7 @@ public class ProblemUploadAction extends ActionSupport implements
 	private IProblemUploadService problemUploadService;
 	
 	
-	private static final Logger log = Logger.getLogger(ProblemUploadAction.class);
+	private static final Logger LOG = Logger.getLogger(ProblemUploadAction.class);
 	
 
 	public void setServletRequest(HttpServletRequest httpServletRequest) {
@@ -101,11 +101,11 @@ public class ProblemUploadAction extends ActionSupport implements
 
 	public String execute() throws Exception{
 		
-		if(log.isDebugEnabled()){
-			log.debug("In ProblemUpload Action ......");
-			log.debug("FileName :" + filePath.getName());
-			log.debug("Year :" + year);
-			log.debug("StateName :" + stateName);
+		if(LOG.isDebugEnabled()){
+			LOG.debug("In ProblemUpload Action ......");
+			LOG.debug("FileName :" + filePath.getName());
+			LOG.debug("Year :" + year);
+			LOG.debug("StateName :" + stateName);
 		}
 		String problemSource = ProblemExcelDataColumnNames.PARTYANALYST.getValue();
 		
@@ -116,8 +116,8 @@ public class ProblemUploadAction extends ActionSupport implements
 		else{
 			ResultStatus result = problemUploadService.readExcelAndInsertData(filePath, year, stateName,problemSource);
 			if(result.getExceptionEncountered() != null){
-				if(log.isDebugEnabled())
-					log.debug("Exception Raised------",result.getExceptionEncountered());
+				if(LOG.isDebugEnabled())
+					LOG.debug("Exception Raised------",result.getExceptionEncountered());
 				return ERROR;
 			}
 		}

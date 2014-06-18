@@ -199,7 +199,7 @@ public class CrossVotingReportInputAction extends ActionSupport implements Servl
 		List<SelectOptionVO> constituencyList = (List<SelectOptionVO>)session.getAttribute("assemblyConstis");
 		
 		if(constituencyList == null){
-		  constituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(user.getRegistrationID(),new Long(IConstants.PRESENT_ELECTION_YEAR),new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID));
+		  constituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(user.getRegistrationID(),Long.valueOf(IConstants.PRESENT_ELECTION_YEAR),Long.valueOf(IConstants.ASSEMBLY_ELECTION_TYPE_ID));
 		  constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));
 		  session.setAttribute("assemblyConstis",constituencyList);
 		}

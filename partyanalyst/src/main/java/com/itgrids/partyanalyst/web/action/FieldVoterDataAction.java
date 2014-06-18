@@ -82,8 +82,8 @@ public class FieldVoterDataAction extends ActionSupport implements ServletReques
 		constituencyList = user.getUserAccessVoterConstituencies();
 		if(constituencyList == null || constituencyList.isEmpty()){
 			Long userID = user.getRegistrationID();
-			Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
-			Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
+			Long electionYear = Long.valueOf(IConstants.PRESENT_ELECTION_YEAR);
+			Long electionTypeId = Long.valueOf(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
 			userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userID,electionYear,electionTypeId);
 			constituencyList = votersAnalysisService.getConstituencyList(userAccessConstituencyList);
 			constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));

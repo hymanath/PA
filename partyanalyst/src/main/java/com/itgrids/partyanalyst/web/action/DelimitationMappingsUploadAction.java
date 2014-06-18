@@ -39,7 +39,7 @@ public class DelimitationMappingsUploadAction extends ActionSupport implements
 	private HttpServletResponse response;
 	private HttpSession session;
 	
-	private static final Logger log = Logger.getLogger(DelimitationMappingsUploadAction.class);
+	private static final Logger LOG = Logger.getLogger(DelimitationMappingsUploadAction.class);
 	
 	private File filePath;
 	private String country;
@@ -210,22 +210,22 @@ public class DelimitationMappingsUploadAction extends ActionSupport implements
 		delimitationMappingUploadVO.setDelimitationYear(this.delimitationYear);
 		
 		if(delimitationMappingUploadVO != null){
-			System.out.println(" Row :" + delimitationMappingUploadVO.getCurrentRow());
-			System.out.println(" Sheet :" + delimitationMappingUploadVO.getCurrentSheet());
+			LOG.info(" Row :" + delimitationMappingUploadVO.getCurrentRow());
+			LOG.info(" Sheet :" + delimitationMappingUploadVO.getCurrentSheet());
 			
 			if(delimitationMappingUploadVO.getMappedConstituencies() != null && delimitationMappingUploadVO.getMappedConstituencies().size() > 0){
-				System.out.println(" Total constituencies Mapped :" + delimitationMappingUploadVO.getMappedConstituencies().size());
+				LOG.info(" Total constituencies Mapped :" + delimitationMappingUploadVO.getMappedConstituencies().size());
 				for(String consti:delimitationMappingUploadVO.getMappedConstituencies()){
-				 System.out.print(consti + " , ");
+				 LOG.info(consti + " , ");
 				}
-				System.out.println("  ");
+				LOG.info("  ");
 			}else{
-				System.out.println(" Total Constituencies Mapped is 0");
+				LOG.info(" Total Constituencies Mapped is 0");
 			}
 			if(delimitationMappingUploadVO.getExceptionEncountered() == null)
-			    System.out.println(" Mapped And Saved Successfully Without Any Exceptions .. ");
+			    LOG.info(" Mapped And Saved Successfully Without Any Exceptions .. ");
 			else
-				System.out.println("Exception Raised :" + delimitationMappingUploadVO.getExceptionEncountered());
+				LOG.info("Exception Raised :" + delimitationMappingUploadVO.getExceptionEncountered());
 		}
 		
 		return Action.SUCCESS;

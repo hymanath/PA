@@ -502,7 +502,7 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		if(result != null && result.getResultCode() == 0)
 		{
 			request.setAttribute("successMsg", "savedSuccessfully");
-			//System.out.println(request.getAttribute("successMsg"));
+			//LOG.info(request.getAttribute("successMsg"));
 		}
 		if(result.getExceptionEncountered() != null){			
 			return ERROR;

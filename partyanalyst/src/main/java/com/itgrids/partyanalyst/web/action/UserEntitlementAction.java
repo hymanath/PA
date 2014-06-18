@@ -35,7 +35,7 @@ ServletRequestAware, ServletContextAware{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger log = Logger.getLogger(UserEntitlementAction.class);
+	private static final Logger LOG = Logger.getLogger(UserEntitlementAction.class);
 	
 	private ServletContext context;
 	HttpServletRequest request;
@@ -206,7 +206,7 @@ ServletRequestAware, ServletContextAware{
 		
 		try {
 			jObj = new JSONObject(getTask());
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -273,18 +273,18 @@ ServletRequestAware, ServletContextAware{
 		
 		try {
 			jObj = new JSONObject(getTask());
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 	   if(jObj.getString("type").equalsIgnoreCase("getAllGroups")){		
-			navigationVO = userEntitlementService.getAllGroupsBasedOnUserId(new Long(jObj.getLong("selectedUserId")));
+			navigationVO = userEntitlementService.getAllGroupsBasedOnUserId(Long.valueOf(jObj.getLong("selectedUserId")));
 		}
 	   else if(jObj.getString("type").equalsIgnoreCase("getAllEntitlementsBasedOnEntitlementGroup")){		
-			navigationVO = userEntitlementService.getAllEntitlementsBasedOnEntitlementGroup(new Long(jObj.getLong("selectedEntitlementGroupId")));
+			navigationVO = userEntitlementService.getAllEntitlementsBasedOnEntitlementGroup(Long.valueOf(jObj.getLong("selectedEntitlementGroupId")));
 	   }
 	   if(jObj.getString("type").equalsIgnoreCase("getAllEntitlementGroupsBasedOnUserGroup")){		
-			navigationVO = userEntitlementService.getAllEntitlementsGroupsBasedOnUserGroupId(new Long(jObj.getLong("selectedUserGroupId")));
+			navigationVO = userEntitlementService.getAllEntitlementsGroupsBasedOnUserGroupId(Long.valueOf(jObj.getLong("selectedUserGroupId")));
 		}
 	return SUCCESS;
 }

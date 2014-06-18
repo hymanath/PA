@@ -194,12 +194,12 @@ public class ElectionLiveResultsAnalysisAction extends ActionSupport implements 
 			jObj = new JSONObject(getTask());
 			if(jObj.getString("task").equalsIgnoreCase("getConstituenciesCount"))
 			{
-				Long electionId = new Long (jObj.getString("electionId"));
+				Long electionId = Long.valueOf (jObj.getString("electionId"));
 			//	electionLiveResultVO = electionLiveResultsAnalysisService.getCountOfConstituenciesForAElection(electionId);
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getOverViewCount"))
 			{
-				Long electionId = new Long (jObj.getString("electionId"));
+				Long electionId = Long.valueOf (jObj.getString("electionId"));
 				electionLiveResultVO = electionLiveResultsAnalysisService.getOverViewCount(electionId);
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getGenderAnalysisInElection"))
@@ -221,12 +221,12 @@ public class ElectionLiveResultsAnalysisAction extends ActionSupport implements 
 			jObj = new JSONObject(getTask());
 			if(jObj.getString("task").equalsIgnoreCase("getPartyWonOrLeadConstituenciesCount")){
 				
-				Long electionId = new Long(jObj.getString("electionId"));
+				Long electionId = Long.valueOf(jObj.getString("electionId"));
 				electionLiveResultVOList = electionLiveResultsAnalysisService.getLeadingOrWinningContituenciesForAParty(electionId);
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getPartiesGainAndLossInfo"))
 			{
-				Long electionId = new Long(jObj.getString("electionId"));
+				Long electionId = Long.valueOf(jObj.getString("electionId"));
 				electionLiveResultVOList = electionLiveResultsAnalysisService.getPartiesGainAndLossInfo(electionId);
 			}
 			
@@ -245,7 +245,7 @@ public class ElectionLiveResultsAnalysisAction extends ActionSupport implements 
 			jObj = new JSONObject(getTask());
 			if(jObj.getString("task").equalsIgnoreCase("getCandidatesStatus"))
 			{
-				Long electionId = new Long(jObj.getString("electionId"));
+				Long electionId = Long.valueOf(jObj.getString("electionId"));
 				candidatesList = electionLiveResultsAnalysisService.getConstituencyWiseCandidatesStates(electionId);
 			}
 		} catch (ParseException e) {
@@ -260,7 +260,7 @@ public class ElectionLiveResultsAnalysisAction extends ActionSupport implements 
 		{
 			jObj = new JSONObject(getTask());
 			
-				Long electionId = new Long(jObj.getString("electionId"));
+				Long electionId = Long.valueOf(jObj.getString("electionId"));
 				electionLiveResultVO = electionLiveResultsAnalysisService.getLiveResultsDetails(electionId);
 			
 		} catch (Exception e) {
@@ -274,11 +274,11 @@ public class ElectionLiveResultsAnalysisAction extends ActionSupport implements 
 		{
 			jObj = new JSONObject(getTask());
 			 if(jObj.getString("task").equalsIgnoreCase("getDistrictWiseLiveResults")){
-				Long electionId = new Long(jObj.getString("electionId"));
-				Long districtId = new Long(jObj.getString("districtId"));
+				Long electionId = Long.valueOf(jObj.getString("electionId"));
+				Long districtId = Long.valueOf(jObj.getString("districtId"));
 			    districtWiseResults = electionLiveResultsAnalysisService.getCandidatesInfoDistrictWise(electionId,districtId);
 			 }else if(jObj.getString("task").equalsIgnoreCase("getWonLeadResults")){
-				 Long electionId = new Long(jObj.getString("electionId"));
+				 Long electionId = Long.valueOf(jObj.getString("electionId"));
 				 districtWiseResults = electionLiveResultsAnalysisService.getWonLeadCandidatesInfo(electionId);
 				 
 			 }

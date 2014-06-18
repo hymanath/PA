@@ -42,7 +42,7 @@ public class ConstituencyManagementWithVoterDataAction extends ActionSupport imp
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(ConstituencyManagementAction.class);
+	private static final Logger LOG = Logger.getLogger(ConstituencyManagementAction.class);
 	private CadreManagementService cadreManagementService;
 	private IProblemManagementService problemManagementService;
 	private CrossVotingEstimationService crossVotingEstimationService;
@@ -433,7 +433,7 @@ public class ConstituencyManagementWithVoterDataAction extends ActionSupport imp
 
 	public String execute() throws Exception{
 		
-		log.debug("In execute of Constituency Management Action ********");
+		LOG.debug("In execute of Constituency Management Action ********");
 
 		SelectOptionVO probSource1 = new SelectOptionVO(2L, IConstants.CALL_CENTER);
 		SelectOptionVO probSource2 = new SelectOptionVO(3L, IConstants.USER);
@@ -452,7 +452,7 @@ public class ConstituencyManagementWithVoterDataAction extends ActionSupport imp
 			return ERROR;
 				
 		accessType =user.getAccessType();
-		accessValue= new Long(user.getAccessValue());		
+		accessValue= Long.valueOf(user.getAccessValue());		
 		
 		Long userID = user.getRegistrationID();
 		remainingSms = smsCountrySmsService.getRemainingSmsLeftForUser(userID);
@@ -469,7 +469,7 @@ public class ConstituencyManagementWithVoterDataAction extends ActionSupport imp
 		parliamentConstituencyList = new ArrayList<SelectOptionVO>();
 		if("MLA".equals(accessType))
 		{
-			log.debug("Access Type = MLA ****");
+			LOG.debug("Access Type = MLA ****");
 			List<SelectOptionVO> list = regionServiceData.getStateDistrictByConstituencyID(accessValue);
 			
 			//constituencyList.add(list.get(2));
@@ -481,12 +481,12 @@ public class ConstituencyManagementWithVoterDataAction extends ActionSupport imp
 						
 		}else if("COUNTRY".equals(accessType))
 		{
-			log.debug("Access Type = Country ****");
+			LOG.debug("Access Type = Country ****");
 			stateList = cadreManagementService.findStatesByCountryID(accessValue.toString());
 			stateList.add(0,new SelectOptionVO(0L, "Select State"));
 			
 		}else if("STATE".equals(accessType)){
-			log.debug("Access Type = State ****");
+			LOG.debug("Access Type = State ****");
 			
 			//constituencyList =  regionServiceData.getConstituenciesByStateIDForUser(accessValue);
 			//constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));
@@ -499,7 +499,7 @@ public class ConstituencyManagementWithVoterDataAction extends ActionSupport imp
 			districtList.add(0,new SelectOptionVO(0l,"Select District"));*/
 			
 		}else if("DISTRICT".equals(accessType)){
-			log.debug("Access Type = District ****");			
+			LOG.debug("Access Type = District ****");			
 
 			List<SelectOptionVO> list = regionServiceData.getStateDistrictByDistrictID(accessValue);
 			constituencyList =  regionServiceData.getConstituenciesByDistrictDForUser(accessValue);
@@ -510,7 +510,7 @@ public class ConstituencyManagementWithVoterDataAction extends ActionSupport imp
 			constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));*/
 			
 		} else if("MP".equals(accessType)){
-			log.debug("Access Type = MP ****");
+			LOG.debug("Access Type = MP ****");
 			ConstituencyInfoVO constituencyInfoVO = new ConstituencyInfoVO();
 			//stateList = regionServiceData.getStateByParliamentConstituencyID(accessValue);
 			constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(accessValue);
@@ -518,7 +518,7 @@ public class ConstituencyManagementWithVoterDataAction extends ActionSupport imp
 			//constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));
 			//parliamentConstituencyList.add(new SelectOptionVO(constituencyInfoVO.getConstituencyId(),constituencyInfoVO.getConstituencyName()));		
 				
-			log.debug("constituencyList.size():"+constituencyList.size());		
+			LOG.debug("constituencyList.size():"+constituencyList.size());		
 		}
 		
 		//problemStatus = staticDataService.getAllProblemStatus(); 
@@ -548,7 +548,7 @@ public class ConstituencyManagementWithVoterDataAction extends ActionSupport imp
 			}
 		}
 		
-		Long regionId = new Long(jObj.getString("regionId"));
+		Long regionId = Long.valueOf(jObj.getString("regionId"));
 		String regionName = jObj.getString("regionName");
 		String regionType = jObj.getString("regionType");
 		String selectType = jObj.getString("selectType");
@@ -602,10 +602,10 @@ public class ConstituencyManagementWithVoterDataAction extends ActionSupport imp
 				e.printStackTrace();
 			}
 		}
-		Long regionId = new Long(jObj.getString("regionId"));
+		Long regionId = Long.valueOf(jObj.getString("regionId"));
 		String regionName = jObj.getString("regionName");
 		String regionType = jObj.getString("regionType");
-		Long regionTitleId = new Long(jObj.getString("regionTitleId"));
+		Long regionTitleId = Long.valueOf(jObj.getString("regionTitleId"));
 		String regionTitle = jObj.getString("regionTitle");
 		String areaType = jObj.getString("areaType");
 		
@@ -627,10 +627,10 @@ public class ConstituencyManagementWithVoterDataAction extends ActionSupport imp
 				e.printStackTrace();
 			}
 		}
-		Long regionId = new Long(jObj.getString("regionId"));
+		Long regionId = Long.valueOf(jObj.getString("regionId"));
 		String regionName = jObj.getString("regionName");
 		String regionType = jObj.getString("regionType");
-		Long regionTitleId = new Long(jObj.getString("regionTitleId"));
+		Long regionTitleId = Long.valueOf(jObj.getString("regionTitleId"));
 		String regionTitle = jObj.getString("regionTitle");
 		String areaType = jObj.getString("areaType");
 		
@@ -645,8 +645,8 @@ public class ConstituencyManagementWithVoterDataAction extends ActionSupport imp
 		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
 		Long userId = regVO.getRegistrationID();
 		
-		Long parentRegionId = new Long(request.getParameter("parentRegionId"));
-		Long regionId = new Long(request.getParameter("regionId"));
+		Long parentRegionId = Long.valueOf(request.getParameter("parentRegionId"));
+		Long regionId = Long.valueOf(request.getParameter("regionId"));
 		regionName = request.getParameter("regionName");
 		regionType = request.getParameter("regionType");
 		scopeType = request.getParameter("scopeType");
@@ -698,7 +698,7 @@ public class ConstituencyManagementWithVoterDataAction extends ActionSupport imp
 		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
 		Long userId = regVO.getRegistrationID();
 		
-		Long personId = new Long(request.getParameter("personId"));
+		Long personId = Long.valueOf(request.getParameter("personId"));
 		
 		influencingPersonVO = influencingPeopleService.getMoreResultsForInfluencingPeopleById(personId);
 		
@@ -733,10 +733,10 @@ public class ConstituencyManagementWithVoterDataAction extends ActionSupport imp
 		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
 		Long userId = regVO.getRegistrationID();
 		
-		Long regionId = new Long(request.getParameter("regionId"));
+		Long regionId = Long.valueOf(request.getParameter("regionId"));
 		regionName = request.getParameter("regionName");
 		regionType = request.getParameter("regionType");
-		Long regionTitleId = new Long(request.getParameter("regionTitleId"));
+		Long regionTitleId = Long.valueOf(request.getParameter("regionTitleId"));
 		regionTitle = request.getParameter("regionTitle");
 		
 		localGroupsPeople = influencingPeopleService.getLocalUserGroupDetails(userId,regionId,regionType,regionTitleId,regionTitle);
@@ -760,7 +760,7 @@ public class ConstituencyManagementWithVoterDataAction extends ActionSupport imp
 		Long localUserGroupIdId = jObj.getLong("localUserGroupIdId");
 		
 		Integer rows = influencingPeopleService.deleteLocalUserGroup(localUserGroupIdId);
-		Log.debug("rows:"+rows);
+		LOG.debug("rows:"+rows);
 	}
 	
 }

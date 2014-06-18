@@ -31,7 +31,7 @@ public class DistPapersAction extends ActionSupport implements ServletRequestAwa
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private final static Logger log = Logger.getLogger(DistPapersAction.class);
+	private final static Logger LOG = Logger.getLogger(DistPapersAction.class);
 	
 	private String task = null;
 	JSONObject jObj = null;
@@ -85,29 +85,29 @@ public class DistPapersAction extends ActionSupport implements ServletRequestAwa
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		String accessType = user.getAccessType();
-		Long accessValue = new Long(user.getAccessValue());
+		Long accessValue = Long.valueOf(user.getAccessValue());
 		String param = null;
 		param = getTask();
 		
 		try {
 			jObj = new JSONObject(param);
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		log.debug("Task::"+jObj.getString("task"));
+		LOG.debug("Task::"+jObj.getString("task"));
 		allDistrictsList = new ArrayList<SelectOptionVO>();
 		if(jObj.getString("task").equalsIgnoreCase("distPapersUrl"))
 		{	
 			if("MLA".equals(accessType) || "MP".equals(accessType) || "STATE".equals(accessType) || "DISTRICT".equals(accessType))
 			{	
-				log.debug(accessType);
-				log.debug(accessValue);
+				LOG.debug(accessType);
+				LOG.debug(accessValue);
 				if("DISTRICT".equals(accessType))
 					stateID = epaperService.getStateIdFromDistrictByDistrictId(accessValue);
 				else if("STATE".equals(accessType))
-					stateID = new Long(accessValue);
+					stateID = Long.valueOf(accessValue);
 				else
 				stateID= epaperService.getStateIdFromConstitunecyByAccessValue(accessValue);
 				allDistrictsList = epaperService.getDistrictsForState(stateID);
@@ -123,7 +123,7 @@ public class DistPapersAction extends ActionSupport implements ServletRequestAwa
 		} if(jObj.getString("task").equalsIgnoreCase("getSelectedDistPaper"))
 		{
 			String districtId = jObj.getString("selected");
-			newsPaperURLsVO.setEPapersURLsVO(epaperService.getEPapersForDistrict(new Long(districtId)));			
+			newsPaperURLsVO.setEPapersURLsVO(epaperService.getEPapersForDistrict(Long.valueOf(districtId)));			
 		}
 		
 		return Action.SUCCESS;

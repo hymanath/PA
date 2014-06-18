@@ -137,7 +137,7 @@ public class CommentsControlAdminAction extends ActionSupport implements Servlet
 			
 		for (int i = 0; i < jArray.length(); i++) 
 		{
-			reasonIds.add(new Long(jArray.getString(i)));		
+			reasonIds.add(Long.valueOf(jArray.getString(i)));		
 		}
 		
 		candidateCommentsVO = commentsDataService.scrutinizePostedComments(reasonIds, actionType, fromDate, toDate);

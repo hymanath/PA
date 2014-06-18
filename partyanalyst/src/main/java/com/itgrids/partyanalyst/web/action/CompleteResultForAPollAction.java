@@ -28,7 +28,7 @@ public class CompleteResultForAPollAction extends ActionSupport implements
 		ServletRequestAware, ServletContextAware  {
 
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(GetAllPollsAction.class);
+	private static final Logger LOG = Logger.getLogger(CompleteResultForAPollAction.class);
 	
 	private HttpServletRequest request;
 	private HttpSession session;

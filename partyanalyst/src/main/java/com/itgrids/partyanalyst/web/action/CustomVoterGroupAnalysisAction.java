@@ -39,7 +39,7 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 	private InfluencingPeopleBeanVO influencingPeopleBeanVO;
 	private VoterInfo voterInfo;
 	JSONObject jobj;
-	private static final Logger log = Logger.getLogger(CustomVoterGroupAnalysisAction.class);
+	private static final Logger LOG = Logger.getLogger(CustomVoterGroupAnalysisAction.class);
 	private ICustomVoterGroupAnalysisService customVoterGroupAnalysisService;
 	private VotersDetailsVO votersDetailsVO;
 	private List<VoterCastInfoVO> castInfoVOsList,customGroupWiseCasteVotersList;
@@ -402,7 +402,7 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 		  jobj = new JSONObject(getTask());
 		}catch (Exception e) {
 		  e.printStackTrace();
-		  Log.error("Exception Occured in ajaxHandler() method, Exception - "+e);
+		  LOG.error("Exception Occured in ajaxHandler() method, Exception - "+e);
 		}
 		if(jobj.getString("task").equalsIgnoreCase("getCasteWiseCustomVotersCount"))
 			castInfoVOsList = customVoterGroupAnalysisService.getCasteWiseCustomVotersCount(jobj.getLong("customVoterGroupId"),userId);
@@ -436,7 +436,7 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 			
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception Occured in getAgeWiseCustomVotersInGroup() Method,Exception is- ",e);
+			LOG.error("Exception Occured in getAgeWiseCustomVotersInGroup() Method,Exception is- ",e);
 		}
 		
 		return SUCCESS;
@@ -464,7 +464,7 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 		}
 		catch(Exception e)
 		{
-			Log.error("Exception Occured in getVoterDetailsForCustomGroup() method of CustomVoterGroupAnalysis Action", e);
+			LOG.error("Exception Occured in getVoterDetailsForCustomGroup() method of CustomVoterGroupAnalysis Action", e);
 		}
 		return Action.SUCCESS;
 	}
@@ -504,7 +504,7 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 			    		voterDataVO.setCastePresent(true);
 			    	}
 			    	else{
-			    		categories.add(new Long(id));
+			    		categories.add(Long.valueOf(id));
 			    	}
 			    }
 			} 
@@ -550,7 +550,7 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 			
 		catch(Exception e)
 		{
-			Log.error("Exception Occured in getTotalVotersInfo() method of customVoterGroup analysis Action ", e);
+			LOG.error("Exception Occured in getTotalVotersInfo() method of customVoterGroup analysis Action ", e);
 		}
 		 return Action.SUCCESS;
 	}
@@ -584,7 +584,7 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 		}
 		catch(Exception e)
 		{
-			Log.error("Exception Occured in getInfluencingPeopleCount() of customVoterGroupAnalysis Action", e);
+			LOG.error("Exception Occured in getInfluencingPeopleCount() of customVoterGroupAnalysis Action", e);
 		}
 		 return Action.SUCCESS;
 	}
@@ -641,7 +641,7 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 			
 		}catch(Exception e){
 			e.printStackTrace();
-			Log.error("Exception occured in getCustomvoterFamilyDetails() Method,Exception is - "+ e);
+			LOG.error("Exception occured in getCustomvoterFamilyDetails() Method,Exception is - "+ e);
 		}
 
 		return Action.SUCCESS;
@@ -650,11 +650,11 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 	public String getVotersCountForPartyByCustomGroup(){
 		String param = null;
 		param = getTask();
-		System.out.println("param:"+param);	
+		LOG.info("param:"+param);	
 		
 		try{
 			param = getTask();
-			System.out.println("param:"+param);	
+			LOG.info("param:"+param);	
 			jobj=new JSONObject(param);
 			
 			session = request.getSession();
@@ -701,7 +701,7 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 			}
 			catch(Exception e)
 			{
-				Log.error("Exception Occured in getVoterDetailsForAttribute() method of CustomVoterGroupAnalysis Action", e);
+				LOG.error("Exception Occured in getVoterDetailsForAttribute() method of CustomVoterGroupAnalysis Action", e);
 			}
 			return Action.SUCCESS;
 		
@@ -749,7 +749,7 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 			    		voterDataVO.setCastePresent(true);
 			    	}
 			    	else{
-			    		categories.add(new Long(id));
+			    		categories.add(Long.valueOf(id));
 			    	}
 			    }
 			} 
@@ -823,7 +823,7 @@ public class CustomVoterGroupAnalysisAction extends ActionSupport implements Ser
 		param = getTask();
 		try {
 			jobj = new JSONObject(param);
-			System.out.println(jobj);
+			LOG.info(jobj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

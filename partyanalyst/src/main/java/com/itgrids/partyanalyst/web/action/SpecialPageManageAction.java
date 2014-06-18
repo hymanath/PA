@@ -359,9 +359,9 @@ ServletRequestAware, ServletResponseAware,ServletContextAware{
 		Long specialPageId = jobj.getLong("specialPageId");
 		for(int j=0; j<jorderNo.length(); j++)
 		{
-		orderNo.add(new Long(jorderNo.getString(j).toString()));
+		orderNo.add(Long.valueOf(jorderNo.getString(j).toString()));
 		description.add(jdescription.getString(j).toString());
-		profileDescriptionId.add(new Long(jprofileDescriptionId.getString(j).toString()));
+		profileDescriptionId.add(Long.valueOf(jprofileDescriptionId.getString(j).toString()));
 		}
 		for(int j=0; j<jorderNo.length(); j++)
 		{
@@ -377,7 +377,7 @@ ServletRequestAware, ServletResponseAware,ServletContextAware{
 		return Action.SUCCESS;
 	}
 	
-	public String AjaxHandler()
+	public String ajaxHandler()
 	{
 		try {
 			jobj = new JSONObject(getTask());
@@ -475,7 +475,7 @@ ServletRequestAware, ServletResponseAware,ServletContextAware{
 				String path = null;
 				
 				SpecialPageVO specialPageVO = new SpecialPageVO();
-				Long SpecialPageId = new Long(speciPageId);
+				Long SpecialPageId = Long.valueOf(speciPageId);
 				specialPageVO.setTitle(getTitle());
 				specialPageVO.setDescription(getDescription());
 				specialPageVO.setHeading(getSpecialPageVisibility());
@@ -501,7 +501,7 @@ ServletRequestAware, ServletResponseAware,ServletContextAware{
 						FileUtils.copyFile(userImage, fileToCreate);
 					} catch (IOException e) {
 						e.printStackTrace();
-						Log.error("Exception Occured in createOrUpdateSpecialPageInfo(),Exception, "+e);
+						LOG.error("Exception Occured in createOrUpdateSpecialPageInfo(),Exception, "+e);
 					}
 				}
 							
@@ -510,7 +510,7 @@ ServletRequestAware, ServletResponseAware,ServletContextAware{
 		
 	}catch (Exception e) {
 		e.printStackTrace();
-		Log.error("Exception Occured in createOrUpdateSpecialPageInfo(),Exception, "+e);
+		LOG.error("Exception Occured in createOrUpdateSpecialPageInfo(),Exception, "+e);
 	} 
 		return Action.SUCCESS;
 	}
@@ -560,9 +560,9 @@ ServletRequestAware, ServletResponseAware,ServletContextAware{
 		Long specialPageId = jobj.getLong("specialPageId");
 		for(int j=0; j<jorderNo.length(); j++)
 		{
-		orderNo.add(new Long(jorderNo.getString(j).toString()));
+		orderNo.add(Long.valueOf(jorderNo.getString(j).toString()));
 		description.add(jdescription.getString(j).toString());
-		profileDescriptionId.add(new Long(jprofileDescriptionId.getString(j).toString()));
+		profileDescriptionId.add(Long.valueOf(jprofileDescriptionId.getString(j).toString()));
 		}
 		for(int j=0; j<jorderNo.length(); j++)
 		{

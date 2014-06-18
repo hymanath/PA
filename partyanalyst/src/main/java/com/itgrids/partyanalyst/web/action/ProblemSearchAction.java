@@ -30,7 +30,7 @@ public class ProblemSearchAction extends ActionSupport implements ServletRequest
 	private HttpServletRequest request;
 	private HttpSession session;
 	private ServletContext context;
-	private static final Logger log = Logger.getLogger(ProblemSearchAction.class);
+	private static final Logger LOG = Logger.getLogger(ProblemSearchAction.class);
 	private IProblemManagementService problemManagementService;
 	private JSONObject jObj;
 	private String task;
@@ -123,7 +123,7 @@ public class ProblemSearchAction extends ActionSupport implements ServletRequest
 		return Action.SUCCESS;
 	}
 	
-	public String AjaxHandler()
+	public String ajaxHandler()
 	{
 		try{
 		
@@ -169,7 +169,7 @@ public class ProblemSearchAction extends ActionSupport implements ServletRequest
 		    
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception Occured in AjaxHandler() Method in ProblemSearchAction class , Exception - "+e);
+			LOG.error("Exception Occured in AjaxHandler() Method in ProblemSearchAction class , Exception - "+e);
 		}
 		return Action.SUCCESS;
 	}
@@ -201,7 +201,7 @@ public class ProblemSearchAction extends ActionSupport implements ServletRequest
 			problemBeanVOList = problemManagementService.getProblemDetailsForFreeUser(problemSearchVO,startIndex,maxIndex);
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception Occured in getProblemDetailsForFreeUser() Method , Exception - "+e);
+			LOG.error("Exception Occured in getProblemDetailsForFreeUser() Method , Exception - "+e);
 		}
 		return Action.SUCCESS;
 	}

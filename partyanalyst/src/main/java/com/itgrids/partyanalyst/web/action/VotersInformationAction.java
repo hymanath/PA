@@ -103,7 +103,7 @@ public class VotersInformationAction extends ActionSupport implements ServletReq
 		this.result = result;
 	}
 
-	public String AjaxHandler()
+	public String ajaxHandler()
 	{
 		String param;
 		param = getTask();

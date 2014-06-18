@@ -10,7 +10,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class BoothReportAction extends ActionSupport implements ServletRequestAware {
 
 	private HttpServletRequest request;
-	private static final Logger log = Logger.getLogger(BoothReportAction.class);
+	private static final Logger LOG = Logger.getLogger(BoothReportAction.class);
 
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
@@ -18,14 +18,14 @@ public class BoothReportAction extends ActionSupport implements ServletRequestAw
 	}
 	@Override
 	public String execute() throws Exception {
-		log.debug("BoothReportAction.execute()... started");
+		LOG.debug("BoothReportAction.execute()... started");
 		String strBoothID = request.getParameter("boothID");
 		String strPartNo = request.getParameter("partNo");
-		log.debug("strBoothID:::"+strBoothID);
-		log.debug("strPartNo:::"+strPartNo);
+		LOG.debug("strBoothID:::"+strBoothID);
+		LOG.debug("strPartNo:::"+strPartNo);
 		if(strBoothID==null)
 			return ERROR;
-		Long boothID = new Long(strBoothID);
+		Long boothID = Long.valueOf(strBoothID);
 		
 		return SUCCESS;
 	}

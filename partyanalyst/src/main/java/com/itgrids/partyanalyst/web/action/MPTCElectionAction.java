@@ -108,7 +108,7 @@ public class MPTCElectionAction  extends ActionSupport implements ServletRequest
 	private Long districtID;
 	private String year;
 	private String elecSubtype;
-	private static Logger log = Logger.getLogger(MPTCElectionAction.class);
+	private final static Logger LOG = Logger.getLogger(MPTCElectionAction.class);
 	
 	private File file;
 	public void setServletRequest(HttpServletRequest request) {
@@ -156,16 +156,16 @@ public class MPTCElectionAction  extends ActionSupport implements ServletRequest
 	}
 
 	public String execute() {
-		log.debug("MPTCElectionAction.execute()....Started");
-		log.debug("MPTCElectionAction.execute() countryID:"+countryID);
-		log.debug("MPTCElectionAction.execute() electionType:"+electionType);
-		log.debug("MPTCElectionAction.execute() stateID:"+stateID);
-		log.debug("MPTCElectionAction.execute() districtID:"+districtID);
-		log.debug("MPTCElectionAction.execute() year:"+year);
+		LOG.debug("MPTCElectionAction.execute()....Started");
+		LOG.debug("MPTCElectionAction.execute() countryID:"+countryID);
+		LOG.debug("MPTCElectionAction.execute() electionType:"+electionType);
+		LOG.debug("MPTCElectionAction.execute() stateID:"+stateID);
+		LOG.debug("MPTCElectionAction.execute() districtID:"+districtID);
+		LOG.debug("MPTCElectionAction.execute() year:"+year);
 		if(file==null)
-			log.debug("MPTCElectionAction.execute() File is null null:");
+			LOG.debug("MPTCElectionAction.execute() File is null null:");
 		else
-			log.debug("MPTCElectionAction.execute() File is not null");
+			LOG.debug("MPTCElectionAction.execute() File is not null");
 		
 		if(IConstants.MPTC_ELECTION_TYPE.equalsIgnoreCase(electionType) ||
 				IConstants.ZPTC_ELECTION_TYPE.equalsIgnoreCase(electionType)){
@@ -182,7 +182,7 @@ public class MPTCElectionAction  extends ActionSupport implements ServletRequest
 		if(resultVO.getExceptionEncountered()==null){
 			result = SUCCESS;
 	    } else{
-			log.error(resultVO.getExceptionEncountered().getMessage(),resultVO.getExceptionEncountered());
+			LOG.error(resultVO.getExceptionEncountered().getMessage(),resultVO.getExceptionEncountered());
 		}
 		return result;
 	}
@@ -193,11 +193,11 @@ public class MPTCElectionAction  extends ActionSupport implements ServletRequest
 		return SUCCESS;
 	}
 	public String getDistricts() throws Exception{
-		log.debug("MPTCElectionAction.getDistricts()....Started");
+		LOG.debug("MPTCElectionAction.getDistricts()....Started");
 		String state = request.getParameter("stateID");
-		log.debug("MPTCElectionAction.getDistricts() stateID:"+stateID);
+		LOG.debug("MPTCElectionAction.getDistricts() stateID:"+stateID);
 		
-		districtList = regionServiceDataImp.getDistrictsByStateID(new Long(state));
+		districtList = regionServiceDataImp.getDistrictsByStateID(Long.valueOf(state));
 		districtList.add(0, new SelectOptionVO(0L,"Select District"));
 		return SUCCESS;
 	}

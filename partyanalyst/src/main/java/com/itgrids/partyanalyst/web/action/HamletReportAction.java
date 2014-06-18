@@ -18,7 +18,7 @@ public class HamletReportAction extends ActionSupport implements ServletRequestA
 	private CastWiseElectionVotersVO castWiseElectionVoters;
 	private GenderAgeWiseVotersVO genderAgeWiseVoters;
 	private IDelimitationConstituencyMandalService delimitationConstituencyMandalService;
-	private static final Logger log = Logger.getLogger(RevenueVillageReportAction.class);
+	private static final Logger LOG = Logger.getLogger(RevenueVillageReportAction.class);
 	private String hamletName;
 	
 	/*public HamletBoothVotersListVO getHamletBoothVotersListVO() {
@@ -65,22 +65,22 @@ public class HamletReportAction extends ActionSupport implements ServletRequestA
 	}
 
 	public String execute(){
-		log.debug("HamletReportAction.java");
+		LOG.debug("HamletReportAction.java");
 		String strHamletID = request.getParameter("hamletID");
 		if(strHamletID==null)
 			return ERROR;
-		Long hamletID = new Long(strHamletID);
+		Long hamletID = Long.valueOf(strHamletID);
 		String year  = request.getParameter("year");
-		log.debug("year="+year);
+		LOG.debug("year="+year);
 		String electionType = request.getParameter("electionType");
-		log.debug("electionType="+electionType);
+		LOG.debug("electionType="+electionType);
 		hamletName = request.getParameter("hamletName");
 		castWiseElectionVoters = delimitationConstituencyMandalService.findCastWiseVoterForHamlet(hamletID, year, electionType);
 		
 		genderAgeWiseVoters = delimitationConstituencyMandalService.findAgeWiseVotersForHamlet(hamletID, year, electionType);
 		/*hamletBoothVotersListVO = constituencyManagementService.findAllBoothVotersForHamlet(hamletID, year, electionType);
 		if(hamletBoothVotersListVO.getExceptionEncountered()!=null)
-			log.error("Exception occurred while retrieving Hamlets booth voters:",hamletBoothVotersListVO.getExceptionEncountered());*/
+			LOG.error("Exception occurred while retrieving Hamlets booth voters:",hamletBoothVotersListVO.getExceptionEncountered());*/
 		
 		
 		//hamletsListWithBoothsAndVotersVO = constituencyManagementService.getAllHamletBoothInfoForRevenueVillage(revenueVillageID, year, electionType);
@@ -91,8 +91,8 @@ public class HamletReportAction extends ActionSupport implements ServletRequestA
 		
 		//genderAgeWiseVoters = delimitationConstituencyMandalService.findAgeWiseVotersForRevenueVillage(revenueVillageID, year, electionType);
 		
-		//log.debug("partyElectionVotersHeaderDataVO.header.size="+partyElectionVotersHeaderDataVO.getHeader().size());
-		//log.debug("partyElectionVotersHeaderDataVO.data.size="+partyElectionVotersHeaderDataVO.getData().size());
+		//LOG.debug("partyElectionVotersHeaderDataVO.header.size="+partyElectionVotersHeaderDataVO.getHeader().size());
+		//LOG.debug("partyElectionVotersHeaderDataVO.data.size="+partyElectionVotersHeaderDataVO.getData().size());
 		
 		return SUCCESS;
 	}

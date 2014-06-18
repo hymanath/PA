@@ -113,7 +113,7 @@ public class AssigningCandidatesToVoterAction extends ActionSupport implements S
 		
 		try 
 		{
-			Log.debug("Entered into the ajaxHandler() method");
+			LOG.debug("Entered into the ajaxHandler() method");
 			jObj = new JSONObject(getTask());
 			
 			if(jObj.getString("task").equalsIgnoreCase("getCandidateDetailsBySearchCriteria"))
@@ -143,7 +143,7 @@ public class AssigningCandidatesToVoterAction extends ActionSupport implements S
 		}
 		catch(Exception e)
 		{
-			Log.error("Exception rasied in ajaxHandler() method",e);
+			LOG.error("Exception rasied in ajaxHandler() method",e);
 		}
 		
 		return SUCCESS;

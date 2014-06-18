@@ -24,7 +24,7 @@ public class MuncipalElectionReportAction extends ActionSupport implements
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(MuncipalElectionReportAction.class);
+	private static final Logger LOG = Logger.getLogger(MuncipalElectionReportAction.class);
 	private ServletContext context;
 	private HttpSession session;
 	private HttpServletRequest request;
@@ -154,21 +154,21 @@ public class MuncipalElectionReportAction extends ActionSupport implements
 		if(task != null){
 			try {
 				jObj = new JSONObject(getTask());
-				System.out.println(jObj);
+				LOG.info(jObj);
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}	
-			log.debug("Task::"+jObj.getString("task"));
+			LOG.debug("Task::"+jObj.getString("task"));
 		
 			if(jObj.getString("task").equalsIgnoreCase("getAllCandidates")||jObj.getString("task").equalsIgnoreCase("getWinners")||jObj.getString("task").equalsIgnoreCase("allCandidates")||jObj.getString("task").equalsIgnoreCase("getParties"))
 			{
 				try{		
-					mandalAllElectionDetails = staticDataService.getAllMuncipalElectionDetails(new Long(jObj.getString("muncipalityId")),jObj.getString("candidateDetailsType"),new Long(jObj.getString("partyId")),jObj.getString("electionType"));
+					mandalAllElectionDetails = staticDataService.getAllMuncipalElectionDetails(Long.valueOf(jObj.getString("muncipalityId")),jObj.getString("candidateDetailsType"),Long.valueOf(jObj.getString("partyId")),jObj.getString("electionType"));
 					if(mandalAllElectionDetails.getResultStatus().getResultCode()!=ResultCodeMapper.FAILURE){
 						dataAvailabilityFlag = "Data Not Available.";
 					}
 				}catch(Exception e){
-					log.debug("No data is available...");
+					LOG.debug("No data is available...");
 				}
 			}
 		}

@@ -22,7 +22,7 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class StaticDataAction  extends ActionSupport implements ServletRequestAware{
 
-	private static final Logger log = Logger.getLogger(StaticDataAction.class);
+	private static final Logger LOG = Logger.getLogger(StaticDataAction.class);
 	private HttpServletRequest request;
 	private IRegionServiceData regionServiceDataImp;
 
@@ -165,8 +165,8 @@ public class StaticDataAction  extends ActionSupport implements ServletRequestAw
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_BOOTHWISE_RESULTS_REPORT))
 			return ERROR;
 		Long userID = user.getRegistrationID();
-		Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
-		Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
+		Long electionYear = Long.valueOf(IConstants.PRESENT_ELECTION_YEAR);
+		Long electionTypeId = Long.valueOf(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
 		userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userID,electionYear,electionTypeId);
 		if(userAccessConstituencyList != null && userAccessConstituencyList.size() > 0)
 			constituencyIds = new ArrayList<Long>();
@@ -191,28 +191,28 @@ public class StaticDataAction  extends ActionSupport implements ServletRequestAw
 
 	public String getList() throws Exception{
 		
-		if(log.isDebugEnabled())
-			log.debug("StaticDataAction.java getList() Started123....");
+		if(LOG.isDebugEnabled())
+			LOG.debug("StaticDataAction.java getList() Started123....");
 		String task = request.getParameter("task");
 		JSONObject jsonObject = new JSONObject(task);
 				
 		String type = jsonObject.getString("type");
 		String value = jsonObject.getString("value");
-		if(log.isDebugEnabled()){
-			log.debug("task:"+task);
-			log.debug("type:"+type);
-			log.debug("value:"+value);
+		if(LOG.isDebugEnabled()){
+			LOG.debug("task:"+task);
+			LOG.debug("type:"+type);
+			LOG.debug("value:"+value);
 		}
 		if("STATE".equals(type)){
-			commonList = regionServiceDataImp.getDistrictsByStateIDFromBooth(new Long(value));
+			commonList = regionServiceDataImp.getDistrictsByStateIDFromBooth(Long.valueOf(value));
 		} else if("DISTRICT".equals(type)){
-			commonList = regionServiceDataImp.getConstituenciesByDistrictID(new Long(value));
+			commonList = regionServiceDataImp.getConstituenciesByDistrictID(Long.valueOf(value));
 		} else if("CONSTITUENCY".equals(type)){
-			commonList = regionServiceDataImp.getMandalsByConstituencyID(new Long(value));
-			//commonList = regionServiceDataImp.getMandalsAndMuncipalitiesByConstituencyID(new Long(value));
+			commonList = regionServiceDataImp.getMandalsByConstituencyID(Long.valueOf(value));
+			//commonList = regionServiceDataImp.getMandalsAndMuncipalitiesByConstituencyID(Long.valueOf(value));
 		}
-		if(log.isDebugEnabled())
-			log.debug("commonList.size():::"+commonList.size());
+		if(LOG.isDebugEnabled())
+			LOG.debug("commonList.size():::"+commonList.size());
 		return SUCCESS;
 	}
 	
@@ -231,8 +231,8 @@ public class StaticDataAction  extends ActionSupport implements ServletRequestAw
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_BOOTHWISE_RESULTS_REPORT))
 			return ERROR;
 		Long userID = user.getRegistrationID();
-		Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
-		Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
+		Long electionYear = Long.valueOf(IConstants.PRESENT_ELECTION_YEAR);
+		Long electionTypeId = Long.valueOf(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
 		userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userID,electionYear,electionTypeId);
 		if(userAccessConstituencyList != null && userAccessConstituencyList.size() > 0)
 			constituencyIds = new ArrayList<Long>();

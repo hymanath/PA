@@ -26,7 +26,7 @@ public class CandidateDetailsForElectionDetailsReportAction extends ActionSuppor
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(CandidateDetailsForElectionDetailsReportAction.class);
+	private static final Logger LOG = Logger.getLogger(CandidateDetailsForElectionDetailsReportAction.class);
 	
 	private HttpServletRequest request;
 	private HttpSession session;
@@ -141,10 +141,6 @@ public class CandidateDetailsForElectionDetailsReportAction extends ActionSuppor
 		this.year = year;
 	}
 
-	public static Logger getLog() {
-		return log;
-	}
-
 	public void setTask(String task) {
 		this.task = task;
 	}
@@ -214,7 +210,7 @@ public class CandidateDetailsForElectionDetailsReportAction extends ActionSuppor
 		if(regVO != null && entitlementsHelper.checkForEntitlementToViewReport(regVO,IConstants.ELECTION_RESULT_REPORT_DETAILED_ANALYSIS))
 			hasDeatiledAnalysis = true;
 		
-		Long stateId = new Long(stateID);
+		Long stateId = Long.valueOf(stateID);
 		statesListObj = staticDataService.getAllStatesInCountry();
 		districtsList = staticDataService.getDistricts(stateId);
 		districtsList.add(0, new SelectOptionVO(0l,"Select A District"));
@@ -226,7 +222,7 @@ public class CandidateDetailsForElectionDetailsReportAction extends ActionSuppor
 				partiesList.add(0, new SelectOptionVO(0l,"Select A Party"));
 			}catch(Exception e){
 				partiesList = null;
-				log.debug("Error occured in retriving the data in CandidateDetailsForElectionDetailsReportAction class");
+				LOG.debug("Error occured in retriving the data in CandidateDetailsForElectionDetailsReportAction class");
 			}
 		}
 		else
@@ -236,7 +232,7 @@ public class CandidateDetailsForElectionDetailsReportAction extends ActionSuppor
 				partiesList.add(0, new SelectOptionVO(0l,"Select A Party"));
 			}catch(Exception e){
 				partiesList = null;
-				log.debug("Error occured in retriving the data in CandidateDetailsForElectionDetailsReportAction class");
+				LOG.debug("Error occured in retriving the data in CandidateDetailsForElectionDetailsReportAction class");
 			}
 		} 
 		
@@ -250,8 +246,8 @@ public class CandidateDetailsForElectionDetailsReportAction extends ActionSuppor
 		param = getTask();
 		try {
 			jObj = new JSONObject(param);
-			if(log.isDebugEnabled())
-				log.debug(jObj);			
+			if(LOG.isDebugEnabled())
+				LOG.debug(jObj);			
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -260,8 +256,8 @@ public class CandidateDetailsForElectionDetailsReportAction extends ActionSuppor
 			String resultsCategory =jObj.getString("resultsCategory");
 			String resultsCategoryVal = null, electionLevelVal = null;
 			String electionLevel = jObj.getString("electionLevel");
-			Long locationId = new Long(jObj.getString("locationId"));
-			Long partyId = new Long(jObj.getString("partyId"));
+			Long locationId = Long.valueOf(jObj.getString("locationId"));
+			Long partyId = Long.valueOf(jObj.getString("partyId"));
 			String year = jObj.getString("year");
 			String electionType = jObj.getString("electionType");
 			String stateID = jObj.getString("stateID");
@@ -310,28 +306,28 @@ public class CandidateDetailsForElectionDetailsReportAction extends ActionSuppor
 			{
 				electionLevelVal = electionLevel; 
 			}
-			log.debug(electionType);
-			log.debug(year);
-			log.debug(resultsCategoryVal);
-			log.debug(electionLevelVal);
-			log.debug(locationId);
-			log.debug(partyId);
-			log.debug(stateID);
+			LOG.debug(electionType);
+			LOG.debug(year);
+			LOG.debug(resultsCategoryVal);
+			LOG.debug(electionLevelVal);
+			LOG.debug(locationId);
+			LOG.debug(partyId);
+			LOG.debug(stateID);
 			try{
 				
 			/*	if(electionType.equalsIgnoreCase(IConstants.ZPTC_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.MPTC_ELECTION_TYPE)){
-					candidateDetailsVO = staticDataService.getCandidatesPartyInfoForAnElectionType(electionType,year,resultsCategoryVal,electionLevelVal,locationId,partyId,new Long(stateID),0,0,null,null);					
+					candidateDetailsVO = staticDataService.getCandidatesPartyInfoForAnElectionType(electionType,year,resultsCategoryVal,electionLevelVal,locationId,partyId,Long.valueOf(stateID),0,0,null,null);					
 				}else{*/
-					int startIndex = new Long(request.getParameter("startIndex").toString()).intValue();
+					int startIndex = Long.valueOf(request.getParameter("startIndex").toString()).intValue();
 					
-					int maxResult = new Long(request.getParameter("results").toString()).intValue();
+					int maxResult = Long.valueOf(request.getParameter("results").toString()).intValue();
 					String order = request.getParameter("dir").toString();
 					String columnName = request.getParameter("sort").toString();					
-					candidateDetailsVO = electionAnalyzeService.getCandidatesPartyInfoForAnElectionType(electionType,year,resultsCategoryVal,electionLevelVal,locationId,partyId,new Long(stateID),startIndex,maxResult,order,columnName);
+					candidateDetailsVO = electionAnalyzeService.getCandidatesPartyInfoForAnElectionType(electionType,year,resultsCategoryVal,electionLevelVal,locationId,partyId,Long.valueOf(stateID),startIndex,maxResult,order,columnName);
 			//	}	
 			}catch(Exception e){
 				e.printStackTrace();
-				log.debug("Error occured in retriving the data in CandidateDetailsForElectionDetailsReportAction class");
+				LOG.debug("Error occured in retriving the data in CandidateDetailsForElectionDetailsReportAction class");
 				candidateDetailsVO = null;
 			}
 			}	

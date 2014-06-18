@@ -196,8 +196,8 @@ public class ValidationToolsAction extends ActionSupport implements ServletReque
 		constituencyList = user.getUserAccessVoterConstituencies();
 		if(constituencyList == null || constituencyList.isEmpty()){
 			Long userID = user.getRegistrationID();
-			Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
-			Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
+			Long electionYear = Long.valueOf(IConstants.PRESENT_ELECTION_YEAR);
+			Long electionTypeId = Long.valueOf(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
 			userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userID,electionYear,electionTypeId);
 			constituencyList = votersAnalysisService.getConstituencyList(userAccessConstituencyList);
 			constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
@@ -206,7 +206,7 @@ public class ValidationToolsAction extends ActionSupport implements ServletReque
 		return SUCCESS;
 		
 	}
-	public String AjaxHandler()
+	public String ajaxHandler()
 	{
 		String param;
 		param = getTask();
@@ -270,7 +270,7 @@ public class ValidationToolsAction extends ActionSupport implements ServletReque
 			
 		}catch (Exception e) {
 			e.printStackTrace();
-			Log.error(" Exception Occured in getVoterCasteInfo() method, Exception - "+e);
+			LOG.error(" Exception Occured in getVoterCasteInfo() method, Exception - "+e);
 		}
 	  return Action.SUCCESS;
 	}*/

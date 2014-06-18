@@ -34,7 +34,7 @@ public class ProblemPostControlAction extends ActionSupport implements
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private static final Logger log = Logger.getLogger(ProblemPostControlAction.class);
+	private static final Logger LOG = Logger.getLogger(ProblemPostControlAction.class);
 	
 	private HttpServletRequest request;
 	private HttpServletResponse response;
@@ -222,7 +222,7 @@ public class ProblemPostControlAction extends ActionSupport implements
 		Object regVO = session.getAttribute(IConstants.USER);
 		
 		if(regVO == null){
-			log.error(" No User Log In .....");
+			LOG.error(" No User Log In .....");
 			if("analyze".equalsIgnoreCase(taskType) || "viewResults".equalsIgnoreCase(taskType))
 			{
 				if("CONSTITUENCY".equalsIgnoreCase(redirectLoc))

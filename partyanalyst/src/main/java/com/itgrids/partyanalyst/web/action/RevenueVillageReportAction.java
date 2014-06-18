@@ -17,7 +17,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class RevenueVillageReportAction extends ActionSupport implements ServletRequestAware {
 
 	private HttpServletRequest request;
-	private static final Logger log = Logger.getLogger(RevenueVillageReportAction.class);
+	private static final Logger LOG = Logger.getLogger(RevenueVillageReportAction.class);
 	private IConstituencyManagementService constituencyManagementService;
 	private HamletsListWithBoothsAndVotersVO hamletsListWithBoothsAndVotersVO;
 	private PartyElectionVotersHeaderDataVO partyElectionVotersHeaderDataVO;
@@ -87,19 +87,19 @@ public class RevenueVillageReportAction extends ActionSupport implements Servlet
 
 	public String execute(){
 		
-		log.debug("Request Came from ==== "+request.getRemoteAddr());
-		log.debug("RevenueVillageReportAction.execute() started.....");
+		LOG.debug("Request Came from ==== "+request.getRemoteAddr());
+		LOG.debug("RevenueVillageReportAction.execute() started.....");
 		String revenueVillageStr = request.getParameter("revenueVillageID");
 		revenueVillageName = request.getParameter("revenueVillageName");
 		
 		if(revenueVillageStr==null)
 			return ERROR;
-		Long revenueVillageID = new Long(revenueVillageStr);
-		log.debug("revenueVillageID="+revenueVillageID);
+		Long revenueVillageID = Long.valueOf(revenueVillageStr);
+		LOG.debug("revenueVillageID="+revenueVillageID);
 		String year  = request.getParameter("year");
-		log.debug("year="+year);
+		LOG.debug("year="+year);
 		String electionType = request.getParameter("electionType");
-		log.debug("electionType="+electionType);
+		LOG.debug("electionType="+electionType);
 		hamletsListWithBoothsAndVotersVO = constituencyManagementService.getAllHamletBoothInfoForRevenueVillage(revenueVillageID, year, electionType);
 
 		partyElectionVotersHeaderDataVO = delimitationConstituencyMandalService.getPartyElectionVotersForMandal(revenueVillageID, IConstants.REVENUE_VILLAGE);
@@ -108,9 +108,9 @@ public class RevenueVillageReportAction extends ActionSupport implements Servlet
 		
 		genderAgeWiseVoters = delimitationConstituencyMandalService.findAgeWiseVotersForRevenueVillage(revenueVillageID, year, electionType);
 		
-		log.debug("RevenueVillageReportAction.java");
-		log.debug("partyElectionVotersHeaderDataVO.header.size="+partyElectionVotersHeaderDataVO.getHeader().size());
-		log.debug("partyElectionVotersHeaderDataVO.data.size="+partyElectionVotersHeaderDataVO.getData().size());
+		LOG.debug("RevenueVillageReportAction.java");
+		LOG.debug("partyElectionVotersHeaderDataVO.header.size="+partyElectionVotersHeaderDataVO.getHeader().size());
+		LOG.debug("partyElectionVotersHeaderDataVO.data.size="+partyElectionVotersHeaderDataVO.getData().size());
 		
 		return SUCCESS;
 	}

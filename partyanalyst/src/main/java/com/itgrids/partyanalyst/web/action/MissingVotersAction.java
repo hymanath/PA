@@ -40,7 +40,7 @@ public class MissingVotersAction extends ActionSupport implements ServletRequest
 	private IVotersAnalysisService votersAnalysisService;
 	private String task;
 	JSONObject jObj;
-	private static final Logger log = Logger.getLogger(VotersAnalysisAction.class);
+	private static final Logger LOG = Logger.getLogger(VotersAnalysisAction.class);
 	private List<SelectOptionVO> boothsList;
 	private ResultStatus storeVoter;
 	private List<String> votercardIds;
@@ -132,8 +132,8 @@ public class MissingVotersAction extends ActionSupport implements ServletRequest
 		if(user == null)
 		return ERROR;
 		Long userID = user.getRegistrationID();
-		Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
-		Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
+		Long electionYear = Long.valueOf(IConstants.PRESENT_ELECTION_YEAR);
+		Long electionTypeId = Long.valueOf(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
 		userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userID,electionYear,electionTypeId);
 		constituencyList = votersAnalysisService.getConstituencyList(userAccessConstituencyList);
 		constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
@@ -154,7 +154,7 @@ public class MissingVotersAction extends ActionSupport implements ServletRequest
 			
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception Occured in getRequestMessagesForUser() Method,Exception is- "+e);
+			LOG.error("Exception Occured in getRequestMessagesForUser() Method,Exception is- "+e);
 		}
 		if(jObj.getString("task").equalsIgnoreCase("getBoothsForConstituency"))
 		{

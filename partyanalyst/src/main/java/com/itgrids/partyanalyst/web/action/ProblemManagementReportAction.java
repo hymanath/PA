@@ -42,7 +42,7 @@ public class ProblemManagementReportAction extends ActionSupport implements
 	 * 
 	 */
 	private static final long serialVersionUID = -500281545950721654L;
-	private static final Logger log = Logger.getLogger(ProblemManagementReportAction.class);
+	private static final Logger LOG = Logger.getLogger(ProblemManagementReportAction.class);
 	private IProblemManagementReportService problemManagementReportService;
 	private HttpServletRequest request;
 	private HttpSession session;
@@ -363,7 +363,7 @@ public class ProblemManagementReportAction extends ActionSupport implements
 	}
 	public String execute() throws Exception
 	{	
-		log.debug("In Action");
+		LOG.debug("In Action");
 		session=request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		Long stateId = 0l;
@@ -381,10 +381,10 @@ public class ProblemManagementReportAction extends ActionSupport implements
 		Long userId = user.getRegistrationID();
 		
 		accessType = user.getAccessType();
-		accessValue = new Long(user.getAccessValue());
+		accessValue = Long.valueOf(user.getAccessValue());
 		if("MLA".equals(accessType))
 		{
-			log.debug("Access Type = MLA ****");
+			LOG.debug("Access Type = MLA ****");
 			List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByConstituencyID(accessValue);	
 			//stateList = regionServiceDataImp.getStatesByCountry(1l);			
 			//districtList = regionServiceDataImp.getDistrictsByStateID(list.get(0).getId());  			
@@ -397,14 +397,14 @@ public class ProblemManagementReportAction extends ActionSupport implements
 			setScope(4l);
 		}
 		else if("STATE".equals(accessType)){
-			log.debug("Access Type = State ****");			
+			LOG.debug("Access Type = State ****");			
 			stateId = accessValue;	
 			setScope(2l);
 			setDefaultStateId(stateId);
 			//stateList = regionServiceDataImp.getStatesByCountry(1l);			
 			
 		}else if("DISTRICT".equals(accessType)){
-			log.debug("Access Type = District ****");			
+			LOG.debug("Access Type = District ****");			
 			List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByDistrictID(accessValue);
 			stateId = list.get(0).getId();
 			setScope(3l);
@@ -431,7 +431,7 @@ public class ProblemManagementReportAction extends ActionSupport implements
 		if(task != null){
 			try{
 				jObj = new JSONObject(getTask());
-				log.debug("Result From JSON:"+jObj);
+				LOG.debug("Result From JSON:"+jObj);
 			}catch(Exception e){
 				e.printStackTrace();
 			}
@@ -441,38 +441,38 @@ public class ProblemManagementReportAction extends ActionSupport implements
 				result.add(1,new SelectOptionVO(1l,"Andhra Pradesh"));
 			}
 			if(jObj.getString("task").equals("getDistricts")){
-				result = staticDataService.getDistricts(new Long(jObj.getString("locationId")));
+				result = staticDataService.getDistricts(Long.valueOf(jObj.getString("locationId")));
 				result.add(0,new SelectOptionVO(0l,"Select District"));
 			}
 			else if(jObj.getString("task").equals("getConstituencies")){
-					result = regionServiceDataImp.getConstituenciesByDistrictID(new Long(jObj.getString("locationId")));
+					result = regionServiceDataImp.getConstituenciesByDistrictID(Long.valueOf(jObj.getString("locationId")));
 				result.add(0,new SelectOptionVO(0l,"Select Constituencies"));
 			}
 			else if(jObj.getString("task").equals("getMandals")){
-				result = regionServiceDataImp.getMandalsByConstituencyID(new Long(jObj.getLong("locationId")));
+				result = regionServiceDataImp.getMandalsByConstituencyID(Long.valueOf(jObj.getLong("locationId")));
 				result.add(0,new SelectOptionVO(0l,"Select Mandal"));
 			}	
 			else if(jObj.getString("task").equals("getTowhships")){
-				result = staticDataService.findTownshipsByTehsilID(new Long(jObj.getLong("locationId")));
+				result = staticDataService.findTownshipsByTehsilID(Long.valueOf(jObj.getLong("locationId")));
 				result.add(0,new SelectOptionVO(0l,"Select Mandal"));
 			}
 			else if(jObj.getString("task").equals("getVillages")){
-				result = staticDataService.getHamletsForTownship(new Long(jObj.getLong("locationId")));
+				result = staticDataService.getHamletsForTownship(Long.valueOf(jObj.getLong("locationId")));
 				result.add(0,new SelectOptionVO(0l,"Select Hamlet"));
 			}
 			
 			else if(jObj.getString("task").equals("findTownshipVoters")){
 				taskType =  jObj.getString("taskType");
-				locationId = new Long(jObj.getLong("locationId"));
+				locationId = Long.valueOf(jObj.getLong("locationId"));
 				status = findTaskType(taskType);
-				problemBean = problemManagementReportService.getTehsilProblemsInfo(new Long(locationId), user.getRegistrationID(),status);
+				problemBean = problemManagementReportService.getTehsilProblemsInfo(Long.valueOf(locationId), user.getRegistrationID(),status);
 			}
 			else if(jObj.getString("task").equals("findConstituencyVoters")){
 				taskType =  jObj.getString("taskType");
-				locationId = new Long(jObj.getLong("locationId"));
+				locationId = Long.valueOf(jObj.getLong("locationId"));
 				status = findTaskType(taskType);
 				//Should Be Refactored For Constituency Type Bellow
-				//problemBean = problemManagementReportService.getConstituencyProblemsInfo(new Long(locationId), user.getRegistrationID(),status, IConstants.ASSEMBLY_ELECTION_TYPE);
+				//problemBean = problemManagementReportService.getConstituencyProblemsInfo(Long.valueOf(locationId), user.getRegistrationID(),status, IConstants.ASSEMBLY_ELECTION_TYPE);
 			}else if(jObj.getString("task").equals("getParties")){
 				result = staticDataService.getStaticParties();
 			}else if(jObj.getString("task").equals("getPositions")){
@@ -549,8 +549,8 @@ public class ProblemManagementReportAction extends ActionSupport implements
 		if(task != null){
 			try{
 				jObj = new JSONObject(getTask());
-				System.out.println("Result From JSON:"+jObj);
-				problemlocationId = new Long(jObj.getLong("locationId"));
+				LOG.info("Result From JSON:"+jObj);
+				problemlocationId = Long.valueOf(jObj.getLong("locationId"));
 				problemHistory = problemManagementReportService.getCompleteDetailsForAProblem(problemlocationId);
 			}catch(Exception e){
 				e.printStackTrace();
@@ -563,8 +563,8 @@ public class ProblemManagementReportAction extends ActionSupport implements
 		if(task != null){
 			try{
 				jObj = new JSONObject(getTask());
-				System.out.println("Result From JSON:"+jObj);
-				problemlocationId = new Long(jObj.getLong("locationId"));
+				LOG.info("Result From JSON:"+jObj);
+				problemlocationId = Long.valueOf(jObj.getLong("locationId"));
 				problemBeanVO = problemManagementReportService.getProblemHistoryInfo(problemlocationId);
 			}catch(Exception e){
 				e.printStackTrace();
@@ -575,8 +575,8 @@ public class ProblemManagementReportAction extends ActionSupport implements
 	
 	public String getProblemsCountByStatusBasedOnAccessLevel(){
 		String cPath = request.getContextPath();
-		if(log.isDebugEnabled())
-			log.debug("Entered in to getProblemsCountByStatusBasedOnAccessLevel in problem mgmt report");
+		if(LOG.isDebugEnabled())
+			LOG.debug("Entered in to getProblemsCountByStatusBasedOnAccessLevel in problem mgmt report");
 		if(task != null){
 			try{
 				jObj = new JSONObject(getTask());				
@@ -590,7 +590,7 @@ public class ProblemManagementReportAction extends ActionSupport implements
 		if(user != null)
 		{
 			accessType = user.getAccessType();
-			accessValue = new Long(user.getAccessValue());
+			accessValue = Long.valueOf(user.getAccessValue());
 			locationwiseProblemStatusInfoVO = problemManagementReportService.getProblemsStatusCount(user.getRegistrationID(),accessType, accessValue, 10);
 					
 			List<ProblemsCountByStatus> problemsCountbyStatus = locationwiseProblemStatusInfoVO.getProblemsCountByStatusForChart();
@@ -618,7 +618,7 @@ public class ProblemManagementReportAction extends ActionSupport implements
 	/*public String createProblemsPieChart(Long locationId, int totalProblemsCount, List<ProblemsCountByStatus>problemsStatusList)	
 	{
 		String cPath = request.getContextPath();
-		log.debug("Entered in to createProblemsPieChart method in ProblemManagementReportAction");
+		LOG.debug("Entered in to createProblemsPieChart method in ProblemManagementReportAction");
 		String chartName = ""+locationId+"_"+totalProblemsCount+"piechart"+".png";
 		String chartPath = "";
 		
@@ -649,15 +649,15 @@ public class ProblemManagementReportAction extends ActionSupport implements
 					
 				}			
 		}
-		log.debug("size::::::::::::::::::::::::::::::::::::"+problemsStatusList.size());
+		LOG.debug("size::::::::::::::::::::::::::::::::::::"+problemsStatusList.size());
 		ChartProducer.createProblemsPieChart("", dataset, chartPath , colors,false,250,220);
 		return chartName ;
 	}*/
 	
 	public String problemsByDateBasedOnStatusAction()
 	{
-		if(log.isDebugEnabled())
-			log.debug("Entered in to problemsByDateBasedOnStatusAction in problem mgmt report service");
+		if(LOG.isDebugEnabled())
+			LOG.debug("Entered in to problemsByDateBasedOnStatusAction in problem mgmt report service");
 		
 		session=request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");

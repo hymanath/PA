@@ -31,7 +31,7 @@ import com.opensymphony.xwork2.Action;
 
 public class VoiceSmsAction implements ServletRequestAware{
 	
-	private static final Logger log = Logger.getLogger(VoiceSmsAction.class);
+	private static final Logger LOG = Logger.getLogger(VoiceSmsAction.class);
 
 	private HttpServletRequest request;
 	private File recordedVoice;
@@ -354,7 +354,7 @@ public class VoiceSmsAction implements ServletRequestAware{
 	}
 	public void prepare() throws Exception {
 		
-		System.out.println("prepare method called");
+		LOG.info("prepare method called");
 	}
 	
 	public String uploadAudioFile() throws Exception
@@ -962,7 +962,7 @@ public class VoiceSmsAction implements ServletRequestAware{
 				List<Long> receiverIds = new ArrayList<Long>();
 				for(int i=0;i<jSONArray.length();i++)
 				{
-					receiverIds.add(new Long(jSONArray.get(i).toString().trim()));
+					receiverIds.add(Long.valueOf(jSONArray.get(i).toString().trim()));
 				}
 				
 			 status = voiceSmsService.deleteSmsDetails(receiverIds);
@@ -1056,7 +1056,7 @@ public class VoiceSmsAction implements ServletRequestAware{
 			List<Long> receiverIds = new ArrayList<Long>();
 			for(int i=0;i<jSONArray.length();i++)
 			{
-				receiverIds.add(new Long(jSONArray.get(i).toString().trim()));
+				receiverIds.add(Long.valueOf(jSONArray.get(i).toString().trim()));
 			}
 			strlist= voiceSmsService.getMobileNosForReceiverIds(receiverIds);
 

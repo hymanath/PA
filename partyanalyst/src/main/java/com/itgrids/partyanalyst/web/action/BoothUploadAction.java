@@ -25,7 +25,7 @@ public class BoothUploadAction extends ActionSupport implements ServletRequestAw
 	private HttpServletRequest request; 
 	private IBoothPopulationService boothPopulationService;
 	private List<ConstituencyInfoVO> uploadInfo;
-	private static final Logger log = Logger.getLogger(BoothUploadAction.class);
+	private static final Logger LOG = Logger.getLogger(BoothUploadAction.class);
     private List<SelectOptionVO> publicationDates;
 	public void setFilePath(File filePath) {
 		this.filePath = filePath;
@@ -80,10 +80,10 @@ public class BoothUploadAction extends ActionSupport implements ServletRequestAw
 	public String execute() throws Exception{
 		
 		ResultWithExceptionVO resultVO = boothPopulationService.readExcelAndPopulateBoothData(filePath, electionYear, 
-				new Long(electionScopeId.trim()), Boolean.parseBoolean(isValidate),publicationDateId);
+				Long.valueOf(electionScopeId.trim()), Boolean.parseBoolean(isValidate),publicationDateId);
 		Throwable ex = resultVO.getExceptionEncountered();
 		if(ex!=null){
-			log.error("exception raised while Uploading Booth Data ", ex);
+			LOG.error("exception raised while Uploading Booth Data ", ex);
 			return ERROR;
 		}
 		

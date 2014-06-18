@@ -3,13 +3,11 @@ package com.itgrids.partyanalyst.web.action;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -19,15 +17,14 @@ import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class AgeWiseVoterDetailsAction extends ActionSupport implements
-ServletRequestAware ,ServletContextAware{
+ServletRequestAware{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private ServletContext context;
-	private HttpServletRequest request;
-	private HttpServletResponse responce;
+	private final static Logger LOG = Logger.getLogger(AgeWiseVoterDetailsAction.class);
+	transient private HttpServletRequest request;
 	private HttpSession session;
 	
 	private Long constituencyId;
@@ -70,7 +67,7 @@ ServletRequestAware ,ServletContextAware{
 	private String publicationDate;
 	private String task;
 	private Long lclBodyId;
-	JSONObject jObj;
+	transient private JSONObject jObj;
 	private IUserVoterService userVoterService;
 	
 	private List<SelectOptionVO> resultList;
@@ -80,45 +77,45 @@ ServletRequestAware ,ServletContextAware{
 	public String getCheckAreaType() {
 		return checkAreaType;
 	}
-	public void setCheckAreaType(String checkAreaType) {
+	public void setCheckAreaType(final String checkAreaType) {
 		this.checkAreaType = checkAreaType;
 	}
 	public Long getLclBodyId() {
 		return lclBodyId;
 	}
-	public void setLclBodyId(Long lclBodyId) {
+	public void setLclBodyId(final Long lclBodyId) {
 		this.lclBodyId = lclBodyId;
 	}
 	public IUserVoterService getUserVoterService() {
 		return userVoterService;
 	}
-	public void setUserVoterService(IUserVoterService userVoterService) {
+	public void setUserVoterService(final IUserVoterService userVoterService) {
 		this.userVoterService = userVoterService;
 	}
 	public List<SelectOptionVO> getResultList() {
 		return resultList;
 	}
-	public void setResultList(List<SelectOptionVO> resultList) {
+	public void setResultList(final List<SelectOptionVO> resultList) {
 		this.resultList = resultList;
 	}
 	
 	public HttpSession getSession() {
 		return session;
 	}
-	public void setSession(HttpSession session) {
+	public void setSession(final HttpSession session) {
 		this.session = session;
 	}
 	public Long getContentId() {
 		return contentId;
 	}
-	public void setContentId(Long contentId) {
+	public void setContentId(final Long contentId) {
 		this.contentId = contentId;
 	}
 	public String getBtnName() {
 		return btnName;
 	}
 
-	public void setBtnName(String btnName) {
+	public void setBtnName(final String btnName) {
 		this.btnName = btnName;
 	}
 
@@ -126,7 +123,7 @@ ServletRequestAware ,ServletContextAware{
 		return typeValue;
 	}
 
-	public void setTypeValue(String typeValue) {
+	public void setTypeValue(final String typeValue) {
 		this.typeValue = typeValue;
 	}
 
@@ -134,7 +131,7 @@ ServletRequestAware ,ServletContextAware{
 		return maintype;
 	}
 
-	public void setMaintype(String maintype) {
+	public void setMaintype(final String maintype) {
 		this.maintype = maintype;
 	}
 
@@ -142,7 +139,7 @@ ServletRequestAware ,ServletContextAware{
 		return mainreqid;
 	}
 
-	public void setMainreqid(Long mainreqid) {
+	public void setMainreqid(final Long mainreqid) {
 		this.mainreqid = mainreqid;
 	}
 
@@ -150,7 +147,7 @@ ServletRequestAware ,ServletContextAware{
 		return typeName;
 	}
 
-	public void setTypeName(String typeName) {
+	public void setTypeName(final String typeName) {
 		this.typeName = typeName;
 	}
 
@@ -158,7 +155,7 @@ ServletRequestAware ,ServletContextAware{
 		return resultFor;
 	}
 
-	public void setResultFor(String resultFor) {
+	public void setResultFor(final String resultFor) {
 		this.resultFor = resultFor;
 	}
 
@@ -166,16 +163,11 @@ ServletRequestAware ,ServletContextAware{
 		return queryType;
 	}
 
-	public void setQueryType(String queryType) {
+	public void setQueryType(final String queryType) {
 		this.queryType = queryType;
 	}
 
-
-	public void setServletContext(ServletContext context) {
-		 this.context =context;	
-	}
-
-	public void setServletRequest(HttpServletRequest request) {
+	public void setServletRequest(final HttpServletRequest request) {
 		this.request = request;
 	}
 	
@@ -184,7 +176,7 @@ ServletRequestAware ,ServletContextAware{
 		return constituencyId;
 	}
 
-	public void setConstituencyId(Long constituencyId) {
+	public void setConstituencyId(final Long constituencyId) {
 		this.constituencyId = constituencyId;
 	}
 
@@ -192,7 +184,7 @@ ServletRequestAware ,ServletContextAware{
 		return publicationDateId;
 	}
 
-	public void setPublicationDateId(Long publicationDateId) {
+	public void setPublicationDateId(final Long publicationDateId) {
 		this.publicationDateId = publicationDateId;
 	}
 
@@ -200,7 +192,7 @@ ServletRequestAware ,ServletContextAware{
 		return mandalId;
 	}
 
-	public void setMandalId(Long mandalId) {
+	public void setMandalId(final Long mandalId) {
 		this.mandalId = mandalId;
 	}
 
@@ -208,7 +200,7 @@ ServletRequestAware ,ServletContextAware{
 		return panchayatId;
 	}
 
-	public void setPanchayatId(Long panchayatId) {
+	public void setPanchayatId(final Long panchayatId) {
 		this.panchayatId = panchayatId;
 	}
 
@@ -216,7 +208,7 @@ ServletRequestAware ,ServletContextAware{
 		return buildType;
 	}
 
-	public void setBuildType(String buildType) {
+	public void setBuildType(final String buildType) {
 		this.buildType = buildType;
 	}
 
@@ -224,7 +216,7 @@ ServletRequestAware ,ServletContextAware{
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
@@ -232,7 +224,7 @@ ServletRequestAware ,ServletContextAware{
 		return retrieveType;
 	}
 
-	public void setRetrieveType(String retrieveType) {
+	public void setRetrieveType(final String retrieveType) {
 		this.retrieveType = retrieveType;
 	}
 
@@ -240,7 +232,7 @@ ServletRequestAware ,ServletContextAware{
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(final String type) {
 		this.type = type;
 	}
 
@@ -249,7 +241,7 @@ ServletRequestAware ,ServletContextAware{
 		return startNumber;
 	}
 
-	public void setStartNumber(Long startNumber) {
+	public void setStartNumber(final Long startNumber) {
 		this.startNumber = startNumber;
 	}
 
@@ -258,7 +250,7 @@ ServletRequestAware ,ServletContextAware{
 		return publicationYear;
 	}
 
-	public void setPublicationYear(Long publicationYear) {
+	public void setPublicationYear(final Long publicationYear) {
 		this.publicationYear = publicationYear;
 	}
 
@@ -267,7 +259,7 @@ ServletRequestAware ,ServletContextAware{
 		return categoryId;
 	}
 
-	public void setCategoryId(Long categoryId) {
+	public void setCategoryId(final Long categoryId) {
 		this.categoryId = categoryId;
 	}
 
@@ -275,7 +267,7 @@ ServletRequestAware ,ServletContextAware{
 		return importanceId;
 	}
 
-	public void setImportanceId(Long importanceId) {
+	public void setImportanceId(final Long importanceId) {
 		this.importanceId = importanceId;
 	}
 
@@ -283,7 +275,7 @@ ServletRequestAware ,ServletContextAware{
 		return lastIndex;
 	}
 
-	public void setLastIndex(Long lastIndex) {
+	public void setLastIndex(final Long lastIndex) {
 		this.lastIndex = lastIndex;
 	}
 
@@ -291,7 +283,7 @@ ServletRequestAware ,ServletContextAware{
 		return locationId;
 	}
 
-	public void setLocationId(Long locationId) {
+	public void setLocationId(final Long locationId) {
 		this.locationId = locationId;
 	}
 
@@ -299,7 +291,7 @@ ServletRequestAware ,ServletContextAware{
 		return locationValue;
 	}
 
-	public void setLocationValue(Long locationValue) {
+	public void setLocationValue(final Long locationValue) {
 		this.locationValue = locationValue;
 	}
 
@@ -307,7 +299,7 @@ ServletRequestAware ,ServletContextAware{
 		return publicationId;
 	}
 
-	public void setPublicationId(Long publicationId) {
+	public void setPublicationId(final Long publicationId) {
 		this.publicationId = publicationId;
 	}
 
@@ -315,7 +307,7 @@ ServletRequestAware ,ServletContextAware{
 		return startIndex;
 	}
 
-	public void setStartIndex(Long startIndex) {
+	public void setStartIndex(final Long startIndex) {
 		this.startIndex = startIndex;
 	}
 
@@ -324,7 +316,7 @@ ServletRequestAware ,ServletContextAware{
 		return categoryStr;
 	}
 
-	public void setCategoryStr(String categoryStr) {
+	public void setCategoryStr(final String categoryStr) {
 		this.categoryStr = categoryStr;
 	}
 
@@ -332,7 +324,7 @@ ServletRequestAware ,ServletContextAware{
 		return displayStr;
 	}
 
-	public void setDisplayStr(String displayStr) {
+	public void setDisplayStr(final String displayStr) {
 		this.displayStr = displayStr;
 	}
 
@@ -341,7 +333,7 @@ ServletRequestAware ,ServletContextAware{
 		return count;
 	}
 
-	public void setCount(Long count) {
+	public void setCount(final Long count) {
 		this.count = count;
 	}
 
@@ -350,7 +342,7 @@ ServletRequestAware ,ServletContextAware{
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(final String status) {
 		this.status = status;
 	}
 
@@ -358,7 +350,7 @@ ServletRequestAware ,ServletContextAware{
 		return srcId;
 	}
 
-	public void setSrcId(Long srcId) {
+	public void setSrcId(final Long srcId) {
 		this.srcId = srcId;
 	}
 
@@ -366,7 +358,7 @@ ServletRequestAware ,ServletContextAware{
 		return title;
 	}
 
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
 		this.title = title;
 	}
 
@@ -375,7 +367,7 @@ ServletRequestAware ,ServletContextAware{
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(final Long id) {
 		this.id = id;
 	}
 
@@ -383,25 +375,25 @@ ServletRequestAware ,ServletContextAware{
 		return typename;
 	}
 
-	public void setTypename(String typename) {
+	public void setTypename(final String typename) {
 		this.typename = typename;
 	}
 	public String getPublicationDate() {
 		return publicationDate;
 	}
-	public void setPublicationDate(String publicationDate) {
+	public void setPublicationDate(final String publicationDate) {
 		this.publicationDate = publicationDate;
 	}
 	public String getAttributeIds() {
 		return attributeIds;
 	}
-	public void setAttributeIds(String attributeIds) {
+	public void setAttributeIds(final String attributeIds) {
 		this.attributeIds = attributeIds;
 	}
 	public String execute()
 	{
-		HttpSession session = request.getSession();
-		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+		final HttpSession session = request.getSession();
+		final RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 		if(user == null)
 		{
 			return Action.ERROR;
@@ -416,8 +408,8 @@ ServletRequestAware ,ServletContextAware{
 	
 	public String getWindowForCast()
 	{
-		HttpSession session = request.getSession();
-		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+		final HttpSession session = request.getSession();
+		final RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 		if(user == null)
 		{
 			return Action.ERROR;
@@ -432,29 +424,29 @@ ServletRequestAware ,ServletContextAware{
 	public String getTask() {
 		return task;
 	}
-	public void setTask(String task) {
+	public void setTask(final String task) {
 		this.task = task;
 	}
 	public JSONObject getjObj() {
 		return jObj;
 	}
-	public void setjObj(JSONObject jObj) {
+	public void setjObjfinal (final JSONObject jObj) {
 		this.jObj = jObj;
 	}
 	public String getUserVoterCategoryList()
 	{
 		try{
-			List<Long> userIds = new ArrayList<Long>(0);
+			final List<Long> userIds = new ArrayList<Long>(0);
 			jObj = new JSONObject(getTask());
 			session = request.getSession();
-			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
-			if(regVO == null)
+			final RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			if(regVO == null){
 				return ERROR;
-			Long userId =  regVO.getRegistrationID();
-			userIds.add(userId);
+			}
+			userIds.add(regVO.getRegistrationID());
 			resultList = userVoterService.getUserVoterCategoryList(userIds);
 		}catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Exception rised in getUserVoterCategoryList",e);
 			
 		}
 		return SUCCESS;

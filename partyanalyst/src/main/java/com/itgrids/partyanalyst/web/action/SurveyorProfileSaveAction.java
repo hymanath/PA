@@ -360,7 +360,7 @@ public class SurveyorProfileSaveAction extends ActionSupport implements ServletR
 			tehsilList.add(0,new SelectOptionVO(0l,"Select Mandal"));
 			}
 			if(surveyorPersonalInfoVO.getVillage() != null && surveyorPersonalInfoVO.getTehsil() >0){
-				hamletList = regionServiceDataImp.getHamletsOrWards(new Long(surveyorPersonalInfoVO.getTehsil()), IConstants.PRESENT_YEAR);
+				hamletList = regionServiceDataImp.getHamletsOrWards(Long.valueOf(surveyorPersonalInfoVO.getTehsil()), IConstants.PRESENT_YEAR);
 				hamletList.add(0,new SelectOptionVO(0l,"Select villiage"));
 			}
 		return Action.SUCCESS;
@@ -371,7 +371,7 @@ public class SurveyorProfileSaveAction extends ActionSupport implements ServletR
 		if(surveyorId !=null && surveyorId !="")
 		{
 			surveyorPersonalInfoVO = new SurveyorPersonalInfoVO();
-			surveyorPersonalInfoVO = surveyAnalysisService.getSurveyorInfoBasedOnSurveyId(new Long(surveyorId));
+			surveyorPersonalInfoVO = surveyAnalysisService.getSurveyorInfoBasedOnSurveyId(Long.valueOf(surveyorId));
 			if(surveyorPersonalInfoVO.getDistrict() != null && surveyorPersonalInfoVO.getDistrict() >0){
 				constituencyList = getRegionServiceDataImp().getConstituenciesByDistrictID(surveyorPersonalInfoVO.getDistrict());
 				}
@@ -380,7 +380,7 @@ public class SurveyorProfileSaveAction extends ActionSupport implements ServletR
 			tehsilList.add(0,new SelectOptionVO(0l,"Select Mandal"));
 			}
 			if(surveyorPersonalInfoVO.getVillage() != null){
-				hamletList = regionServiceDataImp.getHamletsOrWards(new Long(surveyorPersonalInfoVO.getTehsil()), IConstants.PRESENT_YEAR);
+				hamletList = regionServiceDataImp.getHamletsOrWards(Long.valueOf(surveyorPersonalInfoVO.getTehsil()), IConstants.PRESENT_YEAR);
 				hamletList.add(0,new SelectOptionVO(0l,"Select villiage"));
 			}
 		}else {
@@ -423,7 +423,7 @@ public class SurveyorProfileSaveAction extends ActionSupport implements ServletR
 		this.request = arg;
 	}
 	
-	public String AjaxHandler()
+	public String ajaxHandler()
 	{
 		String param;
 		param = getTask();

@@ -29,6 +29,7 @@ public class SessionClearingAction extends ActionSupport implements ServletReque
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private static final Logger LOG = Logger.getLogger(SessionClearingAction.class);
 	private HttpServletRequest request;
 	private ServletContext context;
 	private HttpSession session;
@@ -90,13 +91,13 @@ public class SessionClearingAction extends ActionSupport implements ServletReque
 		String accessType = jObj.getString("accessType");
 		String windowTask = jObj.getString("windowTask");
 		
-		System.out.println("=====");
+		LOG.info("=====");
 		
-		System.out.println(module);
-		System.out.println(accessType);
-		System.out.println(accessType);
+		LOG.info(module);
+		LOG.info(accessType);
+		LOG.info(accessType);
 		
-		System.out.println("=====");
+		LOG.info("=====");
 		
 		removeSessionVariablesForAModule(module,accessType,windowTask);
 	}

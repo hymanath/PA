@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 
@@ -15,7 +16,8 @@ public class ConstituencySearchAction extends ActionSupport implements ServletRe
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -1153325140803872628L;
+	private static final Logger LOG = Logger.getLogger(ConstituencySearchAction.class);
 	HttpServletRequest request;
 	HttpServletResponse response;
 	HttpSession session;
@@ -26,10 +28,10 @@ public class ConstituencySearchAction extends ActionSupport implements ServletRe
 	
 	public String execute() {
 			
-		System.out.println("In constituency search results action + execute method");
-		System.out.println("Name = "+getName());
-		System.out.println("Election type = "+getElectionType());
-		System.out.println("District Name = "+getDistrictName());
+		LOG.info("In constituency search results action + execute method");
+		LOG.info("Name = "+getName());
+		LOG.info("Election type = "+getElectionType());
+		LOG.info("District Name = "+getDistrictName());
 		return SUCCESS;
 		
 	}

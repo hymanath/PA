@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
@@ -26,7 +27,7 @@ ServletContextAware, ServletResponseAware, ServletRequestAware{
 	 * 
 	 */
 	private static final long serialVersionUID = -5313524113544783868L;
-	
+	private static final Logger LOG = Logger.getLogger(VillageBoothMapperAction.class);
 	private ServletContext context;
 	HttpServletRequest request;
 	HttpServletResponse response;
@@ -117,13 +118,13 @@ ServletContextAware, ServletResponseAware, ServletRequestAware{
 	public String setDataForVillageBoothRelation(){
 		try {
 			jObj = new JSONObject(getTask());
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		
-		Long districtID = new Long(jObj.getString("districtId"));
-		Long electionYear =  new Long(jObj.getString("electionYear"));
+		Long districtID = Long.valueOf(jObj.getString("districtId"));
+		Long electionYear =  Long.valueOf(jObj.getString("electionYear"));
 		resultStatus = boothMapperService.setDataForVillageBoothRelation(districtID,electionYear);
 		return SUCCESS;
 	}

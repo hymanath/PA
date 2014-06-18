@@ -115,12 +115,12 @@ public class PartyStrengthResultsAction extends ActionSupport implements
 
 
 	public String execute(){
-		String partyName = new String();
+		String partyName = "";
 		partyList = staticDataService.getStaticParties();
 		partyList.add(0,new SelectOptionVO(0l,"All Parties"));
 		
 		for(int i=0;i<partyList.size();i++){
-			if(partyList.get(i).getId().equals(new Long(party)));
+			if(partyList.get(i).getId().equals(Long.valueOf(party)));
 			   partyName = partyList.get(i).getName();
 		}
 		if(party.equalsIgnoreCase("0")){
@@ -129,10 +129,10 @@ public class PartyStrengthResultsAction extends ActionSupport implements
 		}
 		else{
 			partyListWithOutAll = new ArrayList<SelectOptionVO>();
-			partyListWithOutAll.add(new SelectOptionVO(new Long(party),partyName));
+			partyListWithOutAll.add(new SelectOptionVO(Long.valueOf(party),partyName));
 		}
 			
-		//electionInfo = partyStrengthService.getPartiesData(electionType,new Long(state.toString()),new Long(electionYears.toString()),new Long(party.toString()));
+		//electionInfo = partyStrengthService.getPartiesData(electionType,Long.valueOf(state.toString()),Long.valueOf(electionYears.toString()),Long.valueOf(party.toString()));
 		
 		return Action.SUCCESS;
 	}

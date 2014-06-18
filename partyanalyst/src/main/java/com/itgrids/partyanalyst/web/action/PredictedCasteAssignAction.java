@@ -21,7 +21,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class PredictedCasteAssignAction extends ActionSupport implements ServletRequestAware{
 	
 	private static final long serialVersionUID = 7126714305674261144L;
-	private static final Logger log = Logger.getLogger(PredictedCasteAssignAction.class);
+	private static final Logger LOG = Logger.getLogger(PredictedCasteAssignAction.class);
 	
 	private HttpServletRequest request;
 	private ICastePredictionService castePredictionService;
@@ -95,7 +95,7 @@ public class PredictedCasteAssignAction extends ActionSupport implements Servlet
 			
 		}catch(Exception e)
 		{
-			log.error("Exception is - ",e);
+			LOG.error("Exception is - ",e);
 			return Action.SUCCESS;
 		}
 	}
@@ -110,7 +110,7 @@ public class PredictedCasteAssignAction extends ActionSupport implements Servlet
 		}
 		catch(Exception e)
 		{
-			log.error("Exception Occured in getCasteCount() method in PredictedCasteAssignAction ", e);
+			LOG.error("Exception Occured in getCasteCount() method in PredictedCasteAssignAction ", e);
 		}
 
 		return Action.SUCCESS;
@@ -137,7 +137,7 @@ public class PredictedCasteAssignAction extends ActionSupport implements Servlet
 		}
 		catch(Exception e)
 		{
-			log.error("Exception Occured in getCasteCount() method in PredictedCasteAssignAction ", e);
+			LOG.error("Exception Occured in getCasteCount() method in PredictedCasteAssignAction ", e);
 			return resultStatus;
 		}
 

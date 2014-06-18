@@ -62,8 +62,7 @@ public class SaveLocalGroupAction extends ActionSupport implements ServletReques
 		return session;
 	}
 	public void setSession(HttpSession session) {
-		this.session = session;
-		session = request.getSession();
+		this.session = request.getSession();
 	}
 	public String getRegistrationId() {
 		return registrationId;

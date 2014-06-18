@@ -57,7 +57,7 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 	private List<SelectOptionVO> cadresLevel;
 	private List<CadreInfo> cadresLocation;
 	private String deleteStatus;
-	private final static Logger log = Logger.getLogger(CreateEventAction.class);	
+	private final static Logger LOG = Logger.getLogger(CreateEventAction.class);	
     private Long updateEventId;
     private boolean updateEvent;
     private boolean notLogged;
@@ -208,7 +208,7 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 
 	public String execute() throws Exception
 	{
-		log.debug("CreateEventAction.execute()... started");
+		LOG.debug("CreateEventAction.execute()... started");
 		String result = "success1";
 		
 		session = request.getSession();
@@ -225,18 +225,18 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 		
 		try {
 			jObj = new JSONObject(param);
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		log.debug("Task::"+jObj.getString("task"));
+		LOG.debug("Task::"+jObj.getString("task"));
 		if(jObj.getString("task").equalsIgnoreCase("createEvent") || jObj.getString("task").equalsIgnoreCase("updateCreateEvent"))
 		{
 			event = new UserEventVO();
 				
 			if(!jObj.getString("userEventsId").equalsIgnoreCase(""))			
-				event.setUserEventsId(new Long(jObj.getString("userEventsId")));
+				event.setUserEventsId(Long.valueOf(jObj.getString("userEventsId")));
 			
 			event.setUserID(user.getRegistrationID());
 			if(!jObj.getString("eventName").equalsIgnoreCase(""))
@@ -254,14 +254,14 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 			event.setStartDate(sdf.parse(sDate.toString()));
 			event.setEndDate(sdf.parse(eDate.toString()));
 			event.setDescription(jObj.getString("desc"));
-			event.setLocationId(new Long(jObj.getString("locationId")));
+			event.setLocationId(Long.valueOf(jObj.getString("locationId")));
 			event.setLocationType(jObj.getString("locationType"));
 			event.setIsDeleted(jObj.getString("isDeleted"));
 			//String organisers = jObj.getString("organisers");
 			
 			if(!jObj.getString("organizers").equals("null"))
 			{
-				System.out.println("In If Condition --------------------"+jObj.getString("organizers"));
+				LOG.info("In If Condition --------------------"+jObj.getString("organizers"));
 				JSONArray organizers = jObj.getJSONArray("organizers");
 				int orgzSize = organizers.length();
 				
@@ -272,7 +272,7 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 					String cadreName = orgjsonobj.getString("name");
 					
 					SelectOptionVO orgVo = new SelectOptionVO();
-					orgVo.setId(new Long(cadreID));
+					orgVo.setId(Long.valueOf(cadreID));
 					orgVo.setName(cadreName);		
 					organizersList.add(orgVo);
 				}
@@ -291,12 +291,12 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 					
 					Long userEventsPlanId = null;
 					if(!jsonobj.getString("userEventsPlanId").equalsIgnoreCase(""))			
-						userEventsPlanId = new Long(jsonobj.getString("userEventsPlanId"));
+						userEventsPlanId = Long.valueOf(jsonobj.getString("userEventsPlanId"));
 					String actionPlan = jsonobj.getString("action");
 					String actionPlanDate = jsonobj.getString("targetDate");					
 					JSONArray actionOrganisers = jsonobj.getJSONArray("actionPlanOrganizers");
 					
-					System.out.println("actionOrganisers = "+actionOrganisers);
+					LOG.info("actionOrganisers = "+actionOrganisers);
 					if(actionOrganisers.length()>0)
 					{
 						int actionOrgSize = actionOrganisers.length();
@@ -307,7 +307,7 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 							String orgName = actionobj.getString("name");
 							
 							SelectOptionVO orgVO = new SelectOptionVO();
-							orgVO.setId(new Long(orgID));
+							orgVO.setId(Long.valueOf(orgID));
 							orgVO.setName(orgName);	
 							actionOrgList.add(orgVO); 
 						}
@@ -326,20 +326,20 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 		
 			event = userCalendarService.saveUserPlannedEvents(event);
 			if(event.getExceptionEncountered()!=null)
-				log.error(event.getExceptionEncountered().getMessage());
+				LOG.error(event.getExceptionEncountered().getMessage());
 			else
-				log.debug("No Exception when saving UserEvent");
+				LOG.debug("No Exception when saving UserEvent");
 			result = "success1";
 		}
 		else if(jObj.getString("task").equalsIgnoreCase("createImpDateEvent") || jObj.getString("task").equalsIgnoreCase("updateImpDateEvent"))
 		{
-			log.debug("inside if....createImpDateEvent");
+			LOG.debug("inside if....createImpDateEvent");
 			ImportantDatesVO importantDatesVO = new ImportantDatesVO();			
 			
 			if(!jObj.getString("importantDateId").equalsIgnoreCase(""))
 			{
-				System.out.println(" IN If condition------------------"+jObj.getString("importantDateId"));
-				importantDatesVO.setImportantDateId(new Long(jObj.getString("importantDateId")));
+				LOG.info(" IN If condition------------------"+jObj.getString("importantDateId"));
+				importantDatesVO.setImportantDateId(Long.valueOf(jObj.getString("importantDateId")));
 			}
 			
 			importantDatesVO.setEventId(user.getRegistrationID());
@@ -359,9 +359,9 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 			importantDatesVO.setIsDeleted("NO");
 		
 			importantDatesVOs = userCalendarService.saveUserImpDate(importantDatesVO);
-			//System.out.println("Important dates = "+importantDatesVO);
+			//LOG.info("Important dates = "+importantDatesVO);
 			
-			//log.debug("inside if....createImpDateEvent::"+importantDatesVO.getImportantDateId());
+			//LOG.debug("inside if....createImpDateEvent::"+importantDatesVO.getImportantDateId());
 			result = "success2";
 		}
 		else
@@ -370,7 +370,7 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 		}
 		
 		
-		System.out.println("In Create Event Action %%%%%%%%%%%%%%"+importantDatesVOs);
+		LOG.info("In Create Event Action %%%%%%%%%%%%%%"+importantDatesVOs);
 		
 		return result;
 	}
@@ -378,7 +378,7 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 	public String subscribePartyImpDates() throws Exception{
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		String subscribeStatus = user.getSubscribePartyImpDate();
-		String subscribe = new String();
+		String subscribe = "";
 		if("ALL".equalsIgnoreCase(subscribeStatus)){
 			subscribe ="Subscribe Party Imp Dates";
 			subscribeStatus = "NONE";
@@ -407,7 +407,7 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 		
 		try {
 			jObj = new JSONObject(param);
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -419,13 +419,13 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 		if(jObj.getString("taskType").equalsIgnoreCase("impEvent"))
 		{
 			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-			event = userCalendarService.getUserPlannedEvent(new Long(eventId),user.getRegistrationID());
+			event = userCalendarService.getUserPlannedEvent(Long.valueOf(eventId),user.getRegistrationID());
 			result = "userEvent";
 		}
 		else if(jObj.getString("taskType").equalsIgnoreCase("impDate"))
 		{
 			Calendar cal = Calendar.getInstance();
-			cal.set(new Integer(jObj.getString("currentYear")).intValue(), new Integer(jObj.getString("currentMonth")).intValue(),new Integer(jObj.getString("currentDay")).intValue());
+			cal.set(Integer.valueOf(jObj.getString("currentYear")).intValue(), Integer.valueOf(jObj.getString("currentMonth")).intValue(),Integer.valueOf(jObj.getString("currentDay")).intValue());
 			//cal.set(year, month, date);
 			cal.add(Calendar.DAY_OF_MONTH, -1);
 			importantDatesVOs =  userCalendarService.getUserImpDate(Long.parseLong(values[0]), eventType, cal);
@@ -444,7 +444,7 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 		
 		try {
 			jObj = new JSONObject(param);
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -453,7 +453,7 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 		int month = Integer.parseInt(jObj.getString("monthVal"));
 		int year = Integer.parseInt(jObj.getString("yearval"));
 		
-		System.out.println("@@@@@@@@@@@IN getNextMonth method ="+month+" - "+year);
+		LOG.info("@@@@@@@@@@@IN getNextMonth method ="+month+" - "+year);
 		
 		Calendar calendar =Calendar.getInstance();
 		calendar.set(Calendar.DATE, 1);
@@ -467,7 +467,7 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 	
 	public String getCadresForEvent() throws Exception
 	{	
-		System.out.println("IN get cadres method");
+		LOG.info("IN get cadres method");
 		String result = "success1";
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
@@ -476,7 +476,7 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 		
 		try {
 			jObj = new JSONObject(param);
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -488,13 +488,13 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 		
 		if(jObj.getString("cadreLevel").equalsIgnoreCase("locationLevel"))
 		{
-			cadresLevel = userCalendarService.getCadresByRegionType(user.getRegistrationID(), jObj.getString("regionVal"), new Long(jObj.getString("regionSelectVal")));
+			cadresLevel = userCalendarService.getCadresByRegionType(user.getRegistrationID(), jObj.getString("regionVal"), Long.valueOf(jObj.getString("regionSelectVal")));
 			result = "locationLevel";
 		}
 		else if(jObj.getString("cadreLevel").equalsIgnoreCase("cadreLevel"))
 		{
 			
-			cadresLocation = cadreManagementService.getCadresByCadreLevel(jObj.getString("regionVal"), user.getRegistrationID(), isParent, user.getAccessType(), new Long(user.getAccessValue()));
+			cadresLocation = cadreManagementService.getCadresByCadreLevel(jObj.getString("regionVal"), user.getRegistrationID(), isParent, user.getAccessType(), Long.valueOf(user.getAccessValue()));
 			result = "cadreLevel";
 		} 
 		return result;
@@ -502,28 +502,28 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 	
 	public String deleteSelectedEvent() throws Exception
 	{	
-		System.out.println("IN get cadres method ----------- delete select event");
+		LOG.info("IN get cadres method ----------- delete select event");
 		
 		String param = null;
 		param = getTask();
 		
 		try {
 			jObj = new JSONObject(param);
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if(jObj.getString("task").equalsIgnoreCase("deleteEvent"))
 		{			
-			System.out.println("In delete Event date ***********");
-			userCalendarService.deleteUserPlannedEvents( new Long(jObj.getString("userEventsId"))); 
+			LOG.info("In delete Event date ***********");
+			userCalendarService.deleteUserPlannedEvents( Long.valueOf(jObj.getString("userEventsId"))); 
 			this.setDeleteStatus(jObj.getString("userEventsId"));
 		}
 		else if(jObj.getString("task").equalsIgnoreCase("deleteImpDate"))
 		{		
-			System.out.println("In delete IMP date ***********");
-			userCalendarService.deleteUserImpDate( new Long(jObj.getString("importantDateId")));
+			LOG.info("In delete IMP date ***********");
+			userCalendarService.deleteUserImpDate( Long.valueOf(jObj.getString("importantDateId")));
 			this.setDeleteStatus(jObj.getString("importantDateId"));
 		} 
 		
@@ -551,7 +551,7 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 		    updateEvent = true;
 		}
 	 }catch(Exception e){
-		 log.error(e);
+		 LOG.error(e);
 	 }
 	 return SUCCESS;
 	}

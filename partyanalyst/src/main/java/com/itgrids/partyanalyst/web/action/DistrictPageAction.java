@@ -73,7 +73,7 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 	private MandalAllElectionDetailsVO mptcElectionDetails;
 	private MandalAllElectionDetailsVO zptcElectionDetails;
 	private MandalAllElectionDetailsVO candidateTrendzReportVO;
-	private final Logger log = Logger.getLogger(DistrictPageAction.class);
+	private static final Logger LOG = Logger.getLogger(DistrictPageAction.class);
 	private List<CandidateDetailsVO> candidateDetailsVO;	
 	private List<SelectOptionVO> electionYears;
 	private String task = null,electionYear=null,electionType=null;
@@ -448,7 +448,7 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 			}
 		}
 		
-		stateDetails = staticDataService.getStateOfADistrict(new Long(districtId));
+		stateDetails = staticDataService.getStateOfADistrict(Long.valueOf(districtId));
 		constituenciesStatusVO = staticDataService.getConstituenciesWinnerInfo(Long.parseLong(districtId));	
         if(constituenciesStatusVO != null && constituenciesStatusVO.getElectionYear() != null)
 		electionYear = constituenciesStatusVO.getElectionYear();
@@ -459,14 +459,14 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		parliamentCandidateDetailsVo = staticDataService.getAllParliamentWinningCandidatesForADistrict(Long.parseLong(districtId),
 				constituenciesStatusVO.getParliamentConstituencies());
 		if(mandals == null){
-				if(log.isDebugEnabled())
-					log.error("Failed to get Mandal Data");
+				if(LOG.isDebugEnabled())
+					LOG.error("Failed to get Mandal Data");
 				return Action.ERROR;
 		}
 
-		log.debug("District Id = "+districtId+" & District Name = "+districtName);
+		LOG.debug("District Id = "+districtId+" & District Name = "+districtName);
 		
-		navigationVO = staticDataService.findHirarchiForNavigation(new Long(districtId), IConstants.DISTRICT_LEVEL);
+		navigationVO = staticDataService.findHirarchiForNavigation(Long.valueOf(districtId), IConstants.DISTRICT_LEVEL);
 		
 		List<Long> listOfDistricts = new ArrayList<Long>();
 		listOfDistricts.add(Long.parseLong(districtId));
@@ -507,8 +507,8 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		if(task != null){
 			try {
 				jObj = new JSONObject(getTask());	
-				log.debug("Task::"+jObj.getString("task"));					
-				electionYears = staticDataService.getAllElectionYearsForATeshil(new Long(jObj.getString("eleType")));
+				LOG.debug("Task::"+jObj.getString("task"));					
+				electionYears = staticDataService.getAllElectionYearsForATeshil(Long.valueOf(jObj.getString("eleType")));
 			}catch(Exception e){
 				e.printStackTrace();
 			}
@@ -520,8 +520,8 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		if(task != null){
 			try {
 				jObj = new JSONObject(getTask());	
-				log.debug("Task::"+jObj.getString("task"));		
-				partyDetails = staticDataService.getMandalWisePartyReport(jObj.getString("electionType"),jObj.getString("electionYear"),new Long(jObj.getString("districtId")));
+				LOG.debug("Task::"+jObj.getString("task"));		
+				partyDetails = staticDataService.getMandalWisePartyReport(jObj.getString("electionType"),jObj.getString("electionYear"),Long.valueOf(jObj.getString("districtId")));
 			}catch(Exception e){
 				e.printStackTrace();
 			}
@@ -533,8 +533,8 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		if(task != null){
 			try {
 				jObj = new JSONObject(getTask());	
-				log.debug("Task::"+jObj.getString("task"));				
-				localPartyDetails = staticDataService.getAllPartyTrendsForAllMuncipalitiesInADistrict(jObj.getString("electionType"),new Long(jObj.getString("districtId")));
+				LOG.debug("Task::"+jObj.getString("task"));				
+				localPartyDetails = staticDataService.getAllPartyTrendsForAllMuncipalitiesInADistrict(jObj.getString("electionType"),Long.valueOf(jObj.getString("districtId")));
 				if(localPartyDetails.getResultStatus().getResultCode()==ResultCodeMapper.FAILURE){
 					muncipalityErrorMsg = "Data is Not Available.";
 				}else if(localPartyDetails.getResultStatus().getResultCode()==ResultCodeMapper.DATA_NOT_FOUND){
@@ -551,16 +551,16 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		if(task != null){
 			try {
 				jObj = new JSONObject(getTask());
-				System.out.println(jObj);
+				LOG.info(jObj);
 			
-				log.debug("Task::"+jObj.getString("task"));
+				LOG.debug("Task::"+jObj.getString("task"));
 				if(jObj.getString("task").equalsIgnoreCase("getAllCandidates"))
 				{
-					candidateTrendzReportVO = staticDataService.getAllZptcsOrMptcsCandidatesForADistrictForSelectedYear(new Long(jObj.getString("districtId")),jObj.getString("electionYear"),0,jObj.getString("electionType"));						
+					candidateTrendzReportVO = staticDataService.getAllZptcsOrMptcsCandidatesForADistrictForSelectedYear(Long.valueOf(jObj.getString("districtId")),jObj.getString("electionYear"),0,jObj.getString("electionType"));						
 				}
 				else if(jObj.getString("task").equalsIgnoreCase("getWinners"))
 				{
-					candidateTrendzReportVO = staticDataService.getAllZptcOrMptcWinnerForADistrictForLatestYear(new Long(jObj.getString("districtId")),jObj.getString("electionYear"),jObj.getString("electionType"));					
+					candidateTrendzReportVO = staticDataService.getAllZptcOrMptcWinnerForADistrictForLatestYear(Long.valueOf(jObj.getString("districtId")),jObj.getString("electionYear"),jObj.getString("electionType"));					
 				}
 				else if(jObj.getString("task").equalsIgnoreCase("getPartyWise"))
 				{
@@ -568,7 +568,7 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 							jObj.getString("electionYear"),jObj.getLong("partyId"),0,0, jObj.getString("electionType"));						
 				}
 				else if(jObj.getString("task").equalsIgnoreCase("getParties")){
-					candidateTrendzReportVO = staticDataService.getAllPartiesForAParticularElection(new Long(jObj.getString("districtId")),jObj.getString("electionType"),jObj.getString("electionYear"));				
+					candidateTrendzReportVO = staticDataService.getAllPartiesForAParticularElection(Long.valueOf(jObj.getString("districtId")),jObj.getString("electionType"),jObj.getString("electionYear"));				
 				}		
 			}catch (ParseException e) {
 				e.printStackTrace();
@@ -582,7 +582,7 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		String cPath = request.getContextPath();
 		try {
 			jObj = new JSONObject(getTask());
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -596,7 +596,7 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		List<PartyResultVO> allElectionResults = districtWisePartyResultVO.getPartyElectionResultsList();
 		if(allElectionResults.size() == 0)
 			return SUCCESS;
-		String type = new String();
+		String type = "";
 		if(jObj.getString("electionType").equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
 			type = IConstants.ASSEMBLY_ELECTION_TYPE;
 		}else{
@@ -671,45 +671,45 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
         	
         	if(IConstants.TDP.equalsIgnoreCase(graphInfo.getPartyName()))
 			{	colorsSet.add(IConstants.TDP_COLOR);
-				log.debug("TDP ADDED");
+				LOG.debug("TDP ADDED");
 			}
 			
         	else
         		if(IConstants.INC.equalsIgnoreCase(graphInfo.getPartyName()))
         		{	colorsSet.add(IConstants.INC_COLOR);
-        		log.debug("INC ADDEd");
+        		LOG.debug("INC ADDEd");
         		}
             	else
             		if(IConstants.BJP.equalsIgnoreCase(graphInfo.getPartyName()))
             		{	colorsSet.add(IConstants.BJP_COLOR);
-            			log.debug("BJP ADDEd");
+            			LOG.debug("BJP ADDEd");
             		}
                 	else
                 		if(IConstants.PRP.equalsIgnoreCase(graphInfo.getPartyName()))
                     		{colorsSet.add(IConstants.PRP_COLOR);
-                    		log.debug("PRP ADDEd");
+                    		LOG.debug("PRP ADDEd");
                     		}
                     	else
                     		if(IConstants.TRS.equalsIgnoreCase(graphInfo.getPartyName()))
                         		{
                     			colorsSet.add(IConstants.TRS_COLOR);
-                    			log.debug("TRS ADDEd");
+                    			LOG.debug("TRS ADDEd");
                     			}
                     		else
 	                    		if(IConstants.AIMIM.equalsIgnoreCase(graphInfo.getPartyName()))
 	                        		{
 	                    			colorsSet.add(IConstants.AIMIM_COLOR);
-	                    			log.debug("AIMIM ADDEd");
+	                    			LOG.debug("AIMIM ADDEd");
 	                    			}
 	                    		else
 		                    		if(IConstants.CPI.equalsIgnoreCase(graphInfo.getPartyName()))
 		                        		{
 		                    			colorsSet.add(IConstants.CPI_COLOR);
-		                    			log.debug("CPI ADDEd");
+		                    			LOG.debug("CPI ADDEd");
 		                    			}
                     		else
 		                    	{colorsSet.add(null);
-		                    	log.debug("Default ADDEd");
+		                    	LOG.debug("Default ADDEd");
 		                    	}
         	dataset.addValue(new BigDecimal(graphInfo.getPercentage()), graphInfo.getPartyName(),
            			graphInfo.getElectionYear());
@@ -736,12 +736,12 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 	public String getElectionScopesOfDistrict(){
 		try {
 			jObj = new JSONObject(getTask());
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		
-		Long districtID = new Long(jObj.getString("distId"));		
+		Long districtID = Long.valueOf(jObj.getString("distId"));		
 		session = request.getSession();		
 		RegistrationVO regVO = session.getAttribute(IConstants.USER) != null?(RegistrationVO)session.getAttribute(IConstants.USER):null;
 		
@@ -795,7 +795,7 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 	public String getAllElectionsInDistrict(){
 		try {
 			jObj = new JSONObject(getTask());
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -819,7 +819,7 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		String chartPath;
 		try {
 			jObj = new JSONObject(getTask());
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -855,39 +855,39 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
         	dataset.addValue(partyPositionsVO.getFourthPosWon(), partyPositionsVO.getPartyName(),"4th Pos");
         	if(IConstants.INC.equalsIgnoreCase(partyPositionsVO.getPartyName()))
     		{	colorsSet.add(IConstants.INC_COLOR);
-    		log.debug("INC ADDEd");
+    		LOG.debug("INC ADDEd");
     		}
         	else
         		if(IConstants.BJP.equalsIgnoreCase(partyPositionsVO.getPartyName()))
         		{	colorsSet.add(IConstants.BJP_COLOR);
-        		log.debug("BJP ADDEd");
+        		LOG.debug("BJP ADDEd");
         		}
             	else
             		if(IConstants.PRP.equalsIgnoreCase(partyPositionsVO.getPartyName()))
                 		{colorsSet.add(IConstants.PRP_COLOR);
-                		log.debug("PRP ADDEd");
+                		LOG.debug("PRP ADDEd");
                 		}
                 	else
                 		if(IConstants.TRS.equalsIgnoreCase(partyPositionsVO.getPartyName()))
                     		{
                 			colorsSet.add(IConstants.TRS_COLOR);
-                			log.debug("TRS ADDEd");
+                			LOG.debug("TRS ADDEd");
                 			}
                 		else
                     		if(IConstants.AIMIM.equalsIgnoreCase(partyPositionsVO.getPartyName()))
                         		{
                     			colorsSet.add(IConstants.AIMIM_COLOR);
-                    			log.debug("AIMIM ADDEd");
+                    			LOG.debug("AIMIM ADDEd");
                     			}
                     		else
 	                    		if(IConstants.CPI.equalsIgnoreCase(partyPositionsVO.getPartyName()))
 	                        		{
 	                    			colorsSet.add(IConstants.CPI_COLOR);
-	                    			log.debug("CPI ADDEd");
+	                    			LOG.debug("CPI ADDEd");
 	                    			}
                 		else
 	                    	{colorsSet.add(null);
-	                    	log.debug("Default ADDEd");
+	                    	LOG.debug("Default ADDEd");
 	                    	}
         	if(++i == 10)
         		break; 

@@ -22,7 +22,7 @@ ServletRequestAware, ServletContextAware {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(ByeElectionResultsAnalysisAction.class);
+	private static final Logger LOG = Logger.getLogger(ByeElectionResultsAnalysisAction.class);
 	private ServletContext context;
 	HttpServletRequest request;
 	private String task;
@@ -90,7 +90,7 @@ ServletRequestAware, ServletContextAware {
 
 
 	public String execute(){
-		log.debug(" Inside Action ..");
+		LOG.debug(" Inside Action ..");
 		
 		
 		return SUCCESS;
@@ -98,13 +98,13 @@ ServletRequestAware, ServletContextAware {
 	
 	public String ajaxCallHandler()
 	{
-		log.debug(" Inside ajaxCallHandler Action ..");
+		LOG.debug(" Inside ajaxCallHandler Action ..");
 		String param=null;			    
 		param = getTask();
 		
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -113,7 +113,7 @@ ServletRequestAware, ServletContextAware {
 			String percentage = jObj.getString("percentage");
 			String localElections = jObj.getString("localElections");
 			
-			constituencywiseResults = biElectionPageService.getAllTelanganaConstituencieswisePartiesResultsBasedOnExpectedPercentage(percentage,new Boolean(localElections));
+			constituencywiseResults = biElectionPageService.getAllTelanganaConstituencieswisePartiesResultsBasedOnExpectedPercentage(percentage,Boolean.valueOf(localElections));
 		}
 		return SUCCESS;
 	}

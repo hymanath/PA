@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -22,6 +23,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class DashBoardElectionResultsAction extends ActionSupport implements ServletRequestAware {
 	
 	private HttpServletRequest request;
+	private static final Logger LOG = Logger.getLogger(DashBoardElectionResultsAction.class);
 	private String task;
 	private JSONObject jObj;
 	private IDashBoardElectionResultsService dashBoardElectionResultsService;
@@ -230,7 +232,7 @@ public class DashBoardElectionResultsAction extends ActionSupport implements Ser
 			 
 			   for (int i = 0; i < jArray.length(); i++) 
 			   {
-				   locationIds.add(new Long(jArray.get(i).toString()));
+				   locationIds.add(Long.valueOf(jArray.get(i).toString()));
 			   }
 			   
 			matrixReport = dashBoardElectionResultsService.getMatrixReportForElectionResult(electionId,locationIds,scopeId);
@@ -264,7 +266,7 @@ public class DashBoardElectionResultsAction extends ActionSupport implements Ser
 			 
 			   for (int i = 0; i < jArray.length(); i++) 
 			   {
-				   locationIds.add(new Long(jArray.get(i).toString()));
+				   locationIds.add(Long.valueOf(jArray.get(i).toString()));
 			   }
 			   
 			matrixReport = dashBoardElectionResultsService.getWonAndLeadCountPartyWise(electionId,locationIds,scopeId,electionScopeId);
@@ -292,7 +294,7 @@ public class DashBoardElectionResultsAction extends ActionSupport implements Ser
 			 
 			   for (int i = 0; i < jArray.length(); i++) 
 			   {
-				   locationIds.add(new Long(jArray.get(i).toString()));
+				   locationIds.add(Long.valueOf(jArray.get(i).toString()));
 			   }
 			   
 			   subReport = dashBoardElectionResultsService.getSubReportForElectionResultByConstituencyReservationType(electionId,locationIds,scopeId);
@@ -320,7 +322,7 @@ public class DashBoardElectionResultsAction extends ActionSupport implements Ser
 			 
 			   for (int i = 0; i < jArray.length(); i++) 
 			   {
-				   locationIds.add(new Long(jArray.get(i).toString()));
+				   locationIds.add(Long.valueOf(jArray.get(i).toString()));
 			   }
 			   
 			   subReport = dashBoardElectionResultsService.getSubReportForElectionResultByConstituencyType(electionId,locationIds,scopeId);
@@ -342,7 +344,7 @@ public class DashBoardElectionResultsAction extends ActionSupport implements Ser
 			 
 			   for (int i = 0; i < jArray.length(); i++) 
 			   {
-				   locationIds.add(new Long(jArray.get(i).toString()));
+				   locationIds.add(Long.valueOf(jArray.get(i).toString()));
 			   }
 			
 			dashBoardConstiResults  = dashBoardElectionResultsService.getConstituencyWiseLiveResults(electionId,locationIds);
@@ -363,7 +365,7 @@ public class DashBoardElectionResultsAction extends ActionSupport implements Ser
 			 
 			   for (int i = 0; i < jArray.length(); i++) 
 			   { 
-				   locationIds.add(new Long(jArray.get(i).toString()));
+				   locationIds.add(Long.valueOf(jArray.get(i).toString()));
 			   }
 			
 			   partiesList  = dashBoardElectionResultsService.getPartiesInConsituenciesOfElection(electionId,locationIds);
@@ -384,7 +386,7 @@ public class DashBoardElectionResultsAction extends ActionSupport implements Ser
 			 
 			   for (int i = 0; i < jArray.length(); i++) 
 			   { 
-				   locationIds.add(new Long(jArray.get(i).toString()));
+				   locationIds.add(Long.valueOf(jArray.get(i).toString()));
 			   }
 			   
 			   JSONArray jArrayPrty = jObj.getJSONArray("partyIds");
@@ -392,7 +394,7 @@ public class DashBoardElectionResultsAction extends ActionSupport implements Ser
 				 
 				   for (int i = 0; i < jArrayPrty.length(); i++) 
 				   { 
-					   partyIds.add(new Long(jArrayPrty.get(i).toString()));
+					   partyIds.add(Long.valueOf(jArrayPrty.get(i).toString()));
 				   }
 			
 			   constiList  = dashBoardElectionResultsService.partysVotesShareInConstituenciesOfElection(electionId,locationIds,partyIds);
@@ -421,7 +423,7 @@ public class DashBoardElectionResultsAction extends ActionSupport implements Ser
 			 
 			   for (int i = 0; i < jArray.length(); i++) 
 			   {
-				   locationIds.add(new Long(jArray.get(i).toString()));
+				   locationIds.add(Long.valueOf(jArray.get(i).toString()));
 			   }
 			   
 			   partyWiseCountDetails = dashBoardElectionResultsService.getPartyWiseWinningSeatsCount(
@@ -450,7 +452,7 @@ public class DashBoardElectionResultsAction extends ActionSupport implements Ser
 			List<Long> locationIds = new ArrayList<Long>();
 			for(int i=0;i<jArray.length();i++)
 			{
-				locationIds.add(new Long(jArray.get(i).toString()));	
+				locationIds.add(Long.valueOf(jArray.get(i).toString()));	
 			}
 			 
 			  partyWiseCountDetails = dashBoardElectionResultsService.getPartyWiseWinningSeatsPercentage(
@@ -484,7 +486,7 @@ public class DashBoardElectionResultsAction extends ActionSupport implements Ser
 			 
 			   for (int i = 0; i < jArray.length(); i++) 
 			   {
-				   locationIds.add(new Long(jArray.get(i).toString()));
+				   locationIds.add(Long.valueOf(jArray.get(i).toString()));
 			   }
 			   
 			   genericVO = dashBoardElectionResultsService.getparticipatedPartiesInLocation(electionId,locationIds,electionScopeId,scopeId);
@@ -514,7 +516,7 @@ public class DashBoardElectionResultsAction extends ActionSupport implements Ser
 			 
 			   for (int i = 0; i < jArray.length(); i++) 
 			   {
-				   locationIds.add(new Long(jArray.get(i).toString()));
+				   locationIds.add(Long.valueOf(jArray.get(i).toString()));
 			   }
 			   
 			   genericVO = dashBoardElectionResultsService.getReservedConstiList(electionId,locationIds,electionScopeId,scopeId);
@@ -622,7 +624,7 @@ public class DashBoardElectionResultsAction extends ActionSupport implements Ser
 			 
 			   for (int i = 0; i < jArray.length(); i++) 
 			   {
-				   surveyIds.add(new Long(jArray.get(i).toString()));
+				   surveyIds.add(Long.valueOf(jArray.get(i).toString()));
 			   }
 			   
 			   resultVO = dashBoardElectionResultsService.getPartyWiseCountDetailsByConstituencyIdAndSurveyIds(constituencyId,surveyIds,electionId);

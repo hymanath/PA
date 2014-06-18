@@ -85,8 +85,6 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
     private List<String> userRoles;
    // JSONObject jObj = null;
     private String resultForAjax;
-    private String SUCCESS = "success";
-    private String FAILURE = "failure";
     private ResultStatus resultStatus;
     private String status;
     
@@ -284,7 +282,7 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 		this.constituencyName = constituencyName;
 	}
 
-	private static final Logger log = Logger.getLogger(LoginAction.class);
+	private static final Logger LOG = Logger.getLogger(LoginAction.class);
 	
 	public String getSrc() {
 		return src;
@@ -552,13 +550,13 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 	}
 	
      private String finalResultString() {
-    	System.out.print("URL"+url);
+    	LOG.info("URL"+url);
     	if(userRoles.contains("MAHANADU")){
     		return "mahanadu";
     	}
     	if(src != null && !"null".equalsIgnoreCase(src))
     	{
-    		log.debug(src);
+    		LOG.debug(src);
  			return src;
     	}
  		else if(url != null && url.length() > 0 && url.contains(".action") && !url.contains("loginAction")){
@@ -616,7 +614,7 @@ public String saveUserSessionDetails(String status)
 		loginService.saveUserSessionDetails(userTrackingVO);
 		return SUCCESS;
 	}catch (Exception e) {
-		log.error("Exception Occured in saveUserSessionDetails() Method, Exception is - "+e);
+		LOG.error("Exception Occured in saveUserSessionDetails() Method, Exception is - "+e);
 		return IWebConstants.FAILURE;
 	}
 }
@@ -628,7 +626,7 @@ public String ajaxCallForLoginPopup(){
 	try {
 		 resultStatus = new ResultStatus();
 		//jObj = new JSONObject(param);
-		//System.out.println(jObj);
+		//LOG.info(jObj);
 		 resultStatus.setHost(IConstants.DEPLOYED_HOST);
 		if(getTask().equalsIgnoreCase("validateUserForLogin"))
 		{
@@ -645,7 +643,7 @@ public String ajaxCallForLoginPopup(){
 				session.setAttribute("loginStatus", "in");
 				//addActionError("Invalid username or password! Please try again!");
 				session.setAttribute("checkedTypeValue", userType);
-				resultForAjax=FAILURE;
+				resultForAjax="failure";
 				resultStatus.setResultCode(1);
 				return Action.SUCCESS;
 			}	

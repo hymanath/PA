@@ -34,7 +34,7 @@ public class SetUserRestrictionAction  extends ActionSupport implements ServletR
 	
 	private IUserAccessRegionService userAccessRegionService;
 	
-	private List<UserDetailsInfoVO> IpList;
+	private List<UserDetailsInfoVO> ipList;
 	
 	public HttpSession getSession() {
 		return session;
@@ -100,10 +100,10 @@ public class SetUserRestrictionAction  extends ActionSupport implements ServletR
 	}
 	
 	public List<UserDetailsInfoVO> getIpList() {
-		return IpList;
+		return ipList;
 	}
 	public void setIpList(List<UserDetailsInfoVO> ipList) {
-		IpList = ipList;
+		this.ipList = ipList;
 	}
 	public String execute() throws Exception
 	{
@@ -144,7 +144,7 @@ public class SetUserRestrictionAction  extends ActionSupport implements ServletR
 			for(int i= 0 ;i<userAccessRegionId.length();i++)
 			{
 				userDetailsInfoVO = new UserDetailsInfoVO();
-				userDetailsInfoVO.setUserAccessRegionId(new Long(userAccessRegionId.get(i).toString()));
+				userDetailsInfoVO.setUserAccessRegionId(Long.valueOf(userAccessRegionId.get(i).toString()));
 				list.add(userDetailsInfoVO);
 			}
 			resultStatus = userAccessRegionService.deleteUserIpAddress(list);	
@@ -166,7 +166,7 @@ public class SetUserRestrictionAction  extends ActionSupport implements ServletR
 		
 		 if(jObj.getString("task").equalsIgnoreCase("getAllIpAddressForUser"))
 		{
-			IpList = userAccessRegionService.getAllIpAddressForUser(jObj.getLong("userId"));
+			ipList = userAccessRegionService.getAllIpAddressForUser(jObj.getLong("userId"));
 		}
 		
 		

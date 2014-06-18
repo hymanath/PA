@@ -25,7 +25,7 @@ public class SendSMSAction extends ActionSupport implements ServletRequestAware 
 	private HttpServletRequest request;
 	private String task = null;
 	JSONObject jObj = null;
-	private static final Logger log = Logger.getLogger(SendSMSAction.class);
+	private static final Logger LOG = Logger.getLogger(SendSMSAction.class);
 	private ISmsService smsCountrySmsService;
 	private Long remainingSms;
 	private ResultStatus resultStatus;
@@ -95,7 +95,7 @@ public class SendSMSAction extends ActionSupport implements ServletRequestAware 
 
 	public String execute() throws Exception{
 			
-			log.debug("In execute of SendSMS Action");
+		LOG.debug("In execute of SendSMS Action");
 			String message = jObj.getString("message");
 			JSONArray cellNumbers = jObj.getJSONArray("numbers");
 			String smsMsgs[] = new String[cellNumbers.length()];

@@ -49,7 +49,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger
+	private static final Logger LOG = Logger
 			.getLogger(ElectionDetailsReportAction.class);
 	private HttpServletRequest request;
 	private String task = null;
@@ -219,10 +219,6 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 		return serialVersionUID;
 	}
 
-	public static Logger getLog() {
-		return log;
-	}
-
 	public JSONObject getJObj() {
 		return jObj;
 	}
@@ -355,15 +351,14 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 				 || electionType.equalsIgnoreCase("Greater Municipal Corp"))) {
 			try {
 				electionYears = staticDataService.getElectionYearsBasedOnStateIdAndElecTypeId(
-						 new Long(stateID) ,electionTypeId);
+						 Long.valueOf(stateID) ,electionTypeId);
 				electionYears.add(0, new SelectOptionVO(0l, "Select Year"));
-				partiesList = partyStrengthService.getAllPartiesData(new Long(stateID));
+				partiesList = partyStrengthService.getAllPartiesData(Long.valueOf(stateID));
 				partiesList.add(0, new SelectOptionVO(0l, "Select A Party"));
 			} catch (Exception e) {
 				partiesList = null;
 				electionYears = null;
-				log
-						.debug("Error occured in retriving the data in ElectionDetailsReportAction ");
+				LOG.debug("Error occured in retriving the data in ElectionDetailsReportAction ");
 			}
 		} else if (electionType != null && electionType.equals(IConstants.ZPTC)
 				|| electionType.equals(IConstants.MPTC)) {
@@ -379,17 +374,16 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 			} catch (Exception e) {
 				partiesList = null;
 				electionYears = null;
-				log
-						.debug("Error occured in retriving the data in ElectionDetailsReportAction ");
+				LOG.debug("Error occured in retriving the data in ElectionDetailsReportAction ");
 			}
 		}
 		request.setAttribute("host", IConstants.DEPLOYED_HOST);
 		
 		try{
 		  if(electionTypeId != null && electionTypeId.longValue() == 1 || electionTypeId.longValue() == 2)
-		    wonCandidateResults = electionReportService.getAllWonCandidates(new Long(electionId),electionTypeId);
+		    wonCandidateResults = electionReportService.getAllWonCandidates(Long.valueOf(electionId),electionTypeId);
 		}catch(Exception e){
-			log.error("Exception occured in getting winning candidates ",e);
+			LOG.error("Exception occured in getting winning candidates ",e);
 		}
 		return Action.SUCCESS;
 	}
@@ -400,8 +394,8 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 		param = getTask();
 		try {
 			jObj = new JSONObject(param);
-			if (log.isDebugEnabled())
-				log.debug(jObj);
+			if (LOG.isDebugEnabled())
+				LOG.debug(jObj);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -415,7 +409,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 		{
 			session = request.getSession();
 			electionCompleteDetailsVO = new ElectionResultsReportVO();
-			Long stateId = new Long(jObj.getString("stateID"));
+			Long stateId = Long.valueOf(jObj.getString("stateID"));
 			String electionType = jObj.getString("electionType");
 			String year = jObj.getString("year");
 			Long electionId = jObj.getLong("electionId");
@@ -508,7 +502,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 			chartName = alliancePartiesChartName;
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			log.debug("Exception Raised :" + ex);
+			LOG.debug("Exception Raised :" + ex);
 		}
 		return chartName;
 	}
@@ -538,8 +532,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 		        alliancePartiesChartPath = IWebConstants.CHART_URL_IN_SERVER + alliancePartiesChartName;
 			CategoryDataset categoryDataset = createDataSetForPartyDistrictwiseResults(
 					alliancParties.getPartiesInAlliance(), colors);
-			log
-					.debug("createLineChartForAlliancPartiesForDistrictLevel Colors::"
+			LOG.debug("createLineChartForAlliancPartiesForDistrictLevel Colors::"
 							+ colors.size());
 			ChartProducer.createLineChart("", "", "Seats", categoryDataset,
 					alliancePartiesChartPath, 300, 800, colors, true);
@@ -550,7 +543,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 			chartName = alliancePartiesChartName;
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			log.debug("Exception Raised :" + ex);
+			LOG.debug("Exception Raised :" + ex);
 		}
 		return chartName;
 	}
@@ -582,8 +575,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 
 			CategoryDataset categoryDataset = createDataSetForPartyDistrictwiseResults(
 					allPartiesResults, colors);
-			log
-					.debug("createLineChartForPartiesWithDistrictLevelResults Colors::"
+			LOG.debug("createLineChartForPartiesWithDistrictLevelResults Colors::"
 							+ colors.size());
 			ChartProducer.createLineChart(title, "", "Votes Percentage",
 					categoryDataset, partyDistrictResultsChartPath, height,
@@ -596,7 +588,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 			chartName = partyDistrictResultsChartName;
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			log.debug("Exception Raised :" + ex);
+			LOG.debug("Exception Raised :" + ex);
 		}
 		return chartName;
 	}
@@ -607,7 +599,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 	public String createLineChartForStateLevelResults(
 			List<PartyPositionsVO> allPartiesResults, String chartType,
 			String title) {
-		log.debug("in create line graph method");
+		LOG.debug("in create line graph method");
 		String chartName = null;
 		String cPath = request.getContextPath();
 		String allPartiesChartPath;
@@ -628,7 +620,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 					createDataSetForAlliancPartyOverallResults(
 							allPartiesResults, "LineChart", colors),
 					allPartiesChartPath, 300, 800, colors, true);
-			log.debug("Line Chart Colors ::::::::::::::::::::::::::::::::::::"
+			LOG.debug("Line Chart Colors ::::::::::::::::::::::::::::::::::::"
 					+ colors.size());
 			request.setAttribute("allPartiesChartName", allPartiesChartName);
 			session.setAttribute("allPartiesChartName", allPartiesChartName);
@@ -636,7 +628,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			log.debug("Exception Raised :" + ex);
+			LOG.debug("Exception Raised :" + ex);
 		}
 
 		return chartName;
@@ -687,7 +679,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 	private CategoryDataset createDataSetForPartyDistrictwiseResults(
 			List<DistrictWisePartyPositionsVO> allPartiesResults,
 			List<Color> colors) {
-		log.debug("in  createDataSetForPartyDistrictwiseResults");
+		LOG.debug("in  createDataSetForPartyDistrictwiseResults");
 		int i = 0;
 
 		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
@@ -700,7 +692,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 						&& !parties.getPartyName().equals("CPM")
 						&& !parties.getPartyName().equals("BJP")
 						&& !parties.getPartyName().equals("PRP")) {
-					log.debug("In Continue");
+					LOG.debug("In Continue");
 					i++;
 					continue;
 				}
@@ -723,7 +715,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 	private CategoryDataset createDataSetForAlliancPartyOverallResults(
 			List<PartyPositionsVO> alliancPartiesResults, String chartType,
 			List<Color> colors) {
-		log.debug("createDataSetForAlliancPartyOverallResults");
+		LOG.debug("createDataSetForAlliancPartyOverallResults");
 		final String series1 = "Seats Won";
 		final String series2 = "2nd Pos";
 		final String series3 = "3rd Pos";
@@ -738,48 +730,48 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 					continue;
 				if (IConstants.TDP.equalsIgnoreCase(parties.getPartyName())) {
 					colors.add(IConstants.TDP_COLOR);
-					log.debug("TDP ADDEd");
+					LOG.debug("TDP ADDEd");
 				}
 
 				else if (IConstants.INC
 						.equalsIgnoreCase(parties.getPartyName())) {
 					colors.add(IConstants.INC_COLOR);
-					log.debug("INC ADDEd");
+					LOG.debug("INC ADDEd");
 				} else if (IConstants.BJP.equalsIgnoreCase(parties
 						.getPartyName())) {
 					colors.add(IConstants.BJP_COLOR);
-					log.debug("BJP ADDEd");
+					LOG.debug("BJP ADDEd");
 				} else if (IConstants.PRP.equalsIgnoreCase(parties
 						.getPartyName())) {
 					colors.add(IConstants.PRP_COLOR);
-					log.debug("PRP ADDEd");
+					LOG.debug("PRP ADDEd");
 				} else if (IConstants.TRS.equalsIgnoreCase(parties
 						.getPartyName())) {
 					colors.add(IConstants.TRS_COLOR);
-					log.debug("TRS ADDEd");
+					LOG.debug("TRS ADDEd");
 				} else if (IConstants.AIMIM.equalsIgnoreCase(parties
 						.getPartyName())) {
 					colors.add(IConstants.AIMIM_COLOR);
-					log.debug("AIMIM ADDEd");
+					LOG.debug("AIMIM ADDEd");
 				} else if (IConstants.CPI.equalsIgnoreCase(parties
 						.getPartyName())) {
 					colors.add(IConstants.CPI_COLOR);
-					log.debug("CPI ADDEd");
+					LOG.debug("CPI ADDEd");
 				} else {
 					colors.add(null);
-					log.debug("Default ADDEd");
+					LOG.debug("Default ADDEd");
 				}
 			}
 
-			dataset.addValue(new Long(parties.getTotalSeatsWon()), category,
+			dataset.addValue(Long.valueOf(parties.getTotalSeatsWon()), category,
 					series1);
-			dataset.addValue(new Long(parties.getSecondPosWon()), category,
+			dataset.addValue(Long.valueOf(parties.getSecondPosWon()), category,
 					series2);
-			dataset.addValue(new Long(parties.getThirdPosWon()), category,
+			dataset.addValue(Long.valueOf(parties.getThirdPosWon()), category,
 					series3);
-			dataset.addValue(new Long(parties.getFourthPosWon()), category,
+			dataset.addValue(Long.valueOf(parties.getFourthPosWon()), category,
 					series4);
-			dataset.addValue(new Long(parties.getNthPosWon()), category,
+			dataset.addValue(Long.valueOf(parties.getNthPosWon()), category,
 					series5);
 
 		}

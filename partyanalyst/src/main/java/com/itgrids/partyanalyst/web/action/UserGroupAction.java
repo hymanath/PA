@@ -48,7 +48,7 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 	private List<SelectOptionVO> myGroupsListboxOptions;
 	private UserGroupBasicDetails userGroupBasicDetails;
 	private UserGroupMembersVO userGroupMembersVO = null;
-	private static final Logger log = Logger.getLogger(UserGroupAction.class);
+	private static final Logger LOG = Logger.getLogger(UserGroupAction.class);
 	private UserGroupDetailsVO userGroupDetailsVO;
 	private Long remainingSms;
 	private ISmsService smsCountrySmsService;
@@ -186,8 +186,8 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 	{	
 		staticGroupsListboxOptions = userGroupService.getAllStaticGroupNames();
 		staticGroupsListboxOptions.add(0, new SelectOptionVO(0l,"Select System Group"));
-		if(log.isDebugEnabled()){
-			log.debug("Size: " + staticGroupsListboxOptions);
+		if(LOG.isDebugEnabled()){
+			LOG.debug("Size: " + staticGroupsListboxOptions);
 		}		
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
@@ -219,7 +219,7 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 		
 		try {
 			jObj = new JSONObject(param);
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -229,8 +229,8 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 			myGroupsListboxOptions = userGroupService.getAllMyGroupsCreatedByUser(user.getRegistrationID());
 			myGroupsListboxOptions.add(0, new SelectOptionVO(0l,"Select A Group"));
 			userGroupsVO.setMyGroupsListboxOptions(myGroupsListboxOptions);
-			if(log.isDebugEnabled()){
-				log.debug("Size: " + myGroupsListboxOptions);
+			if(LOG.isDebugEnabled()){
+				LOG.debug("Size: " + myGroupsListboxOptions);
 			}
 		}
 		if(jObj.getString("task").equalsIgnoreCase("subGrpsCountInSystemGrpsForUser"))
@@ -277,21 +277,21 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 				userGroupDetailsVO.setStaticGroupId(null);
 			} else if(!staticGroupId.equals("null"))
 			{
-				userGroupDetailsVO.setStaticGroupId(new Long(staticGroupId));	
+				userGroupDetailsVO.setStaticGroupId(Long.valueOf(staticGroupId));	
 			}
 			if(parentGroupId.equals("null"))
 			{
 				userGroupDetailsVO.setParentGroupId(null);
 			} else if(!parentGroupId.equals("null"))
 			{
-				userGroupDetailsVO.setParentGroupId(new Long(parentGroupId));	
+				userGroupDetailsVO.setParentGroupId(Long.valueOf(parentGroupId));	
 			}
 			if(myGroupId.equals("null"))
 			{
 				userGroupDetailsVO.setMyGroupId(null);
 			} else if(!myGroupId.equals("null"))
 				{
-					userGroupDetailsVO.setMyGroupId(new Long(myGroupId));	
+					userGroupDetailsVO.setMyGroupId(Long.valueOf(myGroupId));	
 				}
 			userGroupsVO.setUserGroupDetailsVO(userGroupService.createGroupForUser(userGroupDetailsVO)) ;
 			
@@ -300,7 +300,7 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 		if(jObj.getString("task").equalsIgnoreCase("addMemberToAGroup"))
 		{
 			userGroupsVO = new UserGroupsVO();
-			Long groupId=new Long(jObj.getString("groupId"));
+			Long groupId=Long.valueOf(jObj.getString("groupId"));
 			userGroupMembersVO = new UserGroupMembersVO();
 			userGroupMembersVO.setAddress(jObj.getString("address"));
 			userGroupMembersVO.setDesignation(jObj.getString("designation"));
@@ -308,14 +308,14 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 			userGroupMembersVO.setName(jObj.getString("name"));
 			userGroupMembersVO.setLocation(jObj.getString("location"));			
 			userGroupMembersVO.setEmailId(jObj.getString("eMailText"));
-			userGroupMembersVO.setConfirmation(new Boolean(jObj.getString("confirmation")));
+			userGroupMembersVO.setConfirmation(Boolean.valueOf(jObj.getString("confirmation")));
 			userGroupsVO.setUserGroupMembersVO(userGroupService.addMemberToGroup(groupId,userGroupMembersVO));
 						
 		}
 		if(jObj.getString("task").equalsIgnoreCase("getSelectedGroupMembersDetails"))
 		{
 			userGroupsVO = new UserGroupsVO();
-			Long groupId=new Long(jObj.getString("id"));
+			Long groupId=Long.valueOf(jObj.getString("id"));
 			userGroupsVO.setUserGroupMembersList(userGroupService.getAllMembersIntheGroup(user.getRegistrationID(), groupId));
 		}if(jObj.getString("task").equalsIgnoreCase("sendSMS"))
 		{
@@ -336,7 +336,7 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 			userGroupsVO = new UserGroupsVO();
 			Set<SelectOptionVO> breadCrumbList = new LinkedHashSet<SelectOptionVO>();
 			SelectOptionVO breadCrumb = new SelectOptionVO();
-			Long groupId=new Long(jObj.getString("categoryId"));
+			Long groupId=Long.valueOf(jObj.getString("categoryId"));
 			String groupName = jObj.getString("name");
 			breadCrumb.setId(0L);
 			breadCrumb.setName(groupName);
@@ -353,30 +353,30 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 			Set<SelectOptionVO> myGroupsBCList = new LinkedHashSet<SelectOptionVO>();
 			Set<SelectOptionVO> myGroupsBCListNew = null;			
 			SelectOptionVO myGroupsBCObj = new SelectOptionVO();
-			Long groupId=new Long(jObj.getString("id"));
+			Long groupId=Long.valueOf(jObj.getString("id"));
 			String groupName = jObj.getString("name");
 			String flag = jObj.getString("flag");
 			myGroupsBCObj.setId(groupId);
 			myGroupsBCObj.setName(groupName);
 			
 			if("new".equals(flag)){
-				if(log.isDebugEnabled())
-					log.debug("flag is ::::" + flag);
+				if(LOG.isDebugEnabled())
+					LOG.debug("flag is ::::" + flag);
 				myGroupsBCList.add(myGroupsBCObj);
 				session.removeAttribute("myGroupsBreadCrumb");
 				session.setAttribute("myGroupsBreadCrumb",myGroupsBCList);				
 				userGroupsVO.setMyGroupsBCList(myGroupsBCList);
 			} else if("add".equals(flag))
 			{
-				if(log.isDebugEnabled())
-					log.debug("flag is ::::" + flag);
+				if(LOG.isDebugEnabled())
+					LOG.debug("flag is ::::" + flag);
 				Set<SelectOptionVO> myGroupsBCList1  = (Set<SelectOptionVO>) session.getAttribute("myGroupsBreadCrumb");
 				myGroupsBCList1.add(myGroupsBCObj);
 				userGroupsVO.setMyGroupsBCList(myGroupsBCList1);
 			} else if ("remove".equals(flag)) {
 				Set<SelectOptionVO> myGroupsBCList2  = (Set<SelectOptionVO>) session.getAttribute("myGroupsBreadCrumb");
-				if(log.isDebugEnabled())
-					log.debug("flag is ::::" + flag);
+				if(LOG.isDebugEnabled())
+					LOG.debug("flag is ::::" + flag);
 				Set<SelectOptionVO> requiredList = new LinkedHashSet<SelectOptionVO>();
 				for(SelectOptionVO vo : myGroupsBCList2){
 					requiredList.add(vo);
@@ -395,7 +395,7 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 			Set<SelectOptionVO> breadCrumbListNew = null;
 			Set<SelectOptionVO> breadCrumbList = (Set<SelectOptionVO>) session.getAttribute("breadCrumb");
 			userGroupsVO = new UserGroupsVO();
-			Long groupId=new Long(jObj.getString("id"));
+			Long groupId=Long.valueOf(jObj.getString("id"));
 			String groupName = jObj.getString("subGrpname");
 			String flag = jObj.getString("flag");
 			SelectOptionVO breadcrumb = new SelectOptionVO();  
@@ -426,7 +426,7 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 		{
 			userGroupsVO = new UserGroupsVO();
 			String memberName =  jObj.getString("name");
-			Long groupId = new Long(jObj.getString("groupId"));
+			Long groupId = Long.valueOf(jObj.getString("groupId"));
 			userGroupsVO.setGroupMemberAlreadyExists(userGroupService.checkForExistingGroupMemeberByName( groupId, memberName));			
 		}
 		return Action.SUCCESS;
@@ -446,7 +446,7 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 		
 		try {
 			jObj = new JSONObject(param);
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -458,7 +458,7 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 			SelectOptionVO sysGroupsBCObj = new SelectOptionVO();
 			String categoryType = jObj.getString("categoryType");
 			String mainType = jObj.getString("mainType");			
-			Long id=new Long(jObj.getString("id"));
+			Long id=Long.valueOf(jObj.getString("id"));
 			String groupName = jObj.getString("name");
 			String flag = jObj.getString("flag");
 			
@@ -500,7 +500,7 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 			Set<SelectOptionVO> myGroupsBCListNew = null;			
 			SelectOptionVO myGroupsBCObj = new SelectOptionVO();
 			String categoryType = jObj.getString("categoryType");
-			Long id=new Long(jObj.getString("id"));
+			Long id=Long.valueOf(jObj.getString("id"));
 			String groupName = jObj.getString("name");
 			String flag = jObj.getString("flag");
 			myGroupsBCObj.setId(id);

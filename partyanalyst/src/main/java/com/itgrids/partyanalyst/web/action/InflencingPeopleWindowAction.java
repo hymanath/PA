@@ -108,8 +108,8 @@ public class InflencingPeopleWindowAction extends ActionSupport implements Servl
 			{
 				return Action.ERROR;
 			}
-			Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
-			Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
+			Long electionYear = Long.valueOf(IConstants.PRESENT_ELECTION_YEAR);
+			Long electionTypeId = Long.valueOf(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
 			Long userId = regVO.getRegistrationID();
 			String type = jObj.getString("type");
 			constituencyesList = influencingPeopleService.getUserAccessConstituencyes(userId,electionYear,electionTypeId,type);

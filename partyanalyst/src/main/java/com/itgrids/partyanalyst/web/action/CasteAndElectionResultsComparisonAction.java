@@ -149,7 +149,7 @@ public class CasteAndElectionResultsComparisonAction extends ActionSupport imple
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.VOTER_ANALYSIS))
 			return ERROR;
-		userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(user.getRegistrationID(),new Long(IConstants.PRESENT_ELECTION_YEAR),new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID));
+		userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(user.getRegistrationID(),Long.valueOf(IConstants.PRESENT_ELECTION_YEAR),Long.valueOf(IConstants.ASSEMBLY_ELECTION_TYPE_ID));
 		constituencyList = votersAnalysisService.getConstituencyList(userAccessConstituencyList);
 		constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
 		return Action.SUCCESS;
@@ -186,22 +186,22 @@ public class CasteAndElectionResultsComparisonAction extends ActionSupport imple
 			
 			String[] elecIds = jObj.getString("electionIds").split(",");
 			for(String elecId:elecIds){
-				electionIds.add(new Long(elecId.trim()));
+				electionIds.add(Long.valueOf(elecId.trim()));
 			}
 			
 			String[] partIds = jObj.getString("partyIds").split(",");
 			for(String partId:partIds){
-				partyIds.add(new Long(partId.trim()));
+				partyIds.add(Long.valueOf(partId.trim()));
 			}
 			
 			String[] locIds = jObj.getString("locationIds").split(",");
 			for(String loc:locIds){
-				ids.add(new Long(loc.trim()));
+				ids.add(Long.valueOf(loc.trim()));
 			}
 			
 			String[] attrIds = jObj.getString("attributeIds").split(",");
 			for(String attrId:attrIds){
-				attributeIds.add(new Long(attrId.trim()));
+				attributeIds.add(Long.valueOf(attrId.trim()));
 			}
 			
 			partyResultsVO = attributeWiseElectionResultComparisonService.getElectionResultsByAttributeWise(electionIds,partyIds,userId,constituencyId,type,ids,attributeType,attributeIds,attrPerc,publicationId);

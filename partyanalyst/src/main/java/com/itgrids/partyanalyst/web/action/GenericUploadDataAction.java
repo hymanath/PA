@@ -36,7 +36,7 @@ public class GenericUploadDataAction extends ActionSupport implements
 	private ServletContext context;
 	private HttpSession session; 
 	
-	private final static Logger log = Logger.getLogger(GenericUploadDataAction.class);
+	private final static Logger LOG = Logger.getLogger(GenericUploadDataAction.class);
 	
 	private EntitlementsHelper entitlementsHelper;
 	
@@ -91,8 +91,8 @@ public class GenericUploadDataAction extends ActionSupport implements
 
 	public String execute(){
 		
-		if(log.isDebugEnabled())
-			log.debug("Started Executing GenericUpload Process ..");
+		if(LOG.isDebugEnabled())
+			LOG.debug("Started Executing GenericUpload Process ..");
 		
 		session = request.getSession();
 		

@@ -57,7 +57,7 @@ ServletRequestAware, ServletContextAware{
 	private ConstituencyVO constituencyVO;
 	private String task;
 	org.json.JSONObject jObj;
-	private static final Logger log = Logger.getLogger(MandalwiseBoothResultsForPartyAction.class);
+	private static final Logger LOG = Logger.getLogger(MandalwiseBoothResultsForPartyAction.class);
 	private int errorFlag=0;
 	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
 	public int getErrorFlag() {
@@ -66,10 +66,6 @@ ServletRequestAware, ServletContextAware{
 
 	public void setErrorFlag(int errorFlag) {
 		this.errorFlag = errorFlag;
-	}
-
-	public static Logger getLog() {
-		return log;
 	}
 
 	public void setServletRequest(HttpServletRequest request) {
@@ -210,13 +206,13 @@ ServletRequestAware, ServletContextAware{
 		
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			LOG.info("jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 			
 		}
-		Long constId = new Long(jObj.getString("constituencyId"));
-		Long partyId = new Long(jObj.getString("partyId"));	
+		Long constId = Long.valueOf(jObj.getString("constituencyId"));
+		Long partyId = Long.valueOf(jObj.getString("partyId"));	
 		votesMarginResultsMainVO =  biElectionPageService.getVotesMarginResultsCompleteDetails(constId, partyId);
 		
 	 return  SUCCESS;
@@ -270,22 +266,22 @@ ServletRequestAware, ServletContextAware{
 			}
 			
 		/*for(int m=0;m<mandalResult.size();m++){	
- 			System.out.println("====================================");
- 			System.out.println(mandalResult.get(m).getMandalName());
- 			System.out.println("====================================");
+ 			LOG.info("====================================");
+ 			LOG.info(mandalResult.get(m).getMandalName());
+ 			LOG.info("====================================");
 	 		for(int i=0;i<mandalResult.get(m).getPartyVotesMarginResultsVO().size();i++){
-	 			System.out.println(mandalResult.get(m).getPartyVotesMarginResultsVO().get(i).getElecionType());
-	 			System.out.println(mandalResult.get(m).getPartyVotesMarginResultsVO().get(i).getElectionYear());
+	 			LOG.info(mandalResult.get(m).getPartyVotesMarginResultsVO().get(i).getElecionType());
+	 			LOG.info(mandalResult.get(m).getPartyVotesMarginResultsVO().get(i).getElectionYear());
 	 			for(int j=0;j<mandalResult.get(m).getPartyVotesMarginResultsVO().get(i).getPartyVotesMarginInConstituency().size();j++){
 	 				for(int k=0;k<mandalResult.get(m).getPartyVotesMarginResultsVO().get(i).getPartyVotesMarginInConstituency().get(j).getPartyResultsInVotesMarginVO().size();k++){
 	 					int margin1 = mandalResult.get(m).getPartyVotesMarginResultsVO().get(i).getPartyVotesMarginInConstituency().get(j).getPartyResultsInVotesMarginVO().get(k).getMarginValue1();
 	 					int margin2 = mandalResult.get(m).getPartyVotesMarginResultsVO().get(i).getPartyVotesMarginInConstituency().get(j).getPartyResultsInVotesMarginVO().get(k).getMarginValue2();
 	 					int resultCount = mandalResult.get(m).getPartyVotesMarginResultsVO().get(i).getPartyVotesMarginInConstituency().get(j).getPartyResultsInVotesMarginVO().get(k).getResultsCount();
-	 					System.out.println(margin1+"\t\t"+margin2+"\t\t"+resultCount);
+	 					LOG.info(margin1+"\t\t"+margin2+"\t\t"+resultCount);
 	 				}
 	 			}
-	 			System.out.println("====================================");
-	 			System.out.println("====================================");
+	 			LOG.info("====================================");
+	 			LOG.info("====================================");
 	 		}
  		}*/
 		
@@ -453,10 +449,10 @@ ServletRequestAware, ServletContextAware{
 		Long totalVotes = 0l;
 		BigDecimal percentage;
 		for(VotersInfoForMandalVO votersInMandalOrAC:votersInfoForMandalVO)
-			totalVotes += new Long(votersInMandalOrAC.getTotalVoters());
+			totalVotes += Long.valueOf(votersInMandalOrAC.getTotalVoters());
 
 		for(VotersInfoForMandalVO votersInMandalOrAC:votersInfoForMandalVO){
-			percentage = new BigDecimal(new Long(votersInMandalOrAC.getTotalVoters())*100.0/totalVotes).setScale(2,BigDecimal.ROUND_HALF_UP);
+			percentage = new BigDecimal(Long.valueOf(votersInMandalOrAC.getTotalVoters())*100.0/totalVotes).setScale(2,BigDecimal.ROUND_HALF_UP);
 			dataset.setValue(votersInMandalOrAC.getMandalName()+" ["+percentage.toString()+"%]",percentage);
 		}
 			

@@ -134,7 +134,7 @@ public class MobileAppUserMgmtAction extends ActionSupport implements ServletReq
 			JSONArray strarr = jObj.getJSONArray("mobileAppuserIds");
 			if(strarr.length() > 0)
 			for(int i=0;i<strarr.length();i++)
-				mobileAppUserIds.add(new Long(strarr.getString(i).toString()));
+				mobileAppUserIds.add(Long.valueOf(strarr.getString(i).toString()));
 			resultStatus = mobileService.enableOrdisableAccessByUniqueCode(mobileAppUserIds,jObj.getString("type"));
 		}
 		catch (Exception e) {

@@ -31,7 +31,7 @@ public class CasteReportAction extends ActionSupport implements ServletRequestAw
 	private String type;
 	private Long constituencyId;
 	private ICasteReportService casteReportService;
-	private static final Logger log = Logger.getLogger(CasteReportAction.class);
+	private static final Logger LOG = Logger.getLogger(CasteReportAction.class);
 	private List<CastVO> casteWiseResult,panchayats;
 	private List<VoterHouseInfoVO> voterDetails;
 	private ResultStatus resultStatus;
@@ -200,7 +200,7 @@ public String getCasteWiseReport()
 	}
 	catch(Exception e)
 	{
-		log.error("Exception Occured in getCasteWiseReport() method",e);
+		LOG.error("Exception Occured in getCasteWiseReport() method",e);
 	}
 	return Action.SUCCESS;
 }
@@ -221,7 +221,7 @@ public String getVoterAddressDetails()
 	}
 	catch(Exception e)
 	{
-		log.error("Exception Occured in getVoterAddressDetails() method",e);
+		LOG.error("Exception Occured in getVoterAddressDetails() method",e);
 	}
 	return Action.SUCCESS;
 }
@@ -256,7 +256,7 @@ public String loadConst()
 	}
 	catch(Exception e)
 	{
-		log.error("Exception Occured in loadConst() method",e);
+		LOG.error("Exception Occured in loadConst() method",e);
 	}
 	return Action.SUCCESS;
 }
@@ -274,7 +274,7 @@ public String getConstXL()
 			return ERROR;
 		
 		try{
-			System.out.println("before   ===="+constValues);
+			LOG.info("before   ===="+constValues);
 			 if(request.getParameterMap().containsKey("constValues")){
 			String[] ids=	 request.getParameterValues("constValues");
 			constValues = new ArrayList<Long>();
@@ -283,7 +283,7 @@ public String getConstXL()
 				constValues.add(Long.valueOf(string));
 			}
 			 }
-			 System.out.println("after ==="+constValues);
+			 LOG.info("after ==="+constValues);
 			 boolean consdWeig = false;
 			 if(notConsiderWeights != null && notConsiderWeights){
 				 consdWeig = true;
@@ -311,7 +311,7 @@ public String getConstXL()
 			resultStatus = new ResultStatus();
 			resultStatus.setResultCode(1);
 		    resultStatus.setMessage(e.getMessage());
-		    log.error("Exception Occured in getConstXL() method",e);
+		    LOG.error("Exception Occured in getConstXL() method",e);
 			return ERROR;
 		}
 	//	constValues
@@ -320,7 +320,7 @@ public String getConstXL()
 	}
 	catch(Exception e)
 	{
-		log.error("Exception Occured in loadConst() method",e);
+		LOG.error("Exception Occured in loadConst() method",e);
 	}
 	return Action.SUCCESS;
 }
@@ -342,7 +342,7 @@ public String getPanchayatsInVoterRange()
 	}
 	catch(Exception e)
 	{
-		log.error("Exception Occured in getVoterAddressDetails() method",e);
+		LOG.error("Exception Occured in getVoterAddressDetails() method",e);
 	}
 	return Action.SUCCESS;
 }
@@ -361,7 +361,7 @@ public String updatePriority()
 	}
 	catch(Exception e)
 	{
-		log.error("Exception Occured in updatePriority() method",e);
+		LOG.error("Exception Occured in updatePriority() method",e);
 	}
 	return Action.SUCCESS;
 }

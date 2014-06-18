@@ -35,7 +35,7 @@ public class ConstituencyElectionReportAction extends ActionSupport implements
 	private HttpServletRequest request;
 	private HttpSession session;
 	private ServletContext context;
-	private final static Logger log = Logger.getLogger(ConstituencyElectionReportAction.class);
+	private final static Logger LOG = Logger.getLogger(ConstituencyElectionReportAction.class);
 	private CandidateDetailsVO candidateResults = null;
 	private IStaticDataService staticDataService = null;	
 	private Long locationId,electionType;
@@ -119,7 +119,7 @@ public class ConstituencyElectionReportAction extends ActionSupport implements
 		if(task != null){
 			try{
 				jObj = new JSONObject(getTask());
-				System.out.println("Result From JSON:"+jObj);
+				LOG.info("Result From JSON:"+jObj);
 			}catch(Exception e){
 				e.printStackTrace();
 			}
@@ -127,12 +127,12 @@ public class ConstituencyElectionReportAction extends ActionSupport implements
 					candidateResults = staticDataService.getAllStatesInCountry();
 			}
 			else if(jObj.getString("task").equals("getConstituencies")){
-				locationId = new Long(jObj.getLong("locationId"));
+				locationId = Long.valueOf(jObj.getLong("locationId"));
 				electionType = 1l;
 				candidateResults =  staticDataService.getLatestConstituenciesForAssemblyAndParliamentForAllElectionYears(electionType,locationId);
 			}
 			else if(jObj.getString("task").equals("getConstituenciesForDistrict")){
-				locationId = new Long(jObj.getLong("locationId"));
+				locationId = Long.valueOf(jObj.getLong("locationId"));
 				ConstituenciesStatusVO convo = staticDataService.getConstituenciesForDistrict(locationId,Long.parseLong(IConstants.PRESENT_ELECTION_YEAR),IConstants.ASSEMBLY_ELECTION_TYPE);
 				List<SelectOptionVO> selVo = new ArrayList<SelectOptionVO>(0);
 				selVo.addAll(convo.getNewConstituencies());
@@ -142,7 +142,7 @@ public class ConstituencyElectionReportAction extends ActionSupport implements
 				candidateResults = canVo;
 			}
 			else if(jObj.getString("task").equals("getAssemblyConstituencysForAState")){
-				locationId = new Long(jObj.getLong("locationId"));
+				locationId = Long.valueOf(jObj.getLong("locationId"));
 				CandidateDetailsVO  canVo = new CandidateDetailsVO();
 				canVo.setLatestConstituencies(staticDataService.getLatestConstituenciesByStateId(locationId));
 				candidateResults = canVo;
@@ -152,11 +152,11 @@ public class ConstituencyElectionReportAction extends ActionSupport implements
 				taskType = jObj.getString("taskType");
 				if(taskType.equalsIgnoreCase("assembly")){
 					electionType = 2l;
-					locationId = new Long(jObj.getLong("locationId"));
+					locationId = Long.valueOf(jObj.getLong("locationId"));
 					candidateResults = staticDataService.getElectionResultsForADistrictForAllYears(locationId);
 				}else{
 					electionType = 1l;
-					locationId = new Long(jObj.getLong("locationId"));
+					locationId = Long.valueOf(jObj.getLong("locationId"));
 					candidateResults = staticDataService.getElectionResultsForAConstituencyForAllYears(locationId);
 				}
 				
@@ -171,12 +171,12 @@ public class ConstituencyElectionReportAction extends ActionSupport implements
 		if(task != null){
 			try{
 				jObj = new JSONObject(getTask());
-				System.out.println("Result From JSON:"+jObj);
+				LOG.info("Result From JSON:"+jObj);
 			}catch(Exception e){
 				e.printStackTrace();
 			}
 		if(jObj.getString("task").equals("getDistricts")){	
-				result = staticDataService.getDistricts(new Long(jObj.getString("locationId")));
+				result = staticDataService.getDistricts(Long.valueOf(jObj.getString("locationId")));
 				result.add(0,new SelectOptionVO(0l,"Select District"));
 		}
 		}

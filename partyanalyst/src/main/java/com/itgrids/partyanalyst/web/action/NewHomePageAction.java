@@ -43,7 +43,7 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class NewHomePageAction extends ActionSupport implements ServletRequestAware,ServletContextAware{
 
-private static final org.apache.log4j.Logger log = Logger.getLogger(HomePageAction.class); 
+private static final org.apache.log4j.Logger LOG = Logger.getLogger(HomePageAction.class); 
 	
 	private HttpServletRequest request;
 	private List<SelectOptionVO> statesList,statesListForLocalBodyElection;
@@ -381,7 +381,7 @@ private static final org.apache.log4j.Logger log = Logger.getLogger(HomePageActi
 		}
 		
 		String requestURL = request.getRequestURL().toString();
-		System.out.println("................ Request URL :" + requestURL);
+		LOG.info("................ Request URL :" + requestURL);
 		
 		String chartPath = IWebConstants.CHART_URL_IN_SERVER;
 		String imagePath = getUserImagesPath(requestURL);
@@ -392,9 +392,9 @@ private static final org.apache.log4j.Logger log = Logger.getLogger(HomePageActi
 		if(session != null && (session.getAttribute("imagePath") == null || session.getAttribute("imagePath") == ""))
 			session.setAttribute("imagePath", imagePath);
 		
-		statesList = staticDataService.getParticipatedStatesForAnElectionType(new Long(2));
+		statesList = staticDataService.getParticipatedStatesForAnElectionType(Long.valueOf(2));
 		
-		statesListForLocalBodyElection = staticDataService.getParticipatedStatesForAnElectionType(new Long(5)); 
+		statesListForLocalBodyElection = staticDataService.getParticipatedStatesForAnElectionType(Long.valueOf(5)); 
 		
 		if(statesListForLocalBodyElection == null || statesListForLocalBodyElection.size() == 0)
 			statesListForLocalBodyElection.add(new SelectOptionVO(0L,"Select State"));
@@ -486,13 +486,13 @@ private static final org.apache.log4j.Logger log = Logger.getLogger(HomePageActi
 		
 		try {
 			jObj = new JSONObject(param);
-			System.out.println(jObj);
+			LOG.info(jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		if(jObj.getString("task").equalsIgnoreCase("getRecentElectionsInState"))
 		{
-			Long stateId = new Long(jObj.getLong("stateId"));
+			Long stateId = Long.valueOf(jObj.getLong("stateId"));
 			stateElections = statePageService.getStateElections(stateId);
 		}
 		if(jObj.getString("task").equalsIgnoreCase("getAllParliamentConstituencies"))
@@ -501,7 +501,7 @@ private static final org.apache.log4j.Logger log = Logger.getLogger(HomePageActi
 		}
 		if(jObj.getString("task").equalsIgnoreCase("statesListForLocalBodyElection"))
 		{			
-			statesListForLocalBodyElection = staticDataService.getParticipatedStatesForAnElectionType(new Long(5)); 
+			statesListForLocalBodyElection = staticDataService.getParticipatedStatesForAnElectionType(Long.valueOf(5)); 
 			
 			if(statesListForLocalBodyElection == null || statesListForLocalBodyElection.size() == 0)
 				statesListForLocalBodyElection.add(new SelectOptionVO(0L,"Select State"));
@@ -509,12 +509,12 @@ private static final org.apache.log4j.Logger log = Logger.getLogger(HomePageActi
 		
 		if(jObj.getString("task").equalsIgnoreCase("getStates"))
 		{	
-			Long electionTypeId = new Long(jObj.getLong("electionType"));
+			Long electionTypeId = Long.valueOf(jObj.getLong("electionType"));
 			states = staticDataService.getParticipatedStatesForAnElectionType(electionTypeId);
 		}
 		if(jObj.getString("task").equalsIgnoreCase("getStates"))
 		{	
-			Long electionTypeId = new Long(jObj.getLong("electionType"));
+			Long electionTypeId = Long.valueOf(jObj.getLong("electionType"));
 			states = staticDataService.getParticipatedStatesForAnElectionType(electionTypeId);
 		}
 		
@@ -560,7 +560,7 @@ private static final org.apache.log4j.Logger log = Logger.getLogger(HomePageActi
 		else
 			chartPath = context.getRealPath("/") + "charts\\";
 		
-		log.info("Chart Path : " + chartPath + " In " + osDetails + " Environment ");
+		LOG.info("Chart Path : " + chartPath + " In " + osDetails + " Environment ");
 		
 	 return chartPath;
 	}

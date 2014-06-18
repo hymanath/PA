@@ -34,7 +34,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class PublicProfileAction extends ActionSupport implements ServletRequestAware {
 
 	private static final long serialVersionUID = -4620729281316958397L;
-	private static final Logger log = Logger.getLogger(UserProfileAction.class);
+	private static final Logger LOG = Logger.getLogger(UserProfileAction.class);
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 	private String redirectLoc;
@@ -310,7 +310,7 @@ public class PublicProfileAction extends ActionSupport implements ServletRequest
 			jObj = new JSONObject(param);
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception Occured in getSpecialPages() method, Exception- "+e);
+			LOG.error("Exception Occured in getSpecialPages() method, Exception- "+e);
 		}
 		specialPageVOList = specialPageService.getAllSpecialPageListForHomePage();
 		return Action.SUCCESS;
@@ -323,7 +323,7 @@ public class PublicProfileAction extends ActionSupport implements ServletRequest
 			 param = getTask();
 			 jObj = new JSONObject(param);
 			}catch (Exception e) {
-			   log.error("Exception Occured in getProblemDetailsForPublicProfile(), Exception - "+e);
+			   LOG.error("Exception Occured in getProblemDetailsForPublicProfile(), Exception - "+e);
 			}
 			problemBeanVOList = problemManagementService.getProblemDetailsByProfileId(profileId,jObj.getInt("startIndex"),jObj.getInt("maxIndex"));
 			return Action.SUCCESS;

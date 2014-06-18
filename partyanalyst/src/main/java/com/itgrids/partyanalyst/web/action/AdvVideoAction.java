@@ -22,11 +22,11 @@ public class AdvVideoAction extends ActionSupport implements ServletRequestAware
 
 	private static final long serialVersionUID = 1L;
 	private final static Logger LOG = Logger.getLogger(AdvVideoAction.class);
-	private HttpServletRequest request;
+	transient private HttpServletRequest request;
 	private String task = null;
 	private IAdvVideoService advVideoService;
 	private AdvVideoVO advVideoVO;
-	JSONObject jobj = null;
+	transient private JSONObject jobj = null;
 	private String showName;
 	private String date;
 	private Long duration;
@@ -42,22 +42,22 @@ public class AdvVideoAction extends ActionSupport implements ServletRequestAware
 	public List<AdvVideoVO> getAdvVideoList() {
 		return advVideoList;
 	}
-	public void setAdvVideoList(List<AdvVideoVO> advVideoList) {
+	public void setAdvVideoList(final List<AdvVideoVO> advVideoList) {
 		this.advVideoList = advVideoList;
 	}
 	public ResultStatus getResultStatus() {
 		return resultStatus;
 	}
-	public void setResultStatus(ResultStatus resultStatus) {
+	public void setResultStatus(final ResultStatus resultStatus) {
 		this.resultStatus = resultStatus;
 	}
-	public void setServletRequest(HttpServletRequest request) {
+	public void setServletRequest(final HttpServletRequest request) {
 		this.request = request;
 	}
 	public IAdvVideoService getAdvVideoService() {
 		return advVideoService;
 	}
-	public void setAdvVideoService(IAdvVideoService advVideoService) {
+	public void setAdvVideoService(final IAdvVideoService advVideoService) {
 		this.advVideoService = advVideoService;
 	}
 	
@@ -65,14 +65,14 @@ public class AdvVideoAction extends ActionSupport implements ServletRequestAware
 	public AdvVideoVO getAdvVideoVO() {
 		return advVideoVO;
 	}
-	public void setAdvVideoVO(AdvVideoVO advVideoVO) {
+	public void setAdvVideoVO(final AdvVideoVO advVideoVO) {
 		this.advVideoVO = advVideoVO;
 	}
 	
 	public String getTask() {
 		return task;
 	}
-	public void setTask(String task) {
+	public void setTask(final String task) {
 		this.task = task;
 	}
 	
@@ -80,56 +80,56 @@ public class AdvVideoAction extends ActionSupport implements ServletRequestAware
 	public String getShowName() {
 		return showName;
 	}
-	public void setShowName(String showName) {
+	public void setShowName(final String showName) {
 		this.showName = showName;
 	}
 	public String getDate() {
 		return date;
 	}
-	public void setDate(String date) {
+	public void setDate(final String date) {
 		this.date = date;
 	}
 	public Long getDuration() {
 		return duration;
 	}
-	public void setDuration(Long duration) {
+	public void setDuration(final Long duration) {
 		this.duration = duration;
 	}
 	public String getThumb() {
 		return thumb;
 	}
-	public void setThumb(String thumb) {
+	public void setThumb(final String thumb) {
 		this.thumb = thumb;
 	}
 	public String getDescription() {
 		return description;
 	}
-	public void setDescription(String description) {
+	public void setDescription(final String description) {
 		this.description = description;
 	}
 	public String getTag() {
 		return tag;
 	}
-	public void setTag(String tag) {
+	public void setTag(final String tag) {
 		this.tag = tag;
 	}
 	public String getCode() {
 		return code;
 	}
-	public void setCode(String code) {
+	public void setCode(final String code) {
 		this.code = code;
 	}
 	public Long getCategoery() {
 		return categoery;
 	}
-	public void setCategoery(Long categoery) {
+	public void setCategoery(final Long categoery) {
 		this.categoery = categoery;
 	}
 	public String execute()
 	{
-		HttpSession session = request.getSession();
+		final HttpSession session = request.getSession();
 		
-		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		final RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		if(user == null)
 		{
 			return Action.ERROR;
@@ -146,11 +146,10 @@ public class AdvVideoAction extends ActionSupport implements ServletRequestAware
 	public String getAdvVideoForDisplay()
 	{
 		LOG.debug("Entered into getAdvVideoForDisplay() method in AdvVideoAction Class");
-		String param = null;
-		param = getTask();
+		final String param = getTask();
 		try {
 			jobj = new JSONObject(param);
-			Long videoId = jobj.getLong("id");
+			final Long videoId = jobj.getLong("id");
 			advVideoVO = advVideoService.getVideoForSelected(videoId);
 		} catch (ParseException e) {
 			LOG.error("Exception raised in getAdvVideoForDisplay() method in AdvVideoAction Class",e);
@@ -167,7 +166,7 @@ public class AdvVideoAction extends ActionSupport implements ServletRequestAware
 	public String saveVideos()
 	{
 		LOG.debug("Entered into saveVideos() method in AdvVideoAction Class");
-		AdvVideoVO advVideoVO = new AdvVideoVO();
+		final AdvVideoVO advVideoVO = new AdvVideoVO();
 		advVideoVO.setCode(code);
 		advVideoVO.setDescription(description);
 		advVideoVO.setDuration(duration);
@@ -194,11 +193,10 @@ public class AdvVideoAction extends ActionSupport implements ServletRequestAware
 	{
 		try {
 			LOG.debug("Entered into getVideosForSelection() method in AdvVideoAction Class");
-			String param = null;
-			param = getTask();
+			final String param = getTask();
 			jobj = new JSONObject(param);
-			String fromDate = jobj.getString("fromDate");
-			String toDate   = jobj.getString("toDate");
+			final String fromDate = jobj.getString("fromDate");
+			final String toDate   = jobj.getString("toDate");
 			advVideoList    = advVideoService.getVideosForSelectedDates(fromDate,toDate);
 		} catch (Exception e) {
 			LOG.error("Exception raised in getVideosForSelection() method in AdvVideoAction Class",e);

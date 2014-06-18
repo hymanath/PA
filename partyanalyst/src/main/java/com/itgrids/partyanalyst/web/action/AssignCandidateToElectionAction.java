@@ -150,27 +150,27 @@ public class AssignCandidateToElectionAction extends ActionSupport implements Se
 			
 			
 			if(jObj.getString("task").equalsIgnoreCase("getStates")){
-				Long electionTypeId = new Long(jObj.getString("electionTypeId"));
+				Long electionTypeId = Long.valueOf(jObj.getString("electionTypeId"));
 				optionVOList = staticDataService.getStatesAndCountryBasedOnElectionType(electionTypeId);
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getElectionYears")){
-				Long electionTypeId = new Long(jObj.getString("electionTypeId"));
+				Long electionTypeId = Long.valueOf(jObj.getString("electionTypeId"));
 				if(electionTypeId == 1l){
 					optionVOList = staticDataService.getElectionYearsBasedOnElectionType(electionTypeId);
 				}
 				else
-					optionVOList = staticDataService.getElectionYearsBasedOnStateIdAndElecTypeId(new Long(jObj.getString("stateId")),electionTypeId);
+					optionVOList = staticDataService.getElectionYearsBasedOnStateIdAndElecTypeId(Long.valueOf(jObj.getString("stateId")),electionTypeId);
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getPartiesParticipatedInElection")){
 				
-				Long electionId = new Long(jObj.getString("electionId"));
+				Long electionId = Long.valueOf(jObj.getString("electionId"));
 				optionVOList = staticDataService.getPartiesForAGivenElectionYear(electionId);
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getCandidates")){
 				
 				 String candidateName = jObj.getString("candidateName");
-				Long partyId = new Long(jObj.getString("partyId"));
-				Long electionId = new Long(jObj.getString("electionId"));
+				Long partyId = Long.valueOf(jObj.getString("partyId"));
+				Long electionId = Long.valueOf(jObj.getString("electionId"));
 				optionVOList = candidateDetailsService.getCandidatesBasedOnSelection(candidateName,partyId,electionId);
 			}			
 			else if(jObj.getString("task").trim().equalsIgnoreCase("getAllPosition"))

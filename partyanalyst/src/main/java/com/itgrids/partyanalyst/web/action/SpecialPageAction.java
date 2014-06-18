@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
@@ -41,6 +42,7 @@ public class SpecialPageAction extends ActionSupport implements
 		ServletRequestAware, ServletResponseAware, ServletContextAware {
 
 	private static final long serialVersionUID = -957791701984246754L;
+	private static final Logger LOG = Logger.getLogger(SpecialPageAction.class);
 	private ServletContext context;
 	private HttpServletRequest request;
 	private HttpServletResponse response;
@@ -309,7 +311,7 @@ public class SpecialPageAction extends ActionSupport implements
 			if(jObj.getString("task").equalsIgnoreCase("getHighLights"))
 			{
 				String specialPageId = jObj.getString("specialPageId");
-				fileVOList = specialPageService.getSpecialPageHighLights(new Long(specialPageId));	
+				fileVOList = specialPageService.getSpecialPageHighLights(Long.valueOf(specialPageId));	
 			}
 		}
 		catch (Exception e) {
@@ -371,7 +373,7 @@ public class SpecialPageAction extends ActionSupport implements
 	}
        
        public String ajaxCallHandlerForRemoveYoutubeVideo(){
-   		 System.out.println("insideajaxcall");
+   		 LOG.info("insideajaxcall");
    		try {
    			jObj = new JSONObject(getTask());
    			        

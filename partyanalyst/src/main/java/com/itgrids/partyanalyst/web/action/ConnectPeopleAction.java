@@ -52,7 +52,7 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 	 */
 	private static final long serialVersionUID = -5360785727347677445L;
 
-	private static final Logger log = Logger.getLogger(ConnectPeopleAction.class);
+	private static final Logger LOG = Logger.getLogger(ConnectPeopleAction.class);
 	
 	private HttpServletRequest request;
 	private HttpServletResponse response;
@@ -460,7 +460,7 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
 		if(user == null || ((RegistrationVO)user).getRegistrationID() == null){
-			log.error(" No User Log In .....");			
+			LOG.error(" No User Log In .....");			
 			return IConstants.NOT_LOGGED_IN;
 		}
 		
@@ -589,9 +589,9 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 			e.printStackTrace();
 		}
 		
-		Long locationId = new Long(jObj.getString("locationId"));
-		Long connectUserId = new Long(jObj.getString("connectUserId"));
-		Long userId = new Long(jObj.getString("userId"));
+		Long locationId = Long.valueOf(jObj.getString("locationId"));
+		Long connectUserId = Long.valueOf(jObj.getString("connectUserId"));
+		Long userId = Long.valueOf(jObj.getString("userId"));
 		String subject = jObj.getString("connectMessage");
 		String locationType = jObj.getString("locationType");
 		
@@ -666,9 +666,9 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		 Long results = Long.parseLong(request.getParameter("resultsCount"));
 		Long userId = 0l;
 		String loginId = jObj.getString("userId");
-		Long locationId = new Long(jObj.getString("locationId"));
+		Long locationId = Long.valueOf(jObj.getString("locationId"));
 		if(!loginId.equalsIgnoreCase("")){
-		userId = new Long(loginId);
+		userId = Long.valueOf(loginId);
 		}
 		String locationType = jObj.getString("locationType");
 		String nameString = ""; 
@@ -704,8 +704,8 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 			e.printStackTrace();
 		}
 		
-		Long districtId = new Long(jObj.getString("connetLocationId"));		
-		Long userId = new Long(jObj.getString("userId"));
+		Long districtId = Long.valueOf(jObj.getString("connetLocationId"));		
+		Long userId = Long.valueOf(jObj.getString("userId"));
 		String subject = jObj.getString("connectMessage");
 		String locationType = jObj.getString("locationType");
 		
@@ -728,7 +728,7 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		
 		for(int j=0;j<size;j++)
 		{			
-			connectUserIdsList.add(new Long(connectUserIds.getString(j)));
+			connectUserIdsList.add(Long.valueOf(connectUserIds.getString(j)));
 		}		
 		
 		//resultStatus = ananymousUserService.saveCommunicationDataBetweenUsers(senderIds, connectUserIdsList, IConstants.FRIEND_REQUEST, subject);
@@ -759,7 +759,7 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		List<Long> listOfConstituencies = new ArrayList<Long>();
 		
 		for(int i=0; i<constituencyIds.length();i++)
-			listOfConstituencies.add(new Long(constituencyIds.getString(i)));
+			listOfConstituencies.add(Long.valueOf(constituencyIds.getString(i)));
 		
 		if(user == null)
 		{
@@ -790,8 +790,8 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 			e.printStackTrace();
 		}
 		
-		Long loginUserId = new Long(jObj.getString("loginUserId"));		
-		Long recipientId = new Long(jObj.getString("recipientId"));
+		Long loginUserId = Long.valueOf(jObj.getString("loginUserId"));		
+		Long recipientId = Long.valueOf(jObj.getString("recipientId"));
 		String message = jObj.getString("message");		
 		
 		List<Long> senderIds = new ArrayList<Long>();
@@ -819,7 +819,7 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 			e.printStackTrace();
 		}
 		
-		Long loginUserId = new Long(jObj.getString("customMasgId"));
+		Long loginUserId = Long.valueOf(jObj.getString("customMasgId"));
 		message = ananymousUserService.displayMessageAndUpdateUnread(loginUserId);
 		return SUCCESS;
 	}
@@ -984,8 +984,8 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
                 	
                 	    FileImageOutputStream filName = new FileImageOutputStream(new File(fileName));
     	
-    	                log.info("Image Name :" + image);
-    	                log.info("File :" + filName);
+                	    LOG.info("Image Name :" + image);
+                	    LOG.info("File :" + filName);
     	                ImageIO.write(resizedImage, constiName[1],filName);
     	                filName.close();
     	                
@@ -999,7 +999,7 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 
     			} catch (Exception e) {
     				inputStream = new StringBufferInputStream("File not uploaded due to failed saving file in machine but database is sucess");
-    				log.error(e);
+    				LOG.error(e);
     			}
             	/*ImageIO.write(image, constiName[1],new File(fileName));
             	photoUploadStatus = "true";
@@ -1062,8 +1062,8 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
                 	
                 	    FileImageOutputStream filName = new FileImageOutputStream(new File(fileName));
     	
-    	                log.info("Image Name :" + image);
-    	                log.info("File :" + filName);
+                	    LOG.info("Image Name :" + image);
+                	    LOG.info("File :" + filName);
     	                ImageIO.write(image, constiName[1],filName);
     	                filName.close();
     	                
@@ -1073,7 +1073,7 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 
     			} catch (Exception e) {
     			
-    				log.error(e);
+    				LOG.error(e);
     			}
             	/*ImageIO.write(image, constiName[1],new File(fileName));
             	photoUploadStatus = "true";
@@ -1144,7 +1144,7 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 
 		String path = requestURL.replace(actionURL, "");
 
-		 log.info("Path for invitation link :" + path);
+		LOG.info("Path for invitation link :" + path);
 
 		return path;
 	}
@@ -1197,7 +1197,7 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		List<Long> listOfConstituencies = new ArrayList<Long>();
 		
 		for(int i=0; i<constituencyIds.length();i++)
-			listOfConstituencies.add(new Long(constituencyIds.getString(i)));
+			listOfConstituencies.add(Long.valueOf(constituencyIds.getString(i)));
 		
 		if(user == null)
 		{
@@ -1233,7 +1233,7 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		List<Long> listOfConstituencies = new ArrayList<Long>();
 		
 		for(int i=0; i<constituencyIds.length();i++)
-			listOfConstituencies.add(new Long(constituencyIds.getString(i)));
+			listOfConstituencies.add(Long.valueOf(constituencyIds.getString(i)));
 		
 		if(user == null)
 		{
