@@ -84,7 +84,7 @@ public class AudioApplet extends JApplet implements ActionListener, ChangeListen
 
  public void init()
  {
-	 System.out.println("HAIIIIIIIIIIIIIIIIIIIIIIIIII87");
+	 LOG.info("HAIIIIIIIIIIIIIIIIIIIIIIIIII87");
 
   setLayout(null);
   JLabel recorder = new JLabel("Recorder");
@@ -205,7 +205,7 @@ public class AudioApplet extends JApplet implements ActionListener, ChangeListen
 
  public void actionPerformed(ActionEvent e) {
 
-System.out.println("HAIIIIIIIIIIIIIIIIIIIIIIIIII");
+LOG.info("HAIIIIIIIIIIIIIIIIIIIIIIIIII");
   if(e.getSource()==record){
    msg = "  Capturing audio from mic.....";
    //statustxt.setText(msg);
@@ -215,7 +215,7 @@ System.out.println("HAIIIIIIIIIIIIIIIIIIIIIIIIII");
    play.setEnabled(false);
    save.setEnabled(true);
 
-   System.out.println("00000000000000000000000000"+paused);
+   LOG.info("00000000000000000000000000"+paused);
    if(paused)
    {
     resumeRecord();
@@ -284,7 +284,7 @@ System.out.println("HAIIIIIIIIIIIIIIIIIIIIIIIIII");
  //******************************************/ 
 
  private void recordAudio() {
-	 System.out.println("==========================================");
+	 LOG.info("==========================================");
   first=true;
   try {
    final AudioFileFormat.Type fileType = AudioFileFormat.Type.AU;                      
@@ -326,7 +326,7 @@ System.out.println("HAIIIIIIIIIIIIIIIIIIIIIIIIII");
   // System.exit(-2);
   }
   catch (Exception e) {
-   System.out.println("Direct Upload Error");
+   LOG.info("Direct Upload Error");
    e.printStackTrace();
   }
  }//End of RecordAudio method
@@ -410,7 +410,7 @@ System.out.println("HAIIIIIIIIIIIIIIIIIIIIIIIIII");
   synchronized(lock) {
    paused = false;
    lock.notifyAll();
-   System.out.println("inside resumeplay method");
+   LOG.info("inside resumeplay method");
   }
  }//End of ResumePlay method
 
@@ -527,17 +527,17 @@ System.out.println("HAIIIIIIIIIIIIIIIIIIIIIIIIII");
    }
    else
    {
-    System.out.println("Unable to get Output Port");
+    LOG.info("Unable to get Output Port");
     return;
    }
    final FloatControl controlIn = (FloatControl)lineIn.getControl(FloatControl.Type.VOLUME);
    final float volume = 100 * (controlIn.getValue() / controlIn.getMaximum());
-   System.out.println(volume);
+   LOG.info(volume);
   /* int sliderValue=volslider.getValue();
    controlIn.setValue((float)sliderValue / 100);*/
 
   } catch (Exception e) {
-   System.out.println(" VOLUME control: exception = " + e);
+   LOG.info(" VOLUME control: exception = " + e);
   }
  }//End of volumeControl method
 
@@ -555,7 +555,7 @@ System.out.println("HAIIIIIIIIIIIIIIIIIIIIIIIIII");
     mControl.setValue(true);
    }             
   } catch (Exception e) {
-   System.out.println(" MUTE control: exception = " + e);
+   LOG.info(" MUTE control: exception = " + e);
   }
  }       
 }//End of main class AudioBroadcast
