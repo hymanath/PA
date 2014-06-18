@@ -144,12 +144,26 @@ public class SoundexService implements ISoundexService {
 			resultList.addAll(membersList);
 			
 			}
+			
+			displayMemberMatchingDetails(resultList);
+			
+			
+			
 		}catch(Exception e)
 		{
 			e.printStackTrace();
 			LOG.error("Exception raised in getMappedVoterDetailsByUsingSoundexByPanchayatId service method");
 		}
+		return membersList;
+	}
+	
+	public void displayMemberMatchingDetails(List<SoundexVO> resultList)
+	{
+		LOG.debug("Entered to displayMemberMatchingDetails service method");
 		
+		try
+		{
+			
 		for(SoundexVO  member:resultList)
 		{
 			 if(member.getExactMatchList().size() == 1 && member.getSoundexMatchList().size() == 0)
@@ -342,8 +356,13 @@ public class SoundexService implements ISoundexService {
 			
 		}
 		
+	}catch(Exception e)
+	{
+		e.printStackTrace();
+		LOG.error("Exception raised in displayMemberMatchingDetails service method");
+
 		
-		return membersList;
+	}
 	}
 	
 	public void setVotersDetails(List<SoundexVO> votersDetails , List<Object[]> list)
