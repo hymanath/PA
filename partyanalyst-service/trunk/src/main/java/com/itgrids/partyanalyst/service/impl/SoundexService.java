@@ -66,64 +66,19 @@ public class SoundexService implements ISoundexService {
 			
 			for(Object[] panchayatList:panchayatDEtails)
 			{
-				
 				List<Object[]> memberDetails = tdMemberDAO.getMembersDetailsBypanchayatId((Long)panchayatList[0]);
 				
 				if(memberDetails == null || memberDetails.size() == 0)
 					continue;
 				
-				membersList = new ArrayList<SoundexVO>();
-
-				for(Object[] obj:memberDetails)
-				{
-					SoundexVO member = new SoundexVO();
-					
-					member.setId((Long)obj[0]);
-					member.setName(obj[1].toString());
-					member.setRelationShipType(obj[2].toString());
-					member.setRelativeName(obj[3].toString());
-					member.setGender(obj[4].toString());
-					
-					Date joinedDate = (Date)obj[5];
-					
-					if(joinedDate != null)
-					{
-						Calendar cal1 = Calendar.getInstance();
-						cal1.setTime(joinedDate);
-						Calendar cal2 = Calendar.getInstance();
-						cal2.set(2014, 2, 1);
-						
-						Long diff = cal2.getTimeInMillis() - cal1.getTimeInMillis();
-						
-						//System.out.println((diff/(1000*24*60*60))/365);
-					
-						member.setAge((diff/(1000*24*60*60))/365);
-					}
-	                membersList.add(member);
-				}
-				
+				membersList = new ArrayList<SoundexVO>();				
+				setMembersDetails(membersList,memberDetails);
 				
 			List<Object[]> list = boothPublicationVoterDAO.getVotersDetailsForPanchayatByPublicationIdAndPAnchayatId((Long)panchayatList[0], 10L);
 			
 			List<SoundexVO> votersDetails = new ArrayList<SoundexVO>();
-			
-			for(Object[] obj:list)
-			{
-				
-				SoundexVO voter = new SoundexVO();
-				
-				voter.setVoterId((Long)obj[0]);
-                voter.setRelationShipType(obj[1].toString());
-                voter.setRelativeName(obj[2].toString());
-                voter.setGender(obj[3].toString());
-                voter.setAge((Long)obj[4]);
-                voter.setVoterIDCardNo(obj[5].toString());
-                voter.setName(obj[6].toString());
-                
-                votersDetails.add(voter);
-			}
-			
-			
+			setVotersDetails(votersDetails,list);
+		
 			
 			RefinedSoundex soundex = new RefinedSoundex();
 			
@@ -309,7 +264,7 @@ public class SoundexService implements ISoundexService {
 				for(SoundexVO soundex:member.getSoundexMatchList())
 				{
 					if(i==0)
-					System.out.println("SOUNDEX MATCH ::"+member.getId()+"-"+
+					System.out.println("RSOUNDEX MATCH ::"+member.getId()+"-"+
 														  member.getName()+"-"+
 														  soundex.getName()+"-"+
 														  
@@ -389,6 +344,80 @@ public class SoundexService implements ISoundexService {
 		
 		
 		return membersList;
+	}
+	
+	public void setVotersDetails(List<SoundexVO> votersDetails , List<Object[]> list)
+	{
+		LOG.debug("Entered into the setVotersDetails service method");
+
+		try
+		{
+			
+			for(Object[] obj:list)
+			{
+				
+				SoundexVO voter = new SoundexVO();
+				
+				voter.setVoterId((Long)obj[0]);
+                voter.setRelationShipType(obj[1].toString());
+                voter.setRelativeName(obj[2].toString());
+                voter.setGender(obj[3].toString());
+                voter.setAge((Long)obj[4]);
+                voter.setVoterIDCardNo(obj[5].toString());
+                voter.setName(obj[6].toString());
+                
+                votersDetails.add(voter);
+			}
+			
+			
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Exception raised in  the setVotersDetails service method");
+
+		}
+		
+	}
+	
+	public void setMembersDetails(List<SoundexVO> membersList , List<Object[]> memberDetails)
+	{
+		LOG.debug("Entered into the setMembersDetails service method");
+		try
+		{
+			for(Object[] obj:memberDetails)
+			{
+				SoundexVO member = new SoundexVO();
+				
+				member.setId((Long)obj[0]);
+				member.setName(obj[1].toString());
+				member.setRelationShipType(obj[2].toString());
+				member.setRelativeName(obj[3].toString());
+				member.setGender(obj[4].toString());
+				
+				Date joinedDate = (Date)obj[5];
+				
+				if(joinedDate != null)
+				{
+					Calendar cal1 = Calendar.getInstance();
+					cal1.setTime(joinedDate);
+					Calendar cal2 = Calendar.getInstance();
+					cal2.set(2014, 2, 1);
+					
+					Long diff = cal2.getTimeInMillis() - cal1.getTimeInMillis();
+					
+					member.setAge((diff/(1000*24*60*60))/365);
+				}
+                membersList.add(member);
+			}
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Exception raised in  the setMembersDetails service method");
+
+		}
+		
 	}
 
 }
