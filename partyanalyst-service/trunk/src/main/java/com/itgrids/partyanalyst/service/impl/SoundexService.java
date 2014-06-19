@@ -23,8 +23,11 @@ public class SoundexService implements ISoundexService {
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
 	private ITdMemberDAO tdMemberDAO;
 	private IPanchayatDAO panchayatDAO;
-   private static int cnt=0;
+	private IMemberVoterMappingDetailsDAO memberVoterMappingDetailsDAO ;
 	
+
+
+
 	public IMemberVoterMappingDetailsDAO getMemberVoterMappingDetailsDAO() {
 		return memberVoterMappingDetailsDAO;
 	}
@@ -664,7 +667,7 @@ public class SoundexService implements ISoundexService {
 									)
 								
 							 {
-								    System.out.println("matched" +cnt++);
+								 
 								 
 								    memberVO.getSoundexMatchList1().add(voterVO);
 								   
