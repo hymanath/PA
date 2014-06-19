@@ -42,6 +42,10 @@ public class MemberVoterMappingDetails extends BaseModel implements java.io.Seri
 	private Voter voter;
 	private MemberMatchedLevelTypeMapping memberMatchedLevelTypeMapping;
 	
+	private String ageMatched;
+	private String genderMatched;
+	private String relativeNameMatched;
+	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -112,5 +116,30 @@ public class MemberVoterMappingDetails extends BaseModel implements java.io.Seri
 	public void setMemberMatchedLevelTypeMapping(
 			MemberMatchedLevelTypeMapping memberMatchedLevelTypeMapping) {
 		this.memberMatchedLevelTypeMapping = memberMatchedLevelTypeMapping;
+	}
+	
+
+	@Column(name="is_age_matched")
+	public String getAgeMatched() {
+		return ageMatched;
+	}
+	public void setAgeMatched(String ageMatched) {
+		this.ageMatched = ageMatched;
+	}
+	
+	@Column(name="is_gender_matched")
+	public String getGenderMatched() {
+		return genderMatched;
+	}
+	public void setGenderMatched(String genderMatched) {
+		this.genderMatched = genderMatched;
+	}
+	
+	@Column(name="is_relative_name_matched")
+	public String getRelativeNameMatched() {
+		return relativeNameMatched;
+	}
+	public void setRelativeNameMatched(String relativeNameMatched) {
+		this.relativeNameMatched = relativeNameMatched;
 	}
 }

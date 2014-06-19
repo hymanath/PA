@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dao.IMemberVoterMappingDetailsDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.ITdMemberDAO;
 import com.itgrids.partyanalyst.dto.SoundexVO;
+import com.itgrids.partyanalyst.model.MemberVoterMappingDetails;
 import com.itgrids.partyanalyst.service.ISoundexService;
 
 public class SoundexService implements ISoundexService {
@@ -246,6 +247,8 @@ public class SoundexService implements ISoundexService {
 								  
 							
 					j++;
+					
+					saveMemberVoterMappingDetails(member,soundex,1L);
 				}
 				
 				
@@ -299,6 +302,8 @@ public class SoundexService implements ISoundexService {
 								  
 							
 					i++;
+					
+					saveMemberVoterMappingDetails(member,soundex,2L);
 				}
 			}
 		}
@@ -326,6 +331,7 @@ public class SoundexService implements ISoundexService {
 						  member.getGender()+"-"+
 						  member.getGender());
 				
+				saveMemberVoterMappingDetails(member,null,3L);
 
 			}
 			
@@ -338,6 +344,34 @@ public class SoundexService implements ISoundexService {
 
 		
 	}
+	}
+	
+	public void saveMemberVoterMappingDetails(SoundexVO memberVO,SoundexVO voterVO,Long levelMappingId)
+	{
+		LOG.debug("Entered into the saveMemberVoterMappingDetails service method");
+		try
+		{
+			MemberVoterMappingDetails memberVoterMappingDetails = new MemberVoterMappingDetails();
+			
+			if(voterVO != null)
+			{
+				memberVoterMappingDetails.setVoterId(voterVO.getVoterId());
+				
+				memberVoterMappingDetails.setAgeMatched(voterVO.isAgeMatched() == true?"Y":"N");
+				memberVoterMappingDetails.setGenderMatched(voterVO.isGenderMatch() == true?"Y":"N");
+				memberVoterMappingDetails.setRelativeNameMatched(voterVO.isRelativeNameMatch() == true?"Y":"N");
+			}
+			memberVoterMappingDetails.setMemberId(memberVO.getId());
+			memberVoterMappingDetails.setMemberMatchedLevelTypeMappingId(levelMappingId);
+			
+			memberVoterMappingDetailsDAO.save(memberVoterMappingDetails);
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Exception raised in saveMemberVoterMappingDetails service method");
+		}
+		
 	}
 	
 	public void setVotersDetails(List<SoundexVO> votersDetails , List<Object[]> list, Map<String, List<SoundexVO>> totalVoters)
@@ -603,6 +637,9 @@ public class SoundexService implements ISoundexService {
 					name = true;
 					//memberVO.setExactMatchCount(memberVO.getExactMatchCount()+1);
 					memberVO.getExactMatchList1().add(voterVO);
+					
+					saveMemberVoterMappingDetails(memberVO,voterVO,4L);
+
 				}else
 				{
 				  //soundex match
@@ -610,6 +647,8 @@ public class SoundexService implements ISoundexService {
 					 
 					 if(name) {
 						 memberVO.getSoundexMatchList1().add(voterVO);
+						 
+						saveMemberVoterMappingDetails(memberVO,voterVO,5L);
 					 }
 					 else if (soundex
 								.soundex(memberVO.getName())
@@ -620,6 +659,8 @@ public class SoundexService implements ISoundexService {
 							
 							memberVO.getSoundexMatchList1().add(voterVO);
 							memberVO.setSplit(true);
+							saveMemberVoterMappingDetails(memberVO,voterVO,5L);
+
 					 }
 					   else if(flagset==0)
 					   {
@@ -671,6 +712,8 @@ public class SoundexService implements ISoundexService {
 								 
 								    memberVO.getSoundexMatchList1().add(voterVO);
 								   
+							  saveMemberVoterMappingDetails(soundexVO,voterVO,5L);
+
 								 memberVO.setSplit(true);
 						      }
 						 	 }//for
@@ -713,6 +756,8 @@ public class SoundexService implements ISoundexService {
 			if(memberVO.getExactMatchList1().size() == 0 && memberVO.getSoundexMatchList1().size() == 0)
 			{
 				memberVO.setUnMatched(true);
+				saveMemberVoterMappingDetails(memberVO,null,6L);
+
 			}else
 			{
 				memberVO.setUnMatched(false);
