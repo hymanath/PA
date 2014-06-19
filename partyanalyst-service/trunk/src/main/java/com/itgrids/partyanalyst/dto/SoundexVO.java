@@ -37,6 +37,23 @@ public class SoundexVO {
 	private List<SoundexVO> exactMatchList = new ArrayList<SoundexVO>();
 	private List<SoundexVO> soundexMatchList = new ArrayList<SoundexVO>();
 	
+	private List<SoundexVO> exactMatchList1 = new ArrayList<SoundexVO>();
+	private List<SoundexVO> soundexMatchList1 = new ArrayList<SoundexVO>();
+	
+	
+	
+	public List<SoundexVO> getExactMatchList1() {
+		return exactMatchList1;
+	}
+	public void setExactMatchList1(List<SoundexVO> exactMatchList1) {
+		this.exactMatchList1 = exactMatchList1;
+	}
+	public List<SoundexVO> getSoundexMatchList1() {
+		return soundexMatchList1;
+	}
+	public void setSoundexMatchList1(List<SoundexVO> soundexMatchList1) {
+		this.soundexMatchList1 = soundexMatchList1;
+	}
 	public List<SoundexVO> getExactMatchList() {
 		return exactMatchList;
 	}
@@ -129,4 +146,6 @@ public class SoundexVO {
 	public void setRelativeNameMatch(boolean relativeNameMatch) {
 		this.relativeNameMatch = relativeNameMatch;
 	}
+
+	
 }
