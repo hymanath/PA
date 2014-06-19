@@ -1469,6 +1469,22 @@
 	</bean>
 	
 	
+	<bean id="memberMatchedLevelTypeMappingDAO" class="com.itgrids.partyanalyst.dao.hibernate.MemberMatchedLevelTypeMappingDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="memberVoterMappingDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.MemberVoterMappingDetailsDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="memberMatchedTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.MemberMatchedTypeDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="memberMatchedlevelDAO" class="com.itgrids.partyanalyst.dao.hibernate.MemberMatchedlevelDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	
 	<!--  survey -->
 	
 		

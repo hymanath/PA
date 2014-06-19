@@ -2116,6 +2116,7 @@
           <property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" />
           <property name="tdMemberDAO" ref="tdMemberDAO" />
           <property name="panchayatDAO" ref="panchayatDAO"></property>
+          <property name="memberVoterMappingDetailsDAO" ref="memberVoterMappingDetailsDAO"></property>
    </bean>
    
 </beans>		

@@ -433,6 +433,12 @@
 				<value>com.itgrids.partyanalyst.model.UserSurveyBooths</value>
 				<value>com.itgrids.partyanalyst.model.TdMember</value>
 				
+				
+				<value>com.itgrids.partyanalyst.model.MemberMatchedLevel</value>
+				<value>com.itgrids.partyanalyst.model.MemberMatchedType</value>
+				<value>com.itgrids.partyanalyst.model.MemberMatchedLevelTypeMapping</value>
+				<value>com.itgrids.partyanalyst.model.MemberVoterMappingDetails</value>
+				
 			</list>
 			
 		</property>
