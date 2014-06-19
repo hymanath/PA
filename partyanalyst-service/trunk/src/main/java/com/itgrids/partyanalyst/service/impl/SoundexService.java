@@ -376,27 +376,30 @@ public class SoundexService implements ISoundexService {
 	public void buildAllTheMemberAndMatchedVotersDetails(List<SoundexVO> membersList,List<SoundexVO>  votersDetails)
 	{
 		LOG.debug("Entered into the buildAllTheMemberAndMatchedVotersDetails service method");
+		RefinedSoundex soundex = new RefinedSoundex();
+
 		try
 		{
-			RefinedSoundex soundex = new RefinedSoundex();
 			
 			for(SoundexVO memberVO:membersList)
 			{
+				boolean matched = false;
 				for(SoundexVO voterVO:votersDetails)
 				{
-					boolean name  = false;
-					if(memberVO.getName().equalsIgnoreCase(voterVO.getName()))
+					if(memberVO.getName().replaceAll(" ","").trim().equalsIgnoreCase(voterVO.getName().replaceAll(" ","").trim()))
 					{
-						name = true;
+						matched = true;
 						memberVO.setExactMatchCount(memberVO.getExactMatchCount()+1);
 						memberVO.getExactMatchList().add(voterVO);
 					}else
 					{
-					
-						 name = soundex.soundex(memberVO.getName()).equalsIgnoreCase(soundex.soundex(voterVO.getName()));
+						boolean name = soundex.soundex(memberVO.getName()).equalsIgnoreCase(soundex.soundex(voterVO.getName()));
 						 
 						 if(name)
+						 {
 							 memberVO.getSoundexMatchList().add(voterVO);
+							 matched = true;
+						 }
 
 					}
 					
@@ -425,9 +428,89 @@ public class SoundexService implements ISoundexService {
 						}
 				}
 				
-				if(memberVO.getExactMatchList().size() == 0 && memberVO.getSoundexMatchList().size() == 0)
+				if(!matched)
 				{
 					memberVO.setUnMatched(true);
+				}
+			}
+			
+			
+			for(SoundexVO memberVO:membersList)
+			{
+				if(memberVO.isUnMatched())
+				{
+					for(SoundexVO voterVO:votersDetails)
+					{
+						
+						String[] memberName = null;
+						  memberName = memberVO.getName().split(" ");
+						  
+						 if(memberName.length !=2)
+							 memberName = memberVO.getName().split(".");
+						 
+						
+						if(memberName != null && memberName.length == 2)
+						{
+							String firstString = memberName[0].trim()+""+memberName[1].trim();
+							String lastString = memberName[1].trim()+""+memberName[0].trim();
+							
+							if (soundex.soundex(voterVO.getName().trim())
+									.equalsIgnoreCase(soundex.soundex(firstString.trim()))
+									|| soundex
+											.soundex(voterVO.getName().trim())
+											.equalsIgnoreCase(soundex.soundex(lastString.trim())))						
+							{
+								memberVO.getSoundexMatchList().add(voterVO);
+								memberVO.setSplit(true);
+							}
+							
+							
+							boolean gender = voterVO.getGender().equalsIgnoreCase(memberVO.getGender());
+							
+							if(gender)
+								voterVO.setGenderMatch(true);
+							
+							boolean relativeName = voterVO.getRelativeName().equalsIgnoreCase(memberVO.getRelativeName());
+
+							if(relativeName)
+								voterVO.setRelativeNameMatch(true);
+							
+							long low = memberVO.getAge() - 4;
+							long high = memberVO.getAge() + 4;
+							
+							boolean age = (voterVO.getAge() >= low) &&( voterVO.getAge() <= high);
+							
+							 if(age)
+								voterVO.setAgeMatched(true);
+							
+						}
+					}
+					
+					if(!memberVO.isSplit())
+						memberVO.setUnMatched(true);
+				}
+			}
+			
+			for(SoundexVO memberVO:membersList)
+			{
+				if(memberVO.isUnMatched())
+				{
+					for(SoundexVO voterVO:votersDetails)
+					{
+						if (soundex
+								.soundex(memberVO.getName())
+								.replaceAll("0", "")
+								.equalsIgnoreCase(
+										soundex.soundex(voterVO.getName())
+												.replaceAll("0", "")))						{
+							
+							memberVO.getSoundexMatchList().add(voterVO);
+							memberVO.setSplit(true);
+							
+						}
+					}
+					
+					
 				}
 			}
 			
