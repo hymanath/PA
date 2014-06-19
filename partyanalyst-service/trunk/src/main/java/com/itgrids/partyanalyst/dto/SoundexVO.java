@@ -18,7 +18,14 @@ public class SoundexVO {
 	private boolean ageMatched;
 	private boolean relativeNameMatch;
 	private boolean unMatched;
+	private boolean split;
 
+	public boolean isSplit() {
+		return split;
+	}
+	public void setSplit(boolean split) {
+		this.split = split;
+	}
 	public boolean isUnMatched() {
 		return unMatched;
 	}
