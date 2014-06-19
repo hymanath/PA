@@ -493,6 +493,8 @@ public class SoundexService implements ISoundexService {
 			
 			for(SoundexVO memberVO:membersList)
 			{
+				boolean matched = false;
+
 				if(memberVO.isUnMatched())
 				{
 					for(SoundexVO voterVO:votersDetails)
@@ -506,12 +508,13 @@ public class SoundexService implements ISoundexService {
 							
 							memberVO.getSoundexMatchList().add(voterVO);
 							memberVO.setSplit(true);
-							
+							matched = true;
 						}
 					}
-					
-					
 				}
+				
+				if(matched)
+					memberVO.setUnMatched(true);
 			}
 			
 		}catch(Exception e)
