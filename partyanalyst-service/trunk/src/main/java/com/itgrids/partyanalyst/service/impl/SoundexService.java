@@ -9,6 +9,7 @@ import org.apache.commons.codec.language.RefinedSoundex;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.IMemberVoterMappingDetailsDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.ITdMemberDAO;
 import com.itgrids.partyanalyst.dto.SoundexVO;
@@ -20,8 +21,20 @@ public class SoundexService implements ISoundexService {
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
 	private ITdMemberDAO tdMemberDAO;
 	private IPanchayatDAO panchayatDAO;
+	private IMemberVoterMappingDetailsDAO memberVoterMappingDetailsDAO;
 
 	
+	public IMemberVoterMappingDetailsDAO getMemberVoterMappingDetailsDAO() {
+		return memberVoterMappingDetailsDAO;
+	}
+
+
+	public void setMemberVoterMappingDetailsDAO(
+			IMemberVoterMappingDetailsDAO memberVoterMappingDetailsDAO) {
+		this.memberVoterMappingDetailsDAO = memberVoterMappingDetailsDAO;
+	}
+
+
 	public IPanchayatDAO getPanchayatDAO() {
 		return panchayatDAO;
 	}
