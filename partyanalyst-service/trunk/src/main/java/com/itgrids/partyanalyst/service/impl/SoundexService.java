@@ -923,7 +923,7 @@ public class SoundexService implements ISoundexService {
     					 member.getRelativeName()+"-"+
     					  member.getGender()+"-"+
     					  member.getGender());
-    			saveMemberVoterMappingDetails(member,null,1L);
+    			saveMemberVoterMappingDetails(member,null,6L);
 
     		}
     		
