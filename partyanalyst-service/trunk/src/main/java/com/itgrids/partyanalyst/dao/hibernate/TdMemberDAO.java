@@ -26,7 +26,7 @@ public class TdMemberDAO extends GenericDaoHibernate<TdMember, Long> implements 
 				"TM.dateofBirth  " +
 				"from TdMember TM " +
 				"where " +
-				"TM.panchayat.panchayatId = :panchayatId  " );
+				"TM.panchayat.panchayatId = :panchayatId  order by TM.nMemberId" );
 		
 		query.setParameter("panchayatId", panchayatId);
 		

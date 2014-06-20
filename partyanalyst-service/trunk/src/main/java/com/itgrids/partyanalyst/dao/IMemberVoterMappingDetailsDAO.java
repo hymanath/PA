@@ -5,5 +5,5 @@ import org.appfuse.dao.GenericDao;
 import com.itgrids.partyanalyst.model.MemberVoterMappingDetails;
 
 public interface IMemberVoterMappingDetailsDAO extends GenericDao<MemberVoterMappingDetails, Long>{
-
+	public void flushSession();
 }

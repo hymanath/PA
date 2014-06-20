@@ -11,4 +11,10 @@ public class MemberVoterMappingDetailsDAO extends GenericDaoHibernate<MemberVote
 	public MemberVoterMappingDetailsDAO() {
 		super(MemberVoterMappingDetails.class);
 	}
+	
+	public void flushSession()
+	{
+		getSession().flush();
+		
+	}
 }
