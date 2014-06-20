@@ -751,7 +751,6 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		return query.list();
 	}
 	
-	
 	@SuppressWarnings("unchecked")
 	public List getLatestConstituenciesByStateIdForregion(String electionType , Long stateID,String region)
 	{
@@ -790,4 +789,13 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Long> getConstituencyIdsByDistrictId(Long districtId,Long electionTypeId)
+	{
+		Query query = getSession().createQuery("select model.constituencyId from Constituency model where model.district.districtId = :districtId and " +
+				" model.electionScope.electionType.electionTypeId = :electionTypeId");
+		query.setParameter("districtId",districtId);
+		query.setParameter("electionTypeId",electionTypeId);
+		return query.list();
+	}
 }
