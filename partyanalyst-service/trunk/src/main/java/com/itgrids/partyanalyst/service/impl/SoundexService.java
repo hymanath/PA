@@ -130,7 +130,7 @@ public class SoundexService implements ISoundexService {
 				resultList.addAll(membersList);
 			}
 			
-			displayMemberMatchingDetails(resultList);
+			//displayMemberMatchingDetails(resultList);
 			
 		}catch(Exception e)
 		{
