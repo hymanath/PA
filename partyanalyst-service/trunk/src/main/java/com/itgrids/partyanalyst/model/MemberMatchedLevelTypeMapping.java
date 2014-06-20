@@ -17,7 +17,7 @@ import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
-@Table(name = "booth")
+@Table(name = "member_matched_level_type_mapping")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class MemberMatchedLevelTypeMapping extends BaseModel implements java.io.Serializable {
 	
