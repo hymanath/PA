@@ -751,4 +751,8 @@ public interface IConstants {
     
     public static final Long PREV_PARLIAMENT_ELECTION_ID = 17l;
     public static final Long PRES_PARLIAMENT_ELECTION_ID = 260l;
+    
+    public enum  MatchTypes{
+    	PExactMatch,PSoundexMatch,CExactMatch,CsoundexMatch
+    }
 }
