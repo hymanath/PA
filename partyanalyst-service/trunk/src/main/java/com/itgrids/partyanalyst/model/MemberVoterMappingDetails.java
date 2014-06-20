@@ -85,7 +85,7 @@ public class MemberVoterMappingDetails extends BaseModel implements java.io.Seri
 	
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "member_id")
+	@JoinColumn(name = "member_id",insertable=false,updatable=false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public TdMember getTdMember() {
@@ -96,7 +96,7 @@ public class MemberVoterMappingDetails extends BaseModel implements java.io.Seri
 	}
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "voter_id")
+	@JoinColumn(name = "voter_id",insertable=false,updatable=false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Voter getVoter() {
@@ -107,7 +107,7 @@ public class MemberVoterMappingDetails extends BaseModel implements java.io.Seri
 	}
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "member_matched_level_type_mapping_id")
+	@JoinColumn(name = "member_matched_level_type_mapping_id",insertable=false,updatable=false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public MemberMatchedLevelTypeMapping getMemberMatchedLevelTypeMapping() {
