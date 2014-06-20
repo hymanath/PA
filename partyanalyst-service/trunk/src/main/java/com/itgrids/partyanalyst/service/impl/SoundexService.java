@@ -19,6 +19,9 @@ import com.itgrids.partyanalyst.dao.ITdMemberDAO;
 import com.itgrids.partyanalyst.dto.SoundexVO;
 import com.itgrids.partyanalyst.model.MemberVoterMappingDetails;
 import com.itgrids.partyanalyst.service.ISoundexService;
+import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.IConstants.MatchTypes;
+import com.itgrids.partyanalyst.utils.MatchedTypeVo;
 
 public class SoundexService implements ISoundexService {
 	private static final Logger LOG = Logger.getLogger(SoundexService.class);
@@ -29,6 +32,7 @@ public class SoundexService implements ISoundexService {
 	private IMemberVoterMappingDetailsDAO memberVoterMappingDetailsDAO ;
 	java.util.Set<Long> totalSet = new java.util.HashSet<Long>();
 
+	
 	
 
 
@@ -316,7 +320,7 @@ public class SoundexService implements ISoundexService {
 		}
 		
 		
-		for(SoundexVO  member:resultList)
+		/*for(SoundexVO  member:resultList)
 		{
 			if(member.getExactMatchList().size() == 0 && member.getSoundexMatchList().size() == 0)
 			{
@@ -342,7 +346,7 @@ public class SoundexService implements ISoundexService {
 
 			}
 			
-		}
+		}*/
 		
 	}catch(Exception e)
 	{
@@ -506,14 +510,26 @@ public class SoundexService implements ISoundexService {
 							voterVO.setRelativeNameMatch(true);
 						}
 						
-						long low = memberVO.getAge() - 4;
+						long difference=memberVO.getAge()-voterVO.getAge();
+						boolean age=false;
+						if(difference<0 && difference>=-4L )
+							age=true;
+						else if(difference>0 && difference<=4L )
+							age=true;
+						else if(difference==0)
+							age=true;
+						
+						/*long low = memberVO.getAge() - 4;
 						long high = memberVO.getAge() + 4;
 						
-						boolean age = (voterVO.getAge() >= low) &&( voterVO.getAge() <= high);
+						System.out.println(low+"=========="+high+"=============" );
+						
+						boolean age = (voterVO.getAge() >= low) &&( voterVO.getAge() <= high);*/
 						
 						 if(age)
 						 {
-							voterVO.setAgeMatched(true);
+							// System.out.println(true+"=========="+memberVO.getId()+"=============" );
+							 voterVO.setAgeMatched(true);
 						}
 				}
 				
@@ -711,21 +727,54 @@ public class SoundexService implements ISoundexService {
 							 for (SoundexVO soundexVO : ids) {
 								 
 								
-							if (soundex.soundex(voterVO.getName().trim()).equalsIgnoreCase(soundex.soundex(lastString)) || 
+							if (soundex.soundex(soundexVO.getName().trim()).equalsIgnoreCase(soundex.soundex(lastString)) || 
 									
-									soundex.soundex(voterVO.getName().replaceAll("[\\s\\.+]", "")).equalsIgnoreCase(soundex.soundex(lastString.replaceAll("[\\s\\.+]", "")))	
+									soundex.soundex(soundexVO.getName().replaceAll("[\\s\\.+]", "")).equalsIgnoreCase(soundex.soundex(lastString.replaceAll("[\\s\\.+]", "")))	
 									
 									
 									)
 								
 							 {
+								boolean gender = soundexVO.getGender().equalsIgnoreCase(memberVO.getGender());
+								
+								if(gender)
+								{
+									soundexVO.setGenderMatch(true);
+								}
+								
+								boolean relativeName = soundexVO.getRelativeName().equalsIgnoreCase(memberVO.getRelativeName());
+
+								if(relativeName)
+								{
+									soundexVO.setRelativeNameMatch(true);
+								}
+								
+								
+								/*long low = memberVO.getAge() - 4;
+								long high = memberVO.getAge() + 4;
+								
+								boolean age = (soundexVO.getAge() >= low) &&( soundexVO.getAge() <= high);
+								*/
+								long difference=memberVO.getAge()-voterVO.getAge();
+								boolean age=false;
+								if(difference<0 && difference>=-4L )
+									age=true;
+								else if(difference>0 && difference<=4L )
+									age=true;
+								else if(difference==0)
+									age=true;
+								if(age)
+								{
+									soundexVO.setAgeMatched(true);
+									
+								}
 								 
-								 
-								    memberVO.getSoundexMatchList1().add(voterVO);
+								    memberVO.getSoundexMatchList1().add(soundexVO);
 								   
 							  saveMemberVoterMappingDetails(soundexVO,voterVO,5L);
 
 								 memberVO.setSplit(true);
+								 memberVO.setUnMatched(false);
 						      }
 						 	 }//for
 							 flagset++;
@@ -777,6 +826,9 @@ public class SoundexService implements ISoundexService {
 		}
     
     System.out.println("end of loop"+membersList.size());
+    //analyze constituency level
+    
+    calculateCateries(membersList);
     processList(membersList);
 	
 	
@@ -788,7 +840,65 @@ public class SoundexService implements ISoundexService {
     public void processList( List<SoundexVO> resultList )
     {
 
-       
+    	for(SoundexVO  member:resultList)
+		{
+			 if(member.getExactMatchList1().size() == 1 && member.getSoundexMatchList1().size() == 0)
+			{
+				 
+				int i=0;
+				for(SoundexVO exactMatch:member.getExactMatchList1())
+				{  
+					List<MatchedTypeVo> lists=null;
+					
+					Long memeberId=member.getId();
+					MatchedTypeVo evo=new MatchedTypeVo();
+					evo.setMemberId(memeberId);
+					lists=	exactMatch.getMaps().get(IConstants.MatchTypes.CExactMatch);
+					evo=lists.get(lists.indexOf(evo));
+					
+					if(i==0)
+					System.out.println("EXACT MATCH ::"+member.getId()+"-"+
+														  member.getName()+"-"+
+														  exactMatch.getName()+"-"+
+														  
+														  evo.isAgeMatched()+"-"+
+														  member.getAge()+"-"+
+														  exactMatch.getAge()+"-"+
+														  
+														  evo.isGenderMatch()+"-"+
+														  member.getGender()+"-"+
+														  exactMatch.getGender()+"-"+
+														  
+														  evo.isRelativeNameMatch()+"-"+
+														  member.getRelativeName()+"-"+
+														  exactMatch.getRelativeName()+"-"+
+														  
+														  exactMatch.getVoterIDCardNo()+"-"+
+														  exactMatch.getVoterId());
+													
+					else
+						System.out.println("         ::"+member.getId()+"-"+
+								 member.getName()+"-"+
+								  exactMatch.getName()+"-"+
+								  
+								  evo.isAgeMatched()+"-"+
+								  member.getAge()+"-"+
+								  exactMatch.getAge()+"-"+
+								  
+								  evo.isGenderMatch()+"-"+
+								  member.getGender()+"-"+
+								  exactMatch.getGender()+"-"+
+								  
+								  evo.isRelativeNameMatch()+"-"+
+								  member.getRelativeName()+"-"+
+								  exactMatch.getRelativeName()+"-"+
+								  
+								  exactMatch.getVoterIDCardNo()+"-"+
+								  exactMatch.getVoterId());
+					i++;
+				}
+			}			
+		}
     	for(SoundexVO  member:resultList)
     	{
     		if(member.getExactMatchList1().size() != 1 && member.getSoundexMatchList1().size() >=0 )
@@ -798,22 +908,30 @@ public class SoundexService implements ISoundexService {
     			int j=0;
     			for(SoundexVO soundex:member.getExactMatchList1())
     			{
+	                List<MatchedTypeVo> lists=null;
+					
+					Long memeberId=member.getId();
+					MatchedTypeVo evo=new MatchedTypeVo();
+					evo.setMemberId(memeberId);
+					lists=	soundex.getMaps().get(IConstants.MatchTypes.CExactMatch);
+					evo=lists.get(lists.indexOf(evo));
+    				
     				if(j==0)
     				System.out.println("EXACT MATCH ::"+member.getId()+"-"+
     													  member.getName()+"-"+
     													  soundex.getName()+"-"+
     													  
     													  
-    													  soundex.isAgeMatched()+"-"+
+    													  evo.isAgeMatched()+"-"+
     													  member.getAge()+"-"+
     													  soundex.getAge()+"-"+
     													  
     													  
-    													 soundex.isGenderMatch()+"-"+
+    													 evo.isGenderMatch()+"-"+
     													 member.getGender()+"-"+
     													 soundex.getGender()+"-"+
     																											 
-    													 soundex.isRelativeNameMatch()+"-"+
+    													 evo.isRelativeNameMatch()+"-"+
     													 member.getRelativeName()+"-"+
     													 soundex.getRelativeName()+"-"+
     																											 
@@ -823,24 +941,24 @@ public class SoundexService implements ISoundexService {
     				else
     					System.out.println("           ::"+member.getId()+"-"+
     							  member.getName()+"-"+
-    							  soundex.getName()+"-"+
-    							  
-    							  
-    							  soundex.isAgeMatched()+"-"+
-    							  member.getAge()+"-"+
-    							  soundex.getAge()+"-"+
-    							  
-    							  
-    							 soundex.isGenderMatch()+"-"+
-    							 member.getGender()+"-"+
-    							 soundex.getGender()+"-"+
-    																					 
-    							 soundex.isRelativeNameMatch()+"-"+
-    							 member.getRelativeName()+"-"+
-    							 soundex.getRelativeName()+"-"+
-    																					 
-    							 soundex.getVoterIDCardNo()+"-"+
-    							 soundex.getVoterId());
+								  soundex.getName()+"-"+
+								  
+								  
+								  evo.isAgeMatched()+"-"+
+								  member.getAge()+"-"+
+								  soundex.getAge()+"-"+
+								  
+								  
+								 evo.isGenderMatch()+"-"+
+								 member.getGender()+"-"+
+								 soundex.getGender()+"-"+
+																						 
+								 evo.isRelativeNameMatch()+"-"+
+								 member.getRelativeName()+"-"+
+								 soundex.getRelativeName()+"-"+
+																						 
+								 soundex.getVoterIDCardNo()+"-"+
+								 soundex.getVoterId());
     							  
     						
     				j++;
@@ -850,50 +968,59 @@ public class SoundexService implements ISoundexService {
     			int i=0;
     			for(SoundexVO soundex:member.getSoundexMatchList1())
     			{
+    				
+                    List<MatchedTypeVo> lists=null;
+					
+					Long memeberId=member.getId();
+					MatchedTypeVo evo=new MatchedTypeVo();
+					evo.setMemberId(memeberId);
+					lists=	soundex.getMaps().get(IConstants.MatchTypes.CsoundexMatch);
+					evo=lists.get(lists.indexOf(evo));
+					
     				if(i==0)
     				System.out.println("RSOUNDEX MATCH ::"+member.getId()+"-"+
-    													  member.getName()+"-"+
-    													  soundex.getName()+"-"+
-    													  
-    													  
-    													  soundex.isAgeMatched()+"-"+
-    													  member.getAge()+"-"+
-    													  soundex.getAge()+"-"+
-    													  
-    													  
-    													 soundex.isGenderMatch()+"-"+
-    													 member.getGender()+"-"+
-    													 soundex.getGender()+"-"+
-    																											 
-    													 soundex.isRelativeNameMatch()+"-"+
-    													 member.getRelativeName()+"-"+
-    													 soundex.getRelativeName()+"-"+
-    																											 
-    													 soundex.getVoterIDCardNo()+"-"+
-    													 soundex.getVoterId());
+    						member.getName()+"-"+
+							  soundex.getName()+"-"+
+							  
+							  
+							  evo.isAgeMatched()+"-"+
+							  member.getAge()+"-"+
+							  soundex.getAge()+"-"+
+							  
+							  
+							 evo.isGenderMatch()+"-"+
+							 member.getGender()+"-"+
+							 soundex.getGender()+"-"+
+																					 
+							 evo.isRelativeNameMatch()+"-"+
+							 member.getRelativeName()+"-"+
+							 soundex.getRelativeName()+"-"+
+																					 
+							 soundex.getVoterIDCardNo()+"-"+
+							 soundex.getVoterId());
     													  
     												
     				else
     					System.out.println("           ::"+member.getId()+"-"+
-    							  member.getName()+"-"+
-    							  soundex.getName()+"-"+
-    							  
-    							  
-    							  soundex.isAgeMatched()+"-"+
-    							  member.getAge()+"-"+
-    							  soundex.getAge()+"-"+
-    							  
-    							  
-    							 soundex.isGenderMatch()+"-"+
-    							 member.getGender()+"-"+
-    							 soundex.getGender()+"-"+
-    																					 
-    							 soundex.isRelativeNameMatch()+"-"+
-    							 member.getRelativeName()+"-"+
-    							 soundex.getRelativeName()+"-"+
-    																					 
-    							 soundex.getVoterIDCardNo()+"-"+
-    							 soundex.getVoterId());
+    							member.getName()+"-"+
+								  soundex.getName()+"-"+
+								  
+								  
+								  evo.isAgeMatched()+"-"+
+								  member.getAge()+"-"+
+								  soundex.getAge()+"-"+
+								  
+								  
+								 evo.isGenderMatch()+"-"+
+								 member.getGender()+"-"+
+								 soundex.getGender()+"-"+
+																						 
+								 evo.isRelativeNameMatch()+"-"+
+								 member.getRelativeName()+"-"+
+								 soundex.getRelativeName()+"-"+
+																						 
+								 soundex.getVoterIDCardNo()+"-"+
+								 soundex.getVoterId());
     							  
     						
     				i++;
@@ -931,7 +1058,141 @@ public class SoundexService implements ISoundexService {
     	
     }
 	
-	/*public void constLevelDest(List<SoundexVO>  membersList, Map<String, List<SoundexVO>> totalVoters )
+	
+    public void calculateCateries( List<SoundexVO> resultList )
+    {
+
+
+    	for(SoundexVO  member:resultList)
+		{
+    		
+    		
+    		
+			 if(member.getExactMatchList1().size() == 1 && member.getSoundexMatchList1().size() == 0)
+			{
+				int i=0;
+				for(SoundexVO exactMatch:member.getExactMatchList1())
+				{
+					setCategories(exactMatch, member,IConstants.MatchTypes.CExactMatch);
+				}
+			}
+			 if(member.getExactMatchList().size() == 1 && member.getSoundexMatchList().size() == 0)
+				{
+					int i=0;
+					for(SoundexVO exactMatch:member.getExactMatchList())
+					{
+						setCategories(exactMatch, member,IConstants.MatchTypes.PExactMatch);
+					}
+				}
+		}
+    	for(SoundexVO  member:resultList)
+    	{
+    		if( member.getSoundexMatchList1().size() >=1 )
+    		{
+    		
+    			for(SoundexVO soundex:member.getExactMatchList1())
+    			{
+    				setCategories(soundex, member,IConstants.MatchTypes.CsoundexMatch);
+    			}
+    			
+    			
+    			
+    			for(SoundexVO soundex:member.getSoundexMatchList1())
+    			{
+    				setCategories(soundex, member,IConstants.MatchTypes.PSoundexMatch);
+
+    			}
+    		}
+        
+    	if( member.getSoundexMatchList().size() >=1 )
+		{
+			int j=0;
+			for(SoundexVO soundex:member.getExactMatchList())
+			{
+				setCategories(soundex, member,IConstants.MatchTypes.CsoundexMatch);
+			}
+			
+			
+			int i=0;
+			for(SoundexVO soundex:member.getSoundexMatchList())
+			{
+				setCategories(soundex, member,IConstants.MatchTypes.PSoundexMatch);
+
+			}
+		}
+    }//for
+    	
+    	
+    }
+    	
+    	
+    
+    public void setCategories(SoundexVO soundexVO,SoundexVO memberVO,IConstants.MatchTypes type)
+    {
+    	
+    	
+    	 Map<MatchTypes, List<MatchedTypeVo>>   maps= soundexVO.getMaps();
+    	 MatchedTypeVo vo=new MatchedTypeVo();
+    	 List<MatchedTypeVo> list=null;
+    	 Long  memberId=memberVO.getId();
+    	 vo.setMemberId(memberId);
+    	 if(maps==null)
+    		 
+    	 {    
+    	     
+    		 maps=new HashMap<IConstants.MatchTypes, List<MatchedTypeVo>>();
+    		 list=new ArrayList<MatchedTypeVo>();
+    		 list.add(vo);
+    		 maps.put(type, list);
+    		 soundexVO.setMaps(maps);
+    	 }else {
+    		 list= maps.get(type);
+    		 if(list==null)
+    		 {
+    			 list=new ArrayList<MatchedTypeVo>();
+        		 list.add(vo);
+    		 }else {
+    		 int index=list.indexOf(vo);
+    		 if(index!=-1)
+    		 vo=list.get(index);
+    		 else
+    			 list.add(vo);
+    		 }
+    	   }
+    	
+    	boolean gender = soundexVO.getGender().equalsIgnoreCase(memberVO.getGender());
+		
+		if(gender)
+		{
+			vo.setGenderMatch(true);
+		}
+		
+		boolean relativeName = soundexVO.getRelativeName().equalsIgnoreCase(memberVO.getRelativeName());
+
+		if(relativeName)
+		{
+			vo.setRelativeNameMatch(true);
+		}
+		
+		
+		long difference=memberVO.getAge()-soundexVO.getAge();
+		boolean age=false;
+		if(difference<0 && difference>=-4L )
+			age=true;
+		else if(difference>0 && difference<=4L )
+			age=true;
+		else if(difference==0)
+			age=true;
+		if(age)
+		{
+			vo.setAgeMatched(true);
+			
+		
+		}
+		 
+    }
+    
+    /*public void constLevelDest(List<SoundexVO>  membersList, Map<String, List<SoundexVO>> totalVoters )
 	
 	{
 		System.out.println("input size"+membersList);

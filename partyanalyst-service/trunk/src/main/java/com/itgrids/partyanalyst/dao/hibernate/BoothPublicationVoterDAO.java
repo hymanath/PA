@@ -6853,12 +6853,67 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		
 		}	
 	
-	public List<Object[]> getDetailsByVoterIdCardNo(String voterIdCard,Long publicationId)
-	{
-		Query query = getSession().createQuery("select model.booth.boothId, model.booth.partNo,model.voter.voterId,model.booth.constituency.constituencyId" +
-				" ,model.booth.constituency.district.districtId,model.voter.name,model.voter.age,model.voter.relationshipType,model.voter.relativeName,model.voter.gender from BoothPublicationVoter model where model.voter.voterIDCardNo = :voterIdCard and model.booth.publicationDate.publicationDateId = :publicationId");
-		query.setParameter("voterIdCard", voterIdCard);
-		query.setParameter("publicationId", publicationId);
+	public List<Object[]> getVotersDetailsForConstId(Long constId, Long publicationDateId) {
+	
+		Query query = getSession()
+				.createQuery("select " +
+						"BPV.voter.voterId,BPV.voter.relationshipType," +
+						"BPV.voter.relativeName,BPV.voter.gender , " +
+						"BPV.voter.age,BPV.voter.voterIDCardNo,BPV.voter.name " +
+						" from " +
+						"BoothPublicationVoter BPV where BPV.booth.publicationDate.publicationDateId = :publicationDateId and " +
+						" BPV.booth.constituency.constituencyId = :constId order by BPV.voter.name ");
+		
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("constId", constId);
+		return query.list();
+	}
+	
+	@Override
+	public List<Object[]> getDetailsByVoterIdCardNo(String voterIdCard,
+			Long publicationId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public List<Object[]> getVotersDetailsForConstIdBasedOnName(Long constId, Long publicationDateId,String voterName) {
+		
+		Query query = getSession()
+				.createQuery("select " +
+						"BPV.voter.voterId,BPV.voter.relationshipType," +
+						"BPV.voter.relativeName,BPV.voter.gender , " +
+						"BPV.voter.age,BPV.voter.voterIDCardNo,BPV.voter.name " +
+						" from " +
+						"BoothPublicationVoter BPV where BPV.booth.publicationDate.publicationDateId = :publicationDateId and " +
+						" BPV.booth.constituency.constituencyId = :constId and   lower(BPV.voter.name) like lower('"+voterName+"%') order by BPV.voter.name ");
+		
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("constId", constId);
+		return query.list();
+	}
+	
+public List<Object[]> checkVoterInState(Long publicationDateId,String voterName,String relativeName,String gender,int age) {
+		
+		Query query = getSession()
+				.createQuery("select " +
+						"BPV.voter.voterId,BPV.voter.relationshipType," +
+						"BPV.voter.relativeName,BPV.voter.gender , " +
+						"BPV.voter.age,BPV.voter.voterIDCardNo,BPV.voter.name " +
+						" from " +
+						"BoothPublicationVoter BPV where BPV.booth.publicationDate.publicationDateId = :publicationDateId and " +
+						"lower(BPV.voter.name)=:voterName and " +
+						"lower(BPV.voter.relativeName)=:relativeName and " +
+						"lower(BPV.voter.gender)=:gender and " +
+						"BPV.voter.age between "+(age-4)+" and " +(age+4)+//+"and"+
+						//"lower(BPV.voter.relationshipType)=:relationshipType and" +
+						//"lower(BPV.voter.name)=:voterName and" +
+						" order by BPV.voter.name ");
+		
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("voterName", voterName);
+		query.setParameter("relativeName", relativeName);
+		query.setParameter("gender", gender);
+		
+		
 		return query.list();
 	}
 }
