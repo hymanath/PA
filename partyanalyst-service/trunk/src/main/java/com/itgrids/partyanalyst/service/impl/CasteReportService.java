@@ -910,8 +910,8 @@ public class CasteReportService implements ICasteReportService{
 		  		{
 		  			try{
 			  			BigInteger voterId = (BigInteger)voterName[0];
-			  			String fname = voterName[0] != null ? voterName[0].toString().trim() : "";
-			  			String lname = voterName[1] != null ? voterName[1].toString().trim() : "";
+			  			String fname = voterName[1] != null ? voterName[1].toString().trim() : "";
+			  			String lname = voterName[2] != null ? voterName[2].toString().trim() : "";
 			  			voterNamesMap.put(voterId.longValue(), (fname+" "+lname).trim());
 		  			}catch(Exception e)
 		  			{
@@ -2073,15 +2073,23 @@ public void setToVo(List<CastVO> resultList,List<Object[]> list,Long startrange,
 		  panchayatIds.add((Long)trend[0]);
 	  }
 	  
-	  for(Long constituencyId:panchayatIdsMap.keySet())
+	  List<Long> constIds = constituencyDAO.getConstituencyIdsByDistrictId(districtId,2l);
+	  
+	  for(Long constituencyId : constIds)
 	  {
 		  List<Long> criticalPanchayatIds = panchayatIdsMap.get(constituencyId);
+		  
+		  if(criticalPanchayatIds == null)
+			  criticalPanchayatIds = new ArrayList<Long>(0);
 		  
 		  if(cIds != null && cIds.size() > 0 && !cIds.contains(constituencyId))
 			  continue;
 		  
 		  if(panchayatType.equalsIgnoreCase("Critical"))
-			  getVoterAddressDetailsForCriticalPanchayats(constituencyId, criticalPanchayatIds, publicationId, 1l);
+		  {
+			  if(criticalPanchayatIds.size() > 0)
+				  getVoterAddressDetailsForCriticalPanchayats(constituencyId, criticalPanchayatIds, publicationId, 1l);
+		  }
 		  else if(panchayatType.equalsIgnoreCase("Normal"))
 		  {
 			  List<Object[]> list = boothDAO.getPanchayatsByConstituencyAndPublication(constituencyId,publicationId);
