@@ -6,9 +6,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.codec.language.RefinedSoundex;
 import org.apache.log4j.Logger;
+import org.hsqldb.lib.HashSet;
 
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IMemberVoterMappingDetailsDAO;
@@ -25,6 +27,8 @@ public class SoundexService implements ISoundexService {
 	private ITdMemberDAO tdMemberDAO;
 	private IPanchayatDAO panchayatDAO;
 	private IMemberVoterMappingDetailsDAO memberVoterMappingDetailsDAO ;
+	java.util.Set<Long> totalSet = new java.util.HashSet<Long>();
+
 	
 
 
@@ -187,6 +191,8 @@ public class SoundexService implements ISoundexService {
 								  exactMatch.getVoterIDCardNo()+"-"+
 								  exactMatch.getVoterId());
 					i++;
+					
+					saveMemberVoterMappingDetails(member,exactMatch,1L);
 				}
 			}			
 		}
@@ -194,7 +200,8 @@ public class SoundexService implements ISoundexService {
 		
 		for(SoundexVO  member:resultList)
 		{
-			if(member.getExactMatchList().size() != 1 && member.getSoundexMatchList().size() >=0 )
+		//	if(member.getExactMatchList().size() != 1 && member.getSoundexMatchList().size() >=0 )
+			if( member.getExactMatchList().size() >0 ||  member.getSoundexMatchList().size() >0 )
 			{
 				
 				
@@ -331,7 +338,7 @@ public class SoundexService implements ISoundexService {
 						  member.getGender()+"-"+
 						  member.getGender());
 				
-				saveMemberVoterMappingDetails(member,null,3L);
+				//saveMemberVoterMappingDetails(member,null,3L);
 
 			}
 			
@@ -353,6 +360,8 @@ public class SoundexService implements ISoundexService {
 		{
 			MemberVoterMappingDetails memberVoterMappingDetails = new MemberVoterMappingDetails();
 			
+			totalSet.add(memberVO.getId());
+			
 			if(voterVO != null)
 			{
 				memberVoterMappingDetails.setVoterId(voterVO.getVoterId());
@@ -365,6 +374,8 @@ public class SoundexService implements ISoundexService {
 			memberVoterMappingDetails.setMemberMatchedLevelTypeMappingId(levelMappingId);
 			
 			memberVoterMappingDetailsDAO.save(memberVoterMappingDetails);
+			
+			memberVoterMappingDetailsDAO.flushSession();
 			
 		}catch(Exception e)
 		{
@@ -912,7 +923,7 @@ public class SoundexService implements ISoundexService {
     					 member.getRelativeName()+"-"+
     					  member.getGender()+"-"+
     					  member.getGender());
-    			
+    			saveMemberVoterMappingDetails(member,null,1L);
 
     		}
     		
