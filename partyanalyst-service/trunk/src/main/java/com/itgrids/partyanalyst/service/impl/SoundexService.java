@@ -196,7 +196,7 @@ public class SoundexService implements ISoundexService {
 								  exactMatch.getVoterId());
 					i++;
 					
-					saveMemberVoterMappingDetails(member,exactMatch,1L);
+					//saveMemberVoterMappingDetails(member,exactMatch,1L);
 				}
 			}			
 		}
@@ -259,7 +259,7 @@ public class SoundexService implements ISoundexService {
 							
 					j++;
 					
-					saveMemberVoterMappingDetails(member,soundex,1L);
+					//saveMemberVoterMappingDetails(member,soundex,1L);
 				}
 				
 				
@@ -314,7 +314,7 @@ public class SoundexService implements ISoundexService {
 							
 					i++;
 					
-					saveMemberVoterMappingDetails(member,soundex,2L);
+					//saveMemberVoterMappingDetails(member,soundex,2L);
 				}
 			}
 		}
@@ -665,7 +665,7 @@ public class SoundexService implements ISoundexService {
 					//memberVO.setExactMatchCount(memberVO.getExactMatchCount()+1);
 					memberVO.getExactMatchList1().add(voterVO);
 					
-					saveMemberVoterMappingDetails(memberVO,voterVO,4L);
+					//saveMemberVoterMappingDetails(memberVO,voterVO,4L);
 
 				}else
 				{
@@ -675,7 +675,7 @@ public class SoundexService implements ISoundexService {
 					 if(name) {
 						 memberVO.getSoundexMatchList1().add(voterVO);
 						 
-						saveMemberVoterMappingDetails(memberVO,voterVO,5L);
+						//saveMemberVoterMappingDetails(memberVO,voterVO,5L);
 					 }
 					 else if (soundex
 								.soundex(memberVO.getName())
@@ -686,7 +686,7 @@ public class SoundexService implements ISoundexService {
 							
 							memberVO.getSoundexMatchList1().add(voterVO);
 							memberVO.setSplit(true);
-							saveMemberVoterMappingDetails(memberVO,voterVO,5L);
+							//saveMemberVoterMappingDetails(memberVO,voterVO,5L);
 
 					 }
 					   else if(flagset==0)
@@ -771,7 +771,7 @@ public class SoundexService implements ISoundexService {
 								 
 								    memberVO.getSoundexMatchList1().add(soundexVO);
 								   
-							  saveMemberVoterMappingDetails(soundexVO,voterVO,5L);
+							 // saveMemberVoterMappingDetails(soundexVO,voterVO,5L);
 
 								 memberVO.setSplit(true);
 								 memberVO.setUnMatched(false);
@@ -816,7 +816,7 @@ public class SoundexService implements ISoundexService {
 			if(memberVO.getExactMatchList1().size() == 0 && memberVO.getSoundexMatchList1().size() == 0)
 			{
 				memberVO.setUnMatched(true);
-				saveMemberVoterMappingDetails(memberVO,null,6L);
+				//saveMemberVoterMappingDetails(memberVO,null,6L);
 
 			}else
 			{
@@ -854,6 +854,8 @@ public class SoundexService implements ISoundexService {
 					MatchedTypeVo evo=new MatchedTypeVo();
 					evo.setMemberId(memeberId);
 					lists=	exactMatch.getMaps().get(IConstants.MatchTypes.CExactMatch);
+					if(lists==null)
+						continue;
 					evo=lists.get(lists.indexOf(evo));
 					
 					if(i==0)
@@ -901,7 +903,7 @@ public class SoundexService implements ISoundexService {
 		}
     	for(SoundexVO  member:resultList)
     	{
-    		if(member.getExactMatchList1().size() != 1 && member.getSoundexMatchList1().size() >=0 )
+    		if((member.getExactMatchList1().size() >1 && member.getSoundexMatchList1().size() ==0) || member.getSoundexMatchList1().size()>1 )
     		{
     			
     			
@@ -914,6 +916,8 @@ public class SoundexService implements ISoundexService {
 					MatchedTypeVo evo=new MatchedTypeVo();
 					evo.setMemberId(memeberId);
 					lists=	soundex.getMaps().get(IConstants.MatchTypes.CExactMatch);
+					if(lists==null)
+						continue;
 					evo=lists.get(lists.indexOf(evo));
     				
     				if(j==0)
@@ -975,6 +979,10 @@ public class SoundexService implements ISoundexService {
 					MatchedTypeVo evo=new MatchedTypeVo();
 					evo.setMemberId(memeberId);
 					lists=	soundex.getMaps().get(IConstants.MatchTypes.CsoundexMatch);
+					
+					if(lists==null)
+						continue;
+					
 					evo=lists.get(lists.indexOf(evo));
 					
     				if(i==0)
@@ -1050,7 +1058,7 @@ public class SoundexService implements ISoundexService {
     					 member.getRelativeName()+"-"+
     					  member.getGender()+"-"+
     					  member.getGender());
-    			saveMemberVoterMappingDetails(member,null,6L);
+    			//saveMemberVoterMappingDetails(member,null,6L);
 
     		}
     		
@@ -1087,7 +1095,7 @@ public class SoundexService implements ISoundexService {
 		}
     	for(SoundexVO  member:resultList)
     	{
-    		if( member.getSoundexMatchList1().size() >=1 )
+    		if( (member.getExactMatchList1().size() >1 && member.getSoundexMatchList1().size() ==0) || member.getSoundexMatchList1().size()>1 )
     		{
     		
     			for(SoundexVO soundex:member.getExactMatchList1())
@@ -1104,7 +1112,7 @@ public class SoundexService implements ISoundexService {
     			}
     		}
         
-    	if( member.getSoundexMatchList().size() >=1 )
+    	if((member.getExactMatchList().size() >1 && member.getSoundexMatchList().size() ==0) || member.getSoundexMatchList().size()>1 )
 		{
 			int j=0;
 			for(SoundexVO soundex:member.getExactMatchList())
@@ -1151,6 +1159,7 @@ public class SoundexService implements ISoundexService {
     		 {
     			 list=new ArrayList<MatchedTypeVo>();
         		 list.add(vo);
+        		 maps.put(type, list);
     		 }else {
     		 int index=list.indexOf(vo);
     		 if(index!=-1)
