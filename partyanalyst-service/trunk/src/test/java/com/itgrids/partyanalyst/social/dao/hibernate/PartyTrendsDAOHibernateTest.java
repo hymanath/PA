@@ -28,22 +28,42 @@ import org.jfree.util.Log;
 
 
 
+import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IPartyTrendsDAO;
 import com.itgrids.partyanalyst.dto.BaseCandidateResultVO;
 import com.itgrids.partyanalyst.dto.BasePartyIdsMAp;
+import com.itgrids.partyanalyst.service.ISoundexService;
 
 public class PartyTrendsDAOHibernateTest extends BaseDaoTestCase {
    // @Autowired
 	private IPartyTrendsDAO partyTrendsDAO;
+	
+	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
 
 	/*private IBoothPollingUpdatesDAO  boothPollingUpdatesDAO;
 	private ISmsWebServiceHandler smsWebServiceHandlerImpl;*/
 	
 	
+   private ISoundexService soundexService;
+   
+   
+   //getMappedVoterDetailsByUsingSoundexByPanchayatId
+
+   
+   
+	public IBoothPublicationVoterDAO getBoothPublicationVoterDAO() {
+	return boothPublicationVoterDAO;
+}
 
 
 
+
+
+public void setBoothPublicationVoterDAO(
+		IBoothPublicationVoterDAO boothPublicationVoterDAO) {
+	this.boothPublicationVoterDAO = boothPublicationVoterDAO;
+}
 
 
 
@@ -51,6 +71,22 @@ public class PartyTrendsDAOHibernateTest extends BaseDaoTestCase {
 
 	public IPartyTrendsDAO getPartyTrendsDAO() {
 		return partyTrendsDAO;
+	}
+
+
+
+
+
+	public ISoundexService getSoundexService() {
+		return soundexService;
+	}
+
+
+
+
+
+	public void setSoundexService(ISoundexService soundexService) {
+		this.soundexService = soundexService;
 	}
 
 
@@ -73,6 +109,20 @@ public class PartyTrendsDAOHibernateTest extends BaseDaoTestCase {
 		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
 	}
 
+	public void testSoundex()
+	
+	{//
+	/*List<Object[]> voters=	boothPublicationVoterDAO.checkVoterInState(10L, "Anilkumar Ravula", "Venkateswarlu Ravula", "M", 23);
+		
+		System.out.println(voters.size());*/
+		Long constId=8L;
+		soundexService.getMappedVoterDetailsByUsingSoundexByPanchayatId(constId);
+	//System.exit(0);
+	
+	
+	}
+	
+	
 	
 	/*public void testGetAllAnswersForTheQuestion() throws Exception{
 		 Map<Long, List<PartyTrendsVO>> map =new HashMap<Long,List<PartyTrendsVO> >();
@@ -594,8 +644,9 @@ List<Object[]> obj=(List<Object[]>) partyTrendsDAO.loadEntitiesForXl(cost);
 	private static  Map<Long,Long> constIdsMap=new HashMap<Long,Long>();
 	private static  Map<Long,Long> totalVotesMap=new HashMap<Long,Long>();
 
-	public void testInsert() {
-		
+	public void testInsert(int x) {
+		if(true)
+			return;
 		String insertFor="Parliament";
 		
 	/*	int x=partyTrendsDAO.updateCandidateReult(362L, 259L, Double.valueOf("100".toString()));
