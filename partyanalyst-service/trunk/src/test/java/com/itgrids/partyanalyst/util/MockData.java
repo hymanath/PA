@@ -30,8 +30,8 @@ import com.itgrids.partyanalyst.model.MessageType;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.PartyImportantDates;
-import com.itgrids.partyanalyst.model.ProblemBackup;
 import com.itgrids.partyanalyst.model.ProblemAndProblemSource;
+import com.itgrids.partyanalyst.model.ProblemBackup;
 import com.itgrids.partyanalyst.model.ProblemLocation;
 import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.State;
@@ -466,7 +466,7 @@ public class MockData {
 	}*/
 	public static List<ConstituencyElection> getConstituencyElections() {
 		getElections();
-		ConstituencyElection constiElection1 = new ConstituencyElection(new Long(1),getElection(new Long(4)),getConstituency(new Long(1)),null,getNominationsList(new Long(1)),getConstituencyElectionResult(new Long(1)), null,null);
+		/*ConstituencyElection constiElection1 = new ConstituencyElection(new Long(1),getElection(new Long(4)),getConstituency(new Long(1)),null,getNominationsList(new Long(1)),getConstituencyElectionResult(new Long(1)), null,null);
 		ConstituencyElection constiElection2 = new ConstituencyElection(new Long(2),getElection(new Long(4)),getConstituency(new Long(2)),null,getNominationsList(new Long(2)),getConstituencyElectionResult(new Long(2)), null,null);
 		ConstituencyElection constiElection3 = new ConstituencyElection(new Long(3),getElection(new Long(4)),getConstituency(new Long(3)),null,getNominationsList(new Long(3)),getConstituencyElectionResult(new Long(3)), null,null);
 		ConstituencyElection constiElection4 = new ConstituencyElection(new Long(4),getElection(new Long(4)),getConstituency(new Long(4)),null,getNominationsList(new Long(4)),getConstituencyElectionResult(new Long(4)), null,null);
@@ -487,11 +487,11 @@ public class MockData {
 		ConstituencyElection constiElection19 = new ConstituencyElection(new Long(19),getElection(new Long(3)),getConstituency(new Long(11)),null,getNominationsList(new Long(19)),getConstituencyElectionResult(new Long(19)), null,null);
 		ConstituencyElection constiElection20 = new ConstituencyElection(new Long(20),getElection(new Long(3)),getConstituency(new Long(12)),null,getNominationsList(new Long(20)),getConstituencyElectionResult(new Long(20)), null,null);
 		ConstituencyElection constiElection21 = new ConstituencyElection(new Long(21),getElection(new Long(3)),getConstituency(new Long(13)),null,getNominationsList(new Long(21)),getConstituencyElectionResult(new Long(21)), null,null);
-		/*ConstituencyElection(Long constiElecId, Election election,
+		*//*ConstituencyElection(Long constiElecId, Election election,
 				Constituency constituency, Date electionDate,
 				Set<Nomination> nominations,
 				ConstituencyElectionResult constituencyElectionResult)*/
-		constituencyElections.add(constiElection1);
+		/*constituencyElections.add(constiElection1);
 		constituencyElections.add(constiElection2);
 		constituencyElections.add(constiElection3);
 		constituencyElections.add(constiElection4);
@@ -556,7 +556,7 @@ public class MockData {
 		constiElection18.setNominations(getNominationsList(new Long(18)));
 		constiElection19.setNominations(getNominationsList(new Long(19)));
 		constiElection20.setNominations(getNominationsList(new Long(20)));
-		constiElection21.setNominations(getNominationsList(new Long(21)));
+		constiElection21.setNominations(getNominationsList(new Long(21)));*/
 		return constituencyElections;
 	}
 	
