@@ -639,4 +639,7 @@ public interface IBoothPublicationVoterDAO extends
 	  
 	  public List<Object[]> getVotersDetailsForPanchayatByPublicationIdAndPAnchayatId(
 				Long panchayatId, Long publicationDateId);
+	  public List<Object[]> getVotersDetailsForConstId(Long constId, Long publicationDateId);
+	  public List<Object[]> getVotersDetailsForConstIdBasedOnName(Long constId, Long publicationDateId,String voterName) ;
+	  public List<Object[]> checkVoterInState(Long publicationDateId,String voterName,String relativeName,String gender,int age);
 }
