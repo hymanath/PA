@@ -2,6 +2,10 @@ package com.itgrids.partyanalyst.dto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.MatchedTypeVo;
 
 public class SoundexVO {
 	
@@ -34,17 +38,30 @@ public class SoundexVO {
 	}
 	private boolean genderMatch;
 	
-	private List<SoundexVO> exactMatchList = new ArrayList<SoundexVO>();
-	private List<SoundexVO> soundexMatchList = new ArrayList<SoundexVO>();
+	private List<SoundexVO> exactMatchList = new ArrayList<SoundexVO>(1);
+	private List<SoundexVO> soundexMatchList = new ArrayList<SoundexVO>(1);
 	
-	private List<SoundexVO> exactMatchList1 = new ArrayList<SoundexVO>();
-	private List<SoundexVO> soundexMatchList1 = new ArrayList<SoundexVO>();
+	private List<SoundexVO> exactMatchList1 = new ArrayList<SoundexVO>(1);
+	private List<SoundexVO> soundexMatchList1 = new ArrayList<SoundexVO>(1);
+	
+	private Map<IConstants.MatchTypes,List<MatchedTypeVo>> maps=null;
 	
 	
 	
+	
+
+	
+
+	public Map<IConstants.MatchTypes, List<MatchedTypeVo>> getMaps() {
+		return maps;
+	}
+	public void setMaps(Map<IConstants.MatchTypes, List<MatchedTypeVo>> maps) {
+		this.maps = maps;
+	}
 	public List<SoundexVO> getExactMatchList1() {
 		return exactMatchList1;
 	}
+	
 	public void setExactMatchList1(List<SoundexVO> exactMatchList1) {
 		this.exactMatchList1 = exactMatchList1;
 	}
