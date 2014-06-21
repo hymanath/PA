@@ -597,24 +597,24 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 			
 			
 			for(PartyGenderWiseVotesVO resultsForPartyInBooth:resultsOfAParty){
-				if(resultsForPartyInBooth.getMaleBoothResults() < 5 && resultsForPartyInBooth.getFemaleBoothResults() < 5){
+				if(resultsForPartyInBooth.getMaleBoothResults() != null && resultsForPartyInBooth.getMaleBoothResults() < 5 && resultsForPartyInBooth.getFemaleBoothResults() < 5){
 					if(i == 0)
 						totalMaleOrFemaleVotersInConstiMandal += resultsForPartyInBooth.getTotalVotesEarned();
 					totalFMBoothVotesForParty = totalFMBoothVotesForParty + resultsForPartyInBooth.getVotesEarnedInBoothForParty();	
 				}
-				else if(resultsForPartyInBooth.getMaleBoothResults() < 5){
+				else if(resultsForPartyInBooth.getMaleBoothResults() != null && resultsForPartyInBooth.getMaleBoothResults() < 5){
 					if(i == 0)
 						totalFemaleVotersInConstiteuncyForMandal += resultsForPartyInBooth.getFemaleBoothResults();	
 					totalFemaleBoothVotesForParty = totalFemaleBoothVotesForParty + resultsForPartyInBooth.getVotesEarnedInBoothForParty();
 					
 				}
-				else if(resultsForPartyInBooth.getFemaleBoothResults() < 5){
+				else if(resultsForPartyInBooth.getFemaleBoothResults() != null && resultsForPartyInBooth.getFemaleBoothResults() < 5){
 					if(i == 0)
 						totalMaleVotersInConstiteuncyForMandal += resultsForPartyInBooth.getMaleBoothResults();	
 					totalMaleBoothVotesForParty = totalMaleBoothVotesForParty + resultsForPartyInBooth.getVotesEarnedInBoothForParty();
 				}
 				else{
-					if(i == 0)
+					if(i == 0 && resultsForPartyInBooth.getTotalVotesEarned() != null)
 						totalMaleOrFemaleVotersInConstiMandal +=  resultsForPartyInBooth.getTotalVotesEarned();	
 					totalFMBoothVotesForParty = totalFMBoothVotesForParty + resultsForPartyInBooth.getVotesEarnedInBoothForParty();
 				}
