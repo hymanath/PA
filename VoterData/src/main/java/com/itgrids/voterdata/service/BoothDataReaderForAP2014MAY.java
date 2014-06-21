@@ -5,6 +5,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +18,14 @@ import com.itgrids.voterdata.VO.BoothVO;
 
 public class BoothDataReaderForAP2014MAY {
 		
+	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
+	static final String DB_URL = "jdbc:mysql://localhost/dakavara_pa";
+	static final String USER = "root";
+	static final String PASS = "root";
+	
+	static Connection conn = null;
+	static Statement stmt = null;
+	
     public static void main(String args[]) throws IOException {
         PDDocument pd = null;
         try {
@@ -25,6 +36,10 @@ public class BoothDataReaderForAP2014MAY {
                 StringBuilder sb = null;
                 StringBuilder boothSB = new StringBuilder();
                 List<BoothVO> boothsInfoList = new ArrayList<BoothVO>(0);
+                String districtName = args[1].trim();
+                
+                Class.forName("com.mysql.jdbc.Driver");
+                conn = DriverManager.getConnection(DB_URL,USER,PASS);
                 
                 for (File input : inputDir.listFiles(new FilenameFilter() {
                     @Override
@@ -33,6 +48,7 @@ public class BoothDataReaderForAP2014MAY {
                     }
                 })) {
                 	try{
+               		stmt = conn.createStatement();
                 	sb = new StringBuilder();
                     pd = PDDocument.load(input);
                     String constituencyId = null;
@@ -70,9 +86,10 @@ public class BoothDataReaderForAP2014MAY {
                     boothVO.setPartNo(fileName[2].trim());
                     boothVO.setConstituencyId(constituencyId);
                     boothVO.setConstituencyName(fileName[1].trim());
+                    boothVO.setDistrict(districtName);
                     
-                    boothSB.append("Booth - "+boothVO.getPartNo()+"\tTotal - "+boothVO.getTotalVoters()+"\tMale - "+boothVO.getMaleVoters()+"\tFemale - "+boothVO.getFemaleVoters()+"\tOthers - "+boothVO.getOtherVoters()+"\tStartind Serial No - "+boothVO.getStartingSerialNo()+"\tEnding Serail No - "+boothVO.getEndingSerialNo()+"\n");
-                    System.out.println("Booth - "+boothVO.getPartNo()+"\tTotal - "+boothVO.getTotalVoters()+"\tMale - "+boothVO.getMaleVoters()+"\tFemale - "+boothVO.getFemaleVoters()+"\tOthers - "+boothVO.getOtherVoters()+"\tStartind Serial No - "+boothVO.getStartingSerialNo()+"\tEnding Serail No - "+boothVO.getEndingSerialNo());
+                    boothSB.append("District - "+districtName+"\tConstituency - "+boothVO.getConstituencyName()+"\tBooth - "+boothVO.getPartNo()+"\tTotal - "+boothVO.getTotalVoters()+"\tMale - "+boothVO.getMaleVoters()+"\tFemale - "+boothVO.getFemaleVoters()+"\tOthers - "+boothVO.getOtherVoters()+"\tStartind Serial No - "+boothVO.getStartingSerialNo()+"\tEnding Serail No - "+boothVO.getEndingSerialNo()+"\n");
+                    System.out.println("District - "+districtName+"\tConstituency - "+boothVO.getConstituencyName()+"\tBooth - "+boothVO.getPartNo()+"\tTotal - "+boothVO.getTotalVoters()+"\tMale - "+boothVO.getMaleVoters()+"\tFemale - "+boothVO.getFemaleVoters()+"\tOthers - "+boothVO.getOtherVoters()+"\tStartind Serial No - "+boothVO.getStartingSerialNo()+"\tEnding Serail No - "+boothVO.getEndingSerialNo());
                     boothsInfoList.add(boothVO);
                     if (pd != null) {
                         pd.close();
@@ -81,10 +98,27 @@ public class BoothDataReaderForAP2014MAY {
         }
             boothInfoReader.write(boothSB.toString());
             boothInfoReader.close();
+            saveBoothData(boothsInfoList);
             	
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    public static void saveBoothData(List<BoothVO> boothsList)
+    {
+    	try{
+    		for(BoothVO boothVO : boothsList)
+    		{
+    			try{
+    				String insertQuery = "INSERT INTO booth_data2(district,constituency,booth,total_voters,male_voters,female_voters,others,st_sno,end_sno)" +
+    						" VALUES ('"+boothVO.getDistrict()+"','"+boothVO.getConstituencyName()+"','"+boothVO.getPartNo()+"',"+boothVO.getTotalVoters()+"" +
+    								","+boothVO.getMaleVoters()+","+boothVO.getFemaleVoters()+","+boothVO.getOtherVoters()+","+boothVO.getStartingSerialNo()+"" +
+    								","+boothVO.getEndingSerialNo()+")";
+    				stmt.executeUpdate(insertQuery);
+    			}catch(Exception e){e.printStackTrace();}
+    		}
+    	}catch(Exception e){e.printStackTrace();}
     }
        	
 }
