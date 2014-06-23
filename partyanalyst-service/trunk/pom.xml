@@ -42,7 +42,7 @@
                  </goals>
                  <configuration>
                  <wsdlUrls>
-                 <wsdlUrl>http://74.208.7.129/Survey/SOAWebService?wsdl</wsdlUrl>
+                 <wsdlUrl>http://www.mytdp.com/Survey/SOAWebService?wsdl</wsdlUrl>
                  </wsdlUrls>
                  <sourceDestDir>src/main/java</sourceDestDir>
                  <verbose>true</verbose>
