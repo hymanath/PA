@@ -4137,7 +4137,7 @@ public class StrategyModelTargetingService implements
 	         Client client = Client.create(clientConfig);
 		 
 	        WebResource webResource = client
-	             .resource("http://74.208.7.129/Survey/WebService/getEffectedPanchayats");
+	             .resource(IConstants.SMS_APP_URL+"/WebService/getEffectedPanchayats");
 
 	          ClientResponse response = webResource.accept("application/json")
 	                  .type("application/json").post(ClientResponse.class, inputs);
