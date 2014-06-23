@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -259,7 +261,7 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 			}
 		}*/
 	
-		public void test()
+		/*public void test()
 		{
 			List<Long> cIdsList = new ArrayList<Long>(0);
 			cIdsList.add(260l);
@@ -324,6 +326,132 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 				}
 			}
 					
+		}*/
+		
+		/*public void test()
+		{
+			try{
+			List<Object[]> list = boothPublicationVoterDAO.getvoterDetailsInAPanchyat(279l);
+			List<String> maleNamesList = new ArrayList<String>(0);
+			List<String> femaleNamesList = new ArrayList<String>(0);
+			
+			List<String> maleNamesList2 = new ArrayList<String>(0);
+			List<String> femaleNamesList2 = new ArrayList<String>(0);
+			File f = new File("H:\\Kamal\\result.csv");
+			
+			BufferedWriter outwriter = new BufferedWriter(new FileWriter(f));
+			StringBuffer sb = new StringBuffer();
+			
+			for(Object[] params: list)
+			{
+				String[] nameArr = params[1].toString().split(" ");
+				String gender = params[0].toString();
+				
+				for(String name : nameArr)
+				{
+					if(name.length() > 3)
+					{
+						if(gender.equalsIgnoreCase("M"))
+						{
+							if(!maleNamesList.contains(name))
+							{
+								maleNamesList.add(name);
+							}
+						}
+						else if(gender.equalsIgnoreCase("F"))
+						{
+							if(!femaleNamesList.contains(name))
+							{
+								femaleNamesList.add(name);
+							}
+						}
+					}
+				}
+				
+			}
+			
+			for(String n : maleNamesList)
+			{
+				if(!femaleNamesList.contains(n))
+					maleNamesList2.add(n);
+			}
+			
+			for(String n : femaleNamesList)
+			{
+				if(!maleNamesList.contains(n))
+					femaleNamesList2.add(n);
+			}
+			
+			sb.append("--------------- Male List ------------------");
+			for(String n : maleNamesList2)
+			{
+				sb.append(n+"\n");
+				System.out.println(n);
+			}
+				
+			
+			sb.append("--------------- Female List ------------------");
+			for(String n : femaleNamesList2)
+			{	
+				sb.append(n+"\n");
+				System.out.println(n);
+			}
+			
+			outwriter.write(sb.toString());
+			outwriter.close();
+			}catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+			
+		}*/
+	
+		public void test2()
+		{
+			try{
+			List<Object[]> list = boothPublicationVoterDAO.getCasteDetailsForACaste(279l,10l,62l);
+			Map<String,List<String>> map = new HashMap<String, List<String>>(0);
+			
+			System.out.println("Total Size --> "+list.size());
+			System.out.println("----------------------------");
+			
+			BufferedWriter outwriter = new BufferedWriter(new FileWriter("H:\\Hari_SIR\\VADDI.txt"));
+			StringBuilder sb = new StringBuilder();
+			
+			for(Object[] params : list)
+			{
+				String name = params[0].toString().trim();
+				List<String> mlist = map.get(name);
+				
+				if(mlist == null)
+				{
+					mlist = new ArrayList<String>(0);
+				}
+				//if()
+				mlist.add(params[1].toString());	
+				map.put(name, mlist);
+			}
+			System.out.println("------------ START ----------------");
+			
+			for(Map.Entry<String,List<String>> entry : map.entrySet())
+			{
+				System.out.println(entry.getKey()+"  -->  "+entry.getValue().toString());
+				sb.append(entry.getKey()+"\t");
+				String st = "";
+				for(String s : entry.getValue())
+					st = st + s+", ";
+				st = st.substring(0,st.length()-2);
+				sb.append(st+"\n");
+			}
+			
+			outwriter.write(sb.toString());
+			outwriter.close();
+			
+			System.out.println("------------ END ----------------");
+			}catch(Exception e)
+			{
+				e.printStackTrace();
+			}
 		}
 	    
 	}
