@@ -22,7 +22,7 @@ import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
-@Table(name="td_member")
+@Table(name="td_member_total")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class TdMember {
 
@@ -522,7 +522,7 @@ CREATE TABLE `td_member` (
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="panchayat_idtemp",insertable = false, updatable = false)
+	@JoinColumn(name="panchayat_id_pa",insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Panchayat getPanchayat() {
