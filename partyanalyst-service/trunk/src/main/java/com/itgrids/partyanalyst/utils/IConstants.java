@@ -747,7 +747,8 @@ public interface IConstants {
     public static final String FORWARD="FORWARD";
     public static final String RESEND="RESEND";
    // public static final String DISTRICT_IDS ="1";
-    public static int censusYear = 2011; 
+    public static int censusYear = 2011;
+    public static final String SMS_APP_URL = "http://www.mytdp.com/Survey";
     
     public static final Long PREV_PARLIAMENT_ELECTION_ID = 17l;
     public static final Long PRES_PARLIAMENT_ELECTION_ID = 260l;
