@@ -6869,11 +6869,13 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		return query.list();
 	}
 	
-	@Override
-	public List<Object[]> getDetailsByVoterIdCardNo(String voterIdCard,
-			Long publicationId) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Object[]> getDetailsByVoterIdCardNo(String voterIdCard,Long publicationId)
+	{
+		Query query = getSession().createQuery("select model.booth.boothId, model.booth.partNo,model.voter.voterId,model.booth.constituency.constituencyId" +
+				" ,model.booth.constituency.district.districtId,model.voter.name,model.voter.age,model.voter.relationshipType,model.voter.relativeName,model.voter.gender from BoothPublicationVoter model where model.voter.voterIDCardNo = :voterIdCard and model.booth.publicationDate.publicationDateId = :publicationId");
+		query.setParameter("voterIdCard", voterIdCard);
+		query.setParameter("publicationId", publicationId);
+		return query.list();
 	}
 	public List<Object[]> getVotersDetailsForConstIdBasedOnName(Long constId, Long publicationDateId,String voterName) {
 		
