@@ -6918,4 +6918,21 @@ public List<Object[]> checkVoterInState(Long publicationDateId,String voterName,
 		
 		return query.list();
 	}
+
+	public List<Object[]> getvoterDetailsInAPanchyat(Long panchayatId)
+	{
+		Query query = getSession().createQuery("select model.voter.gender,model.voter.name from BoothPublicationVoter model where model.booth.constituency.constituencyId = :panchayatId and model.booth.publicationDate.publicationDateId = 10");
+		query.setParameter("panchayatId",panchayatId);
+		return query.list();
+	}
+	
+	public List<Object[]> getCasteDetailsForACaste(Long constituencyId,Long publicationDateId,Long casteStateId)
+	{
+		Query query = getSession().createQuery("select model.voter.name,model3.mobile from BoothPublicationVoter model,UserVoterDetails model2,MobileNumbers model3 where model.voter.voterId = model2.voter.voterId and model.booth.constituency.constituencyId = :constituencyId and " +
+				" model.booth.publicationDate.publicationDateId = :publicationDateId and model2.casteState.casteStateId = :casteStateId and model2.user.userId = 1 and model.voter.voterIDCardNo = model3.idcardNO and model3.mobile is not null ");
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("casteStateId", casteStateId);
+		return query.list();
+	}
 }
