@@ -1480,7 +1480,7 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	<bean id="memberMatchedlevelDAO" class="com.itgrids.partyanalyst.dao.hibernate.MemberMatchedlevelDAO">
+	<bean id="memberMatchedLevelDAO" class="com.itgrids.partyanalyst.dao.hibernate.MemberMatchedLevelDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
