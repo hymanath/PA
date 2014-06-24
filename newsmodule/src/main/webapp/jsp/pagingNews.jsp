@@ -43,7 +43,7 @@ font-size:20px;
 .border
  { 
   list-style-type:none;
-  border: 1px solid black;
+  border: 1px solid #D3D3D3;
   margin-top:46px;
   padding:10px;
    height: 233px;
