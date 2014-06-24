@@ -1464,6 +1464,10 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="hhLeaderBooksDAO" class="com.itgrids.partyanalyst.dao.hibernate.HHLeaderBooksDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<bean id="tdMemberDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdMemberDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
