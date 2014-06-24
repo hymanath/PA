@@ -6408,6 +6408,18 @@
 			<result name="error">/jsp/loginForm.jsp</result>
 		</action>
 		
+		<action name="getBoothsOrBooksInConstituencyOfLeaderToAssign" class="houseHoldSurveyReportAction" method="getBoothsOrBooksInConstituencyOfLeaderToAssign">
+        	 <result type="json" name="success">
+           		<param name="root">boothsAndBooks</param>
+        	</result>
+      	</action>
+      	
+      	<action name="getReportsOfHouseHolds" class="houseHoldSurveyReportAction" method="getReportsOfHouseHolds">
+        	 <result type="json" name="success">
+           		<param name="root">hhSummaryDtls</param>
+        	</result>
+      	</action>
+		
 		<action name="getSubSurveyTypes" class="houseHoldSurveyReportAction" method="getSubSurveyTypes">
 		 <result type="json" name="success">
            		<param name="root">resultList</param>
