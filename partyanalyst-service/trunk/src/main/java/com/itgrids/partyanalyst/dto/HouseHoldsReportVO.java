@@ -2,7 +2,7 @@ package com.itgrids.partyanalyst.dto;
 
 import java.util.List;
 
-public class HouseHoldsVO implements java.io.Serializable{
+public class HouseHoldsReportVO implements java.io.Serializable{
 	
 	/**
 	 * 
@@ -12,7 +12,7 @@ public class HouseHoldsVO implements java.io.Serializable{
 	private String familiRange ;
 	private String familyCount;
 	private String familyPercentage;
-	private List<HouseHoldsVO> houseHoldsVOList = null;
+	private List<HouseHoldsReportVO> houseHoldsVOList = null;
 	private String message;
 	private String calcMessage;
 	private String heading;
@@ -30,20 +30,72 @@ public class HouseHoldsVO implements java.io.Serializable{
 	
 	private Long leaderId;
 	
-	private List<HouseHoldsVO> boothsInConstituency;
-	private List<HouseHoldsVO> booksInConstituency;
+	private List<HouseHoldsReportVO> boothsInConstituency;
+	private List<HouseHoldsReportVO> booksInConstituency;
 	private List<Long> booksInConsti;
 	private List<Long> boothsOfLeader;
 	private List<Long> booksOfLeader;
 	
-	private List<HouseHoldsVO> leadersOfConsti;
+	private List<HouseHoldsReportVO> leadersOfConsti;
 	
 	private String statusOfBook;
 	private Long bookNo;
 	private Long bookId;
 	
 	
+	//
 	
+	private Long panchayatId;
+	private String panchayatName;
+	private Long familiesCount;
+	private String familyHeadName;
+	private Long familyHeadVoterId;
+	private String houseNo;
+	private Long constituencyId;
+	
+	
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	public Long getPanchayatId() {
+		return panchayatId;
+	}
+	public void setPanchayatId(Long panchayatId) {
+		this.panchayatId = panchayatId;
+	}
+	public String getPanchayatName() {
+		return panchayatName;
+	}
+	public void setPanchayatName(String panchayatName) {
+		this.panchayatName = panchayatName;
+	}
+	public Long getFamiliesCount() {
+		return familiesCount;
+	}
+	public void setFamiliesCount(Long familiesCount) {
+		this.familiesCount = familiesCount;
+	}
+	public String getFamilyHeadName() {
+		return familyHeadName;
+	}
+	public void setFamilyHeadName(String familyHeadName) {
+		this.familyHeadName = familyHeadName;
+	}
+	public Long getFamilyHeadVoterId() {
+		return familyHeadVoterId;
+	}
+	public void setFamilyHeadVoterId(Long familyHeadVoterId) {
+		this.familyHeadVoterId = familyHeadVoterId;
+	}
+	public String getHouseNo() {
+		return houseNo;
+	}
+	public void setHouseNo(String houseNo) {
+		this.houseNo = houseNo;
+	}
 	public Long getBookId() {
 		return bookId;
 	}
@@ -86,10 +138,10 @@ public class HouseHoldsVO implements java.io.Serializable{
 	public void setVoterId(String voterId) {
 		this.voterId = voterId;
 	}
-	public List<HouseHoldsVO> getBooksInConstituency() {
+	public List<HouseHoldsReportVO> getBooksInConstituency() {
 		return booksInConstituency;
 	}
-	public void setBooksInConstituency(List<HouseHoldsVO> booksInConstituency) {
+	public void setBooksInConstituency(List<HouseHoldsReportVO> booksInConstituency) {
 		this.booksInConstituency = booksInConstituency;
 	}
 	public boolean isEnableBook() {
@@ -116,17 +168,17 @@ public class HouseHoldsVO implements java.io.Serializable{
 	public void setPartNo(Long partNo) {
 		this.partNo = partNo;
 	}
-	public List<HouseHoldsVO> getBoothsInConstituency() {
+	public List<HouseHoldsReportVO> getBoothsInConstituency() {
 		return boothsInConstituency;
 	}
-	public void setBoothsInConstituency(List<HouseHoldsVO> boothsInConstituency) {
+	public void setBoothsInConstituency(List<HouseHoldsReportVO> boothsInConstituency) {
 		this.boothsInConstituency = boothsInConstituency;
 	}
 	
-	public List<HouseHoldsVO> getLeadersOfConsti() {
+	public List<HouseHoldsReportVO> getLeadersOfConsti() {
 		return leadersOfConsti;
 	}
-	public void setLeadersOfConsti(List<HouseHoldsVO> leadersOfConsti) {
+	public void setLeadersOfConsti(List<HouseHoldsReportVO> leadersOfConsti) {
 		this.leadersOfConsti = leadersOfConsti;
 	}
 	public String getStatusOfBook() {
@@ -190,10 +242,10 @@ public class HouseHoldsVO implements java.io.Serializable{
 	public void setFamilyPercentage(String familyPercentage) {
 		this.familyPercentage = familyPercentage;
 	}
-	public List<HouseHoldsVO> getHouseHoldsVOList() {
+	public List<HouseHoldsReportVO> getHouseHoldsVOList() {
 		return houseHoldsVOList;
 	}
-	public void setHouseHoldsVOList(List<HouseHoldsVO> houseHoldsVOList) {
+	public void setHouseHoldsVOList(List<HouseHoldsReportVO> houseHoldsVOList) {
 		this.houseHoldsVOList = houseHoldsVOList;
 	}
 

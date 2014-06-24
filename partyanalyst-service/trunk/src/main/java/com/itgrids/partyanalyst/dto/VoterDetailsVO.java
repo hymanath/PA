@@ -36,9 +36,16 @@ public class VoterDetailsVO {
 	private List<SelectOptionVO> publicationDatesList;
 	private List<SelectOptionVO> boothList;
 	
+	private Long leaderBookNo;
 	
 	
 	
+	public Long getLeaderBookNo() {
+		return leaderBookNo;
+	}
+	public void setLeaderBookNo(Long leaderBookNo) {
+		this.leaderBookNo = leaderBookNo;
+	}
 	public List<SelectOptionVO> getPublicationDatesList() {
 		return publicationDatesList;
 	}

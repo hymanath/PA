@@ -125,7 +125,27 @@ public class VoterHouseInfoVO implements Comparable<VoterHouseInfoVO>{
     private Long leaderId;
     private String address;
     
+    private Long boothLeaderBookId;
+    private List<GenericVO> leaderBooksList;
     
+    
+    
+	public List<GenericVO> getLeaderBooksList() {
+		return leaderBooksList;
+	}
+
+	public void setLeaderBooksList(List<GenericVO> leaderBooksList) {
+		this.leaderBooksList = leaderBooksList;
+	}
+
+	public Long getBoothLeaderBookId() {
+		return boothLeaderBookId;
+	}
+
+	public void setBoothLeaderBookId(Long boothLeaderBookId) {
+		this.boothLeaderBookId = boothLeaderBookId;
+	}
+
 	public String getAddress() {
 		return address;
 	}

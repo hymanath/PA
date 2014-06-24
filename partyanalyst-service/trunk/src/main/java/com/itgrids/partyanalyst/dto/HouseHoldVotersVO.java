@@ -32,7 +32,7 @@ public class HouseHoldVotersVO {
 	private String socialPosition;
 	private String childrenName;
 	
-	
+	private Long leaderBookNo;
 	
 	public String getChildrenName() {
 		return childrenName;
@@ -178,6 +178,12 @@ public class HouseHoldVotersVO {
 	}
 	public void setSocialPosition(String socialPosition) {
 		this.socialPosition = socialPosition;
+	}
+	public Long getLeaderBookNo() {
+		return leaderBookNo;
+	}
+	public void setLeaderBookNo(Long leaderBookNo) {
+		this.leaderBookNo = leaderBookNo;
 	}
 	
 }
