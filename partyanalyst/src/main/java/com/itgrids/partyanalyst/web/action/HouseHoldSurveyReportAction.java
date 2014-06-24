@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import net.sf.json.JSONSerializer;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.GenericVO;
@@ -17,6 +18,8 @@ import com.itgrids.partyanalyst.dto.HHLeaderDetailsVO;
 import com.itgrids.partyanalyst.dto.HHQuestionDetailsVO;
 import com.itgrids.partyanalyst.dto.HHSurveyVO;
 import com.itgrids.partyanalyst.dto.HouseHoldVotersVO;
+import com.itgrids.partyanalyst.dto.HouseHoldsReportVO;
+import com.itgrids.partyanalyst.dto.HouseHoldsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -67,6 +70,26 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 	private ResultStatus resultStatus;
 	private VoterDetailsVO resultVO;
 	
+	private HouseHoldsVO boothsAndBooks;
+	private HouseHoldsReportVO hhSummaryDtls;
+	
+	
+	
+	public HouseHoldsReportVO getHhSummaryDtls() {
+		return hhSummaryDtls;
+	}
+
+	public void setHhSummaryDtls(HouseHoldsReportVO hhSummaryDtls) {
+		this.hhSummaryDtls = hhSummaryDtls;
+	}
+
+	public HouseHoldsVO getBoothsAndBooks() {
+		return boothsAndBooks;
+	}
+
+	public void setBoothsAndBooks(HouseHoldsVO boothsAndBooks) {
+		this.boothsAndBooks = boothsAndBooks;
+	}
 
 	public VoterDetailsVO getResultVO() {
 		return resultVO;
@@ -307,11 +330,11 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 
 	public String execute(){
 		session = request.getSession();
-		if(session.getAttribute(IConstants.USER) == null && 
+		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.HOUSEHOLDS_SURVEY_ENTITLEMENT))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.HOUSEHOLDS_SURVEY_ENTITLEMENT))
-			return ERROR;
+			return ERROR;*/
 		
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 		userId = user.getRegistrationID();
@@ -348,6 +371,80 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 		Long voterId=jObj.getLong("voterId");
 		
 		questionsList=houseHoldSurveyReportService.getHHSurveyQuestionOptions(1l,bthId,hsNo,voterId);
+		
+		return Action.SUCCESS;
+	}
+	
+	public String getBoothsOrBooksInConstituencyOfLeaderToAssign(){
+		
+		try {
+			jObj = new JSONObject(getTask());
+		
+		
+		String task = jObj.getString("task");
+		Long constituencyId = null;
+		Long publicationId = null;
+		
+		if(!task.equalsIgnoreCase("getBooksOfLeader")){
+			constituencyId = jObj.getLong("constituency");
+			publicationId = jObj.getLong("publication");
+		}
+		
+		if(task.equalsIgnoreCase("assignBooths")){
+			Long leaderId = jObj.getLong("leader");
+			boothsAndBooks=houseHoldSurveyReportService.getBoothsOrBooksInConstituencyOfLeaderToAssign(constituencyId,publicationId,leaderId,"forBooths",null,null);
+			
+		}else if(task.equalsIgnoreCase("assignBooks")){
+			Long leaderId = jObj.getLong("leader");
+			boothsAndBooks=houseHoldSurveyReportService.getBoothsOrBooksInConstituencyOfLeaderToAssign(constituencyId,publicationId,leaderId,"forBooks",null,null);
+			
+		}else if(task.equalsIgnoreCase("checkBookAvail")){
+			String bookNo = jObj.getString("bookNo").trim();
+			boothsAndBooks=houseHoldSurveyReportService.getBoothsOrBooksInConstituencyOfLeaderToAssign(constituencyId,null,null,"checkBook",bookNo,null);
+			
+		}else if(task.equalsIgnoreCase("addGivenBookNo")){
+			String bookNo = jObj.getString("bookNo").trim();
+			boothsAndBooks=houseHoldSurveyReportService.getBoothsOrBooksInConstituencyOfLeaderToAssign(constituencyId,null,null,"addGivenBookNo",bookNo,null);
+			
+		}else if(task.equalsIgnoreCase("leadersOfConstituency")){
+			boothsAndBooks=houseHoldSurveyReportService.getBoothsOrBooksInConstituencyOfLeaderToAssign(constituencyId,null,null,"leadersOfConstituency",null,null);
+			
+		}else if(task.equalsIgnoreCase("assignSelectedBooks")){
+			Long leaderId = jObj.getLong("leader");
+			List<Long> books = new ArrayList<Long>();
+			
+			JSONArray bookNos= jObj.getJSONArray("books");
+			if(bookNos!=null && bookNos.length()>0){
+				for(int i=0; i<bookNos.length();i++){
+					books.add(Long.parseLong(bookNos.getString(i)));
+				}
+			}
+			
+			boothsAndBooks=houseHoldSurveyReportService.getBoothsOrBooksInConstituencyOfLeaderToAssign(constituencyId,publicationId,leaderId,"assignSelectedBooks",null,books);
+			
+		}else if(task.equalsIgnoreCase("assignSelectedBooths")){
+			Long leaderId = jObj.getLong("leader");
+			List<Long> booths = new ArrayList<Long>();
+			
+			JSONArray boothNos= jObj.getJSONArray("booths");
+			if(boothNos!=null && boothNos.length()>0){
+				for(int i=0; i<boothNos.length();i++){
+					booths.add(Long.parseLong(boothNos.getString(i)));
+				}
+			}
+			
+			boothsAndBooks=houseHoldSurveyReportService.getBoothsOrBooksInConstituencyOfLeaderToAssign(constituencyId,publicationId,leaderId,"assignSelectedBooths",null,booths);
+			
+		}if(task.equalsIgnoreCase("getBooksOfLeader")){
+			Long leaderId = jObj.getLong("leader");
+			boothsAndBooks=houseHoldSurveyReportService.getBoothsOrBooksInConstituencyOfLeaderToAssign(null,null,leaderId,"getBooksOfLeader",null,null);
+			
+		}
+		
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace( );
+		}
 		
 		return Action.SUCCESS;
 	}
@@ -515,6 +612,7 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 					
 				}
 				voterDetailsVO.setLeaderId(voter.getLong("leaderId"));
+				voterDetailsVO.setLeaderBookNo(voter.getLong("leaderBookNo"));
 				voterDetailsVO.setOwnerMobileNo(voter.getString("ownerMobileNo"));
 				houseHoldVoters.add(voterDetailsVO);
 				
@@ -620,6 +718,21 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 		try {		
 			jObj = new JSONObject(getTask());
 			resultVO = houseHoldSurveyReportService.getVoterDetailsByVoterId(jObj.getString("voterIdCardNo"));
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
+	public String getReportsOfHouseHolds(){
+		try {		
+			jObj = new JSONObject(getTask());
+			Long constituencyId = jObj.getLong("consitutency");
+			String task = jObj.getString("getSummary");
+			
+			HouseHoldsReportVO input = new HouseHoldsReportVO();
+			
+			
+			hhSummaryDtls = houseHoldSurveyReportService.getReportsOfHouseHolds();
 		}catch (Exception e){
 			e.printStackTrace();
 		}

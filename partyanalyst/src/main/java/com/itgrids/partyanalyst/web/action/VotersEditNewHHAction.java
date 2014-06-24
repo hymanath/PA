@@ -625,6 +625,17 @@ public String saveVoterDetails(){
 		
 		List<GenericVO> hhLeadersList=votersAnalysisService.getHHLeadersList(Long.valueOf(boothId));
 		
+		List<GenericVO> leaderBooks = new ArrayList<GenericVO>();
+		Long leaderId = null;
+		if(hhLeadersList!=null && hhLeadersList.size()>1){
+			leaderId = hhLeadersList.get(1).getId();
+		}
+		leaderBooks = votersAnalysisService.getHHLeadersBooksList(leaderId);
+		
+		Long bookId = votersAnalysisService.bookIdOfVoter(Long.valueOf(voterId));
+		
+		voterHouseInfoVO.setBoothLeaderBookId(bookId);
+				
 		GenericVO gvo=houseHoldSurveyReportService.getLeaderIdAndMobileNoFromHH(Long.valueOf(voterId));
 		if(gvo.getName()!=null){
 			if( gvo.getName().trim().length()!=0){
@@ -641,6 +652,7 @@ public String saveVoterDetails(){
 		voterHouseInfoVO.setVilliageCovered(voterHouseInfoVO1.getVilliageCovered());
 		voterHouseInfoVO.setPanchayatName(voterHouseInfoVO1.getPanchayatName());
 		voterHouseInfoVO.setBoothLeaderList(hhLeadersList);
+		voterHouseInfoVO.setLeaderBooksList(leaderBooks);
 	}
    }
   }
@@ -1876,6 +1888,8 @@ public String saveLocality()
 		}
 		   return Action.SUCCESS;
 	   }
+	   
+	   
 
  
 
