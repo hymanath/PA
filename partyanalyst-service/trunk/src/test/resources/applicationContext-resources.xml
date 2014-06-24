@@ -422,6 +422,7 @@
 		
 		<value>com.itgrids.partyanalyst.model.HHLeader</value>
 		<value>com.itgrids.partyanalyst.model.HHBoothLeader</value>
+		<value>com.itgrids.partyanalyst.model.HHLeaderBooks</value>
 		<value>com.itgrids.partyanalyst.model.PRPWeighteges</value>
 	    <value>com.itgrids.partyanalyst.model.PartyTrends</value>
 	    
@@ -2371,6 +2372,10 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="userSurveyBoothsDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserSurveyBoothsDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="hhLeaderBooksDAO" class="com.itgrids.partyanalyst.dao.hibernate.HHLeaderBooksDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 </beans>
