@@ -6877,7 +6877,18 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		query.setParameter("publicationId", publicationId);
 		return query.list();
 	}
-	public List<Object[]> getVotersDetailsForConstIdBasedOnName(Long constId, Long publicationDateId,String voterName) {
+	
+	public List<Long> getBoothIdsOfVoterIds(List<Long> voterIds,Long publicationDateId){
+		Query query = getSession().createQuery(" select distinct model.booth.boothId from BoothPublicationVoter model" +
+				" where model.voter.voterId in (:voterIds) and model.booth.publicationDate.publicationDateId = :publicationDateId");
+		
+		query.setParameterList("voterIds", voterIds);
+		query.setParameter("publicationDateId", publicationDateId);
+		return query.list();
+		
+	}
+	
+public List<Object[]> getVotersDetailsForConstIdBasedOnName(Long constId, Long publicationDateId,String voterName) {
 		
 		Query query = getSession()
 				.createQuery("select " +

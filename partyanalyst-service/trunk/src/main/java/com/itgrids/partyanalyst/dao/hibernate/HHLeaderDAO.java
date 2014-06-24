@@ -23,5 +23,13 @@ public class HHLeaderDAO extends GenericDaoHibernate<HHLeader,Long> implements I
 		
 	}
 	
+	public List<Object[]> getAllLeadersOfConstituency(Long constituencyId){
+		Query query = getSession().createQuery("select model.id,model.name,model.voterId from HHLeader model " +
+				" where model.constituency.constituencyId = :constituencyId");
+		query.setParameter("constituencyId", constituencyId);
+		
+		return query.list();
+	}
+	
 
 }
