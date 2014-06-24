@@ -11,4 +11,7 @@ public interface IHHBoothLeaderDAO extends GenericDao<HHBoothLeader, Long>{
 	
 	public List<HHBoothLeader> getAllLeaderModelByBoothId(Long boothId);
 	public List getLeaderIdForBoothId(String name,Long boothId);
+	public List<Object[]> getBoothsOfLeader(Long leaderId);
+	public List<Object[]> getLeadersOfConstituency(Long constituencyId);
+	public Integer deleteLeaderWithBooths(List<Long> boothIds,Long leaderId);
 }

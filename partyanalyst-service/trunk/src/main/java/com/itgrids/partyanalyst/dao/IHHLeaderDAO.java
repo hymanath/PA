@@ -11,4 +11,5 @@ import com.itgrids.partyanalyst.model.HHSurveyQuestion;
 public interface IHHLeaderDAO extends GenericDao<HHLeader, Long>{
 	
 	public List<String> getAllExistingVoterIds();
+	public List<Object[]> getAllLeadersOfConstituency(Long constituencyId);
 }

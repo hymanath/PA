@@ -637,6 +637,8 @@ public interface IBoothPublicationVoterDAO extends
 	  
 	  public Long searchVoterdetailsByBoothAndNameCount(Long boothId,String searchName,String searchType,Long publicationDateId,int firstRecord,int maxResult,String queryType);
 	  
+	  public List<Long> getBoothIdsOfVoterIds(List<Long> voterIds,Long publicationDateId);
+	  
 	  public List<Object[]> getVotersDetailsForPanchayatByPublicationIdAndPAnchayatId(
 				Long panchayatId, Long publicationDateId);
 	  public List<Object[]> getVotersDetailsForConstId(Long constId, Long publicationDateId);

@@ -30,4 +30,11 @@ public interface IHouseHoldVoterDAO extends GenericDao<HouseHoldVoter, Long>{
 	public List<HouseHoldVoter> getTotalVoters();
 	public List<HHSurveyAnswers> getAllSurveyAnswers(List<Long> houseHoldIds);
 	public List<Object[]> getAllQuestions();
+	public List<Long> getHouseHoldsOfLeader(Long leaderId);
+	public List<Long> getBooksOfHouseHoldsOfLeader(Long leaderId,Long constituencyId);
+	
+	public Long getBookIdOfVoter(Long voterId);
+	public List<Object[]> getAllLeadersBooksFamilies(Long constituencyId);
+	public List<Object[]> getFamilyHeadsInPanchayat(Long PanchayatId);
+	public List<Object[]> getLeadersAndCountInLocality(Long locationId);
 }
