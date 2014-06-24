@@ -39,7 +39,7 @@ public class HHBoothLeaderDAO extends GenericDaoHibernate<HHBoothLeader,Long> im
 	
 	public List<Object[]> getLeadersOfConstituency(Long constituencyId){
 		Query qry=getSession().createQuery(" select distinct model.hhLeader.id,model.hhLeader.name,model.hhLeader.voterId from HHBoothLeader model " +
-				" where model.constituency.constituencyId =:constituencyId ");
+				" where model.constituency.constituencyId =:constituencyId order by model.hhLeader.name asc ");
 		
 		qry.setParameter("constituencyId", constituencyId);
 		return qry.list();
