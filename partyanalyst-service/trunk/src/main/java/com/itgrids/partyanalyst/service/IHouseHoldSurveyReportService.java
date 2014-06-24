@@ -7,6 +7,8 @@ import com.itgrids.partyanalyst.dto.HHLeaderDetailsVO;
 import com.itgrids.partyanalyst.dto.HHQuestionDetailsVO;
 import com.itgrids.partyanalyst.dto.HHSurveyVO;
 import com.itgrids.partyanalyst.dto.HouseHoldVotersVO;
+import com.itgrids.partyanalyst.dto.HouseHoldsReportVO;
+import com.itgrids.partyanalyst.dto.HouseHoldsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
@@ -33,6 +35,9 @@ public interface IHouseHoldSurveyReportService {
 	public List<String> getAllVoterIds();
 	public ResultStatus saveLeaderDetails(final HHLeaderDetailsVO leaderDtls);
 	public VoterDetailsVO getVoterDetailsByVoterId(String voterIdCardNo);
+	
+	public HouseHoldsVO getBoothsOrBooksInConstituencyOfLeaderToAssign(Long constituencyId,Long publicationId,Long leaderId,String task,String bookNo,List<Long> boothOrBooks );
+	public HouseHoldsReportVO getReportsOfHouseHolds();
 
 
 }

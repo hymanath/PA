@@ -348,6 +348,10 @@ public interface IVotersAnalysisService {
 	 public List<SelectOptionVO> getVoterNamestempConstituencies();
 	 
 	public List<SelectOptionVO> getPartilaBoothsMappedConstituencies(List<SelectOptionVO> userAccessConstituencyList);
+	
+	public List<GenericVO> getHHLeadersBooksList(Long leaderId);
+	
+	public Long bookIdOfVoter(Long voterId);
 
 	
 }
