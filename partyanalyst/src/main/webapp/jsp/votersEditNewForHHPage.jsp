@@ -984,8 +984,23 @@ function saveHouseHoldInfo(){
 			<td><s:select theme="simple" style="width: 169px;"
 				 name="BoothLeadersList" 
 				id="BoothLeadersListId" list="voterHouseInfoVO.BoothLeaderList" 
+				listKey="id" listValue="name" onChange="getBooksOfLeader()"/>
+			</td>
+		
+	</tr>
+	
+	<tr>
+		<th>Book No</th>
+		<td><b>:</b></td>
+			<td><s:select theme="simple" style="width: 169px;"
+				 name="BoothLeadersList" 
+				id="boothLeaderBookId" list="voterHouseInfoVO.leaderBooksList" 
 				listKey="id" listValue="name"/>
 			</td>
+			
+			<!--<td> <select id="boothLeaderBookId"><option value=1 >1</option>
+			<option value=1 >9</option>
+			<option value=1 >23</option></select> </td>-->
 		
 	</tr>
 
@@ -1091,6 +1106,28 @@ function saveHouseHoldInfo(){
 	
 
 <script>
+	
+	function getBooksOfLeader(){
+		var constnDtls={
+             leader:$('#BoothLeadersListId').val(),
+			 task:"getBooksOfLeader"
+		};
+	
+		$.ajax({
+			type:"POST",
+			url:"getBoothsOrBooksInConstituencyOfLeaderToAssign.action",
+			data :{task:JSON.stringify(constnDtls)},
+		}).done(function(result){
+			  $('#boothLeaderBookId').find('option').remove();
+			  if(result.booksInConstituency !=null){
+				$.each(result.booksInConstituency,function(index,value){
+				  $('#boothLeaderBookId').append('<option value="'+value.bookId+'">'+value.bookNo+'</option>');
+			  });
+			  }
+			  
+		});
+	}
+
 	function searchNow(){
 		$(".searchedVotersDiv").html("");
 		var voterCardNo=$(".vtrIdCls").val();
@@ -1281,6 +1318,10 @@ if('${voterHouseInfoVO.leaderId}'){
 	$("#BoothLeadersListId").val('${voterHouseInfoVO.leaderId}');
 }
 
+if('${voterHouseInfoVO.boothLeaderBookId}'){
+	$("#boothLeaderBookId").val('${voterHouseInfoVO.boothLeaderBookId}');
+}
+
 var voterDtls={
 	boothId:'',
 	voters:[],
@@ -1295,11 +1336,16 @@ function submitQuestionDetails()
   var pattern1= /^\d{10}$/;
   //var pattern2 =  /^\d{1,3}(?:\.\d{0,2})?$/;
 	  
-  if($('#BoothLeadersListId').val() == 0)
-  {
+  if($('#BoothLeadersListId').val() == 0){
        str+='Booth Leader Name is Required<br>';
 	   flag=false;
   }
+  
+   if($('#boothLeaderBookId').val() == 0){
+       str+='Booth Leader BookNo is Required<br>';
+	   flag=false;
+  }
+  
   $('.ageCls').each(function() {
     if($.trim($(this).val()).length == 0)
 	 {
@@ -1371,11 +1417,14 @@ function submitQuestionDetails()
 	 }
 	 
 	var leader=$("#BoothLeadersListId").val();
+	var leaderBookNo=$("#boothLeaderBookId").val();
+	
 	var ownerMob=$("#ownerMobileNo").val();
 	
 	var relationsArr=[];
     $('.voterChkbx').each(function(index,value){
 		var leader=$("#BoothLeadersListId").val();
+		var leaderBookNo=$("#boothLeaderBookId").val();
 		var ownerMob=$("#ownerMobileNo").val();
 		
 	   if(this.checked)
@@ -1390,6 +1439,7 @@ function submitQuestionDetails()
 					 voterSocialPstn: $('#'+this.value+"sclCtg").val(),
 					 isNew: 'false',	
 					 leaderId:leader,
+					 leaderBookNo:leaderBookNo,
 					 ownerMobileNo:ownerMob
 			       };
 
@@ -1431,6 +1481,7 @@ function submitQuestionDetails()
 					 relationShipType:"1",
 					 isNew: 'true',
 					 leaderId:leader,
+					 leaderBookNo:leaderBookNo,
 					 ownerMobileNo:ownerMob
 			       };
 
@@ -1458,6 +1509,7 @@ function submitQuestionDetails()
 					 mobileNo:$('#newPrsnMblNO'+newPersons[i]).val().trim(),
 					 familyMemberId:0,
 					 leaderId:leader,
+					 leaderBookNo:leaderBookNo,
 					 ownerMobileNo:ownerMob					 
 			       };
 
