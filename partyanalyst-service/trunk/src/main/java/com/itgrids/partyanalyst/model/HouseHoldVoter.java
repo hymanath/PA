@@ -40,11 +40,13 @@ public class HouseHoldVoter extends BaseModel implements Serializable {
 	private String isDelete;
 	private String ownerMobileNo;
 	private Long leaderId;
+	private Long leaderBookNo;
 	
 	private UserVoterCategoryValue education;
 	private UserVoterCategoryValue occupation;
 	private UserVoterCategoryValue socialCategory;
-
+	private HHLeader hhLeader;
+	private HHLeaderBooks hhLeaderBooks;
 	
 	
 	@Id
@@ -218,6 +220,37 @@ public class HouseHoldVoter extends BaseModel implements Serializable {
 	public void setSocialCategory(UserVoterCategoryValue socialCategory) {
 	this.socialCategory = socialCategory;
 	}
+	
+	@Column(name="leader_bookId")
+	public Long getLeaderBookNo() {
+		return leaderBookNo;
+	}
+	public void setLeaderBookNo(Long leaderBookNo) {
+		this.leaderBookNo = leaderBookNo;
+	}
+	
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "leader_bookId" ,insertable = false ,updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public HHLeaderBooks getHhLeaderBooks() {
+		return hhLeaderBooks;
+	}
+	public void setHhLeaderBooks(HHLeaderBooks hhLeaderBooks) {
+		this.hhLeaderBooks = hhLeaderBooks;
+	}
+	
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "leader_id" ,insertable = false ,updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public HHLeader getHhLeader() {
+		return hhLeader;
+	}
+	public void setHhLeader(HHLeader hhLeader) {
+		this.hhLeader = hhLeader;
+	}
+	
 	
 	
 	
