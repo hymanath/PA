@@ -626,11 +626,7 @@ public String saveVoterDetails(){
 		List<GenericVO> hhLeadersList=votersAnalysisService.getHHLeadersList(Long.valueOf(boothId));
 		
 		List<GenericVO> leaderBooks = new ArrayList<GenericVO>();
-		Long leaderId = null;
-		if(hhLeadersList!=null && hhLeadersList.size()>1){
-			leaderId = hhLeadersList.get(1).getId();
-		}
-		leaderBooks = votersAnalysisService.getHHLeadersBooksList(leaderId);
+		
 		
 		Long bookId = votersAnalysisService.bookIdOfVoter(Long.valueOf(voterId));
 		
@@ -645,6 +641,18 @@ public String saveVoterDetails(){
 		if(gvo.getId()!=null){
 			voterHouseInfoVO.setLeaderId(gvo.getId());
 		}
+		
+		Long leaderId = null;
+		
+		
+		if(hhLeadersList!=null && hhLeadersList.size()>1){
+			if(gvo.getId()==null){
+				leaderId = hhLeadersList.get(1).getId();
+			}else{
+				leaderId = gvo.getId();
+			}
+		}
+		leaderBooks = votersAnalysisService.getHHLeadersBooksList(leaderId);
 		
 		houseHoldIdOfVoter = houseHoldSurveyReportService.getHouseHoldIdOfVoter(Long.valueOf(voterId));
 		
