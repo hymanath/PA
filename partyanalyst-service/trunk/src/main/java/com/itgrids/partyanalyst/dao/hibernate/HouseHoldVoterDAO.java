@@ -177,7 +177,7 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 	}
 	
 	public List<HHSurveyAnswers> getAllSurveyAnswers(List<Long> houseHoldIds){
-		Query query=getSession().createQuery(" select model from HHSurveyAnswers model where model.houseHold.houseHoldId in (:houseHoldIds)" +
+		Query query=getSession().createQuery(" select model from HHSurveyAnswers model where model.houseHolds.houseHoldId in (:houseHoldIds)" +
 				" group by model.hhSurveyAnswerId ");
 		query.setParameterList("houseHoldIds", houseHoldIds);
 		return query.list();
@@ -189,5 +189,64 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 		return query.list();
 	}
 	
+	public List<Long> getHouseHoldsOfLeader(Long leaderId){
+		Query query = getSession().createQuery(" select model.voter.voterId from HouseHoldVoter model,HHBoothLeader model2" +
+				" where model.leaderId =  model2.hhLeader.id" +
+				" and model.isDelete =:deleteStatus and model.leaderId =:leaderId ");
+		
+		query.setParameter("deleteStatus", IConstants.FALSE);
+		query.setParameter("leaderId", leaderId);
+		
+		return query.list();
+	}
 	
+	public List<Long> getBooksOfHouseHoldsOfLeader(Long leaderId,Long constituencyId){
+		Query query = getSession().createQuery(" select distinct model.hhLeaderBooks.hhLeaderBookId from HouseHoldVoter model,HHBoothLeader model2" +
+				" where model.leaderId =  model2.hhLeader.id " +
+				" and model2.constituency.constituencyId =:constituencyId " +
+				" and model.isDelete =:deleteStatus " +
+				" and model.leaderId =:leaderId ");
+		
+		query.setParameter("deleteStatus", IConstants.FALSE);
+		query.setParameter("leaderId", leaderId);
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
+	
+	public Long getBookIdOfVoter(Long voterId){
+		Query query = getSession().createQuery(" select model.hhLeaderBooks.hhLeaderBookId from HouseHoldVoter model" +
+				" where model.voter.voterId = :voterId and model.isDelete =:deleteStatus");
+		query.setParameter("voterId", voterId);
+		query.setParameter("deleteStatus", IConstants.FALSE);
+		return (Long) query.uniqueResult();
+	}
+	
+	public List<Object[]> getAllLeadersBooksFamilies(Long constituencyId){
+		Query query = getSession().createQuery(" select model.houseHolds.panchayat.panchayatId,model.houseHolds.panchayat.panchayatName," +
+				" count(distinct model.houseHolds.houseHoldId),count(distinct model.hhLeader.id)" +
+				" from HouseHoldVoter model where model.isDelete = 'false'" +
+				" and model.hhLeader.is_active = 'YES'" +
+				" group by model.houseHolds.panchayat.panchayatId ");
+		
+		return query.list();
+	}
+	
+	
+	public List<Object[]> getFamilyHeadsInPanchayat(Long panchayatId){
+		Query query = getSession().createQuery(" select distinct model.houseHoldVoterId," +
+				" model.houseHolds.houseHoldId," +
+				" model.houseHolds.houseNo," +
+				" model.houseHolds.panchayat.panchayatId," +
+				" model.houseHolds.panchayat.panchayatName " +
+				" from HouseHoldVoter model " +
+				" where model.isDelete = 'false' and model.voterFamilyRelation.voterFamilyRelationId = 1" +
+				" and model.houseHolds.panchayat.panchayatId = :panchayatId" );
+		
+		query.setParameter("panchayatId", panchayatId);
+		return query.list();
+	}
+	
+	public List<Object[]> getLeadersAndCountInLocality(Long locationId){
+		return null;
+	}
 }

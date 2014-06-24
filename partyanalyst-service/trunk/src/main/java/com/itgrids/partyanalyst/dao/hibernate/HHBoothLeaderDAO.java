@@ -22,13 +22,35 @@ public class HHBoothLeaderDAO extends GenericDaoHibernate<HHBoothLeader,Long> im
 		return qry.list();
 	}
 	
-	public List getLeaderIdForBoothId(String name,Long boothId)
+	public List getLeaderIdForBoothId(String voterId,Long boothId)
 	{
-		Query query = getSession().createQuery("select model.hhBoothLeaderId from HHBoothLeader model where model.hhLeader.name= :name and model.boothId= :boothId");
-		query.setParameter("name", name);
-		query.setParameter("boothId", boothId);
+		Query query = getSession().createQuery("select model.hhBoothLeaderId from HHBoothLeader model where model.hhLeader.voterId= :voterId ");
+		query.setParameter("voterId", voterId);
+		//query.setParameter("boothId", boothId);
 		return query.list();
+	}
+	
+	public List<Object[]> getBoothsOfLeader(Long leaderId){
+		Query qry=getSession().createQuery(" select model.booth.boothId,model.booth.partNo from HHBoothLeader model where model.hhLeader.id =:leaderId ");
 		
+		qry.setParameter("leaderId", leaderId);
+		return qry.list();
+	}
+	
+	public List<Object[]> getLeadersOfConstituency(Long constituencyId){
+		Query qry=getSession().createQuery(" select distinct model.hhLeader.id,model.hhLeader.name,model.hhLeader.voterId from HHBoothLeader model " +
+				" where model.constituency.constituencyId =:constituencyId ");
+		
+		qry.setParameter("constituencyId", constituencyId);
+		return qry.list();
+	}
+	
+	public Integer deleteLeaderWithBooths(List<Long> boothIds,Long leaderId){
+		Query query = getSession().createQuery("delete from HHBoothLeader model where model.booth.boothId in(:boothIds)" +
+				" and model.hhLeader.id =:leaderId");
+		query.setParameterList("boothIds", boothIds);
+		query.setParameter("leaderId", leaderId);
+		return query.executeUpdate();
 	}
 	
 	
