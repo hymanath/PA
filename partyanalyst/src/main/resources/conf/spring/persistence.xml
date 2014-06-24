@@ -394,6 +394,7 @@
 				
 				<value>com.itgrids.partyanalyst.model.HHLeader</value>
 				<value>com.itgrids.partyanalyst.model.HHBoothLeader</value>
+				<value>com.itgrids.partyanalyst.model.HHLeaderBooks</value>
 				
 				<value>com.itgrids.partyanalyst.model.VoterTag</value>
 				<value>com.itgrids.partyanalyst.model.BoothActivities</value>
