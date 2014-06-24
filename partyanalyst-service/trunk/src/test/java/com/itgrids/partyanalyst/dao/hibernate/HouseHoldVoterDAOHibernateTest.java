@@ -46,7 +46,7 @@ public class HouseHoldVoterDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testForGettingFamilyDetails(){
+	/*public void testForGettingFamilyDetails(){
 		List<HouseHoldVoter> list=houseHoldVoterDAO.getTotalVoters();
 		
 		List<HouseHoldVotersVO> hvoList=new ArrayList<HouseHoldVotersVO>();
@@ -94,8 +94,8 @@ public class HouseHoldVoterDAOHibernateTest extends BaseDaoTestCase{
 					questVOList.add(hvo);
 				}
 			}
-			/*hsv.setHouseHoldId(lng);
-			hsv.setQuestionsList(questVOList);*/
+			hsv.setHouseHoldId(lng);
+			hsv.setQuestionsList(questVOList);
 			
 		hqMap.put(lng, questVOList);
 		}
@@ -179,6 +179,15 @@ public class HouseHoldVoterDAOHibernateTest extends BaseDaoTestCase{
 		return null;
 		
 		
+	}*/
+	
+	public void test(){
+		List<Object[]> list = houseHoldVoterDAO.getAllLeadersBooksFamilies(228l);
+		/*for(Object[] obj:list){
+			System.out.println(Long.valueOf(obj[0].toString())+" "+Long.valueOf(obj[1].toString()));
+		}*/
+		
+		System.out.println(list.size());
 	}
 
 }

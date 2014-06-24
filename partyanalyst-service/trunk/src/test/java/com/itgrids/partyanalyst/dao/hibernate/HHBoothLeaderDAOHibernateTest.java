@@ -1,8 +1,10 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
+import org.hibernate.mapping.Array;
 
 import com.itgrids.partyanalyst.dao.IHHBoothLeaderDAO;
 import com.itgrids.partyanalyst.model.HHBoothLeader;
@@ -16,8 +18,13 @@ public class HHBoothLeaderDAOHibernateTest extends BaseDaoTestCase{
 	}
 
 	public void test(){
-		List<HHBoothLeader> list=hhBoothLeaderDAO.getAllLeaderModelByBoothId(134868l);
-		System.out.println(list.size());
+		//List<Object[]> list=hhBoothLeaderDAO.getLeadersOfConstituency(228l);
+		
+		List<Long> boothIds = new ArrayList<Long>();
+		boothIds.add(134868l);
+		
+		int count = hhBoothLeaderDAO.deleteLeaderWithBooths(boothIds);
+		System.out.println(count);
 	}
 
 }
