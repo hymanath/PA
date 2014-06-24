@@ -1,9 +1,11 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Formatter;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -11,6 +13,7 @@ import java.util.Collections;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
+import org.jfree.util.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -18,6 +21,7 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.IHHLeaderBooksDAO;
 import com.itgrids.partyanalyst.dao.IHHOptionTypeDAO;
 import com.itgrids.partyanalyst.dao.IHHOptionsDAO;
 import com.itgrids.partyanalyst.dao.IHHQuestionOptionsDAO;
@@ -40,11 +44,14 @@ import com.itgrids.partyanalyst.dto.HHLeaderDetailsVO;
 import com.itgrids.partyanalyst.dto.HHQuestionDetailsVO;
 import com.itgrids.partyanalyst.dto.HHSurveyVO;
 import com.itgrids.partyanalyst.dto.HouseHoldVotersVO;
+import com.itgrids.partyanalyst.dto.HouseHoldsReportVO;
+import com.itgrids.partyanalyst.dto.HouseHoldsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.model.Booth;
+import com.itgrids.partyanalyst.model.HHLeaderBooks;
 import com.itgrids.partyanalyst.model.HHOptionType;
 import com.itgrids.partyanalyst.model.HHOptions;
 import com.itgrids.partyanalyst.model.HHQuestionOptions;
@@ -99,6 +106,8 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 	
 	@Autowired
 	private IHouseHoldsFamilyDetailsDAO houseHoldsFamilyDetailsDAO; 
+	
+	@Autowired private IHHLeaderBooksDAO hhLeaderBooksDAO;
 	
 	
 	public IVotersAnalysisService getVotersAnalysisService() {
@@ -843,6 +852,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 								voter.setIsDelete(IConstants.FALSE);
 								voter.setOwnerMobileNo(voterDtls.getOwnerMobileNo());
 								voter.setLeaderId(voterDtls.getLeaderId());
+								voter.setLeaderBookNo(voterDtls.getLeaderBookNo());
 								
 								houseHoldVoterDAO.save(voter);
 								
@@ -879,6 +889,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 								newPerson.setIsDelete(IConstants.FALSE);
 								newPerson.setOwnerMobileNo(voterDtls.getOwnerMobileNo());
 								newPerson.setLeaderId(voterDtls.getLeaderId());
+								newPerson.setLeaderBookNo(voterDtls.getLeaderBookNo());
 								
 								houseHoldVoterDAO.save(newPerson);
 
@@ -922,6 +933,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 										houseHoldsVoter.setSocialCategoryId(voterDtls.getSocialPstnId());
 										houseHoldsVoter.setOwnerMobileNo(voterDtls.getOwnerMobileNo());
 										houseHoldsVoter.setLeaderId(voterDtls.getLeaderId());
+										houseHoldsVoter.setLeaderBookNo(voterDtls.getLeaderBookNo());
 										houseHoldsVoter.setIsDelete(IConstants.FALSE);
 										
 										houseHoldVoterDAO.save(houseHoldsVoter);
@@ -941,6 +953,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 									voter.setSocialCategoryId(voterDtls.getSocialPstnId());
 									voter.setOwnerMobileNo(voterDtls.getOwnerMobileNo());
 									voter.setLeaderId(voterDtls.getLeaderId());
+									voter.setLeaderBookNo(voterDtls.getLeaderBookNo());
 									voter.setIsDelete(IConstants.FALSE);
 									
 									houseHoldVoterDAO.save(voter);
@@ -1017,6 +1030,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 										familyMember.setVoterFamilyRelationId(voterDtls.getVoterFamilyRelationId());
 										familyMember.setOwnerMobileNo(voterDtls.getOwnerMobileNo());
 										familyMember.setLeaderId(voterDtls.getLeaderId());
+										familyMember.setLeaderBookNo(voterDtls.getLeaderBookNo());
 										houseHoldVoterDAO.save(familyMember);
 										
 									}
@@ -1049,6 +1063,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 									voter.setHouseHoldsFamilyDetailsId(familyDetails.getHouseHoldsFamilyDetailsId());
 									voter.setOwnerMobileNo(voterDtls.getOwnerMobileNo()!=null?voterDtls.getOwnerMobileNo():"");
 									voter.setLeaderId(voterDtls.getLeaderId());
+									voter.setLeaderBookNo(voterDtls.getLeaderBookNo());
 									voter.setIsDelete(IConstants.FALSE);
 									
 									houseHoldVoterDAO.save(voter);
@@ -1214,7 +1229,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 	{
 		log.debug("Entered into the saveLeaderDetails service method");
 		ResultStatus resultStatus = new ResultStatus();
-		List namesList = hhBoothLeaderDAO.getLeaderIdForBoothId(leaderDtls.getName(),leaderDtls.getBoothId());
+		List namesList = hhBoothLeaderDAO.getLeaderIdForBoothId(leaderDtls.getVoterId(),leaderDtls.getBoothId());
 	    if(namesList != null && namesList.size() > 0 ){
 	    	resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 	    	return resultStatus;
@@ -1228,16 +1243,22 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 					details.setName(leaderDtls.getName());
 					details.setMobileNo(leaderDtls.getMobileNo());
 					details.setVoterId(leaderDtls.getVoterId());
-					details.setUniqueCode(leaderDtls.getUniqueCode());					
+					//details.setUniqueCode(leaderDtls.getUniqueCode());					
 					details.setIs_active(leaderDtls.getIsActive());
+					//details.setConstituencyId(leaderDtls.getConstId());
+					//details.setBoothId(leaderDtls.getBoothId());
+					details = hhLeaderDAO.save(details);
 					
-					     details = hhLeaderDAO.save(details);
+							HHLeaderBooks hhLeaderBooks = new HHLeaderBooks();
+							hhLeaderBooks.setLeaderId(details.getId());
+							hhLeaderBooks.setBookNo(Long.parseLong(leaderDtls.getUniqueCode(),10));
+							hhLeaderBooks = hhLeaderBooksDAO.save(hhLeaderBooks);
 										
-							HHBoothLeader hhBoothLeader = new HHBoothLeader();							
-							hhBoothLeader.setConstituencyId(leaderDtls.getConstId());
-							hhBoothLeader.setBoothId(leaderDtls.getBoothId());
-							hhBoothLeader.setHhLeaderId(details.getId());
-							hhBoothLeader = hhBoothLeaderDAO.save(hhBoothLeader);
+								HHBoothLeader hhBoothLeader = new HHBoothLeader();							
+								hhBoothLeader.setConstituencyId(leaderDtls.getConstId());
+								hhBoothLeader.setBoothId(leaderDtls.getBoothId());
+								hhBoothLeader.setHhLeaderId(details.getId());
+								hhBoothLeader = hhBoothLeaderDAO.save(hhBoothLeader);
 					}				
 			});
 		} catch (Exception e) {
@@ -1280,6 +1301,345 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 		}
 		return resultVO;
 	}
+    
+    public HouseHoldsVO getBoothsOrBooksInConstituencyOfLeaderToAssign(final Long constituencyId,Long publicationId,final Long leaderId,String task,String bookNo,final List<Long> boothOrBooks){
+    	HouseHoldsVO hv = new HouseHoldsVO();
+    	try{
+    	if(task.equalsIgnoreCase("forBooths")){
+    		List<Object[]> boothsInConsti = boothDAO.getBoothsInAConstituencyByPublication(constituencyId,publicationId);
+    		List<Object[]> boothsOfLeader = hhBoothLeaderDAO.getBoothsOfLeader(leaderId);
+    		
+    		List<Long> hseHldsUnderLdr = houseHoldVoterDAO.getHouseHoldsOfLeader(leaderId);
+    		
+    		List<Long> boothsUnderLdr = new ArrayList<Long>();
+    		if(hseHldsUnderLdr != null && hseHldsUnderLdr.size()>0){
+    			boothsUnderLdr = boothPublicationVoterDAO.getBoothIdsOfVoterIds(hseHldsUnderLdr, publicationId);
+    		}
+    		
+    		List<Long> bthsOfLdrList = new ArrayList<Long>();
+    		if(boothsOfLeader!=null && boothsOfLeader.size()>0){
+    			for(Object[] obj:boothsOfLeader){
+    				bthsOfLdrList.add(Long.valueOf(obj[0].toString()));
+    			}
+    		}
+    		
+    		if(boothsInConsti !=null && boothsInConsti.size()>0){
+    				List<HouseHoldsVO> boothsList = new ArrayList<HouseHoldsVO>();
+    			for(Object[] obj:boothsInConsti){
+    				HouseHoldsVO hvo = new HouseHoldsVO();
+    				
+    				if(bthsOfLdrList!=null && bthsOfLdrList.size()>0){
+    					if(bthsOfLdrList.contains(Long.valueOf(obj[0].toString()))){
+    						hvo.setEnableBooth(true);
+    						
+    						if(boothsUnderLdr!=null && boothsUnderLdr.size()>0){
+    							if(boothsUnderLdr.contains(Long.valueOf(obj[0].toString()))){
+    								hvo.setDisableBooth(true);
+    							}else{
+    								hvo.setDisableBooth(false);
+    							}
+    						}else{
+    							hvo.setDisableBooth(false);
+    						}
+    						
+    					}else{
+    						hvo.setEnableBooth(false);
+    						hvo.setDisableBooth(false);
+    					}
+    				}
+    				
+    				hvo.setBoothId(Long.valueOf(obj[0].toString()));
+    				hvo.setPartNo(Long.valueOf(obj[1].toString()));
+    				
+    				boothsList.add(hvo);
+    			}
+    			
+    			hv.setBoothsInConstituency(boothsList);
+    		}
+    		
+    		
+    		
+    	}else if(task.equalsIgnoreCase("forBooks")){
+    		//List<Long> booksOfLeader = hhLeaderBooksDAO.getAllLeaderBooks(leaderId);
+    		List<Long> bksOfLeaderInConsti = hhLeaderBooksDAO.getAllLeaderBooksInConstituency(leaderId,constituencyId);
+    		
+    		List<Object[]> bksOfLeaderInConstincy = hhLeaderBooksDAO.getAllLeaderBooksInConstituencyWithNo(leaderId,constituencyId);
+    		List<Object[]> booksNotAssgned = hhLeaderBooksDAO.getAllBooksNotAssigned();
+    		
+    		List<Long> hseHldsUnderLdr = houseHoldVoterDAO.getBooksOfHouseHoldsOfLeader(leaderId, constituencyId);
+    		
+    		    		
+    		List<Long> bksOfLdrList = new ArrayList<Long>();
+    		if(bksOfLeaderInConsti!=null && bksOfLeaderInConsti.size()>0){
+    			bksOfLdrList = bksOfLeaderInConsti;
+    		}
+    		
+    		booksNotAssgned.addAll(bksOfLeaderInConstincy);
+    		
+    		if(booksNotAssgned !=null && booksNotAssgned.size()>0){
+    				List<HouseHoldsVO> booksList = new ArrayList<HouseHoldsVO>();
+    			for(Object[] obj:booksNotAssgned){
+    				HouseHoldsVO hvo = new HouseHoldsVO();
+    				
+    				hvo.setBookNo(Long.valueOf(obj[1].toString()));
+					hvo.setBookId(Long.valueOf(obj[0].toString()));
+					
+    				
+    				if(bksOfLdrList!=null && bksOfLdrList.size()>0){
+    					
+    					if(bksOfLdrList.contains(Long.valueOf(obj[0].toString()))){
+    						hvo.setEnableBook(true);
+    						
+    						if(hseHldsUnderLdr!=null && hseHldsUnderLdr.size()>0){
+    							if(hseHldsUnderLdr.contains(Long.valueOf(obj[0].toString()))){
+    								hvo.setDisableBook(true);
+    							}else{
+    								hvo.setDisableBook(false);
+    							}
+    						}else{
+    							hvo.setDisableBook(false);
+    						}
+    						
+    					}else{
+    						hvo.setEnableBook(false);
+    						hvo.setDisableBook(false);
+    					}
+    				}
+    				
+    				
+    				booksList.add(hvo);
+    			}
+    			
+    			hv.setBooksInConstituency(booksList);
+    		}
+    		
+    	}else if(task.equalsIgnoreCase("checkBook")){
+    		List<Object[]> booksOfConstituency = hhLeaderBooksDAO.getAllBooksInConstituencyWithBookNo(constituencyId,Long.parseLong(bookNo));
+    		List<Object[]> booksNotAssgned = hhLeaderBooksDAO.getAllBooksNotAssignedWithBookNo(Long.parseLong(bookNo));
+    		
+    		if(booksOfConstituency != null && booksOfConstituency.size()>0 || booksNotAssgned !=null && booksNotAssgned.size()>0){
+    			hv.setStatusOfBook("exist");
+    		}else{
+    			hv.setStatusOfBook("notExist");
+    		}
+    		
+    	}else if(task.equalsIgnoreCase("leadersOfConstituency")){
+    		List<Object[]> leadersOfConsti = hhBoothLeaderDAO.getLeadersOfConstituency(constituencyId);
+    		List<HouseHoldsVO> leadersInConstiList = new ArrayList<HouseHoldsVO>();
+    		
+    		if(leadersOfConsti!=null && leadersOfConsti.size()>0){
+    			for(Object[] obj:leadersOfConsti){
+    				HouseHoldsVO hvo = new HouseHoldsVO();
+    				
+    				hvo.setLeaderId(Long.valueOf(obj[0].toString()));
+    				hvo.setLeaderName(obj[1].toString());
+    				hvo.setVoterId(obj[2].toString());
+    				
+    				leadersInConstiList.add(hvo);
+    				
+    			}
+    			
+    			hv.setLeadersOfConsti(leadersInConstiList);
+    		}
+    		
+    	}else if(task.equalsIgnoreCase("assignSelectedBooths")){
+    		Object stat = transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				public void doInTransactionWithoutResult(TransactionStatus status) {
+					
+					List<Object[]> boothsOfLeader = hhBoothLeaderDAO.getBoothsOfLeader(leaderId);
+					
+					List<Long> bthsOfLdrList = new ArrayList<Long>();
+		    		if(boothsOfLeader!=null && boothsOfLeader.size()>0){
+		    			for(Object[] obj:boothsOfLeader){
+		    				bthsOfLdrList.add(Long.valueOf(obj[0].toString()));
+		    			}
+		    		}
+		    		
+		    		Collection<Long> similar = new HashSet<Long>( bthsOfLdrList );
+		            Collection<Long> different = new HashSet<Long>();
+		            different.addAll( boothOrBooks );
+		            different.addAll( bthsOfLdrList );
+		            
+		            similar.retainAll( bthsOfLdrList );
+		            different.removeAll( similar );
+		            
+		            List<Long> toRemove = new ArrayList<Long>();
+		            
+		            
+		            if(bthsOfLdrList!=null && bthsOfLdrList.size()>0){
+		            	for(Long booth:bthsOfLdrList){
+		            		if(!boothOrBooks.contains(booth)){
+		            			toRemove.add(booth);
+		            		}
+		            	}
+		            }
+		          
+		            different.removeAll(toRemove);
+		            
+		            int deletdCount = 0;
+		            if(toRemove!=null && toRemove.size()>0){
+		            	deletdCount = hhBoothLeaderDAO.deleteLeaderWithBooths(toRemove,leaderId);
+					}
+		            
+		            if(different!=null && different.size()>0){
+    					for(Long boothId:different){
+							HHBoothLeader hhBoothLeader = new HHBoothLeader();							
+							hhBoothLeader.setConstituencyId(constituencyId);
+							hhBoothLeader.setBoothId(boothId);
+							hhBoothLeader.setHhLeaderId(leaderId);
+							hhBoothLeader = hhBoothLeaderDAO.save(hhBoothLeader);
+    					}
+					}
+				}});
+    		
+    		if(stat != null){
+    			hv.setStatusOfBook("success");
+    		}
+    		
+    		
+    	}else if(task.equalsIgnoreCase("assignSelectedBooks")){
+    		Object stat = transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				public void doInTransactionWithoutResult(TransactionStatus status) {
+					
+				List<Long> bksOfLeaderInConsti = hhLeaderBooksDAO.getAllLeaderBooksInConstituency(leaderId,constituencyId);
+				
+				Collection<Long> similar = new HashSet<Long>( bksOfLeaderInConsti );
+	            Collection<Long> different = new HashSet<Long>();
+	            different.addAll( boothOrBooks );
+	            different.addAll( bksOfLeaderInConsti );
+	            
+	            similar.retainAll( bksOfLeaderInConsti );
+	            different.removeAll( similar );
+	            
+	            List<Long> toRemove = new ArrayList<Long>();
+	            
+	            List<Long> bksNotAssgnd = new ArrayList<Long>();
+	            List<Object[]> booksNotAssgned = hhLeaderBooksDAO.getAllBooksNotAssigned();
+	            if(booksNotAssgned !=null && booksNotAssgned.size()>0){
+	            	for(Object[] obj:booksNotAssgned){
+	            		bksNotAssgnd.add(Long.valueOf(obj[0].toString()));
+	            	}
+	            }
+	            
+	            
+	            
+	            
+	            
+	            if(bksOfLeaderInConsti!=null && bksOfLeaderInConsti.size()>0){
+	            	for(Long booth:bksOfLeaderInConsti){
+	            		if(!boothOrBooks.contains(booth)){
+	            			toRemove.add(booth);
+	            		}
+	            	}
+	            }
+	          
+	            different.removeAll(toRemove);
+	            
+	            List<Long> diffList = new ArrayList<Long>();
+	            diffList.addAll(different);
+	            
+	            List<Object[]> list = null;
+	            if(diffList!=null && diffList.size()>0){
+	             list = hhLeaderBooksDAO.getAllLeaderBooksInConstituencyWithNoOfBookIds(leaderId, constituencyId,diffList);
+	            }
+	            Map<Long,Long> bookMap = new HashMap<Long, Long>();
+	            if(list!=null && list.size()>0){
+	            	for(Object[] obj:list){
+	            		bookMap.put(Long.valueOf(obj[0].toString()), Long.valueOf(obj[1].toString()));
+	            	}
+	            }
+	            
+	            
+	            int delCount =0;
+	            
+	            if(toRemove!=null && toRemove.size()>0){
+	            	delCount = hhLeaderBooksDAO.deleteLeaderWithBooks(toRemove, constituencyId);
+	            }
+					
+    			if(different!=null && different.size()>0){
+        			for(Long book:different){
+        				
+        				if(bksNotAssgnd!=null && bksNotAssgnd.size()>0){
+        					if(bksNotAssgnd.contains(book)){
+        						int count = hhLeaderBooksDAO.updateLeaderForBooks(book, leaderId);
+        					}else{
+        						HHLeaderBooks hhLeaderBooks = new HHLeaderBooks();							
+            					hhLeaderBooks.setLeaderId(leaderId);
+            					hhLeaderBooks.setBookNo(bookMap.get(book));
+            					hhLeaderBooks = hhLeaderBooksDAO.save(hhLeaderBooks);
+        					}
+        				}else{
+        					HHLeaderBooks hhLeaderBooks = new HHLeaderBooks();							
+        					hhLeaderBooks.setLeaderId(leaderId);
+        					hhLeaderBooks.setBookNo(bookMap.get(book));
+        					hhLeaderBooks = hhLeaderBooksDAO.save(hhLeaderBooks);
+        				}
+        			}
+        		}
+			}});
+    		if(stat != null){
+    			hv.setStatusOfBook("success");
+    		}
+    	}
+    	
+    	else if(task.equalsIgnoreCase("addGivenBookNo")){
+    		
+    		List<Object[]> booksOfConstituency = hhLeaderBooksDAO.getAllBooksInConstituencyWithBookNo(constituencyId,Long.parseLong(bookNo));
+    		List<Object[]> booksNotAssgned = hhLeaderBooksDAO.getAllBooksNotAssignedWithBookNo(Long.parseLong(bookNo));
+    		boolean bookExist = false;
+    		
+    		if(booksOfConstituency != null && booksOfConstituency.size()>0 || booksNotAssgned !=null && booksNotAssgned.size()>0){
+    			bookExist = true;
+    		}else{
+    			hv.setStatusOfBook("failed");
+    		}
+    		
+    		if(!bookExist){
+    		HHLeaderBooks hhLeaderBooks = new HHLeaderBooks();							
+			hhLeaderBooks.setBookNo(Long.parseLong(bookNo));
+			hhLeaderBooks = hhLeaderBooksDAO.save(hhLeaderBooks);
+			
+				if(hhLeaderBooks!=null){
+					hv.setStatusOfBook("success");
+				}else{
+					hv.setStatusOfBook("failed");
+				}
+    		}
+    	}else if(task.equalsIgnoreCase("getBooksOfLeader")){
+    		List<Object[]> bookList = hhLeaderBooksDAO.getBooksOfLeader(leaderId);
+    		List<HouseHoldsVO> booksList = new ArrayList<HouseHoldsVO>();
+    		
+    		if(bookList!=null && bookList.size()>0){
+    				for(Object[] ob:bookList){
+    	    			HouseHoldsVO hsv = new HouseHoldsVO();
+    	    			hsv.setBookId(Long.valueOf(ob[0].toString()));
+    	    			hsv.setBookNo(Long.valueOf(ob[1].toString()));
+    	    			booksList.add(hsv);
+    	    		}
+    	    	}
+    		
+    		hv.setBooksInConstituency(booksList);
+    	    	
+    		}
+    	}catch (Exception e) {
+    		Log.error("Exception Raised in AssignBoothsOrBooks Method " + e);
+    		
+		}
+    	
+    	return hv;
+    }
+    
+    public HouseHoldsReportVO getReportsOfHouseHolds(){
+    	HouseHoldsReportVO finalVO = new HouseHoldsReportVO();
+    	
+    	//List<Object[]> summaryList = houseHoldVoterDAO.getAllLeadersBooksFamilies();
+    	
+    	List<Object[]> panchayatWiseFamilies = houseHoldVoterDAO.getFamilyHeadsInPanchayat(3361l);
+    	
+    	List<Object[]> leadersInLocation = houseHoldVoterDAO.getLeadersAndCountInLocality(null);
+    	
+    	return null;
+    }
     
     
 }

@@ -29,6 +29,7 @@ import java.util.TreeMap;
 import javassist.bytecode.Descriptor.Iterator;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -60,6 +61,7 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
+import com.itgrids.partyanalyst.dao.IHHLeaderBooksDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothPublicationDAO;
@@ -117,6 +119,7 @@ import com.itgrids.partyanalyst.dto.CrossVotingConsolidateVO;
 import com.itgrids.partyanalyst.dto.DataVerificationVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.HHSurveyVO;
+import com.itgrids.partyanalyst.dto.HouseHoldsVO;
 import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
@@ -271,6 +274,8 @@ public class VotersAnalysisService implements IVotersAnalysisService{
     private ILanguageDAO languageDAO;
     private IVoterNamesDAO voterNamesDAO;
     private IPdfReportsService pdfReportService;
+    
+    @Autowired private IHHLeaderBooksDAO hhLeaderBooksDAO;
     
     
 
@@ -21136,6 +21141,30 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 		return hbLdrList;
 		
 		
+	}
+	
+	public List<GenericVO> getHHLeadersBooksList(Long leaderId){
+		List<Object[]> bookList = hhLeaderBooksDAO.getBooksOfLeader(leaderId);
+		List<GenericVO> booksList = new ArrayList<GenericVO>();
+		
+		if(bookList!=null && bookList.size()>0){
+				for(Object[] ob:bookList){
+	    			GenericVO gv = new GenericVO();
+	    			gv.setId(Long.valueOf(ob[0].toString()));
+	    			gv.setName(ob[1].toString());
+	    			booksList.add(gv);
+	    		}
+	    	}
+		booksList.add(0, new GenericVO(0l, "Select Book"));
+		return booksList;
+	}
+	
+	public Long bookIdOfVoter(Long voterId){
+		Long bookId = null;
+		
+		bookId = houseHoldVoterDAO.getBookIdOfVoter(voterId);
+		
+		return bookId;
 	}
 	  
 	  public List<SelectOptionVO> insertVotersDataInIntermediateTablesForDistrict(Long districtId, Long publicationDateId,Long userId)
