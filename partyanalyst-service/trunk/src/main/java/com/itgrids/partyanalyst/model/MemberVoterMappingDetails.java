@@ -21,32 +21,34 @@ import org.hibernate.annotations.NotFoundAction;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class MemberVoterMappingDetails extends BaseModel implements java.io.Serializable {
 	
-	
-	/*CREATE TABLE member_voter_mapping_details (
-			  member_voter_mapping_details_id bigint(15) NOT NULL AUTO_INCREMENT,
-			  member_id bigint(20) DEFAULT NULL ,
-			  voter_id bigint(15) NOT NULL,
-			  member_matched_level_type_mapping_id bigint(15),
-			  KEY fk_member_membr_voter_mapping_details (member_id),
-			  KEY fk_member_voter (voter_id),
-			  KEY fk_member_voter (member_matched_level_type_mapping_id),
-			  PRIMARY KEY (member_voter_mapping_details_id)
-			) ;
-*/
-	
 	private Long memberVoterMappingDetailsId;
 	private Long memberId;
 	private Long voterId;
-	private Long memberMatchedLevelTypeMappingId;
+	//private Long memberMatchedLevelTypeMappingId;
 	private TdMember tdMember;
 	private Voter voter;
-	private MemberMatchedLevelTypeMapping memberMatchedLevelTypeMapping;
+	//private MemberMatchedLevelTypeMapping memberMatchedLevelTypeMapping;
+	private Long memberMatchedTypeId;
+	private MemberMatchedType memberMatchedType;
 	
 	private String ageMatched;
 	private String genderMatched;
 	private String relativeNameMatched;
+	private Long matchCount;
+	private String memberPanchayatName;
+	private String voterPanchayatName;
+	private Long constituencyId;
+	private Constituency constituency;
+	
+	private String memberGender;
+	private String voterGender;
+	private Long voterAge;
+	private Long memberAge;
+	private String memberRelativeName;
+	private String voterRelativeName;
 	
 	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "member_voter_mapping_details_id", unique = true, nullable = false)
@@ -74,14 +76,14 @@ public class MemberVoterMappingDetails extends BaseModel implements java.io.Seri
 		this.voterId = voterId;
 	}
 	
-	@Column(name="member_matched_level_type_mapping_id")
+/*	@Column(name="member_matched_level_type_mapping_id")
 	public Long getMemberMatchedLevelTypeMappingId() {
 		return memberMatchedLevelTypeMappingId;
 	}
 	public void setMemberMatchedLevelTypeMappingId(
 			Long memberMatchedLevelTypeMappingId) {
 		this.memberMatchedLevelTypeMappingId = memberMatchedLevelTypeMappingId;
-	}
+	}*/
 	
 	
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -106,7 +108,7 @@ public class MemberVoterMappingDetails extends BaseModel implements java.io.Seri
 		this.voter = voter;
 	}
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	/*@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_matched_level_type_mapping_id",insertable=false,updatable=false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
@@ -118,7 +120,7 @@ public class MemberVoterMappingDetails extends BaseModel implements java.io.Seri
 		this.memberMatchedLevelTypeMapping = memberMatchedLevelTypeMapping;
 	}
 	
-
+*/
 	@Column(name="is_age_matched")
 	public String getAgeMatched() {
 		return ageMatched;
@@ -141,5 +143,118 @@ public class MemberVoterMappingDetails extends BaseModel implements java.io.Seri
 	}
 	public void setRelativeNameMatched(String relativeNameMatched) {
 		this.relativeNameMatched = relativeNameMatched;
+	}
+	
+
+	@Column(name="member_matched_type_id")
+	public Long getMemberMatchedTypeId() {
+		return memberMatchedTypeId;
+	}
+	public void setMemberMatchedTypeId(Long memberMatchedTypeId) {
+		this.memberMatchedTypeId = memberMatchedTypeId;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "member_matched_type_id",insertable=false,updatable=false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public MemberMatchedType getMemberMatchedType() {
+		return memberMatchedType;
+	}
+	public void setMemberMatchedType(MemberMatchedType memberMatchedType) {
+		this.memberMatchedType = memberMatchedType;
+	}
+	
+	
+   @Column(name="match_count")
+	public Long getMatchCount() {
+		return matchCount;
+	}
+	public void setMatchCount(Long matchCount) {
+		this.matchCount = matchCount;
+	}
+	
+
+	@Column(name="member_panchayat_name")
+	public String getMemberPanchayatName() {
+		return memberPanchayatName;
+	}
+	public void setMemberPanchayatName(String memberPanchayatName) {
+		this.memberPanchayatName = memberPanchayatName;
+	}
+	
+	@Column(name="voter_panchayat_name")
+	public String getVoterPanchayatName() {
+		return voterPanchayatName;
+	}
+	public void setVoterPanchayatName(String voterPanchayatName) {
+		this.voterPanchayatName = voterPanchayatName;
+	}
+	
+	@Column(name="constituency_id")
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "constituency_id",insertable=false,updatable=false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Constituency getConstituency() {
+		return constituency;
+	}
+	public void setConstituency(Constituency constituency) {
+		this.constituency = constituency;
+	}
+	
+    @Column(name="member_gender")
+	public String getMemberGender() {
+		return memberGender;
+	}
+	public void setMemberGender(String memberGender) {
+		this.memberGender = memberGender;
+	}
+	
+	@Column(name="voter_gender")
+	public String getVoterGender() {
+		return voterGender;
+	}
+	public void setVoterGender(String voterGender) {
+		this.voterGender = voterGender;
+	}
+	
+	@Column(name="voter_age")
+	public Long getVoterAge() {
+		return voterAge;
+	}
+	public void setVoterAge(Long voterAge) {
+		this.voterAge = voterAge;
+	}
+	
+	@Column(name="member_age")
+	public Long getMemberAge() {
+		return memberAge;
+	}
+	public void setMemberAge(Long memberAge) {
+		this.memberAge = memberAge;
+	}
+	
+	@Column(name="member_relative_name")
+	public String getMemberRelativeName() {
+		return memberRelativeName;
+	}
+	public void setMemberRelativeName(String memberRelativeName) {
+		this.memberRelativeName = memberRelativeName;
+	}
+	
+	@Column(name="voter_relative_name")
+	public String getVoterRelativeName() {
+		return voterRelativeName;
+	}
+	public void setVoterRelativeName(String voterRelativeName) {
+		this.voterRelativeName = voterRelativeName;
 	}
 }

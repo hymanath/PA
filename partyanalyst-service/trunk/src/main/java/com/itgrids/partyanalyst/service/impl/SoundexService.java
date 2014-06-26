@@ -83,16 +83,16 @@ public class SoundexService implements ISoundexService {
 		List<Long> list = new ArrayList<Long>();
 		
 		
-		list.add(8L);
-	/*	list.add(1L);
+		//list.add(65L);
+		list.add(1L);
 		list.add(2L);
 		list.add(3L);
 		list.add(4L);
 		list.add(5L);
 		list.add(6L);
-		list.add(7L);*/
-		/*list.add(8L);*/
-		/*list.add(10L);
+		list.add(7L);
+		list.add(8L);
+		list.add(10L);
 		list.add(11L);
 		list.add(12L);
 		list.add(13L);
@@ -124,9 +124,9 @@ public class SoundexService implements ISoundexService {
 		list.add(52L);
 		list.add(53L);
 		list.add(54L);
-		list.add(55L);/*
+		list.add(55L);
 	
-		/*list.add(56L);
+		list.add(56L);
 		list.add(57L);
 		list.add(58L);
 		list.add(59L);
@@ -253,9 +253,9 @@ public class SoundexService implements ISoundexService {
 		list.add(227L);
 		list.add(228L);
 		list.add(229L);
-		list.add(231L);*/
-		/*list.add(232L);*/
-		/*list.add(233L);
+		list.add(231L);
+		list.add(232L);
+		list.add(233L);
 		list.add(236L);
 		list.add(237L);
 		list.add(238L);
@@ -378,7 +378,7 @@ public class SoundexService implements ISoundexService {
 		list.add(366L);
 		list.add(367L);
 		list.add(368L);
-		list.add(369L);*/
+		list.add(369L);
 
 
 		for(Long constituencyId:list)		
@@ -390,7 +390,7 @@ public class SoundexService implements ISoundexService {
 
 	public List<SoundexVO> mapVoterDetailsByUsingSoundexByPanchayatId(Long constitueecyId)
 	{
-		LOG.debug("Entered into the getMappedVoterDetailsByUsingSoundexByPanchayatId service method");
+		LOG.debug("Entered into the getMappedVoterDetailsByUsingSoundexByPanchayatId service method "+constitueecyId);
 		List<SoundexVO>  resultList = new ArrayList<SoundexVO>();
 		List<SoundexVO>  membersList = null;
 		Map<String,List<SoundexVO>> totalVoters=new HashMap<String, List<SoundexVO>>();
@@ -1205,7 +1205,8 @@ public class SoundexService implements ISoundexService {
     		//if(member.isUnMatched())
     		if (member.getBothMatchedList().size() == 0
 					&& member.getAgeMatchedList().size() == 0
-					&& member.getRelativeMatchedList().size() == 0)    
+					&& member.getRelativeMatchedList().size() == 0 && member.getNotMatchedList().size() == 0 && 
+					member.getExactMatchList().size() == 0L && member.getExactMatchList1().size() ==0)    
     		{
     			System.out.println("NO MATCH FOUND _0::"+member.getId()+"-"+
     					  member.getName()+"-"+

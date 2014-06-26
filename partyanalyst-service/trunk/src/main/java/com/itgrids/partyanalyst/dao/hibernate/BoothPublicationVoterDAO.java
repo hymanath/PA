@@ -82,7 +82,7 @@ public class BoothPublicationVoterDAO extends
 					.createQuery("select " +
 							"BPV.voter.voterId,BPV.voter.relationshipType," +
 							"BPV.voter.relativeName,BPV.voter.gender , " +
-							"BPV.voter.age,BPV.voter.voterIDCardNo,BPV.voter.name " +
+							"BPV.voter.age,BPV.voter.voterIDCardNo,BPV.voter.name,BPV.booth.panchayat.panchayatName  " +
 							" from " +
 							"BoothPublicationVoter BPV where BPV.booth.publicationDate.publicationDateId = :publicationDateId and " +
 							" BPV.booth.panchayat.panchayatId = :panchayatId");
