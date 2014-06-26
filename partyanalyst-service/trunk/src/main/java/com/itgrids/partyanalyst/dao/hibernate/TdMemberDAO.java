@@ -23,7 +23,8 @@ public class TdMemberDAO extends GenericDaoHibernate<TdMember, Long> implements 
 				"TM.nRelationType , " +
 				"TM.sRelationName , " +
 				"TM.sGender , " +
-				"TM.dateofBirth  " +
+				"TM.dateofBirth  ," +
+				"TM.panchayat.panchayatName  " +
 				"from TdMember TM " +
 				"where " +
 				"TM.panchayat.panchayatId = :panchayatId  order by TM.nMemberId" );

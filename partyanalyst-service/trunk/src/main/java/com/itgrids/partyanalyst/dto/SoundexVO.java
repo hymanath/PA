@@ -23,7 +23,50 @@ public class SoundexVO {
 	private boolean relativeNameMatch;
 	private boolean unMatched;
 	private boolean split;
+	private List<SoundexVO> ageMatchedList = new ArrayList<SoundexVO>();
+	private List<SoundexVO> relativeMatchedList = new ArrayList<SoundexVO>();
+	private List<SoundexVO> notMatchedList = new ArrayList<SoundexVO>();
+	private List<SoundexVO> bothMatchedList = new ArrayList<SoundexVO>();
+	private String panchayatName = "";
+	private Long constituencyId;
 
+	
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	public String getPanchayatName() {
+		return panchayatName;
+	}
+	public void setPanchayatName(String panchayatName) {
+		this.panchayatName = panchayatName;
+	}
+	public List<SoundexVO> getNotMatchedList() {
+		return notMatchedList;
+	}
+	public void setNotMatchedList(List<SoundexVO> notMatchedList) {
+		this.notMatchedList = notMatchedList;
+	}
+	public List<SoundexVO> getBothMatchedList() {
+		return bothMatchedList;
+	}
+	public void setBothMatchedList(List<SoundexVO> bothMatchedList) {
+		this.bothMatchedList = bothMatchedList;
+	}
+	public List<SoundexVO> getAgeMatchedList() {
+		return ageMatchedList;
+	}
+	public void setAgeMatchedList(List<SoundexVO> ageMatchedList) {
+		this.ageMatchedList = ageMatchedList;
+	}
+	public List<SoundexVO> getRelativeMatchedList() {
+		return relativeMatchedList;
+	}
+	public void setRelativeMatchedList(List<SoundexVO> relativeMatchedList) {
+		this.relativeMatchedList = relativeMatchedList;
+	}
 	public boolean isSplit() {
 		return split;
 	}
