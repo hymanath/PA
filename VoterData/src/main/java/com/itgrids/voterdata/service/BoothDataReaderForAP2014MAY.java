@@ -56,7 +56,7 @@ public class BoothDataReaderForAP2014MAY {
 
                     sb.append(stripper.getText(pd));
                     sb = sb.delete(sb.indexOf("Age As On 01/01/2014"), sb.length()-1);
-                    String str1 = "19/04/2014)";
+                    String str1 = "/04/2014)";
                     String str2 = "Others\r\n";
                     
                     int startNo = sb.lastIndexOf(str1)+str1.length()+1;
