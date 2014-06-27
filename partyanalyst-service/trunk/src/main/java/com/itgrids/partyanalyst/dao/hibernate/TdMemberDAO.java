@@ -33,6 +33,25 @@ public class TdMemberDAO extends GenericDaoHibernate<TdMember, Long> implements 
 		
 		return query.list();
 		
+	}
+	
+	public List<Object[]> getUrbanMembersDetails(Long constituencyId)
+	{
+		Query query = getSession().createQuery("select " +	
+				"TM.nMemberId , " +
+				"TM.sMemberName , " +
+				"TM.nRelationType , " +
+				"TM.sRelationName , " +
+				"TM.sGender , " +
+				"TM.dateofBirth  " +
+				//"TM.panchayat.panchayatName  " +
+				"from TdMember TM " +
+				"where " +
+				"TM.assemblyIdTemp = :constituencyId  and TM.panchayat is null order by TM.nMemberId" );
+		
+		query.setParameter("constituencyId", constituencyId);
+		
+		return query.list();
 		
 	}
 	

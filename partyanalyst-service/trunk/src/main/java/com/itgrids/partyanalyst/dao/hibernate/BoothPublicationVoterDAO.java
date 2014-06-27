@@ -91,6 +91,26 @@ public class BoothPublicationVoterDAO extends
 			query.setParameter("panchayatId", panchayatId);
 			return query.list();
 		}
+		
+		
+		public List<Object[]> getUrbanVotersDetails(
+				Long constituencyId, Long publicationDateId) {
+		
+			Query query = getSession()
+					.createQuery("select " +
+							"BPV.voter.voterId,BPV.voter.relationshipType," +
+							"BPV.voter.relativeName,BPV.voter.gender , " +
+							"BPV.voter.age,BPV.voter.voterIDCardNo,BPV.voter.name  " +
+							" from " +
+							"BoothPublicationVoter BPV where BPV.booth.publicationDate.publicationDateId = :publicationDateId and " +
+							" BPV.booth.constituency.constituencyId = :constituencyId and booth.panchayat is null");
+			
+			query.setParameter("publicationDateId", publicationDateId);
+			query.setParameter("constituencyId", constituencyId);
+			return query.list();
+		}
+		
+		
 	  public List<Object[]> getVotersDetailsForPanchayatByPublicationId(
 				Long panchayatId, Long publicationDateId, Integer startIndex,
 				Integer maxRecords, String order, String columnName) {
