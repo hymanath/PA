@@ -648,4 +648,8 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<Object[]> getvoterDetailsInAPanchyat(Long panchayatId);
 	  
 	  public List<Object[]> getCasteDetailsForACaste(Long constituencyId,Long publicationDateId,Long casteStateId);
+	  public List<Object[]> getUrbanVotersDetails(
+				Long constituencyId, Long publicationDateId);
+	  
+	  
 }
