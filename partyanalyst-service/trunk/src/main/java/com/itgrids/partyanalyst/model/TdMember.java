@@ -350,7 +350,8 @@ CREATE TABLE `td_member` (
 		this.nAssemblyID = nAssemblyID;
 	}
 	
-	@Column(name="assembly_id_temp")
+	//@Column(name="assembly_id_temp")
+	@Column(name="constituency_id_pa")
 	public Long getAssemblyIdTemp() {
 		return assemblyIdTemp;
 	}
