@@ -29,8 +29,9 @@ public class SoundexService implements ISoundexService {
 	private IPanchayatDAO panchayatDAO;
 	private IMemberVoterMappingDetailsDAO memberVoterMappingDetailsDAO ;
 	java.util.Set<Long> totalSet = new java.util.HashSet<Long>();
-	private RefinedSoundex refinedSoundex = null;
+	private RefinedSoundex refinedSoundex = new RefinedSoundex();
 	int testcount =0;
+	private Map<String,List<SoundexVO>> map = new HashMap<String,List<SoundexVO>>();
 
 	
 	
@@ -83,7 +84,10 @@ public class SoundexService implements ISoundexService {
 		List<Long> list = new ArrayList<Long>();
 		
 		
-		//list.add(65L);
+		
+	
+		
+	/*	
 		list.add(1L);
 		list.add(2L);
 		list.add(3L);
@@ -124,8 +128,7 @@ public class SoundexService implements ISoundexService {
 		list.add(52L);
 		list.add(53L);
 		list.add(54L);
-		list.add(55L);
-	
+		list.add(55L);	
 		list.add(56L);
 		list.add(57L);
 		list.add(58L);
@@ -152,7 +155,10 @@ public class SoundexService implements ISoundexService {
 		list.add(81L);
 		list.add(82L);
 		list.add(84L);
-		list.add(85L);
+		*/
+		
+		
+		/*list.add(85L);
 		list.add(86L);
 		list.add(87L);
 		list.add(89L);
@@ -177,6 +183,9 @@ public class SoundexService implements ISoundexService {
 		list.add(116L);
 		list.add(117L);
 		list.add(120L);
+		
+	
+		
 		list.add(121L);
 		list.add(122L);
 		list.add(124L);
@@ -190,7 +199,12 @@ public class SoundexService implements ISoundexService {
 		list.add(137L);
 		list.add(138L);
 		list.add(140L);
-		list.add(141L);
+		list.add(141L);*/
+		
+		
+		/*
+		
+		
 		list.add(146L);
 		list.add(147L);
 		list.add(149L);
@@ -227,8 +241,8 @@ public class SoundexService implements ISoundexService {
 		list.add(194L);
 		list.add(195L);
 		list.add(196L);
-		list.add(199L);
-		list.add(203L);
+		list.add(199L);*/
+		/*list.add(203L);
 		list.add(205L);
 		list.add(206L);
 		list.add(207L);
@@ -301,7 +315,7 @@ public class SoundexService implements ISoundexService {
 		list.add(286L);
 		list.add(288L);
 		list.add(289L);
-		list.add(290L);
+		//list.add(290L);
 		list.add(291L);
 		list.add(294L);
 		list.add(295L);
@@ -379,12 +393,220 @@ public class SoundexService implements ISoundexService {
 		list.add(367L);
 		list.add(368L);
 		list.add(369L);
+*/
+		
+		/*
+		
+		list.add(351L);
+		list.add(361L);
+		list.add(323L);
+		list.add(344L);
+		list.add(313L);
+		list.add(286L);
+		list.add(363L);
+		list.add(360L);
+		list.add(53L);
+		list.add(149L);
+		list.add(233L);
+		list.add(208L);
+		list.add(246L);
+		list.add(138L);
+		list.add(184L);
+		list.add(285L);
+		list.add(241L);
+		list.add(219L);
+		list.add(283L);
+		list.add(44L);
+		list.add(337L);
+		list.add(226L);
+		list.add(134L);
+		list.add(236L);
+		list.add(275L);
+		list.add(187L);
+		list.add(211L);
+		list.add(185L);
+		list.add(252L);
+		list.add(281L);
+		list.add(301L);
+		list.add(173L);
+		list.add(159L);
+		list.add(318L);
+		list.add(316L);
+		list.add(196L);
+		list.add(327L);
+		list.add(237L);
+		list.add(320L);
+		list.add(231L);
+		list.add(248L);
+		list.add(306L);
+		list.add(212L);
+		list.add(176L);
+		list.add(322L);
+		list.add(147L);
+		list.add(171L);
+		list.add(364L);
+		list.add(368L);
+		list.add(192L);
+		list.add(194L);
+		list.add(315L);
+		list.add(272L);
+		list.add(359L);
+		list.add(238L);
+		list.add(155L);
+		list.add(290L);
+		list.add(311L);
+		list.add(186L);
+		list.add(324L);
+		list.add(325L);
+		list.add(331L);
+		list.add(277L);
+		list.add(297L);
+		list.add(312L);
+		list.add(328L);
+		list.add(310L);
+		list.add(182L);
+		list.add(261L);
+		list.add(153L);
+		list.add(163L);
+		list.add(169L);
+		list.add(291L);
+		list.add(330L);
+		list.add(250L);
+		list.add(168L);
+		list.add(258L);
+		list.add(317L);
+		list.add(257L);
+		list.add(239L);
+		list.add(278L);
+		list.add(303L);
+		list.add(264L);
+		list.add(357L);
+		list.add(215L);
+		list.add(302L);
+		list.add(157L);
+		list.add(170L);
+		list.add(319L);
+		list.add(180L);
+		list.add(179L);
+		list.add(329L);
+		list.add(217L);
+		list.add(156L);
+		list.add(47L);
+		list.add(228L);
+		list.add(362L);
+		list.add(339L);
+		list.add(254L);
+		list.add(353L);
+		list.add(177L);
+		list.add(178L);
+		list.add(160L);
+		list.add(270L);
+		list.add(289L);
+		list.add(343L);
+		list.add(308L);
+		list.add(146L);
+		list.add(232L);
+		list.add(167L);
+		list.add(213L);
+		list.add(309L);
+		list.add(334L);
+		list.add(101L);
+		list.add(260L);
+		list.add(284L);
+		list.add(52L);
+		list.add(218L);
+		list.add(354L);
+		list.add(255L);
+		list.add(280L);
+		list.add(253L);
+		list.add(225L);
+		list.add(49L);
+		list.add(214L);
+		list.add(210L);
+		list.add(358L);
+		list.add(50L);
+		list.add(299L);
+		list.add(223L);
+		list.add(300L);
+		list.add(221L);
+		list.add(338L);
+		list.add(352L);
+		list.add(298L);
+		list.add(152L);
+		list.add(222L);
+		list.add(314L);
+		list.add(276L);
+		list.add(294L);
+		list.add(367L);
+		list.add(263L);
+		list.add(199L);
+		list.add(227L);
+		list.add(195L);
+		list.add(356L);
+		list.add(224L);
+		list.add(304L);
+		list.add(51L);
+		list.add(244L);
+		list.add(267L);
+		list.add(271L);
+		list.add(262L);
+		list.add(307L);
+		list.add(229L);
+		list.add(216L);
+		list.add(336L);
+		list.add(332L);
+		list.add(191L);
+		list.add(365L);
+		list.add(348L);
+		list.add(345L);
+		list.add(347L);
+		list.add(349L);
+		list.add(355L);
+		list.add(346L);
+		list.add(282L);
+		list.add(350L);
+		list.add(333L);
+		list.add(207L);
+		list.add(265L);*/
+		
+		
+		list.add(32L);
+		list.add(243L);
+		list.add(273L);
+		list.add(295L);
+		list.add(296L);
+		list.add(242L);
+		list.add(70L);
+		list.add(251L);
+		list.add(335L);
+		list.add(326L);
+		list.add(369L);
+		list.add(340L);
+		list.add(193L);
+		list.add(288L);
+		list.add(54L);
+		list.add(321L);
+		list.add(43L);
+		list.add(249L);
+		list.add(341L);
+		list.add(342L);
+		list.add(245L);
+		list.add(46L);
+		list.add(305L);
+		list.add(279L);
+
+		
+		List<Long> constituencyIds = memberVoterMappingDetailsDAO.getConstituencyIdsAlreadyhasData();
+		
+	
 
 
-		for(Long constituencyId:list)		
+		for(Long constituencyId:list)
+			if(!constituencyIds.contains(constituencyId))
 			mapVoterDetailsByUsingSoundexByPanchayatId(constituencyId);
 		
 		return null;
+		
 	}
 
 
@@ -397,6 +619,8 @@ public class SoundexService implements ISoundexService {
 		int count=0;
 		char[] letters="abcdefghijklmnopqrstuvwxyz".toCharArray();
 		System.out.println(letters.length);
+		
+		
 		for(;;)
 		{
 			
@@ -437,6 +661,14 @@ public class SoundexService implements ISoundexService {
 				buildAllTheMemberAndMatchedVotersDetails(membersList,votersDetails);
 				resultList.addAll(membersList);
 			}
+			
+			 List<Object[]> urbanVotersDetails = boothPublicationVoterDAO.getUrbanVotersDetails(constitueecyId,10L);
+			 setVotersDetails(null,urbanVotersDetails,totalVoters);
+			 
+				List<Object[]> memberDetails = tdMemberDAO.getUrbanMembersDetails(constitueecyId);
+				setMembersDetails(resultList,memberDetails,constitueecyId);
+
+
 			
 			constLevelDest(resultList,totalVoters);
 			
@@ -515,7 +747,7 @@ public class SoundexService implements ISoundexService {
 	
 	public void setVotersDetails(List<SoundexVO> votersDetails , List<Object[]> list, Map<String, List<SoundexVO>> totalVoters)
 	{
-		LOG.debug("Entered into the setVotersDetails service method");
+		//LOG.debug("Entered into the setVotersDetails service method");
 		String firstLitter = null;
 		String testString = null;
 
@@ -534,9 +766,13 @@ public class SoundexService implements ISoundexService {
                 voter.setAge((Long)obj[4]);
                 voter.setVoterIDCardNo(obj[5].toString());
                 voter.setName(obj[6].toString());
-                voter.setPanchayatName(obj[7].toString());
                 
-                votersDetails.add(voter);
+                if(obj.length ==8)
+                 voter.setPanchayatName(obj[7].toString());
+                
+                if(votersDetails != null)
+                	votersDetails.add(voter);
+                
                 testString = obj[6].toString();
             	 firstLitter=	obj[6].toString().substring(0, 1).trim().toLowerCase();
             	 if(totalVoters.get(firstLitter) != null)
@@ -546,10 +782,58 @@ public class SoundexService implements ISoundexService {
             		 System.out.println("----------------"+testString+"----------------"+(Long)obj[0]);
             	 }
             	testcount++;
-
+            	
+    			String voterName = obj[6].toString().trim();
+    			String[] voterSplit = null;
+    			
+    			 voterSplit = voterName.split(" ");
+    			 
+    			 if(voterSplit.length != 2)
+    				 voterSplit = voterName.split(".");
+    			 
+    			 if(voterSplit.length == 2)
+    			 {
+    				 String nameSoundex = refinedSoundex.soundex(voterSplit[0].trim())+refinedSoundex.soundex(voterSplit[1].trim());
+    				 String reverseNameSoundex = refinedSoundex.soundex(voterSplit[1].trim())+refinedSoundex.soundex(voterSplit[0].trim());
+    				 
+    				 
+    				 if(map.get(nameSoundex) != null)
+    				 {
+    					 map.get(nameSoundex).add(voter);
+    				 }else
+    				 {
+    					List<SoundexVO>  nameList = new ArrayList<SoundexVO>();
+    					nameList.add(voter);
+    				    map.put(nameSoundex,nameList ); 
+    				 }
+    				 
+    				 
+    				 if(map.get(reverseNameSoundex) != null)
+    				 {
+    					 map.get(reverseNameSoundex).add(voter);
+    				 }else
+    				 {
+    					List<SoundexVO>  reverseNameList = new ArrayList<SoundexVO>();
+    					reverseNameList.add(voter);
+    				    map.put(reverseNameSoundex,reverseNameList); 
+    				 }
+    				 
+    			 }else
+    			 {
+    				 String nameSoundex = refinedSoundex.soundex(voterName.trim());
+    				 
+    				 if(map.get(nameSoundex) != null)
+    				 {
+    					 map.get(nameSoundex).add(voter);
+    				 }else
+    				 {
+    					List<SoundexVO>  reverseNameList = new ArrayList<SoundexVO>();
+    					reverseNameList.add(voter);
+    				    map.put(nameSoundex,reverseNameList); 
+    				 }
+    				 
+    			 }
 			}
-			
-			
 			
 		}catch(Exception e)
 		{
@@ -576,7 +860,9 @@ public class SoundexService implements ISoundexService {
 				member.setRelationShipType(obj[2].toString());
 				member.setRelativeName(obj[3].toString());
 				member.setGender(obj[4].toString());
-				member.setPanchayatName(obj[6].toString());
+				
+				if(obj.length == 7 )
+				  member.setPanchayatName(obj[6].toString());
 				member.setConstituencyId(constitueecyId);
 				
 				Date joinedDate = (Date)obj[5];
@@ -594,7 +880,9 @@ public class SoundexService implements ISoundexService {
 				}
 			/*	 if((Long)obj[0] == 1254772L || (Long)obj[0] == 1365758L||(Long)obj[0] == 1365764L||
 	            		 (Long)obj[0] == 1365825L||(Long)obj[0] == 1365851L||(Long)obj[0] == 1367932L||(Long)obj[0] == 1377540L)*/
-	            					membersList.add(member);
+				
+				//if((Long)obj[0] == 1012631L)
+	            		membersList.add(member);
 			}
 			
 		}catch(Exception e)
@@ -778,12 +1066,26 @@ public class SoundexService implements ISoundexService {
 
 			Map<String,List<SoundexVO> > mapIds= totalVoters;
 			 for (SoundexVO memberVO : membersList) {
-				
+				 
+				 if(!memberVO.isUnMatched())
+						continue;
+				 
+
+					List<SoundexVO> voterMatchedList = map.get(refinedSoundex.soundex(memberVO.getName()));
+				 
+					if(voterMatchedList != null)
+					{
+						if(voterMatchedList.size() > 1)
+							memberVO.getSoundexMatchList1().addAll(voterMatchedList);
+							
+						System.out.println("HAI I FOUND IN NEW IMPLEMENTATION");
+						continue;
+					}
+					
 			List<SoundexVO> votersDetails = new ArrayList<SoundexVO>();
 
 			
-			if(!memberVO.isUnMatched())
-				continue;
+			
 			String name1=memberVO.getName().substring(0, 1).trim().toLowerCase();
 				
 			votersDetails=mapIds.get(name1);		
@@ -807,6 +1109,10 @@ public class SoundexService implements ISoundexService {
 
 					}else
 					{
+						
+						
+					
+						
 					  //soundex match
 						 name = soundex.soundex(memName).equalsIgnoreCase(soundex.soundex(voterName));//comparing name by applying soundex to cadre and voter names
 						 
@@ -851,6 +1157,7 @@ public class SoundexService implements ISoundexService {
 							 }
 							
 						   } //else
+						 
 
 					}
 				}
@@ -1191,7 +1498,7 @@ public class SoundexService implements ISoundexService {
 								 );
     					i++;
     					
-    					saveMemberVoterMappingDetails(member,nomatch,null,2L,0);
+    					saveMemberVoterMappingDetails(member,nomatch,null,2L,member.getNotMatchedList().size());
 
     					
 				}
