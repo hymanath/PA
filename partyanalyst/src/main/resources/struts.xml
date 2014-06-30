@@ -36,7 +36,7 @@
 	<global-results>
     <result name="multipleAccess" type="redirect">homePage.action?action=multipleAccess</result>
 	<result name="exception">jsp/globalError.jsp</result>
-	<result name="tdpLoginPage">jsp/login.jsp</result>
+	<result name="tdpLoginPage" type="redirect">login.action</result>
 	
 	</global-results>
 
