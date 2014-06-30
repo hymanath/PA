@@ -783,10 +783,11 @@ function showNewsCountDetails(result,jsObj)
   str += '     </tr>';
   for(i=0 ; i < maxCount ; i++)
    {
+   var sourceId = $('#source option:selected').val();
    str+= '<tr style="text-align:center">';
       if(result[0].fileVOList[i] != null)
       // str+= '<td>'+result[0].fileVOList[i].categoryType+' -  <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'All\',\'\',\'\',\''+result[0].fileVOList[i].categoryId+'\',\'\',\'\',\'\',\''+result[0].fileVOList[i].categoryType+'\',\''+jsObj.fromDate+'\',\''+jsObj.toDate+'\');"><font color="brown">  '+result[0].fileVOList[i].sizeOfGallary+'</font></a></td>';
-	   str+= '<td>'+result[0].fileVOList[i].categoryType+' -  <a href="javascript:{}" onclick="buildVotersByLocCustomWardDataTable1(\''+jsObj.task+'\',\'getNews\',\'All\',\'\',\'\',\''+result[0].fileVOList[i].categoryId+'\',\'\',\'\',\'\',\''+result[0].fileVOList[i].categoryType+'\',\''+jsObj.fromDate+'\',\''+jsObj.toDate+'\');"><font color="brown">  '+result[0].fileVOList[i].sizeOfGallary+'</font></a></td>';
+	   str+= '<td>'+result[0].fileVOList[i].categoryType+' -  <a href="javascript:{}" onclick="buildVotersByLocCustomWardDataTable1(\''+jsObj.task+'\',\'getNews\',\'All\',\''+sourceId+'\',\'\',\''+result[0].fileVOList[i].categoryId+'\',\'\',\'\',\'\',\''+result[0].fileVOList[i].categoryType+'\',\''+jsObj.fromDate+'\',\''+jsObj.toDate+'\');"><font color="brown">  '+result[0].fileVOList[i].sizeOfGallary+'</font></a></td>';
 	  else
 	   str+= '<td style="text-align:center">--</td>';
 	  if(result[1].fileVOList[i] != null)
@@ -796,7 +797,7 @@ function showNewsCountDetails(result,jsObj)
 	    str+= '<td>--</td>';
 	  if(result[2].fileVOList[i] != null)
 	   //str+= '<td>'+  result[2].fileVOList[i].language+' -   <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'All\',\'\',\''+result[2].fileVOList[i].languegeId+'\',\'\',\'\',\'\',\'\',\''+result[2].fileVOList[i].language+'\',\''+jsObj.fromDate+'\',\''+jsObj.toDate+'\');"><font color="brown"> '+ result[2].fileVOList[i].sizeOfGallary+'</font></a></td>';
-	  str+= '<td>'+  result[2].fileVOList[i].language+' -   <a href="javascript:{}" onclick="buildVotersByLocCustomWardDataTable1(\''+jsObj.task+'\',\'getNews\',\'All\',\'\',\''+result[2].fileVOList[i].languegeId+'\',\'\',\'\',\'\',\'\',\''+result[2].fileVOList[i].language+'\',\''+jsObj.fromDate+'\',\''+jsObj.toDate+'\');"><font color="brown"> '+ result[2].fileVOList[i].sizeOfGallary+'</font></a></td>';
+	  str+= '<td>'+  result[2].fileVOList[i].language+' -   <a href="javascript:{}" onclick="buildVotersByLocCustomWardDataTable1(\''+jsObj.task+'\',\'getNews\',\'All\',\''+sourceId+'\',\''+result[2].fileVOList[i].languegeId+'\',\'\',\'\',\'\',\'\',\''+result[2].fileVOList[i].language+'\',\''+jsObj.fromDate+'\',\''+jsObj.toDate+'\');"><font color="brown"> '+ result[2].fileVOList[i].sizeOfGallary+'</font></a></td>';
 	  else
 	    str+= '<td>--</td>';
 	  if(result[3].fileVOList[i] != null)
