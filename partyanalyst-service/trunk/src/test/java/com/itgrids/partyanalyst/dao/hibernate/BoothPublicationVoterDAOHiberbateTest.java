@@ -1517,7 +1517,7 @@ List<Long> attrIds = new ArrayList<Long>();
 		
 	}*/
 	
-	public void testResult()
+	/*public void testResult()
 	{
 		List<Long> partyIds = new ArrayList();
 		partyIds.add(72l);
@@ -1625,5 +1625,14 @@ List<Long> attrIds = new ArrayList<Long>();
 			e.printStackTrace();
 		}
 		return returnList;
+	}*/
+	
+	public void test(){
+		List<Long> voterIds = new ArrayList<Long>();
+		voterIds.add(6979788l);
+		voterIds.add(6979790l);
+		
+		List<Long> q = boothPublicationVoterDAO.getBoothIdsOfVoterIds(voterIds,8l);
+		q.size();
 	}
 }
