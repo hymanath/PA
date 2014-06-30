@@ -7,6 +7,7 @@
 <head>
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
+<script type="text/javascript" src="js/blockui.js"></script>
 
 </head>
 <body>
@@ -139,7 +140,7 @@ createNewLeader();
 	
 	 <div id="LeaderSelectDiv" class="selectDiv" style="margin-bottom:15px;">		
 		 Select Leader : <font class="requiredFont"  style="margin-left: 55px;">*</font>
-		<select id="leaderId"><option value="0">Select Leader</option></select>
+		<select id="leaderId" onchange="assignBooths()"><option value="0">Select Leader</option></select>
 		<span style='display:none;float: right;margin:7px 38px;' id='ajaxLoadAssgnLdr'><img src='./images/icons/search.gif' /></span>
 	</div>
  
@@ -326,17 +327,26 @@ function checkBookAvail(){
 		  url:"getBoothsOrBooksInConstituencyOfLeaderToAssign.action",
 		  data :{task:JSON.stringify(reqDtls)},
 	}).done(function(result){
-	if(result.statusOfBook.indexOf('already') <0){
-			$('#avalStatus').html('<span style="color:#66AF66;">'+result.statusOfBook+'</span>');
-			isBookExist = true;
-	}
-	else
-		$('#avalStatus').html('<span style="color:#FF0020;">'+result.statusOfBook+'</span>');
+		buildStatusOfBook(result);
 	});
-	 }
-      
+}      
 }
 
+function buildStatusOfBook(result){
+	if(result.statusOfBook !=null){
+		if(result.statusOfBook == "notExist"){
+			isBookExist = true;
+			$('#avalStatus').html('<span style="color:#66AF66;">You Can Create Book With This Number </span>');
+		}else if(result.statusOfBook == "exist"){
+			isBookExist = false;
+			$('#avalStatus').html('<span style="color:red;"> Book Already Exist With This Number </span>');
+		}
+	}else{
+		isBookExist = false;
+		$('#avalStatus').html('<span style="color:red;"> Book Already Exist With This Number </span>');
+	}
+
+}
 
 function getLeadersOfConstituency(){
 
@@ -478,6 +488,9 @@ function assignBooths(){
 }
 
 function assignBooks(){
+
+	$.blockUI({ message: '<h6><img src="images/icons/ajaxImg.gif"/>Please wait.....</h6>' });
+
 	var consti = $("#constituencyIdAssgn").val();
 	var publication = $("#publicationIdAssgn").val();
 	var leader = $("#leaderId").val();
@@ -506,6 +519,8 @@ function assignBooks(){
 
 function buildBooths(result){
 
+	$.blockUI({ message: '<h6><img src="images/icons/ajaxImg.gif"/>Please wait.....</h6>' });
+	
 	$("#assgnBooks").html("");
 	$("#assgnBooths").html("");
 	
@@ -525,7 +540,7 @@ function buildBooths(result){
 				
 			}
 		}
-		str +="<span class='btn btn-success' onclick='assignSelectedBooths()'  style='float:right;' > Assign </span>";
+		str +="<br><span class='btn btn-success offset4' onclick='assignSelectedBooths()'  > Assign </span>";
 	}
 	else{
 			str +="<h4 style='margin-left:100px;color:#FF0020;'> No Data Available...</h4>";
@@ -534,10 +549,13 @@ function buildBooths(result){
 	
 	$("#assgnBooths").html(str);
 	
+	$.unblockUI();
 }
 
 function buildBooks(result){
 
+	$.blockUI({ message: '<h6><img src="images/icons/ajaxImg.gif"/>Please wait.....</h6>' });
+	
 	$("#assgnBooks").html("");
 	$("#assgnBooths").html("");
 
@@ -564,6 +582,8 @@ function buildBooks(result){
 	
 	
 	$("#assgnBooks").html(str);
+	
+	$.unblockUI();
 }
 
 function assignSelectedBooks(){
@@ -591,7 +611,10 @@ function assignSelectedBooks(){
 	}).done(function(result){
 	//	console.log(result);
 		$("#assignBooksErrDiv").html("<span style='color:#54A854;font-size:13px;font-weight:bold;'>Books are Assigned Successfully . ");
-		assignBooks();
+		setTimeout(function() {
+			assignBooks();
+		}, 2000);
+		
 	});
 }
 
@@ -618,9 +641,15 @@ function assignSelectedBooths(){
 		  url:"getBoothsOrBooksInConstituencyOfLeaderToAssign.action",
 		  data :{task:JSON.stringify(reqDtls)},
 	}).done(function(result){
-		//console.log(result);
-		$('#assignErrDiv').html(" Booths are Assigned Successfully .");
-		assignBooths();
+		$.blockUI({ message: '<h6> Booths are Assigned Successfully..  Please wait.. <img src="images/icons/ajaxImg.gif"/></h6>' });
+	//	$('#assignErrDiv').html(" Booths are Assigned Successfully .");
+		
+		setTimeout(function() {
+			assignBooths();
+		}, 5000);
+		
+		
+		
 	});
 }
 
@@ -651,12 +680,17 @@ function addBooks(){
 		  data :{task:JSON.stringify(reqDtls)},
 	}).done(function(result){
 		//console.log(result);
-		if(result.statusOfBook.indexOf('failed') <0){
-			$('#addBooksErrDiv').html("<span style='color:#FF0020;;font-weight:bold;'> Book Already exist . </span>");
+		if(result.statusOfBook !=null){
+			if(result.statusOfBook == "success"){
+				$('#addBooksErrDiv').html("<span style='color:#8BA870;;font-weight:bold;'> New Book added Successfully </span>");
+			}
+			else{
+				$('#addBooksErrDiv').html("<span style='color:#56AE56;font-weight:bold;'>  Book Already exist </span>");		
+			}
+		}else{
+			$('#addBooksErrDiv').html("<span style='color:#FF0020;;font-weight:bold;'> Book Already exist  </span>");
 		}
-		else{
-			$('#addBooksErrDiv').html("<span style='color:#56AE56;font-weight:bold;'> New Book added Successfully .</span>");		
-		}
+		
 	});
 }
 
@@ -858,6 +892,61 @@ function createNewLeader()
  
  
  
+ 
+  
+  var voterValid = true;
+ function validateVoterId()
+ {
+ 
+	$.blockUI({ message: '<h6><img src="images/icons/ajaxImg.gif"/>Please wait.....</h6>' });
+	$('#errorLeaderDiv').html('');
+      var voterIdDtls={task:"getvoterIds"}
+	   $.ajax({
+	   type:"POST",
+	   url:"getVoterIdsAction.action",
+       dataType: 'json',
+	   data:{task:JSON.stringify(voterIdDtls)},
+        }).done(function(result){
+        voterIdsArray=result;
+      });
+    
+      var voterDtls={voterIdCardNo:$('#lVoterId').val()};
+	   $.ajax({
+	   type:"POST",
+	   url:"getAllVoterDetailsAction.action",
+       dataType: 'json',
+	   data:{task:JSON.stringify(voterDtls)},
+        }).done(function(result){
+		 $("#boothsId option").remove();
+	     $('#publicationId option').remove();
+		 
+		 if(result.boothList== null || result.publicationDatesList==null || result.constyPublicationIds ==null){
+			$("#errorLeaderDiv").html("<span style='color:red'>InValid VoterId Please Try Again</span>");
+			voterValid = false;
+			return;
+		 }else{
+			voterValid = true;
+		 }
+		 
+		 for(var i in result.publicationDatesList)
+          {
+			  $('#publicationId').append('<option value="'+result.publicationDatesList[i].id+'">'+result.publicationDatesList[i].name+'</option>');
+		  }
+		  for(var i in result.boothList)
+          {
+		     $('#boothsId').append('<option value='+result.boothList[i].id+'>Booth-'+result.boothList[i].name+'</option>');         
+          }
+          $('#leaderNameId').val(result.constyPublicationIds[0].voterName);
+          $('#constituencyId').val(result.constyPublicationIds[0].constituencyId);
+		  $('#publicationId').val(result.constyPublicationIds[0].publicationDateId);
+          $('#boothsId').val(result.constyPublicationIds[0].boothId);
+		  
+        
+	 });
+	 
+	 $.unblockUI();
+ }
+ 
  function validateLeaderDetails()
  {
    var leaderDtls={leaderName:'',mobileNo:'',voterId:'',uniqueCode:'',constituencyId:'',boothId:'',isActive:'YES'};
@@ -872,6 +961,16 @@ function createNewLeader()
    $('#errorLeaderDiv').html("");
    $('#statusDiv3').html('');
    var pattern1= /^\d{10}$/;
+   
+   if(!voterValid){
+		$('#errorLeaderDiv').html("Invalid Voter Id<br>");	
+	   return;
+   }
+   
+   if(!isBookExist){
+		$('#errorLeaderDiv').html("Book Already Exist With This Number");	
+	   return;
+   }
 
     if(leaderDtls.voterId.length == 0){
        $('#errorLeaderDiv').html("Please enter Voter Id<br>");
@@ -947,7 +1046,7 @@ function createNewLeader()
 				$("#statusDiv3").css("visibility","visible");
 				$('#statusDiv3').html('New Leader Saved Successfully...').css("color","green");
 				//setTimeout('$("#statusDiv3").css("visibility","hidden")',2500);
-				$('#lmobileId,#lmobileId,#lVoterId,#leaderNameId').val("");
+				$('#lmobileId,#lmobileId,#lVoterId,#leaderNameId,#luniqueId,#avalStatus').val("");
 				$('#constituencyId').find('option').remove();			
 				$('#boothsId').find('option').remove();			
 				$('#publicationId').find('option').remove();			
@@ -960,44 +1059,6 @@ function createNewLeader()
 	   });
 	   
 	
- }
-  
- function validateVoterId()
- {
- $('#errorLeaderDiv').html('');
-      var voterIdDtls={task:"getvoterIds"}
-	   $.ajax({
-	   type:"POST",
-	   url:"getVoterIdsAction.action",
-       dataType: 'json',
-	   data:{task:JSON.stringify(voterIdDtls)},
-        }).done(function(result){
-        voterIdsArray=result;
-      });
-    
-      var voterDtls={voterIdCardNo:$('#lVoterId').val()};
-	   $.ajax({
-	   type:"POST",
-	   url:"getAllVoterDetailsAction.action",
-       dataType: 'json',
-	   data:{task:JSON.stringify(voterDtls)},
-        }).done(function(result){
-		 $("#boothsId option").remove();
-	     $('#publicationId option').remove();
-		 for(var i in result.publicationDatesList)
-          {
-			  $('#publicationId').append('<option value="'+result.publicationDatesList[i].id+'">'+result.publicationDatesList[i].name+'</option>');
-		  }
-		  for(var i in result.boothList)
-          {
-		     $('#boothsId').append('<option value='+result.boothList[i].id+'>Booth-'+result.boothList[i].name+'</option>');         
-          }
-          $('#leaderNameId').val(result.constyPublicationIds[0].voterName);
-          $('#constituencyId').val(result.constyPublicationIds[0].constituencyId);  $('#publicationId').val(result.constyPublicationIds[0].publicationDateId);
-          $('#boothsId').val(result.constyPublicationIds[0].boothId);
-		  
-        
-	 });
  }
 
 function searchNow1(){
