@@ -39,7 +39,7 @@ public class HHBoothLeaderDAO extends GenericDaoHibernate<HHBoothLeader,Long> im
 	
 	public List<Object[]> getLeadersOfConstituency(Long constituencyId){
 		Query qry=getSession().createQuery(" select distinct model.hhLeader.id,model.hhLeader.name,model.hhLeader.voterId from HHBoothLeader model " +
-				" where model.constituency.constituencyId =:constituencyId order by model.hhLeader.name asc ");
+				" where model.constituency.constituencyId =:constituencyId order by model.hhLeader.voterId asc ");
 		
 		qry.setParameter("constituencyId", constituencyId);
 		return qry.list();
@@ -52,6 +52,15 @@ public class HHBoothLeaderDAO extends GenericDaoHibernate<HHBoothLeader,Long> im
 		query.setParameter("leaderId", leaderId);
 		return query.executeUpdate();
 	}
+	
+	public List<Object[]> getConstituenciesOfHouseHolds(){
+		Query query = getSession().createQuery(" select distinct model.constituency.constituencyId, model.constituency.name from " +
+				" HHBoothLeader model " +
+				" where model.hhLeader.is_active = 'YES' " +
+				" order by model.constituency.name asc");
+		return query.list();
+	}
+	
 	
 	
 }

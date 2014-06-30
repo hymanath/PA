@@ -221,21 +221,48 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 		return (Long) query.uniqueResult();
 	}
 	
+	// CONSTITUENCY WISE PANCHAYAT,TOTAL FAMILIES,LEADERS COUNT
 	public List<Object[]> getAllLeadersBooksFamilies(Long constituencyId){
-		Query query = getSession().createQuery(" select model.houseHolds.panchayat.panchayatId,model.houseHolds.panchayat.panchayatName," +
-				" count(distinct model.houseHolds.houseHoldId),count(distinct model.hhLeader.id)" +
-				" from HouseHoldVoter model where model.isDelete = 'false'" +
+		Query query = getSession().createQuery(" select model.houseHolds.panchayat.panchayatId," +//PANCHAYAT ID -- 1
+				" model.houseHolds.panchayat.panchayatName," +// 2 -- PANCHAYAT NAME
+				" count(distinct model.houseHolds.houseHoldId)," + // 3 -- HOUSEHOLDS COUNT
+				" count(distinct model.hhLeader.id)" +// 4 -- LEADERS COUNT
+				" from HouseHoldVoter model,HHBoothLeader model1 where " +
+				" model.hhLeader.id = model1.hhLeader.id and " +
+				" model.isDelete = 'false'" +
 				" and model.hhLeader.is_active = 'YES'" +
+				" and model1.constituency.constituencyId = :constituencyId" +
+				" and model.voter.voterId is not null" +
 				" group by model.houseHolds.panchayat.panchayatId ");
+		
+		query.setParameter("constituencyId", constituencyId);
 		
 		return query.list();
 	}
+	
+
+	public List<Object[]> getAllPanchayatsInHouseHoldsOfConstituency(Long constituencyId){
+		Query query = getSession().createQuery(" select distinct model.houseHolds.panchayat.panchayatId," +//PANCHAYAT ID -- 1
+				" model.houseHolds.panchayat.panchayatName " +// 2 -- PANCHAYAT NAME
+				" from HouseHoldVoter model,HHBoothLeader model1 where " +
+				" model.hhLeader.id = model1.hhLeader.id and " +
+				" model.isDelete = 'false'" +
+				" and model.hhLeader.is_active = 'YES'" +
+				" and model1.constituency.constituencyId = :constituencyId");
+		
+		query.setParameter("constituencyId", constituencyId);
+		
+		return query.list();
+	}
+	
 	
 	
 	public List<Object[]> getFamilyHeadsInPanchayat(Long panchayatId){
 		Query query = getSession().createQuery(" select distinct model.houseHoldVoterId," +
 				" model.houseHolds.houseHoldId," +
 				" model.houseHolds.houseNo," +
+				" model.voter.name," +
+				" model.voter.voterIDCardNo," +
 				" model.houseHolds.panchayat.panchayatId," +
 				" model.houseHolds.panchayat.panchayatName " +
 				" from HouseHoldVoter model " +
@@ -247,6 +274,141 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 	}
 	
 	public List<Object[]> getLeadersAndCountInLocality(Long locationId){
-		return null;
+		Query query = getSession().createQuery(" select model.houseHolds.panchayat.panchayatId," +
+				" model.houseHolds.panchayat.panchayatName," +
+				" count(distinct model.houseHolds.houseHoldId)," +
+				" model.hhLeader.id," +
+				" model.hhLeader.name ," +
+				" model.hhLeader.voterId," +
+				" model.hhLeader.mobileNo" +
+				" from HouseHoldVoter model where " +
+				" model.isDelete = 'false'" +
+				" and model.hhLeader.is_active = 'YES'" +
+				" and model.houseHolds.panchayat.panchayatId = :locationId " +
+				" group by model.hhLeader.id");
+		
+		query.setParameter("locationId", locationId);
+		
+		return query.list();
 	}
+	
+	// TYPE PARAMETER LOCATION -1 , LEADER -2 , BOOK -3
+	public List<Object[]> getFamilyAndVotersCountInHouseHolds(Long val,int type){
+		StringBuffer sb = new StringBuffer();
+		
+		sb.append(" select model.houseHolds.houseHoldId,count(model.voter.voterId)," +
+				" count(model.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId) " +
+				" from HouseHoldVoter model where " +
+				" model.isDelete = 'false'" +
+				" and model.hhLeader.is_active = 'YES'");
+		
+		if(type ==1){
+			sb.append("and model.houseHolds.panchayat.panchayatId = :val");
+		}else if(type == 2){
+			sb.append(" and model.hhLeader.id =:val");
+		}else if(type == 3){
+			sb.append(" and model.hhLeaderBooks.hhLeaderBookId =:val");
+		}
+		sb.append(" group by model.houseHolds.houseHoldId ");
+		
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("val", val);
+		return query.list();
+	}
+	
+	public List<Object[]> getFamilyHeadsUnderLeader(Long leaderId){
+		Query query = getSession().createQuery(" select distinct model.houseHoldVoterId," +
+				" model.houseHolds.houseHoldId," +
+				" model.houseHolds.houseNo," +
+				" model.voter.name," +
+				" model.voter.voterIDCardNo," +
+				" model.houseHolds.panchayat.panchayatId," +
+				" model.houseHolds.panchayat.panchayatName," +
+				" model.hhLeader.id," +
+				" model.hhLeader.name " +
+				" from HouseHoldVoter model " +
+				" where model.isDelete = 'false' and model.voterFamilyRelation.voterFamilyRelationId = 1" +
+				" and model.hhLeader.id = :leaderId" );
+		
+		query.setParameter("leaderId", leaderId);
+		return query.list();
+	}
+	
+	public List<Object[]> getFamilyHeadsUnderBook(Long bookId){
+		Query query = getSession().createQuery(" select distinct model.houseHoldVoterId," +
+				" model.houseHolds.houseHoldId," +
+				" model.houseHolds.houseNo," +
+				" model.voter.name," +
+				" model.voter.voterIDCardNo," +
+				" model.houseHolds.panchayat.panchayatId," +
+				" model.houseHolds.panchayat.panchayatName " +
+				" from HouseHoldVoter model " +
+				" where model.isDelete = 'false' and model.voterFamilyRelation.voterFamilyRelationId = 1" +
+				" and model.hhLeaderBooks.hhLeaderBookId = :bookId" );
+		
+		query.setParameter("bookId", bookId);
+		return query.list();
+	}
+	public List<Object[]> getVoterAndNonVoterCountInConstituency(Long constituencyId){
+		Query query = getSession().createQuery(" select model1.constituency.constituencyId,model1.constituency.name," +
+				" count(model.voter.voterId)," +
+				" count(model.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId) " +
+				" from HouseHoldVoter model,HHBoothLeader model1 where " +
+				" model.hhLeader.id = model1.hhLeader.id" +
+				" and model1.constituency.constituencyId = :constituencyId" +
+				" and model.isDelete = 'false'" +
+				" and model.hhLeader.is_active = 'YES'");
+		
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
+	
+	public List<Object[]> getConstituenciesOfHouseHolds(){
+		Query query = getSession().createQuery(" select distinct model1.constituency.constituencyId,model1.constituency.name " +
+				" from HouseHoldVoter model,HHBoothLeader model1 where " +
+				" model.hhLeader.id = model1.hhLeader.id" +
+				" and model.isDelete = 'false'" +
+				" and model.hhLeader.is_active = 'YES'");
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getHouseHoldsCountInConstituency(Long constituencyId){
+		Query query = getSession().createQuery(" select model1.constituency.constituencyId," +
+				" model1.constituency.name," +
+				" count(distinct model.houseHolds.houseHoldId) " +
+				" from HouseHoldVoter model,HHBoothLeader model1 where " +
+				" model.hhLeader.id = model1.hhLeader.id and " +
+				" model.isDelete = 'false'" +
+				" and model.hhLeader.is_active = 'YES'" +
+				" and model1.constituency.constituencyId = :constituencyId");
+		
+		query.setParameter("constituencyId", constituencyId);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getActiveLeadersOfConstituency(Long constituencyId){
+		
+		Query query = getSession().createQuery(" select distinct model.hhLeader.id,model.hhLeader.name,model.hhLeader.voterId " +
+				" from HouseHoldVoter model,HHBoothLeader model1 where " +
+				" model.hhLeader.id = model1.hhLeader.id and " +
+				" model.isDelete = 'false'" +
+				" and model.hhLeader.is_active = 'YES'" +
+				" and model1.constituency.constituencyId = :constituencyId" +
+				" and model.hhLeader.voterId is not null ");
+		
+		query.setParameter("constituencyId", constituencyId);
+		
+		
+		/*Query qry=getSession().createQuery(" select distinct model.hhLeader.id,model.hhLeader.name,model.hhLeader.voterId from HHBoothLeader model " +
+				" where model.constituency.constituencyId =:constituencyId " +
+				" and model.hhLeader.is_active = 'YES'" +
+				"  order by model.hhLeader.voterId asc ");
+		
+		query.setParameter("constituencyId", constituencyId);*/
+		return query.list();
+	}
+	
+	
 }
