@@ -719,8 +719,8 @@ public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Int
     	 if(fileVO == null)
     		 fileVO = new FileVO();
     	 StringBuilder query = new StringBuilder();
-  		 query.append("select  count(*),model1.source.source,model1.source.sourceId from FileGallary model,FileSourceLanguage model1  where model1.file.fileId=model.file.fileId and model.gallary.candidate.candidateId in(select model1.candidate.candidateId from UserCandidateRelation model1 " +
-  				" where model1.user.userId = :userId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
+  		 query.append("select  count(*),model1.source.source,model1.source.sourceId from FileGallary model,FileSourceLanguage model1,Category model2  where model1.file.fileId=model.file.fileId and model.gallary.candidate.candidateId in(select model1.candidate.candidateId from UserCandidateRelation model1 " +
+  				" where model1.user.userId = :userId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false' and model2.categoryId = model1.file.category.categoryId  ");
    		
    		if(fromDate != null)
   			query.append(" and date(model.file.fileDate) >= :fromDate");
@@ -778,8 +778,8 @@ public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Int
     		 fileVO = new FileVO();
     	 
     	 StringBuilder query = new StringBuilder();
-  		 query.append("select  count(*),model1.language.language,model1.language.languageId from FileGallary model,FileSourceLanguage model1  where model1.file.fileId=model.file.fileId and  model.gallary.candidate.candidateId in(select model1.candidate.candidateId from UserCandidateRelation model1 " +
-  				" where model1.user.userId = :userId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
+  		 query.append("select  count(*),model1.language.language,model1.language.languageId from FileGallary model,FileSourceLanguage model1,Category model2  where model1.file.fileId=model.file.fileId and  model.gallary.candidate.candidateId in(select model1.candidate.candidateId from UserCandidateRelation model1 " +
+  				" where model1.user.userId = :userId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  and model2.categoryId = model1.file.category.categoryId  ");
    		
    		if(fromDate != null)
   			query.append(" and date(model.file.fileDate) >= :fromDate");
@@ -837,7 +837,7 @@ public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Int
     		 fileVO = new FileVO();
     	 
     	 StringBuilder query = new StringBuilder();
-  		 query.append("select  count(*),model.file.newsImportance.importance,model.file.newsImportance.newsImportanceId from FileGallary model  where model.file.fileId in(select distinct model1.file.fileId from FileSourceLanguage model1 where model1.file.fileId!= 0 " );
+  		 query.append("select  count(*),model.file.newsImportance.importance,model.file.newsImportance.newsImportanceId from FileGallary model,Category model2  where model.file.category.categoryId = model2.categoryId   and  model.file.fileId in(select distinct model1.file.fileId from FileSourceLanguage model1 where model1.file.fileId!= 0 " );
   		if(fileVO.getSourceId() != null)
  			query.append(" and model1.source.sourceId = :sourceId ");
  		
@@ -896,7 +896,7 @@ public List<FileGallary> getRecentlyUploadedNewsFileIds(Integer startIndex , Int
     		 fileVO = new FileVO();
     	 
     	StringBuilder query = new StringBuilder();
-  		 query.append("select  count(*),model.file.regionScopes.scope,model.file.regionScopes.regionScopesId from FileGallary model where model.file.fileId in(select distinct model1.file.fileId from FileSourceLanguage model1 where model1.file.fileId!= 0 ");
+  		 query.append("select  count(*),model.file.regionScopes.scope,model.file.regionScopes.regionScopesId from FileGallary model, Category model2  where model.file.category.categoryId = model2.categoryId and model.file.fileId in(select distinct model1.file.fileId from FileSourceLanguage model1 where model1.file.fileId!= 0 ");
   		if(fileVO.getSourceId() != null)
  			query.append(" and model1.source.sourceId = :sourceId ");
  		

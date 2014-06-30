@@ -183,6 +183,15 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List getConstituenciesByElectionTypeAndStateIdForMPTC(Long electionTypeId , Long stateID)
+	{
+		Object[] params = {electionTypeId, stateID};
+		return getHibernateTemplate().find("select model.constituencyId , concat(model.name, ' (' ,model.tehsil.tehsilName, ')')  from Constituency model" +
+				" where model.electionScope.electionType.electionTypeId = ?" +
+				" and model.state.stateId=? order by model.name",params);
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List getLatestConstituenciesByStateId(String electionType , Long stateID)
 	{
 		Object[] params = {electionType, stateID};
