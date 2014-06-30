@@ -173,7 +173,7 @@ $('#ajaxcallimage').html('Login Successfull,Window is closing Please wait...');
   {
     
      $("#ajaxcallimage").hide();
-	$("#LoginErrorMessageDiv").html('Invalid username or password! Please try again!');
+	$("#LoginErrorMessageDiv").html('Invalid Username or Password! Please try again!');
   }
 }
 
@@ -193,13 +193,13 @@ $('#ajaxcallimage').html('Login Successfull,Window is closing Please wait...');
 
 	              if(emailId.length == 0 || emailId == "Email" )
 	               {
-		              str += ' username is required<br>';
+		              str += ' Uername is required<br>';
 		              eFlag = true;
 	               }
 	
 	              if(securityName.length == 0 || securityName =="Password")
 	               {
-		               str += ' password is required<br>';
+		               str += ' Password is required<br>';
 		                eFlag = true;
 	               }else if ( securityName != null)
 					{ 				
