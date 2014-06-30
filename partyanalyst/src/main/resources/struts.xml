@@ -7267,6 +7267,10 @@
 		</result>
 		</action>
 		
+		<action name="houseHoldsSummaryReportAction" class="houseHoldSurveyReportAction" method="getHouseHoldsSummary">
+			<result name="success">/jsp/houseHoldsSummary.jsp</result>
+		</action>
+		
 		
 			
 </package>
