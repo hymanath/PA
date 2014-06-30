@@ -3096,7 +3096,15 @@ public class StaticDataService implements IStaticDataService {
 							.equals(electionTypeObj.getElectionType())) {
 				constiList = localElectionBodyDAO.findByElectionTypeAndState(electionTypeId, stateID);
 			} else {
-				constiList = constituencyDAO.getConstituenciesByElectionTypeAndStateId(electionTypeId, stateID);
+					if(electionTypeId.longValue() == 3)
+					{
+						constiList = constituencyDAO.getConstituenciesByElectionTypeAndStateIdForMPTC(electionTypeId, stateID);
+					}
+					else
+					{
+						constiList = constituencyDAO.getConstituenciesByElectionTypeAndStateId(electionTypeId, stateID);
+					}
+				
 			}
 			if (constiList != null && constiList.size() > 0) {
 				for (int i = 0; i < constiList.size(); i++) {
