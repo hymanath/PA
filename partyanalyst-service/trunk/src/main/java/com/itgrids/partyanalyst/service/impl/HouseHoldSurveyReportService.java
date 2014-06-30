@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Formatter;
 import java.util.HashMap;
@@ -9,7 +10,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Collections;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
@@ -21,7 +21,10 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.IHHBoothLeaderDAO;
 import com.itgrids.partyanalyst.dao.IHHLeaderBooksDAO;
+import com.itgrids.partyanalyst.dao.IHHLeaderDAO;
 import com.itgrids.partyanalyst.dao.IHHOptionTypeDAO;
 import com.itgrids.partyanalyst.dao.IHHOptionsDAO;
 import com.itgrids.partyanalyst.dao.IHHQuestionOptionsDAO;
@@ -36,21 +39,20 @@ import com.itgrids.partyanalyst.dao.IUserVoterCategoryValueDAO;
 import com.itgrids.partyanalyst.dao.IVoterCategoryValueDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterFamilyRelationDAO;
-import com.itgrids.partyanalyst.dao.IHHLeaderDAO;
-import com.itgrids.partyanalyst.dao.IHHBoothLeaderDAO;
-import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.HHLeaderDetailsVO;
 import com.itgrids.partyanalyst.dto.HHQuestionDetailsVO;
 import com.itgrids.partyanalyst.dto.HHSurveyVO;
 import com.itgrids.partyanalyst.dto.HouseHoldVotersVO;
-import com.itgrids.partyanalyst.dto.HouseHoldsReportVO;
+import com.itgrids.partyanalyst.dto.HouseHoldsSummaryReportVO;
 import com.itgrids.partyanalyst.dto.HouseHoldsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.model.Booth;
+import com.itgrids.partyanalyst.model.HHBoothLeader;
+import com.itgrids.partyanalyst.model.HHLeader;
 import com.itgrids.partyanalyst.model.HHLeaderBooks;
 import com.itgrids.partyanalyst.model.HHOptionType;
 import com.itgrids.partyanalyst.model.HHOptions;
@@ -62,8 +64,6 @@ import com.itgrids.partyanalyst.model.HouseHoldVoter;
 import com.itgrids.partyanalyst.model.HouseHolds;
 import com.itgrids.partyanalyst.model.HouseHoldsFamilyDetails;
 import com.itgrids.partyanalyst.model.VoterFamilyRelation;
-import com.itgrids.partyanalyst.model.HHLeader;
-import com.itgrids.partyanalyst.model.HHBoothLeader;
 import com.itgrids.partyanalyst.service.IHouseHoldSurveyReportService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -1629,16 +1629,217 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
     	return hv;
     }
     
-    public HouseHoldsReportVO getReportsOfHouseHolds(){
-    	HouseHoldsReportVO finalVO = new HouseHoldsReportVO();
+    public List<GenericVO> getHouseHoldConstituencies(){
+    	List<GenericVO> gvList = new ArrayList<GenericVO>();
     	
-    	//List<Object[]> summaryList = houseHoldVoterDAO.getAllLeadersBooksFamilies();
+    	//List<Object[]> list = hhBoothLeaderDAO.getConstituenciesOfHouseHolds();
+    	List<Object[]> list = houseHoldVoterDAO.getConstituenciesOfHouseHolds();
+    	
+    	if(list!=null && list.size()>0){
+    		for(Object[] obj:list){
+    			GenericVO gv = new GenericVO();
+    			gv.setId(Long.valueOf(obj[0].toString()));
+    			gv.setName(obj[1].toString());
+    			
+    			gvList.add(gv);
+    		}
+    	}
+    	gvList.add(0,new GenericVO(0l, "Select"));
+    	return gvList;
+    }
+    
+    public HouseHoldsSummaryReportVO getReportsOfHouseHolds(HouseHoldsSummaryReportVO inputVO){
+    	HouseHoldsSummaryReportVO finalVO = new HouseHoldsSummaryReportVO();
+    	String task = inputVO.getTask();
+    	
+    	if(task.equalsIgnoreCase("constituencySummary")){
+    		Long constituencyId = inputVO.getConstituencyId();
+        	
+        	List<Object[]> hhCntOfConsti = houseHoldVoterDAO.getHouseHoldsCountInConstituency(constituencyId);
+        	
+        	List<Object[]> pnchytList = houseHoldVoterDAO.getAllPanchayatsInHouseHoldsOfConstituency(constituencyId);
+        	
+        	List<Object[]> pnchytSmryList = houseHoldVoterDAO.getAllLeadersBooksFamilies(constituencyId);
+        	
+        	List<Object[]> leadersCount = houseHoldVoterDAO.getActiveLeadersOfConstituency(constituencyId);
+        	
+        	List<Object[]> vtrsNonVtrsList = houseHoldVoterDAO.getVoterAndNonVoterCountInConstituency(constituencyId);
+        	
+        	if(vtrsNonVtrsList!=null && vtrsNonVtrsList.size()>0){
+        		for(Object[] obj:vtrsNonVtrsList){
+        			finalVO.setConstiVotersCount(Long.valueOf(obj[2].toString()));
+        			finalVO.setConstiNonVotersCount(Long.valueOf(obj[3].toString()));
+        		}
+        	}
+        	
+        	
+        	List<HouseHoldsSummaryReportVO> panchayatNamesList = new ArrayList<HouseHoldsSummaryReportVO>();
+        	List<HouseHoldsSummaryReportVO> pnchytSummryList = new ArrayList<HouseHoldsSummaryReportVO>();
+        	
+        	if(hhCntOfConsti!=null && hhCntOfConsti.size()>0){
+        		for(Object[] obj:hhCntOfConsti){
+        			finalVO.setConstituencyId(Long.valueOf(obj[0].toString()));
+        			finalVO.setConstituency(obj[1].toString());
+        			finalVO.setConstiHouseHoldsCount(Long.valueOf(obj[2].toString()));
+        			finalVO.setActiveLeadersCount(leadersCount.size());
+        		}
+        	}
+        	
+        	if(pnchytList !=null && pnchytList.size()>0){
+        		for(Object[] obj:pnchytList){
+        			HouseHoldsSummaryReportVO tempVO = new HouseHoldsSummaryReportVO();
+        			tempVO.setPanchayatId(Long.valueOf(obj[0].toString()));
+        			tempVO.setPanchayatName(obj[1].toString());
+        			
+        			panchayatNamesList.add(tempVO);
+        		}
+        		finalVO.setPanchayatNamesList(panchayatNamesList);
+        	}
+        	
+        	if(pnchytSmryList!=null && pnchytSmryList.size()>0){
+        		for(Object[] obj:pnchytSmryList){
+        			HouseHoldsSummaryReportVO tempVO = new HouseHoldsSummaryReportVO();
+        			tempVO.setPanchayatId(Long.valueOf(obj[0].toString()));
+        			tempVO.setPanchayatName(obj[1].toString());
+        			tempVO.setHouseHoldsCount(Long.valueOf(obj[2].toString()));
+        			tempVO.setLeadersCount(Long.valueOf(obj[3].toString()));
+        			
+        			pnchytSummryList.add(tempVO);
+        		}
+        		finalVO.setPanchayatList(pnchytSummryList);
+        	}
+        	
+        	
+        	
+        	
+    	}else if(task.equalsIgnoreCase("leaderOfPanchayat")){
+    		Long panchayatId = inputVO.getPanchayatId();
+    		
+    		List<HouseHoldsSummaryReportVO> leadersInPnchyt = new ArrayList<HouseHoldsSummaryReportVO>();
+    		
+    		if(panchayatId!=null){
+    			List<Object[]> list = houseHoldVoterDAO.getLeadersAndCountInLocality(panchayatId);
+    			if(list!=null && list.size()>0){
+    				for(Object[] obj:list){
+    					HouseHoldsSummaryReportVO tempVO = new HouseHoldsSummaryReportVO();
+    					tempVO.setHouseHoldsCount(Long.valueOf(obj[2].toString()));
+    					tempVO.setLeaderId(Long.valueOf(obj[3].toString()));
+    					tempVO.setVoterName(obj[4].toString());
+    					tempVO.setVoterCardNo(obj[5].toString());
+    					tempVO.setMobileNo(obj[6].toString());
+    					
+    					finalVO.setPanchayatId(Long.valueOf(obj[0].toString()));
+    					finalVO.setPanchayatName(obj[1].toString());
+    					leadersInPnchyt.add(tempVO);
+    				}
+    			}
+    		}
+    		
+    		finalVO.setLeadersOfPnchyt(leadersInPnchyt);
+    		
+    	}else if(task.equalsIgnoreCase("familyHeadsUnderLeader")){
+    		Long leaderId = inputVO.getLeaderId();
+    		
+    		List<HouseHoldsSummaryReportVO> leadersInPnchyt = new ArrayList<HouseHoldsSummaryReportVO>();
+    		
+    		if(leaderId!=null){
+    			
+    			Map<Long,HouseHoldsSummaryReportVO> hhCountMap = new HashMap<Long, HouseHoldsSummaryReportVO>();
+    			List<Object[]> hhList = houseHoldVoterDAO.getFamilyAndVotersCountInHouseHolds(leaderId, 2);
+    			if(hhList!=null && hhList.size()>0){
+    				for(Object[] obj:hhList){
+    					HouseHoldsSummaryReportVO tempVO = new HouseHoldsSummaryReportVO();
+    					tempVO.setHouseHoldId(Long.valueOf(obj[0].toString()));
+    					tempVO.setVotersCount(Long.valueOf(obj[1].toString()));
+    					tempVO.setNonVotersCount(Long.valueOf(obj[2].toString()));
+    					
+    					hhCountMap.put(Long.valueOf(obj[0].toString()), tempVO);
+    					
+    				}
+    			}
+    			
+    			List<Object[]> list = houseHoldVoterDAO.getFamilyHeadsUnderLeader(leaderId);
+    			if(list!=null && list.size()>0){
+    				for(Object[] obj:list){
+    					HouseHoldsSummaryReportVO tempVO = new HouseHoldsSummaryReportVO();
+    					tempVO.setHouseHoldId(Long.valueOf(obj[1].toString()));
+    					tempVO.setHouseNo(obj[2].toString());
+    					tempVO.setVoterName(obj[3].toString());
+    					tempVO.setVoterCardNo(obj[4].toString());
+    					
+    					finalVO.setLeaderId(Long.valueOf(obj[7].toString()));
+    					finalVO.setLeaderName(obj[8].toString());
+    					
+    					if(hhCountMap.get(Long.valueOf(obj[1].toString()))!=null){
+    						HouseHoldsSummaryReportVO hhVO = hhCountMap.get(Long.valueOf(obj[1].toString()));
+    						tempVO.setVotersCount(hhVO.getVotersCount());
+    						tempVO.setNonVotersCount(hhVO.getNonVotersCount());
+    					}
+    					
+    					leadersInPnchyt.add(tempVO);
+    				}
+    			}
+    		}
+    		
+    		finalVO.setLeadersOfPnchyt(leadersInPnchyt);
+    		
+    	}else if(task.equalsIgnoreCase("familyHeadsUnderPanchayat")){
+    		Long panchayatId = inputVO.getPanchayatId();
+    		
+    		List<HouseHoldsSummaryReportVO> leadersInPnchyt = new ArrayList<HouseHoldsSummaryReportVO>();
+    		
+    		if(panchayatId!=null){
+    			
+    			Map<Long,HouseHoldsSummaryReportVO> hhCountMap = new HashMap<Long, HouseHoldsSummaryReportVO>();
+    			List<Object[]> hhList = houseHoldVoterDAO.getFamilyAndVotersCountInHouseHolds(panchayatId, 1);
+    			if(hhList!=null && hhList.size()>0){
+    				for(Object[] obj:hhList){
+    					HouseHoldsSummaryReportVO tempVO = new HouseHoldsSummaryReportVO();
+    					tempVO.setHouseHoldId(Long.valueOf(obj[0].toString()));
+    					tempVO.setVotersCount(Long.valueOf(obj[1].toString()));
+    					tempVO.setNonVotersCount(Long.valueOf(obj[2].toString()));
+    					
+    					hhCountMap.put(Long.valueOf(obj[0].toString()), tempVO);
+    					
+    				}
+    			}
+    			
+    			List<Object[]> list = houseHoldVoterDAO.getFamilyHeadsInPanchayat(panchayatId);
+    			if(list!=null && list.size()>0){
+    				for(Object[] obj:list){
+    					HouseHoldsSummaryReportVO tempVO = new HouseHoldsSummaryReportVO();
+    					tempVO.setHouseHoldId(Long.valueOf(obj[1].toString()));
+    					tempVO.setHouseNo(obj[2].toString());
+    					tempVO.setVoterName(obj[3].toString());
+    					tempVO.setVoterCardNo(obj[4].toString());
+    					
+    					finalVO.setPanchayatId(Long.valueOf(obj[5].toString()));
+    					finalVO.setPanchayatName(obj[6].toString());
+    					
+    					if(hhCountMap.get(Long.valueOf(obj[1].toString()))!=null){
+    						HouseHoldsSummaryReportVO hhVO = hhCountMap.get(Long.valueOf(obj[1].toString()));
+    						tempVO.setVotersCount(hhVO.getVotersCount());
+    						tempVO.setNonVotersCount(hhVO.getNonVotersCount());
+    					}
+    					
+    					leadersInPnchyt.add(tempVO);
+    				}
+    			}
+    		}
+    		
+    		finalVO.setLeadersOfPnchyt(leadersInPnchyt);
+    	}
+    	
+    	
+    	//List<Object[]> list = houseHoldVoterDAO.
+    	
+    	/*//List<Object[]> summaryList = houseHoldVoterDAO.getAllLeadersBooksFamilies();
     	
     	List<Object[]> panchayatWiseFamilies = houseHoldVoterDAO.getFamilyHeadsInPanchayat(3361l);
     	
-    	List<Object[]> leadersInLocation = houseHoldVoterDAO.getLeadersAndCountInLocality(null);
+    	List<Object[]> leadersInLocation = houseHoldVoterDAO.getLeadersAndCountInLocality(null);*/
     	
-    	return null;
+    	return finalVO;
     }
     
     
