@@ -1,22 +1,34 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.BaseDaoTestCase;
 
-import com.itgrids.partyanalyst.dao.IHHOptionTypeDAO;
-import com.itgrids.partyanalyst.dao.IHHOptionsDAO;
 import com.itgrids.partyanalyst.dao.IHHQuestionOptionsDAO;
-import com.itgrids.partyanalyst.dao.ISurveyQuestionDAO;
 
 public class HHQuestionOptionsDAOHibernateTest extends BaseDaoTestCase{
 	
-	private IHHQuestionOptionsDAO ihhQuestionOptionsDAO;
+	private IHHQuestionOptionsDAO hhQuestionOptionsDAO;
+
 	
-	public IHHQuestionOptionsDAO getIhhQuestionOptionsDAO() {
-		return ihhQuestionOptionsDAO;
+	
+	public IHHQuestionOptionsDAO getHhQuestionOptionsDAO() {
+		return hhQuestionOptionsDAO;
 	}
 
-	public void test(){
-		System.out.println("ihhQuestionOptionsDAO");
+
+
+	public void setHhQuestionOptionsDAO(IHHQuestionOptionsDAO hhQuestionOptionsDAO) {
+		this.hhQuestionOptionsDAO = hhQuestionOptionsDAO;
 	}
+
+
+
+	public void test(){
+		List<Object[]> list = hhQuestionOptionsDAO.getOptionsForQuestions(2l);
+		System.out.println(list.size());
+	}
+
+	
 
 }
