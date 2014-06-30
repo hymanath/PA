@@ -523,7 +523,7 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 				" and model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType = ? and " +
 				" model.boothConstituencyElection.booth.localBody.electionType.electionType in ("+localBodyTypes+") " +
 				" group by model.boothConstituencyElection.booth.localBody.localElectionBodyId, " +
-				" model.nomination.nominationId",params);
+				" model.nomination.nominationId order by model.boothConstituencyElection.booth.localBody.name,model.nomination.candidateResult.rank",params);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -540,7 +540,7 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 				" model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType = ? and " +
 				" model.boothConstituencyElection.booth.boothLocalBodyWard.localBodyWard.localElectionBody.electionType.electionType = ? " +
 				" group by model.boothConstituencyElection.booth.boothLocalBodyWard.localBodyWard.constituencyId, " +
-				" model.nomination.nominationId",params);
+				" model.nomination.nominationId order by model.boothConstituencyElection.booth.boothLocalBodyWard.localBodyWard.name,model.nomination.candidateResult.rank",params);
 	}
 
 	public List findAssemblyRegionResultsForPartiesForAConstituency(Long acId, Long pcId, String electionYear){
