@@ -84,14 +84,14 @@ $(document).ready(function(){
 		changeYear: true,
 		maxDate: new Date()
 	});
-
+	
 	$('#districtSelReportId').multiselect({	
 			multiple: true,
 			selectedList: 1,
 			hide: "explode"	
 	}).multiselectfilter({    
 	});
-			
+	
 	
 	 $('#assembSelReportId').multiselect({	
 			multiple: true,
@@ -182,16 +182,15 @@ function getPartiesList()
 		.done(function( result ) {
 		
 		$('#partyid').find('option').remove();
-		$('#partyid').append('<option value="0">Select Party</option>');
 		$.each(result,function(index,value){
 			$('#partyid').append('<option value="'+value.id+'">'+value.name+'</option>');
-			/* $('#partyid').multiselect({	
-			multiple: true,
-			selectedList: 1,
-			hide: "explode"	
-	        }).multiselectfilter({   
-	       }); */
 		});
+		 $('#partyid').multiselect({	
+				multiple: true,
+				selectedList: 1,
+				hide: "explode"	
+		        }).multiselectfilter({   
+		       }); 
      });
 }
 /*
@@ -253,7 +252,15 @@ function getCategoeryWiseNews(pageNo,requestType)
 	
 	var toDate   = $('#todateId').val();
 	
-	var partyId  = $('#partyid option:selected').val();
+     var partyId  = "";
+	
+	var selectedPartyIds = $("#partyid").multiselect("getChecked").map(function(){
+        return this.value;
+    }).get();
+	for(var i in selectedPartyIds)
+	{
+		partyId = partyId+""+selectedPartyIds[i]+",";
+    }
 	
 	var categorieyIds = "";
 	var selected_values = $("#catSelReportId").multiselect("getChecked").map(function(){
@@ -308,6 +315,7 @@ function buildCategoeryDetails(result,jsObj)
 		str += '<table id="responseTable" class="table table-bordered table-hover"><thead>';
 		str += '<tr>';
 		str += '<th>Date</th>';
+		str += '<th>News Id</th>';
 		str += '<th>Constituency</th>';
 		str += '<th>Categories</th>';
 		str += '<th>News</th>';
@@ -316,15 +324,16 @@ function buildCategoeryDetails(result,jsObj)
 		{
 			str += '<tr>';	
 			str += '<td>'+result[i].value+'</td>';
+			str += '<td>'+result[i].populateId+'</td>';
 			str += '<td>'+result[i].location+'</td>';
 			str += '<td>'+result[i].type+'</td>';
 			if(result[i].id == 0)
 			{
-				str += '<td><p>'+result[i].name+'</p></td>';
+				str += '<td><a href="javascript:{};" onclick="openNewsWindow('+result[i].populateId+');"><p>'+result[i].name+'</p></a></td>';
 			}
 			else
 			{
-				str += '<td><p class="enadu">'+result[i].name+'</p></td>';
+				str += '<td><a href="javascript:{};" onclick="openNewsWindow('+result[i].populateId+');"><p class="enadu">'+result[i].name+'</p></a></td>';
 			}
 			str += '</tr>';
 		}
@@ -346,7 +355,8 @@ function buildCategoeryDetails(result,jsObj)
 	    }
 		if(jsObj.requestType == "initial")
 		{
-			$('#urlId').html('<b>NOTE : Use this url for Pdf Generation : </b><b style="color:green;">'+result[0].partno+'</b>');
+		   var newurl = result[0].partno+"&pageVal=1";
+			$('#urlId').html('<div style=" margin-top: 10px; margin-bottom: 10px;" class="btn btn-success" onclick="window.open(\''+newurl+'\',\'_blank\');">Click Here To View Report</div><br/><b>NOTE : Use this url for Pdf Generation : </b><b style="color:green;">'+result[0].partno+'</b>');
 		}
 	}
 	else
@@ -358,6 +368,13 @@ function buildCategoeryDetails(result,jsObj)
 	
 	
 }
+function openNewsWindow(contentId){
+	 var urlstr = "newsDetailsPopupAction.action?contentId="+contentId+"&";
+		
+	    var browser1 = window.open(urlstr,"gallaryDetails"+contentId+"","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+	    browser1.focus();
+	
+}
 /*
 	this function is used for making the ajax call for getting ategoery wise count in onstituency and district level
 */
@@ -367,7 +384,15 @@ function getCategoeryWiseNewsByCount(type)
 	
 	var toDate   = $('#todateId').val();
 	
-	var partyId  = $('#partyid option:selected').val();
+    var partyId  = "";
+	
+	var selectedPartyIds = $("#partyid").multiselect("getChecked").map(function(){
+        return this.value;
+    }).get();
+	for(var i in selectedPartyIds)
+	{
+		partyId = partyId+""+selectedPartyIds[i]+",";
+    }
 	
 	var categorieyIds = "";
 	var selected_values = $("#catSelReportId").multiselect("getChecked").map(function(){
@@ -496,7 +521,15 @@ function genereatePDFOrExcel(type)
 	
 	var toDate   = $('#todateId').val();
 	
-	var partyId  = $('#partyid option:selected').val();
+    var partyId  = "";
+	
+	var selectedPartyIds = $("#partyid").multiselect("getChecked").map(function(){
+        return this.value;
+    }).get();
+	for(var i in selectedPartyIds)
+	{
+		partyId = partyId+""+selectedPartyIds[i]+",";
+    }
 	
 	var categorieyIds = "";
 	var selected_values = $("#catSelReportId").multiselect("getChecked").map(function(){
@@ -559,7 +592,16 @@ function genereatePDFOrExcel(type)
 */
 function validateFields()
 {
-	var partyId  = $('#partyid option:selected').val();
+	var partyId  = "";
+	
+	var selectedPartyIds = $("#partyid").multiselect("getChecked").map(function(){
+        return this.value;
+    }).get();
+	for(var i in selectedPartyIds)
+	{
+		partyId = partyId+""+selectedPartyIds[i]+",";
+    }
+	
 	
 	var categorieyIds = "";
 	var selected_values = $("#catSelReportId").multiselect("getChecked").map(function(){
@@ -589,7 +631,7 @@ function validateFields()
 	
 	var flag = true;
 	var str = '';
-	if(partyId == 0)
+	if(partyId == '')
 	{
 		str += '<b style="color: red; font-family: verdana; font-size: larger;">Please Select Party</b></br>';
 		flag = false;

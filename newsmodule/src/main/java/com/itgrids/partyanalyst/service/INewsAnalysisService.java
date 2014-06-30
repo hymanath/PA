@@ -24,11 +24,11 @@ public interface INewsAnalysisService {
 	
 	public List<SelectOptionVO> getConstituencyesList(List<Long> districtIds);
 	
-	public List<SelectOptionVO> getProgramsWiseNews(List<Long> categIds, List<Long> constituencyIds,String fromDateStr , String toDateStr,Long startIndex , Long maxIndex,Long partyid,Long userId,String url,String requestType);
+	public List<SelectOptionVO> getProgramsWiseNews(List<Long> categIds, List<Long> constituencyIds,String fromDateStr , String toDateStr,Long startIndex , Long maxIndex,List<Long> partyids,Long userId,String url,String requestType);
 	
-	public List<SelectOptionVO> getCategoeryWiseCountDetails(List<Long> categIds, List<Long> constituencyIds,String fromDateStr , String toDateStr,String type,List<Long> districtIds,Long partyId );
+	public List<SelectOptionVO> getCategoeryWiseCountDetails(List<Long> categIds, List<Long> constituencyIds,String fromDateStr , String toDateStr,String type,List<Long> districtIds,List<Long> partyId );
 	
-	public List<SelectOptionVO> generatePdfOrExcel(List<Long> catgIds,List<Long> constiIds,List<Long> districtIds,String fromDateStr,String toDateStr,String type,String Path,Long partyId);
+	public List<SelectOptionVO> generatePdfOrExcel(List<Long> catgIds,List<Long> constiIds,List<Long> districtIds,String fromDateStr,String toDateStr,String type,String Path,List<Long> partyId);
 	
 	public SelectOptionVO getPartyWiseNewsCountForGraph(AnalysisVO analysisVO);
 	

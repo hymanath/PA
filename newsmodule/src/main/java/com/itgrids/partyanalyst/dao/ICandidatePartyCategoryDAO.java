@@ -33,15 +33,15 @@ public interface ICandidatePartyCategoryDAO extends GenericDao<CandidatePartyCat
 	
 	public List<Object[]> getCategoriesList(List<Long> fileIds);
 	
-	public List<Object[]> getCategoeryAndConsttituencyWiseNews(List<Long> categIds,List<Long> constituencyIds,Date fromdate , Date toDate,int startIndex,int maxIndex,Long partyId);
+	public List<Object[]> getCategoeryAndConsttituencyWiseNews(List<Long> categIds,List<Long> constituencyIds,Date fromdate , Date toDate,int startIndex,int maxIndex,List<Long> partyIds);
 	
-	public List<Object[]> getCategoeryAndConsttituencyWiseCount(List<Long> categIds,List<Long> constituencyIds , Date fromDate , Date toDate,Long partyId );
+	public List<Object[]> getCategoeryAndConsttituencyWiseCount(List<Long> categIds,List<Long> constituencyIds , Date fromDate , Date toDate,List<Long> partyIds);
 	
-	public List<Object[]> getCategoeryAndConsttituencyWiseTotalCount(List<Long> categIds,List<Long> constituencyIds , Date fromDate , Date toDate,Long partyId );
+	public List<Object[]> getCategoeryAndConsttituencyWiseTotalCount(List<Long> categIds,List<Long> constituencyIds , Date fromDate , Date toDate,List<Long> partyIds);
 	
-	public List<Object[]> getCategoeryAndDisrictWiseCount(List<Long> categIds,List<Long> districtIds , Date fromDate , Date toDate,Long partyId);
+	public List<Object[]> getCategoeryAndDisrictWiseCount(List<Long> categIds,List<Long> districtIds , Date fromDate , Date toDate,List<Long> partyIds);
 	
-	public List<Long> getCategoeryAndConsttituencyWiseNewsIds(List<Long> categIds,List<Long> constituencyIds , Date fromDate , Date toDate ,Long partyId);
+	public List<Long> getCategoeryAndConsttituencyWiseNewsIds(List<Long> categIds,List<Long> constituencyIds , Date fromDate , Date toDate,List<Long> partyIds);
 
 	public List<Object[]> getCandidatePartyCategoryDetialsByFileId(Long gallaryId);
 	

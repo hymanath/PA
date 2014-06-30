@@ -536,13 +536,21 @@ public class ReportService implements IReportService {
 		LinkedHashMap<Long,List<NewsActivityVO>> constituencyMap = null;
 		List<NewsActivityVO> newsList = null;
 		NewsActivityVO news = null;
-		String categories = activityReportDAO.getCategoeryIds(key);
-		String[] categoriesArry = categories.split(",");
+		Object[] idsArray = activityReportDAO.getCategoeryAndPartyIds(key);
+		String[] categoriesArry = idsArray[0].toString().split(",");
 		List<Long> cateList = new ArrayList<Long>();
 		for (String catg : categoriesArry) {
 			cateList.add(Long.valueOf(catg));
 		}
-		List<Object[]> activitiesList = activityReportFilesDAO.getActivitiesList(key,cateList);
+		List<Long> partyIds = new ArrayList<Long>();
+		if(idsArray[1] != null){
+			String[] partyIdsArry = idsArray[1].toString().split(",");
+		
+			for (String partyId : partyIdsArry) {
+				partyIds.add(Long.valueOf(partyId));
+			}
+		}
+		List<Object[]> activitiesList = activityReportFilesDAO.getActivitiesList(key,cateList,partyIds);
 		for(Object[] activity:activitiesList){
 			districtyMap = newsMap.get((Long)activity[7]);
 			if(districtyMap == null){

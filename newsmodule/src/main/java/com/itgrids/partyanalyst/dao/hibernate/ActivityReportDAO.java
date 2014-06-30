@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
@@ -17,5 +19,12 @@ public class ActivityReportDAO   extends GenericDaoHibernate<ActivityReport, Lon
     			" where model.reportKey = :key");
     	query.setParameter("key", key);
     	return (String) query.uniqueResult();
+    }
+    public Object[] getCategoeryAndPartyIds(String key)
+    {
+    	Query query = getSession().createQuery("select model.categories,model.partyIds from ActivityReport model " +
+    			" where model.reportKey = :key");
+    	query.setParameter("key", key);
+    	return  (Object[]) query.uniqueResult();
     }
 }
