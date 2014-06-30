@@ -20,11 +20,14 @@ public class HHBoothLeaderDAOHibernateTest extends BaseDaoTestCase{
 	public void test(){
 		//List<Object[]> list=hhBoothLeaderDAO.getLeadersOfConstituency(228l);
 		
-		List<Long> boothIds = new ArrayList<Long>();
+		/*List<Long> boothIds = new ArrayList<Long>();
 		boothIds.add(134868l);
 		
-		int count = hhBoothLeaderDAO.deleteLeaderWithBooths(boothIds);
-		System.out.println(count);
+		List<Object[]> count = hhBoothLeaderDAO.getLeadersOfConstituency(228l);
+		System.out.println(count);*/
+		
+		List<Object[]> list = hhBoothLeaderDAO.getConstituenciesOfHouseHolds();
+		System.out.println(list.size());
 	}
 
 }
