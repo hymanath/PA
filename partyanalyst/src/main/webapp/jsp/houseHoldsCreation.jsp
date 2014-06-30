@@ -374,7 +374,7 @@ function getLeadersOfConstituency(){
 		$("#leaderId option").remove();
 		if(result.leadersOfConsti !=null){
 			for(var i in result.leadersOfConsti){
-				$('#leaderId').append('<option value='+result.leadersOfConsti[i].leaderId+'>'+result.leadersOfConsti[i].leaderName +' - '+result.leadersOfConsti[i].voterId+'</option>');         
+				$('#leaderId').append('<option value='+result.leadersOfConsti[i].leaderId+'>'+result.leadersOfConsti[i].voterId+' - '+result.leadersOfConsti[i].leaderName +'</option>');         
 			}
 		}
 	
