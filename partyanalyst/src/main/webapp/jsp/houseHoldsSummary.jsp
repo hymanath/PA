@@ -18,11 +18,11 @@
 
 	<div id="mainDivId" class="container well">
 	<h4 class="offset4" style="color:red">HOUSEHOLDS REPORT</h4>
-	SELECT CONSTITUENCY : <s:select theme="simple" style="width: 169px;"
+	<div class='offset3 span4' style="margin-top:15px;">SELECT CONSTITUENCY : <s:select theme="simple" style="width: 169px;"
 				 name="constituencyList" 
 				id="constituencyId" list="hhConstituenies" 
 				listKey="id" listValue="name" onChange="getSummary()"/>
-	
+	</div>
 		<div id="constiSummaryDiv" style="margin:20px;"></div>
 		<div id="panchayatSummaryDivId" style="margin:20px;"></div>
 		
