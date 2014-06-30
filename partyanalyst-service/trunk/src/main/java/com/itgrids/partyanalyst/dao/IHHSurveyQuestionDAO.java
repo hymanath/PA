@@ -10,5 +10,6 @@ import com.itgrids.partyanalyst.model.HHSurveyQuestion;
 public interface IHHSurveyQuestionDAO extends GenericDao<HHSurveyQuestion, Long>{
 	
 	public List<HHSurveyQuestion> getModelBySurveyId(Long surveyId);
+	public List<Object[]> getAllQuestionInSurvey(Long surveyId);
 	
 }
