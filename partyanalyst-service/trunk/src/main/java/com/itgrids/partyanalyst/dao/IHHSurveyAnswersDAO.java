@@ -12,4 +12,6 @@ public interface IHHSurveyAnswersDAO extends GenericDao<HHSurveyAnswers, Long>{
 	public List<HHSurveyAnswers> getSurveyAnswersByHouseHoldId(Long houseHoldId);
 	public int deleteAllPreviousAnswersByHouseHoldsId(Long houseHoldsId);
 	
+	public List<Object[]> getQuestionWiseSummary(Long questionId,Long constiutencyId);
+	
 }
