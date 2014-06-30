@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dto.HHQuestionDetailsVO;
 import com.itgrids.partyanalyst.dto.HHSurveyVO;
 import com.itgrids.partyanalyst.dto.HouseHoldVotersVO;
 import com.itgrids.partyanalyst.dto.HouseHoldsReportVO;
+import com.itgrids.partyanalyst.dto.HouseHoldsSummaryReportVO;
 import com.itgrids.partyanalyst.dto.HouseHoldsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -71,15 +72,26 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 	private VoterDetailsVO resultVO;
 	
 	private HouseHoldsVO boothsAndBooks;
-	private HouseHoldsReportVO hhSummaryDtls;
+	private HouseHoldsSummaryReportVO hhSummaryDtls;
+	
+	private List<GenericVO> hhConstituenies;
 	
 	
 	
-	public HouseHoldsReportVO getHhSummaryDtls() {
+
+	public List<GenericVO> getHhConstituenies() {
+		return hhConstituenies;
+	}
+
+	public void setHhConstituenies(List<GenericVO> hhConstituenies) {
+		this.hhConstituenies = hhConstituenies;
+	}
+
+	public HouseHoldsSummaryReportVO getHhSummaryDtls() {
 		return hhSummaryDtls;
 	}
 
-	public void setHhSummaryDtls(HouseHoldsReportVO hhSummaryDtls) {
+	public void setHhSummaryDtls(HouseHoldsSummaryReportVO hhSummaryDtls) {
 		this.hhSummaryDtls = hhSummaryDtls;
 	}
 
@@ -726,16 +738,33 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 	public String getReportsOfHouseHolds(){
 		try {		
 			jObj = new JSONObject(getTask());
-			Long constituencyId = jObj.getLong("consitutency");
-			String task = jObj.getString("getSummary");
 			
-			HouseHoldsReportVO input = new HouseHoldsReportVO();
+			HouseHoldsSummaryReportVO input = new HouseHoldsSummaryReportVO();
+			String task = jObj.getString("task");
+			
+			input.setTask(task);
+			if(task.equalsIgnoreCase("constituencySummary")){
+				input.setConstituencyId(Long.valueOf(jObj.getString("constituencyId")));
+			}else if(task.equalsIgnoreCase("leaderOfPanchayat")){
+				input.setPanchayatId(Long.valueOf(jObj.getString("panchayatId")));
+			}else if(task.equalsIgnoreCase("familyHeadsUnderLeader")){
+				input.setLeaderId(Long.valueOf(jObj.getString("leaderId")));
+			}else if(task.equalsIgnoreCase("familyHeadsUnderPanchayat")){
+				input.setPanchayatId(Long.valueOf(jObj.getString("panchayatId")));
+			}
 			
 			
-			hhSummaryDtls = houseHoldSurveyReportService.getReportsOfHouseHolds();
+			hhSummaryDtls = houseHoldSurveyReportService.getReportsOfHouseHolds(input);
 		}catch (Exception e){
 			e.printStackTrace();
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getHouseHoldsSummary(){
+		
+		hhConstituenies = houseHoldSurveyReportService.getHouseHoldConstituencies();
+		
+    	return Action.SUCCESS;
+    }
 }
