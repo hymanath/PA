@@ -24,6 +24,19 @@ public class HHSurveyQuestionDAO extends GenericDaoHibernate<HHSurveyQuestion,Lo
 		return qry.list();
 	}
 	
+	public List<Object[]> getAllQuestionInSurvey(Long surveyId){
+		Query query = getSession().createQuery("select model.surveyQuestionId," +
+				" model.question, model.hhoptionType.optionTypeId " +
+				" from HHSurveyQuestion model" +
+				" where model.hhSurvey.surveyId =:surveyId" +
+				" and model.isDeleted =:delStatus");
+		
+		query.setParameter("surveyId",surveyId);
+		query.setParameter("delStatus", IConstants.FALSE);
+		
+		return query.list();
+	}
+	
 	
 	
 }
