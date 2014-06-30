@@ -99,10 +99,10 @@ createNewLeader();
 	<h4 style="background-color: #80d1f1; padding: 5px; border-radius: 5px; margin-top: 25px;"> LEADER CREATION FOR HOUSE HOLDS </h4>
 	<div  style="margin-top:20px;" >
 	
-		<input type="button" class="btn btn-success"  style="margin-left:450px; " onClick="createQuestions();" value="Create Questions"></input>
+		<input type="button" class="btn btn-success"  style="margin-left:250px; " onClick="createQuestions();" value="Create Questions"></input>
 		<input type="button" class="btn btn-success"  onClick="createMainQuestions();" value="Create Main Question"></input>
 		<input type="button" class="btn btn-success"  onClick="createSubQuestions();" value="Create Sub Questions" />
-		
+		<a class="btn btn-success" href="houseHoldsSummaryReportAction.action"> HouseHolds Report</a>
 		<!--
 		<input type="button" class="btn btn-primary"  onclick="createNewLeader();" value ="Create Leader"></input>		
 		<input type="button" class="btn btn-primary" onclick="assignBoothOrBooks();" value ="Assign Booth / Books"></input>
@@ -326,21 +326,15 @@ function checkBookAvail(){
 		  url:"getBoothsOrBooksInConstituencyOfLeaderToAssign.action",
 		  data :{task:JSON.stringify(reqDtls)},
 	}).done(function(result){
-		bookAvailStatus(result);
-	 });
-	 }
-      
-}
-
-function bookAvailStatus(result){
-	if(result.statusOfBook == "exist"){
-			$('#avalStatus').html('<span style="color:#FF0020;"> Book Exist With This No In This Constituency </span>');
+	if(result.statusOfBook.indexOf('already') <0){
+			$('#avalStatus').html('<span style="color:#66AF66;">'+result.statusOfBook+'</span>');
 			isBookExist = true;
 	}
-	else{
-		$('#avalStatus').html('<span style="color:#66AF66;"> You Can Create The Book With This Number </span>');
-		isBookExist = false;
-	}
+	else
+		$('#avalStatus').html('<span style="color:#FF0020;">'+result.statusOfBook+'</span>');
+	});
+	 }
+      
 }
 
 
@@ -657,11 +651,11 @@ function addBooks(){
 		  data :{task:JSON.stringify(reqDtls)},
 	}).done(function(result){
 		//console.log(result);
-		if(result.statusOfBook == 'success'){
-			$('#addBooksErrDiv').html("<span style='color:#56AE56;font-weight:bold;'> New Book added Successfully .. </span>");
+		if(result.statusOfBook.indexOf('failed') <0){
+			$('#addBooksErrDiv').html("<span style='color:#FF0020;;font-weight:bold;'> Book Already exist . </span>");
 		}
 		else{
-			$('#addBooksErrDiv').html("<span style='color:#FF0020;font-weight:bold;'> Book No Already Exist .. </span>");		
+			$('#addBooksErrDiv').html("<span style='color:#56AE56;font-weight:bold;'> New Book added Successfully .</span>");		
 		}
 	});
 }
@@ -940,10 +934,6 @@ function createNewLeader()
 	   return;
 	}
 	
-	if(isBookExist){
-		return;
-	}
-	
 	$.ajax({
 		  type:'POST',
 		  url: 'saveLeaderDetails.action',
@@ -963,7 +953,7 @@ function createNewLeader()
 				$('#publicationId').find('option').remove();			
 			  }
 		      else if(result.resultCode == 1){
-			     $('#errorLeaderDiv').html("Leader Already Created With This VoterId <br>");
+			     $('#errorLeaderDiv').html("Name already exists,Please Enter another<br>");
 	             return;
 		      }
 		  }
@@ -1003,8 +993,7 @@ function createNewLeader()
 		     $('#boothsId').append('<option value='+result.boothList[i].id+'>Booth-'+result.boothList[i].name+'</option>');         
           }
           $('#leaderNameId').val(result.constyPublicationIds[0].voterName);
-          $('#constituencyId').val(result.constyPublicationIds[0].constituencyId);  
-		  $('#publicationId').val(result.constyPublicationIds[0].publicationDateId);
+          $('#constituencyId').val(result.constyPublicationIds[0].constituencyId);  $('#publicationId').val(result.constyPublicationIds[0].publicationDateId);
           $('#boothsId').val(result.constyPublicationIds[0].boothId);
 		  
         
@@ -1182,6 +1171,26 @@ function getSummary(){
     });
 }
 
+
+function getConstituencySummaryWithPanchayat(){
+	var constnDtls={
+             constituency:constituency,
+			 task:"constituencySummary"
+	};
+	$.ajax({
+          type:'POST',
+          url: 'houseHoldsSummaryReportAction.action',
+          dataType: 'json',
+          data: {task:JSON.stringify(constnDtls)},
+
+          success: function(result){ 
+			console.log(result);			  
+         },
+          error:function() { 
+           console.log('error', arguments);
+         }
+    });
+}
 
 
 </script>
