@@ -195,7 +195,11 @@ public class NewsActivitiesAction extends ActionSupport implements ServletReques
 				String requestType          = jObj.getString("requestType");
 				Long startIndex             = jObj.getLong("startIndex");
 				Long maxIndex               = jObj.getLong("maxIndex");
-				Long partyId                = jObj.getLong("partyId");
+				String[] partyIds                = jObj.getString("partyId").split(",");
+				List<Long> partyIdsList = new ArrayList<Long>();
+				for(String partyId:partyIds){
+					partyIdsList.add(Long.valueOf(partyId.trim()));
+				}
 				String[] categoeryStr       = categorieyIds.split(",");
 				String[] constituencyStr    = constituencyIds.split(",");
 				List<Long> categoeryList    = new ArrayList<Long>();
@@ -208,7 +212,7 @@ public class NewsActivitiesAction extends ActionSupport implements ServletReques
 				}
 				 String[] urls = request.getRequestURL().toString().split("getCategoeryWiseNewsAction.action");
 				 String url = urls[0].concat("createActivitiesReportAction.action?");
-				categoeriesList = newsAnalysisService.getProgramsWiseNews(categoeryList, constituencyList, fromDateStr, toDateStr,startIndex,maxIndex,partyId,regVO.getRegistrationID(),url,requestType);
+				categoeriesList = newsAnalysisService.getProgramsWiseNews(categoeryList, constituencyList, fromDateStr, toDateStr,startIndex,maxIndex,partyIdsList,regVO.getRegistrationID(),url,requestType);
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("genereatePDFOrExcel"))
 			{
@@ -218,7 +222,11 @@ public class NewsActivitiesAction extends ActionSupport implements ServletReques
 				String toDateStr            = jObj.getString("toDate");
 				String districtIds          = jObj.getString("districtIds");
 				String typeFor              = jObj.getString("typeFor");
-				Long partyId                = jObj.getLong("partyId");
+				String[] partyIds                = jObj.getString("partyId").split(",");
+				List<Long> partyIdsList = new ArrayList<Long>();
+				for(String partyId:partyIds){
+					partyIdsList.add(Long.valueOf(partyId.trim()));
+				}
 				String[] categoeryStr       = categorieyIds.split(",");
 				String[] constituencyStr    = constituencyIds.split(",");
 				String[] districtStr        = districtIds.split(",");
@@ -235,7 +243,7 @@ public class NewsActivitiesAction extends ActionSupport implements ServletReques
 					districtList.add(Long.valueOf(district));
 				}
 				String path = IWebConstants.STATIC_CONTENT_FOLDER_URL;
-				categoeriesList = newsAnalysisService.generatePdfOrExcel(categoeryList,constituencyList,districtList,fromDateStr,toDateStr,typeFor,path,partyId);
+				categoeriesList = newsAnalysisService.generatePdfOrExcel(categoeryList,constituencyList,districtList,fromDateStr,toDateStr,typeFor,path,partyIdsList);
 			}
 			else
 			{
@@ -245,7 +253,11 @@ public class NewsActivitiesAction extends ActionSupport implements ServletReques
 				String toDateStr            = jObj.getString("toDate");
 				String type                 = jObj.getString("type");
 				String districtIds          = jObj.getString("districtIds");
-				Long partyId                = jObj.getLong("partyId");
+				String[] partyIds                = jObj.getString("partyId").split(",");
+				List<Long> partyIdsList = new ArrayList<Long>();
+				for(String partyId:partyIds){
+					partyIdsList.add(Long.valueOf(partyId.trim()));
+				}
 				String[] categoeryStr       = categorieyIds.split(",");
 				String[] constituencyStr    = constituencyIds.split(",");
 				String[] districtStr        = districtIds.split(",");
@@ -261,7 +273,7 @@ public class NewsActivitiesAction extends ActionSupport implements ServletReques
 				for (String district : districtStr) {
 					districtList.add(Long.valueOf(district));
 				}
-				categoeriesList = newsAnalysisService.getCategoeryWiseCountDetails(categoeryList,constituencyList,fromDateStr,toDateStr,type,districtList,partyId);
+				categoeriesList = newsAnalysisService.getCategoeryWiseCountDetails(categoeryList,constituencyList,fromDateStr,toDateStr,type,districtList,partyIdsList);
 			}
 			
 			

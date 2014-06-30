@@ -340,17 +340,17 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 	 }
 	 
 	 @SuppressWarnings("unchecked")
-	 public List<Object[]> getCategoeryAndConsttituencyWiseNews(List<Long> categIds,List<Long> constituencyIds , Date fromDate , Date toDate , int startIndex,int maxIndex,Long partyId)
+	 public List<Object[]> getCategoeryAndConsttituencyWiseNews(List<Long> categIds,List<Long> constituencyIds , Date fromDate , Date toDate , int startIndex,int maxIndex,List<Long> partyIds)
 	 {
 		 StringBuffer queryString = new StringBuffer();
 		 
 		 queryString.append("select distinct model.candidatePartyFile.file.fileDate , " +
 		 		" model.candidatePartyFile.file.synopsysDescription , " +
 		 		" model.gallary.name , ua.constituency.name ," +
-		 		" model.candidatePartyFile.file.synopsysFont.fontId from " +
+		 		" model.candidatePartyFile.file.synopsysFont.fontId,model.candidatePartyFile.file.fileId from " +
 		 		" CandidatePartyCategory model,UserAddress ua where ua.constituency.constituencyId in (:constituencyIds)  and  model.candidatePartyFile.file.fileId = ua.file.fileId  and " +
 		 		" model.gallary.gallaryId in (:categIds) and  model.candidatePartyFile.file.synopsysDescription is not null " +
-		 		" and (model.candidatePartyFile.sourceParty.partyId = :partyId or model.candidatePartyFile.destinationParty.partyId = :partyId) " +
+		 		" and (model.candidatePartyFile.sourceParty.partyId in(:partyIds) or ( model.candidatePartyFile.sourceParty.partyId is null and model.candidatePartyFile.destinationParty.partyId in(:partyIds) )) " +
 		 		" and model.candidatePartyFile.file.isDeleted = 'N' ");
 		 if(fromDate != null)
 		 {
@@ -366,7 +366,7 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 		 Query query = getSession().createQuery(queryString.toString());
 		 query.setParameterList("categIds", categIds);
 		 query.setParameterList("constituencyIds", constituencyIds);
-		 query.setParameter("partyId", partyId);
+		 query.setParameterList("partyIds", partyIds);
 		 if(fromDate != null)
 		 {
 			 query.setParameter("fromDate", fromDate);
@@ -381,14 +381,14 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 	 }
 	 
 	 @SuppressWarnings("unchecked")
-	 public List<Long> getCategoeryAndConsttituencyWiseNewsIds(List<Long> categIds,List<Long> constituencyIds , Date fromDate , Date toDate ,Long partyId)
+	 public List<Long> getCategoeryAndConsttituencyWiseNewsIds(List<Long> categIds,List<Long> constituencyIds , Date fromDate , Date toDate ,List<Long> partyIds)
 	 {
 		 StringBuffer queryString = new StringBuffer();
 		 
 		 queryString.append("select distinct model.candidatePartyFile.file.fileId  from " +
 		 		"  CandidatePartyCategory model,UserAddress ua where ua.constituency.constituencyId in (:constituencyIds) and  model.candidatePartyFile.file.fileId = ua.file.fileId  and " +
 		 		"  model.gallary.gallaryId in (:categIds) and  model.candidatePartyFile.file.synopsysDescription is not null " +
-		 		"  and (model.candidatePartyFile.sourceParty.partyId = :partyId or model.candidatePartyFile.destinationParty.partyId = :partyId) " +
+		 		"  and (model.candidatePartyFile.sourceParty.partyId in( :partyIds) or(model.candidatePartyFile.sourceParty.partyId is null and  model.candidatePartyFile.destinationParty.partyId in( :partyIds))) " +
 				"  and model.candidatePartyFile.file.isDeleted = 'N' ");
 		 if(fromDate != null)
 		 {
@@ -401,7 +401,7 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 		 Query query = getSession().createQuery(queryString.toString());
 		 query.setParameterList("categIds", categIds);
 		 query.setParameterList("constituencyIds", constituencyIds);
-		 query.setParameter("partyId", partyId);
+		 query.setParameterList("partyIds", partyIds);
 		 if(fromDate != null)
 		 {
 			 query.setParameter("fromDate", fromDate);
@@ -414,7 +414,7 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 	 }
 	 
 	 @SuppressWarnings("unchecked")
-	 public List<Object[]> getCategoeryAndConsttituencyWiseCount(List<Long> categIds,List<Long> constituencyIds , Date fromDate , Date toDate,Long partyId )
+	 public List<Object[]> getCategoeryAndConsttituencyWiseCount(List<Long> categIds,List<Long> constituencyIds , Date fromDate , Date toDate,List<Long> partyIds )
 	 {
 		StringBuffer queryString = new StringBuffer();
 		
@@ -424,7 +424,7 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 		 		"  ua.constituency.name from " +
 		 		"  CandidatePartyCategory model,UserAddress ua where ua.constituency.constituencyId in (:constituencyIds) and ua.file.fileId = model.candidatePartyFile.file.fileId and " +
 		 		"  model.gallary.gallaryId in (:categIds) and model.candidatePartyFile.file.synopsysDescription is not null  " +
-		 		"  and (model.candidatePartyFile.sourceParty.partyId = :partyId or model.candidatePartyFile.destinationParty.partyId = :partyId) " +
+		 		"  and (model.candidatePartyFile.sourceParty.partyId in (:partyIds) or (model.candidatePartyFile.sourceParty.partyId is null and model.candidatePartyFile.destinationParty.partyId in (:partyIds))) " +
 				"  and model.candidatePartyFile.file.isDeleted = 'N' ");
 		 if(fromDate != null)
 		 {
@@ -440,7 +440,7 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 		 
 		query.setParameterList("categIds", categIds);
 		query.setParameterList("constituencyIds", constituencyIds);
-		query.setParameter("partyId", partyId);
+		query.setParameterList("partyIds", partyIds);
 		 if(fromDate != null)
 		 {
 			 query.setParameter("fromDate", fromDate);
@@ -453,14 +453,14 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 	 }
 	
 	 @SuppressWarnings("unchecked")
-	 public List<Object[]> getCategoeryAndConsttituencyWiseTotalCount(List<Long> categIds,List<Long> constituencyIds , Date fromDate , Date toDate,Long partyId )
+	 public List<Object[]> getCategoeryAndConsttituencyWiseTotalCount(List<Long> categIds,List<Long> constituencyIds , Date fromDate , Date toDate,List<Long> partyIds)
 	 {
 		 StringBuffer queryString = new StringBuffer();
 		 
 		 queryString.append("select distinct  model.candidatePartyFile.file.fileId,model.gallary.gallaryId from " +
 		 		" CandidatePartyCategory model,UserAddress ua  where ua.constituency.constituencyId in (:constituencyIds) and  model.candidatePartyFile.file.fileId = ua.file.fileId " +
 		 		" and model.gallary.gallaryId in (:categIds) and model.candidatePartyFile.file.synopsysDescription is not null " +
-		 		" and (model.candidatePartyFile.sourceParty.partyId = :partyId or model.candidatePartyFile.destinationParty.partyId = :partyId)  " +
+		 		" and (model.candidatePartyFile.sourceParty.partyId in( :partyIds) or (model.candidatePartyFile.sourceParty.partyId is null and model.candidatePartyFile.destinationParty.partyId in( :partyIds)))  " +
 				" and model.candidatePartyFile.file.isDeleted = 'N' ");
 		 if(fromDate != null)
 		 {
@@ -474,7 +474,7 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 		 
 		 query.setParameterList("categIds", categIds);
 		 query.setParameterList("constituencyIds", constituencyIds);
-		 query.setParameter("partyId", partyId);
+		 query.setParameterList("partyIds", partyIds);
 		 if(fromDate != null)
 		 {
 			 query.setParameter("fromDate", fromDate);
@@ -489,7 +489,7 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 	 }
 	
 	 @SuppressWarnings("unchecked")
-	 public List<Object[]> getCategoeryAndDisrictWiseCount(List<Long> categIds,List<Long> districtIds , Date fromDate , Date toDate,Long partyId)
+	 public List<Object[]> getCategoeryAndDisrictWiseCount(List<Long> categIds,List<Long> districtIds , Date fromDate , Date toDate,List<Long>  partyIds)
 	 {
 		 StringBuffer queryString = new StringBuffer();
 		 queryString.append("select model.gallary.name,count(distinct model.candidatePartyFile.file.fileId)," +
@@ -499,7 +499,7 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 		 		" CandidatePartyCategory model,UserAddress ua where ua.file.fileId = model.candidatePartyFile.file.fileId and ua.regionScopes.regionScopesId = 3 and" +
 		 		" ua.locationValue in (:districtIds) and " +
 		 		" model.gallary.gallaryId in (:categIds) and model.candidatePartyFile.file.synopsysDescription is not null " +
-		 		" and (model.candidatePartyFile.sourceParty.partyId = :partyId or model.candidatePartyFile.destinationParty.partyId = :partyId)" +
+		 		" and (model.candidatePartyFile.sourceParty.partyId in( :partyIds) or( model.candidatePartyFile.sourceParty.partyId is null and model.candidatePartyFile.destinationParty.partyId in( :partyIds)))" +
 				" and model.candidatePartyFile.file.isDeleted = 'N' ");
 		 if(fromDate != null)
 		 {
@@ -514,7 +514,7 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 		 
 		 query.setParameterList("categIds", categIds);
 		 query.setParameterList("districtIds", districtIds);
-		 query.setParameter("partyId", partyId);
+		 query.setParameterList("partyIds", partyIds);
 		 if(fromDate != null)
 		 {
 			 query.setParameter("fromDate", fromDate);

@@ -1857,7 +1857,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 	 * @return List<SelectOptionVO>
 	 * @Date 18-12-2013
 	 */
-	public List<SelectOptionVO> getProgramsWiseNews(List<Long> categIds, List<Long> constituencyIds,String fromDateStr , String toDateStr ,Long startIndex,Long maxIndex,final Long partyid,final Long userId,String url,String requestType){
+	public List<SelectOptionVO> getProgramsWiseNews(List<Long> categIds, List<Long> constituencyIds,String fromDateStr , String toDateStr ,Long startIndex,Long maxIndex,final List<Long> partyIds,final Long userId,String url,String requestType){
 		List<SelectOptionVO> returnList = null;
 		try {
 			LOG.info("Entered into getProgramsWiseNews method in NewsAnalysisService service");
@@ -1873,8 +1873,8 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				toDate   = format.parse(toDateStr);
 			}
 
-			List<Object[]> count = candidatePartyCategoryDAO.getCategoeryAndConsttituencyWiseTotalCount(categIds,constituencyIds,fromDate,toDate,partyid);
-			List<Object[]> catgList = candidatePartyCategoryDAO.getCategoeryAndConsttituencyWiseNews(categIds,constituencyIds,fromDate,toDate,startIndex.intValue(),maxIndex.intValue(),partyid);
+			List<Object[]> count = candidatePartyCategoryDAO.getCategoeryAndConsttituencyWiseTotalCount(categIds,constituencyIds,fromDate,toDate,partyIds);
+			List<Object[]> catgList = candidatePartyCategoryDAO.getCategoeryAndConsttituencyWiseNews(categIds,constituencyIds,fromDate,toDate,startIndex.intValue(),maxIndex.intValue(),partyIds);
 			if(catgList != null && catgList.size() > 0)
 			{
 				returnList = new ArrayList<SelectOptionVO>();
@@ -1885,6 +1885,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 					selectOptionVO.setType(parms[2] != null ? parms[2].toString() :"");
 					selectOptionVO.setLocation(parms[3] != null ? parms[3].toString() :"");
 					selectOptionVO.setId(parms[4] != null ? new Long(parms[4].toString()) :0l);
+					selectOptionVO.setPopulateId((Long)parms[5]);
 					if(count != null)
 					selectOptionVO.setOrderId(Long.valueOf(count.size()));
 					else
@@ -1893,7 +1894,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 					
 					
 				}
-				final List<Long> fileIdsList =  candidatePartyCategoryDAO.getCategoeryAndConsttituencyWiseNewsIds(categIds, constituencyIds, fromDate, toDate, partyid);
+				final List<Long> fileIdsList =  candidatePartyCategoryDAO.getCategoeryAndConsttituencyWiseNewsIds(categIds, constituencyIds, fromDate, toDate, partyIds);
 				if(fileIdsList.size() > 0 && requestType.equalsIgnoreCase("initial")){
 					String categoryIds = "";
 					for(Long id:categIds){
@@ -1906,6 +1907,15 @@ public class NewsAnalysisService implements INewsAnalysisService {
 					final String key = UUID.randomUUID().toString();
 					url = url+"key="+key;
 					returnList.get(0).setPartno(url);
+					String partyIdsStr ="";
+					for(Long partyId:partyIds){
+						if(partyIdsStr.length() > 0){
+							partyIdsStr = partyIdsStr+","+partyId;
+						}else{
+							partyIdsStr = partyId+"";
+						}
+					}
+					final String allIds = partyIdsStr;
 					transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 						public void doInTransactionWithoutResult(TransactionStatus status) {
 							DateUtilService dateService = new DateUtilService();
@@ -1913,7 +1923,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 							activityReport.setUser(userDAO.get(userId));
 							activityReport.setCreatedDate(dateService.getCurrentDateAndTime());
 							activityReport.setReportKey(key);
-							activityReport.setParty(partyDAO.get(partyid));
+							activityReport.setPartyIds(allIds);
 							activityReport.setCategories(categoryString);
 							activityReport = activityReportDAO.save(activityReport);
 							for(Long fileId:fileIdsList){
@@ -1942,7 +1952,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 	 * @return List<SelectOptionVO> returnList
 	 * @Date 18-12-2013
 	 */
-	public List<SelectOptionVO> getCategoeryWiseCountDetails(List<Long> categIds, List<Long> constituencyIds,String fromDateStr , String toDateStr,String type ,List<Long> districtIds,Long partyId)
+	public List<SelectOptionVO> getCategoeryWiseCountDetails(List<Long> categIds, List<Long> constituencyIds,String fromDateStr , String toDateStr,String type ,List<Long> districtIds,List<Long> partyIds)
 	{
 		List<SelectOptionVO> returnList = null;
 		try {
@@ -1968,11 +1978,11 @@ public class NewsAnalysisService implements INewsAnalysisService {
 			SelectOptionVO selectOptionVO1 = null;
 			if(type.equalsIgnoreCase("district"))
 			{
-				categCountList = candidatePartyCategoryDAO.getCategoeryAndDisrictWiseCount(categIds,districtIds,fromDate,toDate,partyId);
+				categCountList = candidatePartyCategoryDAO.getCategoeryAndDisrictWiseCount(categIds,districtIds,fromDate,toDate,partyIds);
 			}
 			else
 			{
-				categCountList = candidatePartyCategoryDAO.getCategoeryAndConsttituencyWiseCount(categIds,constituencyIds,fromDate,toDate,partyId);
+				categCountList = candidatePartyCategoryDAO.getCategoeryAndConsttituencyWiseCount(categIds,constituencyIds,fromDate,toDate,partyIds);
 			}
 			
 			if(categCountList != null && categCountList.size() > 0)
@@ -2083,7 +2093,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 	 * @return List<SelectOptionVO> returnList
 	 * @Date 18-12-2013
 	 */
-	public List<SelectOptionVO> generatePdfOrExcel(List<Long> catgIds,List<Long> constiIds,List<Long> districtIds,String fromDateStr,String toDateStr,String type,String path,Long partyId)
+	public List<SelectOptionVO> generatePdfOrExcel(List<Long> catgIds,List<Long> constiIds,List<Long> districtIds,String fromDateStr,String toDateStr,String type,String path,List<Long> partyIds)
 	{
 		List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
 		SelectOptionVO selectOptionVO = new SelectOptionVO();
@@ -2110,12 +2120,12 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				  	}
 				  	document.open();
 				  	addTitlePage(document);
-				List<SelectOptionVO> list1 = getCategoeryWiseCountDetails( catgIds,  constiIds, fromDateStr ,  toDateStr, "district" , districtIds,partyId);
+				List<SelectOptionVO> list1 = getCategoeryWiseCountDetails( catgIds,  constiIds, fromDateStr ,  toDateStr, "district" , districtIds,partyIds);
 				if(list1 != null && list1.size() > 0)
 				{
 					pdfGeneration(list1,document,"District");
 				}
-				List<SelectOptionVO> list2 = getCategoeryWiseCountDetails( catgIds,  constiIds, fromDateStr ,  toDateStr, "constituency" , districtIds,partyId);
+				List<SelectOptionVO> list2 = getCategoeryWiseCountDetails( catgIds,  constiIds, fromDateStr ,  toDateStr, "constituency" , districtIds,partyIds);
 				if(list2 != null && list2.size() > 0)
 				{
 					pdfGeneration(list2,document,"Constituency");
@@ -2151,7 +2161,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				file.createNewFile();
 				HSSFWorkbook workbook=new HSSFWorkbook();
 				selectOptionVO.setUrl(filename);
-				List<SelectOptionVO> list1 =  getCategoeryWiseCountDetails( catgIds,  constiIds, fromDateStr ,  toDateStr, "district" , districtIds,partyId);
+				List<SelectOptionVO> list1 =  getCategoeryWiseCountDetails( catgIds,  constiIds, fromDateStr ,  toDateStr, "district" , districtIds,partyIds);
 				if(list1 != null && list1.size() > 0)
 				{
 					
@@ -2160,7 +2170,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 					generateXl(list1,"District",FILE,workbook,sheet,fileOut);
 					workbook.write(fileOut);
 				}
-				List<SelectOptionVO> list2 = getCategoeryWiseCountDetails( catgIds,  constiIds, fromDateStr ,  toDateStr, "constituency" , districtIds,partyId);
+				List<SelectOptionVO> list2 = getCategoeryWiseCountDetails( catgIds,  constiIds, fromDateStr ,  toDateStr, "constituency" , districtIds,partyIds);
 				if(list2 != null && list2.size() > 0)
 				{
 			        HSSFSheet sheet =  workbook.createSheet("Constituency"); 

@@ -33,9 +33,19 @@ public class CreateReportAction extends ActionSupport implements ServletRequestA
 	private ResultStatus resultStatus;
 	private JSONObject jObj;
 	private String task;
+	private Long pageVal;
 	
 	private IReportService reportService;
 	
+	
+	public Long getPageVal() {
+		return pageVal;
+	}
+
+	public void setPageVal(Long pageVal) {
+		this.pageVal = pageVal;
+	}
+
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
@@ -142,6 +152,9 @@ public class CreateReportAction extends ActionSupport implements ServletRequestA
 	}
 	
 	public String activitiesReports(){
+		if(pageVal != null){
+			request.setAttribute("pageVal",pageVal) ;
+		}
 		return Action.SUCCESS;
 	}
 	

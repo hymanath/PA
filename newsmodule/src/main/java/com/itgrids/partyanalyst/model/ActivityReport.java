@@ -32,6 +32,7 @@ public class ActivityReport extends BaseModel implements Serializable{
 	private String reportKey;
 	private String categories;
 	private Party party;
+	private String partyIds;
 	
 	public ActivityReport()
 	{
@@ -96,6 +97,15 @@ public class ActivityReport extends BaseModel implements Serializable{
 	}
 	public void setParty(Party party) {
 		this.party = party;
+	}
+	
+	@Column(name = "party_ids")
+	public String getPartyIds() {
+		return partyIds;
+	}
+	
+	public void setPartyIds(String partyIds) {
+		this.partyIds = partyIds;
 	}
 
 }

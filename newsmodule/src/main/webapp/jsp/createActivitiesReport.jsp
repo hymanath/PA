@@ -30,7 +30,24 @@
 	  padding-top: 10px;
 	  padding-bottom: 10px;
 	}
-	
+@font-face{ font-family: 'eFont'; src: url('fonts/eenadu_fonts/eenadu.eot');}
+@font-face {
+    font-family: "eFont";
+    font-style: normal;
+    font-weight: normal;
+    src: local("?"), url("fonts/eenadu_fonts/eenadu.woff") format("woff"), url("fonts/eenadu_fonts/eenadu.ttf") format("truetype"), url("fonts/eenadu_fonts/eenadu.svg") format("svg");
+}
+ 
+.enadu
+{
+font-family: eFont;
+font-size:35px;
+line-height: 1;
+}
+.fontclass{
+  font-size: 24px;
+  line-height: 1.5;
+}
 </style>
 </head>
 <body>
@@ -39,7 +56,11 @@
   </div>
   
   <script type="text/javascript">
-  
+  var pageVal = '${pageVal}';
+  var page = true;
+  if(pageVal == '1'){
+	  page = false;
+  }
   function callAjax()
 	{
 		 var myResults;
@@ -74,16 +95,20 @@
 				 str+='<div class="row-fluid ">';
 				 str+='			<div class="span12 widget ">';
 				 str+='				<div class="boxHeading">';
-				 str+='				<h4>'+myResults.list[i].list[j].name+' District</h4>	</div>';
+				 str+='				<h4 style=" font-size:16px;">'+myResults.list[i].list[j].name+' District</h4>	</div>';
 				 for(var k in  myResults.list[i].list[j].list){	//constituency list			
 					str+='				<div class="accordion-inner">';
-					str+='					<a class="btn btn-small">'+myResults.list[i].list[j].list[k].name+'</a>';
+					str+='					<a class="btn btn-small" style=" font-size:15px;">'+myResults.list[i].list[j].list[k].name+'</a>';
 					str+='					<div class="m_top10">';
 					for(var l in  myResults.list[i].list[j].list[k].list){//news list
 					  if(myResults.list[i].list[j].list[k].list[l].font == null){
-					    str+='			<p>'+myResults.list[i].list[j].list[k].list[l].date+' '+myResults.list[i].list[j].list[k].list[l].description+'</p>';
+					    str+='			<p class="fontclass">'+myResults.list[i].list[j].list[k].list[l].date+' '+myResults.list[i].list[j].list[k].list[l].description+'</p>';
 					  }else{
-					    str+='			<p>'+myResults.list[i].list[j].list[k].list[l].date+'&nbsp;<enadu>'+myResults.list[i].list[j].list[k].list[l].description+'</enadu></p>';
+						 if(page){ 
+					        str+='			<p class="fontclass">'+myResults.list[i].list[j].list[k].list[l].date+'&nbsp;<enadu>'+myResults.list[i].list[j].list[k].list[l].description+'</enadu></p>';
+						 }else{
+							 str+='			<p class="fontclass">'+myResults.list[i].list[j].list[k].list[l].date+'&nbsp;<div class="enadu">'+myResults.list[i].list[j].list[k].list[l].description+'</div></p>';
+						 }
 					  }
 					}
 					str+='					</div>';
@@ -95,7 +120,9 @@
 		}
 	  str+="</div></div></div>";
 	  document.getElementById("newsDiv").innerHTML =str;
-	  Cufon.set('fontSize', '28px').replace('enadu');
+	  if(page){ 
+	   Cufon.set('fontSize', '35px').replace('enadu');
+	  }
    }
  }
   callAjax();
