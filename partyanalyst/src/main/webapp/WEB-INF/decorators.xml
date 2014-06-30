@@ -322,6 +322,7 @@
 		<pattern>/electionResults*</pattern>
 		<pattern>/cmsAdminAction*</pattern>
 		<pattern>/fieldVoterDataAction*</pattern>
+		<pattern>/houseHoldsSummaryReportAction*</pattern>
 		
 		</decorator>
     	 
