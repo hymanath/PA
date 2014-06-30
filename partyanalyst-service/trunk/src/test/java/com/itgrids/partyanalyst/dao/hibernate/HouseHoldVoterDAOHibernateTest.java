@@ -182,12 +182,12 @@ public class HouseHoldVoterDAOHibernateTest extends BaseDaoTestCase{
 	}*/
 	
 	public void test(){
-		List<Object[]> list = houseHoldVoterDAO.getAllLeadersBooksFamilies(228l);
+		List<Object[]> list = houseHoldVoterDAO.getActiveLeadersOfConstituency(228l);
 		/*for(Object[] obj:list){
 			System.out.println(Long.valueOf(obj[0].toString())+" "+Long.valueOf(obj[1].toString()));
 		}*/
 		
-		System.out.println(list.size());
+		System.out.println(list);
 	}
 
 }
