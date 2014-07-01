@@ -440,14 +440,15 @@
 				<value>com.itgrids.partyanalyst.model.MemberMatchedLevelTypeMapping</value>
 				<value>com.itgrids.partyanalyst.model.MemberVoterMappingDetails</value>
 				
-				<value>com.itgrids.partyanalyst.model.SurveyUserType</value>
-				<value>com.itgrids.partyanalyst.model.SurveyUser</value>
+				
 				<value>com.itgrids.partyanalyst.model.SurveyUserTabAssign</value>
 				<value>com.itgrids.partyanalyst.model.SurveyUserBoothAssign</value>
 				<value>com.itgrids.partyanalyst.model.SurveyUserRelation</value>
 				<value>com.itgrids.partyanalyst.model.SurveySurveyorType</value>
 				<value>com.itgrids.partyanalyst.model.SurveyDetailsInfo</value>
 				<value>com.itgrids.partyanalyst.model.SurveyUserTracking</value>
+				<value>com.itgrids.partyanalyst.model.SurveyUserType</value>
+				<value>com.itgrids.partyanalyst.model.SurveyUser</value>
 				
 			</list>
 			
