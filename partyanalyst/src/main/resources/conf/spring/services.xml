@@ -2119,5 +2119,7 @@
           <property name="memberVoterMappingDetailsDAO" ref="memberVoterMappingDetailsDAO"></property>
    </bean>
    
+   <bean name="surveyDataDetailsService"  class="com.itgrids.partyanalyst.service.impl.SurveyDataDetailsService"  > </bean>
+   
 </beans>		
 	
