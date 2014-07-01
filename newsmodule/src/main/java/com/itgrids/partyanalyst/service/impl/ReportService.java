@@ -550,6 +550,7 @@ public class ReportService implements IReportService {
 				partyIds.add(Long.valueOf(partyId));
 			}
 		}
+		//0 synopsys,1 fontId ,2 date,3 districtId,4 districtName,5 constituencyId,6 constituencyName ,7 gallaryId,8gallary Name,9 fileId
 		List<Object[]> activitiesList = activityReportFilesDAO.getActivitiesList(key,cateList,partyIds);
 		for(Object[] activity:activitiesList){
 			districtyMap = newsMap.get((Long)activity[7]);
@@ -578,6 +579,7 @@ public class ReportService implements IReportService {
 				 constituency.setFont("eenadu");
 			 }
 			 constituency.setDate(activity[2] != null ? sdf.format((Date)activity[2]):"");
+			 constituency.setId((Long)activity[9]);
 		}
 		for(Long categoryId:newsMap.keySet()){
 			NewsActivityVO category = new NewsActivityVO();

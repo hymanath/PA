@@ -8,6 +8,7 @@ public class NewsActivityVO implements Serializable{
    private String date;
    private String description;
    private String font;
+   private Long id;
    
    private List<NewsActivityVO> list;
 
@@ -49,6 +50,14 @@ public class NewsActivityVO implements Serializable{
 	
 	public void setList(List<NewsActivityVO> list) {
 		this.list = list;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 	   
    
