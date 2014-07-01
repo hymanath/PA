@@ -1,5 +1,9 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -69,6 +73,35 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			}
 			jObj = new JSONObject(getTask());
 			resultStatus = surveyDataDetailsService.saveSurveyUser(jObj.getString("firstName"), jObj.getString("lastName"), jObj.getString("userName"), jObj.getString("password"), jObj.getString("address"), jObj.getString("mobileNo"), jObj.getLong("userType"));
+		} 
+		catch (Exception e)
+		{
+			
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String assignTab()
+	{
+		try
+		{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			Long userId = user.getRegistrationID();
+			jObj = new JSONObject(getTask());
+			String dateObj = jObj.getString("date");
+			SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
+			SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd" );
+			Date Date;
+			
+			Date = originalFormat.parse(dateObj);
+			Date convertDate= targetFormat.parse(targetFormat.format(Date));	
+			resultStatus = surveyDataDetailsService.saveSurveyUserTabAssign(userId, jObj.getString("tabNo"), jObj.getString("remarks"),convertDate);
 		} 
 		catch (Exception e)
 		{
