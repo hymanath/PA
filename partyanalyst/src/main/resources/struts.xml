@@ -7271,8 +7271,14 @@
 			<result name="success">/jsp/houseHoldsSummary.jsp</result>
 		</action>
 		
-			<action name="surveyDataDetailsAction" class="surveyDataDetailsAction">
+		<action name="surveyDataDetailsAction" class="surveyDataDetailsAction">
 			<result name="success">/jsp/surveyDataDetails.jsp</result>
+		</action>
+		
+		<action name="saveSurveyUserAction" class="surveyDataDetailsAction" method="saveSurveyUser">
+			<result type="json" name="success">
+				<param name="root">resultStatus</param>
+			</result>
 		</action>
 		
 			
