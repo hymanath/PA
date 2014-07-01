@@ -965,92 +965,11 @@ public class SoundexService implements ISoundexService {
 				}
 			}
 			
-			
-		/*	for(SoundexVO memberVO:membersList)
-			{
-				if(memberVO.isUnMatched())
-				{
-					for(SoundexVO voterVO:votersDetails)
-					{
-						
-						String[] memberName = null;
-						  memberName = memberVO.getName().split(" ");
-						  
-						 if(memberName.length !=2)
-							 memberName = memberVO.getName().split(".");
-						 
-						
-						if(memberName != null && memberName.length == 2)
-						{
-							String firstString = memberName[0].trim()+""+memberName[1].trim();
-							String lastString = memberName[1].trim()+""+memberName[0].trim();
-							
-							if (soundex.soundex(voterVO.getName().trim())
-									.equalsIgnoreCase(soundex.soundex(firstString.trim()))
-									|| soundex
-											.soundex(voterVO.getName().trim())
-											.equalsIgnoreCase(soundex.soundex(lastString.trim())))						
-							{
-								memberVO.getSoundexMatchList().add(voterVO);
-								memberVO.setSplit(true);
-							}
-							
-							
-							boolean gender = voterVO.getGender().equalsIgnoreCase(memberVO.getGender());
-							
-							if(gender)
-								voterVO.setGenderMatch(true);
-							
-							boolean relativeName = voterVO.getRelativeName().equalsIgnoreCase(memberVO.getRelativeName());
-
-							if(relativeName)
-								voterVO.setRelativeNameMatch(true);
-							
-							long low = memberVO.getAge() - 4;
-							long high = memberVO.getAge() + 4;
-							
-							boolean age = (voterVO.getAge() >= low) &&( voterVO.getAge() <= high);
-							
-							 if(age)
-								voterVO.setAgeMatched(true);
-							
-						}
-					}
-					
-					if(memberVO.isSplit())
-						memberVO.setUnMatched(false);
-				}
-			}*/
-			
-			/*for(SoundexVO memberVO:membersList)
-			{
-				if(memberVO.isUnMatched())
-				{
-					for(SoundexVO voterVO:votersDetails)
-					{
-						if (soundex
-								.soundex(memberVO.getName())
-								.replaceAll("0", "")
-								.equalsIgnoreCase(
-										soundex.soundex(voterVO.getName())
-												.replaceAll("0", "")))						{
-							
-							memberVO.getSoundexMatchList().add(voterVO);
-							memberVO.setSplit(true);
-							memberVO.setUnMatched(false);
-						}
-					}
-					
-					
-				}
-			}*/
-			
 		}catch(Exception e)
 		{
 			e.printStackTrace();
 			LOG.error("Exception raised in buildAllTheMemberAndMatchedVotersDetails service method");
 		}
-		
 	}
 
 	/**
