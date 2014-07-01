@@ -8,5 +8,34 @@
 </head>
 <body>
 
+<script>
+
+function AssignTab()
+{
+	var uname = $trim($("#uname").val());
+	var tabNo = $trim($("#tabNo").val());
+	var remarks = $trim($("#remarks").val());
+	var date = $("#date").val()
+	var jObj = {
+		uname : uname,
+		tabNo :tabNo,
+		remarks : remarks,
+		date : date
+			
+	}
+	$.ajax({
+          type:'POST',
+          url: 'assignTabAction.action',
+          dataType: 'json',
+          data: {task:JSON.stringify(jObj)},
+     	  }).done(function(result){ 
+			 
+	   });
+	
+}
+</script>
+
+
+
 </body>
 </html>
