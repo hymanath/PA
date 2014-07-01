@@ -107,7 +107,7 @@ line-height: 1;
 						 if(page){ 
 					        str+='			<p class="fontclass">'+myResults.list[i].list[j].list[k].list[l].date+'('+myResults.list[i].list[j].list[k].list[l].id+')&nbsp;<enadu>'+myResults.list[i].list[j].list[k].list[l].description+'</enadu></p>';
 						 }else{
-							 str+='			<p class="fontclass">'+myResults.list[i].list[j].list[k].list[l].date+'('+myResults.list[i].list[j].list[k].list[l].id+')&nbsp;<div class="enadu">'+myResults.list[i].list[j].list[k].list[l].description+'</div></p>';
+							 str+='			<p class="fontclass">'+myResults.list[i].list[j].list[k].list[l].date+'('+myResults.list[i].list[j].list[k].list[l].id+')&nbsp;<span class="enadu">'+myResults.list[i].list[j].list[k].list[l].description+'</span></p>';
 						 }
 					  }
 					}
