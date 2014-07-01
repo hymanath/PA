@@ -4,7 +4,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
 <title>Survey Details</title>
+	<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.24.custom.min.js"> </script>
 </head>
 <body>
 
@@ -12,15 +14,16 @@
 
 function AssignTab()
 {
-	var uname = $trim($("#uname").val());
+	
+	/*var uname = $trim($("#uname").val());
 	var tabNo = $trim($("#tabNo").val());
 	var remarks = $trim($("#remarks").val());
-	var date = $("#date").val()
+	var date = $("#date").val()*/
 	var jObj = {
-		uname : uname,
-		tabNo :tabNo,
-		remarks : remarks,
-		date : date
+		uname : "test",
+		tabNo :"1",
+		remarks : "remarks",
+		date : "7-1-2014"
 			
 	}
 	$.ajax({

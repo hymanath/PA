@@ -331,6 +331,7 @@
              <pattern>/smsAction*</pattern>
 			 <pattern>/subUserRegPageAction*</pattern>
 			 <pattern>/login*</pattern>
+			 <pattern>/surveyDataDetailsAction*</pattern>
 			
             <!--  <pattern>/dashBoardAction*</pattern> -->
        </decorator>
