@@ -66,15 +66,17 @@ public class PopulateVoterTempDataFor2014 {
 	        {
 	        	try{
 	        		voter = new VoterInfo();
-	        		String name = (rs.getString("FM_NAME")+" "+rs.getString("LASTNAME")).trim();
-	        		String guardianName = (rs.getString("RLN_FM_NM")+" "+rs.getString("RLN_L_NM")).trim();
-	        		voter.setVoterId(rs.getString("IDCARD_NO"));
+	        		String name = (rs.getString("FM_NAME").trim()+" "+rs.getString("LASTNAME")).trim();
+	        		String guardianName = (rs.getString("RLN_FM_NM").trim()+" "+rs.getString("RLN_L_NM")).trim();
+	        		voter.setVoterId(rs.getString("IDCARD_NO").trim());
 	        		voter.setVoterName(name);
 	        		voter.setSex(sexMap.get(rs.getString("SEX").toUpperCase()));
 	        		voter.setAge(Integer.valueOf(rs.getInt("AGE")).toString());
-	        		voter.setHouseNumber(rs.getString("HOUSE_NO"));
+	        		voter.setHouseNumber(rs.getString("HOUSE_NO").trim());
 	        		voter.setGuardianName(guardianName);
 	        		voter.setGuardianRelation(relationMap.get(rs.getString("RLN_TYPE").toUpperCase()));
+	        		if(voter.getGuardianRelation() == null || voter.getGuardianRelation().trim().length() == 0)
+	        			voter.setGuardianRelation("Other");
 	        		voter.setConstituencyId(Integer.valueOf(rs.getInt("Ac_No")).toString());
 	        		voter.setConstituency(IConstants.CONSTITUENCY_NAME);
 	        		voter.setBoothNo(Integer.valueOf(rs.getInt("PART_NO")).toString());
