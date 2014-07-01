@@ -19,7 +19,7 @@ public class SurveyDetailsInfo
 	private String mobileNumber;
 	private String isCadre;
 	private String isInfluencingPeople;
-	private Caste caste;
+	private CasteState caste;
 	private Hamlet hamlet;
 	private String localArea;
 	private String casteName;
@@ -71,10 +71,11 @@ public class SurveyDetailsInfo
 	public void setIsInfluencingPeople(String isInfluencingPeople) {
 		this.isInfluencingPeople = isInfluencingPeople;
 	}
-	public Caste getCaste() {
+
+	public CasteState getCaste() {
 		return caste;
 	}
-	public void setCaste(Caste caste) {
+	public void setCaste(CasteState caste) {
 		this.caste = caste;
 	}
 	public Hamlet getHamlet() {

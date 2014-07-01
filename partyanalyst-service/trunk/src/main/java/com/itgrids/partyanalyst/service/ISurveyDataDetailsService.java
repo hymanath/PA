@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 
 public interface ISurveyDataDetailsService 
 {
@@ -14,4 +15,6 @@ public interface ISurveyDataDetailsService
 	public ResultStatus saveServeyUserRelationDetails(Long userTypeId,Long surveyUserId,Long leaderId,Long constituencyId);
 	public ResultStatus saveSurveyUserTrackingDetails(Long surveyUserId,String longitude , String latitude,Date date);
 	public ResultStatus deactivateUser(Long userId,String remarks);
+	public ResultStatus saveSurveyDataDetailsInfo(List<SurveyResponceVO> surveyResponceList);
+	public Long getUserDetailsForCheck(String userName,String password);
 }
