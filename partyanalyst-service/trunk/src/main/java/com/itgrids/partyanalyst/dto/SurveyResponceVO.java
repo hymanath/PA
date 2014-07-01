@@ -13,13 +13,20 @@ public class SurveyResponceVO implements Serializable
 	private Long voterId;
 	private Long casteId;
 	private Long hamletId;
-	private String casteName;
-	private String hamletName;
-	
+	private String casteName = null;
+	private String hamletName = null;
+	private String localArea = null;
 	private Date date;
 	
-	private String longitude;
-	private String latitude;
+	private String longitude = null;
+	private String latitude = null;
+	
+	private String voterCardNo;
+	
+	
+	private String isCadre = "N";
+	private String isInfluencingPeople = "N";
+	private String mobileNo = null;
 	public Long getSurveyUserId() {
 		return surveyUserId;
 	}
@@ -62,6 +69,12 @@ public class SurveyResponceVO implements Serializable
 	public void setHamletName(String hamletName) {
 		this.hamletName = hamletName;
 	}
+	public String getLocalArea() {
+		return localArea;
+	}
+	public void setLocalArea(String localArea) {
+		this.localArea = localArea;
+	}
 	public Date getDate() {
 		return date;
 	}
@@ -79,6 +92,30 @@ public class SurveyResponceVO implements Serializable
 	}
 	public void setLatitude(String latitude) {
 		this.latitude = latitude;
+	}
+	public String getVoterCardNo() {
+		return voterCardNo;
+	}
+	public void setVoterCardNo(String voterCardNo) {
+		this.voterCardNo = voterCardNo;
+	}
+	public String getIsCadre() {
+		return isCadre;
+	}
+	public void setIsCadre(String isCadre) {
+		this.isCadre = isCadre;
+	}
+	public String getIsInfluencingPeople() {
+		return isInfluencingPeople;
+	}
+	public void setIsInfluencingPeople(String isInfluencingPeople) {
+		this.isInfluencingPeople = isInfluencingPeople;
+	}
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
 	}
 	
 	

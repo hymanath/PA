@@ -7,7 +7,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.ISurveySurveyorTypeDAO;
@@ -17,14 +19,18 @@ import com.itgrids.partyanalyst.dao.ISurveyUserRelationDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserTabAssignDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserTrackingDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserTypeDAO;
+import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
+import com.itgrids.partyanalyst.model.SurveyDetailsInfo;
+import com.itgrids.partyanalyst.model.SurveySurveyorType;
 import com.itgrids.partyanalyst.model.SurveyUser;
 import com.itgrids.partyanalyst.model.SurveyUserBoothAssign;
 import com.itgrids.partyanalyst.model.SurveyUserRelation;
 import com.itgrids.partyanalyst.model.SurveyUserTabAssign;
 import com.itgrids.partyanalyst.model.SurveyUserTracking;
 import com.itgrids.partyanalyst.model.SurveyUserType;
+import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
 
 public class SurveyDataDetailsService implements ISurveyDataDetailsService
@@ -64,6 +70,15 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	
 	@Autowired
 	private IBoothDAO boothDAO;
+	
+	@Autowired
+	private IVoterDAO voterDAO;
+	
+	@Autowired
+	private IHamletDAO hamletDAO;
+	
+	@Autowired
+	private ICasteStateDAO casteStateDAO;
  	
 	
 	/**
@@ -119,30 +134,35 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		ResultStatus resultStatus = new ResultStatus();
 		try
 		{
-			SurveyUser surveyUser = new SurveyUser();
-			surveyUser.setFirstName(firstName);
-			surveyUser.setLastName(lastName);
-			surveyUser.setUserName(userName);
-			surveyUser.setPassword(password);
-			surveyUser.setAddress(address);
-			surveyUser.setMobileNo(mobileNo);
-			surveyUser.setActiveStatus("Y");
-			SurveyUserType surveyUserType = surveyUserTypeDAO.get(userTypeId);
-			if(surveyUserType != null)
+			Long userId = getUserDetailsForCheck(userName.trim(),password.trim());
+			if(userId == null)
 			{
-				surveyUser.setSurveyUserType(surveyUserType);
+				SurveyUser surveyUser = new SurveyUser();
+				surveyUser.setFirstName(firstName);
+				surveyUser.setLastName(lastName);
+				surveyUser.setUserName(userName);
+				surveyUser.setPassword(password);
+				surveyUser.setAddress(address);
+				surveyUser.setMobileNo(mobileNo);
+				surveyUser.setActiveStatus("Y");
+				SurveyUserType surveyUserType = surveyUserTypeDAO.get(userTypeId);
+				if(surveyUserType != null)
+				{
+					surveyUser.setSurveyUserType(surveyUserType);
+				}
+				SurveyUser result = surveyUserDAO.save(surveyUser);
+				if(result != null)
+				{
+					resultStatus.setResultCode(0);
+					resultStatus.setMessage("Success");
+				}
+				else
+				{
+					resultStatus.setResultCode(1);
+					resultStatus.setMessage("Failure");
+				}
 			}
-			SurveyUser result = surveyUserDAO.save(surveyUser);
-			if(result != null)
-			{
-				resultStatus.setResultCode(0);
-				resultStatus.setMessage("Success");
-			}
-			else
-			{
-				resultStatus.setResultCode(1);
-				resultStatus.setMessage("Failure");
-			}
+			
 			
 		}
 		catch (Exception e)
@@ -366,12 +386,82 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		return resultStatus;
 	}
 	
-	public ResultStatus saveSurveyDataDetailsInfo(SurveyResponceVO surveyResponceVO)
+	/**
+	 * This Service is Used For Saving Survey Data
+	 * @param List<surveyResponceVO>
+	 * @return resultStatus
+	 */
+	public ResultStatus saveSurveyDataDetailsInfo(List<SurveyResponceVO> surveyResponceList)
 	{
 		LOG.info("Entered into saveSurveyDataDetailsInfo service in SurveyDataDetailsService");
 		ResultStatus resultStatus = new ResultStatus();
 		try
 		{
+			if(surveyResponceList != null && surveyResponceList.size() > 0)
+			{
+				for (SurveyResponceVO surveyResponceVO : surveyResponceList)
+				{
+					SurveyDetailsInfo surveyDetailsInfo = new SurveyDetailsInfo();
+					SurveyUser surveyUser = surveyUserDAO.get(surveyResponceVO.getSurveyUserId());
+					if(surveyUser != null)
+					{
+						surveyDetailsInfo.setSurveyUser(surveyUser);
+						SurveySurveyorType surveySurveyorType = surveySurveyorTypeDAO.get(surveyResponceVO.getSurveyorId());
+						surveyDetailsInfo.setSurveySurveyorType(surveySurveyorType);
+						Voter voter = voterDAO.get(surveyResponceVO.getVoterId());
+						if(voter != null)
+						{
+							surveyDetailsInfo.setVoter(voter);
+						}
+						else
+						{
+							if(surveyResponceVO.getVoterCardNo() != null)
+							{
+								Long voterId = voterDAO.getVoterIdByIdCardNo(surveyResponceVO.getVoterCardNo());
+								surveyDetailsInfo.setVoter( voterDAO.get(voterId));
+							}
+							
+						}
+						
+						surveyDetailsInfo.setLatitude(surveyResponceVO.getLatitude());
+						surveyDetailsInfo.setLongitude(surveyResponceVO.getLongitude());
+						surveyDetailsInfo.setIsCadre(surveyResponceVO.getIsCadre());
+						surveyDetailsInfo.setIsInfluencingPeople(surveyResponceVO.getIsInfluencingPeople());
+						surveyDetailsInfo.setMobileNumber(surveyResponceVO.getMobileNo());
+						
+						surveyDetailsInfo.setLocalArea(surveyResponceVO.getLocalArea());
+						surveyDetailsInfo.setHamletName(surveyResponceVO.getHamletName());
+						surveyDetailsInfo.setCasteName(surveyResponceVO.getCasteName());
+						
+						surveyDetailsInfo.setDate(surveyResponceVO.getDate());
+						
+						if(surveyResponceVO.getHamletId() != null && surveyResponceVO.getHamletId() > 0)
+						{
+							surveyDetailsInfo.setHamlet( hamletDAO.get(surveyResponceVO.getHamletId()));
+						}
+						if(surveyResponceVO.getCasteId() != null && surveyResponceVO.getCasteId() > 0)
+						{
+							surveyDetailsInfo.setCaste(casteStateDAO.get(surveyResponceVO.getCasteId() ));
+						}
+						
+						
+						
+						SurveyDetailsInfo result = surveyDetailsInfoDAO.save(surveyDetailsInfo);
+						if(result != null)
+						{
+							resultStatus.setResultCode(0);
+							resultStatus.setMessage("Success");
+						}
+						else
+						{
+							resultStatus.setResultCode(1);
+							resultStatus.setMessage("Failure");
+						}
+					}
+				}
+			}
+			
+			
 			
 		}
 		catch (Exception e)
@@ -380,5 +470,26 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			resultStatus.setResultCode(3);
 			resultStatus.setMessage("Exception");		}
 		return resultStatus;
+	}
+	
+	/**
+	 * This Service is used for getting survey user id.
+	 * @param userName
+	 * @param password
+	 * @return userId
+	 */
+	public Long getUserDetailsForCheck(String userName,String password)
+	{
+		LOG.info("Entered into getUserDetailsForCheck service in SurveyDataDetailsService");
+		Long userId = null;
+		try
+		{
+			userId = surveyUserDAO.getUserDetails(userName,password);
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getUserDetailsForCheck service in SurveyDataDetailsService", e);
+		}	
+		return userId;
 	}
 }
