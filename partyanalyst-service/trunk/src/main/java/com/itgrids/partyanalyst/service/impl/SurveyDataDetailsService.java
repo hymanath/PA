@@ -193,7 +193,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			surveyUserTabAssign.setRemarks(remarks);
 			surveyUserTabAssign.setDate(date);
 			surveyUserTabAssign.setSurveyUser(surveyUserDAO.get(surveyUserId));
-			surveyUserTabAssign.setActiveStatus("Y");
+			//surveyUserTabAssign.setActiveStatus("Y");
 			SurveyUserTabAssign result = surveyUserTabAssignDAO.save(surveyUserTabAssign);
 			if(result != null)
 			{
