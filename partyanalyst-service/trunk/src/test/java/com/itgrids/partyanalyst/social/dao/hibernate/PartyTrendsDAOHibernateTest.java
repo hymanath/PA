@@ -636,7 +636,7 @@ public void setBoothPublicationVoterDAO(
 		list.add(365L);
 		//Long constId=207L;
 		System.out.println(list.size());
-		soundexService.mapAreaInchargersForAConst(207L);
+		//soundexService.mapAreaInchargersForAConst(207L);
 		/*for (Long long1 : list) {
 			soundexService.mapAreaInchargersForAConst(long1);
 		}*/
