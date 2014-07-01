@@ -102,12 +102,12 @@ line-height: 1;
 					str+='					<div class="m_top10">';
 					for(var l in  myResults.list[i].list[j].list[k].list){//news list
 					  if(myResults.list[i].list[j].list[k].list[l].font == null){
-					    str+='			<p class="fontclass">'+myResults.list[i].list[j].list[k].list[l].date+' '+myResults.list[i].list[j].list[k].list[l].description+'</p>';
+					    str+='			<p class="fontclass">'+myResults.list[i].list[j].list[k].list[l].date+'('+myResults.list[i].list[j].list[k].list[l].id+')  '+myResults.list[i].list[j].list[k].list[l].description+'</p>';
 					  }else{
 						 if(page){ 
-					        str+='			<p class="fontclass">'+myResults.list[i].list[j].list[k].list[l].date+'&nbsp;<enadu>'+myResults.list[i].list[j].list[k].list[l].description+'</enadu></p>';
+					        str+='			<p class="fontclass">'+myResults.list[i].list[j].list[k].list[l].date+'('+myResults.list[i].list[j].list[k].list[l].id+')&nbsp;<enadu>'+myResults.list[i].list[j].list[k].list[l].description+'</enadu></p>';
 						 }else{
-							 str+='			<p class="fontclass">'+myResults.list[i].list[j].list[k].list[l].date+'&nbsp;<div class="enadu">'+myResults.list[i].list[j].list[k].list[l].description+'</div></p>';
+							 str+='			<p class="fontclass">'+myResults.list[i].list[j].list[k].list[l].date+'('+myResults.list[i].list[j].list[k].list[l].id+')&nbsp;<div class="enadu">'+myResults.list[i].list[j].list[k].list[l].description+'</div></p>';
 						 }
 					  }
 					}
