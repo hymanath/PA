@@ -4,13 +4,36 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-
 <title>Survey Details</title>
-	<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.24.custom.min.js"> </script>
 </head>
 <body>
 
 <script>
+saveSurveyUser();
+function saveSurveyUser()
+{
+	var jsObj = 
+	{
+		firstName : "firstName",
+		lastName : "lastName",
+		userName : "userName",
+		password : "password",
+		address : "address",
+		mobileNo : "mobileNo",
+		userType : 1,
+		task : "saveSurveyUser"
+	}
+	
+	$.ajax({
+		type:'GET',
+		url: 'saveSurveyUserAction.action',
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)},
+		}).done(function(result){
+		
+		});
+
+}
 
 function AssignTab()
 {
@@ -37,8 +60,5 @@ function AssignTab()
 	
 }
 </script>
-
-
-
 </body>
 </html>
