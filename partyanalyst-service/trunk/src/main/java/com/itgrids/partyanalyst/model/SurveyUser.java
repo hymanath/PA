@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
+import java.io.Serializable;
+
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -25,10 +27,11 @@ import org.hibernate.annotations.NotFoundAction;
  *This Model Describes About Surey User Detais(firstname,lastname,username,password etc....)
  */
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "survey_user")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class SurveyUser
+public class SurveyUser extends BaseModel implements Serializable
 {
 
 	private Long surveyUserId;

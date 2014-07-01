@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
 import java.util.HashSet;
+
 import java.util.Set;
 
 import javax.persistence.CascadeType;
