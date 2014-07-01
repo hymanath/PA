@@ -1,16 +1,22 @@
 package com.itgrids.partyanalyst.model;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NotFoundAction;
 
 
 /**
@@ -30,6 +36,7 @@ public class SurveyUserType
 	private String description;
 	private Date insertedTime;
 	private Date updatedTime;
+	private Set<SurveyUser> surveyUser = new HashSet<SurveyUser>();
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -63,6 +70,14 @@ public class SurveyUserType
 	}
 	public void setUpdatedTime(Date updatedTime) {
 		this.updatedTime = updatedTime;
+	}
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "surveyUserType")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<SurveyUser> getSurveyUser() {
+		return surveyUser;
+	}
+	public void setSurveyUser(Set<SurveyUser> surveyUser) {
+		this.surveyUser = surveyUser;
 	}
 	
 	
