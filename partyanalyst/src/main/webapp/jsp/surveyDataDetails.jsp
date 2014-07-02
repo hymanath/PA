@@ -223,18 +223,18 @@
 										<div class="row-fluid">
 											<div class="span12">
 												<label>Select User Name</label>
-												<select id="surveyUserId" class="input-block-level"> <option value="1">01</option></select>
+												<select class="input-block-level"> <option>01</option></select>
 											</div>										
 										</div>
 									<div class="row-fluid">
 										<div class="span12">
 									<label>Remarks</label>
-									<textarea id="userRemarks" class="input-block-level" rows="2"></textarea>
+									<textarea class="input-block-level" rows="2"></textarea>
 									</div>
 									</div>
 								</div>
 							</div>
-							<div class="row text-center m_top20"><button onCLick = "deactiveSurveyUser()" type="button" class="btn btn-large btn-success">DEACTIVATE</button></div>
+							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success">DEACTIVATE</button></div>
 					</div>
 				</div>
 			</div>
@@ -355,39 +355,6 @@
 	</div>
  <script>
 
-
-function getUserTypes()
-{
-	var jsObj = 
-	{
-		
-	}
-	$.ajax({
-		type:'GET',
-		url: 'getSurveyUserTypeAction.action',
-		dataType: 'json',
-		data: {task:JSON.stringify(jsObj)},
-		}).done(function(result){
-						
-		});
-}
-
-function getSurveyUsersByUserType()
-{
-	var jsObj = 
-	{
-		userTypeId : 1,
-		task : "getSurveyUsersByUserType"
-	}
-	$.ajax({
-		type:'GET',
-		url: 'getSurveyUsersByUserTypeAction.action',
-		dataType: 'json',
-		data: {task:JSON.stringify(jsObj)},
-		}).done(function(result){
-						
-		});
-}
 function saveSurveyUser()
 {
 	var jsObj = 
@@ -432,30 +399,11 @@ function saveSurveyUserType()
 		});
 }
 
-$(".highlight").live("click",function()
+$(".highlight").click(function()
 {
 	$(".highlight").removeClass("selected");
 	$(this).addClass("selected");
 })
-
-function deactiveSurveyUser()
-{
-	var jsObj = 
-	{
-		userId : $('#surveyUserId').val(),
-		remarks : $('#userRemarks').val(),
-		task : "deactiveSurveyUser"
-	}
-	
-	$.ajax({
-		type:'GET',
-		url: 'deactiveSurveyUserAction.action',
-		dataType: 'json',
-		data: {task:JSON.stringify(jsObj)},
-		}).done(function(result){
-		
-		});
-}
 function AssignTab()
 {
 	$("#assignTabErrorDiv").html('');
