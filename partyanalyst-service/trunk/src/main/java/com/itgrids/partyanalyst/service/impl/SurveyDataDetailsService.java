@@ -212,12 +212,16 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		ResultStatus resultStatus = new ResultStatus();
 		try
 		{
+			DateUtilService date1 = new DateUtilService();
 			SurveyUserTabAssign surveyUserTabAssign = new SurveyUserTabAssign();
 			surveyUserTabAssign.setTabNo(tabNo);
 			surveyUserTabAssign.setRemarks(remarks);
 			surveyUserTabAssign.setDate(date);
 			surveyUserTabAssign.setSurveyUser(surveyUserDAO.get(surveyUserId));
+			surveyUserTabAssign.setInsertedTime(date1.getCurrentDateAndTime());
+			surveyUserTabAssign.setUpdatedTime(date1.getCurrentDateAndTime());
 			//surveyUserTabAssign.setActiveStatus("Y");
+			
 			SurveyUserTabAssign result = surveyUserTabAssignDAO.save(surveyUserTabAssign);
 			if(result != null)
 			{
