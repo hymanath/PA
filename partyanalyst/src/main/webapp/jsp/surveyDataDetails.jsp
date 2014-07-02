@@ -6,7 +6,12 @@
 		<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 		<%@ page import="java.util.ResourceBundle;" %>
 <html>
- <head>	
+ <head>
+ <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+
+
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">	
 	
 		<style>
@@ -40,17 +45,17 @@
 		<div class="row">
 			<div class="span10 offset1 m_top20 survey_nav">
 				<ul class="inline unstyled">
-					<li><a href="#" class="selected"> User Types </a></li>
-					<li><a href="#"> User Creation </a></li>
-					<li><a href="#"> Tab Assign </a></li>
-					<li><a href="#"> Booth Assign </a></li>
-					<li><a href="#"> Deactivation </a></li>
-					<li><a href="#"> Assign Leader</a></li>
-					<li><a href="#"> Verification Details	 </a></li>
+					<li><a href="#" class="highlight selected" id="userTypeTab" onclick="showHideTabs(this.id);"> User Types </a></li>
+					<li><a href="#" class="highlight" id="userCreationTab" onclick="showHideTabs(this.id);"> User Creation </a></li>
+					<li><a href="#" class="highlight" id="tabAssignTab" onclick="showHideTabs(this.id);"> Tab Assign </a></li>
+					<li><a href="#" class="highlight" id="boothAssignTab" onclick="showHideTabs(this.id);"> Booth Assign </a></li>
+					<li><a href="#" class="highlight" id="deactivationTab" onclick="showHideTabs(this.id);"> Deactivation </a></li>
+					<li><a href="#" class="highlight" id="assignLeaderTab" onclick="showHideTabs(this.id);"> Assign Leader</a></li>
+					<li><a href="#" class="highlight" id="verificationDetailsTab" onclick="showHideTabs(this.id);"> Verification Details	 </a></li>
 				</ul>
 			</div>
 		</div>
-		<div class="row">
+		<div class="row" id="createUserTypeDiv">
 			<div class="span10 offset1">
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red">
@@ -68,7 +73,7 @@
 		</div>
 	
 		<!----User Creation----->		
-		<div class="row">
+		<div class="row" id="userCreationDiv">
 			<div class="span10 offset1">
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top20">
@@ -125,47 +130,54 @@
 		</div>
 		
 		<!----TAB Assign ---->		
-		<div class="row">
+		<div class="row" id="tabAssignDiv">
 			<div class="span10 offset1">
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top20">
+					
 						<h4>USer Tab Assign</h4>
+						<div class="row">
+						<div id="assignTabErrorDiv" class="span8 offset2"></div>
+						</div>
 							<div class="row">
 								<div class="span8 offset2">
 									<div class="row-fluid">
 										<div class="span4">
 											<label>User Name</label>
-											<input type="text" placeholder="User Name..." class="input-block-level">
+											<input type="text" placeholder="User Name..." class="input-block-level" id="uname">
 										</div>
 										<div class="span2">
 											<label>Tab No</label>
-											<input type="text" placeholder="Tab No..." class="input-block-level">
+											<input type="text" placeholder="Tab No..." class="input-block-level" id="tabNo">
 										</div>
-										<div class="span3">
+										<!--<div class="span3">
 											<label>Status</label>
 											<select class="input-block-level"> <option>01</option></select>
-										</div>
+										</div>-->
 										<div class="span3">
 											<label>Date</label>
-											<input type="text" placeholder="User Name..." class="input-block-level">
+											<input type="text" placeholder="User Name..." class="input-block-level" id="date">
 										</div>										
 									</div>
 									<div class="row-fluid">
 										<div class="span12">
 											<label>Remarks</label>
-											<textarea class="input-block-level" rows="2"></textarea>
+											<textarea class="input-block-level" rows="2" id="remarks"></textarea>
 										</div>
 									</div>
 								</div>
 							</div>
-							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success">ASSIGN</button></div>
+							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onclick="AssignTab();">ASSIGN</button></div>
+
+
+
 					</div>
 				</div>
 			</div>
 		</div>
 		
 		<!---- Booth Assign---->		
-		<div class="row">
+		<div class="row" id="boothAssigniv">
 			<div class="span10 offset1">
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top20">
@@ -201,7 +213,7 @@
 		</div>
 		
 		<!---- User Deactivation---->		
-		<div class="row">
+		<div class="row" id="userDeactivationDiv">
 			<div class="span10 offset1">
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top20">
@@ -229,7 +241,7 @@
 		</div>
 		
 		<!---- Assign Booth To Leader ---->		
-		<div class="row">
+		<div class="row" id="assignBoothToLeaderDiv">
 			<div class="span10 offset1">
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top20">
@@ -264,8 +276,9 @@
 			</div>
 		</div>
 		
-		<!---- User Verification Details ---->		
-		<div class="row">
+		<!---- User Verification Details ---->	
+		
+		<div class="row" id="verificationDiv">
 			<div class="span10 offset1">
 				<div class="row-fluid">
 					<div class="span12 widgetservey_Red m_top20">
@@ -297,7 +310,7 @@
 			</div>
 		</div>
 		<!-----LEADER NAME------->
-		<div class="row">
+		<div class="row" id="leaderNameDiv">
 			<div class="span10 offset1">
 				<div class="row-fluid">
 					<div class="span12 widgetservey m_top20">
@@ -419,6 +432,12 @@ function saveSurveyUserType()
 		});
 }
 
+$(".highlight").live("click",function()
+{
+	$(".highlight").removeClass("selected");
+	$(this).addClass("selected");
+})
+
 function deactiveSurveyUser()
 {
 	var jsObj = 
@@ -439,16 +458,40 @@ function deactiveSurveyUser()
 }
 function AssignTab()
 {
-	
-	/*var uname = $trim($("#uname").val());
-	var tabNo = $trim($("#tabNo").val());
-	var remarks = $trim($("#remarks").val());
-	var date = $("#date").val()*/
+	$("#assignTabErrorDiv").html('');
+	var uname = $.trim($("#uname").val());
+	var tabNo = $.trim($("#tabNo").val());
+	var remarks = $.trim($("#remarks").val());
+	var date = $("#date").val();
+	var str = ''; 
+	if(uname.length == 0)
+	{
+		str +='User Name is required <br/>';
+	}
+	if(tabNo.length == 0)
+	{
+		str +='Tab No is required <br/>';
+	}
+	if(remarks.length == 0)
+	{
+		str +='Remarks is required <br/>';
+	}
+	if(date.length == 0)
+	{
+		str +='Date is required <br/>';
+	}
+	if(str != '')
+	{
+	$("#assignTabErrorDiv").html(str).css("color","red");
+	return;
+	}
+	else
+$("#assignTabErrorDiv").html('');
 	var jObj = {
-		uname : "test",
-		tabNo :"1",
-		remarks : "remarks",
-		date : "7-1-2014"
+		uname : uname,
+		tabNo :tabNo,
+		remarks : remarks,
+		date : date
 			
 	}
 	$.ajax({
@@ -457,11 +500,123 @@ function AssignTab()
           dataType: 'json',
           data: {task:JSON.stringify(jObj)},
      	  }).done(function(result){ 
-			 
+			if(result.resultCode == 0) 
+				$("#assignTabErrorDiv").html('Tab assigned successfully.').css("color","green");
+			else
+			  {
+				$("#assignTabErrorDiv").html('Error Occured,Try again....').css("color","red");
+			  }
 	   });
 	
 }
-</script>
 
+function showHideTabs(id)
+{
+
+
+if(id == "userTypeTab")
+	{
+	$("#createUserTypeDiv").show();
+	$("#userCreationDiv").hide();
+	$("#tabAssignDiv").hide();
+	$("#boothAssigniv").hide();
+	$("#userDeactivationDiv").hide();
+	$("#assignBoothToLeaderDiv").hide();
+	$("#verificationDiv").hide();
+	$("#leaderNameDiv").hide();
+	
+	}
+
+else if(id == "userCreationTab")
+	{
+	$("#createUserTypeDiv").hide();
+	$("#userCreationDiv").show();
+	$("#tabAssignDiv").hide();
+	$("#boothAssigniv").hide();
+	$("#userDeactivationDiv").hide();
+	$("#assignBoothToLeaderDiv").hide();
+	$("#verificationDiv").hide();
+	$("#leaderNameDiv").hide();
+	}
+
+	else if(id == "tabAssignTab")
+	{
+	$("#createUserTypeDiv").hide();
+	$("#userCreationDiv").hide();
+	$("#tabAssignDiv").show();
+	$("#boothAssigniv").hide();
+	$("#userDeactivationDiv").hide();
+	$("#assignBoothToLeaderDiv").hide();
+	$("#verificationDiv").hide();
+	$("#leaderNameDiv").hide();
+	buildDatePicker();
+	}
+
+		else if(id == "boothAssignTab")
+	{
+	$("#createUserTypeDiv").hide();
+	$("#userCreationDiv").hide();
+	$("#tabAssignDiv").hide();
+	$("#boothAssigniv").show();
+	$("#userDeactivationDiv").hide();
+	$("#assignBoothToLeaderDiv").hide();
+	$("#verificationDiv").hide();
+	$("#leaderNameDiv").hide();
+	}
+	
+	else if(id == "deactivationTab")
+	{
+	$("#createUserTypeDiv").hide();
+	$("#userCreationDiv").hide();
+	$("#tabAssignDiv").hide();
+	$("#boothAssigniv").hide();
+	$("#userDeactivationDiv").show();
+	$("#assignBoothToLeaderDiv").hide();
+	$("#verificationDiv").hide();
+	$("#leaderNameDiv").hide();
+	}
+
+	
+		else if(id == "assignLeaderTab")
+	{
+	$("#createUserTypeDiv").hide();
+	$("#userCreationDiv").hide();
+	$("#tabAssignDiv").hide();
+	$("#boothAssigniv").hide();
+	$("#userDeactivationDiv").hide();
+	$("#assignBoothToLeaderDiv").show();
+	$("#verificationDiv").hide();
+	$("#leaderNameDiv").hide();
+	}
+		else if(id == "verificationDetailsTab")
+	{
+	$("#createUserTypeDiv").hide();
+	$("#userCreationDiv").hide();
+	$("#tabAssignDiv").hide();
+	$("#boothAssigniv").hide();
+	$("#userDeactivationDiv").hide();
+	$("#assignBoothToLeaderDiv").hide();
+	$("#verificationDiv").show();
+	$("#leaderNameDiv").show();
+	}
+
+
+
+}
+function buildDatePicker()
+{
+	
+	$("#date").datepicker({ 
+	dateFormat: 'dd-mm-yy',
+	
+	onSelect: function(dateText, inst) {
+	}
+   }).datepicker('setDate', new Date());
+
+}
+</script>
+<script>
+showHideTabs('userTypeTab');
+</script>
 </body>
 </html>
