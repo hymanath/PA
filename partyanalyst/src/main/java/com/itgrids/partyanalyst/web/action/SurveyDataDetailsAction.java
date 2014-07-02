@@ -109,4 +109,46 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String deactiveSurveyUser()
+	{
+		try
+		{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			jObj = new JSONObject(getTask());
+			resultStatus = surveyDataDetailsService.deactivateUser( jObj.getLong("userId"),jObj.getString("remarks"));
+		} 
+		catch (Exception e)
+		{
+			
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String saveSurveyUserType()
+	{
+		try
+		{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			jObj = new JSONObject(getTask());
+			resultStatus = surveyDataDetailsService.saveSurveyUserType( jObj.getString("description"));
+		} 
+		catch (Exception e)
+		{
+			
+		}
+		return Action.SUCCESS;
+	}
+	
+	
 }

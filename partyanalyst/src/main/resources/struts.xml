@@ -7280,7 +7280,19 @@
 				<param name="root">resultStatus</param>
 			</result>
 		</action>
-			<action name="assignTabAction" class="surveyDataDetailsAction" method="assignTab">
+		<action name="assignTabAction" class="surveyDataDetailsAction" method="assignTab">
+			<result type="json" name="success">
+				<param name="root">resultStatus</param>
+			</result>
+		</action>
+		
+		<action name="deactiveSurveyUserAction" class="surveyDataDetailsAction" method="deactiveSurveyUser">
+			<result type="json" name="success">
+				<param name="root">resultStatus</param>
+			</result>
+		</action>
+		
+		<action name="saveSurveyUserTypeAction" class="surveyDataDetailsAction" method="saveSurveyUserType">
 			<result type="json" name="success">
 				<param name="root">resultStatus</param>
 			</result>
