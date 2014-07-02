@@ -112,7 +112,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			
 			Date = originalFormat.parse(dateObj);
 			Date convertDate= targetFormat.parse(targetFormat.format(Date));	
-			resultStatus = surveyDataDetailsService.saveSurveyUserTabAssign(userId, jObj.getString("tabNo"), jObj.getString("remarks"),convertDate);
+			resultStatus = surveyDataDetailsService.saveSurveyUserTabAssign(jObj.getLong("surveyUserId"), jObj.getString("tabNo"), jObj.getString("remarks"),convertDate);
 		} 
 		catch (Exception e)
 		{
