@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.web.action;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -12,6 +13,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
@@ -27,6 +29,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	private String task;
 	private JSONObject jObj;
 	private ResultStatus resultStatus;
+	private List<GenericVO> returnList;
 	@Autowired
 	private ISurveyDataDetailsService surveyDataDetailsService;
 	
@@ -50,6 +53,14 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	}
 	public void setResultStatus(ResultStatus resultStatus) {
 		this.resultStatus = resultStatus;
+	}
+	
+	
+	public List<GenericVO> getReturnList() {
+		return returnList;
+	}
+	public void setReturnList(List<GenericVO> returnList) {
+		this.returnList = returnList;
 	}
 	public String execute()
 	{
@@ -142,6 +153,46 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			}
 			jObj = new JSONObject(getTask());
 			resultStatus = surveyDataDetailsService.saveSurveyUserType( jObj.getString("description"));
+		} 
+		catch (Exception e)
+		{
+			
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getSurveyUserType()
+	{
+		try
+		{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			jObj = new JSONObject(getTask());
+			returnList = surveyDataDetailsService.getUserTypes();
+		} 
+		catch (Exception e)
+		{
+			
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getSurveyUsersByUserType()
+	{
+		try
+		{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			jObj = new JSONObject(getTask());
+			returnList = surveyDataDetailsService.getSurveyUsersByUserType(jObj.getLong("userTypeId"));
 		} 
 		catch (Exception e)
 		{
