@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
 import org.hibernate.Query;
@@ -20,6 +22,13 @@ public class SurveyUserDAO extends GenericDaoHibernate<SurveyUser, Long> impleme
 		query.setParameter("userName", userName);
 		query.setParameter("password", password);
 		return (Long) query.uniqueResult();
+	}
+	
+	public List<Object[]> getSurveyUsersByUserType(Long userTypeId)
+	{
+		Query query = getSession().createQuery("select model.surveyUserId,model.userName from SurveyUser model where model.surveyUserType.surveyUsertypeId = :userTypeId and model.activeStatus = 'Y'");
+		query.setParameter("userTypeId", userTypeId);
+		return query.list();
 	}
 
 }
