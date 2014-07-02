@@ -4,9 +4,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
@@ -550,8 +552,9 @@ public class ReportService implements IReportService {
 				partyIds.add(Long.valueOf(partyId));
 			}
 		}
-		//0 synopsys,1 fontId ,2 date,3 districtId,4 districtName,5 constituencyId,6 constituencyName ,7 gallaryId,8gallary Name,9 fileId
+		//0 synopsys,1 fontId ,2 date,3 districtId,4 districtName,5 constituencyId,6 constituencyName ,7 gallaryId,8gallary Name,9 fileId,10 fileTitle,11 fontId
 		List<Object[]> activitiesList = activityReportFilesDAO.getActivitiesList(key,cateList,partyIds);
+		Set<Long> fileIds = new HashSet<Long>();
 		for(Object[] activity:activitiesList){
 			districtyMap = newsMap.get((Long)activity[7]);
 			if(districtyMap == null){
@@ -578,8 +581,25 @@ public class ReportService implements IReportService {
 			 if(activity[1] != null){
 				 constituency.setFont("eenadu");
 			 }
+			 constituency.setTitle(StringEscapeUtils.unescapeJava(activity[10].toString()));
+			 if(activity[11] != null){
+				 constituency.setTitleFont("eenadu");
+			 }
 			 constituency.setDate(activity[2] != null ? sdf.format((Date)activity[2]):"");
 			 constituency.setId((Long)activity[9]);
+			 fileIds.add((Long)activity[9]);
+		}
+		Map<Long,String> sourceNames = new HashMap<Long,String>();
+		if(fileIds.size() > 0){
+			List<Object[]> fileSourceList = fileSourceLanguageDAO.getAllSourceDetails(fileIds);
+			for(Object[] source : fileSourceList){
+				String name = sourceNames.get((Long)source[0]);
+				if(name == null){
+					sourceNames.put((Long)source[0],source[1].toString());
+				}else{
+					sourceNames.put((Long)source[0],name+", "+source[1].toString());
+				}
+			}
 		}
 		for(Long categoryId:newsMap.keySet()){
 			NewsActivityVO category = new NewsActivityVO();
@@ -599,7 +619,11 @@ public class ReportService implements IReportService {
 					NewsActivityVO constituency = new NewsActivityVO();
 					constituency.setName(constituencyNames.get(constituencyId));
 					constituencyList.add(constituency);
-					constituency.setList(constituencyMap.get(constituencyId));
+					List<NewsActivityVO> constiNewsList = constituencyMap.get(constituencyId);
+					for(NewsActivityVO newsObj:constiNewsList){
+						newsObj.setPaper(sourceNames.get(newsObj.getId()));
+					}
+					constituency.setList(constiNewsList);
 				}
 			}
 		}

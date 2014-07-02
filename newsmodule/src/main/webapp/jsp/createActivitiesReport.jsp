@@ -90,24 +90,33 @@ line-height: 1;
      if(myResults != null && myResults.list != null && myResults.list.length > 0){
 	  str+="<div class='container'><div class='row-fluid'><div class='span12 content_widget'>	";
 	    for(var i in myResults.list){//category list
-			str+="<div class='text-center widget'><h4>"+myResults.list[i].name+"</h4></div>";
+			str+="<center><div class='text-center widget'><h4>"+myResults.list[i].name+"</h4></div></center>";
 			for(var j in myResults.list[i].list){//district list
 				 str+='<div class="row-fluid ">';
 				 str+='			<div class="span12 widget ">';
-				 str+='				<div class="boxHeading">';
-				 str+='				<h4 style=" font-size:16px;">'+myResults.list[i].list[j].name+' District</h4>	</div>';
+				 str+='				<center><div class="boxHeading">';
+				 str+='				<h4 style=" font-size:16px;">'+myResults.list[i].list[j].name+' District</h4>	</div></center>';
 				 for(var k in  myResults.list[i].list[j].list){	//constituency list			
 					str+='				<div class="accordion-inner">';
-					str+='					<a class="btn btn-small" style=" font-size:15px;">'+myResults.list[i].list[j].list[k].name+'</a>';
+					str+='					<center><a class="btn btn-small" style=" font-size:15px;"><b>'+myResults.list[i].list[j].list[k].name+'</b></a></center>';
 					str+='					<div class="m_top10">';
 					for(var l in  myResults.list[i].list[j].list[k].list){//news list
+					 if(myResults.list[i].list[j].list[k].list[l].titleFont == null){
+					   str+='<hgroup><p class="fontclass">'+myResults.list[i].list[j].list[k].list[l].title+'<span><small style="color:#333333;">  ('+myResults.list[i].list[j].list[k].list[l].paper+')<small></small></small></span></p><h5 style="border-bottom:1px solid #333"> </h5></hgroup>';
+					  }else{
+					      if(page){ 
+					        str+='			<hgroup><p class=" fontclass"><enadu1>'+myResults.list[i].list[j].list[k].list[l].title+'</enadu1><span><small style="color:#333333;">  ('+myResults.list[i].list[j].list[k].list[l].paper+')<small></small></small></span></p><h5 style="border-bottom:1px solid #333"> </h5></hgroup>';
+						 }else{
+							 str+='			<hgroup><p class=" fontclass"><span class="enadu">'+myResults.list[i].list[j].list[k].list[l].title+'</span><span><small style="color:#333333;">  ('+myResults.list[i].list[j].list[k].list[l].paper+')<small></small></small></span></p><h5 style="border-bottom:1px solid #333"> </h5></hgroup>';
+						 }
+					  }
 					  if(myResults.list[i].list[j].list[k].list[l].font == null){
-					    str+='			<p class="fontclass">'+myResults.list[i].list[j].list[k].list[l].date+'('+myResults.list[i].list[j].list[k].list[l].id+')  '+myResults.list[i].list[j].list[k].list[l].description+'</p>';
+					    str+='			<p class="fontclass" style="padding-bottom: 15px;">'+myResults.list[i].list[j].list[k].list[l].date+'('+myResults.list[i].list[j].list[k].list[l].id+')  '+myResults.list[i].list[j].list[k].list[l].description+'</p>';
 					  }else{
 						 if(page){ 
-					        str+='			<p class="fontclass">'+myResults.list[i].list[j].list[k].list[l].date+'('+myResults.list[i].list[j].list[k].list[l].id+')&nbsp;<enadu>'+myResults.list[i].list[j].list[k].list[l].description+'</enadu></p>';
+					        str+='			<p class="fontclass" style="padding-bottom: 15px;">'+myResults.list[i].list[j].list[k].list[l].date+'('+myResults.list[i].list[j].list[k].list[l].id+')&nbsp;<enadu>'+myResults.list[i].list[j].list[k].list[l].description+'</enadu></p>';
 						 }else{
-							 str+='			<p class="fontclass">'+myResults.list[i].list[j].list[k].list[l].date+'('+myResults.list[i].list[j].list[k].list[l].id+')&nbsp;<span class="enadu">'+myResults.list[i].list[j].list[k].list[l].description+'</span></p>';
+							 str+='			<p class="fontclass" style="padding-bottom: 15px;">'+myResults.list[i].list[j].list[k].list[l].date+'('+myResults.list[i].list[j].list[k].list[l].id+')&nbsp;<span class="enadu">'+myResults.list[i].list[j].list[k].list[l].description+'</span></p>';
 						 }
 					  }
 					}
@@ -122,6 +131,7 @@ line-height: 1;
 	  document.getElementById("newsDiv").innerHTML =str;
 	  if(page){ 
 	   Cufon.set('fontSize', '35px').replace('enadu');
+	   Cufon.set('fontSize', '35px').replace('enadu1');
 	  }
    }
  }

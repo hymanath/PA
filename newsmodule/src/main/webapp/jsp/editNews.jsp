@@ -470,7 +470,7 @@ $(".destinationCandidateCloseImg").live("click",function(){
 
 				<div class="row-fluid">       
 					<div class="span8 ">         
-						<label><strong>News Description<span class="requiredFont">*</span><strong></strong></strong></label>         
+						<label><strong>Short Description<span class="requiredFont">*</span><strong></strong></strong></label>         
 				   
 						<s:if test="news.fileDescriptionCheckBox != null"> 				
 						  <textarea id="newsfileDescription" class="input-block-level enadu" cols="20" rows="2" name="fileDescription" maxlength="1800">${news.fileDescription}</textarea> 						 
@@ -479,18 +479,15 @@ $(".destinationCandidateCloseImg").live("click",function(){
 						<s:else>
 							<textarea id="newsfileDescription" class="input-block-level" cols="20" rows="2" name="fileDescription" maxlength="1800">${news.fileDescription}</textarea> 
 							<span class="help-block"> <input type="checkbox" id="sourceDescTelugu" onclick="changeLanguage();" name="descCheckBox" value="null">&nbsp;Please check if description is from eenadu.net</span> 
-						</s:else>	
-						<label><strong>News Synopsys : <span class="requiredFont">*</span><strong></strong></strong></label>         
-					   <s:if test="news.synopsysCheckBox != null"> 				
-						 	<textarea id="newsfileSynopsys" class="input-block-level enadu" cols="20" rows="2" name="newsSynopsysDesc" maxlength="1800">${news.synopsysDescription}</textarea> 
-							<span class="help-block"> <input type="checkbox" id="synopsysDescTelugu" onclick="changeLanguage();" value="true" name="synopsysCheckBox" checked="checked">&nbsp;Please check if description is from eenadu.net</span> 
-						</s:if>
-						
-						<s:else>
-							<textarea id="newsfileSynopsys" class="input-block-level" cols="20" rows="2" name="newsSynopsysDesc" maxlength="1800">${news.synopsysDescription}</textarea> 
-							<span class="help-block"> <input type="checkbox" id="synopsysDescTelugu" onclick="changeLanguage();" value="null" name="synopsysCheckBox">&nbsp;Please check if description is from eenadu.net</span> 
 						</s:else>
-							
+						<div style="display:none;">	
+						<label><strong>News Synopsys : <span class="requiredFont">*</span><strong></strong></strong></label>         
+					  			
+						 	<textarea id="newsfileSynopsys" class="input-block-level enadu" cols="20" rows="2" name="newsSynopsysDesc" maxlength="1800">s</textarea> 
+							<span class="help-block"> <input type="checkbox" id="synopsysDescTelugu" onclick="changeLanguage();" value="true" name="synopsysCheckBox" checked="checked">&nbsp;Please check if description is from eenadu.net</span> 
+						
+						
+						</div>		
 					</div>
 					
 					<div class="span4 ">      
