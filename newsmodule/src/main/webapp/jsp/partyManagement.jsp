@@ -610,20 +610,6 @@ function createNewParty()
 <div id='profileManagementMainOuterDiv' style="margin-top:-40px;">
 
 <div id='profileManagementHeaderDiv'>
-	<!--<table width="100%" cellspacing="0" cellpadding="0" border="0">
-		<tr>
-		  <td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_left.jpg">
-		    </td>
-		    <td width="98%">
-		       <div style="text-decoration: none;" class="productFeatureHeaderBackground_center2">
-		         <span style="text-decoration: none;" class="headerLabelSpan2"><center>Party Management Admin</center></span>
-		       </div>
-		    </td>
-		   <td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_right.jpg">
-		   </td>
-		</tr>
-		<span class="span12" style="background:red">Party Management Admin</span>
-	</table>-->
 	
 	
 </div><br>
@@ -631,41 +617,9 @@ function createNewParty()
  
 <div id='profileManagementMainInnerDiv' class="divInfo">
 	<div id="profileManagementDiv">
-		<!--<table class="statusData_table" width="100%">	
-          <tr>
-			<td class="statusData_table_data" width="100%" style="padding-top:23px">
-				<table>
-				  <tr>
-			    	<td style="padding-left:315px"><b><input type="button" class="buttonStyle" value="Photo Gallery" id="photoGalleryId" onClick="showPhotoGallary1()"></b></td>
-				    <td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Video Gallery" id="videoGalleryId" onClick="showVideoGallaey1()"></b> </td>
-					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="News Gallery" id="newsGalleryId" onClick="showNewsGallaey()"></b> </td>
-					<td style="padding-left:50px"><b><input type="button" class="buttonStyle" value="Update News" id="newsEditId" onClick="showTheNewsToUpdate()"></b> </td>
-					</tr>
-				</table>
-			</td>
-		 </tr>
-		</table>-->
-		
-	
-<!-- <ul class="nav nav-tabs" style="margin-left:Auto;margin-right:Auto;width:940px;">
-    <li class="active" id="newsGallaryLiId"><a value="News Gallery" id="newsGalleryId" onClick="showNewsGallaey()" style="cursor:pointer;color: blue;">News Gallery</a></li>
-	<li id="addResponseToNewsLiId"><a value="News Gallery" id="responseNewsId" onClick="showTheNewsToUpdate()" style="cursor:pointer;color: blue;">Add Response To News</a></li>
-	<li><a value="create Report" id="createReportId" onClick="createReport()" style="cursor:pointer;color: blue;">Create Report </a></li>
-	<li><a value="viewReport" id="viewReports" onclick=" getNewsReports();" style="cursor:pointer;color: blue;">View Report</a>
-		
-		</li>	
-		
-		<li><a value="viewReport" id="viewReports" onclick=" createPartyKeywordDiv();" style="cursor:pointer;color: blue;">Party Management</a>
-		
-		</li>
-    </ul> -->
 	
 				<!---Tab Header --Menu--->
 				<ul class="nav nav-tabs" id="myTab">
-					<!-- <li class="active">
-					<a data-toggle="tab" value="News Gallery" id="newsGalleryId" onClick="showNewsGallaey()" style="cursor:pointer;color: #005580;">News Gallery</a>
-					
-					</li> -->
 					
 					
 					<li class="active"><a data-toggle="tab" value="Upload News" style="cursor:pointer;color: #005580;" onclick="clearDivsForGallary();uploadNewsForPartyAndCandidate(null);" style="cursor:pointer;color: #005580;" > Upload News</a>	
@@ -757,26 +711,12 @@ function createNewParty()
 	<span class="btn btn-mini pull-right btn-inverse" id="updateCategoryId">Update</span>
 </div>
 </div>
-<!--<button id="opener">Open Dialog</button>-->
 
 
 <!-- for  body 1 start    result  -->
 <HR>
 <div id='profileManagementMainOuterDiv1' style="display:none">
 	<div id='profileManagementHeaderDiv1' class="row-fluid">
-		<!--<table width="100%" cellspacing="0" cellpadding="0" border="0">
-			  <tr>
-				   <td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_left.jpg"> 
-				   </td>
-				   <td width="98%">
-					 <div style="text-decoration: none;" class="productFeatureHeaderBackground_center2">
-					   <span style="text-decoration: none;" class="headerLabelSpan2">Photo Gallery</span>
-					 </div>
-				   </td>
-				   <td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_right.jpg">
-				   </td>
-			 </tr>
-		</table>-->
 		
 		<div class="span10 offset1 text-center alert"><input type="button" class="btn btn-success highlight" value="Create Gallery" onclick="buildCreateGallaryDiv()">
 		<input type="button" class="btn btn-success highlight" value="Upload photos" onclick="buildUploadPhotosDiv()"></div>
@@ -796,19 +736,6 @@ function createNewParty()
 
 <div id='profileManagementMainOuterDiv2' style="display:none">
 	<div id='profileManagementHeaderDiv2' class="row-fluid">
-		<!--<table width="100%" cellspacing="0" cellpadding="0" border="0">
-			  <tr>
-				   <td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_left.jpg"> 
-				   </td>
-				   <td width="98%">
-					 <div style="text-decoration: none;" class="productFeatureHeaderBackground_center2">
-					   <span style="text-decoration: none;" class="headerLabelSpan2">Video Gallery</span>
-					 </div>
-				   </td>
-				   <td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_right.jpg">
-				   </td>
-			 </tr>
-		</table>-->
 		<div class="span10 offset1 text-center alert"><input type="button" class="btn btn-success highlight" value="Create Video Gallery" onclick="buildCreateVideoGallaryDiv()">
 		<input type="button" class="btn btn-success highlight" value="Upload Video" onclick="buildUploadVideoDiv()">
 		</div>
@@ -824,30 +751,6 @@ function createNewParty()
 <!-- for  body 2 end    result  -->
 <div id='profileManagementMainOuterDiv3' style="display:none">
 	<div id='profileManagementHeaderDiv3' class="row-fluid">
-		<!--<table width="100%" cellspacing="0" cellpadding="0" border="0">
-			  <tr>
-				   <td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_left.jpg"> 
-				   </td>
-				   <td width="98%">
-					 <div style="text-decoration: none;" class="productFeatureHeaderBackground_center2">
-					   <span style="text-decoration: none;" class="headerLabelSpan2">News</span>
-					 </div>
-				   </td>
-				   <td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_right.jpg">
-				   </td>
-			 </tr>
-		</table>-->
-<!--	<div class="span11 offset1 text-center alert" style="margin-left:30px;">
-
-	<input type="button" class="btn btn-success highlight" value="Create News Category" onclick="buildCreateNewsCategory()">
-	<input type="button" class="btn btn-success highlight" value="Upload News" onclick="uploadNewsForPartyAndCandidate(null)">
-
-
-	<c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
-		<input type="button" class="btn btn-success highlight" value="Create New Source" onclick="createNewSource()">
-	</c:if>
-	</div>
-	-->
 </div>
 		<div id='newsGallaryDiv' class="divInfo">
 	 </div>		
@@ -891,10 +794,6 @@ function createNewParty()
  <input type="button" value="Add Response" onclick="addToNewsResponse()" class="btn btn-info"/>
  </div>
  <br/>
- <!--<span style="margin-right:30px;"><b>Start Date:<font class="requiredFont">*</font></b><input type="text" name="fromDate" class="inputClass dateField" id="newsFromDateId" readonly="true"/></span>
- <span><b>End Date:<font class="requiredFont">*</font></b><input type="text" name="toDate" readonly="true" class="inputClass dateField" id="newsToDateId"/></span>
- <input type="button" value="submit" onclick="getTotalNewsWithPagination();" class="btn btn-info" style="margin-right: 20px;"/>
- <input type="button" value="Add Response" onclick="addToNewsResponse()" class="btn btn-info"/>-->
  
  <div id="errorMsgNewsDiv"></div>
 
@@ -928,7 +827,10 @@ function createNewParty()
 <div id='newsReportDiv' class="divInfo">
  <div class="container well">
   <h2 style="text-align: center;margin-bottom:10px;">Create Report</h2>
-  <div id="reportHintDiv" align="center" style="margin-left:-25px;"> Note: Description should not contain #,$,%,& Special charactors.</div>
+  <c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
+     <div style="margin-bottom: 10px;margin-left: 334px;"><input type="checkbox" style="margin-top:0px;" id="reportChkBoxId" onclick="showHideNewsReport();">&nbsp;&nbsp;Check To Create Report Using News Ids</input></div>
+  </c:if>
+  <div id="reportHintDiv" align="center" style="margin-left:-25px;margin-bottom: 10px;"> Note: Description should not contain #,$,%,& Special charactors.</div>
   <div id="reportErrDiv" align="center"></div>
   <div id="newsReportInnerDiv">
     <div id="newsReporterrorMessageDiv"></div>
@@ -975,6 +877,19 @@ function createNewParty()
       </tr>
       </table>
   </div>
+  <div id="newsReportNewsIdsInnerDiv" style="display:none;">
+    <table style="margin-left: 271px;">
+       <tr>
+        <td>Report Description </td><td><textarea maxlength="330" name="fileDescriptionNew" rows="3" cols="20" id="newsreportfileDescription1" onkeyup="clearDiv('reportErrDiv');"></textarea></td>
+      </tr>
+	  <tr>
+        <td>News Ids </td><td><textarea maxlength="330" name="fileIdsAll" rows="3" cols="20" id="fileIdsAll" ></textarea></td>
+      </tr>
+	  <tr>
+        <td colspan="2">Note : Please enter all news Ids with comma( <b>,</b> ) separator</td></td>
+      </tr>
+	</table>
+  </div>
   <div class="form-actions text-center">
     <input type="button" value="submit" class="btn btn-info" id="getNewsreport" style="margin-left:360px;float:left;" onclick="getNewsDetailsForNewsReportGeneration()"/>
 	<input type="button" value="Generate Report" class="btn btn-info" id="createNewsreport" style="display: none;" onclick="saveNewsReport()"/>
@@ -983,8 +898,6 @@ function createNewParty()
    <div id="reportGenaratorNewsDiv" style="display:none;">
     <p style="margin-left: 20px; margin-bottom: 7px; margin-top: -15px;"><b>Total Selected News Count: </b><span id="reportGenaratorSpanCLS"></span></p>
 	 
-	 <!-- <label class="checkbox inline"><input type="checkbox" id="newsReportSelectAllCheckBox" value="Select All" />Select All</label>
-	 <label class="checkbox inline"><input type="checkbox" id="newsReportUnSelectAllCheckBox" value="Unselect All" />Unselect All</label> -->
 	 
 	 <label class="checkbox inline"><input type="button" id="newsReportSelectAllCheckBox" value="Select All"  class="btn"/></label>
 	 <label class="checkbox inline"><input type="button" id="newsReportUnSelectAllCheckBox" value="Unselect All" class="btn"/></label>
@@ -1219,7 +1132,28 @@ function createNewParty()
 
 <!-- for  body 7  result  end -->
 <script>
-
+function showHideNewsReport(){
+       $("#fileIdsAll").val('');
+	   $("#newsreportfileDescription1").val('');
+ if($("#reportChkBoxId").is(':checked')){
+    $("#createNewsreport").css("display","none");
+    $("#locationWiseNewsDiv").css("display","none");
+    $("#newsReportBtnDiv").css("display","none");
+    $("#locationWiseNewsDiv").html("");
+	$("#reportGenaratorNewsDiv").css("display","none");
+	
+    $('#reportErrDiv').html('');
+   $("#newsReportInnerDiv").hide();
+   $("#getNewsreport").hide();
+   $("#createNewsreport").show();
+   $("#newsReportNewsIdsInnerDiv").show();
+ }else{
+     $("#newsReportInnerDiv").show();
+     $("#newsReportNewsIdsInnerDiv").hide();
+	 $("#getNewsreport").show();
+     $("#createNewsreport").hide();
+ }
+}
 function getTypeOfConstituency(value)
 {	
 	if(value == 1)
@@ -1620,35 +1554,20 @@ $(".assignNewsRadioCls").live("click",function(){
 });//End of Ready 
 
 
-
-
-
 </script>
 
 <script>
 
 
-
-
-
-
-
 var count = 0;
 function changeLanguage(){
-//alert(123456);
 	if($("#sourceTelugu").is(':checked') == true)
 	{
 		$('#newsfileTitle').addClass('enadu');
-		//$('#newsfileDescription').addClass('enadu');
-		//$('#newsDesc').addClass('enadu');
-		//$('#aaanewsfileDescription').addClass('enadu');
 	}
 	else
 	{
 		$('#newsfileTitle').removeClass('enadu');
-		//$('#newsfileDescription').removeClass('enadu');
-		//$('#newsDesc').removeClass('enadu');
-		//$('#aaanewsfileDescription').removeClass('enadu');
 	}
 
 	if($("#sourceDescTelugu").is(':checked') == true)
@@ -1668,32 +1587,6 @@ function changeLanguage(){
 	{
 		$('#newsSynopsysDesc').removeClass('enadu');
 	}
-/* var str='';
-if(count == 0)
-	str='Eenadu Telugu';	
-if(/Eenadu Telugu/i.test(str))
-{
- count = count+1; 
-//$('#sourceTelugu').css("display","none");
-//$('#sourceEnglish').css("display","block");
-if(!$('#newsfileTitle').hasClass('enadu'))
-{
-$('#newsfileTitle').addClass('enadu');
-$('#newsfileDescription').addClass('enadu');
-$('#newsDesc').addClass('enadu');
-}
-}else{
-	count = 0;
-//$('#sourceTelugu').css("display","block");
-//$('#sourceEnglish').css("display","none");
-if($('#newsfileTitle').hasClass('enadu'))
-{
-$('#newsfileTitle').removeClass('enadu');
-$('#newsfileDescription').removeClass('enadu');
-$('#newsDesc').removeClass('enadu');
-}
-}
- */
 
 }
 
@@ -1865,11 +1758,7 @@ function getCandidatecategories()
 	     $("#dateErrorMessage").html('Please Select To Date');
 		 return;
 	   }
-	  /*  else if (Date.parse(fromDate) > Date.parse(toDate)) {
-         $("#dateErrorMessage").html('Invalid Date Selection.');
-         return;
-	    
-	} */
+
 
 	var jsObj={
 		fromDate:fromDate,
@@ -1998,7 +1887,7 @@ function assignNewsToCandidate()
   str +='<div id="candidateShowHideDiv" style="display:none;">';
   str += '<label>Select Party : <font class="requiredFont">*</font>';
   str += ' <select id="partiesList" name="party" onchange="getCandidatesByPartyId()">';
-  //str +='<option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option><option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872" selected>TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option>';
+
   str +='</select></label>';
 	
 
@@ -2565,7 +2454,13 @@ function createReport()
   $('#showKeywordsDiv').css("display","none");
   		$('#statusDiv1').html('');
 		$('#statusDiv2').html('');
-  
+  $("#newsReportInnerDiv").show();
+  $("#newsReportNewsIdsInnerDiv").hide();
+  <c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
+    $("#reportChkBoxId").removeAttr('checked'); 
+	$("#getNewsreport").show();
+	$("#createNewsreport").hide();
+  </c:if>
 $("#fromDateId1").datepicker({ 
 dateFormat: 'dd/mm/yy',
 maxDate : new Date()
@@ -2639,7 +2534,106 @@ $("#locationWiseNewsDiv").css("display","none");
 
 function saveNewsReport()
 {
-	 $("#generateReportFormValues").val("");
+ var isadmin = false;
+ var isNewsIds = false;
+ <c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
+   isadmin = true;
+ </c:if>
+	 if(isadmin){
+	     if($("#reportChkBoxId").is(':checked')){
+		     isNewsIds = true;
+		 }
+	 }
+	if(!isadmin){
+	   saveAllNews();
+	}else if(isadmin && isNewsIds){
+	  saveAllNewsWithNewsIds();
+	}else{
+	     saveAllNews();
+	}
+}
+
+function saveAllNewsWithNewsIds(){
+$("#newsReporterrorMessageDiv").html("");
+ var str = '<font color="red">';
+	var flag =false;
+         $("#generateReportFormValues").val("");
+$('#reportErrDiv').html('');
+var newsreportfileDescription = $.trim($("#newsreportfileDescription1").val());
+
+	if(isValid(newsreportfileDescription)){
+		$('#reportErrDiv').html('<b style="color:red">Report Description should not contain #,$,%,& Special charactors</b>');
+		return false;
+	}
+newsReportFileIdsArray = new Array();
+var ids = $.trim($('#fileIdsAll').val());
+if(!(ids.length == 0)){
+   var strArr = ids.split(",");
+   for(var i in strArr){
+      if($.trim(strArr[i]).length > 0){
+		  if(isNaN($.trim(strArr[i]))){
+			 str +='Please Enter Valid News Ids<br/>';
+			  flag =true;
+			  break;
+		  }else{
+			 newsReportFileIdsArray.push($.trim(strArr[i]));
+		  }
+	  
+	  }
+   }
+}
+	
+
+	if(!(str.contains("Please Enter Valid News Ids"))){
+		if(newsReportFileIdsArray.length == 0)
+		{
+		  str +='Please Enter Atleast One News Id<br/>';
+			flag =true;
+		}
+	}
+	
+	 if(newsreportfileDescription.length == 0)
+	{
+		str +='Report Description is required<br/>';
+		flag = true;
+	}
+	str+= '</font>';
+	
+	 if(flag == true)
+	{
+	     $('#reportErrDiv').html(str);
+		$('html, body').animate({
+         scrollTop: $("#reportErrDiv").offset().top
+     }, 2000);
+		
+	return;
+	}
+	else
+	{
+	$("#savenewsAjaxImg").css({'display': 'inline-block' });
+	reportErrDiv.innerHTML = '';
+    var jsObj = {
+			fileGallaryIds:newsReportFileIdsArray,
+			description:newsreportfileDescription,
+			task: 'saveNews'
+	};
+	    $("#generateReportFormValues").val(YAHOO.lang.JSON.stringify(jsObj));
+		var uploadHandlernew1 = {
+		   success : function( o ) { 
+			        var uploadResult = YAHOO.lang.JSON.parse(o.responseText);
+	                showReportFileNewsStatus(uploadResult,2);
+				}									
+	   };	
+	  YAHOO.util.Connect.setForm('generateReportForm',false);
+	  YAHOO.util.Connect.asyncRequest('POST','saveNewsUserAction.action',uploadHandlernew1);
+
+	}
+
+}
+
+function saveAllNews(){
+
+     $("#generateReportFormValues").val("");
 $('#reportErrDiv').html('');
 var newsreportfileDescription = $("#newsreportfileDescription").val();
 
@@ -2648,20 +2642,6 @@ var newsreportfileDescription = $("#newsreportfileDescription").val();
 		return false;
 	}
 
-/*var fileGallaryIds = [];
-   $(".find-table").each(function() {
-      
-		  if($(this).is(":checked")){
-		fileGallaryIds.push($(this).val());
-	   }
-    });
-   var str = '<font color="red">';
-   var flag =false;
-	if(fileGallaryIds == "")
-	{
-		str +='Select atleast one file<br/>';
-		flag =true;
-	}*/
 	var str = '<font color="red">';
 	var flag =false;
 	if(newsReportFileIdsArray.length == 0)
@@ -2705,24 +2685,44 @@ var newsreportfileDescription = $("#newsreportfileDescription").val();
 	  YAHOO.util.Connect.asyncRequest('POST','saveNewsUserAction.action',uploadHandlernew1);
 
 	}
-}
 
-function showReportFileNewsStatus(result)
-{
+}
+function showReportFileNewsStatus(result,id)
+{ 
+  var newsIds = false;
+  if(id == 2){
+    newsIds = true;
+  }
 	$("#savenewsAjaxImg").css("display","none");
 	if(result.resultCode == 0)
 	{
-	 $("#newsreportfileDescription").val('');
-	 $("#newsReporterrorMessageDiv").html('Report Generated Successfully..').css('color','green');
-	  $("#newsReportUnSelectAllCheckBox").trigger("click");
+	  if(!newsIds){
+	   $("#newsreportfileDescription").val('');
+	   $("#newsReporterrorMessageDiv").html('Report Generated Successfully..').css('color','green');
+	   $("#newsReportUnSelectAllCheckBox").trigger("click");
+	  }else{
+	   $("#fileIdsAll").val('');
+	   $("#newsreportfileDescription1").val('');
+	   $("#reportErrDiv").html('Report Generated Successfully..').css('color','green');
+	   }
 	}
 	else
 	{
-  $("#newsReporterrorMessageDiv").html('Error Occured! Try Again..').css('color','red');
+	if(!newsIds){
+      $("#newsReporterrorMessageDiv").html('Error Occured! Try Again..').css('color','red');
+	}else{
+	    $("#reportErrDiv").html('Error Occured! Try Again..').css('color','red');
+	}
    }
- $('html, body').animate({
+   if(!newsIds){
+    $('html, body').animate({
          scrollTop: $("#newsReporterrorMessageDiv").offset().top
      }, 2000);
+  }else{
+     $('html, body').animate({
+         scrollTop: $("#reportErrDiv").offset().top
+     }, 2000);
+  }
 		 return;
 }
 
@@ -3115,11 +3115,6 @@ function removeThisLocation(id){
 function removeAndAddSelection(id){
   var value = $("#"+id+" option:selected").val();
   $("#"+id).find('option').removeAttr("selected");
-    //$("#"+id).each(function() {
-    //   $(this).removeAttr("selected");
-    // });
-  //$("#"+id).find('option:selected').removeAttr("selected");
- // $('#'+id+' option[value="'+value+'"]').setAttribute('selected','selected');
    $("#"+id).find('option[value='+value+']').attr('selected','selected');
 }
 var addSource = 0;
@@ -3230,7 +3225,7 @@ function addNewFrom(){
  str+='    <div id="whocandidate'+who+'" style="margin-left: 0px;" class="row alert alert-warning">';
 		str+='    <div class="span5 well well-small ">';
 		str+='<label style="float: left;"><strong>Select Party</strong></label><span id="errDiv3'+who+'" style="margin-top: -25px; color: red; margin-left: 125px; margin-bottom: 9px;" ></span><select class="input-block-level" id="partiesList'+who+'" name="candidatePartyNewsVOList.sourceVOList['+who+'].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForParty'+who+'\',3'+who+',0)">';
-		//str +='<option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872" >TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option>';
+		
 		str +='</select>';
 		str +='<img src="images/search.jpg" id="candidateListForParty'+who+'Img" style="display:none;"/>';
 		str+='</div>';
@@ -3273,7 +3268,6 @@ var str ='';
 	    str+='    <div id="whomecandidate'+whome+'"><div class="row alert alert-warning" style="margin-left: 0px;">';
 		str+='    <div class="span2 well well-small ">';
 		str+='<label><strong>Select Party</strong></label><span id="errDiv4'+whome+'" style="float:left;position:absolute;margin-top: 30px; color: red; margin-left: -5px; margin-bottom: 9px;" ></span><select class="input-block-level" id="partiesListForWhome'+whome+'" name="candidatePartyNewsVOList.destinationVOList['+whome+'].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForPartyForNewsTo'+whome+'\',4'+whome+',0)">';
-		//str +='<option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872">TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option>';
 		str +='</select>';
 		str +='<img src="images/search.jpg" id="candidateListForPartyForNewsTo'+whome+'Img" style="display:none;" />';
 		str+='</div>';
@@ -3285,7 +3279,6 @@ var str ='';
 		str +='<select id="candidateListForPartyForNewsTo'+whome+'" name="candidatePartyNewsVOList.destinationVOList['+whome+'].candidateId" class="input-block-level" >';
 		str+='    <option value="0">Select Candidate</option>';
 		str+='</select>';
-		//str +='<span style="display: inline-block;"><img partylistid="partiesListForWhome'+whome+'" key="candidateListForPartyForNewsTo'+whome+'" class="createCandidateCls createNewCandidate" title="Click Here To Create New Candidate" src="images/user.png"></span>';
 		str+='</div>';
 		str+='<div class="span4 well well-small">';
 		str+='<label><strong>Select Categories</strong></label>';
@@ -3392,7 +3385,6 @@ function addMoreFilesForPartyCandidate()
 	str += '       <td class="tdWidth1">News Length : <font class="requiredFont">*</font></td>';
 	str += '  <td class="selectWidthPadd"><input type="text" id="newslength'+fileCount+'" class="newslength newsLengthCls" name="fileSourceVOList['+fileCount+'].newsLength" size="25" maxlength="200" style="margin-top:8px;" onKeyup="IsNumeric1(this.value);"></input></td>';
 
-	/*str +='<td><img style="background: #fff; border-radius: 11px; padding: 4px;" src="images/minus.png" title="Click here to delete file" onclick="deleteFile(\'moreFileTableId'+fileCount+'\')"></td>';*/
 	str += '   </tr>';
     
 	str +='<tr>';
@@ -3530,25 +3522,6 @@ function buildCandidateKeywordsList()
   
   document.getElementById("candidateKeywordsDiv").appendChild(divElmt);
    $("#keywordListId1").autoSuggest("getKeyWordsBySearchCriteria.action", {minChars: 4,selectedItemProp: "name", searchObjProps: "name"});
-
-   /*//sourceCandidateIdsArray
-   
-   var divElmt = document.createElement("newsFromCanListLabel");
-   var str = '';
-  
-  for(var i=0;i<candidateIdsListArray.length;i++)
-  {
-	if(sourceCandidateIdsArray.indexOf(candidateIdsListArray[i].id) == -1)
-	{
-	 str +='<label class="btn" id="sourceCan'+candidateIdsListArray[i].id+'" class="sourceCandidateImgCls">';
-	 str +=''+candidateIdsListArray[i].name+'';
-	 str +='<img src="images/closeImg.png" key="'+candidateIdsListArray[i].id+'" class="candidateCloseImg"/>';
-	 str +='</label>';
-	 sourceCandidateIdsArray.push(candidateIdsListArray[i].id);
-	}
-  }
-  divElmt.innerHTML = str;
- document.getElementById("newsFromCanListLabel").appendChild(divElmt);*/
   
 }
 
@@ -3864,29 +3837,6 @@ $('#locationId').val(0);
 	
 	createCandPartyKey =$(this).attr("partyListId");
     createCandCandKey =$(this).attr("key");
-	
-   /* var str = '';
-   str +='<div>';
-   str +='<div id="errorMsgDiv"></div>';
-   str +='<table style="margin-top: 24px;"><tr>';
-   str +='<td>Select Party</td>';
-   str +='<td><select id="partySelectNewList">';
-   str +='</select></td></tr>';
-
-   str +='<tr><td>Candidate Name</td>';
-   str +='<td><input type="text" id="newCandidateName"/></td></tr>';
-   str +='<tr>';
-   str +='<td>Designation</td>';
-   str +='<td><select id="designationsList"></select></td>';
-   str +='</tr>';
-   str +='<tr>';
-   str +='<td>Location</td>';
-   str +='<td><select id="locationId"><option value=0>Select Location</option><option value=1>Assembly Constituency</option><option value=2>Parliment Constituency</option></select></td>';
-   str +='</tr>';
-   str +='</table>';
-   str +='<input type="button" value="submit" class="btn" id="createCandidateId" key="'+key+'" partyListId="'+partyListId+'"/>';
-   str +='</div>';
-   $("#createCandidateInnerDiv").html(str); */
    
    getPartiesList("partySelectNewList",null);
    getDesignationList("designationsList");
@@ -4282,9 +4232,6 @@ function getDesignationList(designationList1)
 
 function populateDate()
 {
-
-//$(".dateField").datepicker();
-//$(".dateField").datepicker("setDate", new Date());
 $(".dateField").datepicker({
 		 dateFormat: "dd/mm/yy",
 		 changeMonth: true,
