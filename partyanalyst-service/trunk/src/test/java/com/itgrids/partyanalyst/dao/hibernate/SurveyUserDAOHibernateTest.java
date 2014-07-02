@@ -19,7 +19,8 @@ public class SurveyUserDAOHibernateTest  extends BaseDaoTestCase
 	
 	public void testResult()
 	{
-		surveyUserDAO.getUserDetails("prasad","prasad");
+		Long userId = surveyUserDAO.getUserDetails("userName","password");
+		System.out.println(userId);
 	}
 	
 }

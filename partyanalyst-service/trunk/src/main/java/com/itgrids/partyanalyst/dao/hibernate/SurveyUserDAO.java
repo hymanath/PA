@@ -16,7 +16,7 @@ public class SurveyUserDAO extends GenericDaoHibernate<SurveyUser, Long> impleme
 	
 	public Long getUserDetails(String userName,String password)
 	{
-		Query query = getSession().createQuery("select count(*) from SurveyUser model where model.userName = :userName and model.password = : password");
+		Query query = getSession().createQuery("select model.surveyUserId from SurveyUser model where model.userName = :userName and model.password = :password");
 		query.setParameter("userName", userName);
 		query.setParameter("password", password);
 		return (Long) query.uniqueResult();

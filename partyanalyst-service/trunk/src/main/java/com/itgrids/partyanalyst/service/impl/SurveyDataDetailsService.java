@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.Date;
+
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -32,6 +33,7 @@ import com.itgrids.partyanalyst.model.SurveyUserTracking;
 import com.itgrids.partyanalyst.model.SurveyUserType;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class SurveyDataDetailsService implements ISurveyDataDetailsService
 {
@@ -80,6 +82,9 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	@Autowired
 	private ICasteStateDAO casteStateDAO;
  	
+	@Autowired
+	private DateUtilService dateUtilService;
+
 	
 	/**
 	 * This Service is used for saving the user type details
@@ -92,20 +97,31 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		ResultStatus resultStatus = new ResultStatus();
 		try
 		{
-			
-			SurveyUserType surveyUserType = new SurveyUserType();
-			surveyUserType.setDescription(userTypeDescription);
-			SurveyUserType result = surveyUserTypeDAO.save(surveyUserType);
-			if(result != null)
+			Long userTypeId = surveyUserTypeDAO.checkForUsertype(userTypeDescription.trim());
+			if(userTypeId == null)
 			{
-				resultStatus.setResultCode(0);
-				resultStatus.setMessage("Success");
+				SurveyUserType surveyUserType = new SurveyUserType();
+				surveyUserType.setDescription(userTypeDescription);
+				surveyUserType.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				surveyUserType.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				SurveyUserType result = surveyUserTypeDAO.save(surveyUserType);
+				if(result != null)
+				{
+					resultStatus.setResultCode(0);
+					resultStatus.setMessage("Success");
+				}
+				else
+				{
+					resultStatus.setResultCode(1);
+					resultStatus.setMessage("Failure");
+				}
 			}
 			else
 			{
-				resultStatus.setResultCode(1);
-				resultStatus.setMessage("Failure");
+				resultStatus.setResultCode(4);
+				resultStatus.setMessage("Exists");
 			}
+			
 		} 
 		catch (Exception e)
 		{
@@ -145,6 +161,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				surveyUser.setAddress(address);
 				surveyUser.setMobileNo(mobileNo);
 				surveyUser.setActiveStatus("Y");
+				surveyUser.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				surveyUser.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 				SurveyUserType surveyUserType = surveyUserTypeDAO.get(userTypeId);
 				if(surveyUserType != null)
 				{
@@ -161,6 +179,11 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					resultStatus.setResultCode(1);
 					resultStatus.setMessage("Failure");
 				}
+			}
+			else
+			{
+				resultStatus.setResultCode(4);
+				resultStatus.setMessage("Exists");
 			}
 			
 			
