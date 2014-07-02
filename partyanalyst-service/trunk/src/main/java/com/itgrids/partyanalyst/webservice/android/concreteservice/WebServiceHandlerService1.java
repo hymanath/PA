@@ -50,14 +50,14 @@ import com.itgrids.partyanalyst.service.IVoterReportService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.Util;
-import com.itgrids.partyanalyst.webservice.android.abstractservice.IWebServiceHandlerService;
+import com.itgrids.partyanalyst.webservice.android.abstractservice.IWebServiceHandlerService1;
 import com.itgrids.partyanalyst.webservice.utils.VoterTagVO;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLoginVO;
 
 
-public class WebServiceHandlerService implements IWebServiceHandlerService {
+public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	
-	private static final Logger log = Logger.getLogger(WebServiceHandlerService.class);
+	private static final Logger log = Logger.getLogger(WebServiceHandlerService1.class);
 	
 	private ILoginService loginService;
 	
