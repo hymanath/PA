@@ -20,16 +20,17 @@ import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
-import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
+
+import com.itgrids.partyanalyst.webservice.android.abstractservice.IWebServiceHandlerService1;
 import com.itgrids.partyanalyst.webservice.utils.VoterTagVO;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLoginVO;
 
 @Component
 @Path("/android/fieldData")
-public class WebServiceHandler {
+public class WebServiceHandler1 {
 	
-	@Autowired
-	private IWebServiceHandlerService  webServiceHandlerService;
+	//@Autowired
+	private IWebServiceHandlerService1  webServiceHandlerService1;
 	
 	
 	@POST

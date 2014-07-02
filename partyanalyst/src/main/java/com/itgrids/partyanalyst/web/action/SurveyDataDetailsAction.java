@@ -201,5 +201,65 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		return Action.SUCCESS;
 	}
 	
+	public String saveServeyUserRelationDetails()
+	{
+		try
+		{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			jObj = new JSONObject(getTask());
+			resultStatus = surveyDataDetailsService.saveServeyUserRelationDetails(jObj.getLong("userTypeId"),jObj.getLong("userId"),jObj.getLong("leaderId"),jObj.getLong("constituencyId"));
+		} 
+		catch (Exception e)
+		{
+			
+		}
+		return Action.SUCCESS;
+	}
+	
+	
+	public String getSurveyLeaders()
+	{
+		try
+		{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			jObj = new JSONObject(getTask());
+			returnList = surveyDataDetailsService.getConstituencyWiseLeaders();
+		} 
+		catch (Exception e)
+		{
+			
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getSurveyUsersByLeaders()
+	{
+		try
+		{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			jObj = new JSONObject(getTask());
+			returnList = surveyDataDetailsService.getSurveyUsersByLeades(jObj.getLong("leaderId"),jObj.getLong("constituencyId"));
+		} 
+		catch (Exception e)
+		{
+			
+		}
+		return Action.SUCCESS;
+	}
 	
 }
