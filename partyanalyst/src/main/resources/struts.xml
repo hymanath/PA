@@ -7309,6 +7309,24 @@
 				<param name="root">returnList</param>
 			</result>
 		</action>
+		
+		<action name="saveServeyUserRelationDetailsAction" class="surveyDataDetailsAction" method="saveServeyUserRelationDetails">
+			<result type="json" name="success">
+				<param name="root">resultStatus</param>
+			</result>
+		</action>
+		
+		<action name="getSurveyLeadersAction" class="surveyDataDetailsAction" method="getSurveyLeaders">
+			<result type="json" name="success">
+				<param name="root">returnList</param>
+			</result>
+		</action>
+		
+		<action name="getSurveyUsersByLeadersAction" class="surveyDataDetailsAction" method="getSurveyUsersByLeaders">
+			<result type="json" name="success">
+				<param name="root">returnList</param>
+			</result>
+		</action>
 			
 </package>
 		
