@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service;
 
 import java.util.Date;
+
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.GenericVO;
@@ -20,4 +21,6 @@ public interface ISurveyDataDetailsService
 	public Long getUserDetailsForCheck(String userName,String password);
 	public List<GenericVO> getUserTypes();
 	public List<GenericVO> getSurveyUsersByUserType(Long userTypeId);
+	public List<GenericVO> getSurveyUsersByLeades(Long leaderId,Long constituencyId);
+	public List<GenericVO> getConstituencyWiseLeaders();
 }

@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -539,7 +540,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		 } 
 		 catch (Exception e)
 		 {
-			
+			 LOG.error("Exception raised in getUserTypes service in SurveyDataDetailsService", e);
 		 }
 		 return returnList;
 	}
@@ -579,7 +580,94 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		}
 		catch (Exception e)
 		{
-			
+			LOG.error("Exception raised in getSurveyUsersByUserType service in SurveyDataDetailsService", e);
+		}
+		 return returnList;
+	}
+	
+	/**
+	 * This Service is used for getting all leaders by constituency wise
+	 * @return returnList
+	 */
+	public List<GenericVO> getConstituencyWiseLeaders()
+	{
+		List<GenericVO> returnList = null;
+		try
+		{
+			List<Object[]> result = surveyUserRelationDAO.getLeadersByConstituency();
+			if(result != null && result.size() > 0)
+			{
+				returnList = new ArrayList<GenericVO>();
+				for (Object[] parms : result)
+				{
+					GenericVO genericVO = new GenericVO();
+					genericVO.setId(parms[0] != null ? (Long)parms[0] : 0l);
+					genericVO.setName(parms[1] != null ? parms[1].toString() : "");
+					genericVO.setRank(parms[2] != null ? (Long)parms[2] : 0l);
+					genericVO.setDesc(parms[3] != null ? parms[3].toString() : "");
+					returnList.add(genericVO);
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getConstituencyWiseLeaders service in SurveyDataDetailsService", e);
+		}
+		 return returnList;
+	}
+	
+	/**
+	 * This Service is used for getting all users by leade and constituency
+	 * @param leaderId
+	 * @param constituencyId
+	 * @return returnList
+	 */
+	public List<GenericVO> getSurveyUsersByLeades(Long leaderId,Long constituencyId)
+	{
+		List<GenericVO> returnList = null;
+		try
+		{
+			List<Object[]> result = surveyUserRelationDAO.getUsersByConstituencyAndLeader(leaderId, constituencyId);
+			if(result != null && result.size() > 0)
+			{
+				returnList = new ArrayList<GenericVO>();
+				Map<Long,List<GenericVO>> resultMap = new java.util.HashMap<Long, List<GenericVO>>();
+				for (Object[] parms : result)
+				{
+					GenericVO VO = new GenericVO();
+					List<GenericVO> list = resultMap.get((Long)parms[0]);
+					if(list == null)
+					{
+						list = new ArrayList<GenericVO>();
+						resultMap.put((Long)parms[0], list);
+					}
+					VO.setId(parms[0] != null ? (Long)parms[0] : 0l);
+					VO.setName(parms[1] != null ? parms[1].toString() : "");
+					VO.setRank(parms[2] != null ? (Long)parms[2] : 0l);
+					list.add(VO);
+				}
+				List<Long> surveyUserIds = new ArrayList<Long>(resultMap.keySet());
+				if(surveyUserIds != null && surveyUserIds.size() > 0)
+				{
+					for (Long surveyUserId : surveyUserIds)
+					{
+						GenericVO genericVO = new GenericVO();
+						genericVO.setId(surveyUserId);
+						List<GenericVO> genericVOList = resultMap.get(surveyUserId);
+						if(genericVOList != null && genericVOList.size() > 0)
+						{
+							genericVO.setName(genericVOList.get(0).getName());
+							genericVO.setGenericVOList(genericVOList);
+						}
+						returnList.add(genericVO);
+						
+					}
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getSurveyUsersByLeades service in SurveyDataDetailsService", e);
 		}
 		 return returnList;
 	}
