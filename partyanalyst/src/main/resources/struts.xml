@@ -7297,6 +7297,18 @@
 				<param name="root">resultStatus</param>
 			</result>
 		</action>
+		
+		<action name="getSurveyUserTypeAction" class="surveyDataDetailsAction" method="getSurveyUserType">
+			<result type="json" name="success">
+				<param name="root">returnList</param>
+			</result>
+		</action>
+		
+		<action name="getSurveyUsersByUserTypeAction" class="surveyDataDetailsAction" method="getSurveyUsersByUserType">
+			<result type="json" name="success">
+				<param name="root">returnList</param>
+			</result>
+		</action>
 			
 </package>
 		
