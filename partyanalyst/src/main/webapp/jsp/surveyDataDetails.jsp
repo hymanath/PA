@@ -35,6 +35,10 @@
 			.survey_nav ul li a{color:#333; font-weight:bold; font-size:13px; padding:12px 5px;text-decoration:none;text-shadow:0px 1px #ffcc00; }
 			.survey_nav ul li a:hover{background:rgba(255,0,0,0.1);}
 			.survey_nav ul li a.selected{color:#fff; background:red;text-shadow:0px 1px #4f4f4f; }
+			.requiredFont{
+				color:red;
+				font-size:13px;
+			}
 			
 			
 		</style>
@@ -61,8 +65,11 @@
 					<div class="span12 widgetservey_Red">
 						<h4>Create user types</h4>
 							<div class="row">
+								<div id="createUserTypeErrorDiv" class="span8 offset2 errorCls"></div>
+							</div>
+							<div class="row">
 								<div class="span8 offset2">
-									<label>User Type Description</label>
+									User Type Description<font class="requiredFont">*</font>
 									<textarea id="userTypeDescription" class="input-block-level" rows="2"></textarea>
 								</div>
 							</div>
@@ -79,46 +86,51 @@
 					<div class="span12 widgetservey_Red m_top20">
 						<h4>User Creation</h4>
 							<div class="row">
+						<div id="createUserErrorDiv" class="span8 offset2 errorCls"></div>
+						</div>
+							<div class="row">
 								<div class="span8 offset2">
 									<div class="row-fluid">
 										<div class="span4">
-											<label>Firsr Name</label>
+											Firsr Name<font class="requiredFont">*</font>
 											<input type="text" id="firstName" placeholder="Firsr Name..." class="input-block-level">
 										</div>
 										<div class="span4">
-											<label>Last Name</label>
+											Last Name<font class="requiredFont">*</font>
 											<input type="text" id="lastName" placeholder="Last Name..." class="input-block-level">
 										</div>
 										<div class="span4">
-											<label>User Name</label>
+											User Name<font class="requiredFont">*</font>
 											<input type="text" id= "userName" placeholder="User Name..." class="input-block-level">
 										</div>
 										
 									</div>
 									<div class="row-fluid">
 										<div class="span12">
-											<label>Address</label>
+											Address<font class="requiredFont">*</font>
 											<textarea id="address" class="input-block-level" rows="2"></textarea>
 										</div>										
 									</div>
 									<div class="row-fluid">
 										<div class="span6">
-											<label>Password</label>
+											Password<font class="requiredFont">*</font>
 											<input id="password" type="password" placeholder="Password..." class="input-block-level">
 										</div>
 										<div class="span6">
-											<label>Retype Password</label>
+											Retype Password<font class="requiredFont">*</font>
 											<input id="retypePassword" type="password" placeholder="Retype Password..." class="input-block-level">
 										</div>
 									</div>
 									<div class="row-fluid">
 										<div class="span6">
-											<label>Mobile Number</label>
+											Mobile Number<font class="requiredFont">*</font>
 											<input id="mobileNumber" type="text" placeholder="Enter Number..." class="input-block-level">
 										</div>
 										<div class="span6">
-											<label>User Type</label>
-											<select id = "userType" class="input-block-level"> <option>01</option></select>
+											User Type<font class="requiredFont">*</font>
+											<select id = "userType" class="input-block-level"> 
+											<option value="0">Select User type</option>
+											</select>
 										</div>
 									</div>
 								</div>
@@ -137,7 +149,7 @@
 					
 						<h4>User Tab Assign</h4>
 						<div class="row">
-						<div id="assignTabErrorDiv" class="span8 offset2"></div>
+						<div id="assignTabErrorDiv" class="span8 offset2 errorCls"></div>
 						</div>
 							<div class="row">
 								<div class="span10 offset2">
@@ -145,15 +157,17 @@
 										<div class="span4">
 											<!--<label>User Name</label>
 											<input type="text" placeholder="User Name..." class="input-block-level" id="uname">-->
-											<label>Select User Type</label>
-											<select class="input-block-level" id="surveyUserTypeForSelect" onchange="getSurveyUsersByUserType();"> <option value="0">Select User type</option></select>
+											Select User Type<font class="requiredFont">*</font>
+											<select class="input-block-level" id="surveyUserTypeForSelect" onchange="getSurveyUsersByUserType();">
+											<option value="0">Select User type</option>
+											</select>
 											</div>
 											<div class="span4">
-										<label>Select User Name</label>
+										Select User Name<font class="requiredFont">*</font>
 										<select class="input-block-level" id="surveyUserIdForSelect"> </select>
 											</div>	
 										<div class="span2">
-											<label>Tab No</label>
+											Tab No<font class="requiredFont">*</font>
 											<input type="text" placeholder="Tab No..." class="input-block-level" id="tabNo">
 										</div>
 										</div>
@@ -163,14 +177,14 @@
 										</div>-->
 											<div class="row-fluid">
 										<div class="span3">
-											<label>Date</label>
+											Date<font class="requiredFont">*</font>
 											<input type="text" placeholder="User Name..." class="input-block-level" id="date">
 										</div>	
 																		
 									</div>
 									<div class="row-fluid">
 										<div class="span12">
-											<label>Remarks</label>
+											Remarks<font class="requiredFont">*</font>
 											<textarea class="input-block-level" rows="2" id="remarks"></textarea>
 										</div>
 									</div>
@@ -191,31 +205,39 @@
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top20">
 							<h4>Assign Booth To User</h4>
+							<div class="row">
+								<div id="assignBoothErrorDiv" class="span8 offset2 errorCls"></div>
+							</div>
 								<div class="row">
 								<div class="span8 offset2">
 									<div class="row-fluid">
 										<div class="span6">
-											<label>Select User Name</label>
-											<select class="input-block-level"> <option>01</option></select>
+											Select User Name<font class="requiredFont">*</font>
+											<select class="input-block-level" id="userId"> 
+											<option value="0">Select User Name</option></select>
 										</div>
 										<div class="span6">
-											<label>Select Constituency</label>
-											<select class="input-block-level"> <option>01</option></select>
+											Select Constituency<font class="requiredFont">*</font>
+											<select class="input-block-level" id="constituencyId"> 
+											<option value="0">Select Constituency</option>
+											</select>
 										</div>
 									</div>	
 									<div class="row-fluid">
 										<div class="span6">
-											<label>Panchayat</label>
-											<select class="input-block-level"> <option>01</option></select>
+											Panchayat<font class="requiredFont">*</font>
+											<select class="input-block-level" id="panchayatId"> 
+											<option value="0">Select Panchayat</option></select>
 										</div>
 										<div class="span6">
-											<label>Booths</label>
-											<select class="input-block-level"> <option>01</option></select>
+											Booths<font class="requiredFont">*</font>
+											<select class="input-block-level" id="boothId"> 
+											<option value="0">Select Booth</option></select>
 										</div>
 									</div>
 									</div>
 									</div>
-							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success">ASSIGN</button></div>
+							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onClick="assignBooth();">ASSIGN</button></div>
 					</div>
 				</div>
 			</div>
@@ -227,23 +249,27 @@
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top20">
 						<h4>Deactive User</h4>
+						<div class="row">
+								<div id="deactivateUserErrorDiv" class="span8 offset2 errorCls"></div>
+							</div>
 							<div class="row">
 								<div class="span8 offset2">
 										<div class="row-fluid">
 											<div class="span12">
-												<label>Select User Name</label>
-												<select class="input-block-level"> <option>01</option></select>
+												Select User Name <font class="requiredFont">*</font>
+												<select class="input-block-level"id="deactivateUserId"> 
+												<option value="0">Select User Name</option></select>
 											</div>										
 										</div>
 									<div class="row-fluid">
 										<div class="span12">
-									<label>Remarks</label>
-									<textarea class="input-block-level" rows="2"></textarea>
+									Remarks	<font class="requiredFont">*</font>
+									<textarea class="input-block-level" rows="2" id=="remarksId"></textarea>
 									</div>
 									</div>
 								</div>
 							</div>
-							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success">DEACTIVATE</button></div>
+							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onClick="deactivateUser();">DEACTIVATE</button></div>
 					</div>
 				</div>
 			</div>
@@ -255,31 +281,36 @@
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top20">
 						<h4>Assign Leaders To User</h4>
+						<div class="row">
+								<div id="assignLeaderErrorDiv" class="span8 offset2 errorCls"></div>
+							</div>
 							<div class="row">
 								<div class="span8 offset2">
 									<div class="row-fluid">
 										<div class="span6">
-											<label>Select Constituency </label>
-											<select class="input-block-level"> <option>01</option></select>
+											Select Constituency<font class="requiredFont">*</font>
+											<select class="input-block-level" id="constituencyLeaderId"> 
+											<option value="0">Select Constituency</option>
+											</select>
 										</div>
 										<div class="span6">
-											<label>Select Type</label>
-											<select class="input-block-level"> <option>01</option></select>
+											Select Type<font class="requiredFont">*</font>
+											<select class="input-block-level" id="typeId"> <option value="0">Select Type</option></select>
 										</div>
 									</div>	
 									<div class="row-fluid">
 										<div class="span6">
-											<label>Select  Leader </label>
-											<select class="input-block-level"> <option>01</option></select>
+											Select  Leader<font class="requiredFont">*</font>
+											<select class="input-block-level" id="leaderId"> <option value="0">Select Leader</option></select>
 										</div>
 										<div class="span6">
-											<label>Select User </label>
-											<select class="input-block-level"> <option>01</option></select>
+											Select User<font class="requiredFont">*</font>
+											<select class="input-block-level" id="userLeaderId"> <option value="0">Select User</option></select>
 										</div>
 									</div>
 								</div>
 									</div>
-							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success">ASSIGN</button></div>
+							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onClick="assignLeaderToUser();">ASSIGN</button></div>
 					</div>
 				</div>
 			</div>
@@ -416,15 +447,77 @@ $('#surveyUserIdForSelect').append('<option value="'+result[i].id+'">'+result[i]
 
 function saveSurveyUser()
 {
+	var	firstName =  $.trim($('#firstName').val());
+	var	lastName =   $.trim($('#lastName').val());
+	var	userName =   $.trim($('#userName').val());
+	var	password =  $.trim($('#password').val());
+	var address =   $.trim($('#address').val());
+	var	mobileNo =   $.trim($('#mobileNumber').val());
+	var	userType =  $('#userType').val();
+	var retypePassword =  $.trim($('#retypePassword').val());
+	
+	if(firstName.length == 0)
+	{
+		$("#createUserErrorDiv").html("FirstName is required").css("color","red");
+		return;
+	}
+	if(lastName.length == 0)
+	{
+		$("#createUserErrorDiv").html("LastName is required").css("color","red");
+		return;
+	}
+	if(userName.length == 0)
+	{
+		$("#createUserErrorDiv").html("UserName is required").css("color","red");
+		return;
+	}
+	
+	if(address.length == 0)
+	{
+		$("#createUserErrorDiv").html("Address is required").css("color","red");
+		return;
+	
+	}
+	if(password.length == 0)
+	{
+		$("#createUserErrorDiv").html("Password is required").css("color","red");
+		return;
+	}
+	if(retypePassword.length == 0)
+	{
+		$("#createUserErrorDiv").html("Retype Password is required").css("color","red");
+		return;
+	}
+	 if(password.length > 0 && retypePassword.length > 0 && password != retypePassword)
+	{
+ 		$("#createUserErrorDiv").html("Passwords donot match").css("color","red");
+       return
+	}
+	if(mobileNo.length == 0)
+	{
+		$("#createUserErrorDiv").html("Mobile Number is required").css("color","red");
+		return;
+	}
+	else if(isNaN(mobileNo))
+	{
+		$("#createUserErrorDiv").html("Mobile Number Should be numeric").css("color","red");
+		return;
+	}
+	if(userType == 0)
+	{
+		$("#createUserErrorDiv").html("UserType is required").css("color","red");
+		return;
+	
+	}
 	var jsObj = 
 	{
-		firstName : $('#firstName').val(),
-		lastName :  $('#lastName').val(),
-		userName :  $('#userName').val(),
-		password : $('#password').val(),
-		address :  $('#address').val(),
-		mobileNo :  $('#mobileNumber').val(),
-		userType :  $('#userType').val(),
+		firstName : firstName,
+		lastName :  lastName,
+		userName : userName,
+		password :password,
+		address :  address,
+		mobileNo : mobileNo,
+		userType : userType,
 		task : "saveSurveyUser"
 	}
 	
@@ -434,6 +527,17 @@ function saveSurveyUser()
 		dataType: 'json',
 		data: {task:JSON.stringify(jsObj)},
 		}).done(function(result){
+			if(result.resultCode == 0) 
+			{
+				$("#createUserErrorDiv").html('User Created successfully.').css("color","green");
+				setTimeout(function(){$('#createUserErrorDiv').html('');}, 3000);
+				$('#mobileNo,#address,#password,#userName,#lastName,#firstName,#retypePassword').val('');
+				$('#userType').val(0);
+			}
+			else
+			{
+				$("#createUserErrorDiv").html('Error Occured,Try again....').css("color","red");
+			}
 		
 		});
 
@@ -442,9 +546,17 @@ function saveSurveyUser()
 
 function saveSurveyUserType()
 {
+	var description = $.trim($('#userTypeDescription').val());
+
+	if(description.length == 0)
+	{
+		$("#createUserTypeErrorDiv").html("Please Enter User Type Description").css("color","red");
+		return;
+	}
+	
 	var jsObj = 
 	{
-		description : $('#userTypeDescription').val(),
+		description : description,
 		task : "saveSurveyUserType"
 	}
 	
@@ -454,7 +566,16 @@ function saveSurveyUserType()
 		dataType: 'json',
 		data: {task:JSON.stringify(jsObj)},
 		}).done(function(result){
-		
+			if(result.resultCode == 0) 
+			{
+				$("#createUserTypeErrorDiv").html('User Type created successfully.').css("color","green");
+				setTimeout(function(){$('#createUserTypeErrorDiv').html('');}, 3000);
+				$('#userTypeDescription').val('');
+			}
+			else
+			{
+				$("#createUserTypeErrorDiv").html('Error Occured,Try again....').css("color","red");
+			}
 		});
 }
 
@@ -474,7 +595,7 @@ function AssignTab()
 	var str = ''; 
 	if(surveyUser == 0)
 	{
-	str +='Select User<br/>';
+		str +='Select User<br/>';
 	}
 	
 	if(tabNo.length == 0)
@@ -525,6 +646,7 @@ function showHideTabs(id)
 
 if(id == "userTypeTab")
 	{
+	$(".errorCls").html('');
 	$("#createUserTypeDiv").show();
 	$("#userCreationDiv").hide();
 	$("#tabAssignDiv").hide();
@@ -538,6 +660,7 @@ if(id == "userTypeTab")
 
 else if(id == "userCreationTab")
 	{
+	$(".errorCls").html('');
 	$("#createUserTypeDiv").hide();
 	$("#userCreationDiv").show();
 	$("#tabAssignDiv").hide();
@@ -550,6 +673,7 @@ else if(id == "userCreationTab")
 
 	else if(id == "tabAssignTab")
 	{
+	$(".errorCls").html('');
 	$("#createUserTypeDiv").hide();
 	$("#userCreationDiv").hide();
 	$("#tabAssignDiv").show();
@@ -564,6 +688,7 @@ else if(id == "userCreationTab")
 
 		else if(id == "boothAssignTab")
 	{
+	$(".errorCls").html('');
 	$("#createUserTypeDiv").hide();
 	$("#userCreationDiv").hide();
 	$("#tabAssignDiv").hide();
@@ -576,6 +701,7 @@ else if(id == "userCreationTab")
 	
 	else if(id == "deactivationTab")
 	{
+	$(".errorCls").html('');
 	$("#createUserTypeDiv").hide();
 	$("#userCreationDiv").hide();
 	$("#tabAssignDiv").hide();
@@ -589,6 +715,7 @@ else if(id == "userCreationTab")
 	
 		else if(id == "assignLeaderTab")
 	{
+	$(".errorCls").html('');
 	$("#createUserTypeDiv").hide();
 	$("#userCreationDiv").hide();
 	$("#tabAssignDiv").hide();
@@ -600,6 +727,7 @@ else if(id == "userCreationTab")
 	}
 		else if(id == "verificationDetailsTab")
 	{
+	$(".errorCls").html('');
 	$("#createUserTypeDiv").hide();
 	$("#userCreationDiv").hide();
 	$("#tabAssignDiv").hide();
@@ -624,6 +752,165 @@ function buildDatePicker()
    }).datepicker('setDate', new Date());
 
 }
+
+function assignBooth()
+{
+	var	user =  $("#userId").val();
+	var	constituencyId = $("#constituencyId").val();
+	var	panchayatId =  $("#panchayatId").val();
+	var	boothId =  $('#boothId').val();
+
+	if(user == 0)
+	{
+		$("#assignBoothErrorDiv").html("Please Select The User").css("color","red");
+		return;
+	}
+	if(constituencyId == 0)
+	{
+		$("#assignBoothErrorDiv").html("Please Select Constituency").css("color","red");
+		return;
+	}
+	if(panchayatId == 0)
+	{
+		$("#assignBoothErrorDiv").html("Please Select Panchayat").css("color","red");
+		return;
+	}
+	if(boothId == 0)
+	{
+		$("#assignBoothErrorDiv").html("Please Select Booth").css("color","red");
+		return;
+	}
+	var jsObj = 
+	{
+		user : user,
+		constituencyId :  constituencyId,
+		panchayatId : panchayatId,
+		boothId :  boothId,
+		task : "assignBooth"
+	}
+	
+	$.ajax({
+		type:'GET',
+		url: 'assignBoothAction.action',
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)},
+		}).done(function(result){
+			if(result.resultCode == 0) 
+			{
+				$("#assignBoothErrorDiv").html('Booth Assigned successfully.').css("color","green");
+				setTimeout(function(){$('#assignBoothErrorDiv').html('');}, 3000);				
+				$('#userId,#boothId,#panchayatId,#constituencyId').val(0);
+			}
+			else
+			{
+				$("#assignBoothErrorDiv").html('Error Occured,Try again....').css("color","red");
+			}
+		
+		});
+
+}
+function assignLeaderToUser()
+{
+	var	typeId =  $("#typeId").val();
+	var	constituencyLeaderId = $("#constituencyLeaderId").val();
+	var	leaderId =  $("#leaderId").val();
+	var	userLeaderId =  $('#userLeaderId').val();
+
+	if(constituencyLeaderId == 0)
+	{
+		$("#assignLeaderErrorDiv").html("Please Select Constituency").css("color","red");
+		return;
+	}
+	if(typeId == 0)
+	{
+		$("#assignLeaderErrorDiv").html("Please Select the Type").css("color","red");
+		return;
+	}
+	if(leaderId == 0)
+	{
+		$("#assignLeaderErrorDiv").html("Please Select Leader").css("color","red");
+		return;
+	}
+	if(userLeaderId == 0)
+	{
+		$("#assignLeaderErrorDiv").html("Please Select User").css("color","red");
+		return;
+	}
+	var jsObj = 
+	{
+		constituencyLeaderId : constituencyLeaderId,
+		typeId :  typeId,
+		leaderId : leaderId,
+		userLeaderId :  userLeaderId,
+		task : "assignLeader"
+	}
+	
+	$.ajax({
+		type:'GET',
+		url: 'assignleaderToUserAction.action',
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)},
+		}).done(function(result){
+			if(result.resultCode == 0) 
+			{
+				$("#assignLeaderErrorDiv").html('Leader Assigned successfully.').css("color","green");
+				setTimeout(function(){$('#assignLeaderErrorDiv').html('');}, 3000);				
+				$('#userLeaderId,#leaderId,#typeId,#constituencyLeaderId').val(0);
+			}
+			else
+			{
+				$("#assignLeaderErrorDiv").html('Error Occured,Try again....').css("color","red");
+			}		
+		});
+
+}
+
+function deactivateUser()
+{
+	var	deactivateUserId =  $("#deactivateUserId").val();
+	var	remarksId = $.trim($("#remarksId").val());
+	
+
+	if(deactivateUserId == 0)
+	{
+		$("#deactivateUserErrorDiv").html("Please Select The User").css("color","red");
+		return;
+	}
+	if(remarksId.length == 0)
+	{
+		$("#deactivateUserErrorDiv").html("Remarks is Required").css("color","red");
+		return;
+	}
+	
+	var jsObj = 
+	{
+		deactivateUserId : deactivateUserId,
+		remarksId :  remarksId,
+		
+		task : "deactivateUser"
+	}
+	
+	$.ajax({
+		type:'GET',
+		url: 'deactivateUserAction.action',
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)},
+		}).done(function(result){
+			if(result.resultCode == 0) 
+			{
+				$("#deactivateUserErrorDiv").html('Deactivated Usersuccessfully.').css("color","green");
+				setTimeout(function(){$('#deactivateUserErrorDiv').html('');}, 3000);				
+				$('#deactivateUserId').val(0);
+				$('#remarksId').val('');
+			}
+			else
+			{
+				$("#deactivateUserErrorDiv").html('Error Occured,Try again....').css("color","red");
+			}		
+		});
+
+}
+
 </script>
 <script>
 showHideTabs('userTypeTab');
