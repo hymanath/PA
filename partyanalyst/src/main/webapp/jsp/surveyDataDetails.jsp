@@ -135,29 +135,38 @@
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top20">
 					
-						<h4>USer Tab Assign</h4>
+						<h4>User Tab Assign</h4>
 						<div class="row">
 						<div id="assignTabErrorDiv" class="span8 offset2"></div>
 						</div>
 							<div class="row">
-								<div class="span8 offset2">
+								<div class="span10 offset2">
 									<div class="row-fluid">
 										<div class="span4">
-											<label>User Name</label>
-											<input type="text" placeholder="User Name..." class="input-block-level" id="uname">
-										</div>
+											<!--<label>User Name</label>
+											<input type="text" placeholder="User Name..." class="input-block-level" id="uname">-->
+											<label>Select User Type</label>
+											<select class="input-block-level" id="surveyUserTypeForSelect" onchange="getSurveyUsersByUserType();"> <option value="0">Select User type</option></select>
+											</div>
+											<div class="span4">
+										<label>Select User Name</label>
+										<select class="input-block-level" id="surveyUserIdForSelect"> </select>
+											</div>	
 										<div class="span2">
 											<label>Tab No</label>
 											<input type="text" placeholder="Tab No..." class="input-block-level" id="tabNo">
+										</div>
 										</div>
 										<!--<div class="span3">
 											<label>Status</label>
 											<select class="input-block-level"> <option>01</option></select>
 										</div>-->
+											<div class="row-fluid">
 										<div class="span3">
 											<label>Date</label>
 											<input type="text" placeholder="User Name..." class="input-block-level" id="date">
-										</div>										
+										</div>	
+																		
 									</div>
 									<div class="row-fluid">
 										<div class="span12">
@@ -354,6 +363,56 @@
 		
 	</div>
  <script>
+function getUserTypes()
+{
+var jsObj =
+{
+
+}
+$.ajax({
+type:'GET',
+url: 'getSurveyUserTypeAction.action',
+dataType: 'json',
+data: {task:JSON.stringify(jsObj)},
+}).done(function(result){
+$('#surveyUserTypeForSelect').find('option:not(:first)').remove();
+if(result != null && result.length > 0)
+{
+for(var i in result)
+{
+$('#surveyUserTypeForSelect').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+}
+
+}
+
+});
+}
+
+function getSurveyUsersByUserType()
+{
+var jsObj =
+{
+userTypeId : 1,
+task : "getSurveyUsersByUserType"
+}
+$.ajax({
+type:'GET',
+url: 'getSurveyUsersByUserTypeAction.action',
+dataType: 'json',
+data: {task:JSON.stringify(jsObj)},
+}).done(function(result){
+$('#surveyUserIdForSelect').find('option:not(:first)').remove();
+if(result != null && result.length > 0)
+{
+for(var i in result)
+{
+$('#surveyUserIdForSelect').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+}
+
+}
+});
+}
+
 
 function saveSurveyUser()
 {
@@ -407,15 +466,17 @@ $(".highlight").click(function()
 function AssignTab()
 {
 	$("#assignTabErrorDiv").html('');
-	var uname = $.trim($("#uname").val());
+	//var uname = $.trim($("#uname").val());
+	var surveyUser = $("#surveyUserIdForSelect").val();
 	var tabNo = $.trim($("#tabNo").val());
 	var remarks = $.trim($("#remarks").val());
 	var date = $("#date").val();
 	var str = ''; 
-	if(uname.length == 0)
+	if(surveyUser == 0)
 	{
-		str +='User Name is required <br/>';
+	str +='Select User<br/>';
 	}
+	
 	if(tabNo.length == 0)
 	{
 		str +='Tab No is required <br/>';
@@ -436,7 +497,7 @@ function AssignTab()
 	else
 $("#assignTabErrorDiv").html('');
 	var jObj = {
-		uname : uname,
+		surveyUserId : surveyUser,
 		tabNo :tabNo,
 		remarks : remarks,
 		date : date
@@ -498,6 +559,7 @@ else if(id == "userCreationTab")
 	$("#verificationDiv").hide();
 	$("#leaderNameDiv").hide();
 	buildDatePicker();
+	getUserTypes();
 	}
 
 		else if(id == "boothAssignTab")
