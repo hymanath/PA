@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.Date;
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 
@@ -17,4 +18,6 @@ public interface ISurveyDataDetailsService
 	public ResultStatus deactivateUser(Long userId,String remarks);
 	public ResultStatus saveSurveyDataDetailsInfo(List<SurveyResponceVO> surveyResponceList);
 	public Long getUserDetailsForCheck(String userName,String password);
+	public List<GenericVO> getUserTypes();
+	public List<GenericVO> getSurveyUsersByUserType(Long userTypeId);
 }

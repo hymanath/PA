@@ -1,7 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
-
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -21,6 +21,7 @@ import com.itgrids.partyanalyst.dao.ISurveyUserTabAssignDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserTrackingDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserTypeDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.model.SurveyDetailsInfo;
@@ -514,5 +515,68 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			LOG.error("Exception raised in getUserDetailsForCheck service in SurveyDataDetailsService", e);
 		}	
 		return userId;
+	}
+	
+	/**
+	 * This Service is used for getting all userType
+	 * @return returnList
+	 */
+	public List<GenericVO> getUserTypes()
+	{
+		 List<GenericVO> returnList = null;
+		 try 
+		 {
+			List<Object[]> result = surveyUserTypeDAO.getAllUserTypes();
+			if(result != null && result.size() > 0)
+			{
+				returnList = new ArrayList<GenericVO>();
+				fillGenericVO(result,returnList);
+			}
+		 } 
+		 catch (Exception e)
+		 {
+			
+		 }
+		 return returnList;
+	}
+	
+	/**
+	 * This Service is used for filling Generic VO
+	 * @param result
+	 * @param returnList
+	 */
+	public void fillGenericVO(List<Object[]> result,List<GenericVO> returnList)
+	{
+		for (Object[] parms : result)
+		{
+			GenericVO genericVO = new GenericVO();
+			genericVO.setId(parms[0] != null ? (Long)parms[0] : 0l);
+			genericVO.setName(parms[1] != null ? parms[1].toString() : "");
+			returnList.add(genericVO);
+		}
+	}
+	
+	/**
+	 * This Service is used for getting all user by user type
+	 * @param userTypeId
+	 * @return returnList
+	 */
+	public List<GenericVO> getSurveyUsersByUserType(Long userTypeId)
+	{
+		List<GenericVO> returnList = null;
+		try
+		{
+			List<Object[]> result = surveyUserDAO.getSurveyUsersByUserType(userTypeId);
+			if(result != null && result.size() > 0)
+			{
+				returnList = new ArrayList<GenericVO>();
+				fillGenericVO(result,returnList);
+			}
+		}
+		catch (Exception e)
+		{
+			
+		}
+		 return returnList;
 	}
 }
