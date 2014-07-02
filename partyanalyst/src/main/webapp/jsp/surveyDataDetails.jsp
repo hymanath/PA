@@ -1,10 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+		<%@taglib prefix="s" uri="/struts-tags" %>
+		<%@taglib uri="http://displaytag.sf.net" prefix="display" %>
+		<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+		<%@ page import="java.util.ResourceBundle;" %>
 <html>
  <head>	
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">	
-
+	
 		<style>
 			body{background:#f0f0f0;}
 			.m_top20{margin-top:20px;}
@@ -26,6 +30,8 @@
 			.survey_nav ul li a{color:#333; font-weight:bold; font-size:13px; padding:12px 5px;text-decoration:none;text-shadow:0px 1px #ffcc00; }
 			.survey_nav ul li a:hover{background:rgba(255,0,0,0.1);}
 			.survey_nav ul li a.selected{color:#fff; background:red;text-shadow:0px 1px #4f4f4f; }
+			
+			
 		</style>
   </head>
   
@@ -52,15 +58,15 @@
 							<div class="row">
 								<div class="span8 offset2">
 									<label>User Type Description</label>
-									<textarea class="input-block-level" rows="2"></textarea>
+									<textarea id="userTypeDescription" class="input-block-level" rows="2"></textarea>
 								</div>
 							</div>
-							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success">UPDATE</button></div>
+							<div class="row text-center m_top20"><button onClick="saveSurveyUserType();" type="button" class="btn btn-large btn-success">UPDATE</button></div>
 					</div>
 				</div>
 			</div>
 		</div>
-		
+	
 		<!----User Creation----->		
 		<div class="row">
 			<div class="span10 offset1">
@@ -72,47 +78,47 @@
 									<div class="row-fluid">
 										<div class="span4">
 											<label>Firsr Name</label>
-											<input type="text" placeholder="Firsr Name..." class="input-block-level">
+											<input type="text" id="firstName" placeholder="Firsr Name..." class="input-block-level">
 										</div>
 										<div class="span4">
 											<label>Last Name</label>
-											<input type="text" placeholder="Last Name..." class="input-block-level">
+											<input type="text" id="lastName" placeholder="Last Name..." class="input-block-level">
 										</div>
 										<div class="span4">
 											<label>User Name</label>
-											<input type="text" placeholder="User Name..." class="input-block-level">
+											<input type="text" id= "userName" placeholder="User Name..." class="input-block-level">
 										</div>
 										
 									</div>
 									<div class="row-fluid">
 										<div class="span12">
 											<label>Address</label>
-											<textarea class="input-block-level" rows="2"></textarea>
+											<textarea id="address" class="input-block-level" rows="2"></textarea>
 										</div>										
 									</div>
 									<div class="row-fluid">
 										<div class="span6">
 											<label>Password</label>
-											<input type="password" placeholder="Password..." class="input-block-level">
+											<input id="password" type="password" placeholder="Password..." class="input-block-level">
 										</div>
 										<div class="span6">
 											<label>Retype Password</label>
-											<input type="password" placeholder="Retype Password..." class="input-block-level">
+											<input id="retypePassword" type="password" placeholder="Retype Password..." class="input-block-level">
 										</div>
 									</div>
 									<div class="row-fluid">
 										<div class="span6">
 											<label>Mobile Number</label>
-											<input type="text" placeholder="Enter Number..." class="input-block-level">
+											<input id="mobileNumber" type="text" placeholder="Enter Number..." class="input-block-level">
 										</div>
 										<div class="span6">
 											<label>User Type</label>
-											<select class="input-block-level"> <option>01</option></select>
+											<select id = "userType" class="input-block-level"> <option>01</option></select>
 										</div>
 									</div>
 								</div>
 							</div>
-							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success">SUBMIT</button></div>
+							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onClick="saveSurveyUser();">SUBMIT</button></div>
 					</div>
 				</div>
 			</div>
@@ -335,18 +341,18 @@
 		
 	</div>
  <script>
-saveSurveyUser();
+
 function saveSurveyUser()
 {
 	var jsObj = 
 	{
-		firstName : "firstName",
-		lastName : "lastName",
-		userName : "userName",
-		password : "password",
-		address : "address",
-		mobileNo : "mobileNo",
-		userType : 1,
+		firstName : $('#firstName').val(),
+		lastName :  $('#lastName').val(),
+		userName :  $('#userName').val(),
+		password : $('#password').val(),
+		address :  $('#address').val(),
+		mobileNo :  $('#mobileNumber').val(),
+		userType :  $('#userType').val(),
 		task : "saveSurveyUser"
 	}
 	
@@ -361,6 +367,24 @@ function saveSurveyUser()
 
 }
 
+
+function saveSurveyUserType()
+{
+	var jsObj = 
+	{
+		description : $('#userTypeDescription').val(),
+		task : "saveSurveyUserType"
+	}
+	
+	$.ajax({
+		type:'GET',
+		url: 'saveSurveyUserTypeAction.action',
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)},
+		}).done(function(result){
+		
+		});
+}
 function AssignTab()
 {
 	
