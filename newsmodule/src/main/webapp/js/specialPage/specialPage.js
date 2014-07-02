@@ -1431,12 +1431,12 @@ function validateNewsFileUpload()
 	}
 	if(fileDesc.length == 0)
 	{
-		str += 'Description is Required.<br>';
+		str += 'Short Description is Required.<br>';
 		flag = false;
 	}
 	if(fileDesc.length > 500)
 	{
-		str += 'Description Should not exceed 500 Characters.<br>';
+		str += 'Short Description Should not exceed 500 Characters.<br>';
 		flag = false;
 	}
 	if(fileVal.length == 0)

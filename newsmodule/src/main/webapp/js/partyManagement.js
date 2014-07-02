@@ -2741,7 +2741,7 @@ function validateUploadFileDetails()
 	}
 	if(fileDesc.length == 0)
 	{
-		str += 'News Description is Required.<br>';
+		str += 'Short Description is Required.<br>';
 		flag = false;
 	}
 	if(synopsysDesc.length == 0)
@@ -2888,7 +2888,7 @@ function validateUploadFileDetails()
 	}
 	if(fileDesc.length > 2000)
 	{
-		str += 'News Description Should not exceed 2000 Characters.<br>';
+		str += 'Short Description Should not exceed 2000 Characters.<br>';
 		flag = false;
 	}
 var allLocSeleted = true;

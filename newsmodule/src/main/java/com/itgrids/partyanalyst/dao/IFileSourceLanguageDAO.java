@@ -29,4 +29,6 @@ public interface IFileSourceLanguageDAO extends GenericDao<FileSourceLanguage, L
 	public void deleteFileSourceLanguage(Long fileSourceLangId);
 	
 	public List<Object[]> getDistrictWiseUploadedNewsCount(Date fromDate,Date toDate);
+	
+	public List<Object[]> getAllSourceDetails(Set<Long> fileIds);
 }

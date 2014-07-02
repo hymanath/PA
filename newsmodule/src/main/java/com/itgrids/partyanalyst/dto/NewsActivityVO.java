@@ -8,6 +8,9 @@ public class NewsActivityVO implements Serializable{
    private String date;
    private String description;
    private String font;
+   private String title;
+   private String titleFont;
+   private String paper;
    private Long id;
    
    private List<NewsActivityVO> list;
@@ -58,6 +61,30 @@ public class NewsActivityVO implements Serializable{
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getTitleFont() {
+		return titleFont;
+	}
+
+	public void setTitleFont(String titleFont) {
+		this.titleFont = titleFont;
+	}
+
+	public String getPaper() {
+		return paper;
+	}
+
+	public void setPaper(String paper) {
+		this.paper = paper;
 	}
 	   
    
