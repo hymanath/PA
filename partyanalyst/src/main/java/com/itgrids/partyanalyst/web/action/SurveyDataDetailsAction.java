@@ -379,7 +379,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			
 			String startDate = jObj.getString("startDate");
 			String endDate = jObj.getString("endDate");
-			String userId = jObj.getString("userId");
+			Long userId = jObj.getLong("userId");
 			
 			boothWiseCountList = surveyDataDetailsService.getBoothWiseUserSamplesDetailsByDates(userId,startDate,endDate);
 			
