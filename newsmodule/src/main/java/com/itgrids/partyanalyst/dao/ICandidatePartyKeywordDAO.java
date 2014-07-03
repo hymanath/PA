@@ -15,11 +15,11 @@ public interface ICandidatePartyKeywordDAO extends GenericDao<CandidatePartyKeyw
 	
 	public CandidatePartyKeyword getCandidateFileDetails(Long candidateFileId,Long newKeywordID);
 	
-	public Long removeDublicateData(Long candidatePartyKeywordId,Long keywordId);
+	public void removeDublicateData(Long candidatePartyKeywordId,Long keywordId);
 	
-	public Long removeKeywordsList(Long keywordId);
+	public void removeKeywordsList(Long keywordId);
 	
-	public List<CandidatePartyKeyword> getCandidatePartyKeywordListByUserwise(Long candidatePartyFileId,Long keywordId);
+	public List<Long> getCandidatePartyKeywordListByUserwise(Long candidatePartyFileId,Long keywordId);
 	
 	public List<Long> getCandidateFileIds(Long keywordId);
 	
@@ -50,4 +50,6 @@ public interface ICandidatePartyKeywordDAO extends GenericDao<CandidatePartyKeyw
 	public List<String> getExistingKeywords(List<String> keywords,List<Long> candidatePartyFileIds);
 	
 	public List<Object[]> getAllExistingKeywords(List<String> keywords,List<Long> candidatePartyFileIds);
+	
+	public int updateCandidatePartyKeyword(List<Long> keywordIds,Long newKeywordId);
 }

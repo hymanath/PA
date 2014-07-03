@@ -85,13 +85,13 @@
 					var str='';
 					var name = oData;
 					var keywordId = oRecord.getData("id");
-					
-					if(selectedKeywordIds.indexOf(""+keywordId+"") != -1)
-					 str +="<input type='checkbox' class='keywordCheckId'  value='"+keywordId+"' checked='checked'/>";
-					else
-					 str +="<input type='checkbox' class='keywordCheckId'   value='"+keywordId+"' />";
-					elLiner.innerHTML=str;
-								
+					if(keywordId != undefined){
+						if(selectedKeywordIds.indexOf(""+keywordId+"") != -1)
+						 str +="<input type='checkbox' class='keywordCheckId'  value='"+keywordId+"' checked='checked'/>";
+						else
+						 str +="<input type='checkbox' class='keywordCheckId'   value='"+keywordId+"' />";		
+				   }
+					elLiner.innerHTML=str;		
 				};
 				
 				
