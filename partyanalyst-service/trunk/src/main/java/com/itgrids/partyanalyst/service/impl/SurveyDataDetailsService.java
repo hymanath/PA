@@ -93,7 +93,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	 * @param userTypeDescription
 	 * @return resultStatus
 	 */
-	public ResultStatus saveSurveyUserType(String userTypeDescription)
+	public ResultStatus saveSurveyUserType(String userTypeDescription,String userType)
 	{
 		LOG.info("Entered into saveSurveyUserType service in SurveyDataDetailsService");
 		ResultStatus resultStatus = new ResultStatus();
@@ -104,6 +104,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			{
 				SurveyUserType surveyUserType = new SurveyUserType();
 				surveyUserType.setDescription(userTypeDescription);
+				surveyUserType.setUserType(userType);
 				surveyUserType.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 				surveyUserType.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 				SurveyUserType result = surveyUserTypeDAO.save(surveyUserType);
@@ -311,7 +312,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			surveyUserRelation.setSurveyUser(surveyUserDAO.get(surveyUserId));
 			surveyUserRelation.setSurveyLeader(surveyUserDAO.get(leaderId));
 			surveyUserRelation.setConstituency(constituencyDAO.get(constituencyId));
-			surveyUserRelation.setActiveStatus("N");
+			surveyUserRelation.setActiveStatus("Y");
 			SurveyUserRelation result = surveyUserRelationDAO.save(surveyUserRelation);
 			if(result != null)
 			{
@@ -643,7 +644,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					}
 					VO.setId(parms[0] != null ? (Long)parms[0] : 0l);
 					VO.setName(parms[1] != null ? parms[1].toString() : "");
-					VO.setRank(parms[2] != null ? (Long)parms[2] : 0l);
+					VO.setRank(parms[2] != null ? (Long.valueOf(parms[2].toString())) : 0l);
 					list.add(VO);
 				}
 				List<Long> surveyUserIds = new ArrayList<Long>(resultMap.keySet());
@@ -671,4 +672,5 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		}
 		 return returnList;
 	}
+
 }

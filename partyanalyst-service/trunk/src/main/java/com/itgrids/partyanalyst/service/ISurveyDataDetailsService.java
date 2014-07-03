@@ -10,7 +10,7 @@ import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 
 public interface ISurveyDataDetailsService 
 {
-	public ResultStatus saveSurveyUserType(String userTypeDescription);
+	public ResultStatus saveSurveyUserType(String userTypeDescription,String userType);
 	public ResultStatus saveSurveyUser(String firstName,String lastName,String userName,String password,String address,String mobileNo,Long userTypeId);
 	public ResultStatus saveSurveyUserTabAssign(Long surveyUserId,String tabNo,String remarks,Date date);
 	public ResultStatus saveSurvetUserBoothAssign(Long surveyUserId,Long constituencyId,Long panchayatId,List<Long> boothIds);

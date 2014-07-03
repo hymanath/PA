@@ -17,7 +17,7 @@ public class SurveyUserTypeDAO extends GenericDaoHibernate<SurveyUserType, Long>
 	
 	public Long checkForUsertype(String description)
 	{
-		Query query = getSession().createQuery("select model.surveyUsertypeId from SurveyUserType model where model.description = :description");
+		Query query = getSession().createQuery("select model.surveyUsertypeId from SurveyUserType model where model.userType = :description");
 		query.setParameter("description", description);
 		return (Long) query.uniqueResult();
 	}
