@@ -62,4 +62,11 @@ public class SurveyDetailsInfoDAO extends GenericDaoHibernate<SurveyDetailsInfo,
 		query.setParameter("boothIds", boothIds);
 		return query.list();
 	}
+	public List<Object[]> getVoterDetailsForbooths(List<Long> boothIds)
+	{
+		Query query = getSession().createQuery("select model1.booth.boothId,model from SurveyDetailsInfo model,BoothPublicationVoter model1" +
+				" where model1.booth.boothId in ( :boothIds) and model.voter.voterId = model1.voter.voterId group by model1.booth.boothId");
+		query.setParameterList("boothIds", boothIds);
+		return query.list();
+	}
 }
