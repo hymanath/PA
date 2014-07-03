@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao;
 
+
 import java.util.Date;
 import java.util.List;
 
@@ -15,4 +16,5 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	public List<SurveyDetailsInfo> getLatLongForSurveyDetails(Long surveyUserId,Date date);
 	
 	public List<SurveyDetailsInfo> getSurveyDetilsForAssibnedBooths(Long boothIds);
+	public List<Object[]> getVoterDetailsForbooths(List<Long> boothIds);
 }
