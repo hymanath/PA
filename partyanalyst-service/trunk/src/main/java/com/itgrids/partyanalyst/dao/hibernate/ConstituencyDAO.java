@@ -807,4 +807,16 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		query.setParameter("electionTypeId",electionTypeId);
 		return query.list();
 	}
+	
+	public List<Object[]> getAllAssemblyConstituenciesByStateId(Long stateId)
+	{
+		Query query = getSession().createQuery("select  C.constituencyId , C.name from Constituency C where C.state.stateId = ? and " +
+				"C.electionScope.electionType.electionTypeId = 2 and C.deformDate is null order by C.name");
+		
+		query.setParameter(0, stateId);
+		
+		return query.list();
+		
+		
+	}
 }

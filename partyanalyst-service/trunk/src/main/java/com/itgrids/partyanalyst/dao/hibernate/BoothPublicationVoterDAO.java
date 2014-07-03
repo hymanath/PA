@@ -6966,4 +6966,23 @@ public List<Object[]> checkVoterInState(Long publicationDateId,String voterName,
 		query.setParameter("casteStateId", casteStateId);
 		return query.list();
 	}
+	
+	public List<Object[]> getVotersDetailsByBoothId(Long boothId)
+	{
+		Query query = getSession().createQuery("select SDI.voter.voterId,SDI.voter.name," +
+				"SDI.isCadre ,SDI.isInfluencingPeople ,SDI.caste , SDI.localArea, SDI.hamlet,SDI.surveyUser.surveyUserId ," +
+				"SDI.surveyUser.userName , SDI.surveyUser.surveyUserType.description  " +
+				" from BoothPublicationVoter BPV , SurveyDetailsInfo SDI " +
+				"where" +
+				"BPV.booth.boothId = :boothId and" +
+				"BPV.voter.voterId = SDI.voter.voterId and " +
+				"BPV.booth.publicationDate.publicationDateId = :publicationDateId");
+		
+		query.setParameter("publicationDateId", IConstants.PUBLICATION);
+		query.setParameter("boothId", boothId);
+		
+		return query.list();
+		
+		
+	}
 }

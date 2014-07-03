@@ -40,6 +40,12 @@ public class SurveyUserBoothAssign
 	private Date insertedTime;
 	private Date updatedTime;
 	
+	private Long surveyUserId;
+	private Long constituencyId;
+	private Long boothId;
+	private String isDelete;
+	
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "survey_user_booth_assign_id", unique = true, nullable = false)
@@ -51,7 +57,7 @@ public class SurveyUserBoothAssign
 	}
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "survey_user_id")
+	@JoinColumn(name = "survey_user_id",insertable = false , updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public SurveyUser getSurveyUser() {
@@ -62,7 +68,7 @@ public class SurveyUserBoothAssign
 	}
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "constituency_id")
+	@JoinColumn(name = "constituency_id" ,insertable = false , updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Constituency getConstituency() {
@@ -73,7 +79,7 @@ public class SurveyUserBoothAssign
 	}
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "panchayat_id")
+	@JoinColumn(name = "panchayat_id" ,insertable = false , updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Panchayat getPanchayat() {
@@ -84,7 +90,7 @@ public class SurveyUserBoothAssign
 	}
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "booth_id")
+	@JoinColumn(name = "booth_id" ,insertable = false , updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Booth getBooth() {
@@ -111,4 +117,35 @@ public class SurveyUserBoothAssign
 	}
 	
 	
+	@Column(name="survey_user_id")
+	public Long getSurveyUserId() {
+		return surveyUserId;
+	}
+	public void setSurveyUserId(Long surveyUserId) {
+		this.surveyUserId = surveyUserId;
+	}
+	
+	@Column(name="constituency_id")
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	
+	@Column(name="booth_id")
+	public Long getBoothId() {
+		return boothId;
+	}
+	public void setBoothId(Long boothId) {
+		this.boothId = boothId;
+	}
+	
+    @Column(name="is_delete")
+	public String getIsDelete() {
+		return isDelete;
+	}
+	public void setIsDelete(String isDelete) {
+		this.isDelete = isDelete;
+	}
 }

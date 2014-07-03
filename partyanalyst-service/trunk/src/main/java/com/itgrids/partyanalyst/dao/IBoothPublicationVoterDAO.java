@@ -651,5 +651,8 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<Object[]> getUrbanVotersDetails(
 				Long constituencyId, Long publicationDateId);
 	  
+	 public List<Object[]> getVotersDetailsByBoothId(Long boothId);
+
+	  
 	  
 }

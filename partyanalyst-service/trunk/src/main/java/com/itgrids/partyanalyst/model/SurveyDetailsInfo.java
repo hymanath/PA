@@ -48,6 +48,8 @@ public class SurveyDetailsInfo
 	private String latitude;
 	private Date insertedTime;
 	private Date updatedTime;
+	private Constituency constituency;
+	private Long constituencyId;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -198,6 +200,25 @@ public class SurveyDetailsInfo
 	}
 	public void setUpdatedTime(Date updatedTime) {
 		this.updatedTime = updatedTime;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "constituency_id" ,insertable = false , updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Constituency getConstituency() {
+		return constituency;
+	}
+	public void setConstituency(Constituency constituency) {
+		this.constituency = constituency;
+	}
+	
+	@Column(name="constituency_id")
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
 	}
 	
 	
