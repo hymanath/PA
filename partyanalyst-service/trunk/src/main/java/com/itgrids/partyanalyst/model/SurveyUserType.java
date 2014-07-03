@@ -33,6 +33,7 @@ public class SurveyUserType
 {
 
 	private Long surveyUsertypeId;
+	private String userType;
 	private String description;
 	private Date insertedTime;
 	private Date updatedTime;
@@ -48,6 +49,14 @@ public class SurveyUserType
 		this.surveyUsertypeId = surveyUsertypeId;
 	}
 	
+	
+	@Column(name="user_type")
+	public String getUserType() {
+		return userType;
+	}
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
 	@Column(name="description")
 	public String getDescription() {
 		return description;
