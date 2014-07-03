@@ -650,6 +650,7 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<Object[]> getCasteDetailsForACaste(Long constituencyId,Long publicationDateId,Long casteStateId);
 	  public List<Object[]> getUrbanVotersDetails(
 				Long constituencyId, Long publicationDateId);
+	  public List<Object[]> getTotalVotersByBoothsForVerfier(Long boothIds,Long publicationDate);
 	  
 	 public List<Object[]> getVotersDetailsByBoothId(Long boothId);
 

@@ -11,4 +11,5 @@ public interface ISurveyUserBoothAssignDAO extends GenericDao<SurveyUserBoothAss
 	public List<Object[]> getAllTheAssignedBoothsByConstituencyIdAndUserId(Long constituencyId,Long userId);
 
 
+	public List<Long> getAssignedBoothsForUser(Long surveyUserId);
 }
