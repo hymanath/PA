@@ -48,7 +48,7 @@ public class SurveyDetailsInfo
 	private String latitude;
 	private Date insertedTime;
 	private Date updatedTime;
-	private Constituency constituency;
+	private Booth booth;
 	private Long constituencyId;
 	
 	@Id
@@ -203,20 +203,21 @@ public class SurveyDetailsInfo
 	}
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "constituency_id" ,insertable = false , updatable = false)
+	@JoinColumn(name = "booth_id" ,insertable = false , updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Constituency getConstituency() {
-		return constituency;
+	public Booth getBooth() {
+		return booth;
 	}
-	public void setConstituency(Constituency constituency) {
-		this.constituency = constituency;
+	public void setBooth(Booth booth) {
+		this.booth = booth;
 	}
 	
-	@Column(name="constituency_id")
+	@Column(name="booth_id")
 	public Long getConstituencyId() {
 		return constituencyId;
 	}
+	
 	public void setConstituencyId(Long constituencyId) {
 		this.constituencyId = constituencyId;
 	}
