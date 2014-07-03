@@ -7327,6 +7327,30 @@
 				<param name="root">returnList</param>
 			</result>
 		</action>
+		
+		<action name="getAssignedBoothsDetailsByConstituencyIdAndUserId" class="surveyDataDetailsAction" method="getAssignedBoothsDetailsByConstituencyIdAndUserId">
+			<result type="json" name="success">
+			<param name="root">assgnedBoothsList</param>
+			</result>
+		</action>
+		
+		<action name="saveUserAssignedBoothsDetails" class="surveyDataDetailsAction" method="saveUserAssignedBoothsDetails">
+			<result type="json" name="success">
+			<param name="root">resultStatus</param>
+			</result>
+		</action>
+		
+		<action name="getDayWisereportDetailsByConstituencyId" class="surveyDataDetailsAction" method="getDayWisereportDetailsByConstituencyId">
+		<result type="json" name="success">
+			<param name="root">dayWiseReportList</param>
+			</result>
+		</action>
+		
+		<action name="getBoothWiseUserSamplesDetailsByDates" class="surveyDataDetailsAction" method="getBoothWiseUserSamplesDetailsByDates">
+		<result type="json" name="success">
+			<param name="root">boothWiseCountList</param>
+			</result>
+		</action>
 			
 </package>
 		

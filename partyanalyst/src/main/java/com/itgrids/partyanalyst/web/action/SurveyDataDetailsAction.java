@@ -2,20 +2,26 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.SurveyReportVO;
+import com.itgrids.partyanalyst.dto.UserBoothDetailsVO;
 import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -32,6 +38,42 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	private List<GenericVO> returnList;
 	@Autowired
 	private ISurveyDataDetailsService surveyDataDetailsService;
+	private List<UserBoothDetailsVO> assgnedBoothsList;
+	private List<SurveyReportVO> dayWiseReportList;
+	private List<SelectOptionVO> constituenciesList;
+	private List<SurveyReportVO> boothWiseCountList;
+	
+	public List<SurveyReportVO> getBoothWiseCountList() {
+		return boothWiseCountList;
+	}
+
+	public void setBoothWiseCountList(List<SurveyReportVO> boothWiseCountList) {
+		this.boothWiseCountList = boothWiseCountList;
+	}
+
+	public List<SelectOptionVO> getConstituenciesList() {
+		return constituenciesList;
+	}
+
+	public void setConstituenciesList(List<SelectOptionVO> constituenciesList) {
+		this.constituenciesList = constituenciesList;
+	}
+
+	public List<SurveyReportVO> getDayWiseReportList() {
+		return dayWiseReportList;
+	}
+
+	public void setDayWiseReportList(List<SurveyReportVO> dayWiseReportList) {
+		this.dayWiseReportList = dayWiseReportList;
+	}
+
+	public List<UserBoothDetailsVO> getAssgnedBoothsList() {
+		return assgnedBoothsList;
+	}
+
+	public void setAssgnedBoothsList(List<UserBoothDetailsVO> assgnedBoothsList) {
+		this.assgnedBoothsList = assgnedBoothsList;
+	}
 	
 	
 	public String getTask() {
@@ -64,6 +106,8 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	}
 	public String execute()
 	{
+		constituenciesList = 	surveyDataDetailsService.getAllAssemblyConstituenciesByStateId();
+
 		return Action.SUCCESS;
 	}
 	@Override
@@ -233,7 +277,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 				return Action.INPUT;
 			}
 			jObj = new JSONObject(getTask());
-			returnList = surveyDataDetailsService.getConstituencyWiseLeaders();
+			//returnList = surveyDataDetailsService.getConstituencyWiseLeaders();
 		} 
 		catch (Exception e)
 		{
@@ -262,4 +306,89 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		return Action.SUCCESS;
 	}
 	
+	public String getAssignedBoothsDetailsByConstituencyIdAndUserId()
+	{
+		try {
+			
+			jObj = new JSONObject(getTask());
+			
+			Long constituencyId = jObj.getLong("constituencyId");
+			Long userId = jObj.getLong("userId");
+			
+			assgnedBoothsList = surveyDataDetailsService.getAssignedBoothsDetailsByConstituencyIdAndUserId(constituencyId,userId);
+					
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return Action.SUCCESS;
+		
+	}
+	
+	public String saveUserAssignedBoothsDetails()
+	{
+		
+		try {
+			jObj = new JSONObject(getTask());
+			
+			 JSONArray boothDetails = jObj.getJSONArray("boothIds");
+			 
+			 Long surveyUserId = jObj.getLong("surveyUserId");
+			 Long constituencyId = jObj.getLong("constituencyId");
+			 
+			 List<Long> boothIds = new ArrayList<Long>();
+			 
+			for(int i = 0 ; i < boothDetails.length() ; i++)
+			{
+				boothIds.add(Long.valueOf(boothDetails.get(i).toString()));
+			}
+			
+			resultStatus = surveyDataDetailsService.saveSurveyUserBoothAssign(surveyUserId,constituencyId,boothIds);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+		
+	}
+	
+	public String getDayWisereportDetailsByConstituencyId()
+	{
+		try {
+			jObj = new JSONObject(getTask());
+			
+			String startDate = jObj.getString("startDate");
+			String endDate = jObj.getString("endDate");
+			
+			dayWiseReportList = surveyDataDetailsService
+					.getDayWisereportDetailsByConstituencyId(jObj
+							.getLong("constituencyId"),startDate,endDate);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getBoothWiseUserSamplesDetailsByDates()
+	{
+		try {
+			
+			jObj = new JSONObject(getTask());
+			
+			String startDate = jObj.getString("startDate");
+			String endDate = jObj.getString("endDate");
+			String userId = jObj.getString("userId");
+			
+			boothWiseCountList = surveyDataDetailsService.getBoothWiseUserSamplesDetailsByDates(userId,startDate,endDate);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return Action.SUCCESS;
+		
+	}
+
 }
