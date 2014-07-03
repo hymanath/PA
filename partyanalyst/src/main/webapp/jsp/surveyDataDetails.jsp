@@ -247,7 +247,7 @@
 
 										</div>
 									</div>	
-									<div class="row-fluid">
+									<!--<div class="row-fluid">
 										<div class="span6">
 											Panchayat<font class="requiredFont">*</font>
 											<select class="input-block-level" id="panchayatId"> 
@@ -258,7 +258,7 @@
 											<select class="input-block-level" id="boothId"> 
 											<option value="0">Select Booth</option></select>
 										</div>
-									</div>
+									</div>-->
 									</div>
 									</div>
 									<div id="boothsDtlsId">
