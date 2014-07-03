@@ -6985,4 +6985,12 @@ public List<Object[]> checkVoterInState(Long publicationDateId,String voterName,
 		
 		
 	}
+	
+	public List<Object[]> getTotalVotersByBoothsForVerfier(Long boothIds,Long publicationDate)
+	{
+		 Query query = getSession().createQuery("select distinct model.voter.voterId,model.voter.houseNo,model.voter.gender,model.voter.age , model.voter.voterIDCardNo,model.name from BoothPublicationVoter model " +
+					" where model.booth.boothId in (:boothIds) and model.booth.publicationDate.publicationDateId = :publicationDate  ");
+		 query.setParameter("boothIds", boothIds);
+		 return query.list();
+	}
 }
