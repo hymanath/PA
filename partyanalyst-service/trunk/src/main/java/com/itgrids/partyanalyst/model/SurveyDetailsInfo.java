@@ -51,7 +51,7 @@ public class SurveyDetailsInfo
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "survey_details_info;", unique = true, nullable = false)
+	@Column(name = "survey_details_info", unique = true, nullable = false)
 	public Long getSurveyDetailsInfoId() {
 		return surveyDetailsInfoId;
 	}
