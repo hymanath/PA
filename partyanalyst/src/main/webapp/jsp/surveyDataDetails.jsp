@@ -1024,7 +1024,7 @@ function buildBoothDetails(result)
     str+='<br/><br/>';
 	 $.each(result,function(index,value){
 		 if(value.userHas == false)
-		   str+='<div class="span2"><label><input type="checkbox" value="'+value.boothId+'" class="boothChckbox"/>  Booth - '+value.partNo+'</label></div>';
+		   str+='<div class="span2"><label><input type="checkbox" value="'+value.boothId+'" class="boothChckbox" style="margin:0px;"/>  Booth - '+value.partNo+'</label></div>';
 		 else
 		  str+='<div class="span2"><label><input type="checkbox" checked value="'+value.boothId+'" class="boothChckbox"/>  Booth - '+value.partNo+'</label></div>';
 
