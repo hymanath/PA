@@ -26,7 +26,7 @@ import org.hibernate.annotations.NotFoundAction;
  *
  */
 @Entity
-@Table(name = "survey_details_info;")
+@Table(name = "survey_details_info")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class SurveyDetailsInfo
 {
