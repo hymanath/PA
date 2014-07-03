@@ -69,7 +69,13 @@
 							</div>
 							<div class="row">
 								<div class="span8 offset2">
-									User Type Description<font class="requiredFont">*</font>
+									User Type <font class="requiredFont">*</font>
+									<input type="text" id="userTypeName" class="input-block-level"></input>
+								</div>
+							</div>
+							<div class="row">
+								<div class="span8 offset2">
+									Description<font class="requiredFont">*</font>
 									<textarea id="userTypeDescription" class="input-block-level" rows="2"></textarea>
 								</div>
 							</div>
@@ -158,7 +164,7 @@
 											<!--<label>User Name</label>
 											<input type="text" placeholder="User Name..." class="input-block-level" id="uname">-->
 											Select User Type<font class="requiredFont">*</font>
-											<select class="input-block-level" id="surveyUserTypeForSelect" onchange="getSurveyUsersByUserType();">
+											<select class="input-block-level" id="surveyUserTypeForSelect" onchange="getSurveyUsersByUserType('surveyUserIdForSelect',this.value);">
 											<option value="0">Select User type</option>
 											</select>
 											</div>
@@ -255,7 +261,12 @@
 							<div class="row">
 								<div class="span8 offset2">
 										<div class="row-fluid">
-											<div class="span12">
+										<div class="span6">
+												Select User Name <font class="requiredFont">*</font>
+												<select class="input-block-level"id="deactiveUserTypeId" onChange="getSurveyUsersByUserType('deactivateUserId',this.value);"> 
+												<option value="0">Select User Type</option></select>
+											</div>
+											<div class="span6">
 												Select User Name <font class="requiredFont">*</font>
 												<select class="input-block-level"id="deactivateUserId"> 
 												<option value="0">Select User Name</option></select>
@@ -287,25 +298,29 @@
 							<div class="row">
 								<div class="span8 offset2">
 									<div class="row-fluid">
+										
+										<div class="span6">
+											Select user Type<font class="requiredFont">*</font>
+											<select class="input-block-level" id="typeId" onChange="getSurveyUsersByUserType('leaderId',this.value);"> <option value="0">Select Type</option></select>
+										</div>
+										<div class="span6">
+											Select  Leader<font class="requiredFont">*</font>
+											<select class="input-block-level" id="leaderId" onChange="getSurveyUsersByUserType('userLeaderId',1);"> <option value="0">Select Leader</option></select>
+										</div>
+									</div>	
+									<div class="row-fluid">
+										
+										<div class="span6">
+											Select User<font class="requiredFont">*</font>
+											<select class="input-block-level" id="userLeaderId"> <option value="0">Select User</option></select>
+										</div>
+										
 										<div class="span6">
 											Select Constituency<font class="requiredFont">*</font>
 											<select class="input-block-level" id="constituencyLeaderId"> 
 											<option value="0">Select Constituency</option>
+											<option value="232">Kavali</option>
 											</select>
-										</div>
-										<div class="span6">
-											Select Type<font class="requiredFont">*</font>
-											<select class="input-block-level" id="typeId"> <option value="0">Select Type</option></select>
-										</div>
-									</div>	
-									<div class="row-fluid">
-										<div class="span6">
-											Select  Leader<font class="requiredFont">*</font>
-											<select class="input-block-level" id="leaderId"> <option value="0">Select Leader</option></select>
-										</div>
-										<div class="span6">
-											Select User<font class="requiredFont">*</font>
-											<select class="input-block-level" id="userLeaderId"> <option value="0">Select User</option></select>
 										</div>
 									</div>
 								</div>
@@ -318,130 +333,60 @@
 		
 		<!---- User Verification Details ---->	
 		
-		<div class="row" id="verificationDiv">
-			<div class="span10 offset1">
-				<div class="row-fluid">
-					<div class="span12 widgetservey_Red m_top20">
-						<h4>User Verification Details</h4>
-							<div class="row">
-								<div class="span8 offset2">
-									<table class="table table-bordered">
-									  <thead>
-										<tr>										  
-										  <th>CONSTITUENCY NAME</th>
-										  <th>LEADER NAME</th>										  
-										</tr>
-									  </thead>
-									  <tbody>										
-										<tr>										  
-										  <td>constituency Name</td>
-										  <td><a href="#">Leader Name</a></td>
-										</tr>										
-										<tr>										  
-										  <td>constituency Name</td>
-										  <td><a href="#">Leader Name</a></td>
-										</tr>
-									  </tbody>
-									</table>
-								</div>
-							</div>
-					</div>
-				</div>
-			</div>
-		</div>
+		<div class="row" id="verificationDiv"></div>
 		<!-----LEADER NAME------->
-		<div class="row" id="leaderNameDiv">
-			<div class="span10 offset1">
-				<div class="row-fluid">
-					<div class="span12 widgetservey m_top20">
-						<h4>LEADER NAME</h4>
-							<div class="row">
-								<div class="span8 offset2">
-									<table class="table table-bordered">
-									  <thead>
-										<tr>										  
-										  <th>USER NAMES</th>
-										  <th>ASSIGned BOOTH NUMBERS</th>										  
-										</tr>
-									  </thead>
-									  <tbody>										
-										<tr>										  
-										  <td>constituency Name</td>
-										  <td>
-											<a href="#">01, </a>
-											<a href="#">02, </a>
-											<a href="#">03, </a>
-											<a href="#">04, </a>
-										  </td>
-										</tr>										
-										<tr>										  
-										  <td>constituency Name</td>
-										  <td>
-											<a href="#">01, </a>
-											<a href="#">02, </a>
-											<a href="#">03, </a>
-											<a href="#">04, </a>
-										  </td>
-										</tr>
-									  </tbody>
-									</table>
-								</div>
-							</div>
-					</div>
-				</div>
-			</div>
-		</div>
+		<div class="row" id="leaderNameDiv"></div>
 		
 	</div>
  <script>
-function getUserTypes()
+function getUserTypes(divId)
 {
-var jsObj =
-{
+	var jsObj =
+	{
 
-}
-$.ajax({
-type:'GET',
-url: 'getSurveyUserTypeAction.action',
-dataType: 'json',
-data: {task:JSON.stringify(jsObj)},
-}).done(function(result){
-$('#surveyUserTypeForSelect').find('option:not(:first)').remove();
-if(result != null && result.length > 0)
-{
-for(var i in result)
-{
-$('#surveyUserTypeForSelect').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
-}
+	}
+	$.ajax({
+	type:'GET',
+	url: 'getSurveyUserTypeAction.action',
+	dataType: 'json',
+	data: {task:JSON.stringify(jsObj)},
+	}).done(function(result){
+	$('#'+divId+'').find('option:not(:first)').remove();
+	if(result != null && result.length > 0)
+	{
+	for(var i in result)
+	{
+	$('#'+divId+'').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+	}
 
-}
+	}
 
-});
-}
-
-function getSurveyUsersByUserType()
-{
-var jsObj =
-{
-userTypeId : 1,
-task : "getSurveyUsersByUserType"
-}
-$.ajax({
-type:'GET',
-url: 'getSurveyUsersByUserTypeAction.action',
-dataType: 'json',
-data: {task:JSON.stringify(jsObj)},
-}).done(function(result){
-$('#surveyUserIdForSelect').find('option:not(:first)').remove();
-if(result != null && result.length > 0)
-{
-for(var i in result)
-{
-$('#surveyUserIdForSelect').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+	});
 }
 
-}
-});
+function getSurveyUsersByUserType(divId,value)
+{
+	var jsObj =
+	{
+	userTypeId :value,
+	task : "getSurveyUsersByUserType"
+	}
+	$.ajax({
+	type:'GET',
+	url: 'getSurveyUsersByUserTypeAction.action',
+	dataType: 'json',
+	data: {task:JSON.stringify(jsObj)},
+	}).done(function(result){
+	$('#'+divId+'').find('option:not(:first)').remove();
+	if(result != null && result.length > 0)
+	{
+	for(var i in result)
+	{
+	$('#'+divId+'').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+	}
+
+	}
+	});
 }
 
 
@@ -547,7 +492,12 @@ function saveSurveyUser()
 function saveSurveyUserType()
 {
 	var description = $.trim($('#userTypeDescription').val());
-
+	var userTypeName = $.trim($('#userTypeName').val());
+	if(userTypeName.length == 0)
+	{
+		$("#createUserTypeErrorDiv").html("Please Enter User Type ").css("color","red");
+		return;
+	}
 	if(description.length == 0)
 	{
 		$("#createUserTypeErrorDiv").html("Please Enter User Type Description").css("color","red");
@@ -557,6 +507,7 @@ function saveSurveyUserType()
 	var jsObj = 
 	{
 		description : description,
+		userType : userTypeName,
 		task : "saveSurveyUserType"
 	}
 	
@@ -669,6 +620,7 @@ else if(id == "userCreationTab")
 	$("#assignBoothToLeaderDiv").hide();
 	$("#verificationDiv").hide();
 	$("#leaderNameDiv").hide();
+	getUserTypes('userType');
 	}
 
 	else if(id == "tabAssignTab")
@@ -683,7 +635,7 @@ else if(id == "userCreationTab")
 	$("#verificationDiv").hide();
 	$("#leaderNameDiv").hide();
 	buildDatePicker();
-	getUserTypes();
+	getUserTypes('surveyUserTypeForSelect');
 	}
 
 		else if(id == "boothAssignTab")
@@ -710,6 +662,7 @@ else if(id == "userCreationTab")
 	$("#assignBoothToLeaderDiv").hide();
 	$("#verificationDiv").hide();
 	$("#leaderNameDiv").hide();
+	getUserTypes('deactiveUserTypeId');
 	}
 
 	
@@ -724,6 +677,8 @@ else if(id == "userCreationTab")
 	$("#assignBoothToLeaderDiv").show();
 	$("#verificationDiv").hide();
 	$("#leaderNameDiv").hide();
+	getUserTypes('typeId');
+	
 	}
 		else if(id == "verificationDetailsTab")
 	{
@@ -736,6 +691,7 @@ else if(id == "userCreationTab")
 	$("#assignBoothToLeaderDiv").hide();
 	$("#verificationDiv").show();
 	$("#leaderNameDiv").show();
+	getLeaderDetetilsByContituencyWise();
 	}
 
 
@@ -838,16 +794,16 @@ function assignLeaderToUser()
 	}
 	var jsObj = 
 	{
-		constituencyLeaderId : constituencyLeaderId,
-		typeId :  typeId,
+		constituencyId : constituencyLeaderId,
+		userTypeId :  typeId,
 		leaderId : leaderId,
-		userLeaderId :  userLeaderId,
+		userId :  userLeaderId,
 		task : "assignLeader"
 	}
 	
 	$.ajax({
 		type:'GET',
-		url: 'assignleaderToUserAction.action',
+		url: 'saveServeyUserRelationDetailsAction.action',
 		dataType: 'json',
 		data: {task:JSON.stringify(jsObj)},
 		}).done(function(result){
@@ -911,6 +867,113 @@ function deactivateUser()
 
 }
 
+function getLeaderDetetilsByContituencyWise()
+{
+	var jsObj = 
+	{
+	}
+	
+	$.ajax({
+		type:'GET',
+		url: 'getSurveyLeadersAction.action',
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)},
+		}).done(function(result){
+			if(result != null && result.length > 0)
+			{	
+				var str = '';
+			
+				str += '<div class="span10 offset1">';
+				str += '<div class="row-fluid">';
+				str += '<div class="span12 widgetservey_Red m_top20">';
+				str += '<h4>User Verification Details</h4>';
+				str += '<div class="row">';
+				str += '<div class="span8 offset2">';
+				str += '<table class="table table-bordered">';
+				str += '<thead>';
+				str += '<tr>	';									  
+				str += ' <th>CONSTITUENCY NAME</th>';
+				str += '<th>LEADER NAME</th>	';									  
+				str += '</tr>';
+				str += ' </thead>';
+				str += '<tbody>	';			
+				for(var i in result)
+				{
+					str += '<tr>		';								  
+					str += '<td>'+result[i].desc+'</td>';
+					str += '<td><a onClick="getBoothDetailsForSelectedUser('+result[i].id+','+result[i].rank+')">'+result[i].name+'</a></td>';
+					str += '</tr>	';									
+				}
+				
+				str += '</tbody>';
+				str += '</table>';
+				str += '</div>';
+				str += '</div>';
+				str += '</div>';
+				str += '</div>';
+			    str += '</div>';
+				
+				$('#verificationDiv').html(str);
+			}			
+		});
+}
+
+function getBoothDetailsForSelectedUser(leaderId,constituencyId)
+{
+	var jsObj = 
+	{
+		leaderId : leaderId,
+		constituencyId : constituencyId,
+		task : "getBoothDetailsForSelectedUser"
+	}
+	
+	$.ajax({
+		type:'GET',
+		url: 'getSurveyUsersByLeadersAction.action',
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)},
+		}).done(function(result){
+			if(result != null && result.length > 0)
+			{	
+				var str = '';
+				str += '<div class="span10 offset1">';
+				str += '<div class="row-fluid">';
+				str += '<div class="span12 widgetservey m_top20">';
+				str += '<h4>LEADER NAME</h4>';
+				str += '<div class="row">';
+				str += '<div class="span8 offset2">';
+				str += '<table class="table table-bordered">';
+				str += '<thead>';
+				str += '<tr>	';									  
+				str += '<th>USER NAMES</th>';
+				str += ' <th>ASSIGNED BOOTH NUMBERS</th>	';									  
+				str += '</tr>';
+				str += '</thead>';
+				str += '<tbody>	';	
+				for(var i in result)	
+				{
+					str += '<tr>';								  
+					str += '<td>'+result[i].name+'</td>';
+					str += '<td>';
+					for(var j in result[i].genericVOList)
+					{
+						str += '<a>'+result[i].genericVOList[j].rank+' , </a>';
+					}
+					str += ' </td>';
+					str += '</tr>';	
+				}			
+											
+				str += ' </tbody>';
+				str += '</table>';
+				str += '</div>';
+				str += '</div>';
+				str += '</div>';
+				str += '</div>';
+			    str += '</div>';
+				$('#leaderNameDiv').html(str);
+			}			
+		});
+}
 </script>
 <script>
 showHideTabs('userTypeTab');
