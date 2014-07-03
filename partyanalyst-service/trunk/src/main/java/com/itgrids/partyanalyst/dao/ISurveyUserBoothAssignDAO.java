@@ -7,6 +7,7 @@ import org.appfuse.dao.GenericDao;
 import com.itgrids.partyanalyst.model.SurveyUserBoothAssign;
 
 public interface ISurveyUserBoothAssignDAO extends GenericDao<SurveyUserBoothAssign, Long>{
+	public List<Long> getBoothIdsBySurveyUser(Long surveyUserId);
 	
 	public List<Object[]> getAllTheAssignedBoothsByConstituencyIdAndUserId(Long constituencyId,Long userId);
 
