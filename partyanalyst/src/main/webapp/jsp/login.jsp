@@ -75,16 +75,16 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c4e480', end
 <div id="forgot_password_window_inner1" style="font-size:0.8em"></div>
 </div>
 			<h2>Login</h2>
-
+<form name="loginForm" method="POST" onsubmit="javascript: ajaxCallForLoginPopup(); return false;">
 			<div id="username_input">
 
 				<div id="username_inputleft"></div>
 
 				<div id="username_inputmiddle">
-				<form>
+			
 					<input type="text" id="userName1" placeholder="User Name" class="url">
 					<img id="url_user" src="./images/tdp-login/mailicon.png" >
-				</form>
+				
 				</div>
 
 				<div id="username_inputright"></div>
@@ -96,10 +96,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c4e480', end
 				<div id="password_inputleft"></div>
 
 				<div id="password_inputmiddle">
-				<form>
+				
 					<input type="password" id="passWord_Id1" placeholder="Password" class="url">
 					<img id="url_password" src="./images/tdp-login/passicon.png" alt="">
-				</form>
+				
 				</div>
 
 				<div id="password_inputright"></div>
@@ -108,12 +108,16 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c4e480', end
 
 			<div id="submit"> 
 				<!--<a class="signin" id="submit1" onclick="ajaxCallForLoginPopup();" >SIGN IN</a>-->
-				<input type="button" class="signin" id="submit1" onclick="ajaxCallForLoginPopup();" value="SIGN IN">SIGN IN</input>
+				<input type="submit" class="signin" id="submit1" value="SIGN IN">SIGN IN</input>
 				
 			</div>
 
 
 			<div id="links_left">
+			<div id="ajaxcallimage"  class = "span3" style="display:none;font-weight:bold;color: #0174DF;font-size:small;width: 345px; height: 17px;">
+<font  style="font-size:small;">Sending Your Request. Please wait...</font>
+<img src="images/icons/loading.gif" style="padding-left:10px;" width="18" height="11"/>
+</div>
 <div id ="LoginErrorMessageDiv" style="color:red; margin-left: 2px;"></div>
 			<!--<a onclick="showForgotPasswordPanelForPopup();" href="javascript:{}">Forgot your Password?</a>-->
 
@@ -122,7 +126,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c4e480', end
 			<!-----<div id="links_right"><a href="#">Not a Member Yet?</a></div>---->
 
 		</div>
-
+</form>
 		<div id="wrapperbottom"></div>
 		
 		<div id="powered">
@@ -133,6 +137,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c4e480', end
 /*$("#submit").live("click",function(){
 	$("#wrappermiddle").css("height","257px");
 });*/
+
+
 </script>
 </body>
 </html>

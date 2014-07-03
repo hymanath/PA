@@ -81,10 +81,13 @@ public class UserTrackingInterceptor extends AbstractInterceptor implements Serv
 		RegistrationVO registrationVO = (RegistrationVO)session.getAttribute(IWebConstants.USER);
 		if( request.getRequestURL().indexOf("loginPopUpsAction") == -1 && IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver"))
 		{
+			String[] arr = request.getRequestURL().toString().split("/");
 			if(registrationVO == null && request.getRequestURL().indexOf("login") == -1)
 				return "tdpLoginPage";
-			else 
+			else if(arr[4].toString().trim().equalsIgnoreCase("login.action"))
 				return "success";
+			else if(arr[4].toString().trim().equalsIgnoreCase("loginPopUpsAction.action"))
+				return "dashboard";
 			
 		}
 		
