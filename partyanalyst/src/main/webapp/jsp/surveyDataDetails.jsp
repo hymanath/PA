@@ -45,6 +45,15 @@
   </head>
   
   <body>
+<script>
+  $(document).ready(function(){
+   
+    $('#userId').change(function(){
+		getUserAssignedBoothsDetailsForAConstituency(this.value);
+	});
+
+});
+  </script>
 	<div class="container">
 		<div class="row">
 			<div class="span10 offset1 m_top20 survey_nav">
@@ -973,6 +982,42 @@ function getBoothDetailsForSelectedUser(leaderId,constituencyId)
 				$('#leaderNameDiv').html(str);
 			}			
 		});
+}
+
+function getUserAssignedBoothsDetailsForAConstituency(userId)
+{
+	var jsObj =
+	{
+	 constituencyId:$('#constituencyId').val(),
+	 userId:userId
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getAssignedBoothsDetailsByConstituencyIdAndUserId.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		  }).done(function(result){
+
+		});
+}
+
+function saveUserAssignedBoothsDetails()
+{
+	var jsObj =
+	{
+	  boothIds:[],
+	  constituencyId:$('#constituencyId').val(),
+	  userId:userId
+	}
+	$.ajax({
+			type:'GET',
+			url: 'saveUserAssignedBoothsDetails.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		  }).done(function(result){
+
+		});
+
 }
 </script>
 <script>
