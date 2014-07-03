@@ -332,7 +332,7 @@ public class ContentManagementService implements IContentManagementService{
 							 
 							 Set<FilePaths> filePathsSet = fileSourceLanguage.getFilePaths();
 							 fileVOSourceLanguage.setMultipleNews(filePathsSet.size());
-							 Long tempPartNo = 1L;
+							// Long tempPartNo = 1L;
 							 for(FilePaths filePath : filePathsSet){
 								 FileVO fileVOPath = new FileVO();
 								 fileVOPath.setPath(filePath.getFilePath());
@@ -348,12 +348,16 @@ public class ContentManagementService implements IContentManagementService{
 								 //fileVOPath.setDescription(fileSourceLanguage.getNewsDetailedDescription());
 								 fileVOPath.setOrderNo(filePath.getOrderNo());
 								 //fileVOPath.setOrderName("Part-"+filePath.getOrderNo());
-								 fileVOPath.setOrderName("Part-"+tempPartNo);
-								 tempPartNo = tempPartNo+1;
+								 fileVOPath.setOrderName("Part-"+filePath.getOrderNo());
+								 //tempPartNo = tempPartNo+1;
 								 fileVOPathsList.add(fileVOPath);
 							 }
-							// Collections.sort(fileVOPathsList,CandidateDetailsService.sortData);
-							 fileVOSourceLanguage.setDescription(fileSourceLanguage.getNewsDetailedDescription() != null ?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileSourceLanguage.getNewsDetailedDescription())):"");
+							 try{
+							Collections.sort(fileVOPathsList,CandidateDetailsService.sortData);
+							 }catch(Exception e){
+								log.error("Exception occured while sorting news parts", e) ;
+							 }
+							 fileVOSourceLanguage.setDescription(fileSourceLanguage.getNewsDetailedDescription() != null ?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileSourceLanguage.getNewsDetailedDescription())).replace("\n", "<br/>"):"");
 							 if(fileSourceLanguage.getFont() != null)
 							 fileVOSourceLanguage.setEenadu(true);
 							 fileVOSourceLanguage.setFileVOList(fileVOPathsList);

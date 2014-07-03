@@ -219,7 +219,7 @@ public class FilePathsDAO extends GenericDaoHibernate<FilePaths,Long> implements
 			query.append("select model.filePath, model.edition, model.pageNo, model.newsLength,model.fileSourceLanguage.source.sourceId, ");
 			query.append(" model.fileSourceLanguage.language.languageId, model.fileSourceLanguage.newsDetailedDescription, ");
 			query.append("model.fileSourceLanguage.font.fontId,model.filePathsId from FilePaths model where ");
-			query.append("model.fileSourceLanguage.fileSourceLanguageId = :fileSourceLanguageIdList");
+			query.append("model.fileSourceLanguage.fileSourceLanguageId = :fileSourceLanguageIdList order by model.orderNo");
 			
 			Query queryObj = getSession().createQuery(query.toString());
 			queryObj.setParameter("fileSourceLanguageIdList", fileSourceLanguageIdList);
