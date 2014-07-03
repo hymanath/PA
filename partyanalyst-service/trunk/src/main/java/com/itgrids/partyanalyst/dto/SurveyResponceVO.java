@@ -27,6 +27,13 @@ public class SurveyResponceVO implements Serializable
 	private String isCadre = "N";
 	private String isInfluencingPeople = "N";
 	private String mobileNo = null;
+	
+	private String voterName;
+	private String gender;
+	private Long age;
+	private String houseNo;
+	
+	
 	public Long getSurveyUserId() {
 		return surveyUserId;
 	}
@@ -116,6 +123,30 @@ public class SurveyResponceVO implements Serializable
 	}
 	public void setMobileNo(String mobileNo) {
 		this.mobileNo = mobileNo;
+	}
+	public String getVoterName() {
+		return voterName;
+	}
+	public void setVoterName(String voterName) {
+		this.voterName = voterName;
+	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	public Long getAge() {
+		return age;
+	}
+	public void setAge(Long age) {
+		this.age = age;
+	}
+	public String getHouseNo() {
+		return houseNo;
+	}
+	public void setHouseNo(String houseNo) {
+		this.houseNo = houseNo;
 	}
 	
 	

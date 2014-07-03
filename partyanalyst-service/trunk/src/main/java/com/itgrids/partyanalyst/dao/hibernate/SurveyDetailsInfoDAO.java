@@ -46,4 +46,20 @@ public class SurveyDetailsInfoDAO extends GenericDaoHibernate<SurveyDetailsInfo,
 		
 	}
 
+	
+	public List<SurveyDetailsInfo> getLatLongForSurveyDetails(Long surveyUserId,Date date)
+	{
+		Query query = getSession().createQuery(" from SurveyDetailsInfo model where model.surveyUser.surveyUserId =:surveyUserId and model.date = :date");
+		query.setParameter("surveyUserId", surveyUserId);
+		query.setParameter("date", date);
+		return query.list();
+	}
+	
+	public List<SurveyDetailsInfo> getSurveyDetilsForAssibnedBooths(Long boothIds)
+	{
+		Query query = getSession().createQuery("from SurveyDetailsInfo model ,SurveyUserBoothAssign model1 where model.surveyUser.surveyUserId = model1.surveyUser.surveyUserId " +
+				" and model1.booth.boothId in (:boothIds) and model.surveyUser.surveyUserType.surveyUsertypeId = 1");
+		query.setParameter("boothIds", boothIds);
+		return query.list();
+	}
 }

@@ -4,8 +4,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -13,6 +15,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
@@ -26,7 +29,6 @@ import com.itgrids.partyanalyst.dao.ISurveyUserTabAssignDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserTrackingDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserTypeDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
-import com.itgrids.partyanalyst.dao.hibernate.BoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -101,7 +103,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	private DateUtilService dateUtilService;
 	
 	@Autowired
-	private BoothPublicationVoterDAO boothPublicationVoterDAO;
+	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
 
 	
 	/**
@@ -702,6 +704,195 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		}
 		 return returnList;
 	}
+	
+	/**
+	 * This Service is used for getting longititude and latitude values for user tracking
+	 * @param surveyUserId
+	 * @param date
+	 * @return
+	 */
+	public List<GenericVO> getLatLongForUserTrackung(Long surveyUserId,Date date)
+	{
+		List<GenericVO> returnList = null;
+		try 
+		{
+			List<Object[]> result = surveyUserTrackingDAO.getLatLongForUserTracking(surveyUserId, date);
+			if(result != null && result.size() > 0)
+			{
+				returnList = new ArrayList<GenericVO>();
+				for (Object[] parms : result)
+				{
+					GenericVO VO = new GenericVO();
+					VO.setName(parms[0] != null ? parms[0].toString() : "");//longtitude
+					VO.setDesc(parms[1] != null ? parms[1].toString() : "");//latitude
+					returnList.add(VO);
+				}
+			}
+		}
+		catch (Exception e) 
+		{
+			LOG.error("Exception raised in getLatLongForUserTrackung service in SurveyDataDetailsService", e);
+		}
+		return returnList;
+	}
+	
+	/**
+	 * This Service is used for getting all detils taken by data collector
+	 * @param surveyUserId
+	 * @param date
+	 * @return returnList
+	 */
+	public List<SurveyResponceVO> getLatLongForSurveyDetails(Long surveyUserId,Date date)
+	{
+		List<SurveyResponceVO> returnList = null;
+		try
+		{
+			List<SurveyDetailsInfo> result = surveyDetailsInfoDAO.getLatLongForSurveyDetails(surveyUserId, date);
+			if(result != null && result.size() > 0)
+			{
+				returnList = new ArrayList<SurveyResponceVO>();
+				fullSurveyResponceVO(result,returnList);
+			}
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getLatLongForUserTrackung service in SurveyDataDetailsService", e);
+		}
+		return returnList;
+	}
+	
+	/**
+	 * This Service is used for filling all details for survey data collection
+	 * @param result
+	 * @param returnList
+	 */
+	
+	public void fullSurveyResponceVO(List<SurveyDetailsInfo> result,List<SurveyResponceVO> returnList )
+	{
+		for (SurveyDetailsInfo surveyDetailsInfo : result)
+		{
+			SurveyResponceVO VO = new SurveyResponceVO();
+			if(surveyDetailsInfo.getVoter() != null)
+			{
+				VO.setVoterId(surveyDetailsInfo.getVoter().getVoterId());
+				VO.setVoterCardNo(surveyDetailsInfo.getVoter().getVoterIDCardNo());
+				VO.setVoterName(surveyDetailsInfo.getVoter().getName());
+				VO.setGender(surveyDetailsInfo.getVoter().getGender());
+				VO.setAge(surveyDetailsInfo.getVoter().getAge());
+			}
+			VO.setMobileNo(surveyDetailsInfo.getMobileNumber());
+			VO.setIsCadre(surveyDetailsInfo.getIsCadre());
+			VO.setIsInfluencingPeople(surveyDetailsInfo.getIsInfluencingPeople());
+			if(surveyDetailsInfo.getCaste() != null)
+			{
+				String casteName = casteStateDAO.get(surveyDetailsInfo.getCaste().getCasteStateId()).getCaste().getCasteName();
+				VO.setCasteName(casteName);
+			}
+			else
+			{
+				VO.setCasteName(surveyDetailsInfo.getCasteName());
+			}
+			if(surveyDetailsInfo.getHamlet() != null)
+			{
+				String hamletName = hamletDAO.get(surveyDetailsInfo.getHamlet().getHamletId()).getHamletName();
+				VO.setHamletName(hamletName);
+			}
+			else
+			{
+				VO.setHamletName(surveyDetailsInfo.getHamletName());
+			}
+			VO.setLatitude(surveyDetailsInfo.getLatitude());
+			VO.setLocalArea(surveyDetailsInfo.getLocalArea());
+			VO.setLongitude(surveyDetailsInfo.getLongitude());
+			returnList.add(VO);
+		}
+	}
+	
+	/**
+	 * This Service is used for assigng voter details for Verifier fordata collection
+	 * @param surveyUserId
+	 * @param boothId
+	 * @return returnList
+	 */
+	public List<SurveyResponceVO> getDetailsForVerifier(Long surveyUserId,Long boothId)
+	{
+		 List<SurveyResponceVO> returnList = null;
+		 try
+		 {
+			
+			List<SurveyDetailsInfo> result = surveyDetailsInfoDAO.getSurveyDetilsForAssibnedBooths(boothId);
+			if(result != null && result.size() > 0)
+			{
+				List<SurveyResponceVO> SurveyResponceVOList = new ArrayList<SurveyResponceVO>();
+				fullSurveyResponceVO(result,SurveyResponceVOList);
+				Map<Long,SurveyResponceVO> collectedDataMap = new HashMap<Long, SurveyResponceVO>();
+				Map<Long,SurveyResponceVO> totalVoterMap = new HashMap<Long, SurveyResponceVO>();
+				
+				Integer totalCollectedData = SurveyResponceVOList.size();
+				
+				List<Object[]> voterHouseDetails = boothPublicationVoterDAO.getTotalVotersByBoothsForVerfier(boothId, 10l);
+				if(voterHouseDetails != null && voterHouseDetails.size() > 0)
+				{
+					for (Object[] parms : voterHouseDetails)
+					{
+						SurveyResponceVO VO = new SurveyResponceVO();
+						VO.setVoterId((Long)parms[0]);
+						VO.setVoterCardNo(parms[4] != null ? parms[4].toString() :"");
+						VO.setAge(parms[3] != null ? (Long)parms[3] :null);
+						VO.setGender(parms[2] != null ? parms[2].toString() :"");
+						VO.setHouseNo(parms[1] != null ? parms[1].toString() :"");
+						totalVoterMap.put((Long)parms[0], VO);
+					}
+				}
+				
+				Integer totalBoothAvaliableData = totalVoterMap.size();
+				if(totalBoothAvaliableData > totalCollectedData)
+				{
+					Integer eareseDataCount = totalCollectedData/10;
+					if(SurveyResponceVOList != null && SurveyResponceVOList.size() > 0)
+					{
+						Random randomNum = new Random();
+						
+						for(Integer i = 0 ; i < eareseDataCount ; i++)
+						{
+							SurveyResponceVOList.remove(randomNum.nextInt(SurveyResponceVOList.size())) ;
+						}
+					}
+					for (SurveyResponceVO surveyResponceVO : SurveyResponceVOList)
+					{
+						collectedDataMap.put(surveyResponceVO.getVoterId(), surveyResponceVO);
+					}
+					
+				}
+				
+				if(totalVoterMap != null && totalVoterMap.size() > 0)
+				{
+					returnList = new ArrayList<SurveyResponceVO>();
+					List<Long> voterIds = new ArrayList<Long>(totalVoterMap.keySet());
+					for (Long voterId : voterIds)
+					{
+						SurveyResponceVO VO = collectedDataMap.get(voterId);
+						if(VO == null)
+						{
+							returnList.add(totalVoterMap.get(voterId));
+						}
+						else
+						{
+							returnList.add(VO);
+						}
+					}
+				}
+				
+				
+			}
+		 }
+		 catch (Exception e) 
+		 {
+			 LOG.error("Exception raised in getDetailsForVerifier service in SurveyDataDetailsService", e);
+		 }
+		 return returnList;
+	}
+	
 	public List<UserBoothDetailsVO> getAssignedBoothsDetailsByConstituencyIdAndUserId(Long constituencyId,Long userId)
 	{
 		
