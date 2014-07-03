@@ -1170,6 +1170,88 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	}
 	
 	
-
+	/*public List<SurveyResponceVO> getSurveyUserBoothsAndVoterDetails(Long surveyUserId)
+	{
+		List<SurveyResponceVO> resultList = new ArrayList<SurveyResponceVO>();
+		
+		try{
+			
+			List<Long> boothIds = surveyUserBoothAssignDAO.getBoothIdsBySurveyUser(surveyUserId);
+			List<Long> booths = new ArrayList<Long>();
+			if(boothIds != null && boothIds.size() > 0)
+			{
+				
+				List<Object[]> list = surveyDetailsInfoDAO.getVoterDetailsForbooths(boothIds);	
+				if(list != null && list.size() > 0)
+				{
+					for(Object[] params : list)
+					{
+						SurveyResponceVO boothVo = new SurveyResponceVO();
+						if(!booths.contains((Long)params[0]))
+						boothVo.setBoothId((Long)params[0]);
+						booths.add((Long)params[0]);
+					}
+					
+					for(Object[] params : list)
+					{
+						SurveyResponceVO booth = checkBoothExist(resultList,(Long)params[0]);
+						if(booth != null)
+						{
+							SurveyDetailsInfo surveyDetailsInfo = (SurveyDetailsInfo) params[1];
+							if(surveyDetailsInfo.getVoter() != null)
+							{
+								Voter voter = surveyDetailsInfo.getVoter();
+								SurveyResponceVO voterVo = new SurveyResponceVO();
+								voterVo.setVoterId(voter.getVoterId());
+								voterVo.setVoterCardNo(voter.getVoterIDCardNo());
+								voterVo.setVoterName(voter.getName() != null ?voter.getName().toString() : "");
+								voterVo.setAge((Long)voter.getAge());
+								voterVo.setGender(voter.getGender().toString());
+							
+								voterVo.setCasteName(surveyDetailsInfo.getCasteName() != null ?surveyDetailsInfo.getCasteName().toString() : "");
+								voterVo.setCasteId(surveyDetailsInfo.getCaste() != null ? surveyDetailsInfo.getCaste().getCaste().getCasteId() : 0l);
+								voterVo.setHamletId(surveyDetailsInfo.getHamlet() != null ? surveyDetailsInfo.getHamlet().getHamletId() : 0l);
+								voterVo.setHamletName(surveyDetailsInfo.getHamlet() != null ?surveyDetailsInfo.getHamlet().getHamletName() : "");
+								voterVo.setIsCadre(surveyDetailsInfo.getIsCadre().toString());
+								voterVo.setIsInfluencingPeople(surveyDetailsInfo.getIsInfluencingPeople().toString());
+								booth.getVotersList().add(voterVo);
+							}
+							
+						}
+								
+						
+					}
+					
+				}
+				
+			
+				
+				
+			}
+		}
+		catch (Exception e) {
+			LOG.error("Exception raised in getSurveyUserBoothsAndVoterDetails service in SurveyDataDetailsService", e);
+		}
+		return resultList;
+	}
+	
+	
+	public SurveyResponceVO checkBoothExist(List<SurveyResponceVO> resultList,Long boothId)
+	{
+		try{
+			
+			if(resultList == null)
+				return null;
+			for(SurveyResponceVO vo : resultList)
+			{
+				if(vo.getBoothId().longValue() == boothId)
+					return vo;
+			}
+		}
+		catch (Exception e) {
+			LOG.error("Exception raised in checkBoothExist service in SurveyDataDetailsService", e);
+		}
+		return null;
+	}*/
 	
 }
