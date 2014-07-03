@@ -34,4 +34,13 @@ public class SurveyUserBoothAssignDAO extends GenericDaoHibernate<SurveyUserBoot
 		query.setParameter("surveyUserId", surveyUserId)	;
 		return query.list();
 	}
+	
+	public List<Long> getBoothIdsBySurveyUser(Long surveyUserId)
+	{
+		
+		Query query = getSession().createQuery("select distinct model.booth.boothId from SurveyUserBoothAssign model where model.surveyUser.surveyUserId = :surveyUserId");
+		query.setParameter("surveyUserId", surveyUserId);
+		return query.list();
+	}
+
 }
