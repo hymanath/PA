@@ -728,7 +728,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				
 				boothDetails.setBoothId((Long)obj[0]);
 				boothDetails.setPartNo(obj[1].toString());
-				if(obj[2] != null)
+				/*if(obj[2] != null)
 				{
 					Panchayat panchayat = (Panchayat)obj[3];
 					boothDetails.setPanchayatName(panchayat.getPanchayatName());
@@ -738,7 +738,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				{
 					LocalElectionBody localBody = (LocalElectionBody)obj[3];
 					boothDetails.setPanchayatName(localBody.getName());
-				}
+				}*/
 				
 				if(existingBoothIds.contains((Long)obj[0]))
 					boothDetails.setUserHas(true);
@@ -977,6 +977,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				return userVO;
 		return null;
 	}
+	
 	
 
 	
