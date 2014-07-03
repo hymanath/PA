@@ -1,7 +1,9 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class SurveyResponceVO implements Serializable 
 {
@@ -17,7 +19,7 @@ public class SurveyResponceVO implements Serializable
 	private String hamletName = null;
 	private String localArea = null;
 	private Date date;
-	
+	private Long boothId;
 	private String longitude = null;
 	private String latitude = null;
 	
@@ -32,8 +34,21 @@ public class SurveyResponceVO implements Serializable
 	private String gender;
 	private Long age;
 	private String houseNo;
+	private List<SurveyResponceVO> votersList = new ArrayList<SurveyResponceVO>();
 	
 	
+	public Long getBoothId() {
+		return boothId;
+	}
+	public void setBoothId(Long boothId) {
+		this.boothId = boothId;
+	}
+	public List<SurveyResponceVO> getVotersList() {
+		return votersList;
+	}
+	public void setVotersList(List<SurveyResponceVO> votersList) {
+		this.votersList = votersList;
+	}
 	public Long getSurveyUserId() {
 		return surveyUserId;
 	}
