@@ -12,5 +12,7 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	public List<Object[]> getDayWisereportDetailsByConstituencyId(Long constituencyId,Date startDate,Date endDate);
 	public List<Object[]> getBoothWiseUserSamplesDetailsByDates(Long userId,Date startDate,Date endDate);
 
-
+	public List<SurveyDetailsInfo> getLatLongForSurveyDetails(Long surveyUserId,Date date);
+	
+	public List<SurveyDetailsInfo> getSurveyDetilsForAssibnedBooths(Long boothIds);
 }
