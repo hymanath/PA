@@ -49,8 +49,9 @@ public class SurveyDetailsInfo
 	private Date insertedTime;
 	private Date updatedTime;
 	private Booth booth;
-	private Long constituencyId;
+	private Long boothId;
 	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "survey_details_info", unique = true, nullable = false)
@@ -214,12 +215,11 @@ public class SurveyDetailsInfo
 	}
 	
 	@Column(name="booth_id")
-	public Long getConstituencyId() {
-		return constituencyId;
+	public Long getBoothId() {
+		return boothId;
 	}
-	
-	public void setConstituencyId(Long constituencyId) {
-		this.constituencyId = constituencyId;
+	public void setBoothId(Long boothId) {
+		this.boothId = boothId;
 	}
 	
 	
