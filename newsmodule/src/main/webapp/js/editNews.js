@@ -765,7 +765,7 @@ function buildUploadNewsForMultipleUsers()
 	str += ' <td><a href="javascript:{changeLanguage();}" id="sourceEnglish" style="display:none"><img src="images/e-letter.jpg" style="height:35px;width:35px;" title="English Language"></img></a></td>';
 	str += '   </tr>';
 	str += '   <tr>';
-	str += '       <td class="tdWidth1">Short Description : <font class="requiredFont">*</font></td>';
+	str += '       <td class="tdWidth1">Short News : <font class="requiredFont">*</font></td>';
 	str += '       <td class="selectWidthPadd"><textarea id="newsfileDescription" cols="20" rows="3" name="fileDescription" maxlength="1800"></textarea></td>';
 	str += '   </tr>';
 
@@ -2364,7 +2364,7 @@ function editNewsDetails(fileId,source){
 	str += '   </tr>';
 	str += '   <tr>';
     
-	str += '       <td class="tdWidth">Short Description : <font class="requiredFont">*</font></td>';
+	str += '       <td class="tdWidth">Short News : <font class="requiredFont">*</font></td>';
 	str +='<td>';
 	if(source == "Eenadu Telugu")
      str += '<textarea style="font-family: eFont; font-size: 20px;" id="fileDescription" cols="20" rows="3"></textarea>';
@@ -3096,7 +3096,7 @@ function  buildUploadNews()
 	str += '       <td class="selectWidthPadd"><input type="text" id="newsfileTitle" name="fileTitle" size="25" maxlength="160" ></input></td>'; 
 	str += '   </tr>';
 	str += '   <tr>';
-	str += '       <td class="tdWidth1">Short Description : <font class="requiredFont">*</font></td>';
+	str += '       <td class="tdWidth1">Short News : <font class="requiredFont">*</font></td>';
 	str += '       <td class="selectWidthPadd"><textarea id="newsfileDescription" cols="20" rows="3" name="fileDescription" maxlength="330"></textarea></td>';
 	str += '   </tr>';
 	
@@ -4014,8 +4014,8 @@ function addNewFileSource(){
 		str+='</div>';
 		str+='<div id="source'+addSource+'newfile"></div>';
 		str+='<div class="container m_top5">';
-		str +='<span class="help-block">&nbsp;&nbsp;&nbsp;File Path Or Detailed News Description is Mandatory. File must be .jpeg or .jpg or .png or .gif formats only.</span>';
-		str+='<div class="span12 ">         <label><strong>Detailed News Description</strong></label>         <textarea id="aaanewsfileDescription'+addSource+'" name="fileSourceVOList['+addSource+'].completeDesc" rows="2" cols="20" class="input-block-level completeDetailedDescCls" style="width: 875px;" ></textarea> <span class="help-block">&nbsp;&nbsp;&nbsp;<input id="newsdetdescchk'+addSource+'" onclick="changeToEEnadutxt(\'newsdetdescchk'+addSource+'\',\'aaanewsfileDescription'+addSource+'\','+addSource+');" style="margin-top:-1px;" name="fileSourceVOList['+addSource+'].newsDescCheck" type="checkbox"/>&nbsp;Please chec,k if detailed news description is from eenadu.net</span>       </div>';
+		str +='<span class="help-block">&nbsp;&nbsp;&nbsp;File Path Or Detailed News is Mandatory. File must be .jpeg or .jpg or .png or .gif formats only.</span>';
+		str+='<div class="span12 ">         <label><strong>Detailed News </strong></label>         <textarea id="aaanewsfileDescription'+addSource+'" name="fileSourceVOList['+addSource+'].completeDesc" rows="2" cols="20" class="input-block-level completeDetailedDescCls" style="width: 875px;" ></textarea> <span class="help-block">&nbsp;&nbsp;&nbsp;<input id="newsdetdescchk'+addSource+'" onclick="changeToEEnadutxt(\'newsdetdescchk'+addSource+'\',\'aaanewsfileDescription'+addSource+'\','+addSource+');" style="margin-top:-1px;" name="fileSourceVOList['+addSource+'].newsDescCheck" type="checkbox"/>&nbsp;Please chec,k if detailed news is from eenadu.net</span>       </div>';
 
 		str+='        </div>';
 			 
@@ -4479,7 +4479,7 @@ var fileTitle = document.getElementById('newsfileTitle').value;
 		   var detalDesc = $("#aaanews"+id+"").val();
 
 			   if( detalDesc.length <= 0 || typeof(detalDesc) ==  "undefined"){
-				str+='File OR Detailed news description Required.<br>';
+				str+='File OR Detailed News Required.<br>';
 				 flag = false;
 				 return false;
 			   }		 
@@ -4568,7 +4568,7 @@ var fileTitle = document.getElementById('newsfileTitle').value;
 	
 	if(fileDesc.length == 0)
 	{
-		str += 'Short Description is Required.<br>';
+		str += 'Short News is Required.<br>';
 		flag = false;
 	}
 	

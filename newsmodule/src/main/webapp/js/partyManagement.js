@@ -2741,7 +2741,7 @@ function validateUploadFileDetails()
 	}
 	if(fileDesc.length == 0)
 	{
-		str += 'Short Description is Required.<br>';
+		str += 'Short News is Required.<br>';
 		flag = false;
 	}
 	if(synopsysDesc.length == 0)
@@ -2794,7 +2794,7 @@ function validateUploadFileDetails()
 		  var desc = $.trim($("#"+key+"").val());
 	      if(desc.length == 0)
 	      { 
-		    str+='Detailed News Description Or File Path is Required.<br>';
+		    str+='Detailed News Or File Path is Required.<br>';
 		    flag = false;
 		    return false;
 		  }
@@ -2888,7 +2888,7 @@ function validateUploadFileDetails()
 	}
 	if(fileDesc.length > 2000)
 	{
-		str += 'Short Description Should not exceed 2000 Characters.<br>';
+		str += 'Short News Should not exceed 2000 Characters.<br>';
 		flag = false;
 	}
 var allLocSeleted = true;

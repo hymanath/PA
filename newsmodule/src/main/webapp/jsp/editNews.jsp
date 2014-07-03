@@ -470,15 +470,15 @@ $(".destinationCandidateCloseImg").live("click",function(){
 
 				<div class="row-fluid">       
 					<div class="span8 ">         
-						<label><strong>Short Description<span class="requiredFont">*</span><strong></strong></strong></label>         
+						<label><strong>Short News<span class="requiredFont">*</span><strong></strong></strong></label>         
 				   
 						<s:if test="news.fileDescriptionCheckBox != null"> 				
 						  <textarea id="newsfileDescription" class="input-block-level enadu" cols="20" rows="2" name="fileDescription" maxlength="1800">${news.fileDescription}</textarea> 						 
-						  <span class="help-block"> <input type="checkbox" id="sourceDescTelugu"  checked="checked" onclick="changeLanguage();" value="true" name="descCheckBox">&nbsp;Please check if description is from eenadu.net</span> 
+						  <span class="help-block"> <input type="checkbox" id="sourceDescTelugu"  checked="checked" onclick="changeLanguage();" value="true" name="descCheckBox">&nbsp;Please check if Short News is from eenadu.net</span> 
 						</s:if>
 						<s:else>
 							<textarea id="newsfileDescription" class="input-block-level" cols="20" rows="2" name="fileDescription" maxlength="1800">${news.fileDescription}</textarea> 
-							<span class="help-block"> <input type="checkbox" id="sourceDescTelugu" onclick="changeLanguage();" name="descCheckBox" value="null">&nbsp;Please check if description is from eenadu.net</span> 
+							<span class="help-block"> <input type="checkbox" id="sourceDescTelugu" onclick="changeLanguage();" name="descCheckBox" value="null">&nbsp;Please check if Short News is from eenadu.net</span> 
 						</s:else>
 						<div style="display:none;">	
 						<label><strong>News Synopsys : <span class="requiredFont">*</span><strong></strong></strong></label>         
@@ -830,21 +830,21 @@ $(".destinationCandidateCloseImg").live("click",function(){
 			<s:if test="#i.index==news.fileSourceVOList[#k.index].sourceFileList.size()-1">
 		</div>	
 			<div class="container m_top5">
-				<span class="help-block" style="float: left;">&nbsp;&nbsp;&nbsp;File Path Or Detailed News Description is Mandatory. File must be .jpeg or .jpg or .png or .gif formats only.</span>
+				<span class="help-block" style="float: left;">&nbsp;&nbsp;&nbsp;File Path Or Detailed News is Mandatory. File must be .jpeg or .jpg or .png or .gif formats only.</span>
 				<div class="span12 ">         
-					<label><strong>Detailed News Description</strong></label>  
+					<label><strong>Detailed News </strong></label>  
 					
 					<s:if test="news.fileSourceVOList[#k.index].sourceFileList[#i.index].newsFont != 0">				
 					<span class="help-block">&nbsp;&nbsp;&nbsp;
 						<textarea  name="fileSourceVOList[${k.index}].completeDesc" rows="2" cols="20" class="input-block-level completeDetailedDescCls enadu" id="aaanewsfileDescription${k.index}" style="width: 900px;" >${news.fileSourceVOList[k.index].sourceFileList[i.index].newsDescCheck}</textarea>
 						
-						<input style="margin-top: -1px;" class="" name="fileSourceVOList[${k.index}].sourceFileList[${i.index}].newsDescCheck" onclick="changeToEEnadutxt('newsdetdescchk${k.index}','aaanewsfileDescription${k.index}',${k.index});" id="newsdetdescchk${k.index}" type="checkbox" checked="true"/>&nbsp;Please check if title is from eenadu.net</span>
+						<input style="margin-top: -1px;" class="" name="fileSourceVOList[${k.index}].sourceFileList[${i.index}].newsDescCheck" onclick="changeToEEnadutxt('newsdetdescchk${k.index}','aaanewsfileDescription${k.index}',${k.index});" id="newsdetdescchk${k.index}" type="checkbox" checked="true"/>&nbsp;Please check if Detailed News is from eenadu.net</span>
 					</s:if>
 					<s:else>
 						<span class="help-block">&nbsp;&nbsp;&nbsp;
 						<textarea  name="fileSourceVOList[${k.index}].completeDesc" rows="2" cols="20" class="input-block-level completeDetailedDescCls " id="aaanewsfileDescription${k.index}" style="width: 900px;" >${news.fileSourceVOList[k.index].sourceFileList[i.index].newsDescCheck}</textarea>
 						
-						<input style="margin-top: -1px;" class="" name="fileSourceVOList[${k.index}].sourceFileList[${i.index}].newsDescCheck" onclick="changeToEEnadutxt('newsdetdescchk${k.index}','aaanewsfileDescription${k.index}',${k.index});" id="newsdetdescchk${k.index}" type="checkbox" />&nbsp;Please check if title is from eenadu.net</span>
+						<input style="margin-top: -1px;" class="" name="fileSourceVOList[${k.index}].sourceFileList[${i.index}].newsDescCheck" onclick="changeToEEnadutxt('newsdetdescchk${k.index}','aaanewsfileDescription${k.index}',${k.index});" id="newsdetdescchk${k.index}" type="checkbox" />&nbsp;Please check if Detailed News is from eenadu.net</span>
 					</s:else>	
 					<input type="hidden" id="fontStatus${k.index}" value="${news.fileSourceVOList[k.index].sourceFileList[i.index].newsFont}" name="fileSourceVOList[${k.index}].newsFont"/>		
 				</div>
