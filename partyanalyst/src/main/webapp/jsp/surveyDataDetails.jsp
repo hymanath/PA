@@ -48,9 +48,12 @@
 <script>
   $(document).ready(function(){
    
-    $('#userId').change(function(){
-		getUserAssignedBoothsDetailsForAConstituency(this.value);
+    $('#constituencyId,#userId').change(function(){
+		$('#boothsDtlsId').html('');
+		getUserAssignedBoothsDetailsForAConstituency();
 	});
+
+
 
 });
   </script>
@@ -229,13 +232,19 @@
 										<div class="span6">
 											Select User Name<font class="requiredFont">*</font>
 											<select class="input-block-level" id="userId"> 
-											<option value="0">Select User Name</option></select>
+												<option value="4">samba_shiva</option>
+												<option value="1">rajiv_raj</option>
+												<option value="3">sunil_mathur</option>
+											</select>
 										</div>
 										<div class="span6">
 											Select Constituency<font class="requiredFont">*</font>
-											<select class="input-block-level" id="constituencyId"> 
+											<!--<select class="input-block-level" id="constituencyId"> 
 											<option value="0">Select Constituency</option>
-											</select>
+											</select>-->
+
+						<s:select theme="simple"  name="constituency" id="constituencyId" list="constituenciesList" listKey="id" listValue="name" />
+
 										</div>
 									</div>	
 									<div class="row-fluid">
@@ -252,7 +261,13 @@
 									</div>
 									</div>
 									</div>
-							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onClick="assignBooth();">ASSIGN</button></div>
+									<div id="boothsDtlsId">
+									</div>
+							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onClick="saveUserAssignedBoothsDetails();">ASSIGN</button></div>
+
+							
+
+							<!--<a class="btn btn-large btn-success" href="javascript:{saveUserAssignedBoothsDetails();}">ASSIGN</a>-->
 					</div>
 				</div>
 			</div>
@@ -984,36 +999,59 @@ function getBoothDetailsForSelectedUser(leaderId,constituencyId)
 		});
 }
 
-function getUserAssignedBoothsDetailsForAConstituency(userId)
+function getUserAssignedBoothsDetailsForAConstituency()
 {
-	var jsObj =
+	var jObj =
 	{
 	 constituencyId:$('#constituencyId').val(),
-	 userId:userId
+	 userId:$('#userId').val()
 	}
 	$.ajax({
 			type:'GET',
 			url: 'getAssignedBoothsDetailsByConstituencyIdAndUserId.action',
 			dataType: 'json',
-			data: {task:JSON.stringify(jsObj)},
+			data: {task:JSON.stringify(jObj)},
 		  }).done(function(result){
-
+				buildBoothDetails(result);
 		});
 }
 
+function buildBoothDetails(result)
+{
+	var str = '';
+
+	str+='<div class="span12">';
+    str+='<br/><br/>';
+	 $.each(result,function(index,value){
+		 if(value.userHas == false)
+		   str+='<div class="span2"><label><input type="checkbox" value="'+value.boothId+'" class="boothChckbox"/>  Booth - '+value.partNo+'</label></div>';
+		 else
+		  str+='<div class="span2"><label><input type="checkbox" checked value="'+value.boothId+'" class="boothChckbox"/>  Booth - '+value.partNo+'</label></div>';
+
+	 });
+	str+='</div>';
+	
+	$('#boothsDtlsId').html(str);
+}
 function saveUserAssignedBoothsDetails()
 {
-	var jsObj =
+	var jObj =
 	{
 	  boothIds:[],
 	  constituencyId:$('#constituencyId').val(),
-	  userId:userId
+	  surveyUserId:$('#userId').val()
 	}
+
+	$('.boothChckbox').each(function(index,value){
+		if(this.checked)
+			jObj.boothIds.push(this.value);
+	}); 
+	
 	$.ajax({
 			type:'GET',
 			url: 'saveUserAssignedBoothsDetails.action',
 			dataType: 'json',
-			data: {task:JSON.stringify(jsObj)},
+			data: {task:JSON.stringify(jObj)},
 		  }).done(function(result){
 
 		});
