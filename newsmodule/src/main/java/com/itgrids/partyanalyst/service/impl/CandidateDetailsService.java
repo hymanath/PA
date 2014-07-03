@@ -8912,10 +8912,11 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 					vo.setPopulateId(0L);
 			   }
 				else{
-					for (Object[] parms : keywordsDetails) {						
+					  Object[] parms = keywordsDetails.get(0);
+					//for (Object[] parms : keywordsDetails) {						
 						keywordIds = updateKeywordList(keywordDAO.get(Long.valueOf(parms[0].toString())),userId,keywordsList);
 						vo.setPopulateId(Long.valueOf(parms[0].toString()));
-					}					
+					//}					
 				}
 				vo.setLocationValuesList(keywordIds);
 				
@@ -8934,12 +8935,12 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 				 for (Long keywordId : keywordsDetails) {
 					 try{
 						 if(vo2.getPopulateId() != 0){
-							 if(vo2.getPopulateId() != keywordId)
+							 if(vo2.getPopulateId().longValue() != keywordId.longValue())
 								 candidatePartyKeywordDAO.removeKeywordsList(keywordId);
 						 }
 							 else
 								 candidatePartyKeywordDAO.removeKeywordsList(keywordId);
-					 }catch(Exception e){}
+					 }catch(Exception e){log.error("Exception rised while removing existing keyword ",e);}
 				}
 				
 			  status = " "+newKeyword1 + " was successfully updated. ";
@@ -8960,74 +8961,32 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
  
  private List<Long> updateKeywordList(Keyword newKeyword,Long userId,List<Long> keywordsList){
 	 
-	 final Map<Long,List<CandidatePartyKeyword>> candidateKeys = new HashMap<Long,List<CandidatePartyKeyword>>();
-	 List<Long> keywordIds = new ArrayList<Long>();
-	 try{
-	 List<CandidatePartyKeyword> candidateKeywordsDetails = null;
-	 
-		for (Long keywordId : keywordsList) {
-			 
-			 candidateKeywordsDetails = candidatePartyKeywordDAO.getCandidatePartyKeywordList(keywordId);
-			 
-			 if(candidateKeywordsDetails !=null && candidateKeywordsDetails.size() > 0){
-				candidateKeys.put(keywordId, candidateKeywordsDetails);	
-			 }
-			 keywordIds.add(keywordId);
-		 }
+	
+	 int updateCount = candidatePartyKeywordDAO.updateCandidatePartyKeyword(keywordsList, newKeyword.getKeywordId());
+		
 		 
-		if(candidateKeys != null && candidateKeys.size() >0){			
-		
-		 for (Long key : candidateKeys.keySet()) {
-			 
-			   List<CandidatePartyKeyword> candidateFileDetails = candidateKeys.get(key);
-			   
-			   if(candidateFileDetails !=null && candidateFileDetails.size() > 0){
-				   
-				   for (CandidatePartyKeyword parms : candidateFileDetails) {
-		
-					   parms.setCandidatePartyFile(parms.getCandidatePartyFile());
-					   parms.setKeyword(newKeyword);
-						   
-					   candidatePartyKeywordDAO.save(parms);									  
-				   }
-			   }
-			  // keywordIds.add(key);
-		 }
+		if(updateCount >0){			
 		 	 		
 		 List<Long> candidatePartyFileIds = candidatePartyKeywordDAO.getCandidateFileIds(newKeyword.getKeywordId());
-		 Set<Long> candidatePartyFileId = new HashSet<Long>();
-		 candidatePartyFileId.addAll(candidatePartyFileIds);
-		 candidatePartyFileIds.clear();
-		 candidatePartyFileIds.addAll(candidatePartyFileId);
 		 
-		 List<CandidatePartyKeyword> candidateList = null;
+		 List<Long> candidateList = null;
 		 
 		 for (Long parms : candidatePartyFileIds) {
 			 candidateList = candidatePartyKeywordDAO.getCandidatePartyKeywordListByUserwise(parms,newKeyword.getKeywordId());
 		
 			 Long count = 0L;
-			 for (CandidatePartyKeyword params : candidateList) {
+			 for (Long params : candidateList) {
 				 count = count+1;
 					 if(count >1){
-						 try{
-						 candidatePartyKeywordDAO.removeDublicateData(params.getCandidatePartyKeywordId(),newKeyword.getKeywordId());
-						 //candidatePartyKeywordDAO.remove(params.getCandidatePartyKeywordId());
-						 }catch(Exception e){
-							 log.error("Exception ocuured while deleting duplicate candidatePartyKeyword :",e);					 
-						 }
+						 candidatePartyKeywordDAO.removeDublicateData(params,newKeyword.getKeywordId());						 
 					 }
 			}
 		 
 		 }
 		 
 		}
-
-	
-	 }catch(Exception e){
-		 keywordIds.clear();
-	 }
 	 
-	 return keywordIds;
+	 return keywordsList;
  }
 private Keyword saveKeyword(Long userId, String keyword1){
 	 log.error("entered into saveKeyword() in CandidateDetailsService class. ");
