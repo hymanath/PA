@@ -7352,6 +7352,13 @@
 			<param name="root">boothWiseCountList</param>
 			</result>
 		</action>
+		
+		<action name="getNotAssignedSurveyUsersByUserTypeAction" class="surveyDataDetailsAction" method="getNotAssignedSurveyUsersByUserType">
+			<result type="json" name="success">
+				<param name="root">returnList</param>
+			</result>
+		</action>
+		
 			
 </package>
 		
