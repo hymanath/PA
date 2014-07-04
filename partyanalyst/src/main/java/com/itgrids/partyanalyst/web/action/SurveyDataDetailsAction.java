@@ -44,7 +44,16 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	private List<SurveyReportVO> dayWiseReportList;
 	private List<SelectOptionVO> constituenciesList;
 	private List<SurveyReportVO> boothWiseCountList;
+	private List<SurveyReportVO> voterVerificationList;
 	
+	public List<SurveyReportVO> getVoterVerificationList() {
+		return voterVerificationList;
+	}
+
+	public void setVoterVerificationList(List<SurveyReportVO> voterVerificationList) {
+		this.voterVerificationList = voterVerificationList;
+	}
+
 	public List<SurveyReportVO> getBoothWiseCountList() {
 		return boothWiseCountList;
 	}
@@ -418,6 +427,22 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		
 		return Action.SUCCESS;
 		
+	}
+	
+	public String getReportForVerificationByBoothId()
+	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			
+			voterVerificationList = surveyDataDetailsService.getReportForVerification(jObj.getLong("boothId"));
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			
+		}
+		return Action.SUCCESS;
 	}
 
 	
