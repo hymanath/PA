@@ -10,6 +10,7 @@ import com.itgrids.partyanalyst.model.BoothPublicationVoter;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
+import com.itgrids.partyanalyst.model.SurveyDetailsInfo;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.model.VoterFlag;
 
@@ -652,7 +653,7 @@ public interface IBoothPublicationVoterDAO extends
 				Long constituencyId, Long publicationDateId);
 	  public List<Object[]> getTotalVotersByBoothsForVerfier(Long boothIds,Long publicationDate);
 	  
-	 public List<Object[]> getVotersDetailsByBoothId(Long boothId);
+	 public List<SurveyDetailsInfo> getVotersDetailsByBoothId(Long boothId);
 
 	  
 	  

@@ -49,6 +49,7 @@ import com.itgrids.partyanalyst.model.SurveyUserType;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class SurveyDataDetailsService implements ISurveyDataDetailsService
 {
@@ -1120,13 +1121,13 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		List<SurveyReportVO> resultList = new ArrayList<SurveyReportVO>();
 		
 		try {
-			List<Object[]> votersList = boothPublicationVoterDAO.getVotersDetailsByBoothId(boothId);
+			List<SurveyDetailsInfo> votersList = boothPublicationVoterDAO.getVotersDetailsByBoothId(boothId);
 			
 			 java.util.Set<Long>  voterIds = new java.util.HashSet<Long>();
 			 
-			 for(Object[] voterDtls:votersList)
+			 for(SurveyDetailsInfo voterDtls:votersList)
 			 {
-				 voterIds.add((Long)voterDtls[0]);
+				 voterIds.add(voterDtls.getVoter().getVoterId());
 			 }
 			 
 			 for(Long voterId:voterIds)
@@ -1152,50 +1153,47 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			 SurveyReportVO subTypeVO = null;
 			 
 			
-			for(Object[] obj:votersList)
+			for(SurveyDetailsInfo surveyDtlsInfo:votersList)
 			{
 				subTypeVO = new SurveyReportVO();
 				
-				SurveyReportVO voterVO = getmatchedVoterVO(resultList,(Long)obj[0]);
+				SurveyReportVO voterVO = getmatchedVoterVO(resultList,(surveyDtlsInfo.getVoter().getVoterId()));
 				
-				if(obj[2].toString().equalsIgnoreCase("true"))
-					subTypeVO.setCadre(true);
+				subTypeVO.setCadre(surveyDtlsInfo.getIsCadre());
 				
-				if(obj[3].toString().equalsIgnoreCase("true"))
-                  subTypeVO.setInfluencePeople(true);
+				subTypeVO.setInfluencePeople(surveyDtlsInfo.getIsInfluencingPeople());
 				
-                subTypeVO.setVoterId((Long)obj[0]);
-                subTypeVO.setVoterName(obj[1].toString());
-                subTypeVO.setUserid((Long)obj[7]);
-                subTypeVO.setLocalArea(obj[5].toString());
+                subTypeVO.setVoterId(surveyDtlsInfo.getVoter().getVoterId());
+                subTypeVO.setVoterName(surveyDtlsInfo.getVoter().getName());
+                subTypeVO.setUserid(surveyDtlsInfo.getSurveyUser().getSurveyUserId());
+                subTypeVO.setLocalArea(surveyDtlsInfo.getLocalArea());
                 
-                if(obj[4] != null)
+                subTypeVO.setCasteId(surveyDtlsInfo.getCaste().getCasteStateId());
+                
+                if(surveyDtlsInfo.getHamlet() != null)
                 {
-                	subTypeVO.setCaste(((CasteState)obj[4]).getCaste().getCasteName());
-                    subTypeVO.setCasteId(((CasteState)obj[4]).getCasteStateId());
+	        	 subTypeVO.setHamletName(surveyDtlsInfo.getHamlet().getHamletName());
+	             subTypeVO.setHamletId(surveyDtlsInfo.getHamlet().getHamletId());
                 }
-                
-                if(obj[6] != null)
-                {
-                	subTypeVO.setHamletName(((Hamlet)obj[6]).getHamletName());
-                    subTypeVO.setHamletId(((Hamlet)obj[6]).getHamletId());
 
-                }
 				
-				if(obj[9].toString().equalsIgnoreCase(""))// collector
+				if(surveyDtlsInfo.getSurveyUser().getSurveyUserType().getSurveyUsertypeId().equals(IConstants.DATA_COLLECTOR_TYPE_ID))// collector
 				{
-					voterVO.setDataCollector(voterVO);
+					voterVO.setDataCollector(subTypeVO);
 				}
-				else if(obj[9].toString().equalsIgnoreCase(""))// verifier
+				else if(surveyDtlsInfo.getSurveyUser().getSurveyUserType().getSurveyUsertypeId().equals(IConstants.VERIFIER_TYPE_ID))// verifier
 				{
-					voterVO.setVerifier(voterVO);
+					voterVO.setVerifier(subTypeVO);
 				}
 				else
 				{
-					voterVO.setThirdParty(voterVO); //third party
+					voterVO.setThirdParty(subTypeVO); //third party
 				}
 					
 			}
+			
+			checkForMatchedDetailsForDataCollectorAndVerifierAndThirdParty(resultList);
+			checkForMatchedDetailsForDataCollectorAndVerifier(resultList);
 			
 		} catch (Exception e) {
 			//e.printStackTrace();
@@ -1211,6 +1209,151 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			if(userVO.getVoterId().equals(voterId))
 				return userVO;
 		return null;
+	}
+	
+	private void checkForMatchedDetailsForDataCollectorAndVerifier(List<SurveyReportVO> votersList)
+	{
+
+		try {
+			for(SurveyReportVO voterVO:votersList)
+			{
+				
+				if(voterVO.getDataCollector() != null && voterVO.getVerifier() != null && voterVO.getThirdParty() != null)
+				{
+					if (voterVO.getDataCollector().isCadre() == voterVO
+							.getVerifier().isCadre())					
+					{
+						voterVO.setCadreMatched(true);
+					}
+					else
+					{
+						voterVO.setCadreMatched(false);
+					}
+					
+					
+					
+					if (voterVO.getDataCollector().isInfluencePeople() == voterVO
+							.getVerifier().isInfluencePeople())					
+					{
+						voterVO.setInfluencePeopleMatched(true);
+					}
+					else
+					{
+						voterVO.setInfluencePeopleMatched(false);
+					}
+					
+					
+					if (voterVO.getDataCollector().getLocalArea().equalsIgnoreCase(voterVO.getVerifier().getLocalArea()))				
+					{
+						voterVO.setLocalAreaMatched(true);
+					}
+					else
+					{
+						voterVO.setLocalAreaMatched(false);
+					}
+					
+					
+					if (voterVO.getDataCollector().getHamletId().equals(voterVO.getVerifier().getHamletId()))				
+					{
+						voterVO.setHamletMatched(true);
+					}
+					else
+					{
+						voterVO.setHamletMatched(false);
+					}
+					
+					
+					if (voterVO.getDataCollector().getCasteId().equals(voterVO.getVerifier().getCasteId()))				
+					{
+						voterVO.setCasteMatched(true);
+					}
+					else
+					{
+						voterVO.setCasteMatched(false);
+					}
+				}
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private void checkForMatchedDetailsForDataCollectorAndVerifierAndThirdParty(List<SurveyReportVO> votersList)
+	{
+
+		try {
+			for(SurveyReportVO voterVO:votersList)
+			{
+				
+				if(voterVO.getDataCollector() != null && voterVO.getVerifier() != null && voterVO.getThirdParty() != null)
+				{
+					if (voterVO.getDataCollector().isCadre() == voterVO
+							.getVerifier().isCadre()
+							&& voterVO.getVerifier().isCadre() == voterVO
+									.getThirdParty().isCadre())					
+					{
+						voterVO.setCadreMatched(true);
+					}
+					else
+					{
+						voterVO.setCadreMatched(false);
+					}
+					
+					
+					
+					if (voterVO.getDataCollector().isInfluencePeople() == voterVO
+							.getVerifier().isInfluencePeople()
+							&& voterVO.getVerifier().isInfluencePeople() == voterVO
+									.getThirdParty().isInfluencePeople())					
+					{
+						voterVO.setInfluencePeopleMatched(true);
+					}
+					else
+					{
+						voterVO.setInfluencePeopleMatched(false);
+					}
+					
+					
+					if (voterVO.getDataCollector().getLocalArea().equalsIgnoreCase(voterVO.getVerifier().getLocalArea()) 
+							&& voterVO.getVerifier().getLocalArea() .equalsIgnoreCase(voterVO.getThirdParty().getLocalArea()))				
+					{
+						voterVO.setLocalAreaMatched(true);
+					}
+					else
+					{
+						voterVO.setLocalAreaMatched(false);
+					}
+					
+					
+					if (voterVO.getDataCollector().getHamletId().equals(voterVO.getVerifier().getHamletId()) 
+							&& voterVO.getVerifier().getHamletId() .equals(voterVO.getThirdParty().getHamletId()))				
+					{
+						voterVO.setHamletMatched(true);
+					}
+					else
+					{
+						voterVO.setHamletMatched(false);
+					}
+					
+					
+					if (voterVO.getDataCollector().getCasteId().equals(voterVO.getVerifier().getCasteId()) 
+							&& voterVO.getVerifier().getCasteId() .equals(voterVO.getThirdParty().getCasteId()))				
+					{
+						voterVO.setCasteMatched(true);
+					}
+					else
+					{
+						voterVO.setCasteMatched(false);
+					}
+				}
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	

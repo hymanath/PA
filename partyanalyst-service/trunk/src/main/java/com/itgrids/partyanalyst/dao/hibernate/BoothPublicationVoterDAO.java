@@ -12,6 +12,7 @@ import com.itgrids.partyanalyst.model.BoothPublicationVoter;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
+import com.itgrids.partyanalyst.model.SurveyDetailsInfo;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.model.VoterFlag;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -6967,18 +6968,25 @@ public List<Object[]> checkVoterInState(Long publicationDateId,String voterName,
 		return query.list();
 	}
 	
-	public List<Object[]> getVotersDetailsByBoothId(Long boothId)
+	public List<SurveyDetailsInfo> getVotersDetailsByBoothId(Long boothId)
 	{
-		Query query = getSession().createQuery("select SDI.voter.voterId,SDI.voter.name," +
-				"SDI.isCadre ,SDI.isInfluencingPeople ,SDI.caste , SDI.localArea, SDI.hamlet,SDI.surveyUser.surveyUserId ," +
+	/*	Query query = getSession().createQuery("select SDI.voter.voterId,SDI.voter.name," +
+				"SDI.isCadre ,SDI.isInfluencingPeople ,SDI.casteId , SDI.localArea, SDI.hamlet,SDI.surveyUser.surveyUserId ," +
 				"SDI.surveyUser.userName , SDI.surveyUser.surveyUserType.description  " +
 				" from BoothPublicationVoter BPV , SurveyDetailsInfo SDI " +
-				"where" +
-				"BPV.booth.boothId = :boothId and" +
+				"where " +
+				"BPV.booth.boothId = :boothId and " +
+				"BPV.voter.voterId = SDI.voter.voterId and " +
+				"BPV.booth.publicationDate.publicationDateId = :publicationDateId");*/
+		
+		Query query = getSession().createQuery("select SDI  " +
+				" from BoothPublicationVoter BPV , SurveyDetailsInfo SDI " +
+				"where " +
+				"BPV.booth.boothId = :boothId and " +
 				"BPV.voter.voterId = SDI.voter.voterId and " +
 				"BPV.booth.publicationDate.publicationDateId = :publicationDateId");
 		
-		query.setParameter("publicationDateId", IConstants.PUBLICATION);
+		query.setParameter("publicationDateId",10L);
 		query.setParameter("boothId", boothId);
 		
 		return query.list();
