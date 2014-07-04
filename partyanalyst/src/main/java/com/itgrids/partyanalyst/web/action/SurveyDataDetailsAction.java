@@ -16,12 +16,14 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
 import com.itgrids.partyanalyst.dto.UserBoothDetailsVO;
+import com.itgrids.partyanalyst.model.Job;
 import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -276,7 +278,13 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 				return Action.INPUT;
 			}
 			jObj = new JSONObject(getTask());
-			resultStatus = surveyDataDetailsService.saveServeyUserRelationDetails(jObj.getLong("userTypeId"),jObj.getLong("userId"),jObj.getLong("leaderId"),jObj.getLong("constituencyId"));
+			List<Long> userIds = new ArrayList<Long>();
+			JSONArray jarray = jObj.getJSONArray("userIds");
+			for (Integer i = 0; i < jarray.length(); i++) 
+			{
+				userIds.add(Long.valueOf(jarray.get(i).toString()));
+			}
+			resultStatus = surveyDataDetailsService.saveServeyUserRelationDetails(jObj.getLong("userTypeId"),userIds,jObj.getLong("leaderId"),jObj.getLong("constituencyId"));
 		} 
 		catch (Exception e)
 		{
@@ -412,4 +420,40 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		
 	}
 
+	
+	public String releaseLeadersWithUser()
+	{
+		try {
+			
+			jObj = new JSONObject(getTask());		
+			returnList = surveyDataDetailsService.releaseLeadersWithUser(jObj.getLong("leaderId"));
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return Action.SUCCESS;
+		
+	}
+	
+	public String updateServeyUserRelationDetails()
+	{
+		try {
+			
+			jObj = new JSONObject(getTask());
+			List<Long> userIds = new ArrayList<Long>();
+			JSONArray jarray = jObj.getJSONArray("userIds");
+			for (Integer i = 0; i < jarray.length(); i++) 
+			{
+				userIds.add(Long.valueOf(jarray.get(i).toString()));
+			}
+			resultStatus = surveyDataDetailsService.updateServeyUserRelationDetails(jObj.getLong("userTypeId"),userIds,jObj.getLong("leaderId"),jObj.getLong("constituencyId"));
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return Action.SUCCESS;
+		
+	}
 }

@@ -469,7 +469,8 @@ function assignLeaderToUser()
 	var	constituencyLeaderId = $("#constituencyLeaderId").val();
 	var	leaderId =  $("#leaderId").val();
 	var	userLeaderId =  $('#userLeaderId').val();
-
+	var userIds = new Array();
+	userIds.push(userLeaderId);
 	if(constituencyLeaderId == 0)
 	{
 		$("#assignLeaderErrorDiv").html("Please Select Constituency").css("color","red");
@@ -495,7 +496,7 @@ function assignLeaderToUser()
 		constituencyId : constituencyLeaderId,
 		userTypeId :  typeId,
 		leaderId : leaderId,
-		userId :  userLeaderId,
+		userIds :  userIds,
 		task : "assignLeader"
 	}
 	
@@ -739,4 +740,86 @@ function saveUserAssignedBoothsDetails()
 
 		});
 
+}
+
+function getSurveyUsersByUserTypeForLeaderRelease()
+{
+	var jObj =
+	{
+	 leaderId:$('#leaderIdForRelease').val()
+	}
+	$.ajax({
+			type:'GET',
+			url: 'releaseLeadersWithUserAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){
+				$('#userLeaderIdForRelease').find('option:not(:first)').remove();
+				if(result != null && result.length > 0)
+				{
+				$('#constituencyLeaderIdForRelease').append('<option value="'+result[0].rank+'">'+result[0].desc+'</option>');
+				for(var i in result)
+				{
+				$('#userLeaderIdForRelease').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+				
+				}
+
+				}							
+		});
+}
+
+function updateLeaderUserReleation()
+{
+	var	typeId =  $("#typeIdForRelease").val();
+	var	constituencyLeaderId = $("#constituencyLeaderIdForRelease").val();
+	var	leaderId =  $("#leaderIdForRelease").val();
+	var	userLeaderId =  $('#userLeaderIdForRelease').val();
+	var userIds = new Array();
+	userIds.push(userLeaderId);
+	if(constituencyLeaderId == 0)
+	{
+		$("#assignLeaderErrorDivForRelease").html("Please Select Constituency").css("color","red");
+		return;
+	}
+	if(typeId == 0)
+	{
+		$("#assignLeaderErrorDivForRelease").html("Please Select the Type").css("color","red");
+		return;
+	}
+	if(leaderId == 0)
+	{
+		$("#assignLeaderErrorDivForRelease").html("Please Select Leader").css("color","red");
+		return;
+	}
+	if(userLeaderId == 0)
+	{
+		$("#assignLeaderErrorDivForRelease").html("Please Select User").css("color","red");
+		return;
+	}
+	var jsObj = 
+	{
+		constituencyId : constituencyLeaderId,
+		userTypeId :  typeId,
+		leaderId : leaderId,
+		userIds :  userIds,
+		task : "assignLeader"
+	}
+	
+	$.ajax({
+		type:'GET',
+		url: 'updateServeyUserRelationDetailsAction.action',
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)},
+		}).done(function(result){
+			if(result.resultCode == 0) 
+			{
+				$("#assignLeaderErrorDiv").html('Leader Assigned successfully.').css("color","green");
+				setTimeout(function(){$('#assignLeaderErrorDiv').html('');}, 3000);				
+				$('#userLeaderId,#leaderId,#typeId,#constituencyLeaderId').val(0);
+			}
+			else
+			{
+				$("#assignLeaderErrorDiv").html('Error Occured,Try again....').css("color","red");
+			}		
+		});
 }

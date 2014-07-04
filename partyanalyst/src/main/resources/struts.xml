@@ -7358,14 +7358,26 @@
 				<param name="root">returnList</param>
 			</result>
 		</action>
-		
 			
 			
 		<action name="dailyVerificationReportsAction" class="surveyDataDetailsAction">
 			<result name="success">/jsp/dailyVerificationReports.jsp</result>
 		</action>
 		
+				
+		<action name="releaseLeadersWithUserAction" class="surveyDataDetailsAction" method="releaseLeadersWithUser">
+			<result type="json" name="success">
+				<param name="root">returnList</param>
+			</result>
+		</action>
 		
+		<action name="updateServeyUserRelationDetailsAction" class="surveyDataDetailsAction" method="updateServeyUserRelationDetails">
+			<result type="json" name="success">
+				<param name="root">resultStatus</param>
+			</result>
+		</action>
+		
+			
 </package>
 		
 </struts>      
