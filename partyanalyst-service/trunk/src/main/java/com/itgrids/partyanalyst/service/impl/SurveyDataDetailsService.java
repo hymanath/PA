@@ -968,7 +968,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	
 	
 	
-	public List<SurveyReportVO> getDayWisereportDetailsByConstituencyId(Long constituencyId,String startDate,String endDate)
+	public List<SurveyReportVO> getDayWisereportDetailsByConstituencyId(Long constituencyId,String startDate,String endDate,Long userTypeId)
 	{
 		LOG.info("Entered into getDayWisereportDetailsByConstituencyId service in SurveyDataDetailsService");
 
@@ -980,13 +980,14 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		    Date startDt =  df.parse(startDate);
 		    Date endDt =  df.parse(endDate);
 		    
-			List<Object[]> dayWiseReportDtls = surveyDetailsInfoDAO.getDayWisereportDetailsByConstituencyId(constituencyId,startDt,endDt);
+			List<Object[]> dayWiseReportDtls = surveyDetailsInfoDAO.getDayWisereportDetailsByConstituencyId(constituencyId,startDt,endDt,userTypeId);
 			
 			List<Long> userIds = new ArrayList<Long>();
 			SortedSet<String> surveyDates = new TreeSet<String>();
 			
 			for(Object[] obj:dayWiseReportDtls)
 			{
+				if(!userIds.contains((Long)obj[1]))
 				userIds.add((Long)obj[1]);
 				surveyDates.add(obj[3].toString());
 			}
@@ -1070,6 +1071,22 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			
 			List<Object[]> boothWiseCountList =  surveyDetailsInfoDAO.getBoothWiseUserSamplesDetailsByDates(userId,startDt,endDt);
 			
+			List<Long> boothIds = new ArrayList<Long>();
+			
+			for(Object[] obj:boothWiseCountList)
+			{
+				if(!boothIds.contains((Long)obj[1]))
+						boothIds.add((Long)obj[1]);
+				
+			}
+			
+			List<Object[]> totalVotersDtls = boothDAO.getTotalaVotesDetailsByBoothIds(boothIds);
+			
+			Map<Long,Long> boothWiseCountMap = new HashMap<Long, Long>();
+			
+			for(Object[] obj:totalVotersDtls)
+				boothWiseCountMap.put((Long)obj[1], (Long)obj[0]);
+			
 			for(Object[] obj:boothWiseCountList)
 			{
 				SurveyReportVO boothCount = new SurveyReportVO();
@@ -1077,6 +1094,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				boothCount.setBoothId((Long)obj[1]);
 				boothCount.setPartNo(obj[2].toString());
                 boothCount.setCount((Long)obj[0]);
+                boothCount.setTotalVoters(boothWiseCountMap.get((Long)obj[1]));
                 
                 resultList.add(boothCount);
 			};

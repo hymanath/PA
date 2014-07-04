@@ -24,7 +24,7 @@ public interface ISurveyDataDetailsService
 	public List<UserBoothDetailsVO> getAssignedBoothsDetailsByConstituencyIdAndUserId(Long constituencyId,Long userId);
 	public List<GenericVO> getUserTypes();
 	public List<GenericVO> getSurveyUsersByUserType(Long userTypeId);
-	public List<SurveyReportVO> getDayWisereportDetailsByConstituencyId(Long constituencyId,String startDate,String endDate);
+	public List<SurveyReportVO> getDayWisereportDetailsByConstituencyId(Long constituencyId,String startDate,String endDate,Long userTypeId);
 	public List<GenericVO> getSurveyUsersByLeades(Long leaderId,Long constituencyId);
 	public List<GenericVO> getConstituencyWiseLeaders();
 	public List<SelectOptionVO> getAllAssemblyConstituenciesByStateId();

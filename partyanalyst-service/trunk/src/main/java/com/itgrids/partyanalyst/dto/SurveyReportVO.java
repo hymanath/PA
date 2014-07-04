@@ -7,7 +7,7 @@ public class SurveyReportVO {
 	
 	private Long userid;
 	private String userName;
-	private Long count;
+	private Long count = 0L;
 	private List<SurveyReportVO> subList = new ArrayList<SurveyReportVO>();
 	private String surveyDate;
 	private String partNo;
@@ -28,10 +28,17 @@ public class SurveyReportVO {
     private String hamletName;
     private String userType;
     private Long casteId;
+    private Long totalVoters;
     
     
 	
 	
+	public Long getTotalVoters() {
+		return totalVoters;
+	}
+	public void setTotalVoters(Long totalVoters) {
+		this.totalVoters = totalVoters;
+	}
 	public Long getCasteId() {
 		return casteId;
 	}
