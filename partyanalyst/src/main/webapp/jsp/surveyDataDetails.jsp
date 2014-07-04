@@ -505,6 +505,12 @@ function buildUserBoothWiseCountDetails(result)
   $('#boothWiseCountDivId').html(str);
   $('#boothWiseCountDivId').dialog();
 }
+
+$(".highlight").click(function()
+{
+	$(".highlight").removeClass("selected");
+	$(this).addClass("selected");
+})
 </script>
 </body>
 </html>

@@ -228,11 +228,7 @@ function saveSurveyUserType()
 		});
 }
 
-$(".highlight").click(function()
-{
-	$(".highlight").removeClass("selected");
-	$(this).addClass("selected");
-})
+
 function AssignTab()
 {
 	$("#assignTabErrorDiv").html('');
