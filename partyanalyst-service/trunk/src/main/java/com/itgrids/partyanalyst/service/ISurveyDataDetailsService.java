@@ -34,5 +34,6 @@ public interface ISurveyDataDetailsService
 	public List<SurveyResponceVO> getLatLongForSurveyDetails(Long surveyUserId,Date date);
 	public List<SurveyResponceVO> getDetailsForVerifier(Long surveyUserId,Long boothId);
 	public ResultStatus saveSurveyUserTrackingDetails(Long surveyUserId,Date date,String longitude,String latitude);
+	public List<GenericVO> getSurveyUsersForAssignToLeader(Long userTypeId);
 	//public List<SurveyResponceVO> getSurveyUserBoothsAndVoterDetails(Long surveyUserId);
 }

@@ -11,4 +11,6 @@ public interface ISurveyUserDAO extends GenericDao<SurveyUser, Long>
 	public Long getUserDetails(String userName,String password);
 	
 	public List<Object[]> getSurveyUsersByUserType(Long userTypeId);
+	
+	public List<Object[]> getSurveyUsersByUserTypeForLeaderAssign(Long userTypeId);
 }
