@@ -358,7 +358,7 @@
 
                             <div id="dayWiseReportDiv"></div>
  						    <div id="boothWiseCountDivId"></div>
-							<a class="btn btn-primary btn-large" href="javascript:{getDayWiseReport()}">TEST</a>
+							<!--<a class="btn btn-primary btn-large" href="javascript:{getDayWiseReport()}">TEST</a>-->
 					</div>
 				</div>
 			</div>
