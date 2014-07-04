@@ -277,7 +277,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 				return Action.INPUT;
 			}
 			jObj = new JSONObject(getTask());
-			//returnList = surveyDataDetailsService.getConstituencyWiseLeaders();
+			returnList = surveyDataDetailsService.getConstituencyWiseLeaders();
 		} 
 		catch (Exception e)
 		{
