@@ -35,8 +35,15 @@ public class SurveyReportVO {
     private boolean localAreaMatched;
     private boolean hamletMatched;
     private boolean casteMatched;
-    
+	private String surveyDate1;
 	
+	
+	public String getSurveyDate1() {
+		return surveyDate1;
+	}
+	public void setSurveyDate1(String surveyDate1) {
+		this.surveyDate1 = surveyDate1;
+	}
 	public boolean isCasteMatched() {
 		return casteMatched;
 	}
