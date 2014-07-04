@@ -43,7 +43,7 @@
 										</div>
 										<div class="span3">
 											<label>User Type</label>
-											<select class="input-block-level" id="userId"> <option value="0">Select User Type</option></select>
+											<select class="input-block-level" id = "userType"> <option value="0">Select User Type</option></select>
 										</div>
 										<div class="span2">
 											<label>From Date</label>
@@ -64,7 +64,7 @@
 									</div>
 									</div>
 									</div>
-							<div class="row text-center m_top20"><button type="button" class="btn btn-success">SUBMIT</button></div>
+							<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getDayWiseReport()">SUBMIT</button></div>
 					</div>
 				</div>
 				
@@ -73,7 +73,9 @@
 						<h4>Verifier Report For Daily Verification </br><small style="color:#333;padding-bottom:10px;display:inline-block;">  From 26 - June - 2014 to 3 - July - 2014 </small> </h4>
 							
 						<div class="row-fluid" style="overflow:scroll; height:500px;">
-							<table class="table table-bordered m_top20 table-hover table-striped username">
+						<div id="dayWiseReportDiv"></div>
+ 						    <div id="boothWiseCountDivId"></div>
+							<!--<table class="table table-bordered m_top20 table-hover table-striped username">
 							
 								<thead class="alert alert-success">
 									<tr> 
@@ -128,7 +130,7 @@
 										<td>500</td>
 										
 									</tr>
-									<!--------->
+									
 									
 									<tr>
 										<td>user Name</td>
@@ -147,7 +149,7 @@
 										<td>200</td>
 										<td>1400</td>
 									</tr>
-									<!-------->
+									
 									<tr>
 										<td>user Name</td>
 									
@@ -165,7 +167,7 @@
 										<td>200</td>
 										<td>1400</td>
 									</tr>
-									<!-------->
+									
 									<tr>
 										<td>user Name</td>
 									
@@ -183,7 +185,7 @@
 										<td>200</td>
 										<td>1400</td>
 									</tr>
-									<!-------->
+									
 									<tr>
 										<td>user Name</td>
 									
@@ -201,7 +203,7 @@
 										<td>200</td>
 										<td>1400</td>
 									</tr>
-									<!-------->
+									
 									<tr>
 										<td>user Name</td>
 									
@@ -219,7 +221,7 @@
 										<td>200</td>
 										<td>1400</td>
 									</tr>
-									<!-------->
+									
 									<tr>
 										<td>user Name</td>
 									
@@ -237,7 +239,7 @@
 										<td>200</td>
 										<td>1400</td>
 									</tr>
-									<!-------->
+									
 									
 									
 										<tr>
@@ -257,7 +259,7 @@
 										<td>200</td>
 										<td>1400</td>
 									</tr>
-									<!-------->
+									
 									
 										<tr>
 										<td>user Name</td>
@@ -276,7 +278,7 @@
 										<td>200</td>
 										<td>1400</td>
 									</tr>
-									<!-------->
+								
 										<tr>
 										<td>user Name</td>
 									
@@ -294,7 +296,7 @@
 										<td>200</td>
 										<td>1400</td>
 									</tr>
-									<!-------->
+									
 										<tr>
 										<td>user Name</td>
 									
@@ -312,7 +314,7 @@
 										<td>200</td>
 										<td>1400</td>
 									</tr>
-									<!-------->
+								
 										<tr>
 										<td>user Name</td>
 									
@@ -330,7 +332,7 @@
 										<td>200</td>
 										<td>1400</td>
 									</tr>
-									<!-------->
+								
 										<tr>
 										<td>user Name</td>
 									
@@ -348,7 +350,7 @@
 										<td>200</td>
 										<td>1400</td>
 									</tr>
-									<!-------->
+									
 										<tr>
 										<td>user Name</td>
 									
@@ -366,7 +368,7 @@
 										<td>200</td>
 										<td>1400</td>
 									</tr>
-									<!-------->
+								
 									
 									
 									<tr>
@@ -386,7 +388,7 @@
 										<td>200</td>
 										<td>1400</td>
 									</tr>
-									<!-------->
+									
 									
 									<tr>
 										<td>user Name</td>
@@ -405,7 +407,7 @@
 										<td>200</td>
 										<td>1400</td>
 									</tr>
-									<!-------->
+								
 									
 									<tr>
 										<td>user Name</td>
@@ -424,7 +426,7 @@
 										<td>200</td>
 										<td>1400</td>
 									</tr>
-									<!-------->
+									
 									
 									<tr>
 										<td>user Name</td>
@@ -445,7 +447,7 @@
 									</tr>
 									
 								</tbody>
-							</table>	
+							</table>-->	
 						</div>
 							
 					</div>
@@ -484,8 +486,133 @@ $(function() {
 });
 
 	
-	
+function getUserTypes(divId)
+{
+	var jsObj =
+	{
+
+	}
+	$.ajax({
+	type:'GET',
+	url: 'getSurveyUserTypeAction.action',
+	dataType: 'json',
+	data: {task:JSON.stringify(jsObj)},
+	}).done(function(result){
+	$('#'+divId+'').find('option:not(:first)').remove();
+	if(result != null && result.length > 0)
+	{
+	for(var i in result)
+	{
+	$('#'+divId+'').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+	}
+
+	}
+
+	});
+}
+function getDayWiseReport()
+{
+	var constituencyId = $("#constituencyId").val();
+	var userTypeId = $("#userType").val();
+	var startDate = $("#fromDate").val();
+	var endDate = $("#toDate").val();
+	var jObj =
+	{
+	 constituencyId:constituencyId,
+     userTypeId:userTypeId,
+	 startDate:startDate,
+	 endDate:endDate	
+
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getDayWisereportDetailsByConstituencyId.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){
+				buildDayWiseReport(result);
+		});
+}
+
+function buildDayWiseReport(result)
+{
+  var str = '';
+
+  str+='<table border="1">';
+  str+='<thead>';
+   str+='<tr>';
+    str+='<th>UserName</th>';
+	$.each(result[0].subList,function(index,value){
+      str+='<th>'+value.surveyDate+'</th>';
+	});
+   str+='</tr>';
+  str+='</thead>';
+  str+='<tbody>';
+  
+    $.each(result,function(index,value){
+		 str+='<tr>';
+		 str+='<td>'+value.userName+'</td>';
+		   $.each(value.subList,function(index1,value1){
+			    str+='<td><a href="javascript:{getDayWiseReportDetailsOfUser('+value.userid+')}">'+value1.count+'</a></td>';
+		   });
+		str+='</tr>';
+	});
+  
+  str+='</tbody>';
+  str+='</table>';
+
+  $('#dayWiseReportDiv').html(str);
+}
+
+
+function getDayWiseReportDetailsOfUser(userId)
+{
+	var jObj =
+	{
+	 userId:userId,
+	 startDate:"07/01/2014",
+	 endDate:"07/04/2014"
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getBoothWiseUserSamplesDetailsByDates.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){
+				buildUserBoothWiseCountDetails(result);
+		});
+}
+
+
+function buildUserBoothWiseCountDetails(result)
+{
+  var str ='';
+
+  str+='<table border="1">';
+   str+='<thead>';
+    str+='<tr>';
+	  str+='<th>Booth No</th>';
+	  str+='<th>Total</th>';
+	  str+='<th>Completed</th>';
+	str+='</tr>';
+   str+='</thead>';	  
+   str+='<tbody>';
+    $.each(result,function(index,value){
+		str+='<tr>';
+		str+='<td>'+value.partNo+'</td>';
+		str+='<td>'+value.totalVoters+'</td>';
+		str+='<td>'+value.count+'</td>';
+		str+='</tr>';
+	});
+   str+='</tbody>';
+  str+='</table>';
+
+  $('#boothWiseCountDivId').html(str);
+  $('#boothWiseCountDivId').dialog();
+}
 	</script>
-	
+	<script>
+	getUserTypes('userType');
+	</script>
   </body>
  </html>
