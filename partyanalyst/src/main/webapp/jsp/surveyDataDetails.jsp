@@ -95,7 +95,7 @@
 									<textarea id="userTypeDescription" class="input-block-level" rows="2"></textarea>
 								</div>
 							</div>
-							<div class="row text-center m_top20"><button onClick="saveSurveyUserType();" type="button" class="btn btn-large btn-success">UPDATE</button></div>
+							<div class="row text-center m_top20"><button onClick="saveSurveyUserType();" type="button" class="btn btn-large btn-success">CREATE</button></div>
 					</div>
 				</div>
 			</div>
