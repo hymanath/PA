@@ -16,7 +16,7 @@ public interface ISurveyDataDetailsService
 	public ResultStatus saveSurveyUser(String firstName,String lastName,String userName,String password,String address,String mobileNo,Long userTypeId);
 	public ResultStatus saveSurveyUserTabAssign(Long surveyUserId,String tabNo,String remarks,Date date);
 	public ResultStatus saveSurveyUserBoothAssign(Long surveyUserId,Long constituencyId,List<Long> boothIds);
-	public ResultStatus saveServeyUserRelationDetails(Long userTypeId,Long surveyUserId,Long leaderId,Long constituencyId);
+	public ResultStatus saveServeyUserRelationDetails(Long userTypeId,List<Long> surveyUserId,Long leaderId,Long constituencyId);
 	public ResultStatus saveSurveyUserTrackingDetails(Long surveyUserId,String longitude , String latitude,Date date);
 	public ResultStatus deactivateUser(Long userId,String remarks);
 	public ResultStatus saveSurveyDataDetailsInfo(List<SurveyResponceVO> surveyResponceList);
@@ -35,5 +35,7 @@ public interface ISurveyDataDetailsService
 	public List<SurveyResponceVO> getDetailsForVerifier(Long surveyUserId,Long boothId);
 	public ResultStatus saveSurveyUserTrackingDetails(Long surveyUserId,Date date,String longitude,String latitude);
 	public List<GenericVO> getSurveyUsersForAssignToLeader(Long userTypeId);
+	public ResultStatus updateServeyUserRelationDetails(Long userTypeId,List<Long> surveyUserIds,Long leaderId,Long constituencyId);
+	public List<GenericVO> releaseLeadersWithUser(Long leaderId);
 	//public List<SurveyResponceVO> getSurveyUserBoothsAndVoterDetails(Long surveyUserId);
 }

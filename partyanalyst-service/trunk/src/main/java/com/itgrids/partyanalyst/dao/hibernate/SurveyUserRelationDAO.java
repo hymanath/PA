@@ -35,7 +35,27 @@ public class SurveyUserRelationDAO extends GenericDaoHibernate<SurveyUserRelatio
 	{
 		Query query = getSession().createQuery("select distinct model.surveyUser.surveyUserId, model.surveyUser.userName from SurveyUserRelation model where " +
 				" model.surveyUser.surveyUserType.surveyUsertypeId = :usertypeId  and model.activeStatus = 'Y'");
-		
+		query.setParameter("usertypeId", usertypeId);
 		return query.list();
+	}
+	
+	public List<Object[]> getUserForAssignedUser(Long leaderId)
+	{
+		Query query = getSession().createQuery("select distinct model.surveyUser.surveyUserId, model.surveyUser.userName,model.constituency.constituencyId,model.constituency.name from SurveyUserRelation model where " +
+				"  model.surveyLeader.surveyUserId = :leaderId  and model.activeStatus = 'Y'");
+		query.setParameter("leaderId", leaderId);
+		return query.list();
+	}
+	
+	public int updateUserLeaderRelations(Long userTypeId,List<Long> surveyUserIds,Long leaderId,Long constituencyId)
+	{
+		Query query = getSession().createQuery("update SurveyUserRelation model set model.activeStatus = 'N' where model.surveyUser.surveyUserId in (:surveyUserIds) and model.constituency.constituencyId = :constituencyId " +
+				" and  model.surveyLeader.surveyUserId = :leaderId and model.surveyUserType.surveyUsertypeId = :userTypeId");
+		query.setParameter("userTypeId", userTypeId);
+		query.setParameter("leaderId", leaderId);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameterList("surveyUserIds", surveyUserIds);
+		int count = query.executeUpdate();
+		return count;
 	}
 }

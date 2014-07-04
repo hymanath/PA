@@ -332,29 +332,36 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	 * @param constituencyId
 	 * @return resultStatus
 	 */
-	public ResultStatus saveServeyUserRelationDetails(Long userTypeId,Long surveyUserId,Long leaderId,Long constituencyId)
+	public ResultStatus saveServeyUserRelationDetails(Long userTypeId,List<Long> surveyUserIds,Long leaderId,Long constituencyId)
 	{
 		LOG.info("Entered into saveServeyUserRelationDetails service in SurveyDataDetailsService");
 		ResultStatus resultStatus = new ResultStatus();
 		try 
 		{
-			SurveyUserRelation surveyUserRelation = new SurveyUserRelation();
-			surveyUserRelation.setSurveyUserType(surveyUserTypeDAO.get(userTypeId));
-			surveyUserRelation.setSurveyUser(surveyUserDAO.get(surveyUserId));
-			surveyUserRelation.setSurveyLeader(surveyUserDAO.get(leaderId));
-			surveyUserRelation.setConstituency(constituencyDAO.get(constituencyId));
-			surveyUserRelation.setActiveStatus("Y");
-			SurveyUserRelation result = surveyUserRelationDAO.save(surveyUserRelation);
-			if(result != null)
+			if(surveyUserIds != null && surveyUserIds.size() > 0)
 			{
-				resultStatus.setResultCode(0);
-				resultStatus.setMessage("Success");
+				for (Long surveyUserId : surveyUserIds)
+				{
+					SurveyUserRelation surveyUserRelation = new SurveyUserRelation();
+					surveyUserRelation.setSurveyUserType(surveyUserTypeDAO.get(userTypeId));
+					surveyUserRelation.setSurveyUser(surveyUserDAO.get(surveyUserId));
+					surveyUserRelation.setSurveyLeader(surveyUserDAO.get(leaderId));
+					surveyUserRelation.setConstituency(constituencyDAO.get(constituencyId));
+					surveyUserRelation.setActiveStatus("Y");
+					SurveyUserRelation result = surveyUserRelationDAO.save(surveyUserRelation);
+					if(result != null)
+					{
+						resultStatus.setResultCode(0);
+						resultStatus.setMessage("Success");
+					}
+					else
+					{
+						resultStatus.setResultCode(1);
+						resultStatus.setMessage("Failure");
+					}
+				}
 			}
-			else
-			{
-				resultStatus.setResultCode(1);
-				resultStatus.setMessage("Failure");
-			}
+			
 		}
 		catch (Exception e)
 		{
@@ -1239,6 +1246,75 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		}
 		return resultStatus;
 	}
+	
+	public List<GenericVO> releaseLeadersWithUser(Long leaderId)
+	{
+		List<GenericVO> returnList = null;
+		try
+		{
+			List<Object[]> result = surveyUserRelationDAO.getUserForAssignedUser(leaderId);
+			if(result != null && result.size() > 0)
+			{
+				returnList = new ArrayList<GenericVO>();
+				for (Object[] parms : result) 
+				{
+					GenericVO genericVO = new GenericVO();
+					genericVO.setId(parms[0] != null ? (Long)parms[0] : 0l);
+					genericVO.setName(parms[1] != null ? parms[1].toString() : "");
+					genericVO.setRank(parms[2] != null ? (Long)parms[2] : 0l);
+					genericVO.setDesc(parms[3] != null ? parms[3].toString() : "");
+					returnList.add(genericVO);
+				}
+				
+			}
+		} 
+		catch (Exception e) 
+		{
+			LOG.error("Exception raised in releaseLeadersWithUser service in SurveyDataDetailsService", e);
+		}
+		return returnList;
+	}
+	
+	
+	/**
+	 * This Service is used for Update the user relations.
+	 * @param userTypeId
+	 * @param surveyUserId
+	 * @param leaderId
+	 * @param constituencyId
+	 * @return resultStatus
+	 */
+	public ResultStatus updateServeyUserRelationDetails(Long userTypeId,List<Long> surveyUserIds,Long leaderId,Long constituencyId)
+	{
+		LOG.info("Entered into saveServeyUserRelationDetails service in SurveyDataDetailsService");
+		ResultStatus resultStatus = new ResultStatus();
+		try 
+		{
+			if(surveyUserIds != null && surveyUserIds.size() > 0)
+			{
+				int count = surveyUserRelationDAO.updateUserLeaderRelations(userTypeId,surveyUserIds, leaderId, constituencyId);
+				if(count > 0)
+				{
+					resultStatus.setResultCode(0);
+					resultStatus.setMessage("Success");
+				}
+				else
+				{
+					resultStatus.setResultCode(1);
+					resultStatus.setMessage("Failure");
+				}
+			}
+			
+		}
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in saveServeyUserRelationDetails service in SurveyDataDetailsService", e);
+			resultStatus.setResultCode(3);
+			resultStatus.setMessage("Exception");
+		}
+		return resultStatus;
+	}
+	
 	/*public List<SurveyResponceVO> getSurveyUserBoothsAndVoterDetails(Long surveyUserId)
 	{
 		List<SurveyResponceVO> resultList = new ArrayList<SurveyResponceVO>();
