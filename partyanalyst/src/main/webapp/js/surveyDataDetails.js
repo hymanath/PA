@@ -28,14 +28,40 @@ function getSurveyUsersByUserTypeForLeaderAssign(divId)
 	var value = $('#typeId').val();
 	if(value == 3)
 	{
-		getSurveyUsersByUserType(divId,1);
+		getRemeaningSurveyUsersByUserType(divId,1);
 	}
 	else
 	{
-		getSurveyUsersByUserType(divId,4);
+		getRemeaningSurveyUsersByUserType(divId,4);
 	}
 	
 }
+
+function getRemeaningSurveyUsersByUserType(divId,value)
+{
+	var jsObj =
+	{
+	userTypeId :value,
+	task : "getRemeaningSurveyUsersByUserType"
+	}
+	$.ajax({
+	type:'GET',
+	url: 'getNotAssignedSurveyUsersByUserTypeAction.action',
+	dataType: 'json',
+	data: {task:JSON.stringify(jsObj)},
+	}).done(function(result){
+	$('#'+divId+'').find('option:not(:first)').remove();
+	if(result != null && result.length > 0)
+	{
+	for(var i in result)
+	{
+	$('#'+divId+'').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+	}
+
+	}
+	});
+}
+
 function getSurveyUsersByUserType(divId,value)
 {
 	var jsObj =

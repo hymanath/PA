@@ -245,6 +245,26 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		return Action.SUCCESS;
 	}
 	
+	
+	public String getNotAssignedSurveyUsersByUserType()
+	{
+		try
+		{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			jObj = new JSONObject(getTask());
+			returnList = surveyDataDetailsService.getSurveyUsersForAssignToLeader(jObj.getLong("userTypeId"));
+		} 
+		catch (Exception e)
+		{
+			
+		}
+		return Action.SUCCESS;
+	}
 	public String saveServeyUserRelationDetails()
 	{
 		try
