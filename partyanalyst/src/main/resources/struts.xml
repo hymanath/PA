@@ -7360,6 +7360,12 @@
 		</action>
 		
 			
+			
+		<action name="dailyVerificationReportsAction" class="surveyDataDetailsAction">
+			<result name="success">/jsp/dailyVerificationReports.jsp</result>
+		</action>
+		
+		
 </package>
 		
 </struts>      
