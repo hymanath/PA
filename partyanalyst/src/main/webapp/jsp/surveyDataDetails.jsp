@@ -358,6 +358,8 @@
 
                             <div id="dayWiseReportDiv"></div>
  						    <div id="boothWiseCountDivId"></div>
+							<a class="btn btn-primary btn-large" href="javascript:{getComparisionReport()}">TEST</a>
+							
 							<!--<a class="btn btn-primary btn-large" href="javascript:{getDayWiseReport()}">TEST</a>-->
 					</div>
 				</div>
@@ -511,6 +513,23 @@ $(".highlight").click(function()
 	$(".highlight").removeClass("selected");
 	$(this).addClass("selected");
 })
+
+function getComparisionReport()
+{
+	var jObj =
+	{
+	 boothId:383457
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getReportForVerificationByBoothId.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){
+				console.log(result);
+		});
+
+}
 </script>
 </body>
 </html>
