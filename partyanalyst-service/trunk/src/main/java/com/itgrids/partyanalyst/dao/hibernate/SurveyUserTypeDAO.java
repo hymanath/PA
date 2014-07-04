@@ -24,7 +24,7 @@ public class SurveyUserTypeDAO extends GenericDaoHibernate<SurveyUserType, Long>
 	
 	public List<Object[]> getAllUserTypes()
 	{
-		Query query = getSession().createQuery("select model.surveyUsertypeId,model.description from SurveyUserType model ");
+		Query query = getSession().createQuery("select model.surveyUsertypeId,model.userType from SurveyUserType model ");
 		
 		return query.list();
 	}
