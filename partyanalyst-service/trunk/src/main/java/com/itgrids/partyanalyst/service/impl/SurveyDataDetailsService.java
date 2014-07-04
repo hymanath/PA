@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -613,6 +614,25 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		catch (Exception e)
 		{
 			LOG.error("Exception raised in getSurveyUsersByUserType service in SurveyDataDetailsService", e);
+		}
+		 return returnList;
+	}
+	
+	public List<GenericVO> getSurveyUsersForAssignToLeader(Long userTypeId)
+	{
+		List<GenericVO> returnList = null;
+		try
+		{
+			List<Object[]> result = surveyUserDAO.getSurveyUsersByUserTypeForLeaderAssign(userTypeId);
+			if(result != null && result.size() > 0)
+			{
+				returnList = new ArrayList<GenericVO>();
+				fillGenericVO(result,returnList);
+			}
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getSurveyUsersForAssignToLeader service in SurveyDataDetailsService", e);
 		}
 		 return returnList;
 	}
