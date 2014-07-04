@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service.impl;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -984,11 +985,23 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		try
 		{
 		   // DateFormat df = new SimpleDateFormat("MM/dd/yyyy"); 
-			 DateFormat df = new SimpleDateFormat("yyyy-mm-dd"); 
+			/* DateFormat df = new SimpleDateFormat("yyyy-mm-dd"); 
 		    Date startDt =  df.parse(startDate);
-		    Date endDt =  df.parse(endDate);
+		    Date endDt =  df.parse(endDate);*/
+			
+			SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
+			SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd" );
+			Date strdate;
+			Date enddate;
+			strdate = originalFormat.parse(startDate);
+			Date convertedstrdate = targetFormat.parse(targetFormat.format(strdate));			
+			
+			enddate = originalFormat.parse(endDate);
+			Date convertedenddate = targetFormat.parse(targetFormat.format(enddate));
 		    
-			List<Object[]> dayWiseReportDtls = surveyDetailsInfoDAO.getDayWisereportDetailsByConstituencyId(constituencyId,startDt,endDt,userTypeId);
+			List<Object[]> dayWiseReportDtls = surveyDetailsInfoDAO.getDayWisereportDetailsByConstituencyId(constituencyId,convertedstrdate,convertedenddate,userTypeId);
+		    
+			
 			
 			List<Long> userIds = new ArrayList<Long>();
 			SortedSet<String> surveyDates = new TreeSet<String>();
@@ -1008,6 +1021,11 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				for(String surveyDate:surveyDates)
 				{
 					SurveyReportVO dateVO = new SurveyReportVO();
+					SimpleDateFormat inFormat = new SimpleDateFormat("yyyy-MM-dd");
+					SimpleDateFormat outFormat = new SimpleDateFormat("dd-MMM-yyyy");
+					Calendar c = Calendar.getInstance();
+					c.setTime(inFormat.parse(surveyDate));
+					dateVO.setSurveyDate1(outFormat.format(c.getTime()));
 					dateVO.setSurveyDate(surveyDate);
 					userVO.getSubList().add(dateVO);
 				}
@@ -1017,11 +1035,15 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			
              for(Object[] obj:dayWiseReportDtls)
              {
+            	
             	 SurveyReportVO userVO = getMatchedUserVO(reportList,(Long)obj[1]);
-            	 userVO.setUserName(obj[2].toString());
-            	 SurveyReportVO dateVO = getMatchedSurveyDateVO(userVO.getSubList(),obj[3].toString());
-            	 dateVO.setCount((Long)obj[0]);
-            	 
+	            	
+	            	 userVO.setUserName(obj[2] != null ? obj[2].toString() : "");
+		            	
+		             SurveyReportVO dateVO = getMatchedSurveyDateVO(userVO.getSubList(),obj[3].toString());
+		             dateVO.setCount(obj[0] != null ? (Long)obj[0] : 0l);
+		            	
+            	
              }
 			
 		}catch(Exception e)
@@ -1072,13 +1094,25 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		List<SurveyReportVO> resultList = new ArrayList<SurveyReportVO>();
 		
 		 try {
-			DateFormat df = new SimpleDateFormat("MM/dd/yyyy"); 
+			/*DateFormat df = new SimpleDateFormat("MM/dd/yyyy"); 
 			    
 			    Date startDt =  df.parse(startDate);
 			    Date endDt =  df.parse(endDate);
 			
 			List<Object[]> boothWiseCountList =  surveyDetailsInfoDAO.getBoothWiseUserSamplesDetailsByDates(userId,startDt,endDt);
+			*/
+			 
+			 SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
+				SimpleDateFormat targetFormat = new SimpleDateFormat("MM-dd-yyyy" );
+				Date strdate;
+				Date enddate;
+				strdate = originalFormat.parse(startDate);
+				Date convertedstrdate = targetFormat.parse(targetFormat.format(strdate));			
+				
+				enddate = originalFormat.parse(endDate);
+				Date convertedenddate = targetFormat.parse(targetFormat.format(enddate));
 			
+			List<Object[]> boothWiseCountList =  surveyDetailsInfoDAO.getBoothWiseUserSamplesDetailsByDates(userId,convertedstrdate,convertedenddate);
 			List<Long> boothIds = new ArrayList<Long>();
 			
 			for(Object[] obj:boothWiseCountList)
