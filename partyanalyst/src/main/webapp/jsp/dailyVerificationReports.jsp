@@ -56,13 +56,13 @@
 										<div class="span2">
 											From Date <font class="requiredFont">*</font>
 											<div class="input-append">
-											<input type="text" placeholder="From Date..." class="input-block-level date" id="fromDate">
+											<input type="text" placeholder="From Date..." class="input-block-level date" id="fromDate" readonly>
 											</div>
 										</div>
 										<div class="span2">
 											To Date <font class="requiredFont">*</font>
 											<div class="input-append">
-											 <input type="text" placeholder="To Date..." class="input-block-level date" id="toDate">
+											 <input type="text" placeholder="To Date..." class="input-block-level date" id="toDate" readonly>
 											</div>
 										</div>
 									</div>	
@@ -73,389 +73,20 @@
 									</div>
 									</div>
 							<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getDayWiseReport()">SUBMIT</button></div>
+							<img src='images/Loading-data.gif' class="offset5" style="width:70px;height:60px;display:none;"/>
 					</div>
 				</div>
 				
 				<div class="row-fluid " >
+				
 					<div class="span12 m_top20 widgetservey" id="reportDiv" style="display:none;">
+					
 						<h4 id="heading">Verifier Report For Daily Verification </br><small style="color:#333;padding-bottom:10px;display:inline-block;">  From 26 - June - 2014 to 3 - July - 2014 </small> </h4>
 							
-						<div class="row-fluid" style="overflow:scroll; height:500px;">
+						<div class="row-fluid" style=" height:300px;">
 						<div id="dayWiseReportDiv"></div>
  						    <div id="boothWiseCountDivId"></div>
-							<!--<table class="table table-bordered m_top20 table-hover table-striped username">
 							
-								<thead class="alert alert-success">
-									<tr> 
-										<th rowspan="2">USER NAME</th>										
-										<th colspan="1"rowspan="1">DATE</th>										
-										<th colspan="2">26-June-2014</th>
-										<th colspan="2">26-June-2014</th>
-										<th colspan="2">26-June-2014</th>
-										<th colspan="2">26-June-2014</th>
-										<th colspan="2">26-June-2014</th>
-										<th colspan="2">26-June-2014</th>
-										
-														
-										
-									</tr>
-									<tr> 
-																			
-										<th>Booth No</th>
-										<th><small>Total Voter</small></th>
-										<th><small>Verified Voters</small></th>
-										<th><small>Total Voter</small></th>
-										<th><small>Verified Voters</small></th>
-										<th><small>Total Voter</small></th>
-										<th><small>Verified Voters</small></th>
-										<th><small>Total Voter</small></th>
-										<th><small>Verified Voters</small></th>
-										<th><small>Total Voter</small></th>
-										<th><small>Verified Voters</small></th>
-										<th><small>Total Voter</small></th>
-										<th><small>Verified Voters</small></th>
-										
-													
-														
-										
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<td>user Name</td>
-										<td>10</td>
-										<td>500</td>
-										<td>500</td>
-										<td>900</td>
-										<td>900</td>
-										<td>900</td>
-										<td>900</td>
-										<td>700</td>
-										<td>900</td>
-										<td>500</td>
-										<td>500</td>
-										<td>800</td>
-										<td>500</td>
-										
-									</tr>
-									
-									
-									<tr>
-										<td>user Name</td>
-									
-										<td>105</td>
-										<td>1000</td>
-										<td>1000</td>
-										<td>500</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>800</td>
-										<td>800</td>
-										<td>200</td>
-										<td>1400</td>
-									</tr>
-									
-									<tr>
-										<td>user Name</td>
-									
-										<td>105</td>
-										<td>1000</td>
-										<td>1000</td>
-										<td>500</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>800</td>
-										<td>800</td>
-										<td>200</td>
-										<td>1400</td>
-									</tr>
-									
-									<tr>
-										<td>user Name</td>
-									
-										<td>105</td>
-										<td>1000</td>
-										<td>1000</td>
-										<td>500</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>800</td>
-										<td>800</td>
-										<td>200</td>
-										<td>1400</td>
-									</tr>
-									
-									<tr>
-										<td>user Name</td>
-									
-										<td>105</td>
-										<td>1000</td>
-										<td>1000</td>
-										<td>500</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>800</td>
-										<td>800</td>
-										<td>200</td>
-										<td>1400</td>
-									</tr>
-									
-									<tr>
-										<td>user Name</td>
-									
-										<td>105</td>
-										<td>1000</td>
-										<td>1000</td>
-										<td>500</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>800</td>
-										<td>800</td>
-										<td>200</td>
-										<td>1400</td>
-									</tr>
-									
-									<tr>
-										<td>user Name</td>
-									
-										<td>105</td>
-										<td>1000</td>
-										<td>1000</td>
-										<td>500</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>800</td>
-										<td>800</td>
-										<td>200</td>
-										<td>1400</td>
-									</tr>
-									
-									
-									
-										<tr>
-										<td>user Name</td>
-									
-										<td>105</td>
-										<td>1000</td>
-										<td>1000</td>
-										<td>500</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>800</td>
-										<td>800</td>
-										<td>200</td>
-										<td>1400</td>
-									</tr>
-									
-									
-										<tr>
-										<td>user Name</td>
-									
-										<td>105</td>
-										<td>1000</td>
-										<td>1000</td>
-										<td>500</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>800</td>
-										<td>800</td>
-										<td>200</td>
-										<td>1400</td>
-									</tr>
-								
-										<tr>
-										<td>user Name</td>
-									
-										<td>105</td>
-										<td>1000</td>
-										<td>1000</td>
-										<td>500</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>800</td>
-										<td>800</td>
-										<td>200</td>
-										<td>1400</td>
-									</tr>
-									
-										<tr>
-										<td>user Name</td>
-									
-										<td>105</td>
-										<td>1000</td>
-										<td>1000</td>
-										<td>500</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>800</td>
-										<td>800</td>
-										<td>200</td>
-										<td>1400</td>
-									</tr>
-								
-										<tr>
-										<td>user Name</td>
-									
-										<td>105</td>
-										<td>1000</td>
-										<td>1000</td>
-										<td>500</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>800</td>
-										<td>800</td>
-										<td>200</td>
-										<td>1400</td>
-									</tr>
-								
-										<tr>
-										<td>user Name</td>
-									
-										<td>105</td>
-										<td>1000</td>
-										<td>1000</td>
-										<td>500</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>800</td>
-										<td>800</td>
-										<td>200</td>
-										<td>1400</td>
-									</tr>
-									
-										<tr>
-										<td>user Name</td>
-									
-										<td>105</td>
-										<td>1000</td>
-										<td>1000</td>
-										<td>500</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>800</td>
-										<td>800</td>
-										<td>200</td>
-										<td>1400</td>
-									</tr>
-								
-									
-									
-									<tr>
-										<td>user Name</td>
-									
-										<td>105</td>
-										<td>1000</td>
-										<td>1000</td>
-										<td>500</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>800</td>
-										<td>800</td>
-										<td>200</td>
-										<td>1400</td>
-									</tr>
-									
-									
-									<tr>
-										<td>user Name</td>
-									
-										<td>105</td>
-										<td>1000</td>
-										<td>1000</td>
-										<td>500</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>800</td>
-										<td>800</td>
-										<td>200</td>
-										<td>1400</td>
-									</tr>
-								
-									
-									<tr>
-										<td>user Name</td>
-									
-										<td>105</td>
-										<td>1000</td>
-										<td>1000</td>
-										<td>500</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>1200</td>
-										<td>800</td>
-										<td>800</td>
-										<td>200</td>
-										<td>1400</td>
-									</tr>
-									
-									
-									<tr>
-										<td>user Name</td>
-										
-										<td>25</td>
-										<td>500</td>
-										<td>500</td>
-										<td>500</td>
-										<td>500</td>
-										<td>500</td>
-										<td>500</td>
-										<td>600</td>
-										<td>900</td>
-										<td>900</td>
-										<td>800</td>
-										<td>200</td>
-										<td>1400</td>
-									</tr>
-									
-								</tbody>
-							</table>-->	
 						</div>
 							
 					</div>
@@ -522,6 +153,7 @@ function getDayWiseReport()
 {
 
 $("#dayWiseReportDiv").html('');
+$("#heading").html('');
 	var constituencyId = $("#constituencyId").val();
 	var userTypeId = $("#userType").val();
 	var startDate = $("#fromDate").val();
@@ -564,6 +196,7 @@ $("#dayWiseReportDiv").html('');
 		 return;
 		}
 	}
+	$("#mainajaximg").show();
 	var jObj =
 	{
 	 constituencyId:constituencyId,
@@ -579,7 +212,7 @@ $("#dayWiseReportDiv").html('');
 			dataType: 'json',
 			data: {task:JSON.stringify(jObj)},
 		  }).done(function(result){
-				
+				$("#mainajaximg").hide();
 				$("#reportDiv").css("display","block");
 						buildDayWiseReport(result,heading,startDate,endDate);
 				
@@ -589,16 +222,20 @@ $("#dayWiseReportDiv").html('');
 function buildDayWiseReport(result,heading,startDate,endDate)
 {
 
-	$("#heading").html(''+heading+'Report For Daily Verification ');
+	$("#heading").html(''+heading+'  Report For Daily Verification ');
 	$("#errorDiv").html("");
+	if(result.length == 0)
+	 $('#dayWiseReportDiv').html('<font style="color:red;">No data available....</font>');
+	 else
+	 {
   var str = '';
 
-  str+='<table border="1">';
-  str+='<thead>';
+  str+='<table class="table table-bordered m_top20 table-hover table-striped offset3" style="width:422px;">';
+  str+='<thead class="alert alert-success">';
    str+='<tr>';
     str+='<th>UserName</th>';
 	$.each(result[0].subList,function(index,value){
-      str+='<th>'+value.surveyDate+'</th>';
+      str+='<th>'+value.surveyDate1+'</th>';
 	});
    str+='</tr>';
   str+='</thead>';
@@ -608,7 +245,7 @@ function buildDayWiseReport(result,heading,startDate,endDate)
 		 str+='<tr>';
 		 str+='<td>'+value.userName+'</td>';
 		   $.each(value.subList,function(index1,value1){
-			    str+='<td><a href="javascript:{getDayWiseReportDetailsOfUser('+value.userid+',\''+startDate+'\'),\''+endDate+'\'}">'+value1.count+'</a></td>';
+			    str+='<td><a href="javascript:{getDayWiseReportDetailsOfUser('+value.userid+')}">'+value1.count+'</a></td>';
 		   });
 		str+='</tr>';
 	});
@@ -617,13 +254,16 @@ function buildDayWiseReport(result,heading,startDate,endDate)
   str+='</table>';
 
   $('#dayWiseReportDiv').html(str);
+  }
 }
 
 
-function getDayWiseReportDetailsOfUser(userId,startDate,endDate)
+function getDayWiseReportDetailsOfUser(userId)
 {
 	
   $('#boothWiseCountDivId').html('');
+  var startDate = $("#fromDate").val();
+	var endDate = $("#toDate").val();
 	var jObj =
 	{
 	 userId:userId,
@@ -645,8 +285,8 @@ function buildUserBoothWiseCountDetails(result)
 {
   var str ='';
 
-  str+='<table border="1">';
-   str+='<thead>';
+  str+='<table class="table table-bordered m_top20 table-hover table-striped username">';
+   str+='<thead class="alert alert-success">';
     str+='<tr>';
 	  str+='<th>Booth No</th>';
 	  str+='<th>Total</th>';
@@ -665,7 +305,16 @@ function buildUserBoothWiseCountDetails(result)
   str+='</table>';
 
   $('#boothWiseCountDivId').html(str);
-  $('#boothWiseCountDivId').dialog();
+  $('#boothWiseCountDivId').dialog({
+			
+			autoOpen: true,
+			show: "blind",
+			width: 500,
+			
+			modal: true,
+			height:"auto",
+			hide: "explode"
+		});
 }
 	</script>
 	<script>
