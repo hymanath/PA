@@ -20,8 +20,8 @@ public class SurveyReportVO {
 	private SurveyReportVO thirdParty;
 	
 	private String voterName;
-	private boolean isCadre;
-	private boolean isInfluencePeople;
+	private String isCadre;
+	private String isInfluencePeople;
     private String caste;
     private String localArea;
     private Long hamletId;
@@ -30,9 +30,43 @@ public class SurveyReportVO {
     private Long casteId;
     private Long totalVoters;
     
+    private boolean cadreMatched;
+    private boolean influencePeopleMatched;
+    private boolean localAreaMatched;
+    private boolean hamletMatched;
+    private boolean casteMatched;
     
 	
-	
+	public boolean isCasteMatched() {
+		return casteMatched;
+	}
+	public void setCasteMatched(boolean casteMatched) {
+		this.casteMatched = casteMatched;
+	}
+	public boolean isCadreMatched() {
+		return cadreMatched;
+	}
+	public void setCadreMatched(boolean cadreMatched) {
+		this.cadreMatched = cadreMatched;
+	}
+	public boolean isInfluencePeopleMatched() {
+		return influencePeopleMatched;
+	}
+	public void setInfluencePeopleMatched(boolean influencePeopleMatched) {
+		this.influencePeopleMatched = influencePeopleMatched;
+	}
+	public boolean isLocalAreaMatched() {
+		return localAreaMatched;
+	}
+	public void setLocalAreaMatched(boolean localAreaMatched) {
+		this.localAreaMatched = localAreaMatched;
+	}
+	public boolean isHamletMatched() {
+		return hamletMatched;
+	}
+	public void setHamletMatched(boolean hamletMatched) {
+		this.hamletMatched = hamletMatched;
+	}
 	public Long getTotalVoters() {
 		return totalVoters;
 	}
@@ -51,16 +85,16 @@ public class SurveyReportVO {
 	public void setVoterName(String voterName) {
 		this.voterName = voterName;
 	}
-	public boolean isCadre() {
+	public String isCadre() {
 		return isCadre;
 	}
-	public void setCadre(boolean isCadre) {
+	public void setCadre(String isCadre) {
 		this.isCadre = isCadre;
 	}
-	public boolean isInfluencePeople() {
+	public String isInfluencePeople() {
 		return isInfluencePeople;
 	}
-	public void setInfluencePeople(boolean isInfluencePeople) {
+	public void setInfluencePeople(String isInfluencePeople) {
 		this.isInfluencePeople = isInfluencePeople;
 	}
 	public String getCaste() {
