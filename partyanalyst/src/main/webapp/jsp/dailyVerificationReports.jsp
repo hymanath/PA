@@ -22,6 +22,11 @@
 			.username td:first-child{ min-width: 200px; }		
 			.username th small{ font-size:11px; }				
 			.username th{ text-align:center; }
+			
+			.requiredFont{
+				color:red;
+				font-size:13px;
+			}
 		</style>	
 	
   </head>
@@ -33,28 +38,31 @@
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top20">
 							<h4>Verifier Report</h4>
+							<div class="row">
+						<div id="errorDiv" class="span8 offset2"></div>
+						</div>
 								<div class="row">
 								<div class="span8 offset2">
 									<div class="row-fluid">
 										
 										<div class="span5">
-											<label>Select Constituency</label>
+											Select Constituency <font class="requiredFont">*</font>
 												<s:select theme="simple"  name="constituency" id="constituencyId"  headerKey="0" headerValue="Select Constituency" list="constituenciesList" listKey="id" listValue="name" />
 										</div>
 										<div class="span3">
-											<label>User Type</label>
+											User Type <font class="requiredFont">*</font>
 											<select class="input-block-level" id = "userType"> <option value="0">Select User Type</option></select>
 										</div>
 										<div class="span2">
-											<label>From Date</label>
+											From Date <font class="requiredFont">*</font>
 											<div class="input-append">
-											<input type="text" placeholder="User Name..." class="input-block-level date" id="fromDate">
+											<input type="text" placeholder="From Date..." class="input-block-level date" id="fromDate">
 											</div>
 										</div>
 										<div class="span2">
-											<label>To Date</label>
+											To Date <font class="requiredFont">*</font>
 											<div class="input-append">
-											 <input type="text" placeholder="User Name..." class="input-block-level date" id="toDate">
+											 <input type="text" placeholder="To Date..." class="input-block-level date" id="toDate">
 											</div>
 										</div>
 									</div>	
@@ -516,6 +524,45 @@ function getDayWiseReport()
 	var userTypeId = $("#userType").val();
 	var startDate = $("#fromDate").val();
 	var endDate = $("#toDate").val();
+	
+	if(constituencyId == 0)
+	{
+		$("#errorDiv").html("Please Select Constituency").css("color","red");
+		return;
+	}
+	if(userTypeId == 0)
+	{
+		$("#errorDiv").html("Please Select User Type").css("color","red");
+		return;
+	}
+	if(startDate.length == 0 || endDate.length == 0)
+	{
+		$("#errorDiv").html("Please Select From Date").css("color","red");
+		return;
+	}
+	if( endDate.length == 0)
+	{
+		$("#errorDiv").html("Please Select To Date").css("color","red");
+		return;
+	}
+	if(startDate.length > 0 && endDate.length > 0 )
+	{		    
+		  var dt1  = parseInt(startDate.substring(0,2),10);
+		  var mon1 = parseInt(startDate.substring(3,5),10);
+		  var yr1  = parseInt(startDate.substring(6,10),10);
+		  var dt2  = parseInt(endDate.substring(0,2),10);
+		  var mon2 = parseInt(endDate.substring(3,5),10);
+		  var yr2  = parseInt(endDate.substring(6,10),10);
+		  var date1 = new Date(yr1, mon1, dt1);
+		  var date2 = new Date(yr2, mon2, dt2);
+
+		if(date2 < date1)
+		{ 
+		 $('#errorDiv').html("From Date should be Less Than To Date");
+		 return;
+		}
+	}
+	
 	var jObj =
 	{
 	 constituencyId:constituencyId,
@@ -536,6 +583,7 @@ function getDayWiseReport()
 
 function buildDayWiseReport(result)
 {
+	$("#errorDiv").html("");
   var str = '';
 
   str+='<table border="1">';
