@@ -627,9 +627,18 @@ function getBoothDetailsForSelectedUser(leaderId,constituencyId)
 					str += '<tr>';								  
 					str += '<td>'+result[i].name+'</td>';
 					str += '<td>';
+					var length = result[i].genericVOList.length;
 					for(var j in result[i].genericVOList)
 					{
-						str += '<a>'+result[i].genericVOList[j].rank+' , </a>';
+						
+						if(j == length-1)
+						{
+							str += '<a>'+result[i].genericVOList[j].rank+' </a>';
+						}
+						else
+						{
+							str += '<a>'+result[i].genericVOList[j].rank+' , </a>';
+						}
 					}
 					str += ' </td>';
 					str += '</tr>';	
