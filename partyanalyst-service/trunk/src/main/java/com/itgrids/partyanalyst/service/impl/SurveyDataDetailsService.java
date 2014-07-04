@@ -975,8 +975,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		List<SurveyReportVO> reportList = new ArrayList<SurveyReportVO>();
 		try
 		{
-		    DateFormat df = new SimpleDateFormat("MM/dd/yyyy"); 
-		    
+		   // DateFormat df = new SimpleDateFormat("MM/dd/yyyy"); 
+			 DateFormat df = new SimpleDateFormat("yyyy-mm-dd"); 
 		    Date startDt =  df.parse(startDate);
 		    Date endDt =  df.parse(endDate);
 		    
