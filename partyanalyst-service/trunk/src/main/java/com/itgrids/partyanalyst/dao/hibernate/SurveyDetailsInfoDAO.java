@@ -15,14 +15,16 @@ public class SurveyDetailsInfoDAO extends GenericDaoHibernate<SurveyDetailsInfo,
 		super(SurveyDetailsInfo.class);
 	}
 	
-	public List<Object[]> getDayWisereportDetailsByConstituencyId(Long constituencyId,Date startDate,Date endDate)
+	public List<Object[]> getDayWisereportDetailsByConstituencyId(Long constituencyId,Date startDate,Date endDate,Long userTypeId)
 	{
-		Query query = getSession().createQuery("select count(*),SDI.surveyUser.surveyUserId,SDI.surveyUser.userName,DATE(SDI.date) from " +
-				"SurveyDetailsInfo SDI where SDI.constituency.constituencyId = :constituencyId  and date(SDI.date) >= :startDate and " +
+		Query query = getSession().createQuery("select count(SDI.booth.constituency.constituencyId),SDI.surveyUser.surveyUserId,SDI.surveyUser.userName,DATE(SDI.date) from " +
+				"SurveyDetailsInfo SDI where SDI.booth.constituency.constituencyId = :constituencyId  and date(SDI.date) >= :startDate and " +
 				" date(SDI.date) <= :endDate group by " +
 				"SDI.surveyUser.surveyUserId,DATE(SDI.date)");
 		
 		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("startDate", startDate);
+		query.setParameter("endDate", endDate);
 		
 		return query.list();
 		
@@ -31,16 +33,17 @@ public class SurveyDetailsInfoDAO extends GenericDaoHibernate<SurveyDetailsInfo,
 	public List<Object[]> getBoothWiseUserSamplesDetailsByDates(Long userId,Date startDate,Date endDate)
 	{
 		
-		Query query = getSession().createQuery("select count(SDI.surveyDetailsInfoId),BPV.booth.boothId,BPV.booth.partNo " +
+		Query query = getSession().createQuery("select count(SDI.booth.constituency.constituencyId),BPV.booth.boothId,BPV.booth.partNo " +
 				"from SurveyDetailsInfo SDI,BoothPublicationVoter BPV where " +
 				"SDI.voter.voterId = BPV.voter.voterId and " +
-				"BPV.publicationDate.publicationDateId = :publicationDateId and " +
-				"DATE(SDI.date) >= :startDate and DATE(SDI.date) <= :endDate group by " +
+				"BPV.booth.publicationDate.publicationDateId = :publicationDateId and " +
+				"DATE(SDI.date) >= :startDate and DATE(SDI.date) <= :endDate and SDI.surveyUser.surveyUserId = :surveyUserId group by " +
 				"BPV.booth.boothId");
 		
 		query.setParameter("publicationDateId", 10L);
 		query.setParameter("startDate", startDate);
 		query.setParameter("endDate", endDate);
+		query.setParameter("surveyUserId", userId);
 		
 		return query.list();
 		
