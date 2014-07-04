@@ -76,9 +76,9 @@
 					</div>
 				</div>
 				
-				<div class="row-fluid ">
-					<div class="span12 m_top20 widgetservey">
-						<h4>Verifier Report For Daily Verification </br><small style="color:#333;padding-bottom:10px;display:inline-block;">  From 26 - June - 2014 to 3 - July - 2014 </small> </h4>
+				<div class="row-fluid " >
+					<div class="span12 m_top20 widgetservey" id="reportDiv" style="display:none;">
+						<h4 id="heading">Verifier Report For Daily Verification </br><small style="color:#333;padding-bottom:10px;display:inline-block;">  From 26 - June - 2014 to 3 - July - 2014 </small> </h4>
 							
 						<div class="row-fluid" style="overflow:scroll; height:500px;">
 						<div id="dayWiseReportDiv"></div>
@@ -520,11 +520,13 @@ function getUserTypes(divId)
 }
 function getDayWiseReport()
 {
+
+$("#dayWiseReportDiv").html('');
 	var constituencyId = $("#constituencyId").val();
 	var userTypeId = $("#userType").val();
 	var startDate = $("#fromDate").val();
 	var endDate = $("#toDate").val();
-	
+	var heading = $( "#userType option:selected" ).text();
 	if(constituencyId == 0)
 	{
 		$("#errorDiv").html("Please Select Constituency").css("color","red");
@@ -562,13 +564,13 @@ function getDayWiseReport()
 		 return;
 		}
 	}
-	
 	var jObj =
 	{
 	 constituencyId:constituencyId,
      userTypeId:userTypeId,
 	 startDate:startDate,
-	 endDate:endDate	
+	 endDate:endDate,
+	heading:heading
 
 	}
 	$.ajax({
@@ -577,12 +579,17 @@ function getDayWiseReport()
 			dataType: 'json',
 			data: {task:JSON.stringify(jObj)},
 		  }).done(function(result){
-				buildDayWiseReport(result);
+				
+				$("#reportDiv").css("display","block");
+						buildDayWiseReport(result,heading,startDate,endDate);
+				
 		});
 }
 
-function buildDayWiseReport(result)
+function buildDayWiseReport(result,heading,startDate,endDate)
 {
+
+	$("#heading").html(''+heading+'Report For Daily Verification ');
 	$("#errorDiv").html("");
   var str = '';
 
@@ -601,7 +608,7 @@ function buildDayWiseReport(result)
 		 str+='<tr>';
 		 str+='<td>'+value.userName+'</td>';
 		   $.each(value.subList,function(index1,value1){
-			    str+='<td><a href="javascript:{getDayWiseReportDetailsOfUser('+value.userid+')}">'+value1.count+'</a></td>';
+			    str+='<td><a href="javascript:{getDayWiseReportDetailsOfUser('+value.userid+',\''+startDate+'\'),\''+endDate+'\'}">'+value1.count+'</a></td>';
 		   });
 		str+='</tr>';
 	});
@@ -613,13 +620,15 @@ function buildDayWiseReport(result)
 }
 
 
-function getDayWiseReportDetailsOfUser(userId)
+function getDayWiseReportDetailsOfUser(userId,startDate,endDate)
 {
+	
+  $('#boothWiseCountDivId').html('');
 	var jObj =
 	{
 	 userId:userId,
-	 startDate:"07/01/2014",
-	 endDate:"07/04/2014"
+	 startDate:startDate,
+	 endDate:endDate
 	}
 	$.ajax({
 			type:'GET',
