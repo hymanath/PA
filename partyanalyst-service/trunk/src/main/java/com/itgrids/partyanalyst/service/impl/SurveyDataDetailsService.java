@@ -528,7 +528,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		{
 			LOG.error("Exception raised in saveSurveyDataDetailsInfo service in SurveyDataDetailsService", e);
 			resultStatus.setResultCode(3);
-			resultStatus.setMessage("Exception");		}
+			resultStatus.setMessage("Exception");
+		}
 		return resultStatus;
 	}
 	
@@ -1152,7 +1153,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			}
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			LOG.error("Exception raised in getReportForVerification service in SurveyDataDetailsService", e);
 		}
 		
@@ -1168,6 +1169,38 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	}
 	
 	
+	public ResultStatus saveSurveyUserTrackingDetails(Long surveyUserId,Date date,String longitude,String latitude)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try
+		{
+			SurveyUserTracking surveyUserTracking = new SurveyUserTracking();
+			surveyUserTracking.setSurveyUser(surveyUserDAO.get(surveyUserId));
+			surveyUserTracking.setDate(date);
+			surveyUserTracking.setLongitude(longitude);
+			surveyUserTracking.setLatitude(latitude);
+			surveyUserTracking.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+			surveyUserTracking.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+			SurveyUserTracking result = surveyUserTrackingDAO.save(surveyUserTracking);
+			if(result != null)
+			{
+				resultStatus.setResultCode(0);
+				resultStatus.setMessage("Success");
+			}
+			else
+			{
+				resultStatus.setResultCode(1);
+				resultStatus.setMessage("Failure");
+			}
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in saveSurveyUserTrackingDetails service in SurveyDataDetailsService", e);
+			resultStatus.setResultCode(3);
+			resultStatus.setMessage("Exception");
+		}
+		return resultStatus;
+	}
 	/*public List<SurveyResponceVO> getSurveyUserBoothsAndVoterDetails(Long surveyUserId)
 	{
 		List<SurveyResponceVO> resultList = new ArrayList<SurveyResponceVO>();
