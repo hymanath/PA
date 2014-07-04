@@ -380,10 +380,11 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			
 			String startDate = jObj.getString("startDate");
 			String endDate = jObj.getString("endDate");
+			Long userTypeId = jObj.getLong("userTypeId");
 			
 			dayWiseReportList = surveyDataDetailsService
 					.getDayWisereportDetailsByConstituencyId(jObj
-							.getLong("constituencyId"),startDate,endDate);
+							.getLong("constituencyId"),startDate,endDate,userTypeId);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
