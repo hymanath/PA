@@ -355,6 +355,10 @@
 								</div>
 									</div>
 							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onClick="assignLeaderToUser();">ASSIGN</button></div>
+
+                            <div id="dayWiseReportDiv"></div>
+ 						    <div id="boothWiseCountDivId"></div>
+							<a class="btn btn-primary btn-large" href="javascript:{getDayWiseReport()}">TEST</a>
 					</div>
 				</div>
 			</div>
@@ -367,5 +371,98 @@
 		<div class="row" id="leaderNameDiv"></div>
 		
 	</div>
+<script>
+function getDayWiseReport()
+{
+	var jObj =
+	{
+	 constituencyId:232,
+     userTypeId:1,
+	 startDate:"07/01/2014",
+	 endDate:"07/04/2014"	
+
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getDayWisereportDetailsByConstituencyId.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){
+				buildDayWiseReport(result);
+		});
+}
+function buildDayWiseReport(result)
+{
+  var str = '';
+
+  str+='<table border="1">';
+  str+='<thead>';
+   str+='<tr>';
+    str+='<th>UserName</th>';
+	$.each(result[0].subList,function(index,value){
+      str+='<th>'+value.surveyDate+'</th>';
+	});
+   str+='</tr>';
+  str+='</thead>';
+  str+='<tbody>';
+  
+    $.each(result,function(index,value){
+		 str+='<tr>';
+		 str+='<td>'+value.userName+'</td>';
+		   $.each(value.subList,function(index1,value1){
+			    str+='<td><a href="javascript:{getDayWiseReportDetailsOfUser('+value.userid+')}">'+value1.count+'</a></td>';
+		   });
+		str+='</tr>';
+	});
+  
+  str+='</tbody>';
+  str+='</table>';
+
+  $('#dayWiseReportDiv').html(str);
+}
+function getDayWiseReportDetailsOfUser(userId)
+{
+	var jObj =
+	{
+	 userId:userId,
+	 startDate:"07/01/2014",
+	 endDate:"07/04/2014"
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getBoothWiseUserSamplesDetailsByDates.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){
+				buildUserBoothWiseCountDetails(result);
+		});
+}
+function buildUserBoothWiseCountDetails(result)
+{
+  var str ='';
+
+  str+='<table border="1">';
+   str+='<thead>';
+    str+='<tr>';
+	  str+='<th>Booth No</th>';
+	  str+='<th>Total</th>';
+	  str+='<th>Completed</th>';
+	str+='</tr>';
+   str+='</thead>';	  
+   str+='<tbody>';
+    $.each(result,function(index,value){
+		str+='<tr>';
+		str+='<td>'+value.partNo+'</td>';
+		str+='<td>'+value.totalVoters+'</td>';
+		str+='<td>'+value.count+'</td>';
+		str+='</tr>';
+	});
+   str+='</tbody>';
+  str+='</table>';
+
+  $('#boothWiseCountDivId').html(str);
+  $('#boothWiseCountDivId').dialog();
+}
+</script>
 </body>
 </html>
