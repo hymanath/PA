@@ -362,6 +362,48 @@
 					</div>
 				</div>
 			</div>
+			
+			<div class="span10 offset1">
+				<div class="row-fluid ">
+					<div class="span12 widgetservey_Red m_top20">
+						<h4>Release Leaders To User</h4>
+						<div class="row">
+								<div id="assignLeaderErrorDivForRelease" class="span8 offset2 errorCls"></div>
+							</div>
+							<div class="row">
+								<div class="span8 offset2">
+									<div class="row-fluid">
+										
+										<div class="span6">
+											Select user Type<font class="requiredFont">*</font>
+											<select class="input-block-level" id="typeIdForRelease" onChange="getSurveyUsersByUserType('leaderIdForRelease',this.value);"> <option value="0">Select Type</option><option value="3">Lead</option><option value="5">Chief Verifier</option></select>
+										</div>
+										<div class="span6">
+											Select  Leader<font class="requiredFont">*</font>
+											<select class="input-block-level" id="leaderIdForRelease" onChange="getSurveyUsersByUserTypeForLeaderRelease();"> <option value="0">Select Leader</option></select>
+										</div>
+									</div>	
+									<div class="row-fluid">
+										
+										<div class="span6">
+											Select User<font class="requiredFont">*</font>
+											<select class="input-block-level" id="userLeaderIdForRelease"> <option value="0">Select User</option></select>
+										</div>
+										
+										<div class="span6">
+											Select Constituency<font class="requiredFont">*</font>
+											<!--<s:select theme="simple"  name="constituency" id="constituencyLeaderId" list="constituenciesList" listKey="id" listValue="name" />-->
+											<select class="input-block-level" id="constituencyLeaderIdForRelease"> 
+											<option value="0">Select Constituency</option>
+											</select>
+										</div>
+									</div>
+								</div>
+									</div>
+							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onClick="updateLeaderUserReleation();">RELEASE</button></div>
+					</div>
+				</div>
+			</div>
 		</div>
 		
 		<!---- User Verification Details ---->	
