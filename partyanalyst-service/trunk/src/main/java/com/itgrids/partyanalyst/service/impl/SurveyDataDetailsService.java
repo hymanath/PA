@@ -112,9 +112,10 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	
 	@Autowired
 	public IBoothPublicationVoterDAO boothPublicationVoterDAO;
-
+	
 	@Autowired
-	public TransactionTemplate transactionTemplate;
+	private TransactionTemplate transactionTemplate;
+
 	
 	/**
 	 * This Service is used for saving the user type details
@@ -463,7 +464,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			resultStatus.setMessage("Exception");
 		}
 		return resultStatus;
-	}
+}
 	
 	/**
 	 * This Service is Used For Saving Survey Data
@@ -1251,8 +1252,10 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
                 subTypeVO.setVoterName(surveyDtlsInfo.getVoter().getName());
                 subTypeVO.setUserid(surveyDtlsInfo.getSurveyUser().getSurveyUserId());
                 subTypeVO.setLocalArea(surveyDtlsInfo.getLocalArea());
-                
+                subTypeVO.setSurveyDetailsInfoId(surveyDtlsInfo.getSurveyDetailsInfoId());
+                subTypeVO.setVoterIDCardNo(surveyDtlsInfo.getVoter().getVoterIDCardNo());
                 subTypeVO.setCasteId(surveyDtlsInfo.getCaste().getCasteStateId());
+                subTypeVO.setVerified(surveyDtlsInfo.getVerified());     
                 
                 if(surveyDtlsInfo.getHamlet() != null)
                 {
@@ -1260,7 +1263,6 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	             subTypeVO.setHamletId(surveyDtlsInfo.getHamlet().getHamletId());
                 }
 
-				
 				if(surveyDtlsInfo.getSurveyUser().getSurveyUserType().getSurveyUsertypeId().equals(IConstants.DATA_COLLECTOR_TYPE_ID))// collector
 				{
 					voterVO.setDataCollector(subTypeVO);
@@ -1273,7 +1275,6 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				{
 					voterVO.setThirdParty(subTypeVO); //third party
 				}
-					
 			}
 			
 			checkForMatchedDetailsForDataCollectorAndVerifierAndThirdParty(resultList);
@@ -1334,7 +1335,6 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					{
 						voterVO.setCadreMatched(false);
 					}
-					
 					
 					
 					if (voterVO.getDataCollector().isInfluencePeople() == voterVO
@@ -1561,6 +1561,44 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			resultStatus.setMessage("Exception");
 		}
 		return resultStatus;
+	}
+	
+	public String saveVerifiedRecordsDetails(final List<Long> verifierIds)
+	{
+		LOG.info("Entered into saveVerifiedRecordsDetails service in SurveyDataDetailsService");
+
+		try
+		{
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				public void doInTransactionWithoutResult(TransactionStatus status) {
+
+				for(Long verifierId:verifierIds)
+				{
+					SurveyDetailsInfo surveyDetailsInfo = surveyDetailsInfoDAO.get(verifierId);
+					
+						List<SurveyDetailsInfo> surveyDetailsInfos = surveyDetailsInfoDAO
+								.getVerifiedVotersDetailsBySurveyDetailsInfoId(surveyDetailsInfo
+										.getVoter().getVoterId());
+						
+						for(SurveyDetailsInfo info:surveyDetailsInfos)
+						{
+							info.setVerified("N");
+							surveyDetailsInfoDAO.save(info);
+
+						}
+					
+					surveyDetailsInfo.setVerified("Y");
+					
+					surveyDetailsInfoDAO.save(surveyDetailsInfo);
+				}
+			}});
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Exception raised in saveVerifiedRecordsDetails service in SurveyDataDetailsService", e);
+			return null;
+		}
+		return "success";
 	}
 	
 	/*public List<SurveyResponceVO> getSurveyUserBoothsAndVoterDetails(Long surveyUserId)
