@@ -631,8 +631,8 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<Object[]> getVoterDetaildsByBoothWise(Long boothId);
 	  
 	  public List<Object[]> getVoterTeluguNames(Long boothId);
-	 
-	  public List<Object[]> searchVoterdetailsByBoothAndName(Long boothId,String searchName,String searchType,Long publicationDateId,int firstRecord,int maxResult,String queryType);
+	  
+	 public List<Object[]> searchVoterdetailsByBoothAndName(Long boothId,String searchName,String searchType,Long publicationDateId,int firstRecord,int maxResult,String queryType);
 	  
 	  public List<Object[]> getDetailsByVoterIdCardNo(String voterIdCard,Long publicationId);
 	  
@@ -645,8 +645,8 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<Object[]> getVotersDetailsForConstId(Long constId, Long publicationDateId);
 	  public List<Object[]> getVotersDetailsForConstIdBasedOnName(Long constId, Long publicationDateId,String voterName) ;
 	  public List<Object[]> checkVoterInState(Long publicationDateId,String voterName,String relativeName,String gender,int age);
-	  
-	  public List<Object[]> getvoterDetailsInAPanchyat(Long panchayatId);
+	
+ public List<Object[]> getvoterDetailsInAPanchyat(Long panchayatId);
 	  
 	  public List<Object[]> getCasteDetailsForACaste(Long constituencyId,Long publicationDateId,Long casteStateId);
 	  public List<Object[]> getUrbanVotersDetails(
@@ -656,5 +656,20 @@ public interface IBoothPublicationVoterDAO extends
 	 public List<SurveyDetailsInfo> getVotersDetailsByBoothId(Long boothId);
 
 	  
+	  
+	  
+	  public List<Object[]> getAllBoothsInConstituency(Long constId,Long publicationDateId);
+	 // public List<Object[]> getVotersDetailsForBoothByPublicationIdAndBoothId(Long boothId, Long publicationDateId);
+	  public List<Object[]> getVotersDetailsForBoothByPublicationIdAndBoothId(Long boothId, Long publicationDateId,int min,int max) ;
+   
+	  public List<Object[]> getVotersDetailsByPublicationIdAndBoothIds(List<?> boothIds, Long publicationDateId,Long constId) ;
+
+	  public List<Object[]> getVotersDetailsByPublicationIdAndAvoidingBoothIds(List<?> boothIds, Long publicationDateId,Long constId) ;
+	  public List<Object[]> getVotersDetailsByPublicationIdAndCOnstituencyIds(Long publicationDateId,Long constId) ;
+
+
+
+
+	 
 	  
 }
