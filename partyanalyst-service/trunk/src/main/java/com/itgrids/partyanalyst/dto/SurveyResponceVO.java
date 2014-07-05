@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class SurveyResponceVO implements Serializable 
+import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserResponseVO;
+
+public class SurveyResponceVO extends UserResponseVO  implements Serializable  
 {
 
 	
@@ -34,20 +36,72 @@ public class SurveyResponceVO implements Serializable
 	private String gender;
 	private Long age;
 	private String houseNo;
+	private String dataTypeId;
+	
+	private List<String> partNos;
+	private List<String> boothIds;
+	private List<SurveyResponceVO> verifiersData;
 	private List<SurveyResponceVO> votersList = new ArrayList<SurveyResponceVO>();
 	
 	
+	
+	private String uuid;
+	private String statusId;
+	private String insertTime;
+	
+	
+	
+	
+	
+	
+	
+	public String getInsertTime() {
+		return insertTime;
+	}
+	public void setInsertTime(String insertTime) {
+		this.insertTime = insertTime;
+	}
+	public String getStatusId() {
+		return statusId;
+	}
+	public void setStatusId(String statusId) {
+		this.statusId = statusId;
+	}
+	public String getUuid() {
+		return uuid;
+	}
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
 	public Long getBoothId() {
 		return boothId;
 	}
 	public void setBoothId(Long boothId) {
 		this.boothId = boothId;
 	}
-	public List<SurveyResponceVO> getVotersList() {
-		return votersList;
+	public List<SurveyResponceVO> getVerifiersData() {
+		return verifiersData;
 	}
-	public void setVotersList(List<SurveyResponceVO> votersList) {
-		this.votersList = votersList;
+	public void setVerifiersData(List<SurveyResponceVO> verifiersData) {
+		this.verifiersData = verifiersData;
+	}
+	public List<String> getPartNos() {
+		return partNos;
+	}
+	public void setPartNos(List<String> partNos) {
+		this.partNos = partNos;
+	}
+	public List<String> getBoothIds() {
+		return boothIds;
+	}
+	public void setBoothIds(List<String> boothIds) {
+		this.boothIds = boothIds;
+	}
+	public String getDataTypeId() {
+		return dataTypeId;
+	}
+	public void setDataTypeId(String dataTypeId) {
+		this.dataTypeId = dataTypeId;
 	}
 	public Long getSurveyUserId() {
 		return surveyUserId;
