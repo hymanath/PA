@@ -32,7 +32,7 @@
 					filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffea51', endColorstr='#ffa600',GradientType=0 );
 					}
 			.survey_nav ul li{line-height:40px;}
-			.survey_nav ul li a{color:#333; font-weight:bold; font-size:13px; padding:12px 5px;text-decoration:none;text-shadow:0px 1px #ffcc00; }
+			.survey_nav ul li a{color:#333; font-weight:bold; font-size:12px; padding:12px 5px;text-decoration:none;text-shadow:0px 1px #ffcc00; }
 			.survey_nav ul li a:hover{background:rgba(255,0,0,0.1);}
 			.survey_nav ul li a.selected{color:#fff; background:red;text-shadow:0px 1px #4f4f4f; }
 			.requiredFont{
@@ -72,6 +72,7 @@
 					<li><a class="highlight" id="deactivationTab" onclick="showHideTabs(this.id);"> Deactivation </a></li>
 					<li><a class="highlight" id="assignLeaderTab" onclick="showHideTabs(this.id);"> Assign Leader</a></li>
 					<li><a class="highlight" id="verificationDetailsTab" onclick="showHideTabs(this.id);"> Verification Details	 </a></li>
+					<li><a class="highlight" id="reportTab" onclick="redicttoVerificationPage();"> Reports	 </a></li>
 				</ul>
 			</div>
 		</div>
