@@ -67,7 +67,7 @@
 									</div>-->
 									</div>
 									</div>
-							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onclick="getComparisionReport();">SUBMIT</button></div>
+							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onclick="getComparisionReport();">SUBMIT</button><img src='./images/icons/search.gif' id="ajaximg" style="display:none;"/></div>
 					</div>
 				</div>
 				
@@ -118,7 +118,7 @@ function getComparisionReport()
 		$("#reportErrorDiv").html("Please Select Booth").css("color","red");
 		return;
 	}
-	
+		$("#ajaximg").css("display","inline-block");
 	var jObj =
 	{
 	 boothId:boothId
@@ -129,7 +129,7 @@ function getComparisionReport()
 			dataType: 'json',
 			data: {task:JSON.stringify(jObj)},
 		  }).done(function(result){
-				console.log(result);
+				$("#ajaximg").css("display","none");
 				buildComparisonReport(result);
 		});
 
