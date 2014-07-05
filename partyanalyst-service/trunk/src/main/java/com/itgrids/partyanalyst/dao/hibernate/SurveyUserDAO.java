@@ -24,12 +24,38 @@ public class SurveyUserDAO extends GenericDaoHibernate<SurveyUser, Long> impleme
 		return (Long) query.uniqueResult();
 	}
 	
+	public Object getUserDetailsAndUserType(String userName,String password)
+	{
+		Query query = getSession().createQuery("select model.surveyUserId,model.surveyUserType.surveyUsertypeId from SurveyUser model where model.userName = :userName and model.password = :password");
+		query.setParameter("userName", userName);
+		query.setParameter("password", password);
+		return query.uniqueResult();
+	}
+	
+	public Object getUserAssignedBooths(long userId)
+	{
+		Query query = getSession().createQuery("select model.surveyUserId,model.surveyUserType.surveyUsertypeId from SurveyUser model where model.userName = :userName and model.password = :password");
+		
+		return query.uniqueResult();
+	}
+	
+	
+	
 	public List<Object[]> getSurveyUsersByUserType(Long userTypeId)
 	{
 		Query query = getSession().createQuery("select model.surveyUserId,model.userName from SurveyUser model where model.surveyUserType.surveyUsertypeId = :userTypeId and model.activeStatus = 'Y'");
 		query.setParameter("userTypeId", userTypeId);
 		return query.list();
 	}
+	
+	/*public List<Long> checkUserForVoter(long userId,long voterId)
+	{
+		
+		Query query = getSession().createQuery("select model.surveyUserId,model.userName from SurveyUser model where model.surveyUserType.surveyUsertypeId = :userTypeId and model.activeStatus = 'Y'");
+		query.setParameter("userTypeId", userTypeId);
+		return query.list();
+		return 
+	}*/
 	
 	public List<Object[]> getSurveyUsersByUserTypeForLeaderAssign(Long userTypeId)
 	{
