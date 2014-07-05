@@ -152,7 +152,7 @@ function buildComparisonReport(result)
 	for(var i in result)
 	{
 			str+='<tr>';		
-			str+='<td  class="span2">'+result[i].voterId+'</td>';
+			str+='<td  class="span2">'+result[i].voterIDCardNo+'</td>';
 			
 			if(result[i].dataCollector != null)
 			{
@@ -164,34 +164,16 @@ function buildComparisonReport(result)
 				str	+='<li><strong>Caste:</strong>'+result[i].dataCollector.casteId+'</li>';
 				str+='<li><strong>Hamlet:</strong>'+result[i].dataCollector.hamletName+'</li>';
 				str+='<li><strong>Local Area:</strong>'+result[i].dataCollector.localArea+'</li>';
-				str+='<li><strong>Cadre:</strong> </li>';
-				str+='<li><strong>Influence People:</strong></li>';
+				str+='<li><strong>Cadre:</strong>'+result[i].dataCollector.isCadre+' </li>';
+				str+='<li><strong>Influence People:</strong>'+result[i].dataCollector.isInfluencePeople+'</li>';
 				str+='</ul>';
 				str+='</div></td>';
 			}
 			else{
 				str+='<td class="span3"><div class="voterDetals_widget"></div></td>';
 				}						
-			if(result[i].thirdParty != null)
-			{	
-				str+='<td class="span3"><div class="voterDetals_widget">';
+			
 
-				if(result[i].thirdParty.verified == "Y")
-					str+='<ul class="unstyled"><li class="pull-right"><label><input type="radio" name="'+result[i].voterId+'"  value="'+result[i].thirdParty.surveyDetailsInfoId+'" class="voterChkbox" checked></label></li>';	
-				else
-					str+='<ul class="unstyled"><li class="pull-right"><label><input type="radio" name="'+result[i].voterId+'"  value="'+result[i].thirdParty.surveyDetailsInfoId+'" class="voterChkbox"></label></li>';	
-
-				str	+='<li><strong>Caste:</strong>'+result[i].thirdParty.casteId+'</li>';
-				str+='<li><strong>Hamlet:</strong>'+result[i].thirdParty.hamletName+'</li>';
-				str+='<li><strong>Local Area:</strong>'+result[i].thirdParty.localArea+'</li>';
-				str+='<li><strong>Cadre:</strong> </li>';
-				str+='<li><strong>Influence People:</strong></li>';
-				str+='</ul>';
-				str+='</div></td>';
-			}
-			else{
-					str+='<td class="span3"><div class="voterDetals_widget">No Records</div></td>';
-			}
 			if(result[i].verifier != null)
 			{	
 				str+='<td class="span3"><div class="voterDetals_widget">';
@@ -204,14 +186,35 @@ function buildComparisonReport(result)
 				str	+='<li><strong>Caste:</strong>'+result[i].verifier.casteId+'</li>';
 				str+='<li><strong>Hamlet:</strong>'+result[i].verifier.hamletName+'</li>';
 				str+='<li><strong>Local Area:</strong>'+result[i].verifier.localArea+'</li>';
-				str+='<li><strong>Cadre:</strong> </li>';
-				str+='<li><strong>Influence People:</strong></li>';
+				str+='<li><strong>Cadre:</strong> '+result[i].verifier.isCadre+'</li>';
+				str+='<li><strong>Influence People:</strong>'+result[i].verifier.isCadre+'</li>';
 				str+='</ul>';
 				str+='</div></td>';
 			}
 			else{
 				str+='<td class="span3"><div class="voterDetals_widget"></div></td>';
-			}						
+			}
+			
+			if(result[i].thirdParty != null)
+			{	
+				str+='<td class="span3"><div class="voterDetals_widget">';
+
+				if(result[i].thirdParty.verified == "Y")
+					str+='<ul class="unstyled"><li class="pull-right"><label><input type="radio" name="'+result[i].voterId+'"  value="'+result[i].thirdParty.surveyDetailsInfoId+'" class="voterChkbox" checked></label></li>';	
+				else
+					str+='<ul class="unstyled"><li class="pull-right"><label><input type="radio" name="'+result[i].voterId+'"  value="'+result[i].thirdParty.surveyDetailsInfoId+'" class="voterChkbox"></label></li>';	
+
+				str	+='<li><strong>Caste:</strong>'+result[i].thirdParty.casteId+'</li>';
+				str+='<li><strong>Hamlet:</strong>'+result[i].thirdParty.hamletName+'</li>';
+				str+='<li><strong>Local Area:</strong>'+result[i].thirdParty.localArea+'</li>';
+				str+='<li><strong>Cadre:</strong> '+result[i].thirdParty.isCadre+'</li>';
+				str+='<li><strong>Influence People:</strong>'+result[i].thirdParty.isCadre+'</li>';
+				str+='</ul>';
+				str+='</div></td>';
+			}
+			else{
+					str+='<td class="span3"><div class="voterDetals_widget">No Records</div></td>';
+			}
 			str+='</tr>';
 		}						
 		str+='</tbody></table>';
