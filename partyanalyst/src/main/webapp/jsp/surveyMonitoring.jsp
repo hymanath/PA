@@ -157,7 +157,10 @@ function buildComparisonReport(result)
 			if(result[i].dataCollector != null)
 			{
 				str+='<td class="span3"><div class="voterDetals_widget">';
-				str+='<ul class="unstyled"><li class="pull-right"><label><input type="radio" name="'+result[i].voterId+'"></label></li>';			
+				if(result[i].dataCollector.verified == "Y")
+					str+='<ul class="unstyled"><li class="pull-right"><label><input type="radio" name="'+result[i].voterId+'" value="'+result[i].dataCollector.surveyDetailsInfoId+'" class="voterChkbox" checked></label></li>';	
+				else
+					str+='<ul class="unstyled"><li class="pull-right"><label><input type="radio" name="'+result[i].voterId+'" value="'+result[i].dataCollector.surveyDetailsInfoId+'" class="voterChkbox"></label></li>';	
 				str	+='<li><strong>Caste:</strong>'+result[i].dataCollector.casteId+'</li>';
 				str+='<li><strong>Hamlet:</strong>'+result[i].dataCollector.hamletName+'</li>';
 				str+='<li><strong>Local Area:</strong>'+result[i].dataCollector.localArea+'</li>';
@@ -172,7 +175,12 @@ function buildComparisonReport(result)
 			if(result[i].thirdParty != null)
 			{	
 				str+='<td class="span3"><div class="voterDetals_widget">';
-				str+='<ul class="unstyled"><li class="pull-right"><label><input type="radio" name="'+result[i].voterId+'"></label></li>';			
+
+				if(result[i].thirdParty.verified == "Y")
+					str+='<ul class="unstyled"><li class="pull-right"><label><input type="radio" name="'+result[i].voterId+'"  value="'+result[i].thirdParty.surveyDetailsInfoId+'" class="voterChkbox" checked></label></li>';	
+				else
+					str+='<ul class="unstyled"><li class="pull-right"><label><input type="radio" name="'+result[i].voterId+'"  value="'+result[i].thirdParty.surveyDetailsInfoId+'" class="voterChkbox"></label></li>';	
+
 				str	+='<li><strong>Caste:</strong>'+result[i].thirdParty.casteId+'</li>';
 				str+='<li><strong>Hamlet:</strong>'+result[i].thirdParty.hamletName+'</li>';
 				str+='<li><strong>Local Area:</strong>'+result[i].thirdParty.localArea+'</li>';
@@ -187,7 +195,12 @@ function buildComparisonReport(result)
 			if(result[i].verifier != null)
 			{	
 				str+='<td class="span3"><div class="voterDetals_widget">';
-				str+='<ul class="unstyled"><li class="pull-right"><label><input type="radio" name="'+result[i].voterId+'"></label></li>';			
+
+				if(result[i].verifier.verified == "Y")
+					str+='<ul class="unstyled"><li class="pull-right"><label><input type="radio" name="'+result[i].voterId+'"  value="'+result[i].verifier.surveyDetailsInfoId+'" class="voterChkbox" checked></label></li>';
+				else
+					str+='<ul class="unstyled"><li class="pull-right"><label><input type="radio" name="'+result[i].voterId+'"  value="'+result[i].verifier.surveyDetailsInfoId+'" class="voterChkbox"></label></li>';
+
 				str	+='<li><strong>Caste:</strong>'+result[i].verifier.casteId+'</li>';
 				str+='<li><strong>Hamlet:</strong>'+result[i].verifier.hamletName+'</li>';
 				str+='<li><strong>Local Area:</strong>'+result[i].verifier.localArea+'</li>';
@@ -203,12 +216,35 @@ function buildComparisonReport(result)
 		}						
 		str+='</tbody></table>';
 		str+='</div>';
-		str+='<div class="row text-center m_top20"><button class="btn btn-large btn-success" type="button">UPDATE SANITY CHECK</button></div>';
+		str+='<div class="row text-center m_top20"><button class="btn btn-large btn-success" type="button" onClick="saveVerifiedRecordsDetails();">UPDATE SANITY CHECK</button></div>';
 		str+='</div></div>';
 		$("#comparisonReportId").html(str);
 		
 }
 
+
+function saveVerifiedRecordsDetails()
+{
+	var jObj =
+	{
+		verifiedIds : []
+	}
+
+	$('.voterChkbox').each(function(){
+		if(this.checked)
+			jObj.verifiedIds.push(this.value);
+	});
+
+	$.ajax({
+			type:'GET',
+			url: 'saveVerifiedRecordsDetails.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){
+				console.log(result);
+		});
+}
+	
 		
 	
 	</script>	
