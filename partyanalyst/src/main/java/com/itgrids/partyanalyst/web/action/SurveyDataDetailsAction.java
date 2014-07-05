@@ -25,6 +25,7 @@ import com.itgrids.partyanalyst.dto.SurveyReportVO;
 import com.itgrids.partyanalyst.dto.UserBoothDetailsVO;
 import com.itgrids.partyanalyst.model.Job;
 import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
+import com.itgrids.partyanalyst.service.impl.SurveyDetailsService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -45,7 +46,16 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	private List<SelectOptionVO> constituenciesList;
 	private List<SurveyReportVO> boothWiseCountList;
 	private List<SurveyReportVO> voterVerificationList;
+	private String status;
 	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	public List<SurveyReportVO> getVoterVerificationList() {
 		return voterVerificationList;
 	}
@@ -498,6 +508,28 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			e.printStackTrace();
 		}
 		
+		return Action.SUCCESS;
+		
+	}
+	
+	
+	public String saveVerifiedRecordsDetails()
+	{
+		try {
+			
+			List<Long> verifiedIds = new ArrayList<Long>();
+			jObj = new JSONObject(getTask());
+			JSONArray jarray = jObj.getJSONArray("verifiedIds");
+			for (Integer i = 0; i < jarray.length(); i++) 
+			{
+				verifiedIds.add(Long.valueOf(jarray.get(i).toString()));
+			}
+			
+			status = surveyDataDetailsService.saveVerifiedRecordsDetails(verifiedIds);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return Action.SUCCESS;
 		
 	}

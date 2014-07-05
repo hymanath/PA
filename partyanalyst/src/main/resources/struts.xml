@@ -7386,11 +7386,17 @@
 			<result name="success">/jsp/surveyMonitoring.jsp</result>
 		</action>
 		
+
 		<action name="getBoothDetailsByConstituencyAction" class="surveyDataDetailsAction" method="getBoothDetailsByConstituency">
 		<result type="json" name="success">
 				<param name="root">assgnedBoothsList</param>
 			</result>
 		</action>	
-</package>
+				<action name="saveVerifiedRecordsDetails" class="surveyDataDetailsAction" method="saveVerifiedRecordsDetails">
+		<result type="json" name="success">
+				<param name="root">voterVerificationList</param>
+			</result>
+		</action>
 		
+</package>
 </struts>      
