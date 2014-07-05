@@ -6951,32 +6951,33 @@ public List<Object[]> checkVoterInState(Long publicationDateId,String voterName,
 		return query.list();
 	}
 
-	public List<Object[]> getvoterDetailsInAPanchyat(Long panchayatId)
-	{
-		Query query = getSession().createQuery("select model.voter.gender,model.voter.name from BoothPublicationVoter model where model.booth.constituency.constituencyId = :panchayatId and model.booth.publicationDate.publicationDateId = 10");
-		query.setParameter("panchayatId",panchayatId);
-		return query.list();
-	}
-	
-	public List<Object[]> getCasteDetailsForACaste(Long constituencyId,Long publicationDateId,Long casteStateId)
-	{
-		Query query = getSession().createQuery("select model.voter.name,model3.mobile from BoothPublicationVoter model,UserVoterDetails model2,MobileNumbers model3 where model.voter.voterId = model2.voter.voterId and model.booth.constituency.constituencyId = :constituencyId and " +
-				" model.booth.publicationDate.publicationDateId = :publicationDateId and model2.casteState.casteStateId = :casteStateId and model2.user.userId = 1 and model.voter.voterIDCardNo = model3.idcardNO and model3.mobile is not null ");
-		query.setParameter("constituencyId", constituencyId);
-		query.setParameter("publicationDateId", publicationDateId);
-		query.setParameter("casteStateId", casteStateId);
-		return query.list();
-	}
-	
+public List<Object[]> getvoterDetailsInAPanchyat(Long panchayatId)
+{
+	Query query = getSession().createQuery("select model.voter.gender,model.voter.name from BoothPublicationVoter model where model.booth.constituency.constituencyId = :panchayatId and model.booth.publicationDate.publicationDateId = 10");
+	query.setParameter("panchayatId",panchayatId);
+	return query.list();
+}
+
+public List<Object[]> getCasteDetailsForACaste(Long constituencyId,Long publicationDateId,Long casteStateId)
+{
+	Query query = getSession().createQuery("select model.voter.name,model3.mobile from BoothPublicationVoter model,UserVoterDetails model2,MobileNumbers model3 where model.voter.voterId = model2.voter.voterId and model.booth.constituency.constituencyId = :constituencyId and " +
+			" model.booth.publicationDate.publicationDateId = :publicationDateId and model2.casteState.casteStateId = :casteStateId and model2.user.userId = 1 and model.voter.voterIDCardNo = model3.idcardNO and model3.mobile is not null ");
+	query.setParameter("constituencyId", constituencyId);
+	query.setParameter("publicationDateId", publicationDateId);
+	query.setParameter("casteStateId", casteStateId);
+	return query.list();
+}
+
+
 	public List<SurveyDetailsInfo> getVotersDetailsByBoothId(Long boothId)
-	{
+{
 	/*	Query query = getSession().createQuery("select SDI.voter.voterId,SDI.voter.name," +
 				"SDI.isCadre ,SDI.isInfluencingPeople ,SDI.casteId , SDI.localArea, SDI.hamlet,SDI.surveyUser.surveyUserId ," +
-				"SDI.surveyUser.userName , SDI.surveyUser.surveyUserType.description  " +
-				" from BoothPublicationVoter BPV , SurveyDetailsInfo SDI " +
-				"where " +
-				"BPV.booth.boothId = :boothId and " +
-				"BPV.voter.voterId = SDI.voter.voterId and " +
+			"SDI.surveyUser.userName , SDI.surveyUser.surveyUserType.description  " +
+			" from BoothPublicationVoter BPV , SurveyDetailsInfo SDI " +
+			"where" +
+			"BPV.booth.boothId = :boothId and" +
+			"BPV.voter.voterId = SDI.voter.voterId and " +
 				"BPV.booth.publicationDate.publicationDateId = :publicationDateId");*/
 		
 		Query query = getSession().createQuery("select SDI  " +
@@ -6984,21 +6985,114 @@ public List<Object[]> checkVoterInState(Long publicationDateId,String voterName,
 				"where " +
 				"BPV.booth.boothId = :boothId and " +
 				"BPV.voter.voterId = SDI.voter.voterId and " +
-				"BPV.booth.publicationDate.publicationDateId = :publicationDateId");
-		
-		query.setParameter("publicationDateId",10L);
-		query.setParameter("boothId", boothId);
-		
-		return query.list();
-		
-		
-	}
+			"BPV.booth.publicationDate.publicationDateId = :publicationDateId");
 	
-	public List<Object[]> getTotalVotersByBoothsForVerfier(Long boothIds,Long publicationDate)
-	{
-		 Query query = getSession().createQuery("select distinct model.voter.voterId,model.voter.houseNo,model.voter.gender,model.voter.age , model.voter.voterIDCardNo,model.name from BoothPublicationVoter model " +
-					" where model.booth.boothId in (:boothIds) and model.booth.publicationDate.publicationDateId = :publicationDate  ");
-		 query.setParameter("boothIds", boothIds);
-		 return query.list();
-	}
+		query.setParameter("publicationDateId",10L);
+	query.setParameter("boothId", boothId);
+	
+	return query.list();
+	
+
+
+	
+}
+
+public List<Object[]> getTotalVotersByBoothsForVerfier(Long boothIds,Long publicationDate)
+{
+	 Query query = getSession().createQuery("select distinct model.voter.voterId,model.voter.houseNo,model.voter.gender,model.voter.age ,model.voter.voterIDCardNo,model.voter.name from BoothPublicationVoter model " +
+				" where model.booth.boothId in (:boothIds) and model.booth.publicationDate.publicationDateId = :publicationDate  ");
+	 query.setParameter("boothIds", boothIds);
+	 query.setParameter("publicationDate", publicationDate);
+	 return query.list();
+}
+
+
+public List<Object[]> getAllBoothsInConstituency(Long constId,Long publicationDateId)
+{
+	Query query = getSession()
+			.createQuery("select booth.partNo,booth.boothId  from Booth booth where booth.constituency.constituencyId = :constId  and booth.publicationDate.publicationDateId = :publicationDateId  order by booth.partNo  ");
+	query.setParameter("publicationDateId", publicationDateId);
+	query.setParameter("constId", constId);
+	return query.list();
+	
+}
+
+public List<Object[]> getVotersDetailsForBoothByPublicationIdAndBoothId(Long boothId, Long publicationDateId,int min,int max) {
+
+	Query query = getSession()
+			.createQuery("select " +
+					"BPV.voter.voterId,BPV.voter.relationshipType," +
+					"BPV.voter.relativeName,BPV.voter.gender , " +
+					"BPV.voter.age,BPV.voter.voterIDCardNo,BPV.voter.name " +
+					" from " +
+					"BoothPublicationVoter BPV where BPV.booth.publicationDate.publicationDateId = :publicationDateId and  BPV.booth.constituency.constituencyId = :constId " );
+					//" BPV.booth.boothId = :boothId");
+	
+	query.setParameter("publicationDateId", publicationDateId);
+	query.setParameter("constId", boothId);
+	query.setFirstResult(min);
+	query.setMaxResults(max);
+
+	return query.list();
+}
+//get all constituencies in a 
+//getVoterIds for setOfBooths
+
+public List<Object[]> getVotersDetailsByPublicationIdAndBoothIds(List<?> boothIds, Long publicationDateId,Long constId) {
+
+	Query query = getSession()
+			.createQuery("select " +
+					"BPV.voter.voterId,BPV.voter.relationshipType," +
+					"BPV.voter.relativeName,BPV.voter.gender , " +
+					"BPV.voter.age,BPV.voter.voterIDCardNo,BPV.voter.name,BPV.booth.boothId,BPV.booth.partNo " +
+					" from " +
+					"BoothPublicationVoter BPV where BPV.booth.publicationDate.publicationDateId = :publicationDateId and  BPV.booth.constituency.constituencyId = :constId and " +//);
+					" BPV.booth.partNo in(:boothIds) group by BPV.voter.voterId order by BPV.voter.name " );
+	
+	query.setParameter("publicationDateId", publicationDateId);
+	query.setParameter("constId", constId);
+	query.setParameterList("boothIds", boothIds);
+	/*query.setFirstResult(min);
+	query.setMaxResults(max);*/
+
+	return query.list();
+}
+public List<Object[]> getVotersDetailsByPublicationIdAndAvoidingBoothIds(List<?> boothIds, Long publicationDateId,Long constId) {
+
+	Query query = getSession()
+			.createQuery("select " +
+					"BPV.voter.voterId,BPV.voter.relationshipType," +
+					"BPV.voter.relativeName,BPV.voter.gender , " +
+					"BPV.voter.age,BPV.voter.voterIDCardNo,BPV.voter.name,BPV.booth.boothId,BPV.booth.partNo " +
+					" from " +
+					"BoothPublicationVoter BPV where BPV.booth.publicationDate.publicationDateId = :publicationDateId and  BPV.booth.constituency.constituencyId = :constId and " +//);
+					" BPV.booth.partNo not in(:boothIds) group by BPV.voter.voterId order by BPV.voter.name " );
+	
+	query.setParameter("publicationDateId", publicationDateId);
+	query.setParameter("constId", constId);
+	query.setParameterList("boothIds", boothIds);
+	/*query.setFirstResult(min);
+	query.setMaxResults(max);*/
+
+	return query.list();
+}
+public List<Object[]> getVotersDetailsByPublicationIdAndCOnstituencyIds(Long publicationDateId,Long constId) {
+
+	Query query = getSession()
+			.createQuery("select " +
+					"BPV.voter.voterId,BPV.voter.relationshipType," +
+					"BPV.voter.relativeName,BPV.voter.gender , " +
+					"BPV.voter.age,BPV.voter.voterIDCardNo,BPV.voter.name,BPV.booth.boothId " +
+					" from " +
+					"BoothPublicationVoter BPV where BPV.booth.publicationDate.publicationDateId = :publicationDateId and  BPV.booth.constituency.constituencyId = :constId  " +//);
+					"  group by BPV.voter.voterId order by BPV.voter.name " );
+	
+	query.setParameter("publicationDateId", publicationDateId);
+	query.setParameter("constId", constId);
+	//query.setParameterList("boothIds", boothIds);
+	/*query.setFirstResult(min);
+	query.setMaxResults(max);*/
+
+	return query.list();
+}
 }
