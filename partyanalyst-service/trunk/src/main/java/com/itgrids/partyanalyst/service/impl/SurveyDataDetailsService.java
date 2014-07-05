@@ -1647,4 +1647,24 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		return null;
 	}*/
 	
+	public List<UserBoothDetailsVO> getBoothDetailsByConstituencyId(Long constituencyId)
+	{
+		List<UserBoothDetailsVO> resultList = new ArrayList<UserBoothDetailsVO>();
+		try {
+			long publicationId= boothDAO.getLatestPublicationDateIdForAConstituency(constituencyId);
+			List<Object[]> boothsList = boothDAO.getAllTheBoothsDetailsByConstituencyId(constituencyId,publicationId);
+			
+			for(Object[] parms:boothsList)
+			{
+				UserBoothDetailsVO vo = new UserBoothDetailsVO();
+				vo.setBoothId(parms[0] != null ? (Long)parms[0] : 0l);
+				vo.setPartNo(parms[1] != null ? parms[1].toString() : "");			
+				resultList.add(vo);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return resultList;
+	}
 }

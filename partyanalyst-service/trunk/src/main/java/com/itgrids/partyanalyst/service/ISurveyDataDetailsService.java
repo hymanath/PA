@@ -41,5 +41,6 @@ public interface ISurveyDataDetailsService
 	public ResultStatus updateServeyUserRelationDetails(Long userTypeId,List<Long> surveyUserIds,Long leaderId,Long constituencyId);
 	public List<GenericVO> releaseLeadersWithUser(Long leaderId);
 	//public List<SurveyResponceVO> getSurveyUserBoothsAndVoterDetails(Long surveyUserId);
+	public List<UserBoothDetailsVO> getBoothDetailsByConstituencyId(Long constituencyId);
 
 }
