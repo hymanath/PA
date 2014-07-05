@@ -18,7 +18,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  *
  */
 @Entity
-@Table(name = "survey_surveior_type;")
+@Table(name = "survey_surveior_type")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class SurveySurveyorType 
 {
