@@ -5948,6 +5948,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 				for (Object[] param : fileaddresList) {
 					Long scopeId = Long.valueOf(param[0].toString());
 					Long scopeValue = Long.valueOf(param[1].toString());
+					Long constituencyId = (Long)param[2];
 					String locationName =null;
 					String locationId = null;
 					String assLocElecBdyId =null;
@@ -5979,7 +5980,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 						break;
 					case 6:
 							Hamlet hamlet = hamletDAO.get(scopeValue);
-							locationName = hamlet.getPanchayatName();
+							locationName = hamlet.getHamletName();
 							locationId = "2"+hamlet.getHamletId().toString();
 						break;
 					case 7:
@@ -6034,6 +6035,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 						selectOptionVO.setName(locationName);
 						selectOptionVO.setLocation(locationId);	
 						selectOptionVO.setValue(assLocElecBdyId);
+						selectOptionVO.setConstituencyId(constituencyId);
 						newsAreaDetails.add(selectOptionVO);
 					}
 				}

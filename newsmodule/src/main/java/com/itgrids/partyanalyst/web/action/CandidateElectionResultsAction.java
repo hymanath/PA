@@ -183,9 +183,20 @@ public class CandidateElectionResultsAction extends ActionSupport implements
     private CandidatePartyNewsVO candidatePartyNewsVOList;
     private Long responseFileId;
     private String responseFileIdsStr;
+    public List<Long> selectedConstituId;
     
     
 	
+
+	public List<Long> getSelectedConstituId() {
+		return selectedConstituId;
+	}
+
+
+	public void setSelectedConstituId(List<Long> selectedConstituId) {
+		this.selectedConstituId = selectedConstituId;
+	}
+
 
 	public String getNewsSynopsysDesc() {
 		return newsSynopsysDesc;
@@ -1663,7 +1674,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		  fileVO.setKeyWordsList(keywordsList);
 		  
 		}*/
-		
+		fileVO.setSelectedConstituId(getSelectedConstituId());
 		fileVO.setResponseFileIdsStr(responseFileIdsStr);
 		
 	    fileVO.setCandidatePartyNewsVOList(candidatePartyNewsVOList);

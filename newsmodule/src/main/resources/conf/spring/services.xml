@@ -1801,5 +1801,10 @@
     <bean name="keywordsService" class="com.itgrids.partyanalyst.service.impl.KeywordsService">
    		<property name="keywordDAO" ref="keywordDAO" />  		
    </bean>
+   
+   <bean name="newsReportService" class="com.itgrids.partyanalyst.service.impl.NewsReportService">
+   		<property name="candidatePartyFileDAO" ref="candidatePartyFileDAO" /> 
+   		<property name="partyDAO" ref="partyDAO" /> 		
+   </bean>
 </beans>		
 	

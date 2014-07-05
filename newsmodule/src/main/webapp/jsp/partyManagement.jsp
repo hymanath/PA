@@ -3101,6 +3101,7 @@ function addNewLocation(){
   str = str.replace(/constituencyDiv0/gi,'constituencyDiv'+newsLocCloneNo);
   str = str.replace(/mandalDiv0/gi,'mandalDiv'+newsLocCloneNo);
   str = str.replace('mandalId[0]','mandalId['+newsLocCloneNo+']');
+  str = str.replace('selectedConstituId[0]','selectedConstituId['+newsLocCloneNo+']');
   str = str.replace(/villageDiv0/gi,'villageDiv'+newsLocCloneNo);
   $("#newsLocationMainDiv").append(str);
   newsLocCloneNo=newsLocCloneNo+1;

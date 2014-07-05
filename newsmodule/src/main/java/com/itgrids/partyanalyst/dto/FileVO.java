@@ -163,7 +163,18 @@ public class FileVO extends ResultStatus implements Serializable {
 	private Long pathId;
 	private NewsAnalysisVO tdpPartyEffect;
 	private NewsAnalysisVO otherPartyEffect;
+	private Long actualConstiId;
+	private List<Long> selectedConstituId;
 	
+	
+	public List<Long> getSelectedConstituId() {
+		return selectedConstituId;
+	}
+
+	public void setSelectedConstituId(List<Long> selectedConstituId) {
+		this.selectedConstituId = selectedConstituId;
+	}
+
 	public List<CandidatePartyNewsVO> getNewsCandidateDetails() {
 		return newsCandidateDetails;
 	}
@@ -1445,6 +1456,14 @@ public class FileVO extends ResultStatus implements Serializable {
 
 	public void setOtherPartyEffect(NewsAnalysisVO otherPartyEffect) {
 		this.otherPartyEffect = otherPartyEffect;
+	}
+
+	public Long getActualConstiId() {
+		return actualConstiId;
+	}
+
+	public void setActualConstiId(Long actualConstiId) {
+		this.actualConstiId = actualConstiId;
 	}
 
 	

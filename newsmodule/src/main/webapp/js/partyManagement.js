@@ -1699,7 +1699,7 @@ function getLocations(id,index){
   
    str += '<div class="span2">';
    str += ' <label>Assembly Consti</label>';
-   str += ' <select class="input-block-level" id="constituencyDiv'+index+'" onchange="removeAndAddSelection(\'constituencyDiv'+index+'\');clearAll(\'mandalDiv'+index+'\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\','+index+')"><option value="0">Select Location</option></select>';
+   str += ' <select class="input-block-level" name="selectedConstituId['+index+']" id="constituencyDiv'+index+'" onchange="removeAndAddSelection(\'constituencyDiv'+index+'\');clearAll(\'mandalDiv'+index+'\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\','+index+')"><option value="0">Select Location</option></select>';
    str +='</div>';
    
    str += '<div class="span2">';
@@ -1742,7 +1742,7 @@ function getLocations(id,index){
   
    str += '<div class="span2">';
    str += ' <label>Assembly Consti</label>';
-   str += ' <select class="input-block-level" id="constituencyDiv'+index+'" onchange="removeAndAddSelection(\'constituencyDiv'+index+'\');clearAllElmts(6,3,'+index+');clearAll(\'mandalDiv'+index+'\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\','+index+')"><option value="0">Select Location</option></select>';
+   str += ' <select class="input-block-level" id="constituencyDiv'+index+'" name="selectedConstituId['+index+']" onchange="removeAndAddSelection(\'constituencyDiv'+index+'\');clearAllElmts(6,3,'+index+');clearAll(\'mandalDiv'+index+'\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\','+index+')"><option value="0">Select Location</option></select>';
    str +='</div>';
    
    str += '<div class="span2">';
@@ -1780,7 +1780,7 @@ function getLocations(id,index){
   
    str += '<div class="span2">';
    str += ' <label>Assembly Consti</label>';
-   str += ' <select class="input-block-level" id="constituencyDiv'+index+'" onchange="removeAndAddSelection(\'constituencyDiv'+index+'\');clearAllElmts(9,3,'+index+');clearAll(\'mandalDiv'+index+'\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\'\',\'\','+index+')"><option value="0">Select Location</option></select>';
+   str += ' <select class="input-block-level" id="constituencyDiv'+index+'" name="selectedConstituId['+index+']" onchange="removeAndAddSelection(\'constituencyDiv'+index+'\');clearAllElmts(9,3,'+index+');clearAll(\'mandalDiv'+index+'\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\'\',\'\','+index+')"><option value="0">Select Location</option></select>';
    str +='</div>';
 
    str += '<div class="span2">';

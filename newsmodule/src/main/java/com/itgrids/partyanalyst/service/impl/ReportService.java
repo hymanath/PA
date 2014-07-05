@@ -743,7 +743,7 @@ public class ReportService implements IReportService {
 		    	String location = boothMap.get(constituency.getConstituencyId());
 		    	String booth= userAddress.getBooth().getPartNo();
 		    	if(location == null){
-		    	  resultStr ="Booth No: "+booth;
+		    	  resultStr ="Constituency : "+constituency.getName()+" Booth No: "+booth;
 		    	}else{
 		    	  resultStr =location+", "+booth;
 		    	}
