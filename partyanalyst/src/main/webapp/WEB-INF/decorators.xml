@@ -333,6 +333,7 @@
 			 <pattern>/login*</pattern>
 			 <pattern>/surveyDataDetailsAction*</pattern>
 			 <pattern>/dailyVerificationReportsAction*</pattern>
+			 <pattern>/surveyMonitoringAction*</pattern>
             <!--  <pattern>/dashBoardAction*</pattern> -->
        </decorator>
        
