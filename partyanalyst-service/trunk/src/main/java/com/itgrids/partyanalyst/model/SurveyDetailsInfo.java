@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -50,8 +52,17 @@ public class SurveyDetailsInfo
 	private Date updatedTime;
 	private Booth booth;
 	private Long boothId;
+	private String uuid;
+	private Integer statusId;
+	private Long surveySurveyorTypeId;
+	
+	
+	
+	
 	
 
+
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "survey_details_info_id", unique = true, nullable = false)
@@ -74,7 +85,7 @@ public class SurveyDetailsInfo
 	}
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "survey_surveior_type_id")
+	@JoinColumn(name = "survey_surveior_type_id",insertable=false,updatable=false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public SurveySurveyorType getSurveySurveyorType() {
@@ -162,7 +173,7 @@ public class SurveyDetailsInfo
 	public void setHamletName(String hamletName) {
 		this.hamletName = hamletName;
 	}
-	
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="date")
 	public Date getDate() {
 		return date;
@@ -186,7 +197,7 @@ public class SurveyDetailsInfo
 	public void setLatitude(String latitude) {
 		this.latitude = latitude;
 	}
-	
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="inserted_time")
 	public Date getInsertedTime() {
 		return insertedTime;
@@ -222,5 +233,27 @@ public class SurveyDetailsInfo
 		this.boothId = boothId;
 	}
 	
+	@Column(name="uuid")	
+	
+	public String getUuid() {
+		return uuid;
+	}
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+	@Column(name="status_id")
+	public Integer getStatusId() {
+		return statusId;
+	}
+	public void setStatusId(Integer statusId) {
+		this.statusId = statusId;
+	}
+	@Column(name="survey_surveior_type_id")
+	public Long getSurveySurveyorTypeId() {
+		return surveySurveyorTypeId;
+	}
+	public void setSurveySurveyorTypeId(Long surveySurveyorTypeId) {
+		this.surveySurveyorTypeId = surveySurveyorTypeId;
+	}
 	
 }
