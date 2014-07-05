@@ -19,7 +19,7 @@ public interface ISurveyDataDetailsService
 	public ResultStatus saveServeyUserRelationDetails(Long userTypeId,List<Long> surveyUserId,Long leaderId,Long constituencyId);
 	public ResultStatus saveSurveyUserTrackingDetails(Long surveyUserId,String longitude , String latitude,Date date);
 	public ResultStatus deactivateUser(Long userId,String remarks);
-	public ResultStatus saveSurveyDataDetailsInfo(List<SurveyResponceVO> surveyResponceList);
+	public ResultStatus saveSurveyDataDetailsInfo(SurveyResponceVO inputResponse);
 	public Long getUserDetailsForCheck(String userName,String password);
 	public List<UserBoothDetailsVO> getAssignedBoothsDetailsByConstituencyIdAndUserId(Long constituencyId,Long userId);
 	public List<GenericVO> getUserTypes();
@@ -33,6 +33,9 @@ public interface ISurveyDataDetailsService
 	public List<GenericVO> getLatLongForUserTrackung(Long surveyUserId,Date date);
 	public List<SurveyResponceVO> getLatLongForSurveyDetails(Long surveyUserId,Date date);
 	public List<SurveyResponceVO> getDetailsForVerifier(Long surveyUserId,Long boothId);
+	public Object[] auhenticateUserandGetUserType(String userName,String password);
+
+
 	public ResultStatus saveSurveyUserTrackingDetails(Long surveyUserId,Date date,String longitude,String latitude);
 	public List<GenericVO> getSurveyUsersForAssignToLeader(Long userTypeId);
 	public ResultStatus updateServeyUserRelationDetails(Long userTypeId,List<Long> surveyUserIds,Long leaderId,Long constituencyId);
