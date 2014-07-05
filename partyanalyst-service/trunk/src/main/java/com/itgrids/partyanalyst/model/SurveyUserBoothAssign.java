@@ -44,7 +44,7 @@ public class SurveyUserBoothAssign
 	private Long constituencyId;
 	private Long boothId;
 	private String isDelete;
-	
+	private String remainingDataBooth;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -148,4 +148,14 @@ public class SurveyUserBoothAssign
 	public void setIsDelete(String isDelete) {
 		this.isDelete = isDelete;
 	}
+
+	
+	@Column(name="remaining_data_booth")
+	public String getRemainingDataBooth() {
+		return remainingDataBooth;
+	}
+	public void setRemainingDataBooth(String remainingDataBooth) {
+		this.remainingDataBooth = remainingDataBooth;
+	}
 }
+	

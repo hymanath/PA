@@ -13,7 +13,16 @@ import java.util.List;
 public class UserResponseSub  extends UserResponseVO{
 	private List<String> partNos;
 	private List<String> boothIds;
+	private List<Long> voterIds;
+	private List<Long> remainingDataBoothIds;
 	
+	
+	public List<Long> getRemainingDataBoothIds() {
+		return remainingDataBoothIds;
+	}
+	public void setRemainingDataBoothIds(List<Long> remainingDataBoothIds) {
+		this.remainingDataBoothIds = remainingDataBoothIds;
+	}
 	public UserResponseSub() {
 		super();
 		
@@ -46,6 +55,13 @@ public class UserResponseSub  extends UserResponseVO{
 	}
 	public void setBoothIds(List<String> boothIds) {
 		this.boothIds = boothIds;
+	}
+	
+	public List<Long> getVoterIds() {
+		return voterIds;
+	}
+	public void setVoterIds(List<Long> voterIds) {
+		this.voterIds = voterIds;
 	}
 	
    
