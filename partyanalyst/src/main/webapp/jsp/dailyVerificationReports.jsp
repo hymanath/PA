@@ -74,7 +74,7 @@
 									</div>
 									</div>
 							<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getDayWiseReport()">SUBMIT</button></div>
-							<img src='images/Loading-data.gif' class="offset5" style="width:70px;height:60px;display:none;"/>
+							<img src='images/Loading-data.gif' class="offset5"  id="mainajaximg" style="width:70px;height:60px;display:none;"/>
 					</div>
 				</div>
 				
