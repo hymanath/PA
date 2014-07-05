@@ -234,15 +234,19 @@
 								<div class="row">
 								<div class="span8 offset2">
 									<div class="row-fluid">
-										<div class="span6">
-											Select User Name<font class="requiredFont">*</font>
-											<select class="input-block-level" id="userId"> 
-												<option value="4">samba_shiva</option>
-												<option value="1">rajiv_raj</option>
-												<option value="3">sunil_mathur</option>
+										<div class="span4">
+											Select User Type<font class="requiredFont">*</font>
+											<select class="input-block-level" id="boothAssignUserType" onchange="getSurveyUsersByUserType('userId',this.value);">
+											<option value="0">Select User type</option>
 											</select>
 										</div>
-										<div class="span6">
+										<div class="span4">
+											Select User Name<font class="requiredFont">*</font>
+											<select class="input-block-level" id="userId"> 
+											<option value="0">Select User Name</option>
+											</select>
+										</div>
+										<div class="span4">
 											Select Constituency<font class="requiredFont">*</font>
 											<!--<select class="input-block-level" id="constituencyId"> 
 											<option value="0">Select Constituency</option>
