@@ -23,8 +23,6 @@ public class SurveyDetailsInfoDAO extends GenericDaoHibernate<SurveyDetailsInfo,
 				"SDI.surveyUser.surveyUserId,DATE(SDI.date)");
 		
 		query.setParameter("constituencyId", constituencyId);
-		query.setParameter("startDate", startDate);
-		query.setParameter("endDate", endDate);
 		
 		return query.list();
 		
@@ -58,12 +56,25 @@ public class SurveyDetailsInfoDAO extends GenericDaoHibernate<SurveyDetailsInfo,
 		return query.list();
 	}
 	
+	//chenge here
 	public List<SurveyDetailsInfo> getSurveyDetilsForAssibnedBooths(Long boothIds)
 	{
-		Query query = getSession().createQuery("from SurveyDetailsInfo model ,SurveyUserBoothAssign model1 where model.surveyUser.surveyUserId = model1.surveyUser.surveyUserId " +
-				" and model1.booth.boothId in (:boothIds) and model.surveyUser.surveyUserType.surveyUsertypeId = 1");
+		Query query = getSession().createQuery("select model from SurveyDetailsInfo model ,SurveyUserBoothAssign model1 where model.surveyUser.surveyUserId = model1.surveyUser.surveyUserId " +
+				" and model1.booth.boothId in (:boothIds) and model.surveyUser.surveyUserType.surveyUsertypeId = 4");
 		query.setParameter("boothIds", boothIds);
 		return query.list();
+	}
+	
+	public SurveyDetailsInfo checkUserForVoter(long userId,String uuid ,Long voterId)
+	{
+		
+		Query query = getSession().createQuery("select model from SurveyDetailsInfo model  where model.surveyUser.surveyUserId = :userId and model.uuid=:uuid and model.voter.voterId = :voterId" );
+				
+		query.setParameter("userId", userId);
+		query.setParameter("uuid", uuid);
+		query.setParameter("voterId", voterId);
+		return (SurveyDetailsInfo) query.uniqueResult();
+		 
 	}
 	public List<Object[]> getVoterDetailsForbooths(List<Long> boothIds)
 	{
