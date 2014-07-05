@@ -726,6 +726,12 @@ function saveUserAssignedBoothsDetails()
 	  remainingDataBooths:''
 	}
 
+	if($('#remainingData').is(":checked"))
+		jObj.remainingDataBooths = 'true';
+	else
+		jObj.remainingDataBooths = 'false';
+
+
 	$('.boothChckbox').each(function(index,value){
 		if(this.checked)
 			jObj.boothIds.push(this.value);

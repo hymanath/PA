@@ -259,6 +259,8 @@
 						<s:select theme="simple"  name="constituency" id="constituencyId" list="constituenciesList" listKey="id" listValue="name" />
 
 										</div>
+
+									<label class="checkbox span2 pull-right"><input type="checkbox" id="remainingData"/>Remaining Data</label>
 									</div>	
 									<!--<div class="row-fluid">
 										<div class="span6">
