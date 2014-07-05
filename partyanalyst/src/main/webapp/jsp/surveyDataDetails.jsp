@@ -237,7 +237,11 @@
 										<div class="span4">
 											Select User Type<font class="requiredFont">*</font>
 											<select class="input-block-level" id="boothAssignUserType" onchange="getSurveyUsersByUserType('userId',this.value);">
+											
 											<option value="0">Select User type</option>
+											<option value="1">Data Collectors</option>
+											<option value="4">Verifier</option>
+											<option value="5">Chief Verifier</option>
 											</select>
 										</div>
 										<div class="span4">
@@ -363,7 +367,7 @@
 
                             <div id="dayWiseReportDiv"></div>
  						    <div id="boothWiseCountDivId"></div>
-							<!--<a class="btn btn-primary btn-large" href="javascript:{getComparisionReport()}">TEST</a>-->
+							<a class="btn btn-primary btn-large" href="javascript:{getComparisionReport()}">TEST</a>
 							
 							<!--<a class="btn btn-primary btn-large" href="javascript:{getDayWiseReport()}">TEST</a>-->
 					</div>
