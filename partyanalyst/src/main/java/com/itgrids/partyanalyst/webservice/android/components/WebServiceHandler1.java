@@ -26,7 +26,7 @@ import com.itgrids.partyanalyst.webservice.utils.VoterTagVO;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLoginVO;
 
 @Component
-@Path("/android/fieldData")
+@Path("/android/fieldData1")
 public class WebServiceHandler1 {
 	
 	//@Autowired
@@ -34,7 +34,7 @@ public class WebServiceHandler1 {
 	
 	
 	@POST
-	@Path("/loginFieldDataUser")
+	@Path("/loginFieldDataUser1")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void loginFieldDataUser (UserLoginVO inputs)
