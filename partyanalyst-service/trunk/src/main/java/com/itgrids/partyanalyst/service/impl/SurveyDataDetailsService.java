@@ -737,7 +737,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	 * This Service is used for getting longititude and latitude values for user tracking
 	 * @param surveyUserId
 	 * @param date
-	 * @return
+	 * @return returnList
 	 */
 	public List<GenericVO> getLatLongForUserTrackung(Long surveyUserId,Date date)
 	{
