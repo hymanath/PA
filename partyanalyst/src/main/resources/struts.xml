@@ -7382,6 +7382,9 @@
 				<param name="root">voterVerificationList</param>
 			</result>
 		</action>
+		<action name="surveyMonitoringAction" class="surveyDataDetailsAction">
+			<result name="success">/jsp/surveyMonitoring.jsp</result>
+		</action>
 		
 			
 </package>
