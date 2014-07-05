@@ -326,6 +326,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
                     
                     if(saveSurveyUserBoothAssign.equalsIgnoreCase("true"))
                     	surveyUserBoothAssign.setRemainingDataBooth("Y");
+                    else
+                    	surveyUserBoothAssign.setRemainingDataBooth("N");
                     	
 					surveyUserBoothAssignDAO.save(surveyUserBoothAssign);
 					resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
