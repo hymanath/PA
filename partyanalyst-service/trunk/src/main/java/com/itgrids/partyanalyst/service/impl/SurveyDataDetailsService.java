@@ -11,10 +11,17 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.TimeZone;
 import java.util.TreeSet;
 
+import javax.management.RuntimeErrorException;
+
 import org.apache.log4j.Logger;
+import org.jfree.util.Log;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
@@ -61,7 +68,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	private ISurveyUserTypeDAO surveyUserTypeDAO;
 	
 	@Autowired
-	private ISurveyUserDAO surveyUserDAO;
+	public ISurveyUserDAO surveyUserDAO;
 	
 	@Autowired
 	private ISurveyUserTabAssignDAO surveyUserTabAssignDAO;
@@ -76,7 +83,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	private ISurveySurveyorTypeDAO surveySurveyorTypeDAO;
 	
 	@Autowired
-	private ISurveyDetailsInfoDAO surveyDetailsInfoDAO;
+	public ISurveyDetailsInfoDAO surveyDetailsInfoDAO;
 	
 	@Autowired
 	private ISurveyUserTrackingDAO surveyUserTrackingDAO;
@@ -94,18 +101,20 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	private IVoterDAO voterDAO;
 	
 	@Autowired
-	private IHamletDAO hamletDAO;
+	public IHamletDAO hamletDAO;
 	
 	@Autowired
-	private ICasteStateDAO casteStateDAO;
+	public ICasteStateDAO casteStateDAO;
 	
  	
 	@Autowired
 	private DateUtilService dateUtilService;
 	
 	@Autowired
-	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
+	public IBoothPublicationVoterDAO boothPublicationVoterDAO;
 
+	@Autowired
+	public TransactionTemplate transactionTemplate;
 	
 	/**
 	 * This Service is used for saving the user type details
@@ -461,74 +470,107 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	 * @param List<surveyResponceVO>
 	 * @return resultStatus
 	 */
-	public ResultStatus saveSurveyDataDetailsInfo(List<SurveyResponceVO> surveyResponceList)
+	public ResultStatus saveSurveyDataDetailsInfo( final SurveyResponceVO inputResponse )
 	{
+		
+		final List<SurveyResponceVO> surveyResponceList=inputResponse.getVerifiersData();
 		LOG.info("Entered into saveSurveyDataDetailsInfo service in SurveyDataDetailsService");
-		ResultStatus resultStatus = new ResultStatus();
+		final ResultStatus resultStatus = new ResultStatus();
 		try
 		{
 			if(surveyResponceList != null && surveyResponceList.size() > 0)
 			{
-				for (SurveyResponceVO surveyResponceVO : surveyResponceList)
-				{
-					SurveyDetailsInfo surveyDetailsInfo = new SurveyDetailsInfo();
-					SurveyUser surveyUser = surveyUserDAO.get(surveyResponceVO.getSurveyUserId());
-					if(surveyUser != null)
-					{
-						surveyDetailsInfo.setSurveyUser(surveyUser);
-						SurveySurveyorType surveySurveyorType = surveySurveyorTypeDAO.get(surveyResponceVO.getSurveyorId());
-						surveyDetailsInfo.setSurveySurveyorType(surveySurveyorType);
-						Voter voter = voterDAO.get(surveyResponceVO.getVoterId());
-						if(voter != null)
-						{
-							surveyDetailsInfo.setVoter(voter);
-						}
-						else
-						{
-							if(surveyResponceVO.getVoterCardNo() != null)
-							{
-								Long voterId = voterDAO.getVoterIdByIdCardNo(surveyResponceVO.getVoterCardNo());
-								surveyDetailsInfo.setVoter( voterDAO.get(voterId));
-							}
+				final SurveyUser surveyUser = surveyUserDAO.get(Long.valueOf(inputResponse.getUserId()));
+                final Long userTypeId=Long.valueOf(inputResponse.getUserTypeId());
+                final Long constituencyId=Long.valueOf(inputResponse.getConstituencyId());
+                final Long userId=Long.valueOf(inputResponse.getUserId());
+				transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+
+					@Override
+					protected void doInTransactionWithoutResult(
+							TransactionStatus arg0) {
+						for (SurveyResponceVO surveyResponceVO : surveyResponceList)
+						{try {
 							
+							
+							Long voterID=surveyResponceVO.getVoterId();
+							
+							//check whether record avilable for user and uniqueID
+							SurveyDetailsInfo surveyDetailsInfo=surveyDetailsInfoDAO.checkUserForVoter(userId, surveyResponceVO.getUuid(),voterID);
+							if(surveyDetailsInfo==null)
+							surveyDetailsInfo = new SurveyDetailsInfo();
+							
+							if(surveyUser != null)
+							{
+								surveyDetailsInfo.setSurveyUser(surveyUser);
+								SurveySurveyorType surveySurveyorType = surveySurveyorTypeDAO.get(Long.valueOf(surveyResponceVO.getDataTypeId()));
+								surveyDetailsInfo.setSurveySurveyorType(surveySurveyorType);
+								Voter voter = voterDAO.get(surveyResponceVO.getVoterId());
+								
+								
+								if(voter != null)
+								{
+									surveyDetailsInfo.setVoter(voter);
+								}
+								else
+								{
+									if(surveyResponceVO.getVoterCardNo() != null)
+									{
+										Long voterId = voterDAO.getVoterIdByIdCardNo(surveyResponceVO.getVoterCardNo());
+										surveyDetailsInfo.setVoter( voterDAO.get(voterId));
+									}
+									
+								}
+								//surveyDetailsInfo.setBooth(boothDAO.get(surveyResponceVO.getBoothId()));
+								surveyDetailsInfo.setBoothId(surveyResponceVO.getBoothId());
+								surveyDetailsInfo.setLatitude(surveyResponceVO.getLatitude());
+								surveyDetailsInfo.setLongitude(surveyResponceVO.getLongitude());
+								surveyDetailsInfo.setIsCadre(surveyResponceVO.getIsCadre());
+								surveyDetailsInfo.setIsInfluencingPeople(surveyResponceVO.getIsInfluencingPeople());
+								surveyDetailsInfo.setMobileNumber(surveyResponceVO.getMobileNo());
+								
+								surveyDetailsInfo.setLocalArea(surveyResponceVO.getLocalArea());
+								surveyDetailsInfo.setHamletName(surveyResponceVO.getHamletName());
+								surveyDetailsInfo.setCasteName(surveyResponceVO.getCasteName());
+								surveyDetailsInfo.setUuid(surveyResponceVO.getUuid());
+								surveyDetailsInfo.setStatusId(Integer.valueOf(surveyResponceVO.getStatusId()));
+								surveyDetailsInfo.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+								
+								SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_AND_TIME_FORMAT);
+								sdf.setTimeZone(TimeZone.getTimeZone(IConstants.TIME_ZONE_INDIA));
+								sdf.parse(surveyResponceVO.getInsertTime());
+								surveyDetailsInfo.setDate(sdf.parse(surveyResponceVO.getInsertTime()));
+								
+								if(surveyResponceVO.getHamletId() != null && surveyResponceVO.getHamletId() > 0)
+								{
+									surveyDetailsInfo.setHamlet( hamletDAO.get(surveyResponceVO.getHamletId()));
+								}
+								if(surveyResponceVO.getCasteId() != null && surveyResponceVO.getCasteId() > 0)
+								{
+									surveyDetailsInfo.setCaste(casteStateDAO.get(surveyResponceVO.getCasteId() ));
+								}
+								
+								
+								
+								SurveyDetailsInfo result = surveyDetailsInfoDAO.save(surveyDetailsInfo);
+								if(result != null)
+								{
+									resultStatus.setResultCode(0);
+									resultStatus.setMessage("Success");
+								}
+								else
+								{
+									resultStatus.setResultCode(1);
+									resultStatus.setMessage("Failure");
+								}
+							}
+						}catch (Exception e) {
+							e.printStackTrace();
+							throw new RuntimeException(e.getMessage());
 						}
-						
-						surveyDetailsInfo.setLatitude(surveyResponceVO.getLatitude());
-						surveyDetailsInfo.setLongitude(surveyResponceVO.getLongitude());
-						surveyDetailsInfo.setIsCadre(surveyResponceVO.getIsCadre());
-						surveyDetailsInfo.setIsInfluencingPeople(surveyResponceVO.getIsInfluencingPeople());
-						surveyDetailsInfo.setMobileNumber(surveyResponceVO.getMobileNo());
-						
-						surveyDetailsInfo.setLocalArea(surveyResponceVO.getLocalArea());
-						surveyDetailsInfo.setHamletName(surveyResponceVO.getHamletName());
-						surveyDetailsInfo.setCasteName(surveyResponceVO.getCasteName());
-						
-						surveyDetailsInfo.setDate(surveyResponceVO.getDate());
-						
-						if(surveyResponceVO.getHamletId() != null && surveyResponceVO.getHamletId() > 0)
-						{
-							surveyDetailsInfo.setHamlet( hamletDAO.get(surveyResponceVO.getHamletId()));
 						}
-						if(surveyResponceVO.getCasteId() != null && surveyResponceVO.getCasteId() > 0)
-						{
-							surveyDetailsInfo.setCaste(casteStateDAO.get(surveyResponceVO.getCasteId() ));
-						}
-						
-						
-						
-						SurveyDetailsInfo result = surveyDetailsInfoDAO.save(surveyDetailsInfo);
-						if(result != null)
-						{
-							resultStatus.setResultCode(0);
-							resultStatus.setMessage("Success");
-						}
-						else
-						{
-							resultStatus.setResultCode(1);
-							resultStatus.setMessage("Failure");
-						}
-					}
-				}
+					}});
+		
 			}
 			
 			
@@ -539,7 +581,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			LOG.error("Exception raised in saveSurveyDataDetailsInfo service in SurveyDataDetailsService", e);
 			resultStatus.setResultCode(3);
 			resultStatus.setMessage("Exception");
-		}
+			}
 		return resultStatus;
 	}
 	
@@ -807,6 +849,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				VO.setVoterName(surveyDetailsInfo.getVoter().getName());
 				VO.setGender(surveyDetailsInfo.getVoter().getGender());
 				VO.setAge(surveyDetailsInfo.getVoter().getAge());
+				VO.setHouseNo(surveyDetailsInfo.getVoter().getHouseNo());
+				VO.setUuid(surveyDetailsInfo.getUuid());
 			}
 			VO.setMobileNo(surveyDetailsInfo.getMobileNumber());
 			VO.setIsCadre(surveyDetailsInfo.getIsCadre());
@@ -837,7 +881,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	}
 	
 	/**
-	 * This Service is used for assigng voter details for Verifier fordata collection
+	 * This Service is used for assigng voter details for Verifier for data collection
 	 * @param surveyUserId
 	 * @param boothId
 	 * @return returnList
@@ -874,6 +918,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				}
 				
 				Integer totalBoothAvaliableData = totalVoterMap.size();
+				System.out.println(totalBoothAvaliableData);
 				if(totalBoothAvaliableData > totalCollectedData)
 				{
 					Integer eareseDataCount = totalCollectedData/10;
@@ -901,13 +946,16 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					{
 						SurveyResponceVO VO = collectedDataMap.get(voterId);
 						if(VO == null)
-						{
-							returnList.add(totalVoterMap.get(voterId));
+						{   
+							VO=totalVoterMap.get(voterId);
+							VO.setDataTypeId("1");
 						}
 						else
 						{
-							returnList.add(VO);
+							VO.setDataTypeId("2");
 						}
+						VO.setBoothId(boothId);
+						returnList.add(VO);
 					}
 				}
 				
@@ -917,6 +965,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		 catch (Exception e) 
 		 {
 			 LOG.error("Exception raised in getDetailsForVerifier service in SurveyDataDetailsService", e);
+			 e.printStackTrace();
 		 }
 		 return returnList;
 	}
@@ -1148,6 +1197,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		 return resultList;
 	}
 	
+	
 	public List<SurveyReportVO> getReportForVerification(Long boothId)
 	{
 		LOG.info("Entered into getReportForVerification service in SurveyDataDetailsService");
@@ -1245,6 +1295,27 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		return null;
 	}
 	
+	/**
+	 * This Service is used for getting survey user id.
+	 * @param userName
+	 * @param password
+	 * @return userId,userTypeId
+	 *  
+	 */
+	public Object[] auhenticateUserandGetUserType(String userName,String password)
+	{
+		LOG.info("Entered into getUserDetailsForCheck service in SurveyDataDetailsService");
+		Object[] userId = null;
+		try
+		{
+			 userId =(Object[]) surveyUserDAO.getUserDetailsAndUserType(userName,password);
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getUserDetailsForCheck service in SurveyDataDetailsService", e);
+		}	
+		return userId;
+	}
 	private void checkForMatchedDetailsForDataCollectorAndVerifier(List<SurveyReportVO> votersList)
 	{
 
