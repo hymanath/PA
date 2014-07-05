@@ -283,7 +283,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	 * @param boothIds
 	 * @return resultStatus
 	 */
-	public ResultStatus saveSurveyUserBoothAssign(Long surveyUserId,Long constituencyId,List<Long> boothIds)
+	public ResultStatus saveSurveyUserBoothAssign(Long surveyUserId,Long constituencyId,List<Long> boothIds,String saveSurveyUserBoothAssign)
 	{
 		LOG.info("Entered into saveSurvetUserBoothAssign service in SurveyDataDetailsService");
 		ResultStatus resultStatus = new ResultStatus();
@@ -323,6 +323,10 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
                     surveyUserBoothAssign.setInsertedTime(dateUtilService.getCurrentDateAndTime());
                     surveyUserBoothAssign.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
                     surveyUserBoothAssign.setIsDelete("N");
+                    
+                    if(saveSurveyUserBoothAssign.equalsIgnoreCase("true"))
+                    	surveyUserBoothAssign.setRemainingDataBooth("Y");
+                    	
 					surveyUserBoothAssignDAO.save(surveyUserBoothAssign);
 					resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 					

@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.webservice.android.concreteservice;
        
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -15,6 +16,7 @@ import com.itgrids.partyanalyst.dao.IMobileAppUserAccessKeyDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserProfileDAO;
 import com.itgrids.partyanalyst.dao.IPingingTypeDAO;
+import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserBoothAssignDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserSurveyBoothsDAO;
@@ -35,6 +37,7 @@ import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
 import com.itgrids.partyanalyst.service.IVoiceSmsService;
 import com.itgrids.partyanalyst.service.IVoterReportService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.webservice.android.abstractservice.IWebServiceHandlerService1;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLoginVO;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserResponseSub;
@@ -90,6 +93,9 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
     
     @Autowired
 	 public ISurveyUserBoothAssignDAO surveyUserBoothAssignDAO; 
+    
+    @Autowired
+    public ISurveyDetailsInfoDAO  surveyDetailsInfoDAO;
 	
 	
 	
@@ -304,6 +310,7 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 		         //collector
 		case 1:
 			res=buildCollectorData(userId, userTypeId);
+			
 			break;
 			     //verifier
 		case 4:
@@ -332,17 +339,39 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 		
 		//get booths for collector
 		List<Object[]> booths =(List<Object[]>) surveyUserBoothAssignDAO.getBoothsForUser(userId);
-         
 		
-		UserResponseVO res=buildResponseVo(booths, userTypeId, userId);
+		
+		List<Long> remainingDatBoothIds = new ArrayList<Long>();
+		
+		for(Object[] obj:booths)
+		{
+			if(obj[3].toString().equalsIgnoreCase("Y"))
+				remainingDatBoothIds.add((Long)obj[0]);
+		}
+		
+         List<Long> voterIds =   boothPublicationVoterDAO.getAllVoterIdsByBoothIdsAndPublicationDateId(remainingDatBoothIds,10L);
+         
+         List<Long> existVoterIds = surveyDetailsInfoDAO.getDataCollectedVoterIdsByBoothIds(remainingDatBoothIds); 
+         
+         voterIds.removeAll(existVoterIds);
+		
+		UserResponseVO res=buildResponseVo(booths, userTypeId, userId,remainingDatBoothIds,voterIds);
 		//process list and convert
 	   return res;
 	}
 	
-	public UserResponseVO buildResponseVo(List<Object[]> booths,long userTypeId,long userId)
+	public UserResponseVO buildResponseVo(List<Object[]> booths,long userTypeId,long userId,List<Long> remainingDatBoothIds,List<Long> voterIds)
 	{
 		//UserResponseVO res= new UserResponseVO();
 		UserResponseSub subRes= new UserResponseSub();
+		
+		if(remainingDatBoothIds != null)
+		{
+		 subRes.setRemainingDataBoothIds(remainingDatBoothIds);
+		 subRes.setVoterIds(voterIds);
+		}
+		
+		
 		int count=0;
 		
 		for (Object[] objects : booths) {
@@ -380,7 +409,7 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 		
 		List<Object[]> booths =(List<Object[]>) surveyUserBoothAssignDAO.getBoothsForUser(userId);
 	
-		UserResponseSub res=(UserResponseSub) buildResponseVo(booths, userTypeId, userId);
+		UserResponseSub res=(UserResponseSub) buildResponseVo(booths, userTypeId, userId,null,null);
 		
 		SurveyResponceVO responseVo= new SurveyResponceVO();
 		responseVo.setConstituencyId(res.getConstituencyId());

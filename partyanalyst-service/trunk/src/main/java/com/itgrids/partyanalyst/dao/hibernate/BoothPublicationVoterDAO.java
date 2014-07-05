@@ -7095,4 +7095,16 @@ public List<Object[]> getVotersDetailsByPublicationIdAndCOnstituencyIds(Long pub
 
 	return query.list();
 }
+
+public List<Long> getAllVoterIdsByBoothIdsAndPublicationDateId(List<Long> boothIds , Long publicationDateId)
+{
+	
+	Query query = getSession().createQuery("select BPV.voter.voterId from BoothPublicationVoter BPV where " +
+			"BPV.booth.boothId in(:boothIds) and BPV.booth.publicationDate.publicationDateId  = :publicationDateId");
+	
+	query.setParameterList("boothIds", boothIds);
+	query.setParameter("publicationDateId", publicationDateId);
+	
+	return query.list();
+}
 }
