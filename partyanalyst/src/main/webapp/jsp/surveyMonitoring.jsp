@@ -27,6 +27,10 @@
 			.notMatched{
 				background-color:red;
 			}
+			#successDiv{
+				font-weight:bold;
+				color:green;
+			}
 		</style>
 		
   </head>
@@ -56,6 +60,7 @@
 										<div class="span5">
 											Select Booth<font class="requiredFont">*</font>
 											<select class="input-block-level" id="boothId"> <option value="0">Select Booth</option></select>
+											<img id="boothAjaxImg" src="./images/icons/search.gif" alt="Processing Image"  class="hide"/>
 										</div>
 									</div>	
 									<!--<div class="row-fluid">
@@ -70,7 +75,8 @@
 									</div>-->
 									</div>
 									</div>
-							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onclick="getComparisionReport();">SUBMIT</button><img src='./images/icons/search.gif' id="ajaximg" style="display:none;"/></div>
+							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onclick="getComparisionReport();">SUBMIT</button></div>
+							<img id="submitImg" src="./images/icons/search.gif" alt="Processing Image" style="margin-left:500px;" class="hide"/>
 					</div>
 				</div>
 				
@@ -81,6 +87,7 @@
 <script>
 
 $('#constituencyId').change(function(){
+	$('#boothAjaxImg').show();
 		getBoothDetails();
  });
 
@@ -96,6 +103,7 @@ function getBoothDetails()
 			dataType: 'json',
 			data: {task:JSON.stringify(jObj)},
 		  }).done(function(result){
+				$('#boothAjaxImg').hide();
 				$('#boothId').find('option').remove();
 				$('#boothId').prepend('<option value="0">Select Booth</option>');
 				for(var i in result){				 
@@ -121,7 +129,11 @@ function getComparisionReport()
 		$("#reportErrorDiv").html("Please Select Booth").css("color","red");
 		return;
 	}
-		$("#ajaximg").css("display","inline-block");
+
+	$('#comparisonReportId,#reportErrorDiv').html('');
+
+	
+	$('#submitImg').show();
 	var jObj =
 	{
 	// boothId:boothId
@@ -134,8 +146,6 @@ function getComparisionReport()
 			dataType: 'json',
 			data: {task:JSON.stringify(jObj)},
 		  }).done(function(result){
-
-				$("#ajaximg").css("display","none");
 				buildComparisonReport(result);
 		});
 
@@ -149,9 +159,9 @@ function buildComparisonReport(result)
 		str+='<table class="table table-bordered m_top20 table-hover table-striped">';
 		str+='<thead class="alert alert-success"><tr>';
 		str+='<th>Voter ID</th>';	
-		str+='<th><span class="pull-right"><input type="checkbox"></span> COLLECTOR</th>';
-		str+='<th><span class="pull-right"><input type="checkbox"></span> VERIFIER</th>';
-		str+='<th><span class="pull-right"><input type="checkbox"></span> 3rd PARTY VERIFIER</th>';						
+		str+='<th><span class="pull-right"></span> COLLECTOR</th>';
+		str+='<th><span class="pull-right"></span> VERIFIER</th>';
+		str+='<th><span class="pull-right"></span> 3rd PARTY VERIFIER</th>';						
 		str+='</tr></thead>';
 	
 		str+='<tbody>';
@@ -289,14 +299,21 @@ function buildComparisonReport(result)
 		str+='</tbody></table>';
 		str+='</div>';
 		str+='<div class="row text-center m_top20"><button class="btn btn-large btn-success" type="button" onClick="saveVerifiedRecordsDetails();">UPDATE SANITY CHECK</button></div>';
+
+		str+='<div id="successDiv"></div>';
+        str+='<img id="ajaxImg" src="./images/icons/search.gif" alt="Processing Image" style="margin-left:600px;" class="hide"/>';
 		str+='</div></div>';
+
 		$("#comparisonReportId").html(str);
+		$('#submitImg').hide();
 		
 }
 
 
 function saveVerifiedRecordsDetails()
 {
+	$('#ajaxImg').show();
+	$('#successDiv').html('');
 	var jObj =
 	{
 		verifiedIds : []
@@ -313,7 +330,11 @@ function saveVerifiedRecordsDetails()
 			dataType: 'json',
 			data: {task:JSON.stringify(jObj)},
 		  }).done(function(result){
-				console.log(result);
+				if(result == "success")
+				{
+					$('#ajaxImg').hide();
+                    $('#successDiv').html('Successfully Updated...');
+				}
 		});
 }
 	
