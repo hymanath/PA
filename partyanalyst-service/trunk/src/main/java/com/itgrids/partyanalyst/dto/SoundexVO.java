@@ -23,6 +23,9 @@ public class SoundexVO {
 	private boolean relativeNameMatch;
 	private boolean unMatched;
 	private boolean split;
+	
+	private String boothPartNo;
+	private Long boothId;
 	private List<SoundexVO> ageMatchedList = new ArrayList<SoundexVO>();
 	private List<SoundexVO> relativeMatchedList = new ArrayList<SoundexVO>();
 	private List<SoundexVO> notMatchedList = new ArrayList<SoundexVO>();
@@ -30,6 +33,20 @@ public class SoundexVO {
 	private String panchayatName = "";
 	private Long constituencyId;
 
+	
+	
+	public String getBoothPartNo() {
+		return boothPartNo;
+	}
+	public void setBoothPartNo(String boothPartNo) {
+		this.boothPartNo = boothPartNo;
+	}
+	public Long getBoothId() {
+		return boothId;
+	}
+	public void setBoothId(Long boothId) {
+		this.boothId = boothId;
+	}
 	
 	public Long getConstituencyId() {
 		return constituencyId;
