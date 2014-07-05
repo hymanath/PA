@@ -121,7 +121,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 
 		return Action.SUCCESS;
 	}
-	@Override
+
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
@@ -473,6 +473,26 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 				userIds.add(Long.valueOf(jarray.get(i).toString()));
 			}
 			resultStatus = surveyDataDetailsService.updateServeyUserRelationDetails(jObj.getLong("userTypeId"),userIds,jObj.getLong("leaderId"),jObj.getLong("constituencyId"));
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return Action.SUCCESS;
+		
+	}
+	
+	public String getBoothDetailsByConstituency()
+	{
+		try {
+			
+			jObj = new JSONObject(getTask());
+			
+			Long constituencyId = jObj.getLong("constituencyId");
+		
+			
+			assgnedBoothsList = surveyDataDetailsService.getBoothDetailsByConstituencyId(jObj.getLong("constituencyId"));
+					
 			
 		} catch (Exception e) {
 			e.printStackTrace();
