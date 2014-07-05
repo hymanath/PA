@@ -435,7 +435,8 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		subRegionsList = getTehsilsInConstituency(constituencyId);
 		} else if(areaType.equalsIgnoreCase(IConstants.CONST_TYPE_URBAN))
 		{
-		subRegionsList = getLocalElectionBodies(constituencyId, year);
+			if(scope.equalsIgnoreCase(IConstants.CONST_TYPE_URBAN))
+		  subRegionsList = getLocalElectionBodies(constituencyId, year);
 
 
 		} else if(areaType.equalsIgnoreCase(IConstants.CONST_TYPE_RURAL_URBAN))

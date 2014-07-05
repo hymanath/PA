@@ -266,7 +266,7 @@ var locaObj = {
 <script> 
 $('document').ready(function(){
 
- $(".scopeLevelDiv").prop("disabled", "disabled");
+ $(".scopeLevelDiv").attr("disabled", "disabled");
 //candidate creation
 $(".createNewCandidate").live("click",function(){	
 $('#errorMsg1Div').html('');
@@ -909,6 +909,12 @@ $(".destinationCandidateCloseImg").live("click",function(){
 							
 			<div id="scopesDiv${i.index}">
 			<input type="hidden" id="scopeDiv${i.index}" name="fileVO[${i.index}].locationScope" value="${news.selectOptionVOList[i.index].id}"/>
+			<s:if test="%{#locationList.id != 5 && #locationList.id != 7}">
+				<input type="hidden" id="mandalDiv${i.index}" class="removeClass${i.index}" name="fileVO[${i.index}].location" value="${news.selectOptionVOList[i.index].value}"/>
+			</s:if>
+			<s:if test="%{#locationList.id != 4 }">
+				<input type="hidden" id="constituencyDiv${i.index}" class="removeClass${i.index}" name="fileVO[${i.index}].actualConstiId" value="${news.selectOptionVOList[i.index].constituencyId}"/>
+			</s:if>
 				<s:if test="%{#locationList.id == 2}">
 				<input type="hidden" id="stateDiv${i.index}" name="fileVO[${i.index}].locationValue" value="${news.selectOptionVOList[i.index].location}"/>	
 				<s:if test="#i.index != 0">
@@ -1016,6 +1022,10 @@ function changeLocationValue(scopeld,index)
 	$('#scopesDiv'+index+'').html('');
 	$('#locationScope'+index+'').removeAttr('name');
 	$('#locationValue'+index+'').removeAttr('name');
+	
+	$('#removeClass'+index+'').each(function() {
+        $(this).removeAttr('name');
+    });
 
 		getLocationsForEdit(scopeld,index);
 				

@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -106,6 +107,12 @@ public class PartyDAO extends GenericDaoHibernate<Party, Long> implements IParty
 	
 	public List<String> getPartyShortNames(List<Long> partyIds){
 		 Query query = getSession().createQuery(" select distinct model.shortName from Party model where model.partyId in(:partyIds) order by model.shortName");
+		 query.setParameterList("partyIds", partyIds);
+		 return query.list();
+	}
+	
+	public List<Object[]> getPartyNames(Set<Long> partyIds){
+		 Query query = getSession().createQuery(" select distinct model.shortName,model.partyId from Party model where model.partyId in(:partyIds) order by model.shortName");
 		 query.setParameterList("partyIds", partyIds);
 		 return query.list();
 	}

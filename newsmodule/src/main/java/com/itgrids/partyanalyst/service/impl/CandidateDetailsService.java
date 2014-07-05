@@ -924,16 +924,19 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			else
 				file.setIsPrivate("N");	
 			file = fileDAO.save(file);
-			
+			List<Long> constituencyIds = fileVO.getSelectedConstituId();
 			for(int i = 0;i<fileVO.getUploadPartyGalleryId().size();i++){
 				Long scopeId = fileVO.getUploadPartyGalleryId().get(i);
 				Long locationValue = fileVO.getUploadCandidateGalleryId().get(i);
+				Long constituencyId = null;
+				if(constituencyIds != null && i<constituencyIds.size())
+					constituencyId = constituencyIds.get(i);
 				if(scopeId != null && locationValue != null){
 					Long mandalId=null;
 					if(fileVO.getUploadSPGalleryId() != null && i<fileVO.getUploadSPGalleryId().size()){
 						mandalId = fileVO.getUploadSPGalleryId().get(i);
 					}
-			      saveFileLocationInUserAddress(scopeId,locationValue,mandalId,file);
+			      saveFileLocationInUserAddress(scopeId,locationValue,mandalId,file,constituencyId);
 				}
 			}
 			if(fileVO.getFileSourceVOList() != null && fileVO.getFileSourceVOList().size() > 0)
@@ -1604,7 +1607,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		}
 	}
 	
-	public UserAddress saveFileLocationInUserAddress(Long locationId,Long locationValue,Long mandalId,File file)
+	public UserAddress saveFileLocationInUserAddress(Long locationId,Long locationValue,Long mandalId,File file,Long constituencyId)
 	{
 	 try{
 		 
@@ -1652,8 +1655,12 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			{
 				userAddress.setState(stateDAO.get((Long)list.get(0)[1]));
 				userAddress.setDistrict(districtDAO.get((Long)list.get(0)[2]));	
-				userAddress.setConstituency(constituencyDAO.get((Long)list.get(0)[0]));
-				userAddress.setParliamentConstituency(getParliamentConstiForAssembly((Long)list.get(0)[0]));
+				Long reqConstiId = constituencyId;
+				if(reqConstiId == null){
+					reqConstiId = (Long)list.get(0)[0];
+				}
+				userAddress.setConstituency(constituencyDAO.get(reqConstiId));
+				userAddress.setParliamentConstituency(getParliamentConstiForAssembly(reqConstiId));
 				userAddress.setTehsil(tehsilDAO.get((Long)list.get(0)[3]));
 				
 			}
@@ -1665,10 +1672,13 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			Long tehsilId = hamletDAO.get(locationValue).getTownship().getTehsil().getTehsilId();
 			
 			List<Long> constituencyIdsList = delimitationConstituencyMandalDAO.getConstituencyIdByTehsilId(tehsilId, Long.parseLong(IConstants.PRESENT_ELECTION_YEAR));
-			
+			Long reqConstiId = constituencyId;
+			if(reqConstiId == null){
+				reqConstiId = constituencyIdsList.get(0);
+			}
 			if(constituencyIdsList != null && constituencyIdsList.size() > 0)
-				userAddress.setConstituency(constituencyDAO.get(constituencyIdsList.get(0)));
-			userAddress.setParliamentConstituency(getParliamentConstiForAssembly(constituencyIdsList.get(0)));
+				userAddress.setConstituency(constituencyDAO.get(reqConstiId));
+			userAddress.setParliamentConstituency(getParliamentConstiForAssembly(reqConstiId));
 				
 			userAddress.setState(stateDAO.get(hamletDAO.get(locationValue).getTownship().getTehsil().getDistrict().getState().getStateId()));
 			userAddress.setDistrict(districtDAO.get(hamletDAO.get(locationValue).getTownship().getTehsil().getDistrict().getDistrictId()));	
@@ -9420,8 +9430,9 @@ public ResultStatus editUploadedFileForCandidateParty(final FileVO fileVO)
 			   if(fileScopes != null){
 				Long scopeId = fileScopes.getLocationScope()!= null ?fileScopes.getLocationScope():0L;
 				Long locationValue = Long.valueOf(fileScopes.getLocationValue() != null ?fileScopes.getLocationValue():"0");
+				Long constituencyId = fileScopes.getActualConstiId();
 				if(scopeId != null && locationValue != null && scopeId != 0 && locationValue != 0){
-				      saveFileLocationInUserAddress(scopeId,locationValue,fileScopes.getLocation(),file);
+				      saveFileLocationInUserAddress(scopeId,locationValue,fileScopes.getLocation(),file,constituencyId);
 				}
 			   }
 			}

@@ -1098,4 +1098,32 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 				query.setParameter("categoryId",categoryId);
 				return query.list();
 			}
+			
+			public List<Object[]> getAllPartyIds(Date fromDate,Date toDate){
+				
+				Query query =  getSession().createQuery("select model.sourceParty.partyId,model.destinationParty.partyId from CandidatePartyFile model where date(model.file.fileDate) >= :fromDate and  date(model.file.fileDate) <= :toDate and  model.file.isDeleted !='Y' ");
+				query.setDate("fromDate", fromDate);
+				query.setDate("toDate", toDate);
+				
+				return query.list();
+			}
+			
+           public List<Object[]> getTotalCounts(Date fromDate,Date toDate,String queryStr){
+				
+				Query query =  getSession().createQuery(queryStr);
+				query.setDate("fromDate", fromDate);
+				query.setDate("toDate", toDate);
+				
+				return query.list();
+			}
+           
+           public List<Object[]> getAllCounts(Date fromDate,Date toDate,String queryStr,Long partyId){
+				
+				Query query =  getSession().createQuery(queryStr);
+				query.setDate("fromDate", fromDate);
+				query.setDate("toDate", toDate);
+				query.setParameter("partyId", partyId);
+				
+				return query.list();
+			}
 }

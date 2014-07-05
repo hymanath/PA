@@ -5139,7 +5139,7 @@ function getLocationsForEdit(id,index){
   
    str += '<div class="span2" style="margin-left:15px;">';
    str += ' <label>Assembly Consti</label>';
-   str += ' <select class="input-block-level" id="constituencyDiv'+index+'" onchange="clearAll(\'mandalDiv'+index+'\');getAllDetailsForEdit(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\',\'mandalDiv'+index+'\','+index+')"><option value="0">Select Location</option></select>';
+   str += ' <select class="input-block-level" id="constituencyDiv'+index+'"  name="fileVO['+index+'].actualConstiId" onchange="clearAll(\'mandalDiv'+index+'\');getAllDetailsForEdit(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\',\'mandalDiv'+index+'\','+index+')"><option value="0">Select Location</option></select>';
    str +='</div>';
    
    str += '<div class="span2" style="width: 155px;margin-left:15px;">';
@@ -5176,7 +5176,7 @@ function getLocationsForEdit(id,index){
   
    str += '<div class="span2" style="margin-left:15px;">';
    str += ' <label>Assembly Consti</label>';
-   str += ' <select class="input-block-level" id="constituencyDiv'+index+'" onchange="clearAllElmts(6,3);clearAll(\'mandalDiv'+index+'\');getAllDetailsForEdit(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\',\'mandalDiv'+index+'\','+index+')"><option value="0">Select Location</option></select>';
+   str += ' <select class="input-block-level" id="constituencyDiv'+index+'"  name="fileVO['+index+'].actualConstiId" onchange="clearAllElmts(6,3);clearAll(\'mandalDiv'+index+'\');getAllDetailsForEdit(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\',\'mandalDiv'+index+'\','+index+')"><option value="0">Select Location</option></select>';
    str +='</div>';
    
    str += '<div class="span2" style="width: 155px;margin-left:15px;">';
@@ -5219,7 +5219,7 @@ function getLocationsForEdit(id,index){
   
    str += '<div class="span2" style="margin-left:15px;">';
    str += ' <label>Assembly Consti</label>';
-   str += ' <select class="input-block-level" id="constituencyDiv'+index+'" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,3);clearAll(\'mandalDiv'+index+'\');getAllDetailsForEdit(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\'\',\'\',\'mandalDiv'+index+'\','+index+')"><option value="0">Select Location</option></select>';
+   str += ' <select class="input-block-level" id="constituencyDiv'+index+'"  name="fileVO['+index+'].actualConstiId" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,3);clearAll(\'mandalDiv'+index+'\');getAllDetailsForEdit(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\'\',\'\',\'mandalDiv'+index+'\','+index+')"><option value="0">Select Location</option></select>';
    str +='</div>';
 
    str += '<div class="span2" style="width: 155px;margin-left:15px;">';
