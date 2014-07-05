@@ -730,13 +730,19 @@ function saveUserAssignedBoothsDetails()
 			jObj.boothIds.push(this.value);
 	}); 
 	
+	$("#assignboothimg").css("display","inline-block");
 	$.ajax({
 			type:'GET',
 			url: 'saveUserAssignedBoothsDetails.action',
 			dataType: 'json',
 			data: {task:JSON.stringify(jObj)},
 		  }).done(function(result){
-
+$("#assignboothimg").css("display","none");
+if(result.resultCode == 0)
+{
+$("#assignBoothErrorDiv").html("booth assigned successfully...").css("color","green");
+ $('html, body').animate({ scrollTop: $("#assignBoothErrorDiv").offset().top }, "slow");
+}
 		});
 
 }

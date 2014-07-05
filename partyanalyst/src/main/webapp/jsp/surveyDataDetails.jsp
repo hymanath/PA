@@ -276,7 +276,8 @@
 									</div>
 									<div id="boothsDtlsId">
 									</div>
-							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onClick="saveUserAssignedBoothsDetails();">ASSIGN</button></div>
+							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onClick="saveUserAssignedBoothsDetails();">ASSIGN</button>
+							<img src='./images/icons/search.gif' id="assignboothimg" style="display:none;"/></div>
 
 							
 
