@@ -731,6 +731,8 @@ function saveUserAssignedBoothsDetails()
 	else
 		jObj.remainingDataBooths = 'false';
 
+	console.log(jObj);
+
 
 	$('.boothChckbox').each(function(index,value){
 		if(this.checked)
@@ -747,7 +749,7 @@ function saveUserAssignedBoothsDetails()
 $("#assignboothimg").css("display","none");
 if(result.resultCode == 0)
 {
-$("#assignBoothErrorDiv").html("booth assigned successfully...").css("color","green");
+$("#assignBoothErrorDiv").html("Booth assigned successfully...").css("color","green");
  $('html, body').animate({ scrollTop: $("#assignBoothErrorDiv").offset().top }, "slow");
 }
 		});
