@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
 
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
@@ -14,6 +15,28 @@ public class SurveyUserBoothAssignDAO extends GenericDaoHibernate<SurveyUserBoot
 	{
 		super(SurveyUserBoothAssign.class);
 	}
+	
+   public List<?> getBoothsForUser(long userId)
+   {
+	   Query  query=  getSession().createQuery("select  sb.booth.boothId,sb.booth.partNo,sb.constituency.constituencyId  from SurveyUserBoothAssign sb where sb.surveyUser.surveyUserId =:userId and sb.isDelete='N' group by sb.booth.boothId");
+	   
+	   query.setParameter("userId",userId);
+	   
+	   return query.list();
+   }
+   
+   
+   
+   //get voterdata to display for a user
+   public List<Object[]> getVoterDataForUser(long userId)
+   {
+	   Query  query =  getSession().createQuery("select sb.voter.voterId,sb.mobileNumber,sb.isCadre,sb.isInfluencingPeople,sb.caste.casteStateId,sb.hamlet.hamletId,sb.localArea,sb.hamletName from SurveyDetailsInfo sb where sb.surveyUser.surveyUserId =:userId group by sb.surveyDetailsInfoId ");
+	   
+	  query.setParameter("userId",userId);
+	   
+	   return query.list();
+   }
+   
 	
 	public List<Object[]> getAllTheAssignedBoothsByConstituencyIdAndUserId(Long constituencyId,Long userId)
 	{
