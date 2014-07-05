@@ -343,7 +343,7 @@ else if(id == "userCreationTab")
 	$("#assignBoothToLeaderDiv").hide();
 	$("#verificationDiv").hide();
 	$("#leaderNameDiv").hide();
-	getUserTypes('boothAssignUserType');
+	//getUserTypes('boothAssignUserType');
 	}
 	
 	else if(id == "deactivationTab")
