@@ -39,6 +39,7 @@ import com.itgrids.partyanalyst.dao.ISurveyUserTrackingDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserTypeDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dto.GenericVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
@@ -305,6 +306,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					surveyUserBoothAssign.setIsDelete("Y");
 					surveyUserBoothAssign.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 					surveyUserBoothAssignDAO.save(surveyUserBoothAssign);
+					resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 				}
 			}
 			
@@ -322,6 +324,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
                     surveyUserBoothAssign.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
                     surveyUserBoothAssign.setIsDelete("N");
 					surveyUserBoothAssignDAO.save(surveyUserBoothAssign);
+					resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 					
 				}
 			}
