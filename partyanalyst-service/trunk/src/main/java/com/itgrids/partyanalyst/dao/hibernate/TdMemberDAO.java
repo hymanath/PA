@@ -55,6 +55,34 @@ public class TdMemberDAO extends GenericDaoHibernate<TdMember, Long> implements 
 		
 	}
 	
+	public List<Object[]> getMembersDetailsByBooth(String boothNo,Long constId,int inttial,int max)
+	{
+		
+		
+		Query query = getSession().createQuery("select " +	
+		        "TM.areaInchargesId , "+
+				"TM.voterIdCardNo , " +
+				"TM.candidateName , " +
+				"TM.surName , " +
+				"TM.ownBooth , " +
+				"TM.mobileNo , " +
+				"TM.age , " +
+				"TM.boothId  " +
+				"from AreaInchargesTemp  TM " +
+				"where " +
+				"TM.constituencyId = :constituencyId  group  by TM.areaInchargesId " );//and TM.ownBooth=:boothNo
+		
+		query.setParameter("constituencyId", constId);
+		//query.setParameter("boothNo", boothNo);
+		//query.setFirstResult(inttial);
+		//query.setMaxResults(max);
+
+		
+		return query.list();
+		
+		
+	}
+	
 	public List<Object[]> getPanchayatsDetailsByConstituencyId(Long constituencyId)
 	{
 		Query query = getSession().createQuery("select distinct TM.panchayat.panchayatId,TM.panchayat.panchayatName from TdMember TM " +
