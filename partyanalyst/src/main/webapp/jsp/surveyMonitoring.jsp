@@ -23,7 +23,10 @@
 			.requiredFont{
 				color:red;
 				font-size:13px;
-			}			
+			}	
+			.notMatched{
+				background-color:red;
+			}
 		</style>
 		
   </head>
@@ -121,7 +124,9 @@ function getComparisionReport()
 		$("#ajaximg").css("display","inline-block");
 	var jObj =
 	{
-	 boothId:boothId
+	// boothId:boothId
+		boothId:383457
+	
 	}
 	$.ajax({
 			type:'GET',
@@ -129,6 +134,7 @@ function getComparisionReport()
 			dataType: 'json',
 			data: {task:JSON.stringify(jObj)},
 		  }).done(function(result){
+
 				$("#ajaximg").css("display","none");
 				buildComparisonReport(result);
 		});
@@ -161,11 +167,32 @@ function buildComparisonReport(result)
 					str+='<ul class="unstyled"><li class="pull-right"><label><input type="radio" name="'+result[i].voterId+'" value="'+result[i].dataCollector.surveyDetailsInfoId+'" class="voterChkbox" checked></label></li>';	
 				else
 					str+='<ul class="unstyled"><li class="pull-right"><label><input type="radio" name="'+result[i].voterId+'" value="'+result[i].dataCollector.surveyDetailsInfoId+'" class="voterChkbox"></label></li>';	
-				str	+='<li><strong>Caste:</strong>'+result[i].dataCollector.casteId+'</li>';
-				str+='<li><strong>Hamlet:</strong>'+result[i].dataCollector.hamletName+'</li>';
-				str+='<li><strong>Local Area:</strong>'+result[i].dataCollector.localArea+'</li>';
-				str+='<li><strong>Cadre:</strong>'+result[i].dataCollector.isCadre+' </li>';
-				str+='<li><strong>Influence People:</strong>'+result[i].dataCollector.isInfluencePeople+'</li>';
+
+				
+				if(result[i].casteMatched == true)
+					str	+='<li><strong>Caste:</strong>'+result[i].dataCollector.caste+'</li>';
+				else
+					str	+='<li class="notMatched"><strong>Caste:</strong>'+result[i].dataCollector.caste+'</li>';
+
+				if(result[i].hamletMatched == true)
+					str+='<li><strong>Hamlet:</strong>'+result[i].dataCollector.hamletName+'</li>';
+				else
+					str+='<li class="notMatched"><strong>Hamlet:</strong>'+result[i].dataCollector.hamletName+'</li>';
+
+				if(result[i].localAreaMatched == true)
+				   str+='<li><strong>Local Area:</strong>'+result[i].dataCollector.localArea+'</li>';
+				else
+				  str+='<li class="notMatched"><strong>Local Area:</strong>'+result[i].dataCollector.localArea+'</li>';
+
+				if(result[i].cadreMatched == true)
+					str+='<li><strong>Cadre:</strong>'+result[i].dataCollector.cadre+' </li>';
+				else
+					str+='<li class="notMatched"><strong>Cadre:</strong>'+result[i].dataCollector.cadre+'</li>';
+
+				if(result[i].influencePeopleMatched == true)
+					str+='<li><strong>Influence People:</strong>'+result[i].dataCollector.influencePeople+'</li>';
+				else
+					str+='<li class="notMatched"><strong>Influence People:</strong>'+result[i].dataCollector.influencePeople+'</li>';
 				str+='</ul>';
 				str+='</div></td>';
 			}
@@ -183,16 +210,38 @@ function buildComparisonReport(result)
 				else
 					str+='<ul class="unstyled"><li class="pull-right"><label><input type="radio" name="'+result[i].voterId+'"  value="'+result[i].verifier.surveyDetailsInfoId+'" class="voterChkbox"></label></li>';
 
-				str	+='<li><strong>Caste:</strong>'+result[i].verifier.casteId+'</li>';
-				str+='<li><strong>Hamlet:</strong>'+result[i].verifier.hamletName+'</li>';
-				str+='<li><strong>Local Area:</strong>'+result[i].verifier.localArea+'</li>';
-				str+='<li><strong>Cadre:</strong> '+result[i].verifier.isCadre+'</li>';
-				str+='<li><strong>Influence People:</strong>'+result[i].verifier.isCadre+'</li>';
+				if(result[i].casteMatched == true)
+					str	+='<li><strong>Caste:</strong>'+result[i].verifier.caste+'</li>';
+				else
+					str	+='<li class="notMatched"><strong>Caste:</strong>'+result[i].verifier.caste+'</li>';
+
+				if(result[i].hamletMatched == true)
+					str+='<li><strong>Hamlet:</strong>'+result[i].verifier.hamletName+'</li>';
+				else
+					str+='<li class="notMatched"><strong>Hamlet:</strong>'+result[i].verifier.hamletName+'</li>';
+
+				if(result[i].localAreaMatched == true)
+					str+='<li><strong>Local Area:</strong>'+result[i].verifier.localArea+'</li>';
+				else
+					str+='<li class="notMatched"><strong>Local Area:</strong>'+result[i].verifier.localArea+'</li>';
+
+				if(result[i].cadreMatched == true)
+					str+='<li><strong>Cadre:</strong> '+result[i].verifier.cadre+'</li>';
+				else
+					str+='<li class="notMatched"><strong>Cadre:</strong>'+result[i].verifier.cadre+'</li>';
+
+				//str+='<li><strong>Cadre:</strong> '+result[i].verifier.cadre+'</li>';
+
+				if(result[i].influencePeopleMatched == true)
+					str+='<li><strong>Influence People:</strong>'+result[i].verifier.influencePeople+'</li>';
+				else
+					str+='<li class="notMatched"><strong>Influence People:</strong>'+result[i].verifier.influencePeople+'</li>';
+
 				str+='</ul>';
 				str+='</div></td>';
 			}
 			else{
-				str+='<td class="span3"><div class="voterDetals_widget"></div></td>';
+				str+='<td class="span3"><div class="voterDetals_widget">No Records</div></td>';
 			}
 			
 			if(result[i].thirdParty != null)
@@ -204,11 +253,31 @@ function buildComparisonReport(result)
 				else
 					str+='<ul class="unstyled"><li class="pull-right"><label><input type="radio" name="'+result[i].voterId+'"  value="'+result[i].thirdParty.surveyDetailsInfoId+'" class="voterChkbox"></label></li>';	
 
-				str	+='<li><strong>Caste:</strong>'+result[i].thirdParty.casteId+'</li>';
-				str+='<li><strong>Hamlet:</strong>'+result[i].thirdParty.hamletName+'</li>';
-				str+='<li><strong>Local Area:</strong>'+result[i].thirdParty.localArea+'</li>';
-				str+='<li><strong>Cadre:</strong> '+result[i].thirdParty.isCadre+'</li>';
-				str+='<li><strong>Influence People:</strong>'+result[i].thirdParty.isCadre+'</li>';
+				if(result[i].casteMatched == true)
+					str	+='<li><strong>Caste:</strong>'+result[i].thirdParty.caste+'</li>';
+				else
+					str	+='<li  class="notMatched"><strong>Caste:</strong>'+result[i].thirdParty.caste+'</li>';
+
+				
+				if(result[i].hamletMatched == true)
+				   str+='<li><strong>Hamlet:</strong>'+result[i].thirdParty.hamletName+'</li>';
+				else
+					str+='<li  class="notMatched"><strong>Hamlet:</strong>'+result[i].thirdParty.hamletName+'</li>';
+
+				if(result[i].localAreaMatched == true)
+					str+='<li><strong>Local Area:</strong>'+result[i].thirdParty.localArea+'</li>';
+				else
+					str+='<li class="notMatched"><strong>Local Area:</strong>'+result[i].thirdParty.localArea+'</li>';
+
+				if(result[i].cadreMatched == true)
+					str+='<li><strong>Cadre:</strong> '+result[i].thirdParty.cadre+'</li>';
+				else
+					str+='<li class="notMatched"><strong>Cadre:</strong>'+result[i].thirdParty.cadre+'</li>';
+
+                 if(result[i].influencePeopleMatched == true)
+					str+='<li><strong>Influence People:</strong>'+result[i].thirdParty.influencePeople+'</li>';
+				 else
+					str+='<li class="notMatched"><strong>Influence People:</strong>'+result[i].thirdParty.influencePeople+'</li>';
 				str+='</ul>';
 				str+='</div></td>';
 			}
