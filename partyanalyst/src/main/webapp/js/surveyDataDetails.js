@@ -385,7 +385,7 @@ else if(id == "userCreationTab")
 	$("#assignBoothToLeaderDiv").hide();
 	$("#verificationDiv").show();
 	$("#leaderNameDiv").show();
-	redicttoVerificationPage();
+	
 	getLeaderDetetilsByContituencyWise();
 
 	}
