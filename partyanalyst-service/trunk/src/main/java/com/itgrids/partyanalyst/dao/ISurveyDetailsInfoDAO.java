@@ -19,4 +19,6 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	public SurveyDetailsInfo checkUserForVoter(long userId,String uuid,Long voterId );
 
 	public List<Object[]> getVoterDetailsForbooths(List<Long> boothIds);
+	public List<SurveyDetailsInfo> getVerifiedVotersDetailsBySurveyDetailsInfoId(Long voterId);
+
 }

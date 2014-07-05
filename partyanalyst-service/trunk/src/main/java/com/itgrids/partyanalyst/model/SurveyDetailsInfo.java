@@ -11,8 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -52,6 +50,7 @@ public class SurveyDetailsInfo
 	private Date updatedTime;
 	private Booth booth;
 	private Long boothId;
+	private String verified;
 	private String uuid;
 	private Integer statusId;
 	private Long surveySurveyorTypeId;
@@ -255,5 +254,14 @@ public class SurveyDetailsInfo
 	public void setSurveySurveyorTypeId(Long surveySurveyorTypeId) {
 		this.surveySurveyorTypeId = surveySurveyorTypeId;
 	}
+	
+	@Column(name="verified")
+	public String getVerified() {
+		return verified;
+	}
+	public void setVerified(String verified) {
+		this.verified = verified;
+	}
+	
 	
 }

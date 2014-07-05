@@ -83,4 +83,14 @@ public class SurveyDetailsInfoDAO extends GenericDaoHibernate<SurveyDetailsInfo,
 		query.setParameterList("boothIds", boothIds);
 		return query.list();
 	}
+	
+	public List<SurveyDetailsInfo> getVerifiedVotersDetailsBySurveyDetailsInfoId(Long voterId)
+	{
+		Query query = getSession().createQuery("select SDI from SurveyDetailsInfo SDI where SDI.voter.voterId = :voterId and SDI.verified = 'Y'");
+		
+		query.setParameter("voterId", voterId);
+		
+		return query.list();
+		
+	}
 }

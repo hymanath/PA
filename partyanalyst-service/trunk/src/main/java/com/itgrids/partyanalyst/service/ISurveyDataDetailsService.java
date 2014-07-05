@@ -43,4 +43,8 @@ public interface ISurveyDataDetailsService
 	//public List<SurveyResponceVO> getSurveyUserBoothsAndVoterDetails(Long surveyUserId);
 	public List<UserBoothDetailsVO> getBoothDetailsByConstituencyId(Long constituencyId);
 
+	public List<UserBoothDetailsVO> getBoothDetailsByConstituencyId(Long constituencyId);
+	public String saveVerifiedRecordsDetails(final List<Long> verifierIds);
+
+
 }

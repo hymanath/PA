@@ -35,6 +35,9 @@ public class SurveyReportVO {
     private boolean localAreaMatched;
     private boolean hamletMatched;
     private boolean casteMatched;
+    private Long surveyDetailsInfoId;
+    private String voterIDCardNo;
+    private String verified;
 	private String surveyDate1;
 	
 	
@@ -43,6 +46,24 @@ public class SurveyReportVO {
 	}
 	public void setSurveyDate1(String surveyDate1) {
 		this.surveyDate1 = surveyDate1;
+	}
+	public String getVerified() {
+		return verified;
+	}
+	public void setVerified(String verified) {
+		this.verified = verified;
+	}
+	public String getVoterIDCardNo() {
+		return voterIDCardNo;
+	}
+	public void setVoterIDCardNo(String voterIDCardNo) {
+		this.voterIDCardNo = voterIDCardNo;
+	}
+	public Long getSurveyDetailsInfoId() {
+		return surveyDetailsInfoId;
+	}
+	public void setSurveyDetailsInfoId(Long surveyDetailsInfoId) {
+		this.surveyDetailsInfoId = surveyDetailsInfoId;
 	}
 	public boolean isCasteMatched() {
 		return casteMatched;
