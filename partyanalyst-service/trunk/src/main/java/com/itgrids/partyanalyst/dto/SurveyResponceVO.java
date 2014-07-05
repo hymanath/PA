@@ -41,7 +41,6 @@ public class SurveyResponceVO extends UserResponseVO  implements Serializable
 	private List<String> partNos;
 	private List<String> boothIds;
 	private List<SurveyResponceVO> verifiersData;
-	private List<SurveyResponceVO> votersList = new ArrayList<SurveyResponceVO>();
 	
 	
 	
