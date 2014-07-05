@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
@@ -31,6 +32,7 @@ public class UserTrackingInterceptor extends AbstractInterceptor implements Serv
 	private List<String> userRoles;
 	private HttpServletRequest request;
 	private static final long serialVersionUID = 1L;
+	private static final Logger LOG = Logger.getLogger(UserTrackingInterceptor.class);
 	
 	public IAccessRestrictedSessionDAO getAccessRestrictedSessionDAO() {
 		return accessRestrictedSessionDAO;
@@ -84,9 +86,9 @@ public class UserTrackingInterceptor extends AbstractInterceptor implements Serv
 			String[] arr = request.getRequestURL().toString().split("/");
 			if(registrationVO == null && request.getRequestURL().indexOf("login") == -1)
 				return "tdpLoginPage";
-			else if(arr[4].toString().trim().equalsIgnoreCase("login.action"))
+			else if(arr[arr.length-1].toString().trim().equalsIgnoreCase("login.action"))
 				return "success";
-			else if(arr[4].toString().trim().equalsIgnoreCase("loginPopUpsAction.action"))
+			else if(arr[arr.length-1].toString().trim().equalsIgnoreCase("loginPopUpsAction.action"))
 				return "dashboard";
 			
 		}
@@ -120,6 +122,7 @@ public class UserTrackingInterceptor extends AbstractInterceptor implements Serv
 		}				
 		return invocation.invoke();
 		}catch (Exception e) {
+			LOG.error("Exception Occured, Exception is - ",e);
 			return invocation.invoke();
 		}
 	}
