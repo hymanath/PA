@@ -77,6 +77,32 @@
 	</div>
 <script>
 
+$('#constituencyId').change(function(){
+		getBoothDetails();
+ });
+
+function getBoothDetails()
+{
+	var jObj =
+	{
+	 constituencyId:$('#constituencyId').val(),
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getBoothDetailsByConstituencyAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){
+				$('#boothId').find('option').remove();
+				$('#boothId').prepend('<option value="0">Select Booth</option>');
+				for(var i in result){				 
+				 $('#boothId').append('<option value="'+result[i].boothId+'">Booth- '+result[i].partNo+'</option>');
+				}
+		});
+}	
+
+
+
 function getComparisionReport()
 {
 	var constituencyId = $("#constituencyId").val();
@@ -87,15 +113,15 @@ function getComparisionReport()
 		$("#reportErrorDiv").html("Please Select Constituency").css("color","red");
 		return;
 	}
-	/*if(boothId == 0)
+	if(boothId == 0)
 	{
 		$("#reportErrorDiv").html("Please Select Booth").css("color","red");
 		return;
-	}*/
+	}
 	
 	var jObj =
 	{
-	 boothId:383457
+	 boothId:boothId
 	}
 	$.ajax({
 			type:'GET',
@@ -182,23 +208,8 @@ function buildComparisonReport(result)
 		$("#comparisonReportId").html(str);
 		
 }
-/*function getBoothDetails()
-{
-	var jObj =
-	{
-	 constituencyId:$('#constituencyId').val(),
-	}
-	$.ajax({
-			type:'GET',
-			url: 'getBoothDetailsByConstituencyAction.action',
-			dataType: 'json',
-			data: {task:JSON.stringify(jObj)},
-		  }).done(function(result){
-				 $('#boothId').find('option').remove();
-				$('#boothId').append('<option value="'+result[i].boothId+'">Booth- '+result[i].partNo+'</option>');
-		});
-}	*/
-	
+
+		
 	
 	</script>	
   </body>
