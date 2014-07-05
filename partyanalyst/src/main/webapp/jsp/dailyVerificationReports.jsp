@@ -11,6 +11,7 @@
 <script src="//code.jquery.com/jquery-1.10.2.js"></script>
 <script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
  <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">	
+
 		<style>
 			body{background:#f0f0f0;}
 			.m_top20{margin-top:20px;}
@@ -221,8 +222,24 @@ $("#heading").html('');
 
 function buildDayWiseReport(result,heading,startDate,endDate)
 {
+var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-	$("#heading").html(''+heading+'  Report For Daily Verification ');
+var dt1 = startDate.split("-").reverse().join("-");
+var d = new Date(dt1);
+var strdate= d.getDate() + '-' +  months[d.getMonth()] + '-' + d.getFullYear();
+
+var dt2 = endDate.split("-").reverse().join("-");
+var d1 = new Date(dt2);
+var enddate= d1.getDate() + '-' +  months[d1.getMonth()] + '-' + d1.getFullYear();
+if(strdate < enddate)
+	{
+	$("#heading").html(''+heading+'  Report For Daily Verification  </br><small style="color:#333;padding-bottom:10px;display:inline-block;">  From '+strdate+' to '+enddate+' </small> ');
+	}
+
+	else
+	{
+	$("#heading").html(''+heading+'  Report For Daily Verification  </br><small style="color:#333;padding-bottom:10px;display:inline-block;"> '+strdate+' </small> ');
+	}
 	$("#errorDiv").html("");
 	if(result.length == 0)
 	 $('#dayWiseReportDiv').html('<font style="color:red;">No data available....</font>');
@@ -316,8 +333,11 @@ function buildUserBoothWiseCountDetails(result)
 			hide: "explode"
 		});
 }
+
+
 	</script>
 	<script>
+	
 	getUserTypes('userType');
 	</script>
   </body>

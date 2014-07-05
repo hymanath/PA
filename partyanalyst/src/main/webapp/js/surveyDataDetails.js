@@ -385,7 +385,9 @@ else if(id == "userCreationTab")
 	$("#assignBoothToLeaderDiv").hide();
 	$("#verificationDiv").show();
 	$("#leaderNameDiv").show();
+	redicttoVerificationPage();
 	getLeaderDetetilsByContituencyWise();
+
 	}
 
 
@@ -818,4 +820,11 @@ function updateLeaderUserReleation()
 				$("#assignLeaderErrorDiv").html('Error Occured,Try again....').css("color","red");
 			}		
 		});
+}
+
+function redicttoVerificationPage()
+{
+
+	 window.open('dailyVerificationReportsAction.action','_blank');
+	
 }
