@@ -722,7 +722,8 @@ function saveUserAssignedBoothsDetails()
 	{
 	  boothIds:[],
 	  constituencyId:$('#constituencyId').val(),
-	  surveyUserId:$('#userId').val()
+	  surveyUserId:$('#userId').val(),
+	  remainingDataBooths:''
 	}
 
 	$('.boothChckbox').each(function(index,value){

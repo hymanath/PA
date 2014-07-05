@@ -383,6 +383,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			 
 			 Long surveyUserId = jObj.getLong("surveyUserId");
 			 Long constituencyId = jObj.getLong("constituencyId");
+			 String remainignDataBooths = jObj.getString("remainingDataBooths");
 			 
 			 List<Long> boothIds = new ArrayList<Long>();
 			 
@@ -391,7 +392,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 				boothIds.add(Long.valueOf(boothDetails.get(i).toString()));
 			}
 			
-			resultStatus = surveyDataDetailsService.saveSurveyUserBoothAssign(surveyUserId,constituencyId,boothIds);
+			resultStatus = surveyDataDetailsService.saveSurveyUserBoothAssign(surveyUserId,constituencyId,boothIds,remainignDataBooths);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
