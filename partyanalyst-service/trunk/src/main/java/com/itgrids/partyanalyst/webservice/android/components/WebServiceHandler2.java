@@ -65,11 +65,11 @@ public class WebServiceHandler2 {
 		{
 			e.printStackTrace();
 		}
-		out.setStatus("Success");
 		if(out==null)
 			return "{\"status\":\"login failure\"}";
-	
-		else return out;
+		out.setStatus("Success");
+
+		 return out;
 	}
 	
 	@POST
