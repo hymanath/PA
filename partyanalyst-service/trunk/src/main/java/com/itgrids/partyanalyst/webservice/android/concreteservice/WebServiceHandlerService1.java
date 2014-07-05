@@ -1,11 +1,12 @@
 package com.itgrids.partyanalyst.webservice.android.concreteservice;
-
+       
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
@@ -14,6 +15,7 @@ import com.itgrids.partyanalyst.dao.IMobileAppUserAccessKeyDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserProfileDAO;
 import com.itgrids.partyanalyst.dao.IPingingTypeDAO;
+import com.itgrids.partyanalyst.dao.ISurveyUserBoothAssignDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserSurveyBoothsDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
@@ -21,23 +23,8 @@ import com.itgrids.partyanalyst.dao.IVoiceRecordingDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterBoothActivitiesDAO;
 import com.itgrids.partyanalyst.dao.IVoterTagDAO;
 import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
-import com.itgrids.partyanalyst.dto.CadreInfo;
-import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
-import com.itgrids.partyanalyst.dto.FlagVO;
-import com.itgrids.partyanalyst.dto.PanchayatCountVo;
-import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.dto.VoterDetailsVO;
-import com.itgrids.partyanalyst.dto.WSResultVO;
-import com.itgrids.partyanalyst.model.Booth;
-import com.itgrids.partyanalyst.model.MobileAppPinging;
-import com.itgrids.partyanalyst.model.MobileAppUser;
-import com.itgrids.partyanalyst.model.MobileAppUserAccessKey;
-import com.itgrids.partyanalyst.model.User;
-import com.itgrids.partyanalyst.model.UserVoterDetails;
-import com.itgrids.partyanalyst.model.VoterBoothActivities;
-import com.itgrids.partyanalyst.model.VoterTag;
-import com.itgrids.partyanalyst.security.PBKDF2;
+import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.itgrids.partyanalyst.service.ILoginService;
 import com.itgrids.partyanalyst.service.IMailService;
@@ -48,16 +35,27 @@ import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
 import com.itgrids.partyanalyst.service.IVoiceSmsService;
 import com.itgrids.partyanalyst.service.IVoterReportService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
-import com.itgrids.partyanalyst.utils.IConstants;
-import com.itgrids.partyanalyst.utils.Util;
 import com.itgrids.partyanalyst.webservice.android.abstractservice.IWebServiceHandlerService1;
-import com.itgrids.partyanalyst.webservice.utils.VoterTagVO;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLoginVO;
-
-
+import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserResponseSub;
+import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserResponseVO;
+@Service
+@Qualifier("web1")
 public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	
+	
+	/**
+	 * @author Anilkumar Ravula
+	 * Jul 3, 2014
+	 * @param 
+	 */
+	public  WebServiceHandlerService1() {
+	System.out.println("got instanciated===========");	
+
+	}
 	private static final Logger log = Logger.getLogger(WebServiceHandlerService1.class);
+
+	private static final Long hamletId = null;
 	
 	private ILoginService loginService;
 	
@@ -87,8 +85,14 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	
 	@Autowired IUserDAO userDAO;
 	@Autowired IStrategyModelTargetingService strategyModelTargetingService;
-    @Autowired IUserSurveyBoothsDAO userSurveyBoothsDAO ;
-    @Autowired ISurveyDataDetailsService surveyDataDetailsService;
+    @Autowired   IUserSurveyBoothsDAO userSurveyBoothsDAO ;
+    @Autowired public ISurveyDataDetailsService surveyDataDetailsService;
+    
+    @Autowired
+	 public ISurveyUserBoothAssignDAO surveyUserBoothAssignDAO; 
+	
+	
+	
     
 	public IVoterBoothActivitiesDAO getVoterBoothActivitiesDAO() {
 		return voterBoothActivitiesDAO;
@@ -250,18 +254,27 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	public void setLoginService(ILoginService loginService) {
 		this.loginService = loginService;
 	}
-
-	public String checkForUserAuthentication(UserLoginVO inputvo)
-	{
+     @Override
+	public UserResponseVO checkForUserAuthentication(UserLoginVO inputvo)
+	{/*
 		StringBuilder buffer= new StringBuilder();
 		
-		buffer.append("{\"statusCode:\"");
-		Long userId=null;
+		buffer.append("{\"statusCode:\"");*/
+		Object[] userId=null;
+		UserResponseVO res=null;
 		log.debug("Entered into the checkForUserAuthentication  method in WebServiceHandlerService");
 		try
 		{
-			 userId=surveyDataDetailsService.getUserDetailsForCheck(inputvo.getUserName(), inputvo.getPassWord());
-		
+			//check user availability
+			 userId=surveyDataDetailsService.auhenticateUserandGetUserType(inputvo.getUserName(), inputvo.getPassWord());
+  
+			 //if user not available 
+			 if(userId==null)
+				 return null;
+			    //stop here and return
+			  res= buildDateForSurverUsers(userId);
+			 
+			 // bulid response based on userType
 		
 		
 		}catch(Exception e)
@@ -270,28 +283,138 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 			e.printStackTrace();
 			
 		}
-		return userId!=null?userId.toString():"";
+		return res;
 	}
+
 	
-/*	public ResultStatus checkUserAuthenticationAndUpdateAuthorisedTime(String userId,String macAdressId)
+	
+	
+	public UserResponseVO  buildDateForSurverUsers(Object[] inputs)
 	{
-		try{
-		List<Object> mobileAppUserId = mobileAppUserDAO.checkUniqueCode(userId);
-		if(mobileAppUserId != null)
+		
+		UserResponseVO res=null;
+		
+		long userId=(Long)inputs[0];
+		int userTypeId=((Long)inputs[1]).intValue();
+
+	//check  usertypes
+		
+		switch(userTypeId)
 		{
-		List<Object> pingingTypeId = pingingTypeDAO.getPingingTypeIdByType(IConstants.App_Authorization);
-		//saveMobileAppPingIngDetails((Long) mobileAppUserId.get(0),(Long)pingingTypeId.get(0),null,null);
+		         //collector
+		case 1:
+			res=buildCollectorData(userId, userTypeId);
+			break;
+			     //verifier
+		case 4:
+			res=buildverifierData(userId, userTypeId);
+			break;
+		case 3:
+			
+			break;
+		
+		default:break;
+		
 		}
-		return mobileService.checkAuthenticateUserAndUpdateLastAuthorisedTime(userId, macAdressId);
-		}
-		catch(Exception e)
-		{
-			log.error("Exception raised in checkUserAuthenticationAndUpdateAuthorisedTime  method in WebServiceHandlerService");
-			return null;
-		}
+		return res;
 		
 	}
-	*/
+	/**
+	 * 
+	 * @author Anilkumar Ravula
+	 * Jul 2, 2014
+	 * @param
+	 */
+	public UserResponseVO buildCollectorData(long userId,long userTypeId)
+	{
+		//check data already available fo user
+	          //need to confirm
+		
+		//get booths for collector
+		List<Object[]> booths =(List<Object[]>) surveyUserBoothAssignDAO.getBoothsForUser(userId);
+         
+		
+		UserResponseVO res=buildResponseVo(booths, userTypeId, userId);
+		//process list and convert
+	   return res;
+	}
+	
+	public UserResponseVO buildResponseVo(List<Object[]> booths,long userTypeId,long userId)
+	{
+		//UserResponseVO res= new UserResponseVO();
+		UserResponseSub subRes= new UserResponseSub();
+		int count=0;
+		
+		for (Object[] objects : booths) {
+			if(count==0) {
+				subRes.setConstituencyId(objects[2].toString());
+				subRes.setUserId(String.valueOf(userId));
+			    subRes.setUserTypeId(String.valueOf(userTypeId));
+			    ArrayList<String> partNos=new ArrayList<String>();
+			    partNos.add(objects[1].toString());
+			    ArrayList<String> boothIds=new ArrayList<String>();
+			    boothIds.add(objects[0].toString());
+			    
+			    subRes.setPartNos(partNos);
+			    subRes.setBoothIds(boothIds);
+			}else {
+			subRes.getBoothIds().add(objects[0].toString());
+			subRes.getPartNos().add(objects[1].toString());
+			}
+			count++;
+		}
+		
+		return subRes;
+	}
+	
+
+	/**
+	 * 
+	 * @author Anilkumar Ravula
+	 * Jul 3, 2014
+	 * @param
+	 */
+	public UserResponseVO  buildverifierData(long userId,long userTypeId)
+	{
+		//check assigned booth for verifier
+		
+		List<Object[]> booths =(List<Object[]>) surveyUserBoothAssignDAO.getBoothsForUser(userId);
+	
+		UserResponseSub res=(UserResponseSub) buildResponseVo(booths, userTypeId, userId);
+		
+		SurveyResponceVO responseVo= new SurveyResponceVO();
+		responseVo.setConstituencyId(res.getConstituencyId());
+		responseVo.setUserId(res.getUserId());
+		responseVo.setUserTypeId(res.getUserTypeId());
+		responseVo.setBoothIds(res.getBoothIds());
+		responseVo.setPartNos(res.getPartNos());
+		
+		for (String boothId :res.getBoothIds() ) {
+			List<SurveyResponceVO>  verifiers=surveyDataDetailsService.getDetailsForVerifier(userId, Long.valueOf(boothId));
+			if(verifiers!=null&&verifiers.size()>0)
+			{
+				List<SurveyResponceVO> verifiersList=responseVo.getVerifiersData();				
+				if(verifiersList==null)				
+					verifiersList=new ArrayList<SurveyResponceVO>();				
+				verifiersList.addAll(verifiers);
+				responseVo.setVerifiersData(verifiersList);
+			}
+		}
+		// check whether data available  for all those booths or not 6782934
+	  //	List<Object[]> votersData =(List<Object[]>) surveyUserBoothAssignDAO.getVoterDataForUser(1l);
+
+		//process data 
+		return responseVo;
+	}
+
+	public Object saveSurveyFieldUsers(SurveyResponceVO inputResponse)
+	{
+		
+		List<SurveyResponceVO> surveyResponceList=inputResponse.getVerifiersData();
+		ResultStatus  rs=surveyDataDetailsService.saveSurveyDataDetailsInfo(inputResponse)	;	
+		return rs;
+	}
+	
 	
 	
 	
