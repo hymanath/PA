@@ -332,7 +332,7 @@ else if(id == "userCreationTab")
 	getUserTypes('surveyUserTypeForSelect');
 	}
 
-		else if(id == "boothAssignTab")
+	else if(id == "boothAssignTab")
 	{
 	$(".errorCls").html('');
 	$("#createUserTypeDiv").hide();
@@ -343,6 +343,7 @@ else if(id == "userCreationTab")
 	$("#assignBoothToLeaderDiv").hide();
 	$("#verificationDiv").hide();
 	$("#leaderNameDiv").hide();
+	getUserTypes('boothAssignUserType');
 	}
 	
 	else if(id == "deactivationTab")
