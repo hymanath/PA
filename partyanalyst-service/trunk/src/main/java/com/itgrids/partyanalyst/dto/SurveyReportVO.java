@@ -20,9 +20,10 @@ public class SurveyReportVO {
 	private SurveyReportVO thirdParty;
 	
 	private String voterName;
-	private String isCadre;
-	private String isInfluencePeople;
-    private String caste;
+	private String cadre;
+	private String influencePeople;
+   
+	private String caste;
     private String localArea;
     private Long hamletId;
     private String hamletName;
@@ -113,18 +114,8 @@ public class SurveyReportVO {
 	public void setVoterName(String voterName) {
 		this.voterName = voterName;
 	}
-	public String isCadre() {
-		return isCadre;
-	}
-	public void setCadre(String isCadre) {
-		this.isCadre = isCadre;
-	}
-	public String isInfluencePeople() {
-		return isInfluencePeople;
-	}
-	public void setInfluencePeople(String isInfluencePeople) {
-		this.isInfluencePeople = isInfluencePeople;
-	}
+	
+	
 	public String getCaste() {
 		return caste;
 	}
@@ -222,6 +213,18 @@ public class SurveyReportVO {
 	}
 	public void setVoterId(Long voterId) {
 		this.voterId = voterId;
+	}
+	 public String getCadre() {
+			return cadre;
+	}
+	public void setCadre(String cadre) {
+		this.cadre = cadre;
+	}
+	public String getInfluencePeople() {
+		return influencePeople;
+	}
+	public void setInfluencePeople(String influencePeople) {
+		this.influencePeople = influencePeople;
 	}
 
 }

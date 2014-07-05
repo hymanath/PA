@@ -1258,7 +1258,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
                 subTypeVO.setSurveyDetailsInfoId(surveyDtlsInfo.getSurveyDetailsInfoId());
                 subTypeVO.setVoterIDCardNo(surveyDtlsInfo.getVoter().getVoterIDCardNo());
                 subTypeVO.setCasteId(surveyDtlsInfo.getCaste().getCasteStateId());
-                subTypeVO.setVerified(surveyDtlsInfo.getVerified());     
+                subTypeVO.setVerified(surveyDtlsInfo.getVerified());    
+                subTypeVO.setCaste(surveyDtlsInfo.getCaste().getCaste().getCasteName());
                 
                 if(surveyDtlsInfo.getHamlet() != null)
                 {
@@ -1269,6 +1270,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				if(surveyDtlsInfo.getSurveyUser().getSurveyUserType().getSurveyUsertypeId().equals(IConstants.DATA_COLLECTOR_TYPE_ID))// collector
 				{
 					voterVO.setDataCollector(subTypeVO);
+					voterVO.setVoterIDCardNo(surveyDtlsInfo.getVoter().getVoterIDCardNo());
 				}
 				else if(surveyDtlsInfo.getSurveyUser().getSurveyUserType().getSurveyUsertypeId().equals(IConstants.VERIFIER_TYPE_ID))// verifier
 				{
@@ -1282,6 +1284,20 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			
 			checkForMatchedDetailsForDataCollectorAndVerifierAndThirdParty(resultList);
 			checkForMatchedDetailsForDataCollectorAndVerifier(resultList);
+			
+			for(SurveyReportVO voterVO:resultList)
+			{
+				if(voterVO.getVerifier() == null && voterVO.getThirdParty() == null)
+				{
+					voterVO.setCadreMatched(true);
+					voterVO.setInfluencePeopleMatched(true);
+					voterVO.setLocalAreaMatched(true);
+					voterVO.setCasteMatched(true);
+					voterVO.setHamletMatched(true);
+					
+				}
+				
+			}
 			
 		} catch (Exception e) {
 			//e.printStackTrace();
@@ -1327,10 +1343,10 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			for(SurveyReportVO voterVO:votersList)
 			{
 				
-				if(voterVO.getDataCollector() != null && voterVO.getVerifier() != null && voterVO.getThirdParty() != null)
+				if(voterVO.getDataCollector() != null && voterVO.getVerifier() != null && voterVO.getThirdParty() == null)
 				{
-					if (voterVO.getDataCollector().isCadre() == voterVO
-							.getVerifier().isCadre())					
+					if (voterVO.getDataCollector().getCadre().equalsIgnoreCase(voterVO
+							.getVerifier().getCadre()))				
 					{
 						voterVO.setCadreMatched(true);
 					}
@@ -1340,8 +1356,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					}
 					
 					
-					if (voterVO.getDataCollector().isInfluencePeople() == voterVO
-							.getVerifier().isInfluencePeople())					
+					if (voterVO.getDataCollector().getInfluencePeople().equalsIgnoreCase(voterVO
+							.getVerifier().getInfluencePeople()))					
 					{
 						voterVO.setInfluencePeopleMatched(true);
 					}
@@ -1397,10 +1413,10 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				
 				if(voterVO.getDataCollector() != null && voterVO.getVerifier() != null && voterVO.getThirdParty() != null)
 				{
-					if (voterVO.getDataCollector().isCadre() == voterVO
-							.getVerifier().isCadre()
-							&& voterVO.getVerifier().isCadre() == voterVO
-									.getThirdParty().isCadre())					
+					if (voterVO.getDataCollector().getCadre().equalsIgnoreCase(voterVO
+							.getVerifier().getCadre())
+							&& voterVO.getVerifier().getCadre().equalsIgnoreCase(voterVO
+									.getThirdParty().getCadre()))					
 					{
 						voterVO.setCadreMatched(true);
 					}
@@ -1411,10 +1427,10 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					
 					
 					
-					if (voterVO.getDataCollector().isInfluencePeople() == voterVO
-							.getVerifier().isInfluencePeople()
-							&& voterVO.getVerifier().isInfluencePeople() == voterVO
-									.getThirdParty().isInfluencePeople())					
+					if (voterVO.getDataCollector().getInfluencePeople().equalsIgnoreCase(voterVO
+							.getVerifier().getInfluencePeople())
+							&& voterVO.getVerifier().getInfluencePeople().equalsIgnoreCase(voterVO
+									.getThirdParty().getInfluencePeople()))					
 					{
 						voterVO.setInfluencePeopleMatched(true);
 					}
