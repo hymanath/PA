@@ -17,7 +17,7 @@ import com.itgrids.partyanalyst.utils.IConstants;
  * Generated source version: 2.1
  * 
  */
-@WebServiceClient(name = "SOAPWebServiceEndPointImplService", targetNamespace = "http://impl.endpoints.soa.survey.itgrids.com/", wsdlLocation = "http://192.168.3.74/Survey/SOAWebService?wsdl")
+@WebServiceClient(name = "SOAPWebServiceEndPointImplService", targetNamespace = "http://impl.endpoints.soa.survey.itgrids.com/", wsdlLocation = IConstants.SMS_APP_URL+"/SOAWebService?wsdl")
 public class SOAPWebServiceEndPointImplService
     extends Service
 {
