@@ -64,6 +64,7 @@ function getRemeaningSurveyUsersByUserType(divId,value)
 
 function getSurveyUsersByUserType(divId,value)
 {
+	$('#'+divId+'').html('<option value="0">Select User</option>');
 	var jsObj =
 	{
 	userTypeId :value,
@@ -75,7 +76,7 @@ function getSurveyUsersByUserType(divId,value)
 	dataType: 'json',
 	data: {task:JSON.stringify(jsObj)},
 	}).done(function(result){
-	$('#'+divId+'').find('option:not(:first)').remove();
+	//$('#'+divId+'').append('<option value="0">Select User</option>');
 	if(result != null && result.length > 0)
 	{
 	for(var i in result)
@@ -84,12 +85,17 @@ function getSurveyUsersByUserType(divId,value)
 	}
 
 	}
+	/* else
+	{
+		$('#'+divId+'').html('<option value="0">Select User</option>');
+	} */
 	});
 }
 
 
 function saveSurveyUser()
 {
+	$('#processingImgForUserCreation').show();
 	var	firstName =  $.trim($('#firstName').val());
 	var	lastName =   $.trim($('#lastName').val());
 	var	userName =   $.trim($('#userName').val());
@@ -102,53 +108,63 @@ function saveSurveyUser()
 	if(firstName.length == 0)
 	{
 		$("#createUserErrorDiv").html("FirstName is required").css("color","red");
+		$('#processingImgForUserCreation').hide();
 		return;
 	}
 	if(lastName.length == 0)
 	{
 		$("#createUserErrorDiv").html("LastName is required").css("color","red");
+		$('#processingImgForUserCreation').hide();
 		return;
 	}
 	if(userName.length == 0)
 	{
 		$("#createUserErrorDiv").html("UserName is required").css("color","red");
+		$('#processingImgForUserCreation').hide();
 		return;
 	}
 	
 	if(address.length == 0)
 	{
 		$("#createUserErrorDiv").html("Address is required").css("color","red");
+		$('#processingImgForUserCreation').hide();
 		return;
 	
 	}
 	if(password.length == 0)
 	{
 		$("#createUserErrorDiv").html("Password is required").css("color","red");
+		$('#processingImgForUserCreation').hide();
 		return;
 	}
 	if(retypePassword.length == 0)
 	{
 		$("#createUserErrorDiv").html("Retype Password is required").css("color","red");
+		$('#processingImgForUserCreation').hide();
 		return;
 	}
 	 if(password.length > 0 && retypePassword.length > 0 && password != retypePassword)
 	{
  		$("#createUserErrorDiv").html("Passwords donot match").css("color","red");
+		$('#processingImgForUserCreation').hide();
        return
 	}
 	if(mobileNo.length == 0)
 	{
 		$("#createUserErrorDiv").html("Mobile Number is required").css("color","red");
+		$('#processingImgForUserCreation').hide();
 		return;
 	}
 	else if(isNaN(mobileNo))
 	{
 		$("#createUserErrorDiv").html("Mobile Number Should be numeric").css("color","red");
+		$('#processingImgForUserCreation').hide();
 		return;
 	}
 	if(userType == 0)
 	{
 		$("#createUserErrorDiv").html("UserType is required").css("color","red");
+		$('#processingImgForUserCreation').hide();
 		return;
 	
 	}
@@ -181,7 +197,7 @@ function saveSurveyUser()
 			{
 				$("#createUserErrorDiv").html('Error Occured,Try again....').css("color","red");
 			}
-		
+		    $('#processingImgForUserCreation').hide();	
 		});
 
 }
@@ -189,18 +205,20 @@ function saveSurveyUser()
 
 function saveSurveyUserType()
 {
+	$('#processingImgForUserType').show();
 	var description = $.trim($('#userTypeDescription').val());
 	var userTypeName = $.trim($('#userTypeName').val());
 	if(userTypeName.length == 0)
 	{
 		$("#createUserTypeErrorDiv").html("Please Enter User Type ").css("color","red");
+		$('#processingImgForUserType').hide();
 		return;
 	}
-	if(description.length == 0)
+	/* if(description.length == 0)
 	{
 		$("#createUserTypeErrorDiv").html("Please Enter User Type Description").css("color","red");
 		return;
-	}
+	} */
 	
 	var jsObj = 
 	{
@@ -221,10 +239,15 @@ function saveSurveyUserType()
 				setTimeout(function(){$('#createUserTypeErrorDiv').html('');}, 3000);
 				$('#userTypeDescription').val('');
 			}
+			else if(result.resultCode == 4)
+			{
+				$("#createUserTypeErrorDiv").html('User Type Already Exists ...').css("color","red");
+			}
 			else
 			{
 				$("#createUserTypeErrorDiv").html('Error Occured,Try again....').css("color","red");
 			}
+			$('#processingImgForUserType').hide();
 		});
 }
 
@@ -232,6 +255,7 @@ function saveSurveyUserType()
 function AssignTab()
 {
 	$("#assignTabErrorDiv").html('');
+	$("#processingImgForTabAssign").show();
 	//var uname = $.trim($("#uname").val());
 	var surveyUser = $("#surveyUserIdForSelect").val();
 	var tabNo = $.trim($("#tabNo").val());
@@ -247,10 +271,10 @@ function AssignTab()
 	{
 		str +='Tab No is required <br/>';
 	}
-	if(remarks.length == 0)
+	/* if(remarks.length == 0)
 	{
 		str +='Remarks is required <br/>';
-	}
+	} */
 	if(date.length == 0)
 	{
 		str +='Date is required <br/>';
@@ -258,6 +282,7 @@ function AssignTab()
 	if(str != '')
 	{
 	$("#assignTabErrorDiv").html(str).css("color","red");
+	$("#processingImgForTabAssign").hide();
 	return;
 	}
 	else
@@ -281,6 +306,7 @@ $("#assignTabErrorDiv").html('');
 			  {
 				$("#assignTabErrorDiv").html('Error Occured,Try again....').css("color","red");
 			  }
+			  $("#processingImgForTabAssign").hide();
 	   });
 	
 }
@@ -464,6 +490,7 @@ function assignBooth()
 }
 function assignLeaderToUser()
 {
+	$('#processingImgForAssignLeader').show();
 	var	typeId =  $("#typeId").val();
 	var	constituencyLeaderId = $("#constituencyLeaderId").val();
 	var	leaderId =  $("#leaderId").val();
@@ -473,21 +500,25 @@ function assignLeaderToUser()
 	if(constituencyLeaderId == 0)
 	{
 		$("#assignLeaderErrorDiv").html("Please Select Constituency").css("color","red");
+		$('#processingImgForAssignLeader').hide();
 		return;
 	}
 	if(typeId == 0)
 	{
 		$("#assignLeaderErrorDiv").html("Please Select the Type").css("color","red");
+		$('#processingImgForAssignLeader').hide();
 		return;
 	}
 	if(leaderId == 0)
 	{
 		$("#assignLeaderErrorDiv").html("Please Select Leader").css("color","red");
+		$('#processingImgForAssignLeader').hide();
 		return;
 	}
 	if(userLeaderId == 0)
 	{
 		$("#assignLeaderErrorDiv").html("Please Select User").css("color","red");
+		$('#processingImgForAssignLeader').hide();
 		return;
 	}
 	var jsObj = 
@@ -515,41 +546,45 @@ function assignLeaderToUser()
 			{
 				$("#assignLeaderErrorDiv").html('Error Occured,Try again....').css("color","red");
 			}		
+			$('#processingImgForAssignLeader').hide();
 		});
 
 }
 
 function deactivateUser()
 {
+	$('#processingImgForDeactivation').show();
 	var	deactivateUserId =  $("#deactivateUserId").val();
 	var	remarksId = $.trim($("#remarksId").val());
-	
 
 	if(deactivateUserId == 0)
 	{
 		$("#deactivateUserErrorDiv").html("Please Select The User").css("color","red");
+		$('#processingImgForDeactivation').hide();
 		return;
 	}
 	if(remarksId.length == 0)
 	{
 		$("#deactivateUserErrorDiv").html("Remarks is Required").css("color","red");
+		$('#processingImgForDeactivation').hide();
 		return;
 	}
 	
 	var jsObj = 
 	{
-		deactivateUserId : deactivateUserId,
-		remarksId :  remarksId,
+		userId : deactivateUserId,
+		remarks :  remarksId,
 		
 		task : "deactivateUser"
 	}
 	
 	$.ajax({
 		type:'GET',
-		url: 'deactivateUserAction.action',
+		url: 'deactiveSurveyUserAction.action',
 		dataType: 'json',
 		data: {task:JSON.stringify(jsObj)},
 		}).done(function(result){
+			
 			if(result.resultCode == 0) 
 			{
 				$("#deactivateUserErrorDiv").html('Deactivated Usersuccessfully.').css("color","green");
@@ -560,7 +595,8 @@ function deactivateUser()
 			else
 			{
 				$("#deactivateUserErrorDiv").html('Error Occured,Try again....').css("color","red");
-			}		
+			}	
+			$('#processingImgForDeactivation').hide();
 		});
 
 }
@@ -599,7 +635,7 @@ function getLeaderDetetilsByContituencyWise()
 				{
 					str += '<tr>		';								  
 					str += '<td>'+result[i].desc+'</td>';
-					str += '<td><a onClick="getBoothDetailsForSelectedUser('+result[i].id+','+result[i].rank+')">'+result[i].name+'</a></td>';
+					str += '<td><a style = "cursor: pointer;" onClick="getBoothDetailsForSelectedUser('+result[i].id+','+result[i].rank+')">'+result[i].name+'</a></td>';
 					str += '</tr>	';									
 				}
 				
@@ -659,11 +695,11 @@ function getBoothDetailsForSelectedUser(leaderId,constituencyId)
 						
 						if(j == length-1)
 						{
-							str += '<a>'+result[i].genericVOList[j].rank+' </a>';
+							str += '<a style="cursor: pointer;">'+result[i].genericVOList[j].rank+' </a>';
 						}
 						else
 						{
-							str += '<a>'+result[i].genericVOList[j].rank+' , </a>';
+							str += '<a style="cursor: pointer;">'+result[i].genericVOList[j].rank+' , </a>';
 						}
 					}
 					str += ' </td>';
@@ -718,6 +754,7 @@ function buildBoothDetails(result)
 }
 function saveUserAssignedBoothsDetails()
 {
+	$('#processingImgForBoothAssign').show();
 	var jObj =
 	{
 	  boothIds:[],
@@ -784,6 +821,7 @@ function getSurveyUsersByUserTypeForLeaderRelease()
 
 function updateLeaderUserReleation()
 {
+	$('#processingImgForReleaseLeader').show();
 	var	typeId =  $("#typeIdForRelease").val();
 	var	constituencyLeaderId = $("#constituencyLeaderIdForRelease").val();
 	var	leaderId =  $("#leaderIdForRelease").val();
@@ -793,21 +831,25 @@ function updateLeaderUserReleation()
 	if(constituencyLeaderId == 0)
 	{
 		$("#assignLeaderErrorDivForRelease").html("Please Select Constituency").css("color","red");
+		$('#processingImgForReleaseLeader').hide();
 		return;
 	}
 	if(typeId == 0)
 	{
 		$("#assignLeaderErrorDivForRelease").html("Please Select the Type").css("color","red");
+		$('#processingImgForReleaseLeader').hide();
 		return;
 	}
 	if(leaderId == 0)
 	{
 		$("#assignLeaderErrorDivForRelease").html("Please Select Leader").css("color","red");
+		$('#processingImgForReleaseLeader').hide();
 		return;
 	}
 	if(userLeaderId == 0)
 	{
 		$("#assignLeaderErrorDivForRelease").html("Please Select User").css("color","red");
+		$('#processingImgForReleaseLeader').hide();
 		return;
 	}
 	var jsObj = 
@@ -827,14 +869,15 @@ function updateLeaderUserReleation()
 		}).done(function(result){
 			if(result.resultCode == 0) 
 			{
-				$("#assignLeaderErrorDiv").html('Leader Assigned successfully.').css("color","green");
-				setTimeout(function(){$('#assignLeaderErrorDiv').html('');}, 3000);				
+				$("#assignLeaderErrorDivForRelease").html('Users Released successfully.').css("color","green");
+				setTimeout(function(){$('#assignLeaderErrorDivForRelease').html('');}, 3000);				
 				$('#userLeaderId,#leaderId,#typeId,#constituencyLeaderId').val(0);
 			}
 			else
 			{
-				$("#assignLeaderErrorDiv").html('Error Occured,Try again....').css("color","red");
-			}		
+				$("#assignLeaderErrorDivForRelease").html('Error Occured,Try again....').css("color","red");
+			}	
+			$('#processingImgForReleaseLeader').hide();			
 		});
 }
 
