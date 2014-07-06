@@ -14,13 +14,13 @@ public class UserResponseSub  extends UserResponseVO{
 	private List<String> partNos;
 	private List<String> boothIds;
 	private List<Long> voterIds;
-	private List<Long> remainingDataBoothIds;
+	private List<String> remainingDataBoothIds;
 	
 	
-	public List<Long> getRemainingDataBoothIds() {
+	public List<String> getRemainingDataBoothIds() {
 		return remainingDataBoothIds;
 	}
-	public void setRemainingDataBoothIds(List<Long> remainingDataBoothIds) {
+	public void setRemainingDataBoothIds(List<String> remainingDataBoothIds) {
 		this.remainingDataBoothIds = remainingDataBoothIds;
 	}
 	public UserResponseSub() {
