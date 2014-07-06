@@ -22,6 +22,8 @@ public class SurveyDetailsInfoDAO extends GenericDaoHibernate<SurveyDetailsInfo,
 				" date(SDI.date) <= :endDate group by " +
 				"SDI.surveyUser.surveyUserId,DATE(SDI.date)");
 		
+		query.setParameter("startDate", startDate);
+		query.setParameter("endDate", endDate);
 		query.setParameter("constituencyId", constituencyId);
 		
 		return query.list();
