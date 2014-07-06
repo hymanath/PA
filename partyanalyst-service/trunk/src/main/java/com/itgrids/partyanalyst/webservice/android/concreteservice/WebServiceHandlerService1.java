@@ -39,6 +39,7 @@ import com.itgrids.partyanalyst.service.IVoterReportService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.webservice.android.abstractservice.IWebServiceHandlerService1;
+import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLocationTrackingVo;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLoginVO;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserResponseSub;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserResponseVO;
@@ -365,11 +366,9 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 		//UserResponseVO res= new UserResponseVO();
 		UserResponseSub subRes= new UserResponseSub();
 		
-		List<String> partNumbers = boothDAO.getPartNosForBooths(remainingDatBoothIds);
-		
 		if(remainingDatBoothIds != null)
 		{
-		 subRes.setRemainingDataBoothIds(partNumbers);
+		 subRes.setRemainingDataBoothIds(remainingDatBoothIds);
 		 subRes.setVoterIds(voterIds);
 		}
 		
@@ -403,7 +402,8 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	 * 
 	 * @author Anilkumar Ravula
 	 * Jul 3, 2014
-	 * @param
+	 * @param userId
+	 * @param userTypeId
 	 */
 	public UserResponseVO  buildverifierData(long userId,long userTypeId)
 	{
@@ -445,7 +445,16 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 		ResultStatus  rs=surveyDataDetailsService.saveSurveyDataDetailsInfo(inputResponse)	;	
 		return rs;
 	}
+	//saveSurveyUserTrackingDetails
 	
+	public ResultStatus saveUserTrackingLocation(UserLocationTrackingVo userLocationTrackingVo)
+	{
+		
+		ResultStatus  status=	surveyDataDetailsService.saveSurveyUserTrackingDetails(userLocationTrackingVo);
+		
+		
+		return status;		
+	}
 	
 	
 	
