@@ -327,7 +327,7 @@ function buildUserBoothWiseCountDetails(result)
 			autoOpen: true,
 			show: "blind",
 			width: 500,
-			
+            title:'Booth Details', 			
 			modal: true,
 			height:"auto",
 			hide: "explode"
