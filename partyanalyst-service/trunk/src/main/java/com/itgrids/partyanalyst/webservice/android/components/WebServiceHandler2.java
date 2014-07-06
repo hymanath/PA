@@ -25,6 +25,7 @@ import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.webservice.android.abstractservice.IWebServiceHandlerService1;
 import com.itgrids.partyanalyst.webservice.android.concreteservice.WebServiceHandlerService1;
 import com.itgrids.partyanalyst.webservice.utils.VoterTagVO;
+import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLocationTrackingVo;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLoginVO;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserResponseVO;
 
@@ -96,6 +97,31 @@ public class WebServiceHandler2 {
 		
 		 else return "{\"status\":\"Success\"}";
 	}
+	
+	
+	@POST
+	@Path("/saveUserTrackingDetails")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Object saveUserLocations (UserLocationTrackingVo  userLocationTrackingVo)
+	{
+		ResultStatus out=null;
+		
+		try{ 
+			out=(ResultStatus) webServiceHandlerService1.saveUserTrackingLocation(userLocationTrackingVo);
+			
+			//out=(UserResponseVO) webServiceHandlerService1.checkForUserAuthentication(inputs);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		if(!out.getMessage().equalsIgnoreCase("Success"))
+			return "{\"status\":\"Failure\"}";
+		
+		 else return "{\"status\":\"Success\"}";
+	}
+	
 	
 	
 }
