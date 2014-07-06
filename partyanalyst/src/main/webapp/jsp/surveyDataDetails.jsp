@@ -92,11 +92,11 @@
 							</div>
 							<div class="row">
 								<div class="span8 offset2">
-									Description<font class="requiredFont">*</font>
+									Description
 									<textarea id="userTypeDescription" class="input-block-level" rows="2"></textarea>
 								</div>
 							</div>
-							<div class="row text-center m_top20"><button onClick="saveSurveyUserType();" type="button" class="btn btn-large btn-success">CREATE</button></div>
+							<div class="row text-center m_top20"><button onClick="saveSurveyUserType();" type="button" class="btn btn-large btn-success">CREATE</button><img id="processingImgForUserType" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img></div>
 					</div>
 				</div>
 			</div>
@@ -158,7 +158,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onClick="saveSurveyUser();">SUBMIT</button></div>
+							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onClick="saveSurveyUser();">SUBMIT</button><img id="processingImgForUserCreation" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img></div>
 					</div>
 				</div>
 			</div>
@@ -177,7 +177,7 @@
 							<div class="row">
 								<div class="span10 offset2">
 									<div class="row-fluid">
-										<div class="span4">
+										<div class="span6">
 											<!--<label>User Name</label>
 											<input type="text" placeholder="User Name..." class="input-block-level" id="uname">-->
 											Select User Type<font class="requiredFont">*</font>
@@ -185,21 +185,22 @@
 											<option value="0">Select User type</option>
 											</select>
 											</div>
-											<div class="span4">
+											<div class="span6">
 										Select User Name<font class="requiredFont">*</font>
 										<select class="input-block-level" id="surveyUserIdForSelect"> </select>
 											</div>	
-										<div class="span2">
-											Tab No<font class="requiredFont">*</font>
-											<input type="text" placeholder="Tab No..." class="input-block-level" id="tabNo">
-										</div>
+										
 										</div>
 										<!--<div class="span3">
 											<label>Status</label>
 											<select class="input-block-level"> <option>01</option></select>
 										</div>-->
 											<div class="row-fluid">
-										<div class="span3">
+											<div class="span6">
+											Tab No<font class="requiredFont">*</font>
+											<input type="text" placeholder="Tab No..." class="input-block-level" id="tabNo">
+										</div>
+										<div class="span6">
 											Date<font class="requiredFont">*</font>
 											<input type="text" placeholder="User Name..." class="input-block-level" id="date">
 										</div>	
@@ -207,13 +208,13 @@
 									</div>
 									<div class="row-fluid">
 										<div class="span12">
-											Remarks<font class="requiredFont">*</font>
+											Remarks
 											<textarea class="input-block-level" rows="2" id="remarks"></textarea>
 										</div>
 									</div>
 								</div>
 							</div>
-							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onclick="AssignTab();">ASSIGN</button></div>
+							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onclick="AssignTab();">ASSIGN</button><img id="processingImgForTabAssign" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img></div>
 
 
 
@@ -256,11 +257,9 @@
 											<option value="0">Select Constituency</option>
 											</select>-->
 
-						<s:select theme="simple"  name="constituency" id="constituencyId" list="constituenciesList" listKey="id" listValue="name" />
+											<s:select theme="simple"  name="constituency" id="constituencyId" list="constituenciesList" listKey="id" listValue="name" />
 
 										</div>
-
-									<label class="checkbox span2 pull-right"><input type="checkbox" id="remainingData"/>Remaining Data</label>
 									</div>	
 									<!--<div class="row-fluid">
 										<div class="span6">
@@ -280,6 +279,8 @@
 									</div>
 							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onClick="saveUserAssignedBoothsDetails();">ASSIGN</button>
 							<img src='./images/icons/search.gif' id="assignboothimg" style="display:none;"/></div>
+
+
 
 							
 
@@ -315,12 +316,12 @@
 									<div class="row-fluid">
 										<div class="span12">
 									Remarks	<font class="requiredFont">*</font>
-									<textarea class="input-block-level" rows="2" id=="remarksId"></textarea>
+									<textarea class="input-block-level" rows="2" id="remarksId"></textarea>
 									</div>
 									</div>
 								</div>
 							</div>
-							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onClick="deactivateUser();">DEACTIVATE</button></div>
+							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onClick="deactivateUser();">DEACTIVATE</button><img id="processingImgForDeactivation" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img></div>
 					</div>
 				</div>
 			</div>
@@ -366,11 +367,11 @@
 									</div>
 								</div>
 									</div>
-							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onClick="assignLeaderToUser();">ASSIGN</button></div>
+							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onClick="assignLeaderToUser();">ASSIGN</button><img id="processingImgForAssignLeader" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img></div>
 
                             <div id="dayWiseReportDiv"></div>
  						    <div id="boothWiseCountDivId"></div>
-							<a class="btn btn-primary btn-large" href="javascript:{getComparisionReport()}">TEST</a>
+							<!--<a class="btn btn-primary btn-large" href="javascript:{getComparisionReport()}">TEST</a>-->
 							
 							<!--<a class="btn btn-primary btn-large" href="javascript:{getDayWiseReport()}">TEST</a>-->
 					</div>
@@ -414,7 +415,7 @@
 									</div>
 								</div>
 									</div>
-							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onClick="updateLeaderUserReleation();">RELEASE</button></div>
+							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onClick="updateLeaderUserReleation();">RELEASE</button><img id="processingImgForReleaseLeader" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img></div>
 					</div>
 				</div>
 			</div>
