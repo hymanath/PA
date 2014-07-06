@@ -667,4 +667,6 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<Object[]> getVotersDetailsByPublicationIdAndAvoidingBoothIds(List<?> boothIds, Long publicationDateId,Long constId) ;
 	  public List<Object[]> getVotersDetailsByPublicationIdAndCOnstituencyIds(Long publicationDateId,Long constId) ;
 	  public List<Long> getAllVoterIdsByBoothIdsAndPublicationDateId(List<Long> boothIds , Long publicationDateId);
+	  public List<Object[]> getBoothIdsDetailsOfVoterIds(List<Long> voterIds,Long publicationDateId);
+
 }

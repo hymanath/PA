@@ -7107,4 +7107,14 @@ public List<Long> getAllVoterIdsByBoothIdsAndPublicationDateId(List<Long> boothI
 	
 	return query.list();
 }
+
+public List<Object[]> getBoothIdsDetailsOfVoterIds(List<Long> voterIds,Long publicationDateId){
+	Query query = getSession().createQuery(" select  model.booth.partNo ,model.voter.voterId from BoothPublicationVoter model" +
+			" where model.voter.voterId in (:voterIds) and model.booth.publicationDate.publicationDateId = :publicationDateId");
+	
+	query.setParameterList("voterIds", voterIds);
+	query.setParameter("publicationDateId", publicationDateId);
+	return query.list();
+	
+}
 }
