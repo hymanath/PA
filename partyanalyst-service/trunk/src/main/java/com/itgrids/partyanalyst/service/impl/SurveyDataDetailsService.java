@@ -59,6 +59,7 @@ import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLocationTrackingVo;
 
 public class SurveyDataDetailsService implements ISurveyDataDetailsService
 {
@@ -283,8 +284,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	 * @param boothIds
 	 * @return resultStatus
 	 */
-	public ResultStatus saveSurveyUserBoothAssign(Long surveyUserId,Long constituencyId,List<Long> boothIds,String saveSurveyUserBoothAssign)
-	{
+	public ResultStatus saveSurveyUserBoothAssign(Long surveyUserId,Long constituencyId,List<Long> boothIds,String saveSurveyUserBoothAssign)	{
 		LOG.info("Entered into saveSurvetUserBoothAssign service in SurveyDataDetailsService");
 		ResultStatus resultStatus = new ResultStatus();
 		try
@@ -1486,7 +1486,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		
 	}
 	
-	
+/*	
 	public ResultStatus saveSurveyUserTrackingDetails(Long surveyUserId,Date date,String longitude,String latitude)
 	{
 		ResultStatus resultStatus = new ResultStatus();
@@ -1518,7 +1518,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			resultStatus.setMessage("Exception");
 		}
 		return resultStatus;
-	}
+	}*/
 	
 	public List<GenericVO> releaseLeadersWithUser(Long leaderId)
 	{
@@ -1730,4 +1730,44 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		}
 		return resultList;
 	}
+	
+	
+	public ResultStatus saveSurveyUserTrackingDetails(UserLocationTrackingVo userLocationTrackingVo )
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try
+		{
+			SurveyUserTracking surveyUserTracking = new SurveyUserTracking();
+			surveyUserTracking.setSurveyUser(surveyUserDAO.get(userLocationTrackingVo.getSurveyUserId()));
+			
+			
+			
+			
+			surveyUserTracking.setDate(new DateUtilService().getDateAndTime(userLocationTrackingVo.getInsertTime()));
+			surveyUserTracking.setLongitude(userLocationTrackingVo.getLongitude());
+			surveyUserTracking.setLatitude(userLocationTrackingVo.getLatitude());
+			surveyUserTracking.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+			surveyUserTracking.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+			SurveyUserTracking result = surveyUserTrackingDAO.save(surveyUserTracking);
+			if(result != null)
+			{
+				resultStatus.setResultCode(0);
+				resultStatus.setMessage("Success");
+			}
+			else
+			{
+				resultStatus.setResultCode(1);
+				resultStatus.setMessage("Failure");
+			}
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in saveSurveyUserTrackingDetails service in SurveyDataDetailsService", e);
+			resultStatus.setResultCode(3);
+			resultStatus.setMessage("Exception");
+		}
+		return resultStatus;
+	}
+
+	
 }
