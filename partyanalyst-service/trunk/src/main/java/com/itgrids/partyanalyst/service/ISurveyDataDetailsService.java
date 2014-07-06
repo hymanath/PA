@@ -9,6 +9,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.dto.UserBoothDetailsVO;
+import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLocationTrackingVo;
 
 public interface ISurveyDataDetailsService 
 {
@@ -36,7 +37,7 @@ public interface ISurveyDataDetailsService
 	public Object[] auhenticateUserandGetUserType(String userName,String password);
 
 
-	public ResultStatus saveSurveyUserTrackingDetails(Long surveyUserId,Date date,String longitude,String latitude);
+	public ResultStatus saveSurveyUserTrackingDetails(UserLocationTrackingVo userLocationTrackingVo);
 	public List<GenericVO> getSurveyUsersForAssignToLeader(Long userTypeId);
 	public ResultStatus updateServeyUserRelationDetails(Long userTypeId,List<Long> surveyUserIds,Long leaderId,Long constituencyId);
 	public List<GenericVO> releaseLeadersWithUser(Long leaderId);
