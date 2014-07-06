@@ -127,6 +127,12 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	}
 	public String execute()
 	{
+		HttpSession session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		if(user == null)
+		{
+			return Action.INPUT;
+		}
 		constituenciesList = 	surveyDataDetailsService.getAllAssemblyConstituenciesByStateId();
 
 		return Action.SUCCESS;
