@@ -129,7 +129,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		ResultStatus resultStatus = new ResultStatus();
 		try
 		{
-			Long userTypeId = surveyUserTypeDAO.checkForUsertype(userType.trim());
+			Long userTypeId = surveyUserTypeDAO.checkForUsertype(userTypeDescription.trim());
 			if(userTypeId == null)
 			{
 				SurveyUserType surveyUserType = new SurveyUserType();
@@ -1715,7 +1715,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		List<UserBoothDetailsVO> resultList = new ArrayList<UserBoothDetailsVO>();
 		try {
 			long publicationId= boothDAO.getLatestPublicationDateIdForAConstituency(constituencyId);
-			List<Object[]> boothsList = boothDAO.getAllTheBoothsDetailsByConstituencyId(constituencyId,publicationId);
+			List<Object[]> boothsList = boothDAO.getAllTheBoothsDetailsByConstituencyId(constituencyId,10L);
 			
 			for(Object[] parms:boothsList)
 			{
