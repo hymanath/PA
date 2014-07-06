@@ -365,9 +365,11 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 		//UserResponseVO res= new UserResponseVO();
 		UserResponseSub subRes= new UserResponseSub();
 		
+		List<String> partNumbers = boothDAO.getPartNosForBooths(remainingDatBoothIds);
+		
 		if(remainingDatBoothIds != null)
 		{
-		 subRes.setRemainingDataBoothIds(remainingDatBoothIds);
+		 subRes.setRemainingDataBoothIds(partNumbers);
 		 subRes.setVoterIds(voterIds);
 		}
 		
