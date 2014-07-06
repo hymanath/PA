@@ -129,7 +129,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		ResultStatus resultStatus = new ResultStatus();
 		try
 		{
-			Long userTypeId = surveyUserTypeDAO.checkForUsertype(userTypeDescription.trim());
+			Long userTypeId = surveyUserTypeDAO.checkForUsertype(userType.trim());
 			if(userTypeId == null)
 			{
 				SurveyUserType surveyUserType = new SurveyUserType();
