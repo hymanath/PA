@@ -4,6 +4,7 @@
 package com.itgrids.partyanalyst.webserviceutils.android.utilvos;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Administrator Jul 2, 2014
@@ -13,8 +14,11 @@ import java.util.List;
 public class UserResponseSub  extends UserResponseVO{
 	private List<String> partNos;
 	private List<String> boothIds;
-	private List<Long> voterIds;
+	private List<BoothVoterVO> voterIds;
 	private List<String> remainingDataBoothIds;
+	
+	private String partNo;
+	
 	
 	
 	public List<String> getRemainingDataBoothIds() {
@@ -56,13 +60,17 @@ public class UserResponseSub  extends UserResponseVO{
 	public void setBoothIds(List<String> boothIds) {
 		this.boothIds = boothIds;
 	}
-	
-	public List<Long> getVoterIds() {
+	public List<BoothVoterVO> getVoterIds() {
 		return voterIds;
 	}
-	public void setVoterIds(List<Long> voterIds) {
+	public void setVoterIds(List<BoothVoterVO> voterIds) {
 		this.voterIds = voterIds;
 	}
+	public String getPartNo() {
+		return partNo;
+	}
+	public void setPartNo(String partNo) {
+		this.partNo = partNo;
+	}
 	
-   
 }
