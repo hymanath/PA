@@ -459,7 +459,7 @@
 				<value>com.itgrids.partyanalyst.model.SurveySurveyorType</value>
 				<value>com.itgrids.partyanalyst.model.SurveyDetailsInfo</value>
 				<value>com.itgrids.partyanalyst.model.SurveyUserTracking</value>
-		
+		        <value>com.itgrids.partyanalyst.model.CandidateDetails</value>
 			</list>
 		</property>
 	</bean>
@@ -2422,4 +2422,7 @@
 	<bean id="surveyUserTrackingDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyUserTrackingDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 		</bean>
+	<bean id="candidateDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateDetailsDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>	
 </beans>
