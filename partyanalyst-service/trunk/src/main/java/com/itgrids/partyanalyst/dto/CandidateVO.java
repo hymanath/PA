@@ -37,9 +37,100 @@ public class CandidateVO {
 	private Long districtId;
 	private Long stateId;
 	private String profileImg;
+	private Long rank;
+	private String caste;
+	private Long casteId;
+	private Long educationId;
+	private Long workingForParty;
+	private String mobileNo;
+	private Long tehsilId;
+	private Long localBodyId;
+	private String tehsilName;
+	private String localBodyName;
 	
 	
 	
+	
+	public Long getRank() {
+		return rank;
+	}
+
+	public void setRank(Long rank) {
+		this.rank = rank;
+	}
+
+	public String getCaste() {
+		return caste;
+	}
+
+	public void setCaste(String caste) {
+		this.caste = caste;
+	}
+
+	public Long getCasteId() {
+		return casteId;
+	}
+
+	public void setCasteId(Long casteId) {
+		this.casteId = casteId;
+	}
+
+	public Long getEducationId() {
+		return educationId;
+	}
+
+	public void setEducationId(Long educationId) {
+		this.educationId = educationId;
+	}
+
+	public Long getWorkingForParty() {
+		return workingForParty;
+	}
+
+	public void setWorkingForParty(Long workingForParty) {
+		this.workingForParty = workingForParty;
+	}
+
+	public String getMobileNo() {
+		return mobileNo;
+	}
+
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+
+	public Long getTehsilId() {
+		return tehsilId;
+	}
+
+	public void setTehsilId(Long tehsilId) {
+		this.tehsilId = tehsilId;
+	}
+
+	public Long getLocalBodyId() {
+		return localBodyId;
+	}
+
+	public void setLocalBodyId(Long localBodyId) {
+		this.localBodyId = localBodyId;
+	}
+
+	public String getTehsilName() {
+		return tehsilName;
+	}
+
+	public void setTehsilName(String tehsilName) {
+		this.tehsilName = tehsilName;
+	}
+
+	public String getLocalBodyName() {
+		return localBodyName;
+	}
+
+	public void setLocalBodyName(String localBodyName) {
+		this.localBodyName = localBodyName;
+	}
+
 	public String getProfileImg() {
 		return profileImg;
 	}
