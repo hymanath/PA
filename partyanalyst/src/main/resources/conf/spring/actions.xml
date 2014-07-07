@@ -1446,6 +1446,9 @@
 	 <property name="soundexService" ref="soundexService"/>
 	</bean>
 	
-	<bean id="candidateUpdateDetailsAction" class="com.itgrids.partyanalyst.web.action.CandidateUpdationDetailsAction" singleton="false"></bean>
+	<bean id="candidateUpdateDetailsAction" class="com.itgrids.partyanalyst.web.action.CandidateUpdationDetailsAction" singleton="false">
+	 <property name="candidateUpdationDetailsService" ref="candidateUpdationDetailsService"/>
+	
+	</bean>
 </beans>	
 	
