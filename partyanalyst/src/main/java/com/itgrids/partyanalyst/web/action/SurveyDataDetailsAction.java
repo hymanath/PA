@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
+import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.dto.UserBoothDetailsVO;
 import com.itgrids.partyanalyst.model.Job;
 import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
@@ -46,6 +47,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	private List<SelectOptionVO> constituenciesList;
 	private List<SurveyReportVO> boothWiseCountList;
 	private List<SurveyReportVO> voterVerificationList;
+	private List<SurveyResponceVO> responceList;
 	private String status;
 	
 	public String getStatus() {
@@ -125,6 +127,16 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	public void setReturnList(List<GenericVO> returnList) {
 		this.returnList = returnList;
 	}
+	
+	
+	public List<SurveyResponceVO> getResponceList() {
+		return responceList;
+	}
+
+	public void setResponceList(List<SurveyResponceVO> responceList) {
+		this.responceList = responceList;
+	}
+
 	public String execute()
 	{
 		HttpSession session = request.getSession();
@@ -158,7 +170,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		} 
 		catch (Exception e)
 		{
-			
+			LOG.error("Exception raised in saveSurveyUser in SurveyDataDetailsAction", e);
 		}
 		return Action.SUCCESS;
 	}
@@ -187,7 +199,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		} 
 		catch (Exception e)
 		{
-			
+			LOG.error("Exception raised in assignTab in SurveyDataDetailsAction", e);
 		}
 		return Action.SUCCESS;
 	}
@@ -207,7 +219,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		} 
 		catch (Exception e)
 		{
-			
+			LOG.error("Exception raised in deactiveSurveyUser in SurveyDataDetailsAction", e);
 		}
 		return Action.SUCCESS;
 	}
@@ -227,7 +239,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		} 
 		catch (Exception e)
 		{
-			
+			LOG.error("Exception raised in saveSurveyUserType in SurveyDataDetailsAction", e);
 		}
 		return Action.SUCCESS;
 	}
@@ -247,7 +259,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		} 
 		catch (Exception e)
 		{
-			
+			LOG.error("Exception raised in getSurveyUserType in SurveyDataDetailsAction", e);
 		}
 		return Action.SUCCESS;
 	}
@@ -267,7 +279,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		} 
 		catch (Exception e)
 		{
-			
+			LOG.error("Exception raised in getSurveyUsersByUserType in SurveyDataDetailsAction", e);
 		}
 		return Action.SUCCESS;
 	}
@@ -288,7 +300,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		} 
 		catch (Exception e)
 		{
-			
+			LOG.error("Exception raised in getNotAssignedSurveyUsersByUserType in SurveyDataDetailsAction", e);
 		}
 		return Action.SUCCESS;
 	}
@@ -313,7 +325,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		} 
 		catch (Exception e)
 		{
-			
+			LOG.error("Exception raised in saveServeyUserRelationDetails in SurveyDataDetailsAction", e);
 		}
 		return Action.SUCCESS;
 	}
@@ -334,7 +346,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		} 
 		catch (Exception e)
 		{
-			
+			LOG.error("Exception raised in getSurveyLeaders in SurveyDataDetailsAction", e);
 		}
 		return Action.SUCCESS;
 	}
@@ -354,7 +366,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		} 
 		catch (Exception e)
 		{
-			
+			LOG.error("Exception raised in getSurveyUsersByLeaders in SurveyDataDetailsAction", e);
 		}
 		return Action.SUCCESS;
 	}
@@ -372,7 +384,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 					
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Exception raised in getAssignedBoothsDetailsByConstituencyIdAndUserId in SurveyDataDetailsAction", e);
 		}
 		
 		return Action.SUCCESS;
@@ -401,7 +413,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			resultStatus = surveyDataDetailsService.saveSurveyUserBoothAssign(surveyUserId,constituencyId,boothIds,remainignDataBooths);
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Exception raised in saveUserAssignedBoothsDetails in SurveyDataDetailsAction", e);
 		}
 		return Action.SUCCESS;
 		
@@ -421,7 +433,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 							.getLong("constituencyId"),startDate,endDate,userTypeId);
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Exception raised in getDayWisereportDetailsByConstituencyId in SurveyDataDetailsAction", e);
 		}
 		return Action.SUCCESS;
 	}
@@ -439,7 +451,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			boothWiseCountList = surveyDataDetailsService.getBoothWiseUserSamplesDetailsByDates(userId,startDate,endDate);
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Exception raised in getBoothWiseUserSamplesDetailsByDates in SurveyDataDetailsAction", e);
 		}
 		
 		return Action.SUCCESS;
@@ -456,8 +468,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			
 		}catch(Exception e)
 		{
-			e.printStackTrace();
-			
+			LOG.error("Exception raised in getReportForVerificationByBoothId in SurveyDataDetailsAction", e);
 		}
 		return Action.SUCCESS;
 	}
@@ -471,7 +482,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			returnList = surveyDataDetailsService.releaseLeadersWithUser(jObj.getLong("leaderId"));
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Exception raised in releaseLeadersWithUser in SurveyDataDetailsAction", e);
 		}
 		
 		return Action.SUCCESS;
@@ -492,7 +503,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			resultStatus = surveyDataDetailsService.updateServeyUserRelationDetails(jObj.getLong("userTypeId"),userIds,jObj.getLong("leaderId"),jObj.getLong("constituencyId"));
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Exception raised in updateServeyUserRelationDetails in SurveyDataDetailsAction", e);
 		}
 		
 		return Action.SUCCESS;
@@ -505,14 +516,12 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			
 			jObj = new JSONObject(getTask());
 			
-			Long constituencyId = jObj.getLong("constituencyId");
-		
-			
+			//Long constituencyId = jObj.getLong("constituencyId");
 			assgnedBoothsList = surveyDataDetailsService.getBoothDetailsByConstituencyId(jObj.getLong("constituencyId"));
 					
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Exception raised in getBoothDetailsByConstituency in SurveyDataDetailsAction", e);
 		}
 		
 		return Action.SUCCESS;
@@ -535,7 +544,45 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			status = surveyDataDetailsService.saveVerifiedRecordsDetails(verifiedIds);
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Exception raised in saveVerifiedRecordsDetails in SurveyDataDetailsAction", e);
+		}
+		return Action.SUCCESS;
+		
+	}
+	
+	public String getLatLongForUserTrackung()
+	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			String dateStr = jObj.getString("dateStr");
+			SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
+			Date date = originalFormat.parse(dateStr);
+			returnList = surveyDataDetailsService.getLatLongForUserTrackung(jObj.getLong("surveyUserId"),date);
+			
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getLatLongForUserTrackung in SurveyDataDetailsAction", e);
+		}
+		return Action.SUCCESS;
+		
+	}
+	
+	public String getLatLongForSurveyDetails()
+	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			String dateStr = jObj.getString("dateStr");
+			SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
+			Date date = originalFormat.parse(dateStr);
+			responceList = surveyDataDetailsService.getLatLongForSurveyDetails(jObj.getLong("surveyUserId"),date);
+			
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getLatLongForSurveyDetails in SurveyDataDetailsAction", e);
 		}
 		return Action.SUCCESS;
 		
