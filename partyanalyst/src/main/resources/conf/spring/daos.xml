@@ -1531,5 +1531,9 @@
 	<bean id="casteGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.CasteGroupDAO">
 		<property name="sessionFactory" ref="sessionFactory2" />
 	</bean>
+	
+<bean id="candidateDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateDetailsDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+</bean>
 	<!--  end -->
 </beans>		
