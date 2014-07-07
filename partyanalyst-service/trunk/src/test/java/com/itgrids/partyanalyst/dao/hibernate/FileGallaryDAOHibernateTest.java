@@ -330,17 +330,17 @@ System.out.println("i " +i);
 		
 	}*/
 	
-	public void testGetCandidateGallariesByCategory(){
+	/*public void testGetCandidateGallariesByCategory(){
 	
-		//String n="In a bid to neutralise th^e Congress from ";
-		String n="Former councillors wife squeaks past Congress rival";
+		//String n="In a bid to neutralise th^e CongressÂ� from ";
+		String n="Former councillorÂ�s wife squeaks past Congress rival";
 	
-				String[] j={"","^"};
+				String[] j={"Â�","^"};
 				for(int i=0;i<j.length;i++){
 					n=n.replace(j[i], "");
 				}
 			System.out.println(n);
 			
-	}
+	}*/
 	
 }
