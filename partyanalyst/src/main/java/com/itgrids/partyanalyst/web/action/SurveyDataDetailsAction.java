@@ -433,6 +433,27 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		return Action.SUCCESS;
 	}
 	
+	public String getDayWiseReportByConstituencyIdAndUserType()
+	{
+		try {
+			jObj = new JSONObject(getTask());
+			
+			String startDate = jObj.getString("startDate");
+			String endDate = jObj.getString("endDate");
+			Long userTypeId = jObj.getLong("userTypeId");
+			
+			dayWiseReportList = surveyDataDetailsService
+					.getDayWiseReportByConstituencyIdAndUserType(
+							jObj
+							.getLong("constituencyId"),  startDate, endDate,
+							 userTypeId);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
+	
 	public String getBoothWiseUserSamplesDetailsByDates()
 	{
 		try {
@@ -440,10 +461,10 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			jObj = new JSONObject(getTask());
 			
 			String startDate = jObj.getString("startDate");
-			String endDate = jObj.getString("endDate");
+			//String endDate = jObj.getString("endDate");
 			Long userId = jObj.getLong("userId");
 			
-			boothWiseCountList = surveyDataDetailsService.getBoothWiseUserSamplesDetailsByDates(userId,startDate,endDate);
+			boothWiseCountList = surveyDataDetailsService.getBoothWiseUserSamplesDetailsByDates(userId,startDate);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in getBoothWiseUserSamplesDetailsByDates in SurveyDataDetailsAction", e);

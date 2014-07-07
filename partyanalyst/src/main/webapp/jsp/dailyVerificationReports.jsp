@@ -73,7 +73,9 @@
 									</div>
 									</div>
 									</div>
-							<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getDayWiseReport()">SUBMIT</button></div>
+						<!--	<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getDayWiseReport()">SUBMIT</button></div>-->
+						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getDayWiseReportByConstituencyIdAndUserType()">SUBMIT</button></div>
+						
 							<img src='images/Loading-data.gif' class="offset5"  id="mainajaximg" style="width:70px;height:60px;display:none;"/>
 					</div>
 				</div>
@@ -206,7 +208,7 @@ $("#heading").html('');
 	 endDate:endDate,
 	heading:heading
 
-	}
+	};
 	$.ajax({
 			type:'GET',
 			url: 'getDayWisereportDetailsByConstituencyId.action',
@@ -262,7 +264,7 @@ if(strdate < enddate)
 		 str+='<tr>';
 		 str+='<td>'+value.userName+'</td>';
 		   $.each(value.subList,function(index1,value1){
-			    str+='<td><a href="javascript:{getDayWiseReportDetailsOfUser('+value.userid+')}">'+value1.count+'</a></td>';
+			    str+='<td><a href="javascript:{getDayWiseReportDetailsOfUser('+value.userid+',\''+value.surveyDate1+'\')}">'+value1.count+'</a></td>';
 		   });
 		str+='</tr>';
 	});
@@ -275,17 +277,17 @@ if(strdate < enddate)
 }
 
 
-function getDayWiseReportDetailsOfUser(userId)
+function getDayWiseReportDetailsOfUser(userId,surveyDate)
 {
 	
   $('#boothWiseCountDivId').html('');
-  var startDate = $("#fromDate").val();
-	var endDate = $("#toDate").val();
+ // var startDate = $("#fromDate").val();
+	//var endDate = $("#toDate").val();
 	var jObj =
 	{
 	 userId:userId,
-	 startDate:startDate,
-	 endDate:endDate
+	 startDate:surveyDate
+	// endDate:endDate
 	}
 	$.ajax({
 			type:'GET',
@@ -336,9 +338,72 @@ function buildUserBoothWiseCountDetails(result)
 
 
 	</script>
-	<script>
-	
+	<script>	
 	getUserTypes('userType');
 	</script>
+<script>
+function getDayWiseReportByConstituencyIdAndUserType()
+{
+	var constituencyId = $("#constituencyId").val();
+	var userTypeId = $("#userType").val();
+	var startDate = $("#fromDate").val();
+	var endDate = $("#toDate").val();
+	var heading = $( "#userType option:selected" ).text();
+	
+	var jObj =
+	{
+	  constituencyId:constituencyId,
+      userTypeId:userTypeId,
+	  startDate:startDate,
+	  endDate:endDate,
+	  heading:heading
+	};
+
+	  $.ajax({
+			type:'GET',
+			url: 'getDayWiseReportByConstituencyIdAndUserType.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){				
+				buildDayWiseReportByUserType(result);				
+		});
+}
+function buildDayWiseReportByUserType(result)
+{
+
+	 var str = '';
+
+   str+='<table>';
+    str+='<thead>';
+	 str+='<tr>';
+	  str+='<th>UserName</th>';
+  	  str+='<th>Booth No</th>';
+	  str+='<th>Total Voters</th>';
+
+	    $.each(result[0].subList,function(index,value){
+          str+='<th>'+value.surveyDate+'</th>';
+		});
+
+	 str+='</tr>';
+	str+='</thead>';
+
+   str+='<tbody>'
+   $.each(result,function(index,value){
+    str+='<tr>';
+	   str+='<td>'+value.userName+'</td>';
+   	   str+='<td>'+value.partNo+'</td>';
+	   str+='<td>'+value.totalVoters+'</td>';
+	     $.each(result,function(index1,value1){
+			   str+='<td>'+value1.count+'</td>';
+		 });
+    str+='</tr>';
+   });
+   str+='</tbody>';
+   str+='</table>';
+
+ $('#dayWiseReportDiv').html(str);
+
+}
+</script>
   </body>
  </html>
