@@ -64,10 +64,15 @@ public class AcPcWiseElectionResultService implements IAcPcWiseElectionResultSer
 	@Autowired IConstiCasteGroupPercDAO constiCasteGroupPercDAO;
 	
 	
-	@Autowired WebServiceClient webServiceClient;
+	private WebServiceClient webServiceClient;
 	
-	
-	
+	public WebServiceClient getWebServiceClient() {
+		return webServiceClient;
+	}
+
+	public void setWebServiceClient(WebServiceClient webServiceClient) {
+		this.webServiceClient = webServiceClient;
+	}
 	@Autowired 	private IVoterAgeInfoDAO voterAgeInfoDAO;
     
 	@Autowired 	private IPartyTrendsDAO partyTrendsDAO;
