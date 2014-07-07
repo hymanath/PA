@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TimeZone;
 import java.util.TreeSet;
@@ -1139,7 +1141,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		return resultList;
 	}
 	
-	public List<SurveyReportVO> getBoothWiseUserSamplesDetailsByDates(Long userId,String startDate,String endDate)
+	public List<SurveyReportVO> getBoothWiseUserSamplesDetailsByDates(Long userId,String startDate)
 	{
 		LOG.info("Entered into getBoothWiseUserSamplesDetailsByDates service in SurveyDataDetailsService");
 
@@ -1157,14 +1159,14 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			 SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
 				SimpleDateFormat targetFormat = new SimpleDateFormat("MM-dd-yyyy" );
 				Date strdate;
-				Date enddate;
+				//Date enddate;
 				strdate = originalFormat.parse(startDate);
 				Date convertedstrdate = targetFormat.parse(targetFormat.format(strdate));			
 				
-				enddate = originalFormat.parse(endDate);
-				Date convertedenddate = targetFormat.parse(targetFormat.format(enddate));
+			//	enddate = originalFormat.parse(endDate);
+				//Date convertedenddate = targetFormat.parse(targetFormat.format(enddate));
 			
-			List<Object[]> boothWiseCountList =  surveyDetailsInfoDAO.getBoothWiseUserSamplesDetailsByDates(userId,convertedstrdate,convertedenddate);
+			List<Object[]> boothWiseCountList =  surveyDetailsInfoDAO.getBoothWiseUserSamplesDetailsByDates(userId,convertedstrdate);
 			List<Long> boothIds = new ArrayList<Long>();
 			
 			for(Object[] obj:boothWiseCountList)
@@ -1210,7 +1212,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		try {
 			List<SurveyDetailsInfo> votersList = boothPublicationVoterDAO.getVotersDetailsByBoothId(boothId);
 			
-			 java.util.Set<Long>  voterIds = new java.util.HashSet<Long>();
+			Set<Long>  voterIds = new HashSet<Long>();
 			 
 			 for(SurveyDetailsInfo voterDtls:votersList)
 			 {
@@ -1761,6 +1763,100 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		}
 		return resultStatus;
 	}
+	
+	
+	public List<SurveyReportVO> getDayWiseReportByConstituencyIdAndUserType(
+			Long constituencyId, String startDate, String endDate,
+			Long userTypeId)	{
+		List<SurveyReportVO> resultList = new ArrayList<SurveyReportVO>();
 
+		try
+		{
+			SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
+			SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd" );
+			Date strdate;
+			Date enddate;
+			strdate = originalFormat.parse(startDate);
+			Date convertedstrdate = targetFormat.parse(targetFormat.format(strdate));			
+			
+			enddate = originalFormat.parse(endDate);
+			Date convertedenddate = targetFormat.parse(targetFormat.format(enddate));
+			
+			
+			List<Object[]> dayWiseReportDtls = surveyDetailsInfoDAO
+					.getDayWisereportDetailsByConstituencyIdAndUserTypeId(
+							constituencyId, convertedstrdate, convertedenddate,
+							userTypeId);
+			
+			
+			
+			List<String> surveyDates = new ArrayList<String>();
+			
+			Set<Long> boothIds = new HashSet<Long>();
+			
+			for(Object[] boothDtls:dayWiseReportDtls)
+				boothIds.add((Long)boothDtls[3]);
+			
+			
+			for(Object[] boothDtls:dayWiseReportDtls)
+			{
+				
+				SurveyReportVO userBoothVO = getMatchedUserBoothVO(resultList,(Long)boothDtls[1],(Long)boothDtls[3]);
+
+				if(userBoothVO == null)
+				{
+					SurveyReportVO reportVO = new SurveyReportVO();
+					
+					reportVO.setPartNo(boothDtls[4].toString());
+					reportVO.setBoothId((Long)boothDtls[3]);
+	                reportVO.setUserid((Long)boothDtls[1]);
+	                reportVO.setUserName(boothDtls[2].toString()); 
+	                reportVO.setTotalVoters((Long)boothDtls[5]);
+					
+	                resultList.add(reportVO);
+				}
+                
+                if(!surveyDates.contains(boothDtls[6].toString()))
+                	surveyDates.add(boothDtls[6].toString());
+				
+			}
+			
+			
+			for(SurveyReportVO report:resultList)
+			{
+			   for(String surveyDate:surveyDates)
+			   {
+				   SurveyReportVO surveyDateVO = new SurveyReportVO();
+				   
+                    surveyDateVO.setSurveyDate(surveyDate);
+                    report.getSubList().add(surveyDateVO);
+			   }
+			}
+			
+			
+			for(Object[] boothDtls:dayWiseReportDtls)
+			{
+				SurveyReportVO userBoothVO = getMatchedUserBoothVO(resultList,(Long)boothDtls[1],(Long)boothDtls[3]);
+				SurveyReportVO surveyDateVO = getMatchedSurveyDateVO(userBoothVO.getSubList(), boothDtls[6].toString());
+				
+				surveyDateVO.setCount((Long)boothDtls[0]);
+			}
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return resultList;
+		
+	}
+	
+	private SurveyReportVO getMatchedUserBoothVO(List<SurveyReportVO> resultList , Long userId,Long boothId)
+	{
+		for(SurveyReportVO userBoothVO:resultList)
+			if(userBoothVO.getUserid().equals(userId) && userBoothVO.getBoothId().equals(boothId))
+				return userBoothVO;
+		return null;
+	}
 	
 }

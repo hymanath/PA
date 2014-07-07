@@ -29,7 +29,7 @@ public interface ISurveyDataDetailsService
 	public List<GenericVO> getSurveyUsersByLeades(Long leaderId,Long constituencyId);
 	public List<GenericVO> getConstituencyWiseLeaders();
 	public List<SelectOptionVO> getAllAssemblyConstituenciesByStateId();
-	public List<SurveyReportVO> getBoothWiseUserSamplesDetailsByDates(Long userId,String startDate,String endDate);
+	public List<SurveyReportVO> getBoothWiseUserSamplesDetailsByDates(Long userId,String startDate);
 	public List<SurveyReportVO> getReportForVerification(Long boothId);
 	public List<GenericVO> getLatLongForUserTrackung(Long surveyUserId,Date date);
 	public List<SurveyResponceVO> getLatLongForSurveyDetails(Long surveyUserId,Date date);
@@ -44,6 +44,9 @@ public interface ISurveyDataDetailsService
 	//public List<SurveyResponceVO> getSurveyUserBoothsAndVoterDetails(Long surveyUserId);
 	public List<UserBoothDetailsVO> getBoothDetailsByConstituencyId(Long constituencyId);
 	public String saveVerifiedRecordsDetails(final List<Long> verifierIds);
+	public List<SurveyReportVO> getDayWiseReportByConstituencyIdAndUserType(
+			Long constituencyId, String startDate, String endDate,
+			Long userTypeId);
 
 
 }
