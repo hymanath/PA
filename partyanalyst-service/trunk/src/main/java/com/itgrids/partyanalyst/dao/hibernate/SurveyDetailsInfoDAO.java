@@ -30,19 +30,36 @@ public class SurveyDetailsInfoDAO extends GenericDaoHibernate<SurveyDetailsInfo,
 		
 	}
 	
-	public List<Object[]> getBoothWiseUserSamplesDetailsByDates(Long userId,Date startDate,Date endDate)
+	public List<Object[]> getDayWisereportDetailsByConstituencyIdAndUserTypeId(Long constituencyId,Date startDate,Date endDate,Long userTypeId)
+	{
+		Query query = getSession().createQuery("select count(SDI.booth.constituency.constituencyId)," +
+				"SDI.surveyUser.surveyUserId,SDI.surveyUser.userName," +
+				"SDI.booth.boothId , SDI.booth.partNo,SDI.booth.totalVoters, DATE(SDI.date) from " +
+				"SurveyDetailsInfo SDI where SDI.booth.constituency.constituencyId = :constituencyId  and date(SDI.date) >= :startDate and " +
+				" date(SDI.date) <= :endDate group by " +
+				"SDI.surveyUser.surveyUserId,DATE(SDI.date) and SDI.surveyUser.surveyUserType.surveyUserTypeId = :userTypeId ");
+		
+		query.setParameter("startDate", startDate);
+		query.setParameter("endDate", endDate);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("userTypeId", userTypeId);
+		
+		return query.list();
+		
+	}
+
+	public List<Object[]> getBoothWiseUserSamplesDetailsByDates(Long userId,Date startDate)
 	{
 		
 		Query query = getSession().createQuery("select count(SDI.booth.constituency.constituencyId),BPV.booth.boothId,BPV.booth.partNo " +
 				"from SurveyDetailsInfo SDI,BoothPublicationVoter BPV where " +
 				"SDI.voter.voterId = BPV.voter.voterId and " +
 				"BPV.booth.publicationDate.publicationDateId = :publicationDateId and " +
-				"DATE(SDI.date) >= :startDate and DATE(SDI.date) <= :endDate and SDI.surveyUser.surveyUserId = :surveyUserId group by " +
+				"DATE(SDI.date) = :startDate  and SDI.surveyUser.surveyUserId = :surveyUserId group by " +
 				"BPV.booth.boothId");
 		
 		query.setParameter("publicationDateId", 10L);
 		query.setParameter("startDate", startDate);
-		query.setParameter("endDate", endDate);
 		query.setParameter("surveyUserId", userId);
 		
 		return query.list();

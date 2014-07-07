@@ -11,7 +11,7 @@ import com.itgrids.partyanalyst.model.SurveyDetailsInfo;
 public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Long>
 {
 	public List<Object[]> getDayWisereportDetailsByConstituencyId(Long constituencyId,Date startDate,Date endDate,Long userTypeId);
-	public List<Object[]> getBoothWiseUserSamplesDetailsByDates(Long userId,Date startDate,Date endDate);
+	public List<Object[]> getBoothWiseUserSamplesDetailsByDates(Long userId,Date startDate);
 
 	public List<SurveyDetailsInfo> getLatLongForSurveyDetails(Long surveyUserId,Date date);
 	
@@ -21,6 +21,7 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	public List<Object[]> getVoterDetailsForbooths(List<Long> boothIds);
 	public List<SurveyDetailsInfo> getVerifiedVotersDetailsBySurveyDetailsInfoId(Long voterId);
 	public List<Long> getDataCollectedVoterIdsByBoothIds(List<Long> boothIds);
-
+	public List<Object[]> getDayWisereportDetailsByConstituencyIdAndUserTypeId(
+			Long constituencyId, Date startDate, Date endDate, Long userTypeId);
 
 }
