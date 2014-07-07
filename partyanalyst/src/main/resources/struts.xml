@@ -7392,10 +7392,27 @@
 				<param name="root">assgnedBoothsList</param>
 			</result>
 		</action>	
-				<action name="saveVerifiedRecordsDetails" class="surveyDataDetailsAction" method="saveVerifiedRecordsDetails">
-		<result type="json" name="success">
+		
+		<action name="saveVerifiedRecordsDetails" class="surveyDataDetailsAction" method="saveVerifiedRecordsDetails">
+			<result type="json" name="success">
 				<param name="root">status</param>
 			</result>
+		</action>
+		
+		<action name="getLatLongForUserTrackungAction" class="surveyDataDetailsAction" method="getLatLongForUserTrackung">
+		<result type="json" name="success">
+				<param name="root">returnList</param>
+			</result>
+		</action>
+		
+		<action name="getLatLongForSurveyDetailsAction" class="surveyDataDetailsAction" method="getLatLongForSurveyDetails">
+			<result type="json" name="success">
+				<param name="root">responceList</param>
+			</result>
+		</action>
+		
+		<action name="surveyUserTrackingAction" class="surveyDataDetailsAction">
+			<result name="success">/jsp/surveyUserTracking.jsp</result>
 		</action>
 		
 </package>
