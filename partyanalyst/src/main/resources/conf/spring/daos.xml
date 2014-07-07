@@ -1521,6 +1521,10 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="surveyUserConstituencyDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyUserConstituencyDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<!--  survey -->
 	
 		
