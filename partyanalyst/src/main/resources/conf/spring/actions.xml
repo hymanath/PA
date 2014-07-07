@@ -1445,5 +1445,7 @@
 	 <property name="fieldVoterDataService" ref="fieldVoterDataService" /> 
 	 <property name="soundexService" ref="soundexService"/>
 	</bean>
+	
+	<bean id="candidateUpdateDetailsAction" class="com.itgrids.partyanalyst.web.action.CandidateUpdationDetailsAction" singleton="false"></bean>
 </beans>	
 	

@@ -2127,6 +2127,6 @@
    </bean>
    
    <bean name="surveyDataDetailsService"  class="com.itgrids.partyanalyst.service.impl.SurveyDataDetailsService"  > </bean>
-   
+   <bean name="candidateUpdationDetailsService"  class="com.itgrids.partyanalyst.service.impl.CandidateUpdationDetailsService"  > </bean>
 </beans>		
 	
