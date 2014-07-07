@@ -52,7 +52,7 @@ public class SurveyDetailsInfoDAO extends GenericDaoHibernate<SurveyDetailsInfo,
 	
 	public List<SurveyDetailsInfo> getLatLongForSurveyDetails(Long surveyUserId,Date date)
 	{
-		Query query = getSession().createQuery(" from SurveyDetailsInfo model where model.surveyUser.surveyUserId =:surveyUserId and model.date = :date");
+		Query query = getSession().createQuery(" from SurveyDetailsInfo model where model.surveyUser.surveyUserId =:surveyUserId and date(model.date) = :date");
 		query.setParameter("surveyUserId", surveyUserId);
 		query.setParameter("date", date);
 		return query.list();
