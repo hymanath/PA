@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.webservice.android.concreteservice;
        
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -37,8 +36,8 @@ import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
 import com.itgrids.partyanalyst.service.IVoiceSmsService;
 import com.itgrids.partyanalyst.service.IVoterReportService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
-import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.webservice.android.abstractservice.IWebServiceHandlerService1;
+import com.itgrids.partyanalyst.webserviceutils.android.utilvos.BoothVoterVO;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLocationTrackingVo;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLoginVO;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserResponseSub;
@@ -361,43 +360,71 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	   return res;
 	}
 	
-	public UserResponseVO buildResponseVo(List<Object[]> booths,long userTypeId,long userId,List<Long> remainingDatBoothIds,List<Long> voterIds)
-	{
-		//UserResponseVO res= new UserResponseVO();
-		UserResponseSub subRes= new UserResponseSub();
-		
-		List<String> partNumbers = 	boothDAO.getPartNosForBooths(remainingDatBoothIds);
-		
-		if(remainingDatBoothIds != null)
-		{
-		 subRes.setRemainingDataBoothIds(partNumbers);
-		 subRes.setVoterIds(voterIds);
-		}
-		
-		
-		int count=0;
-		
-		for (Object[] objects : booths) {
-			if(count==0) {
-				subRes.setConstituencyId(objects[2].toString());
-				subRes.setUserId(String.valueOf(userId));
-			    subRes.setUserTypeId(String.valueOf(userTypeId));
-			    ArrayList<String> partNos=new ArrayList<String>();
-			    partNos.add(objects[1].toString());
-			    ArrayList<String> boothIds=new ArrayList<String>();
-			    boothIds.add(objects[0].toString());
-			    
-			    subRes.setPartNos(partNos);
-			    subRes.setBoothIds(boothIds);
-			}else {
-			subRes.getBoothIds().add(objects[0].toString());
-			subRes.getPartNos().add(objects[1].toString());
-			}
-			count++;
-		}
-		
-		return subRes;
-	}
+	 public UserResponseVO buildResponseVo(List<Object[]> booths,long userTypeId,long userId,List<Long> remainingDatBoothIds,List<Long> voterIds)
+     {
+             //UserResponseVO res= new UserResponseVO();
+             UserResponseSub subRes= new UserResponseSub();
+             
+             List<String> partNumbers = boothDAO.getPartNosForBooths(remainingDatBoothIds);
+             List<Object[]>   votersBoothsDetails =   boothPublicationVoterDAO.getBoothIdsDetailsOfVoterIds(voterIds, 10L);
+             
+      List<BoothVoterVO> boothVotersVOList = new ArrayList<BoothVoterVO>();                
+             
+             for(Object[] obj:votersBoothsDetails)
+             {
+                     
+                     BoothVoterVO boothVoterVO = getMatchedBoothVO(boothVotersVOList,obj[0].toString());
+                     
+                     if(boothVoterVO != null)
+                     {
+                             boothVoterVO.getVoterIds().add((Long)obj[1]);
+                             
+                     }else
+                     {
+                             BoothVoterVO boothVoter  = new BoothVoterVO();
+                             
+                             boothVoter.setPartNo(obj[0].toString());
+                             
+                             List<Long> votersList = new ArrayList<Long>();
+                             votersList.add((Long)obj[1]);
+                             
+                             boothVoter.setVoterIds(votersList);
+                             
+                     }
+                     
+             }
+             
+             
+             if(remainingDatBoothIds != null)
+             {
+              subRes.setRemainingDataBoothIds(partNumbers);
+              subRes.setVoterIds(boothVotersVOList);
+             }
+             
+             
+             int count=0;
+             
+             for (Object[] objects : booths) {
+                     if(count==0) {
+                             subRes.setConstituencyId(objects[2].toString());
+                             subRes.setUserId(String.valueOf(userId));
+                         subRes.setUserTypeId(String.valueOf(userTypeId));
+                         ArrayList<String> partNos=new ArrayList<String>();
+                         partNos.add(objects[1].toString());
+                         ArrayList<String> boothIds=new ArrayList<String>();
+                         boothIds.add(objects[0].toString());
+                         
+                         subRes.setPartNos(partNos);
+                         subRes.setBoothIds(boothIds);
+                     }else {
+                     subRes.getBoothIds().add(objects[0].toString());
+                     subRes.getPartNos().add(objects[1].toString());
+                     }
+                     count++;
+             }
+             
+             return subRes;
+     }
 	
 
 	/**
@@ -457,7 +484,14 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 		
 		return status;		
 	}
-	
+	 private BoothVoterVO getMatchedBoothVO(List<BoothVoterVO> boothVoters , String partNo)
+     {
+             for(BoothVoterVO boothVoter:boothVoters)
+                     if(boothVoter.getPartNo().equalsIgnoreCase(partNo))
+                             return boothVoter;
+             return null;
+             
+     }
 	
 	
 }
