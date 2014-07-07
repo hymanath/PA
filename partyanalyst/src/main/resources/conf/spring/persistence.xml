@@ -449,7 +449,7 @@
 				<value>com.itgrids.partyanalyst.model.SurveyUserTracking</value>
 				<value>com.itgrids.partyanalyst.model.SurveyUserType</value>
 				<value>com.itgrids.partyanalyst.model.SurveyUser</value>
-				
+				<value>com.itgrids.partyanalyst.model.CandidateDetails</value>
 			</list>
 			
 		</property>
