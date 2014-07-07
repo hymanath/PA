@@ -7347,6 +7347,12 @@
 			</result>
 		</action>
 		
+		<action name="getDayWiseReportByConstituencyIdAndUserType" class="surveyDataDetailsAction" method="getDayWiseReportByConstituencyIdAndUserType">
+		<result type="json" name="success">
+			<param name="root">dayWiseReportList</param>
+			</result>
+		</action>
+		
 		<action name="getBoothWiseUserSamplesDetailsByDates" class="surveyDataDetailsAction" method="getBoothWiseUserSamplesDetailsByDates">
 		<result type="json" name="success">
 			<param name="root">boothWiseCountList</param>
