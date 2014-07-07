@@ -17,7 +17,7 @@ public class SurveyUserTrackingDAO extends GenericDaoHibernate<SurveyUserTrackin
 	
 	public List<Object[]> getLatLongForUserTracking(Long surveyUserId,Date date)
 	{
-		Query query = getSession().createQuery("select model.longitude,model.latitude from SurveyUserTracking model where model.surveyUser.surveyUserId = :surveyUserId and model.date =:date");
+		Query query = getSession().createQuery("select model.longitude,model.latitude from SurveyUserTracking model where model.surveyUser.surveyUserId = :surveyUserId and date(model.date) =:date");
 		query.setParameter("surveyUserId", surveyUserId);
 		query.setParameter("date", surveyUserId);
 		return query.list();

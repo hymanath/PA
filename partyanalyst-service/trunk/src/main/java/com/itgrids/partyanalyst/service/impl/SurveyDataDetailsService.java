@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.service.impl;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -9,15 +8,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 import java.util.SortedSet;
 import java.util.TimeZone;
 import java.util.TreeSet;
 
-import javax.management.RuntimeErrorException;
-
 import org.apache.log4j.Logger;
-import org.jfree.util.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -45,8 +40,6 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.dto.UserBoothDetailsVO;
-import com.itgrids.partyanalyst.model.CasteState;
-import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.SurveyDetailsInfo;
 import com.itgrids.partyanalyst.model.SurveySurveyorType;
 import com.itgrids.partyanalyst.model.SurveyUser;
@@ -253,7 +246,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			surveyUserTabAssign.setSurveyUser(surveyUserDAO.get(surveyUserId));
 			surveyUserTabAssign.setInsertedTime(date1.getCurrentDateAndTime());
 			surveyUserTabAssign.setUpdatedTime(date1.getCurrentDateAndTime());
-			//surveyUserTabAssign.setActiveStatus("Y");
+			surveyUserTabAssign.setActiveStatus("Y");
 			
 			SurveyUserTabAssign result = surveyUserTabAssignDAO.save(surveyUserTabAssign);
 			if(result != null)
