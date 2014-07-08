@@ -27,7 +27,7 @@
 			.notMatched{
 				background-color:red;
 			}
-			#successDiv{
+			#successDiv,#statusMsg{
 				font-weight:bold;
 				color:green;
 			}
@@ -79,6 +79,7 @@
 									<div id="summaryDivId">
 									</div>
 							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onclick="getComparisionReport('all');">SUBMIT</button></div>
+							<div class="pull-left" id="statusMsg"></div>
 							<img id="submitImg" src="./images/icons/search.gif" alt="Processing Image" style="margin-left:500px;" class="hide"/>
 					</div>
 				</div>
@@ -156,10 +157,11 @@ function getComparisionReport(type)
 }
 function buildComparisonReport(result,type)
 {
+		$('#submitImg').hide();
 
 if(result == null || result.length == 0)
 {
-  alert("NO DAT AVAILABLE");
+  $('#statusMsg').html("NO DATA AVAILABLE");
   return;
 }
 
@@ -329,7 +331,6 @@ if(result == null || result.length == 0)
 		str+='</div></div>';
 
 		$("#comparisonReportId").html(str);
-		$('#submitImg').hide();
 		
 }
 
