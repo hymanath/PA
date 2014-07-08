@@ -7470,5 +7470,17 @@
 				<param name="root">resultStatus</param>
 			</result>
 		</action>
+		
+		<action name="gettingElectionYearsAction" class="candidateUpdateDetailsAction" method="gettingElectionYears">
+			<result type="json" name="success">
+			<param name="root">electionYearsList</param>
+			</result>
+		</action>	
+			
+		<action name="getAllDistrictsForAStateAction" class="candidateUpdateDetailsAction" method="getAllDistrictsForAState">
+			<result type="json" name="success">
+			<param name="root">districtList</param>
+			</result>
+		</action>
 </package>
 </struts>      
