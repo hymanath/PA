@@ -48,6 +48,14 @@ public class SurveyUserRelationDAO extends GenericDaoHibernate<SurveyUserRelatio
 		return query.list();
 	}
 	
+	public List<Object[]> getUserForAssignedUsers(Long leaderId)
+	{
+		Query query = getSession().createQuery("select distinct model.surveyUser.surveyUserId, model.surveyUser.userName from SurveyUserRelation model where " +
+				"  model.surveyLeader.surveyUserId = :leaderId  and model.activeStatus = 'Y' ");
+		query.setParameter("leaderId", leaderId);
+		return query.list();
+	}
+	
 	public int updateUserLeaderRelations(Long userTypeId,List<Long> surveyUserIds,Long leaderId)
 	{
 		Query query = getSession().createQuery("update SurveyUserRelation model set model.activeStatus = 'N' where model.surveyUser.surveyUserId in (:surveyUserIds)  " +
