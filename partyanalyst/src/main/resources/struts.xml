@@ -185,6 +185,8 @@
 			<result type="redirect" name="messageCenterAction">messageCenterAction.action</result>
 			<result type="redirect" name="updateCustomerContactsAction">updateCustomerContactsAction.action</result>
 			<result type="redirect" name="dashBoardAction">dashBoardAction.action</result>
+			<result type="redirect" name="surveyDataDetails">surveyDataDetailsAction.action</result>
+			
 			<result>/jsp/loginsuccess.jsp</result>
 			 <!-- Problem Management Flow From Different Pages -->
 			 <interceptor-ref name="basicStack"/>
@@ -7274,6 +7276,7 @@
 		
 		<action name="surveyDataDetailsAction" class="surveyDataDetailsAction">
 			<result name="success">/jsp/surveyDataDetails.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=surveyDataDetails</result>
 		</action>
 		
 		<action name="saveSurveyUserAction" class="surveyDataDetailsAction" method="saveSurveyUser">
@@ -7302,6 +7305,31 @@
 		<action name="getSurveyUserTypeAction" class="surveyDataDetailsAction" method="getSurveyUserType">
 			<result type="json" name="success">
 				<param name="root">returnList</param>
+			</result>
+		</action>
+		
+		<action name="getSurveyConstituencyListAction" class="surveyDataDetailsAction" method="getSurveyConstituencyList">
+			<result type="json" name="success">
+				<param name="root">returnList</param>
+			</result>
+		</action>
+		
+		<action name="getSurveyConstituencyLeadersListAction" class="surveyDataDetailsAction" method="getSurveyConstituencyLeadersList">
+			<result type="json" name="success">
+				<param name="root">returnList</param>
+			</result>
+		</action>
+		
+		<action name="releaseLeadersWithUserandTabsListAction" class="surveyDataDetailsAction" method="releaseLeadersWithUserandTabsList">
+			<result type="json" name="success">
+				<param name="root">genericVO</param>
+			</result>
+		</action>
+		
+		
+		<action name="assignTabsForUsersAction" class="surveyDataDetailsAction" method="assignTabsForUsers">
+			<result type="json" name="success">
+				<param name="root">resultStatus</param>
 			</result>
 		</action>
 		
