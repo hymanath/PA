@@ -30,7 +30,7 @@ public interface ISurveyDataDetailsService
 	public List<GenericVO> getConstituencyWiseLeaders();
 	public List<SelectOptionVO> getAllAssemblyConstituenciesByStateId();
 	public List<SurveyReportVO> getBoothWiseUserSamplesDetailsByDates(Long userId,String startDate);
-	public List<SurveyReportVO> getReportForVerification(Long boothId);
+	public List<SurveyReportVO> getReportForVerification(Long boothId,String type);
 	public List<GenericVO> getLatLongForUserTrackung(Long surveyUserId,Date date);
 	public List<SurveyResponceVO> getLatLongForSurveyDetails(Long surveyUserId,Date date);
 	public List<SurveyResponceVO> getDetailsForVerifier(Long surveyUserId,Long boothId);

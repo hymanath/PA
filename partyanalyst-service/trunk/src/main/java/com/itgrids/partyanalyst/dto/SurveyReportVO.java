@@ -41,7 +41,22 @@ public class SurveyReportVO {
     private String verified;
 	private String surveyDate1;
 	
+	private Long matchedCount;
+	private Long unmatchedCount;
 	
+	
+	public Long getMatchedCount() {
+		return matchedCount;
+	}
+	public void setMatchedCount(Long matchedCount) {
+		this.matchedCount = matchedCount;
+	}
+	public Long getUnmatchedCount() {
+		return unmatchedCount;
+	}
+	public void setUnmatchedCount(Long unmatchedCount) {
+		this.unmatchedCount = unmatchedCount;
+	}
 	public String getSurveyDate1() {
 		return surveyDate1;
 	}

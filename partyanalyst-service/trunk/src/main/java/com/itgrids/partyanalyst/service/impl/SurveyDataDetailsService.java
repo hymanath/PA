@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -1206,7 +1207,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	}
 	
 	
-	public List<SurveyReportVO> getReportForVerification(Long boothId)
+	public List<SurveyReportVO> getReportForVerification(Long boothId,String type)
 	{
 		LOG.info("Entered into getReportForVerification service in SurveyDataDetailsService");
 
@@ -1302,6 +1303,54 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				}
 				
 			}
+			
+			Long matchedCount = 0L;
+			Long unmatchedCount = 0L;
+			
+			for(SurveyReportVO voterVO:resultList)
+			{
+				if(voterVO.isCadreMatched() && voterVO.isInfluencePeopleMatched() && voterVO.isLocalAreaMatched() && voterVO.isCasteMatched() && voterVO.isHamletMatched())
+					matchedCount ++;
+				else
+					unmatchedCount++;
+			}
+			
+			if(resultList != null && resultList.size() >0)
+			{
+				resultList.get(0).setMatchedCount(matchedCount);
+				resultList.get(0).setUnmatchedCount(unmatchedCount);
+				
+			}
+			
+			Iterator<SurveyReportVO> itr = resultList.iterator();
+
+			
+			if(type.equalsIgnoreCase("unmatched"))
+			{
+				
+				while(itr.hasNext())
+				{
+					SurveyReportVO voterVO =itr.next();
+						if(voterVO.isCadreMatched() && voterVO.isInfluencePeopleMatched() && voterVO.isCasteMatched() && voterVO.isHamletMatched() && voterVO.isLocalAreaMatched())
+						    itr.remove();
+						
+							
+							
+				}
+			}else if(type.equalsIgnoreCase("matched"))
+			{
+			
+				while(itr.hasNext())
+				{
+					SurveyReportVO voterVO =itr.next();
+						if(!(voterVO.isCadreMatched() && voterVO.isInfluencePeopleMatched() && voterVO.isCasteMatched() && voterVO.isHamletMatched() && voterVO.isLocalAreaMatched()))
+						{
+							 itr.remove();
+						}
+						
+				}
+			}
+			
 			
 		} catch (Exception e) {
 			//e.printStackTrace();
