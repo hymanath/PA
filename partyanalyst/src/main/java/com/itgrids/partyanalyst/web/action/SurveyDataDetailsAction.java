@@ -14,6 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -44,9 +45,19 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	private List<SurveyReportVO> voterVerificationList;
 	private List<SurveyResponceVO> responceList;
 	private String status;
+	private GenericVO genericVO;
 	private Long userTypeId;
 	
 	
+	
+	public GenericVO getGenericVO() {
+		return genericVO;
+	}
+
+	public void setGenericVO(GenericVO genericVO) {
+		this.genericVO = genericVO;
+	}
+
 	public Long getUserTypeId() {
 		return userTypeId;
 	}
@@ -201,14 +212,30 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			}
 			Long userId = user.getRegistrationID();
 			jObj = new JSONObject(getTask());
-			String dateObj = jObj.getString("date");
-			SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
-			SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd" );
-			Date Date;
 			
-			Date = originalFormat.parse(dateObj);
-			Date convertDate= targetFormat.parse(targetFormat.format(Date));	
-			resultStatus = surveyDataDetailsService.saveSurveyUserTabAssign( jObj.getLong("surveyUserId"), jObj.getString("tabNo"), jObj.getString("remarks"),convertDate);
+			JSONArray totalTabsInfo = jObj.getJSONArray("tabsArr");
+			List<BasicVO> assignTabsInfo = null;
+			
+			if(totalTabsInfo != null && totalTabsInfo.length()>0){
+				assignTabsInfo = new ArrayList<BasicVO>();
+				for (int i = 0;i<totalTabsInfo.length();i++) {
+					
+					JSONObject obj =  totalTabsInfo.getJSONObject(i);
+					
+						String tabNo = obj.getString("tabNo");
+						String assignDate = obj.getString("date");
+						
+						BasicVO vo = new BasicVO();
+						
+						vo.setCasteName(tabNo.toString());
+						vo.setName(assignDate);
+						assignTabsInfo.add(vo);
+				}
+			}
+			
+	
+			//resultStatus = surveyDataDetailsService.saveSurveyUserTabAssign( jObj.getLong("surveyUserId"), jObj.getString("tabNo"), jObj.getString("remarks"),convertDate);
+			resultStatus = surveyDataDetailsService.saveSurveyUserTabAssign( jObj.getLong("surveyUserId"),assignTabsInfo);
 		} 
 		catch (Exception e)
 		{
@@ -268,13 +295,72 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 				return Action.INPUT;
 			}
 			jObj = new JSONObject(getTask());
-			returnList = surveyDataDetailsService.getUserTypes();
+			returnList = surveyDataDetailsService.getUserTypes();			
 		} 
 		catch (Exception e)
 		{
 			LOG.error("Exception raised in getSurveyUserType in SurveyDataDetailsAction", e);
 		}
 		return Action.SUCCESS;
+	}
+	
+	public String getSurveyConstituencyList(){
+		
+		try
+		{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			jObj = new JSONObject(getTask());
+			returnList = surveyDataDetailsService.getSurveyConstituencyList();			
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getSurveyConstituencyList() in SurveyDataDetailsAction", e);
+		}
+		return Action.SUCCESS;
+		
+	}
+	
+	
+	public String getSurveyConstituencyLeadersList(){
+		
+		try
+		{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			jObj = new JSONObject(getTask());
+			returnList = surveyDataDetailsService.getSurveyConstituencyLeadersList(Long.valueOf(jObj.getString("constiId")));			
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getSurveyConstituencyList() in SurveyDataDetailsAction", e);
+		}
+		return Action.SUCCESS;
+		
+	}
+
+	
+	public String releaseLeadersWithUserandTabsList()
+	{
+		try {
+			
+			jObj = new JSONObject(getTask());		
+			genericVO = surveyDataDetailsService.releaseLeadersWithUserandTabsList(jObj.getLong("leaderId"));
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in releaseLeadersWithUser in SurveyDataDetailsAction", e);
+		}
+		
+		return Action.SUCCESS;
+		
 	}
 	
 	public String getSurveyUsersByUserType()
@@ -472,11 +558,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			
 			
 			
-			dayWiseReportList = surveyDataDetailsService
-					.getDayWiseReportByConstituencyIdAndUserType(
-							jObj
-							.getLong("constituencyId"),  startDate, endDate,
-							 userTypeId,boothIds);
+			dayWiseReportList = surveyDataDetailsService.getDayWiseReportByConstituencyIdAndUserType(jObj.getLong("constituencyId"),  startDate, endDate,userTypeId,boothIds);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -685,6 +767,48 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		catch (Exception e)
 		{
 			LOG.error("Exception raised in saveSurveyUser in SurveyDataDetailsAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String assignTabsForUsers(){
+		try
+		{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			Long userId = user.getRegistrationID();
+			jObj = new JSONObject(getTask());
+			
+			JSONArray totalTabsInfo = jObj.getJSONArray("userTabsArr");
+			List<BasicVO> assignTabsInfo = null;
+			
+			if(totalTabsInfo != null && totalTabsInfo.length()>0){
+				assignTabsInfo = new ArrayList<BasicVO>();
+				for (int i = 0;i<totalTabsInfo.length();i++) {
+					
+					JSONObject obj =  totalTabsInfo.getJSONObject(i);
+					
+						Long candId = obj.getLong("candId");
+						Long tabId = obj.getLong("tabId");
+						
+						BasicVO vo = new BasicVO();
+						
+						vo.setId(candId);
+						vo.setCount(tabId);
+						assignTabsInfo.add(vo);
+				}
+			}
+			
+			resultStatus = surveyDataDetailsService.saveSurveyUserTabAssign(assignTabsInfo);
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in assignTab in SurveyDataDetailsAction", e);
 		}
 		return Action.SUCCESS;
 	}
