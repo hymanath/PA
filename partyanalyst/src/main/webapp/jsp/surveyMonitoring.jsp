@@ -59,7 +59,7 @@
 										</div>
 										<div class="span5">
 											Select Booth<font class="requiredFont">*</font>
-											<select class="input-block-level" id="boothId"> <option value="0">Select Booth</option></select>
+											<select class="input-block-level" id="boothId" onChange="clearDivs();"> <option value="0">Select Booth</option></select>
 											<img id="boothAjaxImg" src="./images/icons/search.gif" alt="Processing Image"  class="hide"/>
 										</div>
 									</div>	
@@ -75,7 +75,10 @@
 									</div>-->
 									</div>
 									</div>
-							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onclick="getComparisionReport();">SUBMIT</button></div>
+									
+									<div id="summaryDivId">
+									</div>
+							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onclick="getComparisionReport('all');">SUBMIT</button></div>
 							<img id="submitImg" src="./images/icons/search.gif" alt="Processing Image" style="margin-left:500px;" class="hide"/>
 					</div>
 				</div>
@@ -114,7 +117,7 @@ function getBoothDetails()
 
 
 
-function getComparisionReport()
+function getComparisionReport(type)
 {
 	var constituencyId = $("#constituencyId").val();
 	var boothId = $("#boothId").val();
@@ -136,8 +139,9 @@ function getComparisionReport()
 	$('#submitImg').show();
 	var jObj =
 	{
-	 boothId:boothId
-		//boothId:383457
+	// boothId:boothId
+		boothId:122792,
+		type:type
 	
 	}
 	$.ajax({
@@ -146,12 +150,32 @@ function getComparisionReport()
 			dataType: 'json',
 			data: {task:JSON.stringify(jObj)},
 		  }).done(function(result){
-				buildComparisonReport(result);
+				buildComparisonReport(result,type);
 		});
 
 }
-function buildComparisonReport(result)
+function buildComparisonReport(result,type)
 {
+
+if(result == null || result.length == 0)
+{
+  alert("NO DAT AVAILABLE");
+  return;
+}
+
+	if(type == "all")
+	{
+
+		var str1='';
+
+		str1+='<div class="offset7">';
+		str1+='<div><span>Matched Count</span>:<a href="javascript:{getComparisionReport(\'matched\')}">'+result[0].matchedCount+'</a></div>';
+		str1+='<span>Matched Count</span>:<a href="javascript:{getComparisionReport(\'unmatched\')}">'+result[0].unmatchedCount+'</a>';
+		str1+='</div>';
+	 
+		$('#summaryDivId').html(str1);
+	 }
+
 	var str="";
 	str+='<div class="row-fluid "><div class="span12 m_top20 widgetservey">';										
 	str+='<div class="row-fluid">';
@@ -337,7 +361,10 @@ function saveVerifiedRecordsDetails()
 				}
 		});
 }
-	
+function clearDivs()
+{
+   $('#summaryDivId,#comparisonReportId').html('');
+}	
 		
 	
 	</script>	

@@ -501,7 +501,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		{
 			jObj = new JSONObject(getTask());
 			
-			voterVerificationList = surveyDataDetailsService.getReportForVerification(jObj.getLong("boothId"));
+			voterVerificationList = surveyDataDetailsService.getReportForVerification(jObj.getLong("boothId"),jObj.getString("type"));
 			
 		}catch(Exception e)
 		{
