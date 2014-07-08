@@ -366,6 +366,6 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	
 	public List<Object[]> getAllTheBoothsDetailsByConstituencyId(Long constituencyId,Long publicationDateId);
 	public List<Object[]> getTotalaVotesDetailsByBoothIds(List<Long> boothIds);
-
+	public Long getTotalVoter(Long boothId);
 
 }

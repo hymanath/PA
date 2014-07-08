@@ -2199,4 +2199,73 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		return resultStatus;
 	}
 	
+	
+	public List<SelectOptionVO> getLatLongForSurveyUsersByConstituency(Long constituencyId,Date date)
+	{
+		List<SelectOptionVO> returnList = null;
+		try
+		{
+			List<Object[]> result = surveyDetailsInfoDAO.getLatLongForSurveyUsersByConstituency(constituencyId, date);
+			if(result != null && result.size() > 0)
+			{
+				returnList = new ArrayList<SelectOptionVO>();
+				Map<Long,SelectOptionVO> resultMap = new HashMap<Long, SelectOptionVO>();
+				for (Object[] parms : result)
+				{
+					if(resultMap.get((Long)parms[7]) == null)
+					{
+						SelectOptionVO VO = new SelectOptionVO();
+						VO.setName(parms[0] != null ? parms[0].toString() : null);//user Name
+						VO.setPartno(parms[1] != null ? parms[1].toString() : null);// part no
+						VO.setValue(parms[2] != null ? parms[2].toString() : null);// Mandal
+						VO.setUrl(parms[3] != null ? parms[3].toString() : null);// Panchayat
+						VO.setLocation(parms[5] != null ? parms[5].toString() : null);// Location
+						VO.setVillageCovered(parms[4] != null ? parms[4].toString() : null);// Location Covered
+						VO.setType(parms[6] != null ? parms[6].toString() : null);// Location Covered
+						VO.setId((Long)parms[7]);//userId
+						VO.setOrderId((Long)parms[10]);//boothId
+						if( parms[8] != null &&  parms[9] != null)
+						{
+							VO.setLatitude(parms[8] != null ? parms[8].toString() : null);// Location Covered
+							VO.setLongititude(parms[9] != null ? parms[9].toString() : null);// Location Covered
+						}
+						
+						returnList.add(VO);
+						resultMap.put((Long)parms[7], VO);
+					}
+					
+				}
+			}
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getLatLongForSurveyUsersByConstituency service in SurveyDataDetailsService", e);
+		}
+		return returnList;
+	}
+	
+	public List<Long> getDataCollectedCount(Long userId,Long boothId)
+	{
+		List<Long> returnList = new ArrayList<Long>();
+		try
+		{
+			Long voterCount     =  boothDAO.getTotalVoter(boothId);
+			Long casteCount     =  surveyDetailsInfoDAO.getCasteCountByBooth(userId, boothId);
+			Long hamletCount    =  surveyDetailsInfoDAO.getHamletCountByBooth(userId, boothId);
+			Long localAreaCount =  surveyDetailsInfoDAO.getLocalAreaCountByBooth(userId, boothId);
+			Long cadreCount     =  surveyDetailsInfoDAO.getCadreCountByBooth(userId, boothId);
+			Long influCount     =  surveyDetailsInfoDAO.getInfluencingPeopleCountByBooth(userId, boothId);
+			returnList.add(voterCount);
+			returnList.add(casteCount);
+			returnList.add(hamletCount);
+			returnList.add(localAreaCount);
+			returnList.add(cadreCount);
+			returnList.add(influCount);
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getLatLongForSurveyUsersByConstituency service in SurveyDataDetailsService", e);
+		}
+		return returnList;
+	}
 }
