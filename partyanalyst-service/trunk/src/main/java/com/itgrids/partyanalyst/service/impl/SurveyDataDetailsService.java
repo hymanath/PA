@@ -37,6 +37,7 @@ import com.itgrids.partyanalyst.dao.ISurveyUserTabAssignDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserTrackingDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserTypeDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -115,9 +116,9 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	
 	@Autowired
 	private TransactionTemplate transactionTemplate;
-
 	@Autowired
 	private ISurveyUserConstituencyDAO surveyUserConstituencyDAO;
+	
 	/**
 	 * This Service is used for saving the user type details
 	 * @param userTypeDescription
@@ -238,23 +239,42 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	 * @param date
 	 * @return resultStatus
 	 */
-	public ResultStatus saveSurveyUserTabAssign(Long surveyUserId,String tabNo,String remarks,Date date)
+	public ResultStatus saveSurveyUserTabAssign(Long surveyUserId,List<BasicVO> tabsInfoList)
 	{
 		LOG.info("Entered into saveSurveyUserTabAssign service in SurveyDataDetailsService");
 		ResultStatus resultStatus = new ResultStatus();
 		try
 		{
-			DateUtilService date1 = new DateUtilService();
-			SurveyUserTabAssign surveyUserTabAssign = new SurveyUserTabAssign();
-			surveyUserTabAssign.setTabNo(tabNo);
-			surveyUserTabAssign.setRemarks(remarks);
-			surveyUserTabAssign.setDate(date);
-			surveyUserTabAssign.setSurveyUser(surveyUserDAO.get(surveyUserId));
-			surveyUserTabAssign.setInsertedTime(date1.getCurrentDateAndTime());
-			surveyUserTabAssign.setUpdatedTime(date1.getCurrentDateAndTime());
-			surveyUserTabAssign.setActiveStatus("Y");
 			
-			SurveyUserTabAssign result = surveyUserTabAssignDAO.save(surveyUserTabAssign);
+			SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
+			SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd" );
+			
+			SurveyUserTabAssign result = null;
+			
+			if(tabsInfoList != null && tabsInfoList.size()>0){
+				
+				for (BasicVO basicVO : tabsInfoList) {
+					
+					DateUtilService date1 = new DateUtilService();
+					SurveyUserTabAssign surveyUserTabAssign = new SurveyUserTabAssign();
+					surveyUserTabAssign.setTabNo(basicVO.getCasteName().toString());
+				//	surveyUserTabAssign.setRemarks(remarks);
+					
+					Date originalDate = originalFormat.parse(basicVO.getName());
+					Date finalDate= targetFormat.parse(targetFormat.format(originalDate));
+										
+					surveyUserTabAssign.setDate(finalDate);
+					surveyUserTabAssign.setSurveyUser(surveyUserDAO.get(surveyUserId));
+					surveyUserTabAssign.setInsertedTime(date1.getCurrentDateAndTime());
+					surveyUserTabAssign.setUpdatedTime(date1.getCurrentDateAndTime());
+					surveyUserTabAssign.setActiveStatus("Y");
+					
+					result = surveyUserTabAssignDAO.save(surveyUserTabAssign);
+				}
+				
+			}
+			
+
 			if(result != null)
 			{
 				resultStatus.setResultCode(0);
@@ -1910,6 +1930,192 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				return userBoothVO;
 		return null;
 	}
+
+
+	public List<GenericVO> getSurveyConstituencyLeadersList(Long leaderId){
+			
+			 List<GenericVO> returnList = null;
+			 try 
+			 {
+				List<Object[]> result = surveyUserConstituencyDAO.getSurveyConstituencyLeadersList(leaderId);
+				if(result != null && result.size() > 0)
+				{
+					returnList = new ArrayList<GenericVO>();
+					
+					for (Object[] param : result) {
+						GenericVO vo = new GenericVO();
+						vo.setId((Long) param[0]);
+						vo.setName(param[1].toString()+" "+param[2].toString());						
+						returnList.add(vo);
+						
+					}
+				}
+			 } 
+			 catch (Exception e)
+			 {
+				 LOG.error("Exception raised in getSurveyConstituencyLeadersList() service in SurveyDataDetailsService", e);
+			 }
+			 return returnList;
+		}
+
+	
+	public List<GenericVO> getSurveyConstituencyList(){
+		
+		 List<GenericVO> returnList = null;
+		 try 
+		 {
+			List<Object[]> result = surveyUserConstituencyDAO.getSurveyConstituencyList();
+			if(result != null && result.size() > 0)
+			{
+				returnList = new ArrayList<GenericVO>();
+				fillGenericVO(result,returnList);
+			}
+		 } 
+		 catch (Exception e)
+		 {
+			 LOG.error("Exception raised in getSurveyConstituencyList() service in SurveyDataDetailsService", e);
+		 }
+		 return returnList;
+	}
+
+	public GenericVO releaseLeadersWithUserandTabsList(Long leaderId) {
+
+		List<GenericVO> returnList = null;
+		GenericVO returnVO = new GenericVO();
+		try
+		{
+			
+			List<GenericVO> tabsList = new ArrayList<GenericVO>();
+			
+			List<Object[]> tabsInfo = surveyUserTabAssignDAO.getSurveyTabsBySurveyUserId(leaderId);
+			
+			if(tabsInfo != null && tabsInfo.size()>0){
+				for (Object[] param : tabsInfo) {
+					GenericVO genericVO = new GenericVO();
+					genericVO.setId(Long.valueOf(param[0].toString()));
+					genericVO.setName(param[1].toString());					
+					tabsList.add(genericVO);
+				}
+			}
+
+			List<Object[]> result = surveyUserRelationDAO.getUserForAssignedUsers(leaderId);
+			List<Long> surveyUserIdsList = new ArrayList<Long>();
+			if(result != null && result.size() > 0)
+			{
+				returnList = new ArrayList<GenericVO>();
+				for (Object[] parms : result) 
+				{
+					surveyUserIdsList.add((Long) parms[0]);
+				}
+			}
+			List<Object[]> assignedUsersInfo = surveyUserTabAssignDAO.getSurveyTabsBySurveyUserIdsList(surveyUserIdsList);
+			List<Long> assignedUseIds = new ArrayList<Long>();
+			if(assignedUsersInfo != null && assignedUsersInfo.size()>0){
+
+				for (Object[] params : assignedUsersInfo) {
+					GenericVO genericV1O = getMactchedVO(tabsList,params[1].toString());
+					if(genericV1O != null){						
+						tabsList.remove(genericV1O);
+					}
+					assignedUseIds.add((Long)params[0]);
+				}
+			}
+			
+			
+			if(result != null && result.size() > 0)
+			{
+				returnList = new ArrayList<GenericVO>();
+				for (Object[] parms : result) 
+				{	
+					if(!assignedUseIds.contains((Long)parms[0])){
+						GenericVO genericVO = new GenericVO();
+						genericVO.setId(parms[0] != null ? (Long)parms[0] : 0l);
+						genericVO.setName(parms[1] != null ? parms[1].toString() : "");
+						genericVO.setGenericVOList(tabsList);
+						returnList.add(genericVO);	
+					}									
+				}				
+			}
+			
+			returnVO.setGenericVOList(returnList);
+		} 
+		catch (Exception e) 
+		{
+			LOG.error("Exception raised in releaseLeadersWithUser service in SurveyDataDetailsService", e);
+		}
+		return returnVO;
+	}
+	
+	public GenericVO getMactchedVO(List<GenericVO> tabsList,String tabNo){
+		GenericVO genericVO = null;
+		try {
+			
+			if(tabsList != null && tabsList.size()>0){
+				for (GenericVO genericVO1 : tabsList) {
+					if(genericVO1.getName().equalsIgnoreCase(tabNo)){
+						return genericVO1;
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in getMactchedVO() service in SurveyDataDetailsService", e);
+		}
+		return genericVO;
+	}
+	/**
+	 * This Service is used for saving the tab details for assigned survey user.
+	 * @param tabsInfoList
+	 * @return resultStatus
+	 */
+	public ResultStatus saveSurveyUserTabAssign(List<BasicVO> tabsInfoList)
+	{
+		LOG.info("Entered into saveSurveyUserTabAssign service in SurveyDataDetailsService");
+		ResultStatus resultStatus = new ResultStatus();
+		try
+		{
+
+			SurveyUserTabAssign result = null;
+			
+			if(tabsInfoList != null && tabsInfoList.size()>0){
+				
+				for (BasicVO basicVO : tabsInfoList) {
+					
+					DateUtilService date1 = new DateUtilService();
+					SurveyUserTabAssign surveyUserTabAssign = new SurveyUserTabAssign();
+				
+					surveyUserTabAssign.setSurveyUser(surveyUserDAO.get(basicVO.getId()));
+					surveyUserTabAssign.setTabNo(basicVO.getCount().toString());
+					surveyUserTabAssign.setActiveStatus("Y");
+					surveyUserTabAssign.setDate(date1.getCurrentDateAndTime());					
+					surveyUserTabAssign.setInsertedTime(date1.getCurrentDateAndTime());
+					surveyUserTabAssign.setUpdatedTime(date1.getCurrentDateAndTime());
+										
+					result = surveyUserTabAssignDAO.save(surveyUserTabAssign);
+				}
+				
+			}
+			
+
+			if(result != null)
+			{
+				resultStatus.setResultCode(0);
+				resultStatus.setMessage("Success");
+			}
+			else
+			{
+				resultStatus.setResultCode(1);
+				resultStatus.setMessage("Failure");
+			}
+		}
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in saveSurveyUserTabAssign service in SurveyDataDetailsService", e);
+			resultStatus.setResultCode(3);
+			resultStatus.setMessage("Exception");
+		}
+		return resultStatus;
+	}
+	
 	
 	public List<SurveyReportVO> getAllAssignedConstituenciesUsers(Long userTypeId)
 	{
