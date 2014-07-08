@@ -2127,6 +2127,9 @@
    </bean>
    
    <bean name="surveyDataDetailsService"  class="com.itgrids.partyanalyst.service.impl.SurveyDataDetailsService"  > </bean>
-   <bean name="candidateUpdationDetailsService"  class="com.itgrids.partyanalyst.service.impl.CandidateUpdationDetailsService"  > </bean>
+   <bean name="candidateUpdationDetailsService"  class="com.itgrids.partyanalyst.service.impl.CandidateUpdationDetailsService"  >
+   <property name="electionDAO" ref="electionDAO" />
+   <property name="districtDAO" ref="districtDAO" />
+   </bean>
 </beans>		
 	
