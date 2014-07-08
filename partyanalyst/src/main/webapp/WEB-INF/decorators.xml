@@ -341,5 +341,6 @@
 	   <pattern>/profileManagePageAction*</pattern>
 	   <pattern>/newsDisplayAction*</pattern>
 	   <pattern>/generatePdfForGallaryAction*</pattern>
+	   <pattern>/candidateUpdateDetailsAction*</pattern>
        </decorator>
 </decorators>
