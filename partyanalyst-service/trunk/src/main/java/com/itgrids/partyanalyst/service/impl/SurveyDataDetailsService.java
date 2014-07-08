@@ -29,6 +29,7 @@ import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.ISurveySurveyorTypeDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserBoothAssignDAO;
+import com.itgrids.partyanalyst.dao.ISurveyUserConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserRelationDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserTabAssignDAO;
@@ -46,6 +47,7 @@ import com.itgrids.partyanalyst.model.SurveyDetailsInfo;
 import com.itgrids.partyanalyst.model.SurveySurveyorType;
 import com.itgrids.partyanalyst.model.SurveyUser;
 import com.itgrids.partyanalyst.model.SurveyUserBoothAssign;
+import com.itgrids.partyanalyst.model.SurveyUserConstituency;
 import com.itgrids.partyanalyst.model.SurveyUserRelation;
 import com.itgrids.partyanalyst.model.SurveyUserTabAssign;
 import com.itgrids.partyanalyst.model.SurveyUserTracking;
@@ -113,7 +115,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	@Autowired
 	private TransactionTemplate transactionTemplate;
 
-	
+	@Autowired
+	private ISurveyUserConstituencyDAO surveyUserConstituencyDAO;
 	/**
 	 * This Service is used for saving the user type details
 	 * @param userTypeDescription
@@ -125,7 +128,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		ResultStatus resultStatus = new ResultStatus();
 		try
 		{
-			Long userTypeId = surveyUserTypeDAO.checkForUsertype(userTypeDescription.trim());
+			Long userTypeId = surveyUserTypeDAO.checkForUsertype(userType.trim());
 			if(userTypeId == null)
 			{
 				SurveyUserType surveyUserType = new SurveyUserType();
@@ -1857,6 +1860,88 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			if(userBoothVO.getUserid().equals(userId) && userBoothVO.getBoothId().equals(boothId))
 				return userBoothVO;
 		return null;
+	}
+	
+	public List<SurveyReportVO> getAllAssignedConstituenciesUsers(Long userTypeId)
+	{
+		List<SurveyReportVO> resultList = new ArrayList<SurveyReportVO>();
+		try {
+			
+			List<Object[]> totalUsersList = surveyUserDAO.getSurveyUsersByUserType(userTypeId);
+			
+			List<Long> usersList = surveyUserConstituencyDAO.getAlreadyAssignedUsers();
+			
+			for(Object[] parms:totalUsersList)
+			{
+				
+				SurveyReportVO vo = new SurveyReportVO();
+				if(!usersList.contains((Long)parms[0])){
+					vo.setUserid((Long)parms[0]);
+					vo.setUserName(parms[1].toString());
+					resultList.add(vo);
+				}
+					
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return resultList;
+	}
+	
+	public List<SelectOptionVO> getAllAssignedConstituency()
+	{
+		List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>();
+		try {
+			List<Object[]> totalConstituenciesList = constituencyDAO.getAllAssemblyConstituenciesByStateId(1L);
+			List<Long> constituenciesList = surveyUserConstituencyDAO.getAlreadyAssignedConstituencies();
+			
+			for(Object[] parms:totalConstituenciesList)
+			{
+				SelectOptionVO vo = new SelectOptionVO();
+				if(!constituenciesList.contains((Long)parms[0])){
+				vo.setId((Long)parms[0]);
+				vo.setName(parms[1].toString());
+				resultList.add(vo);
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return resultList;
+	}
+	
+	public ResultStatus assignConstituencyForAUser(Long userId,Long constituencyId)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try
+		{
+			SurveyUserConstituency surveyUserConstituency = new SurveyUserConstituency();
+			
+			surveyUserConstituency.setSurveyUser(surveyUserDAO.get(userId));
+			surveyUserConstituency.setConstituency(constituencyDAO.get(constituencyId));
+			surveyUserConstituency.setActiveStatus("Y");
+		
+			SurveyUserConstituency result = surveyUserConstituencyDAO.save(surveyUserConstituency);
+			if(result != null)
+			{
+				resultStatus.setResultCode(0);
+				resultStatus.setMessage("Success");
+			}
+			else
+			{
+				resultStatus.setResultCode(1);
+				resultStatus.setMessage("Failure");
+			}
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in assignConstituencyForAUser service in SurveyDataDetailsService", e);
+			resultStatus.setResultCode(3);
+			resultStatus.setMessage("Exception");
+		}
+		return resultStatus;
 	}
 	
 }
