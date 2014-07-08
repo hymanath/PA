@@ -7,10 +7,9 @@
 		<%@ page import="java.util.ResourceBundle;" %>
 <html>
  <head>
- <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
 <script src="//code.jquery.com/jquery-1.10.2.js"></script>
 <script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
-
 
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">	
 	<script src="js/surveyDataDetails.js"></script>
@@ -44,13 +43,20 @@
 			cursor: pointer;
 			}
 			
-			
+			.datePickerCls{
+			 cursor: text !important;
+			}
 		</style>
   </head>
   
   <body>
 <script>
   $(document).ready(function(){
+  
+   $('.datePickerCls').datepicker({
+   dateFormat: 'dd-mm-yy'
+   });
+   
    
     $('#constituencyId,#userId').change(function(){
 		$('#boothsDtlsId').html('');
@@ -59,13 +65,8 @@
 	showHideTabs('userTypeTab');
 
 
-});
 
-$(".highlight").live("click",function()
-{
-	$(".highlight").removeClass("selected");
-	$(this).addClass("selected");
-})
+});
   </script>
 	<div class="container">
 		<div class="row">
@@ -187,7 +188,8 @@ $(".highlight").live("click",function()
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top20">
 					
-						<h4>User Tab Assign</h4>
+					<!----	<h4>User Tab Assign</h4> ---->
+					<h4>Assign Tabs to Leader </h4> 
 						<div class="row">
 						<div id="assignTabErrorDiv" class="span8 offset2 errorCls"></div>
 						</div>
@@ -215,26 +217,74 @@ $(".highlight").live("click",function()
 											<label>Status</label>
 											<select class="input-block-level"> <option>01</option></select>
 										</div>-->
-											<div class="row-fluid">
+										<div class="row-fluid">
 											<div class="span6">
 											Tab No<font class="requiredFont">*</font>
-											<input type="text" placeholder="Tab No..." class="input-block-level" id="tabNo">
+											<input type="text" placeholder="Tab No..." class="input-block-level newTabCls" id="tabNo1">
 										</div>
 										<div class="span6">
 											Date<font class="requiredFont">*</font>
-											<input type="text" placeholder="User Name..." class="input-block-level" id="date">
+											<input type="text" placeholder="Select Date ..." class="input-block-level datePickerCls" id="date1"  readOnly="true">
 										</div>	
 																		
 									</div>
+									
+									<div id="assignNewTabsDiv"></div>
+									<a href="javascript:{assignNewTabDiv();}"><span class="btn btn-info" style="float:right;" title="Click here to Assign a new tab"> <b> +</b></span> </a> 
+								<!--
 									<div class="row-fluid">
 										<div class="span12">
 											Remarks
 											<textarea class="input-block-level" rows="2" id="remarks"></textarea>
 										</div>
 									</div>
+								-->
+								
 								</div>
 							</div>
 							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onclick="AssignTab();">ASSIGN</button><img id="processingImgForTabAssign" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img></div>
+
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!----TAB Assign ---->		
+		<div class="row" id="tabAssignUserDiv" style="display:none;">
+			<div class="span10 offset1">
+				<div class="row-fluid ">
+					<div class="span12 widgetservey_Red m_top20">
+					
+					<!----	<h4>User Tab Assign</h4> ---->
+					<h4>Assign Tabs to User </h4> 
+						<div class="row">
+						<div id="assignTabUserErrorDiv" class="span8 offset2 errorCls"></div>
+						</div>
+							<div class="row">
+								<div class="span10 offset2">
+									<div class="row-fluid">
+										<div class="span6">
+											Select Constituency <font class="requiredFont">*</font>
+											<select class="input-block-level" id="constitList" onchange="getConstituencyLeadersList('constituencyLeadrList',this.value);">
+											<option value="0">Select Constituency</option>
+											</select>
+											</div>
+											<div class="span6">
+										Select Leader <font class="requiredFont">*</font>
+										<select class="input-block-level" id="constituencyLeadrList" onchange="usersListByTabsInfo('tabAssignTabsId',this.value);"> 
+											<option value="0">Select Leader</option>
+										</select>
+											</div>	
+										
+										</div>
+										
+										<div id="tabAssignTabsId"></div>
+								
+								</div>
+							</div>
+							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onclick="assignTabsToLeaderUsers();">ASSIGN</button><img id="processingImgForTabAssign" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img></div>
 
 
 
@@ -580,6 +630,32 @@ $(".highlight").live("click",function()
 		<div class="row" id="leaderNameDiv"></div>
 		
 	</div>
-<!-- USE JS FILE FOR FUNCTIONS -->
+<script>
+
+var count = 1;
+function assignNewTabDiv(){
+count = count+1;
+var str ='';
+
+	str +='<div class="row-fluid"  id="newTabAssignDiv'+count+'">';
+	str +='	<div class="span6">';
+	str +='		Tab No<font class="requiredFont">*</font>';
+	str +='		<input type="text" placeholder="Tab No..." class="input-block-level newTabCls" id="tabNo'+count+'">';
+	str +='	</div>';
+	str +='	<div class="span6">';
+	str +='		Date<font class="requiredFont">*</font>';   	
+	str +='		<input type="text" placeholder="Select Date..." class="input-block-level datePickerCls" id="date'+count+'" readOnly="true" style="width:270px;"> <a href="javascript:{clearDiv('+count+');}"> <span id="removeDivId" class="btn btn-danger" style="margin-top: -10px;"> <b> - </b></span> </a>';
+	str +='	</div>	';								
+	str +='</div>';
+		str +=' ';
+$('#assignNewTabsDiv').append(str);	
+   $('.datePickerCls').datepicker({
+   dateFormat: 'dd-mm-yy'
+   });
+   	
+
+}
+
+</script>
 </body>
 </html>
