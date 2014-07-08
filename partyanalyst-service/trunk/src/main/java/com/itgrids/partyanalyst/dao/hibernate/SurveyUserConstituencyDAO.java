@@ -26,4 +26,18 @@ public class SurveyUserConstituencyDAO extends GenericDaoHibernate<SurveyUserCon
 		Query query = getSession().createQuery("select distinct model.constituency.constituencyId from SurveyUserConstituency model where model.activeStatus = 'Y'");
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getSurveyConstituencyList(){
+		
+		return getHibernateTemplate().find(" select model.constituency.constituencyId , model.constituency.name from SurveyUserConstituency model order by model.constituency.name asc");
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getSurveyConstituencyLeadersList(Long constituencyId){
+		
+		return getHibernateTemplate().find("select model.surveyUser.surveyUserId, model.surveyUser.firstName,model.surveyUser.lastName from SurveyUserConstituency model " +
+				" where model.constituency.constituencyId = "+constituencyId+" order by model.surveyUser.firstName asc");
+	}
+	
 }
