@@ -22,6 +22,6 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	public List<SurveyDetailsInfo> getVerifiedVotersDetailsBySurveyDetailsInfoId(Long voterId);
 	public List<Long> getDataCollectedVoterIdsByBoothIds(List<Long> boothIds);
 	public List<Object[]> getDayWisereportDetailsByConstituencyIdAndUserTypeId(
-			Long constituencyId, Date startDate, Date endDate, Long userTypeId);
+			Long constituencyId, Date startDate, Date endDate, Long userTypeId,List<Long> boothIds);
 
 }

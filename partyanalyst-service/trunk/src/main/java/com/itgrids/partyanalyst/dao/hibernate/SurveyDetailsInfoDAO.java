@@ -30,20 +30,42 @@ public class SurveyDetailsInfoDAO extends GenericDaoHibernate<SurveyDetailsInfo,
 		
 	}
 	
-	public List<Object[]> getDayWisereportDetailsByConstituencyIdAndUserTypeId(Long constituencyId,Date startDate,Date endDate,Long userTypeId)
+	public List<Object[]> getDayWisereportDetailsByConstituencyIdAndUserTypeId(Long constituencyId,Date startDate,Date endDate,Long userTypeId,List<Long> boothIds)
 	{
-		Query query = getSession().createQuery("select count(SDI.booth.constituency.constituencyId)," +
+		
+		StringBuffer str = new StringBuffer();
+		
+		str.append("select count(SDI.booth.constituency.constituencyId)," +
+				"SDI.surveyUser.surveyUserId,SDI.surveyUser.userName," +
+				"SDI.booth.boothId , SDI.booth.partNo,SDI.booth.totalVoters, DATE(SDI.date) from " +
+				"SurveyDetailsInfo SDI where SDI.booth.constituency.constituencyId = :constituencyId  and date(SDI.date) >= :startDate and " +
+				"SDI.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId and  " +
+				" date(SDI.date) <= :endDate ");
+				
+				if(boothIds != null && boothIds.size() >0)
+					str.append("and SDI.booth.boothId in(:boothIds)");
+				
+				
+				str.append(" group by " +
+				"SDI.surveyUser.surveyUserId,SDI.booth.boothId,DATE(SDI.date) ");
+				
+				Query query = getSession().createQuery(str.toString());
+		
+	/*	Query query = getSession().createQuery("select count(SDI.booth.constituency.constituencyId)," +
 				"SDI.surveyUser.surveyUserId,SDI.surveyUser.userName," +
 				"SDI.booth.boothId , SDI.booth.partNo,SDI.booth.totalVoters, DATE(SDI.date) from " +
 				"SurveyDetailsInfo SDI where SDI.booth.constituency.constituencyId = :constituencyId  and date(SDI.date) >= :startDate and " +
 				"SDI.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId and  " +
 				" date(SDI.date) <= :endDate group by " +
-				"SDI.surveyUser.surveyUserId,SDI.booth.boothId,DATE(SDI.date) ");
+				"SDI.surveyUser.surveyUserId,SDI.booth.boothId,DATE(SDI.date) ");*/
 		
 		query.setParameter("startDate", startDate);
 		query.setParameter("endDate", endDate);
 		query.setParameter("constituencyId", constituencyId);
 		query.setParameter("userTypeId", userTypeId);
+		
+		if(boothIds != null && boothIds.size() >0)
+			query.setParameterList("boothIds", boothIds);
 		
 		return query.list();
 		

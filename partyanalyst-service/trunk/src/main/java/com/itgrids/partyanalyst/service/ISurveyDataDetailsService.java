@@ -46,7 +46,7 @@ public interface ISurveyDataDetailsService
 	public String saveVerifiedRecordsDetails(final List<Long> verifierIds);
 	public List<SurveyReportVO> getDayWiseReportByConstituencyIdAndUserType(
 			Long constituencyId, String startDate, String endDate,
-			Long userTypeId);
+			Long userTypeId,List<Long> boothIds);
 	
 	public List<SelectOptionVO> getAllAssignedConstituency();
 	public List<SurveyReportVO> getAllAssignedConstituenciesUsers(Long userTypeId);	

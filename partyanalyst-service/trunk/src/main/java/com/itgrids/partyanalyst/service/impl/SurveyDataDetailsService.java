@@ -1770,7 +1770,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	
 	public List<SurveyReportVO> getDayWiseReportByConstituencyIdAndUserType(
 			Long constituencyId, String startDate, String endDate,
-			Long userTypeId)	{
+			Long userTypeId,List<Long> bothIds)	{
 		List<SurveyReportVO> resultList = new ArrayList<SurveyReportVO>();
 
 		try
@@ -1789,7 +1789,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			List<Object[]> dayWiseReportDtls = surveyDetailsInfoDAO
 					.getDayWisereportDetailsByConstituencyIdAndUserTypeId(
 							constituencyId, convertedstrdate, convertedenddate,
-							userTypeId);
+							userTypeId,bothIds);
 			
 			
 			
