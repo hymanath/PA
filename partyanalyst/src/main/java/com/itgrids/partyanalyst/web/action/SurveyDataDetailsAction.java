@@ -45,10 +45,9 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	private List<SurveyReportVO> voterVerificationList;
 	private List<SurveyResponceVO> responceList;
 	private String status;
+	private List<Long> countList;
 	private GenericVO genericVO;
 	private Long userTypeId;
-	
-	
 	
 	public GenericVO getGenericVO() {
 		return genericVO;
@@ -159,6 +158,15 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 
 	public void setResponceList(List<SurveyResponceVO> responceList) {
 		this.responceList = responceList;
+	}
+
+	
+	public List<Long> getCountList() {
+		return countList;
+	}
+
+	public void setCountList(List<Long> countList) {
+		this.countList = countList;
 	}
 
 	public String execute()
@@ -809,6 +817,49 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		catch (Exception e)
 		{
 			LOG.error("Exception raised in assignTab in SurveyDataDetailsAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getLatLongForSurveyUsersByConstituency()
+	{
+		try
+		{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			jObj = new JSONObject(getTask());
+			String dateStr = jObj.getString("dateStr");
+			SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
+			Date date = originalFormat.parse(dateStr);
+			constituenciesList = surveyDataDetailsService.getLatLongForSurveyUsersByConstituency(jObj.getLong("constituencyId"), date);
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in saveSurveyUser in SurveyDataDetailsAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getRespectiveCountForBooth()
+	{
+		try
+		{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			jObj = new JSONObject(getTask());
+			countList = surveyDataDetailsService.getDataCollectedCount(jObj.getLong("userId"), jObj.getLong("boothId"));
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in saveSurveyUser in SurveyDataDetailsAction", e);
 		}
 		return Action.SUCCESS;
 	}
