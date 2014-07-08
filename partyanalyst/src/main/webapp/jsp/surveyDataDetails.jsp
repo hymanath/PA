@@ -72,7 +72,18 @@
 					<li><a class="highlight" id="deactivationTab" onclick="showHideTabs(this.id);"> Deactivation </a></li>
 					<li><a class="highlight" id="assignLeaderTab" onclick="showHideTabs(this.id);"> Assign Leader</a></li>
 					<li><a class="highlight" id="verificationDetailsTab" onclick="showHideTabs(this.id);"> Verification Details	 </a></li>
-					<li><a class="highlight" id="reportTab" onclick="redicttoVerificationPage();"> Reports	 </a></li>
+					
+					<li class="highlight" id="reportsTab" onclick="showHideTabs(this.id);">
+					  <div class="dropdown">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="#">Reports</a>
+							<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<li><a href="javascript:{redicttoVerificationPage(1)}">Data Collector Report </a></li>
+							<li><a  href="javascript:{redicttoVerificationPage(2)}">Verifier Report  </a></li>
+							<li><a href="javascript:{redicttoVerificationPage(2)}">Third Party Report </a></li>
+							</ul>
+					</div>
+					</li>
+					<!--<li><a class="highlight" id="reportTab" onclick="redicttoVerificationPage();"> Reports	 </a></li>-->
 				</ul>
 			</div>
 		</div>

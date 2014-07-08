@@ -44,8 +44,17 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	private List<SurveyReportVO> voterVerificationList;
 	private List<SurveyResponceVO> responceList;
 	private String status;
+	private Long userTypeId;
 	
 	
+	public Long getUserTypeId() {
+		return userTypeId;
+	}
+
+	public void setUserTypeId(Long userTypeId) {
+		this.userTypeId = userTypeId;
+	}
+
 	public List<SurveyReportVO> getAssignedUsersList() {
 		return assignedUsersList;
 	}
