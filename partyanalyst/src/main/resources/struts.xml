@@ -7482,5 +7482,17 @@
 			<param name="root">districtList</param>
 			</result>
 		</action>
+				
+		<action name="getLatLongForSurveyUsersByConstituencyAction" class="surveyDataDetailsAction" method="getLatLongForSurveyUsersByConstituency">
+			<result type="json" name="success">
+				<param name="root">constituenciesList</param>
+			</result>
+		</action>
+		
+		<action name="getRespectiveCountForBoothAction" class="surveyDataDetailsAction" method="getRespectiveCountForBooth">
+			<result type="json" name="success">
+				<param name="root">countList</param>
+			</result>
+		</action>
 </package>
 </struts>      
