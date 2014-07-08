@@ -1109,10 +1109,10 @@ function updateLeaderInHouseReleation()
 		});
 }
 
-function redicttoVerificationPage()
+function redicttoVerificationPage(userTypeId)
 {
 
-	 window.open('dailyVerificationReportsAction.action','_blank');
+	 window.open('dailyVerificationReportsAction.action?userTypeId='+userTypeId+'','_blank');
 	
 }
 

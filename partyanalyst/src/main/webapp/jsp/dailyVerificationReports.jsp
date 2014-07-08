@@ -28,6 +28,12 @@
 				color:red;
 				font-size:13px;
 			}
+			
+			#retunMsg
+			{
+			 font-weight:bold;
+			 color:green;
+			}
 		</style>	
 	
   </head>
@@ -77,7 +83,7 @@
 									</div>
 						<!--	<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getDayWiseReport()">SUBMIT</button></div>-->
 						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getDayWiseReportByConstituencyIdAndUserType()">SUBMIT</button></div>
-						
+						<div id="retunMsg"></div>
                              <div id="dayWiseReportDiv1"></div>
 							<img src='images/Loading-data.gif' class="offset5"  id="mainajaximg" style="width:70px;height:60px;display:none;"/>
 					</div>
@@ -347,7 +353,7 @@ function buildUserBoothWiseCountDetails(result)
 <script>
 function getDayWiseReportByConstituencyIdAndUserType()
 {
-$('#dayWiseReportDiv1').html('');
+$('#dayWiseReportDiv1,#retunMsg').html('');
 	var constituencyId = $("#constituencyId").val();
 	//var userTypeId = $("#userType").val();
 	var userTypeId = 1;
@@ -365,6 +371,8 @@ $('#dayWiseReportDiv1').html('');
 	  heading:heading,
       boothIds:[]
  	};
+	
+	$('#mainajaximg').show();
 
 	 jObj.boothIds= $('#boothId').val();
 
@@ -379,9 +387,10 @@ $('#dayWiseReportDiv1').html('');
 }
 function buildDayWiseReportByUserType(result)
 {
+$('#mainajaximg').hide();
 	if(result == null || result.length == 0)
 	{
-		alert("NO DATA AVILABLE");
+		$('#retunMsg').html("NO DATA AVILABLE");
 		return;
 	}
 
