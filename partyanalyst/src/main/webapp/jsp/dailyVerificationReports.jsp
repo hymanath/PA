@@ -347,6 +347,7 @@ function buildUserBoothWiseCountDetails(result)
 <script>
 function getDayWiseReportByConstituencyIdAndUserType()
 {
+$('#dayWiseReportDiv1').html('');
 	var constituencyId = $("#constituencyId").val();
 	//var userTypeId = $("#userType").val();
 	var userTypeId = 1;
