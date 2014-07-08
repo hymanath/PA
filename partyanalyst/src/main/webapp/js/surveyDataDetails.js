@@ -306,6 +306,12 @@ function saveSurveyUserType()
 }
 
 
+function clearDiv(id){
+	if(confirm('Are you sure want to remove it? ')){
+		$('#newTabAssignDiv'+id+'').html('');
+	}
+}
+
 function AssignTab()
 {
 	$("#assignTabErrorDiv").html('');
@@ -316,38 +322,66 @@ function AssignTab()
 	var remarks = $.trim($("#remarks").val());
 	var date = $("#date").val();
 	var str = ''; 
+	
 	if(surveyUser == 0)
 	{
 		str +='Select User<br/>';
 	}
 	
-	if(tabNo.length == 0)
-	{
-		str +='Tab No is required <br/>';
+	var tabsArr = new Array();	
+	var dateArr = new Array();	
+	$('.newTabCls').each(function(){
+		var tabNo = $(this).val();
+		//console.log( "newTabCls  :"+value);		
+		if(tabNo.length == 0 && str.indexOf('Tab No is required') <0 )
+		{		  
+			str +='Tab No is required <br/>';
+		}	
+		else{
+			tabsArr.push(tabNo.trim());
+		}
+	});
+	
+	$('.datePickerCls ').each(function(){
+		var date = $(this).val();
+		//console.log("datePickerCls :  "+value);
+		if(date.length == 0 && str.indexOf('Date is required') <0)
+		{
+			str +='Date is required <br/>';
+		}
+		else{
+			dateArr.push(date.trim());
+		}
+	});
+
+	var length1 = dateArr.length;
+	var tabTatalArr = new Array();
+	console.log(length1);
+	for(var i = 0;i <length1;i++){
+	
+	
+	var obj = {		
+		tabNo :tabsArr[i],
+		date : dateArr[i]
 	}
-	/* if(remarks.length == 0)
-	{
-		str +='Remarks is required <br/>';
-	} */
-	if(date.length == 0)
-	{
-		str +='Date is required <br/>';
+	tabTatalArr.push(obj);
+	
 	}
+
 	if(str != '')
 	{
-	$("#assignTabErrorDiv").html(str).css("color","red");
-	$("#processingImgForTabAssign").hide();
-	return;
+		$("#assignTabErrorDiv").html(str).css("color","red");
+		$("#processingImgForTabAssign").hide();
+		return;
 	}
 	else
-$("#assignTabErrorDiv").html('');
+		$("#assignTabErrorDiv").html('');
+	
 	var jObj = {
-		surveyUserId : surveyUser,
-		tabNo :tabNo,
-		remarks : remarks,
-		date : date
-			
+	surveyUserId : surveyUser,
+	tabsArr : tabTatalArr
 	}
+	
 	$.ajax({
           type:'POST',
           url: 'assignTabAction.action',
@@ -374,7 +408,7 @@ if(id == "userTypeTab")
 	$(".errorCls").html('');
 	$("#createUserTypeDiv").show();
 	$("#userCreationDiv").hide();
-	$("#tabAssignDiv").hide();
+	$("#tabAssignDiv,#tabAssignUserDiv").hide();
 	$("#boothAssigniv").hide();
 	$("#userDeactivationDiv").hide();
 	$("#assignBoothToLeaderDiv").hide();
@@ -388,7 +422,7 @@ else if(id == "userCreationTab")
 	$(".errorCls").html('');
 	$("#createUserTypeDiv").hide();
 	$("#userCreationDiv").show();
-	$("#tabAssignDiv").hide();
+	$("#tabAssignDiv,#tabAssignUserDiv").hide();
 	$("#boothAssigniv").hide();
 	$("#userDeactivationDiv").hide();
 	$("#assignBoothToLeaderDiv").hide();
@@ -402,7 +436,7 @@ else if(id == "userCreationTab")
 	$(".errorCls").html('');
 	$("#createUserTypeDiv").hide();
 	$("#userCreationDiv").hide();
-	$("#tabAssignDiv").show();
+	$("#tabAssignDiv,#tabAssignUserDiv").show();
 	$("#boothAssigniv").hide();
 	$("#userDeactivationDiv").hide();
 	$("#assignBoothToLeaderDiv").hide();
@@ -410,6 +444,7 @@ else if(id == "userCreationTab")
 	$("#leaderNameDiv").hide();
 	buildDatePicker();
 	//getUserTypes('surveyUserTypeForSelect');
+	getSurveyConstituencyList('constitList');
 	}
 
 	else if(id == "boothAssignTab")
@@ -417,7 +452,7 @@ else if(id == "userCreationTab")
 	$(".errorCls").html('');
 	$("#createUserTypeDiv").hide();
 	$("#userCreationDiv").hide();
-	$("#tabAssignDiv").hide();
+	$("#tabAssignDiv,#tabAssignUserDiv").hide();
 	$("#boothAssigniv").show();
 	$("#userDeactivationDiv").hide();
 	$("#assignBoothToLeaderDiv").hide();
@@ -431,7 +466,7 @@ else if(id == "userCreationTab")
 	$(".errorCls").html('');
 	$("#createUserTypeDiv").hide();
 	$("#userCreationDiv").hide();
-	$("#tabAssignDiv").hide();
+	$("#tabAssignDiv,#tabAssignUserDiv").hide();
 	$("#boothAssigniv").hide();
 	$("#userDeactivationDiv").show();
 	$("#assignBoothToLeaderDiv").hide();
@@ -446,7 +481,7 @@ else if(id == "userCreationTab")
 	$(".errorCls").html('');
 	$("#createUserTypeDiv").hide();
 	$("#userCreationDiv").hide();
-	$("#tabAssignDiv").hide();
+	$("#tabAssignDiv,#tabAssignUserDiv").hide();
 	$("#boothAssigniv").hide();
 	$("#userDeactivationDiv").hide();
 	$("#assignBoothToLeaderDiv").show();
@@ -460,7 +495,7 @@ else if(id == "userCreationTab")
 	$(".errorCls").html('');
 	$("#createUserTypeDiv").hide();
 	$("#userCreationDiv").hide();
-	$("#tabAssignDiv").hide();
+	$("#tabAssignDiv,#tabAssignUserDiv").hide();
 	$("#boothAssigniv").hide();
 	$("#userDeactivationDiv").hide();
 	$("#assignBoothToLeaderDiv").hide();
@@ -1336,4 +1371,229 @@ function getComparisionReport()
 				console.log(result);
 		});
 
+}
+
+
+
+function getSurveyConstituencyList(divId){
+var jsObj = 
+	{
+		task : "assignLeader"
+	}
+
+	$.ajax({
+		type:'GET',
+		url: 'getSurveyConstituencyListAction.action',
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)},
+		}).done(function(result){
+				$('#'+divId+'').find('option').remove();
+				$('#'+divId+'').append('<option value="0"> Select Constituency </option>');
+				if(result != null && result.length>0){
+					for(var i in result){
+						$('#'+divId+'').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+					}
+				}
+		});
+}
+
+function getConstituencyLeadersList(divId,value){
+
+var jsObj = 
+	{
+		constiId:value,
+		task : "assignLeader"
+	}
+
+	$.ajax({
+		type:'GET',
+		url: 'getSurveyConstituencyLeadersListAction.action',
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)},
+		}).done(function(result){
+				$('#'+divId+'').find('option').remove();
+				$('#'+divId+'').append('<option value="0"> Select Constituency </option>');
+				if(result != null && result.length>0){
+					for(var i in result){
+						$('#'+divId+'').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+					}
+				}
+		});
+		
+}
+
+var avalTabsArr = new Array();
+var avalTabsArr1 = new Array();
+function usersListByTabsInfo(divId,value){
+
+
+var jsObj = 
+	{
+		leaderId:value,
+		task : "assignLeader"
+	}
+
+	$.ajax({
+		type:'GET',
+		url: 'releaseLeadersWithUserandTabsListAction.action',
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)},
+		}).done(function(result){
+				$("#"+divId+"").html('');
+				if(result !=null ){
+					
+					var str ='';
+					avalTabsArr = [];
+					for(var i in result.genericVOList){										
+						str +='<div class="row-fluid">';
+						str +='	<div class="span6">';
+						str +='	User Name <font class="requiredFont">*</font>';
+						str +='	<input type="hidden" placeholder="User Name ..." class="input-block-level newsTabCls" id="tabNo'+i+'" value="'+result.genericVOList[i].id+'" readOnly="true" style="cursor:text;">';
+						str +='	<input type="text" placeholder="User Name ..." class="input-block-level " value="'+result.genericVOList[i].name+'" readOnly="true" style="cursor:text;">';
+						str +='	</div>';
+						str +='	<div class="span6">';
+						str +='	Tab <font class="requiredFont">*</font>';
+						str +='	<select class="input-block-level tabsListCls" id="constituencyTabsList'+i+'" onchange="updateSelectBoxInfo(\'constituencyTabsList'+i+'\',this.value);" >';
+						str +='<option value="0"> Assign Tab </option>';
+						
+						for(var k in result.genericVOList[i].genericVOList){
+							str +='<option value="'+result.genericVOList[i].genericVOList[k].id+'">'+result.genericVOList[i].genericVOList[k].name+'</option>';
+						}
+						str +='</select>';
+						str +='	</div>	';									
+						str +='	</div>';
+						
+						}
+						
+							$("#"+divId+"").html(str);
+							
+					  for(var i in result.genericVOList){
+							var obj = {
+								id:result.genericVOList[0].genericVOList[i].id,
+								value: result.genericVOList[0].genericVOList[i].name
+							}
+							avalTabsArr.push(obj);
+							avalTabsArr1.push(obj);
+							
+						}
+						//console.log(avalTabsArr);
+						
+				}
+		});
+		
+		
+}
+
+function updateSelectBoxInfo(id,value){
+		var tempArr = avalTabsArr;
+		var selectdValue = $('#'+id+'').val();
+		$('.tabsListCls').css('border','1px solid #CCCCCC');
+		if(selectdValue != 0){
+			$('.tabsListCls').each(function(){			
+				var attrId = $(this).attr('id');
+				
+				if(attrId != id){
+				
+				var thisValue = $('#'+attrId+'').val();				
+					if(thisValue == value ){					
+						$('#'+attrId+'').find('option').remove();
+						$('#'+attrId+'').append('<option value="0"> Assign Tab </option>');
+						//console.log(avalTabsArr1);
+						for(var i in avalTabsArr1){
+						if(avalTabsArr1[i].id != value){
+							$('#'+attrId+'').append('<option value="'+avalTabsArr1[i].id+'">'+avalTabsArr1[i].value+'</option>');
+						}
+					}					
+					$('#'+attrId+'').css('border','1px solid #FF0020');
+					}
+				}
+				
+			});
+			
+			removeItem(selectdValue, tempArr);			
+		}
+
+		if(tempArr.length >0){
+			$('.tabsListCls').each(function(){
+				var attrId = $(this).attr('id');
+				var selectdVal1 = $('#'+attrId+'').val();
+				
+				if(attrId != id && selectdVal1 == 0){
+				$('#'+attrId+'').find('option').remove();
+				$('#'+attrId+'').append('<option value="0"> Assign Tab </option>');
+					for(var i in tempArr){
+						if(tempArr[i].id != value){
+							$('#'+attrId+'').append('<option value="'+tempArr[i].id+'">'+tempArr[i].value+'</option>');
+						}
+					}				
+				}
+			
+			});
+		}
+		
+}
+
+function removeItem(item,array){
+
+    for(var i in array){
+        if(array[i].id==item){
+            array.splice(i,1);
+            break;
+            }
+    }
+}
+
+function assignTabsToLeaderUsers(){
+var candiArr = new Array();
+var candiTabArr = new Array();
+var finalArr = new Array();
+var flag = true;
+	$('#assignTabUserErrorDiv').html('');
+	$('.newsTabCls').each(function(){
+		var value = $(this).val();	
+		candiArr.push(value);
+	});
+	
+	$('.tabsListCls').each(function(){
+		var value = $(this).val();	
+		if(value == 0){
+			$('#assignTabUserErrorDiv').html('Please select Tab No.');
+			flag = false;
+		}
+		candiTabArr.push(value);
+	});
+	
+	var length = candiArr.length;
+	
+	for(var i = 0 ;i<length ;i++){
+	var obj = {
+			candId:candiArr[i],
+			tabId : candiTabArr[i]
+			}
+	finalArr.push(obj);
+	}
+	
+	console.log(finalArr);
+	
+	var jsObj = 
+	{
+		userTabsArr:finalArr,
+		task : "assignTabsForUsers"
+	}
+if(flag){
+		$.ajax({
+			type:'GET',
+			url: 'assignTabsForUsersAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		}).done(function(result){
+				console.log(result);
+				if(result != null && result.message.indexOf('success')<0){
+						$('#assignTabUserErrorDiv').html('<span style="color:#57AF57;font-weight:bold;"> Tabs assigned successfully...</span>');
+				}
+		});
+		
+}
+	
+		
 }
