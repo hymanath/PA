@@ -48,11 +48,13 @@
 										
 										<div class="span5">
 											Select Constituency <font class="requiredFont">*</font>
-												<s:select theme="simple"  name="constituency" id="constituencyId"  headerKey="0" headerValue="Select Constituency" list="constituenciesList" listKey="id" listValue="name" />
+												<s:select theme="simple"  name="constituency" id="constituencyId"  headerKey="0" headerValue="Select Constituency" list="constituenciesList" listKey="id" listValue="name" onChange="getBoothsDetailsByConstituencyId(this.value)"/>
 										</div>
 										<div class="span3">
-											User Type <font class="requiredFont">*</font>
-											<select class="input-block-level" id = "userType"> <option value="0">Select User Type</option></select>
+											<!--User Type <font class="requiredFont">*</font>
+											<select class="input-block-level" id = "userType"> <option value="0">Select User Type</option></select>-->
+											Select Booth <font class="requiredFont">*</font>
+											<select class="input-block-level" id = "boothId" multiple> <option value="0">Select Booth</option></select>
 										</div>
 										<div class="span2">
 											From Date <font class="requiredFont">*</font>
@@ -346,10 +348,12 @@ function buildUserBoothWiseCountDetails(result)
 function getDayWiseReportByConstituencyIdAndUserType()
 {
 	var constituencyId = $("#constituencyId").val();
-	var userTypeId = $("#userType").val();
+	//var userTypeId = $("#userType").val();
+	var userTypeId = 1;
 	var startDate = $("#fromDate").val();
 	var endDate = $("#toDate").val();
 	var heading = $( "#userType option:selected" ).text();
+
 	
 	var jObj =
 	{
@@ -357,8 +361,11 @@ function getDayWiseReportByConstituencyIdAndUserType()
       userTypeId:userTypeId,
 	  startDate:startDate,
 	  endDate:endDate,
-	  heading:heading
-	};
+	  heading:heading,
+      boothIds:[]
+ 	};
+
+	 jObj.boothIds= $('#boothId').val();
 
 	  $.ajax({
 			type:'GET',
@@ -409,6 +416,32 @@ function buildDayWiseReportByUserType(result)
 
  $('#dayWiseReportDiv1').html(str);
 
+}
+
+function getBoothsDetailsByConstituencyId(constituencyId)
+{
+	var jObj =
+	{
+	  constituencyId:constituencyId     
+	};
+
+	 $.ajax({
+			type:'GET',
+			url: 'getBoothDetailsByConstituencyAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){				
+				//buildDayWiseReportByUserType(result);		
+
+				$('#boothId').find('option').remove();
+
+				$.each(result,function(index,value){
+					$('#boothId').append('<option value="'+value.boothId+'">Booth - '+value.partNo+'</option>');
+				});
+		});
+	
+	
+	
 }
 </script>
   </body>

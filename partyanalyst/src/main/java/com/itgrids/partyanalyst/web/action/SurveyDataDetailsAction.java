@@ -325,7 +325,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			{
 				userIds.add(Long.valueOf(jarray.get(i).toString()));
 			}
-			resultStatus = surveyDataDetailsService.saveServeyUserRelationDetails(jObj.getLong("userTypeId"),userIds,jObj.getLong("leaderId"),jObj.getLong("constituencyId"));
+			resultStatus = surveyDataDetailsService.saveServeyUserRelationDetails(jObj.getLong("userTypeId"),userIds,jObj.getLong("leaderId"));
 		} 
 		catch (Exception e)
 		{
@@ -451,11 +451,23 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			String endDate = jObj.getString("endDate");
 			Long userTypeId = jObj.getLong("userTypeId");
 			
+			 JSONArray boothDetails = jObj.getJSONArray("boothIds");
+			 
+			
+			 List<Long> boothIds = new ArrayList<Long>();
+			 
+			for(int i = 0 ; i < boothDetails.length() ; i++)
+			{
+				boothIds.add(Long.valueOf(boothDetails.get(i).toString()));
+			}
+			
+			
+			
 			dayWiseReportList = surveyDataDetailsService
 					.getDayWiseReportByConstituencyIdAndUserType(
 							jObj
 							.getLong("constituencyId"),  startDate, endDate,
-							 userTypeId);
+							 userTypeId,boothIds);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -504,7 +516,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		try {
 			
 			jObj = new JSONObject(getTask());		
-			returnList = surveyDataDetailsService.releaseLeadersWithUser(jObj.getLong("leaderId"));
+			returnList = surveyDataDetailsService.releaseLeadersWithUser(jObj.getLong("leaderId"),jObj.getLong("userType"));
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in releaseLeadersWithUser in SurveyDataDetailsAction", e);
@@ -525,7 +537,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			{
 				userIds.add(Long.valueOf(jarray.get(i).toString()));
 			}
-			resultStatus = surveyDataDetailsService.updateServeyUserRelationDetails(jObj.getLong("userTypeId"),userIds,jObj.getLong("leaderId"),jObj.getLong("constituencyId"));
+			resultStatus = surveyDataDetailsService.updateServeyUserRelationDetails(jObj.getLong("userTypeId"),userIds,jObj.getLong("leaderId"));
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in updateServeyUserRelationDetails in SurveyDataDetailsAction", e);

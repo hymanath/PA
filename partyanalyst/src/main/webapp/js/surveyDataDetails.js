@@ -546,17 +546,17 @@ function assignLeaderToUser()
 {
 	$('#processingImgForAssignLeader').show();
 	var	typeId =  $("#typeId").val();
-	var	constituencyLeaderId = $("#constituencyLeaderId").val();
+	//var	constituencyLeaderId = $("#constituencyLeaderId").val();
 	var	leaderId =  $("#leaderId").val();
 	var	userLeaderId =  $('#userLeaderId').val();
 	var userIds = new Array();
 	userIds.push(userLeaderId);
-	if(constituencyLeaderId == 0)
+	/* if(constituencyLeaderId == 0)
 	{
 		$("#assignLeaderErrorDiv").html("Please Select Constituency").css("color","red");
 		$('#processingImgForAssignLeader').hide();
 		return;
-	}
+	} */
 	if(typeId == 0)
 	{
 		$("#assignLeaderErrorDiv").html("Please Select the Type").css("color","red");
@@ -577,7 +577,6 @@ function assignLeaderToUser()
 	}
 	var jsObj = 
 	{
-		constituencyId : constituencyLeaderId,
 		userTypeId :  typeId,
 		leaderId : leaderId,
 		userIds :  userIds,
@@ -601,6 +600,68 @@ function assignLeaderToUser()
 				$("#assignLeaderErrorDiv").html('Error Occured,Try again....').css("color","red");
 			}		
 			$('#processingImgForAssignLeader').hide();
+		});
+
+}
+
+function assignInhouseVerfiersToLeader()
+{
+	$('#processingImgForInhouseLeader').show();
+	var	typeId =  $("#inHousetypeId").val();
+	//var	constituencyLeaderId = 232;
+	var	leaderId =  $("#inHouseleaderId").val();
+	var	userLeaderId =  $('#inHouseLeaderId').val();
+	var userIds = new Array();
+	userIds.push(userLeaderId);
+	/* if(constituencyLeaderId == 0)
+	{
+		$("#inhouseAssignErrorDiv").html("Please Select Constituency").css("color","red");
+		$('#processingImgForInhouseLeader').hide();
+		return;
+	} */
+	if(typeId == 0)
+	{
+		$("#inhouseAssignErrorDiv").html("Please Select the Type").css("color","red");
+		$('#processingImgForInhouseLeader').hide();
+		return;
+	}
+	if(leaderId == 0)
+	{
+		$("#inhouseAssignErrorDiv").html("Please Select Leader").css("color","red");
+		$('#processingImgForInhouseLeader').hide();
+		return;
+	}
+	if(userLeaderId == 0)
+	{
+		$("#inhouseAssignErrorDiv").html("Please Select User").css("color","red");
+		$('#processingImgForInhouseLeader').hide();
+		return;
+	}
+	var jsObj = 
+	{
+		userTypeId :  typeId,
+		leaderId : leaderId,
+		userIds :  userIds,
+		task : "assignLeader"
+	}
+	
+	$.ajax({
+		type:'GET',
+		url: 'saveServeyUserRelationDetailsAction.action',
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)},
+		}).done(function(result){
+			if(result.resultCode == 0) 
+			{
+				$("#inhouseAssignErrorDiv").html('In House Verfier Assigned successfully.').css("color","green");
+				setTimeout(function(){$('#inhouseAssignErrorDiv').html('');}, 3000);				
+				$('#userLeaderId,#leaderId,#typeId,#constituencyLeaderId').val(0);
+			}
+			else
+			{
+				$("#inhouseAssignErrorDiv").html('Error Occured,Try again....').css("color","red");
+			}		
+			$('#processingImgForInhouseLeader').hide();
 		});
 
 }
@@ -900,17 +961,17 @@ function updateLeaderUserReleation()
 {
 	$('#processingImgForReleaseLeader').show();
 	var	typeId =  $("#typeIdForRelease").val();
-	var	constituencyLeaderId = $("#constituencyLeaderIdForRelease").val();
+	//var	constituencyLeaderId = $("#constituencyLeaderIdForRelease").val();
 	var	leaderId =  $("#leaderIdForRelease").val();
 	var	userLeaderId =  $('#userLeaderIdForRelease').val();
 	var userIds = new Array();
 	userIds.push(userLeaderId);
-	if(constituencyLeaderId == 0)
+	/* if(constituencyLeaderId == 0)
 	{
 		$("#assignLeaderErrorDivForRelease").html("Please Select Constituency").css("color","red");
 		$('#processingImgForReleaseLeader').hide();
 		return;
-	}
+	} */
 	if(typeId == 0)
 	{
 		$("#assignLeaderErrorDivForRelease").html("Please Select the Type").css("color","red");
@@ -931,7 +992,6 @@ function updateLeaderUserReleation()
 	}
 	var jsObj = 
 	{
-		constituencyId : constituencyLeaderId,
 		userTypeId :  typeId,
 		leaderId : leaderId,
 		userIds :  userIds,
@@ -955,6 +1015,69 @@ function updateLeaderUserReleation()
 				$("#assignLeaderErrorDivForRelease").html('Error Occured,Try again....').css("color","red");
 			}	
 			$('#processingImgForReleaseLeader').hide();			
+		});
+}
+
+
+function updateLeaderInHouseReleation()
+{
+	$('#processingImgForreleaseInhouseLeader').show();
+	var	typeId =  $("#inHouseReleasetypeId").val();
+	//var	constituencyLeaderId =232;
+	var	leaderId =  $("#inHouseReleaseleaderId").val();
+	var	userLeaderId =  $('#inHouseReleaseLeaderId').val();
+	var userIds = new Array();
+	userIds.push(userLeaderId);
+	/* if(constituencyLeaderId == 0)
+	{
+		$("#inhouseReleaseErrorDiv").html("Please Select Constituency").css("color","red");
+		$('#processingImgForreleaseInhouseLeader').hide();
+		return;
+	} */
+	if(typeId == 0)
+	{
+		$("#inhouseReleaseErrorDiv").html("Please Select the Type").css("color","red");
+		$('#processingImgForreleaseInhouseLeader').hide();
+		return;
+	}
+	if(leaderId == 0)
+	{
+		$("#inhouseReleaseErrorDiv").html("Please Select Leader").css("color","red");
+		$('#processingImgForreleaseInhouseLeader').hide();
+		return;
+	}
+	if(userLeaderId == 0)
+	{
+		$("#inhouseReleaseErrorDiv").html("Please Select User").css("color","red");
+		$('#processingImgForreleaseInhouseLeader').hide();
+		return;
+	}
+	var jsObj = 
+	{
+		//constituencyId : constituencyLeaderId,
+		userTypeId :  typeId,
+		leaderId : leaderId,
+		userIds :  userIds,
+		task : "assignLeader"
+	}
+	
+	$.ajax({
+		type:'GET',
+		url: 'updateServeyUserRelationDetailsAction.action',
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)},
+		}).done(function(result){
+			if(result.resultCode == 0) 
+			{
+				$("#inhouseReleaseErrorDiv").html('Users Released successfully.').css("color","green");
+				setTimeout(function(){$('#inhouseReleaseErrorDiv').html('');}, 3000);				
+				$('#userLeaderId,#leaderId,#typeId,#constituencyLeaderId').val(0);
+			}
+			else
+			{
+				$("#inhouseReleaseErrorDiv").html('Error Occured,Try again....').css("color","red");
+			}	
+			$('#processingImgForreleaseInhouseLeader').hide();			
 		});
 }
 
