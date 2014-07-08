@@ -348,7 +348,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	 * @param constituencyId
 	 * @return resultStatus
 	 */
-	public ResultStatus saveServeyUserRelationDetails(Long userTypeId,List<Long> surveyUserIds,Long leaderId,Long constituencyId)
+	public ResultStatus saveServeyUserRelationDetails(Long userTypeId,List<Long> surveyUserIds,Long leaderId)
 	{
 		LOG.info("Entered into saveServeyUserRelationDetails service in SurveyDataDetailsService");
 		ResultStatus resultStatus = new ResultStatus();
@@ -362,7 +362,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					surveyUserRelation.setSurveyUserType(surveyUserTypeDAO.get(userTypeId));
 					surveyUserRelation.setSurveyUser(surveyUserDAO.get(surveyUserId));
 					surveyUserRelation.setSurveyLeader(surveyUserDAO.get(leaderId));
-					surveyUserRelation.setConstituency(constituencyDAO.get(constituencyId));
+					//surveyUserRelation.setConstituency(constituencyDAO.get(constituencyId));
 					surveyUserRelation.setActiveStatus("Y");
 					SurveyUserRelation result = surveyUserRelationDAO.save(surveyUserRelation);
 					if(result != null)
@@ -1515,12 +1515,12 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		return resultStatus;
 	}*/
 	
-	public List<GenericVO> releaseLeadersWithUser(Long leaderId)
+	public List<GenericVO> releaseLeadersWithUser(Long leaderId,Long userType)
 	{
 		List<GenericVO> returnList = null;
 		try
 		{
-			List<Object[]> result = surveyUserRelationDAO.getUserForAssignedUser(leaderId);
+			List<Object[]> result = surveyUserRelationDAO.getUserForAssignedUser(leaderId,userType);
 			if(result != null && result.size() > 0)
 			{
 				returnList = new ArrayList<GenericVO>();
@@ -1529,8 +1529,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					GenericVO genericVO = new GenericVO();
 					genericVO.setId(parms[0] != null ? (Long)parms[0] : 0l);
 					genericVO.setName(parms[1] != null ? parms[1].toString() : "");
-					genericVO.setRank(parms[2] != null ? (Long)parms[2] : 0l);
-					genericVO.setDesc(parms[3] != null ? parms[3].toString() : "");
+					/*genericVO.setRank(parms[2] != null ? (Long)parms[2] : 0l);
+					genericVO.setDesc(parms[3] != null ? parms[3].toString() : "");*/
 					returnList.add(genericVO);
 				}
 				
@@ -1552,7 +1552,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	 * @param constituencyId
 	 * @return resultStatus
 	 */
-	public ResultStatus updateServeyUserRelationDetails(Long userTypeId,List<Long> surveyUserIds,Long leaderId,Long constituencyId)
+	public ResultStatus updateServeyUserRelationDetails(Long userTypeId,List<Long> surveyUserIds,Long leaderId)
 	{
 		LOG.info("Entered into saveServeyUserRelationDetails service in SurveyDataDetailsService");
 		ResultStatus resultStatus = new ResultStatus();
@@ -1560,7 +1560,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		{
 			if(surveyUserIds != null && surveyUserIds.size() > 0)
 			{
-				int count = surveyUserRelationDAO.updateUserLeaderRelations(userTypeId,surveyUserIds, leaderId, constituencyId);
+				int count = surveyUserRelationDAO.updateUserLeaderRelations(userTypeId,surveyUserIds, leaderId);
 				if(count > 0)
 				{
 					resultStatus.setResultCode(0);
@@ -1762,7 +1762,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			resultStatus.setMessage("Exception");
 		}
 		return resultStatus;
-	}
+}
 	
 	
 	public List<SurveyReportVO> getDayWiseReportByConstituencyIdAndUserType(

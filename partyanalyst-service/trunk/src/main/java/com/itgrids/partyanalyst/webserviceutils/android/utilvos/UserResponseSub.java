@@ -60,6 +60,8 @@ public class UserResponseSub  extends UserResponseVO{
 	public void setBoothIds(List<String> boothIds) {
 		this.boothIds = boothIds;
 	}
+
+	
 	public List<BoothVoterVO> getVoterIds() {
 		return voterIds;
 	}
