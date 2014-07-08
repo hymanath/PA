@@ -1412,7 +1412,7 @@ var jsObj =
 		data: {task:JSON.stringify(jsObj)},
 		}).done(function(result){
 				$('#'+divId+'').find('option').remove();
-				$('#'+divId+'').append('<option value="0"> Select Constituency </option>');
+				$('#'+divId+'').append('<option value="0"> Select Leader </option>');
 				if(result != null && result.length>0){
 					for(var i in result){
 						$('#'+divId+'').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
@@ -1547,18 +1547,26 @@ function assignTabsToLeaderUsers(){
 var candiArr = new Array();
 var candiTabArr = new Array();
 var finalArr = new Array();
-var flag = true;
+var constiId = $('#constitList').val();
+var leadrId = $('#constituencyLeadrList').val();
+var str ='';
+	if(constiId == 0){
+		str +='Please select Constituency.</br>';
+	}
+	if(leadrId == 0){
+		str +='Please select Leader.</br>';
+	}
 	$('#assignTabUserErrorDiv').html('');
 	$('.newsTabCls').each(function(){
 		var value = $(this).val();	
 		candiArr.push(value);
 	});
 	
+	
 	$('.tabsListCls').each(function(){
 		var value = $(this).val();	
-		if(value == 0){
-			$('#assignTabUserErrorDiv').html('Please select Tab No.');
-			flag = false;
+		if(value == 0 && str.indexOf('Please Assign Tab .') <0){
+			str +='Please Assign Tab .</br>';
 		}
 		candiTabArr.push(value);
 	});
@@ -1580,7 +1588,10 @@ var flag = true;
 		userTabsArr:finalArr,
 		task : "assignTabsForUsers"
 	}
-if(flag){
+if(str.length>0){
+$('#assignTabUserErrorDiv').html(str);
+}
+else{
 		$.ajax({
 			type:'GET',
 			url: 'assignTabsForUsersAction.action',
