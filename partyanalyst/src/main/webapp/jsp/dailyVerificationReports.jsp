@@ -76,6 +76,7 @@
 						<!--	<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getDayWiseReport()">SUBMIT</button></div>-->
 						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getDayWiseReportByConstituencyIdAndUserType()">SUBMIT</button></div>
 						
+                             <div id="dayWiseReportDiv1"></div>
 							<img src='images/Loading-data.gif' class="offset5"  id="mainajaximg" style="width:70px;height:60px;display:none;"/>
 					</div>
 				</div>
@@ -370,6 +371,11 @@ function getDayWiseReportByConstituencyIdAndUserType()
 }
 function buildDayWiseReportByUserType(result)
 {
+	if(result == null || result.length == 0)
+	{
+		alert("NO DATA AVILABLE");
+		return;
+	}
 
 	 var str = '';
 
@@ -393,7 +399,7 @@ function buildDayWiseReportByUserType(result)
 	   str+='<td>'+value.userName+'</td>';
    	   str+='<td>'+value.partNo+'</td>';
 	   str+='<td>'+value.totalVoters+'</td>';
-	     $.each(result,function(index1,value1){
+	     $.each(value.subList,function(index1,value1){
 			   str+='<td>'+value1.count+'</td>';
 		 });
     str+='</tr>';
@@ -401,7 +407,7 @@ function buildDayWiseReportByUserType(result)
    str+='</tbody>';
    str+='</table>';
 
- $('#dayWiseReportDiv').html(str);
+ $('#dayWiseReportDiv1').html(str);
 
 }
 </script>
