@@ -532,7 +532,7 @@
 										</div>
 										<div class="span6">
 											Select  Leader<font class="requiredFont">*</font>
-											<select class="input-block-level" id="inHouseReleaseleaderId" onChange="getRemeaningSurveyUsersByUserType('inHouseReleaseLeaderId',2);"> <option value="0">Select Leader</option></select>
+											<select class="input-block-level" id="inHouseReleaseleaderId" onChange="getInHouseVerfiersByUserTypeForLeaderRelease('inHouseReleaseLeaderId',2);"> <option value="0">Select Leader</option></select>
 										</div>
 									</div>	
 									<div class="row-fluid">
@@ -563,121 +563,6 @@
 		<div class="row" id="leaderNameDiv"></div>
 		
 	</div>
-<script>
-function getDayWiseReport()
-{
-	var jObj =
-	{
-	 constituencyId:232,
-     userTypeId:1,
-	 startDate:"07/01/2014",
-	 endDate:"07/04/2014"	
-
-	}
-	$.ajax({
-			type:'GET',
-			url: 'getDayWisereportDetailsByConstituencyId.action',
-			dataType: 'json',
-			data: {task:JSON.stringify(jObj)},
-		  }).done(function(result){
-				buildDayWiseReport(result);
-		});
-}
-function buildDayWiseReport(result)
-{
-  var str = '';
-
-  str+='<table border="1">';
-  str+='<thead>';
-   str+='<tr>';
-    str+='<th>UserName</th>';
-	$.each(result[0].subList,function(index,value){
-      str+='<th>'+value.surveyDate+'</th>';
-	});
-   str+='</tr>';
-  str+='</thead>';
-  str+='<tbody>';
-  
-    $.each(result,function(index,value){
-		 str+='<tr>';
-		 str+='<td>'+value.userName+'</td>';
-		   $.each(value.subList,function(index1,value1){
-			    str+='<td><a href="javascript:{getDayWiseReportDetailsOfUser('+value.userid+')}">'+value1.count+'</a></td>';
-		   });
-		str+='</tr>';
-	});
-  
-  str+='</tbody>';
-  str+='</table>';
-
-  $('#dayWiseReportDiv').html(str);
-}
-function getDayWiseReportDetailsOfUser(userId)
-{
-	var jObj =
-	{
-	 userId:userId,
-	 startDate:"07/01/2014",
-	 endDate:"07/04/2014"
-	}
-	$.ajax({
-			type:'GET',
-			url: 'getBoothWiseUserSamplesDetailsByDates.action',
-			dataType: 'json',
-			data: {task:JSON.stringify(jObj)},
-		  }).done(function(result){
-				buildUserBoothWiseCountDetails(result);
-		});
-}
-function buildUserBoothWiseCountDetails(result)
-{
-  var str ='';
-
-  str+='<table border="1">';
-   str+='<thead>';
-    str+='<tr>';
-	  str+='<th>Booth No</th>';
-	  str+='<th>Total</th>';
-	  str+='<th>Completed</th>';
-	str+='</tr>';
-   str+='</thead>';	  
-   str+='<tbody>';
-    $.each(result,function(index,value){
-		str+='<tr>';
-		str+='<td>'+value.partNo+'</td>';
-		str+='<td>'+value.totalVoters+'</td>';
-		str+='<td>'+value.count+'</td>';
-		str+='</tr>';
-	});
-   str+='</tbody>';
-  str+='</table>';
-
-  $('#boothWiseCountDivId').html(str);
-  $('#boothWiseCountDivId').dialog();
-}
-
-$(".highlight").click(function()
-{
-	$(".highlight").removeClass("selected");
-	$(this).addClass("selected");
-})
-
-function getComparisionReport()
-{
-	var jObj =
-	{
-	 boothId:383457
-	}
-	$.ajax({
-			type:'GET',
-			url: 'getReportForVerificationByBoothId.action',
-			dataType: 'json',
-			data: {task:JSON.stringify(jObj)},
-		  }).done(function(result){
-				console.log(result);
-		});
-
-}
-</script>
+<!-- USE JS FILE FOR FUNCTIONS -->
 </body>
 </html>
