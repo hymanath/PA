@@ -47,6 +47,8 @@ public interface ISurveyDataDetailsService
 	public List<SurveyReportVO> getDayWiseReportByConstituencyIdAndUserType(
 			Long constituencyId, String startDate, String endDate,
 			Long userTypeId);
-
-
+	
+	public List<SelectOptionVO> getAllAssignedConstituency();
+	public List<SurveyReportVO> getAllAssignedConstituenciesUsers(Long userTypeId);	
+	public ResultStatus assignConstituencyForAUser(Long userId,Long constituencyId);
 }
