@@ -60,6 +60,12 @@
 
 
 });
+
+$(".highlight").live("click",function()
+{
+	$(".highlight").removeClass("selected");
+	$(this).addClass("selected");
+})
   </script>
 	<div class="container">
 		<div class="row">
