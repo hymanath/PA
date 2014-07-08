@@ -99,31 +99,68 @@ function saveSurveyUser()
 	var	firstName =  $.trim($('#firstName').val());
 	var	lastName =   $.trim($('#lastName').val());
 	var	userName =   $.trim($('#userName').val());
-	var	password =  $.trim($('#password').val());
+	var	password =   $.trim($('#password').val());
 	var address =   $.trim($('#address').val());
 	var	mobileNo =   $.trim($('#mobileNumber').val());
 	var	userType =  $('#userType').val();
 	var retypePassword =  $.trim($('#retypePassword').val());
+	var alphaExp = /^[a-zA-Z]+$/;
 	
 	if(firstName.length == 0)
 	{
-		$("#createUserErrorDiv").html("FirstName is required").css("color","red");
+		$("#createUserErrorDiv").html("First Name is required").css("color","red");
 		$('#processingImgForUserCreation').hide();
 		return;
+	}		
+	if(firstName.length > 0) {
+	if(!alphaExp.test(firstName))
+	 {
+		$("#createUserErrorDiv").html("First Name should not be Numeric").css("color","red");
+		$('#processingImgForUserCreation').hide();
+		return;
+	 }
+	 else if(firstName.length<4 || firstName.length>10)
+	 {
+		$("#createUserErrorDiv").html("First Name must be Minimum of 4 Characters and Maximum of 10 Characters").css("color","red");
+		$('#processingImgForUserCreation').hide();
+		return;
+	 }
+	  
 	}
 	if(lastName.length == 0)
 	{
-		$("#createUserErrorDiv").html("LastName is required").css("color","red");
+		$("#createUserErrorDiv").html("Last Name is required").css("color","red");
 		$('#processingImgForUserCreation').hide();
-		return;
+		return;				
 	}
-	if(userName.length == 0)
+	
+	if(lastName.length > 0){ 
+	if(!alphaExp.test(lastName))
 	{
-		$("#createUserErrorDiv").html("UserName is required").css("color","red");
+		$("#createUserErrorDiv").html("last Name should not be Numeric").css("color","red");
 		$('#processingImgForUserCreation').hide();
 		return;
 	}
 	
+	else if(lastName.length <2 || lastName.length>10)
+	{
+		$("#createUserErrorDiv").html("Last Name must be Minimum of 2 Characters and Maximum of 10 Characters").css("color","red");
+		$('#processingImgForUserCreation').hide();
+		return;
+	}
+	}
+	if(userName.length == 0)
+	{
+		$("#createUserErrorDiv").html("User Name is required").css("color","red");
+		$('#processingImgForUserCreation').hide();
+		return;
+	}
+	if(userName.length > 10 || userName.length<4)
+	{
+		$("#createUserErrorDiv").html("User Name must be Minimum of 4 Characters and Maximum of 10 Characters").css("color","red");
+		$('#processingImgForUserCreation').hide();
+		return;
+	}
 	if(address.length == 0)
 	{
 		$("#createUserErrorDiv").html("Address is required").css("color","red");
@@ -131,9 +168,22 @@ function saveSurveyUser()
 		return;
 	
 	}
+	if(address.length > 0 && address.length<10)
+	{
+		$("#createUserErrorDiv").html("Address must be Minimum Of 10 Characters").css("color","red");
+		$('#processingImgForUserCreation').hide();
+		return;
+	
+	}
 	if(password.length == 0)
 	{
 		$("#createUserErrorDiv").html("Password is required").css("color","red");
+		$('#processingImgForUserCreation').hide();
+		return;
+	}
+	if(password.length > 0 && password.length < 6)
+	{
+		$("#createUserErrorDiv").html("Password must be Minimum Of 6 Characters").css("color","red");
 		$('#processingImgForUserCreation').hide();
 		return;
 	}
@@ -155,12 +205,13 @@ function saveSurveyUser()
 		$('#processingImgForUserCreation').hide();
 		return;
 	}
-	else if(isNaN(mobileNo))
+	else if(isNaN(mobileNo) || mobileNo.length != 10)
 	{
-		$("#createUserErrorDiv").html("Mobile Number Should be numeric").css("color","red");
+		$("#createUserErrorDiv").html("Enter Valid Mobile Number").css("color","red");
 		$('#processingImgForUserCreation').hide();
 		return;
 	}
+	
 	if(userType == 0)
 	{
 		$("#createUserErrorDiv").html("UserType is required").css("color","red");
@@ -208,17 +259,19 @@ function saveSurveyUserType()
 	$('#processingImgForUserType').show();
 	var description = $.trim($('#userTypeDescription').val());
 	var userTypeName = $.trim($('#userTypeName').val());
+	var alphaExp = /^[a-zA-Z]+$/;
 	if(userTypeName.length == 0)
 	{
 		$("#createUserTypeErrorDiv").html("Please Enter User Type ").css("color","red");
 		$('#processingImgForUserType').hide();
 		return;
 	}
-	/* if(description.length == 0)
+	if(!alphaExp.test(userTypeName))
 	{
-		$("#createUserTypeErrorDiv").html("Please Enter User Type Description").css("color","red");
+		$("#createUserTypeErrorDiv").html("Please Enter Valid User Type ").css("color","red");
+		$('#processingImgForUserType').hide();
 		return;
-	} */
+	} 
 	
 	var jsObj = 
 	{
@@ -238,6 +291,7 @@ function saveSurveyUserType()
 				$("#createUserTypeErrorDiv").html('User Type created successfully.').css("color","green");
 				setTimeout(function(){$('#createUserTypeErrorDiv').html('');}, 3000);
 				$('#userTypeDescription').val('');
+				$('#userTypeName').val('');
 			}
 			else if(result.resultCode == 4)
 			{
@@ -355,7 +409,7 @@ else if(id == "userCreationTab")
 	$("#verificationDiv").hide();
 	$("#leaderNameDiv").hide();
 	buildDatePicker();
-	getUserTypes('surveyUserTypeForSelect');
+	//getUserTypes('surveyUserTypeForSelect');
 	}
 
 	else if(id == "boothAssignTab")
@@ -739,7 +793,7 @@ function buildBoothDetails(result)
 {
 	var str = '';
 
-	str+='<div class="span12">';
+	str+='<div class="span12 offset1">';
     str+='<br/><br/>';
 	 $.each(result,function(index,value){
 		 if(value.userHas == false)
@@ -753,8 +807,27 @@ function buildBoothDetails(result)
 	$('#boothsDtlsId').html(str);
 }
 function saveUserAssignedBoothsDetails()
-{
+{	
+	var boothAssignUserType= $("#boothAssignUserType").val();
+	var  surveyUserId = $('#userId').val();
+	var constituencyId = $('#constituencyId').val();
+	if(boothAssignUserType == 0)
+	{
+		$("#assignBoothErrorDiv").html("Please Select User Type").css("color","red");
+		return;	
+	}
+	if(surveyUserId == 0)
+	{
+		$("#assignBoothErrorDiv").html("Please Select User Name").css("color","red");
+		return;	
+	}
+	if(constituencyId == 0)
+	{
+		$("#assignBoothErrorDiv").html("Please Select Constituency").css("color","red");
+		return;	
+	}
 	$('#processingImgForBoothAssign').show();
+	
 	var jObj =
 	{
 	  boothIds:[],
@@ -768,14 +841,18 @@ function saveUserAssignedBoothsDetails()
 	else
 		jObj.remainingDataBooths = 'false';
 
-	console.log(jObj);
-
-
 	$('.boothChckbox').each(function(index,value){
 		if(this.checked)
 			jObj.boothIds.push(this.value);
 	}); 
-	
+
+	if(jObj.boothIds.length == 0)
+	{
+		$("#assignBoothErrorDiv").html("Please Select Booth(s)").css("color","red");
+		 $('html, body').animate({ scrollTop: $("#assignBoothErrorDiv").offset().top }, "slow");
+		return;	
+	}
+		
 	$("#assignboothimg").css("display","inline-block");
 	$.ajax({
 			type:'GET',
@@ -783,13 +860,13 @@ function saveUserAssignedBoothsDetails()
 			dataType: 'json',
 			data: {task:JSON.stringify(jObj)},
 		  }).done(function(result){
-$("#assignboothimg").css("display","none");
-if(result.resultCode == 0)
-{
-$("#assignBoothErrorDiv").html("Booth assigned successfully...").css("color","green");
- $('html, body').animate({ scrollTop: $("#assignBoothErrorDiv").offset().top }, "slow");
-}
-		});
+				$("#assignboothimg").css("display","none");
+				if(result.resultCode == 0)
+				{
+				$("#assignBoothErrorDiv").html("Booth assigned successfully...").css("color","green");
+				 $('html, body').animate({ scrollTop: $("#assignBoothErrorDiv").offset().top }, "slow");
+				}
+			});
 
 }
 
@@ -886,4 +963,111 @@ function redicttoVerificationPage()
 
 	 window.open('dailyVerificationReportsAction.action','_blank');
 	
+}
+
+function getAssignedConstituencyUsers(divId,value)
+{
+	
+	var jsObj =
+	{
+	userTypeId :value,
+	task : "getAssignedUsers"
+	}
+	$.ajax({
+	type:'GET',
+	url: 'getAssignedConstituencyUsersAction.action',
+	dataType: 'json',
+	data: {task:JSON.stringify(jsObj)},
+	}).done(function(result){
+	$('#'+divId+'').find('option:not(:first)').remove();
+	if(result != null && result.length > 0)
+	{
+	for(var i in result)
+	{
+		$('#'+divId+'').append('<option value="'+result[i].userid+'">'+result[i].userName+'</option>');
+	}
+
+	}
+	});
+}
+
+
+function getAssignedConstituencies(divId)
+{
+	var jsObj =
+	{
+	task: "getAssignedConstituencies"
+	}
+	$.ajax({
+	type:'GET',
+	url: 'getAssignedConstituenciesAction.action',
+	dataType: 'json',
+	data: {task:JSON.stringify(jsObj)},
+	}).done(function(result){	
+	$('#'+divId+'').find('option:not(:first)').remove();
+	if(result != null && result.length > 0)
+	{
+	for(var i in result)
+	{
+	$('#'+divId+'').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+	}
+
+	}
+
+	});
+}
+
+
+function assignConstituencyToUser()
+{
+	$('#processingImgForAssignConsti').show();
+	var constiUserTypeId = $("#constiUserTypeId").val();
+	var	userId = $("#assignConstituencyLeaderId").val();
+	var	constituencyId =  $('#assignConstituencyId').val();
+	
+	if(constiUserTypeId == 0)
+	{
+		$("#assignconstiErrorDiv").html("Please Select User Type").css("color","red");
+		$('#processingImgForAssignConsti').hide();
+		return;
+	}
+	if(userId == 0)
+	{
+		$("#assignconstiErrorDiv").html("Please Select User").css("color","red");
+		$('#processingImgForAssignConsti').hide();
+		return;
+	}
+	if(constituencyId == 0)
+	{
+		$("#assignconstiErrorDiv").html("Please Select Constituency").css("color","red");
+		$('#processingImgForAssignConsti').hide();
+		return;
+	}
+
+	var jsObj = 
+	{
+		userId : userId,
+		constituencyId :  constituencyId,
+		task : "assignConstituency"
+	}
+	
+	$.ajax({
+		type:'GET',
+		url: 'assignConstituencyToUserAction.action',
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)},
+		}).done(function(result){
+			if(result.resultCode == 0) 
+			{
+				$("#assignconstiErrorDiv").html('Constituency Assigned successfully.').css("color","green");
+				setTimeout(function(){$('#assignconstiErrorDiv').html('');}, 3000);				
+				$('#constiUserTypeId,#assignConstituencyLeaderId,#assignConstituencyId').val(0);
+			}
+			else
+			{
+				$("#assignconstiErrorDiv").html('Error Occured,Try again....').css("color","red");
+			}		
+			$('#processingImgForAssignConsti').hide();
+		});
+
 }

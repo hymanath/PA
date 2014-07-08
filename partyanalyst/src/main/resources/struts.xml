@@ -7424,5 +7424,23 @@
 		<action name="candidateUpdateDetailsAction" class="candidateUpdateDetailsAction">
 			<result name="success">/jsp/candidateUpdateDetails.jsp</result>
 		</action>
+		
+		<action name="getAssignedConstituencyUsersAction" class="surveyDataDetailsAction" method="getAssignedConstituencyUsers">
+			<result type="json" name="success">
+				<param name="root">assignedUsersList</param>
+			</result>
+		</action>
+		
+		<action name="getAssignedConstituenciesAction" class="surveyDataDetailsAction" method="getAssignedConstituencies">
+			<result type="json" name="success">
+				<param name="root">constituenciesList</param>
+			</result>
+		</action>
+		
+		<action name="assignConstituencyToUserAction" class="surveyDataDetailsAction" method="assignConstituencyToUser">
+			<result type="json" name="success">
+				<param name="root">resultStatus</param>
+			</result>
+		</action>
 </package>
 </struts>      
