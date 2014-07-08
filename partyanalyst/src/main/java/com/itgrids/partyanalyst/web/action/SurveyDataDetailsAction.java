@@ -40,11 +40,20 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	private List<UserBoothDetailsVO> assgnedBoothsList;
 	private List<SurveyReportVO> dayWiseReportList;
 	private List<SelectOptionVO> constituenciesList;
-	private List<SurveyReportVO> boothWiseCountList;
+	private List<SurveyReportVO> boothWiseCountList,assignedUsersList;
 	private List<SurveyReportVO> voterVerificationList;
 	private List<SurveyResponceVO> responceList;
 	private String status;
 	
+	
+	public List<SurveyReportVO> getAssignedUsersList() {
+		return assignedUsersList;
+	}
+
+	public void setAssignedUsersList(List<SurveyReportVO> assignedUsersList) {
+		this.assignedUsersList = assignedUsersList;
+	}
+
 	public String getStatus() {
 		return status;
 	}
@@ -602,5 +611,60 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		}
 		return Action.SUCCESS;
 		
+	}
+	
+	public String getAssignedConstituencyUsers()
+	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			
+			assignedUsersList = surveyDataDetailsService.getAllAssignedConstituenciesUsers(jObj.getLong("userTypeId"));
+			
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getAssignedConstituencyUsers in SurveyDataDetailsAction", e);
+		}
+		return Action.SUCCESS;
+		
+	}
+	
+	public String getAssignedConstituencies()
+	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			
+			constituenciesList = surveyDataDetailsService.getAllAssignedConstituency();
+			
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getAssignedConstituencyUsers in SurveyDataDetailsAction", e);
+		}
+		return Action.SUCCESS;
+		
+	}
+	
+	
+	public String assignConstituencyToUser()
+	{
+		try
+		{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			jObj = new JSONObject(getTask());
+			resultStatus = surveyDataDetailsService.assignConstituencyForAUser(jObj.getLong("userId"), jObj.getLong("constituencyId"));
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in saveSurveyUser in SurveyDataDetailsAction", e);
+		}
+		return Action.SUCCESS;
 	}
 }

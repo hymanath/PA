@@ -32,7 +32,7 @@
 					filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffea51', endColorstr='#ffa600',GradientType=0 );
 					}
 			.survey_nav ul li{line-height:40px;}
-			.survey_nav ul li a{color:#333; font-weight:bold; font-size:12px; padding:12px 5px;text-decoration:none;text-shadow:0px 1px #ffcc00; }
+			.survey_nav ul li a{color:#333; font-weight:bold; font-size:12px; padding:12px 2px;text-decoration:none;text-shadow:0px 1px #ffcc00; }
 			.survey_nav ul li a:hover{background:rgba(255,0,0,0.1);}
 			.survey_nav ul li a.selected{color:#fff; background:red;text-shadow:0px 1px #4f4f4f; }
 			.requiredFont{
@@ -65,7 +65,7 @@
 		<div class="row">
 			<div class="span10 offset1 m_top20 survey_nav">
 				<ul class="inline unstyled">
-					<li><a class="highlight selected" id="userTypeTab" onclick="showHideTabs(this.id);"> User Types </a></li>
+					<li><a class="highlight selected" id="userTypeTab" onclick="showHideTabs(this.id);"> User Type Creation </a></li>
 					<li><a class="highlight" id="userCreationTab" onclick="showHideTabs(this.id);"> User Creation </a></li>
 					<li><a class="highlight" id="tabAssignTab" onclick="showHideTabs(this.id);"> Tab Assign </a></li>
 					<li><a class="highlight" id="boothAssignTab" onclick="showHideTabs(this.id);"> Booth Assign </a></li>
@@ -80,7 +80,7 @@
 			<div class="span10 offset1">
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red">
-						<h4>Create user types</h4>
+						<h4>Create User Types</h4>
 							<div class="row">
 								<div id="createUserTypeErrorDiv" class="span8 offset2 errorCls"></div>
 							</div>
@@ -115,8 +115,8 @@
 								<div class="span8 offset2">
 									<div class="row-fluid">
 										<div class="span4">
-											Firsr Name<font class="requiredFont">*</font>
-											<input type="text" id="firstName" placeholder="Firsr Name..." class="input-block-level">
+											First Name<font class="requiredFont">*</font>
+											<input type="text" id="firstName" placeholder="First Name..." class="input-block-level">
 										</div>
 										<div class="span4">
 											Last Name<font class="requiredFont">*</font>
@@ -183,11 +183,14 @@
 											Select User Type<font class="requiredFont">*</font>
 											<select class="input-block-level" id="surveyUserTypeForSelect" onchange="getSurveyUsersByUserType('surveyUserIdForSelect',this.value);">
 											<option value="0">Select User type</option>
+											<option value="1">Data Collectors</option>
+											<option value="4">Verifier</option>
+											<option value="5">Chief Verifier</option>
 											</select>
 											</div>
 											<div class="span6">
-										Select User Name<font class="requiredFont">*</font>
-										<select class="input-block-level" id="surveyUserIdForSelect"> </select>
+											Select User Name<font class="requiredFont">*</font>
+											<select class="input-block-level" id="surveyUserIdForSelect"> <option value="0">Select User Name</option></select>
 											</div>	
 										
 										</div>
@@ -303,7 +306,7 @@
 								<div class="span8 offset2">
 										<div class="row-fluid">
 										<div class="span6">
-												Select User Name <font class="requiredFont">*</font>
+												Select User Type <font class="requiredFont">*</font>
 												<select class="input-block-level"id="deactiveUserTypeId" onChange="getSurveyUsersByUserType('deactivateUserId',this.value);"> 
 												<option value="0">Select User Type</option></select>
 											</div>
@@ -329,6 +332,47 @@
 		
 		<!---- Assign Booth To Leader ---->		
 		<div class="row" id="assignBoothToLeaderDiv">
+		
+			<div class="span10 offset1">
+				<div class="row-fluid ">
+					<div class="span12 widgetservey_Red m_top20">
+						<h4>Tag Constituency To Leader</h4>
+						<div class="row">
+								<div id="assignconstiErrorDiv" class="span8 offset2 errorCls"></div>
+							</div>
+							<div class="row">
+								<div class="span8 offset2">
+									<div class="row-fluid">									
+										<div class="span6">
+											Select User Type<font class="requiredFont">*</font>
+											<select class="input-block-level" id="constiUserTypeId" onChange="getAssignedConstituencyUsers('assignConstituencyLeaderId',this.value);"> <option value="0">Select Type</option><option value="3">Lead</option><option value="5">Chief Verifier</option></select>
+										</div>
+										<div class="span6">
+											Select Leader<font class="requiredFont">*</font>
+											<select class="input-block-level" id="assignConstituencyLeaderId" onChange="getAssignedConstituencies('assignConstituencyId');"> <option value="0">Select Leader</option></select>
+										</div>
+									</div>	
+									<div class="row-fluid">									
+										<div class="span6">
+											Select Constituency<font class="requiredFont">*</font>
+											<select class="input-block-level" id="assignConstituencyId"> <option value="0">Select Constituency</option></select>
+											
+										
+										</div>
+									</div>
+								</div>
+									</div>
+							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onClick="assignConstituencyToUser();">ASSIGN</button><img id="processingImgForAssignConsti" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img></div>
+
+                            <div id="dayWiseReportDiv"></div>
+ 						    <div id="boothWiseCountDivId"></div>
+							<!--<a class="btn btn-primary btn-large" href="javascript:{getComparisionReport()}">TEST</a>-->
+							
+							<!--<a class="btn btn-primary btn-large" href="javascript:{getDayWiseReport()}">TEST</a>-->
+					</div>
+				</div>
+			</div>
+		
 			<div class="span10 offset1">
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top20">
@@ -341,7 +385,7 @@
 									<div class="row-fluid">
 										
 										<div class="span6">
-											Select user Type<font class="requiredFont">*</font>
+											Select User Type<font class="requiredFont">*</font>
 											<select class="input-block-level" id="typeId" onChange="getSurveyUsersByUserType('leaderId',this.value);"> <option value="0">Select Type</option><option value="3">Lead</option><option value="5">Chief Verifier</option></select>
 										</div>
 										<div class="span6">
@@ -390,7 +434,7 @@
 									<div class="row-fluid">
 										
 										<div class="span6">
-											Select user Type<font class="requiredFont">*</font>
+											Select User Type<font class="requiredFont">*</font>
 											<select class="input-block-level" id="typeIdForRelease" onChange="getSurveyUsersByUserType('leaderIdForRelease',this.value);"> <option value="0">Select Type</option><option value="3">Lead</option><option value="5">Chief Verifier</option></select>
 										</div>
 										<div class="span6">
