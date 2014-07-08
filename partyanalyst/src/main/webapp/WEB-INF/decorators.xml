@@ -332,6 +332,7 @@
 			 <pattern>/subUserRegPageAction*</pattern>
 			 <pattern>/login*</pattern>
 			 <pattern>/surveyDataDetailsAction*</pattern>
+			 <pattern>/surveyUserTrackingAction*</pattern>
 			 <pattern>/dailyVerificationReportsAction*</pattern>
 			 <pattern>/surveyMonitoringAction*</pattern>
             <!--  <pattern>/dashBoardAction*</pattern> -->
