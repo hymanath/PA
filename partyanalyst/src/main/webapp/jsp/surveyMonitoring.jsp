@@ -158,6 +158,7 @@ function getComparisionReport(type)
 function buildComparisonReport(result,type)
 {
 		$('#submitImg').hide();
+		 $('#statusMsg').html('');
 
 if(result == null || result.length == 0)
 {
