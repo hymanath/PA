@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.Date;
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -15,7 +16,8 @@ public interface ISurveyDataDetailsService
 {
 	public ResultStatus saveSurveyUserType(String userTypeDescription,String userType);
 	public ResultStatus saveSurveyUser(String firstName,String lastName,String userName,String password,String address,String mobileNo,Long userTypeId);
-	public ResultStatus saveSurveyUserTabAssign(Long surveyUserId,String tabNo,String remarks,Date date);
+	//public ResultStatus saveSurveyUserTabAssign(Long surveyUserId,String tabNo,String remarks,Date date);
+	public ResultStatus saveSurveyUserTabAssign(Long surveyUserId,List<BasicVO> tabsinfoList);
 	public ResultStatus saveSurveyUserBoothAssign(Long surveyUserId,Long constituencyId,List<Long> boothIds,String saveSurveyUserBoothAssign);
 	public ResultStatus saveServeyUserRelationDetails(Long userTypeId,List<Long> surveyUserId,Long leaderId);
 	public ResultStatus saveSurveyUserTrackingDetails(Long surveyUserId,String longitude , String latitude,Date date);
@@ -44,11 +46,20 @@ public interface ISurveyDataDetailsService
 	//public List<SurveyResponceVO> getSurveyUserBoothsAndVoterDetails(Long surveyUserId);
 	public List<UserBoothDetailsVO> getBoothDetailsByConstituencyId(Long constituencyId);
 	public String saveVerifiedRecordsDetails(final List<Long> verifierIds);
-	public List<SurveyReportVO> getDayWiseReportByConstituencyIdAndUserType(
-			Long constituencyId, String startDate, String endDate,
-			Long userTypeId,List<Long> boothIds);
+	public List<SurveyReportVO> getDayWiseReportByConstituencyIdAndUserType(Long constituencyId, String startDate, String endDate,Long userTypeId,List<Long> boothIds);
+
+	public List<GenericVO> getSurveyConstituencyList();
+	
+	public List<GenericVO> getSurveyConstituencyLeadersList(Long leaderId);
+	
+	public GenericVO releaseLeadersWithUserandTabsList(Long leaderId);
+	
+	public ResultStatus saveSurveyUserTabAssign(List<BasicVO> tabsInfoList);
 	
 	public List<SelectOptionVO> getAllAssignedConstituency();
-	public List<SurveyReportVO> getAllAssignedConstituenciesUsers(Long userTypeId);	
+	
+	public List<SurveyReportVO> getAllAssignedConstituenciesUsers(Long userTypeId);
+	
 	public ResultStatus assignConstituencyForAUser(Long userId,Long constituencyId);
+	
 }
