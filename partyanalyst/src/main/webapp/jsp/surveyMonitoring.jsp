@@ -139,8 +139,8 @@ function getComparisionReport(type)
 	$('#submitImg').show();
 	var jObj =
 	{
-	// boothId:boothId
-		boothId:122792,
+	 boothId:boothId
+	//	boothId:122792,
 		type:type
 	
 	}

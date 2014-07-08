@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+<page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 		<%@taglib prefix="s" uri="/struts-tags" %>
@@ -11,8 +11,13 @@
 <script src="//code.jquery.com/jquery-1.10.2.js"></script>
 <script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
  <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">	
+<script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.js"></script>
+<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
+
+
 
 		<style>
+		
 			body{background:#f0f0f0;}
 			.m_top20{margin-top:20px;}
 			.widgetservey{background:#fafafa; display:block; border:1px solid #cccccc; width:100%; padding:0px 20px 20px 20px;}
@@ -34,11 +39,22 @@
 			 font-weight:bold;
 			 color:green;
 			}
+			.ui-multiselect{
+				width:140px !important;
+				}
 		</style>	
 	
   </head>
   
-  <body><div class="container">
+  <body>
+  <script>
+  
+  $( document ).ready(function() {
+$('#boothId').multiselect({
+	  noneSelectedText:"Select Booth(s)"});
+});
+  </script>
+  <div class="container">
 		<!---- Survey monitoring---->		
 		<div class="row">
 			<div class="span12">
@@ -60,7 +76,7 @@
 											<!--User Type <font class="requiredFont">*</font>
 											<select class="input-block-level" id = "userType"> <option value="0">Select User Type</option></select>-->
 											Select Booth <font class="requiredFont">*</font>
-											<select class="input-block-level" id = "boothId" multiple> <option value="0">Select Booth</option></select>
+											<select class="input-block-level" id = "boothId" multiple="true"> <option value="0">Select Booth</option></select>
 										</div>
 										<div class="span2">
 											From Date <font class="requiredFont">*</font>
@@ -448,6 +464,9 @@ function getBoothsDetailsByConstituencyId(constituencyId)
 				$.each(result,function(index,value){
 					$('#boothId').append('<option value="'+value.boothId+'">Booth - '+value.partNo+'</option>');
 				});
+				
+				$('#boothId').multiselect('refresh');
+
 		});
 	
 	
