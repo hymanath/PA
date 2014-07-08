@@ -145,4 +145,61 @@ public class SurveyDetailsInfoDAO extends GenericDaoHibernate<SurveyDetailsInfo,
 		return query.list();
 		
 	}
+	
+	public List<Object[]> getLatLongForSurveyUsersByConstituency(Long constituencyId,Date date)
+	{
+		Query query = getSession().createQuery("select model.surveyUser.userName,model.booth.partNo,model.booth.tehsil.tehsilName,  " +
+				" model.booth.panchayat.panchayatName,model.booth.villagesCovered,model.booth.location , model.surveyUser.surveyUserType.userType," +
+				" model.surveyUser.surveyUserId,model.longitude,model.latitude,model.booth.boothId  " +
+				" from SurveyDetailsInfo model where" + 
+				" model.booth.constituency.constituencyId =:constituencyId and date(model.date) = :date order by model.date desc");
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("date", date);
+		return query.list();
+	}
+	
+	public Long getCasteCountByBooth(Long userId,Long boothId)
+	{
+		Query query = getSession().createQuery("select count(*) from SurveyDetailsInfo model where model.surveyUser.surveyUserId = :userId and " +
+				"model.booth.boothId = :boothId and model.caste.casteStateId is not null or model.casteName is not null");
+		query.setParameter("userId", userId);
+		query.setParameter("boothId", boothId);
+		return (Long)query.uniqueResult();
+	}
+	
+	public Long getHamletCountByBooth(Long userId,Long boothId)
+	{
+		Query query = getSession().createQuery("select count(*) from SurveyDetailsInfo model where model.surveyUser.surveyUserId = :userId and " +
+				"model.booth.boothId = :boothId and model.hamlet.hamletId is not null or model.hamletName is not null");
+		query.setParameter("userId", userId);
+		query.setParameter("boothId", boothId);
+		return (Long)query.uniqueResult();
+	}
+	
+	public Long getLocalAreaCountByBooth(Long userId,Long boothId)
+	{
+		Query query = getSession().createQuery("select count(*) from SurveyDetailsInfo model where model.surveyUser.surveyUserId = :userId and " +
+				"model.booth.boothId = :boothId and model.localArea is not null");
+		query.setParameter("userId", userId);
+		query.setParameter("boothId", boothId);
+		return (Long)query.uniqueResult();
+	}
+	
+	public Long getCadreCountByBooth(Long userId,Long boothId)
+	{
+		Query query = getSession().createQuery("select count(*) from SurveyDetailsInfo model where model.surveyUser.surveyUserId = :userId and " +
+				"model.booth.boothId = :boothId and model.isCadre is not null");
+		query.setParameter("userId", userId);
+		query.setParameter("boothId", boothId);
+		return (Long)query.uniqueResult();
+	}
+	
+	public Long getInfluencingPeopleCountByBooth(Long userId,Long boothId)
+	{
+		Query query = getSession().createQuery("select count(*) from SurveyDetailsInfo model where model.surveyUser.surveyUserId = :userId and " +
+				"model.booth.boothId = :boothId and model.isInfluencingPeople is not null");
+		query.setParameter("userId", userId);
+		query.setParameter("boothId", boothId);
+		return (Long)query.uniqueResult();
+	}
 }

@@ -35,6 +35,8 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	private Double perc;
 	
 	private String percentage;
+	private String latitude;
+	private String longititude;
 	
 	
 	public String getPercentage() {
@@ -295,6 +297,23 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	public void setPerc(Double perc) {
 		this.perc = perc;
 	}
+
+	public String getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+
+	public String getLongititude() {
+		return longititude;
+	}
+
+	public void setLongititude(String longititude) {
+		this.longititude = longititude;
+	}
+	
 	
 	
 }

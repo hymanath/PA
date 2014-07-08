@@ -62,4 +62,7 @@ public interface ISurveyDataDetailsService
 	
 	public ResultStatus assignConstituencyForAUser(Long userId,Long constituencyId);
 	
+	public List<SelectOptionVO> getLatLongForSurveyUsersByConstituency(Long constituencyId,Date date);
+	
+	public List<Long> getDataCollectedCount(Long userId,Long boothId);
 }
