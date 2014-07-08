@@ -1022,10 +1022,6 @@ public List<SelectOptionVO> getConstituencyList()
 					}
 				}
 				
-				
-				
-				
-				
 				if(hamletsList != null && hamletsList.size() > 0)
 				{
 					try{
@@ -1053,8 +1049,6 @@ public List<SelectOptionVO> getConstituencyList()
 						LOG.error(e);
 					}
 				}
-				
-				
 				
 				}catch(Exception e)
 				{
