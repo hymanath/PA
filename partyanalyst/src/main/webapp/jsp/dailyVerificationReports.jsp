@@ -386,8 +386,8 @@ function buildDayWiseReportByUserType(result)
 
 	 var str = '';
 
-   str+='<table>';
-    str+='<thead>';
+   str+='<table class="table table-bordered m_top20 table-hover table-striped username">';
+    str+='<thead class="alert alert-success">';
 	 str+='<tr>';
 	  str+='<th>UserName</th>';
   	  str+='<th>Booth No</th>';
