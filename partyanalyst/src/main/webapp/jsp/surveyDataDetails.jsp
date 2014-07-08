@@ -260,7 +260,7 @@
 					<!----	<h4>User Tab Assign</h4> ---->
 					<h4>Assign Tabs to User </h4> 
 						<div class="row">
-						<div id="assignTabUserErrorDiv" class="span8 offset2 errorCls"></div>
+						<div id="assignTabUserErrorDiv" class="span8 offset2 errorCls" style="color:#FF0020;"></div>
 						</div>
 							<div class="row">
 								<div class="span10 offset2">
