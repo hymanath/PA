@@ -935,7 +935,8 @@ function getSurveyUsersByUserTypeForLeaderRelease()
 {
 	var jObj =
 	{
-	 leaderId:$('#leaderIdForRelease').val()
+	 leaderId:$('#leaderIdForRelease').val(),
+	 userType : 1
 	}
 	$.ajax({
 			type:'GET',
@@ -946,10 +947,37 @@ function getSurveyUsersByUserTypeForLeaderRelease()
 				$('#userLeaderIdForRelease').find('option:not(:first)').remove();
 				if(result != null && result.length > 0)
 				{
-				$('#constituencyLeaderIdForRelease').append('<option value="'+result[0].rank+'">'+result[0].desc+'</option>');
+				//$('#constituencyLeaderIdForRelease').append('<option value="'+result[0].rank+'">'+result[0].desc+'</option>');
 				for(var i in result)
 				{
 				$('#userLeaderIdForRelease').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+				
+				}
+
+				}							
+		});
+}
+
+function getInHouseVerfiersByUserTypeForLeaderRelease()
+{
+	var jObj =
+	{
+	 leaderId:$('#inHouseReleaseleaderId').val(),
+	 userType : 2
+	}
+	$.ajax({
+			type:'GET',
+			url: 'releaseLeadersWithUserAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){
+				$('#inHouseReleaseLeaderId').find('option:not(:first)').remove();
+				if(result != null && result.length > 0)
+				{
+				//$('#constituencyLeaderIdForRelease').append('<option value="'+result[0].rank+'">'+result[0].desc+'</option>');
+				for(var i in result)
+				{
+				$('#inHouseReleaseLeaderId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 				
 				}
 
@@ -1191,6 +1219,121 @@ function assignConstituencyToUser()
 				$("#assignconstiErrorDiv").html('Error Occured,Try again....').css("color","red");
 			}		
 			$('#processingImgForAssignConsti').hide();
+		});
+
+}
+
+function getDayWiseReport()
+{
+	var jObj =
+	{
+	 constituencyId:232,
+     userTypeId:1,
+	 startDate:"07/01/2014",
+	 endDate:"07/04/2014"	
+
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getDayWisereportDetailsByConstituencyId.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){
+				buildDayWiseReport(result);
+		});
+}
+function buildDayWiseReport(result)
+{
+  var str = '';
+
+  str+='<table border="1">';
+  str+='<thead>';
+   str+='<tr>';
+    str+='<th>UserName</th>';
+	$.each(result[0].subList,function(index,value){
+      str+='<th>'+value.surveyDate+'</th>';
+	});
+   str+='</tr>';
+  str+='</thead>';
+  str+='<tbody>';
+  
+    $.each(result,function(index,value){
+		 str+='<tr>';
+		 str+='<td>'+value.userName+'</td>';
+		   $.each(value.subList,function(index1,value1){
+			    str+='<td><a href="javascript:{getDayWiseReportDetailsOfUser('+value.userid+')}">'+value1.count+'</a></td>';
+		   });
+		str+='</tr>';
+	});
+  
+  str+='</tbody>';
+  str+='</table>';
+
+  $('#dayWiseReportDiv').html(str);
+}
+function getDayWiseReportDetailsOfUser(userId)
+{
+	var jObj =
+	{
+	 userId:userId,
+	 startDate:"07/01/2014",
+	 endDate:"07/04/2014"
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getBoothWiseUserSamplesDetailsByDates.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){
+				buildUserBoothWiseCountDetails(result);
+		});
+}
+function buildUserBoothWiseCountDetails(result)
+{
+  var str ='';
+
+  str+='<table border="1">';
+   str+='<thead>';
+    str+='<tr>';
+	  str+='<th>Booth No</th>';
+	  str+='<th>Total</th>';
+	  str+='<th>Completed</th>';
+	str+='</tr>';
+   str+='</thead>';	  
+   str+='<tbody>';
+    $.each(result,function(index,value){
+		str+='<tr>';
+		str+='<td>'+value.partNo+'</td>';
+		str+='<td>'+value.totalVoters+'</td>';
+		str+='<td>'+value.count+'</td>';
+		str+='</tr>';
+	});
+   str+='</tbody>';
+  str+='</table>';
+
+  $('#boothWiseCountDivId').html(str);
+  $('#boothWiseCountDivId').dialog();
+}
+
+$(".highlight").click(function()
+{
+	$(".highlight").removeClass("selected");
+	$(this).addClass("selected");
+})
+
+function getComparisionReport()
+{
+	var jObj =
+	{
+	 boothId:383457
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getReportForVerificationByBoothId.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){
+				console.log(result);
 		});
 
 }
