@@ -10,4 +10,6 @@ import com.itgrids.partyanalyst.model.SurveyUserTracking;
 public interface ISurveyUserTrackingDAO extends GenericDao<SurveyUserTracking, Long>
 {
 	public List<Object[]> getLatLongForUserTracking(Long surveyUserId,Date date);
+	public void sessionFlush();
+
 }
