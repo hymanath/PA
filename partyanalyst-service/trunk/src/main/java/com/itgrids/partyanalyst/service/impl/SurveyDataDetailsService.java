@@ -761,7 +761,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 								surveyDetailsInfo.setUuid(surveyResponceVO.getUuid());
 								surveyDetailsInfo.setStatusId(Integer.valueOf(surveyResponceVO.getStatusId()));
 								surveyDetailsInfo.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
-								
+								surveyDetailsInfo.setHouseNoPoint(surveyResponceVO.getHouseNo());
 								SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_AND_TIME_FORMAT);
 								sdf.setTimeZone(TimeZone.getTimeZone(IConstants.TIME_ZONE_INDIA));
 								sdf.parse(surveyResponceVO.getInsertTime());
@@ -2002,17 +2002,19 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		try
 		{
 			SurveyUserTracking surveyUserTracking = new SurveyUserTracking();
-			surveyUserTracking.setSurveyUser(surveyUserDAO.get(userLocationTrackingVo.getSurveyUserId()));
-			
-			
-			
+			Long userId=userLocationTrackingVo.getSurveyUserId();
+			if(userId!=null && userId!=0 )
+			surveyUserTracking.setSurveyUser(surveyUserDAO.get(userLocationTrackingVo.getSurveyUserId()));			
 			
 			surveyUserTracking.setDate(new DateUtilService().getDateAndTime(userLocationTrackingVo.getInsertTime()));
 			surveyUserTracking.setLongitude(userLocationTrackingVo.getLongitude());
 			surveyUserTracking.setLatitude(userLocationTrackingVo.getLatitude());
+			surveyUserTracking.setUniqueUUID(userLocationTrackingVo.getUuid());
 			surveyUserTracking.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 			surveyUserTracking.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+			surveyUserTracking.setImeiNo(userLocationTrackingVo.getImeiNo());
 			SurveyUserTracking result = surveyUserTrackingDAO.save(surveyUserTracking);
+			surveyUserTrackingDAO.sessionFlush();
 			if(result != null)
 			{
 				resultStatus.setResultCode(0);
