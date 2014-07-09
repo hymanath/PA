@@ -820,7 +820,7 @@ function deactivateLead()
 			$("#dummyuserImg").css("display","none");
 			if(result.resultCode == 0)
 			{
-				$("#errorPop").html("<font color='green'>Survey user created successfully..</font>");
+				$("#errorPop").html("<font color='green'>lead activated successfully..</font>");
 				  setTimeout("closePopup()",3000);	
 			}
 			else
