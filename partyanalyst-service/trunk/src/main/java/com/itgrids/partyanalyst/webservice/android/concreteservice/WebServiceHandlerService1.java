@@ -78,9 +78,9 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	private IVoiceRecordingDetailsDAO voiceRecordingDetailsDAO;
 	private IPingingTypeDAO pingingTypeDAO;
 	private IMobileAppPingingDAO mobileAppPingingDAO;
-	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
+	@Autowired private IBoothPublicationVoterDAO boothPublicationVoterDAO;
 	private IUserVoterDetailsDAO userVoterDetailsDAO;
-	private IBoothDAO boothDAO;
+	@Autowired private IBoothDAO boothDAO;
 	
 	private IInfluencingPeopleService influencingPeopleService;
 	private IVoterReportService voterReportService;
@@ -139,13 +139,13 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	
 	
 
-	public IBoothDAO getBoothDAO() {
+	/*public IBoothDAO getBoothDAO() {
 		return boothDAO;
 	}
 
 	public void setBoothDAO(IBoothDAO boothDAO) {
 		this.boothDAO = boothDAO;
-	}
+	}*/
 
 	public IUserVoterDetailsDAO getUserVoterDetailsDAO() {
 		return userVoterDetailsDAO;
@@ -155,7 +155,7 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 		this.userVoterDetailsDAO = userVoterDetailsDAO;
 	}
 
-	public IBoothPublicationVoterDAO getBoothPublicationVoterDAO() {
+/*	public IBoothPublicationVoterDAO getBoothPublicationVoterDAO() {
 		return boothPublicationVoterDAO;
 	}
 
@@ -163,7 +163,7 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 			IBoothPublicationVoterDAO boothPublicationVoterDAO) {
 		this.boothPublicationVoterDAO = boothPublicationVoterDAO;
 	}
-
+*/
 	public IPingingTypeDAO getPingingTypeDAO() {
 		return pingingTypeDAO;
 	}
@@ -262,7 +262,7 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	public void setLoginService(ILoginService loginService) {
 		this.loginService = loginService;
 	}
-
+     @Override
 	public UserResponseVO checkForUserAuthentication(UserLoginVO inputvo)
 	{/*
 		StringBuilder buffer= new StringBuilder();
@@ -351,12 +351,14 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 				remainingDatBoothIds.add((Long)obj[0]);
 		}
 		
-         List<Long> voterIds =   boothPublicationVoterDAO.getAllVoterIdsByBoothIdsAndPublicationDateId(remainingDatBoothIds,10L);
-         
+		  List<Long> voterIds=null;
+		if(remainingDatBoothIds!=null && remainingDatBoothIds.size()>0)
+         voterIds =   boothPublicationVoterDAO.getAllVoterIdsByBoothIdsAndPublicationDateId(remainingDatBoothIds,10L);
+		if(voterIds!=null && voterIds.size()>0){
          List<Long> existVoterIds = surveyDetailsInfoDAO.getDataCollectedVoterIdsByBoothIds(remainingDatBoothIds); 
          
          voterIds.removeAll(existVoterIds);
-		
+		}
 		UserResponseVO res=buildResponseVo(booths, userTypeId, userId,remainingDatBoothIds,voterIds);
 		//process list and convert
 	   return res;
@@ -366,9 +368,17 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
      {
              //UserResponseVO res= new UserResponseVO();
              UserResponseSub subRes= new UserResponseSub();
+             List<String> partNumbers=null;
+             if(remainingDatBoothIds!=null && remainingDatBoothIds.size()>0){
+            	 partNumbers = boothDAO.getPartNosForBooths(remainingDatBoothIds);
+             }
+             List<Object[]>   votersBoothsDetails=null;
+             if(voterIds!=null && voterIds.size()>0)
+            	 votersBoothsDetails =   boothPublicationVoterDAO.getBoothIdsDetailsOfVoterIds(voterIds, 10L);
              
+/*           if(votersBoothsDetails!=null && votersBoothsDetails.size()>0)
              List<String> partNumbers = boothDAO.getPartNosForBooths(remainingDatBoothIds);
-             List<Object[]>   votersBoothsDetails =   boothPublicationVoterDAO.getBoothIdsDetailsOfVoterIds(voterIds, 10L);
+             List<Object[]>   votersBoothsDetails =   boothPublicationVoterDAO.getBoothIdsDetailsOfVoterIds(voterIds, 10L);*/
              
       List<BoothVoterVO> boothVotersVOList = new ArrayList<BoothVoterVO>();   
       
@@ -405,7 +415,7 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
                              boothVoter.setVoterIds(votersList);
                              
                      }
-                     
+            
              }
              
              
@@ -491,21 +501,28 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	//saveSurveyUserTrackingDetails
 	
 	public ResultStatus saveUserTrackingLocation(UserLocationTrackingVo userLocationTrackingVo)
-	{
+	{    ResultStatus  status=null;
+	
+		for ( UserLocationTrackingVo trackPoints: userLocationTrackingVo.getUserLocations()) {
+			
+				trackPoints.setImeiNo(userLocationTrackingVo.getImeiNo());
+				trackPoints.setSurveyUserId(userLocationTrackingVo.getSurveyUserId());			
+				status=surveyDataDetailsService.saveSurveyUserTrackingDetails(trackPoints);
+		}
 		
-		ResultStatus  status=	surveyDataDetailsService.saveSurveyUserTrackingDetails(userLocationTrackingVo);
+	//	ResultStatus  status=	surveyDataDetailsService.saveSurveyUserTrackingDetails(userLocationTrackingVo);
 		
 		
 		return status;		
 	}
-	 private BoothVoterVO getMatchedBoothVO(List<BoothVoterVO> boothVoters , Long boothId)
-     {
-             for(BoothVoterVO boothVoter:boothVoters)
-                     if(boothVoter.getBoothId().equals(boothId))
-                             return boothVoter;
-             return null;
-             
-     }
+	private BoothVoterVO getMatchedBoothVO(List<BoothVoterVO> boothVoters , Long boothId)
+    {
+            for(BoothVoterVO boothVoter:boothVoters)
+                    if(boothVoter.getBoothId().equals(boothId))
+                            return boothVoter;
+            return null;
+            
+    }
 	
 	
 }
