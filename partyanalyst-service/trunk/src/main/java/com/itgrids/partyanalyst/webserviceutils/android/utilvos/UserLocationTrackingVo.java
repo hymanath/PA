@@ -1,14 +1,42 @@
 package com.itgrids.partyanalyst.webserviceutils.android.utilvos;
 
 import java.util.Date;
+import java.util.List;
 
 public class UserLocationTrackingVo {
 	
-	Long surveyUserId;
-	Date date;
-	String longitude;
-	String latitude;
-	String insertTime;
+	private Long surveyUserId;
+	private Date date;
+	private String longitude;
+	private String latitude;
+	private String insertTime;
+	private String imeiNo;
+	private String uuid;
+	private List<UserLocationTrackingVo> userLocations;
+	
+	
+	
+	
+	
+	
+	public String getUuid() {
+		return uuid;
+	}
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+	public List<UserLocationTrackingVo> getUserLocations() {
+		return userLocations;
+	}
+	public void setUserLocations(List<UserLocationTrackingVo> userLocations) {
+		this.userLocations = userLocations;
+	}
+	public String getImeiNo() {
+		return imeiNo;
+	}
+	public void setImeiNo(String imeiNo) {
+		this.imeiNo = imeiNo;
+	}
 	public Long getSurveyUserId() {
 		return surveyUserId;
 	}
