@@ -383,17 +383,17 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
       List<BoothVoterVO> boothVotersVOList = new ArrayList<BoothVoterVO>();   
       
       Set<Long> boothIds1 = new HashSet<Long>();
-      
+      if(votersBoothsDetails!=null && votersBoothsDetails.size()>0)
       for(Object[] obj:votersBoothsDetails)
     	  boothIds1.add((Long)obj[2]);
-      
+      if(boothIds1!=null && boothIds1.size()>0)
       for(Long boothId:boothIds1)
       {
     	  BoothVoterVO vo = new BoothVoterVO();
     	  vo.setBoothId(boothId);
     	  boothVotersVOList.add(vo);
       }
-             
+      if(votersBoothsDetails!=null && votersBoothsDetails.size()>0)
              for(Object[] obj:votersBoothsDetails)
              {
                      
@@ -402,6 +402,7 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
                      if(boothVoterVO != null)
                      {
                              boothVoterVO.getVoterIds().add((Long)obj[1]);
+                             boothVoterVO.setPartNo(obj[0].toString());
                              
                      }else
                      {
