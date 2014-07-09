@@ -35,4 +35,11 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	public Long getCadreCountByBooth(Long userId,Long boothId);
 	
 	public Long getInfluencingPeopleCountByBooth(Long userId,Long boothId);
+	
+	public List<Object[]> getsurveyDetailsInfoByConstituencyId(Long constituencyId,Long surveyUsertypeId);
+	
+	public List<Object[]> getBoothDetailsByConstituencyId(Long constituencyId);
+	
+	public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUsertypeId);
+	
 }
