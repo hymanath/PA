@@ -799,6 +799,7 @@ function deactivateLead()
 	}
 	else
 	{
+		$("#dummyuserImg").css("display","inline-block");
 	var jsObj = 
 	{
 		userId : deactivateUserId,
@@ -814,6 +815,7 @@ function deactivateLead()
 		dataType: 'json',
 		data: {task:JSON.stringify(jsObj)},
 		}).done(function(result){
+			$("#dummyuserImg").css("display","none");
 			if(result.resultCode == 0)
 			{
 				$("#errorPop").html("<font color='green'>Survey user created successfully..</font>");
