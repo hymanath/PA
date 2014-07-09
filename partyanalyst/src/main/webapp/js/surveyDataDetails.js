@@ -1427,11 +1427,7 @@ function buildUserBoothWiseCountDetails(result)
   $('#boothWiseCountDivId').dialog();
 }
 
-$(".highlight").click(function()
-{
-	$(".highlight").removeClass("selected");
-	$(this).addClass("selected");
-})
+
 
 function getComparisionReport()
 {
