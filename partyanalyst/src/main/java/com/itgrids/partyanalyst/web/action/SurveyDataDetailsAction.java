@@ -15,6 +15,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.ConstituencyDetailReportVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -48,11 +49,19 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	private List<Long> countList;
 	private GenericVO genericVO;
 	private Long userTypeId;
+	private ConstituencyDetailReportVO reportVO;
 	
 	private Long userId;
 	private String date;
 	
-	
+	public ConstituencyDetailReportVO getReportVO() {
+		return reportVO;
+	}
+
+	public void setReportVO(ConstituencyDetailReportVO reportVO) {
+		this.reportVO = reportVO;
+	}
+
 	public Long getUserId() {
 		return userId;
 	}
@@ -906,6 +915,72 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String constituencyDetailReport(){
+		
+		try {
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			Long userId = user.getRegistrationID();
+			constituenciesList = 	surveyDataDetailsService.getAllAssemblyConstituenciesByStateId();
+			
+		} catch (Exception e) {
+			LOG.error(" exception occured in constituencyDetailReport() ,ConstituencyDetailReport Action class",e);
+		}
+		return Action.SUCCESS;
+		
+	}
+	
+	public String getCosntituencyWiseReportByContiId(){
+		
+		try {
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			Long userId = user.getRegistrationID();
+			jObj = new JSONObject(getTask());
+			Long constituencyId = jObj.getLong("constituencyId");
+			
+			reportVO = surveyDataDetailsService.getCosntituencyWiseReportByContiId(constituencyId);
+			
+		} catch (Exception e) {
+			LOG.error(" exception occured in getCosntituencyWiseReportByContiId() ,ConstituencyDetailReport Action class",e);
+		}
+		return Action.SUCCESS;
+		
+	}
+	
+	public String getBoothWiseDetails(){
+		
+		try{
+		HttpSession session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		
+		if(user == null)
+		{
+			return Action.INPUT;
+		}
+		Long userId = user.getRegistrationID();
+		jObj = new JSONObject(getTask());
+		Long constituencyId = jObj.getLong("constituencyId");
+		Long boothId = jObj.getLong("boothId");
+		reportVO = surveyDataDetailsService.getBoothWiseDetails(boothId,constituencyId);
+		
+	} catch (Exception e) {
+		LOG.error(" exception occured in getBoothWiseDetails() ,ConstituencyDetailReport Action class",e);
+	}
+	return Action.SUCCESS;
+	}
+	
 	
 	public String getLatLongForSurveyUsersByConstituency()
 	{
