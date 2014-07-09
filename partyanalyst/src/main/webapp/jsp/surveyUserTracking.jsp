@@ -1,6 +1,13 @@
-
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@taglib prefix="s" uri="/struts-tags" %>
+<%@taglib uri="http://displaytag.sf.net" prefix="display" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="java.util.ResourceBundle;" %>
  <html>
   <head>	
+
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">	
 		<style>
 			body{background:#f0f0f0;}
@@ -35,27 +42,34 @@
   </head>
   
   <body>
-  
-  <script src="js/maps/leaflet.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+<script src="js/maps/leaflet.js"></script>
 <link rel="stylesheet" href="css/leaflet.css"></link>
 <script src="js/maps/google.js"></script>
 <script src="js/maps/Permalink.js"></script>
-<script src="js/maps/jqueryForMap.js"></script>
+
 <script src="js/maps/googleMap.js"></script>
 <script>
+
+$(document).ready(function(){
+   $('.datePickerCls').datepicker({
+   dateFormat: 'dd-mm-yy'
+   });
+});
 var apaccampus = {
 "type": "Point",
 "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
 "features": []
 }
 
-getUserTrackingDetails();
-function getUserTrackingDetails()
+function getDetailsByConstituency()
 {
 	var jObj = 
 	{
-	 constituencyId: 221,
-	 dateStr : "04-07-2014"
+	 constituencyId: $('#constituencyId').val(),
+	 dateStr : $('#appendedInput').val()
 	}
 	$.ajax({
 			type:'GET',
@@ -63,13 +77,16 @@ function getUserTrackingDetails()
 			dataType: 'json',
 			data: {task:JSON.stringify(jObj)},
 		  }).done(function(result){
+				if(result != null && result.length > 0)
 				buildLocationDetails(result);
+				else
+				alert("No Data Avaliable");
 		});
 }
 var features = new Array();
 function buildLocationDetails(result)
 { 
-	
+	$('#detaildDiv').show();
 	$.each(result,function(index,value){
 	if(value.latitude != null && value.longititude != null)
 	{
@@ -160,14 +177,14 @@ function buildTable(result)
 	 str += '<th>Panchayat</th>	';
 	 str += '<th>Area Covered</th>	';
 	 str += '<th>Location</th>	';				
-	 str += '<th>MAP</th>	';				
+	 str += '<th><a style="cursor: pointer;">MAP</a></th>	';				
 	 str += '</tr>	';						
 	 str += '</thead>';
 	 str += '<tbody>';
 	 for(var i in result)
 	 {
 		 str += '<tr>';
-		 str += '<td><a onClick="getUserDetails('+result[i].id+','+result[i].orderId+')">'+result[i].name+'</a> <span class="label label-info pull-right">';
+		 str += '<td><a onClick="getUserDetails('+result[i].id+','+result[i].orderId+')" style="cursor: pointer;">'+result[i].name+'</a> <span class="label label-info pull-right">';
 		 if(result[i].type == "Data Collectors")
 		 {
 			str += 'D.C';
@@ -303,27 +320,27 @@ function openTrackinWindow(userId,date)
 									
 										<div class="span6 offset1">
 											<label>Select Constituency</label>
-											<select class="input-block-level"> <option>01</option></select>
+											<s:select theme="simple"  name="constituency" id="constituencyId" list="constituenciesList" listKey="id" listValue="name" />
 										</div>
 										
 										<div class="span4">
 											<label>Select Date</label>
 											<div class="input-append">
-											  <input type="text" id="appendedInput" class="span10">
-											  <span class="add-on"><i class="icon-calendar icon-block"></i></span>
+											  <input type="text" id="appendedInput" class="span10 datePickerCls" readonly="readonly">
+											 <!-- <span class="add-on"><i class="icon-calendar icon-block"></i></span>-->
 											</div>
 										</div>	
 									</div>	
 									
 								</div>
 							</div>
-							<div class="row text-center m_top20"><button type="button" class="btn btn-success">SUBMIT</button></div>
+							<div class="row text-center m_top20"><button type="button" class="btn btn-success" onClick="getDetailsByConstituency();">SUBMIT</button></div>
 					</div>
 				</div>
 				
-				<div class="row-fluid ">
+				<div class="row-fluid " id="detaildDiv" style="display:none;">
 					<div class="span12 m_top20 widgetservey" id="map" style="height:500px">
-						<h5>Currently Logged in Users <span class="badge badge-success"> 15</span></h5><hr>
+						<!--<h5>Currently Logged in Users <span class="badge badge-success"> 15</span></h5><hr>-->
 					</div>
 					<p class="m_top10"> <span class="label label-info">D.C - Data Collector</span> &nbsp; &nbsp;<span class="label label-important"> D.V - Data Verifier</span></p>
 				</div>
