@@ -544,7 +544,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	
 	
 	/* deactivate Survey leader */
-	public ResultStatus deactiveSurveyLeader(final Long userId,final String remarks,final Long userTypeId,final String dummyLeadName)
+	public ResultStatus deactiveSurveyLeader(final Long userId,final String remarks,final Long userTypeId,final Long dummyLeadId)
 	{
 		
 		final DateUtilService date = new DateUtilService();
@@ -576,13 +576,14 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 							try {
 								
 			/* save dummy lead */
-			SurveyUser surveyUser = new SurveyUser();
+			/*SurveyUser surveyUser = new SurveyUser();
 			surveyUser.setFirstName(dummyLeadName);
 			surveyUser.setSurveyUserType(surveyUserTypeDAO.get(userTypeId));
 			surveyUser.setActiveStatus("Y");
 			surveyUser.setInsertedTime(date.getCurrentDateAndTime());
-			surveyUser.setUpdatedTime(date.getCurrentDateAndTime());
-			surveyUser = surveyUserDAO.save(surveyUser);
+			surveyUser.setUpdatedTime(date.getCurrentDateAndTime());*/
+								
+			SurveyUser surveyUser = surveyUserDAO.get(dummyLeadId);
 			
 			
 			if(surveyUserIds != null && surveyUserIds.size() > 0)
