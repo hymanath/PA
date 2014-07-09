@@ -91,6 +91,7 @@
 							<li><a  href="javascript:{redicttoVerificationPage(2)}">Verifier Report  </a></li>
 							<li><a href="javascript:{redicttoVerificationPage(2)}">Third Party Report </a></li>
 							<li><a href="javascript:{openUserTrackingPage()}">User Tracking Report </a></li>
+							<li><a href="javascript:{openComparisonReport()}">Comparison Report </a></li>
 							</ul>
 					  </div>
 					</li>
