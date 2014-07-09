@@ -429,24 +429,24 @@
 								<div id="assignconstiErrorDiv" class="span8 offset2 errorCls"></div>
 							</div>
 							<div class="row">
-								<div class="span8 offset2">
+								<div class="span12 offset2">
 									<div class="row-fluid">									
-										<div class="span6">
+										<div class="span3">
 											Select User Type<font class="requiredFont">*</font>
 											<select class="input-block-level" id="constiUserTypeId" onChange="getSurveyUsersByUserType('assignConstituencyLeaderId',this.value);"> <option value="0">Select Type</option><option value="3">Lead</option><option value="5">Chief Verifier</option></select>
 										</div>
-										<div class="span6">
+										<div class="span3">
 											Select Leader<font class="requiredFont">*</font>
 											<select class="input-block-level" id="assignConstituencyLeaderId" onChange="getAssignedConstituencies('assignConstituencyId');"> <option value="0">Select Leader</option></select>
 										</div>
-									</div>	
-									<div class="row-fluid">									
-										<div class="span6">
+									
+																
+										<div class="span3">
 											Select Constituency<font class="requiredFont">*</font>
 											<select class="input-block-level" id="assignConstituencyId"> <option value="0">Select Constituency</option></select>
 											
-										
 										</div>
+										
 									</div>
 								</div>
 									</div>
@@ -469,21 +469,20 @@
 								<div id="assignLeaderErrorDiv" class="span8 offset2 errorCls"></div>
 							</div>
 							<div class="row">
-								<div class="span8 offset2">
+								<div class="span12 offset2">
 									<div class="row-fluid">
 										
-										<div class="span6">
+										<div class="span3">
 											Select User Type<font class="requiredFont">*</font>
 											<select class="input-block-level" id="typeId" onChange="getSurveyUsersByUserType('leaderId',this.value);"> <option value="0">Select Type</option><option value="3">Lead</option><option value="5">Chief Verifier</option></select>
 										</div>
-										<div class="span6">
+										<div class="span3">
 											Select  Leader<font class="requiredFont">*</font>
 											<select class="input-block-level" id="leaderId" onChange="getSurveyUsersByUserTypeForLeaderAssign('userLeaderId');"> <option value="0">Select Leader</option></select>
 										</div>
-									</div>	
-									<div class="row-fluid">
+									
 										
-										<div class="span6">
+										<div class="span3">
 											Select User<font class="requiredFont">*</font>
 											<select class="input-block-level" id="userLeaderId"> <option value="0">Select User</option></select>
 										</div>
@@ -520,21 +519,20 @@
 								<div id="assignLeaderErrorDivForRelease" class="span8 offset2 errorCls"></div>
 							</div>
 							<div class="row">
-								<div class="span8 offset2">
+								<div class="span12 offset2">
 									<div class="row-fluid">
 										
-										<div class="span6">
+										<div class="span3">
 											Select User Type<font class="requiredFont">*</font>
 											<select class="input-block-level" id="typeIdForRelease" onChange="getSurveyUsersByUserType('leaderIdForRelease',this.value);"> <option value="0">Select Type</option><option value="3">Lead</option><option value="5">Chief Verifier</option></select>
 										</div>
-										<div class="span6">
+										<div class="span3">
 											Select  Leader<font class="requiredFont">*</font>
 											<select class="input-block-level" id="leaderIdForRelease" onChange="getSurveyUsersByUserTypeForLeaderRelease();"> <option value="0">Select Leader</option></select>
 										</div>
-									</div>	
-									<div class="row-fluid">
+									
 										
-										<div class="span6">
+										<div class="span3">
 											Select User<font class="requiredFont">*</font>
 											<select class="input-block-level" id="userLeaderIdForRelease"> <option value="0">Select User</option></select>
 										</div>
@@ -562,21 +560,20 @@
 								<div id="inhouseAssignErrorDiv" class="span8 offset2 errorCls"></div>
 						</div>
 							<div class="row">
-								<div class="span8 offset2">
+								<div class="span12 offset2">
 									<div class="row-fluid">
 										
-										<div class="span6">
+										<div class="span3">
 											Select user Type<font class="requiredFont">*</font>
 											<select class="input-block-level" id="inHousetypeId" onChange="getSurveyUsersByUserType('inHouseleaderId',this.value);"> <option value="0">Select Type</option><option value="3">Lead</option></select>
 										</div>
-										<div class="span6">
+										<div class="span3">
 											Select  Leader<font class="requiredFont">*</font>
 											<select class="input-block-level" id="inHouseleaderId" onChange="getRemeaningSurveyUsersByUserType('inHouseLeaderId',2);"> <option value="0">Select Leader</option></select>
 										</div>
-									</div>	
-									<div class="row-fluid">
+								
 										
-										<div class="span6">
+										<div class="span3">
 											Select In House Verifier<font class="requiredFont">*</font>
 											<select class="input-block-level" id="inHouseLeaderId"> <option value="0">Select User</option></select>
 										</div>
@@ -611,21 +608,20 @@
 								<div id="inhouseReleaseErrorDiv" class="span8 offset2 errorCls"></div>
 						</div>
 							<div class="row">
-								<div class="span8 offset2">
+								<div class="span12 offset2">
 									<div class="row-fluid">
 										
-										<div class="span6">
+										<div class="span3">
 											Select user Type<font class="requiredFont">*</font>
 											<select class="input-block-level" id="inHouseReleasetypeId" onChange="getSurveyUsersByUserType('inHouseReleaseleaderId',this.value);"> <option value="0">Select Type</option><option value="3">Lead</option></select>
 										</div>
-										<div class="span6">
+										<div class="span3">
 											Select  Leader<font class="requiredFont">*</font>
 											<select class="input-block-level" id="inHouseReleaseleaderId" onChange="getInHouseVerfiersByUserTypeForLeaderRelease('inHouseReleaseLeaderId',2);"> <option value="0">Select Leader</option></select>
 										</div>
-									</div>	
-									<div class="row-fluid">
+									
 										
-										<div class="span6">
+										<div class="span3">
 											Select In House Verifier<font class="requiredFont">*</font>
 											<select class="input-block-level" id="inHouseReleaseLeaderId"> <option value="0">Select User</option></select>
 										</div>
