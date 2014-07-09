@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.ConstituencyDetailReportVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -63,6 +64,10 @@ public interface ISurveyDataDetailsService
 	public ResultStatus assignConstituencyForAUser(Long userId,Long constituencyId);
 	public ResultStatus deactivateUser(Long userId,String remarks,Long userTypeId);
 	public ResultStatus deactiveSurveyLeader(final Long userId,final String remarks,final Long userTypeId,final Long dummyLeadId);
+	
+	public ConstituencyDetailReportVO getCosntituencyWiseReportByContiId(Long constituencyId);
+	
+	public ConstituencyDetailReportVO getBoothWiseDetails(Long boothId,Long constituencyId);
 	
 	public List<SelectOptionVO> getLatLongForSurveyUsersByConstituency(Long constituencyId,Date date);
 	
