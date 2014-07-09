@@ -62,7 +62,7 @@ public interface ISurveyDataDetailsService
 	
 	public ResultStatus assignConstituencyForAUser(Long userId,Long constituencyId);
 	public ResultStatus deactivateUser(Long userId,String remarks,Long userTypeId);
-	public ResultStatus deactiveSurveyLeader(final Long userId,final String remarks,final Long userTypeId,final String dummyLeadName);
+	public ResultStatus deactiveSurveyLeader(final Long userId,final String remarks,final Long userTypeId,final Long dummyLeadId);
 	
 	public List<SelectOptionVO> getLatLongForSurveyUsersByConstituency(Long constituencyId,Date date);
 	
