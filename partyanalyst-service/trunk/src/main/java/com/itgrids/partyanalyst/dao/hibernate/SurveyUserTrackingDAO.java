@@ -23,5 +23,8 @@ public class SurveyUserTrackingDAO extends GenericDaoHibernate<SurveyUserTrackin
 		query.setParameter("date", date);
 		return query.list();
 	}
-
+	public void sessionFlush()
+	{
+		 getSession().flush();
+	}
 }
