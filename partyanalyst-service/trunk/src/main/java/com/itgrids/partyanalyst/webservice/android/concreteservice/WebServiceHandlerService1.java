@@ -38,6 +38,7 @@ import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
 import com.itgrids.partyanalyst.service.IVoiceSmsService;
 import com.itgrids.partyanalyst.service.IVoterReportService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.webservice.android.abstractservice.IWebServiceHandlerService1;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.BoothVoterVO;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLocationTrackingVo;
@@ -353,7 +354,7 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 		
 		  List<Long> voterIds=null;
 		if(remainingDatBoothIds!=null && remainingDatBoothIds.size()>0)
-         voterIds =   boothPublicationVoterDAO.getAllVoterIdsByBoothIdsAndPublicationDateId(remainingDatBoothIds,10L);
+         voterIds =   boothPublicationVoterDAO.getAllVoterIdsByBoothIdsAndPublicationDateId(remainingDatBoothIds,IConstants.VOTER_DATA_PUBLICATION_ID);
 		if(voterIds!=null && voterIds.size()>0){
          List<Long> existVoterIds = surveyDetailsInfoDAO.getDataCollectedVoterIdsByBoothIds(remainingDatBoothIds); 
          
@@ -374,7 +375,7 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
              }
              List<Object[]>   votersBoothsDetails=null;
              if(voterIds!=null && voterIds.size()>0)
-            	 votersBoothsDetails =   boothPublicationVoterDAO.getBoothIdsDetailsOfVoterIds(voterIds, 10L);
+            	 votersBoothsDetails =   boothPublicationVoterDAO.getBoothIdsDetailsOfVoterIds(voterIds, IConstants.VOTER_DATA_PUBLICATION_ID);
              
 /*           if(votersBoothsDetails!=null && votersBoothsDetails.size()>0)
              List<String> partNumbers = boothDAO.getPartNosForBooths(remainingDatBoothIds);
