@@ -303,7 +303,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 				return Action.INPUT;
 			}
 			jObj = new JSONObject(getTask());
-			resultStatus = surveyDataDetailsService.deactiveSurveyLeader(jObj.getLong("userId"),jObj.getString("remarks"),jObj.getLong("deactiveUserType"),jObj.getString("leadName"));
+			resultStatus = surveyDataDetailsService.deactiveSurveyLeader(jObj.getLong("userId"),jObj.getString("remarks"),jObj.getLong("deactiveUserType"),jObj.getLong("leadId"));
 		} 
 		catch (Exception e)
 		{
@@ -451,6 +451,8 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		}
 		return Action.SUCCESS;
 	}
+	
+	
 	
 	public String getExistedConstituenciesDetails()
 	{

@@ -399,8 +399,12 @@
 										<div class="span6" id="dummyLeadinnerDiv">
 										<div id="errorPop"></div>
 									Lead Name	<font class="requiredFont">*</font>
+									<select class="input-block-level"id="dummyLeadID"> 
+												</select>
+									<!--<input class="input-block-level" type="text" id="leadId" placeholder ="Enter lead name"/>-->
 									
-									<input class="input-block-level" type="text" id="leadId" placeholder ="Enter lead name"/>&nbsp;<input type="button" value="OK" onclick="deactivateLead();"/>
+
+									&nbsp;<input type="button" value="OK" onclick="deactivateLead();"/>
 									<input type="button" value="Cancel" onclick="closePopup();"/>
 									</div>
 					              </div>
