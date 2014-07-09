@@ -56,6 +56,11 @@ public class SurveyDetailsInfo
 	private String uuid;
 	private Integer statusId;
 	private Long surveySurveyorTypeId;
+	//is_houseNO_point
+	private String HouseNoPoint;
+	
+	
+	
 	
 	
 	
@@ -264,6 +269,21 @@ public class SurveyDetailsInfo
 	public void setVerified(String verified) {
 		this.verified = verified;
 	}
+	@Column(name="is_houseNO_point")
+	public String getHouseNoPoint() {
+		return HouseNoPoint;
+	}
+	public void setHouseNoPoint(String houseNoPoint) {
+		HouseNoPoint = houseNoPoint;
+	}
+	/*public String getIsHouseNoPoint() {
+		return isHouseNoPoint;
+	}
+	public void setIsHouseNoPoint(String isHouseNoPoint) {
+		this.isHouseNoPoint = isHouseNoPoint;
+	}*/
+	
+	
 	
 	
 }
