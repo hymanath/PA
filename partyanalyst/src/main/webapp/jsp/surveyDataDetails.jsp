@@ -432,7 +432,7 @@
 									<div class="row-fluid">									
 										<div class="span6">
 											Select User Type<font class="requiredFont">*</font>
-											<select class="input-block-level" id="constiUserTypeId" onChange="getAssignedConstituencyUsers('assignConstituencyLeaderId',this.value);"> <option value="0">Select Type</option><option value="3">Lead</option><option value="5">Chief Verifier</option></select>
+											<select class="input-block-level" id="constiUserTypeId" onChange="getSurveyUsersByUserType('assignConstituencyLeaderId',this.value);"> <option value="0">Select Type</option><option value="3">Lead</option><option value="5">Chief Verifier</option></select>
 										</div>
 										<div class="span6">
 											Select Leader<font class="requiredFont">*</font>
