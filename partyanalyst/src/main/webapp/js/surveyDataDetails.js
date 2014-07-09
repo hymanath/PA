@@ -1238,6 +1238,12 @@ function redicttoVerificationPage(userTypeId)
 	
 }
 
+function openComparisonReport()
+{
+	 window.open('surveyMonitoringAction.action','_blank');
+
+}
+
 function openUserTrackingPage()
 {
 	 window.open('surveyUserTrackingAction.action');
