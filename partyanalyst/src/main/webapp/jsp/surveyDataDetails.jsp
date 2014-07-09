@@ -58,7 +58,7 @@
    });
    
    
-    $('#constituencyId,#userId').change(function(){
+    $('#constituencyId').change(function(){
 		$('#boothsDtlsId').html('');
 		getUserAssignedBoothsDetailsForAConstituency();
 	});
@@ -307,27 +307,27 @@
 									<div class="row-fluid">
 										<div class="span4">
 											Select User Type<font class="requiredFont">*</font>
-											<select class="input-block-level" id="boothAssignUserType" onchange="getSurveyUsersByUserType('userId',this.value);">
+											<select class="input-block-level" id="boothAssignUserType" onchange="getExistSurveyUsersByUserType('userId',this.value);">
 											
 											<option value="0">Select User type</option>
 											<option value="1">Data Collectors</option>
 											<option value="4">Verifier</option>
-											<option value="5">Chief Verifier</option>
+											<!--<option value="5">Chief Verifier</option>-->
 											</select>
 										</div>
 										<div class="span4">
 											Select User Name<font class="requiredFont">*</font>
-											<select class="input-block-level" id="userId"> 
+											<select class="input-block-level" id="userId" onChange="getExistedConstituenciesDetails(this.value)"> 
 											<option value="0">Select User Name</option>
 											</select>
 										</div>
 										<div class="span4">
 											Select Constituency<font class="requiredFont">*</font>
-											<!--<select class="input-block-level" id="constituencyId"> 
+											<select class="input-block-level" id="constituencyId"> 
 											<option value="0">Select Constituency</option>
-											</select>-->
+											</select>
 
-											<s:select theme="simple"  name="constituency" id="constituencyId" list="constituenciesList" listKey="id" listValue="name" />
+											
 
 										</div>
 									</div>	
