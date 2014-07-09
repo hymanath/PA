@@ -32,6 +32,9 @@ public class SurveyUserTracking
 	private String latitude;
 	private Date insertedTime;
 	private Date updatedTime;
+	private String imeiNo;
+	private String uniqueUUID;
+	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -92,6 +95,20 @@ public class SurveyUserTracking
 	}
 	public void setUpdatedTime(Date updatedTime) {
 		this.updatedTime = updatedTime;
+	}
+	@Column(name="imei_no")
+	public String getImeiNo() {
+		return imeiNo;
+	}
+	public void setImeiNo(String imeiNo) {
+		this.imeiNo = imeiNo;
+	}
+	@Column(name="unique_uuid")
+	public String getUniqueUUID() {
+		return uniqueUUID;
+	}
+	public void setUniqueUUID(String uniqueUUID) {
+		this.uniqueUUID = uniqueUUID;
 	}
 	
 	
