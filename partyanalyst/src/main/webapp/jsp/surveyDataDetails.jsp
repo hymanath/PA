@@ -206,9 +206,7 @@
 											Select User Type<font class="requiredFont">*</font>
 											<select class="input-block-level" id="surveyUserTypeForSelect" onchange="getSurveyUsersByUserType('surveyUserIdForSelect',this.value);">
 											<option value="0">Select User type</option>
-											<option value="1">Data Collectors</option>
-											<option value="4">Verifier</option>
-											<option value="5">Chief Verifier</option>
+											<option value="3">Lead</option>
 											</select>
 											</div>
 											<div class="span6">
