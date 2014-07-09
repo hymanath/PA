@@ -759,6 +759,8 @@ function deactivateUser()
 			$("#deactivedummyLead").dialog({
 				width:350,
 				height:200,
+			    modal: true,
+		        resizable: false,
 				title :"Lead activation"
 			});
 			getDummyLeads('dummyLeadID',3,''+deactivateUserId+'');
