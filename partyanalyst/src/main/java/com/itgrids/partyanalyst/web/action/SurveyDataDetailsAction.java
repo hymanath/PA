@@ -283,7 +283,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 				return Action.INPUT;
 			}
 			jObj = new JSONObject(getTask());
-			resultStatus = surveyDataDetailsService.deactivateUser( jObj.getLong("userId"),jObj.getString("remarks"));
+			resultStatus = surveyDataDetailsService.deactivateUser( jObj.getLong("userId"),jObj.getString("remarks"),jObj.getLong("deactiveUserType"));
 		} 
 		catch (Exception e)
 		{
@@ -291,6 +291,27 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		}
 		return Action.SUCCESS;
 	}
+	public String deactiveSurveyLeader()
+
+	{
+		try
+		{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			jObj = new JSONObject(getTask());
+			resultStatus = surveyDataDetailsService.deactiveSurveyLeader(jObj.getLong("userId"),jObj.getString("remarks"),jObj.getLong("deactiveUserType"),jObj.getString("leadName"));
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in deactiveSurveyUser in SurveyDataDetailsAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	
 	
 	public String saveSurveyUserType()
 	{

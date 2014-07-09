@@ -706,7 +706,7 @@ function deactivateUser()
 	$('#processingImgForDeactivation').show();
 	var	deactivateUserId =  $("#deactivateUserId").val();
 	var	remarksId = $.trim($("#remarksId").val());
-
+	var userTypeId =  $("#deactiveUserTypeId").val();
 	if(deactivateUserId == 0)
 	{
 		$("#deactivateUserErrorDiv").html("Please Select The User").css("color","red");
@@ -724,7 +724,7 @@ function deactivateUser()
 	{
 		userId : deactivateUserId,
 		remarks :  remarksId,
-		
+		deactiveUserType:userTypeId,
 		task : "deactivateUser"
 	}
 	
@@ -737,19 +737,92 @@ function deactivateUser()
 			
 			if(result.resultCode == 0) 
 			{
+				$("#deactivedummyLead").css("display","none");	
 				$("#deactivateUserErrorDiv").html('Deactivated Usersuccessfully.').css("color","green");
 				setTimeout(function(){$('#deactivateUserErrorDiv').html('');}, 3000);				
 				$('#deactivateUserId').val(0);
 				$('#remarksId').val('');
 			}
+			else if(result.resultCode == 4)
+			{
+				
+			$("#deactivedummyLead").css("display","block");
+			//$("#deactivateUserErrorDiv").html('Users available....').css("color","red");
+
+			$("#deactivedummyLead").dialog({
+				width:350,
+				height:200,
+				title :"Lead activation"
+			});
+
+			}
 			else
 			{
+				$("#deactivedummyLead").css("display","none");	
 				$("#deactivateUserErrorDiv").html('Error Occured,Try again....').css("color","red");
 			}	
 			$('#processingImgForDeactivation').hide();
 		});
 
 }
+
+
+
+
+
+
+
+
+
+function deactivateLead()
+{
+	$("#errorPop").html('');
+	var str ='';
+	var	deactivateUserId =  $("#deactivateUserId").val();
+	var	remarksId = $.trim($("#remarksId").val());
+	var userTypeId =  $("#deactiveUserTypeId").val();
+	var leadname = $.trim($("#leadId").val());
+	if(leadname.length == 0)
+	{
+		str+='<font color="red">Name is required</font>';
+		$("#errorPop").html(str);
+		return;
+	}
+	else
+	{
+	var jsObj = 
+	{
+		userId : deactivateUserId,
+		remarks :  remarksId,
+		deactiveUserType:userTypeId,
+		leadName:leadname,
+		task : "deactivateUser"
+	}
+	
+	$.ajax({
+		type:'GET',
+		url: 'deactiveSurveyLeaderAction.action',
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)},
+		}).done(function(result){
+			if(result.resultCode == 0)
+			{
+				$("#errorPop").html("<font color='green'>Survey user created successfully..</font>");
+			}
+			else
+			{
+			$("#errorPop").html("<font color='red'>Exception Occured try again....</font>");
+			}
+	});
+	}
+
+}
+
+
+
+
+
+
 
 function getLeaderDetetilsByContituencyWise()
 {
@@ -1611,4 +1684,9 @@ else{
 }
 	
 		
+}
+
+function closePopup()
+{
+	$( "#deactivedummyLead" ).dialog('close');
 }
