@@ -72,14 +72,13 @@
 		<div class="row">
 			<div class="span10 offset1 m_top20 survey_nav">
 				<ul class="inline unstyled">
-					<li><a class="highlight selected" id="userTypeTab" onclick="showHideTabs(this.id);"> User Type Creation </a></li>
-					<li><a class="highlight" id="userCreationTab" onclick="showHideTabs(this.id);"> User Creation </a></li>
+					<!-- <li><a class="highlight selected " id="userTypeTab" onclick="showHideTabs(this.id);"> User Type Creation </a></li>-->
+					<li><a class="highlight  selected" id="userCreationTab" onclick="showHideTabs(this.id);"> User Creation </a></li>
+					<li><a class="highlight" id="assignLeaderTab" onclick="showHideTabs(this.id);"> Assign/Release Leader</a></li>
 					<li><a class="highlight" id="tabAssignTab" onclick="showHideTabs(this.id);"> Tab Assign </a></li>
 					<li><a class="highlight" id="boothAssignTab" onclick="showHideTabs(this.id);"> Booth Assign </a></li>
 					<li><a class="highlight" id="deactivationTab" onclick="showHideTabs(this.id);"> Deactivation </a></li>
-					<li><a class="highlight" id="assignLeaderTab" onclick="showHideTabs(this.id);"> Assign Leader</a></li>
 					<li><a class="highlight" id="verificationDetailsTab" onclick="showHideTabs(this.id);"> Verification Details	 </a></li>
-					
 					<li class="highlight" id="reportsTab" onclick="showHideTabs(this.id);">
 					  <div class="dropdown">
 							<a class="dropdown-toggle" data-toggle="dropdown" href="#">Reports</a>
@@ -87,8 +86,9 @@
 							<li><a href="javascript:{redicttoVerificationPage(1)}">Data Collector Report </a></li>
 							<li><a  href="javascript:{redicttoVerificationPage(2)}">Verifier Report  </a></li>
 							<li><a href="javascript:{redicttoVerificationPage(2)}">Third Party Report </a></li>
+							<li><a href="javascript:{openUserTrackingPage()}">User Tracking Report </a></li>
 							</ul>
-					</div>
+					  </div>
 					</li>
 					<!--<li><a class="highlight" id="reportTab" onclick="redicttoVerificationPage();"> Reports	 </a></li>-->
 				</ul>
