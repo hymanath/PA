@@ -31,7 +31,7 @@
 					filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffea51', endColorstr='#ffa600',GradientType=0 );
 					}
 			.survey_nav ul li{line-height:40px;}
-			.survey_nav ul li a{color:#333; font-weight:bold; font-size:12px; padding:12px 2px;text-decoration:none;text-shadow:0px 1px #ffcc00; }
+			.survey_nav ul li a{color:#333; font-weight:bold; font-size:13px; padding:12px 4px;text-decoration:none;text-shadow:0px 1px #ffcc00; }
 			.survey_nav ul li a:hover{background:rgba(255,0,0,0.1);}
 			.survey_nav ul li a.selected{color:#fff; background:red;text-shadow:0px 1px #4f4f4f; }
 			.requiredFont{
@@ -46,6 +46,10 @@
 			.datePickerCls{
 			 cursor: text !important;
 			}
+			
+			.survey_nav ul li .dropdown-menu{background:#ffcc00; border-top-left-radius:0px; border-top-right-radius:0px;margin-top:-1px; margin-right:5px;}
+			.survey_nav ul li .dropdown li a{color:#333; }
+
 		</style>
   </head>
   
@@ -644,6 +648,13 @@
 		
 	</div>
 <script>
+
+
+$(".highlight").click(function()
+{
+	$(".highlight").removeClass("selected");
+	$(this).addClass("selected");
+})
 
 var count = 1;
 function assignNewTabDiv(){
