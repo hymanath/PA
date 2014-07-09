@@ -14,6 +14,25 @@ public class SurveyUserTabAssignDAO extends GenericDaoHibernate<SurveyUserTabAss
 	{
 		super(SurveyUserTabAssign.class);
 	}
+	
+	public List<Object[]> getTabNos(List<Long> surveyUserIds)
+	{
+		Query query = getSession().createQuery("select model.tabNo,model.surveyUserTabAssignId from SurveyUserTabAssign model where" +
+				" model.surveyUser.surveyUserId in(:surveyUserIds) and model.activeStatus = 'Y'");
+		query.setParameterList("surveyUserIds", surveyUserIds);
+		return query.list();
+		
+	}
+	
+	public List<Long> getSurveyUserTabAssignIds(Long surveyUserID)
+	{
+		Query query = getSession().createQuery("select model.surveyUserTabAssignId from SurveyUserTabAssign model where" +
+				" model.surveyUser.surveyUserId = :surveyUserID and model.activeStatus = 'Y'");
+		query.setParameter("surveyUserID", surveyUserID);
+		return query.list();
+		
+	}
+	
 
 	
 	@SuppressWarnings("unchecked")
@@ -29,6 +48,16 @@ public class SurveyUserTabAssignDAO extends GenericDaoHibernate<SurveyUserTabAss
 		query.setParameterList("surveyUserIds", surveyUserIds);
 		
 		return query.list();
+	}
+	
+	public int updateActiveStatus(List<Long> Ids)
+	{
+		Query query = getSession().createQuery("update SurveyUserTabAssign model set model.activeStatus = 'N' where model.surveyUserTabAssignId in (:Ids)");
+		
+		query.setParameterList("Ids", Ids);
+		int count = query.executeUpdate();
+		return count;
+		
 	}
 
 }

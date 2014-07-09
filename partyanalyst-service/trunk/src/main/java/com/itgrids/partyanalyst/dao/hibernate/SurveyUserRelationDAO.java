@@ -67,4 +67,34 @@ public class SurveyUserRelationDAO extends GenericDaoHibernate<SurveyUserRelatio
 		int count = query.executeUpdate();
 		return count;
 	}
+	
+	
+	public List<Object[]> getConstituencyForSurveyUser(List<Long> surveyUserIds)
+	{
+		Query query = getSession().createQuery("select model.constituency.constituencyId,model.surveyUser.surveyUserId,model.surveyUserRelationId from SurveyUserRelation model where model.surveyUser.surveyUserId in (:surveyUserIds) and model.activeStatus = 'Y' ");
+		query.setParameterList("surveyUserIds", surveyUserIds);
+		return query.list();
+		
+					
+	}
+	
+	
+	public List<Object[]> getUsersForAssignedUser(Long leaderId,Long userType)
+	{
+		Query query = getSession().createQuery("select distinct model.surveyUser.surveyUserId,model.surveyUser.userName from SurveyUserRelation model where " +
+				"model.surveyLeader.surveyUserId = :leaderId and model.activeStatus = 'Y' and model.surveyUserType.surveyUsertypeId = :userType");
+		query.setParameter("leaderId", leaderId);
+		query.setParameter("userType", userType);
+		return query.list();
+	}
+	
+	public int updateActiveStatusByIDs(List<Long> Ids)
+	{
+		Query query = getSession().createQuery("update SurveyUserRelation model set model.activeStatus = 'N' where model.surveyUserRelationId in (:Ids)");
+		
+		query.setParameterList("Ids", Ids);
+		int count = query.executeUpdate();
+		return count;
+		
+	}
 }
