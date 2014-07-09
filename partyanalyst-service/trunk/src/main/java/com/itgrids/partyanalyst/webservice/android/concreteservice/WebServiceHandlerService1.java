@@ -1,7 +1,9 @@
 package com.itgrids.partyanalyst.webservice.android.concreteservice;
        
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -368,12 +370,24 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
              List<String> partNumbers = boothDAO.getPartNosForBooths(remainingDatBoothIds);
              List<Object[]>   votersBoothsDetails =   boothPublicationVoterDAO.getBoothIdsDetailsOfVoterIds(voterIds, 10L);
              
-      List<BoothVoterVO> boothVotersVOList = new ArrayList<BoothVoterVO>();                
+      List<BoothVoterVO> boothVotersVOList = new ArrayList<BoothVoterVO>();   
+      
+      Set<Long> boothIds1 = new HashSet<Long>();
+      
+      for(Object[] obj:votersBoothsDetails)
+    	  boothIds1.add((Long)obj[2]);
+      
+      for(Long boothId:boothIds1)
+      {
+    	  BoothVoterVO vo = new BoothVoterVO();
+    	  vo.setBoothId(boothId);
+    	  boothVotersVOList.add(vo);
+      }
              
              for(Object[] obj:votersBoothsDetails)
              {
                      
-                     BoothVoterVO boothVoterVO = getMatchedBoothVO(boothVotersVOList,obj[0].toString());
+                     BoothVoterVO boothVoterVO = getMatchedBoothVO(boothVotersVOList,(Long)obj[2]);
                      
                      if(boothVoterVO != null)
                      {
@@ -484,10 +498,10 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 		
 		return status;		
 	}
-	 private BoothVoterVO getMatchedBoothVO(List<BoothVoterVO> boothVoters , String partNo)
+	 private BoothVoterVO getMatchedBoothVO(List<BoothVoterVO> boothVoters , Long boothId)
      {
              for(BoothVoterVO boothVoter:boothVoters)
-                     if(boothVoter.getPartNo().equalsIgnoreCase(partNo))
+                     if(boothVoter.getBoothId().equals(boothId))
                              return boothVoter;
              return null;
              
