@@ -432,6 +432,46 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		return Action.SUCCESS;
 	}
 	
+	public String getExistedSurveyUsersByUserType()
+	{
+		try
+		{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			jObj = new JSONObject(getTask());
+			returnList = surveyDataDetailsService.getExistedSurveyUsersByUserType(jObj.getLong("userTypeId"));
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getExistedSurveyUsersByUserType in SurveyDataDetailsAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getExistedConstituenciesDetails()
+	{
+		try
+		{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			jObj = new JSONObject(getTask());
+			returnList = surveyDataDetailsService.getExistedConstituenciesDetailsByUserId(jObj.getLong("userId"));
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getExistedConstituenciesDetails in SurveyDataDetailsAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	
 	
 	public String getNotAssignedSurveyUsersByUserType()
 	{
@@ -595,14 +635,17 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			String endDate = jObj.getString("endDate");
 			Long userTypeId = jObj.getLong("userTypeId");
 			
-			 JSONArray boothDetails = jObj.getJSONArray("boothIds");
-			 
-			
+			JSONArray boothDetails = null;
 			 List<Long> boothIds = new ArrayList<Long>();
-			 
-			for(int i = 0 ; i < boothDetails.length() ; i++)
+			
+			if(jObj.get("boothIds") != null)
 			{
-				boothIds.add(Long.valueOf(boothDetails.get(i).toString()));
+			   boothDetails =(JSONArray) jObj.get("boothIds");
+			 
+				for(int i = 0 ; i < boothDetails.length() ; i++)
+				{
+					boothIds.add(Long.valueOf(boothDetails.get(i).toString()));
+				}
 			}
 			
 			

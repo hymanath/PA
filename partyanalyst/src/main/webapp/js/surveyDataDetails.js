@@ -1690,3 +1690,50 @@ function closePopup()
 {
 	$( "#deactivedummyLead" ).dialog('close');
 }
+
+function getExistSurveyUsersByUserType(divId,value)
+{
+	 
+	$('#'+divId+'').html('<option value="0">Select User</option>');
+	var jsObj =
+	{
+		userTypeId :value,
+		task : "getSurveyUsersByUserType"
+	}
+	$.ajax({
+	type:'GET',
+	url: 'getExistedSurveyUsersByUserType.action',
+	dataType: 'json',
+	data: {task:JSON.stringify(jsObj)},
+	}).done(function(result){
+		if(result != null && result.length > 0)
+			for(var i in result)
+			$('#'+divId+'').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');			
+	});
+
+}
+
+function getExistedConstituenciesDetails(userId)
+{
+	$('#boothsDtlsId').html('');
+	var jsObj =
+	{
+		userId :userId
+	}
+
+	$.ajax({
+	type:'GET',
+	url: 'getExistedConstituenciesDetails.action',
+	dataType: 'json',
+	data: {task:JSON.stringify(jsObj)},
+	}).done(function(result){
+		$('#constituencyId').find('option').remove();
+		if(result != null)
+		{
+			$.each(result,function(index,value){
+             $('#constituencyId').append('<option value="'+value.id+'">'+value.name+'</option>');
+			});
+          $('#constituencyId').change();           
+		}
+	});
+}
