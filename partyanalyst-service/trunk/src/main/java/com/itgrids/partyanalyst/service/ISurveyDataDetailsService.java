@@ -67,4 +67,9 @@ public interface ISurveyDataDetailsService
 	public List<SelectOptionVO> getLatLongForSurveyUsersByConstituency(Long constituencyId,Date date);
 	
 	public List<Long> getDataCollectedCount(Long userId,Long boothId);
+	
+	public List<GenericVO> getExistedSurveyUsersByUserType(Long userTypeId);
+	public List<GenericVO> getExistedConstituenciesDetailsByUserId(Long userId);
+
+
 }

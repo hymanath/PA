@@ -1204,7 +1204,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		
 		try
 		{
-			List<Object[]> boothDtls = boothDAO.getAllTheBoothsDetailsByConstituencyId(constituencyId,10L);
+			List<Object[]> boothDtls = boothDAO.getAllTheBoothsDetailsByConstituencyId(constituencyId,9L);
 			
 			List<Long> existingBoothIds = new ArrayList<Long>();
 			
@@ -1979,7 +1979,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		List<UserBoothDetailsVO> resultList = new ArrayList<UserBoothDetailsVO>();
 		try {
 			long publicationId= boothDAO.getLatestPublicationDateIdForAConstituency(constituencyId);
-			List<Object[]> boothsList = boothDAO.getAllTheBoothsDetailsByConstituencyId(constituencyId,10L);
+			List<Object[]> boothsList = boothDAO.getAllTheBoothsDetailsByConstituencyId(constituencyId,9L);
 			
 			for(Object[] parms:boothsList)
 			{
@@ -2313,6 +2313,44 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			resultStatus.setMessage("Exception");
 		}
 		return resultStatus;
+	}
+	
+	public List<GenericVO> getExistedSurveyUsersByUserType(Long userTypeId)
+	{
+		List<GenericVO> returnList = null;
+		try
+		{
+			List<Object[]> result = surveyUserRelationDAO.getExistedSurveyUsersByUserType(userTypeId);
+			if(result != null && result.size() > 0)
+			{
+				returnList = new ArrayList<GenericVO>();
+				fillGenericVO(result,returnList);
+			}
+		}
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getExistedSurveyUsersByUserType service in SurveyDataDetailsService", e);
+		}
+		 return returnList;
+	}
+	
+	public List<GenericVO> getExistedConstituenciesDetailsByUserId(Long userId)
+	{
+		List<GenericVO> returnList = null;
+		try
+		{
+			List<Object[]> result = surveyUserConstituencyDAO.getExistedConstituenciesDetailsByUserId(userId);
+			if(result != null && result.size() > 0)
+			{
+				returnList = new ArrayList<GenericVO>();
+				fillGenericVO(result,returnList);
+			}
+		}
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getExistedSurveyUsersByUserType service in SurveyDataDetailsService", e);
+		}
+		 return returnList;
 	}
 	
 	

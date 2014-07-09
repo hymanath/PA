@@ -60,4 +60,20 @@ public class SurveyUserConstituencyDAO extends GenericDaoHibernate<SurveyUserCon
 		return count;
 		
 	}
+	
+	public List<Object[]> getExistedConstituenciesDetailsByUserId(Long userId)
+	{
+		Query query = getSession().createQuery("select distinct SUC.constituency.constituencyId,SUC.constituency.name from SurveyUserConstituency SUC " +
+				"where " +
+				"SUC.surveyUser.surveyUserId in(select  SUR.surveyLeader.surveyUserId from SurveyUserRelation SUR where  SUR.surveyUser.surveyUserId  = :surveyUserId " +
+				"and SUR.activeStatus = 'Y') and " +
+				"SUC.activeStatus = 'Y'");
+		
+		query.setParameter("surveyUserId", userId);
+		
+		return query.list();
+		
+	}
+	
 }
+
