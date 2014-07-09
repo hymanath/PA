@@ -1130,7 +1130,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				
 				Integer totalCollectedData = SurveyResponceVOList.size();
 				
-				List<Object[]> voterHouseDetails = boothPublicationVoterDAO.getTotalVotersByBoothsForVerfier(boothId, 10l);
+				List<Object[]> voterHouseDetails = boothPublicationVoterDAO.getTotalVotersByBoothsForVerfier(boothId, IConstants.VOTER_DATA_PUBLICATION_ID);
 				if(voterHouseDetails != null && voterHouseDetails.size() > 0)
 				{
 					for (Object[] parms : voterHouseDetails)
@@ -1206,7 +1206,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		
 		try
 		{
-			List<Object[]> boothDtls = boothDAO.getAllTheBoothsDetailsByConstituencyId(constituencyId,9L);
+			List<Object[]> boothDtls = boothDAO.getAllTheBoothsDetailsByConstituencyId(constituencyId,IConstants.VOTER_DATA_PUBLICATION_ID);
 			
 			List<Long> existingBoothIds = new ArrayList<Long>();
 			
@@ -1981,7 +1981,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		List<UserBoothDetailsVO> resultList = new ArrayList<UserBoothDetailsVO>();
 		try {
 			long publicationId= boothDAO.getLatestPublicationDateIdForAConstituency(constituencyId);
-			List<Object[]> boothsList = boothDAO.getAllTheBoothsDetailsByConstituencyId(constituencyId,9L);
+			List<Object[]> boothsList = boothDAO.getAllTheBoothsDetailsByConstituencyId(constituencyId,IConstants.VOTER_DATA_PUBLICATION_ID);
 			
 			for(Object[] parms:boothsList)
 			{
