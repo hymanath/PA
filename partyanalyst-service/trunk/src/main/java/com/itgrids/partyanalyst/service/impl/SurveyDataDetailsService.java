@@ -38,7 +38,9 @@ import com.itgrids.partyanalyst.dao.ISurveyUserTabAssignDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserTrackingDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserTypeDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.ConstituencyDetailReportVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -120,6 +122,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	@Autowired
 	private ISurveyUserConstituencyDAO surveyUserConstituencyDAO;
 	
+	@Autowired
+	private IVoterInfoDAO voterInfoDAO;
 	/**
 	 * This Service is used for saving the user type details
 	 * @param userTypeDescription
@@ -2435,6 +2439,150 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			resultStatus.setMessage("Exception");
 		}
 		return resultStatus;
+	}
+	
+	
+	public ConstituencyDetailReportVO getCosntituencyWiseReportByContiId(Long constituencyId){
+		ConstituencyDetailReportVO reportVO = new ConstituencyDetailReportVO();
+		try {
+			
+
+			 List<Object[]> constituencyCollectdDetls = surveyDetailsInfoDAO.getsurveyDetailsInfoByConstituencyId(constituencyId,1L);
+			 
+			 List<Object[]> constituencyVerifiedDetls = surveyDetailsInfoDAO.getsurveyDetailsInfoByConstituencyId(constituencyId,4L);
+			 
+			 List<Object[]> constituencyBoothInfo = surveyDetailsInfoDAO.getBoothDetailsByConstituencyId(constituencyId);
+			 
+			 Long totalVoters = voterInfoDAO.getTotalVotersForSelectdLevel(1L, constituencyId, 10L, constituencyId); //(report level id,reportlevelValue,publicationId,constId);
+			 if(constituencyCollectdDetls != null && constituencyCollectdDetls.size()>0){
+				
+				 reportVO.setConstituencyTotalVoters(totalVoters);
+				 
+				 for (Object[] param : constituencyCollectdDetls) {
+					
+					reportVO.setTotalColelctedVoters(param[0] != null ? (Long)param[0]:0L);
+
+					Long casteCollectedCount = (param[1] != null ? (Long)param[1]:0L) + (param[2] != null ? (Long)param[2]:0L);
+					reportVO.setCasteCollectedCount(casteCollectedCount);
+					
+					Long hamletCollectedCount =  (param[3] != null ? (Long)param[3]:0L) + (param[4] != null ? (Long)param[4]:0L);
+					reportVO.setHamletCollectedCount(hamletCollectedCount);
+					
+					reportVO.setCadreCollectedCount(param[5] != null ? (Long)param[5]:0L);
+					reportVO.setInfluencePeopleCollectedCount(param[6] != null ? (Long)param[6]:0L);
+					reportVO.setMobileNoCollectedCount(param[7] != null ? (Long)param[7]:0L);
+					
+					reportVO.setNotCollectedVoters(totalVoters - (Long) param[0]);
+					}
+				 
+				 
+				 }
+			 
+				 if(constituencyCollectdDetls != null && constituencyCollectdDetls.size()>0){
+					 
+					 for (Object[] params : constituencyVerifiedDetls) {
+						 
+							reportVO.setTotalVerifiedVoters(params[0] != null ? (Long)params[0]:0L);
+
+							Long casteVerifiedCount = (params[1] != null ? (Long)params[1]:0L) + (params[2] != null ? (Long)params[2]:0L);
+							reportVO.setCasteVerifiedCount(casteVerifiedCount);
+							
+							Long hamletVerifiedCount = (params[3] != null ? (Long)params[3]:0L) + (params[4] != null ? (Long)params[4]:0L);
+							reportVO.setHamletVerifiedCount(hamletVerifiedCount);
+							
+							reportVO.setCadreVerifiedCount(params[5] != null ? (Long)params[5]:0L);
+							reportVO.setInfluencePeopleVerifiedCount(params[6] != null ? (Long)params[6]:0L);
+							reportVO.setMobileNoVerifiedCount(params[7] != null ? (Long)params[7]:0L);
+							
+							reportVO.setNotVerifiedVoters(totalVoters - (Long) params[0]);
+							
+					 }
+				 }
+				 
+				 List<GenericVO> boothsList = new ArrayList<GenericVO>();
+				 if(constituencyBoothInfo != null && constituencyBoothInfo.size()>0){
+					 
+					 for (Object[] booth : constituencyBoothInfo) {
+						 GenericVO vo = new GenericVO();
+						 vo.setId((Long) booth[0]);
+						 vo.setName(booth[1].toString());
+						 boothsList.add(vo);					 
+					 }
+				 }
+			 
+				if(boothsList != null && boothsList.size()>0){ 
+						reportVO.setBoothsList(boothsList);
+				}
+			 
+		} catch (Exception e) {
+			LOG.error("Exception raised in getCosntituencyWiseReportByContiId() service in SurveyDataDetailsService", e);
+			e.printStackTrace();
+			reportVO = null;
+		}
+		return reportVO;
+	}
+	
+	public ConstituencyDetailReportVO getBoothWiseDetails(Long boothId,Long constituencyId){
+		ConstituencyDetailReportVO reportVO = new ConstituencyDetailReportVO();
+		try {
+			
+			 List<Object[]> constituencyCollectdDetls = surveyDetailsInfoDAO.getsurveyDetailsInfoByboothId(boothId,1L);
+			 List<Object[]> constituencyVerifiedDetls = surveyDetailsInfoDAO.getsurveyDetailsInfoByboothId(boothId,4L);
+			 
+			 Long totalVoters = voterInfoDAO.getTotalVotersForSelectdLevel(4L, boothId, 10L, constituencyId); //(report level id,reportlevelValue,publicationId,constId);
+			 if(constituencyCollectdDetls != null && constituencyCollectdDetls.size()>0){
+					
+				 reportVO.setConstituencyTotalVoters(totalVoters);
+				 
+				 for (Object[] param : constituencyCollectdDetls) {
+					
+					//reportVO.setTotalColelctedVoters(param[0] != null ? (Long)param[0]:0L);
+
+					Long casteCollectedCount = (param[1] != null ? (Long)param[1]:0L) + (param[2] != null ? (Long)param[2]:0L);
+					reportVO.setCasteCollectedCount(casteCollectedCount);
+					
+					Long hamletCollectedCount =  (param[3] != null ? (Long)param[3]:0L) + (param[4] != null ? (Long)param[4]:0L);
+					reportVO.setHamletCollectedCount(hamletCollectedCount);
+					
+					reportVO.setCadreCollectedCount(param[5] != null ? (Long)param[5]:0L);
+					reportVO.setInfluencePeopleCollectedCount(param[6] != null ? (Long)param[6]:0L);
+					reportVO.setMobileNoCollectedCount(param[7] != null ? (Long)param[7]:0L);
+					
+					reportVO.setNotCollectedVoters(totalVoters - (param[0]!= null?(Long) param[0]:0L));
+					reportVO.setTotalColelctedVoters((param[8]!= null?(Long) param[8]:0L)); // local area count
+					}
+				 
+				 
+				 }
+			 
+				 if(constituencyCollectdDetls != null && constituencyCollectdDetls.size()>0){
+					 
+					 for (Object[] params : constituencyVerifiedDetls) {
+						 
+						//	reportVO.setTotalVerifiedVoters(params[0] != null ? (Long)params[0]:0L);
+
+							Long casteVerifiedCount = (params[1] != null ? (Long)params[1]:0L) + (params[2] != null ? (Long)params[2]:0L);
+							reportVO.setCasteVerifiedCount(casteVerifiedCount);
+							
+							Long hamletVerifiedCount = (params[3] != null ? (Long)params[3]:0L) + (params[4] != null ? (Long)params[4]:0L);
+							reportVO.setHamletVerifiedCount(hamletVerifiedCount);
+							
+							reportVO.setCadreVerifiedCount(params[5] != null ? (Long)params[5]:0L);
+							reportVO.setInfluencePeopleVerifiedCount(params[6] != null ? (Long)params[6]:0L);
+							reportVO.setMobileNoVerifiedCount(params[7] != null ? (Long)params[7]:0L);
+							
+							reportVO.setNotVerifiedVoters(totalVoters - (params[0]!= null?(Long) params[0]:0L));
+							reportVO.setTotalVerifiedVoters((params[8]!= null?(Long) params[8]:0L)); // local area count
+					 }
+				 }
+				 
+				
+		} catch (Exception e) {
+			LOG.error("Exception raised in getBoothWiseDetails() service in SurveyDataDetailsService", e);
+			e.printStackTrace();
+			reportVO = null;
+		}
+		return reportVO;
 	}
 	
 	
