@@ -7449,6 +7449,12 @@
 			<result name="success">/jsp/surveyUserTracking.jsp</result>
 		</action>
 		
+		
+		<action name="userWiseTrackingAction" class="surveyDataDetailsAction">
+			<result name="success">/jsp/userWiseTracking.jsp</result>
+		</action>
+		
+		
 		<action name="candidateUpdateDetailsAction" class="candidateUpdateDetailsAction">
 			<result name="success">/jsp/candidateUpdateDetails.jsp</result>
 		</action>
