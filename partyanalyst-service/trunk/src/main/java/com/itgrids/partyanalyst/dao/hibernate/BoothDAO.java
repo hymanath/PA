@@ -1895,7 +1895,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 	
 	public Long getTotalVoter(Long boothId)
 	{
-		Query query = getSession().createQuery("select count(model.totalVoters) from Booth model where model.boothId = :boothId and model.publicationDate.publicationDateId = 10");
+		Query query = getSession().createQuery("select model.totalVoters from Booth model where model.boothId = :boothId and model.publicationDate.publicationDateId = 10");
 		query.setParameter("boothId", boothId);
 		return (Long)query.uniqueResult();
 	}
