@@ -757,6 +757,8 @@ public interface IConstants {
     public static final Long DATA_COLLECTOR_TYPE_ID = 1L;
     public static final Long VERIFIER_TYPE_ID = 2L;
     
+    public static final Long VOTER_DATA_PUBLICATION_ID = 11L;
+    
     public enum  MatchTypes{
     	PExactMatch,PSoundexMatch,CExactMatch,CsoundexMatch
     }
