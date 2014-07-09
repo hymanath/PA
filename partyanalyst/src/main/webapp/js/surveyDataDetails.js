@@ -1151,6 +1151,10 @@ function redicttoVerificationPage(userTypeId)
 	
 }
 
+function openUserTrackingPage()
+{
+	 window.open('surveyUserTrackingAction.action');
+}
 function getAssignedConstituencyUsers(divId,value)
 {
 	
