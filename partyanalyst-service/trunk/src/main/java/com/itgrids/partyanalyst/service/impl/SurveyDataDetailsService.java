@@ -624,24 +624,21 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 						for(Object[] params1 : list)
 						{
 							if(!surveyUserRelationIds.contains((Long)params1[2]))
-						surveyUserRelationIds.add((Long)params1[2]);
-						constituencyMap.put((Long)params1[1], (Long)params1[0]);
-						}
-					
-						
-						/* assign surveyUsers to dummy leader  */
-						for(Long userId1 :constituencyMap.keySet())
-						{
+						    surveyUserRelationIds.add((Long)params1[2]);
 							
+							SurveyUserRelation survRelation = surveyUserRelationDAO.get((Long)params1[2]);
 							SurveyUserRelation surveyUserRelation = new SurveyUserRelation();
-							surveyUserRelation.setConstituency(constituencyDAO.get(constituencyMap.get(userId1)));
-							surveyUserRelation.setSurveyUser(surveyUserDAO.get(userId1));
+							if(survRelation.getConstituency() != null)
+							surveyUserRelation.setConstituency(constituencyDAO.get(constituencyMap.get(survRelation.getConstituency().getConstituencyId())));
+							surveyUserRelation.setSurveyUser(surveyUserDAO.get((Long)params1[1]));
 							surveyUserRelation.setSurveyLeader(surveyUser);
 							surveyUserRelation.setSurveyUserType(surveyUserTypeDAO.get(userTypeId));
 							surveyUserRelation.setActiveStatus("Y");
 							surveyUserRelationDAO.save(surveyUserRelation);
-						}
 						
+						}
+					
+					
 						
 						surveyUserRelationDAO.updateActiveStatusByIDs(surveyUserRelationIds);
 						
@@ -657,9 +654,9 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 						  for(Object[] params : list3)
 							{
 							
-							
-							  
-							surveyUserConstituencyIds.add((Long)params[0]);
+						    surveyUserConstituencyIds.add((Long)params[0]);
+						    
+						    
 							SurveyUserConstituency survConstituency = new SurveyUserConstituency();
 							survConstituency.setConstituency(constituencyDAO.get((Long)params[1]));
 							survConstituency.setSurveyUser(surveyUser);
