@@ -71,12 +71,15 @@ function buildLocationDetails(result)
 { 
 	
 	$.each(result,function(index,value){
-	var voterDetails = 
+	if(value.latitude != null && value.longititude != null)
+	{
+		var voterDetails = 
 		{ "type": "Feature",
 		"properties": {"name":value.name,"location":value.location,"partno":value.partno,"url":value.url,"value":value.value,"villageCovered":value.villageCovered},
-		"geometry": { "type": "Polygon", "coordinates": [[[78.3869982,17.4862203]]] }
-	};
-	apaccampus.features.push(voterDetails);
+			"geometry": { "type": "Polygon", "coordinates": [[[value.latitude,value.longititude]]] }
+		};
+		apaccampus.features.push(voterDetails);
+		}
 	});
     //console.log(apaccampus);
 	var map = new L.Map('map').setView(new L.LatLng(16.25,80.15), 6);
@@ -108,6 +111,35 @@ function buildLocationDetails(result)
 			});
 		}
 	}).addTo(map);
+	for(var i in result)
+	{
+		if(result[i].latitude != null && result[i].longititude != null)
+		{
+			var iconImg = '';
+			if(result[i].type == "Data Collectors")
+			{
+				iconImg = 'images/DC.png';
+			}
+			else
+			{
+				iconImg = 'images/DV.png';
+			}
+			var icon = L.icon({
+			iconUrl: iconImg,
+
+			iconSize:     [30, 30], // size of the icon
+			shadowSize:   [10, 10], // size of the shadow
+			iconAnchor:   [10, 10], // point of the icon which will correspond to marker's location
+			shadowAnchor: [4, 62],  // the same for the shadow
+			popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+		   });
+			
+	
+			var markers = new L.Marker([result[i].longititude,result[i].latitude],{icon: icon});
+			map.addLayer(markers);	
+		}
+		
+	}
 	
 	buildTable(result);
 } 
@@ -175,6 +207,8 @@ function onEachFeature(feature, layer)
 		});
 		
 		layer.bindPopup(popupContent); */
+		
+		
 	} 
 }
 
