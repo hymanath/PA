@@ -707,6 +707,8 @@ function deactivateUser()
 	var	deactivateUserId =  $("#deactivateUserId").val();
 	var	remarksId = $.trim($("#remarksId").val());
 	var userTypeId =  $("#deactiveUserTypeId").val();
+	var optionsCount = $("select#deactivateUserId option").length;
+
 	if(deactivateUserId == 0)
 	{
 		$("#deactivateUserErrorDiv").html("Please Select The User").css("color","red");
@@ -745,16 +747,22 @@ function deactivateUser()
 			}
 			else if(result.resultCode == 4)
 			{
-				
-			$("#deactivedummyLead").css("display","block");
-			//$("#deactivateUserErrorDiv").html('Users available....').css("color","red");
-
+			
+			if(optionsCount == 2)
+				{
+			
+			$("#deactivateUserErrorDiv").html('please create dummy user').css("color","red");
+				}
+			else
+				{
+				$("#deactivedummyLead").css("display","block");
 			$("#deactivedummyLead").dialog({
 				width:350,
 				height:200,
 				title :"Lead activation"
 			});
-
+			getDummyLeads('dummyLeadID',3,''+deactivateUserId+'');
+				}
 			}
 			else
 			{
@@ -781,10 +789,11 @@ function deactivateLead()
 	var	deactivateUserId =  $("#deactivateUserId").val();
 	var	remarksId = $.trim($("#remarksId").val());
 	var userTypeId =  $("#deactiveUserTypeId").val();
-	var leadname = $.trim($("#leadId").val());
-	if(leadname.length == 0)
+	var leadId = $("#dummyLeadID").val();
+
+	if(leadId == 0)
 	{
-		str+='<font color="red">Name is required</font>';
+		str+='<font color="red">select user</font>';
 		$("#errorPop").html(str);
 		return;
 	}
@@ -795,7 +804,7 @@ function deactivateLead()
 		userId : deactivateUserId,
 		remarks :  remarksId,
 		deactiveUserType:userTypeId,
-		leadName:leadname,
+		leadId:leadId,
 		task : "deactivateUser"
 	}
 	
@@ -808,6 +817,7 @@ function deactivateLead()
 			if(result.resultCode == 0)
 			{
 				$("#errorPop").html("<font color='green'>Survey user created successfully..</font>");
+				  setTimeout("closePopup()",3000);	
 			}
 			else
 			{
@@ -1686,7 +1696,6 @@ function closePopup()
 {
 	$( "#deactivedummyLead" ).dialog('close');
 }
-
 function getExistSurveyUsersByUserType(divId,value)
 {
 	 
@@ -1731,5 +1740,32 @@ function getExistedConstituenciesDetails(userId)
 			});
           $('#constituencyId').change();           
 		}
+	});
+}
+function getDummyLeads(divId,value,removeId)
+{
+	$('#'+divId+'').html('<option value="0">Select User</option>');
+	var jsObj =
+	{
+	userTypeId :value,
+	task : "getSurveyUsersByUserType"
+	}
+	$.ajax({
+	type:'GET',
+	url: 'getSurveyUsersByUserTypeAction.action',
+	dataType: 'json',
+	data: {task:JSON.stringify(jsObj)},
+	}).done(function(result){
+	//$('#'+divId+'').append('<option value="0">Select User</option>');
+	if(result != null && result.length > 0)
+	{
+	for(var i in result)
+	{
+		if(result[i].id != removeId)
+	$('#'+divId+'').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+	}
+
+	}
+	
 	});
 }
