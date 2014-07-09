@@ -66,7 +66,7 @@
 		$('#boothsDtlsId').html('');
 		getUserAssignedBoothsDetailsForAConstituency();
 	});
-	showHideTabs('userTypeTab');
+	showHideTabs('userCreationTab');
 
 
 
