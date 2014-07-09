@@ -200,7 +200,7 @@ function buildTable(result)
 		 str += '<td>'+result[i].url+'</td>	';
 		 str += '<td>'+result[i].villageCovered+'</td>	';
 		 str += '<td>'+result[i].location+'</td>	';
-		 str += '<td><a onClick="openTrackinWindow('+result[i].id+',\''+date+'\')">MAP</a></td>	';
+		 str += '<td><a onClick="openTrackinWindow('+result[i].id+',\''+date+'\') " style="cursor: pointer;"> MAP</a></td>	';
 		 str += '</tr>	';	
 	 }		
 	 str += '</tbody>';
@@ -285,7 +285,7 @@ function getUserDetails(userId,boothId)
 				str += '</li>';
 				str += '<li>';
 				str += '<hgroup>';
-				str += '<h4>INFLUENCE PEOPLE</h4>';
+				str += '<h4 style="font-size:14px;">INFLUENCE PEOPLE</h4>';
 				str += '<h2>'+result[5]+'</h2>';
 				str += '<h5>Identified</h5>';
 				str += '</hgroup>';
