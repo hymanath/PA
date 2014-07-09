@@ -18,6 +18,7 @@ import java.util.TreeSet;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -458,32 +459,27 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	 * @param remarks
 	 * @return resultStatus
 	 */
-	public ResultStatus deactivateUser(Long userId,String remarks)
+	public ResultStatus deactivateUser(Long userId,String remarks,Long userTypeId)
 	{
 		LOG.info("Entered into deactivateUser service in SurveyDataDetailsService");
 		ResultStatus resultStatus = new ResultStatus();
 		try
 		{
-			SurveyUser surveyUser = surveyUserDAO.get(userId);
-			if(surveyUser == null)
+			
+			if(userTypeId == 3)
 			{
-				resultStatus.setResultCode(3);
-				resultStatus.setMessage("No Exist");
-				return resultStatus;
+				List<Object[]> users = surveyUserRelationDAO.getUsersForAssignedUser(userId,userTypeId);
+				if(users != null && users.size() > 0)
+				{
+					resultStatus.setResultCode(4);	
+					resultStatus.setMessage("users exist");// for leader users are available
+					return resultStatus;	
+				}
+				
 			}
-			surveyUser.setActiveStatus("N");
-			surveyUser.setRemarks(remarks);
-			SurveyUser result = surveyUserDAO.save(surveyUser);
-			if(result != null)
-			{
-				resultStatus.setResultCode(0);
-				resultStatus.setMessage("Success");
-			}
-			else
-			{
-				resultStatus.setResultCode(1);
-				resultStatus.setMessage("Failure");
-			}
+			resultStatus = deactivateUserByID(userId,remarks);
+			
+			
 		}
 		catch (Exception e) 
 		{
@@ -493,6 +489,207 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		}
 		return resultStatus;
 }
+	
+	
+	
+	
+	/* deactivate user */
+	public ResultStatus deactivateUserByID(final Long userId,final String remarks)
+	{
+
+	ResultStatus resultStatus = (ResultStatus) transactionTemplate
+			.execute(new TransactionCallback() {
+				public Object doInTransaction(TransactionStatus status) {
+
+					ResultStatus rs = new ResultStatus();
+
+					try {
+	SurveyUser surveyUser = surveyUserDAO.get(userId);
+	if(surveyUser == null)
+	{
+		rs.setResultCode(3);
+		rs.setMessage("No Exist");
+		return rs;
+	}
+	surveyUser.setActiveStatus("N");
+	surveyUser.setRemarks(remarks);
+	SurveyUser result = surveyUserDAO.save(surveyUser);
+	if(result != null)
+	{
+		rs.setResultCode(0);
+		rs.setMessage("Success");
+	}
+	else
+	{
+		rs.setResultCode(1);
+		rs.setMessage("Failure");
+	}
+					} catch (Exception ex) {
+
+						status.setRollbackOnly();
+						ex.printStackTrace();
+						
+						rs.setExceptionEncountered(ex);
+						rs.setExceptionMsg(ex.getMessage());
+						rs.setResultCode(ResultCodeMapper.FAILURE);
+
+						return rs;
+					}
+					return rs;
+				}
+			});
+
+	return resultStatus;
+	}
+	
+	
+	/* deactivate Survey leader */
+	public ResultStatus deactiveSurveyLeader(final Long userId,final String remarks,final Long userTypeId,final String dummyLeadName)
+	{
+		
+		final DateUtilService date = new DateUtilService();
+		
+		final List<Long> surveyUserIds = new ArrayList<Long>();
+		
+			List<Object[]> users = surveyUserRelationDAO.getUsersForAssignedUser(userId,userTypeId);
+			
+			deactivateUserByID(userId,remarks);
+			
+			if(users != null && users.size() > 0)
+			{
+			
+				for(Object[] params : users)
+				{
+					if(!surveyUserIds.contains((Long)params[0]))
+					surveyUserIds.add((Long)params[0]);
+					
+				}
+			}
+			
+			/* dummy leader save */
+			ResultStatus resultStatus = (ResultStatus) transactionTemplate
+					.execute(new TransactionCallback() {
+						public Object doInTransaction(TransactionStatus status) {
+
+							ResultStatus rs = new ResultStatus();
+
+							try {
+								
+			/* save dummy lead */
+			SurveyUser surveyUser = new SurveyUser();
+			surveyUser.setFirstName(dummyLeadName);
+			surveyUser.setSurveyUserType(surveyUserTypeDAO.get(userTypeId));
+			surveyUser.setActiveStatus("Y");
+			surveyUser.setInsertedTime(date.getCurrentDateAndTime());
+			surveyUser.setUpdatedTime(date.getCurrentDateAndTime());
+			surveyUser = surveyUserDAO.save(surveyUser);
+			
+			
+			if(surveyUserIds != null && surveyUserIds.size() > 0)
+			{
+				/* tabNo assign to dummy leader*/ 
+				List<Object[]> tabNos = surveyUserTabAssignDAO.getTabNos(surveyUserIds);
+				List<Long> surveyUserTabIDs = new ArrayList<Long>();
+				if(tabNos != null && tabNos.size() > 0)
+				{
+					for(Object[] tab : tabNos)
+					{
+					
+					if(!surveyUserTabIDs.contains((Long)tab[1]))
+					surveyUserTabIDs.add((Long)tab[1]);	
+					
+					SurveyUserTabAssign surveyUserTabAssign = new SurveyUserTabAssign();
+					surveyUserTabAssign.setTabNo(tab[0].toString());
+					surveyUserTabAssign.setSurveyUser(surveyUser);
+					surveyUserTabAssign.setActiveStatus("Y");
+					surveyUserTabAssignDAO.save(surveyUserTabAssign);
+				
+					
+					}
+					surveyUserTabAssignDAO.updateActiveStatus(surveyUserTabIDs);
+				
+				}
+			
+				
+				List<Long> surveyUserRelationIds = new ArrayList<Long>();
+				Map<Long,Long> constituencyMap = new HashMap<Long, Long>();//<surveyuserId,constiId>
+				List<Object[]> list = surveyUserRelationDAO.getConstituencyForSurveyUser(surveyUserIds);
+					if(list != null && list.size() > 0)
+					{
+						for(Object[] params1 : list)
+						{
+							if(!surveyUserRelationIds.contains((Long)params1[2]))
+						surveyUserRelationIds.add((Long)params1[2]);
+						constituencyMap.put((Long)params1[1], (Long)params1[0]);
+						}
+					
+						
+						/* assign surveyUsers to dummy leader  */
+						for(Long userId1 :constituencyMap.keySet())
+						{
+							
+							SurveyUserRelation surveyUserRelation = new SurveyUserRelation();
+							surveyUserRelation.setConstituency(constituencyDAO.get(constituencyMap.get(userId1)));
+							surveyUserRelation.setSurveyUser(surveyUserDAO.get(userId1));
+							surveyUserRelation.setSurveyLeader(surveyUser);
+							surveyUserRelation.setSurveyUserType(surveyUserTypeDAO.get(userTypeId));
+							surveyUserRelation.setActiveStatus("Y");
+							surveyUserRelationDAO.save(surveyUserRelation);
+						}
+						
+						
+						surveyUserRelationDAO.updateActiveStatusByIDs(surveyUserRelationIds);
+						
+					}
+					
+					
+					/* survey user constituency */
+					
+					List<Object[]> list3 = surveyUserConstituencyDAO.getSurveyUserConstituency(userId);
+					if(list3 != null && list3.size() > 0)
+					{
+						List<Long> surveyUserConstituencyIds = new ArrayList<Long>();
+						  for(Object[] params : list3)
+							{
+							
+							
+							  
+							surveyUserConstituencyIds.add((Long)params[0]);
+							SurveyUserConstituency survConstituency = new SurveyUserConstituency();
+							survConstituency.setConstituency(constituencyDAO.get((Long)params[1]));
+							survConstituency.setSurveyUser(surveyUser);
+							survConstituency.setActiveStatus("Y");
+							surveyUserConstituencyDAO.save(survConstituency);
+							}
+						  surveyUserConstituencyDAO.updateActiveStatusByList(surveyUserConstituencyIds);
+					}
+				
+				
+				
+			}
+							} catch (Exception ex) {
+
+								status.setRollbackOnly();
+								ex.printStackTrace();
+								
+								rs.setExceptionEncountered(ex);
+								rs.setExceptionMsg(ex.getMessage());
+								rs.setResultCode(ResultCodeMapper.FAILURE);
+
+								return rs;
+							}
+							return rs;
+						}
+					});
+			return resultStatus;
+			
+		
+		
+	}
+	
+	
+	
+	
 	
 	/**
 	 * This Service is Used For Saving Survey Data

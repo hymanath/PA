@@ -21,7 +21,7 @@ public interface ISurveyDataDetailsService
 	public ResultStatus saveSurveyUserBoothAssign(Long surveyUserId,Long constituencyId,List<Long> boothIds,String saveSurveyUserBoothAssign);
 	public ResultStatus saveServeyUserRelationDetails(Long userTypeId,List<Long> surveyUserId,Long leaderId);
 	public ResultStatus saveSurveyUserTrackingDetails(Long surveyUserId,String longitude , String latitude,Date date);
-	public ResultStatus deactivateUser(Long userId,String remarks);
+	//public ResultStatus deactivateUser(Long userId,String remarks);
 	public ResultStatus saveSurveyDataDetailsInfo(SurveyResponceVO inputResponse);
 	public Long getUserDetailsForCheck(String userName,String password);
 	public List<UserBoothDetailsVO> getAssignedBoothsDetailsByConstituencyIdAndUserId(Long constituencyId,Long userId);
@@ -61,6 +61,8 @@ public interface ISurveyDataDetailsService
 	public List<SurveyReportVO> getAllAssignedConstituenciesUsers(Long userTypeId);
 	
 	public ResultStatus assignConstituencyForAUser(Long userId,Long constituencyId);
+	public ResultStatus deactivateUser(Long userId,String remarks,Long userTypeId);
+	public ResultStatus deactiveSurveyLeader(final Long userId,final String remarks,final Long userTypeId,final String dummyLeadName);
 	
 	public List<SelectOptionVO> getLatLongForSurveyUsersByConstituency(Long constituencyId,Date date);
 	

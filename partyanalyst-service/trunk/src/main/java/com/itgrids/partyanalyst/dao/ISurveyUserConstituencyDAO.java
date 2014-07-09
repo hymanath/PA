@@ -15,4 +15,7 @@ public interface ISurveyUserConstituencyDAO extends GenericDao<SurveyUserConstit
 	public List<Long> getAlreadyAssignedUsers();
 	
 	public List<Long> getAlreadyAssignedConstituencies();
+	public List<Object[]> getSurveyUserConstituency(Long surveyUserId);
+	
+	public int updateActiveStatusByList(List<Long> Ids);
 }
