@@ -97,4 +97,16 @@ public class SurveyUserRelationDAO extends GenericDaoHibernate<SurveyUserRelatio
 		return count;
 		
 	}
+	
+	
+	public List<Object[]> getExistedSurveyUsersByUserType(Long userTypeId)
+	{
+		Query query = getSession().createQuery("select distinct SUR.surveyUser.surveyUserId ,SUR.surveyUser.userName  from  " +
+				"SurveyUserRelation SUR where SUR.surveyUser.surveyUserType.surveyUsertypeId = :surveyUserTypeId and SUR.activeStatus = 'Y'");
+		
+		query.setParameter("surveyUserTypeId", userTypeId);
+		
+		return query.list();
+		
+	}
 }
