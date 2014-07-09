@@ -761,7 +761,7 @@ function deactivateUser()
 				height:200,
 			    modal: true,
 		        resizable: false,
-				title :"Lead activation"
+				title :"Lead change to other"
 			});
 			getDummyLeads('dummyLeadID',3,''+deactivateUserId+'');
 				}
@@ -795,7 +795,7 @@ function deactivateLead()
 
 	if(leadId == 0)
 	{
-		str+='<font color="red">select user</font>';
+		str+='<font color="red">select new lead</font>';
 		$("#errorPop").html(str);
 		return;
 	}
@@ -820,7 +820,7 @@ function deactivateLead()
 			$("#dummyuserImg").css("display","none");
 			if(result.resultCode == 0)
 			{
-				$("#errorPop").html("<font color='green'>lead activated successfully..</font>");
+				$("#errorPop").html("<font color='green'>lead changed successfully,and previous lead is deactivated..</font>");
 				  setTimeout("closePopup()",3000);	
 			}
 			else
