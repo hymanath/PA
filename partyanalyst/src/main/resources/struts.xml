@@ -186,6 +186,7 @@
 			<result type="redirect" name="updateCustomerContactsAction">updateCustomerContactsAction.action</result>
 			<result type="redirect" name="dashBoardAction">dashBoardAction.action</result>
 			<result type="redirect" name="surveyDataDetails">surveyDataDetailsAction.action</result>
+			<result type="redirect" name="constituencyDetailReport">constituencyDetailReportAction.action</result>
 			
 			<result>/jsp/loginsuccess.jsp</result>
 			 <!-- Problem Management Flow From Different Pages -->
@@ -7491,6 +7492,23 @@
 			</result>
 		</action>
 		
+				
+		<action name="constituencyDetailReportAction" class="surveyDataDetailsAction" method="constituencyDetailReport">
+			<result name="success">/jsp/constituencyDetailReport.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=constituencyDetailReport</result>
+		</action>
+		
+		<action name="getCosntituencyWiseReportByContiAction" class="surveyDataDetailsAction" method="getCosntituencyWiseReportByContiId">
+			<result type="json" name="success">
+				<param name="root">reportVO</param>
+			</result>
+		</action>
+		
+		<action name="getBoothWiseDetailsAction" class="surveyDataDetailsAction" method="getBoothWiseDetails">
+			<result type="json" name="success">
+				<param name="root">reportVO</param>
+			</result>
+		</action>
 				
 		<action name="deactiveSurveyLeaderAction" class="surveyDataDetailsAction" method="deactiveSurveyLeader">
 			<result type="json" name="success">
