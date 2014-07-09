@@ -404,6 +404,7 @@
 
 									&nbsp;<input type="button" value="OK" onclick="deactivateLead();"/>
 									<input type="button" value="Cancel" onclick="closePopup();"/>
+									<img id="dummyuserImg" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
 									</div>
 					              </div>
 
