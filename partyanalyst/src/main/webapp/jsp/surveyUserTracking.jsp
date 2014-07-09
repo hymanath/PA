@@ -79,7 +79,7 @@ function buildLocationDetails(result)
 			"geometry": { "type": "Polygon", "coordinates": [[[value.latitude,value.longititude]]] }
 		};
 		apaccampus.features.push(voterDetails);
-		}
+	}
 	});
     //console.log(apaccampus);
 	var map = new L.Map('map').setView(new L.LatLng(16.25,80.15), 6);
@@ -146,6 +146,7 @@ function buildLocationDetails(result)
 
 function buildTable(result)
 {
+	var date = "04-07-2014";
 	var str = '';
 	 str += '<div class="span12 m_top20 widgetservey">';
 	 str += '<h4>Logged in users Details </h4>';
@@ -159,6 +160,7 @@ function buildTable(result)
 	 str += '<th>Panchayat</th>	';
 	 str += '<th>Area Covered</th>	';
 	 str += '<th>Location</th>	';				
+	 str += '<th>MAP</th>	';				
 	 str += '</tr>	';						
 	 str += '</thead>';
 	 str += '<tbody>';
@@ -181,6 +183,7 @@ function buildTable(result)
 		 str += '<td>'+result[i].url+'</td>	';
 		 str += '<td>'+result[i].villageCovered+'</td>	';
 		 str += '<td>'+result[i].location+'</td>	';
+		 str += '<td><a onClick="openTrackinWindow('+result[i].id+',\''+date+'\')">MAP</a></td>	';
 		 str += '</tr>	';	
 	 }		
 	 str += '</tbody>';
@@ -278,6 +281,13 @@ function getUserDetails(userId,boothId)
 			}
 			
 		});
+		
+		
+}
+
+function openTrackinWindow(userId,date)
+{
+	window.open('userWiseTrackingAction.action?userId='+userId+'&date='+date+'');
 }
 </script>
 	<div class="container">

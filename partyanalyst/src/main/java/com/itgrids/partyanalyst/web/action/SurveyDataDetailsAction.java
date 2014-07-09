@@ -49,6 +49,26 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	private GenericVO genericVO;
 	private Long userTypeId;
 	
+	private Long userId;
+	private String date;
+	
+	
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
 	public GenericVO getGenericVO() {
 		return genericVO;
 	}
