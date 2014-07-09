@@ -147,6 +147,73 @@ public class SurveyDetailsInfoDAO extends GenericDaoHibernate<SurveyDetailsInfo,
 		
 	}
 	
+	public List<Object[]> getsurveyDetailsInfoByConstituencyId(Long constituencyId,Long surveyUsertypeId){
+		
+		StringBuilder  queryStr = new StringBuilder();
+		queryStr.append(" select count(distinct SDI.voter.voterId), ");									// voters count 			0
+		queryStr.append(" SUM(CASE WHEN SDI.caste.casteStateId is not null THEN 1 ELSE 0 END), ");	// casteStateId count 		1			
+		queryStr.append(" SUM(CASE WHEN SDI.casteName is not null THEN 1 ELSE 0 END), ");			// casteName count 			2
+		queryStr.append(" SUM(CASE WHEN SDI.hamlet.hamletId is not null THEN 1 ELSE 0 END ),  ");	// hamletId count 			3
+		queryStr.append(" SUM(CASE WHEN SDI.hamletName is not null THEN 1 ELSE 0 END ),  " );		// hamletName count 		4
+		queryStr.append(" SUM(CASE WHEN SDI.isCadre ='Y' THEN 1 ELSE 0 END),");						// Cadre count 				5
+		queryStr.append(" SUM(CASE WHEN SDI.isInfluencingPeople ='Y' THEN 1 ELSE 0 END),  ");		// InfluencingPeople count	6 
+		queryStr.append(" SUM(CASE WHEN SDI.mobileNumber is not null THEN 1 ELSE 0 END )  ");		// mobileNumber count 		7
+			
+			queryStr.append(" 	from SurveyDetailsInfo SDI ,SurveyUser SU , SurveyUserType SUT, Booth B ");
+			queryStr.append(" 	where  SDI.surveyUser.surveyUserId = SU.surveyUserId 				and ");
+			queryStr.append(" 	SU.surveyUserType.surveyUsertypeId = SUT.surveyUsertypeId 			and ");
+			queryStr.append(" 	SUT.surveyUsertypeId = :surveyUsertypeId 							and ");
+			queryStr.append("   SDI.booth.boothId = B.boothId 										and ");
+			queryStr.append("   B.publicationDate.publicationDateId = 10 							and ");
+			queryStr.append("	SDI.booth.constituency.constituencyId = :constituencyId ");
+			
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("surveyUsertypeId", surveyUsertypeId);
+		return query.list();
+	
+	}
+	
+	public List<Object[]> getBoothDetailsByConstituencyId(Long constituencyId){
+		StringBuilder  queryStr = new StringBuilder();
+		queryStr.append("select distinct SDI.booth.boothId, SDI.booth.partNo from SurveyDetailsInfo SDI, Booth B where SDI.booth.boothId = B.boothId and SDI.booth.constituency.constituencyId = :constituencyId ");
+			
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("constituencyId", constituencyId);
+
+		return query.list();
+		
+	}
+	
+public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUsertypeId){
+		
+		StringBuilder  queryStr = new StringBuilder();
+		queryStr.append(" select count(distinct SDI.voter.voterId), ");									// voters count 			0
+		queryStr.append(" SUM(CASE WHEN SDI.caste.casteStateId is not null THEN 1 ELSE 0 END), ");	// casteStateId count 		1			
+		queryStr.append(" SUM(CASE WHEN SDI.casteName is not null THEN 1 ELSE 0 END), ");			// casteName count 			2
+		queryStr.append(" SUM(CASE WHEN SDI.hamlet.hamletId is not null THEN 1 ELSE 0 END ),  ");	// hamletId count 			3
+		queryStr.append(" SUM(CASE WHEN SDI.hamletName is not null THEN 1 ELSE 0 END ),  " );		// hamletName count 		4
+		queryStr.append(" SUM(CASE WHEN SDI.isCadre ='Y' THEN 1 ELSE 0 END),");						// Cadre count 				5
+		queryStr.append(" SUM(CASE WHEN SDI.isInfluencingPeople ='Y' THEN 1 ELSE 0 END),  ");		// InfluencingPeople count	6 
+		queryStr.append(" SUM(CASE WHEN SDI.mobileNumber is not null THEN 1 ELSE 0 END ),  ");		// mobileNumber count 		7
+		queryStr.append(" SUM(CASE WHEN SDI.localArea is not null THEN 1 ELSE 0 END)  ");			// localArea count 		8
+		
+			queryStr.append(" 	from SurveyDetailsInfo SDI ,SurveyUser SU , SurveyUserType SUT, Booth B ");
+			queryStr.append(" 	where  SDI.surveyUser.surveyUserId = SU.surveyUserId 				and ");
+			queryStr.append(" 	SU.surveyUserType.surveyUsertypeId = SUT.surveyUsertypeId 			and ");
+			queryStr.append(" 	SUT.surveyUsertypeId = :surveyUsertypeId 							and ");
+			queryStr.append("   SDI.booth.boothId = B.boothId 										and ");
+			queryStr.append("   B.publicationDate.publicationDateId = 10 							and ");
+			queryStr.append("	B.boothId = :boothId ");
+			
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("boothId", boothId);
+		query.setParameter("surveyUsertypeId", surveyUsertypeId);
+		return query.list();
+	}
+	
+
+	
 	public List<Object[]> getLatLongForSurveyUsersByConstituency(Long constituencyId,Date date)
 	{
 		Query query = getSession().createQuery("select model.surveyUser.userName,model.booth.partNo,model.booth.tehsil.tehsilName,  " +
