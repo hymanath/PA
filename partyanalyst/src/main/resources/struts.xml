@@ -7477,6 +7477,13 @@
 			</result>
 		</action>
 		
+				
+		<action name="deactiveSurveyLeaderAction" class="surveyDataDetailsAction" method="deactiveSurveyLeader">
+			<result type="json" name="success">
+				<param name="root">resultStatus</param>
+			</result>
+		</action>
+		
 		<action name="gettingElectionYearsAction" class="candidateUpdateDetailsAction" method="gettingElectionYears">
 			<result type="json" name="success">
 			<param name="root">electionYearsList</param>

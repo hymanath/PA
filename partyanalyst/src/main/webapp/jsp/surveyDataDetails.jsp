@@ -389,6 +389,19 @@
 									<textarea class="input-block-level" rows="2" id="remarksId"></textarea>
 									</div>
 									</div>
+
+										<div class="row-fluid" id="deactivedummyLead" style="display:none">
+
+										<div class="span6" id="dummyLeadinnerDiv">
+										<div id="errorPop"></div>
+									Lead Name	<font class="requiredFont">*</font>
+									
+									<input class="input-block-level" type="text" id="leadId" placeholder ="Enter lead name"/>&nbsp;<input type="button" value="OK" onclick="deactivateLead();"/>
+									<input type="button" value="Cancel" onclick="closePopup();"/>
+									</div>
+					              </div>
+
+
 								</div>
 							</div>
 							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onClick="deactivateUser();">DEACTIVATE</button><img id="processingImgForDeactivation" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img></div>
