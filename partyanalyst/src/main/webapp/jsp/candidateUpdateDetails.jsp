@@ -14,7 +14,7 @@
 	<div class="container">
 		<div class="row">
 		  <div class="span6 offset2 well">
-		  <div id="errorDiv" style="color:red"></div>
+		  <div id="errorDiv" style="color:red;height:30px;"></div>
 					  <div class="row-fluid" style="margin-top:10px;">
 									<div  class="span3 offset2"> 
 									<label>Election Type <font color="#ff0000">*</font>:</label>
