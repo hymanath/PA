@@ -2710,6 +2710,23 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	}
 	
 	
+
+	public List<SelectOptionVO> getSurveyStartedConstituencyList(){
+		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
+		try {
+			List<Object[]> booths = surveyDetailsInfoDAO.getSurveyStartedConstituencyInfo();	
+
+			for(Object[] booth : booths){
+				result.add(new SelectOptionVO(booth[0] != null ? (Long) booth[0]:0L,WordUtils.capitalize(booth[1] != null ? booth[1].toString().toLowerCase():"")));
+			}
+		} catch (Exception e) {
+			result = null;
+			LOG.error("Exception raised in getAssignedBoothDetailsByuserId() service in SurveyDataDetailsService", e);
+			e.printStackTrace();
+		}		
+		return result;
+	}
+	
 	public List<SurveyReportVO> getSurveyVotersList(Long constituencyId, Long boothId,Long leaderId){
 		List<SurveyReportVO> resultList = new ArrayList<SurveyReportVO>();
 		try {
@@ -2767,11 +2784,14 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				protected void doInTransactionWithoutResult(TransactionStatus arg0) {
 					
 					DateUtilService dateUtilService = new DateUtilService();
-					SurveyCallStatus surveyCallStatus = null;
+					
 					
 					if(verifiedList != null && verifiedList.size()>0){
 						
 						for (SurveyReportVO surveyReportVO : verifiedList) {
+							
+							SurveyCallStatus surveyCallStatus = null;
+							
 							Long surveyCallStatusId = surveyCallStatusDAO.getSurveyCallDtalsByVoterId(surveyReportVO.getVoterId());
 							
 							if(surveyCallStatusId != null && surveyCallStatusId != 0 ){				
