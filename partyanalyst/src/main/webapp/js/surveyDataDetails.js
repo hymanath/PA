@@ -322,6 +322,10 @@ function AssignTab()
 	var remarks = $.trim($("#remarks").val());
 	var date = $("#date").val();
 	var str = ''; 
+
+	if($('#surveyUserTypeForSelect').val() == 0)
+		str +='User Type is required <br/>';
+
 	
 	if(surveyUser == 0)
 	{
@@ -354,6 +358,7 @@ function AssignTab()
 		}
 	});
 
+	
 	var length1 = dateArr.length;
 	var tabTatalArr = new Array();
 	console.log(length1);
@@ -1517,8 +1522,9 @@ var jsObj =
 
 var avalTabsArr = new Array();
 var avalTabsArr1 = new Array();
+var usersExist = true;
 function usersListByTabsInfo(divId,value){
-
+usersExist = true;
 
 var jsObj = 
 	{
@@ -1533,6 +1539,10 @@ var jsObj =
 		data: {task:JSON.stringify(jsObj)},
 		}).done(function(result){
 				$("#"+divId+"").html('');
+
+				if(result.genericVOList.length == 0)
+					usersExist = false;
+
 				if(result !=null ){
 					
 					var str ='';
@@ -1663,6 +1673,9 @@ var str ='';
 		}
 		candiTabArr.push(value);
 	});
+
+	if(usersExist == false)
+		str +='No Users Exist .</br>';
 	
 	var length = candiArr.length;
 	
