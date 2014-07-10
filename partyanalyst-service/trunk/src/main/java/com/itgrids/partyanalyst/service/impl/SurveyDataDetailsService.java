@@ -925,7 +925,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		List<GenericVO> returnList = null;
 		try
 		{
-			List<Object[]> result = surveyUserRelationDAO.getLeadersByConstituency();
+			List<Object[]> result = surveyUserConstituencyDAO.getLeadersByConstituency();
 			if(result != null && result.size() > 0)
 			{
 				returnList = new ArrayList<GenericVO>();
