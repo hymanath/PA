@@ -460,7 +460,8 @@
 				<value>com.itgrids.partyanalyst.model.SurveyDetailsInfo</value>
 				<value>com.itgrids.partyanalyst.model.SurveyUserTracking</value>
 		        <value>com.itgrids.partyanalyst.model.CandidateDetails</value>
-		         <value>com.itgrids.partyanalyst.model.SurveyUserConstituency</value>
+		        <value>com.itgrids.partyanalyst.model.SurveyUserConstituency</value>
+		        <value>com.itgrids.partyanalyst.model.SurveyCallStatus</value>
 			</list>
 		</property>
 	</bean>
@@ -2431,5 +2432,8 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="surveyCallStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyCallStatusDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 </beans>
