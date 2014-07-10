@@ -98,7 +98,7 @@ function buildLocationDetails(result)
 		apaccampus.features.push(voterDetails);
 	}
 	});
-	var map = new L.Map('map').setView(new L.LatLng(result[0].longititude,result[0].latitude), 10);
+	var map = new L.Map('map').setView(new L.LatLng(result[0].longititude,result[0].latitude), 15);
 	var osm = new L.TileLayer('http://{s}.tile.osmosnimki.ru/kosmo/{z}/{x}/{y}.png');
 	var mpn = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
 	var qst = new L.TileLayer('http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png', {attribution:'Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">'}).addTo(map);
@@ -176,7 +176,8 @@ function buildTable(result)
 	 str += '<th>Panchayat</th>	';
 	 str += '<th>Area Covered</th>	';
 	 str += '<th>Location</th>	';				
-	 str += '<th><a style="cursor: pointer;">MAP</a></th>	';				
+	 str += '<th><a style="cursor: pointer;">MAP</a></th>	';	
+	str += '<th><a style="cursor: pointer;">Tracking Map</a></th>	';		 
 	 str += '</tr>	';						
 	 str += '</thead>';
 	 str += '<tbody>';
@@ -199,7 +200,8 @@ function buildTable(result)
 		 str += '<td>'+result[i].url+'</td>	';
 		 str += '<td>'+result[i].villageCovered+'</td>	';
 		 str += '<td>'+result[i].location+'</td>	';
-		 str += '<td><a onClick="openTrackinWindow('+result[i].id+',\''+date+'\') " style="cursor: pointer;"> MAP</a></td>	';
+		 str += '<td><a onClick="openTrackinWindow('+result[i].id+',\''+date+'\',1) " style="cursor: pointer;"> MAP</a></td>	';
+		 str += '<td><a onClick="openTrackinWindow('+result[i].id+',\''+date+'\',2) " style="cursor: pointer;"> MAP</a></td>	';
 		 str += '</tr>	';	
 	 }		
 	 str += '</tbody>';
@@ -211,12 +213,9 @@ function buildTable(result)
 }
 function onEachFeature(feature, layer) 
 {
-	
 	    var popupContent = "<table class='table table-info'><tr><td>Name : </td><td>"+feature.properties.name+"</td>";
 	    popupContent += "</tr></table>";
-		if (feature.properties && feature.properties.popupContent) {
-			popupContent += feature.properties.popupContent;
-		 }
+		
 		layer.setStyle({
 		weight:7,
 		color: '#FF0000',
@@ -295,9 +294,9 @@ function getUserDetails(userId,boothId)
 		
 }
 
-function openTrackinWindow(userId,date)
+function openTrackinWindow(userId,date,id)
 {
-	window.open('userWiseTrackingAction.action?userId='+userId+'&date='+date+'');
+	window.open('userWiseTrackingAction.action?userId='+userId+'&date='+date+'&userTypeId='+id+'');
 }
 </script>
 	<div class="container">
