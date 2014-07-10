@@ -10,7 +10,8 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
 <script src="//code.jquery.com/jquery-1.10.2.js"></script>
 <script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
-
+<script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.js"></script>
+<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">	
 	<script src="js/surveyDataDetails.js"></script>
 		<style>
@@ -49,6 +50,10 @@
 			
 			.survey_nav ul li .dropdown-menu{background:#ffcc00; border-top-left-radius:0px; border-top-right-radius:0px;margin-top:-1px; margin-right:5px;}
 			.survey_nav ul li .dropdown li a{color:#333; }
+			
+			.ui-multiselect{
+				width:200px !important;
+				}
 
 		</style>
   </head>
@@ -61,7 +66,19 @@
    dateFormat: 'dd-mm-yy'
    });
    
-   
+   $('#userLeaderId').multiselect({
+	  noneSelectedText:"Select User(s)"});
+	  
+	  
+	   $('#userLeaderIdForRelease').multiselect({
+	  noneSelectedText:"Select User(s)"});
+	  
+	   $('#inHouseLeaderId').multiselect({
+	  noneSelectedText:"Select User(s)"});
+	  
+	   $('#inHouseReleaseLeaderId').multiselect({
+	  noneSelectedText:"Select User(s)"});
+	  
     $('#constituencyId').change(function(){
 		$('#boothsDtlsId').html('');
 		getUserAssignedBoothsDetailsForAConstituency();
@@ -484,7 +501,7 @@
 										
 										<div class="span3">
 											Select User<font class="requiredFont">*</font>
-											<select class="input-block-level" id="userLeaderId"> <option value="0">Select User</option></select>
+											<select class="input-block-level" id="userLeaderId" multiple="true"></select>
 										</div>
 										
 										<!--<div class="span6">
@@ -534,7 +551,7 @@
 										
 										<div class="span3">
 											Select User<font class="requiredFont">*</font>
-											<select class="input-block-level" id="userLeaderIdForRelease"> <option value="0">Select User</option></select>
+											<select class="input-block-level" id="userLeaderIdForRelease"  multiple="true"></select>
 										</div>
 										
 										<!--<div class="span6">
@@ -555,7 +572,7 @@
 			<div class="span10 offset1">
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top20">
-						<h4>Assign Inhouse Verfiers To Leader</h4>
+						<h4>Assign Inhouse Verifiers To Leader</h4>
 						<div class="row">
 								<div id="inhouseAssignErrorDiv" class="span8 offset2 errorCls"></div>
 						</div>
@@ -575,7 +592,7 @@
 										
 										<div class="span3">
 											Select In House Verifier<font class="requiredFont">*</font>
-											<select class="input-block-level" id="inHouseLeaderId"> <option value="0">Select User</option></select>
+											<select class="input-block-level" id="inHouseLeaderId"  multiple="true"> </select>
 										</div>
 										
 										<!--<div class="span6">
@@ -623,7 +640,7 @@
 										
 										<div class="span3">
 											Select In House Verifier<font class="requiredFont">*</font>
-											<select class="input-block-level" id="inHouseReleaseLeaderId"> <option value="0">Select User</option></select>
+											<select class="input-block-level" id="inHouseReleaseLeaderId"  multiple="true"> </select>
 										</div>
 									</div>
 								</div>

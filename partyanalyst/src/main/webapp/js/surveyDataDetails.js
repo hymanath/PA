@@ -39,6 +39,7 @@ function getSurveyUsersByUserTypeForLeaderAssign(divId)
 
 function getRemeaningSurveyUsersByUserType(divId,value)
 {
+
 	var jsObj =
 	{
 	userTypeId :value,
@@ -50,21 +51,24 @@ function getRemeaningSurveyUsersByUserType(divId,value)
 	dataType: 'json',
 	data: {task:JSON.stringify(jsObj)},
 	}).done(function(result){
-	$('#'+divId+'').find('option:not(:first)').remove();
+	$('#'+divId+'').find('option').remove();
+	$('#'+divId+'').multiselect('refresh');
 	if(result != null && result.length > 0)
 	{
-	for(var i in result)
-	{
-	$('#'+divId+'').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+		for(var i in result)
+		{
+			$('#'+divId+'').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+		}
+		
+		
 	}
-
-	}
+	$('#'+divId+'').multiselect('refresh');
 	});
 }
 
 function getSurveyUsersByUserType(divId,value)
 {
-	$('#'+divId+'').html('<option value="0">Select User</option>');
+	//$('#'+divId+'').html('<option value="0">Select User</option>');
 	var jsObj =
 	{
 	userTypeId :value,
@@ -119,9 +123,9 @@ function saveSurveyUser()
 		$('#processingImgForUserCreation').hide();
 		return;
 	 }
-	 else if(firstName.length<4 || firstName.length>10)
+	 else if(firstName.length < 4 || firstName.length >= 15)
 	 {
-		$("#createUserErrorDiv").html("First Name must be Minimum of 4 Characters and Maximum of 10 Characters").css("color","red");
+		$("#createUserErrorDiv").html("First Name must be Minimum of 4 Characters and Maximum of 15 Characters").css("color","red");
 		$('#processingImgForUserCreation').hide();
 		return;
 	 }
@@ -142,9 +146,9 @@ function saveSurveyUser()
 		return;
 	}
 	
-	else if(lastName.length <2 || lastName.length>10)
+	else if(lastName.length <2 || lastName.length>15)
 	{
-		$("#createUserErrorDiv").html("Last Name must be Minimum of 2 Characters and Maximum of 10 Characters").css("color","red");
+		$("#createUserErrorDiv").html("Last Name must be Minimum of 2 Characters and Maximum of 15 Characters").css("color","red");
 		$('#processingImgForUserCreation').hide();
 		return;
 	}
@@ -155,9 +159,9 @@ function saveSurveyUser()
 		$('#processingImgForUserCreation').hide();
 		return;
 	}
-	if(userName.length > 10 || userName.length<4)
+	if(userName.length >= 15 || userName.length<4)
 	{
-		$("#createUserErrorDiv").html("User Name must be Minimum of 4 Characters and Maximum of 10 Characters").css("color","red");
+		$("#createUserErrorDiv").html("User Name must be Minimum of 4 Characters and Maximum of 15 Characters").css("color","red");
 		$('#processingImgForUserCreation').hide();
 		return;
 	}
@@ -168,7 +172,7 @@ function saveSurveyUser()
 		return;
 	
 	}
-	if(address.length > 0 && address.length<10)
+	if(address.length >0)
 	{
 		$("#createUserErrorDiv").html("Address must be Minimum Of 10 Characters").css("color","red");
 		$('#processingImgForUserCreation').hide();
@@ -243,6 +247,10 @@ function saveSurveyUser()
 				setTimeout(function(){$('#createUserErrorDiv').html('');}, 3000);
 				$('#mobileNo,#address,#password,#userName,#lastName,#firstName,#retypePassword').val('');
 				$('#userType').val(0);
+			}
+			else if(result.resultCode == 4)
+			{
+				$("#createUserErrorDiv").html('User Already Exists....').css("color","red");
 			}
 			else
 			{
@@ -434,6 +442,13 @@ else if(id == "userCreationTab")
 	$("#verificationDiv").hide();
 	$("#leaderNameDiv").hide();
 	getUserTypes('userType');
+	$('#firstName').val('');
+	$('#lastName').val('');
+	$('#userName').val('');
+	$('#address').val('');
+	$('#password').val('');
+	$('#retypePassword').val('');
+	$('#mobileNumber').val('');
 	}
 
 	else if(id == "tabAssignTab")
@@ -588,9 +603,9 @@ function assignLeaderToUser()
 	var	typeId =  $("#typeId").val();
 	//var	constituencyLeaderId = $("#constituencyLeaderId").val();
 	var	leaderId =  $("#leaderId").val();
-	var	userLeaderId =  $('#userLeaderId').val();
-	var userIds = new Array();
-	userIds.push(userLeaderId);
+	var	userIds =  $('#userLeaderId').val();
+	//var userIds = new Array();
+	//userIds.push(userLeaderId);
 	/* if(constituencyLeaderId == 0)
 	{
 		$("#assignLeaderErrorDiv").html("Please Select Constituency").css("color","red");
@@ -650,9 +665,9 @@ function assignInhouseVerfiersToLeader()
 	var	typeId =  $("#inHousetypeId").val();
 	//var	constituencyLeaderId = 232;
 	var	leaderId =  $("#inHouseleaderId").val();
-	var	userLeaderId =  $('#inHouseLeaderId').val();
-	var userIds = new Array();
-	userIds.push(userLeaderId);
+	var	userIds =  $('#inHouseLeaderId').val();
+	//var userIds = new Array();
+	//userIds.push(userLeaderId);
 	/* if(constituencyLeaderId == 0)
 	{
 		$("#inhouseAssignErrorDiv").html("Please Select Constituency").css("color","red");
@@ -1071,7 +1086,8 @@ function getSurveyUsersByUserTypeForLeaderRelease()
 			dataType: 'json',
 			data: {task:JSON.stringify(jObj)},
 		  }).done(function(result){
-				$('#userLeaderIdForRelease').find('option:not(:first)').remove();
+				$('#userLeaderIdForRelease').find('option').remove();
+				$('#userLeaderIdForRelease').multiselect('refresh');
 				if(result != null && result.length > 0)
 				{
 				//$('#constituencyLeaderIdForRelease').append('<option value="'+result[0].rank+'">'+result[0].desc+'</option>');
@@ -1080,8 +1096,9 @@ function getSurveyUsersByUserTypeForLeaderRelease()
 				$('#userLeaderIdForRelease').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 				
 				}
-
-				}							
+					
+				}	
+				$('#userLeaderIdForRelease').multiselect('refresh');				
 		});
 }
 
@@ -1107,8 +1124,9 @@ function getInHouseVerfiersByUserTypeForLeaderRelease()
 				$('#inHouseReleaseLeaderId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 				
 				}
-
-				}							
+				
+				}	
+				$('#inHouseReleaseLeaderId').multiselect('refresh');
 		});
 }
 
@@ -1118,9 +1136,9 @@ function updateLeaderUserReleation()
 	var	typeId =  $("#typeIdForRelease").val();
 	//var	constituencyLeaderId = $("#constituencyLeaderIdForRelease").val();
 	var	leaderId =  $("#leaderIdForRelease").val();
-	var	userLeaderId =  $('#userLeaderIdForRelease').val();
-	var userIds = new Array();
-	userIds.push(userLeaderId);
+	var	userIds =  $('#userLeaderIdForRelease').val();
+	//var userIds = new Array();
+	//userIds.push(userLeaderId);
 	/* if(constituencyLeaderId == 0)
 	{
 		$("#assignLeaderErrorDivForRelease").html("Please Select Constituency").css("color","red");
@@ -1180,9 +1198,9 @@ function updateLeaderInHouseReleation()
 	var	typeId =  $("#inHouseReleasetypeId").val();
 	//var	constituencyLeaderId =232;
 	var	leaderId =  $("#inHouseReleaseleaderId").val();
-	var	userLeaderId =  $('#inHouseReleaseLeaderId').val();
-	var userIds = new Array();
-	userIds.push(userLeaderId);
+	var	userIds =  $('#inHouseReleaseLeaderId').val();
+	//var userIds = new Array();
+	//userIds.push(userLeaderId);
 	/* if(constituencyLeaderId == 0)
 	{
 		$("#inhouseReleaseErrorDiv").html("Please Select Constituency").css("color","red");
@@ -1321,7 +1339,7 @@ function assignConstituencyToUser()
 	}
 	if(userId == 0)
 	{
-		$("#assignconstiErrorDiv").html("Please Select User").css("color","red");
+		$("#assignconstiErrorDiv").html("Please Select Leader").css("color","red");
 		$('#processingImgForAssignConsti').hide();
 		return;
 	}
@@ -1722,7 +1740,7 @@ function closePopup()
 function getExistSurveyUsersByUserType(divId,value)
 {
 	 
-	$('#'+divId+'').html('<option value="0">Select User</option>');
+	//$('#'+divId+'').html('<option value="0">Select User</option>');
 	var jsObj =
 	{
 		userTypeId :value,
