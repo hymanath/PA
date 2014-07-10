@@ -40,14 +40,14 @@
 	<div class="row-fluid">
 	<div class="span12">
 		<div class="row-fluid ">
-			<div class="span6 widgetservey_Red m_top20">
+			<div class="span12 widgetservey_Red m_top20">
 				<h4 >SURVEY DETAILS</h4>
 				<div id="map" style="width: 100%; height: 400px;cursor: pointer;"></div>
 			</div>
-			<div class="span6 widgetservey_Red m_top20">
+			<!--<div class="span6 widgetservey_Red m_top20">
 				<h4 >USER TRACKING DETAILS</h4>
 				<div id="map1" style="width: 100%; height: 400px;cursor: pointer;"></div>
-			</div>
+			</div>-->
 		</div>
 	</div>
 
@@ -68,13 +68,22 @@
 
 
 var userId = '${userId}';
-var date = '${date}'
+var date = '${date}';
+var id = '${userTypeId}'
 var campus = {
 "type": "Point",
 "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
 "features": []
 }
-getUserDataCollectionDetails();
+if(id == 1)
+{
+	getUserDataCollectionDetails();
+}
+else
+{
+	getUserTrackingDetails();
+}
+
 function getUserDataCollectionDetails()
 {
 	var jObj = 
@@ -105,15 +114,38 @@ function buildLocationDetails(result)
 		campus.features.push(voterDetails);
 	}
 	});
-	getUserTrackingDetails();
+	
+	var map = new L.Map('map').setView(new L.LatLng(result[0].latitude,result[0].longitude), 15);
+	var osm = new L.TileLayer('http://{s}.tile.osmosnimki.ru/kosmo/{z}/{x}/{y}.png');
+	var mpn = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+	var qst = new L.TileLayer('http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png', {attribution:'Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">'}).addTo(map);
+	
+
+	map.addControl(new L.Control.Scale({width: 100, position: 'bottomleft'}));
+	var link = new L.Control.Permalink();
+	map.addControl(link);
+	map.addControl(new L.Control.Layers({ 'Mapnik':mpn, 'MapQuest':qst,  'Google':new L.Google()},{}
+	 ));
+	L.geoJson(campus, {
+		
+		style: function (feature) {
+			return feature.properties && feature.properties.style;
+		},
+		
+		onEachFeature: onEachFeature,
+		pointToLayer: function (feature, latlng) {
+			return L.circleMarker(latlng, {
+				
+			});
+		}
+	}).addTo(map);
+	
 	
 }
 function onEachFeature(feature, layer)
 {    
 }
 
-</script>
-<script>
 
 function getUserTrackingDetails()
 {
@@ -132,33 +164,28 @@ function getUserTrackingDetails()
 		});
 }
 
-var lat = new Array();
-var longt = new Array();
+
 var polyline = '';
-var map1 = '';
 function buildUserLocationDetails(userLocations)
 {
-	$.each(userLocations,function(index,value){
 	
+	var lat = new Array();
+	var longt = new Array();
+	$.each(userLocations,function(index,value){
 	  lat.push(value.desc);
 	  longt.push(value.name);
 	});
-	var map = new L.Map('map').setView(new L.LatLng(userLocations[0].name,userLocations[0].desc), 10);
+	var map = new L.Map('map').setView(new L.LatLng(longt[0],lat[0]), 15);
 	var osm = new L.TileLayer('http://{s}.tile.osmosnimki.ru/kosmo/{z}/{x}/{y}.png');
 	var mpn = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
 	var qst = new L.TileLayer('http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png', {attribution:'Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">'}).addTo(map);
-	var hyb = new L.TileLayer('http://{s}.tile.osmosnimki.ru/hyb/{z}/{x}/{y}.png');
-	var irs = new L.TileLayer('http://tile.osmosnimki.ru/basesat/{z}/{x}/{y}.jpg');
-	var wms = new L.TileLayer.WMS('http://wms.latlon.org/', {layers:'irs', crs: L.CRS.EPSG4326});
-	var kadastr = new L.TileLayer.WMS('http://maps.rosreestr.ru/arcgis/services/Cadastre/CadastreWMS/MapServer/WMSServer', {format:'image/png', transparent:'true', layers:'16,15,14,13,11,10,9,22,21,20,19,18,7,6', tileSize:512});
+	
 
 	map.addControl(new L.Control.Scale({width: 100, position: 'bottomleft'}));
 	map.addControl(new L.Control.Permalink());
-
 	map.addControl(new L.Control.Layers({ 'Mapnik':mpn, 'MapQuest':qst,  'Google':new L.Google()},{}
 	 ));
-	 console.log(campus);
-	L.geoJson(campus, {
+	/* L.geoJson(campus, {
 		
 		style: function (feature) {
 			return feature.properties && feature.properties.style;
@@ -170,24 +197,11 @@ function buildUserLocationDetails(userLocations)
 				
 			});
 		}
-	}).addTo(map);
-
-
-	map1 = L.map('map1', {
-		center: [longt[0],lat[0]],
-		zoom: 10
-	});
-		
-	map1.addControl(new L.Control.Scale({width: 100, position: 'bottomleft'}));
-	map1.addControl(new L.Control.Permalink());
-
-	map1.addControl(new L.Control.Layers({ 'Mapnik':mpn, 'MapQuest':qst,  'Google':new L.Google()},{}
-	 ));
-	 polyline = L.polyline([]).addTo(map1);
+	}).addTo(map); */
 	var a = 0;
+	polyline = L.polyline([]).addTo(map);
 	for(var j = 0; j < longt.length; j++)
 	{
-		
 			a++;
 			var icon = L.icon({
 			iconUrl: 'numberIcons/number'+a+'.JPG',
@@ -201,7 +215,7 @@ function buildUserLocationDetails(userLocations)
 			
 	
 		var markers = new L.Marker([longt[j], lat[j]],{icon: icon});
-		map1.addLayer(markers);	
+		map.addLayer(markers);	
 		
 		polyline.addLatLng(
         L.latLng(
@@ -209,7 +223,6 @@ function buildUserLocationDetails(userLocations)
 	}
 	
 }
-
 </script>
 </body>
 </html>
