@@ -1271,6 +1271,12 @@ function openComparisonReport()
 
 }
 
+function openStateWiseReport()
+{
+	 window.open('surveyAdmin.action','_blank');
+
+}
+
 function openUserTrackingPage()
 {
 	 window.open('surveyUserTrackingAction.action');
