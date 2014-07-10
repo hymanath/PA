@@ -306,7 +306,7 @@ margin-top:10px;
 					<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CALL_CENTER_ENTITLEMENT' ) }">
 					
 					<li><a href="callCenterAction.action"><span>Call Center</span></a></li>
-					<li><a href="surveyDataDetailsAction.action"><span>Survey</span></a></li>
+					<li><a href="surveyDataDetailsAction.action"><span>VCT Project</span></a></li>
 					</c:if>
 					
 				</ul>
