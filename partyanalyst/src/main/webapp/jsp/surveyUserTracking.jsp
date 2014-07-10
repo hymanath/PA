@@ -98,8 +98,7 @@ function buildLocationDetails(result)
 		apaccampus.features.push(voterDetails);
 	}
 	});
-    //console.log(apaccampus);
-	var map = new L.Map('map').setView(new L.LatLng(16.25,80.15), 6);
+	var map = new L.Map('map').setView(new L.LatLng(result[0].longititude,result[0].latitude), 10);
 	var osm = new L.TileLayer('http://{s}.tile.osmosnimki.ru/kosmo/{z}/{x}/{y}.png');
 	var mpn = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
 	var qst = new L.TileLayer('http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png', {attribution:'Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">'}).addTo(map);
@@ -212,10 +211,8 @@ function buildTable(result)
 }
 function onEachFeature(feature, layer) 
 {
-	if(!(feature.properties.mobileNo == undefined))
-	{
-	   /*  var popupContent = "<table class='table table-info'><tr><td>Name : </td><td>"+feature.properties.name+"</td>";
-        popupContent += "<tr><td>Mobile No : </td><td>"+feature.properties.mobileNo+"</td>";
+	
+	    var popupContent = "<table class='table table-info'><tr><td>Name : </td><td>"+feature.properties.name+"</td>";
 	    popupContent += "</tr></table>";
 		if (feature.properties && feature.properties.popupContent) {
 			popupContent += feature.properties.popupContent;
@@ -225,11 +222,7 @@ function onEachFeature(feature, layer)
 		color: '#FF0000',
 		dashArray: '',
 		});
-		
-		layer.bindPopup(popupContent); */
-		
-		
-	} 
+		layer.bindPopup(popupContent); 
 }
 
 function getUserDetails(userId,boothId)
@@ -251,7 +244,7 @@ function getUserDetails(userId,boothId)
 				str += '<div class="row-fluid">';
 				str += '<div class="span12 booths-Overview-widget">';
 				str += '<div class="row-fluid">';
-				str += '<h4>Total BootH Voters - '+result[0]+'</h4>';
+				str += '<h4>Total Booth Voters - '+result[0]+'</h4>';
 				str += '</div>';
 				str += '<div class="row-fluid">';
 				str += '<ul class="inline unstyled booths-Overview-widget-nav">';
