@@ -451,6 +451,8 @@
 				<value>com.itgrids.partyanalyst.model.SurveyUser</value>
 				<value>com.itgrids.partyanalyst.model.SurveyUserConstituency</value>
 				<value>com.itgrids.partyanalyst.model.CandidateDetails</value>
+				<value>com.itgrids.partyanalyst.model.SurveyCompletedLocationsDetails</value>
+				
 			</list>
 			
 		</property>

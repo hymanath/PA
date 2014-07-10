@@ -2131,5 +2131,9 @@
    <property name="electionDAO" ref="electionDAO" />
    <property name="districtDAO" ref="districtDAO" />
    </bean>
+   
+      <bean name="surveyDashBoardService"  class="com.itgrids.partyanalyst.service.impl.SurveyDashBoardService">
+      </bean>
+   
 </beans>		
 	
