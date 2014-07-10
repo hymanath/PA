@@ -271,6 +271,18 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 		return (Long)query.uniqueResult();
 	}
 	
+	public List<Object[]> getVoterDetailsByBoothId(Long boothId,List<Long> assignUsers)
+	{
+		Query query = getSession().createQuery("select SDI.surveyUser.userName, SDI.voter.voterIDCardNo," +
+				" SDI.mobileNumber, SDI.caste.caste.casteName,SDI.casteName, SDI.hamlet.hamletName, SDI.hamletName, SDI.localArea,  SDI.surveyUser.surveyUserId, " +
+				" SDI.voter.voterId , SDI.isCadre , SDI.isInfluencingPeople  " +
+				"   from SurveyDetailsInfo SDI where SDI.booth.boothId  = :boothId and SDI.surveyUser.surveyUserId in (:assignUsers) and SDI.mobileNumber != null  ");
+		query.setParameter("boothId", boothId);		
+		query.setParameterList("assignUsers", assignUsers);	
+		return query.list();
+	}
+	
+	
 	public List<Long> getSurveyStartedConstituenciesDetails()
 	{
 		Query query = getSession().createQuery("select distinct SDI.booth.constituency.constituencyId from SurveyDetailsInfo SDI");
