@@ -1045,7 +1045,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 				return Action.INPUT;
 			}
 			Long userId = user.getRegistrationID();
-			constituenciesList = 	surveyDataDetailsService.getAllAssemblyConstituenciesByStateId();			
+			constituenciesList = 	surveyDataDetailsService.getSurveyStartedConstituencyList();			
 		} catch (Exception e) {
 			LOG.error(" exception occured in surveyCallCenterPage() ,ConstituencyDetailsAction Action class",e);
 		}
