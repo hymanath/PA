@@ -74,6 +74,23 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 	private Long constituencyId;
 	private Long uvdId;
 	
+	private String casteNameByVoterId;
+	
+	private String mobileNo;
+	
+	private Long publicationDateId;
+	private Date publicationDate;
+	private Long electionId;
+	private Date electionDate;
+	private String type;
+	private Boolean isInfluencePerson;
+	private String influencePerson;
+	private Boolean isCadrePerson;
+	private Boolean isPoliticion;
+	private List<VoterVO> categoriesList;
+	private Long CategoryValuesId;
+	private String name;
+	
 	
 	public Long getUvdId() {
 		return uvdId;
@@ -267,22 +284,6 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 		this.boothId = boothId;
 	}
 
-	private String casteNameByVoterId;
-	
-	private String mobileNo;
-	
-	private Long publicationDateId;
-	private Date publicationDate;
-	private Long electionId;
-	private Date electionDate;
-	private String type;
-	private Boolean isInfluencePerson;
-	private String influencePerson;
-	private Boolean isCadrePerson;
-	private Boolean isPoliticion;
-	private List<VoterVO> categoriesList;
-	private Long CategoryValuesId;
-	private String name;
 	
 	public String getInfluencePerson() {
 		return influencePerson;
