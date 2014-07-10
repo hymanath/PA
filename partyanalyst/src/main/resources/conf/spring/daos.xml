@@ -1525,6 +1525,10 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="surveyCallStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyCallStatusDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<bean id="surveyLocationStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyCompletedLocationsDetailsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
