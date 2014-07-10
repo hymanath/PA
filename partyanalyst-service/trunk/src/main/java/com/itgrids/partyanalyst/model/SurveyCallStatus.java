@@ -76,7 +76,7 @@ public class SurveyCallStatus implements java.io.Serializable{
 		this.voter = voter;
 	}
 	
-	@JoinColumn(name="mobile_no_status")
+	@Column(name="mobile_no_status")
 	public String getMobileNoStatus() {
 		return mobileNoStatus;
 	}
@@ -84,7 +84,7 @@ public class SurveyCallStatus implements java.io.Serializable{
 		this.mobileNoStatus = mobileNoStatus;
 	}
 	
-	@JoinColumn(name="matched_status")
+	@Column(name="matched_status")
 	public String getMatchedStatus() {
 		return matchedStatus;
 	}
@@ -92,7 +92,7 @@ public class SurveyCallStatus implements java.io.Serializable{
 		this.matchedStatus = matchedStatus;
 	}
 	
-	@JoinColumn(name="inserted_date")
+	@Column(name="inserted_date")
 	public Date getInsertedDate() {
 		return insertedDate;
 	}
@@ -100,7 +100,7 @@ public class SurveyCallStatus implements java.io.Serializable{
 		this.insertedDate = insertedDate;
 	}
 	
-	@JoinColumn(name="updated_date")
+	@Column(name="updated_date")
 	public Date getUpdatedDate() {
 		return updatedDate;
 	}
