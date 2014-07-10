@@ -971,7 +971,11 @@ function getBoothDetailsForSelectedUser(leaderId,constituencyId)
 				str += '</div>';
 			    str += '</div>';
 				$('#leaderNameDiv').html(str);
-			}			
+			}	
+			else
+			{
+				$('#leaderNameDiv').html('');
+			}
 		});
 }
 
