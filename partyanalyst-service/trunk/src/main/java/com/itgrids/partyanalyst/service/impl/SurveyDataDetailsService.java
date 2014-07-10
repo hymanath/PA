@@ -2146,7 +2146,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					for (Object[] param : result) {
 						GenericVO vo = new GenericVO();
 						vo.setId((Long) param[0]);
-						vo.setName(param[1].toString()+" "+param[2].toString());						
+						vo.setName(param[3].toString());						
 						returnList.add(vo);
 						
 					}
