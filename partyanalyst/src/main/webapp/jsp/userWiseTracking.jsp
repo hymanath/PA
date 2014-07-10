@@ -7,15 +7,30 @@
 <title>User Tracking</title>
 </head>
 <body>
-<div id="surveymap" >
-<h4 align="center">SURVEY DETAILS MAP</h4>
-<div id="map" style="width: 1000px; height: 700px;cursor: pointer;"></div>
+<div class="container">
+	<div class="span12">
+		<div class="row-fluid ">
+			<div class="span12 widgetservey_Red m_top20">
+				<h4 >SURVEY DETAILS MAP</h4>
+				<div id="map" style="width: 1000px; height: 700px;cursor: pointer;"></div>
+			</div>
+		</div>
+	</div>
+	
+	
+	<div class="span12">
+		<div class="row-fluid ">
+			<div class="span12 widgetservey_Red m_top20">
+				<h4 >USER TRACKING DETAILS MAP</h4>
+				<div id="map1" style="width: 1000px; height: 700px;cursor: pointer;"></div>
+			</div>
+		</div>
+	</div>
+	
+		
+	
 </div>
 
-<div id= "usertracingMap" >
-<h4 align="center">USER TRACKING DETAILS MAP</h4>
-<div id="map1" style="width: 1000px; height: 700px;cursor: pointer;"></div>
-</div>
 
 <div id="votersDetailsDiv"></div>
 <script src="js/maps/leaflet.js"></script>
@@ -60,12 +75,13 @@ function buildLocationDetails(result)
 		var voterDetails = 
 		{ "type": "Feature",
 		"properties": {},
-			"geometry": { "type": "Polygon", "coordinates": [[[value.latitude,value.longitude]]] }
+			"geometry": { "type": "Polygon", "coordinates": [[[value.longitude,value.latitude]]] }
 		};
 		campus.features.push(voterDetails);
-		
 	}
 	});
+	getUserTrackingDetails();
+	
 }
 function onEachFeature(feature, layer)
 {    
@@ -73,7 +89,7 @@ function onEachFeature(feature, layer)
 
 </script>
 <script>
-getUserTrackingDetails();
+
 function getUserTrackingDetails()
 {
 	var jObj = 
