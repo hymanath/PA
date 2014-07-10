@@ -45,6 +45,8 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	public List<Object[]> getVoterDetailsByBoothId(Long boothId, List<Long> assignUsers);
 	
 	public List<Long> getSurveyStartedConstituenciesDetails();
+	
+	public List<Object[]> getSurveyStartedConstituencyInfo();
 
 	
 }
