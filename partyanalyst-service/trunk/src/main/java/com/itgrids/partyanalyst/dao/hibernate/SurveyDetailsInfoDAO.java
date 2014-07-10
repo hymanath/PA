@@ -290,4 +290,14 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 		return query.list();
 		
 	}
+
+	public List<Object[]> getSurveyStartedConstituencyInfo()
+	{
+		Query query = getSession().createQuery("select distinct SDI.booth.constituency.constituencyId,SDI.booth.constituency.name from SurveyDetailsInfo SDI order by SDI.booth.constituency.name asc ");
+		
+		return query.list();
+		
+	}
+
+	
 }
