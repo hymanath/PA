@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service.impl;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,6 +16,7 @@ import java.util.SortedSet;
 import java.util.TimeZone;
 import java.util.TreeSet;
 
+import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
@@ -28,6 +30,7 @@ import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
+import com.itgrids.partyanalyst.dao.ISurveyCallStatusDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.ISurveySurveyorTypeDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserBoothAssignDAO;
@@ -37,6 +40,7 @@ import com.itgrids.partyanalyst.dao.ISurveyUserRelationDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserTabAssignDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserTrackingDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserTypeDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
@@ -48,6 +52,8 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.dto.UserBoothDetailsVO;
+import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.SurveyCallStatus;
 import com.itgrids.partyanalyst.model.SurveyDetailsInfo;
 import com.itgrids.partyanalyst.model.SurveySurveyorType;
 import com.itgrids.partyanalyst.model.SurveyUser;
@@ -124,6 +130,13 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	
 	@Autowired
 	private IVoterInfoDAO voterInfoDAO;
+	
+	@Autowired
+	private IUserDAO userDAO;
+	
+	@Autowired
+	private ISurveyCallStatusDAO surveyCallStatusDAO;
+	
 	/**
 	 * This Service is used for saving the user type details
 	 * @param userTypeDescription
@@ -925,6 +938,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		List<GenericVO> returnList = null;
 		try
 		{
+			//List<Object[]> result = surveyUserRelationDAO.getLeadersByConstituency();
 			List<Object[]> result = surveyUserConstituencyDAO.getLeadersByConstituency();
 			if(result != null && result.size() > 0)
 			{
@@ -2133,12 +2147,12 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	}
 
 
-	public List<GenericVO> getSurveyConstituencyLeadersList(Long leaderId){
+	public List<GenericVO> getSurveyConstituencyLeadersList(Long constituencyId){
 			
 			 List<GenericVO> returnList = null;
 			 try 
 			 {
-				List<Object[]> result = surveyUserConstituencyDAO.getSurveyConstituencyLeadersList(leaderId);
+				List<Object[]> result = surveyUserConstituencyDAO.getSurveyConstituencyLeadersList(constituencyId);
 				if(result != null && result.size() > 0)
 				{
 					returnList = new ArrayList<GenericVO>();
@@ -2623,6 +2637,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		catch (Exception e)
 		{
 			LOG.error("Exception raised in getLatLongForSurveyUsersByConstituency service in SurveyDataDetailsService", e);
+			e.printStackTrace();
 		}
 		return returnList;
 	}
@@ -2648,7 +2663,162 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		catch (Exception e)
 		{
 			LOG.error("Exception raised in getLatLongForSurveyUsersByConstituency service in SurveyDataDetailsService", e);
+			e.printStackTrace();
 		}
 		return returnList;
 	}
+	
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> getConstituencyListByDistrictId(Long districtId){
+		
+		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
+		try {
+			List<Constituency> constituencies = constituencyDAO.findConstituenciesByDistrictId(districtId);			
+			for(Constituency constituency : constituencies){
+				result.add(new SelectOptionVO(constituency.getConstituencyId(),WordUtils.capitalize(constituency.getName().toLowerCase())));
+			}
+			Collections.sort(result);
+			
+		} catch (Exception e) {
+			result = null;
+			LOG.error("Exception raised in getConstituencyListByDistrictId() service in SurveyDataDetailsService", e);
+			e.printStackTrace();
+		}
+		
+		
+		return result;
+	}
+
+	
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> getAssignedBoothDetailsByuserId(Long constituencyId,Long surveyUserId){
+		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
+		try {
+			List<Object[]> booths = surveyUserBoothAssignDAO.getAllTheAssignedBoothsByConstituencyIdAndUserId(constituencyId,surveyUserId);		
+
+			for(Object[] booth : booths){
+				result.add(new SelectOptionVO(booth[1] != null ? (Long) booth[1]:0L,WordUtils.capitalize(booth[2] != null ? booth[2].toString().toLowerCase():"")));
+			}
+		} catch (Exception e) {
+			result = null;
+			LOG.error("Exception raised in getAssignedBoothDetailsByuserId() service in SurveyDataDetailsService", e);
+			e.printStackTrace();
+		}		
+		return result;
+	}
+	
+	
+	public List<SurveyReportVO> getSurveyVotersList(Long constituencyId, Long boothId,Long leaderId){
+		List<SurveyReportVO> resultList = new ArrayList<SurveyReportVO>();
+		try {
+			
+			List<Object[]> usersList = surveyUserRelationDAO.getUsersByConstituencyAndLeader(leaderId, constituencyId);
+			
+			Set<Long> assignedUserIds = new HashSet<Long>();
+			
+			if(usersList != null && usersList.size()>0){
+				for (Object[] user : usersList) {
+					assignedUserIds.add((Long) user[0]);
+				}
+			}
+			List<Long> ids = new ArrayList<Long>();
+			ids.addAll(assignedUserIds);
+			List<Object[]> votersLsit = surveyDetailsInfoDAO.getVoterDetailsByBoothId(boothId,ids);
+			
+			System.out.println(votersLsit);
+			if(votersLsit != null && votersLsit.size()>0){
+				resultList = new ArrayList<SurveyReportVO>();
+				for (Object[] voter : votersLsit) {
+					
+					SurveyReportVO reportVO = new SurveyReportVO();
+					
+					reportVO.setUserName(voter[0] != null ? voter[0].toString():"");
+					reportVO.setVoterIDCardNo(voter[1] != null ? voter[1].toString():"");
+					reportVO.setMobileNo(voter[2] != null ? voter[2].toString():"");
+					reportVO.setCaste(voter[3] != null ? voter[3].toString(): voter[4] != null ? voter[4].toString():"");
+					reportVO.setHamletName(voter[5] != null ? voter[5].toString():voter[6] != null ? voter[6].toString():"");
+					reportVO.setLocalArea(voter[7] != null ? voter[7].toString():"");
+					reportVO.setUserid(voter[8] != null ?(Long) voter[8]:0L);
+					reportVO.setVoterId(voter[9] != null ?(Long) voter[9]:0L);
+					reportVO.setCadre(voter[10] != null ? voter[10].toString():"");
+					reportVO.setInfluencePeople(voter[11] != null ? voter[11].toString():"");
+					resultList.add(reportVO);
+					
+				}
+			}			
+			
+		} catch (Exception e) {
+			resultList = null;
+			LOG.error("Exception raised in getSurveyVotersList() service in SurveyDataDetailsService", e);
+			e.printStackTrace();
+		}		
+		return resultList;
+	}
+	
+	
+	public ResultStatus saveSurveyCallStatusDetils(final Long userId,final List<SurveyReportVO> verifiedList){
+		ResultStatus status = new ResultStatus();
+		
+		try {
+			
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+					
+					DateUtilService dateUtilService = new DateUtilService();
+					SurveyCallStatus surveyCallStatus = null;
+					
+					if(verifiedList != null && verifiedList.size()>0){
+						
+						for (SurveyReportVO surveyReportVO : verifiedList) {
+							Long surveyCallStatusId = surveyCallStatusDAO.getSurveyCallDtalsByVoterId(surveyReportVO.getVoterId());
+							
+							if(surveyCallStatusId != null && surveyCallStatusId != 0 ){				
+								surveyCallStatus = surveyCallStatusDAO.get(surveyCallStatusId);
+							}			
+							else if(surveyCallStatus == null ){
+								surveyCallStatus = new SurveyCallStatus();
+								surveyCallStatus.setSurveyUser(surveyUserDAO.get(surveyReportVO.getUserid()));
+								surveyCallStatus.setVoter(voterDAO.get(surveyReportVO.getVoterId()));
+								surveyCallStatus.setInsertedDate(dateUtilService.getCurrentDateAndTime());
+							}
+							
+							
+							surveyCallStatus.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
+							surveyCallStatus.setUser(userDAO.get(userId));
+							if(!surveyReportVO.getMobileNo().equalsIgnoreCase("0")){
+								surveyCallStatus.setMobileNoStatus("Y");
+							}
+							else{
+								surveyCallStatus.setMobileNoStatus("N");
+							}
+							
+							if(surveyReportVO.getMatchedCount() != 0 ){
+								surveyCallStatus.setMatchedStatus("Y");
+							}
+							else{
+								surveyCallStatus.setMatchedStatus("N");
+							}
+														
+							surveyCallStatusDAO.save(surveyCallStatus);
+							
+						}
+					}
+				}
+			});
+			
+			status.setResultCode(ResultCodeMapper.SUCCESS);
+			status.setMessage(" Survey Details Verified Successfully...");
+			
+		} catch (Exception e) {
+			status.setResultCode(ResultCodeMapper.FAILURE);
+			status.setMessage(" Exception occured while saving Survey Details. ");
+			LOG.error("Exception raised in saveSurveyCallStatusDetils() service in SurveyDataDetailsService", e);
+			e.printStackTrace();			
+		}
+		
+		return status;
+	}
+	
 }
