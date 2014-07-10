@@ -172,13 +172,13 @@ function saveSurveyUser()
 		return;
 	
 	}
-	if(address.length >0)
+	/* if(address.length < 0)
 	{
 		$("#createUserErrorDiv").html("Address must be Minimum Of 10 Characters").css("color","red");
 		$('#processingImgForUserCreation').hide();
 		return;
 	
-	}
+	} */
 	if(password.length == 0)
 	{
 		$("#createUserErrorDiv").html("Password is required").css("color","red");
