@@ -2402,16 +2402,16 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>();
 		try {
 			List<Object[]> totalConstituenciesList = constituencyDAO.getAllAssemblyConstituenciesByStateId(1L);
-			List<Long> constituenciesList = surveyUserConstituencyDAO.getAlreadyAssignedConstituencies();
+			//List<Long> constituenciesList = surveyUserConstituencyDAO.getAlreadyAssignedConstituencies();
 			
 			for(Object[] parms:totalConstituenciesList)
 			{
 				SelectOptionVO vo = new SelectOptionVO();
-				if(!constituenciesList.contains((Long)parms[0])){
+				//if(!constituenciesList.contains((Long)parms[0])){
 				vo.setId((Long)parms[0]);
 				vo.setName(parms[1].toString());
 				resultList.add(vo);
-				}
+				//}
 			}
 			
 		} catch (Exception e) {
