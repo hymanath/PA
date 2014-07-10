@@ -41,7 +41,7 @@ public class SurveyUserBoothAssignDAO extends GenericDaoHibernate<SurveyUserBoot
 	
 	public List<Object[]> getAllTheAssignedBoothsByConstituencyIdAndUserId(Long constituencyId,Long userId)
 	{
-		Query query = getSession().createQuery("select SUBA.surveyUserBoothAssignId , SUBA.booth.boothId from  SurveyUserBoothAssign SUBA where " +
+		Query query = getSession().createQuery("select SUBA.surveyUserBoothAssignId , SUBA.booth.boothId,SUBA.booth.partNo from  SurveyUserBoothAssign SUBA where " +
 				"SUBA.surveyUser.surveyUserId = :userId and SUBA.booth.constituency.constituencyId = :constituencyId and SUBA.isDelete = 'N'");
 		
 		query.setParameter("constituencyId", constituencyId);
