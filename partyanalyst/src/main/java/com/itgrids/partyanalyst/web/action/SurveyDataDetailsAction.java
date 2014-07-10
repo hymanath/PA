@@ -50,10 +50,19 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	private GenericVO genericVO;
 	private Long userTypeId;
 	private ConstituencyDetailReportVO reportVO;
-	
+	private Long districtId;
 	private Long userId;
 	private String date;
 	
+	
+	public Long getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+
 	public ConstituencyDetailReportVO getReportVO() {
 		return reportVO;
 	}
@@ -927,10 +936,10 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 				return Action.INPUT;
 			}
 			Long userId = user.getRegistrationID();
-			constituenciesList = 	surveyDataDetailsService.getAllAssemblyConstituenciesByStateId();
-			
+			//constituenciesList = 	surveyDataDetailsService.getAllAssemblyConstituenciesByStateId();			
+			constituenciesList = surveyDataDetailsService.getConstituencyListByDistrictId(districtId);
 		} catch (Exception e) {
-			LOG.error(" exception occured in constituencyDetailReport() ,ConstituencyDetailReport Action class",e);
+			LOG.error(" exception occured in constituencyDetailReport() ,ConstituencyDetailsAction Action class",e);
 		}
 		return Action.SUCCESS;
 		
@@ -953,7 +962,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			reportVO = surveyDataDetailsService.getCosntituencyWiseReportByContiId(constituencyId);
 			
 		} catch (Exception e) {
-			LOG.error(" exception occured in getCosntituencyWiseReportByContiId() ,ConstituencyDetailReport Action class",e);
+			LOG.error(" exception occured in getCosntituencyWiseReportByContiId() ,ConstituencyDetailsAction Action class",e);
 		}
 		return Action.SUCCESS;
 		
@@ -976,7 +985,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		reportVO = surveyDataDetailsService.getBoothWiseDetails(boothId,constituencyId);
 		
 	} catch (Exception e) {
-		LOG.error(" exception occured in getBoothWiseDetails() ,ConstituencyDetailReport Action class",e);
+		LOG.error(" exception occured in getBoothWiseDetails() ,ConstituencyDetailsAction Action class",e);
 	}
 	return Action.SUCCESS;
 	}
@@ -1020,8 +1029,118 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		} 
 		catch (Exception e)
 		{
-			LOG.error("Exception raised in saveSurveyUser in SurveyDataDetailsAction", e);
+			LOG.error("Exception raised in saveSurveyUser in ConstituencyDetailsAction", e);
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String surveyCallCenterPage(){
+		
+		try {
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			Long userId = user.getRegistrationID();
+			constituenciesList = 	surveyDataDetailsService.getAllAssemblyConstituenciesByStateId();			
+		} catch (Exception e) {
+			LOG.error(" exception occured in surveyCallCenterPage() ,ConstituencyDetailsAction Action class",e);
+		}
+		return Action.SUCCESS;
+		
+	}
+	
+	
+  public String getAssignedBoothsForLeader(){
+		
+		try {
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			Long userId = user.getRegistrationID();
+			jObj = new JSONObject(getTask());
+			Long surveyUserId = jObj.getLong("surveyUserId");
+			Long constituencyId = jObj.getLong("constituencyId");
+			constituenciesList = 	surveyDataDetailsService.getAssignedBoothDetailsByuserId(constituencyId,surveyUserId);			
+		} catch (Exception e) {
+			LOG.error(" exception occured in getAssignedBoothsForLeader() ,ConstituencyDetailsAction class",e);
+		}
+		return Action.SUCCESS;
+		
+	}
+	
+
+
+  public String getSurveyVotersList(){
+		
+		try {
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			Long userId = user.getRegistrationID();
+			jObj = new JSONObject(getTask());
+			Long surveyUserId = jObj.getLong("surveyUserId");
+			Long boothId = jObj.getLong("boothId");
+			Long constituencyId = jObj.getLong("constituencyId");
+			voterVerificationList = 	surveyDataDetailsService.getSurveyVotersList(constituencyId,boothId,surveyUserId);			
+		} catch (Exception e) {
+			LOG.error(" exception occured in getSurveyVotersList() ,ConstituencyDetailsAction class",e);
+		}
+		return Action.SUCCESS;
+		
+	}
+	
+  
+  public String saveSurveyCallStatusDetils(){
+	  
+	  try {
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			Long userId = user.getRegistrationID();
+			jObj = new JSONObject(getTask());
+			
+			JSONArray voterInfoArr = jObj.getJSONArray("voterInfoArr");
+			List<SurveyReportVO> verifiedList = new ArrayList<SurveyReportVO>();
+			if(voterInfoArr.length()>0){
+				for(int i=0;i<voterInfoArr.length();i++){
+					
+					JSONObject obj = voterInfoArr.getJSONObject(i);
+					
+					SurveyReportVO vo = new SurveyReportVO();
+				
+					vo.setMobileNo(obj.getString("isMobileVerified"));
+					vo.setMatchedCount(obj.getLong("isMatched"));
+					vo.setUserid(obj.getLong("surveyUserId"));
+					vo.setVoterId(obj.getLong("voterId"));
+					
+					verifiedList.add(vo);
+					
+				}
+			}			
+			
+			resultStatus = surveyDataDetailsService.saveSurveyCallStatusDetils(userId,verifiedList);
+			
+		} catch (Exception e) {
+			LOG.error(" exception occured in saveSurveyCallStatusDetils() ,ConstituencyDetailsAction class",e);
+		}
+		return Action.SUCCESS;
+	  
+  }
+  
 }
