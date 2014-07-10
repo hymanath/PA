@@ -7,8 +7,7 @@ import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
-import com.itgrids.partyanalyst.dto.ConstituencyDetailReportVO;
-import com.itgrids.partyanalyst.dto.GenericVO;
+import com.itgrids.partyanalyst.dto.SurveyInfoVO;
 
 public class SurveyDetailsInfoDAOHibernateTest extends BaseDaoTestCase{
 	private ISurveyDetailsInfoDAO surveyDetailsInfoDAO;
@@ -21,7 +20,7 @@ public class SurveyDetailsInfoDAOHibernateTest extends BaseDaoTestCase{
 	public void setSurveyDetailsInfoDAO(ISurveyDetailsInfoDAO surveyDetailsInfoDAO) {
 		this.surveyDetailsInfoDAO = surveyDetailsInfoDAO;
 	}
-	
+	/*
 	public void testDetails()
 	{
 		/*List<Long> boothIds = new ArrayList<Long>();
@@ -34,7 +33,7 @@ public class SurveyDetailsInfoDAOHibernateTest extends BaseDaoTestCase{
 		// List<Object[]> constituencyVerifiedDetls = surveyDetailsInfoDAO.getsurveyDetailsInfoByboothId(232L,4L);
 		// List<Object[]> constituencyBoothInfo = surveyDetailsInfoDAO.getBoothDetailsByConstituencyId(232L);
 		 
-		 List<Object[]> constituencyCollectdDetls = surveyDetailsInfoDAO.getsurveyDetailsInfoByboothId(370993L,1L);
+	/*	 List<Object[]> constituencyCollectdDetls = surveyDetailsInfoDAO.getsurveyDetailsInfoByboothId(370993L,1L);
 		 List<Object[]> constituencyVerifiedDetls = surveyDetailsInfoDAO.getsurveyDetailsInfoByboothId(370993L,4L);
 		 
 		 ConstituencyDetailReportVO reportVO = new ConstituencyDetailReportVO();
@@ -99,6 +98,41 @@ public class SurveyDetailsInfoDAOHibernateTest extends BaseDaoTestCase{
 					reportVO.setBoothsList(boothsList);
 			}
 		 		 */
+	/*}
+	*/
+	public void testgetAll(){
+		List<Long> userIds = new ArrayList<Long>();
+		userIds.add(1L);
+		userIds.add(2L);
+		userIds.add(3L);
+		userIds.add(4L);
+		userIds.add(5L);
+		
+		List<Object[]> votersLsit = surveyDetailsInfoDAO.getVoterDetailsByBoothId(370994L,userIds);
+		
+		System.out.println(votersLsit);
+		
+		
+	List<SurveyInfoVO> returnList = null;
+		if(votersLsit != null && votersLsit.size()>0){
+			returnList = new ArrayList<SurveyInfoVO>();
+			for (Object[] voter : votersLsit) {
+				
+				SurveyInfoVO surveyinfoVO = new SurveyInfoVO();
+				
+				surveyinfoVO.setTeamleadName(voter[0] != null ? voter[0].toString():"");
+				surveyinfoVO.setVoterCardNo(voter[1] != null ? voter[1].toString():"");
+				surveyinfoVO.setMobileNo(voter[2] != null ? voter[2].toString():"");
+				surveyinfoVO.setCaste(voter[3] != null ? voter[3].toString(): voter[4] != null ? voter[4].toString():"");
+				//surveyinfoVO.setHamletName(voter[5] != null ? voter[5].toString():voter[6] != null ? voter[6].toString():"");
+				//surveyinfoVO.setLocalArea(voter[7] != null ? voter[7].toString():"");
+				
+				returnList.add(surveyinfoVO);
+				
+			}
+		}
+		System.out.println(returnList.size());
 	}
 
+	
 }
