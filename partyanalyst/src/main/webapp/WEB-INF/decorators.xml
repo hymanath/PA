@@ -336,6 +336,7 @@
 			 <pattern>/dailyVerificationReportsAction*</pattern>
 			 <pattern>/surveyMonitoringAction*</pattern>
 			 <pattern>/constituencyDetailReportAction*</pattern>
+			 <pattern>/surveyCallCenterAction*</pattern>
 			 <pattern>/userWiseTrackingAction*</pattern>
 			 <pattern>/surveyAdmin*</pattern>
             <!--  <pattern>/dashBoardAction*</pattern> -->
