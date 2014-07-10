@@ -36,7 +36,7 @@ public class SurveyUserConstituencyDAO extends GenericDaoHibernate<SurveyUserCon
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getSurveyConstituencyLeadersList(Long constituencyId){
 		
-		return getHibernateTemplate().find("select model.surveyUser.surveyUserId, model.surveyUser.firstName,model.surveyUser.lastName from SurveyUserConstituency model " +
+		return getHibernateTemplate().find("select model.surveyUser.surveyUserId, model.surveyUser.firstName,model.surveyUser.lastName,model.userName from SurveyUserConstituency model " +
 				" where model.constituency.constituencyId = "+constituencyId+" order by model.surveyUser.firstName asc");
 	}
 	

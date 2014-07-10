@@ -440,7 +440,7 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getConstituencyInfoByConstituencyIdList(List<Long> constituenciesList)
 	{
-		Query query = getSession().createQuery("select model.constituencyId, model.name from Constituency model where model.constituencyId in(:constituenciesList)");
+		Query query = getSession().createQuery("select model.constituencyId, model.name,model.district.districtId  from Constituency model where model.constituencyId in(:constituenciesList)");
 		query.setParameterList("constituenciesList",constituenciesList);
 		return query.list();
 	}
@@ -810,7 +810,7 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 	
 	public List<Object[]> getAllAssemblyConstituenciesByStateId(Long stateId)
 	{
-		Query query = getSession().createQuery("select  C.constituencyId , C.name from Constituency C where C.state.stateId = ? and " +
+		Query query = getSession().createQuery("select  C.constituencyId , C.name , C.district.districtId from Constituency C where C.state.stateId = ? and " +
 				"C.electionScope.electionType.electionTypeId = 2 and C.deformDate is null order by C.name");
 		
 		query.setParameter(0, stateId);
