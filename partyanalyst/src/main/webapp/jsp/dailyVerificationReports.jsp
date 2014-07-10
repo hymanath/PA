@@ -33,6 +33,11 @@
 				color:red;
 				font-size:13px;
 			}
+
+			#errorDiv{
+				font-weight:bold;
+				color:red;
+			}
 			
 			#retunMsg
 			{
@@ -60,7 +65,7 @@ $('#boothId').multiselect({
 			<div class="span12">
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top20">
-							<h4>Verifier Report</h4>
+							<h4 id="titleId">Verifier Report</h4>
 							<div class="row">
 						<div id="errorDiv" class="span8 offset2"></div>
 						</div>
@@ -75,7 +80,7 @@ $('#boothId').multiselect({
 										<div class="span3">
 											<!--User Type <font class="requiredFont">*</font>
 											<select class="input-block-level" id = "userType"> <option value="0">Select User Type</option></select>-->
-											Select Booth <font class="requiredFont">*</font>
+											Select Booth 
 											<select class="input-block-level" id = "boothId" multiple="true"> <option value="0">Select Booth</option></select>
 										</div>
 										<div class="span2">
@@ -367,15 +372,58 @@ function buildUserBoothWiseCountDetails(result)
 	getUserTypes('userType');
 	</script>
 <script>
+if('${userTypeId}' == 1)
+	$('#titleId').html("Data Collector Report");
+else if('${userTypeId}' == 2)
+	$('#titleId').html("Verifier Report");
+else if('${userTypeId}' == 3)
+	$('#titleId').html("Third Party Report");
 function getDayWiseReportByConstituencyIdAndUserType()
 {
-$('#dayWiseReportDiv1,#retunMsg').html('');
+$('#dayWiseReportDiv1,#retunMsg,#errorDiv').html('');
 	var constituencyId = $("#constituencyId").val();
 	//var userTypeId = $("#userType").val();
-	var userTypeId = 1;
+	var userTypeId = '${userTypeId}';
 	var startDate = $("#fromDate").val();
 	var endDate = $("#toDate").val();
 	var heading = $( "#userType option:selected" ).text();
+
+	var errorStr ="";
+
+	if(constituencyId == 0)
+		errorStr += 'Please select constituency<br>';
+
+
+if(startDate.length == 0 || endDate.length == 0)
+	{
+		errorStr += 'Please Select From Date<br>';
+	}
+	if( endDate.length == 0)
+	{
+		errorStr += 'Please Select To Date<br>';
+	}
+	if(startDate.length > 0 && endDate.length > 0 )
+	{		    
+		  var dt1  = parseInt(startDate.substring(0,2),10);
+		  var mon1 = parseInt(startDate.substring(3,5),10);
+		  var yr1  = parseInt(startDate.substring(6,10),10);
+		  var dt2  = parseInt(endDate.substring(0,2),10);
+		  var mon2 = parseInt(endDate.substring(3,5),10);
+		  var yr2  = parseInt(endDate.substring(6,10),10);
+		  var date1 = new Date(yr1, mon1, dt1);
+		  var date2 = new Date(yr2, mon2, dt2);
+
+		if(date2 < date1)
+		{ 
+			errorStr += 'From Date should be Less Than To Datee';
+		}
+	}
+
+	if(errorStr.length >0)
+	{
+        $('#errorDiv').html(errorStr);
+		return;
+	}
 
 	
 	var jObj =
