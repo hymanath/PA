@@ -204,7 +204,7 @@
 <script>
 function showConstituenciesDetails(districtId)
 {
-	alert(districtId);
+	 window.open('constituencyDetailReportAction.action?districtId='+districtId+'','_blank');
 }
 </script>
   </body>
