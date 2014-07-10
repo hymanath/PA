@@ -7539,5 +7539,15 @@
 				<param name="root">countList</param>
 			</result>
 		</action>
+		
+		<action name="surveyAdmin" class="surveyDashBoardAction">
+			<result name="success">/jsp/surveyDashBoard.jsp</result>
+		</action>
+		
+		<action name="saveSurveyCompletionDetails" class="surveyDashBoardAction" method="saveSurveyCompletionDetails">
+		<result type="json" name="success">
+				<param name="root">status</param>
+			</result>
+		</action>
 </package>
 </struts>      

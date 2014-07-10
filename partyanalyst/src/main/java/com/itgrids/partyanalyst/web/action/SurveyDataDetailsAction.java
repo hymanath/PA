@@ -649,7 +649,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			JSONArray boothDetails = null;
 			 List<Long> boothIds = new ArrayList<Long>();
 			
-			if(jObj.get("boothIds") != null)
+			if(!jObj.get("boothIds").equals(null))
 			{
 			   boothDetails =(JSONArray) jObj.get("boothIds");
 			 
