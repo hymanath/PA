@@ -150,16 +150,16 @@ var jsObj =
 				str +='				<tbody>';
 				for(var i in result)
 				{
-					str +='<input type="hidden" value="'+result[i].voterId+'" id="voterId"/>';
-					str +='<input type="hidden" value="'+result[i].userid+'" id="surveyUserId"/>';
+					str +='<input type="hidden" value="'+result[i].voterId+'" id="voterId'+i+'" name="Id'+i+'" class="voterInfoCls"/>';
+					str +='<input type="hidden" value="'+result[i].userid+'" id="surveyUserId'+i+'"/>';
 					str +='					<tr>';
 					str +='						<td>'+result[i].userName+'</td>';
 					str +='						<td>'+result[i].voterIDCardNo+'</td>';
 					str +='						<td>'+result[i].mobileNo+' ';
 					str +='	<div data-toggle="buttons-radio" class="btn-group">';
-	str +='<button class="btn btn-mini" type="button" onclick="updateStatus(\'isTestedMobile\',1);">correct </button>';
-	str +='<button class="btn btn-mini active" type="button" onclick="updateStatus(\'isTestedMobile\',0);">wrong</button>';
-					str +='					<input type="hidden" value="0" id="isTestedMobile"/>';
+	str +='<button class="btn btn-mini" type="button" onclick="updateStatus(\'isTestedMobileId'+i+'\',1);">correct </button>';
+	str +='<button class="btn btn-mini active" type="button" onclick="updateStatus(\'isTestedMobileId'+i+'\',0);">wrong</button>';
+					str +='					<input type="hidden" value="0" id="isTestedMobileId'+i+'"/>';
 					str +='							 </div></td>';
 					str +='						<td>';
 					str +='							<div class="callcenter_voterDetals_widget">';
@@ -181,9 +181,9 @@ var jsObj =
 					str +='						</td>';
 					str +='						<td>';
 					str +='							<div data-toggle="buttons-radio" class="btn-group">';
-		str +='	<button class="btn" type="button" onclick="updateStatus(\'isDetailsMobile\',1);">Yes</button>';
-		str +='	<button class="btn active" type="button" onclick="updateStatus(\'isDetailsMobile\',0);">No</button>';
-					str +='             <input type="hidden" value="0" id="isDetailsMobile"/>';
+		str +='	<button class="btn" type="button" onclick="updateStatus(\'isDetailsMatchedId'+i+'\',1);">Yes</button>';
+		str +='	<button class="btn active" type="button" onclick="updateStatus(\'isDetailsMatchedId'+i+'\',0);">No</button>';
+					str +='             <input type="hidden" value="0" id="isDetailsMatchedId'+i+'"/>';
 					str +='							 </div>';
 					str +='						</td>';
 					str +='					</tr>';
@@ -191,6 +191,9 @@ var jsObj =
 				str +='				</tbody>';
 				str +='			</table>';
 			
+		}
+		else{
+			str +='	<b> Data Collection not yet started. </b>';
 		}
 		$('#voterInfoDIv').html(str);
 		});
@@ -203,11 +206,31 @@ function updateStatus(id,value){
 
 function saveSurveyCallStatusDetils(){
 
+var voterInfoArr = new Array();
+
+$('.voterInfoCls').each(function(){
+	var id = $(this).attr('name');
+	var voterId  = $('#voter'+id+'').val();
+	var surveyUserId = $('#surveyUser'+id+'').val();
+	var isMobileVerified = $('#isTestedMobile'+id+'').val();
+	var isMatched = $('#isDetailsMatched'+id+'').val();
+	
+	var obj = {
+		voterId:voterId,
+		surveyUserId:surveyUserId,
+		isMobileVerified:isMobileVerified,
+		isMatched :isMatched	
+	}
+	
+	voterInfoArr.push(obj);
+});
+
+console.log(voterInfoArr);
+	
+
 var jsObj = 
 	{
-		constituencyId:constiId,
-		surveyUserId:leaderId,
-		boothId : boothId,
+		voterInfoArr:voterInfoArr,
 		task : "getSurveyVotersList"
 	}
 
@@ -219,6 +242,7 @@ var jsObj =
 		}).done(function(result){
 			console.log(result);
 		});
+	
 }
 	</script>
 	<script src="http://code.jquery.com/jquery.js"></script>
