@@ -43,8 +43,15 @@ public class SurveyReportVO {
 	
 	private Long matchedCount;
 	private Long unmatchedCount;
+	private String mobileNo;
 	
 	
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
 	public Long getMatchedCount() {
 		return matchedCount;
 	}
