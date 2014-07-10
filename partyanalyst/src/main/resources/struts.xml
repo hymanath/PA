@@ -187,6 +187,7 @@
 			<result type="redirect" name="dashBoardAction">dashBoardAction.action</result>
 			<result type="redirect" name="surveyDataDetails">surveyDataDetailsAction.action</result>
 			<result type="redirect" name="constituencyDetailReport">constituencyDetailReportAction.action</result>
+			<result type="redirect" name="surveyCallCenter">surveyCallCenterAction.action</result>
 			
 			<result>/jsp/loginsuccess.jsp</result>
 			 <!-- Problem Management Flow From Different Pages -->
@@ -7539,6 +7540,32 @@
 				<param name="root">countList</param>
 			</result>
 		</action>
+		
+		<action name="surveyCallCenterAction" class="surveyDataDetailsAction" method="surveyCallCenterPage">
+			<result name="success">/jsp/surveyCallCenter.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=surveyCallCenter</result>
+		</action>
+		
+		<action name="getAssignedBoothsForLeaderAction" class="surveyDataDetailsAction" method="getAssignedBoothsForLeader">
+			<result type="json" name="success">
+				<param name="root">constituenciesList</param>
+			</result>
+		</action>
+		
+		<action name="getSurveyVotersListAction" class="surveyDataDetailsAction" method="getSurveyVotersList">
+			<result type="json" name="success">
+				<param name="root">voterVerificationList</param>
+			</result>
+		</action>
+		
+		<action name="saveSurveyCallStatusDetilsAction" class="surveyDataDetailsAction" method="saveSurveyCallStatusDetils">
+			<result type="json" name="success">
+				<param name="root">resultStatus</param>
+			</result>
+		</action>
+		
+		
+		
 		
 		<action name="surveyAdmin" class="surveyDashBoardAction">
 			<result name="success">/jsp/surveyDashBoard.jsp</result>
