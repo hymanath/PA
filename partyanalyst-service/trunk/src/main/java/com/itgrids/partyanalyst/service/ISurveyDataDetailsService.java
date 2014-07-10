@@ -74,7 +74,14 @@ public interface ISurveyDataDetailsService
 	public List<Long> getDataCollectedCount(Long userId,Long boothId);
 	
 	public List<GenericVO> getExistedSurveyUsersByUserType(Long userTypeId);
+	
 	public List<GenericVO> getExistedConstituenciesDetailsByUserId(Long userId);
 
-
+	public List<SelectOptionVO> getConstituencyListByDistrictId(Long districtId);
+	
+	public List<SelectOptionVO> getAssignedBoothDetailsByuserId(Long constituencyId,Long surveyUserId);
+	
+	public List<SurveyReportVO> getSurveyVotersList(Long constituencyId, Long boothId,Long leaderId);
+	
+	public ResultStatus saveSurveyCallStatusDetils(Long userId,List<SurveyReportVO> verifiedList);
 }
