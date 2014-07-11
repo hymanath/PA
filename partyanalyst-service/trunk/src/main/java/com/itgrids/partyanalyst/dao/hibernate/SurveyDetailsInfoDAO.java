@@ -299,6 +299,14 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 		return query.list();
 		
 	}
-
 	
+	public List<Object[]> getSurveyBooths()
+	{
+		Query query = getSession()
+				.createQuery(
+						"select distinct SDI.booth.boothId , SDI.booth.constituency.constituencyId from SurveyDetailsInfo SDI ");
+		
+		return query.list();
+		
+	}
 }

@@ -7,6 +7,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ISurveyCompletedLocationsDetailsDAO;
 import com.itgrids.partyanalyst.model.SurveyCompletedLocationsDetails;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class SurveyCompletedLocationsDetailsDAO extends GenericDaoHibernate<SurveyCompletedLocationsDetails, Long>  implements ISurveyCompletedLocationsDetailsDAO {
 	
@@ -14,14 +15,71 @@ public class SurveyCompletedLocationsDetailsDAO extends GenericDaoHibernate<Surv
 		super(SurveyCompletedLocationsDetails.class);
 	}
 	
-	public List<Long> getSurveyCompletedLocationDetails(Long scopeId)
+	public List<Object[]> getSurveyCompletedLocationDetails(Long scopeId)
 	{
-		Query query = getSession().createQuery("select SCLD.locationValue from SurveyCompletedLocationsDetails SCLD " +
+		Query query = getSession().createQuery("select SCLD.locationValue,,SCLD.surveyUserTypeId from SurveyCompletedLocationsDetails SCLD " +
 				"where SCLD.locationScopeId = :scopeId");
 		
 		query.setParameter("scopeId", scopeId);
 		
 		return query.list();
 	}
+	
+	public List<Object[]> getSurveyCompletedBoothsDetails(List<Long> boothIds)
+	{
+		
+		StringBuffer queryString = new StringBuffer();
+		
+		queryString.append("select SCLD.locationValue,SCLD.surveyUserTypeId " +
+				" from SurveyCompletedLocationsDetails SCLD  where SCLD.locationScopeId = :locationScopeId ");
+		
+		if(boothIds != null)
+			queryString.append("and SCLD.locationValue in(:boothIds)");
+		
+		Query query = getSession().createQuery(queryString.toString());
+		
+		query.setParameter("locationScopeId", IConstants.BOOTH_SCOPE_ID);
+		
+		if(boothIds != null)
+			query.setParameterList("boothIds", boothIds);
+		
+		return query.list();
+		
+	}
+	
+	public List<Object[]> getSurveyCompletedConstituencyDetails()
+	{
+		Query query = getSession()
+				.createQuery(
+						"select SCLD.locationValue,SCLD.surveyUserTypeId from SurveyCompletedLocationsDetails SCLD where SCLD.locationScopeId = :locationScopeId");
+		
+		query.setParameter("locationScopeId", IConstants.CONSTITUENCY_SCOPE_ID);
+		
+		return query.list();
+		
+	}
+	
+	public void deleteBoothCompletionDataOfContituency(List<Long> boothIds)
+	{
+		Query query = getSession().createQuery("delete from SurveyCompletedLocationsDetails SCLD  where SCLD.locationValue in( :boothIds) and " +
+				"SCLD.locationScopeId = :scopeId");
+		
+		query.setParameterList("boothIds", boothIds);
+		query.setParameter("scopeId", IConstants.BOOTH_SCOPE_ID);
+		
+		query.executeUpdate();
+	}
+	
+	public void deleteConstituencyCompletionData()
+	{
+		Query query = getSession().createQuery("delete from SurveyCompletedLocationsDetails SCLD  where  " +
+				"SCLD.locationScopeId = :scopeId");
+		
+		query.setParameter("scopeId", IConstants.CONSTITUENCY_SCOPE_ID);
+		
+		query.executeUpdate();
+	}
+	
+	
 	
 }

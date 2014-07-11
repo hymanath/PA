@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -1899,5 +1900,25 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		query.setParameter("boothId", boothId);
 		query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID);
 		return (Long)query.uniqueResult();
+	}
+	
+	public List<Object[]> getBoothDetailsByBoothIds(Set<Long> boothIds)
+	{
+		Query query = getSession().createQuery("select B.boothId,B.constituency.constituencyId from Booth B where B.boothId in(:boothIds)");
+		
+		query.setParameterList("boothIds", boothIds);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getConstituencyWiseBoothCount()
+	{
+		Query query = getSession().createQuery("select count(B.boothId),B.constituency.constituencyId from Booth B where " +
+				"B.publicationDate.publicationDateId = :publicationDateId group by B.constituency.constituencyId ");
+		
+		query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID);
+		
+		return query.list();
+		
 	}
 }
