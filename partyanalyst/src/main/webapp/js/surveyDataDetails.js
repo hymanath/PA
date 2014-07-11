@@ -68,7 +68,7 @@ function getRemeaningSurveyUsersByUserType(divId,value)
 
 function getSurveyUsersByUserType(divId,value)
 {
-	//$('#'+divId+'').html('<option value="0">Select User</option>');
+	$('#'+divId+'').find('option').remove();
 	var jsObj =
 	{
 	userTypeId :value,
@@ -80,7 +80,7 @@ function getSurveyUsersByUserType(divId,value)
 	dataType: 'json',
 	data: {task:JSON.stringify(jsObj)},
 	}).done(function(result){
-	//$('#'+divId+'').append('<option value="0">Select User</option>');
+	$('#'+divId+'').append('<option value="0">Select User</option>');
 	if(result != null && result.length > 0)
 	{
 	for(var i in result)
@@ -351,13 +351,17 @@ function AssignTab()
 			str +='Tab No is required <br/>';
 		}	
 		else{
-			tabsArr.push(tabNo.trim());
+			if(tabsArr.indexOf(tabNo.trim()) <0){
+				tabsArr.push(tabNo.trim());
+			}
+			else{
+				str +='Duplicate Tab No not allowed . <br/>';
+			}
 		}
 	});
 	
 	$('.datePickerCls ').each(function(){
 		var date = $(this).val();
-		//console.log("datePickerCls :  "+value);
 		if(date.length == 0 && str.indexOf('Date is required') <0)
 		{
 			str +='Date is required <br/>';
@@ -370,7 +374,6 @@ function AssignTab()
 	
 	var length1 = dateArr.length;
 	var tabTatalArr = new Array();
-	console.log(length1);
 	for(var i = 0;i <length1;i++){
 	
 	
@@ -396,21 +399,27 @@ function AssignTab()
 	tabsArr : tabTatalArr
 	}
 	
+	
 	$.ajax({
           type:'POST',
           url: 'assignTabAction.action',
           dataType: 'json',
           data: {task:JSON.stringify(jObj)},
      	  }).done(function(result){ 
-			if(result.resultCode == 0) 
+			if(result.resultCode == 0) {
 				$("#assignTabErrorDiv").html('Tab assigned successfully.').css("color","green");
+				$('#assignNewTabsDiv').html('');
+				$('#tabNo1').val('');
+				$('#date1').val('');
+				$('#surveyUserIdForSelect').val(0);
+			}
 			else
 			  {
 				$("#assignTabErrorDiv").html('Error Occured,Try again....').css("color","red");
 			  }
 			  $("#processingImgForTabAssign").hide();
 	   });
-	
+
 }
 
 function showHideTabs(id)
@@ -1721,7 +1730,7 @@ var str ='';
 	finalArr.push(obj);
 	}
 	
-	console.log(finalArr);
+	//console.log(finalArr);
 	
 	var jsObj = 
 	{
@@ -1738,9 +1747,11 @@ else{
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)},
 		}).done(function(result){
-				console.log(result);
 				if(result != null && result.message.indexOf('success')<0){
 						$('#assignTabUserErrorDiv').html('<span style="color:#57AF57;font-weight:bold;"> Tabs assigned successfully...</span>');
+						
+						$('#tabAssignTabsId').html('');
+						$('#constituencyLeadrList').val(0);
 				}
 		});
 		
