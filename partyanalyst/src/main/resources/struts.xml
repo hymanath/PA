@@ -7581,7 +7581,7 @@
 				<param name="root">surveyUserConstituencies</param>
 			</result>
 		</action>
-		
+						
 		<action name="getSurveyCompletionDetailsForAllConstituencies" class="surveyDashBoardAction" method="getSurveyCompletionDetailsForAllConstituencies">
 		<result type="json" name="success">
 				<param name="root">completionDtlsList</param>
@@ -7596,6 +7596,12 @@
 		
 		<action name="updateSurveyCompleteDetails" class="surveyDashBoardAction" method="updateSurveyCompleteDetails">
 			<result name="success">/jsp/updateSurveyCompleteDetails.jsp</result>
+		</action>
+				
+		<action name="getSurveyUserNameAndPasswordByLeaderAction" class="surveyDashBoardAction" method="getSurveyUserNameAndPasswordByLeader">
+		<result type="json" name="success">
+				<param name="root">returnList</param>
+			</result>
 		</action>
 </package>
 </struts>      
