@@ -31,6 +31,7 @@ public class SurveyCallStatus implements java.io.Serializable{
 	private String matchedStatus;
 	private Date insertedDate;
 	private Date updatedDate;
+	private Booth booth;
 	
 	
 	@Id
@@ -107,6 +108,15 @@ public class SurveyCallStatus implements java.io.Serializable{
 	public void setUpdatedDate(Date updatedDate) {
 		this.updatedDate = updatedDate;
 	}
-	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "booth_id" ,insertable = false , updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Booth getBooth() {
+		return booth;
+	}
+	public void setBooth(Booth booth) {
+		this.booth = booth;
+	}
 	
 }
