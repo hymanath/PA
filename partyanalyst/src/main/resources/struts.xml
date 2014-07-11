@@ -7576,12 +7576,26 @@
 				<param name="root">status</param>
 			</result>
 		</action>
-			<action name="getsurveyuserConstituenciesAction" class="surveyDataDetailsAction" method="getsurveyuserConstituencies">
+		<action name="getsurveyuserConstituenciesAction" class="surveyDataDetailsAction" method="getsurveyuserConstituencies">
 			<result type="json" name="success">
 				<param name="root">surveyUserConstituencies</param>
 			</result>
 		</action>
 		
+		<action name="getSurveyCompletionDetailsForAllConstituencies" class="surveyDashBoardAction" method="getSurveyCompletionDetailsForAllConstituencies">
+		<result type="json" name="success">
+				<param name="root">completionDtlsList</param>
+			</result>
+		</action>
 		
+		<action name="getSurveyCompletionDetailsOfConstituency" class="surveyDashBoardAction" method="getSurveyCompletionDetailsOfConstituency">
+		<result type="json" name="success">
+				<param name="root">completionDtlsList</param>
+			</result>
+		</action>
+		
+		<action name="updateSurveyCompleteDetails" class="surveyDashBoardAction" method="updateSurveyCompleteDetails">
+			<result name="success">/jsp/updateSurveyCompleteDetails.jsp</result>
+		</action>
 </package>
 </struts>      

@@ -1529,7 +1529,7 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	<bean id="surveyLocationStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyCompletedLocationsDetailsDAO">
+	<bean id="surveyCompletedLocationsDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyCompletedLocationsDetailsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	

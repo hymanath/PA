@@ -148,6 +148,17 @@
 								</tr>
 							</thead>
 							<tbody>
+                              	<c:forEach var="constituency" items="${resultList}">
+								<tr>
+									<td>${constituency.locationName}</td>
+									<td>${constituency.totalCount}</td>
+									<td>${constituency.completedCount}</td>
+									<td>${constituency.processingCount}</td>
+									<td>${constituency.notStartedCount}</td>
+								</tr>
+								</c:forEach>
+
+<!--
 								<tr>
 									<td>Constituency name</td>
 									<td>120</td>
@@ -189,7 +200,7 @@
 									<td>20</td>
 									<td>50</td>
 									<td>40</td>
-								</tr>
+								</tr>-->
 							</tbody>
 						</table>	
 					</div>
