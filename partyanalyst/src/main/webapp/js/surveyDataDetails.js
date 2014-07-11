@@ -1782,7 +1782,8 @@ function closePopup()
 }
 function getExistSurveyUsersByUserType(divId,value)
 {
-	 
+	// $('#'+divId+'').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');	
+	 $('#'+divId+'').find('option').remove();
 	//$('#'+divId+'').html('<option value="0">Select User</option>');
 	var jsObj =
 	{
