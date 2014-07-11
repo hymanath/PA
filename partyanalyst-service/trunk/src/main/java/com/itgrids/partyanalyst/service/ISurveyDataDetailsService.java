@@ -86,4 +86,5 @@ public interface ISurveyDataDetailsService
 	public ResultStatus saveSurveyCallStatusDetils(Long userId,List<SurveyReportVO> verifiedList);
 	
 	public List<SelectOptionVO> getSurveyStartedConstituencyList();
+	public List<SelectOptionVO> getsurveyuserConstituencies();
 }
