@@ -30,13 +30,13 @@ public class SurveyUserConstituencyDAO extends GenericDaoHibernate<SurveyUserCon
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getSurveyConstituencyList(){
 		
-		return getHibernateTemplate().find(" select model.constituency.constituencyId , model.constituency.name from SurveyUserConstituency model order by model.constituency.name asc");
+		return getHibernateTemplate().find(" select distinct model.constituency.constituencyId , model.constituency.name from SurveyUserConstituency model order by model.constituency.name asc");
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getSurveyConstituencyLeadersList(Long constituencyId){
 		
-		return getHibernateTemplate().find("select model.surveyUser.surveyUserId, model.surveyUser.firstName,model.surveyUser.lastName,model.surveyUser.userName from SurveyUserConstituency model " +
+		return getHibernateTemplate().find("select distinct model.surveyUser.surveyUserId, model.surveyUser.firstName,model.surveyUser.lastName,model.surveyUser.userName from SurveyUserConstituency model " +
 				" where model.constituency.constituencyId = "+constituencyId+" order by model.surveyUser.firstName asc");
 	}
 	
@@ -44,7 +44,7 @@ public class SurveyUserConstituencyDAO extends GenericDaoHibernate<SurveyUserCon
 	public List<Object[]> getSurveyUserConstituency(Long surveyUserId)
 	{
 		
-		Query query = getSession().createQuery("select model.surveyUserConstituencyId,model.constituency.constituencyId from SurveyUserConstituency model" +
+		Query query = getSession().createQuery("select distinct model.surveyUserConstituencyId,model.constituency.constituencyId from SurveyUserConstituency model" +
 				" where model.surveyUser.surveyUserId = :surveyUserId");
 		query.setParameter("surveyUserId", surveyUserId);
 		return query.list();
