@@ -162,7 +162,7 @@ function buildLocationDetails(result)
 
 function buildTable(result)
 {
-	var date = "04-07-2014";
+	var date = $('#appendedInput').val();
 	var str = '';
 	 str += '<div class="span12 m_top20 widgetservey">';
 	 str += '<h4>Logged in users Details </h4>';
