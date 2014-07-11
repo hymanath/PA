@@ -17,7 +17,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-	<title><decorator:title default="TDP"/></title>
+	<title><decorator:title default="TDP Party's Election Analysis &amp; Management Platform"/></title>
 	<!--<script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>-->
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
@@ -30,6 +30,7 @@
 	<link type="text/css" href="styles/tdp/menu.css" rel="stylesheet" />
 	<link href="styles/tdphome_inner_styles.css" rel="stylesheet" type="text/css" />
 		<link rel="stylesheet" type="text/css" href="styles/newhome_styles.css">
+	
 	
 	<!--Script file
 	<script type="text/javascript" src="js/jquery.js"></script>-->
