@@ -81,6 +81,11 @@ public class SurveyUserConstituencyDAO extends GenericDaoHibernate<SurveyUserCon
 				" ,model.constituency.name from SurveyUserConstituency model where model.activeStatus = 'Y'");
 		return query.list();
 	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getSurveyConstituencies(){
+		
+		return getHibernateTemplate().find(" select distinct model.constituency.constituencyId , model.constituency.name from SurveyUserConstituency model where model.activeStatus = 'Y' order by model.constituency.name asc");
+	}
 	
 }
 

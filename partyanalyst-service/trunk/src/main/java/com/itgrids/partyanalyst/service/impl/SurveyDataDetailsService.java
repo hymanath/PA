@@ -2851,4 +2851,24 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		return status;
 	}
 	
+	public List<SelectOptionVO> getsurveyuserConstituencies()
+	{
+		List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>();
+		try{
+			List<Object[]> list = surveyUserConstituencyDAO.getSurveyConstituencies();
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+				resultList.add(new SelectOptionVO((Long)params[0],params[1].toString()));
+				}
+			}
+			
+		}
+		catch (Exception e) {
+			LOG.error("Exception raised in getsurveyuserConstituencies() service in SurveyDataDetailsService", e);	
+		}
+		return resultList;
+	}
+	
 }
