@@ -1175,7 +1175,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 					vo.setMatchedCount(obj.getLong("isMatched"));
 					vo.setUserid(obj.getLong("surveyUserId"));
 					vo.setVoterId(obj.getLong("voterId"));
-					
+					vo.setBoothId(obj.getLong("boothId"));
 					verifiedList.add(vo);
 					
 				}
