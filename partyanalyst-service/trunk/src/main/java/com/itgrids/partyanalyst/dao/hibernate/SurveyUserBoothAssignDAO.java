@@ -66,5 +66,14 @@ public class SurveyUserBoothAssignDAO extends GenericDaoHibernate<SurveyUserBoot
 		query.setParameter("surveyUserId", surveyUserId);
 		return query.list();
 	}
-
+	  public List<?> getBoothsForUserWhetherAvailableOrNot(long userId,long boothId)
+	   {
+		   Query  query=  getSession().createQuery("select  sb.booth.boothId,sb.booth.partNo,sb.constituency.constituencyId ,sb.remainingDataBooth " +
+		   		" from SurveyUserBoothAssign sb where sb.surveyUser.surveyUserId =:userId and sb.isDelete='N' and sb.booth.boothId=:boothId group by sb.booth.boothId");
+		   
+		   query.setParameter("userId",userId);
+		   query.setParameter("boothId",boothId);
+		   
+		   return query.list();
+	   }
 }
