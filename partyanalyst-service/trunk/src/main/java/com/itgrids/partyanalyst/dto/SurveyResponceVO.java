@@ -7,6 +7,10 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserResponseVO;
 
+/**
+ * @author Administrator Jul 10, 2014
+ *
+ */
 public class SurveyResponceVO extends UserResponseVO  implements Serializable  
 {
 
@@ -48,12 +52,22 @@ public class SurveyResponceVO extends UserResponseVO  implements Serializable
 	private String statusId;
 	private String insertTime;
 	
+	private int votersSize=0;
 	
 	
 	
 	
 	
 	
+	
+	
+	
+	public int getVotersSize() {
+		return votersSize;
+	}
+	public void setVotersSize(int votersSize) {
+		this.votersSize = votersSize;
+	}
 	public String getInsertTime() {
 		return insertTime;
 	}
