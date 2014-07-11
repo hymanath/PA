@@ -687,7 +687,7 @@ var str ='';
 	str +='	</div>';
 	str +='	<div class="span6">';
 	str +='		Date<font class="requiredFont">*</font>';   	
-	str +='		<input type="text" placeholder="Select Date..." class="input-block-level datePickerCls" id="date'+count+'" readOnly="true" style="width:270px;"> <a href="javascript:{clearDiv('+count+');}"> <span id="removeDivId" class="btn btn-danger" style="margin-top: -10px;"> <b> - </b></span> </a>';
+	str +='		<input type="text" placeholder="Select Date..." class="input-block-level datePickerCls" id="date'+count+'" readOnly="true" style="width:270px;"> <a href="javascript:{clearDiv('+count+');}"> <span id="removeDivId" class="btn btn-danger" style="margin-top: -10px;" title="Click here to remove this tab details."> <b> - </b></span> </a>';
 	str +='	</div>	';								
 	str +='</div>';
 		str +=' ';
