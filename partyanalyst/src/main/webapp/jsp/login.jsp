@@ -1,5 +1,6 @@
 <html>
 <head>
+<title>TDP Party's Election Analysis &amp; Management Platform</title>
 <link type="text/css" rel="stylesheet" href="css/loginpagestyle.css" media="screen" />
 <script type="text/javascript" src="js/md5.js"></script>
 <script type="text/javascript" src="js/loginpopup1.js"> </script>
@@ -26,6 +27,7 @@
 	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
 	<!-- Skin CSS files resize.css must load before layout.css --> 
+	<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/TDP.gif">
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/layout.css">
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css"> 
