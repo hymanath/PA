@@ -37,8 +37,27 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	private String percentage;
 	private String latitude;
 	private String longititude;
+	private String mandalName;
+	private String panchayatName;
 	
 	
+	
+	public String getMandalName() {
+		return mandalName;
+	}
+
+	public void setMandalName(String mandalName) {
+		this.mandalName = mandalName;
+	}
+
+	public String getPanchayatName() {
+		return panchayatName;
+	}
+
+	public void setPanchayatName(String panchayatName) {
+		this.panchayatName = panchayatName;
+	}
+
 	public String getPercentage() {
 		return percentage;
 	}
