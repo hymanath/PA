@@ -2754,8 +2754,10 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	}
 	
 	public List<SurveyReportVO> getSurveyVotersList(Long constituencyId, Long boothId,Long leaderId){
-		List<SurveyReportVO> resultList = new ArrayList<SurveyReportVO>();
+		List<SurveyReportVO> retultList = new ArrayList<SurveyReportVO>();
 		try {
+			
+			SurveyReportVO finalVO = new SurveyReportVO();
 			
 			List<Object[]> usersList = surveyUserRelationDAO.getUsersByConstituencyAndLeader(leaderId, constituencyId);
 			
@@ -2765,39 +2767,72 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				for (Object[] user : usersList) {
 					assignedUserIds.add((Long) user[0]);
 				}
+				
+				List<Long> ids = new ArrayList<Long>();
+				ids.addAll(assignedUserIds);
+				List<Object[]> votersLsit = surveyDetailsInfoDAO.getVoterDetailsByBoothId(boothId,ids);
+				
+				System.out.println(votersLsit);
+				if(votersLsit != null && votersLsit.size()>0){
+					List<SurveyReportVO> resultList = new ArrayList<SurveyReportVO>();
+					for (Object[] voter : votersLsit) {
+						
+						SurveyReportVO reportVO = new SurveyReportVO();
+						
+						//reportVO.setUserName(voter[0] != null ? voter[0].toString():"");
+						reportVO.setVoterIDCardNo(voter[1] != null ? voter[1].toString():"");
+						reportVO.setMobileNo(voter[2] != null ? voter[2].toString():"");
+						reportVO.setCaste(voter[3] != null ? voter[3].toString(): voter[4] != null ? voter[4].toString():"");
+						reportVO.setHamletName(voter[5] != null ? voter[5].toString():voter[6] != null ? voter[6].toString():"");
+						reportVO.setLocalArea(voter[7] != null ? voter[7].toString():"");
+						reportVO.setUserid(voter[8] != null ?(Long) voter[8]:0L);
+						reportVO.setVoterId(voter[9] != null ?(Long) voter[9]:0L);
+						reportVO.setCadre(voter[10] != null ? voter[10].toString():"");
+						reportVO.setInfluencePeople(voter[11] != null ? voter[11].toString():"");
+						reportVO.setUserName(voter[12] != null ? voter[12].toString():"");  // votername 
+						reportVO.setPartNo(voter[13] != null ? voter[13].toString():"");    // H.No
+						reportVO.setVoterName(voter[14] != null ? voter[14].toString():""); // relativeName
+						
+						resultList.add(reportVO);
+						
+					}
+					
+					if(resultList != null && resultList.size()>0){
+						finalVO.setSubList(resultList);
+						
+					}
+				}	
+				
 			}
-			List<Long> ids = new ArrayList<Long>();
-			ids.addAll(assignedUserIds);
-			List<Object[]> votersLsit = surveyDetailsInfoDAO.getVoterDetailsByBoothId(boothId,ids);
-			
-			System.out.println(votersLsit);
-			if(votersLsit != null && votersLsit.size()>0){
-				resultList = new ArrayList<SurveyReportVO>();
-				for (Object[] voter : votersLsit) {
 					
-					SurveyReportVO reportVO = new SurveyReportVO();
+			List<GenericVO> casteList = new ArrayList<GenericVO>();
+			List<Object[]> casteInfo = boothPublicationVoterDAO.getBoothWiseCasteDetails(boothId);
+			if(casteInfo != null && casteInfo.size()>0){
+				for (Object[] caste : casteInfo) {
+					GenericVO vo = new  GenericVO();
+					vo.setId(caste[0] != null ? (Long) caste[0]:0L);
+					vo.setName(caste[1] != null ? caste[1].toString():"");
+					vo.setCount(caste[2] != null ? (Long) caste[2]:0L);
 					
-					reportVO.setUserName(voter[0] != null ? voter[0].toString():"");
-					reportVO.setVoterIDCardNo(voter[1] != null ? voter[1].toString():"");
-					reportVO.setMobileNo(voter[2] != null ? voter[2].toString():"");
-					reportVO.setCaste(voter[3] != null ? voter[3].toString(): voter[4] != null ? voter[4].toString():"");
-					reportVO.setHamletName(voter[5] != null ? voter[5].toString():voter[6] != null ? voter[6].toString():"");
-					reportVO.setLocalArea(voter[7] != null ? voter[7].toString():"");
-					reportVO.setUserid(voter[8] != null ?(Long) voter[8]:0L);
-					reportVO.setVoterId(voter[9] != null ?(Long) voter[9]:0L);
-					reportVO.setCadre(voter[10] != null ? voter[10].toString():"");
-					reportVO.setInfluencePeople(voter[11] != null ? voter[11].toString():"");
-					resultList.add(reportVO);
+					casteList.add(vo);
 					
 				}
-			}			
+			}
+			
+			finalVO.setCount(boothPublicationVoterDAO.getTotalVoters(boothId));
+			
+			if(casteList != null && casteList.size()>0){
+				finalVO.setGenericVOList(casteList);
+			}
+						
+			retultList.add(finalVO);
 			
 		} catch (Exception e) {
-			resultList = null;
+			retultList = null;
 			LOG.error("Exception raised in getSurveyVotersList() service in SurveyDataDetailsService", e);
 			e.printStackTrace();
 		}		
-		return resultList;
+		return retultList;
 	}
 	
 	
@@ -2832,6 +2867,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 							
 							
 							surveyCallStatus.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
+							surveyCallStatus.setBooth(boothDAO.get(surveyReportVO.getBoothId()));
 							surveyCallStatus.setUser(userDAO.get(userId));
 							if(!surveyReportVO.getMobileNo().equalsIgnoreCase("0")){
 								surveyCallStatus.setMobileNoStatus("Y");
