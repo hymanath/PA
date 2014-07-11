@@ -6,7 +6,7 @@
 		<property name="jndiName" value="java:comp/env/jdbc/partyAnalystDB" />
 	</bean>
 	
-	<bean id="dataSource2" class="org.springframework.jndi.JndiObjectFactoryBean">
+	<bean id="dataSource2" class="org.springframework.jndi.JndiObjectFactoryBean" lazy-init="true" >
 		<property name="jndiName" value="java:comp/env/jdbc/survey" />
 	</bean>
 
@@ -460,7 +460,7 @@
 	</bean>
 	
 	<bean id="sessionFactory2" 
-			class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+			class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean" lazy-init="true" >
 		<property name="dataSource">
 			<ref bean="dataSource2"/>
 		</property>
