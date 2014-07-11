@@ -1105,6 +1105,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			{
 				String casteName = casteStateDAO.get(surveyDetailsInfo.getCaste().getCasteStateId()).getCaste().getCasteName();
 				VO.setCasteName(casteName);
+				VO.setCasteId(surveyDetailsInfo.getCaste().getCasteStateId());
 			}
 			else
 			{
@@ -1114,6 +1115,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			{
 				String hamletName = hamletDAO.get(surveyDetailsInfo.getHamlet().getHamletId()).getHamletName();
 				VO.setHamletName(hamletName);
+				VO.setHamletId(surveyDetailsInfo.getHamlet().getHamletId());
 			}
 			else
 			{
@@ -2832,7 +2834,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			LOG.error("Exception raised in getSurveyVotersList() service in SurveyDataDetailsService", e);
 			e.printStackTrace();
 		}		
-		return retultList;
+		return resultList;
 	}
 	
 	
