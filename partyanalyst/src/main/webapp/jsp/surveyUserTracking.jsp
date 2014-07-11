@@ -66,6 +66,12 @@ var apaccampus = {
 
 function getDetailsByConstituency()
 {
+	var constituencyId = $('#constituencyId').val();
+	if(constituencyId == 0)
+	{
+		$("#errorMsgDiv").html('<font style="color:red;font-size:12px;"> select constituency </font>');
+		return;
+	}
 	var jObj = 
 	{
 	 constituencyId: $('#constituencyId').val(),
@@ -302,6 +308,7 @@ function openTrackinWindow(userId,date,id)
 function getconstituencies()
 {
 
+
 	var jsObj =
 	{
 	
@@ -314,7 +321,7 @@ function getconstituencies()
 	data: {task:JSON.stringify(jsObj)},
 	}).done(function(result){
 
-		
+	$("#constituencyId").append('<option value="0">Select Constituency</option>');
 	if(result != null && result.length > 0)
 	{
 	for(var i in result)
@@ -337,6 +344,7 @@ function getconstituencies()
 							<h4>User Tracking</h4>
 							<div class="row">
 								<div class="span8 offset3">
+								<div id="errorMsgDiv" class="offset1"></div>
 									<div class="row-fluid">
 									
 										<div class="span3 offset1">
