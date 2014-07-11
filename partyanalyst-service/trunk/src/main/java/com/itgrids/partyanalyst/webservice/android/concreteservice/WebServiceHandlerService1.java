@@ -9,6 +9,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
@@ -42,6 +45,7 @@ import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.webservice.android.abstractservice.IWebServiceHandlerService1;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.BoothVoterVO;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLocationTrackingVo;
+import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLoginUtils;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLoginVO;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserResponseSub;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserResponseVO;
@@ -99,6 +103,10 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
     
     @Autowired
     public ISurveyDetailsInfoDAO  surveyDetailsInfoDAO;
+    
+    
+	@Autowired
+	private TransactionTemplate transactionTemplate;
 	
 	
 	
@@ -278,10 +286,13 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 			 userId=surveyDataDetailsService.auhenticateUserandGetUserType(inputvo.getUserName(), inputvo.getPassWord());
   
 			 //if user not available 
+			 
+			
 			 if(userId==null)
 				 return null;
+			 
 			    //stop here and return
-			  res= buildDateForSurverUsers(userId);
+			  res= buildDateForSurverUsers(userId,inputvo);
 			 
 			 // bulid response based on userType
 		
@@ -298,7 +309,7 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	
 	
 	
-	public UserResponseVO  buildDateForSurverUsers(Object[] inputs)
+	public UserResponseVO  buildDateForSurverUsers(Object[] inputs, UserLoginVO inputvo)
 	{
 		
 		UserResponseVO res=null;
@@ -317,7 +328,7 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 			break;
 			     //verifier
 		case 4:
-			res=buildverifierData(userId, userTypeId);
+			res=buildverifierData(userId, userTypeId,inputvo);
 			break;
 		case 3:
 			
@@ -381,23 +392,22 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
              List<String> partNumbers = boothDAO.getPartNosForBooths(remainingDatBoothIds);
              List<Object[]>   votersBoothsDetails =   boothPublicationVoterDAO.getBoothIdsDetailsOfVoterIds(voterIds, 10L);*/
              
-      List<BoothVoterVO> boothVotersVOList = new ArrayList<BoothVoterVO>();   
-      
-      Set<Long> boothIds1 = new HashSet<Long>();
-      if(votersBoothsDetails!=null && votersBoothsDetails.size()>0)
-      for(Object[] obj:votersBoothsDetails)
-    	  boothIds1.add((Long)obj[2]);
-      if(boothIds1!=null && boothIds1.size()>0)
-      for(Long boothId:boothIds1)
-      {
-    	  BoothVoterVO vo = new BoothVoterVO();
-    	  vo.setBoothId(boothId);
-    	  boothVotersVOList.add(vo);
-      }
-      if(votersBoothsDetails!=null && votersBoothsDetails.size()>0)
-             for(Object[] obj:votersBoothsDetails)
-             {
-                     
+		      List<BoothVoterVO> boothVotersVOList = new ArrayList<BoothVoterVO>();   
+		      
+		      Set<Long> boothIds1 = new HashSet<Long>();
+		      if(votersBoothsDetails!=null && votersBoothsDetails.size()>0)
+		      for(Object[] obj:votersBoothsDetails)
+		    	  boothIds1.add((Long)obj[2]);
+		      if(boothIds1!=null && boothIds1.size()>0)
+		      for(Long boothId:boothIds1)
+		      {
+		    	  BoothVoterVO vo = new BoothVoterVO();
+		    	  vo.setBoothId(boothId);
+		    	  boothVotersVOList.add(vo);
+		      }
+		      if(votersBoothsDetails!=null && votersBoothsDetails.size()>0)
+               for(Object[] obj:votersBoothsDetails)
+                {                     
                      BoothVoterVO boothVoterVO = getMatchedBoothVO(boothVotersVOList,(Long)obj[2]);
                      
                      if(boothVoterVO != null)
@@ -459,8 +469,9 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	 * Jul 3, 2014
 	 * @param userId
 	 * @param userTypeId
+	 * @param inputvo 
 	 */
-	public UserResponseVO  buildverifierData(long userId,long userTypeId)
+	public UserResponseVO  buildverifierData(long userId,long userTypeId, UserLoginVO inputvo)
 	{
 		//check assigned booth for verifier
 		
@@ -472,10 +483,19 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 		responseVo.setConstituencyId(res.getConstituencyId());
 		responseVo.setUserId(res.getUserId());
 		responseVo.setUserTypeId(res.getUserTypeId());
-		responseVo.setBoothIds(res.getBoothIds());
+		responseVo.setBoothIds(res.getBoothIds()); 
 		responseVo.setPartNos(res.getPartNos());
 		
-		for (String boothId :res.getBoothIds() ) {
+		UserLoginUtils subVo=(UserLoginUtils) inputvo;
+		Long boothId=subVo.getBoothId()!=null?Long.valueOf(subVo.getBoothId()):0;
+		
+		if((res.getBoothIds().size()>=1 && boothId!=0) || (res.getBoothIds().size()==1 && boothId==0))
+		{
+		//for (String boothId :res.getBoothIds() ) {
+			
+			if(boothId==0)
+				boothId=Long.valueOf(res.getBoothIds().get(0));
+				
 			List<SurveyResponceVO>  verifiers=surveyDataDetailsService.getDetailsForVerifier(userId, Long.valueOf(boothId));
 			if(verifiers!=null&&verifiers.size()>0)
 			{
@@ -484,8 +504,11 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 					verifiersList=new ArrayList<SurveyResponceVO>();				
 				verifiersList.addAll(verifiers);
 				responseVo.setVerifiersData(verifiersList);
+				responseVo.setVotersSize(verifiersList.size());
 			}
-		}
+		//} // for
+			
+		}//if
 		// check whether data available  for all those booths or not 6782934
 	  //	List<Object[]> votersData =(List<Object[]>) surveyUserBoothAssignDAO.getVoterDataForUser(1l);
 
@@ -502,15 +525,26 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	}
 	//saveSurveyUserTrackingDetails
 	
-	public ResultStatus saveUserTrackingLocation(UserLocationTrackingVo userLocationTrackingVo)
-	{    ResultStatus  status=null;
-	
-		for ( UserLocationTrackingVo trackPoints: userLocationTrackingVo.getUserLocations()) {
-			
+	public ResultStatus saveUserTrackingLocation(final UserLocationTrackingVo userLocationTrackingVo)
+	{    final ResultStatus  status=  new ResultStatus();;
+	    transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+
+		@Override
+		protected void doInTransactionWithoutResult(
+				TransactionStatus arg0) {
+			for ( UserLocationTrackingVo trackPoints: userLocationTrackingVo.getUserLocations()) {
+				
 				trackPoints.setImeiNo(userLocationTrackingVo.getImeiNo());
 				trackPoints.setSurveyUserId(userLocationTrackingVo.getSurveyUserId());			
-				status=surveyDataDetailsService.saveSurveyUserTrackingDetails(trackPoints);
+				surveyDataDetailsService.saveSurveyUserTrackingDetails(trackPoints);
 		}
+			
+			status.setResultCode(0);
+			status.setMessage("Success");
+
+		}
+		});
+		
 		
 	//	ResultStatus  status=	surveyDataDetailsService.saveSurveyUserTrackingDetails(userLocationTrackingVo);
 		
