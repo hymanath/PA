@@ -339,6 +339,7 @@
 			 <pattern>/surveyCallCenterAction*</pattern>
 			 <pattern>/userWiseTrackingAction*</pattern>
 			 <pattern>/surveyAdmin*</pattern>
+			 <pattern>/updateSurveyCompleteDetails*</pattern>
             <!--  <pattern>/dashBoardAction*</pattern> -->
        </decorator>
        

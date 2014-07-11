@@ -1448,14 +1448,11 @@
 	
 	<bean id="candidateUpdateDetailsAction" class="com.itgrids.partyanalyst.web.action.CandidateUpdationDetailsAction" singleton="false">
 	 <property name="candidateUpdationDetailsService" ref="candidateUpdationDetailsService"/>
-	
 	</bean>
 	
 	<bean id="surveyDashBoardAction" class="com.itgrids.partyanalyst.web.action.SurveyDashBoardAction" singleton="false">
-	<property name="surveyDashBoardService" ref="surveyDashBoardService"></property>
+		<property name="surveyDashBoardService" ref="surveyDashBoardService"></property>
+		<property name="surveyDataDetailsService" ref="surveyDataDetailsService"></property>
 	</bean>
-	
-	
-	
 </beans>	
 	
