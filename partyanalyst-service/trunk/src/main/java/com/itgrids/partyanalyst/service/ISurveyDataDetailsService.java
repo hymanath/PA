@@ -87,4 +87,5 @@ public interface ISurveyDataDetailsService
 	
 	public List<SelectOptionVO> getSurveyStartedConstituencyList();
 	public List<SelectOptionVO> getsurveyuserConstituencies();
+	public List<GenericVO> getSurveyUserNameAndPasswordByLeader(Long leaderId);
 }
