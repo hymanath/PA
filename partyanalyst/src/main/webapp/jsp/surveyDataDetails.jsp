@@ -117,7 +117,7 @@
 				</ul>
 			</div>
 		</div>
-		<div class="row" id="createUserTypeDiv">
+	<!--	<div class="row" id="createUserTypeDiv">
 			<div class="span10 offset1">
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red">
@@ -142,7 +142,7 @@
 				</div>
 			</div>
 		</div>
-	
+	-->
 		<!----User Creation----->		
 		<div class="row" id="userCreationDiv">
 			<div class="span10 offset1">
