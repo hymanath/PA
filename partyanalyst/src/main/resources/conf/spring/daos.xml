@@ -1538,15 +1538,15 @@
 	<!--  survey -->
 	
 		
-	<bean id="constiCasteGroupPercDAO" class="com.itgrids.partyanalyst.dao.hibernate.ConstiCasteGroupPercDAO">
+	<bean id="constiCasteGroupPercDAO" class="com.itgrids.partyanalyst.dao.hibernate.ConstiCasteGroupPercDAO" lazy-init="true">
 		<property name="sessionFactory" ref="sessionFactory2" />
 	</bean>
 			
-	<bean id="casteGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.CasteGroupDAO">
+	<bean id="casteGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.CasteGroupDAO" lazy-init="true" >
 		<property name="sessionFactory" ref="sessionFactory2" />
 	</bean>
 	
-<bean id="candidateDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateDetailsDAO">
+<bean id="candidateDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateDetailsDAO" lazy-init="true" >
 		<property name="sessionFactory" ref="sessionFactory" />
 </bean>
 	<!--  end -->
