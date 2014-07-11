@@ -472,6 +472,16 @@ else if(id == "userCreationTab")
 	$("#assignBoothToLeaderDiv").hide();
 	$("#verificationDiv").hide();
 	$("#leaderNameDiv").hide();
+	$("#tabAssignTabsId").html('');
+	$("#newTabAssignDiv2").html('');
+	$("#constituencyLeadrList").find('option').remove();
+	$("#surveyUserIdForSelect").find('option').remove();
+	$("#constituencyLeadrList").append('<option value="0"> Select Leader </option>');
+	$("#surveyUserIdForSelect").append('<option value="0"> Select Leader Name </option>');
+	$("#surveyUserTypeForSelect").val(0);
+	$(".datePickerCls ").val('');
+	$(".newTabCls ").val('');
+	
 	buildDatePicker();
 	//getUserTypes('surveyUserTypeForSelect');
 	getSurveyConstituencyList('constitList');
