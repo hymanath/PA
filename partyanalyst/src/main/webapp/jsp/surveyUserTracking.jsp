@@ -298,6 +298,35 @@ function openTrackinWindow(userId,date,id)
 {
 	window.open('userWiseTrackingAction.action?userId='+userId+'&date='+date+'&userTypeId='+id+'');
 }
+
+function getconstituencies()
+{
+
+	var jsObj =
+	{
+	
+	task : "getConstituencies"
+	}
+	$.ajax({
+	type:'GET',
+	url: 'getsurveyuserConstituenciesAction.action',
+	dataType: 'json',
+	data: {task:JSON.stringify(jsObj)},
+	}).done(function(result){
+
+		
+	if(result != null && result.length > 0)
+	{
+	for(var i in result)
+	{
+		
+	$("#constituencyId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+	}
+
+	}
+	
+	});
+}
 </script>
 	<div class="container">
 		<!---- Survey monitoring---->		
@@ -307,12 +336,13 @@ function openTrackinWindow(userId,date,id)
 					<div class="span12 widgetservey_Red m_top20">
 							<h4>User Tracking</h4>
 							<div class="row">
-								<div class="span8 offset2">
+								<div class="span8 offset3">
 									<div class="row-fluid">
 									
-										<div class="span6 offset1">
+										<div class="span3 offset1">
 											<label>Select Constituency</label>
-											<s:select theme="simple"  name="constituency" id="constituencyId" list="constituenciesList" listKey="id" listValue="name" />
+										<select name="constituency" id="constituencyId" list="constituenciesList" style="width:130px;"></select>
+								
 										</div>
 										
 										<div class="span4">
@@ -326,7 +356,7 @@ function openTrackinWindow(userId,date,id)
 									
 								</div>
 							</div>
-							<div class="row text-center m_top20"><button type="button" class="btn btn-success" onClick="getDetailsByConstituency();">SUBMIT</button></div>
+							<div class="row text-center m_top20" style="margin-right:51px;"><button type="button" class="btn btn-success" onClick="getDetailsByConstituency();">SUBMIT</button></div>
 					</div>
 				</div>
 				
@@ -341,7 +371,9 @@ function openTrackinWindow(userId,date,id)
 			</div>
 		</div>
 	</div>
-	
+	<script>
+	 getconstituencies();
+	</script>
   </body>
   
 
