@@ -224,13 +224,14 @@
 											<input type="text" placeholder="User Name..." class="input-block-level" id="uname">-->
 											Select User Type<font class="requiredFont">*</font>
 											<select class="input-block-level" id="surveyUserTypeForSelect" onchange="getSurveyUsersByUserType('surveyUserIdForSelect',this.value);">
-											<option value="0">Select User type</option>
-											<option value="3">Lead</option>
+											<option value="0"> Select User type </option>
+											<option value="3"> Lead </option>
+											<option value="5"> Chief Verifier </option>
 											</select>
 											</div>
 											<div class="span6">
-											Select User Name<font class="requiredFont">*</font>
-											<select class="input-block-level" id="surveyUserIdForSelect"> <option value="0">Select User Name</option></select>
+											Select Leader Name<font class="requiredFont">*</font>
+											<select class="input-block-level" id="surveyUserIdForSelect"> <option value="0">Select Leader Name</option></select>
 											</div>	
 										
 										</div>
