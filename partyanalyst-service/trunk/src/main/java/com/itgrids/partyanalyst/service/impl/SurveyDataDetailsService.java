@@ -2021,8 +2021,23 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		ResultStatus resultStatus = new ResultStatus();
 		try
 		{
+			
+			
 			SurveyUserTracking surveyUserTracking = new SurveyUserTracking();
 			Long userId=userLocationTrackingVo.getSurveyUserId();
+			  
+			
+			Long id=surveyUserTrackingDAO.checkWhetherRecordExistingOrNot(userLocationTrackingVo.getUuid(), userLocationTrackingVo.getImeiNo(), new DateUtilService().getDateAndTime(userLocationTrackingVo.getInsertTime()));
+			
+			
+			if(id!=null) {
+				resultStatus.setResultCode(0);
+				resultStatus.setMessage("Success");
+				return resultStatus;
+				
+				
+			}
+				
 			if(userId!=null && userId!=0 )
 			surveyUserTracking.setSurveyUser(surveyUserDAO.get(userLocationTrackingVo.getSurveyUserId()));			
 			
@@ -2051,6 +2066,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			LOG.error("Exception raised in saveSurveyUserTrackingDetails service in SurveyDataDetailsService", e);
 			resultStatus.setResultCode(3);
 			resultStatus.setMessage("Exception");
+			throw new RuntimeException("Exception Because Of",e);
 		}
 		return resultStatus;
 }
