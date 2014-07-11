@@ -1117,6 +1117,26 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		return Action.SUCCESS;
 		
 	}
+  
+  public String getSurveyUserNameAndPasswordByLeader(){
+		
+		try {
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			jObj = new JSONObject(getTask());
+			Long surveyUserId = jObj.getLong("surveyUserId");
+			returnList = 	surveyDataDetailsService.getSurveyUserNameAndPasswordByLeader(surveyUserId);			
+		} catch (Exception e) {
+			LOG.error(" exception occured in getSurveyVotersList() ,ConstituencyDetailsAction class",e);
+		}
+		return Action.SUCCESS;
+		
+	}
 	
   
   public String saveSurveyCallStatusDetils(){
