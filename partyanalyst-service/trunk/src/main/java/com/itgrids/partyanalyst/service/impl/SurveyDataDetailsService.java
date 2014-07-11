@@ -2887,4 +2887,36 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		return resultList;
 	}
 	
+	
+	/**
+	 * This Service is used for getting all user names and password for users under leader
+	 * @param leaderId
+	 * @return returnList
+	 */
+	public List<GenericVO> getSurveyUserNameAndPasswordByLeader(Long leaderId)
+	{
+		List<GenericVO> returnList = null;
+		try
+		{
+			List<Object[]> result = surveyUserRelationDAO.getSurveyUsersByLeaderWise(leaderId);
+			if(result != null && result.size() > 0)
+			{
+				returnList = new ArrayList<GenericVO>();
+				for (Object[] parms : result)
+				{
+					GenericVO VO = new GenericVO();
+					VO.setId((Long)parms[0]);
+					VO.setName(parms[1].toString());
+					VO.setDesc(parms[2].toString());
+					returnList.add(VO);
+				}
+			}
+		}
+		catch (Exception e) 
+		{
+			LOG.error("Exception raised in getSurveyUserNameAndPasswordByLeader() service in SurveyDataDetailsService", e);
+		}
+		return returnList;
+	}
+	
 }
