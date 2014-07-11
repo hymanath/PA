@@ -1337,6 +1337,7 @@ function getAssignedConstituencies(divId)
 {
 	var jsObj =
 	{
+	userTypeId : $("#constiUserTypeId").val(),
 	task: "getAssignedConstituencies"
 	}
 	$.ajax({
@@ -1403,6 +1404,8 @@ function assignConstituencyToUser()
 				$("#assignconstiErrorDiv").html('Constituency Assigned successfully.').css("color","green");
 				setTimeout(function(){$('#assignconstiErrorDiv').html('');}, 3000);				
 				$('#constiUserTypeId,#assignConstituencyLeaderId,#assignConstituencyId').val(0);
+				$('#assignConstituencyLeaderId').find('option:not(:first)').remove();
+				$('#assignConstituencyId').find('option:not(:first)').remove();
 			}
 			else
 			{
