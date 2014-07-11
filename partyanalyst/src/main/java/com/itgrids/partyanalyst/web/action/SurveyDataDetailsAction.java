@@ -41,7 +41,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	private ISurveyDataDetailsService surveyDataDetailsService;
 	private List<UserBoothDetailsVO> assgnedBoothsList;
 	private List<SurveyReportVO> dayWiseReportList;
-	private List<SelectOptionVO> constituenciesList;
+	private List<SelectOptionVO> constituenciesList,surveyUserConstituencies;
 	private List<SurveyReportVO> boothWiseCountList,assignedUsersList;
 	private List<SurveyReportVO> voterVerificationList;
 	private List<SurveyResponceVO> responceList;
@@ -55,6 +55,15 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	private String date;
 	
 	
+	public List<SelectOptionVO> getSurveyUserConstituencies() {
+		return surveyUserConstituencies;
+	}
+
+	public void setSurveyUserConstituencies(
+			List<SelectOptionVO> surveyUserConstituencies) {
+		this.surveyUserConstituencies = surveyUserConstituencies;
+	}
+
 	public Long getDistrictId() {
 		return districtId;
 	}
@@ -1142,5 +1151,27 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		return Action.SUCCESS;
 	  
   }
+  public String getsurveyuserConstituencies(){
+		
+		try {
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			Long userId = user.getRegistrationID();
+			jObj = new JSONObject(getTask());
+			
+			surveyUserConstituencies = surveyDataDetailsService.getsurveyuserConstituencies();			
+		} catch (Exception e) {
+			LOG.error(" exception occured in getSurveyVotersList() ,ConstituencyDetailsAction class",e);
+		}
+		return Action.SUCCESS;
+		
+	}
+	
+  
   
 }
