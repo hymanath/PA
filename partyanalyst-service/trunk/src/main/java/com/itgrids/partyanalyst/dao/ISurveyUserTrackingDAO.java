@@ -11,5 +11,7 @@ public interface ISurveyUserTrackingDAO extends GenericDao<SurveyUserTracking, L
 {
 	public List<Object[]> getLatLongForUserTracking(Long surveyUserId,Date date);
 	public void sessionFlush();
+	public Long checkWhetherRecordExistingOrNot(String uuid,String imei, Date date);
+
 
 }
