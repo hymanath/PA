@@ -338,14 +338,14 @@ function AssignTab()
 	
 	if(surveyUser == 0)
 	{
-		str +='Select User<br/>';
+		str +='Select Leader name<br/>';
 	}
 	
 	var tabsArr = new Array();	
 	var dateArr = new Array();	
 	$('.newTabCls').each(function(){
 		var tabNo = $(this).val();
-		//console.log( "newTabCls  :"+value);		
+				
 		if(tabNo.length == 0 && str.indexOf('Tab No is required') <0 )
 		{		  
 			str +='Tab No is required <br/>';
