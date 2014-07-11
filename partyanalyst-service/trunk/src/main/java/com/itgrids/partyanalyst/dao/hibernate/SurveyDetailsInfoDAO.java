@@ -309,4 +309,42 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 		return query.list();
 		
 	}
+	public List<Object[]> getSurveyDetailsByConstituency(Long constituencyId,Long userTypeId)
+	{
+		
+		Query query = getSession().createQuery("select distinct model.surveyUser.surveyUserId,model.surveyUser.userName from SurveyDetailsInfo model where model.booth.constituency.constituencyId = :constituencyId and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId");
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("userTypeId", userTypeId);
+		return query.list();
+		
+	}
+	
+	
+	public List<Object[]> getBoothCount(Long constituencyId,Long userTypeId)
+	{
+		Query query = getSession().createQuery("select model.surveyUser.surveyUserId,count(distinct model.booth.boothId) from SurveyDetailsInfo model where model.booth.constituency.constituencyId = :constituencyId and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId" +
+				" and model.booth.boothId is not null group by model.surveyUser.surveyUserId");
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("userTypeId", userTypeId);
+		return query.list();
+	}
+	
+	public List<Object[]> getHamletCount(Long constituencyId,Long userTypeId)
+	{
+		Query query = getSession().createQuery("select model.surveyUser.surveyUserId,count(distinct model.hamlet.hamletId) from SurveyDetailsInfo model where model.booth.constituency.constituencyId = :constituencyId and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId" +
+				" and model.hamlet is not null group by model.surveyUser.surveyUserId");
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("userTypeId", userTypeId);
+		return query.list();
+	}
+	
+	
+	public List<Object[]> getCasteCount(Long constituencyId,Long userTypeId)
+	{
+		Query query = getSession().createQuery("select model.surveyUser.surveyUserId,count(distinct model.caste.caste.casteId) from SurveyDetailsInfo model where model.booth.constituency.constituencyId = :constituencyId and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId" +
+				" and model.caste is not null group by model.surveyUser.surveyUserId");
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("userTypeId", userTypeId);
+		return query.list();
+	}
 }
