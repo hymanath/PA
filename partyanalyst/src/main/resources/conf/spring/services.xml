@@ -2068,13 +2068,13 @@
    
    <bean name="prpEffectCalculateService" class="com.itgrids.partyanalyst.service.impl.PrpEffectCalculateService"></bean>
   
-   <bean name="acPcWiseElectionResultService" class="com.itgrids.partyanalyst.service.impl.AcPcWiseElectionResultService">
+   <bean name="acPcWiseElectionResultService" class="com.itgrids.partyanalyst.service.impl.AcPcWiseElectionResultService" lazy-init="true" >
    		<property name="webServiceClient" ref="webServiceClient"/>
    </bean>
    
    <bean name="multiThreadRunner" class="com.itgrids.partyanalyst.utils.MultiThreadRunner"/>
     
-    <bean name="dashBoardElectionResultsService" class="com.itgrids.partyanalyst.service.impl.DashBoardElectionResultsService">
+    <bean name="dashBoardElectionResultsService" class="com.itgrids.partyanalyst.service.impl.DashBoardElectionResultsService" lazy-init="true" >
          <property name="webServiceClient" ref="webServiceClient"/>  
     </bean>
     
@@ -2108,7 +2108,7 @@
          
    </bean>
   
-   <bean name="webServiceClient" class="com.itgrids.partyanalyst.webservice.client.WebServiceClient" >
+   <bean name="webServiceClient" class="com.itgrids.partyanalyst.webservice.client.WebServiceClient" lazy-init="true" >
    
    </bean> 
    
