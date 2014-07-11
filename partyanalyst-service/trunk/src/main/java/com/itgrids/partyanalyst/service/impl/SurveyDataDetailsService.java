@@ -624,6 +624,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				
 					
 					}
+					
+					surveyUserTabIDs.add(userId);
 					surveyUserTabAssignDAO.updateActiveStatus(surveyUserTabIDs);
 				
 				}
@@ -651,8 +653,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 						
 						}
 					
-					
 						
+						surveyUserRelationIds.add(userId);
 						surveyUserRelationDAO.updateActiveStatusByIDs(surveyUserRelationIds);
 						
 					}
@@ -676,6 +678,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 							survConstituency.setActiveStatus("Y");
 							surveyUserConstituencyDAO.save(survConstituency);
 							}
+						  
+						  surveyUserConstituencyIds.add(userId);
 						  surveyUserConstituencyDAO.updateActiveStatusByList(surveyUserConstituencyIds);
 					}
 				
