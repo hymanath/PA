@@ -151,8 +151,8 @@ function getUserTrackingDetails()
 {
 	var jObj = 
 	{
-	 surveyUserId: 9,
-	 dateStr : "08-07-2014"
+	 surveyUserId: userId,
+	 dateStr : date
 	}
 	$.ajax({
 			type:'GET',
