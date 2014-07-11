@@ -6987,7 +6987,7 @@ public List<Object[]> getCasteDetailsForACaste(Long constituencyId,Long publicat
 				"BPV.voter.voterId = SDI.voter.voterId and " +
 			"BPV.booth.publicationDate.publicationDateId = :publicationDateId");
 	
-		query.setParameter("publicationDateId",10L);
+		query.setParameter("publicationDateId",IConstants.VOTER_DATA_PUBLICATION_ID);
 	query.setParameter("boothId", boothId);
 	
 	return query.list();
@@ -7114,6 +7114,18 @@ public List<Object[]> getBoothIdsDetailsOfVoterIds(List<Long> voterIds,Long publ
 	
 	query.setParameterList("voterIds", voterIds);
 	query.setParameter("publicationDateId", publicationDateId);
+	return query.list();
+}
+
+public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
+{
+	
+	Query query = getSession().createQuery("select B.boothId,B.partNo from Booth B where B.constituency.constituencyId = :constituencyId and " +
+			"B.publicationDate.publicationDateId = :publicationDateId order by B.boothId");
+	
+	query.setParameter("constituencyId", constituencyId);
+	query.setParameter("publicationDateId" ,IConstants.VOTER_DATA_PUBLICATION_ID);
+	
 	return query.list();
 	
 }

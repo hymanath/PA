@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -367,5 +368,8 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	public List<Object[]> getAllTheBoothsDetailsByConstituencyId(Long constituencyId,Long publicationDateId);
 	public List<Object[]> getTotalaVotesDetailsByBoothIds(List<Long> boothIds);
 	public Long getTotalVoter(Long boothId);
+	public List<Object[]> getBoothDetailsByBoothIds(Set<Long> boothIds);
+	public List<Object[]> getConstituencyWiseBoothCount();
+
 
 }

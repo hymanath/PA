@@ -9,18 +9,47 @@ public class SurveyDashBoardVO {
 	private Long locationId;
 	private Long count;
 	
-	private int startedCount;
-	private int processingCount;
-	private int completedCount;
-	private int totalCount;
-	private int notStartedCount;
+	private int startedCount = 0;
+	private int processingCount = 0;
+	private int completedCount = 0;
+	private int totalCount = 0;
+	private int notStartedCount = 0;
 
 	private List<SurveyDashBoardVO> completed = new ArrayList<SurveyDashBoardVO>();
 	private List<SurveyDashBoardVO> process = new ArrayList<SurveyDashBoardVO>();
 	private List<SurveyDashBoardVO> notStarted = new ArrayList<SurveyDashBoardVO>();
 	private List<SurveyDashBoardVO> started = new ArrayList<SurveyDashBoardVO>();
+	
+	private boolean dataCollectorCompleted;
+	private boolean verifierCompleted;
+	private Long boothId;
+	private Long constituencyId;
 
 	
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	public Long getBoothId() {
+		return boothId;
+	}
+	public void setBoothId(Long boothId) {
+		this.boothId = boothId;
+	}
+	public boolean isDataCollectorCompleted() {
+		return dataCollectorCompleted;
+	}
+	public void setDataCollectorCompleted(boolean dataCollectorCompleted) {
+		this.dataCollectorCompleted = dataCollectorCompleted;
+	}
+	public boolean isVerifierCompleted() {
+		return verifierCompleted;
+	}
+	public void setVerifierCompleted(boolean verifierCompleted) {
+		this.verifierCompleted = verifierCompleted;
+	}
 	public List<SurveyDashBoardVO> getStarted() {
 		return started;
 	}

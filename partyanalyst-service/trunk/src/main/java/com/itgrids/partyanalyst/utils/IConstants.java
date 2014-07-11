@@ -760,6 +760,11 @@ public interface IConstants {
     public static final Long VOTER_DATA_PUBLICATION_ID = 11L;
     
     public static final Long CONSTITUENCY_SCOPE_ID = 4L;
+    public static final Long BOOTH_SCOPE_ID = 9L;
+    
+    public static final Long DATA_COLLECTOR_ROLE_ID = 1L;
+    public static final Long VERIFIER_ROLE_ID = 3L;
+
 
     public enum  MatchTypes{
     	PExactMatch,PSoundexMatch,CExactMatch,CsoundexMatch
