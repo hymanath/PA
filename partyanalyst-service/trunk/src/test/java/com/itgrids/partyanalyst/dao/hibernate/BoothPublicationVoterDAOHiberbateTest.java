@@ -1627,12 +1627,23 @@ List<Long> attrIds = new ArrayList<Long>();
 		return returnList;
 	}*/
 	
-	public void test(){
+	/*public void test(){
 		List<Long> voterIds = new ArrayList<Long>();
 		voterIds.add(6979788l);
 		voterIds.add(6979790l);
 		
 		List<Long> q = boothPublicationVoterDAO.getBoothIdsOfVoterIds(voterIds,8l);
 		q.size();
+	}*/
+	
+	
+	
+	public void testgetBoothWiseCasteDetails(){
+
+		List<Object[]> casteInfo  = boothPublicationVoterDAO.getBoothWiseCasteDetails(122941L);
+			System.out.println(casteInfo.size());
 	}
+	
+	
+	
 }
