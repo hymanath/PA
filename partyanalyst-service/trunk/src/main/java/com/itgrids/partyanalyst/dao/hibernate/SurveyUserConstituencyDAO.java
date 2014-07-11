@@ -21,9 +21,11 @@ public class SurveyUserConstituencyDAO extends GenericDaoHibernate<SurveyUserCon
 		return query.list();
 	}
 	
-	public List<Long> getAlreadyAssignedConstituencies()
+	public List<Long> getAlreadyAssignedConstituencies(Long surveyUserTypeId)
 	{
-		Query query = getSession().createQuery("select distinct model.constituency.constituencyId from SurveyUserConstituency model where model.activeStatus = 'Y'");
+		Query query = getSession().createQuery("select distinct model.constituency.constituencyId from SurveyUserConstituency model where model.activeStatus = 'Y' and model.surveyUser.surveyUserType.surveyUsertypeId = :surveyUserTypeId");
+		
+		query.setParameter("surveyUserTypeId", surveyUserTypeId);
 		return query.list();
 	}
 	

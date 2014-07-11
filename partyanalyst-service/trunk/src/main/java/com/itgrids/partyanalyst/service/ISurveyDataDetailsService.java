@@ -57,7 +57,7 @@ public interface ISurveyDataDetailsService
 	
 	public ResultStatus saveSurveyUserTabAssign(List<BasicVO> tabsInfoList);
 	
-	public List<SelectOptionVO> getAllAssignedConstituency();
+	public List<SelectOptionVO> getAllAssignedConstituency(Long userTypeId);
 	
 	public List<SurveyReportVO> getAllAssignedConstituenciesUsers(Long userTypeId);
 	
