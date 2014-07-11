@@ -1105,7 +1105,7 @@ function getSurveyUsersByUserTypeForLeaderRelease()
 	var jObj =
 	{
 	 leaderId:$('#leaderIdForRelease').val(),
-	 userType : 4
+	 userType : 1
 	}
 	$.ajax({
 			type:'GET',
