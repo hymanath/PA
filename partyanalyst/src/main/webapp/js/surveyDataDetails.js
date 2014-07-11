@@ -1550,6 +1550,7 @@ var jsObj =
 
 function getConstituencyLeadersList(divId,value){
 
+$('#tabAssignTabsId').html('');
 var jsObj = 
 	{
 		constiId:value,
@@ -1596,7 +1597,7 @@ var jsObj =
 				if(result.genericVOList.length == 0)
 					usersExist = false;
 
-				if(result !=null ){
+				if(result !=null && result.genericVOList.length > 0 ){
 					
 					var str ='';
 					avalTabsArr = [];
@@ -1634,6 +1635,8 @@ var jsObj =
 						}
 						//console.log(avalTabsArr);
 						
+				}else{
+					$("#"+divId+"").html('<b> No Tabs are available for assign .</b>');
 				}
 		});
 		
