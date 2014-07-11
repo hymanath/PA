@@ -860,7 +860,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		{
 			jObj = new JSONObject(getTask());
 			
-			constituenciesList = surveyDataDetailsService.getAllAssignedConstituency();
+			constituenciesList = surveyDataDetailsService.getAllAssignedConstituency(jObj.getLong("userTypeId"));
 			
 		} 
 		catch (Exception e)
