@@ -7129,4 +7129,18 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 	return query.list();
 	
 }
+
+	public List<Object[]> getBoothWiseCasteDetails(Long boothId){
+		Query query = getSession().createQuery(" select CS.casteStateId, C.casteName, count(distinct UVD.voter.voterId) from BoothPublicationVoter BPV ,UserVoterDetails UVD ,CasteState CS, Caste C   where " +
+				" BPV.voter.voterId = UVD.voter.voterId and UVD.casteState.casteStateId = CS.casteStateId and CS.caste.casteId = C.casteId  and " +
+				" UVD.user.userId = 1 and BPV.booth.boothId = :boothId and UVD.casteState != null   group by UVD.casteState.casteStateId order by " +
+				" count(UVD.voter.voterId) desc ");
+		
+		query.setParameter("boothId", boothId);
+		query.setFirstResult(0);
+		query.setMaxResults(5);
+		
+		return query.list();
+	}
+	
 }
