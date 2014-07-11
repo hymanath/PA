@@ -46,6 +46,61 @@ public class SurveyReportVO {
 	private String mobileNo;
 	
 	
+	private Long casteMatchedCount = 0l;
+	private Long casteNotMatchedCount =0l;
+	private Long mobileMatchedCount =0l;
+	private Long mobileNotMatchedCount =0l;
+	
+	private Long boothCount = 0l;
+	
+	private Long hamletCount = 0l;
+	private Long casteCount = 0l;
+	
+	
+	public Long getBoothCount() {
+		return boothCount;
+	}
+	public void setBoothCount(Long boothCount) {
+		this.boothCount = boothCount;
+	}
+	public Long getHamletCount() {
+		return hamletCount;
+	}
+	public void setHamletCount(Long hamletCount) {
+		this.hamletCount = hamletCount;
+	}
+	public Long getCasteCount() {
+		return casteCount;
+	}
+	public void setCasteCount(Long casteCount) {
+		this.casteCount = casteCount;
+	}
+	public Long getCasteMatchedCount() {
+		return casteMatchedCount;
+	}
+	public void setCasteMatchedCount(Long casteMatchedCount) {
+		this.casteMatchedCount = casteMatchedCount;
+	}
+	public Long getCasteNotMatchedCount() {
+		return casteNotMatchedCount;
+	}
+	public void setCasteNotMatchedCount(Long casteNotMatchedCount) {
+		this.casteNotMatchedCount = casteNotMatchedCount;
+	}
+	public Long getMobileMatchedCount() {
+		return mobileMatchedCount;
+	}
+	public void setMobileMatchedCount(Long mobileMatchedCount) {
+		this.mobileMatchedCount = mobileMatchedCount;
+	}
+	
+	
+	public Long getMobileNotMatchedCount() {
+		return mobileNotMatchedCount;
+	}
+	public void setMobileNotMatchedCount(Long mobileNotMatchedCount) {
+		this.mobileNotMatchedCount = mobileNotMatchedCount;
+	}
 	public String getMobileNo() {
 		return mobileNo;
 	}
