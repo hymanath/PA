@@ -85,7 +85,7 @@ public class SurveyCallStatus implements java.io.Serializable{
 		this.mobileNoStatus = mobileNoStatus;
 	}
 	
-	@Column(name="matched_status")
+	@Column(name="caste_status")
 	public String getMatchedStatus() {
 		return matchedStatus;
 	}
@@ -109,7 +109,7 @@ public class SurveyCallStatus implements java.io.Serializable{
 		this.updatedDate = updatedDate;
 	}
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "booth_id" ,insertable = false , updatable = false)
+	@JoinColumn(name = "booth_id" )
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Booth getBooth() {
