@@ -3024,4 +3024,55 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		return returnList;
 	}
 	
+	public List<SelectOptionVO> getSurveyUserDetails(Long constituencyId,Date date)
+	{
+		List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
+		try
+		{
+			List<Object[]> details = surveyDetailsInfoDAO.getAllUserDetailsByConstituency(constituencyId, date);
+			if(details != null && details.size() > 0)
+			{
+				
+				Map<Long,List<SelectOptionVO>> resultMap = new HashMap<Long, List<SelectOptionVO>>();
+				Map<Long,SelectOptionVO> userDataMap = new HashMap<Long, SelectOptionVO>();
+				List<SelectOptionVO> boothsList = null;
+				for (Object[] parms : details)
+				{
+					if(resultMap.get((Long)parms[0]) == null)
+					{
+						boothsList= new ArrayList<SelectOptionVO>();
+						  SelectOptionVO vo = new SelectOptionVO();
+						  vo.setName(parms[1] != null ? parms[1].toString() : null);
+						  vo.setValue(parms[2] != null ? parms[2].toString() : null);
+						  vo.setType(parms[8] != null ? parms[8].toString() : null);
+						  userDataMap.put((Long)parms[0], vo);
+						  resultMap.put((Long)parms[0], boothsList);					
+					}	
+						
+				      SelectOptionVO vo1 = new SelectOptionVO();
+					  vo1.setPartno(parms[3] != null ? parms[3].toString() : null);
+					  vo1.setMandalName(parms[4] != null ? parms[4].toString() : null);
+					  vo1.setPanchayatName(parms[5] != null ? parms[5].toString() : null);
+					  vo1.setLocation(parms[6] != null ? parms[6].toString() : null);						
+					  vo1.setVillageCovered(parms[7] != null ? parms[7].toString() : null);					
+					  boothsList.add(vo1);						
+				}
+								
+				for(Long userId : resultMap.keySet())
+				{
+					SelectOptionVO vo = userDataMap.get(userId);
+					List<SelectOptionVO> booths = resultMap.get(userId);
+					vo.setSelectOptionsList(booths);
+					returnList.add(vo);
+				}
+			}
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getSurveyUserDetails method", e);
+			e.printStackTrace();
+		}
+		return returnList;
+	}
+	
 }
