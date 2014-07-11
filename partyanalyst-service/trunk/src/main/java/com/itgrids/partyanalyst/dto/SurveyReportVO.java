@@ -56,6 +56,15 @@ public class SurveyReportVO {
 	private Long hamletCount = 0l;
 	private Long casteCount = 0l;
 	
+	private List<GenericVO> genericVOList = new ArrayList<GenericVO>();
+	
+	
+	public List<GenericVO> getGenericVOList() {
+		return genericVOList;
+	}
+	public void setGenericVOList(List<GenericVO> genericVOList) {
+		this.genericVOList = genericVOList;
+	}
 	
 	public Long getBoothCount() {
 		return boothCount;
