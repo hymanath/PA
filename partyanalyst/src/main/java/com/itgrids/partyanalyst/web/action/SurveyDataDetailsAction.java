@@ -53,8 +53,16 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	private Long districtId;
 	private Long userId;
 	private String date;
+	private List<SurveyReportVO> surveyUserDetails;
 	
-	
+	public List<SurveyReportVO> getSurveyUserDetails() {
+		return surveyUserDetails;
+	}
+
+	public void setSurveyUserDetails(List<SurveyReportVO> surveyUserDetails) {
+		this.surveyUserDetails = surveyUserDetails;
+	}
+
 	public List<SelectOptionVO> getSurveyUserConstituencies() {
 		return surveyUserConstituencies;
 	}
@@ -1171,7 +1179,20 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		return Action.SUCCESS;
 		
 	}
-	
   
+  
+  public String getSurveyDetailsReport()
+  {
+	  try{
+		  jObj = new JSONObject(getTask());
+		  surveyUserDetails =  surveyDataDetailsService.getSurveyDetailsForConstituency(jObj.getLong("constituencyId") ,jObj.getLong("userTypeId"));  
+	  }
+	  catch (Exception e) {
+		e.printStackTrace();
+		LOG.error(" exception occured in getSurveyDetailsReport() ,ConstituencyDetailsAction class",e);
+	}
+  
+	  return Action.SUCCESS;
+  }
   
 }
