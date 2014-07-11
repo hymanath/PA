@@ -27,4 +27,15 @@ public class SurveyUserTrackingDAO extends GenericDaoHibernate<SurveyUserTrackin
 	{
 		 getSession().flush();
 	}
+	
+	public Long checkWhetherRecordExistingOrNot(String uuid,String imei, Date date)
+	{
+		Query query = getSession().createQuery("select distinct model.surveyUserTrackingId from SurveyUserTracking model where model.imeiNo = :imeiNo and model.uniqueUUID=:uuid   " +
+				" and date(model.date) = :date  group by model.surveyUserTrackingId ");
+		query.setParameter("imeiNo", imei);
+		query.setParameter("uuid", uuid);
+		query.setParameter("date", date);
+		return (Long) query.uniqueResult();
+		
+	}
 }
