@@ -2,8 +2,9 @@ package com.itgrids.partyanalyst.webserviceutils.android.utilvos;
 
 public class UserLoginVO {
 	
-	String userName;
-	String passWord;
+	private String userName;
+	private String passWord;
+	
 	
 	public String getUserName() {
 		return userName;
@@ -17,6 +18,8 @@ public class UserLoginVO {
 	public void setPassWord(String passWord) {
 		this.passWord = passWord;
 	}
+
+	
 	
 	
 	
