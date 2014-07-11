@@ -2227,18 +2227,24 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					surveyUserIdsList.add((Long) parms[0]);
 				}
 			}
-			List<Object[]> assignedUsersInfo = surveyUserTabAssignDAO.getSurveyTabsBySurveyUserIdsList(surveyUserIdsList);
+			
+			List<Object[]> assignedUsersInfo =null ;
 			List<Long> assignedUseIds = new ArrayList<Long>();
-			if(assignedUsersInfo != null && assignedUsersInfo.size()>0){
+			
+			if(surveyUserIdsList != null && surveyUserIdsList.size()>0){
+				assignedUsersInfo = surveyUserTabAssignDAO.getSurveyTabsBySurveyUserIdsList(surveyUserIdsList);
+				if(assignedUsersInfo != null && assignedUsersInfo.size()>0){
 
-				for (Object[] params : assignedUsersInfo) {
-					GenericVO genericV1O = getMactchedVO(tabsList,params[1].toString());
-					if(genericV1O != null){						
-						tabsList.remove(genericV1O);
+					for (Object[] params : assignedUsersInfo) {
+						GenericVO genericV1O = getMactchedVO(tabsList,params[1].toString());
+						if(genericV1O != null){						
+							tabsList.remove(genericV1O);
+						}
+						assignedUseIds.add((Long)params[0]);
 					}
-					assignedUseIds.add((Long)params[0]);
 				}
 			}
+			
 			
 			
 			if(result != null && result.size() > 0)
