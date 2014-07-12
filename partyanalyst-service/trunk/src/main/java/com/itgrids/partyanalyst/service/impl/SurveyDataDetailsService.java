@@ -2834,7 +2834,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			LOG.error("Exception raised in getSurveyVotersList() service in SurveyDataDetailsService", e);
 			e.printStackTrace();
 		}		
-		return resultList;
+		return retultList;
 	}
 	
 	
