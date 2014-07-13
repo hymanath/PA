@@ -57,8 +57,8 @@
 		<div class="row">
 			<div class="span12 m_top20 survey_nav">
 				<ul class="inline unstyled">
-					<li><a class="highlight  selected" id="callCenterTab" onclick="showHideTabs(this.id);"> Call Centre </a></li>
-					<li><a class="highlight" id="startTimeTab" onclick="showHideTabs(this.id);">Survey Start Time</a></li>
+					<li><a class="highlight  selected" id="callCenterTab" onclick="showHideTabs(this.id);"> Web Monitoring </a></li>
+					<li><a class="highlight" id="startTimeTab" onclick="showHideTabs(this.id);">User Field Report</a></li>
 					<li><a class="highlight" id="boothWiseTab" onclick="showHideTabs(this.id);">Field Data Report</a></li>
 				</ul>
 			</div>
@@ -67,7 +67,7 @@
 			<div class="span12">
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top20">
-							<h4>Call Center Verification</h4>	
+							<h4> Web Monitoring </h4>	
 					<div id="errDivId" style="color:#FF0020;font-size:15px;" ></div>							
 						<div class="row-fluid">
 							
@@ -120,7 +120,7 @@
 					
 	<div class="row">
 								<div class="span8 offset3">
-								<div id="errorMsgDiv errClass" class="offset1"  style="color:#FF0020;font-size:15px;"></div>
+								<div id="errorMsgDiv" class="offset1 errClass"  style="color:#FF0020;font-size:15px;"></div>
 									<div class="row-fluid">
 									
 										<div class="span3 offset1">
@@ -478,12 +478,14 @@ function getconstituencies()
 
 function getSurveyUserLoctionCount()
 {
+	
 var constituencyID = $("#constituencyId").val();
 var userTypeId = $("#userTypeId").val();
 
 $("#basicCountDiv").html('');
 $("#errorMsgDiv").html('');
 var str ='';
+
 if(constituencyID == 0)
 	{
 str +='<font color="red">Select Constituency</font>';
@@ -492,8 +494,10 @@ else if(userTypeId == 0)
 	{
 str +='<font color="red">Select User Type</font>';
 	}
+	
 	if(str.length > 0)
 	{
+		
 $("#errorMsgDiv").html(str);
 return;
 	}
