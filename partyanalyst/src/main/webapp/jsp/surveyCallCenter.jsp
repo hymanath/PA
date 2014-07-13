@@ -120,7 +120,7 @@
 					
 	<div class="row">
 								<div class="span8 offset3">
-								<div id="errorMsgDiv" class="offset1"  style="color:#FF0020;font-size:15px;"></div>
+								<div id="errorMsgDiv errClass" class="offset1"  style="color:#FF0020;font-size:15px;"></div>
 									<div class="row-fluid">
 									
 										<div class="span3 offset1">
@@ -165,12 +165,14 @@ function showHideTabs(id)
 		$('#callCenter').show();
 		$('#startTime').hide();
 		$('#boothWise').hide();
+		$(".errClass").html('');
 	}
 	else if (id == "startTimeTab")
 	{
 		$('#callCenter').hide();
 		$('#startTime').show();
 		$('#boothWise').hide();
+		$(".errClass").html('');
 	}
 	else
 	{
@@ -178,6 +180,7 @@ function showHideTabs(id)
 		$('#startTime').hide();
 		$('#boothWise').show();
 		 getconstituencies();
+		$(".errClass").html('');
 	}
 }
 function getConstituencyLeadersList(divId){
