@@ -294,7 +294,7 @@ public interface IConstants {
     public final static String ASPIRANT_DEMO_REQUESTS_VIEW = "ASPIRANT_DEMO_REQUESTS_VIEW";
     public final static String HOUSEHOLDS_SURVEY_ENTITLEMENT = "HOUSEHOLDS_SURVEY_ENTITLEMENT";
     public final static String INFORMATION_MONITOTING_SYSTEM = "INFORMATION_MONITOTING_SYSTEM";
-    
+    public static final String CASTE_SURVEY_CALL_CENTER = "CASTE_SURVEY_CALL_CENTER";
     public final static String NEW_LIVE_RESULTS = "NEW_LIVE_RESULTS"; 
     
     
