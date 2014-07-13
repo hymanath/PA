@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -3150,8 +3151,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				
 				Map<Long,Map<Long,SurveyReportVO>> resultMap = new HashMap<Long, Map<Long,SurveyReportVO>>();
 				Map<Long,SurveyReportVO> userDataMap = new HashMap<Long, SurveyReportVO>();
-				List<SurveyReportVO> boothsList = null;
-				
+				 DateFormat dateFormat = new SimpleDateFormat("hh:mm a"); 
+				  
 				for (Object[] parms : details)
 				{
 						
@@ -3167,12 +3168,11 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 						  vo.setUserName(parms[1] != null ? parms[1].toString() : null);
 						  vo.setMobileNo(parms[2] != null ? parms[2].toString() : null);
 						  vo.setUserType(parms[8] != null ? parms[8].toString() : null);
-						  
-						 
-							  
-							  
-							  vo.setSurveyDate(parms[10] != null ? parms[8].toString() : null);
-						
+						  if(parms[10] != null)
+						  {
+							  String time = dateFormat.format(parms[10]);							 
+							  vo.setSurveyDate(time);
+						  }
 						  userDataMap.put((Long)parms[0], vo);
 						 			
 					 
