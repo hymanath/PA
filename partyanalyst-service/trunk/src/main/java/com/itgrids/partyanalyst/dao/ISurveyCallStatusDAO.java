@@ -9,5 +9,5 @@ import com.itgrids.partyanalyst.model.SurveyCallStatus;
 public interface ISurveyCallStatusDAO extends GenericDao<SurveyCallStatus,Long>{
 
 	public Long getSurveyCallDtalsByVoterId(Long voterId);
-	public List<Object[]> getStatusListForUser(List<Long> surveyUserIDs);
+	public List<Object[]> getStatusListForUser(List<Long> userIds,List<Long> boothIds,Long userTypeId);
 }

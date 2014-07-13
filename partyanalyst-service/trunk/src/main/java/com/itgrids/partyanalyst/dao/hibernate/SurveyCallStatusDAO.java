@@ -23,12 +23,14 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 	}
 	
 	
-	public List<Object[]> getStatusListForUser(List<Long> surveyUserIDs)
+	public List<Object[]> getStatusListForUser(List<Long> userIds,List<Long> boothIds,Long userTypeId)
 	{
 		
-		Query query = getSession().createQuery("select model.surveyUser.surveyUserId,count(model.surveyCallStatusId),model.mobileNoStatus,model.matchedStatus from SurveyCallStatus model" +
-				" where model.surveyUser.surveyUserId in(:surveyUserIDs) group by model.surveyUser.surveyUserId");
-		query.setParameterList("surveyUserIDs", surveyUserIDs);
+		Query query = getSession().createQuery("select distinct model.surveyUser.surveyUserId,model.booth.boothId,model.mobileNoStatus,model.matchedStatus from SurveyCallStatus model" +
+				" where model.surveyUser.surveyUserId in(:userIds) and model.booth.boothId in(:boothIds) and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId");
+		query.setParameterList("userIds", userIds);
+		query.setParameterList("boothIds", boothIds);
+		query.setParameter("userTypeId", userTypeId);
 		return query.list();
 		
 	}

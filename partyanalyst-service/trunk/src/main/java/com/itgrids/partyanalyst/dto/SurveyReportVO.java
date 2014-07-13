@@ -55,10 +55,16 @@ public class SurveyReportVO {
 	
 	private Long hamletCount = 0l;
 	private Long casteCount = 0l;
-	
+	private Long mobileNoCount =0l;
 	private List<GenericVO> genericVOList = new ArrayList<GenericVO>();
 	
 	
+	public Long getMobileNoCount() {
+		return mobileNoCount;
+	}
+	public void setMobileNoCount(Long mobileNoCount) {
+		this.mobileNoCount = mobileNoCount;
+	}
 	public List<GenericVO> getGenericVOList() {
 		return genericVOList;
 	}
