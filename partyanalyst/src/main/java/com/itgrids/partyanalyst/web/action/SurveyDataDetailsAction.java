@@ -23,7 +23,9 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.dto.UserBoothDetailsVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -54,7 +56,18 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	private Long userId;
 	private String date;
 	private List<SurveyReportVO> surveyUserDetails;
+	private EntitlementsHelper entitlementsHelper;
+
 	
+	
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
 	public List<SurveyReportVO> getSurveyUserDetails() {
 		return surveyUserDetails;
 	}
@@ -1062,6 +1075,12 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 				return Action.INPUT;
 			}
 			Long userId = user.getRegistrationID();
+			
+			if(session.getAttribute(IConstants.USER) == null && 
+					!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.CASTE_SURVEY_CALL_CENTER))
+				return INPUT;
+			if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CASTE_SURVEY_CALL_CENTER))
+				return ERROR;
 			constituenciesList = 	surveyDataDetailsService.getSurveyStartedConstituencyList();			
 		} catch (Exception e) {
 			LOG.error(" exception occured in surveyCallCenterPage() ,ConstituencyDetailsAction Action class",e);
