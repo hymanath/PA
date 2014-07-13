@@ -59,7 +59,7 @@
 				<ul class="inline unstyled">
 					<li><a class="highlight  selected" id="callCenterTab" onclick="showHideTabs(this.id);"> Call Centre </a></li>
 					<li><a class="highlight" id="startTimeTab" onclick="showHideTabs(this.id);">Survey Start Time</a></li>
-					<li><a class="highlight" id="boothWiseTab" onclick="showHideTabs(this.id);">Booth Wise Report</a></li>
+					<li><a class="highlight" id="boothWiseTab" onclick="showHideTabs(this.id);">Field Data Report</a></li>
 				</ul>
 			</div>
 		</div>
