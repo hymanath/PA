@@ -7612,5 +7612,10 @@
 			 <result name="success">/jsp/surveyUserStatus.jsp</result>
 		     </action>
 		
+		<action name="getUserDetailsByConstituencyAction" class="surveyDataDetailsAction" method="getSurveyUserDetailsByConstituencyId">
+		<result type="json" name="success">
+				<param name="root">surveyUserDetails</param>
+			</result>
+		</action>
 </package>
 </struts>      

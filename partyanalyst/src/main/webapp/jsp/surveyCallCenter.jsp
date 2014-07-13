@@ -5,7 +5,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
  <html>
   <head>	
-    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">	
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+
 
 		<style>
 			body{background:#f0f0f0;}
@@ -104,8 +108,35 @@
 			<div class="span12">
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top20">
-							<h4>User Field Report</h4>	
-					<div id="errDivIdForStartTime" style="color:#FF0020;font-size:15px;" ></div>							
+							<h4>User Field Report</h4>						
+						<div class="row">
+						<div class="span8 offset3">
+									<div class="row-fluid">
+						<div id="errDivIdForStartTime" class="span8 errClass offset" style="color:#FF0020;font-size:15px;" ></div>
+						</div></div></div>
+						<div class="row">
+								<div class="span8 offset3">
+									<div class="row-fluid">
+										
+										<div class="span5">
+											Select Constituency <font class="requiredFont">*</font>
+												<select id="userConstituencyId"><option value="0">Select Constituency</option></select>
+										</div>
+										<div class="span3">
+											Select Date <font class="requiredFont">*</font>
+											<div class="input-append">
+											<input type="text" placeholder="Select Date" class="input-block-level date" id="dateId" readonly>
+											</div>
+										</div>
+										
+									</div>	
+								
+									</div>
+									</div>
+					
+						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getUserDetailsByConstituency()">SUBMIT</button></div>
+						  <div id="userDetailsReportDiv"></div>
+											
 					</div>
 				</div>
 			</div>
@@ -166,6 +197,7 @@ function showHideTabs(id)
 		$('#callCenter').show();
 		$('#startTime').hide();
 		$('#boothWise').hide();
+
 		
 	}
 	else if (id == "startTimeTab")
@@ -173,15 +205,14 @@ function showHideTabs(id)
 		$('#callCenter').hide();
 		$('#startTime').show();
 		$('#boothWise').hide();
-		
+		getconstituencies('userConstituencyId');
 	}
 	else
 	{
 		$('#callCenter').hide();
 		$('#startTime').hide();
 		$('#boothWise').show();
-		 getconstituencies();
-		
+		 getconstituencies('constituencyId');
 	}
 }
 function getConstituencyLeadersList(divId){
@@ -445,7 +476,7 @@ var voterInfoArr = new Array();
 
 
 
-function getconstituencies()
+function getconstituencies(divId)
 {
 
 
@@ -461,13 +492,13 @@ function getconstituencies()
 	data: {task:JSON.stringify(jsObj)},
 	}).done(function(result){
 
-	$("#constituencyId").append('<option value="0">Select Constituency</option>');
+	$('#'+divId+'').find('option:not(:first)').remove();
 	if(result != null && result.length > 0)
 	{
 	for(var i in result)
 	{
 		
-	$("#constituencyId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+	$('#'+divId+'').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 	}
 
 	}
@@ -582,10 +613,110 @@ return;
 
 }
 
+$(function() {
+	$("#dateId").datepicker({ 
+	dateFormat: 'dd-mm-yy',
+   }).datepicker('setDate', new Date());
+  
+});
+
+function getUserDetailsByConstituency()
+{
+	$('#userDetailsReportDiv').html("");
+	var constituencyId = $("#userConstituencyId").val();
+	var dateVal = $("#dateId").val();
+
+	if(constituencyId == 0)
+	{
+		$("#errDivIdForStartTime").html("Please Select Constituency").css("color","red");
+		return;
+	}
+	if(dateVal.length == 0)
+	{
+		$("#errDivIdForStartTime").html("Please Select Date").css("color","red");
+		return;
+	}
+
+	
+	var jObj =
+	{
+	 constituencyId:constituencyId,
+	 date:dateVal,
+	 task:"getDetails"
+
+	};
+	$.ajax({
+			type:'GET',
+			url: 'getUserDetailsByConstituencyAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){				
+				buildDetailsTable(result);
+		});
+}
+
+function buildDetailsTable(result)
+{
+	if(result == null || result.length == 0)
+	{
+		$('#userDetailsReportDiv').html("<font color='red'> NO DATA AVILABLE<font>");
+		return;
+	}
+
+	var str = '';
+
+	str+='<table class="table table-bordered m_top20 table-hover table-striped">';
+    str+='<thead class="alert alert-success">';
+	 str+='<tr>';
+	  str+='<th>DC Name</th>';
+  	  str+='<th>Mobile No</th>';
+	  str+='<th>Start date</th>';
+	  str+='<th>Booth No</th>';
+	  str+='<th>Mandal</th>';
+	  str+='<th>Panchayat</th>';
+	  str+='<th>Booth Location</th>';
+	  str+='<th>Village Covered</th>';
+	 str+='</tr>';
+	str+='</thead>';
+
+	str+='<tbody>'
+	
+	for(var i in result){	 
+	   for(var j in result[i].subList)
+	   {
+	   if(result[i].userType == 'Data Collectors'){
+			str+='<tr>';
+			str+='<td>'+result[i].userName+'</td>';
+	
+			if(result[i].mobileNo == null)
+				str+='<td>-</td>';
+			else
+				str+='<td>'+result[i].mobileNo+'</td>';	
+				
+			if(result[i].surveyDate == null)
+				str+='<td>-</td>';
+			else
+				str+='<td>'+result[i].surveyDate+'</td>';	
+				
+			str+='<td>'+result[i].subList[j].partNo+'</td>';
+			str+='<td>'+result[i].subList[j].mandalName+'</td>';
+			str+='<td>'+result[i].subList[j].panchayatName+'</td>';
+			str+='<td>'+result[i].subList[j].localArea+'</td>';
+			str+='<td>'+result[i].subList[j].villageCovered+'</td>';
+			str+='</tr>';
+		}
+		}
+   }
+   str+='</tbody>';
+   str+='</table>';
+
+ $('#userDetailsReportDiv').html(str);
+}
+
+
 	</script>
-	<script src="http://code.jquery.com/jquery.js"></script>
 	<script src="js/bootstrap.min.js"></script>
-		<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
    <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
   </body>
  </html>
