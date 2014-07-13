@@ -90,5 +90,5 @@ public interface ISurveyDataDetailsService
 	public List<SurveyReportVO> getSurveyDetailsForConstituency(Long constituencyId,Long userTypeId);
 	public List<GenericVO> getSurveyUserNameAndPasswordByLeader(Long leaderId);
 	
-	public List<SelectOptionVO> getSurveyUserDetails(Long constituencyId,Date date);
+	public List<SurveyReportVO> getSurveyUserDetailsByConstituencies(Long constituencyId,Date date);
 }
