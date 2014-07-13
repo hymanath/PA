@@ -57,13 +57,15 @@ $(document).ready(function(){
    $('.datePickerCls').datepicker({
    dateFormat: 'dd-mm-yy'
    });
+   
 });
+
+var map = '';
 var apaccampus = {
 "type": "Point",
 "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
 "features": []
 }
-
 function getDetailsByConstituency()
 {
 	var constituencyId = $('#constituencyId').val();
@@ -92,6 +94,7 @@ function getDetailsByConstituency()
 var features = new Array();
 function buildLocationDetails(result)
 { 
+	document.getElementById('weathermap').innerHTML = "<div class='span12 m_top20 widgetservey' id='map' style='height:500px'></div>";
 	$('#detaildDiv').show();
 	$.each(result,function(index,value){
 	if(value.latitude != null && value.longititude != null)
@@ -104,7 +107,7 @@ function buildLocationDetails(result)
 		apaccampus.features.push(voterDetails);
 	}
 	});
-	var map = new L.Map('map').setView(new L.LatLng(result[0].longititude,result[0].latitude), 15);
+	map = new L.Map('map').setView(new L.LatLng(result[0].longititude,result[0].latitude), 15);
 	var osm = new L.TileLayer('http://{s}.tile.osmosnimki.ru/kosmo/{z}/{x}/{y}.png');
 	var mpn = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
 	var qst = new L.TileLayer('http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png', {attribution:'Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">'}).addTo(map);
@@ -369,7 +372,7 @@ function getconstituencies()
 				</div>
 				
 				<div class="row-fluid " id="detaildDiv" style="display:none;">
-					<div class="span12 m_top20 widgetservey" id="map" style="height:500px">
+					<div class="span12 m_top20 widgetservey" id="weathermap" style="height:500px">
 						<!--<h5>Currently Logged in Users <span class="badge badge-success"> 15</span></h5><hr>-->
 					</div>
 					<p class="m_top10"> <span class="label label-info">D.C - Data Collector</span> &nbsp; &nbsp;<span class="label label-important"> D.V - Data Verifier</span></p>
