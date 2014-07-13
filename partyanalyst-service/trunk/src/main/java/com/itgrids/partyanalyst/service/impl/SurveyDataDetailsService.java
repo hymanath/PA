@@ -2177,14 +2177,25 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				List<Object[]> result = surveyUserConstituencyDAO.getSurveyConstituencyLeadersList(constituencyId);
 				if(result != null && result.size() > 0)
 				{
+					List<Long> leaderIds = new ArrayList<Long>();
 					returnList = new ArrayList<GenericVO>();
 					
 					for (Object[] param : result) {
-						GenericVO vo = new GenericVO();
-						vo.setId((Long) param[0]);
-						vo.setName(param[3].toString());						
-						returnList.add(vo);
 						
+						leaderIds.add((Long) param[0]);
+						
+					}
+					
+					List<Object[]> usersList = surveyUserRelationDAO.getAllUserForAssignedUsers(leaderIds);
+					if(usersList != null && usersList.size() > 0)
+					{
+						for (Object[] param : usersList)
+						{
+							GenericVO vo = new GenericVO();
+							vo.setId((Long) param[0]);
+							vo.setName(param[1].toString());						
+							returnList.add(vo);
+						}
 					}
 				}
 			 } 
@@ -2761,20 +2772,19 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			
 			SurveyReportVO finalVO = new SurveyReportVO();
 			
-			List<Object[]> usersList = surveyUserRelationDAO.getUsersByConstituencyAndLeader(leaderId, constituencyId);
+			//List<Object[]> usersList = surveyUserRelationDAO.getUsersByConstituencyAndLeader(leaderId, constituencyId);
 			
 			Set<Long> assignedUserIds = new HashSet<Long>();
 			
-			if(usersList != null && usersList.size()>0){
-				for (Object[] user : usersList) {
-					assignedUserIds.add((Long) user[0]);
-				}
+			//if(usersList != null && usersList.size()>0){
+				//for (Object[] user : usersList) {
+				//	assignedUserIds.add((Long) user[0]);
+				//}
 				
 				List<Long> ids = new ArrayList<Long>();
-				ids.addAll(assignedUserIds);
+				ids.add(leaderId);
 				List<Object[]> votersLsit = surveyDetailsInfoDAO.getVoterDetailsByBoothId(boothId,ids);
-				
-				System.out.println(votersLsit);
+
 				if(votersLsit != null && votersLsit.size()>0){
 					List<SurveyReportVO> resultList = new ArrayList<SurveyReportVO>();
 					for (Object[] voter : votersLsit) {
@@ -2805,7 +2815,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					}
 				}	
 				
-			}
+			//}
 					
 			List<GenericVO> casteList = new ArrayList<GenericVO>();
 			List<Object[]> casteInfo = boothPublicationVoterDAO.getBoothWiseCasteDetails(boothId);
