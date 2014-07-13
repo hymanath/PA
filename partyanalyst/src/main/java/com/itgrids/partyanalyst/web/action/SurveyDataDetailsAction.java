@@ -1205,7 +1205,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
   {
 	  try{
 		  jObj = new JSONObject(getTask());
-		  surveyUserDetails =  surveyDataDetailsService.getSurveyDetailsForConstituency(jObj.getLong("constituencyId") ,jObj.getLong("userTypeId"));  
+		  surveyUserDetails =  surveyDataDetailsService.getSurveyDetailsForConstituency(jObj.getLong("constituencyId") ,jObj.getLong("userTypeId"),jObj.getString("date"));  
 	  }
 	  catch (Exception e) {
 		e.printStackTrace();

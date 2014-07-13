@@ -150,7 +150,7 @@
 					<div id="errDivIdForStartTime" style="color:#FF0020;font-size:15px;" ></div>	
 					
 	<div class="row">
-								<div class="span8 offset3">
+								<div class="span8 offset2">
 								<div id="errorMsgDiv" class="offset1 errClass"  style="color:#FF0020;font-size:15px;"></div>
 									<div class="row-fluid">
 									
@@ -159,13 +159,17 @@
 										<select name="constituency" id="constituencyId" list="constituenciesList" style="width:130px;"></select>
 								
 										</div>
-										<div class="span4">
+										<div class="span3">
 											<label>Select User Type</label>
 											<select name="constituency" id="userTypeId"  style="width:130px;">
 											<option value="0">Select user type</option>
 											<option value="1">Data Collectors</option>
 											
 											</select>
+										</div>	
+										<div class="span3">
+											<label>Select Date</label>
+											<input type="text" placeholder="Select Date" class="input-block-level date" id="FielddateId" readonly/>
 										</div>	
 									</div>	
 									
@@ -512,7 +516,7 @@ function getSurveyUserLoctionCount()
 	
 var constituencyID = $("#constituencyId").val();
 var userTypeId = $("#userTypeId").val();
-
+var date=$("#FielddateId").val();
 $("#basicCountDiv").html('');
 $("#errorMsgDiv").html('');
 var str ='';
@@ -537,6 +541,7 @@ return;
 	{
 	constituencyId : constituencyID,
 		userTypeId:1,
+		date:date,
 	task : "getLocationCount"
 	}
 	$.ajax({
@@ -614,7 +619,7 @@ return;
 }
 
 $(function() {
-	$("#dateId").datepicker({ 
+	$("#dateId,#FielddateId").datepicker({ 
 	dateFormat: 'dd-mm-yy',
    }).datepicker('setDate', new Date());
   
