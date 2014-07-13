@@ -312,7 +312,7 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 	public List<Object[]> getSurveyDetailsByConstituency(Long constituencyId,Long userTypeId)
 	{
 		
-		Query query = getSession().createQuery("select distinct model.surveyUser.surveyUserId,model.surveyUser.userName from SurveyDetailsInfo model where model.booth.constituency.constituencyId = :constituencyId and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId");
+		Query query = getSession().createQuery("select distinct model.surveyUser.surveyUserId,model.surveyUser.userName,model.booth.boothId,model.booth.partNo,model.booth.totalVoters from SurveyDetailsInfo model where model.booth.constituency.constituencyId = :constituencyId and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId");
 		query.setParameter("constituencyId", constituencyId);
 		query.setParameter("userTypeId", userTypeId);
 		return query.list();

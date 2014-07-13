@@ -2942,12 +2942,11 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		List<Long> userIDs = new ArrayList<Long>();
 		List<Long> boothIDs = new ArrayList<Long>();
 		try{
-			
-			List<Object[]> dataList = surveyDetailsInfoDAO.getSurveyDetailsByConstituency(constituencyId,userTypeId);
+		   List<Object[]> dataList = surveyDetailsInfoDAO.getSurveyDetailsByConstituency(constituencyId,userTypeId);
 			
 			if(dataList != null && dataList.size() > 0)
 			{
-				 List<Object[]> list1 = surveyDetailsInfoDAO.getBoothCount(constituencyId,userTypeId);
+				// List<Object[]> list1 = surveyDetailsInfoDAO.getBoothCount(constituencyId,userTypeId);
 				  for(Object[] user : dataList)
 				 {
 					 
@@ -2958,20 +2957,19 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					 userIDs.add((Long)user[0]);
 				 }
 				
-				if(list1 != null && list1.size() > 0)
+				if(dataList != null && dataList.size() > 0)
 				{
-					 for(Object[] params : list1)
+					 for(Object[] params : dataList)
 					 {
 						 SurveyReportVO boothVo = getMatchedVo(resultList,(Long)params[0]);
 						 if(boothVo != null)
 						 {
 							 SurveyReportVO vo = new SurveyReportVO();
-							 vo.setBoothId((Long)params[1]);
-							 vo.setPartNo(params[2].toString());
-							
-							 vo.setTotalVoters((Long)params[4]);
+							 vo.setBoothId((Long)params[2]);
+							 vo.setPartNo(params[3].toString());
+						     vo.setTotalVoters((Long)params[4]);
 							 boothVo.getSubList().add(vo);
-							 boothIDs.add((Long)params[1]);
+							 boothIDs.add((Long)params[2]);
 						 }
 						 
 					 }
