@@ -1439,7 +1439,9 @@
 	</bean>
 	<bean id="cmsAdminAction" class="com.itgrids.partyanalyst.web.action.CmsAdminAction" singleton="false"></bean>
 	
-	<bean id="surveyDataDetailsAction" class="com.itgrids.partyanalyst.web.action.SurveyDataDetailsAction" singleton="false"></bean>
+	<bean id="surveyDataDetailsAction" class="com.itgrids.partyanalyst.web.action.SurveyDataDetailsAction" singleton="false">
+	    <property name="entitlementsHelper" ref="entitlementsHelper" />
+	</bean>
 	
 	<bean id="fieldVoterDataAction" class="com.itgrids.partyanalyst.web.action.FieldVoterDataAction" singleton="false">
 	 <property name="fieldVoterDataService" ref="fieldVoterDataService" /> 

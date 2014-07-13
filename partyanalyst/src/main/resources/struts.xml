@@ -5568,7 +5568,7 @@
 		    <result name="input">/jsp/loginForm.jsp?src=dashBoardAction</result>
 		    <result name="userProfile" type="redirect">userProfile.action</result>
 		    <result name="mahanadu" type="redirect">mahaNaduAction.action</result>
-		    
+		    <result name="webuser" type="redirect">surveyCallCenterAction.action</result>
 		</action>
 		
 		<action name="getPariesForAssemplyAction" class="dashBoardAction" method="ajaxHandler">
