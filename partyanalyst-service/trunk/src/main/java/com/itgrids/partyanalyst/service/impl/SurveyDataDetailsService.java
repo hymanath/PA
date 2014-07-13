@@ -3134,45 +3134,66 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		return returnList;
 	}
 	
-	public List<SelectOptionVO> getSurveyUserDetails(Long constituencyId,Date date)
+	public List<SurveyReportVO> getSurveyUserDetailsByConstituencies(Long constituencyId,Date date)
 	{
-		List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
+		List<SurveyReportVO> returnList = new ArrayList<SurveyReportVO>();
 		try
 		{
 			List<Object[]> details = surveyDetailsInfoDAO.getAllUserDetailsByConstituency(constituencyId, date);
 			if(details != null && details.size() > 0)
 			{
 				
-				Map<Long,List<SelectOptionVO>> resultMap = new HashMap<Long, List<SelectOptionVO>>();
-				Map<Long,SelectOptionVO> userDataMap = new HashMap<Long, SelectOptionVO>();
-				List<SelectOptionVO> boothsList = null;
+				Map<Long,Map<Long,SurveyReportVO>> resultMap = new HashMap<Long, Map<Long,SurveyReportVO>>();
+				Map<Long,SurveyReportVO> userDataMap = new HashMap<Long, SurveyReportVO>();
+				List<SurveyReportVO> boothsList = null;
 				for (Object[] parms : details)
 				{
-					if(resultMap.get((Long)parms[0]) == null)
-					{
-						boothsList= new ArrayList<SelectOptionVO>();
-						  SelectOptionVO vo = new SelectOptionVO();
-						  vo.setName(parms[1] != null ? parms[1].toString() : null);
-						  vo.setValue(parms[2] != null ? parms[2].toString() : null);
-						  vo.setType(parms[8] != null ? parms[8].toString() : null);
-						  userDataMap.put((Long)parms[0], vo);
-						  resultMap.put((Long)parms[0], boothsList);					
-					}	
 						
-				      SelectOptionVO vo1 = new SelectOptionVO();
-					  vo1.setPartno(parms[3] != null ? parms[3].toString() : null);
+						Map<Long,SurveyReportVO> boothMap = resultMap.get((Long)parms[0]);
+						if(boothMap == null)
+						{
+							boothMap = new HashMap<Long, SurveyReportVO>();
+							resultMap.put((Long)parms[0], boothMap);		
+							
+						}
+						
+			              SurveyReportVO vo = new SurveyReportVO();
+						  vo.setUserName(parms[1] != null ? parms[1].toString() : null);
+						  vo.setMobileNo(parms[2] != null ? parms[2].toString() : null);
+						  vo.setUserType(parms[8] != null ? parms[8].toString() : null);
+						  if(parms[10] != null)
+						  {
+							  
+							  
+							  vo.setSurveyDate();
+						  }
+						  userDataMap.put((Long)parms[0], vo);
+						 			
+					 
+							 SurveyReportVO  vo1 = boothMap.get((Long)parms[9]);
+					if(vo1 == null)
+					{
+					vo1 = new SurveyReportVO();
+					  vo1.setPartNo(parms[3] != null ? parms[3].toString() : null);
 					  vo1.setMandalName(parms[4] != null ? parms[4].toString() : null);
 					  vo1.setPanchayatName(parms[5] != null ? parms[5].toString() : null);
-					  vo1.setLocation(parms[6] != null ? parms[6].toString() : null);						
+					  vo1.setLocalArea(parms[6] != null ? parms[6].toString() : null);						
 					  vo1.setVillageCovered(parms[7] != null ? parms[7].toString() : null);					
-					  boothsList.add(vo1);						
+					  boothMap.put((Long)parms[9],vo1);		
+					}
 				}
 								
 				for(Long userId : resultMap.keySet())
 				{
-					SelectOptionVO vo = userDataMap.get(userId);
-					List<SelectOptionVO> booths = resultMap.get(userId);
-					vo.setSelectOptionsList(booths);
+					SurveyReportVO vo = userDataMap.get(userId);
+					Map<Long,SurveyReportVO> boothMap = resultMap.get(userId);
+					List<SurveyReportVO> booths = new ArrayList<SurveyReportVO>();
+					for(Long booth : boothMap.keySet())
+					{
+						SurveyReportVO vo1 = boothMap.get(booth);
+						booths.add(vo1);	
+					}
+					vo.setSubList(booths);
 					returnList.add(vo);
 				}
 			}

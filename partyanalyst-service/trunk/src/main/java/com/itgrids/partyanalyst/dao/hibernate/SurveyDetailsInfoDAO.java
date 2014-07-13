@@ -351,9 +351,9 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 	public List<Object[]> getAllUserDetailsByConstituency(Long constituencyId,Date date)
 	{
 		Query query = getSession().createQuery("select model.surveyUser.surveyUserId ,model.surveyUser.userName,model.surveyUser.mobileNo,model.booth.partNo," +
-				" model.booth.tehsil.tehsilName, model.booth.panchayat.panchayatName,model.booth.location,model.booth.villagesCovered ,model.surveyUser.surveyUserType.userType " +
+				" model.booth.tehsil.tehsilName, model.booth.panchayat.panchayatName,model.booth.location,model.booth.villagesCovered ,model.surveyUser.surveyUserType.userType,model.booth.boothId,model.insertedTime " +
 				" from SurveyDetailsInfo model where" + 
-				" model.booth.constituency.constituencyId =:constituencyId and date(model.date) = :date order by model.date desc");
+				" model.booth.constituency.constituencyId =:constituencyId and date(model.date) = :date and model.surveyUser.activeStatus = 'Y'");
 		query.setParameter("constituencyId", constituencyId);
 		query.setParameter("date", date);
 		return query.list();

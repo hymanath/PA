@@ -55,9 +55,32 @@ public class SurveyReportVO {
 	
 	private Long hamletCount = 0l;
 	private Long casteCount = 0l;
+	private String mandalName;
+	private String panchayatName;
+	private String villageCovered;
+
 	private Long mobileNoCount =0l;
 	private List<GenericVO> genericVOList = new ArrayList<GenericVO>();
 	
+	
+	public String getMandalName() {
+		return mandalName;
+	}
+	public void setMandalName(String mandalName) {
+		this.mandalName = mandalName;
+	}
+	public String getPanchayatName() {
+		return panchayatName;
+	}
+	public void setPanchayatName(String panchayatName) {
+		this.panchayatName = panchayatName;
+	}
+	public String getVillageCovered() {
+		return villageCovered;
+	}
+	public void setVillageCovered(String villageCovered) {
+		this.villageCovered = villageCovered;
+	}
 	
 	public Long getMobileNoCount() {
 		return mobileNoCount;
