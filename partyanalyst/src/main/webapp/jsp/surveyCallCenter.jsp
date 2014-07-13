@@ -104,7 +104,7 @@
 			<div class="span12">
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top20">
-							<h4>Data Collector Started Time</h4>	
+							<h4>User Field Report</h4>	
 					<div id="errDivIdForStartTime" style="color:#FF0020;font-size:15px;" ></div>							
 					</div>
 				</div>
@@ -115,7 +115,7 @@
 			<div class="span12">
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top20">
-							<h4>Booth Wise Report</h4>	
+							<h4>Field Data Report</h4>	
 					<div id="errDivIdForStartTime" style="color:#FF0020;font-size:15px;" ></div>	
 					
 	<div class="row">
@@ -160,19 +160,20 @@ $(".highlight").click(function()
 	
 function showHideTabs(id)
 {
+	$(".errClass").html('');
 	if(id == "callCenterTab")
 	{
 		$('#callCenter').show();
 		$('#startTime').hide();
 		$('#boothWise').hide();
-		$(".errClass").html('');
+		
 	}
 	else if (id == "startTimeTab")
 	{
 		$('#callCenter').hide();
 		$('#startTime').show();
 		$('#boothWise').hide();
-		$(".errClass").html('');
+		
 	}
 	else
 	{
@@ -180,7 +181,7 @@ function showHideTabs(id)
 		$('#startTime').hide();
 		$('#boothWise').show();
 		 getconstituencies();
-		$(".errClass").html('');
+		
 	}
 }
 function getConstituencyLeadersList(divId){
