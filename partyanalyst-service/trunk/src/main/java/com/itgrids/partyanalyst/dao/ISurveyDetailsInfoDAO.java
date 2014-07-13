@@ -48,7 +48,7 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	
 	public List<Object[]> getSurveyStartedConstituencyInfo();
 	
-	public List<Object[]> getSurveyDetailsByConstituency(Long constituencyId,Long userTypeId);
+	//public List<Object[]> getSurveyDetailsByConstituency(Long constituencyId,Long userTypeId);
 	public List<Object[]> getBoothCount(Long constituencyId,Long userTypeId);
 	public List<Object[]> getHamletCount(Long constituencyId,Long userTypeId);
 	public List<Object[]> getCasteCount(Long constituencyId,Long userTypeId);
@@ -59,7 +59,7 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	
 	public List<Object[]> getAllUserDetailsByConstituency(Long constituencyId,Date date);
 	
-	
+	public List<Object[]> getSurveyDetailsByConstituency(Long constituencyId,Long userTypeId,Date date);
 	public List<Object[]> getHamletCountByBooths(List<Long> userIds,List<Long> boothIds,Long userTypeId);
 	public List<Object[]> getCasteCountByBooths(List<Long> userIds,List<Long> boothIds,Long userTypeId);
 	public List<Object[]> getMbileNoCountByBooths(List<Long> userIds,List<Long> boothIds,Long userTypeId);

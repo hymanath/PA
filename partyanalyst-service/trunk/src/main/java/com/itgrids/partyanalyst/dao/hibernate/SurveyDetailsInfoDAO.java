@@ -309,12 +309,14 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 		return query.list();
 		
 	}
-	public List<Object[]> getSurveyDetailsByConstituency(Long constituencyId,Long userTypeId)
+	public List<Object[]> getSurveyDetailsByConstituency(Long constituencyId,Long userTypeId,Date date)
 	{
 		
-		Query query = getSession().createQuery("select distinct model.surveyUser.surveyUserId,model.surveyUser.userName,model.booth.boothId,model.booth.partNo,model.booth.totalVoters from SurveyDetailsInfo model where model.booth.constituency.constituencyId = :constituencyId and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId");
+		Query query = getSession().createQuery("select distinct model.surveyUser.surveyUserId,model.surveyUser.userName,model.booth.boothId,model.booth.partNo,model.booth.totalVoters from SurveyDetailsInfo model where model.booth.constituency.constituencyId = :constituencyId and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId" +
+				" and date(model.date) = :date");
 		query.setParameter("constituencyId", constituencyId);
 		query.setParameter("userTypeId", userTypeId);
+		query.setParameter("date", date);
 		return query.list();
 		
 	}
