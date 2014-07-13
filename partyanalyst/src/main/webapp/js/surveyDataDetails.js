@@ -985,11 +985,11 @@ function getBoothDetailsForSelectedUser(leaderId,constituencyId,name)
 						
 						if(j == length-1)
 						{
-							str += '<a style="cursor: pointer;">'+result[i].genericVOList[j].rank+' </a>';
+							str += ''+result[i].genericVOList[j].rank+'';
 						}
 						else
 						{
-							str += '<a style="cursor: pointer;">'+result[i].genericVOList[j].rank+' , </a>';
+							str += ''+result[i].genericVOList[j].rank+' ,';
 						}
 					}
 					str += ' </td>';
