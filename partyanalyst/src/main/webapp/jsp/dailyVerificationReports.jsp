@@ -75,7 +75,8 @@ $('#boothId').multiselect({
 										
 										<div class="span5">
 											Select Constituency <font class="requiredFont">*</font>
-												<s:select theme="simple"  name="constituency" id="constituencyId"  headerKey="0" headerValue="Select Constituency" list="constituenciesList" listKey="id" listValue="name" onChange="getBoothsDetailsByConstituencyId(this.value)"/>
+											<select id="constituencyId" ></select>
+												<!--<s:select theme="simple"  name="constituency" id="constituencyId"  headerKey="0" headerValue="Select Constituency" list="constituenciesList" listKey="id" listValue="name" onChange="getBoothsDetailsByConstituencyId(this.value)"/>-->
 										</div>
 										<div class="span3">
 											<!--User Type <font class="requiredFont">*</font>
@@ -150,6 +151,36 @@ $('#boothId').multiselect({
 	});
 		
 }*/
+getconstituencies();
+function getconstituencies()
+{
+
+
+	var jsObj =
+	{
+	
+	task : "getConstituencies"
+	}
+	$.ajax({
+	type:'GET',
+	url: 'getsurveyuserConstituenciesAction.action',
+	dataType: 'json',
+	data: {task:JSON.stringify(jsObj)},
+	}).done(function(result){
+
+	$("#constituencyId").append('<option value="0">Select Constituency</option>');
+	if(result != null && result.length > 0)
+	{
+	for(var i in result)
+	{
+		
+	$("#constituencyId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+	}
+
+	}
+	
+	});
+}
 $(function() {
 	$(".date").datepicker({ 
 	dateFormat: 'dd-mm-yy',
