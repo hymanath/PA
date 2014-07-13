@@ -25,7 +25,7 @@ public class SurveyUserRelationDAO extends GenericDaoHibernate<SurveyUserRelatio
 	{
 		Query query = getSession().createQuery("select distinct model.surveyUser.surveyUserId, model.surveyUser.userName,model1.booth.partNo from " +
 				"  SurveyUserRelation model ,SurveyUserBoothAssign model1 where model.surveyUser.surveyUserId =  model1.surveyUser.surveyUserId and model.activeStatus = 'Y'" +
-				"  and  model.surveyLeader.surveyUserId = :leaderId and model1.booth.constituency.constituencyId =:constituencyId and model1.isDelete = 'N'");
+				"  and  model.surveyLeader.surveyUserId = :leaderId and model1.booth.constituency.constituencyId =:constituencyId and model1.isDelete = 'N' order by model1.booth.partNo asc");
 		query.setParameter("leaderId", leaderId);
 		query.setParameter("constituencyId", constituencyId);
 		return query.list();
@@ -115,6 +115,14 @@ public class SurveyUserRelationDAO extends GenericDaoHibernate<SurveyUserRelatio
 		Query query = getSession().createQuery("distinct SUR.surveyUser.surveyUserId ,SUR.surveyUser.userName,SUR.surveyUser.password  from  " +
 				"SurveyUserRelation SUR where SUR.surveyLeader.surveyUserId = :leaderId and SUR.activeStatus = 'Y' ");
 		
+		return query.list();
+	}
+	
+	public List<Object[]> getAllUserForAssignedUsers(List<Long> leaderId)
+	{
+		Query query = getSession().createQuery("select distinct model.surveyUser.surveyUserId, model.surveyUser.userName from SurveyUserRelation model where " +
+				"  model.surveyLeader.surveyUserId in(:leaderId)  and model.activeStatus = 'Y' ");
+		query.setParameterList("leaderId", leaderId);
 		return query.list();
 	}
 }
