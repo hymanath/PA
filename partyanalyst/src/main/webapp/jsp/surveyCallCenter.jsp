@@ -517,8 +517,8 @@ return;
 	var str ='';
 	if(result.length == 0)
 	{
-str+='<font color=red>No Data avilable</font>';
-	$("#basicCountDiv").html(str);
+str+='<font style="color:red;">No Data avilable</font>';
+	$("#basicCountDiv").html(str).css("text-align","center");
 return;
 	}
 	
