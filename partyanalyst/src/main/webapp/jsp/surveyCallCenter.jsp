@@ -14,23 +14,61 @@
 			.widgetservey_Red{background:#fafafa; display:block; border:1px solid #cccccc; width:100%; padding:0px 20px 20px 20px; border-top:3px solid #ff0000;}
 			.widgetservey h4{font-size:26px; color:#333; line-height:30px; border-bottom: 1px solid #cccccc;text-align:center; text-transform:uppercase; text-shadow: 0px 1px #4f4f4f;}
 			.widgetservey_Red h4{font-size:26px; color:#ff0000; line-height:30px; border-bottom: 1px solid #cccccc;text-align:center; text-transform:uppercase; text-shadow: 0px 1px #4f4f4f;}
-			/*----*/
-			.callcenter_voterDetals_widget ul li{ padding:10px 5px;}
+			.survey_nav{height:40px; background: #ffea51;
+					background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZWE1MSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZmE2MDAiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+					background: -moz-linear-gradient(top,  #ffea51 0%, #ffa600 100%);
+					background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffea51), color-stop(100%,#ffa600));
+					background: -webkit-linear-gradient(top,  #ffea51 0%,#ffa600 100%);
+					background: -o-linear-gradient(top,  #ffea51 0%,#ffa600 100%);
+					background: -ms-linear-gradient(top,  #ffea51 0%,#ffa600 100%);
+					background: linear-gradient(to bottom,  #ffea51 0%,#ffa600 100%);
+					filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffea51', endColorstr='#ffa600',GradientType=0 );
+					}
+			.survey_nav ul li{line-height:40px;}
+			.survey_nav ul li a{color:#333; font-weight:bold; font-size:13px; padding:12px 4px;text-decoration:none;text-shadow:0px 1px #ffcc00; }
+			.survey_nav ul li a:hover{background:rgba(255,0,0,0.1);}
+			.survey_nav ul li a.selected{color:#fff; background:red;text-shadow:0px 1px #4f4f4f; }
+			.requiredFont{
+				color:red;
+				font-size:13px;
+			}
 			
-				
+			.highlight{
+			cursor: pointer;
+			}
+			
+			.datePickerCls{
+			 cursor: text !important;
+			}
+			
+			.survey_nav ul li .dropdown-menu{background:#ffcc00; border-top-left-radius:0px; border-top-right-radius:0px;margin-top:-1px; margin-right:5px;}
+			.survey_nav ul li .dropdown li a{color:#333; }
+			
+			.ui-multiselect{
+				width:200px !important;
+				}
+
 		</style>
 		
   </head>
   
   <body>
 	<div class="container">
-		
 		<div class="row">
+			<div class="span12 m_top20 survey_nav">
+				<ul class="inline unstyled">
+					<li><a class="highlight  selected" id="callCenterTab" onclick="showHideTabs(this.id);"> Call Centre </a></li>
+					<li><a class="highlight" id="startTimeTab" onclick="showHideTabs(this.id);">Survey Start Time</a></li>
+					<li><a class="highlight" id="boothWiseTab" onclick="showHideTabs(this.id);">Booth Wise Report</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="row" id="callCenter">
 			<div class="span12">
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top20">
 							<h4>Call Center Verification</h4>	
-<div id="errDivId" style="color:#FF0020;font-size:15px;" ></div>							
+					<div id="errDivId" style="color:#FF0020;font-size:15px;" ></div>							
 						<div class="row-fluid">
 							
 							
@@ -61,11 +99,58 @@
 				</div>
 			</div>
 		</div>
+		
+		<div class="row" id="startTime">
+			<div class="span12">
+				<div class="row-fluid ">
+					<div class="span12 widgetservey_Red m_top20">
+							<h4>Data Collector Started Time</h4>	
+					<div id="errDivIdForStartTime" style="color:#FF0020;font-size:15px;" ></div>							
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row" id="boothWise">
+			<div class="span12">
+				<div class="row-fluid ">
+					<div class="span12 widgetservey_Red m_top20">
+							<h4>Booth Wise Report</h4>	
+					<div id="errDivIdForStartTime" style="color:#FF0020;font-size:15px;" ></div>							
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<script>
 	
+$(".highlight").click(function()
+{
+	$(".highlight").removeClass("selected");
+	$(this).addClass("selected");
+})
 	
-	
+function showHideTabs(id)
+{
+	if(id == "callCenterTab")
+	{
+		$('#callCenter').show();
+		$('#startTime').hide();
+		$('#boothWise').hide();
+	}
+	else if (id == "startTimeTab")
+	{
+		$('#callCenter').hide();
+		$('#startTime').show();
+		$('#boothWise').hide();
+	}
+	else
+	{
+		$('#callCenter').hide();
+		$('#startTime').hide();
+		$('#boothWise').show();
+	}
+}
 function getConstituencyLeadersList(divId){
 var value = $('#constiList').val();
 var jsObj = 
