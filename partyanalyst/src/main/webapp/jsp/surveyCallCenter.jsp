@@ -123,7 +123,7 @@
 		</div>
 	</div>
 	<script>
-	
+showHideTabs('callCenterTab');
 $(".highlight").click(function()
 {
 	$(".highlight").removeClass("selected");
@@ -290,8 +290,16 @@ if(flag)
 					str +='							 </div>';
 					str +='						</td>';				
 					
-					//str +='						<td>'+result[i].mobileNo+' </td>';
-					str +='<td>'+result[i].mobileNo+'<div data-toggle="buttons-radio" class="btn-group">';
+					var mobNo = '';
+					if(result[i].mobileNo == 'null')
+					{
+						mobNo = '';
+					}
+					else
+					{
+						mobNo = result[i].mobileNo
+					}
+					str +='<td>'+mobNo+'<div data-toggle="buttons-radio" class="btn-group">';
 	str +='<button class="btn btn-mini" type="button" onclick="updateStatus(\'isTestedMobile'+i+'\',1);">correct </button>';
 	str +='<button class="btn btn-mini " type="button" onclick="updateStatus(\'isTestedMobile'+i+'\',0);">wrong</button>';
 	str +='             <div id="mobileErrDiv'+i+'" style="color:#FF0020;font-size:12px;"> </div>';
