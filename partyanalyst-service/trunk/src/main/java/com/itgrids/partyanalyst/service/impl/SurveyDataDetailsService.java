@@ -52,6 +52,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.dto.UserBoothDetailsVO;
+import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.SurveyCallStatus;
 import com.itgrids.partyanalyst.model.SurveyDetailsInfo;
@@ -2939,6 +2940,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	{
 		List<SurveyReportVO> resultList = new ArrayList<SurveyReportVO>();
 		List<Long> userIDs = new ArrayList<Long>();
+		List<Long> boothIDs = new ArrayList<Long>();
 		try{
 			
 			List<Object[]> dataList = surveyDetailsInfoDAO.getSurveyDetailsByConstituency(constituencyId,userTypeId);
@@ -2946,10 +2948,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			if(dataList != null && dataList.size() > 0)
 			{
 				 List<Object[]> list1 = surveyDetailsInfoDAO.getBoothCount(constituencyId,userTypeId);
-				 List<Object[]> list2 = surveyDetailsInfoDAO.getHamletCount(constituencyId,userTypeId);
-				 List<Object[]> list3 =surveyDetailsInfoDAO.getCasteCount(constituencyId,userTypeId);
-				
-				 for(Object[] user : dataList)
+				  for(Object[] user : dataList)
 				 {
 					 
 					 SurveyReportVO surveyReportVO = new SurveyReportVO();
@@ -2965,50 +2964,98 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					 {
 						 SurveyReportVO boothVo = getMatchedVo(resultList,(Long)params[0]);
 						 if(boothVo != null)
-							 boothVo.setBoothCount((Long)params[1]);
+						 {
+							 SurveyReportVO vo = new SurveyReportVO();
+							 vo.setBoothId((Long)params[1]);
+							 vo.setPartNo(params[2].toString());
+							 Booth booth = boothDAO.get((Long)params[1]);
+							 vo.setTotalVoters(booth.getTotalVoters());
+							 boothVo.getSubList().add(vo);
+							 boothIDs.add((Long)params[1]);
+						 }
 						 
 					 }
 				}
+				
+				List<Object[]> list2 = surveyDetailsInfoDAO.getHamletCountByBooths(userIDs,boothIDs,userTypeId);
 				if(list2 != null && list2.size() > 0)
 				{
 					 for(Object[] params : list2)
 					 {
-						 SurveyReportVO hamletVo = getMatchedVo(resultList,(Long)params[0]);
-						 if(hamletVo != null)
-							 hamletVo.setHamletCount((Long)params[1]);
+						 SurveyReportVO user = getMatchedVo(resultList,(Long)params[0]);
+						 if(user != null)
+						 {
+							 SurveyReportVO boothVo = getMatchedBoothVo(user.getSubList(),(Long)params[1]);
+							 if(boothVo != null)
+							 boothVo.setHamletCount((Long)params[2]);
+						 }
 						 
 					 }
 				 
 				}
+				
+				List<Object[]> list3 = surveyDetailsInfoDAO.getCasteCountByBooths(userIDs,boothIDs,userTypeId);
 				if(list3 != null && list3.size() > 0)
 				{
-					 for(Object[] params : list1)
+					for(Object[] params : list3)
 					 {
-						 SurveyReportVO casteVo = getMatchedVo(resultList,(Long)params[0]);
-						 if(casteVo != null)
-							 casteVo.setCasteCount((Long)params[1]);
+						 SurveyReportVO user = getMatchedVo(resultList,(Long)params[0]);
+						 if(user != null)
+						 {
+							 SurveyReportVO boothVo = getMatchedBoothVo(user.getSubList(),(Long)params[1]);
+							 if(boothVo != null)
+							 boothVo.setCasteCount((Long)params[2]);
+						 }
 						 
 					 }
 				} 
-				List<Object[]> statusList =surveyCallStatusDAO.getStatusListForUser(userIDs);
+				
+				List<Object[]> list4 = surveyDetailsInfoDAO.getMbileNoCountByBooths(userIDs,boothIDs,userTypeId);
+				if(list4 != null && list4.size() > 0)
+				{
+					for(Object[] params : list4)
+					 {
+						 SurveyReportVO user = getMatchedVo(resultList,(Long)params[0]);
+						 if(user != null)
+						 {
+							 SurveyReportVO boothVo = getMatchedBoothVo(user.getSubList(),(Long)params[1]);
+							 if(boothVo != null)
+							 boothVo.setMobileNoCount((Long)params[2]);
+						 }
+						 
+					 }
+				} 
+				
+				List<Object[]> statusList =surveyCallStatusDAO.getStatusListForUser(userIDs,boothIDs,userTypeId);
 				if(statusList !=null && statusList.size() > 0)
 				{
-					for(Object[] params1 : statusList)
-					{
-						SurveyReportVO vo = getMatchedVo(resultList,(Long)params1[0]);
-						if(vo != null)
-						{
-							vo.setCount((Long)params1[1]);
-							if(params1[2].toString().equalsIgnoreCase("N"))
-								vo.setMobileNotMatchedCount(vo.getMobileNotMatchedCount() + 1);
-							if(params1[2].toString().equalsIgnoreCase("Y"))
-								vo.setMobileMatchedCount(vo.getMobileMatchedCount() + 1);
-							if(params1[3].toString().equalsIgnoreCase("N"))
-								vo.setCasteNotMatchedCount(vo.getCasteNotMatchedCount() + 1);
-							if(params1[3].toString().equalsIgnoreCase("Y"))
-								vo.setCasteMatchedCount(vo.getCasteMatchedCount() + 1);
-						}
-					}
+					
+					
+					for(Object[] params : statusList)
+					 {
+						
+						 SurveyReportVO user = getMatchedVo(resultList,(Long)params[0]);
+						 if(user != null)
+						 {
+							
+							 SurveyReportVO boothVo = getMatchedBoothVo(user.getSubList(),(Long)params[1]);
+							 if(boothVo != null)
+							 {
+								 boothVo.setCount(boothVo.getCount() + 1);
+								 if(params[2].toString().equalsIgnoreCase("N"))
+									boothVo.setMobileNotMatchedCount(boothVo.getMobileNotMatchedCount() + 1);
+								if(params[2].toString().equalsIgnoreCase("Y"))
+									boothVo.setMobileMatchedCount(boothVo.getMobileMatchedCount() + 1);
+								if(params[3].toString().equalsIgnoreCase("N"))
+									boothVo.setCasteNotMatchedCount(boothVo.getCasteNotMatchedCount() + 1);
+								if(params[3].toString().equalsIgnoreCase("Y"))
+									boothVo.setCasteMatchedCount(boothVo.getCasteMatchedCount() + 1);
+							 }
+						 }
+						 
+					 }
+					
+					
 				}
 			}
 			
@@ -3039,7 +3086,24 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		}
 		return null;
 	}
+	public SurveyReportVO getMatchedBoothVo(List<SurveyReportVO> boothList,Long boothId)
+	{
 	
+		try{
+			if(boothList == null)
+				return null;
+			for(SurveyReportVO vo : boothList)
+			{
+				if(boothId.longValue() == vo.getBoothId().longValue())
+					return vo;
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			
+		}
+		return null;
+	}
 	
 	/**
 	 * This Service is used for getting all user names and password for users under leader
