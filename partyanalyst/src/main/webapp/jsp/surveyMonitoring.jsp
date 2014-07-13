@@ -55,7 +55,8 @@
 										</div>-->
 										<div class="span6">
 												Select Constituency <font class="requiredFont">*</font>
-												<s:select theme="simple"  name="constituency" id="constituencyId" headerKey="0" headerValue="Select Constituency" list="constituenciesList" listKey="id" listValue="name" />
+												<select id="constituencyId"></select>
+												<!--<s:select theme="simple"  name="constituency" id="constituencyId" headerKey="0" headerValue="Select Constituency" list="constituenciesList" listKey="id" listValue="name" />-->
 										</div>
 										<div class="span5">
 											Select Booth<font class="requiredFont">*</font>
@@ -89,6 +90,36 @@
 		</div>
 	</div>
 <script>
+getconstituencies();
+function getconstituencies()
+{
+
+
+	var jsObj =
+	{
+	
+	task : "getConstituencies"
+	}
+	$.ajax({
+	type:'GET',
+	url: 'getsurveyuserConstituenciesAction.action',
+	dataType: 'json',
+	data: {task:JSON.stringify(jsObj)},
+	}).done(function(result){
+
+	$("#constituencyId").append('<option value="0">Select Constituency</option>');
+	if(result != null && result.length > 0)
+	{
+	for(var i in result)
+	{
+		
+	$("#constituencyId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+	}
+
+	}
+	
+	});
+}
 
 $('#constituencyId').change(function(){
 	$('#boothAjaxImg').show();
