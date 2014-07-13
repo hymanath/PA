@@ -53,7 +53,6 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	private Long districtId;
 	private Long userId;
 	private String date;
-	private List<SelectOptionVO> resultList;
 	private List<SurveyReportVO> surveyUserDetails;
 	
 	public List<SurveyReportVO> getSurveyUserDetails() {
@@ -62,15 +61,6 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 
 	public void setSurveyUserDetails(List<SurveyReportVO> surveyUserDetails) {
 		this.surveyUserDetails = surveyUserDetails;
-	}
-
-	
-	public List<SelectOptionVO> getResultList() {
-		return resultList;
-	}
-
-	public void setResultList(List<SelectOptionVO> resultList) {
-		this.resultList = resultList;
 	}
 
 	public List<SelectOptionVO> getSurveyUserConstituencies() {
@@ -1239,11 +1229,12 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			String date = jObj.getString("date");
 			SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
 			Date date1 = originalFormat.parse(date);
-			resultList = surveyDataDetailsService.getSurveyUserDetails(jObj.getLong("constituencyId"), date1);
+			surveyUserDetails = surveyDataDetailsService.getSurveyUserDetailsByConstituencies(jObj.getLong("constituencyId"), date1);
 		} 
 		catch (Exception e)
 		{
 			LOG.error("Exception raised in getSurveyUserDetailsByConstituencyId", e);
+			e.printStackTrace();
 		}
 		return Action.SUCCESS;
 	}
