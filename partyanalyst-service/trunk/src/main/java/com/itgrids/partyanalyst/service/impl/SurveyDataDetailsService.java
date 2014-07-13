@@ -53,7 +53,6 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.dto.UserBoothDetailsVO;
-import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.SurveyCallStatus;
 import com.itgrids.partyanalyst.model.SurveyDetailsInfo;
@@ -2795,7 +2794,11 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 						
 						//reportVO.setUserName(voter[0] != null ? voter[0].toString():"");
 						reportVO.setVoterIDCardNo(voter[1] != null ? voter[1].toString():"");
-						reportVO.setMobileNo(voter[2] != null ? voter[2].toString():"");
+						if(voter[2] != null && !voter[2].toString().equalsIgnoreCase("null"))
+						{
+							reportVO.setMobileNo(voter[2] != null ? voter[2].toString():"");
+						}
+						
 						reportVO.setCaste(voter[3] != null ? voter[3].toString(): voter[4] != null ? voter[4].toString():"");
 						reportVO.setHamletName(voter[5] != null ? voter[5].toString():voter[6] != null ? voter[6].toString():"");
 						reportVO.setLocalArea(voter[7] != null ? voter[7].toString():"");
