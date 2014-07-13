@@ -7608,5 +7608,9 @@
 				<param name="root">returnList</param>
 			</result>
 		</action>
+				<action name="surveyUserStatus" class="surveyDataDetailsAction">
+			 <result name="success">/jsp/surveyUserStatus.jsp</result>
+		     </action>
+		
 </package>
 </struts>      

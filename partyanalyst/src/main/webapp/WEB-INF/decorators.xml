@@ -340,6 +340,8 @@
 			 <pattern>/userWiseTrackingAction*</pattern>
 			 <pattern>/surveyAdmin*</pattern>
 			 <pattern>/updateSurveyCompleteDetails*</pattern>
+			 <pattern>/surveyUserStatus*</pattern>
+			 
             <!--  <pattern>/dashBoardAction*</pattern> -->
        </decorator>
        
