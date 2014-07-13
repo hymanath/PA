@@ -540,7 +540,7 @@ return;
 	var jsObj =
 	{
 	constituencyId : constituencyID,
-		userTypeId:1,
+		userTypeId:userTypeId,
 		date:date,
 	task : "getLocationCount"
 	}
