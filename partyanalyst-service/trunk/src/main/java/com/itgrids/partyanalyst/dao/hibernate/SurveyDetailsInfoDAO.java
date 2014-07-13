@@ -221,7 +221,7 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 				" model.surveyUser.surveyUserId,model.longitude,model.latitude,model.booth.boothId  " +
 				" from SurveyDetailsInfo model where" + 
 				" model.booth.constituency.constituencyId =:constituencyId and date(model.date) = :date  and model.longitude != '0.0' and model.latitude != '0.0' " +
-				" order by date(model.date) desc");
+				" order by model.date desc");
 		query.setParameter("constituencyId", constituencyId);
 		query.setParameter("date", date);
 		return query.list();
