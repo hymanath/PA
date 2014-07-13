@@ -675,7 +675,7 @@ function buildDetailsTable(result)
 	 str+='<tr>';
 	  str+='<th>DC Name</th>';
   	  str+='<th>Mobile No</th>';
-	  str+='<th>Start date</th>';
+	  str+='<th>Start Time</th>';
 	  str+='<th>Booth No</th>';
 	  str+='<th>Mandal</th>';
 	  str+='<th>Panchayat</th>';
