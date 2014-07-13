@@ -73,10 +73,10 @@
 	   $('#userLeaderIdForRelease').multiselect({
 	  noneSelectedText:"Select User(s)"});
 	  
-	   $('#inHouseLeaderId').multiselect({
+	   $('#inHouseVerifierId').multiselect({
 	  noneSelectedText:"Select User(s)"});
 	  
-	   $('#inHouseReleaseLeaderId').multiselect({
+	   $('#inHouseReleaseId').multiselect({
 	  noneSelectedText:"Select User(s)"});
 	  
     $('#constituencyId').change(function(){
@@ -225,8 +225,8 @@
 											Select User Type<font class="requiredFont">*</font>
 											<select class="input-block-level" id="surveyUserTypeForSelect" onchange="getSurveyUsersByUserType('surveyUserIdForSelect',this.value);">
 											<option value="0"> Select User type </option>
-											<option value="3"> Lead </option>
-											<option value="5"> Chief Verifier </option>
+											<option value="3">Data Lead </option>
+											<option value="5"> Verifier Lead </option>
 											</select>
 											</div>
 											<div class="span6">
@@ -333,8 +333,8 @@
 											
 											<option value="0">Select User type</option>
 											<option value="1">Data Collectors</option>
-											<option value="4">Verifier</option>
-											<!--<option value="5">Chief Verifier</option>-->
+											<option value="4">Data Verifier</option>
+											<!--<option value="5">Verifier Lead</option>-->
 											</select>
 										</div>
 										<div class="span4">
@@ -452,11 +452,11 @@
 									<div class="row-fluid">									
 										<div class="span3">
 											Select User Type<font class="requiredFont">*</font>
-											<select class="input-block-level" id="constiUserTypeId" onChange="getSurveyUsersByUserType('assignConstituencyLeaderId',this.value);"> <option value="0">Select Type</option><option value="3">Lead</option><option value="5">Chief Verifier</option></select>
+											<select class="input-block-level" id="constiUserTypeId" onChange="getSurveyUsersByUserType('assignConstituencyLeaderId',this.value,'constiUserTypeIdImg');"> <option value="0">Select Type</option><option value="3">Data Lead</option><option value="5">Verifier Lead</option></select><img id="constiUserTypeIdImg" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
 										</div>
 										<div class="span3">
 											Select Leader<font class="requiredFont">*</font>
-											<select class="input-block-level" id="assignConstituencyLeaderId" onChange="getAssignedConstituencies('assignConstituencyId');"> <option value="0">Select Leader</option></select>
+											<select class="input-block-level" id="assignConstituencyLeaderId" onChange="getAssignedConstituencies('assignConstituencyId');"> <option value="0">Select Leader</option></select><img id="assignConstituencyLeaderIdImg" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
 										</div>
 									
 																
@@ -493,11 +493,11 @@
 										
 										<div class="span3">
 											Select User Type<font class="requiredFont">*</font>
-											<select class="input-block-level" id="typeId" onChange="getSurveyUsersByUserType('leaderId',this.value);"> <option value="0">Select Type</option><option value="3">Lead</option><option value="5">Chief Verifier</option></select>
+											<select class="input-block-level" id="typeId" onChange="getSurveyUsersByUserType('leaderId',this.value,'typeIdImg');"> <option value="0">Select Type</option><option value="3">Data Lead</option><option value="5">Verifier Lead</option></select><img id="typeIdImg" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
 										</div>
 										<div class="span3">
 											Select  Leader<font class="requiredFont">*</font>
-											<select class="input-block-level" id="leaderId" onChange="getSurveyUsersByUserTypeForLeaderAssign('userLeaderId');"> <option value="0">Select Leader</option></select>
+											<select class="input-block-level" id="leaderId" onChange="getSurveyUsersByUserTypeForLeaderAssign('userLeaderId','leaderIdImg');"> <option value="0">Select Leader</option></select><img id="leaderIdImg" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
 										</div>
 									
 										
@@ -543,11 +543,11 @@
 										
 										<div class="span3">
 											Select User Type<font class="requiredFont">*</font>
-											<select class="input-block-level" id="typeIdForRelease" onChange="getSurveyUsersByUserType('leaderIdForRelease',this.value);"> <option value="0">Select Type</option><option value="3">Lead</option><option value="5">Chief Verifier</option></select>
+											<select class="input-block-level" id="typeIdForRelease" onChange="getSurveyUsersByUserType('leaderIdForRelease',this.value,'typeIdForReleaseImg');"> <option value="0">Select Type</option><option value="3">Data Lead</option><option value="5">Verifier Lead</option></select><img id="typeIdForReleaseImg" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
 										</div>
 										<div class="span3">
 											Select  Leader<font class="requiredFont">*</font>
-											<select class="input-block-level" id="leaderIdForRelease" onChange="getSurveyUsersByUserTypeForLeaderRelease();"> <option value="0">Select Leader</option></select>
+											<select class="input-block-level" id="leaderIdForRelease" onChange="getSurveyUsersByUserTypeForLeaderRelease('leaderIdForReleaseImg');"> <option value="0">Select Leader</option></select><img id="leaderIdForReleaseImg" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
 										</div>
 									
 										
@@ -584,17 +584,17 @@
 										
 										<div class="span3">
 											Select user Type<font class="requiredFont">*</font>
-											<select class="input-block-level" id="inHousetypeId" onChange="getSurveyUsersByUserType('inHouseleaderId',this.value);"> <option value="0">Select Type</option><option value="3">Lead</option></select>
+											<select class="input-block-level" id="inHousetypeId" onChange="getSurveyUsersByUserType('inHouseleaderId',this.value,'inHousetypeIdImg');"> <option value="0">Select Type</option><option value="3">Data Lead</option></select><img id="inHousetypeIdImg" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
 										</div>
 										<div class="span3">
 											Select  Leader<font class="requiredFont">*</font>
-											<select class="input-block-level" id="inHouseleaderId" onChange="getRemeaningSurveyUsersByUserType('inHouseLeaderId',2);"> <option value="0">Select Leader</option></select>
+											<select class="input-block-level" id="inHouseleaderId" onChange="getRemeaningSurveyUsersByUserType('inHouseVerifierId',2,'inHouseleaderIdImg');"> <option value="0">Select Leader</option></select><img id="inHouseleaderIdImg" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
 										</div>
 								
 										
 										<div class="span3">
 											Select In House Verifier<font class="requiredFont">*</font>
-											<select class="input-block-level" id="inHouseLeaderId"  multiple="true"> </select>
+											<select class="input-block-level" id="inHouseVerifierId"  multiple="true"> </select>
 										</div>
 										
 										<!--<div class="span6">
@@ -632,17 +632,17 @@
 										
 										<div class="span3">
 											Select user Type<font class="requiredFont">*</font>
-											<select class="input-block-level" id="inHouseReleasetypeId" onChange="getSurveyUsersByUserType('inHouseReleaseleaderId',this.value);"> <option value="0">Select Type</option><option value="3">Lead</option></select>
+											<select class="input-block-level" id="inHouseReleasetypeId" onChange="getSurveyUsersByUserType('inHouseReleaseleaderId',this.value,'inHouseReleasetypeIdImg');"> <option value="0">Select Type</option><option value="3">Data Lead</option></select><img id="inHouseReleasetypeIdImg" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
 										</div>
 										<div class="span3">
 											Select  Leader<font class="requiredFont">*</font>
-											<select class="input-block-level" id="inHouseReleaseleaderId" onChange="getInHouseVerfiersByUserTypeForLeaderRelease('inHouseReleaseLeaderId',2);"> <option value="0">Select Leader</option></select>
+											<select class="input-block-level" id="inHouseReleaseleaderId" onChange="getInHouseVerfiersByUserTypeForLeaderRelease('inHouseReleaseleaderIdImg');"> <option value="0">Select Leader</option></select><img id="inHouseReleaseleaderIdImg" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
 										</div>
 									
 										
 										<div class="span3">
 											Select In House Verifier<font class="requiredFont">*</font>
-											<select class="input-block-level" id="inHouseReleaseLeaderId"  multiple="true"> </select>
+											<select class="input-block-level" id="inHouseReleaseId"  multiple="true"> </select>
 										</div>
 									</div>
 								</div>
