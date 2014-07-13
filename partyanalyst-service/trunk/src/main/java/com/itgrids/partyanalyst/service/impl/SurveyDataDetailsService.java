@@ -2968,8 +2968,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 							 SurveyReportVO vo = new SurveyReportVO();
 							 vo.setBoothId((Long)params[1]);
 							 vo.setPartNo(params[2].toString());
-							 Booth booth = boothDAO.get((Long)params[1]);
-							 vo.setTotalVoters(booth.getTotalVoters());
+							
+							 vo.setTotalVoters((Long)params[4]);
 							 boothVo.getSubList().add(vo);
 							 boothIDs.add((Long)params[1]);
 						 }
