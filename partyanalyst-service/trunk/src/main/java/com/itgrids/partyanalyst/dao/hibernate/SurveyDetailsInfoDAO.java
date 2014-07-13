@@ -220,7 +220,8 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 				" model.booth.panchayat.panchayatName,model.booth.villagesCovered,model.booth.location , model.surveyUser.surveyUserType.userType," +
 				" model.surveyUser.surveyUserId,model.longitude,model.latitude,model.booth.boothId  " +
 				" from SurveyDetailsInfo model where" + 
-				" model.booth.constituency.constituencyId =:constituencyId and date(model.date) = :date order by model.date desc");
+				" model.booth.constituency.constituencyId =:constituencyId and date(model.date) = :date  and model.longitude != '0.0' and model.latitude != '0.0' " +
+				" order by date(model.date) desc");
 		query.setParameter("constituencyId", constituencyId);
 		query.setParameter("date", date);
 		return query.list();
@@ -277,7 +278,8 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 				" SDI.mobileNumber, SDI.caste.caste.casteName,SDI.casteName, SDI.hamlet.hamletName, SDI.hamletName, SDI.localArea,  SDI.surveyUser.surveyUserId, " +
 				" SDI.voter.voterId , SDI.isCadre , SDI.isInfluencingPeople, SDI.voter.name, SDI.voter.houseNo, SDI.voter.relativeName   " +
 				"   from SurveyDetailsInfo SDI where SDI.booth.boothId  = :boothId and SDI.surveyUser.surveyUserId in (:assignUsers) and SDI.mobileNumber != null  "+
-				" and SDI.voter.voterId not in ( select SCS.voter.voterId from SurveyCallStatus SCS where  SDI.surveyUser.surveyUserId =  SCS.surveyUser.surveyUserId ) order by SDI.voter.voterId ");
+				" and SDI.voter.voterId not in ( select SCS.voter.voterId from SurveyCallStatus SCS where  SDI.surveyUser.surveyUserId =  SCS.surveyUser.surveyUserId )" +
+				" and  SDI.mobileNumber is not null order by SDI.voter.voterId ");
 		query.setParameter("boothId", boothId);		
 		query.setParameterList("assignUsers", assignUsers);	
 		return query.list();
