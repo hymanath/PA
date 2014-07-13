@@ -116,7 +116,35 @@
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top20">
 							<h4>Booth Wise Report</h4>	
-					<div id="errDivIdForStartTime" style="color:#FF0020;font-size:15px;" ></div>							
+					<div id="errDivIdForStartTime" style="color:#FF0020;font-size:15px;" ></div>	
+					
+	<div class="row">
+								<div class="span8 offset3">
+								<div id="errorMsgDiv" class="offset1"  style="color:#FF0020;font-size:15px;"></div>
+									<div class="row-fluid">
+									
+										<div class="span3 offset1">
+											<label>Select Constituency</label>
+										<select name="constituency" id="constituencyId" list="constituenciesList" style="width:130px;"></select>
+								
+										</div>
+										<div class="span4">
+											<label>Select User Type</label>
+											<select name="constituency" id="userTypeId"  style="width:130px;">
+											<option value="0">Select user type</option>
+											<option value="1">Data Collectors</option>
+											
+											</select>
+										</div>	
+									</div>	
+									
+								</div>
+							</div>
+							<div class="row text-center m_top20" style="margin-right:51px;"><button type="button" class="btn btn-success" onClick="getSurveyUserLoctionCount();">SUBMIT</button>
+							<img id="processingImg" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
+							</div>
+							<div id="basicCountDiv" class="span10 m_top20">
+
 					</div>
 				</div>
 			</div>
@@ -149,6 +177,7 @@ function showHideTabs(id)
 		$('#callCenter').hide();
 		$('#startTime').hide();
 		$('#boothWise').show();
+		 getconstituencies();
 	}
 }
 function getConstituencyLeadersList(divId){
@@ -409,6 +438,142 @@ var voterInfoArr = new Array();
 		});
 	}
 }
+
+
+
+function getconstituencies()
+{
+
+
+	var jsObj =
+	{
+	
+	task : "getConstituencies"
+	}
+	$.ajax({
+	type:'GET',
+	url: 'getsurveyuserConstituenciesAction.action',
+	dataType: 'json',
+	data: {task:JSON.stringify(jsObj)},
+	}).done(function(result){
+
+	$("#constituencyId").append('<option value="0">Select Constituency</option>');
+	if(result != null && result.length > 0)
+	{
+	for(var i in result)
+	{
+		
+	$("#constituencyId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+	}
+
+	}
+	
+	});
+}
+
+
+function getSurveyUserLoctionCount()
+{
+var constituencyID = $("#constituencyId").val();
+var userTypeId = $("#userTypeId").val();
+
+$("#basicCountDiv").html('');
+$("#errorMsgDiv").html('');
+var str ='';
+if(constituencyID == 0)
+	{
+str +='<font color="red">Select Constituency</font>';
+	}
+else if(userTypeId == 0)
+	{
+str +='<font color="red">Select User Type</font>';
+	}
+	if(str.length > 0)
+	{
+$("#errorMsgDiv").html(str);
+return;
+	}
+	$("#processingImg").show();
+	var jsObj =
+	{
+	constituencyId : constituencyID,
+		userTypeId:1,
+	task : "getLocationCount"
+	}
+	$.ajax({
+	type:'GET',
+	url: 'getSurveyUserLoctionCount.action',
+	dataType: 'json',
+	data: {task:JSON.stringify(jsObj)},
+	}).done(function(result){
+		$("#processingImg").hide();
+     buildSurveyUserStatusCount(result);
+	
+	});
+}
+
+ function buildSurveyUserStatusCount(result)
+{
+	var str ='';
+	if(result.length == 0)
+	{
+str+='<font color=red>No Data avilable</font>';
+	$("#basicCountDiv").html(str);
+return;
+	}
+	
+	str+='<table class=" table table-bordered m_top20 table-hover table-striped">';
+	str+='<thead >';
+	str+='<tr class="alert alert-success">'
+	str+='<th rowspan="5">DCName</th>';
+	str+='<th rowspan="5">Booth</th>';
+	str+='<th rowspan="5"> Total Voters</th>';
+	str+='<th colspan="3" style="text-align : center;">Data Collector</th>';
+	str+='<th colspan="5" style="text-align : center;">Web monitoring</th>';
+	
+	str+='</tr>';
+
+	str+='<tr class="alert alert-success">';
+    str+='<th >Caste Mapped</th>';
+	str+='<th >Hamlet Mapped</th>';
+	str+='<th >Mobile Collected</th>';
+
+	str+='<th>TOTAL </th>';
+	str+='<th>Mobile MATCHED</th>';
+	str+='<th>Mobile UN MATCHED</th>';
+	str+='<th>CASTE MATCHED</th>';
+	str+='<th>CASTE UN MATCHED</th>';
+	str+='</tr>';
+	str+='</thead>';
+	str+='<tbody>';
+	for(var i in result)
+	{
+
+		for(var j=0;j<result[i].subList.length;j++)
+		{
+			str+='<tr>';
+			str+='<td>'+result[i].userName+'</td>';
+			str+='<td> '+result[i].subList[j].partNo+'</td>';
+			str+='<td>'+result[i].subList[j].totalVoters+'</td>';
+			str+='<td>'+result[i].subList[j].casteCount+'</td>';
+			str+='<td>'+result[i].subList[j].hamletCount+'</td>';
+			str+='<td>'+result[i].subList[j].mobileNoCount+'</td>';
+		    str+='<td>'+result[i].subList[j].count+'</td>';
+			str+='<td>'+result[i].subList[j].mobileMatchedCount+'</td>';
+			str+='<td>'+result[i].subList[j].mobileNotMatchedCount+'</td>';
+			str+='<td>'+result[i].subList[j].casteMatchedCount+'</td>';
+			str+='<td>'+result[i].subList[j].casteNotMatchedCount+'</td>';
+
+			str+='</tr>';
+		}
+	}
+	str+='</tbody>';
+	str+='</table>';
+	$("#basicCountDiv").html(str);
+	
+
+}
+
 	</script>
 	<script src="http://code.jquery.com/jquery.js"></script>
 	<script src="js/bootstrap.min.js"></script>
