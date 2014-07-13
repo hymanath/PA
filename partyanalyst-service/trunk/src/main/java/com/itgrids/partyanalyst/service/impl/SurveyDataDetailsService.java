@@ -2936,13 +2936,18 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		return resultList;
 	}
 	
-	public List<SurveyReportVO> getSurveyDetailsForConstituency(Long constituencyId,Long userTypeId)
+	public List<SurveyReportVO> getSurveyDetailsForConstituency(Long constituencyId,Long userTypeId,String date)
 	{
+		
+		
 		List<SurveyReportVO> resultList = new ArrayList<SurveyReportVO>();
 		List<Long> userIDs = new ArrayList<Long>();
 		List<Long> boothIDs = new ArrayList<Long>();
 		try{
-		   List<Object[]> dataList = surveyDetailsInfoDAO.getSurveyDetailsByConstituency(constituencyId,userTypeId);
+			SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
+			Date date1 = originalFormat.parse(date);
+			
+		   List<Object[]> dataList = surveyDetailsInfoDAO.getSurveyDetailsByConstituency(constituencyId,userTypeId,date1);
 			
 			if(dataList != null && dataList.size() > 0)
 			{
