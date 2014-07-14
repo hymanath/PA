@@ -27,9 +27,29 @@ public class HHSurveyAnswerDAOHibernateTest extends BaseDaoTestCase{
 
 
 
-	public void test(){
+	/*public void test(){
 		List<Object[]> list = hhSurveyAnswersDAO.getQuestionWiseSummary(2l, 282l);
 		System.out.println(list.size());
+	}*/
+	
+	/*public void test(){
+		List<Object[]> list = hhSurveyAnswersDAO.getQuestionWiseSummaryCount(2l, 282l);
+		System.out.println(list.size());
+	}*/
+	
+	/*public void test(){
+		List<Object[]> list = hhSurveyAnswersDAO.getQuestionWiseSummaryCountByPanchayat(2l, 282l);
+		System.out.println(list.size());
+	}*/
+	
+	public void test(){
+		List<Object[]> list = hhSurveyAnswersDAO.getQuestionWiseSummaryCountByPanchayat(2l, 282l);
+		System.out.println(list.size());
 	}
+	
+	/*public void test(){
+		List<Object[]> list = hhSurveyAnswersDAO.getHouseHoldsOfPanchayatWithOption(5l, 3303l);
+		System.out.println(list.size());
+	}*/
 
 }
