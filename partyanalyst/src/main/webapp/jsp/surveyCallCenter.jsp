@@ -1114,6 +1114,8 @@ function onEachFeature(feature, layer)
 
 function getDataCollectorInfo(){
 
+	$('#boothWiseTab,#startTimeTab').removeClass('selected');
+	$('#callCenterTab').addClass('selected');
 showHideTabs('callCenterTab');
 getSurveyVotersList();
 
