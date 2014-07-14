@@ -17,6 +17,9 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ISurveyCompletedLocationsDetailsDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
+import com.itgrids.partyanalyst.dao.ISurveyUserDAO;
+import com.itgrids.partyanalyst.dao.IWebMonitoringAssignedUsersDAO;
+import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.SurveyCompletionDetailsVO;
 import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
 import com.itgrids.partyanalyst.model.SurveyCompletedLocationsDetails;
@@ -44,6 +47,8 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 	
 	@Autowired
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
+	
+	
 
 	public SurveyDashBoardVO getCompletdConstituenciesDetails()
 	{
@@ -370,49 +375,51 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 			// complete booths details start
 			List<Object[]> completeBoothsDetails = surveyCompletedLocationsDetailsDAO
 					.getSurveyCompletedBoothsDetails(null);
-			
-			
-			List<SurveyDashBoardVO> boothsList = new ArrayList<SurveyDashBoardVO>();
-			
 			Set<Long> boothIds = new HashSet<Long>();
 			
-			for(Object[] obj:completeBoothsDetails)
-				boothIds.add((Long)obj[0]);
-			
-			List<Object[]> boothsDtls = boothDAO.getBoothDetailsByBoothIds(boothIds);
-			
-			Map<Long,Long> boothConstituencyMap = new HashMap<Long, Long>();
-			
-			for(Object[] obj:boothsDtls)
-				boothConstituencyMap.put((Long)obj[0], (Long)obj[1]);
-			
-			for(Long boothId:boothIds)
+			if(completeBoothsDetails != null && completeBoothsDetails.size() >0)
 			{
-				SurveyDashBoardVO booth = new SurveyDashBoardVO();
-				booth.setBoothId(boothId);
-				booth.setConstituencyId(boothConstituencyMap.get(boothId));
-				boothsList.add(booth);
-			}
 			
-			for(Object[] obj:completeBoothsDetails)
-			{
-				SurveyDashBoardVO boothVO = getMatchedBoothVO(boothsList,(Long)obj[0]);
-				
-				if(((Long)obj[1]).equals(IConstants.DATA_COLLECTOR_ROLE_ID))
-					boothVO.setDataCollectorCompleted(true);
-				else if(((Long)obj[1]).equals(IConstants.VERIFIER_ROLE_ID))
-					boothVO.setVerifierCompleted(true);
+					List<SurveyDashBoardVO> boothsList = new ArrayList<SurveyDashBoardVO>();
+					
+					
+					for(Object[] obj:completeBoothsDetails)
+						boothIds.add((Long)obj[0]);
+					
+					List<Object[]> boothsDtls = boothDAO.getBoothDetailsByBoothIds(boothIds);
+					
+					Map<Long,Long> boothConstituencyMap = new HashMap<Long, Long>();
+					
+					for(Object[] obj:boothsDtls)
+						boothConstituencyMap.put((Long)obj[0], (Long)obj[1]);
+					
+					for(Long boothId:boothIds)
+					{
+						SurveyDashBoardVO booth = new SurveyDashBoardVO();
+						booth.setBoothId(boothId);
+						booth.setConstituencyId(boothConstituencyMap.get(boothId));
+						boothsList.add(booth);
+					}
+					
+					for(Object[] obj:completeBoothsDetails)
+					{
+						SurveyDashBoardVO boothVO = getMatchedBoothVO(boothsList,(Long)obj[0]);
+						
+						if(((Long)obj[1]).equals(IConstants.DATA_COLLECTOR_ROLE_ID))
+							boothVO.setDataCollectorCompleted(true);
+						else if(((Long)obj[1]).equals(IConstants.VERIFIER_ROLE_ID))
+							boothVO.setVerifierCompleted(true);
+					}
+					
+					for(SurveyDashBoardVO completedBooth:boothsList)
+					{
+						if(completedBooth.isDataCollectorCompleted() && completedBooth.isVerifierCompleted())
+						{
+							SurveyDashBoardVO constituencyVO = getMatchedLocationVO(resultList,completedBooth.getConstituencyId());
+							constituencyVO.setCompletedCount(constituencyVO.getCompletedCount() +1);
+						}
+					}
 			}
-			
-			for(SurveyDashBoardVO completedBooth:boothsList)
-			{
-				if(completedBooth.isDataCollectorCompleted() && completedBooth.isVerifierCompleted())
-				{
-					SurveyDashBoardVO constituencyVO = getMatchedLocationVO(resultList,completedBooth.getConstituencyId());
-					constituencyVO.setCompletedCount(constituencyVO.getCompletedCount() +1);
-				}
-			}
-			
 			//  complete booths details end
 
 			
@@ -507,6 +514,8 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 	
 		
 	}
+	
+
 	
 
 }
