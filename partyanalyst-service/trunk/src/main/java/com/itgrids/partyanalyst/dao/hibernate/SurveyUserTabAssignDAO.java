@@ -38,7 +38,8 @@ public class SurveyUserTabAssignDAO extends GenericDaoHibernate<SurveyUserTabAss
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getSurveyTabsBySurveyUserId(Long leaderId){
 		
-		return getHibernateTemplate().find(" select model.surveyUserTabAssignId, model.tabNo from SurveyUserTabAssign model where model.surveyUser.surveyUserId = "+leaderId+" order by model.tabNo asc ");
+		return getHibernateTemplate().find(" select distinct model.surveyUserTabAssignId, model.tabNo from SurveyUserTabAssign model where model.surveyUser.surveyUserId = "+leaderId+" group by model.tabNo " +
+				"  order by model.tabNo asc ");
 	}
 	
 	public List<Object[]> getSurveyTabsBySurveyUserIdsList(List<Long> surveyUserIds){

@@ -34,4 +34,12 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 		return query.list();
 		
 	}
+	
+	public List<Object[]> getSurveyCallDtalsByboothId(Long boothId){
+		Query query = getSession().createQuery("select distinct model.voter.voterId, model.mobileNoStatus, model.matchedStatus from SurveyCallStatus model" +
+				" where model.booth.boothId =:boothId order by model.surveyCallStatusId");
+		
+		query.setParameter("boothId", boothId);
+		return query.list();		
+	}
 }

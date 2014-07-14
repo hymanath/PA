@@ -286,13 +286,13 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 		return (Long)query.uniqueResult();
 	}
 	
-	public List<Object[]> getVoterDetailsByBoothId(Long boothId,List<Long> assignUsers)
+	public List<Object[]> getVoterDetailsByBoothId(Long boothId,List<Long> assignUsers,Date searchDate)
 	{
 		Query query = getSession().createQuery("select SDI.surveyUser.userName, SDI.voter.voterIDCardNo," +
 				" SDI.mobileNumber, SDI.caste.caste.casteName,SDI.casteName, SDI.hamlet.hamletName, SDI.hamletName, SDI.localArea,  SDI.surveyUser.surveyUserId, " +
 				" SDI.voter.voterId , SDI.isCadre , SDI.isInfluencingPeople, SDI.voter.name, SDI.voter.houseNo, SDI.voter.relativeName   " +
-				"   from SurveyDetailsInfo SDI where SDI.booth.boothId  = :boothId and SDI.surveyUser.surveyUserId in (:assignUsers) and SDI.mobileNumber != null  "+
-				" and SDI.voter.voterId not in ( select SCS.voter.voterId from SurveyCallStatus SCS where  SDI.surveyUser.surveyUserId =  SCS.surveyUser.surveyUserId )" +
+				"   from SurveyDetailsInfo SDI where SDI.booth.boothId  = :boothId and SDI.surveyUser.surveyUserId in (:assignUsers) and SDI.mobileNumber is not null  "+
+				//" and SDI.voter.voterId not in ( select SCS.voter.voterId from SurveyCallStatus SCS where  SDI.surveyUser.surveyUserId =  SCS.surveyUser.surveyUserId )" +
 				"  order by SDI.voter.voterId ");
 		query.setParameter("boothId", boothId);		
 		query.setParameterList("assignUsers", assignUsers);	
@@ -412,5 +412,22 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 		return query.list();
 	}
 	
+	public List<Object[]> getCasteWiseCountInBooth(Long boothId)
+	{
+		Query query = getSession().createQuery(" select  SDI.caste.casteStateId, C.casteName , count( SDI.caste.casteStateId) from SurveyDetailsInfo SDI, CasteState CS, Caste C where " +
+				" SDI.caste.casteStateId = CS.casteStateId and CS.caste.casteId = C.casteId and SDI.booth.boothId = :boothId group by SDI.caste.casteStateId " +
+				" order by SDI.caste.caste.casteName asc ");
+		query.setParameter("boothId", boothId);
+		//query.setParameter("date", date);
+		return query.list();
+	}
+	
+	public Long getTotalVotersinBooth(Long boothId)
+	{
+		Query query = getSession().createQuery(" select count(distinct SDI.voter.voterId) from SurveyDetailsInfo SDI where SDI.booth.boothId = :boothId ");
+		query.setParameter("boothId", boothId);
+		//query.setParameter("date", date);
+		return (Long) query.uniqueResult();
+	}
 	
 }
