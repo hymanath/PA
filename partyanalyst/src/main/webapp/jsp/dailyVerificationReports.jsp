@@ -45,7 +45,10 @@
 			 color:green;
 			}
 			.ui-multiselect{
-				width:140px !important;
+				width:200px !important;
+				}
+				#constituencyId{
+				width:200px !important;
 				}
 		</style>	
 	
@@ -67,13 +70,13 @@ $('#boothId').multiselect({
 					<div class="span12 widgetservey_Red m_top20">
 							<h4 id="titleId">Verifier Report</h4>
 							<div class="row">
-						<div id="errorDiv" class="span8 offset2"></div>
+						<div id="errorDiv" class="span8 offset1"></div>
 						</div>
 								<div class="row">
-								<div class="span8 offset2">
+								<div class="offset1">
 									<div class="row-fluid">
 										
-										<div class="span5">
+										<div class="span3">
 											Select Constituency <font class="requiredFont">*</font>
 											<!--<select id="constituencyId" onChange="getBoothsDetailsByConstituencyId(this.value)"></select>-->
 												<s:select theme="simple"  name="constituency" id="constituencyId"  headerKey="0" headerValue="Select Constituency" list="dataAvilableConstituencies" listKey="id" listValue="name" onChange="getBoothsDetailsByConstituencyId(this.value)"/>
@@ -82,7 +85,10 @@ $('#boothId').multiselect({
 											<!--User Type <font class="requiredFont">*</font>
 											<select class="input-block-level" id = "userType"> <option value="0">Select User Type</option></select>-->
 											Select Booth 
-											<select class="input-block-level" id = "boothId" multiple="true"> <option value="0">Select Booth</option></select>
+											<select class="input-block-level" id = "boothId" multiple="true"> <option value="0">Select Booth</option></select></div>
+											<div class="span1" style="margin:25px -8px 0 8px;width: 15px;">
+								<img id="boothImage" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
+							
 										</div>
 										<div class="span2">
 											From Date <font class="requiredFont">*</font>
@@ -525,6 +531,7 @@ $('#mainajaximg').hide();
 
 function getBoothsDetailsByConstituencyId(constituencyId)
 {
+	$("#boothImage").show();
 	var jObj =
 	{
 	  constituencyId:constituencyId     
@@ -537,7 +544,7 @@ function getBoothsDetailsByConstituencyId(constituencyId)
 			data: {task:JSON.stringify(jObj)},
 		  }).done(function(result){				
 				//buildDayWiseReportByUserType(result);		
-
+				$("#boothImage").hide();
 				$('#boothId').find('option').remove();
 
 				$.each(result,function(index,value){
