@@ -162,6 +162,7 @@
 									</div>
 					
 						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getUserDetailsByConstituency()">SUBMIT</button></div>
+						<div class="row-fluid " id = "leaderDetailsDiv"></div>
 						<div class="row-fluid " id="detaildDiv" style="display:none;">
 							<div class="span12 m_top20 widgetservey" id="weathermap" style="height:500px"></div>
 						</div>
@@ -665,8 +666,50 @@ $(function() {
   
 });
 
+
+function getLeadrDetailsByConstituency()
+{
+	var jObj =
+	{
+	  constiId: $('#userConstituencyId').val()
+	};
+	$.ajax({
+			type:'GET',
+			url: 'getConstituencyWiseLeadersAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){	
+			if(result != null && result.length > 0)
+			{
+				var str = '';
+				 str += '<div class="span12 m_top20 widgetservey">';
+				 str += '<h4>Leader Details</h4>';
+				 str += '<div class="row-fluid" >';
+				 str += '<table class="table table-bordered m_top20 table-hover table-striped username">';	
+				 str += '<thead class="alert alert-success">';
+				 str += '<tr> ';
+				 str += '<th>Name </th>	';
+				 str += '<th>Mobile No</th>	';		 
+				 str += '</tr>	';						
+				 str += '</thead>';
+				 str += '<tbody>';
+				for(var i in result)
+				{
+					str += '<tr>';
+					str += '<td>'+result[i].name+'</td>';
+					str += '<td>'+result[i].desc+'</td>';
+					str += '</tr>';
+				}
+				 str += '</tbody>';
+				str += '</table>';
+				str += '</div></div>';
+				$('#leaderDetailsDiv').html(str);
+			}
+		});
+}
 function getUserDetailsByConstituency()
 {
+	getLeadrDetailsByConstituency();
 	$('#userDetailsReportDiv').html("");
 	var constituencyId = $("#userConstituencyId").val();
 	var dateVal = $("#dateId").val();
