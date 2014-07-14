@@ -195,6 +195,7 @@ $(".highlight").click(function()
 	$(this).addClass("selected");
 })
 	
+
 function showHideTabs(id)
 {
 	$(".errClass").html('');
@@ -685,6 +686,7 @@ function buildDetailsTable(result)
 	  str+='<th>Panchayat</th>';
 	  str+='<th>Booth Location</th>';
 	  str+='<th>Village Covered</th>';
+	  str+='<th>Map</th>';
 	 str+='</tr>';
 	str+='</thead>';
 
@@ -712,6 +714,7 @@ function buildDetailsTable(result)
 			str+='<td>'+result[i].subList[j].panchayatName+'</td>';
 			str+='<td>'+result[i].subList[j].localArea+'</td>';
 			str+='<td>'+result[i].subList[j].villageCovered+'</td>';
+			str+='<td><a style="cursor: pointer;"  onClick="openUserTrackingMapPage();">Map</a></td>';
 			str+='</tr>';
 		}
 		}
@@ -722,6 +725,11 @@ function buildDetailsTable(result)
  $('#userDetailsReportDiv').html(str);
 }
 
+
+function openUserTrackingMapPage()
+{
+	window.open('surveyUserTrackingAction.action?userId='+$('#userConstituencyId').val()+'&date='+$('#dateId').val()+'');
+}
 
 	</script>
 	<script src="js/bootstrap.min.js"></script>
