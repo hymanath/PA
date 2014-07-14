@@ -1268,6 +1268,27 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		}
 		return Action.SUCCESS;
 	}
+  
+  public String getSurveyConstituencyUsersList(){
+		
+		try
+		{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			jObj = new JSONObject(getTask());
+			returnList = surveyDataDetailsService.getSurveyConstituencyUsersList(Long.valueOf(jObj.getString("constiId")));			
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getSurveyConstituencyList() in SurveyDataDetailsAction", e);
+		}
+		return Action.SUCCESS;
+		
+	}
 	
   
 }
