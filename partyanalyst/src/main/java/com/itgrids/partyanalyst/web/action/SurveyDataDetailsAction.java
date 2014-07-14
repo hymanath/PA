@@ -1368,7 +1368,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 
 	  return Action.SUCCESS;
   }
-  
+/*  
   public String getAssignedUsersOfAConstituency()
   {
 	  constituencies =  surveyDataDetailsService.getAssignedUsersOfAConstituency(constituencyId);
@@ -1380,6 +1380,6 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	  surveyDataDetailsService.saveWebMonioringAssignDetails();
 	  
 	  return Action.SUCCESS;
-  }
+  }*/
   
 }
