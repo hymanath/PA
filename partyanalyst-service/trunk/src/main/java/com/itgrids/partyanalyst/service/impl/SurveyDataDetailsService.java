@@ -2984,7 +2984,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					 }
 				}
 				
-				List<Object[]> list2 = surveyDetailsInfoDAO.getHamletCountByBooths(userIDs,boothIDs,userTypeId);
+				List<Object[]> list2 = surveyDetailsInfoDAO.getHamletCountByBooths(userIDs,boothIDs,userTypeId,date1);
 				if(list2 != null && list2.size() > 0)
 				{
 					 for(Object[] params : list2)
@@ -3001,7 +3001,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				 
 				}
 				
-				List<Object[]> list3 = surveyDetailsInfoDAO.getCasteCountByBooths(userIDs,boothIDs,userTypeId);
+				List<Object[]> list3 = surveyDetailsInfoDAO.getCasteCountByBooths(userIDs,boothIDs,userTypeId,date1);
 				if(list3 != null && list3.size() > 0)
 				{
 					for(Object[] params : list3)
@@ -3017,7 +3017,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					 }
 				} 
 				
-				List<Object[]> list4 = surveyDetailsInfoDAO.getMbileNoCountByBooths(userIDs,boothIDs,userTypeId);
+				List<Object[]> list4 = surveyDetailsInfoDAO.getMbileNoCountByBooths(userIDs,boothIDs,userTypeId,date1);
 				if(list4 != null && list4.size() > 0)
 				{
 					for(Object[] params : list4)

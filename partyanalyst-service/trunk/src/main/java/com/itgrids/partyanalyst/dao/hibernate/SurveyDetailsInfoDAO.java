@@ -339,6 +339,7 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 				" and model.hamlet is not null group by model.surveyUser.surveyUserId");
 		query.setParameter("constituencyId", constituencyId);
 		query.setParameter("userTypeId", userTypeId);
+		
 		return query.list();
 	}
 	
@@ -364,33 +365,36 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 	}
 	
 	
-	public List<Object[]> getCasteCountByBooths(List<Long> userIds,List<Long> boothIds,Long userTypeId)
+	public List<Object[]> getCasteCountByBooths(List<Long> userIds,List<Long> boothIds,Long userTypeId,Date date)
 	{
-		Query query = getSession().createQuery("select model.surveyUser.surveyUserId,model.booth.boothId,count(distinct model.caste.caste.casteId) from SurveyDetailsInfo model where model.surveyUser.surveyUserId in(:userIds) and " +
-				"model.booth.boothId in(:boothIds) and model.caste is not null and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId group by model.surveyUser.surveyUserId,model.booth.boothId");
+		Query query = getSession().createQuery("select model.surveyUser.surveyUserId,model.booth.boothId,count(model.caste.caste.casteId) from SurveyDetailsInfo model where model.surveyUser.surveyUserId in(:userIds) and " +
+				"model.booth.boothId in(:boothIds) and model.caste is not null and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId and date(model.date) = :date group by model.surveyUser.surveyUserId,model.booth.boothId");
 		query.setParameterList("userIds", userIds);
 		query.setParameterList("boothIds", boothIds);
 		query.setParameter("userTypeId", userTypeId);
+		query.setParameter("date", date);
 		return query.list();
 	}
 	
-	public List<Object[]> getHamletCountByBooths(List<Long> userIds,List<Long> boothIds,Long userTypeId)
+	public List<Object[]> getHamletCountByBooths(List<Long> userIds,List<Long> boothIds,Long userTypeId,Date date)
 	{
-		Query query = getSession().createQuery("select model.surveyUser.surveyUserId,model.booth.boothId,count(distinct model.hamlet.hamletId) from SurveyDetailsInfo model where model.surveyUser.surveyUserId in(:userIds) and " +
-				"model.booth.boothId in(:boothIds) and model.hamlet.hamletId is not null or model.hamletName is not null and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId group by model.surveyUser.surveyUserId,model.booth.boothId");
+		Query query = getSession().createQuery("select model.surveyUser.surveyUserId,model.booth.boothId,count(model.hamlet.hamletId) from SurveyDetailsInfo model where model.surveyUser.surveyUserId in(:userIds) and " +
+				"model.booth.boothId in(:boothIds) and model.hamlet.hamletId is not null or model.hamletName is not null and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId and date(model.date) = :date group by model.surveyUser.surveyUserId,model.booth.boothId");
 		query.setParameterList("userIds", userIds);
 		query.setParameterList("boothIds", boothIds);
 		query.setParameter("userTypeId", userTypeId);
+		query.setParameter("date", date);
 		return query.list();
 	}
 	
-	public List<Object[]> getMbileNoCountByBooths(List<Long> userIds,List<Long> boothIds,Long userTypeId)
+	public List<Object[]> getMbileNoCountByBooths(List<Long> userIds,List<Long> boothIds,Long userTypeId,Date date)
 	{
 		Query query = getSession().createQuery("select model.surveyUser.surveyUserId,model.booth.boothId,count(distinct model.mobileNumber) from SurveyDetailsInfo model where model.surveyUser.surveyUserId in(:userIds) and " +
-				"model.booth.boothId in(:boothIds) and model.mobileNumber is not null and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId group by model.surveyUser.surveyUserId,model.booth.boothId");
+				"model.booth.boothId in(:boothIds) and model.mobileNumber is not null and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId and date(model.date) = :date group by model.surveyUser.surveyUserId,model.booth.boothId");
 		query.setParameterList("userIds", userIds);
 		query.setParameterList("boothIds", boothIds);
 		query.setParameter("userTypeId", userTypeId);
+		query.setParameter("date", date);
 		return query.list();
 	}
 	
