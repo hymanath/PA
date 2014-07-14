@@ -2726,7 +2726,15 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		List<Long> returnList = new ArrayList<Long>();
 		try
 		{
-			Long voterCount     =  boothDAO.getTotalVoter(boothId);
+			List<Long> boothIds = new ArrayList<Long>();
+			boothIds.add(boothId);
+			Long voterCount = null;
+			List<Object[]> result =  boothPublicationVoterDAO.getBoothWiseVoterDetails(boothIds);
+			if(result != null && result.size() > 0)
+			{
+				 voterCount     =  (Long) result.get(0)[1];
+				
+			}
 			Long casteCount     =  surveyDetailsInfoDAO.getCasteCountByBooth(userId, boothId);
 			Long hamletCount    =  surveyDetailsInfoDAO.getHamletCountByBooth(userId, boothId);
 			Long localAreaCount =  surveyDetailsInfoDAO.getLocalAreaCountByBooth(userId, boothId);
