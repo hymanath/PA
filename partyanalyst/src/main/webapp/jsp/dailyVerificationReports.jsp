@@ -75,7 +75,7 @@ $('#boothId').multiselect({
 										
 										<div class="span5">
 											Select Constituency <font class="requiredFont">*</font>
-											<select id="constituencyId" ></select>
+											<select id="constituencyId" onChange="getBoothsDetailsByConstituencyId(this.value)"></select>
 												<!--<s:select theme="simple"  name="constituency" id="constituencyId"  headerKey="0" headerValue="Select Constituency" list="constituenciesList" listKey="id" listValue="name" onChange="getBoothsDetailsByConstituencyId(this.value)"/>-->
 										</div>
 										<div class="span3">
