@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -8,6 +9,7 @@ import java.util.Formatter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -42,6 +44,7 @@ import com.itgrids.partyanalyst.dao.IVoterFamilyRelationDAO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.HHLeaderDetailsVO;
 import com.itgrids.partyanalyst.dto.HHQuestionDetailsVO;
+import com.itgrids.partyanalyst.dto.HHQuestionSummaryReportVO;
 import com.itgrids.partyanalyst.dto.HHSurveyVO;
 import com.itgrids.partyanalyst.dto.HouseHoldVotersVO;
 import com.itgrids.partyanalyst.dto.HouseHoldsSummaryReportVO;
@@ -1828,7 +1831,101 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
     		}
     		
     		finalVO.setLeadersOfPnchyt(leadersInPnchyt);
+    	}else if(task.equalsIgnoreCase("familyHeadsUnderBook")){
+    		Long bookId = inputVO.getBookId();
+    		
+    		List<HouseHoldsSummaryReportVO> familyHeadsUnderBook = new ArrayList<HouseHoldsSummaryReportVO>();
+    		
+    		if(bookId!=null){
+    			
+    			Map<Long,HouseHoldsSummaryReportVO> hhCountMap = new HashMap<Long, HouseHoldsSummaryReportVO>();
+    			List<Object[]> hhList = houseHoldVoterDAO.getFamilyAndVotersCountInHouseHolds(bookId, 3);
+    			if(hhList!=null && hhList.size()>0){
+    				for(Object[] obj:hhList){
+    					HouseHoldsSummaryReportVO tempVO = new HouseHoldsSummaryReportVO();
+    					tempVO.setHouseHoldId(Long.valueOf(obj[0].toString()));
+    					tempVO.setVotersCount(Long.valueOf(obj[1].toString()));
+    					tempVO.setNonVotersCount(Long.valueOf(obj[2].toString()));
+    					
+    					hhCountMap.put(Long.valueOf(obj[0].toString()), tempVO);
+    					
+    				}
+    			}
+    			
+    			List<Object[]> list = houseHoldVoterDAO.getFamilyHeadsUnderBook(bookId);
+    			if(list!=null && list.size()>0){
+    				for(Object[] obj:list){
+    					HouseHoldsSummaryReportVO tempVO = new HouseHoldsSummaryReportVO();
+    					tempVO.setHouseHoldId(Long.valueOf(obj[1].toString()));
+    					tempVO.setHouseNo(obj[2].toString());
+    					tempVO.setVoterName(obj[3].toString());
+    					tempVO.setVoterCardNo(obj[4].toString());
+    					
+    					finalVO.setPanchayatId(Long.valueOf(obj[5].toString()));
+    					finalVO.setPanchayatName(obj[6].toString());
+    					
+    					if(hhCountMap.get(Long.valueOf(obj[1].toString()))!=null){
+    						HouseHoldsSummaryReportVO hhVO = hhCountMap.get(Long.valueOf(obj[1].toString()));
+    						tempVO.setVotersCount(hhVO.getVotersCount());
+    						tempVO.setNonVotersCount(hhVO.getNonVotersCount());
+    					}
+    					
+    					familyHeadsUnderBook.add(tempVO);
+    				}
+    			}
+    		}
+    		
+    		finalVO.setFamilyHeadsUnderBook(familyHeadsUnderBook);
+    	}else if(task.equalsIgnoreCase("familyHeadsUnderOptions")){
+    		Long optionId = inputVO.getOptionId();
+    		Long panchayatId = inputVO.getPanchayatId();
+    		
+    		List<HouseHoldsSummaryReportVO> familyHeadsUnderOptn = new ArrayList<HouseHoldsSummaryReportVO>();
+    		
+    		if(optionId!=null && panchayatId!=null){
+    			
+    			Map<Long,HouseHoldsSummaryReportVO> hhCountMap = new HashMap<Long, HouseHoldsSummaryReportVO>();
+    			List<Object[]> hhList = hhSurveyAnswersDAO.getVoterAndNonVotersUnderOption(optionId, panchayatId);
+    			
+    			if(hhList!=null && hhList.size()>0){
+    				for(Object[] obj:hhList){
+    					HouseHoldsSummaryReportVO tempVO = new HouseHoldsSummaryReportVO();
+    					tempVO.setHouseHoldId(Long.valueOf(obj[0].toString()));
+    					tempVO.setVotersCount(Long.valueOf(obj[1].toString()));
+    					tempVO.setNonVotersCount(Long.valueOf(obj[2].toString()));
+    					
+    					hhCountMap.put(Long.valueOf(obj[0].toString()), tempVO);
+    					
+    				}
+    			}
+    			
+    			List<Object[]> list = hhSurveyAnswersDAO.getHouseHoldsOfPanchayatWithOption(optionId,panchayatId);
+    			if(list!=null && list.size()>0){
+    				for(Object[] obj:list){
+    					HouseHoldsSummaryReportVO tempVO = new HouseHoldsSummaryReportVO();
+    					tempVO.setHouseHoldId(Long.valueOf(obj[1].toString()));
+    					tempVO.setHouseNo(obj[2].toString());
+    					tempVO.setVoterName(obj[3].toString());
+    					tempVO.setVoterCardNo(obj[4].toString());
+    					
+    					finalVO.setPanchayatId(Long.valueOf(obj[5].toString()));
+    					finalVO.setPanchayatName(obj[6].toString());
+    					finalVO.setOption(StringEscapeUtils.unescapeJava(obj[8].toString()));
+    					
+    					if(hhCountMap.get(Long.valueOf(obj[1].toString()))!=null){
+    						HouseHoldsSummaryReportVO hhVO = hhCountMap.get(Long.valueOf(obj[1].toString()));
+    						tempVO.setVotersCount(hhVO.getVotersCount());
+    						tempVO.setNonVotersCount(hhVO.getNonVotersCount());
+    					}
+    					
+    					familyHeadsUnderOptn.add(tempVO);
+    				}
+    			}
+    		}
+    		
+    		finalVO.setFamilyHeadsUnderOption(familyHeadsUnderOptn);
     	}
+    	
     	
     	
     	//List<Object[]> list = houseHoldVoterDAO.
@@ -1841,6 +1938,191 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
     	
     	return finalVO;
     }
+    
+    
+    /*	@param1 surveyId
+     *  @return this method returns List<HHQuestionSummaryReportVO> 
+     *     which includes question's of Survey except Questions having answer type Text
+     * 	@author <a href="mailto:sasi.itgrids.hyd@gmail.com">SASI</a>
+     * 	@since July 1st 2014
+     * */
+    public List<HHQuestionSummaryReportVO> getQuestionsOfSurvey(Long surveyId){
+    	Log.debug("Entered Into HouseHoldsSurveyReportService getQuestionsOfSurvey() ");
+    	List<HHQuestionSummaryReportVO> questionsList= new ArrayList<HHQuestionSummaryReportVO>();
+    	try{
+    	
+    		List<Object[]> list = hhSurveyQuestionDAO.getAllQuestionInSurvey(surveyId);
+    		if(list!=null && list.size()>0){
+    			for(Object[] obj:list){
+    				if(Long.valueOf(obj[2].toString()) != 3){ // As 3 is the id of Text Type Answer Question
+    					HHQuestionSummaryReportVO temp = new HHQuestionSummaryReportVO();
+    					temp.setQuestion(StringEscapeUtils.unescapeJava(obj[1].toString()));
+    					temp.setQuestionId(Long.valueOf(obj[0].toString()));
+    					
+    					questionsList.add(temp);
+    				}
+    			}
+    		}
+    	}catch (Exception e) {
+    		Log.error("Exception In HouseHoldsSurveyReportService getQuestionsOfSurvey() " + e);
+		}
+    	return questionsList;
+    }
+    
+    
+    /*	@param1 questionId
+     *  @param2 constituencyId
+     *  @return this method returns List<HHQuestionSummaryReportVO> 
+     *     which includes Options summary for that Question
+     * 	@author <a href="mailto:sasi.itgrids.hyd@gmail.com">SASI</a>
+     * 	@since July 1st 2014
+     * */
+    public HHQuestionSummaryReportVO getOptionsCountForQuestion(Long questionId,Long constituencyId){
+    	Log.debug("Entered Into HouseHoldsSurveyReportService getOptionsCountForQuestion() ");
+    	List<HHQuestionSummaryReportVO> optionsList= new ArrayList<HHQuestionSummaryReportVO>();
+    	
+    	HHQuestionSummaryReportVO finalVO = new HHQuestionSummaryReportVO();
+    	
+    	
+    	try{
+    		List<Object[]> list = hhSurveyAnswersDAO.getQuestionWiseSummaryCount(questionId, constituencyId);
+    		List<Object[]> optsList = hhQuestionOptionsDAO.getOptionsForQuestions(questionId);
+    		
+    		Map<Long,Long> optsCountMap = new HashMap<Long, Long>();
+    		
+    		Long totalCount = 0l;
+    		if(list!=null && list.size()>0){
+    			for(Object[] obj:list){
+    				optsCountMap.put(Long.valueOf(obj[1].toString()),Long.valueOf(obj[0].toString()));
+    				totalCount = totalCount + Long.valueOf(obj[0].toString());
+    			}
+    			
+    			finalVO.setTotalCount(totalCount);
+    		}
+    		
+    		if(optsList!=null && optsList.size()>0){
+    			
+    			finalVO.setQuestion(StringEscapeUtils.unescapeJava(list.get(0)[4].toString()));
+    			finalVO.setQuestionId(Long.valueOf(list.get(0)[3].toString()));
+    			
+    			for(Object[] obj:optsList){
+    				HHQuestionSummaryReportVO opts = new HHQuestionSummaryReportVO();
+    				opts.setOption(StringEscapeUtils.unescapeJava(obj[1].toString()));
+    				opts.setOptionId(Long.valueOf(obj[0].toString()));
+    				
+    				if(optsCountMap.get(Long.valueOf(obj[0].toString()))!=null){
+    					opts.setOptsCount(optsCountMap.get(Long.valueOf(obj[0].toString())));
+    				}else{
+    					opts.setOptsCount(0l);
+    				}
+    				
+    				opts.setPercentage(calcPercentage(totalCount,opts.getOptsCount()));
+    				
+    				optionsList.add(opts);
+    			}
+    		}
+    		
+    		
+    		List<Object[]> pancList= hhSurveyAnswersDAO.getQuestionWiseSummaryCountByPanchayat(questionId, constituencyId);
+    		List<HHQuestionSummaryReportVO> panchayatList = new ArrayList<HHQuestionSummaryReportVO>();
+    		if(pancList!=null && pancList.size()>0){
+    			for(Object[] obj:pancList){
+    				HHQuestionSummaryReportVO panchayatVO= getMatchedPanchayat(panchayatList,Long.valueOf(obj[5].toString()));
+    				if(panchayatVO==null){
+	    				HHQuestionSummaryReportVO temp = new HHQuestionSummaryReportVO();
+	    				temp.setPanchayatId(Long.valueOf(obj[5].toString()));
+	    				temp.setPanchayat(obj[6].toString());
+	    				temp.setOptionsList(getOptionVO(optsList));
+	    				panchayatList.add(temp);
+    				}
+    			}
+    		}
+    		
+    		if(pancList!=null && pancList.size()>0){
+    			for(Object[] obj:pancList){
+    				Long pancId = Long.valueOf(obj[5].toString());
+    				HHQuestionSummaryReportVO panchayatVO= getMatchedPanchayat(panchayatList,pancId);
+    				
+    				Long optnId = Long.valueOf(obj[1].toString());
+    				HHQuestionSummaryReportVO optionVO = getMatchedOption(panchayatVO.getOptionsList(),optnId);
+    				optionVO.setOptsCount(Long.valueOf(obj[0].toString()));
+    				
+    				Long ttl = panchayatVO.getTotalCount();
+    				if(ttl ==null){
+    					ttl = 0l;
+    				}
+    				panchayatVO.setTotalCount(ttl+Long.valueOf(obj[0].toString()));
+    				
+    			}
+    		}
+    		
+    		finalVO.setPanchayatList(panchayatList);
+    		finalVO.setOptionsList(optionsList);
+    		
+    	}catch (Exception e) {
+    		Log.error("Exception In HouseHoldsSurveyReportService getOptionsCountForQuestion() " + e);
+		}
+    	return finalVO;
+    }
+    public HHQuestionSummaryReportVO getMatchedPanchayat(List<HHQuestionSummaryReportVO> panList,Long panId){
+    	if(panList!=null && panList.size()>0 && panId !=null){
+    		for(HHQuestionSummaryReportVO temp:panList){
+    			if(temp.getPanchayatId().equals(panId)){
+    				return temp;
+    			}
+    		}
+    	} 
+    	return null;
+    }
+    
+    public HHQuestionSummaryReportVO getMatchedOption(List<HHQuestionSummaryReportVO> optnList,Long optnId){
+    	if(optnList!=null && optnList.size()>0 && optnId !=null){
+    		for(HHQuestionSummaryReportVO temp:optnList){
+    			if(temp.getOptionId().equals(optnId)){
+    				return temp;
+    			}
+    		}
+    	} 
+    	return null;
+    }
+    
+    public List<HHQuestionSummaryReportVO> getOptionVO(List<Object[]> optsList){
+    	List<HHQuestionSummaryReportVO> options = new ArrayList<HHQuestionSummaryReportVO>();
+    		if(optsList!=null && optsList.size()>0){
+    			for(Object[] obj:optsList){
+    				HHQuestionSummaryReportVO opts = new HHQuestionSummaryReportVO();
+    				opts.setOption(StringEscapeUtils.unescapeJava(obj[1].toString()));
+    				opts.setOptionId(Long.valueOf(obj[0].toString()));
+    				opts.setTotalCount(0l);
+    				options.add(opts);
+    			}
+    		}
+    	
+    	return options;
+    }
+    
+    public String calcPercentage(Long total,Long count){
+		if(total>0){
+			return count != 0 ? roundTo2DigitsFloatValue((float) count * 100f / total): "0.00";
+		}else{
+			return "0.00";
+		}
+	}
+    
+    public String roundTo2DigitsFloatValue(Float number){
+		  
+		  String result = "";
+		  try{
+			NumberFormat f = NumberFormat.getInstance(Locale.ENGLISH);  
+			f.setMaximumFractionDigits(2);  
+			f.setMinimumFractionDigits(2);
+			
+			result =  f.format(number);
+		  }catch(Exception e){
+			  log.error("Exception raised in roundTo2DigitsFloatValue service method",e);
+		  }
+		  return result;
+	  }
     
     
 }
