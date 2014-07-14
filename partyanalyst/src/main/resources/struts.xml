@@ -7649,5 +7649,15 @@
 				<param name="root">returnList</param>
 			</result>
 		</action>
+		
+				<action name="assignUsersToWebMonitoringTeam" class="surveyDataDetailsAction" method="assignUsersToWebMonitoringTeam">
+			<result name="success">/jsp/assignUsersToWebMonitoringTeam.jsp</result>		
+		</action>
+		
+	<action name="getAssignedUsersOfAConstituency" class="surveyDataDetailsAction" method="getAssignedUsersOfAConstituency">
+		<result type="json" name="success">
+				<param name="root">constituencies</param>
+			</result>
+  </action>
 </package>
 </struts>      

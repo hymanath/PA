@@ -453,6 +453,8 @@
 				<value>com.itgrids.partyanalyst.model.CandidateDetails</value>
 				<value>com.itgrids.partyanalyst.model.SurveyCallStatus</value>
 				<value>com.itgrids.partyanalyst.model.SurveyCompletedLocationsDetails</value>
+				<value>com.itgrids.partyanalyst.model.WebMonitoringAssignedUsers</value>
+				
 				
 			</list>
 			

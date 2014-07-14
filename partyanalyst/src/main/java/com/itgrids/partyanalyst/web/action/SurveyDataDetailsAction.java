@@ -60,9 +60,26 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	private String date;
 	private List<SurveyReportVO> surveyUserDetails;
 	private EntitlementsHelper entitlementsHelper;
+	private List<GenericVO> usersList,constituencies;
 
 	
 	
+	public List<GenericVO> getUsersList() {
+		return usersList;
+	}
+
+	public void setUsersList(List<GenericVO> usersList) {
+		this.usersList = usersList;
+	}
+
+	public List<GenericVO> getConstituencies() {
+		return constituencies;
+	}
+
+	public void setConstituencies(List<GenericVO> constituencies) {
+		this.constituencies = constituencies;
+	}
+
 	public List<SelectOptionVO> getDataAvilableConstituencies() {
 		return dataAvilableConstituencies;
 	}
@@ -1341,6 +1358,28 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		}
 		return Action.SUCCESS;
 		
+  }
+  
+  
+  public String assignUsersToWebMonitoringTeam()
+  {
+	  usersList = surveyDataDetailsService.getAllWebMonitoringUsersDetails();
+	  constituenciesList =  surveyDataDetailsService.getAllAssemblyConstituenciesByStateId();
+
+	  return Action.SUCCESS;
+  }
+  
+  public String getAssignedUsersOfAConstituency()
+  {
+	  constituencies =  surveyDataDetailsService.getAssignedUsersOfAConstituency(constituencyId);
+	  return Action.SUCCESS;
+  }
+  
+  public String saveWebMonioringAssignDetails()
+  {
+	  surveyDataDetailsService.saveWebMonioringAssignDetails();
+	  
+	  return Action.SUCCESS;
   }
   
 }
