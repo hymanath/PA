@@ -763,7 +763,7 @@ public interface IConstants {
     public static final Long BOOTH_SCOPE_ID = 9L;
     
     public static final Long DATA_COLLECTOR_ROLE_ID = 1L;
-    public static final Long VERIFIER_ROLE_ID = 3L;
+    public static final Long VERIFIER_ROLE_ID = 4L;
 
 
     public enum  MatchTypes{
