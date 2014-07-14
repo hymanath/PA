@@ -714,8 +714,16 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 	}*/
 	
 	
-	
-	
-	
+	public List<Object[]> getAllWebMonitoringUsersDetails(String entitlement)
+	{
+		Query query = getSession().createSQLQuery("SELECT DISTINCT U.user_id,U.firstname,U.lastname " +
+				"FROM group_entitlement GE,user_group_entitlement UGE,user_group_relation UGR," +
+				"user U WHERE description = :entitlement AND " +
+				"GE.group_entitlement_id = UGE.group_entitlement_id AND UGE.user_group_id = UGR.user_group_id AND UGR.user_id = U.user_id");
+
+		
+		query.setParameter("entitlement", entitlement);
+		return query.list();
+	}
 	
 }

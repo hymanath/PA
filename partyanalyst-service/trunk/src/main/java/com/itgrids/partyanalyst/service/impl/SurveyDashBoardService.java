@@ -176,9 +176,66 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 		    	}
 		    }
 		    
+
 		    
 			List<Long> startedConstituenciesCount = surveyDetailsInfoDAO
 					.getSurveyStartedConstituenciesDetails();	
+			
+			
+			
+		  //  List<Object[]> startedConstituencyDetails = constituencyDAO.getConstituencyInfoByConstituencyIdList(startedConstituenciesCount);
+		    
+		    
+		    Map<Long,List<Long>> startedConstnCountMap = new HashMap<Long, List<Long>>();
+
+		    if(startedConstituenciesCount != null && startedConstituenciesCount.size() >0)
+		    {
+		    
+			    List<Object[]> startedConstituencyDetails = constituencyDAO.getConstituencyInfoByConstituencyIdList(startedConstituenciesCount);
+			    
+			    
+			    for(Object[] obj:startedConstituencyDetails)
+			    {
+			    	if(startedConstnCountMap.get((Long)obj[2]) != null)
+			    	{
+			    		startedConstnCountMap.get((Long)obj[2]).add((Long)obj[0]);
+			    	}else
+			    	{
+			    		List<Long> constituencyIds = new ArrayList<Long>();
+			    		constituencyIds.add((Long)obj[0]);
+			    		
+			    		startedConstnCountMap.put((Long)obj[2], constituencyIds);
+			    	}
+			    }
+		    }
+		    
+		    
+		    for(Entry<Long, List<Long>> entry:constnCountMap.entrySet())
+		    {
+		    	SurveyDashBoardVO dashBoardVO =  new SurveyDashBoardVO(); 
+		    	dashBoardVO.setLocationId(entry.getKey());
+		    	dashBoardVO.setLocationName(districtMap.get(entry.getKey()));
+		    	
+		    	if(startedConstnCountMap.get(entry.getKey()) == null)
+		    	{
+		    		//resultVO.getNotStarted().add(dashBoardVO);
+		    	}
+		    	else if(startedConstnCountMap.get(entry.getKey()).size() == entry.getValue().size())
+		    	{
+		    		//dashBoardVO.setLocationId(entry.getKey());
+		    		resultVO.getCompleted().add(dashBoardVO);
+		    		resultVO.getStarted().add(dashBoardVO);
+		    	}
+		    	else if(startedConstnCountMap.get(entry.getKey()).size() < entry.getValue().size())
+		    	{
+		    		//dashBoardVO.setLocationId(entry.getKey());
+		    		resultVO.getProcess().add(dashBoardVO);
+		    		resultVO.getStarted().add(dashBoardVO);
+		    	}
+		    }
+		    
+		    
+
 			
 			int cStartedCount = startedConstituenciesCount.size();
 			int cProcessCount = startedConstituenciesCount.size() - completedConstituenciesIds.size();
