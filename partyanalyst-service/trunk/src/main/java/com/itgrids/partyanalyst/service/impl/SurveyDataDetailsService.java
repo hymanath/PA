@@ -2169,7 +2169,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		return null;
 	}
 
-
+/*
 	public List<GenericVO> getSurveyConstituencyLeadersList(Long constituencyId){
 			
 			 List<GenericVO> returnList = null;
@@ -2207,6 +2207,35 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			 return returnList;
 		}
 
+	
+*/
+	public List<GenericVO> getSurveyConstituencyLeadersList(Long constituencyId){
+			
+			 List<GenericVO> returnList = null;
+			 try 
+			 {
+				List<Object[]> result = surveyUserConstituencyDAO.getSurveyConstituencyLeadersList(constituencyId);
+				if(result != null && result.size() > 0)
+				{
+					returnList = new ArrayList<GenericVO>();
+					
+					for (Object[] param : result)
+					{
+						GenericVO vo = new GenericVO();
+						vo.setId((Long) param[0]);
+						vo.setName(param[3].toString());						
+						returnList.add(vo);
+					}
+				}
+			 } 
+			 catch (Exception e)
+			 {
+				 LOG.error("Exception raised in getSurveyConstituencyLeadersList() service in SurveyDataDetailsService", e);
+			 }
+			 return returnList;
+		}
+
+	
 	
 	public List<GenericVO> getSurveyConstituencyList(){
 		
@@ -2773,17 +2802,18 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			
 			SurveyReportVO finalVO = new SurveyReportVO();
 			
-			//List<Object[]> usersList = surveyUserRelationDAO.getUsersByConstituencyAndLeader(leaderId, constituencyId);
+			List<Object[]> usersList = surveyUserRelationDAO.getUsersByConstituencyAndLeader(leaderId, constituencyId);
 			
 			Set<Long> assignedUserIds = new HashSet<Long>();
 			
-			//if(usersList != null && usersList.size()>0){
-				//for (Object[] user : usersList) {
-				//	assignedUserIds.add((Long) user[0]);
-				//}
+			if(usersList != null && usersList.size()>0){
+				for (Object[] user : usersList) {
+					assignedUserIds.add((Long) user[0]);
+				}
 				
 				List<Long> ids = new ArrayList<Long>();
-				ids.add(leaderId);
+				ids.addAll(assignedUserIds);
+				
 				List<Object[]> votersLsit = surveyDetailsInfoDAO.getVoterDetailsByBoothId(boothId,ids);
 
 				if(votersLsit != null && votersLsit.size()>0){
@@ -2820,7 +2850,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					}
 				}	
 				
-			//}
+			}
 					
 			List<GenericVO> casteList = new ArrayList<GenericVO>();
 			List<Object[]> casteInfo = boothPublicationVoterDAO.getBoothWiseCasteDetails(boothId);
@@ -3215,4 +3245,26 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		return returnList;
 	}
 	
+	public List<Long> getAlreadyAssignTabsListForLeader(Long leaderId){
+		
+		List<Long> returnList = new ArrayList<Long>();
+		try
+		{
+			List<Object[]> tabsList = surveyUserTabAssignDAO.getSurveyTabsBySurveyUserId(leaderId);
+			
+			if(tabsList != null && tabsList.size()>0){
+				for (Object[] param : tabsList) {
+					returnList.add((Long) param[1]);
+				}
+			}
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getAlreadyAssignTabsListForLeader() in SurveyDataService service class.", e);
+			e.printStackTrace();
+			returnList = null;
+		}
+		return returnList;
+		
+	}
 }
