@@ -77,15 +77,15 @@
 							
 							
 							<div class="span4">
-								<label> Constituency </label>
+								<label>Select Constituency </label>
 								<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="constiList" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" onChange="getConstituencyLeadersList('leaderList');"/>
 							</div>
 							<div class="span4">
-								<label> Lead </label>
+								<label>Select User </label>
 								<select class="input-block-level" id="leaderList" onchange="getAssignedBoothsForLeader('boothList');"><option value="0"> Select Leader </option></select>
 							</div>
 							<div class="span4">
-								<label> Booth </label>
+								<label>Select Booth </label>
 								<select class="input-block-level" id="boothList"><option value="0"> Select Booth </option></select>
 							</div>
 						</div>
@@ -236,7 +236,7 @@ var jsObj =
 		data: {task:JSON.stringify(jsObj)},
 		}).done(function(result){
 				$('#'+divId+'').find('option').remove();
-				$('#'+divId+'').append('<option value="0"> Select Leader </option>');
+				$('#'+divId+'').append('<option value="0"> Select User </option>');
 				if(result != null && result.length>0){
 					for(var i in result){
 						$('#'+divId+'').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
