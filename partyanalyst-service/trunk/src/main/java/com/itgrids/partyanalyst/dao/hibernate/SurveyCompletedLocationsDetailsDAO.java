@@ -17,7 +17,7 @@ public class SurveyCompletedLocationsDetailsDAO extends GenericDaoHibernate<Surv
 	
 	public List<Object[]> getSurveyCompletedLocationDetails(Long scopeId)
 	{
-		Query query = getSession().createQuery("select SCLD.locationValue,,SCLD.surveyUserTypeId from SurveyCompletedLocationsDetails SCLD " +
+		Query query = getSession().createQuery("select SCLD.locationValue,SCLD.surveyUserTypeId from SurveyCompletedLocationsDetails SCLD " +
 				"where SCLD.locationScopeId = :scopeId");
 		
 		query.setParameter("scopeId", scopeId);
