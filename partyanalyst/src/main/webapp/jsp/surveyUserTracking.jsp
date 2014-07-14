@@ -35,7 +35,7 @@
 			.booths-Overview-widget{background:#ddd;padding:10px; width:100%;}
 			.booths-Overview-widget-nav li{color:#333333; background:#F6DD78;padding:10px; width:140px; display:table;line-height:20px;border:1px solid #ccc;text-align:center; font-weight:bold; text-transform:uppercase; margin: 10px;text-decoration:none; font-size:16px;}
 			.booths-Overview-widget-nav li hgroup h4,h5{font-size:15px;}
-
+	#constituencyId{width:144px !important;}
 
 		</style>	
 	
@@ -352,7 +352,8 @@ function getconstituencies()
 									
 										<div class="span3 offset1">
 											<label>Select Constituency</label>
-										<select name="constituency" id="constituencyId" list="constituenciesList" style="width:130px;"></select>
+										<!--<select name="constituency" id="constituencyId" list="constituenciesList" style="width:130px;"></select>-->
+										<s:select theme="simple"  name="constituency" id="constituencyId"  headerKey="0" headerValue="Select Constituency" list="dataAvilableConstituencies" listKey="id" listValue="name"/>
 								
 										</div>
 										
@@ -383,7 +384,7 @@ function getconstituencies()
 		</div>
 	</div>
 	<script>
-	 getconstituencies();
+	 //getconstituencies();
 	</script>
   </body>
   

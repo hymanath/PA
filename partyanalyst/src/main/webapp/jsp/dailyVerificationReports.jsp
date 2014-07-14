@@ -75,8 +75,8 @@ $('#boothId').multiselect({
 										
 										<div class="span5">
 											Select Constituency <font class="requiredFont">*</font>
-											<select id="constituencyId" onChange="getBoothsDetailsByConstituencyId(this.value)"></select>
-												<!--<s:select theme="simple"  name="constituency" id="constituencyId"  headerKey="0" headerValue="Select Constituency" list="constituenciesList" listKey="id" listValue="name" onChange="getBoothsDetailsByConstituencyId(this.value)"/>-->
+											<!--<select id="constituencyId" onChange="getBoothsDetailsByConstituencyId(this.value)"></select>-->
+												<s:select theme="simple"  name="constituency" id="constituencyId"  headerKey="0" headerValue="Select Constituency" list="dataAvilableConstituencies" listKey="id" listValue="name" onChange="getBoothsDetailsByConstituencyId(this.value)"/>
 										</div>
 										<div class="span3">
 											<!--User Type <font class="requiredFont">*</font>
@@ -151,7 +151,7 @@ $('#boothId').multiselect({
 	});
 		
 }*/
-getconstituencies();
+//getconstituencies();
 function getconstituencies()
 {
 

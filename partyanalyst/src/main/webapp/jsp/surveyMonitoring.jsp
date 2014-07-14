@@ -55,8 +55,8 @@
 										</div>-->
 										<div class="span6">
 												Select Constituency <font class="requiredFont">*</font>
-												<select id="constituencyId"></select>
-												<!--<s:select theme="simple"  name="constituency" id="constituencyId" headerKey="0" headerValue="Select Constituency" list="constituenciesList" listKey="id" listValue="name" />-->
+												<!--<select id="constituencyId"></select>-->
+												<s:select theme="simple"  name="constituency" id="constituencyId" headerKey="0" headerValue="Select Constituency" list="dataAvilableConstituencies" listKey="id" listValue="name" />
 										</div>
 										<div class="span5">
 											Select Booth<font class="requiredFont">*</font>
@@ -90,7 +90,7 @@
 		</div>
 	</div>
 <script>
-getconstituencies();
+//getconstituencies();
 function getconstituencies()
 {
 
