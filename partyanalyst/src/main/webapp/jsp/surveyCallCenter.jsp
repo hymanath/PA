@@ -231,7 +231,7 @@ var jsObj =
 
 	$.ajax({
 		type:'GET',
-		url: 'getSurveyConstituencyLeadersListAction.action',
+		url: 'getSurveyConstituencyUsersListAction.action',
 		dataType: 'json',
 		data: {task:JSON.stringify(jsObj)},
 		}).done(function(result){
@@ -361,20 +361,22 @@ if(flag)
 					str +='						</td>';				
 					
 					var mobNo = '';
-					if(result[i].mobileNo == 'null')
+					if(result[i].mobileNo == null)
 					{
 						mobNo = '';
+						str += '<td></td>';
 					}
 					else
 					{
 						mobNo = result[i].mobileNo
-					}
-					str +='<td>'+mobNo+'<div data-toggle="buttons-radio" class="btn-group">';
-	str +='<button class="btn btn-mini" type="button" onclick="updateStatus(\'isTestedMobile'+i+'\',1);">correct </button>';
-	str +='<button class="btn btn-mini " type="button" onclick="updateStatus(\'isTestedMobile'+i+'\',0);">wrong</button>';
-	str +='             <div id="mobileErrDiv'+i+'" style="color:#FF0020;font-size:12px;"> </div>';
+						str +='<td>'+mobNo+'<div data-toggle="buttons-radio" class="btn-group">';
+						str +='<button class="btn btn-mini" type="button" onclick="updateStatus(\'isTestedMobile'+i+'\',1);">correct </button>';
+						str +='<button class="btn btn-mini " type="button" onclick="updateStatus(\'isTestedMobile'+i+'\',0);">wrong</button>';
+						str +='             <div id="mobileErrDiv'+i+'" style="color:#FF0020;font-size:12px;"> </div>';
 					str +='					<input type="hidden" value="" id="isTestedMobile'+i+'"/>';
 					str +='							 </div></td>';
+					}
+					
 					
 					str +='						<td>';
 					str +='							<div class="callcenter_voterDetals_widget">';
