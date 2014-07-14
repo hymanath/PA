@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
@@ -11,12 +12,15 @@ import com.itgrids.partyanalyst.model.SurveyDetailsInfo;
 
 public class SurveyDetailsInfoDAO extends GenericDaoHibernate<SurveyDetailsInfo, Long> implements ISurveyDetailsInfoDAO{
 
+	private static final Logger lOG = Logger.getLogger(SurveyDetailsInfoDAO.class);
+
 	public SurveyDetailsInfoDAO() {
 		super(SurveyDetailsInfo.class);
 	}
 	
 	public List<Object[]> getDayWisereportDetailsByConstituencyId(Long constituencyId,Date startDate,Date endDate,Long userTypeId)
 	{
+	
 		Query query = getSession().createQuery("select count(SDI.booth.constituency.constituencyId),SDI.surveyUser.surveyUserId,SDI.surveyUser.userName,DATE(SDI.date) from " +
 				"SurveyDetailsInfo SDI where SDI.booth.constituency.constituencyId = :constituencyId  and date(SDI.date) >= :startDate and " +
 				" date(SDI.date) <= :endDate group by " +
@@ -110,12 +114,22 @@ public class SurveyDetailsInfoDAO extends GenericDaoHibernate<SurveyDetailsInfo,
 	
 	public SurveyDetailsInfo checkUserForVoter(long userId,String uuid ,Long voterId)
 	{
+		StringBuilder logMsg= new StringBuilder();
+		logMsg.append("entered into checkUserForVoter for userId");
+		logMsg.append(userId);
+		logMsg.append("and voter id is ");
+		logMsg.append(voterId);
+		logMsg.append("and uuid  is ");
+		logMsg.append(uuid);
+		
+		lOG.info(logMsg );
 		
 		Query query = getSession().createQuery("select model from SurveyDetailsInfo model  where model.surveyUser.surveyUserId = :userId and model.uuid=:uuid and model.voter.voterId = :voterId" );
 				
 		query.setParameter("userId", userId);
 		query.setParameter("uuid", uuid);
 		query.setParameter("voterId", voterId);
+		logMsg=null;
 		return (SurveyDetailsInfo) query.uniqueResult();
 		 
 	}

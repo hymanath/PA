@@ -230,6 +230,24 @@ public class SurveyResponceVO extends UserResponseVO  implements Serializable
 	public void setHouseNo(String houseNo) {
 		this.houseNo = houseNo;
 	}
+	@Override
+	public String toString() {
+		return "SurveyResponceVO [surveyUserId=" + surveyUserId
+				+ ", surveyorId=" + surveyorId + ", voterId=" + voterId
+				+ ", casteId=" + casteId + ", hamletId=" + hamletId
+				+ ", casteName=" + casteName + ", hamletName=" + hamletName
+				+ ", localArea=" + localArea + ", date=" + date + ", boothId="
+				+ boothId + ", longitude=" + longitude + ", latitude="
+				+ latitude + ", voterCardNo=" + voterCardNo + ", isCadre="
+				+ isCadre + ", isInfluencingPeople=" + isInfluencingPeople
+				+ ", mobileNo=" + mobileNo + ", voterName=" + voterName
+				+ ", gender=" + gender + ", age=" + age + ", houseNo="
+				+ houseNo + ", dataTypeId=" + dataTypeId + ", partNos="
+				+ partNos + ", boothIds=" + boothIds + ", verifiersData="
+				+ verifiersData + ", uuid=" + uuid + ", statusId=" + statusId
+				+ ", insertTime=" + insertTime + ", votersSize=" + votersSize
+				+ "]";
+	}
 	
 	
 	

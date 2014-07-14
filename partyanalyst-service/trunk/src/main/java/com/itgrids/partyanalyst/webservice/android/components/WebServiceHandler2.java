@@ -71,6 +71,9 @@ public class WebServiceHandler2 {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Object saveFieldData (SurveyResponceVO inputs)
 	{
+		LOG.debug("inside save field data");
+		LOG.debug(inputs.toString());
+		
 		ResultStatus out=null;
 		Map<String,String> userDetails= new HashMap<String, String>();
 		userDetails.put("","");
@@ -97,7 +100,9 @@ public class WebServiceHandler2 {
 	public Object saveUserLocations (UserLocationTrackingVo  userLocationTrackingVo)
 	{
 		ResultStatus out=null;
-		
+
+		LOG.debug("inside save field data");
+		LOG.debug(userLocationTrackingVo.toString());
 		try{ 
 			out=(ResultStatus) webServiceHandlerService1.saveUserTrackingLocation(userLocationTrackingVo);
 			

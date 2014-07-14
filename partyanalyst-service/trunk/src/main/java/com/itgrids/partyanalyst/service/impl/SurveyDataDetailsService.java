@@ -742,85 +742,89 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					@Override
 					protected void doInTransactionWithoutResult(
 							TransactionStatus arg0) {
-						for (SurveyResponceVO surveyResponceVO : surveyResponceList)
-						{try {
-							
-							
-							Long voterID=surveyResponceVO.getVoterId();
-							
-							//check whether record avilable for user and uniqueID
-							SurveyDetailsInfo surveyDetailsInfo=surveyDetailsInfoDAO.checkUserForVoter(userId, surveyResponceVO.getUuid(),voterID);
-							if(surveyDetailsInfo==null)
-							surveyDetailsInfo = new SurveyDetailsInfo();
-							
-							if(surveyUser != null)
-							{
-								surveyDetailsInfo.setSurveyUser(surveyUser);
-								SurveySurveyorType surveySurveyorType = surveySurveyorTypeDAO.get(Long.valueOf(surveyResponceVO.getDataTypeId()));
-								surveyDetailsInfo.setSurveySurveyorType(surveySurveyorType);
-								Voter voter = voterDAO.get(surveyResponceVO.getVoterId());
-								
-								
-								if(voter != null)
-								{
-									surveyDetailsInfo.setVoter(voter);
-								}
-								else
-								{
-									if(surveyResponceVO.getVoterCardNo() != null)
-									{
-										Long voterId = voterDAO.getVoterIdByIdCardNo(surveyResponceVO.getVoterCardNo());
-										surveyDetailsInfo.setVoter( voterDAO.get(voterId));
-									}
+							try {
 									
-								}
-								//surveyDetailsInfo.setBooth(boothDAO.get(surveyResponceVO.getBoothId()));
-								surveyDetailsInfo.setBoothId(surveyResponceVO.getBoothId());
-								surveyDetailsInfo.setLatitude(surveyResponceVO.getLatitude());
-								surveyDetailsInfo.setLongitude(surveyResponceVO.getLongitude());
-								surveyDetailsInfo.setIsCadre(surveyResponceVO.getIsCadre());
-								surveyDetailsInfo.setIsInfluencingPeople(surveyResponceVO.getIsInfluencingPeople());
-								surveyDetailsInfo.setMobileNumber(surveyResponceVO.getMobileNo());
-								
-								surveyDetailsInfo.setLocalArea(surveyResponceVO.getLocalArea());
-								surveyDetailsInfo.setHamletName(surveyResponceVO.getHamletName());
-								surveyDetailsInfo.setCasteName(surveyResponceVO.getCasteName());
-								surveyDetailsInfo.setUuid(surveyResponceVO.getUuid());
-								surveyDetailsInfo.setStatusId(Integer.valueOf(surveyResponceVO.getStatusId()));
-								surveyDetailsInfo.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
-								surveyDetailsInfo.setHouseNoPoint(surveyResponceVO.getHouseNo());
-								SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_AND_TIME_FORMAT);
-								sdf.setTimeZone(TimeZone.getTimeZone(IConstants.TIME_ZONE_INDIA));
-								sdf.parse(surveyResponceVO.getInsertTime());
-								surveyDetailsInfo.setDate(sdf.parse(surveyResponceVO.getInsertTime()));
-								
-								if(surveyResponceVO.getHamletId() != null && surveyResponceVO.getHamletId() > 0)
+								for (SurveyResponceVO surveyResponceVO : surveyResponceList)
 								{
-									surveyDetailsInfo.setHamlet( hamletDAO.get(surveyResponceVO.getHamletId()));
+									
+									
+									Long voterID=surveyResponceVO.getVoterId();
+									
+									//check whether record avilable for user and uniqueID
+									SurveyDetailsInfo surveyDetailsInfo=surveyDetailsInfoDAO.checkUserForVoter(userId, surveyResponceVO.getUuid(),voterID);
+									if(surveyDetailsInfo==null)
+									surveyDetailsInfo = new SurveyDetailsInfo();
+									
+									if(surveyUser != null)
+									{
+										surveyDetailsInfo.setSurveyUser(surveyUser);
+										SurveySurveyorType surveySurveyorType = surveySurveyorTypeDAO.get(Long.valueOf(surveyResponceVO.getDataTypeId()));
+										surveyDetailsInfo.setSurveySurveyorType(surveySurveyorType);
+										Voter voter = voterDAO.get(surveyResponceVO.getVoterId());
+										
+										
+										if(voter != null)
+										{
+											surveyDetailsInfo.setVoter(voter);
+										}
+										else
+										{
+											if(surveyResponceVO.getVoterCardNo() != null)
+											{
+												Long voterId = voterDAO.getVoterIdByIdCardNo(surveyResponceVO.getVoterCardNo());
+												surveyDetailsInfo.setVoter( voterDAO.get(voterId));
+											}
+											
+										}
+										//surveyDetailsInfo.setBooth(boothDAO.get(surveyResponceVO.getBoothId()));
+										surveyDetailsInfo.setBoothId(surveyResponceVO.getBoothId());
+										surveyDetailsInfo.setLatitude(surveyResponceVO.getLatitude());
+										surveyDetailsInfo.setLongitude(surveyResponceVO.getLongitude());
+										surveyDetailsInfo.setIsCadre(surveyResponceVO.getIsCadre());
+										surveyDetailsInfo.setIsInfluencingPeople(surveyResponceVO.getIsInfluencingPeople());
+										surveyDetailsInfo.setMobileNumber(surveyResponceVO.getMobileNo());
+										
+										surveyDetailsInfo.setLocalArea(surveyResponceVO.getLocalArea());
+										surveyDetailsInfo.setHamletName(surveyResponceVO.getHamletName());
+										surveyDetailsInfo.setCasteName(surveyResponceVO.getCasteName());
+										surveyDetailsInfo.setUuid(surveyResponceVO.getUuid());
+										surveyDetailsInfo.setStatusId(Integer.valueOf(surveyResponceVO.getStatusId()));
+										surveyDetailsInfo.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+										surveyDetailsInfo.setHouseNoPoint(surveyResponceVO.getHouseNo());
+										SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_AND_TIME_FORMAT);
+										sdf.setTimeZone(TimeZone.getTimeZone(IConstants.TIME_ZONE_INDIA));
+										sdf.parse(surveyResponceVO.getInsertTime());
+										surveyDetailsInfo.setDate(sdf.parse(surveyResponceVO.getInsertTime()));
+										
+										if(surveyResponceVO.getHamletId() != null && surveyResponceVO.getHamletId() > 0)
+										{
+											surveyDetailsInfo.setHamlet( hamletDAO.get(surveyResponceVO.getHamletId()));
+										}
+										if(surveyResponceVO.getCasteId() != null && surveyResponceVO.getCasteId() > 0)
+										{
+											surveyDetailsInfo.setCaste(casteStateDAO.get(surveyResponceVO.getCasteId() ));
+										}
+										
+										
+										
+										SurveyDetailsInfo result = surveyDetailsInfoDAO.save(surveyDetailsInfo);
+										if(result != null)
+										{
+											resultStatus.setResultCode(0);
+											resultStatus.setMessage("Success");
+										}
+										else
+										{
+											resultStatus.setResultCode(1);
+											resultStatus.setMessage("Failure");
+										}
+									}
+									//throw new RuntimeException("anil throw");
+		
 								}
-								if(surveyResponceVO.getCasteId() != null && surveyResponceVO.getCasteId() > 0)
-								{
-									surveyDetailsInfo.setCaste(casteStateDAO.get(surveyResponceVO.getCasteId() ));
-								}
-								
-								
-								
-								SurveyDetailsInfo result = surveyDetailsInfoDAO.save(surveyDetailsInfo);
-								if(result != null)
-								{
-									resultStatus.setResultCode(0);
-									resultStatus.setMessage("Success");
-								}
-								else
-								{
-									resultStatus.setResultCode(1);
-									resultStatus.setMessage("Failure");
-								}
-							}
-						}catch (Exception e) {
-							e.printStackTrace();
+							}catch (Exception e) {
+							LOG.debug("exception raised at inside transaction ", e);
 							throw new RuntimeException(e.getMessage());
-						}
 						}
 					}});
 		
@@ -2177,6 +2181,10 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	}
 
 
+
+
+
+			
 	public List<GenericVO> getSurveyConstituencyUsersList(Long constituencyId){
 			
 			 List<GenericVO> returnList = null;

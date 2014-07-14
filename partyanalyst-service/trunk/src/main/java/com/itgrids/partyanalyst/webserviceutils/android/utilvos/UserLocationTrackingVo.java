@@ -67,6 +67,14 @@ public class UserLocationTrackingVo {
 	public void setInsertTime(String insertTime) {
 		this.insertTime = insertTime;
 	}
+	@Override
+	public String toString() {
+		return "UserLocationTrackingVo [surveyUserId=" + surveyUserId
+				+ ", date=" + date + ", longitude=" + longitude + ", latitude="
+				+ latitude + ", insertTime=" + insertTime + ", imeiNo="
+				+ imeiNo + ", uuid=" + uuid + ", userLocations="
+				+ userLocations + "]";
+	}
 	 
      
 }
