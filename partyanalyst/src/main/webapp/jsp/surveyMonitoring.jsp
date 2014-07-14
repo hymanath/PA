@@ -60,7 +60,8 @@
 										</div>
 										<div class="span5">
 											Select Booth<font class="requiredFont">*</font>
-											<select class="input-block-level" id="boothId" onChange="clearDivs();"> <option value="0">Select Booth</option></select>
+											<select class="input-block-level" id="boothId" onChange="clearDivs();"> <option value="0">Select Booth</option></select></div>
+											<div class="span1" style="margin:29px 8px 0px 6px; width: 15px;">
 											<img id="boothAjaxImg" src="./images/icons/search.gif" alt="Processing Image"  class="hide"/>
 										</div>
 									</div>	
@@ -79,9 +80,9 @@
 									
 									<div id="summaryDivId">
 									</div>
-							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onclick="getComparisionReport('all');">SUBMIT</button></div>
+							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onclick="getComparisionReport('all');">SUBMIT</button><img id="submitImg" src="./images/icons/search.gif" alt="Processing Image"  class="hide"/></div>
 							<div class="pull-left" id="statusMsg"></div>
-							<img id="submitImg" src="./images/icons/search.gif" alt="Processing Image" style="margin-left:500px;" class="hide"/>
+							
 					</div>
 				</div>
 				
