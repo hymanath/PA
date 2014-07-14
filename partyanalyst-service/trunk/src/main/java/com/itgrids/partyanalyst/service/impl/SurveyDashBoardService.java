@@ -56,53 +56,53 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 		//List<SurveyDashBoardVO> resultList = new ArrayList<SurveyDashBoardVO>();
 		
 	    SurveyDashBoardVO resultVO = new SurveyDashBoardVO();
+		List<Long> completedConstituenciesIds = new ArrayList<Long>();
+
 		
 		try
 		{
 			List<Object[]> completedConstituenciesDtls = surveyCompletedLocationsDetailsDAO
 					.getSurveyCompletedLocationDetails(IConstants.CONSTITUENCY_SCOPE_ID);
 			
-			List<SurveyDashBoardVO> list = new ArrayList<SurveyDashBoardVO>();
-			for(Object[] obj:completedConstituenciesDtls)
+			if(completedConstituenciesDtls != null && completedConstituenciesDtls.size() >0)
 			{
-				SurveyDashBoardVO constituencyVO = getMatchedLocationVO(list, (Long)obj[0]);
-				
-				if(constituencyVO != null)
-				{
-					if(((Long)obj[1]).equals(IConstants.DATA_COLLECTOR_ROLE_ID))
-						constituencyVO.setDataCollectorCompleted(true);
-					else if(((Long)obj[1]).equals(IConstants.VERIFIER_ROLE_ID))
-						constituencyVO.setVerifierCompleted(true);
+			
+					List<SurveyDashBoardVO> list = new ArrayList<SurveyDashBoardVO>();
+					for(Object[] obj:completedConstituenciesDtls)
+					{
+						SurveyDashBoardVO constituencyVO = getMatchedLocationVO(list, (Long)obj[0]);
+						
+						if(constituencyVO != null)
+						{
+							if(((Long)obj[1]).equals(IConstants.DATA_COLLECTOR_ROLE_ID))
+								constituencyVO.setDataCollectorCompleted(true);
+							else if(((Long)obj[1]).equals(IConstants.VERIFIER_ROLE_ID))
+								constituencyVO.setVerifierCompleted(true);
+							
+						}else
+						{
+							 constituencyVO  = new SurveyDashBoardVO();
+							 constituencyVO.setLocationId((Long)obj[0]);
+							 
+							 if(((Long)obj[1]).equals(IConstants.DATA_COLLECTOR_ROLE_ID))
+									constituencyVO.setDataCollectorCompleted(true);
+								else if(((Long)obj[1]).equals(IConstants.VERIFIER_ROLE_ID))
+									constituencyVO.setVerifierCompleted(true);
+							 list.add(constituencyVO);
+						}
+						
+					}
 					
-				}else
-				{
-					 constituencyVO  = new SurveyDashBoardVO();
-					 constituencyVO.setLocationId((Long)obj[0]);
-					 
-					 if(((Long)obj[1]).equals(IConstants.DATA_COLLECTOR_ROLE_ID))
-							constituencyVO.setDataCollectorCompleted(true);
-						else if(((Long)obj[1]).equals(IConstants.VERIFIER_ROLE_ID))
-							constituencyVO.setVerifierCompleted(true);
-					 list.add(constituencyVO);
-				}
-				
+					
+					for(SurveyDashBoardVO completedConstituency:list)
+					{
+						if(completedConstituency.isDataCollectorCompleted() && completedConstituency.isVerifierCompleted())
+						{
+							completedConstituenciesIds.add(completedConstituency.getLocationId());
+						}
+					}
+			
 			}
-			
-			List<Long> completedConstituenciesIds = new ArrayList<Long>();
-			
-			for(SurveyDashBoardVO completedConstituency:list)
-			{
-				if(completedConstituency.isDataCollectorCompleted() && completedConstituency.isVerifierCompleted())
-				{
-					completedConstituenciesIds.add(completedConstituency.getLocationId());
-				}
-			}
-			
-			
-			
-			
-			
-			
 		    List<Object[]> constituencyDetails = constituencyDAO.getAllAssemblyConstituenciesByStateId(1L);
 		    
 		    
