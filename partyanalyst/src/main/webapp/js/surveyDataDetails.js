@@ -1,3 +1,6 @@
+
+var leaderTabsArr = new Array();
+
 function getUserTypes(divId)
 {
 	var jsObj =
@@ -342,7 +345,8 @@ function AssignTab()
 	}
 	
 	var tabsArr = new Array();	
-	var dateArr = new Array();	
+	var dateArr = new Array();
+
 	$('.newTabCls').each(function(){
 		var tabNo = $(this).val();
 				
@@ -351,7 +355,16 @@ function AssignTab()
 			str +='Tab No is required <br/>';
 		}	
 		else{
-			if(tabsArr.indexOf(tabNo.trim()) <0){
+			if(leaderTabsArr.length > 0){
+				for(var i in leaderTabsArr){
+					if(tabNo.trim() == leaderTabsArr[i]){
+					//console.log(leaderTabsArr[i]);
+						str +='Duplicate Tab No not allowed .Tab No:<b> '+tabNo.trim()+' </b>already assigned. <br/>';
+					}
+				}
+				
+			}
+			else if(tabsArr.indexOf(tabNo.trim()) <0){
 				tabsArr.push(tabNo.trim());
 			}
 			else{
@@ -371,6 +384,7 @@ function AssignTab()
 		}
 	});
 
+	console.log("str  :"+str);
 	
 	var length1 = dateArr.length;
 	var tabTatalArr = new Array();
@@ -1635,10 +1649,13 @@ var jsObj =
 		}).done(function(result){
 				$("#"+divId+"").html('');
 
-				if(result.genericVOList.length == 0)
+				if(result.genericVOList == null || result.genericVOList.length == 0){
+				
 					usersExist = false;
-
-				if(result !=null && result.genericVOList.length > 0 ){
+					
+				}
+					
+				if(result !=null && result.genericVOList != null && result.genericVOList.length > 0 ){
 					
 					var str ='';
 					avalTabsArr = [];
@@ -1658,7 +1675,11 @@ var jsObj =
 							str +='<option value="'+result.genericVOList[i].genericVOList[k].id+'">'+result.genericVOList[i].genericVOList[k].name+'</option>';
 						}
 						str +='</select>';
-						str +='	</div>	';									
+						str +='	</div>	';	
+					/*	str +='	<div style="margin-top:-30px;margin-left:35px">';
+					str +='<a href="javascript:{clearDiv('+count+');}" style="float:right;"> <span id="removeDivId" class="btn btn-danger" style="margin-top: -10px;" title="Click here to remove this tab details."> <b> - </b></span> </a> ';
+						
+						str +='	</div>';*/
 						str +='	</div>';
 						
 						}
@@ -1890,5 +1911,32 @@ function getDummyLeads(divId,value,removeId)
 
 	}
 	
+	});
+}
+
+
+function getAlreadyAssignTabsList(leaderId)
+{
+
+leaderTabsArr = [];
+	var jsObj =
+	{
+		leaderId :leaderId,
+		task : "getAlreadyAssignTabsList"
+	}
+	$.ajax({
+		type:'GET',
+		url: 'getAlreadyAssignTabsListForLeader.action',
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)},
+	}).done(function(result){
+		if(result != null && result.genericVOList != null && result.genericVOList.length > 0)
+		{
+			for(var i in result.genericVOList){
+				leaderTabsArr.push(result.genericVOList[i].name);
+			}
+			
+			//console.log(leaderTabsArr);
+		}	
 	});
 }
