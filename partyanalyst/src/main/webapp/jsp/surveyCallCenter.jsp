@@ -72,7 +72,7 @@
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top20">
 							<h4> Web Monitoring </h4>	
-					<div id="errDivId" style="color:#FF0020;font-size:15px;" ></div>							
+					<div id="errDivId" class="errClass" style="color:#FF0020;font-size:15px;" ></div>							
 						<div class="row-fluid">
 							
 							
@@ -91,11 +91,11 @@
 						</div>
 						 <div class="row text-center m_top20"><button class="btn btn-success" type="button" onclick="getSurveyVotersList();">GET DETAILS</button></div> 
 						<div class="row-fluid">
-							<div id="casteInfoDiv" style="background-color: #dff0d8; padding: 5px;display:none;margin-top:25px;margin-bottom:25px;"></div>	
+							<div id="casteInfoDiv" class="errClass" style="background-color: #dff0d8; padding: 5px;display:none;margin-top:25px;margin-bottom:25px;"></div>	
 						</div>
 						
 						<div class="row-fluid">
-							<div id="voterInfoDIv"></div>	
+							<div id="voterInfoDIv" class="errClass"></div>	
 						</div>
 						<!--<div class="row text-center m_top20"><button class="btn btn-large btn-success" type="button" onclick="saveSurveyCallStatusDetils();">UPDATE STATUS</button></div>
 							-->
@@ -136,7 +136,7 @@
 									</div>
 					
 						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getUserDetailsByConstituency()">SUBMIT</button></div>
-						  <div id="userDetailsReportDiv"></div>
+						  <div id="userDetailsReportDiv" class="errClass"></div>
 											
 					</div>
 				</div>
@@ -155,7 +155,7 @@
 								<div id="errorMsgDiv" class="offset1 errClass"  style="color:#FF0020;font-size:15px;"></div>
 									<div class="row-fluid">
 									
-										<div class="span3 offset1">
+										<div class="span4 offset1">
 											<label>Select Constituency</label>
 										<!--<select name="constituency" id="constituencyId" list="constituenciesList" style="width:130px;"></select>-->
 										<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="constituencyId" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" />
@@ -163,7 +163,7 @@
 										</div>
 										<div class="span3">
 											<label>Select User Type</label>
-											<select name="constituency" id="userTypeId"  style="width:130px;">
+											<select name="constituency" id="userTypeId"  style="width:145px;">
 											<option value="0">Select user type</option>
 											<option value="1">Data Collectors</option>
 											
@@ -180,7 +180,7 @@
 							<div class="row text-center m_top20" style="margin-right:51px;"><button type="button" class="btn btn-success" onClick="getSurveyUserLoctionCount();">SUBMIT</button>
 							<img id="processingImg" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
 							</div>
-							<div id="basicCountDiv" class="span10 m_top20">
+							<div id="basicCountDiv" class="span10 m_top20 errClass">
 
 					</div>
 				</div>
@@ -199,6 +199,7 @@ $(".highlight").click(function()
 function showHideTabs(id)
 {
 	$(".errClass").html('');
+	$("#constituencyId,#userTypeId,#userConstituencyId,#constiList,#leaderList,#boothList").val(0);
 	if(id == "callCenterTab")
 	{
 		$('#callCenter').show();
