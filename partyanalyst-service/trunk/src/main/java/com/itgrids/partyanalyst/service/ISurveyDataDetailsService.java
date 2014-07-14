@@ -69,7 +69,7 @@ public interface ISurveyDataDetailsService
 	
 	public ConstituencyDetailReportVO getBoothWiseDetails(Long boothId,Long constituencyId);
 	
-	public List<SelectOptionVO> getLatLongForSurveyUsersByConstituency(Long constituencyId,Date date);
+	public List<SelectOptionVO> getLatLongForSurveyUsersByConstituency(Long constituencyId,Date date,Long userId);
 	
 	public List<Long> getDataCollectedCount(Long userId,Long boothId);
 	
@@ -94,4 +94,5 @@ public interface ISurveyDataDetailsService
 	public List<SurveyReportVO> getSurveyDetailsForConstituency(Long constituencyId,Long userTypeId,String date);
 	
 	public List<GenericVO> getSurveyConstituencyUsersList(Long constituencyId);
+	
 }

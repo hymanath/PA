@@ -218,12 +218,26 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 	{
 		Query query = getSession().createQuery("select model.surveyUser.userName,model.booth.partNo,model.booth.tehsil.tehsilName,  " +
 				" model.booth.panchayat.panchayatName,model.booth.villagesCovered,model.booth.location , model.surveyUser.surveyUserType.userType," +
-				" model.surveyUser.surveyUserId,model.longitude,model.latitude,model.booth.boothId  " +
+				" model.surveyUser.surveyUserId,model.longitude,model.latitude,model.booth.boothId ,model.surveyUser.mobileNo " +
 				" from SurveyDetailsInfo model where" + 
 				" model.booth.constituency.constituencyId =:constituencyId and date(model.date) = :date  and model.longitude != '0.0' and model.latitude != '0.0' " +
 				" order by model.date desc");
 		query.setParameter("constituencyId", constituencyId);
 		query.setParameter("date", date);
+		return query.list();
+	}
+	
+	public List<Object[]> getLatLongForSurveyUsersByConstituencyByUser(Long constituencyId,Date date,Long userId)
+	{
+		Query query = getSession().createQuery("select model.surveyUser.userName,model.booth.partNo,model.booth.tehsil.tehsilName,  " +
+				" model.booth.panchayat.panchayatName,model.booth.villagesCovered,model.booth.location , model.surveyUser.surveyUserType.userType," +
+				" model.surveyUser.surveyUserId,model.longitude,model.latitude,model.booth.boothId  ,model.surveyUser.mobileNo " +
+				" from SurveyDetailsInfo model where" + 
+				" model.booth.constituency.constituencyId =:constituencyId and date(model.date) = :date  and model.longitude != '0.0' and model.latitude != '0.0'  " +
+				" and model.surveyUser.surveyUserId = :userId  order by model.date desc");
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("date", date);
+		query.setParameter("userId", userId);
 		return query.list();
 	}
 	

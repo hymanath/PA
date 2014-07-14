@@ -2666,12 +2666,21 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	}
 	
 	
-	public List<SelectOptionVO> getLatLongForSurveyUsersByConstituency(Long constituencyId,Date date)
+	public List<SelectOptionVO> getLatLongForSurveyUsersByConstituency(Long constituencyId,Date date,Long userId)
 	{
 		List<SelectOptionVO> returnList = null;
 		try
 		{
-			List<Object[]> result = surveyDetailsInfoDAO.getLatLongForSurveyUsersByConstituency(constituencyId, date);
+			List<Object[]> result = null ;
+			if(userId > 0)
+			{
+				 result = surveyDetailsInfoDAO.getLatLongForSurveyUsersByConstituencyByUser(constituencyId, date,userId);
+			}
+			else
+			{
+				 result = surveyDetailsInfoDAO.getLatLongForSurveyUsersByConstituency(constituencyId, date);
+			}
+			
 			if(result != null && result.size() > 0)
 			{
 				returnList = new ArrayList<SelectOptionVO>();
@@ -2689,6 +2698,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 						VO.setVillageCovered(parms[4] != null ? parms[4].toString() : null);// Location Covered
 						VO.setType(parms[6] != null ? parms[6].toString() : null);// Location Covered
 						VO.setId((Long)parms[7]);//userId
+						VO.setMandalName(parms[11] != null ? parms[11].toString() : null);
 						VO.setOrderId((Long)parms[10]);//boothId
 						if( parms[8] != null &&  parms[9] != null)
 						{
@@ -3201,6 +3211,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			            if(vo == null)
 			            {
 			            	  vo = new SurveyReportVO();
+			            	  vo.setUserid((Long)parms[0]);
 							  vo.setUserName(parms[1] != null ? parms[1].toString() : null);
 							  vo.setMobileNo(parms[2] != null ? parms[2].toString() : null);
 							  vo.setUserType(parms[8] != null ? parms[8].toString() : null);
