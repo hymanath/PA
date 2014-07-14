@@ -257,7 +257,7 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 	public Long getCadreCountByBooth(Long userId,Long boothId)
 	{
 		Query query = getSession().createQuery("select count(*) from SurveyDetailsInfo model where model.surveyUser.surveyUserId = :userId and " +
-				"model.booth.boothId = :boothId and model.isCadre is not null");
+				"model.booth.boothId = :boothId and model.isCadre != 'N' ");
 		query.setParameter("userId", userId);
 		query.setParameter("boothId", boothId);
 		return (Long)query.uniqueResult();
@@ -266,7 +266,7 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 	public Long getInfluencingPeopleCountByBooth(Long userId,Long boothId)
 	{
 		Query query = getSession().createQuery("select count(*) from SurveyDetailsInfo model where model.surveyUser.surveyUserId = :userId and " +
-				"model.booth.boothId = :boothId and model.isInfluencingPeople is not null");
+				"model.booth.boothId = :boothId and model.isInfluencingPeople  != 'N' ");
 		query.setParameter("userId", userId);
 		query.setParameter("boothId", boothId);
 		return (Long)query.uniqueResult();
