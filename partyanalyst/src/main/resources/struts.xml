@@ -7266,6 +7266,18 @@
 		</result>
 		</action>
 		
+		<action name="getQuestionsForHHOfSurveyAction" class="houseHoldSurveyReportAction" method="getQuestionsOfSurvey">
+			<result type="json" name="success">
+				<param name="root">questions</param>
+			</result>
+		</action>
+		
+		<action name="getQuestionsSummaryForHHOfSurveyAction" class="houseHoldSurveyReportAction" method="getQuestionSummary">
+			<result type="json" name="success">
+				<param name="root">qstnsSummary</param>
+			</result>
+		</action>
+		
 		<action name="getMappedVoterDetailsByUsingSoundexByPanchayatId" class="fieldVoterDataAction" method="getMappedVoterDetailsByUsingSoundexByPanchayatId">
 		<result type="json" name="success">
 		<param name="root">fieldVoterDetailsList</param>
