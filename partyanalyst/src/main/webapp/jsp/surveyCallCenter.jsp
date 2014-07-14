@@ -83,9 +83,10 @@
 		<div class="row">
 			<div class="span12 m_top20 survey_nav">
 				<ul class="inline unstyled">
-					<li><a class="highlight  selected" id="callCenterTab" onclick="showHideTabs(this.id);"> Web Monitoring </a></li>
-					<li><a class="highlight" id="startTimeTab" onclick="showHideTabs(this.id);">Field Report</a></li>
+					
+					<li><a class="highlight   selected" id="startTimeTab" onclick="showHideTabs(this.id);">Field Report</a></li>
 					<li><a class="highlight" id="boothWiseTab" onclick="showHideTabs(this.id);">Data Report</a></li>
+					<li><a class="highlight" id="callCenterTab" onclick="showHideTabs(this.id);"> Web Monitoring </a></li>
 				</ul>
 			</div>
 		</div>
@@ -220,7 +221,7 @@
 		</div>
 	</div>
 	<script>
-showHideTabs('callCenterTab');
+showHideTabs('startTimeTab');
 $(".highlight").click(function()
 {
 	$(".highlight").removeClass("selected");
