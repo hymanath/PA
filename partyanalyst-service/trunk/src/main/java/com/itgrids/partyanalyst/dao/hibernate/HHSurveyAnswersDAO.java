@@ -7,6 +7,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IHHSurveyAnswersDAO;
 import com.itgrids.partyanalyst.model.HHSurveyAnswers;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 
 public class HHSurveyAnswersDAO extends GenericDaoHibernate<HHSurveyAnswers,Long> implements IHHSurveyAnswersDAO {
@@ -50,11 +51,103 @@ public class HHSurveyAnswersDAO extends GenericDaoHibernate<HHSurveyAnswers,Long
 				"  and model1.constituency.constituencyId = :constituencyId" +
 				"  and model1.hhLeader.is_active = 'YES'" +
 				"  and model2.isDelete = 'FALSE'" +
+				" and model2.voterFamilyRelation.voterFamilyRelationId = 1" +
 				"  and model.hhSurveyQuestion.surveyQuestionId =:questionId" +
 				"  group by model2.houseHolds.houseHoldId");
 		
 		query.setParameter("questionId", questionId);
 		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
+	
+	public List<Object[]> getQuestionWiseSummaryCount(Long questionId,Long constituencyId){
+		Query query = getSession().createQuery(" select count(model.hhSurveyAnswerId)," +//0 -- COUNT
+				" model.hhOptions.optionsId," +//1 -- OPTION ID
+				" model.hhOptions.options," +//2 -- OPTION
+				" model.hhSurveyQuestion.surveyQuestionId," + // 3 -- QUESTION ID
+				" model.hhSurveyQuestion.question" + // 4 -- QUESTION
+				" from HHSurveyAnswers model,HHBoothLeader model1,HouseHoldVoter model2 " +
+				" where " +
+				" model.houseHold.houseHoldId = model2.houseHolds.houseHoldId " +
+				"  and model2.hhLeader.id = model1.hhLeader.id  " +
+				"  and model1.constituency.constituencyId = :constituencyId" +
+				"  and model1.hhLeader.is_active = 'YES'" +
+				"  and model2.isDelete = 'FALSE' " +
+				" and model2.voterFamilyRelation.voterFamilyRelationId = 1" +
+				" and model.hhSurveyQuestion.surveyQuestionId =:questionId" +
+				" group by model.hhOptions.optionsId");
+		
+		query.setParameter("questionId", questionId);
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
+	
+	public List<Object[]> getQuestionWiseSummaryCountByPanchayat(Long questionId,Long constituencyId){
+		Query query = getSession().createQuery(" select count(distinct model.houseHold.houseHoldId)," +//0 -- COUNT
+				" model.hhOptions.optionsId," +//1 -- OPTION ID
+				" model.hhOptions.options," +//2 -- OPTION
+				" model.hhSurveyQuestion.surveyQuestionId," + // 3 -- QUESTION ID
+				" model.hhSurveyQuestion.question," +// 4 -- QUESTION
+				" model.houseHold.panchayat.panchayatId," +// 5 -- PANCHAYAT ID
+				" model.houseHold.panchayat.panchayatName" +  // 6 -- PANCHAYAT NAME
+				" from HHSurveyAnswers model,HHBoothLeader model1,HouseHoldVoter model2 " +
+				" where " +
+				" model.houseHold.houseHoldId = model2.houseHolds.houseHoldId " +
+				"  and model2.hhLeader.id = model1.hhLeader.id  " +
+				"  and model1.constituency.constituencyId = :constituencyId" +
+				" and model2.voterFamilyRelation.voterFamilyRelationId = 1" +
+				"  and model2.isDelete = 'FALSE' " +
+				"  and model1.hhLeader.is_active = 'YES'" +
+				" and model.hhSurveyQuestion.surveyQuestionId =:questionId" +
+				" group by model.houseHold.panchayat.panchayatId, model.hhOptions.optionsId");
+		
+		query.setParameter("questionId", questionId);
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
+	
+	public List<Object[]> getHouseHoldsOfPanchayatWithOption(Long optionId,Long panchayatId){
+		Query query = getSession().createQuery(" select model2.houseHoldVoterId," + // 0 -- HOUSEHOLD VOTER ID
+				" model2.houseHolds.houseHoldId," +//1 -- HOUSEHOLD ID
+				" model2.houseHolds.houseNo," +//2 -- HOUSE NO
+				" model2.voter.name," + // 3 -- VOTER NAME(FAMILY HEAD)
+				" model2.voter.voterIDCardNo," +// 4 -- VOTER CARD NO
+				" model.houseHold.panchayat.panchayatId," +// 5 -- PANCHAYAT ID
+				" model.houseHold.panchayat.panchayatName," +  // 6 -- PANCHAYAT NAME
+				" model.hhOptions.optionsId," +//7 -- OPTION ID
+				" model.hhOptions.options" +//8 -- OPTION
+				" from HHSurveyAnswers model,HHBoothLeader model1,HouseHoldVoter model2 " +
+				" where " +
+				" model.houseHold.houseHoldId = model2.houseHolds.houseHoldId " +
+				"  and model2.hhLeader.id = model1.hhLeader.id  " +
+				"  and model.houseHold.panchayat.panchayatId = :panchayatId" +
+				"  and model1.hhLeader.is_active = 'YES'" +
+				"  and model2.isDelete = 'FALSE' " +
+				" and model2.voterFamilyRelation.voterFamilyRelationId = 1" +
+				" and model.hhOptions.optionsId =:optionId");
+		
+		query.setParameter("optionId", optionId);
+		query.setParameter("panchayatId", panchayatId);
+		return query.list();
+	}
+	
+	public List<Object[]> getVoterAndNonVotersUnderOption(Long optionId,Long panchayatId){
+		Query query = getSession().createQuery(" select "+
+				" model2.houseHolds.houseHoldId," +//1 -- HOUSEHOLD ID
+				" count(model2.voter.voterId)," +//2 -- HOUSE NO
+				" count(model2.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId)" + // 3 -- VOTER NAME(FAMILY HEAD)
+				" from HHSurveyAnswers model,HHBoothLeader model1,HouseHoldVoter model2 " +
+				" where " +
+				" model.houseHold.houseHoldId = model2.houseHolds.houseHoldId " +
+				" and model2.hhLeader.id = model1.hhLeader.id  " +
+				" and model.houseHold.panchayat.panchayatId = :panchayatId" +
+				" and model1.hhLeader.is_active = 'YES'" +
+				" and model2.isDelete = 'FALSE' " +
+				" and model.hhOptions.optionsId =:optionId" +
+				" group by model2.houseHolds.houseHoldId ");
+		
+		query.setParameter("optionId", optionId);
+		query.setParameter("panchayatId", panchayatId);
 		return query.list();
 	}
 	
