@@ -41,7 +41,7 @@
 	<div class="span12">
 		<div class="row-fluid ">
 			<div class="span12 widgetservey_Red m_top20">
-				<h4 >SURVEY DETAILS</h4>
+				<h4 id="heading">SURVEY DETAILS</h4>
 				<div id="map" style="width: 100%; height: 400px;cursor: pointer;"></div>
 			</div>
 			<!--<div class="span6 widgetservey_Red m_top20">
@@ -77,10 +77,12 @@ var campus = {
 }
 if(id == 1)
 {
+	$('#heading').html("Survey Data Collected Map");
 	getUserDataCollectionDetails();
 }
 else
 {
+	$('#heading').html("User Tracking Map");
 	getUserTrackingDetails();
 }
 
@@ -139,6 +141,32 @@ function buildLocationDetails(result)
 			});
 		}
 	}).addTo(map);
+	
+	for(var i in result)
+	{
+		if(result[i].latitude != null && result[i].longitude != null)
+		{
+			var iconImg = 'images/DC.png';
+			
+			var icon = L.icon({
+			iconUrl: iconImg,
+
+			iconSize:     [30, 30], // size of the icon
+			shadowSize:   [10, 10], // size of the shadow
+			iconAnchor:   [10, 10], // point of the icon which will correspond to marker's location
+			shadowAnchor: [4, 62],  // the same for the shadow
+			popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+		   });
+			var markers = new L.Marker([result[i].latitude,result[i].longitude],{icon: icon});
+			var popuoContent = "<table class='table table-bordered m_top20 table-hover table-striped username'><tr><td>Name : </td><td>"+result[i].name+"</td></tr>";
+			//popuoContent += "<tr><td>Mobile : </td><td>"+result[i].mandalName+"</td></tr>";
+			//popuoContent += "</table>";
+			//markers.bindPopup(popuoContent);
+			map.addLayer(markers);	
+		}
+		
+	}
+	
 	
 	
 }

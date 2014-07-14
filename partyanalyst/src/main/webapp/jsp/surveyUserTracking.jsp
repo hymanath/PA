@@ -60,11 +60,11 @@ $(document).ready(function(){
    
     var constiD =  '${userId}';
 	var dateStr =  '${date}';
-	
+	var userId ='${userTypeId}';
 	if(constiD != null && constiD != '')
 	{
 		$('#appendedInput').val(dateStr);
-		getDetailsByConstituency();
+		getDetailsByConstituencyForSelectedUser(constiD,dateStr,userId);
 	}
 });
 
@@ -73,6 +73,27 @@ var apaccampus = {
 "type": "Point",
 "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
 "features": []
+}
+
+function getDetailsByConstituencyForSelectedUser(constiD,dateStr,userId)
+{
+	var jObj = 
+	{
+	 constituencyId: constiD,
+	 dateStr :dateStr,
+	 userId : userId
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getLatLongForSurveyUsersByConstituencyAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){
+				if(result != null && result.length > 0)
+				buildLocationDetails(result);
+				else
+				alert("No Data Avaliable");
+		});
 }
 function getDetailsByConstituency()
 {
@@ -85,7 +106,8 @@ function getDetailsByConstituency()
 	var jObj = 
 	{
 	 constituencyId: $('#constituencyId').val(),
-	 dateStr : $('#appendedInput').val()
+	 dateStr : $('#appendedInput').val(),
+	 userId : 0
 	}
 	$("#userTrackingImage").show();
 	$("#errorMsgDiv").html('');
@@ -172,6 +194,10 @@ function buildLocationDetails(result)
 			
 	
 			var markers = new L.Marker([result[i].longititude,result[i].latitude],{icon: icon});
+			var popuoContent = "<table class='table table-bordered m_top20 table-hover table-striped username'><tr><td>Name : </td><td>"+result[i].name+"</td></tr>";
+			popuoContent += "<tr><td>Mobile : </td><td>"+result[i].mandalName+"</td></tr>";
+			popuoContent += "</table>";
+			markers.bindPopup(popuoContent);
 			map.addLayer(markers);	
 		}
 		
@@ -196,8 +222,8 @@ function buildTable(result)
 	 str += '<th>Panchayat</th>	';
 	 str += '<th>Area Covered</th>	';
 	 str += '<th>Location</th>	';				
-	 str += '<th><a style="cursor: pointer;">MAP</a></th>	';	
-	str += '<th><a style="cursor: pointer;">Tracking Map</a></th>	';		 
+	 str += '<th>Data Collected Map</th>	';	
+	str += '<th>Tracking MAP</th>	';		 
 	 str += '</tr>	';						
 	 str += '</thead>';
 	 str += '<tbody>';
@@ -220,8 +246,8 @@ function buildTable(result)
 		 str += '<td>'+result[i].url+'</td>	';
 		 str += '<td>'+result[i].villageCovered+'</td>	';
 		 str += '<td>'+result[i].location+'</td>	';
-		 str += '<td><a onClick="openTrackinWindow('+result[i].id+',\''+date+'\',1) " style="cursor: pointer;"> MAP</a></td>	';
-		 str += '<td><a onClick="openTrackinWindow('+result[i].id+',\''+date+'\',2) " style="cursor: pointer;"> MAP</a></td>	';
+		 str += '<td><a onClick="openTrackinWindow('+result[i].id+',\''+date+'\',1) " style="cursor: pointer;"><img src="images/DC.png"></img></a></td>	';
+		 str += '<td><a onClick="openTrackinWindow('+result[i].id+',\''+date+'\',2) " style="cursor: pointer;"><img src="images/DC.png"></img></a></td>	';
 		 str += '</tr>	';	
 	 }		
 	 str += '</tbody>';
@@ -233,15 +259,7 @@ function buildTable(result)
 }
 function onEachFeature(feature, layer) 
 {
-	    var popupContent = "<table class='table table-info'><tr><td>Name : </td><td>"+feature.properties.name+"</td>";
-	    popupContent += "</tr></table>";
-		
-		layer.setStyle({
-		weight:7,
-		color: '#FF0000',
-		dashArray: '',
-		});
-		layer.bindPopup(popupContent); 
+	layer.bindPopup(); 
 }
 
 function getUserDetails(userId,boothId)
@@ -360,17 +378,17 @@ function getconstituencies()
 								<div id="errorMsgDiv" class="offset1" ></div>
 									<div class="row-fluid">
 									
-										<div class="span5 offset1">
+										<div class="span6">
 											<label>Select Constituency</label>
 										<!--<select name="constituency" id="constituencyId" list="constituenciesList" style="width:130px;"></select>-->
 										<s:select theme="simple"  name="constituency" id="constituencyId"  headerKey="0" headerValue="Select Constituency" list="dataAvilableConstituencies" listKey="id" listValue="name" value="userId"/>
 								
 										</div>
 										
-										<div class="span4">
+										<div class="span6">
 											<label>Select Date</label>
 											<div class="input-append">
-											  <input type="text" id="appendedInput" class="span10 datePickerCls" readonly="readonly">
+											  <input type="text" id="appendedInput" class="datePickerCls" readonly="readonly">
 											 <!-- <span class="add-on"><i class="icon-calendar icon-block"></i></span>-->
 											</div>
 										</div>	
