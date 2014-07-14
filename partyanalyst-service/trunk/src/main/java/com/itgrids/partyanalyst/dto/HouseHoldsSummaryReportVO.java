@@ -33,6 +33,8 @@ public class HouseHoldsSummaryReportVO implements java.io.Serializable{
 	
 	private List<HouseHoldsSummaryReportVO> leadersOfPnchyt;
 	private List<HouseHoldsSummaryReportVO> familyHeads;
+	private List<HouseHoldsSummaryReportVO> familyHeadsUnderBook;
+	private List<HouseHoldsSummaryReportVO> familyHeadsUnderOption;
 	
 	private Long leaderId;
 	private Long houseHoldId;
@@ -40,9 +42,44 @@ public class HouseHoldsSummaryReportVO implements java.io.Serializable{
 	private String leaderName;
 	
 	private int activeLeadersCount;
+	private Long bookId;
+	
+	private Long optionId;
+	private String option;
 	
 	
-	
+	public String getOption() {
+		return option;
+	}
+	public void setOption(String option) {
+		this.option = option;
+	}
+	public List<HouseHoldsSummaryReportVO> getFamilyHeadsUnderOption() {
+		return familyHeadsUnderOption;
+	}
+	public void setFamilyHeadsUnderOption(
+			List<HouseHoldsSummaryReportVO> familyHeadsUnderOption) {
+		this.familyHeadsUnderOption = familyHeadsUnderOption;
+	}
+	public Long getOptionId() {
+		return optionId;
+	}
+	public void setOptionId(Long optionId) {
+		this.optionId = optionId;
+	}
+	public List<HouseHoldsSummaryReportVO> getFamilyHeadsUnderBook() {
+		return familyHeadsUnderBook;
+	}
+	public void setFamilyHeadsUnderBook(
+			List<HouseHoldsSummaryReportVO> familyHeadsUnderBook) {
+		this.familyHeadsUnderBook = familyHeadsUnderBook;
+	}
+	public Long getBookId() {
+		return bookId;
+	}
+	public void setBookId(Long bookId) {
+		this.bookId = bookId;
+	}
 	public int getActiveLeadersCount() {
 		return activeLeadersCount;
 	}
