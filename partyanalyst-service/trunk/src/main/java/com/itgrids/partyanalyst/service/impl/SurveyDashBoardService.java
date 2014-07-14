@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dao.IWebMonitoringAssignedUsersDAO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.SurveyCompletionDetailsVO;
 import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
+import com.itgrids.partyanalyst.dto.SurveyReportVO;
 import com.itgrids.partyanalyst.model.SurveyCompletedLocationsDetails;
 import com.itgrids.partyanalyst.service.ISurveyDashBoardService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -61,6 +62,16 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 		
 		try
 		{
+		/*	List<SurveyDashBoardVO> tempList = new ArrayList<SurveyDashBoardVO>();
+			
+			 List<Object[]> districtDetails =   districtDAO.getDistrictIdAndNameByState(1L);
+			 
+			 
+			 */
+
+			
+			
+			
 			List<Object[]> completedConstituenciesDtls = surveyCompletedLocationsDetailsDAO
 					.getSurveyCompletedLocationDetails(IConstants.CONSTITUENCY_SCOPE_ID);
 			
@@ -160,7 +171,7 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 		    	
 		    	if(completedConstnCountMap.get(entry.getKey()) == null)
 		    	{
-		    		resultVO.getNotStarted().add(dashBoardVO);
+		    		//resultVO.getNotStarted().add(dashBoardVO);
 		    	}
 		    	else if(completedConstnCountMap.get(entry.getKey()).size() == entry.getValue().size())
 		    	{
@@ -218,24 +229,26 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 		    	
 		    	if(startedConstnCountMap.get(entry.getKey()) == null)
 		    	{
-		    		//resultVO.getNotStarted().add(dashBoardVO);
+		    		resultVO.getNotStarted().add(dashBoardVO);
 		    	}
 		    	else if(startedConstnCountMap.get(entry.getKey()).size() == entry.getValue().size())
 		    	{
-		    		//dashBoardVO.setLocationId(entry.getKey());
+		    		/*//dashBoardVO.setLocationId(entry.getKey());
 		    		resultVO.getCompleted().add(dashBoardVO);
-		    		resultVO.getStarted().add(dashBoardVO);
+		    		resultVO.getStarted().add(dashBoardVO);*/
 		    	}
 		    	else if(startedConstnCountMap.get(entry.getKey()).size() < entry.getValue().size())
 		    	{
 		    		//dashBoardVO.setLocationId(entry.getKey());
-		    		resultVO.getProcess().add(dashBoardVO);
-		    		resultVO.getStarted().add(dashBoardVO);
+		    		SurveyDashBoardVO matchedVO = matchedStartedVO(resultVO.getProcess(),entry.getKey());
+		    		if(matchedVO == null)
+		    		{
+			    		resultVO.getProcess().add(dashBoardVO);
+			    		resultVO.getStarted().add(dashBoardVO);
+		    		}
 		    	}
 		    }
 		    
-		    
-
 			
 			int cStartedCount = startedConstituenciesCount.size();
 			int cProcessCount = startedConstituenciesCount.size() - completedConstituenciesIds.size();
@@ -261,6 +274,17 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 		return resultVO;
 	}
 	
+	
+	public SurveyDashBoardVO matchedStartedVO(List<SurveyDashBoardVO> resultList , Long locationId)
+	{
+
+		for(SurveyDashBoardVO boothVO:resultList)
+			if(boothVO.getLocationId().equals(locationId))
+				return boothVO;
+		return null;
+	
+		
+	}
 	public String saveSurveyCompletionDetails(SurveyCompletionDetailsVO completionDetailsVO)
 	{
 		try
