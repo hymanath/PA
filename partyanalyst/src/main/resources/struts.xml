@@ -7347,6 +7347,14 @@
 			</result>
 		</action>
 		
+		
+		<action name="getAlreadyAssignTabsListForLeader" class="surveyDataDetailsAction" method="getAlreadyAssignTabsListForLeader">
+			<result type="json" name="success">
+				<param name="root">genericVO</param>
+			</result>
+		</action>
+		
+		
 		<action name="getSurveyUsersByUserTypeAction" class="surveyDataDetailsAction" method="getSurveyUsersByUserType">
 			<result type="json" name="success">
 				<param name="root">returnList</param>
