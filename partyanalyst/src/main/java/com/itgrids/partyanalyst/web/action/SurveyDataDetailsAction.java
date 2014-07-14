@@ -1096,7 +1096,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 				return INPUT;
 			if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CASTE_SURVEY_CALL_CENTER))
 				return ERROR;
-			constituenciesList = 	surveyDataDetailsService.getSurveyStartedConstituencyList();			
+				constituenciesList = 	surveyDataDetailsService.getSurveyStartedConstituencyList();			
 		} catch (Exception e) {
 			LOG.error(" exception occured in surveyCallCenterPage() ,ConstituencyDetailsAction Action class",e);
 		}
@@ -1144,7 +1144,8 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			Long surveyUserId = jObj.getLong("surveyUserId");
 			Long boothId = jObj.getLong("boothId");
 			Long constituencyId = jObj.getLong("constituencyId");
-			voterVerificationList = 	surveyDataDetailsService.getSurveyVotersList(constituencyId,boothId,surveyUserId);			
+			String searchDate = jObj.getString("searchDate");
+			voterVerificationList = 	surveyDataDetailsService.getSurveyVotersList(constituencyId,boothId,surveyUserId,searchDate);			
 		} catch (Exception e) {
 			LOG.error(" exception occured in getSurveyVotersList() ,ConstituencyDetailsAction class",e);
 		}
@@ -1316,5 +1317,30 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		
 	}
 	
+  
+  
+  public String getAlreadyAssignTabsListForLeader(){
+	  
+
+		try
+		{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			jObj = new JSONObject(getTask());
+
+			genericVO = surveyDataDetailsService.getAlreadyAssignTabsListForLeader(jObj.getLong("leaderId"));
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getAlreadyAssignTabsListForLeader", e);
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+		
+  }
   
 }
