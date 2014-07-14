@@ -87,6 +87,7 @@ function getDetailsByConstituency()
 	 constituencyId: $('#constituencyId').val(),
 	 dateStr : $('#appendedInput').val()
 	}
+	$("#userTrackingImage").show();
 	$("#errorMsgDiv").html('');
 	$.ajax({
 			type:'GET',
@@ -94,6 +95,7 @@ function getDetailsByConstituency()
 			dataType: 'json',
 			data: {task:JSON.stringify(jObj)},
 		  }).done(function(result){
+				$("#userTrackingImage").hide();
 				if(result != null && result.length > 0)
 				buildLocationDetails(result);
 				else
@@ -373,7 +375,7 @@ function getconstituencies()
 											</div>
 										</div>	
 									</div>	
-										<div class="row text-center m_top20" style="margin-right:51px;"><button type="button" class="btn btn-success" onClick="getDetailsByConstituency();">SUBMIT</button></div>
+										<div class="row text-center m_top20" style="margin-right:51px;"><button type="button" class="btn btn-success" onClick="getDetailsByConstituency();">SUBMIT</button><img id="userTrackingImage" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img></div>
 								</div>
 							</div>
 						

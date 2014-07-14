@@ -72,24 +72,29 @@
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top20">
 							<h4> Web Monitoring </h4>	
-					<div id="errDivId" class="errClass" style="color:#FF0020;font-size:15px;" ></div>							
-						<div class="row-fluid">
+					<div id="errDivId" class="errClass offset2" style="color:#FF0020;font-size:15px;" ></div>							
+						<div class="row-fluid offset2">
 							
 							
-							<div class="span4">
+							<div class="span3">
 								<label>Select Constituency </label>
 								<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="constiList" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" onChange="getConstituencyLeadersList('leaderList');"/>
 							</div>
-							<div class="span4">
+							<div class="span2">
 								<label>Select User </label>
-								<select class="input-block-level" id="leaderList" onchange="getAssignedBoothsForLeader('boothList');"><option value="0"> Select Leader </option></select>
+								<select class="input-block-level" id="leaderList" onchange="getAssignedBoothsForLeader('boothList');"><option value="0"> Select User </option></select>
 							</div>
-							<div class="span4">
+							<div class="span1" style="margin:29px -9px 0px 1px;width: 15px;">
+								<img id="userTypeProcessingImage" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
+							</div>
+							<div class="span3">
 								<label>Select Booth </label>
 								<select class="input-block-level" id="boothList"><option value="0"> Select Booth </option></select>
 							</div>
+							<div class="span1" style="margin:29px 8px 0px 6px; width: 15px;">
+								<img id="boothProcessingImage" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img></div>
 						</div>
-						 <div class="row text-center m_top20"><button class="btn btn-success" type="button" onclick="getSurveyVotersList();">GET DETAILS</button></div> 
+						 <div class="row text-center m_top20"><button class="btn btn-success" type="button" onclick="getSurveyVotersList();">GET DETAILS</button><img id="webMonitoringImage" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img></div> 
 						<div class="row-fluid">
 							<div id="casteInfoDiv" class="errClass" style="background-color: #dff0d8; padding: 5px;display:none;margin-top:25px;margin-bottom:25px;"></div>	
 						</div>
@@ -135,7 +140,7 @@
 									</div>
 									</div>
 					
-						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getUserDetailsByConstituency()">SUBMIT</button></div>
+						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getUserDetailsByConstituency()">SUBMIT</button><img id="userFieldImage" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img></div>
 						  <div id="userDetailsReportDiv" class="errClass"></div>
 											
 					</div>
@@ -230,13 +235,14 @@ var jsObj =
 		constiId:value,
 		task : "assignLeader"
 	}
-
+	$("#userTypeProcessingImage").show();
 	$.ajax({
 		type:'GET',
 		url: 'getSurveyConstituencyUsersListAction.action',
 		dataType: 'json',
 		data: {task:JSON.stringify(jsObj)},
 		}).done(function(result){
+				$("#userTypeProcessingImage").hide();
 				$('#'+divId+'').find('option').remove();
 				$('#'+divId+'').append('<option value="0"> Select User </option>');
 				if(result != null && result.length>0){
@@ -253,7 +259,7 @@ var jsObj =
 function getAssignedBoothsForLeader(divId){
 var constiId = $('#constiList').val();
 var leaderId = $('#leaderList').val();
-
+$("#boothProcessingImage").show();
 var jsObj = 
 	{
 		constituencyId:constiId,
@@ -267,6 +273,7 @@ var jsObj =
 		dataType: 'json',
 		data: {task:JSON.stringify(jsObj)},
 		}).done(function(result){
+		$("#boothProcessingImage").hide();
 				$('#'+divId+'').find('option').remove();
 				$('#'+divId+'').append('<option value="0"> Select Booth </option>');
 				if(result != null && result.length>0){
@@ -300,6 +307,7 @@ else if(boothId == 0){
 
 if(flag)
 	{
+		$('#webMonitoringImage').show();
 		var jsObj = 
 		{
 			constituencyId:constiId,
@@ -307,7 +315,7 @@ if(flag)
 			boothId : boothId,
 			task : "getSurveyVotersList"
 		}
-
+	$('#webMonitoringImage').hide();
 	$.ajax({
 		type:'GET',
 		url: 'getSurveyVotersListAction.action',
@@ -647,8 +655,8 @@ function getUserDetailsByConstituency()
 		$("#errDivIdForStartTime").html("Please Select Date").css("color","red");
 		return;
 	}
-
-	
+	$("#userFieldImage").show();
+	$("#errDivIdForStartTime").html("");
 	var jObj =
 	{
 	 constituencyId:constituencyId,
@@ -668,6 +676,7 @@ function getUserDetailsByConstituency()
 
 function buildDetailsTable(result)
 {
+	$("#userFieldImage").hide();
 	if(result == null || result.length == 0)
 	{
 		$('#userDetailsReportDiv').html("<font color='red'> NO DATA AVILABLE<font>");
