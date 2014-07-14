@@ -3184,8 +3184,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				
 				Map<Long,Map<Long,SurveyReportVO>> resultMap = new HashMap<Long, Map<Long,SurveyReportVO>>();
 				Map<Long,SurveyReportVO> userDataMap = new HashMap<Long, SurveyReportVO>();
-				 DateFormat dateFormat = new SimpleDateFormat("hh:mm a"); 
-				  
+				DateFormat dateFormat = new SimpleDateFormat("hh:mm a"); 
+								 
 				for (Object[] parms : details)
 				{
 						
@@ -3193,33 +3193,36 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 						if(boothMap == null)
 						{
 							boothMap = new HashMap<Long, SurveyReportVO>();
+							
 							resultMap.put((Long)parms[0], boothMap);		
 							
-						}
-						
-			              SurveyReportVO vo = new SurveyReportVO();
-						  vo.setUserName(parms[1] != null ? parms[1].toString() : null);
-						  vo.setMobileNo(parms[2] != null ? parms[2].toString() : null);
-						  vo.setUserType(parms[8] != null ? parms[8].toString() : null);
-						  if(parms[10] != null)
-						  {
-							  String time = dateFormat.format(parms[10]);							 
-							  vo.setSurveyDate(time);
-						  }
-						  userDataMap.put((Long)parms[0], vo);
-						 			
+						}					
+			            SurveyReportVO vo = userDataMap.get((Long)parms[0]);
+			            if(vo == null)
+			            {
+			            	  vo = new SurveyReportVO();
+							  vo.setUserName(parms[1] != null ? parms[1].toString() : null);
+							  vo.setMobileNo(parms[2] != null ? parms[2].toString() : null);
+							  vo.setUserType(parms[8] != null ? parms[8].toString() : null);
+							  if(parms[10] != null)
+							  {
+									String time = dateFormat.format(parms[10]);							 
+									vo.setSurveyDate(time);
+							  }
+							  userDataMap.put((Long)parms[0], vo);
+			              }		
 					 
-							 SurveyReportVO  vo1 = boothMap.get((Long)parms[9]);
-					if(vo1 == null)
-					{
-					vo1 = new SurveyReportVO();
-					  vo1.setPartNo(parms[3] != null ? parms[3].toString() : null);
-					  vo1.setMandalName(parms[4] != null ? parms[4].toString() : null);
-					  vo1.setPanchayatName(parms[5] != null ? parms[5].toString() : null);
-					  vo1.setLocalArea(parms[6] != null ? parms[6].toString() : null);						
-					  vo1.setVillageCovered(parms[7] != null ? parms[7].toString() : null);					
-					  boothMap.put((Long)parms[9],vo1);		
-					}
+						  SurveyReportVO  vo1 = boothMap.get((Long)parms[9]);
+						  if(vo1 == null)
+						  {
+							  vo1 = new SurveyReportVO();
+							  vo1.setPartNo(parms[3] != null ? parms[3].toString() : null);
+							  vo1.setMandalName(parms[4] != null ? parms[4].toString() : null);
+							  vo1.setPanchayatName(parms[5] != null ? parms[5].toString() : null);
+							  vo1.setLocalArea(parms[6] != null ? parms[6].toString() : null);						
+							  vo1.setVillageCovered(parms[7] != null ? parms[7].toString() : null);					
+							  boothMap.put((Long)parms[9],vo1);		
+						  }
 				}
 								
 				for(Long userId : resultMap.keySet())
