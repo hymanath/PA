@@ -16,9 +16,9 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.HHLeaderDetailsVO;
 import com.itgrids.partyanalyst.dto.HHQuestionDetailsVO;
+import com.itgrids.partyanalyst.dto.HHQuestionSummaryReportVO;
 import com.itgrids.partyanalyst.dto.HHSurveyVO;
 import com.itgrids.partyanalyst.dto.HouseHoldVotersVO;
-import com.itgrids.partyanalyst.dto.HouseHoldsReportVO;
 import com.itgrids.partyanalyst.dto.HouseHoldsSummaryReportVO;
 import com.itgrids.partyanalyst.dto.HouseHoldsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -75,9 +75,26 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 	private HouseHoldsSummaryReportVO hhSummaryDtls;
 	
 	private List<GenericVO> hhConstituenies;
+	private HHQuestionSummaryReportVO qstnsSummary;
+	private List<HHQuestionSummaryReportVO> questions;
 	
 	
 	
+	public HHQuestionSummaryReportVO getQstnsSummary() {
+		return qstnsSummary;
+	}
+
+	public void setQstnsSummary(HHQuestionSummaryReportVO qstnsSummary) {
+		this.qstnsSummary = qstnsSummary;
+	}
+
+	public List<HHQuestionSummaryReportVO> getQuestions() {
+		return questions;
+	}
+
+	public void setQuestions(List<HHQuestionSummaryReportVO> questions) {
+		this.questions = questions;
+	}
 
 	public List<GenericVO> getHhConstituenies() {
 		return hhConstituenies;
@@ -751,6 +768,11 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 				input.setLeaderId(Long.valueOf(jObj.getString("leaderId")));
 			}else if(task.equalsIgnoreCase("familyHeadsUnderPanchayat")){
 				input.setPanchayatId(Long.valueOf(jObj.getString("panchayatId")));
+			}else if(task.equalsIgnoreCase("familyHeadsUnderBook")){
+				input.setBookId(Long.valueOf(jObj.getString("bookId")));
+			}else if(task.equalsIgnoreCase("familyHeadsUnderOptions")){
+				input.setOptionId(Long.valueOf(jObj.getString("optionId")));
+				input.setPanchayatId(Long.valueOf(jObj.getString("panchayatId")));
 			}
 			
 			
@@ -767,4 +789,29 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 		
     	return Action.SUCCESS;
     }
+	
+	public String getQuestionsOfSurvey(){
+		try {		
+			jObj = new JSONObject(getTask());
+			Long surveyId = jObj.getLong("surveyId");
+			questions = houseHoldSurveyReportService.getQuestionsOfSurvey(surveyId);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+    	return Action.SUCCESS;
+	}
+	
+	public String getQuestionSummary(){
+		try {		
+			jObj = new JSONObject(getTask());
+			Long questionId = jObj.getLong("questionId");
+			Long constituencyId = jObj.getLong("constituencyId");
+			
+			qstnsSummary = houseHoldSurveyReportService.getOptionsCountForQuestion(questionId,constituencyId);
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+    	return Action.SUCCESS;
+	}
 }
