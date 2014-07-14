@@ -53,8 +53,8 @@
 			
 			.ui-multiselect{
 				width:200px !important;
-				}
-
+			}
+			
 		</style>
   </head>
   
@@ -231,7 +231,7 @@
 											</div>
 											<div class="span6">
 											Select Leader Name<font class="requiredFont">*</font>
-											<select class="input-block-level" id="surveyUserIdForSelect"> <option value="0">Select Leader Name</option></select>
+											<select class="input-block-level" id="surveyUserIdForSelect" onchange="getAlreadyAssignTabsList(this.value);"> <option value="0">Select Leader Name</option></select>
 											</div>	
 										
 										</div>
