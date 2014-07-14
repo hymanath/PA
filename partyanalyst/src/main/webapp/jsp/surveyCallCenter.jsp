@@ -95,17 +95,18 @@
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top20">
 							<h4> Web Monitoring </h4>	
+					<!--		
 					<div id="errDivId" class="errClass offset2" style="color:#FF0020;font-size:15px;" ></div>							
 						<div class="row-fluid offset2">
 							
 							
 							<div class="span3">
-								<label>Select Constituency </label>
+								<label> Constituency </label>
 								<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="constiList" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" onChange="getConstituencyLeadersList('leaderList');"/>
 							</div>
 							<div class="span2">
 								<label>Select User </label>
-								<select class="input-block-level" id="leaderList" onchange="getAssignedBoothsForLeader('boothList');"><option value="0"> Select User </option></select>
+								<select class="input-block-level" id="leaderList" onchange="getAssignedBoothsForLeader('boothList');"><option value="0"> Select Leader </option></select>
 							</div>
 							<div class="span1" style="margin:29px -9px 0px 1px;width: 15px;">
 								<img id="userTypeProcessingImage" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
@@ -118,12 +119,14 @@
 								<img id="boothProcessingImage" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img></div>
 						</div>
 						 <div class="row text-center m_top20"><button class="btn btn-success" type="button" onclick="getSurveyVotersList();">GET DETAILS</button><img id="webMonitoringImage" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img></div> 
+						 -->
+						 
 						<div class="row-fluid">
-							<div id="casteInfoDiv" class="errClass" style="background-color: #dff0d8; padding: 5px;display:none;margin-top:25px;margin-bottom:25px;"></div>	
+							<div id="casteInfoDiv" style="background-color: #dff0d8; padding: 5px;display:none;margin-top:25px;margin-bottom:25px;"></div>	
 						</div>
 						
 						<div class="row-fluid">
-							<div id="voterInfoDIv" class="errClass"></div>	
+							<div id="voterInfoDIv"></div>	
 						</div>
 						<!--<div class="row text-center m_top20"><button class="btn btn-large btn-success" type="button" onclick="saveSurveyCallStatusDetils();">UPDATE STATUS</button></div>
 							-->
@@ -163,6 +166,7 @@
 									</div>
 					
 						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getUserDetailsByConstituency()">SUBMIT</button></div>
+						  <div id="userDetailsReportDiv"></div>
 						<div class="row-fluid " id = "leaderDetailsDiv"></div>
 						<div class="row-fluid " id="detaildDiv" style="display:none;">
 							<div class="span12 m_top20 widgetservey" id="weathermap" style="height:500px"></div>
@@ -191,12 +195,12 @@
 										<div class="span4 offset1">
 											<label>Select Constituency</label>
 										<!--<select name="constituency" id="constituencyId" list="constituenciesList" style="width:130px;"></select>-->
-										<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="constituencyId" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" />
+										<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="constituencyId" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" onchange="setConstituency(this.value);" />
 								
 										</div>
 										<div class="span3">
 											<label>Select User Type</label>
-											<select name="constituency" id="userTypeId"  style="width:145px;">
+											<select name="constituency" id="userTypeId"  style="width:145px;" onchange="setUserTypeId(this.value)">
 											<option value="0">Select user type</option>
 											<option value="1">Data Collectors</option>
 											
@@ -314,11 +318,14 @@ var jsObj =
 }
 
 function getSurveyVotersList(){
-var constiId = $('#constiList').val();
-var leaderId = $('#leaderList').val();
-var boothId = $('#boothList').val();
+
+//var constiId = $('#constituencyId').val();
+//var leaderId = $('#userTypeId').val();
+var surveyDate = $('#FielddateId').val();
+var boothId = webBoothId;
 var flag = true;
 $('#errDivId').html('');
+/*
 if(constiId == 0 ){
 	$('#errDivId').html(' Please select Constituency.');
 	flag = false;
@@ -332,15 +339,17 @@ else if(boothId == 0){
 	$('#errDivId').html(' Please select Booth.');
 	flag = false;
 }
+*/
 
 if(flag)
 	{
 		$('#webMonitoringImage').show();
 		var jsObj = 
 		{
-			constituencyId:constiId,
-			surveyUserId:leaderId,
+			constituencyId:webConstId,
+			surveyUserId:webuserId,
 			boothId : boothId,
+			searchDate:surveyDate,
 			task : "getSurveyVotersList"
 		}
 	$('#webMonitoringImage').hide();
@@ -372,7 +381,7 @@ if(flag)
 				str +='						<th> Mobile Number </th>';
 				//str +='						<th> Mobile Matched </th>';
 				str +='						<th> Hamlet </th>';
-				str +='						<th>  </th>';
+				//str +='						<th>  </th>';
 
 				str +='					</tr>';
 				str +='				</thead>';
@@ -390,32 +399,59 @@ if(flag)
 					//str +='						<td>'+result[i].caste+'</td>';
 					
 					str +='						<td>'+result[i].caste+'';
-					str +='							<div data-toggle="buttons-radio" class="btn-group">';
-		str +='	<button class="btn btn-mini" type="button" onclick="updateStatus(\'isCasteMatched'+i+'\',1);">correct</button>';
-		str +='	<button class="btn btn-mini" type="button" onclick="updateStatus(\'isCasteMatched'+i+'\',0);">wrong</button>';
+					
+	if(result[i].casteMatched)
+	{
+		str +='							<div data-toggle="buttons-radio" class="btn-group">';
+		str +='	<button class="btn btn-mini active" type="button" onclick="updateStatus(\'isCasteMatched'+i+'\',1,'+result[i].voterId+','+result[i].userid+',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',\'casteErrDiv'+i+'\',\'mobileErrDiv'+i+'\');">correct</button>';
+		str +='	<button class="btn btn-mini" type="button" onclick="updateStatus(\'isCasteMatched'+i+'\',0,'+result[i].voterId+','+result[i].userid+',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',\'casteErrDiv'+i+'\',\'mobileErrDiv'+i+'\');">wrong</button>';
+		str +='             <div id="casteErrDiv'+i+'" style="color:#FF0020;font-size:12px;"> </div>';
+		str +='             <input type="hidden" value="1" id="isCasteMatched'+i+'"/>';
+		str +='							 </div>';
+	}
+	else
+	{
+		str +='							<div data-toggle="buttons-radio" class="btn-group">';
+		str +='	<button class="btn btn-mini" type="button" onclick="updateStatus(\'isCasteMatched'+i+'\',1,'+result[i].voterId+','+result[i].userid+',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',\'casteErrDiv'+i+'\',\'mobileErrDiv'+i+'\');">correct</button>';
+		str +='	<button class="btn btn-mini" type="button" onclick="updateStatus(\'isCasteMatched'+i+'\',0,'+result[i].voterId+','+result[i].userid+',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',\'casteErrDiv'+i+'\',\'mobileErrDiv'+i+'\');">wrong</button>';
 					str +='             <div id="casteErrDiv'+i+'" style="color:#FF0020;font-size:12px;"> </div>';
 					str +='             <input type="hidden" value="" id="isCasteMatched'+i+'"/>';
 					str +='							 </div>';
+	}
+
 					str +='						</td>';				
 					
-					var mobNo = '';
-					if(result[i].mobileNo == null)
-					{
-						mobNo = '';
-						str += '<td></td>';
-					}
-					else
-					{
-						mobNo = result[i].mobileNo
-						str +='<td>'+mobNo+'<div data-toggle="buttons-radio" class="btn-group">';
-						str +='<button class="btn btn-mini" type="button" onclick="updateStatus(\'isTestedMobile'+i+'\',1);">correct </button>';
-						str +='<button class="btn btn-mini " type="button" onclick="updateStatus(\'isTestedMobile'+i+'\',0);">wrong</button>';
-						str +='             <div id="mobileErrDiv'+i+'" style="color:#FF0020;font-size:12px;"> </div>';
+	var mobNo = '';
+
+	if(result[i].mobileNo != null)
+	{						
+		mobNo = result[i].mobileNo					
+	str +='<td>'+mobNo+'<div data-toggle="buttons-radio" class="btn-group">';					
+	if(result[i].mobileMatchedCount != 0)
+	{
+	
+		str +='<button class="btn btn-mini active" type="button" onclick="updateStatus(\'isTestedMobile'+i+'\',1,'+result[i].voterId+','+result[i].userid+',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',\'casteErrDiv'+i+'\',\'mobileErrDiv'+i+'\');">correct </button>';
+	str +='<button class="btn btn-mini " type="button" onclick="updateStatus(\'isTestedMobile'+i+'\',0,'+result[i].voterId+','+result[i].userid+',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',\'casteErrDiv'+i+'\',\'mobileErrDiv'+i+'\');">wrong</button>';
+	str +='             <div id="mobileErrDiv'+i+'" style="color:#FF0020;font-size:12px;"> </div>';
+					str +='					<input type="hidden" value="1" id="isTestedMobile'+i+'"/>';
+					str +='							 </div>';
+					
+	}
+	else
+	{	
+	str +='<button class="btn btn-mini" type="button" onclick="updateStatus(\'isTestedMobile'+i+'\',1,'+result[i].voterId+','+result[i].userid+',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',\'casteErrDiv'+i+'\',\'mobileErrDiv'+i+'\');">correct </button>';
+	str +='<button class="btn btn-mini " type="button" onclick="updateStatus(\'isTestedMobile'+i+'\',0,'+result[i].voterId+','+result[i].userid+',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',\'casteErrDiv'+i+'\',\'mobileErrDiv'+i+'\');">wrong</button>';
+	str +='             <div id="mobileErrDiv'+i+'" style="color:#FF0020;font-size:12px;"> </div>';
 					str +='					<input type="hidden" value="" id="isTestedMobile'+i+'"/>';
-					str +='							 </div></td>';
-					}
-					
-					
+					str +='							 </div>';
+	}
+
+					str +='</td>';
+			}	
+		else{
+		str +='<td></td>';
+
+		}			
 					str +='						<td>';
 					str +='							<div class="callcenter_voterDetals_widget">';
 					str +='								<ul class="unstyled inline">';
@@ -423,7 +459,7 @@ if(flag)
 					str +='								</ul>';
 					str +='							</div>';
 					str +='						</td>';
-					str +='						<td> <input class="btn" type="button" onclick="saveVoterDetails('+result[i].voterId+','+result[i].userid+',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',\'casteErrDiv'+i+'\',\'mobileErrDiv'+i+'\');" value="save"/></td>';
+					//str +='						<td> <input class="btn" type="button" onclick="saveVoterDetails('+result[i].voterId+','+result[i].userid+',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',\'casteErrDiv'+i+'\',\'mobileErrDiv'+i+'\');" value="save"/></td>';
 
 					str +='					</tr>';
 					
@@ -465,14 +501,64 @@ if(flag)
 	}	
 }
 
-function updateStatus(id,value){
+function updateStatus(id,value,voterId,surveyUserId,isCasteMatched,mobileMatched,casteErrDiv,mobileErrDiv){
 		$('#'+id+'').val(value);
+		
+		
+	var voterInfoArr = new Array();
+	var isMobileVerified = $('#'+mobileMatched+'').val();
+	var isMatched = $('#'+isCasteMatched+'').val();
+	var boothId = webBoothId;
+	$('#'+casteErrDiv+'').html('');
+	$('#'+mobileErrDiv+'').html('');
+
+	if(isMatched == undefined || isMatched.trim().length == 0){
+		isMatched = 0;
+	} 
+	else if(isMobileVerified == undefined || isMobileVerified.trim().length ==0){
+		isMobileVerified = 0;
+	} 
+	
+
+	
+	var obj = {
+		voterId:voterId,
+		surveyUserId:surveyUserId,
+		isMobileVerified:isMobileVerified,
+		isMatched :isMatched,
+		boothId : boothId
+	}
+	
+	voterInfoArr.push(obj);
+	
+	var jsObj = 
+	{
+		voterInfoArr:voterInfoArr,
+		task : "getSurveyVotersList"
+	}
+
+	$.ajax({
+		type:'GET',
+		url: 'saveSurveyCallStatusDetilsAction.action',
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)},
+		}).done(function(result){
+			if(result != null && result.resultCode == 0){
+				getSurveyVotersList();
+			}
+			else{
+				alert('Error occured while saving record.');
+			}
+			
+		});
+	
+	
 }
 
+/*
 function saveVoterDetails(voterId,surveyUserId,isCasteMatched,mobileMatched,casteErrDiv,mobileErrDiv){
 
-var voterInfoArr = new Array();
-
+	var voterInfoArr = new Array();
 	var isMobileVerified = $('#'+mobileMatched+'').val();
 	var isMatched = $('#'+isCasteMatched+'').val();
 	var boothId = $('#boothList').val();
@@ -520,7 +606,7 @@ var voterInfoArr = new Array();
 	}
 }
 
-
+*/
 
 function getconstituencies(divId)
 {
@@ -598,6 +684,9 @@ return;
 	});
 }
 
+var webConstId =0;
+var webuserId =0;
+var webBoothId =0;
  function buildSurveyUserStatusCount(result)
 {
 	var str ='';
@@ -637,8 +726,9 @@ return;
 
 		for(var j=0;j<result[i].subList.length;j++)
 		{
+			webBoothId = result[i].subList[j].boothId;
 			str+='<tr>';
-			str+='<td>'+result[i].userName+'</td>';
+			str+='<td> <a href="javascript:{getDataCollectorInfo();}">'+result[i].userName+' </a></td>';
 			str+='<td> '+result[i].subList[j].partNo+'</td>';
 			str+='<td>'+result[i].subList[j].totalVoters+'</td>';
 			str+='<td>'+result[i].subList[j].casteCount+'</td>';
@@ -1021,6 +1111,20 @@ function onEachFeature(feature, layer)
 {
 }
 
+
+function getDataCollectorInfo(){
+
+showHideTabs('callCenterTab');
+getSurveyVotersList();
+
+}
+
+function setConstituency(value){
+webConstId = value;
+}
+function setUserTypeId(value){
+webuserId = value;
+}
 
 	</script>
 	<script src="js/bootstrap.min.js"></script>
