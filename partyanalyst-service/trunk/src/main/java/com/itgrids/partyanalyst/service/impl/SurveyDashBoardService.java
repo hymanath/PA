@@ -436,31 +436,34 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 			
 			// processing booths start
 			
-			List<Object[]> processedBoothDtls = boothDAO.getBoothDetailsByBoothIds(surveyBoothIds);
-			
-			Map<Long,Long> processedBoothsCount = new HashMap<Long, Long>();
-			
-			for(Object[] obj:processedBoothDtls)
+			if(surveyBoothIds  != null && surveyBoothIds.size() >0)
 			{
-				if(processedBoothsCount.get((Long)obj[1]) != null)
-					processedBoothsCount.put((Long)obj[1], processedBoothsCount.get((Long)obj[1])+1);
-				else
-					processedBoothsCount.put((Long)obj[1], 1L);
-			}
 			
-			//processing booths end
-			
-			
-			
-			for(SurveyDashBoardVO constituency:resultList)
-			{
-				constituency.setTotalCount(totalBoothCountMap.get(constituency.getLocationId()) != null ?totalBoothCountMap.get(constituency.getLocationId()).intValue():0);
-				constituency.setProcessingCount(processedBoothsCount.get(constituency.getLocationId()) !=null ?processedBoothsCount.get(constituency.getLocationId()).intValue():0);
-				constituency.setStartedCount(constituency.getCompletedCount() + constituency.getProcessingCount());
-				constituency.setNotStartedCount(constituency.getTotalCount() - constituency.getStartedCount());
-			}
-
+				List<Object[]> processedBoothDtls = boothDAO.getBoothDetailsByBoothIds(surveyBoothIds);
 				
+				Map<Long,Long> processedBoothsCount = new HashMap<Long, Long>();
+				
+				for(Object[] obj:processedBoothDtls)
+				{
+					if(processedBoothsCount.get((Long)obj[1]) != null)
+						processedBoothsCount.put((Long)obj[1], processedBoothsCount.get((Long)obj[1])+1);
+					else
+						processedBoothsCount.put((Long)obj[1], 1L);
+				}
+				
+				//processing booths end
+				
+				
+				
+				for(SurveyDashBoardVO constituency:resultList)
+				{
+					constituency.setTotalCount(totalBoothCountMap.get(constituency.getLocationId()) != null ?totalBoothCountMap.get(constituency.getLocationId()).intValue():0);
+					constituency.setProcessingCount(processedBoothsCount.get(constituency.getLocationId()) !=null ?processedBoothsCount.get(constituency.getLocationId()).intValue():0);
+					constituency.setStartedCount(constituency.getCompletedCount() + constituency.getProcessingCount());
+					constituency.setNotStartedCount(constituency.getTotalCount() - constituency.getStartedCount());
+				}
+
+			}
 			
 		}catch(Exception e)
 		{
