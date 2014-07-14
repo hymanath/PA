@@ -279,7 +279,7 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 				" SDI.voter.voterId , SDI.isCadre , SDI.isInfluencingPeople, SDI.voter.name, SDI.voter.houseNo, SDI.voter.relativeName   " +
 				"   from SurveyDetailsInfo SDI where SDI.booth.boothId  = :boothId and SDI.surveyUser.surveyUserId in (:assignUsers) and SDI.mobileNumber != null  "+
 				" and SDI.voter.voterId not in ( select SCS.voter.voterId from SurveyCallStatus SCS where  SDI.surveyUser.surveyUserId =  SCS.surveyUser.surveyUserId )" +
-				" and  SDI.mobileNumber is not null and SDI.mobileNumber != 'null' order by SDI.voter.voterId ");
+				"  order by SDI.voter.voterId ");
 		query.setParameter("boothId", boothId);		
 		query.setParameterList("assignUsers", assignUsers);	
 		return query.list();
