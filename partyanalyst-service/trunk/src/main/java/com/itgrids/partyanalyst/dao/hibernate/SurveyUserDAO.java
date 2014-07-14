@@ -8,6 +8,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ISurveyUserDAO;
 import com.itgrids.partyanalyst.model.SurveyUser;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class SurveyUserDAO extends GenericDaoHibernate<SurveyUser, Long> implements ISurveyUserDAO{
 
@@ -64,5 +65,7 @@ public class SurveyUserDAO extends GenericDaoHibernate<SurveyUser, Long> impleme
 		query.setParameter("userTypeId", userTypeId);
 		return query.list();
 	}
+	
+	
 
 }

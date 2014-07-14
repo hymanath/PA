@@ -44,6 +44,7 @@ import com.itgrids.partyanalyst.dao.ISurveyUserTypeDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
+import com.itgrids.partyanalyst.dao.IWebMonitoringAssignedUsersDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.ConstituencyDetailReportVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
@@ -65,6 +66,7 @@ import com.itgrids.partyanalyst.model.SurveyUserTabAssign;
 import com.itgrids.partyanalyst.model.SurveyUserTracking;
 import com.itgrids.partyanalyst.model.SurveyUserType;
 import com.itgrids.partyanalyst.model.Voter;
+import com.itgrids.partyanalyst.model.WebMonitoringAssignedUsers;
 import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -137,6 +139,11 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	
 	@Autowired
 	private ISurveyCallStatusDAO surveyCallStatusDAO;
+	
+
+	@Autowired
+	private IWebMonitoringAssignedUsersDAO webMonitoringAssignedUsersDAO;
+	
 	
 	/**
 	 * This Service is used for saving the user type details
@@ -3328,5 +3335,87 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		}
 		return returnVO;
 		
+	}
+	
+	public List<GenericVO> getAssignedUsersOfAConstituency(Long constituencyId)
+	{
+		 List<GenericVO> usersList  = new ArrayList<GenericVO>();
+		try
+		{
+			
+			List<Object[]> usersDtls = surveyUserRelationDAO.getAssignedUsersOfAConstituency(constituencyId);
+			
+			for(Object[] obj:usersDtls)
+			{
+				GenericVO userVO = new GenericVO();
+				
+				userVO.setId((Long)obj[0]);
+				userVO.setName(obj[1].toString());
+				usersList.add(userVO);
+			}
+			
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return usersList;
+	}
+	
+	public List<GenericVO> getAllWebMonitoringUsersDetails()
+	{
+		 List<GenericVO> usersList  = new ArrayList<GenericVO>();
+		try
+		{
+			List<Object[]> usersDetails = userDAO.getAllWebMonitoringUsersDetails(IConstants.CASTE_SURVEY_CALL_CENTER );
+			
+			for(Object[] obj:usersDetails)
+			{
+				GenericVO userVO = new GenericVO();
+				
+				userVO.setId((Long)obj[0]);
+                userVO.setName(obj[1]+" "+obj[2]);
+                
+                usersList.add(userVO);
+			}
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return usersList;
+	}
+	
+	public String saveWebMonioringAssignDetails(final Long webMonitorId,final List<Long> userIds)
+	{
+		try
+		{
+			List<WebMonitoringAssignedUsers> users = webMonitoringAssignedUsersDAO.getAssignedUsersDetailsByWebMonitorId(webMonitorId);
+			
+			if(users != null && users.size() >0)
+				for(WebMonitoringAssignedUsers assignedUser:users)
+					assignedUser.setIsDelete("Y");
+			
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				protected void doInTransactionWithoutResult(
+						TransactionStatus arg0) {
+			
+				for(Long userId:userIds)
+				{
+					WebMonitoringAssignedUsers webMonitoringAssignedUsers = new WebMonitoringAssignedUsers();
+					
+					webMonitoringAssignedUsers.setSurveyUserId(userId);
+					webMonitoringAssignedUsers.setWebMoniterUserId(webMonitorId);
+					webMonitoringAssignedUsers.setIsDelete("N");
+					webMonitoringAssignedUsersDAO.save(webMonitoringAssignedUsers);
+				}
+			
+			}});
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+		return "success";		
 	}
 }
