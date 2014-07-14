@@ -1086,12 +1086,12 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 				return Action.INPUT;
 			}
 			Long userId = user.getRegistrationID();
-		/*	
+			
 			if(session.getAttribute(IConstants.USER) == null && 
 					!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.CASTE_SURVEY_CALL_CENTER))
 				return INPUT;
 			if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CASTE_SURVEY_CALL_CENTER))
-				return ERROR;*/
+				return ERROR;
 			constituenciesList = 	surveyDataDetailsService.getSurveyStartedConstituencyList();			
 		} catch (Exception e) {
 			LOG.error(" exception occured in surveyCallCenterPage() ,ConstituencyDetailsAction Action class",e);
