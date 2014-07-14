@@ -25,8 +25,9 @@ public class HHSurveyQuestionDAO extends GenericDaoHibernate<HHSurveyQuestion,Lo
 	}
 	
 	public List<Object[]> getAllQuestionInSurvey(Long surveyId){
-		Query query = getSession().createQuery("select model.surveyQuestionId," +
-				" model.question, model.hhoptionType.optionTypeId " +
+		Query query = getSession().createQuery("select model.surveyQuestionId," +//0 -- Quest Id
+				" model.question, " +//1 -- Quest
+				" model.hhoptionType.optionTypeId " +//2 -- Answer Type
 				" from HHSurveyQuestion model" +
 				" where model.hhSurvey.surveyId =:surveyId" +
 				" and model.isDeleted =:delStatus");

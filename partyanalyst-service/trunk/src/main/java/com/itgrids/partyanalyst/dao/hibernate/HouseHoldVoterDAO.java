@@ -410,5 +410,65 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 		return query.list();
 	}
 	
+	// TYPE PARAMETER LOCATION -1 , LEADER -2 , BOOK -3
+	public List<Object[]> getNonVotersAgeGroupInHouseHolds(Long val,int type, Long fromAge,Long toAge){
+		StringBuffer sb = new StringBuffer();
+		
+		sb.append(" select model.houseHolds.houseHoldId," +
+				" count(model.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId)," +
+				" model.houseHoldsFamilyDetails.gender," +
+				" model.houseHoldsFamilyDetails.relativeName" +
+				" from HouseHoldVoter model where " +
+				" model.isDelete = 'false'" +
+				" and model.hhLeader.is_active = 'YES'" +
+				" and model.houseHoldsFamilyDetails.age >= :fromAge " +
+				" and model.houseHoldsFamilyDetails.age <= :toAge ");
+		
+		if(type ==1){
+			sb.append("and model.houseHolds.panchayat.panchayatId = :val");
+		}else if(type == 2){
+			sb.append(" and model.hhLeader.id =:val");
+		}else if(type == 3){
+			sb.append(" and model.hhLeaderBooks.hhLeaderBookId =:val");
+		}
+		sb.append(" group by model.houseHolds.houseHoldId ");
+		
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("val", val);
+		query.setParameter("fromAge", fromAge);
+		query.setParameter("toAge", toAge);
+		return query.list();
+	}
+	
+	public List<Object[]> getNonVoterAgeRangesInConstituency(Long constituencyId,Long fromAge,Long toAge){
+		StringBuffer sb = new StringBuffer();
+		sb.append(" select model1.constituency.constituencyId,model1.constituency.name," +
+				" count(model.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId) " +
+				" from HouseHoldVoter model,HHBoothLeader model1 where " +
+				" model.hhLeader.id = model1.hhLeader.id" +
+				" and model1.constituency.constituencyId = :constituencyId" +
+				" and model.isDelete = 'false'" +
+				" and model.hhLeader.is_active = 'YES'" );
+		
+		if(fromAge!=null){
+			sb.append(" and model.houseHoldsFamilyDetails.age >= :fromAge ");
+		}if(toAge!=null){
+			sb.append(" and model.houseHoldsFamilyDetails.age <= :toAge ");
+		}
+		
+		Query query = getSession().createQuery(sb.toString());
+		
+		query.setParameter("constituencyId", constituencyId);
+		if(fromAge!=null){
+			query.setParameter("fromAge",fromAge);
+		}
+		if(toAge!=null){
+			query.setParameter("toAge",toAge);
+		}
+		return query.list();
+	}
+	
+	
+	
 	
 }
