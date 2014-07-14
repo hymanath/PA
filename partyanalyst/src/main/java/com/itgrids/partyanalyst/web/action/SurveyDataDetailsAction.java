@@ -1046,7 +1046,8 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			String dateStr = jObj.getString("dateStr");
 			SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
 			Date date = originalFormat.parse(dateStr);
-			constituenciesList = surveyDataDetailsService.getLatLongForSurveyUsersByConstituency(jObj.getLong("constituencyId"), date);
+			Long userId = jObj.getLong("userId");
+			constituenciesList = surveyDataDetailsService.getLatLongForSurveyUsersByConstituency(jObj.getLong("constituencyId"), date,userId);
 		} 
 		catch (Exception e)
 		{
