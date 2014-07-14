@@ -122,24 +122,28 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 		    	}
 		    }
 		    
-		    List<Object[]> completdConstituencyDetails = constituencyDAO.getConstituencyInfoByConstituencyIdList(completedConstituenciesIds);
-		    
 		    Map<Long,List<Long>> completedConstnCountMap = new HashMap<Long, List<Long>>();
-		    
-		    for(Object[] obj:completdConstituencyDetails)
+
+		    if(completedConstituenciesIds != null && completedConstituenciesIds.size() >0)
 		    {
-		    	if(completedConstnCountMap.get((Long)obj[2]) != null)
-		    	{
-		    		completedConstnCountMap.get((Long)obj[2]).add((Long)obj[0]);
-		    	}else
-		    	{
-		    		List<Long> constituencyIds = new ArrayList<Long>();
-		    		constituencyIds.add((Long)obj[0]);
-		    		
-		    		completedConstnCountMap.put((Long)obj[2], constituencyIds);
-		    	}
-		    }
 		    
+			    List<Object[]> completdConstituencyDetails = constituencyDAO.getConstituencyInfoByConstituencyIdList(completedConstituenciesIds);
+			    
+			    
+			    for(Object[] obj:completdConstituencyDetails)
+			    {
+			    	if(completedConstnCountMap.get((Long)obj[2]) != null)
+			    	{
+			    		completedConstnCountMap.get((Long)obj[2]).add((Long)obj[0]);
+			    	}else
+			    	{
+			    		List<Long> constituencyIds = new ArrayList<Long>();
+			    		constituencyIds.add((Long)obj[0]);
+			    		
+			    		completedConstnCountMap.put((Long)obj[2], constituencyIds);
+			    	}
+			    }
+		    }
 		    
 		 List<Object[]> districtDetails =   districtDAO.getDistrictIdAndNameByState(1L);
 		 
