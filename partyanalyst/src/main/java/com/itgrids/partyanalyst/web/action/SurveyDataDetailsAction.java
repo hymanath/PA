@@ -43,7 +43,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	private ISurveyDataDetailsService surveyDataDetailsService;
 	private List<UserBoothDetailsVO> assgnedBoothsList;
 	private List<SurveyReportVO> dayWiseReportList;
-	private List<SelectOptionVO> constituenciesList,surveyUserConstituencies;
+	private List<SelectOptionVO> constituenciesList,surveyUserConstituencies,dataAvilableConstituencies;
 	private List<SurveyReportVO> boothWiseCountList,assignedUsersList;
 	private List<SurveyReportVO> voterVerificationList;
 	private List<SurveyResponceVO> responceList;
@@ -60,6 +60,15 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 
 	
 	
+	public List<SelectOptionVO> getDataAvilableConstituencies() {
+		return dataAvilableConstituencies;
+	}
+
+	public void setDataAvilableConstituencies(
+			List<SelectOptionVO> dataAvilableConstituencies) {
+		this.dataAvilableConstituencies = dataAvilableConstituencies;
+	}
+
 	public EntitlementsHelper getEntitlementsHelper() {
 		return entitlementsHelper;
 	}
@@ -246,6 +255,8 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			return Action.INPUT;
 		}
 		constituenciesList = 	surveyDataDetailsService.getAllAssemblyConstituenciesByStateId();
+		
+		dataAvilableConstituencies = surveyDataDetailsService.getSurveyStartedConstituencyList();
 
 		return Action.SUCCESS;
 	}
@@ -1075,12 +1086,12 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 				return Action.INPUT;
 			}
 			Long userId = user.getRegistrationID();
-			
+		/*	
 			if(session.getAttribute(IConstants.USER) == null && 
 					!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.CASTE_SURVEY_CALL_CENTER))
 				return INPUT;
 			if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CASTE_SURVEY_CALL_CENTER))
-				return ERROR;
+				return ERROR;*/
 			constituenciesList = 	surveyDataDetailsService.getSurveyStartedConstituencyList();			
 		} catch (Exception e) {
 			LOG.error(" exception occured in surveyCallCenterPage() ,ConstituencyDetailsAction Action class",e);
