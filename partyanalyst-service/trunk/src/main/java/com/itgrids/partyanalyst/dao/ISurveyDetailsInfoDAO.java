@@ -42,7 +42,7 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	
 	public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUsertypeId);
 	
-	public List<Object[]> getVoterDetailsByBoothId(Long boothId, List<Long> assignUsers);
+	public List<Object[]> getVoterDetailsByBoothId(Long boothId, List<Long> assignUsers,Date searchDate);
 	
 	public List<Long> getSurveyStartedConstituenciesDetails();
 	
@@ -65,4 +65,8 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	public List<Object[]> getMbileNoCountByBooths(List<Long> userIds,List<Long> boothIds,Long userTypeId,Date date);
 	public List<Object[]> getLatLongForSurveyUsersByConstituencyByUser(Long constituencyId,Date date,Long userId);
 	
+	
+	public List<Object[]> getCasteWiseCountInBooth(Long boothId);
+	
+	public Long getTotalVotersinBooth(Long boothId);
 }
