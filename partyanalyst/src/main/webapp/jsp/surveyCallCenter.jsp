@@ -120,7 +120,8 @@
 										
 										<div class="span5">
 											Select Constituency <font class="requiredFont">*</font>
-												<select id="userConstituencyId"><option value="0">Select Constituency</option></select>
+												<!--<select id="userConstituencyId"><option value="0">Select Constituency</option></select>-->
+												<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="userConstituencyId" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" />
 										</div>
 										<div class="span3">
 											Select Date <font class="requiredFont">*</font>
@@ -156,7 +157,8 @@
 									
 										<div class="span3 offset1">
 											<label>Select Constituency</label>
-										<select name="constituency" id="constituencyId" list="constituenciesList" style="width:130px;"></select>
+										<!--<select name="constituency" id="constituencyId" list="constituenciesList" style="width:130px;"></select>-->
+										<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="constituencyId" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" />
 								
 										</div>
 										<div class="span3">
@@ -209,14 +211,14 @@ function showHideTabs(id)
 		$('#callCenter').hide();
 		$('#startTime').show();
 		$('#boothWise').hide();
-		getconstituencies('userConstituencyId');
+		//getconstituencies('userConstituencyId');
 	}
 	else
 	{
 		$('#callCenter').hide();
 		$('#startTime').hide();
 		$('#boothWise').show();
-		 getconstituencies('constituencyId');
+		// getconstituencies('constituencyId');
 	}
 }
 function getConstituencyLeadersList(divId){
