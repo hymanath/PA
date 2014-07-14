@@ -5,9 +5,9 @@ import java.util.List;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.HHLeaderDetailsVO;
 import com.itgrids.partyanalyst.dto.HHQuestionDetailsVO;
+import com.itgrids.partyanalyst.dto.HHQuestionSummaryReportVO;
 import com.itgrids.partyanalyst.dto.HHSurveyVO;
 import com.itgrids.partyanalyst.dto.HouseHoldVotersVO;
-import com.itgrids.partyanalyst.dto.HouseHoldsReportVO;
 import com.itgrids.partyanalyst.dto.HouseHoldsSummaryReportVO;
 import com.itgrids.partyanalyst.dto.HouseHoldsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -41,6 +41,8 @@ public interface IHouseHoldSurveyReportService {
 	public HouseHoldsSummaryReportVO getReportsOfHouseHolds(HouseHoldsSummaryReportVO hhSummaryReportVO);
 	
 	public List<GenericVO> getHouseHoldConstituencies();
+	public List<HHQuestionSummaryReportVO> getQuestionsOfSurvey(Long surveyId);
+	public HHQuestionSummaryReportVO getOptionsCountForQuestion(Long questionId,Long constituencyId);
 
 
 }
