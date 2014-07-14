@@ -107,7 +107,7 @@ function buildLocationDetails(result)
 		apaccampus.features.push(voterDetails);
 	}
 	});
-	map = new L.Map('map').setView(new L.LatLng(result[0].longititude,result[0].latitude), 12);
+	map = new L.Map('map').setView(new L.LatLng(result[0].longititude,result[0].latitude), 10);
 	var osm = new L.TileLayer('http://{s}.tile.osmosnimki.ru/kosmo/{z}/{x}/{y}.png');
 	var mpn = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
 	var qst = new L.TileLayer('http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png', {attribution:'Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">'}).addTo(map);
