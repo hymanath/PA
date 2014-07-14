@@ -58,6 +58,14 @@ $(document).ready(function(){
    dateFormat: 'dd-mm-yy'
    });
    
+    var constiD =  '${userId}';
+	var dateStr =  '${date}';
+	
+	if(constiD != null && constiD != '')
+	{
+		$('#appendedInput').val(dateStr);
+		getDetailsByConstituency();
+	}
 });
 
 var map = '';
@@ -308,10 +316,9 @@ function openTrackinWindow(userId,date,id)
 	window.open('userWiseTrackingAction.action?userId='+userId+'&date='+date+'&userTypeId='+id+'');
 }
 
+
 function getconstituencies()
 {
-
-
 	var jsObj =
 	{
 	
@@ -327,11 +334,11 @@ function getconstituencies()
 	$("#constituencyId").append('<option value="0">Select Constituency</option>');
 	if(result != null && result.length > 0)
 	{
-	for(var i in result)
-	{
-		
-	$("#constituencyId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
-	}
+		for(var i in result)
+		{
+			
+			$("#constituencyId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+		}
 
 	}
 	
@@ -353,7 +360,7 @@ function getconstituencies()
 										<div class="span3 offset1">
 											<label>Select Constituency</label>
 										<!--<select name="constituency" id="constituencyId" list="constituenciesList" style="width:130px;"></select>-->
-										<s:select theme="simple"  name="constituency" id="constituencyId"  headerKey="0" headerValue="Select Constituency" list="dataAvilableConstituencies" listKey="id" listValue="name"/>
+										<s:select theme="simple"  name="constituency" id="constituencyId"  headerKey="0" headerValue="Select Constituency" list="dataAvilableConstituencies" listKey="id" listValue="name" value="userId"/>
 								
 										</div>
 										
