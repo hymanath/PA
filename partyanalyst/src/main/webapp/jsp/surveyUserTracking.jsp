@@ -35,7 +35,7 @@
 			.booths-Overview-widget{background:#ddd;padding:10px; width:100%;}
 			.booths-Overview-widget-nav li{color:#333333; background:#F6DD78;padding:10px; width:140px; display:table;line-height:20px;border:1px solid #ccc;text-align:center; font-weight:bold; text-transform:uppercase; margin: 10px;text-decoration:none; font-size:16px;}
 			.booths-Overview-widget-nav li hgroup h4,h5{font-size:15px;}
-	#constituencyId{width:144px !important;}
+	
 
 		</style>	
 	
@@ -56,7 +56,7 @@
 $(document).ready(function(){
    $('.datePickerCls').datepicker({
    dateFormat: 'dd-mm-yy'
-   });
+   }).datepicker('setDate', new Date());
    
     var constiD =  '${userId}';
 	var dateStr =  '${date}';
@@ -79,7 +79,7 @@ function getDetailsByConstituency()
 	var constituencyId = $('#constituencyId').val();
 	if(constituencyId == 0)
 	{
-		$("#errorMsgDiv").html('<font style="color:red;font-size:12px;"> select constituency </font>');
+		$("#errorMsgDiv").html('<font style="color:red;font-size:14px;"> Select Constituency </font>');
 		return;
 	}
 	var jObj = 
@@ -87,6 +87,7 @@ function getDetailsByConstituency()
 	 constituencyId: $('#constituencyId').val(),
 	 dateStr : $('#appendedInput').val()
 	}
+	$("#errorMsgDiv").html('');
 	$.ajax({
 			type:'GET',
 			url: 'getLatLongForSurveyUsersByConstituencyAction.action',
@@ -354,10 +355,10 @@ function getconstituencies()
 							<h4>User Tracking</h4>
 							<div class="row">
 								<div class="span8 offset3">
-								<div id="errorMsgDiv" class="offset1"></div>
+								<div id="errorMsgDiv" class="offset1" ></div>
 									<div class="row-fluid">
 									
-										<div class="span3 offset1">
+										<div class="span5 offset1">
 											<label>Select Constituency</label>
 										<!--<select name="constituency" id="constituencyId" list="constituenciesList" style="width:130px;"></select>-->
 										<s:select theme="simple"  name="constituency" id="constituencyId"  headerKey="0" headerValue="Select Constituency" list="dataAvilableConstituencies" listKey="id" listValue="name" value="userId"/>
@@ -372,10 +373,10 @@ function getconstituencies()
 											</div>
 										</div>	
 									</div>	
-									
+										<div class="row text-center m_top20" style="margin-right:51px;"><button type="button" class="btn btn-success" onClick="getDetailsByConstituency();">SUBMIT</button></div>
 								</div>
 							</div>
-							<div class="row text-center m_top20" style="margin-right:51px;"><button type="button" class="btn btn-success" onClick="getDetailsByConstituency();">SUBMIT</button></div>
+						
 					</div>
 				</div>
 				
