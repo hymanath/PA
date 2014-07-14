@@ -25,6 +25,7 @@ import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.dto.UserBoothDetailsVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
+import com.itgrids.partyanalyst.service.ISurveyDetailsService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -41,6 +42,8 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	private List<GenericVO> returnList;
 	@Autowired
 	private ISurveyDataDetailsService surveyDataDetailsService;
+	@Autowired
+	private ISurveyDetailsService surveyDetailsService;
 	private List<UserBoothDetailsVO> assgnedBoothsList;
 	private List<SurveyReportVO> dayWiseReportList;
 	private List<SelectOptionVO> constituenciesList,surveyUserConstituencies,dataAvilableConstituencies;
@@ -1286,6 +1289,28 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		catch (Exception e)
 		{
 			LOG.error("Exception raised in getSurveyConstituencyList() in SurveyDataDetailsAction", e);
+		}
+		return Action.SUCCESS;
+		
+	}
+  
+     public String getConstituencyWiseLeaders()
+     {
+		
+		try
+		{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			jObj = new JSONObject(getTask());
+			returnList = surveyDetailsService.getConstituencyWiseLeaders(Long.valueOf(jObj.getString("constiId")));			
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getConstituencyWiseLeaders() in SurveyDataDetailsAction", e);
 		}
 		return Action.SUCCESS;
 		
