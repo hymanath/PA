@@ -2169,8 +2169,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		return null;
 	}
 
-/*
-	public List<GenericVO> getSurveyConstituencyLeadersList(Long constituencyId){
+
+	public List<GenericVO> getSurveyConstituencyUsersList(Long constituencyId){
 			
 			 List<GenericVO> returnList = null;
 			 try 
@@ -2208,7 +2208,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		}
 
 	
-*/
+
 	public List<GenericVO> getSurveyConstituencyLeadersList(Long constituencyId){
 			
 			 List<GenericVO> returnList = null;
@@ -2802,18 +2802,17 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			
 			SurveyReportVO finalVO = new SurveyReportVO();
 			
-			List<Object[]> usersList = surveyUserRelationDAO.getUsersByConstituencyAndLeader(leaderId, constituencyId);
+			//List<Object[]> usersList = surveyUserRelationDAO.getUsersByConstituencyAndLeader(leaderId, constituencyId);
 			
 			Set<Long> assignedUserIds = new HashSet<Long>();
 			
-			if(usersList != null && usersList.size()>0){
-				for (Object[] user : usersList) {
-					assignedUserIds.add((Long) user[0]);
-				}
+			//if(usersList != null && usersList.size()>0){
+				//for (Object[] user : usersList) {
+				//	assignedUserIds.add((Long) user[0]);
+				//}
 				
 				List<Long> ids = new ArrayList<Long>();
-				ids.addAll(assignedUserIds);
-				
+				ids.add(leaderId);
 				List<Object[]> votersLsit = surveyDetailsInfoDAO.getVoterDetailsByBoothId(boothId,ids);
 
 				if(votersLsit != null && votersLsit.size()>0){
@@ -2850,7 +2849,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					}
 				}	
 				
-			}
+			//}
 					
 			List<GenericVO> casteList = new ArrayList<GenericVO>();
 			List<Object[]> casteInfo = boothPublicationVoterDAO.getBoothWiseCasteDetails(boothId);
@@ -2881,6 +2880,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		}		
 		return retultList;
 	}
+	
 	
 	
 	public ResultStatus saveSurveyCallStatusDetils(final Long userId,final List<SurveyReportVO> verifiedList){

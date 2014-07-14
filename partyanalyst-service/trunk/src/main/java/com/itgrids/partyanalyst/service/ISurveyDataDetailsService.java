@@ -92,4 +92,6 @@ public interface ISurveyDataDetailsService
 	
 	public List<SurveyReportVO> getSurveyUserDetailsByConstituencies(Long constituencyId,Date date);
 	public List<SurveyReportVO> getSurveyDetailsForConstituency(Long constituencyId,Long userTypeId,String date);
+	
+	public List<GenericVO> getSurveyConstituencyUsersList(Long constituencyId);
 }
