@@ -341,7 +341,7 @@
 			 <pattern>/surveyAdmin*</pattern>
 			 <pattern>/updateSurveyCompleteDetails*</pattern>
 			 <pattern>/surveyUserStatus*</pattern>
-			 
+			 <pattern>/assignUsersToWebMonitoringTeam*</pattern>
             <!--  <pattern>/dashBoardAction*</pattern> -->
        </decorator>
        

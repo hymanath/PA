@@ -1533,6 +1533,10 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="webMonitoringAssignedUsersDAO" class="com.itgrids.partyanalyst.dao.hibernate.WebMonitoringAssignedUsersDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	
 	
 	<!--  survey -->
