@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -13,8 +14,10 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IRegionWiseSurveysDAO;
 import com.itgrids.partyanalyst.dao.ISurveyAccessUsersDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDAO;
+import com.itgrids.partyanalyst.dao.ISurveyUserConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IUpdationDetailsDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -33,6 +36,9 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 	private ISurveyAccessUsersDAO surveyAccessUsersDAO;
 	private DateUtilService dateUtilService = new DateUtilService();
 	private IRegionWiseSurveysDAO regionWiseSurveysDAO;
+	
+	@Autowired
+	private ISurveyUserConstituencyDAO surveyUserConstituencyDAO;
 
 	
 	public IRegionWiseSurveysDAO getRegionWiseSurveysDAO() {
@@ -159,11 +165,38 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 			
 		}catch(Exception e)
 		{
-			e.printStackTrace();
+			//e.printStackTrace();
 			log.error("Exception raised in  getSurveyDetailsByRegion service method");
 		}
 		return surveyDetailsMap;
 	}
 	
+	public List<GenericVO> getConstituencyWiseLeaders(Long constituencyId)
+	{
+		log.debug("Entered into the getConstituencyWiseLeaders service method");
+		List<GenericVO> returnList = null;
+		try 
+		{
+			List<Object[]> result = surveyUserConstituencyDAO.getSurveyLeaderByConstituency(constituencyId);
+			if(result != null && result.size() > 0)
+			{
+				returnList = new ArrayList<GenericVO>();
+				for (Object[] objects : result)
+				{
+					GenericVO VO = new GenericVO();
+					VO.setId((Long)objects[0]);
+					VO.setName(objects[1] != null ? objects[1].toString() : null);
+					VO.setDesc(objects[2] != null ? objects[2].toString() : null);
+					returnList.add(VO);
+				}
+			}
+		} 
+		catch (Exception e)
+		{
+			log.error("Exception raised in  getConstituencyWiseLeaders service method");
+		}
+		return returnList;
+		
+	}
 	
 }
