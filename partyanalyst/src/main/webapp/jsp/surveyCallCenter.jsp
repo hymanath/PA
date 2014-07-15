@@ -510,7 +510,6 @@ function updateStatus(id,value,voterId,surveyUserId,isCasteMatched,mobileMatched
 	var voterInfoArr = new Array();
 	var isMobileVerified = $('#'+mobileMatched+'').val();
 	var isMatched = $('#'+isCasteMatched+'').val();
-	var boothId = webBoothId;
 	$('#'+casteErrDiv+'').html('');
 	$('#'+mobileErrDiv+'').html('');
 
@@ -525,7 +524,7 @@ function updateStatus(id,value,voterId,surveyUserId,isCasteMatched,mobileMatched
 	
 	var obj = {
 		voterId:voterId,
-		surveyUserId:surveyUserId,
+		surveyUserId:userId,
 		isMobileVerified:isMobileVerified,
 		isMatched :isMatched,
 		boothId : boothId
