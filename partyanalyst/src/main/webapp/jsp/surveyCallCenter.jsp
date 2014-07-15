@@ -449,7 +449,9 @@ if(flag)
 					str +='</td>';
 			}	
 		else{
-		str +='<td></td>';
+		str +='<td>';
+		str +='					<input type="hidden" value="3" id="isTestedMobile'+i+'"/>';
+		str +='</td>';
 
 		}			
 					str +='						<td>';
@@ -1037,7 +1039,7 @@ function getUserDetailsByConstituencyForTable()
 	   {
 	   if(result[i].userType == 'Data Collectors'){
 			str+='<tr>';
-			str+='<td>'+result[i].userName+'</td>';
+			str+='<td><a onClick="getUserDetails('+result[i].userid+','+result[i].boothId+')" style="cursor: pointer;">'+result[i].userName+'</a> <span class="label label-info pull-right"></td>';
 	
 			if(result[i].mobileNo == null)
 				str+='<td>-</td>';
