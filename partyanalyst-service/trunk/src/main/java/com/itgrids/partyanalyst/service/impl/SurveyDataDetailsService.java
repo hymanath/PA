@@ -3046,7 +3046,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			Date date1 = originalFormat.parse(date);
 			
 		   List<Object[]> dataList = surveyDetailsInfoDAO.getSurveyDetailsByConstituency(constituencyId,userTypeId,date1);
-			
+		  
+			 
 			if(dataList != null && dataList.size() > 0)
 			{
 				// List<Object[]> list1 = surveyDetailsInfoDAO.getBoothCount(constituencyId,userTypeId);
@@ -3058,8 +3059,22 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					 surveyReportVO.setUserName(user[1].toString());
 					 resultList.add(surveyReportVO);
 					 userIDs.add((Long)user[0]);
+					 if(!boothIDs.contains((Long)user[2]))
+					 boothIDs.add((Long)user[2]);
 				 }
 				
+				  Map<Long,Long> totalVotersMap = new HashMap<Long, Long>();
+					 List<Object[]> boothTotalVoters = boothPublicationVoterDAO.getBoothWiseVoterDetails(boothIDs);
+					 if(boothTotalVoters != null && boothTotalVoters.size() > 0)
+					 {
+						for(Object[] params : boothTotalVoters)
+						{
+							if(totalVotersMap.get((Long)params[0]) == null)
+							totalVotersMap.put((Long)params[0], (Long)params[1]);
+							else
+								totalVotersMap.put((Long)params[0], (Long)params[1] + totalVotersMap.get((Long)params[0]));	
+						}
+					 }
 				if(dataList != null && dataList.size() > 0)
 				{
 					 for(Object[] params : dataList)
@@ -3070,13 +3085,15 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 							 SurveyReportVO vo = new SurveyReportVO();
 							 vo.setBoothId((Long)params[2]);
 							 vo.setPartNo(params[3].toString());
-						     vo.setTotalVoters((Long)params[4]);
+						     vo.setTotalVoters(totalVotersMap.get((Long)params[2]));
+							 
 							 boothVo.getSubList().add(vo);
-							 boothIDs.add((Long)params[2]);
+							 
 						 }
 						 
 					 }
 				}
+				
 				
 				List<Object[]> list2 = surveyDetailsInfoDAO.getHamletCountByBooths(userIDs,boothIDs,userTypeId,date1);
 				if(list2 != null && list2.size() > 0)
@@ -3143,13 +3160,13 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 							 if(boothVo != null)
 							 {
 								 boothVo.setCount(boothVo.getCount() + 1);
-								 if(params[2].toString().equalsIgnoreCase("N"))
+								 if(params[2]!= null && params[2].toString().equalsIgnoreCase("N"))
 									boothVo.setMobileNotMatchedCount(boothVo.getMobileNotMatchedCount() + 1);
-								if(params[2].toString().equalsIgnoreCase("Y"))
+								if(params[2]!= null && params[2].toString().equalsIgnoreCase("Y"))
 									boothVo.setMobileMatchedCount(boothVo.getMobileMatchedCount() + 1);
-								if(params[3].toString().equalsIgnoreCase("N"))
+								if(params[3]!= null && params[3].toString().equalsIgnoreCase("N"))
 									boothVo.setCasteNotMatchedCount(boothVo.getCasteNotMatchedCount() + 1);
-								if(params[3].toString().equalsIgnoreCase("Y"))
+								if(params[3]!= null && params[3].toString().equalsIgnoreCase("Y"))
 									boothVo.setCasteMatchedCount(boothVo.getCasteMatchedCount() + 1);
 							 }
 						 }
