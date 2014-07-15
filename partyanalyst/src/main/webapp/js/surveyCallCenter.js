@@ -18,7 +18,14 @@ function showHideTabs(id)
 		$('#boothWise').hide();
 		$('#dataCollector').hide();
 	}
-	else if(id="boothWise")
+	else if(id == "boothWiseTab")
+	{
+		$('#callCenter').hide();
+		$('#startTime').hide();
+		$('#boothWise').show();
+		$('#dataCollector').hide();
+	}
+	else
 	{
 		$('#callCenter').hide();
 		$('#startTime').hide();
@@ -299,60 +306,6 @@ function updateStatus(id,value,voterId,surveyUserId,isCasteMatched,mobileMatched
 	
 	
 }
-
-/*
-function saveVoterDetails(voterId,surveyUserId,isCasteMatched,mobileMatched,casteErrDiv,mobileErrDiv){
-
-	var voterInfoArr = new Array();
-	var isMobileVerified = $('#'+mobileMatched+'').val();
-	var isMatched = $('#'+isCasteMatched+'').val();
-	var boothId = $('#boothList').val();
-	$('#'+casteErrDiv+'').html('');
-	$('#'+mobileErrDiv+'').html('');
-
-	if(isMatched == undefined || isMatched.trim().length == 0){
-		$('#'+casteErrDiv+'').html('Caste verification not updated.');
-	} 
-	else if(isMobileVerified == undefined || isMobileVerified.trim().length ==0){
-		$('#'+mobileErrDiv+'').html('Mobile verification not updated.');
-	} 
-	else{
-	
-	var obj = {
-		voterId:voterId,
-		surveyUserId:surveyUserId,
-		isMobileVerified:isMobileVerified,
-		isMatched :isMatched,
-		boothId : boothId
-	}
-	
-	voterInfoArr.push(obj);
-	
-	var jsObj = 
-	{
-		voterInfoArr:voterInfoArr,
-		task : "getSurveyVotersList"
-	}
-
-	$.ajax({
-		type:'GET',
-		url: 'saveSurveyCallStatusDetilsAction.action',
-		dataType: 'json',
-		data: {task:JSON.stringify(jsObj)},
-		}).done(function(result){
-			if(result != null && result.resultCode == 0){
-				getSurveyVotersList();
-			}
-			else{
-				alert('Error occured while saving record.');
-			}
-			
-		});
-	}
-}
-
-*/
-
 function getconstituencies(divId)
 {
 
@@ -673,8 +626,6 @@ function buildLocationDetails(result)
 		}
 		
 	}
-	
-	//buildTable(result);
 	getUserDetailsByConstituencyForTable();
 } 
 
@@ -713,49 +664,7 @@ function getUserDetailsByConstituencyForTable()
 				buildDetailsTable(result);
 		});
 }
-/* function buildTable(result)
-{
-	var date = $('#appendedInput').val();
-	var str = '';
-	 str += '<div class="span12 m_top20 widgetservey">';
-	 str += '<h4>Logged in users Details </h4>';
-	 str += '<div class="row-fluid" >';
-	 str += '<table class="table table-bordered m_top20 table-hover table-striped username">';	
-	 str += '<thead class="alert alert-success">';
-	 str += '<tr> ';
-	 str += '<th>User Name </th>	';
-	 str += '<th>Booth</th>	';
-	 str += '<th>Mandal</th>';	
-	 str += '<th>Panchayat</th>	';
-	 str += '<th>Area Covered</th>	';
-	 str += '<th>Location</th>	';				
-	 str += '<th>Data Collected Map</th>	';	
-	str += '<th>Tracking MAP</th>	';		 
-	 str += '</tr>	';						
-	 str += '</thead>';
-	 str += '<tbody>';
-	 for(var i in result)
-	 {
-		 str += '<tr>';
-		 str += '<td><a onClick="getUserDetails('+result[i].id+','+result[i].orderId+')" style="cursor: pointer;">'+result[i].name+'</a> <span class="label label-info pull-right">';
-		 str += '</span></td>	';
-		 str += '<td>'+result[i].partno+'</td>	';
-		 str += '<td>'+result[i].value+'</td>	';
-		 str += '<td>'+result[i].url+'</td>	';
-		 str += '<td>'+result[i].villageCovered+'</td>	';
-		 str += '<td>'+result[i].location+'</td>	';
-		 str += '<td><a onClick="openTrackinWindow('+result[i].id+',\''+$('#dateId').val()+'\',1) " style="cursor: pointer;"><img src="images/DC.png"></img></a></td>	';
-		 str += '<td><a onClick="openTrackinWindow('+result[i].id+',\''+$('#dateId').val()+'\',2) " style="cursor: pointer;"><img src="images/DC.png"></img></a></td>	';
-		 str += '</tr>	';	
-	 }		
-	 str += '</tbody>';
-	 str += '</table>	';
-	 str += '</div>';
-	 str += '</div>';
-	 
-	 $('#tableDiv').html(str);
-} */
- function buildDetailsTable(result)
+function buildDetailsTable(result)
 {
 	$("#userFieldImage").hide();
 	if(result == null || result.length == 0)
