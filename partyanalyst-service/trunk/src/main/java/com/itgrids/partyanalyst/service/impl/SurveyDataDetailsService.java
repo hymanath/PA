@@ -752,8 +752,20 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 									
 									//check whether record avilable for user and uniqueID
 									SurveyDetailsInfo surveyDetailsInfo=surveyDetailsInfoDAO.checkUserForVoter(userId, surveyResponceVO.getUuid(),voterID);
-									if(surveyDetailsInfo==null)
-									surveyDetailsInfo = new SurveyDetailsInfo();
+									
+									
+									if(surveyDetailsInfo==null){
+										
+										surveyDetailsInfo = new SurveyDetailsInfo();
+										surveyDetailsInfo.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+										SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_AND_TIME_FORMAT);
+									//	sdf.setTimeZone(TimeZone.getTimeZone(IConstants.TIME_ZONE_INDIA));
+										//sdf.parse(surveyResponceVO.getInsertTime());
+										surveyDetailsInfo.setDate(sdf.parse(surveyResponceVO.getInsertTime()));
+									
+									}else{
+										surveyDetailsInfo.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+									}
 									
 									if(surveyUser != null)
 									{
@@ -789,12 +801,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 										surveyDetailsInfo.setCasteName(surveyResponceVO.getCasteName());
 										surveyDetailsInfo.setUuid(surveyResponceVO.getUuid());
 										surveyDetailsInfo.setStatusId(Integer.valueOf(surveyResponceVO.getStatusId()));
-										surveyDetailsInfo.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+										
 										surveyDetailsInfo.setHouseNoPoint(surveyResponceVO.getHouseNo());
-										SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_AND_TIME_FORMAT);
-										sdf.setTimeZone(TimeZone.getTimeZone(IConstants.TIME_ZONE_INDIA));
-										sdf.parse(surveyResponceVO.getInsertTime());
-										surveyDetailsInfo.setDate(sdf.parse(surveyResponceVO.getInsertTime()));
 										
 										if(surveyResponceVO.getHamletId() != null && surveyResponceVO.getHamletId() > 0)
 										{
