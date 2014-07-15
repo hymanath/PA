@@ -241,7 +241,8 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 		    	{
 		    		//dashBoardVO.setLocationId(entry.getKey());
 		    		SurveyDashBoardVO matchedVO = matchedStartedVO(resultVO.getProcess(),entry.getKey());
-		    		if(matchedVO == null)
+		    		SurveyDashBoardVO completedVO = matchedStartedVO(resultVO.getCompleted(),entry.getKey());
+		    		if(matchedVO == null && completedVO == null)
 		    		{
 			    		resultVO.getProcess().add(dashBoardVO);
 			    		resultVO.getStarted().add(dashBoardVO);
