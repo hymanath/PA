@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.dto.UserBoothDetailsVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
 import com.itgrids.partyanalyst.service.ISurveyDetailsService;
+import com.itgrids.partyanalyst.service.impl.RegionServiceDataImp;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -61,10 +62,19 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	private List<SurveyReportVO> surveyUserDetails;
 	private EntitlementsHelper entitlementsHelper;
 	private List<GenericVO> usersList,constituencies;
+	private RegionServiceDataImp regionServiceDataImp;
 	private SurveyReportVO surveyReportVO;
 	
 	
 	
+	public RegionServiceDataImp getRegionServiceDataImp() {
+		return regionServiceDataImp;
+	}
+
+	public void setRegionServiceDataImp(RegionServiceDataImp regionServiceDataImp) {
+		this.regionServiceDataImp = regionServiceDataImp;
+	}
+
 	public SurveyReportVO getSurveyReportVO() {
 		return surveyReportVO;
 	}
@@ -1369,6 +1379,31 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		
   }
   
+  
+  public String getDistrictDetailsForConstituency(){
+	  
+
+		try
+		{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			jObj = new JSONObject(getTask());
+
+			constituenciesList = regionServiceDataImp.getStateDistrictByConstituencyID(jObj.getLong("constituencyId"));
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getAlreadyAssignTabsListForLeader", e);
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+		
+}
+
   
   public String assignUsersToWebMonitoringTeam()
   {
