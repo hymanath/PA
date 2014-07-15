@@ -44,6 +44,8 @@ public class SurveyReportVO {
 	private Long matchedCount;
 	private Long unmatchedCount;
 	private String mobileNo;
+	private Long id;
+	private String name;
 	
 	
 	private Long casteMatchedCount = 0l;
@@ -63,6 +65,18 @@ public class SurveyReportVO {
 	private List<GenericVO> genericVOList = new ArrayList<GenericVO>();
 	
 	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	public String getMandalName() {
 		return mandalName;
 	}

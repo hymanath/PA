@@ -6,6 +6,7 @@ import java.util.Map;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.SurveyReportVO;
 
 public interface ISurveyDetailsService {
 
@@ -13,5 +14,6 @@ public interface ISurveyDetailsService {
 	public ResultStatus saveSurveyDetails(Long userId,Long surveyId);
 	public Map<String,String> getSurveyDetailsByRegion(Long regionId);
 	public List<GenericVO> getConstituencyWiseLeaders(Long constituencyId);
-
+	public List<SurveyReportVO> getSurveyUserConstituencyDetails(Long surveyUserId);
+	public ResultStatus unTagConstituencyForAUser(Long userId,Long constituencyId);
 }
