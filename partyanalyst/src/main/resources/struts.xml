@@ -7518,6 +7518,12 @@
 			<result name="success">/jsp/constituencyDetailReport.jsp</result>
 			<result name="input">/jsp/loginForm.jsp?src=constituencyDetailReport</result>
 		</action>
+				
+		<action name="getDistrictDetailsForConstituencyAction" class="surveyDataDetailsAction" method="getDistrictDetailsForConstituency">
+			<result type="json" name="success">
+				<param name="root">constituenciesList</param>
+			</result>
+		</action>
 		
 		<action name="getCosntituencyWiseReportByContiAction" class="surveyDataDetailsAction" method="getCosntituencyWiseReportByContiId">
 			<result type="json" name="success">
