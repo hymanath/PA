@@ -1940,3 +1940,101 @@ leaderTabsArr = [];
 		}	
 	});
 }
+
+function getAlreadyAssignedUsers(divId)
+{
+	var jsObj = 
+	{
+	}
+	
+	$.ajax({
+		type:'GET',
+		url: 'getSurveyLeadersAction.action',
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)},
+		}).done(function(result){
+			$('#'+divId+'').find('option:not(:first)').remove();
+			for(var i in result)
+				{
+					$('#'+divId+'').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+				}
+		});
+}
+
+function getConstituenciesToUnTag(divId,value)
+{
+
+	var jsObj = 
+	{
+		userId:value
+	}
+	
+	$.ajax({
+		type:'GET',
+		url: 'getConstituencyDtlsForUserAction.action',
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)},
+		}).done(function(result){
+			$('#'+divId+'').find('option:not(:first)').remove();
+			for(var i in result)
+				{
+					$('#'+divId+'').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+				}
+		});
+}
+
+function unTagConstituencyToUser()
+{
+	
+	var userTypeId = $("#untagUserTypeId").val();
+	var	userId = $("#untagUserId").val();
+	var	constituencyId =  $('#untagConstituencyId').val();
+	
+	if(constiUserTypeId == 0)
+	{
+		$("#untagConstiErrorDiv").html("Please Select User Type").css("color","red");
+		return;
+	}
+	if(userId == 0)
+	{
+		$("#untagConstiErrorDiv").html("Please Select Leader").css("color","red");
+		return;
+	}
+	if(constituencyId == 0)
+	{
+		$("#untagConstiErrorDiv").html("Please Select Constituency").css("color","red");
+		return;
+	}
+	$('#processingImgToUnTagConsti').show();
+	var jsObj = 
+	{
+		userId : userId,
+		constituencyId :  constituencyId,
+		task : "unTagConstituency"
+	}
+	
+	$.ajax({
+		type:'GET',
+		url: 'unTagConstituencyOfUserAction.action',
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)},
+		}).done(function(result){
+			if(result.resultCode == 0) 
+			{
+				$("#untagConstiErrorDiv").html('Constituency UnTagged successfully.').css("color","green");
+				setTimeout(function(){$('#untagConstiErrorDiv').html('');}, 3000);				
+				$('#untagUserId').find('option:not(:first)').remove();
+				$('#untagConstituencyId').find('option:not(:first)').remove();
+			}
+			else
+			{
+				$("#untagConstiErrorDiv").html('Error Occured,Try again....').css("color","red");
+			}		
+			$('#processingImgToUnTagConsti').hide();
+			
+			$('#untagUserTypeId').val(0);
+			$('#untagUserId').val(0);
+			$('#untagConstituencyId').val(0);
+		});
+
+}
