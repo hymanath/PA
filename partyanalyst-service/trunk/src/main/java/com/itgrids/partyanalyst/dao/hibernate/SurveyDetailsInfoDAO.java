@@ -171,7 +171,7 @@ public class SurveyDetailsInfoDAO extends GenericDaoHibernate<SurveyDetailsInfo,
 		queryStr.append(" SUM(CASE WHEN SDI.hamletName is not null THEN 1 ELSE 0 END ),  " );		// hamletName count 		4
 		queryStr.append(" SUM(CASE WHEN SDI.isCadre ='Y' THEN 1 ELSE 0 END),");						// Cadre count 				5
 		queryStr.append(" SUM(CASE WHEN SDI.isInfluencingPeople ='Y' THEN 1 ELSE 0 END),  ");		// InfluencingPeople count	6 
-		queryStr.append(" SUM(CASE WHEN SDI.mobileNumber is not null THEN 1 ELSE 0 END )  ");		// mobileNumber count 		7
+		queryStr.append(" SUM(CASE WHEN SDI.mobileNumber is not null and SDI.mobileNumber != 'null'  THEN 1 ELSE 0 END )  ");		// mobileNumber count 		7
 			
 			queryStr.append(" 	from SurveyDetailsInfo SDI ,SurveyUser SU , SurveyUserType SUT, Booth B ");
 			queryStr.append(" 	where  SDI.surveyUser.surveyUserId = SU.surveyUserId 				and ");
