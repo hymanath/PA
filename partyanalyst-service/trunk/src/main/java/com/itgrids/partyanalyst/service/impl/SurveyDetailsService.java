@@ -21,6 +21,7 @@ import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.SurveyReportVO;
 import com.itgrids.partyanalyst.model.SurveyAccessUsers;
 import com.itgrids.partyanalyst.model.UpdationDetails;
 import com.itgrids.partyanalyst.service.ISurveyDetailsService;
@@ -199,4 +200,53 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 		
 	}
 	
+	public List<SurveyReportVO> getSurveyUserConstituencyDetails(Long surveyUserId)
+	{
+		List<SurveyReportVO> resultList = new ArrayList<SurveyReportVO>();
+		try {
+			List<Object[]> constituency = surveyUserConstituencyDAO.getSurveyUserConstituencyDetails(surveyUserId);
+			
+			for(Object[] parms:constituency)
+			{
+				SurveyReportVO vo = new SurveyReportVO();	
+				vo.setId((Long)parms[0]);
+				vo.setName(parms[1].toString());
+				resultList.add(vo);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return resultList;
+	}
+	
+	public ResultStatus unTagConstituencyForAUser(Long userId,Long constituencyId)
+	{
+		log.info("Entered into unTagConstituencyForAUser method");
+		ResultStatus resultStatus = new ResultStatus();
+		try 
+		{			
+				int value = surveyUserConstituencyDAO.updateUserConstituencies(userId, constituencyId);
+				if(value > 0)
+				{
+					resultStatus.setResultCode(0);
+					resultStatus.setMessage("Success");
+				}
+				else
+				{
+					resultStatus.setResultCode(1);
+					resultStatus.setMessage("Failure");
+				}
+		
+		} 
+		catch (Exception e)
+		{
+			log.error("Exception raised in unTagConstituencyForAUser", e);
+			resultStatus.setResultCode(3);
+			resultStatus.setMessage("Exception");
+		}
+		return resultStatus;
+	}
+
+
 }

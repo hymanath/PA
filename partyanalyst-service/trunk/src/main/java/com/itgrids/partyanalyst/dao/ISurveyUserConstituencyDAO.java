@@ -22,4 +22,6 @@ public interface ISurveyUserConstituencyDAO extends GenericDao<SurveyUserConstit
 	public List<Object[]> getLeadersByConstituency();
 	public List<Object[]> getSurveyConstituencies();
 	public List<Object[]> getSurveyLeaderByConstituency(Long constituencyId);
+	public int updateUserConstituencies(Long surveyUserId,Long constituencyId);
+	public List<Object[]> getSurveyUserConstituencyDetails(Long surveyUserId);
 }
