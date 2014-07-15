@@ -153,7 +153,7 @@
 								<c:if test="${constituency.totalCount != constituency.notStartedCount}">
 								<tr>
 
-									<td>${constituency.locationName}</td>
+									<td><a href="javascript:{getConstituencyDetalReport(${constituency.locationId})}">${constituency.locationName}</a></td>
 									<td>${constituency.totalCount}</td>
 									<td>${constituency.completedCount}</td>
 									<td>${constituency.processingCount}</td>
@@ -220,6 +220,24 @@
 function showConstituenciesDetails(districtId)
 {
 	 window.open('constituencyDetailReportAction.action?districtId='+districtId+'','_blank');
+}
+
+function getConstituencyDetalReport(constituencyId){
+
+	var jobj = {
+		constituencyId : constituencyId,
+		task:"getDistrictDetailsForConstituency"
+	}
+	$.ajax({
+          type:'POST',
+          url: 'getDistrictDetailsForConstituencyAction.action',
+          dataType: 'json',
+          data: {task:JSON.stringify(jobj)}
+    }).done(function(result){
+	var district = parseInt(result[1].id);
+		window.open('constituencyDetailReportAction.action?districtId='+district+'&task='+constituencyId+'','_blank');
+	});
+	
 }
 
 function getTotalCasteCounts()
