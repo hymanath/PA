@@ -794,6 +794,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 										surveyDetailsInfo.setLongitude(surveyResponceVO.getLongitude());
 										surveyDetailsInfo.setIsCadre(surveyResponceVO.getIsCadre());
 										surveyDetailsInfo.setIsInfluencingPeople(surveyResponceVO.getIsInfluencingPeople());
+										if(surveyResponceVO.getMobileNo()!=null&&!surveyResponceVO.getMobileNo().equalsIgnoreCase("null"))
 										surveyDetailsInfo.setMobileNumber(surveyResponceVO.getMobileNo());
 										
 										surveyDetailsInfo.setLocalArea(surveyResponceVO.getLocalArea());
