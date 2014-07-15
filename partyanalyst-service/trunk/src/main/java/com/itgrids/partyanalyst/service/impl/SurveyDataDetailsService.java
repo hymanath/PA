@@ -2624,7 +2624,11 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			 List<Object[]> constituencyCollectdDetls = surveyDetailsInfoDAO.getsurveyDetailsInfoByboothId(boothId,1L);
 			 List<Object[]> constituencyVerifiedDetls = surveyDetailsInfoDAO.getsurveyDetailsInfoByboothId(boothId,4L);
 			 
-			 Long totalVoters = voterInfoDAO.getTotalVotersForSelectdLevel(4L, boothId, 10L, constituencyId); //(report level id,reportlevelValue,publicationId,constId);
+			// Long totalVoters = voterInfoDAO.getTotalVotersForSelectdLevel(4L, boothId, 10L, constituencyId); //(report level id,reportlevelValue,publicationId,constId);
+			 List<Long> boothIds = new ArrayList<Long>();
+			 boothIds.add(boothId);
+			 List<Object[]> result = boothPublicationVoterDAO.getBoothWiseVoterDetails(boothIds);
+			 Long totalVoters = (Long) result.get(0)[1];
 			 if(constituencyCollectdDetls != null && constituencyCollectdDetls.size()>0){
 					
 				 reportVO.setConstituencyTotalVoters(totalVoters);
