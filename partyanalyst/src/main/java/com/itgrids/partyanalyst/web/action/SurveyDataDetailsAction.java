@@ -61,9 +61,18 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	private List<SurveyReportVO> surveyUserDetails;
 	private EntitlementsHelper entitlementsHelper;
 	private List<GenericVO> usersList,constituencies;
+	private SurveyReportVO surveyReportVO;
+	
+	
+	
+	public SurveyReportVO getSurveyReportVO() {
+		return surveyReportVO;
+	}
 
-	
-	
+	public void setSurveyReportVO(SurveyReportVO surveyReportVO) {
+		this.surveyReportVO = surveyReportVO;
+	}
+
 	public List<GenericVO> getUsersList() {
 		return usersList;
 	}
@@ -1368,6 +1377,30 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 
 	  return Action.SUCCESS;
   }
+  public String getTotalCasteCollectedCounts(){
+	  
+
+		try
+		{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			jObj = new JSONObject(getTask());
+
+			surveyReportVO = surveyDataDetailsService.getTotalCasteCollectedCount();
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getAlreadyAssignTabsListForLeader", e);
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+		
+  }
+  
 /*  
   public String getAssignedUsersOfAConstituency()
   {

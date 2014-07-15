@@ -73,6 +73,7 @@
 					</div>		
 				</div><!-----State Overview Div end---->
 				
+				<div id="casteCountDiv" class="offset4" style="margin-top:20px;"></div>
 				<div class="row-fluid ">
 					<div class="span12 m_top20 widgetservey">
 						<h4>Districts Started</h4>
@@ -81,7 +82,7 @@
 									SURVEY NOT STARTED IN ANY DISTRICT
 								</c:if>
 								<c:forEach var="startedDistrict" items="${resultVO.started}">
-									  <li><a href="javascript:{showConstituenciesDetails(${startedDistrict.locationId})}">${startedDistrict.locationName}</a></li>
+									  <li><a style="line-height:40px;" href="javascript:{showConstituenciesDetails(${startedDistrict.locationId})}">${startedDistrict.locationName}</a></li>
 								</c:forEach>
 
 							</ul>
@@ -149,13 +150,16 @@
 							</thead>
 							<tbody>
                               	<c:forEach var="constituency" items="${resultList}">
+								<c:if test="${constituency.totalCount != constituency.notStartedCount}">
 								<tr>
+
 									<td>${constituency.locationName}</td>
 									<td>${constituency.totalCount}</td>
 									<td>${constituency.completedCount}</td>
 									<td>${constituency.processingCount}</td>
 									<td>${constituency.notStartedCount}</td>
 								</tr>
+								</c:if>
 								</c:forEach>
 
 <!--
@@ -217,6 +221,49 @@ function showConstituenciesDetails(districtId)
 {
 	 window.open('constituencyDetailReportAction.action?districtId='+districtId+'','_blank');
 }
+
+function getTotalCasteCounts()
+{
+var jObj = 
+	{
+	
+	 task : "getCount"
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getTotalCasteCollectedCountsAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+			}).done(function(result){
+
+				buildCastCounts(result);
+			});
+			setTimeout(getTotalCasteCounts, 3000);
+}
+
+function buildCastCounts(result)
+{
+
+var str=''
+/*str+='<div class="row">';
+str+='<div class="span10">';
+str+='<div class="row-fluid ">';
+str+='<div class="span4">Total Caste Collected Count : '+result.count+'</div> ';
+str+='<div class="span4">Today Caste Collected Count : '+result.casteCount+'</div> ';
+str+='</div>';
+str+='</div>';
+str+='</div>';*/
+str+='<table>';
+str+='<tr><td><b>Total Caste Collected Count </b></td><td> <b>&nbsp;:&nbsp;</b></td><td class="badge badge-info"> <b>'+result.count+'</b></td></tr> ';
+str+='<tr><td><b>Today Caste Collected Count </b></td><td> <b>&nbsp;:&nbsp;</b></td><td class="badge badge-info"> <b>'+result.casteCount+'</b></td></tr> ';
+
+
+str+='</table>';
+$("#casteCountDiv").html(str);
+}
+</script>
+<script>
+getTotalCasteCounts();
 </script>
   </body>
  </html>
