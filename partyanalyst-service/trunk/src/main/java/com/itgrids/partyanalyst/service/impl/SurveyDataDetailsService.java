@@ -3309,7 +3309,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 							  vo.setUserName(parms[1] != null ? parms[1].toString() : null);
 							  vo.setMobileNo(parms[2] != null ? parms[2].toString() : null);
 							  vo.setUserType(parms[8] != null ? parms[8].toString() : null);
-							  vo.setBoothId((Long)parms[9]);
+							  
 							  if(parms[10] != null)
 							  {
 									String time = dateFormat.format(parms[10]);							 
@@ -3326,7 +3326,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 							  vo1.setMandalName(parms[4] != null ? parms[4].toString() : null);
 							  vo1.setPanchayatName(parms[5] != null ? parms[5].toString() : null);
 							  vo1.setLocalArea(parms[6] != null ? parms[6].toString() : null);						
-							  vo1.setVillageCovered(parms[7] != null ? parms[7].toString() : null);					
+							  vo1.setVillageCovered(parms[7] != null ? parms[7].toString() : null);	
+							  vo1.setBoothId((Long)parms[9]);
 							  boothMap.put((Long)parms[9],vo1);		
 						  }
 				}
