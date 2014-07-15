@@ -1441,6 +1441,7 @@
 	
 	<bean id="surveyDataDetailsAction" class="com.itgrids.partyanalyst.web.action.SurveyDataDetailsAction" singleton="false">
 	    <property name="entitlementsHelper" ref="entitlementsHelper" />
+	    <property name="regionServiceDataImp" ref="regionServiceDataImp" />	    
 	</bean>
 	
 	<bean id="fieldVoterDataAction" class="com.itgrids.partyanalyst.web.action.FieldVoterDataAction" singleton="false">
