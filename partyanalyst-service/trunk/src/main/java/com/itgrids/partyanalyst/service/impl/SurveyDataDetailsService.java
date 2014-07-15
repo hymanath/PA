@@ -3467,4 +3467,26 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		}
 		return "success";		
 	}
+	
+	public SurveyReportVO getTotalCasteCollectedCount()
+	{
+		
+		SurveyReportVO surveyReportVO = new SurveyReportVO();
+		try{
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			Date date = new Date();
+			String modifiedDate= new SimpleDateFormat("yyyy-MM-dd").format(date);
+			Date convertedDate = null;
+			convertedDate = formatter.parse(modifiedDate);
+			Long total = surveyDetailsInfoDAO.getTotalCastecollectedCount();
+			Long today =  surveyDetailsInfoDAO.getTotalCastecollectedCountForToday(convertedDate);
+			surveyReportVO.setCount(total);
+			surveyReportVO.setCasteCount(today);
+			
+		}
+		catch (Exception e) {
+			LOG.error("Exception Occured in getTotalCasteCollectedCount()",e);
+		}
+		return surveyReportVO;
+	}
 }

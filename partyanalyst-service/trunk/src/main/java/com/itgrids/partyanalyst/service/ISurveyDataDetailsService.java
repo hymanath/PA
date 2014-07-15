@@ -100,6 +100,7 @@ public interface ISurveyDataDetailsService
 	public List<GenericVO> getAssignedUsersOfAConstituency(Long constituencyId);
 	public List<GenericVO> getAllWebMonitoringUsersDetails();
 	public String saveWebMonioringAssignDetails(final Long webMonitorId,final List<Long> userIds);
+	public SurveyReportVO getTotalCasteCollectedCount();
 
 
 }
