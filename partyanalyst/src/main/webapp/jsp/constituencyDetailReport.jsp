@@ -134,7 +134,7 @@ function getConstituencyReport(constituencyId){
 					str +='		<div class="span12 m_top20 widgetservey">';
 					str +='			<h4>'+constiName +'  Constituency Survey Report </br><small class="text-center">Constituency Overview</small>';
 					str +='<span class="label" style="margin-left: 10px; margin-bottom: 10px;">Total Voters - '+result.constituencyTotalVoters+'</span></h4>';
-				if(result.totalColelctedVoters != 0){
+				//if(result.totalColelctedVoters != 0){
 					str +='			<div class="row-fluid m_top10" >';
 					str +='				<div class="span6 wiget-yellow">	';
 					str +='					<h4 class="text-right">DATA COLLECTION</h4>';
@@ -233,12 +233,12 @@ function getConstituencyReport(constituencyId){
 					str +='						</div>';
 					str +='				</div>';
 			
-			}
+			/* }
 			else{
 					str += '				<div class="row-fluid">';
 					str += '					<p>Data Collection not yet started...</p>';
 					str += '				</div>';
-			}
+			} */
 			
 		$('#constiReportDiv').html(str);
 		}

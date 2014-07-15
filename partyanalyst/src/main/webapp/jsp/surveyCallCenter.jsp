@@ -1023,7 +1023,7 @@ function getUserDetailsByConstituencyForTable()
 	   {
 	   if(result[i].userType == 'Data Collectors'){
 			str+='<tr>';
-			str+='<td><a onClick="getUserDetails('+result[i].userid+','+result[i].boothId+',\'resultDiv'+i+'\',\'buildDiv'+i+'\')" style="cursor: pointer;">'+result[i].userName+'</a> <span class="label label-info pull-right"></td>';
+			str+='<td><a onClick="getUserDetails('+result[i].userid+','+result[i].subList[j].boothId+',\'resultDiv'+i+''+j+'\',\'buildDiv'+i+''+j+'\')" style="cursor: pointer;">'+result[i].userName+'</a> <span class="label label-info pull-right"></td>';
 	
 			if(result[i].mobileNo == null)
 				str+='<td>-</td>';
@@ -1043,8 +1043,8 @@ function getUserDetailsByConstituencyForTable()
 			str += '<td><a onClick="openTrackinWindow('+result[i].userid+',\''+$('#dateId').val()+'\',1) " style="cursor: pointer;"><img src="images/DC.png"></img></a></td>	';
 		 str += '<td><a onClick="openTrackinWindow('+result[i].userid+',\''+$('#dateId').val()+'\',2) " style="cursor: pointer;"><img src="images/DC.png"></img></a></td>	';
 			str+='</tr>';
-			str+='<tr id="resultDiv'+i+'" style="display:none;" class="buildDivCls">';
-			str+='<td colspan="10"> <div id="buildDiv'+i+'"></div></td>';
+			str+='<tr id="resultDiv'+i+''+j+'" style="display:none;" class="buildDivCls">';
+			str+='<td colspan="10"> <div id="buildDiv'+i+''+j+'"></div></td>';
 			str+='</tr>';
 		}
 		}
