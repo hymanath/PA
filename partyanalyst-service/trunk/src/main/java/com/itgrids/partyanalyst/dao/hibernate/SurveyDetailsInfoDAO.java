@@ -217,7 +217,6 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 			queryStr.append(" 	SU.surveyUserType.surveyUsertypeId = SUT.surveyUsertypeId 			and ");
 			queryStr.append(" 	SUT.surveyUsertypeId = :surveyUsertypeId 							and ");
 			queryStr.append("   SDI.booth.boothId = B.boothId 										and ");
-			queryStr.append("   B.publicationDate.publicationDateId = 10 							and ");
 			queryStr.append("	B.boothId = :boothId ");
 			
 		Query query = getSession().createQuery(queryStr.toString());
