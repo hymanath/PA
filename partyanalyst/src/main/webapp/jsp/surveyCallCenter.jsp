@@ -732,7 +732,14 @@ return;
 			str+='<tr>';
 			str+='<td> <a href="javascript:{getDataCollectorInfo('+result[i].userid+','+result[i].subList[j].boothId+',\''+$('#FielddateId').val()+'\');}">'+result[i].userName+' </a></td>';
 			str+='<td> '+result[i].subList[j].partNo+'</td>';
+			if(result[i].subList[j].totalVoters == null)
+			{
+				str+='<td>-</td>';
+			}
+			else
+			{
 			str+='<td>'+result[i].subList[j].totalVoters+'</td>';
+			}
 			str+='<td>'+result[i].subList[j].casteCount+'</td>';
 			str+='<td>'+result[i].subList[j].hamletCount+'</td>';
 			str+='<td>'+result[i].subList[j].mobileNoCount+'</td>';
