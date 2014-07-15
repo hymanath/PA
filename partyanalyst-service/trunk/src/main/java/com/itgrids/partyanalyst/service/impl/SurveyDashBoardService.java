@@ -231,18 +231,18 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 		    	{
 		    		resultVO.getNotStarted().add(dashBoardVO);
 		    	}
-		    	else if(startedConstnCountMap.get(entry.getKey()).size() == entry.getValue().size())
-		    	{
-		    		/*//dashBoardVO.setLocationId(entry.getKey());
-		    		resultVO.getCompleted().add(dashBoardVO);
-		    		resultVO.getStarted().add(dashBoardVO);*/
-		    	}
-		    	else if(startedConstnCountMap.get(entry.getKey()).size() < entry.getValue().size())
+		    	/*else if(startedConstnCountMap.get(entry.getKey()).size() == entry.getValue().size())
 		    	{
 		    		//dashBoardVO.setLocationId(entry.getKey());
-		    		SurveyDashBoardVO matchedVO = matchedStartedVO(resultVO.getProcess(),entry.getKey());
+		    		resultVO.getCompleted().add(dashBoardVO);
+		    		resultVO.getStarted().add(dashBoardVO);
+		    	}*/
+		    	else//if(startedConstnCountMap.get(entry.getKey()).size() < entry.getValue().size())
+		    	{
+		    		//dashBoardVO.setLocationId(entry.getKey());
+		    		SurveyDashBoardVO processdVO = matchedStartedVO(resultVO.getProcess(),entry.getKey());
 		    		SurveyDashBoardVO completedVO = matchedStartedVO(resultVO.getCompleted(),entry.getKey());
-		    		if(matchedVO == null && completedVO == null)
+		    		if(processdVO == null && completedVO == null)
 		    		{
 			    		resultVO.getProcess().add(dashBoardVO);
 			    		resultVO.getStarted().add(dashBoardVO);
