@@ -64,19 +64,23 @@
 			<div class="span12">
 				<!-----Constituency selection Div ---->
 				<div class="row-fluid ">
-					<div class="span12 widgetservey_Red m_top20">
+					<div class="span12 widgetservey_Red m_top10">
 							<h4>Constituency wise detailed reports</h4>
+							<div class="row">
+							<div id="errDivId" style="color:#FF0020;font-size:14px;" class="offset4"></div></div>
 								<div class="row">
-								<div class="span6 offset3">
+								<div class="span6 offset4 m_top10">
 									<div class="row-fluid">										
-										<div class="span12">
-											<label>Select Constituency</label>
+										<div class="span4">
+											<label>Select Constituency :</label></div>
 											<!-- <select class="input-block-level" id="constiList">
 											<option>01</option>
 											</select>
 											---->
-					<s:select theme="simple" cssClass="selectBoxWidth span12" id="constiList" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" />
-										</div>										
+											<div class="span6">
+											<s:select theme="simple" cssClass="selectBoxWidth span12" id="constiList" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" />
+										</div>	
+									
 									</div>										
 								</div>
 									</div>
@@ -95,12 +99,17 @@
 
 <script>
 function getConstituencyReport(constituencyId){
-var constituencyId = $('#constiList').val();
-var constiName = $('#constiList option:selected').text();
-var jobj = {
+	var constituencyId = $('#constiList').val();
+	var constiName = $('#constiList option:selected').text();
+	if(constituencyId == 0 ){
+		$('#errDivId').html(' Please select Constituency');
+		return;
+	}
+	$('#errDivId').html('');
+	var jobj = {
 	constituencyId : constituencyId,
 	task:"getReport"
-}
+	}
 	$.ajax({
           type:'POST',
           url: 'getCosntituencyWiseReportByContiAction.action',
