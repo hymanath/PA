@@ -120,7 +120,7 @@
 						</div>
 						 <div class="row text-center m_top20"><button class="btn btn-success" type="button" onclick="getSurveyVotersList();">GET DETAILS</button><img id="webMonitoringImage" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img></div> 
 						 -->
-						 
+						 <img id="searchDataImg" style="display: none;" src="./images/icons/barloader.gif" alt="Processing Image"></img>
 						<div class="row-fluid">
 							<div id="casteInfoDiv" style="background-color: #dff0d8; padding: 5px;display:none;margin-top:25px;margin-bottom:25px;" class="errClass"></div>	
 						</div>
@@ -319,30 +319,8 @@ var jsObj =
 
 function getSurveyVotersList(userId,boothId,date){
 
-//var constiId = $('#constituencyId').val();
-//var leaderId = $('#userTypeId').val();
 var surveyDate = $('#FielddateId').val();
-
-var flag = true;
-$('#errDivId').html('');
-/*
-if(constiId == 0 ){
-	$('#errDivId').html(' Please select Constituency.');
-	flag = false;
-}
-else if(leaderId == 0){
-	$('#errDivId').html(' Please select Leader .');
-	flag = false;
-}
-
-else if(boothId == 0){
-	$('#errDivId').html(' Please select Booth.');
-	flag = false;
-}
-*/
-
-if(flag)
-	{
+$('#searchDataImg').show();
 		$('#webMonitoringImage').show();
 		var jsObj = 
 		{
@@ -359,7 +337,7 @@ if(flag)
 		dataType: 'json',
 		data: {task:JSON.stringify(jsObj)},
 		}).done(function(results){
-
+		$('#searchDataImg').hide();
 		$('#voterInfoDIv').html('');
 		$('#casteInfoDiv').html('');
 		var str = '';
@@ -477,7 +455,7 @@ if(flag)
 		}
 		
 		$('#voterInfoDIv').html(str);
-		$('#voterDetlsTab').dataTable();
+		$('#voterDetlsTab').dataTable({});
 		
 		
 		var boothNo = $('#boothList option:selected').text();
@@ -500,7 +478,7 @@ if(flag)
 		 
 		  $('#casteInfoDiv').html(str1);
 		});
-	}	
+
 }
 
 function updateStatus(id,value,voterId,surveyUserId,isCasteMatched,mobileMatched,casteErrDiv,mobileErrDiv,userId,boothId,date){
@@ -1167,7 +1145,7 @@ function onEachFeature(feature, layer)
 
 
 function getDataCollectorInfo(userId,boothId,date){
-
+	
 	$('#boothWiseTab,#startTimeTab').removeClass('selected');
 	$('#callCenterTab').addClass('selected');
 	showHideTabs('callCenterTab');
