@@ -122,11 +122,11 @@
 						 -->
 						 
 						<div class="row-fluid">
-							<div id="casteInfoDiv" style="background-color: #dff0d8; padding: 5px;display:none;margin-top:25px;margin-bottom:25px;"></div>	
+							<div id="casteInfoDiv" style="background-color: #dff0d8; padding: 5px;display:none;margin-top:25px;margin-bottom:25px;" class="errClass"></div>	
 						</div>
 						
 						<div class="row-fluid">
-							<div id="voterInfoDIv"></div>	
+							<div id="voterInfoDIv" class="errClass"></div>	
 						</div>
 						<!--<div class="row text-center m_top20"><button class="btn btn-large btn-success" type="button" onclick="saveSurveyCallStatusDetils();">UPDATE STATUS</button></div>
 							-->
@@ -217,7 +217,7 @@
 							<div class="row text-center m_top20" style="margin-right:51px;"><button type="button" class="btn btn-success" onClick="getSurveyUserLoctionCount();">SUBMIT</button>
 							<img id="processingImg" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
 							</div>
-							<div id="basicCountDiv" class="span10 m_top20 errClass">
+							<div id="basicCountDiv" class="span10 m_top20">
 
 					</div>
 				</div>
@@ -236,7 +236,7 @@ $(".highlight").click(function()
 function showHideTabs(id)
 {
 	$(".errClass").html('');
-	$("#constituencyId,#userTypeId,#userConstituencyId,#constiList,#leaderList,#boothList").val(0);
+	
 	if(id == "callCenterTab")
 	{
 		$('#callCenter').show();
@@ -510,6 +510,7 @@ function updateStatus(id,value,voterId,surveyUserId,isCasteMatched,mobileMatched
 	var voterInfoArr = new Array();
 	var isMobileVerified = $('#'+mobileMatched+'').val();
 	var isMatched = $('#'+isCasteMatched+'').val();
+	var boothId = webBoothId;
 	$('#'+casteErrDiv+'').html('');
 	$('#'+mobileErrDiv+'').html('');
 
@@ -524,7 +525,7 @@ function updateStatus(id,value,voterId,surveyUserId,isCasteMatched,mobileMatched
 	
 	var obj = {
 		voterId:voterId,
-		surveyUserId:userId,
+		surveyUserId:surveyUserId,
 		isMobileVerified:isMobileVerified,
 		isMatched :isMatched,
 		boothId : boothId
