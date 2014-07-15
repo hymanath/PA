@@ -452,7 +452,7 @@
 									<div class="row-fluid">									
 										<div class="span3">
 											Select User Type<font class="requiredFont">*</font>
-											<select class="input-block-level" id="constiUserTypeId" onChange="getSurveyUsersByUserType('assignConstituencyLeaderId',this.value,'constiUserTypeIdImg');"> <option value="0">Select Type</option><option value="3">Data Lead</option><option value="5">Verifier Lead</option></select><img id="constiUserTypeIdImg" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
+											<select class="input-block-level" id="constiUserTypeId" onChange="getAssignedConstituencyUsers('assignConstituencyLeaderId',this.value);"> <option value="0">Select Type</option><option value="3">Data Lead</option><option value="5">Verifier Lead</option></select><img id="constiUserTypeIdImg" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
 										</div>
 										<div class="span3">
 											Select Leader<font class="requiredFont">*</font>
@@ -479,7 +479,42 @@
 					</div>
 				</div>
 			</div>
-		
+					
+			<div class="span10 offset1">
+				<div class="row-fluid ">
+					<div class="span12 widgetservey_Red m_top20">
+						<h4>Untag Constituency To Leader</h4>
+						<div class="row">
+								<div id="untagConstiErrorDiv" class="span8 offset2 errorCls"></div>
+							</div>
+							<div class="row">
+								<div class="span12 offset2">
+									<div class="row-fluid">									
+										<div class="span3">
+											Select User Type<font class="requiredFont">*</font>
+											<select class="input-block-level" id="untagUserTypeId" onChange="getAlreadyAssignedUsers('untagUserId',this.value);"> <option value="0">Select Type</option><option value="3">Data Lead</option><option value="5">Verifier Lead</option></select><img id="untagUserIdImg" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
+										</div>
+										<div class="span3">
+											Select Leader<font class="requiredFont">*</font>
+											<select class="input-block-level" id="untagUserId" onchange="getConstituenciesToUnTag('untagConstituencyId',this.value);"> <option value="0">Select Leader</option></select><img id="untagUserIdImg" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
+										</div>
+									
+																
+										<div class="span3">
+											Select Constituency<font class="requiredFont">*</font>
+											<select class="input-block-level" id="untagConstituencyId"> <option value="0">Select Constituency</option></select>
+											
+										</div>
+										
+									</div>
+								</div>
+									</div>
+							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onClick="unTagConstituencyToUser();">ASSIGN</button><img id="processingImgToUnTagConsti" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img></div>
+					</div>
+				</div>
+			</div>
+			
+					
 			<div class="span10 offset1">
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top20">
