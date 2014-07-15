@@ -178,7 +178,6 @@ public class SurveyDetailsInfoDAO extends GenericDaoHibernate<SurveyDetailsInfo,
 			queryStr.append(" 	SU.surveyUserType.surveyUsertypeId = SUT.surveyUsertypeId 			and ");
 			queryStr.append(" 	SUT.surveyUsertypeId = :surveyUsertypeId 							and ");
 			queryStr.append("   SDI.booth.boothId = B.boothId 										and ");
-			queryStr.append("   B.publicationDate.publicationDateId = 10 							and ");
 			queryStr.append("	SDI.booth.constituency.constituencyId = :constituencyId ");
 			
 		Query query = getSession().createQuery(queryStr.toString());
