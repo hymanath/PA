@@ -2789,9 +2789,13 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		
 		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
 		try {
-			List<Constituency> constituencies = constituencyDAO.findConstituenciesByDistrictId(districtId);			
-			for(Constituency constituency : constituencies){
-				result.add(new SelectOptionVO(constituency.getConstituencyId(),WordUtils.capitalize(constituency.getName().toLowerCase())));
+			List<Object[]> constituencies = surveyDetailsInfoDAO.findConstituenciesByDistrictId(districtId);			
+			
+			for(Object[] constituency : constituencies){
+				SelectOptionVO vo = new SelectOptionVO();
+				vo.setId((Long)constituency[0]);
+				vo.setName(constituency[1].toString());
+				result.add(vo);
 			}
 			Collections.sort(result);
 			

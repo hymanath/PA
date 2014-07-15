@@ -444,4 +444,9 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 		return (Long) query.uniqueResult();
 	}
 	
+	public List<Object[]> findConstituenciesByDistrictId(Long districtId) {
+		Query query = getSession().createQuery("select distinct model.booth.constituency.constituencyId,model.booth.constituency.name from SurveyDetailsInfo model where model.booth.constituency.district.districtId = :districtId");
+		query.setParameter("districtId", districtId);
+		return query.list();
+	}
 }

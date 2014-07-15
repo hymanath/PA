@@ -69,4 +69,5 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	public List<Object[]> getCasteWiseCountInBooth(Long boothId);
 	
 	public Long getTotalVotersinBooth(Long boothId);
+	public List<Object[]> findConstituenciesByDistrictId(Long districtId);
 }
