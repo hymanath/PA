@@ -510,7 +510,6 @@ function updateStatus(id,value,voterId,surveyUserId,isCasteMatched,mobileMatched
 	var voterInfoArr = new Array();
 	var isMobileVerified = $('#'+mobileMatched+'').val();
 	var isMatched = $('#'+isCasteMatched+'').val();
-	var boothId = webBoothId;
 	$('#'+casteErrDiv+'').html('');
 	$('#'+mobileErrDiv+'').html('');
 
@@ -525,7 +524,7 @@ function updateStatus(id,value,voterId,surveyUserId,isCasteMatched,mobileMatched
 	
 	var obj = {
 		voterId:voterId,
-		surveyUserId:surveyUserId,
+		surveyUserId:userId,
 		isMobileVerified:isMobileVerified,
 		isMatched :isMatched,
 		boothId : boothId
@@ -1046,7 +1045,7 @@ function getUserDetailsByConstituencyForTable()
 	   {
 	   if(result[i].userType == 'Data Collectors'){
 			str+='<tr>';
-			str+='<td><a onClick="getUserDetails('+result[i].userid+','+result[i].boothId+')" style="cursor: pointer;">'+result[i].userName+'</a> <span class="label label-info pull-right"></td>';
+			str+='<td><a onClick="getUserDetails('+result[i].userid+','+result[i].boothId+',\'resultDiv'+i+'\',\'buildDiv'+i+'\')" style="cursor: pointer;">'+result[i].userName+'</a> <span class="label label-info pull-right"></td>';
 	
 			if(result[i].mobileNo == null)
 				str+='<td>-</td>';
@@ -1065,6 +1064,9 @@ function getUserDetailsByConstituencyForTable()
 			str+='<td>'+result[i].subList[j].villageCovered+'</td>';
 			str += '<td><a onClick="openTrackinWindow('+result[i].userid+',\''+$('#dateId').val()+'\',1) " style="cursor: pointer;"><img src="images/DC.png"></img></a></td>	';
 		 str += '<td><a onClick="openTrackinWindow('+result[i].userid+',\''+$('#dateId').val()+'\',2) " style="cursor: pointer;"><img src="images/DC.png"></img></a></td>	';
+			str+='</tr>';
+			str+='<tr id="resultDiv'+i+'" style="display:none;" class="buildDivCls">';
+			str+='<td colspan="10"> <div id="buildDiv'+i+'"></div></td>';
 			str+='</tr>';
 		}
 		}
@@ -1085,8 +1087,12 @@ function openTrackinWindow(userId,date,id)
 } */
 
 
-function getUserDetails(userId,boothId)
+function getUserDetails(userId,boothId,resultDiv,buildDiv)
 {
+
+$('.buildDivCls').hide();
+$('#'+resultDiv+'').show();
+
 	var jObj = 
 	{
 	 userId: userId,
@@ -1098,6 +1104,7 @@ function getUserDetails(userId,boothId)
 			dataType: 'json',
 			data: {task:JSON.stringify(jObj)},
 			}).done(function(result){
+			$('#'+buildDiv+'').html('');
 			if(result != null)
 			{
 				var str = '';
@@ -1147,7 +1154,7 @@ function getUserDetails(userId,boothId)
 				str += '</div>';
 				str += '</div>';
 				str += '</div>';
-				$('#responceCountDiv').html(str);
+				$('#'+buildDiv+'').html(str);
 			}
 			
 		});
