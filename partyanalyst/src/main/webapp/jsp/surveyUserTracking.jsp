@@ -230,7 +230,7 @@ function buildTable(result)
 	 for(var i in result)
 	 {
 		 str += '<tr>';
-		 str += '<td><a onClick="getUserDetails('+result[i].id+','+result[i].orderId+')" style="cursor: pointer;">'+result[i].name+'</a> <span class="label label-info pull-right">';
+		 str += '<td><a onClick="getUserDetails('+result[i].id+','+result[i].orderId+',\'resultDiv'+i+'\',\'responceCountDiv'+i+'\')" style="cursor: pointer;">'+result[i].name+'</a> <span class="label label-info pull-right">';
 		 if(result[i].type == "Data Collectors")
 		 {
 			str += 'D.C';
@@ -249,6 +249,9 @@ function buildTable(result)
 		 str += '<td><a onClick="openTrackinWindow('+result[i].id+',\''+date+'\',1) " style="cursor: pointer;"><img src="images/DC.png"></img></a></td>	';
 		 str += '<td><a onClick="openTrackinWindow('+result[i].id+',\''+date+'\',2) " style="cursor: pointer;"><img src="images/DC.png"></img></a></td>	';
 		 str += '</tr>	';	
+		 str += '<tr id="resultDiv'+i+'" style="display:none;" class="resultDivCls">	';	
+			str += '<td colspan="8"><div id="responceCountDiv'+i+'"></div></td>	';	
+		 str += '</tr>	';	 
 	 }		
 	 str += '</tbody>';
 	 str += '</table>	';
@@ -262,8 +265,11 @@ function onEachFeature(feature, layer)
 	layer.bindPopup(); 
 }
 
-function getUserDetails(userId,boothId)
+function getUserDetails(userId,boothId,resultDiv,buildDiv)
 {
+$('.resultDivCls').hide();
+$('#'+resultDiv+'').show();
+
 	var jObj = 
 	{
 	 userId: userId,
@@ -275,6 +281,8 @@ function getUserDetails(userId,boothId)
 			dataType: 'json',
 			data: {task:JSON.stringify(jObj)},
 			}).done(function(result){
+			//console.log(result);
+			$('#'+buildDiv+'').html('');
 			if(result != null)
 			{
 				var str = '';
@@ -324,7 +332,7 @@ function getUserDetails(userId,boothId)
 				str += '</div>';
 				str += '</div>';
 				str += '</div>';
-				$('#responceCountDiv').html(str);
+				$('#'+buildDiv+'').html(str);
 			}
 			
 		});
