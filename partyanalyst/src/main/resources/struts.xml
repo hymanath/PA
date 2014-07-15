@@ -7660,17 +7660,28 @@
 			<result name="success">/jsp/assignUsersToWebMonitoringTeam.jsp</result>		
 		</action>
 		
-	<action name="getAssignedUsersOfAConstituency" class="surveyDataDetailsAction" method="getAssignedUsersOfAConstituency">
-		<result type="json" name="success">
-				<param name="root">constituencies</param>
-			</result>
-  </action>
+		<action name="getAssignedUsersOfAConstituency" class="surveyDataDetailsAction" method="getAssignedUsersOfAConstituency">
+				<result type="json" name="success">
+					<param name="root">constituencies</param>
+				</result>
+	  	</action>
   
-  <action name="getTotalCasteCollectedCountsAction" class="surveyDataDetailsAction" method="getTotalCasteCollectedCounts">
-		<result type="json" name="success">
-				<param name="root">surveyReportVO</param>
+	 	 <action name="getTotalCasteCollectedCountsAction" class="surveyDataDetailsAction" method="getTotalCasteCollectedCounts">
+				<result type="json" name="success">
+					<param name="root">surveyReportVO</param>
+				</result>
+	 	 </action>
+  		
+  		<action name="getConstituencyDtlsForUserAction" class="surveyDataDetailsAction" method="getConstituencyDetailsForSurveyUser">
+			<result type="json" name="success">
+				<param name="root">surveyUserDetails</param>
 			</result>
-  </action>
-  
+		</action>
+		
+		<action name="unTagConstituencyOfUserAction" class="surveyDataDetailsAction" method="unTagConstituencyOfUser">
+			<result type="json" name="success">
+				<param name="root">resultStatus</param>
+			</result>
+		</action>
 </package>
 </struts>      
