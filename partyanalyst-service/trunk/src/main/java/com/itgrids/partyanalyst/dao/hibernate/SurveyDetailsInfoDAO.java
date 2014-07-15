@@ -396,7 +396,7 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 	public List<Object[]> getCasteCountByBooths(List<Long> userIds,List<Long> boothIds,Long userTypeId,Date date)
 	{
 		Query query = getSession().createQuery("select model.surveyUser.surveyUserId,model.booth.boothId,count(model.caste.caste.casteId) from SurveyDetailsInfo model where model.surveyUser.surveyUserId in(:userIds) and " +
-				"model.booth.boothId in(:boothIds) and model.caste.casteStateId is not null or model.casteName is not null and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId and date(model.date) = :date group by model.surveyUser.surveyUserId,model.booth.boothId");
+				"model.booth.boothId in(:boothIds) and (model.caste.casteStateId is not null or model.casteName is not null) and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId and date(model.date) = :date group by model.surveyUser.surveyUserId,model.booth.boothId");
 		query.setParameterList("userIds", userIds);
 		query.setParameterList("boothIds", boothIds);
 		query.setParameter("userTypeId", userTypeId);
@@ -407,7 +407,7 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 	public List<Object[]> getHamletCountByBooths(List<Long> userIds,List<Long> boothIds,Long userTypeId,Date date)
 	{
 		Query query = getSession().createQuery("select model.surveyUser.surveyUserId,model.booth.boothId,count(model.hamlet.hamletId) from SurveyDetailsInfo model where model.surveyUser.surveyUserId in(:userIds) and " +
-				"model.booth.boothId in(:boothIds) and model.hamlet.hamletId is not null or model.hamletName is not null and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId and date(model.date) = :date group by model.surveyUser.surveyUserId,model.booth.boothId");
+				"model.booth.boothId in(:boothIds) and (model.hamlet.hamletId is not null or model.hamletName is not null) and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId and date(model.date) = :date group by model.surveyUser.surveyUserId,model.booth.boothId");
 		query.setParameterList("userIds", userIds);
 		query.setParameterList("boothIds", boothIds);
 		query.setParameter("userTypeId", userTypeId);
@@ -443,10 +443,24 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 		//query.setParameter("date", date);
 		return (Long) query.uniqueResult();
 	}
-	
 	public List<Object[]> findConstituenciesByDistrictId(Long districtId) {
 		Query query = getSession().createQuery("select distinct model.booth.constituency.constituencyId,model.booth.constituency.name from SurveyDetailsInfo model where model.booth.constituency.district.districtId = :districtId");
 		query.setParameter("districtId", districtId);
 		return query.list();
 	}
+	public Long getTotalCastecollectedCount()
+	{
+		Query query = getSession().createQuery("select distinct count(model.surveyDetailsInfoId) from SurveyDetailsInfo model where (model.caste.casteStateId is not null or model.casteName is not null)");
+		return (Long) query.uniqueResult();
+	}
+	
+	public Long getTotalCastecollectedCountForToday(Date date)
+	{
+		Query query = getSession().createQuery("select distinct count(model.surveyDetailsInfoId) from SurveyDetailsInfo model where " +
+				" (model.caste.casteStateId is not null or model.casteName is not null) " +
+				" and date(model.date) = date(:date)");
+		query.setParameter("date",date);
+		return (Long) query.uniqueResult();
+	}
+	
 }
