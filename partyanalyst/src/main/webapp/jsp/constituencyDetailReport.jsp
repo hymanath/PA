@@ -78,7 +78,7 @@
 											</select>
 											---->
 											<div class="span6">
-											<s:select theme="simple" cssClass="selectBoxWidth span12" id="constiList" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" />
+											<s:select theme="simple" cssClass="selectBoxWidth span12" id="constiList" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" value="task" />
 										</div>	
 									
 									</div>										
@@ -98,6 +98,15 @@
 	</div>
 
 <script>
+
+var contiId = '${task}';
+buildReport();
+function buildReport(){
+	if(contiId != null && contiId != 0){
+		getConstituencyReport(contiId);
+	}
+}
+
 function getConstituencyReport(constituencyId){
 	var constituencyId = $('#constiList').val();
 	var constiName = $('#constiList option:selected').text();
