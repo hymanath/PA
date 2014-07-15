@@ -2856,9 +2856,13 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				
 				if(verifiedList != null && verifiedList.size()>0){
 					for (Object[] param : verifiedList) {
-						if(!param[1].toString().equalsIgnoreCase("N")){
-							mobileMatched.put((Long)param[0], "Y");
+						if(param[1] != null)
+						{
+							if(!param[1].toString().equalsIgnoreCase("N")){
+								mobileMatched.put((Long)param[0], "Y");
+							}
 						}
+						
 						if(!param[2].toString().equalsIgnoreCase("N")){
 							casteMatched.put((Long)param[0], "Y");
 						}
@@ -2980,8 +2984,11 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 							surveyCallStatus.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
 							surveyCallStatus.setBooth(boothDAO.get(surveyReportVO.getBoothId()));
 							surveyCallStatus.setUser(userDAO.get(userId));
-							if(!surveyReportVO.getMobileNo().equalsIgnoreCase("0")){
+							if(surveyReportVO.getMobileNo().equalsIgnoreCase("1")){
 								surveyCallStatus.setMobileNoStatus("Y");
+							}
+							else if(surveyReportVO.getMobileNo().equalsIgnoreCase("3")){
+								surveyCallStatus.setMobileNoStatus(null);
 							}
 							else{
 								surveyCallStatus.setMobileNoStatus("N");
@@ -3286,6 +3293,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 							  vo.setUserName(parms[1] != null ? parms[1].toString() : null);
 							  vo.setMobileNo(parms[2] != null ? parms[2].toString() : null);
 							  vo.setUserType(parms[8] != null ? parms[8].toString() : null);
+							  vo.setBoothId((Long)parms[9]);
 							  if(parms[10] != null)
 							  {
 									String time = dateFormat.format(parms[10]);							 
