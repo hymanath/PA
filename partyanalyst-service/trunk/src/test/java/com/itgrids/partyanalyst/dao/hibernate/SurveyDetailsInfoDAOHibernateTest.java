@@ -184,6 +184,7 @@ public class SurveyDetailsInfoDAOHibernateTest extends BaseDaoTestCase{
 		
 	
 	}*/
+	/*
 	public void testgetAll(){
 		List<Long> userIds = new ArrayList<Long>();
 		userIds.add(46L);
@@ -194,7 +195,7 @@ public class SurveyDetailsInfoDAOHibernateTest extends BaseDaoTestCase{
 			date = format.parse("14-07-2014");
 		} catch (ParseException e) {}
 		
-		List<Object[]> votersLsit = surveyDetailsInfoDAO.getVoterDetailsByBoothId(439809L,userIds,date);
+		List<Object[]> votersLsit = surveyDetailsInfoDAO.getVoterDetailsByBoothId(156999L,userIds,date);
 		
 		System.out.println(votersLsit);
 		
@@ -219,5 +220,5 @@ public class SurveyDetailsInfoDAOHibernateTest extends BaseDaoTestCase{
 		}
 		System.out.println(returnList.size());
 	}
-	
+	*/
 }
