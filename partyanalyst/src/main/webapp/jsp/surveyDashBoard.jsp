@@ -103,7 +103,7 @@
 								</c:if>
 
 								<c:forEach var="completedDistrict" items="${resultVO.completed}">
-									  <li><a href="javascript:{showConstituenciesDetails(${completedDistrict.locationId})}">${completedDistrict.locationName}</a></li>
+									  <li><a style="line-height:40px;" href="javascript:{showConstituenciesDetails(${completedDistrict.locationId})}">${completedDistrict.locationName}</a></li>
 								</c:forEach>
 							</ul>
 					</div>
@@ -119,7 +119,7 @@
 								  </c:if>
 						       
 								<c:forEach var="processDistrict" items="${resultVO.process}">
-									  <li><a href="javascript:{showConstituenciesDetails(${processDistrict.locationId})}">${processDistrict.locationName}</a></li>
+									  <li><a style="line-height:40px;" href="javascript:{showConstituenciesDetails(${processDistrict.locationId})}">${processDistrict.locationName}</a></li>
 								</c:forEach>
 							</ul>
 					</div>
@@ -135,7 +135,7 @@
 							</c:if>
 
 							<c:forEach var="notStartedDistrict" items="${resultVO.notStarted}">
-									<li><a href="javascript:{showConstituenciesDetails(${notStartedDistrict.locationId})}">${notStartedDistrict.locationName}</a></li>
+									<li><a style="line-height:40px;" href="javascript:{showConstituenciesDetails(${notStartedDistrict.locationId})}">${notStartedDistrict.locationName}</a></li>
 								</c:forEach>
 
 							</ul>
