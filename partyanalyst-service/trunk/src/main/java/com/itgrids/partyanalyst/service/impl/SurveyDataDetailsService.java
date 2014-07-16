@@ -2126,10 +2126,20 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			
 			for(Object[] boothDtls:dayWiseReportDtls)
 				boothIds.add((Long)boothDtls[3]);
+			Map<String,Long> totalCount = new HashMap<String, Long>();
 			
 			
 			for(Object[] boothDtls:dayWiseReportDtls)
 			{
+				Long count = totalCount.get(boothDtls[6].toString());
+				if(count == null)
+				{
+				totalCount.put(boothDtls[6].toString(), (Long)boothDtls[0]);
+				}
+				else
+				{
+				 totalCount.put(boothDtls[6].toString(), (Long)boothDtls[0] + count);	
+				}
 				
 				SurveyReportVO userBoothVO = getMatchedUserBoothVO(resultList,(Long)boothDtls[1],(Long)boothDtls[3]);
 
@@ -2166,11 +2176,18 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			
 			for(Object[] boothDtls:dayWiseReportDtls)
 			{
+				
 				SurveyReportVO userBoothVO = getMatchedUserBoothVO(resultList,(Long)boothDtls[1],(Long)boothDtls[3]);
 				SurveyReportVO surveyDateVO = getMatchedSurveyDateVO(userBoothVO.getSubList(), boothDtls[6].toString());
-				
 				surveyDateVO.setCount((Long)boothDtls[0]);
+			
 			}
+			
+			if(resultList != null && resultList.size() > 0)
+			for( SurveyReportVO vo : resultList.get(0).getSubList())
+		   {
+			  vo.setTotal(totalCount.get(vo.getSurveyDate().toString()));
+		   }
 			
 		}catch(Exception e)
 		{

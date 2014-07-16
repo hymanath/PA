@@ -64,7 +64,14 @@ public class SurveyReportVO {
 	private Long mobileNoCount =0l;
 	private List<GenericVO> genericVOList = new ArrayList<GenericVO>();
 	
+	private Long total;
 	
+	public Long getTotal() {
+		return total;
+	}
+	public void setTotal(Long total) {
+		this.total = total;
+	}
 	public Long getId() {
 		return id;
 	}
