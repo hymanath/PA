@@ -520,8 +520,19 @@ $('#mainajaximg').hide();
 	     $.each(value.subList,function(index1,value1){
 			   str+='<td>'+value1.count+'</td>';
 		 });
+
+		
     str+='</tr>';
+
    });
+   	str+='<tr>';
+	str+='<td><b>Total</b></td>';
+	str+='<td></td>';
+	str+='<td></td>';
+	$.each(result[0].subList,function(index,value){
+          str+='<td><b>'+value.total+'</b></td>';
+		});
+	str+='</tr>';
    str+='</tbody>';
    str+='</table>';
 
