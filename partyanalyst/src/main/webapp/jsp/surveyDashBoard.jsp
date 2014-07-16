@@ -32,7 +32,7 @@
 	.booths-Overview-widget{background:#ddd;padding:10px; width:100%;}
 	.booths-Overview-widget-nav li{color:#333333; background:#F6DD78;padding:10px; width:140px; display:table;line-height:20px;border:1px solid #ccc;text-align:center; font-weight:bold; text-transform:uppercase; margin: 10px;text-decoration:none; font-size:16px;}
 	.booths-Overview-widget-nav li hgroup h4,h5{font-size:15px;}
-	.Constituency-name-nav li a{width:189px;height:40px;color:#333333;display:block; background:#eee;padding:10px; border:1px solid #ccc;text-align:center; font-weight:bold; text-transform:uppercase; margin: 5px 0px;text-decoration:none; font-size:14px; display: inline-table;}
+	.Constituency-name-nav li a{width:165px;line-height:40px;color:#333333;display:block; background:#eee;padding:10px; border:1px solid #ccc;text-align:center; font-weight:bold; text-transform:uppercase; margin: 5px 0px;text-decoration:none; font-size:14px; display: inline-table;}
 	.Constituency-name-nav li a:hover{color:#333333;border:1px solid #ffcc00; box-shadow:0px 0px 3px #ccc;}
 	
 	.wiget-yellow-normal:hover{ box-shadow: 0 -1px 5px rgb(51, 51, 51);}
@@ -136,7 +136,8 @@
 							</c:if>
 
 							<c:forEach var="notStartedDistrict" items="${resultVO.notStarted}">
-									<li><a href="javascript:{showConstituenciesDetails(${notStartedDistrict.locationId})}">${notStartedDistrict.locationName}</a></li>
+									<!-- <li><a href="javascript:{showConstituenciesDetails(${notStartedDistrict.locationId})}">${notStartedDistrict.locationName}</a></li> -->
+									<li><a >${notStartedDistrict.locationName}</a></li>
 								</c:forEach>
 
 							</ul>
