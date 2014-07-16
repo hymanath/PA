@@ -30,7 +30,7 @@
 	.booths-Overview-widget{background:#ddd;padding:10px; width:100%;}
 	.booths-Overview-widget-nav li{color:#333333; background:#F6DD78;padding:10px; width:140px; display:table;line-height:20px;border:1px solid #ccc;text-align:center; font-weight:bold; text-transform:uppercase; margin: 10px;text-decoration:none; font-size:16px;}
 	.booths-Overview-widget-nav li hgroup h4,h5{font-size:15px;}
-	.Constituency-name-nav li a{width:165px;line-height:40px;color:#333333;display:block; background:#eee;padding:10px; border:1px solid #ccc;text-align:center; font-weight:bold; text-transform:uppercase; margin: 5px 0px;text-decoration:none; font-size:14px; display: inline-table;}
+	.Constituency-name-nav li a{width:165px;line-height:40px;color:#333333;display:block; background:#eee;padding:10px; border:1px solid #ccc;text-align:center; font-weight:bold; text-transform:uppercase; margin: 5px;text-decoration:none; font-size:14px; display: inline-table;float:left;}
 	.Constituency-name-nav li a:hover{color:#333333;border:1px solid #ffcc00; box-shadow:0px 0px 3px #ccc;}
 	
 	.wiget-yellow-normal:hover{ box-shadow: 0 -1px 5px rgb(51, 51, 51);}
@@ -43,10 +43,10 @@
 		<div class="row">
 			<div class="span12">
 				<!-----State Overview Div ---->
-				<div class="row-fluid ">
+				<div class="row-fluid">
 					<div class="span12 widgetservey_Red m_top20">
 						<h4>State Overview</h4>
-						<div class="row-fluid">
+						<div class="row-fluid m_top20">
 							<div class="span3 wiget-yellow-normal">
 								<h3>Started Constituency Count</h3>
 								<!--<h2>80</h2>-->
@@ -62,8 +62,21 @@
 								<h2>${resultVO.processingCount}</h2>
 							</div>
 							<div class="span3 wiget-yellow-normal">
-								<h3>Not yet started Constituency Count</h3>
+								<h3>Not Yet Started Constituency Count</h3>
 								<h2>${resultVO.notStartedCount}</h2>
+							</div>
+						</div>
+						
+						<div class="row-fluid m_top10">
+							<div class="span6 wiget-yellow-normal">
+								<h3>Total Caste Collected Count</h3>
+								<h2 id="TotalcasteCount">${resultVO.completedCount}</h2>
+
+							</div>
+							<div class="span6 wiget-yellow-normal">
+							<h3>	Today Caste Collected Count 	</h3>
+								<h2 id="TodaycasteCount">${resultVO.completedCount}</h2>
+
 							</div>
 						</div>
 					</div>		
@@ -83,11 +96,11 @@
 						<table class=" m_top20 table table-bordered table-hover table-striped">
 							<thead class="alert alert-success">
 								<tr>
-									<th>Constituency name</th>
-									<th>Total Booth no</th>
+									<th>Constituency Name</th>
+									<th>Total Booths</th>
 									<th>Completed</th>
 									<th>Processing </th>
-									<th>Not yet Started </th>
+									<th>Not Yet Started </th>
 								</tr>
 							</thead>
 							<tbody>
@@ -174,7 +187,7 @@
 						<h4>Districts Completed </h4>
 						<ul class="inline unstyled Constituency-name-nav">	
 						        <c:if test="${empty resultVO.completed}">
-									SURVEY IS NOT COMPLETD IN ANY DISTRICT
+									SURVEY NOT COMPLETED IN ANY DISTRICT
 								</c:if>
 
 								<c:forEach var="completedDistrict" items="${resultVO.completed}">
@@ -206,7 +219,7 @@
 						<ul class="inline unstyled Constituency-name-nav">
 
 						    <c:if test="${empty resultVO.notStarted}">
-									SURVEY IS STARTED IN ALL DISTRICTS
+									SURVEY STARTED IN ALL DISTRICTS
 							</c:if>
 
 							<c:forEach var="notStartedDistrict" items="${resultVO.notStarted}">
@@ -337,7 +350,7 @@ var jObj =
 
 				buildCastCounts(result);
 			});
-			//setTimeout(getTotalCasteCounts, 3000);
+			setTimeout(getTotalCasteCounts, 3000);
 }
 
 function buildCastCounts(result)
@@ -352,13 +365,16 @@ str+='<div class="span4">Today Caste Collected Count : '+result.casteCount+'</di
 str+='</div>';
 str+='</div>';
 str+='</div>';*/
-str+='<table>';
+/*str+='<table>';
 str+='<tr><td><b>Total Caste Collected Count </b></td><td> <b>&nbsp;:&nbsp;</b></td><td class="badge badge-info"> <b><a href="#" style="color:#fff;" onclick="getDateWiseCount(\'\')">'+result.count+'</a></b></td> <td>&nbsp;&nbsp;</td>';
 str+='<td><b>Today Caste Collected Count </b></td><td> <b>&nbsp;:&nbsp;</b></td><td class="badge badge-info"> <b>'+result.casteCount+'</b></td></tr> ';
 
 
 str+='</table>';
-$("#casteCountDiv").html(str);
+$("#casteCountDiv").html(str);*/
+$("#TotalcasteCount").html('<a href="#" style="color:#5B5B5B;" onclick="getDateWiseCount(\'\')">'+result.count+'</a>');
+$("#TodaycasteCount").html(''+result.casteCount+'');
+
 }
 function getDateWiseCount(date)
 {
