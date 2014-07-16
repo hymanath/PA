@@ -76,7 +76,7 @@
 									<div id="summaryDivId" class="clearCls">
 									</div>
 							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onclick="getComparisionReport('all');">SUBMIT</button><img id="submitImg" src="./images/icons/search.gif" alt="Processing Image"  class="hide"/></div>
-							<div class="pull-left" id="statusMsg" class="clearCls"></div>
+							<div class="pull-left clearCls" id="statusMsg"></div>
 							
 					</div>
 				</div>
