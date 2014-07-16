@@ -65,7 +65,14 @@ public class SurveyReportVO {
 	private List<GenericVO> genericVOList = new ArrayList<GenericVO>();
 	
 	private Long total;
+	private Long serailNo ;
 	
+	public Long getSerailNo() {
+		return serailNo;
+	}
+	public void setSerailNo(Long serailNo) {
+		this.serailNo = serailNo;
+	}
 	public Long getTotal() {
 		return total;
 	}
