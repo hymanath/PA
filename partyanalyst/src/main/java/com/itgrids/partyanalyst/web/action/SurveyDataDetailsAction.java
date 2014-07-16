@@ -1450,4 +1450,46 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	  return Action.SUCCESS;
   }*/
   
+  public String getConstituencyDetailsForSurveyUser(){
+		try
+		{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			jObj = new JSONObject(getTask());
+
+			surveyUserDetails = surveyDetailsService.getSurveyUserConstituencyDetails(jObj.getLong("userId"));
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getConstituencyDetailsForSurveyUser", e);
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+		
+  }
+  
+  public String unTagConstituencyOfUser()
+	{
+		try
+		{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			jObj = new JSONObject(getTask());
+			resultStatus = surveyDetailsService.unTagConstituencyForAUser(jObj.getLong("userId"), jObj.getLong("constituencyId"));
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in unTagConstituencyOfUser", e);
+		}
+		return Action.SUCCESS;
+	}
+  
 }
