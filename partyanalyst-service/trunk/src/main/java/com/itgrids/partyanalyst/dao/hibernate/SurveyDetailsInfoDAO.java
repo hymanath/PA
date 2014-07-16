@@ -498,8 +498,8 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 	
 	public List<Object[]> getCasteWiseCountInBooth(Long boothId)
 	{
-		Query query = getSession().createQuery(" select  SDI.caste.casteStateId, C.casteName , count( SDI.caste.casteStateId) from SurveyDetailsInfo SDI, CasteState CS, Caste C where " +
-				" SDI.caste.casteStateId = CS.casteStateId and CS.caste.casteId = C.casteId and SDI.booth.boothId = :boothId group by SDI.caste.casteStateId " +
+		Query query = getSession().createQuery(" select  SDI.caste.casteStateId,SDI.caste.caste.casteName , count( SDI.caste.casteStateId) from SurveyDetailsInfo SDI where " +
+				"  SDI.booth.boothId = :boothId group by SDI.caste.casteStateId " +
 				" order by SDI.caste.caste.casteName asc ");
 		query.setParameter("boothId", boothId);
 		//query.setParameter("date", date);
