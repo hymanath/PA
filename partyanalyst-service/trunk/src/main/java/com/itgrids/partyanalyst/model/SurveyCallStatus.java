@@ -34,6 +34,12 @@ public class SurveyCallStatus implements java.io.Serializable{
 	private Booth booth;
 	private CasteState casteState;
 	
+	private Long voterId;
+	private Long surveyUserId;
+	private Long boothId;
+	private Long casteStateId;
+	private Long userId;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="survey_call_status_id")
@@ -45,7 +51,7 @@ public class SurveyCallStatus implements java.io.Serializable{
 	}
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
+	@JoinColumn(name = "user_id",insertable = false , updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public User getUser() {
@@ -56,7 +62,7 @@ public class SurveyCallStatus implements java.io.Serializable{
 	}
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "survey_user_id")
+	@JoinColumn(name = "survey_user_id" ,insertable = false , updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public SurveyUser getSurveyUser() {
@@ -67,7 +73,7 @@ public class SurveyCallStatus implements java.io.Serializable{
 	}
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "voter_id")
+	@JoinColumn(name = "voter_id" ,insertable = false , updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Voter getVoter() {
@@ -109,7 +115,7 @@ public class SurveyCallStatus implements java.io.Serializable{
 		this.updatedDate = updatedDate;
 	}
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "booth_id" )
+	@JoinColumn(name = "booth_id" ,insertable = false , updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Booth getBooth() {
@@ -120,7 +126,7 @@ public class SurveyCallStatus implements java.io.Serializable{
 	}
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "updated_caste_id")
+	@JoinColumn(name = "updated_caste_id",insertable = false , updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public CasteState getCasteState() {
@@ -129,6 +135,48 @@ public class SurveyCallStatus implements java.io.Serializable{
 	public void setCasteState(CasteState casteState) {
 		this.casteState = casteState;
 	}
+	
+	@Column(name="voter_id")
+	public Long getVoterId() {
+		return voterId;
+	}
+	public void setVoterId(Long voterId) {
+		this.voterId = voterId;
+	}
+	
+	@Column(name="survey_user_id")
+	public Long getSurveyUserId() {
+		return surveyUserId;
+	}
+	public void setSurveyUserId(Long surveyUserId) {
+		this.surveyUserId = surveyUserId;
+	}
+	
+	@Column(name="booth_id")
+	public Long getBoothId() {
+		return boothId;
+	}
+	public void setBoothId(Long boothId) {
+		this.boothId = boothId;
+	}
+	
+	@Column(name="updated_caste_id")
+	public Long getCasteStateId() {
+		return casteStateId;
+	}
+	public void setCasteStateId(Long casteStateId) {
+		this.casteStateId = casteStateId;
+	}
+	
+	@Column(name="user_id")
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
 
+	
+	
 	
 }

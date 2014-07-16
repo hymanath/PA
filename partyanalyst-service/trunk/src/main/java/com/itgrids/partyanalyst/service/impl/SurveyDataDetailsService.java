@@ -3073,15 +3073,19 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 							}			
 							else if(surveyCallStatus == null ){
 								surveyCallStatus = new SurveyCallStatus();
-								surveyCallStatus.setSurveyUser(surveyUserDAO.get(surveyReportVO.getUserid()));
-								surveyCallStatus.setVoter(voterDAO.get(surveyReportVO.getVoterId()));
+								//surveyCallStatus.setSurveyUser(surveyUserDAO.get(surveyReportVO.getUserid()));
+								surveyCallStatus.setSurveyUserId(surveyReportVO.getUserid());
+								surveyCallStatus.setVoterId(surveyReportVO.getVoterId());
+								//surveyCallStatus.setVoter(voterDAO.get(surveyReportVO.getVoterId()));
 								surveyCallStatus.setInsertedDate(dateUtilService.getCurrentDateAndTime());
 							}
 							
 							
 							surveyCallStatus.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
-							surveyCallStatus.setBooth(boothDAO.get(surveyReportVO.getBoothId()));
-							surveyCallStatus.setUser(userDAO.get(userId));
+							//surveyCallStatus.setBooth(boothDAO.get(surveyReportVO.getBoothId()));
+							surveyCallStatus.setBoothId(surveyReportVO.getBoothId());
+							surveyCallStatus.setUserId(userId);
+							//surveyCallStatus.setUser(userDAO.get(userId));
 							
 							if(surveyReportVO.getMobileNo().equalsIgnoreCase("1")){
 								surveyCallStatus.setMobileNoStatus("Y");
@@ -3102,7 +3106,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 								surveyCallStatus.setMatchedStatus("N");
 								
 								if(surveyReportVO.getCasteId() != 0){
-									surveyCallStatus.setCasteState(casteStateDAO.get(surveyReportVO.getCasteId()));
+									//surveyCallStatus.setCasteState(casteStateDAO.get(surveyReportVO.getCasteId()));
+									surveyCallStatus.setCasteStateId(surveyReportVO.getCasteId());
 								}
 							}
 														
