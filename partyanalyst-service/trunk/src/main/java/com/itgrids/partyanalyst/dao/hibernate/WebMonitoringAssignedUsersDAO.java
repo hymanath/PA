@@ -17,7 +17,7 @@ public class WebMonitoringAssignedUsersDAO extends GenericDaoHibernate<WebMonito
 	
 	public List<WebMonitoringAssignedUsers>  getAssignedUsersDetailsByWebMonitorId(Long webMonitorId)
 	{
-		Query query = getSession().createQuery("select WMAU from WebMonitoringAssignedUsers WMAU where WMAU.webMoniterUserId = :webMonitorId");
+		Query query = getSession().createQuery("select WMAU from WebMonitoringAssignedUsers WMAU where WMAU.webMoniterUserId = :webMonitorId and WMAU.isDelete = 'N'");
 		
 		query.setParameter("webMonitorId", webMonitorId);
 		return query.list();
@@ -30,6 +30,18 @@ public class WebMonitoringAssignedUsersDAO extends GenericDaoHibernate<WebMonito
 				" where model.webMoniterUserId = :userId and model.isDelete = 'N'");
 		query.setParameter("userId", userId);
 		return query.list();
+	}
+	
+	public List<Long>  getAssignedUsersIdsByWebMonitorId(Long webMonitorId)
+	{
+		Query query = getSession()
+				.createQuery(
+						"select WMAU.surveyUserId from WebMonitoringAssignedUsers WMAU where WMAU.webMoniterUserId = :webMonitorId and WMAU.isDelete = 'N'");
+		
+		query.setParameter("webMonitorId", webMonitorId);
+		
+		return query.list();
+		
 	}
 	
 }

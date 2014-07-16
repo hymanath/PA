@@ -66,6 +66,16 @@ public class SurveyUserDAO extends GenericDaoHibernate<SurveyUser, Long> impleme
 		return query.list();
 	}
 	
+	public List<Object[]> getUsersDetailsBySurveyUserIds(List<Long> userIds)
+	{
+		Query query = getSession().createQuery("select SU.surveyUserId,SU.userName from SurveyUser SU where SU.surveyUserId in(:userIds)");
+		
+		query.setParameterList("userIds", userIds);
+		
+		return query.list();
+		
+	}
+	
 	
 
 }

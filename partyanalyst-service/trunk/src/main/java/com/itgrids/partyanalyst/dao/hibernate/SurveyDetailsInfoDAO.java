@@ -549,4 +549,15 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 		return query.list();
 	}
 	
+	public List<Long> getPresentDayUserWiseSamplesCountByUserIds(List<Long> userIds,Date presentDate)
+	{
+		Query query = getSession().createQuery("select distinct SDI.surveyUser.surveyUserId from SurveyDetailsInfo SDI where date(SDI.date) = date(:presentDate) and " +
+				"SDI.surveyUser.surveyUserId in(:userIds)");
+		
+		query.setParameter("presentDate", presentDate);
+		query.setParameterList("userIds", userIds);
+		
+		return query.list();
+	}
+	
 }

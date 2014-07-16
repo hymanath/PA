@@ -730,4 +730,5 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 		return query.list();
 	}
 	
+	
 }
