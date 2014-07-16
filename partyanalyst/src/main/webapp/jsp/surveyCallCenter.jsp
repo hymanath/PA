@@ -257,6 +257,13 @@
 			</div>
 		</div>
 	<script>
+		var userIds = new Array();
+		<c:forEach var="user" items="${usersList}">
+			userIds.push('${user.id}')
+		</c:forEach>
+		console.log(userIds);
+	</script>
+	<script>
 		showHideTabs('startTimeTab');
 		$(".highlight").click(function()
 		{

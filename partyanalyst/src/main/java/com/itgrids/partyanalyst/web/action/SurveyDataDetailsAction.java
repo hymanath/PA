@@ -748,9 +748,19 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 				}
 			}
 			
+			JSONArray jarray = jObj.getJSONArray("userIds");
+			List<Long> userIds = null;
+			if(jarray != null && jarray.length() > 0)
+			{
+				userIds = new ArrayList<Long>();
+				for (Integer i = 0; i < jarray.length(); i++) 
+				{
+					userIds.add(Long.valueOf(jarray.get(i).toString()));
+				}
+				
+			}
 			
-			
-			dayWiseReportList = surveyDataDetailsService.getDayWiseReportByConstituencyIdAndUserType(jObj.getLong("constituencyId"),  startDate, endDate,userTypeId,boothIds);
+			dayWiseReportList = surveyDataDetailsService.getDayWiseReportByConstituencyIdAndUserType(jObj.getLong("constituencyId"),  startDate, endDate,userTypeId,boothIds,userIds);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1081,12 +1091,24 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			{
 				return Action.INPUT;
 			}
+			
+			List<Long> userIds = null;
 			jObj = new JSONObject(getTask());
+			JSONArray userIdsArray = jObj.getJSONArray("userId");
 			String dateStr = jObj.getString("dateStr");
 			SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
 			Date date = originalFormat.parse(dateStr);
-			Long userId = jObj.getLong("userId");
-			constituenciesList = surveyDataDetailsService.getLatLongForSurveyUsersByConstituency(jObj.getLong("constituencyId"), date,userId);
+			//Long userId = jObj.getLong("userId");
+			if(userIdsArray != null && userIdsArray.length()>0){
+				userIds = new ArrayList<Long>();
+				for(int i=0;i<userIdsArray.length();i++){
+					
+					Long userId = Long.valueOf(userIdsArray.get(i).toString());
+					userIds.add(userId);
+					
+				}
+			}	
+			constituenciesList = surveyDataDetailsService.getLatLongForSurveyUsersByConstituency(jObj.getLong("constituencyId"), date,userIds);
 		} 
 		catch (Exception e)
 		{
@@ -1132,7 +1154,8 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 				return INPUT;
 			if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CASTE_SURVEY_CALL_CENTER))
 				return ERROR;
-				constituenciesList = 	surveyDataDetailsService.getSurveyStartedConstituencyList();			
+				constituenciesList = 	surveyDataDetailsService.getSurveyStartedConstituencyList();
+				usersList = surveyDetailsService.getAssignedSurveyUsersForWebMontringTeam(user.getRegistrationID());
 		} catch (Exception e) {
 			LOG.error(" exception occured in surveyCallCenterPage() ,ConstituencyDetailsAction Action class",e);
 		}
@@ -1276,7 +1299,18 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
   {
 	  try{
 		  jObj = new JSONObject(getTask());
-		  surveyUserDetails =  surveyDataDetailsService.getSurveyDetailsForConstituency(jObj.getLong("constituencyId") ,jObj.getLong("userTypeId"),jObj.getString("date"));  
+		  JSONArray userIdsArray = jObj.getJSONArray("userIds");
+		  List<Long> userIds = null;
+		  if(userIdsArray != null && userIdsArray.length()>0){
+			  userIds = new ArrayList<Long>();
+				for(int i=0;i<userIdsArray.length();i++){
+					
+					Long userId =  Long.valueOf(userIdsArray.get(i).toString());
+					userIds.add(userId);
+					
+				}
+			}	
+		  surveyUserDetails =  surveyDataDetailsService.getSurveyDetailsForConstituency(jObj.getLong("constituencyId") ,jObj.getLong("userTypeId"),jObj.getString("date"),userIds);  
 	  }
 	  catch (Exception e) {
 		e.printStackTrace();
@@ -1300,7 +1334,19 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			String date = jObj.getString("date");
 			SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
 			Date date1 = originalFormat.parse(date);
-			surveyUserDetails = surveyDataDetailsService.getSurveyUserDetailsByConstituencies(jObj.getLong("constituencyId"), date1);
+			 JSONArray userIdsArray = jObj.getJSONArray("userIds");
+			  List<Long> userIds = null;
+			  if(userIdsArray != null && userIdsArray.length()>0)
+			  {
+				  userIds = new ArrayList<Long>();
+					for(int i=0;i<userIdsArray.length();i++){
+						
+						Long userId =  Long.valueOf(userIdsArray.get(i).toString());
+						userIds.add(userId);
+						
+					}
+			  }	
+			surveyUserDetails = surveyDataDetailsService.getSurveyUserDetailsByConstituencies(jObj.getLong("constituencyId"), date1,userIds);
 		} 
 		catch (Exception e)
 		{
