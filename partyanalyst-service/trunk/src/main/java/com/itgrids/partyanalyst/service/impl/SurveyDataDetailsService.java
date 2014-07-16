@@ -2956,7 +2956,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 						reportVO.setUserName(voter[12] != null ? voter[12].toString():"");  // votername 
 						reportVO.setPartNo(voter[13] != null ? voter[13].toString():"");    // H.No
 						reportVO.setVoterName(voter[14] != null ? voter[14].toString():""); // relativeName
-						reportVO.setSerailNo(voter[15] != null ?(Long) voter[9]:0L);
+						reportVO.setSerailNo(voter[15] != null ?(Long) voter[15]:0L);
 						if(voter[9] != null)
 								{
 									String casteMatchd = casteMatched.get((Long) voter[9]);
