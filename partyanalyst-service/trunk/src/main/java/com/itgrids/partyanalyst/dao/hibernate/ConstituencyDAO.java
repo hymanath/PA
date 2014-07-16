@@ -811,7 +811,7 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 	public List<Object[]> getAllAssemblyConstituenciesByStateId(Long stateId)
 	{
 		Query query = getSession().createQuery("select  C.constituencyId , C.name , C.district.districtId from Constituency C where C.state.stateId = ? and " +
-				"C.electionScope.electionType.electionTypeId = 2 and C.deformDate is null order by C.name");
+				"C.electionScope.electionType.electionTypeId = 2 and C.deformDate is null and C.district.districtId > 10 order by C.name ");
 		
 		query.setParameter(0, stateId);
 		
