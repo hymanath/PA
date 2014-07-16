@@ -27,6 +27,10 @@
 	font-weight:bold;
 	color:green;
 }
+h4
+{
+  margin-bottom:40px;
+}
 </style>
 <script>
   $(document).ready(function(){
@@ -43,6 +47,7 @@
 <div id="errorDiv"></div>
 <div id="statusDiv"></div>
 
+	<h4 class="offset4">ASSIGN USERS TO WEB MONITORS</h4>
    <div class="offset3">
     <div class="span7">
 		<div class="span2">

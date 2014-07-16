@@ -114,6 +114,33 @@
 			</div>
 		</div>
 		
+
+	<c:if test="${!empty notStartesUsersList}">
+        <div class="span6 offset3">
+		 <div class="m_top20 widgetservey">
+				 <h4>Inactive Users Details</h4>
+				 <b>NOTE:</b>InActive user means, today no sample is submitted from the user
+				 <div class="row-fluid" >
+					 <table class="table table-bordered m_top20 table-hover table-striped username">	
+					 <thead class="alert alert-success">
+					 <tr> 
+					 <th>User Name </th>						 
+					 </tr>						
+					 </thead>
+					 <tbody>
+					<c:forEach var="userDtls" items="${notStartesUsersList}">
+					 <tr>
+						  <td> ${userDtls.name}</td>
+					 </tr>
+					</c:forEach>				
+					 </tbody>
+					</table>
+				</div>
+		</div>
+		</div>
+	</c:if>
+
+
 		<div class="row" id="startTime">
 			<div class="span12">
 				<div class="row-fluid ">

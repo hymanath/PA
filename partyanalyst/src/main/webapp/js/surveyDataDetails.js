@@ -1337,6 +1337,12 @@ function redicttoVerificationPage()
 	
 }
 
+function redicttoAssignUsersPage()
+{
+		 window.open('assignUsersToWebMonitoringTeam.action','_blank');
+
+}
+
 function openComparisonReport()
 {
 	 window.open('surveyMonitoringAction.action','_blank');
