@@ -345,8 +345,9 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 	{
 		Query query = getSession().createQuery("select SDI.surveyUser.userName, SDI.voter.voterIDCardNo," +
 				" SDI.mobileNumber, SDI.caste.caste.casteName,SDI.casteName, SDI.hamlet.hamletName, SDI.hamletName, SDI.localArea,  SDI.surveyUser.surveyUserId, " +
-				" SDI.voter.voterId , SDI.isCadre , SDI.isInfluencingPeople, SDI.voter.name, SDI.voter.houseNo, SDI.voter.relativeName   " +
-				"   from SurveyDetailsInfo SDI where SDI.booth.boothId  = :boothId and SDI.surveyUser.surveyUserId in (:assignUsers)   " +
+				" SDI.voter.voterId , SDI.isCadre , SDI.isInfluencingPeople, SDI.voter.name, SDI.voter.houseNo, SDI.voter.relativeName, BPV.serialNo   " +
+				" from SurveyDetailsInfo SDI ,BoothPublicationVoter BPV where SDI.booth.boothId = BPV.booth.boothId and SDI.voter.voterId = BPV.voter.voterId " +
+				" and SDI.booth.boothId  = :boothId and SDI.surveyUser.surveyUserId in (:assignUsers)   " +
 				" and date(SDI.date) = :searchDate "+
 				//" and SDI.voter.voterId not in ( select SCS.voter.voterId from SurveyCallStatus SCS where  SDI.surveyUser.surveyUserId =  SCS.surveyUser.surveyUserId )" +
 				"  order by SDI.voter.voterId ");
