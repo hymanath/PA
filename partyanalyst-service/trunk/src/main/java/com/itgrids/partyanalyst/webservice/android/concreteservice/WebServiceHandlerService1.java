@@ -22,7 +22,6 @@ import com.itgrids.partyanalyst.dao.IMobileAppUserProfileDAO;
 import com.itgrids.partyanalyst.dao.IPingingTypeDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserBoothAssignDAO;
-import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserSurveyBoothsDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoiceRecordingDetailsDAO;
@@ -40,7 +39,6 @@ import com.itgrids.partyanalyst.service.IStrategyModelTargetingService;
 import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
 import com.itgrids.partyanalyst.service.IVoiceSmsService;
 import com.itgrids.partyanalyst.service.IVoterReportService;
-import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.webservice.android.abstractservice.IWebServiceHandlerService1;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.BoothVoterVO;
@@ -59,14 +57,14 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	 * Jul 3, 2014
 	 * @param 
 	 */
+	private static final Logger LOG = Logger.getLogger(WebServiceHandlerService1.class);
+
 	public  WebServiceHandlerService1() {
-	System.out.println("got instanciated===========");	
+		LOG.info("got instanciated===========");	
 
 	}
-	private static final Logger log = Logger.getLogger(WebServiceHandlerService1.class);
 
-	private static final Long hamletId = null;
-	
+
 	private ILoginService loginService;
 	
 	private IMobileService mobileService;
@@ -91,12 +89,10 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	private IVoterReportService voterReportService;
 	private IVoterTagDAO voterTagDAO;
 	private IVoterBoothActivitiesDAO voterBoothActivitiesDAO;
-	private DateUtilService dateUtilService = new DateUtilService();
 	
-	@Autowired IUserDAO userDAO;
-	@Autowired IStrategyModelTargetingService strategyModelTargetingService;
-    @Autowired   IUserSurveyBoothsDAO userSurveyBoothsDAO ;
-    @Autowired public ISurveyDataDetailsService surveyDataDetailsService;
+	@Autowired private IStrategyModelTargetingService strategyModelTargetingService;
+    @Autowired private IUserSurveyBoothsDAO userSurveyBoothsDAO ;
+    @Autowired private ISurveyDataDetailsService surveyDataDetailsService;
     
     @Autowired
 	 public ISurveyUserBoothAssignDAO surveyUserBoothAssignDAO; 
@@ -279,7 +275,7 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 		buffer.append("{\"statusCode:\"");*/
 		Object[] userId=null;
 		UserResponseVO res=null;
-		log.debug("Entered into the checkForUserAuthentication  method in WebServiceHandlerService");
+		LOG.debug("Entered into the checkForUserAuthentication  method in WebServiceHandlerService");
 		try
 		{
 			//check user availability
@@ -299,8 +295,8 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 		
 		}catch(Exception e)
 		{
-			log.error("Exception raised in checkForUserAuthentication  method in WebServiceHandlerService");
-			e.printStackTrace();
+			LOG.error("Exception raised in checkForUserAuthentication  method in WebServiceHandlerService");
+			
 			
 		}
 		return res;
@@ -314,8 +310,8 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 		
 		UserResponseVO res=null;
 		
-		long userId=(Long)inputs[0];
-		int userTypeId=((Long)inputs[1]).intValue();
+		final long userId=(Long)inputs[0];
+		final int userTypeId=((Long)inputs[1]).intValue();
 
 	//check  usertypes
 		
@@ -346,27 +342,32 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	 * Jul 2, 2014
 	 * @param
 	 */
-	public UserResponseVO buildCollectorData(long userId,long userTypeId)
+	@SuppressWarnings("unchecked")
+	public UserResponseVO buildCollectorData(final long userId,final long userTypeId)
 	{
 		//check data already available fo user
 	          //need to confirm
 		
 		//get booths for collector
-		List<Object[]> booths =(List<Object[]>) surveyUserBoothAssignDAO.getBoothsForUser(userId);
+		 List<Object[]> booths =(List<Object[]>) surveyUserBoothAssignDAO.getBoothsForUser(userId);
 		
 		
-		List<Long> remainingDatBoothIds = new ArrayList<Long>();
+		 List<Long> remainingDatBoothIds = new ArrayList<Long>();
 		
 		for(Object[] obj:booths)
 		{
 			if(obj[3].toString().equalsIgnoreCase("Y"))
+			{
 				remainingDatBoothIds.add((Long)obj[0]);
+			}
 		}
 		
 		  List<Long> voterIds=null;
-		if(remainingDatBoothIds!=null && remainingDatBoothIds.size()>0)
+		if(remainingDatBoothIds!=null && !remainingDatBoothIds.isEmpty())
+		{
          voterIds =   boothPublicationVoterDAO.getAllVoterIdsByBoothIdsAndPublicationDateId(remainingDatBoothIds,IConstants.VOTER_DATA_PUBLICATION_ID);
-		if(voterIds!=null && voterIds.size()>0){
+		}
+         if(voterIds!=null && !voterIds.isEmpty()){
          List<Long> existVoterIds = surveyDetailsInfoDAO.getDataCollectedVoterIdsByBoothIds(remainingDatBoothIds); 
          
          voterIds.removeAll(existVoterIds);
