@@ -1046,7 +1046,7 @@ function buildBoothDetails(result)
 {
 	var str = '';
 
-	str+='<div class="span12 offset1">';
+	str+='<div class="span12" style="margin-left:30px;">';
     str+='<br/><br/>';
 	 $.each(result,function(index,value){
 		 if(value.userHas == false)
