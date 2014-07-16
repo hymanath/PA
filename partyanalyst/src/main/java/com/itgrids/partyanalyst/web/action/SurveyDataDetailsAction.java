@@ -1,9 +1,11 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -64,9 +66,18 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	private List<GenericVO> usersList,constituencies;
 	private RegionServiceDataImp regionServiceDataImp;
 	private SurveyReportVO surveyReportVO;
+	private Long constituencyId;
 	
 	
 	
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+
 	public RegionServiceDataImp getRegionServiceDataImp() {
 		return regionServiceDataImp;
 	}
@@ -1505,7 +1516,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		return Action.SUCCESS;  
   }
   
-/*  
+  
   public String getAssignedUsersOfAConstituency()
   {
 	  constituencies =  surveyDataDetailsService.getAssignedUsersOfAConstituency(constituencyId);
@@ -1514,10 +1525,24 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
   
   public String saveWebMonioringAssignDetails()
   {
-	  surveyDataDetailsService.saveWebMonioringAssignDetails();
+	  try {
+		jObj = new JSONObject(getTask());
+		  
+		  List<Long> userIds = new ArrayList<Long>();
+			JSONArray jarray = jObj.getJSONArray("userIds");
+			for (Integer i = 0; i < jarray.length(); i++) 
+			{
+				userIds.add(Long.valueOf(jarray.get(i).toString()));
+			}
+		  
+		 status =  surveyDataDetailsService.saveWebMonioringAssignDetails(jObj.getLong("webMonitorUserId"),userIds);
+		 
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
 	  
 	  return Action.SUCCESS;
-  }*/
+  }
   
   public String getConstituencyDetailsForSurveyUser(){
 		try

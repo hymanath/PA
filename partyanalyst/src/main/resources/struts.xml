@@ -7687,6 +7687,14 @@
 		<result type="json" name="success">
 				<param name="root">surveyUserDetails</param>
 			</result>
-  </action>
+  		</action>
+  		
+  		
+  		<action name="saveWebMonioringAssignDetails" class="surveyDataDetailsAction" method="saveWebMonioringAssignDetails">
+		<result type="json" name="success">
+				<param name="root">status</param>
+			</result>
+  		</action>
+  
 </package>
 </struts>      
