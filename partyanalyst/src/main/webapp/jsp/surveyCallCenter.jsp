@@ -131,13 +131,15 @@
 										 <table class="table table-bordered m_top20 table-hover table-striped username">	
 										 <thead class="alert alert-success">
 										 <tr> 
-										 <th>User Name </th>						 
+										 <th>User Name </th>	
+										 <th>Mobile No </th>	
 										 </tr>						
 										 </thead>
 										 <tbody>
 										<c:forEach var="userDtls" items="${notStartesUsersList}">
 										 <tr>
 											  <td> ${userDtls.name}</td>
+											  <td> ${userDtls.mobileNo}</td>
 										 </tr>
 										</c:forEach>				
 										 </tbody>
