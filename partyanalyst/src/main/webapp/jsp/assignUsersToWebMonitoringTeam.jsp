@@ -55,6 +55,7 @@ h4
 		</div>
 		<div class="span4">
 			<s:select theme="simple"  name="user" id="userId" list="usersList" listKey="id" listValue="name" />
+
 		</div>
     </div>
 
@@ -64,6 +65,7 @@ h4
 		</div>
 		<div class="span4">
 			<s:select theme="simple"  name="constituency" id="constituencyId" list="constituenciesList" listKey="id" listValue="name" onchange="getAssignedUsersOfConstituency()"/>
+			<img  id="constituencyImage"  src="./images/icons/search.gif" alt="Processing Image"  class="hide"></img>
 		</div>
     </div>
 
@@ -80,12 +82,16 @@ h4
 
 	<div class="span10 offset3">
  	 <a href="javascript:{saveWebMonioringAssignDetails()}" class="btn btn-success">ASSIGN</a>
+	 <img  src="./images/icons/search.gif" alt="Processing Image"  id="submitImage" class="hide"></img>
+
 	</div>
  </div>
 </div>
 <script>
 function getAssignedUsersOfConstituency()
 {
+	$('#constituencyImage').show();
+
 	$.ajax({
 	type:'GET',
 	url: 'getAssignedUsersOfAConstituency.action',
@@ -101,11 +107,15 @@ function buildConstituencies(result)
    $.each(result,function(index,value){
 	   $('#userIds').append('<option value="'+value.id+'">'+value.name+'</option>');
    });
+   $('#constituencyImage').hide();
+
    // $('#userIds').multiselect('refresh');
 }
 
 function saveWebMonioringAssignDetails()
 {
+
+
 	$('#errorDiv').html('');
 	 var errorStr ='';
 	if($('#userIds').val() == null)
@@ -116,6 +126,7 @@ function saveWebMonioringAssignDetails()
 		$('#errorDiv').html(errorStr);
 		return;
 	}
+		$('#submitImage').show();
 	var jsObj ={
 		webMonitorUserId:'',
         userIds:[]
@@ -131,6 +142,7 @@ function saveWebMonioringAssignDetails()
 	dataType: 'json',
 	data: {task:JSON.stringify(jsObj)},
 	}).done(function(result){
+		$('#submitImage').hide();
 		if(result == "success")
 		{
            $('#statusDiv').html("Assigned Success fully..");
