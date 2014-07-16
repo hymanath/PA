@@ -1436,6 +1436,28 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		
   }
   
+  public String getCasteCollectedCountsForDates()
+  {
+		try
+		{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			jObj = new JSONObject(getTask());
+
+			surveyUserDetails = surveyDataDetailsService.getCasteCollectedCountsForDates(jObj.getString("date"));
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getAlreadyAssignTabsListForLeader", e);
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;  
+  }
+  
 /*  
   public String getAssignedUsersOfAConstituency()
   {
