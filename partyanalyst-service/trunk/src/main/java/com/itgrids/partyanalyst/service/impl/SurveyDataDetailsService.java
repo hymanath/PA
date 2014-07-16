@@ -2097,7 +2097,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	
 	public List<SurveyReportVO> getDayWiseReportByConstituencyIdAndUserType(
 			Long constituencyId, String startDate, String endDate,
-			Long userTypeId,List<Long> bothIds)	{
+			Long userTypeId,List<Long> bothIds,List<Long> userIds)	{
 		List<SurveyReportVO> resultList = new ArrayList<SurveyReportVO>();
 
 		try
@@ -2111,12 +2111,23 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			
 			enddate = originalFormat.parse(endDate);
 			Date convertedenddate = targetFormat.parse(targetFormat.format(enddate));
+			List<Object[]> dayWiseReportDtls = null;
 			
+			if(userIds != null && userIds.size() > 0)
+			{
+				 dayWiseReportDtls = surveyDetailsInfoDAO
+							.getDayWisereportDetailsByConstituencyIdAndUserIds(
+									constituencyId, convertedstrdate, convertedenddate,
+									userTypeId,bothIds,userIds);
+			}
+			else
+			{
+				 dayWiseReportDtls = surveyDetailsInfoDAO
+							.getDayWisereportDetailsByConstituencyIdAndUserTypeId(
+									constituencyId, convertedstrdate, convertedenddate,
+									userTypeId,bothIds);
+			}
 			
-			List<Object[]> dayWiseReportDtls = surveyDetailsInfoDAO
-					.getDayWisereportDetailsByConstituencyIdAndUserTypeId(
-							constituencyId, convertedstrdate, convertedenddate,
-							userTypeId,bothIds);
 			
 			
 			
@@ -2711,15 +2722,15 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	}
 	
 	
-	public List<SelectOptionVO> getLatLongForSurveyUsersByConstituency(Long constituencyId,Date date,Long userId)
+	public List<SelectOptionVO> getLatLongForSurveyUsersByConstituency(Long constituencyId,Date date,List<Long> userIds)
 	{
 		List<SelectOptionVO> returnList = null;
 		try
 		{
 			List<Object[]> result = null ;
-			if(userId > 0)
+			if(userIds != null && userIds.size() > 0)
 			{
-				 result = surveyDetailsInfoDAO.getLatLongForSurveyUsersByConstituencyByUser(constituencyId, date,userId);
+				 result = surveyDetailsInfoDAO.getLatLongForSurveyUsersByConstituencyByUser(constituencyId, date,userIds);
 			}
 			else
 			{
@@ -3075,7 +3086,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		return resultList;
 	}
 	
-	public List<SurveyReportVO> getSurveyDetailsForConstituency(Long constituencyId,Long userTypeId,String date)
+	public List<SurveyReportVO> getSurveyDetailsForConstituency(Long constituencyId,Long userTypeId,String date,List<Long> userIds)
 	{
 		
 		
@@ -3085,8 +3096,16 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		try{
 			SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
 			Date date1 = originalFormat.parse(date);
-			
-		   List<Object[]> dataList = surveyDetailsInfoDAO.getSurveyDetailsByConstituency(constituencyId,userTypeId,date1);
+			List<Object[]> dataList = null;
+			if(userIds != null && userIds.size() > 0)
+			{
+				dataList = surveyDetailsInfoDAO.getSurveyDetailsByConstituencyByUsers(constituencyId,userTypeId,date1,userIds);
+			}
+			else
+			{
+				dataList = surveyDetailsInfoDAO.getSurveyDetailsByConstituency(constituencyId,userTypeId,date1);
+			}
+		   
 		  
 			 
 			if(dataList != null && dataList.size() > 0)
@@ -3295,12 +3314,21 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		return returnList;
 	}
 	
-	public List<SurveyReportVO> getSurveyUserDetailsByConstituencies(Long constituencyId,Date date)
+	public List<SurveyReportVO> getSurveyUserDetailsByConstituencies(Long constituencyId,Date date,List<Long> userIds)
 	{
 		List<SurveyReportVO> returnList = new ArrayList<SurveyReportVO>();
 		try
 		{
-			List<Object[]> details = surveyDetailsInfoDAO.getAllUserDetailsByConstituency(constituencyId, date);
+			List<Object[]> details = null;
+			if(userIds != null && userIds.size() > 0)
+			{
+				details = surveyDetailsInfoDAO.getAllUserDetailsByConstituencyByUsers(constituencyId, date,userIds);
+			}
+			else
+			{
+				details = surveyDetailsInfoDAO.getAllUserDetailsByConstituency(constituencyId, date);
+			}
+			
 			if(details != null && details.size() > 0)
 			{
 				

@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dao.ISurveyDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IUpdationDetailsDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.IWebMonitoringAssignedUsersDAO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -37,6 +38,9 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 	private ISurveyAccessUsersDAO surveyAccessUsersDAO;
 	private DateUtilService dateUtilService = new DateUtilService();
 	private IRegionWiseSurveysDAO regionWiseSurveysDAO;
+	
+	@Autowired
+	private IWebMonitoringAssignedUsersDAO webMonitoringAssignedUsersDAO;
 	
 	@Autowired
 	private ISurveyUserConstituencyDAO surveyUserConstituencyDAO;
@@ -249,4 +253,29 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 	}
 
 
+	public List<GenericVO> getAssignedSurveyUsersForWebMontringTeam(Long userId)
+	{
+		log.info("Entered into getAssignedSurveyUsersForWebMontringTeam method");
+		List<GenericVO> returnList = null;
+	    try
+	    {
+			List<Object[]> result = webMonitoringAssignedUsersDAO.getAssignedusersForWebMontringTeam(userId);
+			if(result != null && result.size() > 0)
+			{
+				returnList = new ArrayList<GenericVO>();
+				for (Object[] objects : result)
+				{
+					GenericVO VO = new GenericVO();
+					VO.setId(objects[0] != null ? (Long)objects[0]:0l);
+					VO.setName(objects[1] != null ? objects[1].toString() : "");
+					returnList.add(VO);
+				}
+			}
+		}
+	    catch (Exception e)
+	    {
+	    	log.error("Exception raised in getAssignedSurveyUsersForWebMontringTeam", e);
+		}
+	    return returnList;
+	}
 }

@@ -74,6 +74,49 @@ public class SurveyDetailsInfoDAO extends GenericDaoHibernate<SurveyDetailsInfo,
 		return query.list();
 		
 	}
+	
+	
+	public List<Object[]> getDayWisereportDetailsByConstituencyIdAndUserIds(Long constituencyId,Date startDate,Date endDate,Long userTypeId,List<Long> boothIds,List<Long> userIds)
+	{
+		
+		StringBuffer str = new StringBuffer();
+		
+		str.append("select count(SDI.booth.constituency.constituencyId)," +
+				"SDI.surveyUser.surveyUserId,SDI.surveyUser.userName," +
+				"SDI.booth.boothId , SDI.booth.partNo,SDI.booth.totalVoters, DATE(SDI.date) from " +
+				"SurveyDetailsInfo SDI where SDI.booth.constituency.constituencyId = :constituencyId  and date(SDI.date) >= :startDate and " +
+				"SDI.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId and  " +
+				" date(SDI.date) <= :endDate and SDI.surveyUser.surveyUserId in (:userIds) ");
+				
+				if(boothIds != null && boothIds.size() >0)
+					str.append("and SDI.booth.boothId in(:boothIds)");
+				
+				
+				str.append(" group by " +
+				"SDI.surveyUser.surveyUserId,SDI.booth.boothId,DATE(SDI.date) ");
+				
+				Query query = getSession().createQuery(str.toString());
+		
+	/*	Query query = getSession().createQuery("select count(SDI.booth.constituency.constituencyId)," +
+				"SDI.surveyUser.surveyUserId,SDI.surveyUser.userName," +
+				"SDI.booth.boothId , SDI.booth.partNo,SDI.booth.totalVoters, DATE(SDI.date) from " +
+				"SurveyDetailsInfo SDI where SDI.booth.constituency.constituencyId = :constituencyId  and date(SDI.date) >= :startDate and " +
+				"SDI.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId and  " +
+				" date(SDI.date) <= :endDate group by " +
+				"SDI.surveyUser.surveyUserId,SDI.booth.boothId,DATE(SDI.date) ");*/
+		
+		query.setParameter("startDate", startDate);
+		query.setParameter("endDate", endDate);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("userTypeId", userTypeId);
+		query.setParameterList("userIds", userIds);
+		if(boothIds != null && boothIds.size() >0)
+			query.setParameterList("boothIds", boothIds);
+		
+		return query.list();
+		
+	}
+	
 
 	public List<Object[]> getBoothWiseUserSamplesDetailsByDates(Long userId,Date startDate)
 	{
@@ -239,17 +282,17 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 		return query.list();
 	}
 	
-	public List<Object[]> getLatLongForSurveyUsersByConstituencyByUser(Long constituencyId,Date date,Long userId)
+	public List<Object[]> getLatLongForSurveyUsersByConstituencyByUser(Long constituencyId,Date date,List<Long> userIds)
 	{
 		Query query = getSession().createQuery("select model.surveyUser.userName,model.booth.partNo,model.booth.tehsil.tehsilName,  " +
 				" model.booth.panchayat.panchayatName,model.booth.villagesCovered,model.booth.location , model.surveyUser.surveyUserType.userType," +
 				" model.surveyUser.surveyUserId,model.longitude,model.latitude,model.booth.boothId  ,model.surveyUser.mobileNo " +
 				" from SurveyDetailsInfo model where" + 
 				" model.booth.constituency.constituencyId =:constituencyId and date(model.date) = :date  and model.longitude != '0.0' and model.latitude != '0.0'  " +
-				" and model.surveyUser.surveyUserId = :userId  order by model.date desc");
+				" and model.surveyUser.surveyUserId in (:userIds)  order by model.date desc");
 		query.setParameter("constituencyId", constituencyId);
 		query.setParameter("date", date);
-		query.setParameter("userId", userId);
+		query.setParameterList("userIds", userIds);
 		return query.list();
 	}
 	
@@ -352,6 +395,21 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 	}
 	
 	
+	public List<Object[]> getSurveyDetailsByConstituencyByUsers(Long constituencyId,Long userTypeId,Date date,List<Long> userIds)
+	{
+		
+		Query query = getSession().createQuery("select distinct model.surveyUser.surveyUserId,model.surveyUser.userName,model.booth.boothId,model.booth.partNo," +
+				" model.booth.totalVoters from SurveyDetailsInfo model where model.booth.constituency.constituencyId = :constituencyId " +
+				" and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId and model.surveyUser.surveyUserId in (:userIds)" +
+				" and date(model.date) = :date");
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("userTypeId", userTypeId);
+		query.setParameter("date", date);
+		query.setParameterList("userIds", userIds);
+		return query.list();
+		
+	}
+	
 	public List<Object[]> getBoothCount(Long constituencyId,Long userTypeId)
 	{
 		Query query = getSession().createQuery("select model.surveyUser.surveyUserId,model.booth.boothId,model.booth.partNo,count(distinct model.booth.boothId),model.booth.totalVoters from SurveyDetailsInfo model where model.booth.constituency.constituencyId = :constituencyId and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId" +
@@ -392,6 +450,18 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 		return query.list();
 	}
 	
+	public List<Object[]> getAllUserDetailsByConstituencyByUsers(Long constituencyId,Date date,List<Long> userIds)
+	{
+		Query query = getSession().createQuery("select model.surveyUser.surveyUserId ,model.surveyUser.userName,model.surveyUser.mobileNo,model.booth.partNo," +
+				" model.booth.tehsil.tehsilName, model.booth.panchayat.panchayatName,model.booth.location,model.booth.villagesCovered ,model.surveyUser.surveyUserType.userType,model.booth.boothId,model.insertedTime " +
+				" from SurveyDetailsInfo model where" + 
+				" model.booth.constituency.constituencyId =:constituencyId and date(model.date) = :date and model.surveyUser.activeStatus = 'Y'" +
+				" and model.surveyUser.surveyUserId in (:userIds) order by model.insertedTime asc");
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("date", date);
+		query.setParameterList("userIds", userIds);
+		return query.list();
+	}
 	
 	public List<Object[]> getCasteCountByBooths(List<Long> userIds,List<Long> boothIds,Long userTypeId,Date date)
 	{
