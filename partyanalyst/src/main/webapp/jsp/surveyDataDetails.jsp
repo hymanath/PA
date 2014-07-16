@@ -101,17 +101,17 @@
 					<li><a class="highlight" id="deactivationTab" onclick="showHideTabs(this.id);"> Deactivation </a></li>
 					<li><a class="highlight" id="verificationDetailsTab" onclick="showHideTabs(this.id);"> Verification Details	 </a></li>
 					<li class="highlight" id="reportsTab" onclick="showHideTabs(this.id);">
-					  <div class="dropdown">
-							<a class="dropdown-toggle" data-toggle="dropdown" href="#">Reports</a>
-							<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-							<li><a href="javascript:{redicttoVerificationPage(1)}">Data Collector Report </a></li>
-							<li><a  href="javascript:{redicttoVerificationPage(2)}">Verifier Report  </a></li>
-							<li><a href="javascript:{redicttoVerificationPage(2)}">Third Party Report </a></li>
-							<li><a href="javascript:{openUserTrackingPage()}">User Tracking Report </a></li>
-							<li><a href="javascript:{openComparisonReport()}">Comparison Report </a></li>
-							<li><a href="javascript:{openStateWiseReport()}">State Wise Report </a></li>
+					 <!-- <div class="dropdown">-->
+							<a href="javascript:{redicttoVerificationPage()}">Reports</a>
+							<!--<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<li><a href="javascript:{redicttoVerificationPage()}">Data Collector Report </a></li>
+							<li><a  href="javascript:{redicttoVerificationPage()}">Verifier Report  </a></li>
+							<li><a href="javascript:{redicttoVerificationPage()}">Third Party Report </a></li>
+							<li><a href="javascript:{redicttoVerificationPage()}">User Tracking Report </a></li>
+							<li><a href="javascript:{redicttoVerificationPage()}">Comparison Report </a></li>
+							<li><a href="javascript:{redicttoVerificationPage()}">State Wise Report </a></li>
 							</ul>
-					  </div>
+					  </div>-->
 					</li>
 					<!--<li><a class="highlight" id="reportTab" onclick="redicttoVerificationPage();"> Reports	 </a></li>-->
 				</ul>
