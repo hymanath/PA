@@ -320,7 +320,7 @@ a.tdp-text-error:hover {
 					<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CALL_CENTER_ENTITLEMENT' ) }">
 					
 					<li><a href="callCenterAction.action"><span>Call Center</span></a></li>
-					<li><a href="surveyDataDetailsAction.action"><span>CTP Project</span></a></li>
+					<li><a href="dailyVerificationReportsAction.action"><span>CTP Project</span></a></li>
 					</c:if>
 					
 				</ul>
