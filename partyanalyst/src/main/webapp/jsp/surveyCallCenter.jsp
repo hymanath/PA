@@ -117,7 +117,7 @@
 
 	<c:if test="${!empty notStartesUsersList}">
 	
-		<div class="row">
+		<div class="row" id="inActiveUsersDetails">
 			<div class="span12">
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top20">
