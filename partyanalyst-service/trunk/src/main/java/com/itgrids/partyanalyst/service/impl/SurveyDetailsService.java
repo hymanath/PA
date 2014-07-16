@@ -14,7 +14,9 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IRegionWiseSurveysDAO;
 import com.itgrids.partyanalyst.dao.ISurveyAccessUsersDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDAO;
+import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserConstituencyDAO;
+import com.itgrids.partyanalyst.dao.ISurveyUserDAO;
 import com.itgrids.partyanalyst.dao.IUpdationDetailsDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IWebMonitoringAssignedUsersDAO;
@@ -44,6 +46,13 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 	
 	@Autowired
 	private ISurveyUserConstituencyDAO surveyUserConstituencyDAO;
+	
+	
+	@Autowired
+	private ISurveyDetailsInfoDAO surveyDetailsInfoDAO;
+	
+	@Autowired
+	private ISurveyUserDAO surveyUserDAO;
 
 	
 	public IRegionWiseSurveysDAO getRegionWiseSurveysDAO() {
@@ -278,4 +287,55 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 		}
 	    return returnList;
 	}
+	
+	public List<GenericVO> getNotStartedUsersDetails(Long webMonitorUserId)
+	{
+		log.info("Entered into getNotStartedUsersDetails method");
+		
+		 List<GenericVO> resultList = new ArrayList<GenericVO>();
+
+		try
+		{
+			List<Long> userIds = webMonitoringAssignedUsersDAO.getAssignedUsersIdsByWebMonitorId(webMonitorUserId);
+			
+			List<Long> activeUserIds = surveyDetailsInfoDAO.getPresentDayUserWiseSamplesCountByUserIds(userIds,dateUtilService.getCurrentDateAndTime());
+			
+			List<Long> inActiveUserIds = new ArrayList<Long>();
+			
+			
+			for(Long userId:userIds)
+				if(!activeUserIds.contains(userId))
+					inActiveUserIds.add(userId);
+			
+		
+			if(inActiveUserIds != null && inActiveUserIds.size() >0)
+			{
+			
+				List<Object[]> inActiveUsersDetails = 	surveyUserDAO.getUsersDetailsBySurveyUserIds(inActiveUserIds);
+				
+				
+				for(Object[] obj:inActiveUsersDetails)
+				{
+					GenericVO vo = new GenericVO();
+					
+					vo.setName(obj[1].toString());
+					vo.setId((Long)obj[0]);
+					
+					resultList.add(vo);
+				}
+			}
+			
+			
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+	    	log.error("Exception raised in getNotStartedUsersDetails", e);
+			
+		}
+		
+		return resultList;
+		
+	}
 }
+ 
