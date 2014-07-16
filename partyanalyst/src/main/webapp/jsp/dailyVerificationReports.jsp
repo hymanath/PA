@@ -105,10 +105,10 @@ $('#boothId').multiselect({
   
   <div class="container">
 		<!---- Survey monitoring---->		
-		<div class="row" id="verifierReportId">
+		<div class="row" id="verifierReportId" style="dispaly:none;">
 			<div class="span12">
 				<div class="row-fluid ">
-					<div class="span12 widgetservey_Red m_top20">
+					<div class="span12 widgetservey_Red m_top30">
 							<h4 id="titleId"></h4>
 							<div class="row">
 						<div id="errorDiv" class="span8 offset1 clearCls"></div>
