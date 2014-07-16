@@ -463,4 +463,20 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 		return (Long) query.uniqueResult();
 	}
 	
+	
+	public List<Object[]> getTotalCastecollectedCountForDates()
+	{
+		Query query = getSession().createQuery("select model.date,count(distinct model.surveyDetailsInfoId) from SurveyDetailsInfo model where (model.caste.casteStateId is not null or model.casteName is not null) group by date(model.date)");
+		return query.list();
+	}
+	
+	public List<Object[]> getTotalCastecollectedCountForTodayForDates(Date date)
+	{
+		Query query = getSession().createQuery("select model.date,count(distinct model.surveyDetailsInfoId) from SurveyDetailsInfo model where " +
+				" (model.caste.casteStateId is not null or model.casteName is not null) " +
+				" and date(model.date) = date(:date)");
+		query.setParameter("date",date);
+		return query.list();
+	}
+	
 }

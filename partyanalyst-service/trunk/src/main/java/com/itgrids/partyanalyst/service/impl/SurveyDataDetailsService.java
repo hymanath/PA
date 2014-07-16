@@ -3491,4 +3491,35 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		}
 		return surveyReportVO;
 	}
+	public List<SurveyReportVO> getCasteCollectedCountsForDates(String date)
+	{
+		List<SurveyReportVO> resultList = new ArrayList<SurveyReportVO>();
+		List<Object[]> list = null;
+	try{
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date date1 = new Date();
+		String modifiedDate= new SimpleDateFormat("yyyy-MM-dd").format(date1);
+		Date convertedDate = null;
+		convertedDate = formatter.parse(modifiedDate);
+		if(date.equals(""))
+		list =  surveyDetailsInfoDAO.getTotalCastecollectedCountForDates();
+		else
+		list = surveyDetailsInfoDAO.getTotalCastecollectedCountForTodayForDates(convertedDate);
+		
+		
+		
+		for(Object[] params : list)
+		{
+			SurveyReportVO vo = new SurveyReportVO();
+			vo.setSurveyDate(params[0].toString().substring(8, 10)+"-"+params[0].toString().substring(5, 7)+"-"+params[0].toString().substring(0, 4));
+			vo.setCount((Long)params[1]);
+			resultList.add(vo);
+		}
+	}
+	catch (Exception e) {
+		LOG.error("Exception Occured in getCasteCollectedCountsForDates()",e);
+	}
+	return resultList;
+	}
+	
 }

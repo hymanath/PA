@@ -73,4 +73,6 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	public Long getTotalCastecollectedCountForToday(Date date);
 	
 	public List<Object[]> findConstituenciesByDistrictId(Long districtId);
+	public List<Object[]> getTotalCastecollectedCountForDates();
+	public List<Object[]> getTotalCastecollectedCountForTodayForDates(Date date);
 }
