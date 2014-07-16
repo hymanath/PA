@@ -32,7 +32,7 @@ public class SurveyCallStatus implements java.io.Serializable{
 	private Date insertedDate;
 	private Date updatedDate;
 	private Booth booth;
-	
+	private CasteState casteState;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -118,5 +118,17 @@ public class SurveyCallStatus implements java.io.Serializable{
 	public void setBooth(Booth booth) {
 		this.booth = booth;
 	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "updated_caste_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public CasteState getCasteState() {
+		return casteState;
+	}
+	public void setCasteState(CasteState casteState) {
+		this.casteState = casteState;
+	}
+
 	
 }
