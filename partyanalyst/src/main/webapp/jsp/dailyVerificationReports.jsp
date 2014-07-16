@@ -457,13 +457,14 @@ function buildUserBoothWiseCountDetails(result)
 
 	</script>
 	<script>	
-	getUserTypes('userType');
+	//getUserTypes('userType');
 	</script>
 <script>
 
 function getDayWiseReportByConstituencyIdAndUserType()
 {
-$('#dayWiseReportDiv1,#retunMsg,#errorDiv').html('');
+
+   $('#dayWiseReportDiv1,#retunMsg,#errorDiv').html('');
 	var constituencyId = $("#constituencyId").val();
 	//var userTypeId = $("#userType").val();
 	var userTypeId = userTypeVal;
@@ -508,7 +509,7 @@ if(startDate.length == 0 || endDate.length == 0)
 		return;
 	}
 
-	
+	var userIds = new Array();
 	var jObj =
 	{
 	  constituencyId:constituencyId,
@@ -516,9 +517,10 @@ if(startDate.length == 0 || endDate.length == 0)
 	  startDate:startDate,
 	  endDate:endDate,
 	  heading:heading,
+	  userIds : userIds,
       boothIds:[]
  	};
-	
+	console.log(jObj);
 	$('#mainajaximg').show();
 
 	 jObj.boothIds= $('#boothId').val();

@@ -97,11 +97,12 @@ function getDetailsByConstituency()
 		$("#errorMsgDiv").html('<font style="color:red;font-size:14px;"> Select Constituency </font>');
 		return;
 	}
+	var userId = new Array();
 	var jObj = 
 	{
 	 constituencyId: $('#userTrackingConstituencyId').val(),
 	 dateStr : $('#appendedInput').val(),
-	 userId : 0
+	 userId : userId,
 	}
 	$("#userTrackingImage").show();
 	$("#errorMsgDiv").html('');

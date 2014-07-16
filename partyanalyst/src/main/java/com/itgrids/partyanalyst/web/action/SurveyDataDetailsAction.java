@@ -22,10 +22,12 @@ import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.dto.UserBoothDetailsVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
+import com.itgrids.partyanalyst.service.ISurveyDashBoardService;
 import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
 import com.itgrids.partyanalyst.service.ISurveyDetailsService;
 import com.itgrids.partyanalyst.service.impl.RegionServiceDataImp;
@@ -66,16 +68,37 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	private List<GenericVO> usersList,constituencies;
 	private RegionServiceDataImp regionServiceDataImp;
 	private SurveyReportVO surveyReportVO;
+	private SurveyDashBoardVO resultVO;
+	private List<SurveyDashBoardVO> resultList;
 	private Long constituencyId;
 	
+	@Autowired
+	private ISurveyDashBoardService surveyDashBoardService;
 	
-	
+
 	public Long getConstituencyId() {
 		return constituencyId;
 	}
 
 	public void setConstituencyId(Long constituencyId) {
 		this.constituencyId = constituencyId;
+	}
+
+	
+	public List<SurveyDashBoardVO> getResultList() {
+		return resultList;
+	}
+
+	public void setResultList(List<SurveyDashBoardVO> resultList) {
+		this.resultList = resultList;
+	}
+
+	public SurveyDashBoardVO getResultVO() {
+		return resultVO;
+	}
+
+	public void setResultVO(SurveyDashBoardVO resultVO) {
+		this.resultVO = resultVO;
 	}
 
 	public RegionServiceDataImp getRegionServiceDataImp() {
@@ -307,7 +330,8 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		constituenciesList = 	surveyDataDetailsService.getAllAssemblyConstituenciesByStateId();
 		
 		dataAvilableConstituencies = surveyDataDetailsService.getSurveyStartedConstituencyList();
-
+		resultVO = surveyDashBoardService.getCompletdConstituenciesDetails();
+		resultList = surveyDashBoardService.getConstituencyWiseCompletionReport(); 
 		return Action.SUCCESS;
 	}
 
