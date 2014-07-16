@@ -320,6 +320,7 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 					
 					vo.setName(obj[1].toString());
 					vo.setId((Long)obj[0]);
+					vo.setMobileNo(obj[2].toString());
 					
 					resultList.add(vo);
 				}
