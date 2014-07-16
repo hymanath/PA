@@ -35,7 +35,8 @@
 	.Constituency-name-nav li a{width:189px;height:40px;color:#333333;display:block; background:#eee;padding:10px; border:1px solid #ccc;text-align:center; font-weight:bold; text-transform:uppercase; margin: 5px 0px;text-decoration:none; font-size:14px; display: inline-table;}
 	.Constituency-name-nav li a:hover{color:#333333;border:1px solid #ffcc00; box-shadow:0px 0px 3px #ccc;}
 	
-	
+	.wiget-yellow-normal:hover{ box-shadow: 0 -1px 5px rgb(51, 51, 51);}
+	.Constituency-name-nav li a:hover{color:#333333;border:1px solid #ffcc00;  background-color:rgb(204,204,204);}
 	
 </style>	
 	
@@ -87,7 +88,7 @@
 									SURVEY NOT STARTED IN ANY DISTRICT
 								</c:if>
 								<c:forEach var="startedDistrict" items="${resultVO.started}">
-									  <li><a style="line-height:40px;" href="javascript:{showConstituenciesDetails(${startedDistrict.locationId})}">${startedDistrict.locationName}</a></li>
+									  <li><a href="javascript:{showConstituenciesDetails(${startedDistrict.locationId})}">${startedDistrict.locationName}</a></li>
 								</c:forEach>
 
 							</ul>
@@ -103,7 +104,7 @@
 								</c:if>
 
 								<c:forEach var="completedDistrict" items="${resultVO.completed}">
-									  <li><a style="line-height:40px;" href="javascript:{showConstituenciesDetails(${completedDistrict.locationId})}">${completedDistrict.locationName}</a></li>
+									  <li><a href="javascript:{showConstituenciesDetails(${completedDistrict.locationId})}">${completedDistrict.locationName}</a></li>
 								</c:forEach>
 							</ul>
 					</div>
@@ -119,7 +120,7 @@
 								  </c:if>
 						       
 								<c:forEach var="processDistrict" items="${resultVO.process}">
-									  <li><a style="line-height:40px;" href="javascript:{showConstituenciesDetails(${processDistrict.locationId})}">${processDistrict.locationName}</a></li>
+									  <li><a href="javascript:{showConstituenciesDetails(${processDistrict.locationId})}">${processDistrict.locationName}</a></li>
 								</c:forEach>
 							</ul>
 					</div>
@@ -135,7 +136,7 @@
 							</c:if>
 
 							<c:forEach var="notStartedDistrict" items="${resultVO.notStarted}">
-									<li><a style="line-height:40px;" href="javascript:{showConstituenciesDetails(${notStartedDistrict.locationId})}">${notStartedDistrict.locationName}</a></li>
+									<li><a href="javascript:{showConstituenciesDetails(${notStartedDistrict.locationId})}">${notStartedDistrict.locationName}</a></li>
 								</c:forEach>
 
 							</ul>
@@ -261,7 +262,7 @@ var jObj =
 
 				buildCastCounts(result);
 			});
-			setTimeout(getTotalCasteCounts, 3000);
+			//setTimeout(getTotalCasteCounts, 3000);
 }
 
 function buildCastCounts(result)
