@@ -17,12 +17,8 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ISurveyCompletedLocationsDetailsDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
-import com.itgrids.partyanalyst.dao.ISurveyUserDAO;
-import com.itgrids.partyanalyst.dao.IWebMonitoringAssignedUsersDAO;
-import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.SurveyCompletionDetailsVO;
 import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
-import com.itgrids.partyanalyst.dto.SurveyReportVO;
 import com.itgrids.partyanalyst.model.SurveyCompletedLocationsDetails;
 import com.itgrids.partyanalyst.service.ISurveyDashBoardService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -95,9 +91,9 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 							 constituencyVO  = new SurveyDashBoardVO();
 							 constituencyVO.setLocationId((Long)obj[0]);
 							 
-							 if(((Long)obj[1]).equals(IConstants.DATA_COLLECTOR_ROLE_ID))
+							 if((obj[1] != null ? obj[1].toString():"0").equals(IConstants.DATA_COLLECTOR_ROLE_ID))
 									constituencyVO.setDataCollectorCompleted(true);
-								else if(((Long)obj[1]).equals(IConstants.VERIFIER_ROLE_ID))
+								else if((obj[1] != null ? obj[1].toString():"0").equals(IConstants.VERIFIER_ROLE_ID))
 									constituencyVO.setVerifierCompleted(true);
 							 list.add(constituencyVO);
 						}
