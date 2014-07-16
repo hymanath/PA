@@ -685,7 +685,7 @@ function buildDetailsTable(result)
 	  str+='<th>Mandal</th>';
 	  str+='<th>Panchayat</th>';
 	  str+='<th>Booth Location</th>';
-	  str+='<th>Village Covered</th>';
+	  str+='<th>Areas Covered</th>';
 	  str += '<th>Data Collected Map</th>	';	
 	  str += '<th>Tracking MAP</th>	';	
 	 str+='</tr>';
