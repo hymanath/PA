@@ -6,9 +6,8 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.ResourceBundle;" %>
  <html>
-  <head>	
+	
 
-    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">	
 		<style>
 			body{background:#f0f0f0;}
 			.m_top10{margin-top:10px;}
@@ -38,13 +37,8 @@
 	
 
 		</style>	
-	
-  </head>
-  
-  <body>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
-<script src="//code.jquery.com/jquery-1.10.2.js"></script>
-<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+
+
 <script src="js/maps/leaflet.js"></script>
 <link rel="stylesheet" href="css/leaflet.css"></link>
 <script src="js/maps/google.js"></script>
@@ -97,7 +91,7 @@ function getDetailsByConstituencyForSelectedUser(constiD,dateStr,userId)
 }
 function getDetailsByConstituency()
 {
-	var constituencyId = $('#constituencyId').val();
+	var constituencyId = $('#userTrackingConstituencyId').val();
 	if(constituencyId == 0)
 	{
 		$("#errorMsgDiv").html('<font style="color:red;font-size:14px;"> Select Constituency </font>');
@@ -105,7 +99,7 @@ function getDetailsByConstituency()
 	}
 	var jObj = 
 	{
-	 constituencyId: $('#constituencyId').val(),
+	 constituencyId: $('#userTrackingConstituencyId').val(),
 	 dateStr : $('#appendedInput').val(),
 	 userId : 0
 	}
@@ -360,13 +354,13 @@ function getconstituencies()
 	data: {task:JSON.stringify(jsObj)},
 	}).done(function(result){
 
-	$("#constituencyId").append('<option value="0">Select Constituency</option>');
+	$("#userTrackingConstituencyId").append('<option value="0">Select Constituency</option>');
 	if(result != null && result.length > 0)
 	{
 		for(var i in result)
 		{
 			
-			$("#constituencyId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+			$("#userTrackingConstituencyId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 		}
 
 	}
@@ -383,13 +377,13 @@ function getconstituencies()
 							<h4>User Tracking</h4>
 							<div class="row">
 								<div class="span8 offset3">
-								<div id="errorMsgDiv" class="offset1" ></div>
+								<div id="errorMsgDiv" class="clearCls" ></div>
 									<div class="row-fluid">
 									
-										<div class="span6">
+										<div class="span5">
 											<label>Select Constituency</label>
 										<!--<select name="constituency" id="constituencyId" list="constituenciesList" style="width:130px;"></select>-->
-										<s:select theme="simple"  name="constituency" id="constituencyId"  headerKey="0" headerValue="Select Constituency" list="dataAvilableConstituencies" listKey="id" listValue="name" value="userId"/>
+										<s:select theme="simple"  name="constituency" id="userTrackingConstituencyId"  headerKey="0" headerValue="Select Constituency" list="dataAvilableConstituencies" listKey="id" listValue="name" value="userId"/>
 								
 										</div>
 										
@@ -408,21 +402,17 @@ function getconstituencies()
 					</div>
 				</div>
 				
-				<div class="row-fluid " id="detaildDiv" style="display:none;">
-					<div class="span12 m_top20 widgetservey" id="weathermap" style="height:500px">
+				<div class="row-fluid " id="detaildDiv" style="display:none;" class="clearCls">
+					<div class="span12 m_top20 widgetservey" id="weathermap" style="height:500px" class="clearCls">
 						<!--<h5>Currently Logged in Users <span class="badge badge-success"> 15</span></h5><hr>-->
 					</div>
 					<p class="m_top10"> <span class="label label-info">D.C - Data Collector</span> &nbsp; &nbsp;<span class="label label-important"> D.V - Data Verifier</span></p>
 				</div>
-				<div class="row-fluid " id= "tableDiv"></div>
-				<div id="responceCountDiv"></div>
+				<div class="row-fluid " id= "tableDiv" class="clearCls"></div>
+				<div id="responceCountDiv" class="clearCls"></div>
 			</div>
 		</div>
 	</div>
 	<script>
 	 //getconstituencies();
 	</script>
-  </body>
-  
-
- </html>

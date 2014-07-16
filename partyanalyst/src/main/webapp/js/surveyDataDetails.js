@@ -439,7 +439,6 @@ function AssignTab()
 function showHideTabs(id)
 {
 
-
 if(id == "userTypeTab")
 	{
 	$(".errorCls").html('');
@@ -1331,10 +1330,10 @@ function updateLeaderInHouseReleation()
 		});
 }
 
-function redicttoVerificationPage(userTypeId)
+function redicttoVerificationPage()
 {
 
-	 window.open('dailyVerificationReportsAction.action?userTypeId='+userTypeId+'','_blank');
+	 window.open('dailyVerificationReportsAction.action','_blank');
 	
 }
 

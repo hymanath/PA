@@ -5,9 +5,7 @@
 		<%@taglib uri="http://displaytag.sf.net" prefix="display" %>
 		<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 		<%@ page import="java.util.ResourceBundle;" %>
-<html>
-  <head>	
-    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">	
+	
 		<style>
 			body{background:#f0f0f0;}
 			.m_top20{margin-top:20px;}
@@ -32,10 +30,7 @@
 				color:green;
 			}
 		</style>
-		
-  </head>
-  
-  <body>
+
 	<div class="container">
 		<!---- Survey monitoring---->		
 		<div class="row">
@@ -44,23 +39,23 @@
 					<div class="span12 widgetservey_Red m_top20">
 							<h4>Survey monitoring</h4>
 							<div class="row">
-								<div id="reportErrorDiv" class="span8 offset2"></div>
+								<div id="reportErrorDiv" class="span8 offset3 clearCls"></div>
 							</div>
 								<div class="row">
-								<div class="span8 offset2">
+								<div class="span8 offset3">
 									<div class="row-fluid">
 										<!--<div class="span6">
 											Select User Name<font class="requiredFont">*</font>
 											<select class="input-block-level"> <option>01</option></select>
 										</div>-->
-										<div class="span6">
+										<div class="span5">
 												Select Constituency <font class="requiredFont">*</font>
 												<!--<select id="constituencyId"></select>-->
-												<s:select theme="simple"  name="constituency" id="constituencyId" headerKey="0" headerValue="Select Constituency" list="dataAvilableConstituencies" listKey="id" listValue="name" />
+												<s:select theme="simple"  name="constituency" id="surveyMonitoringConstituencyId" headerKey="0" headerValue="Select Constituency" list="dataAvilableConstituencies" listKey="id" listValue="name" />
 										</div>
 										<div class="span5">
 											Select Booth<font class="requiredFont">*</font>
-											<select class="input-block-level" id="boothId" onChange="clearDivs();"> <option value="0">Select Booth</option></select></div>
+											<select class="input-block-level" id="surveyMonitoringBoothId" onChange="clearDivs();"> <option value="0">Select Booth</option></select></div>
 											<div class="span1" style="margin:29px 8px 0px 6px; width: 15px;">
 											<img id="boothAjaxImg" src="./images/icons/search.gif" alt="Processing Image"  class="hide"/>
 										</div>
@@ -78,15 +73,15 @@
 									</div>
 									</div>
 									
-									<div id="summaryDivId">
+									<div id="summaryDivId" class="clearCls">
 									</div>
 							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onclick="getComparisionReport('all');">SUBMIT</button><img id="submitImg" src="./images/icons/search.gif" alt="Processing Image"  class="hide"/></div>
-							<div class="pull-left" id="statusMsg"></div>
+							<div class="pull-left" id="statusMsg" class="clearCls"></div>
 							
 					</div>
 				</div>
 				
-				<div id="comparisonReportId"></div>
+				<div id="comparisonReportId" class="clearCls"></div>
 			</div>
 		</div>
 	</div>
@@ -108,13 +103,13 @@ function getconstituencies()
 	data: {task:JSON.stringify(jsObj)},
 	}).done(function(result){
 
-	$("#constituencyId").append('<option value="0">Select Constituency</option>');
+	$("#surveyMonitoringConstituencyId").append('<option value="0">Select Constituency</option>');
 	if(result != null && result.length > 0)
 	{
 	for(var i in result)
 	{
 		
-	$("#constituencyId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+	$("#surveyMonitoringConstituencyId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 	}
 
 	}
@@ -122,7 +117,7 @@ function getconstituencies()
 	});
 }
 
-$('#constituencyId').change(function(){
+$('#surveyMonitoringConstituencyId').change(function(){
 	$('#boothAjaxImg').show();
 		getBoothDetails();
  });
@@ -131,7 +126,7 @@ function getBoothDetails()
 {
 	var jObj =
 	{
-	 constituencyId:$('#constituencyId').val(),
+	 constituencyId:$('#surveyMonitoringConstituencyId').val(),
 	}
 	$.ajax({
 			type:'GET',
@@ -140,10 +135,10 @@ function getBoothDetails()
 			data: {task:JSON.stringify(jObj)},
 		  }).done(function(result){
 				$('#boothAjaxImg').hide();
-				$('#boothId').find('option').remove();
-				$('#boothId').prepend('<option value="0">Select Booth</option>');
+				$('#surveyMonitoringBoothId').find('option').remove();
+				$('#surveyMonitoringBoothId').prepend('<option value="0">Select Booth</option>');
 				for(var i in result){				 
-				 $('#boothId').append('<option value="'+result[i].boothId+'">Booth- '+result[i].partNo+'</option>');
+				 $('#surveyMonitoringBoothId').append('<option value="'+result[i].boothId+'">Booth- '+result[i].partNo+'</option>');
 				}
 		});
 }	
@@ -152,8 +147,8 @@ function getBoothDetails()
 
 function getComparisionReport(type)
 {
-	var constituencyId = $("#constituencyId").val();
-	var boothId = $("#boothId").val();
+	var constituencyId = $("#surveyMonitoringConstituencyId").val();
+	var boothId = $("#surveyMonitoringBoothId").val();
 	
 	if(constituencyId == 0)
 	{
@@ -166,7 +161,7 @@ function getComparisionReport(type)
 		return;
 	}
 
-	$('#comparisonReportId,#reportErrorDiv').html('');
+	//$('#comparisonReportId,#reportErrorDiv').html('');
 
 	
 	$('#submitImg').show();
@@ -395,12 +390,10 @@ function saveVerifiedRecordsDetails()
 				}
 		});
 }
-function clearDivs()
+/*function clearDivs()
 {
    $('#summaryDivId,#comparisonReportId').html('');
 }	
-		
+*/		
 	
 	</script>	
-  </body>
- </html>
