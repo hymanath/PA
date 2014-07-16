@@ -1260,6 +1260,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 					vo.setUserid(obj.getLong("surveyUserId"));
 					vo.setVoterId(obj.getLong("voterId"));
 					vo.setBoothId(obj.getLong("boothId"));
+					vo.setCasteId(obj.getLong("casteId"));
 					verifiedList.add(vo);
 					
 				}
