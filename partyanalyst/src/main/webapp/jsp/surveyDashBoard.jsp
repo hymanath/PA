@@ -372,7 +372,7 @@ str+='<td><b>Today Caste Collected Count </b></td><td> <b>&nbsp;:&nbsp;</b></td>
 
 str+='</table>';
 $("#casteCountDiv").html(str);*/
-$("#TotalcasteCount").html('<a href="#" style="color:#5B5B5B;" onclick="getDateWiseCount(\'\')">'+result.count+'</a>');
+$("#TotalcasteCount").html('<a href="#" onclick="getDateWiseCount(\'\')">'+result.count+'</a>');
 $("#TodaycasteCount").html(''+result.casteCount+'');
 
 }
