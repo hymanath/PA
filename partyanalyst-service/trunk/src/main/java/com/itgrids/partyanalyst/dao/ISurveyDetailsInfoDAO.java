@@ -63,7 +63,7 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	public List<Object[]> getHamletCountByBooths(List<Long> userIds,List<Long> boothIds,Long userTypeId,Date date);
 	public List<Object[]> getCasteCountByBooths(List<Long> userIds,List<Long> boothIds,Long userTypeId,Date date);
 	public List<Object[]> getMbileNoCountByBooths(List<Long> userIds,List<Long> boothIds,Long userTypeId,Date date);
-	public List<Object[]> getLatLongForSurveyUsersByConstituencyByUser(Long constituencyId,Date date,Long userId);
+	public List<Object[]> getLatLongForSurveyUsersByConstituencyByUser(Long constituencyId,Date date,List<Long> userId);
 	
 	
 	public List<Object[]> getCasteWiseCountInBooth(Long boothId);
@@ -75,4 +75,8 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	public List<Object[]> findConstituenciesByDistrictId(Long districtId);
 	public List<Object[]> getTotalCastecollectedCountForDates();
 	public List<Object[]> getTotalCastecollectedCountForTodayForDates(Date date);
+	public List<Object[]> getSurveyDetailsByConstituencyByUsers(Long constituencyId,Long userTypeId,Date date,List<Long> userIds);
+	
+	public List<Object[]> getAllUserDetailsByConstituencyByUsers(Long constituencyId,Date date,List<Long> userIds);
+	public List<Object[]> getDayWisereportDetailsByConstituencyIdAndUserIds(Long constituencyId,Date startDate,Date endDate,Long userTypeId,List<Long> boothIds,List<Long> userIds);
 }

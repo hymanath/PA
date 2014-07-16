@@ -24,4 +24,12 @@ public class WebMonitoringAssignedUsersDAO extends GenericDaoHibernate<WebMonito
 		
 	}
 	
+	public List<Object[]> getAssignedusersForWebMontringTeam(Long userId)
+	{
+		Query query = getSession().createQuery("select model.surveyUser.surveyUserId,model.surveyUser.userName from WebMonitoringAssignedUsers model " +
+				" where model.webMoniterUserId = :userId and model.isDelete = 'N'");
+		query.setParameter("userId", userId);
+		return query.list();
+	}
+	
 }

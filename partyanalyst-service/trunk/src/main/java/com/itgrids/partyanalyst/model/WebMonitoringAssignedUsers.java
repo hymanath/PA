@@ -29,7 +29,7 @@ public class WebMonitoringAssignedUsers implements Serializable{
 	private String isDelete;
 	
 	private SurveyUser surveyUser;
-	private SurveyUser webMonitorSurveyUser;
+	private User webMonitorSurveyUser;
 	
 
 	@Id
@@ -82,10 +82,10 @@ public class WebMonitoringAssignedUsers implements Serializable{
 	@JoinColumn(name = "web_moniter_user_id" ,insertable = false , updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public SurveyUser getWebMonitorSurveyUser() {
+	public User getWebMonitorSurveyUser() {
 		return webMonitorSurveyUser;
 	}
-	public void setWebMonitorSurveyUser(SurveyUser webMonitorSurveyUser) {
+	public void setWebMonitorSurveyUser(User webMonitorSurveyUser) {
 		this.webMonitorSurveyUser = webMonitorSurveyUser;
 	}
 }

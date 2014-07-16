@@ -16,4 +16,5 @@ public interface ISurveyDetailsService {
 	public List<GenericVO> getConstituencyWiseLeaders(Long constituencyId);
 	public List<SurveyReportVO> getSurveyUserConstituencyDetails(Long surveyUserId);
 	public ResultStatus unTagConstituencyForAUser(Long userId,Long constituencyId);
+	public List<GenericVO> getAssignedSurveyUsersForWebMontringTeam(Long userId);
 }

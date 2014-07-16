@@ -47,7 +47,7 @@ public interface ISurveyDataDetailsService
 	//public List<SurveyResponceVO> getSurveyUserBoothsAndVoterDetails(Long surveyUserId);
 	public List<UserBoothDetailsVO> getBoothDetailsByConstituencyId(Long constituencyId);
 	public String saveVerifiedRecordsDetails(final List<Long> verifierIds);
-	public List<SurveyReportVO> getDayWiseReportByConstituencyIdAndUserType(Long constituencyId, String startDate, String endDate,Long userTypeId,List<Long> boothIds);
+	public List<SurveyReportVO> getDayWiseReportByConstituencyIdAndUserType(Long constituencyId, String startDate, String endDate,Long userTypeId,List<Long> boothIds,List<Long> userIds);
 
 	public List<GenericVO> getSurveyConstituencyList();
 	
@@ -69,7 +69,7 @@ public interface ISurveyDataDetailsService
 	
 	public ConstituencyDetailReportVO getBoothWiseDetails(Long boothId,Long constituencyId);
 	
-	public List<SelectOptionVO> getLatLongForSurveyUsersByConstituency(Long constituencyId,Date date,Long userId);
+	public List<SelectOptionVO> getLatLongForSurveyUsersByConstituency(Long constituencyId,Date date,List<Long> userId);
 	
 	public List<Long> getDataCollectedCount(Long userId,Long boothId);
 	
@@ -90,9 +90,9 @@ public interface ISurveyDataDetailsService
 	//public List<SurveyReportVO> getSurveyDetailsForConstituency(Long constituencyId,Long userTypeId);
 	public List<GenericVO> getSurveyUserNameAndPasswordByLeader(Long leaderId);
 	
-	public List<SurveyReportVO> getSurveyUserDetailsByConstituencies(Long constituencyId,Date date);
+	public List<SurveyReportVO> getSurveyUserDetailsByConstituencies(Long constituencyId,Date date,List<Long> userIds);
 	
-	public List<SurveyReportVO> getSurveyDetailsForConstituency(Long constituencyId,Long userTypeId,String date);
+	public List<SurveyReportVO> getSurveyDetailsForConstituency(Long constituencyId,Long userTypeId,String date,List<Long> userIds);
 	
 	public GenericVO getAlreadyAssignTabsListForLeader(Long leaderId);
 	
