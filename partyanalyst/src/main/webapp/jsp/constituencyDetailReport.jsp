@@ -204,7 +204,7 @@ function getConstituencyReport(constituencyId){
 					str +='					</div>						';		
 					str +='					<div class="row-fluid">';
 					str +='					<div class="well well-small span10 offset1  ">			';						
-					str +='						Not Collected Data Voters Count <span class="pull-right badge">'+result.notVerifiedVoters+'</span>';
+					str +='Not Verified Voter Count <span class="pull-right badge">'+result.notVerifiedVoters+'</span>';
 					str +='					</div>';						
 					str +='					</div>';
 					str +='				</div>	';					
