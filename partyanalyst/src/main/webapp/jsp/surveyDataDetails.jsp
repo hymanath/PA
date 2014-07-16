@@ -325,9 +325,9 @@
 								<div id="assignBoothErrorDiv" class="span8 offset2 errorCls"></div>
 							</div>
 								<div class="row">
-								<div class="span8 offset2">
+								<div class="span12 offset1">
 									<div class="row-fluid">
-										<div class="span4">
+										<div class="span3">
 											Select User Type<font class="requiredFont">*</font>
 											<select class="input-block-level" id="boothAssignUserType" onchange="getExistSurveyUsersByUserType('userId',this.value);">
 											
@@ -337,20 +337,21 @@
 											<!--<option value="5">Verifier Lead</option>-->
 											</select>
 										</div>
-										<div class="span4">
+										<div class="span3">
 											Select User Name<font class="requiredFont">*</font>
 											<select class="input-block-level" id="userId" onChange="getExistedConstituenciesDetails(this.value)"> 
 											<option value="0">Select User Name</option>
 											</select>
 										</div>
-										<div class="span4">
+										<div class="span3">
 											Select Constituency<font class="requiredFont">*</font>
 											<select class="input-block-level" id="constituencyId"> 
 											<option value="0">Select Constituency</option>
 											</select>
-
 											
-
+										</div>
+										<div class="span3" style="margin-top: 30px;">
+										<label for="remainingData"><input type="checkbox" id="remainingData"/> Special Booths</label> 
 										</div>
 									</div>	
 									<!--<div class="row-fluid">
