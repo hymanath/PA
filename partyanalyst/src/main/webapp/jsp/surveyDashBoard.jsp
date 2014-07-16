@@ -74,6 +74,11 @@
 				</div><!-----State Overview Div end---->
 				
 				<div id="casteCountDiv" class="offset4" style="margin-top:20px;"></div>
+				<div id="dateWisecastePopupDiv">
+				<div id="PopupContentDiv">
+				<img id="popupImg" src="./images/icons/search.gif" alt="Processing Image" style="display:none;"/>
+				</div>
+				</div>
 				<div class="row-fluid ">
 					<div class="span12 m_top20 widgetservey">
 						<h4>Districts Started</h4>
@@ -272,12 +277,65 @@ str+='</div>';
 str+='</div>';
 str+='</div>';*/
 str+='<table>';
-str+='<tr><td><b>Total Caste Collected Count </b></td><td> <b>&nbsp;:&nbsp;</b></td><td class="badge badge-info"> <b>'+result.count+'</b></td></tr> ';
+str+='<tr><td><b>Total Caste Collected Count </b></td><td> <b>&nbsp;:&nbsp;</b></td><td class="badge badge-info"> <b><a href="#" style="color:#fff;" onclick="getDateWiseCount(\'\')">'+result.count+'</a></b></td></tr> ';
 str+='<tr><td><b>Today Caste Collected Count </b></td><td> <b>&nbsp;:&nbsp;</b></td><td class="badge badge-info"> <b>'+result.casteCount+'</b></td></tr> ';
 
 
 str+='</table>';
 $("#casteCountDiv").html(str);
+}
+function getDateWiseCount(date)
+{
+	$("#popupImg").show();
+	$("#PopupContentDiv").html('');
+	$("#dateWisecastePopupDiv").dialog({
+			title:"Caste Collected Count Details",
+			autoOpen: true,
+			show: "blind",
+			width: 500,
+			
+			modal: true,
+			height:300,
+			hide: "explode"
+		});
+
+var jObj = 
+	{
+	 date:date,
+	 task : "getDataCount"
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getCasteCollectedCountsAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+			}).done(function(result){
+
+				buildDayWiseCasteCount(result);
+			});
+
+
+}
+function buildDayWiseCasteCount(result)
+{
+$("#popupImg").hide();
+var str='';
+str+='<table class="table table-bordered">';
+str+='<thead>';
+str+='<th>Date</th>';
+str+='<th>Count</th>';
+str+='</thead>';
+for(var i in result)
+	{
+	str+='<tr>';
+	str+='<td>'+result[i].surveyDate+'</td>';
+	str+='<td>'+result[i].count+'</td>';
+	str+='</tr>';
+	}
+str+='</table>';
+$("#PopupContentDiv").html(str);
+
+	
 }
 </script>
 <script>
