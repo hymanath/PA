@@ -99,10 +99,23 @@ public class WebServiceHandler2 {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Object saveUserLocations (UserLocationTrackingVo  userLocationTrackingVo)
 	{
-		ResultStatus out=null;
-
+		
 		LOG.debug("inside save field data");
 		LOG.debug(userLocationTrackingVo.toString());
+		
+		
+		ResultStatus out=null;
+
+	
+				
+		String imeiNo=userLocationTrackingVo.getImeiNo();
+		
+		if(imeiNo==null || imeiNo.isEmpty() || imeiNo.equalsIgnoreCase("Null"))
+		{
+			LOG.debug("imei number null please check");
+			 return "{\"status\":\"Failure\"}";
+		}
+		
 		try{ 
 			out=(ResultStatus) webServiceHandlerService1.saveUserTrackingLocation(userLocationTrackingVo);
 			
@@ -116,7 +129,7 @@ public class WebServiceHandler2 {
 		}
 		
 		if(out.getMessage()!=null&&!out.getMessage().equalsIgnoreCase("Success"))
-			return "{\"status\":\"Failure\"}";
+			  return "{\"status\":\"Failure\"}";
 		
 		 else return "{\"status\":\"Success\"}";
 	}
