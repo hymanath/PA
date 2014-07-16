@@ -100,7 +100,8 @@
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top20">
 							<h4> Web Monitoring </h4>	
-						 <img id="searchDataImg" style="display: none;" src="./images/icons/barloader.gif" alt="Processing Image"></img>
+						
+						 <img src='images/Loading-data.gif' class="offset5"  id="searchDataImg" style="width:70px;height:60px;display:none;"/>
 						<div class="row-fluid">
 							<div id="casteInfoDiv" style="background-color: #dff0d8; padding: 5px;display:none;margin-top:25px;margin-bottom:25px;" class="errClass"></div>	
 						</div>
