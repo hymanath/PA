@@ -13,8 +13,15 @@ public class GenericVO {
     private Long count;
     private List<GenericVO> genericVOList = new ArrayList<GenericVO>();
     private String percent;
+    private String mobileNo;
     
-    public String getPercent() {
+    public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+	public String getPercent() {
 		return percent;
 	}
 	public void setPercent(String percent) {
