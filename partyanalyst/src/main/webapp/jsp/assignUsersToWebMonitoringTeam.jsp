@@ -17,33 +17,69 @@
 </head>
 <body>
 <style>
-.requiredFont
+.requiredFont,#errorDiv
 {
 	font-weight:bold;
 	color:red;
 }
+#statusDiv
+{
+	font-weight:bold;
+	color:green;
+}
 </style>
 <script>
   $(document).ready(function(){
-	  $('#userIds').multiselect({
-	  noneSelectedText:"Select User(s)"});
+	  $('#constituencyId').change(function(){
+
+	  });
+	 // $('#userIds').multiselect({
+	  //noneSelectedText:"Select User(s)"});
 });
 </script>
 
-	Select User<font class="requiredFont">*</font>
-		<s:select theme="simple"  name="user" id="userId" list="usersList" listKey="id" listValue="name" />
+<div class="container well">
+
+<div id="errorDiv"></div>
+<div id="statusDiv"></div>
+
+   <div class="offset3">
+    <div class="span7">
+		<div class="span2">
+			Select User<font class="requiredFont">*</font>
+		</div>
+		<div class="span4">
+			<s:select theme="simple"  name="user" id="userId" list="usersList" listKey="id" listValue="name" />
+		</div>
+    </div>
+
+	<div class="span7">
+		<div class="span2">
+			Select Constituency<font class="requiredFont">*</font>
+		</div>
+		<div class="span4">
+			<s:select theme="simple"  name="constituency" id="constituencyId" list="constituenciesList" listKey="id" listValue="name" onchange="getAssignedUsersOfConstituency()"/>
+		</div>
+    </div>
 
 
-											
-	Select Constituency<font class="requiredFont">*</font>
-		<s:select theme="simple"  name="constituency" id="constituencyId" list="constituenciesList" listKey="id" listValue="name" onchange="getUserTypes()"/>
-
-	 Select User(s)
-        <select id="userIds" multiple=true>
+	<div class="span7">
+		<div class="span2">
+			Select User(s)<font class="requiredFont">*</font>
+		</div>
+		<div class="span4">
+			 <select id="userIds" multiple>
 		</select>
+		</div>
+    </div>
 
+	<div class="span10 offset3">
+ 	 <a href="javascript:{saveWebMonioringAssignDetails()}" class="btn btn-success">ASSIGN</a>
+	</div>
+ </div>
+</div>
 <script>
-function getUserTypes()
+function getAssignedUsersOfConstituency()
 {
 	$.ajax({
 	type:'GET',
@@ -60,14 +96,29 @@ function buildConstituencies(result)
    $.each(result,function(index,value){
 	   $('#userIds').append('<option value="'+value.id+'">'+value.name+'</option>');
    });
+   // $('#userIds').multiselect('refresh');
 }
 
-function getUserTypes()
+function saveWebMonioringAssignDetails()
 {
+	$('#errorDiv').html('');
+	 var errorStr ='';
+	if($('#userIds').val() == null)
+	  errorStr += "Select Atleast one user to assign .";
+
+	if(errorStr.length > 0)
+	{
+		$('#errorDiv').html(errorStr);
+		return;
+	}
 	var jsObj ={
-		userId:'',
-        boothIds:[]
+		webMonitorUserId:'',
+        userIds:[]
 	};
+
+		jsObj.webMonitorUserId = $('#userId').val();
+		jsObj.userIds = $('#userIds').val();
+
 
 	$.ajax({
 	type:'GET',
@@ -75,6 +126,10 @@ function getUserTypes()
 	dataType: 'json',
 	data: {task:JSON.stringify(jsObj)},
 	}).done(function(result){
+		if(result == "success")
+		{
+           $('#statusDiv').html("Assigned Success fully..");
+		}
 	});
 }
 </script>
