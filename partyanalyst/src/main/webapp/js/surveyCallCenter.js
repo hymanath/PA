@@ -365,10 +365,11 @@ return;
 	$("#processingImg").show();
 	var jsObj =
 	{
-	constituencyId : constituencyID,
+	    constituencyId : constituencyID,
 		userTypeId:userTypeId,
 		date:date,
-	task : "getLocationCount"
+		userIds : userIds,
+		task : "getLocationCount"
 	}
 	$.ajax({
 	type:'GET',
@@ -527,7 +528,7 @@ function getUserDetailsByConstituency()
 	 
 	  constituencyId: constituencyId,
 	  dateStr :dateVal,
-	  userId : 0
+	  userId : userIds
 
 	};
 	$.ajax({
@@ -652,6 +653,7 @@ function getUserDetailsByConstituencyForTable()
 	{
 	 constituencyId:constituencyId,
 	 date:dateVal,
+	 userIds : userIds,
 	 task:"getDetails"
 
 	};
@@ -921,6 +923,7 @@ if(startDate.length == 0 || endDate.length == 0)
 	  startDate:startDate,
 	  endDate:endDate,
 	  heading:heading,
+	  userIds : userIds,
       boothIds:[]
  	};
 	
