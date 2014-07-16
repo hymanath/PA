@@ -403,13 +403,13 @@ function getconstituencies()
 					</div>
 				</div>
 				
-				<div class="row-fluid " id="detaildDiv" style="display:none;" class="clearCls">
-					<div class="span12 m_top20 widgetservey" id="weathermap" style="height:500px" class="clearCls">
+				<div class="row-fluid clearCls" id="detaildDiv" style="display:none;">
+					<div class="span12 m_top20 widgetservey clearCls" id="weathermap" style="height:500px">
 						<!--<h5>Currently Logged in Users <span class="badge badge-success"> 15</span></h5><hr>-->
 					</div>
 					<p class="m_top10"> <span class="label label-info">D.C - Data Collector</span> &nbsp; &nbsp;<span class="label label-important"> D.V - Data Verifier</span></p>
 				</div>
-				<div class="row-fluid " id= "tableDiv" class="clearCls"></div>
+				<div class="row-fluid clearCls" id= "tableDiv"></div>
 				<div id="responceCountDiv" class="clearCls"></div>
 			</div>
 		</div>
