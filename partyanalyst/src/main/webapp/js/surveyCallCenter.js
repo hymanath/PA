@@ -364,7 +364,6 @@ function updateDetails(casteId,mobileId, value,voterId,surveyUserId,selectionTyp
 		// mobile
 		
 		$('#'+mobileId+'').val(value);
-		console.log(" 22222  : "+casteMatched);
 		if(casteMatched != 0 && casteMatched != 1){
 			$('#'+casteId+'').val('5');
 		}
@@ -436,10 +435,14 @@ function updateStatusDetails(isCasteMatched,mobileMatched,voterId,surveyUserId,s
 				
 				if(selectionType =='mobile')
 				{
-					if(isMobileVerified == 2)
+					if(isMobileVerified == 2){
 						$('#updateMBtnId'+updateBtnId+'').addClass('btn-success');
-					if(isMobileVerified == 3)
+						$('#updateMBtnIdA'+updateBtnId+'').removeClass('btn-warning');
+					}
+					if(isMobileVerified == 3){
 							$('#updateMBtnIdA'+updateBtnId+'').addClass('btn-warning');
+							$('#updateMBtnId'+updateBtnId+'').removeClass('btn-success');
+					}
 				}
 				else
 				{
@@ -449,11 +452,12 @@ function updateStatusDetails(isCasteMatched,mobileMatched,voterId,surveyUserId,s
 					
 					if(isMatched == 1){
 						$('#updateBtnId'+updateBtnId+'').addClass('btn-success');
+						$('#updateBtnIdA'+updateBtnId+'').removeClass('btn-warning');
 						$('#'+newCasteId+'').prop('disabled','disabled');
 					}
 					if(isMatched == 0){
 						$('#updateBtnIdA'+updateBtnId+'').addClass('btn-warning');	
-		
+						$('#updateBtnId'+updateBtnId+'').removeClass('btn-success');
 						$('#'+newCasteId+'').prop('disabled',false);	
 						
 						if(casteList.length >0){
