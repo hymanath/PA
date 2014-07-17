@@ -347,14 +347,17 @@ function updateDetails(casteId,mobileId, value,voterId,surveyUserId,selectionTyp
 {
 	var casteMatched = $('#'+casteId+'').val();
 	var mobileMached = $('#'+mobileId+'').val();
-	
+	/*console.log(value);
+	console.log("casteMatched 1 :"+casteMatched);
+	console.log("mobileMached 1 :"+mobileMached);
+	*/
 	// 0 ,2 -- correct
 	// 1 ,3 -- wrong
 	if(value == 0 || value == 1)
 	{
 		// caste 
 		$('#'+casteId+'').val(value);
-		if(mobileMached != 2 && mobileMached != 3){
+		if(mobileMached.length == 0 || (mobileMached != 2 && mobileMached != 3)){
 			$('#'+mobileId+'').val('6');
 		}
 	}
@@ -364,17 +367,18 @@ function updateDetails(casteId,mobileId, value,voterId,surveyUserId,selectionTyp
 		// mobile
 		
 		$('#'+mobileId+'').val(value);
-		if(casteMatched != 0 && casteMatched != 1){
+		if(casteMatched.length == 0 || (casteMatched != 0 && casteMatched != 1)){
 			$('#'+casteId+'').val('5');
 		}
 		
 	}
 	
-/*	casteMatched = $('#'+casteId+'').val();
+	/*
+	casteMatched = $('#'+casteId+'').val();
 	mobileMached = $('#'+mobileId+'').val();
 	
-	console.log("casteMatched  :"+casteMatched);
-	console.log("mobileMached  :"+mobileMached);
+	console.log("casteMatched 2 :"+casteMatched);
+	console.log("mobileMached 2 :"+mobileMached);
 	*/
 updateStatusDetails(casteId,mobileId,voterId,surveyUserId,selectionType,userId,boothId,date,newCasteId,updateBtnId);
 }
