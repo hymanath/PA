@@ -43,7 +43,7 @@ public class SurveyUserTabAssignDAO extends GenericDaoHibernate<SurveyUserTabAss
 	
 	public List<Object[]> getSurveyTabsBySurveyUserIdsList(List<Long> surveyUserIds){
 		
-		Query query = getSession().createQuery("select distinct model.surveyUser.surveyUserId,model.tabNo from SurveyUserTabAssign model where " +
+		Query query = getSession().createQuery("select distinct model.surveyUser.surveyUserId,model.tabNo,model.surveyUserTabAssignId from SurveyUserTabAssign model where " +
 				"  model.surveyUser.surveyUserId in (:surveyUserIds)  and model.activeStatus = 'Y' ");
 		query.setParameterList("surveyUserIds", surveyUserIds);
 		

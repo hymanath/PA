@@ -39,7 +39,7 @@ public class SurveyUserConstituencyDAO extends GenericDaoHibernate<SurveyUserCon
 	public List<Object[]> getSurveyConstituencyLeadersList(Long constituencyId){
 		
 		return getHibernateTemplate().find("select distinct model.surveyUser.surveyUserId, model.surveyUser.firstName,model.surveyUser.lastName,model.surveyUser.userName from SurveyUserConstituency model " +
-				" where model.constituency.constituencyId = "+constituencyId+" order by model.surveyUser.firstName asc");
+				" where model.constituency.constituencyId = "+constituencyId+" and model.activeStatus = 'Y' and model.surveyUser.activeStatus = 'Y' order by model.surveyUser.firstName asc");
 	}
 	
 	
