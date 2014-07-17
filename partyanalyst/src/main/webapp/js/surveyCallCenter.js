@@ -1015,6 +1015,9 @@ webuserId = value;
 
 function getBoothsDetailsByConstituencyId(constituencyId)
 {
+
+	if($('#constituencyIdForVerfication').val() == 0)
+		return;
 	 $('#dayWiseReportDiv1').html('');
 
 	$("#boothImage").show();
@@ -1125,8 +1128,6 @@ $('#mainajaximg').hide();
 		$('#retunMsg').html("<font color='red'>NO DATA AVILABLE</font>");
 		return;
 	}
-
-	
 
 	 var str = '';
 
