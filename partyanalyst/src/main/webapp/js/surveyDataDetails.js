@@ -324,6 +324,12 @@ function clearDiv(id){
 	}
 }
 
+function clearAsssignDiv(id){
+	if(confirm('Are you sure want to remove it? ')){
+		$('#'+id+'').html('');
+	}
+}
+
 function AssignTab()
 {
 	$("#assignTabErrorDiv").html('');
@@ -348,8 +354,9 @@ function AssignTab()
 	var dateArr = new Array();
 
 	$('.newTabCls').each(function(){
+
 		var tabNo = $(this).val();
-				
+
 		if(tabNo.length == 0 && str.indexOf('Tab No is required') <0 )
 		{		  
 			str +='Tab No is required <br/>';
@@ -357,14 +364,13 @@ function AssignTab()
 		else{
 			if(leaderTabsArr.length > 0){
 				for(var i in leaderTabsArr){
-					if(tabNo.trim() == leaderTabsArr[i]){
-					//console.log(leaderTabsArr[i]);
+					if(tabNo.trim() == leaderTabsArr[i]){					
 						str +='Duplicate Tab No not allowed .Tab No:<b> '+tabNo.trim()+' </b>already assigned. <br/>';
 					}
 				}
 				
 			}
-			else if(tabsArr.indexOf(tabNo.trim()) <0){
+			if(tabsArr.indexOf(tabNo.trim()) < 0){
 				tabsArr.push(tabNo.trim());
 			}
 			else{
@@ -383,9 +389,8 @@ function AssignTab()
 			dateArr.push(date.trim());
 		}
 	});
-
-	console.log("str  :"+str);
 	
+
 	var length1 = dateArr.length;
 	var tabTatalArr = new Array();
 	for(var i = 0;i <length1;i++){
@@ -412,6 +417,8 @@ function AssignTab()
 	surveyUserId : surveyUser,
 	tabsArr : tabTatalArr
 	}
+	//console.log(jObj);
+	
 	
 	
 	$.ajax({
@@ -1659,7 +1666,7 @@ var avalTabsArr1 = new Array();
 var usersExist = true;
 function usersListByTabsInfo(divId,value){
 usersExist = true;
-
+$('#assignTabUserErrorDiv').html('');
 var jsObj = 
 	{
 		leaderId:value,
@@ -1680,19 +1687,20 @@ var jsObj =
 					
 				}
 					
-				if(result !=null && result.genericVOList != null && result.genericVOList.length > 0 ){
+				if(result !=null && result.genericVOList != null && result.genericVOList.length > 0 )
+				{
 					
 					var str ='';
 					avalTabsArr = [];
 					for(var i in result.genericVOList){										
-						str +='<div class="row-fluid">';
+						str +='<div class="row-fluid" id="tabsAssign'+i+'">';
 						str +='	<div class="span6">';
-						str +='	User Name <font class="requiredFont">*</font>';
+						str +='	User Name : ';
 						str +='	<input type="hidden" placeholder="User Name ..." class="input-block-level newsTabCls" id="tabNo'+i+'" value="'+result.genericVOList[i].id+'" readOnly="true" style="cursor:text;">';
 						str +='	<input type="text" placeholder="User Name ..." class="input-block-level " value="'+result.genericVOList[i].name+'" readOnly="true" style="cursor:text;">';
 						str +='	</div>';
-						str +='	<div class="span6">';
-						str +='	Tab <font class="requiredFont">*</font>';
+						str +='	<div class="span4">';
+						str +='	Tab :';
 						str +='	<select class="input-block-level tabsListCls" id="constituencyTabsList'+i+'" onchange="updateSelectBoxInfo(\'constituencyTabsList'+i+'\',this.value);" >';
 						str +='<option value="0"> Assign Tab </option>';
 						
@@ -1700,30 +1708,35 @@ var jsObj =
 							str +='<option value="'+result.genericVOList[i].genericVOList[k].id+'">'+result.genericVOList[i].genericVOList[k].name+'</option>';
 						}
 						str +='</select>';
-						str +='	</div>	';	
-					/*	str +='	<div style="margin-top:-30px;margin-left:35px">';
-					str +='<a href="javascript:{clearDiv('+count+');}" style="float:right;"> <span id="removeDivId" class="btn btn-danger" style="margin-top: -10px;" title="Click here to remove this tab details."> <b> - </b></span> </a> ';
-						
-						str +='	</div>';*/
+						str +='<a href="javascript:{clearAsssignDiv(\'tabsAssign'+i+'\')}">	<span id="removeDivId" class="btn btn-danger" style="margin-right:-40px;margin-top: -40px;float:right;" title="Click here to remove this tab details."> <b> - </b></span> </a>';
+						str +='	</div>';
 						str +='	</div>';
 						
 						}
 						
-							$("#"+divId+"").html(str);
 							
-					  for(var i in result.genericVOList){
-							var obj = {
-								id:result.genericVOList[0].genericVOList[i].id,
-								value: result.genericVOList[0].genericVOList[i].name
+					$("#"+divId+"").html(str);
+					if(result.genericVOList[0].genericVOList.length >0)
+					{
+						  for(var i in result.genericVOList[0].genericVOList){
+								var obj = {
+									id:result.genericVOList[0].genericVOList[i].id,
+									value: result.genericVOList[0].genericVOList[i].name
+								}
+								avalTabsArr.push(obj);
+								avalTabsArr1.push(obj);
+								
 							}
-							avalTabsArr.push(obj);
-							avalTabsArr1.push(obj);
 							
-						}
-						//console.log(avalTabsArr);
+					}
+					if(result.genericVOList[0].genericVOList.length == 0){
+						str = '';
+						$("#"+divId+"").html('<b> No Tabs are available for assign .</b>');
 						
-				}else{
-					$("#"+divId+"").html('<b> No Tabs are available for assign .</b>');
+					}						
+				}				
+				else{
+					$("#"+divId+"").html('<b> No Users are available for assign .</b>');
 				}
 		});
 		
@@ -1731,6 +1744,7 @@ var jsObj =
 }
 
 function updateSelectBoxInfo(id,value){
+
 		var tempArr = avalTabsArr;
 		var selectdValue = $('#'+id+'').val();
 		$('.tabsListCls').css('border','1px solid #CCCCCC');
@@ -1780,7 +1794,6 @@ function updateSelectBoxInfo(id,value){
 }
 
 function removeItem(item,array){
-
     for(var i in array){
         if(array[i].id==item){
             array.splice(i,1);
@@ -1811,10 +1824,15 @@ var str ='';
 	
 	$('.tabsListCls').each(function(){
 		var value = $(this).val();	
-		if(value == 0 && str.indexOf('Please Assign Tab .') <0){
+		var id1 = $(this).attr('id');
+		var tabName = $('#'+id1+' option:selected').text();
+
+		 if(value == 0 && str.indexOf('Please Assign Tab .') < 0){
 			str +='Please Assign Tab .</br>';
-		}
-		candiTabArr.push(value);
+		} 
+		
+			candiTabArr.push(value);
+		
 	});
 
 	if(usersExist == false)
@@ -1823,24 +1841,29 @@ var str ='';
 	var length = candiArr.length;
 	
 	for(var i = 0 ;i<length ;i++){
-	var obj = {
-			candId:candiArr[i],
-			tabId : candiTabArr[i]
-			}
-	finalArr.push(obj);
-	}
 	
-	//console.log(finalArr);
+			if(candiTabArr[i] != 0){
+				var obj = {
+							candId:candiArr[i],
+							tabId : candiTabArr[i]
+						}
+				finalArr.push(obj);
+				}
+			}
+
+	console.log(finalArr);
 	
 	var jsObj = 
 	{
 		userTabsArr:finalArr,
 		task : "assignTabsForUsers"
 	}
+	
 if(str.length>0){
-$('#assignTabUserErrorDiv').html(str);
+	$('#assignTabUserErrorDiv').html(str);
 }
-else{
+else if(finalArr.length >0){
+
 		$.ajax({
 			type:'GET',
 			url: 'assignTabsForUsersAction.action',
@@ -1854,9 +1877,8 @@ else{
 						$('#constituencyLeadrList').val(0);
 				}
 		});
-		
+
 }
-	
 		
 }
 
