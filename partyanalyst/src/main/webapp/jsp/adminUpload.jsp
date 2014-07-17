@@ -589,6 +589,14 @@
 										<a class="alinkstyle" href="<s:url action="predictedCasteAssignAction"/>"> Assign<br/>
 										</span><br>
 									</fieldset></td>
+									<td>
+									<fieldset class="f2">
+									<legend class="l2">Survey Users Creation</legend>
+									<span class="fontStyle">
+										Survey Users Creation :&nbsp;
+										<a class="alinkstyle" href="<s:url action="surveyDataDetailsAction"/>"> Assign<br/>
+										</span><br>
+									</fieldset></td>
 								</tr>
 								<td></td>
 								</tr>
