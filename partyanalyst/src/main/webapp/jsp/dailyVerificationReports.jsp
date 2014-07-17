@@ -13,7 +13,8 @@
  <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">	
 <script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.js"></script>
 <link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
-
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 
 
 		<style>
@@ -545,7 +546,7 @@ $('#mainajaximg').hide();
 
 	 var str = '';
 
-   str+='<table class="table table-bordered m_top20 table-hover table-striped username">';
+   str+='<table id="dayWiseReportTable" class="table table-bordered m_top20 table-hover table-striped username">';
     str+='<thead class="alert alert-success">';
 	 str+='<tr>';
 	  str+='<th>UserName</th>';
@@ -585,6 +586,11 @@ $('#mainajaximg').hide();
    str+='</table>';
 
  $('#dayWiseReportDiv1').html(str);
+ $('#dayWiseReportTable').dataTable({
+		"iDisplayLength": 100,
+		"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]]
+		});
+		
 
 }
 
