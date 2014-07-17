@@ -123,7 +123,7 @@ var features = new Array();
 function buildLocationDetails(result)
 { 
 	document.getElementById('weathermap').innerHTML = "<div class='span12 m_top20 widgetservey' id='map' style='height:500px'></div>";
-	$('#detaildDiv').show();
+	$('#detaildDiv123').show();
 	$.each(result,function(index,value){
 	if(value.latitude != null && value.longititude != null)
 	{
@@ -403,8 +403,8 @@ function getconstituencies()
 					</div>
 				</div>
 				
-				<div class="row-fluid clearCls" id="detaildDiv" style="display:none;">
-					<div class="span12 m_top20 widgetservey clearCls" id="weathermap" style="height:500px">
+				<div class="row-fluid hide" id="detaildDiv123" >
+					<div class=" row-fluid clearClsspan12 m_top20 widgetservey " id="weathermap" style="height:500px">
 						<!--<h5>Currently Logged in Users <span class="badge badge-success"> 15</span></h5><hr>-->
 					</div>
 					<p class="m_top10"> <span class="label label-info">D.C - Data Collector</span> &nbsp; &nbsp;<span class="label label-important"> D.V - Data Verifier</span></p>
