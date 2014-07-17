@@ -489,7 +489,8 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 	public List<Object[]> getMbileNoCountByBooths(List<Long> userIds,List<Long> boothIds,Long userTypeId,Date date)
 	{
 		Query query = getSession().createQuery("select model.surveyUser.surveyUserId,model.booth.boothId,count( model.mobileNumber) from SurveyDetailsInfo model where model.surveyUser.surveyUserId in(:userIds) and " +
-				"model.booth.boothId in(:boothIds) and model.mobileNumber is not null and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId and date(model.date) = :date and model.mobileNumber is not null and model.mobileNumber != 'null' group by model.surveyUser.surveyUserId,model.booth.boothId");
+				"model.booth.boothId in(:boothIds) and model.mobileNumber is not null and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId and date(model.date) = :date and model.mobileNumber is not null " +
+				" and model.mobileNumber != 'null' and model.mobileNumber != '' and length(model.mobileNumber) != 0  group by model.surveyUser.surveyUserId,model.booth.boothId");
 		query.setParameterList("userIds", userIds);
 		query.setParameterList("boothIds", boothIds);
 		query.setParameter("userTypeId", userTypeId);
