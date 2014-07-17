@@ -1015,6 +1015,8 @@ webuserId = value;
 
 function getBoothsDetailsByConstituencyId(constituencyId)
 {
+	 $('#dayWiseReportDiv1').html('');
+
 	$("#boothImage").show();
 	var jObj =
 	{
@@ -1045,7 +1047,6 @@ function getBoothsDetailsByConstituencyId(constituencyId)
 
 function getDayWiseReportByConstituencyIdAndUserType()
 {
-
 $('#dayWiseReportDiv1,#retunMsg,#errorDiv').html('');
 	var constituencyId = $("#constituencyIdForVerfication").val();
 	//var userTypeId = $("#userType").val();
