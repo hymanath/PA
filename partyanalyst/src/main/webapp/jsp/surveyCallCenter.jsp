@@ -62,6 +62,12 @@
 				color:red;
 				font-size:13px;
 			}
+
+			#errorDiv
+			{
+			 font-weight:bold;
+			 color:red;
+			}
 			
 			.highlight{
 			cursor: pointer;
