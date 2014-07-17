@@ -1052,6 +1052,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		try 
 		{
 			List<Object[]> result = surveyUserTrackingDAO.getLatLongForUserTracking(surveyUserId, date);
+			DateFormat dateFormat = new SimpleDateFormat("hh:mm a"); 
 			if(result != null && result.size() > 0)
 			{
 				returnList = new ArrayList<GenericVO>();
@@ -1060,6 +1061,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					GenericVO VO = new GenericVO();
 					VO.setName(parms[0] != null ? parms[0].toString() : "");//longtitude
 					VO.setDesc(parms[1] != null ? parms[1].toString() : "");//latitude
+					String time = dateFormat.format(parms[2]);	
+					VO.setPercent(time);
 					returnList.add(VO);
 				}
 			}
