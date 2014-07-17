@@ -55,7 +55,7 @@
 										</div>
 										<div class="span5">
 											Select Booth<font class="requiredFont">*</font>
-											<select class="input-block-level" id="surveyMonitoringBoothId" onChange="clearDivs();"> <option value="0">Select Booth</option></select></div>
+											<select class="input-block-level" id="surveyMonitoringBoothId"> <option value="0">Select Booth</option></select></div>
 											<div class="span1" style="margin:29px 8px 0px 6px; width: 15px;">
 											<img id="boothAjaxImg" src="./images/icons/search.gif" alt="Processing Image"  class="hide"/>
 										</div>
@@ -81,7 +81,7 @@
 					</div>
 				</div>
 				
-				<div id="comparisonReportId" class="clearCls"></div>
+				<div id="comparisonReportId1" class="clearCls"></div>
 			</div>
 		</div>
 	</div>
@@ -161,7 +161,7 @@ function getComparisionReport(type)
 		return;
 	}
 
-	//$('#comparisonReportId,#reportErrorDiv').html('');
+	//$('#comparisonReportId1,#reportErrorDiv').html('');
 
 	
 	$('#submitImg').show();
@@ -358,7 +358,7 @@ if(result == null || result.length == 0)
         str+='<img id="ajaxImg" src="./images/icons/search.gif" alt="Processing Image" style="margin-left:600px;" class="hide"/>';
 		str+='</div></div>';
 
-		$("#comparisonReportId").html(str);
+		$("#comparisonReportId1").html(str);
 		
 }
 
