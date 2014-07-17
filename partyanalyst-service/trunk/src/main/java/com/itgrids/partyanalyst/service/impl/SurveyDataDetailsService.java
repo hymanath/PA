@@ -1875,7 +1875,32 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			if(surveyUserIds != null && surveyUserIds.size() > 0)
 			{
 				int count = surveyUserRelationDAO.updateUserLeaderRelations(userTypeId,surveyUserIds, leaderId);
-				if(count > 0)
+				
+				
+				List<Object[]> assignTabsIdsList = surveyUserTabAssignDAO.getSurveyTabsBySurveyUserIdsList(surveyUserIds);
+				List<Long> assignTabsIds = new ArrayList<Long>();
+				
+				if(assignTabsIdsList != null && assignTabsIdsList.size()>0){
+					for (Object[] assgnTab : assignTabsIdsList) {
+						assignTabsIds.add((Long) assgnTab[2]);
+					}
+				}
+				int assignTabsRemovedCount = 0;
+				if(assignTabsIds != null && assignTabsIds.size()>0){
+					//assignTabsRemovedCount = surveyUserTabAssignDAO.updateActiveStatus(assignTabsIds);
+					for (Long assignTabsId : assignTabsIds) {
+						SurveyUserTabAssign surveyUserTabAssign = surveyUserTabAssignDAO.get(assignTabsId);
+						if(surveyUserTabAssign != null){
+							surveyUserTabAssign.setActiveStatus("N");
+							surveyUserTabAssign.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+							
+							surveyUserTabAssignDAO.save(surveyUserTabAssign);
+							assignTabsRemovedCount = 1;
+						}
+					}
+				}
+				
+				if(count > 0 && assignTabsRemovedCount > 0 )
 				{
 					resultStatus.setResultCode(0);
 					resultStatus.setMessage("Success");
