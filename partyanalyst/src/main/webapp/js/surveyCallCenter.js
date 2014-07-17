@@ -1111,7 +1111,7 @@ function buildDayWiseReportByUserType(result)
 $('#mainajaximg').hide();
 	if(result == null || result.length == 0)
 	{
-		$('#retunMsg').html("NO DATA AVILABLE");
+		$('#retunMsg').html("<font color='red'>NO DATA AVILABLE</font>");
 		return;
 	}
 
