@@ -338,6 +338,8 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		dataAvilableConstituencies = surveyDataDetailsService.getSurveyStartedConstituencyList();
 		resultVO = surveyDashBoardService.getCompletdConstituenciesDetails();
 		resultList = surveyDashBoardService.getConstituencyWiseCompletionReport(); 
+		usersList = surveyDataDetailsService.getAllWebMonitoringUsersDetails();
+		
 		return Action.SUCCESS;
 	}
 

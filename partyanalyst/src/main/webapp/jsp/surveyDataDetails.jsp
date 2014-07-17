@@ -83,6 +83,9 @@
 		$('#boothsDtlsId').html('');
 		getUserAssignedBoothsDetailsForAConstituency();
 	});
+	
+	$('#webMonitorUserIds').multiselect({
+	  noneSelectedText:"Select User(s)"});
 	showHideTabs('userCreationTab');
 
 
@@ -100,13 +103,10 @@
 					<li><a class="highlight" id="boothAssignTab" onclick="showHideTabs(this.id);"> Booth Assign </a></li>
 					<li><a class="highlight" id="deactivationTab" onclick="showHideTabs(this.id);"> Deactivation </a></li>
 					<li><a class="highlight" id="verificationDetailsTab" onclick="showHideTabs(this.id);"> Verification </a></li>
+					<li><a class="highlight" id="webMonitorAssignUsersTab" onclick="showHideTabs(this.id);">Web Monitor </a></li>
 					<li class="highlight" id="reportsTab" onclick="showHideTabs(this.id);">
-					  <div class="dropdown">
-							<a class="dropdown-toggle" data-toggle="dropdown" href="#">Web monitor</a>
-							<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-							<li><a href="javascript:{redicttoAssignUsersPage()}">Assign Users </a></li>
-							</ul>
-					  </div>
+					
+					
 					</li>
 					<!--<li><a class="highlight" id="reportTab" onclick="redicttoVerificationPage();"> Reports	 </a></li>-->
 				</ul>
@@ -695,6 +695,46 @@
 		<div class="row" id="verificationDiv"></div>
 		<!-----LEADER NAME------->
 		<div class="row" id="leaderNameDiv"></div>
+		
+		<!-----WEB MONITOR ------->
+		<div class="row" id="webMonitorAssignUsersDivId">
+			<div class="span10 offset1">
+				<div class="row-fluid ">
+					<div class="span12 widgetservey_Red m_top20">
+							<h4>ASSIGN USERS TO WEB MONITORS</h4>
+							<div class="row">
+								<div id="webMonitorErrorId" class="span8 offset1 errorCls"></div>
+							</div>
+								<div class="row">
+								<div class="span12 offset1">
+									<div class="row-fluid">
+										<div class="span3">
+											Select User<font class="requiredFont">*</font>
+											<s:select theme="simple"  style="width:180px;" name="user" headerValue="Select User" headerKey="0" id="webMonitorUserId" list="usersList" listKey="id" listValue="name"/>
+										</div>
+										<div class="span3">
+											Select Constituency<font class="requiredFont">*</font>
+											<s:select theme="simple"  name="constituency" headerValue="Select Constituency" headerKey="0" id="webMonitorConstituencyId" style="width:180px;" list="constituenciesList" listKey="id" listValue="name" onchange="getAssignedUsersOfConstituency()" />
+										</div>
+										<div class="span4">
+											Select User(s)<font class="requiredFont">*</font>
+											 <select id="webMonitorUserIds"></select>
+											
+										</div>
+										<div class="span1" style="margin:25px -33px 0 0px;width: 15px;">
+										<img id="userImage" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
+										</div>	
+								</div>
+								</div>
+							
+							
+							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onClick="saveWebMonioringAssignDetails();">ASSIGN</button>
+							<img src='./images/icons/search.gif' id="webMonioringAssignimg" style="display:none;"/></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
 		
 	</div>
 <script>
