@@ -3087,22 +3087,25 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 							surveyCallStatus.setUserId(userId);
 							//surveyCallStatus.setUser(userDAO.get(userId));
 							
-							if(surveyReportVO.getMobileNo().equalsIgnoreCase("1")){
+							if(surveyReportVO.getMobileNo().equalsIgnoreCase("2")){
 								surveyCallStatus.setMobileNoStatus("Y");
 							}
-							else if(surveyReportVO.getMobileNo().equalsIgnoreCase("3")){
+							else if(surveyReportVO.getMobileNo().equalsIgnoreCase("6")){
 								surveyCallStatus.setMobileNoStatus(null);
 							}
 							else{
 								surveyCallStatus.setMobileNoStatus("N");
 							}
 							
-							if(surveyReportVO.getMatchedCount() != 0 ){
+							if(surveyReportVO.getMatchedCount().toString().equalsIgnoreCase("1") ){
 								surveyCallStatus.setMatchedStatus("Y");
-								surveyCallStatus.setCasteState(null);
+								surveyCallStatus.setCasteStateId(null);
 							}
-							else{
-								
+							else if(surveyReportVO.getMatchedCount().toString().equalsIgnoreCase("5") ){
+								surveyCallStatus.setMatchedStatus(null);
+								surveyCallStatus.setCasteStateId(null);
+							}
+							else{	
 								surveyCallStatus.setMatchedStatus("N");
 								
 								if(surveyReportVO.getCasteId() != 0){
