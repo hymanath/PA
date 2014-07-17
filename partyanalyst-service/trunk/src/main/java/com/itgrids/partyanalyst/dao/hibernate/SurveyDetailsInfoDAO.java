@@ -214,13 +214,12 @@ public class SurveyDetailsInfoDAO extends GenericDaoHibernate<SurveyDetailsInfo,
 		queryStr.append(" SUM(CASE WHEN SDI.hamletName is not null THEN 1 ELSE 0 END ),  " );		// hamletName count 		4
 		queryStr.append(" SUM(CASE WHEN SDI.isCadre ='Y' THEN 1 ELSE 0 END),");						// Cadre count 				5
 		queryStr.append(" SUM(CASE WHEN SDI.isInfluencingPeople ='Y' THEN 1 ELSE 0 END),  ");		// InfluencingPeople count	6 
-		queryStr.append(" SUM(CASE WHEN SDI.mobileNumber is not null and SDI.mobileNumber != 'null'  THEN 1 ELSE 0 END )  ");		// mobileNumber count 		7
+		queryStr.append(" SUM(CASE WHEN SDI.mobileNumber is not null and SDI.mobileNumber != 'null' and SDI.mobileNumber != '' and length(SDI.mobileNumber) != 0  THEN 1 ELSE 0 END )  ");		// mobileNumber count 		7
 			
-			queryStr.append(" 	from SurveyDetailsInfo SDI ,SurveyUser SU , SurveyUserType SUT, Booth B ");
-			queryStr.append(" 	where  SDI.surveyUser.surveyUserId = SU.surveyUserId 				and ");
-			queryStr.append(" 	SU.surveyUserType.surveyUsertypeId = SUT.surveyUsertypeId 			and ");
-			queryStr.append(" 	SUT.surveyUsertypeId = :surveyUsertypeId 							and ");
-			queryStr.append("   SDI.booth.boothId = B.boothId 										and ");
+			queryStr.append(" 	from SurveyDetailsInfo SDI where ");
+			
+			queryStr.append(" 	SDI.surveyUser.surveyUserType.surveyUsertypeId = :surveyUsertypeId							and ");
+			
 			queryStr.append("	SDI.booth.constituency.constituencyId = :constituencyId ");
 			
 		Query query = getSession().createQuery(queryStr.toString());
@@ -251,15 +250,12 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 		queryStr.append(" SUM(CASE WHEN SDI.hamletName is not null THEN 1 ELSE 0 END ),  " );		// hamletName count 		4
 		queryStr.append(" SUM(CASE WHEN SDI.isCadre ='Y' THEN 1 ELSE 0 END),");						// Cadre count 				5
 		queryStr.append(" SUM(CASE WHEN SDI.isInfluencingPeople ='Y' THEN 1 ELSE 0 END),  ");		// InfluencingPeople count	6 
-		queryStr.append(" SUM(CASE WHEN SDI.mobileNumber is not null and SDI.mobileNumber != 'null' THEN 1 ELSE 0 END ),  ");		// mobileNumber count 		7
+		queryStr.append(" SUM(CASE WHEN SDI.mobileNumber is not null and SDI.mobileNumber != 'null' and  SDI.mobileNumber != '' and length(SDI.mobileNumber) != 0THEN 1 ELSE 0 END ),  ");		// mobileNumber count 		7
 		queryStr.append(" SUM(CASE WHEN SDI.localArea is not null THEN 1 ELSE 0 END)  ");			// localArea count 		8
 		
-			queryStr.append(" 	from SurveyDetailsInfo SDI ,SurveyUser SU , SurveyUserType SUT, Booth B ");
-			queryStr.append(" 	where  SDI.surveyUser.surveyUserId = SU.surveyUserId 				and ");
-			queryStr.append(" 	SU.surveyUserType.surveyUsertypeId = SUT.surveyUsertypeId 			and ");
-			queryStr.append(" 	SUT.surveyUsertypeId = :surveyUsertypeId 							and ");
-			queryStr.append("   SDI.booth.boothId = B.boothId 										and ");
-			queryStr.append("	B.boothId = :boothId ");
+			queryStr.append(" 	from SurveyDetailsInfo SDI where  ");
+			queryStr.append(" 	SDI.surveyUser.surveyUserType.surveyUsertypeId = :surveyUsertypeId	and ");
+			queryStr.append("	SDI.booth.boothId = :boothId ");
 			
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameter("boothId", boothId);
