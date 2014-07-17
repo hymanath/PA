@@ -34,6 +34,15 @@
 
 
 		</style>	
+<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 </head>
 <body>
 <div class="container-fluid">
@@ -43,6 +52,7 @@
 			<div class="span12 widgetservey_Red m_top20">
 				<h4 id="heading">SURVEY DETAILS</h4>
 				<div id="map" style="width: 100%; height: 400px;cursor: pointer;"></div>
+				<div id="tableDiv"></div>
 			</div>
 			<!--<div class="span6 widgetservey_Red m_top20">
 				<h4 >USER TRACKING DETAILS</h4>
@@ -249,7 +259,40 @@ function buildUserLocationDetails(userLocations)
         L.latLng(
             longt[j],lat[j]));
 	}
-	
+	buildTable(userLocations);
+}
+
+function buildTable(result)
+{
+		var str = '';
+		str+='<table class="table table-bordered m_top20 table-hover table-striped username" id="voterDetlsTab">';
+		str+='<thead class="alert alert-success">';
+		str+='<tr>';
+		str+='<th>S.NO</th>';
+		str+='<th>Time</th>';
+		str+='<th>Longititude</th>';
+		str+='<th>Latitude</th>';
+		str+='</tr>';
+		str+='</thead>';
+		str+='<tbody>';
+		var count = 1;
+		for(var i in result)
+		{
+			str += '<tr>';
+			str += '<td>'+count+'</td>';
+			str += '<td>'+result[i].percent+'</td>';
+			str += '<td>'+result[i].desc+'</td>';
+			str += '<td>'+result[i].name+'</td>';
+			str += '</tr>';
+			count ++;
+		}
+		 str+='</tbody>';
+		 str+='</table>';
+		 $('#tableDiv').html(str);
+		$('#voterDetlsTab').dataTable({
+			"iDisplayLength": 100,
+			"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]]
+		});
 }
 </script>
 </body>
