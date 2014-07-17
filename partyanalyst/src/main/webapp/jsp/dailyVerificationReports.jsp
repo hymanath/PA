@@ -553,9 +553,17 @@ $('#mainajaximg').hide();
   	  str+='<th>Booth No</th>';
 	  str+='<th>Total Voters</th>';
 
-	    $.each(result[0].subList,function(index,value){
-          str+='<th>'+value.surveyDate+'</th>';
-		});
+	  
+		if($('#fromDate').val() == $('#toDate').val())
+		{
+			 str+='<th>Collected Count</th>';
+			 str+='<th>Percent</th>';
+		}else
+		{
+			  $.each(result[0].subList,function(index,value){
+                str+='<th>'+value.surveyDate+'</th>';
+		      });
+		}
 
 	 str+='</tr>';
 	str+='</thead>';
@@ -566,20 +574,34 @@ $('#mainajaximg').hide();
 	   str+='<td>'+value.userName+'</td>';
    	   str+='<td>'+value.partNo+'</td>';
 	   str+='<td>'+value.totalVoters+'</td>';
+
+	   if($('#fromDate').val() != $('#toDate').val())
 	     $.each(value.subList,function(index1,value1){
 			   str+='<td>'+value1.count+'</td>';
+		 });
+	  else
+		   $.each(value.subList,function(index1,value1){
+			   str+='<td>'+value1.count+'</td>';
+			   str+='<td>'+value1.percent+'</td>';
 		 });
 
 		
     str+='</tr>';
 
    });
-   	str+='<tr>';
+  	str+='<tr>';
 	str+='<td><b>Total</b></td>';
 	str+='<td></td>';
 	str+='<td></td>';
-	$.each(result[0].subList,function(index,value){
-          str+='<td><b>'+value.total+'</b></td>';
+
+	if($('#fromDate').val() == $('#toDate').val())
+		str+='<td></td>';
+
+		$.each(result[0].subList,function(index,value){
+			if(index == result[0].subList.length-1)
+			  str+='<td><b>'+value.total+'</b></td>';
+			else
+			  str+='<td></td>';
 		});
 	str+='</tr>';
    str+='</tbody>';
