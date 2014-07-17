@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -2255,7 +2256,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			 } 
 			 catch (Exception e)
 			 {
-				 LOG.error("Exception raised in getSurveyConstituencyLeadersList() service in SurveyDataDetailsService", e);
+				 LOG.error("Exception raised in getSurveyConstituencyUsersList() service in SurveyDataDetailsService", e);
 			 }
 			 return returnList;
 		}
@@ -2389,7 +2390,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			
 			if(tabsList != null && tabsList.size()>0){
 				for (GenericVO genericVO1 : tabsList) {
-					if(genericVO1.getId().toString().equalsIgnoreCase(tabNo)){
+					if(genericVO1.getName().toString().equalsIgnoreCase(tabNo)){
 						return genericVO1;
 					}
 				}
@@ -2421,7 +2422,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					SurveyUserTabAssign surveyUserTabAssign = new SurveyUserTabAssign();
 				
 					surveyUserTabAssign.setSurveyUser(surveyUserDAO.get(basicVO.getId()));
-					surveyUserTabAssign.setTabNo(basicVO.getCount().toString());
+					surveyUserTabAssign.setTabNo(surveyUserTabAssignDAO.get(basicVO.getCount()).getTabNo());
 					surveyUserTabAssign.setActiveStatus("Y");
 					surveyUserTabAssign.setDate(date1.getCurrentDateAndTime());					
 					surveyUserTabAssign.setInsertedTime(date1.getCurrentDateAndTime());
@@ -3017,6 +3018,15 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			finalVO.setCount(surveyDetailsInfoDAO.getTotalVotersinBooth(boothId));
 			
 			if(casteListOfSamples != null && casteListOfSamples.size()>0){
+				
+				Collections.sort(casteListOfSamples, new Comparator<GenericVO>() {
+
+					public int compare(GenericVO o1, GenericVO o2) {
+						
+						return (int) (o2.getCount() - o1.getCount());
+					}
+				});
+				
 				finalVO.setGenericVOList(casteListOfSamples);
 			}
 						
@@ -3089,6 +3099,10 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 							surveyCallStatus.setBoothId(surveyReportVO.getBoothId());
 							surveyCallStatus.setUserId(userId);
 							//surveyCallStatus.setUser(userDAO.get(userId));
+							
+							
+							/* caste status :   0 --> wrong, 1 --> write ,  5 --> not any 
+							   mobile status :  2 --> write, 3 --> wrong ,  6 --> not any */
 							
 							if(surveyReportVO.getMobileNo().equalsIgnoreCase("2")){
 								surveyCallStatus.setMobileNoStatus("Y");
