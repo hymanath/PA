@@ -445,6 +445,7 @@ if(id == "userTypeTab")
 	$("#createUserTypeDiv").show();
 	$("#userCreationDiv").hide();
 	$("#tabAssignDiv,#tabAssignUserDiv").hide();
+	$("#webMonitorAssignUsersDivId").hide();
 	$("#boothAssigniv").hide();
 	$("#userDeactivationDiv").hide();
 	$("#assignBoothToLeaderDiv").hide();
@@ -457,6 +458,7 @@ else if(id == "userCreationTab")
 	{
 	$(".errorCls").html('');
 	$("#createUserTypeDiv").hide();
+	$("#webMonitorAssignUsersDivId").hide();
 	$("#userCreationDiv").show();
 	$("#tabAssignDiv,#tabAssignUserDiv").hide();
 	$("#boothAssigniv").hide();
@@ -494,7 +496,7 @@ else if(id == "userCreationTab")
 	$("#surveyUserTypeForSelect").val(0);
 	$(".datePickerCls ").val('');
 	$(".newTabCls ").val('');
-	
+	$("#webMonitorAssignUsersDivId").hide();
 	buildDatePicker();
 	//getUserTypes('surveyUserTypeForSelect');
 	getSurveyConstituencyList('constitList');
@@ -511,6 +513,7 @@ else if(id == "userCreationTab")
 	$("#assignBoothToLeaderDiv").hide();
 	$("#verificationDiv").hide();
 	$("#leaderNameDiv").hide();
+	$("#webMonitorAssignUsersDivId").hide();
 	//getUserTypes('boothAssignUserType');
 	}
 	
@@ -519,6 +522,7 @@ else if(id == "userCreationTab")
 	$(".errorCls").html('');
 	$("#createUserTypeDiv").hide();
 	$("#userCreationDiv").hide();
+	$("#webMonitorAssignUsersDivId").hide();
 	$("#tabAssignDiv,#tabAssignUserDiv").hide();
 	$("#boothAssigniv").hide();
 	$("#userDeactivationDiv").show();
@@ -540,6 +544,7 @@ else if(id == "userCreationTab")
 	$("#assignBoothToLeaderDiv").show();
 	$("#verificationDiv").hide();
 	$("#leaderNameDiv").hide();
+	$("#webMonitorAssignUsersDivId").hide();
 	//getUserTypes('typeId');
 	
 	}
@@ -554,11 +559,26 @@ else if(id == "userCreationTab")
 	$("#assignBoothToLeaderDiv").hide();
 	$("#verificationDiv").show();
 	$("#leaderNameDiv").show();
-	
+	$("#webMonitorAssignUsersDivId").hide();
 	getLeaderDetetilsByContituencyWise();
 
 	}
+	
+	else if(id == "webMonitorAssignUsersTab")
+	{
+	$(".errorCls").html('');
+	$("#createUserTypeDiv").hide();
+	$("#userCreationDiv").hide();
+	$("#tabAssignDiv,#tabAssignUserDiv").hide();
+	$("#boothAssigniv").hide();
+	$("#userDeactivationDiv").hide();
+	$("#assignBoothToLeaderDiv").hide();
+	$("#verificationDiv").hide();
+	$("#leaderNameDiv").hide();
+	
+	$("#webMonitorAssignUsersDivId").show();
 
+	}
 
 
 }
@@ -2042,4 +2062,64 @@ function unTagConstituencyToUser()
 			$('#untagConstituencyId').val(0);
 		});
 
+}
+
+function getAssignedUsersOfConstituency()
+{
+	$('#userImage').show();
+
+	$.ajax({
+	type:'GET',
+	url: 'getAssignedUsersOfAConstituency.action',
+	dataType: 'json',
+	data: {constituencyId:$('#webMonitorConstituencyId').val()},
+	}).done(function(result){
+      buildConstituencies(result);
+	});
+}
+function buildConstituencies(result)
+{
+
+   $('#userImage').hide();
+   $('#webMonitorUserIds').find('option').remove();
+   $.each(result,function(index,value){
+	   $('#webMonitorUserIds').append('<option value="'+value.id+'">'+value.name+'</option>');
+   });
+   $('#webMonitorUserIds').multiselect('refresh');
+}
+
+function saveWebMonioringAssignDetails()
+{
+	$('#webMonitorErrorId').html('');
+	var errorStr ='';
+	if($('#webMonitorUserIds').val() == null)
+	  errorStr += "Select Atleast one user to assign .";
+	
+	if(errorStr.length > 0)
+	{
+		$('#webMonitorErrorId').html("<font style='color:red;'>"+errorStr+"</font>");
+		return;
+	}
+		$('#webMonioringAssignimg').show();
+	var jsObj ={
+		webMonitorUserId:'',
+         userIds:[]
+	};
+
+		jsObj.webMonitorUserId = $('#webMonitorUserId').val();
+		jsObj.userIds = $('#webMonitorUserIds').val();
+
+
+	$.ajax({
+	type:'GET',
+	url: 'saveWebMonioringAssignDetails.action',
+	dataType: 'json',
+	data: {task:JSON.stringify(jsObj)},
+	}).done(function(result){
+		$('#webMonioringAssignimg').hide();
+		if(result == "success")
+		{
+           $('#statusDiv').html("Assigned Success fully..");
+		}
+	});
 }
