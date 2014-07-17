@@ -1045,6 +1045,7 @@ function getBoothsDetailsByConstituencyId(constituencyId)
 
 function getDayWiseReportByConstituencyIdAndUserType()
 {
+
 $('#dayWiseReportDiv1,#retunMsg,#errorDiv').html('');
 	var constituencyId = $("#constituencyIdForVerfication").val();
 	//var userTypeId = $("#userType").val();
@@ -1124,6 +1125,8 @@ $('#mainajaximg').hide();
 		return;
 	}
 
+	
+
 	 var str = '';
 
    str+='<table class="table table-bordered m_top20 table-hover table-striped username">';
@@ -1133,9 +1136,17 @@ $('#mainajaximg').hide();
   	  str+='<th>Booth No</th>';
 	  str+='<th>Total Voters</th>';
 
-	    $.each(result[0].subList,function(index,value){
-          str+='<th>'+value.surveyDate+'</th>';
-		});
+	     if($('#fromDate').val()  == $('#toDate').val())
+		 {
+		     str+='<th>Collected Count</th>';
+			 str+='<th>Percent</th>';
+
+		 }else
+		 {
+			$.each(result[0].subList,function(index,value){
+			  str+='<th>'+value.surveyDate+'</th>';
+			});
+		 }
 
 	 str+='</tr>';
 	str+='</thead>';
@@ -1146,9 +1157,17 @@ $('#mainajaximg').hide();
 	   str+='<td>'+value.userName+'</td>';
    	   str+='<td>'+value.partNo+'</td>';
 	   str+='<td>'+value.totalVoters+'</td>';
-	     $.each(value.subList,function(index1,value1){
+
+	   	if($('#fromDate').val()  != $('#toDate').val())
+	      $.each(value.subList,function(index1,value1){
 			   str+='<td>'+value1.count+'</td>';
-		 });
+		  });
+	    else
+		  $.each(value.subList,function(index1,value1){
+			   str+='<td>'+value1.count+'</td>';
+			   str+='<td>'+value1.percent+'</td>';
+		  });
+
     str+='</tr>';
    });
    str+='</tbody>';
