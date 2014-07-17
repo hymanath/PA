@@ -350,7 +350,7 @@ var jObj =
 
 				buildCastCounts(result);
 			});
-			setTimeout(getTotalCasteCounts, 3000);
+			setTimeout(getTotalCasteCounts, 300000);
 }
 
 function buildCastCounts(result)
