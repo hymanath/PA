@@ -1016,9 +1016,9 @@ webuserId = value;
 function getBoothsDetailsByConstituencyId(constituencyId)
 {
 
+	$('#dayWiseReportDiv1').html('');
 	if($('#constituencyIdForVerfication').val() == 0)
 		return;
-	 $('#dayWiseReportDiv1').html('');
 
 	$("#boothImage").show();
 	var jObj =
