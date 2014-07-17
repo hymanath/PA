@@ -131,7 +131,7 @@ public class SurveyUserRelationDAO extends GenericDaoHibernate<SurveyUserRelatio
 	{
 		Query query = getSession()
 				.createQuery(
-						"select SUR.surveyUser.surveyUserId,SUR.surveyUser.userName from SurveyUserRelation SUR where SUR.surveyLeader.surveyUserId " +
+						"select distinct SUR.surveyUser.surveyUserId,SUR.surveyUser.userName from SurveyUserRelation SUR where SUR.surveyLeader.surveyUserId " +
 						"in(select SUC.surveyUser.surveyUserId from SurveyUserConstituency SUC " +
 						"where SUC.constituency.constituencyId  = :constituencyId) and SUR.surveyUser.activeStatus = 'Y'  ");
 		
