@@ -1019,6 +1019,7 @@ function getBoothsDetailsByConstituencyId(constituencyId)
 	$('#dayWiseReportDiv1').html('');
 	if($('#constituencyIdForVerfication').val() == 0)
 		return;
+	
 
 	$("#boothImage").show();
 	var jObj =
@@ -1123,7 +1124,7 @@ if(startDate.length == 0 || endDate.length == 0)
 }
 function buildDayWiseReportByUserType(result)
 {
-$('#mainajaximg').hide();
+	$('#mainajaximg').hide();
 	if(result == null || result.length == 0)
 	{
 		$('#retunMsg').html("<font color='red'>NO DATA AVILABLE</font>");
@@ -1134,7 +1135,7 @@ $('#mainajaximg').hide();
 
 	 var str = '';
 
-   str+='<table class="table table-bordered m_top20 table-hover table-striped username">';
+   str+='<table class="table table-bordered m_top20 table-hover table-striped username" id="daywisereportTableId">';
     str+='<thead class="alert alert-success">';
 	 str+='<tr>';
 	  str+='<th>UserName</th>';
@@ -1179,5 +1180,8 @@ $('#mainajaximg').hide();
    str+='</table>';
 
  $('#dayWiseReportDiv1').html(str);
+
+	if($('#fromDate').val()  == $('#toDate').val())
+		 $('#daywisereportTableId').dataTable();
 
 }
