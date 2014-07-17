@@ -169,7 +169,7 @@ $('#searchDataImg').show();
 						str +='</div>';
 						str +='</td>';
 						
-						str +='<td> <select id="casteListId'+i+'"  disabled="disabled" style="width:165px;" onchange="updateDetails(\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',1,'+result[i].voterId+','+result[i].userid+',\'caste\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+');"><option value="0"> Select Caste </option> ';
+						str +='<td> <select id="casteListId'+i+'"  disabled="disabled" style="width:165px;" onchange="updateDetails(\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',10,'+result[i].voterId+','+result[i].userid+',\'caste\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+');"><option value="0"> Select Caste </option> ';
 						str +='</select></td>';	
 											
 					}
@@ -186,7 +186,7 @@ $('#searchDataImg').show();
 						str +='</div>';
 						str +='</td>';
 						
-						str +='<td> <select id="casteListId'+i+'"   style="width:165px;" onchange="updateDetails(\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',1,'+result[i].voterId+','+result[i].userid+',\'caste\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+');"><option value="0"> Select Caste </option> ';
+						str +='<td> <select id="casteListId'+i+'"   style="width:165px;" onchange="updateDetails(\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',10,'+result[i].voterId+','+result[i].userid+',\'caste\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+');"><option value="0"> Select Caste </option> ';
 						if(results[1] != null  && results[1].genericVOList.length > 0){
 							for(var k in results[1].genericVOList){
 								str +='<option value="'+results[1].genericVOList[k].id+'">'+results[1].genericVOList[k].name+'</option>';
@@ -207,7 +207,7 @@ $('#searchDataImg').show();
 						str +='</div>';
 						str +='</td>';
 						
-						str +='<td> <select id="casteListId'+i+'"  disabled="disabled" style="width:165px;" onchange="updateDetails(\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',1,'+result[i].voterId+','+result[i].userid+',\'caste\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+');"><option value="0"  > Select Caste </option> ';
+						str +='<td> <select id="casteListId'+i+'"  disabled="disabled" style="width:165px;" onchange="updateDetails(\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',10,'+result[i].voterId+','+result[i].userid+',\'caste\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+');"><option value="0"  > Select Caste </option> ';
 						str +='</select></td>';	
 					}			
 					
@@ -394,12 +394,16 @@ function updateStatusDetails(isCasteMatched,mobileMatched,voterId,surveyUserId,s
 
 	var voterInfoArr = new Array();
 	var isMobileVerified = $('#'+mobileMatched+'').val();
-	var isMatched = 0;
-	
+	var isMatched = $('#'+isCasteMatched+'').val();
+	console.log("isMatched   :"+isMatched );
 	var casteId = 0;
 
 	if(newCasteId != 0){
 		casteId = $('#'+newCasteId+'').val();
+		console.log(casteId);
+		if(isMatched == 1){
+			casteId = 0;
+		}
 	}
 	
 
@@ -442,7 +446,7 @@ function updateStatusDetails(isCasteMatched,mobileMatched,voterId,surveyUserId,s
 					$('#'+newCasteId+'').find('option').remove();
 					$('#'+newCasteId+'').append('<option value="0"> Select Caste </option>');
 					
-					console.log(isMatched);
+					
 					if(isMatched == 1){
 						$('#updateBtnId'+updateBtnId+'').addClass('btn-success');
 						$('#'+newCasteId+'').prop('disabled','disabled');
@@ -450,7 +454,8 @@ function updateStatusDetails(isCasteMatched,mobileMatched,voterId,surveyUserId,s
 					if(isMatched == 0){
 						$('#updateBtnIdA'+updateBtnId+'').addClass('btn-warning');	
 		
-						$('#'+newCasteId+'').prop('disabled',false);						
+						$('#'+newCasteId+'').prop('disabled',false);	
+						
 						if(casteList.length >0){
 							for(var k in casteList){
 								$('#'+newCasteId+'').append('<option value="'+casteList[k].id+'">'+casteList[k].value+'</option>');
