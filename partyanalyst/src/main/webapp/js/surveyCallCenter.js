@@ -155,6 +155,9 @@ $('#searchDataImg').show();
 					str +='<td>'+result[i].partNo+'</td>';
 					str +='<td>'+result[i].userName+'</td>';
 					str +='<td>'+result[i].voterName+'</td>';
+					
+					/*	starting  only caste available details */
+					
 					str +='<td>'+result[i].caste+'';
 				
 					if(result[i].casteMatchedCount == 1) //correct
@@ -219,7 +222,106 @@ $('#searchDataImg').show();
 						str +='</select></td>';	
 					}			
 					
-								
+					/* ending  only caste available details */	
+					
+					/* starting  caste available and not available details */
+					
+					/*
+					
+					if(result[i].caste.trim().length >0)
+					{
+						str +='<td>'+result[i].caste+'';
+					
+					
+				
+						if(result[i].casteMatchedCount == 1) //correct
+						{ 
+							str +='<div data-toggle="buttons-radio" class="btn-group">';
+							str +='<button class="btn btn-mini  btn-success " id="updateBtnId'+i+'" type="button" onclick="updateDetails(\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',1,'+result[i].voterId+','+result[i].userid+',\'caste\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+');">correct</button>';
+							str +='<button class="btn btn-mini " id="updateBtnIdA'+i+'" type="button" onclick="updateDetails(\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',0,'+result[i].voterId+','+result[i].userid+',\'caste\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+');" >wrong</button>';
+							str +='<div id="casteErrDiv'+i+'" style="color:#FF0020;font-size:12px;"> </div>';
+							
+							str +='<input type="hidden" value="1" id="isCasteMatched'+i+'"/>';
+							
+							str +='</div>';
+							str +='</td>';
+							
+							str +='<td> <select id="casteListId'+i+'"  disabled="disabled" style="width:165px;" onchange="updateDetails(\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',10,'+result[i].voterId+','+result[i].userid+',\'caste\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+');"><option value="0"> Select Caste </option> ';
+							str +='</select></td>';	
+												
+						}
+						else if(result[i].casteMatchedCount == 2)
+						{
+							str +='	<div data-toggle="buttons-radio" class="btn-group">';
+							
+							str +='	<button class="btn btn-mini " id="updateBtnId'+i+'" type="button"  onclick="updateDetails(\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',1,'+result[i].voterId+','+result[i].userid+',\'caste\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+');" >correct</button>';
+							
+							str +='	<button class="btn btn-mini  btn-warning " id="updateBtnIdA'+i+'" type="button"  onclick="updateDetails(\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',0,'+result[i].voterId+','+result[i].userid+',\'caste\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+');">wrong</button>';
+							
+							str +='<div id="casteErrDiv'+i+'" style="color:#FF0020;font-size:12px;"> </div>';
+							str +='<input type="hidden" value="0" id="isCasteMatched'+i+'"/>';
+							str +='</div>';
+							str +='</td>';
+							
+							str +='<td> <select id="casteListId'+i+'"   style="width:165px;" onchange="updateDetails(\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',10,'+result[i].voterId+','+result[i].userid+',\'caste\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+');"><option value="0"> Select Caste </option> ';
+							if(results[1] != null  && results[1].genericVOList.length > 0){
+								for(var k in results[1].genericVOList){
+									if(results[1].genericVOList[k].id == result[i].casteId)
+									{
+										str +='<option value="'+results[1].genericVOList[k].id+'" selected="selected">'+results[1].genericVOList[k].name+'</option>';
+									}
+									else
+									{
+										str +='<option value="'+results[1].genericVOList[k].id+'">'+results[1].genericVOList[k].name+'</option>';
+									}
+									
+								}
+							}
+							str +='</select></td>';	
+						}
+						else
+						{
+							str +='<div data-toggle="buttons-radio" class="btn-group">';
+							
+							str +='<button class="btn btn-mini " id="updateBtnId'+i+'" type="button" onclick="updateDetails(\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',1,'+result[i].voterId+','+result[i].userid+',\'caste\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+');" >correct</button>';
+							
+							str +='<button class="btn btn-mini " id="updateBtnIdA'+i+'" type="button" onclick="updateDetails(\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',0,'+result[i].voterId+','+result[i].userid+',\'caste\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+');" >wrong</button>';
+							
+							str +='<div id="casteErrDiv'+i+'" style="color:#FF0020;font-size:12px;"> </div>';
+							str +='<input type="hidden" value="" id="isCasteMatched'+i+'"/>';
+							str +='</div>';
+							str +='</td>';
+							
+							str +='<td> <select id="casteListId'+i+'"  disabled="disabled" style="width:165px;" onchange="updateDetails(\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',10,'+result[i].voterId+','+result[i].userid+',\'caste\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+');"><option value="0"  > Select Caste </option> ';
+							str +='</select></td>';	
+						}			
+					
+					}
+					else{
+						str +='<td>';
+						str +='<input type="hidden" value="" id="isCasteMatched'+i+'"/>';
+						str +='</td>';
+						
+							str +='<td> <select id="casteListId'+i+'"   style="width:165px;" onchange="updateDetails(\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',10,'+result[i].voterId+','+result[i].userid+',\'caste\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+');"><option value="0"> Select Caste </option> ';
+							if(results[1] != null  && results[1].genericVOList.length > 0){
+								for(var k in results[1].genericVOList){
+									if(results[1].genericVOList[k].id == result[i].casteId)
+									{
+										str +='<option value="'+results[1].genericVOList[k].id+'" selected="selected">'+results[1].genericVOList[k].name+'</option>';
+									}
+									else
+									{
+										str +='<option value="'+results[1].genericVOList[k].id+'">'+results[1].genericVOList[k].name+'</option>';
+									}
+									
+								}
+							}
+							str +='</select></td>';
+					}
+					*/
+					
+					/* ending  caste available and not available details */
+					
 							var mobNo = '';
 							if(result[i].mobileNo != null  && result[i].mobileNo.length != 0 )
 							{						
@@ -377,6 +479,16 @@ function updateDetails(casteId,mobileId, value,voterId,surveyUserId,selectionTyp
 		
 	}
 	
+	/*
+	if(value == 10){
+		if(casteMatched == null || casteMatched.trim().length == 0){
+			$('#'+casteId+'').val('0');
+		}
+		if(mobileMached == null || mobileMached.trim().length == 0){
+			$('#'+mobileId+'').val('6');
+		}
+	}
+*/
 
 
 updateStatusDetails(casteId,mobileId,voterId,surveyUserId,selectionType,userId,boothId,date,newCasteId,updateBtnId);
