@@ -50,6 +50,7 @@ import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILanguageDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
 import com.itgrids.partyanalyst.dao.IPartyCadreSkillsDAO;
 import com.itgrids.partyanalyst.dao.IPartyTrainingCampsDAO;
@@ -99,6 +100,7 @@ import com.itgrids.partyanalyst.model.GroupEntitlementRelation;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.Language;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
+import com.itgrids.partyanalyst.model.Panchayat;
 import com.itgrids.partyanalyst.model.PartyCadreSkills;
 import com.itgrids.partyanalyst.model.PartyTrainingCamps;
 import com.itgrids.partyanalyst.model.PartyWorkingCommittee;
@@ -170,7 +172,19 @@ public class CadreManagementService {
 	private TaskExecutor taskExecutor;
 	private IPanchayatHamletDAO panchayatHamletDAO;
 	private ICasteStateDAO casteStateDAO;
+	private IPanchayatDAO panchayatDAO;
 	
+
+	public IPanchayatDAO getPanchayatDAO() {
+		return panchayatDAO;
+	}
+
+
+	public void setPanchayatDAO(IPanchayatDAO panchayatDAO) {
+		this.panchayatDAO = panchayatDAO;
+	}
+
+
 	public ICasteStateDAO getCasteStateDAO() {
 		return casteStateDAO;
 	}
@@ -5577,5 +5591,54 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 		
 		saveCader(cadreInfoVO, null, "new");
 		return "SUC";
+	}
+	public List<SelectOptionVO> getAllConstituencys(Long electionscopeId,Long stateId) throws Exception
+	{
+				List<SelectOptionVO> selectOptionVOList=new ArrayList<SelectOptionVO>();
+		
+				
+			try{
+				List<Constituency> constituencyList=constituencyDAO.getAllParliamentConstituenciesInAState(electionscopeId,stateId);
+		
+				for (Constituency objects : constituencyList)
+				{
+					SelectOptionVO selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId(objects.getConstituencyId());
+					selectOptionVO.setName(objects.getName());
+					selectOptionVOList.add(selectOptionVO);
+				}
+				return selectOptionVOList;
+			}
+		catch(Exception e)
+		{
+			log.error("Exception Rised In getAllConstituencys(Long electionscopeId,Long stateId) in CadreManagementService class",e);
+		}
+		
+		return selectOptionVOList;
+	
+		
+	}
+	public List<SelectOptionVO> getAllPanchayat(Long constituencyId)
+	{
+		List<SelectOptionVO> selectOptionVOList=new ArrayList<SelectOptionVO>();
+		
+		try{
+			List<Object[]> panchayatList=panchayatDAO.getPanchayatsByConstituencyId(constituencyId);
+			
+			for (Object[] objects : panchayatList) {
+				
+				SelectOptionVO selectOptionVO = new SelectOptionVO();
+				selectOptionVO.setId((Long)objects[0]);
+				selectOptionVO.setName(objects[1].toString());
+				selectOptionVOList.add(selectOptionVO);
+			}
+			
+			return selectOptionVOList;
+			
+		}catch(Exception e)
+		{
+			log.error("Exception Rised In getAllPanchayat(Long constituencyId" , e);
+		}
+		return selectOptionVOList;
 	}
 }
