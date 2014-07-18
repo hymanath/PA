@@ -347,10 +347,7 @@ function updateDetails(casteId,mobileId, value,voterId,surveyUserId,selectionTyp
 {
 	var casteMatched = $('#'+casteId+'').val();
 	var mobileMached = $('#'+mobileId+'').val();
-	/*console.log(value);
-	console.log("casteMatched 1 :"+casteMatched);
-	console.log("mobileMached 1 :"+mobileMached);
-	*/
+
 	// 0 ,2 -- correct
 	// 1 ,3 -- wrong
 	if(value == 0 || value == 1)
@@ -373,13 +370,8 @@ function updateDetails(casteId,mobileId, value,voterId,surveyUserId,selectionTyp
 		
 	}
 	
-	/*
-	casteMatched = $('#'+casteId+'').val();
-	mobileMached = $('#'+mobileId+'').val();
-	
-	console.log("casteMatched 2 :"+casteMatched);
-	console.log("mobileMached 2 :"+mobileMached);
-	*/
+
+
 updateStatusDetails(casteId,mobileId,voterId,surveyUserId,selectionType,userId,boothId,date,newCasteId,updateBtnId);
 }
 
@@ -895,7 +887,8 @@ function buildDetailsTable(result)
 			str+='<td>'+result[i].subList[j].mandalName+'</td>';
 			str+='<td>'+result[i].subList[j].panchayatName+'</td>';
 			str+='<td>'+result[i].subList[j].localArea+'</td>';
-			str+='<td>'+result[i].subList[j].villageCovered+'</td>';
+			var areaCovered = result[i].subList[j].villageCovered.replace(/,/g , "  ");
+			str+='<td>'+areaCovered+'</td>';
 			str += '<td><a onClick="openTrackinWindow('+result[i].userid+',\''+$('#dateId').val()+'\',1) " style="cursor: pointer;"><img src="images/DC.png"></img></a></td>	';
 		 str += '<td><a onClick="openTrackinWindow('+result[i].userid+',\''+$('#dateId').val()+'\',2) " style="cursor: pointer;"><img src="images/DC.png"></img></a></td>	';
 			str+='</tr>';
