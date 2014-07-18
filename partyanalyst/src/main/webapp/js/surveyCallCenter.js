@@ -189,7 +189,15 @@ $('#searchDataImg').show();
 						str +='<td> <select id="casteListId'+i+'"   style="width:165px;" onchange="updateDetails(\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',10,'+result[i].voterId+','+result[i].userid+',\'caste\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+');"><option value="0"> Select Caste </option> ';
 						if(results[1] != null  && results[1].genericVOList.length > 0){
 							for(var k in results[1].genericVOList){
-								str +='<option value="'+results[1].genericVOList[k].id+'">'+results[1].genericVOList[k].name+'</option>';
+								if(results[1].genericVOList[k].id == result[i].casteId)
+								{
+									str +='<option value="'+results[1].genericVOList[k].id+'" selected="selected">'+results[1].genericVOList[k].name+'</option>';
+								}
+								else
+								{
+									str +='<option value="'+results[1].genericVOList[k].id+'">'+results[1].genericVOList[k].name+'</option>';
+								}
+								
 							}
 						}
 						str +='</select></td>';	
@@ -271,11 +279,11 @@ $('#searchDataImg').show();
 											str +='</tr>';
 											
 
-										var obj = {
+									/*	var obj = {
 										id: 'casteListId'+i+'',
 										value : result[i].casteId
 									}
-									newCasteArr.push(obj);
+									newCasteArr.push(obj);*/
 									
 									
 				}
@@ -318,12 +326,12 @@ $('#searchDataImg').show();
 		 
 		  $('#casteInfoDiv').html(str1);
 		  
-		  if(newCasteArr != null && newCasteArr.length >0){
+		/*  if(newCasteArr != null && newCasteArr.length >0){
 				for(var i in newCasteArr){
 					if(newCasteArr[i].value != null)
 						$('#'+newCasteArr[i].id+'').val(newCasteArr[i].value);
 				}
-		  }
+		  }*/
 		
 		
 		
