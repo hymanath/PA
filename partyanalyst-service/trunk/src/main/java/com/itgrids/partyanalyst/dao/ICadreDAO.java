@@ -216,4 +216,5 @@ public interface ICadreDAO extends GenericDao<Cadre, Long>{
 
 	public List<Object[]> searchCadreInfoByConstidAndNameORMobile(Long constiId,String sort,String sortBy,int startIndex,int maxResult,String queryStr,String quryType);
 	public List getCadreByVoter(Long voterId);
+	public List<Object[]> getCadreDetailsByPanchayatId(Long panchayatId);
 }
