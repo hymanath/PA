@@ -6999,10 +6999,9 @@ public List<Object[]> getCasteDetailsForACaste(Long constituencyId,Long publicat
 
 public List<Object[]> getTotalVotersByBoothsForVerfier(Long boothIds,Long publicationDate)
 {
-	 Query query = getSession().createQuery("select distinct model.voter.voterId,model.voter.houseNo,model.voter.gender,model.voter.age ,model.voter.voterIDCardNo,model.voter.name from BoothPublicationVoter model " +
-				" where model.booth.boothId in (:boothIds) and model.booth.publicationDate.publicationDateId = :publicationDate  ");
+	 Query query = getSession().createQuery("select  model.voter.voterId,model.voter.houseNo,model.voter.gender,model.voter.age ,model.voter.voterIDCardNo,model.voter.name from BoothPublicationVoter model " +
+				" where model.booth.boothId in (:boothIds)   ");
 	 query.setParameter("boothIds", boothIds);
-	 query.setParameter("publicationDate", publicationDate);
 	 return query.list();
 }
 

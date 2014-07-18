@@ -1188,16 +1188,17 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				
 				Integer totalBoothAvaliableData = totalVoterMap.size();
 				System.out.println(totalBoothAvaliableData);
-				if(totalBoothAvaliableData > totalCollectedData)
+				if(totalBoothAvaliableData >= totalCollectedData)
 				{
 					Integer eareseDataCount = totalCollectedData/10;
 					if(SurveyResponceVOList != null && SurveyResponceVOList.size() > 0)
 					{
 						Random randomNum = new Random();
-						
+						Integer size = SurveyResponceVOList.size()-1;
 						for(Integer i = 0 ; i < eareseDataCount ; i++)
 						{
-							SurveyResponceVOList.remove(randomNum.nextInt(SurveyResponceVOList.size())) ;
+							SurveyResponceVOList.remove(randomNum.nextInt(size)) ;
+							size--;
 						}
 					}
 					for (SurveyResponceVO surveyResponceVO : SurveyResponceVOList)
