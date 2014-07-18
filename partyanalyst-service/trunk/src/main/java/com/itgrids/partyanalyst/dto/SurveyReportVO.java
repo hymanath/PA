@@ -63,7 +63,14 @@ public class SurveyReportVO {
 
 	private Long mobileNoCount =0l;
 	private List<GenericVO> genericVOList = new ArrayList<GenericVO>();
+	private String percent;
 	
+	public String getPercent() {
+		return percent;
+	}
+	public void setPercent(String percent) {
+		this.percent = percent;
+	}
 	private Long total;
 	private Long serailNo ;
 	
