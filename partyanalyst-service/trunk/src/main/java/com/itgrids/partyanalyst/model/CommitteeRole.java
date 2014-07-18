@@ -25,7 +25,7 @@ public class CommitteeRole {
 	
 	private Long committeeRoleId;
 	private Committee committee;
-	private Role role;
+	private Roles roles;
 	
 	public CommitteeRole()
 	{
@@ -54,18 +54,21 @@ public class CommitteeRole {
 	public void setCommittee(Committee committee) {
 		this.committee = committee;
 	}
-	
+
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="role_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Role getRole() {
-		return role;
+	public Roles getRoles() {
+		return roles;
 	}
-	public void setRole(Role role) {
-		this.role = role;
+
+	public void setRoles(Roles roles) {
+		this.roles = roles;
 	}
+	
+	
 	
 
 }
