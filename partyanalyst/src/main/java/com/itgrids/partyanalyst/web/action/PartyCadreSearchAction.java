@@ -23,12 +23,18 @@ public class PartyCadreSearchAction extends ActionSupport implements ServletRequ
 	private List<SelectOptionVO> constituencysList;
 	private Long electionscopeId;
 	private Long stateId;
-	private List<SelectOptionVO> panchayatList;
+	private List<SelectOptionVO> panchayatList,committeLevels;
 	JSONObject jObj = null;
 	private String task = null;
 	
 	
 	
+	public List<SelectOptionVO> getCommitteLevels() {
+		return committeLevels;
+	}
+	public void setCommitteLevels(List<SelectOptionVO> committeLevels) {
+		this.committeLevels = committeLevels;
+	}
 	public JSONObject getjObj() {
 		return jObj;
 	}
@@ -124,4 +130,21 @@ public class PartyCadreSearchAction extends ActionSupport implements ServletRequ
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getCommitteeLevels() 
+	{
+		
+		try{
+			
+			jObj =new JSONObject(getTask());
+			committeLevels=cadreManagementService.getCommitteeLevels();
+			return Action.SUCCESS;
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Rised In getAllPanchayat() in PartyCadreSearchAction class",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }
