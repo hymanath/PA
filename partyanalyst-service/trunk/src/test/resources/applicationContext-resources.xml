@@ -462,6 +462,11 @@
 		        <value>com.itgrids.partyanalyst.model.CandidateDetails</value>
 		        <value>com.itgrids.partyanalyst.model.SurveyUserConstituency</value>
 		        <value>com.itgrids.partyanalyst.model.SurveyCallStatus</value>
+		        <value>com.itgrids.partyanalyst.model.CommitteeLevel</value>
+				<value>com.itgrids.partyanalyst.model.CommitteeType</value>
+				<value>com.itgrids.partyanalyst.model.BasicCommittee</value>
+				<value>com.itgrids.partyanalyst.model.Committee</value>
+				<value>com.itgrids.partyanalyst.model.Roles</value>
 			</list>
 		</property>
 	</bean>
@@ -2435,5 +2440,19 @@
 	<bean id="surveyCallStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyCallStatusDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+	<bean id="committeeLevelDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommitteeLevelDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		<bean id="committeeTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommitteeTypeDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		<bean id="basicCommitteeDAO" class="com.itgrids.partyanalyst.dao.hibernate.BasicCommitteeDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		<bean id="committeeDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommitteeDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		<bean id="rolesDAO" class="com.itgrids.partyanalyst.dao.hibernate.RolesDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>
