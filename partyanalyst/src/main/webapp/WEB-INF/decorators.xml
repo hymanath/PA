@@ -350,5 +350,6 @@
 	   <pattern>/newsDisplayAction*</pattern>
 	   <pattern>/generatePdfForGallaryAction*</pattern>
 	   <pattern>/candidateUpdateDetailsAction*</pattern>
+	   <pattern>/partyCadreSearchAction*</pattern>
        </decorator>
 </decorators>
