@@ -10,7 +10,8 @@ import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
-import com.itgrids.partyanalyst.dto.SurveyInfoVO;
+import com.itgrids.partyanalyst.dto.SurveyReportVO;
+import com.itgrids.partyanalyst.model.SurveyDetailsInfo;
 
 public class SurveyDetailsInfoDAOHibernateTest extends BaseDaoTestCase{
 	private ISurveyDetailsInfoDAO surveyDetailsInfoDAO;
@@ -138,44 +139,70 @@ public class SurveyDetailsInfoDAOHibernateTest extends BaseDaoTestCase{
 	}
 */
 	
-/*	public void testgetAll(){
+	public void testgetAll(){
 		List<Long> userIds = new ArrayList<Long>();
 		userIds.add(46L);
 		
 		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 		SimpleDateFormat finalFormat = new SimpleDateFormat("yyyy-MM-dd");
-		String date = null;
+		Date date = null;
 		try {
-			date = finalFormat.format(format.parse("14-07-2014"));
+			date = format.parse("14-07-2014");
 		} catch (ParseException e) {}
 		
-		List<Object[]> votersLsit = surveyDetailsInfoDAO.getVoterDetailsByBoothId(439809L,userIds,date.toString());
+		//List<Object[]> votersLsit = surveyDetailsInfoDAO.getVoterDetailsByBoothId(122792L,userIds,date);
+		
+		List<Object[]> votersLsit = surveyDetailsInfoDAO.getVotersDetailsByBoothId(122792L,userIds,date);
 		
 		System.out.println(votersLsit);
 		
 		
-	List<SurveyInfoVO> returnList = null;
 		if(votersLsit != null && votersLsit.size()>0){
-			returnList = new ArrayList<SurveyInfoVO>();
-			for (Object[] voter : votersLsit) {
+			List<SurveyReportVO> resultList = new ArrayList<SurveyReportVO>();
+				for (Object[] voterInfo : votersLsit) {
 				
-				SurveyInfoVO surveyinfoVO = new SurveyInfoVO();
+				SurveyReportVO reportVO = new SurveyReportVO();
+				SurveyDetailsInfo surveyDetailsInfo = (SurveyDetailsInfo) voterInfo[0]; 
 				
-				surveyinfoVO.setTeamleadName(voter[0] != null ? voter[0].toString():"");
-				surveyinfoVO.setVoterCardNo(voter[1] != null ? voter[1].toString():"");
-				surveyinfoVO.setMobileNo(voter[2] != null ? voter[2].toString():"");
-				surveyinfoVO.setCaste(voter[3] != null ? voter[3].toString(): voter[4] != null ? voter[4].toString():"");
-				//surveyinfoVO.setHamletName(voter[5] != null ? voter[5].toString():voter[6] != null ? voter[6].toString():"");
-				//surveyinfoVO.setLocalArea(voter[7] != null ? voter[7].toString():"");
+				reportVO.setVoterIDCardNo(surveyDetailsInfo.getVoter().getVoterIDCardNo());
+				reportVO.setMobileNo(surveyDetailsInfo.getMobileNumber() != null ? surveyDetailsInfo.getMobileNumber():"");
 				
-				returnList.add(surveyinfoVO);
+				if(surveyDetailsInfo.getCaste() != null){
+					reportVO.setCaste(surveyDetailsInfo.getCaste().getCaste().getCasteName());
+				}
+				else{
+					reportVO.setCaste(surveyDetailsInfo.getCasteName() != null ? surveyDetailsInfo.getCasteName() :"");
+				}
+				
+				if(surveyDetailsInfo.getHamlet() != null){
+					reportVO.setHamletName(surveyDetailsInfo.getHamlet().getHamletName());
+				}
+				else{
+					reportVO.setHamletName(surveyDetailsInfo.getHamletName() != null ? surveyDetailsInfo.getHamletName() :"");
+				}
+				
+				reportVO.setLocalArea(surveyDetailsInfo.getLocalArea() != null ? surveyDetailsInfo.getLocalArea():"");
+				reportVO.setUserid(surveyDetailsInfo.getSurveyUser().getSurveyUserId() != null ? surveyDetailsInfo.getSurveyUser().getSurveyUserId():0L);
+				reportVO.setVoterId(surveyDetailsInfo.getVoter() != null ? surveyDetailsInfo.getVoter().getVoterId():0L);
+				reportVO.setCadre(surveyDetailsInfo.getIsCadre() != null ? surveyDetailsInfo.getIsCadre():"");
+				reportVO.setInfluencePeople(surveyDetailsInfo.getIsInfluencingPeople() != null ? surveyDetailsInfo.getIsInfluencingPeople() :"");
+				reportVO.setUserName(surveyDetailsInfo.getVoter() != null ? surveyDetailsInfo.getVoter().getName():"");
+				reportVO.setPartNo(surveyDetailsInfo.getVoter() != null ? surveyDetailsInfo.getVoter().getHouseNo():"");
+				reportVO.setVoterName(surveyDetailsInfo.getVoter() != null ? surveyDetailsInfo.getVoter().getRelativeName():"");
+				reportVO.setSerailNo(voterInfo[1] != null ?(Long) voterInfo[1]:0L);
+				
+				resultList.add(reportVO);
 				
 			}
+				System.out.println(resultList.size());
+			
 		}
-		System.out.println(returnList.size());
+		
+		
+		
 	}
 
-	*/
+	
 	
 	
 /*	public void testgetCasteWiseCountInBooth(){	
