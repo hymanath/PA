@@ -567,6 +567,8 @@
 		<property name="taskExecutor" ref="taskExecutor" />	
 		<property name="panchayatHamletDAO" ref="panchayatHamletDAO"></property>
 		<property name="casteStateDAO" ref="casteStateDAO" />
+		<property name="panchayatDAO" ref="panchayatDAO"></property>
+		
 		
 	</bean>
 	
