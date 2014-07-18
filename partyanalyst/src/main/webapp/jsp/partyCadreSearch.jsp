@@ -13,6 +13,8 @@
 		<script src="http://code.jquery.com/jquery.js"></script>
 		<script src="http://code.jquery.com/jquery.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+		<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 </head>
 <body>
 	<div class="container" style="margin-top:10px;background-color:#F7F8F9;">
@@ -37,10 +39,16 @@
 				</div>
 				<div class="offset3">
 					<button name="search" class="btn btn-primary" onclick="getCadreSearchDretails()">Search</button>
+					<div id="ajaxcallimage"  class = "span3" style="display:none;font-weight:bold;color: #0174DF;font-size:small;width: 345px; height: 17px;">
+						<img src="images/icons/loading.gif" style="padding-left:10px;" width="18" height="11"/>
+					</div>						
 				</div>
-			
-		</div>
+			<div id="ajaxcallimage"  class = "span3" style="display:none;font-weight:bold;color: #0174DF;font-size:small;width: 345px; height: 17px;">
+				<img src="images/icons/loading.gif" style="padding-left:10px;" width="18" height="11"/>
+			</div>				
+		</div>		
 	</div>
+	<div id="tableDiv" class="offset2" style="margin-top:10px;"></div>
 <script>
 
 	$(document).ready(function(){
@@ -74,7 +82,7 @@
 	{
 			var constituencyIds=$("#const option:selected").val();
 			
-			var jsObj = 
+		var jsObj = 
 		{
 			constituencyId:constituencyIds,
 			task:"getAllPanchayaties"
@@ -97,20 +105,76 @@
 
 	function getCadreSearchDretails()
 	{
+		$("#tableDiv").html('');
 		$("#errdiv").html('');
-		var panchayatId = $("#panchayat").val();
-		var constituencId=$("#const").val();
 		
-		if(constituencId !=null && constituencId== 0)
+		var constituencyIds=$("#const option:selected").val();
+		var panchayatIds=$("#panchayat option:selected").val();	
+	
+					 
+		if(constituencyIds != null && constituencyIds== 0)
 		{
 			$('#errdiv').html('please select the constituency').css('color','red');
 			return;
 		}
-		if(panchayatId != null && panchayatId == 0)
+		if(panchayatIds != null && panchayatIds == 0)
 		{
 			$('#errdiv').html('please select the panchayat').css('color','red');
 			return;
 		}
+		
+			$("#ajaxcallimage").show();
+			
+				
+	var jsObj = 
+		{
+			panchayatId:panchayatIds,
+			task:"getCadreDetails"
+		}
+		
+				$.ajax({
+					type: "GET",
+					url:"getCadreDetailsByPanchayatAction.action",
+					dataType:'json',
+					 data: {task:JSON.stringify(jsObj)},
+					 }).done(function(result,jsObj){
+						$("#ajaxcallimage").hide();
+							cadreDetails(result);
+							
+					 });
+	}
+	function  cadreDetails(result)
+	{
+		var str='';
+		str+="<table id='cadretable' class='table table-striped table-bordered table-condensed'>";
+		str+="<thead>";
+			str+="<tr>";
+				str+="<th>CadreId</th>";
+				str+="<th>FirstName</th>";
+				str+="<th>LastName</th>";
+				str+="<th>MobileNumber</th>";
+				str+="<th>Age</th>";
+				str+="<th>VoterId</th>";
+				str+="<th>FatherName</th>";
+			str+="</tr>"
+		str+="</thead>";
+		str+="<tbody>";
+		for(var i=0;i<result.length;i++)
+		{
+			str+="<tr>";
+				str+="<td>"+result[i].cadreId+"</td>";
+				str+="<td>"+result[i].firstName+"</td>";
+				str+="<td>"+result[i].lastName+"</td>";
+				str+="<td>"+result[i].mobileNo+"</td>";
+				str+="<td>"+result[i].age+"</td>";
+				str+="<td>"+result[i].voterCardId+"</td>";
+				str+="<td>"+result[i].fatherName+"</td>";
+			str+="</tr>";
+		}
+		str+="</tbody>";
+		str+="</table>";
+		$("#tableDiv").html(str);
+		$("#cadretable").dataTable();
 	}
 
 
