@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
 import com.itgrids.partyanalyst.dao.ICommitteeLevelDAO;
@@ -12,4 +14,9 @@ public class CommitteeLevelDAO extends GenericDaoHibernate<CommitteeLevel, Long>
 		
 	}
 
+	
+	public List<Object[]> getCommitteeLevels()
+	{
+		return getHibernateTemplate().find("select model.commiiteeLevelId,model.commiiteeLevel from CommitteeLevel model");
+	}
 }

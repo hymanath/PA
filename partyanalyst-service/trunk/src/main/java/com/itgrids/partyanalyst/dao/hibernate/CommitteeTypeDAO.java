@@ -9,7 +9,7 @@ public class CommitteeTypeDAO extends GenericDaoHibernate<CommitteeType, Long> i
 
 	public CommitteeTypeDAO() {
 		super(CommitteeType.class);
-		// TODO Auto-generated constructor stub
+		
 	}
 
 }
