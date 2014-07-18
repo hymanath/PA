@@ -213,8 +213,7 @@ $('#searchDataImg').show();
 					
 								
 							var mobNo = '';
-
-							if(result[i].mobileNo != null)
+							if(result[i].mobileNo != null  && result[i].mobileNo.length != 0 )
 							{						
 										mobNo = result[i].mobileNo					
 										str +='<td>'+mobNo+'<div data-toggle="buttons-radio" class="btn-group">';
