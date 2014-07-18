@@ -1164,4 +1164,12 @@ public List<Object[]> searchCadreInfoByConstidAndNameORMobile(Long constiId,Stri
 		return query.list();
 		
 	}
+	public List<Object[]> getCadreDetailsByPanchayatId(Long panchayatId)
+	{
+	Query query = getSession().createQuery("select C.cadreId, C.firstName, C.lastName, C.mobile, C.age, C.voter.voterId, C.fatherOrSpouseName " +
+			" from Cadre C, UserAddress UA  where   C.currentAddress.userAddressId = UA.userAddressId and C.currentAddress.booth.panchayat.panchayatId = :panchayatId");
+	query.setParameter("panchayatId", panchayatId);
+	return query.list();
+
+	}
 }
