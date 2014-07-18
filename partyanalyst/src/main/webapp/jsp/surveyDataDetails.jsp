@@ -714,7 +714,7 @@
 										</div>
 										<div class="span3">
 											Select Constituency<font class="requiredFont">*</font>
-											<s:select theme="simple"  name="constituency" headerValue="Select Constituency" headerKey="0" id="webMonitorConstituencyId" style="width:180px;" list="constituenciesList" listKey="id" listValue="name" onchange="getAssignedUsersOfConstituency()" />
+											<s:select theme="simple"  name="constituency" headerValue="Select Constituency" headerKey="0" id="webMonitorConstituencyId" style="width:180px;" list="dataAvilableConstituencies" listKey="id" listValue="name" onchange="getAssignedUsersOfConstituency()" />
 										</div>
 										<div class="span4">
 											Select User(s)<font class="requiredFont">*</font>
