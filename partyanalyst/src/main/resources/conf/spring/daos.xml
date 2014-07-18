@@ -1536,7 +1536,21 @@
 	<bean id="webMonitoringAssignedUsersDAO" class="com.itgrids.partyanalyst.dao.hibernate.WebMonitoringAssignedUsersDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+	<bean id="committeeLevelDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommitteeLevelDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		<bean id="committeeTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommitteeTypeDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		<bean id="basicCommitteeDAO" class="com.itgrids.partyanalyst.dao.hibernate.BasicCommitteeDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		<bean id="committeeDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommitteeDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		<bean id="rolesDAO" class="com.itgrids.partyanalyst.dao.hibernate.RolesDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	
 	<!--  survey -->

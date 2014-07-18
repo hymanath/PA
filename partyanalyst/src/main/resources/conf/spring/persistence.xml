@@ -454,8 +454,11 @@
 				<value>com.itgrids.partyanalyst.model.SurveyCallStatus</value>
 				<value>com.itgrids.partyanalyst.model.SurveyCompletedLocationsDetails</value>
 				<value>com.itgrids.partyanalyst.model.WebMonitoringAssignedUsers</value>
-				
-				
+				<value>com.itgrids.partyanalyst.model.CommitteeLevel</value>
+				<value>com.itgrids.partyanalyst.model.CommitteeType</value>
+				<value>com.itgrids.partyanalyst.model.BasicCommittee</value>
+				<value>com.itgrids.partyanalyst.model.Committee</value>
+				<value>com.itgrids.partyanalyst.model.Roles</value>
 			</list>
 			
 		</property>
