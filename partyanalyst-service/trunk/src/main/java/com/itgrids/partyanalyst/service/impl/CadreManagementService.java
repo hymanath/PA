@@ -18,6 +18,7 @@ import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -39,6 +40,7 @@ import com.itgrids.partyanalyst.dao.ICadreRoleDAO;
 import com.itgrids.partyanalyst.dao.ICadreRoleRelationDAO;
 import com.itgrids.partyanalyst.dao.ICadreSkillsDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
+import com.itgrids.partyanalyst.dao.ICommitteeLevelDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
@@ -174,7 +176,8 @@ public class CadreManagementService {
 	private ICasteStateDAO casteStateDAO;
 	private IPanchayatDAO panchayatDAO;
 	
-
+	 @Autowired
+	 private ICommitteeLevelDAO committeeLevelDAO ;
 	public IPanchayatDAO getPanchayatDAO() {
 		return panchayatDAO;
 	}
@@ -5640,5 +5643,24 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			log.error("Exception Rised In getAllPanchayat(Long constituencyId" , e);
 		}
 		return selectOptionVOList;
+	}
+	
+	public List<SelectOptionVO> getCommitteeLevels()
+	{
+		List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>();
+		try{
+			List<Object[]> list = committeeLevelDAO.getCommitteeLevels();
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					resultList.add(new SelectOptionVO((Long)params[0],params[1].toString()));
+				}
+			}
+		}
+		catch (Exception e) {
+			log.error("Exception Rised In getCommitteeLevels" , e);
+		}
+		return resultList;
 	}
 }

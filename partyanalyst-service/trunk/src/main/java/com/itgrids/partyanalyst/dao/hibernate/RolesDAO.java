@@ -9,7 +9,7 @@ public class RolesDAO extends GenericDaoHibernate<Roles, Long> implements IRoles
 
 	public RolesDAO() {
 		super(Roles.class);
-		// TODO Auto-generated constructor stub
+		
 	}
 
 }
