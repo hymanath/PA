@@ -1056,12 +1056,15 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			List<Object[]> result = surveyUserTrackingDAO.getLatLongForUserTracking(surveyUserId, date);
 			if(result != null && result.size() > 0)
 			{
+				DateFormat dateFormat = new SimpleDateFormat("hh:mm a"); 
 				returnList = new ArrayList<GenericVO>();
 				for (Object[] parms : result)
 				{
 					GenericVO VO = new GenericVO();
 					VO.setName(parms[0] != null ? parms[0].toString() : "");//longtitude
 					VO.setDesc(parms[1] != null ? parms[1].toString() : "");//latitude
+					String time = dateFormat.format(parms[2]);
+					VO.setPercent(time);
 					returnList.add(VO);
 				}
 			}
