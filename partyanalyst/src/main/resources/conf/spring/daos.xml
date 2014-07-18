@@ -1551,6 +1551,12 @@
 		<bean id="rolesDAO" class="com.itgrids.partyanalyst.dao.hibernate.RolesDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="committeeMemberDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommitteeMemberDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="committeeRoleDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommitteeRoleDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	
 	<!--  survey -->

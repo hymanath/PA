@@ -459,6 +459,8 @@
 				<value>com.itgrids.partyanalyst.model.BasicCommittee</value>
 				<value>com.itgrids.partyanalyst.model.Committee</value>
 				<value>com.itgrids.partyanalyst.model.Roles</value>
+				<value>com.itgrids.partyanalyst.model.CommitteeMember</value>
+				<value>com.itgrids.partyanalyst.model.CommitteeRole</value>
 			</list>
 			
 		</property>
