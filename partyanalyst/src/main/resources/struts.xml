@@ -7707,7 +7707,12 @@
   					<result type="json" name="success">
 							<param name="root">panchayatList</param>
 					</result>
-  		</action>  		
+  		</action>
+		<action name="getCadreDetailsByPanchayatAction" class="partyCadreSearchAction" method="getCadreDetailsByPanchayaties">
+  					<result type="json" name="success">
+							<param name="root">vo</param>
+					</result>
+  		</action>   		
 		
   
 </package>
