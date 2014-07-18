@@ -342,6 +342,7 @@
 			 <pattern>/updateSurveyCompleteDetails*</pattern>
 			 <pattern>/surveyUserStatus*</pattern>
 			 <pattern>/assignUsersToWebMonitoringTeam*</pattern>
+			 <pattern>/partyCadreSearchAction*</pattern>
             <!--  <pattern>/dashBoardAction*</pattern> -->
        </decorator>
        
@@ -349,7 +350,6 @@
 	   <pattern>/profileManagePageAction*</pattern>
 	   <pattern>/newsDisplayAction*</pattern>
 	   <pattern>/generatePdfForGallaryAction*</pattern>
-	   <pattern>/candidateUpdateDetailsAction*</pattern>
-	   <pattern>/partyCadreSearchAction*</pattern>
+	   <pattern>/candidateUpdateDetailsAction*</pattern>	   
        </decorator>
 </decorators>
