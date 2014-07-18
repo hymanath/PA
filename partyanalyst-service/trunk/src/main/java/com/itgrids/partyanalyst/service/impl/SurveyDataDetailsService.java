@@ -1,16 +1,17 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -1053,7 +1054,6 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		try 
 		{
 			List<Object[]> result = surveyUserTrackingDAO.getLatLongForUserTracking(surveyUserId, date);
-			DateFormat dateFormat = new SimpleDateFormat("hh:mm a"); 
 			if(result != null && result.size() > 0)
 			{
 				returnList = new ArrayList<GenericVO>();
@@ -1062,8 +1062,6 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					GenericVO VO = new GenericVO();
 					VO.setName(parms[0] != null ? parms[0].toString() : "");//longtitude
 					VO.setDesc(parms[1] != null ? parms[1].toString() : "");//latitude
-					String time = dateFormat.format(parms[2]);	
-					VO.setPercent(time);
 					returnList.add(VO);
 				}
 			}
@@ -1875,32 +1873,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			if(surveyUserIds != null && surveyUserIds.size() > 0)
 			{
 				int count = surveyUserRelationDAO.updateUserLeaderRelations(userTypeId,surveyUserIds, leaderId);
-				
-				
-				List<Object[]> assignTabsIdsList = surveyUserTabAssignDAO.getSurveyTabsBySurveyUserIdsList(surveyUserIds);
-				List<Long> assignTabsIds = new ArrayList<Long>();
-				
-				if(assignTabsIdsList != null && assignTabsIdsList.size()>0){
-					for (Object[] assgnTab : assignTabsIdsList) {
-						assignTabsIds.add((Long) assgnTab[2]);
-					}
-				}
-				int assignTabsRemovedCount = 0;
-				if(assignTabsIds != null && assignTabsIds.size()>0){
-					//assignTabsRemovedCount = surveyUserTabAssignDAO.updateActiveStatus(assignTabsIds);
-					for (Long assignTabsId : assignTabsIds) {
-						SurveyUserTabAssign surveyUserTabAssign = surveyUserTabAssignDAO.get(assignTabsId);
-						if(surveyUserTabAssign != null){
-							surveyUserTabAssign.setActiveStatus("N");
-							surveyUserTabAssign.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
-							
-							surveyUserTabAssignDAO.save(surveyUserTabAssign);
-							assignTabsRemovedCount = 1;
-						}
-					}
-				}
-				
-				if(count > 0 && assignTabsRemovedCount > 0 )
+				if(count > 0)
 				{
 					resultStatus.setResultCode(0);
 					resultStatus.setMessage("Success");
@@ -2217,8 +2190,12 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				
 				SurveyReportVO userBoothVO = getMatchedUserBoothVO(resultList,(Long)boothDtls[1],(Long)boothDtls[3]);
 				SurveyReportVO surveyDateVO = getMatchedSurveyDateVO(userBoothVO.getSubList(), boothDtls[6].toString());
+				
 				surveyDateVO.setCount((Long)boothDtls[0]);
-			
+				
+				surveyDateVO.setPercent(surveyDateVO.getCount() != null &&surveyDateVO.getCount() !=0 ? roundTo2DigitsFloatValue((float) surveyDateVO
+						.getCount() * 100f / userBoothVO.getTotalVoters())
+						: "0.00");
 			}
 			
 			if(resultList != null && resultList.size() > 0)
@@ -2281,7 +2258,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			 } 
 			 catch (Exception e)
 			 {
-				 LOG.error("Exception raised in getSurveyConstituencyUsersList() service in SurveyDataDetailsService", e);
+				 LOG.error("Exception raised in getSurveyConstituencyLeadersList() service in SurveyDataDetailsService", e);
 			 }
 			 return returnList;
 		}
@@ -2415,7 +2392,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			
 			if(tabsList != null && tabsList.size()>0){
 				for (GenericVO genericVO1 : tabsList) {
-					if(genericVO1.getName().toString().equalsIgnoreCase(tabNo)){
+					if(genericVO1.getId().toString().equalsIgnoreCase(tabNo)){
 						return genericVO1;
 					}
 				}
@@ -2447,7 +2424,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					SurveyUserTabAssign surveyUserTabAssign = new SurveyUserTabAssign();
 				
 					surveyUserTabAssign.setSurveyUser(surveyUserDAO.get(basicVO.getId()));
-					surveyUserTabAssign.setTabNo(surveyUserTabAssignDAO.get(basicVO.getCount()).getTabNo());
+					surveyUserTabAssign.setTabNo(basicVO.getCount().toString());
 					surveyUserTabAssign.setActiveStatus("Y");
 					surveyUserTabAssign.setDate(date1.getCurrentDateAndTime());					
 					surveyUserTabAssign.setInsertedTime(date1.getCurrentDateAndTime());
@@ -3043,15 +3020,6 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			finalVO.setCount(surveyDetailsInfoDAO.getTotalVotersinBooth(boothId));
 			
 			if(casteListOfSamples != null && casteListOfSamples.size()>0){
-				
-				Collections.sort(casteListOfSamples, new Comparator<GenericVO>() {
-
-					public int compare(GenericVO o1, GenericVO o2) {
-						
-						return (int) (o2.getCount() - o1.getCount());
-					}
-				});
-				
 				finalVO.setGenericVOList(casteListOfSamples);
 			}
 						
@@ -3124,10 +3092,6 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 							surveyCallStatus.setBoothId(surveyReportVO.getBoothId());
 							surveyCallStatus.setUserId(userId);
 							//surveyCallStatus.setUser(userDAO.get(userId));
-							
-							
-							/* caste status :   0 --> wrong, 1 --> write ,  5 --> not any 
-							   mobile status :  2 --> write, 3 --> wrong ,  6 --> not any */
 							
 							if(surveyReportVO.getMobileNo().equalsIgnoreCase("2")){
 								surveyCallStatus.setMobileNoStatus("Y");
@@ -3676,5 +3640,26 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	}
 	return resultList;
 	}
+	
+	  public String roundTo2DigitsFloatValue(Float number){
+		  
+		  LOG.debug("Entered into the roundTo2DigitsFloatValue service method");
+		  
+		  String result = "";
+		  try
+		  {
+			
+			NumberFormat f = NumberFormat.getInstance(Locale.ENGLISH);  
+			f.setMaximumFractionDigits(2);  
+			f.setMinimumFractionDigits(2);
+			
+			result =  f.format(number);
+		  }catch(Exception e)
+		  {
+			  LOG.error("Exception raised in roundTo2DigitsFloatValue service method");
+			  e.printStackTrace();
+		  }
+		  return result;
+	  }
 	
 }
