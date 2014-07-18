@@ -149,8 +149,8 @@ public class SurveyDetailsInfoDAO extends GenericDaoHibernate<SurveyDetailsInfo,
 	//chenge here
 	public List<SurveyDetailsInfo> getSurveyDetilsForAssibnedBooths(Long boothIds)
 	{
-		Query query = getSession().createQuery("select model from SurveyDetailsInfo model ,SurveyUserBoothAssign model1 where model.surveyUser.surveyUserId = model1.surveyUser.surveyUserId " +
-				" and model.booth.boothId in (:boothIds) and model.surveyUser.surveyUserType.surveyUsertypeId = 1");
+		Query query = getSession().createQuery("select model from SurveyDetailsInfo model where " +
+				" model.booth.boothId in (:boothIds) and model.surveyUser.surveyUserType.surveyUsertypeId = 1 ");
 		query.setParameter("boothIds", boothIds);
 		return query.list();
 	}
@@ -518,7 +518,7 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 	}
 	public Long getTotalCastecollectedCount()
 	{
-		Query query = getSession().createQuery("select distinct count(model.surveyDetailsInfoId) from SurveyDetailsInfo model where (model.caste.casteStateId is not null or model.casteName is not null)");
+		Query query = getSession().createQuery("select  count(model.surveyDetailsInfoId) from SurveyDetailsInfo model where (model.caste.casteStateId is not null or model.casteName is not null)");
 		return (Long) query.uniqueResult();
 	}
 	
