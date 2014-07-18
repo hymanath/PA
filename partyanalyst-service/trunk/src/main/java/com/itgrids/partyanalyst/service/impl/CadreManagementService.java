@@ -71,6 +71,7 @@ import com.itgrids.partyanalyst.dto.AnnouncementVO;
 import com.itgrids.partyanalyst.dto.CadreCategoryVO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.CadreRegionInfoVO;
+import com.itgrids.partyanalyst.dto.CadreVo;
 import com.itgrids.partyanalyst.dto.PartyCadreDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -5621,7 +5622,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 	
 		
 	}
-	public List<SelectOptionVO> getAllPanchayat(Long constituencyId)
+	public List<SelectOptionVO> getAllPanchayat(Long constituencyId) throws Exception
 	{
 		List<SelectOptionVO> selectOptionVOList=new ArrayList<SelectOptionVO>();
 		
@@ -5640,27 +5641,36 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			
 		}catch(Exception e)
 		{
-			log.error("Exception Rised In getAllPanchayat(Long constituencyId" , e);
+			log.error("Exception Rised In getAllPanchayat(Long constituencyId in CadreManagementService class" , e);
 		}
 		return selectOptionVOList;
 	}
-	
-	public List<SelectOptionVO> getCommitteeLevels()
+	public List<CadreVo> getCadreDetailsbyPanchayat(Long panchayatId) throws Exception
 	{
-		List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>();
+		List<CadreVo> cadreList = new ArrayList<CadreVo>(); 
 		try{
-			List<Object[]> list = committeeLevelDAO.getCommitteeLevels();
-			if(list != null && list.size() > 0)
-			{
-				for(Object[] params : list)
-				{
-					resultList.add(new SelectOptionVO((Long)params[0],params[1].toString()));
+		
+			List<Object[]> cadreDetails = cadreDAO.getCadreDetailsByPanchayatId(panchayatId);
+		
+				for (Object[] objects : cadreDetails) {
+					
+					CadreVo cadreVo = new CadreVo();
+					
+					cadreVo.setCadreId(objects[0] != null ? (Long)objects[0]:0L);
+					cadreVo.setFirstName(objects[1] != null ?objects[1].toString():"");
+					cadreVo.setLastName(objects[2] != null ? objects[2].toString():"");
+					cadreVo.setMobileNo(objects[3] != null ? objects[3].toString():"");
+					cadreVo.setAge(objects[4] != null ? (Long)objects[4]:0L);
+					cadreVo.setVoterCardId(objects[5] != null ? objects[5].toString():"");
+					cadreVo.setFatherName(objects[6] != null ? objects[6].toString():"");
+					
+					cadreList.add(cadreVo);
 				}
-			}
+				return cadreList;
+		}catch(Exception e)
+		{
+			log.error("Exception Rised In getCadreDetailsbyPanchayat(Long panchayatId) in CadreManagementService class" , e);
 		}
-		catch (Exception e) {
-			log.error("Exception Rised In getCommitteeLevels" , e);
-		}
-		return resultList;
+		return cadreList;
 	}
 }
