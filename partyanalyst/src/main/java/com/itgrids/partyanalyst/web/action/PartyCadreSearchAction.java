@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.CadreVo;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
@@ -26,9 +27,14 @@ public class PartyCadreSearchAction extends ActionSupport implements ServletRequ
 	private List<SelectOptionVO> panchayatList,committeLevels;
 	JSONObject jObj = null;
 	private String task = null;
+	private List<CadreVo> vo;
 	
-	
-	
+	public List<CadreVo> getVo() {
+		return vo;
+	}
+	public void setVo(List<CadreVo> vo) {
+		this.vo = vo;
+	}
 	public List<SelectOptionVO> getCommitteLevels() {
 		return committeLevels;
 	}
@@ -146,5 +152,18 @@ public class PartyCadreSearchAction extends ActionSupport implements ServletRequ
 		}
 		return Action.SUCCESS;
 	}
-	
+		
+	public String getCadreDetailsByPanchayaties() throws Exception 
+	{
+		try{
+			jObj =new JSONObject(getTask());
+			vo=cadreManagementService.getCadreDetailsbyPanchayat(jObj.getLong("panchayatId"));
+			
+			return Action.SUCCESS;
+			}catch(Exception e)
+			{
+				LOG.error("Exception Rised In getCadreDetailsByPanchayaties() in PartyCadreSearchAction class",e);
+			}
+		return Action.SUCCESS;
+	}
 }
