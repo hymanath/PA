@@ -39,7 +39,7 @@ public class SurveyDetailsInfoDAO extends GenericDaoHibernate<SurveyDetailsInfo,
 		
 		StringBuffer str = new StringBuffer();
 		
-		str.append("select count(SDI.booth.constituency.constituencyId)," +
+		str.append("select count(SDI.caste.casteStateId)," +
 				"SDI.surveyUser.surveyUserId,SDI.surveyUser.userName," +
 				"SDI.booth.boothId , SDI.booth.partNo,SDI.booth.totalVoters, DATE(SDI.date) from " +
 				"SurveyDetailsInfo SDI where SDI.booth.constituency.constituencyId = :constituencyId  and date(SDI.date) >= :startDate and " +
@@ -81,7 +81,7 @@ public class SurveyDetailsInfoDAO extends GenericDaoHibernate<SurveyDetailsInfo,
 		
 		StringBuffer str = new StringBuffer();
 		
-		str.append("select count(SDI.caste.casteStateId)," +
+		str.append("select count(SDI.booth.constituency.constituencyId)," +
 				"SDI.surveyUser.surveyUserId,SDI.surveyUser.userName," +
 				"SDI.booth.boothId , SDI.booth.partNo,SDI.booth.totalVoters, DATE(SDI.date) from " +
 				"SurveyDetailsInfo SDI where SDI.booth.constituency.constituencyId = :constituencyId  and date(SDI.date) >= :startDate and " +
