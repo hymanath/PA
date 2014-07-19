@@ -1039,12 +1039,12 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 					JSONObject obj =  totalTabsInfo.getJSONObject(i);
 					
 						Long candId = obj.getLong("candId");
-						Long tabId = obj.getLong("tabId");
+						String tabId = obj.getString("tabId");
 						
 						BasicVO vo = new BasicVO();
 						
 						vo.setId(candId);
-						vo.setCount(tabId);
+						vo.setName(tabId);
 						assignTabsInfo.add(vo);
 				}
 			}
