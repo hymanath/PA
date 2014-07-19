@@ -591,12 +591,12 @@ $('#mainajaximg').hide();
     str+='</tr>';
 
    });
-  	str+='<tr>';
+  	/*str+='<tr>';
 	str+='<td><b>Total</b></td>';
 	str+='<td></td>';
 	str+='<td></td>';
 
-	/*if($('#fromDate').val() == $('#toDate').val())
+	if($('#fromDate').val() == $('#toDate').val())
 		str+='<td></td>';
 
 		$.each(result[0].subList,function(index,value){
@@ -604,8 +604,8 @@ $('#mainajaximg').hide();
 			  str+='<td><b>'+value.total+'</b></td>';
 			else
 			  str+='<td></td>';
-		});*/	
-   	str+='</tr>';
+		});
+   	str+='</tr>';*/	
    	str+='</tbody>';
     str+='<tfoot>';
 	str+=' <tr><td>Total</td>';
