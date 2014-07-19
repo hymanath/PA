@@ -92,10 +92,10 @@ $('#boothId').multiselect({
 				<ul class="inline unstyled">
 					<li><a class="highlight selected" id="stateWiseReportTab" onclick="showHideReportTabs(this.id);"> State Wise Report </a></li>
 					<li><a class="highlight" id="dataCollectorTab" value="1" onclick="showHideReportTabs(this.id);"> Data Collector Report </a></li>
-					<li><a class="highlight" id="verifierReportTab" value="2" onclick="showHideReportTabs(this.id);">Verifier Report</a></li>
-					<li><a class="highlight" id="thirdPartyReportTab" value="3" onclick="showHideReportTabs(this.id);"> Third Party Report </a></li>
+					<!--<li><a class="highlight" id="verifierReportTab" value="2" onclick="showHideReportTabs(this.id);">Verifier Report</a></li>
+					<li><a class="highlight" id="thirdPartyReportTab" value="3" onclick="showHideReportTabs(this.id);"> Third Party Report </a></li>-->
 					<li><a class="highlight" id="userTrackingReportTab" onclick="showHideReportTabs(this.id);"> User Tracking Report</a></li>
-					<li><a class="highlight" id="comparisonReportTab" onclick="showHideReportTabs(this.id);"> Comparison Report </a></li>
+					<!--<li><a class="highlight" id="comparisonReportTab" onclick="showHideReportTabs(this.id);"> Comparison Report </a></li>-->
 
 				</ul>
 			</div>
@@ -596,8 +596,21 @@ $('#mainajaximg').hide();
 	str+='<td></td>';
 	str+='<td></td>';
 
-	if($('#fromDate').val() == $('#toDate').val())
+	/*if($('#fromDate').val() == $('#toDate').val())
 		str+='<td></td>';
+
+		$.each(result[0].subList,function(index,value){
+			if(index == result[0].subList.length-1)
+			  str+='<td><b>'+value.total+'</b></td>';
+			else
+			  str+='<td></td>';
+		});*/	
+   	str+='</tr>';
+   	str+='</tbody>';
+    str+='<tfoot>';
+	str+=' <tr><td>Total</td>';
+	str+='<td></td>';
+	str+='<td></td>';
 
 		$.each(result[0].subList,function(index,value){
 			if(index == result[0].subList.length-1)
@@ -606,8 +619,8 @@ $('#mainajaximg').hide();
 			  str+='<td></td>';
 		});
 	str+='</tr>';
-   str+='</tbody>';
-   str+='</table>';
+	str+='</tfoot>';
+	str+='</table>';
 
  $('#dayWiseReportDiv1').html(str);
  $('#dayWiseReportTable').dataTable({
