@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dao.ISurveyDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserDAO;
+import com.itgrids.partyanalyst.dao.ISurveyUserRelationDAO;
 import com.itgrids.partyanalyst.dao.IUpdationDetailsDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IWebMonitoringAssignedUsersDAO;
@@ -40,6 +41,10 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 	private ISurveyAccessUsersDAO surveyAccessUsersDAO;
 	private DateUtilService dateUtilService = new DateUtilService();
 	private IRegionWiseSurveysDAO regionWiseSurveysDAO;
+	
+	
+	@Autowired
+	private ISurveyUserRelationDAO surveyUserRelationDAO;
 	
 	@Autowired
 	private IWebMonitoringAssignedUsersDAO webMonitoringAssignedUsersDAO;
@@ -288,7 +293,7 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 	    return returnList;
 	}
 	
-	public List<GenericVO> getNotStartedUsersDetails(Long webMonitorUserId)
+	public List<GenericVO> getNotStartedUsersDetails(Long webMonitorUserId,Long leaderId)
 	{
 		log.info("Entered into getNotStartedUsersDetails method");
 		
@@ -296,36 +301,58 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 
 		try
 		{
+			List<Long> finalUserIds = new ArrayList<Long>();
+			
 			List<Long> userIds = webMonitoringAssignedUsersDAO.getAssignedUsersIdsByWebMonitorId(webMonitorUserId);
 			
-			List<Long> activeUserIds = surveyDetailsInfoDAO.getPresentDayUserWiseSamplesCountByUserIds(userIds,dateUtilService.getCurrentDateAndTime());
+			//SurveyUserRelationDAO
 			
-			List<Long> inActiveUserIds = new ArrayList<Long>();
+			List<Long> assignedUserIds = surveyUserRelationDAO.getAssignedUsersForLeader(leaderId);
 			
 			
-			for(Long userId:userIds)
-				if(!activeUserIds.contains(userId))
-					inActiveUserIds.add(userId);
-			
-		
-			if(inActiveUserIds != null && inActiveUserIds.size() >0)
+			if(userIds != null && userIds.size() >0)
 			{
-			
-				List<Object[]> inActiveUsersDetails = 	surveyUserDAO.getUsersDetailsBySurveyUserIds(inActiveUserIds);
+				for(Long userId:assignedUserIds)
+					if(userIds.contains(userId))
+						finalUserIds.add(userId);
 				
 				
-				for(Object[] obj:inActiveUsersDetails)
-				{
-					GenericVO vo = new GenericVO();
-					
-					vo.setName(obj[1].toString());
-					vo.setId((Long)obj[0]);
-					vo.setMobileNo(obj[2].toString());
-					
-					resultList.add(vo);
-				}
+			}else
+			{
+				finalUserIds = userIds;
+				
 			}
 			
+			if(finalUserIds != null && finalUserIds.size() >0)
+			{
+				List<Long> activeUserIds = surveyDetailsInfoDAO.getPresentDayUserWiseSamplesCountByUserIds(finalUserIds,dateUtilService.getCurrentDateAndTime());
+				
+				List<Long> inActiveUserIds = new ArrayList<Long>();
+				
+				
+				for(Long userId:userIds)
+					if(!activeUserIds.contains(userId))
+						inActiveUserIds.add(userId);
+				
+			
+				if(inActiveUserIds != null && inActiveUserIds.size() >0)
+				{
+				
+					List<Object[]> inActiveUsersDetails = 	surveyUserDAO.getUsersDetailsBySurveyUserIds(inActiveUserIds);
+					
+					
+					for(Object[] obj:inActiveUsersDetails)
+					{
+						GenericVO vo = new GenericVO();
+						
+						vo.setName(obj[1].toString());
+						vo.setId((Long)obj[0]);
+						vo.setMobileNo(obj[2].toString());
+						
+						resultList.add(vo);
+					}
+				}
+			}
 			
 			
 		}catch(Exception e)
