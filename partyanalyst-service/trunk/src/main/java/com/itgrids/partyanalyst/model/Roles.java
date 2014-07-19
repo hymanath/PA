@@ -23,7 +23,7 @@ public Roles()
 }
 @Id
 @GeneratedValue(strategy=GenerationType.AUTO)
-@Column(name="committee_id", unique=true, nullable=false)
+@Column(name="role_id", unique=true, nullable=false)
 
 
 public Long getRoleId() {
