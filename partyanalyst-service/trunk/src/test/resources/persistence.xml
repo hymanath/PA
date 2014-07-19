@@ -81,6 +81,7 @@
 		<class>com.itgrids.partyanalyst.model.StateSubRegion</class>
 		<class>com.itgrids.partyanalyst.model.SurveyUserConstituency</class>
 		<class>com.itgrids.partyanalyst.model.SurveyCallStatus</class>
+		<class>com.itgrids.partyanalyst.model.WebMonitoringAssignedUsers</class>
 		
 		 <properties> 
 			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />

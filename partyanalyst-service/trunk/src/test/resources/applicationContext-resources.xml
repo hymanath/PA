@@ -469,6 +469,7 @@
 				<value>com.itgrids.partyanalyst.model.Roles</value>
 				<value>com.itgrids.partyanalyst.model.CommitteeMember</value>
 				<value>com.itgrids.partyanalyst.model.CommitteeRole</value>
+				<value>com.itgrids.partyanalyst.model.WebMonitoringAssignedUsers</value>
 				<value>com.itgrids.partyanalyst.model.SurveyConstituency</value>
 			</list>
 		</property>
@@ -2464,8 +2465,8 @@
 	<bean id="committeeRoleDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommitteeRoleDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="surveyConstituencyDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyConstituencyDAO">
+	<bean id="webMonitoringAssignedUsersDAO" class="com.itgrids.partyanalyst.dao.hibernate.WebMonitoringAssignedUsersDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+					
 </beans>
