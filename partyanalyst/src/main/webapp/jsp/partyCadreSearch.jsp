@@ -22,7 +22,7 @@
 				<div id="errdiv" style="height:20px;margin-left: 20px;"" class="offset0"></div>
 				<div class="row-fluid span7">
 					<div class="span3">
-						<label>Select Constituency</label>
+						<label>Select Constituency<font color="#ff0000"> *</font>:</label>
 					</div>
 					<div class="span3">
 						<select id="const" onchange="getAllPanchayat()"></select>
@@ -31,7 +31,7 @@
 				</div>
 				<div class="row-fluid span7">
 					<div class="span3">
-						<label>Select Panchayat</label>
+						<label>Select Panchayat<font color="#ff0000"> *</font>:</label>
 					</div>
 					<div class="span3">
 						<select id="panchayat"></select>
@@ -48,7 +48,7 @@
 			</div>				
 		</div>		
 	</div>
-	<div id="tableDiv" class="offset2" style="margin-top:10px;"></div>
+	<div id="tableDiv" class="offset0" style="margin-top:10px;"></div>
 <script>
 
 	$(document).ready(function(){
