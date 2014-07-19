@@ -96,7 +96,7 @@
 					
 					<li><a class="highlight   selected" id="startTimeTab" onclick="showHideTabs(this.id);">Field Report</a></li>
 					<li><a class="highlight" id="boothWiseTab" onclick="showHideTabs(this.id);">Data Report</a></li>
-					<li><a class="highlight" id="callCenterTab" onclick="showHideTabs(this.id);"> Web Monitoring </a></li>
+					<li id="webMontrId" style="display:none;"><a class="highlight" id="callCenterTab" onclick="showHideTabs(this.id);"> Web Monitoring </a></li>
 					<li><a class="highlight" id="dataCollectorWise" onclick="showHideTabs(this.id);"> Verfication report </a></li>
 				</ul>
 			</div>
@@ -120,7 +120,7 @@
 			</div>
 		</div>
 		
-<!--
+
 	<c:if test="${!empty notStartesUsersList}">
 	
 		<div class="row" id="inActiveUsersDetails">
@@ -163,7 +163,7 @@
 		
 	</c:if>
 
--->
+
 		<div class="row" id="startTime">
 			<div class="span12">
 				<div class="row-fluid ">
@@ -196,9 +196,6 @@
 					
 						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getUserDetailsByConstituency()">SUBMIT</button></div>
 						  <div id="userDetailsReportDiv"></div>
-
-					<img id="ajaxImg"src="./images/icons/search.gif" alt="Processing Image" class="hide"></img>
-
 						<div class="row-fluid " id = "leaderDetailsDiv"></div>
 						<div class="row-fluid " id="detaildDiv" style="display:none;">
 							<div class="span12 m_top20 widgetservey" id="weathermap" style="height:500px"></div>
@@ -309,10 +306,6 @@
 				
 			</div>
 		</div>
-
-<div id="dialogDiv"></div>
-
-<div id="dialogDiv1"></div>
 	<script>
 		var userIds = new Array();
 		<c:forEach var="user" items="${usersList}">
@@ -340,59 +333,6 @@
 		  
 		});
 
-	</script>
-	<script>
-	function getInActiveUsersDetailsByLeaderId(leaderId)
-	{
-		$('#ajaxImg').show();
-
-		$.ajax({
-		type:'GET',
-		url: 'getNotActiveUsersDetails.action',
-		dataType: 'json',
-		data: {leaderId:leaderId},
-		}).done(function(result){
-			buildInActiveUsersDetails(result);
-		});
-	}
-	function buildInActiveUsersDetails(result)
-	{
-		$('#ajaxImg').hide();
-
-		if(result == null || result.length == 0)
-		{
-			$('#dialogDiv1').html("All users are active..");
-			  $('#dialogDiv1').dialog();
-                return;
-		}
-
-
-		var str='';
-
-		str+='<table class="table table-bordered m_top20 table-hover table-striped">';
-		 str+='<thead>';
-		 str+='<tr>';
-		  str+='<th>Name</th>'
-		  str+='<th>Mobile No</th>';
-		 str+='</tr>';
-		 str+='</thead>';
-		 str+='<tbody>';
-		  $.each(result,function(index,value){
-		   str+='<tr>';
-			str+='<td>'+value.name+'</td>'
-			str+='<td>'+value.mobileNo+'</td>';
-		   str+='</tr>';
-		  });
-		 str+='</tbody>';
-		str+='</table>';
-
- $('#dialogDiv').html(str);
-  $('#dialogDiv').dialog({
-	  title:'InActive Users Details',
-		  modal:true
-  });
-
-	}
 	</script>
  </body>
  </html>

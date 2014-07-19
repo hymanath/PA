@@ -364,8 +364,8 @@ function AssignTab()
 		else{
 			if(leaderTabsArr.length > 0){
 				for(var i in leaderTabsArr){
-					if(tabNo.trim() == leaderTabsArr[i]){					
-						str +='Duplicate Tab No not allowed .Tab No:<b> '+tabNo.trim()+' </b>already assigned. <br/>';
+					if(tabNo.trim() == leaderTabsArr[i] && str.indexOf('<b> '+tabNo.trim()+' </b>already assigned. <br/>') <0){					
+						str +='<b> '+tabNo.trim()+' </b>already assigned. <br/>';
 					}
 				}
 				
@@ -373,7 +373,7 @@ function AssignTab()
 			if(tabsArr.indexOf(tabNo.trim()) < 0){
 				tabsArr.push(tabNo.trim());
 			}
-			else{
+			else if(str.indexOf('Duplicate Tab No not allowed . <br/>') <0){
 				str +='Duplicate Tab No not allowed . <br/>';
 			}
 		}
@@ -1701,7 +1701,8 @@ var jsObj =
 						str +='	</div>';
 						str +='	<div class="span4">';
 						str +='	Tab :';
-						str +='	<select class="input-block-level tabsListCls" id="constituencyTabsList'+i+'" onchange="updateSelectBoxInfo(\'constituencyTabsList'+i+'\',this.value);" >';
+						//str +='	<select class="input-block-level tabsListCls" id="constituencyTabsList'+i+'" onchange="updateSelectBoxInfo(\'constituencyTabsList'+i+'\',this.value);" >';
+						str +='	<select class="input-block-level tabsListCls" id="constituencyTabsList'+i+'">';
 						str +='<option value="0"> Assign Tab </option>';
 						
 						for(var k in result.genericVOList[i].genericVOList){
@@ -1827,11 +1828,17 @@ var str ='';
 		var id1 = $(this).attr('id');
 		var tabName = $('#'+id1+' option:selected').text();
 
-		 if(value == 0 && str.indexOf('Please Assign Tab .') < 0){
-			str +='Please Assign Tab .</br>';
-		} 
-		
-			candiTabArr.push(tabName);
+		 if(value == 0 && str.indexOf('Please remove un-assigned Tab details.') < 0){
+			str +='Please remove un-assigned Tab details.</br>';
+		 } 
+
+			if(candiTabArr.indexOf(tabName) < 0){
+				candiTabArr.push(tabName);
+			}else{
+				if(value != 0 && str.indexOf('Duplicate Tab assigning not possible for <b>'+tabName+'</b>.') < 0){
+					str +='Duplicate Tab assigning not possible for <b>'+tabName+'</b>.</br>';
+				 } 
+			}
 		
 	});
 
@@ -2094,7 +2101,7 @@ function getAssignedUsersOfConstituency()
 	type:'GET',
 	url: 'getAssignedUsersOfAConstituency.action',
 	dataType: 'json',
-	data: {constituencyId:$('#webMonitorConstituencyId').val()},
+	data: {constituencyId:$('#webMonitorConstituencyId').val(),userId:$('#webMonitorUserId').val()},
 	}).done(function(result){
       buildConstituencies(result);
 	});
@@ -2141,7 +2148,7 @@ function saveWebMonioringAssignDetails()
 		$('#webMonioringAssignimg').hide();
 		if(result == "success")
 		{
-           $('#statusDiv').html("Assigned Success fully..");
+           $('#webMonitorErrorId').html("<span style='color:Green;'>Assigned Successfully...</span>");
 		}
 	});
 }
