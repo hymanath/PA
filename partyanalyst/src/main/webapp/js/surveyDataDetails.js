@@ -1831,7 +1831,7 @@ var str ='';
 			str +='Please Assign Tab .</br>';
 		} 
 		
-			candiTabArr.push(value);
+			candiTabArr.push(tabName);
 		
 	});
 
