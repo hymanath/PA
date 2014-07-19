@@ -16,7 +16,9 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ISurveyCompletedLocationsDetailsDAO;
+import com.itgrids.partyanalyst.dao.ISurveyConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
+import com.itgrids.partyanalyst.dao.hibernate.SurveyConstituencyDAO;
 import com.itgrids.partyanalyst.dto.SurveyCompletionDetailsVO;
 import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
 import com.itgrids.partyanalyst.model.SurveyCompletedLocationsDetails;
@@ -44,7 +46,8 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 	
 	@Autowired
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
-	
+	@Autowired
+	private ISurveyConstituencyDAO surveyConstituencyDAO;
 	
 
 	public SurveyDashBoardVO getCompletdConstituenciesDetails()
@@ -110,8 +113,8 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 					}
 			
 			}
-		    List<Object[]> constituencyDetails = constituencyDAO.getAllAssemblyConstituenciesByStateId(1L);
-		    
+		   // List<Object[]> constituencyDetails = constituencyDAO.getAllAssemblyConstituenciesByStateId(1L);
+			List<Object[]> constituencyDetails = surveyConstituencyDAO.getSurveyConstituencies();
 		    
 		    Map<Long,List<Long>> constnCountMap = new HashMap<Long, List<Long>>();
 		    
@@ -258,7 +261,8 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 			resultVO.setProcessingCount(cProcessCount);
 			resultVO.setStartedCount(cStartedCount);
             resultVO.setTotalCount(cTotalCount);
-            resultVO.setNotStartedCount(cNotStartedCount);
+           // resultVO.setNotStartedCount(cNotStartedCount);
+            resultVO.setNotStartedCount(cTotalCount - (resultVO.getCompletedCount() + resultVO.getStartedCount()));
             
             
 			
