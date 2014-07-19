@@ -783,7 +783,7 @@ function getLeadrDetailsByConstituency()
 				for(var i in result)
 				{
 					str += '<tr>';
-					str += '<td>'+result[i].name+'</td>';
+					str += '<td><a href="javascript:{getInActiveUsersDetailsByLeaderId('+result[i].id+')}">'+result[i].name+'</a></td>';
 					str += '<td>'+result[i].desc+'</td>';
 					str += '</tr>';
 				}
