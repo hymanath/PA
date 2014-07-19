@@ -51,7 +51,7 @@ public class SurveyDetailsInfoDAO extends GenericDaoHibernate<SurveyDetailsInfo,
 				
 				
 				str.append(" group by " +
-				"SDI.surveyUser.surveyUserId,SDI.booth.boothId,DATE(SDI.date) ");
+				"SDI.surveyUser.surveyUserId,SDI.booth.boothId,DATE(SDI.date) order by  DATE(SDI.date) asc");
 				
 				Query query = getSession().createQuery(str.toString());
 		
@@ -93,7 +93,7 @@ public class SurveyDetailsInfoDAO extends GenericDaoHibernate<SurveyDetailsInfo,
 				
 				
 				str.append(" group by " +
-				"SDI.surveyUser.surveyUserId,SDI.booth.boothId,DATE(SDI.date) ");
+				"SDI.surveyUser.surveyUserId,SDI.booth.boothId,DATE(SDI.date) order by  DATE(SDI.date) asc ");
 				
 				Query query = getSession().createQuery(str.toString());
 		
