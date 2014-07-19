@@ -228,7 +228,7 @@ function buildTable(result)
 		 str += '<td><a onClick="getUserDetails('+result[i].id+','+result[i].orderId+',\'resultDiv'+i+'\',\'responceCountDiv'+i+'\')" style="cursor: pointer;">'+result[i].name+'</a> ';
 		 if(result[i].type == "Data Collectors")
 		 {
-			str += '<span styel="color:#FF0000" class="label lebel-info pull-right">DC</span>';
+			str += '<span styel="color:#FF0000" class="label label-info pull-right">DC</span>';
 		 }
 		 else
 		 {
