@@ -98,6 +98,7 @@ import com.itgrids.partyanalyst.model.CadreParticipatedTrainingCamps;
 import com.itgrids.partyanalyst.model.CadreRole;
 import com.itgrids.partyanalyst.model.CadreRoleRelation;
 import com.itgrids.partyanalyst.model.CadreSkills;
+import com.itgrids.partyanalyst.model.CasteState;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Country;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
@@ -5711,16 +5712,23 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			{
 			for(Object[] params : list)
 			{
+				Cadre cadre = (Cadre)params[0];
 				CadreVo cadreVo = new CadreVo();
-				cadreVo.setCadreId((Long)params[0]);
-				cadreVo.setFirstName(params[1] != null ?params[1].toString() : "" +" "+params[2] != null ?params[2].toString() : "");
-				cadreVo.setAge((Long)params[3]);
-				cadreVo.setMobileNo(params[4]!= null ?params[4].toString() : "");
-				cadreVo.setFatherName(params[5] != null ? params[5].toString() : "");
-				cadreVo.setCasteCategory(params[6] != null ? (Long)params[6] : 0l);
-				cadreVo.setCasteCategoryName(params[7] != null ? params[7].toString() : "");
-				cadreVo.setRoleId(params[8] != null ? (Long)params[8] : 0l);
-				cadreVo.setRole(params[9] != null ? params[9].toString() : "");
+				cadreVo.setCadreId(cadre.getCadreId());
+				cadreVo.setFirstName(cadre.getFirstName() != null ?cadre.getFirstName().toString() : "" +" "+cadre.getLastName() != null ?cadre.getLastName().toString() : "");
+				cadreVo.setAge(cadre.getAge());
+				cadreVo.setMobileNo(cadre.getMobile()!= null ?cadre.getMobile().toString() : "");
+				cadreVo.setFatherName(cadre.getFatherOrSpouseName() != null ? cadre.getFatherOrSpouseName().toString() : "");
+				if(cadre.getCasteState() != null)
+				{
+				CasteState caste = casteStateDAO.get(cadre.getCasteState().getCasteStateId());
+				cadreVo.setCasteCategory(caste.getCaste() != null ?caste.getCaste() .getCasteId() :0l);
+				cadreVo.setCasteCategoryName(caste.getCaste() != null ?caste.getCaste() .getCasteName() :"");
+				}
+				
+				cadreVo.setRoleId(params[1] != null ? (Long)params[1] : 0l);
+				cadreVo.setRole(params[2] != null ? params[2].toString() : "");
+				cadreVo.setVoterCardId(cadre.getVoter() != null ? cadre.getVoter().getVoterIDCardNo() : "");
 				resultList.add(cadreVo);
 			}
 				return resultList;
