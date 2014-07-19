@@ -613,11 +613,14 @@ $('#mainajaximg').hide();
 	str+='<td></td>';
 
 		$.each(result[0].subList,function(index,value){
-			if(index == result[0].subList.length-1)
+			//if(index == result[0].subList.length-1)
 			  str+='<td><b>'+value.total+'</b></td>';
-			else
-			  str+='<td></td>';
+			//else
+			 // str+='<td></td>';
 		});
+
+		  if($('#fromDate').val() == $('#toDate').val())
+			   str+='<td></td>';
 	str+='</tr>';
 	str+='</tfoot>';
 	str+='</table>';
