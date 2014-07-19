@@ -120,7 +120,7 @@
 			</div>
 		</div>
 		
-
+<!--
 	<c:if test="${!empty notStartesUsersList}">
 	
 		<div class="row" id="inActiveUsersDetails">
@@ -163,7 +163,7 @@
 		
 	</c:if>
 
-
+-->
 		<div class="row" id="startTime">
 			<div class="span12">
 				<div class="row-fluid ">
@@ -306,6 +306,8 @@
 				
 			</div>
 		</div>
+
+<div id="dialogDiv"></div>
 	<script>
 		var userIds = new Array();
 		<c:forEach var="user" items="${usersList}">
@@ -333,6 +335,46 @@
 		  
 		});
 
+	</script>
+	<script>
+	function getInActiveUsersDetailsByLeaderId(leaderId)
+	{
+		$.ajax({
+		type:'GET',
+		url: 'getNotActiveUsersDetails.action',
+		dataType: 'json',
+		data: {leaderId:leaderId},
+		}).done(function(result){
+			buildInActiveUsersDetails(result);
+		});
+	}
+	function buildInActiveUsersDetails(result)
+	{
+		var str='';
+
+		str+='<table class="table table-bordered m_top20 table-hover table-striped">';
+		 str+='<thead>';
+		 str+='<tr>';
+		  str+='<th>Name</th>'
+		  str+='<th>Mobile No</th>';
+		 str+='</tr>';
+		 str+='</thead>';
+		 str+='<tbody>';
+		  $.each(result,function(index,value){
+		   str+='<tr>';
+			str+='<td>'+value.name+'</td>'
+			str+='<td>'+value.mobileNo+'</td>';
+		   str+='</tr>';
+		  });
+		 str+='</tbody>';
+		str+='</table>';
+
+$('#dialogDiv').html(str);
+  $('#dialogDiv').dialog({
+	  title:'InActive Users Details',
+		  modal:true
+  });
+	}
 	</script>
  </body>
  </html>

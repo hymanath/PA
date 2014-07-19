@@ -69,7 +69,16 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	private SurveyDashBoardVO resultVO;
 	private List<SurveyDashBoardVO> resultList;
 	private Long constituencyId;
+	private Long leaderId;
 	
+	public Long getLeaderId() {
+		return leaderId;
+	}
+
+	public void setLeaderId(Long leaderId) {
+		this.leaderId = leaderId;
+	}
+
 	@Autowired
 	private ISurveyDashBoardService surveyDashBoardService;
 	
@@ -1199,13 +1208,22 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 				return ERROR;
 				constituenciesList = 	surveyDataDetailsService.getSurveyStartedConstituencyList();
 				usersList = surveyDetailsService.getAssignedSurveyUsersForWebMontringTeam(user.getRegistrationID());
-				notStartesUsersList =  surveyDetailsService.getNotStartedUsersDetails(user.getRegistrationID());
 
 		} catch (Exception e) {
 			LOG.error(" exception occured in surveyCallCenterPage() ,ConstituencyDetailsAction Action class",e);
 		}
 		return Action.SUCCESS;
 		
+	}
+	
+	public String getNotActiveUsersDetails()
+	{
+		HttpSession session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+	
+		notStartesUsersList =  surveyDetailsService.getNotStartedUsersDetails(user.getRegistrationID(),leaderId);
+
+		return Action.SUCCESS;
 	}
 	
 	
@@ -1620,16 +1638,5 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		return Action.SUCCESS;
 	}
   
-  public String getNotStartedUsersDetails()
-  {
-	  HttpSession session = request.getSession();
-		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-		if(user == null)
-		{
-			return Action.INPUT;
-		}
-	  
-	  return Action.SUCCESS;
-  }
   
 }
