@@ -1571,7 +1571,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
   
   public String getAssignedUsersOfAConstituency()
   {
-	  constituencies =  surveyDataDetailsService.getAssignedUsersOfAConstituency(constituencyId);
+	  constituencies =  surveyDataDetailsService.getAssignedUsersOfAConstituency(constituencyId,userId);
 	  return Action.SUCCESS;
   }
   
