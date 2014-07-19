@@ -5635,8 +5635,8 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			for (Object[] objects : panchayatList) {
 				
 				SelectOptionVO selectOptionVO = new SelectOptionVO();
-				selectOptionVO.setId((Long)objects[0]);
-				selectOptionVO.setName(objects[1].toString());
+				selectOptionVO.setId(objects[0] != null ? (Long)objects[0]:0L);
+				selectOptionVO.setName(objects[1] != null ? objects[1].toString():"");
 				selectOptionVOList.add(selectOptionVO);
 			}
 			
@@ -5724,7 +5724,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 		}
 		catch(Exception e)
 		{
-			log.error("Exception Rised In getCadreDetailsbyPanchayat(Long panchayatId) in CadreManagementService class" , e);
+			log.error("Exception Rised In getCommitteCadreDetails(Long committeeId) in CadreManagementService class" , e);
 		}
 		return resultList;
 	}
