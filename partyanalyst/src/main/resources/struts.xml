@@ -7725,5 +7725,21 @@
 			</result>
   		</action>
   		
+  		
+  		<action name="getCommitteeLevelAction" class="partyCadreSearchAction" method="getCommitteeLevels">
+  					<result type="json" name="success">
+							<param name="root">committeLevels</param>
+					</result>
+  		</action>		
+		<action name="getCommitteeLevelValuesAction" class="partyCadreSearchAction" method="getCommitteeLevelValues">
+  					<result type="json" name="success">
+							<param name="root">committeesLevelValue</param>
+					</result>
+  		</action>
+  		<action name="getCommitteesAction" class="partyCadreSearchAction" method="getCommittees">
+  					<result type="json" name="success">
+							<param name="root">committee</param>
+					</result>
+  		</action>
 </package>
 </struts>      

@@ -18,7 +18,15 @@
 </head>
 <body>
 	<div class="container" style="margin-top:10px;background-color:#F7F8F9;">
-		<div class="row offset3">
+	
+	<div class="row offset4">
+		<input type="radio" value="1" name="radioType" id="cadreRadioId" checked="true">&nbsp;<strong>Cadre </strong>
+		<span style="padding-left:5px;font-weight:bold;">
+		<input type="radio" value="2" name="radioType" id="committeeRadioId">
+		Committee</span>
+	</div>
+	
+		<div class="row offset3" id="cadreDivId" style="display:none;">
 				<div id="errdiv" style="height:20px;margin-left: 20px;"" class="offset0"></div>
 				<div class="row-fluid span7">
 					<div class="span3">
@@ -34,7 +42,7 @@
 						<label>Select Panchayat<font color="#ff0000"> *</font>:</label>
 					</div>
 					<div class="span3">
-						<select id="panchayat"></select>
+						<select id="panchayat"><option value='0'> Select Panchayat</option></select>
 					</div>
 				</div>
 				<div class="offset3">
@@ -43,18 +51,49 @@
 						<img src="images/icons/loading.gif" style="padding-left:10px;" width="18" height="11"/>
 					</div>						
 				</div>
-			<div id="ajaxcallimage"  class = "span3" style="display:none;font-weight:bold;color: #0174DF;font-size:small;width: 345px; height: 17px;">
-				<img src="images/icons/loading.gif" style="padding-left:10px;" width="18" height="11"/>
-			</div>				
-		</div>		
+				
+		</div>
+		
+		<div class="row offset3" id="committeeDivId" style="display:none;">
+				<div class="row-fluid span7">
+					<div class="span3">
+						<label>Select Committee Level</label>
+					</div>
+					<div class="span3">
+						<select id="committeeLevelId" onchange="getCommitteeLevelValues()"><option value='0'> Select Committee Level </option></select>
+					</div>
+				</div>
+				
+				<div class="row-fluid span7">
+					<div class="span3">
+						<label>Select Committee Level Value</label>
+					</div>
+					<div class="span3">
+						<select id="committeeLevelValueId"  onchange="getCommittees()"><option value='0'> Select Committee Level Value </option></select>
+					</div>
+				</div>
+				
+				<div class="row-fluid span7">
+					<div class="span3">
+						<label>Select Committee</label>
+					</div>
+					<div class="span3">
+						<select id="committeeId"><option value='0'> Select Committee</option></select>
+					</div>
+				</div>
+				
+				<button name="search" class="btn btn-primary" onclick="getCommitteCadreDetails()">Search</button>
+		</div>
 	</div>
 	<div id="tableDiv" class="offset0" style="margin-top:10px;"></div>
 <script>
 
 	$(document).ready(function(){
 		getAllconstituenys();
-		$("#panchayat").html('');
+		//$("#panchayat").html('');
 		$("#errdiv").html('');
+		getCommitteeLevel();
+		$("#cadreDivId").show();
 	});
 	
 	function getAllconstituenys()
@@ -82,7 +121,7 @@
 	{
 			var constituencyIds=$("#const option:selected").val();
 			
-		var jsObj = 
+			var jsObj = 
 		{
 			constituencyId:constituencyIds,
 			task:"getAllPanchayaties"
@@ -114,12 +153,12 @@
 					 
 		if(constituencyIds != null && constituencyIds== 0)
 		{
-			$('#errdiv').html('please select the constituency').css('color','red');
+			$('#errdiv').html('Please Select Constituency').css('color','red');
 			return;
 		}
 		if(panchayatIds != null && panchayatIds == 0)
 		{
-			$('#errdiv').html('please select the panchayat').css('color','red');
+			$('#errdiv').html('Please Select Panchayat').css('color','red');
 			return;
 		}
 		
@@ -177,7 +216,147 @@
 		$("#cadretable").dataTable();
 	}
 
+	function getCommitteeLevel()
+	{			
+		var jsObj = 
+		{
+			task:"getCommitteeLevel"
+		}
+				$.ajax({
+					type: "GET",
+					url:"getCommitteeLevelAction.action",
+					dataType:'json',
+					 data: {task:JSON.stringify(jsObj)},
+					 }).done(function(result,jsObj){
+					 $("#committeeLevelId").find('option').remove();
+					 $("#committeeLevelId").append("<option value='0'> Select Committee Level </option>");
+						 if(result !=null && result.length >0){
+							for(var i in result){
+								$("#committeeLevelId").append("<option value="+result[i].id+">"+result[i].name+"</option>");
+							}
+						}
+					});		
+	}
+	
+	function getCommitteeLevelValues()
+	{
+			var committeeLevelId=$("#committeeLevelId").val();
+			
+			var jsObj = 
+		{
+			committeeLevelId:committeeLevelId,
+			task:"getCommitteeLevelValues"
+		}
+				$.ajax({
+					type: "GET",
+					url:"getCommitteeLevelValuesAction.action",
+					dataType:'json',
+					 data: {task:JSON.stringify(jsObj)},
+					 }).done(function(result,jsObj){
+					 $("#committeeLevelValueId").find('option').remove();
+					 $("#committeeLevelValueId").append("<option value='0'> Select Committee Level Value </option>");
+						 if(result !=null && result.length >0){
+							for(var i in result){
+								$("#committeeLevelValueId").append("<option value="+result[i].id+">"+result[i].name+"</option>");
+							}
+						}
+					});		
+	}
+		
+	function getCommittees()
+	{
+			var committeeLevelValueId=$("#committeeLevelValueId").val();
+			
+			var jsObj = 
+		{
+			committeeLevelValueId:committeeLevelValueId,
+			task:"getCommitteeLevelValues"
+		}
+				$.ajax({
+					type: "GET",
+					url:"getCommitteesAction.action",
+					dataType:'json',
+					 data: {task:JSON.stringify(jsObj)},
+					 }).done(function(result,jsObj){
+					 $("#committeeId").find('option').remove();
+					 $("#committeeId").append("<option value='0'> Select Committee</option>");
+						 if(result !=null && result.length >0){
+							for(var i in result){
+								$("#committeeId").append("<option value="+result[i].id+">"+result[i].name+"</option>");
+							}
+						}
+					});		
+	}
+function getCommitteCadreDetails()
+{
+var jsObj =
+{
+committeeId : 1,
+task:"getCommitteCadreDetails"
+}
 
+$.ajax({
+type: "GET",
+url:"getCommitteeMeberDetailsAction.action",
+dataType:'json',
+data: {task:JSON.stringify(jsObj)},
+}).done(function(result,jsObj){
+$("#ajaxcallimage").hide();
+getCommitteCadreDetailsTable(result);
+
+});
+}
+
+function getCommitteCadreDetailsTable(result)
+{
+var str='';
+str+="<table id='Commitecadretable' class='table table-striped table-bordered table-condensed'>";
+str+="<thead>";
+str+="<tr>";
+str+="<th>CadreId</th>";
+str+="<th>Name</th>";
+
+str+="<th>MobileNumber</th>";
+str+="<th>Age</th>";
+str+="<th>VoterId</th>";
+str+="<th>RelativeName</th>";
+str+="<th>Role</th>";
+str+="</tr>"
+str+="</thead>";
+str+="<tbody>";
+for(var i=0;i<result.length;i++)
+{
+str+="<tr>";
+str+="<td>"+result[i].cadreId+"</td>";
+str+="<td>"+result[i].firstName+"</td>";
+
+str+="<td>"+result[i].mobileNo+"</td>";
+if(result[i].age == null)
+str+="<td></td>";
+else
+{
+str+="<td>"+result[i].age+"</td>";
+}
+str+="<td>"+result[i].voterCardId+"</td>";
+str+="<td>"+result[i].fatherName+"</td>";
+str+="<td>"+result[i].role+"</td>";
+str+="</tr>";
+}
+str+="</tbody>";
+str+="</table>";
+$("#tableDiv").html(str);
+$("#Commitecadretable").dataTable();
+}
+
+	$("#cadreRadioId").click(function() {
+		$("#committeeDivId").hide();
+	    $("#cadreDivId").show();
+    });
+	$("#committeeRadioId").click(function()
+	{
+	    $("#cadreDivId").hide();
+		$("#committeeDivId").show();		
+    });
 </script>
 </body>
 </html>

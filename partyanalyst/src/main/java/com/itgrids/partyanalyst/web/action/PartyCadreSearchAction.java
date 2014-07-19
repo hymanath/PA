@@ -9,6 +9,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CadreVo;
+import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
@@ -28,8 +29,21 @@ public class PartyCadreSearchAction extends ActionSupport implements ServletRequ
 	JSONObject jObj = null;
 	private String task = null;
 	private List<CadreVo> vo,cadreDetails;
+	private List<GenericVO> committeesLevelValue,committee;
 	
-	
+		
+	public List<GenericVO> getCommittee() {
+		return committee;
+	}
+	public void setCommittee(List<GenericVO> committee) {
+		this.committee = committee;
+	}
+	public List<GenericVO> getCommitteesLevelValue() {
+		return committeesLevelValue;
+	}
+	public void setCommitteesLevelValue(List<GenericVO> committeesLevelValue) {
+		this.committeesLevelValue = committeesLevelValue;
+	}
 	public List<CadreVo> getCadreDetails() {
 		return cadreDetails;
 	}
@@ -185,5 +199,34 @@ public class PartyCadreSearchAction extends ActionSupport implements ServletRequ
 		}
 		return Action.SUCCESS;
 	}
-	
+	public String getCommitteeLevelValues() 
+	{
+		
+		try{
+			
+			jObj =new JSONObject(getTask());
+			committeesLevelValue=cadreManagementService.getAllCommitteeLevelValues(jObj.getLong("committeeLevelId"));
+			
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Rised In getCommitteeLevelValues()",e);
+		}
+		return Action.SUCCESS;
+	}	
+	public String getCommittees() 
+	{
+		
+		try{
+			
+			jObj =new JSONObject(getTask());
+			committee=cadreManagementService.getAllCommittees(jObj.getLong("committeeLevelValueId"));
+			
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Rised In getCommittees() ",e);
+		}
+		return Action.SUCCESS;
+	}
 }
