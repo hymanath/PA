@@ -718,7 +718,7 @@
 										</div>
 										<div class="span4">
 											Select User(s)<font class="requiredFont">*</font>
-											 <select id="webMonitorUserIds"></select>
+											 <select id="webMonitorUserIds" multiple="true"></select>
 											
 										</div>
 										<div class="span1" style="margin:25px -33px 0 0px;width: 15px;">
