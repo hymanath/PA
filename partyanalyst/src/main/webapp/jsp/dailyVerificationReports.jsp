@@ -710,12 +710,12 @@ $(".highlight").click(function()
 	if(val == 1){
 		$('#titleId').html("Data Collector Report");		
 		$("#dataCollectorTab").addClass("selected");
-		userTypeVal = val;
+		userTypeVal = 1;
 	}
 	else if(val == 2){
 		$('#titleId').html("Verifier Report");
 		$("#verifierReportTab").addClass("selected");
-		userTypeVal=val;
+		userTypeVal=4;
 	}
 	
 	else if(val == 3){
