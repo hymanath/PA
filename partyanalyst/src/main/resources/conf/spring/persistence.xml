@@ -461,6 +461,8 @@
 				<value>com.itgrids.partyanalyst.model.Roles</value>
 				<value>com.itgrids.partyanalyst.model.CommitteeMember</value>
 				<value>com.itgrids.partyanalyst.model.CommitteeRole</value>
+				<value>com.itgrids.partyanalyst.model.SurveyConstituency</value>
+				
 			</list>
 			
 		</property>
