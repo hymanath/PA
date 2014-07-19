@@ -225,24 +225,36 @@ function buildTable(result)
 	 for(var i in result)
 	 {
 		 str += '<tr>';
-		 str += '<td><a onClick="getUserDetails('+result[i].id+','+result[i].orderId+',\'resultDiv'+i+'\',\'responceCountDiv'+i+'\')" style="cursor: pointer;">'+result[i].name+'</a> <span class="label label-info pull-right">';
+		 str += '<td><a onClick="getUserDetails('+result[i].id+','+result[i].orderId+',\'resultDiv'+i+'\',\'responceCountDiv'+i+'\')" style="cursor: pointer;">'+result[i].name+'</a> ';
 		 if(result[i].type == "Data Collectors")
 		 {
-			str += 'D.C';
+			str += '<span styel="color:#FF0000" class="label lebel-info pull-right">DC</span>';
 		 }
 		 else
 		 {
-			str += 'D.V';
+			str += '<span styel="color:#FF0000" class="label pull-right" style="background-color:#FF0000">D.V</span>';
 		 }
 		 
-		 str += '</span></td>	';
+		 str += '</td>	';
 		 str += '<td>'+result[i].partno+'</td>	';
 		 str += '<td>'+result[i].value+'</td>	';
 		 str += '<td>'+result[i].url+'</td>	';
 		 str += '<td>'+result[i].villageCovered+'</td>	';
 		 str += '<td>'+result[i].location+'</td>	';
-		 str += '<td><a onClick="openTrackinWindow('+result[i].id+',\''+date+'\',1) " style="cursor: pointer;"><img src="images/DC.png"></img></a></td>	';
+		 if(result[i].type == "Data Collectors"){
+			str += '<td><a onClick="openTrackinWindow('+result[i].id+',\''+date+'\',1) " style="cursor: pointer;"><img src="images/DC.png"></img></a></td>	';
+		 }
+		 else
+		 {
+			str += '<td><a onClick="openTrackinWindow('+result[i].id+',\''+date+'\',1) " style="cursor: pointer;"><img src="images/DV.png"></img></a></td>	';
+		 }
+		 if(result[i].type == "Data Collectors"){
 		 str += '<td><a onClick="openTrackinWindow('+result[i].id+',\''+date+'\',2) " style="cursor: pointer;"><img src="images/DC.png"></img></a></td>	';
+		 }
+		 else
+		 {
+			 str += '<td><a onClick="openTrackinWindow('+result[i].id+',\''+date+'\',2) " style="cursor: pointer;"><img src="images/DV.png"></img></a></td>	';
+		 }
 		 str += '</tr>	';	
 		 str += '<tr id="resultDiv'+i+'" style="display:none;" class="resultDivCls">	';	
 			str += '<td colspan="8"><div id="responceCountDiv'+i+'"></div></td>	';	
