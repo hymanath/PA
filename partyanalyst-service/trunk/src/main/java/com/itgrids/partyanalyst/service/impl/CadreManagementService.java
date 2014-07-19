@@ -40,6 +40,7 @@ import com.itgrids.partyanalyst.dao.ICadreRoleDAO;
 import com.itgrids.partyanalyst.dao.ICadreRoleRelationDAO;
 import com.itgrids.partyanalyst.dao.ICadreSkillsDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
+import com.itgrids.partyanalyst.dao.ICommitteeDAO;
 import com.itgrids.partyanalyst.dao.ICommitteeLevelDAO;
 import com.itgrids.partyanalyst.dao.ICommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -73,6 +74,7 @@ import com.itgrids.partyanalyst.dto.CadreCategoryVO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.CadreRegionInfoVO;
 import com.itgrids.partyanalyst.dto.CadreVo;
+import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.PartyCadreDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -180,6 +182,8 @@ public class CadreManagementService {
 	
 	 @Autowired
 	 private ICommitteeLevelDAO committeeLevelDAO ;
+	 @Autowired
+	 private ICommitteeDAO committeeDAO;
 	 @Autowired
 	 private ICommitteeMemberDAO committeeMemberDAO;
 	public IPanchayatDAO getPanchayatDAO() {
@@ -5727,5 +5731,80 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			log.error("Exception Rised In getCommitteCadreDetails(Long committeeId) in CadreManagementService class" , e);
 		}
 		return resultList;
+	}
+
+	public List<GenericVO> getAllCommitteeLevelValues(Long committeeLevelId)
+	{
+		List<GenericVO> resultList = new ArrayList<GenericVO>();
+		try{
+			List<Long> list = committeeDAO.getAllCommitteeLevelValuesByCommitteeLevel(committeeLevelId);		
+			switch (committeeLevelId.intValue()) {
+
+			case 1: {
+				resultList = getStates(list);
+				break;
+			}
+			case 2: {
+				resultList = getDistricts(list);
+				break;
+			}
+			}
+		}catch (Exception e) {
+			log.error("Exception Rised In getAllCommitteeLevelValues" , e);
+		}
+		return resultList;
+	}
+	
+	public List<GenericVO> getAllCommittees(Long committeeLevelValueId)
+	{
+		List<GenericVO> resultList = new ArrayList<GenericVO>();
+		try{
+			List<Object[]> list = committeeDAO.getAllCommitteesForCommitteeLevelValues(committeeLevelValueId);
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					resultList.add(new GenericVO((Long)params[0],params[1].toString()));
+				}
+			}
+		}
+		catch (Exception e) {
+			log.error("Exception Rised In getAllCommittees" , e);
+		}
+		return resultList;
+	}
+	
+	public List<GenericVO> getStates(List<Long> committeeLevelValues)
+	{
+		List<GenericVO> statesList = new ArrayList<GenericVO>();
+		State state =null;
+		for(Long id : committeeLevelValues)
+		{
+			GenericVO vo= new GenericVO();
+			state = stateDAO.get(new Long(id));
+			vo.setId(id);
+			vo.setName(state.getStateName());
+			statesList.add(vo);
+		}
+		
+		return statesList;
+	}
+	
+	public List<GenericVO> getDistricts(List<Long> committeeLevelValues)
+	{
+		List<GenericVO> districtsList = new ArrayList<GenericVO>();
+		District district =null;
+		for(Long id : committeeLevelValues)
+		{
+			GenericVO vo= new GenericVO();
+			district = districtDAO.get(new Long(id));
+			vo.setId((Long)id);
+			vo.setName(district.getDistrictName());
+			vo.setDesc(district.getState().getStateName());
+			
+			districtsList.add(vo);
+		}
+		
+		return districtsList;
 	}
 }
