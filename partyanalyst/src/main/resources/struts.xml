@@ -7715,7 +7715,7 @@
   		</action>   		
 		<action name="getCommitteeMeberDetailsAction" class="partyCadreSearchAction" method="getCommitteCadreDetails">
   					<result type="json" name="success">
-							<param name="root">panchayatList</param>
+							<param name="root">cadreDetails</param>
 					</result>
   		</action>  
   		
