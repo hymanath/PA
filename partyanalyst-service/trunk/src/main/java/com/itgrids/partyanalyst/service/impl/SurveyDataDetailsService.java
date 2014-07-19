@@ -1877,6 +1877,30 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			if(surveyUserIds != null && surveyUserIds.size() > 0)
 			{
 				int count = surveyUserRelationDAO.updateUserLeaderRelations(userTypeId,surveyUserIds, leaderId);
+				
+				
+				List<Object[]> assignTabsIdsList = surveyUserTabAssignDAO.getSurveyTabsBySurveyUserIdsList(surveyUserIds);
+				List<Long> assignTabsIds = new ArrayList<Long>();
+				
+				if(assignTabsIdsList != null && assignTabsIdsList.size()>0){
+					for (Object[] assgnTab : assignTabsIdsList) {
+						assignTabsIds.add((Long) assgnTab[2]);
+					}
+				}
+
+				if(assignTabsIds != null && assignTabsIds.size()>0){
+					//assignTabsRemovedCount = surveyUserTabAssignDAO.updateActiveStatus(assignTabsIds);
+					for (Long assignTabsId : assignTabsIds) {
+						SurveyUserTabAssign surveyUserTabAssign = surveyUserTabAssignDAO.get(assignTabsId);
+						surveyUserTabAssign.setActiveStatus("N");
+						surveyUserTabAssign.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+						
+						surveyUserTabAssignDAO.save(surveyUserTabAssign);
+					}
+					
+				
+				}
+				
 				if(count > 0)
 				{
 					resultStatus.setResultCode(0);
@@ -2396,7 +2420,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			
 			if(tabsList != null && tabsList.size()>0){
 				for (GenericVO genericVO1 : tabsList) {
-					if(genericVO1.getId().toString().equalsIgnoreCase(tabNo)){
+					if(genericVO1.getName().toString().equalsIgnoreCase(tabNo)){
 						return genericVO1;
 					}
 				}
@@ -2428,7 +2452,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					SurveyUserTabAssign surveyUserTabAssign = new SurveyUserTabAssign();
 				
 					surveyUserTabAssign.setSurveyUser(surveyUserDAO.get(basicVO.getId()));
-					surveyUserTabAssign.setTabNo(basicVO.getCount().toString());
+					surveyUserTabAssign.setTabNo(basicVO.getName());
 					surveyUserTabAssign.setActiveStatus("Y");
 					surveyUserTabAssign.setDate(date1.getCurrentDateAndTime());					
 					surveyUserTabAssign.setInsertedTime(date1.getCurrentDateAndTime());
