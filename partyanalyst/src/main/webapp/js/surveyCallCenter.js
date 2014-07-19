@@ -4,6 +4,7 @@ function showHideTabs(id)
 	
 	if(id == "callCenterTab")
 	{
+		$('#webMontrId').show();
 		$('#callCenter').show();
 		$('#startTime').hide();
 		$('#boothWise').hide();
@@ -14,6 +15,7 @@ function showHideTabs(id)
 	}
 	else if (id == "startTimeTab")
 	{
+		$('#webMontrId').hide();
 		$('#callCenter').hide();
 		$('#startTime').show();
 		$('#boothWise').hide();
@@ -22,6 +24,7 @@ function showHideTabs(id)
 	}
 	else if(id == "boothWiseTab")
 	{
+		$('#webMontrId').hide();
 		$('#callCenter').hide();
 		$('#startTime').hide();
 		$('#boothWise').show();
@@ -31,6 +34,7 @@ function showHideTabs(id)
 	}
 	else
 	{
+		$('#webMontrId').hide();
 		$('#callCenter').hide();
 		$('#startTime').hide();
 		$('#boothWise').hide();
@@ -125,8 +129,7 @@ $('#searchDataImg').show();
 
 		var totalVoters = 0;
 		totalVoters = results != null ? results[0].count:0;
-		
-
+		$('#webMontrId').show();
 		if(results != null && results[0].subList.length>0)
 		{
 		
@@ -157,7 +160,7 @@ $('#searchDataImg').show();
 					str +='<td>'+result[i].voterName+'</td>';
 					
 					/*	starting  only caste available details */
-					
+					/*
 					str +='<td>'+result[i].caste+'';
 				
 					if(result[i].casteMatchedCount == 1) //correct
@@ -221,12 +224,12 @@ $('#searchDataImg').show();
 						str +='<td> <select id="casteListId'+i+'"  disabled="disabled" style="width:165px;" onchange="updateDetails(\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',10,'+result[i].voterId+','+result[i].userid+',\'caste\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+');"><option value="0"  > Select Caste </option> ';
 						str +='</select></td>';	
 					}			
-					
+					*/
 					/* ending  only caste available details */	
 					
 					/* starting  caste available and not available details */
 					
-					/*
+			
 					
 					if(result[i].caste.trim().length >0)
 					{
@@ -318,7 +321,7 @@ $('#searchDataImg').show();
 							}
 							str +='</select></td>';
 					}
-					*/
+					
 					
 					/* ending  caste available and not available details */
 					
@@ -479,7 +482,7 @@ function updateDetails(casteId,mobileId, value,voterId,surveyUserId,selectionTyp
 		
 	}
 	
-	/*
+	
 	if(value == 10){
 		if(casteMatched == null || casteMatched.trim().length == 0){
 			$('#'+casteId+'').val('0');
@@ -488,7 +491,7 @@ function updateDetails(casteId,mobileId, value,voterId,surveyUserId,selectionTyp
 			$('#'+mobileId+'').val('6');
 		}
 	}
-*/
+
 
 
 updateStatusDetails(casteId,mobileId,voterId,surveyUserId,selectionType,userId,boothId,date,newCasteId,updateBtnId);
