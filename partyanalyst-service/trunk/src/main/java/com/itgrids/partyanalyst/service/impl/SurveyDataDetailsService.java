@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -2379,7 +2380,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				if(assignedUsersInfo != null && assignedUsersInfo.size()>0){
 
 					for (Object[] params : assignedUsersInfo) {
-						GenericVO genericV1O = getMactchedVO(tabsList,params[1].toString());
+						GenericVO genericV1O = getGenericVOByName(tabsList,params[1].toString());
 						if(genericV1O != null){						
 							tabsList.remove(genericV1O);
 						}
@@ -2414,7 +2415,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		return returnVO;
 	}
 	
-	public GenericVO getMactchedVO(List<GenericVO> tabsList,String tabNo){
+	public GenericVO getGenericVOByName(List<GenericVO> tabsList,String tabNo){
 		GenericVO genericVO = null;
 		try {
 			
@@ -2905,7 +2906,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		}		
 		return result;
 	}
-	
+	/*
 	public List<SurveyReportVO> getSurveyVotersList(Long constituencyId, Long boothId,Long leaderId,String searchDate){
 		List<SurveyReportVO> retultList = new ArrayList<SurveyReportVO>();
 		try {
@@ -3047,10 +3048,20 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			
 			finalVO.setCount(surveyDetailsInfoDAO.getTotalVotersinBooth(boothId));
 			
+		
 			if(casteListOfSamples != null && casteListOfSamples.size()>0){
+				
+				Collections.sort(casteListOfSamples, new Comparator<GenericVO>() {
+
+					public int compare(GenericVO o1, GenericVO o2) {
+						
+						return (int) (o2.getCount() - o1.getCount());
+					}
+				});
+				
 				finalVO.setGenericVOList(casteListOfSamples);
 			}
-						
+			
 			retultList.add(finalVO);
 			
 			
@@ -3081,7 +3092,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		return retultList;
 	}
 	
-	/*
+	*/
 	 public List<SurveyReportVO> getSurveyVotersList(Long constituencyId, Long boothId,Long leaderId,String searchDate){
 		List<SurveyReportVO> retultList = new ArrayList<SurveyReportVO>();
 		try {
@@ -3103,7 +3114,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				ids.add(leaderId);
 				//List<Object[]> votersLsit = surveyDetailsInfoDAO.getVoterDetailsByBoothId(boothId,ids,date);
 				
-				List<Object[]> votersLsit = surveyDetailsInfoDAO.getVotersDetailsByBoothId(122792L,ids,date);
+				List<Object[]> votersLsit = surveyDetailsInfoDAO.getVotersDetailsByBoothId(boothId,ids,date);
 				
 				List<Object[]> verifiedList = surveyCallStatusDAO.getSurveyCallDtalsByboothId(boothId);
 				
@@ -3278,7 +3289,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		}		
 		return retultList;
 	}
-	 */
+	 
 	
 	
 	public ResultStatus saveSurveyCallStatusDetils(final Long userId,final List<SurveyReportVO> verifiedList){
@@ -3733,14 +3744,14 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		
 	}
 	
-	public List<GenericVO> getAssignedUsersOfAConstituency(Long constituencyId)
+	public List<GenericVO> getAssignedUsersOfAConstituency(Long constituencyId,Long userId)
 	{
 		 List<GenericVO> usersList  = new ArrayList<GenericVO>();
 		try
 		{
 			
 			List<Object[]> usersDtls = surveyUserRelationDAO.getAssignedUsersOfAConstituency(constituencyId);
-			
+			List<Long> constUsersIds = new ArrayList<Long>(0);
 			for(Object[] obj:usersDtls)
 			{
 				GenericVO userVO = new GenericVO();
@@ -3748,6 +3759,25 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				userVO.setId((Long)obj[0]);
 				userVO.setName(obj[1].toString());
 				usersList.add(userVO);
+				
+				constUsersIds.add((Long)obj[0]);
+			}
+			
+			if(constUsersIds != null && constUsersIds.size()>0){
+				List<Long> alredyAssnIds = webMonitoringAssignedUsersDAO.getConstiteuncyUsersInConsti(constUsersIds,userId);
+				if(alredyAssnIds != null && alredyAssnIds.size()>0){
+					
+					for (Long surveyUserId : alredyAssnIds) {
+						
+						GenericVO genericO = getGenericVOById(usersList,surveyUserId);
+						
+						if(genericO != null){						
+							usersList.remove(genericO);
+						}
+						
+					}
+					
+				}
 			}
 			
 			
@@ -3758,6 +3788,22 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		return usersList;
 	}
 	
+	public GenericVO getGenericVOById(List<GenericVO> usersList,Long surveyUserId){
+		GenericVO returnVO = null;
+		try {
+			if(usersList != null && usersList.size()>0){
+				for (GenericVO vo : usersList) {
+					if(vo.getId().toString().equalsIgnoreCase(surveyUserId.toString())){
+						return vo;
+					}
+				}
+			}
+			
+		} catch (Exception e) {
+			returnVO = null;
+		}
+		return returnVO;
+	}
 	public List<GenericVO> getAllWebMonitoringUsersDetails()
 	{
 		 List<GenericVO> usersList  = new ArrayList<GenericVO>();
@@ -3787,23 +3833,39 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		try
 		{
 			List<WebMonitoringAssignedUsers> users = webMonitoringAssignedUsersDAO.getAssignedUsersDetailsByWebMonitorId(webMonitorId);
+			final Map<Long,Long> monitringAssignUsersMap = new HashMap<Long,Long>();
 			
-			if(users != null && users.size() >0)
-				for(WebMonitoringAssignedUsers assignedUser:users)
-					assignedUser.setIsDelete("Y");
+			if(users != null && users.size() >0){
+				for(WebMonitoringAssignedUsers assignedUser:users){
+						assignedUser.setIsDelete("Y");
+						monitringAssignUsersMap.put(assignedUser.getSurveyUserId(), assignedUser.getWebMonitoringAssignedUsersId());
+				}
+			}
 			
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-				protected void doInTransactionWithoutResult(
-						TransactionStatus arg0) {
+				protected void doInTransactionWithoutResult(TransactionStatus status) {
 			
 				for(Long userId:userIds)
 				{
-					WebMonitoringAssignedUsers webMonitoringAssignedUsers = new WebMonitoringAssignedUsers();
+					WebMonitoringAssignedUsers webMonitoringAssignedUsers = null;
 					
-					webMonitoringAssignedUsers.setSurveyUserId(userId);
-					webMonitoringAssignedUsers.setWebMoniterUserId(webMonitorId);
+					if(monitringAssignUsersMap != null && monitringAssignUsersMap.size()>0){
+						
+						if(monitringAssignUsersMap.get(userId) != null){
+							webMonitoringAssignedUsers = webMonitoringAssignedUsersDAO.get(monitringAssignUsersMap.get(userId));
+						}
+					}
+					
+					if(webMonitoringAssignedUsers == null){
+						webMonitoringAssignedUsers = new WebMonitoringAssignedUsers();
+						webMonitoringAssignedUsers.setSurveyUserId(userId);
+						webMonitoringAssignedUsers.setWebMoniterUserId(webMonitorId);
+					}
+					
+					
 					webMonitoringAssignedUsers.setIsDelete("N");
 					webMonitoringAssignedUsersDAO.save(webMonitoringAssignedUsers);
+					constituencyDAO.flushAndclearSession();
 				}
 			
 			}});
