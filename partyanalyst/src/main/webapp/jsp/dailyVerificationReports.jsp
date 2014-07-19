@@ -478,6 +478,8 @@ function getDayWiseReportByConstituencyIdAndUserType()
 	if(constituencyId == 0)
 		errorStr += 'Please select constituency<br>';
 
+	if($('#boothId').val() == null)
+errorStr += 'Please select at least one booth<br>';
 
 if(startDate.length == 0 || endDate.length == 0)
 	{
