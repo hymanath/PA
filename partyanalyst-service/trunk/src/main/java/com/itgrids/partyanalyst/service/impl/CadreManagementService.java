@@ -41,6 +41,7 @@ import com.itgrids.partyanalyst.dao.ICadreRoleRelationDAO;
 import com.itgrids.partyanalyst.dao.ICadreSkillsDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.ICommitteeLevelDAO;
+import com.itgrids.partyanalyst.dao.ICommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
@@ -179,6 +180,8 @@ public class CadreManagementService {
 	
 	 @Autowired
 	 private ICommitteeLevelDAO committeeLevelDAO ;
+	 @Autowired
+	 private ICommitteeMemberDAO committeeMemberDAO;
 	public IPanchayatDAO getPanchayatDAO() {
 		return panchayatDAO;
 	}
@@ -5672,5 +5675,57 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			log.error("Exception Rised In getCadreDetailsbyPanchayat(Long panchayatId) in CadreManagementService class" , e);
 		}
 		return cadreList;
+	}
+	 public List<SelectOptionVO> getCommitteeLevels()
+	 {
+	 List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>();
+	 try{
+	 List<Object[]> list = committeeLevelDAO.getCommitteeLevels();
+	 if(list != null && list.size() > 0)
+	 {
+	 for(Object[] params : list)
+	 {
+	 resultList.add(new SelectOptionVO((Long)params[0],params[1].toString()));
+	 }
+	 }
+	 }
+	 catch (Exception e) {
+	 log.error("Exception Rised In getCommitteeLevels" , e);
+	 }
+	 return resultList;
+	 }
+
+
+	public List<CadreVo> getCommitteCadreDetails(Long committeeId)
+	{
+		List<CadreVo> resultList = new ArrayList<CadreVo>();
+		
+		try{
+
+			List<Object[]> list = committeeMemberDAO.getCommitteeCadreInfo(committeeId);
+			if(list != null && list.size() > 0)
+			{
+			for(Object[] params : list)
+			{
+				CadreVo cadreVo = new CadreVo();
+				cadreVo.setCadreId((Long)params[0]);
+				cadreVo.setFirstName(params[1] != null ?params[1].toString() : "" +" "+params[2] != null ?params[2].toString() : "");
+				cadreVo.setAge((Long)params[3]);
+				cadreVo.setMobileNo(params[4]!= null ?params[4].toString() : "");
+				cadreVo.setFatherName(params[5] != null ? params[5].toString() : "");
+				cadreVo.setCasteCategory(params[6] != null ? (Long)params[6] : 0l);
+				cadreVo.setCasteCategoryName(params[7] != null ? params[7].toString() : "");
+				cadreVo.setRoleId(params[8] != null ? (Long)params[8] : 0l);
+				cadreVo.setRole(params[9] != null ? params[9].toString() : "");
+				resultList.add(cadreVo);
+			}
+				return resultList;
+		}
+		}
+		catch(Exception e)
+		{
+			log.error("Exception Rised In getCadreDetailsbyPanchayat(Long panchayatId) in CadreManagementService class" , e);
+		}
+		return resultList;
 	}
 }
