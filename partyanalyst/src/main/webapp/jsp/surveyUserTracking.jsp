@@ -228,11 +228,11 @@ function buildTable(result)
 		 str += '<td><a onClick="getUserDetails('+result[i].id+','+result[i].orderId+',\'resultDiv'+i+'\',\'responceCountDiv'+i+'\')" style="cursor: pointer;">'+result[i].name+'</a> ';
 		 if(result[i].type == "Data Collectors")
 		 {
-			str += '<span styel="color:#FF0000" class="label label-info pull-right">DC</span>';
+			str += '<span class="label label-info pull-right">DC</span>';
 		 }
 		 else
 		 {
-			str += '<span styel="color:#FF0000" class="label pull-right" style="background-color:#FF0000">D.V</span>';
+			str += '<span class="label pull-right" style="background-color:#FF0000">D.V</span>';
 		 }
 		 
 		 str += '</td>	';
