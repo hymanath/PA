@@ -19,4 +19,5 @@ public interface ISurveyDetailsService {
 	public List<GenericVO> getAssignedSurveyUsersForWebMontringTeam(Long userId);
 	public List<GenericVO> getNotStartedUsersDetails(Long webMonitorUserId,Long constituencyId);
 
+	public GenericVO getSurveyStatusBoothList(Long constituencyId);
 }
