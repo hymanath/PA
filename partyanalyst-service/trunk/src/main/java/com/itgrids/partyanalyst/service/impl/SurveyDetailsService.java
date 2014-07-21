@@ -505,6 +505,120 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 		
 	}
 	
+	 public List<GenericVO> getUserForAssignedLeader(Long leaderId, Long userTypeId)
+		{
+			 List<GenericVO> usersList  = new ArrayList<GenericVO>();
+			try
+			{
+				List<Object[]> usersDetails = surveyUserRelationDAO.getUserForAssignedUser(leaderId,userTypeId);
+				
+				for(Object[] obj:usersDetails)
+				{
+					GenericVO userVO = new GenericVO();
+					
+					userVO.setId((Long)obj[0]);
+	                userVO.setName(obj[1].toString());
+	                
+	                usersList.add(userVO);
+				}
+				
+			}catch(Exception e)
+			{
+				 log.error("Exception raised in getUserForAssignedLeader method");
+				e.printStackTrace();
+			}
+			return usersList;
+		}
+		 
+	 public List<SurveyReportVO> getSurveyDetailsByBoothIds(List<Long> boothIds)
+		{
+				
+			List<SurveyReportVO> resultList = new ArrayList<SurveyReportVO>();
+			
+			try{
+				
+				List<Object[]> totalVoters = boothPublicationVoterDAO.getTotalVoters(boothIds);
+
+				if(totalVoters != null && totalVoters.size() > 0)
+				{
+					for(Object[] params : totalVoters)
+					{
+						 SurveyReportVO surveyReportVO = new SurveyReportVO();
+						 surveyReportVO.setBoothId((Long)params[0]);
+						 surveyReportVO.setPartNo(params[1].toString());
+						 surveyReportVO.setTotalVoters((Long)params[2]);
+						 resultList.add(surveyReportVO);						
+					   	
+					}
+				}
+				
+				List<Object[]> mobileNos = surveyDetailsInfoDAO.getMobileNoCountByListOfBooths(boothIds);
+				if(mobileNos != null && mobileNos.size() > 0)
+				{
+					 for(Object[] params : mobileNos)
+					 {
+						 SurveyReportVO result = getMatchedVO(resultList,(Long)params[0]);
+						 if(result != null)
+						 {							
+							 result.setMobileNoCount((Long)params[1]);
+							 
+						 }						 
+					 }				 
+				}					
+	           
+				List<Object[]> casteCount = surveyDetailsInfoDAO.getCasteCountByListOfBooths(boothIds);
+				if(casteCount != null && casteCount.size() > 0)
+				{
+					 for(Object[] params : casteCount)
+					 {
+						 SurveyReportVO result = getMatchedVO(resultList,(Long)params[0]);
+						 if(result != null)
+						 {							
+							 result.setCasteCount((Long)params[1]);							
+						 }						 
+					 }				 
+				}	
+				List<Object[]> hamletCount = surveyDetailsInfoDAO.getHamletCountByListOfBooths(boothIds);
+				if(hamletCount != null && hamletCount.size() > 0)
+				{
+					 for(Object[] params : hamletCount)
+					 {
+						 SurveyReportVO result = getMatchedVO(resultList,(Long)params[0]);
+						 if(result != null)
+						 {							
+							 result.setHamletCount((Long)params[1]);							
+						 }						 
+					 }				 
+				}	
+				
+				
+			}
+			catch(Exception e)
+			{
+				log.error("Exception raised in getSurveyDetailsByBoothIds method");
+				e.printStackTrace();
+			}
+			return resultList;
+		}
+	 
+	 public SurveyReportVO getMatchedVO(List<SurveyReportVO> resultList,Long boothId)
+		{
+		
+			try{
+				if(resultList == null)
+					return null;
+				for(SurveyReportVO vo : resultList)
+				{
+					if(boothId.longValue() == vo.getBoothId().longValue())
+						return vo;
+				}
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				
+			}
+			return null;
+		}
 	
 	
 }

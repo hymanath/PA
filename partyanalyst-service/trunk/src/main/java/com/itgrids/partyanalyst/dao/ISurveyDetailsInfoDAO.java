@@ -85,6 +85,8 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	
 	public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId);
 	public List<?> getHamletCountBasedOnPanchayIds(List<?> panchayatIds);
-
-
+	
+	public List<Object[]> getHamletCountByListOfBooths(List<Long> boothIds);
+	public List<Object[]> getCasteCountByListOfBooths(List<Long> boothIds);
+	public List<Object[]> getMobileNoCountByListOfBooths(List<Long> boothIds);
 }
