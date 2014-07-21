@@ -24,6 +24,9 @@ import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IWebMonitorCompletedLocationsDetailsDAO;
 import com.itgrids.partyanalyst.dao.IWebMonitoringAssignedUsersDAO;
 import com.itgrids.partyanalyst.dto.GenericVO;
+import com.itgrids.partyanalyst.dto.HamletCountInputVO;
+import com.itgrids.partyanalyst.dto.HamletCountVo;
+import com.itgrids.partyanalyst.dto.PanchayatHamletsCountVo;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -373,7 +376,7 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 		
 	}
 	
-	public GenericVO getSurveyStatusBoothList(Long constituencyId){
+public GenericVO getSurveyStatusBoothList(Long constituencyId){
 		
 		log.info("Entered into getSurveyStatusBoothList method in SurveyDetailsService class.");
 		
@@ -433,5 +436,76 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 		return genericVO;
 		
 	}
+
+	@SuppressWarnings("unchecked")
+	public  PanchayatHamletsCountVo   getSurveyDataCountForHamletsByPanchayats(HamletCountInputVO inputVo)
+	{
+		PanchayatHamletsCountVo responseVo= new PanchayatHamletsCountVo();
+		
+		List<?> details=surveyDetailsInfoDAO.getHamletCountBasedOnPanchayIds(inputVo.getPanchayatIds());
+		convertHamletDetailsIntoVo((List<Object[]>)details,responseVo);
+
+		
+		return responseVo;
+	}
+	
+    /**
+     * @author AnilKumar Ravula
+     * 
+     * @param details
+     * @param responseVo
+     * 
+     */
+	public   static void convertHamletDetailsIntoVo(List<Object[]> details, PanchayatHamletsCountVo responseVo) {
+	
+	
+		
+	
+		
+		List<PanchayatHamletsCountVo> responseSub= new ArrayList<PanchayatHamletsCountVo>();
+		
+		for (Object[] object : details) {
+			
+			long panchayatId=(Long)object[1];	
+			
+			
+		
+			PanchayatHamletsCountVo response=new PanchayatHamletsCountVo();			
+			response.setPanchayatId(panchayatId);
+			
+		    int voIndex=responseSub.indexOf(response);
+		     
+		    
+			if(responseSub.indexOf(voIndex)!=-1){
+			
+				response=responseSub.get(voIndex);
+			}
+			else{
+				
+               String panchayatName=object[0].toString();			
+               response.setPanchayatName(panchayatName);
+               response.setHamletsCountList(new ArrayList<HamletCountVo>());
+               responseSub.add(response);
+			}
+					
+			
+			
+			
+			
+			
+			HamletCountVo countVO= new HamletCountVo();
+			countVO.setHamletName(object[2].toString());
+			countVO.setHamletId((Long)object[3]);
+			countVO.setSurveyCount((Long)object[4]);
+			response.getHamletsCountList().add(countVO);  //adding hamlet to panchayatVo
+			
+			
+		}
+		responseVo.setPanchayatsList(responseSub);
+		
+	}
+	
+	
+	
 }
  

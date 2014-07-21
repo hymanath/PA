@@ -570,13 +570,48 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 		
 		return query.list();
 	}
-	
-	public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
+public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		
 		Query query = getSession().createQuery("select distinct SDI.booth.boothId,SDI.booth.partNo from SurveyDetailsInfo SDI where SDI.booth.constituency.constituencyId = :constituencyId");
 		
 		query.setParameter("constituencyId", constituencyId);
 		return query.list();
 	}
+   /**
+    * 
+    * @param panchayatIds
+    * @return
+    */
+    
+    
+	 public List<?> getHamletCountBasedOnPanchayIds(List<?> panchayatIds)
+	 
+	 {
+		 
+		StringBuffer sb =new StringBuffer();
+		
+		sb.append("select ph.panchayat.panchayatName,ph.panchayat.panchayatId,sinfo.hamlet.hamletName,sinfo.hamlet.hamletId,count(distinct sinfo.surveyDetailsInfoId)  ");
+		sb.append("from ");
+		sb.append("SurveyDetailsInfo sinfo,PanchayatHamlet ph ");
+		
+		sb.append("where ");
+		
+		sb.append("sinfo.hamlet.hamletId=ph.hamlet.hamletId and sinfo.isDelete='N' and  ph.panchayat.panchayatId in (:panchayatIds) ");
+		sb.append("group by sinfo.hamlet.hamletId ");
+		
+		sb.append("order by ph.panchayat.panchayatName,sinfo.hamlet.hamletName ");
+
+		
+		
+		 Query query = getSession().createQuery(sb.toString());
+			
+			
+		 query.setParameterList("panchayatIds",panchayatIds );
+		 
+		return query.list();
+		 
+		 
+	 }
+	
 	
 }
