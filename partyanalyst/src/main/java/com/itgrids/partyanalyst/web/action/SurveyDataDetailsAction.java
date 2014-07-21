@@ -1654,9 +1654,9 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		} 
 		catch (Exception e)
 		{
-			LOG.error("Exception raised in unTagConstituencyOfUser", e);
+			LOG.error("Exception raised in unTagConstituencyOfUser()  in SurveyDataDetailsAction class.", e);
 		}
 		return Action.SUCCESS;
   }
-  
+   
 }
