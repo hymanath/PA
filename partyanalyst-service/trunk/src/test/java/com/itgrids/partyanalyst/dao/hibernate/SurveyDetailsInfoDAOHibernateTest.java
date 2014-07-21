@@ -1,17 +1,9 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
-import com.itgrids.partyanalyst.dto.SurveyReportVO;
-import com.itgrids.partyanalyst.model.SurveyDetailsInfo;
 
 public class SurveyDetailsInfoDAOHibernateTest extends BaseDaoTestCase{
 	private ISurveyDetailsInfoDAO surveyDetailsInfoDAO;
@@ -138,7 +130,7 @@ public class SurveyDetailsInfoDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(returnList.size());
 	}
 */
-	
+/*	
 	public void testgetAll(){
 		List<Long> userIds = new ArrayList<Long>();
 		userIds.add(46L);
@@ -202,7 +194,7 @@ public class SurveyDetailsInfoDAOHibernateTest extends BaseDaoTestCase{
 		
 	}
 
-	
+	*/
 	
 	
 /*	public void testgetCasteWiseCountInBooth(){	
@@ -248,4 +240,10 @@ public class SurveyDetailsInfoDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(returnList.size());
 	}
 	*/
+	
+	/*public void testgetProcecingBoothCountByConstId(){
+		
+		Long count = surveyDetailsInfoDAO.getProcecingBoothCountByConstId(217L);
+		System.out.println(count);
+	}*/
 }
