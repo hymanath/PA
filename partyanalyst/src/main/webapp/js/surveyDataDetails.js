@@ -73,7 +73,7 @@ function getRemeaningSurveyUsersByUserType(divId,value,processImg)
 function getSurveyUsersByUserType(divId,value,processImg)
 {
 	$('#'+processImg+'').show();
-	$('#'+divId+'').find('option').remove();
+	
 	var jsObj =
 	{
 	userTypeId :value,
@@ -86,7 +86,7 @@ function getSurveyUsersByUserType(divId,value,processImg)
 	data: {task:JSON.stringify(jsObj)},
 	}).done(function(result){
 		
-		$('#'+divId+'').append('<option value="0">Select User</option>');
+		$('#'+divId+'').find('option:not(:first)').remove();
 		if(result != null && result.length > 0)
 		{
 			for(var i in result)
@@ -1091,9 +1091,15 @@ function saveUserAssignedBoothsDetails()
 	var boothAssignUserType= $("#boothAssignUserType").val();
 	var  surveyUserId = $('#userId').val();
 	var constituencyId = $('#constituencyId').val();
+	var leaderId = $('#leaderIdForBooth').val();
 	if(boothAssignUserType == 0)
 	{
 		$("#assignBoothErrorDiv").html("Please Select User Type").css("color","red");
+		return;	
+	}
+	if(leaderId == 0)
+	{
+		$("#assignBoothErrorDiv").html("Please Select Leader").css("color","red");
 		return;	
 	}
 	if(surveyUserId == 0)
@@ -2151,4 +2157,94 @@ function saveWebMonioringAssignDetails()
            $('#webMonitorErrorId').html("<span style='color:Green;'>Assigned Successfully...</span>");
 		}
 	});
+}
+
+function getUsersForLeaders(divId,value)
+{
+	
+	var jsObj =
+	{
+	leaderId :value,
+	userTypeId : $("#boothAssignUserType").val(),
+	task : "getUsersForLeader"
+	}
+	$.ajax({
+	type:'GET',
+	url: 'getUsersForLeaderAction.action',
+	dataType: 'json',
+	data: {task:JSON.stringify(jsObj)},
+	}).done(function(result){
+		
+		$('#'+divId+'').find('option:not(:first)').remove();
+		if(result != null && result.length > 0)
+		{
+			for(var i in result)
+			{
+				$('#'+divId+'').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+			}
+
+		}
+		
+	});
+}	
+function getSurveyBoothDetails()
+{
+	
+	var jsObj =
+	{
+		boothIds:["370994","370995"]
+	}
+	$.ajax({
+	type:'GET',
+	url: 'getSurveyBoothDetailsAction.action',
+	dataType: 'json',
+	data: {task:JSON.stringify(jsObj)},
+	}).done(function(result){
+		buildSurveyBoothDetailsTable(result);
+	});
+}
+
+function buildSurveyBoothDetailsTable(result)
+{
+if(result != null && result.length > 0)
+			{	
+				var str = '';
+			
+				str += '<div class="span10 offset1">';
+				str += '<h4></h4>';
+				str += '<div class="row">';
+				str += '<div class="span8 offset2">';
+				str += '<table class="table table-bordered">';
+				str += '<thead>';
+				str += '<tr>	';									  
+				str += ' <th>Booth NO</th>';
+				str += '<th>Total Voters</th>	';	
+				str += ' <th>Mobile Numbers Collected</th>';
+				str += '<th>Caste Collected</th>	';
+				str += ' <th>Hamlets Collected</th>';
+						
+				str += '</tr>';
+				str += ' </thead>';
+				str += '<tbody>	';			
+				for(var i in result)
+				{
+					str += '<tr>		';								  
+					str += '<td>'+result[i].partNo+'</td>';
+					str += '<td>'+result[i].totalVoters+'</td>';
+					str += '<td>'+result[i].mobileNoCount+'</td>';
+					str += '<td>'+result[i].casteCount+'</td>';
+					str += '<td>'+result[i].hamletCount+'</td>';
+					str += '</tr>	';									
+				}
+				
+				str += '</tbody>';
+				str += '</table>';
+				str += '</div>';
+				str += '</div>';
+			
+			    str += '</div>';
+				
+				$('#tableDtailsDiv').html(str);
+			}			
+		
 }
