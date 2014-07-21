@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.dto.UserBoothDetailsVO;
+import com.itgrids.partyanalyst.dto.VerificationCompVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ISurveyDashBoardService;
 import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
@@ -70,6 +71,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	private List<SurveyDashBoardVO> resultList;
 	private Long constituencyId;
 	private Long leaderId;
+	private List<VerificationCompVO> verificationCompVOList;
 
 	public Long getLeaderId() {
 		return leaderId;
@@ -332,6 +334,16 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 
 	public void setCountList(List<Long> countList) {
 		this.countList = countList;
+	}
+
+	
+	public List<VerificationCompVO> getVerificationCompVOList() {
+		return verificationCompVOList;
+	}
+
+	public void setVerificationCompVOList(
+			List<VerificationCompVO> verificationCompVOList) {
+		this.verificationCompVOList = verificationCompVOList;
 	}
 
 	public String execute()
@@ -1741,4 +1753,30 @@ public String getPanchayatsStatusDetails()
 	}
 	return Action.SUCCESS;
 }
+  
+  public String checkForVerifierData()
+ 	{
+ 		try
+ 		{
+ 			HttpSession session = request.getSession();
+ 			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+ 			if(user == null)
+ 			{
+ 				return Action.INPUT;
+ 			}
+ 			jObj = new JSONObject(getTask());
+ 			List<Long> boothIds = new ArrayList<Long>();
+			JSONArray jarray = jObj.getJSONArray("boothIds");
+			for (Integer i = 0; i < jarray.length(); i++) 
+			{
+				boothIds.add(Long.valueOf(jarray.get(i).toString()));
+			}
+ 			verificationCompVOList = surveyDetailsService.checkForVerifierData(boothIds);
+ 		} 
+ 		catch (Exception e)
+ 		{
+ 			LOG.error("Exception raised in unTagConstituencyOfUser", e);
+ 		}
+ 		return Action.SUCCESS;
+ 	}
 }

@@ -69,7 +69,17 @@ function getRemeaningSurveyUsersByUserType(divId,value,processImg)
 	$('#'+processImg+'').hide();
 	});
 }
-
+function getSurveyUsersByUserTypeForBooth(divId,id)
+{
+	if(id == 1)
+	{
+		getSurveyUsersByUserType(divId,3);
+	}
+	else
+	{
+		getSurveyUsersByUserType(divId,5);
+	}
+}
 function getSurveyUsersByUserType(divId,value,processImg)
 {
 	$('#'+processImg+'').show();
