@@ -7741,5 +7741,12 @@
 							<param name="root">committee</param>
 					</result>
   		</action>
+  		
+  		<action name="getSurveyStatusBoothListAction" class="surveyDataDetailsAction" method="getSurveyStatusBoothList">
+				<result type="json" name="success">
+					<param name="root">genericVO</param>
+				</result>
+	  	</action> 
+	  	
 </package>
 </struts>      
