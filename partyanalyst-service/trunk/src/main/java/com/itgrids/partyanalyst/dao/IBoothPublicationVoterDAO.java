@@ -674,7 +674,7 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId);
 	  
 	  public List<Object[]> getBoothWiseVoterDetails(List<Long> boothIds);
-	
+	  public List<Object[]> getVoterDetailsByBoothID(List<Long> boothId);
 	  public List<Object[]> getTotalVoters(List<Long> boothIds);
 		public Long getTotalVotersForPanchayat(List<Long> boothIds);
 }
