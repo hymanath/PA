@@ -19,6 +19,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
+import javax.persistence.UniqueConstraint;
 
 /**
  * 
@@ -28,7 +29,7 @@ import org.hibernate.annotations.NotFoundAction;
  *
  */
 @Entity
-@Table(name = "survey_details_info")
+@Table(name = "survey_details_info",uniqueConstraints=@UniqueConstraint(columnNames={"voter_id" , "survey_user_id" ,"uuid"}))
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class SurveyDetailsInfo
 {
@@ -58,6 +59,10 @@ public class SurveyDetailsInfo
 	private Long surveySurveyorTypeId;
 	//is_houseNO_point
 	private String HouseNoPoint;
+	private String isDelete;
+	
+	
+	
 	
 	
 	
@@ -282,6 +287,15 @@ public class SurveyDetailsInfo
 	public void setIsHouseNoPoint(String isHouseNoPoint) {
 		this.isHouseNoPoint = isHouseNoPoint;
 	}*/
+	@Column(name="is_delete",insertable=false)
+	public String getIsDelete() {
+		return isDelete;
+	}
+	public void setIsDelete(String isDelete) {
+		this.isDelete = isDelete;
+	}
+	
+	
 	
 	
 	
