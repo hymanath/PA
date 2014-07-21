@@ -59,7 +59,8 @@ function showHideTabs(id)
 		$('#startTime').hide();
 		$('#boothWise').hide();
 		$('#dataCollector').hide();
-        $('#inActiveUsersDetails').hide();		
+        $('#inActiveUsersDetails').hide();	
+		$('#completeBooths').hide();
 	}
 	else
 	{
@@ -1360,7 +1361,7 @@ function getReportForConstituency(){
 	var constituencyId = $('#reportConstituencyId').val();
 	$('#errDivIdForReport').html('');
 	$('#basicCountDiv').html('');
-	
+	 $("#panchayatsStatusDiv").html('');
 	if(constituencyId == 0){
 		$('#errDivIdForReport').html('Please Select Constituency.');
 		return;
@@ -1372,6 +1373,7 @@ function getReportForConstituency(){
 		task : "getSurveyStatusBoothData"
 	}
 	$("#reportDataImg").show();
+	getPanchayatsStatusCount(constituencyId)
 	$.ajax({
 		type:'GET',
 		url: 'getSurveyStatusBoothListAction.action',
@@ -1435,5 +1437,92 @@ function getDetailReport(searchType){
 		
 			alert(111);
 		});
+	
+}
+
+function getPanchayatsStatusCount(constituencyId)
+{
+   
+	var jObj =
+	{
+	  constituencyId:constituencyId     
+	};
+
+	 $.ajax({
+			type:'GET',
+			url: 'getPanchayatsStatusCountAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){				
+			buildStatusForPanchayats(result,constituencyId);	
+		});
+	
+	
+}
+function getPanchayatDetails(status,constituencyId)
+{
+var jObj =
+	{
+	  constituencyId:constituencyId ,
+	  status:status
+	};
+
+	 $.ajax({
+			type:'GET',
+			url: 'getPanchayatsStatusDetailsAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){				
+			buildStatusForPanchayatDetials(result);	
+		});
+}
+function buildStatusForPanchayats(result,constituencyId)
+{
+
+	var str='';
+	str+='<div class="span12 booths-Overview-widget">';
+	str+='<div class="row-fluid"></div>';
+	str+='<div class="row-fluid">';
+	str+='<ul class="inline unstyled booths-Overview-widget-nav">';
+	str+='<li><hgroup><h4>PANCHAYAT</h4><h2 id="panchayatreadyID"><a onclick="getPanchayatDetails(\'completed\',\''+constituencyId+'\')">'+result.panchayatCount+'</a></h2><h5>Ready</h5></hgroup>';
+	str+='</li>';
+	str+='<li><hgroup><h4>PANCHAYAT</h4><h2 id="panchayatNotReady"><a onclick="getPanchayatDetails(\'notcompleted\',\''+constituencyId+'\')">'+result.panchayatNotCompleteCount+'</a></h2><h5>Not Ready</h5></hgroup>';
+	str+='</li></ul></div></div></div>';
+	$("#panchayatsStatusDiv").html(str);
+}
+
+function buildStatusForPanchayatDetials(result)
+{
+	var str='';
+	if(result.length == 0)
+	{
+	
+	$("#panchayatDetailsDiv").html('<font color="red">No Data Available...</font>').css("text-align","center");
+	return;
+	}
+
+		str+='<table class="table table-bordered" id="panchayatStatusTable">';
+		str+='<thead>';
+		str+='<th>Panchayat Name</th>';
+		str+='<th>Total Voters</th>';
+		str+='<th>Mobile Collected</th>';
+		str+='<th>Caste Collected</th>';
+		str+='<th>Hamlet Collected</th>';
+		str+='</thead>';
+		str+='<tbody>';
+		for(var i in result)
+		{
+			str+='<tr>';
+			str+='<td id='+result[i].id+'>'+result[i].name+'</td>';
+			str+='<td>'+result[i].totalVoters+'</td>';
+			str+='<td>'+result[i].mobileNoCount+'</td>';
+			str+='<td>'+result[i].casteCount+'</td>';
+			str+='<td>'+result[i].hamletCount+'</td>';
+			str+='</tr>';
+		}
+		str+='</tbody>';
+		str+='</table>';
+	$("#panchayatDetailsDiv").html(str);
+	$("#panchayatStatusTable").dataTable();
 	
 }
