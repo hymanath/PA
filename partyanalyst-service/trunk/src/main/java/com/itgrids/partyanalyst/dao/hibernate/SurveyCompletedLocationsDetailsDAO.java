@@ -83,7 +83,7 @@ public class SurveyCompletedLocationsDetailsDAO extends GenericDaoHibernate<Surv
 	
 	public List<Long> getSurveyCompletedCountByConstId(Long scopeId,List<Long> boothIds)
 	{
-		Query query = getSession().createQuery(" select distinct SCLD.locationValue from SurveyCompletedLocationsDetails SCLD where SCLD.locationScopeId = :scopeId and " +
+		Query query = getSession().createQuery(" select distinct SCLD.locationValue from SurveyCompletedLocationsDetails SCLD where SCLD.locationScopeId = :locationScopeId and " +
 				" SCLD.locationValue  in (:boothIds) ");
 		
 		query.setParameter("locationScopeId", IConstants.BOOTH_SCOPE_ID);
