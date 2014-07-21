@@ -2101,7 +2101,7 @@ function getAssignedUsersOfConstituency()
 	type:'GET',
 	url: 'getAssignedUsersOfAConstituency.action',
 	dataType: 'json',
-	data: {constituencyId:$('#webMonitorConstituencyId').val(),userId:$('#webMonitorUserId').val()},
+	data: {constituencyId:$('#webMonitorConstituencyId').val()},
 	}).done(function(result){
       buildConstituencies(result);
 	});
