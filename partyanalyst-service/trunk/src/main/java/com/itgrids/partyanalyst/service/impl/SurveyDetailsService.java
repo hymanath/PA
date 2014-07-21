@@ -11,6 +11,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IRegionWiseSurveysDAO;
 import com.itgrids.partyanalyst.dao.ISurveyAccessUsersDAO;
 import com.itgrids.partyanalyst.dao.ISurveyCompletedLocationsDetailsDAO;
@@ -70,6 +71,8 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 	@Autowired
 	private IWebMonitorCompletedLocationsDetailsDAO webMonitorCompletedLocationsDetailsDAO;
 	
+	@Autowired
+	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
 	public IRegionWiseSurveysDAO getRegionWiseSurveysDAO() {
 		return regionWiseSurveysDAO;
 	}
