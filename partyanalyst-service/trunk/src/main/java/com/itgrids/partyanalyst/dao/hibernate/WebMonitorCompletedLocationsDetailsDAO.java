@@ -26,4 +26,15 @@ public class WebMonitorCompletedLocationsDetailsDAO extends GenericDaoHibernate<
 		return (Long) query.uniqueResult();
 		
 	}
+	
+	public List<Long> getPanchayatBoothsByConstituencyId(Long scopeId)
+	{
+	
+		
+		Query query = getSession().createQuery("select distinct model.locationValue from WebMonitorCompletedLocationsDetails model" +
+				" where model.locationScopeId = :scopeId");
+		query.setParameter("scopeId", scopeId);
+		return query.list();
+	}
+
 }

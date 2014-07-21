@@ -1921,4 +1921,28 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		return query.list();
 		
 	}
+	
+	 public List<Object[]> getPanchayatBoothDetails(Long constituencyId,Long publicationId){
+			Query query = getSession().createQuery("select distinct model.panchayat.panchayatId , model.panchayat.panchayatName , model.boothId from Booth model where model.publicationDate.publicationDateId = :publicationId and model.constituency.constituencyId =:constituencyId");
+
+			query.setParameter("publicationId", publicationId);
+			query.setParameter("constituencyId", constituencyId);
+
+			return query.list();
+			}
+	 
+	 @SuppressWarnings("unchecked")
+		public List<Object[]> getPanchayatBooths(List<Long> boothIds) {
+			Query queryObject = getSession().createQuery("select distinct model.panchayat.panchayatId , model.panchayat.panchayatName , model.boothId from Booth model where model.boothId in (:boothIds)");
+			queryObject.setParameterList("boothIds", boothIds);
+			return queryObject.list();
+		}
+		
+		 @SuppressWarnings("unchecked")
+			public List<Object[]> getBoothsByPanhcayats(List<Long> panchayatIds) {
+				Query queryObject = getSession().createQuery("select distinct model.panchayat.panchayatId , model.panchayat.panchayatName , model.boothId from Booth model where  model.panchayat.panchayatId in (:panchayatIds)");
+				queryObject.setParameterList("panchayatIds", panchayatIds);
+				return queryObject.list();
+			}
+
 }

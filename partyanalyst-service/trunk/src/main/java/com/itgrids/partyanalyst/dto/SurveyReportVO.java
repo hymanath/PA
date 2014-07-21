@@ -65,6 +65,37 @@ public class SurveyReportVO {
 	private List<GenericVO> genericVOList = new ArrayList<GenericVO>();
 	private String percent;
 	
+	private Long panchayatCount =0l;
+	private Long panchayatNotCompleteCount = 0l;
+	
+	private List<Long> completeIds = new ArrayList<Long>();
+	private List<Long> notCompleteIds = new ArrayList<Long>();
+	
+	
+	public List<Long> getCompleteIds() {
+		return completeIds;
+	}
+	public void setCompleteIds(List<Long> completeIds) {
+		this.completeIds = completeIds;
+	}
+	public List<Long> getNotCompleteIds() {
+		return notCompleteIds;
+	}
+	public void setNotCompleteIds(List<Long> notCompleteIds) {
+		this.notCompleteIds = notCompleteIds;
+	}
+	public Long getPanchayatCount() {
+		return panchayatCount;
+	}
+	public void setPanchayatCount(Long panchayatCount) {
+		this.panchayatCount = panchayatCount;
+	}
+	public Long getPanchayatNotCompleteCount() {
+		return panchayatNotCompleteCount;
+	}
+	public void setPanchayatNotCompleteCount(Long panchayatNotCompleteCount) {
+		this.panchayatNotCompleteCount = panchayatNotCompleteCount;
+	}
 	public String getPercent() {
 		return percent;
 	}

@@ -89,4 +89,8 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	public List<Object[]> getHamletCountByListOfBooths(List<Long> boothIds);
 	public List<Object[]> getCasteCountByListOfBooths(List<Long> boothIds);
 	public List<Object[]> getMobileNoCountByListOfBooths(List<Long> boothIds);
+	public Long getHamletCountByBooths(List<Long> boothIds);
+	public Long getMbileNoCountByBooths(List<Long> boothIds);
+	public Long getCasteCountByBooths(List<Long> boothIds);
+	
 }
