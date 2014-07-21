@@ -1,8 +1,10 @@
 function showHideTabs(id)
 {
+
 	$(".errClass").html('');
 	if(id == "completedBoothsTab")
 	{
+		$('#statusReportDiv').hide();
 		$('#webMontrId').hide();
 		$('#callCenter').hide();
 		$('#startTime').hide();
@@ -16,18 +18,20 @@ function showHideTabs(id)
 	}
 	else if(id == "callCenterTab")
 	{
+		$('#statusReportDiv').hide();
 		$('#webMontrId').show();
 		$('#callCenter').show();
 		$('#startTime').hide();
 		$('#boothWise').hide();
 		$('#dataCollector').hide();
         $('#inActiveUsersDetails').hide(); 
-		 $('#completeBooths').hide();
+		$('#completeBooths').hide();
 
 		
 	}
 	else if (id == "startTimeTab")
 	{
+		$('#statusReportDiv').hide();
 		$('#webMontrId').hide();
 		$('#callCenter').hide();
 		$('#startTime').show();
@@ -38,6 +42,7 @@ function showHideTabs(id)
 	}
 	else if(id == "boothWiseTab")
 	{
+		$('#statusReportDiv').hide();
 		$('#webMontrId').hide();
 		$('#callCenter').hide();
 		$('#startTime').hide();
@@ -47,8 +52,18 @@ function showHideTabs(id)
 		$('#completeBooths').hide();
 
 	}
+	else if(id == "surveyStatusRprtTab"){
+
+		$('#statusReportDiv').show();
+		$('#callCenter').hide();
+		$('#startTime').hide();
+		$('#boothWise').hide();
+		$('#dataCollector').hide();
+        $('#inActiveUsersDetails').hide();		
+	}
 	else
 	{
+		$('#statusReportDiv').hide();
 		$('#webMontrId').hide();
 		$('#callCenter').hide();
 		$('#startTime').hide();
@@ -1339,4 +1354,86 @@ function buildDayWiseReportByUserType(result)
 	if($('#fromDate').val()  == $('#toDate').val())
 		 $('#daywisereportTableId').dataTable();
 
+}
+
+function getReportForConstituency(){
+	var constituencyId = $('#reportConstituencyId').val();
+	$('#errDivIdForReport').html('');
+	$('#basicCountDiv').html('');
+	
+	if(constituencyId == 0){
+		$('#errDivIdForReport').html('Please Select Constituency.');
+		return;
+	}
+	
+	var jsObj = 
+	{
+		constituencyId:constituencyId,
+		task : "getSurveyStatusBoothData"
+	}
+	$("#reportDataImg").show();
+	$.ajax({
+		type:'GET',
+		url: 'getSurveyStatusBoothListAction.action',
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)},
+		}).done(function(result){
+				$("#reportDataImg").hide();
+				if(result != null && result.genericVOList != null && result.genericVOList.length > 0 ){
+					buildReportData(result.genericVOList);
+				}
+				else{
+					$('#basicCountDiv').html(' No Data Available ... ');
+				}
+		});
+		
+}
+
+function buildReportData(result){
+
+$('#basicStatusReport').html('');
+
+var str ='';
+	
+		str +='<table id="reportTable" class="table table-boardered">';
+			str +='<tr>';
+				str +='<thead>';
+					str +='<th> Processing Booths </th>';
+					str +='<th> Completed Booths </th>';
+					str +='<th> Web Monitor Completed Booths </th>';
+				str +='</thead>';
+			str +='</tr>';
+		str +='<tbody>';
+			str +='<tr>';
+				for(var i in result){
+					str +='<td><a href="javascript:{getDetailReport(\''+result[i].name+'\');}" >'+result[i].id+'</a></td>';
+
+				}
+			str +='</tr>';
+		str +='</tbody>';
+		str +='</table>';
+	
+	$('#basicStatusReport').html(str);
+}
+
+function getDetailReport(searchType){
+	var constituencyId = $('#reportConstituencyId').val();
+	
+	var jsObj = 
+	{
+		constituencyId:constituencyId,
+		searchType : searchType,
+		task : "getDetaildReportForSurvey"
+	}
+	$("#reportDataImg").show();
+	$.ajax({
+		type:'GET',
+		url: 'getDetaildReportForSurveyAction.action',
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)},
+		}).done(function(result){
+		
+			alert(111);
+		});
+	
 }
