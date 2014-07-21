@@ -99,6 +99,7 @@
 					<li><a class="highlight" id="boothWiseTab" onclick="showHideTabs(this.id);">Data Report</a></li>
 					<li id="webMontrId" style="display:none;"><a class="highlight" id="callCenterTab" onclick="showHideTabs(this.id);"> Web Monitoring </a></li>
 					<li><a class="highlight" id="dataCollectorWise" onclick="showHideTabs(this.id);"> Verfication report </a></li>
+					<li><a class="highlight" id="surveyStatusRprtTab" onclick="showHideTabs(this.id);"> Survey Status Report </a></li>
 				</ul>
 			</div>
 		</div>
@@ -311,7 +312,7 @@
 								</div>
 							</div>
 							<div class="row text-center m_top20" style="margin-right:51px;"><button type="button" class="btn btn-success" onClick="getSurveyUserLoctionCount();">SUBMIT</button>
-							<img id="processingImg" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
+							<img src='images/Loading-data.gif' class="offset5"  id="reportDataImg" style="width:70px;height:60px;display:none;"/>
 							</div>
 							<div id="basicCountDiv" class="span10 m_top20">
 
@@ -374,6 +375,41 @@
 				
 			</div>
 		</div>
+		
+		<div class="row" id="statusReportDiv">
+			<div class="span12">
+				<div class="row-fluid ">
+					<div class="span12 widgetservey_Red m_top20">
+							<h4> State wise Survey Status Report </h4>						
+						<div class="row">
+						<div class="span8 offset3">
+									<div class="row-fluid">
+						<div id="errDivIdForReport" class="span8 errClass offset" style="color:#FF0020;font-size:15px;" ></div>
+						</div></div></div>
+						<div class="row">
+								<div class="span8 offset3">
+									<div class="row-fluid">
+										
+										<div class="span6">
+											Select Constituency <font class="requiredFont">*</font>
+												<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="reportConstituencyId" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" />
+										</div>
+										
+									</div>	
+								
+									</div>
+									</div>
+					
+						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getReportForConstituency()"> Get Report </button></div>
+						 
+						
+						<div class="row-fluid " id= "basicStatusReport" style="margin-top:20px;"></div>
+											
+					</div>
+				</div>
+			</div>
+		</div>
+		
 	<script>
 		var userIds = new Array();
 		<c:forEach var="user" items="${usersList}">
