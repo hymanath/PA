@@ -109,8 +109,14 @@
 							<h4> Web Monitoring </h4>	
 						
 						 <img src='images/Loading-data.gif' class="offset5"  id="searchDataImg" style="width:70px;height:60px;display:none;"/>
+						 <div class="row-fluid">
+							<div id="userInfoDiv1" class="span4" style="background-color: #e9e9e9; padding: 5px;display:none;margin-top:25px;margin-bottom:10px;" class="errClass"></div>
+							<div id="userInfoDiv2" class="span4" style="background-color: #e9e9e9; padding: 5px;display:none;margin-top:25px;margin-bottom:10px;" class="errClass"></div>
+							<div id="userInfoDiv3" class="span4" style="background-color: #e9e9e9; padding: 5px;display:none;margin-top:25px;margin-bottom:10px;" class="errClass"></div>
+						</div>
+						
 						<div class="row-fluid">
-							<div id="casteInfoDiv" style="background-color: #dff0d8; padding: 5px;display:none;margin-top:25px;margin-bottom:25px;" class="errClass"></div>	
+							<div id="casteInfoDiv" style="background-color: #e9e9e9; padding: 5px;display:none;margin-top:25px;margin-bottom:25px;" class="errClass"></div>	
 						</div>
 						
 						<div class="row-fluid">
