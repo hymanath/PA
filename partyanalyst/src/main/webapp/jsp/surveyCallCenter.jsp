@@ -400,13 +400,25 @@
 									</div>
 									</div>
 					
-						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getReportForConstituency()"> Get Report </button></div>
+						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getReportForConstituency();"> Get Report </button></div>
 						 
 						
 						<div class="row-fluid " id= "basicStatusReport" style="margin-top:20px;"></div>
 											
 					</div>
 				</div>
+				
+				
+				<!-- panchayat status -->
+				<div class="row-fluid" id="panchayatsStatusDiv">
+				
+				</div>
+				<div class="row-fluid" id="panchayatDetailsDiv" style="margin-top:20px;">
+				
+				</div>
+				
+				<!-- end -->
+				
 			</div>
 		</div>
 		

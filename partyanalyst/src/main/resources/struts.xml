@@ -7741,6 +7741,17 @@
 							<param name="root">committee</param>
 					</result>
   		</action>
+			<action name="getPanchayatsStatusCountAction" class="surveyDataDetailsAction" method="getPanchayatsStatus">
+  					<result type="json" name="success">
+							<param name="root">surveyReportVO</param>
+					</result>
+  		</action>
+  			<action name="getPanchayatsStatusDetailsAction" class="surveyDataDetailsAction" method="getPanchayatsStatusDetails">
+  					<result type="json" name="success">
+							<param name="root">surveyUserDetails</param>
+					</result>
+  		</action>
+		
   		
   		<action name="getSurveyStatusBoothListAction" class="surveyDataDetailsAction" method="getSurveyStatusBoothList">
 				<result type="json" name="success">
