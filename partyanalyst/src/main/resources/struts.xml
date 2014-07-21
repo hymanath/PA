@@ -7747,6 +7747,17 @@
 					<param name="root">genericVO</param>
 				</result>
 	  	</action> 
-	  	
+	  	 		
+  		<action name="getUsersForLeaderAction" class="surveyDataDetailsAction" method="getUsersOfALeader">
+  					<result type="json" name="success">
+							<param name="root">usersList</param>
+					</result>
+  		</action>
+  		
+  		<action name="getSurveyBoothDetailsAction" class="surveyDataDetailsAction" method="getSurveyBoothDetails">
+  					<result type="json" name="success">
+							<param name="root">boothWiseCountList</param>
+					</result>
+  		</action>
 </package>
 </struts>      

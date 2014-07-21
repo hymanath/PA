@@ -317,21 +317,29 @@
 					<div class="span12 widgetservey_Red m_top20">
 							<h4>Assign Booth To User</h4>
 							<div class="row">
-								<div id="assignBoothErrorDiv" class="span8 offset2 errorCls"></div>
+								<div id="assignBoothErrorDiv" class="span8 offset3 errorCls"></div>
 							</div>
 								<div class="row">
-								<div class="span12 offset1">
+								<div class="span12 offset3">
 									<div class="row-fluid">
 										<div class="span3">
 											Select User Type<font class="requiredFont">*</font>
-											<select class="input-block-level" id="boothAssignUserType" onchange="getExistSurveyUsersByUserType('userId',this.value);">
+											<select class="input-block-level" id="boothAssignUserType" onchange="getSurveyUsersByUserType('leaderIdForBooth',this.value);">
 											
 											<option value="0">Select User type</option>
-											<option value="1">Data Collectors</option>
-											<option value="4">Data Verifier</option>
+											<option value="3">Data Collectors</option>
+											<option value="5">Data Verifier</option>
 											<!--<option value="5">Verifier Lead</option>-->
 											</select>
 										</div>
+										<div class="span3">
+											Select Leader<font class="requiredFont">*</font>
+											<select class="input-block-level" id="leaderIdForBooth" onChange="getUsersForLeaders('userId',this.value)"> 
+											<option value="0">Select Leader</option>
+											</select>
+										</div>
+										</div>
+										<div  class="row-fluid">
 										<div class="span3">
 											Select User Name<font class="requiredFont">*</font>
 											<select class="input-block-level" id="userId" onChange="getExistedConstituenciesDetails(this.value)"> 
@@ -730,6 +738,9 @@
 							
 							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onClick="saveWebMonioringAssignDetails();">ASSIGN</button>
 							<img src='./images/icons/search.gif' id="webMonioringAssignimg" style="display:none;"/></div>
+							
+							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onClick="getSurveyBoothDetails();">Details</button>
+							<div id="tableDtailsDiv"></div>
 					</div>
 				</div>
 			</div>
