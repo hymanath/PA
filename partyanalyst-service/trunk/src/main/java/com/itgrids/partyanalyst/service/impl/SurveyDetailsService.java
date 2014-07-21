@@ -13,6 +13,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IRegionWiseSurveysDAO;
 import com.itgrids.partyanalyst.dao.ISurveyAccessUsersDAO;
+import com.itgrids.partyanalyst.dao.ISurveyCompletedLocationsDetailsDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserConstituencyDAO;
@@ -20,6 +21,7 @@ import com.itgrids.partyanalyst.dao.ISurveyUserDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserRelationDAO;
 import com.itgrids.partyanalyst.dao.IUpdationDetailsDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.IWebMonitorCompletedLocationsDetailsDAO;
 import com.itgrids.partyanalyst.dao.IWebMonitoringAssignedUsersDAO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -59,6 +61,11 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 	@Autowired
 	private ISurveyUserDAO surveyUserDAO;
 
+	@Autowired
+	private ISurveyCompletedLocationsDetailsDAO surveyCompletedLocationsDetailsDAO;
+	
+	@Autowired
+	private IWebMonitorCompletedLocationsDetailsDAO webMonitorCompletedLocationsDetailsDAO;
 	
 	public IRegionWiseSurveysDAO getRegionWiseSurveysDAO() {
 		return regionWiseSurveysDAO;
@@ -363,6 +370,67 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 		}
 		
 		return resultList;
+		
+	}
+	
+	public GenericVO getSurveyStatusBoothList(Long constituencyId){
+		
+		log.info("Entered into getSurveyStatusBoothList method in SurveyDetailsService class.");
+		
+		 GenericVO genericVO = new GenericVO();
+
+		try
+		{
+			 List<GenericVO> resultList = new ArrayList<GenericVO>();
+			 
+			List<Object[]> processingBooths  =  surveyDetailsInfoDAO.getProcecingBoothCountByConstId(constituencyId);
+			List<Long> procesingBoothIds = new ArrayList<Long>();
+			if(processingBooths != null && processingBooths.size()>0){				
+				
+				for (Object[] booth : processingBooths) {
+					procesingBoothIds.add((Long) booth[0]);
+				}
+			}
+		
+			if(procesingBoothIds != null && procesingBoothIds.size()>0){			
+				List<Long> completedBooths  = surveyCompletedLocationsDetailsDAO.getSurveyCompletedCountByConstId(9L,procesingBoothIds);
+								
+				if(completedBooths != null && completedBooths.size()>0){	
+					
+					Long procesing = Long.valueOf(String.valueOf(processingBooths.size())) - Long.valueOf(String.valueOf(completedBooths.size()));
+					
+					GenericVO procesingVO = new GenericVO();
+					procesingVO.setName("procesing");
+					procesingVO.setId(procesing);
+					resultList.add(procesingVO);
+					
+					
+					
+					GenericVO completedVO = new GenericVO();
+					completedVO.setName("completed");
+					completedVO.setId(Long.valueOf(String.valueOf(completedBooths.size())));
+					resultList.add(completedVO);
+
+					
+					Long count = webMonitorCompletedLocationsDetailsDAO.getSurveyWMCompletedCountByConstId(9L,completedBooths);
+					
+					GenericVO WMCompletedVO = new GenericVO();
+					WMCompletedVO.setName("WMCompleted");
+					WMCompletedVO.setId(count);
+					resultList.add(WMCompletedVO);
+					
+				}
+			}
+			
+			genericVO.setGenericVOList(resultList);
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+	    	log.error("Exception raised in getSurveyStatusBoothList  method in SurveyDetailsService class.", e);
+			
+		}
+		
+		return genericVO;
 		
 	}
 }
