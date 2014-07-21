@@ -7155,4 +7155,12 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		query.setParameterList("boothIds", boothIds);
 		return query.list();
 	}
+	public Long getTotalVotersForPanchayat(List<Long> boothIds)
+	{
+		Query query = getSession().createQuery("select count(model.booth.boothId) from BoothPublicationVoter model where model.booth.boothId in (:boothIds)");
+		query.setParameterList("boothIds", boothIds);
+		return (Long) query.uniqueResult();
+	}
+	
+
 }

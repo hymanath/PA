@@ -20,6 +20,8 @@ public interface ISurveyDetailsService {
 	public ResultStatus unTagConstituencyForAUser(Long userId,Long constituencyId);
 	public List<GenericVO> getAssignedSurveyUsersForWebMontringTeam(Long userId);
 	public List<GenericVO> getNotStartedUsersDetails(Long webMonitorUserId,Long constituencyId);
+	  public SurveyReportVO getPanchayatsStatusCountByConstituency(Long constituencyId);
+	  public List<SurveyReportVO> getPanchayatsStatusWiseDataByConstituency(Long constituencyId,String status);
 	
 	
 	public GenericVO getSurveyStatusBoothList(Long constituencyId);

@@ -11,6 +11,9 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IRegionWiseSurveysDAO;
 import com.itgrids.partyanalyst.dao.ISurveyAccessUsersDAO;
@@ -36,6 +39,7 @@ import com.itgrids.partyanalyst.model.SurveyAccessUsers;
 import com.itgrids.partyanalyst.model.UpdationDetails;
 import com.itgrids.partyanalyst.service.ISurveyDetailsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class SurveyDetailsService implements ISurveyDetailsService {
 
@@ -70,6 +74,11 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 	
 	@Autowired
 	private IWebMonitorCompletedLocationsDetailsDAO webMonitorCompletedLocationsDetailsDAO;
+	@Autowired
+	private IBoothDAO boothDAO;
+	
+	@Autowired
+	private IPanchayatDAO panchayatDAO;
 	
 	@Autowired
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
@@ -378,6 +387,149 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 		return resultList;
 		
 	}
+	  /* get panchayats ready count and not ready count */
+	  
+	  public SurveyReportVO getPanchayatsStatusCountByConstituency(Long constituencyId)
+	  {
+		  SurveyReportVO vo = new SurveyReportVO();
+		  Map<Long,List<Long>> panchayatsBoothsMap = new HashMap<Long, List<Long>>();
+		  Map<Long,List<Long>> surveyPanchyatBoothsMap = new HashMap<Long, List<Long>>();
+		try{
+			
+	 	    List<Object[]> panchayatsBooths = boothDAO.getPanchayatBoothDetails(constituencyId,IConstants.VOTER_DATA_PUBLICATION_ID);
+	 	    List<Long> surveyBooths = webMonitorCompletedLocationsDetailsDAO.getPanchayatBoothsByConstituencyId(8l);
+	 	    if(surveyBooths != null && surveyBooths.size() > 0)
+	 	    {
+	 	    	List<Object[]> list = boothDAO.getPanchayatBooths(surveyBooths);
+	 	    	if(list != null && list.size() > 0)
+	 	    	{
+	 	    		for(Object[] params : list)	
+					{
+						 List<Long> boothIds = surveyPanchyatBoothsMap.get((Long)params[0]);	
+						if(boothIds == null)
+						{
+							boothIds = new ArrayList<Long>();
+							surveyPanchyatBoothsMap.put((Long)params[0], boothIds);
+						    
+						}
+						 boothIds.add((Long)params[2]);
+					}	
+	 	    	}
+	 	    }
+			if(panchayatsBooths != null && panchayatsBooths.size() > 0)
+			{
+				for(Object[] params : panchayatsBooths)	
+				{
+					 List<Long> boothIds1 = panchayatsBoothsMap.get((Long)params[0]);	
+					if(boothIds1 == null)
+					{
+						boothIds1 = new ArrayList<Long>();
+					    panchayatsBoothsMap.put((Long)params[0], boothIds1);
+					    
+					}
+					 boothIds1.add((Long)params[2]);
+				}
+				Long completed = 0l;
+				Long notCompleted = 0l;
+				List<Long> completedPanchayatIds = new ArrayList<Long>();
+				List<Long> notCompletedpanchayatIds = new ArrayList<Long>();
+				for(Long panchayatId : panchayatsBoothsMap.keySet())
+				{
+					List<Long> booths = surveyPanchyatBoothsMap.get(panchayatId);
+					List<Long> booths1 = panchayatsBoothsMap.get(panchayatId);
+					if(booths1 != null && booths1.size() > 0)
+					{
+						
+							if(booths != null && booths.size() == booths1.size())
+							{
+							 completed = completed + 1;
+							 completedPanchayatIds.add(panchayatId);
+							}
+							else
+							{
+							  notCompleted	= notCompleted + 1;
+							  notCompletedpanchayatIds.add(panchayatId);
+							}
+							
+					}
+						
+					
+				}
+				vo.setCompleteIds(completedPanchayatIds);
+				vo.setNotCompleteIds(notCompletedpanchayatIds);
+				vo.setPanchayatCount(completed);
+				vo.setPanchayatNotCompleteCount(notCompleted);
+			}
+			
+			
+			
+		}
+		catch (Exception e) {
+			log.error("Exception raised in getPanchayatsReadyCountByConstituency", e);	
+		}
+		return vo;
+	  }
+	  
+	  
+	  
+ /* get  panchayats ready Data and not ready Data */
+	  
+	  public List<SurveyReportVO> getPanchayatsStatusWiseDataByConstituency(Long constituencyId,String status)
+	  {
+		 
+		  List<SurveyReportVO> resultList = new ArrayList<SurveyReportVO>();
+		 List<Long> panchayatsIds = new ArrayList<Long>();
+		Map<Long,List<Long>> panchayatsBoothsMap = new HashMap<Long, List<Long>>();
+		try{
+			SurveyReportVO vo = getPanchayatsStatusCountByConstituency(constituencyId);
+			if(status.equalsIgnoreCase("completed"))
+				panchayatsIds = vo.getCompleteIds();
+			else
+				panchayatsIds = vo.getNotCompleteIds();
+			
+				 List<Object[]> list = boothDAO.getBoothsByPanhcayats(panchayatsIds); 
+				 if(list !=null && list.size() > 0)
+				 {
+					 for(Object[] params : list)	
+						{
+							 List<Long> boothIds1 = panchayatsBoothsMap.get((Long)params[0]);	
+							if(boothIds1 == null)
+							{
+								boothIds1 = new ArrayList<Long>();
+							    panchayatsBoothsMap.put((Long)params[0], boothIds1);
+							    
+							}
+							 boothIds1.add((Long)params[2]);
+						}
+				 }
+				 
+				 
+				 	for(Long panchayatId : panchayatsBoothsMap.keySet())
+				 	{
+				 		SurveyReportVO vo1 = new SurveyReportVO();
+				 		List<Long> boothIds = panchayatsBoothsMap.get(panchayatId);
+				 		vo1.setId(panchayatId);
+				 		vo1.setName(panchayatDAO.getPanchayatNameById(panchayatId));
+				 		Long totalVoters = boothPublicationVoterDAO.getTotalVotersForPanchayat(boothIds);
+				 		vo1.setTotalVoters(totalVoters);
+				 		Long hamletCount = surveyDetailsInfoDAO.getHamletCountByBooths(boothIds);
+				 		Long casteCount =surveyDetailsInfoDAO.getCasteCountByBooths(boothIds);
+				 		Long mobileNoCount =surveyDetailsInfoDAO.getMbileNoCountByBooths(boothIds);
+				 		vo1.setHamletCount(hamletCount);
+				 		vo1.setCasteCount(casteCount);
+				 		vo1.setMobileNoCount(mobileNoCount);
+						resultList.add(vo1);
+				 	}
+			
+
+				
+		}
+		catch (Exception e) {
+			log.error("Exception raised in getPanchayatsReadyCountByConstituency", e);	
+		}
+		return resultList;
+	  }
+	  
 	
 public GenericVO getSurveyStatusBoothList(Long constituencyId){
 		
