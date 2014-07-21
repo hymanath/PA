@@ -11,6 +11,6 @@ public interface IWebMonitoringAssignedUsersDAO extends GenericDao<WebMonitoring
 	public List<Object[]> getAssignedusersForWebMontringTeam(Long userId);
 	public List<Long>  getAssignedUsersIdsByWebMonitorId(Long webMonitorId);
 	
-	public List<Long> getConstiteuncyUsersInConsti(List<Long> constituencyId,Long webMonitorId);
+	public List<Long> getConstiteuncyUsersInConsti(List<Long> constituencyId);
 	
 }
