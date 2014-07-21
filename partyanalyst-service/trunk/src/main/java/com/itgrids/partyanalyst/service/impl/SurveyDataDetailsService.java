@@ -3750,19 +3750,17 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		 List<GenericVO> returnList  = new ArrayList<GenericVO>();
 		try
 		{
-			 List<GenericVO> usersList  = null;
 			List<Object[]> usersDtls = surveyUserRelationDAO.getAssignedUsersOfAConstituency(constituencyId);
 			List<Long> constUsersIds = new ArrayList<Long>(0);
 			
 			if(usersDtls != null && usersDtls.size()>0){
-				 usersList  = new ArrayList<GenericVO>();
 				for(Object[] obj:usersDtls)
 				{
 					GenericVO userVO = new GenericVO();
 					
 					userVO.setId((Long)obj[0]);
 					userVO.setName(obj[1].toString());
-					usersList.add(userVO);
+					returnList.add(userVO);
 					
 					constUsersIds.add((Long)obj[0]);
 				}
@@ -3775,10 +3773,10 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					
 					for (Long surveyUserId : alredyAssnIds) {
 						
-						GenericVO genericO = getGenericVOById(usersList,surveyUserId);
+						GenericVO genericO = getGenericVOById(returnList,surveyUserId);
 						
 						if(genericO != null){						
-							returnList.add(genericO);
+							returnList.remove(genericO);
 						}
 						
 					}
