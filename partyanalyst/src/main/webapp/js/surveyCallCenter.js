@@ -117,8 +117,11 @@ var jsObj =
 }
 
 var casteList = new Array();
-function getSurveyVotersList(userId,boothId,date){
-
+function getSurveyVotersList(userId,userName,boothId,boothNo,date){
+$('#userInfoDiv1').hide();
+$('#userInfoDiv2').hide();
+$('#userInfoDiv3').hide();
+$('#casteInfoDiv').hide();
 var newCasteArr = new  Array();
 var surveyDate = $('#FielddateId').val();
 $('#searchDataImg').show();
@@ -141,6 +144,7 @@ $('#searchDataImg').show();
 		$('#searchDataImg').hide();
 		$('#voterInfoDIv').html('');
 		$('#casteInfoDiv').html('');
+		$('#userInfoDiv').html('');
 		var str = '';
 
 		var totalVoters = 0;
@@ -150,7 +154,7 @@ $('#searchDataImg').show();
 		{
 		
 				var result = results[0].subList;
-
+				
 				str +='<table class="table table-bordered m_top20 table-hover table-striped" id="voterDetlsTab" >';
 				str +='	<thead class="alert alert-success">';
 				str +='	<tr>';
@@ -424,13 +428,29 @@ $('#searchDataImg').show();
 		"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]]
 		});
 		
-		
-		var boothNo = $('#boothList option:selected').text();
 		var str1='';
+		var str2='';
+		
+		$('#userInfoDiv1').show();
+		$('#userInfoDiv2').show();
+		$('#userInfoDiv3').show();
+		
+		str2 +=' <span style="font-weight:bold;"> User Name  </span> : '+userName+'</br>';		
+		$('#userInfoDiv1').html(str2);
+		
+		str2 ='';
+		str2 +=' <span style="font-weight:bold;"> Booth No </span> : '+boothNo+' </br>';
+		
+		$('#userInfoDiv2').html(str2);
+		
+		str2 ='';
+		str2 +=' <span style="font-weight:bold;"> Total Votes </span> : '+totalVoters+' </br>';
+		$('#userInfoDiv3').html(str2);
+		
 		if(results != null && results[0].genericVOList.length>0)
 		{
 				$('#casteInfoDiv').show();
-				str1 +='<b> Top Castes </b> :  ';
+				str1 +='<b> Caste Details </b> : <br> ';
 				var length = results[0].genericVOList.length;
 				
 				for(var k in results[0].genericVOList){
@@ -736,7 +756,7 @@ return;
 		{
 			webBoothId = result[i].subList[j].boothId;
 			str+='<tr>';
-			str+='<td> <a href="javascript:{getDataCollectorInfo('+result[i].userid+','+result[i].subList[j].boothId+',\''+$('#FielddateId').val()+'\');}">'+result[i].userName+' </a></td>';
+			str+='<td> <a href="javascript:{getDataCollectorInfo('+result[i].userid+',\''+result[i].userName+'\','+result[i].subList[j].boothId+','+result[i].subList[j].partNo+',\''+$('#FielddateId').val()+'\');}">'+result[i].userName+' </a></td>';
 			str+='<td> '+result[i].subList[j].partNo+'</td>';
 			if(result[i].subList[j].totalVoters == null)
 			{
@@ -1131,12 +1151,12 @@ function onEachFeature(feature, layer)
 }
 
 
-function getDataCollectorInfo(userId,boothId,date){
+function getDataCollectorInfo(userId,userName,boothId,boothNo,date){
 	
 	$('#boothWiseTab,#startTimeTab').removeClass('selected');
 	$('#callCenterTab').addClass('selected');
 	showHideTabs('callCenterTab');
-	getSurveyVotersList(userId,boothId,date);
+	getSurveyVotersList(userId,userName,boothId,boothNo,date);
 
 }
 
