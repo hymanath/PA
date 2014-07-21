@@ -1638,5 +1638,25 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		return Action.SUCCESS;
 	}
   
+  public String getSurveyStatusBoothList(){
+	  
+	  try
+		{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			jObj = new JSONObject(getTask());
+			
+			genericVO = surveyDetailsService.getSurveyStatusBoothList(jObj.getLong("constituencyId"));
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in unTagConstituencyOfUser", e);
+		}
+		return Action.SUCCESS;
+  }
   
 }
