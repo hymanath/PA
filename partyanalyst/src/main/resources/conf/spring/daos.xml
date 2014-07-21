@@ -1577,5 +1577,12 @@
 <bean id="candidateDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateDetailsDAO" lazy-init="true" >
 		<property name="sessionFactory" ref="sessionFactory" />
 </bean>
+
+
+<bean id="webMonitorCompletedLocationsDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.WebMonitorCompletedLocationsDetailsDAO" lazy-init="true" >
+		<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
+
 	<!--  end -->
 </beans>		
