@@ -17,9 +17,9 @@ public void setWebMonitorCompletedLocationsDetailsDAO(
 }
  
 
-public void test()
+/*public void test()
 {
 	List<Long> list = webMonitorCompletedLocationsDetailsDAO.getPanchayatBoothsByConstituencyId(8l);
 	System.out.println(list.size());
-}
+}*/
 }
