@@ -94,7 +94,7 @@
 			<div class="span12 m_top20 survey_nav">
 				<ul class="inline unstyled">
 					
-					<li><a class="highlight   selected" id="completedBoothsTab" onclick="showHideTabs(this.id);">Completed Booths</a></li>
+					<!--<li><a class="highlight   selected" id="completedBoothsTab" onclick="showHideTabs(this.id);">Completed Booths</a></li>-->
 					<li><a class="highlight" id="startTimeTab" onclick="showHideTabs(this.id);">Field Report</a></li>
 					<li><a class="highlight" id="boothWiseTab" onclick="showHideTabs(this.id);">Data Report</a></li>
 					<li id="webMontrId" style="display:none;"><a class="highlight" id="callCenterTab" onclick="showHideTabs(this.id);"> Web Monitoring </a></li>
@@ -430,7 +430,7 @@
 		console.log(userIds);
 	</script>
 	<script>
-		showHideTabs('completedBoothsTab');
+		showHideTabs('startTimeTab');
 		$(".highlight").click(function()
 		{
 			$(".highlight").removeClass("selected");
