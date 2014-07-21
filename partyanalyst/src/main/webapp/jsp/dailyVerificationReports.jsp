@@ -84,6 +84,7 @@
   $( document ).ready(function() {
 $('#boothId').multiselect({
 	  noneSelectedText:"Select Booth(s)"});
+	
 });
   </script> 
 		<div class="container">
@@ -92,8 +93,8 @@ $('#boothId').multiselect({
 				<ul class="inline unstyled">
 					<li><a class="highlight selected" id="stateWiseReportTab" onclick="showHideReportTabs(this.id);"> State Wise Report </a></li>
 					<li><a class="highlight" id="dataCollectorTab" value="1" onclick="showHideReportTabs(this.id);"> Data Collector Report </a></li>
-					<!--<li><a class="highlight" id="verifierReportTab" value="2" onclick="showHideReportTabs(this.id);">Verifier Report</a></li>
-					<li><a class="highlight" id="thirdPartyReportTab" value="3" onclick="showHideReportTabs(this.id);"> Third Party Report </a></li>-->
+					<li><a class="highlight" id="verifierReportTab" value="2" onclick="showHideReportTabs(this.id);">Verifier Report</a></li>
+					<!--<li><a class="highlight" id="thirdPartyReportTab" value="3" onclick="showHideReportTabs(this.id);"> Third Party Report </a></li>-->
 					<li><a class="highlight" id="userTrackingReportTab" onclick="showHideReportTabs(this.id);"> User Tracking Report</a></li>
 					<!--<li><a class="highlight" id="comparisonReportTab" onclick="showHideReportTabs(this.id);"> Comparison Report </a></li>-->
 
@@ -121,7 +122,7 @@ $('#boothId').multiselect({
 										<div class="span3">
 											Select Constituency <font class="requiredFont">*</font>
 											<!--<select id="constituencyId" onChange="getBoothsDetailsByConstituencyId(this.value)"></select>-->
-												<s:select theme="simple"  name="constituency" id="constituencyId"  headerKey="0" headerValue="Select Constituency" list="dataAvilableConstituencies" listKey="id" listValue="name" onChange="getBoothsDetailsByConstituencyId(this.value)"/>
+												<s:select theme="simple"  name="constituency" id="constituencyId"  headerKey="0" headerValue="Select Constituency" list="dataAvilableConstituencies" listKey="id" listValue="name" onChange="getBoothsDetailsByConstituencyId(this.value,'boothId')"/>
 										</div>
 										<div class="span3">
 											<!--User Type <font class="requiredFont">*</font>
@@ -170,6 +171,43 @@ $('#boothId').multiselect({
  						    <div id="boothWiseCountDivId"></div>
 							
 						</div>
+							
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row" id="verifierReportIdForVerifier" style="dispaly:none;">
+			<div class="span12">
+				<div class="row-fluid ">
+					<div class="span12 widgetservey_Red m_top30">
+							<h4 id="titleId"></h4>
+							<div class="row">
+						<div id="errorDiv" class="span8 offset1 clearCls"></div>
+						</div>
+								<div class="row">
+									<div class="offset1">
+										<div class="row-fluid">
+											
+											<div class="span5">
+												Select Constituency <font class="requiredFont">*</font>
+												<!--<select id="constituencyId" onChange="getBoothsDetailsByConstituencyId(this.value)"></select>-->
+													<s:select theme="simple"  name="constituency" id="constituencyForVeriFier"  headerKey="0" headerValue="Select Constituency" list="dataAvilableConstituencies" listKey="id" listValue="name" onChange="getBoothsDetailsByConstituencyId(this.value,'boothIdForVerifier')"/>
+											</div>
+											<div class="span4">
+												<!--User Type <font class="requiredFont">*</font>
+												<select class="input-block-level" id = "userType"> <option value="0">Select User Type</option></select>-->
+												Select Booth 
+												<select class="input-block-level" id = "boothIdForVerifier" > <option value="0">Select Booth</option></select></div>
+												<div class="span1" style="margin:25px -8px 0 8px;width: 15px;">
+													<img id="boothImageForVerifier" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
+												</div>
+										</div>	
+									</div>
+								</div>
+						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getVerfierDetails()">SUBMIT</button></div>
+						<div id="retunMsg" class="clearCls"></div>
+						<img src='images/Loading-data.gif' class="offset5"  id="mainajaximgForVerifier" style="width:70px;height:60px;display:none;"/>
+                         <div id="dayWiseReportDivForVerifier" class="clearCls"></div>
 							
 					</div>
 				</div>
@@ -469,7 +507,8 @@ function getDayWiseReportByConstituencyIdAndUserType()
 	var constituencyId = $("#constituencyId").val();
 	//var userTypeId = $("#userType").val();
 	var userTypeId = userTypeVal;
-	var startDate = $("#fromDate").val();
+	
+		var startDate = $("#fromDate").val();
 	var endDate = $("#toDate").val();
 	var heading = $( "#userType option:selected" ).text();
 
@@ -536,6 +575,8 @@ if(startDate.length == 0 || endDate.length == 0)
 		  }).done(function(result){				
 				buildDayWiseReportByUserType(result);				
 		});
+	
+	
 }
 function buildDayWiseReportByUserType(result)
 {
@@ -634,7 +675,141 @@ $('#mainajaximg').hide();
 
 }
 
-function getBoothsDetailsByConstituencyId(constituencyId)
+function getVerfierDetails()
+{
+	$('#mainajaximgForVerifier').show();
+	$('#dayWiseReportDivForVerifier').html('');
+	var boothId = $('#boothIdForVerifier').val();
+	var boothIds = new Array();
+	boothIds.push(boothId);
+	var jObj =
+	{
+		boothIds:boothIds     
+	};
+
+	 $.ajax({
+			type:'GET',
+			url: 'checkForVerifierDataAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){	
+		  
+			if(result != null)
+			{
+					var str = '';
+					if(result[0].matchedList[0] != null )
+					{
+						str += '<div class="row-fluid">';
+						str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;" >PANCHAYAT : '+result[0].matchedList[0].panchayatName+'</div> ';
+						str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">SURVEY USER : '+result[0].matchedList[0].surveyUser+'</div> ';
+						str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">Date : '+result[0].matchedList[0].date+'</div> ';
+						str += '</div>';
+					}
+					else if(result[0].unMatchedList[0] != null )
+					{
+						str += '<div class="row-fluid">';
+						str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;" >PANCHAYAT : '+result[0].unMatchedList[0].panchayatName+'</div> ';
+						str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">SURVEY USER : '+result[0].unMatchedList[0].surveyUser+'</div> ';
+						str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">Date : '+result[0].unMatchedList[0].date+'</div> ';
+						str += '</div>';
+					}
+					
+					str += '<div>';
+					str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">TOTAL : '+result[0].totalCount+'</div> ';
+					str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">MATCHED : '+result[0].matchedCount+'</div>';
+					str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">UN MATCHED : '+result[0].unMatchedCount+'</div> ';
+					str += '</div>';
+					
+					str+='<table id="dayWiseReportTableForVerifier" class="table table-bordered m_top20 table-hover table-striped username">';
+					str+='<thead class="alert alert-success">';
+					str+='<tr>';
+					//str+='<th>Booth</th>';
+					//str+='<th>Panchayat</th>';
+					//str+='<th>Survey User</th>';
+					str+='<th>Voter Name</th>';
+					str+='<th>Relativen Name</th>';
+					//str+='<th>DC Collected Date</th>';
+					str+='<th>DC CASTE</th>';
+					str+='<th>WM CASTE</th>';
+					str+='<th>DV CASTE</th>';
+					str+='<th>STATUS</th>';
+					str+='</tr>';
+					str+='</thead>';
+					str+='<tbody>'
+					for(var i in result)
+					{
+						
+						for(var j in result[i].matchedList)
+						{
+							str += '<tr>';
+							//str+='<td>'+result[i].matchedList[j].partNo+'</td>';
+							//str+='<td>'+result[i].matchedList[j].panchayatName+'</td>';
+							//str+='<td>'+result[i].matchedList[j].surveyUser+'</td>';
+							str+='<td>'+result[i].matchedList[j].voterName+'</td>';
+							str+='<td>'+result[i].matchedList[j].relativeName+'</td>';
+							//str+='<td>'+result[i].matchedList[j].date+'</td>';
+							str+='<td>'+result[i].matchedList[j].dcCaste+'</td>';
+							str+='<td>'+result[i].matchedList[j].wmCaste+'</td>';
+							str+='<td>'+result[i].matchedList[j].dvCaste+'</td>';
+							str+='<td>MATCHED</td>';
+							str += '</tr>';		
+						}
+						for(var j in result[i].unMatchedList)
+						{
+							str += '<tr>';
+							//str+='<td>'+result[i].unMatchedList[j].partNo+'</td>';
+							//str+='<td>'+result[i].unMatchedList[j].panchayatName+'</td>';
+							//str+='<td>'+result[i].unMatchedList[j].surveyUser+'</td>';
+							str+='<td>'+result[i].unMatchedList[j].voterName+'</td>';
+							str+='<td>'+result[i].unMatchedList[j].relativeName+'</td>';
+							//str+='<td>'+result[i].unMatchedList[j].date+'</td>';
+							str+='<td>'+result[i].unMatchedList[j].dcCaste+'</td>';
+							str+='<td>'+result[i].unMatchedList[j].wmCaste+'</td>';
+							str+='<td>'+result[i].unMatchedList[j].dvCaste+'</td>';
+							str+='<td>UNMATCHED</td>';
+							str += '</tr>';		
+						}
+						
+					}
+					str += '</tbody>';
+					str += '</table>';
+					$('#dayWiseReportDivForVerifier').html(str);
+					//generateExcel('dataTableDiv');
+					$('#dayWiseReportTableForVerifier').dataTable({
+						"iDisplayLength": 100,
+						"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]]
+					});
+					$('#mainajaximgForVerifier').hide();
+			}
+			else
+			{
+				$('#dayWiseReportDivForVerifier').html('<b style="color:red">No Data Avaliable</b>');
+				$('#mainajaximgForVerifier').hide();
+			}
+		});	
+				
+			
+			
+}
+
+/*var tableToExcel = (function() {
+var uri = 'data:application/vnd.ms-excel;base64,'
+, template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+, base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+, format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+return function(table, name) {
+if (!table.nodeType) table = document.getElementById(table)
+var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+window.location.href = uri + base64(format(template, ctx))
+}
+})()
+
+function generateExcel(id)
+{
+tableToExcel(id, 'Users Report');
+}*/
+
+function getBoothsDetailsByConstituencyId(constituencyId,divId)
 {
 	$("#boothImage").show();
 	var jObj =
@@ -650,13 +825,13 @@ function getBoothsDetailsByConstituencyId(constituencyId)
 		  }).done(function(result){				
 				//buildDayWiseReportByUserType(result);		
 				$("#boothImage").hide();
-				$('#boothId').find('option').remove();
+				$('#'+divId+'').find('option').remove();
 
 				$.each(result,function(index,value){
-					$('#boothId').append('<option value="'+value.boothId+'">Booth - '+value.partNo+'</option>');
+					$('#'+divId+'').append('<option value="'+value.boothId+'">Booth - '+value.partNo+'</option>');
 				});
 				
-				$('#boothId').multiselect('refresh');
+				$('#'+divId+'').multiselect('refresh');
 
 		});	
 }
@@ -672,6 +847,7 @@ function showHideReportTabs(id)
 		$("#comparisonReportId").hide();
 		$("#stateWiseReportId").hide();
 		$("#verifierReportId").show();
+		$("#verifierReportIdForVerifier").hide();
 		$('#boothId').multiselect('refresh');
 	}
 
@@ -680,7 +856,8 @@ function showHideReportTabs(id)
 		$("#surveyUserTrackingId").hide();
 		$("#comparisonReportId").hide();
 		$("#stateWiseReportId").hide();
-		$("#verifierReportId").show();
+		$("#verifierReportId").hide();
+		$("#verifierReportIdForVerifier").show();
 		$('#boothId').multiselect('refresh');
 	}
 
@@ -690,6 +867,7 @@ function showHideReportTabs(id)
 		$("#comparisonReportId").hide();
 		$("#stateWiseReportId").hide();
 		$("#verifierReportId").show();
+		$("#verifierReportIdForVerifier").hide();
 		$('#boothId').multiselect('refresh');
 	}
 	else if(id == "userTrackingReportTab")
@@ -697,6 +875,7 @@ function showHideReportTabs(id)
 		$("#verifierReportId").hide();
 		$("#comparisonReportId").hide();
 		$("#stateWiseReportId").hide();
+		$("#verifierReportIdForVerifier").hide();
 		$("#surveyUserTrackingId").show();
 	}
 	else if(id == "comparisonReportTab")
@@ -704,6 +883,7 @@ function showHideReportTabs(id)
 		$("#surveyUserTrackingId").hide();
 		$("#verifierReportId").hide();
 		$("#stateWiseReportId").hide();
+		$("#verifierReportIdForVerifier").hide();
 		$("#comparisonReportId").show();
 	}
 	
@@ -712,6 +892,7 @@ function showHideReportTabs(id)
 		$("#surveyUserTrackingId").hide();
 		$("#verifierReportId").hide();
 		$("#comparisonReportId").hide();
+		$("#verifierReportIdForVerifier").hide();
 		$("#stateWiseReportId").show();
 	}
 

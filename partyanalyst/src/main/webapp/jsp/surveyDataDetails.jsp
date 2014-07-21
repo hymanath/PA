@@ -324,11 +324,11 @@
 									<div class="row-fluid">
 										<div class="span3">
 											Select User Type<font class="requiredFont">*</font>
-											<select class="input-block-level" id="boothAssignUserType" onchange="getSurveyUsersByUserType('leaderIdForBooth',this.value);">
+											<select class="input-block-level" id="boothAssignUserType" onchange="getSurveyUsersByUserTypeForBooth('leaderIdForBooth',this.value);">
 											
 											<option value="0">Select User type</option>
-											<option value="3">Data Collectors</option>
-											<option value="5">Data Verifier</option>
+											<option value="1">Data Collectors</option>
+											<option value="4">Data Verifier</option>
 											<!--<option value="5">Verifier Lead</option>-->
 											</select>
 										</div>
