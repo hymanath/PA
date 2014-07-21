@@ -3744,27 +3744,33 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		
 	}
 	
-	public List<GenericVO> getAssignedUsersOfAConstituency(Long constituencyId,Long userId)
+	public List<GenericVO> getAssignedUsersOfAConstituency(Long constituencyId)
 	{
-		 List<GenericVO> usersList  = new ArrayList<GenericVO>();
+		
+		 List<GenericVO> returnList  = new ArrayList<GenericVO>();
 		try
 		{
-			
+			 List<GenericVO> usersList  = null;
 			List<Object[]> usersDtls = surveyUserRelationDAO.getAssignedUsersOfAConstituency(constituencyId);
 			List<Long> constUsersIds = new ArrayList<Long>(0);
-			for(Object[] obj:usersDtls)
-			{
-				GenericVO userVO = new GenericVO();
-				
-				userVO.setId((Long)obj[0]);
-				userVO.setName(obj[1].toString());
-				usersList.add(userVO);
-				
-				constUsersIds.add((Long)obj[0]);
+			
+			if(usersDtls != null && usersDtls.size()>0){
+				 usersList  = new ArrayList<GenericVO>();
+				for(Object[] obj:usersDtls)
+				{
+					GenericVO userVO = new GenericVO();
+					
+					userVO.setId((Long)obj[0]);
+					userVO.setName(obj[1].toString());
+					usersList.add(userVO);
+					
+					constUsersIds.add((Long)obj[0]);
+				}
 			}
 			
+			
 			if(constUsersIds != null && constUsersIds.size()>0){
-				List<Long> alredyAssnIds = webMonitoringAssignedUsersDAO.getConstiteuncyUsersInConsti(constUsersIds,userId);
+				List<Long> alredyAssnIds = webMonitoringAssignedUsersDAO.getConstiteuncyUsersInConsti(constUsersIds);
 				if(alredyAssnIds != null && alredyAssnIds.size()>0){
 					
 					for (Long surveyUserId : alredyAssnIds) {
@@ -3772,7 +3778,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 						GenericVO genericO = getGenericVOById(usersList,surveyUserId);
 						
 						if(genericO != null){						
-							usersList.remove(genericO);
+							returnList.add(genericO);
 						}
 						
 					}
@@ -3784,8 +3790,9 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		}catch(Exception e)
 		{
 			e.printStackTrace();
+			LOG.error(" exception occured in getAssignedUsersOfAConstituency () of SurveyDataDetailsService class ",e);
 		}
-		return usersList;
+		return returnList;
 	}
 	
 	public GenericVO getGenericVOById(List<GenericVO> usersList,Long surveyUserId){
