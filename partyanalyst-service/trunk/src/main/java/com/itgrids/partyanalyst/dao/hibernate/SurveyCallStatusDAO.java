@@ -42,4 +42,11 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 		query.setParameter("boothId", boothId);
 		return query.list();		
 	}
+	
+	public List<Object[]> getBoothWiseWmCasteUpdationDetails(List<Long> boothIds)
+	{
+		Query query = getSession().createQuery("select model.voterId , model.casteStateId,model.matchedStatus,model.boothId from SurveyCallStatus model where model.boothId in(:boothIds)");
+		query.setParameterList("boothIds", boothIds);
+		return query.list();
+	}
 }

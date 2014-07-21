@@ -7148,7 +7148,7 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		query.setParameterList("boothIds", boothIds);
 		return query.list();
 	}
-	
+
 	public List<Object[]> getTotalVoters(List<Long> boothIds)
 	{
 		Query query = getSession().createQuery("select model.booth.boothId ,model.booth.partNo, count(model.booth.boothId) from BoothPublicationVoter model where model.booth.boothId in (:boothIds) group  by model.booth.boothId");
@@ -7162,5 +7162,14 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		return (Long) query.uniqueResult();
 	}
 	
-
+	
+	public List<Object[]> getVoterDetailsByBoothID(List<Long> boothId)
+	{
+		Query query = getSession().createQuery("select model.voter.voterId , model.voter.name,model.voter.voterIDCardNo," +
+				" model.voter.houseNo,model.boothId,model.voter.relativeName ,model.booth.partNo ,model.booth.panchayat.panchayatName  from  BoothPublicationVoter model " +
+				" where model.boothId in (:boothId)");
+		query.setParameterList("boothId", boothId);
+		return query.list();
+	}
+	
 }

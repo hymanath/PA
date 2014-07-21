@@ -9,6 +9,7 @@ import com.itgrids.partyanalyst.dto.PanchayatHamletsCountVo;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
+import com.itgrids.partyanalyst.dto.VerificationCompVO;
 
 public interface ISurveyDetailsService {
 
@@ -20,21 +21,14 @@ public interface ISurveyDetailsService {
 	public ResultStatus unTagConstituencyForAUser(Long userId,Long constituencyId);
 	public List<GenericVO> getAssignedSurveyUsersForWebMontringTeam(Long userId);
 	public List<GenericVO> getNotStartedUsersDetails(Long webMonitorUserId,Long constituencyId);
-	  public SurveyReportVO getPanchayatsStatusCountByConstituency(Long constituencyId);
-	  public List<SurveyReportVO> getPanchayatsStatusWiseDataByConstituency(Long constituencyId,String status);
+	public List<VerificationCompVO> checkForVerifierData(List<Long> boothId);
 	
 	
 	public GenericVO getSurveyStatusBoothList(Long constituencyId);
-
-	/**
-	 * @author Anilkumar Ravula 
-	 * @param HamletCountInputVO 
-	 * @return PanchayatHamletsCountVo
-	 */
-	 
 	public  PanchayatHamletsCountVo   getSurveyDataCountForHamletsByPanchayats(HamletCountInputVO inputVo);
-
 
 	public List<GenericVO> getUserForAssignedLeader(Long leaderId, Long userTypeId);
 	 public List<SurveyReportVO> getSurveyDetailsByBoothIds(List<Long> boothIds);
+	 public List<SurveyReportVO> getPanchayatsStatusWiseDataByConstituency(Long constituencyId,String status);
+	 public SurveyReportVO getPanchayatsStatusCountByConstituency(Long constituencyId);
 }

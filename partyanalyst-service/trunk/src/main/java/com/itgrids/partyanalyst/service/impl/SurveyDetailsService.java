@@ -13,10 +13,11 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
-import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IRegionWiseSurveysDAO;
 import com.itgrids.partyanalyst.dao.ISurveyAccessUsersDAO;
+import com.itgrids.partyanalyst.dao.ISurveyCallStatusDAO;
 import com.itgrids.partyanalyst.dao.ISurveyCompletedLocationsDetailsDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
@@ -35,6 +36,7 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
+import com.itgrids.partyanalyst.dto.VerificationCompVO;
 import com.itgrids.partyanalyst.model.SurveyAccessUsers;
 import com.itgrids.partyanalyst.model.UpdationDetails;
 import com.itgrids.partyanalyst.service.ISurveyDetailsService;
@@ -43,7 +45,7 @@ import com.itgrids.partyanalyst.utils.IConstants;
 
 public class SurveyDetailsService implements ISurveyDetailsService {
 
-	private static final Logger log = Logger.getLogger(SurveyDetailsService.class);
+	private static final Logger LOG = Logger.getLogger(SurveyDetailsService.class);
 	private ISurveyDAO surveyDAO;
 	private TransactionTemplate transactionTemplate;
 	private IUpdationDetailsDAO updationDetailsDAO;
@@ -68,20 +70,28 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 	
 	@Autowired
 	private ISurveyUserDAO surveyUserDAO;
+	
+	@Autowired
+	ICasteStateDAO casteStateDAO;
+	
+	@Autowired
+	ISurveyCallStatusDAO surveyCallStatusDAO ;
 
 	@Autowired
 	private ISurveyCompletedLocationsDetailsDAO surveyCompletedLocationsDetailsDAO;
 	
 	@Autowired
 	private IWebMonitorCompletedLocationsDetailsDAO webMonitorCompletedLocationsDetailsDAO;
-	@Autowired
-	private IBoothDAO boothDAO;
-	
-	@Autowired
-	private IPanchayatDAO panchayatDAO;
 	
 	@Autowired
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
+	
+	@Autowired
+	IBoothDAO boothDAO;
+	
+	@Autowired
+	IPanchayatDAO panchayatDAO;
+	
 	public IRegionWiseSurveysDAO getRegionWiseSurveysDAO() {
 		return regionWiseSurveysDAO;
 	}
@@ -133,7 +143,7 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 	public List<SelectOptionVO> getAllSurveys(){
 		List<SelectOptionVO> listOfSurveys = null; 
 		try{
-			log.info("Entered into getAllRegisterUsersForAssigningParty()");
+			LOG.info("Entered into getAllRegisterUsersForAssigningParty()");
 			List<Object[]> surveyList = surveyDAO.getAllSurveys();
 			if(surveyList != null && surveyList.size() > 0)
 			{
@@ -150,7 +160,7 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 			
 			return listOfSurveys;
 		}catch (Exception e) {
-			log.error("Exception Occured in getAllRegisterUsersForAssigningParty(), Exception - "+e);
+			LOG.error("Exception Occured in getAllRegisterUsersForAssigningParty(), Exception - "+e);
 			e.printStackTrace();
 			return  null;
 		}
@@ -159,7 +169,7 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 	public ResultStatus saveSurveyDetails(final Long userId,final Long surveyId){
 		ResultStatus resultStatus = new ResultStatus();
 		try{
-			log.debug("Entered into saveSurveyDetails() method in Survey Details Service()");
+			LOG.debug("Entered into saveSurveyDetails() method in Survey Details Service()");
 			
 			Long value = surveyAccessUsersDAO.checkForDuplicateRecords(userId,surveyId);
 			if(value == 0){
@@ -184,7 +194,7 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 			}
 			return resultStatus;
 		}catch (Exception e) {
-			log.error("Exception encountered, Check log for Details - ",e);
+			LOG.error("Exception encountered, Check LOG for Details - ",e);
 			resultStatus.setExceptionEncountered(e);
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			return resultStatus;
@@ -194,7 +204,7 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 	
 	public Map<String,String> getSurveyDetailsByRegion(Long regionId)
 	{
-		log.debug("Entered into the getSurveyDetailsByRegion service method");
+		LOG.debug("Entered into the getSurveyDetailsByRegion service method");
 
 		Map<String,String> surveyDetailsMap = new HashMap<String, String>();
 		try
@@ -207,14 +217,14 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 		}catch(Exception e)
 		{
 			//e.printStackTrace();
-			log.error("Exception raised in  getSurveyDetailsByRegion service method");
+			LOG.error("Exception raised in  getSurveyDetailsByRegion service method");
 		}
 		return surveyDetailsMap;
 	}
 	
 	public List<GenericVO> getConstituencyWiseLeaders(Long constituencyId)
 	{
-		log.debug("Entered into the getConstituencyWiseLeaders service method");
+		LOG.debug("Entered into the getConstituencyWiseLeaders service method");
 		List<GenericVO> returnList = null;
 		try 
 		{
@@ -234,7 +244,7 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 		} 
 		catch (Exception e)
 		{
-			log.error("Exception raised in  getConstituencyWiseLeaders service method");
+			LOG.error("Exception raised in  getConstituencyWiseLeaders service method");
 		}
 		return returnList;
 		
@@ -262,7 +272,7 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 	
 	public ResultStatus unTagConstituencyForAUser(Long userId,Long constituencyId)
 	{
-		log.info("Entered into unTagConstituencyForAUser method");
+		LOG.info("Entered into unTagConstituencyForAUser method");
 		ResultStatus resultStatus = new ResultStatus();
 		try 
 		{			
@@ -281,7 +291,7 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 		} 
 		catch (Exception e)
 		{
-			log.error("Exception raised in unTagConstituencyForAUser", e);
+			LOG.error("Exception raised in unTagConstituencyForAUser", e);
 			resultStatus.setResultCode(3);
 			resultStatus.setMessage("Exception");
 		}
@@ -291,7 +301,7 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 
 	public List<GenericVO> getAssignedSurveyUsersForWebMontringTeam(Long userId)
 	{
-		log.info("Entered into getAssignedSurveyUsersForWebMontringTeam method");
+		LOG.info("Entered into getAssignedSurveyUsersForWebMontringTeam method");
 		List<GenericVO> returnList = null;
 	    try
 	    {
@@ -310,14 +320,14 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 		}
 	    catch (Exception e)
 	    {
-	    	log.error("Exception raised in getAssignedSurveyUsersForWebMontringTeam", e);
+	    	LOG.error("Exception raised in getAssignedSurveyUsersForWebMontringTeam", e);
 		}
 	    return returnList;
 	}
 	
 	public List<GenericVO> getNotStartedUsersDetails(Long webMonitorUserId,Long leaderId)
 	{
-		log.info("Entered into getNotStartedUsersDetails method");
+		LOG.info("Entered into getNotStartedUsersDetails method");
 		
 		 List<GenericVO> resultList = new ArrayList<GenericVO>();
 
@@ -379,8 +389,8 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 			
 		}catch(Exception e)
 		{
-			e.printStackTrace();
-	    	log.error("Exception raised in getNotStartedUsersDetails", e);
+			//e.printStackTrace();
+	    	LOG.error("Exception raised in getNotStartedUsersDetails", e);
 			
 		}
 		
@@ -465,14 +475,14 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 			
 		}
 		catch (Exception e) {
-			log.error("Exception raised in getPanchayatsReadyCountByConstituency", e);	
+			LOG.error("Exception raised in getPanchayatsReadyCountByConstituency", e);	
 		}
 		return vo;
 	  }
 	  
 	  
 	  
- /* get  panchayats ready Data and not ready Data */
+/* get  panchayats ready Data and not ready Data */
 	  
 	  public List<SurveyReportVO> getPanchayatsStatusWiseDataByConstituency(Long constituencyId,String status)
 	  {
@@ -525,15 +535,14 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 				
 		}
 		catch (Exception e) {
-			log.error("Exception raised in getPanchayatsReadyCountByConstituency", e);	
+			LOG.error("Exception raised in getPanchayatsReadyCountByConstituency", e);	
 		}
 		return resultList;
 	  }
-	  
-	
+	  	
 public GenericVO getSurveyStatusBoothList(Long constituencyId){
 		
-		log.info("Entered into getSurveyStatusBoothList method in SurveyDetailsService class.");
+		LOG.info("Entered into getSurveyStatusBoothList method in SurveyDetailsService class.");
 		
 		 GenericVO genericVO = new GenericVO();
 
@@ -584,7 +593,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 		}catch(Exception e)
 		{
 			e.printStackTrace();
-	    	log.error("Exception raised in getSurveyStatusBoothList  method in SurveyDetailsService class.", e);
+			LOG.error("Exception raised in getSurveyStatusBoothList  method in SurveyDetailsService class.", e);
 			
 		}
 		
@@ -679,7 +688,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 				
 			}catch(Exception e)
 			{
-				 log.error("Exception raised in getUserForAssignedLeader method");
+				LOG.error("Exception raised in getUserForAssignedLeader method");
 				e.printStackTrace();
 			}
 			return usersList;
@@ -750,7 +759,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 			}
 			catch(Exception e)
 			{
-				log.error("Exception raised in getSurveyDetailsByBoothIds method");
+				LOG.error("Exception raised in getSurveyDetailsByBoothIds method");
 				e.printStackTrace();
 			}
 			return resultList;
@@ -775,6 +784,294 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 			return null;
 		}
 	
+		
 	
+	public List<VerificationCompVO> checkForVerifierData(List<Long> boothIds)
+	{
+		List<VerificationCompVO> returnList = null;
+		try 
+		{
+			List<Object[]> castesList = casteStateDAO.getAllCasteDetails();
+			if(castesList != null && castesList.size() > 0)
+			{
+				Map<Long,Map<Long,String>> dcBoothMap = null;// booth wise Data Collector Caste Collected 
+				Map<Long,Map<Long,String>> dvBoothMap = null;// booth wise Data Verifier Caste Collected
+				Map<Long,Map<Long,String>> wmBoothMap = null;// booth Wise Web Moniter Caste Collected
+				Map<Long,Map<Long,String>> dcBoothDatesMap = null;// Day wise booth Wise Data Collector 
+				Map<Long,VerificationCompVO> boothWiseMap = null;// booth wise total recoreds
+				Map<Long,String> dcMap = null;// Map<voterId,Caste>
+				Map<Long,String> dvMap = null;//Map<voterId,Caste>
+				Map<Long,String> wmMap = null;//Map<voterId,Caste>
+				Map<Long,String> casteMap = new HashMap<Long, String>();//Map<casteId,CasteName>
+				Map<Long,Map<Long,String>> dcWmCollectedMap = null;// Day wise booth Wise Data Collector 
+				Map<Long,String> dcDatesMap = null;
+				Map<Long,String> dcWmMap = null;
+				Map<Long,String> usersMap =null;
+				for (Object[] objects : castesList)
+				{
+					casteMap.put((Long)objects[0], objects[1].toString());
+				}
+				List<Object[]> result = surveyDetailsInfoDAO.getBoothWiseDcAndDvDetails(boothIds);
+				if(result != null && result.size() > 0)
+				{
+					dcBoothMap = new HashMap<Long, Map<Long,String>>();
+					dvBoothMap = new HashMap<Long, Map<Long,String>>();
+					dcBoothDatesMap = new HashMap<Long, Map<Long,String>>();
+					List<GenericVO> userWiseList = new ArrayList<GenericVO>();
+					for (Object[] parms	: result)
+					{
+						dcMap = dcBoothMap.get((Long)parms[4]);
+						if(dcMap == null)
+						{
+							dcMap = new HashMap<Long, String>();
+							dvMap = new HashMap<Long, String>();
+							dcDatesMap = new HashMap<Long, String>();
+							dcBoothMap.put((Long)parms[4], dcMap);
+							dvBoothMap.put((Long)parms[4], dvMap);
+							dcBoothDatesMap.put((Long)parms[4], dcDatesMap);
+
+						}
+						GenericVO VO = new GenericVO();
+						if((Long)parms[3] != null)
+						{
+							if((Long)parms[3] == 1)
+							{
+								dcMap.put((Long)parms[1], casteMap.get((Long)parms[2]));
+								dcDatesMap.put((Long)parms[1], parms[7].toString());
+							}
+							else
+							{
+								dvMap.put((Long)parms[1], casteMap.get((Long)parms[2]));
+							}
+						}
+						userWiseList.add(VO);
+					}
+				}
+				
+				List<Object[]> wmDetails = surveyCallStatusDAO.getBoothWiseWmCasteUpdationDetails(boothIds);
+				if(wmDetails != null && wmDetails.size() > 0)
+				{
+					wmBoothMap = new HashMap<Long, Map<Long,String>>();
+					for (Object[] parms : wmDetails)
+					{
+						wmMap = wmBoothMap.get((Long)parms[3]);
+						if(wmMap == null)
+						{
+							wmMap = new HashMap<Long, String>();
+							wmBoothMap.put((Long)parms[3], wmMap);
+							
+						}
+						if(parms[2] != null)
+						{
+							dcMap = dcBoothMap.get((Long)parms[3]);
+							if(parms[2].toString().trim().equalsIgnoreCase("N"))
+							{
+								wmMap.put((Long)parms[0], casteMap.get((Long)parms[1]));
+							}
+							else
+							{
+								wmMap.put((Long)parms[0], dcMap.get((Long)parms[0]));
+							}
+						}
+						
+					}
+				}
+				if(boothIds != null && boothIds.size() > 0)
+				{
+					dcWmCollectedMap = new HashMap<Long, Map<Long,String>>();
+					for(Long boothId : boothIds)
+					{
+						if(dcBoothMap.get(boothId) != null && dcBoothMap.get(boothId).size() > 0)
+						{
+							Map<Long,String>  resultMap = new HashMap<Long, String>();
+							if(wmBoothMap != null && wmBoothMap.size() > 0)
+							{
+								if(wmBoothMap.get(boothId) != null && wmBoothMap.size() > 0)
+								{
+									checkForDcWithWm(dcBoothMap.get(boothId),wmBoothMap.get(boothId),resultMap);
+									dcWmCollectedMap.put(boothId, resultMap);
+								}
+								else
+								{
+									dcWmCollectedMap.put(boothId, dcBoothMap.get(boothId));
+								}
+							}
+							
+						}
+						
+						
+					}
+				}
+				
+				
+				List<Object[]> userList = surveyDetailsInfoDAO.getBoothWiseUser(boothIds);
+				if(userList != null && userList.size() > 0)
+				{
+					usersMap = new HashMap<Long, String>();
+					for (Object[] objects : userList) 
+					{
+						String name = usersMap.get((Long)objects[0]);
+						if(name == null)
+						{
+							usersMap.put((Long)objects[0], objects[2].toString());
+						}
+						/*else
+						{
+							if(!name.equalsIgnoreCase(objects[2].toString()))
+							{
+								usersMap.put((Long)objects[0], name +","+objects[2].toString());
+							}
+							
+						}*/
+						
+					}
+				}
+				List<Object[]> voterDetails = boothPublicationVoterDAO.getVoterDetailsByBoothID(boothIds);
+				if(voterDetails != null && voterDetails.size() > 0)
+				{
+					boothWiseMap = new HashMap<Long, VerificationCompVO>();
+					List<VerificationCompVO> matchedList  = null;
+					List<VerificationCompVO> unMatchedList = null;
+					String surveyUser = null;
+					for (Object[] parms : voterDetails)
+					{
+						 dcMap = dcBoothMap.get((Long)parms[4]);
+						 if(dcMap != null && dcMap.size() > 0)
+						 {
+							 VerificationCompVO subVO = boothWiseMap.get((Long)parms[4]);
+								if(subVO == null)
+								{
+									 subVO = new VerificationCompVO();
+									 boothWiseMap.put((Long)parms[4], subVO);
+									 matchedList = new ArrayList<VerificationCompVO>();
+									 unMatchedList = new ArrayList<VerificationCompVO>();
+									 if(dvBoothMap != null && dvBoothMap.size() > 0)
+									 dvMap = dvBoothMap.get((Long)parms[4]);
+									 if(wmBoothMap != null && wmBoothMap.size() > 0)
+									 wmMap = wmBoothMap.get((Long)parms[4]);
+									 dcDatesMap = dcBoothDatesMap.get((Long)parms[4]);
+									 dcWmMap =  dcWmCollectedMap.get((Long)parms[4]);
+									 surveyUser = usersMap.get((Long)parms[4]);
+								}
+							//	if(dcMap != null && dcMap.size() > 0 && dvMap != null && dvMap.size() > 0 && wmMap != null && wmMap.size() > 0)
+							//	{
+									VerificationCompVO VO = new VerificationCompVO();
+									VO.setVoterCardNO(parms[2] != null ? parms[2].toString() : "");
+									VO.setVoterName(parms[1] != null ? parms[1].toString() : "");
+									VO.setVoterId(parms[0] != null ? (Long)parms[0]: null  );
+									VO.setHouseNo(parms[3] != null ? parms[3].toString() : "");
+									VO.setPartNo(parms[6] != null ? parms[6].toString() : "");
+									VO.setPanchayatName(parms[7] != null ? parms[7].toString() : "");
+									if(dcMap != null && dcMap.size() > 0)
+									{
+										VO.setDcCaste(dcMap.get((Long)parms[0]) != null ? dcMap.get((Long)parms[0]) : "-");
+									}
+									else
+									{
+										VO.setDcCaste("-");
+									}
+									if(dvMap != null && dvMap.size() > 0)
+									{
+										VO.setDvCaste(dvMap.get((Long)parms[0]) != null ? dvMap.get((Long)parms[0]) : "-");
+									}
+									else
+									{
+										VO.setDvCaste( "-");
+									}
+									if(wmMap != null && wmMap.size() > 0)
+									{
+										VO.setWmCaste(wmMap.get((Long)parms[0]) != null ? wmMap.get((Long)parms[0]) : "-");
+									}
+									else
+									{
+										VO.setWmCaste("-");
+									}
+									
+									VO.setRelativeName(parms[5] != null ? parms[5].toString() : "");
+									VO.setDate(dcDatesMap.get((Long)parms[0]));
+									VO.setSurveyUser(surveyUser);
+									if(dcWmMap != null && dcWmMap.size() > 0)
+									{
+										if(dcWmMap.get((Long)parms[0]) != null && dvMap.get((Long)parms[0]) != null)
+										{
+											if(dcWmMap.get((Long)parms[0]) .equalsIgnoreCase(dvMap.get((Long)parms[0])))
+											{
+												matchedList.add(VO);
+											}
+											else
+											{
+												unMatchedList.add(VO);
+											}
+										}
+										else
+										{
+											unMatchedList.add(VO);
+										}
+									}
+									
+				
+								//}
+								
+								subVO.setMatchedList(matchedList);
+								subVO.setUnMatchedList(unMatchedList);
+								subVO.setTotalCount(unMatchedList.size() + matchedList.size());
+								subVO.setUnMatchedCount(unMatchedList.size());
+								subVO.setMatchedCount(matchedList.size());
+						 }
+						
+					}
+					if(boothWiseMap != null && boothWiseMap.size() > 0)
+					{
+						List<Long> booths = new ArrayList<Long>(boothWiseMap.keySet());
+						returnList = new ArrayList<VerificationCompVO>();
+						for (Long boothId : booths)
+						{
+							returnList.add(boothWiseMap.get(boothId));
+						}
+					}
+				}
+			}
+			
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in checkForVerifierData", e);
+		}
+		return returnList;
+	}
+	
+	public void checkForDcWithWm(Map<Long,String> dcMap,Map<Long,String> wmMap,Map<Long,String> resultMap)
+	{
+		try
+		{
+			List<Long> dcCollectedVoters = new ArrayList<Long>(dcMap.keySet());
+			if(dcCollectedVoters != null && dcCollectedVoters.size() > 0)
+			{
+				for (Long dcVoterId : dcCollectedVoters)
+				{
+					if(wmMap != null)
+					{
+						if(wmMap.get(dcVoterId) != null)
+						{
+							resultMap.put(dcVoterId, wmMap.get(dcVoterId));
+						}
+						else
+						{
+							resultMap.put(dcVoterId, dcMap.get(dcVoterId));
+						}
+					}
+					else
+					{
+						resultMap.put(dcVoterId, dcMap.get(dcVoterId));
+					}
+					
+				}
+			}
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in checkForDcWithWm", e);
+		}
+	}
 }
  

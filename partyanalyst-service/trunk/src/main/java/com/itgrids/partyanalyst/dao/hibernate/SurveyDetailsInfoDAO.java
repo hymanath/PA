@@ -643,7 +643,6 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 	}
 	
 	
-	
 	public Long getHamletCountByBooths(List<Long> boothIds)
 	{
 		Query query = getSession().createQuery("select count(model.hamlet.hamletId) from SurveyDetailsInfo model where" +
@@ -674,6 +673,22 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		query.setParameterList("boothIds", boothIds);
 		
 		return (Long) query.uniqueResult();
+	}
+	
+	public List<Object[]> getBoothWiseDcAndDvDetails(List<Long> boothIds)
+	{
+		Query query = getSession().createQuery("select model.surveyUser.surveyUserId, model.voter.voterId,model.caste.casteStateId , " +
+				" model.surveyUser.surveyUserType.surveyUsertypeId,model.booth.boothId,model.surveyUser.userName,model.booth.partNo,date(model.date) from SurveyDetailsInfo model where model.booth.boothId in(:boothIds) order by model.booth.boothId asc ");
+		query.setParameterList("boothIds", boothIds);
+		return query.list();
+	}
+	
+	public List<Object[]> getBoothWiseUser(List<Long> boothIds)
+	{
+		Query query = getSession().createQuery("select model.booth.boothId,model.surveyUser.surveyUserId , model.surveyUser.userName, " +
+				"  model.surveyUser.surveyUserType.surveyUsertypeId = 1 from SurveyDetailsInfo model where model.booth.boothId in(:boothIds) order by model.booth.boothId asc ");
+		query.setParameterList("boothIds", boothIds);
+		return query.list();
 	}
 	
 }
