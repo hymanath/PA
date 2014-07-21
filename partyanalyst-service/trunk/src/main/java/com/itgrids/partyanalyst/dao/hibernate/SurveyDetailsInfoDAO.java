@@ -634,7 +634,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 	public List<Object[]> getMobileNoCountByListOfBooths(List<Long> boothIds)
 	{
 		Query query = getSession().createQuery("select model.booth.boothId,count( model.mobileNumber) from SurveyDetailsInfo model where " +
-				" model.booth.boothId in(:boothIds) and model.mobileNumber is not null and model.surveyUser.surveyUserType.surveyUsertypeId = 1 and model.mobileNumber is not null " +
+				" model.booth.boothId in(:boothIds) and model.surveyUser.surveyUserType.surveyUsertypeId = 1 and model.mobileNumber is not null " +
 				" and model.mobileNumber != 'null' and model.mobileNumber != '' and length(model.mobileNumber) != 0  group by model.booth.boothId");
 		
 		query.setParameterList("boothIds", boothIds);
