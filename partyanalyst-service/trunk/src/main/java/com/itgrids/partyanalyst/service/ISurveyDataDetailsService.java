@@ -97,7 +97,7 @@ public interface ISurveyDataDetailsService
 	public GenericVO getAlreadyAssignTabsListForLeader(Long leaderId);
 	
 	public List<GenericVO> getSurveyConstituencyUsersList(Long constituencyId);
-	public List<GenericVO> getAssignedUsersOfAConstituency(Long constituencyId,Long userId);
+	public List<GenericVO> getAssignedUsersOfAConstituency(Long constituencyId);
 	public List<GenericVO> getAllWebMonitoringUsersDetails();
 	public String saveWebMonioringAssignDetails(final Long webMonitorId,final List<Long> userIds);
 	public SurveyReportVO getTotalCasteCollectedCount();
