@@ -1659,4 +1659,47 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		return Action.SUCCESS;
   }
    
+  public String getUsersOfALeader(){
+	  
+
+		try
+		{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			jObj = new JSONObject(getTask());
+
+			usersList = surveyDetailsService.getUserForAssignedLeader(jObj.getLong("leaderId"),jObj.getLong("userTypeId"));
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getUsersOfALeader", e);
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+		
+}
+
+public String getSurveyBoothDetails()
+{
+	  try{
+		  jObj = new JSONObject(getTask());
+		  
+		    JSONArray booths = jObj.getJSONArray("boothIds");
+   		List<Long> boothIds = new ArrayList<Long>();			 
+			for(int i = 0 ; i < booths.length() ; i++)
+			{
+				boothIds.add(Long.valueOf(booths.get(i).toString()));
+			}
+		  boothWiseCountList =  surveyDetailsService.getSurveyDetailsByBoothIds(boothIds);  
+	  }
+	  catch (Exception e) {
+		e.printStackTrace();
+		LOG.error(" exception occured in getSurveyBoothDetails()",e);
+	}
+	return Action.SUCCESS;
+}
 }
