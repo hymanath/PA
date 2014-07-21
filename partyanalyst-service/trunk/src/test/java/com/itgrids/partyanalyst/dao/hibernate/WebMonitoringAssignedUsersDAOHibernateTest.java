@@ -16,7 +16,7 @@ public class WebMonitoringAssignedUsersDAOHibernateTest extends BaseDaoTestCase{
 		this.webMonitoringAssignedUsersDAO = webMonitoringAssignedUsersDAO;
 	}
 
-
+/*
 	public void testDtails(){
 		List<Long> listIds = new ArrayList<Long>();
 		listIds.add(40L);
@@ -75,8 +75,8 @@ public class WebMonitoringAssignedUsersDAOHibernateTest extends BaseDaoTestCase{
 		listIds.add(87L);
 		listIds.add(88L);
 		
-		List<Long> ids = webMonitoringAssignedUsersDAO.getConstiteuncyUsersInConsti(listIds, 1L);
+		List<Long> ids = webMonitoringAssignedUsersDAO.getConstiteuncyUsersInConsti(listIds);
 		
 		System.out.println(ids.size());
-	}
+	}*/
 }
