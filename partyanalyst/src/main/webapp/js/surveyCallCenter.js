@@ -1,8 +1,20 @@
 function showHideTabs(id)
 {
 	$(".errClass").html('');
-	
-	if(id == "callCenterTab")
+	if(id == "completedBoothsTab")
+	{
+		$('#webMontrId').hide();
+		$('#callCenter').hide();
+		$('#startTime').hide();
+		$('#boothWise').hide();
+		$('#dataCollector').hide();
+        $('#inActiveUsersDetails').hide(); 
+		$('#inActiveUsersDetails').hide();
+		 $('#completeBooths').show();
+
+		
+	}
+	else if(id == "callCenterTab")
 	{
 		$('#webMontrId').show();
 		$('#callCenter').show();
@@ -10,6 +22,7 @@ function showHideTabs(id)
 		$('#boothWise').hide();
 		$('#dataCollector').hide();
         $('#inActiveUsersDetails').hide(); 
+		 $('#completeBooths').hide();
 
 		
 	}
@@ -21,6 +34,7 @@ function showHideTabs(id)
 		$('#boothWise').hide();
 		$('#dataCollector').hide();
 		$('#inActiveUsersDetails').show();
+		$('#completeBooths').hide();
 	}
 	else if(id == "boothWiseTab")
 	{
@@ -30,6 +44,7 @@ function showHideTabs(id)
 		$('#boothWise').show();
 		$('#dataCollector').hide();
 		$('#inActiveUsersDetails').hide();
+		$('#completeBooths').hide();
 
 	}
 	else
@@ -40,6 +55,7 @@ function showHideTabs(id)
 		$('#boothWise').hide();
 		$('#dataCollector').show();
 		$('#inActiveUsersDetails').hide();
+		$('#completeBooths').hide();
 
 	}
 }

@@ -94,7 +94,8 @@
 			<div class="span12 m_top20 survey_nav">
 				<ul class="inline unstyled">
 					
-					<li><a class="highlight   selected" id="startTimeTab" onclick="showHideTabs(this.id);">Field Report</a></li>
+					<li><a class="highlight   selected" id="completedBoothsTab" onclick="showHideTabs(this.id);">Completed Booths</a></li>
+					<li><a class="highlight" id="startTimeTab" onclick="showHideTabs(this.id);">Field Report</a></li>
 					<li><a class="highlight" id="boothWiseTab" onclick="showHideTabs(this.id);">Data Report</a></li>
 					<li id="webMontrId" style="display:none;"><a class="highlight" id="callCenterTab" onclick="showHideTabs(this.id);"> Web Monitoring </a></li>
 					<li><a class="highlight" id="dataCollectorWise" onclick="showHideTabs(this.id);"> Verfication report </a></li>
@@ -163,6 +164,67 @@
 		
 	</c:if>
 
+	<!-- start -->
+	<div class="row" id="completeBooths">
+			<div class="span12">
+				<div class="row-fluid ">
+					<div class="span10 offset1 widgetservey_Red m_top20">
+							<h4>Update Completed Booths Status</h4>														
+						<div class="row-fluid">
+							<div class="span6 offset3 text-center">
+								<h3>Constituency Name</h3>
+							</div>
+						</div>
+						
+						<div class="row-fluid">
+						<div class="span10 offset1">
+							<table class="table table-bordered table-hover table-striped ">
+								<thead class="alert alert-success">
+									<tr>
+										<th>Booth Number</th>
+										<th>Data Collector</th>
+										<th>Web Monitoring</th>
+										<th>Data Verifier</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>1</td>
+										<td><input type="checkbox"></td>
+										<td><input type="checkbox" disabled></td>
+										<td><input type="checkbox" disabled></td>	
+									</tr>
+									<!--------->
+									<tr>
+										<td>2</td>
+										<td><input type="checkbox" disabled></td>
+										<td><input type="checkbox" ></td>
+										<td><input type="checkbox" disabled></td>	
+									</tr>
+									<!--------->
+									<tr>
+										<td>3</td>
+										<td><input type="checkbox" disabled></td>
+										<td><input type="checkbox" disabled></td>
+										<td><input type="checkbox" ></td>	
+									</tr>
+									<!--------->
+									
+									
+									
+									
+								</tbody>
+							</table>	
+						</div>
+						</div>
+						<div class="row text-center m_top20"><button class="btn btn-large btn-success" type="button">UPDATE STATUS</button></div>
+							
+					</div>
+				</div>
+			</div>
+		</div>
+	<!-- end -->
+	
 
 		<div class="row" id="startTime">
 			<div class="span12">
@@ -314,7 +376,7 @@
 		console.log(userIds);
 	</script>
 	<script>
-		showHideTabs('startTimeTab');
+		showHideTabs('completedBoothsTab');
 		$(".highlight").click(function()
 		{
 			$(".highlight").removeClass("selected");
