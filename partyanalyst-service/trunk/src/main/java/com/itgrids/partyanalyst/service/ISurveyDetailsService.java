@@ -33,4 +33,6 @@ public interface ISurveyDetailsService {
 	public  PanchayatHamletsCountVo   getSurveyDataCountForHamletsByPanchayats(HamletCountInputVO inputVo);
 
 
+	public List<GenericVO> getUserForAssignedLeader(Long leaderId, Long userTypeId);
+	 public List<SurveyReportVO> getSurveyDetailsByBoothIds(List<Long> boothIds);
 }

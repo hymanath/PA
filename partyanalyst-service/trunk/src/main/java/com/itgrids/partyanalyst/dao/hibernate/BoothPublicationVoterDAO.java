@@ -7149,4 +7149,10 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		return query.list();
 	}
 	
+	public List<Object[]> getTotalVoters(List<Long> boothIds)
+	{
+		Query query = getSession().createQuery("select distinct model.booth.boothId ,model.booth.partNo, count(model.booth.boothId) from BoothPublicationVoter model where model.booth.boothId in (:boothIds) group  by model.booth.boothId");
+		query.setParameterList("boothIds", boothIds);
+		return query.list();
+	}
 }
