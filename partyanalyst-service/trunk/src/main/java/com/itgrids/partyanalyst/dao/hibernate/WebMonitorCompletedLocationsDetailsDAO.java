@@ -17,7 +17,7 @@ public class WebMonitorCompletedLocationsDetailsDAO extends GenericDaoHibernate<
 
 	public Long getSurveyWMCompletedCountByConstId(Long scopeId,List<Long> boothIds){
 		
-		Query query = getSession().createQuery(" select count(distinct WMCLD.locationValue) from WebMonitorCompletedLocationsDetails WMCLD where WMCLD.locationScopeId = :scopeId and " +
+		Query query = getSession().createQuery(" select count(distinct WMCLD.locationValue) from WebMonitorCompletedLocationsDetails WMCLD where WMCLD.locationScopeId = :locationScopeId and " +
 				" WMCLD.locationValue  in (:boothIds) ");
 		
 		query.setParameter("locationScopeId", IConstants.BOOTH_SCOPE_ID);
