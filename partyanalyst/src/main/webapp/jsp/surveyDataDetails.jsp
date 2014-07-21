@@ -739,8 +739,8 @@
 							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onClick="saveWebMonioringAssignDetails();">ASSIGN</button>
 							<img src='./images/icons/search.gif' id="webMonioringAssignimg" style="display:none;"/></div>
 							
-							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onClick="getSurveyBoothDetails();">Details</button>
-							<div id="tableDtailsDiv"></div>
+							<!-- <div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onClick="getSurveyBoothDetails();">Details</button>
+							<div id="tableDtailsDiv"></div>-->
 					</div>
 				</div>
 			</div>
