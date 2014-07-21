@@ -99,7 +99,7 @@
 					<li><a class="highlight" id="boothWiseTab" onclick="showHideTabs(this.id);">Data Report</a></li>
 					<li id="webMontrId" style="display:none;"><a class="highlight" id="callCenterTab" onclick="showHideTabs(this.id);"> Web Monitoring </a></li>
 					<li><a class="highlight" id="dataCollectorWise" onclick="showHideTabs(this.id);"> Verfication report </a></li>
-					<li><a class="highlight" id="surveyStatusRprtTab" onclick="showHideTabs(this.id);"> Survey Status Report </a></li>
+				<!--	<li><a class="highlight" id="surveyStatusRprtTab" onclick="showHideTabs(this.id);"> Survey Status Report </a></li> -->
 				</ul>
 			</div>
 		</div>
@@ -404,20 +404,14 @@
 						 
 						
 						<div class="row-fluid " id= "basicStatusReport" style="margin-top:20px;"></div>
-											
+						<div class="row-fluid" id="panchayatsStatusDiv"></div>
+						<div class="row-fluid " id= "tableDtailsDiv" style="margin-top:20px;"></div>
+						<div class="row-fluid" id="panchayatDetailsDiv" style="margin-top:20px;"></div>
+
 					</div>
 				</div>
 				
 				
-				<!-- panchayat status -->
-				<div class="row-fluid" id="panchayatsStatusDiv">
-				
-				</div>
-				<div class="row-fluid" id="panchayatDetailsDiv" style="margin-top:20px;">
-				
-				</div>
-				
-				<!-- end -->
 				
 			</div>
 		</div>
