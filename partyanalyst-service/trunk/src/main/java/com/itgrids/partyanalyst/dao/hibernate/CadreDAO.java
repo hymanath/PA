@@ -1172,4 +1172,26 @@ public List<Object[]> searchCadreInfoByConstidAndNameORMobile(Long constiId,Stri
 	return query.list();
 
 	}
+	public List<String> getAreaTypesByConstituencyId(Long constituencyId)
+	{
+		Query query=getSession().createQuery("select model.areaType from Constituency model where model.constituencyId = :constituencyId");
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
+	
+	public List<Object[]>  getLocalElectionBodydetailsByConstituencyId(Long constituencyId)
+	{
+		Query query = getSession()
+				.createQuery(
+						"select leb.localElectionBodyId,leb.name,leb.electionType.electionType from LocalElectionBody leb,AssemblyLocalElectionBody aleb where leb.localElectionBodyId = aleb.localElectionBody.localElectionBodyId and aleb.constituency.constituencyId = :constituencyId");
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
+	public List<Object[]> getCadreDetailsByMuncipalityId(String locationName)
+	{
+		Query query = getSession().createQuery("select C.cadreId, C.firstName, C.lastName, C.mobile, C.age, C.voter.voterId, C.fatherOrSpouseName " +
+			" from Cadre C, UserAddress UA  where   C.currentAddress.userAddressId = UA.userAddressId and C.currentAddress.localElectionBody.name = :locationName"); 
+		query.setParameter("locationName", locationName);
+		return query.list();
+	}
 }
