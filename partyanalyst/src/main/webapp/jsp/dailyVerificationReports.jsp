@@ -191,8 +191,10 @@ $('#boothId').multiselect({
 											
 											<div class="span5">
 												Select Constituency <font class="requiredFont">*</font>
-												<!--<select id="constituencyId" onChange="getBoothsDetailsByConstituencyId(this.value)"></select>-->
-													<s:select theme="simple"  name="constituency" id="constituencyForVeriFier"  headerKey="0" headerValue="Select Constituency" list="dataAvilableConstituencies" listKey="id" listValue="name" onChange="getBoothsDetailsByConstituencyId(this.value,'boothIdForVerifier')"/>
+												<!--<select id="constituencyId" onChange="getBoothsDetailsByConstituencyId(this.value)"></select>
+													<s:select theme="simple"  name="constituency" id="constituencyForVeriFier"  headerKey="0" headerValue="Select Constituency" list="dataAvilableConstituencies" listKey="id" listValue="name" onChange="getBoothsDetailsByConstituencyId(this.value,'boothIdForVerifier')"/>-->
+													<s:select theme="simple"  name="constituency" id="constituencyForVeriFier"  headerKey="0" headerValue="Select Constituency" list="dataAvilableConstituencies" listKey="id" listValue="name" onChange="getBoothsDetailsInSurveyDetailsInfo(this.value,'boothIdForVerifier')"/>
+
 											</div>
 											<div class="span4">
 												<!--User Type <font class="requiredFont">*</font>
@@ -228,8 +230,9 @@ $('#boothId').multiselect({
 											
 											<div class="span5">
 												Select Constituency <font class="requiredFont">*</font>
-												<!--<select id="constituencyId" onChange="getBoothsDetailsByConstituencyId(this.value)"></select>-->
-													<s:select theme="simple"  name="constituency" id="constituencyForWm"  headerKey="0" headerValue="Select Constituency" list="dataAvilableConstituencies" listKey="id" listValue="name" onChange="getBoothsDetailsByConstituencyId(this.value,'boothIdForWm')"/>
+												<!--<select id="constituencyId" onChange="getBoothsDetailsByConstituencyId(this.value)"></select>
+													<s:select theme="simple"  name="constituency" id="constituencyForWm"  headerKey="0" headerValue="Select Constituency" list="dataAvilableConstituencies" listKey="id" listValue="name" onChange="getBoothsDetailsByConstituencyId(this.value,'boothIdForWm')"/>-->
+													<s:select theme="simple"  name="constituency" id="constituencyForWm"  headerKey="0" headerValue="Select Constituency" list="dataAvilableConstituencies" listKey="id" listValue="name" onChange="getBoothsDetailsInCallStatusInfo(this.value,'boothIdForWm')"/>
 											</div>
 											<div class="span4">
 												<!--User Type <font class="requiredFont">*</font>
@@ -935,6 +938,63 @@ function getBoothsDetailsByConstituencyId(constituencyId,divId)
 
 		});	
 }
+
+
+function getBoothsDetailsInSurveyDetailsInfo(constituencyId,divId)
+{
+
+	$("#boothImage").show();
+	var jObj =
+	{
+	  constituencyId:constituencyId     
+	};
+
+	 $.ajax({
+			type:'GET',
+			url: 'getBoothsDetailsInSurveyDetailsInfoAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){				
+				//buildDayWiseReportByUserType(result);		
+				$("#boothImage").hide();
+				$('#'+divId+'').find('option').remove();
+
+				$.each(result,function(index,value){
+					$('#'+divId+'').append('<option value="'+value.id+'">Booth - '+value.name+'</option>');
+				});
+				
+				$('#'+divId+'').multiselect('refresh');
+
+		});	
+}
+
+function getBoothsDetailsInCallStatusInfo(constituencyId,divId)
+{
+	$("#boothImage").show();
+	var jObj =
+	{
+	  constituencyId:constituencyId     
+	};
+
+	 $.ajax({
+			type:'GET',
+			url: 'getBoothsDetailsInCallStatusAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){				
+				//buildDayWiseReportByUserType(result);		
+				$("#boothImage").hide();
+				$('#'+divId+'').find('option').remove();
+
+				$.each(result,function(index,value){
+					$('#'+divId+'').append('<option value="'+value.id+'">Booth - '+value.name+'</option>');
+				});
+				
+				$('#'+divId+'').multiselect('refresh');
+
+		});	
+}
+
 
 function showHideReportTabs(id)
 {
