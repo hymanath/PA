@@ -18,10 +18,12 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ISurveyCompletedLocationsDetailsDAO;
 import com.itgrids.partyanalyst.dao.ISurveyConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
+import com.itgrids.partyanalyst.dao.IWebMonitorCompletedLocationsDetailsDAO;
 import com.itgrids.partyanalyst.dao.hibernate.SurveyConstituencyDAO;
 import com.itgrids.partyanalyst.dto.SurveyCompletionDetailsVO;
 import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
 import com.itgrids.partyanalyst.model.SurveyCompletedLocationsDetails;
+import com.itgrids.partyanalyst.model.WebMonitorCompletedLocationsDetails;
 import com.itgrids.partyanalyst.service.ISurveyDashBoardService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -48,6 +50,9 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
 	@Autowired
 	private ISurveyConstituencyDAO surveyConstituencyDAO;
+	
+	@Autowired
+	private IWebMonitorCompletedLocationsDetailsDAO webMonitorCompletedLocationsDetailsDAO; 
 	
 
 	public SurveyDashBoardVO getCompletdConstituenciesDetails()
@@ -601,7 +606,51 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 		
 	}
 	
-
 	
+	public String saveBoothCompletionStatus(Long boothId,Long statusId)
+	{
+		LOG.info("Entered into the saveBoothCompletionStatus service method");
+		
+		try
+		{
+			if(statusId.equals(IConstants.BOOTH_PROCESS_DC_STATUS_ID))
+			{
+			    surveyCompletedLocationsDetailsDAO.deleteBoothCompletedLocationDetailsByBoothId(boothId);
+			    webMonitorCompletedLocationsDetailsDAO.deleteBoothCompletedLocationDetailsByBoothId(boothId);
+			    
+			}else if(statusId.equals(IConstants.BOOTH_COMPLETED_DC_STATUS_ID))
+			{
+					webMonitorCompletedLocationsDetailsDAO.deleteBoothCompletedLocationDetailsByBoothId(boothId);
+				 
+				 
+				  	SurveyCompletedLocationsDetails surveyCompletedLocationDetails = new SurveyCompletedLocationsDetails();
+				    
+				    surveyCompletedLocationDetails.setLocationScopeId(IConstants.BOOTH_SCOPE_ID);
+				    surveyCompletedLocationDetails.setLocationValue(boothId);
+				    surveyCompletedLocationDetails.setSurveyUserTypeId(1L);
+				    
+				    surveyCompletedLocationsDetailsDAO.save(surveyCompletedLocationDetails);
+				
+			}else
+			{
+			    surveyCompletedLocationsDetailsDAO.deleteBoothCompletedLocationDetailsByBoothId(boothId);
+			    
+				WebMonitorCompletedLocationsDetails webMonitorCompletionDetails = new WebMonitorCompletedLocationsDetails();
+			    
+				webMonitorCompletionDetails.setLocationScopeId(IConstants.BOOTH_SCOPE_ID);
+				webMonitorCompletionDetails.setLocationValue(boothId);
+			    
+			    webMonitorCompletedLocationsDetailsDAO.save(webMonitorCompletionDetails);
+				
+			}
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Exception raised in saveBoothCompletionStatus service method");
+			return null;
+		}
+		return "success";
+	}
 
 }

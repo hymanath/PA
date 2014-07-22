@@ -764,6 +764,10 @@ public interface IConstants {
     
     public static final Long DATA_COLLECTOR_ROLE_ID = 1L;
     public static final Long VERIFIER_ROLE_ID = 4L;
+    
+    public static final Long BOOTH_PROCESS_DC_STATUS_ID =1L;
+    public static final Long BOOTH_COMPLETED_DC_STATUS_ID =2L;
+    public static final Long BOOTH_COMPLETED_WM_STATUS_ID = 3L;
 
 
     public enum  MatchTypes{

@@ -37,4 +37,14 @@ public class WebMonitorCompletedLocationsDetailsDAO extends GenericDaoHibernate<
 		return query.list();
 	}
 
+	public void deleteBoothCompletedLocationDetailsByBoothId(Long boothId)
+	{
+
+		Query query = getSession().createQuery("delete from WebMonitorCompletedLocationsDetails WCLD  where  " +
+				"WCLD.locationValue = :boothId");
+		
+		query.setParameter("boothId", boothId);		
+		 query.executeUpdate();
+		
+	}
 }
