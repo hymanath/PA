@@ -101,4 +101,18 @@ public class SurveyCompletedLocationsDetailsDAO extends GenericDaoHibernate<Surv
 		
 	}
 	
+	
+	public List<Long> getCompletedBoothDetailsByBoothIds(List<Long> boothIds)
+	{
+		Query query = getSession().createQuery("select SCLD.locationValue from SurveyCompletedLocationsDetails SCLD where SCLD.locationScopeId = :locationScopeId and " +
+				" SCLD.locationValue  in (:boothIds)");
+		
+		query.setParameter("locationScopeId", IConstants.BOOTH_SCOPE_ID);
+		query.setParameterList("boothIds", boothIds);
+		
+		return query.list();
+
+		
+	}
+	
 }
