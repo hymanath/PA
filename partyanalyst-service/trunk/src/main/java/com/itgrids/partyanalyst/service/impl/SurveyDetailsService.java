@@ -548,88 +548,79 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 		 GenericVO genericVO = new GenericVO();
 
 		try
-		{
-			
-			 Map<String , GenericVO> boothsMap = new LinkedHashMap<String , GenericVO>(); 
+		{			
+			Map<String , GenericVO> boothsMap = new LinkedHashMap<String , GenericVO>(); 
 			List<Object[]> processingBooths  =  surveyDetailsInfoDAO.getProcecingBoothCountByConstId(constituencyId);
 			List<Long> procesingBoothIds = new ArrayList<Long>();
 			
-			List<GenericVO> procesingBooths = new ArrayList<GenericVO>();
-			
 			if(processingBooths != null && processingBooths.size()>0){		
-				
-				GenericVO procesingVO = new GenericVO();
-				procesingVO.setCount(Long.valueOf(String.valueOf(processingBooths.size())));
-				String boothIds = "";
-					for (Object[] booth : processingBooths) {
-						
-						boothIds = boothIds+","+booth[0].toString();
-						
+
+				String procesingBoths = "";
+					for (Object[] booth : processingBooths) {						
+						procesingBoths = procesingBoths+","+booth[0].toString();						
 						procesingBoothIds.add(booth[0] != null ? (Long) booth[0]:0L);
 						
-						GenericVO countVO = new GenericVO();
-						countVO.setId(booth[0] != null ? (Long) booth[0]:0L);					
-						procesingBooths.add(countVO);
-						
 					}
-				procesingVO.setId(1L);
-				procesingVO.setDesc(boothIds);
-				procesingVO.setName(" Booth Processing");
-				procesingVO.setGenericVOList(procesingBooths);
-				boothsMap.put("processing", procesingVO);
+				
+				boothsMap.put("procesing", getBoothCountsIteration(procesingBoths,Long.valueOf(String.valueOf(processingBooths.size())),1L,"Booth Processing"));				
 			}
 			
-			
-			List<GenericVO> completedBoothList = new ArrayList<GenericVO>();
-			
-			if(procesingBoothIds != null && procesingBoothIds.size()>0){			
+			if(procesingBoothIds != null && procesingBoothIds.size()>0){
+				
 				List<Long> completedBooths  = surveyCompletedLocationsDetailsDAO.getSurveyCompletedCountByConstId(9L,procesingBoothIds);
 								
 				if(completedBooths != null && completedBooths.size()>0){	
 					
-					GenericVO completedVO = new GenericVO();
-					completedVO.setCount(Long.valueOf(String.valueOf(completedBooths.size())));
-					String boothIds1 = "";
+					String compltdBoothIds1 = "";
+					String procesingBoths = "";
 					for (Long boothId : completedBooths) {	
-						boothIds1 = boothIds1+","+boothId;	
-						GenericVO countVO = new GenericVO();
-						countVO.setId(boothId != null ? (Long) boothId:0L);	
-						completedBoothList.add(countVO);	
+						
+						if(procesingBoothIds.contains(boothId)){
+							procesingBoothIds.remove(boothId);
+						}
+						
+						compltdBoothIds1 = compltdBoothIds1+","+boothId;	
 						
 					}
-					completedVO.setId(2L);
-					completedVO.setDesc(boothIds1);
-					completedVO.setName("Booth Completed");
-					completedVO.setGenericVOList(completedBoothList);
-					boothsMap.put("complete", completedVO);
 					
-
+					for (Long boothId : procesingBoothIds) {
+						procesingBoths = procesingBoths+","+boothId;
+					}
+					
+					
+						boothsMap.put("procesing", getBoothCountsIteration(procesingBoths,Long.valueOf(String.valueOf(procesingBoothIds.size())),1L,"Booth Processing"));
+						boothsMap.put("complete", getBoothCountsIteration(compltdBoothIds1,Long.valueOf(String.valueOf(completedBooths.size())),2L,"Booth Complete"));
 					
 					List<Long> WBCmpletBooths = webMonitorCompletedLocationsDetailsDAO.getSurveyWMCompletedCountByConstId(9L,completedBooths); // 9L means searching based on booths
-					List<GenericVO> WBCmpletBoothsList = new ArrayList<GenericVO>();
-					
+				
 						if(WBCmpletBooths != null && WBCmpletBooths.size()>0){	
-							
-							GenericVO WBCompletVO = new GenericVO();
-							WBCompletVO.setCount(Long.valueOf(String.valueOf(WBCmpletBooths.size())));
-							String boothIds = "";
-							for (Long boothId : WBCmpletBooths) {	
-								
-								boothIds = boothIds+","+boothId;
-								
-								GenericVO countVO = new GenericVO();
-								countVO.setId(boothId != null ? (Long) boothId:0L);	
-								WBCmpletBoothsList.add(countVO);	
-								
+							String WBBooths = "";
+							for (Long boothId : WBCmpletBooths) {									
+								WBBooths = WBBooths+","+boothId;
 							}
-							WBCompletVO.setId(3L);
-							WBCompletVO.setDesc(boothIds);
-							WBCompletVO.setName("Web Monotoring Completed");
-							WBCompletVO.setGenericVOList(WBCmpletBoothsList);
-							boothsMap.put("WMCompleted", WBCompletVO);
+							
+						boothsMap.put("WMCompleted", getBoothCountsIteration(WBBooths,Long.valueOf(String.valueOf(WBCmpletBooths.size())),3L,"Web Monitoring Completed"));
 						
 					}
+					else{ // if WB completed booths not available
+					
+						boothsMap.put("WMCompleted", getBoothCountsIteration(null,0L,3L,"Web Monitoring Completed"));						
+					}
 				}
+				else{  // if completed booths not available
+					
+						boothsMap.put("complete", getBoothCountsIteration(null,0L,2L,"Booth Complete"));
+						boothsMap.put("WMCompleted", getBoothCountsIteration(null,0L,3L,"Web Monitoring Completed"));
+					
+				}
+			}
+			else{
+
+				// if processing booths not available
+						boothsMap.put("procesing", getBoothCountsIteration(null,0L,1L,"Booth Processing"));
+						boothsMap.put("complete", getBoothCountsIteration(null,0L,2L,"Booth Complete"));
+						boothsMap.put("WMCompleted", getBoothCountsIteration(null,0L,3L,"Web Monitoring Completed"));
+				
 			}
 			
 			List<GenericVO> resultList = new ArrayList<GenericVO>();
@@ -655,6 +646,23 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 		
 	}
 
+
+	private GenericVO getBoothCountsIteration(String boothIds,Long count,Long statusId,String boothType){
+		GenericVO vo = new GenericVO();
+		try {
+			vo.setDesc(boothIds);
+			vo.setCount(count);								
+			vo.setId(statusId);
+			vo.setName(boothType);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception raised in getBoothCountsIteration  method in SurveyDetailsService class.", e);
+		}
+		
+		return vo;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public  PanchayatHamletsCountVo   getSurveyDataCountForHamletsByPanchayats(HamletCountInputVO inputVo)
 	{
