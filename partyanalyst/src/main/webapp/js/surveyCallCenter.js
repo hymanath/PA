@@ -1371,6 +1371,8 @@ function buildDayWiseReportByUserType(result)
 function getReportForConstituency(){
 	var constituencyId = $('#reportConstituencyId').val();
 	$('#errDivIdForReport').html('');
+	$('#basicStatusReport').html('');
+	$('#panchayatDetailsDiv').html('');
 	$('#basicCountDiv').html('');
 	 $("#panchayatsStatusDiv").html('');
 	if(constituencyId == 0){
@@ -1393,7 +1395,6 @@ function getReportForConstituency(){
 		}).done(function(result){
 				$("#reportDataImg").hide();
 				if(result != null && result.genericVOList != null && result.genericVOList.length > 0 ){
-					buildReportData(result.genericVOList);
 					getPanchayatsStatusCount(constituencyId,result.genericVOList);
 				}
 				else{
@@ -1403,46 +1404,11 @@ function getReportForConstituency(){
 		
 }
 
-function buildReportData(result){
-
-$('#basicStatusReport').html('');
-
-var str ='';
-	
-
-				str += '<div class="row-fluid">';
-				str += '<div class="span12 booths-Overview-widget">';
-				str += '<div class="row-fluid">';
-				str += '<div class="row-fluid">';
-				str += '<h5 class="text-center label"> Booth Wise Survey Details   </h5>';
-				str += '</div>';
-				str += '<ul class="inline unstyled booths-Overview-widget-nav">';
-				
-			   for(var i in result){
-			 
-					str += '<li>';
-					str += '<hgroup>';
-					str += '<h4>'+result[i].name+'</h4>';
-					str += '<h2> <a href="javascript:{getSurveyBoothDetails(\''+result[i].desc+'\','+result[i].id+');}">'+result[i].count+'</a></h2>';
-					str += '</hgroup>';
-					str += '</li>';	
-				}	
-				
-				str += '</ul>';
-				str += '</div>';
-				str += '</div>';
-				str += '</div> ';
-				
-				
-	$('#basicStatusReport').html(str);
-
-		
-}
-
-	
 function getSurveyBoothDetails(boothDtls,statusId)
 {
+$('#tableDtailsDiv').html('');
 $("#panchayatDetailsDiv").html('');
+$('#statusAjaxImg').show();
 var boothArr = new Array();
 
 var boothInfo = boothDtls.split(',');
@@ -1474,7 +1440,7 @@ var boothInfo = boothDtls.split(',');
 
 function buildSurveyBoothDetailsTable(result,statusId)
 {
-
+	$('#statusAjaxImg').hide();
 	if(result != null && result.length > 0)
 			{	
 				var str = '';
@@ -1561,6 +1527,9 @@ function getPanchayatsStatusCount(constituencyId,boothResult)
 }
 function getPanchayatDetails(status,constituencyId)
 {
+$('#tableDtailsDiv').html('');
+$("#panchayatDetailsDiv").html('');
+$('#statusAjaxImg').show();
 var jObj =
 	{
 	  constituencyId:constituencyId ,
@@ -1588,9 +1557,6 @@ function buildStatusForPanchayats(result,constituencyId,boothResult)
 				str += '<div class="row-fluid">';
 				str += '<div class="span12 booths-Overview-widget">';
 				str += '<div class="row-fluid">';
-				str += '<div class="row-fluid">';
-				str += '<h5 class="text-center label"> Survey Details   </h5>';
-				str += '</div>';
 				str += '<ul class="inline unstyled booths-Overview-widget-nav">';
 				
 			   for(var i in boothResult){
@@ -1636,6 +1602,8 @@ function buildStatusForPanchayats(result,constituencyId,boothResult)
 function buildStatusForPanchayatDetials(result, status)
 {
 	$('#tableDtailsDiv').html('');
+	$("#panchayatDetailsDiv").html('');
+	$('#statusAjaxImg').hide();
 	var str='';
 	
 	if(status == "completed"){
