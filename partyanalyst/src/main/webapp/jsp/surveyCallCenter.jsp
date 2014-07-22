@@ -84,6 +84,16 @@
 				width:200px !important;
 				}
 
+			#reportTab thead th , #panchayatStatusTable thead th{
+				border-bottom: 1px solid black  !important;
+				cursor: pointer  !important;
+				font-weight: bold  !important;
+				background-color: #dff0d8  !important;
+				color : #468847 !important;
+				line-height: 30px !important;
+			}
+			
+	
 		</style>
 		
   </head>
