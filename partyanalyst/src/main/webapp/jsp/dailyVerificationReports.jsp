@@ -93,6 +93,7 @@ $('#boothId').multiselect({
 				<ul class="inline unstyled">
 					<li><a class="highlight selected" id="stateWiseReportTab" onclick="showHideReportTabs(this.id);"> State Wise Report </a></li>
 					<li><a class="highlight" id="dataCollectorTab" value="1" onclick="showHideReportTabs(this.id);"> Data Collector Report </a></li>
+					<li><a class="highlight" id="wmReportTab" value="3" onclick="showHideReportTabs(this.id);">WM Report</a></li>
 					<li><a class="highlight" id="verifierReportTab" value="2" onclick="showHideReportTabs(this.id);">Verifier Report</a></li>
 					<!--<li><a class="highlight" id="thirdPartyReportTab" value="3" onclick="showHideReportTabs(this.id);"> Third Party Report </a></li>-->
 					<li><a class="highlight" id="userTrackingReportTab" onclick="showHideReportTabs(this.id);"> User Tracking Report</a></li>
@@ -204,10 +205,47 @@ $('#boothId').multiselect({
 										</div>	
 									</div>
 								</div>
-						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getVerfierDetails()">SUBMIT</button></div>
+						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getVerfierDetails(1,'mainajaximgForVerifier','dayWiseReportDivForVerifier')">SUBMIT</button></div>
 						<div id="retunMsg" class="clearCls"></div>
 						<img src='images/Loading-data.gif' class="offset5"  id="mainajaximgForVerifier" style="width:70px;height:60px;display:none;"/>
                          <div id="dayWiseReportDivForVerifier" class="clearCls"></div>
+							
+					</div>
+				</div>
+			</div>
+		</div>
+			<div class="row" id="wmReportDiv" style="dispaly:none;">
+			<div class="span12">
+				<div class="row-fluid ">
+					<div class="span12 widgetservey_Red m_top30">
+							<h4 id="titleId"></h4>
+							<div class="row">
+						<div id="errorDiv" class="span8 offset1 clearCls"></div>
+						</div>
+								<div class="row">
+									<div class="offset1">
+										<div class="row-fluid">
+											
+											<div class="span5">
+												Select Constituency <font class="requiredFont">*</font>
+												<!--<select id="constituencyId" onChange="getBoothsDetailsByConstituencyId(this.value)"></select>-->
+													<s:select theme="simple"  name="constituency" id="constituencyForWm"  headerKey="0" headerValue="Select Constituency" list="dataAvilableConstituencies" listKey="id" listValue="name" onChange="getBoothsDetailsByConstituencyId(this.value,'boothIdForWm')"/>
+											</div>
+											<div class="span4">
+												<!--User Type <font class="requiredFont">*</font>
+												<select class="input-block-level" id = "userType"> <option value="0">Select User Type</option></select>-->
+												Select Booth 
+												<select class="input-block-level" id = "boothIdForWm" > <option value="0">Select Booth</option></select></div>
+												<div class="span1" style="margin:25px -8px 0 8px;width: 15px;">
+													<img id="boothImageForWm" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
+												</div>
+										</div>	
+									</div>
+								</div>
+						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getVerfierDetails(2,'mainajaximgForWm','dayWiseReportDivForWm')">SUBMIT</button></div>
+						<div id="retunMsg" class="clearCls"></div>
+						<img src='images/Loading-data.gif' class="offset5"  id="mainajaximgForWm" style="width:70px;height:60px;display:none;"/>
+                         <div id="dayWiseReportDivForWm" class="clearCls"></div>
 							
 					</div>
 				</div>
@@ -675,123 +713,185 @@ $('#mainajaximg').hide();
 
 }
 
-function getVerfierDetails()
+function getVerfierDetails(buildType,imgId,buildDiv)
 {
-	$('#mainajaximgForVerifier').show();
-	$('#dayWiseReportDivForVerifier').html('');
-	var boothId = $('#boothIdForVerifier').val();
+	$('#'+imgId+'').show();
+	$('#'+buildDiv+'').html('');
 	var boothIds = new Array();
-	boothIds.push(boothId);
-	var jObj =
+	
+	if(buildType == 1)
 	{
-		boothIds:boothIds     
-	};
-
-	 $.ajax({
+		var boothId = $('#boothIdForVerifier').val();
+		boothIds.push(boothId);
+		var jObj =
+		{
+			boothIds:boothIds     
+		};
+		
+		$.ajax({
 			type:'GET',
 			url: 'checkForVerifierDataAction.action',
 			dataType: 'json',
 			data: {task:JSON.stringify(jObj)},
-		  }).done(function(result){	
+		 }).done(function(result){	
 		  
-			if(result != null)
-			{
-					var str = '';
-					if(result[0].matchedList[0] != null )
-					{
-						str += '<div class="row-fluid">';
-						str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;" >PANCHAYAT : '+result[0].matchedList[0].panchayatName+'</div> ';
-						str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">SURVEY USER : '+result[0].matchedList[0].surveyUser+'</div> ';
-						str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">Date : '+result[0].matchedList[0].date+'</div> ';
-						str += '</div>';
-					}
-					else if(result[0].unMatchedList[0] != null )
-					{
-						str += '<div class="row-fluid">';
-						str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;" >PANCHAYAT : '+result[0].unMatchedList[0].panchayatName+'</div> ';
-						str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">SURVEY USER : '+result[0].unMatchedList[0].surveyUser+'</div> ';
-						str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">Date : '+result[0].unMatchedList[0].date+'</div> ';
-						str += '</div>';
-					}
-					
-					str += '<div>';
-					str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">TOTAL : '+result[0].totalCount+'</div> ';
-					str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">MATCHED : '+result[0].matchedCount+'</div>';
-					str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">UN MATCHED : '+result[0].unMatchedCount+'</div> ';
-					str += '</div>';
-					
-					str+='<table id="dayWiseReportTableForVerifier" class="table table-bordered m_top20 table-hover table-striped username">';
-					str+='<thead class="alert alert-success">';
-					str+='<tr>';
-					//str+='<th>Booth</th>';
-					//str+='<th>Panchayat</th>';
-					//str+='<th>Survey User</th>';
-					str+='<th>Voter Name</th>';
-					str+='<th>Relativen Name</th>';
-					//str+='<th>DC Collected Date</th>';
-					str+='<th>DC CASTE</th>';
-					str+='<th>WM CASTE</th>';
-					str+='<th>DV CASTE</th>';
-					str+='<th>STATUS</th>';
-					str+='</tr>';
-					str+='</thead>';
-					str+='<tbody>'
-					for(var i in result)
-					{
-						
-						for(var j in result[i].matchedList)
-						{
-							str += '<tr>';
-							//str+='<td>'+result[i].matchedList[j].partNo+'</td>';
-							//str+='<td>'+result[i].matchedList[j].panchayatName+'</td>';
-							//str+='<td>'+result[i].matchedList[j].surveyUser+'</td>';
-							str+='<td>'+result[i].matchedList[j].voterName+'</td>';
-							str+='<td>'+result[i].matchedList[j].relativeName+'</td>';
-							//str+='<td>'+result[i].matchedList[j].date+'</td>';
-							str+='<td>'+result[i].matchedList[j].dcCaste+'</td>';
-							str+='<td>'+result[i].matchedList[j].wmCaste+'</td>';
-							str+='<td>'+result[i].matchedList[j].dvCaste+'</td>';
-							str+='<td>MATCHED</td>';
-							str += '</tr>';		
-						}
-						for(var j in result[i].unMatchedList)
-						{
-							str += '<tr>';
-							//str+='<td>'+result[i].unMatchedList[j].partNo+'</td>';
-							//str+='<td>'+result[i].unMatchedList[j].panchayatName+'</td>';
-							//str+='<td>'+result[i].unMatchedList[j].surveyUser+'</td>';
-							str+='<td>'+result[i].unMatchedList[j].voterName+'</td>';
-							str+='<td>'+result[i].unMatchedList[j].relativeName+'</td>';
-							//str+='<td>'+result[i].unMatchedList[j].date+'</td>';
-							str+='<td>'+result[i].unMatchedList[j].dcCaste+'</td>';
-							str+='<td>'+result[i].unMatchedList[j].wmCaste+'</td>';
-							str+='<td>'+result[i].unMatchedList[j].dvCaste+'</td>';
-							str+='<td>UNMATCHED</td>';
-							str += '</tr>';		
-						}
-						
-					}
-					str += '</tbody>';
-					str += '</table>';
-					$('#dayWiseReportDivForVerifier').html(str);
-					//generateExcel('dataTableDiv');
-					$('#dayWiseReportTableForVerifier').dataTable({
-						"iDisplayLength": 100,
-						"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]]
-					});
-					$('#mainajaximgForVerifier').hide();
-			}
-			else
-			{
-				$('#dayWiseReportDivForVerifier').html('<b style="color:red">No Data Avaliable</b>');
-				$('#mainajaximgForVerifier').hide();
-			}
+		if(result != null)
+		{
+			buildVerifierOrWMReport(result,buildType,buildDiv,imgId);
+		}
+		else
+		{
+			$('#'+buildDiv+'').html('<b style="color:red">No Data Avaliable</b>');
+			$('#'+imgId+'').hide();
+		}		
 		});	
-				
-			
-			
+	}
+	else
+	{
+		var jObj =
+		{
+			boothId:$('#boothIdForWm').val()     
+		};
+		
+		$.ajax({
+			type:'GET',
+			url: 'checkForWebMonitorDataAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		 }).done(function(result){	
+		  
+		if(result != null)
+		{
+			buildVerifierOrWMReport(result,buildType,buildDiv,imgId);
+		}
+		else
+		{
+			$('#'+buildDiv+'').html('<b style="color:red">No Data Avaliable</b>');
+			$('#'+imgId+'').hide();
+		}		
+		});	
+	}
+
+		
 }
 
+function buildVerifierOrWMReport(result,buildType,buildDiv,imgId)
+{
+	var str = '';
+	if(result[0].matchedList[0] != null )
+	{
+		str += '<div class="row-fluid">';
+		str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;" >PANCHAYAT : '+result[0].matchedList[0].panchayatName+'</div> ';
+		str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">SURVEY USER : '+result[0].matchedList[0].surveyUser+'</div> ';
+		str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">Date : '+result[0].matchedList[0].date+'</div> ';
+		str += '</div>';
+	}
+	else if(result[0].unMatchedList[0] != null )
+	{
+		str += '<div class="row-fluid">';
+		str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;" >PANCHAYAT : '+result[0].unMatchedList[0].panchayatName+'</div> ';
+		str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">SURVEY USER : '+result[0].unMatchedList[0].surveyUser+'</div> ';
+		str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">Date : '+result[0].unMatchedList[0].date+'</div> ';
+		str += '</div>';
+	}
+	else if(result[0].notVerifiedList[0] != null )
+	{
+		str += '<div class="row-fluid">';
+		str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;" >PANCHAYAT : '+result[0].notVerifiedList[0].panchayatName+'</div> ';
+		str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">SURVEY USER : '+result[0].notVerifiedList[0].surveyUser+'</div> ';
+		str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">Date : '+result[0].notVerifiedList[0].date+'</div> ';
+		str += '</div>';
+	}
+	
+	str += '<div>';
+	str += '<div class="span3" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">TOTAL : '+result[0].totalCount+'</div> ';
+	str += '<div class="span3" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">MATCHED : '+result[0].matchedCount+'</div>';
+	str += '<div class="span3" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">UN MATCHED : '+result[0].unMatchedCount+'</div> ';
+	str += '<div class="span3" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">NOT VERIFIED : '+result[0].notVerifiedCount+'</div> ';
+	str += '</div>';
+	
+	str+='<table id="dayWiseReportTableForVerifier" class="table table-bordered m_top20 table-hover table-striped username">';
+	str+='<thead class="alert alert-success">';
+	str+='<tr>';
+	//str+='<th>Booth</th>';
+	//str+='<th>Panchayat</th>';
+	//str+='<th>Survey User</th>';
+	str+='<th>Voter Name</th>';
+	str+='<th>Relativen Name</th>';
+	//str+='<th>DC Collected Date</th>';
+	str+='<th>DC CASTE</th>';
+	str+='<th>WM CASTE</th>';
+	if(buildType == 1)
+	str+='<th>DV CASTE</th>';
+	str+='<th>STATUS</th>';
+	str+='</tr>';
+	str+='</thead>';
+	str+='<tbody>'
+	for(var i in result)
+	{
+		
+		for(var j in result[i].matchedList)
+		{
+			str += '<tr>';
+			//str+='<td>'+result[i].matchedList[j].partNo+'</td>';
+			//str+='<td>'+result[i].matchedList[j].panchayatName+'</td>';
+			//str+='<td>'+result[i].matchedList[j].surveyUser+'</td>';
+			str+='<td>'+result[i].matchedList[j].voterName+'</td>';
+			str+='<td>'+result[i].matchedList[j].relativeName+'</td>';
+			//str+='<td>'+result[i].matchedList[j].date+'</td>';
+			str+='<td>'+result[i].matchedList[j].dcCaste+'</td>';
+			str+='<td>'+result[i].matchedList[j].wmCaste+'</td>';
+			if(buildType == 1)
+			str+='<td>'+result[i].matchedList[j].dvCaste+'</td>';
+			str+='<td>MATCHED</td>';
+			str += '</tr>';		
+		}
+		for(var j in result[i].unMatchedList)
+		{
+			str += '<tr>';
+			//str+='<td>'+result[i].unMatchedList[j].partNo+'</td>';
+			//str+='<td>'+result[i].unMatchedList[j].panchayatName+'</td>';
+			//str+='<td>'+result[i].unMatchedList[j].surveyUser+'</td>';
+			str+='<td>'+result[i].unMatchedList[j].voterName+'</td>';
+			str+='<td>'+result[i].unMatchedList[j].relativeName+'</td>';
+			//str+='<td>'+result[i].unMatchedList[j].date+'</td>';
+			str+='<td>'+result[i].unMatchedList[j].dcCaste+'</td>';
+			str+='<td>'+result[i].unMatchedList[j].wmCaste+'</td>';
+			if(buildType == 1)
+			str+='<td>'+result[i].unMatchedList[j].dvCaste+'</td>';
+			str+='<td>UNMATCHED</td>';
+			str += '</tr>';		
+		}
+		for(var j in result[i].notVerifiedList)
+		{
+			str += '<tr>';
+			//str+='<td>'+result[i].notVerifiedList[j].partNo+'</td>';
+			//str+='<td>'+result[i].notVerifiedList[j].panchayatName+'</td>';
+			//str+='<td>'+result[i].notVerifiedList[j].surveyUser+'</td>';
+			str+='<td>'+result[i].notVerifiedList[j].voterName+'</td>';
+			str+='<td>'+result[i].notVerifiedList[j].relativeName+'</td>';
+			//str+='<td>'+result[i].notVerifiedList[j].date+'</td>';
+			str+='<td>'+result[i].notVerifiedList[j].dcCaste+'</td>';
+			str+='<td>'+result[i].notVerifiedList[j].wmCaste+'</td>';
+			if(buildType == 1)
+			str+='<td>'+result[i].notVerifiedList[j].dvCaste+'</td>';
+			str+='<td>NOT VERIFIED</td>';
+			str += '</tr>';		
+		}
+		
+		
+	}
+	str += '</tbody>';
+	str += '</table>';
+	$('#'+buildDiv+'').html(str);
+	//generateExcel('dataTableDiv');
+	$('#dayWiseReportTableForVerifier').dataTable({
+		"iDisplayLength": 100,
+		"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]]
+	});
+	$('#'+imgId+'').hide();
+			
+}
 /*var tableToExcel = (function() {
 var uri = 'data:application/vnd.ms-excel;base64,'
 , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
@@ -848,6 +948,7 @@ function showHideReportTabs(id)
 		$("#stateWiseReportId").hide();
 		$("#verifierReportId").show();
 		$("#verifierReportIdForVerifier").hide();
+		$("#wmReportDiv").hide();
 		$('#boothId').multiselect('refresh');
 	}
 
@@ -857,10 +958,18 @@ function showHideReportTabs(id)
 		$("#comparisonReportId").hide();
 		$("#stateWiseReportId").hide();
 		$("#verifierReportId").hide();
+		$("#wmReportDiv").hide();
 		$("#verifierReportIdForVerifier").show();
-		$('#boothId').multiselect('refresh');
 	}
-
+	else if (id == "wmReportTab")
+	{
+		$("#surveyUserTrackingId").hide();
+		$("#comparisonReportId").hide();
+		$("#stateWiseReportId").hide();
+		$("#verifierReportId").hide();
+		$("#wmReportDiv").show();
+		$("#verifierReportIdForVerifier").hide();
+	}
 	else if(id == "thirdPartyReportTab")
 	{
 		$("#surveyUserTrackingId").hide();
@@ -868,6 +977,7 @@ function showHideReportTabs(id)
 		$("#stateWiseReportId").hide();
 		$("#verifierReportId").show();
 		$("#verifierReportIdForVerifier").hide();
+		$("#wmReportDiv").hide();
 		$('#boothId').multiselect('refresh');
 	}
 	else if(id == "userTrackingReportTab")
@@ -875,6 +985,7 @@ function showHideReportTabs(id)
 		$("#verifierReportId").hide();
 		$("#comparisonReportId").hide();
 		$("#stateWiseReportId").hide();
+		$("#wmReportDiv").hide();
 		$("#verifierReportIdForVerifier").hide();
 		$("#surveyUserTrackingId").show();
 	}
@@ -883,6 +994,7 @@ function showHideReportTabs(id)
 		$("#surveyUserTrackingId").hide();
 		$("#verifierReportId").hide();
 		$("#stateWiseReportId").hide();
+		$("#wmReportDiv").hide();
 		$("#verifierReportIdForVerifier").hide();
 		$("#comparisonReportId").show();
 	}
@@ -892,6 +1004,7 @@ function showHideReportTabs(id)
 		$("#surveyUserTrackingId").hide();
 		$("#verifierReportId").hide();
 		$("#comparisonReportId").hide();
+		$("#wmReportDiv").hide();
 		$("#verifierReportIdForVerifier").hide();
 		$("#stateWiseReportId").show();
 	}

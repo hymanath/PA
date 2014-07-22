@@ -1860,5 +1860,26 @@ public String getPanchayatsStatusDetails()
   	return Action.SUCCESS;
   }
   
-  
+    
+  public String checkForWebMonitorData()
+	{
+		try
+		{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			jObj = new JSONObject(getTask());
+			
+			
+			verificationCompVOList = surveyDetailsService.checkForWebMonitorData(jObj.getLong("boothId"));
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in unTagConstituencyOfUser", e);
+		}
+		return Action.SUCCESS;
+	}
 }
