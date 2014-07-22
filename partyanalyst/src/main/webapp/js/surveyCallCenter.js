@@ -137,6 +137,7 @@ function getSurveyVotersList(userId,userName,boothId,boothNo,date){
 $('#userInfoDiv1').hide();
 $('#userInfoDiv2').hide();
 $('#userInfoDiv3').hide();
+$('#userInfoDiv4').hide();
 $('#casteInfoDiv').hide();
 var newCasteArr = new  Array();
 var surveyDate = $('#FielddateId').val();
@@ -462,6 +463,16 @@ $('#searchDataImg').show();
 		str2 ='';
 		str2 +=' <span style="font-weight:bold;"> Total Votes </span> : '+totalVoters+' </br>';
 		$('#userInfoDiv3').html(str2);
+		
+		var collectdVoters = results[0].subList.length;
+		var remainingCount = totalVoters - collectdVoters;
+		if( remainingCount!= 0)
+		{
+			$('#userInfoDiv4').show();
+			str2 ='';
+			str2 +=' <span style="font-weight:bold;"> Not Collected Voters </span> : '+remainingCount+' </br>';
+			$('#userInfoDiv4').html(str2);
+		}
 		
 		if(results != null && results[0].genericVOList.length>0)
 		{
@@ -1467,7 +1478,19 @@ function buildSurveyBoothDetailsTable(result,statusId)
 	if(result != null && result.length > 0)
 			{	
 				var str = '';
-			
+				
+				if(statusId == 1)
+				{
+					str+='<div style="font-weight:bold; padding:5px;border-radius:5px;background-color:#DFF0D8;margin-bottom:15px;" align="center"> PROCESSING BOOTHS DETAILS </div>';
+				}
+				else if(statusId == 2)
+				{
+					str+='<div style="font-weight:bold; padding:5px;border-radius:5px;background-color:#DFF0D8;margin-bottom:15px;" align="center"> COMPLETED BOOTHS DETAILS </div>';
+				}
+				else if(statusId == 3)
+				{
+					str+='<div style="font-weight:bold; padding:5px;border-radius:5px;background-color:#DFF0D8;margin-bottom:15px;" align="center"> WEB MONITORING COMPLETED BOOTHS DETAILS </div>';
+				}
 				str += '<table class="table table-bordered m_top20 table-hover table-striped " id="reportTab">';
 				str += '<thead>';
 				str += '<tr>	';									  
@@ -1550,7 +1573,7 @@ var jObj =
 			dataType: 'json',
 			data: {task:JSON.stringify(jObj)},
 		  }).done(function(result){				
-			buildStatusForPanchayatDetials(result);	
+			buildStatusForPanchayatDetials(result,status);	
 		});
 }
 function buildStatusForPanchayats(result,constituencyId,boothResult)
@@ -1610,10 +1633,17 @@ function buildStatusForPanchayats(result,constituencyId,boothResult)
 	$('#basicStatusReport').html(str);
 }
 
-function buildStatusForPanchayatDetials(result)
+function buildStatusForPanchayatDetials(result, status)
 {
 	$('#tableDtailsDiv').html('');
 	var str='';
+	
+	if(status == "completed"){
+		str+='<div style="font-weight:bold; padding:5px;border-radius:5px;background-color:#DFF0D8;margin-bottom:15px;" align="center"> COMPLETED PANCHAYAT DETAILS </div>';
+	}
+	else{
+		str+='<div style="font-weight:bold; padding:5px;border-radius:5px;background-color:#DFF0D8;margin-bottom:15px;" align="center"> NOT COMPLETED PANCHAYAT DETAILS  </div>';
+	}
 	if(result.length == 0)
 	{
 	
