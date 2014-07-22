@@ -1486,20 +1486,20 @@ function buildSurveyBoothDetailsTable(result,statusId)
 				
 				for(var i in result)
 				{
-					str += '<tr>		';								  
+					str += '<tr id="updateDiv'+i+'">		';								  
 					str += '<td>'+result[i].partNo+'</td>';
 					str += '<td>'+result[i].totalVoters+'</td>';
 					str += '<td>'+result[i].mobileNoCount+'</td>';
 					str += '<td>'+result[i].casteCount+'</td>';
 					str += '<td>'+result[i].hamletCount+'</td>';
 					if(statusId == 1){
-							str += '<td> <button class="btn-small btn-info" onClick="updateBoothStatusDetails(2,'+result[i].boothId+')"> Completed </button></td>';
+							str += '<td><button class="btn-small btn-info" onClick="updateBoothStatusDetails(2,'+result[i].boothId+','+i+')"> Completed </button></td>';
 					}
 					else if(statusId == 2){
-							str += '<td> <button  class="btn-small btn-warning" onClick="updateBoothStatusDetails(1,'+result[i].boothId+')"> Processing </button> <br> <button  style="margin-top:5px;" class="btn-small btn-success" onClick="updateBoothStatusDetails(3,'+result[i].boothId+')"> WM Completed </button></td>';
+							str += '<td> <button  class="btn-small btn-warning" onClick="updateBoothStatusDetails(1,'+result[i].boothId+','+i+')"> Processing </button> <br> <button  style="margin-top:5px;" class="btn-small btn-success" onClick="updateBoothStatusDetails(3,'+result[i].boothId+','+i+')"> WM Completed </button></td>';
 					}
 					else if(statusId == 3){
-							str += '<td> <button  class="btn-small btn-warning" onClick="updateBoothStatusDetails(1,'+result[i].boothId+')"> Processing </button> <br> <button  style="margin-top:5px;" class="btn-small btn-info" onClick="updateBoothStatusDetails(2,'+result[i].boothId+')"> Completed </button></td>';
+							str += '<td><button  class="btn-small btn-warning" onClick="updateBoothStatusDetails(1,'+result[i].boothId+','+i+')"> Processing </button> <br> <button  style="margin-top:5px;" class="btn-small btn-info" onClick="updateBoothStatusDetails(2,'+result[i].boothId+','+i+')"> Completed </button></div></td>';
 					}
 					
 					str += '</tr>	';
@@ -1704,7 +1704,7 @@ function buildHamletInfo(result,DivEle)
 
 
 }
-function updateBoothStatusDetails(statusId,boothId)
+function updateBoothStatusDetails(statusId,boothId,divId)
 {
 	var jsObj={
 		statusId:statusId,
@@ -1717,6 +1717,10 @@ function updateBoothStatusDetails(statusId,boothId)
 	data: {task:JSON.stringify(jsObj)},
 	}).done(function(result){
 		console.log(result);	
+		if(result != null && result == "success"){
+		getReportForConstituency();
+		$('#updateDiv'+divId+'').hide();			
+		}
 	});
 
 }
