@@ -1493,13 +1493,13 @@ function buildSurveyBoothDetailsTable(result,statusId)
 					str += '<td>'+result[i].casteCount+'</td>';
 					str += '<td>'+result[i].hamletCount+'</td>';
 					if(statusId == 1){
-							str += '<td> <button> Completed </button> <br> <button> WM Completed </button></td>';
+							str += '<td> <button onClick="updateBoothStatusDetails(3,'+result[i].boothId+')"> Completed </button></td>';
 					}
 					else if(statusId == 2){
-							str += '<td> <button> Prcessing </button> <br> <button> WM Completed </button></td>';
+							str += '<td> <button  onClick="updateBoothStatusDetails(1,'+result[i].boothId+')"> Prcessing </button> <br> <button  onClick="updateBoothStatusDetails(3,'+result[i].boothId+')"> WM Completed </button></td>';
 					}
 					else if(statusId == 3){
-							str += '<td> <button> Prcessing </button> <br> <button> Completed </button></td>';
+							str += '<td> <button  onClick="updateBoothStatusDetails(1,'+result[i].boothId+')"> Prcessing </button> <br> <button  onClick="updateBoothStatusDetails(2,'+result[i].boothId+')"> Completed </button></td>';
 					}
 					
 					str += '</tr>	';
@@ -1620,4 +1620,21 @@ function buildStatusForPanchayatDetials(result)
 	$("#panchayatDetailsDiv").html(str);
 	$("#panchayatStatusTable").dataTable();
 	
+}
+
+function updateBoothStatusDetails(statusId,boothId)
+{
+	var jsObj={
+		statusId:statusId,
+		boothId:boothId
+	};
+	$.ajax({
+	type:'GET',
+	url: 'saveBoothCompletionStatus.action',
+	dataType: 'json',
+	data: {task:JSON.stringify(jsObj)},
+	}).done(function(result){
+		console.log(result);	
+	});
+
 }
