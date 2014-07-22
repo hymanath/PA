@@ -15,15 +15,15 @@ public class WebMonitorCompletedLocationsDetailsDAO extends GenericDaoHibernate<
 		super(WebMonitorCompletedLocationsDetails.class);
 	}
 
-	public Long getSurveyWMCompletedCountByConstId(Long scopeId,List<Long> boothIds){
+	public List<Long> getSurveyWMCompletedCountByConstId(Long scopeId,List<Long> boothIds){
 		
-		Query query = getSession().createQuery(" select count(distinct WMCLD.locationValue) from WebMonitorCompletedLocationsDetails WMCLD where WMCLD.locationScopeId = :locationScopeId and " +
+		Query query = getSession().createQuery(" select distinct WMCLD.locationValue from WebMonitorCompletedLocationsDetails WMCLD where WMCLD.locationScopeId = :locationScopeId and " +
 				" WMCLD.locationValue  in (:boothIds) ");
 		
 		query.setParameter("locationScopeId", IConstants.BOOTH_SCOPE_ID);
 		query.setParameterList("boothIds", boothIds);
 				
-		return (Long) query.uniqueResult();
+		return query.list();
 		
 	}
 	
