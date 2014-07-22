@@ -664,11 +664,12 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 	}
 	
 	@SuppressWarnings("unchecked")
-	public  PanchayatHamletsCountVo   getSurveyDataCountForHamletsByPanchayats(HamletCountInputVO inputVo)
+	public  PanchayatHamletsCountVo  getSurveyDataCountForHamletsByPanchayats(Long panchayatId)
 	{
 		PanchayatHamletsCountVo responseVo= new PanchayatHamletsCountVo();
-		
-		List<?> details=surveyDetailsInfoDAO.getHamletCountBasedOnPanchayIds(inputVo.getPanchayatIds());
+			List<Long> panchayatIds = new ArrayList<Long>();
+			panchayatIds.add(panchayatId);
+		List<?> details=surveyDetailsInfoDAO.getHamletCountBasedOnPanchayIds(panchayatIds);
 		convertHamletDetailsIntoVo((List<Object[]>)details,responseVo);
 
 		
