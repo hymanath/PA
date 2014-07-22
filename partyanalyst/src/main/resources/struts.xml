@@ -7779,7 +7779,7 @@
   		
   		<action name="saveBoothCompletionStatus" class="surveyDashBoardAction" method="saveBoothCompletionStatus">
   					<result type="json" name="success">
-							<param name="root">committee</param>
+							<param name="root">status</param>
 					</result>
   		</action>
 </package>
