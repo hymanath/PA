@@ -691,4 +691,13 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		return query.list();
 	}
 	
+
+	public List<Object[]> getBooths(Long constituencyId,Long surveyUserType)
+	{
+		Query query = getSession().createQuery("select distinct model.booth.boothId,model.booth.partNo from SurveyDetailsInfo model where model.booth.constituency.constituencyId = :constituencyId and model.surveyUser.surveyUserType.surveyUsertypeId = :surveyUserType and model.isDelete = 'N'");
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("surveyUserType", surveyUserType);
+		return query.list();	
+	}
+	
 }

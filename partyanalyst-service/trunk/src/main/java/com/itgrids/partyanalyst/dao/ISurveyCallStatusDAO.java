@@ -15,4 +15,5 @@ public interface ISurveyCallStatusDAO extends GenericDao<SurveyCallStatus,Long>{
 	public List<Object[]> getSurveyCallDtalsByboothId(Long boothId);
 	
 	public List<Object[]> getBoothWiseWmCasteUpdationDetails(List<Long> boothId);
+	public List<Object[]> getBoothsByConstituency(Long constituencyId);
 }
