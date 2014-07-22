@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.ConstituencyDetailReportVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
+import com.itgrids.partyanalyst.dto.PanchayatHamletsCountVo;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -72,6 +73,16 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	private Long constituencyId;
 	private Long leaderId;
 	private List<VerificationCompVO> verificationCompVOList;
+	private PanchayatHamletsCountVo panchayatHamletsCountVo;
+	
+	public PanchayatHamletsCountVo getPanchayatHamletsCountVo() {
+		return panchayatHamletsCountVo;
+	}
+
+	public void setPanchayatHamletsCountVo(
+			PanchayatHamletsCountVo panchayatHamletsCountVo) {
+		this.panchayatHamletsCountVo = panchayatHamletsCountVo;
+	}
 
 	public Long getLeaderId() {
 		return leaderId;
@@ -1779,4 +1790,25 @@ public String getPanchayatsStatusDetails()
  		}
  		return Action.SUCCESS;
  	}
+  public String getHamletDetialsByPanchayat()
+  {
+  	try
+  	{
+  		HttpSession session = request.getSession();
+  		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+  		if(user == null)
+  		{
+  			return Action.INPUT;
+  		}
+  		jObj = new JSONObject(getTask());
+  		panchayatHamletsCountVo = surveyDetailsService.getSurveyDataCountForHamletsByPanchayats(jObj.getLong("panchayatId"));
+  	} 
+  	catch (Exception e)
+  	{
+  		LOG.error("Exception raised in unTagConstituencyOfUser", e);
+  	}
+  	return Action.SUCCESS;
+  }
+    
+  
 }
