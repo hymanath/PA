@@ -104,12 +104,12 @@
 			<div class="span12 m_top20 survey_nav">
 				<ul class="inline unstyled">
 					
-					<li><a class="highlight   selected" id="completedBoothsTab" onclick="showHideTabs(this.id);">Completed Booths</a></li>
+					<!-- <li><a class="highlight  " id="completedBoothsTab" onclick="showHideTabs(this.id);">Completed Booths</a></li> -->
+					<li><a class="highlight selected" id="surveyStatusRprtTab" onclick="showHideTabs(this.id);"> Survey Status Report </a></li> 
 					<li><a class="highlight" id="startTimeTab" onclick="showHideTabs(this.id);">Field Report</a></li>
 					<li><a class="highlight" id="boothWiseTab" onclick="showHideTabs(this.id);">Data Report</a></li>
 					<li id="webMontrId" style="display:none;"><a class="highlight" id="callCenterTab" onclick="showHideTabs(this.id);"> Web Monitoring </a></li>
 					<li><a class="highlight" id="dataCollectorWise" onclick="showHideTabs(this.id);"> Verfication report </a></li>
-					<li><a class="highlight" id="surveyStatusRprtTab" onclick="showHideTabs(this.id);"> Survey Status Report </a></li> 
 				</ul>
 			</div>
 		</div>
@@ -412,10 +412,11 @@
 									</div>
 					
 						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getReportForConstituency();"> Get Report </button></div>
-						 
+						   
 						
-						<div class="row-fluid " id= "basicStatusReport" style="margin-top:20px;"></div>
+						<div class="row-fluid " id= "basicStatusReport" style="margin-top:20px;"></div>						
 						<div class="row-fluid" id="panchayatsStatusDiv"></div>
+							<img src='images/Loading-data.gif' class="offset5"  id="statusAjaxImg" style="width:70px;height:60px;display:none;"/>
 						<div class="row-fluid " id= "tableDtailsDiv" style="margin-top:20px;"></div>
 						<div class="row-fluid" id="panchayatDetailsDiv" style="margin-top:20px;"></div>
 
@@ -432,10 +433,10 @@
 		<c:forEach var="user" items="${usersList}">
 			userIds.push('${user.id}')
 		</c:forEach>
-		console.log(userIds);
+		//console.log(userIds);
 	</script>
 	<script>
-		showHideTabs('startTimeTab');
+		showHideTabs('surveyStatusRprtTab');
 		$(".highlight").click(function()
 		{
 			$(".highlight").removeClass("selected");
