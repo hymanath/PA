@@ -13,6 +13,7 @@ public interface ISurveyCompletedLocationsDetailsDAO extends GenericDao<SurveyCo
 	public List<Object[]> getSurveyCompletedConstituencyDetails();
 	public void deleteBoothCompletionDataOfContituency(List<Long> boothIds);
 	public void deleteConstituencyCompletionData();
-
 	public List<Long> getSurveyCompletedCountByConstId(Long scopeId,List<Long> boothIds);
+
+	public void deleteBoothCompletedLocationDetailsByBoothId(Long boothId);
 }

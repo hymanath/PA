@@ -80,6 +80,14 @@ public class SurveyCompletedLocationsDetailsDAO extends GenericDaoHibernate<Surv
 		query.executeUpdate();
 	}
 	
+	public void deleteBoothCompletedLocationDetailsByBoothId(Long boothId)
+	{
+		Query query = getSession().createQuery("delete from SurveyCompletedLocationsDetails SCLD  where  " +
+				"SCLD.locationValue = :boothId");
+		
+		query.setParameter("boothId", boothId);		
+		 query.executeUpdate();
+	}
 	
 	public List<Long> getSurveyCompletedCountByConstId(Long scopeId,List<Long> boothIds)
 	{
@@ -92,6 +100,5 @@ public class SurveyCompletedLocationsDetailsDAO extends GenericDaoHibernate<Surv
 		return query.list();
 		
 	}
-	
 	
 }
