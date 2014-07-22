@@ -28,10 +28,16 @@ public class PartyCadreSearchAction extends ActionSupport implements ServletRequ
 	private List<SelectOptionVO> panchayatList,committeLevels;
 	JSONObject jObj = null;
 	private String task = null;
-	private List<CadreVo> vo,cadreDetails;
+	private List<CadreVo> vo,cadreDetails,locationDetails;
 	private List<GenericVO> committeesLevelValue,committee;
 	
-		
+	
+	public List<CadreVo> getLocationDetails() {
+		return locationDetails;
+	}
+	public void setLocationDetails(List<CadreVo> locationDetails) {
+		this.locationDetails = locationDetails;
+	}
 	public List<GenericVO> getCommittee() {
 		return committee;
 	}
@@ -136,19 +142,19 @@ public class PartyCadreSearchAction extends ActionSupport implements ServletRequ
 		}
 		return Action.SUCCESS;
 	}
-	public String getAllPanchayat() throws Exception
+	public String getAllPanchayatAndMuncipalitie() throws Exception
 	{
 		
 		try{
 			
 			jObj =new JSONObject(getTask());
-			panchayatList=cadreManagementService.getAllPanchayat(jObj.getLong("constituencyId"));
+			panchayatList=cadreManagementService.getAllPanchayatAndMuncipalities(jObj.getLong("constituencyId"));
 
 				return Action.SUCCESS;
 		}
 		catch(Exception e)
 		{
-			LOG.error("Exception Rised In getAllPanchayat() in PartyCadreSearchAction class",e);
+			LOG.error("Exception Rised In getAllPanchayatAndMuncipalitie() in PartyCadreSearchAction class",e);
 		}
 		return Action.SUCCESS;
 	}
@@ -170,16 +176,16 @@ public class PartyCadreSearchAction extends ActionSupport implements ServletRequ
 		return Action.SUCCESS;
 	}
 		
-	public String getCadreDetailsByPanchayaties() throws Exception 
+	public String getCadreDetailsByPanchayatAndMuncipalitie() 
 	{
 		try{
 			jObj =new JSONObject(getTask());
-			vo=cadreManagementService.getCadreDetailsbyPanchayat(jObj.getLong("panchayatId"));
+			vo=cadreManagementService.getCadreDetailsbyPanchayatIdAndMuncipality(jObj.getLong("panchayatId"),jObj.getString("locationName"));
 			
 			return Action.SUCCESS;
 			}catch(Exception e)
 			{
-				LOG.error("Exception Rised In getCadreDetailsByPanchayaties() in PartyCadreSearchAction class",e);
+				LOG.error("Exception Rised In getCadreDetailsByPanchayatAndMuncipalitie() in PartyCadreSearchAction class",e);
 			}
 		return Action.SUCCESS;
 	}
@@ -222,6 +228,7 @@ public class PartyCadreSearchAction extends ActionSupport implements ServletRequ
 			jObj =new JSONObject(getTask());
 			committee=cadreManagementService.getAllCommittees(jObj.getLong("committeeLevelValueId"));
 			
+			return Action.SUCCESS;
 		}
 		catch(Exception e)
 		{
@@ -229,4 +236,19 @@ public class PartyCadreSearchAction extends ActionSupport implements ServletRequ
 		}
 		return Action.SUCCESS;
 	}
+
+	/*public String getAllMuncipalities()
+	{
+		try{
+			jObj =new JSONObject(getTask());
+			locationDetails=cadreManagementService.getLocalElectionBodyDetailsByConId(jObj.getLong("constituencyId"));
+			
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Rised In getAllMuncipalities() in PartyCadreSearchAction class",e);
+		}
+		return Action.SUCCESS;
+	}*/
+
 }
