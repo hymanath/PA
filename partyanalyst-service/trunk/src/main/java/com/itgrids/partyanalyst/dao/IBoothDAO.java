@@ -372,7 +372,7 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	public List<Object[]> getConstituencyWiseBoothCount();
 	 public List<Object[]> getPanchayatBoothDetails(Long constituencyId,Long publicationId);
 	 public List<Object[]> getPanchayatBooths(List<Long> boothIds) ;
-	 public List<Object[]> getBoothsByPanhcayats(List<Long> panchayatIds) ;
+	 public List<Object[]> getBoothsByPanhcayats(List<Long> panchayatIds,Long publicationId) ;
 
 
 }
