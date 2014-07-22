@@ -35,7 +35,7 @@
 			.survey_nav ul li a{color:#333; font-weight:bold; font-size:13px; padding:12px 4px;text-decoration:none;text-shadow:0px 1px #ffcc00; }
 			.survey_nav ul li a:hover{background:rgba(255,0,0,0.1);}
 			.survey_nav ul li a.selected{color:#fff; background:red;text-shadow:0px 1px #4f4f4f; }
-			.requiredFont{
+			.requiredFont,#noBoothsDivId{
 				color:red;
 				font-size:13px;
 			}
@@ -373,8 +373,10 @@
 									</div>
 									<div id="boothsDtlsId">
 									</div>
-							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onClick="saveUserAssignedBoothsDetails();">ASSIGN</button>
+							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onClick="saveUserAssignedBoothsDetails();" id="assignBtnId">ASSIGN</button>
 							<img src='./images/icons/search.gif' id="assignboothimg" style="display:none;"/></div>
+
+							<div id="noBoothsDivId"></div>
 
 
 
