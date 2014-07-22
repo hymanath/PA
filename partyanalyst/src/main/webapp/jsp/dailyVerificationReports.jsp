@@ -121,14 +121,14 @@ $('#boothId').multiselect({
 									<div class="row-fluid">
 										
 										<div class="span3">
-											Select Constituency <font class="requiredFont">*</font>
+											Select Constituency <font class="requiredFont">*</font> : 
 											<!--<select id="constituencyId" onChange="getBoothsDetailsByConstituencyId(this.value)"></select>-->
 												<s:select theme="simple"  name="constituency" id="constituencyId"  headerKey="0" headerValue="Select Constituency" list="dataAvilableConstituencies" listKey="id" listValue="name" onChange="getBoothsDetailsByConstituencyId(this.value,'boothId')"/>
 										</div>
 										<div class="span3">
 											<!--User Type <font class="requiredFont">*</font>
 											<select class="input-block-level" id = "userType"> <option value="0">Select User Type</option></select>-->
-											Select Booth 
+											Select Booth <font class="requiredFont">*</font> : 
 											<select class="input-block-level" id = "boothId" multiple="true"> <option value="0">Select Booth</option></select></div>
 											<div class="span1" style="margin:25px -8px 0 8px;width: 15px;">
 								<img id="boothImage" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
@@ -181,7 +181,7 @@ $('#boothId').multiselect({
 			<div class="span12">
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top30">
-							<h4 id="titleId"></h4>
+							<h4 id="verifiertitleId"></h4>
 							<div class="row">
 						<div id="errorDiv" class="span8 offset1 clearCls"></div>
 						</div>
@@ -197,7 +197,7 @@ $('#boothId').multiselect({
 											<div class="span4">
 												<!--User Type <font class="requiredFont">*</font>
 												<select class="input-block-level" id = "userType"> <option value="0">Select User Type</option></select>-->
-												Select Booth 
+												Select Booth  <font class="requiredFont">*</font> : 
 												<select class="input-block-level" id = "boothIdForVerifier" > <option value="0">Select Booth</option></select></div>
 												<div class="span1" style="margin:25px -8px 0 8px;width: 15px;">
 													<img id="boothImageForVerifier" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
@@ -218,7 +218,7 @@ $('#boothId').multiselect({
 			<div class="span12">
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top30">
-							<h4 id="titleId"></h4>
+							<h4 id="wmtitleId"></h4>
 							<div class="row">
 						<div id="errorDiv" class="span8 offset1 clearCls"></div>
 						</div>
@@ -234,7 +234,7 @@ $('#boothId').multiselect({
 											<div class="span4">
 												<!--User Type <font class="requiredFont">*</font>
 												<select class="input-block-level" id = "userType"> <option value="0">Select User Type</option></select>-->
-												Select Booth 
+												Select Booth <font class="requiredFont">*</font> : 
 												<select class="input-block-level" id = "boothIdForWm" > <option value="0">Select Booth</option></select></div>
 												<div class="span1" style="margin:25px -8px 0 8px;width: 15px;">
 													<img id="boothImageForWm" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
@@ -967,7 +967,6 @@ function showHideReportTabs(id)
 		$("#comparisonReportId").hide();
 		$("#stateWiseReportId").hide();
 		$("#verifierReportId").hide();
-		$("#wmReportDiv").show();
 		$("#verifierReportIdForVerifier").hide();
 	}
 	else if(id == "thirdPartyReportTab")
@@ -1023,14 +1022,16 @@ $(".highlight").click(function()
 		userTypeVal = 1;
 	}
 	else if(val == 2){
-		$('#titleId').html("Verifier Report");
+		$('#verifiertitleId').html("Verifier Report");
 		$("#verifierReportTab").addClass("selected");
 		userTypeVal=4;
 	}
 	
 	else if(val == 3){
-		$('#titleId').html("Third Party Report");
-		$("#thirdPartyReportTab").addClass("selected");
+		$('#wmtitleId').html("Web Monitoring Report ");
+		//$("#thirdPartyReportTab").addClass("selected");
+		$("#wmReportTab").addClass("selected");
+				$("#wmReportDiv").show();
 		userTypeVal= val;
 	}
 	else
