@@ -31,6 +31,7 @@ public interface ISurveyDetailsService {
 	 public List<SurveyReportVO> getSurveyDetailsByBoothIds(List<Long> boothIds);
 	 public List<SurveyReportVO> getPanchayatsStatusWiseDataByConstituency(Long constituencyId,String status);
 	 public SurveyReportVO getPanchayatsStatusCountByConstituency(Long constituencyId);
+	 public List<VerificationCompVO> checkForWebMonitorData(Long boothId);
 	 public List<GenericVO> getBoothsInCallStatus(Long constituencyId);
 	 public List<GenericVO> getBoothsInSurveyDetailsInfo(Long constituencyId);
 	 
