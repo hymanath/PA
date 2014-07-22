@@ -950,8 +950,13 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 									dcWmCollectedMap.put(boothId, dcBoothMap.get(boothId));
 								}
 							}
+							else
+							{
+								dcWmCollectedMap.put(boothId, dcBoothMap.get(boothId));
+							}
 							
 						}
+						
 						
 						
 					}
