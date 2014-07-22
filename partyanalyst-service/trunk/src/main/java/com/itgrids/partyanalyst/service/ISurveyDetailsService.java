@@ -25,7 +25,7 @@ public interface ISurveyDetailsService {
 	
 	
 	public GenericVO getSurveyStatusBoothList(Long constituencyId);
-	public  PanchayatHamletsCountVo   getSurveyDataCountForHamletsByPanchayats(HamletCountInputVO inputVo);
+	public  PanchayatHamletsCountVo   getSurveyDataCountForHamletsByPanchayats(Long panchayatId);
 
 	public List<GenericVO> getUserForAssignedLeader(Long leaderId, Long userTypeId);
 	 public List<SurveyReportVO> getSurveyDetailsByBoothIds(List<Long> boothIds);
