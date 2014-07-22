@@ -498,7 +498,7 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 			else
 				panchayatsIds = vo.getNotCompleteIds();
 			
-				 List<Object[]> list = boothDAO.getBoothsByPanhcayats(panchayatsIds); 
+				 List<Object[]> list = boothDAO.getBoothsByPanhcayats(panchayatsIds,IConstants.VOTER_DATA_PUBLICATION_ID); 
 				 if(list !=null && list.size() > 0)
 				 {
 					 for(Object[] params : list)	
