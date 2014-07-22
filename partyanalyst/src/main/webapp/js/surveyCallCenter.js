@@ -564,12 +564,12 @@ function updateStatusDetails(isCasteMatched,mobileMatched,voterId,surveyUserId,s
 	var voterInfoArr = new Array();
 	var isMobileVerified = $('#'+mobileMatched+'').val();
 	var isMatched = $('#'+isCasteMatched+'').val();
-	console.log("isMatched   :"+isMatched );
+//	console.log("isMatched   :"+isMatched );
 	var casteId = 0;
 
 	if(newCasteId != 0){
 		casteId = $('#'+newCasteId+'').val();
-		console.log(casteId);
+	//	console.log(casteId);
 		if(isMatched == 1){
 			casteId = 0;
 		}
@@ -1443,7 +1443,7 @@ var boothInfo = boothDtls.split(',');
 				boothArr.push(boothInfo[i]);
 		}
 	}
-	console.log(boothArr);
+	//console.log(boothArr);
 
 	$('#tableDtailsDiv').html('');
 	var jsObj =
@@ -1468,7 +1468,7 @@ function buildSurveyBoothDetailsTable(result,statusId)
 			{	
 				var str = '';
 			
-				str += '<table class="table table-bordered" id="reportTab">';
+				str += '<table class="table table-bordered m_top20 table-hover table-striped " id="reportTab">';
 				str += '<thead>';
 				str += '<tr>	';									  
 				str += ' <th>Booth NO</th>';
@@ -1482,7 +1482,7 @@ function buildSurveyBoothDetailsTable(result,statusId)
 				str += ' </thead>';
 				str += '<tbody>	';
 
-				console.log(statusId);				
+				//console.log(statusId);				
 				
 				for(var i in result)
 				{
@@ -1493,13 +1493,13 @@ function buildSurveyBoothDetailsTable(result,statusId)
 					str += '<td>'+result[i].casteCount+'</td>';
 					str += '<td>'+result[i].hamletCount+'</td>';
 					if(statusId == 1){
-							str += '<td> <button onClick="updateBoothStatusDetails(3,'+result[i].boothId+')"> Completed </button></td>';
+							str += '<td> <button class="btn-small btn-info" onClick="updateBoothStatusDetails(2,'+result[i].boothId+')"> Completed </button></td>';
 					}
 					else if(statusId == 2){
-							str += '<td> <button  onClick="updateBoothStatusDetails(1,'+result[i].boothId+')"> Prcessing </button> <br> <button  onClick="updateBoothStatusDetails(3,'+result[i].boothId+')"> WM Completed </button></td>';
+							str += '<td> <button  class="btn-small btn-warning" onClick="updateBoothStatusDetails(1,'+result[i].boothId+')"> Processing </button> <br> <button  style="margin-top:5px;" class="btn-small btn-success" onClick="updateBoothStatusDetails(3,'+result[i].boothId+')"> WM Completed </button></td>';
 					}
 					else if(statusId == 3){
-							str += '<td> <button  onClick="updateBoothStatusDetails(1,'+result[i].boothId+')"> Prcessing </button> <br> <button  onClick="updateBoothStatusDetails(2,'+result[i].boothId+')"> Completed </button></td>';
+							str += '<td> <button  class="btn-small btn-warning" onClick="updateBoothStatusDetails(1,'+result[i].boothId+')"> Processing </button> <br> <button  style="margin-top:5px;" class="btn-small btn-info" onClick="updateBoothStatusDetails(2,'+result[i].boothId+')"> Completed </button></td>';
 					}
 					
 					str += '</tr>	';
@@ -1510,7 +1510,10 @@ function buildSurveyBoothDetailsTable(result,statusId)
 				str += '</table>';
 				
 				$('#tableDtailsDiv').html(str);
-				$('#reportTab').dataTable({});
+				$('#reportTab').dataTable({
+				"iDisplayLength": 100,
+				"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]]
+				});
 			}			
 		
 }
@@ -1563,7 +1566,7 @@ function buildStatusForPanchayats(result,constituencyId,boothResult)
 				str += '<div class="span12 booths-Overview-widget">';
 				str += '<div class="row-fluid">';
 				str += '<div class="row-fluid">';
-				str += '<h5 class="text-center label"> Booth Wise Survey Details   </h5>';
+				str += '<h5 class="text-center label"> Survey Details   </h5>';
 				str += '</div>';
 				str += '<ul class="inline unstyled booths-Overview-widget-nav">';
 				
@@ -1572,7 +1575,11 @@ function buildStatusForPanchayats(result,constituencyId,boothResult)
 					str += '<li>';
 					str += '<hgroup>';
 					str += '<h4>'+boothResult[i].name+'</h4>';
-					str += '<h2> <a href="javascript:{getSurveyBoothDetails(\''+boothResult[i].desc+'\','+boothResult[i].id+');}">'+boothResult[i].count+'</a></h2>';
+					if(boothResult[i].count != 0)
+						str += '<h2> <a href="javascript:{getSurveyBoothDetails(\''+boothResult[i].desc+'\','+boothResult[i].id+');}">'+boothResult[i].count+'</a></h2>';
+					else
+						str += '<h2>'+boothResult[i].count+'</h2>';
+						
 					str += '</hgroup>';
 					str += '</li>';	
 				}	
@@ -1614,7 +1621,7 @@ function buildStatusForPanchayatDetials(result)
 	return;
 	}
 
-		str+='<table class="table table-bordered" id="panchayatStatusTable">';
+		str+='<table class="table table-bordered m_top20 table-hover table-striped" id="panchayatStatusTable">';
 		str+='<thead>';
 		str+='<th>Panchayat Name</th>';
 		str+='<th>Total Voters</th>';
@@ -1636,7 +1643,10 @@ function buildStatusForPanchayatDetials(result)
 		str+='</tbody>';
 		str+='</table>';
 	$("#panchayatDetailsDiv").html(str);
-	$("#panchayatStatusTable").dataTable();
+	$("#panchayatStatusTable").dataTable({
+	"iDisplayLength": 100,
+	"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]]
+	});
 	
 }
 
