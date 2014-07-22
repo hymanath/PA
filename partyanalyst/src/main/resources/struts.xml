@@ -7795,6 +7795,16 @@
 							<param name="root">panchayatHamletsCountVo</param>
 					</result>
   		</action>
+		<action name="getBoothsDetailsInSurveyDetailsInfoAction" class="surveyDataDetailsAction" method="getBoothsInSurveyDetailsInfo">
+  					<result type="json" name="success">
+							<param name="root">boothsList</param>
+					</result>
+  		</action>
+			<action name="getBoothsDetailsInCallStatusAction" class="surveyDataDetailsAction" method="getBoothsInCallStatus">
+  					<result type="json" name="success">
+							<param name="root">boothsList</param>
+					</result>
+  		</action>
   		
 </package>
 </struts>      
