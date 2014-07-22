@@ -5630,22 +5630,63 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 	
 		
 	}
-	public List<SelectOptionVO> getAllPanchayat(Long constituencyId) throws Exception
+	public List<SelectOptionVO> getAllPanchayatAndMuncipalities(Long constituencyId) throws Exception
 	{
 		List<SelectOptionVO> selectOptionVOList=new ArrayList<SelectOptionVO>();
 		
 		try{
-			List<Object[]> panchayatList=panchayatDAO.getPanchayatsByConstituencyId(constituencyId);
 			
-			for (Object[] objects : panchayatList) {
+			Constituency constituency = constituencyDAO.get(constituencyId);
+			
+			List<Object[]> panchayatList =null;
+			List<Object[]> localEleDetails = null;
+			List<SelectOptionVO> muncipalityDetails = new ArrayList<SelectOptionVO>();
+			
+			if(constituency.getAreaType().equalsIgnoreCase("RURAL"))
+			{
+				 panchayatList=panchayatDAO.getPanchayatsByConstituencyId(constituencyId);
 				
-				SelectOptionVO selectOptionVO = new SelectOptionVO();
-				selectOptionVO.setId(objects[0] != null ? (Long)objects[0]:0L);
-				selectOptionVO.setName(objects[1] != null ? objects[1].toString():"");
-				selectOptionVOList.add(selectOptionVO);
+			}else if(constituency.getAreaType().equalsIgnoreCase("RURAL-URBAN"))
+			{
+				 panchayatList=panchayatDAO.getPanchayatsByConstituencyId(constituencyId);
+				 localEleDetails=cadreDAO.getLocalElectionBodydetailsByConstituencyId(constituencyId);
+				
+			}else
+			{
+				localEleDetails=cadreDAO.getLocalElectionBodydetailsByConstituencyId(constituencyId);
+				
 			}
 			
-			return selectOptionVOList;
+			if(panchayatList != null && panchayatList.size()>0)
+			{
+				
+				for (Object[] objects : panchayatList) {
+					
+					SelectOptionVO selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId(objects[0] != null ? (Long)objects[0]:0L);
+					selectOptionVO.setName(objects[1] != null ? objects[1].toString():"");
+					selectOptionVOList.add(selectOptionVO);
+				}
+			}
+					
+				if(localEleDetails != null && localEleDetails.size()>0){
+					
+					for (Object[] objects : localEleDetails)
+					{
+						SelectOptionVO muncipalityVO=new SelectOptionVO();
+						
+						muncipalityVO.setId(objects[0] !=null ? (Long)objects[0]:0L);//here Id is for localElectionBodyId
+						muncipalityVO.setName(objects[1].toString() !=null ? objects[1].toString()+"  "+objects[2].toString():"");//firstName is for Name
+						
+						muncipalityDetails.add(muncipalityVO);
+					}
+					
+					selectOptionVOList.addAll(muncipalityDetails);
+				}
+					
+				
+				
+		
 			
 		}catch(Exception e)
 		{
@@ -5653,12 +5694,22 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 		}
 		return selectOptionVOList;
 	}
-	public List<CadreVo> getCadreDetailsbyPanchayat(Long panchayatId) throws Exception
+	public List<CadreVo> getCadreDetailsbyPanchayatIdAndMuncipality(Long panchayatId,String locationName) throws Exception
 	{
 		List<CadreVo> cadreList = new ArrayList<CadreVo>(); 
 		try{
+			List<Object[]> cadreDetails = null;
 		
-			List<Object[]> cadreDetails = cadreDAO.getCadreDetailsByPanchayatId(panchayatId);
+			if(locationName.contains("MUNCIPALITY") || locationName.contains("CORPORATION") ||locationName.contains("Greater Municipal Corp")  )
+			{
+				cadreDetails = cadreDAO.getCadreDetailsByMuncipalityId(locationName);
+				
+			}else
+			{
+				
+				cadreDetails = cadreDAO.getCadreDetailsByPanchayatId(panchayatId);
+			}
+			
 		
 				for (Object[] objects : cadreDetails) {
 					
@@ -5677,7 +5728,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 				return cadreList;
 		}catch(Exception e)
 		{
-			log.error("Exception Rised In getCadreDetailsbyPanchayat(Long panchayatId) in CadreManagementService class" , e);
+			log.error("Exception Rised In getCadreDetailsbyPanchayatIdAndMuncipality(Long panchayatId) in CadreManagementService class" , e);
 		}
 		return cadreList;
 	}
@@ -5815,4 +5866,30 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 		
 		return districtsList;
 	}
+	/*public List<CadreVo> getLocalElectionBodyDetailsByConId(Long constituencyId) throws Exception
+	{
+		List<CadreVo> LocationDetails=new ArrayList<CadreVo>();
+	try{
+			List<Object[]> localEleDetails=cadreDAO.getLocalElectionBodydetailsByConstituencyId(constituencyId);
+			
+			for (Object[] objects : localEleDetails)
+			{
+				CadreVo cadreVo=new CadreVo();
+				
+				cadreVo.setCadreId(objects[0] !=null ? (Long)objects[0]:0L);//here cadreId is for localElectionBodyId
+				cadreVo.setFirstName(objects[1].toString() !=null ? objects[1].toString()+" - MUNCIPALITY ":"");//firstName is for Name
+				
+				LocationDetails.add(cadreVo);
+			}
+			return LocationDetails;
+		}
+		catch(Exception e)
+		{
+			log.error("Exception Rised In getLocalElectionBodyDetailsByConId(Long constituencyId) in CadreManagementService class" , e);
+		}
+
+		return LocationDetails;
+	}*/
+	
+	
 }
