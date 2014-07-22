@@ -6,9 +6,7 @@ import java.util.Set;
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dao.columns.enums.BoothColumnNames;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Booth;
-import com.itgrids.partyanalyst.model.Voter;
 
 public interface IBoothDAO extends GenericDao<Booth, Long>{
 	

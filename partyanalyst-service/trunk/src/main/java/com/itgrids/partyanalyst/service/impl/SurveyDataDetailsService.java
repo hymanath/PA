@@ -34,6 +34,7 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.ISurveyCallStatusDAO;
+import com.itgrids.partyanalyst.dao.ISurveyCompletedLocationsDetailsDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.ISurveySurveyorTypeDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserBoothAssignDAO;
@@ -144,6 +145,9 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 
 	@Autowired
 	private IWebMonitoringAssignedUsersDAO webMonitoringAssignedUsersDAO;
+	
+	@Autowired
+	private ISurveyCompletedLocationsDetailsDAO surveyCompletedLocationsDetailsDAO;
 	
 	
 	/**
@@ -1264,6 +1268,15 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				existingBoothIds.add((Long)existingBoothDtls[1]);
 			
 			
+			SurveyUser surveyUser = surveyUserDAO.get(userId);
+			
+			List<Long> completedBoothsList = new ArrayList<Long>();
+			
+			if(surveyUser.getSurveyUserType().getSurveyUsertypeId().equals(IConstants.VERIFIER_ROLE_ID))
+				completedBoothsList = surveyCompletedLocationsDetailsDAO.getCompletedBoothDetailsByBoothIds(existingBoothIds);
+				
+			
+			
 			for(Object[] obj:boothDtls)
 			{
 				UserBoothDetailsVO boothDetails = new UserBoothDetailsVO();
@@ -1285,7 +1298,14 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				if(existingBoothIds.contains((Long)obj[0]))
 					boothDetails.setUserHas(true);
 				
-				resultList.add(boothDetails);
+				if(surveyUser.getSurveyUserType().getSurveyUsertypeId().equals(IConstants.VERIFIER_ROLE_ID))
+				{
+					if(completedBoothsList.contains((Long)obj[0]))
+						resultList.add(boothDetails);
+				}else
+				{
+					resultList.add(boothDetails);
+				}
 			}
 			
 		}catch(Exception e)
