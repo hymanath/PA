@@ -33,7 +33,7 @@
 						<label>Select Constituency<font color="#ff0000"> *</font>:</label>
 					</div>
 					<div class="span3">
-						<select id="const" onchange="getAllPanchayat()"></select>
+						<select id="const" onchange="getAllPanchayatAndMuncipalities()"></select>
 					</div>
 				
 				</div>
@@ -42,11 +42,11 @@
 						<label>Select Panchayat<font color="#ff0000"> *</font>:</label>
 					</div>
 					<div class="span3">
-						<select id="panchayat"><option value='0'> Select Panchayat</option></select>
+						<select id="panchayat"><option value='0'> Select Panchayat/Muncipalities</option></select>
 					</div>
 				</div>
 				<div class="offset3">
-					<button name="search" class="btn btn-primary" onclick="getCadreSearchDretails()">Search</button>
+					<button name="search" class="btn btn-primary" onclick="getCadreSearchDretailsBypanchayatAndMuncipalities()">Search</button>
 					<div id="ajaxcallimage"  class = "span3" style="display:none;font-weight:bold;color: #0174DF;font-size:small;width: 345px; height: 17px;">
 						<img src="images/icons/loading.gif" style="padding-left:10px;" width="18" height="11"/>
 					</div>						
@@ -117,23 +117,23 @@
 	
 	}
 	
-	function getAllPanchayat()
+	function getAllPanchayatAndMuncipalities()
 	{
 			var constituencyIds=$("#const option:selected").val();
 			
 			var jsObj = 
 		{
 			constituencyId:constituencyIds,
-			task:"getAllPanchayaties"
+			task:"getAllPanchayatiesAndMuncipalities"
 		}
 				$.ajax({
 					type: "GET",
-					url:"getAllPanchayatiesAction.action",
+					url:"getAllPanchayatAndMuncipalitiesAction.action",
 					dataType:'json',
 					 data: {task:JSON.stringify(jsObj)},
 					 }).done(function(result,jsObj){
 					 $("#panchayat").find('option').remove();
-					 $("#panchayat").append("<option value='0'> Select Panchayat </option>");
+					 $("#panchayat").append("<option value='0'> Select Panchayat/Muncipalities </option>");
 						 if(result !=null && result.length >0){
 							for(var i in result){
 								$("#panchayat").append("<option value="+result[i].id+">"+result[i].name+"</option>");
@@ -142,13 +142,14 @@
 					});		
 	}
 
-	function getCadreSearchDretails()
+	function getCadreSearchDretailsBypanchayatAndMuncipalities()
 	{
 		$("#tableDiv").html('');
 		$("#errdiv").html('');
 		
 		var constituencyIds=$("#const option:selected").val();
 		var panchayatIds=$("#panchayat option:selected").val();	
+		var locationNames=$("#panchayat option:selected").text();
 	
 					 
 		if(constituencyIds != null && constituencyIds== 0)
@@ -158,7 +159,7 @@
 		}
 		if(panchayatIds != null && panchayatIds == 0)
 		{
-			$('#errdiv').html('Please Select Panchayat').css('color','red');
+			$('#errdiv').html('Please Select Panchayat/Muncipalities').css('color','red');
 			return;
 		}
 		
@@ -168,12 +169,13 @@
 	var jsObj = 
 		{
 			panchayatId:panchayatIds,
+			locationName:locationNames,
 			task:"getCadreDetails"
 		}
 		
 				$.ajax({
 					type: "GET",
-					url:"getCadreDetailsByPanchayatAction.action",
+					url:"getCadreDetailsByPanchayatAndMuncipalitiesAction.action",
 					dataType:'json',
 					 data: {task:JSON.stringify(jsObj)},
 					 }).done(function(result,jsObj){
@@ -357,6 +359,32 @@ $("#Commitecadretable").dataTable();
 	    $("#cadreDivId").hide();
 		$("#committeeDivId").show();		
     });
+/*
+	function getAllMuncipalities()
+	{
+			var constituencyIds=$("#const option:selected").val();
+			
+			var jsObj = 
+		{
+			constituencyId:constituencyIds,
+			task:"getAllMuncipalities"
+		}
+				$.ajax({
+					type: "GET",
+					url:"getAllMuncipalitiesAction.action",
+					dataType:'json',
+					 data: {task:JSON.stringify(jsObj)},
+					 }).done(function(result,jsObj){
+					 $("#muncipality").find('option').remove();
+					 $("#muncipality").append("<option value='0'> Select Muncipality </option>");
+						 if(result !=null && result.length >0){
+							for(var i in result){
+								$("#muncipality").append("<option value="+result[i].cadreId+">"+result[i].firstName+"</option>");
+							}
+						}
+					});		
+	}
+*/
 </script>
 </body>
 </html>
