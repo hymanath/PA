@@ -1373,7 +1373,7 @@ function getReportForConstituency(){
 		task : "getSurveyStatusBoothData"
 	}
 	$("#reportDataImg").show();
-	getPanchayatsStatusCount(constituencyId)
+
 	$.ajax({
 		type:'GET',
 		url: 'getSurveyStatusBoothListAction.action',
@@ -1383,6 +1383,7 @@ function getReportForConstituency(){
 				$("#reportDataImg").hide();
 				if(result != null && result.genericVOList != null && result.genericVOList.length > 0 ){
 					buildReportData(result.genericVOList);
+					getPanchayatsStatusCount(constituencyId);
 				}
 				else{
 					$('#basicCountDiv').html(' No Data Available ... ');
@@ -1397,49 +1398,122 @@ $('#basicStatusReport').html('');
 
 var str ='';
 	
-		str +='<table id="reportTable" class="table table-boardered">';
-			str +='<tr>';
-				str +='<thead>';
-					str +='<th> Processing Booths </th>';
-					str +='<th> Completed Booths </th>';
-					str +='<th> Web Monitor Completed Booths </th>';
-				str +='</thead>';
-			str +='</tr>';
-		str +='<tbody>';
-			str +='<tr>';
-				for(var i in result){
-					str +='<td><a href="javascript:{getDetailReport(\''+result[i].name+'\');}" >'+result[i].id+'</a></td>';
 
-				}
-			str +='</tr>';
-		str +='</tbody>';
-		str +='</table>';
-	
+				str += '<div class="row-fluid">';
+				str += '<div class="span12 booths-Overview-widget">';
+				str += '<div class="row-fluid">';
+				str += '<div class="row-fluid">';
+				str += '<h5 class="text-center label"> Booth Wise Survey Details   </h5>';
+				str += '</div>';
+				str += '<ul class="inline unstyled booths-Overview-widget-nav">';
+				
+			   for(var i in result){
+			 
+					str += '<li>';
+					str += '<hgroup>';
+					str += '<h4>'+result[i].name+'</h4>';
+					str += '<h2> <a href="javascript:{getSurveyBoothDetails(\''+result[i].desc+'\','+result[i].id+');}">'+result[i].count+'</a></h2>';
+					str += '</hgroup>';
+					str += '</li>';	
+				}	
+				
+				str += '</ul>';
+				str += '</div>';
+				str += '</div>';
+				str += '</div> ';
+				
+				
 	$('#basicStatusReport').html(str);
-}
 
-function getDetailReport(searchType){
-	var constituencyId = $('#reportConstituencyId').val();
-	
-	var jsObj = 
-	{
-		constituencyId:constituencyId,
-		searchType : searchType,
-		task : "getDetaildReportForSurvey"
-	}
-	$("#reportDataImg").show();
-	$.ajax({
-		type:'GET',
-		url: 'getDetaildReportForSurveyAction.action',
-		dataType: 'json',
-		data: {task:JSON.stringify(jsObj)},
-		}).done(function(result){
 		
-			alert(111);
-		});
+}
+
+	
+function getSurveyBoothDetails(boothDtls,statusId)
+{
+
+var boothArr = new Array();
+
+var boothInfo = boothDtls.split(',');
+
+	if(boothInfo != null && boothInfo.length>0){
+
+		for(var i in boothInfo){
+			if(boothInfo[i].trim().length > 0)
+				boothArr.push(boothInfo[i]);
+		}
+	}
+	console.log(boothArr);
+
+	$('#tableDtailsDiv').html('');
+	var jsObj =
+	{
+		boothIds:boothArr
+	}
+	$.ajax({
+	type:'GET',
+	url: 'getSurveyBoothDetailsAction.action',
+	dataType: 'json',
+	data: {task:JSON.stringify(jsObj)},
+	}).done(function(result){
+		buildSurveyBoothDetailsTable(result,statusId);
+	});
 	
 }
 
+function buildSurveyBoothDetailsTable(result,statusId)
+{
+
+	if(result != null && result.length > 0)
+			{	
+				var str = '';
+			
+				str += '<table class="table table-bordered" id="reportTab">';
+				str += '<thead>';
+				str += '<tr>	';									  
+				str += ' <th>Booth NO</th>';
+				str += '<th>Total Voters</th>	';	
+				str += ' <th>Mobile Numbers Collected</th>';
+				str += '<th>Caste Collected</th>	';
+				str += ' <th>Hamlets Collected</th>';
+				str += ' <th></th>';
+						
+				str += '</tr>';
+				str += ' </thead>';
+				str += '<tbody>	';
+
+				console.log(statusId);				
+				
+				for(var i in result)
+				{
+					str += '<tr>		';								  
+					str += '<td>'+result[i].partNo+'</td>';
+					str += '<td>'+result[i].totalVoters+'</td>';
+					str += '<td>'+result[i].mobileNoCount+'</td>';
+					str += '<td>'+result[i].casteCount+'</td>';
+					str += '<td>'+result[i].hamletCount+'</td>';
+					if(statusId == 1){
+							str += '<td> <button> Completed </button> <br> <button> WM Completed </button></td>';
+					}
+					else if(statusId == 2){
+							str += '<td> <button> Prcessing </button> <br> <button> WM Completed </button></td>';
+					}
+					else if(statusId == 3){
+							str += '<td> <button> Prcessing </button> <br> <button> Completed </button></td>';
+					}
+					
+					str += '</tr>	';
+									
+				}
+				
+				str += '</tbody>';
+				str += '</table>';
+				
+				$('#tableDtailsDiv').html(str);
+				$('#reportTab').dataTable({});
+			}			
+		
+}
 function getPanchayatsStatusCount(constituencyId)
 {
    
