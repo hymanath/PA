@@ -67,8 +67,17 @@ public class CadreVo implements Serializable{
 	private Long roleId;
 	private String role;
 	
-
+	private Long localElectionbBodyId;
 	
+
+	public Long getLocalElectionbBodyId() {
+		return localElectionbBodyId;
+	}
+
+	public void setLocalElectionbBodyId(Long localElectionbBodyId) {
+		this.localElectionbBodyId = localElectionbBodyId;
+	}
+
 	public Long getRoleId() {
 		return roleId;
 	}
