@@ -7701,6 +7701,14 @@
 				<param name="root">verificationCompVOList</param>
 			</result>
   		</action>
+		
+  		<action name="checkForWebMonitorDataAction" class="surveyDataDetailsAction" method="checkForWebMonitorData">
+		<result type="json" name="success">
+				<param name="root">verificationCompVOList</param>
+			</result>
+  		</action>
+  				
+  		
   		<action name="partyCadreSearchAction" class="partyCadreSearchAction">
   			<result name="success">/jsp/partyCadreSearch.jsp</result>
   		</action>
