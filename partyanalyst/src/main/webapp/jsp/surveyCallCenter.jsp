@@ -124,6 +124,7 @@
 							<div id="userInfoDiv1" class="span4" style="background-color: #e9e9e9; padding: 5px;display:none;margin-top:25px;margin-bottom:10px;" class="errClass"></div>
 							<div id="userInfoDiv2" class="span4" style="background-color: #e9e9e9; padding: 5px;display:none;margin-top:25px;margin-bottom:10px;" class="errClass"></div>
 							<div id="userInfoDiv3" class="span4" style="background-color: #e9e9e9; padding: 5px;display:none;margin-top:25px;margin-bottom:10px;" class="errClass"></div>
+							<div id="userInfoDiv4" class="span4" style="background-color: #e9e9e9; padding: 5px;display:none;margin-top:25px;margin-bottom:10px;;margin-left:0px;" class="errClass"></div>
 						</div>
 						
 						<div class="row-fluid">
@@ -455,4 +456,4 @@
 
 	</script>
  </body>
- </html>
+ </html> 
