@@ -52,7 +52,8 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 	
 	public List<Object[]> getBoothsByConstituency(Long constituencyId)
 	{
-		Query query = getSession().createQuery("select distinct model.booth.boothId,model.booth.partNo from SurveyCallStatus model where model.booth.constituency.constituencyId = :constituencyId");
+		Query query = getSession().createQuery("select distinct model.booth.boothId,model.booth.partNo from " +
+				"SurveyCallStatus model where model.booth.constituency.constituencyId = :constituencyId order by model.booth.boothId");
 		query.setParameter("constituencyId", constituencyId);
 		return query.list();	
 	}
