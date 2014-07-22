@@ -1632,14 +1632,19 @@ function buildStatusForPanchayatDetials(result)
 		str+='<tbody>';
 		for(var i in result)
 		{
-			str+='<tr>';
-			str+='<td id='+result[i].id+'>'+result[i].name+'</td>';
+			str+='<tr id="hamletTr'+i+'">';
+			str+='<td  class="hamletDiv"><a id='+result[i].id+' onclick="getHamletInfo(this.id,\'hamletTr'+i+'\','+i+');">'+result[i].name+'</a>';
+			str+='</td>';
 			str+='<td>'+result[i].totalVoters+'</td>';
 			str+='<td>'+result[i].mobileNoCount+'</td>';
 			str+='<td>'+result[i].casteCount+'</td>';
 			str+='<td>'+result[i].hamletCount+'</td>';
 			str+='</tr>';
+			/*str+='<tr id="hamletresultDiv'+i+'" style="display:none;" class="hamletbuildDivCls">';
+			str+='<td colspan="10"> <div id="hamletbuildbuildDiv'+i+'"></div></td>';
+			str+='</tr>';*/
 		}
+	
 		str+='</tbody>';
 		str+='</table>';
 	$("#panchayatDetailsDiv").html(str);
@@ -1649,7 +1654,56 @@ function buildStatusForPanchayatDetials(result)
 	});
 	
 }
+function getHamletInfo(id,tr,index)
+{
 
+//$("#"+tr).last().append("<tr><td colspan='5'><div id='hamletbuildbuildDiv'>dsfdhfhd dhfdg</div></td></tr>");
+$(".hamletRow").remove();
+$('<tr class="hamletRow"><td colspan="5" id="hamletRow'+index+'"></td></tr>').insertAfter($("#"+tr));
+var jsObj={
+		
+		panchayatId:id
+	};
+	$.ajax({
+	type:'GET',
+	url: 'getHamletDetialsByPanchayatAction.action',
+	dataType: 'json',
+	data: {task:JSON.stringify(jsObj)},
+
+	}).done(function(result){
+		buildHamletInfo(result,'hamletRow'+index+'');
+	});
+
+}
+
+function buildHamletInfo(result,DivEle)
+{
+	var str='';
+	if(result.panchayatsList.length == 0)
+	{
+		$("#"+DivEle).html('<font color="red">No Data available</font>');
+		return;
+	}
+	if(result.panchayatsList.length > 0)
+	{
+	 str+='<div class="row-fluid"><div class="span12 booths-Overview-widget">';
+     str+='<div class="row-fluid"><h4>Hamlet</h4><ul class="inline unstyled booths-Overview-widget-nav">';
+
+	for(var i in result.panchayatsList)
+	{
+		for(var j in result.panchayatsList[i].hamletsCountList)
+		{
+
+ str+='<li style="width:180px;"><hgroup><h5>'+result.panchayatsList[i].hamletsCountList[j].hamletName+' - '+result.panchayatsList[i].hamletsCountList[j].surveyCount+'</h5></hgroup></li>';
+ 
+		}
+	}
+	str+='</ul></div></div></div></div>';
+ $("#"+DivEle).html(str);
+	}
+
+
+}
 function updateBoothStatusDetails(statusId,boothId)
 {
 	var jsObj={
