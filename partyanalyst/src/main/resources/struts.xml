@@ -7717,12 +7717,12 @@
 							<param name="root">constituencysList</param>
 					</result>
   		</action>
-		<action name="getAllPanchayatiesAction" class="partyCadreSearchAction" method="getAllPanchayat">
+		<action name="getAllPanchayatAndMuncipalitiesAction" class="partyCadreSearchAction" method="getAllPanchayatAndMuncipalitie">
   					<result type="json" name="success">
 							<param name="root">panchayatList</param>
 					</result>
   		</action>
-		<action name="getCadreDetailsByPanchayatAction" class="partyCadreSearchAction" method="getCadreDetailsByPanchayaties">
+		<action name="getCadreDetailsByPanchayatAndMuncipalitiesAction" class="partyCadreSearchAction" method="getCadreDetailsByPanchayatAndMuncipalitie">
   					<result type="json" name="success">
 							<param name="root">vo</param>
 					</result>
@@ -7784,7 +7784,7 @@
 							<param name="root">boothWiseCountList</param>
 					</result>
   		</action>
-  		
+  		  		
   		<action name="saveBoothCompletionStatus" class="surveyDashBoardAction" method="saveBoothCompletionStatus">
   					<result type="json" name="success">
 							<param name="root">status</param>
@@ -7806,5 +7806,10 @@
 					</result>
   		</action>
   		
+  		<!-- <action name="getAllMuncipalitiesAction" class="partyCadreSearchAction" method="getAllMuncipalities">
+  					<result type="json" name="success">
+							<param name="root">locationDetails</param>
+					</result>
+  		</action> -->
 </package>
 </struts>      
