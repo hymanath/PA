@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -548,48 +549,101 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 
 		try
 		{
-			 List<GenericVO> resultList = new ArrayList<GenericVO>();
-			 
+			
+			 Map<String , GenericVO> boothsMap = new LinkedHashMap<String , GenericVO>(); 
 			List<Object[]> processingBooths  =  surveyDetailsInfoDAO.getProcecingBoothCountByConstId(constituencyId);
 			List<Long> procesingBoothIds = new ArrayList<Long>();
-			if(processingBooths != null && processingBooths.size()>0){				
+			
+			List<GenericVO> procesingBooths = new ArrayList<GenericVO>();
+			
+			if(processingBooths != null && processingBooths.size()>0){		
 				
-				for (Object[] booth : processingBooths) {
-					procesingBoothIds.add((Long) booth[0]);
-				}
+				GenericVO procesingVO = new GenericVO();
+				procesingVO.setCount(Long.valueOf(String.valueOf(processingBooths.size())));
+				String boothIds = "";
+					for (Object[] booth : processingBooths) {
+						
+						boothIds = boothIds+","+booth[0].toString();
+						
+						procesingBoothIds.add(booth[0] != null ? (Long) booth[0]:0L);
+						
+						GenericVO countVO = new GenericVO();
+						countVO.setId(booth[0] != null ? (Long) booth[0]:0L);					
+						procesingBooths.add(countVO);
+						
+					}
+				procesingVO.setId(1L);
+				procesingVO.setDesc(boothIds);
+				procesingVO.setName(" Booth Processing");
+				procesingVO.setGenericVOList(procesingBooths);
+				boothsMap.put("processing", procesingVO);
 			}
-		
+			
+			
+			List<GenericVO> completedBoothList = new ArrayList<GenericVO>();
+			
 			if(procesingBoothIds != null && procesingBoothIds.size()>0){			
 				List<Long> completedBooths  = surveyCompletedLocationsDetailsDAO.getSurveyCompletedCountByConstId(9L,procesingBoothIds);
 								
 				if(completedBooths != null && completedBooths.size()>0){	
 					
-					Long procesing = Long.valueOf(String.valueOf(processingBooths.size())) - Long.valueOf(String.valueOf(completedBooths.size()));
-					
-					GenericVO procesingVO = new GenericVO();
-					procesingVO.setName("procesing");
-					procesingVO.setId(procesing);
-					resultList.add(procesingVO);
-					
-					
-					
 					GenericVO completedVO = new GenericVO();
-					completedVO.setName("completed");
-					completedVO.setId(Long.valueOf(String.valueOf(completedBooths.size())));
-					resultList.add(completedVO);
+					completedVO.setCount(Long.valueOf(String.valueOf(completedBooths.size())));
+					String boothIds1 = "";
+					for (Long boothId : completedBooths) {	
+						boothIds1 = boothIds1+","+boothId;	
+						GenericVO countVO = new GenericVO();
+						countVO.setId(boothId != null ? (Long) boothId:0L);	
+						completedBoothList.add(countVO);	
+						
+					}
+					completedVO.setId(2L);
+					completedVO.setDesc(boothIds1);
+					completedVO.setName("Booth Completed");
+					completedVO.setGenericVOList(completedBoothList);
+					boothsMap.put("complete", completedVO);
+					
 
 					
-					Long count = webMonitorCompletedLocationsDetailsDAO.getSurveyWMCompletedCountByConstId(9L,completedBooths);
+					List<Long> WBCmpletBooths = webMonitorCompletedLocationsDetailsDAO.getSurveyWMCompletedCountByConstId(9L,completedBooths); // 9L means searching based on booths
+					List<GenericVO> WBCmpletBoothsList = new ArrayList<GenericVO>();
 					
-					GenericVO WMCompletedVO = new GenericVO();
-					WMCompletedVO.setName("WMCompleted");
-					WMCompletedVO.setId(count);
-					resultList.add(WMCompletedVO);
-					
+						if(WBCmpletBooths != null && WBCmpletBooths.size()>0){	
+							
+							GenericVO WBCompletVO = new GenericVO();
+							WBCompletVO.setCount(Long.valueOf(String.valueOf(WBCmpletBooths.size())));
+							String boothIds = "";
+							for (Long boothId : WBCmpletBooths) {	
+								
+								boothIds = boothIds+","+boothId;
+								
+								GenericVO countVO = new GenericVO();
+								countVO.setId(boothId != null ? (Long) boothId:0L);	
+								WBCmpletBoothsList.add(countVO);	
+								
+							}
+							WBCompletVO.setId(3L);
+							WBCompletVO.setDesc(boothIds);
+							WBCompletVO.setName("Web Monotoring Completed");
+							WBCompletVO.setGenericVOList(WBCmpletBoothsList);
+							boothsMap.put("WMCompleted", WBCompletVO);
+						
+					}
 				}
 			}
 			
-			genericVO.setGenericVOList(resultList);
+			List<GenericVO> resultList = new ArrayList<GenericVO>();
+			if(boothsMap != null && boothsMap.size()>0){
+				
+				for (String key : boothsMap.keySet()) {
+					GenericVO vo = boothsMap.get(key);
+					resultList.add(vo);
+					
+				}
+				
+				genericVO.setGenericVOList(resultList);
+			}
+			
 		}catch(Exception e)
 		{
 			e.printStackTrace();
