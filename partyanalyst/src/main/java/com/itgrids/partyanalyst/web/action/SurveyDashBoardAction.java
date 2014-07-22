@@ -247,5 +247,22 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 		return Action.SUCCESS;
 		
 	}
-
+	
+	public String saveBoothCompletionStatus()
+	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			
+			Long boothId = jObj.getLong("boothId");
+			Long statusId = jObj.getLong("statusId");
+			
+			status = surveyDashBoardService.saveBoothCompletionStatus(boothId,statusId);
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return Action.SUCCESS;
+	}
 }
