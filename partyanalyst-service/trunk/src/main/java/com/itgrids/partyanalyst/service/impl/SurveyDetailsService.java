@@ -983,15 +983,6 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 						{
 							usersMap.put((Long)objects[0], objects[2].toString());
 						}
-						/*else
-						{
-							if(!name.equalsIgnoreCase(objects[2].toString()))
-							{
-								usersMap.put((Long)objects[0], name +","+objects[2].toString());
-							}
-							
-						}*/
-						
 					}
 				}
 				List<Object[]> voterDetails = boothPublicationVoterDAO.getVoterDetailsByBoothID(boothIds);
@@ -1000,6 +991,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 					boothWiseMap = new HashMap<Long, VerificationCompVO>();
 					List<VerificationCompVO> matchedList  = null;
 					List<VerificationCompVO> unMatchedList = null;
+					List<VerificationCompVO> notVerifiedList = null;
 					String surveyUser = null;
 					for (Object[] parms : voterDetails)
 					{
@@ -1013,6 +1005,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 									 boothWiseMap.put((Long)parms[4], subVO);
 									 matchedList = new ArrayList<VerificationCompVO>();
 									 unMatchedList = new ArrayList<VerificationCompVO>();
+									 notVerifiedList = new ArrayList<VerificationCompVO>(); 
 									 if(dvBoothMap != null && dvBoothMap.size() > 0)
 									 dvMap = dvBoothMap.get((Long)parms[4]);
 									 if(wmBoothMap != null && wmBoothMap.size() > 0)
@@ -1021,8 +1014,6 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 									 dcWmMap =  dcWmCollectedMap.get((Long)parms[4]);
 									 surveyUser = usersMap.get((Long)parms[4]);
 								}
-							//	if(dcMap != null && dcMap.size() > 0 && dvMap != null && dvMap.size() > 0 && wmMap != null && wmMap.size() > 0)
-							//	{
 									VerificationCompVO VO = new VerificationCompVO();
 									VO.setVoterCardNO(parms[2] != null ? parms[2].toString() : "");
 									VO.setVoterName(parms[1] != null ? parms[1].toString() : "");
@@ -1060,31 +1051,67 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 									VO.setSurveyUser(surveyUser);
 									if(dcWmMap != null && dcWmMap.size() > 0)
 									{
-										if(dcWmMap.get((Long)parms[0]) != null && dvMap.get((Long)parms[0]) != null)
+										if(dvMap.get((Long)parms[0] ) != null)
 										{
-											if(dcWmMap.get((Long)parms[0]) .equalsIgnoreCase(dvMap.get((Long)parms[0])))
+											if(dcWmMap.get((Long)parms[0]) != null && dvMap.get((Long)parms[0]) != null)
 											{
-												matchedList.add(VO);
+												if(dcWmMap.get((Long)parms[0]) .equalsIgnoreCase(dvMap.get((Long)parms[0])))
+												{
+													matchedList.add(VO);
+												}
+												/*else if(dcMap.get((Long)parms[0]).equalsIgnoreCase(wmMap.get((Long)parms[0])))
+												{
+													matchedList.add(VO);
+												}	
+												else if(dvMap.get((Long)parms[0]) == null )
+												{
+													notVerifiedList.add(VO);
+												}*/
+												else
+												{
+													unMatchedList.add(VO);
+												}
+
 											}
-											else
-											{
-												unMatchedList.add(VO);
-											}
+											
 										}
 										else
 										{
-											unMatchedList.add(VO);
+											/*if(wmMap != null)
+											{
+												if(dcMap.get((Long)parms[0]).equalsIgnoreCase(wmMap.get((Long)parms[0])))
+												{
+													matchedList.add(VO);
+												}
+												else if(dcMap.get((Long)parms[0]) != null && wmMap.get((Long)parms[0]) != null)
+												{
+													unMatchedList.add(VO);
+												}
+												else
+												{
+													notVerifiedList.add(VO);
+												}
+											}
+											else
+											{*/
+												notVerifiedList.add(VO);
+											//}
+											
+											
 										}
 									}
-									
-				
-								//}
-								
+									else
+									{
+										notVerifiedList.add(VO);
+									}
+
 								subVO.setMatchedList(matchedList);
 								subVO.setUnMatchedList(unMatchedList);
-								subVO.setTotalCount(unMatchedList.size() + matchedList.size());
+								subVO.setNotVerifiedList(notVerifiedList);
+								subVO.setTotalCount(unMatchedList.size() + matchedList.size() + notVerifiedList.size());
 								subVO.setUnMatchedCount(unMatchedList.size());
 								subVO.setMatchedCount(matchedList.size());
+								subVO.setNotVerifiedCount(notVerifiedList.size());
 						 }
 						
 					}
@@ -1173,6 +1200,146 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 			LOG.error("Exception raised in getBoothsInCallStatus", e);
 		}
 		return resultList;
+	}	
+	public List<VerificationCompVO> checkForWebMonitorData(Long boothId)
+	{
+		List<VerificationCompVO> returnList = null;
+		try
+		{
+			List<Object[]> castesList = casteStateDAO.getAllCasteDetails();
+			if(castesList != null && castesList.size() > 0)
+			{
+				Map<Long,String> casteMap = new HashMap<Long, String>();
+				for (Object[] objects : castesList)
+				{
+					casteMap.put((Long)objects[0], objects[1].toString());
+				}
+				Map<Long,String> dcMap = null;
+				Map<Long,String> dcDatesMap = null;
+				Map<Long,String> wmMap = null;
+				Map<Long,String> usersMap = null;
+				List<Object[]> dcDetails = surveyDetailsInfoDAO.getBoothWiseDcDetails(boothId);
+				if(dcDetails != null && dcDetails.size() > 0)
+				{
+					dcMap = new HashMap<Long, String>();
+					dcDatesMap = new HashMap<Long, String>();
+					for (Object[] parms : dcDetails)
+					{
+						dcMap.put((Long)parms[1], casteMap.get((Long)parms[2]));
+						dcDatesMap.put((Long)parms[1], parms[7].toString());
+					}
+				}
+				List<Long> boothIds = new ArrayList<Long>();
+				boothIds.add(boothId);
+				List<Object[]> wmDetails = surveyCallStatusDAO.getBoothWiseWmCasteUpdationDetails(boothIds);
+				if(wmDetails != null && wmDetails.size() > 0)
+				{
+					wmMap = new HashMap<Long, String>();
+					for (Object[] parms : wmDetails)
+					{
+						if(parms[2].toString().trim().equalsIgnoreCase("N"))
+						{
+							wmMap.put((Long)parms[0], casteMap.get((Long)parms[1]));
+						}
+						else
+						{
+							wmMap.put((Long)parms[0], dcMap.get((Long)parms[0]));
+						}
+					}
+				}
+				List<Object[]> userList = surveyDetailsInfoDAO.getBoothWiseUser(boothIds);
+				if(userList != null && userList.size() > 0)
+				{
+					usersMap = new HashMap<Long, String>();
+					for (Object[] objects : userList) 
+					{
+						String name = usersMap.get((Long)objects[0]);
+						if(name == null)
+						{
+							usersMap.put((Long)objects[0], objects[2].toString());
+						}
+					}
+				}
+				
+				List<Object[]> voterDetails = boothPublicationVoterDAO.getVoterDetailsByBoothID(boothIds);
+				if(voterDetails != null && voterDetails.size() > 0)
+				{
+					returnList = new ArrayList<VerificationCompVO>();
+					List<VerificationCompVO> matchedList  = new ArrayList<VerificationCompVO>();
+					List<VerificationCompVO> unMatchedList = new ArrayList<VerificationCompVO>();
+					List<VerificationCompVO> notVerifiedList = new ArrayList<VerificationCompVO>();
+					String surveyUser = usersMap.get(boothId);
+					VerificationCompVO mainVO = new VerificationCompVO();
+					for (Object[] parms : voterDetails)
+					{
+						VerificationCompVO VO = new VerificationCompVO();
+						VO.setVoterCardNO(parms[2] != null ? parms[2].toString() : "");
+						VO.setVoterName(parms[1] != null ? parms[1].toString() : "");
+						VO.setVoterId(parms[0] != null ? (Long)parms[0]: null  );
+						VO.setHouseNo(parms[3] != null ? parms[3].toString() : "");
+						VO.setPartNo(parms[6] != null ? parms[6].toString() : "");
+						VO.setPanchayatName(parms[7] != null ? parms[7].toString() : "");
+						if(dcMap != null && dcMap.size() > 0)
+						{
+							VO.setDcCaste(dcMap.get((Long)parms[0]) != null ? dcMap.get((Long)parms[0]) : "-");
+						}
+						else
+						{
+							VO.setDcCaste("-");
+						}
+						if(wmMap != null && wmMap.size() > 0)
+						{
+							VO.setWmCaste(wmMap.get((Long)parms[0]) != null ? wmMap.get((Long)parms[0]) : "-");
+						}
+						else
+						{
+							VO.setWmCaste("-");
+						}
+						
+						VO.setRelativeName(parms[5] != null ? parms[5].toString() : "");
+						VO.setDate(dcDatesMap.get((Long)parms[0]));
+						VO.setSurveyUser(surveyUser);
+						
+						if(wmMap.get((Long)parms[0]) != null)
+						{
+							if(dcMap.get((Long)parms[0]) != null)
+							{
+								if(dcMap.get((Long)parms[0]).equalsIgnoreCase(wmMap.get((Long)parms[0])))
+								{
+									matchedList.add(VO);
+								}
+								else
+								{
+									unMatchedList.add(VO);
+								}
+							}
+							else
+							{
+								notVerifiedList.add(VO);
+							}
+						}
+						else
+						{
+							notVerifiedList.add(VO);
+						}
+					}
+					mainVO.setMatchedList(matchedList);
+					mainVO.setMatchedCount(matchedList.size());
+					mainVO.setUnMatchedList(unMatchedList);
+					mainVO.setUnMatchedCount(unMatchedList.size());
+					mainVO.setNotVerifiedList(notVerifiedList);
+					mainVO.setNotVerifiedCount(notVerifiedList.size());
+					mainVO.setTotalCount(mainVO.getMatchedCount() + mainVO.getUnMatchedCount() + mainVO.getNotVerifiedCount());
+					returnList.add(mainVO);
+				}
+			}
+			
+		}
+		catch (Exception e) 
+		{
+			LOG.error("Exception raised in checkForWebMonitorData", e);
+		}
+		return returnList;
 	}
 }
  

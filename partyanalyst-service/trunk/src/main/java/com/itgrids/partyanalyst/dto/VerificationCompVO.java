@@ -23,9 +23,11 @@ public class VerificationCompVO implements Serializable
 	private String houseNo;
 	private String voterName;
 	private String relativeName;
-	private Integer totalCount;
-	private Integer matchedCount;
-	private Integer unMatchedCount;
+	private Integer totalCount = 0;
+	private Integer matchedCount = 0;;
+	private Integer unMatchedCount = 0;;
+	private Integer notVerifiedCount = 0;;
+	private Integer verifiedCount;
 	
 	private String partNo;
 	private Long surveyUserType;
@@ -35,6 +37,7 @@ public class VerificationCompVO implements Serializable
 	
 	private List<VerificationCompVO> matchedList;
 	private List<VerificationCompVO> unMatchedList;
+	private List<VerificationCompVO> notVerifiedList;
 
 	public Long getDcCasteId() {
 		return dcCasteId;
@@ -226,6 +229,30 @@ public class VerificationCompVO implements Serializable
 
 	public void setPanchayatName(String panchayatName) {
 		this.panchayatName = panchayatName;
+	}
+
+	public List<VerificationCompVO> getNotVerifiedList() {
+		return notVerifiedList;
+	}
+
+	public void setNotVerifiedList(List<VerificationCompVO> notVerifiedList) {
+		this.notVerifiedList = notVerifiedList;
+	}
+
+	public Integer getNotVerifiedCount() {
+		return notVerifiedCount;
+	}
+
+	public void setNotVerifiedCount(Integer notVerifiedCount) {
+		this.notVerifiedCount = notVerifiedCount;
+	}
+
+	public Integer getVerifiedCount() {
+		return verifiedCount;
+	}
+
+	public void setVerifiedCount(Integer verifiedCount) {
+		this.verifiedCount = verifiedCount;
 	}
 	
 	
