@@ -65,7 +65,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	private String date;
 	private List<SurveyReportVO> surveyUserDetails;
 	private EntitlementsHelper entitlementsHelper;
-	private List<GenericVO> usersList,constituencies,notStartesUsersList;
+	private List<GenericVO> usersList,constituencies,notStartesUsersList,boothsList;
 	private RegionServiceDataImp regionServiceDataImp;
 	private SurveyReportVO surveyReportVO;
 	private SurveyDashBoardVO resultVO;
@@ -75,6 +75,14 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	private List<VerificationCompVO> verificationCompVOList;
 	private PanchayatHamletsCountVo panchayatHamletsCountVo;
 	
+	public List<GenericVO> getBoothsList() {
+		return boothsList;
+	}
+
+	public void setBoothsList(List<GenericVO> boothsList) {
+		this.boothsList = boothsList;
+	}
+
 	public PanchayatHamletsCountVo getPanchayatHamletsCountVo() {
 		return panchayatHamletsCountVo;
 	}
@@ -1809,6 +1817,48 @@ public String getPanchayatsStatusDetails()
   	}
   	return Action.SUCCESS;
   }
-    
+  
+  
+  public String getBoothsInCallStatus()
+  {
+  	try
+  	{
+  		HttpSession session = request.getSession();
+  		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+  		if(user == null)
+  		{
+  			return Action.INPUT;
+  		}
+  		jObj = new JSONObject(getTask());
+  		boothsList = surveyDetailsService.getBoothsInCallStatus(jObj.getLong("constituencyId"));
+  	} 
+  	catch (Exception e)
+  	{
+  		LOG.error("Exception raised in unTagConstituencyOfUser", e);
+  	}
+  	return Action.SUCCESS;
+  }
+  
+  
+  public String getBoothsInSurveyDetailsInfo()
+  {
+  	try
+  	{
+  		HttpSession session = request.getSession();
+  		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+  		if(user == null)
+  		{
+  			return Action.INPUT;
+  		}
+  		jObj = new JSONObject(getTask());
+  		boothsList = surveyDetailsService.getBoothsInSurveyDetailsInfo(jObj.getLong("constituencyId"));
+  	} 
+  	catch (Exception e)
+  	{
+  		LOG.error("Exception raised in unTagConstituencyOfUser", e);
+  	}
+  	return Action.SUCCESS;
+  }
+  
   
 }
