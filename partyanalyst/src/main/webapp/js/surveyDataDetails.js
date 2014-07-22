@@ -1064,6 +1064,7 @@ function getBoothDetailsForSelectedUser(leaderId,constituencyId,name)
 
 function getUserAssignedBoothsDetailsForAConstituency()
 {
+	$('#noBoothsDivId').html('');
 	var jObj =
 	{
 	 constituencyId:$('#constituencyId').val(),
@@ -1081,6 +1082,15 @@ function getUserAssignedBoothsDetailsForAConstituency()
 
 function buildBoothDetails(result)
 {
+	if(result == null || result.length == 0)
+	{
+		$('#assignBtnId').hide();
+		$('#noBoothsDivId').html('No booths completed in this constituency');
+		return ;
+	}
+	$('#assignBtnId').show();
+
+
 	var str = '';
 
 	str+='<div class="span12" style="margin-left:30px;">';
