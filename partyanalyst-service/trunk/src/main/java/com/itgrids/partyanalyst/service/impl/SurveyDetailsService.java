@@ -1141,5 +1141,38 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 			LOG.error("Exception raised in checkForDcWithWm", e);
 		}
 	}
+	
+	public List<GenericVO> getBoothsInCallStatus(Long constituencyId)
+	{
+		List<GenericVO> resultList = new ArrayList<GenericVO>();
+		try{
+			List<Object[]> list = surveyCallStatusDAO.getBoothsByConstituency(constituencyId);
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				resultList.add(new GenericVO((Long)params[0],params[1].toString()));
+			}
+		}
+		catch (Exception e) {
+			LOG.error("Exception raised in getBoothsInCallStatus", e);
+		}
+		return resultList;
+	}
+	public List<GenericVO> getBoothsInSurveyDetailsInfo(Long constituencyId)
+	{
+		List<GenericVO> resultList = new ArrayList<GenericVO>();
+		try{
+			List<Object[]> list = surveyDetailsInfoDAO.getBooths(constituencyId,4l);
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				resultList.add(new GenericVO((Long)params[0],params[1].toString()));
+			}
+		}
+		catch (Exception e) {
+			LOG.error("Exception raised in getBoothsInCallStatus", e);
+		}
+		return resultList;
+	}
 }
  
