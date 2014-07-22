@@ -1939,9 +1939,10 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		}
 		
 		 @SuppressWarnings("unchecked")
-			public List<Object[]> getBoothsByPanhcayats(List<Long> panchayatIds) {
-				Query queryObject = getSession().createQuery("select distinct model.panchayat.panchayatId , model.panchayat.panchayatName , model.boothId from Booth model where  model.panchayat.panchayatId in (:panchayatIds)");
+			public List<Object[]> getBoothsByPanhcayats(List<Long> panchayatIds,Long publicationId) {
+				Query queryObject = getSession().createQuery("select distinct model.panchayat.panchayatId , model.panchayat.panchayatName , model.boothId from Booth model where  model.panchayat.panchayatId in (:panchayatIds) and model.publicationDate.publicationDateId = :publicationId");
 				queryObject.setParameterList("panchayatIds", panchayatIds);
+				queryObject.setParameter("publicationId", publicationId);
 				return queryObject.list();
 			}
 
