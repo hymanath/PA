@@ -70,6 +70,7 @@ import com.itgrids.partyanalyst.model.SurveyUserType;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.model.WebMonitoringAssignedUsers;
 import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
+import com.itgrids.partyanalyst.service.ISurveyDetailsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLocationTrackingVo;
@@ -148,7 +149,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	
 	@Autowired
 	private ISurveyCompletedLocationsDetailsDAO surveyCompletedLocationsDetailsDAO;
-	
+	@Autowired
+	private ISurveyDetailsService surveyDetailsService;
 	
 	/**
 	 * This Service is used for saving the user type details
@@ -1271,12 +1273,34 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			SurveyUser surveyUser = surveyUserDAO.get(userId);
 			
 			List<Long> completedBoothsList = new ArrayList<Long>();
-			
+			 List<Long> completedBoothIds = new ArrayList<Long>();
 			if(surveyUser.getSurveyUserType().getSurveyUsertypeId().equals(IConstants.VERIFIER_ROLE_ID))
 				completedBoothsList = surveyCompletedLocationsDetailsDAO.getCompletedBoothDetailsByBoothIds(existingBoothIds);
+			/* completed panchayat booths */	
+			SurveyReportVO vo = surveyDetailsService.getPanchayatsStatusCountByConstituency(constituencyId);
+			List<Long> panchayatIds = vo.getCompleteIds();
+			List<Long> boothIds = new ArrayList<Long>();
+			if(panchayatIds != null && panchayatIds.size() > 0)
+			{
+			 List<Object[]> list = boothDAO.getBoothsByPanhcayats(panchayatIds,IConstants.VOTER_DATA_PUBLICATION_ID); 
+			 if(list != null && list.size() > 0)
+			 {
+				 for(Object[] params : list)
+				 {
+					 if(!boothIds.contains((Long)params[2]))
+					 boothIds.add((Long)params[2]);
+				 }
+			 }
+			
+			
+			 for(Long id : completedBoothsList)
+			 {
 				
-			
-			
+				 if(boothIds.contains(id))
+					 completedBoothIds.add(id);
+			 }
+			}
+			 
 			for(Object[] obj:boothDtls)
 			{
 				UserBoothDetailsVO boothDetails = new UserBoothDetailsVO();
@@ -1300,7 +1324,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				
 				if(surveyUser.getSurveyUserType().getSurveyUsertypeId().equals(IConstants.VERIFIER_ROLE_ID))
 				{
-					if(completedBoothsList.contains((Long)obj[0]))
+					//if(completedBoothsList.contains((Long)obj[0]))
+					if(completedBoothIds.contains((Long)obj[0]))
 						resultList.add(boothDetails);
 				}else
 				{
