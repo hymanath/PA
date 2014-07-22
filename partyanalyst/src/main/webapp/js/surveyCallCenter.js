@@ -1577,10 +1577,28 @@ function buildStatusForPanchayats(result,constituencyId,boothResult)
 					str += '</li>';	
 				}	
 
+	if(result.panchayatCount == 0)
+	{
+		str+='<li><hgroup><h4>PANCHAYAT Completed </h4><h2 id="panchayatreadyID">'+result.panchayatCount+'</h2></hgroup>';
+	str+='</li>';
+	}
+	else
+	{
 	str+='<li><hgroup><h4>PANCHAYAT Completed </h4><h2 id="panchayatreadyID"><a href="javascript:{getPanchayatDetails(\'completed\',\''+constituencyId+'\');}">'+result.panchayatCount+'</a></h2></hgroup>';
 	str+='</li>';
-	str+='<li><hgroup><h4>PANCHAYAT Not Completed </h4><h2 id="panchayatNotReady"><a href="javascript:{getPanchayatDetails(\'notcompleted\',\''+constituencyId+'\');}">'+result.panchayatNotCompleteCount+'</a></h2></hgroup>';
+	}	
+	
+	if(result.panchayatNotCompleteCount == 0)
+	{
+		 str+='<li><hgroup><h4>PANCHAYAT Not Completed </h4><h2 id="panchayatNotReady">'+result.panchayatNotCompleteCount+'</h2></hgroup>';
 	str+='</li></ul></div></div></div>';
+	
+	}
+	else
+	{
+    str+='<li><hgroup><h4>PANCHAYAT Not Completed </h4><h2 id="panchayatNotReady"><a href="javascript:{getPanchayatDetails(\'notcompleted\',\''+constituencyId+'\');}">'+result.panchayatNotCompleteCount+'</a></h2></hgroup>';
+	str+='</li></ul></div></div></div>';
+	}
 					
 	$('#basicStatusReport').html(str);
 }
