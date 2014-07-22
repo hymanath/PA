@@ -596,7 +596,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		
 		sb.append("where ");
 		
-		sb.append("sinfo.hamlet.hamletId=ph.hamlet.hamletId and sinfo.isDelete='N' and  ph.panchayat.panchayatId in (:panchayatIds) ");
+		sb.append("sinfo.hamlet.hamletId=ph.hamlet.hamletId and sinfo.isDelete='N' and  ph.panchayat.panchayatId in (:panchayatIds) and sinfo.surveyUser.surveyUserType.surveyUsertypeId = 1 ");
 		sb.append("group by sinfo.hamlet.hamletId ");
 		
 		sb.append("order by ph.panchayat.panchayatName,sinfo.hamlet.hamletName ");
