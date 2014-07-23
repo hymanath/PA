@@ -13,5 +13,5 @@ public interface ISurveyDashBoardService {
 	public List<SurveyCompletionDetailsVO> getSurveyCompletionDetailsOfConstituency(Long constituencyId);
 	public List<SurveyCompletionDetailsVO> getSurveyCompletionDetailsForAllConstituencies();
 	public String saveBoothCompletionStatus(Long boothId,Long statusId);
-	
+	public List<String> getCasteCollecteddatesByConstituencyId(Long constituencyId);
 }
