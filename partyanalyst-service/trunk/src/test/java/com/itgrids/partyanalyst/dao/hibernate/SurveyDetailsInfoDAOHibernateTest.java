@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
@@ -246,4 +248,13 @@ public class SurveyDetailsInfoDAOHibernateTest extends BaseDaoTestCase{
 		Long count = surveyDetailsInfoDAO.getProcecingBoothCountByConstId(217L);
 		System.out.println(count);
 	}*/
+	public void testgetDCPerformanceBoothWise()
+	{
+		List<Object[]> values = surveyDetailsInfoDAO.getDCPerformanceBoothWise(217l,46l,1l);
+		for (Object[] objects : values) 
+		{
+			System.out.println(objects[0] +":"+ objects[1].toString() +":"+ objects[2].toString() +":"+objects[3].toString() +":"+objects[4].toString() +":"+ objects[5].toString() +":"+ objects[6].toString() +":"+ objects[7].toString() +":"+ objects[8].toString() +":"+ objects[9].toString() +":"+ objects[10].toString());
+		}
+	}
+	
 }
