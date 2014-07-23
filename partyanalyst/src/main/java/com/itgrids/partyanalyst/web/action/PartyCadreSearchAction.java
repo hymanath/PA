@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.web.action;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
@@ -10,6 +11,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CadreVo;
 import com.itgrids.partyanalyst.dto.GenericVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
@@ -115,6 +117,13 @@ public class PartyCadreSearchAction extends ActionSupport implements ServletRequ
 	
 	
 	public String execute(){
+		
+		HttpSession session = request.getSession();
+		RegistrationVO regVO =(RegistrationVO) session.getAttribute("USER");
+		if(regVO == null)
+		{
+			return Action.INPUT;
+		}
 		
 		return SUCCESS;
 	}
