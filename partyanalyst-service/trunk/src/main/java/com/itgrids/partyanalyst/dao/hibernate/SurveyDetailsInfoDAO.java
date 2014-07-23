@@ -711,7 +711,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		return query.list();	
 	}
 	
-	public List<Object[]> getDCPerformanceBoothWise(Long constituencyId,Long surveyUserId,Long userTypeId)
+	public List<Object[]> getDCPerformanceBoothWise(Long surveyUserId,Long userTypeId,Date fromdate,Date toDate )
 	{
 		
 		StringBuilder  queryStr = new StringBuilder();
@@ -723,29 +723,31 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		queryStr.append(" SUM(CASE WHEN SDI.isCadre ='Y' THEN 1 ELSE 0 END),");						// Cadre count 				5
 		queryStr.append(" SUM(CASE WHEN SDI.isInfluencingPeople ='Y' THEN 1 ELSE 0 END),  ");		// InfluencingPeople count	6 
 		queryStr.append(" SUM(CASE WHEN SDI.mobileNumber is not null and SDI.mobileNumber != 'null' and  SDI.mobileNumber != '' and length(SDI.mobileNumber) != 0THEN 1 ELSE 0 END ),  ");		// mobileNumber count 		7
-		queryStr.append(" SUM(CASE WHEN SDI.localArea is not null THEN 1 ELSE 0 END)  ");			// localArea count 		8
+		queryStr.append(" SUM(CASE WHEN SDI.localArea is not null THEN 1 ELSE 0 END) , SDI.booth.constituency.name ");			// localArea count 		8
 		
 		queryStr.append(" 	from SurveyDetailsInfo SDI where  ");
 		queryStr.append(" 	SDI.surveyUser.surveyUserId = :surveyUserId	and ");
 		queryStr.append(" 	SDI.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId	and ");
-		queryStr.append("	SDI.booth.constituency.constituencyId = :constituencyId  group by SDI.booth.boothId order by SDI.date");
+		queryStr.append("	date(SDI.date) >= :fromdate and date(SDI.date) <= :toDate group by SDI.booth.boothId order by SDI.date");
 		
 			
 		Query query = getSession().createQuery(queryStr.toString());
 		
 		
-		query.setParameter("constituencyId", constituencyId);
+		//query.setParameter("constituencyId", constituencyId);
 		query.setParameter("surveyUserId", surveyUserId);
 		query.setParameter("userTypeId", userTypeId);
+		query.setParameter("fromdate", fromdate);
+		query.setParameter("toDate", toDate);
 		return query.list();
 	}
-	
-	public List<Object[]> getDcorDvUsersByConstituency(Long constituencyId,Long userTypeId)
+
+	public List<Object[]> getDcorDvUsersByConstituency(Long userTypeId)
 	{
 		Query query = getSession().createQuery("select distinct model.surveyUser.surveyUserId , model.surveyUser.userName from SurveyDetailsInfo model where" +
-				"  model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId  and " +
-				"  model.booth.constituency.constituencyId = :constituencyId order by model.surveyUser.userName asc");
-		query.setParameter("constituencyId", constituencyId);
+				"  model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId   " +
+				"   order by model.surveyUser.userName asc");
+		//query.setParameter("constituencyId", constituencyId);
 		query.setParameter("userTypeId", userTypeId);
 		return query.list();
 	}

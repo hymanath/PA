@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -1342,12 +1343,12 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 		return returnList;
 	}
 	
-	public List<DcDvCollectedDataVO> getDcAndDvByConstituencyByUser(Long constituencyId,Long surveyUserId,Long userTypeId)
+	public List<DcDvCollectedDataVO> getDcAndDvByConstituencyByUser(Long surveyUserId,Long userTypeId,Date fromDate,Date toDate)
 	{
 		List<DcDvCollectedDataVO> returnList = null;
 		try
 		{
-			List<Object[]> result = surveyDetailsInfoDAO.getDCPerformanceBoothWise(constituencyId, surveyUserId, userTypeId);
+			List<Object[]> result = surveyDetailsInfoDAO.getDCPerformanceBoothWise(surveyUserId, userTypeId,fromDate,toDate);
 			if(result != null && result.size() > 0)
 			{
 				returnList = new ArrayList<DcDvCollectedDataVO>();
@@ -1363,6 +1364,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 					VO.setInfluencePeopleCount(parms[8] != null ? Long.valueOf(parms[8].toString()) : 0l);
 					VO.setMobileCount(parms[9] != null ? Long.valueOf(parms[9].toString()) : 0l);
 					VO.setLocalAreaCount(parms[10] != null ? Long.valueOf(parms[10].toString()) : 0l);
+					VO.setConstituency(parms[11] != null ? parms[11].toString() : "");
 					returnList.add(VO);
 				}
 			}
@@ -1374,12 +1376,12 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 		return returnList;
 	}
 	
-	public List<GenericVO> getDcorDvUsersByConstituency(Long constituencyId,Long userTypeId)
+	public List<GenericVO> getDcorDvUsersByConstituency(Long userTypeId)
 	{
 		List<GenericVO> returnList = null;
 		try 
 		{
-			List<Object[]> result = surveyDetailsInfoDAO.getDcorDvUsersByConstituency(constituencyId, userTypeId);
+			List<Object[]> result = surveyDetailsInfoDAO.getDcorDvUsersByConstituency(userTypeId);
 			if(result != null && result.size() > 0)
 			{
 				returnList = new ArrayList<GenericVO>();
