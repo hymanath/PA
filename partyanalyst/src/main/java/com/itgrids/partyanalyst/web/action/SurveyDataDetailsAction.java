@@ -1907,8 +1907,10 @@ public String getPanchayatsStatusDetails()
 			}
 			jObj = new JSONObject(getTask());
 			
-			
-			dcDvCollectedDataVOList = surveyDetailsService.getDcAndDvByConstituencyByUser(jObj.getLong("constituencyId"),jObj.getLong("surveyUserId"),jObj.getLong("userTypeId"));
+			String fromDateStr = jObj.getString("fromDate");
+			String toDateStr = jObj.getString("toDate");
+			SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
+			dcDvCollectedDataVOList = surveyDetailsService.getDcAndDvByConstituencyByUser(jObj.getLong("surveyUserId"),jObj.getLong("userTypeId"),originalFormat.parse(fromDateStr),originalFormat.parse(toDateStr));
 		} 
 		catch (Exception e)
 		{
@@ -1929,7 +1931,7 @@ public String getPanchayatsStatusDetails()
 			jObj = new JSONObject(getTask());
 			
 			
-			usersList = surveyDetailsService.getDcorDvUsersByConstituency(jObj.getLong("constituencyId"),jObj.getLong("userTypeId"));
+			usersList = surveyDetailsService.getDcorDvUsersByConstituency(jObj.getLong("userTypeId"));
 		} 
 		catch (Exception e)
 		{

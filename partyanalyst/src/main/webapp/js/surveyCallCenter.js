@@ -1721,7 +1721,7 @@ function buildHamletInfo(result,DivEle)
 function getRespectiveUsers(id)
 {
 	var jsObj={
-		constituencyId:$('#userWiseReportConstituencyId').val(),
+		//constituencyId:$('#userWiseReportConstituencyId').val(),
 		userTypeId:id
 	};
 	$.ajax({
@@ -1744,8 +1744,10 @@ function getUserWiseReport()
 {
 	$('#userWiseReportImg').show();
 	var jsObj={
-		constituencyId:$('#userWiseReportConstituencyId').val(),
+		//constituencyId:$('#userWiseReportConstituencyId').val(),
 		userTypeId:$('#userReportUserType').val(),
+		fromDate : $('#fromDateForUserReport').val(),
+		toDate : $('#toDateForUserReport').val(),
 		surveyUserId : $('#userReportUser').val()
 	};
 	$.ajax({
