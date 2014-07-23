@@ -5702,7 +5702,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 		
 			if(locationName.contains("MUNCIPALITY") || locationName.contains("CORPORATION") ||locationName.contains("Greater Municipal Corp")  )
 			{
-				cadreDetails = cadreDAO.getCadreDetailsByMuncipalityId(locationName);
+				cadreDetails = cadreDAO.getCadreDetailsByMuncipalityId(panchayatId);
 				
 			}else
 			{
