@@ -1,11 +1,11 @@
 package com.itgrids.partyanalyst.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.DcDvCollectedDataVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
-import com.itgrids.partyanalyst.dto.HamletCountInputVO;
 import com.itgrids.partyanalyst.dto.PanchayatHamletsCountVo;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -35,7 +35,7 @@ public interface ISurveyDetailsService {
 	 public List<VerificationCompVO> checkForWebMonitorData(Long boothId);
 	 public List<GenericVO> getBoothsInCallStatus(Long constituencyId);
 	 public List<GenericVO> getBoothsInSurveyDetailsInfo(Long constituencyId);
-	 public List<DcDvCollectedDataVO> getDcAndDvByConstituencyByUser(Long constituencyId,Long surveyUserId,Long userTypeId);
-	 public List<GenericVO> getDcorDvUsersByConstituency(Long constituencyId,Long userTypeId);
+	 public List<DcDvCollectedDataVO> getDcAndDvByConstituencyByUser(Long surveyUserId,Long userTypeId,Date fromDate,Date toDate);
+	 public List<GenericVO> getDcorDvUsersByConstituency(Long userTypeId);
 	 
 }

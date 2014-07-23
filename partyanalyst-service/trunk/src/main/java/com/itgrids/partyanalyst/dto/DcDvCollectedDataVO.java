@@ -11,7 +11,7 @@ public class DcDvCollectedDataVO implements Serializable{
 	private Long boothId;
 	private String partNo;
 	private String date;
-	
+	private String constituency;
 	private Long totalCount;
 	private Long mobileCount;
 	private Long hamletCount;
@@ -78,6 +78,12 @@ public class DcDvCollectedDataVO implements Serializable{
 	}
 	public void setTotalCount(Long totalCount) {
 		this.totalCount = totalCount;
+	}
+	public String getConstituency() {
+		return constituency;
+	}
+	public void setConstituency(String constituency) {
+		this.constituency = constituency;
 	}
 	
 	
