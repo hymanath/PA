@@ -98,4 +98,5 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	public List<Object[]> getBooths(Long constituencyId,Long surveyUserType);	
 	public List<Object[]> getDCPerformanceBoothWise(Long surveyUserId,Long userTypeId,Date FromDate,Date toDate);
 	public List<Object[]> getDcorDvUsersByConstituency(Long userTypeId);
+	public List<String> getCasteCollectedDatesByConstituencyId(Long constituencyId);
 }
