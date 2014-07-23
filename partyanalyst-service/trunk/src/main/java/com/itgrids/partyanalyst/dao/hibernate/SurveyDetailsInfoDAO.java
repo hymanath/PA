@@ -753,4 +753,18 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 	}
 	
 	
+
+	public List<String> getCasteCollectedDatesByConstituencyId(Long constituencyId)
+	{
+		Query query = getSession()
+				.createQuery(
+						"select distinct cast(concat(day(SDI.date),'-',month(SDI.date),'-',year(SDI.date)),string) " +
+						"from SurveyDetailsInfo SDI where SDI.booth.constituency.constituencyId = :constituencyId");
+		
+		query.setParameter("constituencyId", constituencyId);
+		
+		return query.list();
+		
+	}
+
 }
