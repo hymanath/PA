@@ -652,5 +652,20 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 		}
 		return "success";
 	}
+	
+	public List<String> getCasteCollecteddatesByConstituencyId(Long constituencyId)
+	{
+		List<String> surveyDates = new ArrayList<String>();
+		try
+		{
+			 surveyDates = surveyDetailsInfoDAO.getCasteCollectedDatesByConstituencyId(constituencyId);
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return surveyDates;
+	}
 
 }
