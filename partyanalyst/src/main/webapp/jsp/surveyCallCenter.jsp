@@ -355,7 +355,7 @@
 											Select Booth 
 											<select class="input-block-level" id = "boothIdForVerfication" multiple="true"> <option value="0">Select Booth</option></select></div>
 											<div class="span1" style="margin:25px -8px 0 8px;width: 15px;">
-								<img id="boothImage" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
+										<img id="boothImage" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
 							
 										</div>
 										<div class="span2">
@@ -441,11 +441,7 @@
 								<div class="offset1">
 									<div class="row-fluid">
 										
-										<div class="span3">
-											Select Constituency <font class="requiredFont">*</font>
-											<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="userWiseReportConstituencyId" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency"  />
-												
-										</div>
+										
 										<div class="span3">
 											Select User Type 
 											<select class="input-block-level" id = "userReportUserType" onChange="getRespectiveUsers(this.value)"> 
@@ -453,13 +449,28 @@
 												<option value="1">Data Collector</option>
 												<option value="4">Data Verifier</option>
 											</select>
+												
 										</div>
-											<div class="span1" style="margin:25px -8px 0 8px;width: 15px;">
-											</div>
 										<div class="span3">
 											Select User  
 											<select class="input-block-level" id = "userReportUser" > <option value="0">Select User </option></select>
 										</div>
+										<div class="span1" style="margin:25px -8px 0 8px;width: 15px;">
+										<img id="boothImage" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
+										</div>
+										<div class="span2">
+											From Date <font class="requiredFont">*</font>
+											<div class="input-append">
+											<input type="text" placeholder="From Date..." class="input-block-level date" id="fromDateForUserReport" readonly>
+											</div>
+										</div>
+										<div class="span2">
+											To Date <font class="requiredFont">*</font>
+											<div class="input-append">
+											 <input type="text" placeholder="To Date..." class="input-block-level date" id="toDateForUserReport" readonly>
+											</div>
+										</div>
+										
 										
 									</div>	
 									
