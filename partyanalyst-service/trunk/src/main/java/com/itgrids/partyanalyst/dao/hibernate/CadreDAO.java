@@ -1187,11 +1187,11 @@ public List<Object[]> searchCadreInfoByConstidAndNameORMobile(Long constiId,Stri
 		query.setParameter("constituencyId", constituencyId);
 		return query.list();
 	}
-	public List<Object[]> getCadreDetailsByMuncipalityId(String locationName)
+	public List<Object[]> getCadreDetailsByMuncipalityId(Long panchayatId)
 	{
 		Query query = getSession().createQuery("select C.cadreId, C.firstName, C.lastName, C.mobile, C.age, C.voter.voterId, C.fatherOrSpouseName " +
-			" from Cadre C, UserAddress UA  where   C.currentAddress.userAddressId = UA.userAddressId and C.currentAddress.localElectionBody.name = :locationName"); 
-		query.setParameter("locationName", locationName);
+			" from Cadre C  where C.currentAddress.localElectionBody.localElectionBodyId = :panchayatId"); 
+		query.setParameter("panchayatId", panchayatId);
 		return query.list();
 	}
 }
