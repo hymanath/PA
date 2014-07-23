@@ -1270,13 +1270,13 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				existingBoothIds.add((Long)existingBoothDtls[1]);
 			
 			
-			SurveyUser surveyUser = surveyUserDAO.get(userId);
+			/*SurveyUser surveyUser = surveyUserDAO.get(userId);
 			
 			List<Long> completedBoothsList = new ArrayList<Long>();
 			 List<Long> completedBoothIds = new ArrayList<Long>();
 			if(surveyUser.getSurveyUserType().getSurveyUsertypeId().equals(IConstants.VERIFIER_ROLE_ID))
 				completedBoothsList = surveyCompletedLocationsDetailsDAO.getCompletedBoothDetailsByBoothIds(existingBoothIds);
-			/* completed panchayat booths */	
+			 completed panchayat booths 	
 			SurveyReportVO vo = surveyDetailsService.getPanchayatsStatusCountByConstituency(constituencyId);
 			List<Long> panchayatIds = vo.getCompleteIds();
 			List<Long> boothIds = new ArrayList<Long>();
@@ -1299,7 +1299,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				 if(boothIds.contains(id))
 					 completedBoothIds.add(id);
 			 }
-			}
+			}*/
 			 
 			for(Object[] obj:boothDtls)
 			{
@@ -1322,15 +1322,15 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				if(existingBoothIds.contains((Long)obj[0]))
 					boothDetails.setUserHas(true);
 				
-				if(surveyUser.getSurveyUserType().getSurveyUsertypeId().equals(IConstants.VERIFIER_ROLE_ID))
+			/*	if(surveyUser.getSurveyUserType().getSurveyUsertypeId().equals(IConstants.VERIFIER_ROLE_ID))
 				{
 					//if(completedBoothsList.contains((Long)obj[0]))
 					if(completedBoothIds.contains((Long)obj[0]))
 						resultList.add(boothDetails);
 				}else
-				{
+				{*/
 					resultList.add(boothDetails);
-				}
+				//}
 			}
 			
 		}catch(Exception e)
