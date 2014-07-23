@@ -223,5 +223,5 @@ public interface ICadreDAO extends GenericDao<Cadre, Long>{
 	public List<String> getAreaTypesByConstituencyId(Long constituencyId);
 	
 	public List<Object[]> getLocalElectionBodydetailsByConstituencyId(Long constituencyId);
-	public List<Object[]> getCadreDetailsByMuncipalityId(String locationName);
+	public List<Object[]> getCadreDetailsByMuncipalityId(Long panchayatId);
 }
