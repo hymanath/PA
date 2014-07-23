@@ -12,8 +12,8 @@ function showHideTabs(id)
 		$('#dataCollector').hide();
         $('#inActiveUsersDetails').hide(); 
 		$('#inActiveUsersDetails').hide();
-		 $('#completeBooths').show();
-
+		$('#completeBooths').show();
+		$('#userReport').hide();
 		
 	}
 	else if(id == "callCenterTab")
@@ -26,7 +26,7 @@ function showHideTabs(id)
 		$('#dataCollector').hide();
         $('#inActiveUsersDetails').hide(); 
 		$('#completeBooths').hide();
-
+		$('#userReport').hide();
 		
 	}
 	else if (id == "startTimeTab")
@@ -39,6 +39,7 @@ function showHideTabs(id)
 		$('#dataCollector').hide();
 		$('#inActiveUsersDetails').show();
 		$('#completeBooths').hide();
+		$('#userReport').hide();
 	}
 	else if(id == "boothWiseTab")
 	{
@@ -50,6 +51,7 @@ function showHideTabs(id)
 		$('#dataCollector').hide();
 		$('#inActiveUsersDetails').hide();
 		$('#completeBooths').hide();
+		$('#userReport').hide();
 
 	}
 	else if(id == "surveyStatusRprtTab"){
@@ -61,6 +63,18 @@ function showHideTabs(id)
 		$('#dataCollector').hide();
         $('#inActiveUsersDetails').hide();	
 		$('#completeBooths').hide();
+		$('#userReport').hide();
+	}
+	else if (id == "surveyUserWise")
+	{
+		$('#statusReportDiv').hide();
+		$('#callCenter').hide();
+		$('#startTime').hide();
+		$('#boothWise').hide();
+		$('#dataCollector').hide();
+        $('#inActiveUsersDetails').hide();	
+		$('#completeBooths').hide();
+		$('#userReport').show();
 	}
 	else
 	{
@@ -72,6 +86,7 @@ function showHideTabs(id)
 		$('#dataCollector').show();
 		$('#inActiveUsersDetails').hide();
 		$('#completeBooths').hide();
+		$('#userReport').hide();
 
 	}
 }
@@ -1700,6 +1715,91 @@ function buildHamletInfo(result,DivEle)
  $("#"+DivEle).html(str);
 	}
 
+
+}
+
+function getRespectiveUsers(id)
+{
+	var jsObj={
+		constituencyId:$('#userWiseReportConstituencyId').val(),
+		userTypeId:id
+	};
+	$.ajax({
+	type:'GET',
+	url: 'getDcorDvUsersByConstituencyAction.action',
+	dataType: 'json',
+	data: {task:JSON.stringify(jsObj)},
+	}).done(function(result){
+				$('#userReportUser').find('option').remove();
+				$('#userReportUser').append('<option value="0"> Select User </option>');
+				if(result != null && result.length>0){
+					for(var i in result){
+						$('#userReportUser').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+					}
+				}	
+	});
+}
+
+function getUserWiseReport()
+{
+	$('#userWiseReportImg').show();
+	var jsObj={
+		constituencyId:$('#userWiseReportConstituencyId').val(),
+		userTypeId:$('#userReportUserType').val(),
+		surveyUserId : $('#userReportUser').val()
+	};
+	$.ajax({
+	type:'GET',
+	url: 'getDcAndDvByConstituencyByUserAction.action',
+	dataType: 'json',
+	data: {task:JSON.stringify(jsObj)},
+	}).done(function(result){
+		$('#userWiseReport').html('');
+		if(result != null && result.length > 0)
+		{
+			buildUserReport(result);
+		}
+		else
+		{
+			$('#userWiseReportImg').hide();
+		}		
+	});
+}
+
+function buildUserReport(result)
+{
+	var str = '';
+	str+='<table class=" table table-bordered m_top20 table-hover table-striped" id="userReportTable">';
+	str+='<thead>';
+	str+='<th>Booth</th>';
+	str+='<th>Date</th>';
+	str+='<th>Total</th>';
+	str+='<th>Mobile</th>';
+	str+='<th>Caste</th>';
+	str+='<th>Hamlet</th>';
+	str+='<th>Local Area</th>';
+	str+='<th>Cadre</th>';
+	str+='<th>Influence People</th>';
+	str+='</thead>';
+	str+='<tbody>';
+	for(var i in result)
+	{
+		str += '<tr>';
+		str+='<td>'+result[i].partNo+'</td>';
+		str+='<td>'+result[i].date+'</td>';
+		str+='<td>'+result[i].totalCount+'</td>';
+		str+='<td>'+result[i].mobileCount+'</td>';
+		str+='<td>'+result[i].casteCount+'</td>';
+		str+='<td>'+result[i].hamletCount+'</td>';
+		str+='<td>'+result[i].localAreaCount+'</td>';
+		str+='<td>'+result[i].cadreCount+'</td>';
+		str+='<td>'+result[i].influencePeopleCount+'</td>';
+		str += '</tr>';
+	}
+	str+='</tbody>';
+	str+='</table>';
+	$('#userWiseReport').html(str);
+	$('#userWiseReportImg').hide();
 
 }
 function updateBoothStatusDetails(statusId,boothId,divId)
