@@ -29,8 +29,8 @@ import com.itgrids.partyanalyst.dao.IUpdationDetailsDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IWebMonitorCompletedLocationsDetailsDAO;
 import com.itgrids.partyanalyst.dao.IWebMonitoringAssignedUsersDAO;
+import com.itgrids.partyanalyst.dto.DcDvCollectedDataVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
-import com.itgrids.partyanalyst.dto.HamletCountInputVO;
 import com.itgrids.partyanalyst.dto.HamletCountVo;
 import com.itgrids.partyanalyst.dto.PanchayatHamletsCountVo;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -1338,6 +1338,63 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 		catch (Exception e) 
 		{
 			LOG.error("Exception raised in checkForWebMonitorData", e);
+		}
+		return returnList;
+	}
+	
+	public List<DcDvCollectedDataVO> getDcAndDvByConstituencyByUser(Long constituencyId,Long surveyUserId,Long userTypeId)
+	{
+		List<DcDvCollectedDataVO> returnList = null;
+		try
+		{
+			List<Object[]> result = surveyDetailsInfoDAO.getDCPerformanceBoothWise(constituencyId, surveyUserId, userTypeId);
+			if(result != null && result.size() > 0)
+			{
+				returnList = new ArrayList<DcDvCollectedDataVO>();
+				for (Object[] parms : result) 
+				{
+					DcDvCollectedDataVO VO = new DcDvCollectedDataVO();
+					VO.setPartNo(parms[0] != null ? parms[0].toString() : "");
+					VO.setDate(parms[1] != null ? parms[1].toString() : "");
+					VO.setTotalCount(parms[2] != null ? Long.valueOf(parms[2].toString()) : 0l);
+					VO.setCasteCount(parms[3] != null ? Long.valueOf(parms[3].toString()) : 0l);
+					VO.setHamletCount(parms[5] != null ? Long.valueOf(parms[5].toString()) : 0l);
+					VO.setCadreCount(parms[7] != null ? Long.valueOf(parms[7].toString()) : 0l);
+					VO.setInfluencePeopleCount(parms[8] != null ? Long.valueOf(parms[8].toString()) : 0l);
+					VO.setMobileCount(parms[9] != null ? Long.valueOf(parms[9].toString()) : 0l);
+					VO.setLocalAreaCount(parms[10] != null ? Long.valueOf(parms[10].toString()) : 0l);
+					returnList.add(VO);
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getDcAndDvByConstituencyByUser", e);
+		}
+		return returnList;
+	}
+	
+	public List<GenericVO> getDcorDvUsersByConstituency(Long constituencyId,Long userTypeId)
+	{
+		List<GenericVO> returnList = null;
+		try 
+		{
+			List<Object[]> result = surveyDetailsInfoDAO.getDcorDvUsersByConstituency(constituencyId, userTypeId);
+			if(result != null && result.size() > 0)
+			{
+				returnList = new ArrayList<GenericVO>();
+				for (Object[] parms : result)
+				{
+					GenericVO VO = new GenericVO();
+					VO.setId(parms[0] != null ? (Long)parms[0]: 0l);
+					VO.setName(parms[1] != null ? parms[1].toString() : "");
+					returnList.add(VO);
+				}
+			}
+		}
+		catch (Exception e) 
+		{
+			LOG.error("Exception raised in getDcorDvUsersByConstituency", e);
 		}
 		return returnList;
 	}
