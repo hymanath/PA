@@ -20,10 +20,10 @@
 	<div class="container" style="margin-top:10px;background-color:#F7F8F9;">
 	
 	<div class="row offset4">
-		<input type="radio" value="1" name="radioType" id="cadreRadioId" checked="true">&nbsp;<strong>Cadre </strong>
-		<span style="padding-left:5px;font-weight:bold;">
-		<input type="radio" value="2" name="radioType" id="committeeRadioId">
-		Committee</span>
+		<form>
+			<label class="radio inline control-label"><input type="radio" name="radioType" value="1" id="cadreRadioId" checked="false"/><strong> Cadre </strong></label>
+			<label class="radio inline control-label"><input type="radio" name="radioType" value="2" id="committeeRadioId"/><strong> Committee</strong></label>
+		</form>
 	</div>
 	
 		<div class="row offset3" id="cadreDivId" style="display:none;">
@@ -55,6 +55,7 @@
 		</div>
 		
 		<div class="row offset3" id="committeeDivId" style="display:none;">
+			<div id="errdiv1" style="height:20px;margin-left: 20px;"" class="offset0"></div>
 				<div class="row-fluid span7">
 					<div class="span3">
 						<label>Select Committee Level</label>
@@ -82,7 +83,7 @@
 					</div>
 				</div>
 				
-				<button name="search" class="btn btn-primary" onclick="getCommitteCadreDetails()">Search</button>
+				<button name="search" class="btn btn-primary offset3" onclick="getCommitteCadreDetails()">Search</button>
 		</div>
 	</div>
 	<div id="tableDiv" class="offset0" style="margin-top:10px;"></div>
@@ -92,6 +93,7 @@
 		getAllconstituenys();
 		//$("#panchayat").html('');
 		$("#errdiv").html('');
+		$("#errdiv1").html('');
 		getCommitteeLevel();
 		$("#cadreDivId").show();
 	});
@@ -291,6 +293,26 @@
 	}
 function getCommitteCadreDetails()
 {
+var committeeLIds = $("#committeeLevelId").val();
+var committeeLVIds = $("#committeeLevelValueId").val();
+var committeeIds = $("#committeeId").val();
+
+	if(committeeLIds != null && committeeLIds == 0){
+		$("#errdiv1").html("Please Select Committee level").css('color','red');
+		return;
+	}
+	if(committeeLVIds != null && committeeLVIds == 0){
+		$("#errdiv1").html("Please Select Committee level Value").css('color','red');
+		return;
+	}
+	if(committeeIds != null && committeeIds == 0){
+		$("#errdiv1").html("Please Select Committee").css('color','red');
+		return;
+	}
+	
+	$("#ajaxcallimage").show();
+
+
 var jsObj =
 {
 committeeId : 1,
