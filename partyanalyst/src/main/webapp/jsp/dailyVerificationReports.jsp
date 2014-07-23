@@ -123,7 +123,7 @@ $('#boothId').multiselect({
 										<div class="span3">
 											Select Constituency <font class="requiredFont">*</font> : 
 											<!--<select id="constituencyId" onChange="getBoothsDetailsByConstituencyId(this.value)"></select>-->
-												<s:select theme="simple"  name="constituency" id="constituencyId"  headerKey="0" headerValue="Select Constituency" list="dataAvilableConstituencies" listKey="id" listValue="name" onChange="getBoothsDetailsByConstituencyId(this.value,'boothId')"/>
+												<s:select theme="simple"  name="constituency" id="constituencyId"  headerKey="0" headerValue="Select Constituency" list="dataAvilableConstituencies" listKey="id" listValue="name" onChange="getBoothsDetailsByConstituencyId(this.value,'boothId'),getCasteCollectedDatesByConstituencyId(this.value);"/>
 										</div>
 										<div class="span3">
 											<!--User Type <font class="requiredFont">*</font>
@@ -318,12 +318,6 @@ function getconstituencies()
 	
 	});
 }
-$(function() {
-	$(".date").datepicker({ 
-	dateFormat: 'dd-mm-yy',
-   }).datepicker('setDate', new Date());
-  
-});
 
 	
 function getUserTypes(divId)
@@ -1101,6 +1095,43 @@ $(".highlight").click(function()
 	}
 })
 showHideReportTabs('stateWiseReportTab');
+
+
+var availableDates;
+function getCasteCollectedDatesByConstituencyId(constituencyId)
+{
+var jsObj =
+{
+constituencyId :constituencyId
+}
+
+$.ajax({
+type:'GET',
+url: 'getCasteCollectionDatesByConstituencyId.action',
+dataType: 'json',
+data: {task:JSON.stringify(jsObj)},
+}).done(function(result){
+availableDates = result;
+var strtDt = availableDates[0];
+var endtDt = availableDates[availableDates.length-1];
+$('#fromDate').val(strtDt).datepicker({ beforeShowDay: displayDates,maxDate: '0',dateFormat: 'dd-mm-yy',});
+$('#toDate').val(endtDt).datepicker({ beforeShowDay: displayDates ,maxDate: '0' ,dateFormat: 'dd-mm-yy',});
+});
+}
+function displayDates(date)
+{
+	
+var dmy = date.getDate() + "-" + (date.getMonth()+1) + "-" + date.getFullYear();
+
+if ($.inArray(dmy, availableDates) != -1) {
+return [true, "","Available"];
+} else {
+return [false,"","unAvailable"];
+}
+
+}
+
+ 
 </script>
 </body>
 </html>

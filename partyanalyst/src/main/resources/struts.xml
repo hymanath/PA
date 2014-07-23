@@ -7821,5 +7821,11 @@
 							<param name="root">locationDetails</param>
 					</result>
   		</action> -->
+  		
+  		<action name="getCasteCollectionDatesByConstituencyId" class="surveyDashBoardAction" method="getCasteCollectionDatesByConstituencyId">
+				<result type="json" name="success">
+						<param name="root">casteCollectedDates</param>
+				</result>
+	</action>
 </package>
 </struts>      

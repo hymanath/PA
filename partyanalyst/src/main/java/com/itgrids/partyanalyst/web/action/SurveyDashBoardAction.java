@@ -34,8 +34,18 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 	private List<SurveyCompletionDetailsVO> completionDtlsList;
 	private SurveyDataDetailsService surveyDataDetailsService;
 	private List<SelectOptionVO> constituenciesList;
-
+	private List<String> casteCollectedDates;
 	
+	
+	
+	public List<String> getCasteCollectedDates() {
+		return casteCollectedDates;
+	}
+
+	public void setCasteCollectedDates(List<String> casteCollectedDates) {
+		this.casteCollectedDates = casteCollectedDates;
+	}
+
 	public List<SelectOptionVO> getConstituenciesList() {
 		return constituenciesList;
 	}
@@ -264,5 +274,22 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 		}
 		
 		return Action.SUCCESS;
+	}
+	
+	public String getCasteCollectionDatesByConstituencyId()
+	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			
+			Long constituencyId = jObj.getLong("constituencyId");
+			casteCollectedDates = surveyDashBoardService.getCasteCollecteddatesByConstituencyId(constituencyId);
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+		
 	}
 }
