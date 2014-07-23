@@ -7800,10 +7800,20 @@
 							<param name="root">boothsList</param>
 					</result>
   		</action>
-			<action name="getBoothsDetailsInCallStatusAction" class="surveyDataDetailsAction" method="getBoothsInCallStatus">
-  					<result type="json" name="success">
-							<param name="root">boothsList</param>
-					</result>
+		<action name="getBoothsDetailsInCallStatusAction" class="surveyDataDetailsAction" method="getBoothsInCallStatus">
+  			<result type="json" name="success">
+				 <param name="root">boothsList</param>
+			</result>
+  		</action>
+  		<action name="getDcAndDvByConstituencyByUserAction" class="surveyDataDetailsAction" method="getDcAndDvByConstituencyByUser">
+  			<result type="json" name="success">
+				 <param name="root">dcDvCollectedDataVOList</param>
+			</result>
+  		</action>
+  		<action name="getDcorDvUsersByConstituencyAction" class="surveyDataDetailsAction" method="getDcorDvUsersByConstituency">
+  			<result type="json" name="success">
+				 <param name="root">usersList</param>
+			</result>
   		</action>
   		
   		<!-- <action name="getAllMuncipalitiesAction" class="partyCadreSearchAction" method="getAllMuncipalities">

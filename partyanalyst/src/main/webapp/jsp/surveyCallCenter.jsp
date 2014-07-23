@@ -84,7 +84,7 @@
 				width:200px !important;
 				}
 
-			#reportTab thead th , #panchayatStatusTable thead th{
+			#reportTab  thead th , #panchayatStatusTable thead th ,#userReportTable thead th{
 				border-bottom: 1px solid black  !important;
 				cursor: pointer  !important;
 				font-weight: bold  !important;
@@ -110,6 +110,7 @@
 					<li><a class="highlight" id="boothWiseTab" onclick="showHideTabs(this.id);">Data Report</a></li>
 					<li id="webMontrId" style="display:none;"><a class="highlight" id="callCenterTab" onclick="showHideTabs(this.id);"> Web Monitoring </a></li>
 					<li><a class="highlight" id="dataCollectorWise" onclick="showHideTabs(this.id);"> Verfication report </a></li>
+					<li><a class="highlight" id="surveyUserWise" onclick="showHideTabs(this.id);"> User Wise report </a></li>
 				</ul>
 			</div>
 		</div>
@@ -338,7 +339,7 @@
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top20">
 							<h4 id="titleId">Verifier Report</h4>
-							<div class="row">
+						<div class="row">
 						<div id="errorDiv" class="span8 offset1"></div>
 						</div>
 								<div class="row">
@@ -427,7 +428,53 @@
 				
 			</div>
 		</div>
-		
+
+		<div class="row" id="userReport">
+			<div class="span12">
+				<div class="row-fluid ">
+					<div class="span12 widgetservey_Red m_top20">
+							<h4 id="titleId">Survey User Wise Report</h4>
+						<div class="row">
+						<div id="errorDiv" class="span8 offset1"></div>
+						</div>
+								<div class="row">
+								<div class="offset1">
+									<div class="row-fluid">
+										
+										<div class="span3">
+											Select Constituency <font class="requiredFont">*</font>
+											<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="userWiseReportConstituencyId" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency"  />
+												
+										</div>
+										<div class="span3">
+											Select User Type 
+											<select class="input-block-level" id = "userReportUserType" onChange="getRespectiveUsers(this.value)"> 
+												<option value="0">Select User Type</option>
+												<option value="1">Data Collector</option>
+												<option value="4">Data Verifier</option>
+											</select>
+										</div>
+											<div class="span1" style="margin:25px -8px 0 8px;width: 15px;">
+											</div>
+										<div class="span3">
+											Select User  
+											<select class="input-block-level" id = "userReportUser" > <option value="0">Select User </option></select>
+										</div>
+										
+									</div>	
+									
+									</div>
+									</div>
+						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getUserWiseReport();">SUBMIT</button></div>
+                         <div id="userWiseReport"></div>
+					<img src='images/Loading-data.gif' class="offset5"  id="userWiseReportImg" style="width:70px;height:60px;display:none;"/>
+					</div>
+				</div>
+				
+				
+			</div>
+		</div>
+	</div>
 	<script>
 		var userIds = new Array();
 		<c:forEach var="user" items="${usersList}">

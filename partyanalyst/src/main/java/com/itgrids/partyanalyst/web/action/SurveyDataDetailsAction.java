@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.ConstituencyDetailReportVO;
+import com.itgrids.partyanalyst.dto.DcDvCollectedDataVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.PanchayatHamletsCountVo;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -74,7 +75,18 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	private Long leaderId;
 	private List<VerificationCompVO> verificationCompVOList;
 	private PanchayatHamletsCountVo panchayatHamletsCountVo;
+	private List<DcDvCollectedDataVO> dcDvCollectedDataVOList;
 	
+	
+	public List<DcDvCollectedDataVO> getDcDvCollectedDataVOList() {
+		return dcDvCollectedDataVOList;
+	}
+
+	public void setDcDvCollectedDataVOList(
+			List<DcDvCollectedDataVO> dcDvCollectedDataVOList) {
+		this.dcDvCollectedDataVOList = dcDvCollectedDataVOList;
+	}
+
 	public List<GenericVO> getBoothsList() {
 		return boothsList;
 	}
@@ -1875,6 +1887,49 @@ public String getPanchayatsStatusDetails()
 			
 			
 			verificationCompVOList = surveyDetailsService.checkForWebMonitorData(jObj.getLong("boothId"));
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in unTagConstituencyOfUser", e);
+		}
+		return Action.SUCCESS;
+	}
+  
+  public String getDcAndDvByConstituencyByUser()
+	{
+		try
+		{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			jObj = new JSONObject(getTask());
+			
+			
+			dcDvCollectedDataVOList = surveyDetailsService.getDcAndDvByConstituencyByUser(jObj.getLong("constituencyId"),jObj.getLong("surveyUserId"),jObj.getLong("userTypeId"));
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in unTagConstituencyOfUser", e);
+		}
+		return Action.SUCCESS;
+	}
+  public String getDcorDvUsersByConstituency()
+	{
+		try
+		{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			jObj = new JSONObject(getTask());
+			
+			
+			usersList = surveyDetailsService.getDcorDvUsersByConstituency(jObj.getLong("constituencyId"),jObj.getLong("userTypeId"));
 		} 
 		catch (Exception e)
 		{
