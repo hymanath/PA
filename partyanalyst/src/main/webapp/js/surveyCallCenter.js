@@ -796,10 +796,10 @@ return;
 	str+='<table class=" table table-bordered m_top20 table-hover table-striped" id="SurveyUsertable">';
 	str+='<thead >';
 	str+='<tr class="alert alert-success">'
-	str+='<th>DCName</th>';
-	str+='<th>Leader Name</th>';
-	str+='<th>Booth</th>';
-	str+='<th> Total Voters</th>';
+	str+='<th rowspan="7">DCName</th>';
+	str+='<th rowspan="7">Leader Name</th>';
+	str+='<th rowspan="7">Booth</th>';
+	str+='<th rowspan="7"> Total Voters</th>';
 	str+='<th colspan="3" style="text-align : center;">Data Collector</th>';
 	str+='<th colspan="7" style="text-align : center;">Web monitoring</th>';
 	
