@@ -771,12 +771,12 @@ str+='<font style="color:red;">No Data avilable</font>';
 return;
 	}
 	
-	str+='<table class=" table table-bordered m_top20 table-hover table-striped">';
+	str+='<table class=" table table-bordered m_top20 table-hover table-striped" id="SurveyUsertable">';
 	str+='<thead >';
 	str+='<tr class="alert alert-success">'
-	str+='<th rowspan="7">DCName</th>';
-	str+='<th rowspan="7">Booth</th>';
-	str+='<th rowspan="7"> Total Voters</th>';
+	str+='<th >DCName</th>';
+	str+='<th >Booth</th>';
+	str+='<th> Total Voters</th>';
 	str+='<th colspan="3" style="text-align : center;">Data Collector</th>';
 	str+='<th colspan="7" style="text-align : center;">Web monitoring</th>';
 	
@@ -790,10 +790,10 @@ return;
 	str+='<th>TOTAL </th>';
 	str+='<th>Mobile MATCHED</th>';
 	str+='<th>Mobile UN MATCHED</th>';
-	str+='<th>Mobile error %</th>';
+	str+='<th>MOBILE ERROR %</th>';
 	str+='<th>CASTE MATCHED</th>';
 	str+='<th>CASTE UN MATCHED</th>';
-	str+='<th>CASTE error %</th>';
+	str+='<th>CASTE ERROR %</th>';
 	str+='</tr>';
 	str+='</thead>';
 	str+='<tbody>';
@@ -822,7 +822,7 @@ return;
 			str+='<td>'+result[i].subList[j].mobileNotMatchedCount+'</td>';
 			var Mobiletotal = result[i].subList[j].mobileMatchedCount + result[i].subList[j].mobileNotMatchedCount;
 			if(Mobiletotal >0)
-			str+='<td>'+(Math.round(result[i].subList[j].mobileNotMatchedCount)/Mobiletotal).toFixed(2)+'%</td>';
+			str+='<td>'+(Math.round(result[i].subList[j].mobileNotMatchedCount * 100)/Mobiletotal).toFixed(2)+'%</td>';
 			else
 			{
 			str+='<td>0.0%</td>';
@@ -832,7 +832,7 @@ return;
 			var Castetotal = result[i].subList[j].casteMatchedCount + result[i].subList[j].casteNotMatchedCount;
 			if(Castetotal >0)
 				
-			str+='<td>'+(Math.round(result[i].subList[j].casteNotMatchedCount)/Castetotal).toFixed(2)+'%</td>';
+			str+='<td>'+(Math.round(result[i].subList[j].casteNotMatchedCount * 100)/Castetotal).toFixed(2)+'%</td>';
 			else
 			{
 			str+='<td>0.0%</td>';
@@ -1853,3 +1853,22 @@ function updateBoothStatusDetails(statusId,boothId,divId)
 	});
 
 }
+
+
+/*var tableToExcel = (function() {
+var uri = 'data:application/vnd.ms-excel;base64,'
+, template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+, base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+, format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+return function(table, name) {
+if (!table.nodeType) table = document.getElementById(table)
+var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+window.location.href = uri + base64(format(template, ctx))
+}
+})()
+
+function generateExcel(id)
+{
+tableToExcel(id, 'Users Report');
+}
+*/
