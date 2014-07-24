@@ -7827,5 +7827,11 @@
 						<param name="root">casteCollectedDates</param>
 				</result>
 	</action>
+	
+		<action name="saveBoothPercentageForCasteSurveyAction" class="surveyDataDetailsAction" method="saveBoothsPercentageForCasteSurvey">
+  			<result type="json" name="success">
+				 <param name="root">status</param>
+			</result>
+  		</action>
 </package>
 </struts>      

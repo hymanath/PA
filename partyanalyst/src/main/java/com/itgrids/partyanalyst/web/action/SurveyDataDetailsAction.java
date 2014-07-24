@@ -1939,4 +1939,24 @@ public String getPanchayatsStatusDetails()
 		}
 		return Action.SUCCESS;
 	}
+  
+  public String saveBoothsPercentageForCasteSurvey(){
+	  try{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null){
+				return Action.INPUT;
+			}
+			jObj = new JSONObject(getTask());
+			Long boothId = jObj.getLong("boothId");
+			String percentage = jObj.getString("percentage");
+			
+			status = surveyDetailsService.savePercentageOfBoothForCasteSurvey(boothId,percentage);
+		} 
+		catch (Exception e)	{
+			LOG.error("Exception raised in saveBoothsPercentageForCasteSurvey", e);
+		}
+	  
+	  return Action.SUCCESS;
+  }
 }
