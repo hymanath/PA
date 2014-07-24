@@ -463,6 +463,7 @@
 				<value>com.itgrids.partyanalyst.model.CommitteeRole</value>
 				<value>com.itgrids.partyanalyst.model.SurveyConstituency</value>
 				<value>com.itgrids.partyanalyst.model.WebMonitorCompletedLocationsDetails</value>
+				<value>com.itgrids.partyanalyst.model.VerifierBoothPercentage</value>
 				
 				
 			</list>
