@@ -616,7 +616,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 				return Action.INPUT;
 			}
 			jObj = new JSONObject(getTask());
-			returnList = surveyDataDetailsService.getSurveyUsersByUserType(jObj.getLong("userTypeId"));
+			returnList = surveyDataDetailsService.getSurveyUsersByUserType(jObj.getLong("userTypeId"),jObj.getLong("constituencyId"));
 		} 
 		catch (Exception e)
 		{
@@ -925,7 +925,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			{
 				userIds.add(Long.valueOf(jarray.get(i).toString()));
 			}
-			resultStatus = surveyDataDetailsService.updateServeyUserRelationDetails(jObj.getLong("userTypeId"),userIds,jObj.getLong("leaderId"));
+			resultStatus = surveyDataDetailsService.updateServeyUserRelationDetails(jObj.getLong("userTypeId"),userIds,jObj.getLong("leaderId"),null);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in updateServeyUserRelationDetails in SurveyDataDetailsAction", e);
