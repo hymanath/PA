@@ -76,4 +76,15 @@ public class SurveyUserBoothAssignDAO extends GenericDaoHibernate<SurveyUserBoot
 		   
 		   return query.list();
 	   }
+	  
+	  public List<Long> getAssignedDetailsForUser(List<Long> surveyUserIds)
+		{
+			Query query = getSession().createQuery("select model.surveyUserBoothAssignId from SurveyUserBoothAssign model where " +
+					" model.surveyUser.surveyUserId in(:surveyUserIds) and model.isDelete = 'N' ");
+			
+			query.setParameterList("surveyUserIds", surveyUserIds);
+			
+			return query.list();
+		}
+	  
 }

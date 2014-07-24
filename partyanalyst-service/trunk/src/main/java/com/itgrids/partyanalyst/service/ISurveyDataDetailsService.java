@@ -27,7 +27,7 @@ public interface ISurveyDataDetailsService
 	public Long getUserDetailsForCheck(String userName,String password);
 	public List<UserBoothDetailsVO> getAssignedBoothsDetailsByConstituencyIdAndUserId(Long constituencyId,Long userId);
 	public List<GenericVO> getUserTypes();
-	public List<GenericVO> getSurveyUsersByUserType(Long userTypeId);
+	public List<GenericVO> getSurveyUsersByUserType(Long userTypeId, Long constituency);
 	public List<SurveyReportVO> getDayWisereportDetailsByConstituencyId(Long constituencyId,String startDate,String endDate,Long userTypeId);
 	public List<GenericVO> getSurveyUsersByLeades(Long leaderId,Long constituencyId);
 	public List<GenericVO> getConstituencyWiseLeaders();
@@ -42,7 +42,7 @@ public interface ISurveyDataDetailsService
 
 	public ResultStatus saveSurveyUserTrackingDetails(UserLocationTrackingVo userLocationTrackingVo);
 	public List<GenericVO> getSurveyUsersForAssignToLeader(Long userTypeId);
-	public ResultStatus updateServeyUserRelationDetails(Long userTypeId,List<Long> surveyUserIds,Long leaderId);
+	public ResultStatus updateServeyUserRelationDetails(Long userTypeId,List<Long> surveyUserIds,Long leaderId,Long dummyLeaderId);
 	public List<GenericVO> releaseLeadersWithUser(Long leaderId,Long userType);
 	//public List<SurveyResponceVO> getSurveyUserBoothsAndVoterDetails(Long surveyUserId);
 	public List<UserBoothDetailsVO> getBoothDetailsByConstituencyId(Long constituencyId);
@@ -103,5 +103,8 @@ public interface ISurveyDataDetailsService
 	public SurveyReportVO getTotalCasteCollectedCount();
 	public List<SurveyReportVO> getCasteCollectedCountsForDates(String date);
 
-
+	public List<GenericVO> getSurveyUsersByLeader(Long leaderId);
+	
+	public ResultStatus releaseTabsAndBoothsBySurveyUserId(final  Long surveyUserId,final  Long dummyLeaderId,final String remark);
+	
 }

@@ -23,7 +23,7 @@ public class SurveyUserRelationDAO extends GenericDaoHibernate<SurveyUserRelatio
 	
 	public List<Object[]> getUsersByConstituencyAndLeader(Long leaderId,Long constituencyId)
 	{
-		Query query = getSession().createQuery("select distinct model.surveyUser.surveyUserId, model.surveyUser.userName,model1.booth.partNo from " +
+		Query query = getSession().createQuery("select distinct model.surveyUser.surveyUserId, model.surveyUser.userName, model1.booth.partNo, model1.booth.boothId from " +
 				"  SurveyUserRelation model ,SurveyUserBoothAssign model1 where model.surveyUser.surveyUserId =  model1.surveyUser.surveyUserId and model.activeStatus = 'Y'" +
 				"  and  model.surveyLeader.surveyUserId = :leaderId and model1.booth.constituency.constituencyId =:constituencyId and model1.isDelete = 'N' " +
 				"order by model1.booth.partNo asc");
@@ -60,9 +60,9 @@ public class SurveyUserRelationDAO extends GenericDaoHibernate<SurveyUserRelatio
 	public int updateUserLeaderRelations(Long userTypeId,List<Long> surveyUserIds,Long leaderId)
 	{
 		Query query = getSession().createQuery("update SurveyUserRelation model set model.activeStatus = 'N' where model.surveyUser.surveyUserId in (:surveyUserIds)  " +
-				" and  model.surveyLeader.surveyUserId = :leaderId and model.surveyUserType.surveyUsertypeId = :userTypeId");
+				" and model.surveyUserType.surveyUsertypeId = :userTypeId");
 		query.setParameter("userTypeId", userTypeId);
-		query.setParameter("leaderId", leaderId);
+		//query.setParameter("leaderId", leaderId);
 		//query.setParameter("constituencyId", constituencyId);
 		query.setParameterList("surveyUserIds", surveyUserIds);
 		int count = query.executeUpdate();
@@ -150,4 +150,25 @@ public class SurveyUserRelationDAO extends GenericDaoHibernate<SurveyUserRelatio
 		return query.list();
 		
 	}
+	
+	public List<Object[]> getusersBysurveyUserIds(List<Long> surveyUserIds,Long surveyUsertypeId)
+	{
+		Query query = getSession().createQuery("select distinct model.surveyUser.surveyUserId, model.surveyUser.userName from SurveyUserRelation model   where " +
+				" model.surveyLeader.surveyUserId in (:surveyUserIds) and model.surveyUser.surveyUserType.surveyUsertypeId = :surveyUsertypeId  and model.surveyUser.activeStatus = 'Y' and model.activeStatus = 'Y'");
+		query.setParameterList("surveyUserIds", surveyUserIds);
+		query.setParameter("surveyUsertypeId", surveyUsertypeId);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getLeadersBysurveyUserIds(List<Long> surveyUserIds,Long surveyUsertypeId)
+	{
+		Query query = getSession().createQuery("select distinct model.surveyLeader.surveyUserId, model.surveyLeader.userName from SurveyUserRelation model   where " +
+				" model.surveyLeader.surveyUserId in (:surveyUserIds) and model.surveyLeader.surveyUserType.surveyUsertypeId = :surveyUsertypeId  and model.activeStatus = 'Y'");
+		query.setParameterList("surveyUserIds", surveyUserIds);
+		query.setParameter("surveyUsertypeId", surveyUsertypeId);
+		
+		return query.list();
+	}
+	
 }
