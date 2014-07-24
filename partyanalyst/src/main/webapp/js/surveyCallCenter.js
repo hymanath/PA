@@ -714,7 +714,7 @@ function getSurveyUserLoctionCount()
 var constituencyID = $("#constituencyId").val();
 var userTypeId = $("#userTypeId").val();
 var date=$("#FielddateId").val();
-
+var toDate = $("#FieldTodateId").val();
 $("#basicCountDiv").html('');
 $("#errorMsgDiv").html('');
 var str ='';
@@ -740,6 +740,7 @@ return;
 	    constituencyId : constituencyID,
 		userTypeId:userTypeId,
 		date:date,
+		toDate:toDate,
 		userIds : userIds,
 		task : "getLocationCount"
 	}
