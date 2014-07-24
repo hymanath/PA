@@ -396,7 +396,7 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 	{
 		
 		StringBuilder str = new StringBuilder();
-		str.append("select distinct model.surveyUser.surveyUserId,model.surveyUser.userName,model.booth.boothId,model.booth.partNo,model.booth.totalVoters from SurveyDetailsInfo model where model.booth.constituency.constituencyId = :constituencyId and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId");
+		str.append("select distinct model.surveyUser.surveyUserId,model.surveyUser.userName,model.booth.boothId,model.booth.partNo,model.booth.totalVoters,model.surveyUser.mobileNo from SurveyDetailsInfo model where model.booth.constituency.constituencyId = :constituencyId and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId");
 		if(date.equals(todate))
 		str.append(" and date(model.date) = :date ");
 		else
@@ -418,7 +418,7 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 		
 		StringBuilder str = new StringBuilder();
 		str.append("select distinct model.surveyUser.surveyUserId,model.surveyUser.userName,model.booth.boothId,model.booth.partNo," +
-				" model.booth.totalVoters from SurveyDetailsInfo model where model.booth.constituency.constituencyId = :constituencyId " +
+				" model.booth.totalVoters,model.surveyUser.mobileNo from SurveyDetailsInfo model where model.booth.constituency.constituencyId = :constituencyId " +
 				" and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId and model.surveyUser.surveyUserId in (:userIds)");
 		if(date.equals(todate))
 			str.append(" and date(model.date) = :date");
@@ -849,6 +849,47 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		return query.list();
 		
 		
+	}
+	public List<Long> getUserIdsForConstituency(Long constituencyId,Long userTypeId,Date date,Date todate)
+	{
+
+		StringBuilder str = new StringBuilder();
+		str.append("select distinct model.surveyUser.surveyUserId from SurveyDetailsInfo model where model.booth.constituency.constituencyId = :constituencyId and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId");
+		if(date.equals(todate))
+		str.append(" and date(model.date) = :date ");
+		else
+		str.append(" and date(model.date) >= :date and date(model.date) <= :todate");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("userTypeId", userTypeId);
+		query.setParameter("date", date);
+		if(!date.equals(todate))
+		query.setParameter("todate", todate);
+		
+		return query.list();
+
+	}
+
+
+	public List<Long> getUserIdsForConstituencyByUser(Long constituencyId,Long userTypeId,Date date,List<Long> userIds,Date todate)
+	{
+
+		StringBuilder str = new StringBuilder();
+		str.append("select distinct model.surveyUser.surveyUserId from SurveyDetailsInfo model where model.booth.constituency.constituencyId = :constituencyId " +
+				" and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId and model.surveyUser.surveyUserId in (:userIds)");
+		if(date.equals(todate))
+			str.append(" and date(model.date) = :date");
+		else
+			str.append(" and date(model.date) >= :date and date(model.date) <= :todate");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("userTypeId", userTypeId);
+		query.setParameter("date", date);
+		query.setParameterList("userIds", userIds);
+		if(!date.equals(todate))
+		query.setParameter("todate", todate);
+		return query.list();
+
 	}
 	
 }
