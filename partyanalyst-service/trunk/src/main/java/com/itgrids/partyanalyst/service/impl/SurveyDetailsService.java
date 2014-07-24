@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.dao.ISurveyUserDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserRelationDAO;
 import com.itgrids.partyanalyst.dao.IUpdationDetailsDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.IVerifierBoothPercentageDAO;
 import com.itgrids.partyanalyst.dao.IWebMonitorCompletedLocationsDetailsDAO;
 import com.itgrids.partyanalyst.dao.IWebMonitoringAssignedUsersDAO;
 import com.itgrids.partyanalyst.dto.DcDvCollectedDataVO;
@@ -41,6 +42,7 @@ import com.itgrids.partyanalyst.dto.SurveyReportVO;
 import com.itgrids.partyanalyst.dto.VerificationCompVO;
 import com.itgrids.partyanalyst.model.SurveyAccessUsers;
 import com.itgrids.partyanalyst.model.UpdationDetails;
+import com.itgrids.partyanalyst.model.VerifierBoothPercentage;
 import com.itgrids.partyanalyst.service.ISurveyDetailsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -93,6 +95,9 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 	
 	@Autowired
 	IPanchayatDAO panchayatDAO;
+	
+	@Autowired
+	IVerifierBoothPercentageDAO verifierBoothPercentageDAO;
 	
 	public IRegionWiseSurveysDAO getRegionWiseSurveysDAO() {
 		return regionWiseSurveysDAO;
@@ -1399,6 +1404,26 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 			LOG.error("Exception raised in getDcorDvUsersByConstituency", e);
 		}
 		return returnList;
+	}
+	
+	public String savePercentageOfBoothForCasteSurvey(Long boothId,String percentage){
+		String status = "Saved Successfully";
+		
+		try{
+			VerifierBoothPercentage vb = new VerifierBoothPercentage();
+			vb.setBoothId(boothId);
+			vb.setPercentage(percentage);
+			
+			VerifierBoothPercentage vbs = verifierBoothPercentageDAO.save(vb);
+			if(vbs==null){
+				status = "Not Saved, Please Try Again";
+			}
+		}catch (Exception e) {
+			status = "Not Saved, Please Try Again";
+			LOG.error("Exception raised in savePercentageOfBoothForCasteSurvey", e);
+		}
+		
+		return status;
 	}
 }
  

@@ -39,4 +39,6 @@ public interface ISurveyDetailsService {
 	 public List<GenericVO> getDcorDvUsersByConstituency(Long userTypeId);
 	
 	 
+	 public String savePercentageOfBoothForCasteSurvey(Long boothId,String percentage);
+	 
 }
