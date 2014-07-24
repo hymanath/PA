@@ -45,6 +45,7 @@ import com.itgrids.partyanalyst.dao.ISurveyUserTabAssignDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserTrackingDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserTypeDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.IVerifierBoothPercentageDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dao.IWebMonitoringAssignedUsersDAO;
@@ -151,6 +152,9 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	private ISurveyCompletedLocationsDetailsDAO surveyCompletedLocationsDetailsDAO;
 	@Autowired
 	private ISurveyDetailsService surveyDetailsService;
+	
+	@Autowired
+	IVerifierBoothPercentageDAO verifierBoothPercentageDAO;
 	
 	/**
 	 * This Service is used for saving the user type details
@@ -1197,10 +1201,13 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				}
 				
 				Integer totalBoothAvaliableData = totalVoterMap.size();
-				System.out.println(totalBoothAvaliableData);
 				if(totalBoothAvaliableData >= totalCollectedData)
 				{
-					Integer eareseDataCount = totalCollectedData/10;
+					Integer percentage = 10;
+					List<String> percfList = verifierBoothPercentageDAO.getBoothWisePercentage(boothId);
+					if(percfList != null && percfList.size() > 0)
+					percentage = Integer.valueOf(percfList.get(0));
+					Integer eareseDataCount = totalCollectedData/percentage;
 					if(SurveyResponceVOList != null && SurveyResponceVOList.size() > 0)
 					{
 						Random randomNum = new Random();
