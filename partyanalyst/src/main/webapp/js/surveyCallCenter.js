@@ -1365,6 +1365,8 @@ function buildDayWiseReportByUserType(result)
 
 		 }else
 		 {
+			 str+='<th>Total Collected Count</th>';
+			 str+='<th>Total Collected Percent</th>';
 			$.each(result[0].subList,function(index,value){
 			  str+='<th>'+value.surveyDate+'</th>';
 			});
@@ -1379,16 +1381,23 @@ function buildDayWiseReportByUserType(result)
 	   str+='<td>'+value.userName+'</td>';
    	   str+='<td>'+value.partNo+'</td>';
 	   str+='<td>'+value.totalVoters+'</td>';
+	   str+='<td>'+value.totalCollectedCount+'</td>';
+	   str+='<td>'+value.totalCollectedPercent+'</td>';
+
+
 
 	   	if($('#fromDate').val()  != $('#toDate').val())
 	      $.each(value.subList,function(index1,value1){
 			   str+='<td>'+value1.count+'</td>';
 		  });
 	    else
+	   {		
 		  $.each(value.subList,function(index1,value1){
+		
 			   str+='<td>'+value1.count+'</td>';
 			   str+='<td>'+value1.percent+'</td>';
 		  });
+	   }
 
     str+='</tr>';
    });
