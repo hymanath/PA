@@ -1176,8 +1176,16 @@ data: {task:JSON.stringify(jsObj)},
 availableDates = result;
 var strtDt = availableDates[0];
 var endtDt = availableDates[availableDates.length-1];
-$('#fromDate').val(strtDt).datepicker({ beforeShowDay: displayDates,maxDate: '0',dateFormat: 'dd-mm-yy',});
-$('#toDate').val(endtDt).datepicker({ beforeShowDay: displayDates ,maxDate: '0' ,dateFormat: 'dd-mm-yy',});
+var dt= strtDt.substring(0,2);
+var month = 0+strtDt.substring(3,4);
+var yr = strtDt.substring(5,9);
+var dt1= endtDt.substring(0,2);
+var month1 = 0+endtDt.substring(3,4);
+var yr1 = endtDt.substring(5,9);
+var date1 = dt+"-"+month+"-"+yr;
+var date2 = dt1+"-"+month1+"-"+yr1;
+$('#fromDate').val(date1).datepicker({ beforeShowDay: displayDates,maxDate: '0',dateFormat: 'dd-mm-yy'});
+$('#toDate').val(date2).datepicker({ beforeShowDay: displayDates ,maxDate: '0' ,dateFormat: 'dd-mm-yy'});
 });
 }
 function displayDates(date)
