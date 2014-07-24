@@ -98,7 +98,7 @@ $('#boothId').multiselect({
 					<!--<li><a class="highlight" id="thirdPartyReportTab" value="3" onclick="showHideReportTabs(this.id);"> Third Party Report </a></li>-->
 					<li><a class="highlight" id="userTrackingReportTab" onclick="showHideReportTabs(this.id);"> User Tracking Report</a></li>
 					<!--<li><a class="highlight" id="comparisonReportTab" onclick="showHideReportTabs(this.id);"> Comparison Report </a></li>-->
-					<li><a class="highlight" id="saveBoothPercentagesTab" onclick="showHideReportTabs(this.id);"> Save Booth Percentages </a></li>
+					<!--<li><a class="highlight" id="saveBoothPercentagesTab" onclick="showHideReportTabs(this.id);"> Save Booth Percentages </a></li>-->
 
 				</ul>
 			</div>
@@ -255,7 +255,7 @@ $('#boothId').multiselect({
 				</div>
 			</div>
 		</div>
-		<div class="row" id="saveBoothsPercentage" style="dispaly:none;">
+		<!--<div class="row" id="saveBoothsPercentage" style="dispaly:none;">
 			<div class="span12">
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top30">
@@ -296,7 +296,7 @@ $('#boothId').multiselect({
 							
 					</div>
 				</div>
-			</div>
+			</div>-->
 		</div>
 	</div>
 	
@@ -1201,76 +1201,7 @@ return [false,"","unAvailable"];
 
 }
 
-function getBoothsDetailsInCallStatusInfoForSavePercnt(constituencyId,divId)
-{
 
-$("#errorDivSB").html("");
-
-	$("#boothImage").show();
-	var jObj =
-	{
-	  constituencyId:constituencyId     
-	};
-
-	 $.ajax({
-			type:'GET',
-			url: 'getBoothsDetailsInCallStatusAction.action',
-			dataType: 'json',
-			data: {task:JSON.stringify(jObj)},
-		  }).done(function(result){				
-				//buildDayWiseReportByUserType(result);		
-				$("#boothImage").hide();
-				$('#'+divId+'').find('option').remove();
-
-				$.each(result,function(index,value){
-					$('#'+divId+'').append('<option value="'+value.id+'">Booth - '+value.name+'</option>');
-				});
-			
-
-		});	
-}
-
-function saveBoothPercentage(){
-	$("#boothImageForSavingPercent").show();
-	var consId = $("#constituencyForSP").val();
-	var boothId = $("#boothIdForSavePercentages").val();
-	var percentage =$("#percenageForBooth").val();
-	
-	$("#errorDivSB").html("");
-	
-	if(consId == 0){
-		$("#errorDivSB").html("<span style='color:red'>Please Select Constituency</span>");
-		$("#boothImageForSavingPercent").hide();
-		return;
-	}
-	if(boothId == 0 || boothId == null){
-		$("#errorDivSB").html("<span style='color:red'>Please Select Booth</span>");
-		$("#boothImageForSavingPercent").hide();
-		return;
-	}
-	if(percentage==""){
-		$("#errorDivSB").html("<span style='color:red'>Please Enter Percentage</span>");
-		$("#boothImageForSavingPercent").hide();
-		return;
-	}
-	
-	var jObj ={
-	  boothId:boothId,
-	  percentage:percentage
-	};
-
-	 $.ajax({
-			type:'GET',
-			url: 'saveBoothPercentageForCasteSurveyAction.action',
-			dataType: 'json',
-			data: {task:JSON.stringify(jObj)}
-		  }).done(function(result){		
-				$("#boothImageForSavingPercent").hide();
-				$("#errorDivSB").html("<span style='color:blue'>"+result+"</span>");
-		});	
-}
-
- 
 </script>
 </body>
 </html>
