@@ -298,16 +298,16 @@
 					<div id="errDivIdForStartTime" style="color:#FF0020;font-size:15px;" ></div>	
 					
 						<div class="row">
-								<div class="span8 offset2">
+								<div class="span12">
 								<div id="errorMsgDiv" class="offset1 errClass"  style="color:#FF0020;font-size:15px;"></div>
 									<div class="row-fluid">
 									
-										<div class="span4 offset1">
+										<div class="span3 offset2">
 											<label>Select Constituency</label>
 										<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="constituencyId" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" onchange="setConstituency(this.value);" />
 								
 										</div>
-										<div class="span3">
+										<div class="span2">
 											<label>Select User Type</label>
 											<select name="constituency" id="userTypeId"  style="width:145px;" onchange="setUserTypeId(this.value)">
 											<option value="0">Select user type</option>
@@ -315,9 +315,13 @@
 											
 											</select>
 										</div>	
-										<div class="span3">
-											<label>Select Date</label>
+										<div class="span2">
+											<label>Select FromDate</label>
 											<input type="text" placeholder="Select Date" class="input-block-level date" id="FielddateId" readonly/>
+										</div>	
+										<div class="span2">
+											<label>Select ToDate</label>
+											<input type="text" placeholder="Select Date" class="input-block-level date" id="FieldTodateId" readonly/>
 										</div>	
 									</div>	
 									

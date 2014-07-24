@@ -1417,7 +1417,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 					
 				}
 			}	
-		  surveyUserDetails =  surveyDataDetailsService.getSurveyDetailsForConstituency(jObj.getLong("constituencyId") ,jObj.getLong("userTypeId"),jObj.getString("date"),userIds);  
+		  surveyUserDetails =  surveyDataDetailsService.getSurveyDetailsForConstituency(jObj.getLong("constituencyId") ,jObj.getLong("userTypeId"),jObj.getString("date"),userIds,jObj.getString("toDate"));  
 	  }
 	  catch (Exception e) {
 		e.printStackTrace();
