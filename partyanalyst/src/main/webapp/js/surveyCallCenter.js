@@ -148,11 +148,14 @@ var jsObj =
 }
 
 var casteList = new Array();
-function getSurveyVotersList(userId,userName,boothId,boothNo,date){
+function getSurveyVotersList(userId,userName,mobileNo,leaderName,leaderMobile,boothId,boothNo,date){
 $('#userInfoDiv1').hide();
 $('#userInfoDiv2').hide();
 $('#userInfoDiv3').hide();
 $('#userInfoDiv4').hide();
+$('#userInfoDiv5').hide();
+$('#userInfoDiv6').hide();
+$('#userInfoDiv7').hide();
 $('#casteInfoDiv').hide();
 var newCasteArr = new  Array();
 var surveyDate = $('#FielddateId').val();
@@ -465,28 +468,47 @@ $('#searchDataImg').show();
 		
 		$('#userInfoDiv1').show();
 		$('#userInfoDiv2').show();
-		$('#userInfoDiv3').show();
-		
+		$('#userInfoDiv5').show();
+		$('#userInfoDiv6').show();
+		$('#userInfoDiv7').show();
 		str2 +=' <span style="font-weight:bold;"> User Name  </span> : '+userName+'</br>';		
 		$('#userInfoDiv1').html(str2);
 		
 		str2 ='';
 		str2 +=' <span style="font-weight:bold;"> Booth No </span> : '+boothNo+' </br>';
 		
-		$('#userInfoDiv2').html(str2);
+		$('#userInfoDiv5').html(str2);
 		
 		str2 ='';
-		str2 +=' <span style="font-weight:bold;"> Total Votes </span> : '+totalVoters+' </br>';
+		str2 +=' <span style="font-weight:bold;"> Total Voters </span> : '+totalVoters+' </br>';
+		$('#userInfoDiv6').html(str2);
+
+		str2 ='';
+		str2 +=' <span style="font-weight:bold;"> Mobile Number </span> : '+mobileNo+' </br>';
+		$('#userInfoDiv2').html(str2);
+		str2 ='';
+		if(leaderName != null)
+		{
+		$('#userInfoDiv3').show();
+		str2 +=' <span style="font-weight:bold;">Leader Name</span> : '+leaderName+' </br>';
 		$('#userInfoDiv3').html(str2);
+		}
+		str2 ='';
+		if(leaderMobile != null)
+		{
+		$('#userInfoDiv4').show();	
+		str2 +=' <span style="font-weight:bold;">Leader Mobile Number</span> : '+leaderMobile+' </br>';
+		$('#userInfoDiv4').html(str2);
+		}
 		
 		var collectdVoters = results[0].subList.length;
 		var remainingCount = totalVoters - collectdVoters;
 		if( remainingCount!= 0)
 		{
-			$('#userInfoDiv4').show();
+			$('#userInfoDiv7').show();
 			str2 ='';
 			str2 +=' <span style="font-weight:bold;"> Not Collected Voters </span> : '+remainingCount+' </br>';
-			$('#userInfoDiv4').html(str2);
+			$('#userInfoDiv7').html(str2);
 		}
 		
 		if(results != null && results[0].genericVOList.length>0)
@@ -774,8 +796,9 @@ return;
 	str+='<table class=" table table-bordered m_top20 table-hover table-striped" id="SurveyUsertable">';
 	str+='<thead >';
 	str+='<tr class="alert alert-success">'
-	str+='<th >DCName</th>';
-	str+='<th >Booth</th>';
+	str+='<th>DCName</th>';
+	str+='<th>Leader Name</th>';
+	str+='<th>Booth</th>';
 	str+='<th> Total Voters</th>';
 	str+='<th colspan="3" style="text-align : center;">Data Collector</th>';
 	str+='<th colspan="7" style="text-align : center;">Web monitoring</th>';
@@ -804,7 +827,16 @@ return;
 		{
 			webBoothId = result[i].subList[j].boothId;
 			str+='<tr>';
-			str+='<td> <a href="javascript:{getDataCollectorInfo('+result[i].userid+',\''+result[i].userName+'\','+result[i].subList[j].boothId+','+result[i].subList[j].partNo+',\''+$('#FielddateId').val()+'\');}">'+result[i].userName+' </a></td>';
+			if(result[i].verifier != null)
+			{
+			str+='<td> <a href="javascript:{getDataCollectorInfo('+result[i].userid+',\''+result[i].userName+'\','+result[i].mobileNo+',\''+result[i].verifier.name+'\','+result[i].verifier.verified+','+result[i].subList[j].boothId+','+result[i].subList[j].partNo+',\''+$('#FielddateId').val()+'\');}">'+result[i].userName+' </a><br>'+result[i].mobileNo+'</td>';
+			str+='<td> '+result[i].verifier.name+'<br>'+result[i].verifier.verified+'</td>';
+			}
+			else
+			{
+			str+='<td> <a href="javascript:{getDataCollectorInfo('+result[i].userid+',\''+result[i].userName+'\','+result[i].mobileNo+',null,null,'+result[i].subList[j].boothId+','+result[i].subList[j].partNo+',\''+$('#FielddateId').val()+'\');}">'+result[i].userName+' </a></td>';
+			str+='<td>-</td>';
+			}
 			str+='<td> '+result[i].subList[j].partNo+'</td>';
 			if(result[i].subList[j].totalVoters == null)
 			{
@@ -1213,12 +1245,12 @@ function onEachFeature(feature, layer)
 }
 
 
-function getDataCollectorInfo(userId,userName,boothId,boothNo,date){
+function getDataCollectorInfo(userId,userName,mobileNo,leaderName,leaderMobile,boothId,boothNo,date){
 	
 	$('#boothWiseTab,#startTimeTab').removeClass('selected');
 	$('#callCenterTab').addClass('selected');
 	showHideTabs('callCenterTab');
-	getSurveyVotersList(userId,userName,boothId,boothNo,date);
+	getSurveyVotersList(userId,userName,mobileNo,leaderName,leaderMobile,boothId,boothNo,date);
 
 }
 

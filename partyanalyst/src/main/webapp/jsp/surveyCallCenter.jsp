@@ -124,8 +124,15 @@
 						 <div class="row-fluid">
 							<div id="userInfoDiv1" class="span4" style="background-color: #e9e9e9; padding: 5px;display:none;margin-top:25px;margin-bottom:10px;" class="errClass"></div>
 							<div id="userInfoDiv2" class="span4" style="background-color: #e9e9e9; padding: 5px;display:none;margin-top:25px;margin-bottom:10px;" class="errClass"></div>
+						</div>
+						<div class="row-fluid">
 							<div id="userInfoDiv3" class="span4" style="background-color: #e9e9e9; padding: 5px;display:none;margin-top:25px;margin-bottom:10px;" class="errClass"></div>
-							<div id="userInfoDiv4" class="span4" style="background-color: #e9e9e9; padding: 5px;display:none;margin-top:25px;margin-bottom:10px;;margin-left:0px;" class="errClass"></div>
+							<div id="userInfoDiv4" class="span4" style="background-color: #e9e9e9; padding: 5px;display:none;margin-top:25px;margin-bottom:10px;" class="errClass"></div>
+						</div>
+						<div class="row-fluid">
+							<div id="userInfoDiv5" class="span4" style="background-color: #e9e9e9; padding: 5px;display:none;margin-top:25px;margin-bottom:10px;" class="errClass"></div>
+							<div id="userInfoDiv6" class="span4" style="background-color: #e9e9e9; padding: 5px;display:none;margin-top:25px;margin-bottom:10px;" class="errClass"></div>
+							<div id="userInfoDiv7" class="span4" style="background-color: #e9e9e9; padding: 5px;display:none;margin-top:25px;margin-bottom:10px;" class="errClass"></div>	
 						</div>
 						
 						<div class="row-fluid">
@@ -330,7 +337,7 @@
 							<div class="row text-center m_top20" style="margin-right:51px;"><button type="button" class="btn btn-success" onClick="getSurveyUserLoctionCount();">SUBMIT</button>
 							<img src='images/Loading-data.gif' class="offset5"  id="reportDataImg" style="width:70px;height:60px;display:none;"/>
 							</div>
-							<div id="basicCountDiv" class="span10 m_top20" style="overflow-x:scroll;display:none;">
+							<div id="basicCountDiv" class="span10 m_top20" style="overflow-x:scroll;width:847px;display:none;">
 
 					</div>
 				</div>
