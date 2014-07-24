@@ -799,7 +799,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		Query query = getSession()
 				.createQuery(
 						"select distinct cast(concat(day(SDI.date),'-',month(SDI.date),'-',year(SDI.date)),string) " +
-						"from SurveyDetailsInfo SDI where SDI.booth.constituency.constituencyId = :constituencyId");
+						"from SurveyDetailsInfo SDI where SDI.booth.constituency.constituencyId = :constituencyId order by date asc");
 		
 		query.setParameter("constituencyId", constituencyId);
 		
