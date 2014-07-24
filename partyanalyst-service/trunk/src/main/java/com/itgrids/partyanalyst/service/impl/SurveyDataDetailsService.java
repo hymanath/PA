@@ -1268,13 +1268,22 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				}
 				
 				Integer totalBoothAvaliableData = totalVoterMap.size();
-				if(totalBoothAvaliableData >= totalCollectedData)
-				{
+				//if(totalBoothAvaliableData >= totalCollectedData)
+				//{
 					Integer percentage = 10;
+					Integer eareseDataCount = null;
 					List<String> percfList = verifierBoothPercentageDAO.getBoothWisePercentage(boothId);
 					if(percfList != null && percfList.size() > 0)
 					percentage = Integer.valueOf(percfList.get(0));
-					Integer eareseDataCount = totalCollectedData/percentage;
+					if(percentage > 0)
+					{
+						 eareseDataCount =(percentage*totalCollectedData)/100;
+					}
+					else
+					{
+						 eareseDataCount =(10/totalCollectedData)*100;
+					}
+					
 					if(SurveyResponceVOList != null && SurveyResponceVOList.size() > 0)
 					{
 						Random randomNum = new Random();
@@ -1290,7 +1299,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 						collectedDataMap.put(surveyResponceVO.getVoterId(), surveyResponceVO);
 					}
 					
-				}
+				//}
 				
 				if(totalVoterMap != null && totalVoterMap.size() > 0)
 				{
