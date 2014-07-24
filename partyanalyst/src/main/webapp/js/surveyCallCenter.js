@@ -714,6 +714,7 @@ function getSurveyUserLoctionCount()
 var constituencyID = $("#constituencyId").val();
 var userTypeId = $("#userTypeId").val();
 var date=$("#FielddateId").val();
+
 $("#basicCountDiv").html('');
 $("#errorMsgDiv").html('');
 var str ='';
@@ -748,6 +749,8 @@ return;
 	dataType: 'json',
 	data: {task:JSON.stringify(jsObj)},
 	}).done(function(result){
+		$("#basicCountDiv").show();
+
 		$("#processingImg").hide();
      buildSurveyUserStatusCount(result);
 	
@@ -770,11 +773,11 @@ return;
 	str+='<table class=" table table-bordered m_top20 table-hover table-striped">';
 	str+='<thead >';
 	str+='<tr class="alert alert-success">'
-	str+='<th rowspan="5">DCName</th>';
-	str+='<th rowspan="5">Booth</th>';
-	str+='<th rowspan="5"> Total Voters</th>';
+	str+='<th rowspan="7">DCName</th>';
+	str+='<th rowspan="7">Booth</th>';
+	str+='<th rowspan="7"> Total Voters</th>';
 	str+='<th colspan="3" style="text-align : center;">Data Collector</th>';
-	str+='<th colspan="5" style="text-align : center;">Web monitoring</th>';
+	str+='<th colspan="7" style="text-align : center;">Web monitoring</th>';
 	
 	str+='</tr>';
 
@@ -786,8 +789,10 @@ return;
 	str+='<th>TOTAL </th>';
 	str+='<th>Mobile MATCHED</th>';
 	str+='<th>Mobile UN MATCHED</th>';
+	str+='<th>Mobile error %</th>';
 	str+='<th>CASTE MATCHED</th>';
 	str+='<th>CASTE UN MATCHED</th>';
+	str+='<th>CASTE error %</th>';
 	str+='</tr>';
 	str+='</thead>';
 	str+='<tbody>';
@@ -814,9 +819,23 @@ return;
 		    str+='<td>'+result[i].subList[j].count+'</td>';
 			str+='<td>'+result[i].subList[j].mobileMatchedCount+'</td>';
 			str+='<td>'+result[i].subList[j].mobileNotMatchedCount+'</td>';
+			var Mobiletotal = result[i].subList[j].mobileMatchedCount + result[i].subList[j].mobileNotMatchedCount;
+			if(Mobiletotal >0)
+			str+='<td>'+(Math.round(result[i].subList[j].mobileNotMatchedCount)/Mobiletotal).toFixed(2)+'%</td>';
+			else
+			{
+			str+='<td>0.0%</td>';
+			}
 			str+='<td>'+result[i].subList[j].casteMatchedCount+'</td>';
 			str+='<td>'+result[i].subList[j].casteNotMatchedCount+'</td>';
-
+			var Castetotal = result[i].subList[j].casteMatchedCount + result[i].subList[j].casteNotMatchedCount;
+			if(Castetotal >0)
+				
+			str+='<td>'+(Math.round(result[i].subList[j].casteNotMatchedCount)/Castetotal).toFixed(2)+'%</td>';
+			else
+			{
+			str+='<td>0.0%</td>';
+			}
 			str+='</tr>';
 		}
 	}

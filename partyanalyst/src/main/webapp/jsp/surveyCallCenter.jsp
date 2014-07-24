@@ -326,7 +326,7 @@
 							<div class="row text-center m_top20" style="margin-right:51px;"><button type="button" class="btn btn-success" onClick="getSurveyUserLoctionCount();">SUBMIT</button>
 							<img src='images/Loading-data.gif' class="offset5"  id="reportDataImg" style="width:70px;height:60px;display:none;"/>
 							</div>
-							<div id="basicCountDiv" class="span10 m_top20">
+							<div id="basicCountDiv" class="span10 m_top20" style="overflow-x:scroll;display:none;">
 
 					</div>
 				</div>
