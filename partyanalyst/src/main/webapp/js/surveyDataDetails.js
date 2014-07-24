@@ -83,10 +83,18 @@ function getSurveyUsersByUserTypeForBooth(divId,id)
 function getSurveyUsersByUserType(divId,value,processImg)
 {
 	$('#'+processImg+'').show();
+	var constituencyId = $('#deActivatConstituencyId').val();
 	
+	if(value == 3 || value == 5){
+		$('#deactivateUserId').prop('disabled','disabled');
+	}
+	else{
+		$('#deactivateUserId').prop('disabled',false);
+	}
 	var jsObj =
 	{
 	userTypeId :value,
+	constituencyId : constituencyId,
 	task : "getSurveyUsersByUserType"
 	}
 	$.ajax({
@@ -104,6 +112,38 @@ function getSurveyUsersByUserType(divId,value,processImg)
 				$('#'+divId+'').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 			}
 
+		}
+		$('#'+processImg+'').hide();
+	});
+}
+
+
+function getAssignedUsers(divId,value,processImg)
+{
+
+	$('#'+processImg+'').show();
+	var leaderId = $('#deactivateLeaderId').val();
+	var constituencyId = $('#deActivatConstituencyId').val();
+	var jsObj =
+	{
+	leaderId :leaderId,
+	constituencyId : constituencyId,
+	task : "getSurveyUsersByleaderId"
+	}
+	$.ajax({
+	type:'GET',
+	url: 'getSurveyUsersByLeadersAction.action',
+	dataType: 'json',
+	data: {task:JSON.stringify(jsObj)},
+	}).done(function(result){
+		
+		$('#'+divId+'').find('option:not(:first)').remove();
+		if(result != null && result.length > 0)
+		{
+			for(var i in result)
+			{
+				$('#'+divId+'').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+			}
 		}
 		$('#'+processImg+'').hide();
 	});
@@ -546,7 +586,7 @@ else if(id == "userCreationTab")
 	$("#assignBoothToLeaderDiv").hide();
 	$("#verificationDiv").hide();
 	$("#leaderNameDiv").hide();
-	getUserTypes('deactiveUserTypeId');
+	//getUserTypes('deactiveUserTypeId');
 	}
 
 	
@@ -807,24 +847,40 @@ function assignInhouseVerfiersToLeader()
 function deactivateUser()
 {
 	$('#processingImgForDeactivation').show();
-	var	deactivateUserId =  $("#deactivateUserId").val();
+	var	deactivateUserId = 0;
 	var	remarksId = $.trim($("#remarksId").val());
 	var userTypeId =  $("#deactiveUserTypeId").val();
-	var optionsCount = $("select#deactivateUserId option").length;
+	var optionsCount = $("#deactivateUserId option").length;
 
-	if(deactivateUserId == 0)
-	{
-		$("#deactivateUserErrorDiv").html("Please Select The User").css("color","red");
-		$('#processingImgForDeactivation').hide();
-		return;
+	if(userTypeId == 1 || userTypeId == 4 ){
+		deactivateUserId =  $("#deactivateUserId").val();
+
+		if(deactivateUserId == 0)
+		{
+			$("#deactivateUserErrorDiv").html("Please Select The User").css("color","red");
+			$('#processingImgForDeactivation').hide();
+			return;
+		}
+		
 	}
+	else{
+		deactivateUserId =  $("#deactivateLeaderId").val();
+
+			if(deactivateUserId == 0)
+			{
+				$("#deactivateUserErrorDiv").html("Please Select The Leader.").css("color","red");
+				$('#processingImgForDeactivation').hide();
+				return;
+			}
+	}
+	
 	if(remarksId.length == 0)
 	{
 		$("#deactivateUserErrorDiv").html("Remarks is Required").css("color","red");
 		$('#processingImgForDeactivation').hide();
 		return;
 	}
-	
+
 	var jsObj = 
 	{
 		userId : deactivateUserId,
@@ -839,35 +895,30 @@ function deactivateUser()
 		dataType: 'json',
 		data: {task:JSON.stringify(jsObj)},
 		}).done(function(result){
-			
+
 			if(result.resultCode == 0) 
-			{
-				$("#deactivedummyLead").css("display","none");	
-				$("#deactivateUserErrorDiv").html('Deactivated Usersuccessfully.').css("color","green");
-				setTimeout(function(){$('#deactivateUserErrorDiv').html('');}, 3000);				
-				$('#deactivateUserId').val(0);
-				$('#remarksId').val('');
-			}
-			else if(result.resultCode == 4)
-			{
-			
-			if(optionsCount == 2)
-				{
-			
-			$("#deactivateUserErrorDiv").html('please create dummy user').css("color","red");
+			{				
+				if(userTypeId ==1 || userTypeId == 4){
+				
+					$('#remarksId').val('');
+					$("#deactivedummyLead").css("display","none");	
+					$("#deactivateUserErrorDiv").html('Deactivated Usersuccessfully.').css("color","green");
+					setTimeout(function(){$('#deactivateUserErrorDiv').html('');}, 3000);				
+					$('#deactivateUserId').val(0);
 				}
-			else
+				else
 				{
-				$("#deactivedummyLead").css("display","block");
-			$("#deactivedummyLead").dialog({
-				width:350,
-				height:200,
-			    modal: true,
-		        resizable: false,
-				title :"Lead change to other"
-			});
-			getDummyLeads('dummyLeadID',3,''+deactivateUserId+'');
+					$("#deactivedummyLead").css("display","block");
+					$("#deactivedummyLead").dialog({
+						width:500,
+						height:200,
+						modal: true,
+						resizable: false,
+						title :"Lead change to other"
+					});
+					getDummyLeads('dummyLeadID',3,''+deactivateUserId+'');
 				}
+				
 			}
 			else
 			{
@@ -875,6 +926,7 @@ function deactivateUser()
 				$("#deactivateUserErrorDiv").html('Error Occured,Try again....').css("color","red");
 			}	
 			$('#processingImgForDeactivation').hide();
+			
 		});
 
 }
@@ -891,7 +943,7 @@ function deactivateLead()
 {
 	$("#errorPop").html('');
 	var str ='';
-	var	deactivateUserId =  $("#deactivateUserId").val();
+	var	deactivateUserId =  $("#deactivateLeaderId").val();
 	var	remarksId = $.trim($("#remarksId").val());
 	var userTypeId =  $("#deactiveUserTypeId").val();
 	var leadId = $("#dummyLeadID").val();
@@ -1884,7 +1936,7 @@ var str ='';
 				}
 			}
 
-	console.log(finalArr);
+	//console.log(finalArr);
 	
 	var jsObj = 
 	{
@@ -1969,9 +2021,11 @@ function getExistedConstituenciesDetails(userId)
 function getDummyLeads(divId,value,removeId)
 {
 	$('#'+divId+'').html('<option value="0">Select User</option>');
+	var constituencyId = $('#deActivatConstituencyId').val();
 	var jsObj =
 	{
 	userTypeId :value,
+	constituencyId : constituencyId,
 	task : "getSurveyUsersByUserType"
 	}
 	$.ajax({
@@ -1983,13 +2037,17 @@ function getDummyLeads(divId,value,removeId)
 	//$('#'+divId+'').append('<option value="0">Select User</option>');
 	if(result != null && result.length > 0)
 	{
-	for(var i in result)
-	{
-		if(result[i].id != removeId)
-	$('#'+divId+'').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+	
+		for(var i in result)
+		{
+			if(result[i].id != removeId)
+				$('#'+divId+'').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+		}
 	}
-
-	}
+	if( result == null ||  result.length ==1 ) {
+		alert(result.length);
+		$("#errorPop").html('<span style="color:#FF0020;">create a new Leader.</span>');
+	}  
 	
 	});
 }
