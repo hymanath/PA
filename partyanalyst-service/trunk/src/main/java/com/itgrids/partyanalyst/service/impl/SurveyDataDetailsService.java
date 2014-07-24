@@ -501,8 +501,20 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		ResultStatus resultStatus = new ResultStatus();
 		try
 		{
+				
+		
+		 if(userTypeId.longValue() == 3L || userTypeId.longValue() == 5L)
+		 
+			{
+			 resultStatus = deactivateUserByID(userId,remarks);
+			}
+		 else if(userTypeId.longValue() == 1L || userTypeId.longValue() == 4L){
+			 releaseTabsAndBoothsBySurveyUserId(userId,null,remarks);
+			 resultStatus = deactivateUserByID(userId,remarks);
+		 }
 			
-			if(userTypeId == 3)
+			/*
+			 if(userTypeId == 3)
 			{
 				List<Object[]> users = surveyUserRelationDAO.getUsersForAssignedUser(userId,userTypeId);
 				if(users != null && users.size() > 0)
@@ -514,6 +526,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				
 			}
 			resultStatus = deactivateUserByID(userId,remarks);
+			*/
 			
 			
 		}
@@ -540,26 +553,27 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					ResultStatus rs = new ResultStatus();
 
 					try {
-	SurveyUser surveyUser = surveyUserDAO.get(userId);
-	if(surveyUser == null)
-	{
-		rs.setResultCode(3);
-		rs.setMessage("No Exist");
-		return rs;
-	}
-	surveyUser.setActiveStatus("N");
-	surveyUser.setRemarks(remarks);
-	SurveyUser result = surveyUserDAO.save(surveyUser);
-	if(result != null)
-	{
-		rs.setResultCode(0);
-		rs.setMessage("Success");
-	}
-	else
-	{
-		rs.setResultCode(1);
-		rs.setMessage("Failure");
-	}
+							SurveyUser surveyUser = surveyUserDAO.get(userId);
+							if(surveyUser == null)
+							{
+								rs.setResultCode(3);
+								rs.setMessage("No Exist");
+								return rs;
+							}
+							/*surveyUser.setActiveStatus("N");
+							surveyUser.setActiveStatus("Y"); // if we delete it first it will not works further . don't change as N
+							surveyUser.setRemarks(remarks);
+							SurveyUser result = surveyUserDAO.save(surveyUser); */
+							if(surveyUser != null)
+							{
+								rs.setResultCode(0);
+								rs.setMessage("Success");
+							}
+							else
+							{
+								rs.setResultCode(1);
+								rs.setMessage("Failure");
+							}
 					} catch (Exception ex) {
 
 						status.setRollbackOnly();
@@ -583,6 +597,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	public ResultStatus deactiveSurveyLeader(final Long userId,final String remarks,final Long userTypeId,final Long dummyLeadId)
 	{
 		
+		ResultStatus status = releaseTabsAndBoothsBySurveyUserId(userId,dummyLeadId,remarks); 
+		/*
 		final DateUtilService date = new DateUtilService();
 		
 		final List<Long> surveyUserIds = new ArrayList<Long>();
@@ -602,8 +618,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				}
 			}
 			
-			/* dummy leader save */
-			ResultStatus resultStatus = (ResultStatus) transactionTemplate
+			///* dummy leader save */
+		/*	ResultStatus resultStatus = (ResultStatus) transactionTemplate
 					.execute(new TransactionCallback() {
 						public Object doInTransaction(TransactionStatus status) {
 
@@ -619,13 +635,13 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			surveyUser.setInsertedTime(date.getCurrentDateAndTime());
 			surveyUser.setUpdatedTime(date.getCurrentDateAndTime());*/
 								
-			SurveyUser surveyUser = surveyUserDAO.get(dummyLeadId);
+		/*	SurveyUser surveyUser = surveyUserDAO.get(dummyLeadId);
 			
 			
 			if(surveyUserIds != null && surveyUserIds.size() > 0)
-			{
+			{*/
 				/* tabNo assign to dummy leader*/ 
-				List<Object[]> tabNos = surveyUserTabAssignDAO.getTabNos(surveyUserIds);
+		/*		List<Object[]> tabNos = surveyUserTabAssignDAO.getTabNos(surveyUserIds);
 				List<Long> surveyUserTabIDs = new ArrayList<Long>();
 				if(tabNos != null && tabNos.size() > 0)
 				{
@@ -678,10 +694,10 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 						
 					}
 					
-					
+				*/
 					/* survey user constituency */
 					
-					List<Object[]> list3 = surveyUserConstituencyDAO.getSurveyUserConstituency(userId);
+		/*			List<Object[]> list3 = surveyUserConstituencyDAO.getSurveyUserConstituency(userId);
 					if(list3 != null && list3.size() > 0)
 					{
 						List<Long> surveyUserConstituencyIds = new ArrayList<Long>();
@@ -719,9 +735,10 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 							return rs;
 						}
 					});
-			return resultStatus;
+				*/
+			return status;
 			
-		
+	
 		
 	}
 	
@@ -927,18 +944,67 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	 * @param userTypeId
 	 * @return returnList
 	 */
-	public List<GenericVO> getSurveyUsersByUserType(Long userTypeId)
+	public List<GenericVO> getSurveyUsersByUserType(Long userTypeId,Long constituencyId)
 	{
 		List<GenericVO> returnList = null;
 		try
 		{
-			List<Object[]> result = surveyUserDAO.getSurveyUsersByUserType(userTypeId);
+			List<Object[]> result = null ; 
+			
+			List<Object[]> leadersList = surveyUserConstituencyDAO.getSurveyConstituencyLeadersList(constituencyId);
+			List<Long> leaderIds = new ArrayList<Long>(0);
+			if(leadersList != null && leadersList.size()>0){
+				for (Object[] leader : leadersList) {
+					leaderIds.add(leader[0] != null ? (Long)leader[0]:0L);
+				}
+			}
+			
+			// 1 for data collectors & 3 for data leads , 4 for data verifiers & 5 for verifier leads
+			if(userTypeId.longValue() == 1L)
+			{ 
+				userTypeId = 3L;
+			}
+			else if (userTypeId.longValue() == 4L) {
+				userTypeId = 5L;
+			}			
+			
+			if( userTypeId.longValue() == 3L || userTypeId.longValue() == 5L){
+				
+				if(leaderIds != null && leaderIds.size()>0){
+					result = surveyUserRelationDAO.getLeadersBysurveyUserIds(leaderIds,userTypeId);
+				}
+			}
+			
 			if(result != null && result.size() > 0)
 			{
 				returnList = new ArrayList<GenericVO>();
 				fillGenericVO(result,returnList);
 			}
 		}
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getSurveyUsersByUserType service in SurveyDataDetailsService", e);
+		}
+		 return returnList;
+	}
+	
+	/**
+	 * @author Srishailam Pittala
+	 * @param leaderId
+	 * @return List<GenericVO>
+	 */
+	public List<GenericVO> getSurveyUsersByLeader(Long leaderId)
+	{
+		List<GenericVO> returnList = null;
+		try
+		{
+			List<Object[]> result = surveyUserRelationDAO.getUserForAssignedUsers(leaderId);
+			if(result != null && result.size() > 0)
+			{
+				returnList = new ArrayList<GenericVO>();
+				fillGenericVO(result,returnList);
+			}
+		} 
 		catch (Exception e)
 		{
 			LOG.error("Exception raised in getSurveyUsersByUserType service in SurveyDataDetailsService", e);
@@ -1025,6 +1091,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					VO.setId(parms[0] != null ? (Long)parms[0] : 0l);
 					VO.setName(parms[1] != null ? parms[1].toString() : "");
 					VO.setRank(parms[2] != null ? (Long.valueOf(parms[2].toString())) : 0l);
+					VO.setDesc(parms[3] != null ? parms[3].toString():"");
 					list.add(VO);
 				}
 				List<Long> surveyUserIds = new ArrayList<Long>(resultMap.keySet());
@@ -1921,51 +1988,81 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	 * @param constituencyId
 	 * @return resultStatus
 	 */
-	public ResultStatus updateServeyUserRelationDetails(Long userTypeId,List<Long> surveyUserIds,Long leaderId)
+	public ResultStatus updateServeyUserRelationDetails(final Long userTypeId,final List<Long> surveyUserIds,final Long leaderId, final Long dummyLeaderId)
 	{
 		LOG.info("Entered into saveServeyUserRelationDetails service in SurveyDataDetailsService");
 		ResultStatus resultStatus = new ResultStatus();
 		try 
 		{
-			if(surveyUserIds != null && surveyUserIds.size() > 0)
-			{
-				int count = surveyUserRelationDAO.updateUserLeaderRelations(userTypeId,surveyUserIds, leaderId);
-				
-				
-				List<Object[]> assignTabsIdsList = surveyUserTabAssignDAO.getSurveyTabsBySurveyUserIdsList(surveyUserIds);
-				List<Long> assignTabsIds = new ArrayList<Long>();
-				
-				if(assignTabsIdsList != null && assignTabsIdsList.size()>0){
-					for (Object[] assgnTab : assignTabsIdsList) {
-						assignTabsIds.add((Long) assgnTab[2]);
-					}
-				}
-
-				if(assignTabsIds != null && assignTabsIds.size()>0){
-					//assignTabsRemovedCount = surveyUserTabAssignDAO.updateActiveStatus(assignTabsIds);
-					for (Long assignTabsId : assignTabsIds) {
-						SurveyUserTabAssign surveyUserTabAssign = surveyUserTabAssignDAO.get(assignTabsId);
-						surveyUserTabAssign.setActiveStatus("N");
-						surveyUserTabAssign.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
-						
-						surveyUserTabAssignDAO.save(surveyUserTabAssign);
-					}
-					
-				
-				}
-				
-				if(count > 0)
-				{
-					resultStatus.setResultCode(0);
-					resultStatus.setMessage("Success");
-				}
-				else
-				{
-					resultStatus.setResultCode(1);
-					resultStatus.setMessage("Failure");
-				}
-			}
+			//int count = surveyUserRelationDAO.updateUserLeaderRelations(userTypeId,surveyUserIds, leaderId);
 			
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+
+				protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+					if(surveyUserIds != null && surveyUserIds.size() > 0)
+					{
+	
+						List<Object[]> surveyUserRelationDtls = surveyUserRelationDAO.getConstituencyForSurveyUser(surveyUserIds);
+
+						if(surveyUserRelationDtls != null && surveyUserRelationDtls.size()>0){
+							for (Object[] surveyUserRelation : surveyUserRelationDtls) {
+
+								SurveyUserRelation surveyUserRelationModel = surveyUserRelationDAO.get(surveyUserRelation[2] != null ? (Long) surveyUserRelation[2]:0L);
+								surveyUserRelationModel.setActiveStatus("N");
+								surveyUserRelationModel.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+								surveyUserRelationModel = surveyUserRelationDAO.save(surveyUserRelationModel);
+								
+								if(dummyLeaderId != null){ // this loop works for if leader deactivating
+									
+									SurveyUserRelation userRelation = new SurveyUserRelation();
+									userRelation.setSurveyUserType(surveyUserRelationModel.getSurveyUserType());
+									userRelation.setSurveyLeader(surveyUserDAO.get(dummyLeaderId));
+									userRelation.setSurveyUser(surveyUserRelationModel.getSurveyUser());
+									userRelation.setConstituency(surveyUserRelationModel.getConstituency());
+									userRelation.setActiveStatus("Y");
+									userRelation.setInsertedTime(surveyUserRelationModel.getInsertedTime());
+									userRelation.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+									
+									surveyUserRelationDAO.save(userRelation);
+								}
+								
+							}
+						}
+						
+						List<Object[]> assignTabsIdsList = surveyUserTabAssignDAO.getSurveyTabsBySurveyUserIdsList(surveyUserIds);
+						
+						if(assignTabsIdsList != null && assignTabsIdsList.size()>0){
+							for (Object[] assgnTab : assignTabsIdsList) {
+								
+								SurveyUserTabAssign surveyUserTabAssign = surveyUserTabAssignDAO.get(assgnTab[2] != null ?(Long) assgnTab[2]:0L );
+								surveyUserTabAssign.setActiveStatus("N");
+								surveyUserTabAssign.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+								
+								surveyUserTabAssign = surveyUserTabAssignDAO.save(surveyUserTabAssign); 
+								
+								
+								if(dummyLeaderId != null){ // this loop works for if leader deactivating
+									
+									SurveyUserTabAssign userTabAssign = new SurveyUserTabAssign();
+									userTabAssign.setSurveyUser(surveyUserTabAssign.getSurveyUser());
+									userTabAssign.setTabNo(surveyUserTabAssign.getTabNo());
+									userTabAssign.setActiveStatus("Y");
+									userTabAssign.setDate(surveyUserTabAssign.getDate());
+									userTabAssign.setInsertedTime(surveyUserTabAssign.getInsertedTime());
+									userTabAssign.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+									
+									surveyUserTabAssignDAO.save(userTabAssign); 
+									
+								}
+							}
+						}
+					
+					}
+				}
+			});
+
+			resultStatus.setResultCode(0);
+			resultStatus.setMessage("Success");
 		}
 		catch (Exception e)
 		{
@@ -4006,5 +4103,127 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		  }
 		  return result;
 	  }
+	  /**
+	   * @author Srishailam Pittala
+	   * @Date : 23rd July, 2014
+	   * 
+	   * @param constitunecyId
+	   * @param surveyUserId (may be Data Collector Id / Data Lead Id ) 
+	   * @return result status 
+	   */
+	  public ResultStatus releaseTabsAndBoothsBySurveyUserId(final  Long surveyUserId,final  Long dummyLeaderId,final String remark){
+		 ResultStatus resultstatus = new ResultStatus();
+		  try {
+			  
+			 	  SurveyUser  surveyUser= surveyUserDAO.get(surveyUserId);
+				  
+				  final Long userTypeId = surveyUser.getSurveyUserType().getSurveyUsertypeId();
+				 
+				  Object status = transactionTemplate.execute(new TransactionCallback() 
+				  { 
+					  
+					public Object doInTransaction(TransactionStatus arg0) 
+					{
+						List<Long> surveyUserBoothAssignIds = new ArrayList<Long>(0);
+						List<Long> assignedUsersList = new ArrayList<Long>(0);
+						ResultStatus status = new ResultStatus();
+						
+						 if(userTypeId.longValue() == 1L || userTypeId.longValue() == 4L )
+						  {
+								  	assignedUsersList.add(surveyUserId);
+								  	status =  updateServeyUserRelationDetails(userTypeId,assignedUsersList, surveyUserId,dummyLeaderId);  // releasing users and tabs for single assigned user 
+							  
+							  		surveyUserBoothAssignIds = surveyUserBoothAssignDAO.getAssignedDetailsForUser(assignedUsersList);
+							  
+						  }
+						  else if(userTypeId.longValue() == 3L || userTypeId.longValue() == 5L )
+						  {
+								 assignedUsersList =  surveyUserRelationDAO.getAssignedUsersForLeader(surveyUserId);
+								 
+								 if(assignedUsersList != null && assignedUsersList.size()>0){
+									
+									 status =  updateServeyUserRelationDetails(userTypeId,assignedUsersList, surveyUserId,dummyLeaderId);  // releasing users and tabs for assigned users from leader
+									 
+									  surveyUserBoothAssignIds = surveyUserBoothAssignDAO.getAssignedDetailsForUser(assignedUsersList);
+								}
+						  }						  
+						 
+						  if(surveyUserBoothAssignIds != null && surveyUserBoothAssignIds.size()>0)
+						  {
+							  updateBoothAssignForDummyUser(dummyLeaderId,surveyUserBoothAssignIds);
+						  }
+						  
+						 	 SurveyUser surveyUser = surveyUserDAO.get(surveyUserId);	
+						 	 
+							  if(surveyUser != null)
+							  {
+								  surveyUser.setActiveStatus("N");
+								  surveyUser.setRemarks(remark);
+								  surveyUserDAO.save(surveyUser);
+							  }
+							  
+						return status;
+					}
+				});
+				 
+				  resultstatus =(ResultStatus) status;
+			
+		} catch (Exception e) {
+			  LOG.error("Exception raised in releaseTabsAndBoothsBySurveyUserId() in  SurveyDataDetailsService class",e);
+			  resultstatus.setResultCode(1);
+			  resultstatus.setMessage("Error occured while updating the Deactivating the details...");
+			  e.printStackTrace();
+		}
+		  
+		  return resultstatus;
+	  }
+	  
+	  private void updateBoothAssignForDummyUser(final Long dummyLeaderId,final List<Long> surveyUserBoothAssignIds)
+	  {		  
+			 LOG.error("Entered into updateBoothAssignForDummyUser() in  SurveyDataDetailsService class");
+			 
+		  try {
+			  
+			  transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+				
+					 if(surveyUserBoothAssignIds != null && surveyUserBoothAssignIds.size()>0){
+						  
+						  for (Long surveyUserBoothAssignId : surveyUserBoothAssignIds) {
+							  
+							  SurveyUserBoothAssign surveyUserBoothAssign = surveyUserBoothAssignDAO.get(surveyUserBoothAssignId);
+							  
+							  surveyUserBoothAssign.setIsDelete("Y");
+							  surveyUserBoothAssign.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							  surveyUserBoothAssign = surveyUserBoothAssignDAO.save(surveyUserBoothAssign);
+							  
+							  if(dummyLeaderId != null){ // this loop works for if leader deactivating
+									
+								  SurveyUserBoothAssign userBoothAssign = new SurveyUserBoothAssign();
+								  
+								  userBoothAssign.setSurveyUserId(dummyLeaderId);
+								  userBoothAssign.setConstituencyId(surveyUserBoothAssign.getConstituencyId());
+								  userBoothAssign.setPanchayat(surveyUserBoothAssign.getPanchayat());
+								  userBoothAssign.setBoothId(surveyUserBoothAssign.getBoothId());
+								  userBoothAssign.setInsertedTime(surveyUserBoothAssign.getInsertedTime());
+								  userBoothAssign.setIsDelete("N");
+								  userBoothAssign.setRemainingDataBooth(surveyUserBoothAssign.getRemainingDataBooth());							 
+								  
+								  surveyUserBoothAssignDAO.save(userBoothAssign);
+								  
+								}
+						  }
+					  }
+				
+				}
+			});
+			 
+
+		} catch (Exception e) {
+			 LOG.error("Exception raised in updateBoothAssignForDummyUser() in  SurveyDataDetailsService class",e);
+		}
+		  
 	
+	  }
+	  
 }
