@@ -336,6 +336,8 @@
 							</div>
 							<div class="row text-center m_top20" style="margin-right:51px;"><button type="button" class="btn btn-success" onClick="getSurveyUserLoctionCount();">SUBMIT</button>
 							<img src='images/Loading-data.gif' class="offset5"  id="reportDataImg" style="width:70px;height:60px;display:none;"/>
+							<button type="button" class="btn btn-success" id="excelTableID" onClick="generateExcel('SurveyUsertable1');" style="display:none;">Export To Excel</button>
+							<img src='images/Loading-data.gif' class="offset5"  id="reportDataImg" style="width:70px;height:60px;display:none;"/>
 							</div>
 							<div id="basicCountDiv" class="span10 m_top20" style="overflow-x:scroll;width:847px;display:none;">
 
