@@ -14,7 +14,7 @@ function showHideTabs(id)
 		$('#inActiveUsersDetails').hide();
 		$('#completeBooths').show();
 		$('#userReport').hide();
-		
+		$('#saveBoothsPercentage').hide();
 	}
 	else if(id == "callCenterTab")
 	{
@@ -27,6 +27,7 @@ function showHideTabs(id)
         $('#inActiveUsersDetails').hide(); 
 		$('#completeBooths').hide();
 		$('#userReport').hide();
+		$('#saveBoothsPercentage').hide();
 		
 	}
 	else if (id == "startTimeTab")
@@ -40,6 +41,7 @@ function showHideTabs(id)
 		$('#inActiveUsersDetails').show();
 		$('#completeBooths').hide();
 		$('#userReport').hide();
+		$('#saveBoothsPercentage').hide();
 	}
 	else if(id == "boothWiseTab")
 	{
@@ -52,6 +54,7 @@ function showHideTabs(id)
 		$('#inActiveUsersDetails').hide();
 		$('#completeBooths').hide();
 		$('#userReport').hide();
+		$('#saveBoothsPercentage').hide();
 
 	}
 	else if(id == "surveyStatusRprtTab"){
@@ -64,6 +67,7 @@ function showHideTabs(id)
         $('#inActiveUsersDetails').hide();	
 		$('#completeBooths').hide();
 		$('#userReport').hide();
+		$('#saveBoothsPercentage').hide();
 	}
 	else if (id == "surveyUserWise")
 	{
@@ -75,6 +79,19 @@ function showHideTabs(id)
         $('#inActiveUsersDetails').hide();	
 		$('#completeBooths').hide();
 		$('#userReport').show();
+		$('#saveBoothsPercentage').hide();
+	}
+	else if (id == "saveBoothPercentagesTab")
+	{
+		$('#statusReportDiv').hide();
+		$('#callCenter').hide();
+		$('#startTime').hide();
+		$('#boothWise').hide();
+		$('#dataCollector').hide();
+        $('#inActiveUsersDetails').hide();	
+		$('#completeBooths').hide();
+		$('#userReport').hide();
+		$('#saveBoothsPercentage').show();
 	}
 	else
 	{
@@ -87,6 +104,7 @@ function showHideTabs(id)
 		$('#inActiveUsersDetails').hide();
 		$('#completeBooths').hide();
 		$('#userReport').hide();
+		$('#saveBoothsPercentage').hide();
 
 	}
 }
@@ -1989,3 +2007,72 @@ function generateExcel(id)
 {
 tableToExcel(id, 'Users Report');
 }
+
+function getBoothsDetailsInCallStatusInfoForSavePercnt(constituencyId,divId)
+{
+
+$("#errorDivSB").html("");
+
+	$("#boothImage").show();
+	var jObj =
+	{
+	  constituencyId:constituencyId     
+	};
+
+	 $.ajax({
+			type:'GET',
+			url: 'getBoothsDetailsInCallStatusAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){				
+				//buildDayWiseReportByUserType(result);		
+				$("#boothImage").hide();
+				$('#'+divId+'').find('option').remove();
+
+				$.each(result,function(index,value){
+					$('#'+divId+'').append('<option value="'+value.id+'">Booth - '+value.name+'</option>');
+				});
+			
+
+		});	
+}
+function saveBoothPercentage(){
+	$("#boothImageForSavingPercent").show();
+	var consId = $("#constituencyForSP").val();
+	var boothId = $("#boothIdForSavePercentages").val();
+	var percentage =$("#percenageForBooth").val();
+	
+	$("#errorDivSB").html("");
+	
+	if(consId == 0){
+		$("#errorDivSB").html("<span style='color:red'>Please Select Constituency</span>");
+		$("#boothImageForSavingPercent").hide();
+		return;
+	}
+	if(boothId == 0 || boothId == null){
+		$("#errorDivSB").html("<span style='color:red'>Please Select Booth</span>");
+		$("#boothImageForSavingPercent").hide();
+		return;
+	}
+	if(percentage==""){
+		$("#errorDivSB").html("<span style='color:red'>Please Enter Percentage</span>");
+		$("#boothImageForSavingPercent").hide();
+		return;
+	}
+	
+	var jObj ={
+	  boothId:boothId,
+	  percentage:percentage
+	};
+
+	 $.ajax({
+			type:'GET',
+			url: 'saveBoothPercentageForCasteSurveyAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)}
+		  }).done(function(result){		
+				$("#boothImageForSavingPercent").hide();
+				$("#errorDivSB").html("<span style='color:blue'>"+result+"</span>");
+		});	
+}
+
