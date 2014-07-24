@@ -2052,15 +2052,19 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 								
 								if(dummyLeaderId != null){ // this loop works for if leader deactivating
 									
-									SurveyUserTabAssign userTabAssign = new SurveyUserTabAssign();
-									userTabAssign.setSurveyUser(surveyUserTabAssign.getSurveyUser());
-									userTabAssign.setTabNo(surveyUserTabAssign.getTabNo());
-									userTabAssign.setActiveStatus("Y");
-									userTabAssign.setDate(surveyUserTabAssign.getDate());
-									userTabAssign.setInsertedTime(surveyUserTabAssign.getInsertedTime());
-									userTabAssign.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-									
-									surveyUserTabAssignDAO.save(userTabAssign); 
+									for (Long surveyUserId : surveyUserIds) {
+										
+										SurveyUserTabAssign userTabAssign = new SurveyUserTabAssign();
+										userTabAssign.setSurveyUser(surveyUserDAO.get(surveyUserId));
+										userTabAssign.setTabNo(surveyUserTabAssign.getTabNo());
+										userTabAssign.setActiveStatus("Y");
+										userTabAssign.setDate(surveyUserTabAssign.getDate());
+										userTabAssign.setInsertedTime(surveyUserTabAssign.getInsertedTime());
+										userTabAssign.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+										
+										surveyUserTabAssignDAO.save(userTabAssign); 
+										
+									}
 									
 								}
 							}
@@ -4159,7 +4163,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 						 
 						  if(surveyUserBoothAssignIds != null && surveyUserBoothAssignIds.size()>0)
 						  {
-							  updateBoothAssignForDummyUser(dummyLeaderId,surveyUserBoothAssignIds);
+							  updateBoothAssignForDummyUser(dummyLeaderId,surveyUserBoothAssignIds,assignedUsersList);
 						  }
 						  
 						 	 SurveyUser surveyUser = surveyUserDAO.get(surveyUserId);	
@@ -4187,7 +4191,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		  return resultstatus;
 	  }
 	  
-	  private void updateBoothAssignForDummyUser(final Long dummyLeaderId,final List<Long> surveyUserBoothAssignIds)
+	  private void updateBoothAssignForDummyUser(final Long dummyLeaderId,final List<Long> surveyUserBoothAssignIds,final List<Long> assignedUsersList)
 	  {		  
 			 LOG.error("Entered into updateBoothAssignForDummyUser() in  SurveyDataDetailsService class");
 			 
@@ -4208,17 +4212,23 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 							  
 							  if(dummyLeaderId != null){ // this loop works for if leader deactivating
 									
-								  SurveyUserBoothAssign userBoothAssign = new SurveyUserBoothAssign();
+								  for (Long surveyUserId : assignedUsersList) 
+								  {
+									
+									  SurveyUserBoothAssign userBoothAssign = new SurveyUserBoothAssign();
+									  
+									  userBoothAssign.setSurveyUserId(surveyUserId);
+									  userBoothAssign.setConstituencyId(surveyUserBoothAssign.getConstituencyId());
+									  userBoothAssign.setPanchayat(surveyUserBoothAssign.getPanchayat());
+									  userBoothAssign.setBoothId(surveyUserBoothAssign.getBoothId());
+									  userBoothAssign.setInsertedTime(surveyUserBoothAssign.getInsertedTime());
+									  userBoothAssign.setIsDelete("N");
+									  userBoothAssign.setRemainingDataBooth(surveyUserBoothAssign.getRemainingDataBooth());							 
+									  
+									  surveyUserBoothAssignDAO.save(userBoothAssign);
+									  
+								  }
 								  
-								  userBoothAssign.setSurveyUserId(dummyLeaderId);
-								  userBoothAssign.setConstituencyId(surveyUserBoothAssign.getConstituencyId());
-								  userBoothAssign.setPanchayat(surveyUserBoothAssign.getPanchayat());
-								  userBoothAssign.setBoothId(surveyUserBoothAssign.getBoothId());
-								  userBoothAssign.setInsertedTime(surveyUserBoothAssign.getInsertedTime());
-								  userBoothAssign.setIsDelete("N");
-								  userBoothAssign.setRemainingDataBooth(surveyUserBoothAssign.getRemainingDataBooth());							 
-								  
-								  surveyUserBoothAssignDAO.save(userBoothAssign);
 								  
 								}
 						  }
