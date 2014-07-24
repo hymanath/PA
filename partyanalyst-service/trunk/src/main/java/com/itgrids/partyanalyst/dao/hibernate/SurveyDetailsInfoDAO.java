@@ -358,11 +358,11 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 		Query query = getSession().createQuery("select SDI, BPV.serialNo   " +
 				" from SurveyDetailsInfo SDI ,BoothPublicationVoter BPV where SDI.booth.boothId = BPV.booth.boothId and SDI.voter.voterId = BPV.voter.voterId " +
 				" and SDI.booth.boothId  = :boothId and SDI.surveyUser.surveyUserId in (:assignUsers)   " +
-				" and date(SDI.date) = :searchDate "+
+				//" and date(SDI.date) = :searchDate "+
 				//" and SDI.voter.voterId not in ( select SCS.voter.voterId from SurveyCallStatus SCS where  SDI.surveyUser.surveyUserId =  SCS.surveyUser.surveyUserId )" +
 				"  order by SDI.voter.voterId ");
 		query.setParameter("boothId", boothId);		
-		query.setParameter("searchDate", searchDate);
+		//query.setParameter("searchDate", searchDate);
 		query.setParameterList("assignUsers", assignUsers);	
 		return query.list();
 	}
@@ -767,4 +767,48 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		
 	}
 
+	public List<Object[]> getUsersCompleteReportForSameDate(Date startDate,Date endDate)
+ {
+		Query query = getSession()
+				.createQuery(
+						"select SDI.voter.voterId, SDI.surveyUser.surveyUserId, SDI.mobileNumber , SDI.caste ,SDI.hamlet,SDI.surveyUser.userName from SurveyDetailsInfo SDI where "
+								+ "date(SDI.date) >= date(:startDate) and date(SDI.date) <= date(:endDate)");
+
+		query.setParameter("startDate", startDate);
+		query.setParameter("endDate", endDate);
+
+		return query.list();
+
+	}
+	
+	public List<Object[]> getStartAndEndTimesByUserIds(Date startdate,Date endDate )
+	{
+		
+		Query query = getSession()
+				.createQuery(
+						"select min(date), max(date),SDI.surveyUser.surveyUserId from SurveyDetailsInfo SDI  where date(SDI.date) >= date(:startdate) " +
+						"and date(SDI.date) <= date(:endDate) group by survey_user_id");
+		
+		query.setParameter("startdate", startdate);
+		query.setParameter("endDate", endDate);
+		
+		return query.list();
+		
+	}
+	
+	public List<Object[]> getUsersReportDetailsForBetweenDates(Date startDate,Date endDate)
+	{
+		Query query = getSession().createQuery("select count(SDI.surveyDetailsInfoId),SDI.surveyUser.surveyUserId,SDI.surveyUser.userName,date(SDI.date) " +
+				" from SurveyDetailsInfo SDI " +
+				"where " +
+				"date(SDI.date) >= date(:startdate)  and date(SDI.date) <= date(:endDate) group by SDI.surveyUser.surveyUserId ,date(SDI.date) ");
+		
+		query.setParameter("startdate", startDate);
+		query.setParameter("endDate", endDate);
+		
+		return query.list();
+		
+		
+	}
+	
 }
