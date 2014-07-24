@@ -111,6 +111,7 @@
 					<li id="webMontrId" style="display:none;"><a class="highlight" id="callCenterTab" onclick="showHideTabs(this.id);"> Web Monitoring </a></li>
 					<li><a class="highlight" id="dataCollectorWise" onclick="showHideTabs(this.id);"> Verfication report </a></li>
 					<li><a class="highlight" id="surveyUserWise" onclick="showHideTabs(this.id);"> User Wise report </a></li>
+					<li><a class="highlight" id="saveBoothPercentagesTab" onclick="showHideTabs(this.id);"> Save Booth Percentages </a></li>
 				</ul>
 			</div>
 		</div>
@@ -498,6 +499,49 @@
 				
 			</div>
 		</div>
+		<div class="row" id="saveBoothsPercentage" style="dispaly:none;">
+			<div class="span12">
+				<div class="row-fluid ">
+					<div class="span12 widgetservey_Red m_top30">
+							<h4 id="wmtitleId"></h4>
+							<div class="row">
+						<div id="errorDivSB" class="span8 offset1 clearCls"></div>
+						</div>
+								<div class="row">
+									<div class="offset1">
+										<div class="row-fluid">
+											
+											<div class="span4">
+												Select Constituency <font class="requiredFont">*</font>
+													<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="constituencyForSP" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" onChange="getBoothsDetailsInCallStatusInfoForSavePercnt(this.value,'boothIdForSavePercentages')"/>
+													
+											</div>
+											
+											<div class="span3">
+												Select Booth <font class="requiredFont">*</font> : 
+												<select class="input-block-level" id = "boothIdForSavePercentages" > <option value="0">Select Booth</option></select>
+											</div>
+												
+												
+											<div class="span3">
+												Percenage <font class="requiredFont">*</font> : 
+												<input type="text" placeholder="Enter Percentage" id="percenageForBooth"/></div>
+												<div class="span1" style="margin:25px -8px 0 8px;width: 15px;">
+													<img id="boothImageForSavingPercent" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
+												</div>
+											</div>
+											
+										</div>	
+									</div>
+								</div>
+						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="saveBoothPercentage()">SUBMIT</button></div>
+						<div id="retunMsg" class="clearCls"></div>
+						<img src='images/Loading-data.gif' class="offset5"  id="mainajaximgForWm" style="width:70px;height:60px;display:none;"/>
+                         <div id="dayWiseReportDivForWm" class="clearCls"></div>
+							
+					</div>
+				</div>
+			</div>
 	</div>
 	<script>
 		var userIds = new Array();
