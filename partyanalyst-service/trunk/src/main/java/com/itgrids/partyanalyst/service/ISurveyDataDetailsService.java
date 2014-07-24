@@ -92,7 +92,7 @@ public interface ISurveyDataDetailsService
 	
 	public List<SurveyReportVO> getSurveyUserDetailsByConstituencies(Long constituencyId,Date date,List<Long> userIds);
 	
-	public List<SurveyReportVO> getSurveyDetailsForConstituency(Long constituencyId,Long userTypeId,String date,List<Long> userIds);
+	//public List<SurveyReportVO> getSurveyDetailsForConstituency(Long constituencyId,Long userTypeId,String date,List<Long> userIds);
 	
 	public GenericVO getAlreadyAssignTabsListForLeader(Long leaderId);
 	
@@ -102,6 +102,7 @@ public interface ISurveyDataDetailsService
 	public String saveWebMonioringAssignDetails(final Long webMonitorId,final List<Long> userIds);
 	public SurveyReportVO getTotalCasteCollectedCount();
 	public List<SurveyReportVO> getCasteCollectedCountsForDates(String date);
+	public List<SurveyReportVO> getSurveyDetailsForConstituency(Long constituencyId,Long userTypeId,String fromDate,List<Long> userIds,String toDate);
 
 	public List<GenericVO> getSurveyUsersByLeader(Long leaderId);
 	

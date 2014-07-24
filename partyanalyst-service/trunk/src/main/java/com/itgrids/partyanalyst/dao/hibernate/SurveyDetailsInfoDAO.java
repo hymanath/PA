@@ -392,30 +392,45 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 		return query.list();
 		
 	}
-	public List<Object[]> getSurveyDetailsByConstituency(Long constituencyId,Long userTypeId,Date date)
+	public List<Object[]> getSurveyDetailsByConstituency(Long constituencyId,Long userTypeId,Date date,Date todate)
 	{
 		
-		Query query = getSession().createQuery("select distinct model.surveyUser.surveyUserId,model.surveyUser.userName,model.booth.boothId,model.booth.partNo,model.booth.totalVoters from SurveyDetailsInfo model where model.booth.constituency.constituencyId = :constituencyId and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId" +
-				" and date(model.date) = :date");
+		StringBuilder str = new StringBuilder();
+		str.append("select distinct model.surveyUser.surveyUserId,model.surveyUser.userName,model.booth.boothId,model.booth.partNo,model.booth.totalVoters from SurveyDetailsInfo model where model.booth.constituency.constituencyId = :constituencyId and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId");
+		if(date.equals(todate))
+		str.append(" and date(model.date) = :date ");
+		else
+		str.append(" and date(model.date) >= :date and date(model.date) <= :todate");
+		Query query = getSession().createQuery(str.toString());
 		query.setParameter("constituencyId", constituencyId);
 		query.setParameter("userTypeId", userTypeId);
 		query.setParameter("date", date);
+		if(!date.equals(todate))
+		query.setParameter("todate", todate);
+		
 		return query.list();
 		
 	}
 	
 	
-	public List<Object[]> getSurveyDetailsByConstituencyByUsers(Long constituencyId,Long userTypeId,Date date,List<Long> userIds)
+	public List<Object[]> getSurveyDetailsByConstituencyByUsers(Long constituencyId,Long userTypeId,Date date,List<Long> userIds,Date todate)
 	{
 		
-		Query query = getSession().createQuery("select distinct model.surveyUser.surveyUserId,model.surveyUser.userName,model.booth.boothId,model.booth.partNo," +
+		StringBuilder str = new StringBuilder();
+		str.append("select distinct model.surveyUser.surveyUserId,model.surveyUser.userName,model.booth.boothId,model.booth.partNo," +
 				" model.booth.totalVoters from SurveyDetailsInfo model where model.booth.constituency.constituencyId = :constituencyId " +
-				" and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId and model.surveyUser.surveyUserId in (:userIds)" +
-				" and date(model.date) = :date");
+				" and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId and model.surveyUser.surveyUserId in (:userIds)");
+		if(date.equals(todate))
+			str.append(" and date(model.date) = :date");
+		else
+			str.append(" and date(model.date) >= :date and date(model.date) <= :todate");
+		Query query = getSession().createQuery(str.toString());
 		query.setParameter("constituencyId", constituencyId);
 		query.setParameter("userTypeId", userTypeId);
 		query.setParameter("date", date);
 		query.setParameterList("userIds", userIds);
+		if(!date.equals(todate))
+		query.setParameter("todate", todate);
 		return query.list();
 		
 	}
@@ -473,37 +488,62 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 		return query.list();
 	}
 	
-	public List<Object[]> getCasteCountByBooths(List<Long> userIds,List<Long> boothIds,Long userTypeId,Date date)
+	public List<Object[]> getCasteCountByBooths(List<Long> userIds,List<Long> boothIds,Long userTypeId,Date date,Date toDate)
 	{
-		Query query = getSession().createQuery("select model.surveyUser.surveyUserId,model.booth.boothId,count(model.caste.caste.casteId) from SurveyDetailsInfo model where model.surveyUser.surveyUserId in(:userIds) and " +
-				"model.booth.boothId in(:boothIds) and (model.caste.casteStateId is not null or model.casteName is not null) and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId and date(model.date) = :date group by model.surveyUser.surveyUserId,model.booth.boothId");
+		StringBuilder str = new StringBuilder();
+		str.append("select model.surveyUser.surveyUserId,model.booth.boothId,count(model.caste.caste.casteId) from SurveyDetailsInfo model where model.surveyUser.surveyUserId in(:userIds) and " +
+				"model.booth.boothId in(:boothIds) and (model.caste.casteStateId is not null or model.casteName is not null) and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId ");
+		if(date.equals(toDate))
+		str.append("and date(model.date) = :date group by model.surveyUser.surveyUserId,model.booth.boothId");
+		else
+			str.append("and date(model.date) >= :date and date(model.date) <= :toDate group by model.surveyUser.surveyUserId,model.booth.boothId");	
+		Query query = getSession().createQuery(str.toString());
 		query.setParameterList("userIds", userIds);
 		query.setParameterList("boothIds", boothIds);
 		query.setParameter("userTypeId", userTypeId);
 		query.setParameter("date", date);
+		if(!date.equals(toDate))
+		query.setParameter("toDate", toDate);
 		return query.list();
 	}
 	
-	public List<Object[]> getHamletCountByBooths(List<Long> userIds,List<Long> boothIds,Long userTypeId,Date date)
+	public List<Object[]> getHamletCountByBooths(List<Long> userIds,List<Long> boothIds,Long userTypeId,Date date,Date toDate)
 	{
-		Query query = getSession().createQuery("select model.surveyUser.surveyUserId,model.booth.boothId,count(model.hamlet.hamletId) from SurveyDetailsInfo model where model.surveyUser.surveyUserId in(:userIds) and " +
-				"model.booth.boothId in(:boothIds) and (model.hamlet.hamletId is not null or model.hamletName is not null) and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId and date(model.date) = :date group by model.surveyUser.surveyUserId,model.booth.boothId");
+		StringBuilder str = new StringBuilder();
+		str.append("select model.surveyUser.surveyUserId,model.booth.boothId,count(model.hamlet.hamletId) from SurveyDetailsInfo model where model.surveyUser.surveyUserId in(:userIds) and " +
+				"model.booth.boothId in(:boothIds) and (model.hamlet.hamletId is not null or model.hamletName is not null)");
+		str.append(" and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId");
+		if(date.equals(toDate))
+		str.append(" and date(model.date) = :date group by model.surveyUser.surveyUserId,model.booth.boothId");
+		else
+			str.append(" and date(model.date) >= :date and date(model.date) <=:toDate group by model.surveyUser.surveyUserId,model.booth.boothId");	
+		Query query = getSession().createQuery(str.toString());
 		query.setParameterList("userIds", userIds);
 		query.setParameterList("boothIds", boothIds);
 		query.setParameter("userTypeId", userTypeId);
 		query.setParameter("date", date);
+		if(!date.equals(toDate))
+		query.setParameter("toDate", toDate);	
 		return query.list();
 	}
 	
-	public List<Object[]> getMbileNoCountByBooths(List<Long> userIds,List<Long> boothIds,Long userTypeId,Date date)
+	public List<Object[]> getMbileNoCountByBooths(List<Long> userIds,List<Long> boothIds,Long userTypeId,Date date,Date toDate)
 	{
-		Query query = getSession().createQuery("select model.surveyUser.surveyUserId,model.booth.boothId,count( model.mobileNumber) from SurveyDetailsInfo model where model.surveyUser.surveyUserId in(:userIds) and " +
-				"model.booth.boothId in(:boothIds) and model.mobileNumber is not null and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId and date(model.date) = :date and model.mobileNumber is not null " +
-				" and model.mobileNumber != 'null' and model.mobileNumber != '' and length(model.mobileNumber) != 0  group by model.surveyUser.surveyUserId,model.booth.boothId");
+		StringBuilder str = new StringBuilder();
+		str.append("select model.surveyUser.surveyUserId,model.booth.boothId,count( model.mobileNumber) from SurveyDetailsInfo model where model.surveyUser.surveyUserId in(:userIds) and " +
+				"model.booth.boothId in(:boothIds) and model.mobileNumber is not null and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId and model.mobileNumber is not null " +
+				" and model.mobileNumber != 'null' and model.mobileNumber != '' and length(model.mobileNumber) != 0 ");
+		if(date.equals(toDate))
+			str.append("and date(model.date) = :date  group by model.surveyUser.surveyUserId,model.booth.boothId");
+		else
+			str.append("and date(model.date) >= :date and date(model.date) <= :toDate group by model.surveyUser.surveyUserId,model.booth.boothId");	
+		Query query = getSession().createQuery(str.toString());
 		query.setParameterList("userIds", userIds);
 		query.setParameterList("boothIds", boothIds);
 		query.setParameter("userTypeId", userTypeId);
 		query.setParameter("date", date);
+		if(!date.equals(toDate))
+			query.setParameter("toDate", toDate);
 		return query.list();
 	}
 	

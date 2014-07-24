@@ -59,10 +59,10 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	
 	public List<Object[]> getAllUserDetailsByConstituency(Long constituencyId,Date date);
 	
-	public List<Object[]> getSurveyDetailsByConstituency(Long constituencyId,Long userTypeId,Date date);
-	public List<Object[]> getHamletCountByBooths(List<Long> userIds,List<Long> boothIds,Long userTypeId,Date date);
-	public List<Object[]> getCasteCountByBooths(List<Long> userIds,List<Long> boothIds,Long userTypeId,Date date);
-	public List<Object[]> getMbileNoCountByBooths(List<Long> userIds,List<Long> boothIds,Long userTypeId,Date date);
+	//public List<Object[]> getSurveyDetailsByConstituency(Long constituencyId,Long userTypeId,Date date);
+	public List<Object[]> getHamletCountByBooths(List<Long> userIds,List<Long> boothIds,Long userTypeId,Date date,Date toDate);
+	public List<Object[]> getCasteCountByBooths(List<Long> userIds,List<Long> boothIds,Long userTypeId,Date date,Date toDate);
+	public List<Object[]> getMbileNoCountByBooths(List<Long> userIds,List<Long> boothIds,Long userTypeId,Date date,Date toDate);
 	public List<Object[]> getLatLongForSurveyUsersByConstituencyByUser(Long constituencyId,Date date,List<Long> userId);
 	
 	
@@ -75,7 +75,7 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	public List<Object[]> findConstituenciesByDistrictId(Long districtId);
 	public List<Object[]> getTotalCastecollectedCountForDates();
 	public List<Object[]> getTotalCastecollectedCountForTodayForDates(Date date);
-	public List<Object[]> getSurveyDetailsByConstituencyByUsers(Long constituencyId,Long userTypeId,Date date,List<Long> userIds);
+	//public List<Object[]> getSurveyDetailsByConstituencyByUsers(Long constituencyId,Long userTypeId,Date date,List<Long> userIds);
 	
 	public List<Object[]> getAllUserDetailsByConstituencyByUsers(Long constituencyId,Date date,List<Long> userIds);
 	public List<Object[]> getDayWisereportDetailsByConstituencyIdAndUserIds(Long constituencyId,Date startDate,Date endDate,Long userTypeId,List<Long> boothIds,List<Long> userIds);
@@ -99,4 +99,6 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	public List<Object[]> getDCPerformanceBoothWise(Long surveyUserId,Long userTypeId,Date FromDate,Date toDate);
 	public List<Object[]> getDcorDvUsersByConstituency(Long userTypeId);
 	public List<String> getCasteCollectedDatesByConstituencyId(Long constituencyId);
+	public List<Object[]> getSurveyDetailsByConstituency(Long constituencyId,Long userTypeId,Date date,Date todate);
+	public List<Object[]> getSurveyDetailsByConstituencyByUsers(Long constituencyId,Long userTypeId,Date date,List<Long> userIds,Date todate);
 }

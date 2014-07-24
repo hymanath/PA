@@ -3559,7 +3559,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		return resultList;
 	}
 	
-	public List<SurveyReportVO> getSurveyDetailsForConstituency(Long constituencyId,Long userTypeId,String date,List<Long> userIds)
+	public List<SurveyReportVO> getSurveyDetailsForConstituency(Long constituencyId,Long userTypeId,String fromDate,List<Long> userIds,String toDate)
 	{
 		
 		
@@ -3568,30 +3568,32 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		List<Long> boothIDs = new ArrayList<Long>();
 		try{
 			SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
-			Date date1 = originalFormat.parse(date);
+			Date date1 = originalFormat.parse(fromDate);
+			Date date2 = originalFormat.parse(toDate);
 			List<Object[]> dataList = null;
 			if(userIds != null && userIds.size() > 0)
 			{
-				dataList = surveyDetailsInfoDAO.getSurveyDetailsByConstituencyByUsers(constituencyId,userTypeId,date1,userIds);
+				dataList = surveyDetailsInfoDAO.getSurveyDetailsByConstituencyByUsers(constituencyId,userTypeId,date1,userIds,date2);
 			}
 			else
 			{
-				dataList = surveyDetailsInfoDAO.getSurveyDetailsByConstituency(constituencyId,userTypeId,date1);
+				dataList = surveyDetailsInfoDAO.getSurveyDetailsByConstituency(constituencyId,userTypeId,date1,date2);
 			}
 		   
-		  
-			 
-			if(dataList != null && dataList.size() > 0)
+		    if(dataList != null && dataList.size() > 0)
 			{
 				// List<Object[]> list1 = surveyDetailsInfoDAO.getBoothCount(constituencyId,userTypeId);
 				  for(Object[] user : dataList)
 				 {
 					 
+					  if(!userIDs.contains((Long)user[0]))
+					  {
 					 SurveyReportVO surveyReportVO = new SurveyReportVO();
 					 surveyReportVO.setUserid((Long)user[0]);
 					 surveyReportVO.setUserName(user[1].toString());
 					 resultList.add(surveyReportVO);
 					 userIDs.add((Long)user[0]);
+					  }
 					 if(!boothIDs.contains((Long)user[2]))
 					 boothIDs.add((Long)user[2]);
 				 }
@@ -3628,7 +3630,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				}
 				
 				
-				List<Object[]> list2 = surveyDetailsInfoDAO.getHamletCountByBooths(userIDs,boothIDs,userTypeId,date1);
+				List<Object[]> list2 = surveyDetailsInfoDAO.getHamletCountByBooths(userIDs,boothIDs,userTypeId,date1,date2);
 				if(list2 != null && list2.size() > 0)
 				{
 					 for(Object[] params : list2)
@@ -3645,7 +3647,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				 
 				}
 				
-				List<Object[]> list3 = surveyDetailsInfoDAO.getCasteCountByBooths(userIDs,boothIDs,userTypeId,date1);
+				List<Object[]> list3 = surveyDetailsInfoDAO.getCasteCountByBooths(userIDs,boothIDs,userTypeId,date1,date2);
 				if(list3 != null && list3.size() > 0)
 				{
 					for(Object[] params : list3)
@@ -3661,7 +3663,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					 }
 				} 
 				
-				List<Object[]> list4 = surveyDetailsInfoDAO.getMbileNoCountByBooths(userIDs,boothIDs,userTypeId,date1);
+				List<Object[]> list4 = surveyDetailsInfoDAO.getMbileNoCountByBooths(userIDs,boothIDs,userTypeId,date1,date2);
 				if(list4 != null && list4.size() > 0)
 				{
 					for(Object[] params : list4)
@@ -3718,6 +3720,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		}
 		return resultList;
 	}
+	
 	
 	public SurveyReportVO getMatchedVo(List<SurveyReportVO> resultList,Long userId)
 	{

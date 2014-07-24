@@ -37,5 +37,6 @@ public interface ISurveyDetailsService {
 	 public List<GenericVO> getBoothsInSurveyDetailsInfo(Long constituencyId);
 	 public List<DcDvCollectedDataVO> getDcAndDvByConstituencyByUser(Long surveyUserId,Long userTypeId,Date fromDate,Date toDate);
 	 public List<GenericVO> getDcorDvUsersByConstituency(Long userTypeId);
+	
 	 
 }
