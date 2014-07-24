@@ -1584,5 +1584,8 @@
 </bean>
 
 
+<bean id="verifierBoothPercentageDAO" class="com.itgrids.partyanalyst.dao.hibernate.VerifierBoothPercentageDAO" lazy-init="true" >
+		<property name="sessionFactory" ref="sessionFactory" />
+</bean>
 	<!--  end -->
 </beans>		
