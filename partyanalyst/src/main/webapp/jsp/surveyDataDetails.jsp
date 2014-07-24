@@ -401,15 +401,34 @@
 								<div class="span8 offset2">
 										<div class="row-fluid">
 										<div class="span6">
+										Select Constituency  <font class="requiredFont">*</font> :
+										<s:select theme="simple"  name="constituency" headerValue="Select Constituency" headerKey="0" id="deActivatConstituencyId" style="width:180px;" list="dataAvilableConstituencies" listKey="id" listValue="name" />
+										</div>
+										
+										<div class="span6">
 												Select User Type <font class="requiredFont">*</font>
-												<select class="input-block-level"id="deactiveUserTypeId" onChange="getSurveyUsersByUserType('deactivateUserId',this.value);"> 
-												<option value="0">Select User Type</option></select>
+												<select class="input-block-level"id="deactiveUserTypeId" onChange="getSurveyUsersByUserType('deactivateLeaderId',this.value);"> 
+													<option value="0">Select User Type</option>
+													<option value="1"> Data Collector </option>
+													<option value="3"> Lead </option>
+													<option value="4"> Data Verifier </option>
+													<option value="5"> Verifier Lead </option>
+												</select>
+										</div>
+											<div class="row-fluid">
+												<div class="span6">
+														Select Lead <font class="requiredFont">*</font>
+														<select class="input-block-level"id="deactivateLeaderId" onChange="getAssignedUsers('deactivateUserId',this.value,'');"> 
+														<option value="0"> Select Lead </option></select>
+												</div>
+													
+												<div class="span6">
+													Select Data Collector <font class="requiredFont">*</font>
+													<select class="input-block-level"id="deactivateUserId"> 
+													<option value="0">Select Data Collector</option></select>
+												</div>	
+											
 											</div>
-											<div class="span6">
-												Select User Name <font class="requiredFont">*</font>
-												<select class="input-block-level"id="deactivateUserId"> 
-												<option value="0">Select User Name</option></select>
-											</div>										
 										</div>
 									<div class="row-fluid">
 										<div class="span12">
