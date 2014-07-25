@@ -812,8 +812,20 @@ str+='<font style="color:red;">No Data avilable</font>';
 	$("#basicCountDiv").html(str).css("text-align","center");
 return;
 	}
+	str +="<h5>For Mobile No's </h5>"
+	str +="<div style='background:red;padding:10px;width:2px;float:left;'></div>  <span style='float:left;'>&nbsp;&nbsp; 0 - 9 &nbsp;&nbsp;</span>";
+	str +="<div style='background:yellow;padding:10px;width:2px;float:left;'></div>  <span style='float:left;'>&nbsp;&nbsp; 10 - 25 &nbsp;&nbsp;</span>";
+	str +="<div style='background:lightgreen;padding:10px;width:2px;float:left;'></div>  <span style='float:left;'>&nbsp;&nbsp; 26 - 40 &nbsp;&nbsp;</span>";
+	str +="<div style='background:green;padding:10px;width:2px;float:left;'></div>  <span style='float:left;'>&nbsp;&nbsp; 40 Above &nbsp;&nbsp;</span><br>";
 	
-	str+='<table class=" table table-bordered m_top20 table-hover table-striped" id="SurveyUsertable">';
+	str +="<h5>For Castes Error & Mobile Error </h5>"
+	str +="<div style='background:red;padding:10px;width:2px;float:left;'></div>  <span style='float:left;'>&nbsp;&nbsp; 2.01 Above &nbsp;&nbsp;</span>";
+	str +="<div style='background:yellow;padding:10px;width:2px;float:left;'></div>  <span style='float:left;'>&nbsp;&nbsp; 1.01 - 2.00  &nbsp;&nbsp;</span>";
+	str +="<div style='background:lightgreen;padding:10px;width:2px;float:left;'></div>  <span style='float:left;'>&nbsp;&nbsp;0.51 - 1.00  &nbsp;&nbsp;</span>";
+	str +="<div style='background:green;padding:10px;width:2px;float:left;'></div>  <span style='float:left;'>&nbsp;&nbsp; 0.0 - 0.50 &nbsp;&nbsp;</span>";
+	
+	
+	str+='<table class=" table table-bordered m_top20" id="SurveyUsertable">';
 	str+='<thead >';
 
 	str+='<tr class="alert alert-success">'
@@ -835,7 +847,7 @@ return;
 	str+='<th>Mobile MATCHED</th>';
 	str+='<th>Mobile UN MATCHED</th>';
 	str+='<th>MOBILE ERROR %</th>';
-	str+='<th>CASTE MATCHED</th>';
+	str+='<th >CASTE MATCHED</th>';
 	str+='<th>CASTE UN MATCHED</th>';
 	str+='<th>CASTE ERROR %</th>';
 	str+='</tr>';
@@ -869,26 +881,63 @@ return;
 			}
 			str+='<td>'+result[i].subList[j].casteCount+'</td>';
 			str+='<td>'+result[i].subList[j].hamletCount+'</td>';
-			str+='<td>'+result[i].subList[j].mobileNoCount+'</td>';
-		    str+='<td>'+result[i].subList[j].count+'</td>';
+			if(result[i].subList[j].mobileNoCount>=0 && result[i].subList[j].mobileNoCount<=9){
+				str+='<td class="errorRed">'+result[i].subList[j].mobileNoCount+'</td>';
+			}else if(result[i].subList[j].mobileNoCount>=10 && result[i].subList[j].mobileNoCount<=25){
+				str+='<td class="errorYellow">'+result[i].subList[j].mobileNoCount+'</td>';
+			}else if(result[i].subList[j].mobileNoCount>=26 && result[i].subList[j].mobileNoCount<=40){
+				str+='<td class="errorLgreen">'+result[i].subList[j].mobileNoCount+'</td>';
+			}else if(result[i].subList[j].mobileNoCount>=41){
+				str+='<td class="errorGreen">'+result[i].subList[j].mobileNoCount+'</td>';
+			}else{
+				str+='<td>'+result[i].subList[j].mobileNoCount+'</td>';
+			}
+			str+='<td>'+result[i].subList[j].count+'</td>';
 			str+='<td>'+result[i].subList[j].mobileMatchedCount+'</td>';
 			str+='<td>'+result[i].subList[j].mobileNotMatchedCount+'</td>';
 			var Mobiletotal = result[i].subList[j].mobileMatchedCount + result[i].subList[j].mobileNotMatchedCount;
-			if(Mobiletotal >0)
-			str+='<td>'+(Math.round(result[i].subList[j].mobileNotMatchedCount * 100)/Mobiletotal).toFixed(2)+'%</td>';
-			else
-			{
-			str+='<td>0.0%</td>';
+			if(Mobiletotal >0){
+			
+			var mobErrorPercent = (Math.round(result[i].subList[j].mobileNotMatchedCount * 100)/Mobiletotal).toFixed(2);
+			if(mobErrorPercent>=0.0 && mobErrorPercent<=0.50){
+				str+='<td class="errorGreen">'+mobErrorPercent+'</td>';
+			}else if(mobErrorPercent>=0.51 && mobErrorPercent<=1.00){
+				str+='<td class="errorLgreen">'+mobErrorPercent+'</td>';
+			}else if(mobErrorPercent>=1.01 && mobErrorPercent<=2.00){
+				str+='<td class="errorYellow">'+mobErrorPercent+'</td>';
+			}else if(mobErrorPercent>=2.01){
+				str+='<td class="errorRed">'+mobErrorPercent+'</td>';
+			}else{
+				str+='<td>'+mobErrorPercent+'</td>';
+			}
+			
+			//str+='<td>'+(Math.round(result[i].subList[j].mobileNotMatchedCount * 100)/Mobiletotal).toFixed(2)+'%</td>';
+			}
+			else{
+			str+='<td> - </td>';
 			}
 			str+='<td>'+result[i].subList[j].casteMatchedCount+'</td>';
 			str+='<td>'+result[i].subList[j].casteNotMatchedCount+'</td>';
 			var Castetotal = result[i].subList[j].casteMatchedCount + result[i].subList[j].casteNotMatchedCount;
-			if(Castetotal >0)
-				
-			str+='<td>'+(Math.round(result[i].subList[j].casteNotMatchedCount * 100)/Castetotal).toFixed(2)+'%</td>';
-			else
-			{
-			str+='<td>0.0%</td>';
+			if(Castetotal >0){		
+
+			var casteErrorPercent = (Math.round(result[i].subList[j].casteNotMatchedCount * 100)/Castetotal).toFixed(2);
+			if(casteErrorPercent>=0.0 && casteErrorPercent<=0.50){
+				str+='<td class="errorGreen">'+casteErrorPercent+'</td>';
+			}else if(casteErrorPercent>=0.51 && casteErrorPercent<=1.00){
+				str+='<td class="errorLgreen">'+casteErrorPercent+'</td>';
+			}else if(casteErrorPercent>=1.01 && casteErrorPercent<=2.00){
+				str+='<td class="errorYellow">'+casteErrorPercent+'</td>';
+			}else if(casteErrorPercent>=2.01){
+				str+='<td class="errorRed">'+casteErrorPercent+'</td>';
+			}else{
+				str+='<td>'+casteErrorPercent+'</td>';
+			}
+			
+			//str+='<td>'+(Math.round(result[i].subList[j].casteNotMatchedCount * 100)/Castetotal).toFixed(2)+'%</td>';
+			}
+			else{
+			str+='<td> - </td>';
 			}
 			str+='</tr>';
 		}
@@ -898,7 +947,7 @@ return;
 	
 
 	/* for export to excel */
-	str+='<table class=" table table-bordered m_top20 table-hover table-striped" id="SurveyUsertable1" style="display:none;">';
+	str+='<table class=" table table-bordered m_top20" id="SurveyUsertable1" style="display:none;">';
 	str+='<thead >';
 
 	str+='<tr class="alert alert-success">'
@@ -950,26 +999,63 @@ return;
 			}
 			str+='<td>'+result[i].subList[j].casteCount+'</td>';
 			str+='<td>'+result[i].subList[j].hamletCount+'</td>';
-			str+='<td>'+result[i].subList[j].mobileNoCount+'</td>';
+			if(result[i].subList[j].mobileNoCount>=0 && result[i].subList[j].mobileNoCount<=9){
+				str+='<td class="errorRed">'+result[i].subList[j].mobileNoCount+'</td>';
+			}else if(result[i].subList[j].mobileNoCount>=10 && result[i].subList[j].mobileNoCount<=25){
+				str+='<td class="errorYellow">'+result[i].subList[j].mobileNoCount+'</td>';
+			}else if(result[i].subList[j].mobileNoCount>=26 && result[i].subList[j].mobileNoCount<=40){
+				str+='<td class="errorYellow">'+result[i].subList[j].mobileNoCount+'</td>';
+			}else if(result[i].subList[j].mobileNoCount>=41){
+				str+='<td class="errorYellow">'+result[i].subList[j].mobileNoCount+'</td>';
+			}else{
+				str+='<td>'+result[i].subList[j].mobileNoCount+'</td>';
+			}
 		    str+='<td>'+result[i].subList[j].count+'</td>';
 			str+='<td>'+result[i].subList[j].mobileMatchedCount+'</td>';
 			str+='<td>'+result[i].subList[j].mobileNotMatchedCount+'</td>';
 			var Mobiletotal = result[i].subList[j].mobileMatchedCount + result[i].subList[j].mobileNotMatchedCount;
-			if(Mobiletotal >0)
-			str+='<td>'+(Math.round(result[i].subList[j].mobileNotMatchedCount * 100)/Mobiletotal).toFixed(2)+'%</td>';
-			else
-			{
-			str+='<td>0.0%</td>';
+			if(Mobiletotal >0){
+			
+			var mobErrorPercent = (Math.round(result[i].subList[j].mobileNotMatchedCount * 100)/Mobiletotal).toFixed(2);
+			if(mobErrorPercent>=0.0 && mobErrorPercent<=0.50){
+				str+='<td class="errorGreen">'+mobErrorPercent+'</td>';
+			}else if(mobErrorPercent>=0.51 && mobErrorPercent<=1.00){
+				str+='<td class="errorLgreen">'+mobErrorPercent+'</td>';
+			}else if(mobErrorPercent>=1.01 && mobErrorPercent<=2.00){
+				str+='<td class="errorYellow">'+mobErrorPercent+'</td>';
+			}else if(mobErrorPercent>=2.01){
+				str+='<td class="errorRed">'+mobErrorPercent+'</td>';
+			}else{
+				str+='<td>'+mobErrorPercent+'</td>';
+			}
+			
+			//str+='<td>'+(Math.round(result[i].subList[j].mobileNotMatchedCount * 100)/Mobiletotal).toFixed(2)+'%</td>';
+			}
+			else{
+			str+='<td> - </td>';
 			}
 			str+='<td>'+result[i].subList[j].casteMatchedCount+'</td>';
 			str+='<td>'+result[i].subList[j].casteNotMatchedCount+'</td>';
 			var Castetotal = result[i].subList[j].casteMatchedCount + result[i].subList[j].casteNotMatchedCount;
-			if(Castetotal >0)
-				
-			str+='<td>'+(Math.round(result[i].subList[j].casteNotMatchedCount * 100)/Castetotal).toFixed(2)+'%</td>';
-			else
-			{
-			str+='<td>0.0%</td>';
+			if(Castetotal >0){
+			var casteErrorPercent = (Math.round(result[i].subList[j].casteNotMatchedCount * 100)/Castetotal).toFixed(2);
+			
+			if(casteErrorPercent>=0.0 && casteErrorPercent<=0.50){
+				str+='<td class="errorGreen">'+casteErrorPercent+'</td>';
+			}else if(casteErrorPercent>=0.51 && casteErrorPercent<=1.00){
+				str+='<td class="errorLgreen">'+casteErrorPercent+'</td>';
+			}else if(casteErrorPercent>=1.01 && casteErrorPercent<=2.00){
+				str+='<td class="errorYellow">'+casteErrorPercent+'</td>';
+			}else if(casteErrorPercent>=2.01){
+				str+='<td class="errorRed">'+casteErrorPercent+'</td>';
+			}else{
+				str+='<td>'+casteErrorPercent+'</td>';
+			}
+			
+			//str+='<td>'+(Math.round(result[i].subList[j].casteNotMatchedCount * 100)/Castetotal).toFixed(2)+'%</td>';
+			}
+			else{
+			str+='<td> - </td>';
 			}
 			str+='</tr>';
 		}
