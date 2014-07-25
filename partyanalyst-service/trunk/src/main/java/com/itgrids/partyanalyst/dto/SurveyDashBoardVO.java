@@ -24,8 +24,22 @@ public class SurveyDashBoardVO {
 	private boolean verifierCompleted;
 	private Long boothId;
 	private Long constituencyId;
-
+	private Long totalVoters;
 	
+	private Long totalCollectedCount =0l;
+	
+	public Long getTotalCollectedCount() {
+		return totalCollectedCount;
+	}
+	public void setTotalCollectedCount(Long totalCollectedCount) {
+		this.totalCollectedCount = totalCollectedCount;
+	}
+	public Long getTotalVoters() {
+		return totalVoters;
+	}
+	public void setTotalVoters(Long totalVoters) {
+		this.totalVoters = totalVoters;
+	}
 	public Long getConstituencyId() {
 		return constituencyId;
 	}

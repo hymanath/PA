@@ -450,14 +450,15 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 			
 			//setting all constituency details start
 			List<Object[]> constnDtls = constituencyDAO.getAllAssemblyConstituenciesByStateId(1L);
-			
+			List<Long> ids = new ArrayList<Long>();
 			for(Object[] obj:constnDtls)
 			{
 				SurveyDashBoardVO constituency = new SurveyDashBoardVO();
 				
 				constituency.setLocationId((Long)obj[0]);
 				constituency.setLocationName(obj[1].toString());
-				
+				if(!ids.contains((Long)obj[0]))
+				ids.add((Long)obj[0]);
 				resultList.add(constituency);
 			}
 			//setting all constituency details end
@@ -556,17 +557,29 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 				
 				//processing booths end
 				
-				
-				
+				Map<Long,Long> datacollectedCountMap = new HashMap<Long, Long>();
+				List<Object[]> list = surveyDetailsInfoDAO.getDataCollectedCountForConstituency(ids);
+				if(list != null && list.size() > 0)
+				{
+					for(Object[] params : list)
+					{
+						datacollectedCountMap.put((Long)params[0],(Long) params[1]);
+					}
+				}
 				for(SurveyDashBoardVO constituency:resultList)
 				{
 					constituency.setTotalCount(totalBoothCountMap.get(constituency.getLocationId()) != null ?totalBoothCountMap.get(constituency.getLocationId()).intValue():0);
 					constituency.setProcessingCount(processedBoothsCount.get(constituency.getLocationId()) !=null ?processedBoothsCount.get(constituency.getLocationId()).intValue():0);
 					constituency.setStartedCount(constituency.getCompletedCount() + constituency.getProcessingCount());
 					constituency.setNotStartedCount(constituency.getTotalCount() - constituency.getStartedCount());
+					constituency.setTotalVoters(boothPublicationVoterDAO.getTotalVotersForConstituency(constituency.getLocationId()));
+					constituency.setTotalCollectedCount(datacollectedCountMap.get(constituency.getLocationId()) != null ? datacollectedCountMap.get(constituency.getLocationId()) : 0);
 				}
 
 			}
+			
+			// total voters 
+			
 			
 		}catch(Exception e)
 		{
