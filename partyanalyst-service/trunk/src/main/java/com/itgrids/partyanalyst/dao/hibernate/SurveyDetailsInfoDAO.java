@@ -571,15 +571,15 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 	}
 	public Long getTotalCastecollectedCount()
 	{
-		Query query = getSession().createQuery("select  count(model.surveyDetailsInfoId) from SurveyDetailsInfo model where (model.caste.casteStateId is not null or model.casteName is not null)");
+		Query query = getSession().createQuery("select  count(distinct model.voter.voterId) from SurveyDetailsInfo model where (model.caste.casteStateId is not null or model.casteName is not null) and model.surveyUser.surveyUserType.surveyUsertypeId = 1");
 		return (Long) query.uniqueResult();
 	}
 	
 	public Long getTotalCastecollectedCountForToday(Date date)
 	{
-		Query query = getSession().createQuery("select distinct count(model.surveyDetailsInfoId) from SurveyDetailsInfo model where " +
+		Query query = getSession().createQuery("select count(distinct model.voter.voterId) from SurveyDetailsInfo model where " +
 				" (model.caste.casteStateId is not null or model.casteName is not null) " +
-				" and date(model.date) = date(:date)");
+				" and date(model.date) = date(:date) and model.surveyUser.surveyUserType.surveyUsertypeId = 1");
 		query.setParameter("date",date);
 		return (Long) query.uniqueResult();
 	}
@@ -888,6 +888,17 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		query.setParameterList("userIds", userIds);
 		if(!date.equals(todate))
 		query.setParameter("todate", todate);
+		return query.list();
+
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getVerifierCollectedDetails(Long surveyUserId,Long boothId)
+	{
+		Query query = getSession().createQuery("select model.surveyUser.surveyUserId, model.voter.voterId,model.caste.casteStateId , " +
+				" model.surveyUser.surveyUserType.surveyUsertypeId,model.booth.boothId,model.surveyUser.userName,model.booth.partNo,date(model.date) " +
+				" from SurveyDetailsInfo model where model.booth.boothId = :boothId  and model.surveyUser.surveyUserType.surveyUsertypeId = 1 order by model.booth.boothId asc ");
+		query.setParameter("boothId", boothId);
 		return query.list();
 
 	}
