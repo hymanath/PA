@@ -944,7 +944,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 	public Long getCasteCountByBoothByConstituency(Long constituencyId,Long surveyUsertypeId)
 	{
 		Query query = getSession().createQuery("select count(distinct model.voter.voterId) from SurveyDetailsInfo model where  " +
-				" model.booth.constituency.constituencyId = :constituencyId and  model.booth.publicationDate.publicationDateId = :publicationDateId  and model.caste.casteStateId is not null or model.casteName is not null  " +
+				" model.booth.constituency.constituencyId = :constituencyId and  model.booth.publicationDate.publicationDateId = :publicationDateId  and (model.caste.casteStateId is not null or model.casteName is not null or  model.casteName != '') " +
 				" and model.surveyUser.surveyUserType.surveyUsertypeId = :surveyUsertypeId");	
 
 		query.setParameter("surveyUsertypeId", surveyUsertypeId);	
@@ -956,7 +956,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 	public Long getHamletCountByBoothByConstituency(Long constituencyId,Long surveyUsertypeId)
 	{
 		Query query = getSession().createQuery("select count(distinct model.voter.voterId) from SurveyDetailsInfo model where " +
-				" model.booth.constituency.constituencyId = :constituencyId and  model.booth.publicationDate.publicationDateId = :publicationDateId and model.hamlet.hamletId is not null or model.hamletName is not null " +
+				" model.booth.constituency.constituencyId = :constituencyId and  model.booth.publicationDate.publicationDateId = :publicationDateId and (model.hamlet.hamletId is not null or model.hamletName is not null or model.hamletName != '') " +
 				" and model.surveyUser.surveyUserType.surveyUsertypeId = :surveyUsertypeId");	
 
 		query.setParameter("surveyUsertypeId", surveyUsertypeId);	
