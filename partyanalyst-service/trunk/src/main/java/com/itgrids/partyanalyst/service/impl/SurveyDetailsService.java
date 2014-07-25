@@ -603,10 +603,15 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 								
 						if(WBCmpletBooths != null && WBCmpletBooths.size()>0){	
 							String WBBooths = "";
-							for (Long boothId : WBCmpletBooths) {									
+							for (Long boothId : WBCmpletBooths) {	
+								
+								if(procesingBoothIds.contains(boothId)){
+									procesingBoothIds.remove(boothId);
+								}
+								
 								WBBooths = WBBooths+","+boothId;
 							}
-							
+						boothsMap.put("procesing", getBoothCountsIteration(procesingBoths,Long.valueOf(String.valueOf(procesingBoothIds.size())),1L,"Booth Processing"));	
 						boothsMap.put("WMCompleted", getBoothCountsIteration(WBBooths,Long.valueOf(String.valueOf(WBCmpletBooths.size())),3L,"Web Monitoring Completed"));
 						
 					}
@@ -616,9 +621,13 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 						
 						if(WBCmpletBooths != null && WBCmpletBooths.size()>0){	
 							String WBBooths = "";
-							for (Long boothId : WBCmpletBooths) {									
+							for (Long boothId : WBCmpletBooths) {
+								if(procesingBoothIds.contains(boothId)){
+									procesingBoothIds.remove(boothId);
+								}
 								WBBooths = WBBooths+","+boothId;
 							}
+							boothsMap.put("procesing", getBoothCountsIteration(procesingBoths,Long.valueOf(String.valueOf(procesingBoothIds.size())),1L,"Booth Processing"));
 							boothsMap.put("WMCompleted", getBoothCountsIteration(WBBooths,Long.valueOf(String.valueOf(WBCmpletBooths.size())),3L,"Web Monitoring Completed"));
 						}	
 						else{
