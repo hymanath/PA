@@ -15,6 +15,8 @@ function showHideTabs(id)
 		$('#completeBooths').show();
 		$('#userReport').hide();
 		$('#saveBoothsPercentage').hide();
+		$("#verifierReportIdForVerifier").hide();;
+		$("#wmReportDiv").hide();
 	}
 	else if(id == "callCenterTab")
 	{
@@ -28,6 +30,8 @@ function showHideTabs(id)
 		$('#completeBooths').hide();
 		$('#userReport').hide();
 		$('#saveBoothsPercentage').hide();
+		$("#verifierReportIdForVerifier").hide();;
+		$("#wmReportDiv").hide();
 		
 	}
 	else if (id == "startTimeTab")
@@ -42,6 +46,8 @@ function showHideTabs(id)
 		$('#completeBooths').hide();
 		$('#userReport').hide();
 		$('#saveBoothsPercentage').hide();
+		$("#verifierReportIdForVerifier").hide();;
+		$("#wmReportDiv").hide();
 	}
 	else if(id == "boothWiseTab")
 	{
@@ -55,6 +61,8 @@ function showHideTabs(id)
 		$('#completeBooths').hide();
 		$('#userReport').hide();
 		$('#saveBoothsPercentage').hide();
+		$("#verifierReportIdForVerifier").hide();;
+		$("#wmReportDiv").hide();
 
 	}
 	else if(id == "surveyStatusRprtTab"){
@@ -68,6 +76,8 @@ function showHideTabs(id)
 		$('#completeBooths').hide();
 		$('#userReport').hide();
 		$('#saveBoothsPercentage').hide();
+		$("#verifierReportIdForVerifier").hide();;
+		$("#wmReportDiv").hide();
 	}
 	else if (id == "surveyUserWise")
 	{
@@ -80,6 +90,8 @@ function showHideTabs(id)
 		$('#completeBooths').hide();
 		$('#userReport').show();
 		$('#saveBoothsPercentage').hide();
+		$("#verifierReportIdForVerifier").hide();;
+		$("#wmReportDiv").hide();
 	}
 	else if (id == "saveBoothPercentagesTab")
 	{
@@ -92,6 +104,36 @@ function showHideTabs(id)
 		$('#completeBooths').hide();
 		$('#userReport').hide();
 		$('#saveBoothsPercentage').show();
+		$("#verifierReportIdForVerifier").hide();;
+		$("#wmReportDiv").hide();
+	}
+	else if (id == "wmReportTab")
+	{
+		$('#statusReportDiv').hide();
+		$('#callCenter').hide();
+		$('#startTime').hide();
+		$('#boothWise').hide();
+		$('#dataCollector').hide();
+        $('#inActiveUsersDetails').hide();	
+		$('#completeBooths').hide();
+		$('#userReport').hide();
+		$('#saveBoothsPercentage').hide();
+		$("#wmReportDiv").show();
+		$("#verifierReportIdForVerifier").hide();
+	}
+	else if (id == "verifierReportTab")
+	{
+		$('#statusReportDiv').hide();
+		$('#callCenter').hide();
+		$('#startTime').hide();
+		$('#boothWise').hide();
+		$('#dataCollector').hide();
+        $('#inActiveUsersDetails').hide();	
+		$('#completeBooths').hide();
+		$('#userReport').hide();
+		$('#saveBoothsPercentage').hide();
+		$("#verifierReportIdForVerifier").show();;
+		$("#wmReportDiv").hide();
 	}
 	else
 	{
@@ -2166,3 +2208,122 @@ function saveBoothPercentage(){
 		});	
 }
 
+
+function buildVerifierOrWMReport(result,buildType,buildDiv,imgId)
+{
+
+	var str = '';
+	if(result[0].matchedList[0] != null )
+	{
+		str += '<div class="row-fluid">';
+		str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;" >PANCHAYAT : '+result[0].matchedList[0].panchayatName+'</div> ';
+		str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">SURVEY USER : '+result[0].matchedList[0].surveyUser+'</div> ';
+		str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">Date : '+result[0].matchedList[0].date+'</div> ';
+		str += '</div>';
+	}
+	else if(result[0].unMatchedList[0] != null )
+	{
+		str += '<div class="row-fluid">';
+		str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;" >PANCHAYAT : '+result[0].unMatchedList[0].panchayatName+'</div> ';
+		str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">SURVEY USER : '+result[0].unMatchedList[0].surveyUser+'</div> ';
+		str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">Date : '+result[0].unMatchedList[0].date+'</div> ';
+		str += '</div>';
+	}
+	else if(result[0].notVerifiedList[0] != null )
+	{
+		str += '<div class="row-fluid">';
+		str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;" >PANCHAYAT : '+result[0].notVerifiedList[0].panchayatName+'</div> ';
+		str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">SURVEY USER : '+result[0].notVerifiedList[0].surveyUser+'</div> ';
+		str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">Date : '+result[0].notVerifiedList[0].date+'</div> ';
+		str += '</div>';
+	}
+	
+	str += '<div>';
+	str += '<div class="span3" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">TOTAL : '+result[0].totalCount+'</div> ';
+	str += '<div class="span3" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">MATCHED : '+result[0].matchedCount+'</div>';
+	str += '<div class="span3" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">UN MATCHED : '+result[0].unMatchedCount+'</div> ';
+	str += '<div class="span3" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">NOT VERIFIED : '+result[0].notVerifiedCount+'</div> ';
+	str += '</div>';
+	
+	str+='<table id="dayWiseReportTableForVerifier" class="table table-bordered m_top20 table-hover table-striped username">';
+	str+='<thead class="alert alert-success">';
+	str+='<tr>';
+	//str+='<th>Booth</th>';
+	//str+='<th>Panchayat</th>';
+	//str+='<th>Survey User</th>';
+	str+='<th>Voter Name</th>';
+	str+='<th>Relativen Name</th>';
+	//str+='<th>DC Collected Date</th>';
+	str+='<th>DC CASTE</th>';
+	str+='<th>WM CASTE</th>';
+	if(buildType == 1)
+	str+='<th>DV CASTE</th>';
+	str+='<th>STATUS</th>';
+	str+='</tr>';
+	str+='</thead>';
+	str+='<tbody>'
+	for(var i in result)
+	{
+		
+		for(var j in result[i].matchedList)
+		{
+			str += '<tr>';
+			//str+='<td>'+result[i].matchedList[j].partNo+'</td>';
+			//str+='<td>'+result[i].matchedList[j].panchayatName+'</td>';
+			//str+='<td>'+result[i].matchedList[j].surveyUser+'</td>';
+			str+='<td>'+result[i].matchedList[j].voterName+'</td>';
+			str+='<td>'+result[i].matchedList[j].relativeName+'</td>';
+			//str+='<td>'+result[i].matchedList[j].date+'</td>';
+			str+='<td>'+result[i].matchedList[j].dcCaste+'</td>';
+			str+='<td>'+result[i].matchedList[j].wmCaste+'</td>';
+			if(buildType == 1)
+			str+='<td>'+result[i].matchedList[j].dvCaste+'</td>';
+			str+='<td>MATCHED</td>';
+			str += '</tr>';		
+		}
+		for(var j in result[i].unMatchedList)
+		{
+			str += '<tr>';
+			//str+='<td>'+result[i].unMatchedList[j].partNo+'</td>';
+			//str+='<td>'+result[i].unMatchedList[j].panchayatName+'</td>';
+			//str+='<td>'+result[i].unMatchedList[j].surveyUser+'</td>';
+			str+='<td>'+result[i].unMatchedList[j].voterName+'</td>';
+			str+='<td>'+result[i].unMatchedList[j].relativeName+'</td>';
+			//str+='<td>'+result[i].unMatchedList[j].date+'</td>';
+			str+='<td>'+result[i].unMatchedList[j].dcCaste+'</td>';
+			str+='<td>'+result[i].unMatchedList[j].wmCaste+'</td>';
+			if(buildType == 1)
+			str+='<td>'+result[i].unMatchedList[j].dvCaste+'</td>';
+			str+='<td>UNMATCHED</td>';
+			str += '</tr>';		
+		}
+		for(var j in result[i].notVerifiedList)
+		{
+			str += '<tr>';
+			//str+='<td>'+result[i].notVerifiedList[j].partNo+'</td>';
+			//str+='<td>'+result[i].notVerifiedList[j].panchayatName+'</td>';
+			//str+='<td>'+result[i].notVerifiedList[j].surveyUser+'</td>';
+			str+='<td>'+result[i].notVerifiedList[j].voterName+'</td>';
+			str+='<td>'+result[i].notVerifiedList[j].relativeName+'</td>';
+			//str+='<td>'+result[i].notVerifiedList[j].date+'</td>';
+			str+='<td>'+result[i].notVerifiedList[j].dcCaste+'</td>';
+			str+='<td>'+result[i].notVerifiedList[j].wmCaste+'</td>';
+			if(buildType == 1)
+			str+='<td>'+result[i].notVerifiedList[j].dvCaste+'</td>';
+			str+='<td>NOT VERIFIED</td>';
+			str += '</tr>';		
+		}
+		
+		
+	}
+	str += '</tbody>';
+	str += '</table>';
+	$('#'+buildDiv+'').html(str);
+	//generateExcel('dataTableDiv');
+	$('#dayWiseReportTableForVerifier').dataTable({
+		"iDisplayLength": 100,
+		"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]]
+	});
+	$('#'+imgId+'').hide();
+			
+}
