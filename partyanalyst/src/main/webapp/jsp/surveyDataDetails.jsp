@@ -402,7 +402,7 @@
 										<div class="row-fluid">
 										<div class="span6">
 										Select Constituency  <font class="requiredFont">*</font> :
-										<s:select theme="simple"  name="constituency" headerValue="Select Constituency" headerKey="0" id="deActivatConstituencyId" style="width:180px;" list="dataAvilableConstituencies" listKey="id" listValue="name" />
+										<s:select theme="simple"  name="constituency" headerValue="Select Constituency" headerKey="0" id="deActivatConstituencyId" style="width:180px;" list="constituenciesList" listKey="id" listValue="name" />
 										</div>
 										
 										<div class="span6">
