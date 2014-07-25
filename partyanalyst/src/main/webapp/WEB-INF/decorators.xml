@@ -323,7 +323,7 @@
 		<pattern>/cmsAdminAction*</pattern>
 		<pattern>/fieldVoterDataAction*</pattern>
 		<pattern>/houseHoldsSummaryReportAction*</pattern>
-		
+		<pattern>/usersReport*</pattern>
 		</decorator>
     	 
        <decorator name="tdpHome" page="tdplayout.jsp">
