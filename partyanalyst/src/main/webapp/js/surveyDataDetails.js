@@ -83,6 +83,36 @@ function getSurveyUsersByUserTypeForBooth(divId,id)
 function getSurveyUsersByUserType(divId,value,processImg)
 {
 	$('#'+processImg+'').show();
+	
+	var jsObj =
+	{
+	userTypeId :value,
+	task : "getSurveyUsersByUserType"
+	}
+	$.ajax({
+	type:'GET',
+	url: 'getSurveyUsersByUserTypeAction.action',
+	dataType: 'json',
+	data: {task:JSON.stringify(jsObj)},
+	}).done(function(result){
+		
+		$('#'+divId+'').find('option:not(:first)').remove();
+		if(result != null && result.length > 0)
+		{
+			for(var i in result)
+			{
+				$('#'+divId+'').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+			}
+
+		}
+		$('#'+processImg+'').hide();
+	});
+}
+
+
+function getSurveyUsersByUserTypeForDeActive(divId,value,processImg)
+{
+	$('#'+processImg+'').show();
 	var constituencyId = $('#deActivatConstituencyId').val();
 	
 	if(value == 3 || value == 5){
@@ -99,7 +129,7 @@ function getSurveyUsersByUserType(divId,value,processImg)
 	}
 	$.ajax({
 	type:'GET',
-	url: 'getSurveyUsersByUserTypeAction.action',
+	url: 'getSurveyUsersByUserTypeForDeActiveAction.action',
 	dataType: 'json',
 	data: {task:JSON.stringify(jsObj)},
 	}).done(function(result){
