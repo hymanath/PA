@@ -13,5 +13,7 @@ public interface IWebMonitorCompletedLocationsDetailsDAO extends GenericDao<WebM
 	public List<Long> getSurveyWMCompletedCountByConstId(Long scopeId,List<Long> boothIds);
 	
 	public List<Long> getPanchayatBoothsByConstituencyId(Long scopeId);
+	
+	public List<Long> getWebMontringCount(Long constituencyId);
 
 }

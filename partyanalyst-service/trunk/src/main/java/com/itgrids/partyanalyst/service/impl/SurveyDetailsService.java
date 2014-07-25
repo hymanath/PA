@@ -597,8 +597,10 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 						boothsMap.put("procesing", getBoothCountsIteration(procesingBoths,Long.valueOf(String.valueOf(procesingBoothIds.size())),1L,"Booth Processing"));
 						boothsMap.put("complete", getBoothCountsIteration(compltdBoothIds1,Long.valueOf(String.valueOf(completedBooths.size())),2L,"Booth Complete"));
 					
-					List<Long> WBCmpletBooths = webMonitorCompletedLocationsDetailsDAO.getSurveyWMCompletedCountByConstId(9L,completedBooths); // 9L means searching based on booths
+					//List<Long> WBCmpletBooths = webMonitorCompletedLocationsDetailsDAO.getSurveyWMCompletedCountByConstId(9L,completedBooths); // 9L means searching based on booths
 				
+						List<Long> WBCmpletBooths = webMonitorCompletedLocationsDetailsDAO.getWebMontringCount(constituencyId);
+								
 						if(WBCmpletBooths != null && WBCmpletBooths.size()>0){	
 							String WBBooths = "";
 							for (Long boothId : WBCmpletBooths) {									
@@ -610,7 +612,18 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 					}
 					else{ // if WB completed booths not available
 					
-						boothsMap.put("WMCompleted", getBoothCountsIteration(null,0L,3L,"Web Monitoring Completed"));						
+						WBCmpletBooths = webMonitorCompletedLocationsDetailsDAO.getWebMontringCount(constituencyId);
+						
+						if(WBCmpletBooths != null && WBCmpletBooths.size()>0){	
+							String WBBooths = "";
+							for (Long boothId : WBCmpletBooths) {									
+								WBBooths = WBBooths+","+boothId;
+							}
+							boothsMap.put("WMCompleted", getBoothCountsIteration(WBBooths,Long.valueOf(String.valueOf(WBCmpletBooths.size())),3L,"Web Monitoring Completed"));
+						}	
+						else{
+							boothsMap.put("WMCompleted", getBoothCountsIteration(null,0L,3L,"Web Monitoring Completed"));
+						}					
 					}
 				}
 				else{  // if completed booths not available
@@ -1444,6 +1457,53 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 		}
 		
 		return status;
+	}
+	
+	public List<DcDvCollectedDataVO> getVerifierCollectedDetails(Long surveyUserId,Long boothId)
+	{
+		List<DcDvCollectedDataVO> returnList = null;
+		try 
+		{
+			List<Object[]> result = surveyDetailsInfoDAO.getVerifierCollectedDetails(surveyUserId, boothId);
+			if(result != null && result.size() > 0)
+			{
+				returnList = new ArrayList<DcDvCollectedDataVO>();
+				DcDvCollectedDataVO mainVO = new DcDvCollectedDataVO();
+				for (Object[] parms : result)
+				{
+					if(parms[0] != null)
+					{
+						if(Long.valueOf(parms[0].toString()) == 1l)
+						{
+							mainVO.setMobileCount(mainVO.getMobileCount() + (Long)parms[1]);
+						}
+						else if(Long.valueOf(parms[0].toString()) == 2l)
+						{
+							mainVO.setCasteCount((Long)parms[1] + mainVO.getCasteCount());
+						}
+						else
+						{
+							mainVO.setCadreCount((Long)parms[1] + mainVO.getCadreCount());
+						}
+					}
+				}
+				List<Long> boothIds= new ArrayList<Long>();
+				boothIds.add(boothId);
+				List<VerificationCompVO> matchUnMatchList = checkForVerifierData(boothIds);
+				if(matchUnMatchList != null && matchUnMatchList.size() > 0)
+				{
+					mainVO.setTotalCount(matchUnMatchList.get(0).getMatchedCount().longValue());
+					mainVO.setInfluencePeopleCount(matchUnMatchList.get(0).getUnMatchedCount().longValue());
+					mainVO.setLocalAreaCount(matchUnMatchList.get(0).getNotVerifiedCount().longValue());
+				}
+				returnList.add(mainVO);
+			}
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getVerifierCollectedDetails", e);
+		}
+		return returnList;
 	}
 }
  

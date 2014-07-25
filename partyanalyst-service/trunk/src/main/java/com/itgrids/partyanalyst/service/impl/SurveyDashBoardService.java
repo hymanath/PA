@@ -96,7 +96,7 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 					List<SurveyDashBoardVO> list = new ArrayList<SurveyDashBoardVO>();
 					for(Object[] obj:completedConstituenciesDtls)
 					{
-						SurveyDashBoardVO constituencyVO = getMatchedLocationVO(list, (Long)obj[0]);
+						SurveyDashBoardVO constituencyVO = getMatchedLocationVO1(list, (Long)obj[0]);
 						
 						if(constituencyVO != null)
 						{
@@ -520,7 +520,7 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 					{
 						if(completedBooth.isDataCollectorCompleted() && completedBooth.isVerifierCompleted())
 						{
-							SurveyDashBoardVO constituencyVO = getMatchedLocationVO(resultList,completedBooth.getConstituencyId());
+							SurveyDashBoardVO constituencyVO = getMatchedLocationVO1(resultList,completedBooth.getConstituencyId());
 							constituencyVO.setCompletedCount(constituencyVO.getCompletedCount() +1);
 							completedBoothIds.add(completedBooth.getBoothId());
 						}
@@ -602,16 +602,7 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 	}
 	
 	
-	private SurveyDashBoardVO getMatchedLocationVO(List<SurveyDashBoardVO> resultList,Long locationId)
-	{
-
-		for(SurveyDashBoardVO boothVO:resultList)
-			if(boothVO.getLocationId().equals(locationId))
-				return boothVO;
-		return null;
 	
-		
-	}
 	
 	private SurveyDashBoardVO getMatchedBoothVO(List<SurveyDashBoardVO> resultList,Long boothId)
 	{
@@ -979,6 +970,15 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 		return null;
 	}
 	
+	private SurveyDashBoardVO getMatchedLocationVO1(List<SurveyDashBoardVO> resultList,Long locationId)
+	{
+		for(SurveyDashBoardVO boothVO:resultList)
+			if(boothVO.getLocationId().equals(locationId))
+				return boothVO;
+		return null;
+	
+		
+	}
 	public Map<Long,String> getLeadersDetailsByUserIds(List<Long> userIds)
 	{
 		 LOG.info("Entered into the getLeadersDetailsByUserIds service method");

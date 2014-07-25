@@ -47,4 +47,12 @@ public class WebMonitorCompletedLocationsDetailsDAO extends GenericDaoHibernate<
 		 query.executeUpdate();
 		
 	}
+	
+	public List<Long> getWebMontringCount(Long constituencyId)
+	{
+		Query query = getSession().createQuery("select model.locationValue from WebMonitorCompletedLocationsDetails model,Booth model1 where model.locationValue = model1.boothId and " +
+				" model.locationScopeId = 9 and model1.constituency.constituencyId = :constituencyId");
+		query.setParameter("constituencyId", constituencyId);	
+		return query.list();
+	}
 }

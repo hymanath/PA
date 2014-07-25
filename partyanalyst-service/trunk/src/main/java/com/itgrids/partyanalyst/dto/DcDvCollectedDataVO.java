@@ -12,13 +12,13 @@ public class DcDvCollectedDataVO implements Serializable{
 	private String partNo;
 	private String date;
 	private String constituency;
-	private Long totalCount;
-	private Long mobileCount;
-	private Long hamletCount;
-	private Long casteCount;
-	private Long cadreCount;
-	private Long influencePeopleCount;
-	private Long localAreaCount;
+	private Long totalCount = 0l;
+	private Long mobileCount = 0l;;
+	private Long hamletCount = 0l;
+	private Long casteCount = 0l;
+	private Long cadreCount = 0l;
+	private Long influencePeopleCount = 0l;
+	private Long localAreaCount = 0l;
 	public Long getBoothId() {
 		return boothId;
 	}

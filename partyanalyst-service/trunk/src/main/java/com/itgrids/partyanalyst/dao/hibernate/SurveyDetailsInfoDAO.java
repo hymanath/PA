@@ -295,7 +295,7 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 	
 	public Long getCasteCountByBooth(Long userId,Long boothId)
 	{
-		Query query = getSession().createQuery("select count(*) from SurveyDetailsInfo model where model.surveyUser.surveyUserId = :userId and " +
+		Query query = getSession().createQuery("select count(distinct model.voter.voterId) from SurveyDetailsInfo model where model.surveyUser.surveyUserId = :userId and " +
 				"model.booth.boothId = :boothId and model.caste.casteStateId is not null or model.casteName is not null");
 		query.setParameter("userId", userId);
 		query.setParameter("boothId", boothId);
@@ -304,7 +304,7 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 	
 	public Long getHamletCountByBooth(Long userId,Long boothId)
 	{
-		Query query = getSession().createQuery("select count(*) from SurveyDetailsInfo model where model.surveyUser.surveyUserId = :userId and " +
+		Query query = getSession().createQuery("select count(distinct model.voter.voterId) from SurveyDetailsInfo model where model.surveyUser.surveyUserId = :userId and " +
 				"model.booth.boothId = :boothId and model.hamlet.hamletId is not null or model.hamletName is not null");
 		query.setParameter("userId", userId);
 		query.setParameter("boothId", boothId);
@@ -313,7 +313,7 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 	
 	public Long getLocalAreaCountByBooth(Long userId,Long boothId)
 	{
-		Query query = getSession().createQuery("select count(*) from SurveyDetailsInfo model where model.surveyUser.surveyUserId = :userId and " +
+		Query query = getSession().createQuery("select count(distinct model.voter.voterId) from SurveyDetailsInfo model where model.surveyUser.surveyUserId = :userId and " +
 				"model.booth.boothId = :boothId and model.localArea is not null");
 		query.setParameter("userId", userId);
 		query.setParameter("boothId", boothId);
@@ -322,7 +322,7 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 	
 	public Long getCadreCountByBooth(Long userId,Long boothId)
 	{
-		Query query = getSession().createQuery("select count(*) from SurveyDetailsInfo model where model.surveyUser.surveyUserId = :userId and " +
+		Query query = getSession().createQuery("select count(distinct model.voter.voterId) from SurveyDetailsInfo model where model.surveyUser.surveyUserId = :userId and " +
 				"model.booth.boothId = :boothId and model.isCadre != 'N' ");
 		query.setParameter("userId", userId);
 		query.setParameter("boothId", boothId);
@@ -331,7 +331,7 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 	
 	public Long getInfluencingPeopleCountByBooth(Long userId,Long boothId)
 	{
-		Query query = getSession().createQuery("select count(*) from SurveyDetailsInfo model where model.surveyUser.surveyUserId = :userId and " +
+		Query query = getSession().createQuery("select count(distinct model.voter.voterId) from SurveyDetailsInfo model where model.surveyUser.surveyUserId = :userId and " +
 				"model.booth.boothId = :boothId and model.isInfluencingPeople  != 'N' ");
 		query.setParameter("userId", userId);
 		query.setParameter("boothId", boothId);
@@ -922,9 +922,8 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getVerifierCollectedDetails(Long surveyUserId,Long boothId)
 	{
-		Query query = getSession().createQuery("select model.surveyUser.surveyUserId, model.voter.voterId,model.caste.casteStateId , " +
-				" model.surveyUser.surveyUserType.surveyUsertypeId,model.booth.boothId,model.surveyUser.userName,model.booth.partNo,date(model.date) " +
-				" from SurveyDetailsInfo model where model.booth.boothId = :boothId  and model.surveyUser.surveyUserType.surveyUsertypeId = 1 order by model.booth.boothId asc ");
+		Query query = getSession().createQuery("select model.statusId ,count(distinct model.voter.voterId) " +
+				" from SurveyDetailsInfo model where model.booth.boothId = :boothId  and model.surveyUser.surveyUserType.surveyUsertypeId = 4  group by model.statusId ");
 		query.setParameter("boothId", boothId);
 		return query.list();
 

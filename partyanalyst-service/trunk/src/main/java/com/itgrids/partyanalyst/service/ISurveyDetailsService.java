@@ -40,5 +40,6 @@ public interface ISurveyDetailsService {
 	
 	 
 	 public String savePercentageOfBoothForCasteSurvey(Long boothId,String percentage);
+	 public List<DcDvCollectedDataVO> getVerifierCollectedDetails(Long surveyUserId,Long boothId);
 	 
 }
