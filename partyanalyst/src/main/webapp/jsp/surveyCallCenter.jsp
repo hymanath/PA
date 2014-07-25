@@ -3,6 +3,7 @@
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
  <html>
   <head>	
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -23,6 +24,7 @@
 <script src="js/surveyCallCenter.js"></script>
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
+
 		<style>
 			body{background:#f0f0f0;}
 			.m_top20{margin-top:20px;}
@@ -114,8 +116,15 @@
 					<li><a class="highlight" id="boothWiseTab" onclick="showHideTabs(this.id);">Data Report</a></li>
 					<li id="webMontrId" style="display:none;"><a class="highlight" id="callCenterTab" onclick="showHideTabs(this.id);"> Web Monitoring </a></li>
 					<li><a class="highlight" id="dataCollectorWise" onclick="showHideTabs(this.id);"> Verfication report </a></li>
+					  
+		<c:if test="${not fn:contains(sessionScope.USER.entitlements, ' WEB_MONITORING_LEAD')}">
 					<li><a class="highlight" id="surveyUserWise" onclick="showHideTabs(this.id);"> User Wise report </a></li>
+		</c:if>
 					<li><a class="highlight" id="saveBoothPercentagesTab" onclick="showHideTabs(this.id);"> Save Booth Percentages </a></li>
+					<c:if test="${fn:contains(sessionScope.USER.entitlements, ' CASTE_SURVEY_CALL_CENTER')}">
+					<li><a class="highlight" id="wmReportTab" value="3" onclick="showHideTabs(this.id);">WM Report</a></li>
+					<li><a class="highlight" id="verifierReportTab" value="2" onclick="showHideTabs(this.id);">Verifier Report</a></li>
+					</c:if>
 				</ul>
 			</div>
 		</div>
@@ -546,6 +555,81 @@
 					</div>
 				</div>
 			</div>
+				<div class="row" id="verifierReportIdForVerifier" style="dispaly:none;">
+			<div class="span12">
+				<div class="row-fluid ">
+					<div class="span12 widgetservey_Red m_top30">
+							<h4 id="verifiertitleId"></h4>
+							<div class="row">
+						<div id="errorDiv" class="span8 offset1 clearCls"></div>
+						</div>
+								<div class="row">
+									<div class="offset1">
+										<div class="row-fluid">
+											
+											<div class="span5">
+												Select Constituency <font class="requiredFont">*</font>
+												
+													<s:select theme="simple"  name="constituency" id="constituencyForVeriFier"  headerKey="0" headerValue="Select Constituency" list="constituenciesList" listKey="id" listValue="name" onChange="getBoothsDetailsInSurveyDetailsInfo(this.value,'boothIdForVerifier')"/>
+
+											</div>
+											<div class="span4">
+												<!--User Type <font class="requiredFont">*</font>
+												<select class="input-block-level" id = "userType"> <option value="0">Select User Type</option></select>-->
+												Select Booth  <font class="requiredFont">*</font> : 
+												<select class="input-block-level" id = "boothIdForVerifier" > <option value="0">Select Booth</option></select></div>
+												<div class="span1" style="margin:25px -8px 0 8px;width: 15px;">
+													<img id="boothImageForVerifier" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
+												</div>
+										</div>	
+									</div>
+								</div>
+						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getVerfierDetails(1,'mainajaximgForVerifier','dayWiseReportDivForVerifier')">SUBMIT</button></div>
+						<div id="retunMsg" class="clearCls"></div>
+						<img src='images/Loading-data.gif' class="offset5"  id="mainajaximgForVerifier" style="width:70px;height:60px;display:none;"/>
+                         <div id="dayWiseReportDivForVerifier" class="clearCls"></div>
+							
+					</div>
+				</div>
+			</div>
+		</div>
+			<div class="row" id="wmReportDiv" style="dispaly:none;">
+			<div class="span12">
+				<div class="row-fluid ">
+					<div class="span12 widgetservey_Red m_top30">
+							<h4 id="wmtitleId"></h4>
+							<div class="row">
+						<div id="errorDiv" class="span8 offset1 clearCls"></div>
+						</div>
+								<div class="row">
+									<div class="offset1">
+										<div class="row-fluid">
+											
+											<div class="span5">
+												Select Constituency <font class="requiredFont">*</font>
+												
+													<s:select theme="simple"  name="constituency" id="constituencyForWm"  headerKey="0" headerValue="Select Constituency" list="constituenciesList" listKey="id" listValue="name" onChange="getBoothsDetailsInCallStatusInfo(this.value,'boothIdForWm')"/>
+											</div>
+											<div class="span4">
+												<!--User Type <font class="requiredFont">*</font>
+												<select class="input-block-level" id = "userType"> <option value="0">Select User Type</option></select>-->
+												Select Booth <font class="requiredFont">*</font> : 
+												<select class="input-block-level" id = "boothIdForWm" > <option value="0">Select Booth</option></select></div>
+												<div class="span1" style="margin:25px -8px 0 8px;width: 15px;">
+													<img id="boothImageForWm" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
+												</div>
+										</div>	
+									</div>
+								</div>
+						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getVerfierDetails(2,'mainajaximgForWm','dayWiseReportDivForWm1')">SUBMIT</button></div>
+						<div id="retunMsg" class="clearCls"></div>
+						<img src='images/Loading-data.gif' class="offset5"  id="mainajaximgForWm" style="width:70px;height:60px;display:none;"/>
+                         <div id="dayWiseReportDivForWm1"></div>
+							
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<script>
 		var userIds = new Array();
@@ -573,6 +657,123 @@
 		   }).datepicker('setDate', new Date());
 		  
 		});
+function getBoothsDetailsInCallStatusInfo(constituencyId,divId)
+{
+	$("#boothImage").show();
+	var jObj =
+	{
+	  constituencyId:constituencyId     
+	};
+
+	 $.ajax({
+			type:'GET',
+			url: 'getBoothsDetailsInCallStatusAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){				
+				//buildDayWiseReportByUserType(result);		
+				$("#boothImage").hide();
+				$('#'+divId+'').find('option').remove();
+
+				$.each(result,function(index,value){
+					$('#'+divId+'').append('<option value="'+value.id+'">Booth - '+value.name+'</option>');
+				});
+				
+				$('#'+divId+'').multiselect('refresh');
+
+		});	
+}
+function getVerfierDetails(buildType,imgId,buildDiv)
+{
+
+	$('#'+imgId+'').show();
+	$('#'+buildDiv+'').html('');
+	var boothIds = new Array();
+	
+	if(buildType == 1)
+	{
+		var boothId = $('#boothIdForVerifier').val();
+		boothIds.push(boothId);
+		var jObj =
+		{
+			boothIds:boothIds     
+		};
+		
+		$.ajax({
+			type:'GET',
+			url: 'checkForVerifierDataAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		 }).done(function(result){	
+		  
+		if(result != null)
+		{
+			buildVerifierOrWMReport(result,buildType,buildDiv,imgId);
+		}
+		else
+		{
+			$('#'+buildDiv+'').html('<b style="color:red">No Data Avaliable</b>');
+			$('#'+imgId+'').hide();
+		}		
+		});	
+	}
+	else
+	{
+		var jObj =
+		{
+			boothId:$('#boothIdForWm').val()     
+		};
+		
+		$.ajax({
+			type:'GET',
+			url: 'checkForWebMonitorDataAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		 }).done(function(result){	
+		  
+		if(result != null)
+		{
+			buildVerifierOrWMReport(result,buildType,buildDiv,imgId);
+		}
+		else
+		{
+	
+			$('#'+buildDiv+'').html('<b style="color:red">No Data Avaliable</b>');
+			$('#'+imgId+'').hide();
+		}		
+		});	
+	}
+
+		
+}
+
+function getBoothsDetailsInSurveyDetailsInfo(constituencyId,divId)
+{
+
+	$("#boothImage").show();
+	var jObj =
+	{
+	  constituencyId:constituencyId     
+	};
+
+	 $.ajax({
+			type:'GET',
+			url: 'getBoothsDetailsInSurveyDetailsInfoAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){				
+				//buildDayWiseReportByUserType(result);		
+				$("#boothImage").hide();
+				$('#'+divId+'').find('option').remove();
+
+				$.each(result,function(index,value){
+					$('#'+divId+'').append('<option value="'+value.id+'">Booth - '+value.name+'</option>');
+				});
+				
+				$('#'+divId+'').multiselect('refresh');
+
+		});	
+}
 
 	</script>
  </body>
