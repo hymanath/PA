@@ -4323,4 +4323,21 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	
 	  }
 	  
+	  public List<Long> getUsersForLeader(Long leaderId)
+		{
+			List<Long> usersList = new ArrayList<Long>();
+			try
+			{
+				usersList= surveyUserRelationDAO.getUsersForLeader(leaderId);
+				
+			} 
+			catch (Exception e)
+			{
+				LOG.error("Exception raised in getUsersForLeader", e);
+				e.printStackTrace();
+			}
+			return usersList;
+		}
+		
+	  
 }
