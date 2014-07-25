@@ -272,12 +272,12 @@
 					<div class="span12 widgetservey_Red m_top20">
 							<h4>User Field Report</h4>						
 						<div class="row">
-						<div class="span8 offset3">
+						<div class="span8 offset2">
 									<div class="row-fluid">
 						<div id="errDivIdForStartTime" class="span8 errClass offset" style="color:#FF0020;font-size:15px;" ></div>
 						</div></div></div>
 						<div class="row">
-								<div class="span8 offset3">
+								<div class="span8 offset2">
 									<div class="row-fluid">
 										
 										<div class="span6">
@@ -296,7 +296,8 @@
 									</div>
 									</div>
 					
-						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getUserDetailsByConstituency()">SUBMIT</button></div>
+						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getUserDetailsByConstituency()">SUBMIT</button><img id="userFieldImage" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img></div>
+						
 						  <div id="userDetailsReportDiv"></div>
 						<div class="row-fluid " id = "leaderDetailsDiv"></div>
 						<div class="row-fluid " id="detaildDiv" style="display:none;">
@@ -323,7 +324,7 @@
 								<div id="errorMsgDiv" class="offset1 errClass"  style="color:#FF0020;font-size:15px;"></div>
 									<div class="row-fluid">
 									
-										<div class="span3 offset2">
+										<div class="span3 offset1">
 											<label>Select Constituency</label>
 										<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="constituencyId" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" onchange="setConstituency(this.value);" />
 								
@@ -349,7 +350,7 @@
 								</div>
 							</div>
 							<div class="row text-center m_top20" style="margin-right:51px;"><button type="button" class="btn btn-success" onClick="getSurveyUserLoctionCount();">SUBMIT</button>
-							<img src='images/Loading-data.gif' class="offset5"  id="reportDataImg" style="width:70px;height:60px;display:none;"/>
+							<img id="reportDataImg" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
 							<button type="button" class="btn btn-success" id="excelTableID" onClick="generateExcel('SurveyUsertable1');" style="display:none;">Export To Excel</button>
 							<img src='images/Loading-data.gif' class="offset5"  id="reportDataImg" style="width:70px;height:60px;display:none;"/>
 							</div>
@@ -404,10 +405,12 @@
 									</div>
 									</div>
 									</div>
-						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getDayWiseReportByConstituencyIdAndUserType()">SUBMIT</button></div>
+						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getDayWiseReportByConstituencyIdAndUserType()">SUBMIT</button>		
+						<img id="mainajaximg" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
+							</div>
 						<div id="retunMsg"></div>
-                             <div id="dayWiseReportDiv1"></div>
-							<img src='images/Loading-data.gif' class="offset5"  id="mainajaximg" style="width:70px;height:60px;display:none;"/>
+                             <div id="dayWiseReportDiv1" style="overflow-x:scroll;width:870px;" class=" m_top20"></div>
+							
 					</div>
 				</div>
 				
@@ -421,17 +424,17 @@
 					<div class="span12 widgetservey_Red m_top20">
 							<h4> State wise Survey Status Report </h4>						
 						<div class="row">
-						<div class="span8 offset3">
+						<div class="span8 offset4">
 									<div class="row-fluid">
 						<div id="errDivIdForReport" class="span8 errClass offset" style="color:#FF0020;font-size:15px;" ></div>
 						</div></div></div>
 						<div class="row">
-								<div class="span8 offset3">
+								<div class="span12 offset4">
 									<div class="row-fluid">
 										
-										<div class="span6">
+										<div class="span8">
 											Select Constituency <font class="requiredFont">*</font>
-												<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="reportConstituencyId" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" />
+												<s:select theme="simple" cssClass="selectBoxWidth span4 input-block-level" id="reportConstituencyId" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" />
 										</div>
 										
 									</div>	
@@ -439,8 +442,7 @@
 									</div>
 									</div>
 					
-						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getReportForConstituency();"> Get Report </button></div>
-						   
+						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getReportForConstituency();"> Get Report </button><img id="stateStatusAjax" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img> </div>
 						
 						<div class="row-fluid " id= "basicStatusReport" style="margin-top:20px;"></div>						
 						<div class="row-fluid" id="panchayatsStatusDiv"></div>
@@ -483,7 +485,7 @@
 											<select class="input-block-level" id = "userReportUser" > <option value="0">Select User </option></select>
 										</div>
 										<div class="span1" style="margin:25px -8px 0 8px;width: 15px;">
-										<img id="boothImage" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
+										<img id="userProcessingImg" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
 										</div>
 										<div class="span2">
 											From Date <font class="requiredFont">*</font>
@@ -503,9 +505,9 @@
 									
 									</div>
 									</div>
-						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getUserWiseReport();">SUBMIT</button></div>
+						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getUserWiseReport();">SUBMIT</button><img id="userWiseReportImg" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img></div>
                          <div id="userWiseReport"></div>
-					<img src='images/Loading-data.gif' class="offset5"  id="userWiseReportImg" style="width:70px;height:60px;display:none;"/>
+					
 					</div>
 				</div>
 				

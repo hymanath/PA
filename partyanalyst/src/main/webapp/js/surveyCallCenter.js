@@ -816,7 +816,7 @@ str +='<font color="red">Select User Type</font>';
 $("#errorMsgDiv").html(str);
 return;
 	}
-	$("#processingImg").show();
+	$("#reportDataImg").show();
 	var jsObj =
 	{
 	    constituencyId : constituencyID,
@@ -834,7 +834,7 @@ return;
 	}).done(function(result){
 		$("#basicCountDiv").show();
 
-		$("#processingImg").hide();
+		$("#reportDataImg").hide();
 		//$("#SurveyUsertable").show();
      buildSurveyUserStatusCount(result);
 	
@@ -909,7 +909,7 @@ return;
 			}
 			else
 			{
-			str+='<td> <a href="javascript:{getDataCollectorInfo('+result[i].userid+',\''+result[i].userName+'\','+result[i].mobileNo+',null,null,'+result[i].subList[j].boothId+','+result[i].subList[j].partNo+',\''+$('#FielddateId').val()+'\');}">'+result[i].userName+' </a></td>';
+			str+='<td> <a href="javascript:{getDataCollectorInfo('+result[i].userid+',\''+result[i].userName+'\','+result[i].mobileNo+',null,null,'+result[i].subList[j].boothId+','+result[i].subList[j].partNo+',\''+$('#FielddateId').val()+'\');}">'+result[i].userName+' </a><br>'+result[i].mobileNo+'</td>';
 			str+='<td>-</td>';
 			}
 			str+='<td> '+result[i].subList[j].partNo+'</td>';
@@ -1652,7 +1652,7 @@ function buildDayWiseReportByUserType(result)
 	   str+='<td>'+value.userName+'</td>';
    	   str+='<td>'+value.partNo+'</td>';
 	   str+='<td>'+value.totalVoters+'</td>';
-	   str+='<td>'+value.totalCollectedCount+'</td>';
+	  str+='<td>'+value.totalCollectedCount+'</td>';
 	   str+='<td>'+value.totalCollectedPercent+'</td>';
 
 
@@ -1661,14 +1661,14 @@ function buildDayWiseReportByUserType(result)
 	      $.each(value.subList,function(index1,value1){
 			   str+='<td>'+value1.count+'</td>';
 		  });
-	    else
+	    /*else
 	   {		
 		  $.each(value.subList,function(index1,value1){
 		
 			   str+='<td>'+value1.count+'</td>';
 			   str+='<td>'+value1.percent+'</td>';
 		  });
-	   }
+	   }*/
 
     str+='</tr>';
    });
@@ -1700,7 +1700,7 @@ function getReportForConstituency(){
 		constituencyId:constituencyId,
 		task : "getSurveyStatusBoothData"
 	}
-	$("#reportDataImg").show();
+	$("#stateStatusAjax").show();
 
 	$.ajax({
 		type:'GET',
@@ -1708,7 +1708,7 @@ function getReportForConstituency(){
 		dataType: 'json',
 		data: {task:JSON.stringify(jsObj)},
 		}).done(function(result){
-				$("#reportDataImg").hide();
+				$("#stateStatusAjax").hide();
 				if(result != null && result.genericVOList != null && result.genericVOList.length > 0 ){
 					getPanchayatsStatusCount(constituencyId,result.genericVOList,result);
 				}
@@ -2035,6 +2035,7 @@ function buildHamletInfo(result,DivEle)
 
 function getRespectiveUsers(id)
 {
+	$("#userProcessingImg").show();
 	var jsObj={
 		//constituencyId:$('#userWiseReportConstituencyId').val(),
 		userTypeId:id
@@ -2045,6 +2046,7 @@ function getRespectiveUsers(id)
 	dataType: 'json',
 	data: {task:JSON.stringify(jsObj)},
 	}).done(function(result){
+				$("#userProcessingImg").hide();
 				$('#userReportUser').find('option').remove();
 				$('#userReportUser').append('<option value="0"> Select User </option>');
 				if(result != null && result.length>0){
