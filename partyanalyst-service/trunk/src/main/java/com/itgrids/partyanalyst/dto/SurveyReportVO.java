@@ -71,7 +71,59 @@ public class SurveyReportVO {
 	private List<Long> completeIds = new ArrayList<Long>();
 	private List<Long> notCompleteIds = new ArrayList<Long>();
 	
+	private Long casteCollectedCount = 0L;
+	private Long hamletCollectedCount = 0L;
+	private Long mobileNumberCollectedCount = 0L;
 	
+	private String startTime;
+	private String endTime;
+	
+	private Long totalCollectedCount;
+	private String totalCollectedPercent;
+	
+	
+	public String getTotalCollectedPercent() {
+		return totalCollectedPercent;
+	}
+	public void setTotalCollectedPercent(String totalCollectedPercent) {
+		this.totalCollectedPercent = totalCollectedPercent;
+	}
+	public Long getTotalCollectedCount() {
+		return totalCollectedCount;
+	}
+	public void setTotalCollectedCount(Long totalCollectedCount) {
+		this.totalCollectedCount = totalCollectedCount;
+	}
+	public String getStartTime() {
+		return startTime;
+	}
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+	public String getEndTime() {
+		return endTime;
+	}
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
+	public Long getMobileNumberCollectedCount() {
+		return mobileNumberCollectedCount;
+	}
+	public void setMobileNumberCollectedCount(Long mobileNumberCollectedCount) {
+		this.mobileNumberCollectedCount = mobileNumberCollectedCount;
+	}
+	public Long getCasteCollectedCount() {
+		return casteCollectedCount;
+	}
+	public void setCasteCollectedCount(Long casteCollectedCount) {
+		this.casteCollectedCount = casteCollectedCount;
+	}
+	public Long getHamletCollectedCount() {
+		return hamletCollectedCount;
+	}
+	public void setHamletCollectedCount(Long hamletCollectedCount) {
+		this.hamletCollectedCount = hamletCollectedCount;
+	}
 	public List<Long> getCompleteIds() {
 		return completeIds;
 	}
@@ -102,7 +154,7 @@ public class SurveyReportVO {
 	public void setPercent(String percent) {
 		this.percent = percent;
 	}
-	private Long total;
+	private Long total = 0L;
 	private Long serailNo ;
 	
 	public Long getSerailNo() {
