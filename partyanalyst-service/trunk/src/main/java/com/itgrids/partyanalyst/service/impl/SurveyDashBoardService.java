@@ -467,6 +467,8 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 			List<Object[]> completeBoothsDetails = surveyCompletedLocationsDetailsDAO
 					.getSurveyCompletedBoothsDetails(null);
 			Set<Long> boothIds = new HashSet<Long>();
+			Set<Long> completedBoothIds = new HashSet<Long>();
+
 			
 			if(completeBoothsDetails != null && completeBoothsDetails.size() >0)
 			{
@@ -508,6 +510,7 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 						{
 							SurveyDashBoardVO constituencyVO = getMatchedLocationVO(resultList,completedBooth.getConstituencyId());
 							constituencyVO.setCompletedCount(constituencyVO.getCompletedCount() +1);
+							completedBoothIds.add(completedBooth.getBoothId());
 						}
 					}
 			}
@@ -527,10 +530,12 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 			
 			Set<Long> surveyBoothIds = new HashSet<Long>();
 			
+			
 			for(Object[] obj:surveyBooths)
 				surveyBoothIds.add((Long)obj[0]);
 		
-			surveyBoothIds.removeAll(boothIds);
+			//surveyBoothIds.removeAll(boothIds);
+			surveyBoothIds.removeAll(completedBoothIds);
 			
 			// processing booths start
 			
