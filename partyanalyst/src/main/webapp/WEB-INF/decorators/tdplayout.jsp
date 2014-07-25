@@ -191,7 +191,7 @@ margin-top:10px;
 		fn:contains(sessionScope.USER.entitlements, 'CENSUS_REPORT_ENTITLEMENT' ) || fn:contains(sessionScope.USER.entitlements, 'PARTY_STRENGTH_AND_WEAKNESS' ) ||
 		fn:contains(sessionScope.USER.entitlements, 'VOTER_ANALYSIS' )  || fn:contains(sessionScope.USER.entitlements, 'PARTY_BOOTHWISE_RESULTS_REPORT' ) ||
 		fn:contains(sessionScope.USER.entitlements, 'CROSS_VOTING_REPORT' ) || fn:contains(sessionScope.USER.entitlements, 'PARTY_BOOTHWISE_RESULTS_REPORT' ) }">
-	 
+			
          <li>
 		
 			<a href="#" class="parent"><span>ANALYSIS</span></a>
@@ -279,6 +279,7 @@ margin-top:10px;
 		<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}">   
 		<c:if test="${fn:contains(sessionScope.USER.entitlements, 'PROBLEM_MANAGEMENT_ENTITLEMENT' ) || fn:contains(sessionScope.USER.entitlements, 'CADRE_MANAGEMENT_ENTITLEMENT' ) ||
 		fn:contains(sessionScope.USER.entitlements, 'CALL_CENTER_ENTITLEMENT' )}">
+
 		<li id="mangntId">
 		
 		<a href="initailConstituencyManagementAction.action" class="parent"><span>MANAGEMENT TOOLS</span></a>
@@ -300,6 +301,7 @@ margin-top:10px;
 					</li>
 						</c:if>
 					<li><a href="initailConstituencyManagementAction.action"><span>Constituency Management</span></a></li>
+					
 					
 					<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_MANAGEMENT_ENTITLEMENT' ) }">
 					<li><a href="cadreManagementAction.action" id="cadreId"><span>Cadre Management</span></a></li>
@@ -363,11 +365,15 @@ margin-top:10px;
 		<li id="dashBoardBtn">
 			<a href="dashBoardAction.action"><span>DASHBOARD</span></a> 
 		</li>
-		</c:if>			
-			
+		</c:if>		
+		<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}">   
+		<c:if test="${fn:contains(sessionScope.USER.entitlements, 'PARTY_CADRE_SEARCH')}">
+			<li>
+		    <a href="partyCadreSearchAction.action" class="parent"><span>PARTY CADRE SEARCH</span></a>
+			</li>		
+			</c:if>
+			</c:if>
     </ul>
-	
-	
 </div>      
 </div>
 <!-- Header End -->

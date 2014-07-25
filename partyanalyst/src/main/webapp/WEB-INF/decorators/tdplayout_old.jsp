@@ -367,7 +367,13 @@ a.tdp-text-error:hover {
 			<a href="dashBoardAction.action"><span>DASHBOARD</span></a> 
 		</li>
 		</c:if>			
-			
+		<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}">   
+		<c:if test="${fn:contains(sessionScope.USER.entitlements, 'PARTY_CADRE_SEARCH')}">
+			<li>
+		    <a href="partyCadreSearchAction.action" class="parent"><span>PARTY CADRE SEARCH</span></a>
+			</li>		
+			</c:if>
+			</c:if>	
     </ul>
 	
 </div>      
