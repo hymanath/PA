@@ -2881,12 +2881,13 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				 */
 			 
 			 Long totalVoters =  boothPublicationVoterDAO.getTotalVotersForConstituency(constituencyId);
+			 reportVO.setConstituencyTotalVoters(totalVoters);
+			 
 			 Long survyeVoterCount = surveyDetailsInfoDAO.getTotalSurveyVotersByconstituency(constituencyId,1L);
 			 
 			 reportVO.setTotalColelctedVoters(survyeVoterCount);
 			 reportVO.setCasteCollectedCount(surveyDetailsInfoDAO.getCasteCountByBoothByConstituency(constituencyId,1L));
-			 reportVO.setHamletCollectedCount(surveyDetailsInfoDAO.getHamletCountByBoothByConstituency(constituencyId,1L));
-				
+			 reportVO.setHamletCollectedCount(surveyDetailsInfoDAO.getHamletCountByBoothByConstituency(constituencyId,1L));				
 			 reportVO.setCadreCollectedCount(surveyDetailsInfoDAO.getCadreCountByBoothByConstituency(constituencyId,1L));
 			 reportVO.setInfluencePeopleCollectedCount(surveyDetailsInfoDAO.getInfluencingPeopleCountByBoothByConstituency(constituencyId,1L));
 			 reportVO.setMobileNoCollectedCount(surveyDetailsInfoDAO.getMobileCountByBoothByConstituency(constituencyId,1L));
@@ -2894,16 +2895,17 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			 reportVO.setNotCollectedVoters(totalVoters - survyeVoterCount);
 				
 			 
-			 Long casteVerifiedCount = surveyDetailsInfoDAO.getTotalSurveyVotersByconstituency(constituencyId,4L);
-			 reportVO.setCasteVerifiedCount(casteVerifiedCount);
-				
-			 reportVO.setHamletVerifiedCount(surveyDetailsInfoDAO.getCasteCountByBoothByConstituency(constituencyId,4L));
-			
+			 
+			 
+			 Long verifiedCount = surveyDetailsInfoDAO.getTotalSurveyVotersByconstituency(constituencyId,4L);
+			 reportVO.setTotalVerifiedVoters(verifiedCount);			 
+			 reportVO.setCasteVerifiedCount(surveyDetailsInfoDAO.getCasteCountByBoothByConstituency(constituencyId,4L));				
+			 reportVO.setHamletVerifiedCount(surveyDetailsInfoDAO.getHamletCountByBoothByConstituency(constituencyId,4L));			
 			 reportVO.setCadreVerifiedCount(surveyDetailsInfoDAO.getCadreCountByBoothByConstituency(constituencyId,4L));
 			 reportVO.setInfluencePeopleVerifiedCount(surveyDetailsInfoDAO.getInfluencingPeopleCountByBoothByConstituency(constituencyId,4L));
 			 reportVO.setMobileNoVerifiedCount(surveyDetailsInfoDAO.getMobileCountByBoothByConstituency(constituencyId,4L));
 			
-			 reportVO.setNotVerifiedVoters(totalVoters - casteVerifiedCount);
+			 reportVO.setNotVerifiedVoters(totalVoters - verifiedCount);
 			
 				 List<GenericVO> boothsList = new ArrayList<GenericVO>();
 				 if(constituencyBoothInfo != null && constituencyBoothInfo.size()>0){
