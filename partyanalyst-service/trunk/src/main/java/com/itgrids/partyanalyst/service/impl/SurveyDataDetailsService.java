@@ -2406,6 +2406,21 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			  vo.setTotal(totalCount.get(vo.getSurveyDate().toString()));
 		   }
 			
+			
+				for(SurveyReportVO userVO:resultList)
+				{
+			  		Long totalCnt = 0L;
+				   for(SurveyReportVO dateVO:userVO.getSubList())
+				   {
+					   totalCnt = totalCnt + dateVO.getCount(); 
+				   }
+				   
+					userVO.setTotalCollectedCount(totalCnt);
+					userVO.setTotalCollectedPercent(totalCnt != null &&totalCnt !=0 ? roundTo2DigitsFloatValue((float) totalCnt * 100f / userVO.getTotalVoters())
+								: "0.00");
+				}
+			
+			
 		}catch(Exception e)
 		{
 			e.printStackTrace();
