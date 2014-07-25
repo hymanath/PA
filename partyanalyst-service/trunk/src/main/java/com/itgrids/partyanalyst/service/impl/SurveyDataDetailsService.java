@@ -2826,14 +2826,15 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		try {
 			
 
-			 List<Object[]> constituencyCollectdDetls = surveyDetailsInfoDAO.getsurveyDetailsInfoByConstituencyId(constituencyId,1L);
+			// List<Object[]> constituencyCollectdDetls = surveyDetailsInfoDAO.getsurveyDetailsInfoByConstituencyId(constituencyId,1L);
 			 
-			 List<Object[]> constituencyVerifiedDetls = surveyDetailsInfoDAO.getsurveyDetailsInfoByConstituencyId(constituencyId,4L);
+			// List<Object[]> constituencyVerifiedDetls = surveyDetailsInfoDAO.getsurveyDetailsInfoByConstituencyId(constituencyId,4L);
 			 
 			 List<Object[]> constituencyBoothInfo = surveyDetailsInfoDAO.getBoothDetailsByConstituencyId(constituencyId);
 			 
-			 Long totalVoters = voterInfoDAO.getTotalVotersForSelectdLevel(1L, constituencyId, 10L, constituencyId); //(report level id,reportlevelValue,publicationId,constId);
-			 if(constituencyCollectdDetls != null && constituencyCollectdDetls.size()>0){
+			// Long totalVoters = voterInfoDAO.getTotalVotersForSelectdLevel(1L, constituencyId, 10L, constituencyId); //(report level id,reportlevelValue,publicationId,constId);
+			
+			 /* if(constituencyCollectdDetls != null && constituencyCollectdDetls.size()>0){
 				
 				 reportVO.setConstituencyTotalVoters(totalVoters);
 				 
@@ -2856,12 +2857,12 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				 
 				 
 				 }
-			 
+				 
 				 if(constituencyCollectdDetls != null && constituencyCollectdDetls.size()>0){
 					 
 					 for (Object[] params : constituencyVerifiedDetls) {
 						 
-							reportVO.setTotalVerifiedVoters(params[0] != null ? (Long)params[0]:0L);
+							//reportVO.setTotalVerifiedVoters(params[0] != null ? (Long)params[0]:0L);
 
 							Long casteVerifiedCount = (params[1] != null ? (Long)params[1]:0L) + (params[2] != null ? (Long)params[2]:0L);
 							reportVO.setCasteVerifiedCount(casteVerifiedCount);
@@ -2877,7 +2878,33 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 							
 					 }
 				 }
-				 
+				 */
+			 
+			 Long totalVoters =  boothPublicationVoterDAO.getTotalVotersForConstituency(constituencyId);
+			 Long survyeVoterCount = surveyDetailsInfoDAO.getTotalSurveyVotersByconstituency(constituencyId,1L);
+			 
+			 reportVO.setTotalColelctedVoters(survyeVoterCount);
+			 reportVO.setCasteVerifiedCount(surveyDetailsInfoDAO.getCasteCountByBoothByConstituency(constituencyId,1L));
+			 reportVO.setHamletVerifiedCount(surveyDetailsInfoDAO.getHamletCountByBoothByConstituency(constituencyId,1L));
+				
+			 reportVO.setCadreVerifiedCount(surveyDetailsInfoDAO.getCadreCountByBoothByConstituency(constituencyId,1L));
+			 reportVO.setInfluencePeopleVerifiedCount(surveyDetailsInfoDAO.getInfluencingPeopleCountByBoothByConstituency(constituencyId,1L));
+			 reportVO.setMobileNoVerifiedCount(surveyDetailsInfoDAO.getMobileCountByBoothByConstituency(constituencyId,1L));
+			
+			 reportVO.setNotVerifiedVoters(totalVoters - survyeVoterCount);
+				
+			 
+			 Long casteVerifiedCount = surveyDetailsInfoDAO.getTotalSurveyVotersByconstituency(constituencyId,4L);
+			 reportVO.setCasteVerifiedCount(casteVerifiedCount);
+				
+			 reportVO.setHamletVerifiedCount(surveyDetailsInfoDAO.getCasteCountByBoothByConstituency(constituencyId,4L));
+			
+			 reportVO.setCadreVerifiedCount(surveyDetailsInfoDAO.getCadreCountByBoothByConstituency(constituencyId,4L));
+			 reportVO.setInfluencePeopleVerifiedCount(surveyDetailsInfoDAO.getInfluencingPeopleCountByBoothByConstituency(constituencyId,4L));
+			 reportVO.setMobileNoVerifiedCount(surveyDetailsInfoDAO.getMobileCountByBoothByConstituency(constituencyId,4L));
+			
+			 reportVO.setNotVerifiedVoters(totalVoters - casteVerifiedCount);
+			
 				 List<GenericVO> boothsList = new ArrayList<GenericVO>();
 				 if(constituencyBoothInfo != null && constituencyBoothInfo.size()>0){
 					 
@@ -3324,11 +3351,11 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				//	assignedUserIds.add((Long) user[0]);
 				//}
 				
-				List<Long> ids = new ArrayList<Long>();
-				ids.add(leaderId);
+				List<Long> surveyUserids = new ArrayList<Long>();
+				surveyUserids.add(leaderId);
 				//List<Object[]> votersLsit = surveyDetailsInfoDAO.getVoterDetailsByBoothId(boothId,ids,date);
 				
-				List<Object[]> votersLsit = surveyDetailsInfoDAO.getVotersDetailsByBoothId(boothId,ids,date);
+				List<Object[]> votersLsit = surveyDetailsInfoDAO.getVotersDetailsByBoothId(boothId,surveyUserids,date);
 				
 				List<Object[]> verifiedList = surveyCallStatusDAO.getSurveyCallDtalsByboothId(boothId);
 				
@@ -3446,7 +3473,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			//}
 					
 			List<GenericVO> casteListOfSamples = new ArrayList<GenericVO>();
-			List<Object[]> casteInfo = surveyDetailsInfoDAO.getCasteWiseCountInBooth(boothId);	
+			List<Object[]> casteInfo = surveyDetailsInfoDAO.getCasteWiseCountInBooth(boothId,surveyUserids);	
 			if(casteInfo != null && casteInfo.size()>0){
 				for (Object[] caste : casteInfo) {
 					GenericVO vo = new  GenericVO();
