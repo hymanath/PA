@@ -488,7 +488,6 @@ $('#searchDataImg').show();
 		$('#userInfoDiv2').show();
 		$('#userInfoDiv5').show();
 		$('#userInfoDiv6').show();
-		$('#userInfoDiv7').show();
 		str2 +=' <span style="font-weight:bold;"> User Name  </span> : '+userName+'</br>';		
 		$('#userInfoDiv1').html(str2);
 		
