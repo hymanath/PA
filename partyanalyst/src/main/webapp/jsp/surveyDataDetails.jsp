@@ -407,7 +407,7 @@
 										
 										<div class="span6">
 												Select User Type <font class="requiredFont">*</font>
-												<select class="input-block-level"id="deactiveUserTypeId" onChange="getSurveyUsersByUserType('deactivateLeaderId',this.value);"> 
+												<select class="input-block-level"id="deactiveUserTypeId" onChange="getSurveyUsersByUserTypeForDeActive('deactivateLeaderId',this.value);"> 
 													<option value="0">Select User Type</option>
 													<option value="1"> Data Collector </option>
 													<option value="3"> Lead </option>
