@@ -1693,6 +1693,7 @@ function getReportForConstituency(){
 		$('#errDivIdForReport').html('Please Select Constituency.');
 		return;
 	}
+
 	
 	var jsObj = 
 	{
@@ -1709,7 +1710,7 @@ function getReportForConstituency(){
 		}).done(function(result){
 				$("#reportDataImg").hide();
 				if(result != null && result.genericVOList != null && result.genericVOList.length > 0 ){
-					getPanchayatsStatusCount(constituencyId,result.genericVOList);
+					getPanchayatsStatusCount(constituencyId,result.genericVOList,result);
 				}
 				else{
 					$('#basicCountDiv').html(' No Data Available ... ');
@@ -1770,6 +1771,12 @@ function buildSurveyBoothDetailsTable(result,statusId)
 				else if(statusId == 3)
 				{
 					str+='<div style="font-weight:bold; padding:5px;border-radius:5px;background-color:#DFF0D8;margin-bottom:15px;" align="center"> WEB MONITORING COMPLETED BOOTHS DETAILS </div>';
+				}else if(statusId == 4)
+				{
+					str+='<div style="font-weight:bold; padding:5px;border-radius:5px;background-color:#DFF0D8;margin-bottom:15px;" align="center"> VERIFICATION IN PROCESS BOOTHS DETAILS </div>';
+				}else if(statusId == 5)
+				{
+					str+='<div style="font-weight:bold; padding:5px;border-radius:5px;background-color:#DFF0D8;margin-bottom:15px;" align="center"> VERIFICATION COMPLETED BOOTHS DETAILS </div>';
 				}
 				str += '<table class="table table-bordered m_top20 table-hover table-striped " id="reportTab">';
 				str += '<thead>';
@@ -1804,6 +1811,11 @@ function buildSurveyBoothDetailsTable(result,statusId)
 					else if(statusId == 3){
 							str += '<td><button  class="btn-small btn-warning btn-block" onClick="updateBoothStatusDetails(1,'+result[i].boothId+','+i+')"> Processing </button> <button  style="margin-top:5px;" class="btn-small btn-info btn-block" onClick="updateBoothStatusDetails(2,'+result[i].boothId+','+i+')"> Completed </button></div></td>';
 					}
+					else if(statusId == 4){
+							str += '<td><button  class="btn-small btn-warning btn-block" onClick="updateBoothStatusDetails(5,'+result[i].boothId+','+i+')"> Completed </button> </div></td>';
+					}else if(statusId == 5){
+							str += '<td><button  class="btn-small btn-warning btn-block" onClick="updateBoothStatusDetails(4,'+result[i].boothId+','+i+')"> In Process </button> </div></td>';
+					}
 					
 					str += '</tr>	';
 									
@@ -1820,7 +1832,7 @@ function buildSurveyBoothDetailsTable(result,statusId)
 			}			
 		
 }
-function getPanchayatsStatusCount(constituencyId,boothResult)
+function getPanchayatsStatusCount(constituencyId,boothResult,result1)
 {
    
 	var jObj =
@@ -1834,7 +1846,7 @@ function getPanchayatsStatusCount(constituencyId,boothResult)
 			dataType: 'json',
 			data: {task:JSON.stringify(jObj)},
 		  }).done(function(result){				
-			buildStatusForPanchayats(result,constituencyId,boothResult);	
+			buildStatusForPanchayats(result,constituencyId,boothResult,result1);	
 		});
 	
 	
@@ -1859,7 +1871,7 @@ var jObj =
 			buildStatusForPanchayatDetials(result,status);	
 		});
 }
-function buildStatusForPanchayats(result,constituencyId,boothResult)
+function buildStatusForPanchayats(result,constituencyId,boothResult,result1)
 {
 
 	var str='';
@@ -1886,6 +1898,10 @@ function buildStatusForPanchayats(result,constituencyId,boothResult)
 					str += '</hgroup>';
 					str += '</li>';	
 				}	
+
+	str+='<li><hgroup><h4>VERIFICATION Processing </h4><h2 id="verificationProcessId"><a href="javascript:{getVerifiedBoothsDetails(\'process\')}">'+result1.verificationProcessList.length+'</a></h2></hgroup>';
+	str+='<li><hgroup><h4>VERIFICATION Completed </h4><h2 id="verificationCompletedId"><a href="javascript:{getVerifiedBoothsDetails(\'completed\')}">'+result1.verificationCompletionList.length+'</a></h2></hgroup>';
+
 
 	if(result.panchayatCount == 0)
 	{
@@ -2115,7 +2131,6 @@ function updateBoothStatusDetails(statusId,boothId,divId)
 	dataType: 'json',
 	data: {task:JSON.stringify(jsObj)},
 	}).done(function(result){
-		console.log(result);	
 		if(result != null && result == "success"){
 		getReportForConstituency();
 		$('#updateDiv'+divId+'').hide();			
@@ -2396,4 +2411,20 @@ function buildVerifierOrWMReport(result,buildType,buildDiv,imgId)
 	});
 	$('#'+imgId+'').hide();
 			
+}
+
+function getVerifiedBoothsDetails(status)
+{
+	 $.ajax({
+			type:'GET',
+			url: 'getVerifiedBoothsDetails.action',
+			dataType: 'json',
+			data: {status:status,constituencyId:$('#reportConstituencyId').val()}
+		  }).done(function(result){
+			  if(status == "process")
+			   buildSurveyBoothDetailsTable(result,4);
+			  else
+			  buildSurveyBoothDetailsTable(result,5);
+		});	
+
 }

@@ -15,9 +15,9 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyCompletionDetailsVO;
 import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
+import com.itgrids.partyanalyst.dto.SurveyReportVO;
 import com.itgrids.partyanalyst.service.impl.SurveyDashBoardService;
 import com.itgrids.partyanalyst.service.impl.SurveyDataDetailsService;
-import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -34,16 +34,44 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 	private List<SurveyCompletionDetailsVO> completionDtlsList;
 	private SurveyDataDetailsService surveyDataDetailsService;
 	private List<SelectOptionVO> constituenciesList;
+	private List<SurveyReportVO> dayWiseReportList;
 	private List<String> casteCollectedDates;
+	private Long constituencyId;
+	private List<SurveyReportVO> verifiedBooths;
 	
 	
-	
+	public List<SurveyReportVO> getVerifiedBooths() {
+		return verifiedBooths;
+	}
+
+	public void setVerifiedBooths(List<SurveyReportVO> verifiedBooths) {
+		this.verifiedBooths = verifiedBooths;
+	}
+
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+
 	public List<String> getCasteCollectedDates() {
 		return casteCollectedDates;
 	}
 
 	public void setCasteCollectedDates(List<String> casteCollectedDates) {
 		this.casteCollectedDates = casteCollectedDates;
+	}
+
+
+	
+	public List<SurveyReportVO> getDayWiseReportList() {
+		return dayWiseReportList;
+	}
+
+	public void setDayWiseReportList(List<SurveyReportVO> dayWiseReportList) {
+		this.dayWiseReportList = dayWiseReportList;
 	}
 
 	public List<SelectOptionVO> getConstituenciesList() {
@@ -291,5 +319,62 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 		}
 		return Action.SUCCESS;
 		
+	}
+	
+	
+	public String getUsersReport()
+	{
+		return Action.SUCCESS;
+		
+	}
+	
+	public String getUsersCompleteReportByStartAndEndDates()
+	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			
+			String startDate = jObj.getString("startDate");
+			String endDate = jObj.getString("endDate");
+			
+			dayWiseReportList = surveyDashBoardService.getUsersCompleteReportByStartAndEndDates(startDate,endDate);
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getUserReportForADate()
+	{
+		try {
+			jObj = new JSONObject(getTask());
+			
+			Long userId = jObj.getLong("userId");
+			String surveyDate = jObj.getString("surveyDate");
+			
+			dayWiseReportList = surveyDashBoardService.getUserReportForADate(userId,surveyDate);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		
+		return Action.SUCCESS;
+		
+	}
+	
+	public String getVerifiedBoothsDetails()
+	{
+		try
+		{
+			
+			verifiedBooths = surveyDashBoardService.getVerifiedBoothsDetails(status,constituencyId);
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return Action.SUCCESS;
 	}
 }

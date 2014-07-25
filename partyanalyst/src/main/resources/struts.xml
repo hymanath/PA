@@ -7413,7 +7413,7 @@
 			</result>
 		</action>
 		
-		<action name="getDayWisereportDetailsByConstituencyId" class="surveyDataDetailsAction" method="getDayWisereportDetailsByConstituencyId">
+		<action name="ByCDetailsByConstituencyId" class="surveyDataDetailsAction" method="getDayWisereportDetailsByConstituencyId">
 		<result type="json" name="success">
 			<param name="root">dayWiseReportList</param>
 			</result>
@@ -7421,7 +7421,7 @@
 		
 		<action name="getDayWiseReportByConstituencyIdAndUserType" class="surveyDataDetailsAction" method="getDayWiseReportByConstituencyIdAndUserType">
 		<result type="json" name="success">
-			<param name="root">dayWiseReportList</param>
+			<param name="root">dayWiseReportList</param>BY
 			</result>
 		</action>
 		
@@ -7598,7 +7598,7 @@
 			</result>
 		</action>
 		
-		<action name="saveSurveyCallStatusDetilsAction" class="surveyDataDetailsAction" method="saveSurveyCallStatusDetils">
+		<action name="saveSurveyCallSgetzSurveygettatusDetilsAction" class="surveyDataDetailsAction" method="saveSurveyCallStatusDetils">
 			<result type="json" name="success">
 				<param name="root">resultStatus</param>
 			</result>
@@ -7828,6 +7828,16 @@
   			<result type="json" name="success">
 				 <param name="root">usersList</param>
 			</result>
+		</action>	
+  		
+  		<action name="usersReport" class="surveyDashBoardAction" method="getUsersReport">
+  		  			<result name="success">/jsp/usersReport.jsp</result>
+  		</action>
+  		
+  		<action name="getUsersCompleteDayWiseReport" class="surveyDashBoardAction" method="getUsersCompleteReportByStartAndEndDates">
+  					<result type="json" name="success">
+							<param name="root">dayWiseReportList</param>
+					</result>
   		</action>
   		
   		<!-- <action name="getAllMuncipalitiesAction" class="partyCadreSearchAction" method="getAllMuncipalities">
@@ -7841,16 +7851,29 @@
 						<param name="root">casteCollectedDates</param>
 				</result>
 	</action>
+	    
+	    <action name="getUserReportForADate" class="surveyDashBoardAction" method="getUserReportForADate">
+	    	<result type="json" name="success">
+						<param name="root">dayWiseReportList</param>
+				</result>
+	    </action>
+	    
+	
 	
 		<action name="saveBoothPercentageForCasteSurveyAction" class="surveyDataDetailsAction" method="saveBoothsPercentageForCasteSurvey">
   			<result type="json" name="success">
 				 <param name="root">status</param>
 			</result>
   		</action>
-  		
   		<action name="getLeaderUsersAction" class="surveyDataDetailsAction" method="getLeaderUsers">
   			<result type="json" name="success">
 				 <param name="root">countList</param>
+			</result>
+  		</action>
+  		
+  		<action name="getVerifiedBoothsDetails" class="surveyDashBoardAction" method="getVerifiedBoothsDetails">
+  			<result type="json" name="success">
+				 <param name="root">verifiedBooths</param>
 			</result>
   		</action>
 </package>
