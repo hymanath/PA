@@ -944,6 +944,27 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	 * @param userTypeId
 	 * @return returnList
 	 */
+	
+	public List<GenericVO> getSurveyUsersByUserType(Long userTypeId)
+	{
+		List<GenericVO> returnList = null;
+		try
+		{
+			List<Object[]> result = surveyUserDAO.getSurveyUsersByUserType(userTypeId);
+			if(result != null && result.size() > 0)
+			{
+				returnList = new ArrayList<GenericVO>();
+				fillGenericVO(result,returnList);
+			}
+		}
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getSurveyUsersByUserType service in SurveyDataDetailsService", e);
+		}
+		 return returnList;
+	}
+	
+	
 	public List<GenericVO> getSurveyUsersByUserType(Long userTypeId,Long constituencyId)
 	{
 		List<GenericVO> returnList = null;
