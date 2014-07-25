@@ -13,8 +13,10 @@ import com.itgrids.partyanalyst.dto.CadreVo;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -32,8 +34,14 @@ public class PartyCadreSearchAction extends ActionSupport implements ServletRequ
 	private String task = null;
 	private List<CadreVo> vo,cadreDetails,locationDetails;
 	private List<GenericVO> committeesLevelValue,committee;
+	private EntitlementsHelper entitlementsHelper;
 	
-	
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
 	public List<CadreVo> getLocationDetails() {
 		return locationDetails;
 	}
@@ -124,7 +132,11 @@ public class PartyCadreSearchAction extends ActionSupport implements ServletRequ
 		{
 			return Action.INPUT;
 		}
-		
+		if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.PARTY_CADRE_SEARCH))
+			return INPUT;
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_CADRE_SEARCH))
+			return ERROR;
 		return SUCCESS;
 	}
 
