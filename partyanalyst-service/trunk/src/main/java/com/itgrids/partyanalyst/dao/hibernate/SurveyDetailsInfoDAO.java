@@ -657,7 +657,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 	
 	public List<Object[]> getHamletCountByListOfBooths(List<Long> boothIds)
 	{
-		Query query = getSession().createQuery("select model.booth.boothId,count(model.hamlet.hamletId) from SurveyDetailsInfo model where " +
+		Query query = getSession().createQuery("select model.booth.boothId,count(distinct model.voter.voterId) from SurveyDetailsInfo model where " +
 				" model.booth.boothId in(:boothIds) and (model.hamlet.hamletId is not null or model.hamletName is not null) and model.surveyUser.surveyUserType.surveyUsertypeId = 1 group by model.booth.boothId");
 		
 		query.setParameterList("boothIds", boothIds);
@@ -667,7 +667,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 	
 	public List<Object[]> getCasteCountByListOfBooths(List<Long> boothIds)
 	{
-		Query query = getSession().createQuery("select model.booth.boothId,count(model.caste.caste.casteId) from SurveyDetailsInfo model where " +
+		Query query = getSession().createQuery("select model.booth.boothId,count(distinct model.voter.voterId) from SurveyDetailsInfo model where " +
 				" model.booth.boothId in(:boothIds) and (model.caste.casteStateId is not null or model.casteName is not null) and model.surveyUser.surveyUserType.surveyUsertypeId = 1 group by model.booth.boothId");	
 		query.setParameterList("boothIds", boothIds);
 		return query.list();
@@ -675,7 +675,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 	
 	public List<Object[]> getMobileNoCountByListOfBooths(List<Long> boothIds)
 	{
-		Query query = getSession().createQuery("select model.booth.boothId,count( model.mobileNumber) from SurveyDetailsInfo model where " +
+		Query query = getSession().createQuery("select model.booth.boothId,count(distinct model.voter.voterId) from SurveyDetailsInfo model where " +
 				" model.booth.boothId in(:boothIds) and model.surveyUser.surveyUserType.surveyUsertypeId = 1 and model.mobileNumber is not null " +
 				" and model.mobileNumber != 'null' and model.mobileNumber != '' and length(model.mobileNumber) != 0  group by model.booth.boothId");
 		
@@ -687,7 +687,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 	
 	public Long getHamletCountByBooths(List<Long> boothIds)
 	{
-		Query query = getSession().createQuery("select count(model.hamlet.hamletId) from SurveyDetailsInfo model where" +
+		Query query = getSession().createQuery("select count(distinct model.voter.voterId) from SurveyDetailsInfo model where" +
 				" model.booth.boothId in(:boothIds) and model.surveyUser.surveyUserType.surveyUsertypeId = 1 and " +
 				"(model.hamlet.hamletId is not null or model.hamletName is not null)");
 		
@@ -698,7 +698,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 	
 	public Long getMbileNoCountByBooths(List<Long> boothIds)
 	{
-		Query query = getSession().createQuery("select count(model.mobileNumber) from SurveyDetailsInfo model where " +
+		Query query = getSession().createQuery("select count(distinct model.voter.voterId) from SurveyDetailsInfo model where " +
 				"model.booth.boothId in(:boothIds) and model.surveyUser.surveyUserType.surveyUsertypeId = 1 and model.mobileNumber is not null " +
 				"and model.mobileNumber != 'null' and model.mobileNumber != '' and length(model.mobileNumber) != 0");
 		
@@ -709,7 +709,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 	
 	public Long getCasteCountByBooths(List<Long> boothIds)
 	{
-		Query query = getSession().createQuery("select count(model.caste.caste.casteId) from SurveyDetailsInfo model where " +
+		Query query = getSession().createQuery("select count(distinct model.voter.voterId) from SurveyDetailsInfo model where " +
 				"model.booth.boothId in(:boothIds) and model.surveyUser.surveyUserType.surveyUsertypeId = 1 and (model.caste.casteStateId is not null or model.casteName is not null)");
 		
 		query.setParameterList("boothIds", boothIds);
