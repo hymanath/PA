@@ -107,5 +107,6 @@ public interface ISurveyDataDetailsService
 	public List<GenericVO> getSurveyUsersByLeader(Long leaderId);
 	
 	public ResultStatus releaseTabsAndBoothsBySurveyUserId(final  Long surveyUserId,final  Long dummyLeaderId,final String remark);
-	
+
+	public List<GenericVO> getSurveyUsersByUserType(Long userTypeId);
 }
