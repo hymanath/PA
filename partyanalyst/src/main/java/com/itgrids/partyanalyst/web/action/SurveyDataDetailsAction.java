@@ -616,6 +616,29 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 				return Action.INPUT;
 			}
 			jObj = new JSONObject(getTask());
+			
+			returnList = surveyDataDetailsService.getSurveyUsersByUserType(jObj.getLong("userTypeId"));
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getSurveyUsersByUserType in SurveyDataDetailsAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	
+	public String getSurveyUsersByUserTypeForDeActive()
+	{
+		try
+		{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			jObj = new JSONObject(getTask());
+			
 			returnList = surveyDataDetailsService.getSurveyUsersByUserType(jObj.getLong("userTypeId"),jObj.getLong("constituencyId"));
 		} 
 		catch (Exception e)
