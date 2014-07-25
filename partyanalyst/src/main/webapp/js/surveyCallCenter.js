@@ -952,7 +952,9 @@ return;
 
 	str+='<tr class="alert alert-success">'
 	str+='<th>DCName</th>';
+	str+='<th>DC Mobile NO</th>';
 	str+='<th>Leader Name</th>';
+	str+='<th>Leader Mobile No</th>';
 	str+='<th >Booth</th>';
 	str+='<th> Total Voters</th>';
 	
@@ -961,13 +963,13 @@ return;
 	str+='<th >Hamlet Mapped</th>';
 	str+='<th >Mobile Collected</th>';
 
-	str+='<th>TOTAL </th>';
-	str+='<th>Mobile MATCHED</th>';
-	str+='<th>Mobile UN MATCHED</th>';
-	str+='<th>MOBILE ERROR %</th>';
-	str+='<th>CASTE MATCHED</th>';
-	str+='<th>CASTE UN MATCHED</th>';
-	str+='<th>CASTE ERROR %</th>';
+	str+='<th>WM TOTAL</th>';
+	str+='<th>WM Mobile MATCHED</th>';
+	str+='<th>WM Mobile UN MATCHED</th>';
+	str+='<th>WM MOBILE ERROR %</th>';
+	str+='<th>WM CASTE MATCHED</th>';
+	str+='<th>WM CASTE UN MATCHED</th>';
+	str+='<th>WM CASTE ERROR %</th>';
 	str+='</tr>';
 	str+='</thead>';
 	str+='<tbody>';
@@ -978,14 +980,17 @@ return;
 		{
 			webBoothId = result[i].subList[j].boothId;
 			str+='<tr>';
+			str+='<td> '+result[i].userName+'</td>'; 
+			str+='<td> '+result[i].mobileNo+'</td>';
 			if(result[i].verifier != null)
 			{
-			str+='<td> <a href="javascript:{getDataCollectorInfo('+result[i].userid+',\''+result[i].userName+'\','+result[i].mobileNo+',\''+result[i].verifier.name+'\','+result[i].verifier.verified+','+result[i].subList[j].boothId+','+result[i].subList[j].partNo+',\''+$('#FielddateId').val()+'\');}">'+result[i].userName+' </a><br>'+result[i].mobileNo+'</td>';
-			str+='<td> '+result[i].verifier.name+'<br>'+result[i].verifier.verified+'</td>';
+			
+			str+='<td> '+result[i].verifier.name+'</td>';
+			str+='<td> '+result[i].verifier.verified+'</td>';
 			}
 			else
 			{
-			str+='<td> <a href="javascript:{getDataCollectorInfo('+result[i].userid+',\''+result[i].userName+'\','+result[i].mobileNo+',null,null,'+result[i].subList[j].boothId+','+result[i].subList[j].partNo+',\''+$('#FielddateId').val()+'\');}">'+result[i].userName+' </a></td>';
+			str+='<td>-</td>'; 
 			str+='<td>-</td>';
 			}
 			str+='<td> '+result[i].subList[j].partNo+'</td>';
