@@ -93,6 +93,10 @@
 				line-height: 30px !important;
 			}
 			
+			.errorRed{background:red;}
+			.errorYellow{background:yellow;}
+			.errorLgreen{background:lightgreen;}
+			.errorGreen{background:green;}
 	
 		</style>
 		
