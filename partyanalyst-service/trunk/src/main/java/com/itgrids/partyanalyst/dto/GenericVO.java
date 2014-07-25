@@ -15,7 +15,53 @@ public class GenericVO {
     private String percent;
     private String mobileNo;
     
-    public String getMobileNo() {
+    private int verificationProcessCount;
+    private int verificationCompletionCount;
+    private int verificationStartedCount;
+    
+    
+    private List<Long> verificationProcessList = new ArrayList<Long>();
+    private List<Long> verificationCompletionList = new ArrayList<Long>();
+    private List<Long> verificationStartedList = new ArrayList<Long>();
+    
+   
+	public List<Long> getVerificationProcessList() {
+		return verificationProcessList;
+	}
+	public void setVerificationProcessList(List<Long> verificationProcessList) {
+		this.verificationProcessList = verificationProcessList;
+	}
+	public List<Long> getVerificationCompletionList() {
+		return verificationCompletionList;
+	}
+	public void setVerificationCompletionList(List<Long> verificationCompletionList) {
+		this.verificationCompletionList = verificationCompletionList;
+	}
+	public List<Long> getVerificationStartedList() {
+		return verificationStartedList;
+	}
+	public void setVerificationStartedList(List<Long> verificationStartedList) {
+		this.verificationStartedList = verificationStartedList;
+	}
+	public int getVerificationStartedCount() {
+		return verificationStartedCount;
+	}
+	public void setVerificationStartedCount(int verificationStartedCount) {
+		this.verificationStartedCount = verificationStartedCount;
+	}
+	public int getVerificationProcessCount() {
+		return verificationProcessCount;
+	}
+	public void setVerificationProcessCount(int verificationProcessCount) {
+		this.verificationProcessCount = verificationProcessCount;
+	}
+	public int getVerificationCompletionCount() {
+		return verificationCompletionCount;
+	}
+	public void setVerificationCompletionCount(int verificationCompletionCount) {
+		this.verificationCompletionCount = verificationCompletionCount;
+	}
+	public String getMobileNo() {
 		return mobileNo;
 	}
 	public void setMobileNo(String mobileNo) {

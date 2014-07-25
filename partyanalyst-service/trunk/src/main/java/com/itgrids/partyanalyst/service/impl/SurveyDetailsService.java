@@ -638,6 +638,26 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 					
 				}
 				
+				List<Long> verificationStartedList = surveyDetailsInfoDAO.getVerificationStartedBoothsDetailsByConstituencyId(constituencyId);
+				List<Long> verificationCompletedList = surveyCompletedLocationsDetailsDAO.getVerificationCompletedBoothsDetailsByConstituencyId(constituencyId);
+				
+				genericVO.setVerificationCompletionList(verificationCompletedList);
+				genericVO.setVerificationStartedList(verificationStartedList);
+				
+				List<Long> verificationProcessList = new ArrayList<Long>();
+				
+				for(Long startedId:verificationStartedList)
+					if(!verificationCompletedList.contains(startedId))
+						verificationProcessList.add(startedId);
+						
+				
+				genericVO.setVerificationStartedList(verificationStartedList);
+				genericVO.setVerificationProcessList(verificationProcessList);
+				genericVO.setVerificationCompletionList(verificationCompletedList);
+					
+				
+				
+				//verificationCompletionCount
 				genericVO.setGenericVOList(resultList);
 			}
 			

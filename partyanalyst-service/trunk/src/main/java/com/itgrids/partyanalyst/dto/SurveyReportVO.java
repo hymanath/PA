@@ -81,7 +81,15 @@ public class SurveyReportVO {
 	private Long totalCollectedCount;
 	private String totalCollectedPercent;
 	
+	private String leaderName;
 	
+	
+	public String getLeaderName() {
+		return leaderName;
+	}
+	public void setLeaderName(String leaderName) {
+		this.leaderName = leaderName;
+	}
 	public String getTotalCollectedPercent() {
 		return totalCollectedPercent;
 	}

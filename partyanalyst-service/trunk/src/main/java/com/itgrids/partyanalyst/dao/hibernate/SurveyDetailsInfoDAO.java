@@ -9,6 +9,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
 import com.itgrids.partyanalyst.model.SurveyDetailsInfo;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class SurveyDetailsInfoDAO extends GenericDaoHibernate<SurveyDetailsInfo, Long> implements ISurveyDetailsInfoDAO{
 
@@ -827,7 +828,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		Query query = getSession()
 				.createQuery(
 						"select min(date), max(date),SDI.surveyUser.surveyUserId from SurveyDetailsInfo SDI  where date(SDI.date) >= date(:startdate) " +
-						"and date(SDI.date) <= date(:endDate) group by survey_user_id");
+						"and date(SDI.date) <= date(:endDate) and SDI.surveyUser.surveyUserType.surveyUserTypeId = 1 group by survey_user_id");
 		
 		query.setParameter("startdate", startdate);
 		query.setParameter("endDate", endDate);
@@ -841,15 +842,15 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		Query query = getSession().createQuery("select count(SDI.surveyDetailsInfoId),SDI.surveyUser.surveyUserId,SDI.surveyUser.userName,date(SDI.date) " +
 				" from SurveyDetailsInfo SDI " +
 				"where " +
-				"date(SDI.date) >= date(:startdate)  and date(SDI.date) <= date(:endDate) group by SDI.surveyUser.surveyUserId ,date(SDI.date) ");
+				"date(SDI.date) >= date(:startdate)  and date(SDI.date) <= date(:endDate) and SDI.surveyUser.surveyUserType.surveyUsertypeId = 1" +
+				" group by SDI.surveyUser.surveyUserId ,date(SDI.date) ");
 		
 		query.setParameter("startdate", startDate);
 		query.setParameter("endDate", endDate);
 		
 		return query.list();
-		
-		
 	}
+	
 	public List<Long> getUserIdsForConstituency(Long constituencyId,Long userTypeId,Date date,Date todate)
 	{
 
@@ -891,7 +892,33 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		return query.list();
 
 	}
+	public List<Object[]> getUserReportForADate(Long userId,Date surveyDate)
+	{
+		Query query = getSession()
+				.createQuery(
+						"select SDI.voter.voterId, SDI.surveyUser.surveyUserId, SDI.mobileNumber, SDI.caste ,SDI.hamlet,SDI.surveyUser.userName," +
+						"SDI.booth.boothId,SDI.booth.partNo,SDI.booth.constituency.constituencyId ,SDI.booth.constituency.name " +
+						" from SurveyDetailsInfo SDI where "
+								+ "date(SDI.date) = :surveyDate and  SDI.surveyUser.surveyUserId = :surveyUserId");
+
+		query.setParameter("surveyUserId", userId);
+		query.setParameter("surveyDate", surveyDate);
+
+		return query.list();
+
+	}
 	
+	public List<Long> getVerificationStartedBoothsDetailsByConstituencyId(Long constituencyId)
+	{
+		Query query = getSession().createQuery("select distinct SDI.booth.boothId from SurveyDetailsInfo SDI where " +
+				"SDI.booth.constituency.constituencyId = :constituencyId  and SDI.surveyUser.surveyUserType.surveyUsertypeId = :verifierUserTypeId");
+		
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("verifierUserTypeId", IConstants.VERIFIER_ROLE_ID);
+		
+		return query.list();
+		
+	}
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getVerifierCollectedDetails(Long surveyUserId,Long boothId)
 	{
