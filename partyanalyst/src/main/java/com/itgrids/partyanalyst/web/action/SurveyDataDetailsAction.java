@@ -1961,6 +1961,27 @@ public String getPanchayatsStatusDetails()
 		return Action.SUCCESS;
 	}
   
+  public String getVerifierCollectedDetails()
+ 	{
+ 		try
+ 		{
+ 			HttpSession session = request.getSession();
+ 			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+ 			if(user == null)
+ 			{
+ 				return Action.INPUT;
+ 			}
+ 			jObj = new JSONObject(getTask());
+ 			
+ 			
+ 			dcDvCollectedDataVOList = surveyDetailsService.getVerifierCollectedDetails(jObj.getLong("surveyUserId"),jObj.getLong("boothId"));
+ 		} 
+ 		catch (Exception e)
+ 		{
+ 			LOG.error("Exception raised in unTagConstituencyOfUser", e);
+ 		}
+ 		return Action.SUCCESS;
+ 	}
   public String saveBoothsPercentageForCasteSurvey(){
 	  try{
 			HttpSession session = request.getSession();

@@ -135,14 +135,23 @@
 							<h4> Web Monitoring </h4>	
 						
 						 <img src='images/Loading-data.gif' class="offset5"  id="searchDataImg" style="width:70px;height:60px;display:none;"/>
-						 <div class="row-fluid">
-							<div id="userInfoDiv1" class="span4" style="background-color: #e9e9e9; padding: 5px;display:none;margin-top:25px;margin-bottom:10px;" class="errClass"></div>
-							<div id="userInfoDiv2" class="span4" style="background-color: #e9e9e9; padding: 5px;display:none;margin-top:25px;margin-bottom:10px;" class="errClass"></div>
+						<div class="row-fluid">
+							<div id="collecedCountDiv" class="span4" style="background-color: #e9e9e9; padding: 5px;display:none;margin-top:25px;margin-bottom:10px;" class="errClass"></div>
+							<div id="verifiedCountDiv" class="span4" style="background-color: #e9e9e9; padding: 5px;display:none;margin-top:25px;margin-bottom:10px;" class="errClass"></div>
+							<div id="updatedCountDiv" class="span4" style="background-color: #e9e9e9; padding: 5px;display:none;margin-top:25px;margin-bottom:10px;" class="errClass"></div>
 						</div>
 						<div class="row-fluid">
-							<div id="userInfoDiv3" class="span4" style="background-color: #e9e9e9; padding: 5px;display:none;margin-top:25px;margin-bottom:10px;" class="errClass"></div>
-							<div id="userInfoDiv4" class="span4" style="background-color: #e9e9e9; padding: 5px;display:none;margin-top:25px;margin-bottom:10px;" class="errClass"></div>
+							<div id="matchedCountDiv" class="span4" style="background-color: #e9e9e9; padding: 5px;display:none;margin-top:25px;margin-bottom:10px;" class="errClass"></div>
+							<div id="unMatchedCountDiv" class="span4" style="background-color: #e9e9e9; padding: 5px;display:none;margin-top:25px;margin-bottom:10px;" class="errClass"></div>
+							<div id="notVerifiedCountDiv" class="span4" style="background-color: #e9e9e9; padding: 5px;display:none;margin-top:25px;margin-bottom:10px;" class="errClass"></div>
 						</div>
+						<div class="row-fluid">
+							<div id="userInfoDiv1" class="span3" style="background-color: #e9e9e9; padding: 5px;display:none;margin-top:25px;margin-bottom:10px;" class="errClass"></div>
+							<div id="userInfoDiv2" class="span3" style="background-color: #e9e9e9; padding: 5px;display:none;margin-top:25px;margin-bottom:10px;" class="errClass"></div>
+							<div id="userInfoDiv3" class="span3" style="background-color: #e9e9e9; padding: 5px;display:none;margin-top:25px;margin-bottom:10px;" class="errClass"></div>
+							<div id="userInfoDiv4" class="span3" style="background-color: #e9e9e9; padding: 5px;display:none;margin-top:25px;margin-bottom:10px;" class="errClass"></div>
+						</div>
+						
 						<div class="row-fluid">
 							<div id="userInfoDiv5" class="span4" style="background-color: #e9e9e9; padding: 5px;display:none;margin-top:25px;margin-bottom:10px;" class="errClass"></div>
 							<div id="userInfoDiv6" class="span4" style="background-color: #e9e9e9; padding: 5px;display:none;margin-top:25px;margin-bottom:10px;" class="errClass"></div>
@@ -334,7 +343,7 @@
 											<select name="constituency" id="userTypeId"  style="width:145px;" onchange="setUserTypeId(this.value)">
 											<option value="0">Select user type</option>
 											<option value="1">Data Collectors</option>
-											
+											<option value="4">Data Verifier</option>
 											</select>
 										</div>	
 										<div class="span2">

@@ -209,6 +209,12 @@ var jsObj =
 
 var casteList = new Array();
 function getSurveyVotersList(userId,userName,mobileNo,leaderName,leaderMobile,boothId,boothNo,date){
+
+if($('#userTypeId').val() == 4 )
+{
+	getVerifierDetails(userId,boothId);
+}
+	
 $('#userInfoDiv1').hide();
 $('#userInfoDiv2').hide();
 $('#userInfoDiv3').hide();
@@ -217,6 +223,12 @@ $('#userInfoDiv5').hide();
 $('#userInfoDiv6').hide();
 $('#userInfoDiv7').hide();
 $('#casteInfoDiv').hide();
+$('#collecedCountDiv').hide();
+$('#verifiedCountDiv').hide();
+$('#updatedCountDiv').hide();
+$('#matchedCountDiv').hide();
+$('#unMatchedCountDiv').hide();
+$('#notVerifiedCountDiv').hide();
 var newCasteArr = new  Array();
 var surveyDate = $('#FielddateId').val();
 $('#searchDataImg').show();
@@ -530,7 +542,7 @@ $('#searchDataImg').show();
 		$('#userInfoDiv2').show();
 		$('#userInfoDiv5').show();
 		$('#userInfoDiv6').show();
-		str2 +=' <span style="font-weight:bold;"> User Name  </span> : '+userName+'</br>';		
+		str2 +=' <span style="font-weight:bold;"> DC Name  </span> : '+userName+'</br>';		
 		$('#userInfoDiv1').html(str2);
 		
 		str2 ='';
@@ -556,7 +568,7 @@ $('#searchDataImg').show();
 		if(leaderMobile != null)
 		{
 		$('#userInfoDiv4').show();	
-		str2 +=' <span style="font-weight:bold;">Leader Mobile Number</span> : '+leaderMobile+' </br>';
+		str2 +=' <span style="font-weight:bold;">Mobile Number</span> : '+leaderMobile+' </br>';
 		$('#userInfoDiv4').html(str2);
 		}
 		
@@ -584,7 +596,7 @@ $('#searchDataImg').show();
 						str1 +=', ';
 					}					
 				}
-		 }
+		}
 		 
 			//console.log(newCasteArr);
 		 
@@ -1488,6 +1500,7 @@ function getDataCollectorInfo(userId,userName,mobileNo,leaderName,leaderMobile,b
 	$('#boothWiseTab,#startTimeTab').removeClass('selected');
 	$('#callCenterTab').addClass('selected');
 	showHideTabs('callCenterTab');
+	
 	getSurveyVotersList(userId,userName,mobileNo,leaderName,leaderMobile,boothId,boothNo,date);
 
 }
@@ -1535,7 +1548,45 @@ function getBoothsDetailsByConstituencyId(constituencyId)
 	
 	
 }
+function getVerifierDetails(surveyUserId,boothId)
+{
+	
+	$('#collecedCountDiv').html('');
+	$('#verifiedCountDiv').html('');
+	$('#updatedCountDiv').html('');
+	$('#matchedCountDiv').html('');
+	$('#unMatchedCountDiv').html('');
+	$('#notVerifiedCountDiv').html('');
+	var jObj =
+	{
+	  surveyUserId:surveyUserId,
+	  boothId : boothId
+	};
 
+	 $.ajax({
+			type:'GET',
+			url: 'getVerifierCollectedDetailsAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){	
+			if(result != null)
+			{
+				$('#collecedCountDiv').show();
+				$('#verifiedCountDiv').show();
+				$('#updatedCountDiv').show();
+				$('#matchedCountDiv').show();
+				$('#unMatchedCountDiv').show();
+				$('#notVerifiedCountDiv').show();
+				
+				$('#collecedCountDiv').html('<span style="font-weight:bold;"> Collectd  </span> : '+result[0].cadreCount+'</br>');
+				$('#verifiedCountDiv').html('<span style="font-weight:bold;"> Verified  </span> : '+result[0].mobileCount+'</br>');
+				$('#updatedCountDiv').html('<span style="font-weight:bold;">  Updated  </span> : '+result[0].casteCount+'</br>');
+				$('#matchedCountDiv').html('<span style="font-weight:bold;"> Matched   </span> : '+result[0].totalCount+'</br>');
+				$('#unMatchedCountDiv').html('<span style="font-weight:bold;"> Un Matched  </span> : '+result[0].influencePeopleCount+'</br>');
+				$('#notVerifiedCountDiv').html('<span style="font-weight:bold;"> Not Identifed  </span> : '+result[0].localAreaCount+'</br>');
+			}
+		});
+}
 function getDayWiseReportByConstituencyIdAndUserType()
 {
 
