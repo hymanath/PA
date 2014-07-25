@@ -32,7 +32,7 @@
 					filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffea51', endColorstr='#ffa600',GradientType=0 );
 					}
 			.survey_nav ul li{line-height:40px;}
-			.survey_nav ul li a{color:#333; font-weight:bold; font-size:13px; padding:12px 4px;text-decoration:none;text-shadow:0px 1px #ffcc00; }
+			.survey_nav ul li a{color:#333; font-weight:bold; font-size:11px; padding:12px 4px;text-decoration:none;text-shadow:0px 1px #ffcc00; }
 			.survey_nav ul li a:hover{background:rgba(255,0,0,0.1);}
 			.survey_nav ul li a.selected{color:#fff; background:red;text-shadow:0px 1px #4f4f4f; }
 			.requiredFont,#noBoothsDivId{
@@ -98,16 +98,17 @@
 				<ul class="inline unstyled">
 					<!-- <li><a class="highlight selected " id="userTypeTab" onclick="showHideTabs(this.id);"> User Type Creation </a></li>-->
 					<li><a class="highlight  selected" id="userCreationTab" onclick="showHideTabs(this.id);"> User Creation </a></li>
-					<li><a class="highlight" id="assignLeaderTab" onclick="showHideTabs(this.id);"> Assign/Release Leader</a></li>
+					<li><a class="highlight" id="assignLeaderTab" onclick="showHideTabs(this.id);"> Assign/Release</a></li>
 					<li><a class="highlight" id="tabAssignTab" onclick="showHideTabs(this.id);"> Tab Assign </a></li>
 					<li><a class="highlight" id="boothAssignTab" onclick="showHideTabs(this.id);"> Booth Assign </a></li>
 					<li><a class="highlight" id="deactivationTab" onclick="showHideTabs(this.id);"> Deactivation </a></li>
 					<li><a class="highlight" id="verificationDetailsTab" onclick="showHideTabs(this.id);"> Verification </a></li>
 					<li><a class="highlight" id="webMonitorAssignUsersTab" onclick="showHideTabs(this.id);">Web Monitor </a></li>
-					<li class="highlight" id="reportsTab" onclick="showHideTabs(this.id);">
+					<li><a class="highlight" id="boothPercentageTab" onclick="showHideTabs(this.id);">Booth Percentage</a></li>
+					<!--<li class="highlight" id="reportsTab" onclick="showHideTabs(this.id);">
 					
 					
-					</li>
+					</li>-->
 					<!--<li><a class="highlight" id="reportTab" onclick="redicttoVerificationPage();"> Reports	 </a></li>-->
 				</ul>
 			</div>
@@ -199,7 +200,49 @@
 				</div>
 			</div>
 		</div>
-		
+		<div class="row" id="saveBoothsPercentage" style="dispaly:none;">
+			<div class="span10 offset1">
+				<div class="row-fluid ">
+					<div class="span12 widgetservey_Red m_top20">
+							<h4 id="wmtitleId"></h4>
+							<div class="row">
+						<div id="errorDivSB" class="span8 offset1 clearCls"></div>
+						</div>
+								<div class="row">
+									<div class="offset1">
+										<div class="row-fluid">
+											
+											<div class="span4">
+												Select Constituency <font class="requiredFont">*</font>
+													<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="constituencyForSP" list="dataAvilableConstituencies" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" onChange="getBoothsDetailsInCallStatusInfoForSavePercnt(this.value,'boothIdForSavePercentages')"/>
+													
+											</div>
+											
+											<div class="span3">
+												Select Booth <font class="requiredFont">*</font> : 
+												<select class="input-block-level" id = "boothIdForSavePercentages" > <option value="0">Select Booth</option></select>
+											</div>
+												
+												
+											<div class="span3">
+												Percenage <font class="requiredFont">*</font> : 
+												<input type="text" placeholder="Enter Percentage" id="percenageForBooth"/></div>
+												<div class="span1" style="margin:25px -8px 0 8px;width: 15px;">
+													<img id="boothImageForSavingPercent" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
+												</div>
+											</div>
+											
+										</div>	
+									</div>
+								</div>
+						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="saveBoothPercentage()">SUBMIT</button></div>
+						<div id="retunMsg" class="clearCls"></div>
+						<img src='images/Loading-data.gif' class="offset5"  id="mainajaximgForWm" style="width:70px;height:60px;display:none;"/>
+                         <div id="dayWiseReportDivForWm" class="clearCls"></div>
+							
+					</div>
+				</div>
+			</div>
 		<!----TAB Assign ---->		
 		<div class="row" id="tabAssignDiv">
 			<div class="span10 offset1">

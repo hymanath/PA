@@ -7824,6 +7824,11 @@
 				 <param name="root">dcDvCollectedDataVOList</param>
 			</result>
   		</action>
+  		<action name="getVerifierCollectedDetailsAction" class="surveyDataDetailsAction" method="getVerifierCollectedDetails">
+  			<result type="json" name="success">
+				 <param name="root">dcDvCollectedDataVOList</param>
+			</result>
+  		</action>
   		<action name="getDcorDvUsersByConstituencyAction" class="surveyDataDetailsAction" method="getDcorDvUsersByConstituency">
   			<result type="json" name="success">
 				 <param name="root">usersList</param>

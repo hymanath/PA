@@ -538,7 +538,7 @@ if(id == "userTypeTab")
 	$("#assignBoothToLeaderDiv").hide();
 	$("#verificationDiv").hide();
 	$("#leaderNameDiv").hide();
-	
+	$("#saveBoothsPercentage").hide();
 	}
 
 else if(id == "userCreationTab")
@@ -561,6 +561,7 @@ else if(id == "userCreationTab")
 	$('#password').val('');
 	$('#retypePassword').val('');
 	$('#mobileNumber').val('');
+	$("#saveBoothsPercentage").hide();
 	}
 
 	else if(id == "tabAssignTab")
@@ -584,6 +585,7 @@ else if(id == "userCreationTab")
 	$(".datePickerCls ").val('');
 	$(".newTabCls ").val('');
 	$("#webMonitorAssignUsersDivId").hide();
+	$("#saveBoothsPercentage").hide();
 	buildDatePicker();
 	//getUserTypes('surveyUserTypeForSelect');
 	getSurveyConstituencyList('constitList');
@@ -601,6 +603,7 @@ else if(id == "userCreationTab")
 	$("#verificationDiv").hide();
 	$("#leaderNameDiv").hide();
 	$("#webMonitorAssignUsersDivId").hide();
+	$("#saveBoothsPercentage").hide();
 	//getUserTypes('boothAssignUserType');
 	}
 	
@@ -616,11 +619,12 @@ else if(id == "userCreationTab")
 	$("#assignBoothToLeaderDiv").hide();
 	$("#verificationDiv").hide();
 	$("#leaderNameDiv").hide();
+	$("#saveBoothsPercentage").hide();
 	//getUserTypes('deactiveUserTypeId');
 	}
 
 	
-		else if(id == "assignLeaderTab")
+	else if(id == "assignLeaderTab")
 	{
 	$(".errorCls").html('');
 	$("#createUserTypeDiv").hide();
@@ -632,10 +636,10 @@ else if(id == "userCreationTab")
 	$("#verificationDiv").hide();
 	$("#leaderNameDiv").hide();
 	$("#webMonitorAssignUsersDivId").hide();
+	$("#saveBoothsPercentage").hide();
 	//getUserTypes('typeId');
-	
 	}
-		else if(id == "verificationDetailsTab")
+	else if(id == "verificationDetailsTab")
 	{
 	$(".errorCls").html('');
 	$("#createUserTypeDiv").hide();
@@ -647,6 +651,7 @@ else if(id == "userCreationTab")
 	$("#verificationDiv").show();
 	$("#leaderNameDiv").show();
 	$("#webMonitorAssignUsersDivId").hide();
+	$("#saveBoothsPercentage").hide();
 	getLeaderDetetilsByContituencyWise();
 
 	}
@@ -662,8 +667,24 @@ else if(id == "userCreationTab")
 	$("#assignBoothToLeaderDiv").hide();
 	$("#verificationDiv").hide();
 	$("#leaderNameDiv").hide();
-	
+	$("#saveBoothsPercentage").hide();
 	$("#webMonitorAssignUsersDivId").show();
+
+	}
+	
+	else if(id == "boothPercentageTab")
+	{
+	$(".errorCls").html('');
+	$("#createUserTypeDiv").hide();
+	$("#userCreationDiv").hide();
+	$("#tabAssignDiv,#tabAssignUserDiv").hide();
+	$("#boothAssigniv").hide();
+	$("#userDeactivationDiv").hide();
+	$("#assignBoothToLeaderDiv").hide();
+	$("#verificationDiv").hide();
+	$("#leaderNameDiv").hide();
+	$("#saveBoothsPercentage").show();
+	$("#webMonitorAssignUsersDivId").hide();
 
 	}
 
@@ -2295,4 +2316,73 @@ function getUsersForLeaders(divId,value)
 		
 	});
 }	
+
+function getBoothsDetailsInCallStatusInfoForSavePercnt(constituencyId,divId)
+{
+
+$("#errorDivSB").html("");
+
+	$("#boothImage").show();
+	var jObj =
+	{
+	  constituencyId:constituencyId     
+	};
+
+	 $.ajax({
+			type:'GET',
+			url: 'getBoothsDetailsInCallStatusAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){				
+				//buildDayWiseReportByUserType(result);		
+				$("#boothImage").hide();
+				$('#'+divId+'').find('option').remove();
+
+				$.each(result,function(index,value){
+					$('#'+divId+'').append('<option value="'+value.id+'">Booth - '+value.name+'</option>');
+				});
+			
+
+		});	
+}
+function saveBoothPercentage(){
+	$("#boothImageForSavingPercent").show();
+	var consId = $("#constituencyForSP").val();
+	var boothId = $("#boothIdForSavePercentages").val();
+	var percentage =$("#percenageForBooth").val();
+	
+	$("#errorDivSB").html("");
+	
+	if(consId == 0){
+		$("#errorDivSB").html("<span style='color:red'>Please Select Constituency</span>");
+		$("#boothImageForSavingPercent").hide();
+		return;
+	}
+	if(boothId == 0 || boothId == null){
+		$("#errorDivSB").html("<span style='color:red'>Please Select Booth</span>");
+		$("#boothImageForSavingPercent").hide();
+		return;
+	}
+	if(percentage==""){
+		$("#errorDivSB").html("<span style='color:red'>Please Enter Percentage</span>");
+		$("#boothImageForSavingPercent").hide();
+		return;
+	}
+	
+	var jObj ={
+	  boothId:boothId,
+	  percentage:percentage
+	};
+
+	 $.ajax({
+			type:'GET',
+			url: 'saveBoothPercentageForCasteSurveyAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)}
+		  }).done(function(result){		
+				$("#boothImageForSavingPercent").hide();
+				$("#errorDivSB").html("<span style='color:blue'>"+result+"</span>");
+		});	
+}
+
 
