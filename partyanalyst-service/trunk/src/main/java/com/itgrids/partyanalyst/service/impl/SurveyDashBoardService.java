@@ -633,7 +633,7 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 				
 			}else
 			{
-			   // surveyCompletedLocationsDetailsDAO.deleteBoothCompletedLocationDetailsByBoothId(boothId);
+			    surveyCompletedLocationsDetailsDAO.deleteBoothCompletedLocationDetailsByBoothId(boothId);
 			    
 				WebMonitorCompletedLocationsDetails webMonitorCompletionDetails = new WebMonitorCompletedLocationsDetails();
 			    
