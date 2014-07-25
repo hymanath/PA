@@ -1331,7 +1331,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			Long boothId = jObj.getLong("boothId");
 			Long constituencyId = jObj.getLong("constituencyId");
 			String searchDate = jObj.getString("searchDate");
-			voterVerificationList = 	surveyDataDetailsService.getSurveyVotersList(constituencyId,boothId,surveyUserId,searchDate,null);			
+			voterVerificationList = 	surveyDataDetailsService.getSurveyVotersList(constituencyId,boothId,surveyUserId,searchDate);			
 		} catch (Exception e) {
 			LOG.error(" exception occured in getSurveyVotersList() ,ConstituencyDetailsAction class",e);
 		}
@@ -2001,7 +2001,7 @@ public String getPanchayatsStatusDetails()
 	  
 	  return Action.SUCCESS;
   }
-  
+  /*
   public String getCastewiseSurveyVotersList(){
 		try {
 			HttpSession session = request.getSession();
@@ -2019,7 +2019,7 @@ public String getPanchayatsStatusDetails()
 			String searchDate = jObj.getString("searchDate");
 			Long casteId = jObj.getLong("casteId");
 			
-			voterVerificationList = 	surveyDataDetailsService.getSurveyVotersList(constituencyId,boothId,surveyUserId,searchDate,casteId);	
+			voterVerificationList = 	surveyDataDetailsService.getSurveyVotersList(constituencyId,boothId,surveyUserId,searchDate);	
 			
 		} catch (Exception e) {
 			LOG.error(" exception occured in getSurveyVotersList() ,ConstituencyDetailsAction class",e);
@@ -2027,7 +2027,7 @@ public String getPanchayatsStatusDetails()
 		return Action.SUCCESS;
   }
   
-  
+  */
   public String getLeaderUsers()
 	{
 		try
