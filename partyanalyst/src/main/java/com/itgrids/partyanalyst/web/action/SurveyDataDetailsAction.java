@@ -1980,4 +1980,24 @@ public String getPanchayatsStatusDetails()
 	  
 	  return Action.SUCCESS;
   }
+  
+  public String getLeaderUsers()
+	{
+		try
+		{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			jObj = new JSONObject(getTask());
+			countList = surveyDataDetailsService.getUsersForLeader(jObj.getLong("leaderId"));
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getLeaderUsers", e);
+		}
+		return Action.SUCCESS;
+	}
 }
