@@ -24,8 +24,8 @@ public class SurveyUserRelationDAO extends GenericDaoHibernate<SurveyUserRelatio
 	public List<Object[]> getUsersByConstituencyAndLeader(Long leaderId,Long constituencyId)
 	{
 		Query query = getSession().createQuery("select distinct model.surveyUser.surveyUserId, model.surveyUser.userName, model1.booth.partNo, model1.booth.boothId from " +
-				"  SurveyUserRelation model ,SurveyUserBoothAssign model1 where model.surveyUser.surveyUserId =  model1.surveyUser.surveyUserId and model.activeStatus = 'Y'" +
-				"  and  model.surveyLeader.surveyUserId = :leaderId and model1.booth.constituency.constituencyId =:constituencyId and model1.isDelete = 'N' " +
+				"  SurveyUserRelation model ,SurveyUserBoothAssign model1 where model.surveyUser.surveyUserId =  model1.surveyUser.surveyUserId and model.activeStatus = 'N'" +
+				"  and  model.surveyLeader.surveyUserId = :leaderId and model1.booth.constituency.constituencyId =:constituencyId and model1.isDelete = 'Y' and  model.surveyUser.activeStatus = 'Y'" +
 				"order by model1.booth.partNo asc");
 		query.setParameter("leaderId", leaderId);
 		query.setParameter("constituencyId", constituencyId);
