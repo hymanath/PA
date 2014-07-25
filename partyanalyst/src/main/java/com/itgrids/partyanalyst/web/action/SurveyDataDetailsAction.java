@@ -616,7 +616,6 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 				return Action.INPUT;
 			}
 			jObj = new JSONObject(getTask());
-			
 			returnList = surveyDataDetailsService.getSurveyUsersByUserType(jObj.getLong("userTypeId"));
 		} 
 		catch (Exception e)
@@ -638,7 +637,6 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 				return Action.INPUT;
 			}
 			jObj = new JSONObject(getTask());
-			
 			returnList = surveyDataDetailsService.getSurveyUsersByUserType(jObj.getLong("userTypeId"),jObj.getLong("constituencyId"));
 		} 
 		catch (Exception e)
