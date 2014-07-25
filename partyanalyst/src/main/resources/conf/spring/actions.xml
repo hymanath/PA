@@ -1459,6 +1459,7 @@
 	</bean>
 	<bean id="partyCadreSearchAction" class="com.itgrids.partyanalyst.web.action.PartyCadreSearchAction" singleton="false">
 		<property name="cadreManagementService" ref="cadreManagementService"></property>
+		<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>
 </beans>	
 	
