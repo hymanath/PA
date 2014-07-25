@@ -1152,7 +1152,7 @@ function getLeadrDetailsByConstituency()
 				for(var i in result)
 				{
 					str += '<tr>';
-					str += '<td><a href="javascript:{getInActiveUsersDetailsByLeaderId('+result[i].id+')}">'+result[i].name+'</a></td>';
+					str += '<td><a onClick="getUsersOfLeader('+result[i].id+');">'+result[i].name+'</a></td>';
 					str += '<td>'+result[i].desc+'</td>';
 					str += '</tr>';
 				}
@@ -1198,6 +1198,8 @@ function getUserDetailsByConstituency()
 		  }).done(function(result){				
 				//buildDetailsTable(result);
 				buildLocationDetails(result);
+				getUserDetailsByConstituencyForTable();
+				
 		});
 }
 
@@ -1286,7 +1288,7 @@ function buildLocationDetails(result)
 		}
 		
 	}
-	getUserDetailsByConstituencyForTable();
+	
 } 
 
 
@@ -2206,6 +2208,74 @@ function saveBoothPercentage(){
 				$("#boothImageForSavingPercent").hide();
 				$("#errorDivSB").html("<span style='color:blue'>"+result+"</span>");
 		});	
+}
+var users=[];
+function getUsersOfLeader(id)
+{
+	var constituencyId = $('#userConstituencyId').val();
+	var jsObj =
+	{
+	leaderId :id,
+	constituencyId : constituencyId,
+	task : "getSurveyUsersByleaderId"
+	}
+	$.ajax({
+	type:'GET',
+	url: 'getLeaderUsersAction.action',
+	dataType: 'json',
+	data: {task:JSON.stringify(jsObj)},
+	}).done(function(result){	
+			users = result;
+			getInActiveUsersDetailsByLeaderId(id,users);
+		});
+		
+}
+
+function getInActiveUsersDetailsByLeaderId(leaderId,users)
+{
+$('#tableDiv').html('');
+var jObj =
+	{	 
+	  constituencyId: $("#userConstituencyId").val(),
+	  dateStr : $("#dateId").val(),
+	  userId : users
+
+	};
+	$.ajax({
+			type:'GET',
+			url: 'getLatLongForSurveyUsersByConstituencyAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){	
+			  
+				buildLocationDetails(result);
+				getUserDetailsByConstituencyForTable1(users);
+				
+				
+		});
+
+}
+
+function getUserDetailsByConstituencyForTable1(users)
+{
+
+var jObj =
+	{
+	 constituencyId: $("#userConstituencyId").val(),
+	 date : $("#dateId").val(),
+	 userIds : users,
+	 task:"getDetails"
+
+	};
+	$.ajax({
+			type:'GET',
+			url: 'getUserDetailsByConstituencyAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){				
+				buildDetailsTable(result);
+		});
+
 }
 
 

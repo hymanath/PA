@@ -7847,5 +7847,11 @@
 				 <param name="root">status</param>
 			</result>
   		</action>
+  		
+  		<action name="getLeaderUsersAction" class="surveyDataDetailsAction" method="getLeaderUsers">
+  			<result type="json" name="success">
+				 <param name="root">countList</param>
+			</result>
+  		</action>
 </package>
 </struts>      
