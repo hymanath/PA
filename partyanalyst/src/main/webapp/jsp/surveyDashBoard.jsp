@@ -98,6 +98,8 @@
 							<thead class="alert alert-success">
 								<tr>
 									<th>Constituency Name</th>
+									<th>Total Voters </th>
+									<th>Data Collected Count </th>
 									<th>Total Booths</th>
 									<th>Completed</th>
 									<th>Processing </th>
@@ -110,6 +112,8 @@
 								<tr>
 
 									<td><a href="javascript:{getConstituencyDetalReport(${constituency.locationId})}">${constituency.locationName}</a></td>
+									<td>${constituency.totalVoters}</td>
+									<td>${constituency.totalCollectedCount}</td>
 									<td>${constituency.totalCount}</td>
 									<td>${constituency.completedCount}</td>
 									<td>${constituency.processingCount}</td>
