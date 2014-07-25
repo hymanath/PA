@@ -80,12 +80,13 @@ public class SurveyCompletedLocationsDetailsDAO extends GenericDaoHibernate<Surv
 		query.executeUpdate();
 	}
 	
-	public void deleteBoothCompletedLocationDetailsByBoothId(Long boothId)
+	public void deleteBoothCompletedLocationDetailsByBoothId(Long boothId,Long userTypeId)
 	{
 		Query query = getSession().createQuery("delete from SurveyCompletedLocationsDetails SCLD  where  " +
-				"SCLD.locationValue = :boothId");
+				"SCLD.locationValue = :boothId and SCLD.surveyUserType.surveyUsertypeId = :surveyUsertypeId");
 		
 		query.setParameter("boothId", boothId);		
+		query.setParameter("surveyUsertypeId", userTypeId);
 		 query.executeUpdate();
 	}
 	
@@ -111,8 +112,19 @@ public class SurveyCompletedLocationsDetailsDAO extends GenericDaoHibernate<Surv
 		query.setParameterList("boothIds", boothIds);
 		
 		return query.list();
-
 		
+	}
+	
+	public List<Long> getVerificationCompletedBoothsDetailsByConstituencyId(Long constituencyId)
+	{
+		Query query = getSession().createQuery("select distinct SCLD.locationValue from SurveyCompletedLocationsDetails SCLD,Booth B " +
+				"where " +
+				"SCLD.locationValue = B.boothId and B.constituency.constituencyId = :constituencyId and SCLD.surveyUserType.surveyUsertypeId = :verifierUserTypeId");
+		
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("verifierUserTypeId", IConstants.VERIFIER_ROLE_ID);
+		
+		return query.list();
 	}
 	
 }

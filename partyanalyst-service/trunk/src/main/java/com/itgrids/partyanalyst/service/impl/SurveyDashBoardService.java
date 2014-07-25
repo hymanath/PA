@@ -1,8 +1,11 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -18,13 +21,15 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ISurveyCompletedLocationsDetailsDAO;
 import com.itgrids.partyanalyst.dao.ISurveyConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
+import com.itgrids.partyanalyst.dao.ISurveyUserRelationDAO;
 import com.itgrids.partyanalyst.dao.IWebMonitorCompletedLocationsDetailsDAO;
-import com.itgrids.partyanalyst.dao.hibernate.SurveyConstituencyDAO;
 import com.itgrids.partyanalyst.dto.SurveyCompletionDetailsVO;
 import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
+import com.itgrids.partyanalyst.dto.SurveyReportVO;
 import com.itgrids.partyanalyst.model.SurveyCompletedLocationsDetails;
 import com.itgrids.partyanalyst.model.WebMonitorCompletedLocationsDetails;
 import com.itgrids.partyanalyst.service.ISurveyDashBoardService;
+import com.itgrids.partyanalyst.service.ISurveyDetailsService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class SurveyDashBoardService implements ISurveyDashBoardService {
@@ -54,6 +59,12 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 	@Autowired
 	private IWebMonitorCompletedLocationsDetailsDAO webMonitorCompletedLocationsDetailsDAO; 
 	
+	@Autowired
+	private ISurveyUserRelationDAO surveyUserRelationDAO;
+	
+	
+	@Autowired
+	private ISurveyDetailsService surveyDetaisService;
 
 	public SurveyDashBoardVO getCompletdConstituenciesDetails()
 	{
@@ -633,7 +644,7 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 		{
 			if(statusId.equals(IConstants.BOOTH_PROCESS_DC_STATUS_ID))
 			{
-			    surveyCompletedLocationsDetailsDAO.deleteBoothCompletedLocationDetailsByBoothId(boothId);
+			    surveyCompletedLocationsDetailsDAO.deleteBoothCompletedLocationDetailsByBoothId(boothId,IConstants.DATA_COLLECTOR_ROLE_ID);
 			    webMonitorCompletedLocationsDetailsDAO.deleteBoothCompletedLocationDetailsByBoothId(boothId);
 			    
 			}else if(statusId.equals(IConstants.BOOTH_COMPLETED_DC_STATUS_ID))
@@ -645,13 +656,31 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 				    
 				    surveyCompletedLocationDetails.setLocationScopeId(IConstants.BOOTH_SCOPE_ID);
 				    surveyCompletedLocationDetails.setLocationValue(boothId);
-				    surveyCompletedLocationDetails.setSurveyUserTypeId(1L);
+				    surveyCompletedLocationDetails.setSurveyUserTypeId(IConstants.DATA_COLLECTOR_ROLE_ID);
 				    
 				    surveyCompletedLocationsDetailsDAO.save(surveyCompletedLocationDetails);
 				
-			}else
+			}else if(statusId.equals(IConstants.VERIFICATION_PROCESS_STATUS_ID))
 			{
-			    surveyCompletedLocationsDetailsDAO.deleteBoothCompletedLocationDetailsByBoothId(boothId);
+			 
+			    surveyCompletedLocationsDetailsDAO.deleteBoothCompletedLocationDetailsByBoothId(boothId,IConstants.VERIFIER_ROLE_ID);
+			
+			}
+			else if(statusId.equals(IConstants.VERIFICATION_COMPLETD_STATUS_ID))
+			{
+				 
+			  	SurveyCompletedLocationsDetails surveyCompletedLocationDetails = new SurveyCompletedLocationsDetails();
+			    
+			    surveyCompletedLocationDetails.setLocationScopeId(IConstants.BOOTH_SCOPE_ID);
+			    surveyCompletedLocationDetails.setLocationValue(boothId);
+			    surveyCompletedLocationDetails.setSurveyUserTypeId(IConstants.VERIFIER_ROLE_ID);
+			    
+			    surveyCompletedLocationsDetailsDAO.save(surveyCompletedLocationDetails);
+			
+			}
+			else
+			{
+			    surveyCompletedLocationsDetailsDAO.deleteBoothCompletedLocationDetailsByBoothId(boothId,IConstants.DATA_COLLECTOR_ROLE_ID);
 			    
 				WebMonitorCompletedLocationsDetails webMonitorCompletionDetails = new WebMonitorCompletedLocationsDetails();
 			    
@@ -685,5 +714,327 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 		
 		return surveyDates;
 	}
+	
+	
+	public List<SurveyReportVO> getUsersCompleteReportByStartAndEndDates(String startDate,String endDate)
+	{
+		List<SurveyReportVO> resultList  = new ArrayList<SurveyReportVO>();
+		
+		LOG.info("Entered into the getUsersCompleteReportByStartAndEndDates service method");
+		try
+		{
+			
+			SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
+			SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd" );
+			Date startDt;
+			Date endDt;
+			startDt = originalFormat.parse(startDate);
+			Date convertedstrdate = targetFormat.parse(targetFormat.format(startDt));			
+			
+			endDt = originalFormat.parse(endDate);
+			Date convertedenddate = targetFormat.parse(targetFormat.format(endDt));
+			
+			if(!startDate.toString().equalsIgnoreCase(endDate.toString()))
+				return getUsersReportDetailsForDifferentDates(convertedstrdate,convertedenddate);
+			
+			List<Object[]> usersDetails = surveyDetailsInfoDAO.getUsersCompleteReportForSameDate(convertedstrdate,convertedenddate);
+			
+			List<Object[]> startEndTimes = surveyDetailsInfoDAO.getStartAndEndTimesByUserIds(convertedstrdate,convertedenddate);
+			
+			
+			
+			List<Long> userIds = new ArrayList<Long>();
+			
+			for(Object[] obj:usersDetails)
+				if(!userIds.contains((Long)obj[1]))
+				userIds.add((Long)obj[1]);
+			
+			Map<Long,String> leadersMap = getLeadersDetailsByUserIds(userIds);
+			
+			for(Long userId:userIds)
+			{
+				SurveyReportVO userVO = new SurveyReportVO();
+				userVO.setUserid(userId);
+				if(leadersMap.get(userId) != null)
+				{
+					userVO.setLeaderName(leadersMap.get(userId).split("-")[0]);
+					userVO.setMobileNo(leadersMap.get(userId).split("-")[1]);
+				}
+				resultList.add(userVO);
+			}
+			
+			for(Object[] obj:startEndTimes)
+			{
+				SurveyReportVO userVO = getMatchedUserVO(resultList,(Long)obj[2]);
+				
+				if(userVO != null)
+				{
+				 userVO.setStartTime(obj[0].toString());
+				 userVO.setEndTime(obj[1].toString());
+				}
+			}
+			
+			
+			for(Object[] obj:usersDetails)
+			{
+				SurveyReportVO userVO = getMatchedUserVO(resultList,(Long)obj[1]);
+				
+				userVO.setName(obj[5].toString());
+				
+				userVO.setCount(userVO.getCount() +1);
+				
+				if(obj[3] != null)
+					userVO.setCasteCollectedCount(userVO.getCasteCollectedCount()+1);
+				
+				if(obj[4] != null)
+					userVO.setHamletCollectedCount(userVO.getHamletCollectedCount() +1);
+				
+				if(obj[2] != null)
+					userVO.setMobileNumberCollectedCount(userVO.getMobileNumberCollectedCount()+1);
+				
+			}
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Exception raised in getUsersCompleteReportByStartAndEndDates service method");
+		}
+		
+		return resultList;
+	}
+	
+	public SurveyReportVO getMatchedUserVO(List<SurveyReportVO> resultList,Long userId)
+	{
+		
+		for(SurveyReportVO user:resultList)
+			if(user.getUserid().equals(userId))
+				return user;
+		return null;
+	}
+	
 
+	public List<SurveyReportVO> getUsersReportDetailsForDifferentDates(Date startDate,Date endDate)
+	{
+		List<SurveyReportVO> resultList = new ArrayList<SurveyReportVO>();
+		LOG.debug("Entered into the getUsersReportDetailsForDifferentDates service method ");
+		try
+		{
+			List<Object[]> usersCountDtls = surveyDetailsInfoDAO.getUsersReportDetailsForBetweenDates(startDate,endDate);
+			
+			List<Long> userIds = new ArrayList<Long>();
+			List<String> datesList = new ArrayList<String>();
+			
+			
+			for(Object[] obj:usersCountDtls)
+			{
+				if(!userIds.contains((Long)obj[1]))
+					userIds.add((Long)obj[1]);
+				
+				if(!datesList.contains(obj[3].toString()))
+					datesList.add(obj[3].toString());
+			}
+			
+			Map<Long,String> leadersMap = getLeadersDetailsByUserIds(userIds);
+			
+			
+			for(Long userId:userIds)
+			{
+				SurveyReportVO userVO = new SurveyReportVO();
+				userVO.setUserid(userId);
+				
+				if(leadersMap.get(userId) != null)
+				{
+				 userVO.setLeaderName(leadersMap.get(userId).split("-")[1]);
+				 userVO.setMobileNo(leadersMap.get(userId).split("-")[0]);
+				}
+				
+				for(String date:datesList)
+				{
+					SurveyReportVO dateVO = new SurveyReportVO();
+					dateVO.setSurveyDate(date);
+					userVO.getSubList().add(dateVO);
+				}
+				
+				resultList.add(userVO);
+			}
+			
+			
+			for(Object[] obj:usersCountDtls)
+			{
+				SurveyReportVO userVO = getMatchedUserVO(resultList, (Long)obj[1]);
+				userVO.setName(obj[2].toString());
+				SurveyReportVO dateVO = getMatchedDateVO(userVO.getSubList(),obj[3].toString());
+				dateVO.setCount((Long)obj[0]);
+			}
+			
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Exception raised in getUsersReportDetailsForDifferentDates service method ");
+
+		}
+		return resultList;
+	}
+	
+	public SurveyReportVO getMatchedDateVO(List<SurveyReportVO> resultList,String date)
+	{
+		
+		for(SurveyReportVO dateVO:resultList)
+			if(dateVO.getSurveyDate().equalsIgnoreCase(date))
+				return dateVO;
+		return null;
+	}
+	
+	public List<SurveyReportVO> getUserReportForADate(Long userId,String surveyDate)
+	{
+		 List<SurveyReportVO> resultList = new ArrayList<SurveyReportVO>();
+		 LOG.info("Entered into the getUserReportForADate service method");
+		try
+		{
+			SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd" );
+			
+			Date surveyDt = targetFormat.parse(surveyDate);
+			
+			List<Object[]> userReportList = surveyDetailsInfoDAO.getUserReportForADate(userId,surveyDt);
+			
+			 /*SDI.voter.voterId, SDI.surveyUser.surveyUserId, SDI.mobileNumber, SDI.caste ,SDI.hamlet,SDI.surveyUser.userName," +
+				"SDI.booth.boothId,SDI.booth.partNo,SDI.booth.constituency.constituencyId ,SDI.booth.constituency.name "*/
+			
+            Map<Long,List<Long>> constnBoothIdsMap = new LinkedHashMap<Long, List<Long>>();	
+            
+            
+            for(Object[] obj:userReportList)
+            {
+            	List<Long> boothIds = null;
+            	if(constnBoothIdsMap.get((Long)obj[8]) != null)
+            	{
+            		boothIds = constnBoothIdsMap.get((Long)obj[8]);
+            		
+            	}else
+            	{
+            		boothIds = new ArrayList<Long>();
+            	}
+            	
+            	if(!boothIds.contains((Long)obj[6]))
+            	boothIds.add((Long)obj[6]);
+            	constnBoothIdsMap.put((Long)obj[8], boothIds);
+            }
+			
+            
+            for(Entry<Long,List<Long>> entry:constnBoothIdsMap.entrySet())
+            {
+                 SurveyReportVO constituencyVO = new SurveyReportVO();
+                 
+                 constituencyVO.setId(entry.getKey());
+                 
+                 for(Long boothId:entry.getValue())
+                 {
+                	 SurveyReportVO boothVO = new SurveyReportVO();
+                	 
+                	 boothVO.setId(boothId);
+                	 
+                	 constituencyVO.getSubList().add(boothVO);
+                 }
+                 
+                 resultList.add(constituencyVO);
+                 
+            }
+
+            
+            for(Object[] obj:userReportList)
+            {
+            	SurveyReportVO constituencyVO = getMatchedLocationVO(resultList, (Long)obj[8]);
+            	SurveyReportVO boothVO = getMatchedLocationVO(constituencyVO.getSubList(),(Long)obj[6]);
+            	
+            	
+				if(obj[3] != null)
+					boothVO.setCasteCollectedCount(boothVO.getCasteCollectedCount()+1);
+				
+				if(obj[4] != null)
+					boothVO.setHamletCollectedCount(boothVO.getHamletCollectedCount() +1);
+				
+				if(obj[2] != null)
+					boothVO.setMobileNumberCollectedCount(boothVO.getMobileNumberCollectedCount()+1);
+            	
+            }
+          
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			 LOG.error("Exception raised in getUserReportForADate service method");
+
+		}
+		
+		return resultList;
+	}
+	
+	public SurveyReportVO getMatchedLocationVO(List<SurveyReportVO> resultList,Long locationId)
+	{
+		
+		for(SurveyReportVO constituency:resultList)
+			if(constituency.getId().equals(locationId))
+				return constituency;
+		return null;
+	}
+	
+	public Map<Long,String> getLeadersDetailsByUserIds(List<Long> userIds)
+	{
+		 LOG.info("Entered into the getLeadersDetailsByUserIds service method");
+
+		 Map<Long,String> resultMap = new HashMap<Long, String>();
+		try
+		{
+			List<Object[]> leadersDetails = surveyUserRelationDAO.getLeadersByForUsers(userIds);
+			
+			
+			for(Object[] obj:leadersDetails)
+			{
+				
+				resultMap.put((Long)obj[0],obj[1].toString() +"-"+obj[2].toString());
+				
+			}
+			
+		}catch(Exception e)
+		{
+		   e.printStackTrace();
+		  LOG.error("Exception raised in getLeadersDetailsByUserIds service method");
+		}
+		return resultMap;
+	}
+	
+	public List<SurveyReportVO> getVerifiedBoothsDetails(String status,Long constituencyId)
+	{
+		List<SurveyReportVO> resultList = new ArrayList<SurveyReportVO>();
+
+		try
+		{
+			
+			List<Long> verificationBoothsList = surveyDetailsInfoDAO.getVerificationStartedBoothsDetailsByConstituencyId(constituencyId);
+			List<Long> verificationCompletionList = surveyCompletedLocationsDetailsDAO.getVerificationCompletedBoothsDetailsByConstituencyId(constituencyId);
+			List<Long> verificationProcessList = new ArrayList<Long>();
+
+		
+			for(Long processId:verificationBoothsList)
+				if(!verificationCompletionList.contains(processId))
+					verificationProcessList.add(processId);
+			
+			
+			if(status.equalsIgnoreCase("process"))
+			{
+				resultList = surveyDetaisService.getSurveyDetailsByBoothIds(verificationProcessList);
+				
+			}else
+			{
+				resultList = surveyDetaisService.getSurveyDetailsByBoothIds(verificationCompletionList);
+			}
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return resultList;
+	}
 }
