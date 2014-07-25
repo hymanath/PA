@@ -66,7 +66,7 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	public List<Object[]> getLatLongForSurveyUsersByConstituencyByUser(Long constituencyId,Date date,List<Long> userId);
 	
 	
-	public List<Object[]> getCasteWiseCountInBooth(Long boothId);
+	public List<Object[]> getCasteWiseCountInBooth(Long boothId,List<Long> surveyUserIds);
 	
 	public List<Object[]> getVerifierCollectedDetails(Long surveyUserId,Long boothId);
 	
@@ -110,6 +110,15 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	public List<Object[]> getSurveyDetailsByConstituencyByUsers(Long constituencyId,Long userTypeId,Date date,List<Long> userIds,Date todate);
 	public List<Long> getUserIdsForConstituency(Long constituencyId,Long userTypeId,Date date,Date todate);
 	public List<Long> getUserIdsForConstituencyByUser(Long constituencyId,Long userTypeId,Date date,List<Long> userIds,Date todate);
+	
+	public Long getCasteCountByBoothByConstituency(Long constituencyId,Long surveyUsertypeId);
+	public Long getHamletCountByBoothByConstituency(Long constituencyId,Long surveyUsertypeId);
+	public Long getLocalAreaCountByBoothByConstituency(Long constituencyId,Long surveyUsertypeId);
+	public Long getCadreCountByBoothByConstituency(Long constituencyId,Long surveyUsertypeId);
+	public Long getInfluencingPeopleCountByBoothByConstituency(Long constituencyId,Long surveyUsertypeId);
+	public Long getTotalSurveyVotersByconstituency(Long constituencyId,Long surveyUsertypeId);
+	public Long getMobileCountByBoothByConstituency(Long constituencyId,Long surveyUsertypeId);
+	
 	public List<Object[]> getDataCollectedCountForConstituency(List<Long> constituenycIds);
 
 	public List<Long> getVerificationStartedBoothsDetailsByConstituencyId(Long constituencyId);
