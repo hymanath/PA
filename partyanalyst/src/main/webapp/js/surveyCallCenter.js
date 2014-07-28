@@ -63,6 +63,7 @@ function showHideTabs(id)
 		$('#saveBoothsPercentage').hide();
 		$("#verifierReportIdForVerifier").hide();;
 		$("#wmReportDiv").hide();
+		getDataReportSummary();
 
 	}
 	else if(id == "surveyStatusRprtTab"){
@@ -2513,4 +2514,57 @@ function getVerifiedBoothsDetails(status)
 			  buildSurveyBoothDetailsTable(result,5);
 		});	
 
+}
+
+function getDataReportSummary()
+{
+	var jsObj = {
+		task : "constituencySummary"
+	}
+	$("#fieldDataSummaryimg").css("display","block");
+ $.ajax({
+			type:'GET',
+			url: 'getConstituencySummaryReport.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		  }).done(function(result){
+			  $("#fieldDataSummaryimg").css("display","none");
+			  if(result.length > 0)
+			 buildSummaryForFieldData(result);
+			
+		});	
+
+}
+function buildSummaryForFieldData(result)
+{
+
+			var str ='';
+			  
+				  str+='<table class="table table-bordered m_top20 table-hover table-striped">';
+				  str+='<thead class="alert alert-success">';
+				  str+='<th>Constituency</th>';	
+				  str+='<th>Total Voters</th>';	
+				  str+='<th>Caste Tag Voters</th>';
+				  str+='<th>Caste Error Rate</th>';
+				  str+='<th>Mobile Error Rate</th>';
+				  str+=' <th>Empty Fields</th>';
+				 str+='</thead>';
+				 str+='<tbody>';
+				  for(var i in result)
+				  {
+					  str+='<tr>';
+					str+='<td>'+result[i].constituency+'</td>';
+					str+='<td>'+result[i].totalCount+'</td>';
+					str+='<td>'+result[i].casteCount+'</td>';
+					str+='<td>'+result[i].casteErrorRate+'</td>';
+					str+='<td>'+result[i].mobileErrorRate+'</td>';
+					var count = result[i].totalCount - result[i].casteCount;
+					str+='<td>'+count+'</td>';
+					
+					str+='</tr>';
+				  }
+				   str+='</tbody>';
+				  str+='</table>';
+				  $("#fieldDataSummary").html(str);
+			
 }
