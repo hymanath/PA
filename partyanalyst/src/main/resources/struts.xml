@@ -7288,7 +7288,7 @@
 			<result name="success">/jsp/houseHoldsSummary.jsp</result>
 		</action>
 		
-		<action name="surveyDataDetailsAction" class="surveyDataDetailsAction">
+		<action name="surveyDataDetailsAction" class="surveyDataDetailsAction" method="surveyDataDetailsexe">
 			<result name="success">/jsp/surveyDataDetails.jsp</result>
 			<result name="input">/jsp/loginForm.jsp?src=surveyDataDetails</result>
 		</action>

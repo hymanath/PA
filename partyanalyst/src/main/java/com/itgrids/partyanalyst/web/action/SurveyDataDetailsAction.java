@@ -382,9 +382,8 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		HttpSession session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		if(user == null)
-		{
 			return Action.INPUT;
-		}
+		
 		constituenciesList = 	surveyDataDetailsService.getAllAssemblyConstituenciesByStateId();
 		
 		dataAvilableConstituencies = surveyDataDetailsService.getSurveyStartedConstituencyList();
@@ -395,6 +394,26 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		return Action.SUCCESS;
 	}
 
+	
+	public String surveyDataDetailsexe()
+	{
+		HttpSession session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		
+		if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.SURVEY_USER_CREATION))
+			return INPUT;
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.SURVEY_USER_CREATION))
+			return ERROR;
+		constituenciesList = 	surveyDataDetailsService.getAllAssemblyConstituenciesByStateId();
+		
+		dataAvilableConstituencies = surveyDataDetailsService.getSurveyStartedConstituencyList();
+		resultVO = surveyDashBoardService.getCompletdConstituenciesDetails();
+		resultList = surveyDashBoardService.getConstituencyWiseCompletionReport(); 
+		usersList = surveyDataDetailsService.getAllWebMonitoringUsersDetails();
+		
+		return Action.SUCCESS;	
+	}
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
@@ -1265,7 +1284,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			}
 			Long userId = user.getRegistrationID();
 			
-			if(session.getAttribute(IConstants.USER) == null && 
+		 if(session.getAttribute(IConstants.USER) == null && 
 					!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.CASTE_SURVEY_CALL_CENTER))
 				return INPUT;
 			if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CASTE_SURVEY_CALL_CENTER))
