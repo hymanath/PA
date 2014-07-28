@@ -29,6 +29,11 @@ public class VerificationCompVO implements Serializable
 	private Integer notVerifiedCount = 0;;
 	private Integer verifiedCount;
 	
+	private Integer collectedCount;
+	private Integer updatedCount;
+	private Integer verifieCount;
+	private Integer notIdentifedCount;
+	
 	private String partNo;
 	private Long surveyUserType;
 	private String date;
@@ -261,6 +266,38 @@ public class VerificationCompVO implements Serializable
 
 	public void setVerifierStatus(String verifierStatus) {
 		this.verifierStatus = verifierStatus;
+	}
+
+	public Integer getCollectedCount() {
+		return collectedCount;
+	}
+
+	public void setCollectedCount(Integer collectedCount) {
+		this.collectedCount = collectedCount;
+	}
+
+	public Integer getUpdatedCount() {
+		return updatedCount;
+	}
+
+	public void setUpdatedCount(Integer updatedCount) {
+		this.updatedCount = updatedCount;
+	}
+
+	public Integer getVerifieCount() {
+		return verifieCount;
+	}
+
+	public void setVerifieCount(Integer verifieCount) {
+		this.verifieCount = verifieCount;
+	}
+
+	public Integer getNotIdentifedCount() {
+		return notIdentifedCount;
+	}
+
+	public void setNotIdentifedCount(Integer notIdentifedCount) {
+		this.notIdentifedCount = notIdentifedCount;
 	}
 	
 	

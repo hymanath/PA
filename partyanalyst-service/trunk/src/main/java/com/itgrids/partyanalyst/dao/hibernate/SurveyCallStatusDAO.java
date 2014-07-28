@@ -35,11 +35,12 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 		
 	}
 	
-	public List<Object[]> getSurveyCallDtalsByboothId(Long boothId){
+	public List<Object[]> getSurveyCallDtalsByboothId(Long boothId,Long surveyUserId){
 		Query query = getSession().createQuery("select distinct model.voter.voterId, model.mobileNoStatus, model.matchedStatus,model.casteState.casteStateId from SurveyCallStatus model" +
-				" where model.booth.boothId =:boothId order by model.surveyCallStatusId");
+				" where model.booth.boothId =:boothId and model.surveyUser.surveyUserId = :surveyUserId   order by model.surveyCallStatusId");
 		
 		query.setParameter("boothId", boothId);
+		query.setParameter("surveyUserId", surveyUserId);
 		return query.list();		
 	}
 	

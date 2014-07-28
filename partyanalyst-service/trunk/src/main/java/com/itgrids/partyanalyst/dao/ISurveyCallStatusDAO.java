@@ -12,7 +12,7 @@ public interface ISurveyCallStatusDAO extends GenericDao<SurveyCallStatus,Long>{
 	
 	public List<Object[]> getStatusListForUser(List<Long> userIds,List<Long> boothIds,Long userTypeId);
 	
-	public List<Object[]> getSurveyCallDtalsByboothId(Long boothId);
+	public List<Object[]> getSurveyCallDtalsByboothId(Long boothId,Long surveyUserId);
 	
 	public List<Object[]> getBoothWiseWmCasteUpdationDetails(List<Long> boothId);
 	public List<Object[]> getBoothsByConstituency(Long constituencyId);
