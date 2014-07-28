@@ -730,8 +730,6 @@ function getBoothsDetailsInSurveyDetailsInfo(constituencyId,divId)
 }
 
 	</script>
-	<script>
-	getDataReportSummary();
-	</script>
+	
  </body>
  </html> 
