@@ -2406,7 +2406,15 @@ function buildVerifierOrWMReport(result,buildType,buildDiv,imgId)
 		str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">Date : '+result[0].notVerifiedList[0].date+'</div> ';
 		str += '</div>';
 	}
-	
+	if(buildType == 1)
+	{
+		str += '<div class="row-fluid">';
+		str += '<div class="span3" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;" >COLLECTED : '+result[0].collectedCount+'</div> ';
+		str += '<div class="span3" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">UPDATED : '+result[0].updatedCount+'</div> ';
+		str += '<div class="span3" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">VERIFIED : '+result[0].verifieCount+'</div> ';
+		str += '<div class="span3" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">NOT IDENTIFED : '+result[0].notIdentifedCount+'</div> ';
+		str += '</div>';
+	}
 	str += '<div>';
 	str += '<div class="span3" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">TOTAL : '+result[0].totalCount+'</div> ';
 	str += '<div class="span3" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">MATCHED : '+result[0].matchedCount+'</div>';
