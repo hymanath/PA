@@ -406,12 +406,10 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.SURVEY_USER_CREATION))
 			return ERROR;
 		constituenciesList = 	surveyDataDetailsService.getAllAssemblyConstituenciesByStateId();
-		
 		dataAvilableConstituencies = surveyDataDetailsService.getSurveyStartedConstituencyList();
 		resultVO = surveyDashBoardService.getCompletdConstituenciesDetails();
 		resultList = surveyDashBoardService.getConstituencyWiseCompletionReport(); 
 		usersList = surveyDataDetailsService.getAllWebMonitoringUsersDetails();
-		
 		return Action.SUCCESS;	
 	}
 	public void setServletRequest(HttpServletRequest request) {
@@ -2066,4 +2064,25 @@ public String getPanchayatsStatusDetails()
 		}
 		return Action.SUCCESS;
 	}
+  public String getConstituencySummaryReport()
+	{
+		try
+		{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			jObj = new JSONObject(getTask());
+			dcDvCollectedDataVOList = surveyDetailsService.getConstituencySummaryReport();
+					
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getLeaderUsers", e);
+		}
+		return Action.SUCCESS;
+	}
+  
 }
