@@ -3336,7 +3336,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	}
 	
 	*/
-	 public List<SurveyReportVO> getSurveyVotersList(Long constituencyId, Long boothId,Long leaderId,String searchDate){
+	 public List<SurveyReportVO> getSurveyVotersList(Long constituencyId, Long boothId,Long surveyUserId,String searchDate){
 		List<SurveyReportVO> retultList = new ArrayList<SurveyReportVO>();
 		try {
 			
@@ -3354,12 +3354,12 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				//}
 				
 				List<Long> surveyUserids = new ArrayList<Long>();
-				surveyUserids.add(leaderId);
+				surveyUserids.add(surveyUserId);
 				//List<Object[]> votersLsit = surveyDetailsInfoDAO.getVoterDetailsByBoothId(boothId,ids,date);
 				
 				List<Object[]> votersLsit = surveyDetailsInfoDAO.getVotersDetailsByBoothId(boothId,surveyUserids,date);
 				
-				List<Object[]> verifiedList = surveyCallStatusDAO.getSurveyCallDtalsByboothId(boothId);
+				List<Object[]> verifiedList = surveyCallStatusDAO.getSurveyCallDtalsByboothId(boothId,surveyUserId);
 				
 				Map<Long,String> mobileMatched = new HashMap<Long,String>();
 				Map<Long,String> casteMatched = new HashMap<Long,String>();

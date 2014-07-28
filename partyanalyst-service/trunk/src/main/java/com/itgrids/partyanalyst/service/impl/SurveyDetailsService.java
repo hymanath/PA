@@ -946,7 +946,6 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 							dvBoothMap.put((Long)parms[4], dvMap);
 							dvStatusBoothMap.put((Long)parms[4], dvStatusMap);
 							dcBoothDatesMap.put((Long)parms[4], dcDatesMap);
-
 						}
 						GenericVO VO = new GenericVO();
 						if((Long)parms[3] != null)
@@ -1052,6 +1051,10 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 					List<VerificationCompVO> unMatchedList = null;
 					List<VerificationCompVO> notVerifiedList = null;
 					String surveyUser = null;
+					Integer collectdCount = 0;
+					Integer updatedCount = 0;
+					Integer verifedCount = 0;
+					Integer notIdentifedCount = 0;
 					for (Object[] parms : voterDetails)
 					{
 						 dcMap = dcBoothMap.get((Long)parms[4]);
@@ -1073,6 +1076,11 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 									 dcWmMap =  dcWmCollectedMap.get((Long)parms[4]);
 									 surveyUser = usersMap.get((Long)parms[4]);
 									 dvStatusMap = dvStatusBoothMap.get((Long)parms[4]);
+									 collectdCount = 0;
+									 updatedCount = 0;
+									 verifedCount = 0;
+									 notIdentifedCount = 0;
+
 								}
 									VerificationCompVO VO = new VerificationCompVO();
 									VO.setVoterCardNO(parms[2] != null ? parms[2].toString() : "");
@@ -1088,19 +1096,23 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 										{
 											if(statusId.longValue() == 1l)
 											{
+												verifedCount = verifedCount + 1;
 												VO.setVerifierStatus("VERIFIED");
 											}
 											else if(statusId.longValue() == 2l)
 											{
+												updatedCount = updatedCount + 1;
 												VO.setVerifierStatus("UPDATED");
 											}
 											else
 											{
+												collectdCount = collectdCount + 1;
 												VO.setVerifierStatus("COLLECTED");
 											}
 										}
 										else
 										{
+											notIdentifedCount = notIdentifedCount + 1;
 											VO.setVerifierStatus("NOT IDENTIFED");
 										}
 										
@@ -1195,6 +1207,10 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 								subVO.setTotalCount(unMatchedList.size() + matchedList.size() + notVerifiedList.size());
 								subVO.setUnMatchedCount(unMatchedList.size());
 								subVO.setMatchedCount(matchedList.size());
+								subVO.setCollectedCount(collectdCount);
+								subVO.setUpdatedCount(updatedCount);
+								subVO.setVerifieCount(verifedCount);
+								subVO.setNotIdentifedCount(notIdentifedCount);
 								subVO.setNotVerifiedCount(notVerifiedList.size());
 						 }
 						
@@ -1587,20 +1603,6 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 		catch (Exception e)
 		{
 			LOG.error("Exception raised in getVerifierCollectedDetails", e);
-		}
-		return returnList;
-	}
-	
-	public List<DcDvCollectedDataVO> getAllverificationDetails(Long surveyUserId,Long boothId)
-	{
-		List<DcDvCollectedDataVO> returnList = null;
-		try
-		{
-			
-		} 
-		catch (Exception e)
-		{
-			LOG.error("Exception raised in getAllverificationDetails", e);
 		}
 		return returnList;
 	}
