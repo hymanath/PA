@@ -1015,14 +1015,16 @@ return;
 	
 
     str+='<th >Caste Mapped</th>';
+	str+='<th >Caste Mapped %</th>';
 	str+='<th >Hamlet Mapped</th>';
 	str+='<th >Mobile Collected</th>';
-
+	
 	str+='<th>WM TOTAL</th>';
 	str+='<th>WM Mobile MATCHED</th>';
 	str+='<th>WM Mobile UN MATCHED</th>';
 	str+='<th>WM MOBILE ERROR %</th>';
 	str+='<th>WM CASTE MATCHED</th>';
+	str+='<th>WM CASTE MATCHED %</th>';
 	str+='<th>WM CASTE UN MATCHED</th>';
 	str+='<th>WM CASTE ERROR %</th>';
 	str+='</tr>';
@@ -1058,6 +1060,8 @@ return;
 			str+='<td>'+result[i].subList[j].totalVoters+'</td>';
 			}
 			str+='<td>'+result[i].subList[j].casteCount+'</td>';
+			var casteMappedperc = (Math.round(result[i].subList[j].casteCount * 100)/result[i].subList[j].totalVoters).toFixed(2);
+			str+='<td>'+casteMappedperc+'</td>';
 			str+='<td>'+result[i].subList[j].hamletCount+'</td>';
 			if(result[i].subList[j].mobileNoCount>=0 && result[i].subList[j].mobileNoCount<=9){
 				str+='<td class="errorRed">'+result[i].subList[j].mobileNoCount+'</td>';
@@ -1095,7 +1099,10 @@ return;
 			str+='<td> - </td>';
 			}
 			str+='<td>'+result[i].subList[j].casteMatchedCount+'</td>';
+			var wmcasteMappedperc = (Math.round(result[i].subList[j].casteMatchedCount * 100)/result[i].subList[j].casteCount).toFixed(2);
+			str+='<td>'+wmcasteMappedperc+'</td>';
 			str+='<td>'+result[i].subList[j].casteNotMatchedCount+'</td>';
+			
 			var Castetotal = result[i].subList[j].casteMatchedCount + result[i].subList[j].casteNotMatchedCount;
 			if(Castetotal >0){
 			var casteErrorPercent = (Math.round(result[i].subList[j].casteNotMatchedCount * 100)/Castetotal).toFixed(2);
