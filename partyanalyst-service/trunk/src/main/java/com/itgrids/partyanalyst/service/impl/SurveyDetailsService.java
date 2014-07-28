@@ -44,6 +44,7 @@ import com.itgrids.partyanalyst.dto.VerificationCompVO;
 import com.itgrids.partyanalyst.model.SurveyAccessUsers;
 import com.itgrids.partyanalyst.model.UpdationDetails;
 import com.itgrids.partyanalyst.model.VerifierBoothPercentage;
+import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
 import com.itgrids.partyanalyst.service.ISurveyDetailsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -99,7 +100,8 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 	
 	@Autowired
 	IVerifierBoothPercentageDAO verifierBoothPercentageDAO;
-	
+	@Autowired
+	private ISurveyDataDetailsService surveyDataDetailsServic;
 	public IRegionWiseSurveysDAO getRegionWiseSurveysDAO() {
 		return regionWiseSurveysDAO;
 	}
@@ -895,7 +897,20 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 			}
 			return null;
 		}
-	
+	public DcDvCollectedDataVO getMatchedConstituencyVo(List<DcDvCollectedDataVO> resultList,Long constituencyId)
+	{
+		try{
+			if(resultList == null)
+				return null;
+			for(DcDvCollectedDataVO vo : resultList)
+				if(vo.getId().longValue() == constituencyId)
+					return vo;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 		
 	
 	public List<VerificationCompVO> checkForVerifierData(List<Long> boothIds)
@@ -1603,6 +1618,107 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 		catch (Exception e)
 		{
 			LOG.error("Exception raised in getVerifierCollectedDetails", e);
+		}
+		return returnList;
+	}
+	
+	public List<DcDvCollectedDataVO> getConstituencySummaryReport()
+	{
+		List<DcDvCollectedDataVO> resultList = new ArrayList<DcDvCollectedDataVO>();
+		try{
+			List<Object[]> list = boothPublicationVoterDAO.getTotalVotersForAllConstituencies();
+			if(list !=null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+				DcDvCollectedDataVO vo = new DcDvCollectedDataVO();
+				vo.setId((Long)params[0]);
+				vo.setConstituency(params[1].toString());
+				vo.setTotalCount((Long)params[2]);
+				resultList.add(vo);
+				}
+				List<Object[]> list1 = surveyDetailsInfoDAO.getCasteTaggedVotersForAllConstituencies(1l);
+				if(list1 != null && list1.size() > 0)
+				for(Object[] params : list1)
+				{
+					DcDvCollectedDataVO vo = getMatchedConstituencyVo(resultList,(Long)params[0]);
+					if(vo != null)
+						vo.setCasteCount((Long)params[1]);
+				}
+				List<Object[]> list2 = surveyDetailsInfoDAO.getCasteTaggedVotersForAllConstituencies(1l);	
+				if(list2 != null && list2.size() > 0)
+					for(Object[] params : list1)
+					{
+						DcDvCollectedDataVO vo = getMatchedConstituencyVo(resultList,(Long)params[0]);
+						if(vo != null)
+							vo.setMobileCount((Long)params[1]);
+					}	
+				
+				List<Object[]> casteVoters = surveyCallStatusDAO.getCasteVotersForAllConstituencies();
+				
+				if(casteVoters != null && casteVoters.size() > 0)
+				{
+					for(Object[] params : casteVoters)
+					{
+
+						DcDvCollectedDataVO vo = getMatchedConstituencyVo(resultList,(Long)params[0]);
+						if(vo != null)
+						{
+						if(params[2] !=null && params[2].toString().equalsIgnoreCase("Y"))
+						  vo.setCasteActiveVoters(vo.getCasteActiveVoters() + (Long)params[1]);
+						else if(params[2] !=null && params[2].toString().equalsIgnoreCase("N"))
+							 vo.setCasteInActiveVoters(vo.getCasteInActiveVoters() + (Long)params[1]);
+						Long total = vo.getCasteActiveVoters() + vo.getCasteInActiveVoters();
+						vo.setCasteErrorRate(vo.getCasteInActiveVoters() != null &&vo.getCasteInActiveVoters() !=0 ? surveyDataDetailsServic.roundTo2DigitsFloatValue((float) vo.getCasteInActiveVoters() * 100f /total)
+								: "0.00");
+						
+						}
+					}
+				}
+				
+				
+				List<Object[]> mobileVoters = surveyCallStatusDAO.getMobileVotersForAllConstituencies();
+				
+				if(mobileVoters != null && mobileVoters.size() > 0)
+				{
+					for(Object[] params : mobileVoters)
+					{
+
+						DcDvCollectedDataVO vo = getMatchedConstituencyVo(resultList,(Long)params[0]);
+						if(vo != null)
+						{
+						if(params[2] !=null && params[2].toString().equalsIgnoreCase("Y"))
+						
+						  vo.setMobileActiveVoters(vo.getMobileActiveVoters() + (Long)params[1]);
+						else if(params[2] !=null && params[2].toString().equalsIgnoreCase("N"))
+							 vo.setMobileInActiveVoters(vo.getMobileInActiveVoters() + (Long)params[1]);
+						Long total = vo.getMobileActiveVoters() + vo.getMobileInActiveVoters();
+						
+						vo.setMobileErrorRate(vo.getMobileInActiveVoters() != null &&vo.getMobileInActiveVoters() !=0 ? surveyDataDetailsServic.roundTo2DigitsFloatValue((float) vo.getMobileInActiveVoters() * 100f /total)
+								: "0.00");
+						
+						}
+					}
+				}
+			}
+			
+		}
+		catch (Exception e) {
+			LOG.error("Exception raised in getConstituencySummaryReport", e);
+		}
+		return resultList;
+	}
+	
+	public List<DcDvCollectedDataVO> getAllverificationDetails(Long surveyUserId,Long boothId)
+	{
+		List<DcDvCollectedDataVO> returnList = null;
+		try
+		{
+			
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getAllverificationDetails", e);
 		}
 		return returnList;
 	}

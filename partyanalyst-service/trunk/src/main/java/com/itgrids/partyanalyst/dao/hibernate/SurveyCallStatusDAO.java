@@ -7,6 +7,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ISurveyCallStatusDAO;
 import com.itgrids.partyanalyst.model.SurveyCallStatus;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Long> implements ISurveyCallStatusDAO{
 
@@ -56,6 +57,21 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 		Query query = getSession().createQuery("select distinct model.booth.boothId,model.booth.partNo from " +
 				"SurveyCallStatus model where model.booth.constituency.constituencyId = :constituencyId order by model.booth.boothId");
 		query.setParameter("constituencyId", constituencyId);
+		return query.list();	
+	}
+	
+	public List<Object[]> getCasteVotersForAllConstituencies()
+	{
+		Query query = getSession().createQuery("select model.booth.constituency.constituencyId,count(distinct model.voter.voterId),model.matchedStatus from " +
+				"SurveyCallStatus model where model.booth.publicationDate.publicationDateId =:publicationDateId group by model.booth.constituency.constituencyId,model.matchedStatus");
+		query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID);
+		return query.list();	
+	}
+	public List<Object[]> getMobileVotersForAllConstituencies()
+	{
+		Query query = getSession().createQuery("select model.booth.constituency.constituencyId,count(distinct model.voter.voterId),model.mobileNoStatus from " +
+				"SurveyCallStatus model where model.booth.publicationDate.publicationDateId =:publicationDateId group by model.booth.constituency.constituencyId,model.mobileNoStatus");
+		query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID);
 		return query.list();	
 	}
 }

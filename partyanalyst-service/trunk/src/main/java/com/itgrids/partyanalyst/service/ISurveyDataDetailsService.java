@@ -111,4 +111,5 @@ public interface ISurveyDataDetailsService
 	public List<GenericVO> getSurveyUsersByUserType(Long userTypeId);
 
 	public List<Long> getUsersForLeader(Long leaderId);
+	  public String roundTo2DigitsFloatValue(Float number);
 }

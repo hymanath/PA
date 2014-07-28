@@ -1027,6 +1027,29 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		return (Long)query.uniqueResult();
 	}
 	
+	public List<Object[]> getCasteTaggedVotersForAllConstituencies(Long surveyUsertypeId)
+	{
+		Query query = getSession().createQuery("select model.booth.constituency.constituencyId,count(distinct model.voter.voterId) from SurveyDetailsInfo model where  " +
+				"model.booth.publicationDate.publicationDateId = :publicationDateId  and (model.caste.casteStateId is not null or model.casteName is not null or  model.casteName != '') " +
+				" and model.surveyUser.surveyUserType.surveyUsertypeId = :surveyUsertypeId and model.isDelete = 'N' group by model.booth.constituency.constituencyId");	
+
+		query.setParameter("surveyUsertypeId", surveyUsertypeId);	
+        query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID);
+		return query.list();
+	}
+	public List<Object[]> getMobileTaggedVotersForAllConstituencies(Long surveyUsertypeId)
+
+	{
+		Query query = getSession().createQuery("select model.booth.constituency.constituencyId,count(distinct model.mobileNumber) from SurveyDetailsInfo model where " +
+				"model.booth.publicationDate.publicationDateId =:publicationDateId and model.mobileNumber is not null and  " +
+				" model.mobileNumber !='' " +
+				"and model.surveyUser.surveyUserType.surveyUsertypeId = :surveyUsertypeId and model.isDelete = 'N' group by model.booth.constituency.constituencyId");	
+
+		query.setParameter("surveyUsertypeId", surveyUsertypeId);	
+		query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID);
+		return query.list();
+	}
+	
 	public List<Object[]> getAllverificationDetails(Long surveyUserId,Long boothId)
 	{
 		Query query = getSession().createQuery("select model.statusId ,count(distinct model.voter.voterId) " +
@@ -1035,5 +1058,6 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		return query.list();
 
 	}
+	
 	
 }
