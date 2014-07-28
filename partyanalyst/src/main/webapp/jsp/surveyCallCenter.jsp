@@ -212,69 +212,6 @@
 		</div>
 		
 	</c:if>
-
-	<!-- start -->
-	<div class="row" id="completeBooths">
-			<div class="span12">
-				<div class="row-fluid ">
-					<div class="span10 offset1 widgetservey_Red m_top20">
-							<h4>Update Completed Booths Status</h4>														
-						<div class="row-fluid">
-							<div class="span6 offset3 text-center">
-								<h3>Constituency Name</h3>
-							</div>
-						</div>
-						
-						<div class="row-fluid">
-						<div class="span10 offset1">
-							<table class="table table-bordered table-hover table-striped ">
-								<thead class="alert alert-success">
-									<tr>
-										<th>Booth Number</th>
-										<th>Data Collector</th>
-										<th>Web Monitoring</th>
-										<th>Data Verifier</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<td>1</td>
-										<td><input type="checkbox"></td>
-										<td><input type="checkbox" disabled></td>
-										<td><input type="checkbox" disabled></td>	
-									</tr>
-									<!--------->
-									<tr>
-										<td>2</td>
-										<td><input type="checkbox" disabled></td>
-										<td><input type="checkbox" ></td>
-										<td><input type="checkbox" disabled></td>	
-									</tr>
-									<!--------->
-									<tr>
-										<td>3</td>
-										<td><input type="checkbox" disabled></td>
-										<td><input type="checkbox" disabled></td>
-										<td><input type="checkbox" ></td>	
-									</tr>
-									<!--------->
-									
-									
-									
-									
-								</tbody>
-							</table>	
-						</div>
-						</div>
-						<div class="row text-center m_top20"><button class="btn btn-large btn-success" type="button">UPDATE STATUS</button></div>
-							
-					</div>
-				</div>
-			</div>
-		</div>
-	<!-- end -->
-	
-
 		<div class="row" id="startTime">
 			<div class="span12">
 				<div class="row-fluid ">
@@ -305,9 +242,11 @@
 									</div>
 									</div>
 					
-						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getUserDetailsByConstituency()">SUBMIT</button><img id="userFieldImage" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img></div>
+						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getUserDetailsByConstituency()">SUBMIT</button></div>
 						
 						  <div id="userDetailsReportDiv"></div>
+						  
+						  <img src='images/Loading-data.gif' class="offset5"  id="userFieldImage" style="width:70px;height:60px;display:none;"/>
 						<div class="row-fluid " id = "leaderDetailsDiv"></div>
 						<div class="row-fluid " id="detaildDiv" style="display:none;">
 							<div class="span12 m_top20 widgetservey" id="weathermap" style="height:500px"></div>
@@ -359,13 +298,12 @@
 								</div>
 							</div>
 							<div class="row text-center m_top20" style="margin-right:51px;"><button type="button" class="btn btn-success" onClick="getSurveyUserLoctionCount();">SUBMIT</button>
-							<img id="reportDataImg" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
+							
 							<button type="button" class="btn btn-success" id="excelTableID" onClick="generateExcel('SurveyUsertable1');" style="display:none;">Export To Excel</button>
-							<img src='images/Loading-data.gif' class="offset5"  id="reportDataImg" style="width:70px;height:60px;display:none;"/>
 							</div>
-							<div id="basicCountDiv" class="span10 m_top20" style="overflow-x:scroll;width:847px;display:none;">
-
-					</div>
+							<div id="basicCountDiv" class="span10 m_top20" style="overflow-x:scroll;width:847px;display:none;"></div>
+							<img src='images/Loading-data.gif' class="offset5"  id="reportDataImg" style="width:70px;height:60px;display:none;"/>
+							
 				</div>
 			</div>
 		</div>
@@ -451,9 +389,10 @@
 									</div>
 									</div>
 					
-						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getReportForConstituency();"> Get Report </button><img id="stateStatusAjax" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img> </div>
+						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getReportForConstituency();"> Get Report </button> </div>
 						
-						<div class="row-fluid " id= "basicStatusReport" style="margin-top:20px;"></div>						
+						<div class="row-fluid " id= "basicStatusReport" style="margin-top:20px;"></div>	
+						<img src='images/Loading-data.gif' class="offset5"  id="stateStatusAjax" style="width:70px;height:60px;display:none;"/>	</img>				
 						<div class="row-fluid" id="panchayatsStatusDiv"></div>
 							<img src='images/Loading-data.gif' class="offset5"  id="statusAjaxImg" style="width:70px;height:60px;display:none;"/>
 						<div class="row-fluid " id= "tableDtailsDiv" style="margin-top:20px;"></div>
@@ -514,9 +453,10 @@
 									
 									</div>
 									</div>
-						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getUserWiseReport();">SUBMIT</button><img id="userWiseReportImg" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img></div>
+						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getUserWiseReport();">SUBMIT</button>
+						</div>
                          <div id="userWiseReport"></div>
-					
+					<img src='images/Loading-data.gif' class="offset5"  id="userWiseReportImg" style="width:70px;height:60px;display:none;"/></img>
 					</div>
 				</div>
 				
@@ -599,7 +539,7 @@
 						<div id="retunMsg" class="clearCls"></div>
 						<img src='images/Loading-data.gif' class="offset5"  id="mainajaximgForVerifier" style="width:70px;height:60px;display:none;"/>
                          <div id="dayWiseReportDivForVerifier" class="clearCls"></div>
-							
+						 	
 					</div>
 				</div>
 			</div>
@@ -696,7 +636,6 @@ function getBoothsDetailsInCallStatusInfo(constituencyId,divId)
 }
 function getVerfierDetails(buildType,imgId,buildDiv)
 {
-
 	$('#'+imgId+'').show();
 	$('#'+buildDiv+'').html('');
 	var boothIds = new Array();
