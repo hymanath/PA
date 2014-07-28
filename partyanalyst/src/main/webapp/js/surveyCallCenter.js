@@ -63,7 +63,7 @@ function showHideTabs(id)
 		$('#saveBoothsPercentage').hide();
 		$("#verifierReportIdForVerifier").hide();;
 		$("#wmReportDiv").hide();
-		getDataReportSummary();
+		//getDataReportSummary();
 
 	}
 	else if(id == "surveyStatusRprtTab"){
