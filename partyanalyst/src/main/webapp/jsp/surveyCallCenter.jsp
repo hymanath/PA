@@ -353,9 +353,11 @@
 									</div>
 									</div>
 						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getDayWiseReportByConstituencyIdAndUserType()">SUBMIT</button>		
-						<img id="mainajaximg" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
+						
 							</div>
 						<div id="retunMsg"></div>
+						<img src='images/Loading-data.gif' class="offset5"  id="mainajaximg" style="width:70px;height:60px;display:none;"/>
+						
                              <div id="dayWiseReportDiv1" style="overflow-x:scroll;width:870px;" class=" m_top20"></div>
 							
 					</div>
