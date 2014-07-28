@@ -188,7 +188,7 @@
 			<result type="redirect" name="surveyDataDetails">surveyDataDetailsAction.action</result>
 			<result type="redirect" name="constituencyDetailReport">constituencyDetailReportAction.action</result>
 			<result type="redirect" name="surveyCallCenter">surveyCallCenterAction.action</result>
-			
+			<result type="redirect" name="surveyDataDetailsAction">surveyDataDetailsAction.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
 			 <!-- Problem Management Flow From Different Pages -->
 			 <interceptor-ref name="basicStack"/>
@@ -5569,6 +5569,7 @@
 		    <result name="userProfile" type="redirect">userProfile.action</result>
 		    <result name="mahanadu" type="redirect">mahaNaduAction.action</result>
 		    <result name="webuser" type="redirect">surveyCallCenterAction.action</result>
+		    <result name="surveyUser" type="redirect">surveyDataDetailsAction.action</result>
 		</action>
 		
 		<action name="getPariesForAssemplyAction" class="dashBoardAction" method="ajaxHandler">
