@@ -19,6 +19,56 @@ public class DcDvCollectedDataVO implements Serializable{
 	private Long cadreCount = 0l;
 	private Long influencePeopleCount = 0l;
 	private Long localAreaCount = 0l;
+	private Long id;
+	private String casteErrorRate;
+	private String mobileErrorRate;
+	private Long casteActiveVoters =0l;
+	private Long casteInActiveVoters=0l;
+	private Long mobileActiveVoters =0l;
+	private Long mobileInActiveVoters=0l;
+	
+	public Long getCasteActiveVoters() {
+		return casteActiveVoters;
+	}
+	public void setCasteActiveVoters(Long casteActiveVoters) {
+		this.casteActiveVoters = casteActiveVoters;
+	}
+	public Long getCasteInActiveVoters() {
+		return casteInActiveVoters;
+	}
+	public void setCasteInActiveVoters(Long casteInActiveVoters) {
+		this.casteInActiveVoters = casteInActiveVoters;
+	}
+	public Long getMobileActiveVoters() {
+		return mobileActiveVoters;
+	}
+	public void setMobileActiveVoters(Long mobileActiveVoters) {
+		this.mobileActiveVoters = mobileActiveVoters;
+	}
+	public Long getMobileInActiveVoters() {
+		return mobileInActiveVoters;
+	}
+	public void setMobileInActiveVoters(Long mobileInActiveVoters) {
+		this.mobileInActiveVoters = mobileInActiveVoters;
+	}
+	public String getCasteErrorRate() {
+		return casteErrorRate;
+	}
+	public void setCasteErrorRate(String casteErrorRate) {
+		this.casteErrorRate = casteErrorRate;
+	}
+	public String getMobileErrorRate() {
+		return mobileErrorRate;
+	}
+	public void setMobileErrorRate(String mobileErrorRate) {
+		this.mobileErrorRate = mobileErrorRate;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 	private String wmErrorRate;
 	private String verifierErrorRate;
 	
