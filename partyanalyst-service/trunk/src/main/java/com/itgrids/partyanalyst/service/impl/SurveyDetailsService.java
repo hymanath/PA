@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -910,6 +911,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 				Map<Long,Map<Long,String>> wmBoothMap = null;// booth Wise Web Moniter Caste Collected
 				Map<Long,Map<Long,String>> dcBoothDatesMap = null;// Day wise booth Wise Data Collector 
 				Map<Long,VerificationCompVO> boothWiseMap = null;// booth wise total recoreds
+				Map<Long,Map<Long,Long>> dvStatusBoothMap = null;// booth wise Data Verifier Caste Collected
 				Map<Long,String> dcMap = null;// Map<voterId,Caste>
 				Map<Long,String> dvMap = null;//Map<voterId,Caste>
 				Map<Long,String> wmMap = null;//Map<voterId,Caste>
@@ -918,6 +920,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 				Map<Long,String> dcDatesMap = null;
 				Map<Long,String> dcWmMap = null;
 				Map<Long,String> usersMap =null;
+				Map<Long,Long> dvStatusMap = null;
 				for (Object[] objects : castesList)
 				{
 					casteMap.put((Long)objects[0], objects[1].toString());
@@ -927,6 +930,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 				{
 					dcBoothMap = new HashMap<Long, Map<Long,String>>();
 					dvBoothMap = new HashMap<Long, Map<Long,String>>();
+					dvStatusBoothMap = new HashMap<Long, Map<Long,Long>>();
 					dcBoothDatesMap = new HashMap<Long, Map<Long,String>>();
 					List<GenericVO> userWiseList = new ArrayList<GenericVO>();
 					for (Object[] parms	: result)
@@ -936,9 +940,11 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 						{
 							dcMap = new HashMap<Long, String>();
 							dvMap = new HashMap<Long, String>();
+							dvStatusMap = new HashMap<Long, Long>();
 							dcDatesMap = new HashMap<Long, String>();
 							dcBoothMap.put((Long)parms[4], dcMap);
 							dvBoothMap.put((Long)parms[4], dvMap);
+							dvStatusBoothMap.put((Long)parms[4], dvStatusMap);
 							dcBoothDatesMap.put((Long)parms[4], dcDatesMap);
 
 						}
@@ -953,6 +959,11 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 							else
 							{
 								dvMap.put((Long)parms[1], casteMap.get((Long)parms[2]));
+								if(parms[8] != null)
+								{
+									dvStatusMap.put((Long)parms[1],Long.valueOf(parms[8].toString()));
+								}
+								
 							}
 						}
 						userWiseList.add(VO);
@@ -1061,6 +1072,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 									 dcDatesMap = dcBoothDatesMap.get((Long)parms[4]);
 									 dcWmMap =  dcWmCollectedMap.get((Long)parms[4]);
 									 surveyUser = usersMap.get((Long)parms[4]);
+									 dvStatusMap = dvStatusBoothMap.get((Long)parms[4]);
 								}
 									VerificationCompVO VO = new VerificationCompVO();
 									VO.setVoterCardNO(parms[2] != null ? parms[2].toString() : "");
@@ -1069,6 +1081,30 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 									VO.setHouseNo(parms[3] != null ? parms[3].toString() : "");
 									VO.setPartNo(parms[6] != null ? parms[6].toString() : "");
 									VO.setPanchayatName(parms[7] != null ? parms[7].toString() : "");
+									if(dvStatusMap != null && dvStatusMap.size() > 0)
+									{
+										Long statusId = dvStatusMap.get((Long)parms[0]);
+										if(statusId != null)
+										{
+											if(statusId.longValue() == 1l)
+											{
+												VO.setVerifierStatus("VERIFIED");
+											}
+											else if(statusId.longValue() == 2l)
+											{
+												VO.setVerifierStatus("UPDATED");
+											}
+											else
+											{
+												VO.setVerifierStatus("COLLECTED");
+											}
+										}
+										else
+										{
+											VO.setVerifierStatus("NOT IDENTIFED");
+										}
+										
+									}
 									if(dcMap != null && dcMap.size() > 0)
 									{
 										VO.setDcCaste(dcMap.get((Long)parms[0]) != null ? dcMap.get((Long)parms[0]) : "-");
@@ -1285,14 +1321,18 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 					wmMap = new HashMap<Long, String>();
 					for (Object[] parms : wmDetails)
 					{
-						if(parms[2].toString().trim().equalsIgnoreCase("N"))
+						if(parms[2] != null)
 						{
-							wmMap.put((Long)parms[0], casteMap.get((Long)parms[1]));
+							if(parms[2].toString().trim().equalsIgnoreCase("N"))
+							{
+								wmMap.put((Long)parms[0], casteMap.get((Long)parms[1]));
+							}
+							else
+							{
+								wmMap.put((Long)parms[0], dcMap.get((Long)parms[0]));
+							}
 						}
-						else
-						{
-							wmMap.put((Long)parms[0], dcMap.get((Long)parms[0]));
-						}
+						
 					}
 				}
 				List<Object[]> userList = surveyDetailsInfoDAO.getBoothWiseUser(boothIds);
@@ -1347,18 +1387,24 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 						VO.setRelativeName(parms[5] != null ? parms[5].toString() : "");
 						VO.setDate(dcDatesMap.get((Long)parms[0]));
 						VO.setSurveyUser(surveyUser);
-						
-						if(wmMap.get((Long)parms[0]) != null)
+						if(wmMap != null)
 						{
-							if(dcMap.get((Long)parms[0]) != null)
+							if(wmMap.get((Long)parms[0]) != null)
 							{
-								if(dcMap.get((Long)parms[0]).equalsIgnoreCase(wmMap.get((Long)parms[0])))
+								if(dcMap.get((Long)parms[0]) != null)
 								{
-									matchedList.add(VO);
+									if(dcMap.get((Long)parms[0]).equalsIgnoreCase(wmMap.get((Long)parms[0])))
+									{
+										matchedList.add(VO);
+									}
+									else
+									{
+										unMatchedList.add(VO);
+									}
 								}
 								else
 								{
-									unMatchedList.add(VO);
+									notVerifiedList.add(VO);
 								}
 							}
 							else
@@ -1366,10 +1412,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 								notVerifiedList.add(VO);
 							}
 						}
-						else
-						{
-							notVerifiedList.add(VO);
-						}
+						
 					}
 					mainVO.setMatchedList(matchedList);
 					mainVO.setMatchedCount(matchedList.size());
@@ -1412,6 +1455,33 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 					VO.setMobileCount(parms[9] != null ? Long.valueOf(parms[9].toString()) : 0l);
 					VO.setLocalAreaCount(parms[10] != null ? Long.valueOf(parms[10].toString()) : 0l);
 					VO.setConstituency(parms[11] != null ? parms[11].toString() : "");
+					
+					List<VerificationCompVO> wmList = checkForWebMonitorData((Long)parms[12]);
+					if(wmList != null && wmList.size() > 0)
+					{
+						Long matchecCount = wmList.get(0).getMatchedCount().longValue();
+						Long unMatchedCount = wmList.get(0).getUnMatchedCount().longValue();
+						Long total = matchecCount + unMatchedCount;
+						if(total != null && total > 0)
+						{
+							VO.setWmErrorRate(new BigDecimal(unMatchedCount*(100.0)/total).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+						}
+						
+					}
+					List<Long> boothIds = new ArrayList<Long>();
+					boothIds.add((Long)parms[12]);
+					List<VerificationCompVO> verifierList = checkForVerifierData(boothIds);
+					if(verifierList != null && verifierList.size() > 0)
+					{
+						Long matchecCount = verifierList.get(0).getMatchedCount().longValue();
+						Long unMatchedCount = verifierList.get(0).getUnMatchedCount().longValue();
+						Long total = matchecCount + unMatchedCount;
+						if(total != null && total > 0)
+						{
+							VO.setVerifierErrorRate(new BigDecimal(unMatchedCount*(100.0)/total).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+						}
+						
+					}
 					returnList.add(VO);
 				}
 			}
@@ -1468,6 +1538,12 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 		return status;
 	}
 	
+	/**
+	 * This Service is used for getting all verifiers Collected , verified and updated count details
+	 * @param surveyUserId
+	 * @param boothId
+	 * @return returnList
+	 */
 	public List<DcDvCollectedDataVO> getVerifierCollectedDetails(Long surveyUserId,Long boothId)
 	{
 		List<DcDvCollectedDataVO> returnList = null;
@@ -1511,6 +1587,20 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 		catch (Exception e)
 		{
 			LOG.error("Exception raised in getVerifierCollectedDetails", e);
+		}
+		return returnList;
+	}
+	
+	public List<DcDvCollectedDataVO> getAllverificationDetails(Long surveyUserId,Long boothId)
+	{
+		List<DcDvCollectedDataVO> returnList = null;
+		try
+		{
+			
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getAllverificationDetails", e);
 		}
 		return returnList;
 	}

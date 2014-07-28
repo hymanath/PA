@@ -19,6 +19,10 @@ public class DcDvCollectedDataVO implements Serializable{
 	private Long cadreCount = 0l;
 	private Long influencePeopleCount = 0l;
 	private Long localAreaCount = 0l;
+	private String wmErrorRate;
+	private String verifierErrorRate;
+	
+	
 	public Long getBoothId() {
 		return boothId;
 	}
@@ -85,7 +89,18 @@ public class DcDvCollectedDataVO implements Serializable{
 	public void setConstituency(String constituency) {
 		this.constituency = constituency;
 	}
-	
+	public String getWmErrorRate() {
+		return wmErrorRate;
+	}
+	public void setWmErrorRate(String wmErrorRate) {
+		this.wmErrorRate = wmErrorRate;
+	}
+	public String getVerifierErrorRate() {
+		return verifierErrorRate;
+	}
+	public void setVerifierErrorRate(String verifierErrorRate) {
+		this.verifierErrorRate = verifierErrorRate;
+	}
 	
 	
 }

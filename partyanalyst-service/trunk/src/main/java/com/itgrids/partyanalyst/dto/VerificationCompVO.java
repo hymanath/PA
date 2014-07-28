@@ -34,7 +34,7 @@ public class VerificationCompVO implements Serializable
 	private String date;
 	private String surveyUser;
 	private String panchayatName;
-	
+	private String verifierStatus ;
 	private List<VerificationCompVO> matchedList;
 	private List<VerificationCompVO> unMatchedList;
 	private List<VerificationCompVO> notVerifiedList;
@@ -253,6 +253,14 @@ public class VerificationCompVO implements Serializable
 
 	public void setVerifiedCount(Integer verifiedCount) {
 		this.verifiedCount = verifiedCount;
+	}
+
+	public String getVerifierStatus() {
+		return verifierStatus;
+	}
+
+	public void setVerifierStatus(String verifierStatus) {
+		this.verifierStatus = verifierStatus;
 	}
 	
 	

@@ -720,7 +720,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 	public List<Object[]> getBoothWiseDcAndDvDetails(List<Long> boothIds)
 	{
 		Query query = getSession().createQuery("select model.surveyUser.surveyUserId, model.voter.voterId,model.caste.casteStateId , " +
-				" model.surveyUser.surveyUserType.surveyUsertypeId,model.booth.boothId,model.surveyUser.userName,model.booth.partNo,date(model.date) from SurveyDetailsInfo model where model.booth.boothId in(:boothIds) order by model.booth.boothId asc ");
+				" model.surveyUser.surveyUserType.surveyUsertypeId,model.booth.boothId,model.surveyUser.userName,model.booth.partNo,date(model.date), model.statusId from SurveyDetailsInfo model where model.booth.boothId in(:boothIds) order by model.booth.boothId asc ");
 		query.setParameterList("boothIds", boothIds);
 		return query.list();
 	}
@@ -765,7 +765,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		queryStr.append(" SUM(CASE WHEN SDI.isCadre ='Y' THEN 1 ELSE 0 END),");						// Cadre count 				5
 		queryStr.append(" SUM(CASE WHEN SDI.isInfluencingPeople ='Y' THEN 1 ELSE 0 END),  ");		// InfluencingPeople count	6 
 		queryStr.append(" SUM(CASE WHEN SDI.mobileNumber is not null and SDI.mobileNumber != 'null' and  SDI.mobileNumber != '' and length(SDI.mobileNumber) != 0THEN 1 ELSE 0 END ),  ");		// mobileNumber count 		7
-		queryStr.append(" SUM(CASE WHEN SDI.localArea is not null THEN 1 ELSE 0 END) , SDI.booth.constituency.name ");			// localArea count 		8
+		queryStr.append(" SUM(CASE WHEN SDI.localArea is not null THEN 1 ELSE 0 END) , SDI.booth.constituency.name,SDI.booth.boothId ");			// localArea count 		8
 		
 		queryStr.append(" 	from SurveyDetailsInfo SDI where  ");
 		queryStr.append(" 	SDI.surveyUser.surveyUserId = :surveyUserId	and ");
@@ -1025,6 +1025,15 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		query.setParameter("constituencyId", constituencyId);
 		query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID);
 		return (Long)query.uniqueResult();
+	}
+	
+	public List<Object[]> getAllverificationDetails(Long surveyUserId,Long boothId)
+	{
+		Query query = getSession().createQuery("select model.statusId ,count(distinct model.voter.voterId) " +
+				" from SurveyDetailsInfo model where model.booth.boothId = :boothId  and model.surveyUser.surveyUserType.surveyUsertypeId = 4  group by model.statusId ");
+		query.setParameter("boothId", boothId);
+		return query.list();
+
 	}
 	
 }
