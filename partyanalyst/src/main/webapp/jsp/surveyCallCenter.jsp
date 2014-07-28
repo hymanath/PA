@@ -265,6 +265,8 @@
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top20">
 							<h4>Field Data Report</h4>	
+							<img id="fieldDataSummaryimg" style="display: none;" src="./images/Loading-data.gif" alt="Processing Image"  class="offset5"></img>
+							<div id="fieldDataSummary"></div>
 					<div id="errDivIdForStartTime" style="color:#FF0020;font-size:15px;" ></div>	
 					
 						<div class="row">
@@ -727,6 +729,9 @@ function getBoothsDetailsInSurveyDetailsInfo(constituencyId,divId)
 		});	
 }
 
+	</script>
+	<script>
+	getDataReportSummary();
 	</script>
  </body>
  </html> 
