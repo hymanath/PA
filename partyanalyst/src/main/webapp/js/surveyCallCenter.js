@@ -2127,7 +2127,7 @@ function getUserWiseReport()
 		$('#userWiseReport').html('');
 		if(result != null && result.length > 0)
 		{
-			buildUserReport(result);
+			buildUserReport(result,$('#userReportUserType').val());
 		}
 		else
 		{
@@ -2136,11 +2136,12 @@ function getUserWiseReport()
 	});
 }
 
-function buildUserReport(result)
+function buildUserReport(result,userType)
 {
 	var str = '';
 	str+='<table class=" table table-bordered m_top20 table-hover table-striped" id="userReportTable">';
 	str+='<thead>';
+	str+='<th>Constituency</th>';
 	str+='<th>Booth</th>';
 	str+='<th>Date</th>';
 	str+='<th>Total</th>';
@@ -2150,11 +2151,18 @@ function buildUserReport(result)
 	str+='<th>Local Area</th>';
 	str+='<th>Cadre</th>';
 	str+='<th>Influence People</th>';
+	if(userType == 1)
+	{
+		str+='<th>WM Error Rate</th>';
+		str+='<th>DV Error Rate</th>';
+	}
+	
 	str+='</thead>';
 	str+='<tbody>';
 	for(var i in result)
 	{
 		str += '<tr>';
+		str+='<td>'+result[i].constituency+'</td>';
 		str+='<td>'+result[i].partNo+'</td>';
 		str+='<td>'+result[i].date+'</td>';
 		str+='<td>'+result[i].totalCount+'</td>';
@@ -2164,6 +2172,27 @@ function buildUserReport(result)
 		str+='<td>'+result[i].localAreaCount+'</td>';
 		str+='<td>'+result[i].cadreCount+'</td>';
 		str+='<td>'+result[i].influencePeopleCount+'</td>';
+		if(userType == 1)
+		{
+			if(result[i].wmErrorRate == null)
+			{
+				str+='<td>--</td>';
+			}
+			else
+			{	
+				str+='<td>'+result[i].wmErrorRate+'</td>';
+			}
+			if(result[i].verifierErrorRate == null)
+			{
+				str+='<td>--</td>';
+			}
+			else
+			{	
+				str+='<td>'+result[i].verifierErrorRate+'</td>';
+			}
+					
+		}
+
 		str += '</tr>';
 	}
 	str+='</tbody>';
@@ -2349,7 +2378,9 @@ var jObj =
 
 function buildVerifierOrWMReport(result,buildType,buildDiv,imgId)
 {
-
+	console.log(buildDiv);
+	$('#dayWiseReportDivForVerifier').html('');
+	$('#dayWiseReportDivForWm1').html('');
 	var str = '';
 	if(result[0].matchedList[0] != null )
 	{
@@ -2386,17 +2417,16 @@ function buildVerifierOrWMReport(result,buildType,buildDiv,imgId)
 	str+='<table id="dayWiseReportTableForVerifier" class="table table-bordered m_top20 table-hover table-striped username">';
 	str+='<thead class="alert alert-success">';
 	str+='<tr>';
-	//str+='<th>Booth</th>';
-	//str+='<th>Panchayat</th>';
-	//str+='<th>Survey User</th>';
 	str+='<th>Voter Name</th>';
 	str+='<th>Relativen Name</th>';
-	//str+='<th>DC Collected Date</th>';
 	str+='<th>DC CASTE</th>';
 	str+='<th>WM CASTE</th>';
 	if(buildType == 1)
-	str+='<th>DV CASTE</th>';
-	str+='<th>STATUS</th>';
+	{
+		str+='<th>DV CASTE</th>';
+		str+='<th>DV STATUS</th>';
+	}
+	str+='<th>MATCH STATUS</th>';
 	str+='</tr>';
 	str+='</thead>';
 	str+='<tbody>'
@@ -2406,58 +2436,53 @@ function buildVerifierOrWMReport(result,buildType,buildDiv,imgId)
 		for(var j in result[i].matchedList)
 		{
 			str += '<tr>';
-			//str+='<td>'+result[i].matchedList[j].partNo+'</td>';
-			//str+='<td>'+result[i].matchedList[j].panchayatName+'</td>';
-			//str+='<td>'+result[i].matchedList[j].surveyUser+'</td>';
 			str+='<td>'+result[i].matchedList[j].voterName+'</td>';
 			str+='<td>'+result[i].matchedList[j].relativeName+'</td>';
-			//str+='<td>'+result[i].matchedList[j].date+'</td>';
 			str+='<td>'+result[i].matchedList[j].dcCaste+'</td>';
 			str+='<td>'+result[i].matchedList[j].wmCaste+'</td>';
 			if(buildType == 1)
-			str+='<td>'+result[i].matchedList[j].dvCaste+'</td>';
+			{
+				str+='<td>'+result[i].matchedList[j].dvCaste+'</td>';
+				str+='<td>'+result[i].matchedList[j].verifierStatus+'</td>';
+			}
 			str+='<td>MATCHED</td>';
 			str += '</tr>';		
 		}
 		for(var j in result[i].unMatchedList)
 		{
 			str += '<tr>';
-			//str+='<td>'+result[i].unMatchedList[j].partNo+'</td>';
-			//str+='<td>'+result[i].unMatchedList[j].panchayatName+'</td>';
-			//str+='<td>'+result[i].unMatchedList[j].surveyUser+'</td>';
 			str+='<td>'+result[i].unMatchedList[j].voterName+'</td>';
 			str+='<td>'+result[i].unMatchedList[j].relativeName+'</td>';
-			//str+='<td>'+result[i].unMatchedList[j].date+'</td>';
 			str+='<td>'+result[i].unMatchedList[j].dcCaste+'</td>';
 			str+='<td>'+result[i].unMatchedList[j].wmCaste+'</td>';
 			if(buildType == 1)
-			str+='<td>'+result[i].unMatchedList[j].dvCaste+'</td>';
+			{
+				str+='<td>'+result[i].unMatchedList[j].dvCaste+'</td>';
+				str+='<td>'+result[i].unMatchedList[j].verifierStatus+'</td>';
+			}
 			str+='<td>UNMATCHED</td>';
 			str += '</tr>';		
 		}
 		for(var j in result[i].notVerifiedList)
 		{
 			str += '<tr>';
-			//str+='<td>'+result[i].notVerifiedList[j].partNo+'</td>';
-			//str+='<td>'+result[i].notVerifiedList[j].panchayatName+'</td>';
-			//str+='<td>'+result[i].notVerifiedList[j].surveyUser+'</td>';
 			str+='<td>'+result[i].notVerifiedList[j].voterName+'</td>';
 			str+='<td>'+result[i].notVerifiedList[j].relativeName+'</td>';
-			//str+='<td>'+result[i].notVerifiedList[j].date+'</td>';
 			str+='<td>'+result[i].notVerifiedList[j].dcCaste+'</td>';
 			str+='<td>'+result[i].notVerifiedList[j].wmCaste+'</td>';
 			if(buildType == 1)
-			str+='<td>'+result[i].notVerifiedList[j].dvCaste+'</td>';
+			{
+				str+='<td>'+result[i].notVerifiedList[j].dvCaste+'</td>';
+				str+='<td>'+result[i].notVerifiedList[j].verifierStatus+'</td>';
+			}
+			
 			str+='<td>NOT VERIFIED</td>';
 			str += '</tr>';		
 		}
-		
-		
 	}
 	str += '</tbody>';
 	str += '</table>';
 	$('#'+buildDiv+'').html(str);
-	//generateExcel('dataTableDiv');
 	$('#dayWiseReportTableForVerifier').dataTable({
 		"iDisplayLength": 100,
 		"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]]
