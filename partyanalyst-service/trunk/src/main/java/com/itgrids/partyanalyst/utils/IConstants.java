@@ -313,7 +313,9 @@ public interface IConstants {
     public static final String CONST_TYPE_RURAL_URBAN = "RURAL-URBAN";
     public static final String URBAN_TYPE = "1";
     public static final String RURAL_TYPE = "2";
-    
+   
+    public static final String SURVEY_USER_CREATION = "SURVEY_USER_CREATION";
+
     //Problem Management
     public static final String MLA = "MLA";
     public static final String MP = "MP";
@@ -771,7 +773,7 @@ public interface IConstants {
     public static final Long BOOTH_COMPLETED_WM_STATUS_ID = 3L;
     public static final Long VERIFICATION_PROCESS_STATUS_ID =4L;
     public static final Long VERIFICATION_COMPLETD_STATUS_ID =5L;
-
+  
 
     public enum  MatchTypes{
     	PExactMatch,PSoundexMatch,CExactMatch,CsoundexMatch
