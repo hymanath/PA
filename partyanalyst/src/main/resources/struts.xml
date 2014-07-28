@@ -7882,5 +7882,11 @@
 				 <param name="root">verifiedBooths</param>
 			</result>
   		</action>
+  		<action name="getConstituencySummaryReport" class="surveyDataDetailsAction" method="getConstituencySummaryReport">
+  			<result type="json" name="success">
+				 <param name="root">dcDvCollectedDataVOList</param>
+			</result>
+  		</action>
+  		
 </package>
 </struts>      
