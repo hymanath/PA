@@ -424,6 +424,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					surveyUserRelation.setSurveyUser(surveyUserDAO.get(surveyUserId));
 					surveyUserRelation.setSurveyLeader(surveyUserDAO.get(leaderId));
 					//surveyUserRelation.setConstituency(constituencyDAO.get(constituencyId));
+					surveyUserRelation.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					surveyUserRelation.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 					surveyUserRelation.setActiveStatus("Y");
 					SurveyUserRelation result = surveyUserRelationDAO.save(surveyUserRelation);
 					if(result != null)
