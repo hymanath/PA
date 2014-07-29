@@ -242,7 +242,7 @@
 									</div>
 									</div>
 					
-						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getUserDetailsByConstituency()">SUBMIT</button></div>
+						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getLeadersAndUsersByConstituency(),getUserDetailsByConstituency();">SUBMIT</button></div>
 						
 						  <div id="userDetailsReportDiv"></div>
 						  

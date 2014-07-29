@@ -2578,4 +2578,26 @@ function buildSummaryForFieldData(result)
 				  str+='</table>';
 				  $("#fieldDataSummary").html(str);
 			
+
+function getLeadersAndUsersByConstituency()
+{
+	var constituencyId = $("#userConstituencyId").val();
+	var dateVal = $("#dateId").val();
+
+	var jObj =
+	{	 
+	  constituencyId: constituencyId,
+	  dateStr :dateVal,
+	   task:"getLeaderAndUserDetails"
+	};
+	$.ajax({
+			type:'GET',
+			url: 'getConstituencyLeadersAndUsersAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){				
+				
+				
+		});
+
 }
