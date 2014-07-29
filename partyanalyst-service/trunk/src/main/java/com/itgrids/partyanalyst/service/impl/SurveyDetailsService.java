@@ -1727,5 +1727,88 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 		}
 		return returnList;
 	}
+	
+	public List<SurveyReportVO> getConstituencyWiseLeadersAndUsersDetails(Long constituencyId,Date date)
+	{
+		LOG.debug("Entered into the getConstituencyWiseLeadersAndUsersDetails method");
+		List<SurveyReportVO> returnList = new ArrayList<SurveyReportVO>();
+		List<Long> leaderIds = new ArrayList<Long>();
+		try 
+		{
+			List<Object[]> leaders = surveyUserConstituencyDAO.getSurveyLeaderByConstituency(constituencyId);
+			if(leaders != null && leaders.size() > 0)
+			{
+				returnList = new ArrayList<SurveyReportVO>();
+				for (Object[] objects : leaders)
+				{
+					SurveyReportVO VO = new SurveyReportVO();
+					VO.setId((Long)objects[0]);
+					leaderIds.add((Long)objects[0]);
+					VO.setLeaderName(objects[1] != null ? objects[1].toString() : null);
+					VO.setMobileNo(objects[2] != null ? objects[2].toString() : null);
+					returnList.add(VO);
+				}
+			}
+			
+			List<Object[]> users = surveyUserRelationDAO.getAllUserForLeader(leaderIds);
+			if(users != null && users.size() > 0)
+			{
+				 for(Object[] params : users)
+				 {
+					 SurveyReportVO result = getMatchedVOForLeaders(returnList,(Long)params[3]);
+					 if(result != null)
+					 {		
+						 SurveyReportVO vo = new SurveyReportVO();
+						 vo.setUserid((Long)params[0]);
+						 vo.setUserName(params[1].toString());
+						 vo.setUserType(params[2].toString());
+						 result.getSubList().add(vo);
+					 }						 
+				 }				 
+			}				
+			List<Long> userIds = surveyDetailsInfoDAO.getUsersByDate(constituencyId,date);
+			for(SurveyReportVO vo : returnList)
+			{
+				for(SurveyReportVO vo1 : vo.getSubList())
+				{
+					if(userIds.contains(vo1.getUserid()))
+					{					
+						vo1.setName("Active");
+					}
+					else
+					{				
+						vo1.setName("Inactive");
+					}
+				}
+				
+			}
+		
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in  getConstituencyWiseLeadersAndUsersDetails method");
+		}
+		return returnList;
+		
+	}
+	
+	 public SurveyReportVO getMatchedVOForLeaders(List<SurveyReportVO> resultList,Long leaderId)
+		{
+		
+			try{
+				if(resultList == null)
+					return null;
+				for(SurveyReportVO vo : resultList)
+				{
+					if(leaderId.longValue() == vo.getId().longValue())
+						return vo;
+				}
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				
+			}
+			return null;
+		}
 }
  
