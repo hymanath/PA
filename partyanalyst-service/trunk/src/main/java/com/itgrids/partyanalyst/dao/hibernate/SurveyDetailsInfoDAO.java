@@ -1069,4 +1069,14 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		
 	}
 	
+	public List<SurveyDetailsInfo> getVerifierSurveyDetails(Long boothId)
+	{
+		Query query = getSession().createQuery("select model from SurveyDetailsInfo model where " +
+				" model.booth.boothId in (:boothId) and model.surveyUser.surveyUserType.surveyUsertypeId = 4 ");
+		query.setParameter("boothId", boothId);
+		return query.list();
+	}
+	
+	
+	
 }

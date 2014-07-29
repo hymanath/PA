@@ -10,6 +10,7 @@ import com.itgrids.partyanalyst.dto.PanchayatHamletsCountVo;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
+import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.dto.VerificationCompVO;
 
 public interface ISurveyDetailsService {
@@ -42,5 +43,6 @@ public interface ISurveyDetailsService {
 	 public String savePercentageOfBoothForCasteSurvey(Long boothId,String percentage);
 	 public List<DcDvCollectedDataVO> getVerifierCollectedDetails(Long surveyUserId,Long boothId);
 	 public List<DcDvCollectedDataVO> getConstituencySummaryReport();
+	 public List<SurveyResponceVO> getThirdPartyVerificationDetails(Long boothId);
 	 public List<SurveyReportVO> getConstituencyWiseLeadersAndUsersDetails(Long constituencyId,Date date);
 }
