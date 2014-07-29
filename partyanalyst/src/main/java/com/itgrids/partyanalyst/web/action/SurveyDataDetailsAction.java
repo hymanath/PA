@@ -2085,4 +2085,23 @@ public String getPanchayatsStatusDetails()
 		return Action.SUCCESS;
 	}
   
+
+  	public String getConstituencyLeadersAndUsers()
+	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			String dateStr = jObj.getString("dateStr");
+			SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
+			Date date = originalFormat.parse(dateStr);
+			surveyUserDetails = surveyDetailsService.getConstituencyWiseLeadersAndUsersDetails(jObj.getLong("constituencyId"),date);
+			
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getConstituencyLeadersAndUsers", e);
+		}
+		return Action.SUCCESS;
+		
+	}
 }
