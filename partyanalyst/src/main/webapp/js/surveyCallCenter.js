@@ -1784,7 +1784,7 @@ function getReportForConstituency(){
 		
 }
 
-function getSurveyBoothDetails(statusId)
+function getBoothsDetailsByStatusAndConstituency(statusId)
 {
 $('#tableDtailsDiv').html('');
 $("#panchayatDetailsDiv").html('');
@@ -2687,3 +2687,5 @@ function buildLeadersAndUsersTable(result)
 	$("#leaderAndUserDetailsDiv").html(str);
 	$('#leaderUserTableId').dataTable();
 }
+
+
