@@ -464,6 +464,9 @@
 				<value>com.itgrids.partyanalyst.model.SurveyConstituency</value>
 				<value>com.itgrids.partyanalyst.model.WebMonitorCompletedLocationsDetails</value>
 				<value>com.itgrids.partyanalyst.model.VerifierBoothPercentage</value>
+				<value>com.itgrids.partyanalyst.model.SurveyCompletedStatus</value>
+				<value>com.itgrids.partyanalyst.model.SurveyCompletedLocations</value>
+				<value>com.itgrids.partyanalyst.model.SurveyFeedbackComments</value>
 				
 				
 			</list>

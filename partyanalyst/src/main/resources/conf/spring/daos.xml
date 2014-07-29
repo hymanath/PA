@@ -1587,5 +1587,17 @@
 <bean id="verifierBoothPercentageDAO" class="com.itgrids.partyanalyst.dao.hibernate.VerifierBoothPercentageDAO" lazy-init="true" >
 		<property name="sessionFactory" ref="sessionFactory" />
 </bean>
+
+<bean id="surveyCompletedLocationsDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyCompletedLocationsDAO" lazy-init="true" >
+		<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
+<bean id="surveyCompletedStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyCompletedStatusDAO" lazy-init="true" >
+		<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
+<bean id="surveyFeedbackCommentsDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyFeedbackCommentsDAO" lazy-init="true" >
+		<property name="sessionFactory" ref="sessionFactory" />
+</bean>
 	<!--  end -->
 </beans>		

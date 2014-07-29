@@ -7898,6 +7898,25 @@
 				 <param name="root">responceList</param>
 			</result>
   		</action>
+  		  		
+  		
+  		<action name="saveBoothStatusDetails" class="surveyCompletedDetailsAction" method="saveBoothStatusDetails">
+  			<result type="json" name="success">
+				 <param name="root">status</param>
+			</result>
+  		</action>
+  		
+  		<action name="allBoothsDetailsByConstituencyIds" class="surveyCompletedDetailsAction" method="allBoothsDetailsByConstituencyIds">
+  			<result type="json" name="success">
+				 <param name="root">resultList</param>
+			</result>
+  		</action>
+  		
+  		<action name="getBoothStatusDetailsByConstituency" class="surveyCompletedDetailsAction" method="getBoothStatusDetailsByConstituency">
+  			<result type="json" name="success">
+				 <param name="root">resultVO</param>
+			</result>
+  		</action>
   		
 </package>
 </struts>      

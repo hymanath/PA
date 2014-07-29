@@ -24,10 +24,12 @@
    });
 });
 </script>
-<h4 style="text-align:center;margin-top:20px;">USERS DAYWISE REPORT</h4>
+
+ <h4 style="text-align:center;margin-top:20px;">USERS DAYWISE REPORT</h4>
+
+ <div>
  <div class="span12 offset2" style="margin-top:30px;">
   <div class="span5">
-
    <div class="span2">
     StartDate
    </div>
@@ -46,17 +48,25 @@
   </div>
   <a href="javascript:{getUsersDayWiseReport()}" class="btn btn-success pull-right">Report</a>
  </div>
+
  <div style="margin-top:50px;">
    <img id="ajaxImage" src="./images/icons/search.gif" alt="Processing Image" class="hide"></img>
  </div>
 
  <div id="usersReportDivId" class="span8 offset3"></div>
  <div id="noDataDiv"></div>
+ <div id="dialogDiv"></div>
+ <div id="processDialog"  class="hide">Please wait while your request is in process..
+	<img id="processImg" src="./images/icons/search.gif" alt="Processing Image">
+ </div>
+
 <script>
 function getUsersDayWiseReport()
 {
 	$('#ajaxImage').show();
 	$('#noDataDiv,#usersReportDivId').html('');
+
+	
 	var jsObj =
 	{
 		startDate :'',
@@ -72,6 +82,7 @@ function getUsersDayWiseReport()
 	dataType: 'json',
 	data: {task:JSON.stringify(jsObj)},
 	}).done(function(result){
+			$('#ajaxImage').hide();
 		if($('#startDate').val() == $('#endDate').val())
 			buildUsersDayWiseReportForSameDay(result);
 		else
@@ -94,6 +105,7 @@ function buildUsersDayWiseReportForSameDay(result)
 	 str+='<thead>';
 	  str+='<tr>';
 	   str+='<th>User Name</th>';
+	   str+='<th>Leader-MobileNo</th>';
 	   str+='<th>Start Time</th>';
 	   str+='<th>End Time</th>';
 	   str+='<th>Count</h>';
@@ -107,6 +119,7 @@ function buildUsersDayWiseReportForSameDay(result)
 	 $.each(result,function(index,value){
 	  str+='<tr>';
 	   str+='<td>'+value.name+'</td>';
+	   str+='<td>'+value.leaderName+'-'+value.mobileNo+'</td>';
 	   str+='<td>'+value.startTime+'</td>';
 	   str+='<td>'+value.endTime+'</td>';
 	   str+='<td>'+value.count+'</td>';
@@ -135,6 +148,7 @@ function buildUsersDayWiseReportBetweenDates(result)
 	 str+='<thead>';
 	  str+='<tr>';
 	   str+='<th>User Name</th>';
+	    str+='<th>Leader-MobileNo</th>';
 	   $.each(result[0].subList,function(index,value){
 		    str+='<th>'+value.surveyDate+'</th>';
 	   });
@@ -144,8 +158,9 @@ function buildUsersDayWiseReportBetweenDates(result)
 	  $.each(result,function(index,value){
 		  str+='<tr>';
 		   str+='<td>'+value.name+'</td>';
+		   str+='<td>'+value.leaderName+'-'+value.mobileNo+'</td>';
 		    $.each(value.subList,function(index1,value1){
-		     str+='<th><a href="javascript:{getUserReportForADate('+value.userid+',\''+value1.surveyDate+'\')}">'+value1.count+'</a></th>';
+		     str+='<td><a href="javascript:{getUserReportForADate('+value.userid+',\''+value1.surveyDate+'\')}">'+value1.count+'</a></td>';
 			});
 		  str+='</tr>';
 	  });
@@ -160,6 +175,12 @@ $('#usersReportDivId').html(str);
 }
 function getUserReportForADate(userId,surveyDate)
 {
+	$('#processDialog').dialog({
+		title:"Processing",
+		closeOnEscape:false	 
+
+	});
+
 	var jsObj =
 	{
 		userId :userId,
@@ -177,9 +198,10 @@ function getUserReportForADate(userId,surveyDate)
 }
 function buildUserDetailsForADate(result)
 {
+	$('#processDialog').dialog('close');
 	var str ='';
 
-	str+='<table>';
+	str+='<table class="table table-bordered offset2" id="betweendatesId">';
 		str+='<thead>';
 		 str+='<tr>';
 		  str+='<th>Constituency</th>';
@@ -192,10 +214,13 @@ function buildUserDetailsForADate(result)
 		str+='<tbody>';
 		 
 		 $.each(result,function(index,value){
-			 $.each(value,subList,function(index1,value1){
+			 $.each(value.subList,function(index1,value1){
 				  str+='<tr>';
-				   str+='<td></td>';
-				   	str+='<td></td>';
+					str+='<td>'+value.name+'</td>';
+				   	str+='<td>'+value1.name+'</td>';
+					str+='<td>'+value1.casteCollectedCount+'</td>';
+					str+='<td>'+value1.hamletCollectedCount+'</td>';
+					str+='<td>'+value1.mobileNumberCollectedCount+'</td>';
 				  str+='</tr>';
 			 });
 		 });
@@ -203,7 +228,11 @@ function buildUserDetailsForADate(result)
 		str+='</tbody>';
 		str+='</table>';
 
-
+$('#dialogDiv').html(str);
+$('#dialogDiv').dialog({
+	title:"Collected Samples Details",
+	width:800
+});
 
 }
 </script>

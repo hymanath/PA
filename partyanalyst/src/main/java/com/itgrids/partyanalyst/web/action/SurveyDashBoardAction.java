@@ -324,6 +324,14 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 	
 	public String getUsersReport()
 	{
+		
+		HttpSession session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		if(user == null)
+		{
+			return Action.INPUT;
+		}
+		
 		return Action.SUCCESS;
 		
 	}
