@@ -1625,8 +1625,13 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 	public List<DcDvCollectedDataVO> getConstituencySummaryReport()
 	{
 		List<DcDvCollectedDataVO> resultList = new ArrayList<DcDvCollectedDataVO>();
+		List<Long> constituencyIds = new ArrayList<Long>();
 		try{
-			List<Object[]> list = boothPublicationVoterDAO.getTotalVotersForAllConstituencies();
+			List<Object[]> constituencys = surveyDetailsInfoDAO.getSurveyStartedConstituencyInfo();	
+			if(constituencys != null && constituencys.size() > 0)
+				for(Object[] params : constituencys)
+					constituencyIds.add((Long)params[0]);
+			List<Object[]> list = boothPublicationVoterDAO.getTotalVotersForAllConstituencies(constituencyIds);
 			if(list !=null && list.size() > 0)
 			{
 				for(Object[] params : list)
