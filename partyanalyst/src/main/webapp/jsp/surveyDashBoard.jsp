@@ -107,14 +107,14 @@
 								</tr>
 							</thead>
 							<tbody>
-                              	<c:forEach var="constituency" items="${resultList}">
-								<c:if test="${constituency.totalCount != constituency.notStartedCount}">
+                              	<c:forEach var="constituency" items="${reportList}">
+								<c:if test="${constituency.total != constituency.notStartedCount}">
 								<tr>
 
-									<td><a href="javascript:{getConstituencyDetalReport(${constituency.locationId})}">${constituency.locationName}</a></td>
+									<td><a href="javascript:{getConstituencyDetalReport(${constituency.id})}">${constituency.name}</a></td>
 									<td>${constituency.totalVoters}</td>
 									<td>${constituency.totalCollectedCount}</td>
-									<td>${constituency.totalCount}</td>
+									<td>${constituency.total}</td>
 									<td>${constituency.completedCount}</td>
 									<td>${constituency.processingCount}</td>
 									<td>${constituency.notStartedCount}</td>
@@ -235,79 +235,7 @@
 							</ul>
 					</div>
 				</div>
-				<!---<div class="row-fluid ">
-					<div class="span12  m_top20  widgetservey">
-						<table class=" m_top20 table table-bordered table-hover table-striped">
-							<thead class="alert alert-success">
-								<tr>
-									<th>Constituency name</th>
-									<th>Total Booth no</th>
-									<th>Completed</th>
-									<th>Processing </th>
-									<th>Not yet Started </th>
-								</tr>
-							</thead>
-							<tbody>
-                              	<c:forEach var="constituency" items="${resultList}">
-								<c:if test="${constituency.totalCount != constituency.notStartedCount}">
-								<tr>
-
-									<td><a href="javascript:{getConstituencyDetalReport(${constituency.locationId})}">${constituency.locationName}</a></td>
-									<td>${constituency.totalCount}</td>
-									<td>${constituency.completedCount}</td>
-									<td>${constituency.processingCount}</td>
-									<td>${constituency.notStartedCount}</td>
-								</tr>
-								</c:if>
-								</c:forEach>
-
-<!--
-								<tr>
-									<td>Constituency name</td>
-									<td>120</td>
-									<td>20</td>
-									<td>50</td>
-									<td>40</td>
-								</tr>
-								<tr>
-									<td>Constituency name</td>
-									<td>220</td>
-									<td>20</td>
-									<td>100</td>
-									<td>100</td>
-								</tr>
-								<tr>
-									<td>Constituency name</td>
-									<td>180</td>
-									<td>80</td>
-									<td>50</td>
-									<td>50</td>
-								</tr>
-								<tr>
-									<td>Constituency name</td>
-									<td>120</td>
-									<td>90</td>
-									<td>10</td>
-									<td>20</td>
-								</tr>
-								<tr>
-									<td>Constituency name</td>
-									<td>500</td>
-									<td>100</td>
-									<td>200</td>
-									<td>200</td>
-								</tr>
-								<tr>
-									<td>Constituency name</td>
-									<td>120</td>
-									<td>20</td>
-									<td>50</td>
-									<td>40</td>
-								</tr>-->
-							<!--</tbody>
-						</table>	
-					</div>
-				</div>-->
+				
 			</div>
 				</div>	<!----Constituency details main Div End---->
 				
