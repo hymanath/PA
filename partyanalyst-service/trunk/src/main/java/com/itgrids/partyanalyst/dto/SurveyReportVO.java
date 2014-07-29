@@ -18,6 +18,7 @@ public class SurveyReportVO {
 	private SurveyReportVO dataCollector;
 	private SurveyReportVO verifier;
 	private SurveyReportVO thirdParty;
+	private SurveyReportVO panchayatDetails;
 	
 	private String voterName;
 	private String cadre;
@@ -81,6 +82,59 @@ public class SurveyReportVO {
 	private Long totalCollectedCount;
 	private String totalCollectedPercent;
 	
+	private Long processingCount = 0L;
+	private Long startedCount;
+	private Long completedCount = 0L;
+	
+	private Long wmCompletedCount;
+	private Long dvProcessingCount;
+	private Long dvCompletedCount;
+	private Long notStartedCount;
+	
+	
+	public Long getNotStartedCount() {
+		return notStartedCount;
+	}
+	public void setNotStartedCount(Long notStartedCount) {
+		this.notStartedCount = notStartedCount;
+	}
+	public Long getWmCompletedCount() {
+		return wmCompletedCount;
+	}
+	public void setWmCompletedCount(Long wmCompletedCount) {
+		this.wmCompletedCount = wmCompletedCount;
+	}
+	public Long getDvProcessingCount() {
+		return dvProcessingCount;
+	}
+	public void setDvProcessingCount(Long dvProcessingCount) {
+		this.dvProcessingCount = dvProcessingCount;
+	}
+	public Long getDvCompletedCount() {
+		return dvCompletedCount;
+	}
+	public void setDvCompletedCount(Long dvCompletedCount) {
+		this.dvCompletedCount = dvCompletedCount;
+	}
+	public Long getProcessingCount() {
+		return processingCount;
+	}
+	public void setProcessingCount(Long processingCount) {
+		this.processingCount = processingCount;
+	}
+	
+	public Long getStartedCount() {
+		return startedCount;
+	}
+	public void setStartedCount(Long startedCount) {
+		this.startedCount = startedCount;
+	}
+	public Long getCompletedCount() {
+		return completedCount;
+	}
+	public void setCompletedCount(Long completedCount) {
+		this.completedCount = completedCount;
+	}
 	private String leaderName;
 	
 	
@@ -466,6 +520,14 @@ public class SurveyReportVO {
 	}
 	public void setInfluencePeople(String influencePeople) {
 		this.influencePeople = influencePeople;
+	}
+	
+
+	public SurveyReportVO getPanchayatDetails() {
+		return panchayatDetails;
+	}
+	public void setPanchayatDetails(SurveyReportVO panchayatDetails) {
+		this.panchayatDetails = panchayatDetails;
 	}
 
 }

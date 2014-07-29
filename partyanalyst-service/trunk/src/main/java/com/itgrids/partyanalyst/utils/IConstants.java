@@ -779,4 +779,14 @@ public interface IConstants {
     	PExactMatch,PSoundexMatch,CExactMatch,CsoundexMatch
     }
     
+    
+    public static final Long DC_PROCESS_STATUS_ID =1L;
+    public static final Long DC_COMPLETED_STATUS_ID =2L;
+    public static final Long WM_COMPLETED_STATUS_ID = 3L;
+    public static final Long DV_PROCESS_STATUS_ID =4L;
+    public static final Long DV_COMPLETED_STATUS_ID =5L;
+    
+    
+   
+    
 }

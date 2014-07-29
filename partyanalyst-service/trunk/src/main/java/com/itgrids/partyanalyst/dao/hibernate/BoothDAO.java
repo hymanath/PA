@@ -1945,5 +1945,30 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 				queryObject.setParameter("publicationId", publicationId);
 				return queryObject.list();
 			}
+			
+			
+	public List<Object[]> getTotalBoothsCountByConstituencyIds(List<Long> constituencyIds,Long publicationDateId)
+	{
+		Query query = getSession().createQuery("select count(B.boothId),B.constituency.constituencyId,B.constituency.name from Booth B " +
+				"where B.constituency.constituencyId in(:constituencyIds) and B.publicationDate.publicationDateId = :publicationDateId group by B.constituency.constituencyId");
+		
+		query.setParameterList("constituencyIds", constituencyIds);
+		query.setParameter("publicationDateId", publicationDateId);
+		
+		return query.list();
+		
+	}
+	
+	public List<Object[]> getTotalBoothsCountForPanchayatisByConstituencyId(Long constituencyId)
+	{
+		Query query = getSession().createQuery("select count(B.boothId),B.panchayat.panchayatId,B.panchayat.panchayatName from Booth B " +
+				"where B.constituency.constituencyId = :constituencyId and B.publicationDate.publicationDateId = :publicationDateId group by B.panchayat.panchayatId ");
+		
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID);
+		
+		return query.list();
+		
+	}
 
 }
