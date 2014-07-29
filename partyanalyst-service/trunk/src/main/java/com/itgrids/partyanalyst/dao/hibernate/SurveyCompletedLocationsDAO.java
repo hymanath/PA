@@ -91,4 +91,13 @@ public class SurveyCompletedLocationsDAO extends GenericDaoHibernate<SurveyCompl
 		return query.list();
 	}
 	
+	public List<Object[]> getSurveyCompletedLocations(){
+		
+		Query query = getSession().createQuery("select  B.constituency.constituencyId, B.constituency.name, count(SCL.locationValue)  from SurveyCompletedLocations SCL , Booth B " +
+				" where SCL.locationValue = B.boothId and SCL.locationScopeId = :boothScopeId group by B.constituency.constituencyId order by B.constituency.name asc ");		
+		query.setParameter("boothScopeId", IConstants.BOOTH_SCOPE_ID);		
+	
+		return query.list();
+	}
+	
 }
