@@ -74,4 +74,6 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 		query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID);
 		return query.list();	
 	}
+	
+	
 }

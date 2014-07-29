@@ -125,6 +125,8 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	public List<Object[]> getCasteTaggedVotersForAllConstituencies(Long surveyUsertypeId);
 	public List<Object[]> getMobileTaggedVotersForAllConstituencies(Long surveyUsertypeId);
 	
+	public List<SurveyDetailsInfo> getVerifierSurveyDetails(Long boothId);
+	
 	public List<Long> getUsersByDate(Long constituencyId,Date date);
 }
 

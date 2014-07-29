@@ -17,6 +17,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
+import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IRegionWiseSurveysDAO;
 import com.itgrids.partyanalyst.dao.ISurveyAccessUsersDAO;
@@ -40,8 +41,10 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
+import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.dto.VerificationCompVO;
 import com.itgrids.partyanalyst.model.SurveyAccessUsers;
+import com.itgrids.partyanalyst.model.SurveyDetailsInfo;
 import com.itgrids.partyanalyst.model.UpdationDetails;
 import com.itgrids.partyanalyst.model.VerifierBoothPercentage;
 import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
@@ -102,6 +105,10 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 	IVerifierBoothPercentageDAO verifierBoothPercentageDAO;
 	@Autowired
 	private ISurveyDataDetailsService surveyDataDetailsServic;
+	
+	@Autowired
+	
+	IHamletDAO hamletDAO;
 	public IRegionWiseSurveysDAO getRegionWiseSurveysDAO() {
 		return regionWiseSurveysDAO;
 	}
@@ -918,7 +925,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 		List<VerificationCompVO> returnList = null;
 		try 
 		{
-			List<Object[]> castesList = casteStateDAO.getAllCasteDetails();
+			List<Object[]> castesList = casteStateDAO.getAllCasteDetailsForVoters(1l);
 			if(castesList != null && castesList.size() > 0)
 			{
 				Map<Long,Map<Long,String>> dcBoothMap = null;// booth wise Data Collector Caste Collected 
@@ -1321,7 +1328,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 		List<VerificationCompVO> returnList = null;
 		try
 		{
-			List<Object[]> castesList = casteStateDAO.getAllCasteDetails();
+			List<Object[]> castesList = casteStateDAO.getAllCasteDetailsForVoters(1l);
 			if(castesList != null && castesList.size() > 0)
 			{
 				Map<Long,String> casteMap = new HashMap<Long, String>();
@@ -1714,19 +1721,52 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 		return resultList;
 	}
 	
-	public List<DcDvCollectedDataVO> getAllverificationDetails(Long surveyUserId,Long boothId)
+	
+	public void fullSurveyResponceVO(List<SurveyDetailsInfo> result,List<SurveyResponceVO> returnList )
 	{
-		List<DcDvCollectedDataVO> returnList = null;
-		try
+		for (SurveyDetailsInfo surveyDetailsInfo : result)
 		{
-			
-		} 
-		catch (Exception e)
-		{
-			LOG.error("Exception raised in getAllverificationDetails", e);
+			SurveyResponceVO VO = new SurveyResponceVO();
+			if(surveyDetailsInfo.getVoter() != null)
+			{
+				VO.setVoterId(surveyDetailsInfo.getVoter().getVoterId());
+				VO.setVoterCardNo(surveyDetailsInfo.getVoter().getVoterIDCardNo());
+				VO.setVoterName(surveyDetailsInfo.getVoter().getName());
+				VO.setGender(surveyDetailsInfo.getVoter().getGender());
+				VO.setAge(surveyDetailsInfo.getVoter().getAge());
+				VO.setHouseNo(surveyDetailsInfo.getVoter().getHouseNo());
+				VO.setUuid(surveyDetailsInfo.getUuid());
+			}
+			VO.setMobileNo(surveyDetailsInfo.getMobileNumber());
+			VO.setIsCadre(surveyDetailsInfo.getIsCadre());
+			VO.setIsInfluencingPeople(surveyDetailsInfo.getIsInfluencingPeople());
+			if(surveyDetailsInfo.getCaste() != null)
+			{
+				String casteName = casteStateDAO.get(surveyDetailsInfo.getCaste().getCasteStateId()).getCaste().getCasteName();
+				VO.setCasteName(casteName);
+				VO.setCasteId(surveyDetailsInfo.getCaste().getCasteStateId());
+			}
+			else
+			{
+				VO.setCasteName(surveyDetailsInfo.getCasteName());
+			}
+			if(surveyDetailsInfo.getHamlet() != null)
+			{
+				String hamletName = hamletDAO.get(surveyDetailsInfo.getHamlet().getHamletId()).getHamletName();
+				VO.setHamletName(hamletName);
+				VO.setHamletId(surveyDetailsInfo.getHamlet().getHamletId());
+			}
+			else
+			{
+				VO.setHamletName(surveyDetailsInfo.getHamletName());
+			}
+			VO.setLatitude(surveyDetailsInfo.getLatitude());
+			VO.setLocalArea(surveyDetailsInfo.getLocalArea());
+			VO.setLongitude(surveyDetailsInfo.getLongitude());
+			returnList.add(VO);
 		}
-		return returnList;
 	}
+
 	
 	public List<SurveyReportVO> getConstituencyWiseLeadersAndUsersDetails(Long constituencyId,Date date)
 	{
@@ -1810,5 +1850,141 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 			}
 			return null;
 		}
+	 
+	/**
+	 * This Service is used for filling third party verification details
+	 * @param boothId
+	 * @return returnList
+	 */
+	public List<SurveyResponceVO> getThirdPartyVerificationDetails(Long boothId)
+	{
+		List<SurveyResponceVO> returnList = null;
+		try 
+		{
+			List<SurveyDetailsInfo> dcdetails = surveyDetailsInfoDAO.getSurveyDetilsForAssibnedBooths(boothId);
+			if(dcdetails != null && dcdetails.size() > 0)
+			{
+				List<SurveyResponceVO> dcList = new ArrayList<SurveyResponceVO>();
+				Map<Long,SurveyResponceVO> dcMap = null;
+				Map<Long,SurveyResponceVO> dvMap = null;
+				Map<Long,SurveyResponceVO> wmMap = null;
+				Map<Long,SurveyResponceVO> totalVoterMap = null;
+				fullSurveyResponceVO(dcdetails,dcList);
+				if(dcList != null && dcList.size() > 0)
+				{
+					dcMap = new HashMap<Long, SurveyResponceVO>();
+					for (SurveyResponceVO surveyResponceVO : dcList)
+					{
+						dcMap.put(surveyResponceVO.getVoterId(), surveyResponceVO);
+					}
+				}
+				List<SurveyDetailsInfo> dvDetails = surveyDetailsInfoDAO.getVerifierSurveyDetails(boothId);
+				if(dvDetails != null && dvDetails.size() > 0)
+				{
+					List<SurveyResponceVO> dvList = new ArrayList<SurveyResponceVO>();
+					
+					fullSurveyResponceVO(dvDetails,dvList);
+					if(dvList != null && dvList.size() >0)
+					{
+						dvMap = new HashMap<Long, SurveyResponceVO>();
+						for (SurveyResponceVO surveyResponceVO : dvList)
+						{
+							dvMap.put(surveyResponceVO.getVoterId(), surveyResponceVO);
+						}
+					}
+				}
+				List<Long> boothIds = new ArrayList<Long>();
+				boothIds.add(boothId);
+				
+				List<Object[]> wmDetails = surveyCallStatusDAO.getBoothWiseWmCasteUpdationDetails(boothIds);
+				if(wmDetails != null && wmDetails.size() > 0)
+				{
+					 wmMap = new HashMap<Long, SurveyResponceVO>();
+					for (Object[] parms : wmDetails)
+					{
+						if(parms[0] != null)
+						{
+							if(parms[2] != null)
+							{
+								if(parms[2].toString().equalsIgnoreCase("Y"))
+								{
+									if(dcMap.get((Long)parms[0]) != null)
+										wmMap.put((Long)parms[0],dcMap.get((Long)parms[0]));
+								}
+								else
+								{
+									if(parms[1] != null)
+									{
+										if((Long)parms[1]  > 0)
+										{
+											if(dcMap.get((Long)parms[0]) != null)
+											{
+												SurveyResponceVO wmVO = dcMap.get((Long)parms[0]);
+												wmVO.setCasteId(((Long)parms[1]));
+												String casteName = casteStateDAO.get(((Long)parms[1])).getCaste().getCasteName();
+												wmVO.setCasteName(casteName);
+												wmMap.put((Long)parms[0],wmVO);
+											}
+											
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				
+				List<Object[]> voterHouseDetails = boothPublicationVoterDAO.getTotalVotersByBoothsForVerfier(boothId, IConstants.VOTER_DATA_PUBLICATION_ID);
+				if(voterHouseDetails != null && voterHouseDetails.size() > 0)
+				{
+					totalVoterMap = new HashMap<Long, SurveyResponceVO>();
+					for (Object[] parms : voterHouseDetails)
+					{
+						SurveyResponceVO VO = new SurveyResponceVO();
+						VO.setVoterId((Long)parms[0]);
+						VO.setVoterCardNo(parms[4] != null ? parms[4].toString() :"");
+						VO.setAge(parms[3] != null ? (Long)parms[3] :null);
+						VO.setGender(parms[2] != null ? parms[2].toString() :"");
+						VO.setHouseNo(parms[1] != null ? parms[1].toString() :"");
+						totalVoterMap.put((Long)parms[0], VO);
+					}
+				}
+				
+				if(totalVoterMap != null && totalVoterMap.size() > 0)
+				{
+					List<Long> voterIds = new ArrayList<Long>(totalVoterMap.keySet());
+					if(voterIds != null && voterIds.size() > 0)
+					{
+						returnList = new ArrayList<SurveyResponceVO>();
+						for (Long voterId : voterIds) 
+						{
+							if(wmMap.get(voterId) != null)
+							{
+								returnList.add(wmMap.get(voterId));
+							}
+							else if(dvMap.get(voterId) != null)
+							{
+								returnList.add(dvMap.get(voterId));
+							}
+							else if(dcMap.get(voterId) != null)
+							{
+								returnList.add(dcMap.get(voterId));
+							}
+							else
+							{
+								returnList.add(totalVoterMap.get(voterId));
+							}
+						}
+					}
+				}
+			}
+		} 
+		catch (Exception e) 
+		{
+			LOG.error("Exception raised in getThirdPartyVerificationDetails", e);
+		}
+		return returnList;
+	}
+	
 }
  
