@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
@@ -38,5 +39,6 @@ public interface ISurveyUserRelationDAO  extends GenericDao<SurveyUserRelation, 
 	public List<Long> getUsersForLeader(Long leaderId);
 
 	public List<Object[]> getLeadersByForUsers(List<Long> userIds);
+	public List<Object[]> getAllUserForLeader(List<Long> leaderId);
 
 }
