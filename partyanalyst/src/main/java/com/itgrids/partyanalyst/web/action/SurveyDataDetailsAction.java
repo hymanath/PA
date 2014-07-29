@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.dto.UserBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.VerificationCompVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
+import com.itgrids.partyanalyst.service.ISurveyCompletedDetailsService;
 import com.itgrids.partyanalyst.service.ISurveyDashBoardService;
 import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
 import com.itgrids.partyanalyst.service.ISurveyDetailsService;
@@ -76,6 +77,20 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	private List<VerificationCompVO> verificationCompVOList;
 	private PanchayatHamletsCountVo panchayatHamletsCountVo;
 	private List<DcDvCollectedDataVO> dcDvCollectedDataVOList;
+	private List<SurveyReportVO> reportList;
+    
+	
+
+	@Autowired
+	private ISurveyCompletedDetailsService surveyCompletedDetailsService;
+	
+	public List<SurveyReportVO> getReportList() {
+		return reportList;
+	}
+
+	public void setReportList(List<SurveyReportVO> reportList) {
+		this.reportList = reportList;
+	}
 	
 	
 	public List<DcDvCollectedDataVO> getDcDvCollectedDataVOList() {
@@ -388,8 +403,10 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		
 		dataAvilableConstituencies = surveyDataDetailsService.getSurveyStartedConstituencyList();
 		resultVO = surveyDashBoardService.getCompletdConstituenciesDetails();
-		resultList = surveyDashBoardService.getConstituencyWiseCompletionReport(); 
+		//resultList = surveyDashBoardService.getConstituencyWiseCompletionReport(); 
 		usersList = surveyDataDetailsService.getAllWebMonitoringUsersDetails();
+		reportList = surveyCompletedDetailsService.getSurveyCompletedLocationsDetailsForSurveyStartedConstituencies();
+
 		
 		return Action.SUCCESS;
 	}
