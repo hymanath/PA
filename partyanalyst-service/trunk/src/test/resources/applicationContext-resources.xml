@@ -472,7 +472,11 @@
 				<value>com.itgrids.partyanalyst.model.WebMonitoringAssignedUsers</value>
 				<value>com.itgrids.partyanalyst.model.SurveyConstituency</value>
 				<value>com.itgrids.partyanalyst.model.WebMonitorCompletedLocationsDetails</value>
+				
 				<value>com.itgrids.partyanalyst.model.SurveyCompletedLocations</value>
+				<value>com.itgrids.partyanalyst.model.SurveyCompletedStatus</value>
+				<value>com.itgrids.partyanalyst.model.SurveyFeedbackComments</value>
+				
 			</list>
 		</property>
 	</bean>
@@ -2476,5 +2480,16 @@
 <bean id="surveyCompletedLocations" class="com.itgrids.partyanalyst.dao.hibernate.SurveyCompletedLocationsDAO" lazy-init="true" >
 		<property name="sessionFactory" ref="sessionFactory" />
 </bean>
-					
+
+	<bean id="surveyCompletedLocationsDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyCompletedLocationsDAO" lazy-init="true" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="surveyCompletedStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyCompletedStatusDAO" lazy-init="true" >
+			<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="surveyFeedbackCommentsDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyFeedbackCommentsDAO" lazy-init="true" >
+			<property name="sessionFactory" ref="sessionFactory" />
+	</bean>						
 </beans>
