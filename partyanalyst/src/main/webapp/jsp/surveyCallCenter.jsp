@@ -247,6 +247,7 @@
 						  <div id="userDetailsReportDiv"></div>
 						  
 						  <img src='images/Loading-data.gif' class="offset5"  id="userFieldImage" style="width:70px;height:60px;display:none;"/>
+						  <div class="row-fluid " id = "leaderAndUserDetailsDiv"></div>
 						<div class="row-fluid " id = "leaderDetailsDiv"></div>
 						<div class="row-fluid " id="detaildDiv" style="display:none;">
 							<div class="span12 m_top20 widgetservey" id="weathermap" style="height:500px"></div>
