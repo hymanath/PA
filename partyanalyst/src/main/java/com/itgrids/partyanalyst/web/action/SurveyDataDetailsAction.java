@@ -402,12 +402,13 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		constituenciesList = 	surveyDataDetailsService.getAllAssemblyConstituenciesByStateId();
 		
 		dataAvilableConstituencies = surveyDataDetailsService.getSurveyStartedConstituencyList();
-		resultVO = surveyDashBoardService.getCompletdConstituenciesDetails();
+		//resultVO = surveyDashBoardService.getCompletdConstituenciesDetails();
 		//resultList = surveyDashBoardService.getConstituencyWiseCompletionReport(); 
 		usersList = surveyDataDetailsService.getAllWebMonitoringUsersDetails();
 		reportList = surveyCompletedDetailsService.getSurveyCompletedLocationsDetailsForSurveyStartedConstituencies();
 
 		
+		resultVO =  surveyCompletedDetailsService.getCompletdConstituenciesDetails();
 		return Action.SUCCESS;
 	}
 
@@ -2059,9 +2060,9 @@ public String getPanchayatsStatusDetails()
 			Long boothId = jObj.getLong("boothId");
 			Long constituencyId = jObj.getLong("constituencyId");
 			String searchDate = jObj.getString("searchDate");
-			Long casteId = jObj.getLong("casteId");
+			Long casteStateId = jObj.getLong("casteId");
 			
-			voterVerificationList = 	surveyDataDetailsService.getSurveyVotersList(constituencyId,boothId,surveyUserId,searchDate);	
+			voterVerificationList = 	surveyDataDetailsService.getSurveyVotersList(constituencyId,boothId,surveyUserId,searchDate,casteStateId);	
 			
 		} catch (Exception e) {
 			LOG.error(" exception occured in getSurveyVotersList() ,ConstituencyDetailsAction class",e);
