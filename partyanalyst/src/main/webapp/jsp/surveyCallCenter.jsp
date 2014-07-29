@@ -356,6 +356,9 @@
 									</div>
 						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getDayWiseReportByConstituencyIdAndUserType()">SUBMIT</button>		
 						
+						
+						<button type="button" class="btn btn-success" id="excelTableID1" onClick="generateExcel('daywisereportTableId');" style="display:none;">Export To Excel</button>
+						
 							</div>
 						<div id="retunMsg"></div>
 						<img src='images/Loading-data.gif' class="offset5"  id="mainajaximg" style="width:70px;height:60px;display:none;"/>
@@ -458,6 +461,9 @@
 									</div>
 									</div>
 						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getUserWiseReport();">SUBMIT</button>
+						
+						<button type="button" class="btn btn-success" id="excelTableID2" onClick="generateExcel('userReportTable');" style="display:none;">Export To Excel</button>
+						
 						</div>
                          <div id="userWiseReport"></div>
 					<img src='images/Loading-data.gif' class="offset5"  id="userWiseReportImg" style="width:70px;height:60px;display:none;"/></img>
@@ -539,7 +545,14 @@
 										</div>	
 									</div>
 								</div>
-						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getVerfierDetails(1,'mainajaximgForVerifier','dayWiseReportDivForVerifier')">SUBMIT</button></div>
+						<div class="row text-center m_top20">
+							
+							<button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getVerfierDetails(1,'mainajaximgForVerifier','dayWiseReportDivForVerifier')">SUBMIT</button>
+							
+							<button type="button" class="btn btn-success" id="excelTableID4" onClick="generateExcel('dayWiseReportTableForVerifier');" style="display:none;">Export To Excel</button>
+							
+						</div>
+						
 						<div id="retunMsg" class="clearCls"></div>
 						<img src='images/Loading-data.gif' class="offset5"  id="mainajaximgForVerifier" style="width:70px;height:60px;display:none;"/>
                          <div id="dayWiseReportDivForVerifier" class="clearCls"></div>
@@ -576,7 +589,14 @@
 										</div>	
 									</div>
 								</div>
-						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getVerfierDetails(2,'mainajaximgForWm','dayWiseReportDivForWm1')">SUBMIT</button></div>
+						<div class="row text-center m_top20">
+						
+						<button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getVerfierDetails(2,'mainajaximgForWm','dayWiseReportDivForWm1')">SUBMIT</button>
+						
+						<button type="button" class="btn btn-success" id="excelTableID3" onClick="generateExcel('dayWiseReportTableForVerifier');" style="display:none;">Export To Excel</button>
+						
+						</div>
+						
 						<div id="retunMsg" class="clearCls"></div>
 						<img src='images/Loading-data.gif' class="offset5"  id="mainajaximgForWm" style="width:70px;height:60px;display:none;"/>
                          <div id="dayWiseReportDivForWm1"></div>
