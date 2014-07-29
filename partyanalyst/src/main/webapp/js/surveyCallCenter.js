@@ -1784,28 +1784,23 @@ function getReportForConstituency(){
 		
 }
 
-function getSurveyBoothDetails(boothDtls,statusId)
+function getSurveyBoothDetails(statusId)
 {
 $('#tableDtailsDiv').html('');
 $("#panchayatDetailsDiv").html('');
 $('#statusAjaxImg').show();
-var boothArr = new Array();
 
-var boothInfo = boothDtls.split(',');
-
-	if(boothInfo != null && boothInfo.length>0){
-
-		for(var i in boothInfo){
-			if(boothInfo[i].trim().length > 0)
-				boothArr.push(boothInfo[i]);
-		}
-	}
+	var constituency = $("#reportConstituencyId").val();
+	var status = statusId;
 	//console.log(boothArr);
-
 	$('#tableDtailsDiv').html('');
 	var jsObj =
 	{
-		boothIds:boothArr
+		//boothIds:boothArr
+		constituency : constituency,
+		status : status,
+		scope : 9 // For Booth
+		
 	}
 	$.ajax({
 	type:'GET',
@@ -1940,6 +1935,7 @@ function buildSurveyBoothDetailsTable(result,statusId)
 			}			
 		
 }
+
 function getPanchayatsStatusCount(constituencyId,boothResult,result1)
 {
    
@@ -1999,16 +1995,17 @@ function buildStatusForPanchayats(result,constituencyId,boothResult,result1)
 					str += '<hgroup>';
 					str += '<h4>'+boothResult[i].name+'</h4>';
 					if(boothResult[i].count != 0)
-						str += '<h2> <a href="javascript:{getSurveyBoothDetails(\''+boothResult[i].desc+'\','+boothResult[i].id+');}">'+boothResult[i].count+'</a></h2>';
+						str += '<h2> <a href="javascript:{getSurveyBoothDetails('+boothResult[i].id+');}">'+boothResult[i].count+'</a></h2>';
 					else
 						str += '<h2>'+boothResult[i].count+'</h2>';
 						
 					str += '</hgroup>';
 					str += '</li>';	
 				}	
-
-	str+='<li><hgroup><h4>VERIFICATION Processing </h4><h2 id="verificationProcessId"><a href="javascript:{getVerifiedBoothsDetails(\'process\')}">'+result1.verificationProcessList.length+'</a></h2></hgroup>';
-	str+='<li><hgroup><h4>VERIFICATION Completed </h4><h2 id="verificationCompletedId"><a href="javascript:{getVerifiedBoothsDetails(\'completed\')}">'+result1.verificationCompletionList.length+'</a></h2></hgroup>';
+str+='<li><hgroup><h4>VERIFICATION Processing </h4><h2 id="verificationProcessId"><a href="javascript:{getSurveyBoothDetails(4);}"}">'+result1.verificationProcessList.length+'</a></h2></hgroup>';
+	str+='<li><hgroup><h4>VERIFICATION Completed </h4><h2 id="verificationCompletedId"><a href="javascript:{getSurveyBoothDetails(5);}"}">'+result1.verificationCompletionList.length+'</a></h2></hgroup>';
+	/* str+='<li><hgroup><h4>VERIFICATION Processing </h4><h2 id="verificationProcessId"><a href="javascript:{getVerifiedBoothsDetails(\'process\',4)}">'+result1.verificationProcessList.length+'</a></h2></hgroup>';
+	str+='<li><hgroup><h4>VERIFICATION Completed </h4><h2 id="verificationCompletedId"><a href="javascript:{getVerifiedBoothsDetails(\'completed\',5)}">'+result1.verificationCompletionList.length+'</a></h2></hgroup>'; */
 
 
 	if(result.panchayatCount == 0)
@@ -2566,7 +2563,7 @@ function buildVerifierOrWMReport(result,buildType,buildDiv,imgId)
 			
 }
 
-function getVerifiedBoothsDetails(status)
+function getVerifiedBoothsDetails(status,statusId)
 {
 	$('#tableDtailsDiv').html('');
 	$("#panchayatDetailsDiv").html('');
