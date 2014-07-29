@@ -2136,6 +2136,9 @@
    
       <bean name="surveyDashBoardService"  class="com.itgrids.partyanalyst.service.impl.SurveyDashBoardService">
       </bean>
+      
+      <bean name="surveyCompletedDetailsService"  class="com.itgrids.partyanalyst.service.impl.SurveyCompletedDetailsService">
+      </bean>
    
 </beans>		
 	

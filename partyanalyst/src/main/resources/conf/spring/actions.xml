@@ -1461,5 +1461,8 @@
 		<property name="cadreManagementService" ref="cadreManagementService"></property>
 		<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>
+	
+	<bean id="surveyCompletedDetailsAction" class="com.itgrids.partyanalyst.web.action.SurveyCompletedDetailsAction" singleton="false">
+	</bean>
 </beans>	
 	
