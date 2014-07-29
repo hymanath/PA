@@ -7887,6 +7887,11 @@
 				 <param name="root">dcDvCollectedDataVOList</param>
 			</result>
   		</action>
-  		
+  		 				
+  		<action name="getConstituencyLeadersAndUsersAction" class="surveyDataDetailsAction" method="getConstituencyLeadersAndUsers">
+  			<result type="json" name="success">
+				 <param name="root">surveyUserDetails</param>
+			</result>
+  		</action>
 </package>
 </struts>      
