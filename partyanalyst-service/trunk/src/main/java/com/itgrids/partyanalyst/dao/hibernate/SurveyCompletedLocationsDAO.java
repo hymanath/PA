@@ -71,7 +71,7 @@ public class SurveyCompletedLocationsDAO extends GenericDaoHibernate<SurveyCompl
 		query.setParameter("locationValue", locationValue);
 		query.setParameter("scopeId", scopeId);
 		
-		 query.list();
+		 query.executeUpdate();
 	}
 	
 	
@@ -99,5 +99,32 @@ public class SurveyCompletedLocationsDAO extends GenericDaoHibernate<SurveyCompl
 	
 		return query.list();
 	}
+	
+	public List<Long> getCompletedStatusBoothsByBoothIds(List<Long> boothIds)
+	{
+		Query query = getSession().createQuery("select SCL.locationValue from SurveyCompletedLocations SCL where " +
+				"SCL.locationValue in(:boothIds) and SCL.locationScopeId = :scopeId ");
+		
+		query.setParameterList("boothIds", boothIds);
+		query.setParameter("scopeId", IConstants.BOOTH_SCOPE_ID);
+		
+		return query.list();
+		
+	}
+	
+	public List<Long> getProsessingBoothsCountForPanchayatisByConstituencyId(Long constituencyId,List<Long> panchayatIds)
+	{
+		Query query = getSession().createQuery("select distinct SDI.booth.panchayat.panchayatId from SurveyDetailsInfo SDI " +
+				"where " +
+				"SDI.booth.panchayat.panchayatId not in(:panchayatIds) " +
+				"and SDI.booth.constituency.constituencyId = :constituencyId");
+		
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameterList("panchayatIds", panchayatIds);
+		
+		return query.list();
+		
+	}
+	
 	
 }

@@ -135,16 +135,16 @@ public class SurveyCompletedDetailsService implements
 		{
 			List<Object[]> boothStatusDetails = surveyCompletedLocationsDAO.getBoothsStatusDetailsByConstituencyId(constituencyId);
 			
-			List<Long> processingIds = new ArrayList<Long>();
+			List<Long> processingIds =  surveyDetailsInfoDAO.getBoothsInProcessByConstituencyId(constituencyId);
 			
 			for(Object[] obj:boothStatusDetails)
 			{
 				
-				if(((Long)obj[1]).equals(IConstants.DC_PROCESS_STATUS_ID))
+				/*if(((Long)obj[1]).equals(IConstants.DC_PROCESS_STATUS_ID))
 				{
 					processingIds = surveyDetailsInfoDAO.getBoothsInProcessByConstituencyId(constituencyId);
 					
-				}else if(((Long)obj[1]).equals(IConstants.DC_COMPLETED_STATUS_ID))
+				}else*/ if(((Long)obj[1]).equals(IConstants.DC_COMPLETED_STATUS_ID))
 				{
 					resultVO.setCompletedCount((Long)obj[0]);
 					
@@ -162,8 +162,9 @@ public class SurveyCompletedDetailsService implements
 				}
 			}
 			
-			resultVO.setProcessingCount(processingIds.size() - resultVO.getDvCompletedCount());
-			
+			List<Long> boothIdsContainsStatus = surveyCompletedLocationsDAO.getCompletedStatusBoothsByBoothIds(processingIds);
+			 
+			resultVO.setProcessingCount(new Long(processingIds.size() - boothIdsContainsStatus.size()));			
 			
 			
 			
@@ -184,11 +185,17 @@ public class SurveyCompletedDetailsService implements
 			List<Object[]> completedPanchayatBoothDetails = surveyCompletedLocationsDAO.getCompletedBoothsCountForPanchayatisByConstituencyId(constituencyId);	
 			
 			Map<Long,Long> completedPanchayatBoothMap = new HashMap<Long, Long>();
+			List<Long> panchayatIds = new ArrayList<Long>();
 			
 			for(Object[] obj:completedPanchayatBoothDetails)
+			{
 				completedPanchayatBoothMap.put((Long)obj[1], (Long)obj[0]);
+				panchayatIds.add((Long)obj[1]);
+			}
 			
 			//completed booths by panchayat wise end
+			
+			List<Long> processingPanchayatIds = surveyCompletedLocationsDAO.getProsessingBoothsCountForPanchayatisByConstituencyId(constituencyId,panchayatIds);
 			
 			SurveyReportVO panchayatCompletedDetails = new SurveyReportVO();
 			
@@ -206,6 +213,8 @@ public class SurveyCompletedDetailsService implements
 					panchayatCompletedDetails.setProcessingCount(panchayatCompletedDetails.getProcessingCount() +1L);
 				
 			}
+			
+			panchayatCompletedDetails.setProcessingCount(panchayatCompletedDetails.getProcessingCount()+processingPanchayatIds.size());
 			
 			resultVO.setPanchayatDetails(panchayatCompletedDetails);
 			
@@ -237,7 +246,7 @@ public class SurveyCompletedDetailsService implements
 				locationScopeId = 9L;
 			
 			// First we are removing all the previous records rekated to that location
-			surveyCompletedLocationsDAO.deleteSurveyCompletedDetailsByLocationValueAndScope(locationValue,statusId);
+			surveyCompletedLocationsDAO.deleteSurveyCompletedDetailsByLocationValueAndScope(locationValue,locationScopeId);
 			
 			SurveyCompletedLocations surveyCompletedLocationDetails = new SurveyCompletedLocations();
 			

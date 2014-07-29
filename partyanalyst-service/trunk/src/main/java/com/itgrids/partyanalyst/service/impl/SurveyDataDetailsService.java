@@ -3368,7 +3368,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	}
 	
 	*/
-	 public List<SurveyReportVO> getSurveyVotersList(Long constituencyId, Long boothId,Long surveyUserId,String searchDate,Long casteStateId){
+	 public List<SurveyReportVO> getSurveyVotersList(Long constituencyId, Long boothId,Long surveyUserId,String searchDate){
 		List<SurveyReportVO> retultList = new ArrayList<SurveyReportVO>();
 		try {
 			
@@ -3389,7 +3389,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				surveyUserids.add(surveyUserId);
 				//List<Object[]> votersLsit = surveyDetailsInfoDAO.getVoterDetailsByBoothId(boothId,ids,date);
 				
-				List<Object[]> votersLsit = surveyDetailsInfoDAO.getVotersDetailsByBoothId(boothId,surveyUserids,date,casteStateId);
+				List<Object[]> votersLsit = surveyDetailsInfoDAO.getVotersDetailsByBoothId(boothId,surveyUserids,date);
 				
 				List<Object[]> verifiedList = surveyCallStatusDAO.getSurveyCallDtalsByboothId(boothId,surveyUserId);
 				
