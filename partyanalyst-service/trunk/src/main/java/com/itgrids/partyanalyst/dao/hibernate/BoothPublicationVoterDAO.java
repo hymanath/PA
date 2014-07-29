@@ -166,7 +166,7 @@ public class BoothPublicationVoterDAO extends
 
 		public List getVotersCountByBoothId(Long boothId){
 			
-			String queryString = "select count(model.voter.voterId) from BoothPublicationVoter model where model.booth.boothId = ?";
+			String queryString = "select count( distinct model.voter.voterId) from BoothPublicationVoter model where model.booth.boothId = ?";
 
 			Query query = getSession().createQuery(queryString);
 
@@ -7174,7 +7174,7 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 	
 	public Long getTotalVotersForConstituency(Long constituencyId)
 	{
-		Query query = getSession().createQuery("select count(model.voter.voterId) from BoothPublicationVoter model where model.booth.constituency.constituencyId =:constituencyId and model.booth.publicationDate.publicationDateId = 11");
+		Query query = getSession().createQuery("select count( distinct model.voter.voterId) from BoothPublicationVoter model where model.booth.constituency.constituencyId =:constituencyId and model.booth.publicationDate.publicationDateId = 11");
 		query.setParameter("constituencyId", constituencyId);
 		return (Long) query.uniqueResult();
 	}
@@ -7184,6 +7184,13 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		query.setParameterList("constituencyIds", constituencyIds);
 		query.setParameter("publicationId", IConstants.VOTER_DATA_PUBLICATION_ID);
 		return query.list();
+	}
+	
+	public Long getTotalVotersForBoothId(Long boothId)
+	{
+		Query query = getSession().createQuery("select count( distinct model.voter.voterId) from BoothPublicationVoter model where model.booth.boothId = :boothId ");
+		query.setParameter("boothId", boothId);
+		return (Long) query.uniqueResult();
 	}
 	
 }
