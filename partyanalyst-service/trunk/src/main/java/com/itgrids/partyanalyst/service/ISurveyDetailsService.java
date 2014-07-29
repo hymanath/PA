@@ -30,7 +30,9 @@ public interface ISurveyDetailsService {
 	public  PanchayatHamletsCountVo   getSurveyDataCountForHamletsByPanchayats(Long panchayatId);
 
 	public List<GenericVO> getUserForAssignedLeader(Long leaderId, Long userTypeId);
-	 public List<SurveyReportVO> getSurveyDetailsByBoothIds(List<Long> boothIds);
+	public List<SurveyReportVO> getSurveyDetailsByBoothIds(List<Long> boothIds);
+	public List<SurveyReportVO> getSurveyDetailsByConstituencyAndStatus(Long constituencyId,Long statusId,Long scopeId);
+	
 	 public List<SurveyReportVO> getPanchayatsStatusWiseDataByConstituency(Long constituencyId,String status);
 	 public SurveyReportVO getPanchayatsStatusCountByConstituency(Long constituencyId);
 	 public List<VerificationCompVO> checkForWebMonitorData(Long boothId);

@@ -12,4 +12,5 @@ public interface ISurveyCompletedLocationsDAO extends GenericDao<SurveyCompleted
 	public List<Object[]> getBoothsStatusDetailsByConstituencyId(Long constituencyId);
 	public List<Object[]> getCompletedBoothsCountForPanchayatisByConstituencyId(Long constituencyId);
 	public void deleteSurveyCompletedDetailsByLocationValueAndScope(Long locationValue,Long scopeId);
+	public List<Long> getBoothsOfConstituecyByStatus(Long constituencyId,Long statusId,Long scopeId);
 }
