@@ -83,6 +83,7 @@
 		<class>com.itgrids.partyanalyst.model.SurveyCallStatus</class>
 		<class>com.itgrids.partyanalyst.model.WebMonitoringAssignedUsers</class>
 		<class>com.itgrids.partyanalyst.model.WebMonitorCompletedLocationsDetails</class>
+		<class>com.itgrids.partyanalyst.model.SurveyCompletedLocations</class>
 		
 		
 		 <properties> 

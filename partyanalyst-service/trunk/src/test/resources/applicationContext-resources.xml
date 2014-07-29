@@ -472,6 +472,7 @@
 				<value>com.itgrids.partyanalyst.model.WebMonitoringAssignedUsers</value>
 				<value>com.itgrids.partyanalyst.model.SurveyConstituency</value>
 				<value>com.itgrids.partyanalyst.model.WebMonitorCompletedLocationsDetails</value>
+				<value>com.itgrids.partyanalyst.model.SurveyCompletedLocations</value>
 			</list>
 		</property>
 	</bean>
@@ -2470,6 +2471,9 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 		<bean id="webMonitorCompletedLocationsDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.WebMonitorCompletedLocationsDetailsDAO" lazy-init="true" >
+		<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+<bean id="surveyCompletedLocations" class="com.itgrids.partyanalyst.dao.hibernate.SurveyCompletedLocationsDAO" lazy-init="true" >
 		<property name="sessionFactory" ref="sessionFactory" />
 </bean>
 					
