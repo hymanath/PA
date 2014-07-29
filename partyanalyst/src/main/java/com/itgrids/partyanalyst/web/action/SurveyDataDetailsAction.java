@@ -1282,7 +1282,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			}
 			Long userId = user.getRegistrationID();
 			
-		 if(session.getAttribute(IConstants.USER) == null && 
+			 if(session.getAttribute(IConstants.USER) == null && 
 					!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.CASTE_SURVEY_CALL_CENTER))
 				return INPUT;
 			if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CASTE_SURVEY_CALL_CENTER))
@@ -1769,13 +1769,21 @@ public String getSurveyBoothDetails()
 	  try{
 		  jObj = new JSONObject(getTask());
 		  
-		    JSONArray booths = jObj.getJSONArray("boothIds");
+		  Long status = jObj.getLong("status");
+		  Long constituency = jObj.getLong("constituency");
+		  Long scopeId = jObj.getLong("scope");
+		  
+		  
+		    /*JSONArray booths = jObj.getJSONArray("boothIds");
    		List<Long> boothIds = new ArrayList<Long>();			 
 			for(int i = 0 ; i < booths.length() ; i++)
 			{
 				boothIds.add(Long.valueOf(booths.get(i).toString()));
-			}
-		  boothWiseCountList =  surveyDetailsService.getSurveyDetailsByBoothIds(boothIds);  
+			}*/
+		  
+		  
+		  
+		  boothWiseCountList =  surveyDetailsService.getSurveyDetailsByConstituencyAndStatus(constituency,status,scopeId);  
 	  }
 	  catch (Exception e) {
 		e.printStackTrace();
