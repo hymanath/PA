@@ -30,9 +30,9 @@ public class SurveyCompletedLocationsDAOHibernateTest extends BaseDaoTestCase{
 
 
 
-	public void test(){
+	/*public void test(){
 		List<Object[]> list=surveyCompletedLocationsDAO.getBoothsOfConstituecyByStatus(217l, 1l, 9l);
 		System.out.println(list.size());
-	}
+	}*/
 
 }

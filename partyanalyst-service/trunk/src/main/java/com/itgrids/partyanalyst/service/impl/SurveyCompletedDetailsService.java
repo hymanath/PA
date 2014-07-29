@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ISurveyCompletedLocationsDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
@@ -35,6 +36,9 @@ public class SurveyCompletedDetailsService implements
 	
 	@Autowired
 	private IConstituencyDAO constituencyDAO;
+	
+	@Autowired
+	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
 	
 	
 	public List<SurveyReportVO> getSurveyCompletedLocationsDetailsForSurveyStartedConstituencies()
@@ -78,16 +82,29 @@ public class SurveyCompletedDetailsService implements
 			//processing booths details end
 			
 			
+			Map<Long,Long> datacollectedCountMap = new HashMap<Long, Long>();
+			List<Object[]> list = surveyDetailsInfoDAO.getDataCollectedCountForConstituency(constituencyIds);
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					datacollectedCountMap.put((Long)params[0],(Long) params[1]);
+				}
+			}
+			
+			
 			for(Long constituencyId:constituencyIds)
 			{
 				SurveyReportVO constituencyVO = new SurveyReportVO();
 				constituencyVO.setId(constituencyId);
 				constituencyVO.setName(constituencyDAO.get(constituencyId).getName());
 				constituencyVO.setTotal(totalBoothsMap.get(constituencyId));
-				constituencyVO.setCompletedCount(completedBoothsMap.get(constituencyId));
+				constituencyVO.setCompletedCount(completedBoothsMap.get(constituencyId) != null ?completedBoothsMap.get(constituencyId):0L);				
 				constituencyVO.setProcessingCount(constituencyVO.getTotal()-constituencyVO.getCompletedCount());
-				constituencyVO.setNotStartedCount(constituencyVO.getTotal() - constituencyVO.getProcessingCount());
-				
+				constituencyVO.setNotStartedCount(constituencyVO.getTotal() - (constituencyVO.getProcessingCount()+constituencyVO.getCompletedCount()));
+				constituencyVO.setTotalVoters(boothPublicationVoterDAO.getTotalVotersForConstituency(constituencyVO.getId()));
+				constituencyVO.setTotalCollectedCount(datacollectedCountMap.get(constituencyVO.getId()) != null ? datacollectedCountMap.get(constituencyVO.getId()) : 0);
+		
 				resultList.add(constituencyVO);
 			}
 			
@@ -114,12 +131,14 @@ public class SurveyCompletedDetailsService implements
 		{
 			List<Object[]> boothStatusDetails = surveyCompletedLocationsDAO.getBoothsStatusDetailsByConstituencyId(constituencyId);
 			
+			List<Long> processingIds = new ArrayList<Long>();
+			
 			for(Object[] obj:boothStatusDetails)
 			{
 				
 				if(((Long)obj[1]).equals(IConstants.DC_PROCESS_STATUS_ID))
 				{
-					resultVO.setProcessingCount((Long)obj[0]);
+					processingIds = surveyDetailsInfoDAO.getBoothsInProcessByConstituencyId(constituencyId);
 					
 				}else if(((Long)obj[1]).equals(IConstants.DC_COMPLETED_STATUS_ID))
 				{
@@ -138,6 +157,10 @@ public class SurveyCompletedDetailsService implements
 					resultVO.setDvCompletedCount((Long)obj[0]);
 				}
 			}
+			
+			resultVO.setProcessingCount(processingIds.size() - resultVO.getDvCompletedCount());
+			
+			
 			
 			
 			//total booths by panchayat wise start

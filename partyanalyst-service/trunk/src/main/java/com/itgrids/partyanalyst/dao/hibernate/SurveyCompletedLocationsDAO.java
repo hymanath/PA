@@ -24,8 +24,8 @@ public class SurveyCompletedLocationsDAO extends GenericDaoHibernate<SurveyCompl
 		Query query = getSession().createQuery("select  count(SCL.locationValue),B.constituency.constituencyId,B.constituency.name" +
 				" from SurveyCompletedLocations SCL , Booth B " +
 				"where SCL.locationValue = B.boothId and SCL.locationScopeId = :boothScopeId " +
-				"and B.constituency.constituencyId in(:constituencyIds) " +
-				"SCL.statusId = :dvCompletedStatus and " +
+				"and B.constituency.constituencyId in(:constituencyIds) and " +
+				"SCL.statusId = :dvCompletedStatus  " +
 				"group by  B.constituency.constituencyId");
 		
 		query.setParameterList("constituencyIds", constituencyIds);
