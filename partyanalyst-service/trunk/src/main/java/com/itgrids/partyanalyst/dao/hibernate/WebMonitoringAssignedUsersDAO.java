@@ -53,4 +53,18 @@ public class WebMonitoringAssignedUsersDAO extends GenericDaoHibernate<WebMonito
 		
 		return query.list();
 	}
+	
+
+	public List<Long> getAssignedUsersBoothsDetails(Long webMonitorId,Long constituencyId)
+	{
+		
+		Query query = getSession().createQuery("select distinct SUBA.booth.boothId from WebMonitoringAssignedUsers WMAU ,SurveyUserBoothAssign SUBA where" +
+				"WMAU.surveyUser.surveyUserId  = SUBA.surveyUser.surveyUserId and " +
+				"WMAU.webMoniterUserId = :webMonitorId and  SUBA.booth.constituency.constituencyId = :constituencyId");
+		
+		query.setParameter("webMonitorId", webMonitorId);
+		query.setParameter("constituencyId", constituencyId);
+		
+		return query.list();
+	}
 }
