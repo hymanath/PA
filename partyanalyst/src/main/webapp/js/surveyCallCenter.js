@@ -2688,4 +2688,232 @@ function buildLeadersAndUsersTable(result)
 	$('#leaderUserTableId').dataTable();
 }
 
+function getBoothsStatusDetailsOfConstituency()
+{
+		$.ajax({
+		type:'GET',
+		url: 'getBoothStatusDetailsByConstituency.action',
+		dataType: 'json',
+		data: {constituencyId:$('#reportConstituencyId').val()},
+		}).done(function(result){
+          buildBoothsStatusCountsDetails(result);
+        });
+}
+function buildBoothsStatusCountsDetails(result)
+{
+	var str='';
+
+		str += '<div class="row-fluid">';
+		str += '<div class="span12 booths-Overview-widget">';
+		str += '<div class="row-fluid">';
+		str += '<ul class="inline unstyled booths-Overview-widget-nav">';
+
+		str += '<li>';
+		str += '<hgroup>';
+		str += '<h4>DATA COLLECTOR PROCESSING</h4>';
+		str += '<h2> <a href="javascript:{getBoothsDetailsByStatusAndConstituency(1)}">'+result.processingCount+'</a></h2>';
+		str += '</hgroup>';
+		str += '</li>';
+		
+		str += '<li>';
+		str += '<hgroup>';
+		str += '<h4>DATA COLLECTOR COMPLETED</h4>';
+		str += '<h2> <a href="javascript:{getBoothsDetailsByStatusAndConstituency(2)}">'+result.completedCount+'</a></h2>';
+		str += '</hgroup>';
+		str += '</li>';
+
+		str += '<li>';
+		str += '<hgroup>';
+		str += '<h4>WEB MONITOR COMPLETED</h4>';
+		str += '<h2> <a href="javascript:{getBoothsDetailsByStatusAndConstituency(3)}">'+result.wmCompletedCount+'</a></h2>';
+		str += '</hgroup>';
+		str += '</li>';
+
+		str += '<li>';
+		str += '<hgroup>';
+		str += '<h4>VERIFICATION PROCESSING</h4>';
+		str += '<h2> <a href="javascript:{getBoothsDetailsByStatusAndConstituency(4)}">'+result.dvProcessingCount+'</a></h2>';
+		str += '</hgroup>';
+		str += '</li>';
+
+		str += '<li>';
+		str += '<hgroup>';
+		str += '<h4>VERIFICATION COMPLETED</h4>';
+		str += '<h2> <a href="javascript:{getBoothsDetailsByStatusAndConstituency(5)}">'+result.dvCompletedCount+'</a></h2>';
+		str += '</hgroup>';
+		str += '</li>';
+
+		str += '<li>';
+		str += '<hgroup>';
+		str += '<h4>PANCHAYAT PROCESSING</h4>';
+		str += '<h2> <a href="javascript:{getpanchayatDetailsByStatusAndConstituency(1)}">'+result.panchayatDetails.count+'</a></h2>';
+		str += '</hgroup>';
+		str += '</li>';
+
+		str += '<li>';
+		str += '<hgroup>';
+		str += '<h4>PANCHAYAT COMPLETED</h4>';
+		str += '<h2> <a href="javascript:{getpanchayatDetailsByStatusAndConstituency(2)}">'+result.panchayatDetails.processingCount+'</a></h2>';
+		str += '</hgroup>';
+		str += '</li>';
+
+
+		str+='</ul>';
+		str+='</div>';
+		str+='</div>';
+		str+='</div>';
+
+	$('#basicStatusReport').html(str);
+}
+function getpanchayatDetailsByStatusAndConstituency(statusId)
+{
+	var status = '';
+	if(statusId == 1)
+	{
+		status = 'process';
+	}
+	else
+	{
+		status = 'completed';
+	}
+	var jObj =
+	{
+	  status:status
+	};
+	$('#tableDtailsDiv').html('');
+	$("#panchayatDetailsDiv").html('');
+	$('#statusAjaxImg').show();
+	var jObj =
+	{
+	  constituencyId:$('#reportConstituencyId').val() ,
+	  status:status
+	};
+
+	 $.ajax({
+			type:'GET',
+			url: 'getPanchayatsStatusDetailsAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){				
+			//buildStatusForPanchayatDetials(result,status);	
+		});
+}
+
+
+function getBoothsDetailsInCallStatusInfo(constituencyId,divId)
+{
+	$("#boothImage").show();
+	var jObj =
+	{
+	  constituencyId:constituencyId     
+	};
+
+	 $.ajax({
+			type:'GET',
+			url: 'getBoothsDetailsInCallStatusAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){				
+				//buildDayWiseReportByUserType(result);		
+				$("#boothImage").hide();
+				$('#'+divId+'').find('option').remove();
+
+				$.each(result,function(index,value){
+					$('#'+divId+'').append('<option value="'+value.id+'">Booth - '+value.name+'</option>');
+				});
+				
+				$('#'+divId+'').multiselect('refresh');
+
+		});	
+}
+function getVerfierDetails(buildType,imgId,buildDiv)
+{
+	$('#'+imgId+'').show();
+	$('#'+buildDiv+'').html('');
+	var boothIds = new Array();
+	
+	if(buildType == 1)
+	{
+		var boothId = $('#boothIdForVerifier').val();
+		boothIds.push(boothId);
+		var jObj =
+		{
+			boothIds:boothIds     
+		};
+		
+		$.ajax({
+			type:'GET',
+			url: 'checkForVerifierDataAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		 }).done(function(result){	
+		  
+		if(result != null)
+		{
+			buildVerifierOrWMReport(result,buildType,buildDiv,imgId);
+		}
+		else
+		{
+			$('#'+buildDiv+'').html('<b style="color:red">No Data Avaliable</b>');
+			$('#'+imgId+'').hide();
+		}		
+		});	
+	}
+	else
+	{
+		var jObj =
+		{
+			boothId:$('#boothIdForWm').val()     
+		};
+		
+		$.ajax({
+			type:'GET',
+			url: 'checkForWebMonitorDataAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		 }).done(function(result){	
+		  
+		if(result != null)
+		{
+			buildVerifierOrWMReport(result,buildType,buildDiv,imgId);
+		}
+		else
+		{
+	
+			$('#'+buildDiv+'').html('<b style="color:red">No Data Avaliable</b>');
+			$('#'+imgId+'').hide();
+		}		
+		});	
+	}
+
+		
+}
+
+function getBoothsDetailsInSurveyDetailsInfo(constituencyId,divId)
+{
+
+	$("#boothImage").show();
+	var jObj =
+	{
+	  constituencyId:constituencyId     
+	};
+
+	 $.ajax({
+			type:'GET',
+			url: 'getBoothsDetailsInSurveyDetailsInfoAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){				
+				//buildDayWiseReportByUserType(result);		
+				$("#boothImage").hide();
+				$('#'+divId+'').find('option').remove();
+
+				$.each(result,function(index,value){
+					$('#'+divId+'').append('<option value="'+value.id+'">Booth - '+value.name+'</option>');
+				});
+				
+				$('#'+divId+'').multiselect('refresh');
+
+		});	
+}
 
