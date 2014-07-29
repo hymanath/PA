@@ -396,8 +396,8 @@
 									</div>
 									</div>
 					
-						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getReportForConstituency();"> Get Report </button> </div>
-						
+						<!--<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getReportForConstituency();"> Get Report </button> </div>-->
+						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getBoothsStatusDetailsOfConstituency();"> Get Report </button> </div>
 						<div class="row-fluid " id= "basicStatusReport" style="margin-top:20px;"></div>	
 						<img src='images/Loading-data.gif' class="offset5"  id="stateStatusAjax" style="width:70px;height:60px;display:none;"/>	</img>				
 						<div class="row-fluid" id="panchayatsStatusDiv"></div>
@@ -632,123 +632,6 @@
 		   }).datepicker('setDate', new Date());
 		  
 		});
-function getBoothsDetailsInCallStatusInfo(constituencyId,divId)
-{
-	$("#boothImage").show();
-	var jObj =
-	{
-	  constituencyId:constituencyId     
-	};
-
-	 $.ajax({
-			type:'GET',
-			url: 'getBoothsDetailsInCallStatusAction.action',
-			dataType: 'json',
-			data: {task:JSON.stringify(jObj)},
-		  }).done(function(result){				
-				//buildDayWiseReportByUserType(result);		
-				$("#boothImage").hide();
-				$('#'+divId+'').find('option').remove();
-
-				$.each(result,function(index,value){
-					$('#'+divId+'').append('<option value="'+value.id+'">Booth - '+value.name+'</option>');
-				});
-				
-				$('#'+divId+'').multiselect('refresh');
-
-		});	
-}
-function getVerfierDetails(buildType,imgId,buildDiv)
-{
-	$('#'+imgId+'').show();
-	$('#'+buildDiv+'').html('');
-	var boothIds = new Array();
-	
-	if(buildType == 1)
-	{
-		var boothId = $('#boothIdForVerifier').val();
-		boothIds.push(boothId);
-		var jObj =
-		{
-			boothIds:boothIds     
-		};
-		
-		$.ajax({
-			type:'GET',
-			url: 'checkForVerifierDataAction.action',
-			dataType: 'json',
-			data: {task:JSON.stringify(jObj)},
-		 }).done(function(result){	
-		  
-		if(result != null)
-		{
-			buildVerifierOrWMReport(result,buildType,buildDiv,imgId);
-		}
-		else
-		{
-			$('#'+buildDiv+'').html('<b style="color:red">No Data Avaliable</b>');
-			$('#'+imgId+'').hide();
-		}		
-		});	
-	}
-	else
-	{
-		var jObj =
-		{
-			boothId:$('#boothIdForWm').val()     
-		};
-		
-		$.ajax({
-			type:'GET',
-			url: 'checkForWebMonitorDataAction.action',
-			dataType: 'json',
-			data: {task:JSON.stringify(jObj)},
-		 }).done(function(result){	
-		  
-		if(result != null)
-		{
-			buildVerifierOrWMReport(result,buildType,buildDiv,imgId);
-		}
-		else
-		{
-	
-			$('#'+buildDiv+'').html('<b style="color:red">No Data Avaliable</b>');
-			$('#'+imgId+'').hide();
-		}		
-		});	
-	}
-
-		
-}
-
-function getBoothsDetailsInSurveyDetailsInfo(constituencyId,divId)
-{
-
-	$("#boothImage").show();
-	var jObj =
-	{
-	  constituencyId:constituencyId     
-	};
-
-	 $.ajax({
-			type:'GET',
-			url: 'getBoothsDetailsInSurveyDetailsInfoAction.action',
-			dataType: 'json',
-			data: {task:JSON.stringify(jObj)},
-		  }).done(function(result){				
-				//buildDayWiseReportByUserType(result);		
-				$("#boothImage").hide();
-				$('#'+divId+'').find('option').remove();
-
-				$.each(result,function(index,value){
-					$('#'+divId+'').append('<option value="'+value.id+'">Booth - '+value.name+'</option>');
-				});
-				
-				$('#'+divId+'').multiselect('refresh');
-
-		});	
-}
-
 	</script>
 	
  </body>
