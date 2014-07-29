@@ -1674,6 +1674,8 @@ if(startDate.length == 0 || endDate.length == 0)
 }
 function buildDayWiseReportByUserType(result)
 {
+
+	$("#excelTableID1").show();
 	$('#mainajaximg').hide();
 	if(result == null || result.length == 0)
 	{
@@ -2150,6 +2152,8 @@ function getUserWiseReport()
 
 function buildUserReport(result,userType)
 {
+	$("#excelTableID2").show();
+
 	var str = '';
 	str+='<table class=" table table-bordered m_top20 table-hover table-striped" id="userReportTable">';
 	str+='<thead>';
@@ -2390,7 +2394,15 @@ var jObj =
 
 function buildVerifierOrWMReport(result,buildType,buildDiv,imgId)
 {
-	console.log(buildDiv);
+	if(buildDiv=="dayWiseReportDivForVerifier"){
+		$("#excelTableID4").show();
+		$("#excelTableID3").hide();
+	}else{
+		$("#excelTableID3").show();
+		$("#excelTableID4").hide();
+	}
+	
+	//console.log(buildDiv);
 	$('#dayWiseReportDivForVerifier').html('');
 	$('#dayWiseReportDivForWm1').html('');
 	var str = '';
