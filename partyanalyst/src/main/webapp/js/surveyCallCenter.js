@@ -1,3 +1,4 @@
+var fieldDataflg = false;
 function showHideTabs(id)
 {
 
@@ -63,7 +64,10 @@ function showHideTabs(id)
 		$('#saveBoothsPercentage').hide();
 		$("#verifierReportIdForVerifier").hide();;
 		$("#wmReportDiv").hide();
-		//getDataReportSummary();
+		if(fieldDataflg == false)
+		getDataReportSummary();
+		fieldDataflg = true;
+
 
 	}
 	else if(id == "surveyStatusRprtTab"){
