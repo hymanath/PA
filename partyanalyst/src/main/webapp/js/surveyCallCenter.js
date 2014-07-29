@@ -2578,7 +2578,7 @@ function buildSummaryForFieldData(result)
 				  str+='</table>';
 				  $("#fieldDataSummary").html(str);
 			
-
+}
 function getLeadersAndUsersByConstituency()
 {
 	var constituencyId = $("#userConstituencyId").val();
@@ -2596,8 +2596,33 @@ function getLeadersAndUsersByConstituency()
 			dataType: 'json',
 			data: {task:JSON.stringify(jObj)},
 		  }).done(function(result){				
-				
-				
+				buildLeadersAndUsersTable(result);				
 		});
 
+}
+function buildLeadersAndUsersTable(result)
+{
+	var str ='';			  
+	str+='<table class="table table-bordered m_top20 table-hover table-striped" id="leaderUserTableId">';
+	str+='<thead class="alert alert-success">';
+	str+='<th>Leader Name</th>';	
+	str+='<th>User Name</th>';
+	str+=' <th>Status</th>';
+	str+='</thead>';
+	str+='<tbody>';
+	  for(var i in result)
+	  {		
+		for(var j in result[i].subList)
+		{		
+			str+='<tr>';
+			str+='<td>'+result[i].leaderName+'<br>'+result[i].mobileNo+'</td>';		
+			str+='<td>'+result[i].subList[j].userName+'<br>'+result[i].subList[j].userType+'</td>';
+			str+='<td>'+result[i].subList[j].name+'</td>';	
+			str+='</tr>';
+		}		
+	}
+	str+='</tbody>';
+	str+='</table>';
+	$("#leaderAndUserDetailsDiv").html(str);
+	$('#leaderUserTableId').dataTable();
 }
