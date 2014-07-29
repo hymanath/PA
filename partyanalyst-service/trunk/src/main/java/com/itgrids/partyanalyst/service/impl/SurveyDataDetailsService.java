@@ -2885,27 +2885,27 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			 Long totalVoters =  boothPublicationVoterDAO.getTotalVotersForConstituency(constituencyId);
 			 reportVO.setConstituencyTotalVoters(totalVoters);
 			 
-			 Long survyeVoterCount = surveyDetailsInfoDAO.getTotalSurveyVotersByconstituency(constituencyId,1L);
+			 Long survyeVoterCount = surveyDetailsInfoDAO.getTotalSurveyVotersByconstituency(constituencyId,1L,"constituencyWise");
 			 
 			 reportVO.setTotalColelctedVoters(survyeVoterCount);
-			 reportVO.setCasteCollectedCount(surveyDetailsInfoDAO.getCasteCountByBoothByConstituency(constituencyId,1L));
-			 reportVO.setHamletCollectedCount(surveyDetailsInfoDAO.getHamletCountByBoothByConstituency(constituencyId,1L));				
-			 reportVO.setCadreCollectedCount(surveyDetailsInfoDAO.getCadreCountByBoothByConstituency(constituencyId,1L));
-			 reportVO.setInfluencePeopleCollectedCount(surveyDetailsInfoDAO.getInfluencingPeopleCountByBoothByConstituency(constituencyId,1L));
-			 reportVO.setMobileNoCollectedCount(surveyDetailsInfoDAO.getMobileCountByBoothByConstituency(constituencyId,1L));
+			 reportVO.setCasteCollectedCount(surveyDetailsInfoDAO.getCasteCountByBoothByConstituency(constituencyId,1L,"constituencyWise"));
+			 reportVO.setHamletCollectedCount(surveyDetailsInfoDAO.getHamletCountByBoothByConstituency(constituencyId,1L,"constituencyWise"));				
+			 reportVO.setCadreCollectedCount(surveyDetailsInfoDAO.getCadreCountByBoothByConstituency(constituencyId,1L,"constituencyWise"));
+			 reportVO.setInfluencePeopleCollectedCount(surveyDetailsInfoDAO.getInfluencingPeopleCountByBoothByConstituency(constituencyId,1L,"constituencyWise"));
+			 reportVO.setMobileNoCollectedCount(surveyDetailsInfoDAO.getMobileCountByBoothByConstituency(constituencyId,1L,"constituencyWise"));
 			
 			 reportVO.setNotCollectedVoters(totalVoters - survyeVoterCount);
 				
 			 
 			 
 			 
-			 Long verifiedCount = surveyDetailsInfoDAO.getTotalSurveyVotersByconstituency(constituencyId,4L);
+			 Long verifiedCount = surveyDetailsInfoDAO.getTotalSurveyVotersByconstituency(constituencyId,4L,"constituencyWise");
 			 reportVO.setTotalVerifiedVoters(verifiedCount);			 
-			 reportVO.setCasteVerifiedCount(surveyDetailsInfoDAO.getCasteCountByBoothByConstituency(constituencyId,4L));				
-			 reportVO.setHamletVerifiedCount(surveyDetailsInfoDAO.getHamletCountByBoothByConstituency(constituencyId,4L));			
-			 reportVO.setCadreVerifiedCount(surveyDetailsInfoDAO.getCadreCountByBoothByConstituency(constituencyId,4L));
-			 reportVO.setInfluencePeopleVerifiedCount(surveyDetailsInfoDAO.getInfluencingPeopleCountByBoothByConstituency(constituencyId,4L));
-			 reportVO.setMobileNoVerifiedCount(surveyDetailsInfoDAO.getMobileCountByBoothByConstituency(constituencyId,4L));
+			 reportVO.setCasteVerifiedCount(surveyDetailsInfoDAO.getCasteCountByBoothByConstituency(constituencyId,4L,"constituencyWise"));				
+			 reportVO.setHamletVerifiedCount(surveyDetailsInfoDAO.getHamletCountByBoothByConstituency(constituencyId,4L,"constituencyWise"));			
+			 reportVO.setCadreVerifiedCount(surveyDetailsInfoDAO.getCadreCountByBoothByConstituency(constituencyId,4L,"constituencyWise"));
+			 reportVO.setInfluencePeopleVerifiedCount(surveyDetailsInfoDAO.getInfluencingPeopleCountByBoothByConstituency(constituencyId,4L,"constituencyWise"));
+			 reportVO.setMobileNoVerifiedCount(surveyDetailsInfoDAO.getMobileCountByBoothByConstituency(constituencyId,4L,"constituencyWise"));
 			
 			 reportVO.setNotVerifiedVoters(totalVoters - verifiedCount);
 			
@@ -2936,6 +2936,36 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		ConstituencyDetailReportVO reportVO = new ConstituencyDetailReportVO();
 		try {
 			
+			
+			 Long totalVoters =  boothPublicationVoterDAO.getTotalVotersForBoothId(boothId);
+			 reportVO.setConstituencyTotalVoters(totalVoters);
+			 
+			 Long survyeVoterCount = surveyDetailsInfoDAO.getTotalSurveyVotersByconstituency(boothId,1L,"boothWise");
+			 
+			 reportVO.setTotalColelctedVoters(survyeVoterCount);
+			 reportVO.setCasteCollectedCount(surveyDetailsInfoDAO.getCasteCountByBoothByConstituency(boothId,1L,"boothWise"));
+			 reportVO.setHamletCollectedCount(surveyDetailsInfoDAO.getHamletCountByBoothByConstituency(boothId,1L,"boothWise"));				
+			 reportVO.setCadreCollectedCount(surveyDetailsInfoDAO.getCadreCountByBoothByConstituency(boothId,1L,"boothWise"));
+			 reportVO.setInfluencePeopleCollectedCount(surveyDetailsInfoDAO.getInfluencingPeopleCountByBoothByConstituency(boothId,1L,"boothWise"));
+			 reportVO.setMobileNoCollectedCount(surveyDetailsInfoDAO.getMobileCountByBoothByConstituency(boothId,1L,"boothWise"));
+			
+			 reportVO.setNotCollectedVoters(totalVoters - survyeVoterCount);
+				
+			 
+			 
+			 
+			 Long verifiedCount = surveyDetailsInfoDAO.getTotalSurveyVotersByconstituency(boothId,4L,"boothWise");
+			 reportVO.setTotalVerifiedVoters(verifiedCount);			 
+			 reportVO.setCasteVerifiedCount(surveyDetailsInfoDAO.getCasteCountByBoothByConstituency(boothId,4L,"boothWise"));				
+			 reportVO.setHamletVerifiedCount(surveyDetailsInfoDAO.getHamletCountByBoothByConstituency(boothId,4L,"boothWise"));			
+			 reportVO.setCadreVerifiedCount(surveyDetailsInfoDAO.getCadreCountByBoothByConstituency(boothId,4L,"boothWise"));
+			 reportVO.setInfluencePeopleVerifiedCount(surveyDetailsInfoDAO.getInfluencingPeopleCountByBoothByConstituency(boothId,4L,"boothWise"));
+			 reportVO.setMobileNoVerifiedCount(surveyDetailsInfoDAO.getMobileCountByBoothByConstituency(boothId,4L,"boothWise"));
+			
+			 reportVO.setNotVerifiedVoters(totalVoters - verifiedCount);
+			
+			 
+			/*
 			 List<Object[]> constituencyCollectdDetls = surveyDetailsInfoDAO.getsurveyDetailsInfoByboothId(boothId,1L);
 			 List<Object[]> constituencyVerifiedDetls = surveyDetailsInfoDAO.getsurveyDetailsInfoByboothId(boothId,4L);
 			 
@@ -2990,7 +3020,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					 }
 				 }
 				 
-				
+				*/
 		} catch (Exception e) {
 			LOG.error("Exception raised in getBoothWiseDetails() service in SurveyDataDetailsService", e);
 			e.printStackTrace();
@@ -3338,7 +3368,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	}
 	
 	*/
-	 public List<SurveyReportVO> getSurveyVotersList(Long constituencyId, Long boothId,Long surveyUserId,String searchDate){
+	 public List<SurveyReportVO> getSurveyVotersList(Long constituencyId, Long boothId,Long surveyUserId,String searchDate,Long casteStateId){
 		List<SurveyReportVO> retultList = new ArrayList<SurveyReportVO>();
 		try {
 			
@@ -3359,7 +3389,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				surveyUserids.add(surveyUserId);
 				//List<Object[]> votersLsit = surveyDetailsInfoDAO.getVoterDetailsByBoothId(boothId,ids,date);
 				
-				List<Object[]> votersLsit = surveyDetailsInfoDAO.getVotersDetailsByBoothId(boothId,surveyUserids,date);
+				List<Object[]> votersLsit = surveyDetailsInfoDAO.getVotersDetailsByBoothId(boothId,surveyUserids,date,casteStateId);
 				
 				List<Object[]> verifiedList = surveyCallStatusDAO.getSurveyCallDtalsByboothId(boothId,surveyUserId);
 				
