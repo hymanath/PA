@@ -16,6 +16,7 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ISurveyCompletedLocationsDAO;
 import com.itgrids.partyanalyst.dao.ISurveyConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
+import com.itgrids.partyanalyst.dao.IWebMonitoringAssignedUsersDAO;
 import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
 import com.itgrids.partyanalyst.model.SurveyCompletedLocations;
@@ -44,6 +45,9 @@ public class SurveyCompletedDetailsService implements
 	
 	@Autowired
 	private ISurveyConstituencyDAO surveyConstituencyDAO;
+	
+	@Autowired
+	private IWebMonitoringAssignedUsersDAO webMonitoringAssignedUsersDAO;
 	
 	public List<SurveyReportVO> getSurveyCompletedLocationsDetailsForSurveyStartedConstituencies()
 	{
@@ -133,6 +137,12 @@ public class SurveyCompletedDetailsService implements
 
 		try
 		{
+			
+			//if the user is web monitor then we need to show the limited booths information
+			
+		//	List<Long> boothIds =webMonitoringAssignedUsersDAO.getAssignedUsersBoothsDetails(1L,constituencyId);
+			
+			
 			List<Object[]> boothStatusDetails = surveyCompletedLocationsDAO.getBoothsStatusDetailsByConstituencyId(constituencyId);
 			
 			List<Long> processingIds =  surveyDetailsInfoDAO.getBoothsInProcessByConstituencyId(constituencyId);
@@ -482,7 +492,6 @@ public class SurveyCompletedDetailsService implements
 			if(resultVO.getConstituencyId().equals(ConstituencyId))
 				return resultVO;
 		return null;
-	
 		
 	}
 	

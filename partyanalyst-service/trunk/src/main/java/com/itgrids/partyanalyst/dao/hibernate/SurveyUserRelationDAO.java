@@ -214,4 +214,6 @@ public class SurveyUserRelationDAO extends GenericDaoHibernate<SurveyUserRelatio
 		query.setParameterList("leaderId", leaderId);
 		return query.list();
 	}
+	
+	
 }
