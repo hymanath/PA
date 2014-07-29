@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -204,5 +205,13 @@ public class SurveyUserRelationDAO extends GenericDaoHibernate<SurveyUserRelatio
 		
 		return query.list();
 		
+	}
+	
+	public List<Object[]> getAllUserForLeader(List<Long> leaderId)
+	{
+		Query query = getSession().createQuery("select distinct model.surveyUser.surveyUserId, model.surveyUser.userName,model.surveyUser.mobileNo,model.surveyLeader.surveyUserId from SurveyUserRelation model where " +
+				"  model.surveyLeader.surveyUserId in(:leaderId) and model.activeStatus = 'Y'");
+		query.setParameterList("leaderId", leaderId);
+		return query.list();
 	}
 }

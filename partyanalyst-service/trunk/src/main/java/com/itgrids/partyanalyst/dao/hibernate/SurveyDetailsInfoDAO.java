@@ -1059,5 +1059,14 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 
 	}
 	
+	public List<Long> getUsersByDate(Long constituencyId,Date date)
+	{
+		
+		Query query = getSession().createQuery("select distinct SDI.surveyUser.surveyUserId from SurveyDetailsInfo SDI where  SDI.booth.constituency.constituencyId = :constituencyId and DATE(SDI.date) = :date  and SDI.surveyUser.activeStatus = 'Y' ");		
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("date", date);		
+		return query.list();
+		
+	}
 	
 }
