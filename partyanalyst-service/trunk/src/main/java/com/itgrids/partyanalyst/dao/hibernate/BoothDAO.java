@@ -1971,4 +1971,16 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		
 	}
 
+			public List<Object[]> getBoothCountInfoByConstiIds(List<Long> constituencyIds)
+			{
+				Query query = getSession().createQuery("select count(B.boothId),B.constituency.constituencyId from Booth B where " +
+						"B.publicationDate.publicationDateId = :publicationDateId and B.constituency.constituencyId in (:constituencyIds) group by B.constituency.constituencyId ");
+				
+				query.setParameterList("constituencyIds", constituencyIds);
+				query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID);
+				
+				return query.list();
+				
+			}
+			
 }
