@@ -247,8 +247,7 @@
 						  <div id="userDetailsReportDiv"></div>
 						  
 						  <img src='images/Loading-data.gif' class="offset5"  id="userFieldImage" style="width:70px;height:60px;display:none;"/>
-						  <div class="row-fluid " id = "leaderAndUserDetailsDiv"></div>
-						<div class="row-fluid " id = "leaderDetailsDiv"></div>
+						  <div class="row-fluid " id = "leaderAndUserDetailsDiv"></div>						<div class="row-fluid " id = "leaderDetailsDiv"></div>
 						<div class="row-fluid " id="detaildDiv" style="display:none;">
 							<div class="span12 m_top20 widgetservey" id="weathermap" style="height:500px"></div>
 						</div>
@@ -266,7 +265,7 @@
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top20">
 							<h4>Field Data Report</h4>	
-							<img id="fieldDataSummaryimg" style="display: none;" src="./images/Loading-data.gif" alt="Processing Image"  class="offset5" style="width: 70px; height: 60px;"></img>
+							<img id="fieldDataSummaryimg" style="display: none;width: 70px; height: 60px;" src="./images/Loading-data.gif" alt="Processing Image"  class="offset5"></img>
 							<div id="fieldDataSummary"></div>
 					<div id="errDivIdForStartTime" style="color:#FF0020;font-size:15px;" ></div>	
 					
