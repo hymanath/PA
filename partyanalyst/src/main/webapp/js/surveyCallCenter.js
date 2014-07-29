@@ -1867,7 +1867,14 @@ function buildSurveyBoothDetailsTable(result,statusId)
 					str += '<td>'+result[i].mobileNoCount+'</td>';
 					str += '<td>'+result[i].casteCount+'</td>';
 					str += '<td>'+result[i].hamletCount+'</td>';
-					if(statusId == 1){
+					str += '<td><select id="boothStatus" onChange="updateBoothStatusDetails(this.value,'+result[i].boothId+','+i+')"><option>Select Status</option>';
+					str += '<option value="1">DC PROCESS</option>';
+					str += '<option value="2">DC COMPETED</option>';
+					str += '<option value="3">WM COMPETED</option>';
+					str += '<option value="4">DV PROCESS</option>';
+					str += '<option value="5">DV COMPETED</option>';
+					str += '</select></td>';
+					/*if(statusId == 1){
 						str += '<td><button class="btn-small btn-info btn-block " onClick="updateBoothStatusDetails(2,'+result[i].boothId+','+i+')"> Completed </button></td>';
 					}
 					else if(statusId == 2){
@@ -1881,7 +1888,7 @@ function buildSurveyBoothDetailsTable(result,statusId)
 					}else if(statusId == 5){
 							str += '<td><button  class="btn-small btn-warning btn-block" onClick="updateBoothStatusDetails(4,'+result[i].boothId+','+i+')"> In Process </button> </div></td>';
 					}
-					
+					*/
 					str += '</tr>	';
 									
 				}
@@ -2525,6 +2532,9 @@ function buildVerifierOrWMReport(result,buildType,buildDiv,imgId)
 
 function getVerifiedBoothsDetails(status)
 {
+	$('#tableDtailsDiv').html('');
+	$("#panchayatDetailsDiv").html('');
+	$('#statusAjaxImg').show();
 	 $.ajax({
 			type:'GET',
 			url: 'getVerifiedBoothsDetails.action',
