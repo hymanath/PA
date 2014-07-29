@@ -148,7 +148,7 @@ public class SurveyCompletedDetailsService implements
 			
 			
 			for(Object[] obj:panchayatTotalBooths)
-				panchayatBoothCountMap.put((Long)obj[0], (Long)obj[1]);
+				panchayatBoothCountMap.put((Long)obj[1], (Long)obj[0]);
 			
 			//total booths by panchayat wise end
 			

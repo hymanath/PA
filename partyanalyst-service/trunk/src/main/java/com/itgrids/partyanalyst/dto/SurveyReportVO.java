@@ -86,10 +86,10 @@ public class SurveyReportVO {
 	private Long startedCount;
 	private Long completedCount = 0L;
 	
-	private Long wmCompletedCount;
-	private Long dvProcessingCount;
-	private Long dvCompletedCount;
-	private Long notStartedCount;
+	private Long wmCompletedCount = 0L;
+	private Long dvProcessingCount = 0L;
+	private Long dvCompletedCount = 0L;
+	private Long notStartedCount = 0L;
 	
 	
 	public Long getNotStartedCount() {
