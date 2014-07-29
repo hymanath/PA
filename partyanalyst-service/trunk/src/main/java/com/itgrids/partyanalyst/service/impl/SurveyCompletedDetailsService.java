@@ -14,7 +14,9 @@ import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ISurveyCompletedLocationsDAO;
+import com.itgrids.partyanalyst.dao.ISurveyConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
+import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
 import com.itgrids.partyanalyst.model.SurveyCompletedLocations;
 import com.itgrids.partyanalyst.service.ISurveyCompletedDetailsService;
@@ -40,6 +42,8 @@ public class SurveyCompletedDetailsService implements
 	@Autowired
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
 	
+	@Autowired
+	private ISurveyConstituencyDAO surveyConstituencyDAO;
 	
 	public List<SurveyReportVO> getSurveyCompletedLocationsDetailsForSurveyStartedConstituencies()
 	{
@@ -249,6 +253,228 @@ public class SurveyCompletedDetailsService implements
 			LOG.error("Exception raised in saveBoothStatusDetails service method");
 		}
 		return "success";
+	}
+	
+
+	public SurveyDashBoardVO getCompletdConstituenciesDetails()
+	{
+		LOG.debug("entered into getCompletdConstituenciesDetails() in surveyCompletedDetails() service .");
+		
+		SurveyDashBoardVO resultVO = new SurveyDashBoardVO();
+
+		try {
+			
+			List<Long> surveyConstituencyList = new ArrayList<Long>(0);
+			
+			List<Object[]> surveyConstituencyDetails = surveyConstituencyDAO.getSurveyConstituencies();
+			
+			if(surveyConstituencyDetails != null && surveyConstituencyDetails.size()>0)
+			{
+				for (Object[] surveyConstituency : surveyConstituencyDetails)
+				{
+					if(surveyConstituency[0] != null)
+					{						
+						surveyConstituencyList.add((Long)surveyConstituency[0]);
+					}
+				}
+			}
+			
+			
+			List<Object[]> districtWiseContiList = constituencyDAO.getDistictWiseConstituencyListByConstiIds(surveyConstituencyList);	
+			List<SurveyDashBoardVO> locationsLsit = new ArrayList<SurveyDashBoardVO>();
+			
+			if(districtWiseContiList != null && districtWiseContiList.size()>0){
+				for (Object[] param : districtWiseContiList) {
+					SurveyDashBoardVO vo = new SurveyDashBoardVO();
+					
+					vo.setConstituencyId(param[0] != null ? (Long) param[0]:0L);
+					vo.setName(param[1] != null ? param[1].toString():"");
+					
+					vo.setLocationId(param[2] != null ? (Long) param[2]:0L);
+					vo.setLocationName(param[3] != null ? param[3].toString():"");
+					
+					locationsLsit.add(vo);
+				}
+			}
+			
+			Map<Long,Long> constiCount = new HashMap<Long,Long>(0);
+			Map<Long,Long> constiCompletCount = new HashMap<Long,Long>(0);
+			
+			List<Object[]> constituencyInfo = surveyCompletedLocationsDAO.getSurveyCompletedLocations();
+			
+			if(constituencyInfo != null && constituencyInfo.size()>0){
+				for (Object[] locationInfo : constituencyInfo) {
+					
+					if(locationInfo[0] != null && locationInfo[2] != null)
+						constiCompletCount.put((Long) locationInfo[0], (Long) locationInfo[2]);
+				}
+			}
+			
+			List<Object[]> constiBoothCount =  boothDAO.getBoothCountInfoByConstiIds(surveyConstituencyList);
+			
+			if(constiBoothCount != null && constiBoothCount.size()>0){
+				for (Object[] locationInf : constiBoothCount) {
+					
+					if(locationInf[1] != null && locationInf[0] != null)
+						constiCount.put((Long) locationInf[1], (Long) locationInf[0]);
+				}
+			}
+			
+			List<SurveyDashBoardVO> compltedConstiList = new ArrayList<SurveyDashBoardVO>();
+			List<SurveyDashBoardVO> processingConstiList = new ArrayList<SurveyDashBoardVO>();
+			List<SurveyDashBoardVO> startedConstiList = new ArrayList<SurveyDashBoardVO>();
+			List<SurveyDashBoardVO> notYetStartedConstiList = new ArrayList<SurveyDashBoardVO>();
+			
+			if(constiCount != null && constiCount.size()>0)
+			{
+				
+				for (Long constituencyId : constiCount.keySet()) 
+				{
+					
+					Long boothsCount = constiCount.get(constituencyId);
+					Long boothCmpletdCount = constiCompletCount.get(constituencyId);
+					
+					SurveyDashBoardVO constituencyVO = getMatchedDashBoardVOByConstituencyId(locationsLsit,constituencyId);
+
+					if(boothCmpletdCount != null && boothCmpletdCount.longValue() > 0L)
+						{						
+							if(boothsCount.longValue() == boothCmpletdCount.longValue())
+							{
+								compltedConstiList.add(constituencyVO);
+							}
+							else if(boothsCount.longValue() > boothCmpletdCount.longValue())
+							{
+								
+								processingConstiList.add(constituencyVO);
+							}
+						}
+						else{							
+							notYetStartedConstiList.add(constituencyVO);						
+						}
+				}
+			}
+			
+			
+			startedConstiList.addAll(processingConstiList); // started means which are in process state as well completed state;
+			startedConstiList.addAll(compltedConstiList);
+			
+			
+			resultVO.setProcessingCount(processingConstiList.size());			
+			resultVO.setCompletedCount(compltedConstiList.size());			
+			resultVO.setStartedCount(startedConstiList.size());			
+			resultVO.setNotStartedCount(notYetStartedConstiList.size() + surveyConstituencyList.size());	
+			
+			List<Long> completedDistrictList = new ArrayList<Long>(0);
+			
+			if(compltedConstiList != null && compltedConstiList.size()>0)
+			{
+				for (SurveyDashBoardVO dashBoardVO : compltedConstiList) 
+				{
+	
+					if(!completedDistrictList.contains(dashBoardVO.getLocationId()))
+					{
+						completedDistrictList.add(dashBoardVO.getLocationId());
+						
+						SurveyDashBoardVO districtVO = new SurveyDashBoardVO();
+						
+						districtVO.setLocationId(dashBoardVO.getLocationId());
+						districtVO.setLocationName(dashBoardVO.getLocationName());
+						
+						resultVO.getCompleted().add(districtVO);
+					}
+				}
+			}
+			
+			
+			List<Long> processingDistrictList = new ArrayList<Long>(0); 
+			if(processingConstiList != null && processingConstiList.size()>0)
+			{
+				for (SurveyDashBoardVO dashBoardVO : processingConstiList) 
+				{
+
+					if(!completedDistrictList.contains(dashBoardVO.getLocationId()) && !processingDistrictList.contains(dashBoardVO.getLocationId()))
+					{
+						processingDistrictList.add( dashBoardVO.getLocationId());
+						
+						SurveyDashBoardVO districtVO = new SurveyDashBoardVO();
+						
+						districtVO.setLocationId(dashBoardVO.getLocationId());
+						districtVO.setLocationName(dashBoardVO.getLocationName());
+						
+						resultVO.getProcess().add(districtVO);
+					}
+				}
+			}
+			
+			List<Long> startedDistrictList = new ArrayList<Long>(0); 
+			if(startedConstiList != null && startedConstiList.size()>0)
+			{
+				for (SurveyDashBoardVO dashBoardVO : startedConstiList) 
+				{
+
+					if(!completedDistrictList.contains(dashBoardVO.getLocationId()) && !startedDistrictList.contains(dashBoardVO.getLocationId()))
+					{
+						startedDistrictList.add(dashBoardVO.getLocationId());
+						
+						SurveyDashBoardVO districtVO = new SurveyDashBoardVO();
+						
+						districtVO.setLocationId(dashBoardVO.getLocationId());
+						districtVO.setLocationName(dashBoardVO.getLocationName());
+						
+						resultVO.getStarted().add(districtVO);
+					}
+				}
+			}
+			
+			List<Long> notYetStartedDistrictList = new ArrayList<Long>(0); 
+			
+			if(notYetStartedConstiList != null && notYetStartedConstiList.size()>0)
+			{
+				for (SurveyDashBoardVO dashBoardVO : notYetStartedConstiList) 
+				{
+					
+					if(!completedDistrictList.contains(dashBoardVO.getLocationId()) && !notYetStartedDistrictList.contains(dashBoardVO.getLocationId()) &&
+							!startedDistrictList.contains(dashBoardVO.getLocationId()) && !processingDistrictList.contains(dashBoardVO.getLocationId())  )
+					{
+						notYetStartedDistrictList.add(dashBoardVO.getLocationId());
+						
+						SurveyDashBoardVO districtVO = new SurveyDashBoardVO();
+						
+						districtVO.setLocationId(dashBoardVO.getLocationId());
+						districtVO.setLocationName(dashBoardVO.getLocationName());
+						
+						resultVO.getNotStarted().add(districtVO);
+					}
+				}
+			}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception raised in  getCompletdConstituenciesDetails() in surveyCompletedDetails() service .",e);
+		}
+		
+		return resultVO;
+	}
+	
+	private SurveyDashBoardVO getMatchedDashBoardVOByLocationId(List<SurveyDashBoardVO> resultList,Long locationId)
+	{
+		for(SurveyDashBoardVO resultVO:resultList)
+			if(resultVO.getLocationId().equals(locationId))
+				return resultVO;
+		return null;
+	
+		
+	}
+	
+	private SurveyDashBoardVO getMatchedDashBoardVOByConstituencyId(List<SurveyDashBoardVO> resultList,Long ConstituencyId)
+	{
+		for(SurveyDashBoardVO resultVO:resultList)
+			if(resultVO.getConstituencyId().equals(ConstituencyId))
+				return resultVO;
+		return null;
+	
+		
 	}
 	
 }
