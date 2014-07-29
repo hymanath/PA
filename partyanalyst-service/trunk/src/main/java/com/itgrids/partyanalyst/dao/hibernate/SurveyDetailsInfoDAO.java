@@ -354,6 +354,35 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 		return query.list();
 	}
 	
+	/*
+	public List<Object[]> getVotersDetailsByBoothId(Long boothId,List<Long> assignUsers,Date searchDate,Long casteStateId)
+	{
+		
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select SDI, BPV.serialNo from SurveyDetailsInfo SDI ,BoothPublicationVoter BPV ");
+		queryStr.append("  where SDI.booth.boothId = BPV.booth.boothId and SDI.voter.voterId = BPV.voter.voterId ");
+		queryStr.append(" and SDI.booth.boothId  = :boothId and SDI.surveyUser.surveyUserId in (:assignUsers)  ");
+	//	queryStr.append("  and date(SDI.date) = :searchDate  and SDI.voter.voterId not in ( select SCS.voter.voterId from SurveyCallStatus SCS where  SDI.surveyUser.surveyUserId =  SCS.surveyUser.surveyUserId )" );
+		
+		if(casteStateId != null && casteStateId != 0){
+			queryStr.append(" and  SDI.caste.casteStateId = :casteStateId ");
+		}
+		
+		queryStr.append("  order by SDI.voter.voterId ");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("boothId", boothId);		
+		//query.setParameter("searchDate", searchDate);
+		query.setParameterList("assignUsers", assignUsers);	
+		
+		if(casteStateId != null && casteStateId != 0)
+		{
+			query.setParameter("casteStateId", casteStateId);
+		}
+		
+		return query.list();
+	}
+	*/
 	public List<Object[]> getVotersDetailsByBoothId(Long boothId,List<Long> assignUsers,Date searchDate)
 	{
 		Query query = getSession().createQuery("select SDI, BPV.serialNo   " +
@@ -941,89 +970,216 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 	
 	
 
-	public Long getCasteCountByBoothByConstituency(Long constituencyId,Long surveyUsertypeId)
+	public Long getCasteCountByBoothByConstituency(Long locationId,Long surveyUsertypeId, String searchType)
 	{
-		Query query = getSession().createQuery("select count(distinct model.voter.voterId) from SurveyDetailsInfo model where  " +
+		/*
+		 * Query query = getSession().createQuery("select count(distinct model.voter.voterId) from SurveyDetailsInfo model where  " +
 				" model.booth.constituency.constituencyId = :constituencyId and  model.booth.publicationDate.publicationDateId = :publicationDateId  and (model.caste.casteStateId is not null or model.casteName is not null or  model.casteName != '') " +
 				" and model.surveyUser.surveyUserType.surveyUsertypeId = :surveyUsertypeId");	
+		 */
+		StringBuilder queryStr = new StringBuilder();
+		
+		queryStr.append(" select count(distinct model.voter.voterId) from SurveyDetailsInfo model where  ");
+		if(searchType.equalsIgnoreCase("constituencyWise")){
+			queryStr.append(" model.booth.constituency.constituencyId = :locationId and  model.booth.publicationDate.publicationDateId = 11  and ");
+		}
+		else if(searchType.equalsIgnoreCase("boothWise")){
+			queryStr.append(" model.booth.boothId = :locationId and ");
+		}
+		
+		queryStr.append(" (model.caste.casteStateId is not null or model.casteName is not null or  model.casteName != '') ");
+		queryStr.append(" and model.surveyUser.surveyUserType.surveyUsertypeId = :surveyUsertypeId ");
+		
+		Query query = getSession().createQuery(queryStr.toString());	
 
 		query.setParameter("surveyUsertypeId", surveyUsertypeId);	
-		query.setParameter("constituencyId", constituencyId);
-		query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID);
+		query.setParameter("locationId", locationId);
+		//query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID);
 		return (Long)query.uniqueResult();
 	}
 	
-	public Long getHamletCountByBoothByConstituency(Long constituencyId,Long surveyUsertypeId)
+	public Long getHamletCountByBoothByConstituency(Long locationId,Long surveyUsertypeId, String searchType)
 	{
-		Query query = getSession().createQuery("select count(distinct model.voter.voterId) from SurveyDetailsInfo model where " +
+		/*
+		 * Query query = getSession().createQuery("select count(distinct model.voter.voterId) from SurveyDetailsInfo model where " +
 				" model.booth.constituency.constituencyId = :constituencyId and  model.booth.publicationDate.publicationDateId = :publicationDateId and (model.hamlet.hamletId is not null or model.hamletName is not null or model.hamletName != '') " +
 				" and model.surveyUser.surveyUserType.surveyUsertypeId = :surveyUsertypeId");	
+		 */
+		
+		StringBuilder queryStr = new StringBuilder();
+		
+		queryStr.append(" select count(distinct model.voter.voterId) from SurveyDetailsInfo model where  ");
+		
+		if(searchType.equalsIgnoreCase("constituencyWise")){
+			queryStr.append(" model.booth.constituency.constituencyId = :locationId and  model.booth.publicationDate.publicationDateId = 11  and ");
+		}
+		else if(searchType.equalsIgnoreCase("boothWise")){
+			queryStr.append(" model.booth.boothId = :locationId and ");
+		}
+		
+		queryStr.append(" (model.hamlet.hamletId is not null or model.hamletName is not null or model.hamletName != '') ");
+		queryStr.append(" and model.surveyUser.surveyUserType.surveyUsertypeId = :surveyUsertypeId ");
+		
+		Query query = getSession().createQuery(queryStr.toString());	
 
+		
 		query.setParameter("surveyUsertypeId", surveyUsertypeId);	
-		query.setParameter("constituencyId", constituencyId);
-		query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID);
+		query.setParameter("locationId", locationId);
+		//query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID);
 		return (Long)query.uniqueResult();
 	}
 	
-	public Long getLocalAreaCountByBoothByConstituency(Long constituencyId,Long surveyUsertypeId)
+	public Long getLocalAreaCountByBoothByConstituency(Long locationId,Long surveyUsertypeId, String searchType)
 	{
-		Query query = getSession().createQuery("select count(distinct model.voter.voterId) from SurveyDetailsInfo model where " +
+		/*
+		 * Query query = getSession().createQuery("select count(distinct model.voter.voterId) from SurveyDetailsInfo model where " +
 				" model.booth.constituency.constituencyId = :constituencyId and  model.booth.publicationDate.publicationDateId = :publicationDateId and model.localArea is not null " +
 				" and model.surveyUser.surveyUserType.surveyUsertypeId = :surveyUsertypeId");	
+		 */
+		
+		StringBuilder queryStr = new StringBuilder();
+		
+		queryStr.append(" select count(distinct model.voter.voterId) from SurveyDetailsInfo model where  ");
+		
+		if(searchType.equalsIgnoreCase("constituencyWise")){
+			queryStr.append(" model.booth.constituency.constituencyId = :locationId and  model.booth.publicationDate.publicationDateId = 11  and ");
+		}
+		else if(searchType.equalsIgnoreCase("boothWise")){
+			queryStr.append(" model.booth.boothId = :locationId and ");
+		}
+		
+		queryStr.append(" model.localArea is not null ");
+		
+		queryStr.append(" and model.surveyUser.surveyUserType.surveyUsertypeId = :surveyUsertypeId ");
+		
+		Query query = getSession().createQuery(queryStr.toString());	
 
+		
+		
 		query.setParameter("surveyUsertypeId", surveyUsertypeId);	
-		query.setParameter("constituencyId", constituencyId);
-		query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID);
+		query.setParameter("locationId", locationId);
+		//query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID);
 		return (Long)query.uniqueResult();
 	}
 	
-	public Long getCadreCountByBoothByConstituency(Long constituencyId,Long surveyUsertypeId)
+	public Long getCadreCountByBoothByConstituency(Long locationId,Long surveyUsertypeId, String searchType)
 	{
-		Query query = getSession().createQuery("select count(distinct model.voter.voterId) from SurveyDetailsInfo model where" +
+		/*
+		 * Query query = getSession().createQuery("select count(distinct model.voter.voterId) from SurveyDetailsInfo model where" +
 				" model.booth.constituency.constituencyId = :constituencyId and  model.booth.publicationDate.publicationDateId =:publicationDateId and model.isCadre != 'N' " +
 				" and model.surveyUser.surveyUserType.surveyUsertypeId = :surveyUsertypeId");	
+		 */
+		
+		StringBuilder queryStr = new StringBuilder();
+		
+		queryStr.append(" select count(distinct model.voter.voterId) from SurveyDetailsInfo model where  ");
+		
+		if(searchType.equalsIgnoreCase("constituencyWise")){
+			queryStr.append(" model.booth.constituency.constituencyId = :locationId and  model.booth.publicationDate.publicationDateId = 11  and ");
+		}
+		else if(searchType.equalsIgnoreCase("boothWise")){
+			queryStr.append(" model.booth.boothId = :locationId and ");
+		}
+		
+		queryStr.append(" model.isCadre != 'N' ");
+		
+		queryStr.append(" and model.surveyUser.surveyUserType.surveyUsertypeId = :surveyUsertypeId ");
+		
+		Query query = getSession().createQuery(queryStr.toString());	
 
 		query.setParameter("surveyUsertypeId", surveyUsertypeId);	
-		query.setParameter("constituencyId", constituencyId);
-		query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID);
+		query.setParameter("locationId", locationId);
+		//query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID);
 		return (Long)query.uniqueResult();
 	}
 	
-	public Long getInfluencingPeopleCountByBoothByConstituency(Long constituencyId,Long surveyUsertypeId)
+	public Long getInfluencingPeopleCountByBoothByConstituency(Long locationId,Long surveyUsertypeId, String searchType)
 	{
-		Query query = getSession().createQuery("select count(distinct model.voter.voterId) from SurveyDetailsInfo model where " +
+		/*
+		 * Query query = getSession().createQuery("select count(distinct model.voter.voterId) from SurveyDetailsInfo model where " +
 				" model.booth.constituency.constituencyId = :constituencyId and  model.booth.publicationDate.publicationDateId =:publicationDateId and model.isInfluencingPeople  != 'N' " +
 				" and model.surveyUser.surveyUserType.surveyUsertypeId = :surveyUsertypeId");	
-
+		 */
+		StringBuilder queryStr = new StringBuilder();
+		
+		queryStr.append(" select count(distinct model.voter.voterId) from SurveyDetailsInfo model where  ");
+		
+		if(searchType.equalsIgnoreCase("constituencyWise")){
+			queryStr.append(" model.booth.constituency.constituencyId = :locationId and  model.booth.publicationDate.publicationDateId = 11  and ");
+		}
+		else if(searchType.equalsIgnoreCase("boothWise")){
+			queryStr.append(" model.booth.boothId = :locationId and ");
+		}
+		
+		queryStr.append(" model.isInfluencingPeople  != 'N' ");
+		
+		queryStr.append(" and model.surveyUser.surveyUserType.surveyUsertypeId = :surveyUsertypeId ");
+		
+		Query query = getSession().createQuery(queryStr.toString());	
+		
 		query.setParameter("surveyUsertypeId", surveyUsertypeId);	
-		query.setParameter("constituencyId", constituencyId);
-		query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID);
+		query.setParameter("locationId", locationId);
+		//query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID);
 		return (Long)query.uniqueResult();
 	}
 	
-	public Long getTotalSurveyVotersByconstituency(Long constituencyId,Long surveyUsertypeId)
+	public Long getTotalSurveyVotersByconstituency(Long locationId,Long surveyUsertypeId, String searchType)
 	{
-		Query query = getSession().createQuery("select count(distinct model.voter.voterId) from SurveyDetailsInfo model where " +
+		/*
+		 * Query query = getSession().createQuery("select count(distinct model.voter.voterId) from SurveyDetailsInfo model where " +
 				" model.booth.constituency.constituencyId = :constituencyId and  model.booth.publicationDate.publicationDateId =:publicationDateId " +
 				" and model.surveyUser.surveyUserType.surveyUsertypeId = :surveyUsertypeId");	
-
+		 */
+		
+		StringBuilder queryStr = new StringBuilder();
+		
+		queryStr.append(" select count(distinct model.voter.voterId) from SurveyDetailsInfo model where  ");
+		
+		if(searchType.equalsIgnoreCase("constituencyWise")){
+			queryStr.append(" model.booth.constituency.constituencyId = :locationId and  model.booth.publicationDate.publicationDateId = 11  and ");
+		}
+		else if(searchType.equalsIgnoreCase("boothWise")){
+			queryStr.append(" model.booth.boothId = :locationId and ");
+		}
+		
+		queryStr.append(" model.surveyUser.surveyUserType.surveyUsertypeId = :surveyUsertypeId ");
+		
+		Query query = getSession().createQuery(queryStr.toString());	
+		
 		query.setParameter("surveyUsertypeId", surveyUsertypeId);	
-		query.setParameter("constituencyId", constituencyId);
-		query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID);
+		query.setParameter("locationId", locationId);
+		//query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID);
 		return (Long)query.uniqueResult();
 	}
 	
 	
-	public Long getMobileCountByBoothByConstituency(Long constituencyId,Long surveyUsertypeId)
+	public Long getMobileCountByBoothByConstituency(Long locationId,Long surveyUsertypeId, String searchType)
 	{
-		Query query = getSession().createQuery("select count(distinct  model.mobileNumber) from SurveyDetailsInfo model where " +
+		/*	
+		 * Query query = getSession().createQuery("select count(distinct  model.mobileNumber) from SurveyDetailsInfo model where " +
 				" model.booth.constituency.constituencyId = :constituencyId and  model.booth.publicationDate.publicationDateId =:publicationDateId and model.mobileNumber is not null and  " +
 				" model.mobileNumber !='' " +
 				" and model.surveyUser.surveyUserType.surveyUsertypeId = :surveyUsertypeId");	
-
+		 */
+		StringBuilder queryStr = new StringBuilder();
+		
+		queryStr.append(" select count(distinct  model.mobileNumber) from SurveyDetailsInfo model where   ");
+		
+		if(searchType.equalsIgnoreCase("constituencyWise")){
+			queryStr.append(" model.booth.constituency.constituencyId = :locationId and  model.booth.publicationDate.publicationDateId = 11  and ");
+		}
+		else if(searchType.equalsIgnoreCase("boothWise")){
+			queryStr.append(" model.booth.boothId = :locationId and ");
+		}
+		
+		queryStr.append(" model.mobileNumber is not null and model.surveyUser.surveyUserType.surveyUsertypeId = :surveyUsertypeId ");
+		
+		Query query = getSession().createQuery(queryStr.toString());	
+		
+		
 		query.setParameter("surveyUsertypeId", surveyUsertypeId);	
-		query.setParameter("constituencyId", constituencyId);
-		query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID);
+		query.setParameter("locationId", locationId);
+		//query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID);
 		return (Long)query.uniqueResult();
 	}
 	
