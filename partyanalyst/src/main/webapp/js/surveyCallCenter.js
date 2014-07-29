@@ -1868,12 +1868,48 @@ function buildSurveyBoothDetailsTable(result,statusId)
 					str += '<td>'+result[i].casteCount+'</td>';
 					str += '<td>'+result[i].hamletCount+'</td>';
 					str += '<td><select id="boothStatus" onChange="updateBoothStatusDetails(this.value,'+result[i].boothId+','+i+')"><option>Select Status</option>';
-					str += '<option value="1">DC PROCESS</option>';
-					str += '<option value="2">DC COMPETED</option>';
-					str += '<option value="3">WM COMPETED</option>';
-					str += '<option value="4">DV PROCESS</option>';
-					str += '<option value="5">DV COMPETED</option>';
+					if(statusId == 1)
+					{
+						str += '<option value="1" selected="selected">DC PROCESS</option>';
+					}
+					else
+					{
+						str += '<option value="1">DC PROCESS</option>';
+					}
+					if(statusId == 2)
+					{
+						str += '<option value="2" selected="selected">DC COMPETED</option>';
+					}
+					else
+					{
+						str += '<option value="2">DC COMPETED</option>';
+					}
+					if(statusId == 3)
+					{
+						str += '<option value="3" selected="selected">WM COMPETED</option>';
+					}
+					else
+					{
+						str += '<option value="3">WM COMPETED</option>';
+					}
+					if(statusId == 4)
+					{
+						str += '<option value="4" selected="selected" >DV PROCESS</option>';
+					}
+					else
+					{
+						str += '<option value="4">DV PROCESS</option>';
+					}
+					if(statusId == 5)
+					{
+						str += '<option value="5" selected="selected" >DV COMPETED</option>';
+					}
+					else
+					{
+						str += '<option value="5">DV COMPETED</option>';
+					}				
 					str += '</select></td>';
+					
 					/*if(statusId == 1){
 						str += '<td><button class="btn-small btn-info btn-block " onClick="updateBoothStatusDetails(2,'+result[i].boothId+','+i+')"> Completed </button></td>';
 					}
