@@ -24,10 +24,18 @@ public class SurveyDashBoardVO {
 	private boolean verifierCompleted;
 	private Long boothId;
 	private Long constituencyId;
+	private String name;
 	private Long totalVoters;
 	
 	private Long totalCollectedCount =0l;
 	
+
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	public Long getTotalCollectedCount() {
 		return totalCollectedCount;
 	}
