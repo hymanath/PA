@@ -2084,6 +2084,26 @@ public String getPanchayatsStatusDetails()
 		}
 		return Action.SUCCESS;
 	}
+	public String getThirdPartyVerificationDetails()
+	{
+		try
+		{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			jObj = new JSONObject(getTask());
+			responceList = surveyDetailsService.getThirdPartyVerificationDetails(jObj.getLong("boothId"));
+					
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getLeaderUsers", e);
+		}
+		return Action.SUCCESS;
+	}
   
 
   	public String getConstituencyLeadersAndUsers()

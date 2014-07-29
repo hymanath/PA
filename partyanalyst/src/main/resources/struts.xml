@@ -7893,5 +7893,11 @@
 				 <param name="root">surveyUserDetails</param>
 			</result>
   		</action>
+  		<action name="getThirdPartyVerificationDetailsAction" class="surveyDataDetailsAction" method="getThirdPartyVerificationDetails">
+  			<result type="json" name="success">
+				 <param name="root">responceList</param>
+			</result>
+  		</action>
+  		
 </package>
 </struts>      
