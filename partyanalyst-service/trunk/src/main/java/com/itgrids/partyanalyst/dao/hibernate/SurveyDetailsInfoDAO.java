@@ -829,7 +829,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		Query query = getSession()
 				.createQuery(
 						"select min(date), max(date),SDI.surveyUser.surveyUserId from SurveyDetailsInfo SDI  where date(SDI.date) >= date(:startdate) " +
-						"and date(SDI.date) <= date(:endDate) and SDI.surveyUser.surveyUserType.surveyUserTypeId = 1 group by survey_user_id");
+						"and date(SDI.date) <= date(:endDate) and SDI.surveyUser.surveyUserType.surveyUsertypeId = 1 group by survey_user_id");
 		
 		query.setParameter("startdate", startdate);
 		query.setParameter("endDate", endDate);
@@ -1075,6 +1075,18 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 				" model.booth.boothId in (:boothId) and model.surveyUser.surveyUserType.surveyUsertypeId = 4 ");
 		query.setParameter("boothId", boothId);
 		return query.list();
+	}
+	
+	public List<Object[]> getStartedBoothsDetailsByConstituencyIds(List<Long> constituencyIds)
+	{
+		Query query = getSession().createQuery("select count(distinct SDI.booth.boothId), SDI.booth.constituency.constituencyId, SDI.booth.constituency.name from " +
+				" SurveyDetailsInfo SDI where SDI.booth.constituency.constituencyId in(:constituencyIds) and " +
+				"SDI.surveyUser.surveyUserType.surveyUsertypeId = :surveyUsertypeId");
+		
+		query.setParameterList("constituencyIds", constituencyIds);
+		query.setParameter("surveyUsertypeId", IConstants.DATA_COLLECTOR_ROLE_ID);
+		return query.list();
+		
 	}
 	
 	

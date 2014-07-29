@@ -780,7 +780,7 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 				if(obj[4] != null)
 					userVO.setHamletCollectedCount(userVO.getHamletCollectedCount() +1);
 				
-				if(obj[2] != null)
+				if(obj[2] != null && !obj[2].toString().trim().equalsIgnoreCase(""))
 					userVO.setMobileNumberCollectedCount(userVO.getMobileNumberCollectedCount()+1);
 				
 			}
@@ -936,7 +936,9 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
             for(Object[] obj:userReportList)
             {
             	SurveyReportVO constituencyVO = getMatchedLocationVO(resultList, (Long)obj[8]);
+            	constituencyVO.setName(obj[9].toString());
             	SurveyReportVO boothVO = getMatchedLocationVO(constituencyVO.getSubList(),(Long)obj[6]);
+            	boothVO.setName(obj[7].toString());
             	
             	
 				if(obj[3] != null)
@@ -945,7 +947,7 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 				if(obj[4] != null)
 					boothVO.setHamletCollectedCount(boothVO.getHamletCollectedCount() +1);
 				
-				if(obj[2] != null)
+				if(obj[2] != null && !obj[2].toString().trim().equalsIgnoreCase(""))
 					boothVO.setMobileNumberCollectedCount(boothVO.getMobileNumberCollectedCount()+1);
             	
             }
@@ -992,7 +994,7 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 			for(Object[] obj:leadersDetails)
 			{
 				
-				resultMap.put((Long)obj[0],obj[1].toString() +"-"+obj[2].toString());
+				resultMap.put((Long)obj[0],obj[1].toString() +"-"+obj[3].toString());
 				
 			}
 			
