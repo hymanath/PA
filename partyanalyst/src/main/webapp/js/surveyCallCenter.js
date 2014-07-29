@@ -2567,7 +2567,13 @@ function buildSummaryForFieldData(result)
 					str+='<td>'+result[i].constituency+'</td>';
 					str+='<td>'+result[i].totalCount+'</td>';
 					str+='<td>'+result[i].casteCount+'</td>';
+					if(result[i].casteErrorRate == null)
+					str+='<td>-</td>';
+					else
 					str+='<td>'+result[i].casteErrorRate+'</td>';
+					if(result[i].mobileErrorRate == null)
+					str+='<td>-</td>';
+					else
 					str+='<td>'+result[i].mobileErrorRate+'</td>';
 					var count = result[i].totalCount - result[i].casteCount;
 					str+='<td>'+count+'</td>';
