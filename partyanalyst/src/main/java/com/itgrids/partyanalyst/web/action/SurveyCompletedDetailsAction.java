@@ -103,16 +103,5 @@ public class SurveyCompletedDetailsAction extends ActionSupport implements Servl
 		return ActionSupport.SUCCESS;
 	}
 	
-	public String allBoothsDetailsByConstituencyIds()
-	{
-		try 
-		{
-			resultList = surveyCompletedDetailsService.getSurveyCompletedLocationsDetailsForSurveyStartedConstituencies();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return Action.SUCCESS;
-	}
+
 }
