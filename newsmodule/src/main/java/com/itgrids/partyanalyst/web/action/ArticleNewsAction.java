@@ -56,7 +56,6 @@ public class ArticleNewsAction implements ServletRequestAware{
 	}
 	
 	
-	@Override
 	public void setServletRequest(HttpServletRequest request) {
 		
 		this.request = request;
