@@ -222,7 +222,8 @@ function createNewRole(){
 			return;	
 		}
 
-		createNewOne(role,"createNewRole","Role","RerrDiv");							
+		createNewOne(role,"createNewRole","Role","RerrDiv");	
+			$('#newRoleId').val('');
 }
 function createNewCharacteristic(){
 		$("#debateStatus").html('');
@@ -234,6 +235,8 @@ function createNewCharacteristic(){
 		}
 
 		createNewOne(characteristic,"createNewCharacteristic","Characteristic","CerrDiv");
+			$('#CharacteristicId').val('');
+		
 }
 
 function createNewDebateQuestion(){
@@ -246,6 +249,7 @@ function createNewDebateQuestion(){
 		}
 
 		createNewOne(debateQuestion,"createNewDebateQuestion","Debate Question","QerrDiv");
+		$('#debateQstinId').val('');
 }
 
 function insertChannelDetails(){
@@ -257,7 +261,9 @@ function insertChannelDetails(){
 			return;	
 		}
 
-		createNewOne(channel,"createNewChannel","Channel","CHerrDiv");							
+		createNewOne(channel,"createNewChannel","Channel","CHerrDiv");
+			$('#channelName').val('');
+			
 }
 function insertObserverDetails(){
 
@@ -268,7 +274,8 @@ function insertObserverDetails(){
 			return;	
 		}
 
-		createNewOne(observer,"createNewObserver","Observer","OerrDiv");							
+		createNewOne(observer,"createNewObserver","Observer","OerrDiv");	
+			$('#observerName').val('');
 }
 
 
