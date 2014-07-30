@@ -61,7 +61,7 @@ public class SurveyDetailsInfo
 	private String HouseNoPoint;
 	private String isDelete;
 	
-	
+	private Long wardId;
 	
 	
 	
@@ -293,6 +293,13 @@ public class SurveyDetailsInfo
 	}
 	public void setIsDelete(String isDelete) {
 		this.isDelete = isDelete;
+	}
+	@Column(name="ward_id")
+	public Long getWardId() {
+		return wardId;
+	}
+	public void setWardId(Long wardId) {
+		this.wardId = wardId;
 	}
 	
 	
