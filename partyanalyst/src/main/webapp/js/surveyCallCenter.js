@@ -1904,22 +1904,6 @@ function buildSurveyBoothDetailsTable(result,statusId)
 						str += '<option value="5">DV COMPETED</option>';
 					}				
 					str += '</select></td>';
-					
-					/*if(statusId == 1){
-						str += '<td><button class="btn-small btn-info btn-block " onClick="updateBoothStatusDetails(2,'+result[i].boothId+','+i+')"> Completed </button></td>';
-					}
-					else if(statusId == 2){
-							str += '<td> <button  class="btn-small btn-warning btn-block " onClick="updateBoothStatusDetails(1,'+result[i].boothId+','+i+')"> Processing </button> <button  style="margin-top:5px;" class="btn-small btn-success btn-block" onClick="updateBoothStatusDetails(3,'+result[i].boothId+','+i+')"> WM Completed </button></td>';
-					}
-					else if(statusId == 3){
-							str += '<td><button  class="btn-small btn-warning btn-block" onClick="updateBoothStatusDetails(1,'+result[i].boothId+','+i+')"> Processing </button> <button  style="margin-top:5px;" class="btn-small btn-info btn-block" onClick="updateBoothStatusDetails(2,'+result[i].boothId+','+i+')"> Completed </button></div></td>';
-					}
-					else if(statusId == 4){
-							str += '<td><button  class="btn-small btn-warning btn-block" onClick="updateBoothStatusDetails(5,'+result[i].boothId+','+i+')"> Completed </button> </div></td>';
-					}else if(statusId == 5){
-							str += '<td><button  class="btn-small btn-warning btn-block" onClick="updateBoothStatusDetails(4,'+result[i].boothId+','+i+')"> In Process </button> </div></td>';
-					}
-					*/
 					str += '</tr>	';
 									
 				}
@@ -2267,7 +2251,8 @@ function updateBoothStatusDetails(statusId,boothId,divId)
 	data: {statusId:statusId,locationValue:boothId,locationType:"booth"},
 	}).done(function(result){
 		if(result != null && result == "success"){
-		getReportForConstituency();
+		//getReportForConstituency();
+		getBoothsStatusDetailsOfConstituency();
 		$('#updateDiv'+divId+'').hide();			
 		}
 	});
