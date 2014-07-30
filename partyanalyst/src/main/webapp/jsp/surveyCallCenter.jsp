@@ -385,7 +385,7 @@
 						<div class="row">
 								<div class="span12 offset4">
 									<div class="row-fluid">
-										
+										<div id="constnErrDiv"></div>
 										<div class="span8">
 											Select Constituency <font class="requiredFont">*</font>
 												<s:select theme="simple" cssClass="selectBoxWidth span4 input-block-level" id="reportConstituencyId" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" />
@@ -399,7 +399,7 @@
 						<!--<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getReportForConstituency();"> Get Report </button> </div>-->
 						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getBoothsStatusDetailsOfConstituency();"> Get Report </button> </div>
 						<div class="row-fluid " id= "basicStatusReport" style="margin-top:20px;"></div>	
-						<img src='images/Loading-data.gif' class="offset5"  id="stateStatusAjax" style="width:70px;height:60px;display:none;"/>	</img>				
+						<img src='images/Loading-data.gif' class="offset5 hide"  id="stateStatusAjax" style="width:70px;height:60px;"/>	</img>				
 						<div class="row-fluid" id="panchayatsStatusDiv"></div>
 							<img src='images/Loading-data.gif' class="offset5"  id="statusAjaxImg" style="width:70px;height:60px;display:none;"/>
 						<div class="row-fluid " id= "tableDtailsDiv" style="margin-top:20px;"></div>
@@ -625,6 +625,10 @@
 		$('#boothIdForVerfication').multiselect({
 			  noneSelectedText:"Select Booth(s)"});
 		});	
+
+		$('#reportConstituencyId').change(function(){
+			$('#basicStatusReport').html('');
+		});
 		
 		$(function() {
 			$(".date").datepicker({ 

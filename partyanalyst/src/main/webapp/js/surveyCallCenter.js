@@ -2259,15 +2259,12 @@ function buildUserReport(result,userType)
 }
 function updateBoothStatusDetails(statusId,boothId,divId)
 {
-	var jsObj={
-		statusId:statusId,
-		boothId:boothId
-	};
+	
 	$.ajax({
 	type:'GET',
-	url: 'saveBoothCompletionStatus.action',
+	url: 'saveBoothStatusDetails.action',
 	dataType: 'json',
-	data: {task:JSON.stringify(jsObj)},
+	data: {statusId:statusId,locationValue:boothId,locationType:"booth"},
 	}).done(function(result){
 		if(result != null && result == "success"){
 		getReportForConstituency();
@@ -2690,6 +2687,14 @@ function buildLeadersAndUsersTable(result)
 
 function getBoothsStatusDetailsOfConstituency()
 {
+
+	if($('#reportConstituencyId').val() ==0)
+	{
+      $("#constnErrDiv").html('Please select constituency');
+	  return;
+	}
+
+	$('#stateStatusAjax').show();
 		$.ajax({
 		type:'GET',
 		url: 'getBoothStatusDetailsByConstituency.action',
@@ -2701,6 +2706,7 @@ function getBoothsStatusDetailsOfConstituency()
 }
 function buildBoothsStatusCountsDetails(result)
 {
+		$('#stateStatusAjax').hide();
 	var str='';
 
 		str += '<div class="row-fluid">';
@@ -2740,6 +2746,13 @@ function buildBoothsStatusCountsDetails(result)
 		str += '<hgroup>';
 		str += '<h4>VERIFICATION COMPLETED</h4>';
 		str += '<h2> <a href="javascript:{getBoothsDetailsByStatusAndConstituency(5)}">'+result.dvCompletedCount+'</a></h2>';
+		str += '</hgroup>';
+		str += '</li>';
+
+		str += '<li>';
+		str += '<hgroup>';
+		str += '<h4>ACTUAL VERIFICATION PROCESSING</h4>';
+		str += '<h2> <a href="javascript:{getBoothsDetailsByStatusAndConstituency(6)}">'+result.actualProcessingCount+'</a></h2>';
 		str += '</hgroup>';
 		str += '</li>';
 
