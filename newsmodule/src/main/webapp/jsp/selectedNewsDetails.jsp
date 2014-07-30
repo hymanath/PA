@@ -86,7 +86,6 @@ var toDate = "${toDate}";
 </script>
 </head>
 <body>
-<body>
 <div id="newDisplayMainDiv">
   <div id="headerDiv">News Details From ${fromDate} To ${toDate}</div>
 
