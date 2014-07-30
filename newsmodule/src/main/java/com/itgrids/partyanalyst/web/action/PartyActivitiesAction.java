@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.jfree.util.Log;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
@@ -33,7 +35,17 @@ public class PartyActivitiesAction  implements ServletRequestAware{
 	private String status;
 	private List<PartyActivitiesVO> partyActivitiesList;
 	private String url;
+	private ConstituencyInfoVO constituencyInfoVO;
 	
+	
+	public ConstituencyInfoVO getConstituencyInfoVO() {
+		return constituencyInfoVO;
+	}
+
+	public void setConstituencyInfoVO(ConstituencyInfoVO constituencyInfoVO) {
+		this.constituencyInfoVO = constituencyInfoVO;
+	}
+
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 		
@@ -270,6 +282,32 @@ public class PartyActivitiesAction  implements ServletRequestAware{
 	  }catch(Exception e){
 		  LOG.error("Exception rised in activitiesAnalysis ",e);
 	  }
+		return Action.SUCCESS;
+	}
+	
+	public String getAllDistrictsByStateId()
+	{
+		try {
+			jObj = new JSONObject(getTask());
+			
+			districts = staticDataService.getDistricts(jObj.getLong("stateId"));
+			
+		} catch (ParseException e) {
+			LOG.error("Exception rised in getAllDistrictsByStateId() in PartyActivitiesAction "+e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	public String getAllConstituencyByStateId()
+	{
+		LOG.info("Enter Into getAllConstituencyByStateId() method in PartyActivitiesAction class");
+		try {
+			jObj = new JSONObject(getTask());
+			
+			constituencyInfoVO = staticDataService.getConstituenciesByElectionTypeAndStateId(jObj.getLong("elctionTypeId"),jObj.getLong("stateId"));
+		} catch (ParseException e) {
+			LOG.error("Exception rised in getAllDistrictsByStateId() in PartyActivitiesAction "+e);
+		}
 		return Action.SUCCESS;
 	}
 }
