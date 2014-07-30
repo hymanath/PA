@@ -3,8 +3,10 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dto.StateVO;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -156,4 +158,12 @@ public class StateDAO extends GenericDaoHibernate<State, Long> implements IState
 	{
 		return getHibernateTemplate().find("select  model.stateName from State model where  model.stateId=?",stateId);
 	}
-*/}
+*/
+	public List<Object[]> findStates()
+	{
+		Query query=getSession().createQuery("select model.stateId,model.stateName from State model");
+		
+			 return query.list();
+			
+	}
+	}
