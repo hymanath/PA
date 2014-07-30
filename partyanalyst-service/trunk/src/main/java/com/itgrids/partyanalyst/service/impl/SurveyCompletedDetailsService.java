@@ -107,12 +107,9 @@ public class SurveyCompletedDetailsService implements
 				constituencyVO.setId(constituencyId);
 				constituencyVO.setName(constituencyDAO.get(constituencyId).getName());
 				constituencyVO.setTotal(totalBoothsMap.get(constituencyId));
-				constituencyVO.setCompletedCount(completedBoothsMap.get(constituencyId) != null ?completedBoothsMap.get(constituencyId):0L);
-				
-				List<Long> processList = surveyDetailsInfoDAO.getBoothsInProcessByConstituencyId(constituencyId);
-				 
-				constituencyVO.setProcessingCount(processList.size() - constituencyVO.getCompletedCount() );
-				constituencyVO.setNotStartedCount(constituencyVO.getTotal() - constituencyVO.getProcessingCount()- constituencyVO.getCompletedCount());
+				constituencyVO.setCompletedCount(completedBoothsMap.get(constituencyId) != null ?completedBoothsMap.get(constituencyId):0L);				
+				constituencyVO.setProcessingCount(processingBoothsMap.get(constituencyId) != null ?processingBoothsMap.get(constituencyId)-constituencyVO.getCompletedCount():0L);
+				constituencyVO.setNotStartedCount(constituencyVO.getTotal() - (constituencyVO.getProcessingCount()+constituencyVO.getCompletedCount()));
 				constituencyVO.setTotalVoters(boothPublicationVoterDAO.getTotalVotersForConstituency(constituencyVO.getId()));
 				constituencyVO.setTotalCollectedCount(datacollectedCountMap.get(constituencyVO.getId()) != null ? datacollectedCountMap.get(constituencyVO.getId()) : 0);
 		
@@ -333,8 +330,18 @@ public class SurveyCompletedDetailsService implements
 			
 			Map<Long,Long> constiCount = new HashMap<Long,Long>(0);
 			Map<Long,Long> constiCompletCount = new HashMap<Long,Long>(0);
+			Map<Long,Long> processCompletCount = new HashMap<Long,Long>(0);
 			
-			List<Object[]> constituencyInfo = surveyCompletedLocationsDAO.getSurveyCompletedLocations();
+		    List<Object[]> constituencyInfo = surveyCompletedLocationsDAO.getSurveyCompletedLocations();
+			List<Object[]> processconstituencyInfo = surveyDetailsInfoDAO.getProcessingConstituencyes();
+			if(processconstituencyInfo != null && processconstituencyInfo.size()>0){
+				for (Object[] locationInfo : processconstituencyInfo) {
+					
+					if(locationInfo[0] != null && locationInfo[2] != null)
+						processCompletCount.put((Long) locationInfo[0], (Long) locationInfo[2]);
+				}
+			}
+			
 			
 			if(constituencyInfo != null && constituencyInfo.size()>0){
 				for (Object[] locationInfo : constituencyInfo) {
@@ -343,7 +350,6 @@ public class SurveyCompletedDetailsService implements
 						constiCompletCount.put((Long) locationInfo[0], (Long) locationInfo[2]);
 				}
 			}
-			
 			List<Object[]> constiBoothCount =  boothDAO.getBoothCountInfoByConstiIds(surveyConstituencyList);
 			
 			if(constiBoothCount != null && constiBoothCount.size()>0){
@@ -367,24 +373,28 @@ public class SurveyCompletedDetailsService implements
 					
 					Long boothsCount = constiCount.get(constituencyId);
 					Long boothCmpletdCount = constiCompletCount.get(constituencyId);
-					
+					Long boothsProcessing = processCompletCount.get(constituencyId);
 					SurveyDashBoardVO constituencyVO = getMatchedDashBoardVOByConstituencyId(locationsLsit,constituencyId);
 
 					if(boothCmpletdCount != null && boothCmpletdCount.longValue() > 0L)
-						{						
+					{						
 							if(boothsCount.longValue() == boothCmpletdCount.longValue())
 							{
 								compltedConstiList.add(constituencyVO);
 							}
 							else if(boothsCount.longValue() > boothCmpletdCount.longValue())
 							{
-								
 								processingConstiList.add(constituencyVO);
 							}
-						}
-						else{							
-							notYetStartedConstiList.add(constituencyVO);						
-						}
+					}
+					else if(boothsProcessing != null && boothsProcessing.longValue() > 0l )
+					{
+						processingConstiList.add(constituencyVO);
+					}
+					else
+					{							
+						notYetStartedConstiList.add(constituencyVO);						
+					}
 				}
 			}
 			
@@ -396,7 +406,7 @@ public class SurveyCompletedDetailsService implements
 			resultVO.setProcessingCount(processingConstiList.size());			
 			resultVO.setCompletedCount(compltedConstiList.size());			
 			resultVO.setStartedCount(startedConstiList.size());			
-			resultVO.setNotStartedCount(notYetStartedConstiList.size() + surveyConstituencyList.size());	
+			resultVO.setNotStartedCount(notYetStartedConstiList.size());	
 			
 			List<Long> completedDistrictList = new ArrayList<Long>(0);
 			

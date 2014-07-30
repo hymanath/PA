@@ -38,6 +38,7 @@ public class VerificationCompVO implements Serializable
 	private Long surveyUserType;
 	private String date;
 	private String surveyUser;
+	private String verifierUser;
 	private String panchayatName;
 	private String verifierStatus ;
 	private List<VerificationCompVO> matchedList;
@@ -298,6 +299,14 @@ public class VerificationCompVO implements Serializable
 
 	public void setNotIdentifedCount(Integer notIdentifedCount) {
 		this.notIdentifedCount = notIdentifedCount;
+	}
+
+	public String getVerifierUser() {
+		return verifierUser;
+	}
+
+	public void setVerifierUser(String verifierUser) {
+		this.verifierUser = verifierUser;
 	}
 	
 	

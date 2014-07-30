@@ -1053,6 +1053,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 				Map<Long,String> dcDatesMap = null;
 				Map<Long,String> dcWmMap = null;
 				Map<Long,String> usersMap =null;
+				Map<Long,String> verifierMap = null;
 				Map<Long,Long> dvStatusMap = null;
 				for (Object[] objects : castesList)
 				{
@@ -1164,7 +1165,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 				
 				
 				List<Object[]> userList = surveyDetailsInfoDAO.getBoothWiseUser(boothIds,1l);
-			//	List<Object[]> verifiersList = surveyDetailsInfoDAO.getBoothWiseUser(boothIds,4l);
+				List<Object[]> verifiersList = surveyDetailsInfoDAO.getBoothWiseUser(boothIds,4l);
 				if(userList != null && userList.size() > 0)
 				{
 					usersMap = new HashMap<Long, String>();
@@ -1177,6 +1178,18 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 						}
 					}
 				}
+				if(userList != null && userList.size() > 0)
+				{
+					verifierMap = new HashMap<Long, String>();
+					for (Object[] objects : verifiersList)
+					{
+						String name = verifierMap.get((Long)objects[0]);
+						if(name == null)
+						{
+							verifierMap.put((Long)objects[0], objects[2].toString());
+						}
+					}
+				}
 				List<Object[]> voterDetails = boothPublicationVoterDAO.getVoterDetailsByBoothID(boothIds);
 				if(voterDetails != null && voterDetails.size() > 0)
 				{
@@ -1185,6 +1198,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 					List<VerificationCompVO> unMatchedList = null;
 					List<VerificationCompVO> notVerifiedList = null;
 					String surveyUser = null;
+					String verifierUser = null;
 					Integer collectdCount = 0;
 					Integer updatedCount = 0;
 					Integer verifedCount = 0;
@@ -1209,6 +1223,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 									 dcDatesMap = dcBoothDatesMap.get((Long)parms[4]);
 									 dcWmMap =  dcWmCollectedMap.get((Long)parms[4]);
 									 surveyUser = usersMap.get((Long)parms[4]);
+									 verifierUser = verifierMap.get((Long)parms[4]);
 									 dvStatusMap = dvStatusBoothMap.get((Long)parms[4]);
 									 collectdCount = 0;
 									 updatedCount = 0;
@@ -1279,6 +1294,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 									VO.setRelativeName(parms[5] != null ? parms[5].toString() : "");
 									VO.setDate(dcDatesMap.get((Long)parms[0]));
 									VO.setSurveyUser(surveyUser);
+									VO.setVerifierUser(verifierUser);
 									if(dcWmMap != null && dcWmMap.size() > 0)
 									{
 										if(dvMap.get((Long)parms[0] ) != null)
