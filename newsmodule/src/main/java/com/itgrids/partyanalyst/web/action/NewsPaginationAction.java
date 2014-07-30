@@ -18,6 +18,7 @@ import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.util.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -43,8 +44,21 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 	private String keyword;
 	private String status;
 	private IKeywordDAO keywordDAO; 
+	private List<SelectOptionVO> districtsList;	
+	private IStaticDataService staticDataService;
 	
-	
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
+	public List<SelectOptionVO> getDistrictsList() {
+		return districtsList;
+	}
+	public void setDistrictsList(List<SelectOptionVO> districtsList) {
+		this.districtsList = districtsList;
+	}
 	public IKeywordDAO getKeywordDAO() {
 		return keywordDAO;
 	}
@@ -337,7 +351,7 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 		 keywordsList = candidateDetailsService.getTotalKeyWords();
 		
 		else if(jObj.getString("task").equalsIgnoreCase("getPartyList"))
-		 partiesList = candidateDetailsService.getPartiesList();
+		 partiesList = candidateDetailsService.getPartiesListByStateId(jObj.getLong("stateId"));
 		
 		else if(jObj.getString("task").equalsIgnoreCase("getDesignationsList"))
 		 selectOptionVOList = candidateDetailsService.getDesignationsList();
@@ -435,6 +449,17 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 			
 		}catch (Exception e) {
 			log.debug("exception occured in checkIsKeywordExist(),newsPaginationAction class",e); 
+		}
+		
+		return Action.SUCCESS;
+	}
+	public String getDistrictsbyStateId(){
+		try {
+			jObj = new JSONObject(getTask());
+			districtsList =  staticDataService.getDistricts(jObj.getLong("stateId"));
+		} catch (Exception e) {
+			
+			log.error("Exception Occured in getDistrictsbyStateId() method in NewsPaginationAction, Exception - "+e);
 		}
 		
 		return Action.SUCCESS;
