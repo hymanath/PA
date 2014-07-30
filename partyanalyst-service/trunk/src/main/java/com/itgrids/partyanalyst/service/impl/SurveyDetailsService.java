@@ -987,6 +987,43 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 				}	
 				
 				
+				if(statusId == 3l){
+					List<Object[]> casteStatusCount = surveyCallStatusDAO.getCasteStatusForBooth(boothIds);
+					if(casteStatusCount!=null && casteStatusCount.size()>0){
+						for(Object[] obj:casteStatusCount){
+							SurveyReportVO result = getMatchedVO(resultList, Long.valueOf(obj[0].toString()));
+							if(result != null){
+								if(obj[1].toString().equalsIgnoreCase("y")){
+									result.setCasteMatchedCount(Long.valueOf(obj[2].toString()));
+								}else{
+									result.setCasteNotMatchedCount(Long.valueOf(obj[2].toString()));
+								}
+							}
+						}
+					}
+					
+					
+					if(resultList!=null && resultList.size()>0){
+						for(SurveyReportVO temp:resultList){
+							Long matchedCount = 0l;
+							Long unMatchedCount = 0l;
+							
+								if(temp.getCasteMatchedCount()!=null){matchedCount = temp.getCasteMatchedCount();}
+								if(temp.getCasteNotMatchedCount()!=null){unMatchedCount = temp.getCasteNotMatchedCount();}
+								Long total = matchedCount + unMatchedCount;
+								if(total != null && total > 0){
+									temp.setCasteErrorPercent(new BigDecimal(unMatchedCount*(100.0)/total).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+								}
+							
+						}
+					}
+					
+				}
+				
+				
+				
+				
+				
 			}
 			catch(Exception e)
 			{
@@ -995,6 +1032,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 			}
 			return resultList;
 		}
+	 
 	 
 	 
 	 public SurveyReportVO getMatchedVO(List<SurveyReportVO> resultList,Long boothId)
