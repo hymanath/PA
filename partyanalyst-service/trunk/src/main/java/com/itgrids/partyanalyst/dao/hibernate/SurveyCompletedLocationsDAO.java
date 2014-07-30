@@ -91,6 +91,21 @@ public class SurveyCompletedLocationsDAO extends GenericDaoHibernate<SurveyCompl
 		return query.list();
 	}
 	
+	public List<Long> getBoothsOfConstituecyByStatusByPanchayat(Long constituencyId,Long scopeId){
+		Query query = getSession().createQuery(" select model.locationValue " +
+				" from SurveyCompletedLocations model, Booth model1 " +
+				" where " +
+				" model.locationValue = model1.boothId " +
+				" and model1.constituency.constituencyId = :constituencyId" +
+				" and model.surveyCompletedStatus.surveyCompletedStatusId >=3" +
+				" and model.locationScopeId = :scopeId");
+		
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("scopeId", scopeId);
+		
+		return query.list();
+	}
+	
 	public List<Object[]> getSurveyCompletedLocations(){
 		
 		Query query = getSession().createQuery("select  B.constituency.constituencyId, B.constituency.name, count(SCL.locationValue)  from SurveyCompletedLocations SCL , Booth B " +
