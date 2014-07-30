@@ -2744,14 +2744,14 @@ function buildBoothsStatusCountsDetails(result)
 		str += '<li>';
 		str += '<hgroup>';
 		str += '<h4>PANCHAYAT PROCESSING</h4>';
-		str += '<h2> <a href="javascript:{getpanchayatDetailsByStatusAndConstituency(1)}">'+result.panchayatDetails.count+'</a></h2>';
+		str += '<h2> <a href="javascript:{getpanchayatDetailsByStatusAndConstituency(1)}">'+result.panchayatDetails.processingCount+'</a></h2>';
 		str += '</hgroup>';
 		str += '</li>';
 
 		str += '<li>';
 		str += '<hgroup>';
 		str += '<h4>PANCHAYAT COMPLETED</h4>';
-		str += '<h2> <a href="javascript:{getpanchayatDetailsByStatusAndConstituency(2)}">'+result.panchayatDetails.processingCount+'</a></h2>';
+		str += '<h2> <a href="javascript:{getpanchayatDetailsByStatusAndConstituency(2)}">'+result.panchayatDetails.count+'</a></h2>';
 		str += '</hgroup>';
 		str += '</li>';
 
