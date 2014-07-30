@@ -15,6 +15,7 @@
 	</bean>
 	<bean id="newsPaginationAction" class="com.itgrids.partyanalyst.web.action.NewsPaginationAction" singleton="false">
 		<property name="candidateDetailsService" ref="candidateDetailsService" />
+		<property name="staticDataService" ref="staticDataService"/>
 	</bean>
 	<bean id="partyManagementAction" class="com.itgrids.partyanalyst.web.action.PartyManagementAction" singleton="false">
 		<property name="partyDetailsService" ref="partyDetailsService" />
