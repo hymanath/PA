@@ -1846,8 +1846,12 @@ function buildSurveyBoothDetailsTable(result,statusId)
 				str += ' <th>Mobile Numbers Collected</th>';
 				str += '<th>Caste Collected</th>	';
 				str += ' <th>Hamlets Collected</th>';
+				
+				// COMMENTED FOR ENTITLEMENT NOT CONFIRMED -- SASI
+				/*if(statusId ==3){
+					str += ' <th> WM Error Percent </th>';
+				}*/
 				str += ' <th> Update Status </th>';
-						
 				str += '</tr>';
 				str += ' </thead>';
 				str += '<tbody>	';
@@ -1862,6 +1866,10 @@ function buildSurveyBoothDetailsTable(result,statusId)
 					str += '<td>'+result[i].mobileNoCount+'</td>';
 					str += '<td>'+result[i].casteCount+'</td>';
 					str += '<td>'+result[i].hamletCount+'</td>';
+					// COMMENTED FOR ENTITLEMENT NOT CONFIRMED -- SASI
+					/*if(statusId == 3){
+						str += '<th>'+result[i].casteErrorPercent+'</th>';
+					}*/
 					str += '<td><select id="boothStatus" onChange="updateBoothStatusDetails(this.value,'+result[i].boothId+','+i+')"><option>Select Status</option>';
 					if(statusId == 1)
 					{
