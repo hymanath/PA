@@ -1519,13 +1519,24 @@ function getCandidatesForSelectedParty(partyId)
 function getRespectiveSelection()
 {
 		var str = '';
+		str +='<div class="span4">';
+		str +='<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Select State</label>';
+		str +='<select id="stateId" onchange="getPartiesList(this.value)">';
+		str +='<option value="0">Select State</option>';
+		str +='<option value="1">Andhra Pradesh</option>';
+		str +='<option value="36">Telangana</option>';
+		str +='</select>';
+		str +='</div>';
+		
 		str += '<div class="span4" > ';
 		str += '<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Party  </label>'; 
 		str +='<select id="partySelecction" onChange="getCandidatesForSelectedParty(this.value)">';
-		for(var i in partiesArray)
+		str +='<option>Select Party</option>';
+	/*	for(var i in partiesArray)
 		{
 			str +='<option value="'+partiesArray[i].id+'">'+partiesArray[i].name+'</option>';
 		}
+	*/
 		str +='</select>';
 		str += '</div>';
 		str += '<div class="span4" > ';
@@ -1533,4 +1544,25 @@ function getRespectiveSelection()
 		str +='<select id="candidateSelecction"><option value="0">Select Candidate</option></select>';
 		str += '</div>';
 		$('#reportTypeSelectionDiv').html(str);
+}
+function getPartiesList(stateId)
+{
+	var jsObj =
+	{
+		stateId : stateId,
+		task:"getpartiesList"
+	}
+	$.ajax({
+			type  	:"GET",
+			url   	:"getPartiesListActionByStateId.action",
+			dataType:'json',
+			data: {task:JSON.stringify(jsObj)},
+			}).done(function(result){
+					$("#partySelecction").find('option').remove();
+					$("#partySelecction").append("<option value='0'> Select Party </option>");
+					if(result !=null && result.length >0){
+						for( var i in result)
+								$("#partySelecction").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+					}
+				});
 }
