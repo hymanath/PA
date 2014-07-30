@@ -2121,7 +2121,7 @@ public String getPanchayatsStatusDetails()
 				return Action.INPUT;
 			}
 			jObj = new JSONObject(getTask());
-			responceList = surveyDetailsService.getThirdPartyVerificationDetails(jObj.getLong("boothId"));
+			responceList = surveyDetailsService.getThirdPartyVerificationDetails(jObj.getLong("boothId"),null);
 					
 		} 
 		catch (Exception e)
