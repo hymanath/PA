@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IPartyDAO;
@@ -17,8 +19,12 @@ public class PartyDAOHibernateTest extends BaseDaoTestCase{
 		partyDAO.getAll();
 	}*/
 
-	public void testGetPartiesList()
+	/*public void testGetPartiesList()
 	{
 		System.out.println(partyDAO.getPartyShortName("INC345"));
+	}*/
+	public void testPartiesListByStateId(){
+		List<Object[]> parties = partyDAO.getPartiesListByStateId(1l);
+		System.out.println(parties.size());
 	}
 }
