@@ -37,6 +37,7 @@ import com.itgrids.partyanalyst.service.IMobileService;
 import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.service.IStrategyModelTargetingService;
 import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
+import com.itgrids.partyanalyst.service.ISurveyDetailsService;
 import com.itgrids.partyanalyst.service.IVoiceSmsService;
 import com.itgrids.partyanalyst.service.IVoterReportService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -103,6 +104,9 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
     
 	@Autowired
 	private TransactionTemplate transactionTemplate;
+	
+	@Autowired
+	private ISurveyDetailsService surveyDetailsService;
 	
 	
 	
@@ -326,8 +330,8 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 		case 4:
 			res=buildverifierData(userId, userTypeId,inputvo);
 			break;
-		case 3:
-			
+		case 10:
+			res=buildThirdPartyVerifierData(userId, userTypeId,inputvo);
 			break;
 		
 		default:break;
@@ -560,7 +564,52 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
             return null;
             
     }
+	public UserResponseVO  buildThirdPartyVerifierData(long userId,long userTypeId, UserLoginVO inputvo)
+	{
+		//check assigned booth for verifier
+		
+		List<Object[]> booths =(List<Object[]>) surveyUserBoothAssignDAO.getBoothsForUser(userId);
 	
+		UserResponseSub res=(UserResponseSub) buildResponseVo(booths, userTypeId, userId,null,null);
+		
+		SurveyResponceVO responseVo= new SurveyResponceVO();
+		responseVo.setConstituencyId(res.getConstituencyId());
+		responseVo.setUserId(res.getUserId());
+		responseVo.setUserTypeId(res.getUserTypeId());
+		responseVo.setBoothIds(res.getBoothIds()); 
+		responseVo.setPartNos(res.getPartNos());
+		
+		UserLoginUtils subVo=(UserLoginUtils) inputvo;
+		Long boothId=subVo.getBoothId()!=null?Long.valueOf(subVo.getBoothId()):0;
+		
+		if((res.getBoothIds().size()>=1 && boothId!=0) || (res.getBoothIds().size()==1 && boothId==0))
+		{
+		//for (String boothId :res.getBoothIds() ) {
+			
+			if(boothId==0)
+				boothId=Long.valueOf(res.getBoothIds().get(0));
+			//public List<SurveyResponceVO> getThirdPartyVerificationDetails(Long boothId)
+
+			List<SurveyResponceVO>  verifiers=surveyDetailsService.getThirdPartyVerificationDetails(Long.valueOf(boothId),userId);
+			if(verifiers!=null&&verifiers.size()>0)
+			{
+				List<SurveyResponceVO> verifiersList=responseVo.getVerifiersData();				
+				if(verifiersList==null)				
+					verifiersList=new ArrayList<SurveyResponceVO>();				
+				verifiersList.addAll(verifiers);
+				responseVo.setVerifiersData(verifiersList);
+				responseVo.setVotersSize(verifiersList.size());
+			}
+		//} // for
+			
+		}//if
+		// check whether data available  for all those booths or not 6782934
+	  //	List<Object[]> votersData =(List<Object[]>) surveyUserBoothAssignDAO.getVoterDataForUser(1l);
+
+		//process data 
+		return responseVo;
+	}
+
 	
 }
 
