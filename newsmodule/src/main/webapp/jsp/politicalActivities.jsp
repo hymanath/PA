@@ -109,7 +109,7 @@ color:#333333;
   <div class="offset0">
 	<label><strong>Select State<font color="red"> *</font></strong></label>
 	<select id="stateIds" onchange="getDistrictsByStateId(this.value)">
-		<option value="1">Andhara Pradesh</option>
+		<option value="1">Andhra Pradesh</option>
 		<option value="36">Telangana</option>
 	</select>
   </div>
@@ -390,7 +390,7 @@ function  getDistrictsByStateId(stateid){
 					{
 						$('#districtSel').find('option').remove();
 							for(var i in result){	
-							$('#districtSel').append('<option id="'+result[i].id+'">'+result[i].name+'</option>');
+							$('#districtSel').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 								}
 								$("#districtSel").multiselect("refresh");
 					}
