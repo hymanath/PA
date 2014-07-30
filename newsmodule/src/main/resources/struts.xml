@@ -6259,7 +6259,7 @@
 		  <result name="success">/jsp/activitiesAnalysis.jsp</result>
 		  <result name="error" type="redirect">loginPageAction.action</result>
 		</action>
-		
+
 		<action name="getActivitiesCountAction" class="partyActivitiesAction"  method="getActivitiesCount">
 		   <result type="json" name="success">
 		    	<param name="root">partyActivitiesList</param>
@@ -6285,7 +6285,28 @@
 		    	<param name="root">selectOptionVO</param>
 		   </result> 
 		</action>
+			<action name="getDistrictListAction" class="newsPaginationAction"  method="getDistrictsbyStateId">
+		   <result type="json" name="success">
+		    	<param name="root">districtsList</param>
+		   </result> 
+		</action>
 		
+		<action name="getAllDistrictsAction" class="partyActivitiesAction"  method="getAllDistrictsByStateId">
+		  		   <result type="json" name="success">
+		    			<param name="root">districts</param>
+		    		</result>
+		</action>
+		
+		<action name="getAllConstituencyAction" class="partyActivitiesAction"  method="getAllConstituencyByStateId">
+		  		   <result type="json" name="success">
+		    			<param name="root">constituencyInfoVO</param>
+		    		</result>
+		</action>
+		<action name="getPartiesListActionByStateId" class="debateAction" method="getPartiesListByStateId">
+					<result type="json" name="success">
+		    			<param name="root">partiesList1</param>
+		    		</result>
+		 </action>
         </package>
 		
 </struts>      
