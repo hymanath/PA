@@ -107,9 +107,12 @@ public class SurveyCompletedDetailsService implements
 				constituencyVO.setId(constituencyId);
 				constituencyVO.setName(constituencyDAO.get(constituencyId).getName());
 				constituencyVO.setTotal(totalBoothsMap.get(constituencyId));
-				constituencyVO.setCompletedCount(completedBoothsMap.get(constituencyId) != null ?completedBoothsMap.get(constituencyId):0L);				
-				constituencyVO.setProcessingCount(constituencyVO.getTotal()-constituencyVO.getCompletedCount());
-				constituencyVO.setNotStartedCount(constituencyVO.getTotal() - (constituencyVO.getProcessingCount()+constituencyVO.getCompletedCount()));
+				constituencyVO.setCompletedCount(completedBoothsMap.get(constituencyId) != null ?completedBoothsMap.get(constituencyId):0L);
+				
+				List<Long> processList = surveyDetailsInfoDAO.getBoothsInProcessByConstituencyId(constituencyId);
+				 
+				constituencyVO.setProcessingCount(processList.size() - constituencyVO.getCompletedCount() );
+				constituencyVO.setNotStartedCount(constituencyVO.getTotal() - constituencyVO.getProcessingCount()- constituencyVO.getCompletedCount());
 				constituencyVO.setTotalVoters(boothPublicationVoterDAO.getTotalVotersForConstituency(constituencyVO.getId()));
 				constituencyVO.setTotalCollectedCount(datacollectedCountMap.get(constituencyVO.getId()) != null ? datacollectedCountMap.get(constituencyVO.getId()) : 0);
 		
