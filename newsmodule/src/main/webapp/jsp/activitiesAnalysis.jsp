@@ -516,7 +516,7 @@ showLocations();
 						$('#districtSel').find('option').remove();
 						//$('#districtSel').append('<option id="0">Select District</option>');
 						for(var i in result){
-							$('#districtSel').append('<option id="'+result[i].id+'">'+result[i].name+'</option>');
+							$('#districtSel').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 						}
 						
 						$("#districtSel").multiselect("refresh");
@@ -552,7 +552,7 @@ function  getConstituencyByStateId(value){
 						$('#constituencySel').find('option').remove();
 						//$('#constituencySel').append('<option id="0">Select Constituency</option>');
 						for(var i in result.constituencies){
-							$('#constituencySel').append('<option id="'+result.constituencies[i].id+'">'+result.constituencies[i].name+'</option>');
+							$('#constituencySel').append('<option value="'+result.constituencies[i].id+'">'+result.constituencies[i].name+'</option>');
 						}
 						
 						$("#constituencySel").multiselect("refresh");
