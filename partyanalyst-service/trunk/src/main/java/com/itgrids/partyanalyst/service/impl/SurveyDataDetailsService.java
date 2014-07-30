@@ -832,6 +832,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 										surveyDetailsInfo.setCasteName(surveyResponceVO.getCasteName());
 										surveyDetailsInfo.setUuid(surveyResponceVO.getUuid());
 										surveyDetailsInfo.setStatusId(Integer.valueOf(surveyResponceVO.getStatusId()));
+										if(surveyResponceVO.getWardId() != null && surveyResponceVO.getWardId() > 0)
+										surveyDetailsInfo.setWardId(surveyResponceVO.getWardId());
 										
 										surveyDetailsInfo.setHouseNoPoint(surveyResponceVO.getHouseNo());
 										
