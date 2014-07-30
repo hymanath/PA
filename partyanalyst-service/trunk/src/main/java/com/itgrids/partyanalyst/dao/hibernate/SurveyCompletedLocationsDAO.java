@@ -126,5 +126,41 @@ public class SurveyCompletedLocationsDAO extends GenericDaoHibernate<SurveyCompl
 		
 	}
 	
+	public List<Long> getCompletedBoothsIdsByConstituencyId(Long constituencyId)
+	{
+		Query query = getSession().createQuery("select distinct SCL.locationValue from SurveyCompletedLocations SCL,Booth B " +
+				"where " +
+				"SCL.locationValue = B.boothId and " +
+				"B.constituency.constituencyId = :constituencyId");
+		
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+		
+	}
+	
+	public List<Long> getVerificationProcessBoothsByConstituencyId(Long constituencyId)
+	{
+		Query query = getSession().createQuery("select distinct SDI.booth.boothId from SurveyDetailsInfo SDI where " +
+				"SDI.booth.constituency.constituencyId = :constituencyId and SDI.surveyUser.surveyUserType.surveyUsertypeId = :verifierTypeId");
+		
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("verifierTypeId", IConstants.VERIFIER_ROLE_ID);
+		
+		return query.list();
+		
+	}
+	
+	public List<Long> getCompletedBoothsDetailsByStatusIdAndConstituencyId(Long constituencyId,Long statusId)
+	{
+		Query query = getSession().createQuery("select distinct SCL.locationValue from  SurveyCompletedLocations SCL,Booth B  " +
+				"where " +
+				"SCL.locationValue = B.boothId and " +
+				"B.constituency.constituencyId = :constituencyId and SCL.statusId = :statusId");
+		
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("statusId", statusId);
+		return query.list();
+	}
+	
 	
 }

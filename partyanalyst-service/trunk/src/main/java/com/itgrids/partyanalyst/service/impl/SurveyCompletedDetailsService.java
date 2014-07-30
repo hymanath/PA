@@ -174,7 +174,15 @@ public class SurveyCompletedDetailsService implements
 			
 			List<Long> boothIdsContainsStatus = surveyCompletedLocationsDAO.getCompletedStatusBoothsByBoothIds(processingIds);
 			 
-			resultVO.setProcessingCount(new Long(processingIds.size() - boothIdsContainsStatus.size()));			
+			resultVO.setProcessingCount(new Long(processingIds.size() - boothIdsContainsStatus.size()));
+			
+			List<Long> dvProcessBooths = surveyCompletedLocationsDAO.getVerificationProcessBoothsByConstituencyId(constituencyId);
+			
+			List<Long> dvCompletedBooths = surveyCompletedLocationsDAO.getCompletedBoothsDetailsByStatusIdAndConstituencyId(constituencyId,IConstants.DV_COMPLETED_STATUS_ID);
+			
+			dvProcessBooths.removeAll(dvCompletedBooths);
+			
+			resultVO.setActualProcessingCount(new Long(dvProcessBooths.size()));
 			
 			
 			
@@ -258,13 +266,17 @@ public class SurveyCompletedDetailsService implements
 			// First we are removing all the previous records rekated to that location
 			surveyCompletedLocationsDAO.deleteSurveyCompletedDetailsByLocationValueAndScope(locationValue,locationScopeId);
 			
-			SurveyCompletedLocations surveyCompletedLocationDetails = new SurveyCompletedLocations();
+			if(statusId != IConstants.DC_PROCESS_STATUS_ID)
+			{
 			
-			surveyCompletedLocationDetails.setLocationValue(locationValue);
-			surveyCompletedLocationDetails.setLocationScopeId(locationScopeId);
-			surveyCompletedLocationDetails.setStatusId(statusId);
-			
-			surveyCompletedLocationsDAO.save(surveyCompletedLocationDetails);
+				SurveyCompletedLocations surveyCompletedLocationDetails = new SurveyCompletedLocations();
+				
+				surveyCompletedLocationDetails.setLocationValue(locationValue);
+				surveyCompletedLocationDetails.setLocationScopeId(locationScopeId);
+				surveyCompletedLocationDetails.setStatusId(statusId);
+				
+				surveyCompletedLocationsDAO.save(surveyCompletedLocationDetails);
+			}
 			
 		}catch(Exception e)
 		{

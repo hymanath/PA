@@ -90,8 +90,15 @@ public class SurveyReportVO {
 	private Long dvProcessingCount = 0L;
 	private Long dvCompletedCount = 0L;
 	private Long notStartedCount = 0L;
+	private Long actualProcessingCount = 0L;
 	
 	
+	public Long getActualProcessingCount() {
+		return actualProcessingCount;
+	}
+	public void setActualProcessingCount(Long actualProcessingCount) {
+		this.actualProcessingCount = actualProcessingCount;
+	}
 	public Long getNotStartedCount() {
 		return notStartedCount;
 	}
