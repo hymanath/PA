@@ -92,7 +92,17 @@ public class SurveyReportVO {
 	private Long notStartedCount = 0L;
 	private Long actualProcessingCount = 0L;
 	
+	private String casteErrorPercent;
 	
+	
+	
+	
+	public String getCasteErrorPercent() {
+		return casteErrorPercent;
+	}
+	public void setCasteErrorPercent(String casteErrorPercent) {
+		this.casteErrorPercent = casteErrorPercent;
+	}
 	public Long getActualProcessingCount() {
 		return actualProcessingCount;
 	}
