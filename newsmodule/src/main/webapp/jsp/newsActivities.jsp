@@ -162,18 +162,16 @@ function getConstituencyesList()
 /*
 	this method is used for getting the all parties
 */
-function getPartiesList()
+function getPartiesList(stateId)
 {
+	
 	var jsObj=
 	{
+		stateId:stateId,
 		partySelectBoxId:"partiesList",
 		partiesListForWhome:"partiesListForWhome",
 		task:'getPartyList'
 	};
-	$.ajaxSetup({
-		   jsonp: null,
-		   jsonpCallback: null
-		});
 	 $.ajax({
 		type: "POST",
 		url: "getPartiesListAction.action",
@@ -193,6 +191,33 @@ function getPartiesList()
 		       }); 
      });
 }
+	 function getPartiesList1(stateId)
+	 {
+	 	var jsObj=
+	{
+		stateId:stateId,
+		task:'getDistrictList'
+	};
+	 
+	 $.ajax({
+		type: "POST",
+		url: "getDistrictListAction.action",
+		data: {task : JSON.stringify(jsObj)}
+		})
+		.done(function( result ) {
+		
+		$('#districtSelReportId').find('option').remove();
+		$.each(result,function(index,value){
+			$('#districtSelReportId').append('<option value="'+value.id+'">'+value.name+'</option>');
+		});
+		 $('#districtSelReportId').multiselect({	
+				multiple: true,
+				selectedList: 1,
+				hide: "explode"	
+		        }).multiselectfilter({   
+		       }); 
+     });
+	}
 /*
 this method is used for getting the all categories and filling the categories list in select box
 */
@@ -239,7 +264,7 @@ function clearDate(id){
    $("#"+id).val('');
 }
 getPartyGallariesForUplaod();
-getPartiesList();
+getPartiesList(1);
 /*
 	this function is used for making ajax cal for getting ategoery wise details for selectd constituency level
 */
@@ -687,6 +712,14 @@ function validateFields()
 			<div id="errorMsgDiv" style="margin-left: 10px; margin-bottom: 15px;display:none;"></div>
 		</div>
 		
+		<div class="offset4">
+			<label><strong>Select State<font color="red"> *</font></strong></label>
+			<select class="span4" id="stateIds" onchange="getPartiesList(this.value);getPartiesList1(this.value)">
+				<option value="1">Andhra Pradesh</option>
+				<option value="36">Telangana</option>
+			</select>
+		</div>
+	
 		<div class="row-fluid">
 			<div class="span4" >
 				<label class="help-inline"><strong>Select From Date :</strong></label>
