@@ -141,12 +141,17 @@
 	<div class="row-fluid" >
 		
 		<div class="span3">
-			<label style="font-size: 17px;font-weight: bold;line-height: 1.5;"> Date : <font class="requiredFont">*</font></label>
+			<label><strong>Select State</strong><font class="requiredFont">*</font></label>
+			<select id="stateId" onchange="getParliment(stateId)"><option value="1">Andhra Pradesh</option><option value="2">Telangana</option></select>
+		</div>
+		
+		<div class="span3">
+			<label><strong>Date :</strong><font class="requiredFont">*</font></label>
 			<input type="text" class="input-block-level selectWidth" name="politicalFeedBackVO.createdDate" id="pcDateview"/>
 		</div>	
 		
 		<div class="span3">
-			<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Parliment : <font class="requiredFont">*</font></label>
+			<label><strong>Parliment :</strong><font class="requiredFont">*</font></label>
 					
 			<s:select name="politicalFeedBackVO.parlimentId"  id="parlimentListview" list="constituencysList" theme="simple" listKey="id" listValue="name"/>
 		</div>
