@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,7 +55,7 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 	private List<SelectOptionVO> 		channelList;
 	private List<SelectOptionVO> 		telecastTimeList;
 	private List<SelectOptionVO> 		observerList;
-	private List<SelectOptionVO> 		partiesList;
+	private List<SelectOptionVO> 		partiesList,partiesList1;
 	private List<SelectOptionVO> 		debateQuestionList;
 	private List<SelectOptionVO> 		debateSmsQuestionList;
 	private List<SelectOptionVO> 		debateParticipantRoleList;
@@ -85,6 +86,15 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 
 	
 	
+	
+	public List<SelectOptionVO> getPartiesList1() {
+		return partiesList1;
+	}
+
+	public void setPartiesList1(List<SelectOptionVO> partiesList1) {
+		this.partiesList1 = partiesList1;
+	}
+
 	public String getKey() {
 		return key;
 	}
@@ -901,6 +911,20 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 		{
 			LOG.error(" Exception occured in createCandidate() in DebateAction class. ",e);
 		}
+		return Action.SUCCESS;
+	}
+	public String getPartiesListByStateId()
+	{
+		try {
+			jObj=new JSONObject(getTask());
+			partiesList1 = candidateDetailsService.getPartiesListByStateId(jObj.getLong("stateId"));
+			
+			return Action.SUCCESS;
+		} catch (Exception e) {
+			LOG.error(" Exception occured in getPartiesListByStateId() in DebateAction class. "+e);
+		}
+		
+		
 		return Action.SUCCESS;
 	}
 
