@@ -900,7 +900,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 			try{
 				
 				
-				if(statusId == 1L)
+				if(statusId == IConstants.DC_PROCESS_STATUS_ID)
 				{
 					
 					List<Long> processingIds =  surveyDetailsInfoDAO.getBoothsInProcessByConstituencyId(constituencyId);
@@ -908,6 +908,17 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 					
 					 processingIds.removeAll(completedIds);
 					 boothIds = processingIds;
+
+					
+				}else if(statusId == 6L)
+				{
+					
+					List<Long> dvProcessBooths = surveyCompletedLocationsDAO.getVerificationProcessBoothsByConstituencyId(constituencyId);
+					
+					List<Long> dvCompletedBooths = surveyCompletedLocationsDAO.getCompletedBoothsDetailsByStatusIdAndConstituencyId(constituencyId,IConstants.DV_COMPLETED_STATUS_ID);
+					
+					dvProcessBooths.removeAll(dvCompletedBooths);
+					boothIds = dvProcessBooths;
 
 					
 				}else
