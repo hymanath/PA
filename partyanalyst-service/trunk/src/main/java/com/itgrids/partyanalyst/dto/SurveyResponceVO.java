@@ -21,6 +21,7 @@ public class SurveyResponceVO extends UserResponseVO  implements Serializable
 	private Long voterId;
 	private Long casteId;
 	private Long hamletId;
+	private Long wardId;
 	private String casteName = null;
 	private String hamletName = null;
 	private String localArea = null;
@@ -62,6 +63,12 @@ public class SurveyResponceVO extends UserResponseVO  implements Serializable
 	
 	
 	
+	public Long getWardId() {
+		return wardId;
+	}
+	public void setWardId(Long wardId) {
+		this.wardId = wardId;
+	}
 	public int getVotersSize() {
 		return votersSize;
 	}
