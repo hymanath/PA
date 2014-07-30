@@ -243,6 +243,7 @@ $( document ).ready(function() {
 
 
 var partiesArray = new Array();
+/*
 <c:forEach var="parties" items="${partiesList}">
 	var parties1 ={
 	id:"${parties.id}",
@@ -250,6 +251,7 @@ var partiesArray = new Array();
 	}
 	partiesArray.push(parties1);
 </c:forEach>
+*/
 
 var charsArray = new Array();
 <c:forEach var="chars" items="${characteristicsList}">
