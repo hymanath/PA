@@ -899,14 +899,27 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 			
 			try{
 				
-				List<Long> boothObjs =  surveyCompletedLocationsDAO.getBoothsOfConstituecyByStatus(constituencyId, statusId, scopeId);
-				if(boothObjs!=null && boothObjs.size()>0){
-					for(Long obj:boothObjs){
-						boothIds.add(obj);
-					}
-					
-				}
 				
+				if(statusId == 1L)
+				{
+					
+					List<Long> processingIds =  surveyDetailsInfoDAO.getBoothsInProcessByConstituencyId(constituencyId);
+					List<Long> completedIds  = surveyCompletedLocationsDAO.getCompletedBoothsIdsByConstituencyId(constituencyId);
+					
+					 processingIds.removeAll(completedIds);
+					 boothIds = processingIds;
+
+					
+				}else
+				{
+					List<Long> boothObjs =  surveyCompletedLocationsDAO.getBoothsOfConstituecyByStatus(constituencyId, statusId, scopeId);
+					if(boothObjs!=null && boothObjs.size()>0){
+						for(Long obj:boothObjs){
+							boothIds.add(obj);
+						}
+						
+					}
+				}
 				
 				List<Object[]> totalVoters = boothPublicationVoterDAO.getTotalVoters(boothIds);
 
