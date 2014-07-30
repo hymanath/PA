@@ -226,7 +226,7 @@ public class SurveyCompletedDetailsService implements
 				Long total = panchayatBoothCountMap.get(entry.getKey());
 				
 				if(entry.getValue().equals(total))
-					panchayatCompletedDetails.setCount(panchayatCompletedDetails.getCompletedCount() +1L);
+					panchayatCompletedDetails.setCount(panchayatCompletedDetails.getCount() +1L);
 				else if(entry.getValue() < total)
 					panchayatCompletedDetails.setProcessingCount(panchayatCompletedDetails.getProcessingCount() +1L);
 				
