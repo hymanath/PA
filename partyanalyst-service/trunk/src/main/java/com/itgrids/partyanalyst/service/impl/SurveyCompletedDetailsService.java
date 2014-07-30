@@ -204,6 +204,7 @@ public class SurveyCompletedDetailsService implements
 			
 			Map<Long,Long> completedPanchayatBoothMap = new HashMap<Long, Long>();
 			List<Long> panchayatIds = new ArrayList<Long>();
+			panchayatIds.add(0L);
 			
 			for(Object[] obj:completedPanchayatBoothDetails)
 			{
