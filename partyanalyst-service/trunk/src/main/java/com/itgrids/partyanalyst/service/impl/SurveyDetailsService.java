@@ -1850,11 +1850,13 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 	}
 	
 	
-	public void fullSurveyResponceVO(List<SurveyDetailsInfo> result,List<SurveyResponceVO> returnList )
+	public void fullSurveyResponceVO(List<SurveyDetailsInfo> result,List<SurveyResponceVO> returnList,Long boothId )
 	{
 		for (SurveyDetailsInfo surveyDetailsInfo : result)
 		{
 			SurveyResponceVO VO = new SurveyResponceVO();
+			VO.setDataTypeId("2");
+			VO.setBoothId(boothId);
 			if(surveyDetailsInfo.getVoter() != null)
 			{
 				VO.setVoterId(surveyDetailsInfo.getVoter().getVoterId());
@@ -1984,7 +1986,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 	 * @param boothId
 	 * @return returnList
 	 */
-	public List<SurveyResponceVO> getThirdPartyVerificationDetails(Long boothId)
+	public List<SurveyResponceVO> getThirdPartyVerificationDetails(Long boothId,Long userId)
 	{
 		List<SurveyResponceVO> returnList = null;
 		try 
@@ -1997,7 +1999,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 				Map<Long,SurveyResponceVO> dvMap = null;
 				Map<Long,SurveyResponceVO> wmMap = null;
 				Map<Long,SurveyResponceVO> totalVoterMap = null;
-				fullSurveyResponceVO(dcdetails,dcList);
+				fullSurveyResponceVO(dcdetails,dcList,boothId);
 				if(dcList != null && dcList.size() > 0)
 				{
 					dcMap = new HashMap<Long, SurveyResponceVO>();
@@ -2011,7 +2013,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 				{
 					List<SurveyResponceVO> dvList = new ArrayList<SurveyResponceVO>();
 					
-					fullSurveyResponceVO(dvDetails,dvList);
+					fullSurveyResponceVO(dvDetails,dvList,boothId);
 					if(dvList != null && dvList.size() >0)
 					{
 						dvMap = new HashMap<Long, SurveyResponceVO>();
@@ -2074,6 +2076,8 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 						VO.setAge(parms[3] != null ? (Long)parms[3] :null);
 						VO.setGender(parms[2] != null ? parms[2].toString() :"");
 						VO.setHouseNo(parms[1] != null ? parms[1].toString() :"");
+						VO.setDataTypeId("2");
+						VO.setBoothId(boothId);
 						totalVoterMap.put((Long)parms[0], VO);
 					}
 				}
@@ -2086,7 +2090,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 						returnList = new ArrayList<SurveyResponceVO>();
 						for (Long voterId : voterIds) 
 						{
-							if(wmMap.get(voterId) != null)
+							if(wmMap!=null&&wmMap.get(voterId) != null)
 							{
 								returnList.add(wmMap.get(voterId));
 							}
