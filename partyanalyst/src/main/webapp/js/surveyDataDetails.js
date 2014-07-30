@@ -2330,7 +2330,7 @@ $("#errorDivSB").html("");
 
 	 $.ajax({
 			type:'GET',
-			url: 'getBoothsDetailsInCallStatusAction.action',
+			url: 'getBoothDetailsByConstituencyAction.action',
 			dataType: 'json',
 			data: {task:JSON.stringify(jObj)},
 		  }).done(function(result){				
@@ -2339,7 +2339,7 @@ $("#errorDivSB").html("");
 				$('#'+divId+'').find('option').remove();
 
 				$.each(result,function(index,value){
-					$('#'+divId+'').append('<option value="'+value.id+'">Booth - '+value.name+'</option>');
+					$('#'+divId+'').append('<option value="'+value.boothId+'">Booth - '+value.partNo+'</option>');
 				});
 			
 
