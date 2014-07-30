@@ -428,7 +428,7 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 		try{
 			
 	 	    List<Object[]> panchayatsBooths = boothDAO.getPanchayatBoothDetails(constituencyId,IConstants.VOTER_DATA_PUBLICATION_ID);
-	 	    List<Long> surveyBooths = webMonitorCompletedLocationsDetailsDAO.getPanchayatBoothsByConstituencyId(9l);  // 9 is Booth scopeId  
+	 	    List<Long> surveyBooths = surveyCompletedLocationsDAO.getBoothsOfConstituecyByStatus(constituencyId,3l,9l);  // 9 is Booth scopeId  
 	 	    if(surveyBooths != null && surveyBooths.size() > 0)
 	 	    {
 	 	    	List<Object[]> list = boothDAO.getPanchayatBooths(surveyBooths);
