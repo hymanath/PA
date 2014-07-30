@@ -130,7 +130,7 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	public List<Long> getUsersByDate(Long constituencyId,Date date);
 	public List<Object[]> getStartedBoothsDetailsByConstituencyIds(List<Long> constituencyIds);
 	public List<Long> getBoothsInProcessByConstituencyId(Long constituencyId);
-
+	public List<Object[]> getProcessingConstituencyes();
 
 }
 
