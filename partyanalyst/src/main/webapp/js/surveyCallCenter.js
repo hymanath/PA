@@ -2077,7 +2077,7 @@ function buildStatusForPanchayatDetials(result, status)
 			str+='<td colspan="10"> <div id="hamletbuildbuildDiv'+i+'"></div></td>';
 			str+='</tr>';*/
 		}
-	
+
 		str+='</tbody>';
 		str+='</table>';
 	$("#panchayatDetailsDiv").html(str);
@@ -2808,7 +2808,7 @@ function getpanchayatDetailsByStatusAndConstituency(statusId)
 			dataType: 'json',
 			data: {task:JSON.stringify(jObj)},
 		  }).done(function(result){				
-			//buildStatusForPanchayatDetials(result,status);	
+			buildStatusForPanchayatDetials(result,status);	
 		});
 }
 
