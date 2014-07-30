@@ -1163,7 +1163,8 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 				}
 				
 				
-				List<Object[]> userList = surveyDetailsInfoDAO.getBoothWiseUser(boothIds);
+				List<Object[]> userList = surveyDetailsInfoDAO.getBoothWiseUser(boothIds,1l);
+			//	List<Object[]> verifiersList = surveyDetailsInfoDAO.getBoothWiseUser(boothIds,4l);
 				if(userList != null && userList.size() > 0)
 				{
 					usersMap = new HashMap<Long, String>();
@@ -1484,7 +1485,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 						
 					}
 				}
-				List<Object[]> userList = surveyDetailsInfoDAO.getBoothWiseUser(boothIds);
+				List<Object[]> userList = surveyDetailsInfoDAO.getBoothWiseUser(boothIds,1l);
 				if(userList != null && userList.size() > 0)
 				{
 					usersMap = new HashMap<Long, String>();
