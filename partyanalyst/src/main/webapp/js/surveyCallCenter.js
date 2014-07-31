@@ -1617,7 +1617,7 @@ $('#dayWiseReportDiv1,#retunMsg,#errorDiv').html('');
 	var errorStr ="";
 
 	if(constituencyId == 0)
-		errorStr += 'Please select constituency<br>';
+		errorStr += 'Please Select Constituency<br>';
 
 
 if(startDate.length == 0 || endDate.length == 0)
@@ -1877,19 +1877,19 @@ function buildSurveyBoothDetailsTable(result,statusId)
 					}
 					if(statusId == 2)
 					{
-						str += '<option value="2" selected="selected">DC COMPETED</option>';
+						str += '<option value="2" selected="selected">DC COMPLETED</option>';
 					}
 					else
 					{
-						str += '<option value="2">DC COMPETED</option>';
+						str += '<option value="2">DC COMPLETED</option>';
 					}
 					if(statusId == 3)
 					{
-						str += '<option value="3" selected="selected">WM COMPETED</option>';
+						str += '<option value="3" selected="selected">WM COMPLETED</option>';
 					}
 					else
 					{
-						str += '<option value="3">WM COMPETED</option>';
+						str += '<option value="3">WM COMPLETED</option>';
 					}
 					if(statusId == 4)
 					{
@@ -1901,11 +1901,11 @@ function buildSurveyBoothDetailsTable(result,statusId)
 					}
 					if(statusId == 5)
 					{
-						str += '<option value="5" selected="selected" >DV COMPETED</option>';
+						str += '<option value="5" selected="selected" >DV COMPLETED</option>';
 					}
 					else
 					{
-						str += '<option value="5">DV COMPETED</option>';
+						str += '<option value="5">DV COMPLETED</option>';
 					}				
 					str += '</select></td>';
 					str += '</tr>	';
@@ -2720,7 +2720,7 @@ function getBoothsStatusDetailsOfConstituency()
 
 	if($('#reportConstituencyId').val() ==0)
 	{
-      $("#constnErrDiv").html('Please select constituency');
+      $("#constnErrDiv").html('Please Select Constituency');
 	  return;
 	}
 
