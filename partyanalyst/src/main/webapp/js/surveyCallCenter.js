@@ -248,6 +248,7 @@ $('#searchDataImg').show();
 			surveyUserId:userId,
 			boothId : boothId,
 			searchDate:date,
+			userType : $('#userTypeId').val(),
 			task : "getSurveyVotersList"
 		}
 	$('#webMonitoringImage').hide();
@@ -282,6 +283,11 @@ $('#searchDataImg').show();
 				str +='<th> Caste Matched  </th>';
 				str +='<th> Mobile Number </th>';
 				str +='<th> Hamlet </th>';
+				if(userType == 4)
+				{
+					str +='<th>DC CASTE</th>';
+					str +='<th>WM CASTE</th>';
+				}
 				str +='</tr>';
 				str +='</thead>';
 				str +='<tbody>';
@@ -517,7 +523,7 @@ $('#searchDataImg').show();
 											str +='</ul>';
 											str +='</div>';
 											str +='</td>';
-											str +='</tr>';
+											
 											
 
 									/*	var obj = {
@@ -525,8 +531,26 @@ $('#searchDataImg').show();
 										value : result[i].casteId
 									}
 									newCasteArr.push(obj);*/
-									
-									
+									if(userType == 4)
+									{
+											str +='<td>';
+											str +='<div >';
+											str +='<ul class="unstyled inline">';
+											str +='<li>'+result[i].dcCaste+'</li>';					
+											str +='</ul>';
+											str +='</div>';
+											str +='</td>';
+											str +='<td>';
+											str +='<div>';
+											str +='<ul class="unstyled inline">';
+											str +='<li>'+result[i].wmCaste+'</li>';					
+											str +='</ul>';
+											str +='</div>';
+											str +='</td>';
+										
+									}
+									str +='</tr>';
+														
 				}
 				str +='</tbody>';
 				str +='</table>';
@@ -639,6 +663,7 @@ function updateDetails(casteId,mobileId, value,voterId,surveyUserId,selectionTyp
 {
 	var casteMatched = $('#'+casteId+'').val();
 	var mobileMached = $('#'+mobileId+'').val();
+	console.log($('#userTypeId').val());
 	// 0 ,2 -- correct
 	// 1 ,3 -- wrong
 	if(value == 0 || value == 1)
@@ -1851,9 +1876,6 @@ function buildSurveyBoothDetailsTable(result,statusId)
 				str += ' <th>Mobile Numbers Collected</th>';
 				str += '<th>Caste Collected</th>	';
 				str += ' <th>Hamlets Collected</th>';
-				if(statusId == 3){
-					str += ' <th> Caste Error Percent </th>';
-				}
 				str += ' <th> Update Status </th>';
 						
 				str += '</tr>';
@@ -1870,9 +1892,6 @@ function buildSurveyBoothDetailsTable(result,statusId)
 					str += '<td>'+result[i].mobileNoCount+'</td>';
 					str += '<td>'+result[i].casteCount+'</td>';
 					str += '<td>'+result[i].hamletCount+'</td>';
-					if(statusId == 3){
-						str += '<td>'+result[i].casteErrorPercent+'</td>';
-					}
 					str += '<td><select id="boothStatus" onChange="updateBoothStatusDetails(this.value,'+result[i].boothId+','+i+')"><option>Select Status</option>';
 					if(statusId == 1)
 					{
