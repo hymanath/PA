@@ -49,6 +49,7 @@ function showHideTabs(id)
 		$('#saveBoothsPercentage').hide();
 		$("#verifierReportIdForVerifier").hide();;
 		$("#wmReportDiv").hide();
+		getFieldReportSummary();
 	}
 	else if(id == "boothWiseTab")
 	{
@@ -1846,12 +1847,8 @@ function buildSurveyBoothDetailsTable(result,statusId)
 				str += ' <th>Mobile Numbers Collected</th>';
 				str += '<th>Caste Collected</th>	';
 				str += ' <th>Hamlets Collected</th>';
-				
-				// COMMENTED FOR ENTITLEMENT NOT CONFIRMED -- SASI
-				/*if(statusId ==3){
-					str += ' <th> WM Error Percent </th>';
-				}*/
 				str += ' <th> Update Status </th>';
+						
 				str += '</tr>';
 				str += ' </thead>';
 				str += '<tbody>	';
@@ -1866,10 +1863,6 @@ function buildSurveyBoothDetailsTable(result,statusId)
 					str += '<td>'+result[i].mobileNoCount+'</td>';
 					str += '<td>'+result[i].casteCount+'</td>';
 					str += '<td>'+result[i].hamletCount+'</td>';
-					// COMMENTED FOR ENTITLEMENT NOT CONFIRMED -- SASI
-					/*if(statusId == 3){
-						str += '<th>'+result[i].casteErrorPercent+'</th>';
-					}*/
 					str += '<td><select id="boothStatus" onChange="updateBoothStatusDetails(this.value,'+result[i].boothId+','+i+')"><option>Select Status</option>';
 					if(statusId == 1)
 					{
@@ -2923,3 +2916,58 @@ function getBoothsDetailsInSurveyDetailsInfo(constituencyId,divId)
 		});	
 }
 
+
+function getFieldReportSummary()
+{
+	var jsObj = {
+		task : "constituencySummary"
+	}
+	$("#fieldReportSummaryimg").css("display","block");
+ $.ajax({
+			type:'GET',
+			url: 'getConstituencySummaryFieldReport.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		  }).done(function(result){
+			 $("#fieldReportSummaryimg").css("display","none");
+			  if(result.length > 0)
+			 buildSummaryData(result);
+			
+		});	
+
+}
+
+function buildSummaryData(result)
+{
+
+			var str ='';
+			  
+				  str+='<table class="table table-bordered m_top20 table-hover table-striped">';
+				  str+='<thead class="alert alert-success">';
+				  str+='<th>Constituency</th>';	
+				  str+='<th>Leader</th>';	
+				  str+='<th>Total</th>';
+				  str+='<th>Active</th>';
+				  str+='<th>In Active</th>';
+				 
+				 str+='</thead>';
+				 str+='<tbody>';
+				  for(var i in result)
+				  {
+					  for(var j in result[i].subList)
+					  {
+					  str+='<tr>';
+					str+='<td>'+result[i].name+'</td>';
+					str+='<td>'+result[i].subList[j].name+'</td>';
+					str+='<td>'+result[i].subList[j].total+'</td>';
+					
+					str+='<td>'+result[i].subList[j].activeUsersCount+'</td>';
+					str+='<td>'+result[i].subList[j].inActiveUsersCount+'</td>';
+					str+='</tr>';
+					  }
+				  }
+				   str+='</tbody>';
+				  str+='</table>';
+				  $("#fieldReportSummary").html(str);
+			
+}
