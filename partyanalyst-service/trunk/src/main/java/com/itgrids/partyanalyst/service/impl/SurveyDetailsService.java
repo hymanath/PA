@@ -1082,6 +1082,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 				Map<Long,Map<Long,String>> dvBoothMap = null;// booth wise Data Verifier Caste Collected
 				Map<Long,Map<Long,String>> wmBoothMap = null;// booth Wise Web Moniter Caste Collected
 				Map<Long,Map<Long,String>> dcBoothDatesMap = null;// Day wise booth Wise Data Collector 
+				Map<Long,Map<Long,String>> dvBoothDatesMap = null;// Day wise booth Wise Data Verified 
 				Map<Long,VerificationCompVO> boothWiseMap = null;// booth wise total recoreds
 				Map<Long,Map<Long,Long>> dvStatusBoothMap = null;// booth wise Data Verifier Caste Collected
 				Map<Long,String> dcMap = null;// Map<voterId,Caste>
@@ -1090,10 +1091,14 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 				Map<Long,String> casteMap = new HashMap<Long, String>();//Map<casteId,CasteName>
 				Map<Long,Map<Long,String>> dcWmCollectedMap = null;// Day wise booth Wise Data Collector 
 				Map<Long,String> dcDatesMap = null;
+				Map<Long,String> dvDatesMap = null;
 				Map<Long,String> dcWmMap = null;
 				Map<Long,String> usersMap =null;
 				Map<Long,String> verifierMap = null;
+				Map<Long,String> usersDateMap =null;
+				Map<Long,String> verifierDateMap = null;
 				Map<Long,Long> dvStatusMap = null;
+				Map<Long,String> mobileNoMap = null;
 				for (Object[] objects : castesList)
 				{
 					casteMap.put((Long)objects[0], objects[1].toString());
@@ -1105,7 +1110,9 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 					dvBoothMap = new HashMap<Long, Map<Long,String>>();
 					dvStatusBoothMap = new HashMap<Long, Map<Long,Long>>();
 					dcBoothDatesMap = new HashMap<Long, Map<Long,String>>();
+					dvBoothDatesMap = new HashMap<Long, Map<Long,String>>();
 					List<GenericVO> userWiseList = new ArrayList<GenericVO>();
+					mobileNoMap = new HashMap<Long, String>();
 					for (Object[] parms	: result)
 					{
 						dcMap = dcBoothMap.get((Long)parms[4]);
@@ -1115,11 +1122,15 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 							dvMap = new HashMap<Long, String>();
 							dvStatusMap = new HashMap<Long, Long>();
 							dcDatesMap = new HashMap<Long, String>();
+							dvDatesMap = new HashMap<Long, String>();
 							dcBoothMap.put((Long)parms[4], dcMap);
 							dvBoothMap.put((Long)parms[4], dvMap);
 							dvStatusBoothMap.put((Long)parms[4], dvStatusMap);
 							dcBoothDatesMap.put((Long)parms[4], dcDatesMap);
+							dvBoothDatesMap.put((Long)parms[4], dvDatesMap);
 						}
+						if(parms[9] != null)
+						mobileNoMap.put((Long)parms[1], parms[9].toString());
 						GenericVO VO = new GenericVO();
 						if((Long)parms[3] != null)
 						{
@@ -1130,7 +1141,9 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 							}
 							else
 							{
+								dvDatesMap.put((Long)parms[1], parms[7].toString());
 								dvMap.put((Long)parms[1], casteMap.get((Long)parms[2]));
+								
 								if(parms[8] != null)
 								{
 									dvStatusMap.put((Long)parms[1],Long.valueOf(parms[8].toString()));
@@ -1208,24 +1221,28 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 				if(userList != null && userList.size() > 0)
 				{
 					usersMap = new HashMap<Long, String>();
+					usersDateMap = new HashMap<Long, String>();
 					for (Object[] objects : userList) 
 					{
 						String name = usersMap.get((Long)objects[0]);
 						if(name == null)
 						{
 							usersMap.put((Long)objects[0], objects[2].toString());
+							usersDateMap.put((Long)objects[0], objects[4].toString());
 						}
 					}
 				}
 				if(userList != null && userList.size() > 0)
 				{
 					verifierMap = new HashMap<Long, String>();
+					verifierDateMap = new HashMap<Long, String>();
 					for (Object[] objects : verifiersList)
 					{
 						String name = verifierMap.get((Long)objects[0]);
 						if(name == null)
 						{
 							verifierMap.put((Long)objects[0], objects[2].toString());
+							verifierDateMap.put((Long)objects[0], objects[4].toString());
 						}
 					}
 				}
@@ -1238,6 +1255,8 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 					List<VerificationCompVO> notVerifiedList = null;
 					String surveyUser = null;
 					String verifierUser = null;
+					String dcDate = null;
+					String dvDate = null;
 					Integer collectdCount = 0;
 					Integer updatedCount = 0;
 					Integer verifedCount = 0;
@@ -1260,9 +1279,12 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 									 if(wmBoothMap != null && wmBoothMap.size() > 0)
 									 wmMap = wmBoothMap.get((Long)parms[4]);
 									 dcDatesMap = dcBoothDatesMap.get((Long)parms[4]);
+									 dvDatesMap = dcBoothDatesMap.get((Long)parms[4]);
 									 dcWmMap =  dcWmCollectedMap.get((Long)parms[4]);
 									 surveyUser = usersMap.get((Long)parms[4]);
 									 verifierUser = verifierMap.get((Long)parms[4]);
+									 dcDate = usersDateMap.get((Long)parms[4]);
+									 dvDate = verifierDateMap.get((Long)parms[4]);
 									 dvStatusMap = dvStatusBoothMap.get((Long)parms[4]);
 									 collectdCount = 0;
 									 updatedCount = 0;
@@ -1277,25 +1299,30 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 									VO.setHouseNo(parms[3] != null ? parms[3].toString() : "");
 									VO.setPartNo(parms[6] != null ? parms[6].toString() : "");
 									VO.setPanchayatName(parms[7] != null ? parms[7].toString() : "");
+									if(mobileNoMap.get((Long)parms[0]) != null)
+									{
+										VO.setMobileNO(mobileNoMap.get((Long)parms[0]));
+									}
+									
 									if(dvStatusMap != null && dvStatusMap.size() > 0)
 									{
 										Long statusId = dvStatusMap.get((Long)parms[0]);
 										if(statusId != null)
 										{
-											if(statusId.longValue() == 1l)
+											if(statusId.longValue() == 1l) // collected
 											{
-												verifedCount = verifedCount + 1;
-												VO.setVerifierStatus("VERIFIED");
+												collectdCount = collectdCount + 1;
+												VO.setVerifierStatus("COLLECTED");
 											}
-											else if(statusId.longValue() == 2l)
+											else if(statusId.longValue() == 2l) // updated
 											{
 												updatedCount = updatedCount + 1;
 												VO.setVerifierStatus("UPDATED");
 											}
-											else
+											else// verified
 											{
-												collectdCount = collectdCount + 1;
-												VO.setVerifierStatus("COLLECTED");
+												verifedCount = verifedCount + 1;
+												VO.setVerifierStatus("VERIFIED");
 											}
 										}
 										else
@@ -1331,9 +1358,10 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 									}
 									
 									VO.setRelativeName(parms[5] != null ? parms[5].toString() : "");
-									VO.setDate(dcDatesMap.get((Long)parms[0]));
-									VO.setSurveyUser(surveyUser);
-									VO.setVerifierUser(verifierUser);
+									//VO.setDate(dcDate);
+									//VO.setVerifierDate(dvDate);
+									//VO.setSurveyUser(surveyUser);
+									//VO.setVerifierUser(verifierUser);
 									if(dcWmMap != null && dcWmMap.size() > 0)
 									{
 										if(dvMap.get((Long)parms[0] ) != null)
@@ -1389,7 +1417,10 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 									{
 										notVerifiedList.add(VO);
 									}
-
+								subVO.setDate(dcDate);
+								subVO.setVerifierDate(dvDate);
+								subVO.setSurveyUser(surveyUser);
+								subVO.setVerifierUser(verifierUser);
 								subVO.setMatchedList(matchedList);
 								subVO.setUnMatchedList(unMatchedList);
 								subVO.setNotVerifiedList(notVerifiedList);
@@ -1765,15 +1796,15 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 					{
 						if(Long.valueOf(parms[0].toString()) == 1l)
 						{
-							mainVO.setMobileCount(mainVO.getMobileCount() + (Long)parms[1]);
+							mainVO.setMobileCount(mainVO.getMobileCount() + (Long)parms[1]);// collected count
 						}
 						else if(Long.valueOf(parms[0].toString()) == 2l)
 						{
-							mainVO.setCasteCount((Long)parms[1] + mainVO.getCasteCount());
+							mainVO.setCasteCount((Long)parms[1] + mainVO.getCasteCount()); // updated count
 						}
 						else
 						{
-							mainVO.setCadreCount((Long)parms[1] + mainVO.getCadreCount());
+							mainVO.setCadreCount((Long)parms[1] + mainVO.getCadreCount()); // verified count
 						}
 					}
 				}
