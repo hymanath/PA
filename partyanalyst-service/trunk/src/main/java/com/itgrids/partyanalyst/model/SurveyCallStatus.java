@@ -40,6 +40,19 @@ public class SurveyCallStatus implements java.io.Serializable{
 	private Long casteStateId;
 	private Long userId;
 	
+	private User dvWebMoniteruser;
+	private Long dvWebMonterId;
+	
+	private SurveyUser dvSurveyUser;
+	private Long dvSurveyUserId;
+	
+	private CasteState dvCasteState;
+	private Long dvCasteStateId;
+	
+	private String dvMobileNoStatus;
+	private String dvMatchedStatus ;
+
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="survey_call_status_id")
@@ -174,6 +187,80 @@ public class SurveyCallStatus implements java.io.Serializable{
 	}
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}
+	
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "dv_web_moniter_user_id",insertable = false , updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getDvWebMoniteruser() {
+		return dvWebMoniteruser;
+	}
+	public void setDvWebMoniteruser(User dvWebMoniteruser) {
+		this.dvWebMoniteruser = dvWebMoniteruser;
+	}
+	
+	@Column(name="dv_web_moniter_user_id")
+	public Long getDvWebMonterId() {
+		return dvWebMonterId;
+	}
+	public void setDvWebMonterId(Long dvWebMonterId) {
+		this.dvWebMonterId = dvWebMonterId;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "dv_survey_user_id" ,insertable = false , updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public SurveyUser getDvSurveyUser() {
+		return dvSurveyUser;
+	}
+	public void setDvSurveyUser(SurveyUser dvSurveyUser) {
+		this.dvSurveyUser = dvSurveyUser;
+	}
+	
+	@Column(name="dv_survey_user_id")
+	public Long getDvSurveyUserId() {
+		return dvSurveyUserId;
+	}
+	public void setDvSurveyUserId(Long dvSurveyUserId) {
+		this.dvSurveyUserId = dvSurveyUserId;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "dv_updated_caste_status_id",insertable = false , updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public CasteState getDvCasteState() {
+		return dvCasteState;
+	}
+	public void setDvCasteState(CasteState dvCasteState) {
+		this.dvCasteState = dvCasteState;
+	}
+	
+	@Column(name = "dv_updated_caste_status_id")
+	public Long getDvCasteStateId() {
+		return dvCasteStateId;
+	}
+	public void setDvCasteStateId(Long dvCasteStateId) {
+		this.dvCasteStateId = dvCasteStateId;
+	}
+	
+	@Column(name = "dv_mobile_no_status")
+	public String getDvMobileNoStatus() {
+		return dvMobileNoStatus;
+	}
+	public void setDvMobileNoStatus(String dvMobileNoStatus) {
+		this.dvMobileNoStatus = dvMobileNoStatus;
+	}
+	
+	@Column(name = "dv_caste_status")
+	public String getDvMatchedStatus() {
+		return dvMatchedStatus;
+	}
+	public void setDvMatchedStatus(String dvMatchedStatus) {
+		this.dvMatchedStatus = dvMatchedStatus;
 	}
 
 	
