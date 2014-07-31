@@ -278,7 +278,7 @@
 									
 										<div class="span3 offset1">
 											<label>Select Constituency</label>
-										<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="constituencyId" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" onchange="setConstituency(this.value);" />
+										<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="constituencyId" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" onchange="setConstituency(this.value),getCasteCollectedDatesByConstituencyId(this.value,'FielddateId','FieldTodateId');" />
 								
 										</div>
 										<div class="span2">
@@ -327,7 +327,7 @@
 										
 										<div class="span3">
 											Select Constituency <font class="requiredFont">*</font>
-											<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="constituencyIdForVerfication" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" onchange="getBoothsDetailsByConstituencyId(this.value);" />
+											<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="constituencyIdForVerfication" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" onchange="getBoothsDetailsByConstituencyId(this.value),getCasteCollectedDatesByConstituencyId(this.value,'fromDate','toDate');" />
 												
 										</div>
 										<div class="span3">
@@ -439,7 +439,7 @@
 										</div>
 										<div class="span3">
 											Select User  
-											<select class="input-block-level" id = "userReportUser" > <option value="0">Select User </option></select>
+											<select class="input-block-level" id = "userReportUser" onchange="getCasteCollectedDatesByUserId(this.value,'fromDateForUserReport','toDateForUserReport');"> <option value="0">Select User </option></select>
 										</div>
 										<div class="span1" style="margin:25px -8px 0 8px;width: 15px;">
 										<img id="userProcessingImg" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
@@ -632,12 +632,79 @@
 			$('#basicStatusReport').html('');
 		});
 		
-		$(function() {
+		var availableDates;
+function getCasteCollectedDatesByConstituencyId(constituencyId,fromDateId,toDateId){
+var jsObj ={
+	constituencyId :constituencyId
+}
+
+$.ajax({
+		type:'GET',
+		url: 'getCasteCollectionDatesByConstituencyId.action',
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)},
+	}).done(function(result){
+		availableDates = result;
+		var strtDt = availableDates[0];
+		var endtDt = availableDates[availableDates.length-1];
+		var dt= strtDt.substring(0,2);
+		var month = 0+strtDt.substring(3,4);
+		var yr = strtDt.substring(5,9);
+		var dt1= endtDt.substring(0,2);
+		var month1 = 0+endtDt.substring(3,4);
+		var yr1 = endtDt.substring(5,9);
+		var date1 = dt+"-"+month+"-"+yr;
+		var date2 = dt1+"-"+month1+"-"+yr1;
+		$('#'+fromDateId).val(date1).datepicker({ beforeShowDay: displayDates,maxDate: '0',dateFormat: 'dd-mm-yy'});
+		$('#'+toDateId).val(date2).datepicker({ beforeShowDay: displayDates ,maxDate: '0' ,dateFormat: 'dd-mm-yy'});
+	});
+}
+
+function getCasteCollectedDatesByUserId(userId,fromDateId,toDateId){
+
+var jsObj ={
+	userId :userId
+}
+
+$.ajax({
+		type:'GET',
+		url: 'getCasteCollectionDatesByUserId.action',
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)},
+	}).done(function(result){
+		availableDates = result;
+		var strtDt = availableDates[0];
+		var endtDt = availableDates[availableDates.length-1];
+		var dt= strtDt.substring(0,2);
+		var month = 0+strtDt.substring(3,4);
+		var yr = strtDt.substring(5,9);
+		var dt1= endtDt.substring(0,2);
+		var month1 = 0+endtDt.substring(3,4);
+		var yr1 = endtDt.substring(5,9);
+		var date1 = dt+"-"+month+"-"+yr;
+		var date2 = dt1+"-"+month1+"-"+yr1;
+		$('#'+fromDateId).val(date1).datepicker({ beforeShowDay: displayDates,maxDate: '0',dateFormat: 'dd-mm-yy'});
+		$('#'+toDateId).val(date2).datepicker({ beforeShowDay: displayDates ,maxDate: '0' ,dateFormat: 'dd-mm-yy'});
+	});
+}
+
+function displayDates(date){
+	var dmy = date.getDate() + "-" + (date.getMonth()+1) + "-" + date.getFullYear();
+	if ($.inArray(dmy, availableDates) != -1) {
+		return [true, "","Available"];
+	} else {
+		return [false,"","unAvailable"];
+	}
+}
+		
+		/*$(function() {
 			$(".date").datepicker({ 
 			dateFormat: 'dd-mm-yy',
 		   }).datepicker('setDate', new Date());
 		  
-		});
+		});*/
+		
+		
 	</script>
 	
  </body>
