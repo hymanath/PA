@@ -1039,4 +1039,18 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 		
 		return resultList;
 	}
+	
+	public List<String> getCasteCollectedDatesByUserId(Long userId){
+		List<String> surveyDates = new ArrayList<String>();
+		try
+		{
+			 surveyDates = surveyDetailsInfoDAO.getCasteCollectedDatesByUserId(userId);
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return surveyDates;
+	}
 }
