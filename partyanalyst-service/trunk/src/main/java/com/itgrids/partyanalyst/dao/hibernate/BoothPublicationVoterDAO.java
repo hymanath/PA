@@ -7151,14 +7151,16 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 
 	public List<Object[]> getTotalVoters(List<Long> boothIds)
 	{
-		Query query = getSession().createQuery("select model.booth.boothId ,model.booth.partNo, count(model.booth.boothId) from BoothPublicationVoter model where model.booth.boothId in (:boothIds) group  by model.booth.boothId");
+		Query query = getSession().createQuery("select model.booth.boothId ,model.booth.partNo, count(model.booth.boothId) from BoothPublicationVoter model where model.booth.boothId in (:boothIds)and model.booth.publicationDate.publicationDateId = :publicationId group  by model.booth.boothId");
 		query.setParameterList("boothIds", boothIds);
+		query.setParameter("publicationId", IConstants.VOTER_DATA_PUBLICATION_ID);
 		return query.list();
 	}
 	public Long getTotalVotersForPanchayat(List<Long> boothIds)
 	{
-		Query query = getSession().createQuery("select count(model.booth.boothId) from BoothPublicationVoter model where model.booth.boothId in (:boothIds)");
+		Query query = getSession().createQuery("select count(model.booth.boothId) from BoothPublicationVoter model where model.booth.boothId in (:boothIds) and model.booth.publicationDate.publicationDateId = :publicationId");
 		query.setParameterList("boothIds", boothIds);
+		query.setParameter("publicationId", IConstants.VOTER_DATA_PUBLICATION_ID);
 		return (Long) query.uniqueResult();
 	}
 	
