@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -2154,6 +2155,125 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 			LOG.error("Exception raised in getThirdPartyVerificationDetails", e);
 		}
 		return returnList;
+	}
+	
+	public List<SurveyReportVO> getConstituencyWiseFieldSummary()
+	{
+		List<SurveyReportVO> resultList = new ArrayList<SurveyReportVO>();
+		List<Long> leaderIds = new ArrayList<Long>();
+		List<Long> constituencyIds = new ArrayList<Long>();
+		try{
+			
+			List<Object[]> list = surveyUserConstituencyDAO.getSurveyLeadersForAllConstituency();
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					if(!constituencyIds.contains((Long)params[0]))
+					{
+					SurveyReportVO vo = new SurveyReportVO();
+					vo.setId((Long)params[0]);
+					vo.setName(params[1].toString());
+					constituencyIds.add((Long)params[0]);
+					resultList.add(vo);
+				}
+					if(!leaderIds.contains((Long)params[2]))
+						leaderIds.add((Long)params[2]);
+					
+				}
+				List<Object[]> list1 = surveyUserRelationDAO.getAllUsersCountForLeaders(leaderIds);
+				List<Long> allLeadersUserIds = new ArrayList<Long>();
+				Map<Long,List<Long>> leaderUsers = new HashMap<Long, List<Long>>();
+				for(Object[] params : list1)
+				{
+					List<Long> userIds = leaderUsers.get((Long)params[0]);
+					if(userIds == null)
+					{
+						userIds = new ArrayList<Long>();
+						leaderUsers.put((Long)params[0], userIds);
+					}
+					if(!userIds.contains((Long)params[1]))
+					userIds.add((Long)params[1]);
+					if(!allLeadersUserIds.contains((Long)params[1]))
+					allLeadersUserIds.add((Long)params[1]);
+				}
+				
+				
+				for(Object[] params : list)
+				{
+					SurveyReportVO vo = getMatchedSurveyReportVo(resultList, (Long)params[0]);
+					if(vo != null)
+					{
+						
+						SurveyReportVO leaderVo = new SurveyReportVO();
+						leaderVo.setId((Long)params[2]);
+						leaderVo.setName(params[3].toString());
+						leaderVo.setTotal(leaderUsers.get((Long)params[2]) != null ? new Long(leaderUsers.get((Long)params[2]).size()) : 0l);
+						leaderVo.setCompleteIds(leaderUsers.get((Long)params[2]));// userIds for leader
+						vo.getSubList().add(leaderVo);
+						
+					}
+				}
+				Map<Long,List<Long>> constituencyUsersMap = new HashMap<Long, List<Long>>();
+			 /*  SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd" );
+				Date date = targetFormat.parse("2014-07-14");*/
+				List<Long> list2 = surveyDetailsInfoDAO.getUsersByDate(allLeadersUserIds,new Date());
+				
+				for(SurveyReportVO vo : resultList)
+				{
+					
+					
+					for(SurveyReportVO vo1 : vo.getSubList())
+					{
+						if(vo1.getCompleteIds() != null && vo1.getCompleteIds().size() > 0)
+						{
+							Long active = 0l;
+							Long inactive = 0l;
+							for(Long id : vo1.getCompleteIds())
+							{
+								if(list2.contains(id))
+								{	
+									active = active + 1;
+								}
+								else
+								{				
+									
+									inactive = inactive + 1;
+								}
+							}
+							vo1.setActiveUsersCount(active);
+							vo1.setInActiveUsersCount(inactive);
+						}
+						
+					}
+					
+				}
+			}
+			
+		}
+		catch (Exception e) {
+			LOG.error("Exception raised in getConstituencyWiseFieldSummary", e);
+		}
+		return resultList;
+	}
+	
+	public SurveyReportVO getMatchedSurveyReportVo(List<SurveyReportVO> resultList,Long id)
+	{
+	
+		try{
+			if(resultList == null)
+				return null;
+			for(SurveyReportVO vo : resultList)
+			{
+				if(id.longValue() == vo.getId().longValue())
+					return vo;
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			
+		}
+		return null;
 	}
 	
 }

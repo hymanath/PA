@@ -91,9 +91,23 @@ public class SurveyReportVO {
 	private Long dvCompletedCount = 0L;
 	private Long notStartedCount = 0L;
 	private Long actualProcessingCount = 0L;
+	private Long activeUsersCount = 0L;
+	private Long inActiveUsersCount = 0L;
 	
 	private String casteErrorPercent;
 	
+	public Long getActiveUsersCount() {
+		return activeUsersCount;
+	}
+	public void setActiveUsersCount(Long activeUsersCount) {
+		this.activeUsersCount = activeUsersCount;
+	}
+	public Long getInActiveUsersCount() {
+		return inActiveUsersCount;
+	}
+	public void setInActiveUsersCount(Long inActiveUsersCount) {
+		this.inActiveUsersCount = inActiveUsersCount;
+	}
 	
 	
 	

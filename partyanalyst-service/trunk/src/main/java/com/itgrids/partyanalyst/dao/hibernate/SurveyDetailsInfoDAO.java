@@ -1258,6 +1258,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		
 	}
 	
+	
 	public List<Object[]> getProcessingConstituencyes()
 	{
 		Query query = getSession().createQuery("select SDI.booth.constituency.constituencyId, SDI.booth.constituency.name , count(distinct SDI.booth.boothId) from SurveyDetailsInfo SDI where SDI.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId group by SDI.booth.constituency.constituencyId ");
@@ -1265,7 +1266,14 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		return query.list();
 				
 	}
-	
-	
+	public List<Long> getUsersByDate(List<Long> userIds,Date date)
+	{
+		
+		Query query = getSession().createQuery("select distinct SDI.surveyUser.surveyUserId from SurveyDetailsInfo SDI where SDI.surveyUser.surveyUserId in(:userIds) and DATE(SDI.date) = :date  and SDI.surveyUser.activeStatus = 'Y' ");		
+		query.setParameterList("userIds", userIds);
+		query.setParameter("date", date);		
+		return query.list();
+		
+	}
 	
 }
