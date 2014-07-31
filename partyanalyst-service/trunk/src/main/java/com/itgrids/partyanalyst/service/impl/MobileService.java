@@ -739,7 +739,6 @@ public List<SelectOptionVO> getConstituencyList()
 			List<Object[]> constituenyAreaTypesList = constituencyDAO.getAreaTypesOfAConstituencyByElectionScope(2l);
 			
 			List<Constituency> acList = delimitationConstituencyAssemblyDetailsDAO.findAssemblyConstituencies(pconstituencyId,2009l);
-			List<Object[]> hamletsList = panchayatHamletDAO.getHamletsListByConstituency(pconstituencyId,publicationId);
 			
 			for(Constituency ac : acList)
 			{
@@ -1021,6 +1020,8 @@ public List<SelectOptionVO> getConstituencyList()
 						LOG.error(e);
 					}
 				}
+				
+				List<Object[]> hamletsList = panchayatHamletDAO.getHamletsListByConstituency(ac.getConstituencyId(),publicationId);
 				
 				if(hamletsList != null && hamletsList.size() > 0)
 				{
