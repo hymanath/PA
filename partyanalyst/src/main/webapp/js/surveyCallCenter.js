@@ -2629,8 +2629,11 @@ function buildSummaryForFieldData(result)
 function getLeadersAndUsersByConstituency()
 {
 	var constituencyId = $("#userConstituencyId").val();
-	var dateVal = $("#dateId").val();
+	var name = $("#userConstituencyId option:selected").text();
 
+	var dateVal = $("#dateId").val();
+$("#leaderAndUserDetailsDiv").html('');
+$("#leaderAndUserDetailsInactiveDiv").html('');
 	var jObj =
 	{	 
 	  constituencyId: constituencyId,
@@ -2643,13 +2646,15 @@ function getLeadersAndUsersByConstituency()
 			dataType: 'json',
 			data: {task:JSON.stringify(jObj)},
 		  }).done(function(result){				
-				buildLeadersAndUsersTable(result);				
+				buildLeadersAndUsersTableActive(result,name);	
+				buildLeadersAndUsersTableInActive(result,name);	
 		});
 
 }
-function buildLeadersAndUsersTable(result)
+function buildLeadersAndUsersTableActive(result,name)
 {
-	var str ='';			  
+	var str ='';	
+	str+='<h4>'+name+' Constituency Active Users</h4>';
 	str+='<table class="table table-bordered m_top20 table-hover table-striped" id="leaderUserTableId">';
 	str+='<thead class="alert alert-success">';
 	str+='<th>Leader Name</th>';	
@@ -2660,18 +2665,54 @@ function buildLeadersAndUsersTable(result)
 	  for(var i in result)
 	  {		
 		for(var j in result[i].subList)
-		{		
+		{	
+			if(result[i].subList[j].name == 'Active')
+			{
 			str+='<tr>';
 			str+='<td>'+result[i].leaderName+'<br>'+result[i].mobileNo+'</td>';		
 			str+='<td>'+result[i].subList[j].userName+'<br>'+result[i].subList[j].userType+'</td>';
 			str+='<td>'+result[i].subList[j].name+'</td>';	
 			str+='</tr>';
+			}
 		}		
 	}
 	str+='</tbody>';
 	str+='</table>';
 	$("#leaderAndUserDetailsDiv").html(str);
 	$('#leaderUserTableId').dataTable();
+}
+
+
+function buildLeadersAndUsersTableInActive(result,name)
+{
+	var str ='';	
+	str+='<h4>'+name+' Constituency InActive Users</h4>';
+	str+='<table class="table table-bordered m_top20 table-hover table-striped" id="leaderUserTableInactiveId">';
+	str+='<thead class="alert alert-success">';
+	str+='<th>Leader Name</th>';	
+	str+='<th>User Name</th>';
+	str+=' <th>Status</th>';
+	str+='</thead>';
+	str+='<tbody>';
+	  for(var i in result)
+	  {		
+		for(var j in result[i].subList)
+		{	
+			if(result[i].subList[j].name == 'Inactive')
+			{
+			str+='<tr>';
+			str+='<td>'+result[i].leaderName+'<br>'+result[i].mobileNo+'</td>';	
+			
+			str+='<td>'+result[i].subList[j].userName+'<br>'+result[i].subList[j].userType+'</td>';
+			str+='<td>'+result[i].subList[j].name+'</td>';	
+			str+='</tr>';
+			}
+		}		
+	}
+	str+='</tbody>';
+	str+='</table>';
+	$("#leaderAndUserDetailsInactiveDiv").html(str);
+	$('#leaderUserTableInactiveId').dataTable();
 }
 
 function getBoothsStatusDetailsOfConstituency()
