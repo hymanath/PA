@@ -1144,7 +1144,7 @@ return;
 }
 
 $(function() {
-	$("#dateId,#FielddateId").datepicker({ 
+	$("#dateId").datepicker({ 
 	dateFormat: 'dd-mm-yy',
    }).datepicker('setDate', new Date());
   
