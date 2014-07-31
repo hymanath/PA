@@ -2405,7 +2405,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					reportVO.setBoothId((Long)boothDtls[3]);
 	                reportVO.setUserid((Long)boothDtls[1]);
 	                reportVO.setUserName(boothDtls[2].toString()); 
-	                reportVO.setTotalVoters(totalVotersMap.get((Long)boothDtls[3]));
+	                reportVO.setTotalVoters(totalVotersMap.get((Long)boothDtls[3]) != null ? totalVotersMap.get((Long)boothDtls[3]) : 0l);
 					
 	                resultList.add(reportVO);
 				}
