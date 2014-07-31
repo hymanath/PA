@@ -17,5 +17,6 @@ public interface ISurveyDashBoardService {
 	public List<String> getCasteCollecteddatesByConstituencyId(Long constituencyId);
 	public List<SurveyReportVO> getUsersCompleteReportByStartAndEndDates(String startDate,String endDate);
 	public List<SurveyReportVO> getVerifiedBoothsDetails(String status,Long constituencyId);
+	public List<String> getCasteCollectedDatesByUserId(Long userId);
 
 }

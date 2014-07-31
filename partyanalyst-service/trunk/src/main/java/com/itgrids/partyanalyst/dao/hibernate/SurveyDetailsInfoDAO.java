@@ -1276,4 +1276,15 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		
 	}
 	
+	public List<String> getCasteCollectedDatesByUserId(Long userId){
+		Query query = getSession()
+				.createQuery(
+						"select distinct cast(concat(day(SDI.date),'-',month(SDI.date),'-',year(SDI.date)),string) " +
+						"from SurveyDetailsInfo SDI where SDI.surveyUser.surveyUserId = :userId order by date asc");
+		
+		query.setParameter("userId", userId);
+		
+		return query.list();
+	}
+	
 }
