@@ -1850,6 +1850,9 @@ function buildSurveyBoothDetailsTable(result,statusId)
 				str += ' <th>Mobile Numbers Collected</th>';
 				str += '<th>Caste Collected</th>	';
 				str += ' <th>Hamlets Collected</th>';
+				if(statusId == 3){
+					str += ' <th> Caste Error Percent </th>';
+				}
 				str += ' <th> Update Status </th>';
 						
 				str += '</tr>';
@@ -1866,6 +1869,9 @@ function buildSurveyBoothDetailsTable(result,statusId)
 					str += '<td>'+result[i].mobileNoCount+'</td>';
 					str += '<td>'+result[i].casteCount+'</td>';
 					str += '<td>'+result[i].hamletCount+'</td>';
+					if(statusId == 3){
+						str += '<td>'+result[i].casteErrorPercent+'</td>';
+					}
 					str += '<td><select id="boothStatus" onChange="updateBoothStatusDetails(this.value,'+result[i].boothId+','+i+')"><option>Select Status</option>';
 					if(statusId == 1)
 					{
