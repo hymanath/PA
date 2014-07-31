@@ -216,7 +216,9 @@
 			<div class="span12">
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top20">
-							<h4>User Field Report</h4>						
+							<h4>User Field Report</h4>
+<img id="fieldReportSummaryimg" style="display: none;width: 70px; height: 60px;" src="./images/Loading-data.gif" alt="Processing Image"  class="offset5"></img>
+							<div id="fieldReportSummary"></div>					
 						<div class="row">
 						<div class="span8 offset2">
 									<div class="row-fluid">
