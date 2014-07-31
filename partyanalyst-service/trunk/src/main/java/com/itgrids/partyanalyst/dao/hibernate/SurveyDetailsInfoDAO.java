@@ -749,7 +749,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 	public List<Object[]> getBoothWiseDcAndDvDetails(List<Long> boothIds)
 	{
 		Query query = getSession().createQuery("select model.surveyUser.surveyUserId, model.voter.voterId,model.caste.casteStateId , " +
-				" model.surveyUser.surveyUserType.surveyUsertypeId,model.booth.boothId,model.surveyUser.userName,model.booth.partNo,date(model.date), model.statusId from SurveyDetailsInfo model where model.booth.boothId in(:boothIds) order by model.booth.boothId asc ");
+				" model.surveyUser.surveyUserType.surveyUsertypeId,model.booth.boothId,model.surveyUser.userName,model.booth.partNo,date(model.date), model.statusId,model.mobileNumber from SurveyDetailsInfo model where model.booth.boothId in(:boothIds) order by model.booth.boothId asc ");
 		query.setParameterList("boothIds", boothIds);
 		return query.list();
 	}
@@ -766,7 +766,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 	public List<Object[]> getBoothWiseUser(List<Long> boothIds,Long typeId)
 	{
 		Query query = getSession().createQuery("select distinct model.booth.boothId,model.surveyUser.surveyUserId , model.surveyUser.userName, " +
-				"  model.surveyUser.surveyUserType.surveyUsertypeId from SurveyDetailsInfo model where model.booth.boothId in(:boothIds)  and model.surveyUser.surveyUserType.surveyUsertypeId = :typeId order by model.booth.boothId asc ");
+				"  model.surveyUser.surveyUserType.surveyUsertypeId ,date(model.date) from SurveyDetailsInfo model where model.booth.boothId in(:boothIds)  and model.surveyUser.surveyUserType.surveyUsertypeId = :typeId order by model.booth.boothId asc ");
 		query.setParameterList("boothIds", boothIds);
 		query.setParameter("typeId", typeId);
 		return query.list();
