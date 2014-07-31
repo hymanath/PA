@@ -1366,7 +1366,8 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			Long boothId = jObj.getLong("boothId");
 			Long constituencyId = jObj.getLong("constituencyId");
 			String searchDate = jObj.getString("searchDate");
-			voterVerificationList = 	surveyDataDetailsService.getSurveyVotersList(constituencyId,boothId,surveyUserId,searchDate);			
+			Long userType = jObj.getLong("userType");
+			voterVerificationList = 	surveyDataDetailsService.getSurveyVotersList(constituencyId,boothId,surveyUserId,searchDate,userType);			
 		} catch (Exception e) {
 			LOG.error(" exception occured in getSurveyVotersList() ,ConstituencyDetailsAction class",e);
 		}
