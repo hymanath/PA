@@ -385,4 +385,20 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 		
 		return Action.SUCCESS;
 	}
+	
+	public String getCasteCollectionDatesByUserId()	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			
+			Long userId = jObj.getLong("userId");
+			casteCollectedDates = surveyDashBoardService.getCasteCollectedDatesByUserId(userId);
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+		
+	}
 }
