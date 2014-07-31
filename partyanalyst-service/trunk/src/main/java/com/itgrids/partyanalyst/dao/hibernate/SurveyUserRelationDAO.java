@@ -214,6 +214,12 @@ public class SurveyUserRelationDAO extends GenericDaoHibernate<SurveyUserRelatio
 		query.setParameterList("leaderId", leaderId);
 		return query.list();
 	}
-	
+	public List<Object[]> getAllUsersCountForLeaders(List<Long> leaderIds)
+	{
+		Query query = getSession().createQuery("select distinct model.surveyLeader.surveyUserId,model.surveyUser.surveyUserId from SurveyUserRelation model where " +
+				"  model.surveyLeader.surveyUserId in(:leaderIds) and model.activeStatus = 'Y' ");
+		query.setParameterList("leaderIds", leaderIds);
+		return query.list();
+	}
 	
 }

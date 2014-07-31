@@ -47,4 +47,5 @@ public interface ISurveyDetailsService {
 	 public List<DcDvCollectedDataVO> getConstituencySummaryReport();
 	 public List<SurveyResponceVO> getThirdPartyVerificationDetails(Long boothId, Long userId);
 	 public List<SurveyReportVO> getConstituencyWiseLeadersAndUsersDetails(Long constituencyId,Date date);
+	 public List<SurveyReportVO> getConstituencyWiseFieldSummary();
 }
