@@ -1423,6 +1423,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 					vo.setVoterId(obj.getLong("voterId"));
 					vo.setBoothId(obj.getLong("boothId"));
 					vo.setCasteId(obj.getLong("casteId"));
+					vo.setUserTypeId(obj.getLong("userType"));
 					verifiedList.add(vo);
 					
 				}
