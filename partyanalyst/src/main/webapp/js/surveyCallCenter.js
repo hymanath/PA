@@ -1590,8 +1590,8 @@ function getVerifierDetails(surveyUserId,boothId)
 				$('#unMatchedCountDiv').show();
 				$('#notVerifiedCountDiv').show();
 				
-				$('#collecedCountDiv').html('<span style="font-weight:bold;"> Collectd  </span> : '+result[0].cadreCount+'</br>');
-				$('#verifiedCountDiv').html('<span style="font-weight:bold;"> Verified  </span> : '+result[0].mobileCount+'</br>');
+				$('#collecedCountDiv').html('<span style="font-weight:bold;"> Collectd  </span> : '+result[0].mobileCount+'</br>');
+				$('#verifiedCountDiv').html('<span style="font-weight:bold;"> Verified  </span> : '+result[0].cadreCount+'</br>');
 				$('#updatedCountDiv').html('<span style="font-weight:bold;">  Updated  </span> : '+result[0].casteCount+'</br>');
 				$('#matchedCountDiv').html('<span style="font-weight:bold;"> Matched   </span> : '+result[0].totalCount+'</br>');
 				$('#unMatchedCountDiv').html('<span style="font-weight:bold;"> Un Matched  </span> : '+result[0].influencePeopleCount+'</br>');
@@ -2463,9 +2463,9 @@ function buildVerifierOrWMReport(result,buildType,buildDiv,imgId)
 	if(buildType == 1)
 	{
 		str += '<div class="row-fluid">';
-		str += '<div class="span3" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;" >COLLECTED : '+result[0].collectedCount+'</div> ';
+		str += '<div class="span3" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;" >COLLECTED : '+result[0].verifieCount+'</div> ';
 		str += '<div class="span3" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">UPDATED : '+result[0].updatedCount+'</div> ';
-		str += '<div class="span3" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">VERIFIED : '+result[0].verifieCount+'</div> ';
+		str += '<div class="span3" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">VERIFIED : '+result[0].collectedCount+'</div> ';
 		str += '<div class="span3" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">NOT IDENTIFED : '+result[0].notIdentifedCount+'</div> ';
 		str += '</div>';
 	}
