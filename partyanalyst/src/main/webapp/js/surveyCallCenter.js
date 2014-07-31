@@ -1,4 +1,5 @@
 var fieldDataflg = false;
+var fieldReportflg = false;
 function showHideTabs(id)
 {
 
@@ -49,7 +50,9 @@ function showHideTabs(id)
 		$('#saveBoothsPercentage').hide();
 		$("#verifierReportIdForVerifier").hide();;
 		$("#wmReportDiv").hide();
+		if(fieldReportflg == false)
 		getFieldReportSummary();
+		fieldReportflg = true;
 	}
 	else if(id == "boothWiseTab")
 	{
