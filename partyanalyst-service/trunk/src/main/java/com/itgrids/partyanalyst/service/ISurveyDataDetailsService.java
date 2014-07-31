@@ -81,7 +81,7 @@ public interface ISurveyDataDetailsService
 	
 	public List<SelectOptionVO> getAssignedBoothDetailsByuserId(Long constituencyId,Long surveyUserId);
 	
-	public List<SurveyReportVO> getSurveyVotersList(Long constituencyId, Long boothId,Long leaderId,String searcyDate);
+	public List<SurveyReportVO> getSurveyVotersList(Long constituencyId, Long boothId,Long leaderId,String searcyDate,Long userTypeId);
 	
 	public ResultStatus saveSurveyCallStatusDetils(Long userId,List<SurveyReportVO> verifiedList);
 	

@@ -58,6 +58,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.dto.UserBoothDetailsVO;
+import com.itgrids.partyanalyst.dto.VerificationCompVO;
 import com.itgrids.partyanalyst.model.SurveyCallStatus;
 import com.itgrids.partyanalyst.model.SurveyDetailsInfo;
 import com.itgrids.partyanalyst.model.SurveySurveyorType;
@@ -3381,7 +3382,18 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	}
 	
 	*/
-	 public List<SurveyReportVO> getSurveyVotersList(Long constituencyId, Long boothId,Long surveyUserId,String searchDate){
+	
+	public void fillDcWmMap(Map<Long,GenericVO> dcWmMap , List<VerificationCompVO> resultList)
+	{
+		for (VerificationCompVO verificationCompVO : resultList) 
+		{
+			GenericVO VO = new GenericVO();
+			VO.setDesc(verificationCompVO.getDcCaste());//DC CASTE
+			VO.setName(verificationCompVO.getWmCaste());//DV CASTE
+			dcWmMap.put(verificationCompVO.getVoterId(), VO);
+		}
+	}
+	 public List<SurveyReportVO> getSurveyVotersList(Long constituencyId, Long boothId,Long surveyUserId,String searchDate,Long userType){
 		List<SurveyReportVO> retultList = new ArrayList<SurveyReportVO>();
 		try {
 			
@@ -3403,8 +3415,40 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				//List<Object[]> votersLsit = surveyDetailsInfoDAO.getVoterDetailsByBoothId(boothId,ids,date);
 				
 				List<Object[]> votersLsit = surveyDetailsInfoDAO.getVotersDetailsByBoothId(boothId,surveyUserids,date);
+				List<Object[]> verifiedList = null;
+				Map<Long,GenericVO> dcWmMap = null;
+				if(userType.longValue() == 1l)
+				{
+					 verifiedList = surveyCallStatusDAO.getSurveyCallDtalsByboothId(boothId,surveyUserId);
+				}
+				else
+				{
+					List<VerificationCompVO> dcWmDetails = surveyDetailsService.checkForWebMonitorData(boothId);
+					if(dcWmDetails != null && dcWmDetails.size() > 0)
+					{
+						dcWmMap = new HashMap<Long, GenericVO>();
+						for (VerificationCompVO verificationCompVO : dcWmDetails)
+						{
+							List<VerificationCompVO> matchedList = verificationCompVO.getMatchedList();
+							if(matchedList != null && matchedList.size() > 0)
+							{
+								fillDcWmMap(dcWmMap,matchedList);
+							}
+							List<VerificationCompVO> unMatchedLiat = verificationCompVO.getUnMatchedList();
+							if(unMatchedLiat != null && unMatchedLiat.size() > 0)
+							{
+								fillDcWmMap(dcWmMap,unMatchedLiat);
+							}
+							List<VerificationCompVO> notVerifiedList = verificationCompVO.getNotVerifiedList();
+							if(notVerifiedList != null && notVerifiedList.size() > 0)
+							{
+								fillDcWmMap(dcWmMap,notVerifiedList);
+							}
+						}
+					}
+					verifiedList = surveyCallStatusDAO.getDvSurveyCallDtalsByboothId(boothId,surveyUserId);
+				}
 				
-				List<Object[]> verifiedList = surveyCallStatusDAO.getSurveyCallDtalsByboothId(boothId,surveyUserId);
 				
 				Map<Long,String> mobileMatched = new HashMap<Long,String>();
 				Map<Long,String> casteMatched = new HashMap<Long,String>();
@@ -3506,7 +3550,15 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 									reportVO.setCasteId(Long.valueOf(newCasteMatched.get(surveyDetailsInfo.getVoter().getVoterId())));
 								}
 							}
-						
+						if(dcWmMap != null && dcWmMap.size() > 0)
+						{
+							GenericVO genVO = dcWmMap.get(reportVO.getVoterId());
+							if(genVO != null)
+							{
+								reportVO.setDcCaste(genVO.getDesc());
+								reportVO.setWmCaste(genVO.getName());
+							}
+						}
 						resultList.add(reportVO);
 						
 					}

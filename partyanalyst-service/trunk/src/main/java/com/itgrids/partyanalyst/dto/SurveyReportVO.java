@@ -97,6 +97,9 @@ public class SurveyReportVO {
 	
 	private String casteErrorPercent;
 	
+	private String dcCaste;
+	private String wmCaste;
+	
 	public Long getActiveUsersCount() {
 		return activeUsersCount;
 	}
@@ -566,6 +569,18 @@ public class SurveyReportVO {
 	}
 	public void setUserTypeId(Long userTypeId) {
 		this.userTypeId = userTypeId;
+	}
+	public String getDcCaste() {
+		return dcCaste;
+	}
+	public void setDcCaste(String dcCaste) {
+		this.dcCaste = dcCaste;
+	}
+	public String getWmCaste() {
+		return wmCaste;
+	}
+	public void setWmCaste(String wmCaste) {
+		this.wmCaste = wmCaste;
 	}
     
 	

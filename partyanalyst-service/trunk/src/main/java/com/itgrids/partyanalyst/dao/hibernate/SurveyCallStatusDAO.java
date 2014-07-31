@@ -45,6 +45,14 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 		return query.list();		
 	}
 	
+	public List<Object[]> getDvSurveyCallDtalsByboothId(Long boothId,Long surveyUserId){
+		Query query = getSession().createQuery("select distinct model.voter.voterId, model.dvMobileNoStatus, model.dvMatchedStatus,model.dvCasteState.casteStateId from SurveyCallStatus model" +
+				" where model.booth.boothId =:boothId and model.dvSurveyUser.surveyUserId = :surveyUserId   order by model.surveyCallStatusId");
+		
+		query.setParameter("boothId", boothId);
+		query.setParameter("surveyUserId", surveyUserId);
+		return query.list();		
+	}
 	public List<Object[]> getBoothWiseWmCasteUpdationDetails(List<Long> boothIds)
 	{
 		Query query = getSession().createQuery("select model.voterId , model.casteStateId,model.matchedStatus,model.boothId from SurveyCallStatus model where model.boothId in(:boothIds)");
