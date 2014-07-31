@@ -2370,7 +2370,18 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			for(Object[] boothDtls:dayWiseReportDtls)
 				boothIds.add((Long)boothDtls[3]);
 			Map<String,Long> totalCount = new HashMap<String, Long>();
-			
+			List<Long> booths = new ArrayList<Long>(boothIds);
+			Map<Long,Long> totalVotersMap = new HashMap<Long, Long>();
+			List<Object[]> totalVoters = boothPublicationVoterDAO.getTotalVoters(booths);
+			if(totalVoters != null && totalVoters.size() > 0)
+				for(Object[] params : totalVoters)
+				{
+					Long total = totalVotersMap.get((Long)params[0]);
+					if(total == null)
+					totalVotersMap.put((Long)params[0], (Long)params[2]);
+					else
+						totalVotersMap.put((Long)params[0], (Long)params[2] + total);	
+				}
 			
 			for(Object[] boothDtls:dayWiseReportDtls)
 			{
@@ -2394,7 +2405,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					reportVO.setBoothId((Long)boothDtls[3]);
 	                reportVO.setUserid((Long)boothDtls[1]);
 	                reportVO.setUserName(boothDtls[2].toString()); 
-	                reportVO.setTotalVoters((Long)boothDtls[5]);
+	                reportVO.setTotalVoters(totalVotersMap.get((Long)boothDtls[3]));
 					
 	                resultList.add(reportVO);
 				}
