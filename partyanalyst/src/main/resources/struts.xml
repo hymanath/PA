@@ -7918,7 +7918,13 @@
 			</result>
   		</action>
   		
-  		<action name="getConstituencySummaryFieldReport" class="surveyDataDetailsAction" method="getConstituencyFieldSummary">
+  		<action name="getCasteCollectionDatesByUserId" class="surveyDashBoardAction" method="getCasteCollectionDatesByUserId">
+			<result type="json" name="success">
+					<param name="root">casteCollectedDates</param>
+			</result>
+		</action>
+		
+		<action name="getConstituencySummaryFieldReport" class="surveyDataDetailsAction" method="getConstituencyFieldSummary">
   			<result type="json" name="success">
 				 <param name="root">reportList</param>
 			</result>
