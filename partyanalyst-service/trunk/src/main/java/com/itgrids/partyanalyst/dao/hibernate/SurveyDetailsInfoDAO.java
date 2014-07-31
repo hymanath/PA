@@ -610,7 +610,7 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 	{
 		Query query = getSession().createQuery("select count(distinct model.voter.voterId) from SurveyDetailsInfo model where " +
 				" (model.caste.casteStateId is not null or model.casteName is not null) " +
-				" and date(model.date) = date(:date) and model.surveyUser.surveyUserType.surveyUsertypeId = 1");
+				" and date(model.insertedTime) = date(:date) and model.surveyUser.surveyUserType.surveyUsertypeId = 1");
 		query.setParameter("date",date);
 		return (Long) query.uniqueResult();
 	}
@@ -618,15 +618,15 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 	
 	public List<Object[]> getTotalCastecollectedCountForDates()
 	{
-		Query query = getSession().createQuery("select model.date,count(distinct model.surveyDetailsInfoId) from SurveyDetailsInfo model where (model.caste.casteStateId is not null or model.casteName is not null) group by date(model.date)");
+		Query query = getSession().createQuery("select model.insertedTime,count(distinct model.voter.voterId) from SurveyDetailsInfo model where (model.caste.casteStateId is not null or model.casteName is not null) and model.surveyUser.surveyUserType.surveyUsertypeId = 1 group by date(model.insertedTime)");
 		return query.list();
 	}
 	
 	public List<Object[]> getTotalCastecollectedCountForTodayForDates(Date date)
 	{
-		Query query = getSession().createQuery("select model.date,count(distinct model.surveyDetailsInfoId) from SurveyDetailsInfo model where " +
+		Query query = getSession().createQuery("select model.insertedTime,count(distinct model.voter.voterId) from SurveyDetailsInfo model where " +
 				" (model.caste.casteStateId is not null or model.casteName is not null) " +
-				" and date(model.date) = date(:date)");
+				" and date(model.insertedTime) = date(:date)");
 		query.setParameter("date",date);
 		return query.list();
 	}
