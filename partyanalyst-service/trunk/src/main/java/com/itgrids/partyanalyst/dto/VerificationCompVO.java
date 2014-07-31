@@ -37,6 +37,7 @@ public class VerificationCompVO implements Serializable
 	private String partNo;
 	private Long surveyUserType;
 	private String date;
+	private String verifierDate;
 	private String surveyUser;
 	private String verifierUser;
 	private String panchayatName;
@@ -44,6 +45,8 @@ public class VerificationCompVO implements Serializable
 	private List<VerificationCompVO> matchedList;
 	private List<VerificationCompVO> unMatchedList;
 	private List<VerificationCompVO> notVerifiedList;
+	
+	private String mobileNO;
 
 	public Long getDcCasteId() {
 		return dcCasteId;
@@ -307,6 +310,22 @@ public class VerificationCompVO implements Serializable
 
 	public void setVerifierUser(String verifierUser) {
 		this.verifierUser = verifierUser;
+	}
+
+	public String getMobileNO() {
+		return mobileNO;
+	}
+
+	public void setMobileNO(String mobileNO) {
+		this.mobileNO = mobileNO;
+	}
+
+	public String getVerifierDate() {
+		return verifierDate;
+	}
+
+	public void setVerifierDate(String verifierDate) {
+		this.verifierDate = verifierDate;
 	}
 	
 	
