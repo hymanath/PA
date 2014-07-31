@@ -29,6 +29,7 @@ public class SurveyReportVO {
     private Long hamletId;
     private String hamletName;
     private String userType;
+    private Long userTypeId;
     private Long casteId;
     private Long totalVoters;
     
@@ -560,5 +561,12 @@ public class SurveyReportVO {
 	public void setPanchayatDetails(SurveyReportVO panchayatDetails) {
 		this.panchayatDetails = panchayatDetails;
 	}
-
+	public Long getUserTypeId() {
+		return userTypeId;
+	}
+	public void setUserTypeId(Long userTypeId) {
+		this.userTypeId = userTypeId;
+	}
+    
+	
 }
