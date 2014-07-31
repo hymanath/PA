@@ -2150,4 +2150,16 @@ public String getPanchayatsStatusDetails()
 		return Action.SUCCESS;
 		
 	}
+  	
+  	public String getConstituencyFieldSummary()
+  	{
+  		try{
+  			reportList = surveyDetailsService.getConstituencyWiseFieldSummary();	
+  		}
+  		catch (Exception e)
+		{
+			LOG.error("Exception raised in getConstituencyFieldSummary", e);
+		}
+		return Action.SUCCESS;
+  	}
 }
