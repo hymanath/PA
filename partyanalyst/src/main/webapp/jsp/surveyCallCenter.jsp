@@ -551,7 +551,7 @@
 												<!--User Type <font class="requiredFont">*</font>
 												<select class="input-block-level" id = "userType"> <option value="0">Select User Type</option></select>-->
 												Select Booth  <font class="requiredFont">*</font> : 
-												<select class="input-block-level" id = "boothIdForVerifier" > <option value="0">Select Booth</option></select></div>
+												<select class="input-block-level" id = "boothIdForVerifier"> <option value="0">Select Booth</option></select></div>
 												<div class="span1" style="margin:25px -8px 0 8px;width: 15px;">
 													<img id="boothImageForVerifier" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
 												</div>
@@ -560,7 +560,7 @@
 								</div>
 						<div class="row text-center m_top20">
 							
-							<button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getVerfierDetails(1,'mainajaximgForVerifier','dayWiseReportDivForVerifier')">SUBMIT</button>
+							<button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getVerifiersInBooth()">SUBMIT</button>
 							
 							<button type="button" class="btn btn-success" id="excelTableID4" onClick="generateExcel('dayWiseReportTableForVerifier');" style="display:none;">Export To Excel</button>
 							
@@ -568,6 +568,8 @@
 						
 						<div id="retunMsg" class="clearCls"></div>
 						<img src='images/Loading-data.gif' class="offset5"  id="mainajaximgForVerifier" style="width:70px;height:60px;display:none;"/>
+						 <div id="verifiersInbooths" class="clearCls"></div>
+						 
                          <div id="dayWiseReportDivForVerifier" class="clearCls"></div>
 						 	
 					</div>
@@ -662,6 +664,35 @@ $.ajax({
 		availableDates = result;
 		var strtDt = availableDates[0];
 		var endtDt = availableDates[availableDates.length-1];
+		
+		var arrStrt = strtDt.split('-');
+		var arrEnd =  endtDt.split('-');
+		
+		var strtDate = arrStrt[0];
+		var strtMonth = arrStrt[1];
+		var strtYear = arrStrt[2];
+		
+		if(strtDate.length<2){
+			strtDate = "0"+strtDate;
+		}
+		
+		if(strtMonth.length<2){
+			strtMonth = "0"+strtMonth;
+		}
+		
+		var endDate = arrEnd[0];
+		var endMonth = arrEnd[1];
+		var endYear = arrEnd[2];
+		
+		if(endDate.length<2){
+			endDate = "0"+endDate;
+		}
+		
+		if(endMonth.length<2){
+			endMonth = "0"+endMonth;
+		}
+		
+		/* 
 		var dt= strtDt.substring(0,2);
 		var month = 0+strtDt.substring(3,4);
 		var yr = strtDt.substring(5,9);
@@ -669,7 +700,11 @@ $.ajax({
 		var month1 = 0+endtDt.substring(3,4);
 		var yr1 = endtDt.substring(5,9);
 		var date1 = dt+"-"+month+"-"+yr;
-		var date2 = dt1+"-"+month1+"-"+yr1;
+		var date2 = dt1+"-"+month1+"-"+yr1; */
+		
+		var date1 =  strtDate+"-"+strtMonth+"-"+strtYear;
+		var date2 =  endDate+"-"+endMonth+"-"+endYear;
+		
 		$('#'+fromDateId).val(date1).datepicker({ beforeShowDay: displayDates,maxDate: '0',dateFormat: 'dd-mm-yy'});
 		$('#'+toDateId).val(date2).datepicker({ beforeShowDay: displayDates ,maxDate: '0' ,dateFormat: 'dd-mm-yy'});
 	});
@@ -690,6 +725,34 @@ $.ajax({
 		availableDates = result;
 		var strtDt = availableDates[0];
 		var endtDt = availableDates[availableDates.length-1];
+		var arrStrt = strtDt.split('-');
+		var arrEnd =  endtDt.split('-');
+		
+		var strtDate = arrStrt[0];
+		var strtMonth = arrStrt[1];
+		var strtYear = arrStrt[2];
+		
+		if(strtDate.length<2){
+			strtDate = "0"+strtDate;
+		}
+		
+		if(strtMonth.length<2){
+			strtMonth = "0"+strtMonth;
+		}
+		
+		var endDate = arrEnd[0];
+		var endMonth = arrEnd[1];
+		var endYear = arrEnd[2];
+		
+		if(endDate.length<2){
+			endDate = "0"+endDate;
+		}
+		
+		if(endMonth.length<2){
+			endMonth = "0"+endMonth;
+		}
+		
+		/* 
 		var dt= strtDt.substring(0,2);
 		var month = 0+strtDt.substring(3,4);
 		var yr = strtDt.substring(5,9);
@@ -697,7 +760,10 @@ $.ajax({
 		var month1 = 0+endtDt.substring(3,4);
 		var yr1 = endtDt.substring(5,9);
 		var date1 = dt+"-"+month+"-"+yr;
-		var date2 = dt1+"-"+month1+"-"+yr1;
+		var date2 = dt1+"-"+month1+"-"+yr1; */
+		
+		var date1 =  strtDate+"-"+strtMonth+"-"+strtYear;
+		var date2 =  endDate+"-"+endMonth+"-"+endYear;
 		$('#'+fromDateId).val(date1).datepicker({ beforeShowDay: displayDates,maxDate: '0',dateFormat: 'dd-mm-yy'});
 		$('#'+toDateId).val(date2).datepicker({ beforeShowDay: displayDates ,maxDate: '0' ,dateFormat: 'dd-mm-yy'});
 	});
@@ -711,14 +777,45 @@ function displayDates(date){
 		return [false,"","unAvailable"];
 	}
 }
+
+function getVerifiersInBooth(){
+
+	$("#verifiersInbooths").html("");
+
+	var boothId = $("#boothIdForVerifier").val();
+
+	var jsObj ={
+		boothId :boothId
+	}
+
+	$.ajax({
+			type:'GET',
+			url: 'getVerifiersInBoothsAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		}).done(function(result){
+			buildVerifiers(result);
+		});
+}
+
+function buildVerifiers(result){
+	if(result.length>1){
+		$("#verifiersInbooths").html("");
+		var str  = "";
+		for(var i in result){
+			str += "<input type='radio' name='verifiers' onclick='getVerfierDetailsWithVerifier()' style='margin:4px;' value="+result[i].verifierId+"><span style='margin:4px;font-size:16px;color:blue;'>"+result[i].verifier+"</span></input>";
+		}
+		$("#verifiersInbooths").html(str);
+		$("input:radio[name=verifiers]:first").attr('checked', true);
+		getVerfierDetailsWithVerifier();
 		
-		/*$(function() {
-			$(".date").datepicker({ 
-			dateFormat: 'dd-mm-yy',
-		   }).datepicker('setDate', new Date());
-		  
-		});*/
-		function buildConstituency()
+	}else{
+		getVerfierDetails(1,'mainajaximgForVerifier','dayWiseReportDivForVerifier');
+	}
+
+	
+}
+	function buildConstituency()
 		{
 			
 			var result = new Array();
@@ -763,7 +860,8 @@ function displayDates(date){
 				});
 		});
 		 }
+		
 	</script>
 	
  </body>
- </html>
+ </html> 
