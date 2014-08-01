@@ -78,9 +78,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	private PanchayatHamletsCountVo panchayatHamletsCountVo;
 	private List<DcDvCollectedDataVO> dcDvCollectedDataVOList;
 	private List<SurveyReportVO> reportList;
-    
 	
-
 	@Autowired
 	private ISurveyCompletedDetailsService surveyCompletedDetailsService;
 	
@@ -2165,6 +2163,47 @@ public String getPanchayatsStatusDetails()
 		return Action.SUCCESS;
   	}
   	
+  	public String getVerifiersOfBooths(){
+  		try{
+  			jObj = new JSONObject(getTask());
+			Long boothId = jObj.getLong("boothId");
+			
+			List<Long> boothIds = new ArrayList<Long>();
+			boothIds.add(boothId);
+			
+			verificationCompVOList = surveyDetailsService.getVerifiersOfBooths(boothIds);
+  				
+  		}
+  		catch (Exception e){
+			LOG.error("Exception raised in getVerifiersOfBooths", e);
+		}
+		return Action.SUCCESS;
+  	}
+  	
+  	 public String checkForVerifierDataWithVerifier(){
+  		try	{
+  			HttpSession session = request.getSession();
+  			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+  			if(user == null){
+  				return Action.INPUT;
+  			}
+  			jObj = new JSONObject(getTask());
+  			List<Long> boothIds = new ArrayList<Long>();
+ 			JSONArray jarray = jObj.getJSONArray("boothIds");
+ 			for (Integer i = 0; i < jarray.length(); i++){
+ 				boothIds.add(Long.valueOf(jarray.get(i).toString()));
+ 			}
+ 			
+ 			Long veriferId = jObj.getLong("verifierId");
+ 			
+  			verificationCompVOList = surveyDetailsService.checkForVerifierDataWithBoothAndVerifierId(boothIds,veriferId);
+  			
+  		} 
+  		catch (Exception e){
+  			LOG.error("Exception raised in unTagConstituencyOfUser", e);
+  		}
+  		return Action.SUCCESS;
+  	}
   	public String getUsersForConstituencies()
   	{
   		try
