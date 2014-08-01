@@ -2311,16 +2311,15 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 		}
 		return null;
 	}
-	public List<GenericVO> getUsersList(List<Long> constituencyIds)
-	{
-		 List<GenericVO> resultList = new ArrayList<GenericVO>();
+	public List<GenericVO> getUsersList(List<Long> constituencyIds){
+		List<GenericVO> resultList = new ArrayList<GenericVO>();
 		try{
-		List<Object[]> list = surveyUserConstituencyDAO.getSurveyConstituencyLeadersList(constituencyIds);
-		if(list != null && list.size() > 0)
-		{
-		for(Object[] params : list)
-			resultList.add(new GenericVO((Long)params[0],params[1].toString()));
-		}
+			List<Object[]> list = surveyUserRelationDAO.getSurveyConstituencyLeadersList(constituencyIds);
+			if(list != null && list.size() > 0){
+				for(Object[] params : list){
+					resultList.add(new GenericVO((Long)params[0],params[1].toString()));
+				}
+			}
 		}
 		catch (Exception e) {
 			Log.error("Exception Occured in getUsersList()");
