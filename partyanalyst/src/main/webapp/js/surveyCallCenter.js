@@ -1,5 +1,6 @@
 var fieldDataflg = false;
 var fieldReportflg = false;
+
 function showHideTabs(id)
 {
 
@@ -907,7 +908,7 @@ return;
 
 		$("#reportDataImg").hide();
 		//$("#SurveyUsertable").show();
-     buildSurveyUserStatusCount(result);
+     buildSurveyUserStatusCount(result,userTypeId);
 	
 	});
 }
@@ -915,9 +916,9 @@ return;
 var webConstId =0;
 var webuserId =0;
 var webBoothId =0;
- function buildSurveyUserStatusCount(result)
+ function buildSurveyUserStatusCount(result,userTypeId)
 {
-	var userType = $('#userTypeId').val();
+	var userType = userTypeId;
 	$("#excelTableID").css("display","inline-block");
 	var str ='';
 	if(result.length == 0)
@@ -940,23 +941,30 @@ return;
 	
 	
 	str+='<table class=" table table-bordered m_top20" id="SurveyUsertable">';
-	str+='<thead >';
-
-	str+='<tr class="alert alert-success">'
-	str+='<th rowspan="7">DCName</th>';
-	str+='<th rowspan="7">Leader Name</th>';
-	str+='<th rowspan="7">Booth</th>';
-	str+='<th rowspan="7"> Total Voters</th>';
-	str+='<th colspan="3" style="text-align : center;">Data Collector</th>';
-	str+='<th colspan="7" style="text-align : center;">Web monitoring</th>';
-	
-	str+='</tr>';
+	str+='<thead>';
 
 	str+='<tr class="alert alert-success">';
-    str+='<th >Caste Mapped</th>';
-	str+='<th >Hamlet Mapped</th>';
-	str+='<th >Mobile Collected</th>';
-
+	if(userType ==1)
+	str+='<th>DCName</th>';
+	else if (userType ==4)
+	str+='<th>DVName</th>';
+	str+='<th>Leader Name</th>';
+	str+='<th>Booth</th>';
+	str+='<th> Total Voters</th>';
+//	str+='<th style="text-align : center;">Data Collector</th>';
+	//str+='<th style="text-align : center;">Web monitoring</th>';
+	if(userType ==1)
+	{
+    str+='<th>DC Caste Mapped</th>';
+	str+='<th>DC Hamlet Mapped</th>';
+	str+='<th>DC Mobile Collected</th>';
+	}
+else if(userType ==4)
+	{
+    str+='<th>DV Caste Mapped</th>';
+	str+='<th>DV Hamlet Mapped</th>';
+	str+='<th>DV Mobile Collected</th>';
+	}
 	str+='<th>TOTAL </th>';
 	str+='<th>Mobile MATCHED</th>';
 	str+='<th>Mobile UN MATCHED</th>';
@@ -1191,7 +1199,10 @@ return;
 	
 	$("#basicCountDiv").html(str);
 
-
+$("#SurveyUsertable").dataTable({
+				"iDisplayLength": 100,
+				"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]]
+				});
 }
 
 $(function() {
