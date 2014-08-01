@@ -1890,8 +1890,10 @@ function buildSurveyBoothDetailsTable(result,statusId)
 					str += '<td>'+result[i].partNo+'</td>';
 					str += '<td>'+result[i].totalVoters+'</td>';
 					str += '<td>'+result[i].mobileNoCount+'</td>';
-					str += '<td>'+result[i].casteCount+'</td>';
-					str += '<td>'+result[i].hamletCount+'</td>';
+					var castePer = ((result[i].casteCount * 100)/result[i].totalVoters).toFixed(2);
+					var hamletPer = ((result[i].hamletPer * 100)/result[i].totalVoters).toFixed(2);
+					str += '<td>'+result[i].casteCount+'('+castePer+'%)</td>';
+					str += '<td>'+result[i].hamletCount+'('+hamletPer+'%)</td>';
 					str += '<td><select id="boothStatus" onChange="updateBoothStatusDetails(this.value,'+result[i].boothId+','+i+')"><option>Select Status</option>';
 					if(statusId == 1)
 					{
