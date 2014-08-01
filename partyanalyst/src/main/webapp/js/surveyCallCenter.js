@@ -2907,6 +2907,65 @@ function getBoothsDetailsInCallStatusInfo(constituencyId,divId)
 
 		});	
 }
+//getMatchedUnMatchedCountsByBoothWise();
+function getMatchedUnMatchedCountsByBoothWise()
+{
+		var boothIds = new Array();
+		boothIds.push(440023);
+		boothIds.push(440026);
+		boothIds.push(440050);
+		var jObj =
+		{
+			boothIds:boothIds     
+		};
+		
+		$.ajax({
+			type:'GET',
+			url: 'checkForVerifierDataAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		 }).done(function(result){	
+		  
+		if(result != null)
+		{
+			buildMatchecdUnMatchedDetails(result);
+		}	
+		});	
+}
+
+function buildMatchecdUnMatchedDetails(result)
+{
+	
+	var str = '';
+	str += '<table>';
+	str += '<tr>';
+	str += '<th>BOOTH</th>';
+	str += '<th>DC NAME</th>';
+	str += '<th>DC DATE</th>';
+	str += '<th>DV NAME</th>';
+	str += '<th>DV DATE</th>';
+	str += '<th>TOTAL</th>';
+	str += '<th>MATCHED</th>';
+	str += '<th>UN MATCHED</th>';
+	str += '<th>NOT VERIFIED</th>';
+	str += '</tr>';
+	for(var i in result)
+	{
+		str += '<tr>';
+		str+= '<td>'+result[i].matchedList[0].partNo+'</td>';
+		str+= '<td>'+result[i].surveyUser+'</td>';
+		str+= '<td>'+result[i].date+'</td>';
+		str+= '<td>'+result[i].verifierUser+'</td>';
+		str+= '<td>'+result[i].verifierDate+'</td>';
+		str+= '<td>'+result[i].totalCount+'</td>';
+		str+= '<td>'+result[i].matchedCount+'</td>';
+		str+= '<td>'+result[i].unMatchedCount+'</td>';
+		str+= '<td>'+result[i].notVerifiedCount+'</td>';
+		str += '<\tr>';
+	}
+	str += '</table>';
+	$('#tableForMatchedAndUnMatched').html(str);
+}
 function getVerfierDetails(buildType,imgId,buildDiv)
 {
 	$('#'+imgId+'').show();
