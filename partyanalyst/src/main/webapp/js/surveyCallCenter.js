@@ -2458,29 +2458,60 @@ function buildVerifierOrWMReport(result,buildType,buildDiv,imgId)
 	$('#dayWiseReportDivForVerifier').html('');
 	$('#dayWiseReportDivForWm1').html('');
 	var str = '';
+	str += '<div class="row-fluid">';
 	if(result[0].matchedList[0] != null )
 	{
-		str += '<div class="row-fluid">';
-		str += '<div class="span12" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;" >PANCHAYAT : '+result[0].matchedList[0].panchayatName+'</div> ';
+		if(buildType == 1)
+		{
+			str += '<div class="span12" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;" >PANCHAYAT : '+result[0].matchedList[0].panchayatName+'</div> ';
+		}
+		else
+		{
+			str += '<div class="row-fluid">';
+			str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;" >PANCHAYAT : '+result[0].matchedList[0].panchayatName+'</div> ';
+			str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">DC NAME: '+result[0].surveyUser+'</div> ';
+			str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">DC Date : '+result[0].date+'</div> ';
+		}
+		
 	}
 	else if(result[0].unMatchedList[0] != null )
 	{
-		str += '<div class="row-fluid">';
-		str += '<div class="span12" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;" >PANCHAYAT : '+result[0].unMatchedList[0].panchayatName+'</div> ';
+		if(buildType == 1)
+		{
+			str += '<div class="span12" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;" >PANCHAYAT : '+result[0].unMatchedList[0].panchayatName+'</div> ';
+		}
+		else
+		{
+			str += '<div class="row-fluid">';
+			str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;" >PANCHAYAT : '+result[0].unMatchedList[0].panchayatName+'</div> ';
+			str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">DC NAME: '+result[0].surveyUser+'</div> ';
+			str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">DC Date : '+result[0].date+'</div> ';
+		}
 	}
 	else if(result[0].notVerifiedList[0] != null )
 	{
-		str += '<div class="row-fluid">';
-		str += '<div class="span12" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;" >PANCHAYAT : '+result[0].notVerifiedList[0].panchayatName+'</div> ';
+		if(buildType == 1)
+		{
+			str += '<div class="span12" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;" >PANCHAYAT : '+result[0].notVerifiedList[0].panchayatName+'</div> ';
+		}
+		else
+		{
+			str += '<div class="row-fluid">';
+			str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;" >PANCHAYAT : '+result[0].notVerifiedList[0].panchayatName+'</div> ';
+			str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">DC NAME: '+result[0].surveyUser+'</div> ';
+			str += '<div class="span4" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">DC Date : '+result[0].date+'</div> ';
+		}
 	}
-	
-	str += '</div>';
-	str += '<div class="row-fluid">';
-	str += '<div class="span3" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">DC NAME: '+result[0].surveyUser+'</div> ';
-	str += '<div class="span3" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">DC Date : '+result[0].date+'</div> ';
-	str += '<div class="span3" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">DV NAME: '+result[0].verifierUser+'</div> ';
-	str += '<div class="span3" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">DV Date : '+result[0].verifierDate+'</div> ';
-	str += '</div>';
+	if(buildType == 1)
+	{
+		str += '</div>';
+		str += '<div class="row-fluid">';
+		str += '<div class="span3" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">DC NAME: '+result[0].surveyUser+'</div> ';
+		str += '<div class="span3" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">DC Date : '+result[0].date+'</div> ';
+		str += '<div class="span3" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">DV NAME: '+result[0].verifierUser+'</div> ';
+		str += '<div class="span3" style="background-color: yellow; padding: 5px;margin-top:25px;margin-bottom:10px;">DV Date : '+result[0].verifierDate+'</div> ';
+		str += '</div>';
+	}
 	if(buildType == 1)
 	{
 		str += '<div class="row-fluid">';
