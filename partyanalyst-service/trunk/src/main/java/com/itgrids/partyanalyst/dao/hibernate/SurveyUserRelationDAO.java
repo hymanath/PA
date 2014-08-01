@@ -224,9 +224,14 @@ public class SurveyUserRelationDAO extends GenericDaoHibernate<SurveyUserRelatio
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getSurveyConstituencyLeadersList(List<Long> constituencyIds){
 		
-		Query query = getSession().createQuery("select distinct model.surveyUser.surveyUserId,model.surveyUser.userName from SurveyUserRelation model" +
-				" where model.constituency.constituencyId in(:constituencyIds) and model.activeStatus = 'Y' order by model.surveyUser.userName asc");
+		Query query = getSession()
+				.createQuery(
+						"select distinct SUR.surveyUser.surveyUserId,SUR.surveyUser.userName from SurveyUserRelation SUR where SUR.surveyLeader.surveyUserId " +
+						"in(select SUC.surveyUser.surveyUserId from SurveyUserConstituency SUC " +
+						"where SUC.constituency.constituencyId  in(:constituencyIds)) and SUR.surveyUser.activeStatus = 'Y'  ");
+		
 		query.setParameterList("constituencyIds", constituencyIds);
+		
 		return query.list();
 	}
 }
