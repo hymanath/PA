@@ -1287,4 +1287,12 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		return query.list();
 	}
 	
+	public List<Object[]> getBoothWiseVerifier(List<Long> boothIds){
+		Query query = getSession().createQuery("select distinct model.booth.boothId,model.surveyUser.surveyUserId , model.surveyUser.userName, " +
+				"  model.surveyUser.surveyUserType.surveyUsertypeId from SurveyDetailsInfo model where model.booth.boothId in(:boothIds)  and model.surveyUser.surveyUserType.surveyUsertypeId = :typeId order by model.booth.boothId asc ");
+		query.setParameterList("boothIds", boothIds);
+		query.setParameter("typeId", 4l);
+		return query.list();
+	}
+	
 }
