@@ -1222,8 +1222,13 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 					wmResultBoothMap = new HashMap<Long, Map<Long,String>>();
 					for (Long boothId : boothIds)
 					{
-						Map<Long,String>  resultMap = checkForDcWmWithDvWm(wmBoothMap.get(boothId),dvWmBoothMap.get(boothId));
-						wmResultBoothMap.put(boothId, resultMap);
+						if(wmBoothMap !=null && wmBoothMap.size() > 0)
+						{
+							Map<Long,String>  resultMap = checkForDcWmWithDvWm(wmBoothMap.get(boothId),dvWmBoothMap.get(boothId));
+							wmResultBoothMap.put(boothId, resultMap);
+						}
+						
+						
 					}
 					
 				}
