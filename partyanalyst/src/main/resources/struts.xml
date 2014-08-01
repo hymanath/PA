@@ -189,6 +189,7 @@
 			<result type="redirect" name="constituencyDetailReport">constituencyDetailReportAction.action</result>
 			<result type="redirect" name="surveyCallCenter">surveyCallCenterAction.action</result>
 			<result type="redirect" name="surveyDataDetailsAction">surveyDataDetailsAction.action</result>
+			<result type="redirect" name="candidateUpdateDetailsAction">candidateUpdateDetailsAction.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
 			 <!-- Problem Management Flow From Different Pages -->
 			 <interceptor-ref name="basicStack"/>
@@ -7502,6 +7503,7 @@
 		
 		<action name="candidateUpdateDetailsAction" class="candidateUpdateDetailsAction">
 			<result name="success">/jsp/candidateUpdateDetails.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=candidateUpdateDetailsAction</result>
 		</action>
 		
 		<action name="getAssignedConstituencyUsersAction" class="surveyDataDetailsAction" method="getAssignedConstituencyUsers">
@@ -7929,6 +7931,15 @@
 				 <param name="root">reportList</param>
 			</result>
   		</action>
-  		
+  		<action name="gettingCandidateDetailsAction" class="candidateUpdateDetailsAction" method="gettingCandidateDetails">
+		<result type="json" name="success">
+				<param name="root">candidateVOList</param>
+			</result>
+  </action>
+  
+  <action name="updateDetailsofACandidateAction" class="candidateUpdateDetailsAction" method="updateDetailsofACandidate">
+		<result type="json" name="success">
+				<param name="root">resultStatus</param>
+			</result>
 </package>
 </struts>      

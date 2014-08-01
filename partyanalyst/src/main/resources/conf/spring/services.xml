@@ -2132,6 +2132,10 @@
    <bean name="candidateUpdationDetailsService"  class="com.itgrids.partyanalyst.service.impl.CandidateUpdationDetailsService"  >
    <property name="electionDAO" ref="electionDAO" />
    <property name="districtDAO" ref="districtDAO" />
+   <property name="candidateDetailsDAO" ref="candidateDetailsDAO"/>
+   <property name="casteStateDAO" ref="casteStateDAO"/>
+   <property name="educationalQualificationsDAO" ref="educationalQualificationsDAO"/>
+   <property name="casteDAO" ref="casteDAO"/>
    </bean>
    
       <bean name="surveyDashBoardService"  class="com.itgrids.partyanalyst.service.impl.SurveyDashBoardService">
