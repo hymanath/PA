@@ -3181,3 +3181,39 @@ function buildSummaryData(result)
 				  $("#fieldReportSummary").html(str);
 			
 }
+
+function getVerfierDetailsWithVerifier(){
+	var imgId = "mainajaximgForVerifier";
+	var buildDiv = "dayWiseReportDivForVerifier";
+	var buildType =1;
+	$('#'+imgId+'').show();
+	$('#'+buildDiv+'').html('');
+	var boothIds = new Array();
+		var boothId = $('#boothIdForVerifier').val();
+		var verifierId = $('input[name=verifiers]:checked').val();
+		
+		boothIds.push(boothId);
+		
+		var jObj ={
+			boothIds:boothIds,
+			verifierId:verifierId
+		};
+		
+		$.ajax({
+			type:'GET',
+			url: 'checkForVerifierDataWithVeriferAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		 }).done(function(result){	
+		  
+		if(result != null)
+		{
+			buildVerifierOrWMReport(result,buildType,buildDiv,imgId);
+		}
+		else
+		{
+			$('#'+buildDiv+'').html('<b style="color:red">No Data Avaliable</b>');
+			$('#'+imgId+'').hide();
+		}		
+		});	
+}
