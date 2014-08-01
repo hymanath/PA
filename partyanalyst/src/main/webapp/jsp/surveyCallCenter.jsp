@@ -431,7 +431,7 @@
 									<div class="row-fluid">
 										
 										
-										<div class="span3">
+										<div class="span2">
 											Select User Type 
 											<select class="input-block-level" id = "userReportUserType" onChange="getRespectiveUsers(this.value)"> 
 												<option value="0">Select User Type</option>
@@ -440,7 +440,15 @@
 											</select>
 												
 										</div>
+										
 										<div class="span3">
+											Select Constituency 
+											<select class="input-block-level" id = "userReportUserConstituency" multiple="true" onchange="getUsersForConstituenies()">
+											</select>
+											
+												
+										</div>
+										<div class="span2">
 											Select User  
 											<select class="input-block-level" id = "userReportUser" onchange="getCasteCollectedDatesByUserId(this.value,'fromDateForUserReport','toDateForUserReport');"> <option value="0">Select User </option></select>
 										</div>
@@ -620,6 +628,7 @@
 	</script>
 	<script>
 		showHideTabs('surveyStatusRprtTab');
+		
 		$(".highlight").click(function()
 		{
 			$(".highlight").removeClass("selected");
@@ -629,8 +638,11 @@
 		$( document ).ready(function() {
 		$('#boothIdForVerfication').multiselect({
 			  noneSelectedText:"Select Booth(s)"});
+			 $('#userReportUserConstituency').multiselect({
+			  noneSelectedText:"Select Constituency(s)"});
 		});	
 
+		buildConstituency();
 		$('#reportConstituencyId').change(function(){
 			$('#basicStatusReport').html('');
 		});
@@ -706,9 +718,52 @@ function displayDates(date){
 		   }).datepicker('setDate', new Date());
 		  
 		});*/
+		function buildConstituency()
+		{
+			
+			var result = new Array();
+			<c:forEach var="user" items="${constituenciesList}">
+			var obj = {
+				id : '${user.id}',
+				name:'${user.name}'
+			}
+				result.push(obj);
+			</c:forEach>
+			
+			$.each(result,function(index,value){
+					$('#userReportUserConstituency').append('<option value="'+value.id+'"> '+value.name+'</option>');
+				});
 		
-		
+		$('#userReportUserConstituency').multiselect('refresh');
+		}
+
+		 function getUsersForConstituenies()
+		 {
+			 $("#errorDiv").html('');
+			 var constituencyIds = new Array();
+			 constituencyIds=$("#userReportUserConstituency").val();
+			 if(constituencyIds == null)
+			 {
+				 $("#errorDiv").html('Select atleast Constituency...');
+				 return;
+			 }
+			 var jsObj = {
+				 constituencyIds : constituencyIds
+			 }
+		$.ajax({
+		type:'GET',
+		url: 'getUsersForConstituenciesAction.action',
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)},
+		}).done(function(result){
+			$('#userReportUser').find('option').remove();
+			$.each(result,function(index,value){
+					
+					$('#userReportUser').append('<option value="'+value.id+'"> '+value.name+'</option>');
+				});
+		});
+		 }
 	</script>
 	
  </body>
- </html> 
+ </html>
