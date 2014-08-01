@@ -47,6 +47,35 @@ public class VerificationCompVO implements Serializable
 	private List<VerificationCompVO> notVerifiedList;
 	
 	private String mobileNO;
+	
+	private String verifier;
+	private Long verifierId;
+	private Long boothId;
+	
+	
+	public String getVerifier() {
+		return verifier;
+	}
+
+	public void setVerifier(String verifier) {
+		this.verifier = verifier;
+	}
+
+	public Long getVerifierId() {
+		return verifierId;
+	}
+
+	public void setVerifierId(Long verifierId) {
+		this.verifierId = verifierId;
+	}
+
+	public Long getBoothId() {
+		return boothId;
+	}
+
+	public void setBoothId(Long boothId) {
+		this.boothId = boothId;
+	}
 
 	public Long getDcCasteId() {
 		return dcCasteId;

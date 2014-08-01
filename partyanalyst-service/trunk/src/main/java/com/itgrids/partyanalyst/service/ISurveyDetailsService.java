@@ -48,6 +48,9 @@ public interface ISurveyDetailsService {
 	 public List<SurveyResponceVO> getThirdPartyVerificationDetails(Long boothId, Long userId);
 	 public List<SurveyReportVO> getConstituencyWiseLeadersAndUsersDetails(Long constituencyId,Date date);
 	 public List<SurveyReportVO> getConstituencyWiseFieldSummary();
+	 
+	 public List<VerificationCompVO> getVerifiersOfBooths(List<Long> boothIds);
+	 public List<VerificationCompVO> checkForVerifierDataWithBoothAndVerifierId(List<Long> boothIds,Long verifierId);
+	 
 	 public List<GenericVO> getUsersList(List<Long> constituencyIds);
-		
 }
