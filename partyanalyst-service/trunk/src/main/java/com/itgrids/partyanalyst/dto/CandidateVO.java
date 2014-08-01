@@ -1,6 +1,6 @@
 package com.itgrids.partyanalyst.dto;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CandidateVO {
@@ -47,9 +47,10 @@ public class CandidateVO {
 	private Long localBodyId;
 	private String tehsilName;
 	private String localBodyName;
-	
-	
-	
+	private Double howLongWorkingInParty;
+	private Double votesEarned;
+	private List<GenericVO> candidatescastes=new ArrayList<GenericVO>();
+	private List<GenericVO> candidatesEducations=new ArrayList<GenericVO>();
 	
 	public Long getRank() {
 		return rank;
@@ -401,6 +402,38 @@ public class CandidateVO {
 
 	public void setStateId(Long stateId) {
 		this.stateId = stateId;
+	}
+
+	public Double getHowLongWorkingInParty() {
+		return howLongWorkingInParty;
+	}
+
+	public void setHowLongWorkingInParty(Double howLongWorkingInParty) {
+		this.howLongWorkingInParty = howLongWorkingInParty;
+	}
+
+	public Double getVotesEarned() {
+		return votesEarned;
+	}
+
+	public void setVotesEarned(Double votesEarned) {
+		this.votesEarned = votesEarned;
+	}
+
+	public List<GenericVO> getCandidatescastes() {
+		return candidatescastes;
+	}
+
+	public void setCandidatescastes(List<GenericVO> candidatescastes) {
+		this.candidatescastes = candidatescastes;
+	}
+
+	public List<GenericVO> getCandidatesEducations() {
+		return candidatesEducations;
+	}
+
+	public void setCandidatesEducations(List<GenericVO> candidatesEducations) {
+		this.candidatesEducations = candidatesEducations;
 	}
 	
 	
