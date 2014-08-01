@@ -27,7 +27,7 @@ public class CandidateDetails extends BaseModel implements Serializable
 	
  private static final long serialVersionUID = 1L;
  private Long candidateDetailsId;
- private CasteState CasteState;
+ private CasteState casteState;
  private EducationalQualifications educationalQualifications;
  private String mobileno;
  private Double howLongWorkingInParty;
@@ -63,11 +63,11 @@ public void setCandidateDetailsId(Long candidateDetailsId) {
 @LazyToOne(LazyToOneOption.NO_PROXY)
 @org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 public CasteState getCasteState() {
-	return CasteState;
+	return casteState;
 }
 
 public void setCasteState(CasteState casteState) {
-	CasteState = casteState;
+	this.casteState = casteState;
 }
 @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 @JoinColumn(name="educational_qualification_id")
