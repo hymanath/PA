@@ -3383,13 +3383,15 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	
 	*/
 	
-	public void fillDcWmMap(Map<Long,GenericVO> dcWmMap , List<VerificationCompVO> resultList)
+	public void fillDcWmMap(Map<Long,GenericVO> dcWmMap , List<VerificationCompVO> resultList,String status)
 	{
 		for (VerificationCompVO verificationCompVO : resultList) 
 		{
 			GenericVO VO = new GenericVO();
 			VO.setDesc(verificationCompVO.getDcCaste());//DC CASTE
 			VO.setName(verificationCompVO.getWmCaste());//DV CASTE
+			VO.setPercent(status);//Status
+			VO.setMobileNo(verificationCompVO.getMobileNO());//Mobile No
 			dcWmMap.put(verificationCompVO.getVoterId(), VO);
 		}
 	}
@@ -3423,7 +3425,9 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				}
 				else
 				{
-					List<VerificationCompVO> dcWmDetails = surveyDetailsService.checkForWebMonitorData(boothId);
+					List<Long> boothIds = new ArrayList<Long>();
+					boothIds.add(boothId);
+					List<VerificationCompVO> dcWmDetails = surveyDetailsService.checkForVerifierData(boothIds);
 					if(dcWmDetails != null && dcWmDetails.size() > 0)
 					{
 						dcWmMap = new HashMap<Long, GenericVO>();
@@ -3432,17 +3436,17 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 							List<VerificationCompVO> matchedList = verificationCompVO.getMatchedList();
 							if(matchedList != null && matchedList.size() > 0)
 							{
-								fillDcWmMap(dcWmMap,matchedList);
+								fillDcWmMap(dcWmMap,matchedList,"MATCHED");
 							}
-							List<VerificationCompVO> unMatchedLiat = verificationCompVO.getUnMatchedList();
-							if(unMatchedLiat != null && unMatchedLiat.size() > 0)
+							List<VerificationCompVO> unMatchedList = verificationCompVO.getUnMatchedList();
+							if(unMatchedList != null && unMatchedList.size() > 0)
 							{
-								fillDcWmMap(dcWmMap,unMatchedLiat);
+								fillDcWmMap(dcWmMap,unMatchedList,"UN MATCHED");
 							}
 							List<VerificationCompVO> notVerifiedList = verificationCompVO.getNotVerifiedList();
 							if(notVerifiedList != null && notVerifiedList.size() > 0)
 							{
-								fillDcWmMap(dcWmMap,notVerifiedList);
+								fillDcWmMap(dcWmMap,notVerifiedList,"NOT VERIFIED");
 							}
 						}
 					}
@@ -3557,6 +3561,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 							{
 								reportVO.setDcCaste(genVO.getDesc());
 								reportVO.setWmCaste(genVO.getName());
+								reportVO.setStatus(genVO.getPercent());
+								reportVO.setMobileNumber(genVO.getMobileNo());
 							}
 						}
 						resultList.add(reportVO);

@@ -99,6 +99,8 @@ public class SurveyReportVO {
 	
 	private String dcCaste;
 	private String wmCaste;
+	private String status;
+	private String MobileNumber; 
 	
 	public Long getActiveUsersCount() {
 		return activeUsersCount;
@@ -581,6 +583,18 @@ public class SurveyReportVO {
 	}
 	public void setWmCaste(String wmCaste) {
 		this.wmCaste = wmCaste;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public String getMobileNumber() {
+		return MobileNumber;
+	}
+	public void setMobileNumber(String mobileNumber) {
+		MobileNumber = mobileNumber;
 	}
     
 	
