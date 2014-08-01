@@ -7932,6 +7932,17 @@
 			</result>
   		</action>
   		
+  		<action name="getVerifiersInBoothsAction" class="surveyDataDetailsAction" method="getVerifiersOfBooths">
+  			<result type="json" name="success">
+				 <param name="root">verificationCompVOList</param>
+			</result>
+  		</action>
+  		<action name="checkForVerifierDataWithVeriferAction" class="surveyDataDetailsAction" method="checkForVerifierDataWithVerifier">
+		<result type="json" name="success">
+				<param name="root">verificationCompVOList</param>
+			</result>
+  		</action>
+  		
   		<action name="gettingCandidateDetailsAction" class="candidateUpdateDetailsAction" method="gettingCandidateDetails">
 		<result type="json" name="success">
 				<param name="root">candidateVOList</param>
