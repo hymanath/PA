@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.jfree.util.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -2311,6 +2312,21 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 		}
 		return null;
 	}
-	
+	public List<GenericVO> getUsersList(List<Long> constituencyIds)
+	{
+		 List<GenericVO> resultList = new ArrayList<GenericVO>();
+		try{
+		List<Object[]> list = surveyUserConstituencyDAO.getSurveyConstituencyLeadersList(constituencyIds);
+		if(list != null && list.size() > 0)
+		{
+		for(Object[] params : list)
+			resultList.add(new GenericVO((Long)params[0],params[1].toString()));
+		}
+		}
+		catch (Exception e) {
+			Log.error("Exception Occured in getUsersList()");
+		}
+		return resultList;
+	}
 }
  
