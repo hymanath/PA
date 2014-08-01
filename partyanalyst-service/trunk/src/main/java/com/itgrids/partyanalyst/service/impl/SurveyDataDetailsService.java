@@ -3956,8 +3956,11 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 						 
 					 }
 				} 
-				
-				List<Object[]> statusList =surveyCallStatusDAO.getStatusListForUser(userIDs,boothIDs,userTypeId);
+				List<Object[]> statusList = null;
+				if(userTypeId.longValue() == 1l)
+				 statusList =surveyCallStatusDAO.getStatusListForUser(userIDs,boothIDs,userTypeId);
+				else if(userTypeId.longValue() == 4l)
+					statusList =surveyCallStatusDAO.getStatusListForVerifier(userIDs,boothIDs,userTypeId);
 				if(statusList !=null && statusList.size() > 0)
 				{
 					
