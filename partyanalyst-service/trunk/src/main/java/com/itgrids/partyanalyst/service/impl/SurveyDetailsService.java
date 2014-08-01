@@ -1081,6 +1081,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 				Map<Long,Map<Long,String>> dcBoothMap = null;// booth wise Data Collector Caste Collected 
 				Map<Long,Map<Long,String>> dvBoothMap = null;// booth wise Data Verifier Caste Collected
 				Map<Long,Map<Long,String>> wmBoothMap = null;// booth Wise Web Moniter Caste Collected
+				Map<Long,Map<Long,String>> dvWmBoothMap = null;// booth Wise Web Moniter Caste Collected
 				Map<Long,Map<Long,String>> dcBoothDatesMap = null;// Day wise booth Wise Data Collector 
 				Map<Long,Map<Long,String>> dvBoothDatesMap = null;// Day wise booth Wise Data Verified 
 				Map<Long,VerificationCompVO> boothWiseMap = null;// booth wise total recoreds
@@ -1088,6 +1089,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 				Map<Long,String> dcMap = null;// Map<voterId,Caste>
 				Map<Long,String> dvMap = null;//Map<voterId,Caste>
 				Map<Long,String> wmMap = null;//Map<voterId,Caste>
+				Map<Long,String> dvWmMap = null;//Map<voterId,Caste>
 				Map<Long,String> casteMap = new HashMap<Long, String>();//Map<casteId,CasteName>
 				Map<Long,Map<Long,String>> dcWmCollectedMap = null;// Day wise booth Wise Data Collector 
 				Map<Long,String> dcDatesMap = null;
@@ -1099,6 +1101,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 				Map<Long,String> verifierDateMap = null;
 				Map<Long,Long> dvStatusMap = null;
 				Map<Long,String> mobileNoMap = null;
+				Map<Long,Map<Long,String>> wmResultBoothMap = null;// booth Wise Web Moniter Caste Collected
 				for (Object[] objects : castesList)
 				{
 					casteMap.put((Long)objects[0], objects[1].toString());
@@ -1183,6 +1186,48 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 						
 					}
 				}
+				
+				
+				List<Object[]> dvWmDetails = surveyCallStatusDAO.getBoothWiseDvWmCasteUpdationDetails(boothIds);
+				if(dvWmDetails != null && dvWmDetails.size() > 0)
+				{
+					dvWmBoothMap = new HashMap<Long, Map<Long,String>>();
+					for (Object[] parms : wmDetails)
+					{
+						dvWmMap = dvWmBoothMap.get((Long)parms[3]);
+						if(dvWmMap == null)
+						{
+							dvWmMap = new HashMap<Long, String>();
+							dvWmBoothMap.put((Long)parms[3], dvWmMap);
+							
+						}
+						if(parms[2] != null)
+						{
+							 
+							Map<Long,String> dvMapForBooth = dvBoothMap.get((Long)parms[3]);
+							if(parms[2].toString().trim().equalsIgnoreCase("N"))
+							{
+								dvWmMap.put((Long)parms[0], casteMap.get((Long)parms[1]));
+							}
+							else
+							{
+								dvWmMap.put((Long)parms[0], dvMapForBooth.get((Long)parms[0]));
+							}
+						}
+						
+					}
+				}
+				if(boothIds != null && boothIds.size() > 0)
+				{
+					wmResultBoothMap = new HashMap<Long, Map<Long,String>>();
+					for (Long boothId : boothIds)
+					{
+						Map<Long,String>  resultMap = checkForDcWmWithDvWm(wmBoothMap.get(boothId),dvWmBoothMap.get(boothId));
+						wmResultBoothMap.put(boothId, resultMap);
+					}
+					
+				}
+				
 				if(boothIds != null && boothIds.size() > 0)
 				{
 					dcWmCollectedMap = new HashMap<Long, Map<Long,String>>();
@@ -1191,11 +1236,12 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 						if(dcBoothMap.get(boothId) != null && dcBoothMap.get(boothId).size() > 0)
 						{
 							Map<Long,String>  resultMap = new HashMap<Long, String>();
-							if(wmBoothMap != null && wmBoothMap.size() > 0)
+							
+							if(wmResultBoothMap != null && wmResultBoothMap.size() > 0)
 							{
-								if(wmBoothMap.get(boothId) != null && wmBoothMap.size() > 0)
+								if(wmResultBoothMap.get(boothId) != null && wmResultBoothMap.size() > 0)
 								{
-									checkForDcWithWm(dcBoothMap.get(boothId),wmBoothMap.get(boothId),resultMap);
+									checkForDcWithWm(dcBoothMap.get(boothId),wmResultBoothMap.get(boothId),resultMap);
 									dcWmCollectedMap.put(boothId, resultMap);
 								}
 								else
@@ -1276,8 +1322,8 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 									 notVerifiedList = new ArrayList<VerificationCompVO>(); 
 									 if(dvBoothMap != null && dvBoothMap.size() > 0)
 									 dvMap = dvBoothMap.get((Long)parms[4]);
-									 if(wmBoothMap != null && wmBoothMap.size() > 0)
-									 wmMap = wmBoothMap.get((Long)parms[4]);
+									 if(wmResultBoothMap != null && wmResultBoothMap.size() > 0)
+									 wmMap = wmResultBoothMap.get((Long)parms[4]);
 									 dcDatesMap = dcBoothDatesMap.get((Long)parms[4]);
 									 dvDatesMap = dcBoothDatesMap.get((Long)parms[4]);
 									 dcWmMap =  dcWmCollectedMap.get((Long)parms[4]);
@@ -1453,6 +1499,32 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 			LOG.error("Exception raised in checkForVerifierData", e);
 		}
 		return returnList;
+	}
+	
+	
+	public Map<Long,String> checkForDcWmWithDvWm(Map<Long,String> wmMap,Map<Long,String> dvWmMap)
+	{
+		Map<Long,String> resultMap = new HashMap<Long, String>();
+		if(dvWmMap != null && dvWmMap.size() > 0)
+		{
+			if(wmMap != null && wmMap.size() > 0)
+			{
+				for(Long voterId : dvWmMap.keySet())
+				{
+					wmMap.put(voterId, dvWmMap.get(voterId));
+				}
+				resultMap = wmMap;
+			}
+			else
+			{
+				resultMap = dvWmMap;
+			}
+		}
+		else
+		{
+			resultMap = wmMap;
+		}
+		return resultMap;
 	}
 	
 	public void checkForDcWithWm(Map<Long,String> dcMap,Map<Long,String> wmMap,Map<Long,String> resultMap)
