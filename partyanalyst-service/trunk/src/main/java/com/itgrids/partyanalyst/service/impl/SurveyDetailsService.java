@@ -1129,8 +1129,6 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 							dcBoothDatesMap.put((Long)parms[4], dcDatesMap);
 							dvBoothDatesMap.put((Long)parms[4], dvDatesMap);
 						}
-						if(parms[9] != null)
-						mobileNoMap.put((Long)parms[1], parms[9].toString());
 						GenericVO VO = new GenericVO();
 						if((Long)parms[3] != null)
 						{
@@ -1138,6 +1136,8 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 							{
 								dcMap.put((Long)parms[1], casteMap.get((Long)parms[2]));
 								dcDatesMap.put((Long)parms[1], parms[7].toString());
+								if(parms[9] != null)
+								mobileNoMap.put((Long)parms[1], parms[9].toString());
 							}
 							else
 							{
