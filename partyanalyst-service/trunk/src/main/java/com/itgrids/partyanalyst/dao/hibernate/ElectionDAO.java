@@ -831,5 +831,102 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		
 		return query.list();
 	}
+	public List<Object[]> getCandidateDetailsForMPTC(Long publicationDateId,Long electionScopeId,Long electionId,List<Long> districtIds)
+	{
+	 
+	 Query query = getSession().createQuery(
+	 "select distinct c2.constituencyId,b.constituency.district.districtName, " +
+	 " b.constituency.name,b.tehsil.tehsilName,c2.name,ca.lastname,cd.candidateDetailsId," +
+	 " cr.nomination.party.shortName,cr.rank, " +
+	 " cd.casteState.caste.casteName,cd.educationalQualifications.qualification, " +
+	 " cd.howLongWorkingInParty,cd.mobileno " +
+	 " from Booth b,Constituency c2,Candidate ca,CandidateResult cr,CandidateDetails cd " +
+	 " where b.tehsil.tehsilId=c2.tehsil.tehsilId and " +
+	 " c2.constituencyId=cr.nomination.constituencyElection.constituency.constituencyId and " +
+	 " ca.candidateId=cr.nomination.candidate.candidateId and" +
+	 " ca.candidateId=cd.candidate.candidateId and " +
+	 " b.publicationDate.publicationDateId=:publicationDateId and c2.electionScope.electionScopeId=:electionScopeId " +
+	 " and cr.nomination.constituencyElection.election.electionId=:electionId " +
+	 " and b.constituency.district.districtId in(:districtIds) ");		
+		
+	   query.setParameter("publicationDateId",publicationDateId);
+	   query.setParameter("electionScopeId",electionScopeId);
+	   query.setParameter("electionId",electionId);
+	   query.setParameterList("districtIds", districtIds);
+	   return query.list();
+	 }
 	
+	public List<Object[]> getCandidateDetailsForZPTC(Long publicationDateId,Long electionScopeId,Long electionId,List<Long> districtIds)
+	{
+	 
+	 Query query = getSession().createQuery(
+	 "select distinct c2.constituencyId,b.constituency.district.districtName, " +
+	 " b.constituency.name,b.tehsil.tehsilName,c2.name,ca.lastname,cd.candidateDetailsId, " +
+	 " cr.nomination.party.shortName,cr.rank, " +
+	 " cd.casteState.caste.casteName,cd.educationalQualifications.qualification, " +
+	 " cd.howLongWorkingInParty,cd.mobileno " +
+	 " from Booth b,Constituency c2,Candidate ca,CandidateResult cr,CandidateDetails cd " +
+	 " where b.tehsil.tehsilId=c2.tehsil.tehsilId and " +
+	 " c2.constituencyId=cr.nomination.constituencyElection.constituency.constituencyId and " +
+	 " ca.candidateId=cr.nomination.candidate.candidateId and" +
+	 " ca.candidateId=cd.candidate.candidateId and " +
+	 " b.publicationDate.publicationDateId=:publicationDateId and c2.electionScope.electionScopeId=:electionScopeId " +
+	 " and cr.nomination.constituencyElection.election.electionId=:electionId " +
+	 " and b.constituency.district.districtId in(:districtIds) ");		
+		
+	   query.setParameter("publicationDateId",publicationDateId);
+	   query.setParameter("electionScopeId",electionScopeId);
+	   query.setParameter("electionId",electionId);
+	   query.setParameterList("districtIds", districtIds);
+	   return query.list();
+	 }
+	
+  public List<Object[]> getCandidateDetailsForMunicipality(Long electionId,List<Long> districtIds)
+  {  
+	
+	  Query query = getSession().createQuery("select " +
+		  		"cer.constituencyElection.constituency.constituencyId,cer.constituencyElection.constituency.localElectionBody.tehsil.district.districtName, " +
+		  		"cer.constituencyElection.constituency.localElectionBody.tehsil.tehsilName," +
+		  		"cer.constituencyElection.constituency.localElectionBody.name,cer.constituencyElection.constituency.name," +
+		  		"cr.nomination.candidate.lastname,cd.candidateDetailsId,cr.nomination.party.shortName," +
+		  		" cr.votesEarned,cr.rank, cd.casteState.caste.casteName," +
+		  		" cd.educationalQualifications.qualification,cd.howLongWorkingInParty,cd.mobileno  " +
+		  		"from CandidateResult cr,ConstituencyElectionResult cer,CandidateDetails cd " +
+		  		"where cr.nomination.constituencyElection.constiElecId=cer.constituencyElection.constiElecId " +
+		  		" and cr.nomination.candidate.candidateId=cd.candidate.candidateId" +
+		  		" and cer.constituencyElection.election.electionId=:electionId " +
+		  		" and cer.constituencyElection.constituency.localElectionBody.tehsil.district.districtId in(:districtIds)" );
+		  
+		  query.setParameter("electionId",electionId);
+		  query.setParameterList("districtIds", districtIds);
+	  return query.list();
+	  
+	  
+ }
+  public List<Object[]> getCandidateDetailsForCorporation(Long electionId,List<Long> districtIds)
+  {  
+	
+	  Query query = getSession().createQuery("select " +
+		  		"cer.constituencyElection.constituency.constituencyId,cer.constituencyElection.constituency.localElectionBody.tehsil.district.districtName, " +
+		  		"cer.constituencyElection.constituency.localElectionBody.tehsil.tehsilName," +
+		  		"cer.constituencyElection.constituency.localElectionBody.name,cer.constituencyElection.constituency.name," +
+		  		"cr.nomination.candidate.lastname,cd.candidateDetailsId,cr.nomination.party.shortName," +
+		  		" cr.votesEarned,cr.rank, cd.casteState.caste.casteName," +
+		  		" cd.educationalQualifications.qualification,cd.howLongWorkingInParty,cd.mobileno  " +
+		  		"from CandidateResult cr,ConstituencyElectionResult cer,CandidateDetails cd " +
+		  		"where cr.nomination.constituencyElection.constiElecId=cer.constituencyElection.constiElecId " +
+		  		" and cr.nomination.candidate.candidateId=cd.candidate.candidateId" +
+		  		" and cer.constituencyElection.election.electionId=:electionId " +
+		  		" and cer.constituencyElection.constituency.localElectionBody.tehsil.district.districtId in (:districtIds) " );
+		  
+		  query.setParameter("electionId",electionId);
+		  query.setParameterList("districtIds", districtIds);
+	  return query.list();
+	  
+	  
+ }
+  
+  
+  
+  
 }
