@@ -279,15 +279,18 @@ $('#searchDataImg').show();
 				str +='<th>H.NO</th>';
 				str +='<th> Name </th>';
 				str +='<th> Gaurdian Name </th>';
+				if(userType == 4)
+				{
+					str +='<th>DC CASTE</th>';
+					str +='<th>DC MOBILE</th>';
+					str +='<th>WM CASTE</th>';
+					str +='<th>MATCHED STATUS</th>';
+				}
 				str +='<th> Caste </th>';
 				str +='<th> Caste Matched  </th>';
 				str +='<th> Mobile Number </th>';
 				str +='<th> Hamlet </th>';
-				if(userType == 4)
-				{
-					str +='<th>DC CASTE</th>';
-					str +='<th>WM CASTE</th>';
-				}
+				
 				str +='</tr>';
 				str +='</thead>';
 				str +='<tbody>';
@@ -300,7 +303,46 @@ $('#searchDataImg').show();
 					str +='<td>'+result[i].partNo+'</td>';
 					str +='<td>'+result[i].userName+'</td>';
 					str +='<td>'+result[i].voterName+'</td>';
-					
+					if(userType == 4)
+					{
+							str +='<td>';
+							str +='<div >';
+							str +='<ul class="unstyled inline">';
+							str +='<li>'+result[i].dcCaste+'</li>';					
+							str +='</ul>';
+							str +='</div>';
+							str +='</td>';
+							
+							str +='<td>';
+							str +='<div>';
+							str +='<ul class="unstyled inline">';
+							if(result[i].mobileNumber != null)
+							str +='<li>'+result[i].mobileNumber+'</li>';
+							else
+							str +='<li></li>';
+							str +='</ul>';
+							str +='</div>';
+							str +='</td>';
+							
+							str +='<td>';
+							str +='<div>';
+							str +='<ul class="unstyled inline">';
+							str +='<li>'+result[i].wmCaste+'</li>';					
+							str +='</ul>';
+							str +='</div>';
+							str +='</td>';
+							
+							str +='<td>';
+							str +='<div>';
+							str +='<ul class="unstyled inline">';
+							str +='<li>'+result[i].status+'</li>';					
+							str +='</ul>';
+							str +='</div>';
+							str +='</td>';
+							
+							
+						
+					}
 					/*	starting  only caste available details */
 					/*
 					str +='<td>'+result[i].caste+'';
@@ -531,24 +573,7 @@ $('#searchDataImg').show();
 										value : result[i].casteId
 									}
 									newCasteArr.push(obj);*/
-									if(userType == 4)
-									{
-											str +='<td>';
-											str +='<div >';
-											str +='<ul class="unstyled inline">';
-											str +='<li>'+result[i].dcCaste+'</li>';					
-											str +='</ul>';
-											str +='</div>';
-											str +='</td>';
-											str +='<td>';
-											str +='<div>';
-											str +='<ul class="unstyled inline">';
-											str +='<li>'+result[i].wmCaste+'</li>';					
-											str +='</ul>';
-											str +='</div>';
-											str +='</td>';
-										
-									}
+									
 									str +='</tr>';
 														
 				}
