@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,10 +9,13 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.ICandidateUpdationDetailsService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -30,8 +34,8 @@ JSONObject jObj = null;
 private String task = null;
 private CandidateVO candidateDetails;
 private List<GenericVO> electionYearsList,districtList;
-
-
+private List<CandidateVO> candidateVOList;
+private ResultStatus resultStatus;
 
 public List<GenericVO> getElectionYearsList() {
 return electionYearsList;
@@ -118,10 +122,34 @@ ICandidateUpdationDetailsService candidateUpdationDetailsService) {
 this.candidateUpdationDetailsService = candidateUpdationDetailsService;
 }
 
+
+public List<CandidateVO> getCandidateVOList() {
+	return candidateVOList;
+}
+
+public void setCandidateVOList(List<CandidateVO> candidateVOList) {
+	this.candidateVOList = candidateVOList;
+}
+
+
+public ResultStatus getResultStatus() {
+	return resultStatus;
+}
+
+public void setResultStatus(ResultStatus resultStatus) {
+	this.resultStatus = resultStatus;
+}
+
 public String execute()
 {
-
-return Action.SUCCESS;
+	HttpSession session = request.getSession();
+	RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+	
+	if(user == null)
+	{
+		return Action.INPUT;
+	}
+    return Action.SUCCESS;
 }
 
 public String getCandidateDetailsForElection()
@@ -162,10 +190,73 @@ districtList = (List<GenericVO>)candidateUpdationDetailsService.getAllDistrictsF
 } catch (Exception e) {
 LOG.error("Exception Occured in getAllDistrictsForAState() method", e);
 }
-
-
 return Action.SUCCESS;
 }
+
+public String gettingCandidateDetails()
+{
+ try{
+	 List<Long> districtIds=new ArrayList<Long>();
+	 String task=request.getParameter("task");
+	 org.json.JSONObject jobj=new org.json.JSONObject(task);
+	 Long electionScopeId=jobj.getLong("electionScopeId");
+	 Long electionId=jobj.getLong("electionId");
+	 JSONArray jArray = jobj.getJSONArray("districtIds");
+	 for (int i = 0; i < jArray.length(); i++) 
+		{
+			districtIds.add((Long.parseLong(jArray.getString(i))));
+		}
+   candidateVOList =candidateUpdationDetailsService.gettingCandidateDetails(electionScopeId,electionId,districtIds);
+     
+   }
+    catch(Exception e)
+   {
+	 LOG.error("Exception Occured in getAllDistrictsForAState() method", e);
+     e.printStackTrace();
+	 
+   }
+	
+	return Action.SUCCESS;
+}
+
+
+public String updateDetailsofACandidate()
+{
+ List<CandidateVO> candidateVOList=new ArrayList<CandidateVO>();
+ try
+ {
+	 org.json.JSONObject jobj=new org.json.JSONObject(getTask());
+	 JSONArray jArray = jobj.getJSONArray("candidateDetailsArray");
+	 for (int i = 0; i < jArray.length(); i++) 
+	 {
+		JSONObject obj = jArray.getJSONObject(i);
+		CandidateVO vo=new CandidateVO();
+		vo.setCandidateId(obj.getLong("candidateDetailsId"));//candidateDetailsId
+		//vo.setCaste(obj.getString("caste"));
+		//vo.setEducation(obj.getString("education"));
+		vo.setCasteId(obj.getLong("casteId"));
+		vo.setEducationId(obj.getLong("educationId"));
+		vo.setHowLongWorkingInParty(obj.getDouble("workingHours"));
+		vo.setMobileNo(obj.getString("mobileNo"));
+		candidateVOList.add(vo);
+	 }
+	 
+	 resultStatus= candidateUpdationDetailsService.updateDetailsofACandidate(candidateVOList);
+	 
+ }
+ catch (Exception e)
+ {
+	 LOG.error("Exception Occured in updateDetailsofACandidate() method", e);
+     e.printStackTrace();
+ }	
+	
+	
+
+	return Action.SUCCESS;	
+}
+
+
+
 
 
 }
