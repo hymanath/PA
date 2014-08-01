@@ -1594,6 +1594,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 					List<VerificationCompVO> notVerifiedList = new ArrayList<VerificationCompVO>();
 					String surveyUser = usersMap.get(boothId);
 					VerificationCompVO mainVO = new VerificationCompVO();
+					String date = null;
 					for (Object[] parms : voterDetails)
 					{
 						VerificationCompVO VO = new VerificationCompVO();
@@ -1603,6 +1604,8 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 						VO.setHouseNo(parms[3] != null ? parms[3].toString() : "");
 						VO.setPartNo(parms[6] != null ? parms[6].toString() : "");
 						VO.setPanchayatName(parms[7] != null ? parms[7].toString() : "");
+						if(date==null)
+						date = dcDatesMap.get((Long)parms[0]);
 						if(dcMap != null && dcMap.size() > 0)
 						{
 							VO.setDcCaste(dcMap.get((Long)parms[0]) != null ? dcMap.get((Long)parms[0]) : "-");
@@ -1621,8 +1624,8 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 						}
 						
 						VO.setRelativeName(parms[5] != null ? parms[5].toString() : "");
-						VO.setDate(dcDatesMap.get((Long)parms[0]));
-						VO.setSurveyUser(surveyUser);
+						//VO.setDate(dcDatesMap.get((Long)parms[0]));
+						//VO.setSurveyUser(surveyUser);
 						if(wmMap != null)
 						{
 							if(wmMap.get((Long)parms[0]) != null)
@@ -1656,7 +1659,9 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 					mainVO.setUnMatchedCount(unMatchedList.size());
 					mainVO.setNotVerifiedList(notVerifiedList);
 					mainVO.setNotVerifiedCount(notVerifiedList.size());
+					mainVO.setDate(date);
 					mainVO.setTotalCount(mainVO.getMatchedCount() + mainVO.getUnMatchedCount() + mainVO.getNotVerifiedCount());
+					mainVO.setSurveyUser(surveyUser);
 					returnList.add(mainVO);
 				}
 			}
