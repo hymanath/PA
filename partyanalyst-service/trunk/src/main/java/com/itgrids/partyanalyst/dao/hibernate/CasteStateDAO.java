@@ -119,4 +119,13 @@ public List<Object[]> getAllCasteInfoDetails(){
 		query.setParameterList("casteIds", casteIds);
 		return query.list();
 	}
+	public List<CasteState> gettingCasteStateBasedOnCaste(Long casteId)
+	{
+		Query query  = getSession().createQuery("from CasteState model where model.caste.casteId=:casteId");
+		query.setParameter("casteId", casteId);
+		return query.list();
+	}
+	 
+	
+
 }
