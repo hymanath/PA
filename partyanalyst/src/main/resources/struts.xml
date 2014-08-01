@@ -7931,6 +7931,7 @@
 				 <param name="root">reportList</param>
 			</result>
   		</action>
+  		
   		<action name="gettingCandidateDetailsAction" class="candidateUpdateDetailsAction" method="gettingCandidateDetails">
 		<result type="json" name="success">
 				<param name="root">candidateVOList</param>
@@ -7941,5 +7942,11 @@
 		<result type="json" name="success">
 				<param name="root">resultStatus</param>
 			</result>
+			</action>
+			<action name="getUsersForConstituenciesAction" class="surveyDataDetailsAction" method="getUsersForConstituencies">
+  			<result type="json" name="success">
+				 <param name="root">returnList</param>
+			</result>
+  		</action>
 </package>
 </struts>      

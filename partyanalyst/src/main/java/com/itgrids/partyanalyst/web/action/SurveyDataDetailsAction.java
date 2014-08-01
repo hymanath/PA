@@ -2164,4 +2164,22 @@ public String getPanchayatsStatusDetails()
 		}
 		return Action.SUCCESS;
   	}
+  	
+  	public String getUsersForConstituencies()
+  	{
+  		try
+		{
+			jObj = new JSONObject(getTask());
+			List<Long> constiIds = new ArrayList<Long>();
+			JSONArray ids = jObj.getJSONArray("constituencyIds");
+			for(int i=0;i<ids.length();i++)
+				constiIds.add(Long.valueOf(ids.get(i).toString()));
+			returnList = surveyDetailsService.getUsersList(constiIds);		
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getConstituencyLeadersAndUsers", e);
+		}
+		return Action.SUCCESS;	
+  	}
 }
