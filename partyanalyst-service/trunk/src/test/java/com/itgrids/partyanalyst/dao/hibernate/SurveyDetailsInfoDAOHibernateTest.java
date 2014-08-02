@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -256,5 +257,13 @@ public class SurveyDetailsInfoDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(objects[0] +":"+ objects[1].toString() +":"+ objects[2].toString() +":"+objects[3].toString() +":"+objects[4].toString() +":"+ objects[5].toString() +":"+ objects[6].toString() +":"+ objects[7].toString() +":"+ objects[8].toString() +":"+ objects[9].toString() +":"+ objects[10].toString());
 		}
 	}*/
+	
+	public void test(){
+		List<Long> boothIds = new ArrayList<Long>();
+		boothIds.add(439828l);
+		
+		List<Object[]> list = surveyDetailsInfoDAO.getBoothWiseVerifier(boothIds);
+		System.out.println(list.size());
+	}
 	
 }
