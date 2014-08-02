@@ -361,7 +361,7 @@
 						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getDayWiseReportByConstituencyIdAndUserType()">SUBMIT</button>		
 						
 						
-						<button type="button" class="btn btn-success" id="excelTableID1" onClick="generateExcel('daywisereportTableId');" style="display:none;">Export To Excel</button>
+						<button type="button" class="btn btn-success" id="excelTableID1" onClick="generateExcel('daywisereportTableIdTemp');" style="display:none;">Export To Excel</button>
 						
 							</div>
 						<div id="retunMsg"></div>
@@ -562,7 +562,7 @@
 							
 							<button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getVerifiersInBooth()">SUBMIT</button>
 							
-							<button type="button" class="btn btn-success" id="excelTableID4" onClick="generateExcel('dayWiseReportTableForVerifier');" style="display:none;">Export To Excel</button>
+							<button type="button" class="btn btn-success" id="excelTableID4" onClick="generateExcel('dayWiseReportTableForVerifier1');" style="display:none;">Export To Excel</button>
 							
 						</div>
 						
@@ -608,7 +608,7 @@
 						
 						<button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getVerfierDetails(2,'mainajaximgForWm','dayWiseReportDivForWm1')">SUBMIT</button>
 						
-						<button type="button" class="btn btn-success" id="excelTableID3" onClick="generateExcel('dayWiseReportTableForVerifier');" style="display:none;">Export To Excel</button>
+						<button type="button" class="btn btn-success" id="excelTableID3" onClick="generateExcel('dayWiseReportTableForVerifier1');" style="display:none;">Export To Excel</button>
 						
 						</div>
 						
