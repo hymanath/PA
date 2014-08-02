@@ -1562,6 +1562,16 @@ $('#'+resultDiv+'').show();
 				str += '<h5>Identified</h5>';
 				str += '</hgroup>';
 				str += '</li>';
+				if(result[6] > 0)
+				{
+				str += '<li>';
+				str += '<hgroup>';
+				str += '<h4 style="font-size:14px;">WARD</h4>';
+				str += '<h2>'+result[6]+'</h2>';
+				str += '<h5>Mapped</h5>';
+				str += '</hgroup>';
+				str += '</li>';
+				}
 				str += '</ul>';
 				str += '</div>';
 				str += '</div>';
