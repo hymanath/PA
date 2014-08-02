@@ -112,4 +112,7 @@ public interface ISurveyDataDetailsService
 
 	public List<Long> getUsersForLeader(Long leaderId);
 	  public String roundTo2DigitsFloatValue(Float number);
+	  
+		public List<SurveyReportVO> getAllUsersDetilsByUserIdsForSelectedDate(Long constituencyId,Date date,List<Long> userIds);
+
 }

@@ -4074,6 +4074,54 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		return returnList;
 	}
 	
+	public List<SurveyReportVO> getAllUsersDetilsByUserIdsForSelectedDate(Long constituencyId,Date date,List<Long> userIds)
+	{
+		List<SurveyReportVO> returnList = new ArrayList<SurveyReportVO>();
+		
+		LOG.info("Entered into getAllUsersDetilsByUserIdsForSelectedDate service in SurveyDataDetailsService");
+
+		try
+		{
+			
+			List<Object[]> details = surveyDetailsInfoDAO.getAllUsersDetilsByUserIdsForSelectedDate(constituencyId,date,userIds);
+			
+			if(details != null && details.size() >0)
+			{
+				for(Object[] obj:details)
+				{
+					SurveyReportVO reportVO = new SurveyReportVO(); 
+					
+					reportVO.setCount((Long)obj[0]);
+					reportVO.setUserName(obj[2].toString());
+					reportVO.setUserid((Long)obj[1]);
+					reportVO.setMobileNo(obj[3].toString());
+					reportVO.setVillageCovered(obj[9].toString());
+					reportVO.setMandalName(obj[6].toString());
+					reportVO.setPanchayatName(obj[7].toString());
+					reportVO.setBoothId((Long)obj[4]);
+					
+					DateFormat dateFormat = new SimpleDateFormat("hh:mm a"); 
+
+					reportVO.setStartTime(dateFormat.format(obj[10]));
+					reportVO.setEndTime(dateFormat.format(obj[11]));
+					reportVO.setLocalArea(obj[8].toString());
+					reportVO.setPartNo(obj[5].toString());
+					returnList.add(reportVO);
+					
+				}
+				
+			}
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Exception raised in getAllUsersDetilsByUserIdsForSelectedDate service in SurveyDataDetailsService", e);
+		}
+		
+		return returnList;
+		
+	}
+	
 	public List<SurveyReportVO> getSurveyUserDetailsByConstituencies(Long constituencyId,Date date,List<Long> userIds)
 	{
 		List<SurveyReportVO> returnList = new ArrayList<SurveyReportVO>();
@@ -4151,6 +4199,22 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					vo.setSubList(booths);
 					returnList.add(vo);
 				}
+				
+				List<Object[]>	datesList= surveyDetailsInfoDAO.getStartAndEndTimesByUserIdsAndConstituencyIdAndDates(constituencyId, date,userIds);
+				
+				if(datesList != null && datesList.size() >0)
+				{
+					for(Object[] obj:datesList)
+					{
+						SurveyReportVO userVO = getMatchedUserVO(returnList, (Long)obj[2]);
+						SurveyReportVO boothVO = getMatchedBoothVo(userVO.getSubList(), (Long)obj[3]);
+						
+						boothVO.setStartTime(dateFormat.format(obj[0]));
+						boothVO.setEndTime(dateFormat.format(obj[1]));
+					}
+					
+				}
+				
 			}
 		} 
 		catch (Exception e)
