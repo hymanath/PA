@@ -843,11 +843,18 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
  {
 		Query query = getSession()
 				.createQuery(
-						"select SDI.voter.voterId, SDI.surveyUser.surveyUserId, SDI.mobileNumber , SDI.caste ,SDI.hamlet,SDI.surveyUser.userName from SurveyDetailsInfo SDI where "
-								+ "date(SDI.date) >= date(:startDate) and date(SDI.date) <= date(:endDate)");
+						"select SDI.voter.voterId," +
+						"SDI.surveyUser.surveyUserId, " +
+						"SDI.mobileNumber , " +
+						"CASE WHEN SDI.caste.casteStateId is not null THEN 1 ELSE 0 END  ," +
+						"CASE WHEN SDI.hamlet.hamletId is not null OR SDI.wardId is not null THEN 1 ELSE 0 END  ," +
+						"SDI.surveyUser.userName from SurveyDetailsInfo SDI where "
+								+ "date(SDI.date) >= date(:startDate) and date(SDI.date) <= date(:endDate) " +
+								"and SDI.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId ");
 
 		query.setParameter("startDate", startDate);
 		query.setParameter("endDate", endDate);
+		query.setParameter("userTypeId", IConstants.DATA_COLLECTOR_ROLE_ID);
 
 		return query.list();
 
@@ -859,10 +866,11 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		Query query = getSession()
 				.createQuery(
 						"select min(SDI.date), max(SDI.date),SDI.surveyUser.surveyUserId from SurveyDetailsInfo SDI  where date(SDI.date) >= date(:startdate) " +
-						"and date(SDI.date) <= date(:endDate) and SDI.surveyUser.surveyUserType.surveyUsertypeId = 1 group by survey_user_id");
+						"and date(SDI.date) <= date(:endDate) and SDI.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId group by SDI.surveyUser.surveyUserId");
 		
 		query.setParameter("startdate", startdate);
 		query.setParameter("endDate", endDate);
+		query.setParameter("userTypeId", IConstants.DATA_COLLECTOR_ROLE_ID);
 		
 		return query.list();
 		
@@ -873,11 +881,12 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		Query query = getSession().createQuery("select count(SDI.surveyDetailsInfoId),SDI.surveyUser.surveyUserId,SDI.surveyUser.userName,date(SDI.date) " +
 				" from SurveyDetailsInfo SDI " +
 				"where " +
-				"date(SDI.date) >= date(:startdate)  and date(SDI.date) <= date(:endDate) and SDI.surveyUser.surveyUserType.surveyUsertypeId = 1" +
-				" group by SDI.surveyUser.surveyUserId ,date(SDI.date) ");
+				"date(SDI.date) >= date(:startdate)  and date(SDI.date) <= date(:endDate) and SDI.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId" +
+				" group by SDI.surveyUser.surveyUserId ,date(SDI.date)");
 		
 		query.setParameter("startdate", startDate);
 		query.setParameter("endDate", endDate);
+		query.setParameter("userTypeId", IConstants.DATA_COLLECTOR_ROLE_ID);
 		
 		return query.list();
 	}
@@ -927,7 +936,12 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 	{
 		Query query = getSession()
 				.createQuery(
-						"select SDI.voter.voterId, SDI.surveyUser.surveyUserId, SDI.mobileNumber, SDI.caste ,SDI.hamlet,SDI.surveyUser.userName," +
+						"select SDI.voter.voterId," +
+						"SDI.surveyUser.surveyUserId," +
+						"SDI.mobileNumber," +
+						"CASE WHEN SDI.caste.casteStateId is not null THEN 1 ELSE 0 END ," +
+						"CASE WHEN SDI.hamlet.hamletId is not null OR SDI.wardId is not null THEN 1 ELSE 0 END ," +
+						"SDI.surveyUser.userName," +
 						"SDI.booth.boothId,SDI.booth.partNo,SDI.booth.constituency.constituencyId ,SDI.booth.constituency.name " +
 						" from SurveyDetailsInfo SDI where "
 								+ "date(SDI.date) = :surveyDate and  SDI.surveyUser.surveyUserId = :surveyUserId");
@@ -1374,6 +1388,17 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		query.setParameter("date", date);
 		query.setParameterList("userIds", userIds);
 		return query.list();
+	}
+	
+	public List<String> getCasteCollectedDates()
+	{
+		Query query = getSession()
+				.createQuery(
+						"select distinct cast(concat(day(SDI.date),'-',month(SDI.date),'-',year(SDI.date)),string) " +
+						"from SurveyDetailsInfo SDI order by date asc");
+		
+		return query.list();
+		
 	}
 	
 	

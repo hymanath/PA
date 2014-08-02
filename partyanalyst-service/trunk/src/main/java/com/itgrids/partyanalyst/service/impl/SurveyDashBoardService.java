@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -754,14 +755,17 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 				resultList.add(userVO);
 			}
 			
+			DateFormat dateFormat = new SimpleDateFormat("hh:mm a"); 
+
+			
 			for(Object[] obj:startEndTimes)
 			{
 				SurveyReportVO userVO = getMatchedUserVO(resultList,(Long)obj[2]);
 				
 				if(userVO != null)
 				{
-				 userVO.setStartTime(obj[0].toString());
-				 userVO.setEndTime(obj[1].toString());
+				 userVO.setStartTime(dateFormat.format(obj[0]));
+				 userVO.setEndTime(dateFormat.format(obj[1]));
 				}
 			}
 			
@@ -774,10 +778,10 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 				
 				userVO.setCount(userVO.getCount() +1);
 				
-				if(obj[3] != null)
+				if(obj[3].toString().equalsIgnoreCase("1"))
 					userVO.setCasteCollectedCount(userVO.getCasteCollectedCount()+1);
 				
-				if(obj[4] != null)
+				if(obj[4].toString().equalsIgnoreCase("1"))
 					userVO.setHamletCollectedCount(userVO.getHamletCollectedCount() +1);
 				
 				if(obj[2] != null && !obj[2].toString().trim().equalsIgnoreCase(""))
@@ -941,10 +945,10 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
             	boothVO.setName(obj[7].toString());
             	
             	
-				if(obj[3] != null)
+				if(obj[3].toString().equalsIgnoreCase("1"))
 					boothVO.setCasteCollectedCount(boothVO.getCasteCollectedCount()+1);
 				
-				if(obj[4] != null)
+				if(obj[4].toString().equalsIgnoreCase("1"))
 					boothVO.setHamletCollectedCount(boothVO.getHamletCollectedCount() +1);
 				
 				if(obj[2] != null && !obj[2].toString().trim().equalsIgnoreCase(""))
@@ -994,7 +998,7 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 			for(Object[] obj:leadersDetails)
 			{
 				
-				resultMap.put((Long)obj[0],obj[1].toString() +"-"+obj[3].toString());
+				resultMap.put((Long)obj[0],obj[2].toString() +"-"+obj[3].toString());
 				
 			}
 			
@@ -1045,6 +1049,22 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 		try
 		{
 			 surveyDates = surveyDetailsInfoDAO.getCasteCollectedDatesByUserId(userId);
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return surveyDates;
+	}
+	
+	
+	public List<String> getCasteCollectedDates()
+	{
+		List<String> surveyDates = new ArrayList<String>();
+		try
+		{
+			 surveyDates = surveyDetailsInfoDAO.getCasteCollectedDates();
 			
 		}catch(Exception e)
 		{
