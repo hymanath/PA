@@ -63,7 +63,7 @@ public class UserAddress implements java.io.Serializable {
 	
 	private Set<Survey> survey = new HashSet<Survey>(0);
 	private Set<UserAddress> userAddress = new HashSet<UserAddress>(0);
-	
+	private Long panchayatId;
 	public UserAddress() {
 		super();		
 	}
@@ -281,6 +281,14 @@ public class UserAddress implements java.io.Serializable {
 
 	public void setUserAddress(Set<UserAddress> userAddress) {
 		this.userAddress = userAddress;
+	}
+	@Column(name="panchayat_id")
+	public Long getPanchayatId() {
+		return panchayatId;
+	}
+
+	public void setPanchayatId(Long panchayatId) {
+		this.panchayatId = panchayatId;
 	}
 	
 	
