@@ -1808,8 +1808,12 @@ function buildDayWiseReportByUserType(result)
 
  $('#dayWiseReportDiv1').html(str);
 
-	if($('#fromDate').val()  == $('#toDate').val())
-		 $('#daywisereportTableId').dataTable();
+	//if($('#fromDate').val()  == $('#toDate').val())
+
+	$('#daywisereportTableId').dataTable({
+		"iDisplayLength": 100,
+		"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]]
+	});
 
 }
 
