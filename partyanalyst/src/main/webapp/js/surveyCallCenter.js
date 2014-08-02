@@ -1449,7 +1449,7 @@ function buildDetailsTable(result)
 	for(var i in result){	 
 	   for(var j in result[i].subList)
 	   {
-	   if(result[i].userType == 'Data Collectors'){
+	   if(result[i].userType =="Data Collectors" || result[i].userType =="Verifier"){
 			str+='<tr>';
 			str+='<td><a onClick="getUserDetails('+result[i].userid+','+result[i].subList[j].boothId+',\'resultDiv'+i+''+j+'\',\'buildDiv'+i+''+j+'\')" style="cursor: pointer;">'+result[i].userName+'</a> <span class="label label-info pull-right"></td>';
 	
@@ -1469,8 +1469,13 @@ function buildDetailsTable(result)
 			str+='<td>'+result[i].subList[j].localArea+'</td>';
 			var areaCovered = result[i].subList[j].villageCovered.replace(/,/g , "  ");
 			str+='<td>'+areaCovered+'</td>';
-			str += '<td><a onClick="openTrackinWindow('+result[i].userid+',\''+$('#dateId').val()+'\',1) " style="cursor: pointer;"><img src="images/DC.png"></img></a></td>	';
-		 str += '<td><a onClick="openTrackinWindow('+result[i].userid+',\''+$('#dateId').val()+'\',2) " style="cursor: pointer;"><img src="images/DC.png"></img></a></td>	';
+			if(result[i].userType == "Data Collectors"){
+				str += '<td><a onClick="openTrackinWindow('+result[i].userid+',\''+$('#dateId').val()+'\',1) " style="cursor: pointer;"><img src="images/DC.png"></img></a></td>	';
+				str += '<td><a onClick="openTrackinWindow('+result[i].userid+',\''+$('#dateId').val()+'\',2) " style="cursor: pointer;"><img src="images/DC.png"></img></a></td>	';
+			}else if(result[i].userType =="Verifier"){
+				str += '<td><a onClick="openTrackinWindow('+result[i].userid+',\''+$('#dateId').val()+'\',1) " style="cursor: pointer;"><img src="images/DV.png"></img></a></td>	';
+				str += '<td><a onClick="openTrackinWindow('+result[i].userid+',\''+$('#dateId').val()+'\',2) " style="cursor: pointer;"><img src="images/DV.png"></img></a></td>	';
+			}
 			str+='</tr>';
 			str+='<tr id="resultDiv'+i+''+j+'" style="display:none;" class="buildDivCls">';
 			str+='<td colspan="10"> <div id="buildDiv'+i+''+j+'"></div></td>';
