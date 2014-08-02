@@ -111,11 +111,11 @@
 				<ul class="inline unstyled">
 					
 					<!-- <li><a class="highlight  " id="completedBoothsTab" onclick="showHideTabs(this.id);">Completed Booths</a></li> -->
-					<li><a class="highlight selected" id="surveyStatusRprtTab" onclick="showHideTabs(this.id);"> Survey Status Report </a></li> 
+					<li><a class="highlight selected" id="surveyStatusRprtTab" onclick="showHideTabs(this.id);"> Survey Status </a></li> 
 					<li><a class="highlight" id="startTimeTab" onclick="showHideTabs(this.id);">Field Report</a></li>
 					<li><a class="highlight" id="boothWiseTab" onclick="showHideTabs(this.id);">Data Report</a></li>
 					<li id="webMontrId" style="display:none;"><a class="highlight" id="callCenterTab" onclick="showHideTabs(this.id);"> Web Monitoring </a></li>
-					<li><a class="highlight" id="dataCollectorWise" onclick="showHideTabs(this.id);"> Verfication Report </a></li>
+					<li><a class="highlight" id="dataCollectorWise" onclick="showHideTabs(this.id);"> Verification Report </a></li>
 					  
 					<c:if test="${not fn:contains(sessionScope.USER.entitlements, 'WEB_MONITORING_LEAD')}">
 					<li><a class="highlight" id="surveyUserWise" onclick="showHideTabs(this.id);"> User Wise report </a></li>
