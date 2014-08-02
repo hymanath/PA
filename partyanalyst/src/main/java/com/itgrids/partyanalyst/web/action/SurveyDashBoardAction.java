@@ -327,10 +327,13 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 		
 		HttpSession session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		
 		if(user == null)
 		{
 			return Action.INPUT;
 		}
+		
+		casteCollectedDates = surveyDashBoardService.getCasteCollectedDates();
 		
 		return Action.SUCCESS;
 		
