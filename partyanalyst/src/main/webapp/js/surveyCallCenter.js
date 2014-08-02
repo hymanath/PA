@@ -2709,7 +2709,7 @@ function buildSummaryForFieldData(result)
 
 			var str ='';
 			  
-				  str+='<table class="table table-bordered m_top20 table-hover table-striped">';
+				  str+='<table class="table table-bordered m_top20 table-hover table-striped" id="fieldDataSummaryTable">';
 				  str+='<thead class="alert alert-success">';
 				  str+='<th>Constituency</th>';	
 				  str+='<th>Total Voters</th>';	
@@ -2741,6 +2741,7 @@ function buildSummaryForFieldData(result)
 				   str+='</tbody>';
 				  str+='</table>';
 				  $("#fieldDataSummary").html(str);
+				  $('#fieldDataSummaryTable').dataTable();
 			
 }
 function getLeadersAndUsersByConstituency()
@@ -2924,6 +2925,7 @@ function buildBoothsStatusCountsDetails(result)
 		str+='</div>';
 
 	$('#basicStatusReport').html(str);
+	getMatchecUnMatchedDetails();
 }
 function getpanchayatDetailsByStatusAndConstituency(statusId)
 {
@@ -2986,13 +2988,34 @@ function getBoothsDetailsInCallStatusInfo(constituencyId,divId)
 
 		});	
 }
-//getMatchedUnMatchedCountsByBoothWise();
-function getMatchedUnMatchedCountsByBoothWise()
+function getMatchecUnMatchedDetails()
 {
-		var boothIds = new Array();
-		boothIds.push(440023);
-		boothIds.push(440026);
-		boothIds.push(440050);
+	//$('#stateStatusAjax').show();
+	var jObj =
+	{
+	  constituencyId:$('#reportConstituencyId').val()     
+	};
+
+	 $.ajax({
+			type:'GET',
+			url: 'getBoothsDetailsInSurveyDetailsInfoAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){	
+			if(result != null)
+			{
+				var boothIds = new Array();
+				for(var i in result)
+				{
+					boothIds.push(result[i].id);
+				}
+				getMatchedUnMatchedCountsByBoothWise(boothIds);
+			}
+			
+		});	
+}
+function getMatchedUnMatchedCountsByBoothWise(boothIds)
+{
 		var jObj =
 		{
 			boothIds:boothIds     
@@ -3014,9 +3037,9 @@ function getMatchedUnMatchedCountsByBoothWise()
 
 function buildMatchecdUnMatchedDetails(result)
 {
-	
 	var str = '';
-	str += '<table>';
+	str += '<table class="table table-bordered m_top20 table-hover table-striped" id="matchedUnMatchedTable">';
+	str += '<thead class="alert alert-success">';
 	str += '<tr>';
 	str += '<th>BOOTH</th>';
 	str += '<th>DC NAME</th>';
@@ -3025,9 +3048,13 @@ function buildMatchecdUnMatchedDetails(result)
 	str += '<th>DV DATE</th>';
 	str += '<th>TOTAL</th>';
 	str += '<th>MATCHED</th>';
+	str += '<th>MATCHED %</th>';
 	str += '<th>UN MATCHED</th>';
+	str += '<th>UN MATCHED %</th>';
 	str += '<th>NOT VERIFIED</th>';
+	str += '<th>NOT VERIFIED %</th>';
 	str += '</tr>';
+	str += '</thead><tbody>';
 	for(var i in result)
 	{
 		str += '<tr>';
@@ -3038,12 +3065,21 @@ function buildMatchecdUnMatchedDetails(result)
 		str+= '<td>'+result[i].verifierDate+'</td>';
 		str+= '<td>'+result[i].totalCount+'</td>';
 		str+= '<td>'+result[i].matchedCount+'</td>';
+		str+= '<td>'+(Math.round(result[i].matchedCount * 100)/result[i].totalCount).toFixed(2)+'</td>';
 		str+= '<td>'+result[i].unMatchedCount+'</td>';
+		str+= '<td>'+(Math.round(result[i].unMatchedCount * 100)/result[i].totalCount).toFixed(2)+'</td>';
 		str+= '<td>'+result[i].notVerifiedCount+'</td>';
-		str += '<\tr>';
+		str+= '<td>'+(Math.round(result[i].notVerifiedCount * 100)/result[i].totalCount).toFixed(2)+'</td>';
+		str += '</tr>';
 	}
+	str += '</tbody>';
 	str += '</table>';
 	$('#tableForMatchedAndUnMatched').html(str);
+	$('#matchedUnMatchedTable').dataTable({
+		"iDisplayLength": 30,
+		"aLengthMenu": [[30, 60, 100, -1], [30, 60, 100, "All"]]
+		});
+	//$('#stateStatusAjax').hide();
 }
 function getVerfierDetails(buildType,imgId,buildDiv)
 {
