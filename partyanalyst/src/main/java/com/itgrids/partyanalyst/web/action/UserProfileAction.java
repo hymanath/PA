@@ -536,6 +536,9 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 			LOG.error(" No User Log In .....");			
 			return "error";
 		}
+		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),IConstants.PARTY_CADRE_SEARCH)){
+			return "partyCadre";
+		}
 		 List<Long> userId = new ArrayList<Long>(0);
 		 
 		 loginUserId = user.getRegistrationID();
