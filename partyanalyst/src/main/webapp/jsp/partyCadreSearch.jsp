@@ -383,11 +383,19 @@ $("#Commitecadretable").dataTable();
 }
 
 	$("#cadreRadioId").click(function() {
+	$("#const").val(0);
+	$("#panchayat").val(0);
+	
+	$("#tableDiv").html('');
 		$("#committeeDivId").hide();
 	    $("#cadreDivId").show();
     });
 	$("#committeeRadioId").click(function()
 	{
+	$("#committeeLevelId").val(0);
+	$("#committeeLevelValueId").val(0);
+	$("#committeeId").val(0);
+	$("#tableDiv").html('');
 	    $("#cadreDivId").hide();
 		$("#committeeDivId").show();		
     });
