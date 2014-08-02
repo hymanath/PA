@@ -197,8 +197,8 @@
 		str+="<thead>";
 			str+="<tr>";
 				//str+="<th>CadreId</th>";
-				str+="<th>FirstName</th>";
-				str+="<th>LastName</th>";
+				str+="<th>Name</th>";
+				//str+="<th>LastName</th>";
 				str+="<th>MobileNumber</th>";
 				str+="<th>Age</th>";
 				str+="<th>VoterId</th>";
@@ -211,7 +211,7 @@
 			str+="<tr>";
 				//str+="<td>"+result[i].cadreId+"</td>";
 				str+="<td>"+result[i].firstName+"</td>";
-				str+="<td>"+result[i].lastName+"</td>";
+				//str+="<td>"+result[i].lastName+"</td>";
 				str+="<td>"+result[i].mobileNo+"</td>";
 				str+="<td>"+result[i].age+"</td>";
 				str+="<td>"+result[i].voterCardId+"</td>";
