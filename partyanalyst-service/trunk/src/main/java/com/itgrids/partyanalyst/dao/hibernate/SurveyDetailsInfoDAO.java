@@ -858,7 +858,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		
 		Query query = getSession()
 				.createQuery(
-						"select min(date), max(date),SDI.surveyUser.surveyUserId from SurveyDetailsInfo SDI  where date(SDI.date) >= date(:startdate) " +
+						"select min(SDI.date), max(SDI.date),SDI.surveyUser.surveyUserId from SurveyDetailsInfo SDI  where date(SDI.date) >= date(:startdate) " +
 						"and date(SDI.date) <= date(:endDate) and SDI.surveyUser.surveyUserType.surveyUsertypeId = 1 group by survey_user_id");
 		
 		query.setParameter("startdate", startdate);
@@ -1303,5 +1303,79 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		query.setParameter("boothId", boothId);
 		return (Long)query.uniqueResult();
 	}
+	
+	public List<Object[]> getStartAndEndTimesByUserIdsAndConstituencyIdAndDates(Long constituencyId,Date date,List<Long> userIds)
+	{
+		StringBuffer queryString = new StringBuffer();
+		
+		queryString.append("select min(SDI.date),max(SDI.date),SDI.surveyUser.surveyUserId,SDI.booth.boothId from " +
+				"SurveyDetailsInfo SDI where " +
+				"SDI.booth.constituency.constituencyId = :constituencyId and date(SDI.date) = :date ");
+		
+		if(userIds != null && userIds.size() >0)
+			queryString.append("and SDI.survey.surveyUserId in(:userIds) ");
+		
+		queryString.append("group by SDI.surveyUser.surveyUserId,SDI.booth.boothId ");
+		
+		Query query = getSession().createQuery("select min(SDI.date),max(SDI.date),SDI.surveyUser.surveyUserId,SDI.booth.boothId from " +
+				"SurveyDetailsInfo SDI where " +
+				"SDI.booth.constituency.constituencyId = :constituencyId and SDI.surveyUser.surveyUserId in(:userIds) and date(SDI.date) = :date " +
+				"group by SDI.surveyUser.surveyUserId,SDI.booth.boothId ");
+		
+		query.setParameter("constituencyId", constituencyId);
+		
+		if(userIds != null && userIds.size() >0)
+			query.setParameterList("userIds", userIds);
+		
+		query.setParameter("date", date);
+		
+		return query.list();
+		
+	}
+	
+	public List<Object[]> getAllUsersDetilsByUserIdsForSelectedDate(Long constituencyId,Date date,List<Long> userIds)
+	{
+		StringBuffer queryString = new StringBuffer();
+		
+		queryString.append("select count(SDI.surveyUser.surveyUserId)," +
+				"SDI.surveyUser.surveyUserId,SDI.surveyUser.userName,SDI.surveyUser.mobileNo," +
+				"SDI.booth.boothId, SDI.booth.partNo,SDI.booth.tehsil.tehsilName," +
+				"CASE WHEN SDI.booth.panchayat.panchayatId is not null THEN SDI.booth.panchayat.panchayatName ELSE 0 END ," +
+				"SDI.booth.location,SDI.booth.villagesCovered,min(SDI.date),max(SDI.date) " +
+				" from SurveyDetailsInfo SDI where " +
+				"SDI.booth.constituency.constituencyId = :constituencyId and " +
+				"date(SDI.date) = :date ");
+		
+		if(userIds != null && userIds.size() >0)
+			queryString.append("and SDI.surveyUser.surveyUserId in(:userIds) ");
+		
+		queryString.append("group by SDI.surveyUser.surveyUserId , SDI.booth.boothId");
+		
+		Query query = getSession().createQuery(queryString.toString());
+		
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("date", date);
+		
+		if(userIds != null && userIds.size() >0)
+			query.setParameterList("userIds", userIds);
+		
+		return query.list();
+		
+	}
+	
+	public List<Object[]> getAllUserDetailsByConstituencyByUsers1(Long constituencyId,Date date,List<Long> userIds)
+	{
+		Query query = getSession().createQuery("select model.surveyUser.surveyUserId ,model.surveyUser.userName,model.surveyUser.mobileNo,model.booth.partNo," +
+				" model.booth.tehsil.tehsilName, model.booth.panchayat.panchayatName,model.booth.location,model.booth.villagesCovered ,model.surveyUser.surveyUserType.userType,model.booth.boothId,model.insertedTime " +
+				" from SurveyDetailsInfo model where" + 
+				" model.booth.constituency.constituencyId =:constituencyId and date(model.date) = :date and model.surveyUser.activeStatus = 'Y'" +
+				" and model.surveyUser.surveyUserId in (:userIds) order by model.insertedTime asc");
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("date", date);
+		query.setParameterList("userIds", userIds);
+		return query.list();
+	}
+	
+	
 	
 }
