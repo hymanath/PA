@@ -362,9 +362,11 @@ margin-top:10px;
 		
 	
 			<c:if test="${sessionScope.loginStatus == 'out'}">  
+			 <c:if test="${not fn:contains(sessionScope.USER.entitlements, 'PARTY_CADRE_SEARCH' ) }">
 		<li id="dashBoardBtn">
 			<a href="dashBoardAction.action"><span>DASHBOARD</span></a> 
 		</li>
+		</c:if>
 		</c:if>		
 		<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}">   
 		<c:if test="${fn:contains(sessionScope.USER.entitlements, 'PARTY_CADRE_SEARCH')}">
