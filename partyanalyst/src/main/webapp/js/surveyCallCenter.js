@@ -1809,9 +1809,65 @@ function buildDayWiseReportByUserType(result)
 
 	
 
-	 var str = '';
+	var str ='';
+	
 
    str+='<table class="table table-bordered m_top20 table-hover table-striped username" id="daywisereportTableId">';
+    str+='<thead class="alert alert-success">';
+	 str+='<tr>';
+	  str+='<th>UserName</th>';
+  	  str+='<th>Booth No</th>';
+	  str+='<th>Total Voters</th>';
+
+	     if($('#fromDate').val()  == $('#toDate').val())
+		 {
+		     str+='<th>Collected Count</th>';
+			 str+='<th>Percent</th>';
+
+		 }else
+		 {
+			 str+='<th>Total Collected Count</th>';
+			 str+='<th>Total Collected Percent</th>';
+			$.each(result[0].subList,function(index,value){
+			  str+='<th>'+value.surveyDate+'</th>';
+			});
+		 }
+
+	 str+='</tr>';
+	str+='</thead>';
+
+   str+='<tbody>'
+   $.each(result,function(index,value){
+    str+='<tr>';
+	   str+='<td>'+value.userName+'</td>';
+   	   str+='<td>'+value.partNo+'</td>';
+	   str+='<td>'+value.totalVoters+'</td>';
+	  str+='<td>'+value.totalCollectedCount+'</td>';
+	   str+='<td>'+value.totalCollectedPercent+'</td>';
+
+
+
+	   	if($('#fromDate').val()  != $('#toDate').val())
+	      $.each(value.subList,function(index1,value1){
+			   str+='<td>'+value1.count+'</td>';
+		  });
+	    /*else
+	   {		
+		  $.each(value.subList,function(index1,value1){
+		
+			   str+='<td>'+value1.count+'</td>';
+			   str+='<td>'+value1.percent+'</td>';
+		  });
+	   }*/
+
+    str+='</tr>';
+   });
+   str+='</tbody>';
+   str+='</table>';
+   
+   
+   //FOR EXPORTING TO EXCEL -- SASI
+   str+='<table class="table table-bordered m_top20 table-hover table-striped username" id="daywisereportTableIdTemp" style="display:none;">';
     str+='<thead class="alert alert-success">';
 	 str+='<tr>';
 	  str+='<th>UserName</th>';
@@ -2638,7 +2694,7 @@ function buildVerifierOrWMReport(result,buildType,buildDiv,imgId)
 	str+='<thead class="alert alert-success">';
 	str+='<tr>';
 	str+='<th>Voter Name</th>';
-	str+='<th>Relativen Name</th>';
+	str+='<th>Relative Name</th>';
 	str+='<th>DC CASTE</th>';
 	str+='<th>WM CASTE</th>';
 	if(buildType == 1)
@@ -2715,11 +2771,99 @@ function buildVerifierOrWMReport(result,buildType,buildDiv,imgId)
 	}
 	str += '</tbody>';
 	str += '</table>';
+	
+	
+	
+	//FOR EXPORT TO EXCEL -- SASI
+	str+='<table id="dayWiseReportTableForVerifier1" class="table table-bordered m_top20 table-hover table-striped username" style="display:none;"> ';
+	
+	str+='<thead class="alert alert-success">';
+	str+='<tr>';
+	str+='<th>Voter Name</th>';
+	str+='<th>Relative Name</th>';
+	str+='<th>DC CASTE</th>';
+	str+='<th>WM CASTE</th>';
+	if(buildType == 1)
+	{
+		str+='<th>DV CASTE</th>';
+		str+='<th>DV STATUS</th>';
+		str+='<th>MOBILE NO</th>';
+	}
+	str+='<th>MATCH STATUS</th>';
+	str+='</tr>';
+	str+='</thead>';
+	str+='<tbody>'
+	for(var i in result)
+	{
+		
+		for(var j in result[i].matchedList)
+		{
+			str += '<tr>';
+			str+='<td>'+result[i].matchedList[j].voterName+'</td>';
+			str+='<td>'+result[i].matchedList[j].relativeName+'</td>';
+			str+='<td>'+result[i].matchedList[j].dcCaste+'</td>';
+			str+='<td>'+result[i].matchedList[j].wmCaste+'</td>';
+			if(buildType == 1)
+			{
+				str+='<td>'+result[i].matchedList[j].dvCaste+'</td>';
+				str+='<td>'+result[i].matchedList[j].verifierStatus+'</td>';
+				if(result[i].matchedList[j].mobileNO != null)
+				str+='<td>'+result[i].matchedList[j].mobileNO+'</td>';
+				else
+				str+='<td>-</td>';
+			}
+			str+='<td>MATCHED</td>';
+			str += '</tr>';		
+		}
+		for(var j in result[i].unMatchedList)
+		{
+			str += '<tr>';
+			str+='<td>'+result[i].unMatchedList[j].voterName+'</td>';
+			str+='<td>'+result[i].unMatchedList[j].relativeName+'</td>';
+			str+='<td>'+result[i].unMatchedList[j].dcCaste+'</td>';
+			str+='<td>'+result[i].unMatchedList[j].wmCaste+'</td>';
+			if(buildType == 1)
+			{
+				str+='<td>'+result[i].unMatchedList[j].dvCaste+'</td>';
+				str+='<td>'+result[i].unMatchedList[j].verifierStatus+'</td>';
+				if(result[i].unMatchedList[j].mobileNO != null)
+				str+='<td>'+result[i].unMatchedList[j].mobileNO+'</td>';
+				else
+				str+='<td>-</td>';
+			}
+			str+='<td>UNMATCHED</td>';
+			str += '</tr>';		
+		}
+		for(var j in result[i].notVerifiedList)
+		{
+			str += '<tr>';
+			str+='<td>'+result[i].notVerifiedList[j].voterName+'</td>';
+			str+='<td>'+result[i].notVerifiedList[j].relativeName+'</td>';
+			str+='<td>'+result[i].notVerifiedList[j].dcCaste+'</td>';
+			str+='<td>'+result[i].notVerifiedList[j].wmCaste+'</td>';
+			if(buildType == 1)
+			{
+				str+='<td>'+result[i].notVerifiedList[j].dvCaste+'</td>';
+				str+='<td>'+result[i].notVerifiedList[j].verifierStatus+'</td>';
+				if(result[i].notVerifiedList[j].mobileNO != null)
+				str+='<td>'+result[i].notVerifiedList[j].mobileNO+'</td>';
+				else
+				str+='<td>-</td>';
+			}
+			
+			str+='<td>NOT VERIFIED</td>';
+			str += '</tr>';		
+		}
+	}
+	str += '</tbody>';
+	str += '</table>';
+	
 	$('#'+buildDiv+'').html(str);
 	$('#dayWiseReportTableForVerifier').dataTable({
 		"iDisplayLength": 100,
 		"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]]
 	});
+	
 	$('#'+imgId+'').hide();
 			
 }
