@@ -538,6 +538,9 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),IConstants.SURVEY_USER_CREATION)){
 			return "surveyUser";
 		}
+		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),IConstants.PARTY_CADRE_SEARCH)){
+			return "partyCadre";
+		}
 		
 		statesList = staticDataService.getParticipatedStatesForAnElectionType(Long.valueOf(2));
 		

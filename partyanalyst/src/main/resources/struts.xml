@@ -51,6 +51,7 @@
 			<result name="error">/jsp/loginForm.jsp?src=userProfile</result>
 			<result name="publicprofile">/jsp/publicProfilePage.jsp</result>
 			<result name="failure">/jsp/noProfileExists.jsp</result>
+			<result name="partyCadre" type="redirect">partyCadreSearchAction.action</result>
 		</action>
 		<action name="getDashBoardInformationAction" class="indexAction" method="indexPageAjaxCallHandler">
 			<result type="json" name="success">
@@ -5571,6 +5572,7 @@
 		    <result name="mahanadu" type="redirect">mahaNaduAction.action</result>
 		    <result name="webuser" type="redirect">surveyCallCenterAction.action</result>
 		    <result name="surveyUser" type="redirect">surveyDataDetailsAction.action</result>
+		     <result name="partyCadre" type="redirect">partyCadreSearchAction.action</result>
 		</action>
 		
 		<action name="getPariesForAssemplyAction" class="dashBoardAction" method="ajaxHandler">
