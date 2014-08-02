@@ -5716,8 +5716,9 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 					CadreVo cadreVo = new CadreVo();
 					
 					cadreVo.setCadreId(objects[0] != null ? (Long)objects[0]:0L);
-					cadreVo.setFirstName(objects[1] != null ?objects[1].toString():"");
-					cadreVo.setLastName(objects[2] != null ? objects[2].toString():"");
+					/*cadreVo.setFirstName(objects[1] != null ?objects[1].toString():"");
+					cadreVo.setLastName(objects[2] != null ? objects[2].toString():"");*/
+					cadreVo.setFirstName(objects[1] != null ?objects[1].toString() : "" +" "+objects[2] != null ?objects[2].toString() : "");
 					cadreVo.setMobileNo(objects[3] != null ? objects[3].toString():"");
 					cadreVo.setAge(objects[4] != null ? (Long)objects[4]:0L);
 					cadreVo.setVoterCardId(objects[5] != null ? objects[5].toString():"");
@@ -5860,7 +5861,6 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			vo.setId((Long)id);
 			vo.setName(district.getDistrictName());
 			vo.setDesc(district.getState().getStateName());
-			
 			districtsList.add(vo);
 		}
 		
