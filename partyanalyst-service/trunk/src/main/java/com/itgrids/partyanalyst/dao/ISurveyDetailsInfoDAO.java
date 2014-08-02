@@ -138,6 +138,7 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	public List<Long> getUsersByDate(List<Long> userIds,Date date);
 	
 	public List<Object[]> getBoothWiseVerifier(List<Long> boothIds);
+	public Long getWardsCountByBooth(Long userId,Long boothId);
 
 }
 

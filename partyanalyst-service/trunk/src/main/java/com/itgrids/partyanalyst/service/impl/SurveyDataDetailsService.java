@@ -3118,12 +3118,15 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			Long localAreaCount =  surveyDetailsInfoDAO.getLocalAreaCountByBooth(userId, boothId);
 			Long cadreCount     =  surveyDetailsInfoDAO.getCadreCountByBooth(userId, boothId);
 			Long influCount     =  surveyDetailsInfoDAO.getInfluencingPeopleCountByBooth(userId, boothId);
+			Long wardCount     =  surveyDetailsInfoDAO.getWardsCountByBooth(userId, boothId);
+			
 			returnList.add(voterCount);
 			returnList.add(casteCount);
 			returnList.add(hamletCount);
 			returnList.add(localAreaCount);
 			returnList.add(cadreCount);
 			returnList.add(influCount);
+			returnList.add(wardCount);
 		} 
 		catch (Exception e)
 		{
