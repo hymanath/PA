@@ -3116,7 +3116,12 @@ function buildMatchecdUnMatchedDetails(result)
 	for(var i in result)
 	{
 		str += '<tr>';
+		if(result[i].matchedList[0] != null) 
 		str+= '<td>'+result[i].matchedList[0].partNo+'</td>';
+		else if(result[i].unMatchedList[0] != null)
+		str+= '<td>'+result[i].unMatchedList[0].partNo+'</td>';
+		else
+		str+= '<td>'+result[i].notVerifiedList[0].partNo+'</td>';
 		str+= '<td>'+result[i].surveyUser+'</td>';
 		str+= '<td>'+result[i].date+'</td>';
 		str+= '<td>'+result[i].verifierUser+'</td>';
@@ -3319,5 +3324,37 @@ function getVerfierDetailsWithVerifier(){
 			$('#'+buildDiv+'').html('<b style="color:red">No Data Avaliable</b>');
 			$('#'+imgId+'').hide();
 		}		
+		});	
+
+}
+//getThirdPartyVerificationDetails();
+function getThirdPartyVerificationDetails()
+{
+	var jsObj = 
+	{
+		boothId : 439961
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getThirdPartyVerificationDetailsAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		 }).done(function(result){	
+		 
+			var str = '';
+			str += '<table>';
+			str += '<tr>';
+			str += '<th>Name</th>';
+			str += '<th>Caste</th>';
+			str += '</tr>';
+			for(var i in result)
+			{
+				str += '<tr>';
+				str += '<td>'+result[i].voterName+'</td>';
+				str += '<td>'+result[i].casteName+'</td>';
+				str += '</tr>';
+			}
+			str += '</table>';
+			$('#tableForMatchedAndUnMatched').html(str);
 		});	
 }
