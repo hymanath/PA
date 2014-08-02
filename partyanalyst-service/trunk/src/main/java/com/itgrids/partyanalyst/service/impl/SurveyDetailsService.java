@@ -1192,7 +1192,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 				if(dvWmDetails != null && dvWmDetails.size() > 0)
 				{
 					dvWmBoothMap = new HashMap<Long, Map<Long,String>>();
-					for (Object[] parms : wmDetails)
+					for (Object[] parms : dvWmDetails)
 					{
 						dvWmMap = dvWmBoothMap.get((Long)parms[3]);
 						if(dvWmMap == null)
