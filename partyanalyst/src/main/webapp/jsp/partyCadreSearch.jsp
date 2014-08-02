@@ -88,9 +88,12 @@
 		</div>
 		<div id="ajaxcallimage1"  class = "span3 offset5"  style="display:none;">
 						<img src="./images/Loading-data.gif" style="width:70px;height:60px;"/>
-					</div>	
+					</div>
+<div class="row">
+		<div id="tableDiv" class="offset1 span10" style="margin-top:10px;"></div>
+		</div>
 	</div>
-	<div id="tableDiv" class="offset0" style="margin-top:10px;"></div>
+	
 <script>
 
 	$(document).ready(function(){
@@ -213,6 +216,9 @@
 				str+="<td>"+result[i].firstName+"</td>";
 				//str+="<td>"+result[i].lastName+"</td>";
 				str+="<td>"+result[i].mobileNo+"</td>";
+				if(result[i].age == 0)
+				str+="<td></td>";
+				else
 				str+="<td>"+result[i].age+"</td>";
 				str+="<td>"+result[i].voterCardId+"</td>";
 				str+="<td>"+result[i].fatherName+"</td>";
@@ -359,7 +365,7 @@ str+="<tr>";
 str+="<td>"+result[i].firstName+"</td>";
 
 str+="<td>"+result[i].mobileNo+"</td>";
-if(result[i].age == null)
+if(result[i].age == null || result[i].age == 0)
 str+="<td></td>";
 else
 {
