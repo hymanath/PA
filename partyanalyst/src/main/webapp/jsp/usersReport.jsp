@@ -16,6 +16,12 @@
   font-weight:bold;
   color:red;
 }
+.ui-icon-closethick
+{
+margin-top:-8px !important;
+margin-left:-8px !important;
+}
+
 </style>
 <script>
  $(document).ready(function(){
@@ -136,7 +142,8 @@ function buildUsersDayWiseReportForSameDay(result)
 	$('#usersReportDivId').html(str);
 
 	$('#sameDayUserReport').dataTable({
-		"iDisplayLength": 100
+		"iDisplayLength": -1,
+		"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]]
 	});
 }
 
@@ -170,7 +177,8 @@ function buildUsersDayWiseReportBetweenDates(result)
 $('#usersReportDivId').html(str);
 
 	$('#betweendatesId').dataTable({
-		"iDisplayLength": 100
+		"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]],
+		"iDisplayLength": -1
 	});
 }
 function getUserReportForADate(userId,surveyDate)
@@ -201,7 +209,7 @@ function buildUserDetailsForADate(result)
 	$('#processDialog').dialog('close');
 	var str ='';
 
-	str+='<table class="table table-bordered offset2" id="betweendatesId">';
+	str+='<table border="1" id="betweendatesId">';
 		str+='<thead>';
 		 str+='<tr>';
 		  str+='<th>Constituency</th>';
@@ -231,7 +239,7 @@ function buildUserDetailsForADate(result)
 $('#dialogDiv').html(str);
 $('#dialogDiv').dialog({
 	title:"Collected Samples Details",
-	width:800
+	width:500
 });
 
 }
