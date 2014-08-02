@@ -2149,7 +2149,8 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 				List<SurveyResponceVO> dcList = new ArrayList<SurveyResponceVO>();
 				Map<Long,SurveyResponceVO> dcMap = null;
 				Map<Long,SurveyResponceVO> dvMap = null;
-				Map<Long,SurveyResponceVO> wmMap = null;
+				Map<Long,SurveyResponceVO> dcWmMap = null;
+				Map<Long,SurveyResponceVO> dvWmMap = null;
 				Map<Long,SurveyResponceVO> totalVoterMap = null;
 				fullSurveyResponceVO(dcdetails,dcList,boothId);
 				if(dcList != null && dcList.size() > 0)
@@ -2181,7 +2182,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 				List<Object[]> wmDetails = surveyCallStatusDAO.getBoothWiseWmCasteUpdationDetails(boothIds);
 				if(wmDetails != null && wmDetails.size() > 0)
 				{
-					 wmMap = new HashMap<Long, SurveyResponceVO>();
+					dcWmMap = new HashMap<Long, SurveyResponceVO>();
 					for (Object[] parms : wmDetails)
 					{
 						if(parms[0] != null)
@@ -2191,7 +2192,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 								if(parms[2].toString().equalsIgnoreCase("Y"))
 								{
 									if(dcMap.get((Long)parms[0]) != null)
-										wmMap.put((Long)parms[0],dcMap.get((Long)parms[0]));
+										dcWmMap.put((Long)parms[0],dcMap.get((Long)parms[0]));
 								}
 								else
 								{
@@ -2205,7 +2206,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 												wmVO.setCasteId(((Long)parms[1]));
 												String casteName = casteStateDAO.get(((Long)parms[1])).getCaste().getCasteName();
 												wmVO.setCasteName(casteName);
-												wmMap.put((Long)parms[0],wmVO);
+												dcWmMap.put((Long)parms[0],wmVO);
 											}
 											
 										}
@@ -2216,6 +2217,46 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 					}
 				}
 				
+				
+				List<Object[]> dvWmDetails = surveyCallStatusDAO.getBoothWiseDvWmCasteUpdationDetails(boothIds);
+				if(dvWmDetails != null && dvWmDetails.size() > 0)
+				{
+					dvWmMap = new HashMap<Long, SurveyResponceVO>();
+					for (Object[] parms : dvWmDetails)
+					{
+						if(parms[0] != null)
+						{
+							if(parms[2] != null)
+							{
+								if(parms[2].toString().equalsIgnoreCase("Y"))
+								{
+									if(dvMap.get((Long)parms[0]) != null)
+										dvWmMap.put((Long)parms[0],dvMap.get((Long)parms[0]));
+								}
+								else
+								{
+									if(parms[1] != null)
+									{
+										if((Long)parms[1]  > 0)
+										{
+											if(dcMap.get((Long)parms[0]) != null)
+											{
+												SurveyResponceVO wmVO = dcMap.get((Long)parms[0]);
+												wmVO.setCasteId(((Long)parms[1]));
+												String casteName = casteStateDAO.get(((Long)parms[1])).getCaste().getCasteName();
+												wmVO.setCasteName(casteName);
+												dvWmMap.put((Long)parms[0],wmVO);
+											}
+											
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				
+				Map<Long,SurveyResponceVO> resultMap = checkForDcWmWithDvWmForThirdParty(dcWmMap,dvWmMap);
 				List<Object[]> voterHouseDetails = boothPublicationVoterDAO.getTotalVotersByBoothsForVerfier(boothId, IConstants.VOTER_DATA_PUBLICATION_ID);
 				if(voterHouseDetails != null && voterHouseDetails.size() > 0)
 				{
@@ -2242,9 +2283,9 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 						returnList = new ArrayList<SurveyResponceVO>();
 						for (Long voterId : voterIds) 
 						{
-							if(wmMap!=null&&wmMap.get(voterId) != null)
+							if(resultMap!=null&&resultMap.get(voterId) != null)
 							{
-								returnList.add(wmMap.get(voterId));
+								returnList.add(resultMap.get(voterId));
 							}
 							else if(dvMap.get(voterId) != null)
 							{
@@ -2268,6 +2309,31 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 			LOG.error("Exception raised in getThirdPartyVerificationDetails", e);
 		}
 		return returnList;
+	}
+	
+	public Map<Long,SurveyResponceVO> checkForDcWmWithDvWmForThirdParty(Map<Long,SurveyResponceVO> wmMap,Map<Long,SurveyResponceVO> dvWmMap)
+	{
+		Map<Long,SurveyResponceVO> resultMap = new HashMap<Long, SurveyResponceVO>();
+		if(dvWmMap != null && dvWmMap.size() > 0)
+		{
+			if(wmMap != null && wmMap.size() > 0)
+			{
+				for(Long voterId : dvWmMap.keySet())
+				{
+					wmMap.put(voterId, dvWmMap.get(voterId));
+				}
+				resultMap = wmMap;
+			}
+			else
+			{
+				resultMap = dvWmMap;
+			}
+		}
+		else
+		{
+			resultMap = wmMap;
+		}
+		return resultMap;
 	}
 	
 	public List<SurveyReportVO> getConstituencyWiseFieldSummary()
