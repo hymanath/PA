@@ -47,10 +47,11 @@
 				</div>
 				<div class="offset3">
 					<button name="search" class="btn btn-primary" onclick="getCadreSearchDretailsBypanchayatAndMuncipalities()">Search</button>
-					<div id="ajaxcallimage"  class = "span3" style="display:none;font-weight:bold;color: #0174DF;font-size:small;width: 345px; height: 17px;">
-						<img src="images/icons/loading.gif" style="padding-left:10px;" width="18" height="11"/>
-					</div>						
+									
 				</div>
+				<div id="ajaxcallimage"  class = "span3 offset3"  style="display:none;">
+						<img src="./images/Loading-data.gif" style="width:70px;height:60px;"/>
+					</div>	
 				
 		</div>
 		
@@ -85,6 +86,9 @@
 				
 				<button name="search" class="btn btn-primary offset3" onclick="getCommitteCadreDetails()">Search</button>
 		</div>
+		<div id="ajaxcallimage1"  class = "span3 offset5"  style="display:none;">
+						<img src="./images/Loading-data.gif" style="width:70px;height:60px;"/>
+					</div>	
 	</div>
 	<div id="tableDiv" class="offset0" style="margin-top:10px;"></div>
 <script>
@@ -192,7 +196,7 @@
 		str+="<table id='cadretable' class='table table-striped table-bordered table-condensed'>";
 		str+="<thead>";
 			str+="<tr>";
-				str+="<th>CadreId</th>";
+				//str+="<th>CadreId</th>";
 				str+="<th>FirstName</th>";
 				str+="<th>LastName</th>";
 				str+="<th>MobileNumber</th>";
@@ -205,7 +209,7 @@
 		for(var i=0;i<result.length;i++)
 		{
 			str+="<tr>";
-				str+="<td>"+result[i].cadreId+"</td>";
+				//str+="<td>"+result[i].cadreId+"</td>";
 				str+="<td>"+result[i].firstName+"</td>";
 				str+="<td>"+result[i].lastName+"</td>";
 				str+="<td>"+result[i].mobileNo+"</td>";
@@ -310,12 +314,12 @@ var committeeIds = $("#committeeId").val();
 		return;
 	}
 	
-	$("#ajaxcallimage").show();
+	$("#ajaxcallimage1").show();
 
 
 var jsObj =
 {
-committeeId : 1,
+committeeId : committeeIds,
 task:"getCommitteCadreDetails"
 }
 
@@ -325,7 +329,7 @@ url:"getCommitteeMeberDetailsAction.action",
 dataType:'json',
 data: {task:JSON.stringify(jsObj)},
 }).done(function(result,jsObj){
-$("#ajaxcallimage").hide();
+$("#ajaxcallimage1").hide();
 getCommitteCadreDetailsTable(result);
 
 });
@@ -337,7 +341,7 @@ var str='';
 str+="<table id='Commitecadretable' class='table table-striped table-bordered table-condensed'>";
 str+="<thead>";
 str+="<tr>";
-str+="<th>CadreId</th>";
+//str+="<th>CadreId</th>";
 str+="<th>Name</th>";
 
 str+="<th>MobileNumber</th>";
@@ -351,7 +355,7 @@ str+="<tbody>";
 for(var i=0;i<result.length;i++)
 {
 str+="<tr>";
-str+="<td>"+result[i].cadreId+"</td>";
+//str+="<td>"+result[i].cadreId+"</td>";
 str+="<td>"+result[i].firstName+"</td>";
 
 str+="<td>"+result[i].mobileNo+"</td>";
