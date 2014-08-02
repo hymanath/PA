@@ -1428,10 +1428,51 @@ function buildDetailsTable(result)
 
 	var str = '';
 
+	str+='<table class="table table-bordered m_top20 table-hover table-striped" id="dayreport">';
+    str+='<thead class="alert alert-success">';
+	 str+='<tr>';
+	  str+='<th>DC NAME</th>';
+	  str+='<th>MOBILE NO</th>';
+	  str+='<th>START TIME</th>';
+	  str+='<th>END TIME</th>';
+	  str+='<th>BOOTH NO</th>';
+	  str+='<th>MANDAL</th>';
+	  str+='<th>PANCHAYAT</th>';
+	  str+='<th>BOOTH LOCATION</th>';
+	  str+='<th>AREAS COVERED</th>';
+	  str+='<th>DATA COLLECTED MAP</th>';
+	  str+='<th>TRACKING MAP</th>	';	
+	 str+='</tr>';
+	str+='</thead>';
+
+	$.each(result,function(index,value){
+		str+='<tr>';
+			str+='<td><a onClick="getUserDetails('+value.userid+','+value.boothId+',\'resultDiv'+index+'\',\'buildDiv'+index+'\')" style="cursor: pointer;">'+value.userName+'</a></td>';
+			str+='<td>'+value.mobileNo+'</td>';
+			str+='<td>'+value.startTime+'</td>';
+			str+='<td>'+value.endTime+'</td>';
+			str+='<td>'+value.partNo+'</td>';
+			str+='<td>'+value.mandalName+'</td>';
+			str+='<td>'+value.panchayatName+'</td>';
+			str+='<td>'+value.localArea+'</td>';
+			str+='<td>'+value.villageCovered+'</td>';
+			str+='<td><a onClick="openTrackinWindow('+value.userid+',\''+$('#dateId').val()+'\',1) " style="cursor: pointer;"><img src="images/DC.png"></img></a></td>';
+			str+='<td><a onClick="openTrackinWindow('+value.userid+',\''+$('#dateId').val()+'\',2) " style="cursor: pointer;"><img src="images/DC.png"></img></a></td>';
+		str+='</tr>';
+
+			str+='<tr id="resultDiv'+index+'" style="display:none;" class="buildDivCls">';
+			str+='<td colspan="12"> <div id="buildDiv'+index+'"></div></td>';
+			str+='</tr>';
+	});
+
+	/*var str = '';
+
 	str+='<table class="table table-bordered m_top20 table-hover table-striped">';
     str+='<thead class="alert alert-success">';
 	 str+='<tr>';
 	  str+='<th>DC Name</th>';
+	  str+='<th>START TIME</th>';
+	  str+='<th>END TIME</th>';
   	  str+='<th>Mobile No</th>';
 	  str+='<th>Start Time</th>';
 	  str+='<th>Booth No</th>';
@@ -1449,10 +1490,14 @@ function buildDetailsTable(result)
 	for(var i in result){	 
 	   for(var j in result[i].subList)
 	   {
-	   if(result[i].userType =="Data Collectors" || result[i].userType =="Verifier"){
+	   if(result[i].userType == 'Data Collectors'){
 			str+='<tr>';
 			str+='<td><a onClick="getUserDetails('+result[i].userid+','+result[i].subList[j].boothId+',\'resultDiv'+i+''+j+'\',\'buildDiv'+i+''+j+'\')" style="cursor: pointer;">'+result[i].userName+'</a> <span class="label label-info pull-right"></td>';
-	
+	    
+		     str+='<td>'+result[i].subList[j].startTime+'</td>';	
+			 str+='<td>'+result[i].subList[j].endTime+'</td>';	
+
+
 			if(result[i].mobileNo == null)
 				str+='<td>-</td>';
 			else
@@ -1469,13 +1514,8 @@ function buildDetailsTable(result)
 			str+='<td>'+result[i].subList[j].localArea+'</td>';
 			var areaCovered = result[i].subList[j].villageCovered.replace(/,/g , "  ");
 			str+='<td>'+areaCovered+'</td>';
-			if(result[i].userType == "Data Collectors"){
-				str += '<td><a onClick="openTrackinWindow('+result[i].userid+',\''+$('#dateId').val()+'\',1) " style="cursor: pointer;"><img src="images/DC.png"></img></a></td>	';
-				str += '<td><a onClick="openTrackinWindow('+result[i].userid+',\''+$('#dateId').val()+'\',2) " style="cursor: pointer;"><img src="images/DC.png"></img></a></td>	';
-			}else if(result[i].userType =="Verifier"){
-				str += '<td><a onClick="openTrackinWindow('+result[i].userid+',\''+$('#dateId').val()+'\',1) " style="cursor: pointer;"><img src="images/DV.png"></img></a></td>	';
-				str += '<td><a onClick="openTrackinWindow('+result[i].userid+',\''+$('#dateId').val()+'\',2) " style="cursor: pointer;"><img src="images/DV.png"></img></a></td>	';
-			}
+			str += '<td><a onClick="openTrackinWindow('+result[i].userid+',\''+$('#dateId').val()+'\',1) " style="cursor: pointer;"><img src="images/DC.png"></img></a></td>	';
+		 str += '<td><a onClick="openTrackinWindow('+result[i].userid+',\''+$('#dateId').val()+'\',2) " style="cursor: pointer;"><img src="images/DC.png"></img></a></td>	';
 			str+='</tr>';
 			str+='<tr id="resultDiv'+i+''+j+'" style="display:none;" class="buildDivCls">';
 			str+='<td colspan="10"> <div id="buildDiv'+i+''+j+'"></div></td>';
@@ -1484,9 +1524,12 @@ function buildDetailsTable(result)
 		}
    }
    str+='</tbody>';
-   str+='</table>';
+   str+='</table>';*/
 
  $('#tableDiv').html(str);
+
+   // $('#dayreport').dataTable();
+
 } 
 
 function openTrackinWindow(userId,date,id)
