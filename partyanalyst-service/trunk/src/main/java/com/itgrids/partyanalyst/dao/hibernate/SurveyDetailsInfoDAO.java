@@ -1295,4 +1295,13 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		return query.list();
 	}
 	
+	public Long getWardsCountByBooth(Long userId,Long boothId)
+	{
+		Query query = getSession().createQuery("select count(distinct model.voter.voterId) from SurveyDetailsInfo model where model.surveyUser.surveyUserId = :userId and " +
+				"model.booth.boothId = :boothId and model.wardId is not null");
+		query.setParameter("userId", userId);
+		query.setParameter("boothId", boothId);
+		return (Long)query.uniqueResult();
+	}
+	
 }
