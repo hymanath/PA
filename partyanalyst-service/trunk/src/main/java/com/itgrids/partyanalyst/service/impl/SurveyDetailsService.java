@@ -2442,6 +2442,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 				Map<Long,Map<Long,String>> dcBoothMap = null;// booth wise Data Collector Caste Collected 
 				Map<Long,Map<Long,String>> dvBoothMap = null;// booth wise Data Verifier Caste Collected
 				Map<Long,Map<Long,String>> wmBoothMap = null;// booth Wise Web Moniter Caste Collected
+				Map<Long,Map<Long,String>> dvWmBoothMap = null;// booth Wise Web Moniter Caste Collected
 				Map<Long,Map<Long,String>> dcBoothDatesMap = null;// Day wise booth Wise Data Collector 
 				Map<Long,Map<Long,String>> dvBoothDatesMap = null;// Day wise booth Wise Data Verified 
 				Map<Long,VerificationCompVO> boothWiseMap = null;// booth wise total recoreds
@@ -2449,6 +2450,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 				Map<Long,String> dcMap = null;// Map<voterId,Caste>
 				Map<Long,String> dvMap = null;//Map<voterId,Caste>
 				Map<Long,String> wmMap = null;//Map<voterId,Caste>
+				Map<Long,String> dvWmMap = null;//Map<voterId,Caste>
 				Map<Long,String> casteMap = new HashMap<Long, String>();//Map<casteId,CasteName>
 				Map<Long,Map<Long,String>> dcWmCollectedMap = null;// Day wise booth Wise Data Collector 
 				Map<Long,String> dcDatesMap = null;
@@ -2460,6 +2462,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 				Map<Long,String> verifierDateMap = null;
 				Map<Long,Long> dvStatusMap = null;
 				Map<Long,String> mobileNoMap = null;
+				Map<Long,Map<Long,String>> wmResultBoothMap = null;// booth Wise Web Moniter Caste Collected
 				for (Object[] objects : castesList)
 				{
 					casteMap.put((Long)objects[0], objects[1].toString());
@@ -2490,8 +2493,6 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 							dcBoothDatesMap.put((Long)parms[4], dcDatesMap);
 							dvBoothDatesMap.put((Long)parms[4], dvDatesMap);
 						}
-						if(parms[9] != null)
-						mobileNoMap.put((Long)parms[1], parms[9].toString());
 						GenericVO VO = new GenericVO();
 						if((Long)parms[3] != null)
 						{
@@ -2499,9 +2500,10 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 							{
 								dcMap.put((Long)parms[1], casteMap.get((Long)parms[2]));
 								dcDatesMap.put((Long)parms[1], parms[7].toString());
+								if(parms[9] != null)
+								mobileNoMap.put((Long)parms[1], parms[9].toString());
 							}
-							else
-							{
+							else{
 								if(verifierId.equals(Long.valueOf(parms[0].toString()))){
 									dvDatesMap.put((Long)parms[1], parms[7].toString());
 									dvMap.put((Long)parms[1], casteMap.get((Long)parms[2]));
@@ -2545,6 +2547,53 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 						
 					}
 				}
+				
+				
+				List<Object[]> dvWmDetails = surveyCallStatusDAO.getBoothWiseDvWmCasteUpdationDetails(boothIds);
+				if(dvWmDetails != null && dvWmDetails.size() > 0)
+				{
+					dvWmBoothMap = new HashMap<Long, Map<Long,String>>();
+					for (Object[] parms : dvWmDetails)
+					{
+						dvWmMap = dvWmBoothMap.get((Long)parms[3]);
+						if(dvWmMap == null)
+						{
+							dvWmMap = new HashMap<Long, String>();
+							dvWmBoothMap.put((Long)parms[3], dvWmMap);
+							
+						}
+						if(parms[2] != null)
+						{
+							 
+							Map<Long,String> dvMapForBooth = dvBoothMap.get((Long)parms[3]);
+							if(parms[2].toString().trim().equalsIgnoreCase("N"))
+							{
+								dvWmMap.put((Long)parms[0], casteMap.get((Long)parms[1]));
+							}
+							else
+							{
+								dvWmMap.put((Long)parms[0], dvMapForBooth.get((Long)parms[0]));
+							}
+						}
+						
+					}
+				}
+				if(boothIds != null && boothIds.size() > 0)
+				{
+					wmResultBoothMap = new HashMap<Long, Map<Long,String>>();
+					for (Long boothId : boothIds)
+					{
+						if(wmBoothMap !=null && wmBoothMap.size() > 0)
+						{
+							Map<Long,String>  resultMap = checkForDcWmWithDvWm(wmBoothMap.get(boothId),dvWmBoothMap.get(boothId));
+							wmResultBoothMap.put(boothId, resultMap);
+						}
+						
+						
+					}
+					
+				}
+				
 				if(boothIds != null && boothIds.size() > 0)
 				{
 					dcWmCollectedMap = new HashMap<Long, Map<Long,String>>();
@@ -2553,11 +2602,12 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 						if(dcBoothMap.get(boothId) != null && dcBoothMap.get(boothId).size() > 0)
 						{
 							Map<Long,String>  resultMap = new HashMap<Long, String>();
-							if(wmBoothMap != null && wmBoothMap.size() > 0)
+							
+							if(wmResultBoothMap != null && wmResultBoothMap.size() > 0)
 							{
-								if(wmBoothMap.get(boothId) != null && wmBoothMap.size() > 0)
+								if(wmResultBoothMap.get(boothId) != null && wmResultBoothMap.size() > 0)
 								{
-									checkForDcWithWm(dcBoothMap.get(boothId),wmBoothMap.get(boothId),resultMap);
+									checkForDcWithWm(dcBoothMap.get(boothId),wmResultBoothMap.get(boothId),resultMap);
 									dcWmCollectedMap.put(boothId, resultMap);
 								}
 								else
@@ -2594,10 +2644,12 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 						}
 					}
 				}
-				if(verifiersList != null && verifiersList.size() > 0){
+				if(verifiersList != null && verifiersList.size() > 0)
+				{
 					verifierMap = new HashMap<Long, String>();
 					verifierDateMap = new HashMap<Long, String>();
-					for (Object[] objects : verifiersList){
+					for (Object[] objects : verifiersList)
+					{
 						String name = verifierMap.get((Long)objects[0]);
 						if(name == null){
 							if(verifierId.equals(Long.valueOf(objects[1].toString()))){
@@ -2608,7 +2660,8 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 					}
 				}
 				List<Object[]> voterDetails = boothPublicationVoterDAO.getVoterDetailsByBoothID(boothIds);
-				if(voterDetails != null && voterDetails.size() > 0){
+				if(voterDetails != null && voterDetails.size() > 0)
+				{
 					boothWiseMap = new HashMap<Long, VerificationCompVO>();
 					List<VerificationCompVO> matchedList  = null;
 					List<VerificationCompVO> unMatchedList = null;
@@ -2621,11 +2674,14 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 					Integer updatedCount = 0;
 					Integer verifedCount = 0;
 					Integer notIdentifedCount = 0;
-					for (Object[] parms : voterDetails){
+					for (Object[] parms : voterDetails)
+					{
 						 dcMap = dcBoothMap.get((Long)parms[4]);
-						 if(dcMap != null && dcMap.size() > 0){
+						 if(dcMap != null && dcMap.size() > 0)
+						 {
 							 VerificationCompVO subVO = boothWiseMap.get((Long)parms[4]);
-								if(subVO == null){
+								if(subVO == null)
+								{
 									 subVO = new VerificationCompVO();
 									 boothWiseMap.put((Long)parms[4], subVO);
 									 matchedList = new ArrayList<VerificationCompVO>();
@@ -2633,8 +2689,8 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 									 notVerifiedList = new ArrayList<VerificationCompVO>(); 
 									 if(dvBoothMap != null && dvBoothMap.size() > 0)
 									 dvMap = dvBoothMap.get((Long)parms[4]);
-									 if(wmBoothMap != null && wmBoothMap.size() > 0)
-									 wmMap = wmBoothMap.get((Long)parms[4]);
+									 if(wmResultBoothMap != null && wmResultBoothMap.size() > 0)
+									 wmMap = wmResultBoothMap.get((Long)parms[4]);
 									 dcDatesMap = dcBoothDatesMap.get((Long)parms[4]);
 									 dvDatesMap = dcBoothDatesMap.get((Long)parms[4]);
 									 dcWmMap =  dcWmCollectedMap.get((Long)parms[4]);
@@ -2656,11 +2712,13 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 									VO.setHouseNo(parms[3] != null ? parms[3].toString() : "");
 									VO.setPartNo(parms[6] != null ? parms[6].toString() : "");
 									VO.setPanchayatName(parms[7] != null ? parms[7].toString() : "");
-									if(mobileNoMap.get((Long)parms[0]) != null){
+									if(mobileNoMap.get((Long)parms[0]) != null)
+									{
 										VO.setMobileNO(mobileNoMap.get((Long)parms[0]));
 									}
 									
-									if(dvStatusMap != null && dvStatusMap.size() > 0){
+									if(dvStatusMap != null && dvStatusMap.size() > 0)
+									{
 										Long statusId = dvStatusMap.get((Long)parms[0]);
 										if(statusId != null)
 										{
