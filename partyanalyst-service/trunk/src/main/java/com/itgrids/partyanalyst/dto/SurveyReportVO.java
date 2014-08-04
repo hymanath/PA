@@ -106,7 +106,7 @@ public class SurveyReportVO {
 	private Long thirdPartyProcessing = 0L;
 	private Long thirdPartyCompleted = 0L;
 	private Long thirdpartyReady = 0L;
-	
+	private Long houseNoCount;
 	
 	public Long getThirdPartyProcessing() {
 		return thirdPartyProcessing;
@@ -627,6 +627,12 @@ public class SurveyReportVO {
 	}
 	public void setMobileNumber(String mobileNumber) {
 		MobileNumber = mobileNumber;
+	}
+	public Long getHouseNoCount() {
+		return houseNoCount;
+	}
+	public void setHouseNoCount(Long houseNoCount) {
+		this.houseNoCount = houseNoCount;
 	}
     
 	
