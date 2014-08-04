@@ -149,7 +149,7 @@ public class NewsActivitiesAction extends ActionSupport implements ServletReques
 			if(regVO == null){
 				return Action.ERROR;
 			}
-			districtsList =  staticDataService.getDistricts(1l);
+			districtsList =  staticDataService.getDistricts(0l);
 			return Action.SUCCESS;
 		} catch (Exception e) {
 			LOG.info("Exception occured in execute() method in NewsActivitiesAction Ation",e);
