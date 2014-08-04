@@ -182,18 +182,22 @@ ul.as-selections1 li {
 					
 					<!------Who Div---->
 					<div class="row-fluid label label-success-50">
-					<div class="row-fluid">
-						<!--<div class="span1 btn-block btn btn-large">
-							<h4 class=" text-center ">Who</h4>					
-						</div>-->
-						<div>
-							<label>select state</label>
+						<div class="offset4" style="margin-top:20px;">
+						
+							<label >select state
+							
 							<select id="statelist" onchange="getPartiesList(this.value);getDistrictsForAState(this.value);getConstituenciesForAState(this.value);">
 								<option value="0">All</option>
 								<option value="1">Andhra Pradesh</option>
 								<option value="36">Telangana</option>
-							</select>
+							</select></label>
 						</div>
+					<div class="row-fluid">
+						<!--<div class="span1 btn-block btn btn-large">
+							<h4 class=" text-center ">Who</h4>					
+						</div>-->
+						
+					
 						<div class="span4">
 							<label>Select Party<span class="requiredFont">*</span></label>
 							<select class="input-block-level" id="partyList" onchange="getCandidatesOfSelectedParty(this.value,'candidateId');">	
@@ -241,7 +245,9 @@ ul.as-selections1 li {
 							<label>Analyse By Who</label>
 							 <input type="checkbox" id="analyseCandidateSource" disabled="true"/>				
 						</div>-->
-					</div><!------Who Div END---->
+					</div>
+					
+					<!------Who Div END---->
 					<div class="row-fluid">
 					<div class="span4">
 							<label>Select Candidate</label>
