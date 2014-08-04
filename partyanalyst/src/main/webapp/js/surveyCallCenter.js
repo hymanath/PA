@@ -2866,6 +2866,7 @@ function buildVerifierOrWMReport(result,buildType,buildDiv,imgId)
 		str+='<th>DV CASTE</th>';
 		str+='<th>DV STATUS</th>';
 		str+='<th>MOBILE NO</th>';
+		//str+='<th>VOTER ID</th>';
 	}
 	str+='<th>MATCH STATUS</th>';
 	str+='</tr>';
@@ -2889,6 +2890,7 @@ function buildVerifierOrWMReport(result,buildType,buildDiv,imgId)
 				str+='<td>'+result[i].matchedList[j].mobileNO+'</td>';
 				else
 				str+='<td>-</td>';
+				//str+='<td>'+result[i].matchedList[j].voterId+'</td>';
 			}
 			str+='<td>MATCHED</td>';
 			str += '</tr>';		
@@ -2908,6 +2910,7 @@ function buildVerifierOrWMReport(result,buildType,buildDiv,imgId)
 				str+='<td>'+result[i].unMatchedList[j].mobileNO+'</td>';
 				else
 				str+='<td>-</td>';
+				//str+='<td>'+result[i].unMatchedList[j].voterId+'</td>';
 			}
 			str+='<td>UNMATCHED</td>';
 			str += '</tr>';		
@@ -2927,6 +2930,7 @@ function buildVerifierOrWMReport(result,buildType,buildDiv,imgId)
 				str+='<td>'+result[i].notVerifiedList[j].mobileNO+'</td>';
 				else
 				str+='<td>-</td>';
+				//str+='<td>'+result[i].notVerifiedList[j].voterId+'</td>';
 			}
 			
 			str+='<td>NOT VERIFIED</td>';
@@ -4182,4 +4186,157 @@ function getThirdPartyVerificationDetails()
 			str += '</table>';
 			$('#tableForMatchedAndUnMatched').html(str);
 		});	
+}
+//getFinalReport();
+function getFinalReport()
+{
+	$('#mainajaximg').show();
+	var jsObj = 
+	{
+		constituencyId : $('#constituencyIdForVerfication').val()
+	}
+	$.ajax({
+			type:'GET',
+			url: 'finalDeselectionReport.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		 }).done(function(result){	
+			if(result != null)
+			buildFinalReport(result)
+		});	
+}
+
+function buildFinalReport(result)
+{
+	var str = '';
+	str += '<table  class="table table-bordered m_top20 table-hover table-striped" id="daywisereportTableIdTemp">';
+	str += '<tr>';
+	str += '<th>Booth</th>';
+	str += '<th>Total Voters</th>';
+	str += '<th>DC Caste Mapped</th>';
+	str += '<th>DC Caste Mapped %</th>';
+	str += '<th>DC Hamlet Mapped</th>';
+	str += '<th>DC Hamlet Mapped %</th>';
+	str += '<th>DC Mobile Collected</th>';
+	str += '<th>WM-DC TOTAL</th>';
+	str += '<th>WM-DC Mobile MATCHED</th>';
+	str += '<th>WM-DC Mobile UN MATCHED</th>';
+	str += '<th>WM-DC MOBILE ERROR %</th>';
+	str += '<th>WM-DC CASTE MATCHED</th>';
+	str += '<th>WM-DC CASTE UN MATCHED</th>';
+	str += '<th>WM-DC CASTE ERROR %</th>';
+	str += '<th>DV-MATCHED</th>';
+	str += '<th>DV-MATCHED %</th>';
+	str += '<th>DV-UN MATCHED</th>';
+	str += '<th>DV-UN MATCHED %</th>';
+	str += '<th>DV-NOT VERIFIED</th>';
+	str += '<th>DV-NOT VERIFIED %</th>';
+	str += '<th>WM-DV Y</th>';
+	str += '<th>WM-DV N</th>';
+	str += '<th>WM-DV EMPTY</th>';
+	str += '</tr>';
+	for(var i in result)
+	{
+		str += '<tr>';
+		str += '<td>'+result[i].partNo+'</td>';
+		str += '<td>'+result[i].totalVoters+'</td>';
+		str += '<td>'+result[i].dcCasteMapped+'</td>';
+		if(result[i].dcCasteMapped != null)
+		{
+			str += '<td>'+(Math.round(result[i].dcCasteMapped * 100)/result[i].totalVoters).toFixed(2)+'</td>';
+		}
+		else
+		{
+			str += '<td></td>';
+		}
+		
+		
+		str += '<td>'+result[i].dcHamletMapped+'</td>';
+		if(result[i].dcHamletMapped != null)
+		{
+			str += '<td>'+(Math.round(result[i].dcHamletMapped * 100)/result[i].totalVoters).toFixed(2)+'</td>';
+		}
+		
+		else
+		{
+			str += '<td>'-'</td>';
+		}
+		
+		
+		str += '<td>'+result[i].dcMobileMapped+'</td>';
+		str += '<td>'+result[i].wmDcTotal+'</td>';
+		str += '<td>'+result[i].wmDcMobileMapped+'</td>';
+		str += '<td>'+result[i].wmDcMobileUnMapped+'</td>';
+		if(result[i].wmDcMobileMapped != null  && result[i].wmDcMobileUnMapped != null)
+		{
+			if(!isNaN(Math.round(result[i].wmDcMobileUnMapped * 100)/(result[i].wmDcMobileUnMapped + result[i].wmDcMobileMapped)))
+			{
+				str += '<td>'+(Math.round(result[i].wmDcMobileUnMapped * 100)/(result[i].wmDcMobileUnMapped + result[i].wmDcMobileMapped)).toFixed(2);+'</td>';
+			}
+			else
+			{
+				str += '<td>0</td>';
+			}
+		}
+		else
+		{
+			str += '<td>'-'</td>';
+		}
+		
+		str += '<td>'+result[i].wmDcCasteMapped+'</td>';
+		str += '<td>'+result[i].wmDcCasteUnMapped+'</td>';
+		if(result[i].wmDcCasteMapped != null && result[i].wmDcCasteUnMapped != null)
+		{
+			if(!isNaN(Math.round(result[i].wmDcCasteUnMapped * 100)/(result[i].wmDcCasteUnMapped + result[i].wmDcCasteMapped)))
+			{
+				str += '<td>'+(Math.round(result[i].wmDcCasteUnMapped * 100)/(result[i].wmDcCasteUnMapped + result[i].wmDcCasteMapped)).toFixed(2)+'</td>';
+			}
+			else
+			{
+				str += '<td>0</td>';
+			}
+			
+		}
+		else
+		{
+			str += '<td>'-'</td>';
+		}
+		str += '<td>'+result[i].matchedCount+'</td>';
+		if(result[i].matchedCount != null)
+		{
+			str += '<td>'+(Math.round(result[i].matchedCount * 100)/result[i].totalVoters).toFixed(2)+'</td>';
+		}
+		else
+		{
+			str += '<td>'-'</td>';
+		}
+		
+		str += '<td>'+result[i].unMatchedCount+'</td>';
+		if(result[i].unMatchedCount != null)
+		{
+			str += '<td>'+(Math.round(result[i].unMatchedCount * 100)/result[i].totalVoters).toFixed(2)+'</td>';
+		}
+		else
+		{
+			str += '<td>'-'</td>';
+		}
+		str += '<td>'+result[i].notIdentifedCount+'</td>';
+		if(result[i].notIdentifedCount != null)
+		{
+			str += '<td>'+(Math.round(result[i].notIdentifedCount * 100)/result[i].totalVoters).toFixed(2)+'</td>';
+		}
+		else
+		{
+			str += '<td>'-'</td>';
+		}
+		str += '<td>'+result[i].wmDvY+'</td>';
+		str += '<td>'+result[i].wmDvN+'</td>';
+		str += '<td>'+result[i].wmDvEmpty+'</td>';
+		
+		str += '</tr>';
+	}
+	$('#mainajaximg').hide();
+	$('#excelTableID1').show();
+	str += '</table>';
+	$('#dayWiseReportDiv1').html(str);
 }

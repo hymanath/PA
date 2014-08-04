@@ -120,7 +120,7 @@
 					<li><a class="highlight" id="startTimeTab" onclick="showHideTabs(this.id);">Field Report</a></li>
 					<li><a class="highlight" id="boothWiseTab" onclick="showHideTabs(this.id);">Data Report</a></li>
 					<li id="webMontrId" style="display:none;"><a class="highlight" id="callCenterTab" onclick="showHideTabs(this.id);"> Web Monitoring </a></li>
-					<li><a class="highlight" id="dataCollectorWise" onclick="showHideTabs(this.id);"> Verification Report </a></li>
+					<li><a class="highlight" id="dataCollectorWise" onclick="showHideTabs(this.id);"> Survey Report </a></li>
 					  
 					<c:if test="${not fn:contains(sessionScope.USER.entitlements, 'WEB_MONITORING_LEAD')}">
 					<li><a class="highlight" id="surveyUserWise" onclick="showHideTabs(this.id);"> User Wise report </a></li>
@@ -337,12 +337,12 @@
 								<div class="offset1">
 									<div class="row-fluid">
 										
-										<div class="span3">
+										<div class="span6">
 											Select Constituency <font class="requiredFont">*</font>
-											<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="constituencyIdForVerfication" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" onchange="getBoothsDetailsByConstituencyId(this.value),getCasteCollectedDatesByConstituencyId(this.value,'fromDate','toDate');" />
+											<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="constituencyIdForVerfication" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency"  />
 												
 										</div>
-										<div class="span3">
+										<!--<div class="span3">
 											Select Booth 
 											<select class="input-block-level" id = "boothIdForVerfication" multiple="true"> <option value="0">Select Booth</option></select></div>
 											<div class="span1" style="margin:25px -8px 0 8px;width: 15px;">
@@ -360,7 +360,7 @@
 											<div class="input-append">
 											 <input type="text" placeholder="To Date..." class="input-block-level date" id="toDate" readonly>
 											</div>
-										</div>
+										</div>-->
 									</div>	
 									<div class="row-fluid">
 										
@@ -368,7 +368,7 @@
 									</div>
 									</div>
 									</div>
-						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getDayWiseReportByConstituencyIdAndUserType()">SUBMIT</button>		
+						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getFinalReport()">SUBMIT</button>		
 						
 						
 						<button type="button" class="btn btn-success" id="excelTableID1" onClick="generateExcel('daywisereportTableIdTemp');" style="display:none;">Export To Excel</button>
