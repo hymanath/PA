@@ -901,7 +901,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 			try{
 				
 				
-				if(statusId == IConstants.DC_PROCESS_STATUS_ID)
+				if(statusId.equals(IConstants.DC_PROCESS_STATUS_ID))
 				{
 					
 					List<Long> processingIds =  surveyDetailsInfoDAO.getBoothsInProcessByConstituencyId(constituencyId);
@@ -911,7 +911,27 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 					 boothIds = processingIds;
 
 					
-				}else if(statusId == 6L)
+				}else if(statusId.equals(IConstants.TP_READY_STATUS_ID))
+				{
+					
+					List<Long> dvCompletdBooths = surveyCompletedLocationsDAO.getBoothsOfConstituecyByStatus(constituencyId,IConstants.DV_COMPLETED_STATUS_ID,scopeId);
+					
+					List<Long> tpProcessBooths = surveyCompletedLocationsDAO.getBoothsOfConstituecyByStatus(constituencyId,IConstants.TP_PROCESS_STATUS_ID,scopeId);
+					
+					List<Long> tpCompletedBooths = surveyCompletedLocationsDAO.getBoothsOfConstituecyByStatus(constituencyId,IConstants.TP_PROCESS_STATUS_ID,scopeId);
+
+                   
+					if(tpProcessBooths != null && tpProcessBooths.size() >0)
+						dvCompletdBooths.removeAll(tpProcessBooths);
+					
+					if(tpCompletedBooths != null && tpCompletedBooths.size() >0)
+					dvCompletdBooths.removeAll(tpCompletedBooths);
+					
+					boothIds = dvCompletdBooths;
+
+					
+				}
+				else if(statusId == 0L)
 				{
 					
 					List<Long> dvProcessBooths = surveyCompletedLocationsDAO.getVerificationProcessBoothsByConstituencyId(constituencyId);

@@ -102,15 +102,32 @@ public class SurveyReportVO {
 	private String wmCaste;
 	private String status;
 	private String MobileNumber; 
-	private Long houseNoCount;
-		
-	public Long getHouseNoCount() {
-		return houseNoCount;
+	
+	private Long thirdPartyProcessing = 0L;
+	private Long thirdPartyCompleted = 0L;
+	private Long thirdpartyReady = 0L;
+	
+	
+	public Long getThirdPartyProcessing() {
+		return thirdPartyProcessing;
 	}
-	public void setHouseNoCount(Long houseNoCount) {
-		this.houseNoCount = houseNoCount;
+	public void setThirdPartyProcessing(Long thirdPartyProcessing) {
+		this.thirdPartyProcessing = thirdPartyProcessing;
 	}
-		
+	public Long getThirdPartyCompleted() {
+		return thirdPartyCompleted;
+	}
+	public void setThirdPartyCompleted(Long thirdPartyCompleted) {
+		this.thirdPartyCompleted = thirdPartyCompleted;
+	}
+	public Long getThirdpartyReady() {
+		return thirdpartyReady;
+	}
+	public void setThirdpartyReady(Long thirdpartyReady) {
+		this.thirdpartyReady = thirdpartyReady;
+	}
+	
+	
 	public List<GenericVO> getGenericVOList1() {
 		return genericVOList1;
 	}
