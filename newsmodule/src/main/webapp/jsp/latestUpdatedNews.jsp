@@ -90,7 +90,14 @@ About Gmail - email from Google
 Video chat with a friend, or give someone a ring all from your inbox. See more reasons to switch or check out our newest features. <p>
 								</li> -->
 								<div id="errorMsgDiv"></div>
-		       <p> From Date: <input type="text" id="existingFromText" class="dateField" readonly="true" name="fileDate" size="20"/></p>	
+								<p>Select State:
+								<select name="stateSelect" id="stateSelectId" class="span0">
+								<option value="0">ALL</option>
+								<option value="1">AndhraPradesh</option>
+								<option value="36">Telangana</option>
+								</select>
+								</p>
+										       <p> From Date: <input type="text" id="existingFromText" class="dateField" readonly="true" name="fileDate" size="20"/></p>	
 			   <p>To Date: <input type="text" id="existingToText" class="dateField" readonly="true" name="fileDate" size="20"/></p>
 			<input type="button" value="Get News" id="selectedNewsDetBtn" onclick="getSelectedNewsDetails(0)" class="btn btn-info"/>
 			<input type="button" value="Cancel" id="newsCancelBtn" onclick="cancelAll1()" class="btn btn-info"/>
@@ -264,6 +271,7 @@ function getSelectedNewsDetails(startIndex)
 	
 	var fromDate = $("#existingFromText").val();
 	var toDate = $("#existingToText").val();
+	var stateId=$("#stateSelectId option:selected").val();
 	/*
 	if(fromDate=="" && toDate == "")
 	{
@@ -328,6 +336,7 @@ function getSelectedNewsDetails(startIndex)
 	  firstResult:startIndex,
 	  maxResult:10,
 	  level:0,
+	  stateId:stateId,
 	  searchBy:"betweenDates",
 	  task:"getSelectedNewsBetweenDates"
 	};
