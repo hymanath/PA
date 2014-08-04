@@ -1071,12 +1071,14 @@ return;
 	{
     str+='<th>DC Caste Mapped</th>';
 	str+='<th>DC Hamlet Mapped</th>';
+	str+='<th>DC HouseNos Mapped</th>';
 	str+='<th>DC Mobile Collected</th>';
 	}
 else if(userType ==4)
 	{
     str+='<th>DV Caste Mapped</th>';
 	str+='<th>DV Hamlet Mapped</th>';
+	str+='<th>DV HouseNos Mapped</th>';
 	str+='<th>DV Mobile Collected</th>';
 	}
 	str+='<th>TOTAL </th>';
@@ -1117,6 +1119,14 @@ else if(userType ==4)
 			}
 			str+='<td>'+result[i].subList[j].casteCount+'</td>';
 			str+='<td>'+result[i].subList[j].hamletCount+'</td>';
+			if(result[i].subList[j].houseNoCount == null)
+			{
+				str+='<td>-</td>';
+			}
+			else
+			{
+			str+='<td>'+result[i].subList[j].houseNoCount+'</td>';
+			}		
 			if(result[i].subList[j].mobileNoCount>=0 && result[i].subList[j].mobileNoCount<=9){
 				str+='<td class="errorRed">'+result[i].subList[j].mobileNoCount+'</td>';
 			}else if(result[i].subList[j].mobileNoCount>=10 && result[i].subList[j].mobileNoCount<=25){
@@ -1193,7 +1203,7 @@ else if(userType ==4)
 	str+='<th>Leader Mobile No</th>';
 	str+='<th >Booth</th>';
 	str+='<th> Total Voters</th>';
-	
+	str+='<th> HouseNos Mapped</th>';
 
     str+='<th >Caste Mapped</th>';
 	str+='<th >Caste Mapped %</th>';
@@ -1239,6 +1249,14 @@ else if(userType ==4)
 			else
 			{
 			str+='<td>'+result[i].subList[j].totalVoters+'</td>';
+			}
+			if(result[i].subList[j].houseNoCount == null)
+			{
+				str+='<td>-</td>';
+			}
+			else
+			{
+			str+='<td>'+result[i].subList[j].houseNoCount+'</td>';
 			}
 			str+='<td>'+result[i].subList[j].casteCount+'</td>';
 			var casteMappedperc = (Math.round(result[i].subList[j].casteCount * 100)/result[i].subList[j].totalVoters).toFixed(2);
