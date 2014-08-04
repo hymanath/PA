@@ -382,4 +382,14 @@ GenericDaoHibernate<PartialBoothPanchayat, Long> implements IPartialBoothPanchay
 		return query.list();
 		
 	}
+	
+	public  List<Object[]> getPartialHamletsForBooth(Long boothId)
+	{
+		Query query = getSession().createQuery("select model.hamlet.hamletId, model.hamlet.hamletName from PartialBoothPanchayat model where " +
+				" model.booth.boothId = :boothId");
+		query.setParameter("boothId", boothId);
+		
+		return query.list();
+	}
+	
 }
