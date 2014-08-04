@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -175,10 +176,19 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 	@SuppressWarnings("unchecked")
 	public List getConstituenciesByElectionTypeAndStateId(Long electionTypeId , Long stateID)
 	{
-		Object[] params = {electionTypeId, stateID};
+		if(stateID != 0){
+			Object[] params = {electionTypeId, stateID};
 		return getHibernateTemplate().find("select model.constituencyId , model.name from Constituency model" +
 				" where model.electionScope.electionType.electionTypeId = ?" +
 				" and model.state.stateId=? and model.deformDate is null order by model.name",params);
+		}
+		else{
+			Object[] params = {electionTypeId};
+			return getHibernateTemplate().find("select model.constituencyId , model.name from Constituency model" +
+					" where model.electionScope.electionType.electionTypeId = ? " +
+					" and model.state.stateId in (1,36) and model.deformDate is  null order by model.name",params);
+			
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -639,5 +649,5 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 				" from Constituency model where  " +
 				" model.electionScope.electionScopeId = 1 and model.deformDate is null " +
 				" and model.state.stateId = 1");
-	}
+	}	
 }
