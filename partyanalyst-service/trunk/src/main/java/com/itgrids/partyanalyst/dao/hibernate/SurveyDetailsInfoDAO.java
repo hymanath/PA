@@ -354,7 +354,7 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 		return query.list();
 	}
 	
-	/*
+	
 	public List<Object[]> getVotersDetailsByBoothId(Long boothId,List<Long> assignUsers,Date searchDate,Long casteStateId)
 	{
 		
@@ -382,7 +382,7 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 		
 		return query.list();
 	}
-	*/
+	/*
 	public List<Object[]> getVotersDetailsByBoothId(Long boothId,List<Long> assignUsers,Date searchDate)
 	{
 		Query query = getSession().createQuery("select SDI, BPV.serialNo   " +
@@ -396,7 +396,7 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 		query.setParameterList("assignUsers", assignUsers);	
 		return query.list();
 	}
-	
+	*/
 	public List<Long> getSurveyStartedConstituenciesDetails()
 	{
 		Query query = getSession().createQuery("select distinct SDI.booth.constituency.constituencyId from SurveyDetailsInfo SDI");
