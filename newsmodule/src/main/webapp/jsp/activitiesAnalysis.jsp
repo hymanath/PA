@@ -114,7 +114,8 @@ color:#333333;
   <div id="errorMsgDiv"></div>
   <div class="offset5">
     <label><Strong>Select State<font color="red"> *</font></strong></label>
-    <select class="span2" id="stateIds" onchange="getAllDistrictsByStateId();getPartiesList(this.value)">
+    <select class="span2" id="stateIds" onchange="getPartiesList(this.value);getDistrictsForAState(this.value);getConstituenciesForAState(this.value)">
+      <option value="0">ALL</option>
       <option value="1">Andhra Pradesh</option>
       <option value="36">Telangana</option>
     </select>
@@ -124,7 +125,7 @@ color:#333333;
    <div class="span3" style="margin-left:3px;"><label style="float: left;"><strong>End Date<span class="requiredFont">*</span></strong></label><input type="text" name="toDate" readonly="true" class="inpit-block-level  dateField" id="newsToDateId"/></div>
   </div>
   <div class="span12">
-   <div class="span3" style="margin-left:240px;"><label style="float: left;"><strong>Select Location Type<span class="requiredFont">*</span></strong></label><select onchange="showLocations();getConstituencyByStateId(this.value)" id="locationType" ><option value="1">District</option><option value="2">Constituency</option></select></div>
+   <div class="span3" style="margin-left:240px;"><label style="float: left;"><strong>Select Location Type<span class="requiredFont">*</span></strong></label><select onchange="showLocations();" id="locationType" ><option value="1">District</option><option value="2">Constituency</option></select></div>
    <div class="span3" id="showHideDistis" style="margin-left:3px;"><label style="float: left;"><strong>Select District<span class="requiredFont">*</span></strong></label><s:select name="districtSelReport" id="districtSel" list="districts" theme="simple" listKey="id" listValue="name"/></div>
    <div class="span3" id="showHideConstis" style="display:none;margin-left:3px;"><label style="float: left;"><strong>Select Constituency<span class="requiredFont">*</span></strong></label><s:select  id="constituencySel" list="assemblies" theme="simple" listKey="id" listValue="name"/></div>
   </div>
@@ -278,16 +279,31 @@ function getActititiesCountForReport(buildType){
 }
 function getPartiesList(stateId)
 	{
-		var jsObj=
-			{
-				stateId:stateId,
-				partySelectBoxId:"partiesList",
-				partiesListForWhome:"partiesListForWhome",
-				task:'getPartyList'
-			};
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
-		var url = "getPartiesListAction.action?"+rparam;
-		callAjax(jsObj, url);
+	var jsObj=
+	{
+		stateId:stateId,
+		partySelectBoxId:"partiesList",
+		partiesListForWhome:"partiesListForWhome",
+		task:'getPartyList'
+	};
+	 $.ajax({
+		type: "POST",
+		url: "getPartiesListAction.action",
+		data: {task : JSON.stringify(jsObj)}
+		})
+		.done(function( result ) {
+		 
+		$('#partySel').find('option').remove();
+		$.each(result,function(index,value){
+			$('#partySel').append('<option value="'+value.id+'">'+value.name+'</option>');
+		});
+		 $('#partySel').multiselect({	
+				multiple: true,
+				selectedList: 1,
+				hide: "explode"	
+		        }).multiselectfilter({   
+		       }); 
+     });
 	}
 function callAjax(jsObj,url)
 {
@@ -306,8 +322,6 @@ function callAjax(jsObj,url)
 			}else{
 		       buildCountsTable(myResults,jsObj);
 			}
-		  }else if(jsObj.task == "getPartyList"){
-		    populateParties(myResults);
 		  }
 		}
 		catch(e)
@@ -483,7 +497,7 @@ function populateParties(myResults){
 	          }).multiselectfilter({ });
    $(".ui-multiselect").css("width","220px");
 }
-getPartiesList(1);
+getPartiesList(0);
 function showLocations(){
   var type = $("#locationType").val();
   if(type == 1){
@@ -524,46 +538,61 @@ showLocations();
 						
 					});
 }
-function  getConstituencyByStateId(value){
 
-		var stateId = $('#stateIds').val();
-		
-		if(value == 1){
-			getAllDistrictsByStateId(stateId)
-		}
-		else if(value == 2)
-		{
-					var jsObj =
-					{
-						elctionTypeId:2,
-						stateId:stateId,
-						task:'getAllConstituencyAction'
-					};
-					$.ajax({
-					type: "GET",
-					url:"getAllConstituencyAction.action",
-					dataType:'json',
-					 data: {task:JSON.stringify(jsObj)},
-					 }).done(function(result,jsObj){
-					// console.log(result.constituencies);
-						if(result.constituencies != null && result.constituencies.length > 0)
-					{
+function getDistrictsForAState(stateId)
+{
+	var jsObj=
+{
+	stateId:stateId,
+	task:'getDistrictList'
+};
 
-						$('#constituencySel').find('option').remove();
-						//$('#constituencySel').append('<option id="0">Select Constituency</option>');
-						for(var i in result.constituencies){
-							$('#constituencySel').append('<option value="'+result.constituencies[i].id+'">'+result.constituencies[i].name+'</option>');
-						}
-						
-						$("#constituencySel").multiselect("refresh");
-					}
-					
-					});
-		}
-			
-							
+$.ajax({
+	type: "POST",
+	url: "getDistrictListAction.action",
+	data: {task : JSON.stringify(jsObj)}
+	})
+	.done(function( result ) {
+	
+	$('#districtSel').find('option').remove();
+	$.each(result,function(index,value){
+		$('#districtSel').append('<option value="'+value.id+'">'+value.name+'</option>');
+	});
+	 $('#districtSel').multiselect({	
+			multiple: true,
+			selectedList: 1,
+			hide: "explode"	
+	        }).multiselectfilter({   
+	       }); 
+});
 }
+function getConstituenciesForAState(stateId)
+{
+	var jsObj=
+{
+	stateId:stateId,
+	task:'getConstituenciesList'
+};
 
+$.ajax({
+	type: "POST",
+	url: "getConstituenciesListAction.action",
+	data: {task : JSON.stringify(jsObj)}
+	})
+	.done(function( result ) {
+	
+	$('#constituencySel').find('option').remove();
+	$.each(result,function(index,value){
+		$('#constituencySel').append('<option value="'+value.id+'">'+value.name+'</option>');
+	});
+	 $('#constituencySel').multiselect({	
+			multiple: true,
+			selectedList: 1,
+			hide: "explode"	
+	        }).multiselectfilter({   
+	       }); 
+});
+}
  </script>
 </body>
 </html>
