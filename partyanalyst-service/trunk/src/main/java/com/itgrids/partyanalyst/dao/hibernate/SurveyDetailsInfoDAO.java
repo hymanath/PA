@@ -1401,6 +1401,24 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		
 	}
 	
+	public List<Object[]> getHouseNosMappedCount(List<Long> userIds,List<Long> boothIds,Long userTypeId,Date date,Date toDate)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select model.surveyUser.surveyUserId,model.booth.boothId,count( model.houseNoPoint) from SurveyDetailsInfo model where model.surveyUser.surveyUserId in(:userIds) and " +
+				"model.booth.boothId in(:boothIds) and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId and model.houseNoPoint = 'Y' ");
+		if(date.equals(toDate))
+			str.append("and date(model.date) = :date  group by model.surveyUser.surveyUserId,model.booth.boothId");
+		else
+			str.append("and date(model.date) >= :date and date(model.date) <= :toDate group by model.surveyUser.surveyUserId,model.booth.boothId");	
+		Query query = getSession().createQuery(str.toString());
+		query.setParameterList("userIds", userIds);
+		query.setParameterList("boothIds", boothIds);
+		query.setParameter("userTypeId", userTypeId);
+		query.setParameter("date", date);
+		if(!date.equals(toDate))
+			query.setParameter("toDate", toDate);
+		return query.list();
+	}
 	
 	
 }
