@@ -65,6 +65,7 @@ public class SurveyReportVO {
 
 	private Long mobileNoCount =0l;
 	private List<GenericVO> genericVOList = new ArrayList<GenericVO>();
+	private List<GenericVO> genericVOList1 = new ArrayList<GenericVO>();
 	private String percent;
 	
 	private Long panchayatCount =0l;
@@ -102,6 +103,13 @@ public class SurveyReportVO {
 	private String status;
 	private String MobileNumber; 
 	
+	
+	public List<GenericVO> getGenericVOList1() {
+		return genericVOList1;
+	}
+	public void setGenericVOList1(List<GenericVO> genericVOList1) {
+		this.genericVOList1 = genericVOList1;
+	}
 	public Long getActiveUsersCount() {
 		return activeUsersCount;
 	}
