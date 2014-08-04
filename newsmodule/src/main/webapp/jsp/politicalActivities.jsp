@@ -106,20 +106,30 @@ color:#333333;
 <body>
  <div class="container">
   <div id="errorMsgDiv"></div>
-  <div class="offset0">
+  <div class="row">
+  <div class="span9 offset3">
+   <div class="span3" ><label ><strong>Start Date<span class="requiredFont"> *</span></strong></label><input type="text" name="fromDate" class="inpit-block-level  dateField" id="newsFromDateId" readonly="true"/></div>
+   <div class="span3" ><label ><strong>End Date<span class="requiredFont"> *</span></strong></label><input type="text" name="toDate" readonly="true" class="inpit-block-level  dateField" id="newsToDateId"/></div>
+  </div>
+  </div>
+  
+  <div class="row">
+  <div class="span9 offset3">
+   <div class="span3">
 	<label><strong>Select State<font color="red"> *</font></strong></label>
 	<select id="stateIds" onchange="getDistrictsByStateId(this.value)">
+		<option value="0">ALL</option>
 		<option value="1">Andhra Pradesh</option>
 		<option value="36">Telangana</option>
 	</select>
   </div>
-  <div class="span12">
-   <div class="span3" style="margin-left:240px;"><label style="float: left;"><strong>Start Date<span class="requiredFont"> *</span></strong></label><input type="text" name="fromDate" class="inpit-block-level  dateField" id="newsFromDateId" readonly="true"/></div>
-   <div class="span3" style="margin-left:3px;"><label style="float: left;"><strong>End Date<span class="requiredFont"> *</span></strong></label><input type="text" name="toDate" readonly="true" class="inpit-block-level  dateField" id="newsToDateId"/></div>
+  
+   <div class="span3"><label >
+   <strong>Select District<span class="requiredFont"> *</span></strong>
+   </label><s:select name="districtSelReport" id="districtSel" list="districts" theme="simple" listKey="id" listValue="name"/></div>
+  
   </div>
-  <div class="span12">
-   <div class="span3" style="margin-left:240px;"><label style="float: left;"><strong>Select District<span class="requiredFont"> *</span></strong></label><s:select name="districtSelReport" id="districtSel" list="districts" theme="simple" listKey="id" listValue="name"/></div>
-  </div> 
+  </div>
   <div class="span12">
    <div class="span3" style="margin-left:240px;"><input class="btn btn-success" id="getNewsButton" style="margin-top:10px;" onclick="getTotalNewsToChangeKeywords();" type="button" value="Submit"></input></div>
   </div>   
