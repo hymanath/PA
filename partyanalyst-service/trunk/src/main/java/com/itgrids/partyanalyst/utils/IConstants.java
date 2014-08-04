@@ -785,6 +785,9 @@ public interface IConstants {
     public static final Long WM_COMPLETED_STATUS_ID = 3L;
     public static final Long DV_PROCESS_STATUS_ID =4L;
     public static final Long DV_COMPLETED_STATUS_ID =5L;
+    public static final Long TP_READY_STATUS_ID =6L;
+    public static final Long TP_PROCESS_STATUS_ID =7L;
+    public static final Long TP_COMPLETED_STATUS_ID =8L;
     
     
    

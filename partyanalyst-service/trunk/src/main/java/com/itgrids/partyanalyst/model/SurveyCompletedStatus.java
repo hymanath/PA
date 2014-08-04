@@ -22,6 +22,8 @@ public class SurveyCompletedStatus implements Serializable {
 	private String statusCode;
 	
 	private String description;
+	private String thirdPartyStatus;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "survey_completed_status_id", unique = true, nullable = false)
@@ -46,6 +48,15 @@ public class SurveyCompletedStatus implements Serializable {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	
+	@Column(name="third_party_status")
+	public String getThirdPartyStatus() {
+		return thirdPartyStatus;
+	}
+	public void setThirdPartyStatus(String thirdPartyStatus) {
+		this.thirdPartyStatus = thirdPartyStatus;
 	}
 
 }

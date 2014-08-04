@@ -75,6 +75,18 @@ public class SurveyCompletedLocationsDAO extends GenericDaoHibernate<SurveyCompl
 	}
 	
 	
+	public void deleteSurveyCompletedDetailsByLocationValueAndScopeForThirdParty(Long locationValue,Long scopeId,List<Long> thirdPartyScopes)
+	{
+		Query query = getSession().createQuery("delete from SurveyCompletedLocations SCL where " +
+				"SCL.locationValue = :locationValue and SCL.locationScopeId = :scopeId and SCL.surveyCompletedStatus.surveyCompletedStatusId in(:thirdPartyScopes)");
+		
+		query.setParameter("locationValue", locationValue);
+		query.setParameter("scopeId", scopeId);
+		query.setParameterList("thirdPartyScopes", thirdPartyScopes);
+		
+		 query.executeUpdate();
+	}
+	
 	public List<Long> getBoothsOfConstituecyByStatus(Long constituencyId,Long statusId,Long scopeId){
 		Query query = getSession().createQuery(" select model.locationValue " +
 				" from SurveyCompletedLocations model, Booth model1 " +
@@ -117,7 +129,7 @@ public class SurveyCompletedLocationsDAO extends GenericDaoHibernate<SurveyCompl
 	
 	public List<Long> getCompletedStatusBoothsByBoothIds(List<Long> boothIds)
 	{
-		Query query = getSession().createQuery("select SCL.locationValue from SurveyCompletedLocations SCL where " +
+		Query query = getSession().createQuery("select distinct SCL.locationValue from SurveyCompletedLocations SCL where " +
 				"SCL.locationValue in(:boothIds) and SCL.locationScopeId = :scopeId ");
 		
 		query.setParameterList("boothIds", boothIds);
