@@ -191,9 +191,6 @@ function getPartiesList(stateId)
 		       }); 
      });
 }
-
-
-
     function getDistrictsForAState(stateId)
 	 {
 	 	var jsObj=
