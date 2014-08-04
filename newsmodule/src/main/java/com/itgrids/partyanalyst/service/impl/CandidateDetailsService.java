@@ -1863,7 +1863,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		 { 
 			 List<FileVO> nl = new ArrayList<FileVO>();
 			 Set<Long> fileIds = new HashSet<Long>();
-			
+			Map<Long,FileVO> allNews = new HashMap<Long,FileVO>();
 			 for(Object[] obj : newsDetails){
 				  fileIds.add((Long)obj[0]);
 			  }
@@ -1916,7 +1916,17 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 					v.setCount(count);
 					
 					nl.add(v);
-			    	
+					allNews.put(id, v);
+			    }
+			    if(allNews.size() > 0){
+			      List<Object[]> paths = filePathsDAO.getAllFiles(new ArrayList<Long>(allNews.keySet()));
+			      for(Object[] path:paths){
+			    	  FileVO v = allNews.get((Long)path[0]);
+			    	  if(v.getDisplayImagePath() == null || v.getDisplayImagePath().trim().length() == 0){
+			    		  v.setDisplayImagePath(path[1].toString());
+			    	  }
+			      }
+			    
 			    }
 			 
 	     return nl;
@@ -8163,7 +8173,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
  public void setDataToFileVo(List<File> filesList,List<FileVO> returnList)
  {
 	 try{
-	
+		 Map<Long,FileVO> allNews = new HashMap<Long,FileVO>();
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 		Set<Long> fileIds = new HashSet<Long>();
 		for(File file:filesList){
@@ -8207,8 +8217,18 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	
 	
 	returnList.add(filevo);
-	
+	allNews.put(file.getFileId(), filevo);
 	 }
+	 if(allNews.size() > 0){
+	      List<Object[]> paths = filePathsDAO.getAllFiles(new ArrayList<Long>(allNews.keySet()));
+	      for(Object[] path:paths){
+	    	  FileVO v = allNews.get((Long)path[0]);
+	    	  if(v.getFilePath1() == null || v.getFilePath1().trim().length() == 0){
+	    		  v.setFilePath1(path[1].toString());
+	    	  }
+	      }
+	    
+	    }
 	 }
 	 catch (Exception e) {
 			e.printStackTrace();
@@ -8519,6 +8539,9 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 						{
 							FileVO fileVOPath = new FileVO();
 							fileVOPath.setPath(filePath.getFilePath());
+							if(fileVO.getFilePath1() == null || fileVO.getFilePath1().trim().length() == 0){
+								fileVO.setFilePath1(filePath.getFilePath());
+							}
 							fileVOPath.setOrderNo(filePath.getOrderNo());
 							fileVOPath.setOrderName("Part-"+filePath.getOrderNo());
 							fileVOPathsList.add(fileVOPath);
@@ -8732,6 +8755,13 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			
 		}
 	 }
+	  List<Object[]> paths = filePathsDAO.getAllFiles(fileIds);
+	  for(Object[] path:paths){
+		  FileVO fileVO = fileMap.get((Long)path[0]);
+		  if(fileVO != null && (fileVO.getFileName1() == null || fileVO.getFileName1().trim().length() == 0 )){
+			  fileVO.setFileName1(path[1].toString());
+		  }
+	  }
 	  List<Object[]> keyWordsList = null;
 	  List<Object[]> galleriesList = null;
 	  if(fileIds.size()>0){

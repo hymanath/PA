@@ -255,4 +255,12 @@ public class FilePathsDAO extends GenericDaoHibernate<FilePaths,Long> implements
 		return (Long) query.uniqueResult();
 		
 	}
+	
+	public List<Object[]> getAllFiles(List<Long> fileIds){
+		Query query = getSession().createQuery(" select model.fileSourceLanguage.file.fileId,model.filePath from FilePaths model where " +
+				" model.fileSourceLanguage.file.fileId in(:fileIds) and model.filePath is not null ");
+		query.setParameterList("fileIds", fileIds);
+		
+		return query.list();
+	}
 }

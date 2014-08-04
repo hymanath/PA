@@ -592,12 +592,12 @@ function showTotalNews(myResult,jsObj){
 		str+='<div class="row-fluid">';
 	if(myResult[i].displayImagePath != null){
 		str+='<a class="thumbnail span4" onclick="getNewsDetailsByContentId('+myResult[i].contentId+')" style="width: 146px;height:120px; cursor: pointer;">';
-		str+='<img src="'+myResult[i].displayImagePath+'" style="width:100%;height: 100%;"  onerror="imgError(this)"/>';
+		str+='<img src="'+myResult[i].displayImagePath+'" style="width: 146px;height:113px;"  onerror="imgError(this)"/>';
 		str+='</a>';
 	}
 	if(myResult[i].displayImagePath == null){
 		str+='<a class="thumbnail span4" onclick="getNewsDetailsByContentId('+myResult[i].contentId+')" style="width: 146px;height:120px;  cursor: pointer;">';
-		str+='<img src="images/'+myResult[i].imagePathInUpperCase+'" style="width:100%;height: 100%;"  onerror="imgError(this);"/>';
+		str+='<img src="images/'+myResult[i].imagePathInUpperCase+'" style="width: 146px;height:113px;"  onerror="imgError(this);"/>';
 		str+='</a>';
 	}
 		if(descFont)
@@ -676,7 +676,7 @@ function getAllConstituenciesInDistrictByType(stateId){
 
 function imgError(image) {
     image.onerror = "";
-    image.src = "images/TDP.PNG";
+    image.src = "images/no_image.gif";
     return true;
 }
 
@@ -751,9 +751,9 @@ if(resultMap != null)
 	str += "<div class='row-fluid'>";
 	if(resultMap.NewsGallary[i].fileType == 'Party'){
 		if(resultMap.NewsGallary[i].displayImagePath != null)
-			str += "<a class='thumbnail span4' style='height:120px;' href='javascript:{}'  onclick='getNewsDetailsByContentId("+resultMap.NewsGallary[i].contentId+")'><img style='float:left;width:150px;height:110px;' src='"+resultMap.NewsGallary[i].displayImagePath+"' onerror='imgError(this);' /></a>";
+			str += "<a class='thumbnail span4'  href='javascript:{}'  onclick='getNewsDetailsByContentId("+resultMap.NewsGallary[i].contentId+")'><img style='float:left;width:150px;height:110px;' src='"+resultMap.NewsGallary[i].displayImagePath+"' onerror='imgError(this);' /></a>";
 		if(resultMap.NewsGallary[i].displayImagePath == null)
-			str += "<a class='thumbnail span4' style='height:120px;' href='javascript:{}' onclick='getNewsDetailsByContentId("+resultMap.NewsGallary[i].contentId+")'> <img style='float:left;width:150px;height:110px;' src='./images/party_flags/"+resultMap.NewsGallary[i].imagePathInUpperCase+"' onerror='imgError(this);'/></a>";
+			str += "<a class='thumbnail span4'  href='javascript:{}' onclick='getNewsDetailsByContentId("+resultMap.NewsGallary[i].contentId+")'> <img style='float:left;width:150px;height:110px;' src='./images/party_flags/"+resultMap.NewsGallary[i].imagePathInUpperCase+"' onerror='imgError(this);'/></a>";
 		
 		if(resultMap.NewsGallary[i].descEenadu)
 			str += "<p class='span8 enadu'>"+resultMap.NewsGallary[i].description+"</p>";
@@ -800,9 +800,9 @@ if(resultMap != null)
 	str += "<div class='row-fluid'>";
 	if(resultMap.NewsGallaryForDist[i].fileType == 'Party'){
 		if(resultMap.NewsGallaryForDist[i].displayImagePath != null)
-			str += "<a class='thumbnail span4' style='height:120px;' href='javascript:{}'  onclick='getNewsDetailsByContentId("+resultMap.NewsGallaryForDist[i].contentId+")'><img style='float:left;width:150px;height:110px;' src='"+resultMap.NewsGallaryForDist[i].displayImagePath+"' onerror='imgError(this);' /></a>";
+			str += "<a class='thumbnail span4'  href='javascript:{}'  onclick='getNewsDetailsByContentId("+resultMap.NewsGallaryForDist[i].contentId+")'><img style='float:left;width:150px;height:110px;' src='"+resultMap.NewsGallaryForDist[i].displayImagePath+"' onerror='imgError(this);' /></a>";
 		if(resultMap.NewsGallaryForDist[i].displayImagePath == null)
-			str += "<a class='thumbnail span4' style='height:120px;' href='javascript:{}' onclick='getNewsDetailsByContentId("+resultMap.NewsGallaryForDist[i].contentId+")'> <img style='float:left;width:150px;height:110px;' src='./images/party_flags/"+resultMap.NewsGallaryForDist[i].imagePathInUpperCase+"' onerror='imgError(this);'/></a>";
+			str += "<a class='thumbnail span4'  href='javascript:{}' onclick='getNewsDetailsByContentId("+resultMap.NewsGallaryForDist[i].contentId+")'> <img style='float:left;width:150px;height:110px;' src='./images/party_flags/"+resultMap.NewsGallaryForDist[i].imagePathInUpperCase+"' onerror='imgError(this);'/></a>";
 		
 		if(resultMap.NewsGallaryForDist[i].descEenadu)
 			str += "<p class='span8 enadu'>"+resultMap.NewsGallaryForDist[i].description+"</p>";

@@ -198,7 +198,7 @@ function buildPaginatedNews(results,jsObj)
 		var path = results[i].filePath1;
 		var source = results[i].fileVOList[0].source;
 		
-		str+="<img id='myImg' style='width:100%' src="+path+" onerror='imgError(this)'></a>";
+		str+="<img id='myImg' style='width:146px;height:113px;'  src="+path+" onerror='imgError(this)'></a>";
 		if(results[i].descEenadu)
 		{
 			str+="<p class='span8 enadu fontStyle'>"+results[i].description+"</p>";
@@ -261,7 +261,7 @@ function buildPaginatedNews(results,jsObj)
 }
 function imgError(image) {
     image.onerror = "";
-    image.src = "images/TDP.PNG";
+    image.src = "images/no_image.gif";
     return true;
 }
 

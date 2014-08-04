@@ -32,4 +32,6 @@ public interface IFilePathsDAO extends GenericDao<FilePaths, Long> {
 	public void deleteFilePathsByFileSourceLangId(Long fileSourceLangId);
 	
 	public Long getMaxfilePathsOrderNo(Long fileSourceLanguageId);
+	
+	public List<Object[]> getAllFiles(List<Long> fileIds);
 }

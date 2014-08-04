@@ -21,6 +21,7 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
+import com.itgrids.partyanalyst.dao.IFilePathsDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.INewsResponseDAO;
@@ -94,6 +95,7 @@ public class PartyDetailsService implements IPartyDetailsService {/*
 	private IFileDAO fileDAO;
 	*/
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+	private IFilePathsDAO filePathsDAO;
 	/*
 	 private IPartyManifestoDAO partyManifestoDAO;
 	private IElectionDAO electionDAO;
@@ -109,7 +111,7 @@ public class PartyDetailsService implements IPartyDetailsService {/*
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private IAllianceGroupDAO allianceGroupDAO;
 	private IFileSourceLanguageDAO fileSourceLanguageDAO;
-	private IFilePathsDAO filePathsDAO;
+	
 	private IUserPartyRelationDAO userPartyRelationDAO;
 	private IUserDAO userDAO;
 	public IUserDAO getUserDAO() {
@@ -128,13 +130,7 @@ public class PartyDetailsService implements IPartyDetailsService {/*
 		this.userPartyRelationDAO = userPartyRelationDAO;
 	}
 
-	public IFilePathsDAO getFilePathsDAO() {
-		return filePathsDAO;
-	}
-
-	public void setFilePathsDAO(IFilePathsDAO filePathsDAO) {
-		this.filePathsDAO = filePathsDAO;
-	}
+	
 
 	public IFileSourceLanguageDAO getFileSourceLanguageDAO() {
 		return fileSourceLanguageDAO;
@@ -193,7 +189,13 @@ public class PartyDetailsService implements IPartyDetailsService {/*
 		this.partyManifestoDAO = partyManifestoDAO;
 	}
 */
-	
+	public IFilePathsDAO getFilePathsDAO() {
+		return filePathsDAO;
+	}
+
+	public void setFilePathsDAO(IFilePathsDAO filePathsDAO) {
+		this.filePathsDAO = filePathsDAO;
+	}
 	public IElectionTypeDAO getElectionTypeDAO() {
 		return electionTypeDAO;
 	}
@@ -2463,7 +2465,7 @@ public List<FileVO> generateNewsDetails(List<Object[]> countByCategoryList,Long 
 		Map<Long,String> candidateNames = candidateDetailsService.getCandidateNames(fileIds);
 		Map<Long,String> keywordsCount = candidateDetailsService.getKeywordsCountByFileId(fileIds);
 		Map<Long,String> categorysCount = candidateDetailsService.getCategorysCountByFileId(fileIds);
-		
+		Map<Long,FileVO> allNews = new HashMap<Long,FileVO>();
 		for(UserAddress param:newsDetails)
 		{
 			 file =new FileVO();
@@ -2511,7 +2513,18 @@ public List<FileVO> generateNewsDetails(List<Object[]> countByCategoryList,Long 
 			 //file.setResponseCount(candidateNewsResponseDAO.getFileGalleryIdByResponseGalleryId((Long)obj[1]).size());
 			 file.setTotalResultsCount(newsDetailsCount);
 			 result.add(file);
+			 allNews.put(fileId.get(0), file);
 		}
+		if(allNews.size() > 0){
+		      List<Object[]> paths = filePathsDAO.getAllFiles(new ArrayList<Long>(allNews.keySet()));
+		      for(Object[] path:paths){
+		    	  FileVO v = allNews.get((Long)path[0]);
+		    	  if(v.getDisplayImagePath() == null || v.getDisplayImagePath().trim().length() == 0){
+		    		  v.setDisplayImagePath(path[1].toString());
+		    	  }
+		      }
+		    
+		    }
 		}
 		}catch (Exception e) {
 			log.error("Exception occured in getNewsCountForALocation1",e);

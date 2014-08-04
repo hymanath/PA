@@ -269,10 +269,10 @@ function buildFilesInCategoryDetails(results,selectedvalue)
 		
 			str+='<div class="row-fluid">';
 			str+='<a style="width: 146px;" href="javascript:{getNewsDetailsByContentId('+results[i].fileGallaryId+')}" class="thumbnail span4">';
-				 if(results[i].filePath1 != null && results[i].filePath1 == "") 
-					str+='<img style="width:100%" src="'+results[i].filePath1+'" >';
+				 if(results[i].filePath1 != null && results[i].filePath1.length > 0) 
+					str+='<img style="width:146px;height:113px;" src="'+results[i].filePath1+'"  onerror="imgError(this);" >';
                   else
-					  str+='<img style="width:100%"src="/TDP/images/TDP.PNG" >';
+					  str+='<img style="width:146px;height:113px;" src="images/no_image.gif" >';
 				str+='</a>';
 				if(descFont)
 				{
@@ -316,6 +316,11 @@ document.getElementById("newsDisplayDiv").innerHTML = str;
  $('html,body').animate({
         scrollTop: $("#mainDiv").offset().top},
         'slow');
+}
+function imgError(image) {
+    image.onerror = "";
+    image.src = "images/no_image.gif";
+    return true;
 }
 function buildFilesInGallaryDetails(results,selectedvalue)
 {   

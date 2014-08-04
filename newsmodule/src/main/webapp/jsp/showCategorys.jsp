@@ -161,11 +161,11 @@ function buildFilesInGallaryDetails(results,selectedvalue,index,endValue)
 		str+='<a style="width: 146px;" href="javascript:{getNewsDetailsByContentId('+results[i].fileId+')}" class="thumbnail span4">';
 		if(results[i].fileName1 != null && results[i].fileName1.length > 0)
 		{
-			str+='<img style="width:100%" src="'+results[i].fileName1+'" onerror="imgError(this)">';
+			str+='<img style="width:146px;height:113px;" src="'+results[i].fileName1+'" onerror="imgError(this)">';
 		}		
 		
 		else
-		str+='<img style="width:100%"src="/TDP/images/TDP.PNG" onerror="imgError(this)">';
+		str+='<img style="width:146px;height:113px;" src="/TDP/images/no_image.gif" onerror="imgError(this)">';
 		str+='</a>';
 		
 		if(descFont)
@@ -225,7 +225,7 @@ function buildFilesInGallaryDetails(results,selectedvalue,index,endValue)
 
 function imgError(image) {
     image.onerror = "";
-    image.src = "images/TDP.PNG";
+    image.src = "images/no_image.gif";
     return true;
 }
 function callAjaxToGetTheResults(selectedvalue)

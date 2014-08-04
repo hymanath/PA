@@ -170,11 +170,11 @@ function buildFilesInGallaryDetails(results,selectedvalue,index,endValue)
 		
 
 		str+='<div class="row-fluid">';
-		str+='<a style="width: 146px;" href="javascript:{getNewsDetailsByContentId('+results[i].fileId+')}" class="thumbnail span4">';
-		if(results[i].fileName1 != null && results[i].fileName1 != "") 
-			str+='<img style="width:100%" src="'+results[i].fileName1+'" >';
+		str+='<a  style="width:150px;height:120px;" href="javascript:{getNewsDetailsByContentId('+results[i].fileId+')}" class="thumbnail span4">';
+		if(results[i].fileName1 != null && $.trim(results[i].fileName1).length > 0) 
+			str+='<img style="width:146px;height:113px;"  src="'+results[i].fileName1+'" >';
 		else
-		str+='<img style="width:100%"src="/TDP/images/TDP.PNG" >';
+		str+='<img style="width:146px;height:113px;" src="/TDP/images/no_image.gif" >';
 		str+='</a>';
 		
 		if(results[i].descEenadu)

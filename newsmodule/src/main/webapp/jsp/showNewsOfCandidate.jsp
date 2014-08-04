@@ -340,12 +340,12 @@ function buildPaginatedNewsOfCandidate(results,jsObj){
 				
 		str+="<div class='row-fluid'>";
 		str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{getNewsDetailsByContentId("+results[i].contentId+")}'>";
-		var path = "images/TDP.PNG";
+		var path = "images/no_image.gif";
 		 if(results[i].fileVOList.length > 0 && results[i].fileVOList[0].fileVOList.length > 0)
 		 path = results[i].fileVOList[0].fileVOList[0].path;
 		//var source = results[i].fileVOList[0].source;
 		
-		str+="<img id='myImg' style='width:100%' src="+path+" onerror='imgError(this)'></a>";
+		str+="<img id='myImg' style='width:146px;height:113px;' src="+path+" onerror='imgError(this)'></a>";
 		if(descEenadu)
 		  str+="<p class='span8 enadu' style='color:#000;'>"+results[i].description+"</p>";
 		else
@@ -403,7 +403,7 @@ function buildPaginatedNewsOfCandidate(results,jsObj){
 
 function imgError(image) {
     image.onerror = "";
-    image.src = "images/TDP.PNG";
+    image.src = "images/no_image.gif";
     return true;
 }
 function getCandidates(){

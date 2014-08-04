@@ -3,15 +3,14 @@ package com.itgrids.partyanalyst.service.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.ICandidatePartyFileDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.service.INewsReportService;
@@ -26,7 +25,7 @@ public class NewsReportService implements INewsReportService {
 	
 	private IDistrictDAO districtDAO;
 	
-	private IConstituencyDAO constituencyDAO;
+	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 
 	public ICandidatePartyFileDAO getCandidatePartyFileDAO() {
 		return candidatePartyFileDAO;
@@ -53,59 +52,38 @@ public class NewsReportService implements INewsReportService {
 		this.districtDAO = districtDAO;
 	}
 
-	public IConstituencyDAO getConstituencyDAO() {
-		return constituencyDAO;
+	public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
+		return delimitationConstituencyDAO;
 	}
 
-	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
-		this.constituencyDAO = constituencyDAO;
+	public void setDelimitationConstituencyDAO(
+			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
+		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
 	}
 
 	public void getNewsCountsPartyWise(final Date fromDate,final Date toDate,final Long locationLvl){
 		try{
 
-			//getting party Details started
-			final List<Object[]> partiesList = candidatePartyFileDAO.getAllPartyIds(fromDate, toDate);
-			final Set<Long> partyIds = new HashSet<Long>();
-			for(Object[] parties:partiesList){
-				if(parties[0] != null){
-					partyIds.add((Long)parties[0]);
-				}
-				if(parties[1] != null){
-					partyIds.add((Long)parties[1]);
-				}
-			}
-
-			final Map<Long,String> partyNames = new HashMap<Long,String>();
-			final List<Long> parties = new ArrayList<Long>();
-			final List<Object[]> partyDetails = partyDAO.getPartyNames(partyIds);
-			for(Object[] party:partyDetails){
-				partyNames.put((Long)party[1], party[0].toString());
-				parties.add((Long)party[1]);
-			}
-
-			if(parties.contains(872l)){
-				parties.remove(872l);
-				parties.add(0, 872l);
-			}
-			//getting party Details end
-
 			//getting location details
 			Map<Long,String> locationNames = new HashMap<Long,String>();
 			List<Long> locationIds = new ArrayList<Long>();
 			List<Object[]> locationsArray = getLocationDetails(locationLvl);
-            
+            for(Object[] location:locationsArray){
+            	locationIds.add((Long)location[0]);
+            	locationNames.put((Long)location[0], location[1].toString());
+            }
 			//getting location Details end
 
 			final List<Object[]> totalCountList = candidatePartyFileDAO.getTotalCounts(fromDate, toDate, getQueryForTotalCount(locationLvl));
 
 			//0 count,1 queryType,2 partyId,3 locationId,4 locationName
 			final List<Object[]> allCounts = new ArrayList<Object[]>();
-			for(Long partyId:partyIds){
-				allCounts.addAll(candidatePartyFileDAO.getAllCounts(fromDate, toDate, getQueryForPartyTotalCount(locationLvl, partyId), partyId));
-				allCounts.addAll(candidatePartyFileDAO.getAllCounts(fromDate, toDate, getQueryForPartyPosCount(locationLvl, partyId), partyId));
-				allCounts.addAll(candidatePartyFileDAO.getAllCounts(fromDate, toDate, getQueryForPartyNegCount(locationLvl, partyId), partyId));
-			}
+			   List<Object[]> tdPTotalCount = candidatePartyFileDAO.getTotalCounts(fromDate, toDate, getQueryForTDPTotalCount(locationLvl));
+			   //getQueryForOthersTotalCount
+			   //allCounts.addAll(candidatePartyFileDAO.getAllCounts(fromDate, toDate, getQueryForPartyTotalCount(locationLvl, partyId), partyId));
+				//allCounts.addAll(candidatePartyFileDAO.getAllCounts(fromDate, toDate, getQueryForPartyPosCount(locationLvl, partyId), partyId));
+				//allCounts.addAll(candidatePartyFileDAO.getAllCounts(fromDate, toDate, getQueryForPartyNegCount(locationLvl, partyId), partyId));
+			
 
 
 			Map<Long,Map<Long,Map<String,Long>>> locationMap = new HashMap<Long,Map<Long,Map<String,Long>>>();//Map<locationId,Map<partyId,Map<countType,count>>>
@@ -138,11 +116,11 @@ public class NewsReportService implements INewsReportService {
 
 	public List<Object[]> getLocationDetails(Long locationLvl){
 		if(locationLvl.longValue() == 1l){
-			
+			return districtDAO.getDistrictsByStateId(1l);
 		}else if(locationLvl.longValue() == 2l){
-			
+			return delimitationConstituencyDAO.findConstituencys(2l);
 		}else if(locationLvl.longValue() == 3l){
-			
+			return delimitationConstituencyDAO.findConstituencys(1l);
 		}
 		
 		return null;
@@ -159,20 +137,35 @@ public class NewsReportService implements INewsReportService {
 		return queryStr.toString();
 	}
 
-	public String getQueryForPartyTotalCount(final Long locationLvl,final Long partyId){
+	public String getQueryForTDPTotalCount(final Long locationLvl){
 		final StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select count(distinct cpf.file.fileId),'paTot',"+partyId+" " );
+		queryStr.append(" select count(distinct cpf.file.fileId),'paTot' " );
 
 		queryStr.append(getAttributesString(locationLvl));
 
 		queryStr.append(" from CandidatePartyFile cpf,UserAddress ua where date(cpf.file.fileDate) >= :fromDate and  date(cpf.file.fileDate) <= :toDate and  cpf.file.isDeleted !='Y' and " +
-				"  ( cpf.sourceParty.partyId =:partyId or cpf.destinationParty.partyId =:partyId ) and ua.file.fileId = cpf.file.fileId  group by ");
+				"  ( cpf.sourceParty.partyId =872 or cpf.destinationParty.partyId =872 ) and ua.file.fileId = cpf.file.fileId  group by ");
 
 		queryStr.append(getGroupByString(locationLvl));
 
 		return queryStr.toString();
 	}
 
+	public String getQueryForOthersTotalCount(final Long locationLvl){
+		final StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select count(distinct cpf.file.fileId),'paTot' " );
+
+		queryStr.append(getAttributesString(locationLvl));
+
+		queryStr.append(" from CandidatePartyFile cpf,UserAddress ua where date(cpf.file.fileDate) >= :fromDate and  date(cpf.file.fileDate) <= :toDate and  cpf.file.isDeleted !='Y' and " +
+				"  ( cpf.sourceParty.partyId !=872 or cpf.destinationParty.partyId !=872 ) and ua.file.fileId = cpf.file.fileId  group by ");
+
+		queryStr.append(getGroupByString(locationLvl));
+
+		return queryStr.toString();
+	}
+
+	
 	public String getQueryForPartyPosCount(final Long locationLvl,final Long partyId){
 		final StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select count(distinct cpf.file.fileId),'pos',"+partyId+" " );
@@ -205,11 +198,11 @@ public class NewsReportService implements INewsReportService {
 		final StringBuilder queryStr = new StringBuilder();
 
 		if(locationLvl.longValue() == 1l){
-			queryStr.append(", ua.district.districtId,ua.district.districtName  ");
+			queryStr.append(", ua.district.districtId ");
 		}else if(locationLvl.longValue() == 2l){
-			queryStr.append(", ua.constituency.constituencyId,ua.constituency.name  ");
+			queryStr.append(", ua.constituency.constituencyId  ");
 		}else if(locationLvl.longValue() == 3l){
-			queryStr.append(", ua.parliamentConstituency.constituencyId,ua.parliamentConstituency.name  ");
+			queryStr.append(", ua.parliamentConstituency.constituencyId  ");
 		}
 
 		return queryStr;
