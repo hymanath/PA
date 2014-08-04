@@ -2187,6 +2187,10 @@ function buildSurveyBoothDetailsTable(result,statusId)
 						str += '<td>'+result[i].casteErrorPercent+'</td>';
 					}
 					str += '<td><select id="boothStatus" onChange="updateBoothStatusDetails(this.value,'+result[i].boothId+','+i+')"><option>Select Status</option>';
+					
+				if(statusId < 6)
+				{
+
 					if(statusId == 1)
 					{
 						str += '<option value="1" selected="selected">DC PROCESS</option>';
@@ -2226,7 +2230,35 @@ function buildSurveyBoothDetailsTable(result,statusId)
 					else
 					{
 						str += '<option value="5">DV COMPLETED</option>';
-					}				
+					}	
+				}else
+				{
+					if(statusId == 6)
+					{
+						str += '<option value="6" selected="selected" >TP READY</option>';
+					}
+					else
+					{
+						str += '<option value="6">TP READY</option>';
+					}
+					if(statusId == 7)
+					{
+						str += '<option value="7" selected="selected" >TP PROCESS</option>';
+					}
+					else
+					{
+						str += '<option value="7">TP PROCESS</option>';
+					}
+					if(statusId == 8)
+					{
+						str += '<option value="8" selected="selected" >TP COMPLETED</option>';
+					}
+					else
+					{
+						str += '<option value="8">TP COMPLETED</option>';
+					}	
+					
+				}
 					str += '</select></td>';
 					str += '</tr>	';
 									
@@ -3234,7 +3266,7 @@ function buildBoothsStatusCountsDetails(result)
 		str += '<li>';
 		str += '<hgroup>';
 		str += '<h4>ACTUAL VERIFICATION PROCESSING</h4>';
-		str += '<h2> <a href="javascript:{getBoothsDetailsByStatusAndConstituency(6)}">'+result.actualProcessingCount+'</a></h2>';
+		str += '<h2> <a href="javascript:{getBoothsDetailsByStatusAndConstituency(0)}">'+result.actualProcessingCount+'</a></h2>';
 		str += '</hgroup>';
 		str += '</li>';
 
@@ -3249,6 +3281,28 @@ function buildBoothsStatusCountsDetails(result)
 		str += '<hgroup>';
 		str += '<h4>PANCHAYAT COMPLETED</h4>';
 		str += '<h2> <a href="javascript:{getpanchayatDetailsByStatusAndConstituency(2)}">'+result.panchayatDetails.count+'</a></h2>';
+		str += '</hgroup>';
+		str += '</li>';
+		
+		
+		str += '<li>';
+		str += '<hgroup>';
+		str += '<h4>THIRD PARTY READY</h4>';
+		str += '<h2> <a href="javascript:{getBoothsDetailsByStatusAndConstituency(6)}">'+result.thirdpartyReady+'</a></h2>';
+		str += '</hgroup>';
+		str += '</li>';
+
+		str += '<li>';
+		str += '<hgroup>';
+		str += '<h4>THIRD PARTY PROCESSING</h4>';
+		str += '<h2> <a href="javascript:{getBoothsDetailsByStatusAndConstituency(7)}">'+result.thirdPartyProcessing+'</a></h2>';
+		str += '</hgroup>';
+		str += '</li>';
+
+		str += '<li>';
+		str += '<hgroup>';
+		str += '<h4>THIRD PARTY COMPLETED</h4>';
+		str += '<h2> <a href="javascript:{getBoothsDetailsByStatusAndConstituency(8)}">'+result.thirdPartyCompleted+'</a></h2>';
 		str += '</hgroup>';
 		str += '</li>';
 
