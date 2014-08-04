@@ -407,7 +407,7 @@ public class NewsAnalysisAction extends ActionSupport implements ServletRequestA
 			jObj = new JSONObject(getTask());
 			districtsList1 =  staticDataService.getDistricts(jObj.getLong("stateId"));
 		} catch (Exception e) {
-			// TODO: handle exception
+			LOG.error("Exception raised in getDistricts method in NewsAnalysisAction Action"+e);
 		}
 		
 		return Action.SUCCESS;
@@ -421,7 +421,7 @@ public class NewsAnalysisAction extends ActionSupport implements ServletRequestA
 			ConstituencyInfoVO constituencyInfoVO = staticDataService.getConstituenciesByElectionTypeAndStateId(2L,jObj.getLong("stateId"));
 			assemConstiList1 = constituencyInfoVO.getConstituencies();
 		} catch (Exception e) {
-			// TODO: handle exception
+			LOG.error("Exception raised in getAssemblies method in NewsAnalysisAction Action"+e);
 		}
 		
 		return Action.SUCCESS;
