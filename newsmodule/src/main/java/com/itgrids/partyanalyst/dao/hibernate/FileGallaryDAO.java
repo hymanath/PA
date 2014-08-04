@@ -3153,66 +3153,76 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 	 
 	 
 	 @SuppressWarnings("unchecked")
-	 public List<File> getNewsDetailsBetweenSelectedDates(Date fromDate,Date toDate, Integer starIndex, Integer maxResults, Long scopeId)
+	 public List<File> getNewsDetailsBetweenSelectedDates(Date fromDate,Date toDate, Integer starIndex, Integer maxResults, Long scopeId,Long stateId)
+
 	 {
-			StringBuilder stringBuilder = new StringBuilder();
-			
-			stringBuilder.append("select distinct model from File model where model.isDeleted != 'Y' and model.isPrivate != 'Y' ");
-			
-			if(fromDate != null)
-				stringBuilder.append(" and date(model.fileDate) >= :fromDate ");
-			if(toDate != null)
-				stringBuilder.append(" and date(model.fileDate) <= :toDate ");
-			if(scopeId > 0)
-			stringBuilder.append(" and model.regionScopes.regionScopesId = :scopeId ");
-			
-			stringBuilder.append(" order by date(model.fileDate) desc,model.updatedDate desc");
-			
-			Query query = getSession().createQuery(stringBuilder.toString());
-			
-			if(fromDate != null)
-			 query.setParameter("fromDate", fromDate);
-			
-			if(toDate != null)
-				query.setParameter("toDate", toDate);
-			
-			if(starIndex != null)
-			 query.setFirstResult(starIndex);
-			if(maxResults != null)
-			query.setMaxResults(maxResults);
-			if(scopeId > 0)
-			query.setLong("scopeId", scopeId);
-			
-			return query.list();
-			
+
+	 StringBuilder stringBuilder = new StringBuilder();
+
+	 stringBuilder.append("select distinct model.file from UserAddress model where model.file.isDeleted != 'Y' and model.file.isPrivate != 'Y' ");
+
+	 if(fromDate != null)
+	 stringBuilder.append(" and date(model.file.fileDate) >= :fromDate ");
+	 if(toDate != null)
+	 stringBuilder.append(" and date(model.file.fileDate) <= :toDate ");
+	 if(scopeId > 0)
+	 stringBuilder.append(" and model.file.regionScopes.regionScopesId = :scopeId ");
+	 if(stateId>0)
+	 stringBuilder.append(" and model.state.stateId=:stateId");
+
+	 stringBuilder.append(" order by date(model.file.fileDate) desc,model.file.updatedDate desc");
+
+	 Query query = getSession().createQuery(stringBuilder.toString());
+
+	 if(fromDate != null)
+	 query.setParameter("fromDate", fromDate);
+
+	 if(toDate != null)
+	 query.setParameter("toDate", toDate);
+
+	 if(starIndex != null)
+	 query.setFirstResult(starIndex);
+	 if(maxResults != null)
+	 query.setMaxResults(maxResults);
+	 if(scopeId > 0)
+	 query.setLong("scopeId", scopeId);
+	 if(stateId>0)
+	 query.setParameter("stateId", stateId);
+	 return query.list();
+
 	 }
+
 	 
-	 public Long getNewsDetailsBetweenSelectedDatesCount(Date fromDate,Date toDate, long scopeId)
+	 public Long getNewsDetailsBetweenSelectedDatesCount(Date fromDate,Date toDate, long scopeId,Long stateId)
 	 {
-			StringBuilder stringBuilder = new StringBuilder();
-			
-			stringBuilder.append("select distinct count(model.fileId) from File model where model.isDeleted != 'Y' and model.isPrivate != 'Y' ");
-			
-			if(fromDate != null)
-				stringBuilder.append(" and date(model.fileDate) >= :fromDate ");
-			if(toDate != null)
-				stringBuilder.append(" and date(model.fileDate) <= :toDate ");
-			if(scopeId > 0)
-				stringBuilder.append(" and model.regionScopes.regionScopesId = :scopeId ");
-				
-			Query query = getSession().createQuery(stringBuilder.toString());
-			
-			if(fromDate != null)
-			 query.setParameter("fromDate", fromDate);
-			
-			if(toDate != null)
-				query.setParameter("toDate", toDate);
-			if(scopeId > 0)
-				query.setLong("scopeId", scopeId);
-			return (Long)query.uniqueResult();
-			
+	 StringBuilder stringBuilder = new StringBuilder();
+
+	 stringBuilder.append("select distinct count(model.file.fileId) from UserAddress model where model.file.isDeleted != 'Y' and model.file.isPrivate != 'Y' ");
+
+	 if(fromDate != null)
+	 stringBuilder.append(" and date(model.file.fileDate) >= :fromDate ");
+	 if(toDate != null)
+	 stringBuilder.append(" and date(model.file.fileDate) <= :toDate ");
+	 if(scopeId > 0)
+	 stringBuilder.append(" and model.file.regionScopes.regionScopesId = :scopeId ");
+	 if(stateId>0)
+	 stringBuilder.append(" and model.state.stateId = :stateId ");
+
+	 Query query = getSession().createQuery(stringBuilder.toString());
+
+	 if(fromDate != null)
+	 query.setParameter("fromDate", fromDate);
+
+	 if(toDate != null)
+	 query.setParameter("toDate", toDate);
+	 if(scopeId > 0)
+	 query.setLong("scopeId", scopeId);
+	 if(stateId>0)
+	 query.setParameter("stateId", stateId);
+
+	 return (Long)query.uniqueResult();
+
 	 }
-	 
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getGalleriesByCategoryIds(List<Long> categoryIdsList,Long partyId,Long candidateId)
 	 {
