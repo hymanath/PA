@@ -374,7 +374,7 @@ class MyComparator implements Comparator<CandidateVO>
 {
    //Sorting according to ascending order of ids.
   //If same ids then sort according to ascending order of ranks.
-	@Override
+	//@Override
 	public int compare(CandidateVO obj1, CandidateVO obj2)
 	{
 	    if( (obj1.getId()-obj2.getId())==0 )

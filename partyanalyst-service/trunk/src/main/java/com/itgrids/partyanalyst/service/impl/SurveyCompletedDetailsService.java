@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -13,14 +14,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.ISurveyCallStatusDAO;
 import com.itgrids.partyanalyst.dao.ISurveyCompletedLocationsDAO;
 import com.itgrids.partyanalyst.dao.ISurveyConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.IWebMonitoringAssignedUsersDAO;
+import com.itgrids.partyanalyst.dto.FinalSurveyReportVO;
+import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
+import com.itgrids.partyanalyst.dto.VerificationCompVO;
 import com.itgrids.partyanalyst.model.SurveyCompletedLocations;
 import com.itgrids.partyanalyst.service.ISurveyCompletedDetailsService;
+import com.itgrids.partyanalyst.service.ISurveyDashBoardService;
+import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
+import com.itgrids.partyanalyst.service.ISurveyDetailsService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class SurveyCompletedDetailsService implements
@@ -48,6 +56,18 @@ public class SurveyCompletedDetailsService implements
 	
 	@Autowired
 	private IWebMonitoringAssignedUsersDAO webMonitoringAssignedUsersDAO;
+	
+	@Autowired
+	private ISurveyDashBoardService surveyDashBoardService ;
+	
+	@Autowired
+	private ISurveyDataDetailsService surveyDataDetailsService;
+	
+	@Autowired
+	private ISurveyDetailsService surveyDetailsService;
+	
+	@Autowired 
+	private ISurveyCallStatusDAO surveyCallStatusDAO;
 	
 	public List<SurveyReportVO> getSurveyCompletedLocationsDetailsForSurveyStartedConstituencies()
 	{
@@ -520,7 +540,7 @@ public class SurveyCompletedDetailsService implements
 			
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			LOG.error("Exception raised in  getCompletdConstituenciesDetails() in surveyCompletedDetails() service .",e);
 		}
 		
@@ -534,6 +554,262 @@ public class SurveyCompletedDetailsService implements
 				return resultVO;
 		return null;
 		
+	}
+	
+	public List<FinalSurveyReportVO> finalDeselectionReport(Long constituencyId)
+	{
+		List<FinalSurveyReportVO> resultList = null;
+		try 
+		{
+			Map<Long,String> boothPartNoMap = null;
+			Map<Long,Long> boothWiseTotalMap = null;
+			Map<Long,List<FinalSurveyReportVO>>  dcResultMap = null;
+			//Map<Long,List<FinalSurveyReportVO>>  dvResultMap = null;
+			
+			Map<Long,FinalSurveyReportVO>  dvMatchedUnMatchedMap = null;
+			Map<Long,GenericVO> wmDvCollectedMap = null;
+			List<Object[]> boothWiseTotalVoters = boothPublicationVoterDAO.getTotalVotersForConstituencyByBoothWise(constituencyId);
+			if(boothWiseTotalVoters != null && boothWiseTotalVoters.size() > 0)
+			{
+				boothPartNoMap = new HashMap<Long, String>();
+				boothWiseTotalMap = new HashMap<Long, Long>();
+				for (Object[] parms : boothWiseTotalVoters) 
+				{
+					if(parms[0] != null)
+					{
+						String parnNo = boothPartNoMap.get((Long)parms[0]);
+						if(parnNo == null)
+						{
+							boothPartNoMap.put((Long)parms[0], parms[1].toString());
+							boothWiseTotalMap.put((Long)parms[0], (Long)parms[2]);
+						}
+					}
+					
+				}
+				dcResultMap = new HashMap<Long, List<FinalSurveyReportVO>>();
+				getDcOrDvAndDcWmOrDvWmDetails(constituencyId,dcResultMap,1l);
+				
+				
+				//dvResultMap = new HashMap<Long, List<FinalSurveyReportVO>>();
+				//getDcOrDvAndDcWmOrDvWmDetails(constituencyId,dvResultMap,4l);
+				
+				dvMatchedUnMatchedMap = new HashMap<Long, FinalSurveyReportVO>();
+				getVerifierMatchedUnMatchedDetails(constituencyId,dvMatchedUnMatchedMap);
+				
+				wmDvCollectedMap = new HashMap<Long, GenericVO>();
+				getWmDvVerifiedDetailsByBoothWise(constituencyId,wmDvCollectedMap);
+				
+				if(boothPartNoMap != null && boothPartNoMap.size() > 0)
+				{
+					resultList = new ArrayList<FinalSurveyReportVO>();
+					for(Long boothId : boothPartNoMap.keySet())
+					{
+						FinalSurveyReportVO finalSurveyReportVO = new FinalSurveyReportVO();
+						finalSurveyReportVO.setBoothId(boothId);
+						finalSurveyReportVO.setPartNo(boothPartNoMap.get(boothId));
+						finalSurveyReportVO.setTotalVoters(boothWiseTotalMap.get(boothId));
+						List<FinalSurveyReportVO> dcCollectedDetails = dcResultMap.get(boothId);
+						if(dcCollectedDetails != null && dcCollectedDetails.size() > 0)
+						for (FinalSurveyReportVO finalSurveyReport : dcCollectedDetails)
+						{
+							finalSurveyReportVO.setWmDcTotal(finalSurveyReport.getWmDcTotal());
+							finalSurveyReportVO.setDcCasteMapped(finalSurveyReport.getDcCasteMapped());
+							finalSurveyReportVO.setDcHamletMapped(finalSurveyReport.getDcHamletMapped());
+							finalSurveyReportVO.setDcMobileMapped(finalSurveyReport.getDcMobileMapped());
+							
+							finalSurveyReportVO.setWmDcMobileMapped(finalSurveyReport.getWmDcMobileMapped());
+							finalSurveyReportVO.setWmDcMobileMappedError(finalSurveyReport.getWmDcMobileMappedError());
+							finalSurveyReportVO.setWmDcMobileMappedPerc(finalSurveyReport.getWmDcMobileMappedPerc());
+							
+							finalSurveyReportVO.setWmDcMobileUnMapped(finalSurveyReport.getWmDcMobileUnMapped());
+							finalSurveyReportVO.setWmDcMobileUnMappedError(finalSurveyReport.getWmDcMobileUnMappedError());
+							finalSurveyReportVO.setWmDcMobileUnMappedPerc(finalSurveyReport.getWmDcMobileUnMappedPerc());
+
+							finalSurveyReportVO.setWmDcCasteMapped(finalSurveyReport.getWmDcCasteMapped());
+							finalSurveyReportVO.setWmDcCasteMappedError(finalSurveyReport.getWmDcCasteMappedError());
+							finalSurveyReportVO.setWmDcCasteMappedPerc(finalSurveyReport.getWmDcCasteMappedPerc());
+							
+							finalSurveyReportVO.setWmDcCasteUnMapped(finalSurveyReport.getWmDcCasteUnMapped());
+							finalSurveyReportVO.setWmDcCasteUnMappedError(finalSurveyReport.getWmDcCasteUnMappedError());
+							finalSurveyReportVO.setWmDcCasteUnMappedPerc(finalSurveyReport.getWmDcCasteUnMappedPerc());
+						}
+						
+						FinalSurveyReportVO matchedUnMatchedVO = dvMatchedUnMatchedMap.get(boothId);
+						if(matchedUnMatchedVO != null)
+						{
+							finalSurveyReportVO.setCollectedCount(matchedUnMatchedVO.getCollectedCount());
+							finalSurveyReportVO.setUpdatedCount(matchedUnMatchedVO.getUpdatedCount());
+							finalSurveyReportVO.setVerifiedCount(matchedUnMatchedVO.getVerifiedCount());
+							
+							finalSurveyReportVO.setMatchedCount(matchedUnMatchedVO.getMatchedCount());
+							finalSurveyReportVO.setUnMatchedCount(matchedUnMatchedVO.getUnMatchedCount());
+							finalSurveyReportVO.setNotIdentifedCount(matchedUnMatchedVO.getNotIdentifedCount());
+						}
+						GenericVO wmDvVO = wmDvCollectedMap.get(boothId);
+						if(wmDvVO != null)
+						{
+							finalSurveyReportVO.setWmDvY(wmDvVO.getCount() != null ? wmDvVO.getCount() : 0l);
+							finalSurveyReportVO.setWmDvN(wmDvVO.getId()  != null ? wmDvVO.getId() : 0l);
+							if(finalSurveyReportVO.getUnMatchedCount()  != null && finalSurveyReportVO.getWmDvY() != null && finalSurveyReportVO.getWmDvN() != null)
+							{
+								finalSurveyReportVO.setWmDvEmpty(finalSurveyReportVO.getUnMatchedCount().longValue() - (finalSurveyReportVO.getWmDvY().longValue()+ finalSurveyReportVO.getWmDvN().longValue()));
+							}
+							
+							
+						}
+						if(finalSurveyReportVO.getWmDvEmpty() == null)
+						{
+							finalSurveyReportVO.setWmDvEmpty(0l);
+						}
+						resultList.add(finalSurveyReportVO);
+					}
+				}
+				
+			}
+			
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in  finalDeselectionReport() in surveyCompletedDetails() service .",e);
+		}
+		return resultList;
+	}
+	
+	public void getWmDvVerifiedDetailsByBoothWise(Long constituencyId,Map<Long,GenericVO> wmDvCollectedMap)
+	{
+		List<Object[]> wmDvVeriferDetails = surveyCallStatusDAO.getWmDvMappedUnMappedDetailsBoothWise(constituencyId);
+		if(wmDvVeriferDetails != null && wmDvVeriferDetails.size() > 0)
+		{
+			for (Object[] objects : wmDvVeriferDetails)
+			{
+				if(objects[0] != null)
+				{
+					GenericVO VO = wmDvCollectedMap.get((Long)objects[0]);
+					if(VO == null)
+					{
+						VO = new GenericVO();
+						wmDvCollectedMap.put((Long)objects[0], VO);
+					}
+					if(objects[1] != null)
+					{
+						if(objects[1].toString().equalsIgnoreCase("Y"))
+						{
+							VO.setCount((Long)objects[2]);// WM-DV Y Count
+						}
+						else
+						{
+							VO.setId((Long)objects[2]);// WM-DV N Count
+						}
+					}
+				}
+					
+			}
+		}
+	}
+	public void getVerifierMatchedUnMatchedDetails(Long constituencyId,Map<Long,FinalSurveyReportVO> dvMatchedUnMatchedMap)
+	{
+
+		List<Long> boothIds = null;
+		List<Object[]> boothsList = surveyDetailsInfoDAO.getBooths(constituencyId,4l);
+		if(boothsList != null && boothsList.size() > 0)
+		{
+			boothIds = new ArrayList<Long>();
+			for (Object[] objects : boothsList)
+			{
+				if(objects[0] != null)
+				boothIds.add((Long)objects[0]);
+			}
+		}
+		
+		if(boothIds != null && boothIds.size() > 0)
+		{
+			List<VerificationCompVO> dvVerifiersDetails = surveyDetailsService.checkForVerifierData(boothIds);
+			if(dvVerifiersDetails != null && dvVerifiersDetails.size() > 0)
+			{
+				for (VerificationCompVO verificationCompVO : dvVerifiersDetails) 
+				{
+					FinalSurveyReportVO matchedUnMatcedVO = dvMatchedUnMatchedMap.get(verificationCompVO.getBoothId());
+					if(matchedUnMatcedVO == null)
+					{
+						matchedUnMatcedVO = new FinalSurveyReportVO();
+						dvMatchedUnMatchedMap.put(verificationCompVO.getBoothId(), matchedUnMatcedVO);
+					}
+					matchedUnMatcedVO.setCollectedCount(verificationCompVO.getCollectedCount());
+					matchedUnMatcedVO.setUpdatedCount(verificationCompVO.getUpdatedCount());
+					matchedUnMatcedVO.setVerifiedCount(verificationCompVO.getVerifieCount());
+					
+					matchedUnMatcedVO.setMatchedCount(verificationCompVO.getMatchedCount());
+					matchedUnMatcedVO.setUnMatchedCount(verificationCompVO.getUnMatchedCount());
+					matchedUnMatcedVO.setNotIdentifedCount(verificationCompVO.getNotIdentifedCount());
+				}
+			}
+		}
+	}
+	
+	/**
+	 * This Method is used for get DC OR DV And WM-DC OR WM_DV Details
+	 * @param constituencyId
+	 * @param dcResultMap
+	 */
+	public void getDcOrDvAndDcWmOrDvWmDetails(Long constituencyId,Map<Long,List<FinalSurveyReportVO>>  dcResultMap,Long surveyUserType)
+	{
+		String fromDate = null;
+		String toDate = null;
+		List<String> surveyDates = surveyDashBoardService.getCasteCollecteddatesByConstituencyId(constituencyId);
+		if(surveyDates != null && surveyDates.size() > 0)
+		{
+			fromDate = surveyDates.get(0);
+			toDate = surveyDates.get(surveyDates.size()-1);
+		}
+		
+		if(fromDate != null && toDate != null)
+		{
+			List<SurveyReportVO> dcDetails = surveyDataDetailsService.getSurveyDetailsForConstituency(constituencyId, surveyUserType, fromDate, null, toDate);
+			if(dcDetails != null && dcDetails.size() > 0)
+			{
+				for (SurveyReportVO surveyReportVO : dcDetails) 
+				{
+					if(surveyReportVO.getSubList() != null && surveyReportVO.getSubList().size() > 0)
+					{
+						List<SurveyReportVO> dcWIseDetailsList = surveyReportVO.getSubList() ;
+						if(dcWIseDetailsList != null && dcWIseDetailsList.size() > 0)
+						{
+							for (SurveyReportVO surveyReportVO2 : dcWIseDetailsList) 
+							{
+								List<FinalSurveyReportVO> dcMainVOList = dcResultMap.get(surveyReportVO2.getBoothId());
+								if(dcMainVOList == null)
+								{
+									dcMainVOList = new ArrayList<FinalSurveyReportVO>();
+									dcResultMap.put(surveyReportVO2.getBoothId(), dcMainVOList);
+								}
+								FinalSurveyReportVO dcMainVO = new FinalSurveyReportVO();
+								dcMainVO.setDcCasteMapped(surveyReportVO2.getCasteCount());
+								dcMainVO.setDcHamletMapped(surveyReportVO2.getHamletCount());
+								dcMainVO.setDcMobileMapped(surveyReportVO2.getMobileNoCount());
+								
+								dcMainVO.setWmDcTotal(surveyReportVO2.getCount());
+								
+								dcMainVO.setWmDcCasteMapped(surveyReportVO2.getCasteMatchedCount());
+								//dcMainVO.setWmDcCasteMappedPerc(new BigDecimal(surveyReportVO2.getCasteMatchedCount()*(100.0)/surveyReportVO2.getTotal()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+								
+								dcMainVO.setWmDcCasteUnMapped(surveyReportVO2.getCasteNotMatchedCount());
+								//dcMainVO.setWmDcCasteUnMappedPerc(new BigDecimal(surveyReportVO2.getCasteNotMatchedCount()*(100.0)/surveyReportVO2.getTotal()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+								
+								//dcMainVO.setWmDcCasteMappedError(new BigDecimal(surveyReportVO2.getCasteNotMatchedCount()*(100.0)/(surveyReportVO2.getCasteNotMatchedCount().longValue() + surveyReportVO2.getCasteMatchedCount())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+								
+								dcMainVO.setWmDcMobileMapped(surveyReportVO2.getMobileMatchedCount());							
+								dcMainVO.setWmDcMobileUnMapped(surveyReportVO2.getMobileNotMatchedCount());
+								//dcMainVO.setWmDcMobileMappedError(new BigDecimal(surveyReportVO2.getMobileNotMatchedCount()*(100.0)/(surveyReportVO2.getMobileNotMatchedCount().longValue() + surveyReportVO2.getMobileMatchedCount())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+								
+								dcMainVOList.add(dcMainVO);
+							}
+						}
+						
+					}
+					
+				}
+			}
+		}
 	}
 	
 }

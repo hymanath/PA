@@ -115,4 +115,11 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 		return query.list();
 		
 	}
+	
+	public List<Object[]> getWmDvMappedUnMappedDetailsBoothWise(Long constituencyId)
+	{
+		Query query = getSession().createQuery("select model.booth.boothId,model.dvMatchedStatus,count(model.surveyCallStatusId) from SurveyCallStatus model where model.booth.constituency.constituencyId = :constituencyId  and model.dvMatchedStatus is not null  group by model.booth.boothId , model.dvMatchedStatus  ");
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
 }

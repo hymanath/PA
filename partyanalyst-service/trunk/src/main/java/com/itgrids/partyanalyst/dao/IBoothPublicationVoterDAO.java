@@ -680,4 +680,5 @@ public interface IBoothPublicationVoterDAO extends
 	  public Long getTotalVotersForConstituency(Long constituencyId);
 	  public List<Object[]> getTotalVotersForAllConstituencies(List<Long> constituencyIds);
 	  public Long getTotalVotersForBoothId(Long boothId);
+	  public List<Object[]>  getTotalVotersForConstituencyByBoothWise(Long constituencyId);
 }
