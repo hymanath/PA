@@ -280,7 +280,10 @@ $('#searchDataImg').show();
 				str +='<table class="table table-bordered m_top20 table-hover table-striped" id="voterDetlsTab" >';
 				str +='	<thead class="alert alert-success">';
 				str +='	<tr>';
-				str +='<th> <input type="checkbox" id="alluserChkbx" class="allCheckbxCls"  onclick="selectAllCheckBoxes();"/> Select All </th>';
+				if(userType != 4)
+				{
+					str +='<th> <input type="checkbox" id="alluserChkbx" class="allCheckbxCls"  onclick="selectAllCheckBoxes();"/> Select All </th>';
+				}
 				str +='<th> S.NO </th>';
 				str +='<th>H.NO</th>';
 				str +='<th> Name </th>';
@@ -310,7 +313,10 @@ $('#searchDataImg').show();
 					str +='<tr>';					
 					str +='<input type="hidden" value="'+result[i].voterId+'" id="voterId"/>';
 					str +='<input type="hidden" value="'+result[i].userid+'" id="surveyUserId"/></td>';
-					str +='<td> <input type="checkbox" id="userChkbx" value="'+result[i].voterId+'"class="checkbxCls" /></td>';					
+					if(userType != 4)
+					{
+						str +='<td> <input type="checkbox" id="userChkbx" value="'+result[i].voterId+'"class="checkbxCls" /></td>';		
+					}					
 					str +='<td>'+result[i].serailNo+'</td>';
 					str +='<td>'+result[i].partNo+'</td>';
 					str +='<td>'+result[i].userName+'</td>';
@@ -694,10 +700,12 @@ $('#searchDataImg').show();
 				}
 				str +='</tbody>';
 				str +='</table>';
-				
-			str +='<div id="scrollBtnDiv" >';
-			str +='<a id="updateBtnInNewWndow" style="position: fixed; left :0px; top: 320px;" href="javascript:{updateVoterDetlsStatus('+userId+','+boothId+',0,'+webConstId+','+date+','+userType+');}" class="btn btn-primary"> Update Details </a>';
-			str +='</div>';				
+			if(userType != 4)
+			{	
+				str +='<div id="scrollBtnDiv" >';
+				str +='<a id="updateBtnInNewWndow" style="position: fixed; left :0px; top: 320px;" href="javascript:{updateVoterDetlsStatus('+userId+','+boothId+',0,'+webConstId+','+date+','+userType+');}" class="btn btn-primary"> Update Details </a>';
+				str +='</div>';
+			}
 		}
 		else
 		{
