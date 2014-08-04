@@ -6307,6 +6307,28 @@
 		    			<param name="root">partiesList1</param>
 		    		</result>
 		 </action>
+		  <action name="getPartiesForAStateAction" class="newsPaginationAction" method="ajaxHandler">
+		  <result type="json" name="success">
+		    	<param name="root">partiesList</param>
+		  </result>
+		</action>
+		
+		<action name="getConstituenciesListAction" class="partyActivitiesAction"  method="getconstituenciesbyStateId">
+		   <result type="json" name="success">
+		    	<param name="root">assemblies</param>
+		   </result> 
+		</action>
+		<action name="getDistrictsBasedOnStateIdAction" class="newsAnalysisAction" method="getDistricts">
+					<result type="json" name="success">
+		    			<param name="root">districtsList1</param>
+		    		</result>
+		 </action>
+		 
+		 <action name="getAssemblyListBasedOnStateId" class="newsAnalysisAction" method="getAssemblies">
+					<result type="json" name="success">
+		    			<param name="root">assemConstiList1</param>
+		    		</result>
+		 </action>
         </package>
 		
 </struts>      
