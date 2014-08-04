@@ -191,7 +191,10 @@ function getPartiesList(stateId)
 		       }); 
      });
 }
-	 function getPartiesList1(stateId)
+
+
+
+    function getDistrictsForAState(stateId)
 	 {
 	 	var jsObj=
 	{
@@ -264,7 +267,8 @@ function clearDate(id){
    $("#"+id).val('');
 }
 getPartyGallariesForUplaod();
-getPartiesList(1);
+getPartiesList(0);
+
 /*
 	this function is used for making ajax cal for getting ategoery wise details for selectd constituency level
 */
@@ -714,7 +718,8 @@ function validateFields()
 		
 		<div class="offset4">
 			<label><strong>Select State<font color="red"> *</font></strong></label>
-			<select class="span4" id="stateIds" onchange="getPartiesList(this.value);getPartiesList1(this.value)">
+			<select class="span4" id="stateIds" onchange="getPartiesList(this.value);getDistrictsForAState(this.value)">
+				<option value="0">ALL</option>
 				<option value="1">Andhra Pradesh</option>
 				<option value="36">Telangana</option>
 			</select>
