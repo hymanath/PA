@@ -393,7 +393,7 @@ public class NewsAnalysisAction extends ActionSupport implements ServletRequestA
 		}
 		
 		ConstituencyInfoVO constituencyInfoVO = staticDataService.getConstituenciesByElectionTypeAndStateId(2L,0L);
-		 ConstituencyInfoVO parliamantConstis = staticDataService.getConstituenciesByElectionTypeAndStateId(1L,1L);
+		 ConstituencyInfoVO parliamantConstis = staticDataService.getConstituenciesByElectionTypeAndStateId(1L,0L);
 		 districtsList =  staticDataService.getDistricts(0l);
 		 parlConstiList = parliamantConstis.getConstituencies();
 		 assemConstiList = constituencyInfoVO.getConstituencies();

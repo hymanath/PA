@@ -340,7 +340,7 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 		{
 		  String accessType = user.getAccessType();
 		  Long accessValue = new Long(user.getAccessValue());
-		  locationVO = candidateDetailsService.getLocationListForSelectedUser(accessType, accessValue, user.getRegistrationID());
+		  locationVO = candidateDetailsService.getLocationListForSelectedUser(accessType, accessValue, user.getRegistrationID(),user.getUserAccessType());
 		  
 		}
 		
@@ -351,7 +351,7 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 		 keywordsList = candidateDetailsService.getTotalKeyWords();
 		
 		else if(jObj.getString("task").equalsIgnoreCase("getPartyList"))
-		 partiesList = candidateDetailsService.getPartiesListByStateId(jObj.getLong("stateId"));
+			partiesList = candidateDetailsService.getPartiesList();
 			
 		else if(jObj.getString("task").equalsIgnoreCase("getDesignationsList"))
 		 selectOptionVOList = candidateDetailsService.getDesignationsList();

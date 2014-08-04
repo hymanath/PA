@@ -735,6 +735,34 @@ $.ajax({
 });
 }		
 
+function getParlConstituenciesForAState(stateId)
+{
+	var jsObj=
+{
+	stateId:stateId,
+	task:'getParlConstituenciesList'
+};
+
+$.ajax({
+	type: "POST",
+	url: "getParlConstituenciesListAction.action",
+	data: {task : JSON.stringify(jsObj)}
+	})
+	.done(function( result ) {
+	
+	$('#parliamSelReportId').find('option').remove();
+	$.each(result,function(index,value){
+		$('#parliamSelReportId').append('<option value="'+value.id+'">'+value.name+'</option>');
+	});
+	 $('#parliamSelReportId').multiselect({	
+			multiple: true,
+			selectedList: 1,
+			hide: "explode"	
+	        }).multiselectfilter({   
+	       }); 
+});
+}		
+
 function getRespectedLocationValues(loc)
 {
 	 if(loc == 1){

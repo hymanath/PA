@@ -182,16 +182,7 @@ ul.as-selections1 li {
 					
 					<!------Who Div---->
 					<div class="row-fluid label label-success-50">
-						<div class="offset4" style="margin-top:20px;">
 						
-							<label >Select State
-							
-							<select id="statelist" onchange="getPartiesList(this.value);getDistrictsForAState(this.value);getConstituenciesForAState(this.value);">
-								<option value="0">All</option>
-								<option value="1">Andhra Pradesh</option>
-								<option value="36">Telangana</option>
-							</select></label>
-						</div>
 					<div class="row-fluid">
 						<!--<div class="span1 btn-block btn btn-large">
 							<h4 class=" text-center ">Who</h4>					
@@ -215,7 +206,32 @@ ul.as-selections1 li {
 							</select>
 												
 						</div>
-						<div class="span4">
+						<div class="span4" >
+						
+							<label >Select State</label>
+							
+							<select id="statelist" style="width:250px;" onchange="getDistrictsForAState(this.value);getConstituenciesForAState(this.value);getParlConstituenciesForAState(this.value);">
+								<option value="0">All</option>
+								<option value="1">Andhra Pradesh</option>
+								<option value="36">Telangana</option>
+							</select>
+						</div>
+						
+						<!--<div class="span3">
+							<label>Benifits</label>
+							<select class="input-block-level" id="benifitsList" disabled="true">	
+								<option value=0>Select Benifits</option>
+							</select>					
+						</div>
+						<div class="span2">
+							<label>Analyse By Who</label>
+							 <input type="checkbox" id="analyseCandidateSource" disabled="true"/>				
+						</div>-->
+					</div>
+					
+					<!------Who Div END---->
+					<div class="row-fluid">
+					<div class="span4">
 							
 							<div  class="LocationLevelId">
 							<label>Select Location</label>
@@ -234,21 +250,6 @@ ul.as-selections1 li {
 							</div>
 												
 						</div>
-						
-						<!--<div class="span3">
-							<label>Benifits</label>
-							<select class="input-block-level" id="benifitsList" disabled="true">	
-								<option value=0>Select Benifits</option>
-							</select>					
-						</div>
-						<div class="span2">
-							<label>Analyse By Who</label>
-							 <input type="checkbox" id="analyseCandidateSource" disabled="true"/>				
-						</div>-->
-					</div>
-					
-					<!------Who Div END---->
-					<div class="row-fluid">
 					<div class="span4">
 							<label>Select Candidate</label>
 							<select class="input-block-level" id="candidateId">	

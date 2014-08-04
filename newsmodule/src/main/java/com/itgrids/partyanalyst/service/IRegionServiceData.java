@@ -89,4 +89,5 @@ public interface IRegionServiceData {
 	public List<Object> getAllAccessLocByDistrict(Long districtId);
 	public List<Object> getAllAccessLocByAssConsti(Long constiId);
 	public List<Object> getAllAccessLocByParlConsti(Long constiId);
+	public List<Object> getAllAccessLocByState(List<Long> stateIds);
 }

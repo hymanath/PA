@@ -17,6 +17,7 @@ public class LocationVO implements Serializable{
 	private List<SelectOptionVO> districtList;
 	private List<SelectOptionVO> constituencyList;
 	private List<SelectOptionVO> mandalList;
+	private List<Long> stateIds;
 	
 	public List<SelectOptionVO> getStateList() {
 		return stateList;
@@ -71,6 +72,12 @@ public class LocationVO implements Serializable{
 	}
 	public void setMandalList(List<SelectOptionVO> mandalList) {
 		this.mandalList = mandalList;
+	}
+	public List<Long> getStateIds() {
+		return stateIds;
+	}
+	public void setStateIds(List<Long> stateIds) {
+		this.stateIds = stateIds;
 	}
 	
 	

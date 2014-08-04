@@ -185,11 +185,11 @@ margin:-1px 0px 0px 0px ;
 									</ul> 
 							</li> 
 						      <li class="outerLi" id="partyManagementTabId"><a href="partyManagementAction.action" class="innerA">Manage News</a></li>
-							   <li class="outerLi" id="debateTabId"><a href="#" class="innerA"> Reports </a>
-							   <ul>
+							   <li class="outerLi" id="debateTabId"><a href="debateAction.action" class="innerA"> Debate </a>
+							   <!--<ul>
 							   <li  id="debateTabId"><a href="debateAction.action" class=""> Debate </a></li>
 							   <li  id="debateTabId"><a href="politicalFeedBackAction.action" class=""> PFB </a></li>
-							   </ul>
+							   </ul>-->
 							   </li>
 							 
 						   

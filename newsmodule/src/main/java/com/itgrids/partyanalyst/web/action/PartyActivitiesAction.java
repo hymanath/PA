@@ -293,7 +293,7 @@ public class PartyActivitiesAction  implements ServletRequestAware{
 			districts = staticDataService.getDistricts(jObj.getLong("stateId"));
 			
 		} catch (ParseException e) {
-			LOG.error("Exception rised in getAllDistrictsByStateId() in PartyActivitiesAction "+e);
+			LOG.error("Exception rised in getAllDistrictsByStateId() in PartyActivitiesAction ",e);
 		}
 		
 		return Action.SUCCESS;
@@ -306,7 +306,20 @@ public class PartyActivitiesAction  implements ServletRequestAware{
 			ConstituencyInfoVO infoVO =  staticDataService.getConstituenciesByElectionTypeAndStateId(2l,jObj.getLong("stateId"));
 			assemblies = infoVO.getConstituencies();
 		} catch (Exception e) {
-			LOG.error("Exception Occured in getconstituenciesbyStateId() method in PartyActivitiesAction, Exception - "+e);
+			LOG.error("Exception Occured in getconstituenciesbyStateId() method in PartyActivitiesAction, Exception - ",e);
+		}
+		return Action.SUCCESS;	
+	}
+	
+	public String getParlconstituenciesbyStateId()
+	{
+		LOG.info("Enter Into getParlconstituenciesbyStateId() method in PartyActivitiesAction class");
+		try {
+			jObj = new JSONObject(getTask());
+			ConstituencyInfoVO infoVO =  staticDataService.getConstituenciesByElectionTypeAndStateId(1l,jObj.getLong("stateId"));
+			assemblies = infoVO.getConstituencies();
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getconstituenciesbyStateId() method in PartyActivitiesAction, Exception - ",e);
 		}
 		return Action.SUCCESS;	
 	}
