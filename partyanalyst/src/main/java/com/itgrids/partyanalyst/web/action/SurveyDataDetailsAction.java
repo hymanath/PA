@@ -1365,7 +1365,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			Long constituencyId = jObj.getLong("constituencyId");
 			String searchDate = jObj.getString("searchDate");
 			Long userType = jObj.getLong("userType");
-			voterVerificationList = 	surveyDataDetailsService.getSurveyVotersList(constituencyId,boothId,surveyUserId,searchDate,userType);			
+			voterVerificationList = 	surveyDataDetailsService.getSurveyVotersList(constituencyId,boothId,surveyUserId,searchDate,userType,null);			
 		} catch (Exception e) {
 			LOG.error(" exception occured in getSurveyVotersList() ,ConstituencyDetailsAction class",e);
 		}
@@ -1387,7 +1387,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			Long surveyUserId = jObj.getLong("surveyUserId");
 			returnList = 	surveyDataDetailsService.getSurveyUserNameAndPasswordByLeader(surveyUserId);			
 		} catch (Exception e) {
-			LOG.error(" exception occured in getSurveyVotersList() ,ConstituencyDetailsAction class",e);
+			LOG.error(" exception occured in getSurveyUserNameAndPasswordByLeader() ,ConstituencyDetailsAction class",e);
 		}
 		return Action.SUCCESS;
 		
@@ -1423,6 +1423,8 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 					vo.setBoothId(obj.getLong("boothId"));
 					vo.setCasteId(obj.getLong("casteId"));
 					vo.setUserTypeId(obj.getLong("userType"));
+					vo.setHamletCount(obj.getLong("isHamletMatched"));
+					vo.setHamletId(obj.getLong("hamletId"));
 					verifiedList.add(vo);
 					
 				}
@@ -1451,7 +1453,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			
 			surveyUserConstituencies = surveyDataDetailsService.getsurveyuserConstituencies();			
 		} catch (Exception e) {
-			LOG.error(" exception occured in getSurveyVotersList() ,ConstituencyDetailsAction class",e);
+			LOG.error(" exception occured in getsurveyuserConstituencies() ,ConstituencyDetailsAction class",e);
 		}
 		return Action.SUCCESS;
 		
@@ -2046,7 +2048,7 @@ public String getPanchayatsStatusDetails()
 	  
 	  return Action.SUCCESS;
   }
-  /*
+  
   public String getCastewiseSurveyVotersList(){
 		try {
 			HttpSession session = request.getSession();
@@ -2063,16 +2065,16 @@ public String getPanchayatsStatusDetails()
 			Long constituencyId = jObj.getLong("constituencyId");
 			String searchDate = jObj.getString("searchDate");
 			Long casteStateId = jObj.getLong("casteId");
-			
-			voterVerificationList = 	surveyDataDetailsService.getSurveyVotersList(constituencyId,boothId,surveyUserId,searchDate,casteStateId);	
+			Long userType = jObj.getLong("userType");
+			voterVerificationList = 	surveyDataDetailsService.getSurveyVotersList(constituencyId,boothId,surveyUserId,searchDate,userType,casteStateId);	
 			
 		} catch (Exception e) {
-			LOG.error(" exception occured in getSurveyVotersList() ,ConstituencyDetailsAction class",e);
+			LOG.error(" exception occured in getCastewiseSurveyVotersList() ,ConstituencyDetailsAction class",e);
 		}
 		return Action.SUCCESS;
   }
   
-  */
+  
   public String getLeaderUsers()
 	{
 		try
