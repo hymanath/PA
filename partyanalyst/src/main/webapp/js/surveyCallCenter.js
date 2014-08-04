@@ -3585,7 +3585,7 @@ function buildCasteWiseVotersList(results,userId,boothId,date,casteId1,webConstI
 		}
 		
 		str +='<div id="scrollBtnDiv" >';
-		str +='<a id="updateBtnInNewWndow" style="position: fixed; left :0px; top: 320px;" href="javascript:{updateVoterDetlsStatus('+userId+','+boothId+','+casteId1+','+webConstId1+','+date+',\''+isCasteAvalbl+'\',\''+isMobileAvalbl+'\','+userType+');}" class="btn btn-primary"> Update Details </a>';
+		str +='<a id="updateBtnInNewWndow" style="position: fixed; left :0px; top: 320px;" href="javascript:{updateVoterDetlsStatus('+userId+','+boothId+','+casteId1+','+webConstId1+',\''+date+'\','+userType+');}" class="btn btn-primary"> Update Details </a>';
 		str +='</div>';
 
 		$('#scrollBtnDiv').show();
@@ -3671,7 +3671,7 @@ $('#finalInputDiv').html('');
 		str +='<div class="offset1">';
 			str +='<div class="row-fluid">';
 				str +='<div class="span6">';
-					str +='<button class="btn btn-success" onClick="saveVoterCasteAndMobileDetals(\''+voterIdsArr+'\','+userId+','+boothId+','+casteId1+','+webConstId1+','+date+','+userType+');" style="float:right;"> Submit </button>';
+					str +='<button class="btn btn-success" onClick="saveVoterCasteAndMobileDetals(\''+voterIdsArr+'\','+userId+','+boothId+','+casteId1+','+webConstId1+',\''+date+'\','+userType+');" style="float:right;"> Submit </button>';
 				str +='</div>';
 			str +='</div>';
 		str +='</div>';
@@ -3773,7 +3773,7 @@ function saveVoterCasteAndMobileDetals(voterIds,userId,boothId,casteId1,webConst
 			if(result != null && result.resultCode == 0){
 				$('#saviStatusDiv').html(' <span style="color:#008000;">Survey details successfully updated...');
 				$("#editStatusDiv").dialog('close');
-				getCasteWiseVotersListByCaste(casteId1,webConstId1,userId,boothId,date);
+				getCasteWiseVotersListByCaste(casteId1,webConstId1,userId,boothId,date,userType);
 			}
 			else{
 				$('#finalErrDiv').html(' Error occured while updating details.');
