@@ -186,6 +186,14 @@ ul.as-selections1 li {
 						<!--<div class="span1 btn-block btn btn-large">
 							<h4 class=" text-center ">Who</h4>					
 						</div>-->
+						<div>
+							<label>select state</label>
+							<select id="statelist" onchange="getPartiesList(this.value);getDistrictsForAState(this.value);getConstituenciesForAState(this.value);">
+								<option value="0">All</option>
+								<option value="1">Andhra Pradesh</option>
+								<option value="36">Telangana</option>
+							</select>
+						</div>
 						<div class="span4">
 							<label>Select Party<span class="requiredFont">*</span></label>
 							<select class="input-block-level" id="partyList" onchange="getCandidatesOfSelectedParty(this.value,'candidateId');">	
