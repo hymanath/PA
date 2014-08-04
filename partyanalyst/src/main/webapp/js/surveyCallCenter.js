@@ -696,7 +696,7 @@ $('#searchDataImg').show();
 				str +='</table>';
 				
 			str +='<div id="scrollBtnDiv" >';
-			str +='<a id="updateBtnInNewWndow" style="position: fixed; left :0px; top: 320px;" href="javascript:{updateVoterDetlsStatus('+userId+','+boothId+',0,'+webConstId+','+date+');}" class="btn btn-primary"> Update Details </a>';
+			str +='<a id="updateBtnInNewWndow" style="position: fixed; left :0px; top: 320px;" href="javascript:{updateVoterDetlsStatus('+userId+','+boothId+',0,'+webConstId+','+date+','+userType+');}" class="btn btn-primary"> Update Details </a>';
 			str +='</div>';				
 		}
 		else
