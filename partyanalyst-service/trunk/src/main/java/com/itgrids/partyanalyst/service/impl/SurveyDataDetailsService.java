@@ -33,6 +33,8 @@ import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
+import com.itgrids.partyanalyst.dao.IPartialBoothPanchayatDAO;
 import com.itgrids.partyanalyst.dao.ISurveyCallStatusDAO;
 import com.itgrids.partyanalyst.dao.ISurveyCompletedLocationsDetailsDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
@@ -59,6 +61,7 @@ import com.itgrids.partyanalyst.dto.SurveyReportVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.dto.UserBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.VerificationCompVO;
+import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.SurveyCallStatus;
 import com.itgrids.partyanalyst.model.SurveyDetailsInfo;
 import com.itgrids.partyanalyst.model.SurveySurveyorType;
@@ -155,7 +158,14 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	private ISurveyDetailsService surveyDetailsService;
 	
 	@Autowired
-	IVerifierBoothPercentageDAO verifierBoothPercentageDAO;
+	private IVerifierBoothPercentageDAO verifierBoothPercentageDAO;
+	
+	@Autowired
+	private IPanchayatHamletDAO panchayatHamletDAO;
+
+	@Autowired
+	private IPartialBoothPanchayatDAO partialBoothPanchayatDAO;
+	
 	
 	/**
 	 * This Service is used for saving the user type details
@@ -3398,7 +3408,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			dcWmMap.put(verificationCompVO.getVoterId(), VO);
 		}
 	}
-	 public List<SurveyReportVO> getSurveyVotersList(Long constituencyId, Long boothId,Long surveyUserId,String searchDate,Long userType){
+	 public List<SurveyReportVO> getSurveyVotersList(Long constituencyId, Long boothId,Long surveyUserId,String searchDate,Long userType,Long casteStateId){
 		List<SurveyReportVO> retultList = new ArrayList<SurveyReportVO>();
 		try {
 			
@@ -3419,10 +3429,10 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				surveyUserids.add(surveyUserId);
 				//List<Object[]> votersLsit = surveyDetailsInfoDAO.getVoterDetailsByBoothId(boothId,ids,date);
 				
-				List<Object[]> votersLsit = surveyDetailsInfoDAO.getVotersDetailsByBoothId(boothId,surveyUserids,date);
+				List<Object[]> votersLsit = surveyDetailsInfoDAO.getVotersDetailsByBoothId(boothId,surveyUserids,date,casteStateId);
 				List<Object[]> verifiedList = null;
 				Map<Long,GenericVO> dcWmMap = null;
-				if(userType.longValue() == 1l)
+				if(userType != null && userType.longValue() == 1l)
 				{
 					 verifiedList = surveyCallStatusDAO.getSurveyCallDtalsByboothId(boothId,surveyUserId);
 				}
@@ -3629,7 +3639,55 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				allCastesVO.setGenericVOList(stateCasteList);
 			}
 			
+			List<Booth> boothList = boothDAO.getBoothDetailsByBoothId(boothId);
+			List<GenericVO> hamletsList = new ArrayList<GenericVO>(0);
+			if(boothList != null && boothList.size()>0)
+			{
+				for (Booth booth : boothList) {
+					Long panchayatId = booth.getPanchayat().getPanchayatId();
+					List<Long> panchayats = new ArrayList<Long>(0);
+					panchayats.add(panchayatId);
+					List<Object[]> hamlets = panchayatHamletDAO.getAllHamletsOfPanchayats(panchayats);
+					
+					if(hamlets != null && hamlets.size()>0)
+					{
+						for (Object[] hamlet : hamlets) {
+							
+							GenericVO hamletVO = new GenericVO();
+							hamletVO.setId((Long) hamlet[0]);
+							hamletVO.setName(hamlet[1].toString());
+							
+							hamletsList.add(hamletVO);
+							
+						}
+					}
+					
+					
+				}
+			}
+			
+			List<Object[]> partialHamlets = partialBoothPanchayatDAO.getPartialHamletsForBooth(boothId);
+			
+			if(partialHamlets != null && partialHamlets.size()>0)
+			{
+				for (Object[] hamlet : partialHamlets) {
+					
+					GenericVO hamletVO = new GenericVO();
+					hamletVO.setId((Long) hamlet[0]);
+					hamletVO.setName(hamlet[1].toString());
+					
+					hamletsList.add(hamletVO);
+					
+				}
+			}
+			
+			if(hamletsList != null && hamletsList.size()>0)
+			{
+				allCastesVO.setGenericVOList1(hamletsList);
+			}
+			
 			retultList.add(allCastesVO);
+			
 			
 		} catch (Exception e) {
 			retultList = null;
@@ -3641,9 +3699,21 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	 
 	public void saveCallCenterForDataCollector(SurveyReportVO surveyReportVO,Long userId)
 	{
+
+		
 		SurveyCallStatus surveyCallStatus = null;
 		
-		Long surveyCallStatusId = surveyCallStatusDAO.getSurveyCallDtalsByVoterId(surveyReportVO.getVoterId());
+		SurveyCallStatus surveyCallStatu = surveyCallStatusDAO.getSurveyCallStatusByVoterId(surveyReportVO.getVoterId());
+		
+		Long surveyCallStatusId = 0L;
+		String mobileNoStatus = null;
+		
+		if(surveyCallStatu != null)
+		{
+			surveyCallStatusId = surveyCallStatu.getSurveyCallStatusId();
+			mobileNoStatus = surveyCallStatu.getMobileNoStatus();
+		}
+		
 		
 		if(surveyCallStatusId != null && surveyCallStatusId != 0 )
 		{				
@@ -3653,12 +3723,12 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		{
 			surveyCallStatus = new SurveyCallStatus();
 			//surveyCallStatus.setSurveyUser(surveyUserDAO.get(surveyReportVO.getUserid()));
-			
+			surveyCallStatus.setSurveyUserId(surveyReportVO.getUserid());
 			surveyCallStatus.setVoterId(surveyReportVO.getVoterId());
 			//surveyCallStatus.setVoter(voterDAO.get(surveyReportVO.getVoterId()));
 			surveyCallStatus.setInsertedDate(dateUtilService.getCurrentDateAndTime());
 		}
-		surveyCallStatus.setSurveyUserId(surveyReportVO.getUserid());
+		
 		
 		surveyCallStatus.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
 		//surveyCallStatus.setBooth(boothDAO.get(surveyReportVO.getBoothId()));
@@ -3666,14 +3736,17 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		surveyCallStatus.setUserId(userId);
 		//surveyCallStatus.setUser(userDAO.get(userId));
 		
-		if(surveyReportVO.getMobileNo().equalsIgnoreCase("2")){
-			surveyCallStatus.setMobileNoStatus("Y");
-		}
-		else if(surveyReportVO.getMobileNo().equalsIgnoreCase("6")){
-			surveyCallStatus.setMobileNoStatus(null);
-		}
-		else{
-			surveyCallStatus.setMobileNoStatus("N");
+		if(mobileNoStatus == null)
+		{
+			if(surveyReportVO.getMobileNo().equalsIgnoreCase("2")){
+				surveyCallStatus.setMobileNoStatus("Y");
+			}
+			else if(surveyReportVO.getMobileNo().equalsIgnoreCase("6")){
+				surveyCallStatus.setMobileNoStatus(null);
+			}
+			else{
+				surveyCallStatus.setMobileNoStatus("N");
+			}								
 		}
 		
 		if(surveyReportVO.getMatchedCount().toString().equalsIgnoreCase("1") ){
@@ -3761,7 +3834,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				protected void doInTransactionWithoutResult(TransactionStatus arg0) {
 					
-					DateUtilService dateUtilService = new DateUtilService();
+					//DateUtilService dateUtilService = new DateUtilService();
 					
 					
 					if(verifiedList != null && verifiedList.size()>0){
