@@ -10,12 +10,15 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import com.itgrids.partyanalyst.dto.FinalSurveyReportVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyCompletionDetailsVO;
 import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
+import com.itgrids.partyanalyst.service.ISurveyCompletedDetailsService;
 import com.itgrids.partyanalyst.service.impl.SurveyDashBoardService;
 import com.itgrids.partyanalyst.service.impl.SurveyDataDetailsService;
 import com.opensymphony.xwork2.Action;
@@ -38,8 +41,20 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 	private List<String> casteCollectedDates;
 	private Long constituencyId;
 	private List<SurveyReportVO> verifiedBooths;
+	private List<FinalSurveyReportVO> returnList;
+	
+	@Autowired
+	ISurveyCompletedDetailsService surveyCompletedDetailsService ;
 	
 	
+	public List<FinalSurveyReportVO> getReturnList() {
+		return returnList;
+	}
+
+	public void setReturnList(List<FinalSurveyReportVO> returnList) {
+		this.returnList = returnList;
+	}
+
 	public List<SurveyReportVO> getVerifiedBooths() {
 		return verifiedBooths;
 	}
@@ -396,6 +411,22 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 			
 			Long userId = jObj.getLong("userId");
 			casteCollectedDates = surveyDashBoardService.getCasteCollectedDatesByUserId(userId);
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+		
+	}
+	
+	public String finalDeselectionReport()	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			
+			
+			returnList = surveyCompletedDetailsService.finalDeselectionReport(jObj.getLong("constituencyId"));
 			
 		}catch(Exception e)
 		{
