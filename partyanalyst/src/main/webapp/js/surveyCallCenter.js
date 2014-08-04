@@ -3205,6 +3205,50 @@ function buildMatchecdUnMatchedDetails(result)
 	}
 	str += '</tbody>';
 	str += '</table>';
+	
+	str += '<table class="table table-bordered m_top20 table-hover table-striped" id="matchedUnMatchedTable1" style="display:none;">';
+	str += '<thead class="alert alert-success">';
+	str += '<tr>';
+	str += '<th>BOOTH</th>';
+	str += '<th>DC NAME</th>';
+	str += '<th>DC DATE</th>';
+	str += '<th>DV NAME</th>';
+	str += '<th>DV DATE</th>';
+	str += '<th>TOTAL</th>';
+	str += '<th>MATCHED</th>';
+	str += '<th>MATCHED %</th>';
+	str += '<th>UN MATCHED</th>';
+	str += '<th>UN MATCHED %</th>';
+	str += '<th>NOT VERIFIED</th>';
+	str += '<th>NOT VERIFIED %</th>';
+	str += '</tr>';
+	str += '</thead><tbody>';
+	for(var i in result)
+	{
+		str += '<tr>';
+		if(result[i].matchedList[0] != null) 
+		str+= '<td>'+result[i].matchedList[0].partNo+'</td>';
+		else if(result[i].unMatchedList[0] != null)
+		str+= '<td>'+result[i].unMatchedList[0].partNo+'</td>';
+		else
+		str+= '<td>'+result[i].notVerifiedList[0].partNo+'</td>';
+		str+= '<td>'+result[i].surveyUser+'</td>';
+		str+= '<td>'+result[i].date+'</td>';
+		str+= '<td>'+result[i].verifierUser+'</td>';
+		str+= '<td>'+result[i].verifierDate+'</td>';
+		str+= '<td>'+result[i].totalCount+'</td>';
+		str+= '<td>'+result[i].matchedCount+'</td>';
+		str+= '<td>'+(Math.round(result[i].matchedCount * 100)/result[i].totalCount).toFixed(2)+'</td>';
+		str+= '<td>'+result[i].unMatchedCount+'</td>';
+		str+= '<td>'+(Math.round(result[i].unMatchedCount * 100)/result[i].totalCount).toFixed(2)+'</td>';
+		str+= '<td>'+result[i].notVerifiedCount+'</td>';
+		str+= '<td>'+(Math.round(result[i].notVerifiedCount * 100)/result[i].totalCount).toFixed(2)+'</td>';
+		str += '</tr>';
+	}
+	str += '</tbody>';
+	str += '</table>';
+	
+	
 	$('#tableForMatchedAndUnMatched').html(str);
 	$('#matchedUnMatchedTable').dataTable({
 		"iDisplayLength": 30,
