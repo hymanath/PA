@@ -100,6 +100,11 @@
 			.errorLgreen{background:lightgreen;}
 			.errorGreen{background:green;}
 	
+	.ui-icon-closethick 
+		{
+			margin-top:-8px !important;
+			margin-left:-8px !important;
+		}
 		</style>
 		
   </head>
@@ -134,7 +139,7 @@
 					<div class="span12 widgetservey_Red m_top20">
 							<h4> Web Monitoring </h4>	
 						
-						 <img src='images/Loading-data.gif' class="offset5"  id="searchDataImg" style="width:70px;height:60px;display:none;"/>
+						 
 						<div class="row-fluid">
 							<div id="collecedCountDiv" class="span4" style="background-color: #e9e9e9; padding: 5px;display:none;margin-top:25px;margin-bottom:10px;" class="errClass"></div>
 							<div id="verifiedCountDiv" class="span4" style="background-color: #e9e9e9; padding: 5px;display:none;margin-top:25px;margin-bottom:10px;" class="errClass"></div>
@@ -161,10 +166,15 @@
 						<div class="row-fluid">
 							<div id="casteInfoDiv" style="background-color: #e9e9e9; padding: 5px;display:none;margin-top:25px;margin-bottom:25px;" class="errClass"></div>	
 						</div>
-						
+						<img src='images/Loading-data.gif' class="offset5"  id="searchDataImg" style="width:70px;height:60px;display:none;"/>
 						<div class="row-fluid">
 							<div id="voterInfoDIv" class="errClass" ></div>	
 						</div>
+						
+						<div id="editStatusDiv">
+							<div id="finalInputDiv" style="border-radius:5px;background-color:#E9E9E9;padding:10px;"></div>
+						</div>
+						
 					</div>
 				</div>
 			</div>
@@ -402,14 +412,14 @@
 					
 						<!--<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getReportForConstituency();"> Get Report </button> </div>-->
 						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getBoothsStatusDetailsOfConstituency();"> Get Report </button> </div>
-						<div class="row-fluid " id= "tableForMatchedAndUnMatched" style="margin-top:20px;overflow-x: scroll;"></div>
+						<div class="row-fluid " id= "tableForMatchedAndUnMatched" style="margin-top:20px;"></div>	
 						<div class="row-fluid " id= "basicStatusReport" style="margin-top:20px;"></div>	
 						<img src='images/Loading-data.gif' class="offset5 hide"  id="stateStatusAjax" style="width:70px;height:60px;"/>	</img>				
 						<div class="row-fluid" id="panchayatsStatusDiv"></div>
 							<img src='images/Loading-data.gif' class="offset5"  id="statusAjaxImg" style="width:70px;height:60px;display:none;"/>
 						<div class="row-fluid " id= "tableDtailsDiv" style="margin-top:20px;"></div>
 						<div class="row-fluid" id="panchayatDetailsDiv" style="margin-top:20px;"></div>
-						
+
 					</div>
 				</div>
 				
