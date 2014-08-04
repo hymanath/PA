@@ -102,8 +102,15 @@ public class SurveyReportVO {
 	private String wmCaste;
 	private String status;
 	private String MobileNumber; 
-	
-	
+	private Long houseNoCount;
+		
+	public Long getHouseNoCount() {
+		return houseNoCount;
+	}
+	public void setHouseNoCount(Long houseNoCount) {
+		this.houseNoCount = houseNoCount;
+	}
+		
 	public List<GenericVO> getGenericVOList1() {
 		return genericVOList1;
 	}

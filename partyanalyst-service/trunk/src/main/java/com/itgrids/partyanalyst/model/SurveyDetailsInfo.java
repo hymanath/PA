@@ -58,7 +58,7 @@ public class SurveyDetailsInfo
 	private Integer statusId;
 	private Long surveySurveyorTypeId;
 	//is_houseNO_point
-	private String HouseNoPoint;
+	private String houseNoPoint;
 	private String isDelete;
 	
 	private Long wardId;
@@ -276,10 +276,10 @@ public class SurveyDetailsInfo
 	}
 	@Column(name="is_houseNO_point")
 	public String getHouseNoPoint() {
-		return HouseNoPoint;
+		return houseNoPoint;
 	}
 	public void setHouseNoPoint(String houseNoPoint) {
-		HouseNoPoint = houseNoPoint;
+		this.houseNoPoint = houseNoPoint;
 	}
 	/*public String getIsHouseNoPoint() {
 		return isHouseNoPoint;

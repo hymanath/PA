@@ -4033,6 +4033,23 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 						 
 					 }
 				} 
+				
+				List<Object[]> list5 = surveyDetailsInfoDAO.getHouseNosMappedCount(userIDs,boothIDs,userTypeId,date1,date2);
+				if(list5 != null && list5.size() > 0)
+				{
+					for(Object[] params : list5)
+					 {
+						 SurveyReportVO user = getMatchedVo(resultList,(Long)params[0]);
+						 if(user != null)
+						 {
+							 SurveyReportVO boothVo = getMatchedBoothVo(user.getSubList(),(Long)params[1]);
+							 if(boothVo != null)
+							 boothVo.setHouseNoCount((Long)params[2]);
+						 }
+						 
+					 }
+				} 
+				
 				List<Object[]> statusList = null;
 				if(userTypeId.longValue() == 1l)
 				 statusList =surveyCallStatusDAO.getStatusListForUser(userIDs,boothIDs,userTypeId);
