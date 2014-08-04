@@ -129,7 +129,7 @@ public class PartyActivitiesAction  implements ServletRequestAware{
 		 RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
 		 if(regVO == null)
 			 return Action.ERROR;
-		districts = staticDataService.getDistricts(1l);
+		districts = staticDataService.getDistricts(0l);
 		return Action.SUCCESS;
 	}
 
@@ -276,8 +276,8 @@ public class PartyActivitiesAction  implements ServletRequestAware{
 		 RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
 		 if(regVO == null)
 			 return Action.ERROR;
-		districts = staticDataService.getDistricts(1l);
-		ConstituencyInfoVO infoVO = staticDataService.getConstituenciesByElectionTypeAndStateId(2l, 1l);
+		districts = staticDataService.getDistricts(0l);
+		ConstituencyInfoVO infoVO = staticDataService.getConstituenciesByElectionTypeAndStateId(2l,0l);
 		assemblies = infoVO.getConstituencies();
 	  }catch(Exception e){
 		  LOG.error("Exception rised in activitiesAnalysis ",e);
@@ -298,16 +298,16 @@ public class PartyActivitiesAction  implements ServletRequestAware{
 		
 		return Action.SUCCESS;
 	}
-	public String getAllConstituencyByStateId()
+	public String getconstituenciesbyStateId()
 	{
-		LOG.info("Enter Into getAllConstituencyByStateId() method in PartyActivitiesAction class");
+		LOG.info("Enter Into getconstituenciesbyStateId() method in PartyActivitiesAction class");
 		try {
 			jObj = new JSONObject(getTask());
-			
-			constituencyInfoVO = staticDataService.getConstituenciesByElectionTypeAndStateId(jObj.getLong("elctionTypeId"),jObj.getLong("stateId"));
-		} catch (ParseException e) {
-			LOG.error("Exception rised in getAllDistrictsByStateId() in PartyActivitiesAction "+e);
+			ConstituencyInfoVO infoVO =  staticDataService.getConstituenciesByElectionTypeAndStateId(2l,jObj.getLong("stateId"));
+			assemblies = infoVO.getConstituencies();
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getconstituenciesbyStateId() method in PartyActivitiesAction, Exception - "+e);
 		}
-		return Action.SUCCESS;
+		return Action.SUCCESS;	
 	}
 }
