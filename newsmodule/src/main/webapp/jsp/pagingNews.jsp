@@ -42,12 +42,10 @@ font-size:20px;
 
 .border
  { 
-  list-style-type:none;
-  border: 1px solid #D3D3D3;
-  margin-top:46px;
+
   padding:10px;
-   height: 233px;
-   margin-bottom: -31px;
+   
+   margin-bottom: 3px;
  }
  
 </style>
@@ -189,7 +187,7 @@ function buildPaginatedNews(results,jsObj){
 		
 		str+="<div class='row-fluid'>";
 		str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{getNewsDetailsByContentId("+results[i].contentId+")}'>";
-		str+="<img id='myImg' style='width:100%' src="+results[i].displayImagePath+" onerror='imgError(this)'></a>";
+		str+="<img id='myImg' style='width:146px;height:113px;'  src="+results[i].displayImagePath+" onerror='imgError(this)'></a>";
 		if(descSource)
 		{
 			str+="<p class='span8 enadu fontStyle'>"+results[i].description+"</p>";
@@ -237,7 +235,7 @@ function buildPaginatedNews(results,jsObj){
 
 function imgError(image) {
     image.onerror = "";
-    image.src = "images/TDP.PNG";
+    image.src = "images/no_image.gif";
     return true;
 }
 

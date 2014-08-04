@@ -70,4 +70,6 @@ public interface IDelimitationConstituencyDAO extends GenericDao<DelimitationCon
 			String areaType);
 	
 	public List<Object[]> findConstituencyiOrder(List<Long> constituencyIds);
+	
+	public List<Object[]> findConstituencys(Long electionScope);
 }

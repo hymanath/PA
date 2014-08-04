@@ -24,6 +24,8 @@
 	    <property name="categoryDAO" ref="categoryDAO" /> 
 	    <property name="newsResponseDAO" ref="newsResponseDAO" /> 
 	    <property name="candidateDetailsService" ref="candidateDetailsService" /> 
+	    <property name="filePathsDAO" ref="filePathsDAO" /> 
+	    
 	</bean>
 	
 	<!--<bean name="voterReportService" class="com.itgrids.partyanalyst.service.impl.VoterReportService" >
@@ -1804,7 +1806,9 @@
    
    <bean name="newsReportService" class="com.itgrids.partyanalyst.service.impl.NewsReportService">
    		<property name="candidatePartyFileDAO" ref="candidatePartyFileDAO" /> 
-   		<property name="partyDAO" ref="partyDAO" /> 		
+   		<property name="partyDAO" ref="partyDAO" />
+   		<property name="districtDAO" ref="districtDAO" /> 
+   		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />		
    </bean>
 </beans>		
 	

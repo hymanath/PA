@@ -191,4 +191,13 @@ public List<Object[]> getAllDistrictInfoDetails(){
 		query.setParameterList("stateIds", stateIds);
 		return query.list();
 	}
+	
+	public List<Object[]> getDistrictsByStateId(Long stateId)
+	{
+	  Query query = getSession().createQuery(" select distinct model.districtId,model.districtName from District model where model.state.stateId =:stateId " +
+	  		" order by model.districtId ");
+	  
+	  query.setParameter("stateId", stateId);
+	  return query.list();
+	}
 }
