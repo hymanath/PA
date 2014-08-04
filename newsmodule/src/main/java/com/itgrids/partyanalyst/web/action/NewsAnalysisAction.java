@@ -38,7 +38,7 @@ public class NewsAnalysisAction extends ActionSupport implements ServletRequestA
 	JSONObject jObj = null;
 	private INewsAnalysisService newsAnalysisService;
 	private IStaticDataService staticDataService;
-	private List<SelectOptionVO> districtsList,parlConstiList,assemConstiList;
+	private List<SelectOptionVO> districtsList,parlConstiList,assemConstiList,districtsList1,assemConstiList1;
 	private HttpSession session ; 
 	private NewsAnalysisVO result;
 	private Long sourceCandId;
@@ -95,6 +95,22 @@ public class NewsAnalysisAction extends ActionSupport implements ServletRequestA
 	 */
 	public void setResultStatus(ResultStatus resultStatus) {
 		this.resultStatus = resultStatus;
+	}
+
+	public List<SelectOptionVO> getAssemConstiList1() {
+		return assemConstiList1;
+	}
+
+	public void setAssemConstiList1(List<SelectOptionVO> assemConstiList1) {
+		this.assemConstiList1 = assemConstiList1;
+	}
+
+	public List<SelectOptionVO> getDistrictsList1() {
+		return districtsList1;
+	}
+
+	public void setDistrictsList1(List<SelectOptionVO> districtsList1) {
+		this.districtsList1 = districtsList1;
 	}
 
 	public String getTask() {
@@ -376,12 +392,38 @@ public class NewsAnalysisAction extends ActionSupport implements ServletRequestA
         	return "input";
 		}
 		
-		ConstituencyInfoVO constituencyInfoVO = staticDataService.getConstituenciesByElectionTypeAndStateId(2L,1L);
+		ConstituencyInfoVO constituencyInfoVO = staticDataService.getConstituenciesByElectionTypeAndStateId(2L,0L);
 		 ConstituencyInfoVO parliamantConstis = staticDataService.getConstituenciesByElectionTypeAndStateId(1L,1L);
-		 districtsList =  staticDataService.getDistricts(1l);
+		 districtsList =  staticDataService.getDistricts(0l);
 		 parlConstiList = parliamantConstis.getConstituencies();
 		 assemConstiList = constituencyInfoVO.getConstituencies();
 		 
+		return Action.SUCCESS;
+	}
+	public String getDistricts() 
+	{
+		
+		try {
+			jObj = new JSONObject(getTask());
+			districtsList1 =  staticDataService.getDistricts(jObj.getLong("stateId"));
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String getAssemblies() 
+	{
+		
+		try {
+			jObj = new JSONObject(getTask());
+			ConstituencyInfoVO constituencyInfoVO = staticDataService.getConstituenciesByElectionTypeAndStateId(2L,jObj.getLong("stateId"));
+			assemConstiList1 = constituencyInfoVO.getConstituencies();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
 		return Action.SUCCESS;
 	}
 	
