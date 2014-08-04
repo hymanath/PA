@@ -502,16 +502,6 @@ public class SurveyCompletedDetailsService implements
 		return resultVO;
 	}
 	
-	private SurveyDashBoardVO getMatchedDashBoardVOByLocationId(List<SurveyDashBoardVO> resultList,Long locationId)
-	{
-		for(SurveyDashBoardVO resultVO:resultList)
-			if(resultVO.getLocationId().equals(locationId))
-				return resultVO;
-		return null;
-	
-		
-	}
-	
 	private SurveyDashBoardVO getMatchedDashBoardVOByConstituencyId(List<SurveyDashBoardVO> resultList,Long ConstituencyId)
 	{
 		for(SurveyDashBoardVO resultVO:resultList)
