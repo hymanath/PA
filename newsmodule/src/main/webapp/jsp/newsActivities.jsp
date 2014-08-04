@@ -698,7 +698,15 @@ function validateFields()
 	}
 }
 
-
+function removeAssemblies(){
+	$("#assembSelReportId option").remove();
+	 $('#assembSelReportId').multiselect({	
+			multiple: true,
+			selectedList: 1,
+			hide: "explode"	
+	   }).multiselectfilter({   
+	}); 
+}
 </script>
 
 <body>
@@ -715,7 +723,7 @@ function validateFields()
 		
 		<div class="offset4">
 			<label><strong>Select State<font color="red"> *</font></strong></label>
-			<select class="span4" id="stateIds" onchange="getPartiesList(this.value);getDistrictsForAState(this.value)">
+			<select class="span4" id="stateIds" onchange="getDistrictsForAState(this.value);removeAssemblies();">
 				<option value="0">ALL</option>
 				<option value="1">Andhra Pradesh</option>
 				<option value="36">Telangana</option>

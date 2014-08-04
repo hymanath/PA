@@ -847,6 +847,9 @@ function createNewParty()
 	  <tr class="regionClass regSelReport">
         <td>Select Level</td><td><select id="reportRegionLevel" onchange="showCorrespondingLocations();"><option value="1">STATE</option><option value="2">DISTRICT</option><option value="3">PARLIAMENT CONSTITUENCY</option><option value="4">ASSEMBLY CONSTITUENCY</option></select></td>
       </tr>
+       <tr class="regionClass stateSelReport">
+        <td>Select State</td><td><s:select name="stateSelReport" id="stateSelReportId" list="statesList" theme="simple" listKey="id" listValue="name"/></td>
+      </tr>
 	  <tr class="regionClass districtSelReport">
         <td>Select District</td><td><s:select name="districtSelReport" id="districtSelReportId" list="districtsList" theme="simple" listKey="id" listValue="name"/></td>
       </tr>
@@ -967,6 +970,11 @@ function createNewParty()
 <td>
 <s:select name="assembSelReport"  id="assembSelReportId" list="assemConstiList1" theme="simple" listKey="id" listValue="name"/></td>
 </tr>
+<tr>
+<td></td>
+<td>
+<input type="checkbox" id="isMinisterId3"> &nbsp; Check If Candidate Is Minister</td>
+</tr>
 </table>
 <input type="button" value="submit" class="btn" id="createCandidateId" key="'+key+'" partyListId="'+partyListId+'"/>
 
@@ -1078,6 +1086,11 @@ function createNewParty()
 <td>
 <s:select name="assembSelReport"  id="assembSelReportIdForCreate" list="assemConstiList1" theme="simple" listKey="id" listValue="name"/></td>
 </tr>
+<tr>
+<td></td>
+<td>
+<input type="checkbox" id="isMinisterId1"> &nbsp; Check If Candidate Is Minister</td>
+</tr>
 </table>
 <input type="button" value="submit" class="btn" id="createCandidateId1"/>
 </div>
@@ -1122,6 +1135,11 @@ function createNewParty()
 <td>Constituency</td>
 <td>
 <s:select name="assembSelReport"  id="editassembSelReportId" list="assemConstiList1" theme="simple" listKey="id" listValue="name"/></td>
+</tr>
+<tr>
+<td></td>
+<td>
+<input type="checkbox" id="isMinisterId2"> &nbsp; Check If Candidate Is Minister</td>
 </tr>
 </table>
 <input type="button" value="Update" class="btn" onclick="updateExistingCandidate();" />
@@ -2902,8 +2920,8 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='    <div class="span5 well well-small">';
 		str+='<label><strong>Select Candidate</strong></label>';
 		str+='<div id="searchDiv"></div>';
-		str +='<div class="btn btn-mini pull-right " style="float: right; position: absolute; margin-top: -24px; margin-left: 260px;"> <a onclick="buildSearchDiv(11,0);"><i class="icon-search" title="Click here to Search Candidates"></i> </a></div>';
-		str +='<span class="btn btn-mini pull-right m_topN65"><img partylistid="partiesList" key="candidateListForParty" class="createCandidateCls createNewCandidate" title="Click Here To Create New Candidate" src="images/user.png"></span>';
+		str +='<div class="btn btn-mini pull-right " style="float: right; position: absolute; margin-top: -24px; margin-left: 260px; padding-top: 4px; padding-bottom: 3px;" onclick="buildSearchDiv(11,0);" title="Click here to Search Candidates"> <i class="icon-search" ></i> </div>';
+		str +='<span class="btn btn-mini pull-right m_topN65 createCandidateCls createNewCandidate" title="Click Here To Create New Candidate" partylistid="partiesList" key="candidateListForParty" ><img src="images/user.png"></span>';
 		str +='<select class="input-block-level" name="candidatePartyNewsVOList.sourceVOList[0].candidateId" id="candidateListForParty">';
 		str+='    <option value="0">Select Candidate</option>';
 		str+='</select>';
@@ -2930,8 +2948,8 @@ function uploadNewsForPartyAndCandidate(fileId)
 
 		str+='    <div class="span4 well well-small">';
 		str+='<label><strong>Select Candidate</strong></label> ';
-		str +='<div class="btn btn-mini pull-right " style="float: right; position: absolute; margin-top: -24px; margin-left: 190px;"> <a onclick="buildSearchDiv(22,0);"><i class="icon-search" title="Click here to Search Candidates"></i> </a></div>';
-		str +='<span class="btn btn-mini pull-right m_topN65"><img src="images/user.png" title="Click Here To Create New Candidate" class="createCandidateCls createNewCandidate" key="candidateListForPartyForNewsTo" partyListId="partiesListForWhome" ></span>';
+		str +='<div class="btn btn-mini pull-right " style="float: right; position: absolute; margin-top: -24px; margin-left: 190px;padding-top: 4px; padding-bottom: 3px;" onclick="buildSearchDiv(22,0);" title="Click here to Search Candidates"> <i class="icon-search"></i> </div>';
+		str +='<span class="btn btn-mini pull-right m_topN65 createCandidateCls createNewCandidate" title="Click Here To Create New Candidate" key="candidateListForPartyForNewsTo" partyListId="partiesListForWhome"><img src="images/user.png"  ></span>';
 		str +='<select id="candidateListForPartyForNewsTo" name="candidatePartyNewsVOList.destinationVOList[0].candidateId" class="input-block-level">';
 		str+='    <option value="0">Select Candidate</option>';
 		str+='</select>';
@@ -3233,8 +3251,8 @@ function addNewFrom(){
 
 		str+='    <div class="span5 well well-small">';
 		str+='<label><strong>Select Candidate</strong></label>';
-		str +='<div class="btn btn-mini pull-right " style="float: right; position: absolute; margin-top: -24px; margin-left: 260px;"> <a onclick="buildSearchDiv(3'+who+','+who+');"><i class="icon-search" title="Click here to Search Candidates"></i> </a></div>';
-		str +='<span class="btn btn-mini pull-right m_topN65"><img src="images/user.png" title="Click Here To Create New Candidate" class="createCandidateCls createNewCandidate" key="candidateListForParty'+who+'" partylistid="partiesList'+who+'"></span>';
+		str +='<div class="btn btn-mini pull-right " style="float: right; position: absolute; margin-top: -24px; margin-left: 260px;padding-top: 4px; padding-bottom: 3px;" onclick="buildSearchDiv(3'+who+','+who+');" title="Click here to Search Candidates"> <i class="icon-search" ></i></div>';
+		str +='<span class="btn btn-mini pull-right m_topN65 createCandidateCls createNewCandidate"  title="Click Here To Create New Candidate" key="candidateListForParty'+who+'" partylistid="partiesList'+who+'"><img src="images/user.png"></span>';
 		str +='<select class="input-block-level" name="candidatePartyNewsVOList.sourceVOList['+who+'].candidateId" id="candidateListForParty'+who+'" >';
 		str+='    <option value="0">Select Candidate</option>';
 		str+='</select>';
@@ -3275,8 +3293,8 @@ var str ='';
 
 		str+='    <div class="span4 well well-small">';
 		str+='<label><strong>Select Candidate</strong></label>';
-		str +='<div class="btn btn-mini pull-right " style="float: right; position: absolute; margin-top: -24px; margin-left: 190px;"> <a onclick="buildSearchDiv(4'+whome+','+whome+');"><i class="icon-search" title="Click here to Search Candidates"></i> </a></div>';
-		str +='<span class="btn btn-mini pull-right m_topN65"><img partylistid="partiesListForWhome'+whome+'" key="candidateListForPartyForNewsTo'+whome+'" class="createCandidateCls createNewCandidate" title="Click Here To Create New Candidate" src="images/user.png"></span>';
+		str +='<div class="btn btn-mini pull-right " style="float: right; position: absolute; margin-top: -24px; margin-left: 190px;padding-top: 4px; padding-bottom: 3px;" onclick="buildSearchDiv(4'+whome+','+whome+');" title="Click here to Search Candidates"> <i class="icon-search" ></i> </div>';
+		str +='<span class="btn btn-mini pull-right m_topN65 createCandidateCls createNewCandidate" partylistid="partiesListForWhome'+whome+'" key="candidateListForPartyForNewsTo'+whome+'" title="Click Here To Create New Candidate"><img  src="images/user.png"></span>';
 		str +='<select id="candidateListForPartyForNewsTo'+whome+'" name="candidatePartyNewsVOList.destinationVOList['+whome+'].candidateId" class="input-block-level" >';
 		str+='    <option value="0">Select Candidate</option>';
 		str+='</select>';
@@ -3892,7 +3910,11 @@ $("#createCandidateId").live("click",function(){
 	{
 		locationValue = $('#locationId option:selected').val();
 	}
-	 
+	
+	var isMinister = false;
+	if( $('#isMinisterId3').is(':checked')){
+		isMinister = true;
+	}
 	var jsObj =
 		{ 
             partyId : partyId,
@@ -3902,7 +3924,8 @@ $("#createCandidateId").live("click",function(){
 			designationId:designationId,
 			locationId : $('#locationId option:selected').val(),
 			locationValue : locationValue,
-			task:"saveCandidate"
+			task:"saveCandidate",
+			isMinister:isMinister
 		};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -3958,6 +3981,10 @@ $("#createCandidateId1").live("click",function(){
 	{
 		locationValue = $('#locationId1 option:selected').val();
 	}
+	var isMinister = false;
+	if( $('#isMinisterId1').is(':checked')){
+		isMinister = true;
+	}
 	
 	var jsObj =
 		{ 
@@ -3968,7 +3995,8 @@ $("#createCandidateId1").live("click",function(){
 			designationId:designationId,
 			locationId : $('#locationId1 option:selected').val(),
 			locationValue : locationValue,
-			task:"saveCandidate1"
+			task:"saveCandidate1",
+			isMinister:isMinister
 		};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -4152,17 +4180,22 @@ if(key == 'level'){
 function showCorrespondingLocations(){
  var loc = $("#reportRegionLevel").val();
  if(loc == 1){
-  showHideLocations(false,false,false);
+  showHideLocations(true,false,false,false);
  }else if(loc == 2){
-  showHideLocations(true,false,false);
+  showHideLocations(false,true,false,false);
  }else if(loc == 3){
-  showHideLocations(false,true,false);
+  showHideLocations(false,false,true,false);
  }else if(loc == 4){
-  showHideLocations(false,false,true);
+  showHideLocations(false,false,false,true);
  }
 }
 
-function showHideLocations(dist,pc,ac){
+function showHideLocations(state,dist,pc,ac){
+  if(state){
+	  $(".stateSelReport").show();
+  }else{
+     $(".stateSelReport").hide();
+  }
  if(dist){
   $(".districtSelReport").show();
  }else{

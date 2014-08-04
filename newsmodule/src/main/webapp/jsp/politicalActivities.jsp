@@ -402,7 +402,12 @@ function  getDistrictsByStateId(stateid){
 							for(var i in result){	
 							$('#districtSel').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 								}
-								$("#districtSel").multiselect("refresh");
+							$('#districtSel').multiselect({	
+								multiple: true,
+								selectedList: 1,
+								hide: "explode"	
+						   }).multiselectfilter({ });
+							 $(".ui-multiselect").css("width","220px");
 					}
 						});
 						

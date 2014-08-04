@@ -1149,20 +1149,51 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		return regionName;
 	}*/
 	
-	public List<Object> getAllAccessLocByDistrict(Long districtId)
+	public List<Object> getAllAccessLocByState(List<Long> stateIds)
 	{
 		List<Object> returnVal = new ArrayList<Object>();
+		List<SelectOptionVO> stateList = new ArrayList<SelectOptionVO>(); 
 		List<SelectOptionVO> regionList = new ArrayList<SelectOptionVO>(); 
 		List<SelectOptionVO> assemblyList = new ArrayList<SelectOptionVO>();
 		List<SelectOptionVO> districtList = new ArrayList<SelectOptionVO>();
 		
+		List<Object[]> stList = stateDAO.getAllStatesByIds(stateIds);;
+		
+		List<Object[]>  parlList =  constituencyDAO.getParliamentConstisByStateIds(stateIds);
+			
+		List<Object[]> conList =  constituencyDAO.getAssemblyConstisByStateIds(stateIds);
+			
+		List<Object[]> distList = districtDAO.getDistrictsByStateId(stateIds);
+		populateDataToVo(stList,stateList);
+		populateDataToVo(parlList,regionList);
+		populateDataToVo(conList,assemblyList);
+		populateDataToVo(distList,districtList);
+
+		returnVal.add(stateList);
+		returnVal.add(districtList);
+		returnVal.add(regionList);
+		returnVal.add(assemblyList);
+		return returnVal;
+	}
+	
+	public List<Object> getAllAccessLocByDistrict(Long districtId)
+	{
+		List<Object> returnVal = new ArrayList<Object>();
+		List<SelectOptionVO> stateList = new ArrayList<SelectOptionVO>(); 
+		List<SelectOptionVO> regionList = new ArrayList<SelectOptionVO>(); 
+		List<SelectOptionVO> assemblyList = new ArrayList<SelectOptionVO>();
+		List<SelectOptionVO> districtList = new ArrayList<SelectOptionVO>();
+		
+		List<Object[]> stList = districtDAO.getStateName(districtId);
 		List list = delimitationConstituencyAssemblyDetailsDAO.findParliamentConstituenciesByDistrictId(districtId, IConstants.DELIMITATION_YEAR);
 		List<Object[]> conList = delimitationConstituencyDAO.getLatestConstituenciesByElectionTypeAndYearInADistrict(2l,districtId, IConstants.DELIMITATION_YEAR);
 		List<Object[]> distList = districtDAO.getDistrictIdAndNameByDistrictId(districtId);
+		populateDataToVo(stList,stateList);
 		populateDataToVo((List<Object[]>)list,regionList);
 		populateDataToVo(conList,assemblyList);
 		populateDataToVo(distList,districtList);
 
+		returnVal.add(stateList);
 		returnVal.add(districtList);
 		returnVal.add(regionList);
 		returnVal.add(assemblyList);
@@ -1185,6 +1216,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	public List<Object> getAllAccessLocByAssConsti(Long constiId)
 	{
 		List<Object> returnVal = new ArrayList<Object>();
+		List<SelectOptionVO> stateList = new ArrayList<SelectOptionVO>(); 
 		List<SelectOptionVO> regionList = new ArrayList<SelectOptionVO>(); 
 		List<SelectOptionVO> assemblyList = new ArrayList<SelectOptionVO>();
 		List<SelectOptionVO> districtList = new ArrayList<SelectOptionVO>();
@@ -1200,8 +1232,13 @@ public class RegionServiceDataImp implements IRegionServiceData {
 			vo.setId((Long)value[2]);
 			vo.setName(WordUtils.capitalize(value[3].toString().toLowerCase()));
 			districtList.add(vo);
+			vo = new SelectOptionVO();
+			vo.setId((Long)value[4]);
+			vo.setName(WordUtils.capitalize(value[5].toString().toLowerCase()));
+			stateList.add(vo);
 		}
 		 data = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentByAssembly(constiId);
+		 returnVal.add(stateList);
 		populateDataToVo(data,regionList);
 		returnVal.add(districtList);
 		returnVal.add(regionList);
@@ -1212,6 +1249,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	public List<Object> getAllAccessLocByParlConsti(Long constiId)
 	{
 		List<Object> returnVal = new ArrayList<Object>();
+		List<SelectOptionVO> stateList = new ArrayList<SelectOptionVO>(); 
 		List<SelectOptionVO> regionList = new ArrayList<SelectOptionVO>(); 
 		List<SelectOptionVO> assemblyList = new ArrayList<SelectOptionVO>();
 		List<SelectOptionVO> districtList = new ArrayList<SelectOptionVO>();
@@ -1229,11 +1267,18 @@ public class RegionServiceDataImp implements IRegionServiceData {
 			}
 		}
 		  data = constituencyDAO.getConstituencyConstituencyId(constiId);
+		  
+		  SelectOptionVO stateVo = new SelectOptionVO();
+		  stateVo.setId((Long)data.get(0)[2]);
+		  stateVo.setName(WordUtils.capitalize(data.get(0)[3].toString().toLowerCase()));
+		  stateList.add(stateVo);
+		  
 		populateDataToVo(data,regionList);
 		if(assemblyIds.size() >0){
 			data = constituencyDAO.getDistrictByConstituencyId(assemblyIds);
 			populateDataToVo(data,districtList);
 		}
+		returnVal.add(stateList);
 		returnVal.add(districtList);
 		returnVal.add(regionList);
 		returnVal.add(assemblyList);

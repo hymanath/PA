@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IRegistrationService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IUserService;
@@ -57,7 +58,35 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 	private Long parliamentId;
 	private Long assemblyId;
 	private Long accesslevel;
+	private Long stateId;
+	private List<SelectOptionVO> statesList;
+	private IRegionServiceData regionServiceDataImp;
 	
+	
+	public IRegionServiceData getRegionServiceDataImp() {
+		return regionServiceDataImp;
+	}
+
+	public void setRegionServiceDataImp(IRegionServiceData regionServiceDataImp) {
+		this.regionServiceDataImp = regionServiceDataImp;
+	}
+
+	public List<SelectOptionVO> getStatesList() {
+		return statesList;
+	}
+
+	public void setStatesList(List<SelectOptionVO> statesList) {
+		this.statesList = statesList;
+	}
+
+	public Long getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+
 	public String getElectionType() {
 		return electionType;
 	}
@@ -383,7 +412,7 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 					}
 					if(accesslevel.longValue() == 1l){
 						regVO.setAccessType("STATE");
-						regVO.setAccessValue("1");
+						regVO.setAccessValue(stateId.toString());
 					}else if(accesslevel.longValue() == 2l){
 						regVO.setAccessType("DISTRICT");
 						regVO.setAccessValue(districtId.toString());
@@ -405,12 +434,24 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 			savedSuccessfully = registrationService.saveDataIntoUser(regVO,userType);
 		else
 			savedSuccessfully = false;
-		constituencyInfoVO = new ConstituencyInfoVO();		
-		constituencyInfoVO = staticDataService.getConstituenciesByElectionTypeAndStateId(2L,1L);
+		
+		constituencyInfoVO = new ConstituencyInfoVO();	
+		parliamantConstis =  new ConstituencyInfoVO();	
+		List<Long> stateIds = new ArrayList<Long>();
+		 stateIds.add(1l);
+		 stateIds.add(36l);
+		 List<Object> assessLocs = regionServiceDataImp.getAllAccessLocByState(stateIds);
+		 statesList =     (List<SelectOptionVO>)assessLocs.get(0);
+		 districtsList =  (List<SelectOptionVO>)assessLocs.get(1);
+		 List<SelectOptionVO> parlConstiList1 = (List<SelectOptionVO>)assessLocs.get(2);
+		 List<SelectOptionVO>  assemConstiList1 =(List<SelectOptionVO>)assessLocs.get(3);
+		 constituencyInfoVO.setConstituencies(assemConstiList1);
+		 parliamantConstis.setConstituencies(parlConstiList1);
+		//constituencyInfoVO = staticDataService.getConstituenciesByElectionTypeAndStateId(2L,1L);
 		//constituencyInfoVO.getConstituencies().add(0,new SelectOptionVO(0L,"Select Assembly Constituency"));
-		parliamantConstis = staticDataService.getConstituenciesByElectionTypeAndStateId(1L,1L);
+		//parliamantConstis = staticDataService.getConstituenciesByElectionTypeAndStateId(1L,1L);
 		//parliamantConstis.getConstituencies().add(0,new SelectOptionVO(0L,"Select Parliament Constituency"));
-		districtsList =  staticDataService.getDistricts(1l);
+		//districtsList =  staticDataService.getDistricts(1l);
 		//districtsList.add(0,new SelectOptionVO(0L,"Select District"));
 		userTypeList = new ArrayList<SelectOptionVO>();		
 		userTypeList.add(0,new SelectOptionVO(0l,"Select User Type"));

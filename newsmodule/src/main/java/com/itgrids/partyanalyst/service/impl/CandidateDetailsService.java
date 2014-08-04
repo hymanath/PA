@@ -2113,14 +2113,19 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	}
 	
 	
-	public List<FileVO> getStateDetails(String accessType,Long accessValue)
+	public List<FileVO> getStateDetails(String accessType,Long accessValue,String userType)
 	{   
 		 List<FileVO> retValue = new ArrayList<FileVO>();
 	try{
 		//List<com.itgrids.partyanalyst.model.State> states = stateDAO.getAll();
 		List<Object[]> stateList = null;
-		
-		if(accessType.equalsIgnoreCase("STATE"))
+		if("Admin".equalsIgnoreCase(userType)){
+			List<Long> stateIds = new ArrayList<Long>();
+			stateIds.add(1l);
+			stateIds.add(36l);
+			stateList = stateDAO.getAllStatesByIds(stateIds);
+			
+		}else if(accessType.equalsIgnoreCase("STATE"))
 		{
 			State state = stateDAO.get(accessValue);
 			if(state != null)
@@ -7885,7 +7890,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	}
  }*/
  
- public LocationVO getLocationListForSelectedUser(String accessType,Long accessValue,Long userId)
+ public LocationVO getLocationListForSelectedUser(String accessType,Long accessValue,Long userId,String userType)
  {
 	 LocationVO locationVO = new LocationVO();
 	 
@@ -7896,7 +7901,23 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	 
 	 try{
 		 locationVO.setPopulatedId(accessValue);
-		if(accessType.equalsIgnoreCase("MLA"))
+		 if("Admin".equalsIgnoreCase(userType)){
+			 List<Long> stateIds = new ArrayList<Long>();
+				stateIds.add(1l);
+				stateIds.add(36l);
+				List<Object[]> allstateList = stateDAO.getAllStatesByIds(stateIds);
+				 stateList = new ArrayList<SelectOptionVO>(0);
+				 if(allstateList!=null && allstateList.size()>0){
+					 stateIds = new ArrayList<Long>();
+					 for(Object[] object:allstateList){
+						stateList.add(new SelectOptionVO((Long)object[0],object[1]!=null?object[1].toString():""));
+						 locationVO.setStateId((Long)object[0]);
+						 stateIds.add((Long)object[0]);
+					 }
+					 locationVO.setStateIds(stateIds);
+					}
+		 }
+		 else if(accessType.equalsIgnoreCase("MLA"))
 		{
 		
 		 locationVO.setScopeId(2L);
@@ -8240,8 +8261,10 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	 	List<SelectOptionVO> candidateList = new ArrayList<SelectOptionVO>(0);
 	 	User user = userDAO.get(userId);
 	 	StringBuffer query = new StringBuffer();
-	 	if(user.getAccessType().equalsIgnoreCase("STATE"))	 		
-	 		query = query.append(" and model.state.stateId = "+user.getAccessValue());
+	 	if("Admin".equalsIgnoreCase(user.getUserAccessType())){
+	 		
+	 	}else if(user.getAccessType().equalsIgnoreCase("STATE"))	 		
+	 		query = query.append(" and ((model.state.stateId = "+user.getAccessValue()+") or (model.district.districtId is null and model.parliament.constituencyId is null) or (model.isMinister ='Y')) ");
 	 	else if(user.getAccessType().equalsIgnoreCase("DISTRICT")){
 
 			List<Long> assmblyConstIds = new ArrayList<Long>(0);
@@ -8280,12 +8303,12 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 					query.append(", ");
 			}
 			
-			query .append(" ))");
+			query .append(" ) or (model.district.districtId is null and model.parliament.constituencyId is null) or (model.isMinister ='Y') ) ");
 	 	}
 	 	else if(user.getAccessType().equalsIgnoreCase("MLA"))
-	 		query.append(" and model.assembly.constituencyId = "+user.getAccessValue());
+	 		query.append(" and (model.assembly.constituencyId = "+user.getAccessValue()+"  or (model.district.districtId is null and model.parliament.constituencyId is null) or (model.isMinister ='Y')) ");
 	 	else if(user.getAccessType().equalsIgnoreCase("MP"))
-	 		query.append(" and model.parliament.constituencyId = "+user.getAccessValue());
+	 		query.append(" and (model.parliament.constituencyId = "+user.getAccessValue()+"  or (model.district.districtId is null and model.parliament.constituencyId is null) or (model.isMinister ='Y')) ");
 	 	
 	 	List<Object[]> list = candidateDAO.getCandidateListByPartyId(query.toString(),partyId);
 	 	if(list != null && list.size() > 0)
@@ -8297,6 +8320,8 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	 		String name="";
 	 		if(params[1] != null)
 	 		 name += params[1].toString();
+	 		if(params[3].toString().equalsIgnoreCase("Y"))
+		 		 name += " (Minister)";
 	 		if(params[2] != null)
 	 		 name += " ("+params[2].toString()+")";
 	 		optionVO.setName(name);
@@ -9560,6 +9585,9 @@ public SelectOptionVO getDesignationOfCandidateFromCandidateTable(Long candidate
 		//List<Object[]> list = candidateDAO.getDesignationsAndLocation(candidateId);
 		SelectOptionVO optionVO = new SelectOptionVO();
 		Candidate candidate = candidateDAO.get(candidateId);
+		if("Y".equalsIgnoreCase(candidate.getIsMinister())){
+			optionVO.setFlag(true);
+		}
 		optionVO.setId(candidate.getDesignation().getDesignationId());
 		if(candidate.getAssembly() != null){
 			optionVO.setType("Assembly");

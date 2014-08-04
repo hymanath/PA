@@ -6318,6 +6318,11 @@
 		    	<param name="root">assemblies</param>
 		   </result> 
 		</action>
+		<action name="getParlConstituenciesListAction" class="partyActivitiesAction"  method="getParlconstituenciesbyStateId">
+		   <result type="json" name="success">
+		    	<param name="root">assemblies</param>
+		   </result> 
+		</action>
 		<action name="getDistrictsBasedOnStateIdAction" class="newsAnalysisAction" method="getDistricts">
 					<result type="json" name="success">
 		    			<param name="root">districtsList1</param>

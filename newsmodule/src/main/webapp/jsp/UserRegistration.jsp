@@ -23,7 +23,7 @@
  margin-left: 181px;
  margin-bottom:15px;
 }
-#districtDIV,#parliamentDIV,#assemblyDIV{
+#stateDIV,#districtDIV,#parliamentDIV,#assemblyDIV{
   display:none;
 }
 </style>
@@ -137,7 +137,9 @@ onsubmit="return validatefields()" cssClass="form-horizontal text-center">
 
 <span id="locationErr">
   </span>
-
+<div id="stateDIV" class="controls" style="margin-bottom:15px;">
+ <b style="color:red;font-size:20px;">*</b> &nbsp; <s:select name="stateId"  list="statesList"   theme="simple" listKey="id" listValue="name"/>
+</div>
 <div id="districtDIV" class="controls" style="margin-bottom:15px;">
  <b style="color:red;font-size:20px;">*</b> &nbsp; <s:select name="districtId"  list="districtsList"   theme="simple" listKey="id" listValue="name"/>
 </div> 
@@ -175,18 +177,25 @@ var emailflag = true;
 <script>
 function showLoc(){
   var id = $("#selectLocLvl").val();
-  if(id == 0 || id == 1 )
+  if(id == 0)
   {
-    showHide(false,false,false);
-  }else if(id == 2){
-    showHide(true,false,false);
+    showHide(false,false,false,false);
+  }else if(id == 1){
+	showHide(true,false,false,false);
+  } else if(id == 2){
+    showHide(false,true,false,false);
   }else if(id == 3){
-    showHide(false,true,false);
+    showHide(false,false,true,false);
   }else if(id == 4){
-    showHide(false,false,true);
+    showHide(false,false,false,true);
   }
 }
-function showHide(dist,parl,assem){
+function showHide(state,dist,parl,assem){
+	if(state){ 
+		  $("#stateDIV").show();
+		}else{
+		  $("#stateDIV").hide();
+		}
     if(dist){ 
 	  $("#districtDIV").show();
 	}else{

@@ -727,10 +727,10 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 		
 		jObj = new JSONObject(getTask());
 		if(jObj.getString("task").equalsIgnoreCase("saveCandidateForDebate")){
-		resultStatus = newsMonitoringService.saveCandidatesAndParty(jObj.getLong("partyId"),jObj.getString("candidateName"),jObj.getLong("designationId"),jObj.getLong("locationId"),jObj.getLong("locationValue"),"debateCandidate");
+		resultStatus = newsMonitoringService.saveCandidatesAndParty(jObj.getLong("partyId"),jObj.getString("candidateName"),jObj.getLong("designationId"),jObj.getLong("locationId"),jObj.getLong("locationValue"),"debateCandidate",false);
 		}
 		else{
-			resultStatus = newsMonitoringService.saveCandidatesAndParty(jObj.getLong("partyId"),jObj.getString("candidateName"),jObj.getLong("designationId"),jObj.getLong("locationId"),jObj.getLong("locationValue"),null);
+			resultStatus = newsMonitoringService.saveCandidatesAndParty(jObj.getLong("partyId"),jObj.getString("candidateName"),jObj.getLong("designationId"),jObj.getLong("locationId"),jObj.getLong("locationValue"),null,jObj.getBoolean("isMinister"));
 		}
 	}catch (Exception e) {
 	 e.printStackTrace();
@@ -750,7 +750,7 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 		 return ERROR;
 		
 		jObj = new JSONObject(getTask());
-		resultStatus = newsMonitoringService.updateCandidatesAndParty(jObj.getLong("candidateId"),jObj.getLong("presentPartyId"),jObj.getString("candidateName"),jObj.getLong("designationId"),jObj.getLong("locationId"),jObj.getLong("locationValue"));	
+		resultStatus = newsMonitoringService.updateCandidatesAndParty(jObj.getLong("candidateId"),jObj.getLong("presentPartyId"),jObj.getString("candidateName"),jObj.getLong("designationId"),jObj.getLong("locationId"),jObj.getLong("locationValue"),jObj.getBoolean("isMinister"));	
 	}catch (Exception e) {
 	 e.printStackTrace();
 	 Log.error(" Exception Occured in updateCandidatesAndParty() method, Exception - ",e);

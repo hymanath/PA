@@ -166,7 +166,7 @@ function callAjax(jsObj,url)
  		},
  		scope : this,
 		failure : function( o ) 
-		{
+		{$("#latestNewsAjaxDiv").css("display","none");
 			//alert( "Failed to load result" + o.status + " " + o.statusText);
 		}
 	   };
@@ -328,7 +328,9 @@ function getSelectedNewsDetails(startIndex)
 			return false;		
 		   }
 	}
-	
+	$("#latestNewsAjaxDiv").show();
+	$("#latestNewsDiv").html("");
+	$("#paginationId").html("");
 	  var jObj=
 	{
 	  fromDate:fromDate,

@@ -594,7 +594,7 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 	
 	public List<Object[]> getConstituencyConstituencyId(Long constituencyId)
 	{
-		Query query = getSession().createQuery("select model.constituencyId, model.name from Constituency model where model.constituencyId = :constituencyId");
+		Query query = getSession().createQuery("select model.constituencyId, model.name,model.state.stateId,model.state.stateName from Constituency model where model.constituencyId = :constituencyId");
 		query.setParameter("constituencyId",constituencyId);
 		return query.list();
 	}
@@ -648,6 +648,26 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		return getHibernateTemplate().find("select distinct model.constituencyId, model.name " +
 				" from Constituency model where  " +
 				" model.electionScope.electionScopeId = 1 and model.deformDate is null " +
-				" and model.state.stateId = 1");
+				" and model.state.stateId in (1,36)");
 	}	
+	
+	public List<Object[]> getParliamentConstisByStateIds(List<Long> stateIds){
+		Query query = getSession().createQuery("select distinct model.constituencyId, model.name " +
+				" from Constituency model where  " +
+				" model.electionScope.electionScopeId = 1 and model.deformDate is null " +
+				" and model.state.stateId in(:stateIds) order by model.state.stateId,model.name");
+		
+		query.setParameterList("stateIds", stateIds);
+		return query.list();
+	}
+	
+	public List<Object[]> getAssemblyConstisByStateIds(List<Long> stateIds){
+		Query query = getSession().createQuery("select distinct model.constituencyId, model.name " +
+				" from Constituency model where  " +
+				" model.electionScope.electionScopeId = 2 and model.deformDate is null " +
+				" and model.state.stateId in(:stateIds) order by model.state.stateId,model.name");
+		
+		query.setParameterList("stateIds", stateIds);
+		return query.list();
+	}
 }

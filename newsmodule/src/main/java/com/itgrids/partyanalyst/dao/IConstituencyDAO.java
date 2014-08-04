@@ -183,4 +183,8 @@ public interface IConstituencyDAO extends GenericDao<Constituency, Long>{
 	public List<Object[]> getPCConstituencyes(List<Long> constiIds);
 	
 	public List<Object[]> getAllParlimentConstituencys();
+	
+	public List<Object[]> getParliamentConstisByStateIds(List<Long> stateIds);
+	
+	public List<Object[]> getAssemblyConstisByStateIds(List<Long> stateIds);
 }

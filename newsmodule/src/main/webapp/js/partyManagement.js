@@ -3634,6 +3634,7 @@ function showCandidateSaveStatus(result,jsObj)
    setTimeout(function(){$("#errorMsgDiv").html('').css("color","red");},3000);
    $("#newCandidateName").val('');
    $("#partySelectNewList").val(0);
+   $("#isMinisterId3").removeAttr('checked'); 
    var partyId = $("#"+jsObj.partyListId+"").val();
    
    if(partyId != null && partyId > 0)
@@ -3665,6 +3666,7 @@ function showCandidateSaveStatus1(result,jsObj)
    setTimeout(function(){$("#errorMsgDiv1").html('').css("color","red");},3000); 
    $("#newCandidateName1").val('');
    $("#partySelectNewList1").val(0);
+   $("#isMinisterId1").removeAttr('checked');
    var partyId = $("#"+jsObj.partyListId+"").val();
    
    if(partyId != null && partyId > 0)
@@ -4056,7 +4058,7 @@ var descriptionValue = $("#newsreportfileDescription").val();
 	}else{
 		reqType = "byRegion";
 	  if(reportRegionLevel == 1){
-	      reportRegionLevelVal = 1;
+		  reportRegionLevelVal = $("#stateSelReportId option:selected").val();
 	  }else if(reportRegionLevel == 2){
 		  reportRegionLevelVal = $("#districtSelReportId option:selected").val();
 	  }else if(reportRegionLevel == 3){
@@ -4642,6 +4644,9 @@ function showDesignationDetails(myResults,jsObj){
 	    getTypeOfConstituencyForEdit(0,'editacConstituencyRow','editpcConstituencyRow');
 	   $("#editcandidateLocType").val(3);
 	 }
+	 if(myResults.flag){
+		 $("#isMinisterId2").attr("checked","checked");	
+	 }
  }
 
 }
@@ -4724,6 +4729,10 @@ function updateExistingCandidate(){
 	{
 		locationValue = 0;
 	}
+	var isMinister = false;
+	if( $('#isMinisterId2').is(':checked')){
+		isMinister = true;
+	}
 	var jsObj =
 		{ 
             partyId : partyId,
@@ -4733,7 +4742,8 @@ function updateExistingCandidate(){
 			designationId:designationId,
 			locationId : $('#editcandidateLocType option:selected').val(),
 			locationValue : locationValue,
-			task:"updateCandidateDetails"
+			task:"updateCandidateDetails",
+			isMinister:isMinister
 		};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -4760,7 +4770,7 @@ function showCandidateEditStatus(result,jsObj)
        $("#EditCandidateListForParty").append($("<option></option>").attr("value",0).text("Select Candidate"));
    $("#designationsList2").val(0);
     $("#editcandidateLocType").val(0);
-   
+    $("#isMinisterId2").removeAttr('checked');
    getTypeOfConstituencyForEdit(0,'editacConstituencyRow','editpcConstituencyRow');
   
    return;

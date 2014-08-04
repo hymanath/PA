@@ -5437,7 +5437,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 	  }
 	}
 	
-	public ResultStatus saveCandidatesAndParty(final Long partyId,final String candidateName,final Long designationId,final Long loctionId,final Long locationValue,final String isDebate)
+	public ResultStatus saveCandidatesAndParty(final Long partyId,final String candidateName,final Long designationId,final Long loctionId,final Long locationValue,final String isDebate,final boolean isMinister)
 	{
 		final ResultStatus resultStatus = new ResultStatus();
 	  try{
@@ -5491,7 +5491,11 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		  }
 		  else
 			  candidate.setIsDebateCandidate("N");
-		  
+		  if(isMinister){
+			  candidate.setIsMinister("Y");
+		  }else{
+			  candidate.setIsMinister("N");
+		  }
 		  candidate=candidateDAO.save(candidate);
 		  if(candidate != null){
 			  resultStatus.setId(candidate.getCandidateId());
@@ -6250,7 +6254,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		  }
 		return result;
 	  }
-		public ResultStatus updateCandidatesAndParty(Long candidateId,Long partyId,String candidateName,Long designationId,Long loctionId,Long locationValue)
+		public ResultStatus updateCandidatesAndParty(Long candidateId,Long partyId,String candidateName,Long designationId,Long loctionId,Long locationValue,boolean isMinister)
 		{
 			ResultStatus resultStatus = new ResultStatus();
 		  try{
@@ -6293,7 +6297,11 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 			  {
 				 candidate.setState(stateDAO.get(1l));
 			  }
-			  
+			  if(isMinister){
+				  candidate.setIsMinister("Y");
+			  }else{
+				  candidate.setIsMinister("N");
+			  }
 			  candidateDAO.save(candidate);
 			  
 			  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);

@@ -93,7 +93,7 @@ public interface INewsMonitoringService {/*
 	
 	public List<SelectOptionVO> getCandidatesByPartyIdsList(List<Long> partyIdsList);
 	
-	public ResultStatus saveCandidatesAndParty(Long partyId,String candidateName,Long designationId,Long locationId,Long locationValue,String isDebate);
+	public ResultStatus saveCandidatesAndParty(Long partyId,String candidateName,Long designationId,Long locationId,Long locationValue,String isDebate,boolean isMinister);
 	
 	public List<SelectOptionVO> getCandidatesNewsCount();
 	
@@ -103,7 +103,7 @@ public interface INewsMonitoringService {/*
 	public ResultStatus deleteNews(Long fileId,Long userId);
     public NewsEditVO getInfoForFile(String userType,Long fileId,Long userId);
     
-    public ResultStatus updateCandidatesAndParty(Long candidateId,Long partyId,String candidateName,Long designationId,Long loctionId,Long locationValue);
+    public ResultStatus updateCandidatesAndParty(Long candidateId,Long partyId,String candidateName,Long designationId,Long loctionId,Long locationValue,boolean isMinister);
     //public List<ArticleVO> getArticleNews();
    
 }

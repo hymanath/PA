@@ -61,7 +61,7 @@ public interface ICandidateDetailsService {
 	public List<SelectOptionVO> getLanguage();
 	public List<SelectOptionVO> getCategory();
 	public List<SelectOptionVO> getNewsImportance();
-	public List<FileVO> getStateDetails(String accessType,Long accessValue);
+	public List<FileVO> getStateDetails(String accessType,Long accessValue,String userType);
 	public List<SelectOptionVO> getCandidateGallaries(Long registrationId,String contentType);
 	public List<SelectOptionVO> getCandidatesOfAUser(Long userId);
 	/*public List<SelectOptionVO> getCandidateGallarySelectList(Long candidateId,String contentType);
@@ -289,7 +289,7 @@ public interface ICandidateDetailsService {
 	 
 	 public List<SelectOptionVO> getGallariesInCategory(Long categoryId);
 	 
-	 public LocationVO getLocationListForSelectedUser(String userAccessType,Long accessValue,Long userId);
+	 public LocationVO getLocationListForSelectedUser(String userAccessType,Long accessValue,Long userId,String userType);
 	
 	 public List<SelectOptionVO> getConstituencyList(Long districtId,String accessType,Long accessValue);
 	 

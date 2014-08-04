@@ -114,7 +114,7 @@ color:#333333;
   <div id="errorMsgDiv"></div>
   <div class="offset5">
     <label><Strong>Select State<font color="red"> *</font></strong></label>
-    <select class="span2" id="stateIds" onchange="getPartiesList(this.value);getDistrictsForAState(this.value);getConstituenciesForAState(this.value)">
+    <select class="span2" id="stateIds" onchange="getDistrictsForAState(this.value);getConstituenciesForAState(this.value)">
       <option value="0">ALL</option>
       <option value="1">Andhra Pradesh</option>
       <option value="36">Telangana</option>
@@ -161,6 +161,7 @@ color:#333333;
 			selectedList: 1,
 			hide: "explode"	
 	}).multiselectfilter({ });
+	 $(".ui-multiselect").css("width","220px");
  $(document).ready(function() {
  $(".dateField").datepicker({
 		dateFormat: "dd/mm/yy",
@@ -303,6 +304,7 @@ function getPartiesList(stateId)
 				hide: "explode"	
 		        }).multiselectfilter({   
 		       }); 
+		 $(".ui-multiselect").css("width","220px");
      });
 	}
 function callAjax(jsObj,url)
@@ -564,6 +566,7 @@ $.ajax({
 			hide: "explode"	
 	        }).multiselectfilter({   
 	       }); 
+	 $(".ui-multiselect").css("width","220px");
 });
 }
 function getConstituenciesForAState(stateId)
@@ -591,6 +594,7 @@ $.ajax({
 			hide: "explode"	
 	        }).multiselectfilter({   
 	       }); 
+	 $(".ui-multiselect").css("width","220px");
 });
 }
  </script>

@@ -24,7 +24,7 @@ public class PartyDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(partyDAO.getPartyShortName("INC345"));
 	}*/
 	public void testPartiesListByStateId(){
-		List<Object[]> parties = partyDAO.getPartiesListByStateId(1l);
-		System.out.println(parties.size());
+		//List<Object[]> parties = partyDAO.getPartiesListByStateId(1l);
+		//System.out.println(parties.size());
 	}
 }

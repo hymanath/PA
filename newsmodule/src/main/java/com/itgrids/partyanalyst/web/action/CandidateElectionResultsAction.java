@@ -2055,7 +2055,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getStates"))
 			{
-				fileVO = candidateDetailsService.getStateDetails(accessType,accessValue);
+				fileVO = candidateDetailsService.getStateDetails(accessType,accessValue,regVO.getUserAccessType());
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getDistrictsByStateId"))
 			{
