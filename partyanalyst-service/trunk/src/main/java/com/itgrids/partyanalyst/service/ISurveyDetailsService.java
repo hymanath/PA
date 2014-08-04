@@ -53,4 +53,5 @@ public interface ISurveyDetailsService {
 	 public List<VerificationCompVO> checkForVerifierDataWithBoothAndVerifierId(List<Long> boothIds,Long verifierId);
 	 
 	 public List<GenericVO> getUsersList(List<Long> constituencyIds);
+	 public List<VerificationCompVO> checkForVerifierDataForWM(List<Long> boothIds);
 }

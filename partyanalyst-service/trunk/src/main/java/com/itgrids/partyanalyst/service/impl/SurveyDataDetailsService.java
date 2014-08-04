@@ -3440,7 +3440,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				{
 					List<Long> boothIds = new ArrayList<Long>();
 					boothIds.add(boothId);
-					List<VerificationCompVO> dcWmDetails = surveyDetailsService.checkForVerifierData(boothIds);
+					//List<VerificationCompVO> dcWmDetails = surveyDetailsService.checkForVerifierData(boothIds);
+					List<VerificationCompVO> dcWmDetails = surveyDetailsService.checkForVerifierDataForWM(boothIds);
 					if(dcWmDetails != null && dcWmDetails.size() > 0)
 					{
 						dcWmMap = new HashMap<Long, GenericVO>();
