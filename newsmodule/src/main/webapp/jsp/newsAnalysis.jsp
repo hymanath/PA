@@ -184,7 +184,7 @@ ul.as-selections1 li {
 					<div class="row-fluid label label-success-50">
 						<div class="offset4" style="margin-top:20px;">
 						
-							<label >select state
+							<label >Select State
 							
 							<select id="statelist" onchange="getPartiesList(this.value);getDistrictsForAState(this.value);getConstituenciesForAState(this.value);">
 								<option value="0">All</option>
