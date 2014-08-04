@@ -456,19 +456,35 @@ function callAjax(jsObj,url)
 		var url = "getPartiesListAction.action?"+rparam;
 		callAjax(jsObj, url);
 	} */
-	function getPartiesList()
+	function getPartiesList(stateId)
 	{
+		
 		var jsObj=
-			{
-				partySelectBoxId:"partiesList",
-				partiesListForWhome:"partiesListForWhome",
-				task:'getPartyList'
-			};
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
-		var url = "getPartiesListAction.action?"+rparam;
-		callAjax(jsObj, url);
-	}
-	
+		{
+			stateId:stateId,
+			partySelectBoxId:"partiesList",
+			partiesListForWhome:"partiesListForWhome",
+			task:'getPartyList'
+		};
+		 $.ajax({
+			type: "POST",
+			url: "getPartiesListAction.action",
+			data: {task : JSON.stringify(jsObj)}
+			})
+			.done(function( result ) {
+			
+			$('#partyList').find('option').remove();
+			$.each(result,function(index,value){
+				$('#partyList').append('<option value="'+value.id+'">'+value.name+'</option>');
+			});
+			 $('#partyList').multiselect({	
+					multiple: true,
+					selectedList: 1,
+					hide: "explode"	
+					}).multiselectfilter({   
+				   }); 
+		 });
+}	
 	function buildSelectOptionVoforMuntiple(results,divId1,divId2,name)
 	{
 		//$('#'+divId1+'').find('option').remove();
@@ -663,6 +679,61 @@ function getSource()
 	callAjax(jsObj,url);
 	
 }
+function getDistrictsForAState(stateId)
+	 {
+	 	var jsObj=
+	{
+		stateId:stateId,
+		task:'getDistrictList'
+	};
+	 
+	 $.ajax({
+		type: "POST",
+		url: "getDistrictListAction.action",
+		data: {task : JSON.stringify(jsObj)}
+		})
+		.done(function( result ) {
+		
+		$('#districtSelReportId').find('option').remove();
+		$.each(result,function(index,value){
+			$('#districtSelReportId').append('<option value="'+value.id+'">'+value.name+'</option>');
+		});
+		 $('#districtSelReportId').multiselect({	
+				multiple: true,
+				selectedList: 1,
+				hide: "explode"	
+		        }).multiselectfilter({   
+		       }); 
+     });
+	}
+
+function getConstituenciesForAState(stateId)
+{
+	var jsObj=
+{
+	stateId:stateId,
+	task:'getConstituenciesList'
+};
+
+$.ajax({
+	type: "POST",
+	url: "getConstituenciesListAction.action",
+	data: {task : JSON.stringify(jsObj)}
+	})
+	.done(function( result ) {
+	
+	$('#assembSelReportId').find('option').remove();
+	$.each(result,function(index,value){
+		$('#assembSelReportId').append('<option value="'+value.id+'">'+value.name+'</option>');
+	});
+	 $('#assembSelReportId').multiselect({	
+			multiple: true,
+			selectedList: 1,
+			hide: "explode"	
+	        }).multiselectfilter({   
+	       }); 
+});
+}		
 
 function getRespectedLocationValues(loc)
 {
@@ -733,8 +804,8 @@ $(document).ready(function(){
 	
 
 		$('#reportsTabId').addClass('menuActive');
-		
-	getPartiesList();
+			
+	getPartiesList(0);
 	//getBenefitList();
 	//getSource();
 		
