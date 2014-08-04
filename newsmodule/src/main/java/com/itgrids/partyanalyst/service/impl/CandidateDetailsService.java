@@ -7030,7 +7030,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		}
 
 	 
-	 public List<FileVO> getNewsBetweenSelectedDates(String fromDateStr,String toDateStr,Integer starIndex, Integer maxResults, String newsType, String level)
+	 public List<FileVO> getNewsBetweenSelectedDates(String fromDateStr,String toDateStr,Integer starIndex, Integer maxResults, String newsType, String level,Long stateId)
 	 {
 		 List<FileVO> fileVOsList = new ArrayList<FileVO>(0);
 		 try{
@@ -7048,11 +7048,11 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			else if(level.equalsIgnoreCase("district"))
 				scopeID = 3l;
 			
-			List<File> fileList = fileGallaryDAO.getNewsDetailsBetweenSelectedDates(fromDate, toDate, starIndex, maxResults, scopeID);
+			List<File> fileList = fileGallaryDAO.getNewsDetailsBetweenSelectedDates(fromDate, toDate, starIndex, maxResults, scopeID,stateId);
 			if(fileList != null && fileList.size() > 0)
 			{
 				setfileDetails(fileList, fileVOsList);
-			    fileVOsList.get(0).setCount(fileGallaryDAO.getNewsDetailsBetweenSelectedDatesCount(fromDate, toDate, scopeID).intValue());
+			    fileVOsList.get(0).setCount(fileGallaryDAO.getNewsDetailsBetweenSelectedDatesCount(fromDate, toDate, scopeID,stateId).intValue());
 			}
 			
 			 return fileVOsList;
@@ -9685,22 +9685,31 @@ public SelectOptionVO getDesignationOfCandidateFromCandidateTable(Long candidate
    }
    public List<SelectOptionVO> getPartiesListByStateId(Long stateId)
    {
-  	 try{
-  		 List<SelectOptionVO> selectOptionVOList = null;
-  		 List<Object[]> list = partyDAO.getPartiesListByStateId(stateId);
-  		 if(list != null && list.size() > 0)
-  		 {
-  			selectOptionVOList = new ArrayList<SelectOptionVO>(0);
-  			for(Object[] params:list)
-  			 selectOptionVOList.add(new SelectOptionVO((Long)params[0],params[1]!= null?params[1].toString():" "));
-  		 }
-  		 
-  		return selectOptionVOList; 
-  	 }catch (Exception e) {
-  		//e.printStackTrace();
-  		log.error("Exception Occured in getPartiesList(Long stateId) method, Exception - ",e);
-  		return null;
-  	}
+   try{
+	  List<Long> statesList=new ArrayList<Long>();
+	 if(stateId==0l)
+	 {
+		 statesList.add(1l);
+		 statesList.add(36l);
+	 }
+	 else
+		 statesList.add(stateId);
+	 
+   List<SelectOptionVO> selectOptionVOList = null;
+   List<Object[]> list = partyDAO.getPartiesListByStateId(statesList);
+   if(list != null && list.size() > 0)
+   {
+   selectOptionVOList = new ArrayList<SelectOptionVO>(0);
+   for(Object[] params:list)
+   selectOptionVOList.add(new SelectOptionVO((Long)params[0],params[1]!= null?params[1].toString():" "));
    }
-   
+
+   return selectOptionVOList;
+   }catch (Exception e) {
+   //e.printStackTrace();
+   log.error("Exception Occured in getPartiesList(Long stateId) method, Exception - ",e);
+   return null;
+   }
+   }
+  
 }
