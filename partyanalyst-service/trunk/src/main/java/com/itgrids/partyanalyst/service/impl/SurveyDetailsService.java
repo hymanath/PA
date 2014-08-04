@@ -1892,7 +1892,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 				}
 				List<Long> boothIds= new ArrayList<Long>();
 				boothIds.add(boothId);
-				List<VerificationCompVO> matchUnMatchList = checkForVerifierData(boothIds);
+				List<VerificationCompVO> matchUnMatchList = checkForVerifierDataForWM(boothIds);
 				if(matchUnMatchList != null && matchUnMatchList.size() > 0)
 				{
 					mainVO.setTotalCount(matchUnMatchList.get(0).getMatchedCount().longValue());
@@ -2757,6 +2757,398 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 									 dvMap = dvBoothMap.get((Long)parms[4]);
 									 if(wmResultBoothMap != null && wmResultBoothMap.size() > 0)
 									 wmMap = wmResultBoothMap.get((Long)parms[4]);
+									 dcDatesMap = dcBoothDatesMap.get((Long)parms[4]);
+									 dvDatesMap = dcBoothDatesMap.get((Long)parms[4]);
+									 dcWmMap =  dcWmCollectedMap.get((Long)parms[4]);
+									 surveyUser = usersMap.get((Long)parms[4]);
+									 verifierUser = verifierMap.get((Long)parms[4]);
+									 dcDate = usersDateMap.get((Long)parms[4]);
+									 dvDate = verifierDateMap.get((Long)parms[4]);
+									 dvStatusMap = dvStatusBoothMap.get((Long)parms[4]);
+									 collectdCount = 0;
+									 updatedCount = 0;
+									 verifedCount = 0;
+									 notIdentifedCount = 0;
+
+								}
+									VerificationCompVO VO = new VerificationCompVO();
+									VO.setVoterCardNO(parms[2] != null ? parms[2].toString() : "");
+									VO.setVoterName(parms[1] != null ? parms[1].toString() : "");
+									VO.setVoterId(parms[0] != null ? (Long)parms[0]: null  );
+									VO.setHouseNo(parms[3] != null ? parms[3].toString() : "");
+									VO.setPartNo(parms[6] != null ? parms[6].toString() : "");
+									VO.setPanchayatName(parms[7] != null ? parms[7].toString() : "");
+									if(mobileNoMap.get((Long)parms[0]) != null)
+									{
+										VO.setMobileNO(mobileNoMap.get((Long)parms[0]));
+									}
+									
+									if(dvStatusMap != null && dvStatusMap.size() > 0)
+									{
+										Long statusId = dvStatusMap.get((Long)parms[0]);
+										if(statusId != null)
+										{
+											if(statusId.longValue() == 1l) // collected
+											{
+												collectdCount = collectdCount + 1;
+												VO.setVerifierStatus("COLLECTED");
+											}
+											else if(statusId.longValue() == 2l) // updated
+											{
+												updatedCount = updatedCount + 1;
+												VO.setVerifierStatus("UPDATED");
+											}
+											else// verified
+											{
+												verifedCount = verifedCount + 1;
+												VO.setVerifierStatus("VERIFIED");
+											}
+										}
+										else
+										{
+											notIdentifedCount = notIdentifedCount + 1;
+											VO.setVerifierStatus("NOT IDENTIFED");
+										}
+										
+									}
+									if(dcMap != null && dcMap.size() > 0)
+									{
+										VO.setDcCaste(dcMap.get((Long)parms[0]) != null ? dcMap.get((Long)parms[0]) : "-");
+									}
+									else
+									{
+										VO.setDcCaste("-");
+									}
+									if(dvMap != null && dvMap.size() > 0)
+									{
+										VO.setDvCaste(dvMap.get((Long)parms[0]) != null ? dvMap.get((Long)parms[0]) : "-");
+									}
+									else
+									{
+										VO.setDvCaste( "-");
+									}
+									if(wmMap != null && wmMap.size() > 0)
+									{
+										VO.setWmCaste(wmMap.get((Long)parms[0]) != null ? wmMap.get((Long)parms[0]) : "-");
+									}
+									else
+									{
+										VO.setWmCaste("-");
+									}
+									
+									VO.setRelativeName(parms[5] != null ? parms[5].toString() : "");
+									//VO.setDate(dcDate);
+									//VO.setVerifierDate(dvDate);
+									//VO.setSurveyUser(surveyUser);
+									//VO.setVerifierUser(verifierUser);
+									if(dcWmMap != null && dcWmMap.size() > 0)
+									{
+										if(dvMap.get((Long)parms[0] ) != null)
+										{
+											if(dcWmMap.get((Long)parms[0]) != null && dvMap.get((Long)parms[0]) != null)
+											{
+												if(dcWmMap.get((Long)parms[0]) .equalsIgnoreCase(dvMap.get((Long)parms[0])))
+												{
+													matchedList.add(VO);
+												}
+												/*else if(dcMap.get((Long)parms[0]).equalsIgnoreCase(wmMap.get((Long)parms[0])))
+												{
+													matchedList.add(VO);
+												}	
+												else if(dvMap.get((Long)parms[0]) == null )
+												{
+													notVerifiedList.add(VO);
+												}*/
+												else
+												{
+													unMatchedList.add(VO);
+												}
+
+											}
+											
+										}
+										else
+										{
+											/*if(wmMap != null)
+											{
+												if(dcMap.get((Long)parms[0]).equalsIgnoreCase(wmMap.get((Long)parms[0])))
+												{
+													matchedList.add(VO);
+												}
+												else if(dcMap.get((Long)parms[0]) != null && wmMap.get((Long)parms[0]) != null)
+												{
+													unMatchedList.add(VO);
+												}
+												else
+												{
+													notVerifiedList.add(VO);
+												}
+											}
+											else
+											{*/
+												notVerifiedList.add(VO);
+											//}
+											
+											
+										}
+									}
+									else
+									{
+										notVerifiedList.add(VO);
+									}
+								subVO.setDate(dcDate);
+								subVO.setVerifierDate(dvDate);
+								subVO.setSurveyUser(surveyUser);
+								subVO.setVerifierUser(verifierUser);
+								subVO.setMatchedList(matchedList);
+								subVO.setUnMatchedList(unMatchedList);
+								subVO.setNotVerifiedList(notVerifiedList);
+								subVO.setTotalCount(unMatchedList.size() + matchedList.size() + notVerifiedList.size());
+								subVO.setUnMatchedCount(unMatchedList.size());
+								subVO.setMatchedCount(matchedList.size());
+								subVO.setCollectedCount(collectdCount);
+								subVO.setUpdatedCount(updatedCount);
+								subVO.setVerifieCount(verifedCount);
+								subVO.setNotIdentifedCount(notIdentifedCount);
+								subVO.setNotVerifiedCount(notVerifiedList.size());
+						 }
+						
+					}
+					if(boothWiseMap != null && boothWiseMap.size() > 0)
+					{
+						List<Long> booths = new ArrayList<Long>(boothWiseMap.keySet());
+						returnList = new ArrayList<VerificationCompVO>();
+						for (Long boothId : booths)
+						{
+							returnList.add(boothWiseMap.get(boothId));
+						}
+					}
+				}
+			}
+			
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in checkForVerifierData", e);
+		}
+		return returnList;
+	}
+	
+	public List<VerificationCompVO> checkForVerifierDataForWM(List<Long> boothIds)
+	{
+		List<VerificationCompVO> returnList = null;
+		try 
+		{
+			List<Object[]> castesList = casteStateDAO.getAllCasteDetailsForVoters(1l);
+			if(castesList != null && castesList.size() > 0)
+			{
+				Map<Long,Map<Long,String>> dcBoothMap = null;// booth wise Data Collector Caste Collected 
+				Map<Long,Map<Long,String>> dvBoothMap = null;// booth wise Data Verifier Caste Collected
+				Map<Long,Map<Long,String>> wmBoothMap = null;// booth Wise Web Moniter Caste Collected
+				Map<Long,Map<Long,String>> dvWmBoothMap = null;// booth Wise Web Moniter Caste Collected
+				Map<Long,Map<Long,String>> dcBoothDatesMap = null;// Day wise booth Wise Data Collector 
+				Map<Long,Map<Long,String>> dvBoothDatesMap = null;// Day wise booth Wise Data Verified 
+				Map<Long,VerificationCompVO> boothWiseMap = null;// booth wise total recoreds
+				Map<Long,Map<Long,Long>> dvStatusBoothMap = null;// booth wise Data Verifier Caste Collected
+				Map<Long,String> dcMap = null;// Map<voterId,Caste>
+				Map<Long,String> dvMap = null;//Map<voterId,Caste>
+				Map<Long,String> wmMap = null;//Map<voterId,Caste>
+				Map<Long,String> dvWmMap = null;//Map<voterId,Caste>
+				Map<Long,String> casteMap = new HashMap<Long, String>();//Map<casteId,CasteName>
+				Map<Long,Map<Long,String>> dcWmCollectedMap = null;// Day wise booth Wise Data Collector 
+				Map<Long,String> dcDatesMap = null;
+				Map<Long,String> dvDatesMap = null;
+				Map<Long,String> dcWmMap = null;
+				Map<Long,String> usersMap =null;
+				Map<Long,String> verifierMap = null;
+				Map<Long,String> usersDateMap =null;
+				Map<Long,String> verifierDateMap = null;
+				Map<Long,Long> dvStatusMap = null;
+				Map<Long,String> mobileNoMap = null;
+				//Map<Long,Map<Long,String>> wmResultBoothMap = null;// booth Wise Web Moniter Caste Collected
+				for (Object[] objects : castesList)
+				{
+					casteMap.put((Long)objects[0], objects[1].toString());
+				}
+				List<Object[]> result = surveyDetailsInfoDAO.getBoothWiseDcAndDvDetails(boothIds);
+				if(result != null && result.size() > 0)
+				{
+					dcBoothMap = new HashMap<Long, Map<Long,String>>();
+					dvBoothMap = new HashMap<Long, Map<Long,String>>();
+					dvStatusBoothMap = new HashMap<Long, Map<Long,Long>>();
+					dcBoothDatesMap = new HashMap<Long, Map<Long,String>>();
+					dvBoothDatesMap = new HashMap<Long, Map<Long,String>>();
+					List<GenericVO> userWiseList = new ArrayList<GenericVO>();
+					mobileNoMap = new HashMap<Long, String>();
+					for (Object[] parms	: result)
+					{
+						dcMap = dcBoothMap.get((Long)parms[4]);
+						if(dcMap == null)
+						{
+							dcMap = new HashMap<Long, String>();
+							dvMap = new HashMap<Long, String>();
+							dvStatusMap = new HashMap<Long, Long>();
+							dcDatesMap = new HashMap<Long, String>();
+							dvDatesMap = new HashMap<Long, String>();
+							dcBoothMap.put((Long)parms[4], dcMap);
+							dvBoothMap.put((Long)parms[4], dvMap);
+							dvStatusBoothMap.put((Long)parms[4], dvStatusMap);
+							dcBoothDatesMap.put((Long)parms[4], dcDatesMap);
+							dvBoothDatesMap.put((Long)parms[4], dvDatesMap);
+						}
+						GenericVO VO = new GenericVO();
+						if((Long)parms[3] != null)
+						{
+							if((Long)parms[3] == 1)
+							{
+								dcMap.put((Long)parms[1], casteMap.get((Long)parms[2]));
+								dcDatesMap.put((Long)parms[1], parms[7].toString());
+								if(parms[9] != null)
+								mobileNoMap.put((Long)parms[1], parms[9].toString());
+							}
+							else
+							{
+								dvDatesMap.put((Long)parms[1], parms[7].toString());
+								dvMap.put((Long)parms[1], casteMap.get((Long)parms[2]));
+								
+								if(parms[8] != null)
+								{
+									dvStatusMap.put((Long)parms[1],Long.valueOf(parms[8].toString()));
+								}
+								
+							}
+						}
+						userWiseList.add(VO);
+					}
+				}
+				
+				List<Object[]> wmDetails = surveyCallStatusDAO.getBoothWiseWmCasteUpdationDetails(boothIds);
+				if(wmDetails != null && wmDetails.size() > 0)
+				{
+					wmBoothMap = new HashMap<Long, Map<Long,String>>();
+					for (Object[] parms : wmDetails)
+					{
+						wmMap = wmBoothMap.get((Long)parms[3]);
+						if(wmMap == null)
+						{
+							wmMap = new HashMap<Long, String>();
+							wmBoothMap.put((Long)parms[3], wmMap);
+							
+						}
+						if(parms[2] != null)
+						{
+							dcMap = dcBoothMap.get((Long)parms[3]);
+							if(parms[2].toString().trim().equalsIgnoreCase("N"))
+							{
+								wmMap.put((Long)parms[0], casteMap.get((Long)parms[1]));
+							}
+							else
+							{
+								wmMap.put((Long)parms[0], dcMap.get((Long)parms[0]));
+							}
+						}
+						
+					}
+				}
+				
+				
+				
+				if(boothIds != null && boothIds.size() > 0)
+				{
+					dcWmCollectedMap = new HashMap<Long, Map<Long,String>>();
+					for(Long boothId : boothIds)
+					{
+						if(dcBoothMap.get(boothId) != null && dcBoothMap.get(boothId).size() > 0)
+						{
+							Map<Long,String>  resultMap = new HashMap<Long, String>();
+							
+							if(wmBoothMap != null && wmBoothMap.size() > 0)
+							{
+								if(wmBoothMap.get(boothId) != null && wmBoothMap.size() > 0)
+								{
+									checkForDcWithWm(dcBoothMap.get(boothId),wmBoothMap.get(boothId),resultMap);
+									dcWmCollectedMap.put(boothId, resultMap);
+								}
+								else
+								{
+									dcWmCollectedMap.put(boothId, dcBoothMap.get(boothId));
+								}
+							}
+							else
+							{
+								dcWmCollectedMap.put(boothId, dcBoothMap.get(boothId));
+							}
+							
+						}
+						
+						
+						
+					}
+				}
+				
+				
+				List<Object[]> userList = surveyDetailsInfoDAO.getBoothWiseUser(boothIds,1l);
+				List<Object[]> verifiersList = surveyDetailsInfoDAO.getBoothWiseUser(boothIds,4l);
+				if(userList != null && userList.size() > 0)
+				{
+					usersMap = new HashMap<Long, String>();
+					usersDateMap = new HashMap<Long, String>();
+					for (Object[] objects : userList) 
+					{
+						String name = usersMap.get((Long)objects[0]);
+						if(name == null)
+						{
+							usersMap.put((Long)objects[0], objects[2].toString());
+							usersDateMap.put((Long)objects[0], objects[4].toString());
+						}
+					}
+				}
+				if(userList != null && userList.size() > 0)
+				{
+					verifierMap = new HashMap<Long, String>();
+					verifierDateMap = new HashMap<Long, String>();
+					for (Object[] objects : verifiersList)
+					{
+						String name = verifierMap.get((Long)objects[0]);
+						if(name == null)
+						{
+							verifierMap.put((Long)objects[0], objects[2].toString());
+							verifierDateMap.put((Long)objects[0], objects[4].toString());
+						}
+					}
+				}
+				List<Object[]> voterDetails = boothPublicationVoterDAO.getVoterDetailsByBoothID(boothIds);
+				if(voterDetails != null && voterDetails.size() > 0)
+				{
+					boothWiseMap = new HashMap<Long, VerificationCompVO>();
+					List<VerificationCompVO> matchedList  = null;
+					List<VerificationCompVO> unMatchedList = null;
+					List<VerificationCompVO> notVerifiedList = null;
+					String surveyUser = null;
+					String verifierUser = null;
+					String dcDate = null;
+					String dvDate = null;
+					Integer collectdCount = 0;
+					Integer updatedCount = 0;
+					Integer verifedCount = 0;
+					Integer notIdentifedCount = 0;
+					for (Object[] parms : voterDetails)
+					{
+						 dcMap = dcBoothMap.get((Long)parms[4]);
+						 if(dcMap != null && dcMap.size() > 0)
+						 {
+							 VerificationCompVO subVO = boothWiseMap.get((Long)parms[4]);
+								if(subVO == null)
+								{
+									 subVO = new VerificationCompVO();
+									 boothWiseMap.put((Long)parms[4], subVO);
+									 matchedList = new ArrayList<VerificationCompVO>();
+									 unMatchedList = new ArrayList<VerificationCompVO>();
+									 notVerifiedList = new ArrayList<VerificationCompVO>(); 
+									 if(dvBoothMap != null && dvBoothMap.size() > 0)
+									 dvMap = dvBoothMap.get((Long)parms[4]);
+									 if(wmBoothMap != null && wmBoothMap.size() > 0)
+									 wmMap = wmBoothMap.get((Long)parms[4]);
 									 dcDatesMap = dcBoothDatesMap.get((Long)parms[4]);
 									 dvDatesMap = dcBoothDatesMap.get((Long)parms[4]);
 									 dcWmMap =  dcWmCollectedMap.get((Long)parms[4]);
