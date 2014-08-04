@@ -352,14 +352,14 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 		
 		else if(jObj.getString("task").equalsIgnoreCase("getPartyList"))
 		 partiesList = candidateDetailsService.getPartiesListByStateId(jObj.getLong("stateId"));
-		
+			
 		else if(jObj.getString("task").equalsIgnoreCase("getDesignationsList"))
 		 selectOptionVOList = candidateDetailsService.getDesignationsList();
-		 
+			 
 		else if(jObj.getString("task").equalsIgnoreCase("getAllKeywordsByCount"))
 			keywordsList = candidateDetailsService.getKeywordsListCount();
-		
-		}catch (Exception e) {
+			
+			}catch (Exception e) {
 			e.printStackTrace();
 	         log.error("Exception Occured in ajaxHandler() method, Exception - "+e);
 		}
