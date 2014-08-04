@@ -156,6 +156,7 @@ function showHideTabs(id)
 		$('#inActiveUsersDetails').hide();
 		$('#completeBooths').hide();
 		$('#userReport').hide();
+		$("#verifierReportIdForVerifier").hide();;
 		$('#saveBoothsPercentage').hide();
 
 	}
