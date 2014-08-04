@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -55,7 +56,14 @@ IDistrictDAO {
 	}
 	@SuppressWarnings("unchecked")
 	public List<District> findByStateId(Long stateId){
-		return getHibernateTemplate().find("from District model where model.state.stateId=? order by districtName", stateId);
+		if(stateId != 0 )
+		{
+			return getHibernateTemplate().find("from District model where model.state.stateId=? order by districtName", stateId);
+
+		}
+		else{
+			return getHibernateTemplate().find("from District model where model.state.stateId in (1,36) order by districtName");
+			}
 	}
 /*
 	@SuppressWarnings("unchecked")
