@@ -19,6 +19,8 @@ public interface ISurveyCallStatusDAO extends GenericDao<SurveyCallStatus,Long>{
 	public List<Object[]> getCasteVotersForAllConstituencies();
 	public List<Object[]> getMobileVotersForAllConstituencies();
 	
+	public SurveyCallStatus getSurveyCallStatusByVoterId(Long voterId);
+	
 	public List<Object[]> getCasteStatusForBooth(List<Long> boothIds);
 	public List<Object[]> getDvSurveyCallDtalsByboothId(Long boothId,Long surveyUserId);
 	public List<Object[]> getStatusListForVerifier(List<Long> userIds,List<Long> boothIds,Long userTypeId);

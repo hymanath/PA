@@ -45,4 +45,6 @@ public interface IHamletDAO extends GenericDao<Hamlet, Long> {
 	public List<String> getTehsilIdsByHamlets(List<Long> hamletIds);
 	
 	public List<Object[]> gethamletsInAState(Long stateId);
+	
+	public List<Object[]> getHamletsByTehsilIds(List<Long> tehsilIds) ;
 }
