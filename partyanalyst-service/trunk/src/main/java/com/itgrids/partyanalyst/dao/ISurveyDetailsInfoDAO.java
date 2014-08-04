@@ -84,7 +84,7 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	public List<Long> getPresentDayUserWiseSamplesCountByUserIds(List<Long> userIds,Date presentDate);
 	public List<Object[]> getBoothWiseDcAndDvDetails(List<Long> boothId);
 
-	public List<Object[]> getVotersDetailsByBoothId(Long boothId,List<Long> assignUsers,Date searchDate);
+	public List<Object[]> getVotersDetailsByBoothId(Long boothId,List<Long> assignUsers,Date searchDate,Long casteStateId);
 	
 	public List<Object[]> getBoothWiseUser(List<Long> boothIds,Long typeId);
 	public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId);
