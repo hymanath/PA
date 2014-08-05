@@ -723,7 +723,7 @@ public class SurveyCompletedDetailsService implements
 		
 		if(boothIds != null && boothIds.size() > 0)
 		{
-			List<VerificationCompVO> dvVerifiersDetails = surveyDetailsService.checkForVerifierData(boothIds);
+			List<VerificationCompVO> dvVerifiersDetails = surveyDetailsService.checkForVerifierDataForWM(boothIds);
 			if(dvVerifiersDetails != null && dvVerifiersDetails.size() > 0)
 			{
 				for (VerificationCompVO verificationCompVO : dvVerifiersDetails) 
