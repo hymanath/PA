@@ -770,24 +770,47 @@ $('#searchDataImg').show();
 					$('#userInfoDiv7').html(str2);
 				}
 				
-				if(results != null && results[0].genericVOList.length>0)
+				if(userType != 4)
 				{
-						$('#casteInfoDiv').show();
-						str1 +='<b> Caste Details </b> : <br> ';
-						var length = results[0].genericVOList.length;
-						
-						str1 +='<a style="color:#008000;" href="javascript:{getSurveyVotersList('+userId+',\''+userName+'\','+mobileNo+',\''+leaderName+'\','+leaderMobile+','+boothId+','+boothNo+',\''+date+'\','+userType+',2);}">All</a>, ';
-						
-						for(var k in results[0].genericVOList){
-						var perc = (results[0].genericVOList[k].count * 100 ) / totalVoters;
-							str1 +=' <a href="javascript:{getCasteWiseVotersListByCaste('+results[0].genericVOList[k].id+','+webConstId+','+userId+','+boothId+',\''+date+'\','+userType+');}">'+results[0].genericVOList[k].name+' ('+parseFloat(perc).toFixed(2)+') </a> ';
-							
-							if(k < length-1){
-								str1 +=', ';
-							}					
+						if(results != null && results[0].genericVOList.length>0)
+						{
+								$('#casteInfoDiv').show();
+								str1 +='<b> Caste Details </b> : <br> ';
+								var length = results[0].genericVOList.length;
+								
+								str1 +='<a style="color:#008000;" href="javascript:{getSurveyVotersList('+userId+',\''+userName+'\','+mobileNo+',\''+leaderName+'\','+leaderMobile+','+boothId+','+boothNo+',\''+date+'\','+userType+',2);}">All</a>, ';
+								
+								for(var k in results[0].genericVOList){
+								var perc = (results[0].genericVOList[k].count * 100 ) / totalVoters;
+									str1 +=' <a href="javascript:{getCasteWiseVotersListByCaste('+results[0].genericVOList[k].id+','+webConstId+','+userId+','+boothId+',\''+date+'\','+userType+');}">'+results[0].genericVOList[k].name+' ('+parseFloat(perc).toFixed(2)+') </a> ';
+									
+									if(k < length-1){
+										str1 +=', ';
+									}					
+								}
 						}
-				}
-
+					}
+					else
+					{
+					if(results != null && results[0].genericVOList.length>0)
+						{
+								$('#casteInfoDiv').show();
+								str1 +='<b> Caste Details </b> : <br> ';
+								var length = results[0].genericVOList.length;
+								
+								//str1 +='<a style="color:#008000;" href="javascript:{getSurveyVotersList('+userId+',\''+userName+'\','+mobileNo+',\''+leaderName+'\','+leaderMobile+','+boothId+','+boothNo+',\''+date+'\','+userType+',2);}">All</a>, ';
+								
+								for(var k in results[0].genericVOList){
+								var perc = (results[0].genericVOList[k].count * 100 ) / totalVoters;
+									str1 +=''+results[0].genericVOList[k].name+' ('+parseFloat(perc).toFixed(2)+')';
+									
+									if(k < length-1){
+										str1 +=', ';
+									}					
+								}
+						}
+					
+					}
 				  $('#casteInfoDiv').html(str1);
 				
 					if(results[1] != null  && results[1].genericVOList.length > 0){
