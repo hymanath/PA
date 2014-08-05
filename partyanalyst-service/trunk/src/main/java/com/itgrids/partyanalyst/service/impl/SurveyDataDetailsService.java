@@ -4197,6 +4197,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					reportVO.setEndTime(dateFormat.format(obj[11]));
 					reportVO.setLocalArea(obj[8].toString());
 					reportVO.setPartNo(obj[5].toString());
+					reportVO.setUserTypeId((Long)obj[12]);
 					returnList.add(reportVO);
 					
 				}

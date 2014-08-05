@@ -1355,7 +1355,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 				"SDI.surveyUser.surveyUserId,SDI.surveyUser.userName,SDI.surveyUser.mobileNo," +
 				"SDI.booth.boothId, SDI.booth.partNo,SDI.booth.tehsil.tehsilName," +
 				"CASE WHEN SDI.booth.panchayat.panchayatId is not null THEN SDI.booth.panchayat.panchayatName ELSE 0 END ," +
-				"SDI.booth.location,SDI.booth.villagesCovered,min(SDI.date),max(SDI.date) " +
+				"SDI.booth.location,SDI.booth.villagesCovered,min(SDI.date),max(SDI.date),SDI.surveyUser.surveyUserType.surveyUsertypeId" +
 				" from SurveyDetailsInfo SDI where " +
 				"SDI.booth.constituency.constituencyId = :constituencyId and " +
 				"date(SDI.date) = :date ");
