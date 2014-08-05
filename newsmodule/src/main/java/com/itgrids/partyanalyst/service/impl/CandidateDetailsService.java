@@ -1807,7 +1807,10 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		 		}
 				 
 			 if(level.equalsIgnoreCase("district")||level.equalsIgnoreCase("")){
-				 List<Long> distIds = districtDAO.getAllDistrictByStateIds(1L);
+				 List<Long> stateIds = new ArrayList<Long>();
+				 stateIds.add(1l);
+				 stateIds.add(36l);
+				 List<Long> distIds = districtDAO.getAllDistrictByStateIds(stateIds);
 				 List <Object[]> newsDetailsForDist =  partyGalleryDAO.getAllNewsDetailsForDistrict(872l,startIndex,maxResults,newsType,3L,distIds);
 				 
 				/* if(newsDetailsForDist == null || newsDetailsForDist.isEmpty() )

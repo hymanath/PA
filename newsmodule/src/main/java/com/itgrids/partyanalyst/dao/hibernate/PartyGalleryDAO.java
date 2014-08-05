@@ -414,10 +414,10 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 			query.append("select distinct model.file.fileId,model.file.fileDate,model.file.fileTitle,model.file.fileDescription,model.file.font.fontId,model.file.fileName,model.file.filePath,model.file.descFont.fontId from UserAddress model where ");		
 			if(queryType.equalsIgnoreCase("Public"))
 					query.append("  model.file.isPrivate != 'Y' and ");	
-			query.append(" model.locationValue = :locationValue and model.regionScopes.regionScopesId = :locId and model.file.isDeleted !='Y' ");
+			query.append(" model.locationValue in(1,36) and model.regionScopes.regionScopesId = :locId and model.file.isDeleted !='Y' ");
 			query.append(" order by model.file.fileDate desc,model.file.updatedDate desc ");
 			Query queryObject = getSession().createQuery(query.toString());		
-			queryObject.setLong("locationValue", stateId);
+			//queryObject.setLong("locationValue", stateId);
 			queryObject.setLong("locId", scopeId);
 			queryObject.setFirstResult(firstResult);
 			queryObject.setMaxResults(maxResult);									
