@@ -408,7 +408,7 @@ function getconstituencies()
 											</div>
 										</div>	
 									</div>	
-										<div class="row text-center m_top20" style="margin-right:51px;"><button type="button" class="btn btn-success" onClick="getDetailsByConstituency();">SUBMIT</button><img id="userTrackingImage" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img></div>
+										<div class="row text-center m_top10" style="margin-right:111px;"><button type="button" class="btn btn-success" onClick="getDetailsByConstituency();">SUBMIT</button><img id="userTrackingImage" style="width:70px;height:60px;display:none" src="images/Loading-data.gif" alt="Processing Image"></img></div>
 								</div>
 							</div>
 						

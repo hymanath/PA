@@ -147,6 +147,8 @@ $('#boothId').multiselect({
 											 <input type="text" placeholder="To Date..." class="input-block-level date" id="toDate" readonly>
 											</div>
 										</div>
+										<div class="span1" style="margin:25px -8px 0 8px;width: 15px;">
+								<img id="dateAjaxImage" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
 									</div>	
 									<div class="row-fluid">
 										
@@ -157,7 +159,7 @@ $('#boothId').multiselect({
 						<!--	<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getDayWiseReport()">SUBMIT</button></div>-->
 						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getDayWiseReportByConstituencyIdAndUserType()">SUBMIT</button></div>
 						<div id="retunMsg" class="clearCls"></div>
-                             <div id="dayWiseReportDiv1" class="clearCls"></div>
+                             <div id="dayWiseReportDiv1" class="clearCls" style="overflow-x:scroll;"></div>
 							<img src='images/Loading-data.gif' class="offset5"  id="mainajaximg" style="width:70px;height:60px;display:none;"/>
 					</div>
 				</div>
@@ -1163,6 +1165,7 @@ showHideReportTabs('stateWiseReportTab');
 var availableDates;
 function getCasteCollectedDatesByConstituencyId(constituencyId)
 {
+$("#dateAjaxImage").show();
 var jsObj =
 {
 constituencyId :constituencyId
@@ -1174,15 +1177,37 @@ url: 'getCasteCollectionDatesByConstituencyId.action',
 dataType: 'json',
 data: {task:JSON.stringify(jsObj)},
 }).done(function(result){
+$("#dateAjaxImage").hide();
 availableDates = result;
 var strtDt = availableDates[0];
 var endtDt = availableDates[availableDates.length-1];
-var dt= strtDt.substring(0,2);
-var month = 0+strtDt.substring(3,4);
-var yr = strtDt.substring(5,9);
-var dt1= endtDt.substring(0,2);
-var month1 = 0+endtDt.substring(3,4);
-var yr1 = endtDt.substring(5,9);
+
+var arrStrt = strtDt.split('-');
+var arrEnd =  endtDt.split('-');
+		
+	var dt = arrStrt[0];
+	var month = arrStrt[1];
+	var yr = arrStrt[2];
+	
+	if(dt.length<2){
+		dt = "0"+dt;
+	}
+	
+	if(month.length<2){
+		month = "0"+month;
+	}
+	
+	var dt1 = arrEnd[0];
+	var month1 = arrEnd[1];
+	var yr1 = arrEnd[2];
+	
+	if(dt1.length<2){
+		dt1 = "0"+dt1;
+	}
+	
+	if(month1.length<2){
+		month1 = "0"+month1;
+	}
 var date1 = dt+"-"+month+"-"+yr;
 var date2 = dt1+"-"+month1+"-"+yr1;
 $('#fromDate').val(date1).datepicker({ beforeShowDay: displayDates,maxDate: '0',dateFormat: 'dd-mm-yy'});

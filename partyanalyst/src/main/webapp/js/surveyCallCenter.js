@@ -1595,7 +1595,7 @@ function buildDetailsTable(result)
 	str+='<table class="table table-bordered m_top20 table-hover table-striped" id="dayreport">';
     str+='<thead class="alert alert-success">';
 	 str+='<tr>';
-	  str+='<th>DC NAME</th>';
+	  str+='<th>USER NAME</th>';
 	  str+='<th>MOBILE NO</th>';
 	  str+='<th>START TIME</th>';
 	  str+='<th>END TIME</th>';
@@ -1620,8 +1620,16 @@ function buildDetailsTable(result)
 			str+='<td>'+value.panchayatName+'</td>';
 			str+='<td>'+value.localArea+'</td>';
 			str+='<td>'+value.villageCovered+'</td>';
+			if(value.userTypeId == 1)
+			{
 			str+='<td><a onClick="openTrackinWindow('+value.userid+',\''+$('#dateId').val()+'\',1) " style="cursor: pointer;"><img src="images/DC.png"></img></a></td>';
 			str+='<td><a onClick="openTrackinWindow('+value.userid+',\''+$('#dateId').val()+'\',2) " style="cursor: pointer;"><img src="images/DC.png"></img></a></td>';
+			}
+			else
+			{
+			str+='<td><a onClick="openTrackinWindow('+value.userid+',\''+$('#dateId').val()+'\',1) " style="cursor: pointer;"><img src="images/DV.png"></img></a></td>';
+			str+='<td><a onClick="openTrackinWindow('+value.userid+',\''+$('#dateId').val()+'\',2) " style="cursor: pointer;"><img src="images/DV.png"></img></a></td>';
+			}
 		str+='</tr>';
 
 			str+='<tr id="resultDiv'+index+'" style="display:none;" class="buildDivCls">';
@@ -2103,7 +2111,7 @@ function getReportForConstituency(){
 	$('#basicCountDiv').html('');
 	 $("#panchayatsStatusDiv").html('');
 	if(constituencyId == 0){
-		$('#errDivIdForReport').html('Please Select Constituency.');
+		$('#errDivIdForReport').html('Please Select Constituency');
 		return;
 	}
 
@@ -2536,13 +2544,56 @@ function getRespectiveUsers(id)
 
 function getUserWiseReport()
 {
+	var userTypeId = $("#userReportUserType").val();
+	var surveyUserId = $( "#userReportUser" ).val();
+	var fromDate = $("#fromDateForUserReport").val();
+	var toDate = $("#toDateForUserReport").val();
+	$("#userReportTable").html("");
+	if(userTypeId == 0)
+	{
+		$("#errorDiv").html("Please Select User Type").css("color","red");
+		return;
+	}
+	if(surveyUserId == 0)
+	{
+		$("#errorDiv").html("Please Select User").css("color","red");
+		return;
+	}
+	if(fromDate.length == 0)
+	{
+		$("#errorDiv").html("Please Select From Date").css("color","red");
+		return;
+	}
+	if( toDate.length == 0)
+	{
+		$("#errorDiv").html("Please Select To Date").css("color","red");
+		return;
+	}
+	if(fromDate.length > 0 && toDate.length > 0 )
+	{		    
+		  var dt1  = parseInt(fromDate.substring(0,2),10);
+		  var mon1 = parseInt(fromDate.substring(3,5),10);
+		  var yr1  = parseInt(fromDate.substring(6,10),10);
+		  var dt2  = parseInt(toDate.substring(0,2),10);
+		  var mon2 = parseInt(toDate.substring(3,5),10);
+		  var yr2  = parseInt(toDate.substring(6,10),10);
+		  var date1 = new Date(yr1, mon1, dt1);
+		  var date2 = new Date(yr2, mon2, dt2);
+
+		if(date2 < date1)
+		{ 
+		 $('#errorDiv').html("From Date should be Less Than To Date");
+		 return;
+		}
+	}
+	$('#errorDiv').html("");
 	$('#userWiseReportImg').show();
 	var jsObj={
 		//constituencyId:$('#userWiseReportConstituencyId').val(),
-		userTypeId:$('#userReportUserType').val(),
-		fromDate : $('#fromDateForUserReport').val(),
-		toDate : $('#toDateForUserReport').val(),
-		surveyUserId : $('#userReportUser').val()
+		userTypeId:userTypeId,
+		fromDate : fromDate,
+		toDate :toDate,
+		surveyUserId :surveyUserId
 	};
 	$.ajax({
 	type:'GET',
@@ -2699,7 +2750,6 @@ function saveBoothPercentage(){
 	var boothId = $("#boothIdForSavePercentages").val();
 	var percentage =$("#percenageForBooth").val();
 	
-	$("#errorDivSB").html("");
 	
 	if(consId == 0){
 		$("#errorDivSB").html("<span style='color:red'>Please Select Constituency</span>");
@@ -2716,7 +2766,7 @@ function saveBoothPercentage(){
 		$("#boothImageForSavingPercent").hide();
 		return;
 	}
-	
+	$("#errorDivSB").html("");
 	var jObj ={
 	  boothId:boothId,
 	  percentage:percentage
@@ -3154,6 +3204,11 @@ function getLeadersAndUsersByConstituency()
 	var dateVal = $("#dateId").val();
 $("#leaderAndUserDetailsDiv").html('');
 $("#leaderAndUserDetailsInactiveDiv").html('');
+if(constituencyId == 0)
+{
+ $("#errDivIdForStartTime").html("Please Select Constituency");
+ return;
+}
 	var jObj =
 	{	 
 	  constituencyId: constituencyId,
@@ -3240,10 +3295,10 @@ function getBoothsStatusDetailsOfConstituency()
 
 	if($('#reportConstituencyId').val() ==0)
 	{
-      $("#constnErrDiv").html('Please Select Constituency');
+      $("#constnErrDiv").html('<font color="#FF0000">Please Select Constituency</font>');
 	  return;
 	}
-
+	$("#constnErrDiv").html('');
 	$('#stateStatusAjax').show();
 		$.ajax({
 		type:'GET',
@@ -3388,7 +3443,7 @@ function getpanchayatDetailsByStatusAndConstituency(statusId)
 
 function getBoothsDetailsInCallStatusInfo(constituencyId,divId)
 {
-	$("#boothImage").show();
+	$("#boothImageForWm").show();
 	var jObj =
 	{
 	  constituencyId:constituencyId     
@@ -3401,8 +3456,8 @@ function getBoothsDetailsInCallStatusInfo(constituencyId,divId)
 			data: {task:JSON.stringify(jObj)},
 		  }).done(function(result){				
 				//buildDayWiseReportByUserType(result);		
-				$("#boothImage").hide();
-				$('#'+divId+'').find('option').remove();
+				$("#boothImageForWm").hide();
+				$('#'+divId+'').find('option:not(:first)').remove();
 
 				$.each(result,function(index,value){
 					$('#'+divId+'').append('<option value="'+value.id+'">Booth - '+value.name+'</option>');
@@ -3559,7 +3614,17 @@ function getVerfierDetails(buildType,imgId,buildDiv)
 	$('#'+imgId+'').show();
 	$('#'+buildDiv+'').html('');
 	var boothIds = new Array();
-	
+	if($("#constituencyForWm").val() == 0)
+	{
+		$("#errorDivForWM").html("<font color='#FF0000'>Select Constituency</font>");
+		return;
+	}
+	if($('#boothIdForWm').val()  == 0)
+	{
+		 $("#errorDivForWM").html('<font color="#FF0000">Select Booth</font>');
+		 return;
+	}
+	 $("#errorDivForWM").html("");
 	if(buildType == 1)
 	{
 		var boothId = $('#boothIdForVerifier').val();
@@ -3620,7 +3685,7 @@ function getVerfierDetails(buildType,imgId,buildDiv)
 function getBoothsDetailsInSurveyDetailsInfo(constituencyId,divId)
 {
 
-	$("#boothImage").show();
+	$("#boothImageForVerifier").show();
 	var jObj =
 	{
 	  constituencyId:constituencyId     
@@ -3633,8 +3698,8 @@ function getBoothsDetailsInSurveyDetailsInfo(constituencyId,divId)
 			data: {task:JSON.stringify(jObj)},
 		  }).done(function(result){				
 				//buildDayWiseReportByUserType(result);		
-				$("#boothImage").hide();
-				$('#'+divId+'').find('option').remove();
+				$("#boothImageForVerifier").hide();
+				$('#'+divId+'').find('option:not(:first)').remove();
 
 				$.each(result,function(index,value){
 					$('#'+divId+'').append('<option value="'+value.id+'">Booth - '+value.name+'</option>');
@@ -4223,10 +4288,17 @@ function getThirdPartyVerificationDetails()
 function getFinalReport()
 {
 	$('#dayWiseReportDiv1').html('');
+	var constituencyId = $('#constituencyIdForVerfication').val();
+	if(constituencyId == 0)
+	{
+	 $("#errorDivForVerification").html("<font color='#FF0000'>Please Select Constituency</font>");
+	 return;
+	}
+	 $("#errorDivForVerification").html("");
 	$('#mainajaximg').show();
 	var jsObj = 
 	{
-		constituencyId : $('#constituencyIdForVerfication').val()
+		constituencyId : constituencyId
 	}
 	$.ajax({
 			type:'GET',
