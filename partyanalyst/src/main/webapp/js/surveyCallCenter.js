@@ -3349,7 +3349,7 @@ function buildBoothsStatusCountsDetails(result)
 		str+='</div>';
 
 	$('#basicStatusReport').html(str);
-	getMatchecUnMatchedDetails();
+	//getMatchecUnMatchedDetails();
 }
 function getpanchayatDetailsByStatusAndConstituency(statusId)
 {
@@ -4222,6 +4222,7 @@ function getThirdPartyVerificationDetails()
 //getFinalReport();
 function getFinalReport()
 {
+	$('#dayWiseReportDiv1').html('');
 	$('#mainajaximg').show();
 	var jsObj = 
 	{
@@ -4272,33 +4273,130 @@ function buildFinalReport(result)
 		str += '<tr>';
 		str += '<td>'+result[i].partNo+'</td>';
 		str += '<td>'+result[i].totalVoters+'</td>';
-		str += '<td>'+result[i].dcCasteMapped+'</td>';
 		if(result[i].dcCasteMapped != null)
 		{
-			str += '<td>'+(Math.round(result[i].dcCasteMapped * 100)/result[i].totalVoters).toFixed(2)+'</td>';
+			if(!isNaN(result[i].dcCasteMapped))
+			{
+				str += '<td>'+result[i].dcCasteMapped+'</td>';
+			}
+			else
+			{
+				str += '<td>0</td>';
+			}
 		}
 		else
 		{
-			str += '<td></td>';
+			str += '<td>0</td>';
+		}
+		if(result[i].dcCasteMapped != null)
+		{
+			if(!isNaN(Math.round(result[i].dcCasteMapped * 100)/result[i].totalVoters))
+			{
+				str += '<td>'+(Math.round(result[i].dcCasteMapped * 100)/result[i].totalVoters).toFixed(2);+'</td>';
+			}
+			else
+			{
+				str += '<td>0.00</td>';
+			}
+		}
+		else
+		{
+			str += '<td>0.00</td>';
 		}
 		
-		
-		str += '<td>'+result[i].dcHamletMapped+'</td>';
 		if(result[i].dcHamletMapped != null)
 		{
-			str += '<td>'+(Math.round(result[i].dcHamletMapped * 100)/result[i].totalVoters).toFixed(2)+'</td>';
+			if(!isNaN(result[i].dcHamletMapped))
+			{
+				str += '<td>'+result[i].dcHamletMapped+'</td>';
+			}
+			else
+			{
+				str += '<td>0</td>';
+			}
+		}
+		else
+		{
+			str += '<td>0</td>';
+		}
+		if(result[i].dcHamletMapped != null)
+		{
+			if(!isNaN(Math.round(result[i].dcHamletMapped * 100)/result[i].totalVoters))
+			{
+				str += '<td>'+(Math.round(result[i].dcHamletMapped * 100)/result[i].totalVoters).toFixed(2);+'</td>';
+			}
+			else
+			{
+				str += '<td>0.00</td>';
+			}
 		}
 		
 		else
 		{
-			str += '<td>'-'</td>';
+			str += '<td>0.00</td>';
 		}
 		
+		if(result[i].dcMobileMapped != null)
+		{
+			if(!isNaN(result[i].dcMobileMapped))
+			{
+				str += '<td>'+result[i].dcMobileMapped+'</td>';
+			}
+			else
+			{
+				str += '<td>0</td>';
+			}
+		}
+		else
+		{
+			str += '<td>0</td>';
+		}
 		
-		str += '<td>'+result[i].dcMobileMapped+'</td>';
-		str += '<td>'+result[i].wmDcTotal+'</td>';
-		str += '<td>'+result[i].wmDcMobileMapped+'</td>';
-		str += '<td>'+result[i].wmDcMobileUnMapped+'</td>';
+		if(result[i].wmDcTotal != null)
+		{
+			if(!isNaN(result[i].wmDcTotal))
+			{
+				str += '<td>'+result[i].wmDcTotal+'</td>';
+			}
+			else
+			{
+				str += '<td>0</td>';
+			}
+		}
+		else
+		{
+			str += '<td>0</td>';
+		}
+		if(result[i].wmDcMobileMapped != null)
+		{
+			if(!isNaN(result[i].wmDcMobileMapped))
+			{
+				str += '<td>'+result[i].wmDcMobileMapped+'</td>';
+			}
+			else
+			{
+				str += '<td>0</td>';
+			}
+		}
+		else
+		{
+			str += '<td>0</td>';
+		}
+		if(result[i].wmDcMobileUnMapped != null)
+		{
+			if(!isNaN(result[i].wmDcMobileUnMapped))
+			{
+				str += '<td>'+result[i].wmDcMobileUnMapped+'</td>';
+			}
+			else
+			{
+				str += '<td>0</td>';
+			}
+		}
+		else
+		{
+			str += '<td>0</td>';
+		}
 		if(result[i].wmDcMobileMapped != null  && result[i].wmDcMobileUnMapped != null)
 		{
 			if(!isNaN(Math.round(result[i].wmDcMobileUnMapped * 100)/(result[i].wmDcMobileUnMapped + result[i].wmDcMobileMapped)))
@@ -4307,16 +4405,44 @@ function buildFinalReport(result)
 			}
 			else
 			{
+				str += '<td>0.00</td>';
+			}
+		}
+		else
+		{
+			str += '<td>0.00</td>';
+		}
+		if(result[i].wmDcCasteMapped != null)
+		{
+			if(!isNaN(result[i].wmDcCasteMapped))
+			{
+				str += '<td>'+result[i].wmDcCasteMapped+'</td>';
+			}
+			else
+			{
 				str += '<td>0</td>';
 			}
 		}
 		else
 		{
-			str += '<td>'-'</td>';
+			str += '<td>0</td>';
 		}
-		
-		str += '<td>'+result[i].wmDcCasteMapped+'</td>';
-		str += '<td>'+result[i].wmDcCasteUnMapped+'</td>';
+		if(result[i].wmDcCasteUnMapped != null)
+		{
+			if(!isNaN(result[i].wmDcCasteUnMapped))
+			{
+				str += '<td>'+result[i].wmDcCasteUnMapped+'</td>';
+			}
+			else
+			{
+				str += '<td>0</td>';
+			}
+		}
+		else
+		{
+			str += '<td>0</td>';
+		}
+
 		if(result[i].wmDcCasteMapped != null && result[i].wmDcCasteUnMapped != null)
 		{
 			if(!isNaN(Math.round(result[i].wmDcCasteUnMapped * 100)/(result[i].wmDcCasteUnMapped + result[i].wmDcCasteMapped)))
@@ -4325,46 +4451,157 @@ function buildFinalReport(result)
 			}
 			else
 			{
-				str += '<td>0</td>';
+				str += '<td>0.00</td>';
 			}
 			
 		}
 		else
 		{
-			str += '<td>'-'</td>';
+			str += '<td>0.00</td>';
 		}
-		str += '<td>'+result[i].matchedCount+'</td>';
+		
 		if(result[i].matchedCount != null)
 		{
-			str += '<td>'+(Math.round(result[i].matchedCount * 100)/result[i].totalVoters).toFixed(2)+'</td>';
+			if(!isNaN(result[i].matchedCount))
+			{
+				str += '<td>'+result[i].matchedCount+'</td>';
+			}
+			else
+			{
+				str += '<td>0</td>';
+			}
 		}
 		else
 		{
-			str += '<td>'-'</td>';
+			str += '<td>0</td>';
+		}
+		if(result[i].matchedCount != null)
+		{
+		
+			if(!isNaN(Math.round(result[i].matchedCount * 100)/result[i].totalVoters))
+			{
+				str += '<td>'+(Math.round(result[i].matchedCount * 100)/result[i].totalVoters).toFixed(2)+'</td>';
+			}
+			else
+			{
+				str += '<td>0.00</td>';
+			}
+		}
+		else
+		{
+			str += '<td>0.00</td>';
 		}
 		
-		str += '<td>'+result[i].unMatchedCount+'</td>';
 		if(result[i].unMatchedCount != null)
 		{
-			str += '<td>'+(Math.round(result[i].unMatchedCount * 100)/result[i].totalVoters).toFixed(2)+'</td>';
+			if(!isNaN(result[i].unMatchedCount))
+			{
+				str += '<td>'+result[i].unMatchedCount+'</td>';
+			}
+			else
+			{
+				str += '<td>0</td>';
+			}
 		}
 		else
 		{
-			str += '<td>'-'</td>';
+			str += '<td>0</td>';
 		}
-		str += '<td>'+result[i].notIdentifedCount+'</td>';
+		if(result[i].unMatchedCount != null)
+		{
+		
+			if(!isNaN(Math.round(result[i].unMatchedCount * 100)/result[i].totalVoters))
+			{
+				str += '<td>'+(Math.round(result[i].unMatchedCount * 100)/result[i].totalVoters).toFixed(2)+'</td>';
+			}
+			else
+			{
+				str += '<td>0.00</td>';
+			}
+			
+		}
+		else
+		{
+			str += '<td>0.00</td>';
+		}
+		
 		if(result[i].notIdentifedCount != null)
 		{
-			str += '<td>'+(Math.round(result[i].notIdentifedCount * 100)/result[i].totalVoters).toFixed(2)+'</td>';
+			if(!isNaN(result[i].notIdentifedCount))
+			{
+				str += '<td>'+result[i].notIdentifedCount+'</td>';
+			}
+			else
+			{
+				str += '<td>0</td>';
+			}
 		}
 		else
 		{
-			str += '<td>'-'</td>';
+			str += '<td>0</td>';
 		}
-		str += '<td>'+result[i].wmDvY+'</td>';
-		str += '<td>'+result[i].wmDvN+'</td>';
-		str += '<td>'+result[i].wmDvEmpty+'</td>';
-		
+		if(result[i].notIdentifedCount != null)
+		{
+			if(!isNaN(Math.round(result[i].notIdentifedCount * 100)/result[i].totalVoters))
+			{
+				str += '<td>'+(Math.round(result[i].notIdentifedCount * 100)/result[i].totalVoters).toFixed(2)+'</td>';
+			}
+			else
+			{
+				str += '<td>0.00</td>';
+			}
+			
+		}
+		else
+		{
+			str += '<td>0.00</td>';
+		}
+		if(result[i].wmDvY != null)
+		{
+			if(!isNaN(result[i].wmDvY))
+			{
+				str += '<td>'+result[i].wmDvY+'</td>';
+			}
+			else
+			{
+				str += '<td>0</td>';
+			}
+		}
+		else
+		{
+			str += '<td>0</td>';
+		}
+		if(result[i].wmDvN != null)
+		{
+			if(!isNaN(result[i].wmDvN))
+			{
+				str += '<td>'+result[i].wmDvN+'</td>';
+			}
+			else
+			{
+				str += '<td>0</td>';
+			}
+		}
+		else
+		{
+			str += '<td>0</td>';
+		}
+		if(result[i].wmDvEmpty != null)
+		{
+			if(!isNaN(result[i].wmDvEmpty))
+			{
+				str += '<td>'+result[i].wmDvEmpty+'</td>';
+			}
+			else
+			{
+				str += '<td>0</td>';
+			}
+		}
+		else
+		{
+			str += '<td>0</td>';
+		}
+	
 		str += '</tr>';
 	}
 	$('#mainajaximg').hide();
