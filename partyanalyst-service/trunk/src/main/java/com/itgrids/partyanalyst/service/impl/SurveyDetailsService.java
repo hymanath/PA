@@ -2917,6 +2917,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 									{
 										notVerifiedList.add(VO);
 									}
+								subVO.setBoothId((Long)parms[4]);
 								subVO.setDate(dcDate);
 								subVO.setVerifierDate(dvDate);
 								subVO.setSurveyUser(surveyUser);
@@ -3309,6 +3310,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 									{
 										notVerifiedList.add(VO);
 									}
+								subVO.setBoothId((Long)parms[4]);
 								subVO.setDate(dcDate);
 								subVO.setVerifierDate(dvDate);
 								subVO.setSurveyUser(surveyUser);
