@@ -3640,6 +3640,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				allCastesVO.setGenericVOList(stateCasteList);
 			}
 			
+			/*
 			List<Booth> boothList = boothDAO.getBoothDetailsByBoothId(boothId);
 			List<GenericVO> hamletsList = new ArrayList<GenericVO>(0);
 			if(boothList != null && boothList.size()>0)
@@ -3686,7 +3687,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			{
 				allCastesVO.setGenericVOList1(hamletsList);
 			}
-			
+			*/
 			retultList.add(allCastesVO);
 			
 			
