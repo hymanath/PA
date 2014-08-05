@@ -45,14 +45,21 @@ ServletRequestAware, ServletResponseAware,ServletContextAware,ModelDriven<NewsEd
     private Long fileId;
     private List<FileVO> fileList;
     private INewsMonitoringService newsMonitoringService;
-	private List<SelectOptionVO> districtsList,parlConstiList,assemConstiList,keywordsList;
+	private List<SelectOptionVO> keywordsList;
 	private IRegionServiceData regionServiceDataImp;
 	private IStaticDataService staticDataService;
 	private ICandidateDetailsService candidateDetailsService;
 	
-	private List<SelectOptionVO> districtsList1;
-	private List<SelectOptionVO> parlConstiList1;
-	private List<SelectOptionVO> assemConstiList1;
+	
+	
+	private List<SelectOptionVO> statesList = new ArrayList<SelectOptionVO>();
+	private List<SelectOptionVO> districtsList = new ArrayList<SelectOptionVO>();
+	private List<SelectOptionVO> parlConstiList = new ArrayList<SelectOptionVO>();
+	private List<SelectOptionVO> assemConstiList = new ArrayList<SelectOptionVO>();
+	private List<SelectOptionVO> statesList1 = new ArrayList<SelectOptionVO>();
+	private List<SelectOptionVO> districtsList1 = new ArrayList<SelectOptionVO>();
+	private List<SelectOptionVO> parlConstiList1 = new ArrayList<SelectOptionVO>();
+	private List<SelectOptionVO> assemConstiList1 = new ArrayList<SelectOptionVO>();
 	private List<AddressVO> userDetailsVO;
 	private String type;
 	
@@ -209,6 +216,22 @@ ServletRequestAware, ServletResponseAware,ServletContextAware,ModelDriven<NewsEd
 		this.newsMonitoringService = newsMonitoringService;
 	}
 	
+	public List<SelectOptionVO> getStatesList() {
+		return statesList;
+	}
+
+	public void setStatesList(List<SelectOptionVO> statesList) {
+		this.statesList = statesList;
+	}
+
+	public List<SelectOptionVO> getStatesList1() {
+		return statesList1;
+	}
+
+	public void setStatesList1(List<SelectOptionVO> statesList1) {
+		this.statesList1 = statesList1;
+	}
+
 	public String getType() {
 		return type;
 	}
@@ -235,18 +258,35 @@ ServletRequestAware, ServletResponseAware,ServletContextAware,ModelDriven<NewsEd
 			{
 			// if("Admin".equalsIgnoreCase(registrationVO.getUserType()) || "subuser".equalsIgnoreCase(registrationVO.getUserType())  )
 				 //keywordsList = candidateDetailsService.getTotalKeyWords();
+				 List<Object> assessLocs = null;
 				 if("Admin".equalsIgnoreCase(registrationVO.getUserAccessType()) || "subuser".equalsIgnoreCase(registrationVO.getUserAccessType())  )
 				 {
 					 
 					if("Admin".equalsIgnoreCase(registrationVO.getUserAccessType()) || registrationVO.getAccessType().equalsIgnoreCase("STATE")){
-						 ConstituencyInfoVO constituencyInfoVO = staticDataService.getConstituenciesByElectionTypeAndStateId(2L,1L);
+						/* ConstituencyInfoVO constituencyInfoVO = staticDataService.getConstituenciesByElectionTypeAndStateId(2L,1L);
 						 ConstituencyInfoVO parliamantConstis = staticDataService.getConstituenciesByElectionTypeAndStateId(1L,1L);
 						 districtsList =  staticDataService.getDistricts(1l);
 						 parlConstiList = parliamantConstis.getConstituencies();
-						 assemConstiList = constituencyInfoVO.getConstituencies();
+						 assemConstiList = constituencyInfoVO.getConstituencies();*/
+						 
+						 List<Long> stateIds = new ArrayList<Long>();
+						 stateIds.add(1l);
+						 stateIds.add(36l);
+						 assessLocs = regionServiceDataImp.getAllAccessLocByState(stateIds);
 					 }else{
-						 List<Object> assessLocs = null;
-						 if(registrationVO.getAccessType().equalsIgnoreCase("DISTRICT")){
+						 if(registrationVO.getAccessType().equalsIgnoreCase("STATE")){
+							 List<Long> stateIds = new ArrayList<Long>();
+							 stateIds.add(Long.valueOf(registrationVO.getAccessValue().trim()));
+							 assessLocs = regionServiceDataImp.getAllAccessLocByState(stateIds);	 
+						 }
+						 else if(registrationVO.getAccessType().equalsIgnoreCase("DISTRICT")){
+							 assessLocs = regionServiceDataImp.getAllAccessLocByDistrict(Long.valueOf(registrationVO.getAccessValue().trim()));	 
+						 }else if(registrationVO.getAccessType().equalsIgnoreCase("MLA")){
+							 assessLocs =  regionServiceDataImp.getAllAccessLocByAssConsti(Long.valueOf(registrationVO.getAccessValue().trim()));
+						 }else if(registrationVO.getAccessType().equalsIgnoreCase("MP")){
+							 assessLocs = regionServiceDataImp.getAllAccessLocByParlConsti(Long.valueOf(registrationVO.getAccessValue().trim()));
+						 }
+						/* if(registrationVO.getAccessType().equalsIgnoreCase("DISTRICT")){
 							 assessLocs = regionServiceDataImp.getAllAccessLocByDistrict(Long.valueOf(registrationVO.getAccessValue().trim()));	 
 						 }else if(registrationVO.getAccessType().equalsIgnoreCase("MLA")){
 							 assessLocs =  regionServiceDataImp.getAllAccessLocByAssConsti(Long.valueOf(registrationVO.getAccessValue().trim()));
@@ -257,14 +297,32 @@ ServletRequestAware, ServletResponseAware,ServletContextAware,ModelDriven<NewsEd
 							 districtsList =  (List<SelectOptionVO>)assessLocs.get(0);
 							 parlConstiList = (List<SelectOptionVO>)assessLocs.get(1);
 							 assemConstiList =(List<SelectOptionVO>)assessLocs.get(2);
-						 }
+						 }*/
 					 }
 					
-					 ConstituencyInfoVO constituencyInfoVO = staticDataService.getConstituenciesByElectionTypeAndStateId(2L,1L);
-					 ConstituencyInfoVO parliamantConstis = staticDataService.getConstituenciesByElectionTypeAndStateId(1L,1L);
-					 districtsList1 =  staticDataService.getDistricts(1l);
-					 parlConstiList1 = parliamantConstis.getConstituencies();
-				     assemConstiList1 = constituencyInfoVO.getConstituencies();
+					if(assessLocs != null && assessLocs.size() == 4){
+						 statesList =     (List<SelectOptionVO>)assessLocs.get(0);
+						 districtsList =  (List<SelectOptionVO>)assessLocs.get(1);
+						 parlConstiList = (List<SelectOptionVO>)assessLocs.get(2);
+						 assemConstiList =(List<SelectOptionVO>)assessLocs.get(3);
+					 }
+					
+					 if("Admin".equalsIgnoreCase(registrationVO.getUserAccessType())){
+						 statesList1 =     (List<SelectOptionVO>)assessLocs.get(0);
+						 districtsList1 =  (List<SelectOptionVO>)assessLocs.get(1);
+						 parlConstiList1 = (List<SelectOptionVO>)assessLocs.get(2);
+						 assemConstiList1 =(List<SelectOptionVO>)assessLocs.get(3);
+					 }else{
+						 List<Long> stateIds = new ArrayList<Long>();
+						 stateIds.add(1l);
+						 stateIds.add(36l);
+						 assessLocs = regionServiceDataImp.getAllAccessLocByState(stateIds);
+						 statesList1 =     (List<SelectOptionVO>)assessLocs.get(0);
+						 districtsList1 =  (List<SelectOptionVO>)assessLocs.get(1);
+						 parlConstiList1 = (List<SelectOptionVO>)assessLocs.get(2);
+						 assemConstiList1 =(List<SelectOptionVO>)assessLocs.get(3);
+					 }
+					
 				     
 				     userDetailsVO = new ArrayList<AddressVO>();
 				     userDetailsVO =  staticDataService.getUserLocationScopeDetilsByUserid(registrationVO.getRegistrationID(),registrationVO.getAccessType(),registrationVO.getAccessValue());

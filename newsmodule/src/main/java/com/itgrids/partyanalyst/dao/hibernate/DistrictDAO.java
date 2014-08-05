@@ -139,6 +139,14 @@ public List<Object[]> getAllDistrictInfoDetails(){
 		return queryObject.list();
 	}	
 	
+	public List<Long> getAllDistrictByStateIds(List<Long> stateIds) {	
+		StringBuilder query = new StringBuilder();
+		query.append("select model.districtId from District model where model.state.stateId in (:stateIds)");		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameterList("stateIds", stateIds);
+		return queryObject.list();
+	}	
+	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getDistrictNamesByDistrictIdsList(List<Long> districtIdsList)
 	{
