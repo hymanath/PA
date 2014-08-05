@@ -331,14 +331,15 @@
 					<div class="span12 widgetservey_Red m_top20">
 							<h4 id="titleId">WM VERIFIER REPORT</h4>
 						<div class="row">
-						<div id="errorDiv" class="span8 offset1"></div>
+						<div id="errorDivForVerification" class="span8 offset4"></div>
 						</div>
 								<div class="row">
-								<div class="offset1">
+								<div class="offset4">
 									<div class="row-fluid">
 										
-										<div class="span6">
-											Select Constituency <font class="requiredFont">*</font>
+										<div class="span3">
+											Select Constituency <font class="requiredFont">*</font></div>
+											<div class="span4">
 											<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="constituencyIdForVerfication" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency"  />
 												
 										</div>
@@ -394,12 +395,13 @@
 						<div class="row">
 						<div class="span8 offset4">
 									<div class="row-fluid">
-						<div id="errDivIdForReport" class="span8 errClass offset" style="color:#FF0020;font-size:15px;" ></div>
+						<!--<div id="constnErrDiv" class="span8 errClass offset" style="color:#FF0020;font-size:15px;" ></div>-->
+						<div id="constnErrDiv" class="errClass"></div>
 						</div></div></div>
 						<div class="row">
 								<div class="span12 offset4">
 									<div class="row-fluid">
-										<div id="constnErrDiv"></div>
+										<!--<div id="constnErrDiv"></div>-->
 										<div class="span8">
 											Select Constituency <font class="requiredFont">*</font>
 												<s:select theme="simple" cssClass="selectBoxWidth span4 input-block-level" id="reportConstituencyId" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" />
@@ -416,7 +418,7 @@
 							
 							<button type="button" class="btn btn-success" id="excelTab" onClick="generateExcel('matchedUnMatchedTable1');" style="display:none;">Export To Excel</button>
 						</div>
-						<div class="row-fluid " id= "tableForMatchedAndUnMatched" style="margin-top:20px;"></div>	
+						<div class="row-fluid " id= "tableForMatchedAndUnMatched" style="margin-top:10px;"></div>	
 						<img src='images/Loading-data.gif' class="offset5 hide"  id="stateStatusAjaxMatchUnMatch" style="width:70px;height:60px;"/>	</img>				
 						<div class="row-fluid " id= "basicStatusReport" style="margin-top:20px;"></div>	
 						<img src='images/Loading-data.gif' class="offset5 hide"  id="stateStatusAjax" style="width:70px;height:60px;"/>	</img>				
@@ -439,7 +441,7 @@
 					<div class="span12 widgetservey_Red m_top20">
 							<h4 id="titleId">Survey User Wise Report</h4>
 						<div class="row">
-						<div id="errorDiv" class="span8 offset1"></div>
+						<div id="errorDiv" class="span8 offset1 errClass"></div>
 						</div>
 								<div class="row">
 								<div class="offset1">
@@ -507,7 +509,7 @@
 					<div class="span12 widgetservey_Red m_top30">
 							<h4 id="wmtitleId"></h4>
 							<div class="row">
-						<div id="errorDivSB" class="span8 offset1 clearCls"></div>
+						<div id="errorDivSB" class="span8 offset1 errClass"></div>
 						</div>
 								<div class="row">
 									<div class="offset1">
@@ -550,13 +552,13 @@
 					<div class="span12 widgetservey_Red m_top30">
 							<h4 id="verifiertitleId"></h4>
 							<div class="row">
-						<div id="errorDiv" class="span8 offset1 clearCls"></div>
+						<div id="errorDiv1" class="span8 offset3 errClass"></div>
 						</div>
 								<div class="row">
-									<div class="offset1">
+									<div class="offset3">
 										<div class="row-fluid">
 											
-											<div class="span5">
+											<div class="span4">
 												Select Constituency <font class="requiredFont">*</font>
 												
 													<s:select theme="simple"  name="constituency" id="constituencyForVeriFier"  headerKey="0" headerValue="Select Constituency" list="constituenciesList" listKey="id" listValue="name" onChange="getBoothsDetailsInSurveyDetailsInfo(this.value,'boothIdForVerifier')"/>
@@ -597,13 +599,13 @@
 					<div class="span12 widgetservey_Red m_top30">
 							<h4 id="wmtitleId"></h4>
 							<div class="row">
-						<div id="errorDiv" class="span8 offset1 clearCls"></div>
+						<div id="errorDivForWM" class="span8 offset3 errClass"></div>
 						</div>
 								<div class="row">
-									<div class="offset1">
+									<div class="offset3">
 										<div class="row-fluid">
 											
-											<div class="span5">
+											<div class="span4">
 												Select Constituency <font class="requiredFont">*</font>
 												
 													<s:select theme="simple"  name="constituency" id="constituencyForWm"  headerKey="0" headerValue="Select Constituency" list="constituenciesList" listKey="id" listValue="name" onChange="getBoothsDetailsInCallStatusInfo(this.value,'boothIdForWm')"/>
@@ -796,9 +798,18 @@ function displayDates(date){
 function getVerifiersInBooth(){
 
 	$("#verifiersInbooths").html("");
-
 	var boothId = $("#boothIdForVerifier").val();
-
+	if($("#constituencyForVeriFier").val() == 0)
+	{
+		$("#errorDiv1").html("<font color='#FF0000'>Select Constituency</font>");
+		return;
+	}
+	if(boothId  == 0)
+	{
+		 $("#errorDiv1").html('<font color="#FF0000">Select Booth</font>');
+		 return;
+	}
+	$("#errorDiv1").html("");
 	var jsObj ={
 		boothId :boothId
 	}
