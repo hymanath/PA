@@ -827,4 +827,9 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		return query.list();
 		
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> findWardsAndIdsInlocalElectionBody(Long localElectionBodyId) {
+		return getHibernateTemplate().find(" select model.constituencyId , model.name from Constituency model where model.localElectionBody.localElectionBodyId = ?", localElectionBodyId);
+	}
 }
