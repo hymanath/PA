@@ -1425,6 +1425,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 					vo.setUserTypeId(obj.getLong("userType"));
 					vo.setHamletCount(obj.getLong("isHamletMatched"));
 					vo.setHamletId(obj.getLong("hamletId"));
+					vo.setName(obj.getString("updationType"));
 					verifiedList.add(vo);
 					
 				}
