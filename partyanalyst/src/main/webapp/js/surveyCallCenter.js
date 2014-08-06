@@ -3292,7 +3292,9 @@ function buildLeadersAndUsersTableInActive(result,name)
 
 function getBoothsStatusDetailsOfConstituency()
 {
-
+	$('#tableDtailsDiv').html('');
+	$('#basicStatusReport').html('');
+	$('#panchayatDetailsDiv').html('');
 	if($('#reportConstituencyId').val() ==0)
 	{
       $("#constnErrDiv").html('<font color="#FF0000">Please Select Constituency</font>');
