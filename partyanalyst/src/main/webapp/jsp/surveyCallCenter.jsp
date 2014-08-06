@@ -879,7 +879,7 @@ function buildVerifiers(result){
 		dataType: 'json',
 		data: {task:JSON.stringify(jsObj)},
 		}).done(function(result){
-			$('#userReportUser').find('option').remove();
+			$('#userReportUser').find('option:not(:first)').remove();
 			$.each(result,function(index,value){
 					
 					$('#userReportUser').append('<option value="'+value.id+'"> '+value.name+'</option>');
