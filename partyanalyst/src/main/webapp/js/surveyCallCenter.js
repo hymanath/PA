@@ -299,7 +299,7 @@ $('#searchDataImg').show();
 				str +='<th> Caste Matched  </th>';
 				str +='<th> Mobile Number </th>';
 				str +='<th> Hamlet </th>';
-				
+				str +='<th> H.NO With Diff Castes </th>';
 				str +='</tr>';
 				str +='</thead>';
 				str +='<tbody>';
@@ -526,6 +526,11 @@ $('#searchDataImg').show();
 											str +='</ul>';
 											str +='</div>';
 											str +='</td>';
+											if(result[i].villageCovered != null){
+											  str +='<td>'+result[i].villageCovered+'</td>';
+											}else{
+											  str +='<td></td>';
+											}
 											str +='</tr>';
 				}
 				}
@@ -694,7 +699,12 @@ $('#searchDataImg').show();
 											str +='<li>'+result[i].hamletName+'</li>';					
 											str +='</ul>';
 											str +='</div>';
-											str +='</td>';
+											str +='</td>';											
+											if(result[i].villageCovered != null){
+											  str +='<td>'+result[i].villageCovered+'</td>';
+											}else{
+											  str +='<td></td>';
+											}
 											str +='</tr>';
 				}
 				}
