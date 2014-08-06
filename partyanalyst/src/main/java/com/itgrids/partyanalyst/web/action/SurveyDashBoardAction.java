@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dto.FinalSurveyReportVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyCompletionDetailsVO;
 import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
@@ -42,6 +43,7 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 	private Long constituencyId;
 	private List<SurveyReportVO> verifiedBooths;
 	private List<FinalSurveyReportVO> returnList;
+	private ResultStatus resultStatus;
 	
 	@Autowired
 	ISurveyCompletedDetailsService surveyCompletedDetailsService ;
@@ -81,6 +83,14 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 
 
 	
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
+
 	public List<SurveyReportVO> getDayWiseReportList() {
 		return dayWiseReportList;
 	}
@@ -427,6 +437,22 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 			
 			
 			returnList = surveyCompletedDetailsService.finalDeselectionReport(jObj.getLong("constituencyId"));
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+		
+	}
+	
+	public String saveThirdPartyDetails()	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			
+			
+			resultStatus = surveyDashBoardService.saveThirdPartyDetails(jObj.getLong("boothId"));
 			
 		}catch(Exception e)
 		{
