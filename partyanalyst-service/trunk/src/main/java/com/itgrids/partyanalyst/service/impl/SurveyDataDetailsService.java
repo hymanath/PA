@@ -3507,6 +3507,23 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 						
 					}
 				}
+				Map<String,Boolean> houseStatusMap = new HashMap<String,Boolean>(); //contains houseNo and status whether house has different caste voters
+				Map<String,List<SurveyReportVO>> houseVotersMap = new HashMap<String,List<SurveyReportVO>>();//contains houseNo and list of voter info
+				List<Object[]> castesList = casteStateDAO.getAllCasteDetailsForVoters(1L); // for AP state
+				List<GenericVO> stateCasteList = new ArrayList<GenericVO>();
+				Map<Long,String> allCasteNames = new HashMap<Long,String>();
+				if(castesList != null && castesList.size()>0){
+					for (Object[] cast : castesList) {
+						GenericVO vo = new  GenericVO();
+						vo.setId(cast[0] != null ? (Long) cast[0]:0L);
+						vo.setName(cast[1] != null ? cast[1].toString():"");
+						
+						stateCasteList.add(vo);
+						allCasteNames.put((Long)cast[0], cast[1].toString().trim().toLowerCase());
+					}
+					
+					
+				}
 				
 				if(votersLsit != null && votersLsit.size()>0){
 					List<SurveyReportVO> resultList = new ArrayList<SurveyReportVO>();
@@ -3581,12 +3598,65 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 						}
 						resultList.add(reportVO);
 						
+						//start verifying castes of all voters in a house no are same or not 
+						if((reportVO.getCaste() != null && reportVO.getCaste().trim().length() > 0) || (reportVO.getCasteId() != null)){
+							if(houseStatusMap.containsKey(reportVO.getPartNo().trim().toLowerCase())){
+								if(!houseStatusMap.get(reportVO.getPartNo().trim().toLowerCase())){
+									String caste = null;
+									if(reportVO.getCasteMatchedCount().longValue() == 1l){
+										if(reportVO.getCaste() != null && reportVO.getCaste().trim().length() > 0){
+											caste = reportVO.getCaste().trim().toLowerCase();
+										}
+									}else if(reportVO.getCasteMatchedCount().longValue() == 2l){
+										if(reportVO.getCasteId() != null){
+											caste = allCasteNames.get(reportVO.getCasteId());
+										}
+									}
+									if(caste != null){
+										List<SurveyReportVO> votersList = houseVotersMap.get(reportVO.getPartNo().trim().toLowerCase());
+										if(!caste.equalsIgnoreCase(votersList.get(0).getCasteErrorPercent())){
+											reportVO.setVillageCovered("Y");
+											houseStatusMap.put(reportVO.getPartNo().trim().toLowerCase(), true);
+											for(SurveyReportVO voter:votersList){
+												voter.setVillageCovered("Y");
+											}
+										}else{
+											votersList.add(reportVO);
+										}
+									}
+									
+								}else{
+									reportVO.setVillageCovered("Y");
+								}
+							}else{
+								String caste = null;
+								if(reportVO.getCasteMatchedCount().longValue() == 1l){
+									if(reportVO.getCaste() != null && reportVO.getCaste().trim().length() > 0){
+										caste = reportVO.getCaste().trim().toLowerCase();
+									}
+								}else if(reportVO.getCasteMatchedCount().longValue() == 2l){
+									if(reportVO.getCasteId() != null){
+										caste = allCasteNames.get(reportVO.getCasteId());
+									}
+								}
+								if(caste != null){
+									reportVO.setCasteErrorPercent(caste);
+									List<SurveyReportVO> votersList = new ArrayList<SurveyReportVO>();
+									votersList.add(reportVO);
+									houseVotersMap.put(reportVO.getPartNo().trim().toLowerCase(), votersList);
+									houseStatusMap.put(reportVO.getPartNo().trim().toLowerCase(), false);
+								}
+							}
+						}
+						
+						//end verifying castes of all voters in a house no are same or not start
 					}
 					
 					if(resultList != null && resultList.size()>0){
 						finalVO.setSubList(resultList);
 						
 					}
+					
 				}	
 				
 			//}
@@ -3625,20 +3695,9 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			
 			SurveyReportVO allCastesVO = new SurveyReportVO();
 			
-			List<Object[]> castesList = casteStateDAO.getAllCasteDetailsForVoters(1L); // for AP state
-			List<GenericVO> stateCasteList = new ArrayList<GenericVO>();
+			allCastesVO.setGenericVOList(stateCasteList);
 			
-			if(castesList != null && castesList.size()>0){
-				for (Object[] cast : castesList) {
-					GenericVO vo = new  GenericVO();
-					vo.setId(cast[0] != null ? (Long) cast[0]:0L);
-					vo.setName(cast[1] != null ? cast[1].toString():"");
-					
-					stateCasteList.add(vo);
-				}
-				
-				allCastesVO.setGenericVOList(stateCasteList);
-			}
+			
 			
 			/*
 			List<Booth> boothList = boothDAO.getBoothDetailsByBoothId(boothId);
