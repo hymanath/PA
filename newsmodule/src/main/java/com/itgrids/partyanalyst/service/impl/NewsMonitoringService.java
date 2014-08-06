@@ -5457,14 +5457,18 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		  if(loctionId == 1)
 		  {
 			 Object[] stateAndDisrictValues = constituencyDAO.getStateAndDistrictDetails(locationValue).get(0);
-			 Long pcId = delimitationConstituencyAssemblyDetailsDAO.getAllAssemblyConstituencyByParlimentId(locationValue).get(0);
+			 List<Long> pcIds = delimitationConstituencyAssemblyDetailsDAO.getAllAssemblyConstituencyByParlimentId(locationValue);
+			 Long pcId = null;
+			 if(pcIds != null && pcIds.size() > 0){
+				 pcId = pcIds.get(0);
+			 }
 			 if(stateAndDisrictValues != null)
 			 {
 				 candidate.setState(stateDAO.get((Long)stateAndDisrictValues[0])) ;
 				 candidate.setDistrict(districtDAO.get((Long)stateAndDisrictValues[1]));
 				 candidate.setAssembly(constituencyDAO.get(locationValue));
 			 }
-			 if(pcId > 0)
+			 if(pcId != null && pcId > 0)
 			 {
 				 candidate.setParliament(constituencyDAO.get(pcId)); 
 			 }
@@ -5510,6 +5514,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 	  }catch (Exception e) {
 		
 		log.error(" Exception Occured in saveCandidatesAndParty() method, Exception - ",e);
+		e.printStackTrace();
 		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 		  return resultStatus;
 	  }
