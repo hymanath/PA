@@ -223,7 +223,7 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 	{
 		
 		return getHibernateTemplate().find("select distinct model.delimitationConstituency.constituency.constituencyId from DelimitationConstituencyAssemblyDetails model where " +
-				"model.constituency.constituencyId = ? and  model.delimitationConstituency.constituency.state.stateId = 1 and model.delimitationConstituency.year = " +
+				"model.constituency.constituencyId = ? and  model.delimitationConstituency.constituency.state.stateId in( 1,36) and model.delimitationConstituency.year = " +
 				"(select max(model1.year) from DelimitationConstituency model1) order by model.constituency.name ",constituencyId);
 	}
 	
