@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.service.impl;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -89,6 +88,8 @@ public class SurveyCompletedDetailsService implements
 				totalBoothsMap.put((Long)obj[1], (Long)obj[0]);
 			//total booths details end
 			
+
+			
 			//completed booths details start
 			
 			List<Object[]> completedList = surveyCompletedLocationsDAO.getCompletedBoothsDetailsByConstituencyIds(constituencyIds);
@@ -99,6 +100,8 @@ public class SurveyCompletedDetailsService implements
 			
 			//completed booths details end
 			
+
+			
 			//processing booths details start
 			
 			List<Object[]> processedList = surveyDetailsInfoDAO.getStartedBoothsDetailsByConstituencyIds(constituencyIds);
@@ -108,6 +111,7 @@ public class SurveyCompletedDetailsService implements
 				processingBoothsMap.put((Long)obj[1], (Long)obj[0]);
 			
 			//processing booths details end
+
 			
 			
 			Map<Long,Long> datacollectedCountMap = new HashMap<Long, Long>();
@@ -119,18 +123,32 @@ public class SurveyCompletedDetailsService implements
 					datacollectedCountMap.put((Long)params[0],(Long) params[1]);
 				}
 			}
+
+			List<Object[]> constnDtlsList = constituencyDAO.getConstituencyNameByConstituencyIdsList(constituencyIds);
+			Map<Long,String> constituencyDetailsMap = new HashMap<Long, String>();
+
+			
+			for(Object[] obj:constnDtlsList)
+				constituencyDetailsMap.put((Long)obj[0], obj[1].toString());
+			
+			List<Object[]> votersCountList = boothPublicationVoterDAO.getTotalVotersForAllConstituencies(constituencyIds);
+			
+			Map<Long,Long> votersCountMap = new HashMap<Long, Long>();
+			
+			for(Object[] obj:votersCountList)
+				votersCountMap.put((Long)obj[0],(Long) obj[2]);
 			
 			
 			for(Long constituencyId:constituencyIds)
 			{
 				SurveyReportVO constituencyVO = new SurveyReportVO();
 				constituencyVO.setId(constituencyId);
-				constituencyVO.setName(constituencyDAO.get(constituencyId).getName());
+				constituencyVO.setName(constituencyDetailsMap.get(constituencyId));
 				constituencyVO.setTotal(totalBoothsMap.get(constituencyId));
 				constituencyVO.setCompletedCount(completedBoothsMap.get(constituencyId) != null ?completedBoothsMap.get(constituencyId):0L);				
 				constituencyVO.setProcessingCount(processingBoothsMap.get(constituencyId) != null ?processingBoothsMap.get(constituencyId)-constituencyVO.getCompletedCount():0L);
 				constituencyVO.setNotStartedCount(constituencyVO.getTotal() - (constituencyVO.getProcessingCount()+constituencyVO.getCompletedCount()));
-				constituencyVO.setTotalVoters(boothPublicationVoterDAO.getTotalVotersForConstituency(constituencyVO.getId()));
+				constituencyVO.setTotalVoters(votersCountMap.get(constituencyId));
 				constituencyVO.setTotalCollectedCount(datacollectedCountMap.get(constituencyVO.getId()) != null ? datacollectedCountMap.get(constituencyVO.getId()) : 0);
 		
 				resultList.add(constituencyVO);
@@ -142,7 +160,6 @@ public class SurveyCompletedDetailsService implements
 			e.printStackTrace();
 			LOG.error("Exception raised in getSurveyCompletedLocationsDetails service method");
 		}
-		
 		return resultList;
 	}
 	
