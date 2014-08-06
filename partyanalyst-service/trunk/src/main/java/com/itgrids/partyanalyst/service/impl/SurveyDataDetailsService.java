@@ -61,7 +61,6 @@ import com.itgrids.partyanalyst.dto.SurveyReportVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.dto.UserBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.VerificationCompVO;
-import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.SurveyCallStatus;
 import com.itgrids.partyanalyst.model.SurveyDetailsInfo;
 import com.itgrids.partyanalyst.model.SurveySurveyorType;

@@ -14,6 +14,9 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
@@ -22,15 +25,20 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ISurveyCompletedLocationsDetailsDAO;
 import com.itgrids.partyanalyst.dao.ISurveyConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
+import com.itgrids.partyanalyst.dao.ISurveyFinalDataDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserRelationDAO;
 import com.itgrids.partyanalyst.dao.IWebMonitorCompletedLocationsDetailsDAO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyCompletionDetailsVO;
 import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
+import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.model.SurveyCompletedLocationsDetails;
+import com.itgrids.partyanalyst.model.SurveyFinalData;
 import com.itgrids.partyanalyst.model.WebMonitorCompletedLocationsDetails;
 import com.itgrids.partyanalyst.service.ISurveyDashBoardService;
 import com.itgrids.partyanalyst.service.ISurveyDetailsService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class SurveyDashBoardService implements ISurveyDashBoardService {
@@ -63,7 +71,12 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 	@Autowired
 	private ISurveyUserRelationDAO surveyUserRelationDAO;
 	
-	
+	@Autowired
+	private TransactionTemplate transactionTemplate;
+	@Autowired
+	private ISurveyFinalDataDAO surveyFinalDataDAO;
+	@Autowired 
+	private DateUtilService dateUtilService;
 	@Autowired
 	private ISurveyDetailsService surveyDetaisService;
 
@@ -959,8 +972,8 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 			
 		}catch(Exception e)
 		{
-			e.printStackTrace();
-			 LOG.error("Exception raised in getUserReportForADate service method");
+			//e.printStackTrace();
+			 LOG.error("Exception raised in getUserReportForADate service method",e);
 
 		}
 		
@@ -1004,8 +1017,8 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 			
 		}catch(Exception e)
 		{
-		   e.printStackTrace();
-		  LOG.error("Exception raised in getLeadersDetailsByUserIds service method");
+		  // e.printStackTrace();
+		  LOG.error("Exception raised in getLeadersDetailsByUserIds service method",e);
 		}
 		return resultMap;
 	}
@@ -1038,7 +1051,7 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 			
 		}catch(Exception e)
 		{
-			e.printStackTrace();
+			 LOG.error("Exception raised in getVerifiedBoothsDetails service method",e);
 		}
 		
 		return resultList;
@@ -1052,7 +1065,7 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 			
 		}catch(Exception e)
 		{
-			e.printStackTrace();
+			LOG.error("Exception raised in getCasteCollectedDatesByUserId service method",e);
 		}
 		
 		return surveyDates;
@@ -1068,9 +1081,82 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 			
 		}catch(Exception e)
 		{
-			e.printStackTrace();
+			LOG.error("Exception raised in getCasteCollectedDates service method",e);
 		}
 		
 		return surveyDates;
+	}
+	
+	public ResultStatus saveThirdPartyDetails(final Long bootId)
+	{
+		final ResultStatus resultStatus = new ResultStatus();
+		try
+		{
+			final List<SurveyResponceVO> thirdPartyDetails = surveyDetaisService.getThirdPartyVerificationDetails(bootId,null);
+			if(thirdPartyDetails != null && thirdPartyDetails.size() > 0)
+			{
+				
+				transactionTemplate.execute(new TransactionCallbackWithoutResult() 
+				{
+
+					protected void doInTransactionWithoutResult(TransactionStatus arg0)
+					{
+						surveyFinalDataDAO.deleteExistingBoothDetails(bootId);
+						for (SurveyResponceVO surveyResponceVO : thirdPartyDetails)
+						{
+							
+							if(surveyResponceVO.getVoterId() != null)
+							{
+								SurveyFinalData surveyFinalData = new SurveyFinalData();
+								surveyFinalData.setVoterId(surveyResponceVO.getVoterId());
+								surveyFinalData.setMobileNo(surveyResponceVO.getMobileNo());
+								surveyFinalData.setIsCadre(surveyResponceVO.getIsCadre());
+								surveyFinalData.setIsInfluencingPeople(surveyResponceVO.getIsInfluencingPeople());
+								surveyFinalData.setCasteStateId(surveyResponceVO.getCasteId());
+								surveyFinalData.setCasteName(surveyResponceVO.getCasteName());
+								
+								surveyFinalData.setHamletId(surveyResponceVO.getHamletId());
+								surveyFinalData.setHamletName(surveyResponceVO.getHamletName());
+								
+								surveyFinalData.setWardId(surveyResponceVO.getWardId());
+								surveyFinalData.setLocalArea(surveyResponceVO.getLocalArea());
+								
+								surveyFinalData.setBoothId(surveyResponceVO.getBoothId());
+								
+								surveyFinalData.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+								surveyFinalData.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+								SurveyFinalData saveStatus = surveyFinalDataDAO.save(surveyFinalData);
+								if(saveStatus != null)
+								{
+									resultStatus.setResultCode(2);
+									resultStatus.setMessage("Succuss");
+								}
+								else
+								{
+									resultStatus.setResultCode(4);
+									resultStatus.setMessage("Error Occured");
+								}
+							}
+							
+						}
+						
+					}
+				});
+			}
+			else
+			{
+				resultStatus.setResultCode(1);
+				resultStatus.setMessage("No Data Avaliable");
+			}
+				
+			
+		} 
+		catch (Exception e) 
+		{
+			resultStatus.setResultCode(0);
+			resultStatus.setMessage("Exception");
+			LOG.error("Exception raised in ResultStatus service method",e);
+		}
+		return resultStatus;
 	}
 }

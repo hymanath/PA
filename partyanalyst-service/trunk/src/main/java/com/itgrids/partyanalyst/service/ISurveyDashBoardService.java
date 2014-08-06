@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyCompletionDetailsVO;
 import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
@@ -19,5 +20,6 @@ public interface ISurveyDashBoardService {
 	public List<SurveyReportVO> getVerifiedBoothsDetails(String status,Long constituencyId);
 	public List<String> getCasteCollectedDatesByUserId(Long userId);
 	public List<String> getCasteCollectedDates();
+	public ResultStatus saveThirdPartyDetails(Long bootId);
 
 }
