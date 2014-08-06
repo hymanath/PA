@@ -214,7 +214,7 @@ public class SurveyFinalData implements Serializable
 	}
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="update_time")
+	@Column(name="updated_time")
 	public Date getUpdatedTime() {
 		return updatedTime;
 	}
@@ -223,7 +223,7 @@ public class SurveyFinalData implements Serializable
 	}
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "survey_wm_third_party_status" ,insertable = false , updatable = false)
+	@JoinColumn(name = "survey_wm_third_party_status_id" ,insertable = false , updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public SurveyWmThirdPartyStatus getSurveyWmThirdPartyStatus() {
@@ -234,7 +234,7 @@ public class SurveyFinalData implements Serializable
 		this.surveyWmThirdPartyStatus = surveyWmThirdPartyStatus;
 	}
 	
-	@Column(name="survey_wm_third_party_status")
+	@Column(name="survey_wm_third_party_status_id")
 	public Long getSurveyWmThirdPartyStatusId() {
 		return surveyWmThirdPartyStatusId;
 	}
