@@ -1,4 +1,4 @@
-package com.itgrids.partyanalyst.dto;
+package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
 

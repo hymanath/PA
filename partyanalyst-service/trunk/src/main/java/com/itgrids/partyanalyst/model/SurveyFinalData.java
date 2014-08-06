@@ -1,4 +1,4 @@
-package com.itgrids.partyanalyst.dto;
+package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -25,6 +25,7 @@ import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.CasteState;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Hamlet;
+import com.itgrids.partyanalyst.model.SurveyWmThirdPartyStatus;
 import com.itgrids.partyanalyst.model.Voter;
 @Entity
 @Table(name = "survey_final_data")
