@@ -242,10 +242,7 @@ public class SurveyFinalData implements Serializable
 		this.surveyWmThirdPartyStatusId = surveyWmThirdPartyStatusId;
 	}
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "booth_id", insertable = false , updatable = false)
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	@Column(name="booth_id")
 	public Long getBoothId() {
 		return boothId;
 	}
@@ -253,7 +250,11 @@ public class SurveyFinalData implements Serializable
 		this.boothId = boothId;
 	}
 	
-	@Column(name="booth_id")
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "booth_id", insertable = false , updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Booth getBooth() {
 		return booth;
 	}
