@@ -1167,7 +1167,7 @@ public List<Object[]> searchCadreInfoByConstidAndNameORMobile(Long constiId,Stri
 	public List<Object[]> getCadreDetailsByPanchayatId(Long panchayatId)
 	{
 	Query query = getSession().createQuery("select C.cadreId, C.firstName, C.lastName, C.mobile, C.age, C.voter.voterId, C.fatherOrSpouseName " +
-			" from Cadre C, UserAddress UA  where C.currentAddress.userAddressId = UA.userAddressId and UA.panchayatId = :panchayatId");
+			" from Cadre C, UserAddress UA  where C.currentAddress.userAddressId = UA.userAddressId and UA.panchayatId = :panchayatId and C.memberId is not null");
 	query.setParameter("panchayatId", panchayatId);
 	return query.list();
 
@@ -1190,7 +1190,7 @@ public List<Object[]> searchCadreInfoByConstidAndNameORMobile(Long constiId,Stri
 	public List<Object[]> getCadreDetailsByMuncipalityId(Long panchayatId)
 	{
 		Query query = getSession().createQuery("select C.cadreId, C.firstName, C.lastName, C.mobile, C.age, C.voter.voterId, C.fatherOrSpouseName " +
-			" from Cadre C  where C.currentAddress.localElectionBody.localElectionBodyId = :panchayatId"); 
+			" from Cadre C  where C.currentAddress.localElectionBody.localElectionBodyId = :panchayatId and C.memberId is not null"); 
 		query.setParameter("panchayatId", panchayatId);
 		return query.list();
 	}
