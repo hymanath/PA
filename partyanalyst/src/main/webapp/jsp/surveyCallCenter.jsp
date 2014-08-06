@@ -123,7 +123,7 @@
 					<li><a class="highlight" id="dataCollectorWise" onclick="showHideTabs(this.id);">WM Verifier Report</a></li>
 					  
 					<c:if test="${not fn:contains(sessionScope.USER.entitlements, 'WEB_MONITORING_LEAD')}">
-					<li><a class="highlight" id="surveyUserWise" onclick="showHideTabs(this.id);">User Wise report</a></li>
+					<li><a class="highlight" id="surveyUserWise" onclick="showHideTabs(this.id);">User Wise Report</a></li>
 					</c:if>
 					<!--<li><a class="highlight" id="saveBoothPercentagesTab" onclick="showHideTabs(this.id);"> Save Booth Percentages </a></li>-->
 					<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CASTE_SURVEY_CALL_CENTER')}">
