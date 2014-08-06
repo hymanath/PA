@@ -3166,7 +3166,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		} catch (Exception e) {
 			result = null;
 			LOG.error("Exception raised in getConstituencyListByDistrictId() service in SurveyDataDetailsService", e);
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		
 		
@@ -3186,7 +3186,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		} catch (Exception e) {
 			result = null;
 			LOG.error("Exception raised in getAssignedBoothDetailsByuserId() service in SurveyDataDetailsService", e);
-			e.printStackTrace();
+			//e.printStackTrace();
 		}		
 		return result;
 	}
@@ -3204,7 +3204,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		} catch (Exception e) {
 			result = null;
 			LOG.error("Exception raised in getAssignedBoothDetailsByuserId() service in SurveyDataDetailsService", e);
-			e.printStackTrace();
+			//e.printStackTrace();
 		}		
 		return result;
 	}
