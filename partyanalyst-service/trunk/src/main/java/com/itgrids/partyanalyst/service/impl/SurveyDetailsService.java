@@ -2063,6 +2063,10 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 			{
 				VO.setHamletName(surveyDetailsInfo.getHamletName());
 			}
+			if(VO.getWardId() != null)
+			{
+				VO.setWardId(VO.getWardId());
+			}
 			VO.setLatitude(surveyDetailsInfo.getLatitude());
 			VO.setLocalArea(surveyDetailsInfo.getLocalArea());
 			VO.setLongitude(surveyDetailsInfo.getLongitude());
