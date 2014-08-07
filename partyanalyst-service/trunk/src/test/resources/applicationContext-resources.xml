@@ -477,6 +477,9 @@
 				<value>com.itgrids.partyanalyst.model.SurveyCompletedStatus</value>
 				<value>com.itgrids.partyanalyst.model.SurveyFeedbackComments</value>
 				
+				<value>com.itgrids.partyanalyst.model.SurveyFinalData</value>
+				<value>com.itgrids.partyanalyst.model.SurveyWmThirdPartyStatus</value>
+				
 			</list>
 		</property>
 	</bean>
@@ -2490,6 +2493,10 @@
 	</bean>
 	
 	<bean id="surveyFeedbackCommentsDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyFeedbackCommentsDAO" lazy-init="true" >
+			<property name="sessionFactory" ref="sessionFactory" />
+	</bean>	
+	
+	<bean id="surveyFinalDataDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyFinalDataDAO" >
 			<property name="sessionFactory" ref="sessionFactory" />
 	</bean>						
 </beans>
