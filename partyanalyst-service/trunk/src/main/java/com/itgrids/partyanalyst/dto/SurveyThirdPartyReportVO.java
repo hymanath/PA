@@ -26,6 +26,16 @@ public class SurveyThirdPartyReportVO implements Serializable {
 	private List<SurveyThirdPartyReportVO> usersList;
 	private SurveyThirdPartyReportVO users;
 	
+	private String boothType;
+	
+	
+	
+	public String getBoothType() {
+		return boothType;
+	}
+	public void setBoothType(String boothType) {
+		this.boothType = boothType;
+	}
 	public Long getBoothId() {
 		return boothId;
 	}
