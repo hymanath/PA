@@ -5575,3 +5575,37 @@ function getThirdPartyFinalDetails()
 		 }).done(function(result){	
 		});
 }
+//getThirdPartyProvidedAndCollectedDetails();
+function getThirdPartyProvidedAndCollectedDetails()
+{
+	alert(1234);
+	var jsObj = 
+	{
+		boothId : 439822,
+		surveyuserId : 41
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getCompressionReportForThirdParty.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		 }).done(function(result){	
+		});
+}
+//updateThirdPartyDetails();
+function updateThirdPartyDetails()
+{
+	alert(1234456);
+	var jsObj = 
+	{
+		voterId : 13867808,
+		statusId : 3
+	}
+	$.ajax({
+			type:'GET',
+			url: 'updateThirdPartyStatus.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		 }).done(function(result){	
+		});
+}

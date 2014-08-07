@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +21,7 @@ import com.itgrids.partyanalyst.dto.SurveyCompletionDetailsVO;
 import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
+import com.itgrids.partyanalyst.dto.ThirdPartyCompressionVO;
 import com.itgrids.partyanalyst.service.ISurveyCompletedDetailsService;
 import com.itgrids.partyanalyst.service.impl.SurveyDashBoardService;
 import com.itgrids.partyanalyst.service.impl.SurveyDataDetailsService;
@@ -46,6 +48,7 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 	private List<FinalSurveyReportVO> returnList;
 	private ResultStatus resultStatus;
 	private List<SurveyResponceVO> thirdPartyDetailsList;
+	private List<ThirdPartyCompressionVO> thirdPartyCompressionVOList;
 	
 	@Autowired
 	ISurveyCompletedDetailsService surveyCompletedDetailsService ;
@@ -85,6 +88,15 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 
 
 	
+	public List<ThirdPartyCompressionVO> getThirdPartyCompressionVOList() {
+		return thirdPartyCompressionVOList;
+	}
+
+	public void setThirdPartyCompressionVOList(
+			List<ThirdPartyCompressionVO> thirdPartyCompressionVOList) {
+		this.thirdPartyCompressionVOList = thirdPartyCompressionVOList;
+	}
+
 	public ResultStatus getResultStatus() {
 		return resultStatus;
 	}
@@ -481,6 +493,38 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 			
 			
 			thirdPartyDetailsList = surveyDashBoardService.getThirdPartyFinalDetails(jObj.getLong("boothId"));
+			
+		}catch(Exception e)
+		{
+			LOG.error("Exception raised ", e);
+		}
+		return Action.SUCCESS;
+		
+	}
+	
+	public String updateThirdPartyStatus()	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			
+			
+			resultStatus = surveyDashBoardService.updateThirdPartyStatus(jObj.getLong("voterId"),jObj.getLong("statusId"));
+			
+		}catch(Exception e)
+		{
+			LOG.error("Exception raised ", e);
+		}
+		return Action.SUCCESS;
+		
+	}
+	
+	public String getCompressionReportForThirdParty()	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			
+			
+			thirdPartyCompressionVOList = surveyDashBoardService.getCompressionReportForThirdParty(jObj.getLong("boothId"),jObj.getLong("surveyuserId"));
 			
 		}catch(Exception e)
 		{

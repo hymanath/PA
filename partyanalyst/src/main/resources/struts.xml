@@ -7946,6 +7946,18 @@
 			</result>
 		</action>
 		
+  		<action name="updateThirdPartyStatus" class="surveyDashBoardAction" method="updateThirdPartyStatus">
+			<result type="json" name="success">
+					<param name="root">resultStatus</param>
+			</result>
+		</action>
+		
+  		<action name="getCompressionReportForThirdParty" class="surveyDashBoardAction" method="getCompressionReportForThirdParty">
+			<result type="json" name="success">
+					<param name="root">thirdPartyCompressionVOList</param>
+			</result>
+		</action>
+		
 		<action name="getConstituencySummaryFieldReport" class="surveyDataDetailsAction" method="getConstituencyFieldSummary">
   			<result type="json" name="success">
 				 <param name="root">reportList</param>
