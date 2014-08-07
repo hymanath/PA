@@ -421,6 +421,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.SURVEY_USER_CREATION))
 			return ERROR;
+		constituencies = surveyDashBoardService.getConstituencyListForThirdPartyReport();
 		constituenciesList = 	surveyDataDetailsService.getAllAssemblyConstituenciesByStateId();
 		dataAvilableConstituencies = surveyDataDetailsService.getSurveyStartedConstituencyList();
 		resultVO = surveyDashBoardService.getCompletdConstituenciesDetails();
