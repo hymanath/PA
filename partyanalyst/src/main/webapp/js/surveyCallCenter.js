@@ -5188,3 +5188,18 @@ function saveThirdPartyDetails()
 		 }).done(function(result){	
 		});	
 }
+//getThirdPartyFinalDetails();
+function getThirdPartyFinalDetails()
+{
+	var jsObj = 
+	{
+		boothId : 439822
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getThirdPartyFinalDetails.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		 }).done(function(result){	
+		});
+}
