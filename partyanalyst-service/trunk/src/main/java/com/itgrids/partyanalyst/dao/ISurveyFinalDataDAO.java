@@ -6,8 +6,9 @@ import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.model.SurveyFinalData;
 
-public interface ISurveyFinalDataDAO extends GenericDao<SurveyFinalData, Long>
-{
+public interface ISurveyFinalDataDAO extends GenericDao<SurveyFinalData, Long>{
+	public List<Object[]> getThirdPartyStatusWithBooths(List<Long> boothIds);
+	
 	public int deleteExistingBoothDetails(Long boothId);
 	public List<Object[]> getBoothWiseErrorCountForAConstituency(Long constituencyId);
 	public List<Object[]> getBoothWiseVoterDetails(Long boothId);
