@@ -1419,6 +1419,10 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 		ResultStatus resultStatus = new ResultStatus();
 		try
 		{
+			if(statusId.longValue() == 0l)
+			{
+				statusId = null;
+			}
 			int resultCount = surveyFinalDataDAO.updatedThirdPartyStatus(voterId, statusId);
 			if(resultCount >= 0)
 			{
