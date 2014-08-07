@@ -29,13 +29,15 @@ public class CommitteeMemberDAO extends GenericDaoHibernate<CommitteeMember, Lon
 		
 	}*/
 	
-	public List<Object[]> getCommitteeCadreInfo(Long committeeId)
+	public List<Object[]> getCommitteeCadreInfo(Long committeeId,Long commiteLevelId)
 	{
 		
-		Query query = getSession().createQuery("select model.cadre," +
+		Query query = getSession().createQuery("select distinct model.cadre," +
 				"model.committeeRole.roles.roleId,model.committeeRole.roles.role from CommitteeMember model" +
-				" where model.committeeRole.committee.committeeId = :committeeId and model.isActive = 'Y'");
+				" where model.committeeRole.committee.committeeId = :committeeId and model.isActive = 'Y' and model.committeeRole.committee.committeeLevel.commiiteeLevelId = :commiteLevelId");
 		query.setParameter("committeeId", committeeId);
+		query.setParameter("commiteLevelId", commiteLevelId);
+		
 		return query.list();
 		
 		

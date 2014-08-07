@@ -7,5 +7,5 @@ import org.appfuse.dao.GenericDao;
 import com.itgrids.partyanalyst.model.CommitteeMember;
 
 public interface ICommitteeMemberDAO extends GenericDao<CommitteeMember, Long>{
-	public List<Object[]> getCommitteeCadreInfo(Long committeeId);
+	public List<Object[]> getCommitteeCadreInfo(Long committeeId,Long commiteLevelId);
 }
