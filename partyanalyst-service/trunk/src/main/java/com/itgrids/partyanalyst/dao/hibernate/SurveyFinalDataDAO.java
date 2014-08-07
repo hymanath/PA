@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
@@ -21,6 +23,15 @@ public class SurveyFinalDataDAO extends GenericDaoHibernate<SurveyFinalData, Lon
 		int c= query.executeUpdate();
 		return c;
 		
+	}
+	
+	public List<Object[]> getBoothWiseVoterDetails(Long boothId)
+	{
+		Query query = getSession().createQuery("select model.booth.boothId,model.voter.voterId,model.voter.voterIDCardNo,model.voter.name,model.voter.gender,model.voter.age " +
+				" , model.voter.houseNo , model.mobileNo,model.isCadre , model.isInfluencingPeople , model.casteStateId , model.casteName ," +
+				" model.hamletId , model.hamletName , model.wardId,model.localArea from SurveyFinalData model where model.boothId = :boothId");
+		query.setParameter("boothId", boothId);
+		return query.list();
 	}
 
 }

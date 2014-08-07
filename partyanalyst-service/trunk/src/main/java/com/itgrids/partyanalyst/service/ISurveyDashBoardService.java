@@ -6,6 +6,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyCompletionDetailsVO;
 import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
+import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 
 public interface ISurveyDashBoardService {
 	
@@ -21,5 +22,5 @@ public interface ISurveyDashBoardService {
 	public List<String> getCasteCollectedDatesByUserId(Long userId);
 	public List<String> getCasteCollectedDates();
 	public ResultStatus saveThirdPartyDetails(Long bootId);
-
+	public  List<SurveyResponceVO> getThirdPartyFinalDetails(Long boothId);
 }
