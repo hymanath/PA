@@ -13,7 +13,17 @@ public class SurveyFinalDataDAO extends GenericDaoHibernate<SurveyFinalData, Lon
 
 	public SurveyFinalDataDAO() {
 		super(SurveyFinalData.class);
-		
+	}
+	
+	public List<Object[]> getThirdPartyStatusWithBooths(List<Long> boothIds){
+		Query query = getSession().createQuery("select model.booth.boothId,model.surveyWmThirdPartyStatus.surveyWmThirdPartyStatusId," +
+				" count(model.surveyWmThirdPartyStatusId)" +
+				" from SurveyFinalData model" +
+				" where model.booth.boothId in(:boothIds)" +
+				" and model.surveyWmThirdPartyStatusId is not null" +
+				" group by model.booth.boothId, model.surveyWmThirdPartyStatusId");
+		query.setParameterList("boothIds", boothIds);
+		return query.list();
 	}
 	
 	public int deleteExistingBoothDetails(Long boothId)
