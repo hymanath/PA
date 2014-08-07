@@ -1,9 +1,11 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -17,11 +19,14 @@ import com.itgrids.partyanalyst.dao.ISurveyCallStatusDAO;
 import com.itgrids.partyanalyst.dao.ISurveyCompletedLocationsDAO;
 import com.itgrids.partyanalyst.dao.ISurveyConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
+import com.itgrids.partyanalyst.dao.ISurveyFinalDataDAO;
+import com.itgrids.partyanalyst.dao.ISurveyWmThirdPartyStatusDAO;
 import com.itgrids.partyanalyst.dao.IWebMonitoringAssignedUsersDAO;
 import com.itgrids.partyanalyst.dto.FinalSurveyReportVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
+import com.itgrids.partyanalyst.dto.SurveyThirdPartyReportVO;
 import com.itgrids.partyanalyst.dto.VerificationCompVO;
 import com.itgrids.partyanalyst.model.SurveyCompletedLocations;
 import com.itgrids.partyanalyst.service.ISurveyCompletedDetailsService;
@@ -67,6 +72,9 @@ public class SurveyCompletedDetailsService implements
 	
 	@Autowired 
 	private ISurveyCallStatusDAO surveyCallStatusDAO;
+	
+	@Autowired private ISurveyFinalDataDAO surveyFinalDataDAO;
+	@Autowired private ISurveyWmThirdPartyStatusDAO surveyWmThirdPartyStatusDAO;
 	
 	public List<SurveyReportVO> getSurveyCompletedLocationsDetailsForSurveyStartedConstituencies()
 	{
@@ -842,6 +850,233 @@ public class SurveyCompletedDetailsService implements
 				}
 			}
 		}
+	}
+	
+	
+	public List<SurveyThirdPartyReportVO> finalReportWithThirdParty(Long constituencyId){
+		List<SurveyThirdPartyReportVO> resultList = new ArrayList<SurveyThirdPartyReportVO>();
+		try 
+		{
+			Map<Long,String> boothPartNoMap = null;
+			Map<Long,Long> boothWiseTotalMap = null;
+			
+			//GETTING TOTALVOTERS AND PARTNO'S OF BOOTHS IN CONSTIUTENY
+			List<Object[]> boothWiseTotalVoters = boothPublicationVoterDAO.getTotalVotersForConstituencyByBoothWise(constituencyId);
+			if(boothWiseTotalVoters != null && boothWiseTotalVoters.size() > 0){
+				boothPartNoMap = new HashMap<Long, String>();
+				boothWiseTotalMap = new HashMap<Long, Long>();
+				for (Object[] parms : boothWiseTotalVoters) {
+					if(parms[0] != null){
+						String parnNo = boothPartNoMap.get((Long)parms[0]);
+						if(parnNo == null){
+							boothPartNoMap.put((Long)parms[0], parms[1].toString());
+							boothWiseTotalMap.put((Long)parms[0], (Long)parms[2]);
+						}
+					}
+					
+				}
+			}
+			
+			
+			//STATUS TYPES
+			List<Object[]> statusList = surveyWmThirdPartyStatusDAO.getStatusTypes();
+			
+			// BOOTH WISE USERS SAMPLE COUNT
+			List<SurveyThirdPartyReportVO> usersSamples = new ArrayList<SurveyThirdPartyReportVO>();
+			//List<SurveyThirdPartyReportVO> users = new ArrayList<SurveyThirdPartyReportVO>();
+			List<Object[]> thirdPartySamples = surveyDetailsInfoDAO.getTotalSamplesInBoothsOfUserType(constituencyId, 10l);
+			if(thirdPartySamples != null && thirdPartySamples.size() > 0){
+				for(Object[] obj:thirdPartySamples){
+					boolean isNew = false;
+					SurveyThirdPartyReportVO sv = getMatchedBooth(usersSamples, Long.valueOf(obj[0].toString()));
+					if(sv==null){
+						isNew = true;
+						sv = new SurveyThirdPartyReportVO();
+						sv.setBoothId(Long.valueOf(obj[0].toString()));
+					}
+					
+					List<SurveyThirdPartyReportVO> usersList = sv.getUsersList();
+					if(usersList==null){
+						usersList = new ArrayList<SurveyThirdPartyReportVO>();
+					}
+					
+					SurveyThirdPartyReportVO usr = getMatchedUser(usersList,Long.valueOf(obj[3].toString()));
+					
+					SurveyThirdPartyReportVO user = new SurveyThirdPartyReportVO();
+					user.setUserCollected(Long.valueOf(obj[2].toString()));
+					user.setUserName(obj[4].toString());
+					user.setUserId(Long.valueOf(obj[3].toString()));
+					user.setMobileNo(obj[5].toString());
+					user = setStatusTypesForBoothsList(statusList,user);
+					
+					usersList.add(user);
+					sv.setUsersList(usersList);
+					
+					if(isNew){
+						usersSamples.add(sv);
+					}
+					
+					
+				}
+			}
+			
+			
+			//	GETTING THIRD PARTY USERS INVOLVED BOOTHS
+			List<Object[]> boothsList = surveyDetailsInfoDAO.getBooths(constituencyId, 10l);
+			List<Long> boothIds = new ArrayList<Long>();
+			
+			if(boothsList!=null && boothsList.size()>0){
+				for(Object[] temp:boothsList){
+					boothIds.add(Long.valueOf(temp[0].toString()));
+				} 
+			}
+			
+			
+			
+			
+			if(boothIds!=null && boothIds.size()>0){
+				for(Long boothId:boothIds){
+					SurveyThirdPartyReportVO boothVO = getMatchedBooth(resultList,boothId);
+					if(boothVO==null){
+						boothVO = new SurveyThirdPartyReportVO();
+						boothVO.setBoothId(boothId);
+						if(boothPartNoMap!=null){
+							boothVO.setPartNo(boothPartNoMap.get(boothId));
+						}
+						if(boothWiseTotalMap!=null){
+							boothVO.setTotalVoters(boothWiseTotalMap.get(boothId));
+						}
+						SurveyThirdPartyReportVO usrsList = getMatchedUsersList(usersSamples,boothId);
+						boothVO.setUsers(usrsList);
+						//boothVO.setUserCollected(boothWiseTPCounts.get(boothId));
+						boothVO = setStatusTypesForBoothsList(statusList,boothVO);
+					}
+					
+					resultList.add(boothVO);
+				}
+			}
+			
+			
+			List<Object[]> statusCountsList = surveyFinalDataDAO.getThirdPartyStatusWithBooths(boothIds);
+			if(statusCountsList!=null && statusCountsList.size()>0){
+				for(Object[] obj:statusCountsList){
+					SurveyThirdPartyReportVO boothVO = getMatchedBooth(resultList, Long.valueOf(obj[0].toString()));
+					if(boothVO!=null){
+						
+						SurveyThirdPartyReportVO usersClcted = boothVO.getUsers();
+						if(usersClcted!=null){
+							List<SurveyThirdPartyReportVO> tempList = usersClcted.getUsersList();
+							if(tempList!=null && tempList.size()>0){
+								for(SurveyThirdPartyReportVO sv:tempList){
+									
+									sv.setBoothId(boothVO.getBoothId());
+									sv.setTotalVoters(boothVO.getTotalVoters());
+									sv.setPartNo(boothVO.getPartNo());
+									
+									SurveyThirdPartyReportVO statusVO = getMatchedThirdPartyStatusVO(sv.getStatusList(), Long.valueOf(obj[1].toString()));
+									if(statusVO!=null){
+										statusVO.setStatusCount(Long.valueOf(obj[2].toString()));
+										statusVO.setStatusPercentage(statusVO.getStatusCount() != null &&statusVO.getStatusCount() !=0 ? roundTo2DigitsFloatValue((float) statusVO.getStatusCount() * 100f / sv.getUserCollected())
+												: "0.00");
+									}
+								}
+							}
+						}
+						
+						
+					}
+				}
+			}
+			
+			
+		}catch (Exception e) {
+			LOG.error("Exception Raised In finalDeselectionReport"+e);
+		}
+		return resultList;
+	}
+	
+	
+	public SurveyThirdPartyReportVO getMatchedBooth(List<SurveyThirdPartyReportVO> list,Long boothId){
+		if(list!=null && list.size()>0 && boothId!=null){
+			for(SurveyThirdPartyReportVO sv:list){
+				if(sv.getBoothId().equals(boothId)){
+					return sv;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public SurveyThirdPartyReportVO getMatchedThirdPartyStatusVO(List<SurveyThirdPartyReportVO> list,Long statusId){
+		if(list!=null && list.size()>0 && statusId!=null){
+			for(SurveyThirdPartyReportVO sv:list){
+				if(sv.getStatusId().equals(statusId)){
+					return sv;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public SurveyThirdPartyReportVO setStatusTypesForBoothsList(List<Object[]> statusList,SurveyThirdPartyReportVO boothVO){
+		
+		List<SurveyThirdPartyReportVO> statsLst= new ArrayList<SurveyThirdPartyReportVO>();
+		if(statusList!=null && statusList.size()>0){
+			for(Object[] obj:statusList){
+				SurveyThirdPartyReportVO sv = new SurveyThirdPartyReportVO();
+				sv.setStatusId(Long.valueOf(obj[0].toString()));
+				sv.setStatusName(obj[1].toString());
+				sv.setStatusCount(0l);
+				sv.setStatusPercentage("0.0");
+				statsLst.add(sv);
+			}
+		}
+		
+		boothVO.setStatusList(statsLst);
+		return boothVO;
+	}
+	
+	public String roundTo2DigitsFloatValue(Float number){
+		  
+		  LOG.debug("Entered into the roundTo2DigitsFloatValue service method");
+		  
+		  String result = "";
+		  try
+		  {
+			
+			NumberFormat f = NumberFormat.getInstance(Locale.ENGLISH);  
+			f.setMaximumFractionDigits(2);  
+			f.setMinimumFractionDigits(2);
+			
+			result =  f.format(number);
+		  }catch(Exception e)
+		  {
+			  LOG.error("Exception raised in roundTo2DigitsFloatValue service method");
+			  e.printStackTrace();
+		  }
+		  return result;
+	  }
+	
+	public SurveyThirdPartyReportVO getMatchedUsersList(List<SurveyThirdPartyReportVO> list, Long boothId){
+		if(list!=null && list.size()>0 && boothId!=null){
+			for(SurveyThirdPartyReportVO sv:list){
+				if(sv.getBoothId().equals(boothId)){
+					return sv;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public SurveyThirdPartyReportVO getMatchedUser(List<SurveyThirdPartyReportVO> list, Long userId){
+		if(list!=null && list.size()>0 && userId!=null){
+			for(SurveyThirdPartyReportVO sv:list){
+				if(sv.getUserId().equals(userId)){
+					return sv;
+				}
+			}
+		}
+		return null;
 	}
 	
 }
