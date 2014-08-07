@@ -1264,6 +1264,9 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 				}
 				surveyResponceVO.setWardId(parms[14] != null ? Long.valueOf(parms[14].toString()) :0l);
 				surveyResponceVO.setLocalArea(parms[15] != null ? parms[15].toString() : "");
+				if(parms.length > 16 && parms[16] != null){
+					surveyResponceVO.setStatusId(parms[16].toString());
+				}
 				returnList.add(surveyResponceVO);
 			}
 		} 
@@ -1334,6 +1337,7 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 								thirdPartyCompressionVO.setWmCasteStateId(tpCollectedVO.getCasteId());
 								thirdPartyCompressionVO.setWmHamlet(tpCollectedVO.getHamletName());
 								thirdPartyCompressionVO.setWmHamletId(tpCollectedVO.getHamletId());
+								thirdPartyCompressionVO.setStatus(tpCollectedVO.getStatus());
 							}
 							returnList.add(thirdPartyCompressionVO);
 						}

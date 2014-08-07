@@ -39,7 +39,7 @@ public class SurveyFinalDataDAO extends GenericDaoHibernate<SurveyFinalData, Lon
 	{
 		Query query = getSession().createQuery("select model.booth.boothId,model.voter.voterId,model.voter.voterIDCardNo,model.voter.name,model.voter.gender,model.voter.age " +
 				" , model.voter.houseNo , model.mobileNo,model.isCadre , model.isInfluencingPeople , model.casteStateId , model.casteName ," +
-				" model.hamletId , model.hamletName , model.wardId,model.localArea ,model.voter.relativeName from SurveyFinalData model where model.boothId = :boothId");
+				" model.hamletId , model.hamletName , model.wardId,model.localArea ,model.voter.relativeName,model.surveyWmThirdPartyStatus.surveyWmThirdPartyStatusId from SurveyFinalData model where model.boothId = :boothId");
 		query.setParameter("boothId", boothId);
 		return query.list();
 	}
@@ -72,4 +72,13 @@ public class SurveyFinalDataDAO extends GenericDaoHibernate<SurveyFinalData, Lon
 		return query.list();
 	}
 	
+	public List<Object[]> getWMUpdatedStatusOnThirdPartyData(List<Long> userIds,List<Long> boothIds){
+		//0 count,1 surveyUserId,2 boothId,3 statusId
+		Query query = getSession().createQuery("select count(distinct sfd.voterId),sdi.surveyUser.surveyUserId,sdi.booth.boothId,sfd.surveyWmThirdPartyStatus.surveyWmThirdPartyStatusId from  SurveyFinalData sfd,SurveyDetailsInfo sdi where sfd.booth.boothId in(:boothIds)  " +
+				" and sfd.surveyWmThirdPartyStatus.surveyWmThirdPartyStatusId is not null and sfd.voter.voterId = sdi.voter.voterId and sfd.booth.boothId = sdi.booth.boothId and sdi.surveyUser.surveyUserId in (:userIds) group by " +
+				" sdi.surveyUser.surveyUserId,sdi.booth.boothId,sfd.surveyWmThirdPartyStatus.surveyWmThirdPartyStatusId");
+		query.setParameterList("userIds", userIds);
+		query.setParameterList("boothIds", boothIds);
+		return query.list();
+	}
 }

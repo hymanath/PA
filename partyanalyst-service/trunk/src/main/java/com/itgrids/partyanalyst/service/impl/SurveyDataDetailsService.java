@@ -38,6 +38,7 @@ import com.itgrids.partyanalyst.dao.IPartialBoothPanchayatDAO;
 import com.itgrids.partyanalyst.dao.ISurveyCallStatusDAO;
 import com.itgrids.partyanalyst.dao.ISurveyCompletedLocationsDetailsDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
+import com.itgrids.partyanalyst.dao.ISurveyFinalDataDAO;
 import com.itgrids.partyanalyst.dao.ISurveySurveyorTypeDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserBoothAssignDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserConstituencyDAO;
@@ -165,6 +166,9 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 
 	@Autowired
 	private IPartialBoothPanchayatDAO partialBoothPanchayatDAO;
+	
+	@Autowired
+	private ISurveyFinalDataDAO surveyFinalDataDAO;
 	
 	
 	/**
@@ -4052,7 +4056,6 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	public List<SurveyReportVO> getSurveyDetailsForConstituency(Long constituencyId,Long userTypeId,String fromDate,List<Long> userIds,String toDate)
 	{
 		
-		
 		List<SurveyReportVO> resultList = new ArrayList<SurveyReportVO>();
 		List<Long> userIDs = new ArrayList<Long>();
 		List<Long> boothIDs = new ArrayList<Long>();
@@ -4209,6 +4212,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				} 
 				
 				List<Object[]> statusList = null;
+			 if(!(userTypeId.longValue() == 10l)){
 				if(userTypeId.longValue() == 1l)
 				 statusList =surveyCallStatusDAO.getStatusListForUser(userIDs,boothIDs,userTypeId);
 				else if(userTypeId.longValue() == 4l)
@@ -4243,18 +4247,55 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					
 					
 				}
+				
+			   }else{
+					
+				   getDetailsAndErrPercForThirdParty(resultList,userIDs,boothIDs);
+			   }
 			}
 			
 			
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			LOG.error("Exception rised in getSurveyDetailsForConstituency ",e);
 		}
 		return resultList;
 	}
 	
-	
+	public void getDetailsAndErrPercForThirdParty(List<SurveyReportVO> resultList,List<Long> userIDs,List<Long> boothIDs){
+		//0 count,1 surveyUserId,2 boothId,3 statusId
+		List<Object[]> statusList = surveyFinalDataDAO.getWMUpdatedStatusOnThirdPartyData(userIDs, boothIDs);
+		//List<Object[]>  countList = surveyDetailsInfoDAO.getTotalDataCollectedCount(userIDs, boothIDs);
+		//statusList.addAll(countList);
+		if(statusList !=null && statusList.size() > 0)
+		{
+			for(Object[] params : statusList)
+			 {
+				
+				 SurveyReportVO user = getMatchedVo(resultList,(Long)params[1]);
+				 if(user != null)
+				 {
+					
+					 SurveyReportVO boothVo = getMatchedBoothVo(user.getSubList(),(Long)params[2]);
+					 if(boothVo != null)
+					 {
+							 boothVo.setCount(boothVo.getCount()+(Long)params[0]);
+						 if(((Long)params[3]).longValue() == 1l){
+							 boothVo.setMobileNotMatchedCount((Long)params[0]);
+						 }else if(((Long)params[3]).longValue() == 2l){
+							 boothVo.setMobileMatchedCount((Long)params[0]);
+						 }else if(((Long)params[3]).longValue() == 3l){
+							 boothVo.setCasteNotMatchedCount((Long)params[0]);
+						 }else if(((Long)params[3]).longValue() == 4l){
+							 boothVo.setCasteMatchedCount((Long)params[0]);
+						 }
+					 }
+				 }
+				 
+			 }
+		}
+	}
 	public SurveyReportVO getMatchedVo(List<SurveyReportVO> resultList,Long userId)
 	{
 	
