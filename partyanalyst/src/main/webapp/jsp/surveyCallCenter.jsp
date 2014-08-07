@@ -129,6 +129,7 @@
 					<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CASTE_SURVEY_CALL_CENTER')}">
 					<li><a class="highlight" id="wmReportTab" value="3" onclick="showHideTabs(this.id);">WM Report</a></li>
 					<li><a class="highlight" id="verifierReportTab" value="2" onclick="showHideTabs(this.id);">Verifier Report</a></li>
+					<li><a class="highlight" id="thirdPartyReportTab" onclick="showHideTabs(this.id);">Third Party Report</a></li>
 					</c:if>
 				</ul>
 			</div>
@@ -637,6 +638,31 @@
 				</div>
 			</div>
 		</div>
+				
+		<div class="row" id="thirdPartyReportDiv">
+			<div class="span12">
+				<div class="row-fluid ">
+					<div class="span12 widgetservey_Red m_top20">
+							<h4>THIRD PARTY REPORT</h4>
+								<div class="row">
+									<div id="errorDivForThirdParty" class="span8 offset4"></div>
+								</div>
+								<div class="row offset4">								
+									<div class="row-fluid">										
+										<div class="span3">
+											Select Constituency <font class="requiredFont">*</font></div>
+											<div class="span4">
+											 <s:select theme="simple"  name="constituency" id="constituencyForThirdParty"  headerKey="0" headerValue="Select Constituency" list="constituencies" listKey="id" listValue="name"/>
+										</div>												
+									</div>
+								</div>
+								<div class="row text-center m_top10"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="">SUBMIT</button></div>
+								<img src='images/Loading-data.gif' class="offset5"  id="thirdPartyAjax" style="width:70px;height:60px;display:none;"/>
+					</div>						
+                </div>
+			</div>				
+		</div>
+		
 	</div>
 	<script>
 		var userIds = new Array();

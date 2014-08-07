@@ -1304,6 +1304,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CASTE_SURVEY_CALL_CENTER))
 				return ERROR;
 				constituenciesList = 	surveyDataDetailsService.getSurveyStartedConstituencyList();
+				constituencies = surveyDashBoardService.getConstituencyListForThirdPartyReport();
 				usersList = surveyDetailsService.getAssignedSurveyUsersForWebMontringTeam(user.getRegistrationID());
 
 		} catch (Exception e) {
