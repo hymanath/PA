@@ -217,7 +217,7 @@ public class PartyCadreSearchAction extends ActionSupport implements ServletRequ
 			
 			jObj =new JSONObject(getTask());
 			
-			cadreDetails = cadreManagementService.getCommitteCadreDetails(jObj.getLong("committeeId"));
+			cadreDetails = cadreManagementService.getCommitteCadreDetails(jObj.getLong("committeeId"),jObj.getLong("committeeLevelId"));
 			return Action.SUCCESS;
 		}
 		catch(Exception e)
