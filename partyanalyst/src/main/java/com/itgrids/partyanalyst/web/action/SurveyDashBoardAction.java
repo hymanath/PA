@@ -20,6 +20,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyCompletionDetailsVO;
 import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
+import com.itgrids.partyanalyst.dto.SurveyThirdPartyReportVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.dto.ThirdPartyCompressionVO;
 import com.itgrids.partyanalyst.service.ISurveyCompletedDetailsService;
@@ -46,6 +47,7 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 	private Long constituencyId;
 	private List<SurveyReportVO> verifiedBooths;
 	private List<FinalSurveyReportVO> returnList;
+	private List<SurveyThirdPartyReportVO> thirdPartyResultList;
 	private ResultStatus resultStatus;
 	private List<SurveyResponceVO> thirdPartyDetailsList;
 	private List<ThirdPartyCompressionVO> thirdPartyCompressionVOList;
@@ -204,6 +206,17 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 
 	public void setResultVO(SurveyDashBoardVO resultVO) {
 		this.resultVO = resultVO;
+	}
+	
+	
+
+	public List<SurveyThirdPartyReportVO> getThirdPartyResultList() {
+		return thirdPartyResultList;
+	}
+
+	public void setThirdPartyResultList(
+			List<SurveyThirdPartyReportVO> thirdPartyResultList) {
+		this.thirdPartyResultList = thirdPartyResultList;
 	}
 
 	public String execute()
@@ -500,6 +513,17 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 		}
 		return Action.SUCCESS;
 		
+	}
+	
+	public String getFinalReportWithTP(){
+			LOG.debug("Entered Into getFinalReportWithTP");
+		try	{
+			jObj = new JSONObject(getTask());
+			thirdPartyResultList = surveyCompletedDetailsService.finalReportWithThirdParty(jObj.getLong("constituencyId"));
+		}catch(Exception e){
+			LOG.error("Exception Raised in getFinalReportWithTP"+e);
+		}
+		return Action.SUCCESS;
 	}
 	
 	public String updateThirdPartyStatus()	{
