@@ -5841,6 +5841,7 @@ function buildFinalReportWithTP(result){
 				str +="<th>"+stList[i].statusName+"</th>";
 				str +="<th>"+stList[i].statusName+" % </th>";
 			}
+			str +="<th>BOOTH TYPE </th>";
 			str +="</tr>";
 		str +="</thead>";
 		/* for(var i in result){
@@ -5864,9 +5865,10 @@ function buildFinalReportWithTP(result){
 					str +="<td>"+result[i].users.usersList[k].userCollected+"</td>";
 					var sttsList = result[i].users.usersList[k].statusList;
 					for(var p in sttsList){
-						str +="<th>"+sttsList[p].statusCount+"</th>";
-						str +="<th>"+sttsList[p].statusPercentage+" % </th>";
+						str +="<td>"+sttsList[p].statusCount+"</td>";
+						str +="<td>"+sttsList[p].statusPercentage+" </td>";
 					}
+					str +="<td>"+result[i].boothType+"</td>";
 					str +="</tr>";
 				}
 		}
