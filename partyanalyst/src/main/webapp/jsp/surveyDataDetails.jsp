@@ -204,7 +204,7 @@
 			<div class="span10 offset1">
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top20">
-							<h4 id="wmtitleId"></h4>
+							<h4 id="wmtitleId">Verifier Booth Percentage</h4>
 							<div class="row">
 						<div id="errorDivSB" class="span8 offset1 clearCls"></div>
 						</div>
@@ -225,7 +225,7 @@
 												
 												
 											<div class="span3">
-												Percenage <font class="requiredFont">*</font> : 
+												Percentage <font class="requiredFont">*</font> : 
 												<input type="text" placeholder="Enter Percentage" id="percenageForBooth"/></div>
 												<div class="span1" style="margin:25px -8px 0 8px;width: 15px;">
 													<img id="boothImageForSavingPercent" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
@@ -234,15 +234,45 @@
 											
 										</div>	
 									</div>
-								</div>
-						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="saveBoothPercentage()">SUBMIT</button></div>
+									<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="saveBoothPercentage()">SUBMIT</button></div>
 						<div id="retunMsg" class="clearCls"></div>
 						<img src='images/Loading-data.gif' class="offset5"  id="mainajaximgForWm" style="width:70px;height:60px;display:none;"/>
+								</div>
+						
                          <div id="dayWiseReportDivForWm" class="clearCls"></div>
 							
 					</div>
 				</div>
+				
+				
+			<div class="span10 offset1">
+				<div class="row-fluid ">
+					<div class="span12 widgetservey_Red m_top20">
+						<h4>PROVIDING DATA FOR THIRD PARTY</h4>
+							<div class="row">
+								<div id="errorDivTP" class="span8 offset3 clearCls"></div>
+							</div>
+							<div class="row">
+								<div class="offset3">
+									<div class="row-fluid">											
+										<div class="span4">
+											Select Constituency <font class="requiredFont">*</font>
+											<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="constituencyForTP" list="constituencies" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" onChange="getBoothsDetailsInCallStatusInfoForSavePercnt(this.value,'boothIdForTP')"/>
+										</div>
+										<div class="span3">
+											Select Booth <font class="requiredFont">*</font> : 
+											<select class="input-block-level" id = "boothIdForTP" > <option value="0">Select Booth</option></select>
+										</div>											
+									</div>	
+								</div>
+									<div class="row text-center m_top10"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="saveThirdPartyDetails()">SUBMIT</button></div>
+									<img src='images/Loading-data.gif' class="offset5"  id="ajaxImgForTP" style="width:70px;height:60px;display:none;"/>
+							</div>
+					</div>
+				</div>
 			</div>
+	
+	</div>
 		<!----TAB Assign ---->		
 		<div class="row" id="tabAssignDiv">
 			<div class="span10 offset1">
