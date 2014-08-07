@@ -34,4 +34,11 @@ public class SurveyFinalDataDAO extends GenericDaoHibernate<SurveyFinalData, Lon
 		return query.list();
 	}
 
+	public List<Object[]> getSurveyFinalConstituencyInfo()
+	{
+		Query query = getSession().createQuery("select distinct model.booth.constituency.constituencyId,model.booth.constituency.name from SurveyFinalData model order by model.booth.constituency.name asc ");		
+		return query.list();
+		
+	}
+
 }
