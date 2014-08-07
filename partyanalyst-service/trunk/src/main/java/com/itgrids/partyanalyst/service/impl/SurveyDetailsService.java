@@ -2453,11 +2453,11 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 							{
 								returnList.add(resultMap.get(voterId));
 							}
-							else if(dvMap.get(voterId) != null)
+							else if(dvMap != null && dvMap.get(voterId) != null)
 							{
 								returnList.add(dvMap.get(voterId));
 							}
-							else if(dcMap.get(voterId) != null)
+							else if(dcMap != null && dcMap.get(voterId) != null)
 							{
 								returnList.add(dcMap.get(voterId));
 							}
