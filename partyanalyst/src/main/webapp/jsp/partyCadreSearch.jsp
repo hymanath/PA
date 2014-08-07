@@ -326,6 +326,7 @@ var committeeIds = $("#committeeId").val();
 var jsObj =
 {
 committeeId : committeeIds,
+committeeLevelId :	committeeLIds,
 task:"getCommitteCadreDetails"
 }
 
