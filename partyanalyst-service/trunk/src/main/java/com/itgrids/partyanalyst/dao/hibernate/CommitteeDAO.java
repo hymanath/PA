@@ -18,7 +18,7 @@ public class CommitteeDAO extends GenericDaoHibernate<Committee, Long> implement
 	
 	public List<Long> getAllCommitteeLevelValuesByCommitteeLevel(Long committeeLevelId)
 	{		
-		Query query = getSession().createQuery("select model.commiiteeLevelValue from Committee model where model.committeeLevel.commiiteeLevelId = :committeeLevelId");		
+		Query query = getSession().createQuery("select distinct model.commiiteeLevelValue from Committee model where model.committeeLevel.commiiteeLevelId = :committeeLevelId");		
 		query.setParameter("committeeLevelId", committeeLevelId);
 		return query.list();
 	}
