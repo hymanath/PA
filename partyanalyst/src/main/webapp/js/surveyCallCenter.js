@@ -292,10 +292,10 @@ $('#searchDataImg').show();
 				{
 					str +='<th>DC CASTE</th>';
 					str +='<th>DC MOBILE</th>';
-					str +='<th>WM CASTE</th>';
+					str +='<th>DC WM CASTE</th>';
 					str +='<th>MATCHED STATUS</th>';
 				}
-				str +='<th> Caste </th>';
+				str +='<th> DV Caste </th>';
 				str +='<th> Caste Matched  </th>';
 				str +='<th> Mobile Number </th>';
 				str +='<th> Hamlet </th>';
@@ -524,13 +524,13 @@ $('#searchDataImg').show();
 							
 								var  hamletCount =  0;
 
-								if(result[i].hamletName != null  )
+								if(result[i].hamletName != null   )
 								{
 								
-									if(result[i].hamletCount != null  )
+									if(result[i].hamletCount != null )
 									{
 										hamletCount = result[i].hamletCount;
-											console.log("2.hamletCount  :"+hamletCount);
+										
 										if(hamletCount == 1)
 										{
 											str +='<td>';
@@ -846,7 +846,7 @@ $('#searchDataImg').show();
 									if(result[i].hamletCount != null   )
 									{
 										hamletCount = result[i].hamletCount;
-										console.log("1.hamletCount  :"+hamletCount);
+										
 										if(hamletCount == 1)
 										{
 											str +='<td>';
@@ -897,7 +897,6 @@ $('#searchDataImg').show();
 													str +='<td> <select id="hamletsListId'+i+'"   style="width:165px;" onchange="updateDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',10,'+result[i].voterId+','+result[i].userid+',\'caste\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');"><option value="0"> Select Hamlet </option> ';
 													if(results[1] != null  && results[1].genericVOList1.length > 0){
 														for(var k in results[1].genericVOList1){
-													
 															if(results[1].genericVOList1[k].id == result[i].hamletId)
 															{
 																str +='<option value="'+results[1].genericVOList1[k].id+'" selected="selected">'+results[1].genericVOList1[k].name+'</option>';
@@ -1385,7 +1384,6 @@ $("#errorMsgDiv").html(str);
 return;
 	}
 	$("#reportDataImg").show();
-	
 	var jsObj =
 	{
 	    constituencyId : constituencyID,
@@ -1395,7 +1393,6 @@ return;
 		userIds : userIds,
 		task : "getLocationCount"
 	}
-	
 	$.ajax({
 	type:'GET',
 	url: 'getSurveyUserLoctionCount.action',
@@ -3494,8 +3491,7 @@ function getDataReportSummary()
 	var jsObj = {
 		task : "constituencySummary"
 	}
-	
-	$("#fieldDataSummaryimg").css("display","block");	
+	$("#fieldDataSummaryimg").css("display","block");
  $.ajax({
 			type:'GET',
 			url: 'getConstituencySummaryReport.action',
@@ -3507,7 +3503,6 @@ function getDataReportSummary()
 			 buildSummaryForFieldData(result);
 			
 		});	
-		
 
 }
 function buildSummaryForFieldData(result)
