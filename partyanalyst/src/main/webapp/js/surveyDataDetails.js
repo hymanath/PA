@@ -2322,7 +2322,7 @@ function getBoothsDetailsInCallStatusInfoForSavePercnt(constituencyId,divId)
 
 $("#errorDivSB").html("");
 
-	$("#boothImage").show();
+	//$("#boothImage").show();
 	var jObj =
 	{
 	  constituencyId:constituencyId     
@@ -2335,8 +2335,8 @@ $("#errorDivSB").html("");
 			data: {task:JSON.stringify(jObj)},
 		  }).done(function(result){				
 				//buildDayWiseReportByUserType(result);		
-				$("#boothImage").hide();
-				$('#'+divId+'').find('option').remove();
+				//$("#boothImage").hide();
+				$('#'+divId+'').find('option:not(:first)').remove();
 
 				$.each(result,function(index,value){
 					$('#'+divId+'').append('<option value="'+value.boothId+'">Booth - '+value.partNo+'</option>');
@@ -2382,6 +2382,42 @@ function saveBoothPercentage(){
 		  }).done(function(result){		
 				$("#boothImageForSavingPercent").hide();
 				$("#errorDivSB").html("<span style='color:blue'>"+result+"</span>");
+				setTimeout(function(){$('#errorDivSB').html('');}, 3000);
+				$("#constituencyForSP,#boothIdForSavePercentages").val(0);
+				$("#percenageForBooth").val("");
+		});	
+}
+
+//saveThirdPartyDetails();
+function saveThirdPartyDetails()
+{
+	var constId = $("#constituencyForTP").val();
+	var boothId = $("#boothIdForTP").val();
+	if(constId == 0){
+		$("#errorDivTP").html("<span style='color:red'>Please Select Constituency</span>");
+		return;
+	}
+	if(boothId == 0){
+		$("#errorDivTP").html("<span style='color:red'>Please Select Booth</span>");
+		return;
+	}
+	$("#errorDivTP").html("");
+	$("#ajaxImgForTP").show();
+	
+	var jsObj = 
+	{
+		boothId : boothId
+	}
+	$.ajax({
+			type:'GET',
+			url: 'saveThirdPartyDetails.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		 }).done(function(result){	
+				$("#ajaxImgForTP").hide();
+				$("#errorDivTP").html("<span style='color:blue'>"+result.message+"</span>");
+				setTimeout(function(){$('#errorDivTP').html('');}, 3000);
+				$("#constituencyForTP,#boothIdForTP").val(0);
 		});	
 }
 

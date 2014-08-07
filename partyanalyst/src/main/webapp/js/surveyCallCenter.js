@@ -5559,21 +5559,7 @@ function buildFinalReport(result)
 	str += '</table>';
 	$('#dayWiseReportDiv1').html(str);
 }
-//saveThirdPartyDetails();
-function saveThirdPartyDetails()
-{
-	var jsObj = 
-	{
-		boothId : 439822
-	}
-	$.ajax({
-			type:'GET',
-			url: 'saveThirdPartyDetails.action',
-			dataType: 'json',
-			data: {task:JSON.stringify(jsObj)},
-		 }).done(function(result){	
-		});	
-}
+
 //getThirdPartyFinalDetails();
 function getThirdPartyFinalDetails()
 {
