@@ -5753,13 +5753,13 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 	 }
 
 
-	public List<CadreVo> getCommitteCadreDetails(Long committeeId)
+	public List<CadreVo> getCommitteCadreDetails(Long committeeId,Long committeeLevelId)
 	{
 		List<CadreVo> resultList = new ArrayList<CadreVo>();
 		
 		try{
 
-			List<Object[]> list = committeeMemberDAO.getCommitteeCadreInfo(committeeId);
+			List<Object[]> list = committeeMemberDAO.getCommitteeCadreInfo(committeeId,committeeLevelId);
 			if(list != null && list.size() > 0)
 			{
 			for(Object[] params : list)
