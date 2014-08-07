@@ -1390,12 +1390,11 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 	}
 	
 	public List<GenericVO> getConstituencyListForThirdPartyReport(){
-		List<GenericVO> resultList = null;
+		List<GenericVO> resultList = new ArrayList<GenericVO>();
 		try {
 			List<Object[]> constituencies = surveyFinalDataDAO.getSurveyFinalConstituencyInfo();	
 			if(constituencies != null && constituencies.size() > 0)
 			{
-				resultList = new ArrayList<GenericVO>();
 				for(Object[] constituency : constituencies)
 				{
 					resultList.add(new GenericVO(constituency[0] != null ? (Long)constituency[0] : 0L, WordUtils.capitalize(constituency[1] != null ? constituency[1].toString().toLowerCase() : "")));
