@@ -639,7 +639,7 @@
 			</div>
 		</div>
 				
-		<div class="row" id="thirdPartyReportDiv" style="dispaly:none;">
+		<div class="row" id="thirdPartyReportDiv" style="display:none;">
 			<div class="span12">
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top20">
