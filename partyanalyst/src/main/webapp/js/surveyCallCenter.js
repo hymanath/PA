@@ -7,6 +7,7 @@ function showHideTabs(id)
 	$(".errClass").html('');
 	if(id == "completedBoothsTab")
 	{
+		$("#thirdPartyReportDiv").hide();
 		$('#statusReportDiv').hide();
 		$('#webMontrId').hide();
 		$('#callCenter').hide();
@@ -23,6 +24,7 @@ function showHideTabs(id)
 	}
 	else if(id == "callCenterTab")
 	{
+		$("#thirdPartyReportDiv").hide();
 		$('#statusReportDiv').hide();
 		$('#webMontrId').show();
 		$('#callCenter').show();
@@ -39,6 +41,7 @@ function showHideTabs(id)
 	}
 	else if (id == "startTimeTab")
 	{
+		$("#thirdPartyReportDiv").hide();
 		$('#statusReportDiv').hide();
 		$('#webMontrId').hide();
 		$('#callCenter').hide();
@@ -57,6 +60,7 @@ function showHideTabs(id)
 	}
 	else if(id == "boothWiseTab")
 	{
+		$("#thirdPartyReportId").hide();
 		$('#statusReportDiv').hide();
 		$('#webMontrId').hide();
 		$('#callCenter').hide();
@@ -76,7 +80,7 @@ function showHideTabs(id)
 
 	}
 	else if(id == "surveyStatusRprtTab"){
-
+		$("#thirdPartyReportId").hide();
 		$('#statusReportDiv').show();
 		$('#callCenter').hide();
 		$('#startTime').hide();
@@ -91,6 +95,7 @@ function showHideTabs(id)
 	}
 	else if (id == "surveyUserWise")
 	{
+		$("#thirdPartyReportId").hide();
 		$('#statusReportDiv').hide();
 		$('#callCenter').hide();
 		$('#startTime').hide();
@@ -105,6 +110,7 @@ function showHideTabs(id)
 	}
 	else if (id == "saveBoothPercentagesTab")
 	{
+		$("#thirdPartyReportId").hide();
 		$('#statusReportDiv').hide();
 		$('#callCenter').hide();
 		$('#startTime').hide();
@@ -119,6 +125,7 @@ function showHideTabs(id)
 	}
 	else if (id == "wmReportTab")
 	{
+		$("#thirdPartyReportId").hide();
 		$('#statusReportDiv').hide();
 		$('#callCenter').hide();
 		$('#startTime').hide();
@@ -133,6 +140,7 @@ function showHideTabs(id)
 	}
 	else if (id == "verifierReportTab")
 	{
+		$("#thirdPartyReportId").hide();
 		$('#statusReportDiv').hide();
 		$('#callCenter').hide();
 		$('#startTime').hide();
@@ -145,8 +153,24 @@ function showHideTabs(id)
 		$("#verifierReportIdForVerifier").show();;
 		$("#wmReportDiv").hide();
 	}
+	else if (id == "thirdPartyReportTab")
+	{
+		$('#statusReportDiv').hide();
+		$('#callCenter').hide();
+		$('#startTime').hide();
+		$('#boothWise').hide();
+		$('#dataCollector').hide();
+        $('#inActiveUsersDetails').hide();	
+		$('#completeBooths').hide();
+		$('#userReport').hide();
+		$('#saveBoothsPercentage').hide();
+		$("#verifierReportIdForVerifier").hide();
+		$("#wmReportDiv").hide();
+		$("#thirdPartyReportId").show();
+	}
 	else
 	{
+		$("#thirdPartyReportId").hide();
 		$('#statusReportDiv').hide();
 		$('#webMontrId').hide();
 		$('#callCenter').hide();
