@@ -2644,7 +2644,25 @@ function buildSurveyBoothDetailsTable(result,statusId)
 					else
 					{
 						str += '<option value="8">TP COMPLETED</option>';
-					}	
+					}
+
+					if(statusId == 9)
+					{
+						str += '<option value="9" selected="selected" >TP-WM PROCESSING</option>';
+					}
+					else
+					{
+						str += '<option value="9">TP-WM PROCESSING</option>';
+					}
+
+					if(statusId == 10)
+					{
+						str += '<option value="10" selected="selected" >TP-WM COMPLETED</option>';
+					}
+					else
+					{
+						str += '<option value="10">TP-WM COMPLETED</option>';
+					}
 					
 				}
 					str += '</select></td>';
@@ -3702,29 +3720,7 @@ function buildBoothsStatusCountsDetails(result)
 		str += '<h4>VERIFICATION COMPLETED</h4>';
 		str += '<h2> <a href="javascript:{getBoothsDetailsByStatusAndConstituency(5)}">'+result.dvCompletedCount+'</a></h2>';
 		str += '</hgroup>';
-		str += '</li>';
-
-		str += '<li>';
-		str += '<hgroup>';
-		str += '<h4>ACTUAL VERIFICATION PROCESSING</h4>';
-		str += '<h2> <a href="javascript:{getBoothsDetailsByStatusAndConstituency(0)}">'+result.actualProcessingCount+'</a></h2>';
-		str += '</hgroup>';
-		str += '</li>';
-
-		str += '<li>';
-		str += '<hgroup>';
-		str += '<h4>PANCHAYAT PROCESSING</h4>';
-		str += '<h2> <a href="javascript:{getpanchayatDetailsByStatusAndConstituency(1)}">'+result.panchayatDetails.processingCount+'</a></h2>';
-		str += '</hgroup>';
-		str += '</li>';
-
-		str += '<li>';
-		str += '<hgroup>';
-		str += '<h4>PANCHAYAT COMPLETED</h4>';
-		str += '<h2> <a href="javascript:{getpanchayatDetailsByStatusAndConstituency(2)}">'+result.panchayatDetails.count+'</a></h2>';
-		str += '</hgroup>';
-		str += '</li>';
-		
+		str += '</li>';		
 		
 		str += '<li>';
 		str += '<hgroup>';
@@ -3744,6 +3740,42 @@ function buildBoothsStatusCountsDetails(result)
 		str += '<hgroup>';
 		str += '<h4>THIRD PARTY COMPLETED</h4>';
 		str += '<h2> <a href="javascript:{getBoothsDetailsByStatusAndConstituency(8)}">'+result.thirdPartyCompleted+'</a></h2>';
+		str += '</hgroup>';
+		str += '</li>';
+
+		
+		str += '<li>';
+		str += '<hgroup>';
+		str += '<h4>THIRD PARTY WEB MONITORING PROCESSING</h4>';
+		str += '<h2> <a href="javascript:{getBoothsDetailsByStatusAndConstituency(9)}">'+result.tpWebMonitoringProcessing+'</a></h2>';
+		str += '</hgroup>';
+		str += '</li>';
+
+		str += '<li>';
+		str += '<hgroup>';
+		str += '<h4>THIRD PARTY WEB MONITORING COMPLETED</h4>';
+		str += '<h2> <a href="javascript:{getBoothsDetailsByStatusAndConstituency(10)}">'+result.tpWebMonitoringCompleted+'</a></h2>';
+		str += '</hgroup>';
+		str += '</li>';	
+
+		str += '<li>';
+		str += '<hgroup>';
+		str += '<h4>ACTUAL VERIFICATION PROCESSING</h4>';
+		str += '<h2> <a href="javascript:{getBoothsDetailsByStatusAndConstituency(0)}">'+result.actualProcessingCount+'</a></h2>';
+		str += '</hgroup>';
+		str += '</li>';
+
+		str += '<li>';
+		str += '<hgroup>';
+		str += '<h4>PANCHAYAT PROCESSING</h4>';
+		str += '<h2> <a href="javascript:{getpanchayatDetailsByStatusAndConstituency(1)}">'+result.panchayatDetails.processingCount+'</a></h2>';
+		str += '</hgroup>';
+		str += '</li>';
+
+		str += '<li>';
+		str += '<hgroup>';
+		str += '<h4>PANCHAYAT COMPLETED</h4>';
+		str += '<h2> <a href="javascript:{getpanchayatDetailsByStatusAndConstituency(2)}">'+result.panchayatDetails.count+'</a></h2>';
 		str += '</hgroup>';
 		str += '</li>';
 
