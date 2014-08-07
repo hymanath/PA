@@ -1478,4 +1478,21 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 	
 	
 	
+	public List<Object[]> getTotalSamplesInBoothsOfUserType(Long constituencyId,Long surveyUserType){
+		Query query = getSession().createQuery("select model.booth.boothId," +
+				" model.booth.partNo, " +
+				" count(model.voter.voterId)," +
+				" model.surveyUser.surveyUserId," +
+				" model.surveyUser.userName," +
+				" model.surveyUser.mobileNo " +
+				" from SurveyDetailsInfo model where model.booth.constituency.constituencyId = :constituencyId " +
+				" and model.surveyUser.surveyUserType.surveyUsertypeId = :surveyUserType and model.isDelete = 'N'" +
+				" group by model.booth.boothId,model.surveyUser.surveyUserId" +
+				" order by model.booth.boothId asc");
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("surveyUserType", surveyUserType);
+		return query.list();
+	}
+	
+	
 }
