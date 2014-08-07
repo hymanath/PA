@@ -20,8 +20,10 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ISurveyCompletedLocationsDetailsDAO;
 import com.itgrids.partyanalyst.dao.ISurveyConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
@@ -77,6 +79,11 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 	private ISurveyFinalDataDAO surveyFinalDataDAO;
 	@Autowired 
 	private DateUtilService dateUtilService;
+	@Autowired
+	private ICasteStateDAO casteStateDAO;
+	
+	@Autowired
+	private IHamletDAO hamletDAO;
 	@Autowired
 	private ISurveyDetailsService surveyDetaisService;
 
@@ -1087,6 +1094,11 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 		return surveyDates;
 	}
 	
+	/**
+	 * This Service is used for saving third party details
+	 * @param boothId
+	 * @return resultStatus
+	 */
 	public ResultStatus saveThirdPartyDetails(final Long bootId)
 	{
 		final ResultStatus resultStatus = new ResultStatus();
@@ -1158,5 +1170,88 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 			LOG.error("Exception raised in ResultStatus service method",e);
 		}
 		return resultStatus;
+	}
+	
+	/**
+	 * This Service is used for providing third party details
+	 * @param boothId
+	 * @return returnList
+	 */
+	public  List<SurveyResponceVO> getThirdPartyFinalDetails(Long boothId)
+	{
+		List<SurveyResponceVO> returnList = null;
+		try
+		{
+			List<Object[]> resultList = surveyFinalDataDAO.getBoothWiseVoterDetails(boothId);
+			if(resultList != null && resultList.size() > 0)
+			{
+				returnList = new ArrayList<SurveyResponceVO>();
+				for (Object[] parms : resultList) 
+				{
+					SurveyResponceVO surveyResponceVO = new SurveyResponceVO();
+					surveyResponceVO.setDataTypeId("2");
+					surveyResponceVO.setBoothId((Long)parms[0]);
+					if(parms[1] != null)
+					{
+						surveyResponceVO.setVoterId(parms[1] != null ? Long.valueOf(parms[1].toString()) :0l);
+						surveyResponceVO.setVoterCardNo(parms[2] != null ? parms[2].toString() : "");
+						surveyResponceVO.setVoterName(parms[3] != null ? parms[3].toString() : "");
+						surveyResponceVO.setGender(parms[4] != null ? parms[4].toString() : "");
+						surveyResponceVO.setAge(parms[5] != null ? Long.valueOf(parms[5].toString()) : 0l);
+						surveyResponceVO.setHouseNo(parms[6] != null ? parms[6].toString() : "");
+					}
+					surveyResponceVO.setMobileNo(parms[7] != null ? parms[7].toString() : "");
+					surveyResponceVO.setIsCadre(parms[8] != null ? parms[8].toString() : "");
+					surveyResponceVO.setIsInfluencingPeople(parms[9] != null ? parms[9].toString() : "");
+					if(parms[10] != null)
+					{
+						if(parms[11] != null && parms[11].toString().trim().length() > 0)
+						{
+							surveyResponceVO.setCasteName(parms[11] != null ? parms[11].toString() : "");
+						}
+						else
+						{
+							surveyResponceVO.setCasteName(casteStateDAO.get(Long.valueOf(parms[10].toString())).getCaste().getCasteName());
+						}
+						surveyResponceVO.setCasteId(parms[10] != null ? Long.valueOf(parms[10].toString()) :0l);
+					}
+					else
+					{
+						if(parms[11] != null && parms[11].toString().trim().length() > 0)
+						{
+							surveyResponceVO.setCasteName(parms[11] != null ? parms[11].toString() : "");
+						}
+					}
+					if(parms[12] != null)
+					{
+						if(parms[13] != null && parms[13].toString().trim().length() > 0)
+						{
+							surveyResponceVO.setHamletName(parms[13] != null ? parms[13].toString() : "");
+						}
+						else
+						{
+							surveyResponceVO.setHamletName(hamletDAO.get(Long.valueOf(parms[12].toString())).getHamletName());
+						}
+						surveyResponceVO.setHamletId(parms[12] != null ? Long.valueOf(parms[12].toString()) :0l);
+					}
+					else
+					{
+						if(parms[13] != null && parms[13].toString().trim().length() > 0)
+						{
+							surveyResponceVO.setHamletName(parms[13] != null ? parms[13].toString() : "");
+						}
+					}
+					surveyResponceVO.setWardId(parms[14] != null ? Long.valueOf(parms[14].toString()) :0l);
+					surveyResponceVO.setLocalArea(parms[15] != null ? parms[15].toString() : "");
+					returnList.add(surveyResponceVO);
+				}
+				
+			}
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getThirdPartyFinalDetails service method",e);
+		}
+		return returnList;
 	}
 }
