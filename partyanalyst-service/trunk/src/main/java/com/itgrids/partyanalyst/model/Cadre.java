@@ -97,9 +97,15 @@ public class Cadre extends BaseModel{
 	 private String isMahanadu;
 	 	
 	 private String address;
-	 private String incomeSource;
+	 
+
+	private String incomeSource;
 	 private String isVerified;
 	 private String insertType;
+	 
+	 private Long memberId;
+	 
+	 
 	@Id
 	 @GeneratedValue(strategy = GenerationType.AUTO)
 	 @Column(name = "cadre_id", unique = true, nullable = false)
@@ -674,10 +680,14 @@ public class Cadre extends BaseModel{
 	}
 	
 	
-	
-	
-	
-	
+	@Column(name="member_id")
+	public Long getMemberId() {
+		return memberId;
+	}
+
+	public void setMemberId(Long memberId) {
+		this.memberId = memberId;
+	}
 	
 	
  }

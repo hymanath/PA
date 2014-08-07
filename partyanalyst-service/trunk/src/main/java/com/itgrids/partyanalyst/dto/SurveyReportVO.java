@@ -108,6 +108,38 @@ public class SurveyReportVO {
 	private Long thirdpartyReady = 0L;
 	private Long houseNoCount;
 	
+	private Long tpWebMonitoringProcessing = 0L;
+	private Long tpWebMonitoringCompleted = 0L;
+	
+	private Long errorCount = 0L;
+	
+	private boolean forThirdParty;
+	
+	
+	public boolean isForThirdParty() {
+		return forThirdParty;
+	}
+	public void setForThirdParty(boolean forThirdParty) {
+		this.forThirdParty = forThirdParty;
+	}
+	public Long getErrorCount() {
+		return errorCount;
+	}
+	public void setErrorCount(Long errorCount) {
+		this.errorCount = errorCount;
+	}
+	public Long getTpWebMonitoringProcessing() {
+		return tpWebMonitoringProcessing;
+	}
+	public void setTpWebMonitoringProcessing(Long tpWebMonitoringProcessing) {
+		this.tpWebMonitoringProcessing = tpWebMonitoringProcessing;
+	}
+	public Long getTpWebMonitoringCompleted() {
+		return tpWebMonitoringCompleted;
+	}
+	public void setTpWebMonitoringCompleted(Long tpWebMonitoringCompleted) {
+		this.tpWebMonitoringCompleted = tpWebMonitoringCompleted;
+	}
 	public Long getThirdPartyProcessing() {
 		return thirdPartyProcessing;
 	}

@@ -207,15 +207,28 @@ public class SurveyCompletedDetailsService implements
 				{
 					resultVO.setDvCompletedCount((Long)obj[0]);
 				}
-				else if(((Long)obj[1]).equals(IConstants.TP_PROCESS_STATUS_ID))
+				/*else if(((Long)obj[1]).equals(IConstants.TP_PROCESS_STATUS_ID))
 				{
 					resultVO.setThirdPartyProcessing(((Long)obj[0]));
-				}
+				}*/
 				else if(((Long)obj[1]).equals(IConstants.TP_COMPLETED_STATUS_ID))
 				{
 					resultVO.setThirdPartyCompleted((Long)obj[0]);
 				}
+				else if(((Long)obj[1]).equals(IConstants.TP_WM_PROCESS_STATUS_ID))
+				{
+					resultVO.setTpWebMonitoringProcessing((Long)obj[0]);
+				}
+				else if(((Long)obj[1]).equals(IConstants.TP_WM_COMPLETED_STATUS_ID))
+				{
+					resultVO.setTpWebMonitoringCompleted((Long)obj[0]);
+				}
+				
 			}
+			
+			List<Long> tdProcessingList = surveyCompletedLocationsDAO.getThirdPartyVerificationProcessingBoothsByConstituencyId(constituencyId);
+			
+			resultVO.setThirdPartyProcessing(new Long(tdProcessingList.size() - resultVO.getThirdPartyCompleted().intValue()) - resultVO.getTpWebMonitoringProcessing() - resultVO.getTpWebMonitoringCompleted() );
 			
 			List<Long> boothIdsContainsStatus = surveyCompletedLocationsDAO.getCompletedStatusBoothsByBoothIds(processingIds);
 			 
@@ -311,16 +324,18 @@ public class SurveyCompletedDetailsService implements
 			if(locationType.equalsIgnoreCase("booth"))
 				locationScopeId = 9L;
 			
-			if(!statusId.equals(IConstants.TP_READY_STATUS_ID) && statusId.equals(IConstants.TP_PROCESS_STATUS_ID) && statusId.equals(IConstants.TP_COMPLETED_STATUS_ID))
-			{
+			List<Long> thirdPartySCopesList = new ArrayList<Long>();
+			
+			thirdPartySCopesList.add(IConstants.TP_PROCESS_STATUS_ID);
+			thirdPartySCopesList.add(IConstants.TP_COMPLETED_STATUS_ID);
+			thirdPartySCopesList.add(IConstants.TP_WM_PROCESS_STATUS_ID);
+			thirdPartySCopesList.add(IConstants.TP_WM_COMPLETED_STATUS_ID);
+			
+			if (!thirdPartySCopesList.contains(statusId))			{
 				// First we are removing all the previous records rekated to that location
 				surveyCompletedLocationsDAO.deleteSurveyCompletedDetailsByLocationValueAndScope(locationValue,locationScopeId);
 			}else
 			{
-				List<Long> thirdPartySCopesList = new ArrayList<Long>();
-				
-				thirdPartySCopesList.add(IConstants.TP_PROCESS_STATUS_ID);
-				thirdPartySCopesList.add(IConstants.TP_COMPLETED_STATUS_ID);
 				
 				surveyCompletedLocationsDAO.deleteSurveyCompletedDetailsByLocationValueAndScopeForThirdParty(locationValue,locationScopeId,thirdPartySCopesList);
 			}

@@ -145,5 +145,7 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	public List<String> getCasteCollectedDates();
 	public List<Object[]> getHouseNosMappedCount(List<Long> userIds,List<Long> boothIds,Long userTypeId,Date date,Date toDate);
 	public List<Object[]> getThirdPartyCollectedDetails(Long boothId,Long surveyUserId);
+	public List<Object[]> getBoothWiseCollectedDetailsForConstituency(Long constituencyId,Long userTypeId,String attribute);
+
 }
 

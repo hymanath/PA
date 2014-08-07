@@ -1429,6 +1429,53 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		query.setParameter("surveyUserId", surveyUserId);
 		return query.list();
 	}
+	public List<Object[]> getBoothWiseCollectedDetailsForConstituency(Long constituencyId,Long userTypeId,String attribute)
+	{
+		
+	/*	Query query = getSession().createQuery("select count(SDI.caste.casteStateId),SDI.booth.boothId,SDI.booth.partNo from SurveyDetailsInfo SDI " +
+				"where " +
+				"SDI.booth.constituency.constituencyId = :constituencyId and " +
+				"SDI.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId group by SDI.booth.boothId");*/
+		
+		
+		StringBuffer queryString = new StringBuffer();
+		
+		queryString.append("select ");
+
+		
+		if(attribute.equalsIgnoreCase("caste"))
+		{
+			queryString.append(" count(SDI.caste.casteStateId)");
+			
+		}else if(attribute.equalsIgnoreCase("hamlet"))
+		{
+			queryString.append("count(SDI.hamlet.hamletId)");
+			
+		}else if(attribute.equalsIgnoreCase("mobileNumber"))
+		{
+			queryString.append("count(SDI.mobileNumber)");
+			
+		}
+		
+		queryString.append(",SDI.booth.boothId,SDI.booth.partNo from SurveyDetailsInfo SDI " +
+				"where " +
+				"SDI.booth.constituency.constituencyId = :constituencyId and ");
+		
+        if(attribute.equalsIgnoreCase("mobileNumber"))
+           queryString.append("SDI.mobileNumber != '' and ");
+	
+				
+        queryString.append("SDI.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId group by SDI.booth.boothId");
+        
+        Query query = getSession().createQuery(queryString.toString());
+		
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("userTypeId", userTypeId);
+		
+		return query.list();
+		
+	}
+	
 	
 	
 }
