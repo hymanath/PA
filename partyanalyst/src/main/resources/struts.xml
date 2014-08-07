@@ -7991,5 +7991,11 @@
 				 <param name="root">returnList</param>
 			</result>
   		</action>
+  		
+  		<action name="getFinalReportWithTPAction" class="surveyDashBoardAction" method="getFinalReportWithTP">
+			<result type="json" name="success">
+					<param name="root">thirdPartyResultList</param>
+			</result>
+		</action>
 </package>
 </struts>      
