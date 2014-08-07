@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
@@ -30,6 +31,7 @@ import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.ISurveyFinalDataDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserRelationDAO;
 import com.itgrids.partyanalyst.dao.IWebMonitorCompletedLocationsDetailsDAO;
+import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyCompletionDetailsVO;
 import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
@@ -1253,5 +1255,20 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 			LOG.error("Exception raised in getThirdPartyFinalDetails service method",e);
 		}
 		return returnList;
+	}
+	
+	public List<GenericVO> getConstituencyListForThirdPartyReport(){
+		List<GenericVO> result = new ArrayList<GenericVO>();
+		try {
+			List<Object[]> constituencies = surveyFinalDataDAO.getSurveyFinalConstituencyInfo();	
+
+			for(Object[] constituency : constituencies){
+				result.add(new GenericVO(constituency[0] != null ? (Long)constituency[0] : 0L, WordUtils.capitalize(constituency[1] != null ? constituency[1].toString().toLowerCase() : "")));
+			}
+		} catch (Exception e) {
+			result = null;
+			LOG.error("Exception raised in getConstituencyListForThirdPartyReport()",e);
+		}		
+		return result;
 	}
 }
