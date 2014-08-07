@@ -859,18 +859,29 @@ public class SurveyCompletedDetailsService implements
 		{
 			Map<Long,String> boothPartNoMap = null;
 			Map<Long,Long> boothWiseTotalMap = null;
+			Map<Long,String> boothsTypeMap = null;
 			
 			//GETTING TOTALVOTERS AND PARTNO'S OF BOOTHS IN CONSTIUTENY
-			List<Object[]> boothWiseTotalVoters = boothPublicationVoterDAO.getTotalVotersForConstituencyByBoothWise(constituencyId);
+			List<Object[]> boothWiseTotalVoters = boothPublicationVoterDAO.getTotalVotersAndBoothTypeForConstituencyByBoothWise(constituencyId);
 			if(boothWiseTotalVoters != null && boothWiseTotalVoters.size() > 0){
 				boothPartNoMap = new HashMap<Long, String>();
 				boothWiseTotalMap = new HashMap<Long, Long>();
+				boothsTypeMap = new HashMap<Long, String>();
 				for (Object[] parms : boothWiseTotalVoters) {
 					if(parms[0] != null){
 						String parnNo = boothPartNoMap.get((Long)parms[0]);
 						if(parnNo == null){
 							boothPartNoMap.put((Long)parms[0], parms[1].toString());
 							boothWiseTotalMap.put((Long)parms[0], (Long)parms[2]);
+							boothsTypeMap.put((Long)parms[0], "-");
+							if(parms[3]!=null){
+								boothsTypeMap.put((Long)parms[0], "RURAL");
+							}
+							if(parms[4]!=null){
+								boothsTypeMap.put((Long)parms[0], "URBAN");
+							}
+							
+							
 						}
 					}
 					
@@ -945,6 +956,9 @@ public class SurveyCompletedDetailsService implements
 						}
 						if(boothWiseTotalMap!=null){
 							boothVO.setTotalVoters(boothWiseTotalMap.get(boothId));
+						}
+						if(boothsTypeMap!=null){
+							boothVO.setBoothType(boothsTypeMap.get(boothId));
 						}
 						SurveyThirdPartyReportVO usrsList = getMatchedUsersList(usersSamples,boothId);
 						boothVO.setUsers(usrsList);
