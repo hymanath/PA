@@ -4,9 +4,12 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.jfree.util.Log;
@@ -27,6 +30,7 @@ import com.itgrids.partyanalyst.dao.ISurveyCompletedLocationsDAO;
 import com.itgrids.partyanalyst.dao.ISurveyCompletedLocationsDetailsDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
+import com.itgrids.partyanalyst.dao.ISurveyFinalDataDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserRelationDAO;
@@ -64,6 +68,10 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 	private ISurveyAccessUsersDAO surveyAccessUsersDAO;
 	private DateUtilService dateUtilService = new DateUtilService();
 	private IRegionWiseSurveysDAO regionWiseSurveysDAO;
+	
+	@Autowired
+	private ISurveyFinalDataDAO surveyFinalDataDAO;
+	
 	
 	
 	@Autowired
@@ -900,6 +908,17 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 			
 			try{
 				
+				List<Long> thirdPartyStatusIdsList = new ArrayList<Long>();
+				
+				thirdPartyStatusIdsList.add(IConstants.TP_PROCESS_STATUS_ID);
+				thirdPartyStatusIdsList.add(IConstants.TP_COMPLETED_STATUS_ID);
+				thirdPartyStatusIdsList.add(IConstants.TP_WM_PROCESS_STATUS_ID);
+				thirdPartyStatusIdsList.add(IConstants.TP_WM_COMPLETED_STATUS_ID);
+				
+				
+				
+				if(thirdPartyStatusIdsList.contains(statusId))
+				   return getThirdPartyRelatedBoothsDetails(scopeId,constituencyId);
 				
 				if(statusId.equals(IConstants.DC_PROCESS_STATUS_ID))
 				{
@@ -1054,7 +1073,119 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 			return resultList;
 		}
 	 
+	 public List<SurveyReportVO> getThirdPartyRelatedBoothsDetails(Long statusId,Long constituencyId)
+	 {
+		 LOG.info("Entered into the getThirdPartyRelatedBoothsDetails service method");
+		 List<SurveyReportVO> resultList = new ArrayList<SurveyReportVO>();
+		 try
+		 {
+			List<Object[]> casteList =  surveyDetailsInfoDAO.getBoothWiseCollectedDetailsForConstituency(constituencyId,IConstants.THIRD_PARTY_ROLE_ID,"caste");
+			
+			List<Object[]> hamletList =  surveyDetailsInfoDAO.getBoothWiseCollectedDetailsForConstituency(constituencyId,IConstants.THIRD_PARTY_ROLE_ID,"hamlet");
+			
+			List<Object[]> mobileNumberList =  surveyDetailsInfoDAO.getBoothWiseCollectedDetailsForConstituency(constituencyId,IConstants.THIRD_PARTY_ROLE_ID,"mobileNumber");
+			
+			
+			Set<Long> totalBoothsList = new HashSet<Long>();
+			
+			Map<Long,Long> casteMap = new HashMap<Long, Long>();
+			Map<Long,Long> hamletMap = new HashMap<Long, Long>();
+			Map<Long,Long> mobileNumbersMap = new HashMap<Long, Long>();
+			
+			for(Object[] obj:casteList)
+			{
+				casteMap.put((Long)obj[1], (Long)obj[0]);
+				totalBoothsList.add((Long)obj[1]);
+			}
+			
+			for(Object[] obj:hamletList)
+			{
+				hamletMap.put((Long)obj[1], (Long)obj[0]);
+				totalBoothsList.add((Long)obj[1]);
+			}
+			
+			for(Object[] obj:mobileNumberList)
+			{
+				mobileNumbersMap.put((Long)obj[1], (Long)obj[0]);
+				totalBoothsList.add((Long)obj[1]);
+			}
+			
+			
+			
+			List<Object[] > thirdPartyErrorCountList = surveyFinalDataDAO.getBoothWiseErrorCountForAConstituency(constituencyId);
+			
+			//List<Object[]> thirdPartyErrorCountList = surveyCallStatusDAO.getBoothWiseErrorCountForConstituencyByUsertypeId(constituencyId,IConstants.THIRD_PARTY_ROLE_ID);
+			
+			Map<Long,Long> errorCountMap = new HashMap<Long, Long>();
+			
+			for(Object[] obj:thirdPartyErrorCountList)
+				errorCountMap.put((Long)obj[1], (Long)obj[0]);
+			
+			List<Object[]> totalVoterList = boothPublicationVoterDAO.getTotalVotersForConstituencyByBoothWise(constituencyId);
+			
+			Map<Long,Long> totalVotersMap = new HashMap<Long, Long>();
+			
+			for(Object[] obj:totalVoterList)
+				totalVotersMap.put((Long)obj[0], (Long)obj[2]);
+			
+			List<Object[]> boothDetails = boothDAO.getBoothDetailsByBoothIds(totalBoothsList);
+			
+			Map<Long,String> boothDetailsMap = new HashMap<Long, String>();
+				
+			for(Object[] obj:boothDetails)
+				boothDetailsMap.put((Long)obj[0], obj[2].toString());
+				
+			
+			
+			for(Long boothId:totalBoothsList)
+			{
+				SurveyReportVO boothVO = new SurveyReportVO();
+				
+				boothVO.setTotalVoters(totalVotersMap.get(boothId));
+				boothVO.setMobileNoCount(mobileNumbersMap.get(boothId));
+				boothVO.setCasteCount(casteMap.get(boothId));
+				boothVO.setHamletCount(hamletMap.get(boothId));
+				boothVO.setBoothId(boothId);
+				boothVO.setPartNo(boothDetailsMap.get(boothId));
+				
+				resultList.add(boothVO);
+			}
+			
+			 
+		 }catch(Exception e)
+		 {
+			 e.printStackTrace();
+				LOG.error("Exception raised in getThirdPartyRelatedBoothsDetails service method");
+		 }
+		 
+		 if(resultList != null && resultList.size() >0)
+			 resultList.get(0).setForThirdParty(true);
+		 
+		 return resultList;
+	 }
 	 
+	  public String roundTo2DigitsFloatValue(Float number){
+		  
+		  Log.debug("Entered into the roundTo2DigitsFloatValue service method");
+		  
+		  String result = "";
+		  try
+		  {
+			  
+			
+			NumberFormat f = NumberFormat.getInstance(Locale.ENGLISH);  
+			f.setMaximumFractionDigits(2);  
+			f.setMinimumFractionDigits(2);
+			
+			result =  f.format(number);
+		  }catch(Exception e)
+		  {
+			  Log.error("Exception raised in roundTo2DigitsFloatValue service method");
+			  e.printStackTrace();
+		  }
+		  return result;
+	  }
+
 	 
 	 public SurveyReportVO getMatchedVO(List<SurveyReportVO> resultList,Long boothId)
 		{

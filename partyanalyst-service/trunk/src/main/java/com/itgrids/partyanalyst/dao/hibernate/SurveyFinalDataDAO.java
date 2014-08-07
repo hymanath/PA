@@ -49,5 +49,17 @@ public class SurveyFinalDataDAO extends GenericDaoHibernate<SurveyFinalData, Lon
 		int c = query.executeUpdate();
 		return c;
 	}
-
+	
+	
+	public List<Object[]> getBoothWiseErrorCountForAConstituency(Long constituencyId)
+	{
+		Query query = getSession().createQuery("select count(SFD.booth.boothId),SFD.booth.boothId from SurveyFinalData SFD where " +
+				"SFD.booth.constituency.constituencyId =:constituencyId and SFD.surveyWmThirdPartyStatusId = 3 " +
+				"group by SFD.booth.boothId");
+		
+		query.setParameter("constituencyId", constituencyId);
+		
+		return query.list();
+	}
+	
 }

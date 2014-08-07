@@ -767,6 +767,7 @@ public interface IConstants {
     
     public static final Long DATA_COLLECTOR_ROLE_ID = 1L;
     public static final Long VERIFIER_ROLE_ID = 4L;
+    public static final Long THIRD_PARTY_ROLE_ID = 10L;
     
     public static final Long BOOTH_PROCESS_DC_STATUS_ID =1L;
     public static final Long BOOTH_COMPLETED_DC_STATUS_ID =2L;
@@ -788,8 +789,7 @@ public interface IConstants {
     public static final Long TP_READY_STATUS_ID =6L;
     public static final Long TP_PROCESS_STATUS_ID =7L;
     public static final Long TP_COMPLETED_STATUS_ID =8L;
-    
-    
-   
+    public static final Long TP_WM_PROCESS_STATUS_ID =9L;
+    public static final Long TP_WM_COMPLETED_STATUS_ID =10L;
     
 }

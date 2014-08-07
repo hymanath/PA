@@ -190,4 +190,17 @@ public class SurveyCompletedLocationsDAO extends GenericDaoHibernate<SurveyCompl
 	}
 	
 	
+	public List<Long> getThirdPartyVerificationProcessingBoothsByConstituencyId(Long constituencyId)
+	{
+		Query query = getSession().createQuery("select distinct SDI.booth.boothId from SurveyDetailsInfo SDI " +
+				"where SDI.booth.constituency.constituencyId = :constituencyId and SDI.surveyUser.surveyUserType.surveyUsertypeId = :thirdPartyUserId");
+		
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("thirdPartyUserId", IConstants.THIRD_PARTY_ROLE_ID);
+		
+		return query.list();
+		
+	}
+	
+	
 }

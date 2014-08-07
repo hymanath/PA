@@ -37,7 +37,7 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 	}
 	
 	public List<Object[]> getSurveyCallDtalsByboothId(Long boothId,Long surveyUserId){
-		Query query = getSession().createQuery("select distinct model.voter.voterId, model.mobileNoStatus, model.matchedStatus,model.casteState.casteStateId,model.hamletStatus,model.hamletId from SurveyCallStatus model" +
+		Query query = getSession().createQuery("select distinct model.voter.voterId, model.mobileNoStatus, model.matchedStatus,model.casteState.casteStateId from SurveyCallStatus model" +
 				" where model.booth.boothId =:boothId and model.surveyUser.surveyUserId = :surveyUserId   order by model.surveyCallStatusId");
 		
 		query.setParameter("boothId", boothId);
@@ -46,7 +46,7 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 	}
 	
 	public List<Object[]> getDvSurveyCallDtalsByboothId(Long boothId,Long surveyUserId){
-		Query query = getSession().createQuery("select distinct model.voter.voterId, model.dvMobileNoStatus, model.dvMatchedStatus,model.dvCasteState.casteStateId,model.dvhamletStatus,model.dvHamletId from SurveyCallStatus model" +
+		Query query = getSession().createQuery("select distinct model.voter.voterId, model.dvMobileNoStatus, model.dvMatchedStatus,model.dvCasteState.casteStateId from SurveyCallStatus model" +
 				" where model.booth.boothId =:boothId and model.dvSurveyUser.surveyUserId = :surveyUserId   order by model.surveyCallStatusId");
 		
 		query.setParameter("boothId", boothId);
@@ -120,6 +120,22 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 	{
 		Query query = getSession().createQuery("select model.booth.boothId,model.dvMatchedStatus,count(model.surveyCallStatusId) from SurveyCallStatus model where model.booth.constituency.constituencyId = :constituencyId  and model.dvMatchedStatus is not null  group by model.booth.boothId , model.dvMatchedStatus  ");
 		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
+	
+	public List<Object[]> getBoothWiseErrorCountForConstituencyByUsertypeId(Long constituencyId,Long userTypeId)
+	{
+		Query query = getSession().createQuery("select count(distinct SDI.voter.voterId),SDI.booth.boothId,SDI.booth.partNo from SurveyDetailsInfo SDI,SurveyCallStatus SCS where " +
+				"SDI.surveyUser.surveyUserId = SCS.surveyUser.surveyUserId and  " +
+				"SDI.voter.voterId = SCS.voter.voterId and " +
+				"SDI.booth.boothId = SCS.booth.boothId and " +
+				"SDI.surveyUser.surveyUserType.surveyUsertypeId = :surveyUserTypeId and " +
+				"SDI.booth.constituency.constituencyId = :constituencyId and SCS.matchedStatus = 'N' group by " +
+				"SDI.booth.boothId ");
+		
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("surveyUserTypeId", userTypeId);
+		
 		return query.list();
 	}
 }
