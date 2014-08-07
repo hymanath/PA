@@ -29,7 +29,7 @@ public class SurveyFinalDataDAO extends GenericDaoHibernate<SurveyFinalData, Lon
 	{
 		Query query = getSession().createQuery("select model.booth.boothId,model.voter.voterId,model.voter.voterIDCardNo,model.voter.name,model.voter.gender,model.voter.age " +
 				" , model.voter.houseNo , model.mobileNo,model.isCadre , model.isInfluencingPeople , model.casteStateId , model.casteName ," +
-				" model.hamletId , model.hamletName , model.wardId,model.localArea from SurveyFinalData model where model.boothId = :boothId");
+				" model.hamletId , model.hamletName , model.wardId,model.localArea ,model.voter.relativeName from SurveyFinalData model where model.boothId = :boothId");
 		query.setParameter("boothId", boothId);
 		return query.list();
 	}
@@ -39,6 +39,15 @@ public class SurveyFinalDataDAO extends GenericDaoHibernate<SurveyFinalData, Lon
 		Query query = getSession().createQuery("select distinct model.booth.constituency.constituencyId,model.booth.constituency.name from SurveyFinalData model order by model.booth.constituency.name asc ");		
 		return query.list();
 		
+	}
+	
+	public int updatedThirdPartyStatus(Long voterId,Long statusId)
+	{
+		Query query = getSession().createQuery("update  SurveyFinalData set surveyWmThirdPartyStatusId = :statusId where voterId = :voterId");
+		query.setParameter("voterId", voterId);
+		query.setParameter("statusId", statusId);
+		int c = query.executeUpdate();
+		return c;
 	}
 
 }

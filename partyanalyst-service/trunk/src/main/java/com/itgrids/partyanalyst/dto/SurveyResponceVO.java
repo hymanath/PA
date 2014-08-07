@@ -38,6 +38,7 @@ public class SurveyResponceVO extends UserResponseVO  implements Serializable
 	private String mobileNo = null;
 	
 	private String voterName;
+	private String relativeName;
 	private String gender;
 	private Long age;
 	private String houseNo;
@@ -254,6 +255,12 @@ public class SurveyResponceVO extends UserResponseVO  implements Serializable
 				+ verifiersData + ", uuid=" + uuid + ", statusId=" + statusId
 				+ ", insertTime=" + insertTime + ", votersSize=" + votersSize
 				+ "]";
+	}
+	public String getRelativeName() {
+		return relativeName;
+	}
+	public void setRelativeName(String relativeName) {
+		this.relativeName = relativeName;
 	}
 	
 	

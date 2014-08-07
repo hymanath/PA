@@ -37,6 +37,7 @@ import com.itgrids.partyanalyst.dto.SurveyCompletionDetailsVO;
 import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
+import com.itgrids.partyanalyst.dto.ThirdPartyCompressionVO;
 import com.itgrids.partyanalyst.model.SurveyCompletedLocationsDetails;
 import com.itgrids.partyanalyst.model.SurveyFinalData;
 import com.itgrids.partyanalyst.model.WebMonitorCompletedLocationsDetails;
@@ -1216,6 +1217,7 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 					surveyResponceVO.setGender(parms[4] != null ? parms[4].toString() : "");
 					surveyResponceVO.setAge(parms[5] != null ? Long.valueOf(parms[5].toString()) : 0l);
 					surveyResponceVO.setHouseNo(parms[6] != null ? parms[6].toString() : "");
+					surveyResponceVO.setRelativeName(parms[16] != null ? parms[16].toString() : "");
 				}
 				surveyResponceVO.setMobileNo(parms[7] != null ? parms[7].toString() : "");
 				surveyResponceVO.setIsCadre(parms[8] != null ? parms[8].toString() : "");
@@ -1267,9 +1269,16 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 			LOG.error("Exception raised in fillSurveyResponceVO service method",e);
 		}
 	}
-	public List<SurveyResponceVO> getCompressionReportForThirdParty(Long boothId,Long surveyUserId)
+	
+	/**
+	 * This Service is used for comparing booth Third party Collected and Third party providers 
+	 * @param boothId
+	 * @param surveyUserId
+	 * @return
+	 */
+	public List<ThirdPartyCompressionVO> getCompressionReportForThirdParty(Long boothId,Long surveyUserId)
 	{
-		List<SurveyResponceVO> returnList = null;
+		List<ThirdPartyCompressionVO> returnList = null;
 		try 
 		{
 			List<SurveyResponceVO> thirdPartyDetails = getThirdPartyFinalDetails(boothId);
@@ -1287,6 +1296,49 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 				
 				Map<Long,SurveyResponceVO> tpCollectedMap = getThirdPartyCollectedDetails(boothId,surveyUserId);
 				
+				if(tpProvidedMap != null && tpProvidedMap.size() > 0)
+				{
+					returnList = new ArrayList<ThirdPartyCompressionVO>();
+					for(Long voterId : tpProvidedMap.keySet())
+					{
+						SurveyResponceVO tpProvidedVO = tpProvidedMap.get(voterId);
+						SurveyResponceVO tpCollectedVO = null;
+						if(tpCollectedMap != null && tpCollectedMap.size() > 0)
+						{
+							tpCollectedVO = tpCollectedMap.get(voterId);
+						}
+						ThirdPartyCompressionVO thirdPartyCompressionVO = new ThirdPartyCompressionVO();
+						if(tpProvidedVO != null)
+						{
+							thirdPartyCompressionVO.setVoterId(tpProvidedVO.getVoterId());
+							thirdPartyCompressionVO.setVoterCardNo(tpProvidedVO.getVoterCardNo());
+							thirdPartyCompressionVO.setVoterName(tpProvidedVO.getVoterName());
+							thirdPartyCompressionVO.setRelativeName(tpProvidedVO.getRelativeName());
+							thirdPartyCompressionVO.setGender(tpProvidedVO.getGender());
+							thirdPartyCompressionVO.setAge(tpProvidedVO.getAge());
+							thirdPartyCompressionVO.setHouseNo(tpProvidedVO.getHouseNo());
+							thirdPartyCompressionVO.setIsCadre(tpProvidedVO.getIsCadre());
+							thirdPartyCompressionVO.setIsInfluencingPeople(tpProvidedVO.getIsInfluencingPeople());
+							thirdPartyCompressionVO.setTpCaste(tpProvidedVO.getCasteName());
+							thirdPartyCompressionVO.setTpHamlet(tpProvidedVO.getHamletName());
+							thirdPartyCompressionVO.setTpWard(tpProvidedVO.getWardId());
+							thirdPartyCompressionVO.setTpCasteStateId(tpProvidedVO.getCasteId());
+							thirdPartyCompressionVO.setTphamletId(tpProvidedVO.getHamletId());
+							
+							if(tpCollectedVO != null)
+							{
+								thirdPartyCompressionVO.setWardId(tpCollectedVO.getWardId());
+								thirdPartyCompressionVO.setWmCaste(tpCollectedVO.getCasteName());
+								thirdPartyCompressionVO.setWmCasteStateId(tpCollectedVO.getCasteId());
+								thirdPartyCompressionVO.setWmHamlet(tpCollectedVO.getHamletName());
+								thirdPartyCompressionVO.setWmHamletId(tpCollectedVO.getHamletId());
+							}
+							returnList.add(thirdPartyCompressionVO);
+						}
+						
+						
+					}
+				}
 				
 			}
 		} 
@@ -1336,17 +1388,53 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 	}
 	
 	public List<GenericVO> getConstituencyListForThirdPartyReport(){
-		List<GenericVO> result = new ArrayList<GenericVO>();
+		List<GenericVO> resultList = null;
 		try {
 			List<Object[]> constituencies = surveyFinalDataDAO.getSurveyFinalConstituencyInfo();	
-
-			for(Object[] constituency : constituencies){
-				result.add(new GenericVO(constituency[0] != null ? (Long)constituency[0] : 0L, WordUtils.capitalize(constituency[1] != null ? constituency[1].toString().toLowerCase() : "")));
+			if(constituencies != null && constituencies.size() > 0)
+			{
+				resultList = new ArrayList<GenericVO>();
+				for(Object[] constituency : constituencies)
+				{
+					resultList.add(new GenericVO(constituency[0] != null ? (Long)constituency[0] : 0L, WordUtils.capitalize(constituency[1] != null ? constituency[1].toString().toLowerCase() : "")));
+				}
 			}
+			
 		} catch (Exception e) {
-			result = null;
 			LOG.error("Exception raised in getConstituencyListForThirdPartyReport()",e);
 		}		
-		return result;
+		return resultList;
+	}
+	
+	/**
+	 * This Service is used for updating third party voter status
+	 * @param voterId
+	 * @param statusId
+	 * @return resultStatus
+	 */
+	public ResultStatus updateThirdPartyStatus(Long voterId,Long statusId)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try
+		{
+			int resultCount = surveyFinalDataDAO.updatedThirdPartyStatus(voterId, statusId);
+			if(resultCount >= 0)
+			{
+				resultStatus.setResultCode(0);
+				resultStatus.setMessage("SUCCUSS");
+			}
+			else
+			{
+				resultStatus.setResultCode(1);
+				resultStatus.setMessage("ERROR");
+			}
+		}
+		catch (Exception e)
+		{
+			resultStatus.setResultCode(2);
+			resultStatus.setMessage("EXCEPTION");
+			LOG.error("Exception raised in getConstituencyListForThirdPartyReport()",e);
+		}
+		return resultStatus;
 	}
 }

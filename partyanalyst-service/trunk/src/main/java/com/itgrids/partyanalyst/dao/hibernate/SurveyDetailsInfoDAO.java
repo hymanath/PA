@@ -1423,8 +1423,8 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 	public List<Object[]> getThirdPartyCollectedDetails(Long boothId,Long surveyUserId)
 	{
 		Query query = getSession().createQuery("select model.booth.boothId,model.voter.voterId,model.voter.voterIDCardNo,model.voter.name,model.voter.gender,model.voter.age " +
-				" , model.voter.houseNo , model.mobileNo,model.isCadre , model.isInfluencingPeople , model.casteStateId , model.casteName ," +
-				" model.hamletId , model.hamletName , model.wardId,model.localArea from SurveyFinalData model where model.booth.boothId = :boothId  and model.surveyUser.surveyUserId = :surveyUserId");
+				" , model.voter.houseNo , model.mobileNumber,model.isCadre , model.isInfluencingPeople , model.caste.casteStateId , model.casteName ," +
+				" model.hamlet.hamletId , model.hamletName , model.wardId,model.localArea,model.voter.relativeName from SurveyDetailsInfo model where model.booth.boothId = :boothId  and model.surveyUser.surveyUserId = :surveyUserId");
 		query.setParameter("boothId", boothId);
 		query.setParameter("surveyUserId", surveyUserId);
 		return query.list();
