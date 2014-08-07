@@ -300,6 +300,7 @@
 											<option value="0">Select user type</option>
 											<option value="1">Data Collectors</option>
 											<option value="4">Data Verifier</option>
+											<option value="10">Third Party Verifier</option>
 											</select>
 										</div>	
 										<div class="span2">
