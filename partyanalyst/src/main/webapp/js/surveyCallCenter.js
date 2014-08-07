@@ -5740,25 +5740,25 @@ $('#boothWiseTab,#startTimeTab').removeClass('selected');
 					   str +='<td>'+result[i].wmCaste+'</td>';
 					   str +='<td>'+result[i].tpCaste+'</td>';
 					   str +='<td>';
-					    if(result[i].statusId != null){
+					    if(result[i].status != null){
 					      str +='<select onchange="updateThirdPartyDetails('+result[i].voterId+',this.value);">';
 					              str +='<option value="0">Select Status</option>';
-								  if(result[i].statusId == 1){
+								  if(result[i].status == 1){
 								     str +='<option value="1" selected="selected">Same Caste</option>';
 								  }else{
 								     str +='<option value="1">Same Caste</option>';
 								  }
-								  if(result[i].statusId == 2){
+								  if(result[i].status == 2){
 								     str +='<option value="2" selected="selected">WM Wrong</option>';
 								  }else{
 								     str +='<option value="2">WM Wrong</option>';
 								  }
-								  if(result[i].statusId == 3){
+								  if(result[i].status == 3){
 								     str +='<option value="3" selected="selected">TP Wrong</option>';
 								  }else{
 								     str +='<option value="3">TP Wrong</option>';
 								  }
-								  if(result[i].statusId == 4){
+								  if(result[i].status == 4){
 								     str +='<option value="4" selected="selected">Newly Collected Caste</option>';
 								  }else{
 								     str +='<option value="4">Newly Collected Caste</option>';
