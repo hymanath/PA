@@ -60,7 +60,7 @@ function showHideTabs(id)
 	}
 	else if(id == "boothWiseTab")
 	{
-		$("#thirdPartyReportId").hide();
+		$("#thirdPartyReportDiv").hide();
 		$('#statusReportDiv').hide();
 		$('#webMontrId').hide();
 		$('#callCenter').hide();
@@ -80,7 +80,7 @@ function showHideTabs(id)
 
 	}
 	else if(id == "surveyStatusRprtTab"){
-		$("#thirdPartyReportId").hide();
+		$("#thirdPartyReportDiv").hide();
 		$('#statusReportDiv').show();
 		$('#callCenter').hide();
 		$('#startTime').hide();
@@ -95,7 +95,7 @@ function showHideTabs(id)
 	}
 	else if (id == "surveyUserWise")
 	{
-		$("#thirdPartyReportId").hide();
+		$("#thirdPartyReportDiv").hide();
 		$('#statusReportDiv').hide();
 		$('#callCenter').hide();
 		$('#startTime').hide();
@@ -110,7 +110,7 @@ function showHideTabs(id)
 	}
 	else if (id == "saveBoothPercentagesTab")
 	{
-		$("#thirdPartyReportId").hide();
+		$("#thirdPartyReportDiv").hide();
 		$('#statusReportDiv').hide();
 		$('#callCenter').hide();
 		$('#startTime').hide();
@@ -125,7 +125,7 @@ function showHideTabs(id)
 	}
 	else if (id == "wmReportTab")
 	{
-		$("#thirdPartyReportId").hide();
+		$("#thirdPartyReportDiv").hide();
 		$('#statusReportDiv').hide();
 		$('#callCenter').hide();
 		$('#startTime').hide();
@@ -140,7 +140,7 @@ function showHideTabs(id)
 	}
 	else if (id == "verifierReportTab")
 	{
-		$("#thirdPartyReportId").hide();
+		$("#thirdPartyReportDiv").hide();
 		$('#statusReportDiv').hide();
 		$('#callCenter').hide();
 		$('#startTime').hide();
@@ -166,11 +166,11 @@ function showHideTabs(id)
 		$('#saveBoothsPercentage').hide();
 		$("#verifierReportIdForVerifier").hide();
 		$("#wmReportDiv").hide();
-		$("#thirdPartyReportId").show();
+		$("#thirdPartyReportDiv").show();
 	}
 	else
 	{
-		$("#thirdPartyReportId").hide();
+		$("#thirdPartyReportDiv").hide();
 		$('#statusReportDiv').hide();
 		$('#webMontrId').hide();
 		$('#callCenter').hide();
@@ -5608,4 +5608,80 @@ function updateThirdPartyDetails()
 			data: {task:JSON.stringify(jsObj)},
 		 }).done(function(result){	
 		});
+}
+
+function getFinalReportWithTP(){
+	$('#dayWiseReportDiv1').html('');
+	var constituencyId = $('#constituencyForThirdParty').val();
+	if(constituencyId == 0)	{
+	 $("#errorDivForVerification").html("<font color='#FF0000'>Please Select Constituency</font>");
+	 return;
+	}
+	 $("#errorDivForVerification").html("");
+	$('#mainajaximg').show();
+	var jsObj = {
+		constituencyId : 217
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getFinalReportWithTPAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		 }).done(function(result){	
+			if(result != null)
+			buildFinalReportWithTP(result)
+		});	
+}
+
+function buildFinalReportWithTP(result){
+	$("#FinalReportWithTPId").html("");
+	var str = "";
+	str +="<table id='FinalReportWithTPTableId' class='table table-bordered table-striped'>";
+		str +="<thead class='alert alert-success'>";
+			str +="<tr>";
+			str +="<th>BOOTH</th>";
+			str +="<th>TOTAL VOTERS</th>";
+			str +="<th>THIRD PARTY COLLECTED </th>";
+			var stList = result[0].statusList;
+			for(var i in stList){
+				str +="<th>"+stList[i].statusName+"</th>";
+				str +="<th>"+stList[i].statusName+" % </th>";
+			}
+			str +="</tr>";
+		str +="</thead>";
+		/* for(var i in result){
+			str +="<tr>";
+			str +="<td>"+result[i].partNo+"</td>";
+			str +="<td>"+result[i].totalVoters+"</td>";
+			str +="<td>"+result[i].userCollected+"</td>";
+			var sttsList = result[i].statusList;
+			for(var j in sttsList){
+				str +="<th>"+sttsList[j].statusCount+"</th>";
+				str +="<th>"+sttsList[j].statusPercentage+" % </th>";
+			}
+			str +="</tr>";
+		} */
+		
+		for(var i in result){
+				for(var k in result[i].users.usersList){
+					str +="<tr>";
+					str +="<td>"+result[i].partNo+"</td>";
+					str +="<td>"+result[i].totalVoters+"</td>";
+					str +="<td>"+result[i].users.usersList[k].userCollected+"</td>";
+					var sttsList = result[i].users.usersList[k].statusList;
+					for(var p in sttsList){
+						str +="<th>"+sttsList[p].statusCount+"</th>";
+						str +="<th>"+sttsList[p].statusPercentage+" % </th>";
+					}
+					str +="</tr>";
+				}
+		}
+			
+		str +="<tbody>";
+	str +="</table>";
+	
+	$("#FinalReportWithTPId").html(str);
+	$('#FinalReportWithTPTableId').dataTable();
+	
+	$("#thirdPartyAjax").hide();
 }
