@@ -2039,6 +2039,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 			SurveyResponceVO VO = new SurveyResponceVO();
 			VO.setDataTypeId("2");
 			VO.setBoothId(boothId);
+			VO.setSurveyUserId(surveyDetailsInfo.getSurveyUser().getSurveyUserId());
 			if(surveyDetailsInfo.getVoter() != null)
 			{
 				VO.setVoterId(surveyDetailsInfo.getVoter().getVoterId());

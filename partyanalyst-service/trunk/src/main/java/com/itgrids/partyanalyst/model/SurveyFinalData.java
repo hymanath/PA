@@ -67,7 +67,10 @@ public class SurveyFinalData implements Serializable
 	private Long boothId;
 	private Booth booth;
 	
+	private Long surveyUserId;
+	private SurveyUser surveyUser;
 	
+	private String uuid;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -261,6 +264,35 @@ public class SurveyFinalData implements Serializable
 	public void setBooth(Booth booth) {
 		this.booth = booth;
 	}
+	
+	@Column(name="survey_user_id")
+	public Long getSurveyUserId() {
+		return surveyUserId;
+	}
+	public void setSurveyUserId(Long surveyUserId) {
+		this.surveyUserId = surveyUserId;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "survey_user_id", insertable = false , updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public SurveyUser getSurveyUser() {
+		return surveyUser;
+	}
+	public void setSurveyUser(SurveyUser surveyUser) {
+		this.surveyUser = surveyUser;
+	}
+	
+	@Column(name="uuid")
+	public String getUuid() {
+		return uuid;
+	}
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+	
+	
 	
 	
 	

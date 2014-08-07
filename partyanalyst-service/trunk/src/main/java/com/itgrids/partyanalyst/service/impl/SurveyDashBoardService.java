@@ -1138,6 +1138,8 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 								
 								surveyFinalData.setBoothId(surveyResponceVO.getBoothId());
 								
+								surveyFinalData.setSurveyUserId(surveyResponceVO.getSurveyUserId());
+								surveyFinalData.setUuid(surveyResponceVO.getUuid());
 								surveyFinalData.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 								surveyFinalData.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 								SurveyFinalData saveStatus = surveyFinalDataDAO.save(surveyFinalData);
