@@ -650,17 +650,18 @@
 								<div class="row offset4">								
 									<div class="row-fluid">										
 										<div class="span3">
-											Select Constituency <font class="requiredFont">*</font></div>
+											 Constituency <font class="requiredFont">*</font></div>
 											<div class="span4">
 											 <s:select theme="simple"  name="constituency" id="constituencyForThirdParty"  headerKey="0" headerValue="Select Constituency" list="constituencies" listKey="id" listValue="name"/>
 										</div>												
 									</div>
 								</div>
-								<div class="row text-center m_top10"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="">SUBMIT</button></div>
+								<div class="row text-center m_top10"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getFinalReportWithTP()">SUBMIT</button></div>
 								<img src='images/Loading-data.gif' class="offset5"  id="thirdPartyAjax" style="width:70px;height:60px;display:none;"/>
+								<div id="FinalReportWithTPId"></div>	
 					</div>						
                 </div>
-			</div>				
+			</div>
 		</div>
 		
 	</div>
