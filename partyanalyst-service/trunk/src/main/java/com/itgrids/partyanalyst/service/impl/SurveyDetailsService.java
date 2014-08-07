@@ -1861,14 +1861,23 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 		String status = "Saved Successfully";
 		
 		try{
-			VerifierBoothPercentage vb = new VerifierBoothPercentage();
+		Long verifierBoothPercentageId = verifierBoothPercentageDAO.checkForBoothPercentages(boothId);
+		VerifierBoothPercentage vb = null;
+
+		if(verifierBoothPercentageId ==  null)
+		{
+			vb = new VerifierBoothPercentage();
 			vb.setBoothId(boothId);
-			vb.setPercentage(percentage);
-			
-			VerifierBoothPercentage vbs = verifierBoothPercentageDAO.save(vb);
-			if(vbs==null){
-				status = "Not Saved, Please Try Again";
-			}
+		}
+		else
+		{
+			vb = verifierBoothPercentageDAO.get(verifierBoothPercentageId);
+		}
+		vb.setPercentage(percentage);			
+	    VerifierBoothPercentage vbs = verifierBoothPercentageDAO.save(vb);
+		if(vbs==null){
+			status = "Not Saved, Please Try Again";
+		}						
 		}catch (Exception e) {
 			status = "Not Saved, Please Try Again";
 			LOG.error("Exception raised in savePercentageOfBoothForCasteSurvey", e);

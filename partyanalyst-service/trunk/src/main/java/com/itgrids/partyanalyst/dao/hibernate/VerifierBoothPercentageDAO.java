@@ -21,4 +21,11 @@ public class VerifierBoothPercentageDAO extends GenericDaoHibernate<VerifierBoot
 		query.setParameter("boothId", boothId);
 		return query.list();
 	}
+	
+	public Long checkForBoothPercentages(Long boothId)
+	{
+		Query query = getSession().createQuery("select model.verifierBoothPercentageId from VerifierBoothPercentage model where model.boothId = :boothId");
+		query.setParameter("boothId",boothId);
+		return (Long) query.uniqueResult();
+	}
 }

@@ -9,4 +9,5 @@ import com.itgrids.partyanalyst.model.VerifierBoothPercentage;
 public interface IVerifierBoothPercentageDAO extends GenericDao<VerifierBoothPercentage,Long>{
 
 	public List<String> getBoothWisePercentage(Long boothId);
+	public Long checkForBoothPercentages(Long boothId);
 }
