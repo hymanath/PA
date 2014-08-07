@@ -1438,10 +1438,13 @@ return;
 	str+='<thead>';
 
 	str+='<tr class="alert alert-success">';
-	if(userType ==1)
+	if(userType ==1){
 	str+='<th>DCName</th>';
-	else if (userType ==4)
+	}else if (userType ==4){
 	str+='<th>DVName</th>';
+	}else if (userType ==10){
+		   str+='<th>TPName</th>';
+		}
 	str+='<th>Leader Name</th>';
 	str+='<th>Booth</th>';
 	str+='<th> Total Voters</th>';
@@ -1461,13 +1464,32 @@ else if(userType ==4)
 	str+='<th>DV HouseNos Mapped</th>';
 	str+='<th>DV Mobile Collected</th>';
 	}
+	else if(userType ==10)
+	{
+	str+='<th>TP Caste Mapped</th>';
+	str+='<th>TP Hamlet Mapped</th>';
+	str+='<th>TP HouseNos Mapped</th>';
+	str+='<th>TP Mobile Collected</th>';
+	
+	}
 	str+='<th>TOTAL </th>';
-	str+='<th>Mobile MATCHED</th>';
-	str+='<th>Mobile UN MATCHED</th>';
-	str+='<th>MOBILE ERROR %</th>';
-	str+='<th>CASTE MATCHED</th>';
-	str+='<th>CASTE UN MATCHED</th>';
-	str+='<th>CASTE ERROR %</th>';
+	if(userType ==1 || userType ==4){
+		str+='<th>Mobile MATCHED</th>';
+		str+='<th>Mobile UN MATCHED</th>';
+		str+='<th>MOBILE ERROR %</th>';
+		str+='<th>CASTE MATCHED</th>';
+		str+='<th>CASTE UN MATCHED</th>';
+		str+='<th>CASTE ERROR %</th>';
+	}else if(userType ==10)
+	{
+        str+='<th>WM Wrong</th>';
+		  str+='<th>WM ERROR %</th>';
+		  str+='<th>TP ERROR</th>';
+		  str+='<th>TP ERROR %</th>';
+		  str+='<th>Same Caste</th>';
+		  str+='<th>Same Caste ERROR %</th>';
+	      str+='<th>New Castes Collected</th>';
+	}
 	str+='</tr>';
 	str+='</thead>';
 	str+='<tbody>';
@@ -1480,12 +1502,20 @@ else if(userType ==4)
 			str+='<tr>';
 			if(result[i].verifier != null)
 			{
-			str+='<td> <a href="javascript:{getDataCollectorInfo('+result[i].userid+',\''+result[i].userName+'\','+result[i].mobileNo+',\''+result[i].verifier.name+'\','+result[i].verifier.verified+','+result[i].subList[j].boothId+','+result[i].subList[j].partNo+',\''+$('#FielddateId').val()+'\','+userType+',1);}">'+result[i].userName+' </a><br>'+result[i].mobileNo+'</td>';
+				if(userType !=10){
+				  str+='<td> <a href="javascript:{getDataCollectorInfo('+result[i].userid+',\''+result[i].userName+'\','+result[i].mobileNo+',\''+result[i].verifier.name+'\','+result[i].verifier.verified+','+result[i].subList[j].boothId+','+result[i].subList[j].partNo+',\''+$('#FielddateId').val()+'\','+userType+',1);}">'+result[i].userName+' </a><br>'+result[i].mobileNo+'</td>';
+				}else{
+				  str+='<td> <a href="javascript:{getThirdPartyProvidedAndCollectedDetails('+result[i].userid+','+result[i].subList[j].boothId+');}">'+result[i].userName+' </a><br>'+result[i].mobileNo+'</td>';
+				}
 			str+='<td> '+result[i].verifier.name+'<br>'+result[i].verifier.verified+'</td>';
 			}
 			else
 			{
-			str+='<td> <a href="javascript:{getDataCollectorInfo('+result[i].userid+',\''+result[i].userName+'\','+result[i].mobileNo+',null,null,'+result[i].subList[j].boothId+','+result[i].subList[j].partNo+',\''+$('#FielddateId').val()+'\','+userType+',1);}">'+result[i].userName+' </a><br>'+result[i].mobileNo+'</td>';
+				if(userType !=10){
+				   str+='<td> <a href="javascript:{getDataCollectorInfo('+result[i].userid+',\''+result[i].userName+'\','+result[i].mobileNo+',null,null,'+result[i].subList[j].boothId+','+result[i].subList[j].partNo+',\''+$('#FielddateId').val()+'\','+userType+',1);}">'+result[i].userName+' </a><br>'+result[i].mobileNo+'</td>';
+				}else{
+					  str+='<td> <a href="javascript:{getThirdPartyProvidedAndCollectedDetails('+result[i].userid+','+result[i].subList[j].boothId+');}">'+result[i].userName+' </a><br>'+result[i].mobileNo+'</td>';
+				}
 			str+='<td>-</td>';
 			}
 			str+='<td> '+result[i].subList[j].partNo+'</td>';
@@ -1519,6 +1549,7 @@ else if(userType ==4)
 				str+='<td>'+result[i].subList[j].mobileNoCount+'</td>';
 			}
 			str+='<td>'+result[i].subList[j].count+'</td>';
+		if(userType !=10){
 			str+='<td>'+result[i].subList[j].mobileMatchedCount+'</td>';
 			str+='<td>'+result[i].subList[j].mobileNotMatchedCount+'</td>';
 			var Mobiletotal = result[i].subList[j].mobileMatchedCount + result[i].subList[j].mobileNotMatchedCount;
@@ -1565,6 +1596,60 @@ else if(userType ==4)
 			else{
 			str+='<td> - </td>';
 			}
+		}else{
+		    str+='<td>'+result[i].subList[j].mobileMatchedCount+'</td>';
+		    if(result[i].subList[j].mobileMatchedCount > 0 && result[i].subList[j].casteCount != null && result[i].subList[j].casteCount > 0){
+			    var wMError = (Math.round(result[i].subList[j].mobileMatchedCount * 100)/result[i].subList[j].casteCount).toFixed(2);
+				if(wMError>=0.0 && wMError<=0.50){
+					str+='<td class="errorGreen">'+wMError+'</td>';
+				}else if(wMError>=0.51 && wMError<=1.00){
+					str+='<td class="errorLgreen">'+wMError+'</td>';
+				}else if(wMError>=1.01 && wMError<=2.00){
+					str+='<td class="errorYellow">'+wMError+'</td>';
+				}else if(wMError>=2.01){
+					str+='<td class="errorRed">'+wMError+'</td>';
+				}else{
+					str+='<td>'+wMError+'</td>';
+				}
+			}else{
+			   str+='<td> - </td>';
+			}
+			str+='<td>'+result[i].subList[j].casteNotMatchedCount+'</td>';
+			if(result[i].subList[j].casteNotMatchedCount > 0  && result[i].subList[j].casteCount != null && result[i].subList[j].casteCount > 0){
+			    var tPError = (Math.round(result[i].subList[j].casteNotMatchedCount * 100)/result[i].subList[j].casteCount).toFixed(2);
+				if(tPError>=0.0 && tPError<=0.50){
+					str+='<td class="errorGreen">'+tPError+'</td>';
+				}else if(tPError>=0.51 && tPError<=1.00){
+					str+='<td class="errorLgreen">'+tPError+'</td>';
+				}else if(tPError>=1.01 && tPError<=2.00){
+					str+='<td class="errorYellow">'+tPError+'</td>';
+				}else if(tPError>=2.01){
+					str+='<td class="errorRed">'+tPError+'</td>';
+				}else{
+					str+='<td>'+tPError+'</td>';
+				}
+			}else{
+			   str+='<td> - </td>';
+			}
+			str+='<td>'+result[i].subList[j].mobileNotMatchedCount+'</td>';
+			if(result[i].subList[j].mobileNotMatchedCount > 0  && result[i].subList[j].casteCount != null && result[i].subList[j].casteCount > 0){
+			    var sameCasteError = (Math.round(result[i].subList[j].mobileNotMatchedCount * 100)/result[i].subList[j].casteCount).toFixed(2);
+				if(sameCasteError>=0.0 && sameCasteError<=0.50){
+					str+='<td class="errorGreen">'+sameCasteError+'</td>';
+				}else if(sameCasteError>=0.51 && sameCasteError<=1.00){
+					str+='<td class="errorLgreen">'+sameCasteError+'</td>';
+				}else if(sameCasteError>=1.01 && sameCasteError<=2.00){
+					str+='<td class="errorYellow">'+sameCasteError+'</td>';
+				}else if(sameCasteError>=2.01){
+					str+='<td class="errorRed">'+sameCasteError+'</td>';
+				}else{
+					str+='<td>'+sameCasteError+'</td>';
+				}
+			}else{
+			   str+='<td> - </td>';
+			}
+			 str+='<td>'+result[i].subList[j].casteMatchedCount+'</td>';			
+		}
 			str+='</tr>';
 		}
 	}
@@ -5608,30 +5693,107 @@ function getThirdPartyFinalDetails()
 		});
 }
 //getThirdPartyProvidedAndCollectedDetails();
-function getThirdPartyProvidedAndCollectedDetails()
+function getThirdPartyProvidedAndCollectedDetails(surveyuserId,boothId)
 {
-	alert(1234);
+ $('#voterInfoDIv').html("");
+$('#boothWiseTab,#startTimeTab').removeClass('selected');
+	$('#callCenterTab').addClass('selected');
+	showHideTabs('callCenterTab');
 	var jsObj = 
 	{
-		boothId : 439822,
-		surveyuserId : 41
+		boothId : boothId,
+		surveyuserId : surveyuserId
 	}
+	$('#searchDataImg').show();
 	$.ajax({
 			type:'GET',
 			url: 'getCompressionReportForThirdParty.action',
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)},
 		 }).done(function(result){	
+		   $('#searchDataImg').hide();
+		   if(result != null && result.length>0){
+		      var str ="";
+		       str  +='<table class="table table-bordered m_top20 table-hover table-striped" id="voterDetlsTab" >';
+				str +='	<thead class="alert alert-success">';
+				str +='	<tr>';
+				
+					//str +='<th> <input type="checkbox" id="alluserChkbx" class="allCheckbxCls"  onclick="selectAllCheckBoxes();"/> Select All </th>';
+				    str +='<th>VOTER NAME</th>';
+					str +='<th>RELATIVE NAME</th>';
+					str +='<th>H.NO</th>';
+					str +='<th>GENDER</th>';
+					str +='<th>AGE</th>';
+					str +='<th>WM CASTE</th>';
+					str +='<th>TP CASTE</th>';
+					str +='<th>STATUS</th>';
+					str +='</tr>';
+				    str +='</thead>';
+				    str +='<tbody>';
+					 for(var i in result){
+			          str +='<tr>';
+					   str +='<td>'+result[i].voterName+'</td>';
+					   str +='<td>'+result[i].relativeName+'</td>';
+					   str +='<td>'+result[i].houseNo+'</td>';
+					   str +='<td>'+result[i].gender+'</td>';
+					   str +='<td>'+result[i].age+'</td>';
+					   str +='<td>'+result[i].wmCaste+'</td>';
+					   str +='<td>'+result[i].tpCaste+'</td>';
+					   str +='<td>';
+					    if(result[i].statusId != null){
+					      str +='<select onchange="updateThirdPartyDetails('+result[i].voterId+',this.value);">';
+					              str +='<option value="0">Select Status</option>';
+								  if(result[i].statusId == 1){
+								     str +='<option value="1" selected="selected">Same Caste</option>';
+								  }else{
+								     str +='<option value="1">Same Caste</option>';
+								  }
+								  if(result[i].statusId == 2){
+								     str +='<option value="2" selected="selected">WM Wrong</option>';
+								  }else{
+								     str +='<option value="2">WM Wrong</option>';
+								  }
+								  if(result[i].statusId == 3){
+								     str +='<option value="3" selected="selected">TP Wrong</option>';
+								  }else{
+								     str +='<option value="3">TP Wrong</option>';
+								  }
+								  if(result[i].statusId == 4){
+								     str +='<option value="4" selected="selected">Newly Collected Caste</option>';
+								  }else{
+								     str +='<option value="4">Newly Collected Caste</option>';
+								  }
+					      str +='</select>';
+						 }else{
+						   str +='<select onchange="updateThirdPartyDetails('+result[i].voterId+',this.value);">';
+					              str +='<option value="0">Select Status</option>';
+								  str +='<option value="1">Same Caste</option>';
+								  str +='<option value="2">WM Wrong</option>';
+								  str +='<option value="3">TP Wrong</option>';
+								  str +='<option value="4">Newly Collected Caste</option>';
+					       str +='</select>';
+						 }
+					    str +='</td>';
+					  str +='</tr>';
+			         }
+					str +='</tbody>';
+					str +='</table>';
+		        $('#voterInfoDIv').html(str);
+				$('#voterDetlsTab').dataTable({
+				"iDisplayLength": 100,
+				"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]]
+				});
+		   }
 		});
 }
 //updateThirdPartyDetails();
-function updateThirdPartyDetails()
+function updateThirdPartyDetails(voterId,statusId)
 {
-	alert(1234456);
+	
 	var jsObj = 
 	{
-		voterId : 13867808,
-		statusId : 3
+		voterId : voterId,
+		statusId : statusId
 	}
 	$.ajax({
 			type:'GET',
