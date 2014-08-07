@@ -1329,7 +1329,7 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 							thirdPartyCompressionVO.setTpWard(tpProvidedVO.getWardId());
 							thirdPartyCompressionVO.setTpCasteStateId(tpProvidedVO.getCasteId());
 							thirdPartyCompressionVO.setTphamletId(tpProvidedVO.getHamletId());
-							
+							thirdPartyCompressionVO.setStatus(tpProvidedVO.getStatusId());
 							if(tpCollectedVO != null)
 							{
 								thirdPartyCompressionVO.setWardId(tpCollectedVO.getWardId());
@@ -1337,7 +1337,7 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 								thirdPartyCompressionVO.setWmCasteStateId(tpCollectedVO.getCasteId());
 								thirdPartyCompressionVO.setWmHamlet(tpCollectedVO.getHamletName());
 								thirdPartyCompressionVO.setWmHamletId(tpCollectedVO.getHamletId());
-								thirdPartyCompressionVO.setStatus(tpCollectedVO.getStatusId());
+								
 							}
 							returnList.add(thirdPartyCompressionVO);
 						}
