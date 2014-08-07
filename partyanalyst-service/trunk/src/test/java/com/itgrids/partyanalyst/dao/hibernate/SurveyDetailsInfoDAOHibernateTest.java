@@ -258,11 +258,16 @@ public class SurveyDetailsInfoDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void test(){
+	/*public void test(){
 		List<Long> boothIds = new ArrayList<Long>();
 		boothIds.add(439828l);
 		
 		List<Object[]> list = surveyDetailsInfoDAO.getBoothWiseVerifier(boothIds);
+		System.out.println(list.size());
+	}*/
+	
+	public void test(){
+		List<Object[]> list = surveyDetailsInfoDAO.getTotalSamplesInBoothsOfUserType(217l, 10l);
 		System.out.println(list.size());
 	}
 	
