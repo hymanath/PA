@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyCompletionDetailsVO;
 import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
+import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.service.ISurveyCompletedDetailsService;
 import com.itgrids.partyanalyst.service.impl.SurveyDashBoardService;
 import com.itgrids.partyanalyst.service.impl.SurveyDataDetailsService;
@@ -44,6 +45,7 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 	private List<SurveyReportVO> verifiedBooths;
 	private List<FinalSurveyReportVO> returnList;
 	private ResultStatus resultStatus;
+	private List<SurveyResponceVO> thirdPartyDetailsList;
 	
 	@Autowired
 	ISurveyCompletedDetailsService surveyCompletedDetailsService ;
@@ -151,6 +153,15 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 
 	
 
+	public List<SurveyResponceVO> getThirdPartyDetailsList() {
+		return thirdPartyDetailsList;
+	}
+
+	public void setThirdPartyDetailsList(
+			List<SurveyResponceVO> thirdPartyDetailsList) {
+		this.thirdPartyDetailsList = thirdPartyDetailsList;
+	}
+
 	public SurveyDashBoardService getSurveyDashBoardService() {
 		return surveyDashBoardService;
 	}
@@ -235,7 +246,7 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 			
 		}catch(Exception e)
 		{
-			e.printStackTrace();
+			LOG.error("Exception raised in saveSurveyCompletionDetails", e);
 		}
 		
 		return Action.SUCCESS;
@@ -282,7 +293,8 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 			completionDtlsList = surveyDashBoardService.getSurveyCompletionDetailsForAllConstituencies();
 		}catch(Exception e)
 		{
-			e.printStackTrace();
+			//e.printStackTrace();
+			LOG.error("Exception raised ", e);
 		}
 		return Action.SUCCESS;
 	}
@@ -299,7 +311,7 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 			
 		}catch(Exception e)
 		{
-			e.printStackTrace();
+			LOG.error("Exception raised ", e);
 		}
 		return Action.SUCCESS;
 	}
@@ -323,7 +335,7 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 			status = surveyDashBoardService.saveBoothCompletionStatus(boothId,statusId);
 		}catch(Exception e)
 		{
-			e.printStackTrace();
+			LOG.error("Exception raised", e);
 		}
 		
 		return Action.SUCCESS;
@@ -340,7 +352,7 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 			
 		}catch(Exception e)
 		{
-			e.printStackTrace();
+			LOG.error("Exception raised ", e);
 		}
 		return Action.SUCCESS;
 		
@@ -377,7 +389,7 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 			
 		}catch(Exception e)
 		{
-			e.printStackTrace();
+			LOG.error("Exception raised ", e);
 		}
 		return Action.SUCCESS;
 	}
@@ -392,7 +404,7 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 			
 			dayWiseReportList = surveyDashBoardService.getUserReportForADate(userId,surveyDate);
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Exception raised", e);
 		} 
 		
 		return Action.SUCCESS;
@@ -408,7 +420,7 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 			
 		}catch(Exception e)
 		{
-			e.printStackTrace();
+			LOG.error("Exception raised ", e);
 		}
 		
 		return Action.SUCCESS;
@@ -424,7 +436,7 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 			
 		}catch(Exception e)
 		{
-			e.printStackTrace();
+			LOG.error("Exception raised ", e);
 		}
 		return Action.SUCCESS;
 		
@@ -440,7 +452,7 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 			
 		}catch(Exception e)
 		{
-			e.printStackTrace();
+			LOG.error("Exception raised ", e);
 		}
 		return Action.SUCCESS;
 		
@@ -456,7 +468,23 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 			
 		}catch(Exception e)
 		{
-			e.printStackTrace();
+			LOG.error("Exception raised ", e);
+		}
+		return Action.SUCCESS;
+		
+	}
+	
+	public String getThirdPartyFinalDetails()	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			
+			
+			thirdPartyDetailsList = surveyDashBoardService.getThirdPartyFinalDetails(jObj.getLong("boothId"));
+			
+		}catch(Exception e)
+		{
+			LOG.error("Exception raised ", e);
 		}
 		return Action.SUCCESS;
 		
