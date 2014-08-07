@@ -5,6 +5,7 @@ import java.util.List;
 import com.itgrids.partyanalyst.dto.FinalSurveyReportVO;
 import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
+import com.itgrids.partyanalyst.dto.SurveyThirdPartyReportVO;
 
 public interface ISurveyCompletedDetailsService {
 	public SurveyReportVO getBoothsStatusByConstituencyId(Long constituencyId);
@@ -13,4 +14,5 @@ public interface ISurveyCompletedDetailsService {
 
 	public SurveyDashBoardVO getCompletdConstituenciesDetails();
 	public List<FinalSurveyReportVO> finalDeselectionReport(Long constituencyId);
+	public List<SurveyThirdPartyReportVO> finalReportWithThirdParty(Long constituencyId);
 }
