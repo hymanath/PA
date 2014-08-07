@@ -8,9 +8,10 @@ import com.itgrids.partyanalyst.dto.SurveyCompletionDetailsVO;
 import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
+import com.itgrids.partyanalyst.dto.ThirdPartyCompressionVO;
 
-public interface ISurveyDashBoardService {
-	
+public interface ISurveyDashBoardService
+{
 	public SurveyDashBoardVO getCompletdConstituenciesDetails();
 	public String saveSurveyCompletionDetails(SurveyCompletionDetailsVO completionDetailsVO);
 	public List<SurveyDashBoardVO> getConstituencyWiseCompletionReport();
@@ -25,4 +26,6 @@ public interface ISurveyDashBoardService {
 	public ResultStatus saveThirdPartyDetails(Long bootId);
 	public  List<SurveyResponceVO> getThirdPartyFinalDetails(Long boothId);
 	public List<GenericVO> getConstituencyListForThirdPartyReport();
+	public List<ThirdPartyCompressionVO> getCompressionReportForThirdParty(Long boothId,Long surveyUserId);
+	public ResultStatus updateThirdPartyStatus(Long voterId,Long statusId);
 }
