@@ -2862,6 +2862,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			 
 			 List<Object[]> constituencyBoothInfo = surveyDetailsInfoDAO.getBoothDetailsByConstituencyId(constituencyId);
 			 
+			 List<Object[]> constituencyThirtyPartyBoothInfo = surveyDetailsInfoDAO.getBoothDetailsByForThirtyPartyVerifiers(constituencyId,10L);
+			 
 			// Long totalVoters = voterInfoDAO.getTotalVotersForSelectdLevel(1L, constituencyId, 10L, constituencyId); //(report level id,reportlevelValue,publicationId,constId);
 			
 			 /* if(constituencyCollectdDetls != null && constituencyCollectdDetls.size()>0){
@@ -2936,6 +2938,16 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			 reportVO.setMobileNoVerifiedCount(surveyDetailsInfoDAO.getMobileCountByBoothByConstituency(constituencyId,4L,"constituencyWise"));
 			
 			 reportVO.setNotVerifiedVoters(totalVoters - verifiedCount);
+				
+			 Long dataTPVerifiedCount = surveyDetailsInfoDAO.getTotalSurveyVotersByconstituency(constituencyId,10L,"constituencyWise");
+			 reportVO.setDataTPVerifiedCount(dataTPVerifiedCount);			 
+			 reportVO.setCasteTPVerifiedCount(surveyDetailsInfoDAO.getCasteCountByBoothByConstituency(constituencyId,10L,"constituencyWise"));				
+			 reportVO.setHamletTPVerifiedCount(surveyDetailsInfoDAO.getHamletCountByBoothByConstituency(constituencyId,10L,"constituencyWise"));			
+			 reportVO.setCadreTPVerifiedCount(surveyDetailsInfoDAO.getCadreCountByBoothByConstituency(constituencyId,10L,"constituencyWise"));
+			 reportVO.setInfluencePeopleTPVerifiedCount(surveyDetailsInfoDAO.getInfluencingPeopleCountByBoothByConstituency(constituencyId,10L,"constituencyWise"));
+			 reportVO.setMobileNoTPVerifiedCount(surveyDetailsInfoDAO.getMobileCountByBoothByConstituency(constituencyId,10L,"constituencyWise"));
+			 
+			 reportVO.setNotTPVerifiedVoters(totalVoters - dataTPVerifiedCount);
 			
 				 List<GenericVO> boothsList = new ArrayList<GenericVO>();
 				 if(constituencyBoothInfo != null && constituencyBoothInfo.size()>0){
@@ -2951,7 +2963,26 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				if(boothsList != null && boothsList.size()>0){ 
 						reportVO.setBoothsList(boothsList);
 				}
+				
+				
+				
+				
+				 List<GenericVO> thirtyPartyBoothsList = new ArrayList<GenericVO>();
+				 if(constituencyThirtyPartyBoothInfo != null && constituencyThirtyPartyBoothInfo.size()>0){
+					 
+					 for (Object[] booth : constituencyThirtyPartyBoothInfo) {
+						 GenericVO vo = new GenericVO();
+						 vo.setId((Long) booth[0]);
+						 vo.setName(booth[1].toString());
+						 thirtyPartyBoothsList.add(vo);					 
+					 }
+				 }
 			 
+				if(thirtyPartyBoothsList != null && thirtyPartyBoothsList.size()>0){ 
+						reportVO.setThirdPartyboothsList(thirtyPartyBoothsList);
+				}
+				
+				
 		} catch (Exception e) {
 			LOG.error("Exception raised in getCosntituencyWiseReportByContiId() service in SurveyDataDetailsService", e);
 			e.printStackTrace();
@@ -2976,6 +3007,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			 reportVO.setCadreCollectedCount(surveyDetailsInfoDAO.getCadreCountByBoothByConstituency(boothId,1L,"boothWise"));
 			 reportVO.setInfluencePeopleCollectedCount(surveyDetailsInfoDAO.getInfluencingPeopleCountByBoothByConstituency(boothId,1L,"boothWise"));
 			 reportVO.setMobileNoCollectedCount(surveyDetailsInfoDAO.getMobileCountByBoothByConstituency(boothId,1L,"boothWise"));
+			 reportVO.setLocalAreaDataCount(surveyDetailsInfoDAO.getLocalAreaCountByBoothByConstituency(boothId,1L,"boothWise"));
 			
 			 reportVO.setNotCollectedVoters(totalVoters - survyeVoterCount);
 				
@@ -2989,9 +3021,21 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			 reportVO.setCadreVerifiedCount(surveyDetailsInfoDAO.getCadreCountByBoothByConstituency(boothId,4L,"boothWise"));
 			 reportVO.setInfluencePeopleVerifiedCount(surveyDetailsInfoDAO.getInfluencingPeopleCountByBoothByConstituency(boothId,4L,"boothWise"));
 			 reportVO.setMobileNoVerifiedCount(surveyDetailsInfoDAO.getMobileCountByBoothByConstituency(boothId,4L,"boothWise"));
+			 reportVO.setLocalAreaCount(surveyDetailsInfoDAO.getLocalAreaCountByBoothByConstituency(boothId,4L,"boothWise"));
 			
 			 reportVO.setNotVerifiedVoters(totalVoters - verifiedCount);
 			
+			 Long dataTPVerifiedCount = surveyDetailsInfoDAO.getTotalSurveyVotersByconstituency(boothId,10L,"boothWise");
+			 reportVO.setDataTPVerifiedCount(dataTPVerifiedCount);			 
+			 reportVO.setCasteTPVerifiedCount(surveyDetailsInfoDAO.getCasteCountByBoothByConstituency(boothId,10L,"boothWise"));				
+			 reportVO.setHamletTPVerifiedCount(surveyDetailsInfoDAO.getHamletCountByBoothByConstituency(boothId,10L,"boothWise"));			
+			 reportVO.setCadreTPVerifiedCount(surveyDetailsInfoDAO.getCadreCountByBoothByConstituency(boothId,10L,"boothWise"));
+			 reportVO.setInfluencePeopleTPVerifiedCount(surveyDetailsInfoDAO.getInfluencingPeopleCountByBoothByConstituency(boothId,10L,"boothWise"));
+			 reportVO.setMobileNoTPVerifiedCount(surveyDetailsInfoDAO.getMobileCountByBoothByConstituency(boothId,10L,"boothWise"));
+			 reportVO.setLocalAreaTPCount(surveyDetailsInfoDAO.getLocalAreaCountByBoothByConstituency(boothId,10L,"boothWise"));
+			 
+			 reportVO.setNotTPVerifiedVoters(totalVoters - dataTPVerifiedCount);
+			 
 			 
 			/*
 			 List<Object[]> constituencyCollectdDetls = surveyDetailsInfoDAO.getsurveyDetailsInfoByboothId(boothId,1L);
@@ -3726,7 +3770,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				finalVO.setGenericVOList(casteListOfSamples);
 			}
 						
-			retultList.add(finalVO);
+			//retultList.add(finalVO);
 			
 			
 			SurveyReportVO allCastesVO = new SurveyReportVO();
@@ -3760,10 +3804,13 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 						List<Long> panchayats = new ArrayList<Long>(0);
 						panchayats.add(panchayatId);
 						hamlets = panchayatHamletDAO.getAllHamletsOfPanchayats(panchayats);
+						finalVO.setStatus("rural");
 					}
 					else{
 						Long localElectionBodyId = booth.getLocalBody().getLocalElectionBodyId();
 						hamlets = constituencyDAO.findWardsAndIdsInlocalElectionBody(localElectionBodyId); // wards
+						
+						finalVO.setStatus("urban");
 					}
 					
 					
@@ -3804,6 +3851,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				allCastesVO.setGenericVOList1(hamletsList);
 			}
 			
+			retultList.add(finalVO);
 			retultList.add(allCastesVO);
 			
 			
@@ -3854,6 +3902,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		surveyCallStatus.setUserId(userId);
 		//surveyCallStatus.setUser(userDAO.get(userId));
 		
+		List<SurveyDetailsInfo> dcVoterCasteDetls = surveyDetailsInfoDAO.getsurveyDetailsInfoByVoterId(surveyReportVO.getUserid(),surveyReportVO.getVoterId());
+		
 		if(surveyReportVO.getMatchedCount().toString().equalsIgnoreCase("1") ){
 			surveyCallStatus.setMatchedStatus("Y");
 			surveyCallStatus.setCasteStateId(null);
@@ -3863,7 +3913,28 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			surveyCallStatus.setCasteStateId(null);
 		}
 		else{	
-			surveyCallStatus.setMatchedStatus("N");
+			
+			//surveyCallStatus.setMatchedStatus(null);
+			
+			if(dcVoterCasteDetls != null && dcVoterCasteDetls.size()>0)
+			{
+				for (SurveyDetailsInfo surveyDetailsInfo : dcVoterCasteDetls) {
+					if(surveyDetailsInfo.getCaste() != null){
+						surveyCallStatus.setMatchedStatus("N");
+					}
+					else if(surveyDetailsInfo.getCasteName() != null){
+						surveyCallStatus.setMatchedStatus("N");
+					}
+					else{
+						surveyCallStatus.setMatchedStatus(null);
+					}
+				}
+			}
+			else
+			{
+				surveyCallStatus.setMatchedStatus(null);
+			}
+		
 			
 			if(surveyReportVO.getCasteId() != 0){
 				//surveyCallStatus.setCasteState(casteStateDAO.get(surveyReportVO.getCasteId()));
@@ -3897,7 +3968,27 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				surveyCallStatus.setHamletId(null);
 			}
 			else{	
-				surveyCallStatus.setHamletStatus("N");
+				
+				if(dcVoterCasteDetls != null && dcVoterCasteDetls.size()>0)
+				{
+					for (SurveyDetailsInfo surveyDetailsInfo : dcVoterCasteDetls) {
+						if(surveyDetailsInfo.getHamlet() != null){
+							surveyCallStatus.setHamletStatus("N");
+						}
+						else if(surveyDetailsInfo.getHamletName() != null){
+							surveyCallStatus.setHamletStatus("N");
+						}
+						else{
+							surveyCallStatus.setHamletStatus(null);
+						}
+					}
+				}
+				else
+				{
+					surveyCallStatus.setHamletStatus(null);
+				}
+				
+				//surveyCallStatus.setHamletStatus("N");
 				
 				if(surveyReportVO.getHamletId() != 0){
 					//surveyCallStatus.setCasteState(casteStateDAO.get(surveyReportVO.getCasteId()));
@@ -3934,6 +4025,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		surveyCallStatus.setBoothId(surveyReportVO.getBoothId());
 		surveyCallStatus.setDvWebMonterId(userId);
 		
+		List<SurveyDetailsInfo> surveyDetailsInfo = surveyDetailsInfoDAO.getsurveyDetailsInfoByVoterId(surveyReportVO.getUserid(),surveyReportVO.getVoterId());
+		
 		if(surveyReportVO.getMatchedCount().toString().equalsIgnoreCase("1") )
 		{
 			surveyCallStatus.setDvMatchedStatus("Y");
@@ -3944,7 +4037,29 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			surveyCallStatus.setDvCasteStateId(null);
 		}
 		else{	
-			surveyCallStatus.setDvMatchedStatus("N");
+			//surveyCallStatus.setDvMatchedStatus("N");	
+			
+			
+			if(surveyDetailsInfo != null && surveyDetailsInfo.size()>0)
+			{
+				for (SurveyDetailsInfo surveyDetailsInfo1 : surveyDetailsInfo) {
+					if(surveyDetailsInfo1.getCaste() != null){
+						surveyCallStatus.setDvMatchedStatus("N");
+					}
+					else if(surveyDetailsInfo1.getCasteName() != null){
+						surveyCallStatus.setDvMatchedStatus("N");
+					}
+					else
+					{
+						surveyCallStatus.setDvMatchedStatus(null);
+					}
+				}
+			}
+			else
+			{
+				surveyCallStatus.setDvMatchedStatus(null);
+			}
+		
 			
 			if(surveyReportVO.getCasteId() != 0){
 				//surveyCallStatus.setCasteState(casteStateDAO.get(surveyReportVO.getCasteId()));
@@ -3978,7 +4093,27 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				surveyCallStatus.setDvHamletId(null);
 			}
 			else{	
-				surveyCallStatus.setDvhamletStatus("N");
+			//	surveyCallStatus.setDvhamletStatus("N");
+				
+				if(surveyDetailsInfo != null && surveyDetailsInfo.size()>0)
+				{
+					for (SurveyDetailsInfo surveyDetailsInfo1 : surveyDetailsInfo) {
+						if(surveyDetailsInfo1.getHamlet() != null){
+							surveyCallStatus.setDvhamletStatus("N");
+						}
+						else if(surveyDetailsInfo1.getHamletName() != null){
+							surveyCallStatus.setDvhamletStatus("N");
+						}
+						else
+						{
+							surveyCallStatus.setDvhamletStatus(null);
+						}
+					}
+				}
+				else
+				{
+					surveyCallStatus.setDvhamletStatus(null);
+				}
 				
 				if(surveyReportVO.getHamletId() != 0){
 					//surveyCallStatus.setCasteState(casteStateDAO.get(surveyReportVO.getCasteId()));
