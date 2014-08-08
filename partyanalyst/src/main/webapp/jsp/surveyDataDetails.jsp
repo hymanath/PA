@@ -295,6 +295,7 @@
 											<option value="0"> Select User type </option>
 											<option value="3">Data Lead </option>
 											<option value="5"> Verifier Lead </option>
+											<option value="11"> Third Party Lead </option>
 											</select>
 											</div>
 											<div class="span6">
@@ -402,6 +403,7 @@
 											<option value="0">Select User type</option>
 											<option value="1">Data Collectors</option>
 											<option value="4">Data Verifier</option>
+											<option value="10">Third Party</option>
 											<!--<option value="5">Verifier Lead</option>-->
 											</select>
 										</div>
@@ -550,7 +552,7 @@
 									<div class="row-fluid">									
 										<div class="span3">
 											Select User Type<font class="requiredFont">*</font>
-											<select class="input-block-level" id="constiUserTypeId" onChange="getAssignedConstituencyUsers('assignConstituencyLeaderId',this.value);"> <option value="0">Select Type</option><option value="3">Data Lead</option><option value="5">Verifier Lead</option></select><img id="constiUserTypeIdImg" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
+											<select class="input-block-level" id="constiUserTypeId" onChange="getAssignedConstituencyUsers('assignConstituencyLeaderId',this.value);"> <option value="0">Select Type</option><option value="3">Data Lead</option><option value="5">Verifier Lead</option><option value="11">Third Party Lead</option></select><img id="constiUserTypeIdImg" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
 										</div>
 										<div class="span3">
 											Select Leader<font class="requiredFont">*</font>
@@ -590,7 +592,7 @@
 									<div class="row-fluid">									
 										<div class="span3">
 											Select User Type<font class="requiredFont">*</font>
-											<select class="input-block-level" id="untagUserTypeId" onChange="getAlreadyAssignedUsers('untagUserId',this.value);"> <option value="0">Select Type</option><option value="3">Data Lead</option><option value="5">Verifier Lead</option></select><img id="untagUserIdImg" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
+											<select class="input-block-level" id="untagUserTypeId" onChange="getAlreadyAssignedUsers('untagUserId',this.value);"> <option value="0">Select Type</option><option value="3">Data Lead</option><option value="5">Verifier Lead</option><option value="11">Third Party Lead</option></select><img id="untagUserIdImg" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
 										</div>
 										<div class="span3">
 											Select Leader<font class="requiredFont">*</font>
@@ -626,7 +628,7 @@
 										
 										<div class="span3">
 											Select User Type<font class="requiredFont">*</font>
-											<select class="input-block-level" id="typeId" onChange="getSurveyUsersByUserType('leaderId',this.value,'typeIdImg');"> <option value="0">Select Type</option><option value="3">Data Lead</option><option value="5">Verifier Lead</option></select><img id="typeIdImg" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
+											<select class="input-block-level" id="typeId" onChange="getSurveyUsersByUserType('leaderId',this.value,'typeIdImg');"> <option value="0">Select Type</option><option value="3">Data Lead</option><option value="5">Verifier Lead</option><option value="11">Third Party Lead</option></select><img id="typeIdImg" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
 										</div>
 										<div class="span3">
 											Select  Leader<font class="requiredFont">*</font>
@@ -676,7 +678,7 @@
 										
 										<div class="span3">
 											Select User Type<font class="requiredFont">*</font>
-											<select class="input-block-level" id="typeIdForRelease" onChange="getSurveyUsersByUserType('leaderIdForRelease',this.value,'typeIdForReleaseImg');"> <option value="0">Select Type</option><option value="3">Data Lead</option><option value="5">Verifier Lead</option></select><img id="typeIdForReleaseImg" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
+											<select class="input-block-level" id="typeIdForRelease" onChange="getSurveyUsersByUserType('leaderIdForRelease',this.value,'typeIdForReleaseImg');"> <option value="0">Select Type</option><option value="3">Data Lead</option><option value="5">Verifier Lead</option><option value="11">Third Party Lead</option></select><img id="typeIdForReleaseImg" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
 										</div>
 										<div class="span3">
 											Select  Leader<font class="requiredFont">*</font>

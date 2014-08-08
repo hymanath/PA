@@ -33,9 +33,13 @@ function getSurveyUsersByUserTypeForLeaderAssign(divId,processImg)
 	{
 		getRemeaningSurveyUsersByUserType(divId,1,processImg);
 	}
-	else
+	else if(value == 3)
 	{
 		getRemeaningSurveyUsersByUserType(divId,4,processImg);
+	}
+	else
+	{
+		getRemeaningSurveyUsersByUserType(divId,10,processImg);
 	}
 	
 }
@@ -74,6 +78,10 @@ function getSurveyUsersByUserTypeForBooth(divId,id)
 	if(id == 1)
 	{
 		getSurveyUsersByUserType(divId,3);
+	}
+	else if(id == 10)
+	{
+		getSurveyUsersByUserType(divId,11);
 	}
 	else
 	{
@@ -1288,9 +1296,13 @@ function getSurveyUsersByUserTypeForLeaderRelease(processingImg)
 	{
 		userType = 4;
 	}
-	else
+	else if(value == 3)
 	{
 		userType = 1;
+	}
+	else
+	{
+		userType = 10;
 	}
 	var jObj =
 	{
