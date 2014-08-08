@@ -172,6 +172,7 @@ function getConstituencyReport(constituencyId){
 					str +='					</div>	';					
 					str +='					</div>';
 					str +='				</div>';
+				/*	
 					str +='				<div class="span6 wiget-yellow">	';
 					str +='					<h4 class="text-right">DATA VERIFICATION</h4>';
 					str +='					<div class="row-fluid">';
@@ -207,7 +208,48 @@ function getConstituencyReport(constituencyId){
 					str +='Not Verified Voter Count <span class="pull-right badge">'+result.notVerifiedVoters+'</span>';
 					str +='					</div>';						
 					str +='					</div>';
+					str +='				</div>	';	
+
+*/
+
+					str +='				<div class="span6 wiget-yellow">	';
+					str +='					<h4 class="text-right"> THIRD PARTY VERIFICATION</h4>';
+					str +='					<div class="row-fluid">';
+					str +='					<div class="well well-small span4  text-center">';
+					str +='						<h4>'+result.dataTPVerifiedCount+'</h4>';
+					str +='						<p class="">Data Verified</p>';
+					str +='					</div>';
+					str +='					<div class="well well-small span4 text-center">';
+					str +='						<h4>'+result.casteTPVerifiedCount+'</h4>';
+					str +='						<p>Caste Verified</p>';
+					str +='					</div>';
+					str +='					<div class="well well-small span4 text-center">';
+					str +='						<h4>'+result.hamletTPVerifiedCount+'</h4>';
+					str +='						<p> Hamlets Mapped</p>';
+					str +='					</div>		';					
+					str +='					</div>';
+					str +='					<div class="row-fluid">';
+					str +='					<div class="well well-small span4 text-center">';
+					str +='						<h4>'+result.cadreTPVerifiedCount+'</h4>';
+					str +='						<p>Cadre</p>';
+					str +='					</div>';
+					str +='					<div class="well well-small span4 text-center">';
+					str +='						<h4>'+result.influencePeopleTPVerifiedCount+'</h4>';
+					str +='						<p>Influence People</p>';
+					str +='					</div>';
+					str +='					<div class="well well-small span4 text-center">';
+					str +='						<h4>'+result.mobileNoTPVerifiedCount+'</h4>';
+					str +='						<p>Mobile Number</p>';
+					str +='					</div>				';			
+					str +='					</div>						';		
+					str +='					<div class="row-fluid">';
+					str +='					<div class="well well-small span10 offset1  ">			';						
+					str +='Not Third Party Verified Voter Count <span class="pull-right badge">'+result.notTPVerifiedVoters+'</span>';
+					str +='					</div>';						
+					str +='					</div>';
 					str +='				</div>	';					
+					str +='			</div>';
+										
 					str +='			</div>';
 					
 					
@@ -215,6 +257,7 @@ function getConstituencyReport(constituencyId){
 					str +='						<div class="span12">';
 					str +='							<p class="text-center"> <span class="text-error">Note:</span><span class="text-success"> Click on Booth Number to view Booth Overview</p>';
 					str +='							<ul class="inline unstyled boothdetails-nav">';
+					/*
 					if(result.boothsList != null && result.boothsList.length > 0){
 					var count = 0;
 					var divCount = 1;
@@ -229,6 +272,27 @@ function getConstituencyReport(constituencyId){
 						}
 						str +='<div id="boothsDiv'+divCount+'" class="boothsDivCls"></div>';				
 					}
+					*/
+					
+					if(result.thirdPartyboothsList != null && result.thirdPartyboothsList.length > 0){
+					var count = 0;
+					var divCount = 1;
+						for(var i in result.thirdPartyboothsList){
+						count = count +1;
+							str +='	<li><a href="javascript:{getBoothWiseReport(\'boothsDiv'+divCount+'\','+result.thirdPartyboothsList[i].id+',\'boothNo'+count+'\','+result.thirdPartyboothsList[i].name+')}" id="boothNo'+count+'" class="boothListCls" >Booth - '+result.thirdPartyboothsList[i].name+'</a></li>';
+							
+							if(count%5 == 0){					
+								str +='<div id="boothsDiv'+divCount+'" class="boothsDivCls"></div>';
+								divCount = divCount+1;
+							}
+						}
+						str +='<div id="boothsDiv'+divCount+'" class="boothsDivCls"></div>';				
+					}
+					else
+					{					
+					str +='<div style="font-weight:bold;font-size:13px;"> No Booths are assigned for Third Party. </div>';
+					}
+					
 					str +='							</ul>';
 					str +='						</div>';
 					str +='				</div>';
@@ -296,7 +360,7 @@ var jobj = {
 			str += '					<li>';
 			str += '						<hgroup>';
 			str += '						<h4>LOCAL AREA</h4>';
-			str += '							<h2>'+result.totalColelctedVoters+'</h2>';
+			str += '							<h2>'+result.localAreaDataCount+'</h2>';
 			str += '							<h5>Identified</h5>';
 			str += '						</hgroup>';
 			str += '					</li>';
@@ -318,6 +382,8 @@ var jobj = {
 			str += '			</div>';
 			str += '			</div>';
 			str += '		</div> ';
+			
+			/*
 			
 			if( result.casteVerifiedCount !=0 || result.hamletVerifiedCount != 0 || result.totalVerifiedVoters != 0 || result.cadreVerifiedCount != 0 || result.influencePeopleVerifiedCount != 0)
 			{
@@ -345,7 +411,7 @@ var jobj = {
 				str += '					<li>';
 				str += '						<hgroup>';
 				str += '						<h4>LOCAL AREA</h4>';
-				str += '							<h2>'+result.totalVerifiedVoters+'</h2>';
+				str += '							<h2>'+result.localAreaCount+'</h2>';
 				str += '							<h5>Identified</h5>';
 				str += '						</hgroup>';
 				str += '					</li>';
@@ -368,6 +434,59 @@ var jobj = {
 				str += '			</div>';
 				str += '		</div> ';
 			}
+			*/
+			
+			if( result.casteTPVerifiedCount !=0 || result.hamletTPVerifiedCount != 0 || result.localAreaTPCount != 0 || result.cadreTPVerifiedCount != 0 || result.influencePeopleTPVerifiedCount != 0)
+			{
+				str += '		<div class="row-fluid">';
+				str += '			<div class="span12 booths-Overview-widget">';
+				str += '				<div class="row-fluid">';
+				str += '				<div class="row-fluid">';
+				str += '				<h5 class="text-center label"> THIRD PARTY VERIFICATION </h5>';
+				str += '				</div>';
+				str += '				<ul class="inline unstyled booths-Overview-widget-nav">';
+				str += '					<li>';
+				str += '					<hgroup>';
+				str += '							<h4>CASTE</h4>';
+				str += '							<h2>'+result.casteTPVerifiedCount+'</h2>';
+				str += '							<h5>Completed</h5>';
+				str += '						</hgroup>';
+				str += '					</li>';
+				str += '					<li>';
+				str += '						<hgroup>';
+				str += '							<h4>HAMLET</h4>';
+				str += '							<h2>'+result.hamletTPVerifiedCount+'</h2>';
+				str += '							<h5>Mapped</h5>';
+				str += '						</hgroup>';
+				str += '				</li>';
+				str += '					<li>';
+				str += '						<hgroup>';
+				str += '						<h4>LOCAL AREA</h4>';
+				str += '							<h2>'+result.localAreaTPCount+'</h2>';
+				str += '							<h5>Identified</h5>';
+				str += '						</hgroup>';
+				str += '					</li>';
+				str += '					<li>';
+				str += '						<hgroup>';
+				str += '							<h4>CADRE</h4>';
+				str += '							<h2>'+result.cadreTPVerifiedCount+'</h2>';
+				str += '							<h5>Identified</h5>';
+				str += '						</hgroup>';
+				str += '					</li>';
+				str += '					<li>';
+				str += '						<hgroup>';
+				str += '							<h4 style="font-size:14px;">INFLUENCE PEOPLE</h4>';
+				str += '							<h2>'+result.influencePeopleTPVerifiedCount+'</h2>';
+				str += '							<h5>Identified</h5>';
+				str += '						</hgroup>';
+				str += '					</li>';
+				str += '				</ul>';
+				str += '			</div>';
+				str += '			</div>';
+				str += '		</div> ';
+			}
+			
+			
 				$('#'+divId+'').html(str);
 	});
 }
