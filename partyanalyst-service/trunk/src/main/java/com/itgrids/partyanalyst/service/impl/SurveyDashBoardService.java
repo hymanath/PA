@@ -1228,7 +1228,11 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 				surveyResponceVO.setMobileNo(parms[7] != null ? parms[7].toString() : "");
 				surveyResponceVO.setIsCadre(parms[8] != null ? parms[8].toString() : "");
 				surveyResponceVO.setIsInfluencingPeople(parms[9] != null ? parms[9].toString() : "");
-				surveyResponceVO.setUuid(parms[18] != null ? parms[18].toString() : "");
+				if(parms.length > 18 && parms[18] != null)
+				{
+					surveyResponceVO.setUuid(parms[18] != null ? parms[18].toString() : "");
+				}
+				
 
 				if(parms[10] != null)
 				{
