@@ -247,7 +247,7 @@ public class PartyCadreSearchAction extends ActionSupport implements ServletRequ
 		try{
 			
 			jObj =new JSONObject(getTask());
-			committee=cadreManagementService.getAllCommittees(jObj.getLong("committeeLevelValueId"));
+			committee=cadreManagementService.getAllCommittees(jObj.getLong("committeeLevelValueId"),jObj.getLong("scopeId"));
 			
 			return Action.SUCCESS;
 		}

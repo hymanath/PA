@@ -280,10 +280,13 @@
 	function getCommittees()
 	{
 			var committeeLevelValueId=$("#committeeLevelValueId").val();
-			
+			var committeeLIds = $("#committeeLevelId").val();
+			if(committeeLevelValueId == 0)
+				return;
 			var jsObj = 
 		{
 			committeeLevelValueId:committeeLevelValueId,
+				scopeId          : committeeLIds,
 			task:"getCommitteeLevelValues"
 		}
 				$.ajax({
