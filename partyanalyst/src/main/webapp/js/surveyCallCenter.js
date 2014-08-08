@@ -295,6 +295,8 @@ $('#searchDataImg').show();
 
 		var totalVoters = 0;
 		totalVoters = results != null ? results[0].count:0;
+		
+		var status = results[0].status;
 		$('#webMontrId').show();
 		if(results != null && results[0].subList.length>0)
 		{
@@ -317,8 +319,12 @@ $('#searchDataImg').show();
 					str +='<th>DC MOBILE</th>';
 					str +='<th>DC WM CASTE</th>';
 					str +='<th>MATCHED STATUS</th>';
+					str +='<th> DV Caste </th>';
 				}
-				str +='<th> DV Caste </th>';
+				else
+				{
+				str +='<th> DC Caste </th>';
+				}
 				str +='<th> Caste Matched  </th>';
 				str +='<th> Mobile Number </th>';
 				str +='<th> Hamlet </th>';
@@ -546,7 +552,7 @@ $('#searchDataImg').show();
 							
 								var  hamletCount =  0;
 
-								if(result[i].hamletName != null   )
+								if(result[i].hamletName != null  && result[i].hamletName.length != 0 )
 								{
 								
 									if(result[i].hamletCount != null )
@@ -862,7 +868,7 @@ $('#searchDataImg').show();
 							
 								var  hamletCount =  0;
 
-								if(result[i].hamletName != null  )
+								if(result[i].hamletName != null && result[i].hamletName.length != 0  )
 								{
 								
 									if(result[i].hamletCount != null   )
