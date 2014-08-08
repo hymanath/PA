@@ -3890,13 +3890,13 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			{
 				surveyCallStatus = new SurveyCallStatus();
 				//surveyCallStatus.setSurveyUser(surveyUserDAO.get(surveyReportVO.getUserid()));
-				surveyCallStatus.setSurveyUserId(surveyReportVO.getUserid());
+				//surveyCallStatus.setSurveyUserId(surveyReportVO.getUserid());
 				surveyCallStatus.setVoterId(surveyReportVO.getVoterId());
 				//surveyCallStatus.setVoter(voterDAO.get(surveyReportVO.getVoterId()));
 				surveyCallStatus.setInsertedDate(dateUtilService.getCurrentDateAndTime());
 			}
 			
-			
+			surveyCallStatus.setSurveyUserId(surveyReportVO.getUserid());
 			surveyCallStatus.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
 			//surveyCallStatus.setBooth(boothDAO.get(surveyReportVO.getBoothId()));
 			surveyCallStatus.setBoothId(surveyReportVO.getBoothId());
