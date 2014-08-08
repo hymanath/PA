@@ -5815,11 +5815,11 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 		return resultList;
 	}
 	
-	public List<GenericVO> getAllCommittees(Long committeeLevelValueId)
+	public List<GenericVO> getAllCommittees(Long committeeLevelValueId,Long scopeId)
 	{
 		List<GenericVO> resultList = new ArrayList<GenericVO>();
 		try{
-			List<Object[]> list = committeeDAO.getAllCommitteesForCommitteeLevelValues(committeeLevelValueId);
+			List<Object[]> list = committeeDAO.getAllCommitteesForCommitteeLevelValues(committeeLevelValueId,scopeId);
 			if(list != null && list.size() > 0)
 			{
 				for(Object[] params : list)

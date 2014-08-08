@@ -8,5 +8,5 @@ import com.itgrids.partyanalyst.model.Committee;
 
 public interface ICommitteeDAO extends GenericDao<Committee, Long>{
 	public List<Long> getAllCommitteeLevelValuesByCommitteeLevel(Long committeeLevelId);
-	public List<Object[]> getAllCommitteesForCommitteeLevelValues(Long committeeLevelValueId);
+	public List<Object[]> getAllCommitteesForCommitteeLevelValues(Long committeeLevelValueId,Long scopeId);
 }
