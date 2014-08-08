@@ -39,7 +39,7 @@ public class SurveyFinalDataDAO extends GenericDaoHibernate<SurveyFinalData, Lon
 	{
 		Query query = getSession().createQuery("select model.booth.boothId,model.voter.voterId,model.voter.voterIDCardNo,model.voter.name,model.voter.gender,model.voter.age " +
 				" , model.voter.houseNo , model.mobileNo,model.isCadre , model.isInfluencingPeople , model.casteStateId , model.casteName ," +
-				" model.hamletId , model.hamletName , model.wardId,model.localArea ,model.voter.relativeName,model.surveyWmThirdPartyStatus.surveyWmThirdPartyStatusId from SurveyFinalData model where model.boothId = :boothId");
+				" model.hamletId , model.hamletName , model.wardId,model.localArea ,model.voter.relativeName,model.surveyWmThirdPartyStatus.surveyWmThirdPartyStatusId,model.uuid from SurveyFinalData model where model.boothId = :boothId");
 		query.setParameter("boothId", boothId);
 		return query.list();
 	}
