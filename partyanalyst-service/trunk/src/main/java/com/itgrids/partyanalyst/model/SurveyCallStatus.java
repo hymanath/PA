@@ -29,9 +29,6 @@ public class SurveyCallStatus implements java.io.Serializable{
 	private Voter voter;
 	private String mobileNoStatus;
 	private String matchedStatus;
-	private String hamletStatus;
-	private Long hamletId;
-	private Hamlet hamlet;
 	private Date insertedDate;
 	private Date updatedDate;
 	private Booth booth;
@@ -54,9 +51,6 @@ public class SurveyCallStatus implements java.io.Serializable{
 	
 	private String dvMobileNoStatus;
 	private String dvMatchedStatus ;
-	private String dvhamletStatus;
-	private Hamlet dvHamlet;
-	private Long dvHamletId;	
 
 	
 	@Id
@@ -267,61 +261,6 @@ public class SurveyCallStatus implements java.io.Serializable{
 	}
 	public void setDvMatchedStatus(String dvMatchedStatus) {
 		this.dvMatchedStatus = dvMatchedStatus;
-	}
-	
-	@Column(name = "hamlet_status")
-	public String getHamletStatus() {
-		return hamletStatus;
-	}
-	public void setHamletStatus(String hamletStatus) {
-		this.hamletStatus = hamletStatus;
-	}
-	
-	@Column(name="updated_hamlet_id")
-	public Long getHamletId() {
-		return hamletId;
-	}
-	public void setHamletId(Long hamletId) {
-		this.hamletId = hamletId;
-	}
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "updated_hamlet_id",insertable = false , updatable = false)
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Hamlet getHamlet() {
-		return hamlet;
-	}
-	
-	public void setHamlet(Hamlet hamlet) {
-		this.hamlet = hamlet;
-	}
-	
-	@Column(name = "dv_hamlet_status")
-	public String getDvhamletStatus() {
-		return dvhamletStatus;
-	}
-	public void setDvhamletStatus(String dvhamletStatus) {
-		this.dvhamletStatus = dvhamletStatus;
-	}
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "dv_updated_hamlet_id",insertable = false , updatable = false)
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)	
-	public Hamlet getDvHamlet() {
-		return dvHamlet;
-	}
-	public void setDvHamlet(Hamlet dvHamlet) {
-		this.dvHamlet = dvHamlet;
-	}
-	
-	@Column(name="dv_updated_hamlet_id")
-	public Long getDvHamletId() {
-		return dvHamletId;
-	}
-	public void setDvHamletId(Long dvHamletId) {
-		this.dvHamletId = dvHamletId;
 	}
 
 	
