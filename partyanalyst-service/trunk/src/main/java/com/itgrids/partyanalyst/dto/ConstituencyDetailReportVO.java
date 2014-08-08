@@ -19,6 +19,7 @@ public class ConstituencyDetailReportVO implements java.io.Serializable{
 	private Long influencePeopleCollectedCount;
 	private Long mobileNoCollectedCount;
 	private Long notCollectedVoters;
+	private Long localAreaDataCount;
 	
 	private Long dataVerifiedCount;
 	private Long casteVerifiedCount;
@@ -31,8 +32,99 @@ public class ConstituencyDetailReportVO implements java.io.Serializable{
 	private Long localAreaCount;
 	
 	private List<GenericVO> boothsList = new ArrayList<GenericVO>();
+	private List<GenericVO> thirdPartyboothsList = new ArrayList<GenericVO>();
 			
+	private Long dataTPVerifiedCount;
+	private Long casteTPVerifiedCount;
+	private Long hamletTPVerifiedCount;
+	private Long cadreTPVerifiedCount;
+	private Long influencePeopleTPVerifiedCount;
+	private Long mobileNoTPVerifiedCount;
+	private Long notTPVerifiedVoters;
+	private Long localAreaTPCount;
 	
+	
+	public List<GenericVO> getThirdPartyboothsList() {
+		return thirdPartyboothsList;
+	}
+
+	public void setThirdPartyboothsList(List<GenericVO> thirdPartyboothsList) {
+		this.thirdPartyboothsList = thirdPartyboothsList;
+	}
+
+	public Long getLocalAreaDataCount() {
+		return localAreaDataCount;
+	}
+
+	public void setLocalAreaDataCount(Long localAreaDataCount) {
+		this.localAreaDataCount = localAreaDataCount;
+	}
+
+	public Long getLocalAreaTPCount() {
+		return localAreaTPCount;
+	}
+
+	public void setLocalAreaTPCount(Long localAreaTPCount) {
+		this.localAreaTPCount = localAreaTPCount;
+	}
+
+	public Long getDataTPVerifiedCount() {
+		return dataTPVerifiedCount;
+	}
+
+	public void setDataTPVerifiedCount(Long dataTPVerifiedCount) {
+		this.dataTPVerifiedCount = dataTPVerifiedCount;
+	}
+
+	public Long getCasteTPVerifiedCount() {
+		return casteTPVerifiedCount;
+	}
+
+	public void setCasteTPVerifiedCount(Long casteTPVerifiedCount) {
+		this.casteTPVerifiedCount = casteTPVerifiedCount;
+	}
+
+	public Long getHamletTPVerifiedCount() {
+		return hamletTPVerifiedCount;
+	}
+
+	public void setHamletTPVerifiedCount(Long hamletTPVerifiedCount) {
+		this.hamletTPVerifiedCount = hamletTPVerifiedCount;
+	}
+
+	public Long getCadreTPVerifiedCount() {
+		return cadreTPVerifiedCount;
+	}
+
+	public void setCadreTPVerifiedCount(Long cadreTPVerifiedCount) {
+		this.cadreTPVerifiedCount = cadreTPVerifiedCount;
+	}
+
+	public Long getInfluencePeopleTPVerifiedCount() {
+		return influencePeopleTPVerifiedCount;
+	}
+
+	public void setInfluencePeopleTPVerifiedCount(
+			Long influencePeopleTPVerifiedCount) {
+		this.influencePeopleTPVerifiedCount = influencePeopleTPVerifiedCount;
+	}
+
+	public Long getMobileNoTPVerifiedCount() {
+		return mobileNoTPVerifiedCount;
+	}
+
+	public void setMobileNoTPVerifiedCount(Long mobileNoTPVerifiedCount) {
+		this.mobileNoTPVerifiedCount = mobileNoTPVerifiedCount;
+	}
+
+	public Long getNotTPVerifiedVoters() {
+		return notTPVerifiedVoters;
+	}
+
+	public void setNotTPVerifiedVoters(Long notTPVerifiedVoters) {
+		this.notTPVerifiedVoters = notTPVerifiedVoters;
+	}
+
 	public List<GenericVO> getBoothsList() {
 		return boothsList;
 	}
