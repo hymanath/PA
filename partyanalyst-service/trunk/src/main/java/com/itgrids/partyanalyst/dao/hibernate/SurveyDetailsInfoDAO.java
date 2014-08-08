@@ -1401,6 +1401,33 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		
 	}
 	
+	public List<Object[]> getBoothDetailsByForThirtyPartyVerifiers(Long constituencyId,Long surveyUserTypeId)
+	{
+		StringBuilder  queryStr = new StringBuilder();
+		queryStr.append("select distinct SDI.booth.boothId, SDI.booth.partNo from SurveyDetailsInfo SDI, Booth B where SDI.booth.boothId = B.boothId and " +
+				"SDI.booth.constituency.constituencyId = :constituencyId and SDI.surveyUser.surveyUserType.surveyUsertypeId =:surveyUserTypeId  ");
+			
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("surveyUserTypeId", surveyUserTypeId);
+
+		return query.list();
+		
+	}
+	
+	
+	public List<SurveyDetailsInfo> getsurveyDetailsInfoByVoterId(Long surveyUserId, Long voterId)
+	{
+		Query query = getSession().createQuery("select SDI from SurveyDetailsInfo SDI where SDI.voter.voterId = :voterId and SDI.surveyUser.surveyUserId = :surveyUserId ");
+		
+		query.setParameter("voterId", voterId);
+		query.setParameter("surveyUserId", surveyUserId);
+		
+		return query.list();
+		
+	}
+	
+	
 	public List<Object[]> getHouseNosMappedCount(List<Long> userIds,List<Long> boothIds,Long userTypeId,Date date,Date toDate)
 	{
 		StringBuilder str = new StringBuilder();
