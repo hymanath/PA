@@ -3,6 +3,8 @@ package com.itgrids.partyanalyst.service.impl;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -84,6 +86,7 @@ import com.itgrids.partyanalyst.dto.SmsResultVO;
 import com.itgrids.partyanalyst.dto.SmsVO;
 import com.itgrids.partyanalyst.dto.StateToHamletVO;
 import com.itgrids.partyanalyst.dto.UserCadresInfoVO;
+import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.model.AssemblyLocalElectionBody;
 import com.itgrids.partyanalyst.model.AssignedProblemProgress;
@@ -5801,17 +5804,39 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			switch (committeeLevelId.intValue()) {
 
 			case 1: {
-				resultList = getStates(list);
+				resultList = getValues(list,IConstants.STATE);
 				break;
 			}
 			case 2: {
-				resultList = getDistricts(list);
+				resultList = getValues(list,IConstants.DISTRICT);
+				break;
+			}
+			case 3: {
+				resultList = getValues(list,IConstants.CONSTITUENCY);
+				break;
+			}
+			case 4: {
+				resultList = getValues(list,IConstants.CONSTITUENCY);
+				break;
+			}
+			case 5: {
+				resultList = getValues(list,IConstants.MANDAL);
+				break;
+			}
+			case 6: {
+				resultList = getValues(list,IConstants.PANCHAYAT);
+				break;
+			}
+			case 7: {
+				resultList = getValues(list,IConstants.BOOTH);
 				break;
 			}
 			}
+			Collections.sort(resultList);
 		}catch (Exception e) {
 			log.error("Exception Rised In getAllCommitteeLevelValues" , e);
 		}
+		
 		return resultList;
 	}
 	
@@ -5834,22 +5859,62 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 		return resultList;
 	}
 	
-	public List<GenericVO> getStates(List<Long> committeeLevelValues)
+	public List<GenericVO> getValues(List<Long> committeeLevelValues,String type)
 	{
-		List<GenericVO> statesList = new ArrayList<GenericVO>();
+		List<GenericVO> result = new ArrayList<GenericVO>();
+		try{
+		
 		State state =null;
+		District district =null;
+		Constituency constituency = null;
+		Tehsil tehsil = null;
+		Booth booth = null;
+		Panchayat panchayat = null;
 		for(Long id : committeeLevelValues)
 		{
 			GenericVO vo= new GenericVO();
-			state = stateDAO.get(new Long(id));
 			vo.setId(id);
+			if(type.equalsIgnoreCase(IConstants.STATE))
+			{
+			state = stateDAO.get(new Long(id));
 			vo.setName(state.getStateName());
-			statesList.add(vo);
+			}
+			else if(type.equalsIgnoreCase(IConstants.DISTRICT))
+			{
+			district = districtDAO.get(new Long(id));
+			
+			vo.setName(district.getDistrictName());
+			}
+			else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			{
+			constituency = constituencyDAO.get(new Long(id));
+			vo.setName(constituency.getName());
+			}
+			else if(type.equalsIgnoreCase(IConstants.MANDAL))
+			{
+				tehsil = tehsilDAO.get(new Long(id));
+				vo.setName(tehsil.getTehsilName());
+			}
+			else if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
+			{
+				panchayat = panchayatDAO.get(new Long(id));
+				vo.setName(panchayat.getPanchayatName());
+			}
+			else if(type.equalsIgnoreCase(IConstants.BOOTH))
+			{
+				booth = boothDAO.get(new Long(id));
+				vo.setName(booth.getPartNo());
+			}
+			result.add(vo);
+		}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
 		}
 		
-		return statesList;
+		return result;
 	}
-	
+	/*
 	public List<GenericVO> getDistricts(List<Long> committeeLevelValues)
 	{
 		List<GenericVO> districtsList = new ArrayList<GenericVO>();
@@ -5865,7 +5930,8 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 		}
 		
 		return districtsList;
-	}
+	}*/
+	
 	/*public List<CadreVo> getLocalElectionBodyDetailsByConId(Long constituencyId) throws Exception
 	{
 		List<CadreVo> LocationDetails=new ArrayList<CadreVo>();
