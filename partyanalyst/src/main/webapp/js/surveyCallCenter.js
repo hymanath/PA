@@ -5300,7 +5300,8 @@ function getFinalReport()
 			url: 'finalDeselectionReport.action',
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)},
-		 }).done(function(result){	
+		 }).done(function(result){
+			$('#mainajaximg').hide();		 
 			if(result != null)
 			buildFinalReport(result)
 		});	
