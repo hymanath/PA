@@ -306,6 +306,7 @@
 	}
 function getCommitteCadreDetails()
 {
+	$("#tableDiv").html('');
 var committeeLIds = $("#committeeLevelId").val();
 var committeeLVIds = $("#committeeLevelValueId").val();
 var committeeIds = $("#committeeId").val();
