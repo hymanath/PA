@@ -1,9 +1,10 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GenericVO {
+public class GenericVO implements Serializable, Comparable<GenericVO>{
 	
 	private Long id;
     private String name;
@@ -129,8 +130,34 @@ public class GenericVO {
 		this.genericVOList = genericVOList;
 	}
 	
+	@Override
+	public boolean equals(Object obj){
+		if(id==null)
+			id = -1L;
+		if(obj instanceof GenericVO){
+			GenericVO vo = (GenericVO) obj;
+			return this.id.equals(vo.getId());
+		}
+		return false;
+	}
 	
+	@Override
+	public int hashCode(){
+		if(id==null)
+			id = -1L;
+		return this.id.intValue();
+	}
 	
+	@Override
+	public int compareTo(GenericVO obj) {
+		
+		if(obj  instanceof GenericVO){
+			GenericVO vo = (GenericVO) obj;
+			return name.compareToIgnoreCase(vo.getName());
+		}
+		else
+			return 0;
+	}
 	
 	
 }
