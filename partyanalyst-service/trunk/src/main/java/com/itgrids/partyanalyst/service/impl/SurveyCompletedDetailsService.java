@@ -146,6 +146,8 @@ public class SurveyCompletedDetailsService implements
 			for(Object[] obj:votersCountList)
 				votersCountMap.put((Long)obj[0],(Long) obj[2]);
 			
+			List<Long> thitdPartyConstns = surveyDetailsInfoDAO.getThirdPartyStartedConstituencies();
+			
 			
 			for(Long constituencyId:constituencyIds)
 			{
@@ -158,6 +160,8 @@ public class SurveyCompletedDetailsService implements
 				constituencyVO.setNotStartedCount(constituencyVO.getTotal() - (constituencyVO.getProcessingCount()+constituencyVO.getCompletedCount()));
 				constituencyVO.setTotalVoters(votersCountMap.get(constituencyId));
 				constituencyVO.setTotalCollectedCount(datacollectedCountMap.get(constituencyVO.getId()) != null ? datacollectedCountMap.get(constituencyVO.getId()) : 0);
+				if(thitdPartyConstns != null)
+				constituencyVO.setForThirdParty(thitdPartyConstns.contains(constituencyId) ? true:false);
 		
 				resultList.add(constituencyVO);
 			}

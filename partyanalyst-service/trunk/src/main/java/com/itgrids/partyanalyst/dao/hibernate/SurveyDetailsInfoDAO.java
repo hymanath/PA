@@ -1502,4 +1502,15 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		return query.list();
 		
 	}
+	
+	public List<Long> getThirdPartyStartedConstituencies()
+	{
+		Query query = getSession().createQuery("select distinct SDI.booth.constituency.constituencyId from SurveyDetailsInfo SDI " +
+				"where SDI.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId");
+		
+		query.setParameter("userTypeId", IConstants.THIRD_PARTY_ROLE_ID);
+		
+		return query.list();
+		
+	}
 }
