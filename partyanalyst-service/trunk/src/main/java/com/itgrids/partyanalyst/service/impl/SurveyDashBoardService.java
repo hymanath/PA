@@ -1208,6 +1208,9 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 		{
 			for (Object[] parms : resultList) 
 			{
+				
+				boolean casteExisist=false;
+				boolean hamletExisist=false;
 				SurveyResponceVO surveyResponceVO = new SurveyResponceVO();
 				surveyResponceVO.setDataTypeId("2");
 				surveyResponceVO.setBoothId((Long)parms[0]);
@@ -1220,12 +1223,16 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 					surveyResponceVO.setAge(parms[5] != null ? Long.valueOf(parms[5].toString()) : 0l);
 					surveyResponceVO.setHouseNo(parms[6] != null ? parms[6].toString() : "");
 					surveyResponceVO.setRelativeName(parms[16] != null ? parms[16].toString() : "");
+				//	surveyResponceVO.setUuid(parms[18] != null ? parms[17].toString() : "");
 				}
 				surveyResponceVO.setMobileNo(parms[7] != null ? parms[7].toString() : "");
 				surveyResponceVO.setIsCadre(parms[8] != null ? parms[8].toString() : "");
 				surveyResponceVO.setIsInfluencingPeople(parms[9] != null ? parms[9].toString() : "");
+				surveyResponceVO.setUuid(parms[18] != null ? parms[18].toString() : "");
+
 				if(parms[10] != null)
 				{
+					casteExisist=true;
 					if(parms[11] != null && parms[11].toString().trim().length() > 0)
 					{
 						surveyResponceVO.setCasteName(parms[11] != null ? parms[11].toString() : "");
@@ -1245,6 +1252,7 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 				}
 				if(parms[12] != null)
 				{
+					hamletExisist=true;
 					if(parms[13] != null && parms[13].toString().trim().length() > 0)
 					{
 						surveyResponceVO.setHamletName(parms[13] != null ? parms[13].toString() : "");
@@ -1261,7 +1269,14 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 					{
 						surveyResponceVO.setHamletName(parms[13] != null ? parms[13].toString() : "");
 					}
+					if(parms[14] != null)
+					{
+						hamletExisist=true;
+					}
 				}
+				if(!hamletExisist && !casteExisist)
+					surveyResponceVO.setDataTypeId("1");
+				
 				surveyResponceVO.setWardId(parms[14] != null ? Long.valueOf(parms[14].toString()) :0l);
 				surveyResponceVO.setLocalArea(parms[15] != null ? parms[15].toString() : "");
 				if(parms.length > 17 && parms[17] != null){
