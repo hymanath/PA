@@ -1084,13 +1084,19 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 			
 			List<Object[]> hamletList =  surveyDetailsInfoDAO.getBoothWiseCollectedDetailsForConstituency(constituencyId,IConstants.THIRD_PARTY_ROLE_ID,"hamlet");
 			
+			List<Object[]> wardList =  surveyDetailsInfoDAO.getBoothWiseCollectedDetailsForConstituency(constituencyId,IConstants.THIRD_PARTY_ROLE_ID,"ward");
+
+			
 			List<Object[]> mobileNumberList =  surveyDetailsInfoDAO.getBoothWiseCollectedDetailsForConstituency(constituencyId,IConstants.THIRD_PARTY_ROLE_ID,"mobileNumber");
+			
+
 			
 			
 			Set<Long> totalBoothsList = new HashSet<Long>();
 			
 			Map<Long,Long> casteMap = new HashMap<Long, Long>();
 			Map<Long,Long> hamletMap = new HashMap<Long, Long>();
+			Map<Long,Long> wardMap = new HashMap<Long, Long>();
 			Map<Long,Long> mobileNumbersMap = new HashMap<Long, Long>();
 			
 			for(Object[] obj:casteList)
@@ -1102,6 +1108,12 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 			for(Object[] obj:hamletList)
 			{
 				hamletMap.put((Long)obj[1], (Long)obj[0]);
+				totalBoothsList.add((Long)obj[1]);
+			}
+			
+			for(Object[] obj:wardList)
+			{
+				wardMap.put((Long)obj[1], (Long)obj[0]);
 				totalBoothsList.add((Long)obj[1]);
 			}
 			
@@ -1145,7 +1157,12 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 				boothVO.setTotalVoters(totalVotersMap.get(boothId));
 				boothVO.setMobileNoCount(mobileNumbersMap.get(boothId));
 				boothVO.setCasteCount(casteMap.get(boothId));
-				boothVO.setHamletCount(hamletMap.get(boothId));
+				
+				if(hamletMap.get(boothId) != null)
+					 boothVO.setHamletCount(hamletMap.get(boothId));
+				else if(wardMap.get(boothId) != null)
+					 boothVO.setHamletCount(wardMap.get(boothId));
+				
 				boothVO.setBoothId(boothId);
 				boothVO.setPartNo(boothDetailsMap.get(boothId));
 				

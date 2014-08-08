@@ -1482,6 +1482,10 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		{
 			queryString.append("count(SDI.mobileNumber)");
 			
+		}else if(attribute.equalsIgnoreCase("ward"))
+		{
+			queryString.append("count(SDI.wardId)");
+			
 		}
 		
 		queryString.append(",SDI.booth.boothId,SDI.booth.partNo from SurveyDetailsInfo SDI " +
