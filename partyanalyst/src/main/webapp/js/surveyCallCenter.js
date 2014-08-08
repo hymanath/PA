@@ -4087,7 +4087,7 @@ function getVerfierDetails(buildType,imgId,buildDiv)
 	$('#'+imgId+'').show();
 	$('#'+buildDiv+'').html('');
 	var boothIds = new Array();
-	if($("#constituencyForWm").val() == 0)
+	/*if($("#constituencyForWm").val() == 0)
 	{
 		$("#errorDivForWM").html("<font color='#FF0000'>Select Constituency</font>");
 		return;
@@ -4096,7 +4096,7 @@ function getVerfierDetails(buildType,imgId,buildDiv)
 	{
 		 $("#errorDivForWM").html('<font color="#FF0000">Select Booth</font>');
 		 return;
-	}
+	}*/
 	 $("#errorDivForWM").html("");
 	if(buildType == 1)
 	{
