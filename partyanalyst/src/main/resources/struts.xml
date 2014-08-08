@@ -7997,5 +7997,11 @@
 					<param name="root">thirdPartyResultList</param>
 			</result>
 		</action>
+		
+		<action name="updateThirdPartyComment" class="surveyDashBoardAction" method="updateThirdPartyComment">
+			<result type="json" name="success">
+					<param name="root">resultStatus</param>
+			</result>
+		</action>
 </package>
 </struts>      
