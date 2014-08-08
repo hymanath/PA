@@ -416,11 +416,11 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		HttpSession session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
-		/*if(session.getAttribute(IConstants.USER) == null && 
+		if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.SURVEY_USER_CREATION))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.SURVEY_USER_CREATION))
-			return ERROR;*/
+			return ERROR;
 		constituencies = surveyDashBoardService.getConstituencyListForThirdPartyReport();
 		constituenciesList = 	surveyDataDetailsService.getAllAssemblyConstituenciesByStateId();
 		dataAvilableConstituencies = surveyDataDetailsService.getSurveyStartedConstituencyList();
