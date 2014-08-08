@@ -104,6 +104,7 @@
 									<th>Completed</th>
 									<th>Processing </th>
 									<th>Not Yet Started </th>
+									<th>Third Party Started ? </th>
 								</tr>
 							</thead>
 							<tbody>
@@ -118,6 +119,13 @@
 									<td>${constituency.completedCount}</td>
 									<td>${constituency.processingCount}</td>
 									<td>${constituency.notStartedCount}</td>
+									<c:if test="${constituency.forThirdParty == true}">
+ 									 <td>Y</td>
+								    </c:if>
+
+									<c:if test="${constituency.forThirdParty != true}">
+ 									 <td>N</td>
+								    </c:if>
 								</tr>
 								</c:if>
 								</c:forEach>
