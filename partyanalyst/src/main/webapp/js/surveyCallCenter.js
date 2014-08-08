@@ -4709,8 +4709,9 @@ $('#boothWiseTab,#startTimeTab').removeClass('selected');
 				str +='	<thead class="alert alert-success">';
 				str +='	<tr>';
 				
-					//str +='<th> <input type="checkbox" id="alluserChkbx" class="allCheckbxCls"  onclick="selectAllCheckBoxes();"/> Select All </th>';
-				    str +='<th>VOTER NAME</th>';
+					str +='<th> <input type="checkbox" id="thirdPartyChkBox" class="allCheckbxCls"  onclick="checkAllThirdPartyChkBoxes();"/> Select All </th>';
+					str +='<th>S.NO</th>';
+					str +='<th>VOTER NAME</th>';
 					str +='<th>RELATIVE NAME</th>';
 					str +='<th>H.NO</th>';
 					str +='<th>GENDER</th>';
@@ -4718,11 +4719,14 @@ $('#boothWiseTab,#startTimeTab').removeClass('selected');
 					str +='<th>WM CASTE</th>';
 					str +='<th>TP CASTE</th>';
 					str +='<th>STATUS</th>';
+					str +='<th>COMMENT</th>';
 					str +='</tr>';
 				    str +='</thead>';
 				    str +='<tbody>';
 					 for(var i in result){
 			          str +='<tr>';
+					   str +='<td><input type="checkbox" id="tPCommentCheck'+i+'" key="'+i+'" class="thirdPartyChkAllVoters" value="'+result[i].voterId+'"></input></td>';
+					   str +='<td>'+result[i].serialNo+'</td>';
 					   str +='<td>'+result[i].voterName+'</td>';
 					   str +='<td>'+result[i].relativeName+'</td>';
 					   str +='<td>'+result[i].houseNo+'</td>';
@@ -4732,7 +4736,7 @@ $('#boothWiseTab,#startTimeTab').removeClass('selected');
 					   str +='<td>'+result[i].tpCaste+'</td>';
 					   str +='<td>';
 					    if(result[i].status != null){
-					      str +='<select onchange="updateThirdPartyDetails('+result[i].voterId+',this.value);">';
+					      str +='<select id="tPmultipleupdtStsId'+i+'" onchange="updateThirdPartyDetails('+result[i].voterId+',this.value);">';
 					              str +='<option value="0">Select Status</option>';
 								  if(result[i].status == 1){
 								     str +='<option value="1" selected="selected">Same Caste</option>';
@@ -4756,7 +4760,7 @@ $('#boothWiseTab,#startTimeTab').removeClass('selected');
 								  }
 					      str +='</select>';
 						 }else{
-						   str +='<select onchange="updateThirdPartyDetails('+result[i].voterId+',this.value);">';
+						   str +='<select id="tPmultipleupdtStsId'+i+'" onchange="updateThirdPartyDetails('+result[i].voterId+',this.value);">';
 					              str +='<option value="0">Select Status</option>';
 								  str +='<option value="1">Same Caste</option>';
 								  str +='<option value="2">WM Wrong</option>';
@@ -4765,18 +4769,102 @@ $('#boothWiseTab,#startTimeTab').removeClass('selected');
 					       str +='</select>';
 						 }
 					    str +='</td>';
+						 str +='<td><textarea id="tPCommentArea'+i+'">'+result[i].comment+'</textarea><br /><input type="button" id="tPCommentSubmit'+i+'" value="Submit" class="btn btn-success" onclick="updateTPComment('+i+')"/><img style="display:none;"  src="images/icons/search.gif" id="tPCommentSubmitImg'+i+'"/></td>';
 					  str +='</tr>';
 			         }
 					str +='</tbody>';
 					str +='</table>';
+					str +='<div id="scrollBtnDiv" >';
+				    str +='<a id="tPUpdateBtnInNewWndow" style="position: fixed; left :0px; top: 320px;" href="javascript:{tPUpdateVoterCommentStatus();}" class="btn btn-primary"> Update Details </a>';
+				    str +='</div>';
 		        $('#voterInfoDIv').html(str);
 				$('#voterDetlsTab').dataTable({
 				"iDisplayLength": 100,
 				"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]]
 				});
+		   }else{
+		       var str ="";
+		       str +='	No Data Available. ';
+			    $('#voterInfoDIv').html(str);
 		   }
 		});
 }
+
+function updateTPComment(id){
+ var voterIds = $("#tPCommentCheck"+id).val();
+ var comment = $.trim($("#tPCommentArea"+id).val());
+ $("#tPCommentSubmit"+id).attr('disabled','disabled');
+ $("#tPCommentSubmitImg"+id).show();
+  var jsObj = 
+	{
+		voterIds : voterIds,
+		statusId : "",
+		comment  : comment
+	}
+	$.ajax({
+			type:'GET',
+			url: 'updateThirdPartyComment.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		 }).done(function(result){	
+		    $("#tPCommentSubmitImg"+id).hide();
+		    $("#tPCommentSubmit"+id).removeAttr('disabled');
+			alert("Comment Updated SuccessFully");
+		});
+}
+
+function updateMultipleTPComment(){
+var voterIds ="";
+var comment = $("#multipleTpCommentUpdateId").val();
+var statusId ="";
+var ids = new Array();
+ $(".thirdPartyChkAllVoters").each(function(){
+     if($(this).is(":checked")){
+	     ids.push($(this).attr("key"));
+	     if(voterIds.length > 0){
+	       voterIds = voterIds+","+$(this).val();
+		 }else{
+		   voterIds = $(this).val();
+		 }
+	 }
+ 
+ });
+ if($.trim(voterIds).length > 0){
+	   if($("#multipleTpStatusUpdateCheckId").is(":checked")){
+	      statusId = $("#multipleTpStatusUpdateId").val();
+	   }
+	   $("#multipleTpStatusUpdateSubmitId").attr('disabled','disabled');
+	   $("#updateMultipleTPCommentImg").show();
+	   var jsObj = 
+		{
+			voterIds : voterIds,
+			statusId : statusId,
+			comment  : comment
+		}
+		$.ajax({
+				type:'GET',
+				url: 'updateThirdPartyComment.action',
+				dataType: 'json',
+				data: {task:JSON.stringify(jsObj)},
+			 }).done(function(result){	
+			    $("#updateMultipleTPCommentImg").hide();
+			    for(var i in ids){
+	              $("#tPCommentArea"+ids[i]).val(comment);
+				  if(statusId.length > 0){
+				     $("#tPmultipleupdtStsId"+ids[i]).val(statusId);
+				  }
+				  $("#tPCommentCheck"+ids[i]).checked = false;	
+                  $("#tPCommentCheck"+ids[i]).removeAttr('checked');					  
+	            }
+				
+				$("#multipleTpStatusUpdateSubmitId").removeAttr('disabled');
+				alert("Comment Updated SuccessFully");
+			});
+	}else{
+	   alert("Please Select Voter To Update Comment");
+	}
+}
+
 //updateThirdPartyDetails();
 function updateThirdPartyDetails(voterId,statusId)
 {
@@ -4872,4 +4960,77 @@ function buildFinalReportWithTP(result){
 	$('#FinalReportWithTPTableId').dataTable();
 	
 	$("#thirdPartyAjax").hide();
+}
+
+function checkAllThirdPartyChkBoxes(){
+ if($("#thirdPartyChkBox").is(':checked')){
+    $('.thirdPartyChkAllVoters').each(function(){ this.checked = true; }); 
+  }else{
+    $('.thirdPartyChkAllVoters').each(function(){ this.checked = false; });
+  }
+}
+
+function tPUpdateVoterCommentStatus(){
+	
+	var checked =false;
+
+	$('.thirdPartyChkAllVoters').each(function(){
+		if($(this).is(':checked')){
+			checked=true;
+		}
+		if(checked){
+		  return false;
+		}
+	});
+
+	if(!checked){
+		alert("Please select atleast one voter to update comment.");
+		return;
+	}
+	
+$('#finalInputDiv').html('');
+	
+	$("#editStatusDiv").dialog({
+		width:600,
+		height:300,
+		modal: true,
+		resizable: false,
+		title:" Update Comment and Status"
+	});
+
+	var str='';
+	str +='<div class="row">';
+	str +='<div id="finalErrDiv" style="color:#FF0020;margin-left: 100px;"></div>';
+		str +='<div class="offset1">';
+		str +='<div class="row-fluid">';
+				str +='<div class="span14">';
+				str +='<table>';
+				str +='<tr><td><b>Comment : </b></td><td><textarea id="multipleTpCommentUpdateId"></textarea></td></tr>';
+				str +='<tr><td></td><td><input type="checkbox" id="multipleTpStatusUpdateCheckId" style="margin-top:-3px;" onclick="hideShowmultipleTpStatusUpdateDiv();"/> &nbsp; Check To Update Status</td></tr>';
+				str +='<tr id="multipleTpStatusUpdateDivId" style="display:none;"><td><b>Select Status : </b></td><td><select id="multipleTpStatusUpdateId">';
+				                  str +='<option value="0">Select Status</option>';
+								  str +='<option value="1">Same Caste</option>';
+								  str +='<option value="2">WM Wrong</option>';
+								  str +='<option value="3">TP Wrong</option>';
+								  str +='<option value="4">Newly Collected Caste</option>';
+				str +='</select></td></tr>';
+				str +='<tr><td></td><td><input id="multipleTpStatusUpdateSubmitId" type="button" class="btn btn-success" value="Submit" onclick="updateMultipleTPComment();" /><img style="display:none;"  src="images/icons/search.gif" id="updateMultipleTPCommentImg"/></td></tr>';
+				str +='</table>';		
+				str +='</div>';		
+	str +='</div>';
+	str +='</div>';
+		
+	str +='</div>';
+	str +='</div>';					
+	$('#finalInputDiv').html(str);
+				
+}
+function hideShowmultipleTpStatusUpdateDiv(){
+
+   if($("#multipleTpStatusUpdateCheckId").is(":checked")){
+       $("#multipleTpStatusUpdateDivId").show();
+   }else{
+       $("#multipleTpStatusUpdateDivId").hide();
+   }
+
 }

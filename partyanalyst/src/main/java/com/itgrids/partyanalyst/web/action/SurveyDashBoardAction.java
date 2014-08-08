@@ -557,4 +557,32 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 		return Action.SUCCESS;
 		
 	}
+	
+	public String updateThirdPartyComment()	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			List<Long> voterIds = new ArrayList<Long>();
+			String[] ids = jObj.getString("voterIds").split(",");
+			if(ids.length > 0){
+				for(String id:ids){
+					if(id.trim().length() > 0){
+						voterIds.add(Long.valueOf(id.trim()));
+					}
+				}
+			}
+			Long statusId = null;
+			 String status = jObj.getString("statusId");
+			 if(status.trim().length() > 0){
+				 statusId = Long.valueOf(status.trim());
+			 }
+			resultStatus = surveyDashBoardService.updateThirdPartyComment(voterIds,jObj.getString("comment"),statusId);
+			
+		}catch(Exception e)
+		{
+			LOG.error("Exception raised ", e);
+		}
+		return Action.SUCCESS;
+		
+	}
 }
