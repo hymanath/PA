@@ -257,7 +257,7 @@
 									<div class="row-fluid">											
 										<div class="span4">
 											Select Constituency <font class="requiredFont">*</font>
-											<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="constituencyForTP" list="constituencies" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" onChange="getBoothsDetailsInCallStatusInfoForSavePercnt(this.value,'boothIdForTP')"/>
+											<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="constituencyForTP" list="dataAvilableConstituencies" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" onChange="getBoothsDetailsInCallStatusInfoForSavePercnt(this.value,'boothIdForTP')"/>
 										</div>
 										<div class="span3">
 											Select Booth <font class="requiredFont">*</font> : 
