@@ -71,6 +71,7 @@ public class SurveyFinalData implements Serializable
 	private SurveyUser surveyUser;
 	
 	private String uuid;
+	private String comment;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -293,7 +294,13 @@ public class SurveyFinalData implements Serializable
 	}
 	
 	
-	
+	@Column(name="comment")
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
 	
 	
 }
