@@ -5828,6 +5828,7 @@ function getFinalReportWithTP(){
 }
 
 function buildFinalReportWithTP(result){
+	$("#thirdPartyAjax").show();
 	$("#FinalReportWithTPId").html("");
 	var str = "";
 	str +="<table id='FinalReportWithTPTableId' class='table table-bordered table-striped'>";
