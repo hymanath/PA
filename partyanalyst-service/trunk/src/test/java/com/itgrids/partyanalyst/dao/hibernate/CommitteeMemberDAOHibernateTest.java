@@ -18,12 +18,5 @@ public class CommitteeMemberDAOHibernateTest  extends BaseDaoTestCase{
 	}
 	
 	
-	public void test()
-	{
-		List<Object[]> list = committeeMemberDAO.getCommitteeCadreInfo(1l);
-		System.out.println(list.size());
-		
-		
-	}
 	
 }
