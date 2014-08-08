@@ -33,6 +33,7 @@ import com.itgrids.partyanalyst.service.ISurveyDashBoardService;
 import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
 import com.itgrids.partyanalyst.service.ISurveyDetailsService;
 import com.itgrids.partyanalyst.service.impl.RegionServiceDataImp;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -1298,11 +1299,11 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 			}
 			Long userId = user.getRegistrationID();
 			
-			/*if(session.getAttribute(IConstants.USER) == null && 
+			if(session.getAttribute(IConstants.USER) == null && 
 					!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.CASTE_SURVEY_CALL_CENTER))
 				return INPUT;
 			if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CASTE_SURVEY_CALL_CENTER))
-				return ERROR;*/
+				return ERROR;
 				constituenciesList = 	surveyDataDetailsService.getSurveyStartedConstituencyList();
 				constituencies = surveyDashBoardService.getConstituencyListForThirdPartyReport();
 				usersList = surveyDetailsService.getAssignedSurveyUsersForWebMontringTeam(user.getRegistrationID());
