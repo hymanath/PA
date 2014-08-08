@@ -2439,8 +2439,9 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 						}
 					}
 				}
-				
-				Map<Long,SurveyResponceVO> resultMap = checkForDcWmWithDvWmForThirdParty(dcWmMap,dvWmMap);
+				Map<Long,SurveyResponceVO> wmMap = new HashMap<Long, SurveyResponceVO>();
+				checkForDcWithWmForVO(dcMap,dcWmMap,wmMap);
+				Map<Long,SurveyResponceVO> resultMap = checkForDcWmWithDvWmForThirdParty(wmMap,dvWmMap);
 				List<Object[]> voterHouseDetails = boothPublicationVoterDAO.getTotalVotersByBoothsForVerfier(boothId, IConstants.VOTER_DATA_PUBLICATION_ID);
 				if(voterHouseDetails != null && voterHouseDetails.size() > 0)
 				{
@@ -2494,7 +2495,39 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 		}
 		return returnList;
 	}
-	
+	public void checkForDcWithWmForVO(Map<Long,SurveyResponceVO> dcMap,Map<Long,SurveyResponceVO> wmMap,Map<Long,SurveyResponceVO> resultMap)
+	{
+		try
+		{
+			List<Long> dcCollectedVoters = new ArrayList<Long>(dcMap.keySet());
+			if(dcCollectedVoters != null && dcCollectedVoters.size() > 0)
+			{
+				for (Long dcVoterId : dcCollectedVoters)
+				{
+					if(wmMap != null)
+					{
+						if(wmMap.get(dcVoterId) != null)
+						{
+							resultMap.put(dcVoterId, wmMap.get(dcVoterId));
+						}
+						else
+						{
+							resultMap.put(dcVoterId, dcMap.get(dcVoterId));
+						}
+					}
+					else
+					{
+						resultMap.put(dcVoterId, dcMap.get(dcVoterId));
+					}
+					
+				}
+			}
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in checkForDcWithWm", e);
+		}
+	}
 	public Map<Long,SurveyResponceVO> checkForDcWmWithDvWmForThirdParty(Map<Long,SurveyResponceVO> wmMap,Map<Long,SurveyResponceVO> dvWmMap)
 	{
 		Map<Long,SurveyResponceVO> resultMap = new HashMap<Long, SurveyResponceVO>();
