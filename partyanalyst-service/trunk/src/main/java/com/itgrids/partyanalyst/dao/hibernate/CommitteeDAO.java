@@ -24,10 +24,12 @@ public class CommitteeDAO extends GenericDaoHibernate<Committee, Long> implement
 	}
 	
 
-	public List<Object[]> getAllCommitteesForCommitteeLevelValues(Long committeeLevelValueId)
+	public List<Object[]> getAllCommitteesForCommitteeLevelValues(Long committeeLevelValueId,Long scopeId)
 	{		
-		Query query = getSession().createQuery("select distinct model.committeeId,model.name from Committee model where model.commiiteeLevelValue = :committeeLevelValueId order by model.name");		
+		Query query = getSession().createQuery("select distinct model.committeeId,model.name from Committee model where model.commiiteeLevelValue = :committeeLevelValueId and model.committeeLevel.commiiteeLevelId = :scopeId order by model.name");		
 		query.setParameter("committeeLevelValueId", committeeLevelValueId);
+		query.setParameter("scopeId", scopeId);
+		
 		return query.list();
 	}
 	
