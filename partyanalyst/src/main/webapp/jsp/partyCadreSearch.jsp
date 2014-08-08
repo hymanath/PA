@@ -254,6 +254,8 @@
 	
 	function getCommitteeLevelValues()
 	{
+			
+			 $("select[id$=committeeId] > option:gt(0)").remove();
 			var committeeLevelId=$("#committeeLevelId").val();
 			
 			var jsObj = 
