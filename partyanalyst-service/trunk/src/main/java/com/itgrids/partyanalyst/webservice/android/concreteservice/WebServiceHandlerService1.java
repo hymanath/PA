@@ -36,10 +36,12 @@ import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.service.IMobileService;
 import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.service.IStrategyModelTargetingService;
+import com.itgrids.partyanalyst.service.ISurveyDashBoardService;
 import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
 import com.itgrids.partyanalyst.service.ISurveyDetailsService;
 import com.itgrids.partyanalyst.service.IVoiceSmsService;
 import com.itgrids.partyanalyst.service.IVoterReportService;
+import com.itgrids.partyanalyst.service.impl.SurveyDashBoardService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.webservice.android.abstractservice.IWebServiceHandlerService1;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.BoothVoterVO;
@@ -108,6 +110,8 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	@Autowired
 	private ISurveyDetailsService surveyDetailsService;
 	
+	@Autowired
+	private ISurveyDashBoardService  surveyDashBoardService;
 	
 	
     
@@ -590,7 +594,8 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 				boothId=Long.valueOf(res.getBoothIds().get(0));
 			//public List<SurveyResponceVO> getThirdPartyVerificationDetails(Long boothId)
 
-			List<SurveyResponceVO>  verifiers=surveyDetailsService.getThirdPartyVerificationDetails(Long.valueOf(boothId),userId);
+		//	List<SurveyResponceVO>  verifiers=surveyDetailsService.getThirdPartyVerificationDetails(Long.valueOf(boothId),userId);
+			List<SurveyResponceVO>  verifiers=surveyDashBoardService.getThirdPartyFinalDetails(boothId);
 			if(verifiers!=null&&verifiers.size()>0)
 			{
 				List<SurveyResponceVO> verifiersList=responseVo.getVerifiersData();				
