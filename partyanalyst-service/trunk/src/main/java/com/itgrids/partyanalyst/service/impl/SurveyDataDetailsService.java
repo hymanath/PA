@@ -3554,7 +3554,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 						{
 								newCasteMatched.put((Long)param[0], param[3].toString());
 						}
-						
+					/*	
 						if(param[4] != null)
 						{
 							if(!param[4].toString().equalsIgnoreCase("N")){
@@ -3572,6 +3572,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 						{
 							newHamletStatus.put((Long)param[0], param[5].toString());
 						}
+						*/
 					}
 				}
 				Map<String,Boolean> houseStatusMap = new HashMap<String,Boolean>(); //contains houseNo and status whether house has different caste voters
@@ -3863,89 +3864,45 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		return retultList;
 	}
 	 
-	public void saveCallCenterForDataCollector(SurveyReportVO surveyReportVO,Long userId)
-	{
+	 public void saveCallCenterForDataCollector(SurveyReportVO surveyReportVO,Long userId)
+		{
 
-		
-		SurveyCallStatus surveyCallStatus = null;
-		
-		SurveyCallStatus surveyCallStatu = surveyCallStatusDAO.getSurveyCallStatusByVoterId(surveyReportVO.getVoterId());
-		
-		Long surveyCallStatusId = 0L;
-		String mobileNoStatus = null;
-		
-		if(surveyCallStatu != null)
-		{
-			surveyCallStatusId = surveyCallStatu.getSurveyCallStatusId();
-			mobileNoStatus = surveyCallStatu.getMobileNoStatus();
-		}
-		
-		
-		if(surveyCallStatusId != null && surveyCallStatusId != 0 )
-		{				
-			surveyCallStatus = surveyCallStatusDAO.get(surveyCallStatusId);
-		}			
-		else if(surveyCallStatus == null )
-		{
-			surveyCallStatus = new SurveyCallStatus();
-			//surveyCallStatus.setSurveyUser(surveyUserDAO.get(surveyReportVO.getUserid()));
-			surveyCallStatus.setSurveyUserId(surveyReportVO.getUserid());
-			surveyCallStatus.setVoterId(surveyReportVO.getVoterId());
-			//surveyCallStatus.setVoter(voterDAO.get(surveyReportVO.getVoterId()));
-			surveyCallStatus.setInsertedDate(dateUtilService.getCurrentDateAndTime());
-		}
-		
-		
-		surveyCallStatus.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
-		//surveyCallStatus.setBooth(boothDAO.get(surveyReportVO.getBoothId()));
-		surveyCallStatus.setBoothId(surveyReportVO.getBoothId());
-		surveyCallStatus.setUserId(userId);
-		//surveyCallStatus.setUser(userDAO.get(userId));
-		
-		List<SurveyDetailsInfo> dcVoterCasteDetls = surveyDetailsInfoDAO.getsurveyDetailsInfoByVoterId(surveyReportVO.getUserid(),surveyReportVO.getVoterId());
-		
-		if(surveyReportVO.getMatchedCount().toString().equalsIgnoreCase("1") ){
-			surveyCallStatus.setMatchedStatus("Y");
-			surveyCallStatus.setCasteStateId(null);
-		}
-		else if(surveyReportVO.getMatchedCount().toString().equalsIgnoreCase("5") ){
-			surveyCallStatus.setMatchedStatus(null);
-			surveyCallStatus.setCasteStateId(null);
-		}
-		else{	
 			
-			//surveyCallStatus.setMatchedStatus(null);
+			SurveyCallStatus surveyCallStatus = null;
 			
-			if(dcVoterCasteDetls != null && dcVoterCasteDetls.size()>0)
+			SurveyCallStatus surveyCallStatu = surveyCallStatusDAO.getSurveyCallStatusByVoterId(surveyReportVO.getVoterId());
+			
+			Long surveyCallStatusId = 0L;
+			String mobileNoStatus = null;
+			
+			if(surveyCallStatu != null)
 			{
-				for (SurveyDetailsInfo surveyDetailsInfo : dcVoterCasteDetls) {
-					if(surveyDetailsInfo.getCaste() != null){
-						surveyCallStatus.setMatchedStatus("N");
-					}
-					else if(surveyDetailsInfo.getCasteName() != null){
-						surveyCallStatus.setMatchedStatus("N");
-					}
-					else{
-						surveyCallStatus.setMatchedStatus(null);
-					}
-				}
+				surveyCallStatusId = surveyCallStatu.getSurveyCallStatusId();
+				mobileNoStatus = surveyCallStatu.getMobileNoStatus();
 			}
-			else
-			{
-				surveyCallStatus.setMatchedStatus(null);
-			}
-		
 			
-			if(surveyReportVO.getCasteId() != 0){
-				//surveyCallStatus.setCasteState(casteStateDAO.get(surveyReportVO.getCasteId()));
-				surveyCallStatus.setCasteStateId(surveyReportVO.getCasteId());
+			
+			if(surveyCallStatusId != null && surveyCallStatusId != 0 )
+			{				
+				surveyCallStatus = surveyCallStatusDAO.get(surveyCallStatusId);
+			}			
+			else if(surveyCallStatus == null )
+			{
+				surveyCallStatus = new SurveyCallStatus();
+				//surveyCallStatus.setSurveyUser(surveyUserDAO.get(surveyReportVO.getUserid()));
+				surveyCallStatus.setSurveyUserId(surveyReportVO.getUserid());
+				surveyCallStatus.setVoterId(surveyReportVO.getVoterId());
+				//surveyCallStatus.setVoter(voterDAO.get(surveyReportVO.getVoterId()));
+				surveyCallStatus.setInsertedDate(dateUtilService.getCurrentDateAndTime());
 			}
-		}
-				
-		
-		if(!surveyReportVO.getName().equalsIgnoreCase("casteWise"))
-		{
-		
+			
+			
+			surveyCallStatus.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
+			//surveyCallStatus.setBooth(boothDAO.get(surveyReportVO.getBoothId()));
+			surveyCallStatus.setBoothId(surveyReportVO.getBoothId());
+			surveyCallStatus.setUserId(userId);
+			//surveyCallStatus.setUser(userDAO.get(userId));
+			
 			if(mobileNoStatus == null)
 			{
 				if(surveyReportVO.getMobileNo().equalsIgnoreCase("2")){
@@ -3958,117 +3915,51 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					surveyCallStatus.setMobileNoStatus("N");
 				}								
 			}
-						
-		if(surveyReportVO.getHamletCount().toString().equalsIgnoreCase("7") ){
-				surveyCallStatus.setHamletStatus("Y");
-				surveyCallStatus.setHamletId(null);
+			
+			if(surveyReportVO.getMatchedCount().toString().equalsIgnoreCase("1") ){
+				surveyCallStatus.setMatchedStatus("Y");
+				surveyCallStatus.setCasteStateId(null);
 			}
-			else if(surveyReportVO.getMatchedCount().toString().equalsIgnoreCase("9") ){
-				surveyCallStatus.setHamletStatus(null);
-				surveyCallStatus.setHamletId(null);
+			else if(surveyReportVO.getMatchedCount().toString().equalsIgnoreCase("5") ){
+				surveyCallStatus.setMatchedStatus(null);
+				surveyCallStatus.setCasteStateId(null);
 			}
 			else{	
+				surveyCallStatus.setMatchedStatus("N");
 				
-				if(dcVoterCasteDetls != null && dcVoterCasteDetls.size()>0)
-				{
-					for (SurveyDetailsInfo surveyDetailsInfo : dcVoterCasteDetls) {
-						if(surveyDetailsInfo.getHamlet() != null){
-							surveyCallStatus.setHamletStatus("N");
-						}
-						else if(surveyDetailsInfo.getHamletName() != null){
-							surveyCallStatus.setHamletStatus("N");
-						}
-						else{
-							surveyCallStatus.setHamletStatus(null);
-						}
-					}
-				}
-				else
-				{
-					surveyCallStatus.setHamletStatus(null);
-				}
-				
-				//surveyCallStatus.setHamletStatus("N");
-				
-				if(surveyReportVO.getHamletId() != 0){
+				if(surveyReportVO.getCasteId() != 0){
 					//surveyCallStatus.setCasteState(casteStateDAO.get(surveyReportVO.getCasteId()));
-					surveyCallStatus.setHamletId(surveyReportVO.getHamletId());
+					surveyCallStatus.setCasteStateId(surveyReportVO.getCasteId());
 				}
 			}
-			
+										
+			surveyCallStatusDAO.save(surveyCallStatus);
 		}
 		
-		surveyCallStatusDAO.save(surveyCallStatus);
-	}
-	
-	
-	public void saveCallCenterForDataVerifier(SurveyReportVO surveyReportVO,Long userId)
-	{
-		SurveyCallStatus surveyCallStatus = null;
 		
-		Long surveyCallStatusId = surveyCallStatusDAO.getSurveyCallDtalsByVoterId(surveyReportVO.getVoterId());
-		
-		if(surveyCallStatusId != null && surveyCallStatusId != 0 )
-		{				
-			surveyCallStatus = surveyCallStatusDAO.get(surveyCallStatusId);
-		}			
-		else if(surveyCallStatus == null )
+		public void saveCallCenterForDataVerifier(SurveyReportVO surveyReportVO,Long userId)
 		{
-			surveyCallStatus = new SurveyCallStatus();
+			SurveyCallStatus surveyCallStatus = null;
 			
-			surveyCallStatus.setVoterId(surveyReportVO.getVoterId());
-			surveyCallStatus.setInsertedDate(dateUtilService.getCurrentDateAndTime());
-		}
-		surveyCallStatus.setDvSurveyUserId(surveyReportVO.getUserid());
-		
-		surveyCallStatus.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
-		surveyCallStatus.setBoothId(surveyReportVO.getBoothId());
-		surveyCallStatus.setDvWebMonterId(userId);
-		
-		List<SurveyDetailsInfo> surveyDetailsInfo = surveyDetailsInfoDAO.getsurveyDetailsInfoByVoterId(surveyReportVO.getUserid(),surveyReportVO.getVoterId());
-		
-		if(surveyReportVO.getMatchedCount().toString().equalsIgnoreCase("1") )
-		{
-			surveyCallStatus.setDvMatchedStatus("Y");
-			surveyCallStatus.setDvCasteStateId(null);
-		}
-		else if(surveyReportVO.getMatchedCount().toString().equalsIgnoreCase("5") ){
-			surveyCallStatus.setDvMatchedStatus(null);
-			surveyCallStatus.setDvCasteStateId(null);
-		}
-		else{	
-			//surveyCallStatus.setDvMatchedStatus("N");	
+			Long surveyCallStatusId = surveyCallStatusDAO.getSurveyCallDtalsByVoterId(surveyReportVO.getVoterId());
 			
-			
-			if(surveyDetailsInfo != null && surveyDetailsInfo.size()>0)
+			if(surveyCallStatusId != null && surveyCallStatusId != 0 )
+			{				
+				surveyCallStatus = surveyCallStatusDAO.get(surveyCallStatusId);
+			}			
+			else if(surveyCallStatus == null )
 			{
-				for (SurveyDetailsInfo surveyDetailsInfo1 : surveyDetailsInfo) {
-					if(surveyDetailsInfo1.getCaste() != null){
-						surveyCallStatus.setDvMatchedStatus("N");
-					}
-					else if(surveyDetailsInfo1.getCasteName() != null){
-						surveyCallStatus.setDvMatchedStatus("N");
-					}
-					else
-					{
-						surveyCallStatus.setDvMatchedStatus(null);
-					}
-				}
+				surveyCallStatus = new SurveyCallStatus();
+				
+				surveyCallStatus.setVoterId(surveyReportVO.getVoterId());
+				surveyCallStatus.setInsertedDate(dateUtilService.getCurrentDateAndTime());
 			}
-			else
-			{
-				surveyCallStatus.setDvMatchedStatus(null);
-			}
-		
+			surveyCallStatus.setDvSurveyUserId(surveyReportVO.getUserid());
 			
-			if(surveyReportVO.getCasteId() != 0){
-				//surveyCallStatus.setCasteState(casteStateDAO.get(surveyReportVO.getCasteId()));
-				surveyCallStatus.setDvCasteStateId(surveyReportVO.getCasteId());
-			}
-		}
-		
-		if(!surveyReportVO.getName().equalsIgnoreCase("casteWise"))
-		{
+			surveyCallStatus.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
+			surveyCallStatus.setBoothId(surveyReportVO.getBoothId());
+			surveyCallStatus.setDvWebMonterId(userId);
+			
 			if(surveyReportVO.getMobileNo().equalsIgnoreCase("2"))
 			{
 				surveyCallStatus.setDvMobileNoStatus("Y");
@@ -4082,91 +3973,69 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				surveyCallStatus.setDvMobileNoStatus("N");
 			}
 			
-		
-			
-			if(surveyReportVO.getHamletCount().toString().equalsIgnoreCase("7") ){
-				surveyCallStatus.setDvhamletStatus("Y");
-				surveyCallStatus.setDvHamletId(null);
+			if(surveyReportVO.getMatchedCount().toString().equalsIgnoreCase("1") )
+			{
+				surveyCallStatus.setDvMatchedStatus("Y");
+				surveyCallStatus.setDvCasteStateId(null);
 			}
-			else if(surveyReportVO.getMatchedCount().toString().equalsIgnoreCase("9") ){
-				surveyCallStatus.setDvhamletStatus(null);
-				surveyCallStatus.setDvHamletId(null);
+			else if(surveyReportVO.getMatchedCount().toString().equalsIgnoreCase("5") ){
+				surveyCallStatus.setDvMatchedStatus(null);
+				surveyCallStatus.setDvCasteStateId(null);
 			}
 			else{	
-			//	surveyCallStatus.setDvhamletStatus("N");
+				surveyCallStatus.setDvMatchedStatus("N");
 				
-				if(surveyDetailsInfo != null && surveyDetailsInfo.size()>0)
-				{
-					for (SurveyDetailsInfo surveyDetailsInfo1 : surveyDetailsInfo) {
-						if(surveyDetailsInfo1.getHamlet() != null){
-							surveyCallStatus.setDvhamletStatus("N");
-						}
-						else if(surveyDetailsInfo1.getHamletName() != null){
-							surveyCallStatus.setDvhamletStatus("N");
-						}
-						else
-						{
-							surveyCallStatus.setDvhamletStatus(null);
-						}
-					}
-				}
-				else
-				{
-					surveyCallStatus.setDvhamletStatus(null);
-				}
-				
-				if(surveyReportVO.getHamletId() != 0){
+				if(surveyReportVO.getCasteId() != 0){
 					//surveyCallStatus.setCasteState(casteStateDAO.get(surveyReportVO.getCasteId()));
-					surveyCallStatus.setDvHamletId(surveyReportVO.getHamletId());
+					surveyCallStatus.setDvCasteStateId(surveyReportVO.getCasteId());
 				}
 			}
+										
+			surveyCallStatusDAO.save(surveyCallStatus);
 		}
-		
-		surveyCallStatusDAO.save(surveyCallStatus);
-	}
-	public ResultStatus saveSurveyCallStatusDetils(final Long userId,final List<SurveyReportVO> verifiedList){
-		ResultStatus status = new ResultStatus();
-		
-		try {
+		public ResultStatus saveSurveyCallStatusDetils(final Long userId,final List<SurveyReportVO> verifiedList){
+			ResultStatus status = new ResultStatus();
 			
-			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-				protected void doInTransactionWithoutResult(TransactionStatus arg0) {
-					
-					//DateUtilService dateUtilService = new DateUtilService();
-					
-					
-					if(verifiedList != null && verifiedList.size()>0){
-
+			try {
+				
+				transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+					protected void doInTransactionWithoutResult(TransactionStatus arg0) {
 						
-						for (SurveyReportVO surveyReportVO : verifiedList) {
+						//DateUtilService dateUtilService = new DateUtilService();
+						
+						
+						if(verifiedList != null && verifiedList.size()>0){
+
 							
-							if(surveyReportVO.getUserTypeId().longValue() == 1l)
-							{
-								saveCallCenterForDataCollector(surveyReportVO,userId);
+							for (SurveyReportVO surveyReportVO : verifiedList) {
+								
+								if(surveyReportVO.getUserTypeId().longValue() == 1l)
+								{
+									saveCallCenterForDataCollector(surveyReportVO,userId);
+								}
+								else
+								{
+									saveCallCenterForDataVerifier(surveyReportVO,userId);
+								}
+								
+								
 							}
-							else
-							{
-								saveCallCenterForDataVerifier(surveyReportVO,userId);
-							}
-							
-							
 						}
 					}
-				}
-			});
+				});
+				
+				status.setResultCode(ResultCodeMapper.SUCCESS);
+				status.setMessage(" Survey Details Verified Successfully...");
+				
+			} catch (Exception e) {
+				status.setResultCode(ResultCodeMapper.FAILURE);
+				status.setMessage(" Exception occured while saving Survey Details. ");
+				LOG.error("Exception raised in saveSurveyCallStatusDetils() service in SurveyDataDetailsService", e);
+				e.printStackTrace();			
+			}
 			
-			status.setResultCode(ResultCodeMapper.SUCCESS);
-			status.setMessage(" Survey Details Verified Successfully...");
-			
-		} catch (Exception e) {
-			status.setResultCode(ResultCodeMapper.FAILURE);
-			status.setMessage(" Exception occured while saving Survey Details. ");
-			LOG.error("Exception raised in saveSurveyCallStatusDetils() service in SurveyDataDetailsService", e);
-			e.printStackTrace();			
+			return status;
 		}
-		
-		return status;
-	}
 	
 	public List<SelectOptionVO> getsurveyuserConstituencies()
 	{
