@@ -56,6 +56,8 @@ public class SurveyResponceVO extends UserResponseVO  implements Serializable
 	
 	private int votersSize=0;
 	
+	private Long serialNo;
+	private String comment;
 	
 	
 	
@@ -261,6 +263,18 @@ public class SurveyResponceVO extends UserResponseVO  implements Serializable
 	}
 	public void setRelativeName(String relativeName) {
 		this.relativeName = relativeName;
+	}
+	public Long getSerialNo() {
+		return serialNo;
+	}
+	public void setSerialNo(Long serialNo) {
+		this.serialNo = serialNo;
+	}
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 	
 	

@@ -13,6 +13,8 @@ public interface ISurveyFinalDataDAO extends GenericDao<SurveyFinalData, Long>{
 	public List<Object[]> getBoothWiseErrorCountForAConstituency(Long constituencyId);
 	public List<Object[]> getBoothWiseVoterDetails(Long boothId);
 	public List<Object[]> getSurveyFinalConstituencyInfo();
-	public int updatedThirdPartyStatus(Long voterId,Long statusId);
+	public int updatedThirdPartyStatus(List<Long> voterIds,Long statusId);
 	public List<Object[]> getWMUpdatedStatusOnThirdPartyData(List<Long> userIds,List<Long> boothIds);
+	
+	public int updatedThirdPartyComment(List<Long> voterIds,String comment);
 }

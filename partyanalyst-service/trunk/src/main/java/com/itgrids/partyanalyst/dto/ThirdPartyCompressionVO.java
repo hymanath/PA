@@ -47,9 +47,10 @@ public class ThirdPartyCompressionVO implements Serializable
 	
 	private Long tpWard;
 	private Long wmWard;
-	
+	private Long serialNo;
 	
 	private String status;
+	private String comment;
 	
 	public Long getSurveyUserId() {
 		return surveyUserId;
@@ -236,6 +237,18 @@ public class ThirdPartyCompressionVO implements Serializable
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public Long getSerialNo() {
+		return serialNo;
+	}
+	public void setSerialNo(Long serialNo) {
+		this.serialNo = serialNo;
+	}
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 	
 	
