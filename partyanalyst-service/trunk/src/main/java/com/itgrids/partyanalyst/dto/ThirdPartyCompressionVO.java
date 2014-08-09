@@ -13,9 +13,9 @@ public class ThirdPartyCompressionVO implements Serializable
 	private Long casteId;
 	private Long hamletId;
 	private Long wardId;
-	private String casteName = null;
-	private String hamletName = null;
-	private String localArea = null;
+	private String casteName="-";
+	private String hamletName="-";
+	private String localArea ="-";
 	private Date date;
 	private Long boothId;
 	
@@ -35,15 +35,15 @@ public class ThirdPartyCompressionVO implements Serializable
 	private Long tpCasteStateId;
 	private Long wmCasteStateId;
 	
-	private String wmCaste;
-	private String tpCaste;
+	private String wmCaste ="-";;
+	private String tpCaste ="-";;
 	
 	private Long tphamletId;
 	private Long wmHamletId;
 	
 	
-	private String tpHamlet;
-	private String wmHamlet;
+	private String tpHamlet ="-";;
+	private String wmHamlet ="-";;
 	
 	private Long tpWard;
 	private Long wmWard;

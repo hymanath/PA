@@ -1217,20 +1217,20 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 				if(parms[1] != null)
 				{
 					surveyResponceVO.setVoterId(parms[1] != null ? Long.valueOf(parms[1].toString()) :0l);
-					surveyResponceVO.setVoterCardNo(parms[2] != null ? parms[2].toString() : "");
-					surveyResponceVO.setVoterName(parms[3] != null ? parms[3].toString() : "");
-					surveyResponceVO.setGender(parms[4] != null ? parms[4].toString() : "");
+					surveyResponceVO.setVoterCardNo(parms[2] != null ? parms[2].toString() : "-");
+					surveyResponceVO.setVoterName(parms[3] != null ? parms[3].toString() : "-");
+					surveyResponceVO.setGender(parms[4] != null ? parms[4].toString() : "-");
 					surveyResponceVO.setAge(parms[5] != null ? Long.valueOf(parms[5].toString()) : 0l);
-					surveyResponceVO.setHouseNo(parms[6] != null ? parms[6].toString() : "");
-					surveyResponceVO.setRelativeName(parms[16] != null ? parms[16].toString() : "");
+					surveyResponceVO.setHouseNo(parms[6] != null ? parms[6].toString() : "-");
+					surveyResponceVO.setRelativeName(parms[16] != null ? parms[16].toString() : "-");
 				//	surveyResponceVO.setUuid(parms[18] != null ? parms[17].toString() : "");
 				}
-				surveyResponceVO.setMobileNo(parms[7] != null ? parms[7].toString() : "");
-				surveyResponceVO.setIsCadre(parms[8] != null ? parms[8].toString() : "");
-				surveyResponceVO.setIsInfluencingPeople(parms[9] != null ? parms[9].toString() : "");
+				surveyResponceVO.setMobileNo(parms[7] != null ? parms[7].toString() : "-");
+				surveyResponceVO.setIsCadre(parms[8] != null ? parms[8].toString() : "-");
+				surveyResponceVO.setIsInfluencingPeople(parms[9] != null ? parms[9].toString() : "-");
 				if(parms.length > 18 && parms[18] != null)
 				{
-					surveyResponceVO.setUuid(parms[18] != null ? parms[18].toString() : "");
+					surveyResponceVO.setUuid(parms[18] != null ? parms[18].toString() : "-");
 				}
 				
 
@@ -1239,7 +1239,7 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 					casteExisist=true;
 					if(parms[11] != null && parms[11].toString().trim().length() > 0)
 					{
-						surveyResponceVO.setCasteName(parms[11] != null ? parms[11].toString() : "");
+						surveyResponceVO.setCasteName(parms[11] != null ? parms[11].toString() : "-");
 					}
 					else
 					{
@@ -1251,7 +1251,7 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 				{
 					if(parms[11] != null && parms[11].toString().trim().length() > 0)
 					{
-						surveyResponceVO.setCasteName(parms[11] != null ? parms[11].toString() : "");
+						surveyResponceVO.setCasteName(parms[11] != null ? parms[11].toString() : "-");
 					}
 				}
 				if(parms[12] != null)
@@ -1259,7 +1259,7 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 					hamletExisist=true;
 					if(parms[13] != null && parms[13].toString().trim().length() > 0)
 					{
-						surveyResponceVO.setHamletName(parms[13] != null ? parms[13].toString() : "");
+						surveyResponceVO.setHamletName(parms[13] != null ? parms[13].toString() : "-");
 					}
 					else
 					{
@@ -1271,7 +1271,7 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 				{
 					if(parms[13] != null && parms[13].toString().trim().length() > 0)
 					{
-						surveyResponceVO.setHamletName(parms[13] != null ? parms[13].toString() : "");
+						surveyResponceVO.setHamletName(parms[13] != null ? parms[13].toString() : "-");
 					}
 					if(parms[14] != null)
 					{
@@ -1282,7 +1282,7 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 					surveyResponceVO.setDataTypeId("1");
 				
 				surveyResponceVO.setWardId(parms[14] != null ? Long.valueOf(parms[14].toString()) :0l);
-				surveyResponceVO.setLocalArea(parms[15] != null ? parms[15].toString() : "");
+				surveyResponceVO.setLocalArea(parms[15] != null ? parms[15].toString() : "-");
 				if(parms.length > 17 && parms[17] != null){
 					surveyResponceVO.setStatusId(parms[17].toString());
 				}
@@ -1343,7 +1343,7 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 							thirdPartyCompressionVO.setHouseNo(tpProvidedVO.getHouseNo());
 							thirdPartyCompressionVO.setIsCadre(tpProvidedVO.getIsCadre());
 							thirdPartyCompressionVO.setIsInfluencingPeople(tpProvidedVO.getIsInfluencingPeople());
-							thirdPartyCompressionVO.setTpCaste(tpProvidedVO.getCasteName());
+							thirdPartyCompressionVO.setTpCaste(tpProvidedVO.getCasteName() != null ?tpProvidedVO.getCasteName() :"-");
 							thirdPartyCompressionVO.setTpHamlet(tpProvidedVO.getHamletName());
 							thirdPartyCompressionVO.setTpWard(tpProvidedVO.getWardId());
 							thirdPartyCompressionVO.setTpCasteStateId(tpProvidedVO.getCasteId());
@@ -1358,7 +1358,7 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 							if(tpCollectedVO != null)
 							{
 								thirdPartyCompressionVO.setWardId(tpCollectedVO.getWardId());
-								thirdPartyCompressionVO.setWmCaste(tpCollectedVO.getCasteName());
+								thirdPartyCompressionVO.setWmCaste(tpCollectedVO.getCasteName() != null ? tpCollectedVO.getCasteName() :"-");
 								thirdPartyCompressionVO.setWmCasteStateId(tpCollectedVO.getCasteId());
 								thirdPartyCompressionVO.setWmHamlet(tpCollectedVO.getHamletName());
 								thirdPartyCompressionVO.setWmHamletId(tpCollectedVO.getHamletId());
@@ -1519,21 +1519,21 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 				if(parms[1] != null)
 				{
 					surveyResponceVO.setVoterId(parms[1] != null ? Long.valueOf(parms[1].toString()) :0l);
-					surveyResponceVO.setVoterCardNo(parms[2] != null ? parms[2].toString() : "");
-					surveyResponceVO.setVoterName(parms[3] != null ? parms[3].toString() : "");
-					surveyResponceVO.setGender(parms[4] != null ? parms[4].toString() : "");
+					surveyResponceVO.setVoterCardNo(parms[2] != null ? parms[2].toString() : "-");
+					surveyResponceVO.setVoterName(parms[3] != null ? parms[3].toString() : "-");
+					surveyResponceVO.setGender(parms[4] != null ? parms[4].toString() : "-");
 					surveyResponceVO.setAge(parms[5] != null ? Long.valueOf(parms[5].toString()) : 0l);
-					surveyResponceVO.setHouseNo(parms[6] != null ? parms[6].toString() : "");
-					surveyResponceVO.setRelativeName(parms[16] != null ? parms[16].toString() : "");
+					surveyResponceVO.setHouseNo(parms[6] != null ? parms[6].toString() : "-");
+					surveyResponceVO.setRelativeName(parms[16] != null ? parms[16].toString() : "-");
 				}
-				surveyResponceVO.setMobileNo(parms[7] != null ? parms[7].toString() : "");
-				surveyResponceVO.setIsCadre(parms[8] != null ? parms[8].toString() : "");
-				surveyResponceVO.setIsInfluencingPeople(parms[9] != null ? parms[9].toString() : "");
+				surveyResponceVO.setMobileNo(parms[7] != null ? parms[7].toString() : "-");
+				surveyResponceVO.setIsCadre(parms[8] != null ? parms[8].toString() : "-");
+				surveyResponceVO.setIsInfluencingPeople(parms[9] != null ? parms[9].toString() : "-");
 				if(parms[10] != null)
 				{
 					if(parms[11] != null && parms[11].toString().trim().length() > 0)
 					{
-						surveyResponceVO.setCasteName(parms[11] != null ? parms[11].toString() : "");
+						surveyResponceVO.setCasteName(parms[11] != null ? parms[11].toString() : "-");
 					}
 					else
 					{
@@ -1545,14 +1545,14 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 				{
 					if(parms[11] != null && parms[11].toString().trim().length() > 0)
 					{
-						surveyResponceVO.setCasteName(parms[11] != null ? parms[11].toString() : "");
+						surveyResponceVO.setCasteName(parms[11] != null ? parms[11].toString() : "-");
 					}
 				}
 				if(parms[12] != null)
 				{
 					if(parms[13] != null && parms[13].toString().trim().length() > 0)
 					{
-						surveyResponceVO.setHamletName(parms[13] != null ? parms[13].toString() : "");
+						surveyResponceVO.setHamletName(parms[13] != null ? parms[13].toString() : "-");
 					}
 					else
 					{
@@ -1564,12 +1564,12 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 				{
 					if(parms[13] != null && parms[13].toString().trim().length() > 0)
 					{
-						surveyResponceVO.setHamletName(parms[13] != null ? parms[13].toString() : "");
+						surveyResponceVO.setHamletName(parms[13] != null ? parms[13].toString() : "-");
 					}
 				}
 				surveyResponceVO.setWardId(parms[14] != null ? Long.valueOf(parms[14].toString()) :0l);
-				surveyResponceVO.setLocalArea(parms[15] != null ? parms[15].toString() : "");
-				surveyResponceVO.setUuid(parms[18] != null ? parms[18].toString() : "");
+				surveyResponceVO.setLocalArea(parms[15] != null ? parms[15].toString() : "-");
+				surveyResponceVO.setUuid(parms[18] != null ? parms[18].toString() : "-");
 				if(parms[17] != null){
 					surveyResponceVO.setStatusId(parms[17].toString());
 				}
