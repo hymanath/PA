@@ -667,7 +667,7 @@ $('#searchDataImg').show();
 						}
 				}
 			}
-				  $('#casteInfoDiv').html(str1);
+				 // $('#casteInfoDiv').html(str1);
 				
 					if(results[1] != null  && results[1].genericVOList.length > 0){
 						for(var k in results[1].genericVOList){
