@@ -33,7 +33,7 @@ function getSurveyUsersByUserTypeForLeaderAssign(divId,processImg)
 	{
 		getRemeaningSurveyUsersByUserType(divId,1,processImg);
 	}
-	else if(value == 3)
+	else if(value == 5)
 	{
 		getRemeaningSurveyUsersByUserType(divId,4,processImg);
 	}
