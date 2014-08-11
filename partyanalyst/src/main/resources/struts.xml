@@ -8003,10 +8003,17 @@
 					<param name="root">resultStatus</param>
 			</result>
 		</action>
+
         <action name="getSurveyCompletedLocationsDetailsForSurveyStartedConstituenciesAction" class="surveyDataDetailsAction" method="getSurveyCompletedLocationsDetailsForSurveyStartedConstituencies">
 			<result type="json" name="success">
 				<param name="root">reportList</param>
 			</result>
 		</action>  		
+				
+		<action name="getUpdatedCommentsFromWmForTP" class="surveyDashBoardAction" method="getUpdatedCommentsFromWmForTP">
+			<result type="json" name="success">
+					<param name="root">commentsList</param>
+			</result>
+		</action>
 </package>
 </struts>      

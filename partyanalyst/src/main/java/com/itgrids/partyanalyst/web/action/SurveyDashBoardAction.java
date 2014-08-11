@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dto.FinalSurveyReportVO;
+import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -51,6 +52,7 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 	private ResultStatus resultStatus;
 	private List<SurveyResponceVO> thirdPartyDetailsList;
 	private List<ThirdPartyCompressionVO> thirdPartyCompressionVOList;
+	private List<GenericVO> commentsList;
 	
 	@Autowired
 	ISurveyCompletedDetailsService surveyCompletedDetailsService ;
@@ -147,6 +149,16 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 
 	public void setResultList(List<SurveyDashBoardVO> resultList) {
 		this.resultList = resultList;
+	}
+
+	
+	
+	public List<GenericVO> getCommentsList() {
+		return commentsList;
+	}
+
+	public void setCommentsList(List<GenericVO> commentsList) {
+		this.commentsList = commentsList;
 	}
 
 	public String getTask() {
@@ -549,6 +561,22 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 			
 			
 			thirdPartyCompressionVOList = surveyDashBoardService.getCompressionReportForThirdParty(jObj.getLong("boothId"),jObj.getLong("surveyuserId"));
+			
+		}catch(Exception e)
+		{
+			LOG.error("Exception raised ", e);
+		}
+		return Action.SUCCESS;
+		
+	}
+	
+	public String getUpdatedCommentsFromWmForTP()	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			
+			
+			commentsList = surveyDashBoardService.getUpdatedCommentsFromWmForTP(jObj.getLong("boothId"));
 			
 		}catch(Exception e)
 		{

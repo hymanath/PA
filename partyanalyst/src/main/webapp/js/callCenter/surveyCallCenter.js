@@ -3895,6 +3895,7 @@ function buildFinalReportWithTP(result){
 				str +="<th>"+stList[i].statusName+" % </th>";
 			}
 			str +="<th>BOOTH TYPE </th>";
+			str +="<th>REVIEW</th>";
 			str +="</tr>";
 		str +="</thead>";
 		/* for(var i in result){
@@ -3922,6 +3923,7 @@ function buildFinalReportWithTP(result){
 						str +="<td>"+sttsList[p].statusPercentage+" </td>";
 					}
 					str +="<td>"+result[i].boothType+"</td>";
+					str +="<td><a style='cursor: pointer;' onCLick='getWmUpdatedDetails("+result[i].boothId+","+result[i].partNo+")'> REVIEW</a></td>";
 					str +="</tr>";
 				}
 		}
@@ -3935,6 +3937,58 @@ function buildFinalReportWithTP(result){
 	$("#thirdPartyAjax").hide();
 }
 
+function getWmUpdatedDetails(boothId,partNo)
+{
+	$('#CommentsDiv').html('');
+	var jsObj = {
+		boothId : boothId
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getUpdatedCommentsFromWmForTP.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		 }).done(function(result){
+				if(result != null)
+				{
+					buildCommentedDetails(result,partNo);
+				}
+				else
+				{
+					$('#CommentsDiv').html('<b style="color:red;">NO DATA AVALIABLE</b>');
+				}
+		});	
+}
+
+function buildCommentedDetails(result,partNo)
+{
+	var str = '';
+	
+	str += '<table  class="table table-bordered table-striped">';
+	str += '<thead class="alert alert-success">';
+	str += '<tr>';
+	str += '<th>BOOTH NO</th>';
+	str += '<th>VOTER NAME</th>';
+	str += '<th>WM CASTE</th>';
+	str += '<th>TP CASTE</th>';
+	str += '<th>COMMENT</th>';
+	str += '</tr>';
+	str += '</thead>';
+	str += '<tbody>';
+	for(var i in result)
+	{
+		str += '<tr>';
+		str += '<td>'+partNo+'</td>';
+		str += '<td>'+result[i].name+'</td>';
+		str += '<td>'+result[i].desc+'</td>';
+		str += '<td>'+result[i].mobileNo+'</td>';
+		str += '<td>'+result[i].percent+'</td>';
+		str += '</tr>';
+	}
+	str += '</tbody>';
+	str += '</table>';
+	$('#CommentsDiv').html(str);
+}
 function checkAllThirdPartyChkBoxes(){
  if($("#thirdPartyChkBox").is(':checked')){
     $('.thirdPartyChkAllVoters').each(function(){ this.checked = true; }); 
