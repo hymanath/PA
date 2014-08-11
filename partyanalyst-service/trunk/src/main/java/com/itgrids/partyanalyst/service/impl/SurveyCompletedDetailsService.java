@@ -27,6 +27,7 @@ import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
 import com.itgrids.partyanalyst.dto.SurveyThirdPartyReportVO;
+import com.itgrids.partyanalyst.dto.ThirdPartyCompressionVO;
 import com.itgrids.partyanalyst.dto.VerificationCompVO;
 import com.itgrids.partyanalyst.model.SurveyCompletedLocations;
 import com.itgrids.partyanalyst.service.ISurveyCompletedDetailsService;
@@ -1094,6 +1095,151 @@ public class SurveyCompletedDetailsService implements
 		if(list!=null && list.size()>0 && userId!=null){
 			for(SurveyThirdPartyReportVO sv:list){
 				if(sv.getUserId().equals(userId)){
+					return sv;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public SurveyThirdPartyReportVO  getTPCompleteBoothsDetails(Long constituencyId,List<SurveyThirdPartyReportVO> thirdPartyList){
+		
+		List<Long> boothForReady = null;
+		SurveyThirdPartyReportVO finalVO = new SurveyThirdPartyReportVO();
+		List<SurveyThirdPartyReportVO> finalList = new ArrayList<SurveyThirdPartyReportVO>();
+		
+		
+		List<SurveyThirdPartyReportVO> bthTypeList = new ArrayList<SurveyThirdPartyReportVO>();
+		
+		
+		
+		
+		
+		
+		
+		//GETTING BOOTH IDS WITH READY FOR REVIEW FROM SURVEY COMPLETED LOCATIONS
+		if(constituencyId!=null  && thirdPartyList != null && thirdPartyList.size()>0){
+			boothForReady = surveyCompletedLocationsDAO.getBoothsOfTPWithStatus(constituencyId, 8l);
+		}
+		
+		//PROCESSING THIRD PARTY RESULT WITH BOOTHS FROM SURVEY COMPLETED LOCATIONS
+		for(SurveyThirdPartyReportVO sv:thirdPartyList){
+			if(boothForReady.contains(sv.getBoothId())){
+				finalList.add(sv);
+			}
+		}
+		
+		SurveyThirdPartyReportVO stprVO = null;
+		List<Object[]> statusList = surveyWmThirdPartyStatusDAO.getStatusTypes();
+		
+		stprVO = new SurveyThirdPartyReportVO();
+		stprVO.setBoothType("ALL");
+		stprVO = setStatusTypesForBoothsList(statusList,stprVO);
+		//stprVO.setStatusList(finalList.get(0).getStatusList());
+		bthTypeList.add(stprVO);
+		
+		stprVO = new SurveyThirdPartyReportVO();
+		stprVO.setBoothType("RURAL");
+		stprVO = setStatusTypesForBoothsList(statusList,stprVO);
+		//stprVO.setStatusList(finalList.get(0).getStatusList());
+		bthTypeList.add(stprVO);
+		
+		stprVO = new SurveyThirdPartyReportVO();
+		stprVO.setBoothType("URBAN");
+		stprVO = setStatusTypesForBoothsList(statusList,stprVO);
+		//stprVO.setStatusList(finalList.get(0).getStatusList());
+		bthTypeList.add(stprVO);
+		
+		finalVO.setBoothTypeSummaryList(bthTypeList);
+		
+		if(finalList!=null && finalList.size()>0){
+		finalVO.setFinalList(finalList);
+		finalVO.setStatusList(finalList.get(0).getStatusList());
+			//PROCESSING FINAL LIST FOR SUMMARY TABLE
+				SurveyThirdPartyReportVO allVO = getMatchedBoothType(bthTypeList,"ALL");
+				
+				if(allVO == null){
+					allVO = new SurveyThirdPartyReportVO();
+				}
+				
+				allVO.setUserCollected(0l);
+				allVO.setTotalVoters(0l);
+				
+			for(SurveyThirdPartyReportVO sv:finalList){
+				SurveyThirdPartyReportVO temp = getMatchedBoothType(bthTypeList,sv.getBoothType());
+				
+				if(temp.getFinalList()==null){
+					List<SurveyThirdPartyReportVO> fnlList = new ArrayList<SurveyThirdPartyReportVO>();
+					temp.setFinalList(fnlList);
+				}
+				if(allVO.getFinalList()==null){
+					List<SurveyThirdPartyReportVO> fnlList = new ArrayList<SurveyThirdPartyReportVO>();
+					allVO.setFinalList(fnlList);
+				}
+				
+				temp.getFinalList().add(sv);
+				allVO.getFinalList().add(sv);
+				
+				if(temp==null){
+					temp = new SurveyThirdPartyReportVO();
+				}
+				if(temp.getTotalVoters()==null){
+					temp.setTotalVoters(0l);
+				}
+				
+					temp.setTotalVoters(temp.getTotalVoters()+sv.getTotalVoters());
+					allVO.setTotalVoters(allVO.getTotalVoters()+sv.getTotalVoters());
+				
+				
+				
+				
+				if(temp.getUserCollected()==null){
+					temp.setUserCollected(0l);
+				}
+					
+				if(sv.getUsers()!=null){
+						List<SurveyThirdPartyReportVO> users = sv.getUsers().getUsersList();
+						if(users!=null){
+							SurveyThirdPartyReportVO user = users.get(0);
+							List<SurveyThirdPartyReportVO> stList = user.getStatusList();
+							
+							temp.setUserCollected(user.getUserCollected()+temp.getUserCollected());
+							allVO.setUserCollected(user.getUserCollected()+allVO.getUserCollected());
+							
+							if(stList!=null && stList.size()>0){
+								for(SurveyThirdPartyReportVO tmp:stList){
+									SurveyThirdPartyReportVO sn = getMatchedThirdPartyStatusVO(temp.getStatusList(),tmp.getStatusId());
+									if(sn!=null){
+										sn.setStatusCount(sn.getStatusCount()+tmp.getStatusCount());
+										sn.setStatusPercentage(sn.getStatusCount() != null &&sn.getStatusCount() !=0 ? roundTo2DigitsFloatValue((float) sn.getStatusCount() * 100f / temp.getUserCollected())
+												: "0.00");
+									}
+									
+									SurveyThirdPartyReportVO all = getMatchedThirdPartyStatusVO(allVO.getStatusList(),tmp.getStatusId());
+									if(all!=null){
+										all.setStatusCount(all.getStatusCount()+tmp.getStatusCount());
+										all.setStatusPercentage(all.getStatusCount() != null &&all.getStatusCount() !=0 ? roundTo2DigitsFloatValue((float) all.getStatusCount() * 100f / allVO.getUserCollected())
+												: "0.00");
+									}
+								}
+							}
+						}
+				}
+				
+				
+				
+			}
+		}
+		
+		return finalVO;
+		
+		
+	}
+	
+	public SurveyThirdPartyReportVO getMatchedBoothType(List<SurveyThirdPartyReportVO> svList, String type){
+		if(svList!=null && svList.size()>0 && type!=null && type.trim().length()>0){
+			for(SurveyThirdPartyReportVO sv:svList){
+				if(sv.getBoothType().equalsIgnoreCase(type)){
 					return sv;
 				}
 			}

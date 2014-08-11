@@ -28,8 +28,24 @@ public class SurveyThirdPartyReportVO implements Serializable {
 	
 	private String boothType;
 	
+	private List<SurveyThirdPartyReportVO> finalList;
+	private List<SurveyThirdPartyReportVO> boothTypeSummaryList;
 	
+		
 	
+	public List<SurveyThirdPartyReportVO> getBoothTypeSummaryList() {
+		return boothTypeSummaryList;
+	}
+	public void setBoothTypeSummaryList(
+			List<SurveyThirdPartyReportVO> boothTypeSummaryList) {
+		this.boothTypeSummaryList = boothTypeSummaryList;
+	}
+	public List<SurveyThirdPartyReportVO> getFinalList() {
+		return finalList;
+	}
+	public void setFinalList(List<SurveyThirdPartyReportVO> finalList) {
+		this.finalList = finalList;
+	}
 	public String getBoothType() {
 		return boothType;
 	}
