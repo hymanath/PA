@@ -1597,4 +1597,71 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 		}
 	}
 	
+	/**
+	 * This Service is used for getting updated comments from WM 
+	 * @param boothId
+	 * @return returnList
+	 */
+	public List<GenericVO> getUpdatedCommentsFromWmForTP(Long boothId)
+	{
+		List<GenericVO> returnList = null;
+		try 
+		{
+			List<Object[]> castesList = casteStateDAO.getAllCasteDetailsForVoters(1l);
+			if(castesList != null && castesList.size() > 0)
+			{
+				Map<Long,String> casteMap = new HashMap<Long, String>();
+				Map<Long,String> tpCollectedMap = null;
+				Map<Long,GenericVO> wmUpdatedMap = null;
+				for (Object[] parms : castesList)
+				{
+					casteMap.put((Long)parms[0], parms[1].toString());
+				}
+				List<Object[]> tpCollectedDetails = surveyDetailsInfoDAO.getThirdPartyCollectedInfo(boothId);
+				if(tpCollectedDetails != null && tpCollectedDetails.size() > 0)
+				{
+					tpCollectedMap = new HashMap<Long, String>();
+					for (Object[] objects : tpCollectedDetails)
+					{
+						tpCollectedMap.put((Long)objects[0],casteMap.get((Long)objects[1]));
+					}
+				}
+				
+				List<Object[]> wmUpdatedDetails = surveyFinalDataDAO.getWmCommentedDetails(boothId);
+				if(wmUpdatedDetails != null && wmUpdatedDetails.size() > 0)
+				{
+					wmUpdatedMap = new HashMap<Long, GenericVO>();
+					for (Object[] parms : wmUpdatedDetails)
+					{
+						GenericVO genericVO = new GenericVO();
+						genericVO.setId((Long)parms[0]);
+						genericVO.setName(parms[1] != null ? parms[1].toString() :"-");//voter name
+						genericVO.setDesc(parms[2] != null ? casteMap.get((Long)parms[2]) :"-");// Wm Updated caste
+						genericVO.setPercent(parms[3] != null ? parms[3].toString() :"-");// comment
+						
+						wmUpdatedMap.put((Long)parms[0], genericVO);
+					}
+				}
+				
+				if(wmUpdatedMap != null && wmUpdatedMap.size() > 0)
+				{
+					returnList = new ArrayList<GenericVO>();
+					for (Long voterId : wmUpdatedMap.keySet())
+					{
+						GenericVO finalVO =wmUpdatedMap.get(voterId);
+						if(tpCollectedMap != null && tpCollectedMap.size() > 0)
+						finalVO.setMobileNo(tpCollectedMap.get(voterId)) ;// Tp Collected caste
+						returnList.add(finalVO);
+					}
+				}
+			}
+			
+		} 
+		catch (Exception e) 
+		{
+			LOG.error("Exception raised in getUpdatedCommentsFromWmForTP service method",e);
+		}
+		return returnList;
+	}
+	
 }
