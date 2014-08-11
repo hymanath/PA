@@ -1104,7 +1104,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	}
 	
 	/**
-	 * This Service is used for getting all users by leade and constituency
+	 * This Service is used for getting all users by leader and constituency
 	 * @param leaderId
 	 * @param constituencyId
 	 * @return returnList
@@ -3902,20 +3902,24 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			surveyCallStatus.setBoothId(surveyReportVO.getBoothId());
 			surveyCallStatus.setUserId(userId);
 			//surveyCallStatus.setUser(userDAO.get(userId));
-			
-			if(mobileNoStatus == null)
+		
+			if(!surveyReportVO.getName().equalsIgnoreCase("casteWise"))
 			{
-				if(surveyReportVO.getMobileNo().equalsIgnoreCase("2")){
-					surveyCallStatus.setMobileNoStatus("Y");
-				}
-				else if(surveyReportVO.getMobileNo().equalsIgnoreCase("6")){
-					surveyCallStatus.setMobileNoStatus(null);
-				}
-				else{
-					surveyCallStatus.setMobileNoStatus("N");
-				}								
-			}
+
+			/*	if(mobileNoStatus == null)
+				{*/
+					if(surveyReportVO.getMobileNo().equalsIgnoreCase("2")){
+						surveyCallStatus.setMobileNoStatus("Y");
+					}
+					else if(surveyReportVO.getMobileNo().equalsIgnoreCase("6")){
+						surveyCallStatus.setMobileNoStatus(null);
+					}
+					else{
+						surveyCallStatus.setMobileNoStatus("N");
+					}								
+			//	}
 			
+			}
 			if(surveyReportVO.getMatchedCount().toString().equalsIgnoreCase("1") ){
 				surveyCallStatus.setMatchedStatus("Y");
 				surveyCallStatus.setCasteStateId(null);
@@ -3960,17 +3964,20 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			surveyCallStatus.setBoothId(surveyReportVO.getBoothId());
 			surveyCallStatus.setDvWebMonterId(userId);
 			
-			if(surveyReportVO.getMobileNo().equalsIgnoreCase("2"))
+			if(!surveyReportVO.getName().equalsIgnoreCase("casteWise"))
 			{
-				surveyCallStatus.setDvMobileNoStatus("Y");
-			}
-			else if(surveyReportVO.getMobileNo().equalsIgnoreCase("6"))
-			{
-				surveyCallStatus.setDvMobileNoStatus(null);
-			}
-			else
-			{
-				surveyCallStatus.setDvMobileNoStatus("N");
+				if(surveyReportVO.getMobileNo().equalsIgnoreCase("2"))
+				{
+					surveyCallStatus.setDvMobileNoStatus("Y");
+				}
+				else if(surveyReportVO.getMobileNo().equalsIgnoreCase("6"))
+				{
+					surveyCallStatus.setDvMobileNoStatus(null);
+				}
+				else
+				{
+					surveyCallStatus.setDvMobileNoStatus("N");
+				}
 			}
 			
 			if(surveyReportVO.getMatchedCount().toString().equalsIgnoreCase("1") )

@@ -235,12 +235,15 @@ public class SurveyCompletedDetailsService implements
 				{
 					resultVO.setTpWebMonitoringCompleted((Long)obj[0]);
 				}
-				
+				else if(((Long)obj[1]).equals(IConstants.READY_FOR_REVIEW))
+				{
+					resultVO.setReadyForReviewCount((Long)obj[0]);
+				}
 			}
 			
 			List<Long> tdProcessingList = surveyCompletedLocationsDAO.getThirdPartyVerificationProcessingBoothsByConstituencyId(constituencyId);
 			
-			resultVO.setThirdPartyProcessing(new Long(tdProcessingList.size() - resultVO.getThirdPartyCompleted().intValue()) - resultVO.getTpWebMonitoringProcessing() - resultVO.getTpWebMonitoringCompleted() );
+			resultVO.setThirdPartyProcessing(new Long(tdProcessingList.size() - resultVO.getThirdPartyCompleted().intValue()) - resultVO.getTpWebMonitoringProcessing() - resultVO.getTpWebMonitoringCompleted() - resultVO.getReadyForReviewCount() );
 			
 			List<Long> boothIdsContainsStatus = surveyCompletedLocationsDAO.getCompletedStatusBoothsByBoothIds(processingIds);
 			 
@@ -342,6 +345,7 @@ public class SurveyCompletedDetailsService implements
 			thirdPartySCopesList.add(IConstants.TP_COMPLETED_STATUS_ID);
 			thirdPartySCopesList.add(IConstants.TP_WM_PROCESS_STATUS_ID);
 			thirdPartySCopesList.add(IConstants.TP_WM_COMPLETED_STATUS_ID);
+			thirdPartySCopesList.add(IConstants.READY_FOR_REVIEW);
 			
 			if (!thirdPartySCopesList.contains(statusId))			{
 				// First we are removing all the previous records rekated to that location
@@ -352,7 +356,7 @@ public class SurveyCompletedDetailsService implements
 				surveyCompletedLocationsDAO.deleteSurveyCompletedDetailsByLocationValueAndScopeForThirdParty(locationValue,locationScopeId,thirdPartySCopesList);
 			}
 			
-			if(!statusId.equals(IConstants.DC_PROCESS_STATUS_ID))
+			if(!statusId.equals(IConstants.DC_PROCESS_STATUS_ID) && !statusId.equals(IConstants.TP_READY_STATUS_ID))
 			{
 			
 				SurveyCompletedLocations surveyCompletedLocationDetails = new SurveyCompletedLocations();

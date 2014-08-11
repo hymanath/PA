@@ -49,6 +49,7 @@ public class SurveyReportVO {
 	private Long id;
 	private String name;
 	
+	private Long readyForReviewCount = 0L;
 	
 	private Long casteMatchedCount = 0l;
 	private Long casteNotMatchedCount =0l;
@@ -666,6 +667,12 @@ public class SurveyReportVO {
 	public void setHouseNoCount(Long houseNoCount) {
 		this.houseNoCount = houseNoCount;
 	}
-    
+	
+	public Long getReadyForReviewCount() {
+		return readyForReviewCount;
+	}
+	public void setReadyForReviewCount(Long readyForReviewCount) {
+		this.readyForReviewCount = readyForReviewCount;
+	}
 	
 }
