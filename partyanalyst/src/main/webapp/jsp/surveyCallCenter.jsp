@@ -21,7 +21,8 @@
 <link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
 <script src="js/maps/googleMap.js"></script>
 <script src="js/bootstrap.min.js"></script>
-<script src="js/surveyCallCenter.js"></script>
+<script src="js/callCenter/surveyCallCenter.js"></script>
+<script src="js/callCenter/surveyCallCenter1.js"></script>
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 
