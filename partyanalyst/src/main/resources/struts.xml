@@ -7401,7 +7401,7 @@
 		
 		<action name="getSurveyUsersByLeadersAction" class="surveyDataDetailsAction" method="getSurveyUsersByLeaders">
 			<result type="json" name="success">
-				<param name="root">returnList</param>
+				<param name="root">reportList</param>
 			</result>
 		</action>
 		
