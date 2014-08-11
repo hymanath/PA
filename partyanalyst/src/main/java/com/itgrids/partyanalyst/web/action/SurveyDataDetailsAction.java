@@ -403,7 +403,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		//resultVO = surveyDashBoardService.getCompletdConstituenciesDetails();
 		//resultList = surveyDashBoardService.getConstituencyWiseCompletionReport(); 
 		usersList = surveyDataDetailsService.getAllWebMonitoringUsersDetails();
-		reportList = surveyCompletedDetailsService.getSurveyCompletedLocationsDetailsForSurveyStartedConstituencies();
+		//reportList = surveyCompletedDetailsService.getSurveyCompletedLocationsDetailsForSurveyStartedConstituencies();
 
 		
 		resultVO =  surveyCompletedDetailsService.getCompletdConstituenciesDetails();
@@ -2228,4 +2228,17 @@ public String getPanchayatsStatusDetails()
 		}
 		return Action.SUCCESS;	
   	}
+ 	public String getSurveyCompletedLocationsDetailsForSurveyStartedConstituencies()
+  	{
+  		try
+		{
+  		 reportList = surveyCompletedDetailsService.getSurveyCompletedLocationsDetailsForSurveyStartedConstituencies();
+		
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getSurveyCompletedLocationsDetailsForSurveyStartedConstituencies", e);
+		}
+		return Action.SUCCESS;	
+  	} 
 }
