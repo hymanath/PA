@@ -257,7 +257,7 @@
 									<div class="row-fluid">											
 										<div class="span4">
 											Select Constituency <font class="requiredFont">*</font>
-											<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="constituencyForTP" list="dataAvilableConstituencies" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" onChange="getBoothsDetailsInCallStatusInfoForSavePercnt(this.value,'boothIdForTP')"/>
+											<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="constituencyForTP" list="dataAvilableConstituencies" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" onChange="getThirdPartyDataAvaliableBooths(this.value,'boothIdForTP')"/>
 										</div>
 										<div class="span3">
 											Select Booth <font class="requiredFont">*</font> : 
@@ -267,6 +267,33 @@
 								</div>
 									<div class="row text-center m_top10"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="saveThirdPartyDetails()">SUBMIT</button></div>
 									<img src='images/Loading-data.gif' class="offset5"  id="ajaxImgForTP" style="width:70px;height:60px;display:none;"/>
+							</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="span10 offset1">
+				<div class="row-fluid ">
+					<div class="span12 widgetservey_Red m_top20">
+						<h4>REMOVING THIRD PARTY DATA </h4>
+							<div class="row">
+								<div id="errorDivTPRemove" class="span8 offset3 clearCls"></div>
+							</div>
+							<div class="row">
+								<div class="offset3">
+									<div class="row-fluid">											
+										<div class="span4">
+											Select Constituency <font class="requiredFont">*</font>
+											<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="constituencyForTPRemove" list="dataAvilableConstituencies" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" onChange="getThirdPartyDataAvaliable(this.value,'boothIdForTPRemove')"/>
+										</div>
+										<div class="span3">
+											Select Booth <font class="requiredFont">*</font> : 
+											<select class="input-block-level" id = "boothIdForTPRemove" > <option value="0">Select Booth</option></select>
+										</div>											
+									</div>	
+								</div>
+									<div class="row text-center m_top10"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="removeThirdPartyDetails()">REMOVE</button></div>
+									<img src='images/Loading-data.gif' class="offset5"  id="ajaxImgForTPForRemove" style="width:70px;height:60px;display:none;"/>
 							</div>
 					</div>
 				</div>
