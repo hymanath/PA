@@ -3675,7 +3675,9 @@ $('#boothWiseTab,#startTimeTab').removeClass('selected');
 		 }).done(function(result){	
 		   $('#searchDataImg').hide();
 		   if(result != null && result.length>0){
-		      var str ="";
+		      var str ="<div id='tpReportBasicInfo'></div>";
+			   str  +='<input type="hidden" id="boothIdHidden" value="'+boothId+'">';
+			    str  +='<input type="hidden" id="userIdHidden" value="'+surveyuserId+'">';
 		       str  +='<table class="table table-bordered m_top20 table-hover table-striped" id="voterDetlsTab" >';
 				str +='	<thead class="alert alert-success">';
 				str +='	<tr>';
@@ -3755,6 +3757,7 @@ $('#boothWiseTab,#startTimeTab').removeClass('selected');
 				"iDisplayLength": 100,
 				"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]]
 				});
+				buildThirdPartyBasicData(result[0].surveyResponceVO);
 		   }else{
 		       var str ="";
 		       str +='	No Data Available. ';
@@ -3762,7 +3765,60 @@ $('#boothWiseTab,#startTimeTab').removeClass('selected');
 		   }
 		});
 }
+function getLatestBasicInfo(boothId,userId){
+  var jsObj = 
+	{
+		boothId : boothId,
+		userId : userId
+	}
+  $.ajax({
+			type:'GET',
+			url: 'getSurveyUserBasicInfo.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		 }).done(function(result){
+		   buildThirdPartyBasicDataNew(result);
+		 });
+}
+function buildThirdPartyBasicData(result){
+    var str="";
+	str+='<div class="container">';
+		str+='<div class="row">';
+            str+='<div class="span12">';
+				   str+=' <div class="row-fluid ">';
+					    str+='<div class="row-fluid">';
+								str+='<div  class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> TP Name  </span>: '+result.voterName+'</div>';
+								str+='<div  class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> TP Mobile  </span>: '+result.longitude+'</div>';
+								str+='<div  class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> TP Lead  </span>: '+result.relativeName+'</div>';
+								str+='<div  class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> TP Lead Mobile </span>: '+result.latitude+'</div>';
+					    str+='</div>';
+						 str+='<div class="row-fluid">';
+								str+='<div  class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> Booth NO  </span>: '+result.casteName+'</div>';
+								str+='<div  class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> Total Voters  </span>: '+result.voterId+'</div>';
+								str+='<div id="sameCasteTpUpdtDiv"  class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> Same Caste  </span>: '+result.sameCount+'</div>';
+								str+='<div  id="wmWrongTpUpdtDiv" class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> WM Wrong </span>: '+result.wmWrong+'</div>';
+					    str+='</div>';
+						 str+='<div class="row-fluid">';
+								str+='<div  id="tpWrongTpUpdtDiv" class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> TP Wrong  </span>: '+result.tpWrong+'</div>';
+								str+='<div  id="newCasteTpUpdtDiv" class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> Newly Collected Caste  </span>: '+result.newCaste+'</div>';
+								
+					    str+='</div>';
+				   str+='</div>';
+	            str+='</div>';
+			str+='</div>';
+		str+='</div>';
+		$("#tpReportBasicInfo").html(str);
+}
+function buildThirdPartyBasicDataNew(result){
+   
+		$("#sameCasteTpUpdtDiv").html('<span style="font-weight:bold;"> Same Caste  </span>: '+result.sameCount+'</div>');
+		$("#wmWrongTpUpdtDiv").html('<span style="font-weight:bold;"> WM Wrong </span>: '+result.wmWrong+'</div>');
 
+		$("#tpWrongTpUpdtDiv").html('<span style="font-weight:bold;"> TP Wrong  </span>: '+result.tpWrong+'</div>');
+		$("#newCasteTpUpdtDiv").html('<span style="font-weight:bold;"> Newly Collected Caste  </span>: '+result.newCaste+'</div>');
+								
+					
+}
 function updateTPComment(id){
  var voterIds = $("#tPCommentCheck"+id).val();
  var comment = $.trim($("#tPCommentArea"+id).val());
@@ -3832,6 +3888,7 @@ var ids = new Array();
 				
 				$("#multipleTpStatusUpdateSubmitId").removeAttr('disabled');
 				alert("Comment Updated SuccessFully");
+				getLatestBasicInfo($("#boothIdHidden").val(),$("#userIdHidden").val());
 			});
 	}else{
 	   alert("Please Select Voter To Update Comment");
@@ -3853,6 +3910,7 @@ function updateThirdPartyDetails(voterId,statusId)
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)},
 		 }).done(function(result){	
+		   getLatestBasicInfo($("#boothIdHidden").val(),$("#userIdHidden").val());
 		});
 }
 

@@ -8039,5 +8039,11 @@
 					<param name="root">delstatus</param>
 			</result>
 		</action>
+						
+		<action name="getSurveyUserBasicInfo" class="surveyDashBoardAction" method="getBoothDetails">
+			<result type="json" name="success">
+					<param name="root">basicInfo</param>
+			</result>
+		</action>
 </package>
 </struts>      

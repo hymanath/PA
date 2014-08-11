@@ -53,7 +53,8 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 	private List<SurveyResponceVO> thirdPartyDetailsList;
 	private List<ThirdPartyCompressionVO> thirdPartyCompressionVOList;
 	private List<GenericVO> commentsList;
-	private String delstatus;
+	private String delstatus;	
+	private SurveyResponceVO basicInfo;
 	
 	@Autowired
 	ISurveyCompletedDetailsService surveyCompletedDetailsService ;
@@ -238,6 +239,14 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 	public void setThirdPartyResultList(
 			List<SurveyThirdPartyReportVO> thirdPartyResultList) {
 		this.thirdPartyResultList = thirdPartyResultList;
+	}
+
+	public SurveyResponceVO getBasicInfo() {
+		return basicInfo;
+	}
+
+	public void setBasicInfo(SurveyResponceVO basicInfo) {
+		this.basicInfo = basicInfo;
 	}
 
 	public String execute()
@@ -669,5 +678,18 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 		}
 		return Action.SUCCESS;
 		
+	}
+	
+	public String getBoothDetails()	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			basicInfo = surveyDashBoardService.thirdPartyCollectedBasicData(jObj.getLong("boothId"),jObj.getLong("userId"),true);
+			
+		}catch(Exception e)
+		{
+			LOG.error("Exception raised ", e);
+		}
+		return Action.SUCCESS;
 	}
 }
