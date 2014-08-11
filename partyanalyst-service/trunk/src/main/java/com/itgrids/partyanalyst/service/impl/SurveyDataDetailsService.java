@@ -47,6 +47,7 @@ import com.itgrids.partyanalyst.dao.ISurveyUserRelationDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserTabAssignDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserTrackingDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserTypeDAO;
+import com.itgrids.partyanalyst.dao.ISurveyWmThirdPartyStatusDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IVerifierBoothPercentageDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
@@ -65,6 +66,7 @@ import com.itgrids.partyanalyst.dto.VerificationCompVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.SurveyCallStatus;
 import com.itgrids.partyanalyst.model.SurveyDetailsInfo;
+import com.itgrids.partyanalyst.model.SurveyFinalData;
 import com.itgrids.partyanalyst.model.SurveySurveyorType;
 import com.itgrids.partyanalyst.model.SurveyUser;
 import com.itgrids.partyanalyst.model.SurveyUserBoothAssign;
@@ -102,7 +104,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	private ISurveyUserRelationDAO surveyUserRelationDAO;
 	
 	@Autowired
-	private ISurveySurveyorTypeDAO surveySurveyorTypeDAO;
+	public ISurveySurveyorTypeDAO surveySurveyorTypeDAO;
 	
 	@Autowired
 	public ISurveyDetailsInfoDAO surveyDetailsInfoDAO;
@@ -120,7 +122,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	private IBoothDAO boothDAO;
 	
 	@Autowired
-	private IVoterDAO voterDAO;
+	public IVoterDAO voterDAO;
 	
 	@Autowired
 	public IHamletDAO hamletDAO;
@@ -168,9 +170,10 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	private IPartialBoothPanchayatDAO partialBoothPanchayatDAO;
 	
 	@Autowired
-	private ISurveyFinalDataDAO surveyFinalDataDAO;
+	public ISurveyFinalDataDAO surveyFinalDataDAO;
 	
-	
+	@Autowired
+	public ISurveyWmThirdPartyStatusDAO surveyWmThirdPartyStatusDAO;
 	/**
 	 * This Service is used for saving the user type details
 	 * @param userTypeDescription
@@ -797,7 +800,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 									
 									//check whether record avilable for user and uniqueID
 									SurveyDetailsInfo surveyDetailsInfo=surveyDetailsInfoDAO.checkUserForVoter(userId, surveyResponceVO.getUuid(),voterID);
-									
+									 boolean isUpdate = false;
 									
 									if(surveyDetailsInfo==null){
 										
@@ -809,6 +812,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 										surveyDetailsInfo.setDate(sdf.parse(surveyResponceVO.getInsertTime()));
 									
 									}else{
+										isUpdate = true;
 										surveyDetailsInfo.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
 									}
 									
@@ -864,6 +868,27 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 										
 										
 										SurveyDetailsInfo result = surveyDetailsInfoDAO.save(surveyDetailsInfo);
+										try{
+											if(surveyUser != null && surveyUser.getSurveyUserType().getSurveyUsertypeId().longValue() == 10l && voterID != null && voterID.longValue() > 0 && surveyResponceVO.getCasteId() != null && surveyResponceVO.getCasteId().longValue() > 0){
+												if(!isUpdate){
+												  surveyFinalDataDAO.updateDefaultCasteMatchStatus(voterID, surveyResponceVO.getCasteId(), surveyResponceVO.getBoothId(),1l);
+												}else{
+													List<SurveyFinalData> objs = surveyFinalDataDAO.getSurveyFinalDataObj(voterID, surveyResponceVO.getBoothId());
+													for(SurveyFinalData obj:objs){
+														if(obj.getCasteState() != null){
+															if(obj.getCasteState().getCasteStateId().longValue() == surveyResponceVO.getCasteId().longValue() ){
+																obj.setSurveyWmThirdPartyStatusId(1l);
+															}else{
+																obj.setSurveyWmThirdPartyStatusId(null);
+															}
+															surveyFinalDataDAO.save(obj);
+														}
+													}
+												}
+											}
+										}catch(Exception e){
+											LOG.error("Exception rised while updating WebMoniter Third Party Status ",e);
+										}
 										if(result != null)
 										{
 											resultStatus.setResultCode(0);
@@ -5037,5 +5062,4 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			return usersList;
 		}
 		
-	  
 }

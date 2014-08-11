@@ -43,4 +43,5 @@ public interface ISurveyUserRelationDAO  extends GenericDao<SurveyUserRelation, 
 	public List<Object[]> getAllUsersCountForLeaders(List<Long> leaderIds);
 	public List<Object[]> getSurveyConstituencyLeadersList(List<Long> constituencyIds);
 
+	public List<Object[]> getSurveyUserAndLeaderInfo(Long surveyUserId);
 }

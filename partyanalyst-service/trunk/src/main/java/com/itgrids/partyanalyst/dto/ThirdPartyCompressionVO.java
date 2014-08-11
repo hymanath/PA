@@ -51,6 +51,7 @@ public class ThirdPartyCompressionVO implements Serializable
 	
 	private String status;
 	private String comment;
+	private SurveyResponceVO surveyResponceVO;
 	
 	public Long getSurveyUserId() {
 		return surveyUserId;
@@ -250,9 +251,11 @@ public class ThirdPartyCompressionVO implements Serializable
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
+	public SurveyResponceVO getSurveyResponceVO() {
+		return surveyResponceVO;
+	}
+	public void setSurveyResponceVO(SurveyResponceVO surveyResponceVO) {
+		this.surveyResponceVO = surveyResponceVO;
+	}
 	
-	
-	
-
-
 }
