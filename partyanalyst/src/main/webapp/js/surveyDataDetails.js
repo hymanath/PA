@@ -1140,17 +1140,17 @@ function getBoothDetailsForSelectedUser(leaderId,constituencyId,name)
 					str += '<tr>';								  
 					str += '<td>'+result[i].name+'</td>';
 					str += '<td>';
-					var length = result[i].genericVOList.length;
-					for(var j in result[i].genericVOList)
+					var length = result[i].subList.length;
+					for(var j in result[i].subList)
 					{
 						
 						if(j == length-1)
 						{
-							str += ''+result[i].genericVOList[j].rank+'';
+							str += ''+result[i].subList[j].count+'';
 						}
 						else
 						{
-							str += ''+result[i].genericVOList[j].rank+' ,';
+							str += ''+result[i].subList[j].count+' ,';
 						}
 					}
 					str += ' </td>';

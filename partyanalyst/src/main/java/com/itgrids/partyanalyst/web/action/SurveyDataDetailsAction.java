@@ -800,7 +800,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 				return Action.INPUT;
 			}
 			jObj = new JSONObject(getTask());
-			returnList = surveyDataDetailsService.getSurveyUsersByLeades(jObj.getLong("leaderId"),jObj.getLong("constituencyId"));
+			reportList = surveyDataDetailsService.getSurveyUsersByLeades(jObj.getLong("leaderId"),jObj.getLong("constituencyId"));
 		} 
 		catch (Exception e)
 		{
