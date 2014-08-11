@@ -1350,6 +1350,7 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 							thirdPartyCompressionVO.setTphamletId(tpProvidedVO.getHamletId());
 							thirdPartyCompressionVO.setStatus(tpProvidedVO.getStatusId());
 							thirdPartyCompressionVO.setSerialNo(tpProvidedVO.getSerialNo());
+							thirdPartyCompressionVO.setMobileNo(tpProvidedVO.getMobileNo());
 							if(tpProvidedVO.getComment() != null){
 								thirdPartyCompressionVO.setComment(tpProvidedVO.getComment());
 							}else{
@@ -1362,6 +1363,15 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 								thirdPartyCompressionVO.setWmCasteStateId(tpCollectedVO.getCasteId());
 								thirdPartyCompressionVO.setWmHamlet(tpCollectedVO.getHamletName());
 								thirdPartyCompressionVO.setWmHamletId(tpCollectedVO.getHamletId());
+								if(thirdPartyCompressionVO.getMobileNo() != null && thirdPartyCompressionVO.getMobileNo().trim().length() > 3)
+								{
+									if(tpCollectedVO.getMobileNo() != null && tpCollectedVO.getMobileNo().trim().length() > 3)
+									thirdPartyCompressionVO.setMobileNo(thirdPartyCompressionVO.getMobileNo() +","+ tpCollectedVO.getMobileNo());
+								}
+								else
+								{
+									thirdPartyCompressionVO.setMobileNo(tpCollectedVO.getMobileNo());
+								}
 								
 							}
 							returnList.add(thirdPartyCompressionVO);
