@@ -3,6 +3,8 @@ package com.itgrids.partyanalyst.service.impl;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1664,4 +1666,138 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 		return returnList;
 	}
 	
+	/**
+	 * This Service is used for getting not runned third party details
+	 * @param constituencyId
+	 * @return returnList
+	 */
+	public List<GenericVO> getThirdPartyAvaliableBooths(Long constituencyId)
+	{
+		List<GenericVO> returnList = null;
+		try 
+		{
+			List<Object[]> totalBooths = boothDAO.getBoothsInAConstituencyByPublication(constituencyId, 11l);
+			if(totalBooths != null && totalBooths.size() > 0)
+			{
+				Map<Long,String> boothsMap = new HashMap<Long, String>();
+				Map<Long,String> tpAvaliableBoothsMap = null;
+				for (Object[] parms : totalBooths)
+				{
+					boothsMap.put((Long)parms[0], parms[1].toString());
+				}
+				
+				List<Object[]> tpAvaliableBooths = surveyFinalDataDAO.getThirdPartyBooths(constituencyId);
+				if(tpAvaliableBooths != null && tpAvaliableBooths.size() > 0)
+				{
+					tpAvaliableBoothsMap = new HashMap<Long, String>();
+					for (Object[] parms : tpAvaliableBooths)
+					{
+						tpAvaliableBoothsMap.put((Long)parms[0], parms[1].toString());
+					}
+				}
+				
+				if(boothsMap != null && boothsMap.size() > 0)
+				{
+					returnList = new ArrayList<GenericVO>();
+					if(tpAvaliableBoothsMap != null && tpAvaliableBoothsMap.size() > 0)
+					{
+						for(Long boothId : boothsMap.keySet())
+						{
+								String partNo =  tpAvaliableBoothsMap.get(boothId);
+								if(partNo == null)
+								{
+									GenericVO genericVO = new GenericVO();
+									genericVO.setId(boothId);
+									genericVO.setName("BOOTH" +" - "+ boothsMap.get(boothId));
+									returnList.add(genericVO);
+								}
+						}
+						
+					}
+					else
+					{
+						for(Long boothId : boothsMap.keySet())
+						{
+							GenericVO genericVO = new GenericVO();
+							genericVO.setId(boothId);
+							genericVO.setName("BOOTH" +" - "+ boothsMap.get(boothId));
+							returnList.add(genericVO);
+						}
+					}
+						
+					Collections.sort(returnList,arraySort1);
+					}
+				}
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getThirdPartyAvaliableBooths service method",e);
+		}
+		return returnList;
+	}
+	
+	/**
+	 * This Service is used for grtting all third party data avaliable booths
+	 * @param constituencyId
+	 * @return returnList
+	 */
+	public List<GenericVO> getThirdRaprtyBooths(Long constituencyId)
+	{
+		List<GenericVO> returnList = null;
+		try 
+		{
+			List<Object[]> tpAvaliableBooths = surveyFinalDataDAO.getThirdPartyBooths(constituencyId);
+			if(tpAvaliableBooths != null && tpAvaliableBooths.size() > 0)
+			{
+				returnList = new ArrayList<GenericVO>();
+				for (Object[] objects : tpAvaliableBooths)
+				{
+					GenericVO genericVO = new GenericVO();
+					genericVO.setId((Long)objects[0]);
+					genericVO.setName("BOOTH" +" - "+ objects[1].toString());
+					returnList.add(genericVO);
+				}
+				Collections.sort(returnList,arraySort1);
+			}
+		} 
+		catch (Exception e) 
+		{
+			LOG.error("Exception raised in getThirdRaprtyBooths service method",e);
+		}
+		
+		return returnList;
+	}
+	
+	public String deleteThirdPartyData(Long boothId)
+	{
+		String status = null;
+		try
+		{
+			int count = surveyFinalDataDAO.deleteExistingBoothDetails(boothId);
+			if(count > 0)
+			{
+				status = "SUCCESS";
+			}
+			else
+			{
+				status = "ERROR";
+			}
+		} 
+		catch (Exception e) 
+		{
+			status = "EXCEPTION";
+			LOG.error("Exception raised in deleteThirdPartyData service method",e);
+		}
+		
+		return status;
+	}
+	
+	
+	public static Comparator<GenericVO> arraySort1 = new Comparator<GenericVO>()
+			{	  
+					  public int compare(GenericVO arg1,GenericVO arg2)
+						{
+						  return arg1.getId().compareTo(arg2.getId());
+						}
+			};
 }

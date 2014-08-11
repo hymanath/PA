@@ -18,4 +18,5 @@ public interface ISurveyFinalDataDAO extends GenericDao<SurveyFinalData, Long>{
 	
 	public int updatedThirdPartyComment(List<Long> voterIds,String comment);
 	public List<Object[]> getWmCommentedDetails(Long boothId);
+	public List<Object[]> getThirdPartyBooths(Long constituencyId);
 }
