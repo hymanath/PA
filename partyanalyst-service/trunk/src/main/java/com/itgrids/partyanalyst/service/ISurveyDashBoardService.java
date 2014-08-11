@@ -29,4 +29,5 @@ public interface ISurveyDashBoardService
 	public List<ThirdPartyCompressionVO> getCompressionReportForThirdParty(Long boothId,Long surveyUserId);
 	public ResultStatus updateThirdPartyStatus(Long voterId,Long statusId);
 	public ResultStatus updateThirdPartyComment(List<Long> voterIds,String comment,Long statusId);
+	public List<GenericVO> getUpdatedCommentsFromWmForTP(Long boothId);
 }

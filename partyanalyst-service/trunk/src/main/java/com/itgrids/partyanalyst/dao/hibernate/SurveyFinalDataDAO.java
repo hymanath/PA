@@ -91,4 +91,11 @@ public class SurveyFinalDataDAO extends GenericDaoHibernate<SurveyFinalData, Lon
 		int c = query.executeUpdate();
 		return c;
 	}
+	
+	public List<Object[]> getWmCommentedDetails(Long boothId)
+	{
+		Query query = getSession().createQuery("select model.voter.voterId,model.voter.name,model.casteStateId , model.comment from SurveyFinalData model where model.boothId = :boothId and model.comment is not null");
+		query.setParameter("boothId", boothId);
+		return query.list();
+	}
 }

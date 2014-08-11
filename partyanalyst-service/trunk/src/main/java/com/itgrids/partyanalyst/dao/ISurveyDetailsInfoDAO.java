@@ -152,5 +152,6 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	public List<Long> getThirdPartyStartedConstituencies();
 	public List<Object[]> getBoothDetailsByForThirtyPartyVerifiers(Long constituencyId,Long surveyUserTypeId);
 	public List<SurveyDetailsInfo> getsurveyDetailsInfoByVoterId(Long surveyUserId, Long voterId);	
+	public List<Object[]> getThirdPartyCollectedInfo(Long boothId);
 }
 

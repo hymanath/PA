@@ -1557,4 +1557,12 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		return query.list();
 		
 	}
+	
+	public List<Object[]> getThirdPartyCollectedInfo(Long boothId)
+	{
+		Query query = getSession().createQuery("select distinct model.voter.voterId , model.caste.casteStateId from SurveyDetailsInfo model where model.booth.boothId = :boothId and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId ");
+		query.setParameter("boothId", boothId);
+		query.setParameter("userTypeId", IConstants.THIRD_PARTY_ROLE_ID);
+		return query.list();
+	}
 }
