@@ -1109,29 +1109,29 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	 * @param constituencyId
 	 * @return returnList
 	 */
-	public List<GenericVO> getSurveyUsersByLeades(Long leaderId,Long constituencyId)
+	public List<SurveyReportVO> getSurveyUsersByLeades(Long leaderId,Long constituencyId)
 	{
-		List<GenericVO> returnList = null;
+		List<SurveyReportVO> returnList = null;
 		try
 		{
 			List<Object[]> result = surveyUserRelationDAO.getUsersByConstituencyAndLeader(leaderId, constituencyId);
 			if(result != null && result.size() > 0)
 			{
-				returnList = new ArrayList<GenericVO>();
-				Map<Long,List<GenericVO>> resultMap = new java.util.HashMap<Long, List<GenericVO>>();
+				returnList = new ArrayList<SurveyReportVO>();
+				Map<Long,List<SurveyReportVO>> resultMap = new java.util.HashMap<Long, List<SurveyReportVO>>();
 				for (Object[] parms : result)
 				{
-					GenericVO VO = new GenericVO();
-					List<GenericVO> list = resultMap.get((Long)parms[0]);
+					SurveyReportVO VO = new SurveyReportVO();
+					List<SurveyReportVO> list = resultMap.get((Long)parms[0]);
 					if(list == null)
 					{
-						list = new ArrayList<GenericVO>();
+						list = new ArrayList<SurveyReportVO>();
 						resultMap.put((Long)parms[0], list);
 					}
 					VO.setId(parms[0] != null ? (Long)parms[0] : 0l);
 					VO.setName(parms[1] != null ? parms[1].toString() : "");
-					VO.setRank(parms[2] != null ? (Long.valueOf(parms[2].toString())) : 0l);
-					VO.setDesc(parms[3] != null ? parms[3].toString():"");
+					VO.setCount(parms[2] != null ? (Long.valueOf(parms[2].toString())) : 0l);
+					VO.setStatus(parms[3] != null ? parms[3].toString():"");
 					list.add(VO);
 				}
 				List<Long> surveyUserIds = new ArrayList<Long>(resultMap.keySet());
@@ -1139,15 +1139,15 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				{
 					for (Long surveyUserId : surveyUserIds)
 					{
-						GenericVO genericVO = new GenericVO();
-						genericVO.setId(surveyUserId);
-						List<GenericVO> genericVOList = resultMap.get(surveyUserId);
-						if(genericVOList != null && genericVOList.size() > 0)
+						SurveyReportVO vo = new SurveyReportVO();
+						vo.setId(surveyUserId);
+						List<SurveyReportVO> voList = resultMap.get(surveyUserId);
+						if(voList != null && voList.size() > 0)
 						{
-							genericVO.setName(genericVOList.get(0).getName());
-							genericVO.setGenericVOList(genericVOList);
+							vo.setName(voList.get(0).getName());
+							vo.setSubList(voList);
 						}
-						returnList.add(genericVO);
+						returnList.add(vo);
 						
 					}
 				}
