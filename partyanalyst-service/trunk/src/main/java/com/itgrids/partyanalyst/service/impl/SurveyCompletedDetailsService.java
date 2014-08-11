@@ -356,7 +356,7 @@ public class SurveyCompletedDetailsService implements
 				surveyCompletedLocationsDAO.deleteSurveyCompletedDetailsByLocationValueAndScopeForThirdParty(locationValue,locationScopeId,thirdPartySCopesList);
 			}
 			
-			if(!statusId.equals(IConstants.DC_PROCESS_STATUS_ID) && !statusId.equals(IConstants.TP_READY_STATUS_ID))
+			if(!statusId.equals(IConstants.DC_PROCESS_STATUS_ID) && !statusId.equals(IConstants.TP_READY_STATUS_ID) &&!statusId.equals(IConstants.TP_PROCESS_STATUS_ID) )
 			{
 			
 				SurveyCompletedLocations surveyCompletedLocationDetails = new SurveyCompletedLocations();
