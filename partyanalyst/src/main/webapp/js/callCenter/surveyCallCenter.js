@@ -3670,6 +3670,7 @@ $('#boothWiseTab,#startTimeTab').removeClass('selected');
 					str +='<th>AGE</th>';
 					str +='<th>WM CASTE</th>';
 					str +='<th>TP CASTE</th>';
+					str +='<th>MOBILE NO</th>';
 					str +='<th>STATUS</th>';
 					str +='<th>COMMENT</th>';
 					str +='</tr>';
@@ -3686,6 +3687,7 @@ $('#boothWiseTab,#startTimeTab').removeClass('selected');
 					   str +='<td>'+result[i].age+'</td>';
 					   str +='<td>'+result[i].tpCaste+'</td>';
 					   str +='<td>'+result[i].wmCaste+'</td>';
+					   str +='<td>'+result[i].mobileNo+'</td>';
 					   str +='<td>';
 					    if(result[i].status != null){
 					      str +='<select id="tPmultipleupdtStsId'+i+'" onchange="updateThirdPartyDetails('+result[i].voterId+',this.value);">';
