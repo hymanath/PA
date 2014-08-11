@@ -92,7 +92,9 @@
 				<!----Constituency details main Div---->
 				<div id="constiReportDiv"></div>
 				<!----Constituency details main Div End---->
-				
+				<div class="row-fluid m_top20" id="summary"></div>
+				<div class="row-fluid m_top20" id="boothsSummary"></div>
+				<div class="row-fluid m_top20" id="CommentsDiv"></div>
 			</div>
 		</div>
 	</div>
@@ -491,6 +493,7 @@ var jobj = {
 	});
 }
 
+var myResult = null;
 function getTPTotalBoothsDetails(){
 	$('#dayWiseReportDiv1').html('');
 	var constituencyId = $('#constituencyForThirdParty').val();
@@ -510,11 +513,218 @@ function getTPTotalBoothsDetails(){
 			data: {task:JSON.stringify(jsObj)},
 		 }).done(function(result){	
 			if(result != null){
-				console.log(result);
+				myResult= result;
+				buildBoothsSummary(result);
 			}
 			
 			//buildFinalReportWithTP(result)
 		});	
+}
+
+
+
+function buildFinalReportWithTP(result){
+	$("#thirdPartyAjax").show();
+	$("#FinalReportWithTPId").html("");
+	var str = "";
+	str +="<table id='FinalReportWithTPTableId' class='table table-bordered table-striped'>";
+		str +="<thead class='alert alert-success'>";
+			str +="<tr>";
+			str +="<th>BOOTH</th>";
+			str +="<th>TOTAL VOTERS</th>";
+			str +="<th>THIRD PARTY COLLECTED </th>";
+			var stList = result[0].statusList;
+			for(var i in stList){
+				str +="<th>"+stList[i].statusName+"</th>";
+				str +="<th>"+stList[i].statusName+" % </th>";
+			}
+			str +="<th>BOOTH TYPE </th>";
+			str +="<th>REVIEW</th>";
+			str +="</tr>";
+		str +="</thead>";
+		
+		for(var i in result){
+				for(var k in result[i].users.usersList){
+					str +="<tr>";
+					str +="<td>"+result[i].partNo+"</td>";
+					str +="<td>"+result[i].totalVoters+"</td>";
+					str +="<td>"+result[i].users.usersList[k].userCollected+"</td>";
+					var sttsList = result[i].users.usersList[k].statusList;
+					for(var p in sttsList){
+						str +="<td>"+sttsList[p].statusCount+"</td>";
+						str +="<td>"+sttsList[p].statusPercentage+" </td>";
+					}
+					str +="<td>"+result[i].boothType+"</td>";
+					str +="<td><a style='cursor: pointer;' onCLick='getWmUpdatedDetails("+result[i].boothId+","+result[i].partNo+")'> REVIEW</a></td>";
+					str +="</tr>";
+				}
+		}
+			
+		str +="<tbody>";
+	str +="</table>";
+	
+	$("#FinalReportWithTPId").html(str);
+	$('#FinalReportWithTPTableId').dataTable();
+	
+	$("#thirdPartyAjax").hide();
+}
+
+function buildBoothsSummary(result){
+	$("#summary").html("");
+	var str = "";
+	str +="<table id='FinalReportWithTPTableId' class='table table-bordered table-striped'>";
+		str +="<thead class='alert alert-success'>";
+			str +="<tr>";
+			str +="<th>BOOTHS TYPE</th>";
+			str +="<th>TOTAL VOTERS</th>";
+			str +="<th>THIRD PARTY COLLECTED </th>";
+			var stList = result.statusList;
+			for(var i in stList){
+				str +="<th>"+stList[i].statusName+"</th>";
+				str +="<th>"+stList[i].statusName+" % </th>";
+			}
+			str +="</tr>";
+		str +="</thead>";
+		str +="<tbody>";
+		for(var i in result.boothTypeSummaryList){
+			str +="<tr>";
+				str +="<td onclick='getMeBoothsUnder(\""+result.boothTypeSummaryList[i].boothType+"\");'>"+result.boothTypeSummaryList[i].boothType+"</td>";
+				if(result.boothTypeSummaryList[i].totalVoters==null){
+					str +="<td> 0 </td>";
+				}else{
+					str +="<td>"+result.boothTypeSummaryList[i].totalVoters+"</td>";
+				}
+				
+				if(result.boothTypeSummaryList[i].userCollected==null){
+					str +="<td> 0 </td>";
+				}else{
+					str +="<td>"+result.boothTypeSummaryList[i].userCollected+"</td>";
+				}
+				
+				var stList = result.boothTypeSummaryList[i].statusList;
+				for(var j in stList){
+					str +="<td>"+stList[j].statusCount+"</td>";
+					str +="<td>"+stList[j].statusPercentage+"</td>";
+				}
+			str +="</tr>";
+		}
+		str +="</tbody>";
+	str +="</table>";
+	
+	$("#summary").html(str);
+}
+
+function getMeBoothsUnder(bthType){
+	$("#thirdPartyAjax").show();
+	$("#boothsSummary").html("");
+	var str = "";
+	if(myResult==null){
+		return;
+	}
+	for(var i in myResult.boothTypeSummaryList){
+		if(myResult.boothTypeSummaryList[i].boothType == bthType){
+			var reslt = myResult.boothTypeSummaryList[i];
+			if(reslt.finalList == null){
+				return;
+			}						
+		}
+		}
+	str +="<table id='FinalReportWithTPTableId' class='table table-bordered table-striped'>";
+		str +="<thead class='alert alert-success'>";
+			str +="<tr>";
+			str +="<th>BOOTH</th>";
+			str +="<th>TOTAL VOTERS</th>";
+			str +="<th>THIRD PARTY COLLECTED </th>";
+			var stList = myResult.statusList;
+			for(var i in stList){
+				str +="<th>"+stList[i].statusName+"</th>";
+				str +="<th>"+stList[i].statusName+" % </th>";
+			}
+			str +="<th>REVIEW</th>";
+			str +="</tr>";
+		str +="</thead>";
+		
+		for(var i in myResult.boothTypeSummaryList){
+				if(myResult.boothTypeSummaryList[i].boothType == bthType){
+					var reslt = myResult.boothTypeSummaryList[i];
+					for(var j in reslt.finalList){
+						for(var k in reslt.finalList[j].users.usersList){
+							str +="<tr>";
+							str +="<td>"+ reslt.finalList[j].partNo+"</td>";
+							str +="<td>"+reslt.finalList[j].totalVoters+"</td>";
+							str +="<td>"+reslt.finalList[j].users.usersList[k].userCollected+"</td>";
+							var sttsList = reslt.finalList[j].users.usersList[k].statusList;
+							for(var p in sttsList){
+								str +="<td>"+sttsList[p].statusCount+"</td>";
+								str +="<td>"+sttsList[p].statusPercentage+" </td>";
+							}
+							str +="<td><a style='cursor: pointer;' onCLick='getWmUpdatedDetails("+reslt.finalList[j].boothId+","+reslt.finalList[j].partNo+")'> REVIEW</a></td>";
+							str +="</tr>";
+						}
+					}
+				}
+		}
+			
+		str +="<tbody>";
+	str +="</table>";
+	
+	$("#boothsSummary").html(str);
+	//$('#FinalReportWithTPTableId').dataTable();
+	
+	$("#thirdPartyAjax").hide();
+}
+
+function getWmUpdatedDetails(boothId,partNo)
+{
+	$('#CommentsDiv').html('');
+	var jsObj = {
+		boothId : boothId
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getUpdatedCommentsFromWmForTP.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		 }).done(function(result){
+				if(result != null)
+				{
+					buildCommentedDetails(result,partNo);
+				}
+				else
+				{
+					$('#CommentsDiv').html('<b style="color:red;">NO DATA AVALIABLE</b>');
+				}
+		});	
+}
+
+function buildCommentedDetails(result,partNo)
+{
+	var str = '';
+	
+	str += '<table  class="table table-bordered table-striped">';
+	str += '<thead class="alert alert-success">';
+	str += '<tr>';
+	str += '<th>BOOTH NO</th>';
+	str += '<th>VOTER NAME</th>';
+	str += '<th>WM CASTE</th>';
+	str += '<th>TP CASTE</th>';
+	str += '<th>COMMENT</th>';
+	str += '</tr>';
+	str += '</thead>';
+	str += '<tbody>';
+	for(var i in result)
+	{
+		str += '<tr>';
+		str += '<td>'+partNo+'</td>';
+		str += '<td>'+result[i].name+'</td>';
+		str += '<td>'+result[i].desc+'</td>';
+		str += '<td>'+result[i].mobileNo+'</td>';
+		str += '<td>'+result[i].percent+'</td>';
+		str += '</tr>';
+	}
+	str += '</tbody>';
+	str += '</table>';
+	$('#CommentsDiv').html(str);
 }
 
 </script>
