@@ -660,7 +660,8 @@
 								</div>
 								<div class="row text-center m_top10"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getFinalReportWithTP()">SUBMIT</button></div>
 								<img src='images/Loading-data.gif' class="offset5"  id="thirdPartyAjax" style="width:70px;height:60px;display:none;"/>
-								<div id="FinalReportWithTPId"></div>	
+								<div id="FinalReportWithTPId"></div></br></br>
+								<div id="CommentsDiv"></div>								
 					</div>						
                 </div>
 			</div>
