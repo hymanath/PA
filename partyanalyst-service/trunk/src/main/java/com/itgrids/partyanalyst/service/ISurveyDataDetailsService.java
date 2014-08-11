@@ -29,7 +29,7 @@ public interface ISurveyDataDetailsService
 	public List<GenericVO> getUserTypes();
 	public List<GenericVO> getSurveyUsersByUserType(Long userTypeId, Long constituency);
 	public List<SurveyReportVO> getDayWisereportDetailsByConstituencyId(Long constituencyId,String startDate,String endDate,Long userTypeId);
-	public List<GenericVO> getSurveyUsersByLeades(Long leaderId,Long constituencyId);
+	public List<SurveyReportVO> getSurveyUsersByLeades(Long leaderId,Long constituencyId);
 	public List<GenericVO> getConstituencyWiseLeaders();
 	public List<SelectOptionVO> getAllAssemblyConstituenciesByStateId();
 	public List<SurveyReportVO> getBoothWiseUserSamplesDetailsByDates(Long userId,String startDate);
