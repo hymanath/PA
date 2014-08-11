@@ -2357,6 +2357,93 @@ $("#errorDivSB").html("");
 
 		});	
 }
+
+function getThirdPartyDataAvaliableBooths(constituencyId,divId)
+{
+
+	var jObj =
+	{
+	  constituencyId:constituencyId     
+	};
+
+	 $.ajax({
+			type:'GET',
+			url: 'getThirdPartyAvaliableBooths.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){				
+				//buildDayWiseReportByUserType(result);		
+				//$("#boothImage").hide();
+				$('#'+divId+'').find('option:not(:first)').remove();
+
+				$.each(result,function(index,value){
+					$('#'+divId+'').append('<option value="'+value.id+'">'+value.name+'</option>');
+				});
+			
+
+		});	
+}
+
+function getThirdPartyDataAvaliable(constituencyId,divId)
+{
+
+	var jObj =
+	{
+	  constituencyId:constituencyId     
+	};
+
+	 $.ajax({
+			type:'GET',
+			url: 'getThirdRaprtyBooths.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){				
+				//buildDayWiseReportByUserType(result);		
+				//$("#boothImage").hide();
+				$('#'+divId+'').find('option:not(:first)').remove();
+
+				$.each(result,function(index,value){
+					$('#'+divId+'').append('<option value="'+value.id+'">'+value.name+'</option>');
+				});
+			
+
+		});	
+}
+
+function removeThirdPartyDetails(boothId)
+{
+	var constId = $("#constituencyForTPRemove").val();
+	var boothId = $("#boothIdForTPRemove").val();
+	if(constId == 0){
+		$("#errorDivTPRemove").html("<span style='color:red'>Please Select Constituency</span>");
+		return;
+	}
+	if(boothId == 0){
+		$("#errorDivTPRemove").html("<span style='color:red'>Please Select Booth</span>");
+		return;
+	}
+	$("#errorDivTPRemove").html("");
+	$('#ajaxImgForTPForRemove').show();
+	var jObj =
+	{
+	  boothId:boothId    
+	};
+
+	 $.ajax({
+			type:'GET',
+			url: 'removeThirdPartyDetails.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){
+			if(result != null)
+			{
+				$("#errorDivTPRemove").html("<span style='color:blue'>"+result+"</span>");
+				setTimeout(function(){$('#errorDivTPRemove').html('');}, 3000);
+				//$("#constituencyForTPRemove,#boothIdForTPRemove").val(0);
+			}
+			$('#ajaxImgForTPForRemove').hide();
+		});
+}
 function saveBoothPercentage(){
 	$("#boothImageForSavingPercent").show();
 	var consId = $("#constituencyForSP").val();
@@ -2429,7 +2516,7 @@ function saveThirdPartyDetails()
 				$("#ajaxImgForTP").hide();
 				$("#errorDivTP").html("<span style='color:blue'>"+result.message+"</span>");
 				setTimeout(function(){$('#errorDivTP').html('');}, 3000);
-				$("#constituencyForTP,#boothIdForTP").val(0);
+				//$("#constituencyForTP,#boothIdForTP").val(0);
 		});	
 }
 

@@ -53,6 +53,7 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 	private List<SurveyResponceVO> thirdPartyDetailsList;
 	private List<ThirdPartyCompressionVO> thirdPartyCompressionVOList;
 	private List<GenericVO> commentsList;
+	private String delstatus;
 	
 	@Autowired
 	ISurveyCompletedDetailsService surveyCompletedDetailsService ;
@@ -153,6 +154,14 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 
 	
 	
+	public String getDelstatus() {
+		return delstatus;
+	}
+
+	public void setDelstatus(String delstatus) {
+		this.delstatus = delstatus;
+	}
+
 	public List<GenericVO> getCommentsList() {
 		return commentsList;
 	}
@@ -586,6 +595,54 @@ public class SurveyDashBoardAction  extends ActionSupport implements ServletRequ
 		
 	}
 	
+	
+	public String getThirdPartyAvaliableBooths()	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			
+			
+			commentsList = surveyDashBoardService.getThirdPartyAvaliableBooths(jObj.getLong("constituencyId"));
+			
+		}catch(Exception e)
+		{
+			LOG.error("Exception raised ", e);
+		}
+		return Action.SUCCESS;
+		
+	}
+	
+	public String getThirdRaprtyBooths()	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			
+			
+			commentsList = surveyDashBoardService.getThirdRaprtyBooths(jObj.getLong("constituencyId"));
+			
+		}catch(Exception e)
+		{
+			LOG.error("Exception raised ", e);
+		}
+		return Action.SUCCESS;
+		
+	}
+	
+	public String removeThirdPartyDetails()	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			
+			
+			delstatus = surveyDashBoardService.deleteThirdPartyData(jObj.getLong("boothId"));
+			
+		}catch(Exception e)
+		{
+			LOG.error("Exception raised ", e);
+		}
+		return Action.SUCCESS;
+		
+	}
 	public String updateThirdPartyComment()	{
 		try
 		{

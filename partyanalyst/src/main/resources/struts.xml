@@ -8021,5 +8021,17 @@
 					<param name="root">commentsList</param>
 			</result>
 		</action>
+		
+		<action name="getThirdPartyAvaliableBooths" class="surveyDashBoardAction" method="getThirdPartyAvaliableBooths">
+			<result type="json" name="success">
+					<param name="root">commentsList</param>
+			</result>
+		</action>
+		
+		<action name="getThirdRaprtyBooths" class="surveyDashBoardAction" method="getThirdRaprtyBooths">
+			<result type="json" name="success">
+					<param name="root">commentsList</param>
+			</result>
+		</action>
 </package>
 </struts>      
