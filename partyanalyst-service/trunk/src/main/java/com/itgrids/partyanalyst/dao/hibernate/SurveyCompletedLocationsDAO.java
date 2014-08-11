@@ -203,4 +203,16 @@ public class SurveyCompletedLocationsDAO extends GenericDaoHibernate<SurveyCompl
 	}
 	
 	
+	public List<Long> getAllThirdPartyRelatedBoothByConstituencyId(Long constituencyId,List<Long> thirdPartyStatusIds)
+	{
+		Query query = getSession().createQuery("select distinct SCL.locationValue from  SurveyCompletedLocations SCL,Booth B  " +
+				"where " +
+				"SCL.locationValue = B.boothId and " +
+				"B.constituency.constituencyId = :constituencyId and SCL.statusId in(:statusIds)");
+		
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameterList("statusIds", thirdPartyStatusIds);
+		return query.list();
+	}
+	
 }

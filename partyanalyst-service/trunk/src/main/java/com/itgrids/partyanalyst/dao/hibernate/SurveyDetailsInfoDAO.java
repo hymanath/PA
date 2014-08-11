@@ -1456,7 +1456,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		query.setParameter("surveyUserId", surveyUserId);
 		return query.list();
 	}
-	public List<Object[]> getBoothWiseCollectedDetailsForConstituency(Long constituencyId,Long userTypeId,String attribute)
+	public List<Object[]> getBoothWiseCollectedDetailsForConstituency(Long constituencyId,Long userTypeId,String attribute,Long statusId)
 	{
 		
 	/*	Query query = getSession().createQuery("select count(SDI.caste.casteStateId),SDI.booth.boothId,SDI.booth.partNo from SurveyDetailsInfo SDI " +
@@ -1488,9 +1488,16 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 			
 		}
 		
-		queryString.append(",SDI.booth.boothId,SDI.booth.partNo from SurveyDetailsInfo SDI " +
-				"where " +
+		queryString.append(",SDI.booth.boothId,SDI.booth.partNo from SurveyDetailsInfo SDI ");
+		
+		if(!statusId.equals(IConstants.TP_PROCESS_STATUS_ID))
+			queryString.append(" , SurveyCompletedLocations SCL ");
+		
+		queryString.append("where " +
 				"SDI.booth.constituency.constituencyId = :constituencyId and ");
+		
+		if(!statusId.equals(IConstants.TP_PROCESS_STATUS_ID))
+				queryString.append("SCL.locationScopeId = :locationScopeId and SCL.locationValue = SDI.booth.boothId and SCL.statusId =:statusId and ");
 		
         if(attribute.equalsIgnoreCase("mobileNumber"))
            queryString.append("SDI.mobileNumber != '' and ");
@@ -1502,6 +1509,12 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		
 		query.setParameter("constituencyId", constituencyId);
 		query.setParameter("userTypeId", userTypeId);
+		
+		if(!statusId.equals(IConstants.TP_PROCESS_STATUS_ID))
+		{
+			query.setParameter("locationScopeId", IConstants.BOOTH_SCOPE_ID);
+			query.setParameter("statusId", statusId);
+		}
 		
 		return query.list();
 		

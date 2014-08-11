@@ -915,11 +915,11 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 				thirdPartyStatusIdsList.add(IConstants.TP_COMPLETED_STATUS_ID);
 				thirdPartyStatusIdsList.add(IConstants.TP_WM_PROCESS_STATUS_ID);
 				thirdPartyStatusIdsList.add(IConstants.TP_WM_COMPLETED_STATUS_ID);
-				
+				thirdPartyStatusIdsList.add(IConstants.READY_FOR_REVIEW);
 				
 				
 				if(thirdPartyStatusIdsList.contains(statusId))
-				   return getThirdPartyRelatedBoothsDetails(scopeId,constituencyId);
+				   return getThirdPartyRelatedBoothsDetails(scopeId,constituencyId,statusId,thirdPartyStatusIdsList);
 				
 				if(statusId.equals(IConstants.DC_PROCESS_STATUS_ID))
 				{
@@ -1074,20 +1074,20 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 			return resultList;
 		}
 	 
-	 public List<SurveyReportVO> getThirdPartyRelatedBoothsDetails(Long statusId,Long constituencyId)
+	 public List<SurveyReportVO> getThirdPartyRelatedBoothsDetails(Long scopeId,Long constituencyId,Long statusId,List<Long> thirdPartyStatusIdsList)
 	 {
 		 LOG.info("Entered into the getThirdPartyRelatedBoothsDetails service method");
 		 List<SurveyReportVO> resultList = new ArrayList<SurveyReportVO>();
 		 try
 		 {
-			List<Object[]> casteList =  surveyDetailsInfoDAO.getBoothWiseCollectedDetailsForConstituency(constituencyId,IConstants.THIRD_PARTY_ROLE_ID,"caste");
+			List<Object[]> casteList =  surveyDetailsInfoDAO.getBoothWiseCollectedDetailsForConstituency(constituencyId,IConstants.THIRD_PARTY_ROLE_ID,"caste",statusId);
 			
-			List<Object[]> hamletList =  surveyDetailsInfoDAO.getBoothWiseCollectedDetailsForConstituency(constituencyId,IConstants.THIRD_PARTY_ROLE_ID,"hamlet");
+			List<Object[]> hamletList =  surveyDetailsInfoDAO.getBoothWiseCollectedDetailsForConstituency(constituencyId,IConstants.THIRD_PARTY_ROLE_ID,"hamlet",statusId);
 			
-			List<Object[]> wardList =  surveyDetailsInfoDAO.getBoothWiseCollectedDetailsForConstituency(constituencyId,IConstants.THIRD_PARTY_ROLE_ID,"ward");
+			List<Object[]> wardList =  surveyDetailsInfoDAO.getBoothWiseCollectedDetailsForConstituency(constituencyId,IConstants.THIRD_PARTY_ROLE_ID,"ward",statusId);
 
 			
-			List<Object[]> mobileNumberList =  surveyDetailsInfoDAO.getBoothWiseCollectedDetailsForConstituency(constituencyId,IConstants.THIRD_PARTY_ROLE_ID,"mobileNumber");
+			List<Object[]> mobileNumberList =  surveyDetailsInfoDAO.getBoothWiseCollectedDetailsForConstituency(constituencyId,IConstants.THIRD_PARTY_ROLE_ID,"mobileNumber",statusId);
 			
 
 			
@@ -1123,7 +1123,12 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 				totalBoothsList.add((Long)obj[1]);
 			}
 			
-			
+			if(statusId.equals(IConstants.TP_PROCESS_STATUS_ID))
+			{
+				List<Long> thirdPartyBooths = surveyCompletedLocationsDAO.getAllThirdPartyRelatedBoothByConstituencyId(constituencyId,thirdPartyStatusIdsList);
+				totalBoothsList.removeAll(thirdPartyBooths);
+			}
+			 
 			
 			List<Object[] > thirdPartyErrorCountList = surveyFinalDataDAO.getBoothWiseErrorCountForAConstituency(constituencyId);
 			
