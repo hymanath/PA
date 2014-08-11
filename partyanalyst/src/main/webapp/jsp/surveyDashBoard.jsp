@@ -91,92 +91,14 @@
 				
 				<!-- constituency Div -->
 				
-				<div class="row-fluid ">
-					<div class="span12  m_top20  widgetservey">
-					<h4>Constituency Overview</h4>
-						<table class=" m_top20 table table-bordered table-hover table-striped">
-							<thead class="alert alert-success">
-								<tr>
-									<th>Constituency Name</th>
-									<th>Total Voters </th>
-									<th>Data Collected Count </th>
-									<th>Total Booths</th>
-									<th>Completed</th>
-									<th>Processing </th>
-									<th>Not Yet Started </th>
-									<th>Third Party Started ? </th>
-								</tr>
-							</thead>
-							<tbody>
-                              	<c:forEach var="constituency" items="${reportList}">
-								<c:if test="${constituency.total != constituency.notStartedCount}">
-								<tr>
-
-									<td><a href="javascript:{getConstituencyDetalReport(${constituency.id})}">${constituency.name}</a></td>
-									<td>${constituency.totalVoters}</td>
-									<td>${constituency.totalCollectedCount}</td>
-									<td>${constituency.total}</td>
-									<td>${constituency.completedCount}</td>
-									<td>${constituency.processingCount}</td>
-									<td>${constituency.notStartedCount}</td>
-									<c:if test="${constituency.forThirdParty == true}">
- 									 <td>Y</td>
-								    </c:if>
-
-									<c:if test="${constituency.forThirdParty != true}">
- 									 <td>N</td>
-								    </c:if>
-								</tr>
-								</c:if>
-								</c:forEach>
-
-<!--
-								<tr>
-									<td>Constituency name</td>
-									<td>120</td>
-									<td>20</td>
-									<td>50</td>
-									<td>40</td>
-								</tr>
-								<tr>
-									<td>Constituency name</td>
-									<td>220</td>
-									<td>20</td>
-									<td>100</td>
-									<td>100</td>
-								</tr>
-								<tr>
-									<td>Constituency name</td>
-									<td>180</td>
-									<td>80</td>
-									<td>50</td>
-									<td>50</td>
-								</tr>
-								<tr>
-									<td>Constituency name</td>
-									<td>120</td>
-									<td>90</td>
-									<td>10</td>
-									<td>20</td>
-								</tr>
-								<tr>
-									<td>Constituency name</td>
-									<td>500</td>
-									<td>100</td>
-									<td>200</td>
-									<td>200</td>
-								</tr>
-								<tr>
-									<td>Constituency name</td>
-									<td>120</td>
-									<td>20</td>
-									<td>50</td>
-									<td>40</td>
-								</tr>-->
-							</tbody>
-						</table>	
-					</div>
-				</div>
+				<div class="row-fluid " >
+				
+				  <div class="span12  m_top20  widgetservey" id="buldingConstituenciesDivId">
+	              <h4>Constituency Overview</h4>
+				  <img id="popupImgid1" src="./images/icons/search.gif" alt="Processing Image" style="display:block;margin-left:410px"/>
+				 </div>
+					
+				
 				
 					<!-- constituency End Div -->
 				
@@ -252,11 +174,86 @@
 	</div>
 		
 <script>
+$( document ).ready(function() {
+getSurveyCompletedLocationsDetailsForSurveyStartedConstituencies();	  
+});
+
 function showConstituenciesDetails(districtId)
 {
 	 window.open('constituencyDetailReportAction.action?districtId='+districtId+'','_blank');
 }
 
+function getSurveyCompletedLocationsDetailsForSurveyStartedConstituencies()
+{  
+   document.getElementById("popupImgid1").style.display="block";
+  
+	var jobj = {
+			     task:"getSurveyCompletedLocationDetails"
+	  	       }
+		$.ajax({
+	          type:'GET',
+	          url: 'getSurveyCompletedLocationsDetailsForSurveyStartedConstituenciesAction.action',
+	          dataType: 'json',
+	          data: {task:JSON.stringify(jobj)}
+	    }).done(function(result){
+		    
+		    buildingSurveyCompletedLocationsDetailsForSurveyStartedConstituencies(result);
+		});
+	
+	
+	
+}
+function buildingSurveyCompletedLocationsDetailsForSurveyStartedConstituencies(result)
+{
+	 document.getElementById("popupImgid1").style.display="none";
+	var str='';
+	str+='<table class=" m_top20 table table-bordered table-hover table-striped">';
+	str+='<thead class="alert alert-success">';
+	str+='<tr>';
+	str+='<th>Constituency Name</th>';
+	str+='<th>Total Voters </th>';
+	str+='<th>Data Collected Count </th>';
+	str+='<th>Total Booths</th>';
+	str+='<th>Completed</th>';
+	str+='<th>Processing </th>';
+	str+='<th>Not Yet Started </th>';
+	str+='<th>Third Party Started ?</th>';
+	str+='</tr>';
+	str+='</thead>';
+	str+='<tbody>';
+	for(i=0;i<result.length;i++)
+	{
+	  if( (result[i].total) != (result[i].notStartedCount))
+	  {
+		 str+='<tr>';
+		 str+='<td><a href="javascript:{getConstituencyDetalReport('+result[i].id+')}"> '+result[i].name+'</a></td>';
+		 if(result[i].totalVoters==null)
+		 {
+		  str+='<td></td>';
+		 }
+		 else{str+='<td>'+result[i].totalVoters+'</td>';}
+		 
+		 str+='<td>'+result[i].totalCollectedCount+'</td>';
+		 str+='<td>'+result[i].total+'</td>';
+		 str+='<td>'+result[i].completedCount+'</td>';
+		 str+='<td>'+result[i].processingCount+'</td>';
+		 str+='<td>'+result[i].notStartedCount+'</td>';
+		 if(result[i].forThirdParty == true)
+		   str+='<td>Y</td>';
+		 else 
+		   str+='<td>N</td>';
+		   
+		 str+='</tr>';
+	  }
+	}
+	str+='</tbody>';
+	str+='</table>';
+	$("#buldingConstituenciesDivId").append(str);
+	
+	
+	
+	
+}
 function getConstituencyDetalReport(constituencyId){
 
 	var jobj = {
