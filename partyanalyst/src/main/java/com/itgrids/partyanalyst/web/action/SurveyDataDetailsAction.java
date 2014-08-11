@@ -25,6 +25,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
+import com.itgrids.partyanalyst.dto.SurveyThirdPartyReportVO;
 import com.itgrids.partyanalyst.dto.UserBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.VerificationCompVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
@@ -79,9 +80,30 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	private List<DcDvCollectedDataVO> dcDvCollectedDataVOList;
 	private List<SurveyReportVO> reportList;
 	
+	
 	@Autowired
 	private ISurveyCompletedDetailsService surveyCompletedDetailsService;
+	private List<SurveyThirdPartyReportVO> thirdPartyResultList;
+	private SurveyThirdPartyReportVO tpFinalVO;
 	
+	
+	public SurveyThirdPartyReportVO getTpFinalVO() {
+		return tpFinalVO;
+	}
+
+	public void setTpFinalVO(SurveyThirdPartyReportVO tpFinalVO) {
+		this.tpFinalVO = tpFinalVO;
+	}
+
+	public List<SurveyThirdPartyReportVO> getThirdPartyResultList() {
+		return thirdPartyResultList;
+	}
+
+	public void setThirdPartyResultList(
+			List<SurveyThirdPartyReportVO> thirdPartyResultList) {
+		this.thirdPartyResultList = thirdPartyResultList;
+	}
+
 	public List<SurveyReportVO> getReportList() {
 		return reportList;
 	}
@@ -2228,7 +2250,21 @@ public String getPanchayatsStatusDetails()
 		}
 		return Action.SUCCESS;	
   	}
- 	public String getSurveyCompletedLocationsDetailsForSurveyStartedConstituencies()
+  	
+  	public String getFinalReportWithTP(){
+		LOG.debug("Entered Into getFinalReportWithTP");
+		try	{
+			jObj = new JSONObject(getTask());
+			thirdPartyResultList = surveyCompletedDetailsService.finalReportWithThirdParty(jObj.getLong("constituencyId"));
+			tpFinalVO = surveyCompletedDetailsService.getTPCompleteBoothsDetails(jObj.getLong("constituencyId"),thirdPartyResultList);
+			
+		}catch(Exception e){
+			LOG.error("Exception Raised in getFinalReportWithTP"+e);
+		}
+		return Action.SUCCESS;
+  	}
+  	
+  	public String getSurveyCompletedLocationsDetailsForSurveyStartedConstituencies()
   	{
   		try
 		{

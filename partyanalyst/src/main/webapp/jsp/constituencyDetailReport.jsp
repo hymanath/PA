@@ -98,7 +98,7 @@
 	</div>
 
 <script>
-
+getTPTotalBoothsDetails();
 var contiId = '${task}';
 buildReport();
 function buildReport(){
@@ -490,6 +490,33 @@ var jobj = {
 				$('#'+divId+'').html(str);
 	});
 }
+
+function getTPTotalBoothsDetails(){
+	$('#dayWiseReportDiv1').html('');
+	var constituencyId = $('#constituencyForThirdParty').val();
+	if(constituencyId == 0)	{
+	 $("#errorDivForVerification").html("<font color='#FF0000'>Please Select Constituency</font>");
+	 return;
+	}
+	 $("#errorDivForVerification").html("");
+	$('#mainajaximg').show();
+	var jsObj = {
+		constituencyId : 217
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getBoothDetailsWithTPAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		 }).done(function(result){	
+			if(result != null){
+				console.log(result);
+			}
+			
+			//buildFinalReportWithTP(result)
+		});	
+}
+
 </script>
 	
   </body>
