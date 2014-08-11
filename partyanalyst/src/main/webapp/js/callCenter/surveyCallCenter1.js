@@ -302,7 +302,13 @@ $('#searchDataImg').show();
 											str +='<td>';
 											str +='<div class="callcenter_voterDetals_widget">';
 											str +='<ul class="unstyled inline">';
+											if(result[i].hamletName != null && result[i].hamletName.length != 0 )
+											{
 											str +='<li>'+result[i].hamletName+'</li>';					
+											}
+											else{
+											str +='<li></li>';	
+											}
 											str +='</ul>';
 											str +='</div>';
 											str +='</td>';
