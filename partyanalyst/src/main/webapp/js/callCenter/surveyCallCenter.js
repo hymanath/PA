@@ -1570,7 +1570,10 @@ function buildSurveyBoothDetailsTable(result,statusId)
 					str += '<tr id="updateDiv'+i+'">		';								  
 					str += '<td>'+result[i].partNo+'</td>';
 					str += '<td>'+result[i].totalVoters+'</td>';
-					str += '<td>'+result[i].mobileNoCount+'</td>';
+					if(result[i].mobileNoCount == null || result[i].mobileNoCount == "null")
+						str += '<td>0</td>';
+					else
+					    str += '<td>'+result[i].mobileNoCount+'</td>';
 					var castePer = ((result[i].casteCount * 100)/result[i].totalVoters).toFixed(2);
 					var hamletPer = ((result[i].hamletCount * 100)/result[i].totalVoters).toFixed(2);
 					str += '<td>'+result[i].casteCount+'('+castePer+'%)</td>';
@@ -1666,6 +1669,15 @@ function buildSurveyBoothDetailsTable(result,statusId)
 					else
 					{
 						str += '<option value="10">TP-WM COMPLETED</option>';
+					}
+
+					if(statusId == 11)
+					{
+						str += '<option value="11" selected="selected" >READY FOR REVIEW</option>';
+					}
+					else
+					{
+						str += '<option value="11">READY FOR REVIEW</option>';
 					}
 					
 				}
@@ -2759,6 +2771,13 @@ function buildBoothsStatusCountsDetails(result)
 		str += '<hgroup>';
 		str += '<h4>THIRD PARTY WEB MONITORING COMPLETED</h4>';
 		str += '<h2> <a href="javascript:{getBoothsDetailsByStatusAndConstituency(10)}">'+result.tpWebMonitoringCompleted+'</a></h2>';
+		str += '</hgroup>';
+		str += '</li>';	
+
+		str += '<li>';
+		str += '<hgroup>';
+		str += '<h4>READY FOR REVIEW</h4>';
+		str += '<h2> <a href="javascript:{getBoothsDetailsByStatusAndConstituency(11)}">'+result.readyForReviewCount+'</a></h2>';
 		str += '</hgroup>';
 		str += '</li>';	
 
