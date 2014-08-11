@@ -8004,7 +8004,7 @@
 			</result>
 		</action>
 		
-		<action name="getFinalReportWithTPAction" class="surveyDashBoardAction" method="getFinalReportWithTP">
+		<action name="getBoothDetailsWithTPAction" class="surveyDataDetailsAction" method="getFinalReportWithTP">
 			<result type="json" name="success">
 					<param name="root">tpFinalVO</param>
 			</result>
@@ -8031,6 +8031,12 @@
 		<action name="getThirdRaprtyBooths" class="surveyDashBoardAction" method="getThirdRaprtyBooths">
 			<result type="json" name="success">
 					<param name="root">commentsList</param>
+			</result>
+		</action>
+		
+		<action name="removeThirdPartyDetails" class="surveyDashBoardAction" method="removeThirdPartyDetails">
+			<result type="json" name="success">
+					<param name="root">delstatus</param>
 			</result>
 		</action>
 </package>

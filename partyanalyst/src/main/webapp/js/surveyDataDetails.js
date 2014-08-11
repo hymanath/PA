@@ -2386,7 +2386,6 @@ function getThirdPartyDataAvaliableBooths(constituencyId,divId)
 
 function getThirdPartyDataAvaliable(constituencyId,divId)
 {
-
 	var jObj =
 	{
 	  constituencyId:constituencyId     
