@@ -30,4 +30,7 @@ public interface ISurveyDashBoardService
 	public ResultStatus updateThirdPartyStatus(Long voterId,Long statusId);
 	public ResultStatus updateThirdPartyComment(List<Long> voterIds,String comment,Long statusId);
 	public List<GenericVO> getUpdatedCommentsFromWmForTP(Long boothId);
+	public List<GenericVO> getThirdPartyAvaliableBooths(Long constituencyId);
+	public List<GenericVO> getThirdRaprtyBooths(Long constituencyId);
+	public String deleteThirdPartyData(Long boothId);
 }

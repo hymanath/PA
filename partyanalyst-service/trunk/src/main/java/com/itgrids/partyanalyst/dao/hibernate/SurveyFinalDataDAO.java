@@ -98,4 +98,11 @@ public class SurveyFinalDataDAO extends GenericDaoHibernate<SurveyFinalData, Lon
 		query.setParameter("boothId", boothId);
 		return query.list();
 	}
+	
+	public List<Object[]> getThirdPartyBooths(Long constituencyId)
+	{
+		Query query = getSession().createQuery("select distinct model.booth.boothId,model.booth.partNo from SurveyFinalData model where model.booth.constituency.constituencyId = :constituencyId");
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
 }
