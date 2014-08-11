@@ -1381,6 +1381,10 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 						
 						
 					}
+					
+					if(returnList != null && returnList.size() > 0){
+						returnList.get(0).setSurveyResponceVO(thirdPartyCollectedBasicData(boothId,surveyUserId,false));
+					}
 				}
 				
 			}
@@ -1598,7 +1602,6 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 			LOG.error("Exception raised in fillSurveyResponceVO service method",e);
 		}
 	}
-	
 	/**
 	 * This Service is used for getting updated comments from WM 
 	 * @param boothId
@@ -1799,5 +1802,76 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 						{
 						  return arg1.getId().compareTo(arg2.getId());
 						}
-			};
+			};	
+	//this method will return basic thirdParty(TP) user Details and tp collected details
+	/** @return Tp Name ,mobile No
+	 *  @return Tp Lead Name ,mobile No
+	 *  @return booth No
+	 *  @return Total Voters in Booth
+	 *  @return Same Caste Count,Different Caste Count,TP Wrong Count,Wm Wrong Count,New Caste Data Collected Count
+	 */
+	public SurveyResponceVO thirdPartyCollectedBasicData(Long boothId,Long userId,boolean onlyStatus){
+		SurveyResponceVO statusVO = new SurveyResponceVO();
+	  try{
+		//0 count,1 statusId
+		List<Object[]> statusList = surveyFinalDataDAO.getWMUpdatedStatusOnThirdPartyDataByBooth(userId, boothId);
+		for(Object[] params : statusList)
+		 {	
+			 if(((Long)params[1]).longValue() == 1l){
+				 statusVO.setSameCount((Long)params[0]);
+			 }else if(((Long)params[1]).longValue() == 2l){
+				 statusVO.setWmWrong((Long)params[0]);
+			 }else if(((Long)params[1]).longValue() == 3l){
+				 statusVO.setTpWrong((Long)params[0]);
+			 }else if(((Long)params[1]).longValue() == 4l){
+				 statusVO.setNewCaste((Long)params[0]);
+			 }
+			 if(statusVO.getSameCount() == null){
+				 statusVO.setSameCount(0l);
+			 }
+			 if(statusVO.getWmWrong() == null){
+				 statusVO.setWmWrong(0l);
+			 }
+			 if(statusVO.getTpWrong() == null){
+				 statusVO.setTpWrong(0l);
+			 }
+			 if(statusVO.getNewCaste() == null){
+				 statusVO.setNewCaste(0l);
+			 }
+		 }
+       if(!onlyStatus){
+			//0 userId,1 userName,2 userMobile,3 leaderId,4 leaderName,5 leaderMobile
+			 List<Object[]>  userDetailsList = surveyUserRelationDAO.getSurveyUserAndLeaderInfo(userId);
+			 
+			for(Object[] userDetails : userDetailsList)
+			 {	
+				statusVO.setSurveyUserId((Long)userDetails[0]);
+				statusVO.setVoterName(userDetails[1].toString());
+				if(userDetails[2] != null){
+				   statusVO.setLongitude(userDetails[2].toString());
+				}else{
+				  statusVO.setLongitude("");
+				}
+				
+				statusVO.setSurveyorId((Long)userDetails[3]);
+				statusVO.setRelativeName(userDetails[4].toString());
+				if(userDetails[5] != null){
+				   statusVO.setLatitude(userDetails[5].toString());
+				}else{
+				   statusVO.setLatitude("");
+				}
+			 }
+			//0 count,1 partNo
+			List<Object[]>  boothDataList = surveyFinalDataDAO.getBoothDetails(boothId);
+			for(Object[] boothData:boothDataList){
+				statusVO.setVoterId((Long)boothData[0]);
+				statusVO.setCasteName(boothData[1].toString());
+			}
+         }
+	  }catch(Exception e){
+		  LOG.error("Exception raised in thirdPartyCollectedBasicData ",e);
+	  }
+		return statusVO;
+	}
+	
 }

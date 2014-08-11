@@ -105,4 +105,42 @@ public class SurveyFinalDataDAO extends GenericDaoHibernate<SurveyFinalData, Lon
 		query.setParameter("constituencyId", constituencyId);
 		return query.list();
 	}
+	
+	public List<Object[]> getWMUpdatedStatusOnThirdPartyDataByBooth(Long userId,Long boothId){
+		//0 count,1 statusId
+		Query query = getSession().createQuery("select count(distinct sfd.voterId),sfd.surveyWmThirdPartyStatus.surveyWmThirdPartyStatusId from  SurveyFinalData sfd,SurveyDetailsInfo sdi where sfd.booth.boothId =:boothId  " +
+				" and sfd.surveyWmThirdPartyStatus.surveyWmThirdPartyStatusId is not null and sfd.voter.voterId = sdi.voter.voterId and sfd.booth.boothId = sdi.booth.boothId and sdi.surveyUser.surveyUserId =:userId group by " +
+				" sfd.surveyWmThirdPartyStatus.surveyWmThirdPartyStatusId");
+		query.setParameter("userId", userId);
+		query.setParameter("boothId", boothId);
+		return query.list();
+	}
+	public List<Object[]> getBoothDetails(Long boothId){
+		//0 count,1 partNo
+		Query query = getSession().createQuery("select count(distinct model.voterId),model.booth.partNo from  SurveyFinalData model where model.booth.boothId =:boothId ");
+		query.setParameter("boothId", boothId);
+		return query.list();
+	}
+	
+	public int updateDefaultCasteMatchStatus(Long voterId,Long casteStateId,Long boothId,Long statusId){
+		Query query = getSession().createQuery("update SurveyFinalData model set model.surveyWmThirdPartyStatusId = :statusId where model.voter.voterId = :voterId and model.casteState.casteStateId = :casteStateId  and model.booth.boothId = :boothId and  " +
+				" model.voter.voterId is not null and model.casteState.casteStateId is not null ");
+		query.setParameter("voterId", voterId);
+		query.setParameter("casteStateId", casteStateId);
+		query.setParameter("boothId", boothId);
+		query.setParameter("statusId", statusId);
+		 return query.executeUpdate();
+	}
+	
+	public List<SurveyFinalData> getSurveyFinalDataObj(Long voterId,Long boothId){
+		Query query = getSession().createQuery("select model from SurveyFinalData model where model.voter.voterId = :voterId   and model.booth.boothId = :boothId and  " +
+				" model.voter.voterId is not null and model.casteState.casteStateId is not null ");
+		query.setParameter("voterId", voterId);
+		
+		query.setParameter("boothId", boothId);
+		
+		 return query.list();
+	}
+	
+	
 }

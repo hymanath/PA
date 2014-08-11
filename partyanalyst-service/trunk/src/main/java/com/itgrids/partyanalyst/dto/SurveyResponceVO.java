@@ -58,6 +58,10 @@ public class SurveyResponceVO extends UserResponseVO  implements Serializable
 	
 	private Long serialNo;
 	private String comment;
+	private Long sameCount;
+	private Long wmWrong;
+	private Long tpWrong;
+	private Long newCaste;
 	
 	
 	
@@ -275,6 +279,30 @@ public class SurveyResponceVO extends UserResponseVO  implements Serializable
 	}
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+	public Long getSameCount() {
+		return sameCount;
+	}
+	public void setSameCount(Long sameCount) {
+		this.sameCount = sameCount;
+	}
+	public Long getWmWrong() {
+		return wmWrong;
+	}
+	public void setWmWrong(Long wmWrong) {
+		this.wmWrong = wmWrong;
+	}
+	public Long getTpWrong() {
+		return tpWrong;
+	}
+	public void setTpWrong(Long tpWrong) {
+		this.tpWrong = tpWrong;
+	}
+	public Long getNewCaste() {
+		return newCaste;
+	}
+	public void setNewCaste(Long newCaste) {
+		this.newCaste = newCaste;
 	}
 	
 	

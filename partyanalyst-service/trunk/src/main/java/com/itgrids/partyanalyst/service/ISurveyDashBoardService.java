@@ -33,4 +33,5 @@ public interface ISurveyDashBoardService
 	public List<GenericVO> getThirdPartyAvaliableBooths(Long constituencyId);
 	public List<GenericVO> getThirdRaprtyBooths(Long constituencyId);
 	public String deleteThirdPartyData(Long boothId);
+	public SurveyResponceVO thirdPartyCollectedBasicData(Long boothId,Long userId,boolean onlyStatus);
 }
