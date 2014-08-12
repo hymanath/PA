@@ -854,6 +854,7 @@ function getUserDetailsByConstituency()
 			data: {task:JSON.stringify(jObj)},
 		  }).done(function(result){				
 				//buildDetailsTable(result);
+				$("#userFieldImage").hide();
 				buildLocationDetails(result);
 				getUserDetailsByConstituencyForTable();
 				
@@ -967,6 +968,7 @@ function getUserDetailsByConstituencyForTable()
 	}
 
 	
+	$("#userFieldImage").show();	
 	var jObj =
 	{
 	 constituencyId:constituencyId,
@@ -2111,7 +2113,7 @@ function buildUserReport(result,userType)
 	str+='</table>';
 	$('#userWiseReport').html(str);
 	$('#userWiseReportImg').hide();
-
+	$('#userReportTable').dataTable();
 }
 function updateBoothStatusDetails(statusId,boothId,divId)
 {
@@ -2637,6 +2639,7 @@ function getLeadersAndUsersByConstituency()
 	var dateVal = $("#dateId").val();
 $("#leaderAndUserDetailsDiv").html('');
 $("#leaderAndUserDetailsInactiveDiv").html('');
+$("#tableDiv").html('');
 if(constituencyId == 0)
 {
  $("#errDivIdForStartTime").html("Please Select Constituency");
@@ -3194,7 +3197,7 @@ function buildSummaryData(result)
 
 			var str ='';
 			  
-				  str+='<table class="table table-bordered m_top20 table-hover table-striped">';
+				  str+='<table class="table table-bordered m_top20 table-hover table-striped" id="fieldReportSummaryTableId">';
 				  str+='<thead class="alert alert-success">';
 				  str+='<th>Constituency</th>';	
 				  str+='<th>Leader</th>';	
@@ -3221,7 +3224,7 @@ function buildSummaryData(result)
 				   str+='</tbody>';
 				  str+='</table>';
 				  $("#fieldReportSummary").html(str);
-			
+					$("#fieldReportSummaryTableId").dataTable();
 }
 
 function getVerfierDetailsWithVerifier(){
