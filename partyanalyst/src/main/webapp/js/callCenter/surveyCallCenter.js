@@ -3748,6 +3748,7 @@ $('#boothWiseTab,#startTimeTab').removeClass('selected');
 					str +='<th>AGE</th>';
 					str +='<th>WM CASTE</th>';
 					str +='<th>TP CASTE</th>';
+					str +='<th>MATCHED STATUS</th>';
 					str +='<th>MOBILE NO</th>';
 					str +='<th>STATUS</th>';
 					str +='<th>COMMENT</th>';
@@ -3765,6 +3766,14 @@ $('#boothWiseTab,#startTimeTab').removeClass('selected');
 					   str +='<td>'+result[i].age+'</td>';
 					   str +='<td>'+result[i].tpCaste+'</td>';
 					   str +='<td>'+result[i].wmCaste+'</td>';
+					   if(result[i].status == 1)	
+					   {
+							str +='<td>MATCHED</td>';
+					   }
+					   else
+					   {
+							str +='<td>UN MATCHED</td>';
+					   }
 					   str +='<td>'+result[i].mobileNo+'</td>';
 					   str +='<td>';
 					    if(result[i].status != null){
