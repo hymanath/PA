@@ -35,10 +35,15 @@ public class SurveyCompletedLocationsDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}*/
 	
-	public void test(){
+	/*public void test(){
 			List<Long> list = surveyCompletedLocationsDAO.getBoothsOfTPWithStatus(217l,8l);
 			System.out.println(list.size());
 		
+	}*/
+	
+	public void test(){
+		List<Long> list = surveyCompletedLocationsDAO.getBoothsAndConstituenciesOfTPWithStatus(8l);
+		System.out.println(list.size());
 	}
 
 }
