@@ -406,7 +406,7 @@ else if(userType ==4)
 		  str+='<th>TP ERROR</th>';
 		  str+='<th>TP ERROR %</th>';
 		  str+='<th>Same Caste</th>';
-		  str+='<th>Same Caste ERROR %</th>';
+		  str+='<th>Same Caste  %</th>';
 	      str+='<th>New Castes Collected</th>';
 	}
 	str+='</tr>';
