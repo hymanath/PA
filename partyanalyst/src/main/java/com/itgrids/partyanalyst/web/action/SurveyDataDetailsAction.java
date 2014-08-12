@@ -3,7 +3,9 @@ package com.itgrids.partyanalyst.web.action;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -86,7 +88,18 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 	private List<SurveyThirdPartyReportVO> thirdPartyResultList;
 	private SurveyThirdPartyReportVO tpFinalVO;
 	
+	private List<SurveyThirdPartyReportVO> tpFinalVOList;
 	
+	
+	
+	public List<SurveyThirdPartyReportVO> getTpFinalVOList() {
+		return tpFinalVOList;
+	}
+
+	public void setTpFinalVOList(List<SurveyThirdPartyReportVO> tpFinalVOList) {
+		this.tpFinalVOList = tpFinalVOList;
+	}
+
 	public SurveyThirdPartyReportVO getTpFinalVO() {
 		return tpFinalVO;
 	}
@@ -2277,4 +2290,44 @@ public String getPanchayatsStatusDetails()
 		}
 		return Action.SUCCESS;	
   	} 
+  	
+  	public String getFinalReportWithTPConstituencyWise(){
+		LOG.debug("Entered Into getFinalReportWithTP");
+		tpFinalVOList = new ArrayList<SurveyThirdPartyReportVO>();
+		try	{
+			jObj = new JSONObject(getTask());
+			List<Long> constituencies = new ArrayList<Long>();
+			Map<Long,String> constiMap = new HashMap<Long, String>();
+			List<SurveyThirdPartyReportVO> constList = surveyCompletedDetailsService.thirdPartyReadyForReviewConstBooths();
+			if(constList!=null && constList.size()>0){
+				for(SurveyThirdPartyReportVO sv:constList){
+					if(!constituencies.contains(sv.getConstituencyId())){
+						constituencies.add(sv.getConstituencyId());
+						constiMap.put(sv.getConstituencyId(), sv.getConstituency());
+					}
+				}
+			}
+			
+			if(constituencies!=null && constituencies.size()>0){
+				for(Long sv:constituencies){
+					thirdPartyResultList = surveyCompletedDetailsService.finalReportWithThirdParty(sv);
+					SurveyThirdPartyReportVO fnlVO = surveyCompletedDetailsService.getTPCompleteBoothsDetails(sv,thirdPartyResultList);
+					
+					tpFinalVO = new SurveyThirdPartyReportVO();
+					
+					tpFinalVO.setConstituencyId(sv);
+					tpFinalVO.setConstituencyDetails(fnlVO);
+					tpFinalVO.setConstituency(constiMap.get(sv));
+					
+					tpFinalVOList.add(tpFinalVO);
+				}
+			}
+			
+			
+			
+		}catch(Exception e){
+			LOG.error("Exception Raised in getFinalReportWithTP"+e);
+		}
+		return Action.SUCCESS;
+  	}
 }
