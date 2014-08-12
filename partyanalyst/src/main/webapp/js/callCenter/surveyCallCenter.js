@@ -183,6 +183,7 @@ function showHideTabs(id)
 		$('#userReport').hide();
 		$("#verifierReportIdForVerifier").hide();;
 		$('#saveBoothsPercentage').hide();
+		$("#wmReportDiv").hide();
 
 	}
 }
@@ -3692,6 +3693,7 @@ function buildFinalReport(result)
 	$('#excelTableID1').show();
 	str += '</table>';
 	$('#dayWiseReportDiv1').html(str);
+	$('#daywisereportTableIdTemp').dataTable();
 }
 
 //getThirdPartyFinalDetails();
