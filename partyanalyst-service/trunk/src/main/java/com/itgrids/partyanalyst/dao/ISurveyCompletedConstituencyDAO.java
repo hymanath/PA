@@ -8,4 +8,5 @@ import com.itgrids.partyanalyst.model.SurveyCompletedConstituency;
 
 public interface ISurveyCompletedConstituencyDAO extends GenericDao<SurveyCompletedConstituency, Long>{
 	public List<Object[]> getSurveyCompletedConstituencyDetails();
+	public List<Object[]> getConstituencyCompletionStatusByConstituencyId(Long constituencyId);
 }

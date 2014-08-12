@@ -22,6 +22,16 @@ public class SurveyCompletedConstituencyDAO extends GenericDaoHibernate<SurveyCo
 				",SCC.queryComment from SurveyCompletedConstituency SCC");
 		
 		return query.list();
+	}
+	
+	public List<Object[]> getConstituencyCompletionStatusByConstituencyId(Long constituencyId)
+	{
+		Query query = getSession().createQuery("select SCC.surveyCompletedConstituencyStatus.status ,SCC.queryComment from " +
+				"SurveyCompletedConstituency SCC where  SCC.constituency.constituencyId = :constituencyId");
+		
+		query.setParameter("constituencyId", constituencyId);
+		
+		return query.list();
 		
 	}
 }
