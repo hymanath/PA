@@ -1297,7 +1297,11 @@ public class SurveyCompletedDetailsService implements
 				completionVO.setName(obj[1].toString());
                 completionVO.setStatus(obj[3].toString());
                 completionVO.setStatusId((Long)obj[2]);
-                completionVO.setComment(obj[4].toString());
+                
+                if(obj[4] != null)
+                 completionVO.setComment(obj[4].toString());
+                else
+                 completionVO.setComment("---");
 				
                 resultList.add(completionVO);
 			}
@@ -1309,5 +1313,29 @@ public class SurveyCompletedDetailsService implements
 			return null;
 		}
 		return resultList;
+	}
+	
+	public String getConstituencyCompletionStatusByConstituencyId(Long constituencyId)
+	{
+		try
+		{
+			List<Object[]> list = surveyCompletedConstituencyDAO.getConstituencyCompletionStatusByConstituencyId(constituencyId);
+			
+			if(list != null && list.size() >0)
+			{
+				Object[] obj = list.get(0);
+				
+				String resultString = obj[0].toString();
+				if(obj[0] != null)
+					resultString = resultString.concat("-"+obj[1].toString());
+				 return resultString;
+			}
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+		return null;
 	}
 }
