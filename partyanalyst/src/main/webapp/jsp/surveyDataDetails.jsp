@@ -195,7 +195,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onClick="saveSurveyUser();">SUBMIT</button><img id="processingImgForUserCreation" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img></div>
+							<div class="row text-center m_top20"><button type="button" class="btn btn-large btn-success" onClick="saveSurveyUser();">CREATE</button><img id="processingImgForUserCreation" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img></div>
 					</div>
 				</div>
 			</div>
