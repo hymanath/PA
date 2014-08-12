@@ -506,7 +506,7 @@ var jobj = {
 var myResult = null;
 function getTPTotalBoothsDetails(){
 	$('#dayWiseReportDiv1').html('');
-	var constituencyId = $('#constituencyForThirdParty').val();
+	var constituencyId = $('#constiList').val();
 	if(constituencyId == 0)	{
 	 $("#errorDivForVerification").html("<font color='#FF0000'>Please Select Constituency</font>");
 	 return;
