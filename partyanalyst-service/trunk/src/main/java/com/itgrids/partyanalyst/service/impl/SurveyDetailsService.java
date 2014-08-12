@@ -1088,8 +1088,10 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 
 			
 			List<Object[]> mobileNumberList =  surveyDetailsInfoDAO.getBoothWiseCollectedDetailsForConstituency(constituencyId,IConstants.THIRD_PARTY_ROLE_ID,"mobileNumber",statusId);
-			
+						
+			List<Long> boothIds =  surveyCompletedLocationsDAO.getBoothsOfConstituecyByStatus(constituencyId, statusId, scopeId);
 
+			List<Object[]> statusCountList = surveyFinalDataDAO.getThirdPartyStatusWithBooths(boothIds);
 			
 			
 			Set<Long> totalBoothsList = new HashSet<Long>();
@@ -1098,6 +1100,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 			Map<Long,Long> hamletMap = new HashMap<Long, Long>();
 			Map<Long,Long> wardMap = new HashMap<Long, Long>();
 			Map<Long,Long> mobileNumbersMap = new HashMap<Long, Long>();
+			Map<Long,Long> statusMap = new HashMap<Long, Long>();
 			
 			for(Object[] obj:casteList)
 			{
@@ -1123,6 +1126,12 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 				totalBoothsList.add((Long)obj[1]);
 			}
 			
+			for(Object[] obj:statusCountList)
+			{
+				statusMap.put((Long)obj[0], (Long)obj[2]);				
+				totalBoothsList.add((Long)obj[0]);
+			}
+			
 			if(statusId.equals(IConstants.TP_PROCESS_STATUS_ID))
 			{
 				List<Long> thirdPartyBooths = surveyCompletedLocationsDAO.getAllThirdPartyRelatedBoothByConstituencyId(constituencyId,thirdPartyStatusIdsList);
@@ -1142,10 +1151,11 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 			List<Object[]> totalVoterList = boothPublicationVoterDAO.getTotalVotersForConstituencyByBoothWise(constituencyId);
 			
 			Map<Long,Long> totalVotersMap = new HashMap<Long, Long>();
-			
+			if(totalVoterList != null && totalVoterList.size() > 0)
+			{
 			for(Object[] obj:totalVoterList)
 				totalVotersMap.put((Long)obj[0], (Long)obj[2]);
-			
+			}
 			List<Object[]> boothDetails = boothDAO.getBoothDetailsByBoothIds(totalBoothsList);
 			
 			Map<Long,String> boothDetailsMap = new HashMap<Long, String>();
@@ -1159,14 +1169,14 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 			{
 				SurveyReportVO boothVO = new SurveyReportVO();
 				
-				boothVO.setTotalVoters(totalVotersMap.get(boothId));
-				boothVO.setMobileNoCount(mobileNumbersMap.get(boothId));
-				boothVO.setCasteCount(casteMap.get(boothId));
-				
+				boothVO.setTotalVoters(totalVotersMap.get(boothId) != null ? totalVotersMap.get(boothId) : 0L);
+				boothVO.setMobileNoCount(mobileNumbersMap.get(boothId) != null ? mobileNumbersMap.get(boothId) : 0L);
+				boothVO.setCasteCount(casteMap.get(boothId) != null ? casteMap.get(boothId) : 0L);
+				boothVO.setCount(statusMap.get(boothId) != null ? statusMap.get(boothId) : 0L);
 				if(hamletMap.get(boothId) != null)
-					 boothVO.setHamletCount(hamletMap.get(boothId));
+					 boothVO.setHamletCount(hamletMap.get(boothId) != null ? hamletMap.get(boothId) : 0L);
 				else if(wardMap.get(boothId) != null)
-					 boothVO.setHamletCount(wardMap.get(boothId));
+					 boothVO.setHamletCount(wardMap.get(boothId) != null ? wardMap.get(boothId) : 0L);
 				
 				boothVO.setBoothId(boothId);
 				boothVO.setPartNo(boothDetailsMap.get(boothId));
