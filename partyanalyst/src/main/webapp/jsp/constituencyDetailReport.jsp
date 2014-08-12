@@ -93,7 +93,7 @@
 							<button type="button" class="btn btn-success" onclick="getConstituencyReport();">SUBMIT</button></div>
 					</div>
 				</div><!-----Constituency selection Div end---->
-				
+				<div id="completionStatusDivId" style="margin-top:20px;"></div>
 				<!----Constituency details main Div---->
 				<div id="constiReportDiv"></div>
 				<!----Constituency details main Div End---->
@@ -115,6 +115,9 @@ function buildReport(){
 }
 
 function getConstituencyReport(constituencyId){
+
+	getConstituencyCompletionStatusDetails(constituencyId);
+
 	var constituencyId = $('#constiList').val();
 	var constiName = $('#constiList option:selected').text();
 	if(constituencyId == 0 ){
@@ -778,9 +781,31 @@ function buildCommentedDetails(result,partNo)
 	str += '</table>';
 	$('#CommentsDiv').html(str);
 }
+function getConstituencyCompletionStatusDetails(constituencyId)
+{
+	 $('#completionStatusDivId').html('');
 
-</script>
-	
-  </body>
+		$.ajax({
+			type:'GET',
+			url: 'getConstituencyCompletionStatusByConstituencyId.action',
+			dataType: 'json',
+			data: {constituencyId:constituencyId},
+		 }).done(function(result){
+			if(result != null)
+			{
+				var str='';
+              if(result == "SIGN-OFF")
+			  {
+				  str += "<label><b>STATUS  :</b>"+result+"</label>";
+			  }else
+			  {
+				  str += "<label><b>STATUS  :</b>"+result+"</label>";
+			  }
+			  $('#completionStatusDivId').html(str);
+			}				
+		});	
+}
 
+</script>	
+</body>
  </html>

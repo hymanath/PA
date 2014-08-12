@@ -134,4 +134,18 @@ public class SurveyCompletedDetailsAction extends ActionSupport implements Servl
 		return Action.SUCCESS;
 	}
 	
+	
+	public String getConstituencyCompletionStatusByConstituencyId()
+	{
+		try
+		{
+			status = surveyCompletedDetailsService.getConstituencyCompletionStatusByConstituencyId(constituencyId);
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return Action.SUCCESS;
+	}
 }
