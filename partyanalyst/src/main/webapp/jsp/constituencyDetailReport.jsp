@@ -18,6 +18,11 @@
 			<!--------------------	-->
 	<!----------------------->
 		<style>
+		#commentStatusDiv
+		{
+		  font-weight:bold;
+		  color:green;
+		}
 			body{background:#f0f0f0;}
 			.m_top10{margin-top:10px;}
 			.m_top20{margin-top:20px;}
@@ -610,8 +615,54 @@ function buildBoothsSummary(result){
 		}
 		str +="</tbody>";
 	str +="</table>";
+
+	str+='<div class="span5 offset3">';
+	 str+='<a class="btn btn-success pull-left" href="javascript:{showCommentDiv(1)}">SIGN-OFF</a>';
+ 	 str+='<a class="btn btn-danger pull-right"  href="javascript:{showCommentDiv(2)}">Query</a>';
+	str+='</div>';
+
+	str+='<div class="span8 hide" id="commentDiv" style="margin-top:20px;">';
+	 str+='<textarea id="queryComment"  rows="4" cols="50"></textarea>';
+	 str+='<a class="btn btn-success offset1" href="javascript:{saveConstituencyCompletionStatus(2)}">Update Comment</a>';
+	str+='</div>';
+
+	str+='<div id="commentStatusDiv"></div>';
 	
 	$("#summary").html(str);
+}
+function showCommentDiv(statusId)
+{
+	$('#commentStatusDiv').html('');
+
+	if(statusId == 2)
+	{
+     $('#commentDiv').show();
+	}
+	else
+	{
+	    saveConstituencyCompletionStatus(1);
+		$('#commentDiv').hide();
+	}
+}
+
+function saveConstituencyCompletionStatus(statusId)
+{
+	var comment = "";
+	if(statusId == 2)
+		comment = $('#queryComment').val().trim();
+	$.ajax({
+			type:'GET',
+			url: 'saveSurveyCompletedConstituencyDetails.action',
+			dataType: 'json',
+			data: {constituencyId:$('#constiList').val(),statusId:statusId,comment:comment},
+		 }).done(function(result){
+				if(result == "success")
+				{
+					$('#commentStatusDiv').html("Status Updated Successfully...");
+					$('#commentDiv').hide();
+				}
+		});	
+
 }
 
 function getMeBoothsUnder(bthType){
