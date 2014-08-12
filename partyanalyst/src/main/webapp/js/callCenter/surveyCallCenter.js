@@ -4002,7 +4002,7 @@ function getFinalReportWithTP(){
 	 return;
 	}
 	 $("#errorDivForVerification").html("");
-	$('#mainajaximg').show();
+	//$('#mainajaximg').show();
 	var jsObj = {
 		constituencyId : $('#constituencyForThirdParty').val()
 	}
@@ -4018,36 +4018,29 @@ function getFinalReportWithTP(){
 }
 
 function buildFinalReportWithTP(result){
-	$("#thirdPartyAjax").show();
 	$("#FinalReportWithTPId").html("");
 	var str = "";
+	str +="<h4 style='text-align:center;color:red;'> BOOTH WISE OVERVIEW OF THIRD PARTY DATA</h4>";
 	str +="<table id='FinalReportWithTPTableId' class='table table-bordered table-striped'>";
 		str +="<thead class='alert alert-success'>";
 			str +="<tr>";
-			str +="<th>BOOTH</th>";
-			str +="<th>TOTAL VOTERS</th>";
-			str +="<th>THIRD PARTY COLLECTED </th>";
-			var stList = result[0].statusList;
-			for(var i in stList){
-				str +="<th>"+stList[i].statusName+"</th>";
-				str +="<th>"+stList[i].statusName+" % </th>";
-			}
-			str +="<th>BOOTH TYPE </th>";
-			str +="<th>REVIEW</th>";
+				str +="<th rowspan=2>BOOTH</th>";
+				str +="<th rowspan=2>TOTAL VOTERS</th>";
+				str +="<th rowspan=2>THIRD PARTY COLLECTED </th>";
+				str +="<th colspan=2 style='border-bottom:0px;'>MATCHED</th>";
+				str +="<th colspan=4 style='border-bottom:0px;'>UN MATCHED</th>";
+				str +="<th colspan=2 style='border-bottom:0px;'>NEW CASTE</th>";
+				str +="<th rowspan=2>BOOTH TYPE </th>";
+				str +="<th rowspan=2>REVIEW</th>";
 			str +="</tr>";
-		str +="</thead>";
-		/* for(var i in result){
 			str +="<tr>";
-			str +="<td>"+result[i].partNo+"</td>";
-			str +="<td>"+result[i].totalVoters+"</td>";
-			str +="<td>"+result[i].userCollected+"</td>";
-			var sttsList = result[i].statusList;
-			for(var j in sttsList){
-				str +="<th>"+sttsList[j].statusCount+"</th>";
-				str +="<th>"+sttsList[j].statusPercentage+" % </th>";
-			}
-			str +="</tr>";
-		} */
+				var stList = result[0].statusList;
+				for(var i in stList){
+					str +="<th>"+stList[i].statusName+"</th>";
+					str +="<th>"+stList[i].statusName+" % </th>";
+				}
+			str +="</tr>";	
+		str +="</thead>";
 		
 		for(var i in result){
 				for(var k in result[i].users.usersList){
@@ -4061,7 +4054,7 @@ function buildFinalReportWithTP(result){
 						str +="<td>"+sttsList[p].statusPercentage+" </td>";
 					}
 					str +="<td>"+result[i].boothType+"</td>";
-					str +="<td><a style='cursor: pointer;' onCLick='getWmUpdatedDetails("+result[i].boothId+","+result[i].partNo+")'> REVIEW</a></td>";
+					str +="<td><a style='cursor: pointer;' onCLick='getWmUpdatedDetails("+result[i].boothId+","+result[i].partNo+",2)'> REVIEW</a></td>";
 					str +="</tr>";
 				}
 		}
@@ -4072,12 +4065,20 @@ function buildFinalReportWithTP(result){
 	$("#FinalReportWithTPId").html(str);
 	$('#FinalReportWithTPTableId').dataTable();
 	
-	$("#thirdPartyAjax").hide();
 }
 
-function getWmUpdatedDetails(boothId,partNo)
+function getWmUpdatedDetails(boothId,partNo,id)
 {
-	$('#CommentsDiv').html('');
+	var divId = '';
+	if(id == 1)
+	{
+		divId = "commentsDiv1";
+	}
+	else
+	{
+		divId = "CommentsDiv";
+	}
+	$("#"+divId+"").html('');
 	var jsObj = {
 		boothId : boothId
 	}
@@ -4089,16 +4090,17 @@ function getWmUpdatedDetails(boothId,partNo)
 		 }).done(function(result){
 				if(result != null)
 				{
-					buildCommentedDetails(result,partNo);
+					buildCommentedDetails(result,partNo,divId);
 				}
 				else
 				{
-					$('#CommentsDiv').html('<b style="color:red;">NO DATA AVALIABLE</b>');
+					$("#"+divId+"").html('<b style="color:red;">NO DATA AVALIABLE</b>');
+					$("#thirdPartyAjax").hide();
 				}
 		});	
 }
 
-function buildCommentedDetails(result,partNo)
+function buildCommentedDetails(result,partNo,divId)
 {
 	var str = '';
 	
@@ -4125,7 +4127,8 @@ function buildCommentedDetails(result,partNo)
 	}
 	str += '</tbody>';
 	str += '</table>';
-	$('#CommentsDiv').html(str);
+	$("#"+divId+"").html(str);
+	$("#thirdPartyAjax").hide();
 }
 function checkAllThirdPartyChkBoxes(){
  if($("#thirdPartyChkBox").is(':checked')){

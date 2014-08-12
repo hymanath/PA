@@ -74,6 +74,7 @@
 			.highlight{
 			cursor: pointer;
 			}
+			#FinalReportWithTPTableId th{ text-align:center;}
 		</style>	
 	
   </head>
@@ -313,6 +314,9 @@ $('#boothId').multiselect({
 	<div class="container" style="display:none;margin-top:20px;" id="stateWiseReportId">
 		<jsp:include page="surveyDashBoard.jsp" flush="true"/>	
 	</div>
+	
+	
+	
 	<script>
 /*	function getBoothDetails()
 {
@@ -1225,6 +1229,211 @@ return [true, "","Available"];
 return [false,"","unAvailable"];
 }
 
+}
+
+var finalRes = null;
+getTPTotalBoothsDetailsConstituencyWise();
+function getTPTotalBoothsDetailsConstituencyWise(){
+	$('#mainajaximg').show();
+	var jsObj = {}
+	$.ajax({
+			type:'GET',
+			url: 'getBoothDetailsConstituencyWiseWithTPAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		 }).done(function(result){	
+			if(result != null){
+				finalRes= result;
+				buildConstituencySummary(result);
+			}
+			
+			//buildFinalReportWithTP(result)
+		});	
+}
+
+function buildConstituencySummary(myrslt){
+	$("#constSummary").html("");
+	var rest = myrslt[0].constituencyDetails;
+	var str = "";
+	str +="<h4 style='text-align:center;color:red;'>THIRD PARTY READY FOR REVIEW BOOTHS OVERVIEW</h4>";
+	str +="<table id='FinalReportWithTPTableId' class='table table-bordered table-striped'>";
+		str +="<thead class='alert alert-success'>";
+			
+			str +="<tr>";
+				str +="<th rowspan=2>CONSTITUENCY</th>";
+				str +="<th rowspan=2>BOOTHS TYPE</th>";
+				str +="<th rowspan=2>TOTAL VOTERS</th>";
+				str +="<th rowspan=2>THIRD PARTY COLLECTED </th>";
+				str +="<th colspan=2>MATCHED</th>";
+				str +="<th colspan=4>UN MATCHED</th>";
+				str +="<th colspan=2>NEW CASTE</th>";
+			str +="</tr>";
+			str +="<tr>";
+				var stList = rest.statusList;
+				for(var i in stList){
+					str +="<th>"+stList[i].statusName+"</th>";
+					str +="<th>"+stList[i].statusName+" % </th>";
+				}
+			str +="</tr>";
+		str +="</thead>";
+		str +="<tbody>";
+	for(var q in myrslt){
+		var result = myrslt[q].constituencyDetails;
+		str +="<tr>";
+		str +="<td rowspan='3'>"+myrslt[q].constituency+"</td>";
+		for(var i in result.boothTypeSummaryList){
+				str +="<td><a  href='javascript:{}' onclick='getMeBoothsUnder(\""+result.boothTypeSummaryList[i].boothType+"\",\""+myrslt[q].constituencyId+"\",\""+myrslt[q].constituency+"\");'>"+result.boothTypeSummaryList[i].boothType+"</a></td>";
+				if(result.boothTypeSummaryList[i].totalVoters==null){
+					str +="<td> 0 </td>";
+				}else{
+					str +="<td>"+result.boothTypeSummaryList[i].totalVoters+"</td>";
+				}
+				
+				if(result.boothTypeSummaryList[i].userCollected==null){
+					str +="<td> 0 </td>";
+				}else{
+					str +="<td>"+result.boothTypeSummaryList[i].userCollected+"</td>";
+				}
+				
+				var stList = result.boothTypeSummaryList[i].statusList;
+				for(var j in stList){
+					str +="<td>"+stList[j].statusCount+"</td>";
+					str +="<td>"+stList[j].statusPercentage+"</td>";
+				}
+			str +="</tr>";
+		}
+	}
+	
+	str +="</tbody>";
+	str +="</table>";
+
+	$("#constSummary").html(str);
+}
+
+function getMeBoothsUnder(bthType,constiId,constituency){
+	$("#thirdPartyAjax").show();
+	$("#boothsSummary").html("");
+	var str = "";
+	if(finalRes==null){
+		return;
+	}
+	var myrslt = null;
+	for(var q in finalRes){
+		myrslt = finalRes[q].constituencyDetails;
+		for(var i in myrslt.boothTypeSummaryList){
+			if(myrslt.boothTypeSummaryList[i].boothType == bthType && finalRes[q].constituencyId == constiId){
+				var reslt = myrslt.boothTypeSummaryList[i];
+				if(reslt.finalList == null){
+					return;
+				}						
+			}
+		}
+	}
+	
+	str +="<h4 style='text-align:center;color:red;'>"+constituency+" CONSTITUENCY "+bthType+" BOOTHS OVERVIEW</h4>";
+	str +="<table id='FinalReportWithTPTableId' class='table table-bordered table-striped'>";
+		str +="<thead class='alert alert-success'>";
+			str +="<tr>";
+			str +="<th rowspan=2>BOOTH</th>";
+			str +="<th rowspan=2>TOTAL VOTERS</th>";
+			str +="<th rowspan=2>THIRD PARTY COLLECTED </th>";
+			str +="<th colspan=2>MATCHED</th>";
+			str +="<th colspan=4>UN MATCHED</th>";
+			str +="<th colspan=2>NEW CASTE</th>";
+			str +="<th rowspan=2>REVIEW</th>";
+			str +="</tr>";
+			str +="<tr>";
+				var stList = myrslt.boothTypeSummaryList[0].statusList;
+				for(var i in stList){
+					str +="<th>"+stList[i].statusName+"</th>";
+					str +="<th>"+stList[i].statusName+" % </th>";
+				}
+			str +="</tr>";
+		str +="</thead>";
+		for(var q in finalRes){
+			myrslt = finalRes[q].constituencyDetails;
+			for(var i in myrslt.boothTypeSummaryList){
+					if(myrslt.boothTypeSummaryList[i].boothType == bthType  && finalRes[q].constituencyId == constiId ){
+						var reslt = myrslt.boothTypeSummaryList[i];
+						for(var j in reslt.finalList){
+							for(var k in reslt.finalList[j].users.usersList){
+								str +="<tr>";
+								str +="<td>"+ reslt.finalList[j].partNo+"</td>";
+								str +="<td>"+reslt.finalList[j].totalVoters+"</td>";
+								str +="<td>"+reslt.finalList[j].users.usersList[k].userCollected+"</td>";
+								var sttsList = reslt.finalList[j].users.usersList[k].statusList;
+								for(var p in sttsList){
+									str +="<td>"+sttsList[p].statusCount+"</td>";
+									str +="<td>"+sttsList[p].statusPercentage+" </td>";
+								}
+								str +="<td><a style='cursor: pointer;' onCLick='getWmUpdatedDetails("+reslt.finalList[j].boothId+","+reslt.finalList[j].partNo+")'> REVIEW</a></td>";
+								str +="</tr>";
+							}
+						}
+					}
+			}
+		}
+			
+		str +="<tbody>";
+	str +="</table>";
+	
+	$("#boothsSummary").html(str);
+	//$('#FinalReportWithTPTableId').dataTable();
+	
+	$("#thirdPartyAjax").hide();
+}
+
+function getWmUpdatedDetails(boothId,partNo)
+{
+	$('#CommentsDiv').html('');
+	var jsObj = {
+		boothId : boothId
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getUpdatedCommentsFromWmForTP.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		 }).done(function(result){
+				if(result != null)
+				{
+					buildCommentedDetails(result,partNo);
+				}
+				else
+				{
+					$('#CommentsDiv').html('<b style="color:red;">NO DATA AVALIABLE</b>');
+				}
+		});	
+}
+
+function buildCommentedDetails(result,partNo)
+{
+	var str = '';
+	
+	str += '<table  class="table table-bordered table-striped">';
+	str += '<thead class="alert alert-success">';
+	str += '<tr>';
+	str += '<th>BOOTH NO</th>';
+	str += '<th>VOTER NAME</th>';
+	str += '<th>WM CASTE</th>';
+	str += '<th>TP CASTE</th>';
+	str += '<th>COMMENT</th>';
+	str += '</tr>';
+	str += '</thead>';
+	str += '<tbody>';
+	for(var i in result)
+	{
+		str += '<tr>';
+		str += '<td>'+partNo+'</td>';
+		str += '<td>'+result[i].name+'</td>';
+		str += '<td>'+result[i].desc+'</td>';
+		str += '<td>'+result[i].mobileNo+'</td>';
+		str += '<td>'+result[i].percent+'</td>';
+		str += '</tr>';
+	}
+	str += '</tbody>';
+	str += '</table>';
+	$('#CommentsDiv').html(str);
 }
 
 

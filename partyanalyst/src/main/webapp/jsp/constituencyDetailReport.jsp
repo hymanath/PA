@@ -58,6 +58,9 @@
 	font-weight: bold;
 	margin-top: 8px;	
 }
+
+#FinalReportWithTPTableId th{text-align:center;}
+
 		</style>	
 	
   </head>
@@ -98,14 +101,13 @@
 				<div id="constiReportDiv"></div>
 				<!----Constituency details main Div End---->
 				<div class="row-fluid m_top20" id="summary"></div>
-				<div class="row-fluid m_top20" id="boothsSummary"></div>
-				<div class="row-fluid m_top20" id="CommentsDiv"></div>
+				
 			</div>
 		</div>
 	</div>
 
 <script>
-getTPTotalBoothsDetails();
+
 var contiId = '${task}';
 buildReport();
 function buildReport(){
@@ -115,10 +117,13 @@ function buildReport(){
 }
 
 function getConstituencyReport(constituencyId){
-
+	
+	getTPTotalBoothsDetails(constituencyId);
+	
 	$('#searchDataImg').show();
 	getConstituencyCompletionStatusDetails(constituencyId);
-
+	
+	
 	var constituencyId = $('#constiList').val();
 	var constiName = $('#constiList option:selected').text();
 	if(constituencyId == 0 ){
@@ -504,9 +509,9 @@ var jobj = {
 }
 
 var myResult = null;
-function getTPTotalBoothsDetails(){
+function getTPTotalBoothsDetails(constituencyId){
 	$('#dayWiseReportDiv1').html('');
-	var constituencyId = $('#constiList').val();
+	//var constituencyId = $('#constiList').val();
 	if(constituencyId == 0)	{
 	 $("#errorDivForVerification").html("<font color='#FF0000'>Please Select Constituency</font>");
 	 return;
@@ -582,17 +587,23 @@ function buildFinalReportWithTP(result){
 function buildBoothsSummary(result){
 	$("#summary").html("");
 	var str = "";
+	str +="<h4 style='text-align:center;color:red;'>THIRD PARTY READY FOR REVIEW BOOTHS OVERVIEW</h4>";
 	str +="<table id='FinalReportWithTPTableId' class='table table-bordered table-striped'>";
 		str +="<thead class='alert alert-success'>";
 			str +="<tr>";
-			str +="<th>BOOTHS TYPE</th>";
-			str +="<th>TOTAL VOTERS</th>";
-			str +="<th>THIRD PARTY COLLECTED </th>";
-			var stList = result.statusList;
-			for(var i in stList){
-				str +="<th>"+stList[i].statusName+"</th>";
-				str +="<th>"+stList[i].statusName+" % </th>";
-			}
+				str +="<th rowspan=2>BOOTHS TYPE</th>";
+				str +="<th rowspan=2>TOTAL VOTERS</th>";
+				str +="<th rowspan=2>THIRD PARTY COLLECTED </th>";
+				str +="<th colspan=2>MATCHED</th>";
+				str +="<th colspan=4>UN MATCHED</th>";
+				str +="<th colspan=2>NEW CASTE</th>";
+			str +="</tr>";
+			str +="<tr>";
+				var stList = result.statusList;
+				for(var i in stList){
+					str +="<th>"+stList[i].statusName+"</th>";
+					str +="<th>"+stList[i].statusName+" % </th>";
+				}
 			str +="</tr>";
 		str +="</thead>";
 		str +="<tbody>";
@@ -620,6 +631,9 @@ function buildBoothsSummary(result){
 		}
 		str +="</tbody>";
 	str +="</table>";
+	
+		str +="	<div class='row-fluid m_top20' id='boothsSummary'></div>";
+		str +="<div class='row-fluid m_top20' id='CommentsDiv'></div>";
 
 	str+='<div class="span5 offset3">';
 	 str+='<a class="btn btn-success pull-left" href="javascript:{showCommentDiv(1)}">SIGN-OFF</a>';
@@ -686,18 +700,24 @@ function getMeBoothsUnder(bthType){
 			}						
 		}
 		}
+		str +="<h4 style='text-align:center;color:red;'>"+bthType+" BOOTHS OVERVIEW</h4>";
 	str +="<table id='FinalReportWithTPTableId' class='table table-bordered table-striped'>";
 		str +="<thead class='alert alert-success'>";
 			str +="<tr>";
-			str +="<th>BOOTH</th>";
-			str +="<th>TOTAL VOTERS</th>";
-			str +="<th>THIRD PARTY COLLECTED </th>";
-			var stList = myResult.statusList;
-			for(var i in stList){
-				str +="<th>"+stList[i].statusName+"</th>";
-				str +="<th>"+stList[i].statusName+" % </th>";
-			}
-			str +="<th>REVIEW</th>";
+			str +="<th rowspan=2>BOOTH</th>";
+			str +="<th rowspan=2>TOTAL VOTERS</th>";
+			str +="<th rowspan=2>THIRD PARTY COLLECTED </th>";
+			str +="<th colspan=2>MATCHED</th>";
+			str +="<th colspan=4>UN MATCHED</th>";
+			str +="<th colspan=2>NEW CASTE </th>";
+			str +="<th rowspan=2>REVIEW</th>";
+			str +="</tr>";
+			str +="<tr>";
+				var stList = myResult.statusList;
+				for(var i in stList){
+					str +="<th>"+stList[i].statusName+"</th>";
+					str +="<th>"+stList[i].statusName+" % </th>";
+				}
 			str +="</tr>";
 		str +="</thead>";
 		
@@ -786,6 +806,7 @@ function buildCommentedDetails(result,partNo)
 function getConstituencyCompletionStatusDetails(constituencyId)
 {
 	 $('#completionStatusDivId').html('');
+
 
 		$.ajax({
 			type:'GET',

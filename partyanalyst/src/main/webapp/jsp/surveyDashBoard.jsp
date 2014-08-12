@@ -97,6 +97,10 @@
 	              <h4>Constituency Overview</h4>
 				  <img id="popupImgid1" src="./images/icons/search.gif" alt="Processing Image" style="display:block;margin-left:410px"/>
 				 </div>
+				 
+				 <div id="constSummary"></div>
+				 <div id="boothsSummary"></div>
+				 <div id="CommentsDiv"></div>
 					
 				
 				
