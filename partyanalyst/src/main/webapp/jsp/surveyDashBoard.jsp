@@ -207,7 +207,7 @@ function buildingSurveyCompletedLocationsDetailsForSurveyStartedConstituencies(r
 {
 	 document.getElementById("popupImgid1").style.display="none";
 	var str='';
-	str+='<table class=" m_top20 table table-bordered table-hover table-striped">';
+	str+='<table class=" m_top20 table table-bordered table-hover table-striped" id="constituencyOverView">';
 	str+='<thead class="alert alert-success">';
 	str+='<tr>';
 	str+='<th>Constituency Name</th>';
@@ -249,7 +249,10 @@ function buildingSurveyCompletedLocationsDetailsForSurveyStartedConstituencies(r
 	str+='</tbody>';
 	str+='</table>';
 	$("#buldingConstituenciesDivId").append(str);
-	
+	 $('#constituencyOverView').dataTable({
+		"iDisplayLength": 50,
+		"aLengthMenu": [[50, 100, 150, -1], [50, 100, 150, "All"]]
+		});
 	
 	
 	
