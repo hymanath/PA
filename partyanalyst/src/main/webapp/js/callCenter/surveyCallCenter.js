@@ -775,6 +775,7 @@ $("#SurveyUsertable").dataTable({
 $(function() {
 	$("#dateId").datepicker({ 
 	dateFormat: 'dd-mm-yy',
+	 maxDate: new Date()
    }).datepicker('setDate', new Date());
   
 });
