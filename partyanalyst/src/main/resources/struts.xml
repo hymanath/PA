@@ -8052,6 +8052,12 @@
 			</result>
 		</action>
 		
+		<action name="getBoothDetailsConstituencyWiseWithTPAction" class="surveyDataDetailsAction" method="getFinalReportWithTPConstituencyWise">
+			<result type="json" name="success">
+					<param name="root">tpFinalVOList</param>
+			</result>
+		</action>
+		
 		<action name="getSurveyCompletedConstituencyDetails" class="surveyCompletedDetailsAction" method="getSurveyCompletedConstituencyDetails">
 			<result type="json" name="success">
 					<param name="root">resultList</param>
