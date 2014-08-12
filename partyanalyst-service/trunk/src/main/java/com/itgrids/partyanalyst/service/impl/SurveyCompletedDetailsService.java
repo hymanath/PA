@@ -10,12 +10,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ISurveyCallStatusDAO;
+import com.itgrids.partyanalyst.dao.ISurveyCompletedConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ISurveyCompletedLocationsDAO;
 import com.itgrids.partyanalyst.dao.ISurveyConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
@@ -29,6 +31,7 @@ import com.itgrids.partyanalyst.dto.SurveyReportVO;
 import com.itgrids.partyanalyst.dto.SurveyThirdPartyReportVO;
 import com.itgrids.partyanalyst.dto.ThirdPartyCompressionVO;
 import com.itgrids.partyanalyst.dto.VerificationCompVO;
+import com.itgrids.partyanalyst.model.SurveyCompletedConstituency;
 import com.itgrids.partyanalyst.model.SurveyCompletedLocations;
 import com.itgrids.partyanalyst.service.ISurveyCompletedDetailsService;
 import com.itgrids.partyanalyst.service.ISurveyDashBoardService;
@@ -76,6 +79,10 @@ public class SurveyCompletedDetailsService implements
 	
 	@Autowired private ISurveyFinalDataDAO surveyFinalDataDAO;
 	@Autowired private ISurveyWmThirdPartyStatusDAO surveyWmThirdPartyStatusDAO;
+	
+	@Autowired
+	private ISurveyCompletedConstituencyDAO surveyCompletedConstituencyDAO;
+	
 	
 	public List<SurveyReportVO> getSurveyCompletedLocationsDetailsForSurveyStartedConstituencies()
 	{
@@ -1247,4 +1254,60 @@ public class SurveyCompletedDetailsService implements
 		return null;
 	}
 	
+	
+	public String saveSurveyCompletedConstituencyDetails(Long statusId,Long constituencyId,String comment)
+	{
+		LOG.info("Entered into the saveSurveyCompletedConstituencyDetails service method");
+
+		try
+		{
+			SurveyCompletedConstituency surveyCompletedConstituency = new SurveyCompletedConstituency();
+			
+			surveyCompletedConstituency.setConstituencyId(constituencyId);
+			surveyCompletedConstituency.setSurveyCompletedConstituencyStatusId(statusId);
+			
+			if(statusId.equals(IConstants.QUERY_STATUS_ID))
+				surveyCompletedConstituency.setQueryComment(comment);
+			
+			surveyCompletedConstituencyDAO.save(surveyCompletedConstituency);
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Exception raised in saveSurveyCompletedConstituencyDetails service method");
+			return null;
+		}
+		return "success";
+	}
+	
+	public List<SurveyReportVO> getSurveyCompletedConstituencyDetails()
+	{
+		LOG.info("Entered into the getSurveyCompletedConstituencyDetails service method");
+		List<SurveyReportVO> resultList = new ArrayList<SurveyReportVO>();
+
+		try
+		{
+			List<Object[]> completedDetailsList = surveyCompletedConstituencyDAO.getSurveyCompletedConstituencyDetails();
+			
+			for(Object[] obj:completedDetailsList)
+			{
+				SurveyReportVO completionVO = new SurveyReportVO();
+				
+				completionVO.setId((Long)obj[0]);
+				completionVO.setName(obj[1].toString());
+                completionVO.setStatus(obj[3].toString());
+                completionVO.setStatusId((Long)obj[2]);
+                completionVO.setComment(obj[4].toString());
+				
+                resultList.add(completionVO);
+			}
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Exception raised in getSurveyCompletedConstituencyDetails service method");
+			return null;
+		}
+		return resultList;
+	}
 }
