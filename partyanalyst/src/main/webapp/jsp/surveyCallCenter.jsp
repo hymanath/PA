@@ -421,7 +421,7 @@
 							
 							<button type="button" class="btn btn-success" id="excelTab" onClick="generateExcel('matchedUnMatchedTable1');" style="display:none;">Export To Excel</button>
 						</div>
-						<div class="row-fluid " id= "tableForMatchedAndUnMatched" style="overflow-x:scroll;margin-top:10px;"></div>	
+						<div class="row-fluid " id= "tableForMatchedAndUnMatched" style="margin-top:10px;"></div>	
 						<img src='images/Loading-data.gif' class="offset5 hide"  id="stateStatusAjaxMatchUnMatch" style="width:70px;height:60px;"/>	</img>				
 						<div class="row-fluid " id= "basicStatusReport" style="margin-top:20px;"></div>	
 						<img src='images/Loading-data.gif' class="offset5 hide"  id="stateStatusAjax" style="width:70px;height:60px;"/>	</img>				
