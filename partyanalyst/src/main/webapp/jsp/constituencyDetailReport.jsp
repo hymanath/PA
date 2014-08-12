@@ -618,12 +618,12 @@ function buildBoothsSummary(result){
 
 	str+='<div class="span5 offset3">';
 	 str+='<a class="btn btn-success pull-left" href="javascript:{showCommentDiv(1)}">SIGN-OFF</a>';
- 	 str+='<a class="btn btn-danger pull-right"  href="javascript:{showCommentDiv(2)}">Query</a>';
+ 	 str+='<a class="btn btn-danger pull-right"  href="javascript:{showCommentDiv(2)}">Raise Query</a>';
 	str+='</div>';
 
 	str+='<div class="span8 hide offset3" id="commentDiv" style="margin-top:20px;">';
 	 str+='<textarea id="queryComment"  rows="4" cols="50"></textarea>';
-	 str+='<a class="btn btn-success offset1" href="javascript:{saveConstituencyCompletionStatus(2)}">Update Comment</a>';
+	 str+='<a class="btn btn-success offset1" href="javascript:{saveConstituencyCompletionStatus(2)}">Update query comment</a>';
 	str+='</div>';
 
 	str+='<div id="commentStatusDiv"></div>';
