@@ -1100,7 +1100,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 			Map<Long,Long> hamletMap = new HashMap<Long, Long>();
 			Map<Long,Long> wardMap = new HashMap<Long, Long>();
 			Map<Long,Long> mobileNumbersMap = new HashMap<Long, Long>();
-			Map<Long,Long> statusMap = new HashMap<Long, Long>();
+			Map<Long,List<SurveyReportVO>> statusMap = new HashMap<Long, List<SurveyReportVO>>();
 			
 			for(Object[] obj:casteList)
 			{
@@ -1128,7 +1128,17 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 			
 			for(Object[] obj:statusCountList)
 			{
-				statusMap.put((Long)obj[0], (Long)obj[2]);				
+				
+				List<SurveyReportVO> status = statusMap.get((Long)obj[0]);
+				SurveyReportVO vo = new SurveyReportVO();
+				if(status == null)
+				{
+					status = new ArrayList<SurveyReportVO>();
+					statusMap.put((Long)obj[0], status);
+				}
+				vo.setStatusId((Long)obj[1]);
+				vo.setCount((Long)obj[2]);
+				status.add(vo);
 				totalBoothsList.add((Long)obj[0]);
 			}
 			
@@ -1168,11 +1178,12 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 			for(Long boothId:totalBoothsList)
 			{
 				SurveyReportVO boothVO = new SurveyReportVO();
-				
+				List<SurveyReportVO> statusList  = new ArrayList<SurveyReportVO>();
 				boothVO.setTotalVoters(totalVotersMap.get(boothId) != null ? totalVotersMap.get(boothId) : 0L);
 				boothVO.setMobileNoCount(mobileNumbersMap.get(boothId) != null ? mobileNumbersMap.get(boothId) : 0L);
 				boothVO.setCasteCount(casteMap.get(boothId) != null ? casteMap.get(boothId) : 0L);
-				boothVO.setCount(statusMap.get(boothId) != null ? statusMap.get(boothId) : 0L);
+				statusList = statusMap.get(boothId);
+				boothVO.setSubList(statusList);
 				if(hamletMap.get(boothId) != null)
 					 boothVO.setHamletCount(hamletMap.get(boothId) != null ? hamletMap.get(boothId) : 0L);
 				else if(wardMap.get(boothId) != null)
