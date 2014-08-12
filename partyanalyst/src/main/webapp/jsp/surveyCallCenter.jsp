@@ -267,7 +267,7 @@
 						<div class="row-fluid " id="detaildDiv" style="display:none;">
 							<div class="span12 m_top20 widgetservey" id="weathermap" style="height:500px"></div>
 						</div>
-						<div class="row-fluid " id= "tableDiv"></div>
+						<div class="row-fluid " id= "tableDiv" style="overflow-x:scroll;"></div>
 						<div class="row-fluid " id= "responceCountDiv"></div>
 				
 											
