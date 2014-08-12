@@ -1255,7 +1255,7 @@ function buildConstituencySummary(myrslt){
 	$("#constSummary").html("");
 	var rest = myrslt[0].constituencyDetails;
 	var str = "";
-	str +="<h4 style='text-align:center;color:red;'>THIRD PARTY READY FOR REVIEW BOOTHS OVERVIEW</h4>";
+	str +="<div class='span12  m_top20'><h4 style='text-align:center;color:black;'>THIRD PARTY READY FOR REVIEW BOOTHS OVERVIEW</h4><div class='row-fluid m_top20'>";
 	str +="<table id='FinalReportWithTPTableId' class='table table-bordered table-striped'>";
 		str +="<thead class='alert alert-success'>";
 			
@@ -1306,7 +1306,8 @@ function buildConstituencySummary(myrslt){
 	
 	str +="</tbody>";
 	str +="</table>";
-
+	str += '</div>';
+	str += '</div>';
 	$("#constSummary").html(str);
 }
 
