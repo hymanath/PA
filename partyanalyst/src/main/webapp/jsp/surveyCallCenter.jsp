@@ -457,6 +457,7 @@
 												<option value="0">Select User Type</option>
 												<option value="1">Data Collector</option>
 												<option value="4">Data Verifier</option>
+												<option value="10">Third Party</option>
 											</select>
 												
 										</div>
