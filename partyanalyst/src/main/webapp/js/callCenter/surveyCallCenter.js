@@ -3693,7 +3693,7 @@ function buildFinalReport(result)
 	$('#excelTableID1').show();
 	str += '</table>';
 	$('#dayWiseReportDiv1').html(str);
-	$('#daywisereportTableIdTemp').dataTable();
+	//$('#daywisereportTableIdTemp').dataTable();
 }
 
 //getThirdPartyFinalDetails();
