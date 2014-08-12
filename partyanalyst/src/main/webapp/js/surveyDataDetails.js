@@ -1263,12 +1263,12 @@ function saveUserAssignedBoothsDetails()
 			jObj.boothIds.push(this.value);
 	}); 
 
-	if(jObj.boothIds.length == 0)
+	/*if(jObj.boothIds.length == 0)
 	{
 		$("#assignBoothErrorDiv").html("Please Select Booth(s)").css("color","red");
 		 $('html, body').animate({ scrollTop: $("#assignBoothErrorDiv").offset().top }, "slow");
 		return;	
-	}
+	}*/
 		
 	$("#assignboothimg").css("display","inline-block");
 	$.ajax({
