@@ -1628,6 +1628,7 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 					tpCollectedMap = new HashMap<Long, String>();
 					for (Object[] objects : tpCollectedDetails)
 					{
+						if(casteMap.get((Long)objects[1]) != null)
 						tpCollectedMap.put((Long)objects[0],casteMap.get((Long)objects[1]));
 					}
 				}
@@ -1655,7 +1656,7 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 					{
 						GenericVO finalVO =wmUpdatedMap.get(voterId);
 						if(tpCollectedMap != null && tpCollectedMap.size() > 0)
-						finalVO.setMobileNo(tpCollectedMap.get(voterId)) ;// Tp Collected caste
+						finalVO.setMobileNo(tpCollectedMap.get(voterId) != null ? tpCollectedMap.get(voterId) : "-") ;// Tp Collected caste
 						returnList.add(finalVO);
 					}
 				}
@@ -1826,18 +1827,19 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 			 }else if(((Long)params[1]).longValue() == 4l){
 				 statusVO.setNewCaste((Long)params[0]);
 			 }
-			 if(statusVO.getSameCount() == null){
-				 statusVO.setSameCount(0l);
-			 }
-			 if(statusVO.getWmWrong() == null){
-				 statusVO.setWmWrong(0l);
-			 }
-			 if(statusVO.getTpWrong() == null){
-				 statusVO.setTpWrong(0l);
-			 }
-			 if(statusVO.getNewCaste() == null){
-				 statusVO.setNewCaste(0l);
-			 }
+			
+		 }
+		 if(statusVO.getSameCount() == null){
+			 statusVO.setSameCount(0l);
+		 }
+		 if(statusVO.getWmWrong() == null){
+			 statusVO.setWmWrong(0l);
+		 }
+		 if(statusVO.getTpWrong() == null){
+			 statusVO.setTpWrong(0l);
+		 }
+		 if(statusVO.getNewCaste() == null){
+			 statusVO.setNewCaste(0l);
 		 }
        if(!onlyStatus){
 			//0 userId,1 userName,2 userMobile,3 leaderId,4 leaderName,5 leaderMobile

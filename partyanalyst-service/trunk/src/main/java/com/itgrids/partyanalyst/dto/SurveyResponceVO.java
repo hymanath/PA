@@ -62,13 +62,7 @@ public class SurveyResponceVO extends UserResponseVO  implements Serializable
 	private Long wmWrong;
 	private Long tpWrong;
 	private Long newCaste;
-	
-	
-	
-	
-	
-	
-	
+
 	
 	public Long getWardId() {
 		return wardId;
