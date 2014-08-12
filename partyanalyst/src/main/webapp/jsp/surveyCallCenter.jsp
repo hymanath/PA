@@ -170,7 +170,7 @@
 						</div>
 						<img src='images/Loading-data.gif' class="offset5"  id="searchDataImg" style="width:70px;height:60px;display:none;"/>
 						<div class="row-fluid">
-							<div id="voterInfoDIv" class="errClass" ></div>	
+							<div id="voterInfoDIv" class="errClass" style="overflow-x:scroll;"></div>	
 						</div>
 						
 						<div id="editStatusDiv">
