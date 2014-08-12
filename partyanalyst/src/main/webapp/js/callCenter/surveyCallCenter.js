@@ -406,7 +406,7 @@ else if(userType ==4)
 		  str+='<th>TP ERROR</th>';
 		  str+='<th>TP ERROR %</th>';
 		  str+='<th>Same Caste</th>';
-		  str+='<th>Same Caste  %</th>';
+		  str+='<th>Same Caste %</th>';
 	      str+='<th>New Castes Collected</th>';
 	}
 	str+='</tr>';
@@ -475,7 +475,8 @@ else if(userType ==4)
 			if(Mobiletotal >0){
 			
 			var mobErrorPercent = (Math.round(result[i].subList[j].mobileNotMatchedCount * 100)/Mobiletotal).toFixed(2);
-			if(mobErrorPercent>=0.0 && mobErrorPercent<=0.50){
+			str+='<td>'+mobErrorPercent+'</td>';
+			/*if(mobErrorPercent>=0.0 && mobErrorPercent<=0.50){
 				str+='<td class="errorGreen">'+mobErrorPercent+'</td>';
 			}else if(mobErrorPercent>=0.51 && mobErrorPercent<=1.00){
 				str+='<td class="errorLgreen">'+mobErrorPercent+'</td>';
@@ -485,7 +486,7 @@ else if(userType ==4)
 				str+='<td class="errorRed">'+mobErrorPercent+'</td>';
 			}else{
 				str+='<td>'+mobErrorPercent+'</td>';
-			}
+			}*/
 			
 			//str+='<td>'+(Math.round(result[i].subList[j].mobileNotMatchedCount * 100)/Mobiletotal).toFixed(2)+'%</td>';
 			}
@@ -498,7 +499,8 @@ else if(userType ==4)
 			if(Castetotal >0){		
 
 			var casteErrorPercent = (Math.round(result[i].subList[j].casteNotMatchedCount * 100)/Castetotal).toFixed(2);
-			if(casteErrorPercent>=0.0 && casteErrorPercent<=0.50){
+			str+='<td>'+casteErrorPercent+'</td>';
+			/*if(casteErrorPercent>=0.0 && casteErrorPercent<=0.50){
 				str+='<td class="errorGreen">'+casteErrorPercent+'</td>';
 			}else if(casteErrorPercent>=0.51 && casteErrorPercent<=1.00){
 				str+='<td class="errorLgreen">'+casteErrorPercent+'</td>';
@@ -508,7 +510,7 @@ else if(userType ==4)
 				str+='<td class="errorRed">'+casteErrorPercent+'</td>';
 			}else{
 				str+='<td>'+casteErrorPercent+'</td>';
-			}
+			}*/
 			
 			//str+='<td>'+(Math.round(result[i].subList[j].casteNotMatchedCount * 100)/Castetotal).toFixed(2)+'%</td>';
 			}
@@ -519,7 +521,8 @@ else if(userType ==4)
 		    str+='<td>'+result[i].subList[j].mobileMatchedCount+'</td>';
 		    if(result[i].subList[j].mobileMatchedCount > 0 && result[i].subList[j].casteCount != null && result[i].subList[j].casteCount > 0){
 			    var wMError = (Math.round(result[i].subList[j].mobileMatchedCount * 100)/result[i].subList[j].casteCount).toFixed(2);
-				if(wMError>=0.0 && wMError<=0.50){
+				str+='<td>'+wMError+'</td>';
+				/*if(wMError>=0.0 && wMError<=0.50){
 					str+='<td class="errorGreen">'+wMError+'</td>';
 				}else if(wMError>=0.51 && wMError<=1.00){
 					str+='<td class="errorLgreen">'+wMError+'</td>';
@@ -529,14 +532,15 @@ else if(userType ==4)
 					str+='<td class="errorRed">'+wMError+'</td>';
 				}else{
 					str+='<td>'+wMError+'</td>';
-				}
+				}*/
 			}else{
 			   str+='<td> - </td>';
 			}
 			str+='<td>'+result[i].subList[j].casteNotMatchedCount+'</td>';
 			if(result[i].subList[j].casteNotMatchedCount > 0  && result[i].subList[j].casteCount != null && result[i].subList[j].casteCount > 0){
 			    var tPError = (Math.round(result[i].subList[j].casteNotMatchedCount * 100)/result[i].subList[j].casteCount).toFixed(2);
-				if(tPError>=0.0 && tPError<=0.50){
+				str+='<td>'+tPError+'</td>';
+				/*if(tPError>=0.0 && tPError<=0.50){
 					str+='<td class="errorGreen">'+tPError+'</td>';
 				}else if(tPError>=0.51 && tPError<=1.00){
 					str+='<td class="errorLgreen">'+tPError+'</td>';
@@ -546,14 +550,16 @@ else if(userType ==4)
 					str+='<td class="errorRed">'+tPError+'</td>';
 				}else{
 					str+='<td>'+tPError+'</td>';
-				}
+				}*/
 			}else{
 			   str+='<td> - </td>';
 			}
 			str+='<td>'+result[i].subList[j].mobileNotMatchedCount+'</td>';
 			if(result[i].subList[j].mobileNotMatchedCount > 0  && result[i].subList[j].casteCount != null && result[i].subList[j].casteCount > 0){
+				
 			    var sameCasteError = (Math.round(result[i].subList[j].mobileNotMatchedCount * 100)/result[i].subList[j].casteCount).toFixed(2);
-				if(sameCasteError>=0.0 && sameCasteError<=0.50){
+				str+='<td>'+sameCasteError+'</td>';
+				/*if(sameCasteError>=0.0 && sameCasteError<=0.50){
 					str+='<td class="errorGreen">'+sameCasteError+'</td>';
 				}else if(sameCasteError>=0.51 && sameCasteError<=1.00){
 					str+='<td class="errorLgreen">'+sameCasteError+'</td>';
@@ -563,7 +569,7 @@ else if(userType ==4)
 					str+='<td class="errorRed">'+sameCasteError+'</td>';
 				}else{
 					str+='<td>'+sameCasteError+'</td>';
-				}
+				}*/
 			}else{
 			   str+='<td> - </td>';
 			}
@@ -3787,20 +3793,23 @@ function buildThirdPartyBasicData(result){
             str+='<div class="span12">';
 				   str+=' <div class="row-fluid ">';
 					    str+='<div class="row-fluid">';
-								str+='<div  class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> TP Name  </span>: '+result.voterName+'</div>';
-								str+='<div  class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> TP Mobile  </span>: '+result.longitude+'</div>';
-								str+='<div  class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> TP Lead  </span>: '+result.relativeName+'</div>';
-								str+='<div  class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> TP Lead Mobile </span>: '+result.latitude+'</div>';
+								str+='<div  class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> TP NAME  </span>: '+result.voterName+'</div>';
+								str+='<div  class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> TP MOBILE  </span>: '+result.longitude+'</div>';
+								str+='<div  class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> TP LEAD  </span>: '+result.relativeName+'</div>';
+								str+='<div  class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> TP LEAD MOBILE </span>: '+result.latitude+'</div>';
 					    str+='</div>';
 						 str+='<div class="row-fluid">';
-								str+='<div  class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> Booth NO  </span>: '+result.casteName+'</div>';
-								str+='<div  class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> Total Voters  </span>: '+result.voterId+'</div>';
-								str+='<div id="sameCasteTpUpdtDiv"  class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> Same Caste  </span>: '+result.sameCount+'</div>';
-								str+='<div  id="wmWrongTpUpdtDiv" class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> WM Wrong </span>: '+result.wmWrong+'</div>';
+								str+='<div  class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> BOOTH  </span>: '+result.casteName+'</div>';
+								str+='<div  class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> TOTAL  </span>: '+result.voterId+'</div>';
+								str+='<div id="sameCasteTpUpdtDiv"  class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> MATCHED  </span>: '+result.sameCount+'</div>';
+								var unMatched = (result.voterId) - (result.sameCount)
+								str+='<div id="unMatchedCasteTpUpdtDiv"  class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;">UN MATCHED  </span>: '+unMatched+'</div><input type="hidden" value="'+result.voterId+'" id="boothTptotalCount"></input>';
+								
 					    str+='</div>';
 						 str+='<div class="row-fluid">';
-								str+='<div  id="tpWrongTpUpdtDiv" class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> TP Wrong  </span>: '+result.tpWrong+'</div>';
-								str+='<div  id="newCasteTpUpdtDiv" class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> Newly Collected Caste  </span>: '+result.newCaste+'</div>';
+								str+='<div  id="wmWrongTpUpdtDiv" class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> WM WRONG </span>: '+result.wmWrong+'</div>';
+								str+='<div  id="tpWrongTpUpdtDiv" class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> TP WRONG  </span>: '+result.tpWrong+'</div>';
+								str+='<div  id="newCasteTpUpdtDiv" class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> NEWLY COLLECTED </span>: '+result.newCaste+'</div>';
 								
 					    str+='</div>';
 				   str+='</div>';
@@ -3812,6 +3821,8 @@ function buildThirdPartyBasicData(result){
 function buildThirdPartyBasicDataNew(result){
    
 		$("#sameCasteTpUpdtDiv").html('<span style="font-weight:bold;"> Same Caste  </span>: '+result.sameCount+'</div>');
+		var unMatchedCount = ($('#boothTptotalCount').val())-(result.sameCount);
+		$("#unMatchedCasteTpUpdtDiv").html('<span style="font-weight:bold;"> Same Caste  </span>: '+unMatchedCount+'</div>');
 		$("#wmWrongTpUpdtDiv").html('<span style="font-weight:bold;"> WM Wrong </span>: '+result.wmWrong+'</div>');
 
 		$("#tpWrongTpUpdtDiv").html('<span style="font-weight:bold;"> TP Wrong  </span>: '+result.tpWrong+'</div>');
