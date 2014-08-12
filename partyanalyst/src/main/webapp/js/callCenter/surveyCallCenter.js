@@ -167,6 +167,7 @@ function showHideTabs(id)
 		$("#verifierReportIdForVerifier").hide();
 		$("#wmReportDiv").hide();
 		$("#thirdPartyReportDiv").show();
+        getThirdPartySummaryDetails();
 	}
 	else
 	{
@@ -185,6 +186,50 @@ function showHideTabs(id)
 
 	}
 }
+function  getThirdPartySummaryDetails()
+{	
+	$('#thirdPartySummary').html('');
+
+	$.ajax({
+		type:'GET',
+		url: 'getSurveyCompletedConstituencyDetails.action',
+		dataType: 'json',
+		data: {},
+		}).done(function(result){
+			buildThirdPartySummaryDetails(result);
+			
+		});
+	
+}
+function buildThirdPartySummaryDetails(result)
+{
+	var str = '';
+	if(result != null && result.length >0)
+	{
+		str+='<table class=" table table-bordered m_top20">';
+		 str+='<thead>';
+		  str+='<tr>';
+		   str+='<th>Constituency Name</th>';
+		   str+='<th>Status</th>';
+		   str+='<th>Comment</th>';
+		  str+='</tr>';
+		 str+='</thead>';
+		 str+='<tbody>';
+		  $.each(result,function(index,value){
+			  str+='<tr>';
+				str+='<td>'+value.name+'</td>';
+				str+='<td>'+value.status+'</td>';
+				str+='<td>'+value.comment+'</td>';
+			  str+='</tr>';
+		  });
+		 str+='</tbody>';
+		str+='</table>';
+
+	}
+
+	$('#thirdPartySummary').html(str);
+}
+
 function getConstituencyLeadersList(divId){
 var value = $('#constiList').val();
 var jsObj = 
