@@ -3768,7 +3768,15 @@ $('#boothWiseTab,#startTimeTab').removeClass('selected');
 					   str +='<td>'+result[i].mobileNo+'</td>';
 					   str +='<td>';
 					    if(result[i].status != null){
-					      str +='<select id="tPmultipleupdtStsId'+i+'" onchange="updateThirdPartyDetails('+result[i].voterId+',this.value);">';
+						  if(result[i].status == 1)	
+						  {
+							 str +='<select id="tPmultipleupdtStsId'+i+'" disabled="disabled" onchange="updateThirdPartyDetails('+result[i].voterId+',this.value);">';
+						  }
+						  else
+						  {
+							 str +='<select id="tPmultipleupdtStsId'+i+'" onchange="updateThirdPartyDetails('+result[i].voterId+',this.value);">';
+						  }
+					     
 					              str +='<option value="0">Select Status</option>';
 								  if(result[i].status == 1){
 								     str +='<option value="1" selected="selected">Same Caste</option>';
@@ -3791,6 +3799,10 @@ $('#boothWiseTab,#startTimeTab').removeClass('selected');
 								     str +='<option value="4">Newly Collected Caste</option>';
 								  }
 					      str +='</select>';
+						  if(result[i].status == 1)	
+						  {
+							str += '<a class="btn btn-success" style = "float: right; width: 40px; height: 17px;" onClick="enableSelectBox('+i+')">Enable</a>';
+						  }
 						 }else{
 						   str +='<select id="tPmultipleupdtStsId'+i+'" onchange="updateThirdPartyDetails('+result[i].voterId+',this.value);">';
 					              str +='<option value="0">Select Status</option>';
@@ -3821,6 +3833,12 @@ $('#boothWiseTab,#startTimeTab').removeClass('selected');
 			    $('#voterInfoDIv').html(str);
 		   }
 		});
+}
+
+function enableSelectBox(id)
+{
+	//$('#'+id+'').removeAttr('disabled');
+	$('#tPmultipleupdtStsId'+id+'').removeAttr('disabled');
 }
 function getLatestBasicInfo(boothId,userId){
   var jsObj = 
