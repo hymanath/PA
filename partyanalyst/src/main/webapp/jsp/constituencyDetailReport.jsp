@@ -621,7 +621,7 @@ function buildBoothsSummary(result){
  	 str+='<a class="btn btn-danger pull-right"  href="javascript:{showCommentDiv(2)}">Query</a>';
 	str+='</div>';
 
-	str+='<div class="span8 hide" id="commentDiv" style="margin-top:20px;">';
+	str+='<div class="span8 hide offset3" id="commentDiv" style="margin-top:20px;">';
 	 str+='<textarea id="queryComment"  rows="4" cols="50"></textarea>';
 	 str+='<a class="btn btn-success offset1" href="javascript:{saveConstituencyCompletionStatus(2)}">Update Comment</a>';
 	str+='</div>';
@@ -633,6 +633,7 @@ function buildBoothsSummary(result){
 function showCommentDiv(statusId)
 {
 	$('#commentStatusDiv').html('');
+	$('#queryComment').val('');
 
 	if(statusId == 2)
 	{
