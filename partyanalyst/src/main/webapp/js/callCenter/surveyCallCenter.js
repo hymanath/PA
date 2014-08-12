@@ -3983,7 +3983,7 @@ function getFinalReportWithTP(){
 	 $("#errorDivForVerification").html("");
 	$('#mainajaximg').show();
 	var jsObj = {
-		constituencyId : 217
+		constituencyId : $('#constituencyForThirdParty').val()
 	}
 	$.ajax({
 			type:'GET',
