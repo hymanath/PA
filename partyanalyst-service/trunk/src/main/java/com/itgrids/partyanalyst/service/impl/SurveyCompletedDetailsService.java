@@ -1119,7 +1119,7 @@ public class SurveyCompletedDetailsService implements
 		
 		//GETTING BOOTH IDS WITH READY FOR REVIEW FROM SURVEY COMPLETED LOCATIONS
 		if(constituencyId!=null  && thirdPartyList != null && thirdPartyList.size()>0){
-			boothForReady = surveyCompletedLocationsDAO.getBoothsOfTPWithStatus(constituencyId, 8l);
+			boothForReady = surveyCompletedLocationsDAO.getBoothsOfTPWithStatus(constituencyId, IConstants.READY_FOR_REVIEW);
 		}
 		
 		//PROCESSING THIRD PARTY RESULT WITH BOOTHS FROM SURVEY COMPLETED LOCATIONS
