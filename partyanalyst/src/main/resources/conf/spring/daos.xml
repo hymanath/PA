@@ -1607,5 +1607,13 @@
 <bean id="surveyFeedbackCommentsDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyFeedbackCommentsDAO" lazy-init="true" >
 		<property name="sessionFactory" ref="sessionFactory" />
 </bean>
+
+<bean id="surveyCompletedConstituencyDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyCompletedConstituencyDAO" lazy-init="true" >
+		<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
+<bean id="surveyCompletedConstituencyStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyCompletedConstituencyStatusDAO" lazy-init="true" >
+		<property name="sessionFactory" ref="sessionFactory" />
+</bean>
 	<!--  end -->
 </beans>		

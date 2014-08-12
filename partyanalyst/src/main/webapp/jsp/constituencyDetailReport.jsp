@@ -588,7 +588,7 @@ function buildBoothsSummary(result){
 		str +="<tbody>";
 		for(var i in result.boothTypeSummaryList){
 			str +="<tr>";
-				str +="<td onclick='getMeBoothsUnder(\""+result.boothTypeSummaryList[i].boothType+"\");'>"+result.boothTypeSummaryList[i].boothType+"</td>";
+				str +="<td><a  href='javascript:{}' onclick='getMeBoothsUnder(\""+result.boothTypeSummaryList[i].boothType+"\");'>"+result.boothTypeSummaryList[i].boothType+"</a></td>";
 				if(result.boothTypeSummaryList[i].totalVoters==null){
 					str +="<td> 0 </td>";
 				}else{
