@@ -107,8 +107,8 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 	public List<Object[]> getStatusListForVerifier(List<Long> userIds,List<Long> boothIds,Long userTypeId)
 	{
 		
-		Query query = getSession().createQuery("select model.surveyUser.surveyUserId,model.booth.boothId,model.dvMobileNoStatus,model.dvMatchedStatus from SurveyCallStatus model" +
-				" where model.surveyUser.surveyUserId in(:userIds) and model.booth.boothId in(:boothIds) and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId");
+		Query query = getSession().createQuery("select model.dvSurveyUser.surveyUserId,model.booth.boothId,model.dvMobileNoStatus,model.dvMatchedStatus from SurveyCallStatus model" +
+				" where model.dvSurveyUser.surveyUserId in(:userIds) and model.booth.boothId in(:boothIds) and model.dvSurveyUser.surveyUserType.surveyUsertypeId = :userTypeId");
 		query.setParameterList("userIds", userIds);
 		query.setParameterList("boothIds", boothIds);
 		query.setParameter("userTypeId", userTypeId);
