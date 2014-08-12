@@ -215,7 +215,6 @@ public class SurveyCompletedLocationsDAO extends GenericDaoHibernate<SurveyCompl
 		query.setParameter("constituencyId", constituencyId);
 		query.setParameter("statusId", statusId);
 		return query.list();
-				
 	}
 	
 	public List<Long> getAllThirdPartyRelatedBoothByConstituencyId(Long constituencyId,List<Long> thirdPartyStatusIds)
@@ -227,6 +226,21 @@ public class SurveyCompletedLocationsDAO extends GenericDaoHibernate<SurveyCompl
 		
 		query.setParameter("constituencyId", constituencyId);
 		query.setParameterList("statusIds", thirdPartyStatusIds);
+		return query.list();
+	}
+	
+	
+	//TO GET THE LIST OF BOOTHS & CONSTITUENCIES WITH STATUS
+	public List<Object[]> getBoothsAndConstituenciesOfTPWithStatus(Long statusId){
+		Query query = getSession().createQuery("select distinct model.locationValue," +
+				" model1.constituency.name," +
+				" model1.constituency.constituencyId from " +
+				" SurveyCompletedLocations model,Booth model1  " +
+				" where " +
+				" model.locationValue = model1.boothId and " +
+				" model.statusId = :statusId");
+			
+		query.setParameter("statusId", statusId);
 		return query.list();
 	}
 	

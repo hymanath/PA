@@ -27,5 +27,6 @@ public interface ISurveyCompletedLocationsDAO extends GenericDao<SurveyCompleted
 	public List<Long> getBoothsOfTPWithStatus(Long constituencyId,Long statusId);
 	
 	public List<Long> getAllThirdPartyRelatedBoothByConstituencyId(Long constituencyId,List<Long> thirdPartyStatusIds);
+	public List<Object[]> getBoothsAndConstituenciesOfTPWithStatus(Long statusId);
 }
 

@@ -30,9 +30,45 @@ public class SurveyThirdPartyReportVO implements Serializable {
 	
 	private List<SurveyThirdPartyReportVO> finalList;
 	private List<SurveyThirdPartyReportVO> boothTypeSummaryList;
+	private String constituency;
+	private Long constituencyId;
+	private List<Long> constituencyIds;
 	
-		
+	private List<Long> booths;
+	private SurveyThirdPartyReportVO constituencyDetails;
 	
+	
+	
+	public SurveyThirdPartyReportVO getConstituencyDetails() {
+		return constituencyDetails;
+	}
+	public void setConstituencyDetails(SurveyThirdPartyReportVO constituencyDetails) {
+		this.constituencyDetails = constituencyDetails;
+	}
+	public List<Long> getBooths() {
+		return booths;
+	}
+	public void setBooths(List<Long> booths) {
+		this.booths = booths;
+	}
+	public String getConstituency() {
+		return constituency;
+	}
+	public void setConstituency(String constituency) {
+		this.constituency = constituency;
+	}
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	public List<Long> getConstituencyIds() {
+		return constituencyIds;
+	}
+	public void setConstituencyIds(List<Long> constituencyIds) {
+		this.constituencyIds = constituencyIds;
+	}
 	public List<SurveyThirdPartyReportVO> getBoothTypeSummaryList() {
 		return boothTypeSummaryList;
 	}

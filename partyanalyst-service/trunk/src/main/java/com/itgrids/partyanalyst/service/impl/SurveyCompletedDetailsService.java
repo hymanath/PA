@@ -870,6 +870,7 @@ public class SurveyCompletedDetailsService implements
 	
 	
 	public List<SurveyThirdPartyReportVO> finalReportWithThirdParty(Long constituencyId){
+		LOG.debug("In finalReportWithThirdParty");
 		List<SurveyThirdPartyReportVO> resultList = new ArrayList<SurveyThirdPartyReportVO>();
 		try 
 		{
@@ -1020,7 +1021,7 @@ public class SurveyCompletedDetailsService implements
 			
 			
 		}catch (Exception e) {
-			LOG.error("Exception Raised In finalDeselectionReport"+e);
+			LOG.error("Exception Raised In finalReportWithThirdParty"+e);
 		}
 		return resultList;
 	}
@@ -1110,6 +1111,7 @@ public class SurveyCompletedDetailsService implements
 	}
 	
 	public SurveyThirdPartyReportVO  getTPCompleteBoothsDetails(Long constituencyId,List<SurveyThirdPartyReportVO> thirdPartyList){
+		LOG.debug("In getTPCompleteBoothsDetails");
 		
 		List<Long> boothForReady = null;
 		SurveyThirdPartyReportVO finalVO = new SurveyThirdPartyReportVO();
@@ -1121,7 +1123,7 @@ public class SurveyCompletedDetailsService implements
 		
 		
 		
-		
+		try{
 		
 		
 		//GETTING BOOTH IDS WITH READY FOR REVIEW FROM SURVEY COMPLETED LOCATIONS
@@ -1237,7 +1239,9 @@ public class SurveyCompletedDetailsService implements
 				
 			}
 		}
-		
+		}catch (Exception e) {
+			LOG.error("Exception Raised in getTPCompleteBoothsDetails" + e);
+		}
 		return finalVO;
 		
 		
@@ -1315,6 +1319,40 @@ public class SurveyCompletedDetailsService implements
 		return resultList;
 	}
 	
+	public List<SurveyThirdPartyReportVO> thirdPartyReadyForReviewConstBooths(){
+		LOG.debug("In thirdPartyReadyForReviewConstBooths");
+		List<SurveyThirdPartyReportVO> finalList = new ArrayList<SurveyThirdPartyReportVO>();
+		try{
+			List<Object[]> list = surveyCompletedLocationsDAO.getBoothsAndConstituenciesOfTPWithStatus(IConstants.READY_FOR_REVIEW);
+			if(list!=null && list.size()>0){
+				for(Object[] obj:list){
+					
+					SurveyThirdPartyReportVO sv = getMatchedConstituency(finalList,Long.valueOf(obj[2].toString()));
+					if(sv==null){
+						sv = new SurveyThirdPartyReportVO();
+						sv.setConstituency(obj[1].toString());
+						sv.setConstituencyId(Long.valueOf(obj[2].toString()));
+					}
+					
+					
+					List<Long> booths = sv.getBooths();
+					if(booths==null){
+						booths = new ArrayList<Long>();
+					}
+					booths.add(Long.valueOf(obj[0].toString()));
+					sv.setBooths(booths);
+					
+					finalList.add(sv);
+				}
+			}
+		}catch (Exception e) {
+			LOG.error("Exception Raised in thirdPartyReadyForReviewConstBooths " +e );
+		}
+		
+		return finalList;
+		
+	}
+	
 	public String getConstituencyCompletionStatusByConstituencyId(Long constituencyId)
 	{
 		try
@@ -1335,6 +1373,17 @@ public class SurveyCompletedDetailsService implements
 		{
 			e.printStackTrace();
 			return null;
+		}
+		return null;
+	}
+	
+	public SurveyThirdPartyReportVO getMatchedConstituency(List<SurveyThirdPartyReportVO> list,Long constituencyId){
+		if(list!=null && list.size()>0 && constituencyId!=null){
+			for(SurveyThirdPartyReportVO sv:list){
+				if(sv.getConstituencyId().equals(constituencyId)){
+					return sv;
+				}
+			}
 		}
 		return null;
 	}

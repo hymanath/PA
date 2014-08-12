@@ -18,5 +18,6 @@ public interface ISurveyCompletedDetailsService {
 	public SurveyThirdPartyReportVO  getTPCompleteBoothsDetails(Long constituencyId,List<SurveyThirdPartyReportVO> thirdPartyList);
 	public String saveSurveyCompletedConstituencyDetails(Long statusId,Long constituencyId,String comment);
 	public List<SurveyReportVO> getSurveyCompletedConstituencyDetails();
+	public List<SurveyThirdPartyReportVO> thirdPartyReadyForReviewConstBooths();
 	public String getConstituencyCompletionStatusByConstituencyId(Long constituencyId);
 }
