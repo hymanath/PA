@@ -103,5 +103,35 @@ public class SurveyCompletedDetailsAction extends ActionSupport implements Servl
 		return ActionSupport.SUCCESS;
 	}
 	
-
+	public String saveSurveyCompletedConstituencyDetails()
+	{
+		try
+		{
+			Long constituencyId = Long.parseLong(request.getParameter("constituencyId"));
+			Long statusId = Long.parseLong(request.getParameter("statusId"));
+			String locationType = request.getParameter("comment");
+			
+			status = surveyCompletedDetailsService.saveSurveyCompletedConstituencyDetails(statusId,constituencyId,locationType);
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return ActionSupport.SUCCESS;
+	}
+	
+	public String getSurveyCompletedConstituencyDetails()
+	{
+		try
+		{
+			resultList = surveyCompletedDetailsService.getSurveyCompletedConstituencyDetails();
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return Action.SUCCESS;
+	}
+	
 }

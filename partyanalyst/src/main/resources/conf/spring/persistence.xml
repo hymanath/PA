@@ -469,6 +469,8 @@
 				<value>com.itgrids.partyanalyst.model.SurveyFeedbackComments</value>
 				<value>com.itgrids.partyanalyst.model.SurveyWmThirdPartyStatus</value>
 				<value>com.itgrids.partyanalyst.model.SurveyFinalData</value>
+				<value>com.itgrids.partyanalyst.model.SurveyCompletedConstituency</value>
+				<value>com.itgrids.partyanalyst.model.SurveyCompletedConstituencyStatus</value>
 			</list>
 			
 		</property>
