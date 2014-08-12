@@ -48,7 +48,14 @@ public class SurveyReportVO {
 	private String mobileNo;
 	private Long id;
 	private String name;
+    private String comment;
 	
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
 	private Long readyForReviewCount = 0L;
 	
 	private Long casteMatchedCount = 0l;
@@ -116,7 +123,15 @@ public class SurveyReportVO {
 	
 	private boolean forThirdParty;
 	
+	private Long statusId;
 	
+	
+	public Long getStatusId() {
+		return statusId;
+	}
+	public void setStatusId(Long statusId) {
+		this.statusId = statusId;
+	}
 	public boolean isForThirdParty() {
 		return forThirdParty;
 	}

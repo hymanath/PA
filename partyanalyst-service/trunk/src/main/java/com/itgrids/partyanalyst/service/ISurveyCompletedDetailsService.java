@@ -16,4 +16,6 @@ public interface ISurveyCompletedDetailsService {
 	public List<FinalSurveyReportVO> finalDeselectionReport(Long constituencyId);
 	public List<SurveyThirdPartyReportVO> finalReportWithThirdParty(Long constituencyId);
 	public SurveyThirdPartyReportVO  getTPCompleteBoothsDetails(Long constituencyId,List<SurveyThirdPartyReportVO> thirdPartyList);
+	public String saveSurveyCompletedConstituencyDetails(Long statusId,Long constituencyId,String comment);
+	public List<SurveyReportVO> getSurveyCompletedConstituencyDetails();
 }

@@ -793,4 +793,7 @@ public interface IConstants {
     public static final Long TP_WM_COMPLETED_STATUS_ID =10L;
     public static final Long READY_FOR_REVIEW =11L;
     
+    public static final Long SIGN_OFF_STATUS_ID = 1L;
+    public static final Long QUERY_STATUS_ID = 2L;
+    
 }
