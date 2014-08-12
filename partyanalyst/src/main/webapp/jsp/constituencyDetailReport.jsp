@@ -84,8 +84,8 @@
 											---->
 											<div class="span6">
 											<s:select theme="simple" cssClass="selectBoxWidth span12" id="constiList" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" value="task" />
-										</div>	
-									
+											</div>	
+											<img src='images/Loading-data.gif' class="offset5"  id="searchDataImg" style="width:70px;height:60px;display:none;"/>
 									</div>										
 								</div>
 									</div>
@@ -116,6 +116,7 @@ function buildReport(){
 
 function getConstituencyReport(constituencyId){
 
+	$('#searchDataImg').show();
 	getConstituencyCompletionStatusDetails(constituencyId);
 
 	var constituencyId = $('#constiList').val();
@@ -315,6 +316,7 @@ function getConstituencyReport(constituencyId){
 			} */
 			
 		$('#constiReportDiv').html(str);
+		$('#searchDataImg').hide();
 		}
 	});
 	
@@ -512,7 +514,7 @@ function getTPTotalBoothsDetails(){
 	 $("#errorDivForVerification").html("");
 	$('#mainajaximg').show();
 	var jsObj = {
-		constituencyId : 217
+		constituencyId : constituencyId
 	}
 	$.ajax({
 			type:'GET',
