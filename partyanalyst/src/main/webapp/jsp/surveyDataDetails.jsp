@@ -515,6 +515,8 @@
 													<option value="3"> Lead </option>
 													<option value="4"> Data Verifier </option>
 													<option value="5"> Verifier Lead </option>
+													<option value="10"> Third Party </option>
+													<option value="11"> Third Party Lead </option>
 												</select>
 										</div>
 											<div class="row-fluid">
