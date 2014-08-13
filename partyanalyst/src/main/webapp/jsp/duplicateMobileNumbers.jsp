@@ -39,38 +39,36 @@ $( document ).ready(function() {
 	$('#startDateId,#endDateId').datepicker({
 		dateFormat:'dd/mm/yy'
 	});
+	
+	$('#constituencyId').multiselect();
+	
 });
 </script>
 
-<div class="offset6">
+<div class="offset6 span8">
  <h4>DUPLICATE MOBILE NUMBERS REPORT</h4>
- <div class="span12">
- <div id="span4">
-    Select Constituencies
-   </div>
-   <div id="span4">
- <s:select theme="simple" id="constituencyId" list="constituenciesList" listKey="id" listValue="name" multiple="true"/>
+ <div class="span8">
+ <div id="span4" style="margin-top: 10px;">
+    Select Constituencies  :  
+
+	<s:select theme="simple" id="constituencyId" list="constituenciesList" listKey="id" listValue="name" multiple="true"/>
    </div>
  </div>
-  <div class="span12">
-   <div id="span4">
-    Start Date
-   </div>
-   <div id="span4">
+  <div class="span8">
+   <div id="span4" style="margin-top: 10px; margin-left: 70px;" >
+    Start Date   :   
     <input type="text" id="startDateId" readonly="true"/>
    </div>
   </div>
-  <div class="span12">
-   <div id="span4">
-   End Date
-   </div>
-   <div id="span4">
+  <div class="span8">
+   <div id="span4" style="margin-top: 10px; margin-left: 75px;" >
+   End Date    : 
      <input type="text" id="endDateId" readonly="true"/>
    </div>
   </div>
 </div>
 
-<a class="btn btn-primary offset7" href="javascript:{getDuplicateMobileNumbersDetails()}">Report</a>
+<a class="btn btn-primary offset9" href="javascript:{getDuplicateMobileNumbersDetails()}">Report</a>
 <img src='images/Loading-data.gif' style="width:70px;height:60px;" class="hide"  id="ajaxImage"/>
 
 <a class="btn btn-primary hide" href="javascript:{generateExcel()}" id="excelBtnId">Export To Excel</a>
