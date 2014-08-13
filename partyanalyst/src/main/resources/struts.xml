@@ -8070,5 +8070,15 @@
 			</result>
 		</action>
 		
+		<action name="getDuplicateMobileNumbersDetails" class="surveyCompletedDetailsAction" method="getDuplicateMobileNumbersDetails">
+			<result type="json" name="success">
+					<param name="root">duplicateMobileNumbersDetailsList</param>
+			</result>
+		</action>
+		
+		<action name="duplicateMobileNumbers" class="surveyCompletedDetailsAction" method="duplicateMobileNumbers">
+			<result>/jsp/duplicateMobileNumbers.jsp</result>
+		</action>
+		
 </package>
 </struts>      
