@@ -127,11 +127,11 @@
 					<li><a class="highlight" id="surveyUserWise" onclick="showHideTabs(this.id);">User Wise Report</a></li>
 					</c:if>
 					<!--<li><a class="highlight" id="saveBoothPercentagesTab" onclick="showHideTabs(this.id);"> Save Booth Percentages </a></li>-->
-					<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CASTE_SURVEY_CALL_CENTER')}">
+					
 					<li><a class="highlight" id="wmReportTab" value="3" onclick="showHideTabs(this.id);">WM Report</a></li>
 					<li><a class="highlight" id="verifierReportTab" value="2" onclick="showHideTabs(this.id);">Verifier Report</a></li>
 					<li><a class="highlight" id="thirdPartyReportTab" onclick="showHideTabs(this.id);">Third Party Report</a></li>
-					</c:if>
+					
 				</ul>
 			</div>
 		</div>
@@ -394,7 +394,7 @@
 			<div class="span12">
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top20">
-							<h4> State wise Survey Status Report </h4>						
+							<h4> Constituency wise Survey Status Report </h4>						
 						<div class="row">
 						<div class="span8 offset4">
 									<div class="row-fluid">
@@ -686,7 +686,7 @@
 	</script>
 	<script>
 		showHideTabs('surveyStatusRprtTab');
-		getTPTotalBoothsDetailsConstituencyWise();
+		//getTPTotalBoothsDetailsConstituencyWise();
 		
 		$(".highlight").click(function()
 		{
@@ -881,10 +881,21 @@ function buildConstituencySummary(myrslt){
 		str +="<tbody>";
 	for(var q in myrslt){
 		var result = myrslt[q].constituencyDetails;
+		
+		var size = 0;
+		for(var p in result.boothTypeSummaryList)
+		{
+			if(result.boothTypeSummaryList[p].totalVoters > 0)
+			{
+				size = size +1;
+			}
+		}
 		str +="<tr>";
-		str +="<td rowspan='3'>"+myrslt[q].constituency+"</td>";
+		str +="<td rowspan='"+size+"'>"+myrslt[q].constituency+"</td>";
 		for(var i in result.boothTypeSummaryList){
-				str +="<td><a  href='javascript:{}' onclick='getMeBoothsUnder(\""+result.boothTypeSummaryList[i].boothType+"\",\""+myrslt[q].constituencyId+"\",\""+myrslt[q].constituency+"\");'>"+result.boothTypeSummaryList[i].boothType+"</a></td>";
+		if(result.boothTypeSummaryList[i].totalVoters > 0)
+		{
+			str +="<td><a  href='javascript:{}' onclick='getMeBoothsUnder(\""+result.boothTypeSummaryList[i].boothType+"\",\""+myrslt[q].constituencyId+"\",\""+myrslt[q].constituency+"\");'>"+result.boothTypeSummaryList[i].boothType+"</a></td>";
 				if(result.boothTypeSummaryList[i].totalVoters==null){
 					str +="<td> 0 </td>";
 				}else{
@@ -903,6 +914,8 @@ function buildConstituencySummary(myrslt){
 					str +="<td>"+stList[j].statusPercentage+"</td>";
 				}
 			str +="</tr>";
+		}
+				
 		}
 	}
 	

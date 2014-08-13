@@ -560,18 +560,22 @@ function buildFinalReportWithTP(result){
 		
 		for(var i in result){
 				for(var k in result[i].users.usersList){
-					str +="<tr>";
-					str +="<td>"+result[i].partNo+"</td>";
-					str +="<td>"+result[i].totalVoters+"</td>";
-					str +="<td>"+result[i].users.usersList[k].userCollected+"</td>";
-					var sttsList = result[i].users.usersList[k].statusList;
-					for(var p in sttsList){
-						str +="<td>"+sttsList[p].statusCount+"</td>";
-						str +="<td>"+sttsList[p].statusPercentage+" </td>";
+					if(result[i].totalVoters > 0)
+					{
+						str +="<tr>";
+						str +="<td>"+result[i].partNo+"</td>";
+						str +="<td>"+result[i].totalVoters+"</td>";
+						str +="<td>"+result[i].users.usersList[k].userCollected+"</td>";
+						var sttsList = result[i].users.usersList[k].statusList;
+						for(var p in sttsList){
+							str +="<td>"+sttsList[p].statusCount+"</td>";
+							str +="<td>"+sttsList[p].statusPercentage+" </td>";
+						}
+						str +="<td>"+result[i].boothType+"</td>";
+						str +="<td><a style='cursor: pointer;' onCLick='getWmUpdatedDetails("+result[i].boothId+","+result[i].partNo+")'> REVIEW</a></td>";
+						str +="</tr>";
 					}
-					str +="<td>"+result[i].boothType+"</td>";
-					str +="<td><a style='cursor: pointer;' onCLick='getWmUpdatedDetails("+result[i].boothId+","+result[i].partNo+")'> REVIEW</a></td>";
-					str +="</tr>";
+					
 				}
 		}
 			
