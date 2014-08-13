@@ -3835,7 +3835,7 @@ $('#boothWiseTab,#startTimeTab').removeClass('selected');
 				"iDisplayLength": 100,
 				"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]]
 				});
-				buildThirdPartyBasicData(result[0].surveyResponceVO);
+				buildThirdPartyBasicData(result[0]);
 		   }else{
 		       var str ="";
 		       str +='	No Data Available. ';
@@ -3864,7 +3864,8 @@ function getLatestBasicInfo(boothId,userId){
 		   buildThirdPartyBasicDataNew(result);
 		 });
 }
-function buildThirdPartyBasicData(result){
+function buildThirdPartyBasicData(myResult){
+	var result = myResult.surveyResponceVO;
     var str="";
 	str+='<div class="container">';
 		str+='<div class="row">';
@@ -3880,11 +3881,12 @@ function buildThirdPartyBasicData(result){
 								str+='<div  class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> BOOTH  </span>: '+result.casteName+'</div>';
 								str+='<div  class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> TOTAL  </span>: '+result.voterId+'</div>';
 								str+='<div id="sameCasteTpUpdtDiv"  class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> MATCHED  </span>: '+result.sameCount+'</div>';
-								var unMatched = (result.voterId) - (result.sameCount)
-								str+='<div id="unMatchedCasteTpUpdtDiv"  class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;">UN MATCHED  </span>: '+unMatched+'</div><input type="hidden" value="'+result.voterId+'" id="boothTptotalCount"></input>';
+								//var unMatched = (result.voterId) - (result.sameCount)
+								str+='<div id="unMatchedCasteTpUpdtDiv"  class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;">UN MATCHED  </span>: '+myResult.unMatchedCount+'</div><input type="hidden" value="'+result.voterId+'" id="boothTpUnMatchedCount"></input>';
 								
 					    str+='</div>';
 						 str+='<div class="row-fluid">';
+								str+='<div  id="notIdentifedCasteTpUpdtDiv" class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> NOT IDENTIFED </span>: '+myResult.notIdentifedCount+'</div><input type="hidden" value="'+myResult.notIdentifedCount+'" id="boothTpNotIdentifedCount"></input>';
 								str+='<div  id="wmWrongTpUpdtDiv" class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> WM WRONG </span>: '+result.wmWrong+'</div>';
 								str+='<div  id="tpWrongTpUpdtDiv" class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> TP WRONG  </span>: '+result.tpWrong+'</div>';
 								str+='<div  id="newCasteTpUpdtDiv" class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> NEWLY COLLECTED </span>: '+result.newCaste+'</div>';
@@ -3899,8 +3901,11 @@ function buildThirdPartyBasicData(result){
 function buildThirdPartyBasicDataNew(result){
    
 		$("#sameCasteTpUpdtDiv").html('<span style="font-weight:bold;"> Same Caste  </span>: '+result.sameCount+'</div>');
-		var unMatchedCount = ($('#boothTptotalCount').val())-(result.sameCount);
-		$("#unMatchedCasteTpUpdtDiv").html('<span style="font-weight:bold;"> Same Caste  </span>: '+unMatchedCount+'</div>');
+		var notIdentidedCount = $('#notIdentifedCasteTpUpdtDiv').val();
+		var unMatchedCount = ($('#boothTptotalCount').val())-((result.sameCount)+notIdentidedCount);
+		
+		$("#unMatchedCasteTpUpdtDiv").html('<span style="font-weight:bold;"> NOT IDENTIFED  </span>: '+notIdentidedCount+'</div>');
+		$("#notIdentifedCasteTpUpdtDiv").html('<span style="font-weight:bold;"> Same Caste  </span>: '+unMatchedCount+'</div>');
 		$("#wmWrongTpUpdtDiv").html('<span style="font-weight:bold;"> WM Wrong </span>: '+result.wmWrong+'</div>');
 
 		$("#tpWrongTpUpdtDiv").html('<span style="font-weight:bold;"> TP Wrong  </span>: '+result.tpWrong+'</div>');
