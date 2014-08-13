@@ -35,11 +35,13 @@ import com.itgrids.partyanalyst.dao.ISurveyFinalDataDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserRelationDAO;
+import com.itgrids.partyanalyst.dao.ISurveyWmThirdPartyStatusDAO;
 import com.itgrids.partyanalyst.dao.IUpdationDetailsDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IVerifierBoothPercentageDAO;
 import com.itgrids.partyanalyst.dao.IWebMonitorCompletedLocationsDetailsDAO;
 import com.itgrids.partyanalyst.dao.IWebMonitoringAssignedUsersDAO;
+import com.itgrids.partyanalyst.dao.hibernate.SurveyWmThirdPartyStatusDAO;
 import com.itgrids.partyanalyst.dto.DcDvCollectedDataVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.HamletCountVo;
@@ -73,7 +75,8 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 	@Autowired
 	private ISurveyFinalDataDAO surveyFinalDataDAO;
 	
-	
+	@Autowired
+	private ISurveyWmThirdPartyStatusDAO surveyWmThirdPartyStatusDAO;
 	
 	@Autowired
 	private ISurveyUserRelationDAO surveyUserRelationDAO;
@@ -1088,10 +1091,6 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 
 			
 			List<Object[]> mobileNumberList =  surveyDetailsInfoDAO.getBoothWiseCollectedDetailsForConstituency(constituencyId,IConstants.THIRD_PARTY_ROLE_ID,"mobileNumber",statusId);
-						
-			//List<Long> boothIds =  surveyCompletedLocationsDAO.getBoothsOfConstituecyByStatus(constituencyId, statusId, scopeId);
-
-			//List<Object[]> statusCountList = surveyFinalDataDAO.getThirdPartyStatusWithBooths(boothIds);
 			
 			
 			Set<Long> totalBoothsList = new HashSet<Long>();
@@ -1100,7 +1099,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 			Map<Long,Long> hamletMap = new HashMap<Long, Long>();
 			Map<Long,Long> wardMap = new HashMap<Long, Long>();
 			Map<Long,Long> mobileNumbersMap = new HashMap<Long, Long>();
-			//Map<Long,List<SurveyReportVO>> statusMap = new HashMap<Long, List<SurveyReportVO>>();
+			Map<Long,List<SurveyReportVO>> statusMap = new HashMap<Long, List<SurveyReportVO>>();
 			
 			for(Object[] obj:casteList)
 			{
@@ -1126,22 +1125,44 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 				totalBoothsList.add((Long)obj[1]);
 			}
 			
-			/*for(Object[] obj:statusCountList)
-			{
+			if(statusId == IConstants.TP_WM_PROCESS_STATUS_ID || statusId == IConstants.TP_WM_COMPLETED_STATUS_ID){
 				
-				List<SurveyReportVO> status = statusMap.get((Long)obj[0]);
-				SurveyReportVO vo = new SurveyReportVO();
-				if(status == null)
-				{
-					status = new ArrayList<SurveyReportVO>();
-					statusMap.put((Long)obj[0], status);
-				}
-				vo.setStatusId((Long)obj[1]);
-				vo.setCount((Long)obj[2]);
-				status.add(vo);
-				totalBoothsList.add((Long)obj[0]);
-			}*/
+			List<Long> boothIds =  surveyCompletedLocationsDAO.getBoothsOfConstituecyByStatus(constituencyId, statusId, scopeId);
+			List<Object[]> statusCountList = surveyFinalDataDAO.getThirdPartyStatusWithBooths(boothIds);
+
+			Set<Long> statusIds = new HashSet<Long>();
+			List<SurveyReportVO> statusCount = new ArrayList<SurveyReportVO>();
+			List<Object[]> ids = surveyWmThirdPartyStatusDAO.getStatusTypes();
 			
+			for(Object[] obj:ids)
+			{
+				if(statusIds.add((Long)obj[0]))
+				{
+				SurveyReportVO vo = new SurveyReportVO();
+				vo.setStatusId((Long)obj[0]);
+				vo.setStatus(obj[1].toString());
+				vo.setCount(0l);
+				statusCount.add(vo);
+				}				
+			}
+			
+			for(Object[] obj:statusCountList)
+			{				
+				statusMap.put((Long)obj[0], statusCount);
+			}			
+			
+			for(Object[] obj:statusCountList)
+			{			
+				
+				List<SurveyReportVO> statusLst = statusMap.get((Long)obj[0]);
+				SurveyReportVO vo= getMatchedStatusVO(statusLst,(Long)obj[1]);
+				if(vo != null){
+					vo.setCount((Long)obj[2]);
+				}
+				totalBoothsList.add((Long)obj[0]);
+			}			
+			
+			}
 			if(statusId.equals(IConstants.TP_PROCESS_STATUS_ID))
 			{
 				List<Long> thirdPartyBooths = surveyCompletedLocationsDAO.getAllThirdPartyRelatedBoothByConstituencyId(constituencyId,thirdPartyStatusIdsList);
@@ -1182,8 +1203,12 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 				boothVO.setTotalVoters(totalVotersMap.get(boothId) != null ? totalVotersMap.get(boothId) : 0L);
 				boothVO.setMobileNoCount(mobileNumbersMap.get(boothId) != null ? mobileNumbersMap.get(boothId) : 0L);
 				boothVO.setCasteCount(casteMap.get(boothId) != null ? casteMap.get(boothId) : 0L);
-				//statusList = statusMap.get(boothId);
-				//boothVO.setSubList(statusList);
+				
+				if(statusMap != null && statusMap.size() > 0)
+				{
+					statusList = statusMap.get(boothId != null ? boothId :0L);
+					boothVO.setSubList(statusList);
+				}
 				if(hamletMap.get(boothId) != null)
 					 boothVO.setHamletCount(hamletMap.get(boothId) != null ? hamletMap.get(boothId) : 0L);
 				else if(wardMap.get(boothId) != null)
@@ -1207,6 +1232,18 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 		 
 		 return resultList;
 	 }
+	 
+	 public SurveyReportVO getMatchedStatusVO(List<SurveyReportVO> list,Long statusId){
+			if(list!=null && list.size()>0 && statusId!=null){
+				for(SurveyReportVO vo:list){
+					if(vo.getStatusId().longValue() == statusId.longValue()){
+						return vo;
+					}
+				}
+			}
+			return null;
+		}
+	 
 	 
 	  public String roundTo2DigitsFloatValue(Float number){
 		  
