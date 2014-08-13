@@ -911,7 +911,7 @@ function deactivateUser()
 	var userTypeId =  $("#deactiveUserTypeId").val();
 	var optionsCount = $("#deactivateUserId option").length;
 
-	if(userTypeId == 1 || userTypeId == 4 ){
+	if(userTypeId == 1 || userTypeId == 4 || userTypeId == 10){
 		deactivateUserId =  $("#deactivateUserId").val();
 
 		if(deactivateUserId == 0)
@@ -957,7 +957,7 @@ function deactivateUser()
 
 			if(result.resultCode == 0) 
 			{				
-				if(userTypeId ==1 || userTypeId == 4){
+				if(userTypeId ==1 || userTypeId == 4 || userTypeId == 10){
 				
 					$('#remarksId').val('');
 					$("#deactivedummyLead").css("display","none");	
