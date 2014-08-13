@@ -1612,6 +1612,11 @@ function buildSurveyBoothDetailsTable(result,statusId)
 				if(statusId == 3){
 					str += ' <th> Caste Error % </th>';
 				}
+				if(statusId == 9 || statusId == 10){
+					for(var j in result[0].subList){
+						str +='<th>'+result[i].subList[j].status+'</th>';
+				}
+				}
 				str += ' <th> Update Status </th>';
 						
 				str += '</tr>';
@@ -1636,7 +1641,17 @@ function buildSurveyBoothDetailsTable(result,statusId)
 					if(statusId == 3){
 						str += '<td>'+result[i].casteErrorPercent+'</td>';
 					}
-					str += '<td><select id="boothStatus" onChange="updateBoothStatusDetails(this.value,'+result[i].boothId+','+i+')"><option>Select Status</option>';
+					if(statusId == 9 || statusId == 10){
+				
+					for(var j in result[i].subList){
+					var percent = ((result[i].subList[j].count * 100)/result[i].totalVoters).toFixed(2);
+					
+						str +='<td>'+result[i].subList[j].count+'('+percent+'%)</td>';
+						
+					}
+					}
+					
+					str += '<td><select id="boothStatus" style="width:150px;" onChange="updateBoothStatusDetails(this.value,'+result[i].boothId+','+i+')"><option>Select Status</option>';
 					
 				if(statusId < 6)
 				{
@@ -2751,7 +2766,7 @@ function getBoothsStatusDetailsOfConstituency()
 }
 function buildBoothsStatusCountsDetails(result)
 {
-		$('#stateStatusAjax').hide();
+	$('#stateStatusAjax').hide();
 	var str='';
 
 		str += '<div class="row-fluid">';
@@ -2930,7 +2945,7 @@ function getBoothsDetailsInCallStatusInfo(constituencyId,divId)
 }
 function getMatchecUnMatchedDetails()
 {
-	//$('#stateStatusAjax').show();
+	$('#stateStatusAjax').show();
 	var jObj =
 	{
 	  constituencyId:$('#reportConstituencyId').val()     
@@ -2967,7 +2982,7 @@ function getMatchedUnMatchedCountsByBoothWise(boothIds)
 			dataType: 'json',
 			data: {task:JSON.stringify(jObj)},
 		 }).done(function(result){	
-		  
+		$('#stateStatusAjax').hide();  
 		if(result != null)
 		{
 			buildMatchecdUnMatchedDetails(result);
@@ -4012,26 +4027,29 @@ function getFinalReportWithTP(){
 	$('#dayWiseReportDiv1').html('');
 	var constituencyId = $('#constituencyForThirdParty').val();
 	if(constituencyId == 0)	{
-	 $("#errorDivForVerification").html("<font color='#FF0000'>Please Select Constituency</font>");
+	 $("#errorDivForThirdParty").html("<font color='#FF0000'>Please Select Constituency</font>");
 	 return;
 	}
-	 $("#errorDivForVerification").html("");
+	 $("#errorDivForThirdParty").html("");
 	//$('#mainajaximg').show();
 	var jsObj = {
 		constituencyId : $('#constituencyForThirdParty').val()
 	}
+	$("#thirdPartyAjax").show();
 	$.ajax({
 			type:'GET',
 			url: 'getFinalReportWithTPAction.action',
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)},
 		 }).done(function(result){	
+		 $("#thirdPartyAjax").hide();
 			if(result != null)
 			buildFinalReportWithTP(result)
 		});	
 }
 
 function buildFinalReportWithTP(result){
+	
 	$("#FinalReportWithTPId").html("");
 	var str = "";
 	str +="<h4 style='text-align:center;color:red;'> BOOTH WISE OVERVIEW OF THIRD PARTY DATA</h4>";
