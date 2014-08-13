@@ -123,7 +123,7 @@ function getSurveyUsersByUserTypeForDeActive(divId,value,processImg)
 	$('#'+processImg+'').show();
 	var constituencyId = $('#deActivatConstituencyId').val();
 	
-	if(value == 3 || value == 5){
+	if(value == 3 || value == 5 || value == 11){
 		$('#deactivateUserId').prop('disabled','disabled');
 	}
 	else{
