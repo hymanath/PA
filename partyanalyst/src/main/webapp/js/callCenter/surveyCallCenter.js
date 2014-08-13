@@ -168,6 +168,7 @@ function showHideTabs(id)
 		$("#wmReportDiv").hide();
 		$("#thirdPartyReportDiv").show();
         getThirdPartySummaryDetails();
+		getTPTotalBoothsDetailsConstituencyWise();
 	}
 	else
 	{
@@ -522,7 +523,7 @@ else if(userType ==4)
 			
 			var mobErrorPercent = (Math.round(result[i].subList[j].mobileNotMatchedCount * 100)/Mobiletotal).toFixed(2);
 			str+='<td>'+mobErrorPercent+'</td>';
-			/*if(mobErrorPercent>=0.0 && mobErrorPercent<=0.50){
+			if(mobErrorPercent>=0.0 && mobErrorPercent<=0.50){
 				str+='<td class="errorGreen">'+mobErrorPercent+'</td>';
 			}else if(mobErrorPercent>=0.51 && mobErrorPercent<=1.00){
 				str+='<td class="errorLgreen">'+mobErrorPercent+'</td>';
@@ -532,7 +533,7 @@ else if(userType ==4)
 				str+='<td class="errorRed">'+mobErrorPercent+'</td>';
 			}else{
 				str+='<td>'+mobErrorPercent+'</td>';
-			}*/
+			}
 			
 			//str+='<td>'+(Math.round(result[i].subList[j].mobileNotMatchedCount * 100)/Mobiletotal).toFixed(2)+'%</td>';
 			}
@@ -546,7 +547,7 @@ else if(userType ==4)
 
 			var casteErrorPercent = (Math.round(result[i].subList[j].casteNotMatchedCount * 100)/Castetotal).toFixed(2);
 			str+='<td>'+casteErrorPercent+'</td>';
-			/*if(casteErrorPercent>=0.0 && casteErrorPercent<=0.50){
+			if(casteErrorPercent>=0.0 && casteErrorPercent<=0.50){
 				str+='<td class="errorGreen">'+casteErrorPercent+'</td>';
 			}else if(casteErrorPercent>=0.51 && casteErrorPercent<=1.00){
 				str+='<td class="errorLgreen">'+casteErrorPercent+'</td>';
@@ -556,7 +557,7 @@ else if(userType ==4)
 				str+='<td class="errorRed">'+casteErrorPercent+'</td>';
 			}else{
 				str+='<td>'+casteErrorPercent+'</td>';
-			}*/
+			}
 			
 			//str+='<td>'+(Math.round(result[i].subList[j].casteNotMatchedCount * 100)/Castetotal).toFixed(2)+'%</td>';
 			}
@@ -998,7 +999,7 @@ function buildDetailsTable(result)
 	}
 
 	var str = '';
-
+	str += '<h4> </h4>';
 	str+='<table class="table table-bordered m_top20 table-hover table-striped" id="dayreport">';
     str+='<thead class="alert alert-success">';
 	 str+='<tr>';
@@ -1029,13 +1030,13 @@ function buildDetailsTable(result)
 			str+='<td>'+value.villageCovered+'</td>';
 			if(value.userTypeId == 1)
 			{
-			str+='<td><a onClick="openTrackinWindow('+value.userid+',\''+$('#dateId').val()+'\',1) " style="cursor: pointer;"><img src="images/DC.png"></img></a></td>';
-			str+='<td><a onClick="openTrackinWindow('+value.userid+',\''+$('#dateId').val()+'\',2) " style="cursor: pointer;"><img src="images/DC.png"></img></a></td>';
+			str+='<td><a onClick="openTrackinWindow('+value.userid+',\''+$('#dateId').val()+'\',1,1) " style="cursor: pointer;"><img src="images/DC.png"></img></a></td>';
+			str+='<td><a onClick="openTrackinWindow('+value.userid+',\''+$('#dateId').val()+'\',2,1) " style="cursor: pointer;"><img src="images/DC.png"></img></a></td>';
 			}
 			else
 			{
-			str+='<td><a onClick="openTrackinWindow('+value.userid+',\''+$('#dateId').val()+'\',1) " style="cursor: pointer;"><img src="images/DV.png"></img></a></td>';
-			str+='<td><a onClick="openTrackinWindow('+value.userid+',\''+$('#dateId').val()+'\',2) " style="cursor: pointer;"><img src="images/DV.png"></img></a></td>';
+			str+='<td><a onClick="openTrackinWindow('+value.userid+',\''+$('#dateId').val()+'\',1,2) " style="cursor: pointer;"><img src="images/DV.png"></img></a></td>';
+			str+='<td><a onClick="openTrackinWindow('+value.userid+',\''+$('#dateId').val()+'\',2,2) " style="cursor: pointer;"><img src="images/DV.png"></img></a></td>';
 			}
 		str+='</tr>';
 
@@ -1111,9 +1112,9 @@ function buildDetailsTable(result)
 
 } 
 
-function openTrackinWindow(userId,date,id)
+function openTrackinWindow(userId,date,id,imgType)
 {
-	window.open('userWiseTrackingAction.action?userId='+userId+'&date='+date+'&userTypeId='+id+'');
+	window.open('userWiseTrackingAction.action?userId='+userId+'&date='+date+'&userTypeId='+id+'&leaderId='+imgType+'');
 }
 /* function openUserTrackingMapPage(id)
 {
@@ -2880,7 +2881,7 @@ function buildBoothsStatusCountsDetails(result)
 		str+='</div>';
 
 	$('#basicStatusReport').html(str);
-	getMatchecUnMatchedDetails();
+	//getMatchecUnMatchedDetails();
 }
 function getpanchayatDetailsByStatusAndConstituency(statusId)
 {
@@ -3708,7 +3709,7 @@ function buildFinalReport(result)
 	$('#excelTableID1').show();
 	str += '</table>';
 	$('#dayWiseReportDiv1').html(str);
-	//$('#daywisereportTableIdTemp').dataTable();
+	$('#daywisereportTableIdTemp').dataTable();
 }
 
 //getThirdPartyFinalDetails();
@@ -4095,7 +4096,7 @@ function buildFinalReportWithTP(result){
 	str +="</table>";
 	
 	$("#FinalReportWithTPId").html(str);
-	$('#FinalReportWithTPTableId').dataTable();
+	//$('#FinalReportWithTPTableId').dataTable();
 	
 }
 
