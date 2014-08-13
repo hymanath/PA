@@ -154,4 +154,11 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 		
 		return query.list();
 	}
+	
+	public List<Long> getSurveyCallDetailsByVoterId(Long voterId){
+		
+		Query query = getSession().createQuery(" select model.surveyCallStatusId from SurveyCallStatus model where model.voter.voterId = :voterId");
+		query.setParameter("voterId", voterId);		
+		return query.list();
+	}
 }
