@@ -3962,7 +3962,10 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				
 			}
 			
+			//Long surveyCallStatusId = surveyCallStatusDAO.getSurveyCallDtalsByVoterId(surveyReportVO.getVoterId());
+			
 			Long surveyCallStatusId = null;
+			
 			List<Long> surveyCallStatusIds = surveyCallStatusDAO.getSurveyCallDetailsByVoterId(surveyReportVO.getVoterId());
 			
 			if(surveyCallStatusIds != null && surveyCallStatusIds.size()>0)
@@ -4096,7 +4099,17 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			}
 			
 			
-			Long surveyCallStatusId = surveyCallStatusDAO.getSurveyCallDtalsByVoterId(surveyReportVO.getVoterId());
+			//Long surveyCallStatusId = surveyCallStatusDAO.getSurveyCallDtalsByVoterId(surveyReportVO.getVoterId());
+			
+			Long surveyCallStatusId = null;
+			
+			List<Long> surveyCallStatusIds = surveyCallStatusDAO.getSurveyCallDetailsByVoterId(surveyReportVO.getVoterId());
+			
+			if(surveyCallStatusIds != null && surveyCallStatusIds.size()>0)
+			{
+				surveyCallStatusId = surveyCallStatusIds.get(0);
+			}
+			
 			
 			if(surveyCallStatusId != null && surveyCallStatusId != 0 )
 			{				
