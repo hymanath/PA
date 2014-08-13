@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,8 +11,12 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.interceptor.SessionAware;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.itgrids.partyanalyst.dto.DuplicateMobileNumbersVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
 import com.itgrids.partyanalyst.service.ISurveyCompletedDetailsService;
 import com.opensymphony.xwork2.Action;
@@ -25,12 +31,53 @@ public class SurveyCompletedDetailsAction extends ActionSupport implements Servl
  	 private SurveyReportVO resultVO;
  	 private String status;
      private List<SurveyReportVO> resultList;
-     
-     @Autowired
-	 private ISurveyCompletedDetailsService surveyCompletedDetailsService;
-	
+     private JSONObject jObj;
+     private String task;
+     private List<DuplicateMobileNumbersVO> duplicateMobileNumbersDetailsList;
+     private List<SelectOptionVO> constituenciesList;
 
-	  public List<SurveyReportVO> getResultList() {
+	
+     
+     public List<SelectOptionVO> getConstituenciesList() {
+		return constituenciesList;
+	}
+
+	public void setConstituenciesList(List<SelectOptionVO> constituenciesList) {
+		this.constituenciesList = constituenciesList;
+	}
+
+	public List<DuplicateMobileNumbersVO> getDuplicateMobileNumbersDetailsList() {
+		return duplicateMobileNumbersDetailsList;
+	}
+
+	public void setDuplicateMobileNumbersDetailsList(
+			List<DuplicateMobileNumbersVO> duplicateMobileNumbersDetailsList) {
+		this.duplicateMobileNumbersDetailsList = duplicateMobileNumbersDetailsList;
+	}
+
+
+	@Autowired
+	 private ISurveyCompletedDetailsService surveyCompletedDetailsService;
+     
+   
+
+    public String getTask() {
+		return task;
+	}
+
+	public void setTask(String task) {
+		this.task = task;
+	}
+
+   public JSONObject getjObj() {
+		return jObj;
+	}
+
+	public void setjObj(JSONObject jObj) {
+		this.jObj = jObj;
+	}
+
+	public List<SurveyReportVO> getResultList() {
 		return resultList;
 	  }
 
@@ -148,4 +195,42 @@ public class SurveyCompletedDetailsAction extends ActionSupport implements Servl
 		
 		return Action.SUCCESS;
 	}
+	
+	
+	public String getDuplicateMobileNumbersDetails()
+	{
+		try
+		{
+			jObj=new JSONObject(getTask());
+			
+			List<Long> selectedConstituencyIds = new ArrayList<Long>();
+			
+			JSONArray constituencyIds = jObj.getJSONArray("constituencyIds");
+			 
+			for(int i = 0 ; i < constituencyIds.length() ; i++)
+			{
+				selectedConstituencyIds.add(Long.valueOf(constituencyIds.get(i).toString()));
+			}
+			
+			duplicateMobileNumbersDetailsList = surveyCompletedDetailsService
+					.getDuplicateMobileNumbersDetails(
+							jObj.getString("startDate"),
+							jObj.getString("endDate"), selectedConstituencyIds,
+							jObj.getLong("frequencyCount"));
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String duplicateMobileNumbers()
+	{
+		constituenciesList = surveyCompletedDetailsService.getSurveyStartedConstituencyDetails();
+		return Action.SUCCESS;
+	}
+	
+	
 }
