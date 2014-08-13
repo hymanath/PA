@@ -37,11 +37,27 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 	}
 	
 	public List<Object[]> getSurveyCallDtalsByboothId(Long boothId,Long surveyUserId){
+		
+		StringBuffer queryString = new StringBuffer();
+		
+		queryString.append("select distinct model.voter.voterId, model.mobileNoStatus, model.matchedStatus,model.casteState.casteStateId,model.hamletStatus,model.hamletId from SurveyCallStatus model" +
+				" where model.booth.boothId =:boothId ");
+		
+		if(surveyUserId != 0)
+			queryString.append("and model.surveyUser.surveyUserId = :surveyUserId ");
+		else
+			queryString.append("and model.surveyUser.surveyUserType.surveyUsertypeId = 1 ");
+			
+	/*		
 		Query query = getSession().createQuery("select distinct model.voter.voterId, model.mobileNoStatus, model.matchedStatus,model.casteState.casteStateId,model.hamletStatus,model.hamletId from SurveyCallStatus model" +
-				" where model.booth.boothId =:boothId and model.surveyUser.surveyUserId = :surveyUserId   order by model.surveyCallStatusId");
+				" where model.booth.boothId =:boothId and model.surveyUser.surveyUserId = :surveyUserId   order by model.surveyCallStatusId");*/
+		
+		Query query = getSession().createQuery(queryString.toString());
 		
 		query.setParameter("boothId", boothId);
-		query.setParameter("surveyUserId", surveyUserId);
+		
+		if(surveyUserId != 0)
+		 query.setParameter("surveyUserId", surveyUserId);
 		return query.list();		
 	}
 	

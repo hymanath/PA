@@ -523,12 +523,11 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		{
 				
 		
-		 if(userTypeId.longValue() == 3L || userTypeId.longValue() == 5L)
-		 
+		 if(userTypeId.longValue() == 3L || userTypeId.longValue() == 5L || userTypeId.longValue() == 11L)		 
 			{
 			 resultStatus = deactivateUserByID(userId,remarks);
 			}
-		 else if(userTypeId.longValue() == 1L || userTypeId.longValue() == 4L){
+		 else if(userTypeId.longValue() == 1L || userTypeId.longValue() == 4L || userTypeId.longValue() == 10L){
 			 releaseTabsAndBoothsBySurveyUserId(userId,null,remarks);
 			 resultStatus = deactivateUserByID(userId,remarks);
 		 }
@@ -1032,8 +1031,11 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			else if (userTypeId.longValue() == 4L) {
 				userTypeId = 5L;
 			}			
-			
-			if( userTypeId.longValue() == 3L || userTypeId.longValue() == 5L){
+			else if(userTypeId.longValue() == 10L){
+				userTypeId = 11L;
+			}
+						
+			if( userTypeId.longValue() == 3L || userTypeId.longValue() == 5L ||  userTypeId.longValue() == 11L){
 				
 				if(leaderIds != null && leaderIds.size()>0){
 					result = surveyUserRelationDAO.getLeadersBysurveyUserIds(leaderIds,userTypeId);
@@ -3555,10 +3557,34 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					}
 				}
 				
+				List<Long> surveyUserids = new ArrayList<Long>();
 				
-				
-					List<Long> surveyUserids = new ArrayList<Long>();
+
+				if(userType == 1L)
+				{
+					List<Long> specialBoothList = surveyUserBoothAssignDAO.checkForSpecialBooth(boothId);
+					
+					if(specialBoothList.get(0) >= 1)
+					{
+						surveyUserId = 0L;
+					}else
+					{
+						surveyUserids.add(surveyUserId);
+					}
+					
+				}else
+				{
 					surveyUserids.add(surveyUserId);
+				}
+				
+				
+			/*	if(specialBoothList == null || specialBoothList.get(0).equals(0L))
+				{
+					surveyUserids.add(surveyUserId);
+
+				}else
+					surveyUserId = 0L;
+				*/
 					//List<Object[]> votersLsit = surveyDetailsInfoDAO.getVoterDetailsByBoothId(boothId,ids,date);
 					
 					List<Object[]> votersLsit = surveyDetailsInfoDAO.getVotersDetailsByBoothId(boothId,surveyUserids,date,casteStateId);
@@ -4942,7 +4968,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 						List<Long> assignedUsersList = new ArrayList<Long>(0);
 						ResultStatus status = new ResultStatus();
 						
-						 if(userTypeId.longValue() == 1L || userTypeId.longValue() == 4L )
+						 if(userTypeId.longValue() == 1L || userTypeId.longValue() == 4L || userTypeId.longValue() == 10L)
 						  {
 								  	assignedUsersList.add(surveyUserId);
 								  	status =  updateServeyUserRelationDetails(userTypeId,assignedUsersList, surveyUserId,dummyLeaderId);  // releasing users and tabs for single assigned user 
@@ -4950,7 +4976,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 							  		surveyUserBoothAssignIds = surveyUserBoothAssignDAO.getAssignedDetailsForUser(assignedUsersList);
 							  
 						  }
-						  else if(userTypeId.longValue() == 3L || userTypeId.longValue() == 5L )
+						  else if(userTypeId.longValue() == 3L || userTypeId.longValue() == 5L || userTypeId.longValue() == 11L)
 						  {
 								 assignedUsersList =  surveyUserRelationDAO.getAssignedUsersForLeader(surveyUserId);
 								 

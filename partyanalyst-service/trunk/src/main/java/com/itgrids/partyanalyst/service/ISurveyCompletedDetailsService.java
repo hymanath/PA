@@ -2,7 +2,9 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.DuplicateMobileNumbersVO;
 import com.itgrids.partyanalyst.dto.FinalSurveyReportVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
 import com.itgrids.partyanalyst.dto.SurveyThirdPartyReportVO;
@@ -20,4 +22,6 @@ public interface ISurveyCompletedDetailsService {
 	public List<SurveyReportVO> getSurveyCompletedConstituencyDetails();
 	public List<SurveyThirdPartyReportVO> thirdPartyReadyForReviewConstBooths();
 	public String getConstituencyCompletionStatusByConstituencyId(Long constituencyId);
+	public List<DuplicateMobileNumbersVO> getDuplicateMobileNumbersDetails(String startDate,String endDate,List<Long> constituencyIds,Long frequencyCount);
+	public List<SelectOptionVO> getSurveyStartedConstituencyDetails();
 }

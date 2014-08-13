@@ -87,4 +87,16 @@ public class SurveyUserBoothAssignDAO extends GenericDaoHibernate<SurveyUserBoot
 			return query.list();
 		}
 	  
+	  public List<Long> checkForSpecialBooth(Long boothId)
+	  {
+		  Query query = getSession().createQuery("select count(SUBA.boothId) from SurveyUserBoothAssign SUBA " +
+		  		"where SUBA.remainingDataBooth = 'Y' and SUBA.boothId = :boothId");
+		  
+		  query.setParameter("boothId", boothId);
+		  
+		  return query.list();
+		  
+		  
+	  }
+	  
 }
