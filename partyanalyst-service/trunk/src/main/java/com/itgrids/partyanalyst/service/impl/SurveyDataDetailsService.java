@@ -3963,7 +3963,10 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			}
 			
 			
-			Long surveyCallStatusId = surveyCallStatusDAO.getSurveyCallDtalsByVoterId(surveyReportVO.getVoterId());
+			List<Long> surveyCallStatusIds = surveyCallStatusDAO.getSurveyCallDetailsByVoterId(surveyReportVO.getVoterId());
+			
+			Long surveyCallStatusId = (Long) surveyCallStatusIds.get(0);
+			
 			if(surveyCallStatusId != null && surveyCallStatusId != 0 )
 			{				
 				surveyCallStatus = surveyCallStatusDAO.get(surveyCallStatusId);
