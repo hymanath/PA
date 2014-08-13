@@ -1,7 +1,10 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -10,7 +13,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
-import org.hibernate.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
@@ -24,12 +26,13 @@ import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.ISurveyFinalDataDAO;
 import com.itgrids.partyanalyst.dao.ISurveyWmThirdPartyStatusDAO;
 import com.itgrids.partyanalyst.dao.IWebMonitoringAssignedUsersDAO;
+import com.itgrids.partyanalyst.dto.DuplicateMobileNumbersVO;
 import com.itgrids.partyanalyst.dto.FinalSurveyReportVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
 import com.itgrids.partyanalyst.dto.SurveyThirdPartyReportVO;
-import com.itgrids.partyanalyst.dto.ThirdPartyCompressionVO;
 import com.itgrids.partyanalyst.dto.VerificationCompVO;
 import com.itgrids.partyanalyst.model.SurveyCompletedConstituency;
 import com.itgrids.partyanalyst.model.SurveyCompletedLocations;
@@ -1386,5 +1389,168 @@ public class SurveyCompletedDetailsService implements
 			}
 		}
 		return null;
+	}
+	
+	
+	
+	public List<DuplicateMobileNumbersVO> getDuplicateMobileNumbersDetails(String startDate,String endDate,List<Long> constituencyIds,Long frequencyCount)
+	{
+		LOG.info("Entered into the getDuplicateMobileNumbersDetails service method");
+		
+		List<DuplicateMobileNumbersVO> resultList = new ArrayList<DuplicateMobileNumbersVO>();
+
+		try
+		{
+			
+			SimpleDateFormat originalFormat = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd" );
+			Date strtDt = originalFormat.parse(startDate);
+			Date endDt = originalFormat.parse(endDate);
+			
+			Date convertedstrdate = targetFormat.parse(targetFormat.format(strtDt));			
+			Date convertedenddate = targetFormat.parse(targetFormat.format(endDt));
+			
+			List<Object[]> mobileNumbersList = surveyDetailsInfoDAO.getDuplicateMobileNumbersByConstituencyIdsAndDates(convertedstrdate,convertedenddate,constituencyIds,frequencyCount);
+
+		
+			List<String> mobileNumbers = new ArrayList<String>();
+			
+			for(Object[] mobileNumberDtls:mobileNumbersList)
+			{
+				if(!mobileNumberDtls[1].toString().trim().equalsIgnoreCase(""))
+				{
+					DuplicateMobileNumbersVO mobileNumberVO = new DuplicateMobileNumbersVO();
+					
+					mobileNumberVO.setMobileNumber(mobileNumberDtls[1].toString());
+					mobileNumberVO.setCount((Long)mobileNumberDtls[0]);
+					mobileNumbers.add(mobileNumberDtls[1].toString());
+					resultList.add(mobileNumberVO);
+				}
+			}
+			
+			List<Object[]> votersDetails =  surveyDetailsInfoDAO.getDuplicateMobileNumersDetails(convertedstrdate, convertedenddate, constituencyIds, mobileNumbers);
+
+			
+		/*	Query query = getSession().createQuery("select SDI.mobileNumber,
+		 * SDI.booth.constituency.name," +				
+					"SDI.booth.boothId , SDI.booth.partNo,SDI.voter.name , SDI.voter.houseNo " +
+					" from SurveyDetailsInfo SDI where date(SDI.date) >= :startDate and " +
+					"date(SDI.date) <= :endDate and SDI.booth.constituency.constituencyId in(:constituencyIds) and SDI.mobileNumber in(:mobileNumbers)");*/
+			
+			List<Long> boothIds = new ArrayList<Long>();
+			
+			for(Object[] obj:votersDetails)
+				if(!boothIds.contains((Long)obj[2]))
+						boothIds.add((Long)obj[2]);
+			
+			List<Object[]> mandalDetails = boothDAO.getmandalDetailsByBoothIds(boothIds);
+			List<Object[]> muncipalityDetails = boothDAO.getMuncipalityDetyailsByBoothIds(boothIds);
+			
+			Map<Long,String> mandalMap = new HashMap<Long, String>();
+			Map<Long,String> muncipalMap = new HashMap<Long, String>();
+			
+			for(Object[] mandalDtls:mandalDetails)
+				mandalMap.put((Long)mandalDtls[0],mandalDtls[2].toString()+"-"+mandalDtls[3].toString() );
+			
+			
+			for(Object[] muncipalDtls:muncipalityDetails)
+				muncipalMap.put((Long)muncipalDtls[0],muncipalDtls[2].toString());
+			
+			for(Object[] obj:votersDetails)
+			{
+				DuplicateMobileNumbersVO matchedDuplicateMobileNumbersVO = getMatchedDuplicateMobileNUmberVO(
+						resultList, obj[0].toString());
+				
+				DuplicateMobileNumbersVO subVO = new DuplicateMobileNumbersVO(); 
+				
+				subVO.setConstituencyName(obj[1].toString());
+				
+				if(mandalMap.get((Long)obj[2]) != null)
+					subVO.setTehsilName(mandalMap.get((Long)obj[2]).split("-")[0]);
+				else if(muncipalMap.get((Long)obj[2]) != null)
+					subVO.setMuncipalityName(muncipalMap.get((Long)obj[2])+" Muncipality");
+				
+				subVO.setBoothId((Long)obj[2]);
+				subVO.setPartNo(obj[3].toString());
+				subVO.setVoterName(obj[4].toString());
+				subVO.setHoseNo(obj[5].toString());
+				subVO.setUserName(obj[6].toString());
+				subVO.setDate(obj[7].toString());
+				
+				matchedDuplicateMobileNumbersVO.getSubList().add(subVO);
+			}
+			
+			List<DuplicateMobileNumbersVO> countList = new ArrayList<DuplicateMobileNumbersVO>();
+			
+			for(DuplicateMobileNumbersVO vo:resultList)
+			{
+				DuplicateMobileNumbersVO countVO = getMatchedCountVO(countList, vo.getCount());
+				if(countVO != null)
+				  countVO.setTotal(countVO.getTotal() +1);
+				else
+				{
+					DuplicateMobileNumbersVO cntVO = new DuplicateMobileNumbersVO();
+					cntVO.setTotal(1L);
+					cntVO.setCount(vo.getCount());
+					countList.add(cntVO);
+				}
+			}
+			
+			Collections.sort(resultList);
+			
+			if(resultList != null && resultList.size() >0)
+				resultList.get(0).setCountList(countList);
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Exception raised in getDuplicateMobileNumbersDetails service method");
+            return null; 
+		}
+		return resultList;
+	}
+	
+	public DuplicateMobileNumbersVO getMatchedCountVO(List<DuplicateMobileNumbersVO> resultList,Long total)
+	{
+		for(DuplicateMobileNumbersVO resultVO:resultList)
+			if(resultVO.getCount().equals(total))
+				return resultVO;
+		return null;
+		
+	}
+	
+	public DuplicateMobileNumbersVO getMatchedDuplicateMobileNUmberVO(List<DuplicateMobileNumbersVO> resultList,String mobileNumber)
+	{
+		for(DuplicateMobileNumbersVO resultVO:resultList)
+			if(resultVO.getMobileNumber().equals(mobileNumber))
+				return resultVO;
+		return null;
+		
+	}
+	
+	public List<SelectOptionVO> getSurveyStartedConstituencyDetails()
+	{
+		List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>();
+		try
+		{
+			List<Object[]> constituencyDetails = surveyDetailsInfoDAO.getSurveyStartedConstituencyDetails();
+			
+			for(Object[] obj:constituencyDetails)
+			{
+				SelectOptionVO constituency = new SelectOptionVO();
+				
+				constituency.setId((Long)obj[0]);
+				constituency.setName(obj[1].toString());
+				
+				resultList.add(constituency);
+			}
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return resultList;
+		
 	}
 }

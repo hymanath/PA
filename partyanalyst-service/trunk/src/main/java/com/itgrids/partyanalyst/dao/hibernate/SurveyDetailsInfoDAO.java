@@ -361,7 +361,13 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select SDI, BPV.serialNo from SurveyDetailsInfo SDI ,BoothPublicationVoter BPV ");
 		queryStr.append("  where SDI.booth.boothId = BPV.booth.boothId and SDI.voter.voterId = BPV.voter.voterId ");
-		queryStr.append(" and SDI.booth.boothId  = :boothId and SDI.surveyUser.surveyUserId in (:assignUsers)  ");
+		queryStr.append(" and SDI.booth.boothId  = :boothId ");
+		
+		if(assignUsers != null && assignUsers.size() >0)
+			queryStr.append("and SDI.surveyUser.surveyUserId in (:assignUsers)  ");
+		else
+			queryStr.append("and SDI.surveyUser.surveyUserType.surveyUsertypeId = :dataCollectorRoleId ");
+			
 	//	queryStr.append("  and date(SDI.date) = :searchDate  and SDI.voter.voterId not in ( select SCS.voter.voterId from SurveyCallStatus SCS where  SDI.surveyUser.surveyUserId =  SCS.surveyUser.surveyUserId )" );
 		
 		if(casteStateId != null && casteStateId != 0){
@@ -373,7 +379,11 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameter("boothId", boothId);		
 		//query.setParameter("searchDate", searchDate);
-		query.setParameterList("assignUsers", assignUsers);	
+		
+		if(assignUsers != null && assignUsers.size() >0)
+			query.setParameterList("assignUsers", assignUsers);	
+		else
+			query.setParameter("dataCollectorRoleId", IConstants.DATA_COLLECTOR_ROLE_ID);
 		
 		if(casteStateId != null && casteStateId != 0)
 		{
@@ -579,10 +589,27 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 	
 	public List<Object[]> getCasteWiseCountInBooth(Long boothId,List<Long> surveyUserIds)
 	{
-		Query query = getSession().createQuery(" select  SDI.caste.casteStateId,SDI.caste.caste.casteName , count(SDI.caste.casteStateId) from SurveyDetailsInfo SDI where " +
+		StringBuffer queryString = new StringBuffer();
+		
+		queryString.append("select  SDI.caste.casteStateId,SDI.caste.caste.casteName , count(SDI.caste.casteStateId) from SurveyDetailsInfo SDI where " +
+				"  SDI.booth.boothId = :boothId ");
+		
+		if(surveyUserIds != null && surveyUserIds.size() >0)
+			queryString.append("and SDI.surveyUser.surveyUserId in (:surveyUserIds)  ");
+		else
+			queryString.append("and SDI.surveyUser.surveyUserType.surveyUsertypeId = 1");
+		
+		queryString.append("group by SDI.caste.casteStateId  order by SDI.caste.caste.casteName asc");
+		
+	/*	Query query = getSession().createQuery(" select  SDI.caste.casteStateId,SDI.caste.caste.casteName , count(SDI.caste.casteStateId) from SurveyDetailsInfo SDI where " +
 				"  SDI.booth.boothId = :boothId and SDI.surveyUser.surveyUserId in (:surveyUserIds)  group by SDI.caste.casteStateId " +
-				" order by SDI.caste.caste.casteName asc ");
+				" order by SDI.caste.caste.casteName asc ");*/
+		
+		Query query = getSession().createQuery(queryString.toString());
+		
 		query.setParameter("boothId", boothId);
+		
+		if(surveyUserIds != null && surveyUserIds.size() >0)
 		query.setParameterList("surveyUserIds", surveyUserIds);
 		//query.setParameter("date", date);
 		return query.list();
@@ -1565,4 +1592,59 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		query.setParameter("userTypeId", IConstants.THIRD_PARTY_ROLE_ID);
 		return query.list();
 	}
+	
+	public List<Long> getThirdPartyStartedBoothsDetailsByConstituencyId(Long constituencyId)
+	{
+		Query query = getSession().createQuery("select distinct SDI.booth.boothId from " +
+				"SurveyDetailsInfo SDI where SDI.booth.constituency.constituencyId = :constituencyId and SDI.surveyUser.surveyUserType.surveyUsertypeId = :3");
+		
+		query.setParameter("constituencyId", constituencyId);
+		
+		return query.list();
+		
+	}
+	
+	public List<Object[]> getDuplicateMobileNumbersByConstituencyIdsAndDates(Date startDate,Date endDate,List<Long> constituencyIds,Long frequencyCount)
+	{
+		
+		Query query = getSession().createQuery("select count(SDI.mobileNumber) ,SDI.mobileNumber from SurveyDetailsInfo SDI where date(SDI.date) >= :startDate and " +
+				"date(SDI.date) <= :endDate and SDI.booth.constituency.constituencyId in(:constituencyIds) " +
+				"group by SDI.mobileNumber having  count(SDI.mobileNumber) >"+frequencyCount+" ");
+		
+		query.setParameter("startDate", startDate);
+		query.setParameter("endDate", endDate);
+		query.setParameterList("constituencyIds", constituencyIds);
+		
+		return query.list();
+		
+	}
+	
+	public List<Object[]> getDuplicateMobileNumersDetails(Date startDate,Date endDate,List<Long> constituencyIds,List<String> mobileNumbers)
+	{
+		Query query = getSession().createQuery("select SDI.mobileNumber,SDI.booth.constituency.name," +
+	/*			"CASE WHEN SDI.booth.localBody is not null THEN 0 ELSE  1 END ," +
+				"CASE WHEN SDI.booth.localBody is not null THEN SDI.booth.localBody.name  ELSE SDI.booth.tehsil.tehsilName  END ," +*/
+				"SDI.booth.boothId , SDI.booth.partNo,SDI.voter.name , SDI.voter.houseNo,SDI.surveyUser.userName,SDI.date " +
+				" from SurveyDetailsInfo SDI where date(SDI.date) >= :startDate and " +
+				"date(SDI.date) <= :endDate and SDI.booth.constituency.constituencyId in(:constituencyIds) and SDI.mobileNumber in(:mobileNumbers)");
+		
+		query.setParameter("startDate", startDate);
+		query.setParameter("endDate", endDate);
+		query.setParameterList("constituencyIds", constituencyIds);
+		query.setParameterList("mobileNumbers", mobileNumbers);
+		
+		return query.list();
+
+		
+	}
+	
+	public List<Object[]> getSurveyStartedConstituencyDetails()
+	{
+		Query query = getSession().createQuery("select distinct SDI.booth.constituency.constituencyId,SDI.booth.constituency.name from " +
+				"SurveyDetailsInfo SDI order by SDI.booth.constituency.name");
+		
+		return query.list();
+		
+	}
+	
 }
