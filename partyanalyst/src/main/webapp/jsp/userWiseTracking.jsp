@@ -79,7 +79,8 @@
 
 var userId = '${userId}';
 var date = '${date}';
-var id = '${userTypeId}'
+var id = '${userTypeId}';
+var imgId = '${leaderId}';
 var campus = {
 "type": "Point",
 "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
@@ -156,7 +157,16 @@ function buildLocationDetails(result)
 	{
 		if(result[i].latitude != null && result[i].longitude != null)
 		{
-			var iconImg = 'images/DC.png';
+			var iconImg = '';
+			
+			if(imgId == 1)
+			{
+				iconImg = 'images/DC.png';
+			}
+			else
+			{
+				iconImg = 'images/DV.png';
+			}
 			
 			var icon = L.icon({
 			iconUrl: iconImg,

@@ -1279,9 +1279,19 @@ function buildConstituencySummary(myrslt){
 		str +="<tbody>";
 	for(var q in myrslt){
 		var result = myrslt[q].constituencyDetails;
+		var size = 0;
+		for(var p in result.boothTypeSummaryList)
+		{
+			if(result.boothTypeSummaryList[p].totalVoters > 0)
+			{
+				size = size + 1;
+			}
+		}
 		str +="<tr>";
-		str +="<td rowspan='3'>"+myrslt[q].constituency+"</td>";
+		str +="<td rowspan='"+size+"'>"+myrslt[q].constituency+"</td>";
 		for(var i in result.boothTypeSummaryList){
+			if(result.boothTypeSummaryList[i].totalVoters > 0)
+			{
 				str +="<td><a  href='javascript:{}' onclick='getMeBoothsUnder(\""+result.boothTypeSummaryList[i].boothType+"\",\""+myrslt[q].constituencyId+"\",\""+myrslt[q].constituency+"\");'>"+result.boothTypeSummaryList[i].boothType+"</a></td>";
 				if(result.boothTypeSummaryList[i].totalVoters==null){
 					str +="<td> 0 </td>";
@@ -1300,7 +1310,9 @@ function buildConstituencySummary(myrslt){
 					str +="<td>"+stList[j].statusCount+"</td>";
 					str +="<td>"+stList[j].statusPercentage+"</td>";
 				}
-			str +="</tr>";
+				str +="</tr>";
+			}
+				
 		}
 	}
 	
