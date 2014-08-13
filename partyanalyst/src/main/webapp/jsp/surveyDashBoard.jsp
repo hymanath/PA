@@ -114,7 +114,7 @@
 									SURVEY NOT STARTED IN ANY DISTRICT
 								</c:if>
 								<c:forEach var="startedDistrict" items="${resultVO.started}">
-									  <li><a href="javascript:{showConstituenciesDetails(${startedDistrict.locationId})}">${startedDistrict.locationName}</a></li>
+									  <li><a href="javascript:{showConstituenciesDetails(${startedDistrict.locationId},'${startedDistrict.locationName}')}">${startedDistrict.locationName}</a></li>
 								</c:forEach>
 
 							</ul>
@@ -130,7 +130,7 @@
 								</c:if>
 
 								<c:forEach var="completedDistrict" items="${resultVO.completed}">
-									  <li><a href="javascript:{showConstituenciesDetails(${completedDistrict.locationId})}">${completedDistrict.locationName}</a></li>
+									  <li><a href="javascript:{showConstituenciesDetails(${completedDistrict.locationId},'${completedDistrict.locationName}')}">${completedDistrict.locationName}</a></li>
 								</c:forEach>
 							</ul>
 					</div>
@@ -146,7 +146,7 @@
 								  </c:if>
 						       
 								<c:forEach var="processDistrict" items="${resultVO.process}">
-									  <li><a href="javascript:{showConstituenciesDetails(${processDistrict.locationId})}">${processDistrict.locationName}</a></li>
+									  <li><a href="javascript:{showConstituenciesDetails(${processDistrict.locationId},'${processDistrict.locationName}')}">${processDistrict.locationName}</a></li>
 								</c:forEach>
 							</ul>
 					</div>
@@ -182,9 +182,9 @@ $( document ).ready(function() {
 getSurveyCompletedLocationsDetailsForSurveyStartedConstituencies();	  
 });
 
-function showConstituenciesDetails(districtId)
+function showConstituenciesDetails(districtId,locationName)
 {
-	 window.open('constituencyDetailReportAction.action?districtId='+districtId+'','_blank');
+	 window.open('constituencyDetailReportAction.action?districtId='+districtId+'&task='+locationName+' District ','_blank');
 }
 
 function getSurveyCompletedLocationsDetailsForSurveyStartedConstituencies()
@@ -230,7 +230,7 @@ function buildingSurveyCompletedLocationsDetailsForSurveyStartedConstituencies(r
 	  if( (result[i].total) != (result[i].notStartedCount))
 	  {
 		 str+='<tr>';
-		 str+='<td><a href="javascript:{getConstituencyDetalReport('+result[i].id+')}"> '+result[i].name+'</a></td>';
+		 str+='<td><a href="javascript:{getConstituencyDetalReport('+result[i].id+',\''+result[i].name+'\')}"> '+result[i].name+'</a></td>';
 		 if(result[i].totalVoters==null)
 		 {
 		  str+='<td></td>';
@@ -261,7 +261,7 @@ function buildingSurveyCompletedLocationsDetailsForSurveyStartedConstituencies(r
 	
 	
 }
-function getConstituencyDetalReport(constituencyId){
+function getConstituencyDetalReport(constituencyId,locationName){
 
 	var jobj = {
 		constituencyId : constituencyId,
@@ -274,7 +274,7 @@ function getConstituencyDetalReport(constituencyId){
           data: {task:JSON.stringify(jobj)}
     }).done(function(result){
 	var district = parseInt(result[1].id);
-		window.open('constituencyDetailReportAction.action?districtId='+district+'&task='+constituencyId+'','_blank');
+		window.open('constituencyDetailReportAction.action?districtId='+district+'&constituencyId='+constituencyId+'&task='+locationName+' Assembly','_blank');
 	});
 	
 }
