@@ -455,7 +455,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.SURVEY_USER_CREATION))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.SURVEY_USER_CREATION))
-			return ERROR;
+			return INPUT;
 		constituencies = surveyDashBoardService.getConstituencyListForThirdPartyReport();
 		constituenciesList = 	surveyDataDetailsService.getAllAssemblyConstituenciesByStateId();
 		dataAvilableConstituencies = surveyDataDetailsService.getSurveyStartedConstituencyList();
@@ -1338,7 +1338,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 					!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.CASTE_SURVEY_CALL_CENTER))
 				return INPUT;
 			if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CASTE_SURVEY_CALL_CENTER))
-				return ERROR;
+				return INPUT;
 				constituenciesList = 	surveyDataDetailsService.getSurveyStartedConstituencyList();
 				constituencies = surveyDashBoardService.getConstituencyListForThirdPartyReport();
 				usersList = surveyDetailsService.getAssignedSurveyUsersForWebMontringTeam(user.getRegistrationID());
