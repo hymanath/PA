@@ -1324,6 +1324,9 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 				
 				if(tpProvidedMap != null && tpProvidedMap.size() > 0)
 				{
+					Long matchedCount = 0l;
+					Long unMatchedCount = 0l;
+					Long notIdentifedCount = 0l;
 					returnList = new ArrayList<ThirdPartyCompressionVO>();
 					for(Long voterId : tpProvidedMap.keySet())
 					{
@@ -1375,6 +1378,19 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 									thirdPartyCompressionVO.setMobileNo(tpCollectedVO.getMobileNo());
 								}
 								
+								if(tpCollectedVO.getCasteId().longValue() == tpProvidedVO.getCasteId().longValue())
+								{
+									matchedCount = matchedCount + 1;
+								}
+								else
+								{
+									unMatchedCount = unMatchedCount + 1;
+								}
+								
+							}
+							else
+							{
+								notIdentifedCount = notIdentifedCount + 1;
 							}
 							returnList.add(thirdPartyCompressionVO);
 						}
@@ -1384,6 +1400,9 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 					
 					if(returnList != null && returnList.size() > 0){
 						returnList.get(0).setSurveyResponceVO(thirdPartyCollectedBasicData(boothId,surveyUserId,false));
+						returnList.get(0).setMatchedCount(matchedCount);
+						returnList.get(0).setUnMatchedCount(unMatchedCount);
+						returnList.get(0).setNotIdentifedCount(notIdentifedCount);
 					}
 				}
 				
@@ -1815,6 +1834,9 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 		SurveyResponceVO statusVO = new SurveyResponceVO();
 	  try{
 		//0 count,1 statusId
+		 /* statusVO.setMatchedCount(matchedCount);
+		  statusVO.setUnMatchedCount(unMatchedCount);
+		  statusVO.setNotIdentifedCount(notIdentifedCount);*/
 		List<Object[]> statusList = surveyFinalDataDAO.getWMUpdatedStatusOnThirdPartyDataByBooth(userId, boothId);
 		for(Object[] params : statusList)
 		 {	
