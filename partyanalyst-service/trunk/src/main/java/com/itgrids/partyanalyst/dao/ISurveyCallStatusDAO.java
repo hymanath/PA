@@ -27,5 +27,7 @@ public interface ISurveyCallStatusDAO extends GenericDao<SurveyCallStatus,Long>{
 	public List<Object[]> getBoothWiseDvWmCasteUpdationDetails(List<Long> boothIds);
 	public List<Object[]> getWmDvMappedUnMappedDetailsBoothWise(Long constituencyId);
 	public List<Object[]> getBoothWiseErrorCountForConstituencyByUsertypeId(Long constituencyId,Long userTypeId);
+	
+	public List<Long> getSurveyCallDetailsByVoterId(Long voterId);
 
 }
