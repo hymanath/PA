@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,12 +9,12 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
-import org.apache.struts2.interceptor.SessionAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dto.DuplicateMobileNumbersVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
 import com.itgrids.partyanalyst.service.ISurveyCompletedDetailsService;
@@ -228,6 +227,14 @@ public class SurveyCompletedDetailsAction extends ActionSupport implements Servl
 	
 	public String duplicateMobileNumbers()
 	{
+		HttpSession session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		
+		if(user == null)
+		{
+			return Action.INPUT;
+		}
+		
 		constituenciesList = surveyCompletedDetailsService.getSurveyStartedConstituencyDetails();
 		return Action.SUCCESS;
 	}

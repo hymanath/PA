@@ -27,6 +27,13 @@
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 </head>
 <body>
+<style>
+#errorDiv,.errorClass
+{
+ font-weight:bold;
+ color:red;
+}
+</style>
 <script>
 $( document ).ready(function() {
 	$('#startDateId,#endDateId').datepicker({
@@ -36,12 +43,13 @@ $( document ).ready(function() {
 </script>
 
 <div class="offset6">
+ <h4>DUPLICATE MOBILE NUMBERS REPORT</h4>
  <div class="span12">
  <div id="span4">
     Select Constituencies
    </div>
    <div id="span4">
- <s:select theme="simple" id="constituencyId" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" multiple="true"/>
+ <s:select theme="simple" id="constituencyId" list="constituenciesList" listKey="id" listValue="name" multiple="true"/>
    </div>
  </div>
   <div class="span12">
@@ -49,7 +57,7 @@ $( document ).ready(function() {
     Start Date
    </div>
    <div id="span4">
-    <input type="text" id="startDateId"/>
+    <input type="text" id="startDateId" readonly="true"/>
    </div>
   </div>
   <div class="span12">
@@ -57,20 +65,42 @@ $( document ).ready(function() {
    End Date
    </div>
    <div id="span4">
-     <input type="text" id="endDateId"/>
+     <input type="text" id="endDateId" readonly="true"/>
    </div>
   </div>
 </div>
 
+<a class="btn btn-primary offset7" href="javascript:{getDuplicateMobileNumbersDetails()}">Report</a>
+<img src='images/Loading-data.gif' style="width:70px;height:60px;" class="hide"  id="ajaxImage"/>
 
-<a class="btn btn-primary offset6" href="javascript:{getDuplicateMobileNumbersDetails()}">Report</a>
+<a class="btn btn-primary hide" href="javascript:{generateExcel()}" id="excelBtnId">Export To Excel</a>
+<div id="errorDiv" class="offset5"></div>
 
 <div id="duplicateDetailsDivId"></div>
 <script>
 
 function getDuplicateMobileNumbersDetails()
 {
-	$('#duplicateDetailsDivId').html('');
+    $('#excelBtnId').hide();
+	$('#duplicateDetailsDivId,#errorDiv').html('');
+
+	var errorStr = '';
+
+	if($('#constituencyId').val() == null)
+		errorStr += 'Please select atlease one constituency<br>';
+
+	if($('#startDateId').val() == "")
+		errorStr += 'Please select start date <br>';
+
+	if($('#endDateId').val() == "")
+		errorStr += 'Please select nd date <br>';
+
+	if(errorStr.length >0)
+	{
+		$('#errorDiv').html(errorStr);
+		return;
+	}
+	$('#ajaxImage').show();
 
 	var jsObj = 
 		     {
@@ -87,36 +117,44 @@ function getDuplicateMobileNumbersDetails()
 		dataType: 'json',
 		data: {task:JSON.stringify(jsObj)},
 	}).done(function(result){
-			console.log(result);
 			buildDuplicateMobileNumbersDetails(result);
 	});
 }
 function buildDuplicateMobileNumbersDetails(result)
 {
+		$('#ajaxImage').hide();
+
 	if(result == null || result.length == 0)
 	{
-		$('#duplicateDetailsDivId').html('<h4>No Data Available...</h4>');
+		$('#duplicateDetailsDivId').html('<h4 class="offset4 errorClass">No Data Available...</h4>');
 		return;
 	}
 	var str ='';
 
      str+='<div class="span3 offset4">';
 	 str+='<h4 class="offset2">SUMMARY</h4>';
-	 str+='<table class="offset1 table table-bordered m_top20 table-hover table-striped">';
+	 str+='<table class="offset2 table table-bordered m_top20 table-hover table-striped">';
 	  str+='<thead>';
 	   str+='<tr>';
-	    str+='<th>No of Mobile Numbers</th>';
-		str+='<th>Count</th>';
+	   // str+='<th>No of Mobile Numbers</th>';
+		//str+='<th>Count</th>';
+		str+='<th></th>';
+		 $.each(result[0].countList,function(index,value){
+   		   str+='<th>'+value.count+'</th>';
+	     });
 	   str+='</tr>';
 	  str+='</thead>';
 	  str+='<tbody>';
 
+	  str+='<tr>';
+	  str+='<td>Count</td>';
 	  $.each(result[0].countList,function(index,value){
-		  str+='<tr>';
-		   str+='<td>'+value.count+'</td>';
-   		   str+='<td>'+value.total+'</td>';
-		  str+='</tr>';
+		
+		  // str+='<td>'+value.count+'</td>';
+   		   str+='<td>'+value.total+'</td>';		
 	  });
+	  str+='</tr>';
+
 	  str+='</tbody>';
 	 str+='</table>';
 	 str+='</div>';
@@ -146,7 +184,10 @@ function buildDuplicateMobileNumbersDetails(result)
 		 $.each(value.subList,function(index1,value1){
 			
 				str+='<td>'+value1.constituencyName+'</td>';
-				str+='<td>'+value1.tehsilName+'</td>';
+				if(value1.tehsilName != null)
+				  str+='<td>'+value1.tehsilName+'</td>';
+				else
+				  str+='<td>'+value1.muncipalityName+'</td>';
 				str+='<td>'+value1.partNo+'</td>';
 				str+='<td>'+value1.userName+'</td>';
 				str+='<td>'+value1.date+'</td>';
@@ -162,7 +203,29 @@ function buildDuplicateMobileNumbersDetails(result)
 	str+='</div>';
 
 $('#duplicateDetailsDivId').html(str);
+	$('#excelBtnId').show();
+
 }
+</script>
+<script>
+
+var tableToExcel = (function() {
+var uri = 'data:application/vnd.ms-excel;base64,'
+, template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+, base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+, format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+return function(table, name) {
+if (!table.nodeType) table = document.getElementById(table)
+var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+window.location.href = uri + base64(format(template, ctx))
+}
+})()
+
+function generateExcel(id)
+{
+	tableToExcel("duplicateDetailsDivId", 'Duplicate Numbers Report Report');
+}
+
 </script>
 </body>
 </html>
