@@ -5,7 +5,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
  <html>
   <head>
-	<title>Dashboard</title>  
+	<title> ${task} - Dashboard </title>  
 
 	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">	
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
@@ -86,7 +86,7 @@
 											</select>
 											---->
 											<div class="span6">
-											<s:select theme="simple" cssClass="selectBoxWidth span12" id="constiList" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" value="task" />
+											<s:select theme="simple" cssClass="selectBoxWidth span12" id="constiList" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" value="constituencyId" />
 											</div>	
 											<img src='images/Loading-data.gif' class="offset5"  id="searchDataImg" style="width:70px;height:60px;display:none;"/>
 									</div>										
@@ -108,7 +108,7 @@
 
 <script>
 
-var contiId = '${task}';
+var contiId = '${constituencyId}';
 buildReport();
 function buildReport(){
 	if(contiId != null && contiId != 0){
