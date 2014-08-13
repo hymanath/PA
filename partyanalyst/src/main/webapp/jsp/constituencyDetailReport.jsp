@@ -612,26 +612,30 @@ function buildBoothsSummary(result){
 		str +="</thead>";
 		str +="<tbody>";
 		for(var i in result.boothTypeSummaryList){
-			str +="<tr>";
-				str +="<td><a  href='javascript:{}' onclick='getMeBoothsUnder(\""+result.boothTypeSummaryList[i].boothType+"\");'>"+result.boothTypeSummaryList[i].boothType+"</a></td>";
-				if(result.boothTypeSummaryList[i].totalVoters==null){
-					str +="<td> 0 </td>";
-				}else{
-					str +="<td>"+result.boothTypeSummaryList[i].totalVoters+"</td>";
-				}
-				
-				if(result.boothTypeSummaryList[i].userCollected==null){
-					str +="<td> 0 </td>";
-				}else{
-					str +="<td>"+result.boothTypeSummaryList[i].userCollected+"</td>";
-				}
-				
-				var stList = result.boothTypeSummaryList[i].statusList;
-				for(var j in stList){
-					str +="<td>"+stList[j].statusCount+"</td>";
-					str +="<td>"+stList[j].statusPercentage+"</td>";
-				}
-			str +="</tr>";
+			if(result.boothTypeSummaryList[i].totalVoters > 0)
+			{
+				str +="<tr>";
+					str +="<td><a  href='javascript:{}' onclick='getMeBoothsUnder(\""+result.boothTypeSummaryList[i].boothType+"\");'>"+result.boothTypeSummaryList[i].boothType+"</a></td>";
+					if(result.boothTypeSummaryList[i].totalVoters==null){
+						str +="<td> 0 </td>";
+					}else{
+						str +="<td>"+result.boothTypeSummaryList[i].totalVoters+"</td>";
+					}
+					
+					if(result.boothTypeSummaryList[i].userCollected==null){
+						str +="<td> 0 </td>";
+					}else{
+						str +="<td>"+result.boothTypeSummaryList[i].userCollected+"</td>";
+					}
+					
+					var stList = result.boothTypeSummaryList[i].statusList;
+					for(var j in stList){
+						str +="<td>"+stList[j].statusCount+"</td>";
+						str +="<td>"+stList[j].statusPercentage+"</td>";
+					}
+				str +="</tr>";
+			}
+			
 		}
 		str +="</tbody>";
 	str +="</table>";
