@@ -522,7 +522,6 @@ else if(userType ==4)
 			if(Mobiletotal >0){
 			
 			var mobErrorPercent = (Math.round(result[i].subList[j].mobileNotMatchedCount * 100)/Mobiletotal).toFixed(2);
-			str+='<td>'+mobErrorPercent+'</td>';
 			if(mobErrorPercent>=0.0 && mobErrorPercent<=0.50){
 				str+='<td class="errorGreen">'+mobErrorPercent+'</td>';
 			}else if(mobErrorPercent>=0.51 && mobErrorPercent<=1.00){
@@ -546,7 +545,6 @@ else if(userType ==4)
 			if(Castetotal >0){		
 
 			var casteErrorPercent = (Math.round(result[i].subList[j].casteNotMatchedCount * 100)/Castetotal).toFixed(2);
-			str+='<td>'+casteErrorPercent+'</td>';
 			if(casteErrorPercent>=0.0 && casteErrorPercent<=0.50){
 				str+='<td class="errorGreen">'+casteErrorPercent+'</td>';
 			}else if(casteErrorPercent>=0.51 && casteErrorPercent<=1.00){
