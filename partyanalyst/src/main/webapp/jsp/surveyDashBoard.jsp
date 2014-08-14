@@ -242,32 +242,49 @@ function buildingSurveyCompletedLocationsDetailsForSurveyStartedConstituencies(r
 	{
 	  if( (result[i].total) != (result[i].notStartedCount))
 	  {
-		if(result[i].processingCount == 0)
-		{
-		 str+='<tr style="background:#12BB1B;">';
+
+		  str+='<tr>';
+		if( (result[i].total) == (result[i].completedCount))
+			{
+			 str+='<td style="background:#12BB1B;" ><a href="javascript:{getConstituencyDetalReport('+result[i].id+',\''+result[i].name+'\')}"> '+result[i].name+'</a></td>';
+			 if(result[i].totalVoters==null)
+			 {
+			  str+='<td style="background:#12BB1B;" ></td>';
+			 }
+			 else{str+='<td style="background:#12BB1B;" >'+result[i].totalVoters+'</td>';}
+			 
+			 str+='<td style="background:#12BB1B;" >'+result[i].totalCollectedCount+'</td>';
+			 str+='<td style="background:#12BB1B;" >'+result[i].total+'</td>';
+			 str+='<td style="background:#12BB1B;" >'+result[i].completedCount+'</td>';
+			 str+='<td style="background:#12BB1B;" >'+result[i].processingCount+'</td>';
+			 str+='<td style="background:#12BB1B;" >'+result[i].notStartedCount+'</td>';
+			 if(result[i].forThirdParty == true)
+			   str+='<td style="background:#12BB1B;" >Y</td>';
+			 else 
+			   str+='<td style="background:#12BB1B;" >N</td>';
+
 		}
 		else
 		{
-			 str+='<tr>';
+			 str+='<td><a href="javascript:{getConstituencyDetalReport('+result[i].id+',\''+result[i].name+'\')}"> '+result[i].name+'</a></td>';
+			 if(result[i].totalVoters==null)
+			 {
+			  str+='<td></td>';
+			 }
+			 else{str+='<td>'+result[i].totalVoters+'</td>';}
+			 
+			 str+='<td>'+result[i].totalCollectedCount+'</td>';
+			 str+='<td>'+result[i].total+'</td>';
+			 str+='<td>'+result[i].completedCount+'</td>';
+			 str+='<td>'+result[i].processingCount+'</td>';
+			 str+='<td>'+result[i].notStartedCount+'</td>';
+			 if(result[i].forThirdParty == true)
+			   str+='<td>Y</td>';
+			 else 
+			   str+='<td>N</td>';
+			   
+
 		}
-		
-		 str+='<td><a href="javascript:{getConstituencyDetalReport('+result[i].id+',\''+result[i].name+'\')}"> '+result[i].name+'</a></td>';
-		 if(result[i].totalVoters==null)
-		 {
-		  str+='<td></td>';
-		 }
-		 else{str+='<td>'+result[i].totalVoters+'</td>';}
-		 
-		 str+='<td>'+result[i].totalCollectedCount+'</td>';
-		 str+='<td>'+result[i].total+'</td>';
-		 str+='<td>'+result[i].completedCount+'</td>';
-		 str+='<td>'+result[i].processingCount+'</td>';
-		 str+='<td>'+result[i].notStartedCount+'</td>';
-		 if(result[i].forThirdParty == true)
-		   str+='<td>Y</td>';
-		 else 
-		   str+='<td>N</td>';
-		   
 		 str+='</tr>';
 	  }
 	}
