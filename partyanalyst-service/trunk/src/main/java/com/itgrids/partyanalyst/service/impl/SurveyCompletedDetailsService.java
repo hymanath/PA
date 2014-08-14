@@ -507,7 +507,28 @@ public class SurveyCompletedDetailsService implements
 			startedConstiList.addAll(processingConstiList); // started means which are in process state as well completed state;
 			startedConstiList.addAll(compltedConstiList);
 			
-			
+			Map<Long,Long> actualDistrictWiseConstiCount = new HashMap<Long, Long>();
+			Map<Long,Long> surveyDistrictWiseConstiCount = new HashMap<Long, Long>();			
+			if(startedConstiList != null && startedConstiList.size()>0)
+			{
+				for (SurveyDashBoardVO dashBoardVO : startedConstiList) 
+				{
+					Long count = 0L;
+					if(actualDistrictWiseConstiCount.get(dashBoardVO.getLocationId()) == null)
+					{
+						count = count +1;
+						actualDistrictWiseConstiCount.put(dashBoardVO.getLocationId(), count);
+					}
+					else{
+						
+						count = actualDistrictWiseConstiCount.get(dashBoardVO.getLocationId());
+						count = count +1;
+						
+						actualDistrictWiseConstiCount.put(dashBoardVO.getLocationId(), count);
+					}
+				}
+			}
+						
 			resultVO.setProcessingCount(processingConstiList.size());			
 			resultVO.setCompletedCount(compltedConstiList.size());			
 			resultVO.setStartedCount(startedConstiList.size());			
@@ -520,6 +541,22 @@ public class SurveyCompletedDetailsService implements
 				for (SurveyDashBoardVO dashBoardVO : compltedConstiList) 
 				{
 	
+					
+					Long count = 0L;
+					if(surveyDistrictWiseConstiCount.get(dashBoardVO.getLocationId()) == null)
+					{
+						count = count +1;
+						surveyDistrictWiseConstiCount.put(dashBoardVO.getLocationId(), count);
+					}
+					else{
+						
+						count = surveyDistrictWiseConstiCount.get(dashBoardVO.getLocationId());
+						count = count +1;
+						
+						surveyDistrictWiseConstiCount.put(dashBoardVO.getLocationId(), count);
+					}
+					
+					/*
 					if(!completedDistrictList.contains(dashBoardVO.getLocationId()))
 					{
 						completedDistrictList.add(dashBoardVO.getLocationId());
@@ -531,9 +568,43 @@ public class SurveyCompletedDetailsService implements
 						
 						resultVO.getCompleted().add(districtVO);
 					}
+					*/
 				}
 			}
 			
+			if( (actualDistrictWiseConstiCount != null && actualDistrictWiseConstiCount.size()>0) && 
+					(surveyDistrictWiseConstiCount != null && surveyDistrictWiseConstiCount.size()>0))
+				{
+					Long actualCount = 0L;
+					Long surveyCount = 0L;
+					
+					for (Long districtId : surveyDistrictWiseConstiCount.keySet()) {
+						surveyCount = surveyDistrictWiseConstiCount.get(districtId);
+						actualCount = actualDistrictWiseConstiCount.get(districtId);
+						
+						if(surveyCount == actualCount)
+						{
+							
+							
+							SurveyDashBoardVO dashBoardVO  = getMatchedVOByLocationId(compltedConstiList,districtId);
+							
+							if(dashBoardVO != null)
+							{
+								completedDistrictList.add(districtId);
+								
+								SurveyDashBoardVO districtVO = new SurveyDashBoardVO();
+								
+								districtVO.setLocationId(dashBoardVO.getLocationId());
+								districtVO.setLocationName(dashBoardVO.getLocationName());
+								
+								resultVO.getCompleted().add(districtVO);
+							}
+							
+						}
+						
+					}
+					
+				}
 			
 			List<Long> processingDistrictList = new ArrayList<Long>(0); 
 			if(processingConstiList != null && processingConstiList.size()>0)
@@ -614,6 +685,19 @@ public class SurveyCompletedDetailsService implements
 		return null;
 		
 	}
+	
+	private SurveyDashBoardVO getMatchedVOByLocationId(List<SurveyDashBoardVO> resultList,Long locationId)
+	{
+		for(SurveyDashBoardVO resultVO:resultList)
+			if(resultVO.getLocationId().equals(locationId))
+				return resultVO;
+		return null;
+		
+	}
+	
+	
+	
+	
 	
 	public List<FinalSurveyReportVO> finalDeselectionReport(Long constituencyId)
 	{
