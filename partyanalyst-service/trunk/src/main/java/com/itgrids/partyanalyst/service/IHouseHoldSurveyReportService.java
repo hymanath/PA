@@ -43,6 +43,7 @@ public interface IHouseHoldSurveyReportService {
 	public List<GenericVO> getHouseHoldConstituencies();
 	public List<HHQuestionSummaryReportVO> getQuestionsOfSurvey(Long surveyId);
 	public HHQuestionSummaryReportVO getOptionsCountForQuestion(Long questionId,Long constituencyId);
+	public List<HouseHoldVotersVO> getFamilyMembersUnderFamilyHead(Long houseHoldId);
 
 
 }

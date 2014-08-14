@@ -1278,7 +1278,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 		log.debug("Entered into the getVoterDetailsByVoterId method");
 		VoterDetailsVO resultVO = new VoterDetailsVO();
 		try {
-			List<Object[]> constyPublicationIdByVoterId=boothPublicationVoterDAO.getConstyPublicationIdByVoterId(voterIdCardNo);
+			List<Object[]> constyPublicationIdByVoterId=boothPublicationVoterDAO.getConstyPublicationIdByVoterId1(voterIdCardNo);
 			List<VoterDetailsVO> constyPublicationIds= new ArrayList<VoterDetailsVO>();
 			if(constyPublicationIdByVoterId != null && constyPublicationIdByVoterId.size() > 0)
 			{
@@ -2124,5 +2124,37 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 		  return result;
 	  }
     
-    
+    public List<HouseHoldVotersVO> getFamilyMembersUnderFamilyHead(Long houseHoldId){
+    	   
+        List<HouseHoldVotersVO> familyMembersList= new ArrayList<HouseHoldVotersVO>();
+        try{
+       
+            List<HouseHoldVoter> list = houseHoldVoterDAO.getHouseHoldsVoterdDetailsByHouseHoldId1(houseHoldId);
+           
+            for(HouseHoldVoter hhv:list)
+            {           
+                HouseHoldVotersVO vo = new HouseHoldVotersVO();  
+                if(hhv.getVoterId() != null)
+                {
+                	vo.setName(hhv.getVoter().getName());
+                	vo.setVoterIDCardNo(hhv.getVoter().getVoterIDCardNo());
+                	vo.setRelation(hhv.getVoter().getRelationshipType());  
+                	vo.setRelativeName(hhv.getVoter().getRelativeName());
+                	vo.setPanchayatName(hhv.getHouseHolds().getPanchayat().getPanchayatName());
+                }
+                else
+                {
+                	vo.setName(hhv.getHouseHoldsFamilyDetails().getName());
+                	vo.setVoterIDCardNo("");
+                	vo.setRelativeName(hhv.getHouseHoldsFamilyDetails().getRelativeName());
+                	vo.setRelation(hhv.getVoterFamilyRelation().getRelation()); 
+                }
+                familyMembersList.add(vo);
+            }
+           
+        }catch (Exception e) {
+        	 log.error("Exception raised in getFamilyMembersUnderFamilyHead service method",e);
+        }
+        return familyMembersList;
+    }
 }
