@@ -325,16 +325,7 @@ function getDateWiseCount(date)
 {
 	$("#popupImg").show();
 	$("#PopupContentDiv").html('');
-	$("#dateWisecastePopupDiv").dialog({
-			title:"Caste Collected Count Details",
-			autoOpen: true,
-			show: "blind",
-			width: 500,
-			
-			modal: true,
-			height:300,
-			hide: "explode"
-		});
+	
 
 var jObj = 
 	{
@@ -371,7 +362,16 @@ for(var i in result)
 	}
 str+='</table>';
 $("#PopupContentDiv").html(str);
-
+$("#dateWisecastePopupDiv").dialog({
+			title:"Caste Collected Count Details",
+			autoOpen: true,
+			show: "blind",
+			width: 500,
+			
+			modal: true,
+			height:500,
+			hide: "explode"
+		});
 	
 }
 </script>
