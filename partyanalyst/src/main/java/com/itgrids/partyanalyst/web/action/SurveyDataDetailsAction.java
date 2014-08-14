@@ -2330,4 +2330,32 @@ public String getPanchayatsStatusDetails()
 		}
 		return Action.SUCCESS;
   	}
+  	
+  	public String getConstituencyWiseReportForDashBoard(){
+  		
+  		LOG.debug("Entered Into getFinalReportWithTP");
+		tpFinalVOList = new ArrayList<SurveyThirdPartyReportVO>();
+		try	{
+			jObj = new JSONObject(getTask());
+			
+			String constituencies  = jObj.getString("constituencyIds");
+			
+			String  constituencyIds[] = constituencies.split(",");
+			
+			List<Long> constiIds  = new ArrayList<Long>(0);
+			
+			if(constituencyIds != null && constituencyIds.length >0)
+			{
+				for (int i = 0; i < constituencyIds.length; i++) {
+					constiIds.add(Long.valueOf(String.valueOf(constituencyIds[i]).trim().replace("[", "").replace("]", "")));
+				}
+			}
+			reportList = surveyCompletedDetailsService.getConstituencyWiseReportForDashBoard(constiIds);
+		}catch(Exception e){
+			LOG.error("Exception Raised in getConstituencyWiseReportForDashBoard"+e);
+		}
+		return Action.SUCCESS;
+  	}
+  	
+	
 }
