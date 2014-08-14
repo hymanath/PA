@@ -2298,12 +2298,14 @@ public String getPanchayatsStatusDetails()
 			jObj = new JSONObject(getTask());
 			List<Long> constituencies = new ArrayList<Long>();
 			Map<Long,String> constiMap = new HashMap<Long, String>();
+			Map<Long,String> constiTypeMap = new HashMap<Long, String>();
 			List<SurveyThirdPartyReportVO> constList = surveyCompletedDetailsService.thirdPartyReadyForReviewConstBooths();
 			if(constList!=null && constList.size()>0){
 				for(SurveyThirdPartyReportVO sv:constList){
 					if(!constituencies.contains(sv.getConstituencyId())){
 						constituencies.add(sv.getConstituencyId());
 						constiMap.put(sv.getConstituencyId(), sv.getConstituency());
+						constiTypeMap.put(sv.getConstituencyId(), sv.getConstituencyType());
 					}
 				}
 			}
@@ -2318,7 +2320,7 @@ public String getPanchayatsStatusDetails()
 					tpFinalVO.setConstituencyId(sv);
 					tpFinalVO.setConstituencyDetails(fnlVO);
 					tpFinalVO.setConstituency(constiMap.get(sv));
-					
+					tpFinalVO.setConstituencyType(constiTypeMap.get(sv));
 					tpFinalVOList.add(tpFinalVO);
 				}
 			}

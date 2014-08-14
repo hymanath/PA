@@ -238,7 +238,7 @@ function getConstituencyReport(constituencyId){
 */
 
 					str +='				<div class="span6 wiget-yellow">	';
-					str +='					<h4 class="text-right"> THIRD PARTY VERIFICATION</h4>';
+					str +='					<h4 class="text-right"> QC VERIFICATION</h4>';
 					str +='					<div class="row-fluid">';
 					str +='					<div class="well well-small span4  text-center">';
 					str +='						<h4>'+result.dataTPVerifiedCount+'</h4>';
@@ -721,23 +721,24 @@ function getMeBoothsUnder(bthType){
 			}						
 		}
 		}
-		str +="<h4 style='text-align:center;color:red;'>"+bthType+" BOOTHS OVERVIEW</h4>";
+		str +="<h4 style='text-align:center;color:red;'>QC VERIFICATION BOOTHS</h4>";
 	str +="<table id='FinalReportWithTPTableId' class='table table-bordered table-striped'>";
 		str +="<thead class='alert alert-success'>";
 			str +="<tr>";
 			str +="<th rowspan=2>BOOTH</th>";
 			str +="<th rowspan=2>TOTAL VOTERS</th>";
 			str +="<th rowspan=2>THIRD PARTY COLLECTED </th>";
-			str +="<th colspan=2>MATCHED</th>";
-			str +="<th colspan=4>UN MATCHED</th>";
-			str +="<th colspan=2>NEW CASTE </th>";
+			str +="<th rowspan=2>MATCHED</th>";
+			str +="<th colspan=3>UN MATCHED</th>";
+			str +="<th rowspan=2>NEW CASTE </th>";
 			str +="<th rowspan=2>REVIEW</th>";
 			str +="</tr>";
 			str +="<tr>";
 				var stList = myResult.statusList;
 				for(var i in stList){
+					if(i == 1 || i == 2 || i == 3)
 					str +="<th>"+stList[i].statusName+"</th>";
-					str +="<th>"+stList[i].statusName+" % </th>";
+					
 				}
 			str +="</tr>";
 		str +="</thead>";
@@ -753,8 +754,7 @@ function getMeBoothsUnder(bthType){
 							str +="<td>"+reslt.finalList[j].users.usersList[k].userCollected+"</td>";
 							var sttsList = reslt.finalList[j].users.usersList[k].statusList;
 							for(var p in sttsList){
-								str +="<td>"+sttsList[p].statusCount+"</td>";
-								str +="<td>"+sttsList[p].statusPercentage+" </td>";
+								str +="<td>"+sttsList[p].statusCount+"("+sttsList[p].statusPercentage+")</td>";
 							}
 							str +="<td><a style='cursor: pointer;' onCLick='getWmUpdatedDetails("+reslt.finalList[j].boothId+","+reslt.finalList[j].partNo+")'> REVIEW</a></td>";
 							str +="</tr>";

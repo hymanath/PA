@@ -96,16 +96,22 @@
 				<div class="row-fluid " >
 				
 				  <div class="span12  m_top20  widgetservey" id="buldingConstituenciesDivId">
-	              <h4>Constituency Wise Processing Status</h4>
-				  <img id="popupImgid1" src="./images/icons/search.gif" alt="Processing Image" style="display:block;margin-left:410px"/>
-				 </div>
+					<h4>Constituency Wise Processing Status</h4>
+					<img id="popupImgid1" src="./images/icons/search.gif" alt="Processing Image" style="display:block;margin-left:410px"/>
+				  </div>
 				 
-				 <div id="constSummary" class="span12  widgetservey m_top20"></div>
-				 <div id="constSummarySub"></div>
-				 <div id="boothsSummary"></div>
-				 <div id="CommentsDiv"></div>
-					
+				</div>
 				
+				<div class="row-fluid " >
+					 <div class="span12  widgetservey m_top20">
+					  <h4>QC READY BOOTHS</h4>
+					 <div id="constSummary"></div>
+						
+						 <div id="constSummarySub"></div>
+						 <div id="boothsSummary"></div>
+						 <div id="CommentsDiv"></div>
+					 </div> 
+				</div>
 				
 					<!-- constituency End Div -->
 				
@@ -139,7 +145,8 @@
 					</div>
 				</div>
 				
-				<div class="row-fluid ">
+				
+				<!--<div class="row-fluid ">
 					<div class="span12 m_top20 widgetservey">
 						<h4>Districts  Survey In Processing</h4>
 						<ul class="inline unstyled Constituency-name-nav">
@@ -153,9 +160,9 @@
 								</c:forEach>
 							</ul>
 					</div>
-				</div>
+				</div>-->
 				
-				<div class="row-fluid ">
+				<!--<div class="row-fluid ">
 					<div class="span12 m_top20 widgetservey">
 						<h4>Districts Not Started</h4>
 						<ul class="inline unstyled Constituency-name-nav">
@@ -165,13 +172,13 @@
 							</c:if>
 
 							<c:forEach var="notStartedDistrict" items="${resultVO.notStarted}">
-									<!-- <li><a href="javascript:{showConstituenciesDetails(${notStartedDistrict.locationId})}">${notStartedDistrict.locationName}</a></li> -->
+									<!-- <li><a href="javascript:{showConstituenciesDetails(${notStartedDistrict.locationId})}">${notStartedDistrict.locationName}</a></li>
 									<li><a >${notStartedDistrict.locationName}</a></li>
 								</c:forEach>
 
 							</ul>
 					</div>
-				</div>
+				</div>-->
 				
 			</div>
 				</div>	<!----Constituency details main Div End---->
