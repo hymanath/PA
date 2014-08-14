@@ -1234,7 +1234,7 @@ return [false,"","unAvailable"];
 var finalRes = null;
 getTPTotalBoothsDetailsConstituencyWise();
 function getTPTotalBoothsDetailsConstituencyWise(){
-	$('#mainajaximg').show();
+	//$('#mainajaximg').show();
 	var jsObj = {}
 	$.ajax({
 			type:'GET',
