@@ -649,7 +649,7 @@
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top20">
 							<h4>THIRD PARTY READY FOR REVIEW BOOTHS OVERVIEW</h4>
-								
+								<img src='images/Loading-data.gif' class="offset5"  id="thirdPartyAjaxImg" style="width:70px;height:60px;display:none;"/>
 								<div class="row">
 									<div id="errorDivForThirdParty" class="span8 offset4"></div>
 								</div>
@@ -838,7 +838,8 @@ function displayDates(date){
 
 var finalRes = null;
 function getTPTotalBoothsDetailsConstituencyWise(){
-	$('#mainajaximg').show();
+
+	$('#thirdPartyAjaxImg').show();
 	var jsObj = {}
 	$.ajax({
 			type:'GET',
@@ -850,7 +851,10 @@ function getTPTotalBoothsDetailsConstituencyWise(){
 				finalRes= result;
 				buildConstituencySummary(result);
 			}
-			
+			else
+			{
+				$('#thirdPartyAjaxImg').hide();
+			}
 			//buildFinalReportWithTP(result)
 		});	
 }
@@ -1005,6 +1009,7 @@ function buildConstituencySummary(myrslt){
 	str +="</table>";
 	}
 	$("#constSummary").html(str);
+	$('#thirdPartyAjaxImg').hide();
 }
 function getMeBoothsUnder(bthType,constiId,constituency){
 	$("#boothsSummary").html("");
