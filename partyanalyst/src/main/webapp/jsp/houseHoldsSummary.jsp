@@ -75,7 +75,7 @@
 	<div id="questSummary" style="margin:20px;"></div>
 	<div id="questSummary1" style="margin:20px;"></div>
 	<div id="questSummary2" style="margin:20px;"></div>
-	
+	<div id="questSummary3" style="margin:20px;"></div>
 	<div id="questionSummary" style="margin:20px;"></div>
 	
 	
@@ -577,7 +577,7 @@ function buildHouseHolds(result){
 			str +="<tbody>";
 				for(var i in result.leadersOfPnchyt){
 					str +="<tr>";
-						str +="<td>"+result.leadersOfPnchyt[i].voterName+"</td>";
+						str +="<td onclick='getFamilyMembers(\""+result.leadersOfPnchyt[i].voterName+"\","+result.leadersOfPnchyt[i].houseHoldId+")' style='cursor:pointer;'>"+result.leadersOfPnchyt[i].voterName+"</td>";
 						str +="<td>"+result.leadersOfPnchyt[i].voterCardNo+"</td>";
 						str +="<td>"+result.leadersOfPnchyt[i].houseNo+"</td>";
 						str +="<td>"+result.leadersOfPnchyt[i].votersCount+"</td>";
@@ -627,8 +627,59 @@ function buildHouseHoldsUnderOptions(result){
 	}
 }
 
+function getFamilyMembers(name,householdId){
 
+	var details={
+             householdId:householdId,
+			 task:"familyMembersUnderHead"
+	};
+	$.ajax({
+          type:'POST',
+          url: 'familyMembersUnderFamilyHead.action',
+          dataType: 'json',
+          data: {task:JSON.stringify(details)},
 
-	</script>
+          success: function(result){ 
+			buildHouseHoldsUnderFamilyHead(result,name);
+         },
+          error:function() { 
+           console.log('error', arguments);
+         }
+    });
+}
+function buildHouseHoldsUnderFamilyHead(result,name){
+	
+	if(result!=null && result.length>0){
+		var str = "";
+			str +="<h4 class='offset3' style='color:red;margin-down:20px;margin-up:20px;'>FAMILY MEMBERS UNDER "+name.toUpperCase()+"</h4>"; 
+		
+		str+= "<table class='table table-bordered questSummaryTbl'>";
+			str +="<thead>";
+				str +="<tr>";
+					str +="<th>FAMILY MEMBER</th>";	
+					str +="<th>VOTER ID</th>";	
+					str +="<th>RELATIVE NAME</th>";	
+					str +="<th>RELATION TYPE</th>";	
+					
+				str +="</tr>";
+			str +="</thead>";
+			
+			str +="<tbody>";
+				for(var i in result){
+					str +="<tr>";
+						str +="<td>"+result[i].name+"</td>";
+						str +="<td>"+result[i].voterIDCardNo+"</td>";
+						str +="<td>"+result[i].relativeName+"</td>";
+						str +="<td>"+result[i].relation+"</td>";
+					str +="</tr>";
+				}
+			str +="</tbody>";
+		str+= "</table>";
+		$("#questSummary3").html(str);
+		
+		$('.questSummaryTbl').dataTable();
+	}
+}
+</script>
 </body>
 </html>

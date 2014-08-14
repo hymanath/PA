@@ -77,9 +77,17 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 	private List<GenericVO> hhConstituenies;
 	private HHQuestionSummaryReportVO qstnsSummary;
 	private List<HHQuestionSummaryReportVO> questions;
+	private List<HouseHoldVotersVO> report;
 	
 	
-	
+	public List<HouseHoldVotersVO> getReport() {
+		return report;
+	}
+
+	public void setReport(List<HouseHoldVotersVO> report) {
+		this.report = report;
+	}
+
 	public HHQuestionSummaryReportVO getQstnsSummary() {
 		return qstnsSummary;
 	}
@@ -809,6 +817,17 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 			
 			qstnsSummary = houseHoldSurveyReportService.getOptionsCountForQuestion(questionId,constituencyId);
 			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+    	return Action.SUCCESS;
+	}
+	
+	public String familyMembersUnderFamilyHead(){
+		try {		
+			jObj = new JSONObject(getTask());
+			Long householdId = jObj.getLong("householdId");
+			report = houseHoldSurveyReportService.getFamilyMembersUnderFamilyHead(jObj.getLong("householdId"));
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
