@@ -98,7 +98,8 @@
 				  <img id="popupImgid1" src="./images/icons/search.gif" alt="Processing Image" style="display:block;margin-left:410px"/>
 				 </div>
 				 
-				 <div id="constSummary"></div>
+				 <div id="constSummary" class="span12  widgetservey m_top20"></div>
+				 <div id="constSummarySub"></div>
 				 <div id="boothsSummary"></div>
 				 <div id="CommentsDiv"></div>
 					
