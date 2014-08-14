@@ -1250,12 +1250,11 @@ function getTPTotalBoothsDetailsConstituencyWise(){
 			//buildFinalReportWithTP(result)
 		});	
 }
-
-function buildConstituencySummary(myrslt){
-	$("#constSummary").html("");
+function buildConstituencySummarySub(constiName){
+	myrslt = finalRes;
+	$("#constSummarySub").html("");
 	var rest = myrslt[0].constituencyDetails;
 	var str = "";
-	str +="<div class='span12  widgetservey m_top20'><h4 style='text-align:center;color:black;'>THIRD PARTY READY FOR REVIEW BOOTHS OVERVIEW</h4><div class='row-fluid m_top20'>";
 	str +="<table id='FinalReportWithTPTableId' class='table table-bordered table-striped'>";
 		str +="<thead class='alert alert-success'>";
 			
@@ -1264,35 +1263,39 @@ function buildConstituencySummary(myrslt){
 				str +="<th rowspan=2>BOOTHS TYPE</th>";
 				str +="<th rowspan=2>TOTAL VOTERS</th>";
 				str +="<th rowspan=2>THIRD PARTY COLLECTED </th>";
-				str +="<th colspan=2>MATCHED</th>";
-				str +="<th colspan=4>UN MATCHED</th>";
-				str +="<th colspan=2>NEW CASTE</th>";
+				str +="<th rowspan=2>MATCHED</th>";
+                str +="<th rowspan=2>NEW CASTE</th>";
+                str +="<th colspan=3>UN MATCHED</th>";
 			str +="</tr>";
 			str +="<tr>";
-				var stList = rest.statusList;
-				for(var i in stList){
-					str +="<th>"+stList[i].statusName+"</th>";
-					str +="<th>"+stList[i].statusName+" % </th>";
-				}
+				 var stList = rest.statusList;
+				 for(var i in stList){
+                     if(i == 1 || i == 2 || i == 3){
+                            str +="<th>"+stList[i].statusName+"</th>";
+						}
+                 }
 			str +="</tr>";
 		str +="</thead>";
 		str +="<tbody>";
 	for(var q in myrslt){
 		var result = myrslt[q].constituencyDetails;
+		
 		var size = 0;
 		for(var p in result.boothTypeSummaryList)
 		{
 			if(result.boothTypeSummaryList[p].totalVoters > 0)
 			{
-				size = size + 1;
+				size = size +1;
 			}
 		}
+		if(constiName == myrslt[q].constituency){
 		str +="<tr>";
 		str +="<td rowspan='"+size+"'>"+myrslt[q].constituency+"</td>";
 		for(var i in result.boothTypeSummaryList){
-			if(result.boothTypeSummaryList[i].totalVoters > 0)
-			{
-				str +="<td><a  href='javascript:{}' onclick='getMeBoothsUnder(\""+result.boothTypeSummaryList[i].boothType+"\",\""+myrslt[q].constituencyId+"\",\""+myrslt[q].constituency+"\");'>"+result.boothTypeSummaryList[i].boothType+"</a></td>";
+			if(result.boothTypeSummaryList[i].boothType!="ALL"){
+		if(result.boothTypeSummaryList[i].totalVoters > 0)
+		{
+			str +="<td><a  href='javascript:{}' onclick='getMeBoothsUnder(\""+result.boothTypeSummaryList[i].boothType+"\",\""+myrslt[q].constituencyId+"\",\""+myrslt[q].constituency+"\");'>"+result.boothTypeSummaryList[i].boothType+"</a></td>";
 				if(result.boothTypeSummaryList[i].totalVoters==null){
 					str +="<td> 0 </td>";
 				}else{
@@ -1307,19 +1310,95 @@ function buildConstituencySummary(myrslt){
 				
 				var stList = result.boothTypeSummaryList[i].statusList;
 				for(var j in stList){
-					str +="<td>"+stList[j].statusCount+"</td>";
-					str +="<td>"+stList[j].statusPercentage+"</td>";
+					str +="<td>"+stList[j].statusCount+" ("+stList[j].statusPercentage+") </td>";
 				}
-				str +="</tr>";
-			}
+				}
+			str +="</tr>";
+		}
 				
 		}
+	}
 	}
 	
 	str +="</tbody>";
 	str +="</table>";
-	str += '</div>';
-	str += '</div>';
+
+	$("#constSummarySub").html(str);
+}
+
+function buildConstituencySummary(myrslt){
+       $("#constSummary").html("");
+       var rest = myrslt[0].constituencyDetails;
+       var str = "";
+       str +="<table id='FinalReportWithTPTableId' class='table table-bordered table-striped '>";
+               str +="<thead class='alert alert-success'>";
+                       
+                       str +="<tr>";
+                               str +="<th rowspan=2>CONSTITUENCY</th>";
+                               str +="<th rowspan=2>TOTAL BOOTHS</th>";
+                               str +="<th rowspan=2>TOTAL VOTERS</th>";
+                               str +="<th rowspan=2>THIRD PARTY COLLECTED </th>";
+                               str +="<th rowspan=2>MATCHED</th>";
+                               str +="<th colspan=3>UN MATCHED</th>";
+							   str +="<th rowspan=2>NEW CASTE</th>";
+                               
+                       str +="</tr>";
+                       str +="<tr>";
+                               var stList = rest.statusList;
+                               for(var i in stList){
+                                       if(i == 1 || i == 2 || i == 3)
+                                       {
+                                               str +="<th>"+stList[i].statusName+"</th>";
+                                       }
+                                       
+                               }
+                       str +="</tr>";
+               str +="</thead>";
+               str +="<tbody>";
+       for(var q in myrslt){
+               var result = myrslt[q].constituencyDetails;
+               
+			   if(myrslt[q].constituencyDetails.finalList!=null){
+               str +="<tr>";
+			   if(myrslt[q].constituencyType=="RURAL-URBAN"){
+				str +="<td> <a  href='javascript:{}' onclick='buildConstituencySummarySub(\""+myrslt[q].constituency+"\");'>"+myrslt[q].constituency+"</td>";
+			   }else{
+				str +="<td> <a  href='javascript:{}' onclick='getMeBoothsUnder(\"ALL\",\""+myrslt[q].constituencyId+"\",\""+myrslt[q].constituency+"\");'>"+myrslt[q].constituency+"</td>";
+			   }
+			   
+               for(var i in result.boothTypeSummaryList){
+               if(result.boothTypeSummaryList[i].totalVoters > 0)
+               {
+                       if(result.boothTypeSummaryList[i].boothType == 'ALL')
+                       {
+                               str +="<td>"+result.boothTypeSummaryList[i].finalList.length+"</td>";
+                               if(result.boothTypeSummaryList[i].totalVoters==null){
+                                       str +="<td> 0 </td>";
+                               }else{
+                                       str +="<td>"+result.boothTypeSummaryList[i].totalVoters+"</td>";
+                               }
+                               
+                             if(result.boothTypeSummaryList[i].userCollected==null){
+								str +="<td> 0 </td>";
+							}else{
+								str +="<td>"+result.boothTypeSummaryList[i].userCollected+"</td>";
+							}
+				
+				var stList = result.boothTypeSummaryList[i].statusList;
+				for(var j in stList){
+					str +="<td>"+stList[j].statusCount+" ("+stList[j].statusPercentage+") </td>";
+				}
+			str +="</tr>";
+			}
+		}
+		}
+		
+	}
+	
+	
+	str +="</tbody>";
+	str +="</table>";
+	}
 	$("#constSummary").html(str);
 }
 
