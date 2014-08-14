@@ -33,7 +33,22 @@ public class HouseHoldVotersVO {
 	private String childrenName;
 	
 	private Long leaderBookNo;
+	private String voterIDCardNo;
+	private String panchayatName;
 	
+	
+	public String getPanchayatName() {
+		return panchayatName;
+	}
+	public void setPanchayatName(String panchayatName) {
+		this.panchayatName = panchayatName;
+	}
+	public String getVoterIDCardNo() {
+		return voterIDCardNo;
+	}
+	public void setVoterIDCardNo(String voterIDCardNo) {
+		this.voterIDCardNo = voterIDCardNo;
+	}
 	public String getChildrenName() {
 		return childrenName;
 	}

@@ -21135,7 +21135,7 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 			GenericVO gvo=new GenericVO();
 			
 			gvo.setId(hbLdr.getHhLeader().getId());
-			gvo.setName(hbLdr.getHhLeader().getName());
+			gvo.setName(hbLdr.getHhLeader().getName() +"-"+ hbLdr.getHhLeader().getVoterId());
 			
 			hbLdrList.add(gvo);
 		}

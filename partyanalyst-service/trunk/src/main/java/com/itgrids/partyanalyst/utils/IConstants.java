@@ -775,7 +775,8 @@ public interface IConstants {
     public static final Long VERIFICATION_PROCESS_STATUS_ID =4L;
     public static final Long VERIFICATION_COMPLETD_STATUS_ID =5L;
   
-
+    public static final Long HH_KUPPAM_PUBLICATION_ID = 10L;
+    
     public enum  MatchTypes{
     	PExactMatch,PSoundexMatch,CExactMatch,CsoundexMatch
     }
