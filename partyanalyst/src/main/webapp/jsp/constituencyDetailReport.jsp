@@ -600,7 +600,7 @@ function buildFinalReportWithTP(result){
 function buildBoothsSummary(result){
 	$("#summary").html("");
 	var str = "";
-	str +="<h4 style='text-align:center;color:red;'>THIRD PARTY READY FOR REVIEW BOOTHS OVERVIEW</h4>";
+	/* str +="<h4 style='text-align:center;color:red;'>THIRD PARTY READY FOR REVIEW BOOTHS OVERVIEW</h4>";
 	str +="<table id='FinalReportWithTPTableId' class='table table-bordered table-striped'>";
 		str +="<thead class='alert alert-success'>";
 			str +="<tr>";
@@ -647,12 +647,12 @@ function buildBoothsSummary(result){
 			
 		}
 		str +="</tbody>";
-	str +="</table>";
+	str +="</table>"; */
 	
 		str +="	<div class='row-fluid m_top20' id='boothsSummary'></div>";
 		str +="<div class='row-fluid m_top20' id='CommentsDiv'></div>";
 
-	str+='<div class="span5 offset3">';
+	/* str+='<div class="span5 offset3">';
 	 str+='<a class="btn btn-success pull-left" href="javascript:{showCommentDiv(1)}">SIGN-OFF</a>';
  	 str+='<a class="btn btn-danger pull-right"  href="javascript:{showCommentDiv(2)}">Raise Query</a>';
 	str+='</div>';
@@ -660,11 +660,15 @@ function buildBoothsSummary(result){
 	str+='<div class="span8 hide offset3" id="commentDiv" style="margin-top:20px;">';
 	 str+='<textarea id="queryComment"  rows="4" cols="50"></textarea>';
 	 str+='<a class="btn btn-success offset1" href="javascript:{saveConstituencyCompletionStatus(2)}">Update query comment</a>';
-	str+='</div>';
+	str+='</div>'; */
 
 	str+='<div id="commentStatusDiv"></div>';
 	
 	$("#summary").html(str);
+	
+	//$("#summary").css("display","none");
+	
+	getMeBoothsUnder("ALL");
 }
 function showCommentDiv(statusId)
 {
