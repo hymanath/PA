@@ -8080,5 +8080,10 @@
 			<result>/jsp/duplicateMobileNumbers.jsp</result>
 		</action>
 		
+		<action name="familyMembersUnderFamilyHead" class="houseHoldSurveyReportAction" method="familyMembersUnderFamilyHead">
+			<result type="json" name="success">
+					<param name="root">report</param>
+			</result>
+		</action>
 </package>
 </struts>      
