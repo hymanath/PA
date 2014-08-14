@@ -16,6 +16,8 @@ public class GenericVO implements Serializable, Comparable<GenericVO>{
     private String percent;
     private String mobileNo;
     
+    private String caste;
+    
     private int verificationProcessCount;
     private int verificationCompletionCount;
     private int verificationStartedCount;
@@ -148,7 +150,7 @@ public class GenericVO implements Serializable, Comparable<GenericVO>{
 		return this.id.intValue();
 	}
 	
-	@Override
+	//@Override
 	public int compareTo(GenericVO obj) {
 		
 		if(obj  instanceof GenericVO){
@@ -158,6 +160,14 @@ public class GenericVO implements Serializable, Comparable<GenericVO>{
 		else
 			return 0;
 	}
+	public String getCaste() {
+		return caste;
+	}
+	public void setCaste(String caste) {
+		this.caste = caste;
+	}
+	
+	
 	
 	
 }
