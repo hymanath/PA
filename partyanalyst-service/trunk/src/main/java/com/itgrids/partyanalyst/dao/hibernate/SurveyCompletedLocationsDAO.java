@@ -234,7 +234,9 @@ public class SurveyCompletedLocationsDAO extends GenericDaoHibernate<SurveyCompl
 	public List<Object[]> getBoothsAndConstituenciesOfTPWithStatus(Long statusId){
 		Query query = getSession().createQuery("select distinct model.locationValue," +
 				" model1.constituency.name," +
-				" model1.constituency.constituencyId from " +
+				" model1.constituency.constituencyId," +
+				" model1.constituency.areaType" +
+				" from " +
 				" SurveyCompletedLocations model,Booth model1  " +
 				" where " +
 				" model.locationValue = model1.boothId and " +
