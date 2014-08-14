@@ -157,5 +157,7 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	public List<Object[]> getDuplicateMobileNumbersByConstituencyIdsAndDates(Date startDate,Date endDate,List<Long> constituencyIds,Long frequencyCount);
 	public List<Object[]> getDuplicateMobileNumersDetails(Date startDate,Date endDate,List<Long> constituencyIds,List<String> mobileNumbers);
 	public List<Object[]> getSurveyStartedConstituencyDetails();
+	
+	public List<Object[]> getStartedBoothsDetailsByConstituencyWise();
 }
 
