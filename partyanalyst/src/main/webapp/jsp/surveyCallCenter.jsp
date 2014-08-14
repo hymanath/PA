@@ -944,8 +944,8 @@ function buildConstituencySummary(myrslt){
                                str +="<th rowspan=2>TOTAL VOTERS</th>";
                                str +="<th rowspan=2>THIRD PARTY COLLECTED </th>";
                                str +="<th rowspan=2>MATCHED</th>";
-                               str +="<th rowspan=2>NEW CASTE</th>";
                                str +="<th colspan=3>UN MATCHED</th>";
+							   str +="<th rowspan=2>NEW CASTE</th>";
                                
                        str +="</tr>";
                        str +="<tr>";
