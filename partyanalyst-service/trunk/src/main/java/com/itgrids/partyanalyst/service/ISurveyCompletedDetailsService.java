@@ -24,4 +24,5 @@ public interface ISurveyCompletedDetailsService {
 	public String getConstituencyCompletionStatusByConstituencyId(Long constituencyId);
 	public List<DuplicateMobileNumbersVO> getDuplicateMobileNumbersDetails(String startDate,String endDate,List<Long> constituencyIds,Long frequencyCount);
 	public List<SelectOptionVO> getSurveyStartedConstituencyDetails();
+	public List<SurveyReportVO> getConstituencyWiseReportForDashBoard(List<Long> constituencyIds);
 }
