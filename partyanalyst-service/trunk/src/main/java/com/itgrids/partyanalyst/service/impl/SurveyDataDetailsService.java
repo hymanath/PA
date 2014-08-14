@@ -3489,6 +3489,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				
 				SurveyReportVO finalVO = new SurveyReportVO();
 				SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+				List<Long> voterIds = new ArrayList<Long>(0);
 				//SimpleDateFormat finalFormat = new SimpleDateFormat("yyyy-MM-dd");
 				Date date = format.parse(searchDate);
 				//List<Object[]> usersList = surveyUserRelationDAO.getUsersByConstituencyAndLeader(leaderId, constituencyId);
@@ -3740,8 +3741,14 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 							reportVO.setVoterName(surveyDetailsInfo.getVoter() != null ? surveyDetailsInfo.getVoter().getRelativeName():"");
 							reportVO.setSerailNo(voterInfo[1] != null ?(Long) voterInfo[1]:0L);
 							
+							
+							if(!voterIds.contains(surveyDetailsInfo.getVoter().getVoterId()))
+							{								
+
 							if(surveyDetailsInfo.getVoter() != null)
 									{
+										voterIds.add(surveyDetailsInfo.getVoter().getVoterId());
+								
 										String casteMatchd = casteMatched.get(surveyDetailsInfo.getVoter().getVoterId());
 										String mobilMatchd = mobileMatched.get(surveyDetailsInfo.getVoter().getVoterId());
 										String hamletMatched = hamletStatus.get(surveyDetailsInfo.getVoter().getVoterId());
@@ -3791,7 +3798,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 								}
 							}
 							resultList.add(reportVO);
-							
+						}	
 							//start verifying castes of all voters in a house no are same or not 
 							if((reportVO.getCaste() != null && reportVO.getCaste().trim().length() > 0) || (reportVO.getCasteId() != null)){
 								if(houseStatusMap.containsKey(reportVO.getPartNo().trim().toLowerCase())){
