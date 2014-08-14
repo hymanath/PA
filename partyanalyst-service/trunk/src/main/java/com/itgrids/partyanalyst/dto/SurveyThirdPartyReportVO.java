@@ -37,8 +37,15 @@ public class SurveyThirdPartyReportVO implements Serializable {
 	private List<Long> booths;
 	private SurveyThirdPartyReportVO constituencyDetails;
 	
+	private String constituencyType;
 	
 	
+	public String getConstituencyType() {
+		return constituencyType;
+	}
+	public void setConstituencyType(String constituencyType) {
+		this.constituencyType = constituencyType;
+	}
 	public SurveyThirdPartyReportVO getConstituencyDetails() {
 		return constituencyDetails;
 	}

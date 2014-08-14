@@ -191,19 +191,31 @@ public class HouseHoldVoterDAOHibernateTest extends BaseDaoTestCase{
 	}*/
 	
 	
-	public void test(){
+	/*public void test(){
 		List<Object[]> list = houseHoldVoterDAO.getNonVoterAgeRangesInConstituency(282l,null,15l);
-		System.out.println(" 0 - 16 "+list.get(0)[2].toString());
+		for(Object[] obj:list){
+			System.out.println(" 0 - 15 \t"+obj[2].toString() +"\t"+obj[4].toString()+"\t"+obj[3].toString());
+		}
+		
+		System.out.println("-------------");
 		
 		List<Object[]> list1 = houseHoldVoterDAO.getNonVoterAgeRangesInConstituency(282l,16l,21l);
-		if(list1!=null && list1.size()>0){
-			System.out.println(" 16 - 21 "+list1.get(0)[2].toString());
+		for(Object[] obj:list1){
+			System.out.println(" 16 - 21 \t"+obj[2].toString() +"\t"+obj[4].toString()+"\t"+obj[3].toString());
 		}
 		
+		System.out.println("-------------");
+		
 		List<Object[]> list2 = houseHoldVoterDAO.getNonVoterAgeRangesInConstituency(282l,22l,null);
-		if(list2!=null && list2.size()>0){
-			System.out.println(" 21 - 100 "+list2.get(0)[2].toString());
+		for(Object[] obj:list2){
+			System.out.println(" 22 - 100 \t"+obj[2].toString() +"\t"+obj[4].toString()+"\t"+obj[3].toString());
 		}
+	}*/
+	
+	public void test(){
+		List<Object[]> list = houseHoldVoterDAO.getNonVotersAgeGroupInHouseHolds(3284l, 1, 0l, 15l);
+		System.out.println(list.size());
+		
 	}
 
 }

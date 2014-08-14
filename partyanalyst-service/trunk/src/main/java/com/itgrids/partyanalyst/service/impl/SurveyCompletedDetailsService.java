@@ -1419,6 +1419,7 @@ public class SurveyCompletedDetailsService implements
 						sv = new SurveyThirdPartyReportVO();
 						sv.setConstituency(obj[1].toString());
 						sv.setConstituencyId(Long.valueOf(obj[2].toString()));
+						sv.setConstituencyType(obj[3].toString());
 					}
 					
 					
