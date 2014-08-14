@@ -50,16 +50,16 @@
 							<div class="span3 wiget-yellow-normal">
 								<h3>Started Constituency Count</h3>
 								<!--<h2>80</h2>-->
-								<h2>${resultVO.startedCount}</h2>
+								<h2><a href="javascript:{getConstituencyWiseReport('${resultVO.startedConstituencyIds}');}">${resultVO.startedCount}</a></h2>
 							
 							</div>
 							<div class="span3 wiget-yellow-normal">
 								<h3>Completed Constituency Count</h3>
-								<h2>${resultVO.completedCount}</h2>
+								<h2><a href="javascript:{getConstituencyWiseReport('${resultVO.completedConstituencyIds}');}">${resultVO.completedCount}</a></h2>
 							</div>
 							<div class="span3 wiget-yellow-normal">
 								<h3>Processing Constituency Count</h3>
-								<h2>${resultVO.processingCount}</h2>
+								<h2><a href="javascript:{getConstituencyWiseReport('${resultVO.processConstituencyIds}');}">${resultVO.processingCount}</a></h2>
 							</div>
 							<div class="span3 wiget-yellow-normal">
 								<h3>Not Yet Started Constituency Count</h3>
@@ -70,12 +70,14 @@
 						<div class="row-fluid m_top10">
 							<div class="span6 wiget-yellow-normal">
 								<h3>Total Caste Collected Count</h3>
-								<h2 id="TotalcasteCount">${resultVO.completedCount}</h2>
+								<!-- <h2 id="TotalcasteCount">${resultVO.completedCount}</h2> -->
+								<h2 id="TotalcasteCount">0</h2> 
 
 							</div>
 							<div class="span6 wiget-yellow-normal">
 							<h3>	Today Caste Collected Count 	</h3>
-								<h2 id="TodaycasteCount">${resultVO.completedCount}</h2>
+							<!--	<h2 id="TodaycasteCount">${resultVO.completedCount}</h2> -->
+							<h2 id="TodaycasteCount">0</h2> 
 
 							</div>
 						</div>
@@ -210,7 +212,9 @@ function getSurveyCompletedLocationsDetailsForSurveyStartedConstituencies()
 }
 function buildingSurveyCompletedLocationsDetailsForSurveyStartedConstituencies(result)
 {
-	 document.getElementById("popupImgid1").style.display="none";
+	// document.getElementById("popupImgid1").style.display="none";
+	 $("#buldingConstituenciesDivId").html('');
+	 $('#constituencyOverView').html('')
 	var str='';
 	str+='<table class=" m_top20 table table-bordered table-hover table-striped" id="constituencyOverView">';
 	str+='<thead class="alert alert-success">';
@@ -222,7 +226,8 @@ function buildingSurveyCompletedLocationsDetailsForSurveyStartedConstituencies(r
 	str+='<th>Completed</th>';
 	str+='<th>Processing </th>';
 	str+='<th>Not Yet Started </th>';
-	str+='<th>Third Party Started ?</th>';
+	//str+='<th>Third Party Started ?</th>';
+	str+='<th> QC Verification </th>';
 	str+='</tr>';
 	str+='</thead>';
 	str+='<tbody>';
@@ -230,7 +235,15 @@ function buildingSurveyCompletedLocationsDetailsForSurveyStartedConstituencies(r
 	{
 	  if( (result[i].total) != (result[i].notStartedCount))
 	  {
-		 str+='<tr>';
+		if(result[i].processingCount == 0)
+		{
+		 str+='<tr style="background:#12BB1B;">';
+		}
+		else
+		{
+			 str+='<tr>';
+		}
+		
 		 str+='<td><a href="javascript:{getConstituencyDetalReport('+result[i].id+',\''+result[i].name+'\')}"> '+result[i].name+'</a></td>';
 		 if(result[i].totalVoters==null)
 		 {
@@ -375,6 +388,26 @@ $("#dateWisecastePopupDiv").dialog({
 		});
 	
 }
+
+function getConstituencyWiseReport(constituencyIds){
+
+console.log(constituencyIds);
+var jObj = 
+	{
+	 constituencyIds:constituencyIds,
+	 task : "getConstituenciWiseReport"
+	}
+	$.ajax({
+		type:'GET',
+		url: 'getConstituencyWiseReportForDashBoardAction.action',
+		dataType: 'json',
+		data: {task:JSON.stringify(jObj)},
+	}).done(function(result){
+		buildingSurveyCompletedLocationsDetailsForSurveyStartedConstituencies(result);
+	});
+
+}
+
 </script>
 <script>
 getTotalCasteCounts();
