@@ -73,7 +73,12 @@
 				<!-----Constituency selection Div ---->
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top10">
-							<h4>Constituency wise detailed reports</h4>
+					<c:if test="${not empty constituencyId}">
+						<h4>Constituency wise detailed reports</h4>
+					</c:if>
+					<c:if test="${ empty constituencyId}">
+							<h4> ${task} Constituency wise detailed reports</h4>
+					</c:if>
 							<div class="row">
 							<div id="errDivId" style="color:#FF0020;font-size:14px;" class="offset4"></div></div>
 								<div class="row">
@@ -119,7 +124,8 @@ function buildReport(){
 function getConstituencyReport(constituencyId){
 	
 	getTPTotalBoothsDetails(constituencyId);
-	
+	$('#constiReportDiv').html('');
+	$('.boothsDivCls').html('');
 	$('#searchDataImg').show();
 	getConstituencyCompletionStatusDetails(constituencyId);
 	
@@ -145,7 +151,7 @@ function getConstituencyReport(constituencyId){
 			$('#constiReportDiv').html('');
 			var str ='';
 			
-				
+				var notCollectdCount = result.constituencyTotalVoters - result.casteCollectedCount ; 
 					str +='<div class="row-fluid ">';
 					str +='		<div class="span12 m_top20 widgetservey">';
 					str +='			<h4>'+constiName +'  Constituency Survey Report </br><small class="text-center">Constituency Overview</small>';
@@ -156,8 +162,10 @@ function getConstituencyReport(constituencyId){
 					str +='					<h4 class="text-right">DATA COLLECTION</h4>';
 					str +='					<div class="row-fluid">';
 					str +='					<div class="well well-small span4  text-center">';
-					str +='						<h4>'+result.totalColelctedVoters+'</h4>';
-					str +='						<p class="">Data Collected</p>';
+					//str +='						<h4>'+result.totalColelctedVoters+'</h4>';
+					//str +='						<p class="">Data Collected</p>';
+					str +='						<h4>'+result.constituencyTotalVoters+'</h4>';
+					str +='						<p class="">Total Voters </p>';
 					str +='					</div>';
 					str +='					<div class="well well-small span4 text-center">';
 					str +='						<h4>'+result.casteCollectedCount+'</h4>';
@@ -184,7 +192,8 @@ function getConstituencyReport(constituencyId){
 					str +='					</div>			';					
 					str +='					<div class="row-fluid">';
 					str +='					<div class="well well-small span10 offset1  ">	';								
-					str +='						Not Collected Data Voters Count <span class="pull-right badge">'+result.notCollectedVoters+'</span>';
+					//str +='						Not Collected Data Voters Count <span class="pull-right badge">'+result.notCollectedVoters+'</span>';
+					str +='						Not Collected Data Voters Count <span class="pull-right badge">'+notCollectdCount+'</span>';
 					str +='					</div>	';					
 					str +='					</div>';
 					str +='				</div>';
