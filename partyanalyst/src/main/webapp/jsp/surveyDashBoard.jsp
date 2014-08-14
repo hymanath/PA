@@ -94,7 +94,7 @@
 				<div class="row-fluid " >
 				
 				  <div class="span12  m_top20  widgetservey" id="buldingConstituenciesDivId">
-	              <h4>Constituency Overview</h4>
+	              <h4>Constituency Wise Processing Status</h4>
 				  <img id="popupImgid1" src="./images/icons/search.gif" alt="Processing Image" style="display:block;margin-left:410px"/>
 				 </div>
 				 
