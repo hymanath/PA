@@ -1327,6 +1327,7 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 					Long matchedCount = 0l;
 					Long unMatchedCount = 0l;
 					Long notIdentifedCount = 0l;
+					Long newCasteCollected = 0l;
 					returnList = new ArrayList<ThirdPartyCompressionVO>();
 					for(Long voterId : tpProvidedMap.keySet())
 					{
@@ -1378,19 +1379,51 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 									thirdPartyCompressionVO.setMobileNo(tpCollectedVO.getMobileNo());
 								}
 								
-								if(tpCollectedVO.getCasteId().longValue() == tpProvidedVO.getCasteId().longValue())
+								if(tpCollectedVO.getCasteId() != null && tpProvidedVO.getCasteId() != null)
 								{
-									matchedCount = matchedCount + 1;
+									if(tpCollectedVO.getCasteId().longValue() == tpProvidedVO.getCasteId().longValue())
+									{
+										matchedCount = matchedCount + 1;
+										thirdPartyCompressionVO.setMatchedStatus("MATCHED");
+									}
+									else
+									{
+										unMatchedCount = unMatchedCount + 1;
+										thirdPartyCompressionVO.setMatchedStatus("UNMATCHED");
+									}
 								}
-								else
+								else 
 								{
-									unMatchedCount = unMatchedCount + 1;
+									if(tpCollectedVO.getCasteId() == null && tpProvidedVO.getCasteId() == null)
+									{
+										notIdentifedCount = notIdentifedCount + 1;
+										thirdPartyCompressionVO.setMatchedStatus("NOT IDENTIFED");
+									}
+									else if(tpProvidedVO.getCasteId() != null && tpCollectedVO.getCasteId() == null)
+									{
+										notIdentifedCount = notIdentifedCount + 1;
+										thirdPartyCompressionVO.setMatchedStatus("NOT IDENTIFED");
+									}
+									else if(tpProvidedVO.getCasteId() == null && tpCollectedVO.getCasteId() != null)
+									{
+										newCasteCollected = newCasteCollected + 1;
+										thirdPartyCompressionVO.setMatchedStatus("NEW CASTE");
+									}
+									else
+									{
+										unMatchedCount = unMatchedCount + 1;
+										thirdPartyCompressionVO.setMatchedStatus("UNMATCHED");
+									}
+										
+									
 								}
+								
 								
 							}
 							else
 							{
 								notIdentifedCount = notIdentifedCount + 1;
+								thirdPartyCompressionVO.setMatchedStatus("NOT IDENTIFED");
 							}
 							returnList.add(thirdPartyCompressionVO);
 						}
@@ -1403,6 +1436,7 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 						returnList.get(0).setMatchedCount(matchedCount);
 						returnList.get(0).setUnMatchedCount(unMatchedCount);
 						returnList.get(0).setNotIdentifedCount(notIdentifedCount);
+						returnList.get(0).setNewCasteCount(newCasteCollected);
 					}
 				}
 				
@@ -1663,7 +1697,7 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 						genericVO.setName(parms[1] != null ? parms[1].toString() :"-");//voter name
 						genericVO.setDesc(parms[2] != null ? casteMap.get((Long)parms[2]) :"-");// Wm Updated caste
 						genericVO.setPercent(parms[3] != null ? parms[3].toString() :"-");// comment
-						
+						genericVO.setCount(parms[4] != null ? (Long)parms[4] :0l);// correctd type
 						wmUpdatedMap.put((Long)parms[0], genericVO);
 					}
 				}
@@ -1676,6 +1710,23 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 						GenericVO finalVO =wmUpdatedMap.get(voterId);
 						if(tpCollectedMap != null && tpCollectedMap.size() > 0)
 						finalVO.setMobileNo(tpCollectedMap.get(voterId) != null ? tpCollectedMap.get(voterId) : "-") ;// Tp Collected caste
+						
+						if(finalVO.getCount().longValue() == 2)
+						{
+							finalVO.setCaste("WM Wrong");
+						}
+						else if(finalVO.getCount().longValue() == 3)
+						{
+							finalVO.setCaste("TP Wrong");
+						}
+						else if(finalVO.getCount().longValue() == 4)
+						{
+							finalVO.setCaste("New Caste Data");
+						}
+						else if(finalVO.getCount().longValue() == 5)
+						{
+							finalVO.setCaste("Same Caste Different Name");
+						}
 						returnList.add(finalVO);
 					}
 				}

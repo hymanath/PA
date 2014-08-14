@@ -55,6 +55,9 @@ public class ThirdPartyCompressionVO implements Serializable
 	private Long matchedCount;
 	private Long unMatchedCount;
 	private Long notIdentifedCount;
+	private Long newCasteCount;
+	
+	private String matchedStatus;
 
 	private SurveyResponceVO surveyResponceVO;
 	
@@ -280,6 +283,19 @@ public class ThirdPartyCompressionVO implements Serializable
 	public void setNotIdentifedCount(Long notIdentifedCount) {
 		this.notIdentifedCount = notIdentifedCount;
 	}
+	public Long getNewCasteCount() {
+		return newCasteCount;
+	}
+	public void setNewCasteCount(Long newCasteCount) {
+		this.newCasteCount = newCasteCount;
+	}
+	public String getMatchedStatus() {
+		return matchedStatus;
+	}
+	public void setMatchedStatus(String matchedStatus) {
+		this.matchedStatus = matchedStatus;
+	}
+	
 	
 	
 }
