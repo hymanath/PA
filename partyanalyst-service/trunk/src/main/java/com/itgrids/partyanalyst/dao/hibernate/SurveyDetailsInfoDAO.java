@@ -232,7 +232,7 @@ public class SurveyDetailsInfoDAO extends GenericDaoHibernate<SurveyDetailsInfo,
 	
 	public List<Object[]> getBoothDetailsByConstituencyId(Long constituencyId){
 		StringBuilder  queryStr = new StringBuilder();
-		queryStr.append("select distinct SDI.booth.boothId, SDI.booth.partNo from SurveyDetailsInfo SDI, Booth B where SDI.booth.boothId = B.boothId and SDI.booth.constituency.constituencyId = :constituencyId ");
+		queryStr.append("select distinct SDI.booth.boothId, SDI.booth.partNo from SurveyDetailsInfo SDI, Booth B where SDI.booth.boothId = B.boothId and SDI.booth.constituency.constituencyId = :constituencyId order by SDI.booth.partNo ");
 			
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameter("constituencyId", constituencyId);
@@ -1432,7 +1432,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 	{
 		StringBuilder  queryStr = new StringBuilder();
 		queryStr.append("select distinct SDI.booth.boothId, SDI.booth.partNo from SurveyDetailsInfo SDI, Booth B where SDI.booth.boothId = B.boothId and " +
-				"SDI.booth.constituency.constituencyId = :constituencyId and SDI.surveyUser.surveyUserType.surveyUsertypeId =:surveyUserTypeId  ");
+				"SDI.booth.constituency.constituencyId = :constituencyId and SDI.surveyUser.surveyUserType.surveyUsertypeId =:surveyUserTypeId  order by SDI.booth.boothId ");
 			
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameter("constituencyId", constituencyId);
