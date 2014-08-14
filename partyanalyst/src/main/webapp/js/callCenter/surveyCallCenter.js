@@ -4017,6 +4017,7 @@ function updateThirdPartyDetails(voterId,statusId)
 
 function getFinalReportWithTP(){
 	$('#dayWiseReportDiv1').html('');
+	//$('#thirdPartyAjaxImg').show();
 	var constituencyId = $('#constituencyForThirdParty').val();
 	if(constituencyId == 0)	{
 	 $("#errorDivForThirdParty").html("<font color='#FF0000'>Please Select Constituency</font>");
@@ -4037,47 +4038,55 @@ function getFinalReportWithTP(){
 		 $("#thirdPartyAjax").hide();
 			if(result != null)
 			buildFinalReportWithTP(result)
+			else
+			$('#thirdPartyAjaxImg').show();
 		});	
 }
 
 function buildFinalReportWithTP(result){
 	
-	$("#FinalReportWithTPId").html("");
+	//$("#FinalReportWithTPId").html("");
 	var str = "";
 	str +="<h4 style='text-align:center;color:red;'> BOOTH WISE OVERVIEW OF THIRD PARTY DATA</h4>";
 	str +="<table id='FinalReportWithTPTableId' class='table table-bordered table-striped'>";
 		str +="<thead class='alert alert-success'>";
 			str +="<tr>";
 				str +="<th rowspan=2>BOOTH</th>";
+				str +="<th rowspan=2>BOOTH TYPE </th>";
 				str +="<th rowspan=2>TOTAL VOTERS</th>";
 				str +="<th rowspan=2>THIRD PARTY COLLECTED </th>";
-				str +="<th colspan=2 style='border-bottom:0px;'>MATCHED</th>";
-				str +="<th colspan=4 style='border-bottom:0px;'>UN MATCHED</th>";
-				str +="<th colspan=2 style='border-bottom:0px;'>NEW CASTE</th>";
-				str +="<th rowspan=2>BOOTH TYPE </th>";
+				str +="<th rowspan=2>MATCHED</th>";
+				str +="<th colspan=3>UN MATCHED</th>";
+				str +="<th rowspan=2>NEW CASTE</th>";
 				str +="<th rowspan=2>REVIEW</th>";
 			str +="</tr>";
 			str +="<tr>";
 				var stList = result[0].statusList;
-				for(var i in stList){
-					str +="<th>"+stList[i].statusName+"</th>";
-					str +="<th>"+stList[i].statusName+" % </th>";
+				for(var i in stList)
+				{
+					if(i == 1 || i == 2 || i == 3)
+					{
+						str +="<th>"+stList[i].statusName+"</th>";
+					}
+					
 				}
 			str +="</tr>";	
 		str +="</thead>";
 		
-		for(var i in result){
-				for(var k in result[i].users.usersList){
+		for(var i in result)
+		{
+				for(var k in result[i].users.usersList)
+				{
 					str +="<tr>";
 					str +="<td>"+result[i].partNo+"</td>";
+					str +="<td>"+result[i].boothType+"</td>";
 					str +="<td>"+result[i].totalVoters+"</td>";
 					str +="<td>"+result[i].users.usersList[k].userCollected+"</td>";
 					var sttsList = result[i].users.usersList[k].statusList;
-					for(var p in sttsList){
-						str +="<td>"+sttsList[p].statusCount+"</td>";
-						str +="<td>"+sttsList[p].statusPercentage+" </td>";
+					for(var p in sttsList)
+					{
+						str +="<td>"+sttsList[p].statusCount+"("+sttsList[p].statusPercentage+")</td>";
 					}
-					str +="<td>"+result[i].boothType+"</td>";
 					str +="<td><a style='cursor: pointer;' onCLick='getWmUpdatedDetails("+result[i].boothId+","+result[i].partNo+",2)'> REVIEW</a></td>";
 					str +="</tr>";
 				}
@@ -4088,7 +4097,7 @@ function buildFinalReportWithTP(result){
 	
 	$("#FinalReportWithTPId").html(str);
 	//$('#FinalReportWithTPTableId').dataTable();
-	
+	//$('#thirdPartyAjaxImg').show();
 }
 
 function getWmUpdatedDetails(boothId,partNo,id)
