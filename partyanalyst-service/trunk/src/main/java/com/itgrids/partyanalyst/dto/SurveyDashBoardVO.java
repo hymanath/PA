@@ -29,7 +29,37 @@ public class SurveyDashBoardVO {
 	
 	private Long totalCollectedCount =0l;
 	
+	private List<Long> completedConstituencyIds = new ArrayList<Long>();
+	private List<Long> processConstituencyIds = new ArrayList<Long>();
+	private List<Long> notStartedConstituencyIds = new ArrayList<Long>();
+	private List<Long> startedConstituencyIds = new ArrayList<Long>();
 
+	
+	
+	public List<Long> getCompletedConstituencyIds() {
+		return completedConstituencyIds;
+	}
+	public void setCompletedConstituencyIds(List<Long> completedConstituencyIds) {
+		this.completedConstituencyIds = completedConstituencyIds;
+	}
+	public List<Long> getProcessConstituencyIds() {
+		return processConstituencyIds;
+	}
+	public void setProcessConstituencyIds(List<Long> processConstituencyIds) {
+		this.processConstituencyIds = processConstituencyIds;
+	}
+	public List<Long> getNotStartedConstituencyIds() {
+		return notStartedConstituencyIds;
+	}
+	public void setNotStartedConstituencyIds(List<Long> notStartedConstituencyIds) {
+		this.notStartedConstituencyIds = notStartedConstituencyIds;
+	}
+	public List<Long> getStartedConstituencyIds() {
+		return startedConstituencyIds;
+	}
+	public void setStartedConstituencyIds(List<Long> startedConstituencyIds) {
+		this.startedConstituencyIds = startedConstituencyIds;
+	}
 	public String getName() {
 		return name;
 	}
