@@ -3780,14 +3780,7 @@ $('#boothWiseTab,#startTimeTab').removeClass('selected');
 					   str +='<td>'+result[i].age+'</td>';
 					   str +='<td>'+result[i].tpCaste+'</td>';
 					   str +='<td>'+result[i].wmCaste+'</td>';
-					   if(result[i].status == 1)	
-					   {
-							str +='<td>MATCHED</td>';
-					   }
-					   else
-					   {
-							str +='<td>UN MATCHED</td>';
-					   }
+					   str +='<td>'+result[i].matchedStatus+'</td>';
 					   str +='<td>'+result[i].mobileNo+'</td>';
 					   str +='<td>';
 					    if(result[i].status != null){
@@ -3903,7 +3896,7 @@ function buildThirdPartyBasicData(myResult){
 								str+='<div  id="notIdentifedCasteTpUpdtDiv" class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> NOT IDENTIFED </span>: '+myResult.notIdentifedCount+'</div><input type="hidden" value="'+myResult.notIdentifedCount+'" id="boothTpNotIdentifedCount"></input>';
 								str+='<div  id="wmWrongTpUpdtDiv" class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> WM WRONG </span>: '+result.wmWrong+'</div>';
 								str+='<div  id="tpWrongTpUpdtDiv" class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> TP WRONG  </span>: '+result.tpWrong+'</div>';
-								str+='<div  id="newCasteTpUpdtDiv" class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> NEWLY COLLECTED </span>: '+result.newCaste+'</div>';
+								str+='<div  id="newCasteTpUpdtDiv" class="span3" style="background-color: #e9e9e9; padding: 5px;margin-top:25px;margin-bottom:10px;" class="errClass"><span style="font-weight:bold;"> NEWLY COLLECTED </span>: '+myResult.newCasteCount+'</div>';
 								
 					    str+='</div>';
 				   str+='</div>';
@@ -4142,6 +4135,7 @@ function buildCommentedDetails(result,partNo,divId)
 	str += '<th>VOTER NAME</th>';
 	str += '<th>WM CASTE</th>';
 	str += '<th>TP CASTE</th>';
+	str += '<th>STATUS</th>';
 	str += '<th>COMMENT</th>';
 	str += '</tr>';
 	str += '</thead>';
@@ -4153,6 +4147,7 @@ function buildCommentedDetails(result,partNo,divId)
 		str += '<td>'+result[i].name+'</td>';
 		str += '<td>'+result[i].desc+'</td>';
 		str += '<td>'+result[i].mobileNo+'</td>';
+		str += '<td>'+result[i].caste+'</td>';
 		str += '<td>'+result[i].percent+'</td>';
 		str += '</tr>';
 	}
