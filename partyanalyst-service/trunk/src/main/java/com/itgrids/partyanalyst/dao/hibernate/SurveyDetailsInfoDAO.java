@@ -1277,9 +1277,12 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 	
 	public List<Object[]> getStartedBoothsDetailsByConstituencyWise()
 	{
-		Query query = getSession().createQuery("select count(distinct SDI.booth.boothId), SDI.booth.constituency.constituencyId, SDI.booth.constituency.name from " +
+		Query query = getSession().createQuery("select count(distinct SDI.booth.boothId)," +
+				" SDI.booth.constituency.constituencyId," +
+				" SDI.booth.constituency.name from " +
 				" SurveyDetailsInfo SDI where  " +
-				" SDI.surveyUser.surveyUserType.surveyUsertypeId = :surveyUsertypeId group by SDI.booth.constituency.constituencyId ");
+				" SDI.surveyUser.surveyUserType.surveyUsertypeId = :surveyUsertypeId " +
+				"group by SDI.booth.constituency.constituencyId ");
 		
 		//query.setParameterList("constituencyIds", constituencyIds);
 		query.setParameter("surveyUsertypeId", IConstants.DATA_COLLECTOR_ROLE_ID);
@@ -1314,7 +1317,27 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 	
 	public List<Object[]> getProcessingConstituencyes()
 	{
-		Query query = getSession().createQuery("select SDI.booth.constituency.constituencyId, SDI.booth.constituency.name , count(distinct SDI.booth.boothId) from SurveyDetailsInfo SDI where SDI.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId group by SDI.booth.constituency.constituencyId ");
+		Query query = getSession()
+				.createQuery(
+						"select SDI.booth.constituency.constituencyId," +
+						" SDI.booth.constituency.name , count(distinct SDI.booth.boothId)" +
+						" from SurveyDetailsInfo SDI where" +
+						" SDI.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId " +
+						"group by SDI.booth.constituency.constituencyId ");
+		query.setParameter("userTypeId", IConstants.DATA_COLLECTOR_ROLE_ID);
+		return query.list();
+				
+	}
+	
+	public List<Object[]> getDcProcessingConstituenciesDetails()
+	{
+		Query query = getSession()
+				.createQuery(
+						"select SDI.booth.constituency.constituencyId," +
+						" SDI.booth.constituency.name ,SDI.booth.boothId" +
+						" from SurveyDetailsInfo SDI where" +
+						" SDI.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId " +
+						"group by SDI.booth.boothId ");
 		query.setParameter("userTypeId", IConstants.DATA_COLLECTOR_ROLE_ID);
 		return query.list();
 				
