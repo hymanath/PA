@@ -102,7 +102,7 @@
 				 
 				</div>
 				
-				<div class="row-fluid " >
+				<!--<div class="row-fluid " >
 					 <div class="span12  widgetservey m_top20">
 					  <h4>QC READY BOOTHS</h4>
 					 <div id="constSummary"></div>
@@ -111,7 +111,7 @@
 						 <div id="boothsSummary"></div>
 						 <div id="CommentsDiv"></div>
 					 </div> 
-				</div>
+				</div>-->
 				
 					<!-- constituency End Div -->
 				
