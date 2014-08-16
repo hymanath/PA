@@ -28,7 +28,7 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 	{
 		
 		Query query = getSession().createQuery("select model.surveyUser.surveyUserId,model.booth.boothId,model.mobileNoStatus,model.matchedStatus from SurveyCallStatus model" +
-				" where model.surveyUser.surveyUserId in(:userIds) and model.booth.boothId in(:boothIds) and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId");
+				" where model.surveyUser.surveyUserId in(:userIds) and model.booth.boothId in(:boothIds) and model.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId group by model.voterId ");
 		query.setParameterList("userIds", userIds);
 		query.setParameterList("boothIds", boothIds);
 		query.setParameter("userTypeId", userTypeId);
