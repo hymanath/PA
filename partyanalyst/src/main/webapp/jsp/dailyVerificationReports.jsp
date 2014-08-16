@@ -343,6 +343,7 @@ $(".highlight").click(function()
 		$(this).addClass("selected");
 	}
 })
+getSurveyCompletedLocationsDetailsForSurveyStartedConstituencies();
 </script>
 </body>
 </html>
