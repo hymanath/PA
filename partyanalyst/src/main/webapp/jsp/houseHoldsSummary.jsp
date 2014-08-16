@@ -48,7 +48,7 @@
 	<div class='offset3' style="margin-top:15px;">SELECT CONSTITUENCY  <s:select theme="simple" style="width: 169px;"
 				 name="constituencyList" 
 				id="constituencyId" list="hhConstituenies" 
-				listKey="id" listValue="name" onChange="getSummary();getQuestions()"/>
+				listKey="id" listValue="name" onChange="getSummary();getQuestions();"/>
 	</div>
 	
 	<div class='offset3' style="margin-top:15px;display:none;" id="questionDivId">SELECT QUESTION  <select id="questionId" style="margin-left:24px;"><option val="0">Select</option></select></div>
@@ -66,7 +66,10 @@
 	
 	
 	<div id="constiSummaryDiv" style="margin:20px;"></div>
+	<div id="constiNonVotersSummaryDiv" style="margin:20px;"></div>
+	<div id="consolidateReport" style="margin:20px;"></div>
 	<div id="panchayatSummaryDivId" style="margin:20px;"></div>
+	
 	<div id="summariesId" style="margin:20px;"></div>
 	<div id="summariesId1" style="margin:20px;"></div>
 	<div id="summariesId2" style="margin:20px;"></div>
@@ -85,7 +88,7 @@
 	<script>
 	
 	function getBooksSummary(){
-		$("#panchayatSummaryDivId,#summariesId,#summariesId1,#summariesId2").html("");
+		$("#panchayatSummaryDivId,#summariesId,#summariesId1,#summariesId2,#constiNonVotersSummaryDiv,#questSummary3,#consolidateReport").html("");
 		$("#questSummary,#questSummary1,#question,#questSummary2").html("");
 		$("#leaderDivId,#bookDivId").css("display","block");
 		$("#questionDivId").css("display","none");
@@ -238,11 +241,11 @@ function getQuestionSummary(){
 }
 
 function clearSummaryDivs(){
-	$("#constiSummaryDiv,#panchayatSummaryDivId,#summariesId,#summariesId1,#summariesId2").html("");
+	$("#constiSummaryDiv,#panchayatSummaryDivId,#summariesId,#summariesId1,#summariesId2,#constiNonVotersSummaryDiv,#questSummary3,#consolidateReport").html("");
 }
 
 function buildQuestionSummary(result){
-	$("#questSummary,#questSummary1,#questSummary2").html("");
+	$("#questSummary,#questSummary1,#questSummary2,#questSummary3").html("");
 	
 	$("#question").html("<h3>"+result.question+"</h3>");
 	var str = "";
@@ -328,7 +331,7 @@ function getFamilies(optionId,panchayatId){
 
 function getSummary(){
 
-	$("#questSummary,#questSummary1,#questSummary2,#question,#summariesId2").html("");
+	$("#questSummary,#questSummary1,#questSummary2,#question,#summariesId2,#constiNonVotersSummaryDiv,#questSummary3").html("");
 	$("#questionDivId,#leaderDivId,#bookDivId").css('display','none');
 	
 	
@@ -343,7 +346,7 @@ function getSummary(){
           dataType: 'json',
           data: {task:JSON.stringify(constnDtls)},
 
-          success: function(result){ 
+          success: function(result){
 			buildPanchayatSummary(result);		  
          },
           error:function() { 
@@ -433,7 +436,7 @@ function buildPanchayatSummary(result){
 					str1 +="<th>"+result.constiHouseHoldsCount+"</th>";
 					str1 +="<th>"+result.activeLeadersCount+"</th>";
 					str1 +="<th>"+result.constiVotersCount+"</th>";
-					str1 +="<th>"+result.constiNonVotersCount+"</th>";
+					str1 +="<th onClick='getNonVotersAgeRangeWiseCount("+result.constituencyId+")' style='cursor:pointer;'>"+result.constiNonVotersCount+"</th>";
 				str1 +="</tr>";
 			
 		str1 +="</table>";
@@ -471,6 +474,7 @@ function buildPanchayatSummary(result){
 	$("#panchayatSummaryDivId").html(str);
 	
 	$('.summaryDiv').dataTable();
+	getBooksOfHouseHold();
 }
 
 function buildLeadersOfPanchayat(result){
@@ -680,6 +684,122 @@ function buildHouseHoldsUnderFamilyHead(result,name){
 		$('.questSummaryTbl').dataTable();
 	}
 }
+
+function getNonVotersAgeRangeWiseCount(constiId){
+	var details={
+             constituencyId:constiId,
+			 task:"NonVotersAgeRangeCount"
+	};
+	$.ajax({
+          type:'POST',
+          url: 'getNonVoterAgeRangeDetailsConstituencyWiseAction.action',
+          dataType: 'json',
+          data: {task:JSON.stringify(details)},
+
+          success: function(result){ 
+			buildNonVotersAgeRangeWiseDetails(result);
+         },
+          error:function() { 
+           console.log('error', arguments);
+         }
+    });
+}
+
+function buildNonVotersAgeRangeWiseDetails(result){
+	$("#panchayatSummaryDivId").html("");
+	$("#consolidateReport").html("");
+	if(result!=null && result.length>0){
+		var str = "";
+			str +="<h4 class='offset3' style='color:red;margin-down:20px;margin-up:20px;'></h4>";
+		
+		str+= "<table class='table table-bordered questSummaryTbl'>";
+			str +="<thead>";
+				str +="<tr>";
+					str +="<th>PANCHAYAT NAME</th>";	
+					for(var i in result[0].ageRangesList){
+					str +="<th>"+result[0].ageRangesList[i].ageRange+"</th>";
+					}
+				str +="</tr>";
+			str +="</thead>";
+			
+			str +="<tbody>";
+				for(var i in result){
+					str +="<tr>";
+						str +="<td>"+result[i].panchayatName+"</td>";
+						for(var j in result[i].ageRangesList){
+							str +="<td>"+result[i].ageRangesList[j].ageRangeCount+"</td>";
+						}
+					str +="</tr>";
+				}
+			str +="</tbody>";
+		str+= "</table>";
+		$("#constiNonVotersSummaryDiv").html(str);
+		
+		$('.questSummaryTbl').dataTable();
+	}
+}
+function getBooksOfHouseHold(){
+	var details={
+             constituencyId:$("#constituencyId").val(),
+			 task:"bookDetails"
+	};
+	$.ajax({
+          type:'POST',
+          url: 'getBooksDetailsOfHouseHoldsAction.action',
+          dataType: 'json',
+          data: {task:JSON.stringify(details)},
+
+          success: function(result){ 
+			buildBookDetailsOfHouseHolds(result);
+         },
+          error:function() { 
+           console.log('error', arguments);
+         }
+    });
+}
+
+function buildBookDetailsOfHouseHolds(result)
+{
+if(result!=null && result.length>0){
+		var str = "";
+			str +="<h4 class='offset3' style='color:red;margin-down:20px;margin-up:20px;'>Consolidate Report</h4>";
+		
+		str+= "<table class='table table-bordered questSummaryTbl'>";
+			str +="<thead>";
+				str +="<tr>";
+					str +="<th>MANDAL NAME</th>";	
+					str +="<th>PANCHAYAT NAME</th>";	
+					str +="<th>BOOK NO</th>";	
+					str +="<th>LEADER NAME</th>";
+					str +="<th>VOTER ID CARD NO</th>";
+					str +="<th>BOOK FAMILIES COUNT</th>";						
+					str +="<th>VOTERS COUNT</th>";	
+					str +="<th>NON VOTERS COUNT</th>";	
+					
+				str +="</tr>";
+			str +="</thead>";
+			
+			str +="<tbody>";
+				for(var i in result){
+					str +="<tr>";
+						str +="<td>"+result[i].tehsilName+"</td>";
+						str +="<td>"+result[i].panchayatName+"</td>";
+						str +="<td>"+result[i].bookNo+"</td>";
+						str +="<td>"+result[i].leaderName+"</td>";
+						str +="<td>"+result[i].voterId+"</td>";
+						str +="<td>"+result[i].familiesCount+"</td>";
+						str +="<td>"+result[i].votersCount+"</td>";
+						str +="<td>"+result[i].nonVotersCount+"</td>";
+					str +="</tr>";
+				}
+			str +="</tbody>";
+		str+= "</table>";
+		$("#consolidateReport").html(str);
+		
+		$('.questSummaryTbl').dataTable();
+	}
+}
+
 </script>
 </body>
 </html>
