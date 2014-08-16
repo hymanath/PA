@@ -651,6 +651,11 @@ function updateStatusDetails(newHamletId,hamletFieldId,isCasteMatched,mobileMatc
 		}
 	}
 	
+	if(casteId != 0 )
+	{
+		isMatched = 0;
+	}
+		
 	var obj = {	
 		boothId : boothId,
 		casteId:casteId,
