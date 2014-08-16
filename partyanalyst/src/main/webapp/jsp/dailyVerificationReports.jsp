@@ -1513,6 +1513,7 @@ function buildCommentedDetails(result,partNo)
 	str += '<th>VOTER NAME</th>';
 	str += '<th>WM CASTE</th>';
 	str += '<th>TP CASTE</th>';
+	str += '<th>STATUS</th>';
 	str += '<th>COMMENT</th>';
 	str += '</tr>';
 	str += '</thead>';
@@ -1524,6 +1525,7 @@ function buildCommentedDetails(result,partNo)
 		str += '<td>'+result[i].name+'</td>';
 		str += '<td>'+result[i].desc+'</td>';
 		str += '<td>'+result[i].mobileNo+'</td>';
+		str += '<td>'+result[i].caste+'</td>';
 		str += '<td>'+result[i].percent+'</td>';
 		str += '</tr>';
 	}
