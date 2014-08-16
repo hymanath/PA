@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HouseHoldVotersVO {
@@ -10,7 +11,7 @@ public class HouseHoldVotersVO {
 	private Long occupationId;
 	private Long socialPstnId;
 	
-	private List<HouseHoldVotersVO> houseHoldsVoters;
+	private List<HouseHoldVotersVO> houseHoldsVoters = new ArrayList<HouseHoldVotersVO>();
 	private Long boothId;
 	private String houseNo;
 	
@@ -35,8 +36,39 @@ public class HouseHoldVotersVO {
 	private Long leaderBookNo;
 	private String voterIDCardNo;
 	private String panchayatName;
+	private Long panchayatId;
+	
+	private Long ageRangeCount;
+	private String ageRange;
+	private List<HouseHoldVotersVO> ageRangesList;
 	
 	
+	
+	public List<HouseHoldVotersVO> getAgeRangesList() {
+		return ageRangesList;
+	}
+	public void setAgeRangesList(List<HouseHoldVotersVO> ageRangesList) {
+		this.ageRangesList = ageRangesList;
+	}
+	public String getAgeRange() {
+		return ageRange;
+	}
+	public void setAgeRange(String ageRange) {
+		this.ageRange = ageRange;
+	}
+	
+	public Long getAgeRangeCount() {
+		return ageRangeCount;
+	}
+	public void setAgeRangeCount(Long ageRangeCount) {
+		this.ageRangeCount = ageRangeCount;
+	}
+	public Long getPanchayatId() {
+		return panchayatId;
+	}
+	public void setPanchayatId(Long panchayatId) {
+		this.panchayatId = panchayatId;
+	}
 	public String getPanchayatName() {
 		return panchayatName;
 	}

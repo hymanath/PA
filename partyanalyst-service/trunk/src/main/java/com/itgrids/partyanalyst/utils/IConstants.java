@@ -797,4 +797,10 @@ public interface IConstants {
     public static final Long SIGN_OFF_STATUS_ID = 1L;
     public static final Long QUERY_STATUS_ID = 2L;
     
+    public static final Long KPM_AGE1_MIN = 0L;
+    public static final Long KPM_AGE1_MAX = 15L;
+    public static final Long KPM_AGE2_MIN = 16L;
+    public static final Long KPM_AGE2_MAX = 21L;
+    public static final Long KPM_AGE3_MIN = 22L;
+    public static final Long KPM_AGE3_MAX = 100L;
 }

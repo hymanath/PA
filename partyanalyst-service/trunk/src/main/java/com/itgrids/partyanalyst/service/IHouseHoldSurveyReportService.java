@@ -8,6 +8,7 @@ import com.itgrids.partyanalyst.dto.HHQuestionDetailsVO;
 import com.itgrids.partyanalyst.dto.HHQuestionSummaryReportVO;
 import com.itgrids.partyanalyst.dto.HHSurveyVO;
 import com.itgrids.partyanalyst.dto.HouseHoldVotersVO;
+import com.itgrids.partyanalyst.dto.HouseHoldsReportVO;
 import com.itgrids.partyanalyst.dto.HouseHoldsSummaryReportVO;
 import com.itgrids.partyanalyst.dto.HouseHoldsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -44,6 +45,6 @@ public interface IHouseHoldSurveyReportService {
 	public List<HHQuestionSummaryReportVO> getQuestionsOfSurvey(Long surveyId);
 	public HHQuestionSummaryReportVO getOptionsCountForQuestion(Long questionId,Long constituencyId);
 	public List<HouseHoldVotersVO> getFamilyMembersUnderFamilyHead(Long houseHoldId);
-
-
+	public List<HouseHoldVotersVO> getNonVoterAgeRangeDetailsInConstituency(Long constituencyId);
+	 public List<HouseHoldsReportVO> getBooksDetailsOfHouseHolds(Long constituencyId);
 }

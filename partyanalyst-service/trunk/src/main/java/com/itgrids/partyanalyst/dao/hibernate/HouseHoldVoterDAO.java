@@ -493,7 +493,8 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 				" model2.hhLeader.name," +
 				" model2.hhLeader.voterId," +
 				" count(model.voter.voterId)," +
-				" count(model.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId)" +
+				" count(model.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId)," +
+				" count(distinct model.houseHoldId)" +
 				" from HouseHoldVoter model,HHBoothLeader model2" +
 				" where model.leaderId =  model2.hhLeader.id " +
 				" and model2.constituency.constituencyId =:constituencyId " +
