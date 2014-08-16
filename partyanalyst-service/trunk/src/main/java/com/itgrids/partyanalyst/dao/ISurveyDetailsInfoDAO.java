@@ -39,6 +39,8 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	public List<Object[]> getsurveyDetailsInfoByConstituencyId(Long constituencyId,Long surveyUsertypeId);
 	
 	public List<Object[]> getBoothDetailsByConstituencyId(Long constituencyId);
+	public List<Object[]> getDcProcessingConstituenciesDetails();
+
 	
 	public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUsertypeId);
 	

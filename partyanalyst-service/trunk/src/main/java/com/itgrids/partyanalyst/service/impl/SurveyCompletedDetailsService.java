@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,14 +100,15 @@ public class SurveyCompletedDetailsService implements
 			//List<Long> constituencyIds = surveyDetailsInfoDAO.getSurveyStartedConstituenciesDetails();
 			List<Long> constituencyIds = new ArrayList<Long>();
 			Map<Long,String> constituencyDetailsMap = new HashMap<Long, String>();
+			Map<Long,Long> processingBoothsMap = new LinkedHashMap<Long, Long>();
+
 			
 			//processing booths details start	
-			
+			/*
 			List<Object[]> processedList = surveyDetailsInfoDAO.getStartedBoothsDetailsByConstituencyWise();			
 			
 			//processing booths details end
 
-			Map<Long,Long> processingBoothsMap = new LinkedHashMap<Long, Long>();
 			
 			if(processedList != null && processedList.size()>0)
 			{
@@ -116,7 +118,42 @@ public class SurveyCompletedDetailsService implements
 					
 					constituencyIds.add((Long)obj[1]);
 				}
-			}
+			}*/
+			
+			
+			 List<Object[]> processingConstnsDtls = surveyDetailsInfoDAO.getDcProcessingConstituenciesDetails();
+			    
+			    Map<Long,Set<Long>> boothDtlsMap = new HashMap<Long, Set<Long>>();
+			    
+			    if(processingConstnsDtls != null && processingConstnsDtls.size() >0)
+			    {
+			    	for(Object[] obj:processingConstnsDtls)
+			    	{
+			    		constituencyDetailsMap.put((Long)obj[0], obj[1].toString());
+			    		
+			    		if(!constituencyIds.contains((Long)obj[0]))
+			    		  constituencyIds.add((Long)obj[0]);
+			    		
+			    		Set<Long> booths = null;
+			    		if(boothDtlsMap.get((Long)obj[0]) != null)
+			    		{
+			    			booths = boothDtlsMap.get((Long)obj[0]);
+			    			
+			    		}else
+			    		{
+			    			booths = new java.util.HashSet<Long>();
+				    		boothDtlsMap.put((Long)obj[0], booths);
+
+			    		}
+			    		booths.add((Long)obj[2]);
+			    	}
+			    }
+				
+			    for(Entry<Long,Set<Long>> entry:boothDtlsMap.entrySet())
+			    {
+			    	processingBoothsMap.put(entry.getKey(), new Long(entry.getValue().size()));
+			    	
+			    }
 			
 			// total booths details start
 			List<Object[]> boothDtls = boothDAO.getTotalBoothsCountByConstituencyIds(constituencyIds,IConstants.VOTER_DATA_PUBLICATION_ID);
@@ -452,14 +489,45 @@ public class SurveyCompletedDetailsService implements
 			Map<Long,Long> processCompletCount = new HashMap<Long,Long>(0);
 			
 		    List<Object[]> constituencyInfo = surveyCompletedLocationsDAO.getSurveyCompletedLocations();
-			List<Object[]> processconstituencyInfo = surveyDetailsInfoDAO.getProcessingConstituencyes();
-			if(processconstituencyInfo != null && processconstituencyInfo.size()>0){
+		//	List<Object[]> processconstituencyInfo = surveyDetailsInfoDAO.getProcessingConstituencyes();
+		    
+		    List<Object[]> processingConstnsDtls = surveyDetailsInfoDAO.getDcProcessingConstituenciesDetails();
+		    
+		    Map<Long,Set<Long>> boothDtlsMap = new HashMap<Long, Set<Long>>();
+		    
+		    if(processingConstnsDtls != null && processingConstnsDtls.size() >0)
+		    {
+		    	for(Object[] obj:processingConstnsDtls)
+		    	{
+		    		Set<Long> booths = null;
+		    		if(boothDtlsMap.get((Long)obj[0]) != null)
+		    		{
+		    			booths = boothDtlsMap.get((Long)obj[0]);
+		    			
+		    		}else
+		    		{
+		    			booths = new java.util.HashSet<Long>();
+			    		boothDtlsMap.put((Long)obj[0], booths);
+
+		    		}
+		    		booths.add((Long)obj[2]);
+		    	}
+		    }
+			
+		    for(Entry<Long,Set<Long>> entry:boothDtlsMap.entrySet())
+		    {
+		    	processCompletCount.put(entry.getKey(), new Long(entry.getValue().size()));
+		    	
+		    	
+		    }
+			
+			/*if(processconstituencyInfo != null && processconstituencyInfo.size()>0){
 				for (Object[] locationInfo : processconstituencyInfo) {
 					
 					if(locationInfo[0] != null && locationInfo[2] != null)
 						processCompletCount.put((Long) locationInfo[0], (Long) locationInfo[2]);
 				}
-			}
+			}*/
 			
 			
 			if(constituencyInfo != null && constituencyInfo.size()>0){
@@ -500,7 +568,6 @@ public class SurveyCompletedDetailsService implements
 							if(boothsCount.longValue() == boothCmpletdCount.longValue())
 							{
 								compltedConstiList.add(constituencyVO);
-								resultVO.getCompletedConstituencyIds().add(constituencyVO.getConstituencyId());
 							}
 							else if(boothsCount.longValue() > boothCmpletdCount.longValue())
 							{
@@ -522,28 +589,7 @@ public class SurveyCompletedDetailsService implements
 			startedConstiList.addAll(processingConstiList); // started means which are in process state as well completed state;
 			startedConstiList.addAll(compltedConstiList);
 			
-			Map<Long,Long> actualDistrictWiseConstiCount = new HashMap<Long, Long>();
-			Map<Long,Long> surveyDistrictWiseConstiCount = new HashMap<Long, Long>();			
-			if(startedConstiList != null && startedConstiList.size()>0)
-			{
-				for (SurveyDashBoardVO dashBoardVO : startedConstiList) 
-				{
-					Long count = 0L;
-					if(actualDistrictWiseConstiCount.get(dashBoardVO.getLocationId()) == null)
-					{
-						count = count +1;
-						actualDistrictWiseConstiCount.put(dashBoardVO.getLocationId(), count);
-					}
-					else{
-						
-						count = actualDistrictWiseConstiCount.get(dashBoardVO.getLocationId());
-						count = count +1;
-						
-						actualDistrictWiseConstiCount.put(dashBoardVO.getLocationId(), count);
-					}
-				}
-			}
-						
+			
 			resultVO.setProcessingCount(processingConstiList.size());			
 			resultVO.setCompletedCount(compltedConstiList.size());			
 			resultVO.setStartedCount(startedConstiList.size());			
@@ -556,22 +602,6 @@ public class SurveyCompletedDetailsService implements
 				for (SurveyDashBoardVO dashBoardVO : compltedConstiList) 
 				{
 	
-					
-					Long count = 0L;
-					if(surveyDistrictWiseConstiCount.get(dashBoardVO.getLocationId()) == null)
-					{
-						count = count +1;
-						surveyDistrictWiseConstiCount.put(dashBoardVO.getLocationId(), count);
-					}
-					else{
-						
-						count = surveyDistrictWiseConstiCount.get(dashBoardVO.getLocationId());
-						count = count +1;
-						
-						surveyDistrictWiseConstiCount.put(dashBoardVO.getLocationId(), count);
-					}
-					
-					/*
 					if(!completedDistrictList.contains(dashBoardVO.getLocationId()))
 					{
 						completedDistrictList.add(dashBoardVO.getLocationId());
@@ -583,41 +613,9 @@ public class SurveyCompletedDetailsService implements
 						
 						resultVO.getCompleted().add(districtVO);
 					}
-					*/
 				}
 			}
 			
-			if( (actualDistrictWiseConstiCount != null && actualDistrictWiseConstiCount.size()>0) && 
-					(surveyDistrictWiseConstiCount != null && surveyDistrictWiseConstiCount.size()>0))
-				{
-					Long actualCount = 0L;
-					Long surveyCount = 0L;
-					
-					for (Long districtId : surveyDistrictWiseConstiCount.keySet()) {
-						surveyCount = surveyDistrictWiseConstiCount.get(districtId);
-						actualCount = actualDistrictWiseConstiCount.get(districtId);
-						
-						SurveyDashBoardVO dashBoardVO  = getMatchedVOByLocationId(compltedConstiList,districtId);
-						
-						if(surveyCount == actualCount)
-						{
-							if(dashBoardVO != null)
-							{
-								completedDistrictList.add(districtId);
-								
-								SurveyDashBoardVO districtVO = new SurveyDashBoardVO();
-								
-								districtVO.setLocationId(dashBoardVO.getLocationId());
-								districtVO.setLocationName(dashBoardVO.getLocationName());
-								
-								resultVO.getCompleted().add(districtVO);
-							}
-							
-						}
-						
-					}
-					
-				}
 			
 			List<Long> processingDistrictList = new ArrayList<Long>(0); 
 			if(processingConstiList != null && processingConstiList.size()>0)
@@ -636,8 +634,6 @@ public class SurveyCompletedDetailsService implements
 						
 						resultVO.getProcess().add(districtVO);
 					}
-					
-					resultVO.getProcessConstituencyIds().add(dashBoardVO.getConstituencyId());
 				}
 			}
 			
@@ -658,8 +654,6 @@ public class SurveyCompletedDetailsService implements
 						
 						resultVO.getStarted().add(districtVO);
 					}
-					
-					resultVO.getStartedConstituencyIds().add(dashBoardVO.getConstituencyId());
 				}
 			}
 			
@@ -682,9 +676,9 @@ public class SurveyCompletedDetailsService implements
 						
 						resultVO.getNotStarted().add(districtVO);
 					}
-					resultVO.getNotStartedConstituencyIds().add(dashBoardVO.getConstituencyId());
 				}
 			}
+			
 			
 		} catch (Exception e) {
 			//e.printStackTrace();
