@@ -1,20 +1,10 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IHouseHoldVoterDAO;
-import com.itgrids.partyanalyst.dto.HHSurveyVO;
-import com.itgrids.partyanalyst.dto.HouseHoldVotersVO;
-import com.itgrids.partyanalyst.model.HHSurveyAnswers;
-import com.itgrids.partyanalyst.model.HouseHoldVoter;
 
 public class HouseHoldVoterDAOHibernateTest extends BaseDaoTestCase{
 	
@@ -212,10 +202,16 @@ public class HouseHoldVoterDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void test(){
+	/*public void test(){
 		List<Object[]> list = houseHoldVoterDAO.getNonVotersAgeGroupInHouseHolds(3284l, 1, 0l, 15l);
 		System.out.println(list.size());
 		
+	}*/
+	
+	public void test(){
+		List<Object[]> list = houseHoldVoterDAO.getBooksOfHouseHolds(282l);
+		//List<Object[]> list = houseHoldVoterDAO.getFamilyHeadsUnderBook(1112l);
+		System.out.println(list.size());
 	}
 
 }
