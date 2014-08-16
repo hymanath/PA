@@ -52,8 +52,28 @@ public class HouseHoldsReportVO implements java.io.Serializable{
 	private Long familyHeadVoterId;
 	private String houseNo;
 	private Long constituencyId;
+	private String tehsilName;
+	private Long votersCount;
+	private Long nonVotersCount;
 	
-	
+	public Long getVotersCount() {
+		return votersCount;
+	}
+	public void setVotersCount(Long votersCount) {
+		this.votersCount = votersCount;
+	}
+	public Long getNonVotersCount() {
+		return nonVotersCount;
+	}
+	public void setNonVotersCount(Long nonVotersCount) {
+		this.nonVotersCount = nonVotersCount;
+	}
+	public String getTehsilName() {
+		return tehsilName;
+	}
+	public void setTehsilName(String tehsilName) {
+		this.tehsilName = tehsilName;
+	}
 	public Long getConstituencyId() {
 		return constituencyId;
 	}

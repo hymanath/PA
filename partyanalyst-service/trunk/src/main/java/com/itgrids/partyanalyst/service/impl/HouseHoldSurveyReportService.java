@@ -47,6 +47,7 @@ import com.itgrids.partyanalyst.dto.HHQuestionDetailsVO;
 import com.itgrids.partyanalyst.dto.HHQuestionSummaryReportVO;
 import com.itgrids.partyanalyst.dto.HHSurveyVO;
 import com.itgrids.partyanalyst.dto.HouseHoldVotersVO;
+import com.itgrids.partyanalyst.dto.HouseHoldsReportVO;
 import com.itgrids.partyanalyst.dto.HouseHoldsSummaryReportVO;
 import com.itgrids.partyanalyst.dto.HouseHoldsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -2140,6 +2141,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
                 	vo.setVoterIDCardNo(hhv.getVoter().getVoterIDCardNo());
                 	vo.setRelation(hhv.getVoter().getRelationshipType());  
                 	vo.setRelativeName(hhv.getVoter().getRelativeName());
+                	vo.setAge(hhv.getVoter().getAge());
                 	vo.setPanchayatName(hhv.getHouseHolds().getPanchayat().getPanchayatName());
                 }
                 else
@@ -2147,6 +2149,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
                 	vo.setName(hhv.getHouseHoldsFamilyDetails().getName());
                 	vo.setVoterIDCardNo("");
                 	vo.setRelativeName(hhv.getHouseHoldsFamilyDetails().getRelativeName());
+                	vo.setAge(hhv.getHouseHoldsFamilyDetails().getAge());
                 	vo.setRelation(hhv.getVoterFamilyRelation().getRelation()); 
                 }
                 familyMembersList.add(vo);
@@ -2157,4 +2160,144 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
         }
         return familyMembersList;
     }
+    
+    public List<HouseHoldVotersVO> getNonVoterAgeRangeDetailsInConstituency(Long constituencyId)
+    {
+    	List<HouseHoldVotersVO> ageRangeDetails = new ArrayList<HouseHoldVotersVO>();
+    	try{
+    		
+    		List<Object[]> list = houseHoldVoterDAO.getNonVoterAgeRangesInConstituency(constituencyId,null,IConstants.KPM_AGE1_MAX);   		 
+			List<Object[]> list1 = houseHoldVoterDAO.getNonVoterAgeRangesInConstituency(constituencyId,IConstants.KPM_AGE2_MIN,IConstants.KPM_AGE2_MAX);   		 
+			List<Object[]> list2 = houseHoldVoterDAO.getNonVoterAgeRangesInConstituency(constituencyId,IConstants.KPM_AGE3_MIN,null);
+	
+			for(Object[] params:list)
+			{ 				
+				HouseHoldVotersVO vo = new HouseHoldVotersVO();
+				 vo.setPanchayatId((Long)params[3]);
+				 vo.setPanchayatName(params[4].toString());
+				 vo = getAgeRangesOfHouseHolds(vo);
+				 
+				 ageRangeDetails.add(vo);					 						
+			}
+			 
+			for(Object[] params :list){
+				 HouseHoldVotersVO vo1 = getMatchedVO(ageRangeDetails,(Long)params[3]);
+				 if(vo1 != null){	
+					 HouseHoldVotersVO ageRangeVO = getMatchedAgeRange(vo1.getAgeRangesList(),IConstants.KPM_AGE1_MIN+"-"+IConstants.KPM_AGE1_MAX);
+					 if(ageRangeVO!=null){
+						 ageRangeVO.setAgeRangeCount((Long)params[2]);
+					 }
+				 }					
+			 }		
+		
+			 for(Object[] params :list1)
+			 {
+				 HouseHoldVotersVO vo1 = getMatchedVO(ageRangeDetails,(Long)params[3]);
+				 if(vo1 != null){	
+					 HouseHoldVotersVO ageRangeVO = getMatchedAgeRange(vo1.getAgeRangesList(),IConstants.KPM_AGE2_MIN+"-"+IConstants.KPM_AGE2_MAX);
+					 if(ageRangeVO!=null){
+						 ageRangeVO.setAgeRangeCount((Long)params[2]);
+					 }
+				 }					
+			 }
+			 
+			 for(Object[] params :list2)
+			 {
+				 HouseHoldVotersVO vo1 = getMatchedVO(ageRangeDetails,(Long)params[3]);
+				 if(vo1 != null){	
+					 HouseHoldVotersVO ageRangeVO = getMatchedAgeRange(vo1.getAgeRangesList(),IConstants.KPM_AGE3_MIN+"-"+IConstants.KPM_AGE3_MAX);
+					 if(ageRangeVO!=null){
+						 ageRangeVO.setAgeRangeCount((Long)params[2]);
+					 }
+				 }				
+			 }   			    			
+         }catch (Exception e) {
+         	 log.error("Exception raised in getNonVoterAgeRangeDetailsInConstituency service method",e);
+         }
+    	 return ageRangeDetails; 
+    }
+    
+    public HouseHoldVotersVO getAgeRangesOfHouseHolds(HouseHoldVotersVO finalVO){
+		
+		HouseHoldVotersVO hv =null;
+		
+		List<HouseHoldVotersVO> ageRangesList = new ArrayList<HouseHoldVotersVO>();
+		
+		hv  = new HouseHoldVotersVO();
+		hv.setAgeRange(IConstants.KPM_AGE1_MIN+"-"+IConstants.KPM_AGE1_MAX);
+		ageRangesList.add(hv);
+		
+		hv  = new HouseHoldVotersVO();
+		hv.setAgeRange(IConstants.KPM_AGE2_MIN+"-"+IConstants.KPM_AGE2_MAX);
+		ageRangesList.add(hv);
+		
+		hv  = new HouseHoldVotersVO();
+		hv.setAgeRange(IConstants.KPM_AGE3_MIN+"-"+IConstants.KPM_AGE3_MAX);
+		ageRangesList.add(hv);
+		
+		finalVO.setAgeRangesList(ageRangesList);
+		return finalVO;
+		
+	}
+    public HouseHoldVotersVO getMatchedVO(List<HouseHoldVotersVO> resultList,Long panchayatId)
+	{
+	
+		try{
+			if(resultList == null)
+				return null;
+			for(HouseHoldVotersVO vo : resultList)
+			{
+				if(panchayatId.longValue() == vo.getPanchayatId().longValue())
+					return vo;
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			
+		}
+		return null;
+	}
+
+    public HouseHoldVotersVO getMatchedAgeRange(List<HouseHoldVotersVO> ageRanges,String ageRange){
+	if(ageRanges!=null && ageRanges.size()>0 && ageRange!=null && ageRange.trim()!=""){
+		for(HouseHoldVotersVO ag:ageRanges){
+			if(ag.getAgeRange().equalsIgnoreCase(ageRange)){
+				return ag;
+			}
+		}
+	}
+	return null;
+    }
+    
+   
+
+    public List<HouseHoldsReportVO> getBooksDetailsOfHouseHolds(Long constituencyId)
+    {
+    	List<HouseHoldsReportVO>  booksDetails= new ArrayList<HouseHoldsReportVO>();
+    	try{
+    		List<Object[]> list = houseHoldVoterDAO.getBooksOfHouseHolds(constituencyId);
+    		if(list != null && list.size() > 0){
+    		for(Object[] params : list){
+    			
+    			HouseHoldsReportVO hhv = new HouseHoldsReportVO();
+    			hhv.setBookId((Long)params[0]);
+    			hhv.setTehsilName(params[2].toString());
+    			hhv.setPanchayatId((Long)params[4]);
+    			hhv.setPanchayatName(params[5].toString());
+    			hhv.setLeaderName(params[6].toString());
+    			hhv.setVoterId(params[7].toString());
+    			hhv.setBookNo((Long)params[1]);
+    			hhv.setVotersCount((Long)params[8]);
+    			hhv.setNonVotersCount((Long)params[9]);
+    			hhv.setFamiliesCount((Long)params[10]);
+    			booksDetails.add(hhv);
+    			
+    		}
+    		}
+         }catch (Exception e) {
+         	 log.error("Exception raised in getBooksOfHouseHoldDetails service method",e);
+         }
+    	 return booksDetails; 
+    }
+
 }
