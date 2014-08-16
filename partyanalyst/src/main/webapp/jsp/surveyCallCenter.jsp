@@ -130,7 +130,7 @@
 					
 					<li><a class="highlight" id="wmReportTab" value="3" onclick="showHideTabs(this.id);">WM Report</a></li>
 					<li><a class="highlight" id="verifierReportTab" value="2" onclick="showHideTabs(this.id);">Verifier Report</a></li>
-					<li><a class="highlight" id="thirdPartyReportTab" onclick="showHideTabs(this.id);">Third Party Report</a></li>
+					<li><a class="highlight" id="thirdPartyReportTab" onclick="showHideTabs(this.id);">QC Report</a></li>
 					
 				</ul>
 			</div>
@@ -346,25 +346,7 @@
 											<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="constituencyIdForVerfication" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency"  />
 												
 										</div>
-										<!--<div class="span3">
-											Select Booth 
-											<select class="input-block-level" id = "boothIdForVerfication" multiple="true"> <option value="0">Select Booth</option></select></div>
-											<div class="span1" style="margin:25px -8px 0 8px;width: 15px;">
-										<img id="boothImage" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
-							
-										</div>
-										<div class="span2">
-											From Date <font class="requiredFont">*</font>
-											<div class="input-append">
-											<input type="text" placeholder="From Date..." class="input-block-level date" id="fromDate" readonly>
-											</div>
-										</div>
-										<div class="span2">
-											To Date <font class="requiredFont">*</font>
-											<div class="input-append">
-											 <input type="text" placeholder="To Date..." class="input-block-level date" id="toDate" readonly>
-											</div>
-										</div>-->
+										
 									</div>	
 									<div class="row-fluid">
 										
@@ -648,7 +630,7 @@
 			<div class="span12">
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top20">
-							<h4>THIRD PARTY READY FOR REVIEW BOOTHS OVERVIEW</h4>
+							<h4>QC READY FOR REVIEW BOOTHS</h4>
 								<img src='images/Loading-data.gif' class="offset5"  id="thirdPartyAjaxImg" style="width:70px;height:60px;display:none;"/>
 								<div class="row">
 									<div id="errorDivForThirdParty" class="span8 offset4"></div>
@@ -752,9 +734,6 @@ function buildConstituency()
 				});
 		});
 		 }
-		
-		
-
 	</script>
 	
  </body>

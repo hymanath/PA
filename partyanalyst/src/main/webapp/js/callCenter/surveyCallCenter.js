@@ -4048,7 +4048,7 @@ function buildFinalReportWithTP(result){
 	
 	//$("#FinalReportWithTPId").html("");
 	var str = "";
-	str +="<h4 style='text-align:center;color:red;'> BOOTH WISE OVERVIEW OF THIRD PARTY DATA</h4>";
+	str +="<h4 style='text-align:center;color:red;'> BOOTH WISE OVERVIEW OF QC COLLECTED DETAILS</h4>";
 	str +="<table id='FinalReportWithTPTableId' class='table table-bordered table-striped'>";
 		str +="<thead class='alert alert-success'>";
 			str +="<tr>";
@@ -4137,8 +4137,8 @@ function getWmUpdatedDetails(boothId,partNo,id)
 function buildCommentedDetails(result,partNo,divId)
 {
 	var str = '';
-	
-	str += '<table  class="table table-bordered table-striped">';
+	str += '<h4 style="text-align:center;color:red;">'+partNo+' BOOTH REVIEW DETAILS</h4>';
+	str += '<table  class="table table-bordered table-striped" id="reviewDetails">';
 	str += '<thead class="alert alert-success">';
 	str += '<tr>';
 	str += '<th>BOOTH NO</th>';
@@ -4165,6 +4165,7 @@ function buildCommentedDetails(result,partNo,divId)
 	str += '</table>';
 	$("#"+divId+"").html(str);
 	$("#thirdPartyAjax").hide();
+	$('#reviewDetails').datatable();
 }
 function checkAllThirdPartyChkBoxes(){
  if($("#thirdPartyChkBox").is(':checked')){
