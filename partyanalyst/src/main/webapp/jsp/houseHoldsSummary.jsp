@@ -662,6 +662,7 @@ function buildHouseHoldsUnderFamilyHead(result,name){
 				str +="<tr>";
 					str +="<th>FAMILY MEMBER</th>";	
 					str +="<th>VOTER ID</th>";	
+					str +="<th>AGE</th>";	
 					str +="<th>RELATIVE NAME</th>";	
 					str +="<th>RELATION TYPE</th>";	
 					
@@ -673,6 +674,7 @@ function buildHouseHoldsUnderFamilyHead(result,name){
 					str +="<tr>";
 						str +="<td>"+result[i].name+"</td>";
 						str +="<td>"+result[i].voterIDCardNo+"</td>";
+						str +="<td>"+result[i].age+"</td>";
 						str +="<td>"+result[i].relativeName+"</td>";
 						str +="<td>"+result[i].relation+"</td>";
 					str +="</tr>";
@@ -762,7 +764,7 @@ function buildBookDetailsOfHouseHolds(result)
 {
 if(result!=null && result.length>0){
 		var str = "";
-			str +="<h4 class='offset3' style='color:red;margin-down:20px;margin-up:20px;'>Consolidate Report</h4>";
+			str +="<h4 class='offset3' style='color:red;margin-down:20px;margin-up:20px;'>CONSOLIDATE REPORT</h4>";
 		
 		str+= "<table class='table table-bordered questSummaryTbl'>";
 			str +="<thead>";
@@ -772,7 +774,7 @@ if(result!=null && result.length>0){
 					str +="<th>BOOK NO</th>";	
 					str +="<th>LEADER NAME</th>";
 					str +="<th>VOTER ID CARD NO</th>";
-					str +="<th>BOOK FAMILIES COUNT</th>";						
+					str +="<th>FAMILIES COUNT</th>";						
 					str +="<th>VOTERS COUNT</th>";	
 					str +="<th>NON VOTERS COUNT</th>";	
 					
