@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dto.HHQuestionDetailsVO;
 import com.itgrids.partyanalyst.dto.HHQuestionSummaryReportVO;
 import com.itgrids.partyanalyst.dto.HHSurveyVO;
 import com.itgrids.partyanalyst.dto.HouseHoldVotersVO;
+import com.itgrids.partyanalyst.dto.HouseHoldsReportVO;
 import com.itgrids.partyanalyst.dto.HouseHoldsSummaryReportVO;
 import com.itgrids.partyanalyst.dto.HouseHoldsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -78,8 +79,17 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 	private HHQuestionSummaryReportVO qstnsSummary;
 	private List<HHQuestionSummaryReportVO> questions;
 	private List<HouseHoldVotersVO> report;
+	private List<HouseHoldsReportVO> houseHoldBooks;
 	
 	
+	public List<HouseHoldsReportVO> getHouseHoldBooks() {
+		return houseHoldBooks;
+	}
+
+	public void setHouseHoldBooks(List<HouseHoldsReportVO> houseHoldBooks) {
+		this.houseHoldBooks = houseHoldBooks;
+	}
+
 	public List<HouseHoldVotersVO> getReport() {
 		return report;
 	}
@@ -826,8 +836,27 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 	public String familyMembersUnderFamilyHead(){
 		try {		
 			jObj = new JSONObject(getTask());
-			Long householdId = jObj.getLong("householdId");
 			report = houseHoldSurveyReportService.getFamilyMembersUnderFamilyHead(jObj.getLong("householdId"));
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+    	return Action.SUCCESS;
+	}
+	
+	public String getNonVoterAgeRangeDetailsConstituencyWise(){
+		try {		
+			jObj = new JSONObject(getTask());
+			report = houseHoldSurveyReportService.getNonVoterAgeRangeDetailsInConstituency(jObj.getLong("constituencyId"));
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+    	return Action.SUCCESS;
+	}
+	
+	public String getBooksDetailsOfHouseHolds(){
+		try {		
+			jObj = new JSONObject(getTask());
+			houseHoldBooks = houseHoldSurveyReportService.getBooksDetailsOfHouseHolds(jObj.getLong("constituencyId"));
 		}catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -8093,5 +8093,17 @@
 					<param name="root">report</param>
 			</result>
 		</action>
+		
+		<action name="getNonVoterAgeRangeDetailsConstituencyWiseAction" class="houseHoldSurveyReportAction" method="getNonVoterAgeRangeDetailsConstituencyWise">
+			<result type="json" name="success">
+					<param name="root">report</param>
+			</result>
+		</action>
+		
+		<action name="getBooksDetailsOfHouseHoldsAction" class="houseHoldSurveyReportAction" method="getBooksDetailsOfHouseHolds">
+			<result type="json" name="success">
+					<param name="root">houseHoldBooks</param>
+			</result>
+		</action>
 </package>
 </struts>      
