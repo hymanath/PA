@@ -402,6 +402,8 @@
 							<button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getBoothsStatusDetailsOfConstituency();"> Get Report </button>
 							
 							<button type="button" class="btn btn-success" id="excelTab" onClick="generateExcel('matchedUnMatchedTable1');" style="display:none;">Export To Excel</button>
+							
+								<a href="duplicateMobileNumbers.action"  class="btn btn-success pull-right">Duplicate Mobile Numbers Report</a>
 						</div>
 						<img src='images/Loading-data.gif' class="offset5 hide"  id="stateStatusAjax" style="width:70px;height:60px;"/>	</img>
 						<div class="row-fluid " id= "tableForMatchedAndUnMatched" style="margin-top:10px;overflow-x:scroll;"></div>		
