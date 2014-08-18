@@ -351,11 +351,24 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 	}
 	public List<Object[]> getVoterAndNonVoterCountInConstituency(Long constituencyId){
 		Query query = getSession().createQuery(" select model1.constituency.constituencyId,model1.constituency.name," +
-				" count(model.voter.voterId)," +
-				" count(model.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId) " +
+				" count(distinct model.voter.voterId) " +
+				//" count(model.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId) " +
 				" from HouseHoldVoter model,HHBoothLeader model1 where " +
 				" model.hhLeader.id = model1.hhLeader.id" +
-				" and model1.constituency.constituencyId = :constituencyId" +
+				" and model1.constituency.constituencyId = :constituencyId and model.voter.voterId is not null " +
+				" and model.isDelete = 'false'" +
+				" and model.hhLeader.is_active = 'YES'");
+		
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
+	public List<Object[]> getVoterAndNonVoterCountInConstituency1(Long constituencyId){
+		Query query = getSession().createQuery(" select model1.constituency.constituencyId,model1.constituency.name," +
+				//" count(model.voter.voterId)," +
+				" count(distinct model.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId) " +
+				" from HouseHoldVoter model,HHBoothLeader model1 where " +
+				" model.hhLeader.id = model1.hhLeader.id" +
+				" and model1.constituency.constituencyId = :constituencyId and model.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId is not null " +
 				" and model.isDelete = 'false'" +
 				" and model.hhLeader.is_active = 'YES'");
 		
@@ -414,8 +427,8 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 	public List<Object[]> getNonVotersAgeGroupInHouseHolds(Long val,int type, Long fromAge,Long toAge){
 		StringBuffer sb = new StringBuffer();
 		
-		sb.append(" select distinct model.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId," +
-				" model.houseHolds.houseHoldId," +
+		sb.append(" select distinct model.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId, model.houseHoldsFamilyDetails.name, " +
+				" model.houseHolds.houseHoldId,model.houseHolds.houseNo, model.houseHoldsFamilyDetails.age, " +
 				//" count(model.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId)," +
 				" model.houseHoldsFamilyDetails.gender," +
 				" model.houseHoldsFamilyDetails.relativeName" +
@@ -452,8 +465,8 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 	
 	public List<Object[]> getNonVoterAgeRangesInConstituency(Long constituencyId,Long fromAge,Long toAge){
 		StringBuffer sb = new StringBuffer();
-		sb.append(" select model1.constituency.constituencyId,model1.constituency.name," +
-				" count(model.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId)," +
+		sb.append(" select  model1.constituency.constituencyId,model1.constituency.name," +
+				" count(distinct model.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId)," +
 				" model.houseHolds.panchayat.panchayatId," +
 				" model.houseHolds.panchayat.panchayatName " +
 				" from HouseHoldVoter model,HHBoothLeader model1 where " +

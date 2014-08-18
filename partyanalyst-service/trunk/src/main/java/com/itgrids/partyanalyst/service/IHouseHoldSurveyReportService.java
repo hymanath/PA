@@ -47,4 +47,5 @@ public interface IHouseHoldSurveyReportService {
 	public List<HouseHoldVotersVO> getFamilyMembersUnderFamilyHead(Long houseHoldId);
 	public List<HouseHoldVotersVO> getNonVoterAgeRangeDetailsInConstituency(Long constituencyId);
 	 public List<HouseHoldsReportVO> getBooksDetailsOfHouseHolds(Long constituencyId);
+	public List<HouseHoldVotersVO> getAgeRangeWiseNonVotersDetails(Long panchayatId,int type,Long fromAge,Long toAge);
 }

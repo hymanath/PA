@@ -1667,15 +1667,20 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
         	
         	List<Object[]> leadersCount = houseHoldVoterDAO.getActiveLeadersOfConstituency(constituencyId);
         	
-        	List<Object[]> vtrsNonVtrsList = houseHoldVoterDAO.getVoterAndNonVoterCountInConstituency(constituencyId);
+        	List<Object[]> vtrsList = houseHoldVoterDAO.getVoterAndNonVoterCountInConstituency(constituencyId);
+        	List<Object[]> nonVtrsList = houseHoldVoterDAO.getVoterAndNonVoterCountInConstituency1(constituencyId);
         	
-        	if(vtrsNonVtrsList!=null && vtrsNonVtrsList.size()>0){
-        		for(Object[] obj:vtrsNonVtrsList){
+        	if(vtrsList!=null && vtrsList.size()>0){
+        		for(Object[] obj:vtrsList){
         			finalVO.setConstiVotersCount(Long.valueOf(obj[2].toString()));
-        			finalVO.setConstiNonVotersCount(Long.valueOf(obj[3].toString()));
         		}
         	}
         	
+        	if(nonVtrsList!=null && nonVtrsList.size()>0){
+        		for(Object[] obj:nonVtrsList){
+        			finalVO.setConstiNonVotersCount(Long.valueOf(obj[2].toString()));
+        		}
+        	}
         	
         	List<HouseHoldsSummaryReportVO> panchayatNamesList = new ArrayList<HouseHoldsSummaryReportVO>();
         	List<HouseHoldsSummaryReportVO> pnchytSummryList = new ArrayList<HouseHoldsSummaryReportVO>();
@@ -2299,5 +2304,30 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
          }
     	 return booksDetails; 
     }
-
+    
+    
+    public List<HouseHoldVotersVO> getAgeRangeWiseNonVotersDetails(Long panchayatId,int type,Long fromAge,Long toAge)
+    {
+    	List<HouseHoldVotersVO>  nonVotersDetails= new ArrayList<HouseHoldVotersVO>();
+    	try{
+    		List<Object[]> list = houseHoldVoterDAO.getNonVotersAgeGroupInHouseHolds(panchayatId,type,fromAge,toAge);
+    		if(list != null && list.size() > 0){
+    		for(Object[] params : list){
+    			
+    			HouseHoldVotersVO hhv = new HouseHoldVotersVO();
+    			hhv.setHouseHoldFamilyMemberId((Long)params[0]);
+    			hhv.setName(params[1].toString());
+    			hhv.setHouseNo(params[3].toString());
+    			hhv.setAge((Long)params[4]);
+    			hhv.setRelativeName(params[6].toString());
+    			nonVotersDetails.add(hhv);
+    			
+    		}
+    		}
+         }catch (Exception e) {
+         	 log.error("Exception raised in getAgeRangeWiseNonVotersDetails service method",e);
+         }
+    	 return nonVotersDetails; 
+    }
+    	
 }
