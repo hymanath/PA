@@ -3795,9 +3795,9 @@ $('#boothWiseTab,#startTimeTab').removeClass('selected');
 					     
 					              str +='<option value="0">Select Status</option>';
 								  if(result[i].status == 1){
-								     str +='<option value="1" selected="selected">Same Caste</option>';
+								     str +='<option value="1" selected="selected">Matched</option>';
 								  }else{
-								     str +='<option value="1">Same Caste</option>';
+								     str +='<option value="1">Matched</option>';
 								  }
 								  if(result[i].status == 2){
 								     str +='<option value="2" selected="selected">WM Wrong</option>';
@@ -3810,10 +3810,15 @@ $('#boothWiseTab,#startTimeTab').removeClass('selected');
 								     str +='<option value="3">TP Wrong</option>';
 								  }
 								  if(result[i].status == 4){
-								     str +='<option value="4" selected="selected">Newly Collected Caste</option>';
+								     str +='<option value="4" selected="selected">Same Caste</option>';
 								  }else{
-								     str +='<option value="4">Newly Collected Caste</option>';
+								     str +='<option value="4">Same Caste</option>';
 								  }
+								  if(result[i].status == 7){
+									     str +='<option value="4" selected="selected">New Caste</option>';
+								  }else{
+									     str +='<option value="4">New Caste</option>';
+									  }
 					      str +='</select>';
 						  if(result[i].status == 1)	
 						  {
@@ -3822,10 +3827,10 @@ $('#boothWiseTab,#startTimeTab').removeClass('selected');
 						 }else{
 						   str +='<select id="tPmultipleupdtStsId'+i+'" onchange="updateThirdPartyDetails('+result[i].voterId+',this.value);">';
 					              str +='<option value="0">Select Status</option>';
-								  str +='<option value="1">Same Caste</option>';
+								  str +='<option value="1">Matched</option>';
 								  str +='<option value="2">WM Wrong</option>';
 								  str +='<option value="3">TP Wrong</option>';
-								  str +='<option value="4">Same Caste With Diff Name</option>';
+								  str +='<option value="4">Same Caste</option>';
 								   str +='<option value="7">New Caste</option>';
 					       str +='</select>';
 						 }
@@ -4214,10 +4219,10 @@ $('#finalInputDiv').html('');
 				str +='<tr><td></td><td><input type="checkbox" id="multipleTpStatusUpdateCheckId" style="margin-top:-3px;" onclick="hideShowmultipleTpStatusUpdateDiv();"/> &nbsp; Check To Update Status</td></tr>';
 				str +='<tr id="multipleTpStatusUpdateDivId" style="display:none;"><td><b>Select Status : </b></td><td><select id="multipleTpStatusUpdateId">';
 				                  str +='<option value="0">Select Status</option>';
-								  str +='<option value="1">Same Caste</option>';
+								  str +='<option value="1">Matched</option>';
 								  str +='<option value="2">WM Wrong</option>';
 								  str +='<option value="3">TP Wrong</option>';
-								  str +='<option value="4">Same Caste With Diff Name</option>';
+								  str +='<option value="4">Same Caste</option>';
 								   str +='<option value="7">New Caste</option>';
 				str +='</select></td></tr>';
 				str +='<tr><td></td><td><input id="multipleTpStatusUpdateSubmitId" type="button" class="btn btn-success" value="Submit" onclick="updateMultipleTPComment();" /><img style="display:none;"  src="images/icons/search.gif" id="updateMultipleTPCommentImg"/></td></tr>';
