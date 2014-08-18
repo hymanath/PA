@@ -1329,13 +1329,13 @@ var voterDtls={
 };
 function submitQuestionDetails()
 {
-  $("#submitQuesAjaxImg").css("display","block");
+ 
   var errorDivEle = document.getElementById('errorDiv');
   var flag= true;
   var str= '';
   var pattern1= /^\d{10}$/;
   //var pattern2 =  /^\d{1,3}(?:\.\d{0,2})?$/;
-	  
+  var pattern = /^[a-zA-Z\s]+$/;  
   if($('#BoothLeadersListId').val() == 0){
        str+='Booth Leader Name is Required<br>';
 	   flag=false;
@@ -1345,7 +1345,24 @@ function submitQuestionDetails()
        str+='Booth Leader BookNo is Required<br>';
 	   flag=false;
   }
-  
+   $('.nameCls').each(function() {
+     if($.trim($(this).val()).length == 0)
+	  {
+	    str+='Name is required for adding new person<br>';
+	    flag=false;
+		return false;
+	 }
+  });
+   $('.nameCls').each(function() {
+    if($.trim($(this).val()).length > 0 )
+	 {
+		if(!pattern.test($(this).val())){
+		str+='Please Enter Name Correctly<br>';
+		flag=false;
+		return false;
+		}
+	 }
+   });
   $('.ageCls').each(function() {
     if($.trim($(this).val()).length == 0)
 	 {
@@ -1356,24 +1373,17 @@ function submitQuestionDetails()
   });
 
    $('.ageCls').each(function() {
-    if($.trim($(this).val()).length > 0)
+    if($.trim($(this).val()).length > 0 )
 	 {
-		if(isNaN($.trim($(this).val()))){
-		str+='Age must be integer<br>';
+		if(isNaN($.trim($(this).val())) || $.trim($(this).val())< 1 || $.trim($(this).val()) > 120){
+		str+='Please Enter Age Correctly<br>';
 		flag=false;
 		return false;
 		}
 	 }
    });
       
-  $('.nameCls').each(function() {
-     if($.trim($(this).val()).length == 0)
-	  {
-	    str+='Name is required for adding new person<br>';
-	    flag=false;
-		return false;
-	 }
-  });
+ 
   $('.gaurdianCls').each(function(){
      if($.trim($(this).val()).length == 0)
 	 {
@@ -1382,6 +1392,18 @@ function submitQuestionDetails()
 		 return false;
      }
   });
+  
+   $('.gaurdianCls').each(function() {
+    if($.trim($(this).val()).length > 0 )
+	 {
+		if(!pattern.test($(this).val())){
+		str+='Please Enter Gaurdian Name Correctly<br>';
+		flag=false;
+		return false;
+		}
+	 }
+   }); 
+   
    $('.mobileCls').each(function(){
      if($.trim($(this).val()).length == 0)
 	 {
@@ -1400,6 +1422,7 @@ function submitQuestionDetails()
 					 }
 			}
    });
+    
   errorDivEle.innerHTML = str;
   if(flag == false)
   {
@@ -1516,7 +1539,7 @@ function submitQuestionDetails()
 				 voterDtls.voters.push(selectedVoterDtls);
 
   }
-
+$("#submitQuesAjaxImg").css("display","block");
 	 $.ajax({
           type:'POST',
           url: 'saveHouseHoldsVotersDetailsAction.action',
