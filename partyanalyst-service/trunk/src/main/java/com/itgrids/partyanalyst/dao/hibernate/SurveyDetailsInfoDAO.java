@@ -1682,4 +1682,13 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		
 	}
 	
+	public List<Long> getSurveyStartedDistrictDetails()
+	{
+		Query query = getSession().createQuery("select distinct SDI.booth.constituency.district.districtId from " +
+				"SurveyDetailsInfo SDI");
+		
+
+		return query.list();
+	}
+	
 }

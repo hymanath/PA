@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ISurveyCallStatusDAO;
 import com.itgrids.partyanalyst.dao.ISurveyCompletedConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ISurveyCompletedLocationsDAO;
@@ -86,6 +87,10 @@ public class SurveyCompletedDetailsService implements
 	
 	@Autowired
 	private ISurveyCompletedConstituencyDAO surveyCompletedConstituencyDAO;
+	
+	@Autowired
+	private IDistrictDAO districtDAO;
+	
 	
 	
 	public List<SurveyReportVO> getSurveyCompletedLocationsDetailsForSurveyStartedConstituencies()
@@ -1757,4 +1762,123 @@ public class SurveyCompletedDetailsService implements
 		
 	}
 	
+	
+	public SurveyDashBoardVO getCompletedLocationsDetails()
+	{
+		LOG.info("Entered into the getCompletedLocationsDetails service method");
+		SurveyDashBoardVO resultVO = new SurveyDashBoardVO();
+		try
+		{
+			Long cCompletedCnt = 0L;
+			Long cTotalCnt = 0L;
+			
+			//completed constituencies details start
+			Map<Long,Long> cCompletedMap = new HashMap<Long, Long>();
+			
+			List<Object[]> completedConstnsCountList = surveyCompletedLocationsDAO
+					.getDistrictWiseCompletedConstituenciesDetails();
+			
+			cCompletedCnt = setListDetailsToMap(cCompletedMap,completedConstnsCountList);
+			
+			//completed constituencies details end
+			
+			
+			//total constituencies details start
+			Map<Long,Long> cTotalMap = new HashMap<Long, Long>();
+			
+			List<Object[]> totalConstnsCountList = surveyConstituencyDAO
+					.getDistrictWiseSurveyConstituenciesCount();
+			
+			cTotalCnt = setListDetailsToMap(cTotalMap,totalConstnsCountList);
+			
+			List<Long> startedConstns = surveyDetailsInfoDAO.getSurveyStartedConstituenciesDetails();
+
+			resultVO.setProcessingCount(startedConstns.size() - Integer.parseInt(cCompletedCnt.toString()));			
+			resultVO.setCompletedCount(Integer.parseInt(cCompletedCnt.toString()));			
+			resultVO.setStartedCount(startedConstns.size());			
+			resultVO.setNotStartedCount(Integer.parseInt(cTotalCnt.toString()) - startedConstns.size());
+			
+			List<Long> startedDistrictIds = surveyDetailsInfoDAO
+					.getSurveyStartedDistrictDetails();	
+			
+			List<Long> completedDistrictsList = new ArrayList<Long>();
+			
+			
+			// if the no of survey constituencies of a district is equal to the no of processing constituencies
+			// then we can say a district is completed
+			
+			for(Entry<Long,Long> entry:cTotalMap.entrySet())
+			{
+				if(cCompletedMap.get(entry.getKey()) != null && cCompletedMap.get(entry.getKey()).equals(entry.getValue()))
+				{
+					completedDistrictsList.add(entry.getKey());
+				}
+				
+			}
+			setDistrictsDetails(startedDistrictIds,resultVO,completedDistrictsList);
+
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Exception raised in getCompletedLocationsDetails service method");
+		}
+		return resultVO;
+	}
+	
+	public void setDistrictsDetails(List<Long> startedDistrictIds,
+			SurveyDashBoardVO resultVO, List<Long> completedDistrictsList)	{
+		
+		LOG.info("Entered into the setDistrictsDetails service method");
+
+		// If the completed districts contains districtId, then we will add that district details
+		// as completed otherwise we will add that district to started district
+		
+		try
+		{
+			List<Object[]> districtsDtls = districtDAO
+					.getDistrictDetailsByDistrictIds(startedDistrictIds);
+	
+			for(Object[] obj:districtsDtls)
+			{
+				SurveyDashBoardVO district = new SurveyDashBoardVO();
+				
+				district.setLocationName(obj[1].toString());
+				district.setLocationId((Long)obj[0]);
+				
+				if(completedDistrictsList.contains((Long)obj[0]))
+				{
+					resultVO.getCompleted().add(district);
+				}else
+				{
+					resultVO.getStarted().add(district);
+				}
+			}
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Exception raised in setDistrictsDetails service method");
+		}
+	}
+	
+	public Long setListDetailsToMap(Map<Long, Long> constnMap,
+			List<Object[]> constnList)	{
+		LOG.info("Entered into the setListDetailsToMap service method");
+
+		Long count = 0L;
+		try
+		{
+			for(Object[] obj:constnList)
+			{
+				constnMap.put((Long)obj[1], (Long)obj[0]);
+				count = count + (Long)obj[0];
+			}
+			
+		}catch(Exception e)
+		{
+		  e.printStackTrace();
+		  LOG.error("Exception raised in setListDetailsToMap service method");
+		}
+		return count;
+		
+	}
 }
