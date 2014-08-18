@@ -232,6 +232,7 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 				" model.isDelete = 'false'" +
 				" and model.hhLeader.is_active = 'YES'" +
 				" and model1.constituency.constituencyId = :constituencyId" +
+				" and model.voterFamilyRelation.voterFamilyRelationId = 1" +
 				" and model.voter.voterId is not null" +
 				" group by model.houseHolds.panchayat.panchayatId ");
 		
@@ -394,6 +395,7 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 				" model.hhLeader.id = model1.hhLeader.id and " +
 				" model.isDelete = 'false'" +
 				" and model.hhLeader.is_active = 'YES'" +
+				" and model.voterFamilyRelation.voterFamilyRelationId = 1"+
 				" and model1.constituency.constituencyId = :constituencyId");
 		
 		query.setParameter("constituencyId", constituencyId);
@@ -518,6 +520,51 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 		query.setParameter("deleteStatus", IConstants.FALSE);
 		query.setParameter("constituencyId", constituencyId);
 		query.setParameter("activeStatus", "YES");
+		return query.list();
+	}
+	
+	public List<Object[]> getNonVotersInConstituencyWithAgeRange(Long constituencyId,Long fromAge,Long toAge){
+		StringBuffer sb = new StringBuffer();
+		sb.append(" select " +
+				" model.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId," +
+				" model.houseHolds.houseHoldId," +
+				" model.houseHolds.houseNo," +
+				" model.houseHoldsFamilyDetails.name," +
+				" model.houseHoldsFamilyDetails.age," +
+				" model.houseHoldsFamilyDetails.gender," +
+				" model.houseHoldsFamilyDetails.relativeName," +
+				" model.houseHolds.panchayat.panchayatId," +
+				" model.houseHolds.panchayat.panchayatName," +
+				" model.hhLeader.voterId," +
+				" model.hhLeader.name," +
+				" model.hhLeader.mobileNo," +
+				" model1.booth.boothId," +
+				" model1.booth.partNo," +
+				" model.hhLeaderBooks.hhLeaderBookId," +
+				" model.hhLeaderBooks.bookNo " +
+				" from HouseHoldVoter model,HHBoothLeader model1 where " +
+				" model.hhLeader.id = model1.hhLeader.id" +
+				" and model1.constituency.constituencyId = :constituencyId" +
+				" and model.isDelete = 'false'" +
+				" and model.hhLeader.is_active = 'YES'" );
+		
+		if(fromAge!=null){
+			sb.append(" and model.houseHoldsFamilyDetails.age >= :fromAge ");
+		}if(toAge!=null){
+			sb.append(" and model.houseHoldsFamilyDetails.age <= :toAge ");
+		}
+		
+		sb.append("group by model.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId");
+		
+		Query query = getSession().createQuery(sb.toString());
+		
+		query.setParameter("constituencyId", constituencyId);
+		if(fromAge!=null){
+			query.setParameter("fromAge",fromAge);
+		}
+		if(toAge!=null){
+			query.setParameter("toAge",toAge);
+		}
 		return query.list();
 	}
 	
