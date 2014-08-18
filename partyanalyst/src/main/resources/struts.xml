@@ -8105,5 +8105,11 @@
 					<param name="root">houseHoldBooks</param>
 			</result>
 		</action>
+		
+		<action name="getAgeWiseNonVotersDetailsAction" class="houseHoldSurveyReportAction" method="getAgeWiseNonVotersDetails">
+			<result type="json" name="success">
+					<param name="root">report</param>
+			</result>
+		</action>
 </package>
 </struts>      

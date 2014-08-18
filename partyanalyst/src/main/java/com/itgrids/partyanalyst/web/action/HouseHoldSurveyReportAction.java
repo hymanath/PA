@@ -862,4 +862,16 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 		}
     	return Action.SUCCESS;
 	}
+	
+	public String getAgeWiseNonVotersDetails(){
+		try {		
+			jObj = new JSONObject(getTask());
+			Long fromAge = Long.valueOf(jObj.getString("fromAge"));
+			Long toAge = Long.valueOf(jObj.getString("toAge"));
+			report = houseHoldSurveyReportService.getAgeRangeWiseNonVotersDetails(jObj.getLong("panchayatId"),jObj.getInt("type"),fromAge,toAge);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+    	return Action.SUCCESS;
+	}
 }

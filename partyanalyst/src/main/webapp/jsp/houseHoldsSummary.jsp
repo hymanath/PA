@@ -67,6 +67,7 @@
 	
 	<div id="constiSummaryDiv" style="margin:20px;"></div>
 	<div id="constiNonVotersSummaryDiv" style="margin:20px;"></div>
+	<div id="ageRangeNonVotersSummaryDiv" style="margin:20px;"></div>
 	<div id="consolidateReport" style="margin:20px;"></div>
 	<div id="panchayatSummaryDivId" style="margin:20px;"></div>
 	
@@ -88,7 +89,7 @@
 	<script>
 	
 	function getBooksSummary(){
-		$("#panchayatSummaryDivId,#summariesId,#summariesId1,#summariesId2,#constiNonVotersSummaryDiv,#questSummary3,#consolidateReport").html("");
+		$("#panchayatSummaryDivId,#summariesId,#summariesId1,#summariesId2,#constiNonVotersSummaryDiv,#questSummary3,#consolidateReport,#ageRangeNonVotersSummaryDiv").html("");
 		$("#questSummary,#questSummary1,#question,#questSummary2").html("");
 		$("#leaderDivId,#bookDivId").css("display","block");
 		$("#questionDivId").css("display","none");
@@ -241,7 +242,7 @@ function getQuestionSummary(){
 }
 
 function clearSummaryDivs(){
-	$("#constiSummaryDiv,#panchayatSummaryDivId,#summariesId,#summariesId1,#summariesId2,#constiNonVotersSummaryDiv,#questSummary3,#consolidateReport").html("");
+	$("#constiSummaryDiv,#panchayatSummaryDivId,#summariesId,#summariesId1,#summariesId2,#constiNonVotersSummaryDiv,#questSummary3,#consolidateReport,#ageRangeNonVotersSummaryDiv").html("");
 }
 
 function buildQuestionSummary(result){
@@ -331,7 +332,7 @@ function getFamilies(optionId,panchayatId){
 
 function getSummary(){
 
-	$("#questSummary,#questSummary1,#questSummary2,#question,#summariesId2,#constiNonVotersSummaryDiv,#questSummary3").html("");
+	$("#questSummary,#questSummary1,#questSummary2,#question,#summariesId2,#constiNonVotersSummaryDiv,#questSummary3,#ageRangeNonVotersSummaryDiv").html("");
 	$("#questionDivId,#leaderDivId,#bookDivId").css('display','none');
 	
 	
@@ -581,7 +582,7 @@ function buildHouseHolds(result){
 			str +="<tbody>";
 				for(var i in result.leadersOfPnchyt){
 					str +="<tr>";
-						str +="<td onclick='getFamilyMembers(\""+result.leadersOfPnchyt[i].voterName+"\","+result.leadersOfPnchyt[i].houseHoldId+")' style='cursor:pointer;'>"+result.leadersOfPnchyt[i].voterName+"</td>";
+						str +="<td title='Click To See Family Members Under Family Head' onclick='getFamilyMembers(\""+result.leadersOfPnchyt[i].voterName+"\","+result.leadersOfPnchyt[i].houseHoldId+")' style='cursor:pointer;'>"+result.leadersOfPnchyt[i].voterName+"</td>";
 						str +="<td>"+result.leadersOfPnchyt[i].voterCardNo+"</td>";
 						str +="<td>"+result.leadersOfPnchyt[i].houseNo+"</td>";
 						str +="<td>"+result.leadersOfPnchyt[i].votersCount+"</td>";
@@ -709,7 +710,7 @@ function getNonVotersAgeRangeWiseCount(constiId){
 
 function buildNonVotersAgeRangeWiseDetails(result){
 	$("#panchayatSummaryDivId").html("");
-	$("#consolidateReport").html("");
+	$("#consolidateReport,#summariesId1,#questSummary3").html("");
 	if(result!=null && result.length>0){
 		var str = "";
 			str +="<h4 class='offset3' style='color:red;margin-down:20px;margin-up:20px;'></h4>";
@@ -729,8 +730,14 @@ function buildNonVotersAgeRangeWiseDetails(result){
 					str +="<tr>";
 						str +="<td>"+result[i].panchayatName+"</td>";
 						for(var j in result[i].ageRangesList){
-							str +="<td>"+result[i].ageRangesList[j].ageRangeCount+"</td>";
+						if(result[i].ageRangesList[j].ageRangeCount != null){
+							str +="<td title='Click To Voter Details' onclick='getAgeWiseNonVotersDetails(\""+result[i].ageRangesList[j].ageRange+"\","+result[i].panchayatId+")' style='cursor:pointer;'>"+result[i].ageRangesList[j].ageRangeCount+"</td>";
 						}
+						else{
+							str +="<td>--</td>";
+						}
+					}
+						
 					str +="</tr>";
 				}
 			str +="</tbody>";
@@ -800,6 +807,67 @@ if(result!=null && result.length>0){
 		
 		$('.questSummaryTbl').dataTable();
 	}
+}
+
+function getAgeWiseNonVotersDetails(range,panchayatId){
+var age = range.split("-");
+	var details={
+             panchayatId:panchayatId,
+			 fromAge:age[0],
+			 toAge:age[1],
+			 type:1,
+			 task:"nonVotersAgeWiseDetails"
+	};
+	$.ajax({
+          type:'POST',
+          url: 'getAgeWiseNonVotersDetailsAction.action',
+          dataType: 'json',
+          data: {task:JSON.stringify(details)},
+
+          success: function(result){ 
+			buildAgeWiseNonVotersDetails(result);
+         },
+          error:function() { 
+           console.log('error', arguments);
+         }
+    });
+}
+
+function buildAgeWiseNonVotersDetails(result){
+
+	if(result!=null && result.length>0){
+		var str = "";
+			str +="<h4 class='offset3' style='color:red;margin-down:20px;margin-up:20px;'></h4>";
+		
+		str+= "<table class='table table-bordered questSummaryTbl'>";
+			str +="<thead>";
+				str +="<tr>";
+					str +="<th>NAME</th>";	
+					str +="<th>HOUSE No</th>";	
+					str +="<th>AGE</th>";	
+					str +="<th>RELATIVE NAME</th>";
+						
+					
+				str +="</tr>";
+			str +="</thead>";
+			
+			str +="<tbody>";
+				for(var i in result){
+					str +="<tr>";
+						str +="<td>"+result[i].name+"</td>";
+						str +="<td>"+result[i].houseNo+"</td>";
+						str +="<td>"+result[i].age+"</td>";
+						str +="<td>"+result[i].relativeName+"</td>";
+					
+					str +="</tr>";
+				}
+			str +="</tbody>";
+		str+= "</table>";
+		$("#ageRangeNonVotersSummaryDiv").html(str);
+		
+		$('.questSummaryTbl').dataTable();
+	}
+
 }
 
 </script>
