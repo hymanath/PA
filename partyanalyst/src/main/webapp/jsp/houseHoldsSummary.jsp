@@ -713,7 +713,7 @@ function buildNonVotersAgeRangeWiseDetails(result){
 	$("#consolidateReport,#summariesId1,#questSummary3").html("");
 	if(result!=null && result.length>0){
 		var str = "";
-			str +="<h4 class='offset3' style='color:red;margin-down:20px;margin-up:20px;'></h4>";
+			str +="<h4 class='offset3' style='color:red;margin-down:20px;margin-up:20px;'>NON VOTERS DETAILS</h4>";
 		
 		str+= "<table class='table table-bordered questSummaryTbl'>";
 			str +="<thead>";
@@ -731,7 +731,7 @@ function buildNonVotersAgeRangeWiseDetails(result){
 						str +="<td>"+result[i].panchayatName+"</td>";
 						for(var j in result[i].ageRangesList){
 						if(result[i].ageRangesList[j].ageRangeCount != null){
-							str +="<td title='Click To Voter Details' onclick='getAgeWiseNonVotersDetails(\""+result[i].ageRangesList[j].ageRange+"\","+result[i].panchayatId+")' style='cursor:pointer;'>"+result[i].ageRangesList[j].ageRangeCount+"</td>";
+							str +="<td title='Click To See ("+ result[i].ageRangesList[j].ageRange+ ") Age Range Voters Details' onclick='getAgeWiseNonVotersDetails(\""+result[i].ageRangesList[j].ageRange+"\",\""+result[i].panchayatName+"\","+result[i].panchayatId+")' style='cursor:pointer;'>"+result[i].ageRangesList[j].ageRangeCount+"</td>";
 						}
 						else{
 							str +="<td>--</td>";
@@ -809,7 +809,7 @@ if(result!=null && result.length>0){
 	}
 }
 
-function getAgeWiseNonVotersDetails(range,panchayatId){
+function getAgeWiseNonVotersDetails(range,name,panchayatId){
 var age = range.split("-");
 	var details={
              panchayatId:panchayatId,
@@ -825,7 +825,7 @@ var age = range.split("-");
           data: {task:JSON.stringify(details)},
 
           success: function(result){ 
-			buildAgeWiseNonVotersDetails(result);
+			buildAgeWiseNonVotersDetails(result,name,range);
          },
           error:function() { 
            console.log('error', arguments);
@@ -833,11 +833,11 @@ var age = range.split("-");
     });
 }
 
-function buildAgeWiseNonVotersDetails(result){
+function buildAgeWiseNonVotersDetails(result,name,range){
 
 	if(result!=null && result.length>0){
 		var str = "";
-			str +="<h4 class='offset3' style='color:red;margin-down:20px;margin-up:20px;'></h4>";
+			str +="<h4 class='offset3' style='color:red;margin-down:20px;margin-up:20px;'> ("+range+") AGE RANGE NON VOTERS DETAILS IN  "+ name.toUpperCase()+"</h4>";
 		
 		str+= "<table class='table table-bordered questSummaryTbl'>";
 			str +="<thead>";
