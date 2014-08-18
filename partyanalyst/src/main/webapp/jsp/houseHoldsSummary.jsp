@@ -437,7 +437,7 @@ function buildPanchayatSummary(result){
 					str1 +="<th>"+result.constiHouseHoldsCount+"</th>";
 					str1 +="<th>"+result.activeLeadersCount+"</th>";
 					str1 +="<th>"+result.constiVotersCount+"</th>";
-					str1 +="<th onClick='getNonVotersAgeRangeWiseCount("+result.constituencyId+")' style='cursor:pointer;'>"+result.constiNonVotersCount+"</th>";
+					str1 +="<th title='Click To See Non Voters Details' onClick='getNonVotersAgeRangeWiseCount("+result.constituencyId+")' style='cursor:pointer;'>"+result.constiNonVotersCount+"</th>";
 				str1 +="</tr>";
 			
 		str1 +="</table>";
