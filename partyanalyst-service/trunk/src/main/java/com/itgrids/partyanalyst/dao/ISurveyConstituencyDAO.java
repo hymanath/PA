@@ -8,4 +8,5 @@ import com.itgrids.partyanalyst.model.SurveyConstituency;
 
 public interface ISurveyConstituencyDAO extends GenericDao<SurveyConstituency, Long>{
 	public List<Object[]> getSurveyConstituencies();
+	public List<Object[]> getDistrictWiseSurveyConstituenciesCount();
 }

@@ -247,4 +247,17 @@ public class SurveyCompletedLocationsDAO extends GenericDaoHibernate<SurveyCompl
 	}
 	
 	
+	public List<Object[]> getDistrictWiseCompletedConstituenciesDetails()
+	{
+		Query query = getSession().createQuery("select count(C.district.districtId),C.district.districtId" +
+				" from SurveyCompletedLocations SCL , Constituency C where  " +
+				"SCL.locationValue = C.constituencyId and SCL.locationScopeId = :constituencyScopeId " +
+				"group by C.district.districtId");
+		
+		query.setParameter("constituencyScopeId", IConstants.CONSTITUENCY_SCOPE_ID);
+
+		return query.list();
+		
+	}
+	
 }

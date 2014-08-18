@@ -161,5 +161,6 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	public List<Object[]> getSurveyStartedConstituencyDetails();
 	
 	public List<Object[]> getStartedBoothsDetailsByConstituencyWise();
+	public List<Long> getSurveyStartedDistrictDetails();
 }
 
