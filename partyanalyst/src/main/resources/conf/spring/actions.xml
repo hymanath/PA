@@ -1462,7 +1462,9 @@
 		<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>
 	
-	<bean id="surveyCompletedDetailsAction" class="com.itgrids.partyanalyst.web.action.SurveyCompletedDetailsAction" singleton="false">
-	</bean>
+	<bean id="surveyCompletedDetailsAction" class="com.itgrids.partyanalyst.web.action.SurveyCompletedDetailsAction" singleton="false"></bean>
+	    
+	 <bean id="ctpDashBoardAction" class="com.itgrids.partyanalyst.web.action.CtpDashBoardAction" singleton="false"></bean>
+	
 </beans>	
 	

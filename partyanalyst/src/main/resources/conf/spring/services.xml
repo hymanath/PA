@@ -2138,11 +2138,10 @@
    <property name="casteDAO" ref="casteDAO"/>
    </bean>
    
-      <bean name="surveyDashBoardService"  class="com.itgrids.partyanalyst.service.impl.SurveyDashBoardService">
-      </bean>
+      <bean name="surveyDashBoardService"  class="com.itgrids.partyanalyst.service.impl.SurveyDashBoardService"> </bean>
+      <bean name="surveyCompletedDetailsService"  class="com.itgrids.partyanalyst.service.impl.SurveyCompletedDetailsService"></bean>
+       <bean name="ctpDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CtpDashBoardService"></bean>
       
-      <bean name="surveyCompletedDetailsService"  class="com.itgrids.partyanalyst.service.impl.SurveyCompletedDetailsService">
-      </bean>
    
 </beans>		
 	
