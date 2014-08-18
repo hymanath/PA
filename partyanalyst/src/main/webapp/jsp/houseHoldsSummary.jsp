@@ -475,7 +475,7 @@ function buildPanchayatSummary(result){
 	$("#panchayatSummaryDivId").html(str);
 	
 	$('.summaryDiv').dataTable();
-	getBooksOfHouseHold();
+	//getBooksOfHouseHold();
 }
 
 function buildLeadersOfPanchayat(result){
