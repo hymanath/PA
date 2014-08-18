@@ -4844,7 +4844,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			
 		}catch(Exception e)
 		{
-			e.printStackTrace();
+			LOG.error("Exception Occured in getAllWebMonitoringUsersDetails()",e);
 		}
 		return usersList;
 	}
@@ -4892,7 +4892,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			}});
 		}catch(Exception e)
 		{
-			e.printStackTrace();
+			LOG.error("Exception Occured in saveWebMonioringAssignDetails()",e);
 			return null;
 		}
 		return "success";		
