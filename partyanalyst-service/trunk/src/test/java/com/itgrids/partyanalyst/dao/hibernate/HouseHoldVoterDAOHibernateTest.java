@@ -205,13 +205,37 @@ public class HouseHoldVoterDAOHibernateTest extends BaseDaoTestCase{
 	/*public void test(){
 		List<Object[]> list = houseHoldVoterDAO.getNonVotersAgeGroupInHouseHolds(3284l, 1, 0l, 15l);
 		System.out.println(list.size());
+		List<Object[]> list2 = houseHoldVoterDAO.getNonVotersInConstituencyWithAgeRange(282l,18l,null);
+		System.out.println("HHFamilyId\t HHID\t HouseNO\t Name\t Age\t Gender\t RelativeName\t PanchayatId\t PanchayatName\t LeaderVoterId\t LeaderName\t LeaderMobileNo\t L-BoothId\t L-PartNo\t L-BookId\t L-BookNo");
+		for(Object[] obj:list2){
+			System.out.println(Long.valueOf(obj[0].toString())+"\t"+Long.valueOf(obj[1].toString())+" \t "+obj[2].toString()+"\t "+obj[3].toString()+"\t "+obj[4].toString()+"\t"+obj[5].toString()+" \t "+obj[6].toString()+"\t "+Long.valueOf(obj[7].toString())+"\t "+obj[8].toString()+"\t "+obj[9].toString()+"\t "+obj[10].toString()+"\t "+obj[11].toString()+"\t "+Long.valueOf(obj[12].toString())+"\t "+obj[13].toString()+"\t"+Long.valueOf(obj[14].toString())+"\t "+obj[15].toString());
+		}
 		
+		List<Object[]> list = houseHoldVoterDAO.getVoterAndNonVoterCountInConstituency(282l);
+		System.out.println(list.size());
 	}*/
 	
-	public void test(){
+	/*public void test(){
 		List<Object[]> list = houseHoldVoterDAO.getBooksOfHouseHolds(282l);
 		//List<Object[]> list = houseHoldVoterDAO.getFamilyHeadsUnderBook(1112l);
 		System.out.println(list.size());
+	}
+	*/
+	public void test(){
+			List<Object[]> list = houseHoldVoterDAO.getHouseHoldsCountInConstituency(282l);
+			System.out.println(list.size());
+			
+				List<Object[]> list1 = houseHoldVoterDAO.getActiveLeadersOfConstituency(282l);
+				for(Object[] obj:list1){
+					System.out.println(Long.valueOf(obj[0].toString())+" "+Long.valueOf(obj[1].toString()));
+				}
+		
+		
+			/*List<Object[]> list = houseHoldVoterDAO.getAllLeadersBooksFamilies(282l);
+			for(Object[] obj:list){
+				System.out.println(Long.valueOf(obj[0].toString())+"\t"+obj[1].toString()+"\t"+ Long.valueOf(obj[2].toString())+"\t"+ Long.valueOf(obj[3].toString()));
+			}*/
+		
 	}
 
 }
