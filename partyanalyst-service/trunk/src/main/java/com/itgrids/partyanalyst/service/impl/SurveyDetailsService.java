@@ -2477,8 +2477,12 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 							{
 								if(parms[2].toString().equalsIgnoreCase("Y"))
 								{
-									if(dvMap.get((Long)parms[0]) != null)
-										dvWmMap.put((Long)parms[0],dvMap.get((Long)parms[0]));
+									if(dvMap != null && dvMap.size() > 0)
+									{
+										if(dvMap.get((Long)parms[0]) != null)
+											dvWmMap.put((Long)parms[0],dvMap.get((Long)parms[0]));
+									}
+									
 								}
 								else
 								{
