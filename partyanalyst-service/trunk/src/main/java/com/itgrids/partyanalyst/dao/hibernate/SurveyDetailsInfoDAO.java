@@ -1690,5 +1690,65 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 
 		return query.list();
 	}
+		
+	public Integer getSurveyUserCollectedVoters(Long surveyUsertypeId)
+	{
+		Query query = getSession().createQuery("select distinct model.voter.voterId from SurveyDetailsInfo model where model.surveyUser.surveyUserType.surveyUsertypeId = :surveyUsertypeId");
+		query.setParameter("surveyUsertypeId", surveyUsertypeId);
+		return query.executeUpdate();
+	}
 	
+	public Integer getSurveyUserCompeletedBooths(Long surveyUsertypeId)
+	{
+		Query query = getSession().createQuery("select distinct model.booth.boothId from SurveyDetailsInfo model where model.surveyUser.surveyUserType.surveyUsertypeId = :surveyUsertypeId");
+		query.setParameter("surveyUsertypeId", surveyUsertypeId);
+		return query.executeUpdate();
+	}
+	
+	public Integer getSurveyUserCompeletedConstituencyes(Long surveyUsertypeId)
+	{
+		Query query = getSession().createQuery("select distinct model.booth.constituency.constituencyId from SurveyDetailsInfo model where model.surveyUser.surveyUserType.surveyUsertypeId = :surveyUsertypeId");
+		query.setParameter("surveyUsertypeId", surveyUsertypeId);
+		return query.executeUpdate();
+	}
+	
+	public List<Long> getsurveyUserCollectedBooths(Long surveyUsertypeId)
+	{
+		Query query = getSession().createQuery("select distinct model.booth.boothId from SurveyDetailsInfo model where model.surveyUser.surveyUserType.surveyUsertypeId = :surveyUsertypeId");
+		query.setParameter("surveyUsertypeId", surveyUsertypeId);
+		return query.list();
+	}
+	
+	public List<Object[]> getTodayTeamDetails(Date date)
+	{
+		Query query = getSession().createQuery("select model.surveyUser.surveyUserType.surveyUsertypeId,count(distinct model.surveyUser.surveyUserId) from SurveyDetailsInfo model  where model.date = :date group by model.surveyUser.surveyUserType.surveyUsertypeId");
+		query.setParameter("date", date);
+		return query.list();
+	}
+	
+	public List<Object[]> getTeamDetailsInConstituencyLevel(Date date)
+	{
+		Query query = getSession().createQuery("select model.surveyUser.surveyUserType.surveyUserTypeId,model.booth.constituency.constituencyId,model.booth.constituency.name , count(distinct model.booth.boothId),count(distinct model.surveyUser.surveyUserId) from SurveyDetailsInfo model" +
+				"  where model.date = :date group by model.surveyUser.surveyUserType.surveyUserTypeId,model.booth.constituency.constituencyId order by model.booth.constituency.constituencyId");
+		query.setParameter("date", date);
+		return query.list();
+	}
+	
+	public List<Object[]> getTeamDetailsInBoothLevel(Long constituencyId , Long surveyUserTypeId,Date date)
+	{
+		Query query = getSession().createQuery("select  model.booth.boothId,model.booth.partNo,model.surveyUser.surveyUserId,model.surveyUser.userName,model.surveyUser.mobileNo from SurveyDetailsInfo model" +
+				"  where model.date = :date  and model.booth.constituency.constituencyId = :constituencyId and model.surveyUser.surveyUserType.surveyUserTypeId = :surveyUserTypeId" +
+				"  order by model.booth.boothId");
+		query.setParameter("date", date);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("surveyUserTypeId", surveyUserTypeId);
+		return query.list();
+	}
+	
+	public List<Object[]> getConstituecySummaryForQc()
+	{
+		Query query = getSession().createQuery("select model.booth.constituency.constituenyId , model.booth.constituency.name , count(distinct model.booth.boothId) , count(distinct model.voter.voterId) from SurveyDetailsInfo model group by model.booth.constituency.constituencyId ");
+		
+		return query.list();
+	}
 }

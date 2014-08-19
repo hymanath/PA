@@ -7220,4 +7220,11 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		query.setParameter("publicationDateId",IConstants.HH_KUPPAM_PUBLICATION_ID);
 		return query.list();
 	}	
+	
+	public Integer getTotalVoterByBooths(List<Long> boothIds)
+	{
+		Query query = getSession().createQuery("select count(*) from BoothPublicationVoter model where model.boothId in (:boothIds)");
+		query.setParameterList("boothIds", boothIds);
+		return query.executeUpdate();
+	}
 }

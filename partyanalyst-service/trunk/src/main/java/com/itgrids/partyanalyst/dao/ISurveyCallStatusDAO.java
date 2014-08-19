@@ -29,5 +29,10 @@ public interface ISurveyCallStatusDAO extends GenericDao<SurveyCallStatus,Long>{
 	public List<Object[]> getBoothWiseErrorCountForConstituencyByUsertypeId(Long constituencyId,Long userTypeId);
 	
 	public List<Long> getSurveyCallDetailsByVoterId(Long voterId);
+	
+	public Integer getWmVerifiedVoters();
+	public Integer getWmVerifiedBooths();
+	public Integer getWmVerifiedConstituencyes();
+	public Integer getWmVerifiedRecordsCount(String type);
 
 }
