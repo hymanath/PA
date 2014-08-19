@@ -17,7 +17,6 @@
 <script type="text/javascript" src="js/dailyVerificationReports.js"></script>
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 
-
 		<style>
 		
 			body{background:#f0f0f0;}
