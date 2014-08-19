@@ -4,6 +4,7 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -36,6 +37,8 @@ import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
 import com.itgrids.partyanalyst.dto.SurveyThirdPartyReportVO;
 import com.itgrids.partyanalyst.dto.VerificationCompVO;
+import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
+import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.SurveyCompletedConstituency;
 import com.itgrids.partyanalyst.model.SurveyCompletedLocations;
 import com.itgrids.partyanalyst.service.ISurveyCompletedDetailsService;
@@ -1530,14 +1533,6 @@ public class SurveyCompletedDetailsService implements
 			}
 			
 			List<Object[]> votersDetails =  surveyDetailsInfoDAO.getDuplicateMobileNumersDetails(convertedstrdate, convertedenddate, constituencyIds, mobileNumbers);
-
-			
-		/*	Query query = getSession().createQuery("select SDI.mobileNumber,
-		 * SDI.booth.constituency.name," +				
-					"SDI.booth.boothId , SDI.booth.partNo,SDI.voter.name , SDI.voter.houseNo " +
-					" from SurveyDetailsInfo SDI where date(SDI.date) >= :startDate and " +
-					"date(SDI.date) <= :endDate and SDI.booth.constituency.constituencyId in(:constituencyIds) and SDI.mobileNumber in(:mobileNumbers)");*/
-			
 			List<Long> boothIds = new ArrayList<Long>();
 			
 			for(Object[] obj:votersDetails)
@@ -1597,6 +1592,7 @@ public class SurveyCompletedDetailsService implements
 				}
 			}
 			
+			Collections.sort(countList,duplicateMobileCountSort);
 			Collections.sort(resultList);
 			
 			if(resultList != null && resultList.size() >0)
@@ -1611,6 +1607,17 @@ public class SurveyCompletedDetailsService implements
 		return resultList;
 	}
 	
+	
+	public static Comparator<DuplicateMobileNumbersVO> duplicateMobileCountSort = new Comparator<DuplicateMobileNumbersVO>()
+    {
+   
+        public int compare(DuplicateMobileNumbersVO duplicateNumbersVO1, DuplicateMobileNumbersVO duplicateNumbersVO2)
+        {
+            return (duplicateNumbersVO1.getCount().intValue()) - (duplicateNumbersVO2.getCount().intValue());
+        }
+    };
+	 
+	 
 	public DuplicateMobileNumbersVO getMatchedCountVO(List<DuplicateMobileNumbersVO> resultList,Long total)
 	{
 		for(DuplicateMobileNumbersVO resultVO:resultList)
