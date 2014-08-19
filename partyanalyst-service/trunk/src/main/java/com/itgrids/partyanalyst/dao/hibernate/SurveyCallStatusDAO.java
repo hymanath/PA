@@ -161,4 +161,30 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 		query.setParameter("voterId", voterId);		
 		return query.list();
 	}
+	
+	
+	public Integer getWmVerifiedVoters()
+	{
+		Query query = getSession().createQuery("select distinct model.voter.voterId from SurveyCallStatus model where model.matchedStatus is not null");
+		return query.executeUpdate();
+	}
+	
+	public Integer getWmVerifiedBooths()
+	{
+		Query query = getSession().createQuery("select distinct model.boothId from SurveyCallStatus model where model.matchedStatus is not null");
+		return query.executeUpdate();
+	}
+	
+	public Integer getWmVerifiedConstituencyes()
+	{
+		Query query = getSession().createQuery("select distinct model.boothId.constituency.constituencyId from SurveyCallStatus model where model.matchedStatus is not null");
+		return query.executeUpdate();
+	}
+	
+	public Integer getWmVerifiedRecordsCount(String type)
+	{
+		Query query = getSession().createQuery("select distinct model.voter.voterId from SurveyCallStatus model where model.matchedStatus = :type");
+		query.setParameter("type", type);
+		return query.executeUpdate();
+	}
 }

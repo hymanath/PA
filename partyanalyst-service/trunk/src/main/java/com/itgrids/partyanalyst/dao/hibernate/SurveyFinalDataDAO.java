@@ -142,5 +142,10 @@ public class SurveyFinalDataDAO extends GenericDaoHibernate<SurveyFinalData, Lon
 		 return query.list();
 	}
 	
-	
+	public Integer getQcCollectedMatchedUnMatchedDetails(List<Long> statusIds)
+	{
+		Query query = getSession().createQuery("select distinct model.voterId from SurveyFinalData model where model.surveyWmThirdPartyStatusId in (:statusIds)");
+		
+		return query.executeUpdate();
+	}
 }
