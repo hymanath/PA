@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dto.BigPictureVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
+import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.service.ICtpDashBoardService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -26,7 +28,64 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 	private List<BigPictureVO> bigPictureVOList;
 	private String task;
 	private JSONObject jObj;
+	private Long constituencyId;
+	private Long userTypeId;
+	private Long regionId;
 	
+	private List<SurveyDashBoardVO> resultList;
+	private List<SurveyResponceVO> collectedCasteDetails;
+	
+	public List<SurveyResponceVO> getCollectedCasteDetails() {
+		return collectedCasteDetails;
+	}
+
+
+	public void setCollectedCasteDetails(
+			List<SurveyResponceVO> collectedCasteDetails) {
+		this.collectedCasteDetails = collectedCasteDetails;
+	}
+
+
+	public Long getRegionId() {
+		return regionId;
+	}
+
+
+	public void setRegionId(Long regionId) {
+		this.regionId = regionId;
+	}
+
+	
+	
+	public List<SurveyDashBoardVO> getResultList() {
+		return resultList;
+	}
+
+
+	public void setResultList(List<SurveyDashBoardVO> resultList) {
+		this.resultList = resultList;
+	}
+
+
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+
+
+	public Long getUserTypeId() {
+		return userTypeId;
+	}
+
+
+	public void setUserTypeId(Long userTypeId) {
+		this.userTypeId = userTypeId;
+	}
+
 	@Autowired
 	private ICtpDashBoardService ctpDashBoardService;
 	
@@ -169,6 +228,57 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 		{
 			LOG.error("Exception reised in getTodayTeamDetails", e);
 		}
+		return Action.SUCCESS;
+	}
+	
+	public String getCasteCollectedDetails()
+	{
+		LOG.info("Entered into the  getCasteCollectedDetails");
+
+		try
+		{
+			resultList = ctpDashBoardService.getCasteCollectedDetails(regionId,userTypeId);
+		} 
+		catch (Exception e) 
+		{
+			LOG.error("Exception raised in getCasteCollectedDetails", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getSurveyDetailsByConstituencyId()
+	{
+		LOG.info("Entered into the getSurveyDetailsByConstituencyId ");
+
+		try
+		{
+			resultList = ctpDashBoardService.getSurveyDetailsByConstituencyId(constituencyId,userTypeId);
+		} 
+		catch (Exception e) 
+		{
+			LOG.error("Exception raised in getSurveyDetailsByConstituencyId", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getBoothWiseCollectedcasteDetails()
+	{
+		LOG.info("Entered into the getBoothWiseCollectedcasteDetails ");
+
+		try
+		{
+			collectedCasteDetails = ctpDashBoardService.getBoothWiseCollectedcasteDetails(
+					constituencyId, userTypeId);
+		} 
+		catch (Exception e) 
+		{
+			LOG.error("Exception raised in getBoothWiseCollectedcasteDetails", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String surveyConstituencieOverview()
+	{
 		return Action.SUCCESS;
 	}
 	
