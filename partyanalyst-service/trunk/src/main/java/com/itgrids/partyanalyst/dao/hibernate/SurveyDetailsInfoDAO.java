@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
 import com.itgrids.partyanalyst.model.SurveyDetailsInfo;
@@ -1765,4 +1766,124 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		
 		return query.list();
 	}
+	
+	public List<Object[]> getConstituencyWiseCasteCollectedDetailsByUserTypeId(Long surveyUserTypeId,
+			Long startDistrictId, Long endDistrictId)	{
+		
+		Query query = getSession().createQuery("select count(distinct SDI.voter.voterId) ," +
+				"SDI.booth.constituency.constituencyId from SurveyDetailsInfo SDI , " +
+				"SurveyConstituency SC where " +
+				"SDI.booth.constituency.constituencyId = SC.constituency.constituencyId and " +
+				"SDI.surveyUser.surveyUserType.surveyUsertypeId = :surveyUserTypeId and " +
+				"SC.constituency.district.districtId >= :startDistrictId and " +
+				"SC.constituency.district.districtId <= :endDistrictId  and " +
+				"SDI.caste.casteStateId is not null group by SDI.booth.constituency.constituencyId");
+		
+		query.setParameter("surveyUserTypeId", surveyUserTypeId);
+		query.setParameter("startDistrictId", startDistrictId);
+		query.setParameter("endDistrictId", endDistrictId);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getConstituencyWiseCasteCollectedBoothsDetailsByUserTypeId(Long surveyUserTypeId,
+			Long startDistrictId, Long endDistrictId)	{
+		
+		Query query = getSession().createQuery("select count(distinct SDI.booth.boothId) ," +
+				"SDI.booth.constituency.constituencyId from SurveyDetailsInfo SDI , " +
+				"SurveyConstituency SC where " +
+				"SDI.booth.constituency.constituencyId = SC.constituency.constituencyId and " +
+				"SDI.surveyUser.surveyUserType.surveyUsertypeId = :surveyUserTypeId and " +
+				"SC.constituency.district.districtId >= :startDistrictId and " +
+				"SC.constituency.district.districtId <= :endDistrictId  and " +
+				"SDI.caste.casteStateId is not null " +
+				"group by SDI.booth.constituency.constituencyId");
+		
+		query.setParameter("surveyUserTypeId", surveyUserTypeId);
+		query.setParameter("startDistrictId", startDistrictId);
+		query.setParameter("endDistrictId", endDistrictId);
+		
+		return query.list();
+		
+	}
+	 
+	public List<Object[]> getBoothWiseCollectedCasteDetailsByConstituencyId(
+			Long constituencyId, Long userTypeId)	{
+		
+		Query query = getSession().createQuery("select count(distinct SDI.voter.voterId),SDI.booth.boothId from " +
+				"SurveyDetailsInfo SDI where " +
+				"SDI.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId and " +
+				"SDI.booth.constituency.constituencyId = :constituencyId and " +
+				"SDI.caste.casteStateId is not null " +
+				"group by  SDI.booth.boothId");
+		
+		query.setParameter("userTypeId", userTypeId);
+		query.setParameter("constituencyId", constituencyId);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getBoothWiseUsersDetailsByConstituencyId(
+			Long constituencyId, Long userTypeId)	{
+		
+		SQLQuery query = getSession().createSQLQuery(
+				"SELECT B.booth_id,cast(GROUP_CONCAT( distinct user_name SEPARATOR ',') as CHAR) " +
+				"FROM survey_details_info SDI , booth B , survey_user SU " +
+				"where " +
+				"SDI.booth_id = B.booth_id and " +
+				"SDI.survey_user_id = SU.survey_user_id and " +
+				"SU.survey_user_type = "+userTypeId+" and B.constituency_id = "+constituencyId+" " +
+				"GROUP BY booth_id");
+		
+		
+		return query.list();
+	}
+	
+	public List<Long> getSurveyStartedBoothsDetailsForConstituencyByUserTypeId(
+			Long constituencyId, Long surveyUserTypeId)	{
+		Query query = getSession().createQuery("select distinct SDI.booth.boothId from " +
+				"SurveyDetailsInfo SDI where SDI.booth.constituency.constituencyId = :constituencyId and " +
+				"SDI.surveyUser.surveyUserType.surveyUsertypeId = :surveyUserTypeId");
+		
+		query.setParameter("surveyUserTypeId", surveyUserTypeId);
+		query.setParameter("constituencyId", constituencyId);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getBoothWiseCollectedcasteDetails(Long boothId,Long surveyUserTypeId)
+	{
+		Query query = getSession().createQuery("select SDI.voter.name,SDI.voter.relativeName ," +
+				"SDI.voter.houseNo,SDI.voter.age,SDI.voter.gender,SDI.caste.caste.casteName " +
+				"from " +
+				"SurveyDetailsInfo SDI where SDI.booth.boothId = :boothId and " +
+				"SDI.surveyUser.surveyUserType.surveyUsertypeId = :surveyUserTypeId group by SDI.voter.voterId");
+		
+		query.setParameter("boothId", boothId);
+		query.setParameter("surveyUserTypeId", surveyUserTypeId);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getCollectedCasteDetailsForVoterIdsByUserTypeId(
+			List<Long> voterIds, Long surveyUserTypeId,Long boothId)	{
+		
+		Query query = getSession().createQuery("select SDI.voter.voterId," +
+				"SDI.caste.caste.casteName," +
+				"SDI.voter.name,SDI.voter.relativeName , " +
+				"SDI.voter.houseNo,SDI.voter.age,SDI.voter.gender " +
+				" from SurveyDetailsInfo SDI " +
+				"where " +
+				"SDI.voter.voterId not in(:voterIds) and " +
+				"SDI.surveyUser.surveyUserType.surveyUsertypeId = :surveyUserTypeId and " +
+				"SDI.booth.boothId = :boothId " +
+				" group by SDI.voter.voterId");
+		
+		query.setParameterList("voterIds", voterIds);
+		query.setParameter("surveyUserTypeId", surveyUserTypeId);
+		query.setParameter("boothId", boothId);
+		
+		return query.list();
+	}
+	
 }

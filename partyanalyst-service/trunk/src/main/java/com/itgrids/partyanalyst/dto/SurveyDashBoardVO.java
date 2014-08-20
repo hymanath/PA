@@ -14,6 +14,9 @@ public class SurveyDashBoardVO {
 	private int completedCount = 0;
 	private int totalCount = 0;
 	private int notStartedCount = 0;
+	private Long totalBooths = 0L;
+	private Long partNo;
+
 
 	private List<SurveyDashBoardVO> completed = new ArrayList<SurveyDashBoardVO>();
 	private List<SurveyDashBoardVO> process = new ArrayList<SurveyDashBoardVO>();
@@ -33,9 +36,22 @@ public class SurveyDashBoardVO {
 	private List<Long> processConstituencyIds = new ArrayList<Long>();
 	private List<Long> notStartedConstituencyIds = new ArrayList<Long>();
 	private List<Long> startedConstituencyIds = new ArrayList<Long>();
-
 	
+	private Long collectedBoothsCount = 0L;
+	private Long collectedVotersCount = 0L;
 	
+	public Long getCollectedBoothsCount() {
+		return collectedBoothsCount;
+	}
+	public void setCollectedBoothsCount(Long collectedBoothsCount) {
+		this.collectedBoothsCount = collectedBoothsCount;
+	}
+	public Long getCollectedVotersCount() {
+		return collectedVotersCount;
+	}
+	public void setCollectedVotersCount(Long collectedVotersCount) {
+		this.collectedVotersCount = collectedVotersCount;
+	}
 	public List<Long> getCompletedConstituencyIds() {
 		return completedConstituencyIds;
 	}
@@ -169,12 +185,25 @@ public class SurveyDashBoardVO {
 		this.count = count;
 	}
 	
-	
 	public int getNotStartedCount() {
 		return notStartedCount;
 	}
 	public void setNotStartedCount(int notStartedCount) {
 		this.notStartedCount = notStartedCount;
+	}
+
+	public Long getTotalBooths() {
+		return totalBooths;
+	}
+	public void setTotalBooths(Long totalBooths) {
+		this.totalBooths = totalBooths;
+	}
+	
+	public Long getPartNo() {
+		return partNo;
+	}
+	public void setPartNo(Long partNo) {
+		this.partNo = partNo;
 	}
 
 }

@@ -1,21 +1,26 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ISurveyCallStatusDAO;
+import com.itgrids.partyanalyst.dao.ISurveyConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.ISurveyFinalDataDAO;
 import com.itgrids.partyanalyst.dto.BigPictureVO;
+import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
+import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.service.ICtpDashBoardService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CtpDashBoardService implements ICtpDashBoardService
 {
@@ -32,6 +37,9 @@ public class CtpDashBoardService implements ICtpDashBoardService
 	
 	@Autowired
 	private IBoothPublicationVoterDAO  boothPublicationVoterDAO;
+	
+	@Autowired
+	private ISurveyConstituencyDAO surveyConstituencyDAO;
 	
 	/**
 	 * @author Prasad Thiragabathina
@@ -478,5 +486,278 @@ public class CtpDashBoardService implements ICtpDashBoardService
 			LOG.error("Exception raised in getBoothWiseQcVerificationSummary", e);
 		}
 		return returnList;
+	}
+	
+	public List<SurveyDashBoardVO> getCasteCollectedDetails(Long regionId,Long userTypeId)
+	{
+		List<SurveyDashBoardVO> resultList = new ArrayList<SurveyDashBoardVO>();
+		
+		LOG.info("Entered into getCasteCollectedDetails service method");
+		try
+		{
+			 List<Object[]> votersDtls = null;
+			 List<Object[]> boothsCount = null;
+			 List<Object[]> totalVotersDtls = null;
+			 List<Object[]> totalBoothsDtls = null;
+			 
+			 
+			if (userTypeId.equals(IConstants.DATA_COLLECTOR_ROLE_ID)
+					|| userTypeId.equals(IConstants.THIRD_PARTY_ROLE_ID) 
+					|| userTypeId.equals(IConstants.VERIFIER_ROLE_ID))			 {
+			 
+				 if(regionId.equals(1L))
+				 {
+					 votersDtls = surveyDetailsInfoDAO
+							.getConstituencyWiseCasteCollectedDetailsByUserTypeId(
+									userTypeId, 1L, 10L);
+					
+					boothsCount = surveyDetailsInfoDAO
+							.getConstituencyWiseCasteCollectedBoothsDetailsByUserTypeId(
+									userTypeId, 1L, 10L);
+				 }
+				 else
+				 {
+					 votersDtls = surveyDetailsInfoDAO
+							.getConstituencyWiseCasteCollectedDetailsByUserTypeId(
+									userTypeId, 11L, 23L);
+							
+					boothsCount = surveyDetailsInfoDAO
+							.getConstituencyWiseCasteCollectedBoothsDetailsByUserTypeId(
+									userTypeId, 11L, 23L);
+				 }
+			 }
+			
+			List<Long> casteCollectedConstnIds = new ArrayList<Long>();
+			
+			for(Object[] obj:votersDtls)
+				casteCollectedConstnIds.add((Long)obj[1]);
+			 
+			 totalVotersDtls = surveyConstituencyDAO
+					.getTotalVotersDetailsForSurveyConstituencies(casteCollectedConstnIds);
+			 
+			totalBoothsDtls = surveyConstituencyDAO
+					.getTotalBoothsCountForSurveyConstituencies(casteCollectedConstnIds);			 
+			 
+			 Map<Long,Long> votersMap = generateMapFromList(votersDtls);
+			 Map<Long,Long> booothsMap =generateMapFromList(boothsCount);
+			 Map<Long,Long> totalVotersMap = generateMapFromList(totalVotersDtls);
+			// Map<Long,Long> totalBoothsMap = generateMapFromList(totalBoothsDtls);
+			 
+	 		if (userTypeId.equals(0L))
+			{	
+	 			 if(regionId.equals(1L))
+				 {
+	 				 votersDtls = surveyCallStatusDAO.getConstituencyWiseVerifiedVoters(1L,10L);
+	 				 boothsCount = surveyCallStatusDAO.getConstituencyWiseVerifiedBooths(1L,10L);
+				 }
+	 			 {
+	 				 votersDtls = surveyCallStatusDAO.getConstituencyWiseVerifiedVoters(11L,23L);
+	 				 boothsCount = surveyCallStatusDAO.getConstituencyWiseVerifiedBooths(11L,23L);
+	 			 }
+			}
+	 
+			 
+			 for(Object[] obj:totalBoothsDtls)
+			 {
+				 SurveyDashBoardVO constituency = new SurveyDashBoardVO();
+				 
+				 constituency.setLocationName(obj[2].toString());
+				 constituency.setLocationId((Long)obj[1]);
+
+				 constituency.setTotalBooths((Long)obj[0]);
+				 constituency.setTotalVoters(totalVotersMap.get((Long)obj[1]));
+				 
+				 constituency.setCollectedBoothsCount(booothsMap.get((Long)obj[1]));
+				 constituency.setCollectedVotersCount(votersMap.get((Long)obj[1]));
+				 
+				 resultList.add(constituency);
+			 }
+			 
+			 
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Exception raised in getCasteCollectedDetails", e);
+		}
+		
+		return resultList;
+	}
+	
+	public Map<Long,Long> generateMapFromList(List<Object[]> countList)
+	{
+		LOG.info("Entered into the  generateMapFromList service method");
+		Map<Long,Long> resultMap = new HashMap<Long,Long>();
+		try
+		{
+			for(Object[] obj:countList)
+				resultMap.put((Long)obj[1], (Long)obj[0]);
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Exception raised in generateMapFromList service method", e);
+		}
+		return resultMap;
+		
+	}
+	
+	public List<SurveyDashBoardVO> getSurveyDetailsByConstituencyId(
+			Long constituencyId, Long userTypeId)	{
+		
+		LOG.info("Entered into the  getSurveyConstituencyDetailsByConstituencyId service method");
+		List<SurveyDashBoardVO>  resultList = new ArrayList<SurveyDashBoardVO>();
+		try
+		{
+			List<Object[]> votersDtls = null;
+			List<Object[]> totalVoters  = null;
+			List<Object[]> usersDetails  = null;
+			
+			if (userTypeId.equals(IConstants.DATA_COLLECTOR_ROLE_ID)
+					|| userTypeId.equals(IConstants.THIRD_PARTY_ROLE_ID) 
+					|| userTypeId.equals(IConstants.VERIFIER_ROLE_ID))	{
+				votersDtls = surveyDetailsInfoDAO.getBoothWiseCollectedCasteDetailsByConstituencyId(constituencyId,userTypeId);
+				usersDetails = surveyDetailsInfoDAO.getBoothWiseUsersDetailsByConstituencyId(constituencyId,userTypeId);
+				
+			}else
+			{
+				votersDtls = surveyCallStatusDAO.getBoothWiseVerifiedDetailsByConstituencyId(constituencyId);
+				usersDetails = surveyCallStatusDAO.getBoothWiseUsersDetailsByConstituencyId(constituencyId);
+			}
+			
+			List<Long> boothIds = surveyDetailsInfoDAO.getSurveyStartedBoothsDetailsForConstituencyByUserTypeId(constituencyId,userTypeId);
+			
+			totalVoters = boothPublicationVoterDAO.getBoothWiseTotalVotersByConstituencyId(constituencyId);
+
+			Map<Long,String> usersMap = new HashMap<Long, String>();
+			
+			for(Object[] obj:usersDetails)
+				usersMap.put(Long.parseLong(obj[0].toString()), obj[1].toString());
+			
+			Map<Long,Long> votersMap = generateMapFromList(votersDtls);
+			
+			for(Object[] obj:totalVoters)
+			{
+				
+				if(boothIds.contains((Long)obj[1]))
+				{
+					SurveyDashBoardVO boothVO = new SurveyDashBoardVO();
+					
+					boothVO.setLocationName(obj[2].toString());
+					boothVO.setLocationId((Long)obj[1]);
+					boothVO.setCollectedVotersCount(votersMap.get((Long)obj[1]));
+					boothVO.setName(usersMap.get((Long)obj[1]));
+					boothVO.setTotalVoters((Long)obj[0]);
+					boothVO.setPartNo(Long.parseLong(obj[2].toString()));
+					
+					resultList.add(boothVO);
+				}
+				
+			}
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Exception raised in getSurveyConstituencyDetailsByConstituencyId service method", e);
+		}
+		
+		return resultList;
+	}
+	
+	
+	public List<SurveyResponceVO> getBoothWiseCollectedcasteDetails(Long boothId,Long userTypeId)
+	{
+		LOG.info("Entered into the  getBoothWiseCollectedcasteDetails service method");
+		
+		List<SurveyResponceVO> resultList = new ArrayList<SurveyResponceVO>();
+
+		try
+		{
+			List<Object[]> votersDetails = null;
+			
+			if (userTypeId.equals(IConstants.DATA_COLLECTOR_ROLE_ID)
+					|| userTypeId.equals(IConstants.THIRD_PARTY_ROLE_ID)
+					|| userTypeId.equals(IConstants.VERIFIER_ROLE_ID))	{
+				 votersDetails = surveyDetailsInfoDAO
+						.getBoothWiseCollectedcasteDetails(boothId, userTypeId);
+				
+				for(Object[] obj:votersDetails)
+				{
+					SurveyResponceVO voterVO = new SurveyResponceVO();
+					
+					voterVO.setVoterName(obj[0].toString());
+					voterVO.setRelativeName(obj[1].toString());
+					voterVO.setHouseNo(obj[2].toString());
+					voterVO.setAge((Long)obj[3]);
+					voterVO.setGender(obj[4].toString());
+					voterVO.setCasteName(obj[5].toString());
+					resultList.add(voterVO);
+				}
+			}else
+			{
+				
+				votersDetails = surveyCallStatusDAO.getVotersDetailsByBoothId(boothId);
+				
+				List<Long> dcVoterIds = new ArrayList<Long>();
+				//List<Long> dvVoterIds = new ArrayList<Long>();
+				
+				
+				for(Object[] obj:votersDetails)
+				{
+					SurveyResponceVO voterVO = new SurveyResponceVO();
+					
+					voterVO.setVoterName(obj[0].toString());
+					voterVO.setRelativeName(obj[1].toString());
+					voterVO.setHouseNo(obj[2].toString());
+					voterVO.setAge((Long)obj[3]);
+					voterVO.setGender(obj[4].toString());
+					voterVO.setVoterId((Long)obj[5]);
+					voterVO.setDcCorrectedCasteName(obj[6].toString());
+					dcVoterIds.add((Long)obj[5]);
+						
+					resultList.add(voterVO);
+				}
+				
+				
+				
+				if(dcVoterIds.size()== 0)
+					dcVoterIds.add(0L);
+				
+					List<Object[]> dcCasteDtls = surveyDetailsInfoDAO
+							.getCollectedCasteDetailsForVoterIdsByUserTypeId(
+									dcVoterIds, IConstants.DATA_COLLECTOR_ROLE_ID,boothId);
+					
+					
+					for(Object[] obj:dcCasteDtls)
+					{
+						SurveyResponceVO voterVO = new SurveyResponceVO();
+						
+						voterVO.setVoterId((Long)obj[0]);
+						voterVO.setVoterName(obj[2].toString());
+						voterVO.setRelativeName(obj[3].toString());
+						voterVO.setHouseNo(obj[4].toString());
+						voterVO.setAge((Long)obj[5]);
+						voterVO.setGender(obj[6].toString());
+						voterVO.setDcCasteName(obj[1].toString());
+						resultList.add(voterVO);
+					}
+	
+			}
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Exception raised in getBoothWiseCollectedcasteDetails service method", e);
+		}
+		
+		return resultList;
+	}
+	
+	public SurveyResponceVO getMatchedVoterVO(List<SurveyResponceVO> resultList,Long voterId)
+	{
+		for(SurveyResponceVO resultVO:resultList)
+			if(resultVO.getVoterId().equals(voterId))
+				return resultVO;
+		return null;
+	
 	}
 }

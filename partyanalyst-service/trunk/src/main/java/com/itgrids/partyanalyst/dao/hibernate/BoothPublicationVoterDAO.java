@@ -7227,4 +7227,19 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		query.setParameterList("boothIds", boothIds);
 		return (Long) query.uniqueResult();
 	}
+	
+	
+	public List<Object[]> getBoothWiseTotalVotersByConstituencyId(Long constituencyId)
+	{
+		Query query = getSession().createQuery(
+				"select count(distinct BPV.voter.voterId),BPV.booth.boothId,BPV.booth.partNo from " +
+				"BoothPublicationVoter BPV where BPV.booth.constituency.constituencyId = :constituencyId and " +
+				"BPV.booth.publicationDate.publicationDateId = :publicationDateId group by BPV.booth.boothId");
+		
+		query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID);
+		query.setParameter("constituencyId", constituencyId);
+		
+		return query.list();
+
+	}
 }

@@ -62,8 +62,39 @@ public class SurveyResponceVO extends UserResponseVO  implements Serializable
 	private Long wmWrong;
 	private Long tpWrong;
 	private Long newCaste;
-
 	
+	private String dcCasteName;
+	private String dvCasteName;
+	
+	private String dcCorrectedCasteName;
+	private String dvCorrectedCasteName;
+	
+
+	public String getDcCorrectedCasteName() {
+		return dcCorrectedCasteName;
+	}
+	public void setDcCorrectedCasteName(String dcCorrectedCasteName) {
+		this.dcCorrectedCasteName = dcCorrectedCasteName;
+	}
+	public String getDvCorrectedCasteName() {
+		return dvCorrectedCasteName;
+	}
+	public void setDvCorrectedCasteName(String dvCorrectedCasteName) {
+		this.dvCorrectedCasteName = dvCorrectedCasteName;
+	}
+	
+	public String getDcCasteName() {
+		return dcCasteName;
+	}
+	public void setDcCasteName(String dcCasteName) {
+		this.dcCasteName = dcCasteName;
+	}
+	public String getDvCasteName() {
+		return dvCasteName;
+	}
+	public void setDvCasteName(String dvCasteName) {
+		this.dvCasteName = dvCasteName;
+	}
 	public Long getWardId() {
 		return wardId;
 	}
