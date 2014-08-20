@@ -8111,5 +8111,29 @@
 					<param name="root">report</param>
 			</result>
 		</action>
+		
+		<action name="getBigPictureDetails" class="ctpDashBoardAction" method="getBigPictureDetails">
+		    <result type="json" name="success">
+		        <param name="root">bigPictureVO</param>
+		    </result>
+		</action>
+		
+		<action name="getInternalVerificationSummary" class="ctpDashBoardAction" method="getInternalVerificationSummary">
+		    <result type="json" name="success">
+		        <param name="root">bigPictureVO</param>
+		    </result>
+		</action>
+		
+		<action name="getQcVerificationSummaryReport" class="ctpDashBoardAction" method="getQcVerificationSummaryReport">
+		    <result type="json" name="success">
+		        <param name="root">bigPictureVO</param>
+		    </result>
+		</action>
+		
+		<action name="getTodayTeamDetails" class="ctpDashBoardAction" method="getTodayTeamDetails">
+		    <result type="json" name="success">
+		        <param name="root">bigPictureVO</param>
+		    </result>
+		</action>
 </package>
 </struts>      
