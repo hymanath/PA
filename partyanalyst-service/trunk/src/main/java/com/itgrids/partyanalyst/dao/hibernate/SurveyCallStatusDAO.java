@@ -163,29 +163,36 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 	}
 	
 	
-	public Integer getWmVerifiedVoters()
+	public Long getWmVerifiedVoters()
 	{
-		Query query = getSession().createQuery("select distinct model.voter.voterId from SurveyCallStatus model where model.matchedStatus is not null");
-		return query.executeUpdate();
+		Query query = getSession().createQuery("select count(distinct model.voter.voterId) from SurveyCallStatus model where model.matchedStatus is not null");
+		return (Long) query.uniqueResult();
 	}
 	
-	public Integer getWmVerifiedBooths()
+	public Long getWmVerifiedBooths()
 	{
-		Query query = getSession().createQuery("select distinct model.boothId from SurveyCallStatus model where model.matchedStatus is not null");
-		return query.executeUpdate();
+		Query query = getSession().createQuery("select count(distinct model.boothId) from SurveyCallStatus model where model.matchedStatus is not null");
+		return (Long) query.uniqueResult();
 	}
 	
-	public Integer getWmVerifiedConstituencyes()
+	public Long getWmVerifiedConstituencyes()
 	{
-		Query query = getSession().createQuery("select distinct model.boothId.constituency.constituencyId from SurveyCallStatus model where model.matchedStatus is not null");
-		return query.executeUpdate();
+		Query query = getSession().createQuery("select count(distinct model.boothId.constituency.constituencyId) from SurveyCallStatus model where model.matchedStatus is not null");
+		return (Long) query.uniqueResult();
 	}
 	
-	public Integer getWmVerifiedRecordsCount(String type)
+	public Long getWmVerifiedRecordsCount(String type)
 	{
-		Query query = getSession().createQuery("select distinct model.voter.voterId from SurveyCallStatus model where model.matchedStatus = :type");
+		Query query = getSession().createQuery("select count(distinct model.voter.voterId) from SurveyCallStatus model where model.matchedStatus = :type");
 		query.setParameter("type", type);
-		return query.executeUpdate();
+		return (Long) query.uniqueResult();
+	}
+	
+	public List<Object[]> getVerifierCounts()
+	{
+		Query query = getSession().createQuery("select model.matchedStatus , count(distinct model.voter.voterId),count(distinct model.booth.constituency.constituencyId) ,count(distinct model.boothId) from SurveyCallStatus model where model.matchedStatus is not null  group by  model.matchedStatus");
+		
+		return query.list();
 	}
 	
 	public List<Object[]> getConstituencyWiseInternalVerificationSummary(String type)

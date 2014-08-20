@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,7 +13,6 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ISurveyCallStatusDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.ISurveyFinalDataDAO;
-import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dto.BigPictureVO;
 import com.itgrids.partyanalyst.service.ICtpDashBoardService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -43,17 +43,62 @@ public class CtpDashBoardService implements ICtpDashBoardService
 		BigPictureVO returnVO = new BigPictureVO();
 		try
 		{
-			returnVO.setDcVotersCount(surveyDetailsInfoDAO.getSurveyUserCollectedVoters(1l));
-			returnVO.setDcBoothsCount(surveyDetailsInfoDAO.getSurveyUserCollectedVoters(1l));
-			returnVO.setDcConstituencysCount(surveyDetailsInfoDAO.getSurveyUserCompeletedConstituencyes(1l));
+			List<Object[]> dcAndQcDetails = surveyDetailsInfoDAO.getTotalVotersAndBoothsAndConstituencyes();
+			if(dcAndQcDetails != null && dcAndQcDetails.size() > 0)
+			{
+				for (Object[] objects : dcAndQcDetails)
+				{
+					if(objects[0] != null )
+					{
+						if((Long)objects[0] == 1l)
+						{
+							returnVO.setDcVotersCount(objects[1] != null ? Integer.valueOf(objects[1].toString()) : 0);
+							returnVO.setDcBoothsCount(objects[3] != null ? Integer.valueOf(objects[3].toString()) : 0);
+							returnVO.setDcConstituencysCount(objects[2] != null ? Integer.valueOf(objects[2].toString()) : 0);
+						}
+						else
+						{
+							returnVO.setQcVotersCount(objects[1] != null ? Integer.valueOf(objects[1].toString()) : 0);
+							returnVO.setQcBoothsCount(objects[3] != null ? Integer.valueOf(objects[3].toString()) : 0);
+							returnVO.setQcConstituencyesCount(objects[2] != null ? Integer.valueOf(objects[2].toString()) : 0);
+						}
+					}
+				}
+			}
 			
-			returnVO.setQcVotersCount(surveyDetailsInfoDAO.getSurveyUserCollectedVoters(10l));
-			returnVO.setQcBoothsCount(surveyDetailsInfoDAO.getSurveyUserCompeletedBooths(10l));
-			returnVO.setQcConstituencyesCount(surveyDetailsInfoDAO.getSurveyUserCompeletedConstituencyes(10l));
+			List<Object[]> verifierDetails = surveyCallStatusDAO.getVerifierCounts();
+			if(verifierDetails != null && verifierDetails.size() > 0)
+			{
+				for (Object[] objects : verifierDetails)
+				{
+					if(objects[0] != null )
+					{
+						if(objects[0].toString().equalsIgnoreCase("Y"))
+						{
+							returnVO.setVerifierVotersCount(returnVO.getVerifierVotersCount() + Integer.valueOf(objects[1].toString()));
+							returnVO.setVerifierBoothsCount(returnVO.getVerifierBoothsCount() + Integer.valueOf(objects[3].toString()));
+							returnVO.setVerifierConstituencyCount(returnVO.getVerifierConstituencyCount() + Integer.valueOf(objects[2].toString()));
+						}
+						else if (objects[0].toString().equalsIgnoreCase("n"))
+						{
+							returnVO.setVerifierVotersCount(returnVO.getVerifierVotersCount() + Integer.valueOf(objects[1].toString()));
+							returnVO.setVerifierBoothsCount(returnVO.getVerifierBoothsCount() + Integer.valueOf(objects[3].toString()));
+							returnVO.setVerifierConstituencyCount(returnVO.getVerifierConstituencyCount() + Integer.valueOf(objects[2].toString()));
+						}
+					}
+				}
+			}
+			/*returnVO.setDcVotersCount(surveyDetailsInfoDAO.getSurveyUserCollectedVoters(1l).intValue());
+			returnVO.setDcBoothsCount(surveyDetailsInfoDAO.getSurveyUserCollectedVoters(1l).intValue());
+			returnVO.setDcConstituencysCount(surveyDetailsInfoDAO.getSurveyUserCompeletedConstituencyes(1l).intValue());
 			
-			returnVO.setVerifierVotersCount(surveyCallStatusDAO.getWmVerifiedVoters());
-			returnVO.setVerifierBoothsCount(surveyCallStatusDAO.getWmVerifiedBooths());
-			returnVO.setVerifierConstituencyCount(surveyCallStatusDAO.getWmVerifiedConstituencyes());
+			returnVO.setQcVotersCount(surveyDetailsInfoDAO.getSurveyUserCollectedVoters(10l).intValue());
+			returnVO.setQcBoothsCount(surveyDetailsInfoDAO.getSurveyUserCompeletedBooths(10l).intValue());
+			returnVO.setQcConstituencyesCount(surveyDetailsInfoDAO.getSurveyUserCompeletedConstituencyes(10l).intValue());*/
+			
+			/*returnVO.setVerifierVotersCount(surveyCallStatusDAO.getWmVerifiedVoters().intValue());
+			returnVO.setVerifierBoothsCount(surveyCallStatusDAO.getWmVerifiedBooths().intValue());
+			returnVO.setVerifierConstituencyCount(surveyCallStatusDAO.getWmVerifiedConstituencyes().intValue());*/
 			
 			returnVO.setTotalVoters(37696573);
 			returnVO.setTotalBooths(44688);
@@ -94,24 +139,46 @@ public class CtpDashBoardService implements ICtpDashBoardService
 		BigPictureVO returnVO = new BigPictureVO();
 		try
 		{
-			returnVO.setVerifierVotersCount(surveyCallStatusDAO.getWmVerifiedVoters());
-			returnVO.setCorrectDetails(surveyCallStatusDAO.getWmVerifiedRecordsCount("Y"));
-			returnVO.setWrongDetails(surveyCallStatusDAO.getWmVerifiedRecordsCount("N"));
 			
-			if(returnVO.getVerifierVotersCount() != null && returnVO.getVerifierVotersCount() > 0)
+			List<Object[]> verifierDetails = surveyCallStatusDAO.getVerifierCounts();
+			if(verifierDetails != null && verifierDetails.size() > 0)
 			{
-				if(returnVO.getCorrectDetails() != null && returnVO.getCorrectDetails() > 0)
+				for (Object[] objects : verifierDetails)
 				{
-					returnVO.setCorrectPerc(new BigDecimal(returnVO.getCorrectDetails()*(100.0)/returnVO.getVerifierVotersCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-				}
-				if(returnVO.getWrongDetails() != null && returnVO.getWrongDetails() > 0)
-				{
-					returnVO.setWrongPerc(new BigDecimal(returnVO.getWrongDetails()*(100.0)/returnVO.getVerifierVotersCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-				}
-				
+					if(objects[0] != null )
+					{
+						if(objects[0].toString().equalsIgnoreCase("Y"))
+						{
+							returnVO.setCorrectDetails(returnVO.getVerifierVotersCount() + Integer.valueOf(objects[1].toString()));
+							
+						}
+						else if (objects[0].toString().equalsIgnoreCase("N"))
+						{
+							returnVO.setWrongDetails(returnVO.getVerifierVotersCount() + Integer.valueOf(objects[1].toString()));
+						}
+					}
+					
 			}
-			getRedoBooths(returnVO);
+			if(returnVO.getCorrectDetails() != null && returnVO.getCorrectDetails() > 0  && returnVO.getWrongDetails() != null && returnVO.getWrongDetails() > 0)
+			{
+				returnVO.setVerifierVotersCount(returnVO.getCorrectDetails() + returnVO.getWrongDetails())	;
+				if(returnVO.getVerifierVotersCount() != null && returnVO.getVerifierVotersCount() > 0)
+				{
+					if(returnVO.getCorrectDetails() != null && returnVO.getCorrectDetails() > 0)
+					{
+						returnVO.setCorrectPerc(new BigDecimal(returnVO.getCorrectDetails()*(100.0)/returnVO.getVerifierVotersCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					}
+					if(returnVO.getWrongDetails() != null && returnVO.getWrongDetails() > 0)
+					{
+						returnVO.setWrongPerc(new BigDecimal(returnVO.getWrongDetails()*(100.0)/returnVO.getVerifierVotersCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					}
+					
+				}
+				getRedoBooths(returnVO);
+			}
 			
+			
+			}
 		}
 		catch (Exception e) 
 		{
@@ -132,7 +199,12 @@ public class CtpDashBoardService implements ICtpDashBoardService
 			if(redoBooths != null && redoBooths.size() > 0)
 			{
 				returnVO.setRedoBooths(redoBooths.size());
-				returnVO.setRedoVoters(getRedoTotalVoters(redoBooths,returnVO));
+				Long total = getRedoTotalVoters(redoBooths,returnVO);
+				if(total != null && total > 0)
+				{
+					returnVO.setRedoVoters(Integer.valueOf(total.toString()));
+				}
+				
 			}
 		} 
 		catch (Exception e) 
@@ -147,9 +219,9 @@ public class CtpDashBoardService implements ICtpDashBoardService
 	 * @param returnVO
 	 * @return total
 	 */
-	public Integer getRedoTotalVoters(List<Long> redoBooths,BigPictureVO returnVO )
+	public Long getRedoTotalVoters(List<Long> redoBooths,BigPictureVO returnVO )
 	{
-		Integer total = 0;
+		Long total = 0l;
 		try
 		{
 			returnVO.setRedoBooths(redoBooths.size());
@@ -160,7 +232,7 @@ public class CtpDashBoardService implements ICtpDashBoardService
 			  {
 				  while(fromIndex <= toIndex)
 				  {
-					Integer count = boothPublicationVoterDAO.getTotalVoterByBooths(redoBooths.subList(fromIndex, toIndex));
+					Long count = boothPublicationVoterDAO.getTotalVoterByBooths(redoBooths.subList(fromIndex, toIndex));
 					 if(count != null)
 					 {
 						 total = total +  count;
@@ -192,16 +264,15 @@ public class CtpDashBoardService implements ICtpDashBoardService
 		BigPictureVO returnVO = new BigPictureVO();
 		try
 		{
-			returnVO.setQcVotersCount(surveyDetailsInfoDAO.getSurveyUserCollectedVoters(10l));
+			returnVO.setQcVotersCount(surveyDetailsInfoDAO.getSurveyUserCollectedVoters(10l).intValue());
 			List<Long> matchedIds = new ArrayList<Long>();
 			matchedIds.add(1l);
-			returnVO.setMatchedCount(surveyFinalDataDAO.getQcCollectedMatchedUnMatchedDetails(matchedIds));
+			returnVO.setMatchedCount(surveyFinalDataDAO.getQcCollectedMatchedUnMatchedDetails(matchedIds).intValue());
 			List<Long> unMatchedIds = new ArrayList<Long>();
 			unMatchedIds.add(2l);
 			unMatchedIds.add(3l);
 			unMatchedIds.add(4l);
-			returnVO.setUnMatchedCount(surveyFinalDataDAO.getQcCollectedMatchedUnMatchedDetails(unMatchedIds));
-			
+			returnVO.setUnMatchedCount(surveyFinalDataDAO.getQcCollectedMatchedUnMatchedDetails(unMatchedIds).intValue());
 			if(returnVO.getQcVotersCount() != null && returnVO.getQcVotersCount() > 0)
 			{
 				if(returnVO.getMatchedCount() != null && returnVO.getMatchedCount() > 0)
@@ -238,17 +309,17 @@ public class CtpDashBoardService implements ICtpDashBoardService
 			{
 				for (Object[] objects : teamDetailsObj) 
 				{
-					if((Integer)objects[0] == 1)
+					if((Long)objects[0] == 1l)
 					{
-						returnVO.setDcVotersCount((Integer)objects[0]);
+						returnVO.setDcVotersCount(Integer.valueOf(objects[1].toString()));
 					}
-					else if((Integer)objects[0] == 4)
+					else if((Long)objects[0] == 4l)
 					{
-						returnVO.setVerifierVotersCount((Integer)objects[0]);
+						returnVO.setVerifierVotersCount(Integer.valueOf(objects[1].toString()));
 					}
 					else
 					{
-						returnVO.setQcVotersCount((Integer)objects[0]);
+						returnVO.setQcVotersCount(Integer.valueOf(objects[1].toString()));
 					}
 				}
 			}
