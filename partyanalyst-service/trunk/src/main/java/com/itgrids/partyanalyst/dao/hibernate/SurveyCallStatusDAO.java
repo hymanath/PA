@@ -201,4 +201,83 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 		
 		return query.list();
 	}
+	
+	
+	public List<Object[]> getConstituencyWiseVerifiedVoters(Long startDistrictId,Long endDistrictId)
+	{
+		Query query = getSession().createQuery("select count(distinct SCS.voter.voterId)," +
+				"SCS.booth.constituency.constituencyId  " +
+				"from " +
+				"SurveyCallStatus SCS where SCS.matchedStatus is not null and" +
+				"SCS.booth.constituency.district.districtId >= :startDistrictId and " +
+				"SCS.booth.constituency.district.districtId <= :endDistrictId  " +
+				"group by SCS.booth.constituency.constituencyId ");
+		
+		query.setParameter("startDistrictId", startDistrictId);
+		query.setParameter("endDistrictId", endDistrictId);
+		
+		return query.list();
+		
+	}
+	public List<Object[]> getConstituencyWiseVerifiedBooths(Long startDistrictId,Long endDistrictId)
+	{
+		Query query = getSession().createQuery("select count(distinct SCS.booth.boothId)," +
+				"SCS.booth.constituency.constituencyId  " +
+				"from " +
+				"SurveyCallStatus SCS where SCS.matchedStatus is not null and " +
+				"SCS.booth.constituency.district.districtId >= :startDistrictId and " +
+				"SCS.booth.constituency.district.districtId <= :endDistrictId  " +
+				"group by SCS.booth.constituency.constituencyId ");
+		
+		query.setParameter("startDistrictId", startDistrictId);
+		query.setParameter("endDistrictId", endDistrictId);
+		
+		
+		return query.list();
+		
+	}
+	
+	public List<Object[]> getBoothWiseVerifiedDetailsByConstituencyId(Long constituencyId)
+	{
+		Query query = getSession().createQuery("select count(distinct SCS.voter.voterId),SCS.booth.boothId from " +
+				"SurveyCallStatus SCS where SCS.booth.constituency.constituencyId = :constituencyId and " +
+				"SCS.matchedStatus is not null " +
+				"group by SCS.booth.boothId");
+		query.setParameter("constituencyId", constituencyId);
+		
+		return query.list();
+		
+	}
+	
+	public List<Object[]> getBoothWiseUsersDetailsByConstituencyId(
+			Long constituencyId)	{
+		
+		Query query = getSession().createSQLQuery(
+				"SELECT cast(B.booth_id as int),cast(GROUP_CONCAT( distinct U.username SEPARATOR ',') as CHAR) " +
+				"FROM survey_call_status SCS , booth B , user U " +
+				"where " +
+				"SCS.booth_id = B.booth_id and " +
+				"SCS.user_id = U.user_id and " +
+				" B.constituency_id = "+constituencyId+" " +
+				"GROUP BY booth_id");
+		
+		return query.list();
+	}
+	public List<Object[]> getVotersDetailsByBoothId(Long boothId)
+	{
+				Query query = getSession().createQuery("select " +
+				"SCS.voter.name,SCS.voter.relativeName , " +
+				"SCS.voter.houseNo,SCS.voter.age,SCS.voter.gender," +
+				"SCS.voter.voterId  ,SCS.casteState.caste.casteName  " +
+				"from SurveyCallStatus SCS " +
+				"where " +
+				"SCS.booth.boothId = :boothId and SCS.matchedStatus = 'N'");
+		
+		query.setParameter("boothId", boothId);
+		
+		return query.list();
+		
+	}
+	
+	
 }
