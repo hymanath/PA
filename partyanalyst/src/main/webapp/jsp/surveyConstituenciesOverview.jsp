@@ -169,7 +169,7 @@ function getBoothWiseCollectedcasteDetails(boothId,boothNo,userTypeId)
 		data: {constituencyId:boothId,userTypeId:userTypeId},
 	}).done(function(result){
 			if(userTypeId != 0)
-  			  buildBoothWiseCasteCollectedDetails(result);
+  			  buildBoothWiseCasteCollectedDetails(result,boothNo);
 			else
 			  buildBoothWiseVerifiedCasteCollectedDetails(result,boothNo);
 			  $('#vAjaxImg').hide();
@@ -177,10 +177,12 @@ function getBoothWiseCollectedcasteDetails(boothId,boothNo,userTypeId)
 	});
 
 }
-function buildBoothWiseCasteCollectedDetails(result)
+function buildBoothWiseCasteCollectedDetails(result,boothNo)
 {
 
 	var str ='';
+
+	str+='<h4 class="offset3">COLLECTED CASTE DETAILS FOR BOOTH-'+boothNo+'</h4>';
 
 	str+='<div class="span2 offset2">';
 	str+='<table class="table table-bordered m_top20 table-hover table-striped" id="votersDtls">';
@@ -224,7 +226,7 @@ function buildBoothWiseVerifiedCasteCollectedDetails(result,boothNo)
 {
 	var str ='';
 
-	str+='<h4 class="offset3">CASTE COLLECTED DETAILS FOR BOOTH-'+boothNo+'</h4>';
+	str+='<h4 class="offset3">COLLECTED CASTE DETAILS FOR BOOTH-'+boothNo+'</h4>';
 
     str+='<div class="span2 offset2">';
 	str+='<table class="table table-bordered m_top20 table-hover table-striped" id="votersDtls">';
