@@ -187,4 +187,11 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 		query.setParameter("type", type);
 		return query.executeUpdate();
 	}
+	
+	public List<Object[]> getConstituencyWiseInternalVerificationSummary(String type)
+	{
+		Query query = getSession().createQuery("model.booth.constituency.constituencyId");
+		
+		return query.list();
+	}
 }
