@@ -230,6 +230,21 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 		}
 		return Action.SUCCESS;
 	}
+
+	
+	public String getBoothWiseQcVerificationSummary()
+	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			bigPictureVOList = ctpDashBoardService.getBoothWiseQcVerificationSummary(jObj.getLong("constituencyId"));
+		} 
+		catch (Exception e) 
+		{
+			LOG.error("Exception reised in getTodayTeamDetails", e);
+		}
+		return Action.SUCCESS;
+	}
 	
 	public String getCasteCollectedDetails()
 	{

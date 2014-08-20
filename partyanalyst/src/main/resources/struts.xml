@@ -8135,6 +8135,31 @@
 		        <param name="root">bigPictureVO</param>
 		    </result>
 		</action>
+		
+		<action name="getConstituencyWiseTeamDetails" class="ctpDashBoardAction" method="getConstituencyWiseTeamDetails">
+		    <result type="json" name="success">
+		        <param name="root">bigPictureVOList</param>
+		    </result>
+		</action>
+		
+		<action name="getBoothWiseTeamDetails" class="ctpDashBoardAction" method="getBoothWiseTeamDetails">
+		    <result type="json" name="success">
+		        <param name="root">bigPictureVOList</param>
+		    </result>
+		</action>
+		
+		<action name="getConstituencyWiseQcVerificationSummary" class="ctpDashBoardAction" method="getConstituencyWiseQcVerificationSummary">
+		    <result type="json" name="success">
+		        <param name="root">bigPictureVOList</param>
+		    </result>
+		</action>
+		
+		<action name="getBoothWiseQcVerificationSummary" class="ctpDashBoardAction" method="getBoothWiseQcVerificationSummary">
+		    <result type="json" name="success">
+		        <param name="root">bigPictureVOList</param>
+		    </result>
+		</action>
+
 				
 			<action name="getCasteCollectedDetails" class="ctpDashBoardAction" method="getCasteCollectedDetails">
 			<result type="json" name="success">
@@ -8157,6 +8182,6 @@
 		<action name="surveyConstituencieOverview" class="ctpDashBoardAction" method="surveyConstituencieOverview">
 			<result>/jsp/surveyConstituenciesOverview.jsp</result>
 		</action>
-		
+	
 </package>
 </struts>      
