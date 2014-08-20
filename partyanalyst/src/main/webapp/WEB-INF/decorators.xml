@@ -343,7 +343,8 @@
 			 <pattern>/surveyUserStatus*</pattern>
 			 <pattern>/assignUsersToWebMonitoringTeam*</pattern>
 			 <pattern>/partyCadreSearchAction*</pattern>
-			  <pattern>/duplicateMobileNumbers*</pattern>
+			 <pattern>/duplicateMobileNumbers*</pattern>
+			 <pattern>/surveyConstituencieOverview*</pattern>
             <!--  <pattern>/dashBoardAction*</pattern> -->
        </decorator>
        
