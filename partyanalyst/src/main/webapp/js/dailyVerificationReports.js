@@ -1829,6 +1829,60 @@ function buildFinalReportWithTP(result){
 	//$('#FinalReportWithTPTableId').dataTable();
 	//$('#thirdPartyAjaxImg').show();
 }
+getBigPictureDetails();
 
+function getBigPictureDetails()
+{
+	alert(123);
+	var jsObj = {
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getBigPictureDetails.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		 }).done(function(result){	
+		});	
+		getInternalVerificationSummary();
+		getQcVerificationSummaryReport();
+		getTodayTeamDetails();
+}
+
+function getInternalVerificationSummary()
+{
+	var jsObj = {
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getInternalVerificationSummary.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		 }).done(function(result){	
+		});	
+}
+function getQcVerificationSummaryReport()
+{
+	var jsObj = {
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getQcVerificationSummaryReport.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		 }).done(function(result){	
+		});	
+}
+function getTodayTeamDetails()
+{
+	var jsObj = {
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getTodayTeamDetails.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		 }).done(function(result){	
+		});	
+}
 
 
