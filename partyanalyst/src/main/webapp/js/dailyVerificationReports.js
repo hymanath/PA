@@ -1833,7 +1833,7 @@ getBigPictureDetails();
 
 function getBigPictureDetails()
 {
-	alert(123);
+	//alert(123);
 	var jsObj = {
 	}
 	$.ajax({
