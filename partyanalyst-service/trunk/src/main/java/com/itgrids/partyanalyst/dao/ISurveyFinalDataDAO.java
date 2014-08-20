@@ -27,5 +27,5 @@ public interface ISurveyFinalDataDAO extends GenericDao<SurveyFinalData, Long>{
 	
 	public int updateDefaultCasteMatchStatus(Long voterId,Long casteStateId,Long boothId,Long statusId);
 	
-	public Integer getQcCollectedMatchedUnMatchedDetails(List<Long> statusIds);
+	public Long getQcCollectedMatchedUnMatchedDetails(List<Long> statusIds);
 }

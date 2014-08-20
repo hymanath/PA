@@ -7221,10 +7221,10 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		return query.list();
 	}	
 	
-	public Integer getTotalVoterByBooths(List<Long> boothIds)
+	public Long getTotalVoterByBooths(List<Long> boothIds)
 	{
 		Query query = getSession().createQuery("select count(*) from BoothPublicationVoter model where model.boothId in (:boothIds)");
 		query.setParameterList("boothIds", boothIds);
-		return query.executeUpdate();
+		return (Long) query.uniqueResult();
 	}
 }

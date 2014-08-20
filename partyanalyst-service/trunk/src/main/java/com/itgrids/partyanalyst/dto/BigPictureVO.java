@@ -9,9 +9,9 @@ public class BigPictureVO implements Serializable
 	private Integer dcBoothsCount;
 	private Integer dcConstituencysCount;
 	
-	private Integer verifierVotersCount;
-	private Integer verifierBoothsCount;
-	private Integer verifierConstituencyCount;
+	private Integer verifierVotersCount = 0;
+	private Integer verifierBoothsCount = 0;
+	private Integer verifierConstituencyCount = 0;
 	
 	private Integer qcVotersCount;
 	private Integer qcBoothsCount;

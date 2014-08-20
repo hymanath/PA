@@ -30,9 +30,10 @@ public interface ISurveyCallStatusDAO extends GenericDao<SurveyCallStatus,Long>{
 	
 	public List<Long> getSurveyCallDetailsByVoterId(Long voterId);
 	
-	public Integer getWmVerifiedVoters();
-	public Integer getWmVerifiedBooths();
-	public Integer getWmVerifiedConstituencyes();
-	public Integer getWmVerifiedRecordsCount(String type);
+	public Long getWmVerifiedVoters();
+	public Long getWmVerifiedBooths();
+	public Long getWmVerifiedConstituencyes();
+	public Long getWmVerifiedRecordsCount(String type);
+	public List<Object[]> getVerifierCounts();
 
 }
