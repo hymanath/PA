@@ -1659,7 +1659,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
     	if(task.equalsIgnoreCase("constituencySummary")){
     		Long constituencyId = inputVO.getConstituencyId();
         	
-        	List<Object[]> hhCntOfConsti = houseHoldVoterDAO.getHouseHoldsCountInConstituency(constituencyId);
+        	List<Object[]> hhCntOfConsti = houseHoldVoterDAO.getHouseHoldsCountInConstituency1(constituencyId);
         	
         	List<Object[]> pnchytList = houseHoldVoterDAO.getAllPanchayatsInHouseHoldsOfConstituency(constituencyId);
         	

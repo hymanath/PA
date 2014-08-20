@@ -567,6 +567,24 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 		}
 		return query.list();
 	}
-	
+	public List<Object[]> getHouseHoldsCountInConstituency1(Long constituencyId)
+	{
+		Query query = getSession().createQuery(" select model1.constituency.constituencyId," +
+				" model1.constituency.name," +
+				" count(distinct model.houseHolds.houseHoldId) " +
+				" from HouseHoldVoter model,HHBoothLeader model1,Panchayat model2 where "+
+				" model2.panchayatId=model.houseHolds.panchayat.panchayatId and "+
+				" model.hhLeader.id = model1.hhLeader.id and " +
+				" model.isDelete = 'false'" +
+				" and model.hhLeader.is_active = 'YES'" +
+				" and model.voterFamilyRelation.voterFamilyRelationId = 1"+
+				" and model1.constituency.constituencyId = :constituencyId "+
+				" and model2.panchayatId is not null and model.voterFamilyRelationId=1 " +
+				" and model.voter.voterId is not null)");
+		
+		query.setParameter("constituencyId", constituencyId);
+		
+		return query.list();
+	}
 	
 }
