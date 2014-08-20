@@ -110,6 +110,7 @@ $('#boothId').multiselect({
 					<li><a class="highlight" id="dataCollectorTab" value="1" onclick="showHideReportTabs(this.id);"> Data Collector Report </a></li>
 					<li><a class="highlight" id="userTrackingReportTab" onclick="showHideReportTabs(this.id);"> User Tracking Report</a></li>
 					<li><a class="highlight" id="thirdpPartyReportTab" onclick="showHideReportTabs(this.id);">QC Report</a></li>
+					<li><a class="highlight" id="dashboardReportTab" onclick="showHideReportTabs(this.id);"> Dashboard </a></li>
 				</ul>
 			</div>
 		</div>
@@ -118,6 +119,11 @@ $('#boothId').multiselect({
   
   
   <div class="container">
+  
+  <!----- CTP DASHBOARD START  -->
+		<div class="row" id="dashBoardDiv">	</div>
+  <!----- CTP DASHBOARD END  -->
+
 		<!---- Survey monitoring---->	
 		<div class="span12" style="display:none;margin-top:20px;" id="stateWiseReportId">
 				<!-----State Overview Div ---->
