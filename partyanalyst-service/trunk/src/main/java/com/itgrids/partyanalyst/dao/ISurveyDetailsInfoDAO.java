@@ -170,5 +170,6 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	public List<Object[]> getTeamDetailsInConstituencyLevel(Date date);
 	public List<Object[]> getTeamDetailsInBoothLevel(Long constituencyId , Long surveyUserTypeId,Date date);
 	public List<Object[]> getConstituecySummaryForQc();
+	public List<Object[]> getBoothWiseSummaryForQc(Long constituencyId);
 }
 

@@ -1751,4 +1751,11 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		
 		return query.list();
 	}
+	
+	public List<Object[]> getBoothWiseSummaryForQc(Long constituencyId)
+	{
+		Query query = getSession().createQuery("select  model.booth.boothId,model.booth.partNo,model.surveyUser.surveyUserId,model.surveyUser.userName ,model.surveyUser.mobileNo, count(distinct model.voter.voterId) from SurveyDetailsInfo where model.booth.constituency.constituencyId = :constituencyId  group by model.booth.boothId ");
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
 }
