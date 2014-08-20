@@ -358,11 +358,11 @@ public class CtpDashBoardService implements ICtpDashBoardService
 				for (Object[] objects : teamDetailsObj) 
 				{
 					BigPictureVO bigPictureVO = new BigPictureVO();
-					bigPictureVO.setDcVotersCount(objects[0] != null ? (Integer)objects[0] : 0);// surveyUserType
-					bigPictureVO.setQcVotersCount(objects[1] != null ? (Integer)objects[1] : 0);//constituencyId
-					bigPictureVO.setDcPercentage(objects[2] != null ?objects[2].toString() : "");//constituency
-					bigPictureVO.setDcBoothsCount(objects[3] != null ? (Integer)objects[3] : 0);// total booths
-					bigPictureVO.setDcConstituencysCount(objects[4] != null ? (Integer)objects[4] : 0);//total survey users
+					bigPictureVO.setDcVotersCount(objects[0] != null ? Integer.valueOf(objects[0].toString()) : 0);// surveyUserType
+					bigPictureVO.setQcVotersCount(objects[1] != null ?  Integer.valueOf(objects[1].toString()) : 0);//constituencyId
+					bigPictureVO.setDcPercentage(objects[2] != null ?  objects[2].toString() : "");//constituency
+					bigPictureVO.setDcBoothsCount(objects[3] != null ?  Integer.valueOf(objects[3].toString()): 0);// total booths
+					bigPictureVO.setDcConstituencysCount(objects[4] != null ?  Integer.valueOf(objects[4].toString()) : 0);//total survey users
 					returnList.add(bigPictureVO);
 				}
 			}
@@ -394,11 +394,11 @@ public class CtpDashBoardService implements ICtpDashBoardService
 				for (Object[] objects : teamDetails)
 				{
 					BigPictureVO bigPictureVO = new BigPictureVO();
-					bigPictureVO.setDcVotersCount(objects[0] != null ? (Integer)objects[0] : 0);// booth Id
-					bigPictureVO.setQcVotersCount(objects[2] != null ? (Integer)objects[2] : 0);//survey userid
-					bigPictureVO.setDcPercentage(objects[1] != null ?objects[1].toString() : "");//partNo
-					bigPictureVO.setQcPercentage(objects[3] != null ?objects[3].toString() : "");//user name
-					bigPictureVO.setVerifierPercentage(objects[4] != null ?objects[4].toString() : "");// mobile no
+					bigPictureVO.setDcVotersCount(objects[0] != null ?  Integer.valueOf(objects[0].toString()) : 0);// booth Id
+					bigPictureVO.setQcVotersCount(objects[2] != null ?  Integer.valueOf(objects[2].toString()) : 0);//survey userid
+					bigPictureVO.setDcPercentage(objects[1] != null ? objects[1].toString() : "");//partNo
+					bigPictureVO.setQcPercentage(objects[3] != null ? objects[3].toString() : "");//user name
+					bigPictureVO.setVerifierPercentage(objects[4] != null ? objects[4].toString() : "");// mobile no
 					returnList.add(bigPictureVO);
 				}
 			}
@@ -426,10 +426,10 @@ public class CtpDashBoardService implements ICtpDashBoardService
 				for (Object[] objects : constituencyWiseDetils)
 				{
 					BigPictureVO bigPictureVO = new BigPictureVO();
-					bigPictureVO.setDcVotersCount(objects[0] != null ? (Integer)objects[0] : 0);// constituency Id
-					bigPictureVO.setQcVotersCount(objects[2] != null ? (Integer)objects[2] : 0);//booths count
+					bigPictureVO.setDcVotersCount(objects[0] != null ?  Integer.valueOf(objects[0].toString()) : 0);// constituency Id
+					bigPictureVO.setQcVotersCount(objects[2] != null ?  Integer.valueOf(objects[2].toString()) : 0);//booths count
 					bigPictureVO.setDcPercentage(objects[1] != null ?objects[1].toString() : "");// constituency Name
-					bigPictureVO.setVerifierVotersCount(objects[3] != null ? (Integer)objects[3] : 0); // voters count
+					bigPictureVO.setVerifierVotersCount(objects[3] != null ?  Integer.valueOf(objects[3].toString()) : 0); // voters count
 					returnList.add(bigPictureVO);
 				}
 			}
@@ -458,11 +458,11 @@ public class CtpDashBoardService implements ICtpDashBoardService
 				for (Object[] objects : boothWiseQcDetails)
 				{
 					BigPictureVO bigPictureVO = new BigPictureVO();
-					bigPictureVO.setDcVotersCount(objects[0] != null ? (Integer)objects[0] : 0);// booth id
-					bigPictureVO.setQcVotersCount(objects[2] != null ? (Integer)objects[2] : 0);// survey user id
+					bigPictureVO.setDcVotersCount(objects[0] != null ? Integer.valueOf(objects[0].toString()) : 0);// booth id
+					bigPictureVO.setQcVotersCount(objects[2] != null ? Integer.valueOf(objects[2].toString()) : 0);// survey user id
 					bigPictureVO.setDcPercentage(objects[1] != null ?objects[1].toString() : "");// part no
 					bigPictureVO.setVerifierPercentage(objects[3] != null ?objects[3].toString() : "");// survey user name
-					bigPictureVO.setVerifierVotersCount(objects[4] != null ? (Integer)objects[4] : 0); // voters count
+					bigPictureVO.setQcPercentage(objects[4] != null ? objects[4].toString() : ""); // MObile Number
 					returnList.add(bigPictureVO);
 				}
 			}
@@ -474,19 +474,7 @@ public class CtpDashBoardService implements ICtpDashBoardService
 		return returnList;
 	}
 	
-	public List<BigPictureVO> getConstituencyWiseInternalVerificationSummary(String type)
-	{
-		List<BigPictureVO> returnList = null;
-		try
-		{
-			
-		}
-		catch (Exception e)
-		{
-			LOG.error("Exception raised in getBoothWiseQcVerificationSummary", e);
-		}
-		return returnList;
-	}
+	
 	
 	public List<SurveyDashBoardVO> getCasteCollectedDetails(Long regionId,Long userTypeId)
 	{
