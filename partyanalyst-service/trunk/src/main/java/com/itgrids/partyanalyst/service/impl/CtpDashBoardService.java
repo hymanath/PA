@@ -350,7 +350,7 @@ public class CtpDashBoardService implements ICtpDashBoardService
 					bigPictureVO.setDcVotersCount(objects[0] != null ? (Integer)objects[0] : 0);// constituency Id
 					bigPictureVO.setQcVotersCount(objects[2] != null ? (Integer)objects[2] : 0);//booths count
 					bigPictureVO.setDcPercentage(objects[1] != null ?objects[1].toString() : "");// constituency Name
-					bigPictureVO.setVerifierVotersCount(objects[3] != null ? (Integer)objects[3] : 0);
+					bigPictureVO.setVerifierVotersCount(objects[3] != null ? (Integer)objects[3] : 0); // voters count
 					returnList.add(bigPictureVO);
 				}
 			}
@@ -358,6 +358,53 @@ public class CtpDashBoardService implements ICtpDashBoardService
 		catch (Exception e)
 		{
 			LOG.error("Exception raised in getConstituencyWiseQcVerificationSummary", e);
+		}
+		return returnList;
+	}
+	
+	/**
+	 * This Service is used for providing booth wise qc verification report
+	 * @param constituencyId
+	 * @return returnList
+	 */
+	public List<BigPictureVO> getBoothWiseQcVerificationSummary(Long constituencyId)
+	{
+		List<BigPictureVO> returnList = null;
+		try 
+		{
+			List<Object[]> boothWiseQcDetails = surveyDetailsInfoDAO.getBoothWiseSummaryForQc(constituencyId);
+			if(boothWiseQcDetails != null && boothWiseQcDetails.size() > 0)
+			{
+				returnList = new ArrayList<BigPictureVO>();
+				for (Object[] objects : boothWiseQcDetails)
+				{
+					BigPictureVO bigPictureVO = new BigPictureVO();
+					bigPictureVO.setDcVotersCount(objects[0] != null ? (Integer)objects[0] : 0);// booth id
+					bigPictureVO.setQcVotersCount(objects[2] != null ? (Integer)objects[2] : 0);// survey user id
+					bigPictureVO.setDcPercentage(objects[1] != null ?objects[1].toString() : "");// part no
+					bigPictureVO.setVerifierPercentage(objects[3] != null ?objects[3].toString() : "");// survey user name
+					bigPictureVO.setVerifierVotersCount(objects[4] != null ? (Integer)objects[4] : 0); // voters count
+					returnList.add(bigPictureVO);
+				}
+			}
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getBoothWiseQcVerificationSummary", e);
+		}
+		return returnList;
+	}
+	
+	public List<BigPictureVO> getConstituencyWiseInternalVerificationSummary(String type)
+	{
+		List<BigPictureVO> returnList = null;
+		try
+		{
+			
+		}
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getBoothWiseQcVerificationSummary", e);
 		}
 		return returnList;
 	}
