@@ -1729,17 +1729,17 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 	
 	public List<Object[]> getTeamDetailsInConstituencyLevel(Date date)
 	{
-		Query query = getSession().createQuery("select model.surveyUser.surveyUserType.surveyUserTypeId,model.booth.constituency.constituencyId,model.booth.constituency.name , count(distinct model.booth.boothId),count(distinct model.surveyUser.surveyUserId) from SurveyDetailsInfo model" +
-				"  where model.date = :date group by model.surveyUser.surveyUserType.surveyUserTypeId,model.booth.constituency.constituencyId order by model.booth.constituency.constituencyId");
+		Query query = getSession().createQuery("select model.surveyUser.surveyUserType.surveyUsertypeId,model.booth.constituency.constituencyId,model.booth.constituency.name , count(distinct model.booth.boothId),count(distinct model.surveyUser.surveyUserId) from SurveyDetailsInfo model" +
+				"  where date(model.date) = :date group by model.surveyUser.surveyUserType.surveyUsertypeId,model.booth.constituency.constituencyId order by model.booth.constituency.constituencyId");
 		query.setParameter("date", date);
 		return query.list();
 	}
 	
 	public List<Object[]> getTeamDetailsInBoothLevel(Long constituencyId , Long surveyUserTypeId,Date date)
 	{
-		Query query = getSession().createQuery("select  model.booth.boothId,model.booth.partNo,model.surveyUser.surveyUserId,model.surveyUser.userName,model.surveyUser.mobileNo from SurveyDetailsInfo model" +
-				"  where model.date = :date  and model.booth.constituency.constituencyId = :constituencyId and model.surveyUser.surveyUserType.surveyUserTypeId = :surveyUserTypeId" +
-				"  order by model.booth.boothId");
+		Query query = getSession().createQuery("select  distinct model.booth.boothId,model.booth.partNo,model.surveyUser.surveyUserId,model.surveyUser.userName,model.surveyUser.mobileNo from SurveyDetailsInfo model" +
+				"  where date(model.date) = :date  and model.booth.constituency.constituencyId = :constituencyId and model.surveyUser.surveyUserType.surveyUsertypeId = :surveyUserTypeId" +
+				"  group by model.booth.boothId");
 		query.setParameter("date", date);
 		query.setParameter("constituencyId", constituencyId);
 		query.setParameter("surveyUserTypeId", surveyUserTypeId);
@@ -1748,14 +1748,14 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 	
 	public List<Object[]> getConstituecySummaryForQc()
 	{
-		Query query = getSession().createQuery("select model.booth.constituency.constituenyId , model.booth.constituency.name , count(distinct model.booth.boothId) , count(distinct model.voter.voterId) from SurveyDetailsInfo model group by model.booth.constituency.constituencyId ");
+		Query query = getSession().createQuery("select model.booth.constituency.constituencyId , model.booth.constituency.name , count(distinct model.booth.boothId) , count(distinct model.voter.voterId) from SurveyDetailsInfo model where model.surveyUser.surveyUserType.surveyUsertypeId = 10 group by model.booth.constituency.constituencyId  ");
 		
 		return query.list();
 	}
 	
 	public List<Object[]> getBoothWiseSummaryForQc(Long constituencyId)
 	{
-		Query query = getSession().createQuery("select  model.booth.boothId,model.booth.partNo,model.surveyUser.surveyUserId,model.surveyUser.userName ,model.surveyUser.mobileNo, count(distinct model.voter.voterId) from SurveyDetailsInfo model where model.booth.constituency.constituencyId = :constituencyId  group by model.booth.boothId ");
+		Query query = getSession().createQuery("select  model.booth.boothId,model.booth.partNo,model.surveyUser.surveyUserId,model.surveyUser.userName ,model.surveyUser.mobileNo, count(distinct model.voter.voterId) from SurveyDetailsInfo model where model.booth.constituency.constituencyId = :constituencyId  and model.surveyUser.surveyUserType.surveyUsertypeId = 10 group by model.booth.boothId ");
 		query.setParameter("constituencyId", constituencyId);
 		return query.list();
 	}
