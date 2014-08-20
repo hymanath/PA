@@ -1829,11 +1829,9 @@ function buildFinalReportWithTP(result){
 	//$('#FinalReportWithTPTableId').dataTable();
 	//$('#thirdPartyAjaxImg').show();
 }
-getBigPictureDetails();
-
 function getBigPictureDetails()
 {
-	//alert(123);
+
 	var jsObj = {
 	}
 	$.ajax({
@@ -1879,6 +1877,61 @@ function getTodayTeamDetails()
 	$.ajax({
 			type:'GET',
 			url: 'getTodayTeamDetails.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		 }).done(function(result){	
+		});	
+}
+//getConstituencyWiseTeamDetails();
+function getConstituencyWiseTeamDetails()
+{
+	var jsObj = {
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getConstituencyWiseTeamDetails.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		 }).done(function(result){	
+		});	
+		
+}
+
+function getBoothWiseTeamDetails()
+{
+	var jsObj = {
+		constituencyId : 170,
+		surveyUserTypeId : 1
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getBoothWiseTeamDetails.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		 }).done(function(result){	
+		});	
+}
+
+function getConstituencyWiseQcVerificationSummary()
+{
+	var jsObj = {
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getConstituencyWiseQcVerificationSummary.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		 }).done(function(result){	
+		});	
+}
+function getBoothWiseQcVerificationSummary()
+{
+	var jsObj = {
+		constituencyId : 217
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getBoothWiseQcVerificationSummary.action',
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)},
 		 }).done(function(result){	
