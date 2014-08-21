@@ -1972,6 +1972,7 @@ function buildHamletInfo(result,DivEle)
 function getRespectiveUsers(id)
 {
 	$("#userProcessingImg").show();
+	$('#userReportUser').find('option').remove();
 	var jsObj={
 		//constituencyId:$('#userWiseReportConstituencyId').val(),
 		userTypeId:id
@@ -1983,13 +1984,15 @@ function getRespectiveUsers(id)
 	data: {task:JSON.stringify(jsObj)},
 	}).done(function(result){
 				$("#userProcessingImg").hide();
-				$('#userReportUser').find('option').remove();
-				$('#userReportUser').append('<option value="0"> Select User </option>');
+				//$('#userReportUser').append('<option value="0"> Select User </option>');
 				if(result != null && result.length>0){
 					for(var i in result){
 						$('#userReportUser').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 					}
-				}	
+					//$('#userReportUser').multiselect('refresh');
+				}
+
+		$('#userReportUser').multiselect('refresh');		
 	});
 }
 
@@ -2040,7 +2043,7 @@ function getUserWiseReport()
 	$('#errorDiv').html("");
 	$('#userWiseReportImg').show();
 	var jsObj={
-		//constituencyId:$('#userWiseReportConstituencyId').val(),
+		constitiencyIds:$('#userReportUserConstituency').val(),
 		userTypeId:userTypeId,
 		fromDate : fromDate,
 		toDate :toDate,
@@ -2072,6 +2075,7 @@ function buildUserReport(result,userType)
 	str+='<table class=" table table-bordered m_top20 table-hover table-striped" id="userReportTable">';
 	str+='<thead>';
 	str+='<th>Constituency</th>';
+	str+='<th> User Name </th>';
 	str+='<th>Booth</th>';
 	str+='<th>Date</th>';
 	str+='<th>Total</th>';
@@ -2093,6 +2097,7 @@ function buildUserReport(result,userType)
 	{
 		str += '<tr>';
 		str+='<td>'+result[i].constituency+'</td>';
+		str+='<td>'+result[i].name+'</td>';
 		str+='<td>'+result[i].partNo+'</td>';
 		str+='<td>'+result[i].date+'</td>';
 		str+='<td>'+result[i].totalCount+'</td>';
@@ -2615,29 +2620,36 @@ function buildSummaryForFieldData(result)
 				  str+='<table class="table table-bordered m_top20 table-hover table-striped" id="fieldDataSummaryTable">';
 				  str+='<thead class="alert alert-success">';
 				  str+='<th>Constituency</th>';	
-				  str+='<th>Total Voters</th>';	
-				  str+='<th>Caste Tag Voters</th>';
-				  str+='<th>Caste Error Rate</th>';
-				  str+='<th>Mobile Error Rate</th>';
-				  str+=' <th>Empty Fields</th>';
+				  str+='<th> Total Booths </th>';	
+				  str+='<th> Total Voters </th>';	
+				  str+='<th> Caste Tag Booths </th>';
+				  str+='<th> Caste Tag Voters </th>';
+				  str+='<th> Verified Booths </th>';
+				  str+='<th> Caste Error Rate </th>';
+				  str+='<th> Mobile Error Rate </th>';
+				  //str+=' <th>Empty Fields</th>';
 				 str+='</thead>';
 				 str+='<tbody>';
 				  for(var i in result)
 				  {
 					  str+='<tr>';
 					str+='<td>'+result[i].constituency+'</td>';
+					str+='<td>'+result[i].boothCount+'</td>';
 					str+='<td>'+result[i].totalCount+'</td>';
+					str+='<td>'+result[i].casteTagedBooths+'</td>';
 					str+='<td>'+result[i].casteCount+'</td>';
+					str+='<td>'+result[i].casteVerifiedBooths+'</td>';
+					
 					if(result[i].casteErrorRate == null)
-					str+='<td>-</td>';
+						str+='<td>-</td>';
 					else
-					str+='<td>'+result[i].casteErrorRate+'</td>';
+						str+='<td>'+result[i].casteErrorRate+'</td>';
 					if(result[i].mobileErrorRate == null)
-					str+='<td>-</td>';
+						str+='<td>-</td>';
 					else
-					str+='<td>'+result[i].mobileErrorRate+'</td>';
-					var count = result[i].totalCount - result[i].casteCount;
-					str+='<td>'+count+'</td>';
+						str+='<td>'+result[i].mobileErrorRate+'</td>';
+					//var count = result[i].totalCount - result[i].casteCount;
+					//str+='<td>'+count+'</td>';
 					
 					str+='</tr>';
 				  }
