@@ -1955,11 +1955,12 @@ function getInternalVerificationSummary(stateId,divId)
 		 }).done(function(result){
 			if(result != null)
 			{
-				$('#verifiedCount').html('<a href="javascript:{openConstituencyWiseWindow(0)}">'+result.verifierVotersCount+'</a>');
+				$('#verifiedCount').html('<a href="javascript:{openInternalConstituencyWiseWindow(0)}">'+result.verifierVotersCount+'</a>');
 				$('#matchedCount').html(result.correctDetails);
 				$('#unMatchedCount').html(result.wrongDetails);
-				$('#redoBoothDetails').html('<a href="javascript:{openConstituencyWiseWindow(4)}">'+result.redoVoters +"</a>-"+ result.redoBooths);
-				$('#'+divId+'').addClass('btn-success');
+				
+				
+				$('#redoBoothDetails').html('<a href="javascript:{openInternalConstituencyWiseWindow(4)}">'+result.redoVoters +"</a>-"+ result.redoBooths);
 			}
 		});	
 }
@@ -2350,4 +2351,9 @@ function buildBoothWiseStatusDetails(result)
 	$('#boothWiseTable').dataTable();
 		$('#bmainajaximg').hide();
 
+}
+
+function openInternalConstituencyWiseWindow(userTypeId)
+{
+	window.open("surveyConstituencieOverview.action?regionId="+internalRegionId+"&userTypeId="+userTypeId+"", "_blank");
 }
