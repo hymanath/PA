@@ -58,12 +58,12 @@ public class CtpDashBoardService implements ICtpDashBoardService
 	 * This Serivice is used for setting over all big picture on CTP project
 	 * @return returnVO
 	 */
-	public BigPictureVO getBigPictureDetails()
+	public BigPictureVO getBigPictureDetails(Long stateId)
 	{
 		BigPictureVO returnVO = new BigPictureVO();
 		try
 		{
-			List<Object[]> dcAndQcDetails = surveyDetailsInfoDAO.getTotalVotersAndBoothsAndConstituencyes();
+			List<Object[]> dcAndQcDetails = surveyDetailsInfoDAO.getTotalVotersAndBoothsAndConstituencyes(stateId);
 			if(dcAndQcDetails != null && dcAndQcDetails.size() > 0)
 			{
 				for (Object[] objects : dcAndQcDetails)
@@ -86,7 +86,7 @@ public class CtpDashBoardService implements ICtpDashBoardService
 				}
 			}
 			
-			List<Object[]> verifierDetails = surveyCallStatusDAO.getVerifierCounts();
+			List<Object[]> verifierDetails = surveyCallStatusDAO.getVerifierCounts(stateId);
 			if(verifierDetails != null && verifierDetails.size() > 0)
 			{
 				for (Object[] objects : verifierDetails)
@@ -108,38 +108,36 @@ public class CtpDashBoardService implements ICtpDashBoardService
 					}
 				}
 			}
-			/*returnVO.setDcVotersCount(surveyDetailsInfoDAO.getSurveyUserCollectedVoters(1l).intValue());
-			returnVO.setDcBoothsCount(surveyDetailsInfoDAO.getSurveyUserCollectedVoters(1l).intValue());
-			returnVO.setDcConstituencysCount(surveyDetailsInfoDAO.getSurveyUserCompeletedConstituencyes(1l).intValue());
 			
-			returnVO.setQcVotersCount(surveyDetailsInfoDAO.getSurveyUserCollectedVoters(10l).intValue());
-			returnVO.setQcBoothsCount(surveyDetailsInfoDAO.getSurveyUserCompeletedBooths(10l).intValue());
-			returnVO.setQcConstituencyesCount(surveyDetailsInfoDAO.getSurveyUserCompeletedConstituencyes(10l).intValue());*/
-			
-			/*returnVO.setVerifierVotersCount(surveyCallStatusDAO.getWmVerifiedVoters().intValue());
-			returnVO.setVerifierBoothsCount(surveyCallStatusDAO.getWmVerifiedBooths().intValue());
-			returnVO.setVerifierConstituencyCount(surveyCallStatusDAO.getWmVerifiedConstituencyes().intValue());*/
-			
-			returnVO.setTotalVoters(37696573);
-			returnVO.setTotalBooths(44688);
-			returnVO.setTotalConstituencyes(216);
-			
-			if(returnVO.getTotalVoters() != null && returnVO.getTotalVoters() > 0)
+			List<Object[]> totalCountsList = surveyConstituencyTempDAO.getTotalVoters(stateId);
+			if(totalCountsList != null && totalCountsList.size() > 0)
 			{
-				if(returnVO.getDcVotersCount() != null  && returnVO.getDcVotersCount() > 0)
+				for (Object[] objects : totalCountsList) 
 				{
-					returnVO.setDcPercentage(new BigDecimal(returnVO.getDcVotersCount()*(100.0)/returnVO.getTotalVoters()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-				}
-				if(returnVO.getQcVotersCount() != null && returnVO.getQcVotersCount() > 0)
-				{
-					returnVO.setQcPercentage(new BigDecimal(returnVO.getQcVotersCount()*(100.0)/returnVO.getTotalVoters()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-				}
-				if(returnVO.getVerifierVotersCount() != null && returnVO.getVerifierVotersCount() > 0)
-				{
-					returnVO.setVerifierPercentage(new BigDecimal(returnVO.getVerifierVotersCount()*(100.0)/returnVO.getTotalVoters()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					returnVO.setTotalVoters(Integer.valueOf(objects[0].toString()));
+					returnVO.setTotalBooths(Integer.valueOf(objects[1].toString()));
+					returnVO.setTotalConstituencyes(Integer.valueOf(objects[2].toString()));
 				}
 				
+				
+				if(returnVO.getTotalVoters() != null && returnVO.getTotalVoters() > 0)
+				{
+					if(returnVO.getDcVotersCount() != null  && returnVO.getDcVotersCount() > 0)
+					{
+						returnVO.setDcPercentage(new BigDecimal(returnVO.getDcVotersCount()*(100.0)/returnVO.getTotalVoters()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					}
+					if(returnVO.getQcVotersCount() != null && returnVO.getQcVotersCount() > 0)
+					{
+						returnVO.setQcPercentage(new BigDecimal(returnVO.getQcVotersCount()*(100.0)/returnVO.getTotalVoters()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					}
+					if(returnVO.getVerifierVotersCount() != null && returnVO.getVerifierVotersCount() > 0)
+					{
+						returnVO.setVerifierPercentage(new BigDecimal(returnVO.getVerifierVotersCount()*(100.0)/returnVO.getTotalVoters()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					}
+					
+				}
 			}
+			
 			
 			
 		} 
@@ -154,13 +152,13 @@ public class CtpDashBoardService implements ICtpDashBoardService
 	 * This Service is used for providing internal Verification Summary details
 	 * @return returnVO
 	 */
-	public BigPictureVO getInternalVerificationSummary()
+	public BigPictureVO getInternalVerificationSummary(Long stateId)
 	{
 		BigPictureVO returnVO = new BigPictureVO();
 		try
 		{
 			
-			List<Object[]> verifierDetails = surveyCallStatusDAO.getVerifierCounts();
+			List<Object[]> verifierDetails = surveyCallStatusDAO.getVerifierCounts(stateId);
 			if(verifierDetails != null && verifierDetails.size() > 0)
 			{
 				for (Object[] objects : verifierDetails)
@@ -194,7 +192,7 @@ public class CtpDashBoardService implements ICtpDashBoardService
 					}
 					
 				}
-				getRedoBooths(returnVO);
+				getRedoBooths(stateId,returnVO);
 			}
 			
 			
@@ -211,11 +209,11 @@ public class CtpDashBoardService implements ICtpDashBoardService
 	 * This Service is used for getting redo booths
 	 * @param returnVO
 	 */
-	public void getRedoBooths(BigPictureVO returnVO)
+	public void getRedoBooths(Long stateId , BigPictureVO returnVO)
 	{
 		try
 		{
-			List<Long> redoBooths = surveyDetailsInfoDAO.getsurveyUserCollectedBooths(4l);
+			List<Long> redoBooths = surveyDetailsInfoDAO.getsurveyUserCollectedBooths(stateId,4l);
 			if(redoBooths != null && redoBooths.size() > 0)
 			{
 				returnVO.setRedoBooths(redoBooths.size());
@@ -279,20 +277,20 @@ public class CtpDashBoardService implements ICtpDashBoardService
 	 * This Service is used for providing QC Verification Summary Details
 	 * @return returnVO
 	 */
-	public BigPictureVO getQcVerificationSummaryReport()
+	public BigPictureVO getQcVerificationSummaryReport(Long stateId)
 	{
 		BigPictureVO returnVO = new BigPictureVO();
 		try
 		{
-			returnVO.setQcVotersCount(surveyDetailsInfoDAO.getSurveyUserCollectedVoters(10l).intValue());
+			returnVO.setQcVotersCount(surveyDetailsInfoDAO.getSurveyUserCollectedVoters(stateId,10l).intValue());
 			List<Long> matchedIds = new ArrayList<Long>();
 			matchedIds.add(1l);
-			returnVO.setMatchedCount(surveyFinalDataDAO.getQcCollectedMatchedUnMatchedDetails(matchedIds).intValue());
+			returnVO.setMatchedCount(surveyFinalDataDAO.getQcCollectedMatchedUnMatchedDetails(stateId,matchedIds).intValue());
 			List<Long> unMatchedIds = new ArrayList<Long>();
 			unMatchedIds.add(2l);
 			unMatchedIds.add(3l);
 			unMatchedIds.add(4l);
-			returnVO.setUnMatchedCount(surveyFinalDataDAO.getQcCollectedMatchedUnMatchedDetails(unMatchedIds).intValue());
+			returnVO.setUnMatchedCount(surveyFinalDataDAO.getQcCollectedMatchedUnMatchedDetails(stateId,unMatchedIds).intValue());
 			if(returnVO.getQcVotersCount() != null && returnVO.getQcVotersCount() > 0)
 			{
 				if(returnVO.getMatchedCount() != null && returnVO.getMatchedCount() > 0)
@@ -316,14 +314,14 @@ public class CtpDashBoardService implements ICtpDashBoardService
 	 * This Service is used for getting team details 
 	 * @return returnVO
 	 */
-	public BigPictureVO getTodayTeamDetails()
+	public BigPictureVO getTodayTeamDetails(Long stateId)
 	{
 		BigPictureVO returnVO = new BigPictureVO();
 		try 
 		{
 			DateUtilService dateUtilService = new DateUtilService();
 			Date todateDate = dateUtilService.getCurrentDateAndTime();
-			List<Object[]> teamDetailsObj = surveyDetailsInfoDAO.getTodayTeamDetails(todateDate);
+			List<Object[]> teamDetailsObj = surveyDetailsInfoDAO.getTodayTeamDetails(stateId,todateDate);
 			
 			if(teamDetailsObj != null && teamDetailsObj.size() > 0)
 			{
@@ -355,7 +353,7 @@ public class CtpDashBoardService implements ICtpDashBoardService
 	 * This Service is used for getting constituency wise team details
 	 * @return returnList
 	 */
-	public List<BigPictureVO> getConstituencyWiseTeamDetails(Long surveyUserType)
+	public List<BigPictureVO> getConstituencyWiseTeamDetails(Long stateId , Long surveyUserType)
 	{
 		List<BigPictureVO> returnList = null;
 		
@@ -363,7 +361,7 @@ public class CtpDashBoardService implements ICtpDashBoardService
 		{
 			DateUtilService dateUtilService = new DateUtilService();
 			Date todateDate = dateUtilService.getCurrentDateAndTime();
-			List<Object[]> teamDetailsObj = surveyDetailsInfoDAO.getTeamDetailsInConstituencyLevel(todateDate,surveyUserType);
+			List<Object[]> teamDetailsObj = surveyDetailsInfoDAO.getTeamDetailsInConstituencyLevel(stateId,todateDate,surveyUserType);
 			if(teamDetailsObj != null && teamDetailsObj.size() > 0)
 			{
 				returnList = new ArrayList<BigPictureVO>();
@@ -392,14 +390,14 @@ public class CtpDashBoardService implements ICtpDashBoardService
 	 * @param surveyUserTypeId
 	 * @return returnList
 	 */
-	public List<BigPictureVO> getBoothWiseTeamDetails(Long constituencyId , Long surveyUserTypeId)
+	public List<BigPictureVO> getBoothWiseTeamDetails(Long stateId , Long constituencyId , Long surveyUserTypeId)
 	{
 		List<BigPictureVO> returnList = null;
 		try 
 		{
 			DateUtilService dateUtilService = new DateUtilService();
 			Date todateDate = dateUtilService.getCurrentDateAndTime();
-			List<Object[]> teamDetails = surveyDetailsInfoDAO.getTeamDetailsInBoothLevel(constituencyId, surveyUserTypeId, todateDate);
+			List<Object[]> teamDetails = surveyDetailsInfoDAO.getTeamDetailsInBoothLevel(stateId,constituencyId, surveyUserTypeId, todateDate);
 			if(teamDetails != null && teamDetails.size() > 0)
 			{
 				returnList = new ArrayList<BigPictureVO>();
@@ -426,7 +424,7 @@ public class CtpDashBoardService implements ICtpDashBoardService
 	 * This Service is used for getting constituency wise Qc Summary
 	 * @return returnList
 	 */
-	public List<BigPictureVO> getConstituencyWiseQcVerificationSummary(String type)
+	public List<BigPictureVO> getConstituencyWiseQcVerificationSummary(Long stateId , String type)
 	{
 		List<BigPictureVO> returnList = null;
 		try
@@ -434,7 +432,7 @@ public class CtpDashBoardService implements ICtpDashBoardService
 			List<Object[]> constituencyWiseDetils = null;
 			if(type.equalsIgnoreCase("null"))
 			{
-				constituencyWiseDetils = surveyDetailsInfoDAO.getConstituecySummaryForQc();
+				constituencyWiseDetils = surveyDetailsInfoDAO.getConstituecySummaryForQc(stateId);
 			}
 			else
 			{
@@ -442,13 +440,13 @@ public class CtpDashBoardService implements ICtpDashBoardService
 				if(type.equalsIgnoreCase("Y"))
 				{
 					statusIds.add(1l);
-					constituencyWiseDetils = surveyFinalDataDAO.getQcDataForSelection(statusIds);
+					constituencyWiseDetils = surveyFinalDataDAO.getQcDataForSelection(stateId,statusIds);
 				}
 				else
 				{
 					statusIds.add(2l);
 					statusIds.add(3l);
-					constituencyWiseDetils =surveyFinalDataDAO.getQcDataForSelection(statusIds);
+					constituencyWiseDetils =surveyFinalDataDAO.getQcDataForSelection(stateId,statusIds);
 				}
 				
 			}
@@ -479,7 +477,7 @@ public class CtpDashBoardService implements ICtpDashBoardService
 	 * @param constituencyId
 	 * @return returnList
 	 */
-	public List<BigPictureVO> getBoothWiseQcVerificationSummary(Long constituencyId,String type)
+	public List<BigPictureVO> getBoothWiseQcVerificationSummary(Long stateId , Long constituencyId,String type)
 	{
 		List<BigPictureVO> returnList = null;
 		try 
@@ -487,7 +485,7 @@ public class CtpDashBoardService implements ICtpDashBoardService
 			List<Object[]> boothWiseQcDetails = null;
 			if(type.equalsIgnoreCase("null"))
 			{
-				boothWiseQcDetails = surveyDetailsInfoDAO.getBoothWiseSummaryForQc(constituencyId);
+				boothWiseQcDetails = surveyDetailsInfoDAO.getBoothWiseSummaryForQc(stateId,constituencyId);
 			}
 			else
 			{
@@ -495,13 +493,13 @@ public class CtpDashBoardService implements ICtpDashBoardService
 				if(type.equalsIgnoreCase("Y"))
 				{
 					statusIds.add(1l);
-					boothWiseQcDetails = surveyFinalDataDAO.getBoothWiseQcData(constituencyId,statusIds);
+					boothWiseQcDetails = surveyFinalDataDAO.getBoothWiseQcData(stateId,constituencyId,statusIds);
 				}
 				else
 				{
 					statusIds.add(2l);
 					statusIds.add(3l);
-					boothWiseQcDetails = surveyFinalDataDAO.getBoothWiseQcData(constituencyId,statusIds);
+					boothWiseQcDetails = surveyFinalDataDAO.getBoothWiseQcData(stateId,constituencyId,statusIds);
 				}
 				
 			}
@@ -533,14 +531,14 @@ public class CtpDashBoardService implements ICtpDashBoardService
 	 * This Service is used for getting all team collected details
 	 * @return returnList
 	 */
-	public BigPictureVO getTodayTeamCollectedDetails()
+	public BigPictureVO getTodayTeamCollectedDetails(Long stateId)
 	{
 		BigPictureVO returnVO = new BigPictureVO();
 		try 
 		{
 			DateUtilService dateUtilService = new DateUtilService();
 			Date todateDate = dateUtilService.getCurrentDateAndTime();
-			List<Object[]> teamCollectedDetails = surveyDetailsInfoDAO.getTodayTeamCollectedDetails(todateDate);
+			List<Object[]> teamCollectedDetails = surveyDetailsInfoDAO.getTodayTeamCollectedDetails(stateId,todateDate);
 			if(teamCollectedDetails != null && teamCollectedDetails.size() > 0)
 			{
 				for (Object[] objects : teamCollectedDetails)
@@ -575,14 +573,14 @@ public class CtpDashBoardService implements ICtpDashBoardService
 	 * @param type
 	 * @return returnList
 	 */
-	public List<BigPictureVO> getConstituencyWiseTeamCollectedSummary(Long type)
+	public List<BigPictureVO> getConstituencyWiseTeamCollectedSummary(Long stateId , Long type)
 	{
 		List<BigPictureVO> returnList = null;
 		try 
 		{
 			DateUtilService dateUtilService = new DateUtilService();
 			Date todateDate = dateUtilService.getCurrentDateAndTime();
-			List<Object[]> constituencyWiseDetails = surveyDetailsInfoDAO.getConstituencyWiseTeamCollectedDetails(type, todateDate);
+			List<Object[]> constituencyWiseDetails = surveyDetailsInfoDAO.getConstituencyWiseTeamCollectedDetails(stateId,type, todateDate);
 			if(constituencyWiseDetails != null && constituencyWiseDetails.size() > 0)
 			{
 				returnList = new ArrayList<BigPictureVO>();
@@ -604,14 +602,14 @@ public class CtpDashBoardService implements ICtpDashBoardService
 		return returnList;
 	}
 	
-	public List<BigPictureVO> getBoothWiseTeamCollectedDetailsSummary(Long constituencyId , Long surveyUserTypeId)
+	public List<BigPictureVO> getBoothWiseTeamCollectedDetailsSummary(Long stateId ,Long constituencyId , Long surveyUserTypeId)
 	{
 		List<BigPictureVO> returnList = null;
 		try 
 		{
 			DateUtilService dateUtilService = new DateUtilService();
 			Date todateDate = dateUtilService.getCurrentDateAndTime();
-			List<Object[]> boothWiseDetails = surveyDetailsInfoDAO.getBoothWiseTeamCollectedDetails(surveyUserTypeId, todateDate, constituencyId);
+			List<Object[]> boothWiseDetails = surveyDetailsInfoDAO.getBoothWiseTeamCollectedDetails(stateId,surveyUserTypeId, todateDate, constituencyId);
 			if(boothWiseDetails != null && boothWiseDetails.size() > 0)
 			{
 				returnList = new ArrayList<BigPictureVO>();

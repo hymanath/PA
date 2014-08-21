@@ -14,6 +14,27 @@ public class SurveyConstituencyTempDAO extends GenericDaoHibernate<SurveyConstit
 		super(SurveyConstituencyTemp.class);
 		
 	}
+	
+	public List<Object[]> getTotalVoters(Long type)
+	{
+		StringBuffer queryString = new StringBuffer();
+		queryString.append("select sum(model.totalVoters) ,sum(model.totalBooths) , count(model.constituency.constituencyId)  from SurveyConstituencyTemp model where ");
+		if(type != null)
+		{
+			if(type.longValue() == 1l)
+			{
+				queryString.append("  model.constituency.district.districtId > 10 and ");
+			}
+			if(type.longValue() == 2l)
+			{
+				queryString.append("  model.constituency.district.districtId <= 10  and ");
+			}
+		}
+		queryString.append(" model.surveyType = 'CTP' ");
+
+		Query query = getSession().createQuery(queryString.toString());
+		return query.list();
+	}
 
 	
 	

@@ -5,37 +5,37 @@ import java.io.Serializable;
 public class BigPictureVO implements Serializable
 {
 
-	private Integer dcVotersCount;
-	private Integer dcBoothsCount;
-	private Integer dcConstituencysCount;
-	
+	private Integer dcVotersCount= 0;
+	private Integer dcBoothsCount= 0;
+	private Integer dcConstituencysCount= 0;
+
 	private Integer verifierVotersCount = 0;
 	private Integer verifierBoothsCount = 0;
 	private Integer verifierConstituencyCount = 0;
 	
-	private Integer qcVotersCount;
-	private Integer qcBoothsCount;
-	private Integer qcConstituencyesCount;
+	private Integer qcVotersCount= 0;
+	private Integer qcBoothsCount= 0;
+	private Integer qcConstituencyesCount= 0;
 	
 	private String dcPercentage;
 	private String verifierPercentage;
 	private String qcPercentage;
 	
-	private Integer totalVoters;
-	private Integer totalBooths;
-	private Integer totalConstituencyes;
+	private Integer totalVoters= 0;
+	private Integer totalBooths= 0;
+	private Integer totalConstituencyes= 0;
 	
-	private Integer correctDetails;
-	private Integer wrongDetails;
+	private Integer correctDetails= 0;
+	private Integer wrongDetails= 0;
 	
 	private String correctPerc;
 	private String wrongPerc;
 	
-	private Integer redoBooths;
-	private Integer redoVoters;
+	private Integer redoBooths= 0;
+	private Integer redoVoters= 0;
 	
-	private Integer matchedCount;
-	private Integer unMatchedCount;
+	private Integer matchedCount= 0;
+	private Integer unMatchedCount= 0;
 	
 	public Integer getDcVotersCount() {
 		return dcVotersCount;
