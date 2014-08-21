@@ -37,6 +37,9 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 	private List<SurveyResponceVO> collectedCasteDetails;
 	private List<BoothWiseSurveyStatusDetailsVO> boothWiseStatusList;
 	
+	@Autowired
+	private ICtpDashBoardService ctpDashBoardService;
+	
 
 	public List<BoothWiseSurveyStatusDetailsVO> getBoothWiseStatusList() {
 		return boothWiseStatusList;
@@ -98,9 +101,7 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 		this.userTypeId = userTypeId;
 	}
 
-	@Autowired
-	private ICtpDashBoardService ctpDashBoardService;
-	
+
 	
 	public void setServletRequest(HttpServletRequest request)
 	{
@@ -155,7 +156,8 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 	{
 		try
 		{
-			bigPictureVO = ctpDashBoardService.getBigPictureDetails();
+			jObj = new JSONObject(getTask());
+			bigPictureVO = ctpDashBoardService.getBigPictureDetails(jObj.getLong("stateId"));
 		} 
 		catch (Exception e) 
 		{
@@ -168,7 +170,8 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 	{
 		try
 		{
-			bigPictureVO = ctpDashBoardService.getInternalVerificationSummary();
+			jObj = new JSONObject(getTask());
+			bigPictureVO = ctpDashBoardService.getInternalVerificationSummary(jObj.getLong("stateId"));
 		} 
 		catch (Exception e) 
 		{
@@ -181,7 +184,8 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 	{
 		try
 		{
-			bigPictureVO = ctpDashBoardService.getQcVerificationSummaryReport();
+			jObj = new JSONObject(getTask());
+			bigPictureVO = ctpDashBoardService.getQcVerificationSummaryReport(jObj.getLong("stateId"));
 		} 
 		catch (Exception e) 
 		{
@@ -194,7 +198,8 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 	{
 		try
 		{
-			bigPictureVO = ctpDashBoardService.getTodayTeamDetails();
+			jObj = new JSONObject(getTask());
+			bigPictureVO = ctpDashBoardService.getTodayTeamDetails(jObj.getLong("stateId"));
 		} 
 		catch (Exception e) 
 		{
@@ -208,7 +213,7 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 		try
 		{
 			jObj = new JSONObject(getTask());
-			bigPictureVOList = ctpDashBoardService.getBoothWiseTeamDetails(jObj.getLong("constituencyId"),jObj.getLong("surveyUserTypeId"));
+			bigPictureVOList = ctpDashBoardService.getBoothWiseTeamDetails(jObj.getLong("stateId"),jObj.getLong("constituencyId"),jObj.getLong("surveyUserTypeId"));
 		} 
 		catch (Exception e) 
 		{
@@ -222,7 +227,7 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 		try
 		{
 			jObj = new JSONObject(getTask());
-			bigPictureVOList = ctpDashBoardService.getConstituencyWiseTeamDetails(jObj.getLong("type"));
+			bigPictureVOList = ctpDashBoardService.getConstituencyWiseTeamDetails(jObj.getLong("stateId"),jObj.getLong("type"));
 		} 
 		catch (Exception e) 
 		{
@@ -236,7 +241,7 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 		try
 		{
 			jObj = new JSONObject(getTask());
-			bigPictureVOList = ctpDashBoardService.getConstituencyWiseQcVerificationSummary(jObj.getString("type"));
+			bigPictureVOList = ctpDashBoardService.getConstituencyWiseQcVerificationSummary(jObj.getLong("stateId"),jObj.getString("type"));
 		} 
 		catch (Exception e) 
 		{
@@ -251,7 +256,7 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 		try
 		{
 			jObj = new JSONObject(getTask());
-			bigPictureVOList = ctpDashBoardService.getBoothWiseQcVerificationSummary(jObj.getLong("constituencyId"),jObj.getString("type"));
+			bigPictureVOList = ctpDashBoardService.getBoothWiseQcVerificationSummary(jObj.getLong("stateId"),jObj.getLong("constituencyId"),jObj.getString("type"));
 		} 
 		catch (Exception e) 
 		{
@@ -264,7 +269,8 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 	{
 		try
 		{
-			bigPictureVO = ctpDashBoardService.getTodayTeamCollectedDetails();
+			jObj = new JSONObject(getTask());
+			bigPictureVO = ctpDashBoardService.getTodayTeamCollectedDetails(jObj.getLong("stateId"));
 		} 
 		catch (Exception e) 
 		{
@@ -278,7 +284,7 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 		try
 		{
 			jObj = new JSONObject(getTask());
-			bigPictureVOList = ctpDashBoardService.getConstituencyWiseTeamCollectedSummary(jObj.getLong("type"));
+			bigPictureVOList = ctpDashBoardService.getConstituencyWiseTeamCollectedSummary(jObj.getLong("stateId"),jObj.getLong("type"));
 		} 
 		catch (Exception e) 
 		{
@@ -292,7 +298,7 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 		try
 		{
 			jObj = new JSONObject(getTask());
-			bigPictureVOList = ctpDashBoardService.getBoothWiseTeamCollectedDetailsSummary(jObj.getLong("constituencyId"),jObj.getLong("type"));
+			bigPictureVOList = ctpDashBoardService.getBoothWiseTeamCollectedDetailsSummary(jObj.getLong("stateId"),jObj.getLong("constituencyId"),jObj.getLong("type"));
 		} 
 		catch (Exception e) 
 		{
