@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.hibernate.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ISurveyCallStatusDAO;
@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dao.ISurveyConstituencyTempDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.ISurveyFinalDataDAO;
 import com.itgrids.partyanalyst.dto.BigPictureVO;
+import com.itgrids.partyanalyst.dto.BoothWiseSurveyStatusDetailsVO;
 import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.service.ICtpDashBoardService;
@@ -669,7 +670,18 @@ public class CtpDashBoardService implements ICtpDashBoardService
 							.getConstituencyWiseCasteCollectedBoothsDetailsByUserTypeId(
 									userTypeId, 11L, 23L);
 				 }
-			 }
+			 }else if (userTypeId.equals(0L))
+			{	
+	 			 if(regionId.equals(1L))
+				 {
+	 				 votersDtls = surveyCallStatusDAO.getConstituencyWiseVerifiedVoters(1L,10L);
+	 				 boothsCount = surveyCallStatusDAO.getConstituencyWiseVerifiedBooths(1L,10L);
+				 }
+	 			 {
+	 				 votersDtls = surveyCallStatusDAO.getConstituencyWiseVerifiedVoters(11L,23L);
+	 				 boothsCount = surveyCallStatusDAO.getConstituencyWiseVerifiedBooths(11L,23L);
+	 			 }
+			}
 			
 			List<Long> casteCollectedConstnIds = new ArrayList<Long>();
 			
@@ -687,18 +699,7 @@ public class CtpDashBoardService implements ICtpDashBoardService
 			 Map<Long,Long> totalVotersMap = generateMapFromList(totalVotersDtls);
 			// Map<Long,Long> totalBoothsMap = generateMapFromList(totalBoothsDtls);
 			 
-	 		if (userTypeId.equals(0L))
-			{	
-	 			 if(regionId.equals(1L))
-				 {
-	 				 votersDtls = surveyCallStatusDAO.getConstituencyWiseVerifiedVoters(1L,10L);
-	 				 boothsCount = surveyCallStatusDAO.getConstituencyWiseVerifiedBooths(1L,10L);
-				 }
-	 			 {
-	 				 votersDtls = surveyCallStatusDAO.getConstituencyWiseVerifiedVoters(11L,23L);
-	 				 boothsCount = surveyCallStatusDAO.getConstituencyWiseVerifiedBooths(11L,23L);
-	 			 }
-			}
+	 		
 	 
 			 
 			 for(Object[] obj:totalBoothsDtls)
@@ -756,6 +757,8 @@ public class CtpDashBoardService implements ICtpDashBoardService
 			List<Object[]> votersDtls = null;
 			List<Object[]> totalVoters  = null;
 			List<Object[]> usersDetails  = null;
+			List<Long> boothIds = null;
+
 			
 			if (userTypeId.equals(IConstants.DATA_COLLECTOR_ROLE_ID)
 					|| userTypeId.equals(IConstants.THIRD_PARTY_ROLE_ID) 
@@ -763,13 +766,16 @@ public class CtpDashBoardService implements ICtpDashBoardService
 				votersDtls = surveyDetailsInfoDAO.getBoothWiseCollectedCasteDetailsByConstituencyId(constituencyId,userTypeId);
 				usersDetails = surveyDetailsInfoDAO.getBoothWiseUsersDetailsByConstituencyId(constituencyId,userTypeId);
 				
+				boothIds = surveyDetailsInfoDAO.getSurveyStartedBoothsDetailsForConstituencyByUserTypeId(constituencyId,userTypeId);
+				
 			}else
 			{
 				votersDtls = surveyCallStatusDAO.getBoothWiseVerifiedDetailsByConstituencyId(constituencyId);
 				usersDetails = surveyCallStatusDAO.getBoothWiseUsersDetailsByConstituencyId(constituencyId);
+				
+				boothIds = surveyCallStatusDAO.getVerifiedBoothIdsByConstituencyId(constituencyId);
 			}
 			
-			List<Long> boothIds = surveyDetailsInfoDAO.getSurveyStartedBoothsDetailsForConstituencyByUserTypeId(constituencyId,userTypeId);
 			
 			totalVoters = boothPublicationVoterDAO.getBoothWiseTotalVotersByConstituencyId(constituencyId);
 
