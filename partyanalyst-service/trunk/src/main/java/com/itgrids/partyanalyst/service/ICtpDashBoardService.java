@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.BigPictureVO;
+import com.itgrids.partyanalyst.dto.BoothWiseSurveyStatusDetailsVO;
 import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 
@@ -24,5 +25,8 @@ public interface ICtpDashBoardService
 			Long constituencyId, Long userTypeId);
 	
 	public List<SurveyResponceVO> getBoothWiseCollectedcasteDetails(Long boothId,Long userTypeId);
+	public List<BoothWiseSurveyStatusDetailsVO> getAllBoothsStatusDetailsByConstituencyId(Long constituencyId);
 	public List<SurveyDashBoardVO> getCountsForDC();
+
+
 }

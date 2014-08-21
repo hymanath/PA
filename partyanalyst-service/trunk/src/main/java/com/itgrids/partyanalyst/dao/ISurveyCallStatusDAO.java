@@ -45,6 +45,8 @@ public interface ISurveyCallStatusDAO extends GenericDao<SurveyCallStatus,Long>{
 	public List<Object[]> getTotalVotersByConstituencyIds(List<Long> constituencyIds);
 	public List<Object[]> getTotalBoothsByConstituencyIds(List<Long> constituencyIds);
 	public List<Object[]> getDVTotalBoothsByConstituencyIds(List<Long> constituencyIds);
-
+	public List<Long> getDataCollectorWebMonitorDetailsForConstituency(Long constituencyId);
+	public List<Long> getDataVerifierWebMonitorDetailsForConstituency(Long constituencyId);
+	public List<Long> getVerifiedBoothIdsByConstituencyId(Long constituencyId);
 
 }
