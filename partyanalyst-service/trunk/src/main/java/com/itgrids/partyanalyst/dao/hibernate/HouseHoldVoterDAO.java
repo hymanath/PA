@@ -397,6 +397,7 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 				" model.isDelete = 'false'" +
 				" and model.hhLeader.is_active = 'YES'" +
 				" and model.voterFamilyRelation.voterFamilyRelationId = 1"+
+				" and model.voter.voterId is not null " +
 				" and model1.constituency.constituencyId = :constituencyId");
 		
 		query.setParameter("constituencyId", constituencyId);
