@@ -8182,6 +8182,7 @@
 		<action name="surveyConstituencieOverview" class="ctpDashBoardAction" method="surveyConstituencieOverview">
 			<result>/jsp/surveyConstituenciesOverview.jsp</result>
 		</action>
+	
 		
 		
 		<action name="getTodayTeamCollectedDetails" class="ctpDashBoardAction" method="getTodayTeamCollectedDetails">
@@ -8201,6 +8202,10 @@
 		        <param name="root">bigPictureVOList</param>
 		    </result>
 		</action>
-	
+		<action name="getVerifierReportAction" class="ctpDashBoardAction" method="getSurveyConstituencyStatus">
+		<result type="json" name="success">
+				<param name="root">resultList</param>
+		</result>
+		</action>
 </package>
 </struts>      
