@@ -44,7 +44,318 @@
 </div>
 
 <script>
-getConstituencyWiseCasteCollectionDetails('${regionId}','${userTypeId}');
+var reportType = '${constituencyId}';
+if(reportType == 1)
+{
+	getConstituencyWiseCasteCollectionDetails('${regionId}','${userTypeId}');
+}
+else if(reportType == 2)
+{
+	getConstituencyWiseTeamCollecetdDetails('${regionId}','${userTypeId}');
+}
+else if(reportType == 3)
+{
+	getConstituencyWiseQcVerificationSummary('${regionId}','${userTypeId}')
+}
+else if(reportType == 4)
+{
+	getConstituencyWiseTeamDetails('${regionId}','${userTypeId}')
+}
+
+function getConstituencyWiseTeamCollecetdDetails(type,stateId)
+{
+	var jsObj = {
+		type : type,
+		stateId : stateId
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getConstituencyWiseTeamCollectedSummary.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		 }).done(function(result){
+			if(result != null)
+			{
+				buildTeamConstituencyWiseDetailsSummary(result,type,stateId);
+			}
+		});	
+		
+}
+
+function buildTeamConstituencyWiseDetailsSummary(result,strTypr,stateId)
+{
+	$('#constituencyWiseReport').html('');
+	var str = '';
+	str += '<table class="table table-bordered m_top20 table-hover table-striped offset3">';
+	str += '<thead>';
+	str += '<tr>';
+	str += '<th>Constituency</th>';
+	str += '<th>Booths</th>';
+	str += '<th>Voters</th>';
+	str += '</tr>';
+	str += '</thead>';
+	str += '<tbody>';
+	for(var i in result)
+	{
+		str += '<tr>';
+		str += '<td><a onClick="getBoothWiseTeamCollecetdDetails('+result[i].dcVotersCount+',\''+strTypr+'\','+stateId+')">'+result[i].dcPercentage+'</a></td>';
+		str += '<td>'+result[i].qcVotersCount+'</td>';
+		str += '<td>'+result[i].verifierVotersCount+'</td>';
+		str += '</tr>';
+	}
+	str += '</tbody>';
+	str += '<table>';
+	$('#constituencyWiseReport').html(str);
+}
+
+
+function getConstituencyWiseQcVerificationSummary(type,stateId)
+{
+	var strTypr = '';
+	if(type == 0)
+	{
+		strTypr = "null";
+	}
+	else if(type == 1)
+	{
+		strTypr = "Y";
+	}
+	else
+	{
+		strTypr = "N";
+	}
+	var jsObj = {
+		type : strTypr,
+		stateId : stateId
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getConstituencyWiseQcVerificationSummary.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		 }).done(function(result){	
+			if(result != null)
+			 {
+				buildQcConstituencyWiseSummary(result,strTypr,stateId);
+			 }
+		});	
+}
+
+function buildQcConstituencyWiseSummary(result,strTypr,stateId)
+{
+	$('#constituencyWiseReport').html('');
+	var str = '';
+	str += '<table class="table table-bordered m_top20 table-hover table-striped offset3">';
+	str += '<thead>';
+	str += '<tr>';
+	str += '<th>Constituency</th>';
+	str += '<th>Booths</th>';
+	str += '<th>Voters</th>';
+	str += '</tr>';
+	str += '</thead>';
+	str += '<tbody>';
+	for(var i in result)
+	{
+		str += '<tr>';
+		str += '<td><a onClick="getBoothWiseQcVerificationSummary('+result[i].dcVotersCount+',\''+strTypr+'\','+stateId+')">'+result[i].dcPercentage+'</a></td>';
+		str += '<td>'+result[i].qcVotersCount+'</td>';
+		str += '<td>'+result[i].verifierVotersCount+'</td>';
+		str += '</tr>';
+	}
+	str += '</tbody>';
+	str += '<table>';
+	$('#constituencyWiseReport').html(str);
+}
+function getBoothWiseQcVerificationSummary(constituencyId,type,stateId)
+{
+	var jsObj = {
+		constituencyId : constituencyId,
+		type : type,
+		stateId : stateId
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getBoothWiseQcVerificationSummary.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		 }).done(function(result){	
+			if(result != null)
+			{
+				buildQcBoothWiseQCSummary(result);
+			}
+		});	
+}
+
+function buildQcBoothWiseQCSummary(result)
+{
+	$('#boothWiseReport').html('');
+	var str = '';
+	str += '<table class="table table-bordered m_top20 table-hover table-striped offset3">';
+	str += '<thead>';
+	str += '<tr>';
+	str += '<th>Booth</th>';
+	str += '<th>Survey User</th>';
+	str += '<th>Mobile No</th>';
+	str += '<th>Voters</th>';
+	str += '</tr>';
+	str += '</thead>';
+	str += '<tbody>';
+	for(var i in result)
+	{
+		str += '<tr>';
+		str += '<td><a>'+result[i].dcPercentage+'</a></td>';
+		str += '<td>'+result[i].verifierPercentage+'</td>';
+		str += '<td>'+result[i].qcPercentage+'</td>';
+		str += '<td>'+result[i].verifierVotersCount+'</td>';
+		str += '</tr>';
+	}
+	str += '</tbody>';
+	str += '<table>';
+	$('#boothWiseReport').html(str);
+}
+
+function getBoothWiseTeamCollecetdDetails(constituencyId,surveyUserTypeId,stateId)
+{
+	var jsObj = {
+		constituencyId : constituencyId,
+		surveyUserTypeId : surveyUserTypeId,
+		stateId : stateId
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getBoothWiseTeamDetails.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		 }).done(function(result){	
+			if(result != null)
+			{
+				buildBoothWiseTeamCollecetedDetails(result);
+			}
+		});	
+
+}
+
+function buildBoothWiseTeamCollecetedDetails(result)
+{
+	$('#boothWiseReport').html('');
+	var str = '';
+	str += '<table class="table table-bordered m_top20 table-hover table-striped offset3">';
+	str += '<thead>';
+	str += '<tr>';
+	str += '<th>Booth</th>';
+	str += '<th>Survey User</th>';
+	str += '<th>Mobile No</th>';
+	str += '<th>Voters</th>';
+	str += '</tr>';
+	str += '</thead>';
+	str += '<tbody>';
+	for(var i in result)
+	{
+		str += '<tr>';
+		str += '<td><a>'+result[i].dcPercentage+'</a></td>';
+		str += '<td>'+result[i].qcPercentage+'</td>';
+		str += '<td>'+result[i].verifierPercentage+'</td>';
+		str += '<td>'+result[i].qcVotersCount+'</td>';
+		str += '</tr>';
+	}
+	str += '</tbody>';
+	str += '<table>';
+	$('#boothWiseReport').html(str);
+}
+function getConstituencyWiseTeamDetails(type,stateId)
+{
+	var jsObj = {
+		type : type,
+		stateId :stateId
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getConstituencyWiseTeamDetails.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		 }).done(function(result){
+			if(result != null)
+			{
+				buildTeamConstituencyWiseSummary(result,type,stateId);
+			}
+		});	
+		
+}
+
+function buildTeamConstituencyWiseSummary(result,strTypr,stateId)
+{
+	$('#constituencyWiseReport').html('');
+	var str = '';
+	str += '<table class="table table-bordered m_top20 table-hover table-striped offset3">';
+	str += '<thead>';
+	str += '<tr>';
+	str += '<th>Constituency</th>';
+	str += '<th>Booths</th>';
+	str += '<th>Users</th>';
+	str += '</tr>';
+	str += '</thead>';
+	str += '<tbody>';
+	for(var i in result)
+	{
+		str += '<tr>';
+		str += '<td><a onClick="getBoothWiseTeamDetails('+result[i].qcVotersCount+',\''+strTypr+'\','+stateId+')">'+result[i].dcPercentage+'</a></td>';
+		str += '<td>'+result[i].dcBoothsCount+'</td>';
+		str += '<td>'+result[i].dcConstituencysCount+'</td>';
+		str += '</tr>';
+	}
+	str += '</tbody>';
+	str += '<table>';
+	$('#constituencyWiseReport').html(str);
+}
+
+function getBoothWiseTeamDetails(constituencyId,surveyUserTypeId,stateId)
+{
+	var jsObj = {
+		constituencyId : constituencyId,
+		surveyUserTypeId : surveyUserTypeId,
+		stateId : stateId
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getBoothWiseTeamDetails.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		 }).done(function(result){	
+			if(result != null)
+			{
+				buildBoothWiseTeamDetails(result);
+			}
+		});	
+}
+function buildBoothWiseTeamDetails(result)
+{
+	$('#boothWiseReport').html('');
+	var str = '';
+	str += '<table class="table table-bordered m_top20 table-hover table-striped offset3">';
+	str += '<thead>';
+	str += '<tr>';
+	str += '<th>Booth</th>';
+	str += '<th>Survey User</th>';
+	str += '<th>Mobile No</th>';
+	str += '<th>Voters</th>';
+	str += '</tr>';
+	str += '</thead>';
+	str += '<tbody>';
+	for(var i in result)
+	{
+		str += '<tr>';
+		str += '<td><a>'+result[i].dcPercentage+'</a></td>';
+		str += '<td>'+result[i].qcPercentage+'</td>';
+		str += '<td>'+result[i].verifierPercentage+'</td>';
+		str += '<td>'+result[i].qcVotersCount+'</td>';
+		str += '</tr>';
+	}
+	str += '</tbody>';
+	str += '<table>';
+	$('#boothWiseReport').html(str);
+}
+
+
 function getConstituencyWiseCasteCollectionDetails(regionId,userTypeId)
 {
 	$('#constituencyWiseReport').html('');

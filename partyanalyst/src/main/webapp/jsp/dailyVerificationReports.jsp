@@ -179,9 +179,9 @@ $('#boothId').multiselect({
 							
 							<!----Data Verification (right)---->
 							<div class="span6 wiget-yellow">	
-								<h4 class="text-right">Daily & Date Range Summary<span class="pull-right btn-group"><a href="" class="btn btn-mini selectedStateCls btn-success">AP</a>|<a href="" class="btn btn-mini selectedStateCls">TS</a></span></h4>
-								
-								<div class="row-fluid">
+								<h4 class="text-right">Daily & Date Range <span class="pull-right btn-group"><a onClick="getTeamCollectedDetailsSummaryReport(0,this.id)" id="allCollecetdId" class="btn btn-mini todayCollectdDetailsCls btn-success">ALL</a>|<a  onClick="getTeamCollectedDetailsSummaryReport(1,this.id)" id="apCollecetdId" class="btn btn-mini todayCollectdDetailsCls btn-success">AP</a>|<a  onClick="getTeamCollectedDetailsSummaryReport(2,this.id)" id="tsCollecetdId" class="btn btn-mini todayCollectdDetailsCls">TS</a></span></h4>
+								<input type="hidden" value="0" id="dailyDateRangeHidden"></input>
+								<!--<div class="row-fluid">
 									<div class="input-append span6">
 										<input type="text" class="span8 offset2 offset2" placeholder="From Date">
 										<span class="add-on"><i class="icon-calendar"></i></span>
@@ -190,7 +190,7 @@ $('#boothId').multiselect({
 										<input type="text" class="span8  " placeholder="To Date">
 										<span class="add-on"><i class="icon-calendar"></i></span>
 									</div>						
-								</div>
+								</div>-->
 								
 								<!--<div class="row-fluid text-center">
 									<P CLASS="label">Today: Date</p>
@@ -223,7 +223,7 @@ $('#boothId').multiselect({
 
 								</h4>
 								
-								<div class="row-fluid">
+								<!--<div class="row-fluid">
 									<div class="input-append span6">
 										<input type="text" class="span8 offset2 offset2" placeholder="From Date">
 										<span class="add-on"><i class="icon-calendar"></i></span>
@@ -232,7 +232,7 @@ $('#boothId').multiselect({
 										<input type="text" class="span8  " placeholder="To Date">
 										<span class="add-on"><i class="icon-calendar"></i></span>
 									</div>						
-								</div>
+								</div>-->
 								
 								<div class="row-fluid">
 									<div class="well well-small span4  text-center">
@@ -272,15 +272,15 @@ $('#boothId').multiselect({
 								
 								<div class="row-fluid">
 									<div class="well well-small span4  text-center">
-										<a><h4 style = "cursor: pointer;" id="verifiedRecords" onClick="getConstituencyWiseQcVerificationSummary(0)">0</h4></a>
+										<h4 id="verifiedRecords">0</h4>
 										<p class="">Records Verified</p>										
 									</div>
 									<div class="well well-small span4 text-center">
-										<a><h4 style = "cursor: pointer;" id="qcMatched" onClick="getConstituencyWiseQcVerificationSummary(1)">0</h4></a>
+										<h4  id="qcMatched" >0</h4>
 										<p>Matched Identified</p>
 									</div>
 									<div class="well well-small span4 text-center">
-										<a><h4 style = "cursor: pointer;" id="qcUnMatched" onClick="getConstituencyWiseQcVerificationSummary(2)">0</h4></a>
+										<h4 id="qcUnMatched" >0</h4></a>
 										<p>Records Collected</p>
 									</div>
 								</div>							
@@ -305,15 +305,15 @@ $('#boothId').multiselect({
 								
 								<div class="row-fluid">
 									<div class="well well-small span4  text-center">
-										<a><h4 style = "cursor: pointer;" id="dcMembers" onClick="getConstituencyWiseTeamDetails(1);">0</h4></a>
+										<h4  id="dcMembers" >0</h4>
 										<p class="">DC</p>										
 									</div>
 									<div class="well well-small span4 text-center">
-										<a><h4 style = "cursor: pointer;" id="dvMembers" onClick="getConstituencyWiseTeamDetails(4);">0</h4></a>
+										<h4  id="dvMembers" >0</h4>
 										<p>DV</p>
 									</div>
 									<div class="well well-small span4 text-center">
-										<a><h4 style = "cursor: pointer;" id="qcMembers" onClick="getConstituencyWiseTeamDetails(10);">0</h4></a>
+										<h4  id="qcMembers" >0</h4></a>
 										<p>QC</p>
 									</div>
 								</div>							
@@ -661,7 +661,7 @@ function setRegionLevel(regionId,divId)
 }
 function openConstituencyWiseWindow(userTypeId)
 {
-	window.open("surveyConstituencieOverview.action?regionId="+sRegionId+"&userTypeId="+userTypeId+"", "_blank");
+	window.open("surveyConstituencieOverview.action?constituencyId=1&regionId="+sRegionId+"&userTypeId="+userTypeId+"", "_blank");
 }
 
 function setInternalVerificationRegionLevel(iRegionId,divId)
