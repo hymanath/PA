@@ -2296,7 +2296,7 @@ function buildBoothWiseStatusDetails(result)
 {
 	var str ='';
 
-    str+='<div class="span3 offset3">';
+    str+='<div class="span10 offset2">';
 	str+='<table class="table table-bordered m_top20 table-hover table-striped" id="boothWiseTable">';
 	 str+='<thead>';
       str+='<tr>';
@@ -2329,5 +2329,3 @@ function buildBoothWiseStatusDetails(result)
 		$('#bmainajaximg').hide();
 
 }
-
-
