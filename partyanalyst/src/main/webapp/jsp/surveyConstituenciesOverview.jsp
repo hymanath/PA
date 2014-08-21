@@ -235,7 +235,7 @@ function buildBoothWiseVerifiedCasteCollectedDetails(result,boothNo)
 
 	str+='<h4 class="offset3">COLLECTED CASTE DETAILS FOR BOOTH-'+boothNo+'</h4>';
 
-    str+='<div class="span2 offset2">';
+    str+='<div class="span10 offset2">';
 	str+='<table class="table table-bordered m_top20 table-hover table-striped" id="votersDtls">';
 	 str+='<thead>';
 	  str+='<tr>';
