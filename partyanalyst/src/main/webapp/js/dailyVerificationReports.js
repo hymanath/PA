@@ -2110,7 +2110,7 @@ function getConstituencyWiseTeamDetails(type)
 {
 	var jsObj = {
 		type : type,
-		stateId = $('#todatTeamHidden').val();
+		stateId : $('#todatTeamHidden').val()
 	}
 	$.ajax({
 			type:'GET',
@@ -2131,7 +2131,7 @@ function getBoothWiseTeamDetails(constituencyId,surveyUserTypeId)
 	var jsObj = {
 		constituencyId : constituencyId,
 		surveyUserTypeId : surveyUserTypeId,
-		stateId : $('#todatTeamHidden').val();
+		stateId : $('#todatTeamHidden').val()
 	}
 	$.ajax({
 			type:'GET',

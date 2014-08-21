@@ -217,8 +217,10 @@ $('#boothId').multiselect({
 						<div class="row-fluid m_top20">
 						<!-------->
 							<div class="span6 wiget-yellow">	
-								<h4 class="text-right">Internal Verification Summary
-								<span class="btn-group"><a href="javascript:{setInternalVerificationRegionLevel(0)}" class="btn btn-mini">ALL</a><a href="javascript:{setInternalVerificationRegionLevel(2)}" class="btn btn-mini">AP</a><a href="javascript:{setInternalVerificationRegionLevel(1)}" class="btn btn-mini">TS</a></span>
+								<h4 class="text-right">Internal Verification
+								<span class="btn-group"><a href="javascript:{setInternalVerificationRegionLevel(0,'allRegionsId1')}" class="btn btn-mini selectedCls1 btn-success" id="allRegionsId1">ALL</a><a href="javascript:{setInternalVerificationRegionLevel(2,'apRegionsId1')}" class="btn btn-mini selectedCls1" id="apRegionsId1">AP</a><a href="javascript:{setInternalVerificationRegionLevel(1,'tsRegionsId1')}" class="btn btn-mini selectedCls1" id="tsRegionsId1">TS</a></span>
+
+
 								</h4>
 								
 								<div class="row-fluid">
@@ -662,9 +664,11 @@ function openConstituencyWiseWindow(userTypeId)
 	window.open("surveyConstituencieOverview.action?regionId="+sRegionId+"&userTypeId="+userTypeId+"", "_blank");
 }
 
-function setInternalVerificationRegionLevel(iRegionId)
+function setInternalVerificationRegionLevel(iRegionId,divId)
 {
  internalRegionId = iRegionId;
+	$('.selectedCls1').removeClass('btn-success');
+	$('#'+divId+'').addClass('btn-success');
 }
 </script>
 </body>
