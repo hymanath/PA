@@ -1727,11 +1727,12 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		return query.list();
 	}
 	
-	public List<Object[]> getTeamDetailsInConstituencyLevel(Date date)
+	public List<Object[]> getTeamDetailsInConstituencyLevel(Date date,Long surveyUserType)
 	{
 		Query query = getSession().createQuery("select model.surveyUser.surveyUserType.surveyUsertypeId,model.booth.constituency.constituencyId,model.booth.constituency.name , count(distinct model.booth.boothId),count(distinct model.surveyUser.surveyUserId) from SurveyDetailsInfo model" +
-				"  where date(model.date) = :date group by model.surveyUser.surveyUserType.surveyUsertypeId,model.booth.constituency.constituencyId order by model.booth.constituency.constituencyId");
+				"  where date(model.date) = :date  and model.surveyUser.surveyUserType.surveyUsertypeId = :surveyUserType group by model.booth.constituency.constituencyId order by model.booth.constituency.constituencyId");
 		query.setParameter("date", date);
+		query.setParameter("surveyUserType", surveyUserType);
 		return query.list();
 	}
 	
@@ -1883,6 +1884,13 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		query.setParameter("surveyUserTypeId", surveyUserTypeId);
 		query.setParameter("boothId", boothId);
 		
+		return query.list();
+	}
+	
+	public List<Object[]> getTodayTeamCollectedDetails(Date date)
+	{
+		Query query = getSession().createQuery("select model.surveyUser.surveyUserType.surveyUsertypeId , count(distinct model.voter.voterId) from SurveyDetailsInfo model where date(model.date) = :date group by model.surveyUser.surveyUserType.surveyUsertypeId");
+		query.setParameter("date", date);
 		return query.list();
 	}
 	

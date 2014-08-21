@@ -148,4 +148,19 @@ public class SurveyFinalDataDAO extends GenericDaoHibernate<SurveyFinalData, Lon
 		query.setParameterList("statusIds", statusIds);
 		return (Long)query.uniqueResult();
 	}
+	
+	public List<Object[]> getQcDataForSelection(List<Long> statusIds)
+	{
+		Query query = getSession().createQuery("select model.booth.constituency.constituencyId, model.booth.constituency.name , count(distinct model.booth.boothId) , count(model.voter.voterId) from SurveyFinalData model where model.surveyWmThirdPartyStatusId in (:statusIds) group by model.booth.constituency.constituencyId");
+		query.setParameterList("statusIds", statusIds);
+		return query.list();
+	}
+	
+	public List<Object[]> getBoothWiseQcData(Long constituencyId , List<Long> statusIds)
+	{
+		Query query = getSession().createQuery("select model.booth.boothId, model.booth.partNo , model.surveyUser.surveyUserId , model.surveyUser.userName , model.surveyUser.mobileNo , count(distinct model.voter.voterId) from SurveyFinalData model where model.booth.constituency.constituencyId =:constituencyId and model.surveyWmThirdPartyStatusId in (:statusIds) group by model.booth.boothId ");
+		query.setParameterList("statusIds", statusIds);
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
 }

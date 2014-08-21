@@ -13,9 +13,9 @@ public interface ICtpDashBoardService
 	public BigPictureVO getQcVerificationSummaryReport();
 	public BigPictureVO getTodayTeamDetails();
 	public List<BigPictureVO> getBoothWiseTeamDetails(Long constituencyId , Long surveyUserTypeId);
-	public List<BigPictureVO> getConstituencyWiseTeamDetails();
-	public List<BigPictureVO> getConstituencyWiseQcVerificationSummary();
-	public List<BigPictureVO> getBoothWiseQcVerificationSummary(Long constituencyId);
+	public List<BigPictureVO> getConstituencyWiseTeamDetails(Long type);
+	public List<BigPictureVO> getConstituencyWiseQcVerificationSummary(String type);
+	public List<BigPictureVO> getBoothWiseQcVerificationSummary(Long constituencyId,String type);
 	public List<SurveyDashBoardVO> getCasteCollectedDetails(Long regionId,Long userTypeId);
 	public List<SurveyDashBoardVO> getSurveyDetailsByConstituencyId(
 			Long constituencyId, Long userTypeId);

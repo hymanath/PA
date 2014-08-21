@@ -343,7 +343,7 @@ public class CtpDashBoardService implements ICtpDashBoardService
 	 * This Service is used for getting constituency wise team details
 	 * @return returnList
 	 */
-	public List<BigPictureVO> getConstituencyWiseTeamDetails()
+	public List<BigPictureVO> getConstituencyWiseTeamDetails(Long surveyUserType)
 	{
 		List<BigPictureVO> returnList = null;
 		
@@ -351,7 +351,7 @@ public class CtpDashBoardService implements ICtpDashBoardService
 		{
 			DateUtilService dateUtilService = new DateUtilService();
 			Date todateDate = dateUtilService.getCurrentDateAndTime();
-			List<Object[]> teamDetailsObj = surveyDetailsInfoDAO.getTeamDetailsInConstituencyLevel(todateDate);
+			List<Object[]> teamDetailsObj = surveyDetailsInfoDAO.getTeamDetailsInConstituencyLevel(todateDate,surveyUserType);
 			if(teamDetailsObj != null && teamDetailsObj.size() > 0)
 			{
 				returnList = new ArrayList<BigPictureVO>();
@@ -414,12 +414,33 @@ public class CtpDashBoardService implements ICtpDashBoardService
 	 * This Service is used for getting constituency wise Qc Summary
 	 * @return returnList
 	 */
-	public List<BigPictureVO> getConstituencyWiseQcVerificationSummary()
+	public List<BigPictureVO> getConstituencyWiseQcVerificationSummary(String type)
 	{
 		List<BigPictureVO> returnList = null;
 		try
 		{
-			List<Object[]> constituencyWiseDetils = surveyDetailsInfoDAO.getConstituecySummaryForQc();
+			List<Object[]> constituencyWiseDetils = null;
+			if(type.equalsIgnoreCase("null"))
+			{
+				constituencyWiseDetils = surveyDetailsInfoDAO.getConstituecySummaryForQc();
+			}
+			else
+			{
+				List<Long> statusIds = new ArrayList<Long>();
+				if(type.equalsIgnoreCase("Y"))
+				{
+					statusIds.add(1l);
+					constituencyWiseDetils = surveyFinalDataDAO.getQcDataForSelection(statusIds);
+				}
+				else
+				{
+					statusIds.add(2l);
+					statusIds.add(3l);
+					constituencyWiseDetils =surveyFinalDataDAO.getQcDataForSelection(statusIds);
+				}
+				
+			}
+			
 			if(constituencyWiseDetils != null && constituencyWiseDetils.size() > 0)
 			{
 				returnList = new ArrayList<BigPictureVO>();
@@ -446,12 +467,33 @@ public class CtpDashBoardService implements ICtpDashBoardService
 	 * @param constituencyId
 	 * @return returnList
 	 */
-	public List<BigPictureVO> getBoothWiseQcVerificationSummary(Long constituencyId)
+	public List<BigPictureVO> getBoothWiseQcVerificationSummary(Long constituencyId,String type)
 	{
 		List<BigPictureVO> returnList = null;
 		try 
 		{
-			List<Object[]> boothWiseQcDetails = surveyDetailsInfoDAO.getBoothWiseSummaryForQc(constituencyId);
+			List<Object[]> boothWiseQcDetails = null;
+			if(type.equalsIgnoreCase("null"))
+			{
+				boothWiseQcDetails = surveyDetailsInfoDAO.getBoothWiseSummaryForQc(constituencyId);
+			}
+			else
+			{
+				List<Long> statusIds = new ArrayList<Long>();
+				if(type.equalsIgnoreCase("Y"))
+				{
+					statusIds.add(1l);
+					boothWiseQcDetails = surveyFinalDataDAO.getBoothWiseQcData(constituencyId,statusIds);
+				}
+				else
+				{
+					statusIds.add(2l);
+					statusIds.add(3l);
+					boothWiseQcDetails = surveyFinalDataDAO.getBoothWiseQcData(constituencyId,statusIds);
+				}
+				
+			}
+			
 			if(boothWiseQcDetails != null && boothWiseQcDetails.size() > 0)
 			{
 				returnList = new ArrayList<BigPictureVO>();
@@ -463,6 +505,7 @@ public class CtpDashBoardService implements ICtpDashBoardService
 					bigPictureVO.setDcPercentage(objects[1] != null ?objects[1].toString() : "");// part no
 					bigPictureVO.setVerifierPercentage(objects[3] != null ?objects[3].toString() : "");// survey user name
 					bigPictureVO.setQcPercentage(objects[4] != null ? objects[4].toString() : ""); // MObile Number
+					bigPictureVO.setVerifierVotersCount(objects[5] != null ?  Integer.valueOf(objects[5].toString()) : 0); // voters count
 					returnList.add(bigPictureVO);
 				}
 			}
@@ -474,7 +517,19 @@ public class CtpDashBoardService implements ICtpDashBoardService
 		return returnList;
 	}
 	
-	
+	public List<BigPictureVO> getTodayTeamCollectedDetails()
+	{
+		List<BigPictureVO> returnList = null;
+		try 
+		{
+			
+		} 
+		catch (Exception e) 
+		{
+			LOG.error("Exception raised in getTodayTeamCollectedDetails", e);
+		}
+		return returnList;
+	}
 	
 	public List<SurveyDashBoardVO> getCasteCollectedDetails(Long regionId,Long userTypeId)
 	{
