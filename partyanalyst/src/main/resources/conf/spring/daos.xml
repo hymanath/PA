@@ -1615,5 +1615,14 @@
 <bean id="surveyCompletedConstituencyStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyCompletedConstituencyStatusDAO" lazy-init="true" >
 		<property name="sessionFactory" ref="sessionFactory" />
 </bean>
+
+<bean id="surveyConstituencyStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyConstituencyStatusDAO" lazy-init="true" >
+		<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
+<bean id="surveyConstituencyTempDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyConstituencyTempDAO" lazy-init="true" >
+		<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
 	<!--  end -->
 </beans>		
