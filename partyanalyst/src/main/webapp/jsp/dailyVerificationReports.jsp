@@ -306,15 +306,15 @@ $('#boothId').multiselect({
 								<div class="row-fluid">
 									<div class="well well-small span4  text-center">
 										<h4  id="dcMembers" >0</h4>
-										<p class="">DC</p>										
+										<p class="">Data Collectors</p>										
 									</div>
 									<div class="well well-small span4 text-center">
 										<h4  id="dvMembers" >0</h4>
-										<p>DV</p>
+										<p>Data Verifiers</p>
 									</div>
 									<div class="well well-small span4 text-center">
 										<h4  id="qcMembers" >0</h4></a>
-										<p>QC</p>
+										<p>Quality Check</p>
 									</div>
 								</div>							
 							</div>	<!-------->
