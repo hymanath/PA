@@ -199,6 +199,7 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	
 	public List<Long> getBoothDetailsForConstituencyByUserTypeId(Long constituencyId,Long surveyUserTypeId);
 
+	public List<Object[]> getDVTotalBoothsByConstituencyIds(List<Long> constituencyIds);
 
 }
 
