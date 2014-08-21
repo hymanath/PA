@@ -439,7 +439,8 @@
 										
 										<div class="span2">
 											Select User Type 
-											<select class="input-block-level" id = "userReportUserType" onChange="getRespectiveUsers(this.value)"> 
+											<!-- <select class="input-block-level" id = "userReportUserType" onChange="getRespectiveUsers(this.value)">  -->
+											<select class="input-block-level" id = "userReportUserType" > 
 												<option value="0">Select User Type</option>
 												<option value="1">Data Collector</option>
 												<option value="4">Data Verifier</option>
@@ -457,15 +458,18 @@
 										</div>
 										<div class="span2">
 											Select User  
-											<select class="input-block-level" id = "userReportUser" onchange="getCasteCollectedDatesByUserId(this.value,'fromDateForUserReport','toDateForUserReport');"> <option value="0">Select User </option></select>
+										<!-- 	<select class="input-block-level" id = "userReportUser" onchange="getCasteCollectedDatesByUserId(this.value,'fromDateForUserReport','toDateForUserReport');" multiple="true"> <option value="0">Select User </option></select> -->
+										
+										<select class="input-block-level" id = "userReportUser" multiple="true"></select>
+											
 										</div>
 										<div class="span1" style="margin:25px -8px 0 8px;width: 15px;">
 										<img id="userProcessingImg" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
 										</div>
-										<div class="span2">
+										<div class="span2" style="margin-left:70px">
 											From Date <font class="requiredFont">*</font>
 											<div class="input-append">
-											<input type="text" placeholder="From Date..." class="input-block-level date" id="fromDateForUserReport" readonly>
+											<input type="text" placeholder="From Date..." class="input-block-level date" id="fromDateForUserReport" readonly  >
 											</div>
 										</div>
 										<div class="span2">
@@ -682,7 +686,19 @@
 		$('#boothIdForVerfication').multiselect({
 			  noneSelectedText:"Select Booth(s)"});
 			 $('#userReportUserConstituency').multiselect({
-			  noneSelectedText:"Select Constituency(s)"});
+			  noneSelectedText:"Select Constituency(s)"});		
+		  
+			 $('#userReportUser').multiselect({
+			  noneSelectedText:"Select User(s)"});
+			  
+			  $('#toDateForUserReport,#fromDateForUserReport').datepicker({
+			  maxDate : new Date(),
+			  minDate : '14-07-2014',
+			  dateFormat: 'dd-mm-yy'
+			  });
+			  $("#toDateForUserReport").datepicker("setDate", new Date());
+			  $("#fromDateForUserReport").datepicker("setDate", '14-07-2014');
+			  
 		});	
 
 		buildConstituency();
@@ -714,13 +730,18 @@ function buildConstituency()
 		 {
 			 $("#errorDiv").html('');
 			 var constituencyIds = new Array();
+			 var userTypeId = $('#userReportUserType').val();
 			 constituencyIds=$("#userReportUserConstituency").val();
+			  $('#userReportUser').find('option').remove();
+			  $('#userReportUser').multiselect('refresh');
 			 if(constituencyIds == null)
 			 {
 				 $("#errorDiv").html('Select atleast Constituency...');
+				
 				 return;
 			 }
 			 var jsObj = {
+				 userTypeId 	 : userTypeId,
 				 constituencyIds : constituencyIds
 			 }
 		$.ajax({
@@ -729,11 +750,12 @@ function buildConstituency()
 		dataType: 'json',
 		data: {task:JSON.stringify(jsObj)},
 		}).done(function(result){
-			$('#userReportUser').find('option:not(:first)').remove();
 			$.each(result,function(index,value){
 					
 					$('#userReportUser').append('<option value="'+value.id+'"> '+value.name+'</option>');
 				});
+				
+					$('#userReportUser').multiselect('refresh');
 		});
 		 }
 	</script>
