@@ -266,9 +266,11 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 				" model.voter.voterIDCardNo," +
 				" model.houseHolds.panchayat.panchayatId," +
 				" model.houseHolds.panchayat.panchayatName " +
-				" from HouseHoldVoter model " +
+				" from HouseHoldVoter model,HHLeader model2 " +
 				" where model.isDelete = 'false' and model.voterFamilyRelation.voterFamilyRelationId = 1" +
-				" and model.houseHolds.panchayat.panchayatId = :panchayatId" );
+				" and model.houseHolds.panchayat.panchayatId = :panchayatId " +
+				" and model2.id=model.leaderId and model2.is_active='YES' " +
+				" and model.voter.voterId is not null" );
 		
 		query.setParameter("panchayatId", panchayatId);
 		return query.list();
@@ -508,8 +510,8 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 				" model2.booth.panchayat.panchayatId," +
 				" model2.booth.panchayat.panchayatName," +
 				" model2.hhLeader.name," +
-				" model2.hhLeader.voterId" +
-				//" count(distinct model.voter.voterId)" +
+				" model2.hhLeader.voterId," +
+				" count(distinct model.voter.voterId)" +
 				//" count(model.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId)," +
 				//" count(distinct model.houseHoldId)" +
 				" from HouseHoldVoter model,HHBoothLeader model2" +
