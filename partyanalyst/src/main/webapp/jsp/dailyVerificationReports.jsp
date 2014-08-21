@@ -111,6 +111,7 @@ $('#boothId').multiselect({
 					<li><a class="highlight" id="userTrackingReportTab" onclick="showHideReportTabs(this.id);"> User Tracking Report</a></li>
 					<li><a class="highlight" id="thirdpPartyReportTab" onclick="showHideReportTabs(this.id);">QC Report</a></li>
 					<li><a class="highlight" id="dashboardReportTab" onclick="showHideReportTabs(this.id);"> Dashboard </a></li>
+					<li><a class="highlight" id="verificationReportTab" onclick="showHideReportTabs(this.id);"> Verification report</a></li>
 				</ul>
 			</div>
 		</div>
@@ -120,7 +121,7 @@ $('#boothId').multiselect({
   
   <div class="container">
   
-  <!----- CTP DASHBOARD START  -->
+ <!----- CTP DASHBOARD START  -->
 		<div class="row" id="dashBoardDiv">	
 			<div class="row">
 			<div class="span12">
@@ -318,6 +319,22 @@ $('#boothId').multiselect({
 		</div>
 		
   <!----- CTP DASHBOARD END  -->
+    <!----- CTP Verification report START  -->
+		<div class="row" id="verificationReportDiv">
+		<div class="span12">
+				<div class="row-fluid ">
+					<div class="span12 widgetservey_Red m_top30">
+							<h4>Verification report</h4>
+							<img id="verificationImg" src="./images/Loading-data.gif" alt="Processing Image" class="offset5" 
+							style="width:70px;height:60px;display:none;"/>
+							<div class="row">
+						<div id="verifiedDiv" class="span10 offset1"></div>
+						</div>
+			</div>
+			</div>
+          </div>   
+	    </div>
+  <!----- CTP Verification report END  -->
 
 		<!---- Survey monitoring---->	
 		<div class="span12" style="display:none;margin-top:20px;" id="stateWiseReportId">
@@ -513,6 +530,52 @@ var userTypeVal;
 showHideReportTabs('stateWiseReportTab');
 getTotalCasteCounts();
 
+function getVerifierReportCounts()
+{
+	$("#verificationImg").show();
+var jobj = {
+			     task:"verifierReport"
+	  	       }
+		$.ajax({
+	          type:'GET',
+	          url: 'getVerifierReportAction.action',
+	          dataType: 'json',
+	          data: {task:JSON.stringify(jobj)}
+	    }).done(function(result){
+		    $("#verificationImg").hide();
+		    buildVerifierReport(result);
+		});
+	
+}
+function buildVerifierReport(result)
+{
+
+ var str ='';
+ str+='<table class=" m_top20 table table-bordered table-hover table-striped">';
+ str+='<thead class="alert alert-success">';
+ str+='<th>Constituency</th>';
+ str+='<th>Total Voters</th>';
+ str+='<th>Total Booths</th>';
+ str+='<th>WM-DC Verified Booths</th>';
+ str+='<th>WM-DC Verified Voters</th>';
+ str+='<th>DV Total Booths</th>';
+  str+='</thead>';
+ str+='<tbody>';
+ for(var i in result)
+ {
+ str+='<tr>';
+str+='<td>'+result[i].name+'</td>';
+str+='<td>'+result[i].totalVoters+'</td>';
+str+='<td>'+result[i].totalBooths+'</td>';
+str+='<td>'+result[i].dcVerifiedBooths+'</td>';
+str+='<td>'+result[i].dcTotalVoters+'</td>';
+str+='<td>'+result[i].dvTotalBooths+'</td>';
+ str+='</tr>';
+ }
+ str+='</tbody>';
+ str+='</table>';
+ $("#verifiedDiv").html(str);
+}
 $(".highlight").click(function()
 {
 	$('#titleId').html("");
@@ -543,6 +606,8 @@ $(".highlight").click(function()
 		$(this).addClass("selected");
 	}
 })
+
+
 getSurveyCompletedLocationsDetailsForSurveyStartedConstituencies();
 </script>
 </body>

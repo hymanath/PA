@@ -340,5 +340,15 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 		return Action.SUCCESS;
 	}
 	
+	public String getSurveyConstituencyStatus()
+	{
+		try{
+			resultList = ctpDashBoardService.getCountsForDC();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
 	
 }
