@@ -38,7 +38,7 @@ public interface ISurveyDetailsService {
 	 public List<VerificationCompVO> checkForWebMonitorData(Long boothId);
 	 public List<GenericVO> getBoothsInCallStatus(Long constituencyId);
 	 public List<GenericVO> getBoothsInSurveyDetailsInfo(Long constituencyId);
-	 public List<DcDvCollectedDataVO> getDcAndDvByConstituencyByUser(Long surveyUserId,Long userTypeId,Date fromDate,Date toDate);
+	 public List<DcDvCollectedDataVO> getDcAndDvByConstituencyByUser(List<Long> constiIds,List<Long> surveyUserIds,Long userTypeId,Date fromDate,Date toDate);
 	 public List<GenericVO> getDcorDvUsersByConstituency(Long userTypeId);
 	
 	 
@@ -52,6 +52,6 @@ public interface ISurveyDetailsService {
 	 public List<VerificationCompVO> getVerifiersOfBooths(List<Long> boothIds);
 	 public List<VerificationCompVO> checkForVerifierDataWithBoothAndVerifierId(List<Long> boothIds,Long verifierId);
 	 
-	 public List<GenericVO> getUsersList(List<Long> constituencyIds);
+	 public List<GenericVO> getUsersList(Long userTypeId, List<Long> constituencyIds);
 	 public List<VerificationCompVO> checkForVerifierDataForWM(List<Long> boothIds);
 }
