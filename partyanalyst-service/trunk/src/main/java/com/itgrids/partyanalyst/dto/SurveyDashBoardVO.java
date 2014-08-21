@@ -39,7 +39,28 @@ public class SurveyDashBoardVO {
 	
 	private Long collectedBoothsCount = 0L;
 	private Long collectedVotersCount = 0L;
+	private Long dcVerifiedBooths = 0l;
+	private Long dvTotalBooths = 0l;
+	private Long dcTotalVoters = 0l;
 	
+	public Long getDcVerifiedBooths() {
+		return dcVerifiedBooths;
+	}
+	public void setDcVerifiedBooths(Long dcVerifiedBooths) {
+		this.dcVerifiedBooths = dcVerifiedBooths;
+	}
+	public Long getDvTotalBooths() {
+		return dvTotalBooths;
+	}
+	public void setDvTotalBooths(Long dvTotalBooths) {
+		this.dvTotalBooths = dvTotalBooths;
+	}
+	public Long getDcTotalVoters() {
+		return dcTotalVoters;
+	}
+	public void setDcTotalVoters(Long dcTotalVoters) {
+		this.dcTotalVoters = dcTotalVoters;
+	}
 	public Long getCollectedBoothsCount() {
 		return collectedBoothsCount;
 	}

@@ -24,5 +24,5 @@ public interface ICtpDashBoardService
 			Long constituencyId, Long userTypeId);
 	
 	public List<SurveyResponceVO> getBoothWiseCollectedcasteDetails(Long boothId,Long userTypeId);
-
+	public List<SurveyDashBoardVO> getCountsForDC();
 }

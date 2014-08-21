@@ -1887,6 +1887,11 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		return query.list();
 	}
 	
+	public List<Long> getConstituencyIds()
+	{
+		return getHibernateTemplate().find("select distinct model.booth.constituency.constituencyId from SurveyDetailsInfo model where model.isDelete = 'N'");
+	}
+	
 	public List<Object[]> getTodayTeamCollectedDetails(Date date)
 	{
 		Query query = getSession().createQuery("select model.surveyUser.surveyUserType.surveyUsertypeId , count(distinct model.voter.voterId) from SurveyDetailsInfo model where date(model.date) = :date group by model.surveyUser.surveyUserType.surveyUsertypeId");
