@@ -252,9 +252,9 @@ $('#boothId').multiselect({
 							
 							<!-------->
 							<div class="span6 wiget-yellow">	
-								<h4 class="text-right">QC Verification Summary</h4>
-								
-								<div class="row-fluid">
+								<h4 class="text-right">QC Verification <span class="pull-right btn-group"><a  class="btn btn-mini qcCollectedDetailsCls" id="allQcCollecetdId" onClick="getQcVerificationSummaryReport(0,this.id)">ALL</a><a onClick="getQcVerificationSummaryReport(1,this.id)" id= "apQcColledcetdId" class="btn btn-mini todayCollectdDetailsCls">AP</a>|<a onClick="getQcVerificationSummaryReport(2,this.id)" class="btn btn-mini todayCollectdDetailsCls" id="tsQcCollectedId">TS</a></span></h4>
+								<input type="hidden" value="0" id="qcVerificationHidden"></input>
+								<!--<div class="row-fluid">
 									<div class="input-append span6">
 										<input type="text" class="span8 offset2 offset2" placeholder="From Date">
 										<span class="add-on"><i class="icon-calendar"></i></span>
@@ -263,7 +263,7 @@ $('#boothId').multiselect({
 										<input type="text" class="span8  " placeholder="To Date">
 										<span class="add-on"><i class="icon-calendar"></i></span>
 									</div>						
-								</div>
+								</div>-->
 								
 								<div class="row-fluid">
 									<div class="well well-small span4  text-center">
@@ -285,9 +285,9 @@ $('#boothId').multiselect({
 						<div class="row-fluid m_top20">
 								<!-------->
 							<div class="span6 wiget-yellow">	
-								<h4 class="text-right">Today Team Details Summary</h4>
-								
-								<div class="row-fluid">
+								<h4 class="text-right">Today Team Details <span class="pull-right btn-group"><a  class="btn btn-mini todayTeamDetailsCls" id="allTeamId" onClick="getTodayTeamDetails(0,this.id)">ALL</a><a onClick="getTodayTeamDetails(1,this.id)" id= "apTeamId" class="btn btn-mini todayCollectdDetailsCls">AP</a>|<a onClick="getTodayTeamDetails(2,this.id)" class="btn btn-mini todayCollectdDetailsCls" id="tsTeamId">TS</a></span></h4>
+								<input type="hidden" value ="0" id="todatTeamHidden"></input>
+								<!--<div class="row-fluid">
 									<div class="input-append span6">
 										<input type="text" class="span8 offset2 offset2" placeholder="From Date">
 										<span class="add-on"><i class="icon-calendar"></i></span>
@@ -296,7 +296,7 @@ $('#boothId').multiselect({
 										<input type="text" class="span8  " placeholder="To Date">
 										<span class="add-on"><i class="icon-calendar"></i></span>
 									</div>						
-								</div>
+								</div>-->
 								
 								<div class="row-fluid">
 									<div class="well well-small span4  text-center">
