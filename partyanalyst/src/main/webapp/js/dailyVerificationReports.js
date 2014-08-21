@@ -734,6 +734,7 @@ function showHideReportTabs(id)
 		$('#boothId').multiselect('refresh');
 		$("#thirdpPartyReport").hide();
 		$("#verificationReportDiv").hide();
+		$('#boothWiseDtlsId').hide();
 	}
 	else if(id == "userTrackingReportTab")
 	{
@@ -747,6 +748,7 @@ function showHideReportTabs(id)
 		$("#surveyUserTrackingId").show();
 		$("#thirdpPartyReport").hide();
 		$("#verificationReportDiv").hide();
+		$('#boothWiseDtlsId').hide();
 	}
 	else if(id == "stateWiseReportTab")
 	{
@@ -760,6 +762,7 @@ function showHideReportTabs(id)
 		$("#stateWiseReportId").show();
 		$("#thirdpPartyReport").hide();
 		$("#verificationReportDiv").hide();
+		$('#boothWiseDtlsId').hide();
 	}
 	else if(id == "thirdpPartyReportTab")
 	{
@@ -773,6 +776,7 @@ function showHideReportTabs(id)
 		$("#saveBoothsPercentage").hide();
 		$("#thirdpPartyReport").show();
 		$("#verificationReportDiv").hide();
+		$('#boothWiseDtlsId').hide();
 		//getThirdPartySummaryDetails();
 		getTPTotalBoothsDetailsConstituencyWise();
 	}
@@ -788,6 +792,7 @@ function showHideReportTabs(id)
 		$("#saveBoothsPercentage").hide();
 		$("#thirdpPartyReport").hide();
 		$("#verificationReportDiv").hide();
+		$('#boothWiseDtlsId').hide();
 		getBigPictureDetails();
 		
 	}
@@ -803,9 +808,26 @@ function showHideReportTabs(id)
 		$("#saveBoothsPercentage").hide();
 		$("#thirdpPartyReport").hide();
 		$("#dashBoardDiv").hide();
+		$('#boothWiseDtlsId').hide();
+
 		if(voterReportFlag == false)
 		getVerifierReportCounts();
 		voterReportFlag = true;
+	}
+	else if(id == "boothWiseReportsTab")
+	{
+		$("#verificationReportDiv").hide();
+		$("#surveyUserTrackingId").hide();
+		$("#verifierReportId").hide();
+		$("#comparisonReportId").hide();
+		$("#wmReportDiv").hide();
+		$("#verifierReportIdForVerifier").hide();
+		$("#stateWiseReportId").hide();
+		$("#saveBoothsPercentage").hide();
+		$("#thirdpPartyReport").hide();
+		$("#dashBoardDiv").hide();
+
+		$('#boothWiseDtlsId').show();
 	}
 
 }
@@ -2256,4 +2278,56 @@ function buildBoothWiseTeamDetails(result)
 	str += '<table>';
 	$('#boothWiseQcTable').html(str);
 }
+
+function getBoothWiseDetails()
+{
+	$('#boothWiseStatusDtls').html('');
+	$('#bmainajaximg').show();
+	$.ajax({
+		type:'GET',
+		url: 'getAllBoothsStatusDetailsByConstituencyId.action',
+		dataType: 'json',
+		data: {constituencyId:$('#bconstituencyId').val()},
+	}).done(function(result){
+		buildBoothWiseStatusDetails(result);
+	});
+}
+function buildBoothWiseStatusDetails(result)
+{
+	var str ='';
+
+    str+='<div class="span3 offset3">';
+	str+='<table class="table table-bordered m_top20 table-hover table-striped" id="boothWiseTable">';
+	 str+='<thead>';
+      str+='<tr>';
+	    str+='<th>Boot No</th>';
+		str+='<th>DC</th>';
+		str+='<th>DV</th>';
+		str+='<th>QC</th>';
+		str+='<th>WM-DC</th>';
+		str+='<th>WM-DV</th>';
+      str+='</tr>';
+	 str+='</thead>';
+	 str+='<tbody>';
+
+	 $.each(result,function(index,value){
+		 str+='<tr>';
+		    str+='<td>'+value.partNo+'</td>';
+			str+='<td>'+value.dcCompleted+'</td>';
+			str+='<td>'+value.dvCompleted+'</td>';
+			str+='<td>'+value.qcCompleted+'</td>';
+			str+='<td>'+value.wmDcCompleted+'</td>';
+			str+='<td>'+value.wmDvCompleted+'</td>';
+		 str+='</tr>';
+	 });
+	 str+='</tbody>';
+	str+='</table>';
+	str+='</div>';
+
+	$('#boothWiseStatusDtls').html(str);
+	$('#boothWiseTable').dataTable();
+		$('#bmainajaximg').hide();
+
+}
+
 
