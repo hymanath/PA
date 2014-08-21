@@ -95,8 +95,9 @@
   
   <body>
   <script>
-  
-  $( document ).ready(function() {
+ 
+var sRegionId = 0;  
+$( document ).ready(function() {
 $('#boothId').multiselect({
 	  noneSelectedText:"Select Booth(s)"});
 	
@@ -134,7 +135,9 @@ $('#boothId').multiselect({
 						<div class="row-fluid m_top10" >
 							<!----Data Collection (left)------>
 							<div class="span6 wiget-yellow">	
-								<h4 class="text-right">Big Picture</h4>
+								<h4 class="text-right">Big Picture
+								<span class="btn-group"><a href="javascript:{setRegionLevel(0)}" class="btn btn-mini">ALL</a><a href="javascript:{setRegionLevel(2)}" class="btn btn-mini">AP</a><a href="javascript:{setRegionLevel(1)}" class="btn btn-mini">TS</a></span>
+								</h4>
 								<div class="row-fluid">
 									<div class="well well-small span4  text-center">
 										<h4 id="totalVoters">0</h4>
@@ -609,6 +612,14 @@ $(".highlight").click(function()
 
 
 getSurveyCompletedLocationsDetailsForSurveyStartedConstituencies();
+function setRegionLevel(regionId)
+{
+  sRegionId = regionId;
+}
+function openConstituencyWiseWindow(userTypeId)
+{
+	window.open("surveyConstituencieOverview.action?regionId="+sRegionId+"&userTypeId="+userTypeId+"", "_blank");
+}
 </script>
 </body>
 </html>

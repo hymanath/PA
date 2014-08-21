@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dto.BigPictureVO;
+import com.itgrids.partyanalyst.dto.BoothWiseSurveyStatusDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
@@ -34,7 +35,18 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 	
 	private List<SurveyDashBoardVO> resultList;
 	private List<SurveyResponceVO> collectedCasteDetails;
+	private List<BoothWiseSurveyStatusDetailsVO> boothWiseStatusList;
 	
+
+	public List<BoothWiseSurveyStatusDetailsVO> getBoothWiseStatusList() {
+		return boothWiseStatusList;
+	}
+
+
+	public void setBoothWiseStatusList(
+			List<BoothWiseSurveyStatusDetailsVO> boothWiseStatusList) {
+		this.boothWiseStatusList = boothWiseStatusList;
+	}
 	public List<SurveyResponceVO> getCollectedCasteDetails() {
 		return collectedCasteDetails;
 	}
@@ -350,5 +362,18 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 		}
 		return Action.SUCCESS;
 	}
+	public String getAllBoothsStatusDetailsByConstituencyId()
+	{
+		try
+		{
+			boothWiseStatusList = ctpDashBoardService.getAllBoothsStatusDetailsByConstituencyId(constituencyId);
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
+	
 	
 }

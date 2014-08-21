@@ -28,16 +28,20 @@
 </head>
 <body>
 
-<h4 class="offset3">CONSTITUENCY WISE CASTE COLLECTION DETAILS</h4>
-<img src='images/Loading-data.gif' style="width:70px;height:60px;" class="hide offset5"  id="cAjaxImg"/>
+<!--<h4 class="offset3">CONSTITUENCY WISE CASTE COLLECTION DETAILS</h4>-->
+<img src='images/Loading-data.gif' style="width:70px;height:60px;" class="hide offset6"  id="cAjaxImg"/>
 <div id="constituencyWiseReport"  class="span12"></div>
 
-<h4 class="offset3 hide" id="boothHeading">BOOTH WISE CASTE COLLECTION DETAILS</h4>
-<img src='images/Loading-data.gif' style="width:70px;height:60px;" class="hide offset5"  id="bAjaxImg"/>
+<!--<h4 class="offset3 hide" id="boothHeading">BOOTH WISE CASTE COLLECTION DETAILS</h4>-->
+<img src='images/Loading-data.gif' style="width:70px;height:60px;" class="hide offset6"  id="bAjaxImg"/>
 <div id="boothWiseReport" class="span12"></div>
 
-<img src='images/Loading-data.gif' style="width:70px;height:60px;" class="hide offset5"  id="vAjaxImg"/>
-<div id="votersReport"  class="span12"></div>					
+<img src='images/Loading-data.gif' style="width:70px;height:60px;" class="hide offset6"  id="vAjaxImg"/>
+<div id="votersReport"  class="span12"></div>	
+
+<div class="span12">
+	<div id="boothWiseStatusDtls"></div>
+</div>
 
 <script>
 getConstituencyWiseCasteCollectionDetails('${regionId}','${userTypeId}');
@@ -59,7 +63,8 @@ function buildConstituencyWiseDetails(result,userTypeId)
 {
 	var str ='';
 
-	str+='<div class="span2 offset3">';
+	str+='<h4 class="offset3">CONSTITUENCY WISE CASTE COLLECTION DETAILS</h4>';
+	str+='<div class="span10 offset2">';
 	str+='<table class="table table-bordered m_top20 table-hover table-striped" id="constnDtls">';
 	str+='<thead>';
 	 str+='<tr>';
@@ -74,7 +79,7 @@ function buildConstituencyWiseDetails(result,userTypeId)
     str+='<tbody>';
 	$.each(result,function(index,value){
 	 str+='<tr>';
-	  str+='<td><a href="javascript:{getConstituencySurveyDetails('+value.locationId+','+userTypeId+')}">'+value.locationName+'</a></td>';
+	  str+='<td><a href="javascript:{getConstituencySurveyDetails('+value.locationId+','+userTypeId+',\''+value.locationName+'\')}">'+value.locationName+'</a></td>';
 	  str+='<td>'+value.totalBooths+'</td>';
 	  str+='<td>'+value.totalVoters+'</td>';
 	  str+='<td>'+value.collectedBoothsCount+'</td>';
@@ -97,10 +102,10 @@ function buildConstituencyWiseDetails(result,userTypeId)
 
 }
 
-function getConstituencySurveyDetails(constituencyId,userTypeId)
+function getConstituencySurveyDetails(constituencyId,userTypeId,locationName)
 {
 	$('#boothWiseReport,#votersReport').html('');
-	$('#boothHeading').show();
+	//$('#boothHeading').show();
 
 	 $('html, body').animate({
         scrollTop: $("#boothWiseReport").offset().top
@@ -114,14 +119,16 @@ function getConstituencySurveyDetails(constituencyId,userTypeId)
 		dataType: 'json',
 		data: {constituencyId:constituencyId,userTypeId:userTypeId},
 	}).done(function(result){
-			buildConstituencySurveyDetails(result,userTypeId);
+			buildConstituencySurveyDetails(result,userTypeId,locationName);
 	});
 }
-function buildConstituencySurveyDetails(result,userTypeId)
+function buildConstituencySurveyDetails(result,userTypeId,locationName)
 {
 	var str = '';
 
-	str+='<div class="span2 offset3">';
+	str+='<h4 class="offset3">'+locationName+' CONSTITUENCY BOOTH WISE CASTE COLLECTION DETAILS</h4>';
+
+	str+='<div class="span10 offset2">';
 	str+='<table class="table table-bordered m_top20 table-hover table-striped" id="boothDtls">';
 	 str+='<thead>';
 	  str+='<tr>';
@@ -184,7 +191,7 @@ function buildBoothWiseCasteCollectedDetails(result,boothNo)
 
 	str+='<h4 class="offset3">COLLECTED CASTE DETAILS FOR BOOTH-'+boothNo+'</h4>';
 
-	str+='<div class="span2 offset2">';
+	str+='<div class="span10 offset2">';
 	str+='<table class="table table-bordered m_top20 table-hover table-striped" id="votersDtls">';
 	 str+='<thead>';
 	  str+='<tr>';
@@ -274,6 +281,54 @@ function buildBoothWiseVerifiedCasteCollectedDetails(result,boothNo)
 		"iDisplayLength": -1,
 		"aLengthMenu": [[50, 100, 150, -1], [50, 100, 150, "All"]]
 		});
+}
+</script>
+<script>
+//boothWiseStatusDetailsByConstituency();
+function boothWiseStatusDetailsByConstituency()
+{
+	$.ajax({
+		type:'GET',
+		url: 'getAllBoothsStatusDetailsByConstituencyId.action',
+		dataType: 'json',
+		data: {constituencyId:217},
+	}).done(function(result){
+		buildBoothWiseStatusDetails(result);
+	});
+}
+function buildBoothWiseStatusDetails(result)
+{
+	var str ='';
+
+    str+='<div class="span3 offset3">';
+	str+='<table class="table table-bordered m_top20 table-hover table-striped">';
+	 str+='<thead>';
+      str+='<tr>';
+	    str+='<th>Boot No</th>';
+		str+='<th>DC</th>';
+		str+='<th>DV</th>';
+		str+='<th>QC</th>';
+		str+='<th>WM-DC</th>';
+		str+='<th>WM-DV</th>';
+      str+='</tr>';
+	 str+='</thead>';
+	 str+='<tbody>';
+
+	 $.each(result,function(index,value){
+		 str+='<tr>';
+		    str+='<td>'+value.partNo+'</td>';
+			str+='<td>'+value.dcCompleted+'</td>';
+			str+='<td>'+value.dvCompleted+'</td>';
+			str+='<td>'+value.qcCompleted+'</td>';
+			str+='<td>'+value.wmDcCompleted+'</td>';
+			str+='<td>'+value.wmDvCompleted+'</td>';
+		 str+='</tr>';
+	 });
+	 str+='</tbody>';
+	str+='</table>';
+	str+='</div>';
+
+	$('#boothWiseStatusDtls').html(str);
 }
 </script>
 </body>
