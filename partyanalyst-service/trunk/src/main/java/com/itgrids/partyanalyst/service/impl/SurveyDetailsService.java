@@ -29,6 +29,7 @@ import com.itgrids.partyanalyst.dao.ISurveyAccessUsersDAO;
 import com.itgrids.partyanalyst.dao.ISurveyCallStatusDAO;
 import com.itgrids.partyanalyst.dao.ISurveyCompletedLocationsDAO;
 import com.itgrids.partyanalyst.dao.ISurveyCompletedLocationsDetailsDAO;
+import com.itgrids.partyanalyst.dao.ISurveyConstituencyTempDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.ISurveyFinalDataDAO;
@@ -41,6 +42,7 @@ import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IVerifierBoothPercentageDAO;
 import com.itgrids.partyanalyst.dao.IWebMonitorCompletedLocationsDetailsDAO;
 import com.itgrids.partyanalyst.dao.IWebMonitoringAssignedUsersDAO;
+import com.itgrids.partyanalyst.dao.hibernate.SurveyConstituencyTempDAO;
 import com.itgrids.partyanalyst.dao.hibernate.SurveyWmThirdPartyStatusDAO;
 import com.itgrids.partyanalyst.dto.DcDvCollectedDataVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
@@ -125,6 +127,9 @@ public class SurveyDetailsService implements ISurveyDetailsService {
 	IHamletDAO hamletDAO;
 	
 	@Autowired ISurveyCompletedLocationsDAO surveyCompletedLocationsDAO;
+	
+	@Autowired
+	private ISurveyConstituencyTempDAO surveyConstituencyTempDAO;
 	
 	public IRegionWiseSurveysDAO getRegionWiseSurveysDAO() {
 		return regionWiseSurveysDAO;
@@ -1984,12 +1989,16 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 		return returnList;
 	}
 	
-	public List<DcDvCollectedDataVO> getDcAndDvByConstituencyByUser(Long surveyUserId,Long userTypeId,Date fromDate,Date toDate)
+	public List<DcDvCollectedDataVO> getDcAndDvByConstituencyByUser(List<Long> constiIds,List<Long> surveyUserIds,Long userTypeId,Date fromDate,Date toDate)
 	{
 		List<DcDvCollectedDataVO> returnList = null;
 		try
 		{
-			List<Object[]> result = surveyDetailsInfoDAO.getDCPerformanceBoothWise(surveyUserId, userTypeId,fromDate,toDate);
+			
+			List<Long> boothidsList = boothDAO.getBoothIdsByConstituencyIdsAndPublicationId(constiIds,IConstants.VOTER_DATA_PUBLICATION_ID);
+			
+			List<Object[]> result = surveyDetailsInfoDAO.getDCPerformanceBoothWise(boothidsList,surveyUserIds,userTypeId,fromDate,toDate);
+			
 			if(result != null && result.size() > 0)
 			{
 				returnList = new ArrayList<DcDvCollectedDataVO>();
@@ -2006,6 +2015,8 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 					VO.setMobileCount(parms[9] != null ? Long.valueOf(parms[9].toString()) : 0l);
 					VO.setLocalAreaCount(parms[10] != null ? Long.valueOf(parms[10].toString()) : 0l);
 					VO.setConstituency(parms[11] != null ? parms[11].toString() : "");
+					VO.setId(parms[13] != null ? Long.valueOf(parms[13].toString()) : 0l);
+					VO.setName(parms[14] != null ? parms[14].toString() : "");
 					
 					List<VerificationCompVO> wmList = checkForWebMonitorData((Long)parms[12]);
 					if(wmList != null && wmList.size() > 0)
@@ -2156,36 +2167,52 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 		List<DcDvCollectedDataVO> resultList = new ArrayList<DcDvCollectedDataVO>();
 		List<Long> constituencyIds = new ArrayList<Long>();
 		try{
-			List<Object[]> constituencys = surveyDetailsInfoDAO.getSurveyStartedConstituencyInfo();	
+			List<Object[]> constituencys = surveyDetailsInfoDAO.getSurveyStartedConstituencyInfo();				
+			
 			if(constituencys != null && constituencys.size() > 0)
 				for(Object[] params : constituencys)
 					constituencyIds.add((Long)params[0]);
-			List<Object[]> list = boothPublicationVoterDAO.getTotalVotersForAllConstituencies(constituencyIds);
+			
+					
+			//List<Object[]> list = boothPublicationVoterDAO.getTotalVotersForAllConstituencies(constituencyIds);
+			
+			List<Object[]> list = surveyConstituencyTempDAO.getTotalVotersAndBooths(constituencyIds);
+			
 			if(list !=null && list.size() > 0)
 			{
 				for(Object[] params : list)
 				{
 				DcDvCollectedDataVO vo = new DcDvCollectedDataVO();
-				vo.setId((Long)params[0]);
-				vo.setConstituency(params[1].toString());
-				vo.setTotalCount((Long)params[2]);
+				vo.setId(params[0] != null ? (Long)params[0]:0L);
+				vo.setConstituency(params[3] != null ? params[3].toString():"");
+				vo.setTotalCount(params[1] != null ?(Long)params[1]:0L);
+				vo.setBoothCount(params[2] != null ? Long.valueOf(params[2].toString()) : 0L );
+				
 				resultList.add(vo);
 				}
+				
 				List<Object[]> list1 = surveyDetailsInfoDAO.getCasteTaggedVotersForAllConstituencies(1l);
 				if(list1 != null && list1.size() > 0)
 				for(Object[] params : list1)
 				{
 					DcDvCollectedDataVO vo = getMatchedConstituencyVo(resultList,(Long)params[0]);
 					if(vo != null)
-						vo.setCasteCount((Long)params[1]);
+					{
+						vo.setCasteCount(params[1] != null ? (Long)params[1]:0L);
+						vo.setCasteTagedBooths(params[2] != null ? (Long)params[2]:0L);
+					}
 				}
-				List<Object[]> list2 = surveyDetailsInfoDAO.getCasteTaggedVotersForAllConstituencies(1l);	
+				List<Object[]> list2 = surveyDetailsInfoDAO.getMobileTaggedVotersForAllConstituencies(1l);	
 				if(list2 != null && list2.size() > 0)
 					for(Object[] params : list1)
 					{
 						DcDvCollectedDataVO vo = getMatchedConstituencyVo(resultList,(Long)params[0]);
 						if(vo != null)
-							vo.setMobileCount((Long)params[1]);
+						{
+							vo.setMobileCount(params[1] != null ? (Long)params[1]:0L);
+							vo.setMobileTagedBooths(params[2] != null ? (Long)params[2]:0L);
+						}
+							
 					}	
 				
 				List<Object[]> casteVoters = surveyCallStatusDAO.getCasteVotersForAllConstituencies();
@@ -2205,6 +2232,12 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 						Long total = vo.getCasteActiveVoters() + vo.getCasteInActiveVoters();
 						vo.setCasteErrorRate(vo.getCasteInActiveVoters() != null &&vo.getCasteInActiveVoters() !=0 ? surveyDataDetailsServic.roundTo2DigitsFloatValue((float) vo.getCasteInActiveVoters() * 100f /total)
 								: "0.00");
+					
+						List<Long> constiIds = new ArrayList<Long>();
+						constiIds.add((Long)params[0]);
+						
+						if(vo.getCasteVerifiedBooths() == null)
+							vo.setCasteVerifiedBooths((Long) surveyCallStatusDAO.getTotalVerifiedBoothsinAllConstituencyIds(constiIds).get(0)[1]);
 						
 						}
 					}
@@ -2230,7 +2263,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 						
 						vo.setMobileErrorRate(vo.getMobileInActiveVoters() != null &&vo.getMobileInActiveVoters() !=0 ? surveyDataDetailsServic.roundTo2DigitsFloatValue((float) vo.getMobileInActiveVoters() * 100f /total)
 								: "0.00");
-						
+
 						}
 					}
 				}
@@ -2738,10 +2771,10 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 		}
 		return null;
 	}
-	public List<GenericVO> getUsersList(List<Long> constituencyIds){
+	public List<GenericVO> getUsersList(Long userTypeId,List<Long> constituencyIds){
 		List<GenericVO> resultList = new ArrayList<GenericVO>();
 		try{
-			List<Object[]> list = surveyUserRelationDAO.getSurveyConstituencyLeadersList(constituencyIds);
+			List<Object[]> list = surveyUserRelationDAO.getSurveyConstituencyLeadersList(userTypeId,constituencyIds);
 			if(list != null && list.size() > 0){
 				for(Object[] params : list){
 					resultList.add(new GenericVO((Long)params[0],params[1].toString()));
