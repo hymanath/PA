@@ -1970,7 +1970,7 @@ function getQcVerificationSummaryReport(str)
 		 }).done(function(result){
 			if(result != null)
 			{
-				$('#verifiedRecords').html(result.qcVotersCount);
+				$('#verifiedRecords').html('<a href="javascript:{openConstituencyWiseWindow(10)}">'+result.qcVotersCount+'</a>');
 				$('#qcMatched').html(result.matchedCount);
 				$('#qcUnMatched').html(result.unMatchedCount);
 			}
