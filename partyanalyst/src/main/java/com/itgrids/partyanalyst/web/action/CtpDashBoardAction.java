@@ -209,7 +209,8 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 	{
 		try
 		{
-			bigPictureVOList = ctpDashBoardService.getConstituencyWiseTeamDetails();
+			jObj = new JSONObject(getTask());
+			bigPictureVOList = ctpDashBoardService.getConstituencyWiseTeamDetails(jObj.getLong("type"));
 		} 
 		catch (Exception e) 
 		{
@@ -222,7 +223,8 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 	{
 		try
 		{
-			bigPictureVOList = ctpDashBoardService.getConstituencyWiseQcVerificationSummary();
+			jObj = new JSONObject(getTask());
+			bigPictureVOList = ctpDashBoardService.getConstituencyWiseQcVerificationSummary(jObj.getString("type"));
 		} 
 		catch (Exception e) 
 		{
@@ -237,7 +239,7 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 		try
 		{
 			jObj = new JSONObject(getTask());
-			bigPictureVOList = ctpDashBoardService.getBoothWiseQcVerificationSummary(jObj.getLong("constituencyId"));
+			bigPictureVOList = ctpDashBoardService.getBoothWiseQcVerificationSummary(jObj.getLong("constituencyId"),jObj.getString("type"));
 		} 
 		catch (Exception e) 
 		{

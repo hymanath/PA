@@ -121,7 +121,202 @@ $('#boothId').multiselect({
   <div class="container">
   
   <!----- CTP DASHBOARD START  -->
-		<div class="row" id="dashBoardDiv">	</div>
+		<div class="row" id="dashBoardDiv">	
+			<div class="row">
+			<div class="span12">
+				
+				<div class="row-fluid ">
+					<div class="span12 m_top20 widgetservey">
+						<h4>Data Collection Dashboard</h4>						
+						
+						<!-----Data Collection & Verification Main Div---->
+						<div class="row-fluid m_top10" >
+							<!----Data Collection (left)------>
+							<div class="span6 wiget-yellow">	
+								<h4 class="text-right">Big Picture</h4>
+								<div class="row-fluid">
+									<div class="well well-small span4  text-center">
+										<h4 id="totalVoters">0</h4>
+										<p>Voters</p>
+									</div>
+									<div class="well well-small span4 text-center">
+										<h4 id="totalBooths">0</h4>
+										<p>Booths</p>
+									</div>
+									<div class="well well-small span4 text-center">
+										<h4 id="totalConstituencyes">0</h4>
+										<p>Constituencies</p>
+									</div>							
+								</div>
+								<div class="row-fluid">
+								<div class="well well-small span4 text-center">
+									<h4 id="decDetails">0</h4>
+									<p>Data Collection Completed</p>
+								</div>
+								<div class="well well-small span4 text-center">
+									<h4 id="verifierDetails">0</h4>
+									<p>Verification Completed</p>
+								</div>
+								<div class="well well-small span4 text-center">
+									<h4 id="qcDetails">0</h4>
+									<p>QC Verification Completed</p>
+								</div>							
+								</div>
+								
+								<!--<div class="row-fluid">
+								<div class="well well-small span10 offset1  ">									
+									Planned Vs Actual Status  <span class="pull-right badge">5214</span>
+								</div>						
+								</div>-->
+							</div><!----Data Collection End------>
+							
+							<!----Data Verification (right)---->
+							<div class="span6 wiget-yellow">	
+								<h4 class="text-right">Daily & Date Range Summary<span class="pull-right btn-group"><a href="" class="btn btn-mini">AP</a>|<a href="" class="btn btn-mini">TS</a></span></h4>
+								
+								<div class="row-fluid">
+									<div class="input-append span6">
+										<input type="text" class="span8 offset2 offset2" placeholder="From Date">
+										<span class="add-on"><i class="icon-calendar"></i></span>
+									</div>
+									<div class="input-append span6">
+										<input type="text" class="span8  " placeholder="To Date">
+										<span class="add-on"><i class="icon-calendar"></i></span>
+									</div>						
+								</div>
+								
+								<div class="row-fluid text-center">
+									<P CLASS="label">Today: Date</p>
+								</div>
+								
+								<div class="row-fluid">
+									<div class="well well-small span4  text-center">
+										<h4>20%</h4>
+										<p class="">Data Collection Completed</p>										
+									</div>
+									<div class="well well-small span4 text-center">
+										<h4>20%</h4>
+										<p>Verification Completed</p>
+									</div>
+									<div class="well well-small span4 text-center">
+										<h4>55%</h4>
+										<p>QC Verification Completed</p>
+									</div>							
+								</div>
+								
+							</div>	<!----Data Verification---->	
+						</div><!-----Data Collection & Verification Main Div---->	
+						
+						<div class="row-fluid m_top20">
+						<!-------->
+							<div class="span6 wiget-yellow">	
+								<h4 class="text-right">Internal Verification Summary</h4>
+								
+								<div class="row-fluid">
+									<div class="input-append span6">
+										<input type="text" class="span8 offset2 offset2" placeholder="From Date">
+										<span class="add-on"><i class="icon-calendar"></i></span>
+									</div>
+									<div class="input-append span6">
+										<input type="text" class="span8  " placeholder="To Date">
+										<span class="add-on"><i class="icon-calendar"></i></span>
+									</div>						
+								</div>
+								
+								<div class="row-fluid">
+									<div class="well well-small span4  text-center">
+										<h4 id="verifiedCount">0</h4>
+										<p class="">Verified <br/> Records</p>										
+									</div>
+									<div class="well well-small span4 text-center">
+										<h4 id="matchedCount">0</h4>
+										<p>Valid <br/> Records</p>
+									</div>
+									<div class="well well-small span4 text-center">
+										<h4 id="unMatchedCount">0</h4>
+										<p>Corrected <br/> Records</p>
+									</div>							
+								</div>
+								<div class="row-fluid">
+									<div class="well well-small span12">									
+										Redo Records <span class="pull-right badge"><span id="redoBoothDetails">0</span></span>
+									</div>						
+								</div>								
+							</div>	<!-------->
+							
+							<!-------->
+							<div class="span6 wiget-yellow">	
+								<h4 class="text-right">QC Verification Summary</h4>
+								
+								<div class="row-fluid">
+									<div class="input-append span6">
+										<input type="text" class="span8 offset2 offset2" placeholder="From Date">
+										<span class="add-on"><i class="icon-calendar"></i></span>
+									</div>
+									<div class="input-append span6">
+										<input type="text" class="span8  " placeholder="To Date">
+										<span class="add-on"><i class="icon-calendar"></i></span>
+									</div>						
+								</div>
+								
+								<div class="row-fluid">
+									<div class="well well-small span4  text-center">
+										<a><h4 id="verifiedRecords" onClick="getConstituencyWiseQcVerificationSummary(0)">0</h4></a>
+										<p class="">Records Verified</p>										
+									</div>
+									<div class="well well-small span4 text-center">
+										<a><h4 id="qcMatched" onClick="getConstituencyWiseQcVerificationSummary(1)">0</h4></a>
+										<p>Matched Identified</p>
+									</div>
+									<div class="well well-small span4 text-center">
+										<a><h4 id="qcUnMatched" onClick="getConstituencyWiseQcVerificationSummary(2)">0</h4></a>
+										<p>Records Collected</p>
+									</div>
+								</div>							
+							</div>	<!-------->
+						</div>
+						
+						<div class="row-fluid m_top20">
+								<!-------->
+							<div class="span6 wiget-yellow">	
+								<h4 class="text-right">Team Details Summary</h4>
+								
+								<div class="row-fluid">
+									<div class="input-append span6">
+										<input type="text" class="span8 offset2 offset2" placeholder="From Date">
+										<span class="add-on"><i class="icon-calendar"></i></span>
+									</div>
+									<div class="input-append span6">
+										<input type="text" class="span8  " placeholder="To Date">
+										<span class="add-on"><i class="icon-calendar"></i></span>
+									</div>						
+								</div>
+								
+								<div class="row-fluid">
+									<div class="well well-small span4  text-center">
+										<a><h4 id="dcMembers" onClick="getConstituencyWiseTeamDetails(1);">0</h4></a>
+										<p class="">DC</p>										
+									</div>
+									<div class="well well-small span4 text-center">
+										<a><h4 id="dvMembers" onClick="getConstituencyWiseTeamDetails(4);">0</h4></a>
+										<p>DV</p>
+									</div>
+									<div class="well well-small span4 text-center">
+										<a><h4 id="qcMembers" onClick="getConstituencyWiseTeamDetails(10);">0</h4></a>
+										<p>QC</p>
+									</div>
+								</div>							
+							</div>	<!-------->
+						</div>
+					</div>
+				</div>	<!----Constituency details main Div End---->
+				
+			</div>
+		</div>
+		<!--<div id="constituencyWiseQcTable"></div>
+		<div id="boothWiseQcTable"></div>-->
+		</div>
+		
   <!----- CTP DASHBOARD END  -->
 
 		<!---- Survey monitoring---->	

@@ -1842,12 +1842,13 @@ function buildFinalReportWithTP(result){
 	str +="</table>";
 	
 	$("#FinalReportWithTPId").html(str);
-	//$('#FinalReportWithTPTableId').dataTable();
-	//$('#thirdPartyAjaxImg').show();
+
 }
 function getBigPictureDetails()
 {
-	$('#dashBoardDiv').html('');
+	getInternalVerificationSummary();
+	getQcVerificationSummaryReport();
+	getTodayTeamDetails();
 	var jsObj = {
 	}
 	$.ajax({
@@ -1856,69 +1857,21 @@ function getBigPictureDetails()
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)},
 		 }).done(function(result){	
-		 
-		 var str ='';
-		 str +='<div class="span12">';
-
-			str +='<div class="row-fluid ">';
-			str +='<div class="span12 m_top20 widgetservey">';
-			
-			str +='<h4>Data Collection Dashboard</h4>';						
-			str +='<div class="row-fluid m_top10" >';
-			str +='<div class="span6 wiget-yellow">	';
-			str +='<h4 class="text-right">Big Picture</h4>';
-				str +='<div class="row-fluid">';
-					str +='<div class="well well-small span4  text-center">';
-					str +='<h4>'+result.totalVoters+'</h4>';
-					str +='<p>Voters</p>';
-					str +='</div>';
-					str +='<div class="well well-small span4 text-center">';
-					str +='<h4>'+result.totalBooths+'</h4>';
-					str +='<p>Booths</p>';
-					str +='</div>';
-					str +='<div class="well well-small span4 text-center">';
-					str +='<h4>'+result.dcConstituencysCount+'</h4>';
-					str +='<p>Constituencies</p>';
-					str +='</div>';							
-				str +='</div>';
-			str +='<div class="row-fluid">';
-				str +='<div class="well well-small span4 text-center">';
-					str +='<h4>'+result.dcPercentage+' % </h4>';
-					str +='<p>Data Collection Completed</p>';
-				str +='</div>';
-				str +='<div class="well well-small span4 text-center">';
-					str +='<h4>'+result.verifierPercentage+' % </h4>';
-					str +='<p>Verification Completed</p>';
-				str +='</div>';
-				str +='<div class="well well-small span4 text-center">';			
-					if(result.qcPercentage != null)
-					{
-						str +='<h4>'+result.qcPercentage+' % </h4>';
-
-					}
-					else
-					{
-						str +='<h4> 0 % </h4>';
-					}
-					str +='<p> QC Verification Completed </p>';
-				str +='</div>		';		
+			if(result != null)
+			{
+				$('#totalVoters').html(result.totalVoters);
+				$('#totalBooths').html(result.totalBooths);
+				$('#totalConstituencyes').html(result.totalConstituencyes);
 				
-			str +='</div>';
-			str +='</div>';
-			/*
-			str +='<div class="row-fluid">';
-				str +='<div class="well well-small span10 offset1  ">';						
-					str +='Planned Vs Actual Status  <span class="pull-right badge">5214</span>';
-				str +='</div>';
-			str +='</div>';
-			*/
-
-			getTodayTeamDetails(str);
+				$('#decDetails').html(result.dcVotersCount);
+				$('#verifierDetails').html(result.verifierVotersCount);
+				$('#qcDetails').html(result.qcVotersCount);
+			}
 		});	
 }
 
 
-function getTodayTeamDetails(str)
+function getTodayTeamDetails()
 {
 	var jsObj = {
 	}
@@ -1927,66 +1880,18 @@ function getTodayTeamDetails(str)
 			url: 'getTodayTeamDetails.action',
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)},
-		 }).done(function(result){	
-
-				
-				str +='<div class="span6 wiget-yellow">	';
-				str +='<h4 class="text-right">Daily & Date Range Summary<span class="pull-right btn-group"><a href="" class="btn btn-mini btn-success selectCls">AP</a>|<a href="" class="btn btn-mini selectCls">TS</a></span></h4>';
-
-				str +='<div class="row-fluid">';
-				str +='<div class="input-append span6">';
-				str +='<input type="text" class="span8 offset2 offset2" placeholder="From Date">';
-				str +='<span class="add-on"><i class="icon-calendar"></i></span>';
-				str +='</div>';
-				str +='<div class="input-append span6">';
-				str +='<input type="text" class="span8  " placeholder="To Date">';
-				str +='<span class="add-on"><i class="icon-calendar"></i></span>';
-				str +='</div>';			
-				str +='</div>';
-
-				str +='<div class="row-fluid text-center">';
-				str +='<P CLASS="label">Today: Date</p>';
-				str +='</div>';
-				str +='<div class="row-fluid">';
-				str +='<div class="well well-small span4  text-center">';
-					str +='<h4>'+result.dcVotersCount+'</h4>';
-				str +='<p class="">Data Collection Completed</p>';									
-				str +='</div>';
-				str +='<div class="well well-small span4 text-center">';
-					str +='<h4>'+result.verifierVotersCount+'</h4>';
-				str +='<p>Verification Completed</p>';
-				str +='</div>';
-				str +='<div class="well well-small span4 text-center">';
-					str +='<h4>'+result.qcVotersCount+'</h4>';
-				str +='<p>QC Verification Completed</p>';
-				str +='</div>';	
-				str +='</div>';
-			/*
-			str +='<div class="row-fluid">';
-					str +='<div class="span12">';
-						str +='<h5 style="margin-top: -7px;">Team Details</h5>';
-						str +='<ul class="unstyled" style="height: 80px; overflow: auto;">';
-							str +='<li>Team Name</li>';
-							str +='<li>Team Name</li>';
-							str +='<li>Team Name</li>';
-							str +='<li>Team Name</li>';
-						str +='</ul>';
-					str +='</div>';
-				str +='</div>';
-				*/
-				str +='</div>';
-				str +='</div>';	
-				
-				$('#dashBoardDiv').append(str);
-				
-				str = '';
-				
-		getInternalVerificationSummary(str);
+		 }).done(function(result){
+			if(result != null)
+			{
+				$('#dcMembers').html(result.dcVotersCount);
+				$('#dvMembers').html(result.verifierVotersCount);
+				$('#qcMembers').html(result.qcVotersCount);
+			}
 		});	
 }
 
 
-function getInternalVerificationSummary(str)
+function getInternalVerificationSummary()
 {
 	var jsObj = {
 	}
@@ -1995,58 +1900,16 @@ function getInternalVerificationSummary(str)
 			url: 'getInternalVerificationSummary.action',
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)},
-		 }).done(function(result){	
-
-
-				str +='<div class="row-fluid m_top20">';
-
-				str +='<div class="span6 wiget-yellow">	';
-				str +='<h4 class="text-right">Internal Verification Summary</h4>';
-
-				str +='<div class="row-fluid">';
-				str +='<div class="input-append span6">';
-				str +='<input type="text" class="span8 offset2 offset2" placeholder="From Date">';
-				str +='<span class="add-on"><i class="icon-calendar"></i></span>';
-				str +='</div>';
-				str +='<div class="input-append span6">';
-				str +='<input type="text" class="span8  " placeholder="To Date">';
-				str +='<span class="add-on"><i class="icon-calendar"></i></span>';
-				str +='</div>';						
-				str +='</div>';
-
-				str +='<div class="row-fluid">';
-				str +='<div class="well well-small span4  text-center">';
-
-				if(result.verifierVotersCount != null)
-				{
-					str +='<h4>'+result.verifierVotersCount+'  </h4>';
-				}
-				else
-				{
-					str +='<h4> 0  </h4>';
-				}
-
-				str +='<p class="">Verified <br/> Records</p>	';									
-				str +='</div>';
-				str +='<div class="well well-small span4 text-center">';
-				str +='<h4>'+result.verifierVotersCount+' </h4>';
-				str +='<p>Valid <br/> Records</p>';
-				str +='</div>';
-				str +='<div class="well well-small span4 text-center">';
-				str +='<h4>'+result.wrongDetails+'('+result.wrongPerc+'%)</h4>';
-				str +='<p>Corrected <br/> Records</p>';
-				str +='</div>';						
-				str +='</div>';
-				str +='<div class="row-fluid">';
-				str +='<div class="well well-small span12">';							
-				str +='Redo Records(Error Rate>10% in a booth)<span class="pull-right badge">'+result.redoVoters+'-'+result.redoBooths+' Booths</span>';
-				str +='</div>';				
-				str +='</div>';						
-				str +='</div>';
-
-				getQcVerificationSummaryReport(str);
-
-
+		 }).done(function(result){
+			if(result != null)
+			{
+				$('#verifiedCount').html(result.verifierVotersCount);
+				$('#matchedCount').html(result.correctDetails);
+				$('#unMatchedCount').html(result.wrongDetails);
+				
+				
+				$('#redoBoothDetails').html(result.redoVoters +"-"+ result.redoBooths);
+			}
 		});	
 }
 
@@ -2060,65 +1923,40 @@ function getQcVerificationSummaryReport(str)
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)},
 		 }).done(function(result){
-
-
-str +='<div class="span6 wiget-yellow">	';
-str +='<h4 class="text-right">QC Verification Summary</h4>';
-
-str +='<div class="row-fluid">';
-str +='<div class="input-append span6">';
-str +='<input type="text" class="span8 offset2 offset2" placeholder="From Date">';
-str +='<span class="add-on"><i class="icon-calendar"></i></span>';
-str +='</div>';
-str +='<div class="input-append span6">';
-str +='<input type="text" class="span8  " placeholder="To Date">';
-str +='<span class="add-on"><i class="icon-calendar"></i></span>';
-str +='</div>	';					
-str +='</div>';
-
-str +='<div class="row-fluid">';
-str +='<div class="well well-small span6  text-center">';
-str +='<h4>'+result.matchedCount+'</h4>';
-str +='<p class="">Records Verified</p>	';									
-str +='</div>';
-
-str +='<div class="well well-small span6 text-center">';
-str +='<h4>'+result.wrongPerc+'</h4>';
-str +='<p>Errors Identified</p>';
-str +='</div>';
-
-str +='</div>';
-							
-str +='</div>';
-str +='</div>';
-str +='</div>';
-str +='</div>';
-str +='</div>';
-
-	$('#dashBoardDiv').append(str);	 
+			if(result != null)
+			{
+				$('#verifiedRecords').html(result.qcVotersCount);
+				$('#qcMatched').html(result.matchedCount);
+				$('#qcUnMatched').html(result.unMatchedCount);
+			}
 		});	
 }
 
-//getConstituencyWiseTeamDetails();
-function getConstituencyWiseTeamDetails()
+
+function getConstituencyWiseTeamDetails(type)
 {
 	var jsObj = {
+		type : type
 	}
 	$.ajax({
 			type:'GET',
 			url: 'getConstituencyWiseTeamDetails.action',
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)},
-		 }).done(function(result){	
+		 }).done(function(result){
+			if(result != null)
+			{
+				buildTeamConstituencyWiseSummary(result,type);
+			}
 		});	
 		
 }
 
-function getBoothWiseTeamDetails()
+function getBoothWiseTeamDetails(constituencyId,surveyUserTypeId)
 {
 	var jsObj = {
-		constituencyId : 170,
-		surveyUserTypeId : 1
+		constituencyId : constituencyId,
+		surveyUserTypeId : surveyUserTypeId
 	}
 	$.ajax({
 			type:'GET',
@@ -2126,12 +1964,30 @@ function getBoothWiseTeamDetails()
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)},
 		 }).done(function(result){	
+			if(result != null)
+			{
+				buildBoothWiseTeamDetails(result);
+			}
 		});	
 }
 
-function getConstituencyWiseQcVerificationSummary()
+function getConstituencyWiseQcVerificationSummary(type)
 {
+	var strTypr = '';
+	if(type == 0)
+	{
+		strTypr = "null";
+	}
+	else if(type == 1)
+	{
+		strTypr = "Y";
+	}
+	else
+	{
+		strTypr = "N";
+	}
 	var jsObj = {
+		type : strTypr
 	}
 	$.ajax({
 			type:'GET',
@@ -2139,12 +1995,42 @@ function getConstituencyWiseQcVerificationSummary()
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)},
 		 }).done(function(result){	
+			if(result != null)
+			 {
+				buildQcConstituencyWiseSummary(result,strTypr);
+			 }
 		});	
 }
-function getBoothWiseQcVerificationSummary()
+
+function buildQcConstituencyWiseSummary(result,strTypr)
+{
+	var str = '';
+	str += '<table class="table table-bordered m_top20 table-hover table-striped offset3">';
+	str += '<thead>';
+	str += '<tr>';
+	str += '<th>Constituency</th>';
+	str += '<th>Booths</th>';
+	str += '<th>Voters</th>';
+	str += '</tr>';
+	str += '</thead>';
+	str += '<tbody>';
+	for(var i in result)
+	{
+		str += '<tr>';
+		str += '<td><a onClick="getBoothWiseQcVerificationSummary('+result[i].dcVotersCount+',\''+strTypr+'\')">'+result[i].dcPercentage+'</a></td>';
+		str += '<td>'+result[i].qcVotersCount+'</td>';
+		str += '<td>'+result[i].verifierVotersCount+'</td>';
+		str += '</tr>';
+	}
+	str += '</tbody>';
+	str += '<table>';
+	$('#constituencyWiseQcTable').html(str);
+}
+function getBoothWiseQcVerificationSummary(constituencyId,type)
 {
 	var jsObj = {
-		constituencyId : 217
+		constituencyId : constituencyId,
+		type : type
 	}
 	$.ajax({
 			type:'GET',
@@ -2152,7 +2038,90 @@ function getBoothWiseQcVerificationSummary()
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)},
 		 }).done(function(result){	
+			if(result != null)
+			{
+				buildQcBoothWiseQCSummary(result);
+			}
 		});	
 }
 
+function buildQcBoothWiseQCSummary(result)
+{
+	var str = '';
+	str += '<table class="table table-bordered m_top20 table-hover table-striped offset3">';
+	str += '<thead>';
+	str += '<tr>';
+	str += '<th>Booth</th>';
+	str += '<th>Survey User</th>';
+	str += '<th>Mobile No</th>';
+	str += '<th>Voters</th>';
+	str += '</tr>';
+	str += '</thead>';
+	str += '<tbody>';
+	for(var i in result)
+	{
+		str += '<tr>';
+		str += '<td><a>'+result[i].dcPercentage+'</a></td>';
+		str += '<td>'+result[i].verifierPercentage+'</td>';
+		str += '<td>'+result[i].qcPercentage+'</td>';
+		str += '<td>'+result[i].verifierVotersCount+'</td>';
+		str += '</tr>';
+	}
+	str += '</tbody>';
+	str += '<table>';
+	$('#boothWiseQcTable').html(str);
+}
+
+function buildTeamConstituencyWiseSummary(result,strTypr)
+{
+	var str = '';
+	str += '<table class="table table-bordered m_top20 table-hover table-striped offset3">';
+	str += '<thead>';
+	str += '<tr>';
+	str += '<th>Constituency</th>';
+	str += '<th>Booths</th>';
+	str += '<th>Users</th>';
+	str += '</tr>';
+	str += '</thead>';
+	str += '<tbody>';
+	for(var i in result)
+	{
+		str += '<tr>';
+		str += '<td><a onClick="getBoothWiseTeamDetails('+result[i].qcVotersCount+',\''+strTypr+'\')">'+result[i].dcPercentage+'</a></td>';
+		str += '<td>'+result[i].dcBoothsCount+'</td>';
+		str += '<td>'+result[i].dcConstituencysCount+'</td>';
+		str += '</tr>';
+	}
+	str += '</tbody>';
+	str += '<table>';
+	$('#constituencyWiseQcTable').html(str);
+}
+
+
+function buildBoothWiseTeamDetails(result)
+{
+	var str = '';
+	str += '<table class="table table-bordered m_top20 table-hover table-striped offset3">';
+	str += '<thead>';
+	str += '<tr>';
+	str += '<th>Booth</th>';
+	str += '<th>Survey User</th>';
+	str += '<th>Mobile No</th>';
+	str += '<th>Voters</th>';
+	str += '</tr>';
+	str += '</thead>';
+	str += '<tbody>';
+	for(var i in result)
+	{
+		str += '<tr>';
+		str += '<td><a>'+result[i].dcPercentage+'</a></td>';
+		str += '<td>'+result[i].qcPercentage+'</td>';
+		str += '<td>'+result[i].verifierPercentage+'</td>';
+		str += '<td>'+result[i].qcVotersCount+'</td>';
+		str += '</tr>';
+	}
+	str += '</tbody>';
+	str += '<table>';
+	$('#boothWiseQcTable').html(str);
+}
 
