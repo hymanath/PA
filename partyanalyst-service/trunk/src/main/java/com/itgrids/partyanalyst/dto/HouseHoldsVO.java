@@ -41,8 +41,9 @@ public class HouseHoldsVO implements java.io.Serializable{
 	private String statusOfBook;
 	private Long bookNo;
 	private Long bookId;
-	
-	
+	private Long votersCount;
+	private Long nonVotersCount;
+	private Long familiesCount;
 	
 	public Long getBookId() {
 		return bookId;
@@ -195,6 +196,24 @@ public class HouseHoldsVO implements java.io.Serializable{
 	}
 	public void setHouseHoldsVOList(List<HouseHoldsVO> houseHoldsVOList) {
 		this.houseHoldsVOList = houseHoldsVOList;
+	}
+	public Long getVotersCount() {
+		return votersCount;
+	}
+	public void setVotersCount(Long votersCount) {
+		this.votersCount = votersCount;
+	}
+	public Long getNonVotersCount() {
+		return nonVotersCount;
+	}
+	public void setNonVotersCount(Long nonVotersCount) {
+		this.nonVotersCount = nonVotersCount;
+	}
+	public Long getFamiliesCount() {
+		return familiesCount;
+	}
+	public void setFamiliesCount(Long familiesCount) {
+		this.familiesCount = familiesCount;
 	}
 
 	
