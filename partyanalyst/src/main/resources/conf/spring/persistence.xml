@@ -471,6 +471,10 @@
 				<value>com.itgrids.partyanalyst.model.SurveyFinalData</value>
 				<value>com.itgrids.partyanalyst.model.SurveyCompletedConstituency</value>
 				<value>com.itgrids.partyanalyst.model.SurveyCompletedConstituencyStatus</value>
+				<value>com.itgrids.partyanalyst.model.SurveyConstituencyStatus</value>
+				<value>com.itgrids.partyanalyst.model.SurveyConstituencyTemp</value>
+				
+				
 			</list>
 			
 		</property>
