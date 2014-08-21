@@ -26,7 +26,51 @@ public class DcDvCollectedDataVO implements Serializable{
 	private Long casteInActiveVoters=0l;
 	private Long mobileActiveVoters =0l;
 	private Long mobileInActiveVoters=0l;
+	private String name;
+	private Long boothCount;
+	private Long casteTagedBooths;
+	private Long mobileTagedBooths;
+	private Long casteVerifiedBooths;
+	private Long mobileVerifiedBooths;
 	
+	
+	public Long getCasteVerifiedBooths() {
+		return casteVerifiedBooths;
+	}
+	public void setCasteVerifiedBooths(Long casteVerifiedBooths) {
+		this.casteVerifiedBooths = casteVerifiedBooths;
+	}
+	public Long getMobileVerifiedBooths() {
+		return mobileVerifiedBooths;
+	}
+	public void setMobileVerifiedBooths(Long mobileVerifiedBooths) {
+		this.mobileVerifiedBooths = mobileVerifiedBooths;
+	}
+	public Long getCasteTagedBooths() {
+		return casteTagedBooths;
+	}
+	public void setCasteTagedBooths(Long casteTagedBooths) {
+		this.casteTagedBooths = casteTagedBooths;
+	}
+	public Long getMobileTagedBooths() {
+		return mobileTagedBooths;
+	}
+	public void setMobileTagedBooths(Long mobileTagedBooths) {
+		this.mobileTagedBooths = mobileTagedBooths;
+	}
+	
+	public Long getBoothCount() {
+		return boothCount;
+	}
+	public void setBoothCount(Long boothCount) {
+		this.boothCount = boothCount;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	public Long getCasteActiveVoters() {
 		return casteActiveVoters;
 	}
