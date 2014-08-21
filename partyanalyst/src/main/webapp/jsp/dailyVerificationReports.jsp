@@ -127,7 +127,7 @@ $('#boothId').multiselect({
 				
 				<div class="row-fluid ">
 					<div class="span12 m_top20 widgetservey">
-						<h4>Data Collection Dashboard</h4>						
+						<h4>Caste Collection Dashboard</h4>						
 						
 						<!-----Data Collection & Verification Main Div---->
 						<div class="row-fluid m_top10" >
@@ -191,15 +191,15 @@ $('#boothId').multiselect({
 								
 								<div class="row-fluid">
 									<div class="well well-small span4  text-center">
-										<a onClick="getConstituencyWiseTeamCollecetdDetails(1)"><h4 id="dcDetailsId">0</h4></a>
+										<a onClick="getConstituencyWiseTeamCollecetdDetails(1)"><h4 style = "cursor: pointer;" id="dcDetailsId">0</h4></a>
 										<p class="">Data Collection Completed</p>										
 									</div>
 									<div class="well well-small span4 text-center">
-										<a onClick="getConstituencyWiseTeamCollecetdDetails(4)"><h4 id="dvDetailsId">0</h4></a>
+										<a onClick="getConstituencyWiseTeamCollecetdDetails(4)"><h4 style = "cursor: pointer;" id="dvDetailsId">0</h4></a>
 										<p>Verification Completed</p>
 									</div>
 									<div class="well well-small span4 text-center">
-										<a onClick="getConstituencyWiseTeamCollecetdDetails(10)"><h4 id="qcDetailsId">0</h4></a>
+										<a onClick="getConstituencyWiseTeamCollecetdDetails(10)"><h4 style = "cursor: pointer;" id="qcDetailsId">0</h4></a>
 										<p>QC Verification Completed</p>
 									</div>							
 								</div>
@@ -261,15 +261,15 @@ $('#boothId').multiselect({
 								
 								<div class="row-fluid">
 									<div class="well well-small span4  text-center">
-										<a><h4 id="verifiedRecords" onClick="getConstituencyWiseQcVerificationSummary(0)">0</h4></a>
+										<a><h4 style = "cursor: pointer;" id="verifiedRecords" onClick="getConstituencyWiseQcVerificationSummary(0)">0</h4></a>
 										<p class="">Records Verified</p>										
 									</div>
 									<div class="well well-small span4 text-center">
-										<a><h4 id="qcMatched" onClick="getConstituencyWiseQcVerificationSummary(1)">0</h4></a>
+										<a><h4 style = "cursor: pointer;" id="qcMatched" onClick="getConstituencyWiseQcVerificationSummary(1)">0</h4></a>
 										<p>Matched Identified</p>
 									</div>
 									<div class="well well-small span4 text-center">
-										<a><h4 id="qcUnMatched" onClick="getConstituencyWiseQcVerificationSummary(2)">0</h4></a>
+										<a><h4 style = "cursor: pointer;" id="qcUnMatched" onClick="getConstituencyWiseQcVerificationSummary(2)">0</h4></a>
 										<p>Records Collected</p>
 									</div>
 								</div>							
@@ -279,7 +279,7 @@ $('#boothId').multiselect({
 						<div class="row-fluid m_top20">
 								<!-------->
 							<div class="span6 wiget-yellow">	
-								<h4 class="text-right">Team Details Summary</h4>
+								<h4 class="text-right">Today Team Details Summary</h4>
 								
 								<div class="row-fluid">
 									<div class="input-append span6">
@@ -294,15 +294,15 @@ $('#boothId').multiselect({
 								
 								<div class="row-fluid">
 									<div class="well well-small span4  text-center">
-										<a><h4 id="dcMembers" onClick="getConstituencyWiseTeamDetails(1);">0</h4></a>
+										<a><h4 style = "cursor: pointer;" id="dcMembers" onClick="getConstituencyWiseTeamDetails(1);">0</h4></a>
 										<p class="">DC</p>										
 									</div>
 									<div class="well well-small span4 text-center">
-										<a><h4 id="dvMembers" onClick="getConstituencyWiseTeamDetails(4);">0</h4></a>
+										<a><h4 style = "cursor: pointer;" id="dvMembers" onClick="getConstituencyWiseTeamDetails(4);">0</h4></a>
 										<p>DV</p>
 									</div>
 									<div class="well well-small span4 text-center">
-										<a><h4 id="qcMembers" onClick="getConstituencyWiseTeamDetails(10);">0</h4></a>
+										<a><h4 style = "cursor: pointer;" id="qcMembers" onClick="getConstituencyWiseTeamDetails(10);">0</h4></a>
 										<p>QC</p>
 									</div>
 								</div>							
@@ -313,8 +313,8 @@ $('#boothId').multiselect({
 				
 			</div>
 		</div>
-		<!-- <div id="constituencyWiseQcTable"></div>
-		<div id="boothWiseQcTable"></div> -->
+		<div id="constituencyWiseQcTable"></div>
+		<div id="boothWiseQcTable"></div>
 		</div>
 		
   <!----- CTP DASHBOARD END  -->
