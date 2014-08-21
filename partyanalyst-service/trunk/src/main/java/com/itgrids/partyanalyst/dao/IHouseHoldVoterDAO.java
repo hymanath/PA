@@ -55,5 +55,9 @@ public interface IHouseHoldVoterDAO extends GenericDao<HouseHoldVoter, Long>{
 	public List<Object[]> getBooksOfHouseHolds(Long constituencyId);
 	public List<Object[]> getNonVotersInConstituencyWithAgeRange(Long constituencyId,Long fromAge,Long toAge);
 	public List<Object[]> getVoterAndNonVoterCountInConstituency1(Long constituencyId);
+	
+	public List<Object[]> getBooksOfHouseHoldsNV(Long constituencyId);
+	public List<Object[]> getBooksOfHouseHoldsHHCount(Long constituencyId);
+	
 	public List<Object[]> getHouseHoldsCountInConstituency1(Long constituencyId);
 }

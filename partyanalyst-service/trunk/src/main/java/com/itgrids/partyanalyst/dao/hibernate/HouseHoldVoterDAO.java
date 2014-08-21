@@ -369,7 +369,8 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 				" count(distinct model.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId) " +
 				" from HouseHoldVoter model,HHBoothLeader model1 where " +
 				" model.hhLeader.id = model1.hhLeader.id" +
-				" and model1.constituency.constituencyId = :constituencyId and model.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId is not null " +
+				" and model1.constituency.constituencyId = :constituencyId " +
+				" and model.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId is not null " +
 				" and model.isDelete = 'false'" +
 				" and model.hhLeader.is_active = 'YES'");
 		
@@ -410,8 +411,8 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 				" model.hhLeader.id = model1.hhLeader.id and " +
 				" model.isDelete = 'false'" +
 				" and model.hhLeader.is_active = 'YES'" +
-				" and model1.constituency.constituencyId = :constituencyId" +
-				" and model.hhLeader.voterId is not null ");
+				//" and model.voterFamilyRelation.voterFamilyRelationId = 1"+
+				" and model1.constituency.constituencyId = :constituencyId");
 		
 		query.setParameter("constituencyId", constituencyId);
 		
@@ -506,15 +507,72 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 				" model2.booth.panchayat.panchayatId," +
 				" model2.booth.panchayat.panchayatName," +
 				" model2.hhLeader.name," +
+				" model2.hhLeader.voterId" +
+				//" count(distinct model.voter.voterId)" +
+				//" count(model.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId)," +
+				//" count(distinct model.houseHoldId)" +
+				" from HouseHoldVoter model,HHBoothLeader model2" +
+				" where model.leaderId =  model2.hhLeader.id " +
+				" and model2.constituency.constituencyId =:constituencyId " +
+				" and model.isDelete =:deleteStatus " +
+				" and model2.hhLeader.is_active =:activeStatus" +
+				//" and model.voter.voterId is not null" +
+				" and model2.booth.publicationDate.publicationDateId = 10"+ 
+				" group by model.hhLeaderBooks.hhLeaderBookId ");
+		
+		query.setParameter("deleteStatus", IConstants.FALSE);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("activeStatus", "YES");
+		return query.list();
+	}
+	
+	public List<Object[]> getBooksOfHouseHoldsNV(Long constituencyId){
+		Query query = getSession().createQuery(" select distinct model.hhLeaderBooks.hhLeaderBookId," +
+				" model.hhLeaderBooks.bookNo," +
+				" model2.booth.tehsil.tehsilName," +
+				" model2.booth.tehsil.tehsilId," +
+				" model2.booth.panchayat.panchayatId," +
+				" model2.booth.panchayat.panchayatName," +
+				" model2.hhLeader.name," +
 				" model2.hhLeader.voterId," +
-				" count(model.voter.voterId)," +
-				" count(model.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId)," +
+				//" distinct model.voter.voterId,"+
+				//" count(distinct model.voter.voterId)" +
+				" count(distinct model.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId)" +
+				//" count(distinct model.houseHoldId)" +
+				" from HouseHoldVoter model,HHBoothLeader model2" +
+				" where model.leaderId =  model2.hhLeader.id " +
+				" and model2.constituency.constituencyId =:constituencyId " +
+				" and model.isDelete =:deleteStatus " +
+				" and model2.hhLeader.is_active =:activeStatus" +
+				" and model.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId is not null" +
+				//" and model.voterFamilyRelation.voterFamilyRelationId = 1"+ 
+				" group by model.hhLeaderBooks.hhLeaderBookId ");
+		
+		query.setParameter("deleteStatus", IConstants.FALSE);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("activeStatus", "YES");
+		return query.list();
+	}
+	
+	public List<Object[]> getBooksOfHouseHoldsHHCount(Long constituencyId){
+		Query query = getSession().createQuery(" select distinct model.hhLeaderBooks.hhLeaderBookId," +
+				" model.hhLeaderBooks.bookNo," +
+				" model2.booth.tehsil.tehsilName," +
+				" model2.booth.tehsil.tehsilId," +
+				" model2.booth.panchayat.panchayatId," +
+				" model2.booth.panchayat.panchayatName," +
+				" model2.hhLeader.name," +
+				" model2.hhLeader.voterId," +
+				//" count(distinct model.voter.voterId)" +
+				//" count(distinct model.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId)" +
 				" count(distinct model.houseHoldId)" +
 				" from HouseHoldVoter model,HHBoothLeader model2" +
 				" where model.leaderId =  model2.hhLeader.id " +
 				" and model2.constituency.constituencyId =:constituencyId " +
 				" and model.isDelete =:deleteStatus " +
 				" and model2.hhLeader.is_active =:activeStatus" +
+				" and model.voter.voterId is not null"+  
+				" and model.voterFamilyRelation.voterFamilyRelationId = 1"+
 				" group by model.hhLeaderBooks.hhLeaderBookId ");
 		
 		query.setParameter("deleteStatus", IConstants.FALSE);

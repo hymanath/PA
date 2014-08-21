@@ -217,24 +217,38 @@ public class HouseHoldVoterDAOHibernateTest extends BaseDaoTestCase{
 	
 	/*public void test(){
 		List<Object[]> list = houseHoldVoterDAO.getBooksOfHouseHolds(282l);
-		//List<Object[]> list = houseHoldVoterDAO.getFamilyHeadsUnderBook(1112l);
-		System.out.println(list.size());
-	}
-	*/
+		//List<Object[]> list = houseHoldVoterDAO.getBooksOfHouseHoldsNV(282l);
+		//List<Object[]> list = houseHoldVoterDAO.getBooksOfHouseHoldsNV(282l);
+		System.out.println("Book Id\t BookNo\t MandalName\t MandalId\t PanchayatId\t PanchayatName\t Name\t VoterId\t VotersCount\t NonVotersCount\t FamiliesCount\t ");
+		for(Object[] obj:list){
+			
+			System.out.println(Long.valueOf(obj[0].toString())+"\t" +
+					obj[1].toString()+"\t"+
+					obj[2].toString()+"\t"+
+					Long.valueOf(obj[3].toString())+"\t"+
+					Long.valueOf(obj[4].toString())+"\t"+
+					obj[5].toString()+"\t"+
+					obj[6].toString()+"\t"+
+					obj[7].toString()+"\t");
+		}
+		//System.out.println(list.size());
+	}*/
+	
 	public void test(){
-			List<Object[]> list = houseHoldVoterDAO.getHouseHoldsCountInConstituency(282l);
+			/*List<Object[]> list = houseHoldVoterDAO.getHouseHoldsCountInConstituency(282l);
 			System.out.println(list.size());
 			
 				List<Object[]> list1 = houseHoldVoterDAO.getActiveLeadersOfConstituency(282l);
 				for(Object[] obj:list1){
-					System.out.println(Long.valueOf(obj[0].toString())+" "+Long.valueOf(obj[1].toString()));
+					System.out.println(Long.valueOf(obj[0].toString())+"\t"+obj[1].toString()+"\t"+obj[2].toString());
 				}
+		*/
 		
-		
-			/*List<Object[]> list = houseHoldVoterDAO.getAllLeadersBooksFamilies(282l);
+			List<Object[]> list = houseHoldVoterDAO.getAllLeadersBooksFamilies(282l);
+			System.out.println(list.size());
 			for(Object[] obj:list){
 				System.out.println(Long.valueOf(obj[0].toString())+"\t"+obj[1].toString()+"\t"+ Long.valueOf(obj[2].toString())+"\t"+ Long.valueOf(obj[3].toString()));
-			}*/
+			}
 		
 	}
 
