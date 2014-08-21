@@ -884,7 +884,6 @@ function buildQuestionAnswers(results){
 	str+="<input type='hidden' name='boothId' value="+boothId+"></input>";
 	str+="<input type='hidden' name='houseNo' value="+houseNo+"></input>";
 	
-	str+="<span class='btn btn-info' id = 'saveBtnId' onclick=submitQuestionDetails()> Save </span>";
 	str+="<img id='submitQuesAjaxImg' style='width: 25px;display:none;margin-left:5px;' src='images/icons/ajaxImg.gif'>"	
 	str+="<div id='errorDiv' style='color:red'></div></form>"
 	str+="</div>";
@@ -1087,6 +1086,7 @@ function saveHouseHoldInfo(){
 	</div>
 
 <div id="qstnAnswer" class="span10 offset2" style="border:1px solid gray"></div>
+<div id="btnDivId" class="offset2" style="clear:both;padding-top:10px;"><button class="btn btn-info" id = "saveBtnId" onclick="submitQuestionDetails()"> Save </button></div>
 <div class="statusMsg span12"></div>
 
 <div id="dialog">
@@ -1470,17 +1470,7 @@ function submitQuestionDetails()
 	   }
 	   
    });
-    var count=countElement("1",relationsArr);
-      if(count>1)
-	  {
-	   //$("#errorDiv").html('Family Head Relation must be assigned to only one person<br>');
-	   alert('Family Head Relation must be assigned to only one person');
-		 return ;
-	  }
-	  if(count<1){
-		alert('Please Assign Family Head to Atleast One Person');
-		return;
-	  }
+   
 	   
   $('.familyMemberChkbx').each(function(index,value){
 		
@@ -1539,6 +1529,18 @@ function submitQuestionDetails()
 				 voterDtls.voters.push(selectedVoterDtls);
 
   }
+  
+   var count=countElement("1",relationsArr);
+      if(count>1)
+	  {
+	   //$("#errorDiv").html('Family Head Relation must be assigned to only one person<br>');
+	   alert('Family Head Relation must be assigned to only one person');
+		 return ;
+	  }
+	  if(count<1){
+		alert('Please Assign Family Head to Atleast One Person');
+		return;
+	  }
 $("#submitQuesAjaxImg").css("display","block");
 	 $.ajax({
           type:'POST',
