@@ -8214,5 +8214,10 @@
 				<param name="root">boothWiseStatusList</param>
 		</result>
 		</action>
+		<action name="getBooksWiseSummaryAction" class="houseHoldSurveyReportAction" method="getBooksWiseSummaryReport">
+        	 <result type="json" name="success">
+           		<param name="root">houseHoldsVOList</param>
+        	</result>
+      	</action>
 </package>
 </struts>      
