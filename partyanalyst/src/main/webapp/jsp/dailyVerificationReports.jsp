@@ -185,21 +185,21 @@ $('#boothId').multiselect({
 									</div>						
 								</div>
 								
-								<div class="row-fluid text-center">
+								<!--<div class="row-fluid text-center">
 									<P CLASS="label">Today: Date</p>
-								</div>
+								</div>-->
 								
 								<div class="row-fluid">
 									<div class="well well-small span4  text-center">
-										<h4>20%</h4>
+										<a onClick="getConstituencyWiseTeamCollecetdDetails(1)"><h4 id="dcDetailsId">0</h4></a>
 										<p class="">Data Collection Completed</p>										
 									</div>
 									<div class="well well-small span4 text-center">
-										<h4>20%</h4>
+										<a onClick="getConstituencyWiseTeamCollecetdDetails(4)"><h4 id="dvDetailsId">0</h4></a>
 										<p>Verification Completed</p>
 									</div>
 									<div class="well well-small span4 text-center">
-										<h4>55%</h4>
+										<a onClick="getConstituencyWiseTeamCollecetdDetails(10)"><h4 id="qcDetailsId">0</h4></a>
 										<p>QC Verification Completed</p>
 									</div>							
 								</div>
@@ -313,8 +313,8 @@ $('#boothId').multiselect({
 				
 			</div>
 		</div>
-		<!--<div id="constituencyWiseQcTable"></div>
-		<div id="boothWiseQcTable"></div>-->
+		<!-- <div id="constituencyWiseQcTable"></div>
+		<div id="boothWiseQcTable"></div> -->
 		</div>
 		
   <!----- CTP DASHBOARD END  -->
