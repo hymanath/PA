@@ -96,7 +96,8 @@
   <body>
   <script>
  
-var sRegionId = 0;  
+var sRegionId = 0;
+var internalRegionId = 0;
 $( document ).ready(function() {
 $('#boothId').multiselect({
 	  noneSelectedText:"Select Booth(s)"});
@@ -216,7 +217,9 @@ $('#boothId').multiselect({
 						<div class="row-fluid m_top20">
 						<!-------->
 							<div class="span6 wiget-yellow">	
-								<h4 class="text-right">Internal Verification Summary</h4>
+								<h4 class="text-right">Internal Verification Summary
+								<span class="btn-group"><a href="javascript:{setInternalVerificationRegionLevel(0)}" class="btn btn-mini">ALL</a><a href="javascript:{setInternalVerificationRegionLevel(2)}" class="btn btn-mini">AP</a><a href="javascript:{setInternalVerificationRegionLevel(1)}" class="btn btn-mini">TS</a></span>
+								</h4>
 								
 								<div class="row-fluid">
 									<div class="input-append span6">
@@ -657,6 +660,11 @@ function setRegionLevel(regionId,divId)
 function openConstituencyWiseWindow(userTypeId)
 {
 	window.open("surveyConstituencieOverview.action?regionId="+sRegionId+"&userTypeId="+userTypeId+"", "_blank");
+}
+
+function setInternalVerificationRegionLevel(iRegionId)
+{
+ internalRegionId = iRegionId;
 }
 </script>
 </body>
