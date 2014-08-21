@@ -91,7 +91,7 @@ font-size:20px;
 		var categoryId = '${categoryId}';
 		var sourceId = '${sourceId}';
 		var keywordId = '${keywordId}';
-  getAllGallaries(0,10);
+  getAllGallaries(0,500);
             
 function getAllGallaries(startIndex,endIndex)
 {
@@ -161,29 +161,29 @@ function buildFilesInGallaryDetails(results,selectedvalue,index,endValue)
 	var fontId = results[i].fontId;
 	if(fontId >  0)
 	{
-		str+='<h4 style="" class="enadu"><a style="color: #005580;" href="javascript:{getNewsDetailsByContentId('+results[i].fileId+')}">'+results[i].title+'</a></h4>';
+		str+='<h4 style="" class="enadu"><a style="color: #005580;font-size: 25px;" href="javascript:{getNewsDetailsByContentId('+results[i].fileId+')}">'+results[i].title+'</a></h4>';
 	}
 	else
 	{
-		str+='<h4 style="text-transform: capitalize;"> <a style="color: #005580;" href="javascript:{getNewsDetailsByContentId('+results[i].fileId+')}">'+results[i].title+'</a></h4>';
+		str+='<h4 style="text-transform: capitalize;"> <a style="color: #005580;font-size: 18px;" href="javascript:{getNewsDetailsByContentId('+results[i].fileId+')}">'+results[i].title+'</a></h4>';
 	}
 		
 
 		str+='<div class="row-fluid">';
-		str+='<a  style="width:150px;height:120px;" href="javascript:{getNewsDetailsByContentId('+results[i].fileId+')}" class="thumbnail span4">';
+		/*str+='<a  style="width:150px;height:120px;" href="javascript:{getNewsDetailsByContentId('+results[i].fileId+')}" class="thumbnail span4">';
 		if(results[i].fileName1 != null && $.trim(results[i].fileName1).length > 0) 
 			str+='<img style="width:146px;height:113px;"  src="'+results[i].fileName1+'" >';
 		else
 		str+='<img style="width:146px;height:113px;" src="/TDP/images/no_image.gif" >';
-		str+='</a>';
+		str+='</a>';*/
 		
 		if(results[i].descEenadu)
 		{
-			str+='<p class="span8 enadu">'+results[i].description+'</p>';
+			str+='<p class="span11 enadu" style="font-size: 25px;">'+results[i].description+'</p>';
 		}
 		else
 		{
-			str+='<p class="span8">'+results[i].description+'</p>';
+			str+='<p class="span11" style="font-size: 18px;">'+results[i].description+'</p>';
 		}
 		str+='</div>';
 		if(results[i].categoriesList != null)
@@ -304,13 +304,13 @@ if(index==0){
 function callAjaxToGetTheResults(selectedvalue)
 {
 	var startIndex = 0;
-	var endIndex = 10; 
+	var endIndex = 500; 
 	var selectedvalue1 = 0;
 	if(selectedvalue == "1")
 		startIndex = 0;
 	else{
 		selectedvalue1 = selectedvalue - 1;
-		startIndex = selectedvalue1*10;
+		startIndex = selectedvalue1*500;
 	}
 	getAllGallaries(startIndex,endIndex)
 }
