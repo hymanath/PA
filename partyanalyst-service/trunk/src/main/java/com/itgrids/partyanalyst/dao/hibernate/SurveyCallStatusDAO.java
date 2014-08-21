@@ -188,9 +188,20 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 		return (Long) query.uniqueResult();
 	}
 	
-	public List<Object[]> getVerifierCounts()
+	public List<Object[]> getVerifierCounts(Long stateId)
 	{
-		Query query = getSession().createQuery("select model.matchedStatus , count(distinct model.voter.voterId),count(distinct model.booth.constituency.constituencyId) ,count(distinct model.boothId) from SurveyCallStatus model where model.matchedStatus is not null  group by  model.matchedStatus");
+		StringBuffer queryString = new StringBuffer();
+		queryString.append("select model.matchedStatus , count(distinct model.voter.voterId),count(distinct model.booth.constituency.constituencyId) ,count(distinct model.boothId) from SurveyCallStatus model where model.matchedStatus is not null  ");
+		if(stateId.longValue() == 1)
+		{
+			queryString.append("  and model.booth.constituency.district.districtId > 10 ");
+		}
+		if(stateId.longValue() == 2)
+		{
+			queryString.append(" and model.booth.constituency.district.districtId <= 10");
+		}
+		queryString.append("  group by  model.matchedStatus ");
+		Query query = getSession().createQuery(queryString.toString());
 		
 		return query.list();
 	}

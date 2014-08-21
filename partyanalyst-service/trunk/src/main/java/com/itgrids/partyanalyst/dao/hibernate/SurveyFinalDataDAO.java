@@ -142,23 +142,55 @@ public class SurveyFinalDataDAO extends GenericDaoHibernate<SurveyFinalData, Lon
 		 return query.list();
 	}
 	
-	public Long getQcCollectedMatchedUnMatchedDetails(List<Long> statusIds)
+	public Long getQcCollectedMatchedUnMatchedDetails(Long stateId , List<Long> statusIds)
 	{
-		Query query = getSession().createQuery("select count(distinct model.voterId) from SurveyFinalData model where model.surveyWmThirdPartyStatusId in (:statusIds)");
+		StringBuffer queryString = new StringBuffer();
+		queryString.append("select count(distinct model.voterId) from SurveyFinalData model where model.surveyWmThirdPartyStatusId in (:statusIds)");
+		if(stateId.longValue() == 1)
+		{
+			queryString.append("  and model.booth.constituency.district.districtId > 10 ");
+		}
+		if(stateId.longValue() == 2)
+		{
+			queryString.append(" and model.booth.constituency.district.districtId <= 10");
+		}
+		Query query = getSession().createQuery(queryString.toString());
 		query.setParameterList("statusIds", statusIds);
 		return (Long)query.uniqueResult();
 	}
 	
-	public List<Object[]> getQcDataForSelection(List<Long> statusIds)
+	public List<Object[]> getQcDataForSelection(Long stateId , List<Long> statusIds)
 	{
-		Query query = getSession().createQuery("select model.booth.constituency.constituencyId, model.booth.constituency.name , count(distinct model.booth.boothId) , count(model.voter.voterId) from SurveyFinalData model where model.surveyWmThirdPartyStatusId in (:statusIds) group by model.booth.constituency.constituencyId");
+		StringBuffer queryString = new StringBuffer();
+		queryString.append("select model.booth.constituency.constituencyId, model.booth.constituency.name , count(distinct model.booth.boothId) , count(model.voter.voterId) from SurveyFinalData model where model.surveyWmThirdPartyStatusId in (:statusIds) ");
+		if(stateId.longValue() == 1)
+		{
+			queryString.append("  and model.booth.constituency.district.districtId > 10 ");
+		}
+		if(stateId.longValue() == 2)
+		{
+			queryString.append(" and model.booth.constituency.district.districtId <= 10");
+		}
+		queryString.append("  group by model.booth.constituency.constituencyId");
+		Query query = getSession().createQuery(queryString.toString());
 		query.setParameterList("statusIds", statusIds);
 		return query.list();
 	}
 	
-	public List<Object[]> getBoothWiseQcData(Long constituencyId , List<Long> statusIds)
+	public List<Object[]> getBoothWiseQcData(Long stateId , Long constituencyId , List<Long> statusIds)
 	{
-		Query query = getSession().createQuery("select model.booth.boothId, model.booth.partNo , model.surveyUser.surveyUserId , model.surveyUser.userName , model.surveyUser.mobileNo , count(distinct model.voter.voterId) from SurveyFinalData model where model.booth.constituency.constituencyId =:constituencyId and model.surveyWmThirdPartyStatusId in (:statusIds) group by model.booth.boothId ");
+		StringBuffer queryString = new StringBuffer();
+		queryString.append("select model.booth.boothId, model.booth.partNo , model.surveyUser.surveyUserId , model.surveyUser.userName , model.surveyUser.mobileNo , count(distinct model.voter.voterId) from SurveyFinalData model where model.booth.constituency.constituencyId =:constituencyId and model.surveyWmThirdPartyStatusId in (:statusIds)   ");
+		if(stateId.longValue() == 1)
+		{
+			queryString.append("  and model.booth.constituency.district.districtId > 10 ");
+		}
+		if(stateId.longValue() == 2)
+		{
+			queryString.append(" and model.booth.constituency.district.districtId <= 10");
+		}
+		queryString.append("  group by model.booth.boothId ");
+		Query query = getSession().createQuery(queryString.toString());
 		query.setParameterList("statusIds", statusIds);
 		query.setParameter("constituencyId", constituencyId);
 		return query.list();

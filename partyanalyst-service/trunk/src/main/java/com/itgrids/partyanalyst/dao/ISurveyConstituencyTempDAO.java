@@ -6,6 +6,8 @@ import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.model.SurveyConstituencyTemp;
 
-public interface ISurveyConstituencyTempDAO extends GenericDao<SurveyConstituencyTemp, Long>{
+public interface ISurveyConstituencyTempDAO extends GenericDao<SurveyConstituencyTemp, Long>
+{
+	public List<Object[]> getTotalVoters(Long type);
 	public List<Object[]> getTotalVotersAndBooths(List<Long> constituencyIds);
 }
