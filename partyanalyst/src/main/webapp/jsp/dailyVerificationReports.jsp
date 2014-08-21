@@ -113,6 +113,8 @@ $('#boothId').multiselect({
 					<li><a class="highlight" id="thirdpPartyReportTab" onclick="showHideReportTabs(this.id);">QC Report</a></li>
 					<li><a class="highlight" id="dashboardReportTab" onclick="showHideReportTabs(this.id);"> Dashboard </a></li>
 					<li><a class="highlight" id="verificationReportTab" onclick="showHideReportTabs(this.id);"> Verification report</a></li>
+					<li><a class="highlight" id="boothWiseReportsTab" onclick="showHideReportTabs(this.id);">  Booth Wise Status</a></li>
+
 				</ul>
 			</div>
 		</div>
@@ -521,6 +523,39 @@ $('#boothId').multiselect({
 		</div>
 		
 		
+		<div class="row" id="boothWiseDtlsId" style="dispaly:none;">
+			<div class="span12">
+				<div class="row-fluid ">
+					<div class="span12 widgetservey_Red m_top30">
+							<h4 id="titleId"></h4>
+							<div class="row">
+						<div id="errorDiv" class="span8 offset1 clearCls"></div>
+						</div>
+								<div class="row">
+								<div class="offset3">
+									<div class="row-fluid">
+										
+										<div class="span3">
+											Select Constituency <font class="requiredFont">*</font> : 
+												<s:select theme="simple"  name="constituency" id="bconstituencyId"  headerKey="0" headerValue="Select Constituency" list="dataAvilableConstituencies" listKey="id" listValue="name" />
+										</div>
+									</div>	
+									<div class="row-fluid">
+										
+										
+									</div>
+									</div>
+									</div>
+						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getBoothWiseDetails()">SUBMIT</button></div>
+						<div id="retunMsg" class="clearCls"></div>
+                           <div id="boothWiseStatusDtls" class="clearCls" ></div>
+							<img src='images/Loading-data.gif' class="offset5"  id="bmainajaximg" style="width:70px;height:60px;display:none;"/>
+					</div>
+				</div>
+			</div>	
+				
+			</div>
+		</div>
 	
 	<div  style="display:none;margin-top:20px;" id="surveyUserTrackingId">
 		<jsp:include page="surveyUserTracking.jsp" flush="true"/>	
