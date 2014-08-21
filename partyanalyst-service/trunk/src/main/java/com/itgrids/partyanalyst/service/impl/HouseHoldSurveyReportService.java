@@ -1015,7 +1015,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 									familyDetails.setName(voterDtls.getName());
 									//familyDetails.setInsertedTime(DateUtilService.getCurrentDateAndTime());
 									
-									familyDetails.setRelationshipType(voterDtls.getRelationShipType());									
+									familyDetails.setRelationshipType(voterDtls.getVoterFamilyRelationId().toString());									
 									familyDetails.setRelativeName(voterDtls.getRelativeName());									
 									familyDetails.setMobileNo(voterDtls.getMobileNo());									
 									familyDetails = houseHoldsFamilyDetailsDAO.save(familyDetails);
