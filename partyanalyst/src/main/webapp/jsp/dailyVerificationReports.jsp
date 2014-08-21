@@ -108,7 +108,7 @@ $('#boothId').multiselect({
 			<div class="span12 m_top20 survey_nav">
 				<ul class="inline unstyled">
 					<li><a class="highlight selected" id="stateWiseReportTab" onclick="showHideReportTabs(this.id);"> State Wise Report </a></li>
-					<li><a class="highlight" id="dataCollectorTab" value="1" onclick="showHideReportTabs(this.id);"> Data Collector Report </a></li>
+					<!--<li><a class="highlight" id="dataCollectorTab" value="1" onclick="showHideReportTabs(this.id);"> Data Collector Report </a></li>-->
 					<li><a class="highlight" id="userTrackingReportTab" onclick="showHideReportTabs(this.id);"> User Tracking Report</a></li>
 					<li><a class="highlight" id="thirdpPartyReportTab" onclick="showHideReportTabs(this.id);">QC Report</a></li>
 					<li><a class="highlight" id="dashboardReportTab" onclick="showHideReportTabs(this.id);"> Dashboard </a></li>
@@ -138,7 +138,7 @@ $('#boothId').multiselect({
 							<!----Data Collection (left)------>
 							<div class="span6 wiget-yellow">	
 								<h4 class="text-right">Big Picture
-								<span class="btn-group"><a href="javascript:{setRegionLevel(0)}" class="btn btn-mini">ALL</a><a href="javascript:{setRegionLevel(2)}" class="btn btn-mini">AP</a><a href="javascript:{setRegionLevel(1)}" class="btn btn-mini">TS</a></span>
+								<span class="btn-group"><a href="javascript:{setRegionLevel(0,'allRegionsId')}" class="btn btn-mini selectedCls btn-success" id="allRegionsId">ALL</a><a href="javascript:{setRegionLevel(2,'apRegionsId')}" class="btn btn-mini selectedCls" id="apRegionsId">AP</a><a href="javascript:{setRegionLevel(1,'tsRegionsId')}" class="btn btn-mini selectedCls" id="tsRegionsId">TS</a></span>
 								</h4>
 								<div class="row-fluid">
 									<div class="well well-small span4  text-center">
@@ -178,7 +178,7 @@ $('#boothId').multiselect({
 							
 							<!----Data Verification (right)---->
 							<div class="span6 wiget-yellow">	
-								<h4 class="text-right">Daily & Date Range Summary<span class="pull-right btn-group"><a href="" class="btn btn-mini">AP</a>|<a href="" class="btn btn-mini">TS</a></span></h4>
+								<h4 class="text-right">Daily & Date Range Summary<span class="pull-right btn-group"><a href="" class="btn btn-mini selectedStateCls btn-success">AP</a>|<a href="" class="btn btn-mini selectedStateCls">TS</a></span></h4>
 								
 								<div class="row-fluid">
 									<div class="input-append span6">
@@ -647,8 +647,11 @@ $(".highlight").click(function()
 
 
 getSurveyCompletedLocationsDetailsForSurveyStartedConstituencies();
-function setRegionLevel(regionId)
+function setRegionLevel(regionId,divId)
 {
+	$('.selectedCls').removeClass('btn-success');
+	$('#'+divId+'').addClass('btn-success');
+
   sRegionId = regionId;
 }
 function openConstituencyWiseWindow(userTypeId)
