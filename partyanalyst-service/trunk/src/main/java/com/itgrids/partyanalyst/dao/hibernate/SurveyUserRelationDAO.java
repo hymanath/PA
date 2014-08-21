@@ -222,15 +222,16 @@ public class SurveyUserRelationDAO extends GenericDaoHibernate<SurveyUserRelatio
 		return query.list();
 	}
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getSurveyConstituencyLeadersList(List<Long> constituencyIds){
+	public List<Object[]> getSurveyConstituencyLeadersList(Long surveyUsertypeId,List<Long> constituencyIds){
 		
 		Query query = getSession()
 				.createQuery(
 						"select distinct SUR.surveyUser.surveyUserId,SUR.surveyUser.userName from SurveyUserRelation SUR where SUR.surveyLeader.surveyUserId " +
 						"in(select SUC.surveyUser.surveyUserId from SurveyUserConstituency SUC " +
-						"where SUC.constituency.constituencyId  in(:constituencyIds)) and SUR.surveyUser.activeStatus = 'Y'  order by SUR.surveyUser.userName asc ");
+						"where SUC.constituency.constituencyId  in(:constituencyIds)) and SUR.surveyUser.activeStatus = 'Y' and SUR.surveyUser.surveyUserType.surveyUsertypeId = :surveyUsertypeId order by SUR.surveyUser.userName asc ");
 		
 		query.setParameterList("constituencyIds", constituencyIds);
+		query.setParameter("surveyUsertypeId", surveyUsertypeId);
 		
 		return query.list();
 	}
