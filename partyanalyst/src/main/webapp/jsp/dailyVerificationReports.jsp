@@ -112,7 +112,7 @@ $('#boothId').multiselect({
 					<li><a class="highlight" id="userTrackingReportTab" onclick="showHideReportTabs(this.id);"> User Tracking Report</a></li>
 					<li><a class="highlight" id="thirdpPartyReportTab" onclick="showHideReportTabs(this.id);">QC Report</a></li>
 					<li><a class="highlight" id="dashboardReportTab" onclick="showHideReportTabs(this.id);"> Dashboard </a></li>
-					<li><a class="highlight" id="verificationReportTab" onclick="showHideReportTabs(this.id);"> Verification report</a></li>
+					<li><a class="highlight" id="verificationReportTab" onclick="showHideReportTabs(this.id);"> Verification Report</a></li>
 					<li><a class="highlight" id="boothWiseReportsTab" onclick="showHideReportTabs(this.id);">  Booth Wise Status</a></li>
 
 				</ul>
