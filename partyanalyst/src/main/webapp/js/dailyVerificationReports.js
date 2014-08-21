@@ -802,6 +802,7 @@ function showHideReportTabs(id)
 		$("#stateWiseReportId").hide();
 		$("#saveBoothsPercentage").hide();
 		$("#thirdpPartyReport").hide();
+		$("#dashBoardDiv").hide();
 		if(voterReportFlag == false)
 		getVerifierReportCounts();
 		voterReportFlag = true;
