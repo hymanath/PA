@@ -793,7 +793,7 @@ function showHideReportTabs(id)
 		$("#thirdpPartyReport").hide();
 		$("#verificationReportDiv").hide();
 		$('#boothWiseDtlsId').hide();
-		getBigPictureDetails();
+		getBigPictureDetails(0);
 		
 	}
 	else if(id == "verificationReportTab")
@@ -1789,7 +1789,6 @@ $("#dateWisecastePopupDiv").dialog({
 
 function getConstituencyWiseReport(constituencyIds){
 
-console.log(constituencyIds);
 var jObj = 
 	{
 	 constituencyIds:constituencyIds,
@@ -1888,13 +1887,14 @@ function buildFinalReportWithTP(result){
 	$("#FinalReportWithTPId").html(str);
 
 }
-function getBigPictureDetails()
+function getBigPictureDetails(stateId)
 {
-	getInternalVerificationSummary();
-	getQcVerificationSummaryReport();
-	getTodayTeamDetails();
-	getTeamCollectedDetailsSummaryReport();
+	getInternalVerificationSummary(0,'allVerifiedDetailsId');
+	getQcVerificationSummaryReport(0,'allQcCollecetdId');
+	getTodayTeamDetails(0,'allTeamId');
+	getTeamCollectedDetailsSummaryReport(0,'allCollecetdId');
 	var jsObj = {
+		stateId : stateId
 	}
 	$.ajax({
 			type:'GET',
@@ -1916,9 +1916,12 @@ function getBigPictureDetails()
 }
 
 
-function getTodayTeamDetails()
+function getTodayTeamDetails(stateId,divId)
 {
+	$('#todatTeamHidden').val(stateId);
+	$('.todayTeamDetailsCls').removeClass('btn-success');
 	var jsObj = {
+		stateId : stateId
 	}
 	$.ajax({
 			type:'GET',
@@ -1931,14 +1934,18 @@ function getTodayTeamDetails()
 				$('#dcMembers').html(result.dcVotersCount);
 				$('#dvMembers').html(result.verifierVotersCount);
 				$('#qcMembers').html(result.qcVotersCount);
+				$('#'+divId+'').addClass('btn-success');
 			}
 		});	
 }
 
 
-function getInternalVerificationSummary()
+function getInternalVerificationSummary(stateId,divId)
 {
+	$('#internalVerificationHidden').val(stateId);
+	$('.verifiedDetailsCls').removeClass('btn-success');
 	var jsObj = {
+		stateId : stateId
 	}
 	$.ajax({
 			type:'GET',
@@ -1951,16 +1958,18 @@ function getInternalVerificationSummary()
 				$('#verifiedCount').html('<a href="javascript:{openConstituencyWiseWindow(0)}">'+result.verifierVotersCount+'</a>');
 				$('#matchedCount').html(result.correctDetails);
 				$('#unMatchedCount').html(result.wrongDetails);
-				
-				
 				$('#redoBoothDetails').html('<a href="javascript:{openConstituencyWiseWindow(4)}">'+result.redoVoters +"</a>-"+ result.redoBooths);
+				$('#'+divId+'').addClass('btn-success');
 			}
 		});	
 }
 
-function getQcVerificationSummaryReport(str)
+function getQcVerificationSummaryReport(stateId,divId)
 {
+	$('#qcVerificationHidden').val(stateId);
+	$('.qcCollectedDetailsCls').removeClass('btn-success');
 	var jsObj = {
+		stateId : stateId
 	}
 	$.ajax({
 			type:'GET',
@@ -1973,13 +1982,17 @@ function getQcVerificationSummaryReport(str)
 				$('#verifiedRecords').html('<a href="javascript:{openConstituencyWiseWindow(10)}">'+result.qcVotersCount+'</a>');
 				$('#qcMatched').html(result.matchedCount);
 				$('#qcUnMatched').html(result.unMatchedCount);
+				$('#'+divId+'').addClass('btn-success');
 			}
 		});	
 }
 
-function getTeamCollectedDetailsSummaryReport()
+function getTeamCollectedDetailsSummaryReport(stateId,divId)
 {
+	$('#dailyDateRangeHidden').val(stateId);
+	$('.todayCollectdDetailsCls').removeClass('btn-success');
 	var jsObj = {
+		stateId : stateId
 	}
 	$.ajax({
 			type:'GET',
@@ -1992,14 +2005,18 @@ function getTeamCollectedDetailsSummaryReport()
 				$('#dcDetailsId').html(result.dcVotersCount);
 				$('#dvDetailsId').html(result.verifierVotersCount);
 				$('#qcDetailsId').html(result.qcVotersCount);
+				$('#'+divId+'').addClass('btn-success');
 			}
 		});	
+		
 }
 
 function getConstituencyWiseTeamCollecetdDetails(type)
 {
+	
 	var jsObj = {
-		type : type
+		type : type,
+		stateId : $('#dailyDateRangeHidden').val()
 	}
 	$.ajax({
 			type:'GET',
@@ -2044,7 +2061,8 @@ function getBoothWiseTeamCollecetdDetails(constituencyId,surveyUserTypeId)
 {
 	var jsObj = {
 		constituencyId : constituencyId,
-		surveyUserTypeId : surveyUserTypeId
+		surveyUserTypeId : surveyUserTypeId,
+		stateId : $('#dailyDateRangeHidden').val()
 	}
 	$.ajax({
 			type:'GET',
@@ -2090,7 +2108,8 @@ function buildBoothWiseTeamCollecetedDetails(result)
 function getConstituencyWiseTeamDetails(type)
 {
 	var jsObj = {
-		type : type
+		type : type,
+		stateId = $('#todatTeamHidden').val();
 	}
 	$.ajax({
 			type:'GET',
@@ -2110,7 +2129,8 @@ function getBoothWiseTeamDetails(constituencyId,surveyUserTypeId)
 {
 	var jsObj = {
 		constituencyId : constituencyId,
-		surveyUserTypeId : surveyUserTypeId
+		surveyUserTypeId : surveyUserTypeId,
+		stateId : $('#todatTeamHidden').val();
 	}
 	$.ajax({
 			type:'GET',
@@ -2141,7 +2161,8 @@ function getConstituencyWiseQcVerificationSummary(type)
 		strTypr = "N";
 	}
 	var jsObj = {
-		type : strTypr
+		type : strTypr,
+		stateId : $('#qcVerificationHidden').val()
 	}
 	$.ajax({
 			type:'GET',
@@ -2184,7 +2205,8 @@ function getBoothWiseQcVerificationSummary(constituencyId,type)
 {
 	var jsObj = {
 		constituencyId : constituencyId,
-		type : type
+		type : type,
+		stateId : $('#qcVerificationHidden').val()
 	}
 	$.ajax({
 			type:'GET',
