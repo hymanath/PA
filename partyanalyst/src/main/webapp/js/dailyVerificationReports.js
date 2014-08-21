@@ -715,7 +715,7 @@ function getBoothsDetailsInCallStatusInfo(constituencyId,divId)
 		});	
 }
 
-
+var voterReportFlag = false;
 function showHideReportTabs(id)
 {
 	$(".clearCls").html("");
@@ -733,6 +733,7 @@ function showHideReportTabs(id)
 		$("#saveBoothsPercentage").hide();
 		$('#boothId').multiselect('refresh');
 		$("#thirdpPartyReport").hide();
+		$("#verificationReportDiv").hide();
 	}
 	else if(id == "userTrackingReportTab")
 	{
@@ -745,6 +746,7 @@ function showHideReportTabs(id)
 		$("#saveBoothsPercentage").hide();
 		$("#surveyUserTrackingId").show();
 		$("#thirdpPartyReport").hide();
+		$("#verificationReportDiv").hide();
 	}
 	else if(id == "stateWiseReportTab")
 	{
@@ -757,6 +759,7 @@ function showHideReportTabs(id)
 		$("#saveBoothsPercentage").hide();
 		$("#stateWiseReportId").show();
 		$("#thirdpPartyReport").hide();
+		$("#verificationReportDiv").hide();
 	}
 	else if(id == "thirdpPartyReportTab")
 	{
@@ -769,6 +772,7 @@ function showHideReportTabs(id)
 		$("#stateWiseReportId").hide();
 		$("#saveBoothsPercentage").hide();
 		$("#thirdpPartyReport").show();
+		$("#verificationReportDiv").hide();
 		//getThirdPartySummaryDetails();
 		getTPTotalBoothsDetailsConstituencyWise();
 	}
@@ -783,7 +787,24 @@ function showHideReportTabs(id)
 		$("#stateWiseReportId").hide();
 		$("#saveBoothsPercentage").hide();
 		$("#thirdpPartyReport").hide();
+		$("#verificationReportDiv").hide();
 		getBigPictureDetails();
+		
+	}
+	else if(id == "verificationReportTab")
+	{
+		$("#verificationReportDiv").show();
+		$("#surveyUserTrackingId").hide();
+		$("#verifierReportId").hide();
+		$("#comparisonReportId").hide();
+		$("#wmReportDiv").hide();
+		$("#verifierReportIdForVerifier").hide();
+		$("#stateWiseReportId").hide();
+		$("#saveBoothsPercentage").hide();
+		$("#thirdpPartyReport").hide();
+		if(voterReportFlag == false)
+		getVerifierReportCounts();
+		voterReportFlag = true;
 	}
 
 }
