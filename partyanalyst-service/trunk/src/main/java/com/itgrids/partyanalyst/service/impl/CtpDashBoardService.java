@@ -940,7 +940,7 @@ public class CtpDashBoardService implements ICtpDashBoardService
 						if(constituencyVo != null)
 							constituencyVo.setDcVerifiedBooths((Long)params[1]);
 					}
-		     List<Object[]> DVboothsList = surveyCallStatusDAO.getDVTotalBoothsByConstituencyIds(constituencyIds);
+		     List<Object[]> DVboothsList = surveyDetailsInfoDAO.getDVTotalBoothsByConstituencyIds(constituencyIds);
 		     if(DVboothsList != null && DVboothsList.size() > 0)
 					for(Object[] params : DVboothsList)
 					{
