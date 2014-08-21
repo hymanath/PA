@@ -80,6 +80,7 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 	private List<HHQuestionSummaryReportVO> questions;
 	private List<HouseHoldVotersVO> report;
 	private List<HouseHoldsReportVO> houseHoldBooks;
+	private List<HouseHoldsVO> houseHoldsVOList;
 	
 	
 	public List<HouseHoldsReportVO> getHouseHoldBooks() {
@@ -373,6 +374,14 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 	public void setHouseHoldSurveyReportService(
 			IHouseHoldSurveyReportService houseHoldSurveyReportService) {
 		this.houseHoldSurveyReportService = houseHoldSurveyReportService;
+	}
+
+	public List<HouseHoldsVO> getHouseHoldsVOList() {
+		return houseHoldsVOList;
+	}
+
+	public void setHouseHoldsVOList(List<HouseHoldsVO> houseHoldsVOList) {
+		this.houseHoldsVOList = houseHoldsVOList;
 	}
 
 	public String execute(){
@@ -874,4 +883,19 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 		}
     	return Action.SUCCESS;
 	}
+public String getBooksWiseSummaryReport()
+{
+  try{
+	   Long constituencyId=Long.parseLong(request.getParameter("constituencyId"));	
+	   houseHoldsVOList=(List<HouseHoldsVO>)houseHoldSurveyReportService.getBooksWiseSummaryReport(constituencyId);
+     }
+  catch(Exception e)
+  {
+	  e.printStackTrace();  
+   }
+	
+   return Action.SUCCESS;	
 }
+}
+
+
