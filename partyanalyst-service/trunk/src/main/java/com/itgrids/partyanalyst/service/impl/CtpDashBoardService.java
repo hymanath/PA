@@ -8,11 +8,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ISurveyCallStatusDAO;
 import com.itgrids.partyanalyst.dao.ISurveyConstituencyDAO;
+import com.itgrids.partyanalyst.dao.ISurveyConstituencyTempDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.ISurveyFinalDataDAO;
 import com.itgrids.partyanalyst.dto.BigPictureVO;
@@ -41,6 +44,10 @@ public class CtpDashBoardService implements ICtpDashBoardService
 	@Autowired
 	private ISurveyConstituencyDAO surveyConstituencyDAO;
 	
+	@Autowired
+	private ISurveyConstituencyTempDAO surveyConstituencyTempDAO;
+	@Autowired
+	private IConstituencyDAO constituencyDAO;
 	/**
 	 * @author Prasad Thiragabathina
 	 * This Serivice is used for setting over all big picture on CTP project
@@ -893,5 +900,78 @@ public class CtpDashBoardService implements ICtpDashBoardService
 				return resultVO;
 		return null;
 	
+	}
+	
+	public List<SurveyDashBoardVO> getCountsForDC()
+	{
+		List<SurveyDashBoardVO> resultList = new ArrayList<SurveyDashBoardVO>();
+	try{
+		List<Long> constituencyIds = surveyDetailsInfoDAO.getConstituencyIds();
+		if(constituencyIds != null && constituencyIds.size() > 0)
+		{
+			List<Object[]> list = surveyConstituencyTempDAO.getTotalVotersAndBooths(constituencyIds);
+			if(list != null && list.size() > 0)
+			 for(Object[] params : list)
+			 {
+				 SurveyDashBoardVO vo = new SurveyDashBoardVO();
+				 vo.setConstituencyId((Long)params[0]);
+				 vo.setName(constituencyDAO.get((Long)params[0]).getName());
+				 vo.setTotalVoters((Long)params[1]);
+				 vo.setTotalBooths((Long)params[2]);
+				 resultList.add(vo); 
+			 }
+			
+			 List<Object[]> votersList = surveyCallStatusDAO.getTotalVotersByConstituencyIds(constituencyIds);
+			if(votersList != null && votersList.size() > 0)
+				for(Object[] params : votersList)
+				{
+					SurveyDashBoardVO constituencyVo = getMatchedConstituencyVo(resultList,(Long)params[0]);
+					if(constituencyVo != null)
+						constituencyVo.setDcTotalVoters((Long)params[1]);
+				}
+		     List<Object[]> boothsList = surveyCallStatusDAO.getTotalBoothsByConstituencyIds(constituencyIds);
+		     if(boothsList != null && boothsList.size() > 0)
+					for(Object[] params : boothsList)
+					{
+						SurveyDashBoardVO constituencyVo = getMatchedConstituencyVo(resultList,(Long)params[0]);
+						if(constituencyVo != null)
+							constituencyVo.setDcVerifiedBooths((Long)params[1]);
+					}
+		     List<Object[]> DVboothsList = surveyCallStatusDAO.getDVTotalBoothsByConstituencyIds(constituencyIds);
+		     if(DVboothsList != null && DVboothsList.size() > 0)
+					for(Object[] params : DVboothsList)
+					{
+						SurveyDashBoardVO constituencyVo = getMatchedConstituencyVo(resultList,(Long)params[0]);
+						if(constituencyVo != null)
+							constituencyVo.setDvTotalBooths((Long)params[1]);
+					}
+
+		     
+			
+		}
+		
+	}
+	catch (Exception e) {
+		e.printStackTrace();
+		LOG.error("Exception raised in getCountsForDC service method", e);
+	}
+	return resultList;
+	}
+	
+	public SurveyDashBoardVO getMatchedConstituencyVo(List<SurveyDashBoardVO> resultList,Long constituencyId)
+	{
+		try{
+	if(resultList == null)
+		return null;
+	for(SurveyDashBoardVO vo : resultList)
+	{
+		if(vo.getConstituencyId().longValue() == constituencyId.longValue())
+			return vo;
+	}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	return null;
 	}
 }

@@ -188,6 +188,7 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 
 	public List<Object[]> getCollectedCasteDetailsForVoterIdsByUserTypeId(
 			List<Long> voterIds, Long surveyUserTypeId,Long boothId);
+	public List<Long> getConstituencyIds();
 	
 	public List<Object[]> getTodayTeamCollectedDetails(Date date);
 	public List<Object[]> getConstituencyWiseTeamCollectedDetails(Long surveyUsertypeId , Date date);

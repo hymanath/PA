@@ -279,5 +279,22 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 		
 	}
 	
-	
+	public List<Object[]> getTotalVotersByConstituencyIds(List<Long> constituencyIds)
+	{
+		Query query = getSession().createQuery("select model.booth.constituency.constituencyId,count(distinct model.voter.voterId) from SurveyCallStatus model where model.booth.constituency.constituencyId in(:constituencyIds) and model.surveyUser.surveyUserType.surveyUsertypeId = 1 group by model.booth.constituency.constituencyId");
+		query.setParameterList("constituencyIds", constituencyIds);
+		return query.list();
+	}
+	public List<Object[]> getTotalBoothsByConstituencyIds(List<Long> constituencyIds)
+	{
+		Query query = getSession().createQuery("select model.booth.constituency.constituencyId,count(distinct model.booth.boothId) from SurveyCallStatus model where model.booth.constituency.constituencyId in(:constituencyIds) and model.surveyUser.surveyUserType.surveyUsertypeId = 1 group by model.booth.constituency.constituencyId");
+		query.setParameterList("constituencyIds", constituencyIds);
+		return query.list();
+	}
+	public List<Object[]> getDVTotalBoothsByConstituencyIds(List<Long> constituencyIds)
+	{
+		Query query = getSession().createQuery("select model.booth.constituency.constituencyId,count(distinct model.booth.boothId) from SurveyCallStatus model where model.booth.constituency.constituencyId in(:constituencyIds) and model.surveyUser.surveyUserType.surveyUsertypeId = 4 group by model.booth.constituency.constituencyId");
+		query.setParameterList("constituencyIds", constituencyIds);
+		return query.list();
+	}
 }
