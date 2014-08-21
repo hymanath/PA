@@ -479,6 +479,8 @@
 				
 				<value>com.itgrids.partyanalyst.model.SurveyFinalData</value>
 				<value>com.itgrids.partyanalyst.model.SurveyWmThirdPartyStatus</value>
+				<value>com.itgrids.partyanalyst.model.SurveyConstituencyStatus</value>
+				<value>com.itgrids.partyanalyst.model.SurveyConstituencyTemp</value>
 				
 			</list>
 		</property>
@@ -2498,5 +2500,12 @@
 	
 	<bean id="surveyFinalDataDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyFinalDataDAO" >
 			<property name="sessionFactory" ref="sessionFactory" />
-	</bean>						
+	</bean>		
+	<bean id="surveyConstituencyStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyConstituencyStatusDAO" lazy-init="true" >
+		<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
+<bean id="surveyConstituencyTempDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyConstituencyTempDAO" lazy-init="true" >
+		<property name="sessionFactory" ref="sessionFactory" />
+</bean>				
 </beans>
