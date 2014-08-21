@@ -1894,4 +1894,21 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		return query.list();
 	}
 	
+	public List<Object[]> getConstituencyWiseTeamCollectedDetails(Long surveyUsertypeId , Date date)
+	{
+		Query query = getSession().createQuery("select model.booth.constituency.constituencyId , model.booth.constituency.name , count(distinct model.booth.boothId) , count(distinct model.voter.voterId) from SurveyDetailsInfo model where date(model.date) = :date and model.surveyUser.surveyUserType.surveyUsertypeId = :surveyUsertypeId group by model.booth.constituency.constituencyId ");
+		query.setParameter("surveyUsertypeId", surveyUsertypeId);
+		query.setParameter("date", date);
+		return query.list();
+	}
+	
+	public List<Object[]> getBoothWiseTeamCollectedDetails(Long surveyUserTypeId,Date date,Long constituencyId)
+	{
+		Query query = getSession().createQuery("  model.booth.boothId,model.booth.partNo,model.surveyUser.surveyUserId,model.surveyUser.userName ,model.surveyUser.mobileNo, count(distinct model.voter.voterId) from SurveyDetailsInfo model where model.booth.constituency.constituencyId = :constituencyId  and model.surveyUser.surveyUserType.surveyUsertypeId = :surveyUserTypeId and date(model.date) = :date group by model.booth.boothId");
+		query.setParameter("surveyUserTypeId", surveyUserTypeId);
+		query.setParameter("date", date);
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
+	
 }

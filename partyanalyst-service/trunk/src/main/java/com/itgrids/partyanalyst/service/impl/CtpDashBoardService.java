@@ -517,20 +517,111 @@ public class CtpDashBoardService implements ICtpDashBoardService
 		return returnList;
 	}
 	
-	public List<BigPictureVO> getTodayTeamCollectedDetails()
+	/**
+	 * This Service is used for getting all team collected details
+	 * @return returnList
+	 */
+	public BigPictureVO getTodayTeamCollectedDetails()
 	{
-		List<BigPictureVO> returnList = null;
+		BigPictureVO returnVO = new BigPictureVO();
 		try 
 		{
-			
+			DateUtilService dateUtilService = new DateUtilService();
+			Date todateDate = dateUtilService.getCurrentDateAndTime();
+			List<Object[]> teamCollectedDetails = surveyDetailsInfoDAO.getTodayTeamCollectedDetails(todateDate);
+			if(teamCollectedDetails != null && teamCollectedDetails.size() > 0)
+			{
+				for (Object[] objects : teamCollectedDetails)
+				{
+					if(objects[0] != null)
+					{
+						if((Long)objects[0] == 1)
+						{
+							returnVO.setDcVotersCount(Integer.valueOf(objects[1].toString()));
+						}
+						else if((Long)objects[0] == 4)
+						{
+							returnVO.setVerifierVotersCount(Integer.valueOf(objects[1].toString()));
+						}
+						else
+						{
+							returnVO.setQcVotersCount(Integer.valueOf(objects[1].toString()));
+						}
+					}
+				}
+			}
 		} 
 		catch (Exception e) 
 		{
 			LOG.error("Exception raised in getTodayTeamCollectedDetails", e);
 		}
+		return returnVO;
+	}
+	
+	/**
+	 * This Service is used for getting constituency wise team collected details summary
+	 * @param type
+	 * @return returnList
+	 */
+	public List<BigPictureVO> getConstituencyWiseTeamCollectedSummary(Long type)
+	{
+		List<BigPictureVO> returnList = null;
+		try 
+		{
+			DateUtilService dateUtilService = new DateUtilService();
+			Date todateDate = dateUtilService.getCurrentDateAndTime();
+			List<Object[]> constituencyWiseDetails = surveyDetailsInfoDAO.getConstituencyWiseTeamCollectedDetails(type, todateDate);
+			if(constituencyWiseDetails != null && constituencyWiseDetails.size() > 0)
+			{
+				returnList = new ArrayList<BigPictureVO>();
+				for (Object[] objects : constituencyWiseDetails)
+				{
+					BigPictureVO bigPictureVO = new BigPictureVO();
+					bigPictureVO.setDcVotersCount(objects[0] != null ?  Integer.valueOf(objects[0].toString()) : 0);// constituency Id
+					bigPictureVO.setQcVotersCount(objects[2] != null ?  Integer.valueOf(objects[2].toString()) : 0);//booths count
+					bigPictureVO.setDcPercentage(objects[1] != null ?objects[1].toString() : "");// constituency Name
+					bigPictureVO.setVerifierVotersCount(objects[3] != null ?  Integer.valueOf(objects[3].toString()) : 0); // voters count
+					returnList.add(bigPictureVO);
+				}
+			}
+		}
+		catch (Exception e) 
+		{
+			LOG.error("Exception raised in getConstituencyWiseTeamCollectedSummary", e);
+		}
 		return returnList;
 	}
 	
+	public List<BigPictureVO> getBoothWiseTeamCollectedDetailsSummary(Long constituencyId , Long surveyUserTypeId)
+	{
+		List<BigPictureVO> returnList = null;
+		try 
+		{
+			DateUtilService dateUtilService = new DateUtilService();
+			Date todateDate = dateUtilService.getCurrentDateAndTime();
+			List<Object[]> boothWiseDetails = surveyDetailsInfoDAO.getBoothWiseTeamCollectedDetails(surveyUserTypeId, todateDate, constituencyId);
+			if(boothWiseDetails != null && boothWiseDetails.size() > 0)
+			{
+				returnList = new ArrayList<BigPictureVO>();
+				for (Object[] objects : boothWiseDetails) 
+				{
+					BigPictureVO bigPictureVO = new BigPictureVO();
+					bigPictureVO.setDcVotersCount(objects[0] != null ? Integer.valueOf(objects[0].toString()) : 0);// booth id
+					bigPictureVO.setQcVotersCount(objects[2] != null ? Integer.valueOf(objects[2].toString()) : 0);// survey user id
+					bigPictureVO.setDcPercentage(objects[1] != null ?objects[1].toString() : "");// part no
+					bigPictureVO.setVerifierPercentage(objects[3] != null ?objects[3].toString() : "");// survey user name
+					bigPictureVO.setQcPercentage(objects[4] != null ? objects[4].toString() : ""); // MObile Number
+					bigPictureVO.setVerifierVotersCount(objects[5] != null ?  Integer.valueOf(objects[5].toString()) : 0); // voters count
+					returnList.add(bigPictureVO);
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getBoothWiseTeamCollectedDetailsSummary", e);
+		}
+		return returnList;
+	}
 	public List<SurveyDashBoardVO> getCasteCollectedDetails(Long regionId,Long userTypeId)
 	{
 		List<SurveyDashBoardVO> resultList = new ArrayList<SurveyDashBoardVO>();
