@@ -2017,8 +2017,32 @@ public String getPanchayatsStatusDetails()
 			
 			String fromDateStr = jObj.getString("fromDate");
 			String toDateStr = jObj.getString("toDate");
+			JSONArray useridsArr = jObj.getJSONArray("surveyUserId");
+			
+			List<Long> userIds = new ArrayList<Long>();
+			if(useridsArr != null && useridsArr.length() > 0)
+			{
+				for(int i = 0 ; i<useridsArr.length();i++)
+				{
+					Long userId = Long.valueOf(useridsArr.get(i).toString().replace("\"", "").replace("[", "").replace("]", "").trim());
+					userIds.add(userId);
+				}
+			}
+			
+			
+			JSONArray constitiencyArr = jObj.getJSONArray("constitiencyIds");
+			List<Long> constitiencyIds = new ArrayList<Long>();
+			if(constitiencyArr != null && constitiencyArr.length() > 0)
+			{
+				for(int i = 0 ; i<constitiencyArr.length();i++)
+				{
+					Long userId = Long.valueOf(constitiencyArr.get(i).toString().replace("\"", "").replace("[", "").replace("]", "").trim());
+					constitiencyIds.add(userId);
+				}
+			}
+			
 			SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
-			dcDvCollectedDataVOList = surveyDetailsService.getDcAndDvByConstituencyByUser(jObj.getLong("surveyUserId"),jObj.getLong("userTypeId"),originalFormat.parse(fromDateStr),originalFormat.parse(toDateStr));
+			dcDvCollectedDataVOList = surveyDetailsService.getDcAndDvByConstituencyByUser(constitiencyIds,userIds,jObj.getLong("userTypeId"),originalFormat.parse(fromDateStr),originalFormat.parse(toDateStr));
 		} 
 		catch (Exception e)
 		{
@@ -2255,9 +2279,10 @@ public String getPanchayatsStatusDetails()
 			jObj = new JSONObject(getTask());
 			List<Long> constiIds = new ArrayList<Long>();
 			JSONArray ids = jObj.getJSONArray("constituencyIds");
+			Long userTypeId = jObj.getLong("userTypeId");
 			for(int i=0;i<ids.length();i++)
 				constiIds.add(Long.valueOf(ids.get(i).toString()));
-			returnList = surveyDetailsService.getUsersList(constiIds);		
+			returnList = surveyDetailsService.getUsersList(userTypeId,constiIds);		
 		} 
 		catch (Exception e)
 		{
