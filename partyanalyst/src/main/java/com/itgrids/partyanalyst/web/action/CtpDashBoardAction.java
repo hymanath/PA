@@ -248,6 +248,47 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 		return Action.SUCCESS;
 	}
 	
+	public String getTodayTeamCollectedDetails()
+	{
+		try
+		{
+			bigPictureVO = ctpDashBoardService.getTodayTeamCollectedDetails();
+		} 
+		catch (Exception e) 
+		{
+			LOG.error("Exception reised in getTodayTeamDetails", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getConstituencyWiseTeamCollectedSummary()
+	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			bigPictureVOList = ctpDashBoardService.getConstituencyWiseTeamCollectedSummary(jObj.getLong("type"));
+		} 
+		catch (Exception e) 
+		{
+			LOG.error("Exception reised in getTodayTeamDetails", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getBoothWiseTeamCollectedDetailsSummary()
+	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			bigPictureVOList = ctpDashBoardService.getBoothWiseTeamCollectedDetailsSummary(jObj.getLong("constituencyId"),jObj.getLong("type"));
+		} 
+		catch (Exception e) 
+		{
+			LOG.error("Exception reised in getTodayTeamDetails", e);
+		}
+		return Action.SUCCESS;
+	}
+	
 	public String getCasteCollectedDetails()
 	{
 		LOG.info("Entered into the  getCasteCollectedDetails");

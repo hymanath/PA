@@ -1849,6 +1849,7 @@ function getBigPictureDetails()
 	getInternalVerificationSummary();
 	getQcVerificationSummaryReport();
 	getTodayTeamDetails();
+	getTeamCollectedDetailsSummaryReport();
 	var jsObj = {
 	}
 	$.ajax({
@@ -1932,6 +1933,115 @@ function getQcVerificationSummaryReport(str)
 		});	
 }
 
+function getTeamCollectedDetailsSummaryReport()
+{
+	var jsObj = {
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getTodayTeamCollectedDetails.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		 }).done(function(result){
+			if(result != null)
+			{
+				$('#dcDetailsId').html(result.dcVotersCount);
+				$('#dvDetailsId').html(result.verifierVotersCount);
+				$('#qcDetailsId').html(result.qcVotersCount);
+			}
+		});	
+}
+
+function getConstituencyWiseTeamCollecetdDetails(type)
+{
+	var jsObj = {
+		type : type
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getConstituencyWiseTeamCollectedSummary.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		 }).done(function(result){
+			if(result != null)
+			{
+				buildTeamConstituencyWiseDetailsSummary(result,type);
+			}
+		});	
+		
+}
+
+function buildTeamConstituencyWiseDetailsSummary(result,strTypr)
+{
+	var str = '';
+	str += '<table class="table table-bordered m_top20 table-hover table-striped offset3">';
+	str += '<thead>';
+	str += '<tr>';
+	str += '<th>Constituency</th>';
+	str += '<th>Booths</th>';
+	str += '<th>Voters</th>';
+	str += '</tr>';
+	str += '</thead>';
+	str += '<tbody>';
+	for(var i in result)
+	{
+		str += '<tr>';
+		str += '<td><a onClick="getBoothWiseTeamCollecetdDetails('+result[i].dcVotersCount+',\''+strTypr+'\')">'+result[i].dcPercentage+'</a></td>';
+		str += '<td>'+result[i].qcVotersCount+'</td>';
+		str += '<td>'+result[i].verifierVotersCount+'</td>';
+		str += '</tr>';
+	}
+	str += '</tbody>';
+	str += '<table>';
+	$('#constituencyWiseQcTable').html(str);
+}
+
+function getBoothWiseTeamCollecetdDetails(constituencyId,surveyUserTypeId)
+{
+	var jsObj = {
+		constituencyId : constituencyId,
+		surveyUserTypeId : surveyUserTypeId
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getBoothWiseTeamDetails.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		 }).done(function(result){	
+			if(result != null)
+			{
+				buildBoothWiseTeamCollecetedDetails(result);
+			}
+		});	
+
+}
+
+function buildBoothWiseTeamCollecetedDetails(result)
+{
+	var str = '';
+	str += '<table class="table table-bordered m_top20 table-hover table-striped offset3">';
+	str += '<thead>';
+	str += '<tr>';
+	str += '<th>Booth</th>';
+	str += '<th>Survey User</th>';
+	str += '<th>Mobile No</th>';
+	str += '<th>Voters</th>';
+	str += '</tr>';
+	str += '</thead>';
+	str += '<tbody>';
+	for(var i in result)
+	{
+		str += '<tr>';
+		str += '<td><a>'+result[i].dcPercentage+'</a></td>';
+		str += '<td>'+result[i].qcPercentage+'</td>';
+		str += '<td>'+result[i].verifierPercentage+'</td>';
+		str += '<td>'+result[i].qcVotersCount+'</td>';
+		str += '</tr>';
+	}
+	str += '</tbody>';
+	str += '<table>';
+	$('#boothWiseQcTable').html(str);
+}
 
 function getConstituencyWiseTeamDetails(type)
 {

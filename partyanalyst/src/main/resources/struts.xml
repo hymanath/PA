@@ -8182,6 +8182,25 @@
 		<action name="surveyConstituencieOverview" class="ctpDashBoardAction" method="surveyConstituencieOverview">
 			<result>/jsp/surveyConstituenciesOverview.jsp</result>
 		</action>
+		
+		
+		<action name="getTodayTeamCollectedDetails" class="ctpDashBoardAction" method="getTodayTeamCollectedDetails">
+		    <result type="json" name="success">
+		        <param name="root">bigPictureVO</param>
+		    </result>
+		</action>
+		
+		<action name="getConstituencyWiseTeamCollectedSummary" class="ctpDashBoardAction" method="getConstituencyWiseTeamCollectedSummary">
+		    <result type="json" name="success">
+		        <param name="root">bigPictureVOList</param>
+		    </result>
+		</action>
+		
+		<action name="getBoothWiseTeamCollectedDetailsSummary" class="ctpDashBoardAction" method="getBoothWiseTeamCollectedDetailsSummary">
+		    <result type="json" name="success">
+		        <param name="root">bigPictureVOList</param>
+		    </result>
+		</action>
 	
 </package>
 </struts>      
