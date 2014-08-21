@@ -2329,5 +2329,68 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
          }
     	 return nonVotersDetails; 
     }
-    	
+  public Object getBooksWiseSummaryReport(Long constituencyId)
+ {
+
+	  List<HouseHoldsVO> houseHoldsVoList=null;
+		try {
+			List<Object[]> votersCountList = houseHoldVoterDAO
+					.getBooksOfHouseHolds(constituencyId);
+			List<Object[]> nonVotersCountList = houseHoldVoterDAO
+					.getBooksOfHouseHoldsNV(constituencyId);
+			List<Object[]> familiesCountList = houseHoldVoterDAO
+					.getBooksOfHouseHoldsHHCount(constituencyId);
+
+			Map<Long, HouseHoldsVO> m = new HashMap<Long, HouseHoldsVO>();
+			if (votersCountList != null && votersCountList.size() > 0) {
+				for (Object[] votersCount : votersCountList) {
+					HouseHoldsVO houseHoldsVO = new HouseHoldsVO();
+					houseHoldsVO
+							.setBookId((Long) votersCount[0] != null ? (Long) votersCount[0]
+									: 0l);// bookid
+					houseHoldsVO
+							.setBookNo((Long) votersCount[1] != null ? (Long) votersCount[1]
+									: 0l);// bookno
+					houseHoldsVO.setMessage((String) votersCount[2]);// tehsilname.
+					houseHoldsVO
+							.setBoothId((Long) votersCount[4] != null ? (Long) votersCount[4]
+									: 0l);// pid
+					houseHoldsVO.setHeading((String) votersCount[5]);// pname
+					houseHoldsVO.setLeaderName((String) votersCount[6]);// leadername
+					houseHoldsVO.setVoterId((String) votersCount[7]);// leader
+																		// voterId
+					houseHoldsVO
+							.setVotersCount((Long) votersCount[8] != null ? (Long) votersCount[8]
+									: 0l);// votersCount
+					m.put((Long) votersCount[0], houseHoldsVO);
+				}
+			}
+			if (nonVotersCountList != null && nonVotersCountList.size() > 0) {
+				for (Object[] nonVotersCount : nonVotersCountList) {
+					HouseHoldsVO vo = m.get((Long) nonVotersCount[0]);
+					if (vo != null)
+						vo.setNonVotersCount((Long) nonVotersCount[8] != null ? (Long) nonVotersCount[8]
+								: 0l);// nonvoterscount.
+				}
+
+			}
+			if (familiesCountList != null && familiesCountList.size() > 0) {
+				for (Object[] familiesCount : familiesCountList) {
+					HouseHoldsVO vo = m.get((Long) familiesCount[0]);
+					if (vo != null)
+						vo.setFamiliesCount((Long) familiesCount[8] != null ? (Long) familiesCount[8]
+								: 0l);// familiescount.
+				}
+			}
+			houseHoldsVoList = new ArrayList<HouseHoldsVO>();
+			houseHoldsVoList.addAll(m.values());
+		} catch (Exception e) {
+			log.error(
+					"Exception raised in getBooksWiseSummaryReport service method",
+					e);
+		}
+
+		return houseHoldsVoList;
+
+	} 
 }
