@@ -335,4 +335,11 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 		
 		return query.list();
 	}
+	
+	public List<Object[]> getTotalVerifiedBoothsinAllConstituencyIds(List<Long> constituencyIds)
+	{
+			Query query = getSession().createQuery("select model.booth.constituency.constituencyId,count(distinct model.booth.boothId) from SurveyCallStatus model where model.booth.constituency.constituencyId in(:constituencyIds) group by model.booth.constituency.constituencyId");
+			query.setParameterList("constituencyIds", constituencyIds);
+			return query.list();
+	}
 }

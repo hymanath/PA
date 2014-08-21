@@ -811,7 +811,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		return query.list();	
 	}
 	
-	public List<Object[]> getDCPerformanceBoothWise(Long surveyUserId,Long userTypeId,Date fromdate,Date toDate )
+	public List<Object[]> getDCPerformanceBoothWise(List<Long> boothIds, List<Long> surveyUserIds,Long userTypeId,Date fromdate,Date toDate )
 	{
 		
 		StringBuilder  queryStr = new StringBuilder();
@@ -823,19 +823,20 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		queryStr.append(" SUM(CASE WHEN SDI.isCadre ='Y' THEN 1 ELSE 0 END),");						// Cadre count 				5
 		queryStr.append(" SUM(CASE WHEN SDI.isInfluencingPeople ='Y' THEN 1 ELSE 0 END),  ");		// InfluencingPeople count	6 
 		queryStr.append(" SUM(CASE WHEN SDI.mobileNumber is not null and SDI.mobileNumber != 'null' and  SDI.mobileNumber != '' and length(SDI.mobileNumber) != 0THEN 1 ELSE 0 END ),  ");		// mobileNumber count 		7
-		queryStr.append(" SUM(CASE WHEN SDI.localArea is not null THEN 1 ELSE 0 END) , SDI.booth.constituency.name,SDI.booth.boothId ");			// localArea count 		8
+		queryStr.append(" SUM(CASE WHEN SDI.localArea is not null THEN 1 ELSE 0 END) , SDI.booth.constituency.name,SDI.booth.boothId, ");			// localArea count 		8
+		queryStr.append(" SDI.surveyUser.surveyUserId, SDI.surveyUser.userName ");
 		
 		queryStr.append(" 	from SurveyDetailsInfo SDI where  ");
-		queryStr.append(" 	SDI.surveyUser.surveyUserId = :surveyUserId	and ");
+		queryStr.append(" 	SDI.surveyUser.surveyUserId in (:surveyUserIds)	and ");
 		queryStr.append(" 	SDI.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId	and ");
-		queryStr.append("	date(SDI.date) >= :fromdate and date(SDI.date) <= :toDate group by SDI.booth.boothId order by SDI.date");
+		queryStr.append("	date(SDI.date) >= :fromdate and date(SDI.date) <= :toDate and SDI.boothId in (:boothIds) group by SDI.booth.boothId,SDI.surveyUser.surveyUserId order by SDI.date");
 		
 			
 		Query query = getSession().createQuery(queryStr.toString());
 		
 		
-		//query.setParameter("constituencyId", constituencyId);
-		query.setParameter("surveyUserId", surveyUserId);
+		query.setParameterList("boothIds", boothIds);
+		query.setParameterList("surveyUserIds", surveyUserIds);
 		query.setParameter("userTypeId", userTypeId);
 		query.setParameter("fromdate", fromdate);
 		query.setParameter("toDate", toDate);
@@ -1228,7 +1229,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 	
 	public List<Object[]> getCasteTaggedVotersForAllConstituencies(Long surveyUsertypeId)
 	{
-		Query query = getSession().createQuery("select model.booth.constituency.constituencyId,count(distinct model.voter.voterId) from SurveyDetailsInfo model where  " +
+		Query query = getSession().createQuery("select model.booth.constituency.constituencyId,count(distinct model.voter.voterId),count(distinct model.boothId) from SurveyDetailsInfo model where  " +
 				"model.booth.publicationDate.publicationDateId = :publicationDateId  and (model.caste.casteStateId is not null or model.casteName is not null or  model.casteName != '') " +
 				" and model.surveyUser.surveyUserType.surveyUsertypeId = :surveyUsertypeId and model.isDelete = 'N' group by model.booth.constituency.constituencyId");	
 
@@ -1239,7 +1240,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 	public List<Object[]> getMobileTaggedVotersForAllConstituencies(Long surveyUsertypeId)
 
 	{
-		Query query = getSession().createQuery("select model.booth.constituency.constituencyId,count(distinct model.mobileNumber) from SurveyDetailsInfo model where " +
+		Query query = getSession().createQuery("select model.booth.constituency.constituencyId,count(distinct model.mobileNumber),count(distinct model.boothId) from SurveyDetailsInfo model where " +
 				"model.booth.publicationDate.publicationDateId =:publicationDateId and model.mobileNumber is not null and  " +
 				" model.mobileNumber !='' " +
 				"and model.surveyUser.surveyUserType.surveyUsertypeId = :surveyUsertypeId and model.isDelete = 'N' group by model.booth.constituency.constituencyId");	
