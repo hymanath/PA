@@ -48,6 +48,11 @@ public class CtpDashBoardService implements ICtpDashBoardService
 	private ISurveyConstituencyTempDAO surveyConstituencyTempDAO;
 	@Autowired
 	private IConstituencyDAO constituencyDAO;
+	
+	
+	@Autowired
+	private IBoothDAO boothDAO;
+	
 	/**
 	 * @author Prasad Thiragabathina
 	 * This Serivice is used for setting over all big picture on CTP project
@@ -973,5 +978,75 @@ public class CtpDashBoardService implements ICtpDashBoardService
 			e.printStackTrace();
 		}
 	return null;
+	}
+	
+	
+	public List<BoothWiseSurveyStatusDetailsVO> getAllBoothsStatusDetailsByConstituencyId(Long constituencyId)
+	{
+		LOG.info("Entered into the getAllBoothsStatusDetailsByConstituencyId service method");
+		List<BoothWiseSurveyStatusDetailsVO> resultList = new ArrayList<BoothWiseSurveyStatusDetailsVO>();
+		try
+		{
+			
+			List<Long> dcBoothsDetails = surveyDetailsInfoDAO.getBoothDetailsForConstituencyByUserTypeId(constituencyId,IConstants.DATA_COLLECTOR_ROLE_ID);
+			List<Long> dvBoothsDetails = surveyDetailsInfoDAO.getBoothDetailsForConstituencyByUserTypeId(constituencyId,IConstants.VERIFIER_ROLE_ID);
+			List<Long> qcBoothsDetails = surveyDetailsInfoDAO.getBoothDetailsForConstituencyByUserTypeId(constituencyId,IConstants.THIRD_PARTY_ROLE_ID);
+			
+			List<Long> dcWmBoothsDetails = surveyCallStatusDAO.getDataCollectorWebMonitorDetailsForConstituency(constituencyId);
+			List<Long> dvWmBoothsDetails = surveyCallStatusDAO.getDataVerifierWebMonitorDetailsForConstituency(constituencyId);
+			
+			List<Object[]> votersDetails = boothPublicationVoterDAO.getBoothWiseTotalVotersByConstituencyId(constituencyId);
+			
+			Map<Long,Long> voterCountMap = new HashMap<Long, Long>();
+			
+			for(Object[] obj:votersDetails)
+				voterCountMap.put((Long)obj[1], (Long)obj[0]);
+				
+			
+			List<Object[]> boothDtls = boothDAO.getTotalBoothsDetailsByConstituencyId(constituencyId);
+			
+			for(Object[] obj:boothDtls)
+			{
+				BoothWiseSurveyStatusDetailsVO booth = new BoothWiseSurveyStatusDetailsVO();
+				
+				booth.setBoothId((Long)obj[0]);
+				booth.setPartNo(obj[1].toString());
+				booth.setTotalVoters(voterCountMap.get((Long)obj[0]));
+				
+				if(dcBoothsDetails.contains((Long)obj[0]))
+				{
+					booth.setDcCompleted("Y");
+					
+					if(dvBoothsDetails.contains((Long)obj[0]))
+					{
+						booth.setDvCompleted("Y");
+						
+						if(dvWmBoothsDetails.contains((Long)obj[0]))
+						{
+							booth.setWmDvCompleted("Y");
+						}
+					}
+					
+					if(qcBoothsDetails.contains((Long)obj[0]))
+					{
+						booth.setQcCompleted("Y");
+					}
+					
+					if(dcWmBoothsDetails.contains((Long)obj[0]))
+					{
+						booth.setWmDcCompleted("Y");
+					}
+				}
+				resultList.add(booth);
+			}
+	
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Exception raised in getAllBoothsStatusDetailsByConstituencyId service method", e);
+		}
+		
+		return resultList;
 	}
 }

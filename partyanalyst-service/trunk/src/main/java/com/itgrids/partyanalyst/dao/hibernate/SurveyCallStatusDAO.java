@@ -208,7 +208,7 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 		Query query = getSession().createQuery("select count(distinct SCS.voter.voterId)," +
 				"SCS.booth.constituency.constituencyId  " +
 				"from " +
-				"SurveyCallStatus SCS where SCS.matchedStatus is not null and" +
+				"SurveyCallStatus SCS where SCS.matchedStatus is not null and " +
 				"SCS.booth.constituency.district.districtId >= :startDistrictId and " +
 				"SCS.booth.constituency.district.districtId <= :endDistrictId  " +
 				"group by SCS.booth.constituency.constituencyId ");
@@ -253,7 +253,7 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 			Long constituencyId)	{
 		
 		Query query = getSession().createSQLQuery(
-				"SELECT cast(B.booth_id as int),cast(GROUP_CONCAT( distinct U.username SEPARATOR ',') as CHAR) " +
+				"SELECT B.booth_id ,cast(GROUP_CONCAT( distinct U.username SEPARATOR ',') as CHAR) " +
 				"FROM survey_call_status SCS , booth B , user U " +
 				"where " +
 				"SCS.booth_id = B.booth_id and " +
@@ -295,6 +295,39 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 	{
 		Query query = getSession().createQuery("select model.booth.constituency.constituencyId,count(distinct model.booth.boothId) from SurveyCallStatus model where model.booth.constituency.constituencyId in(:constituencyIds) and model.surveyUser.surveyUserType.surveyUsertypeId = 4 group by model.booth.constituency.constituencyId");
 		query.setParameterList("constituencyIds", constituencyIds);
+		return query.list();
+	}
+	
+	public List<Long> getDataCollectorWebMonitorDetailsForConstituency(Long constituencyId)
+	{
+		Query query = getSession().createQuery("select distinct SCS.booth.boothId from SurveyCallStatus " +
+				"SCS where SCS.booth.constituency.constituencyId = :constituencyId and SCS.matchedStatus is not null");
+		
+		query.setParameter("constituencyId", constituencyId);
+		
+		return query.list();
+		
+	}
+	
+	public List<Long> getDataVerifierWebMonitorDetailsForConstituency(Long constituencyId)
+	{
+		Query query = getSession().createQuery("select distinct SCS.booth.boothId from SurveyCallStatus " +
+				"SCS where SCS.booth.constituency.constituencyId = :constituencyId and SCS.dvMatchedStatus is not null");
+		
+		query.setParameter("constituencyId", constituencyId);
+		
+		return query.list();
+		
+	}
+	
+	public List<Long> getVerifiedBoothIdsByConstituencyId(Long constituencyId)
+	{
+		Query query = getSession()
+				.createQuery(
+						"select distinct SCS.booth.boothId from SurveyCallStatus SCS  where SCS.booth.constituency.constituencyId = :constituencyId");
+		
+		query.setParameter("constituencyId", constituencyId);
+		
 		return query.list();
 	}
 }

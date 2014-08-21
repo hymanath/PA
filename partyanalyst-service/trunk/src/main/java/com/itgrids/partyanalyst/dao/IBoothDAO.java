@@ -378,6 +378,6 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	 
 	public List<Object[]> getmandalDetailsByBoothIds(List<Long> boothIds);
 	public List<Object[]> getMuncipalityDetyailsByBoothIds(List<Long> boothIds);
-
+	public List<Object[]> getTotalBoothsDetailsByConstituencyId(Long constituencyId);
 
 }
