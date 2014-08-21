@@ -1885,9 +1885,9 @@ function getBigPictureDetails()
 				$('#totalBooths').html(result.totalBooths);
 				$('#totalConstituencyes').html(result.totalConstituencyes);
 				
-				$('#decDetails').html(result.dcVotersCount);
-				$('#verifierDetails').html(result.verifierVotersCount);
-				$('#qcDetails').html(result.qcVotersCount);
+				$('#decDetails').html('<a href="javascript:{openConstituencyWiseWindow(1)}">'+result.dcVotersCount+'</a>');
+				$('#verifierDetails').html('<a href="javascript:{openConstituencyWiseWindow(0)}">'+result.verifierVotersCount+'</a>');
+				$('#qcDetails').html('<a href="javascript:{openConstituencyWiseWindow(10)}">'+result.qcVotersCount+'</a>');
 			}
 		});	
 }
@@ -1925,12 +1925,12 @@ function getInternalVerificationSummary()
 		 }).done(function(result){
 			if(result != null)
 			{
-				$('#verifiedCount').html(result.verifierVotersCount);
+				$('#verifiedCount').html('<a href="javascript:{openConstituencyWiseWindow(0)}">'+result.verifierVotersCount+'</a>');
 				$('#matchedCount').html(result.correctDetails);
 				$('#unMatchedCount').html(result.wrongDetails);
 				
 				
-				$('#redoBoothDetails').html(result.redoVoters +"-"+ result.redoBooths);
+				$('#redoBoothDetails').html('<a href="javascript:{openConstituencyWiseWindow(4)}">'+result.redoVoters +"</a>-"+ result.redoBooths);
 			}
 		});	
 }
