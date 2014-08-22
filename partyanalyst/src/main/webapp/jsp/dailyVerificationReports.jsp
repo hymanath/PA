@@ -139,7 +139,7 @@ $('#boothId').multiselect({
 							<!----Data Collection (left)------>
 							<div class="span6 wiget-yellow">	
 								<h4 class="text-right">Big Picture
-								<span class="btn-group"><a href="javascript:{setRegionLevel(0,'allRegionsId')}" class="btn btn-mini selectedCls btn-success" id="allRegionsId">ALL</a><a href="javascript:{setRegionLevel(2,'apRegionsId')}" class="btn btn-mini selectedCls" id="apRegionsId">AP</a><a href="javascript:{setRegionLevel(1,'tsRegionsId')}" class="btn btn-mini selectedCls" id="tsRegionsId">TS</a></span>
+								<span class="btn-group pull-right"><a href="javascript:{setRegionLevel(0,'allRegionsId')}" class="btn btn-mini selectedCls btn-success" id="allRegionsId">ALL</a><a href="javascript:{setRegionLevel(2,'apRegionsId')}" class="btn btn-mini selectedCls" id="apRegionsId">AP</a><a href="javascript:{setRegionLevel(1,'tsRegionsId')}" class="btn btn-mini selectedCls" id="tsRegionsId">TS</a></span>
 								</h4>
 								<div class="row-fluid">
 									<div class="well well-small span4  text-center">
@@ -179,9 +179,9 @@ $('#boothId').multiselect({
 							
 							<!----Data Verification (right)---->
 							<div class="span6 wiget-yellow">	
-								<h4 class="text-right">Daily & Date Range <span class="pull-right btn-group"><a onClick="getTeamCollectedDetailsSummaryReport(0,this.id)" id="allCollecetdId" class="btn btn-mini todayCollectdDetailsCls btn-success">ALL</a>|<a  onClick="getTeamCollectedDetailsSummaryReport(1,this.id)" id="apCollecetdId" class="btn btn-mini todayCollectdDetailsCls btn-success">AP</a>|<a  onClick="getTeamCollectedDetailsSummaryReport(2,this.id)" id="tsCollecetdId" class="btn btn-mini todayCollectdDetailsCls">TS</a></span></h4>
+								<h4 class="text-right">Daily & Date Range <span class="pull-right btn-group   pull-right"><a onClick="getTeamCollectedDetailsSummaryReport(0,this.id)" id="allCollecetdId" class="btn btn-mini todayCollectdDetailsCls btn-success">ALL</a>|<a  onClick="getTeamCollectedDetailsSummaryReport(1,this.id)" id="apCollecetdId" class="btn btn-mini todayCollectdDetailsCls btn-success">AP</a>|<a  onClick="getTeamCollectedDetailsSummaryReport(2,this.id)" id="tsCollecetdId" class="btn btn-mini todayCollectdDetailsCls">TS</a></span></h4>
 								<input type="hidden" value="0" id="dailyDateRangeHidden"></input>
-								<!--<div class="row-fluid">
+								<div class="row-fluid">
 									<div class="input-append span6">
 										<input type="text" class="span8 offset2 offset2" placeholder="From Date">
 										<span class="add-on"><i class="icon-calendar"></i></span>
@@ -190,7 +190,7 @@ $('#boothId').multiselect({
 										<input type="text" class="span8  " placeholder="To Date">
 										<span class="add-on"><i class="icon-calendar"></i></span>
 									</div>						
-								</div>-->
+								</div>
 								
 								<!--<div class="row-fluid text-center">
 									<P CLASS="label">Today: Date</p>
@@ -218,12 +218,12 @@ $('#boothId').multiselect({
 						<!-------->
 							<div class="span6 wiget-yellow">	
 								<h4 class="text-right">Internal Verification
-								<span class="btn-group"><a href="javascript:{setInternalVerificationRegionLevel(0,'allRegionsId1')}" class="btn btn-mini selectedCls1 btn-success" id="allRegionsId1">ALL</a><a href="javascript:{setInternalVerificationRegionLevel(2,'apRegionsId1')}" class="btn btn-mini selectedCls1" id="apRegionsId1">AP</a><a href="javascript:{setInternalVerificationRegionLevel(1,'tsRegionsId1')}" class="btn btn-mini selectedCls1" id="tsRegionsId1">TS</a></span>
+								<span class="btn-group  pull-right"><a href="javascript:{setInternalVerificationRegionLevel(0,'allRegionsId1')}" class="btn btn-mini selectedCls1 btn-success" id="allRegionsId1">ALL</a><a href="javascript:{setInternalVerificationRegionLevel(2,'apRegionsId1')}" class="btn btn-mini selectedCls1" id="apRegionsId1">AP</a><a href="javascript:{setInternalVerificationRegionLevel(1,'tsRegionsId1')}" class="btn btn-mini selectedCls1" id="tsRegionsId1">TS</a></span>
 
 
 								</h4>
 								
-								<!--<div class="row-fluid">
+								<div class="row-fluid">
 									<div class="input-append span6">
 										<input type="text" class="span8 offset2 offset2" placeholder="From Date">
 										<span class="add-on"><i class="icon-calendar"></i></span>
@@ -232,7 +232,7 @@ $('#boothId').multiselect({
 										<input type="text" class="span8  " placeholder="To Date">
 										<span class="add-on"><i class="icon-calendar"></i></span>
 									</div>						
-								</div>-->
+								</div>
 								
 								<div class="row-fluid">
 									<div class="well well-small span4  text-center">
@@ -257,9 +257,9 @@ $('#boothId').multiselect({
 							
 							<!-------->
 							<div class="span6 wiget-yellow">	
-								<h4 class="text-right">QC Verification <span class="pull-right btn-group"><a  class="btn btn-mini qcCollectedDetailsCls" id="allQcCollecetdId" onClick="getQcVerificationSummaryReport(0,this.id)">ALL</a><a onClick="getQcVerificationSummaryReport(1,this.id)" id= "apQcColledcetdId" class="btn btn-mini todayCollectdDetailsCls">AP</a>|<a onClick="getQcVerificationSummaryReport(2,this.id)" class="btn btn-mini todayCollectdDetailsCls" id="tsQcCollectedId">TS</a></span></h4>
+								<h4 class="text-right ">QC Verification <span class="pull-right btn-group  pull-right"><a  class="btn btn-mini qcCollectedDetailsCls" id="allQcCollecetdId" onClick="getQcVerificationSummaryReport(0,this.id)">ALL</a><a onClick="getQcVerificationSummaryReport(1,this.id)" id= "apQcColledcetdId" class="btn btn-mini todayCollectdDetailsCls">AP</a>|<a onClick="getQcVerificationSummaryReport(2,this.id)" class="btn btn-mini todayCollectdDetailsCls" id="tsQcCollectedId">TS</a></span></h4>
 								<input type="hidden" value="0" id="qcVerificationHidden"></input>
-								<!--<div class="row-fluid">
+								<div class="row-fluid">
 									<div class="input-append span6">
 										<input type="text" class="span8 offset2 offset2" placeholder="From Date">
 										<span class="add-on"><i class="icon-calendar"></i></span>
@@ -268,7 +268,7 @@ $('#boothId').multiselect({
 										<input type="text" class="span8  " placeholder="To Date">
 										<span class="add-on"><i class="icon-calendar"></i></span>
 									</div>						
-								</div>-->
+								</div>
 								
 								<div class="row-fluid">
 									<div class="well well-small span4  text-center">
@@ -290,9 +290,9 @@ $('#boothId').multiselect({
 						<div class="row-fluid m_top20">
 								<!-------->
 							<div class="span6 wiget-yellow">	
-								<h4 class="text-right">Today Team Details <span class="pull-right btn-group"><a  class="btn btn-mini todayTeamDetailsCls" id="allTeamId" onClick="getTodayTeamDetails(0,this.id)">ALL</a><a onClick="getTodayTeamDetails(1,this.id)" id= "apTeamId" class="btn btn-mini todayCollectdDetailsCls">AP</a>|<a onClick="getTodayTeamDetails(2,this.id)" class="btn btn-mini todayCollectdDetailsCls" id="tsTeamId">TS</a></span></h4>
+								<h4 class="text-right">Today Team Details <span class="pull-right btn-group   pull-right"><a  class="btn btn-mini todayTeamDetailsCls" id="allTeamId" onClick="getTodayTeamDetails(0,this.id)">ALL</a><a onClick="getTodayTeamDetails(1,this.id)" id= "apTeamId" class="btn btn-mini todayCollectdDetailsCls">AP</a>|<a onClick="getTodayTeamDetails(2,this.id)" class="btn btn-mini todayCollectdDetailsCls" id="tsTeamId">TS</a></span></h4>
 								<input type="hidden" value ="0" id="todatTeamHidden"></input>
-								<!--<div class="row-fluid">
+								<div class="row-fluid">
 									<div class="input-append span6">
 										<input type="text" class="span8 offset2 offset2" placeholder="From Date">
 										<span class="add-on"><i class="icon-calendar"></i></span>
@@ -301,7 +301,7 @@ $('#boothId').multiselect({
 										<input type="text" class="span8  " placeholder="To Date">
 										<span class="add-on"><i class="icon-calendar"></i></span>
 									</div>						
-								</div>-->
+								</div>
 								
 								<div class="row-fluid">
 									<div class="well well-small span4  text-center">
