@@ -135,7 +135,7 @@ public class HHSurveyAnswersDAO extends GenericDaoHibernate<HHSurveyAnswers,Long
 		Query query = getSession().createQuery(" select "+
 				" model2.houseHolds.houseHoldId," +//1 -- HOUSEHOLD ID
 				" count(model2.voter.voterId)," +//2 -- HOUSE NO
-				" count(model2.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId)" + // 3 -- VOTER NAME(FAMILY HEAD)
+				//" count(model2.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId)" + // 3 -- VOTER NAME(FAMILY HEAD)
 				" from HHSurveyAnswers model,HHBoothLeader model1,HouseHoldVoter model2 " +
 				" where " +
 				" model.houseHold.houseHoldId = model2.houseHolds.houseHoldId " +
@@ -144,6 +144,7 @@ public class HHSurveyAnswersDAO extends GenericDaoHibernate<HHSurveyAnswers,Long
 				" and model1.hhLeader.is_active = 'YES'" +
 				" and model2.isDelete = 'FALSE' " +
 				" and model.hhOptions.optionsId =:optionId" +
+				" and model2.voter.voterId is not null" +
 				" group by model2.houseHolds.houseHoldId ");
 		
 		query.setParameter("optionId", optionId);
@@ -151,5 +152,25 @@ public class HHSurveyAnswersDAO extends GenericDaoHibernate<HHSurveyAnswers,Long
 		return query.list();
 	}
 	
+	public List<Object[]> getVoterAndNonVotersUnderOption1(Long optionId,Long panchayatId){
+		Query query = getSession().createQuery(" select "+
+				" model2.houseHolds.houseHoldId," +//1 -- HOUSEHOLD ID
+				//" count(model2.voter.voterId)," +//2 -- HOUSE NO
+				" count(model2.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId)" + // -- VOTER NAME(FAMILY HEAD)
+				" from HHSurveyAnswers model,HHBoothLeader model1,HouseHoldVoter model2 " +
+				" where " +
+				" model.houseHold.houseHoldId = model2.houseHolds.houseHoldId " +
+				" and model2.hhLeader.id = model1.hhLeader.id  " +
+				" and model.houseHold.panchayat.panchayatId = :panchayatId" +
+				" and model1.hhLeader.is_active = 'YES'" +
+				" and model2.isDelete = 'FALSE' " +
+				" and model.hhOptions.optionsId =:optionId" +
+				" and model2.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId is not null" +
+				" group by model2.houseHolds.houseHoldId ");
+		
+		query.setParameter("optionId", optionId);
+		query.setParameter("panchayatId", panchayatId);
+		return query.list();
+	}
 	
 }
