@@ -209,7 +209,7 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 		try
 		{
 			jObj = new JSONObject(getTask());
-			bigPictureVO = ctpDashBoardService.getInternalVerificationSummary(jObj.getLong("stateId"));
+			bigPictureVO = ctpDashBoardService.getInternalVerificationSummary(jObj.getLong("stateId"),jObj.getString("fromDate"),jObj.getString("toDate"));
 		} 
 		catch (Exception e) 
 		{
