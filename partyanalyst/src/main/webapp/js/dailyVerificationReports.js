@@ -1936,9 +1936,17 @@ function getBigPictureDetails(stateId)
 				$('#totalBooths').html(result.totalBooths);
 				$('#totalConstituencyes').html(result.totalConstituencyes);
 				
-				$('#decDetails').html('<a href="javascript:{openConstituencyWiseWindow(1,\'DATA COLLECTION \')}">'+result.dcVotersCount+'</a>');
-				$('#verifierDetails').html('<a href="javascript:{openConstituencyWiseWindow(0,\'VERIFICATION\')}">'+result.verifierVotersCount+'</a>');
-				$('#qcDetails').html('<a href="javascript:{openConstituencyWiseWindow(10,\'QC VERIFICATION\')}">'+result.qcVotersCount+'</a>');
+				$('#dcVoters').html('<a href="javascript:{openConstituencyWiseWindow(1,\'DATA COLLECTION \')}">'+result.dcVotersCount+'</a>');
+				$('#wmVoters').html('<a href="javascript:{openConstituencyWiseWindow(0,\'VERIFICATION\')}">'+result.verifierVotersCount+'</a>');
+				$('#qcVoters').html('<a href="javascript:{openConstituencyWiseWindow(10,\'QC VERIFICATION\')}">'+result.qcVotersCount+'</a>');
+				
+				$('#dcBooths').html(result.dcBoothsCount);
+				$('#wmBooths').html(result.verifierBoothsCount);
+				$('#qcBooths').html(result.qcBoothsCount);
+				
+				$('#dcConstituecyes').html(result.dcConstituencysCount);
+				$('#wmConstituencyes').html(result.verifierConstituencyCount);
+				$('#qcConstituencyes').html(result.qcConstituencyesCount);
 				$('#totalState').show();
 			}
 		});	

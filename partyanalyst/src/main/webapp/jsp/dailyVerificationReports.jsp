@@ -140,36 +140,62 @@ $('#boothId').multiselect({
 						<!-----Data Collection & Verification Main Div---->
 						<div class="row-fluid m_top10" >
 							<!----Data Collection (left)------>
-							<div class="span6 wiget-yellow">	
+							<div class="span12 wiget-yellow">	
 								<h4 class="text-right">Big Picture
 								</h4>
 								<div class="row-fluid">
-									<div class="well well-small span4  text-center">
+									<div class="well well-small span2  text-center">
 										<h4 id="totalVoters"><img src="./images/icons/search.gif" ></img></h4>
 										<p>Target </br> Voters</p>
 									</div>
-									<div class="well well-small span4 text-center">
+									<div class="well well-small span2 text-center">
 										<h4 id="totalBooths"><img src="./images/icons/search.gif" ></img></h4>
 										<p>Target </br>Booths</p>
 									</div>
-									<div class="well well-small span4 text-center">
+									<div class="well well-small span2 text-center">
 										<h4 id="totalConstituencyes"><img src="./images/icons/search.gif" ></img></h4>
 										<p>Target </br>Constituencies</p>
 									</div>							
+								
+									<div class="well well-small span2 text-center">
+										<h4 id="dcVoters"><img src="./images/icons/search.gif" ></img></h4>
+										<p>DC </br> Voters</p>
+									</div>
+									<div class="well well-small span2 text-center">
+										<h4 id="dcBooths"><img src="./images/icons/search.gif" ></img></h4>
+										<p>DC </br>Booths</p>
+									</div>
+									<div class="well well-small span2 text-center">
+										<h4 id="dcConstituecyes"><img src="./images/icons/search.gif" ></img></h4>
+										<p>DC </br>Constituencies</p>
+									</div>							
 								</div>
 								<div class="row-fluid">
-								<div class="well well-small span4 text-center">
-									<h4 id="decDetails"><img src="./images/icons/search.gif" ></img></h4>
-									<p>Data Collection Completed</p>
-								</div>
-								<div class="well well-small span4 text-center">
-									<h4 id="verifierDetails"><img src="./images/icons/search.gif" ></img></h4>
-									<p>Verification Completed</p>
-								</div>
-								<div class="well well-small span4 text-center">
-									<h4 id="qcDetails"><img src="./images/icons/search.gif" ></img></h4>
-									<p>QC Verification Completed</p>
-								</div>							
+									<div class="well well-small span2 text-center">
+										<h4 id="wmVoters"><img src="./images/icons/search.gif" ></img></h4>
+										<p>WM </br> Voters</p>
+									</div>
+									<div class="well well-small span2 text-center">
+										<h4 id="wmBooths"><img src="./images/icons/search.gif" ></img></h4>
+										<p>WM </br>Booths</p>
+									</div>
+									<div class="well well-small span2 text-center">
+										<h4 id="wmConstituencyes"><img src="./images/icons/search.gif" ></img></h4>
+										<p>WM </br>Constituencies</p>
+									</div>							
+								
+									<div class="well well-small span2 text-center">
+										<h4 id="qcVoters"><img src="./images/icons/search.gif" ></img></h4>
+										<p>QC </br> Voters</p>
+									</div>
+									<div class="well well-small span2 text-center">
+										<h4 id="qcBooths"><img src="./images/icons/search.gif" ></img></h4>
+										<p>QC </br>Booths</p>
+									</div>
+									<div class="well well-small span2 text-center">
+										<h4 id="qcConstituencyes"><img src="./images/icons/search.gif" ></img></h4>
+										<p>QC </br>Constituencies</p>
+									</div>							
 								</div>
 								
 								<!--<div class="row-fluid">
@@ -179,6 +205,10 @@ $('#boothId').multiselect({
 								</div>-->
 							</div><!----Data Collection End------>
 							
+						
+						</div><!-----Data Collection & Verification Main Div---->	
+						
+						<div class="row-fluid m_top20">
 							<!----Data Verification (right)---->
 							<div class="span6 wiget-yellow">	
 								<h4 class="text-right">Daily & Date Range <span class="pull-right btn-group   pull-right"><a onClick="getTeamCollectedDetailsSummaryReport(0,this.id)" id="allCollecetdId" class="btn btn-mini todayCollectdDetailsCls btn-success">ALL</a>|<a  onClick="getTeamCollectedDetailsSummaryReport(1,this.id)" id="apCollecetdId" class="btn btn-mini todayCollectdDetailsCls btn-success">AP</a>|<a  onClick="getTeamCollectedDetailsSummaryReport(2,this.id)" id="tsCollecetdId" class="btn btn-mini todayCollectdDetailsCls">TS</a></span></h4>
@@ -215,9 +245,6 @@ $('#boothId').multiselect({
 								</div>
 								
 							</div>	<!----Data Verification---->	
-						</div><!-----Data Collection & Verification Main Div---->	
-						
-						<div class="row-fluid m_top20">
 						<!-------->
 							<div class="span6 wiget-yellow">	
 								<h4 class="text-right">Internal Verification
@@ -259,6 +286,10 @@ $('#boothId').multiselect({
 								</div>								
 							</div>	<!-------->
 							
+						</div>
+						
+						<div class="row-fluid m_top20">
+						
 							<!-------->
 							<div class="span6 wiget-yellow">	
 								<h4 class="text-right ">QC Verification <span class="pull-right btn-group  pull-right"><a  class="btn btn-mini qcCollectedDetailsCls" id="allQcCollecetdId" onClick="getQcVerificationSummaryReport(0,this.id)">ALL</a><a onClick="getQcVerificationSummaryReport(1,this.id)" id= "apQcColledcetdId" class="btn btn-mini qcCollectedDetailsCls">AP</a>|<a onClick="getQcVerificationSummaryReport(2,this.id)" class="btn btn-mini qcCollectedDetailsCls" id="tsQcCollectedId">TS</a></span></h4>
@@ -290,9 +321,6 @@ $('#boothId').multiselect({
 									</div>
 								</div>							
 							</div>	<!-------->
-						</div>
-						
-						<div class="row-fluid m_top20">
 								<!-------->
 							<div class="span6 wiget-yellow">	
 								<h4 class="text-right">Today Team Details <span class="pull-right btn-group   pull-right"><a  class="btn btn-mini todayTeamDetailsCls" id="allTeamId" onClick="getTodayTeamDetails(0,this.id)">ALL</a><a onClick="getTodayTeamDetails(1,this.id)" id= "apTeamId" class="btn btn-mini todayTeamDetailsCls">AP</a>|<a onClick="getTodayTeamDetails(2,this.id)" class="btn btn-mini todayTeamDetailsCls" id="tsTeamId">TS</a></span></h4>
