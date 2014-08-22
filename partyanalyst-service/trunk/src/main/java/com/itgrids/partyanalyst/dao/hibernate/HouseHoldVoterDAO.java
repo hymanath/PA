@@ -519,7 +519,7 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 				" and model2.constituency.constituencyId =:constituencyId " +
 				" and model.isDelete =:deleteStatus " +
 				" and model2.hhLeader.is_active =:activeStatus" +
-				//" and model.voter.voterId is not null" +
+				" and model.voter.voterId is not null" +
 				" and model2.booth.publicationDate.publicationDateId = 10"+ 
 				" group by model.hhLeaderBooks.hhLeaderBookId ");
 		
