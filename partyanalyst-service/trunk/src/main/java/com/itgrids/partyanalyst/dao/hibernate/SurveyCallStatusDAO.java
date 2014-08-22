@@ -198,11 +198,11 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 			queryString.append(" and date(model.insertedDate) >= :fromDate and date(model.insertedDate) <= :toDate ");
 		}
 		
-		if(stateId.longValue() == 1)
+		if(stateId.longValue() == 2)
 		{
 			queryString.append("  and model.booth.constituency.district.districtId > 10 ");
 		}
-		if(stateId.longValue() == 2)
+		if(stateId.longValue() == 1)
 		{
 			queryString.append(" and model.booth.constituency.district.districtId <= 10");
 		}

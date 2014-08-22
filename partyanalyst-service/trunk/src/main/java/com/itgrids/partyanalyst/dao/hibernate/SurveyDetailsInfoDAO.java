@@ -1744,16 +1744,16 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 			queryString.append("  and  date(model.date) >= :fromDate and date(model.date) <= :toDate ");
 		}
 		
-		if(stateId.longValue() == 1)
+		if(stateId.longValue() == 2)
 		{
 			queryString.append("  and model.booth.constituency.district.districtId > 10 ");
 		}
-		if(stateId.longValue() == 2)
+		if(stateId.longValue() == 1)
 		{
 			queryString.append(" and model.booth.constituency.district.districtId <= 10");
 		}
 		Query query = getSession().createQuery(queryString.toString());
-		if(fromDate == null && toDate == null)
+		if(fromDate != null && toDate != null)
 		{
 			query.setParameter("fromDate", fromDate);
 			query.setParameter("toDate", toDate);
@@ -1837,7 +1837,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 	public List<Object[]> getTeamDetailsInBoothLevel(Long stateId , Long constituencyId , Long surveyUserTypeId,Date date,Date fromDate , Date toDate)
 	{
 		StringBuffer queryString = new StringBuffer();
-		queryString.append("select  distinct model.booth.boothId,model.booth.partNo,model.surveyUser.surveyUserId,model.surveyUser.userName,model.surveyUser.mobileNo from SurveyDetailsInfo model" +
+		queryString.append("select  distinct model.booth.boothId,model.booth.partNo,model.surveyUser.surveyUserId,model.surveyUser.userName,model.surveyUser.mobileNo,count(distinct model.voter.voterId) from SurveyDetailsInfo model" +
 				"  where  model.booth.constituency.constituencyId = :constituencyId and model.surveyUser.surveyUserType.surveyUsertypeId = :surveyUserTypeId and " +
 				"  ");
 		if(fromDate== null && toDate == null)
