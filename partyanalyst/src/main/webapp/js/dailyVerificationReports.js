@@ -2170,5 +2170,5 @@ function buildBoothWiseStatusDetails(result)
 
 function openInternalConstituencyWiseWindow(userTypeId,searchType)
 {
-	window.open("surveyConstituencieOverview.action?regionId="+internalRegionId+"&userTypeId="+userTypeId+"&task="+searchType+"", "_blank");
+	window.open("surveyConstituencieOverview.action?constituencyId=1&regionId="+internalRegionId+"&userTypeId="+userTypeId+"&startDate="+$('#internalVerificationFromDate').val()+"&endDate="+$('#internalVerificationToDate').val(), "_blank");
 }
