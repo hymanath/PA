@@ -39,6 +39,8 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 	private List<SurveyDashBoardVO> resultList;
 	private List<SurveyResponceVO> collectedCasteDetails;
 	private List<BoothWiseSurveyStatusDetailsVO> boothWiseStatusList;
+	private String startDate;
+	private String endDate;
 	
 	@Autowired
 	private ICtpDashBoardService ctpDashBoardService;
@@ -110,7 +112,6 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 	{
 		this.request = request;
 	}
-
 	
 	public String getTask() {
 		return task;
@@ -121,7 +122,6 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 		this.task = task;
 	}
 
-	
 
 	public BigPictureVO getBigPictureVO() {
 		return bigPictureVO;
@@ -141,8 +141,22 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 	public void setBigPictureVOList(List<BigPictureVO> bigPictureVOList) {
 		this.bigPictureVOList = bigPictureVOList;
 	}
+	
+	public String getStartDate() {
+		return startDate;
+	}
 
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
 
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
 	public String getFromDate() {
 		return fromDate;
 	}
@@ -161,6 +175,7 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 	public void setToDate(String toDate) {
 		this.toDate = toDate;
 	}
+
 
 
 	public String execute()
@@ -336,7 +351,7 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 
 		try
 		{
-			resultList = ctpDashBoardService.getCasteCollectedDetails(regionId,userTypeId);
+			resultList = ctpDashBoardService.getCasteCollectedDetails(regionId,userTypeId,startDate,endDate);
 		} 
 		catch (Exception e) 
 		{
