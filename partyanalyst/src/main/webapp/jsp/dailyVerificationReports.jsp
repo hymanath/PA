@@ -101,7 +101,7 @@ var internalRegionId = 0;
 $( document ).ready(function() {
 $('#boothId').multiselect({
 	  noneSelectedText:"Select Booth(s)"});
-	$('.datepicker').datepicker();  
+	$('.datepicker').datepicker({ dateFormat: 'dd-mm-yy'});  
 	
 });
   </script> 
