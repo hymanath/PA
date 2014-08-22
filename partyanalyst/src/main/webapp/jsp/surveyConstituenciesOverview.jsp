@@ -149,7 +149,7 @@
 var reportType = '${constituencyId}';
 if(reportType == 1)
 {
-	getConstituencyWiseCasteCollectionDetails('${regionId}','${userTypeId}','${startDate}','${endDate}');
+	getConstituencyWiseCasteCollectionDetails('${regionId}','${userTypeId}');
 }
 else if(reportType == 2)
 {
@@ -193,8 +193,8 @@ function buildTeamConstituencyWiseDetailsSummary(result,strTypr,stateId,fromDate
 {
 	$('#constituencyWiseReport').html('');
 	var str = '';
-	str += '<table class="table table-bordered m_top20 table-hover table-striped">';
-	str += '<thead>';
+	str += '<table class="table table-bordered m_top20 table-hover table-striped" id="constiTeamTable">';
+	str += '<thead  class="alert alert-success">';
 	str += '<tr>';
 	str += '<th>Constituency</th>';
 	str += '<th>Booths</th>';
@@ -214,6 +214,10 @@ function buildTeamConstituencyWiseDetailsSummary(result,strTypr,stateId,fromDate
 	str += '<table>';
 	$('#constituencyWiseReport').html(str);
 	$('#constituencyWiseReport1').css('display','block');
+	$('#constiTeamTable').dataTable({
+		"iDisplayLength": -1,
+		"aLengthMenu": [[50, 100, 150, -1], [50, 100, 150, "All"]]
+		});
 	$('#ajaxImg').hide();
 }
 
@@ -256,8 +260,8 @@ function buildQcConstituencyWiseSummary(result,strTypr,stateId,fromDate,toDate)
 {
 	$('#constituencyWiseReport').html('');
 	var str = '';
-	str += '<table class="table table-bordered m_top20 table-hover table-striped ">';
-	str += '<thead>';
+	str += '<table class="table table-bordered m_top20 table-hover table-striped " id="boothWiseTeamTable">';
+	str += '<thead class="alert alert-success">';
 	str += '<tr>';
 	str += '<th>Constituency</th>';
 	str += '<th>Booths</th>';
@@ -277,6 +281,10 @@ function buildQcConstituencyWiseSummary(result,strTypr,stateId,fromDate,toDate)
 	str += '<table>';
 	$('#constituencyWiseReport').html(str);
 	$('#constituencyWiseReport1').css('display','block');
+	$('#boothWiseTeamTable').dataTable({
+		"iDisplayLength": -1,
+		"aLengthMenu": [[50, 100, 150, -1], [50, 100, 150, "All"]]
+		});
 	$('#ajaxImg').hide();;
 }
 function getBoothWiseQcVerificationSummary(constituencyId,type,stateId,name)
@@ -318,8 +326,8 @@ function buildQcBoothWiseQCSummary(result,name)
 
 	var str = '';
 	str += '<h4>'+name+' Constituency Wise Booth Details</h4>';
-	str += '<table class="table table-bordered m_top20 table-hover table-striped">';
-	str += '<thead>';
+	str += '<table class="table table-bordered m_top20 table-hover table-striped" id="constiQcTable">';
+	str += '<thead class="alert alert-success">';
 	str += '<tr>';
 	str += '<th>Booth</th>';
 	str += '<th>Survey User</th>';
@@ -341,6 +349,10 @@ function buildQcBoothWiseQCSummary(result,name)
 	str += '<table>';
 	$('#boothWiseReport').html(str);
 	$('#boothWiseReport1').css('display','block');
+	$('#constiQcTable').dataTable({
+		"iDisplayLength": -1,
+		"aLengthMenu": [[50, 100, 150, -1], [50, 100, 150, "All"]]
+		});
 	$('#boothAjaxImg').hide();
 }
 
@@ -383,8 +395,8 @@ function buildBoothWiseTeamCollecetedDetails(result,name)
 	$('#boothWiseReport').html('');
 	var str = '';
 	str += '<h4>'+name+' Constituency Wise Booth Details</h4>';
-	str += '<table class="table table-bordered m_top20 table-hover table-striped">';
-	str += '<thead>';
+	str += '<table class="table table-bordered m_top20 table-hover table-striped" id="boothQcTable">';
+	str += '<thead class="alert alert-success">';
 	str += '<tr>';
 	str += '<th>Booth</th>';
 	str += '<th>Survey User</th>';
@@ -406,6 +418,10 @@ function buildBoothWiseTeamCollecetedDetails(result,name)
 	str += '<table>';
 	$('#boothWiseReport').html(str);
 	$('#boothWiseReport1').css('display','block');
+	$('#boothQcTable').dataTable({
+		"iDisplayLength": -1,
+		"aLengthMenu": [[50, 100, 150, -1], [50, 100, 150, "All"]]
+		});
 	$('#boothAjaxImg').hide();
 }
 function getConstituencyWiseTeamDetails(type,stateId,fromDate , toDate)
@@ -434,8 +450,8 @@ function buildTeamConstituencyWiseSummary(result,strTypr,stateId,fromDate,toDate
 {
 	$('#constituencyWiseReport').html('');
 	var str = '';
-	str += '<table class="table table-bordered m_top20 table-hover table-striped ">';
-	str += '<thead>';
+	str += '<table class="table table-bordered m_top20 table-hover table-striped " id="constiTeamCollectedTable">';
+	str += '<thead class="alert alert-success">';
 	str += '<tr>';
 	str += '<th>Constituency</th>';
 	str += '<th>Booths</th>';
@@ -455,6 +471,10 @@ function buildTeamConstituencyWiseSummary(result,strTypr,stateId,fromDate,toDate
 	str += '<table>';
 	$('#constituencyWiseReport').html(str);
 	$('#constituencyWiseReport1').css('display','block');
+	$('#constiTeamCollectedTable').dataTable({
+		"iDisplayLength": -1,
+		"aLengthMenu": [[50, 100, 150, -1], [50, 100, 150, "All"]]
+		});
 	$('#ajaxImg').hide();
 }
 
@@ -491,8 +511,8 @@ function buildBoothWiseTeamDetails(result,name)
 {
 	var str = '';
 	str += '<h4>'+name+' Constituency Booth Wise Details</h4>';
-	str += '<table class="table table-bordered m_top20 table-hover table-striped">';
-	str += '<thead>';
+	str += '<table class="table table-bordered m_top20 table-hover table-striped" id="boothTeamCollectedTable">';
+	str += '<thead class="alert alert-success">';
 	str += '<tr>';
 	str += '<th>Booth</th>';
 	str += '<th>Survey User</th>';
@@ -514,20 +534,24 @@ function buildBoothWiseTeamDetails(result,name)
 	str += '<table>';
 	$('#boothWiseReport').html(str);
 	$('#boothWiseReport1').css('display','block');
+	$('#boothTeamCollectedTable').dataTable({
+		"iDisplayLength": -1,
+		"aLengthMenu": [[50, 100, 150, -1], [50, 100, 150, "All"]]
+		});
 	$('#boothAjaxImg').hide();
 }
 
 
-function getConstituencyWiseCasteCollectionDetails(regionId,userTypeId,startDate,endDate)
+function getConstituencyWiseCasteCollectionDetails(regionId,userTypeId)
 {
 	$('#constituencyWiseReport').html('');
-	$('#cAjaxImg').show();
+	$('#ajaxImg').show();
 
 	$.ajax({
 		type:'GET',
 		url: 'getCasteCollectedDetails.action',
 		dataType: 'json',
-		data: {regionId:regionId,userTypeId:userTypeId,startDate:startDate,endDate:endDate},
+		data: {regionId:regionId,userTypeId:userTypeId},
 	}).done(function(result){
 			buildConstituencyWiseDetails(result,userTypeId);
 	});
@@ -537,9 +561,8 @@ function buildConstituencyWiseDetails(result,userTypeId)
 	var str ='';
 
 	//str+='<h4 class=""> CONSTITUENCY WISE CASTE COLLECTION DETAILS </h4>';
-	str+='<div class="span10 offset1">';
 	str+='<table class="table table-bordered m_top20 table-hover table-striped" id="constnDtls">';
-	str+='<thead>';
+	str+='<thead class="alert alert-success">';
 	 str+='<tr>';
 	  str+='<th>Constituency Name</th>';
 	  str+='<th>Total Booths</th>';
@@ -562,7 +585,6 @@ function buildConstituencyWiseDetails(result,userTypeId)
 	});
 	str+='</tbody>';
 	str+='</table>';
-	str+='</div>';
 
 	$('#constituencyWiseReport').html(str);
 $('#constituencyWiseReport1').css('display','block');
@@ -571,7 +593,7 @@ $('#constituencyWiseReport1').css('display','block');
 		"aLengthMenu": [[50, 100, 150, -1], [50, 100, 150, "All"]]
 		});
 
-	$('#cAjaxImg').hide();
+	$('#ajaxImg').hide();
 
 }
 
@@ -579,12 +601,10 @@ function getConstituencySurveyDetails(constituencyId,userTypeId,locationName)
 {
 	$('#boothWiseReport,#votersReport').html('');
 	//$('#boothHeading').show();
-/*
 	 $('html, body').animate({
         scrollTop: $("#boothWiseReport").offset().top
     }, 2000);
-*/
-	$('#bAjaxImg').show();
+	$('#boothAjaxImg').show();
 
 	$.ajax({
 		type:'GET',
@@ -600,10 +620,8 @@ function buildConstituencySurveyDetails(result,userTypeId,locationName)
 	var str = '';
 
 	str+='<h4 class="">'+locationName+' CONSTITUENCY BOOTH WISE CASTE COLLECTION DETAILS</h4>';
-
-	str+='<div class="span10 offset1">';
 	str+='<table class="table table-bordered m_top20 table-hover table-striped" id="boothDtls">';
-	 str+='<thead>';
+	 str+='<thead class="alert alert-success">';
 	  str+='<tr>';
 	   str+='<th>Booth No</th>';
 	   str+='<th>Total Voters</th>';
@@ -622,7 +640,6 @@ function buildConstituencySurveyDetails(result,userTypeId,locationName)
 	  });
 	 str+='</tbody>';
 	str+='</table>';
-	str+='</div>';
 
 	$('#boothWiseReport').html(str);
 	$('#boothWiseReport1').css('display','block');
@@ -630,7 +647,7 @@ function buildConstituencySurveyDetails(result,userTypeId,locationName)
 		"iDisplayLength": -1,
 		"aLengthMenu": [[50, 100, 150, -1], [50, 100, 150, "All"]]
 		});
-	$('#bAjaxImg').hide();
+	$('#boothAjaxImg').hide();
 
 }
 
@@ -659,14 +676,12 @@ function getBoothWiseCollectedcasteDetails(boothId,boothNo,userTypeId)
 }
 function buildBoothWiseCasteCollectedDetails(result,boothNo)
 {
-
+	$('#boothWiseStatusDtls1').css('display','block');
 	var str ='';
 
 	str+='<h4 class="">COLLECTED CASTE DETAILS FOR BOOTH-'+boothNo+'</h4>';
-
-	str+='<div class="span10 offset1">';
 	str+='<table class="table table-bordered m_top20 table-hover table-striped" id="votersDtls">';
-	 str+='<thead>';
+	 str+='<thead class="alert alert-success">';
 	  str+='<tr>';
 	   str+='<th>Voter Name</th>';
 	   str+='<th>Relative Name</th>';
@@ -692,8 +707,6 @@ function buildBoothWiseCasteCollectedDetails(result,boothNo)
 
 	 str+='</tbody>';
 	str+='</table>';
-	str+='</div>';
-
 	$('#votersReport').html(str);
 	$('#boothWiseStatusDtls1').css('display','block');
    $('#votersDtls').dataTable({
@@ -706,12 +719,10 @@ function buildBoothWiseCasteCollectedDetails(result,boothNo)
 function buildBoothWiseVerifiedCasteCollectedDetails(result,boothNo)
 {
 	var str ='';
-
+	$('#boothWiseStatusDtls1').css('display','block');
 	str+='<h4 class="">COLLECTED CASTE DETAILS FOR BOOTH-'+boothNo+'</h4>';
-
-    str+='<div class="span10 offset1">';
 	str+='<table class="table table-bordered m_top20 table-hover table-striped" id="votersDtls">';
-	 str+='<thead>';
+	 str+='<thead class="alert alert-success">';
 	  str+='<tr>';
 	   str+='<th>Voter Name</th>';
 	   str+='<th>Relative Name</th>';
@@ -747,8 +758,6 @@ function buildBoothWiseVerifiedCasteCollectedDetails(result,boothNo)
 
 	 str+='</tbody>';
 	str+='</table>';
-	str+='</div>';
-
 	$('#votersReport').html(str);
 
 	$('#votersDtls').dataTable({
@@ -776,7 +785,7 @@ function buildBoothWiseStatusDetails(result)
 
     str+='<div class="span3 offset1">';
 	str+='<table class="table table-bordered m_top20 table-hover table-striped">';
-	 str+='<thead>';
+	 str+='<thead class="alert alert-success">';
       str+='<tr>';
 	    str+='<th>Boot No</th>';
 		str+='<th>DC</th>';
