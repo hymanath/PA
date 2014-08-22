@@ -509,7 +509,7 @@ function buildPanchayatSummary(result){
 	
 	$('.summaryDiv').dataTable();
 	//getBooksOfHouseHold();
-	getBooksWiseSummary();
+	//getBooksWiseSummary();
 }
 function buildBooksWiseSummary(result,constituency)
 {   
