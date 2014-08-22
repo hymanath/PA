@@ -469,10 +469,11 @@ public class CtpDashBoardService implements ICtpDashBoardService
 				{
 					BigPictureVO bigPictureVO = new BigPictureVO();
 					bigPictureVO.setDcVotersCount(objects[0] != null ?  Integer.valueOf(objects[0].toString()) : 0);// booth Id
-					bigPictureVO.setQcVotersCount(objects[2] != null ?  Integer.valueOf(objects[2].toString()) : 0);//survey userid
+					bigPictureVO.setVerifierVotersCount(objects[2] != null ?  Integer.valueOf(objects[2].toString()) : 0);//survey userid
 					bigPictureVO.setDcPercentage(objects[1] != null ? objects[1].toString() : "");//partNo
 					bigPictureVO.setQcPercentage(objects[3] != null ? objects[3].toString() : "");//user name
 					bigPictureVO.setVerifierPercentage(objects[4] != null ? objects[4].toString() : "");// mobile no
+					bigPictureVO.setQcVotersCount(objects[5] != null ?  Integer.valueOf(objects[5].toString()) : 0);//total Voters
 					returnList.add(bigPictureVO);
 				}
 			}
