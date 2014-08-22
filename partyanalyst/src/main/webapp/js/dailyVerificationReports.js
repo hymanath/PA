@@ -2104,18 +2104,48 @@ function getTeamCollectedDetailsSummaryReport(stateId,divId)
 function openConstituencyWiseWindowForDailyCollectedDetails(type)
 {
 	var stateId = $('#dailyDateRangeHidden').val();
-	window.open("surveyConstituencieOverview.action?constituencyId=2&regionId="+type+"&userTypeId="+stateId+"", "_blank");
+	var fromDate = $('#dailyDateFromDate').val();
+	var toDate   = $('#dailtDateToDate').val();
+	if(fromDate == '')
+	{
+		fromDate = "null";
+	}
+	if(toDate == '')
+	{
+		toDate = "null";
+	}
+	window.open("surveyConstituencieOverview.action?toDate="+toDate+"&fromDate="+fromDate+"&constituencyId=2&regionId="+type+"&userTypeId="+stateId+"", "_blank");
 }
 
 function openConstituencyWiseWindowForQcDetails(type)
 {
-	var stateId = $('#qcVerificationHidden').val();
-	window.open("surveyConstituencieOverview.action?constituencyId=3&regionId="+type+"&userTypeId="+stateId+"", "_blank");
+	var stateId  = $('#qcVerificationHidden').val();
+	var fromDate = $('#qcVerificationFromDate').val();
+	var toDate   = $('#qcVerificationToDate').val();
+	if(fromDate == '')
+	{
+		fromDate = "null";
+	}
+	if(toDate == '')
+	{
+		toDate = "null";
+	}
+	window.open("surveyConstituencieOverview.action?toDate="+toDate+"&fromDate="+fromDate+"&constituencyId=3&regionId="+type+"&userTypeId="+stateId+"", "_blank");
 }
 function openConstituencyWiseWindowForTeamDetails(type)
 {
 	var stateId = $('#todatTeamHidden').val();
-	window.open("surveyConstituencieOverview.action?constituencyId=4&regionId="+type+"&userTypeId="+stateId+"", "_blank");
+	var fromDate = $('#teamDetailsFromDate').val();
+	var toDate   = $('#teamDetailsToDate').val();
+	if(fromDate == '')
+	{
+		fromDate = "null";
+	}
+	if(toDate == '')
+	{
+		toDate = "null";
+	}
+	window.open("surveyConstituencieOverview.action?toDate="+toDate+"&fromDate="+fromDate+"&constituencyId=4&regionId="+type+"&userTypeId="+stateId+"", "_blank");
 }
 function getBoothWiseDetails()
 {
