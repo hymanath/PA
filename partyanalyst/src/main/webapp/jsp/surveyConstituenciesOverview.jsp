@@ -551,7 +551,7 @@ function getConstituencyWiseCasteCollectionDetails(regionId,userTypeId)
 		type:'GET',
 		url: 'getCasteCollectedDetails.action',
 		dataType: 'json',
-		data: {regionId:regionId,userTypeId:userTypeId},
+		data: {regionId:regionId,userTypeId:userTypeId,startDate:'${startDate}',endDate:'${endDate}'},
 	}).done(function(result){
 			buildConstituencyWiseDetails(result,userTypeId);
 	});
