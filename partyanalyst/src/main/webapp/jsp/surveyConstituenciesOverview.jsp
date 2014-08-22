@@ -144,7 +144,7 @@
 var reportType = '${constituencyId}';
 if(reportType == 1)
 {
-	getConstituencyWiseCasteCollectionDetails('${regionId}','${userTypeId}');
+	getConstituencyWiseCasteCollectionDetails('${regionId}','${userTypeId}','${startDate}','${endDate}');
 }
 else if(reportType == 2)
 {
@@ -477,7 +477,7 @@ function buildBoothWiseTeamDetails(result)
 }
 
 
-function getConstituencyWiseCasteCollectionDetails(regionId,userTypeId)
+function getConstituencyWiseCasteCollectionDetails(regionId,userTypeId,startDate,endDate)
 {
 	$('#constituencyWiseReport').html('');
 	$('#cAjaxImg').show();
@@ -486,7 +486,7 @@ function getConstituencyWiseCasteCollectionDetails(regionId,userTypeId)
 		type:'GET',
 		url: 'getCasteCollectedDetails.action',
 		dataType: 'json',
-		data: {regionId:regionId,userTypeId:userTypeId},
+		data: {regionId:regionId,userTypeId:userTypeId,startDate:startDate,endDate:endDate},
 	}).done(function(result){
 			buildConstituencyWiseDetails(result,userTypeId);
 	});
