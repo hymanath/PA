@@ -61,7 +61,7 @@ public class HHSurveyAnswersDAO extends GenericDaoHibernate<HHSurveyAnswers,Long
 	}
 	
 	public List<Object[]> getQuestionWiseSummaryCount(Long questionId,Long constituencyId){
-		Query query = getSession().createQuery(" select count(model.hhSurveyAnswerId)," +//0 -- COUNT
+		Query query = getSession().createQuery(" select count(distinct model2.voter.voterId)," +//0 -- COUNT
 				" model.hhOptions.optionsId," +//1 -- OPTION ID
 				" model.hhOptions.options," +//2 -- OPTION
 				" model.hhSurveyQuestion.surveyQuestionId," + // 3 -- QUESTION ID
@@ -83,7 +83,7 @@ public class HHSurveyAnswersDAO extends GenericDaoHibernate<HHSurveyAnswers,Long
 	}
 	
 	public List<Object[]> getQuestionWiseSummaryCountByPanchayat(Long questionId,Long constituencyId){
-		Query query = getSession().createQuery(" select count(model.hhSurveyAnswerId), " +//0 -- COUNT
+		Query query = getSession().createQuery(" select count(distinct model2.voter.voterId)," +//0 -- COUNT
 				" model.hhOptions.optionsId," +//1 -- OPTION ID
 				" model.hhOptions.options," +//2 -- OPTION
 				" model.hhSurveyQuestion.surveyQuestionId," + // 3 -- QUESTION ID
@@ -107,7 +107,7 @@ public class HHSurveyAnswersDAO extends GenericDaoHibernate<HHSurveyAnswers,Long
 	}
 	
 	public List<Object[]> getHouseHoldsOfPanchayatWithOption(Long optionId,Long panchayatId){
-		Query query = getSession().createQuery(" select model2.houseHoldVoterId," + // 0 -- HOUSEHOLD VOTER ID
+		Query query = getSession().createQuery(" select distinct model2.houseHoldVoterId," + // 0 -- HOUSEHOLD VOTER ID
 				" model2.houseHolds.houseHoldId," +//1 -- HOUSEHOLD ID
 				" model2.houseHolds.houseNo," +//2 -- HOUSE NO
 				" model2.voter.name," + // 3 -- VOTER NAME(FAMILY HEAD)
@@ -134,7 +134,7 @@ public class HHSurveyAnswersDAO extends GenericDaoHibernate<HHSurveyAnswers,Long
 	public List<Object[]> getVoterAndNonVotersUnderOption(Long optionId,Long panchayatId){
 		Query query = getSession().createQuery(" select "+
 				" model2.houseHolds.houseHoldId," +//1 -- HOUSEHOLD ID
-				" count(model2.voter.voterId)" +//2 -- HOUSE NO
+				" count(distinct model2.voter.voterId)" +//2 -- HOUSE NO
 				//" count(model2.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId)" + // 3 -- VOTER NAME(FAMILY HEAD)
 				" from HHSurveyAnswers model,HHBoothLeader model1,HouseHoldVoter model2 " +
 				" where " +
@@ -156,7 +156,7 @@ public class HHSurveyAnswersDAO extends GenericDaoHibernate<HHSurveyAnswers,Long
 		Query query = getSession().createQuery(" select "+
 				" model2.houseHolds.houseHoldId," +//1 -- HOUSEHOLD ID
 				//" count(model2.voter.voterId)," +//2 -- HOUSE NO
-				" count(model2.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId)" + // -- VOTER NAME(FAMILY HEAD)
+				" count(distinct model2.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId)" + // -- VOTER NAME(FAMILY HEAD)
 				" from HHSurveyAnswers model,HHBoothLeader model1,HouseHoldVoter model2 " +
 				" where " +
 				" model.houseHold.houseHoldId = model2.houseHolds.houseHoldId " +

@@ -502,6 +502,33 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 	}
 	
 	
+	public List<Object[]> getBooks(Long constituencyId){
+		Query query = getSession().createQuery(" select distinct model.hhLeaderBooks.hhLeaderBookId," +
+				" model.hhLeaderBooks.bookNo," +
+				" model2.booth.tehsil.tehsilName," +
+				" model2.booth.tehsil.tehsilId," +
+				" model2.booth.panchayat.panchayatId," +
+				" model2.booth.panchayat.panchayatName," +
+				" model2.hhLeader.name," +
+				" model2.hhLeader.voterId" +
+				//" count(distinct model.voter.voterId)" +
+				//" count(model.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId)," +
+				//" count(distinct model.houseHoldId)" +
+				" from HouseHoldVoter model,HHBoothLeader model2" +
+				" where model.leaderId =  model2.hhLeader.id " +
+				" and model2.constituency.constituencyId =:constituencyId " +
+				" and model.isDelete =:deleteStatus " +
+				" and model2.hhLeader.is_active =:activeStatus" +
+				//" and model.voter.voterId is not null" +
+				//" and model2.booth.publicationDate.publicationDateId = 10"+ 
+				" group by model.hhLeaderBooks.hhLeaderBookId ");
+		
+		query.setParameter("deleteStatus", IConstants.FALSE);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("activeStatus", "YES");
+		return query.list();
+	}
+	
 	public List<Object[]> getBooksOfHouseHolds(Long constituencyId){
 		Query query = getSession().createQuery(" select distinct model.hhLeaderBooks.hhLeaderBookId," +
 				" model.hhLeaderBooks.bookNo," +
