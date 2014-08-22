@@ -1892,19 +1892,26 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
     			
     			Map<Long,HouseHoldsSummaryReportVO> hhCountMap = new HashMap<Long, HouseHoldsSummaryReportVO>();
     			List<Object[]> hhList = hhSurveyAnswersDAO.getVoterAndNonVotersUnderOption(optionId, panchayatId);
+    			List<Object[]> hhList1 = hhSurveyAnswersDAO.getVoterAndNonVotersUnderOption1(optionId, panchayatId);
     			
     			if(hhList!=null && hhList.size()>0){
     				for(Object[] obj:hhList){
     					HouseHoldsSummaryReportVO tempVO = new HouseHoldsSummaryReportVO();
     					tempVO.setHouseHoldId(Long.valueOf(obj[0].toString()));
     					tempVO.setVotersCount(Long.valueOf(obj[1].toString()));
-    					tempVO.setNonVotersCount(Long.valueOf(obj[2].toString()));
+    					//tempVO.setNonVotersCount(Long.valueOf(obj[2].toString()));
     					
     					hhCountMap.put(Long.valueOf(obj[0].toString()), tempVO);
     					
     				}
     			}
     			
+    			if(hhList1!=null && hhList1.size()>0){    				
+    				for(Object[] obj:hhList1){  					
+    					HouseHoldsSummaryReportVO tempVO = hhCountMap.get(Long.valueOf(obj[0].toString()));
+    					tempVO.setNonVotersCount(Long.valueOf(obj[1].toString()));   					
+    				}
+    			}
     			List<Object[]> list = hhSurveyAnswersDAO.getHouseHoldsOfPanchayatWithOption(optionId,panchayatId);
     			if(list!=null && list.size()>0){
     				for(Object[] obj:list){
