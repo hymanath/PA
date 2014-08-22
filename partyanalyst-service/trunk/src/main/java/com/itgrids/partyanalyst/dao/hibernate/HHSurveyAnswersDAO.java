@@ -134,7 +134,7 @@ public class HHSurveyAnswersDAO extends GenericDaoHibernate<HHSurveyAnswers,Long
 	public List<Object[]> getVoterAndNonVotersUnderOption(Long optionId,Long panchayatId){
 		Query query = getSession().createQuery(" select "+
 				" model2.houseHolds.houseHoldId," +//1 -- HOUSEHOLD ID
-				" count(model2.voter.voterId)," +//2 -- HOUSE NO
+				" count(model2.voter.voterId)" +//2 -- HOUSE NO
 				//" count(model2.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId)" + // 3 -- VOTER NAME(FAMILY HEAD)
 				" from HHSurveyAnswers model,HHBoothLeader model1,HouseHoldVoter model2 " +
 				" where " +
