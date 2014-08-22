@@ -101,6 +101,7 @@ var internalRegionId = 0;
 $( document ).ready(function() {
 $('#boothId').multiselect({
 	  noneSelectedText:"Select Booth(s)"});
+	$('.datepicker').datepicker();  
 	
 });
   </script> 
@@ -183,12 +184,12 @@ $('#boothId').multiselect({
 								<input type="hidden" value="0" id="dailyDateRangeHidden"></input>
 								<div class="row-fluid">
 									<div class="input-append span6">
-										<input type="text" class="span8 offset2 offset2" placeholder="From Date">
-										<span class="add-on"><i class="icon-calendar"></i></span>
+										<input type="text" class="span8 offset2 datepicker" placeholder="From Date" id="dailyDateFromDate">
+										<!--<span class="add-on"><i class="icon-calendar"></i></span>-->
 									</div>
 									<div class="input-append span6">
-										<input type="text" class="span8  " placeholder="To Date">
-										<span class="add-on"><i class="icon-calendar"></i></span>
+										<input type="text" class="span8  datepicker" placeholder="To Date" id="dailtDateToDate">
+										<!--<span class="add-on"><i class="icon-calendar"></i></span>-->
 									</div>						
 								</div>
 								
@@ -225,12 +226,12 @@ $('#boothId').multiselect({
 								
 								<div class="row-fluid">
 									<div class="input-append span6">
-										<input type="text" class="span8 offset2 offset2" placeholder="From Date">
-										<span class="add-on"><i class="icon-calendar"></i></span>
+										<input type="text" class="span8 datepicker offset2" placeholder="From Date" id="internalVerificationFromDate">
+										<!--<span class="add-on"><i class="icon-calendar"></i></span>-->
 									</div>
 									<div class="input-append span6">
-										<input type="text" class="span8  " placeholder="To Date">
-										<span class="add-on"><i class="icon-calendar"></i></span>
+										<input type="text" class="span8 datepicker " placeholder="To Date" id="internalVerificationToDate">
+										<!--<span class="add-on"><i class="icon-calendar"></i></span>-->
 									</div>						
 								</div>
 								
@@ -261,12 +262,12 @@ $('#boothId').multiselect({
 								<input type="hidden" value="0" id="qcVerificationHidden"></input>
 								<div class="row-fluid">
 									<div class="input-append span6">
-										<input type="text" class="span8 offset2 offset2" placeholder="From Date">
-										<span class="add-on"><i class="icon-calendar"></i></span>
+										<input type="text" class="span8 offset2 datepicker" placeholder="From Date" id="qcVerificationFromDate">
+										<!--<span class="add-on"><i class="icon-calendar"></i></span>-->
 									</div>
 									<div class="input-append span6">
-										<input type="text" class="span8  " placeholder="To Date">
-										<span class="add-on"><i class="icon-calendar"></i></span>
+										<input type="text" class="span8 datepicker " placeholder="To Date" id="qcVerificationToDate">
+										<!--<span class="add-on"><i class="icon-calendar"></i></span>-->
 									</div>						
 								</div>
 								
@@ -294,12 +295,12 @@ $('#boothId').multiselect({
 								<input type="hidden" value ="0" id="todatTeamHidden"></input>
 								<div class="row-fluid">
 									<div class="input-append span6">
-										<input type="text" class="span8 offset2 offset2" placeholder="From Date">
-										<span class="add-on"><i class="icon-calendar"></i></span>
+										<input type="text" class="span8 offset2 datepicker" placeholder="From Date" id="teamDetailsFromDate">
+										<!--<span class="add-on"><i class="icon-calendar"></i></span>-->
 									</div>
 									<div class="input-append span6">
-										<input type="text" class="span8  " placeholder="To Date">
-										<span class="add-on"><i class="icon-calendar"></i></span>
+										<input type="text" class="span8 datepicker " placeholder="To Date" id="teamDetailsToDate">
+										<!--<span class="add-on"><i class="icon-calendar"></i></span>-->
 									</div>						
 								</div>
 								
