@@ -1887,9 +1887,37 @@ function buildFinalReportWithTP(result){
 	$("#FinalReportWithTPId").html(str);
 
 }
+
+function getEntaieSelectionDetails(stateId,divId)
+{
+	$('.entaieSelection').removeClass('btn-success');
+	$('.datepicker').each(function(){ $(this).val('') ; });
+	if(stateId == 1)
+	{
+		getInternalVerificationSummary(2,'apRegionsId1');
+		getQcVerificationSummaryReport(stateId,'apQcColledcetdId');
+		getTodayTeamDetails(stateId,'apTeamId');
+		getTeamCollectedDetailsSummaryReport(stateId,'apCollecetdId');
+	}
+	else if(stateId == 2)
+	{
+		getInternalVerificationSummary(1,'tsRegionsId1');
+		getQcVerificationSummaryReport(stateId,'tsQcCollectedId');
+		getTodayTeamDetails(stateId,'tsTeamId');
+		getTeamCollectedDetailsSummaryReport(stateId,'tsCollecetdId');
+	}
+	else
+	{
+		getInternalVerificationSummary(0,'allRegionsId1');
+		getQcVerificationSummaryReport(stateId,'allQcCollecetdId');
+		getTodayTeamDetails(stateId,'allTeamId');
+		getTeamCollectedDetailsSummaryReport(stateId,'allCollecetdId');
+	}
+	$('#'+divId+'').addClass('btn-success');
+}
 function getBigPictureDetails(stateId)
 {
-	getInternalVerificationSummary(0,'allVerifiedDetailsId');
+	getInternalVerificationSummary(0,'allRegionsId1');
 	getQcVerificationSummaryReport(0,'allQcCollecetdId');
 	getTodayTeamDetails(0,'allTeamId');
 	getTeamCollectedDetailsSummaryReport(0,'allCollecetdId');
@@ -1911,12 +1939,16 @@ function getBigPictureDetails(stateId)
 				$('#decDetails').html('<a href="javascript:{openConstituencyWiseWindow(1,\'DATA COLLECTION \')}">'+result.dcVotersCount+'</a>');
 				$('#verifierDetails').html('<a href="javascript:{openConstituencyWiseWindow(0,\'VERIFICATION\')}">'+result.verifierVotersCount+'</a>');
 				$('#qcDetails').html('<a href="javascript:{openConstituencyWiseWindow(10,\'QC VERIFICATION\')}">'+result.qcVotersCount+'</a>');
+				$('#totalState').show();
 			}
 		});	
 }
 
 function getTodayTeamDetailsbtDeates()
 {
+	$('#dcDetailsId').html('<img src="./images/icons/search.gif" ></img>');
+	$('#dvDetailsId').html('<img src="./images/icons/search.gif" ></img>');
+	$('#qcDetailsId').html('<img src="./images/icons/search.gif" ></img>');
 	var stateId  = $('#dailyDateRangeHidden').val();
 	var divId = '';
 	if(stateId == 0)
@@ -1953,6 +1985,9 @@ function getTodayTeamDetailsBtDates()
 }
 function getTodayTeamDetails(stateId,divId)
 {
+	$('#dcMembers').html('<img src="./images/icons/search.gif" ></img>');
+	$('#dvMembers').html('<img src="./images/icons/search.gif" ></img>');
+	$('#qcMembers').html('<img src="./images/icons/search.gif" ></img>');
 	$('#todatTeamHidden').val(stateId);
 	$('.todayTeamDetailsCls').removeClass('btn-success');
 	var fromDate = $('#teamDetailsFromDate').val();
@@ -1987,6 +2022,9 @@ function getTodayTeamDetails(stateId,divId)
 }
 function getInternalVerificationSummaryBtDates()
 {
+	$('#verifiedCount').html('<img src="./images/icons/search.gif" ></img>');
+	$('#matchedCount').html('<img src="./images/icons/search.gif" ></img>');
+	$('#unMatchedCount').html('<img src="./images/icons/search.gif" ></img>');
 	var stateId  = internalRegionId;
 	var divId = '';
 	if(stateId == 0)
@@ -2006,6 +2044,9 @@ function getInternalVerificationSummaryBtDates()
 
 function getInternalVerificationSummary(stateId,divId)
 {
+	$('#verifiedCount').html('<img src="./images/icons/search.gif" ></img>');
+	$('#matchedCount').html('<img src="./images/icons/search.gif" ></img>');
+	$('#unMatchedCount').html('<img src="./images/icons/search.gif" ></img>');
 	$('#internalVerificationHidden').val(stateId);
 	$('.selectedCls1').removeClass('btn-success');
 	var fromDate = $('#internalVerificationFromDate').val();
@@ -2034,9 +2075,8 @@ function getInternalVerificationSummary(stateId,divId)
 				$('#verifiedCount').html('<a href="javascript:{openInternalConstituencyWiseWindow(0,\'INTERNAL VERIFICATION VERIFIED \')}">'+result.verifierVotersCount+'</a>');
 				$('#matchedCount').html(result.correctDetails);
 				$('#unMatchedCount').html(result.wrongDetails);
-				
-				
 				$('#redoBoothDetails').html('<a href="javascript:{openInternalConstituencyWiseWindow(4,\'INTERNAL VERIFICATION REDO RECORDS  \')}">'+result.redoVoters +"</a>-"+ result.redoBooths);
+				$('#'+divId+'').addClass('btn-success');
 			}
 		});	
 }
@@ -2061,6 +2101,9 @@ function getQcVerificationSummaryReportbtDeates()
 }
 function getQcVerificationSummaryReport(stateId,divId)
 {
+	$('#verifiedRecords').html('<img src="./images/icons/search.gif" ></img>');
+	$('#qcMatched').html('<img src="./images/icons/search.gif" ></img>');
+	$('#qcUnMatched').html('<img src="./images/icons/search.gif" ></img>');
 	$('#qcVerificationHidden').val(stateId);
 	$('.qcCollectedDetailsCls').removeClass('btn-success');
 	var fromDate = $('#qcVerificationFromDate').val();
@@ -2096,6 +2139,9 @@ function getQcVerificationSummaryReport(stateId,divId)
 
 function getTeamCollectedDetailsSummaryReport(stateId,divId)
 {
+	$('#dcDetailsId').html('<img src="./images/icons/search.gif" ></img>');
+	$('#dvDetailsId').html('<img src="./images/icons/search.gif" ></img>');
+	$('#qcDetailsId').html('<img src="./images/icons/search.gif" ></img>');
 	$('#dailyDateRangeHidden').val(stateId);
 	$('.todayCollectdDetailsCls').removeClass('btn-success');
 	var fromDate = $('#dailyDateFromDate').val();

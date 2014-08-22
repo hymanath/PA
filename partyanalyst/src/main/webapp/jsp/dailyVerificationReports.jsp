@@ -126,49 +126,48 @@ $('#boothId').multiselect({
 	
   
   
-  <div class="container">
+  <div class="">
   
  <!----- CTP DASHBOARD START  -->
 		<div class="row" id="dashBoardDiv">	
-			<div class="row">
+			<div class="">
 			<div class="span12">
 				
 				<div class="row-fluid ">
 					<div class="span12 m_top20 widgetservey">
-						<h4>Caste Collection Dashboard</h4>						
+						<h4>Caste Collection Dashboard <span id="totalState" style="display:none" class="pull-right btn-group   pull-right"><a onClick="getEntaieSelectionDetails(0,this.id)" id="all" class="btn btn-mini btn-success entaieSelection">ALL</a>|<a  onClick="getEntaieSelectionDetails(1,this.id)" id="ap" class="btn btn-mini entaieSelection ">AP</a>|<a  onClick="getEntaieSelectionDetails(2,this.id)" id="ts" class="btn btn-mini entaieSelection">TS</a></span></h4>						
 						
 						<!-----Data Collection & Verification Main Div---->
 						<div class="row-fluid m_top10" >
 							<!----Data Collection (left)------>
 							<div class="span6 wiget-yellow">	
 								<h4 class="text-right">Big Picture
-								<span class="btn-group pull-right"><a href="javascript:{setRegionLevel(0,'allRegionsId')}" class="btn btn-mini selectedCls btn-success" id="allRegionsId">ALL</a><a href="javascript:{setRegionLevel(2,'apRegionsId')}" class="btn btn-mini selectedCls" id="apRegionsId">AP</a><a href="javascript:{setRegionLevel(1,'tsRegionsId')}" class="btn btn-mini selectedCls" id="tsRegionsId">TS</a></span>
 								</h4>
 								<div class="row-fluid">
 									<div class="well well-small span4  text-center">
-										<h4 id="totalVoters">0</h4>
-										<p>Voters</p>
+										<h4 id="totalVoters"><img src="./images/icons/search.gif" ></img></h4>
+										<p>Target </br> Voters</p>
 									</div>
 									<div class="well well-small span4 text-center">
-										<h4 id="totalBooths">0</h4>
-										<p>Booths</p>
+										<h4 id="totalBooths"><img src="./images/icons/search.gif" ></img></h4>
+										<p>Target </br>Booths</p>
 									</div>
 									<div class="well well-small span4 text-center">
-										<h4 id="totalConstituencyes">0</h4>
-										<p>Constituencies</p>
+										<h4 id="totalConstituencyes"><img src="./images/icons/search.gif" ></img></h4>
+										<p>Target </br>Constituencies</p>
 									</div>							
 								</div>
 								<div class="row-fluid">
 								<div class="well well-small span4 text-center">
-									<h4 id="decDetails">0</h4>
+									<h4 id="decDetails"><img src="./images/icons/search.gif" ></img></h4>
 									<p>Data Collection Completed</p>
 								</div>
 								<div class="well well-small span4 text-center">
-									<h4 id="verifierDetails">0</h4>
+									<h4 id="verifierDetails"><img src="./images/icons/search.gif" ></img></h4>
 									<p>Verification Completed</p>
 								</div>
 								<div class="well well-small span4 text-center">
-									<h4 id="qcDetails">0</h4>
+									<h4 id="qcDetails"><img src="./images/icons/search.gif" ></img></h4>
 									<p>QC Verification Completed</p>
 								</div>							
 								</div>
@@ -202,15 +201,15 @@ $('#boothId').multiselect({
 								
 								<div class="row-fluid">
 									<div class="well well-small span4  text-center">
-										<a onClick="getConstituencyWiseTeamCollecetdDetails(1)"><h4 style = "cursor: pointer;" id="dcDetailsId">0</h4></a>
+										<a onClick="getConstituencyWiseTeamCollecetdDetails(1)"><h4 style = "cursor: pointer;" id="dcDetailsId"><img src="./images/icons/search.gif" ></img></h4></a>
 										<p class="">Data Collection Completed</p>										
 									</div>
 									<div class="well well-small span4 text-center">
-										<a onClick="getConstituencyWiseTeamCollecetdDetails(4)"><h4 style = "cursor: pointer;" id="dvDetailsId">0</h4></a>
+										<a onClick="getConstituencyWiseTeamCollecetdDetails(4)"><h4 style = "cursor: pointer;" id="dvDetailsId"><img src="./images/icons/search.gif" ></img></h4></a>
 										<p>Verification Completed</p>
 									</div>
 									<div class="well well-small span4 text-center">
-										<a onClick="getConstituencyWiseTeamCollecetdDetails(10)"><h4 style = "cursor: pointer;" id="qcDetailsId">0</h4></a>
+										<a onClick="getConstituencyWiseTeamCollecetdDetails(10)"><h4 style = "cursor: pointer;" id="qcDetailsId"><img src="./images/icons/search.gif" ></img></h4></a>
 										<p>QC Verification Completed</p>
 									</div>							
 								</div>
@@ -228,27 +227,28 @@ $('#boothId').multiselect({
 								</h4>
 								
 								<div class="row-fluid">
-									<div class="input-append span6">
+									<div class="input-append span4">
 										<input type="text" class="span8 datepicker offset2 fromDatepicker" placeholder="From Date" id="internalVerificationFromDate">
-										<!--<span class="add-on"><i class="icon-calendar"></i></span>-->
 									</div>
-									<div class="input-append span6">
+									<div class="input-append span4">
 										<input type="text" class="span8 datepicker toDatepicker" placeholder="To Date" id="internalVerificationToDate">
-										<!--<span class="add-on"><i class="icon-calendar"></i></span>-->
-									</div>						
+									</div>
+									<div class="span4">
+										<a class="btn btn-mini" onClick="getInternalVerificationSummaryBtDates()">Submit</a>
+									</div>									
 								</div>
 								
 								<div class="row-fluid">
 									<div class="well well-small span4  text-center">
-										<h4 id="verifiedCount">0</h4>
+										<h4 id="verifiedCount"><img src="./images/icons/search.gif" ></img></h4>
 										<p class="">Verified <br/> Records</p>										
 									</div>
 									<div class="well well-small span4 text-center">
-										<h4 id="matchedCount">0</h4>
+										<h4 id="matchedCount"><img src="./images/icons/search.gif" ></img></h4>
 										<p>Valid <br/> Records</p>
 									</div>
 									<div class="well well-small span4 text-center">
-										<h4 id="unMatchedCount">0</h4>
+										<h4 id="unMatchedCount"><img src="./images/icons/search.gif" ></img></h4>
 										<p>Corrected <br/> Records</p>
 									</div>							
 								</div>
@@ -277,15 +277,15 @@ $('#boothId').multiselect({
 								
 								<div class="row-fluid">
 									<div class="well well-small span4  text-center">
-										<h4 id="verifiedRecords">0</h4>
+										<h4 id="verifiedRecords"><img src="./images/icons/search.gif" ></img></h4>
 										<p class="">Records Verified</p>										
 									</div>
 									<div class="well well-small span4 text-center">
-										<h4  id="qcMatched" >0</h4>
+										<h4  id="qcMatched" ><img src="./images/icons/search.gif" ></img></h4>
 										<p>Matched Identified</p>
 									</div>
 									<div class="well well-small span4 text-center">
-										<h4 id="qcUnMatched" >0</h4></a>
+										<h4 id="qcUnMatched" ><img src="./images/icons/search.gif" ></img></h4></a>
 										<p>Records Collected</p>
 									</div>
 								</div>							
@@ -314,15 +314,15 @@ $('#boothId').multiselect({
 								
 								<div class="row-fluid">
 									<div class="well well-small span4  text-center">
-										<h4  id="dcMembers" >0</h4>
+										<h4  id="dcMembers" ><img src="./images/icons/search.gif" ></img></h4>
 										<p class="">Data Collectors</p>										
 									</div>
 									<div class="well well-small span4 text-center">
-										<h4  id="dvMembers" >0</h4>
+										<h4  id="dvMembers" ><img src="./images/icons/search.gif" ></img></h4>
 										<p>Data Verifiers</p>
 									</div>
 									<div class="well well-small span4 text-center">
-										<h4  id="qcMembers" >0</h4></a>
+										<h4  id="qcMembers" ><img src="./images/icons/search.gif" ></img></h4></a>
 										<p>Quality Check</p>
 									</div>
 								</div>							
@@ -670,6 +670,16 @@ function setRegionLevel(regionId,divId)
 }
 function openConstituencyWiseWindow(userTypeId,searchType)
 {
+	var fromDate = $('#teamDetailsFromDate').val();
+	var toDate   = $('#teamDetailsToDate').val();
+	if(fromDate == '')
+	{
+		fromDate = 'null';
+	}
+	if(toDate == '')
+	{
+		toDate = 'null';
+	}
 	var startDate = "";
 	var endDate = "";
 	window.open("surveyConstituencieOverview.action?constituencyId=1&&startDate="+startDate+"&endDate="+endDate+"regionId="+sRegionId+"&userTypeId="+userTypeId+"&task="+searchType+"", "_blank");
@@ -677,9 +687,13 @@ function openConstituencyWiseWindow(userTypeId,searchType)
 
 function setInternalVerificationRegionLevel(iRegionId,divId)
 {
- internalRegionId = iRegionId;
+	$('#verifiedCount').html('<img src="./images/icons/search.gif" ></img>');
+	$('#matchedCount').html('<img src="./images/icons/search.gif" ></img>');
+	$('#unMatchedCount').html('<img src="./images/icons/search.gif" ></img>');
+	internalRegionId = iRegionId;
 	$('.selectedCls1').removeClass('btn-success');
 	$('#'+divId+'').addClass('btn-success');
+	getInternalVerificationSummary(internalRegionId,divId);
 }
 </script>
 </body>
