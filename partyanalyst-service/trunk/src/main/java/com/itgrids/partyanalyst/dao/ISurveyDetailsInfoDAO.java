@@ -173,9 +173,9 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	public List<Object[]> getBoothWiseSummaryForQc(Long stateId , Long constituencyId,Date fromDate , Date toDate);
 	public List<Object[]> getTotalVotersAndBoothsAndConstituencyes(Long stateId);
 	public List<Object[]> getConstituencyWiseCasteCollectedDetailsByUserTypeId(Long surveyUserTypeId,
-			Long startDistrictId, Long endDistrictId);
+			Long startDistrictId, Long endDistrictId,Date startDate,Date endDate);
 	public List<Object[]> getConstituencyWiseCasteCollectedBoothsDetailsByUserTypeId(Long surveyUserTypeId,
-			Long startDistrictId, Long endDistrictId);
+			Long startDistrictId, Long endDistrictId,Date startDate,Date endDate);
 	
 	public List<Object[]> getBoothWiseCollectedCasteDetailsByConstituencyId(
 			Long constituencyId, Long userTypeId);

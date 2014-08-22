@@ -778,7 +778,7 @@ public class CtpDashBoardService implements ICtpDashBoardService
 		}
 		return returnList;
 	}
-	public List<SurveyDashBoardVO> getCasteCollectedDetails(Long regionId,Long userTypeId)
+	public List<SurveyDashBoardVO> getCasteCollectedDetails(Long regionId,Long userTypeId,String startDate,String endDate)
 	{
 		List<SurveyDashBoardVO> resultList = new ArrayList<SurveyDashBoardVO>();
 		
@@ -790,6 +790,10 @@ public class CtpDashBoardService implements ICtpDashBoardService
 			 List<Object[]> totalVotersDtls = null;
 			 List<Object[]> totalBoothsDtls = null;
 			 
+			SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+			 
+			 Date strtDt = formatter.parse(startDate);
+			 Date endDt = formatter.parse(endDate);
 			 
 			if (userTypeId.equals(IConstants.DATA_COLLECTOR_ROLE_ID)
 					|| userTypeId.equals(IConstants.THIRD_PARTY_ROLE_ID) 
@@ -799,33 +803,39 @@ public class CtpDashBoardService implements ICtpDashBoardService
 				 {
 					 votersDtls = surveyDetailsInfoDAO
 							.getConstituencyWiseCasteCollectedDetailsByUserTypeId(
-									userTypeId, 1L, 10L);
+									userTypeId, 1L, 10L,strtDt,endDt);
 					
 					boothsCount = surveyDetailsInfoDAO
 							.getConstituencyWiseCasteCollectedBoothsDetailsByUserTypeId(
-									userTypeId, 1L, 10L);
+									userTypeId, 1L, 10L,strtDt,endDt);
 				 }
 				 else
 				 {
 					 votersDtls = surveyDetailsInfoDAO
 							.getConstituencyWiseCasteCollectedDetailsByUserTypeId(
-									userTypeId, 11L, 23L);
+									userTypeId, 11L, 23L,strtDt,endDt);
 							
 					boothsCount = surveyDetailsInfoDAO
 							.getConstituencyWiseCasteCollectedBoothsDetailsByUserTypeId(
-									userTypeId, 11L, 23L);
+									userTypeId, 11L, 23L,strtDt,endDt);
 				 }
 			 }else if (userTypeId.equals(0L))
 			{	
 	 			 if(regionId.equals(1L))
 				 {
-	 				 votersDtls = surveyCallStatusDAO.getConstituencyWiseVerifiedVoters(1L,10L);
-	 				 boothsCount = surveyCallStatusDAO.getConstituencyWiseVerifiedBooths(1L,10L);
-				 }
+	 				 votersDtls = surveyCallStatusDAO.getConstituencyWiseVerifiedVoters(1L,10L,strtDt,endDt);
+	 				 boothsCount = surveyCallStatusDAO.getConstituencyWiseVerifiedBooths(1L,10L,strtDt,endDt);
+	 				 
+				 }else 	if(regionId.equals(2L))
 	 			 {
-	 				 votersDtls = surveyCallStatusDAO.getConstituencyWiseVerifiedVoters(11L,23L);
-	 				 boothsCount = surveyCallStatusDAO.getConstituencyWiseVerifiedBooths(11L,23L);
+	 				 votersDtls = surveyCallStatusDAO.getConstituencyWiseVerifiedVoters(11L,23L,strtDt,endDt);
+	 				 boothsCount = surveyCallStatusDAO.getConstituencyWiseVerifiedBooths(11L,23L,strtDt,endDt);
+	 			 }else 
+	 			 {
+	 				 votersDtls = surveyCallStatusDAO.getConstituencyWiseVerifiedVoters(1L,23L,strtDt,endDt);
+	 				 boothsCount = surveyCallStatusDAO.getConstituencyWiseVerifiedBooths(1L,23L,strtDt,endDt);
 	 			 }
+	 			 
 			}
 			
 			List<Long> casteCollectedConstnIds = new ArrayList<Long>();
@@ -833,8 +843,10 @@ public class CtpDashBoardService implements ICtpDashBoardService
 			for(Object[] obj:votersDtls)
 				casteCollectedConstnIds.add((Long)obj[1]);
 			 
-			 totalVotersDtls = surveyConstituencyDAO
-					.getTotalVotersDetailsForSurveyConstituencies(casteCollectedConstnIds);
+			/* totalVotersDtls = surveyConstituencyDAO
+					.getTotalVotersDetailsForSurveyConstituencies(casteCollectedConstnIds);*/
+			
+			totalVotersDtls = surveyConstituencyTempDAO.getTotalVotersForConstituencies();
 			 
 			totalBoothsDtls = surveyConstituencyDAO
 					.getTotalBoothsCountForSurveyConstituencies(casteCollectedConstnIds);			 

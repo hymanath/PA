@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.BigPictureVO;
@@ -20,7 +21,7 @@ public interface ICtpDashBoardService
 	public BigPictureVO getTodayTeamCollectedDetails(Long stateId,String fromdate,String toDate);
 	public List<BigPictureVO> getConstituencyWiseTeamCollectedSummary(Long stateId,Long type,String fromdate,String toDate);
 	public List<BigPictureVO> getBoothWiseTeamCollectedDetailsSummary(Long stateId,Long constituencyId , Long surveyUserTypeId,String fromdate,String toDate);
-	public List<SurveyDashBoardVO> getCasteCollectedDetails(Long regionId,Long userTypeId);
+	public List<SurveyDashBoardVO> getCasteCollectedDetails(Long regionId,Long userTypeId,String startDate,String endDate);
 	public List<SurveyDashBoardVO> getSurveyDetailsByConstituencyId(
 			Long constituencyId, Long userTypeId);
 	

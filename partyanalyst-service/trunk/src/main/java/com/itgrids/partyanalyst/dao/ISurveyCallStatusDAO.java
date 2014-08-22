@@ -36,8 +36,8 @@ public interface ISurveyCallStatusDAO extends GenericDao<SurveyCallStatus,Long>{
 	public Long getWmVerifiedConstituencyes();
 	public Long getWmVerifiedRecordsCount(String type);
 	public List<Object[]> getVerifierCounts(Long stateId,Date fromDate ,Date toDate);
-	public List<Object[]> getConstituencyWiseVerifiedVoters(Long startDistrictId,Long endDistrictId);
-	public List<Object[]> getConstituencyWiseVerifiedBooths(Long startDistrictId,Long endDistrictId);
+	public List<Object[]> getConstituencyWiseVerifiedVoters(Long startDistrictId,Long endDistrictId,Date startDate,Date endDate);
+	public List<Object[]> getConstituencyWiseVerifiedBooths(Long startDistrictId,Long endDistrictId,Date startDate,Date endDate);
 	public List<Object[]> getBoothWiseVerifiedDetailsByConstituencyId(Long constituencyId);
 	public List<Object[]> getBoothWiseUsersDetailsByConstituencyId(
 			Long constituencyId);
