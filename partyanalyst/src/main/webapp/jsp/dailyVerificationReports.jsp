@@ -185,14 +185,15 @@ $('#boothId').multiselect({
 								<h4 class="text-right">Daily & Date Range <span class="pull-right btn-group   pull-right"><a onClick="getTeamCollectedDetailsSummaryReport(0,this.id)" id="allCollecetdId" class="btn btn-mini todayCollectdDetailsCls btn-success">ALL</a>|<a  onClick="getTeamCollectedDetailsSummaryReport(1,this.id)" id="apCollecetdId" class="btn btn-mini todayCollectdDetailsCls btn-success">AP</a>|<a  onClick="getTeamCollectedDetailsSummaryReport(2,this.id)" id="tsCollecetdId" class="btn btn-mini todayCollectdDetailsCls">TS</a></span></h4>
 								<input type="hidden" value="0" id="dailyDateRangeHidden"></input>
 								<div class="row-fluid">
-									<div class="input-append span6">
+									<div class="input-append span4">
 										<input type="text" class="span8 offset2 datepicker fromDatepicker" placeholder="From Date" id="dailyDateFromDate">
-										<!--<span class="add-on"><i class="icon-calendar"></i></span>-->
 									</div>
-									<div class="input-append span6">
+									<div class="input-append span4">
 										<input type="text" class="span8  datepicker toDatepicker" placeholder="To Date" id="dailtDateToDate">
-										<!--<span class="add-on"><i class="icon-calendar"></i></span>-->
-									</div>						
+									</div>	
+									<div class="span4">
+										<a class="btn btn-mini" onClick="getTodayTeamDetailsbtDeates();">Submit</a>
+									</div>									
 								</div>
 								
 								<!--<div class="row-fluid text-center">
@@ -260,17 +261,18 @@ $('#boothId').multiselect({
 							
 							<!-------->
 							<div class="span6 wiget-yellow">	
-								<h4 class="text-right ">QC Verification <span class="pull-right btn-group  pull-right"><a  class="btn btn-mini qcCollectedDetailsCls" id="allQcCollecetdId" onClick="getQcVerificationSummaryReport(0,this.id)">ALL</a><a onClick="getQcVerificationSummaryReport(1,this.id)" id= "apQcColledcetdId" class="btn btn-mini todayCollectdDetailsCls">AP</a>|<a onClick="getQcVerificationSummaryReport(2,this.id)" class="btn btn-mini todayCollectdDetailsCls" id="tsQcCollectedId">TS</a></span></h4>
+								<h4 class="text-right ">QC Verification <span class="pull-right btn-group  pull-right"><a  class="btn btn-mini qcCollectedDetailsCls" id="allQcCollecetdId" onClick="getQcVerificationSummaryReport(0,this.id)">ALL</a><a onClick="getQcVerificationSummaryReport(1,this.id)" id= "apQcColledcetdId" class="btn btn-mini qcCollectedDetailsCls">AP</a>|<a onClick="getQcVerificationSummaryReport(2,this.id)" class="btn btn-mini qcCollectedDetailsCls" id="tsQcCollectedId">TS</a></span></h4>
 								<input type="hidden" value="0" id="qcVerificationHidden"></input>
 								<div class="row-fluid">
-									<div class="input-append span6">
+									<div class="input-append span4">
 										<input type="text" class="span8 offset2 datepicker fromDatepicker" placeholder="From Date" id="qcVerificationFromDate">
-										<!--<span class="add-on"><i class="icon-calendar"></i></span>-->
 									</div>
-									<div class="input-append span6">
+									<div class="input-append span4">
 										<input type="text" class="span8 datepicker toDatepicker" placeholder="To Date" id="qcVerificationToDate">
-										<!--<span class="add-on"><i class="icon-calendar"></i></span>-->
-									</div>						
+									</div>	
+									<div class="span4">
+										<a class="btn btn-mini" onClick="getQcVerificationSummaryReportbtDeates();">Submit</a>
+									</div>										
 								</div>
 								
 								<div class="row-fluid">
@@ -293,17 +295,21 @@ $('#boothId').multiselect({
 						<div class="row-fluid m_top20">
 								<!-------->
 							<div class="span6 wiget-yellow">	
-								<h4 class="text-right">Today Team Details <span class="pull-right btn-group   pull-right"><a  class="btn btn-mini todayTeamDetailsCls" id="allTeamId" onClick="getTodayTeamDetails(0,this.id)">ALL</a><a onClick="getTodayTeamDetails(1,this.id)" id= "apTeamId" class="btn btn-mini todayCollectdDetailsCls">AP</a>|<a onClick="getTodayTeamDetails(2,this.id)" class="btn btn-mini todayCollectdDetailsCls" id="tsTeamId">TS</a></span></h4>
+								<h4 class="text-right">Today Team Details <span class="pull-right btn-group   pull-right"><a  class="btn btn-mini todayTeamDetailsCls" id="allTeamId" onClick="getTodayTeamDetails(0,this.id)">ALL</a><a onClick="getTodayTeamDetails(1,this.id)" id= "apTeamId" class="btn btn-mini todayTeamDetailsCls">AP</a>|<a onClick="getTodayTeamDetails(2,this.id)" class="btn btn-mini todayTeamDetailsCls" id="tsTeamId">TS</a></span></h4>
 								<input type="hidden" value ="0" id="todatTeamHidden"></input>
 								<div class="row-fluid">
-									<div class="input-append span6">
+									<div class="input-append span4">
 										<input type="text" class="span8 offset2 datepicker fromDatepicker" placeholder="From Date" id="teamDetailsFromDate">
 										<!--<span class="add-on"><i class="icon-calendar"></i></span>-->
 									</div>
-									<div class="input-append span6">
+									<div class="input-append span4">
 										<input type="text" class="span8 datepicker toDatepicker" placeholder="To Date" id="teamDetailsToDate">
 										<!--<span class="add-on"><i class="icon-calendar"></i></span>-->
-									</div>						
+									</div>	
+									
+									<div class="span4">
+										<a class="btn btn-mini" onClick="getTodayTeamDetailsBtDates();">Submit</a>
+									</div>
 								</div>
 								
 								<div class="row-fluid">

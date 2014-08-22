@@ -1915,13 +1915,60 @@ function getBigPictureDetails(stateId)
 		});	
 }
 
-
+function getTodayTeamDetailsbtDeates()
+{
+	var stateId  = $('#dailyDateRangeHidden').val();
+	var divId = '';
+	if(stateId == 0)
+	{
+		divId = 'allCollecetdId';
+	}
+	else if(stateId == 1)
+	{
+		divId = 'apCollecetdId';
+	}
+	else
+	{
+		divId = 'tsCollecetdId';
+	}
+	getTeamCollectedDetailsSummaryReport(stateId,divId)
+}
+function getTodayTeamDetailsBtDates()
+{
+var stateId  = $('#todatTeamHidden').val();
+	var divId = '';
+	if(stateId == 0)
+	{
+		divId = 'allTeamId';
+	}
+	else if(stateId == 1)
+	{
+		divId = 'apTeamId';
+	}
+	else
+	{
+		divId = 'tsTeamId';
+	}
+	getTodayTeamDetails(stateId,divId)
+}
 function getTodayTeamDetails(stateId,divId)
 {
 	$('#todatTeamHidden').val(stateId);
 	$('.todayTeamDetailsCls').removeClass('btn-success');
+	var fromDate = $('#teamDetailsFromDate').val();
+	var toDate   = $('#teamDetailsToDate').val();
+	if(fromDate == '')
+	{
+		fromDate = 'null';
+	}
+	if(toDate == '')
+	{
+		toDate = 'null';
+	}
 	var jsObj = {
-		stateId : stateId
+		stateId : stateId,
+		fromDate : fromDate,
+		toDate : toDate
 	}
 	$.ajax({
 			type:'GET',
@@ -1965,12 +2012,42 @@ function getInternalVerificationSummary(stateId,divId)
 		});	
 }
 
+function getQcVerificationSummaryReportbtDeates()
+{
+	var stateId  = $('#qcVerificationHidden').val();
+	var divId = '';
+	if(stateId == 0)
+	{
+		divId = 'allQcCollecetdId';
+	}
+	else if(stateId == 1)
+	{
+		divId = 'apQcColledcetdId';
+	}
+	else
+	{
+		divId = 'tsQcCollectedId';
+	}
+	getQcVerificationSummaryReport(stateId,divId)
+}
 function getQcVerificationSummaryReport(stateId,divId)
 {
 	$('#qcVerificationHidden').val(stateId);
 	$('.qcCollectedDetailsCls').removeClass('btn-success');
+	var fromDate = $('#qcVerificationFromDate').val();
+	var toDate   = $('#qcVerificationToDate').val();
+	if(fromDate == '')
+	{
+		fromDate = 'null';
+	}
+	if(toDate == '')
+	{
+		toDate = 'null';
+	}
 	var jsObj = {
-		stateId : stateId
+		stateId : stateId,
+		fromDate : fromDate,
+		toDate : toDate
 	}
 	$.ajax({
 			type:'GET',
@@ -1992,8 +2069,20 @@ function getTeamCollectedDetailsSummaryReport(stateId,divId)
 {
 	$('#dailyDateRangeHidden').val(stateId);
 	$('.todayCollectdDetailsCls').removeClass('btn-success');
+	var fromDate = $('#dailyDateFromDate').val();
+	var toDate   = $('#dailtDateToDate').val();
+	if(fromDate == '')
+	{
+		fromDate = 'null';
+	}
+	if(toDate == '')
+	{
+		toDate = 'null';
+	}
 	var jsObj = {
-		stateId : stateId
+		stateId : stateId,
+		fromDate : fromDate,
+		toDate : toDate
 	}
 	$.ajax({
 			type:'GET',
