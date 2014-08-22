@@ -48,7 +48,7 @@
 	<div class='offset3' style="margin-top:15px;">SELECT CONSTITUENCY  <s:select theme="simple" style="width: 169px;"
 				 name="constituencyList" 
 				id="constituencyId" list="hhConstituenies" 
-				listKey="id" listValue="name" onChange="getSummary();getQuestions();getBooksWiseSummary();"/>
+				listKey="id" listValue="name" onChange="getSummary();getQuestions()"/>
 	</div>
 	
 	<div class='offset3' style="margin-top:15px;display:none;" id="questionDivId">SELECT QUESTION  <select id="questionId" style="margin-left:24px;"><option val="0">Select</option></select></div>
@@ -59,7 +59,7 @@
 	
 	
 	<div class="offset3" style="margin-top:10px;">
-		<span class="btn btn-error" onclick="getSummary();getBooksWiseSummary();">Constituency Summary</span>
+		<span class="btn btn-error" onclick="getSummary();">Constituency Summary</span>
 		<span class="btn btn-error" onclick="getQuestionSummary()">Question Wise Summary</span>
 		<span class="btn btn-error" onclick="getBooksSummary()">Get Books Summary</span>
 	</div>
@@ -69,6 +69,7 @@
 	<div id="constiNonVotersSummaryDiv" style="margin:20px;"></div>
 	<div id="ageRangeNonVotersSummaryDiv" style="margin:20px;"></div>
 	<div id="consolidateReport" style="margin:20px;"></div>
+	<div id="booksWiseSummaryDiv" style="margin:20px"></div>
 	<div id="panchayatSummaryDivId" style="margin:20px;"></div>
 	
 	<div id="summariesId" style="margin:20px;"></div>
@@ -81,7 +82,7 @@
 	<div id="questSummary2" style="margin:20px;"></div>
 	<div id="questSummary3" style="margin:20px;"></div>
 	<div id="questionSummary" style="margin:20px;"></div>
-	<div id="booksWiseSummaryDiv" style="margin:20px"></div>
+	
 	
 	
 	</div>
@@ -386,6 +387,7 @@ function getBooksWiseSummary()
 }
 
 function getHouseHoldsUnderPanchayat(panchayatId){
+$("#summariesId1,#questSummary3,#summariesId").html("");
 	var constnDtls={
              panchayatId:panchayatId,
 			 task:"familyHeadsUnderPanchayat"
@@ -406,6 +408,8 @@ function getHouseHoldsUnderPanchayat(panchayatId){
 }
 
 function getLeadersUnderPanchayat(panchayatId){
+$("#summariesId").html("");
+	$("#summariesId1,#questSummary3").html("");
 	var constnDtls={
              panchayatId:panchayatId,
 			 task:"leaderOfPanchayat"
@@ -505,6 +509,7 @@ function buildPanchayatSummary(result){
 	
 	$('.summaryDiv').dataTable();
 	//getBooksOfHouseHold();
+	getBooksWiseSummary();
 }
 function buildBooksWiseSummary(result,constituency)
 {   
@@ -549,16 +554,16 @@ function buildBooksWiseSummary(result,constituency)
 	str+= "</table>";
 	
 	$("#booksWiseSummaryDiv").html(str);
-	$(".summaryDivv").dataTable();
-	
-	
+	$(".summaryDivv").dataTable({        
+		   "aaSorting": [[ 5, "desc" ]],
+		   "aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
+		   "aoColumns": [null,null,null,null,null,null,null,null] 
+        });
 	
 	
 }
 function buildLeadersOfPanchayat(result){
-	$("#summariesId").html("");
-	$("#summariesId1").html("");
-	
+
 	var str = "";
 	if(result.leadersOfPnchyt!=null && result.leadersOfPnchyt.length>0){
 		str +="<h4 class='offset3' style='color:red;margin-down:20px;margin-up:20px;'> LEADERS IN "+result.panchayatName+" PANCHAYAT</h4>";
@@ -633,7 +638,7 @@ function buildHouseHoldsUnderBook(result){
 }
 
 function buildHouseHolds(result){
-	$("#summariesId1").html("");
+	
 	if(result.panchayatName!=null){
 		$("#summariesId").html("");
 	}	
@@ -787,7 +792,7 @@ function getNonVotersAgeRangeWiseCount(constiId){
 
 function buildNonVotersAgeRangeWiseDetails(result){
 	$("#panchayatSummaryDivId").html("");
-	$("#consolidateReport,#summariesId1,#questSummary3").html("");
+	$("#consolidateReport,#summariesId1,#questSummary3,#booksWiseSummaryDiv").html("");
 	if(result!=null && result.length>0){
 		var str = "";
 			str +="<h4 class='offset3' style='color:red;margin-down:20px;margin-up:20px;'>NON VOTERS DETAILS</h4>";
