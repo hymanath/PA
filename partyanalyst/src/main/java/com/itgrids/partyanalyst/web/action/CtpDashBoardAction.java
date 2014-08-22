@@ -33,6 +33,9 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 	private Long userTypeId;
 	private Long regionId;
 	
+	private String fromDate;
+	private String toDate;
+	
 	private List<SurveyDashBoardVO> resultList;
 	private List<SurveyResponceVO> collectedCasteDetails;
 	private List<BoothWiseSurveyStatusDetailsVO> boothWiseStatusList;
@@ -140,6 +143,26 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 	}
 
 
+	public String getFromDate() {
+		return fromDate;
+	}
+
+
+	public void setFromDate(String fromDate) {
+		this.fromDate = fromDate;
+	}
+
+
+	public String getToDate() {
+		return toDate;
+	}
+
+
+	public void setToDate(String toDate) {
+		this.toDate = toDate;
+	}
+
+
 	public String execute()
 	{
 		HttpSession session = request.getSession();
@@ -185,7 +208,7 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 		try
 		{
 			jObj = new JSONObject(getTask());
-			bigPictureVO = ctpDashBoardService.getQcVerificationSummaryReport(jObj.getLong("stateId"));
+			bigPictureVO = ctpDashBoardService.getQcVerificationSummaryReport(jObj.getLong("stateId"),jObj.getString("fromDate"),jObj.getString("toDate"));
 		} 
 		catch (Exception e) 
 		{
@@ -199,7 +222,7 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 		try
 		{
 			jObj = new JSONObject(getTask());
-			bigPictureVO = ctpDashBoardService.getTodayTeamDetails(jObj.getLong("stateId"));
+			bigPictureVO = ctpDashBoardService.getTodayTeamDetails(jObj.getLong("stateId"),jObj.getString("fromDate"),jObj.getString("toDate"));
 		} 
 		catch (Exception e) 
 		{
@@ -213,7 +236,7 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 		try
 		{
 			jObj = new JSONObject(getTask());
-			bigPictureVOList = ctpDashBoardService.getBoothWiseTeamDetails(jObj.getLong("stateId"),jObj.getLong("constituencyId"),jObj.getLong("surveyUserTypeId"));
+			bigPictureVOList = ctpDashBoardService.getBoothWiseTeamDetails(jObj.getLong("stateId"),jObj.getLong("constituencyId"),jObj.getLong("surveyUserTypeId"),jObj.getString("fromDate"),jObj.getString("toDate"));
 		} 
 		catch (Exception e) 
 		{
@@ -227,7 +250,7 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 		try
 		{
 			jObj = new JSONObject(getTask());
-			bigPictureVOList = ctpDashBoardService.getConstituencyWiseTeamDetails(jObj.getLong("stateId"),jObj.getLong("type"));
+			bigPictureVOList = ctpDashBoardService.getConstituencyWiseTeamDetails(jObj.getLong("stateId"),jObj.getLong("type"),jObj.getString("fromDate"),jObj.getString("toDate"));
 		} 
 		catch (Exception e) 
 		{
@@ -241,7 +264,7 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 		try
 		{
 			jObj = new JSONObject(getTask());
-			bigPictureVOList = ctpDashBoardService.getConstituencyWiseQcVerificationSummary(jObj.getLong("stateId"),jObj.getString("type"));
+			bigPictureVOList = ctpDashBoardService.getConstituencyWiseQcVerificationSummary(jObj.getLong("stateId"),jObj.getString("type"),jObj.getString("fromDate"),jObj.getString("toDate"));
 		} 
 		catch (Exception e) 
 		{
@@ -256,7 +279,7 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 		try
 		{
 			jObj = new JSONObject(getTask());
-			bigPictureVOList = ctpDashBoardService.getBoothWiseQcVerificationSummary(jObj.getLong("stateId"),jObj.getLong("constituencyId"),jObj.getString("type"));
+			bigPictureVOList = ctpDashBoardService.getBoothWiseQcVerificationSummary(jObj.getLong("stateId"),jObj.getLong("constituencyId"),jObj.getString("type"),jObj.getString("fromDate"),jObj.getString("toDate"));
 		} 
 		catch (Exception e) 
 		{
@@ -270,7 +293,7 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 		try
 		{
 			jObj = new JSONObject(getTask());
-			bigPictureVO = ctpDashBoardService.getTodayTeamCollectedDetails(jObj.getLong("stateId"));
+			bigPictureVO = ctpDashBoardService.getTodayTeamCollectedDetails(jObj.getLong("stateId"),jObj.getString("fromDate"),jObj.getString("toDate"));
 		} 
 		catch (Exception e) 
 		{
@@ -284,7 +307,7 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 		try
 		{
 			jObj = new JSONObject(getTask());
-			bigPictureVOList = ctpDashBoardService.getConstituencyWiseTeamCollectedSummary(jObj.getLong("stateId"),jObj.getLong("type"));
+			bigPictureVOList = ctpDashBoardService.getConstituencyWiseTeamCollectedSummary(jObj.getLong("stateId"),jObj.getLong("type"),jObj.getString("fromDate"),jObj.getString("toDate"));
 		} 
 		catch (Exception e) 
 		{
@@ -298,7 +321,7 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 		try
 		{
 			jObj = new JSONObject(getTask());
-			bigPictureVOList = ctpDashBoardService.getBoothWiseTeamCollectedDetailsSummary(jObj.getLong("stateId"),jObj.getLong("constituencyId"),jObj.getLong("type"));
+			bigPictureVOList = ctpDashBoardService.getBoothWiseTeamCollectedDetailsSummary(jObj.getLong("stateId"),jObj.getLong("constituencyId"),jObj.getLong("type"),jObj.getString("fromDate"),jObj.getString("toDate"));
 		} 
 		catch (Exception e) 
 		{
