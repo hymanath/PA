@@ -45,4 +45,12 @@ public class SurveyConstituencyTempDAO extends GenericDaoHibernate<SurveyConstit
 		query.setParameterList("constituencyIds", constituencyIds);
 		return query.list();
 	}
+	
+	public List<Object[]> getTotalVotersForConstituencies()
+	{
+		Query query = getSession().createQuery("select SCT.totalVoters,SCT.constituency.constituencyId from SurveyConstituencyTemp SCT ");
+		
+		return query.list();
+		
+	}
 }
