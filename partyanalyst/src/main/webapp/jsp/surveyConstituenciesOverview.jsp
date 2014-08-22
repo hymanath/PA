@@ -103,20 +103,25 @@
 </head>
 <body>
   <div class="container">
-  <div class="container">
+	<div class="row">
+		<div class="span12" align="center">
+			<img src='images/Loading-data.gif' style="width:70px;height:60px;" class="hide"  id="ajaxImg"/>	
+		</div>
 		<div class="span12">
 			<div class="row-fluid">
 				<div class="span12 widgetservey_Red m_top20"  id="constituencyWiseReport1" style="display:none;">
 					<h4> CONSTITUENCY WISE ${task} REPORT </h4>		
-					<img src='images/Loading-data.gif' style="width:70px;height:60px;" class="hide offset6"  id="cAjaxImg"/>	
+					
 					<div id="constituencyWiseReport"></div>					
 				</div>		
 			</div>
 		</div>
-		
+		<div class="span12" align="center">
+			<img src='images/Loading-data.gif' style="width:70px;height:60px;" class="hide"  id="boothAjaxImg"/>	
+		</div>
 		<div class="span12">
 			<div class="row-fluid">
-				<div class="span12 widgetservey m_top20" id="boothWiseReport1" style="display:none;">
+				<div class="span12 widgetservey_Red m_top20" id="boothWiseReport1" style="display:none;">
 					<img src='images/Loading-data.gif' style="width:70px;height:60px;" class="hide offset6"  id="bAjaxImg"/>	
 						<div id="boothWiseReport"></div>					
 				</div>		
@@ -125,7 +130,7 @@
 		
 		<div class="span12">
 			<div class="row-fluid">
-				<div class="span12 widgetservey m_top20" id="boothWiseStatusDtls1" style="display:none;">
+				<div class="span12 widgetservey_Red m_top20" id="boothWiseStatusDtls1" style="display:none;">
 					<img src='images/Loading-data.gif' style="width:70px;height:60px;" class="hide offset6"  id="vAjaxImg"/>
 					<div id="votersReport"></div>	
 
@@ -135,9 +140,9 @@
 			</div>
 		</div>
 		
-		
+	</div>	
 	</div>
-</div>
+
 
 
 <script>
@@ -148,14 +153,17 @@ if(reportType == 1)
 }
 else if(reportType == 2)
 {
+	$('#ajaxImg').show();
 	getConstituencyWiseTeamCollecetdDetails('${regionId}','${userTypeId}','${fromDate}','${toDate}');
 }
 else if(reportType == 3)
 {
+	$('#ajaxImg').show();
 	getConstituencyWiseQcVerificationSummary('${regionId}','${userTypeId}','${fromDate}','${toDate}')
 }
 else if(reportType == 4)
 {
+	$('#ajaxImg').show();
 	getConstituencyWiseTeamDetails('${regionId}','${userTypeId}','${fromDate}','${toDate}')
 }
 
@@ -197,7 +205,7 @@ function buildTeamConstituencyWiseDetailsSummary(result,strTypr,stateId,fromDate
 	for(var i in result)
 	{
 		str += '<tr>';
-		str += '<td><a onClick="getBoothWiseTeamCollecetdDetails('+result[i].dcVotersCount+',\''+strTypr+'\','+stateId+')">'+result[i].dcPercentage+'</a></td>';
+		str += '<td><a style="cursor: pointer;" onClick="getBoothWiseTeamCollecetdDetails('+result[i].dcVotersCount+',\''+strTypr+'\','+stateId+',\''+result[i].dcPercentage+'\')">'+result[i].dcPercentage+'</a></td>';
 		str += '<td>'+result[i].qcVotersCount+'</td>';
 		str += '<td>'+result[i].verifierVotersCount+'</td>';
 		str += '</tr>';
@@ -206,6 +214,7 @@ function buildTeamConstituencyWiseDetailsSummary(result,strTypr,stateId,fromDate
 	str += '<table>';
 	$('#constituencyWiseReport').html(str);
 	$('#constituencyWiseReport1').css('display','block');
+	$('#ajaxImg').hide();
 }
 
 
@@ -259,7 +268,7 @@ function buildQcConstituencyWiseSummary(result,strTypr,stateId,fromDate,toDate)
 	for(var i in result)
 	{
 		str += '<tr>';
-		str += '<td><a onClick="getBoothWiseQcVerificationSummary('+result[i].dcVotersCount+',\''+strTypr+'\','+stateId+')">'+result[i].dcPercentage+'</a></td>';
+		str += '<td><a  style="cursor: pointer;" onClick="getBoothWiseQcVerificationSummary('+result[i].dcVotersCount+',\''+strTypr+'\','+stateId+',\''+result[i].dcPercentage+'\')">'+result[i].dcPercentage+'</a></td>';
 		str += '<td>'+result[i].qcVotersCount+'</td>';
 		str += '<td>'+result[i].verifierVotersCount+'</td>';
 		str += '</tr>';
@@ -268,9 +277,16 @@ function buildQcConstituencyWiseSummary(result,strTypr,stateId,fromDate,toDate)
 	str += '<table>';
 	$('#constituencyWiseReport').html(str);
 	$('#constituencyWiseReport1').css('display','block');
+	$('#ajaxImg').hide();;
 }
-function getBoothWiseQcVerificationSummary(constituencyId,type,stateId)
+function getBoothWiseQcVerificationSummary(constituencyId,type,stateId,name)
 {
+	$('#boothWiseReport').html('');
+	$('html, body').animate({
+        scrollTop: $("#boothWiseReport").offset().top
+    }, 2000);
+
+	$('#boothAjaxImg').show();
 	var fromDate = '${fromDate}';
 	var toDate = '${toDate}';
 	var jsObj = {
@@ -288,16 +304,21 @@ function getBoothWiseQcVerificationSummary(constituencyId,type,stateId)
 		 }).done(function(result){	
 			if(result != null)
 			{
-				buildQcBoothWiseQCSummary(result);
+				buildQcBoothWiseQCSummary(result,name);
+			}
+			else
+			{
+				$('#boothAjaxImg').hide();
 			}
 		});	
 }
 
-function buildQcBoothWiseQCSummary(result)
+function buildQcBoothWiseQCSummary(result,name)
 {
-	$('#boothWiseReport').html('');
+
 	var str = '';
-	str += '<table class="table table-bordered m_top20 table-hover table-striped offset1">';
+	str += '<h4>'+name+' Constituency Wise Booth Details</h4>';
+	str += '<table class="table table-bordered m_top20 table-hover table-striped">';
 	str += '<thead>';
 	str += '<tr>';
 	str += '<th>Booth</th>';
@@ -310,7 +331,7 @@ function buildQcBoothWiseQCSummary(result)
 	for(var i in result)
 	{
 		str += '<tr>';
-		str += '<td><a>'+result[i].dcPercentage+'</a></td>';
+		str += '<td>'+result[i].dcPercentage+'</td>';
 		str += '<td>'+result[i].verifierPercentage+'</td>';
 		str += '<td>'+result[i].qcPercentage+'</td>';
 		str += '<td>'+result[i].verifierVotersCount+'</td>';
@@ -320,10 +341,16 @@ function buildQcBoothWiseQCSummary(result)
 	str += '<table>';
 	$('#boothWiseReport').html(str);
 	$('#boothWiseReport1').css('display','block');
+	$('#boothAjaxImg').hide();
 }
 
-function getBoothWiseTeamCollecetdDetails(constituencyId,surveyUserTypeId,stateId)
+function getBoothWiseTeamCollecetdDetails(constituencyId,surveyUserTypeId,stateId,name)
 {
+	$('#boothWiseReport').html('');
+	$('html, body').animate({
+        scrollTop: $("#boothWiseReport").offset().top
+    }, 2000);
+	$('#boothAjaxImg').show();
 	var fromDate = '${fromDate}';
 	var toDate = '${toDate}';
 	var jsObj = {
@@ -341,17 +368,22 @@ function getBoothWiseTeamCollecetdDetails(constituencyId,surveyUserTypeId,stateI
 		 }).done(function(result){	
 			if(result != null)
 			{
-				buildBoothWiseTeamCollecetedDetails(result);
+				buildBoothWiseTeamCollecetedDetails(result,name);
+			}
+			else
+			{
+				$('#boothAjaxImg').hide();
 			}
 		});	
 
 }
 
-function buildBoothWiseTeamCollecetedDetails(result)
+function buildBoothWiseTeamCollecetedDetails(result,name)
 {
 	$('#boothWiseReport').html('');
 	var str = '';
-	str += '<table class="table table-bordered m_top20 table-hover table-striped offset1">';
+	str += '<h4>'+name+' Constituency Wise Booth Details</h4>';
+	str += '<table class="table table-bordered m_top20 table-hover table-striped">';
 	str += '<thead>';
 	str += '<tr>';
 	str += '<th>Booth</th>';
@@ -364,7 +396,7 @@ function buildBoothWiseTeamCollecetedDetails(result)
 	for(var i in result)
 	{
 		str += '<tr>';
-		str += '<td><a>'+result[i].dcPercentage+'</a></td>';
+		str += '<td>'+result[i].dcPercentage+'</td>';
 		str += '<td>'+result[i].qcPercentage+'</td>';
 		str += '<td>'+result[i].verifierPercentage+'</td>';
 		str += '<td>'+result[i].qcVotersCount+'</td>';
@@ -374,6 +406,7 @@ function buildBoothWiseTeamCollecetedDetails(result)
 	str += '<table>';
 	$('#boothWiseReport').html(str);
 	$('#boothWiseReport1').css('display','block');
+	$('#boothAjaxImg').hide();
 }
 function getConstituencyWiseTeamDetails(type,stateId,fromDate , toDate)
 {
@@ -413,7 +446,7 @@ function buildTeamConstituencyWiseSummary(result,strTypr,stateId,fromDate,toDate
 	for(var i in result)
 	{
 		str += '<tr>';
-		str += '<td><a onClick="getBoothWiseTeamDetails('+result[i].qcVotersCount+',\''+strTypr+'\','+stateId+')">'+result[i].dcPercentage+'</a></td>';
+		str += '<td><a style="cursor: pointer;" onClick="getBoothWiseTeamDetails('+result[i].qcVotersCount+',\''+strTypr+'\','+stateId+',\''+result[i].dcPercentage+'\')">'+result[i].dcPercentage+'</a></td>';
 		str += '<td>'+result[i].dcBoothsCount+'</td>';
 		str += '<td>'+result[i].dcConstituencysCount+'</td>';
 		str += '</tr>';
@@ -422,10 +455,17 @@ function buildTeamConstituencyWiseSummary(result,strTypr,stateId,fromDate,toDate
 	str += '<table>';
 	$('#constituencyWiseReport').html(str);
 	$('#constituencyWiseReport1').css('display','block');
+	$('#ajaxImg').hide();
 }
 
-function getBoothWiseTeamDetails(constituencyId,surveyUserTypeId,stateId,fromDate,toDate)
+function getBoothWiseTeamDetails(constituencyId,surveyUserTypeId,stateId,name)
 {
+	$('#boothWiseReport').html('');
+	$('html, body').animate({
+        scrollTop: $("#boothWiseReport").offset().top
+    }, 2000);
+
+	$('#boothAjaxImg').show();
 	var fromDate = '${fromDate}';
 	var toDate = '${toDate}';
 	var jsObj = {
@@ -443,28 +483,28 @@ function getBoothWiseTeamDetails(constituencyId,surveyUserTypeId,stateId,fromDat
 		 }).done(function(result){	
 			if(result != null)
 			{
-				buildBoothWiseTeamDetails(result);
+				buildBoothWiseTeamDetails(result,name);
 			}
 		});	
 }
-function buildBoothWiseTeamDetails(result)
+function buildBoothWiseTeamDetails(result,name)
 {
-	$('#boothWiseReport').html('');
 	var str = '';
-	str += '<table class="table table-bordered m_top20 table-hover table-striped offset1">';
+	str += '<h4>'+name+' Constituency Booth Wise Details</h4>';
+	str += '<table class="table table-bordered m_top20 table-hover table-striped">';
 	str += '<thead>';
 	str += '<tr>';
 	str += '<th>Booth</th>';
 	str += '<th>Survey User</th>';
 	str += '<th>Mobile No</th>';
-	str += '<th>Voters</th>';
+	str += '<th>Total Voters</th>';
 	str += '</tr>';
 	str += '</thead>';
 	str += '<tbody>';
 	for(var i in result)
 	{
 		str += '<tr>';
-		str += '<td><a>'+result[i].dcPercentage+'</a></td>';
+		str += '<td>'+result[i].dcPercentage+'</td>';
 		str += '<td>'+result[i].qcPercentage+'</td>';
 		str += '<td>'+result[i].verifierPercentage+'</td>';
 		str += '<td>'+result[i].qcVotersCount+'</td>';
@@ -474,6 +514,7 @@ function buildBoothWiseTeamDetails(result)
 	str += '<table>';
 	$('#boothWiseReport').html(str);
 	$('#boothWiseReport1').css('display','block');
+	$('#boothAjaxImg').hide();
 }
 
 
