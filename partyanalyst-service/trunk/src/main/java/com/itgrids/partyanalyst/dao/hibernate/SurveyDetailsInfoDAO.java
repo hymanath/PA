@@ -1735,10 +1735,15 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		return (Long) query.uniqueResult();
 	}
 	
-	public List<Long> getsurveyUserCollectedBooths(Long stateId , Long surveyUsertypeId)
+	public List<Long> getsurveyUserCollectedBooths(Long stateId , Long surveyUsertypeId,Date fromDate,Date toDate)
 	{
 		StringBuffer queryString = new StringBuffer();
-		queryString.append("select distinct model.booth.boothId from SurveyDetailsInfo model where model.surveyUser.surveyUserType.surveyUsertypeId = :surveyUsertypeId");
+		queryString.append("select distinct model.booth.boothId from SurveyDetailsInfo model where model.surveyUser.surveyUserType.surveyUsertypeId = :surveyUsertypeId ");
+		if(fromDate != null && toDate != null)
+		{
+			queryString.append("  and  date(model.date) >= :fromDate and date(model.date) <= :toDate ");
+		}
+		
 		if(stateId.longValue() == 1)
 		{
 			queryString.append("  and model.booth.constituency.district.districtId > 10 ");
@@ -1748,6 +1753,11 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 			queryString.append(" and model.booth.constituency.district.districtId <= 10");
 		}
 		Query query = getSession().createQuery(queryString.toString());
+		if(fromDate == null && toDate == null)
+		{
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
 		query.setParameter("surveyUsertypeId", surveyUsertypeId);
 		return query.list();
 	}
