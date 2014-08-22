@@ -703,7 +703,12 @@ function buildHouseHoldsUnderOptions(result){
 						str +="<td>"+result.familyHeadsUnderOption[i].voterCardNo+"</td>";
 						str +="<td>"+result.familyHeadsUnderOption[i].houseNo+"</td>";
 						str +="<td>"+result.familyHeadsUnderOption[i].votersCount+"</td>";
+						if(result.familyHeadsUnderOption[i].nonVotersCount != null){
 						str +="<td>"+result.familyHeadsUnderOption[i].nonVotersCount+"</td>";
+						}
+						else{
+						str +="<td>--</td>";
+						}
 					str +="</tr>";
 				}
 			str +="</tbody>";
