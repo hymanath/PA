@@ -215,8 +215,9 @@ public class HouseHoldVoterDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}*/
 	
-	/*public void test(){
-		List<Object[]> list = houseHoldVoterDAO.getBooksOfHouseHolds(282l);
+	public void test(){
+		//List<Object[]> list = houseHoldVoterDAO.getBooksOfHouseHolds(282l);
+		List<Object[]> list = houseHoldVoterDAO.getBooks(282l);
 		//List<Object[]> list = houseHoldVoterDAO.getBooksOfHouseHoldsNV(282l);
 		//List<Object[]> list = houseHoldVoterDAO.getBooksOfHouseHoldsNV(282l);
 		System.out.println("Book Id\t BookNo\t MandalName\t MandalId\t PanchayatId\t PanchayatName\t Name\t VoterId\t VotersCount\t NonVotersCount\t FamiliesCount\t ");
@@ -232,9 +233,9 @@ public class HouseHoldVoterDAOHibernateTest extends BaseDaoTestCase{
 					obj[7].toString()+"\t");
 		}
 		//System.out.println(list.size());
-	}*/
+	}
 	
-	public void test(){
+	/*public void test(){
 			/*List<Object[]> list = houseHoldVoterDAO.getHouseHoldsCountInConstituency(282l);
 			System.out.println(list.size());
 			
@@ -242,7 +243,7 @@ public class HouseHoldVoterDAOHibernateTest extends BaseDaoTestCase{
 				for(Object[] obj:list1){
 					System.out.println(Long.valueOf(obj[0].toString())+"\t"+obj[1].toString()+"\t"+obj[2].toString());
 				}
-		*/
+		
 		
 			List<Object[]> list = houseHoldVoterDAO.getAllLeadersBooksFamilies(282l);
 			System.out.println(list.size());
@@ -250,6 +251,6 @@ public class HouseHoldVoterDAOHibernateTest extends BaseDaoTestCase{
 				System.out.println(Long.valueOf(obj[0].toString())+"\t"+obj[1].toString()+"\t"+ Long.valueOf(obj[2].toString())+"\t"+ Long.valueOf(obj[3].toString()));
 			}
 		
-	}
+	}*/
 
 }

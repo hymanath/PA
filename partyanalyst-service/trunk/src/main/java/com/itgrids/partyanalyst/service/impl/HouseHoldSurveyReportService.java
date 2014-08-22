@@ -1909,7 +1909,9 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
     			if(hhList1!=null && hhList1.size()>0){    				
     				for(Object[] obj:hhList1){  					
     					HouseHoldsSummaryReportVO tempVO = hhCountMap.get(Long.valueOf(obj[0].toString()));
-    					tempVO.setNonVotersCount(Long.valueOf(obj[1].toString()));   					
+    					if(tempVO!=null){
+    						tempVO.setNonVotersCount(Long.valueOf(obj[1].toString()));
+    					}
     				}
     			}
     			List<Object[]> list = hhSurveyAnswersDAO.getHouseHoldsOfPanchayatWithOption(optionId,panchayatId);

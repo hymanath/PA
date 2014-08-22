@@ -41,6 +41,7 @@ public class HHLeaderBooksDAO extends GenericDaoHibernate<HHLeaderBooks,Long> im
 		Query query= getSession().createQuery(" select distinct model.hhLeaderBookId,model.bookNo from HHLeaderBooks model,HHBoothLeader model1 where " +
 				" model.leader.id = model1.hhLeader.id and " +
 				" model1.constituency.constituencyId = :constituencyId" +
+				" and model1.hhLeader.is_active ='YES'" +
 				" and model.leader.id is not null");
 		query.setParameter("constituencyId", constituencyId);
 		return query.list();

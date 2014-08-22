@@ -16,12 +16,23 @@ public class HHLeaderBooksDAOHibernateTest extends BaseDaoTestCase{
 		this.hhLeaderBooksDAO = hhLeaderBooksDAO;
 	}
 
-	public void test(){
+	/*public void test(){
 		List<Long> boo = new ArrayList<Long>();
 		boo.add(531l);
 		
 		Integer update=hhLeaderBooksDAO.deleteLeaderWithBooks(boo,445l);
 		System.out.println(update);
+	}*/
+	
+	public void test(){
+		List<Object[]> list = hhLeaderBooksDAO.getAllBooksInConstituency(282l);
+		
+		for(Object[] obj:list){
+			System.out.println(obj[0].toString()+"\t"+obj[1].toString());
+		}
+		
+		//System.out.println(list.size());
+		
 	}
 
 }
