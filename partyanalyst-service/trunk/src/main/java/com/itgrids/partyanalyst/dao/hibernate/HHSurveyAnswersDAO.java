@@ -83,7 +83,7 @@ public class HHSurveyAnswersDAO extends GenericDaoHibernate<HHSurveyAnswers,Long
 	}
 	
 	public List<Object[]> getQuestionWiseSummaryCountByPanchayat(Long questionId,Long constituencyId){
-		Query query = getSession().createQuery(" select count(model.hhSurveyAnswerId)" +//0 -- COUNT
+		Query query = getSession().createQuery(" select count(model.hhSurveyAnswerId), " +//0 -- COUNT
 				" model.hhOptions.optionsId," +//1 -- OPTION ID
 				" model.hhOptions.options," +//2 -- OPTION
 				" model.hhSurveyQuestion.surveyQuestionId," + // 3 -- QUESTION ID
