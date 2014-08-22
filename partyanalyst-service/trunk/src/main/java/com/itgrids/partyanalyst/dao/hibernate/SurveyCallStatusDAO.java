@@ -192,7 +192,7 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 	public List<Object[]> getVerifierCounts(Long stateId,Date fromDate , Date toDate)
 	{
 		StringBuffer queryString = new StringBuffer();
-		queryString.append("select model.matchedStatus , count(distinct model.voter.voterId),count(distinct model.booth.constituency.constituencyId) ,count(distinct model.boothId) from SurveyCallStatus model where model.matchedStatus is not null  ");
+		queryString.append("select model.matchedStatus , count(distinct model.voter.voterId),count(distinct model.booth.constituency.constituencyId) ,count(distinct model.booth.boothId) from SurveyCallStatus model where model.matchedStatus is not null  ");
 		if(fromDate != null && toDate != null)
 		{
 			queryString.append(" and date(model.insertedDate) >= :fromDate and date(model.insertedDate) <= :toDate ");
@@ -216,6 +216,23 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 		return query.list();
 	}
 	
+	
+	public List<Object[]> getVerifiesCountDetails(Long stateId)
+	{
+		StringBuffer queryString = new StringBuffer();
+		queryString.append("select count(distinct model.voter.voterId),count(distinct model.booth.boothId) ,count(distinct model.booth.constituency.constituencyId) from SurveyCallStatus model where model.matchedStatus is not null ");
+		if(stateId.longValue() == 2)
+		{
+			queryString.append("  and model.booth.constituency.district.districtId > 10 ");
+		}
+		if(stateId.longValue() == 1)
+		{
+			queryString.append(" and model.booth.constituency.district.districtId <= 10");
+		}
+		Query query = getSession().createQuery(queryString.toString());
+		
+		return query.list();
+	}
 	public List<Object[]> getConstituencyWiseInternalVerificationSummary(String type)
 	{
 		Query query = getSession().createQuery("model.booth.constituency.constituencyId");

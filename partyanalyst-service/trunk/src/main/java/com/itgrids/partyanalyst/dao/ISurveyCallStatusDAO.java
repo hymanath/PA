@@ -51,4 +51,6 @@ public interface ISurveyCallStatusDAO extends GenericDao<SurveyCallStatus,Long>{
 	public List<Long> getVerifiedBoothIdsByConstituencyId(Long constituencyId);
 	
 	public List<Object[]> getTotalVerifiedBoothsinAllConstituencyIds(List<Long> constituencyIds);
+	
+	public List<Object[]> getVerifiesCountDetails(Long stateId);
 }

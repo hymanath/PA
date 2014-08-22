@@ -88,26 +88,14 @@ public class CtpDashBoardService implements ICtpDashBoardService
 				}
 			}
 			
-			List<Object[]> verifierDetails = surveyCallStatusDAO.getVerifierCounts(stateId,null,null);
+			List<Object[]> verifierDetails = surveyCallStatusDAO.getVerifiesCountDetails(stateId);
 			if(verifierDetails != null && verifierDetails.size() > 0)
 			{
 				for (Object[] objects : verifierDetails)
 				{
-					if(objects[0] != null )
-					{
-						if(objects[0].toString().equalsIgnoreCase("Y"))
-						{
-							returnVO.setVerifierVotersCount(returnVO.getVerifierVotersCount() + Integer.valueOf(objects[1].toString()));
-							returnVO.setVerifierBoothsCount(returnVO.getVerifierBoothsCount() + Integer.valueOf(objects[3].toString()));
-							returnVO.setVerifierConstituencyCount(returnVO.getVerifierConstituencyCount() + Integer.valueOf(objects[2].toString()));
-						}
-						else if (objects[0].toString().equalsIgnoreCase("n"))
-						{
-							returnVO.setVerifierVotersCount(returnVO.getVerifierVotersCount() + Integer.valueOf(objects[1].toString()));
-							returnVO.setVerifierBoothsCount(returnVO.getVerifierBoothsCount() + Integer.valueOf(objects[3].toString()));
-							returnVO.setVerifierConstituencyCount(returnVO.getVerifierConstituencyCount() + Integer.valueOf(objects[2].toString()));
-						}
-					}
+					returnVO.setVerifierVotersCount( Integer.valueOf(objects[0].toString()));
+					returnVO.setVerifierBoothsCount( Integer.valueOf(objects[1].toString()));
+					returnVO.setVerifierConstituencyCount(Integer.valueOf(objects[2].toString()));
 				}
 			}
 			

@@ -1931,7 +1931,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 	public List<Object[]> getTotalVotersAndBoothsAndConstituencyes(Long stateId)
 	{
 		StringBuffer queryString = new StringBuffer();
-		queryString.append("select model.surveyUser.surveyUserType.surveyUsertypeId , count(distinct model.voter.voterId) , count(distinct model.booth.constituency.constituencyId),count(model.booth.boothId) from SurveyDetailsInfo model where model.surveyUser.surveyUserType.surveyUsertypeId in (1,10) ");
+		queryString.append("select model.surveyUser.surveyUserType.surveyUsertypeId , count(distinct model.voter.voterId) , count(distinct model.booth.constituency.constituencyId),count(distinct model.booth.boothId) from SurveyDetailsInfo model where model.surveyUser.surveyUserType.surveyUsertypeId in (1,10) ");
 		if(stateId.longValue() == 1)
 		{
 			queryString.append("  and model.booth.constituency.district.districtId > 10 ");
