@@ -51,22 +51,24 @@ if(reportType == 1)
 }
 else if(reportType == 2)
 {
-	getConstituencyWiseTeamCollecetdDetails('${regionId}','${userTypeId}');
+	getConstituencyWiseTeamCollecetdDetails('${regionId}','${userTypeId}','${fromDate}','${toDate}');
 }
 else if(reportType == 3)
 {
-	getConstituencyWiseQcVerificationSummary('${regionId}','${userTypeId}')
+	getConstituencyWiseQcVerificationSummary('${regionId}','${userTypeId}','${fromDate}','${toDate}')
 }
 else if(reportType == 4)
 {
-	getConstituencyWiseTeamDetails('${regionId}','${userTypeId}')
+	getConstituencyWiseTeamDetails('${regionId}','${userTypeId}','${fromDate}','${toDate}')
 }
 
-function getConstituencyWiseTeamCollecetdDetails(type,stateId)
+function getConstituencyWiseTeamCollecetdDetails(type,stateId,fromDate,toDate)
 {
 	var jsObj = {
 		type : type,
-		stateId : stateId
+		stateId : stateId,
+		fromDate : fromDate , 
+		toDate : toDate
 	}
 	$.ajax({
 			type:'GET',
@@ -76,13 +78,13 @@ function getConstituencyWiseTeamCollecetdDetails(type,stateId)
 		 }).done(function(result){
 			if(result != null)
 			{
-				buildTeamConstituencyWiseDetailsSummary(result,type,stateId);
+				buildTeamConstituencyWiseDetailsSummary(result,type,stateId,fromDate,toDate);
 			}
 		});	
 		
 }
 
-function buildTeamConstituencyWiseDetailsSummary(result,strTypr,stateId)
+function buildTeamConstituencyWiseDetailsSummary(result,strTypr,stateId,fromDate,toDate)
 {
 	$('#constituencyWiseReport').html('');
 	var str = '';
@@ -109,7 +111,7 @@ function buildTeamConstituencyWiseDetailsSummary(result,strTypr,stateId)
 }
 
 
-function getConstituencyWiseQcVerificationSummary(type,stateId)
+function getConstituencyWiseQcVerificationSummary(type,stateId,fromDate,toDate)
 {
 	var strTypr = '';
 	if(type == 0)
@@ -126,7 +128,9 @@ function getConstituencyWiseQcVerificationSummary(type,stateId)
 	}
 	var jsObj = {
 		type : strTypr,
-		stateId : stateId
+		stateId : stateId,
+		fromDate : fromDate,
+		toDate : toDate
 	}
 	$.ajax({
 			type:'GET',
@@ -136,12 +140,12 @@ function getConstituencyWiseQcVerificationSummary(type,stateId)
 		 }).done(function(result){	
 			if(result != null)
 			 {
-				buildQcConstituencyWiseSummary(result,strTypr,stateId);
+				buildQcConstituencyWiseSummary(result,strTypr,stateId,fromDate,toDate);
 			 }
 		});	
 }
 
-function buildQcConstituencyWiseSummary(result,strTypr,stateId)
+function buildQcConstituencyWiseSummary(result,strTypr,stateId,fromDate,toDate)
 {
 	$('#constituencyWiseReport').html('');
 	var str = '';
@@ -168,10 +172,14 @@ function buildQcConstituencyWiseSummary(result,strTypr,stateId)
 }
 function getBoothWiseQcVerificationSummary(constituencyId,type,stateId)
 {
+	var fromDate = '${fromDate}';
+	var toDate = '${toDate}';
 	var jsObj = {
 		constituencyId : constituencyId,
 		type : type,
-		stateId : stateId
+		stateId : stateId,
+		fromDate : fromDate,
+		toDate : toDate
 	}
 	$.ajax({
 			type:'GET',
@@ -216,10 +224,14 @@ function buildQcBoothWiseQCSummary(result)
 
 function getBoothWiseTeamCollecetdDetails(constituencyId,surveyUserTypeId,stateId)
 {
+	var fromDate = '${fromDate}';
+	var toDate = '${toDate}';
 	var jsObj = {
 		constituencyId : constituencyId,
 		surveyUserTypeId : surveyUserTypeId,
-		stateId : stateId
+		stateId : stateId,
+		fromDate : fromDate,
+		toDate : toDate
 	}
 	$.ajax({
 			type:'GET',
@@ -262,11 +274,13 @@ function buildBoothWiseTeamCollecetedDetails(result)
 	str += '<table>';
 	$('#boothWiseReport').html(str);
 }
-function getConstituencyWiseTeamDetails(type,stateId)
+function getConstituencyWiseTeamDetails(type,stateId,fromDate , toDate)
 {
 	var jsObj = {
 		type : type,
-		stateId :stateId
+		stateId :stateId,
+		fromDate : fromDate,
+		toDate : toDate
 	}
 	$.ajax({
 			type:'GET',
@@ -276,13 +290,13 @@ function getConstituencyWiseTeamDetails(type,stateId)
 		 }).done(function(result){
 			if(result != null)
 			{
-				buildTeamConstituencyWiseSummary(result,type,stateId);
+				buildTeamConstituencyWiseSummary(result,type,stateId,fromDate , toDate);
 			}
 		});	
 		
 }
 
-function buildTeamConstituencyWiseSummary(result,strTypr,stateId)
+function buildTeamConstituencyWiseSummary(result,strTypr,stateId,fromDate,toDate)
 {
 	$('#constituencyWiseReport').html('');
 	var str = '';
@@ -308,12 +322,16 @@ function buildTeamConstituencyWiseSummary(result,strTypr,stateId)
 	$('#constituencyWiseReport').html(str);
 }
 
-function getBoothWiseTeamDetails(constituencyId,surveyUserTypeId,stateId)
+function getBoothWiseTeamDetails(constituencyId,surveyUserTypeId,stateId,fromDate,toDate)
 {
+	var fromDate = '${fromDate}';
+	var toDate = '${toDate}';
 	var jsObj = {
 		constituencyId : constituencyId,
 		surveyUserTypeId : surveyUserTypeId,
-		stateId : stateId
+		stateId : stateId,
+		fromDate : fromDate,
+		toDate : toDate
 	}
 	$.ajax({
 			type:'GET',
