@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -278,20 +279,36 @@ public class CtpDashBoardService implements ICtpDashBoardService
 	 * This Service is used for providing QC Verification Summary Details
 	 * @return returnVO
 	 */
-	public BigPictureVO getQcVerificationSummaryReport(Long stateId)
+	public BigPictureVO getQcVerificationSummaryReport(Long stateId,String fromDate , String toDate)
 	{
 		BigPictureVO returnVO = new BigPictureVO();
 		try
 		{
-			returnVO.setQcVotersCount(surveyDetailsInfoDAO.getSurveyUserCollectedVoters(stateId,10l).intValue());
-			List<Long> matchedIds = new ArrayList<Long>();
-			matchedIds.add(1l);
-			returnVO.setMatchedCount(surveyFinalDataDAO.getQcCollectedMatchedUnMatchedDetails(stateId,matchedIds).intValue());
-			List<Long> unMatchedIds = new ArrayList<Long>();
-			unMatchedIds.add(2l);
-			unMatchedIds.add(3l);
-			unMatchedIds.add(4l);
-			returnVO.setUnMatchedCount(surveyFinalDataDAO.getQcCollectedMatchedUnMatchedDetails(stateId,unMatchedIds).intValue());
+			if(fromDate.toString().equalsIgnoreCase("null") && toDate.toString().equalsIgnoreCase("null"))
+			{
+				returnVO.setQcVotersCount(surveyDetailsInfoDAO.getSurveyUserCollectedVoters(stateId,10l,null,null).intValue());
+				List<Long> matchedIds = new ArrayList<Long>();
+				matchedIds.add(1l);
+				returnVO.setMatchedCount(surveyFinalDataDAO.getQcCollectedMatchedUnMatchedDetails(stateId,matchedIds,null,null).intValue());
+				List<Long> unMatchedIds = new ArrayList<Long>();
+				unMatchedIds.add(2l);
+				unMatchedIds.add(3l);
+				unMatchedIds.add(4l);
+				returnVO.setUnMatchedCount(surveyFinalDataDAO.getQcCollectedMatchedUnMatchedDetails(stateId,unMatchedIds,null,null).intValue());
+			}
+			else
+			{
+				SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
+				returnVO.setQcVotersCount(surveyDetailsInfoDAO.getSurveyUserCollectedVoters(stateId,10l,originalFormat.parse(fromDate),originalFormat.parse(toDate)).intValue());
+				List<Long> matchedIds = new ArrayList<Long>();
+				matchedIds.add(1l);
+				returnVO.setMatchedCount(surveyFinalDataDAO.getQcCollectedMatchedUnMatchedDetails(stateId,matchedIds,originalFormat.parse(fromDate),originalFormat.parse(toDate)).intValue());
+				List<Long> unMatchedIds = new ArrayList<Long>();
+				unMatchedIds.add(2l);
+				unMatchedIds.add(3l);
+				unMatchedIds.add(4l);
+				returnVO.setUnMatchedCount(surveyFinalDataDAO.getQcCollectedMatchedUnMatchedDetails(stateId,unMatchedIds,originalFormat.parse(fromDate),originalFormat.parse(toDate)).intValue());
+			}
 			if(returnVO.getQcVotersCount() != null && returnVO.getQcVotersCount() > 0)
 			{
 				if(returnVO.getMatchedCount() != null && returnVO.getMatchedCount() > 0)
@@ -315,14 +332,23 @@ public class CtpDashBoardService implements ICtpDashBoardService
 	 * This Service is used for getting team details 
 	 * @return returnVO
 	 */
-	public BigPictureVO getTodayTeamDetails(Long stateId)
+	public BigPictureVO getTodayTeamDetails(Long stateId,String fromdate,String todate)
 	{
 		BigPictureVO returnVO = new BigPictureVO();
 		try 
 		{
-			DateUtilService dateUtilService = new DateUtilService();
-			Date todateDate = dateUtilService.getCurrentDateAndTime();
-			List<Object[]> teamDetailsObj = surveyDetailsInfoDAO.getTodayTeamDetails(stateId,todateDate);
+			List<Object[]> teamDetailsObj = null;
+			if(fromdate.toString().equalsIgnoreCase("null") && todate.toString().equalsIgnoreCase("null"))
+			{
+				DateUtilService dateUtilService = new DateUtilService();
+				Date todateDate = dateUtilService.getCurrentDateAndTime();
+				 teamDetailsObj = surveyDetailsInfoDAO.getTodayTeamDetails(stateId,todateDate,null,null);
+			}
+			else
+			{
+				SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
+				teamDetailsObj = surveyDetailsInfoDAO.getTodayTeamDetails(stateId,null,originalFormat.parse(fromdate),originalFormat.parse(todate));
+			}
 			
 			if(teamDetailsObj != null && teamDetailsObj.size() > 0)
 			{
@@ -354,15 +380,25 @@ public class CtpDashBoardService implements ICtpDashBoardService
 	 * This Service is used for getting constituency wise team details
 	 * @return returnList
 	 */
-	public List<BigPictureVO> getConstituencyWiseTeamDetails(Long stateId , Long surveyUserType)
+	public List<BigPictureVO> getConstituencyWiseTeamDetails(Long stateId , Long surveyUserType,String fromdate , String toDate)
 	{
 		List<BigPictureVO> returnList = null;
 		
 		try 
 		{
-			DateUtilService dateUtilService = new DateUtilService();
-			Date todateDate = dateUtilService.getCurrentDateAndTime();
-			List<Object[]> teamDetailsObj = surveyDetailsInfoDAO.getTeamDetailsInConstituencyLevel(stateId,todateDate,surveyUserType);
+			List<Object[]> teamDetailsObj = null;
+			if(fromdate.toString().equalsIgnoreCase("null") && toDate.toString().equalsIgnoreCase("null"))
+			{
+				DateUtilService dateUtilService = new DateUtilService();
+				Date todateDate = dateUtilService.getCurrentDateAndTime();
+				teamDetailsObj = surveyDetailsInfoDAO.getTeamDetailsInConstituencyLevel(stateId,todateDate,surveyUserType,null,null);
+			}
+			else
+			{
+				SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
+				teamDetailsObj = surveyDetailsInfoDAO.getTeamDetailsInConstituencyLevel(stateId,null,surveyUserType,originalFormat.parse(fromdate),originalFormat.parse(toDate));
+			}
+			
 			if(teamDetailsObj != null && teamDetailsObj.size() > 0)
 			{
 				returnList = new ArrayList<BigPictureVO>();
@@ -391,14 +427,23 @@ public class CtpDashBoardService implements ICtpDashBoardService
 	 * @param surveyUserTypeId
 	 * @return returnList
 	 */
-	public List<BigPictureVO> getBoothWiseTeamDetails(Long stateId , Long constituencyId , Long surveyUserTypeId)
+	public List<BigPictureVO> getBoothWiseTeamDetails(Long stateId , Long constituencyId , Long surveyUserTypeId,String fromDate , String toDate)
 	{
 		List<BigPictureVO> returnList = null;
 		try 
 		{
-			DateUtilService dateUtilService = new DateUtilService();
-			Date todateDate = dateUtilService.getCurrentDateAndTime();
-			List<Object[]> teamDetails = surveyDetailsInfoDAO.getTeamDetailsInBoothLevel(stateId,constituencyId, surveyUserTypeId, todateDate);
+			List<Object[]> teamDetails = null;
+			if(fromDate.toString().equalsIgnoreCase("null") && toDate.toString().equalsIgnoreCase("null"))
+			{
+				DateUtilService dateUtilService = new DateUtilService();
+				Date todateDate = dateUtilService.getCurrentDateAndTime();
+				teamDetails = surveyDetailsInfoDAO.getTeamDetailsInBoothLevel(stateId,constituencyId, surveyUserTypeId, todateDate,null,null);
+			}
+			else
+			{
+				SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
+				teamDetails = surveyDetailsInfoDAO.getTeamDetailsInBoothLevel(stateId,constituencyId, surveyUserTypeId, null,originalFormat.parse(fromDate),originalFormat.parse(toDate));
+			}
 			if(teamDetails != null && teamDetails.size() > 0)
 			{
 				returnList = new ArrayList<BigPictureVO>();
@@ -425,7 +470,7 @@ public class CtpDashBoardService implements ICtpDashBoardService
 	 * This Service is used for getting constituency wise Qc Summary
 	 * @return returnList
 	 */
-	public List<BigPictureVO> getConstituencyWiseQcVerificationSummary(Long stateId , String type)
+	public List<BigPictureVO> getConstituencyWiseQcVerificationSummary(Long stateId , String type,String fromDate , String toDate)
 	{
 		List<BigPictureVO> returnList = null;
 		try
@@ -433,7 +478,16 @@ public class CtpDashBoardService implements ICtpDashBoardService
 			List<Object[]> constituencyWiseDetils = null;
 			if(type.equalsIgnoreCase("null"))
 			{
-				constituencyWiseDetils = surveyDetailsInfoDAO.getConstituecySummaryForQc(stateId);
+				if(fromDate.toString().equalsIgnoreCase("null") && toDate.toString().equalsIgnoreCase("null"))
+				{
+					constituencyWiseDetils = surveyDetailsInfoDAO.getConstituecySummaryForQc(stateId,null,null);
+				}
+				else
+				{
+					SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
+					constituencyWiseDetils = surveyDetailsInfoDAO.getConstituecySummaryForQc(stateId,originalFormat.parse(fromDate),originalFormat.parse(toDate));
+				}
+				
 			}
 			else
 			{
@@ -441,13 +495,31 @@ public class CtpDashBoardService implements ICtpDashBoardService
 				if(type.equalsIgnoreCase("Y"))
 				{
 					statusIds.add(1l);
-					constituencyWiseDetils = surveyFinalDataDAO.getQcDataForSelection(stateId,statusIds);
+					if(fromDate.toString().equalsIgnoreCase("null") && toDate.toString().equalsIgnoreCase("null"))
+					{
+						constituencyWiseDetils = surveyFinalDataDAO.getQcDataForSelection(stateId,statusIds,null,null);
+					}
+					else
+					{
+						SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
+						constituencyWiseDetils = surveyFinalDataDAO.getQcDataForSelection(stateId,statusIds,originalFormat.parse(fromDate),originalFormat.parse(toDate));
+					}
+					
 				}
 				else
 				{
 					statusIds.add(2l);
 					statusIds.add(3l);
-					constituencyWiseDetils =surveyFinalDataDAO.getQcDataForSelection(stateId,statusIds);
+					if(fromDate.toString().equalsIgnoreCase("null") && toDate.toString().equalsIgnoreCase("null"))
+					{
+						constituencyWiseDetils =surveyFinalDataDAO.getQcDataForSelection(stateId,statusIds,null,null);
+					}
+					else
+					{
+						SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
+						constituencyWiseDetils = surveyFinalDataDAO.getQcDataForSelection(stateId,statusIds,originalFormat.parse(fromDate),originalFormat.parse(toDate));
+					}
+					
 				}
 				
 			}
@@ -478,7 +550,7 @@ public class CtpDashBoardService implements ICtpDashBoardService
 	 * @param constituencyId
 	 * @return returnList
 	 */
-	public List<BigPictureVO> getBoothWiseQcVerificationSummary(Long stateId , Long constituencyId,String type)
+	public List<BigPictureVO> getBoothWiseQcVerificationSummary(Long stateId , Long constituencyId,String type,String fromDate , String toDate)
 	{
 		List<BigPictureVO> returnList = null;
 		try 
@@ -486,7 +558,16 @@ public class CtpDashBoardService implements ICtpDashBoardService
 			List<Object[]> boothWiseQcDetails = null;
 			if(type.equalsIgnoreCase("null"))
 			{
-				boothWiseQcDetails = surveyDetailsInfoDAO.getBoothWiseSummaryForQc(stateId,constituencyId);
+				if(fromDate.toString().equalsIgnoreCase("null") && toDate.toString().equalsIgnoreCase("null"))
+				{
+					boothWiseQcDetails = surveyDetailsInfoDAO.getBoothWiseSummaryForQc(stateId,constituencyId,null,null);
+				}
+				else
+				{
+					SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
+					boothWiseQcDetails = surveyDetailsInfoDAO.getBoothWiseSummaryForQc(stateId,constituencyId,originalFormat.parse(fromDate),originalFormat.parse(toDate));
+				}
+				
 			}
 			else
 			{
@@ -494,13 +575,31 @@ public class CtpDashBoardService implements ICtpDashBoardService
 				if(type.equalsIgnoreCase("Y"))
 				{
 					statusIds.add(1l);
-					boothWiseQcDetails = surveyFinalDataDAO.getBoothWiseQcData(stateId,constituencyId,statusIds);
+					if(fromDate.toString().equalsIgnoreCase("null") && toDate.toString().equalsIgnoreCase("null"))
+					{
+						boothWiseQcDetails = surveyFinalDataDAO.getBoothWiseQcData(stateId,constituencyId,statusIds,null,null);
+					}
+					else
+					{
+						SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
+						boothWiseQcDetails = surveyFinalDataDAO.getBoothWiseQcData(stateId,constituencyId,statusIds,originalFormat.parse(fromDate),originalFormat.parse(toDate));
+					}
+					
 				}
 				else
 				{
 					statusIds.add(2l);
 					statusIds.add(3l);
-					boothWiseQcDetails = surveyFinalDataDAO.getBoothWiseQcData(stateId,constituencyId,statusIds);
+					if(fromDate.toString().equalsIgnoreCase("null") && toDate.toString().equalsIgnoreCase("null"))
+					{
+						boothWiseQcDetails = surveyFinalDataDAO.getBoothWiseQcData(stateId,constituencyId,statusIds,null,null);
+					}
+					else
+					{
+						SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
+						boothWiseQcDetails = surveyFinalDataDAO.getBoothWiseQcData(stateId,constituencyId,statusIds,originalFormat.parse(fromDate),originalFormat.parse(toDate));
+					}
+					
 				}
 				
 			}
@@ -532,14 +631,23 @@ public class CtpDashBoardService implements ICtpDashBoardService
 	 * This Service is used for getting all team collected details
 	 * @return returnList
 	 */
-	public BigPictureVO getTodayTeamCollectedDetails(Long stateId)
+	public BigPictureVO getTodayTeamCollectedDetails(Long stateId,String fromDate , String toDate)
 	{
 		BigPictureVO returnVO = new BigPictureVO();
 		try 
 		{
-			DateUtilService dateUtilService = new DateUtilService();
-			Date todateDate = dateUtilService.getCurrentDateAndTime();
-			List<Object[]> teamCollectedDetails = surveyDetailsInfoDAO.getTodayTeamCollectedDetails(stateId,todateDate);
+			List<Object[]> teamCollectedDetails = null;
+			if(fromDate.toString().equalsIgnoreCase("null") && toDate.toString().equalsIgnoreCase("null"))
+			{
+				DateUtilService dateUtilService = new DateUtilService();
+				Date todateDate = dateUtilService.getCurrentDateAndTime();
+				teamCollectedDetails = surveyDetailsInfoDAO.getTodayTeamCollectedDetails(stateId,todateDate,null,null);
+			}
+			else
+			{
+				SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
+				teamCollectedDetails = surveyDetailsInfoDAO.getTodayTeamCollectedDetails(stateId,null,originalFormat.parse(fromDate),originalFormat.parse(toDate));
+			}
 			if(teamCollectedDetails != null && teamCollectedDetails.size() > 0)
 			{
 				for (Object[] objects : teamCollectedDetails)
@@ -574,14 +682,24 @@ public class CtpDashBoardService implements ICtpDashBoardService
 	 * @param type
 	 * @return returnList
 	 */
-	public List<BigPictureVO> getConstituencyWiseTeamCollectedSummary(Long stateId , Long type)
+	public List<BigPictureVO> getConstituencyWiseTeamCollectedSummary(Long stateId , Long type,String fromdate,String toDate)
 	{
 		List<BigPictureVO> returnList = null;
 		try 
 		{
-			DateUtilService dateUtilService = new DateUtilService();
-			Date todateDate = dateUtilService.getCurrentDateAndTime();
-			List<Object[]> constituencyWiseDetails = surveyDetailsInfoDAO.getConstituencyWiseTeamCollectedDetails(stateId,type, todateDate);
+			List<Object[]> constituencyWiseDetails = null;
+			if(fromdate.toString().equalsIgnoreCase("null") && toDate.toString().equalsIgnoreCase("null")  )
+			{
+				DateUtilService dateUtilService = new DateUtilService();
+				Date todateDate = dateUtilService.getCurrentDateAndTime();
+				constituencyWiseDetails = surveyDetailsInfoDAO.getConstituencyWiseTeamCollectedDetails(stateId,type, todateDate,null,null);
+			}
+			else
+			{
+				SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
+				constituencyWiseDetails = surveyDetailsInfoDAO.getConstituencyWiseTeamCollectedDetails(stateId,type, null,originalFormat.parse(fromdate),originalFormat.parse(toDate));
+			}
+			
 			if(constituencyWiseDetails != null && constituencyWiseDetails.size() > 0)
 			{
 				returnList = new ArrayList<BigPictureVO>();
@@ -603,14 +721,23 @@ public class CtpDashBoardService implements ICtpDashBoardService
 		return returnList;
 	}
 	
-	public List<BigPictureVO> getBoothWiseTeamCollectedDetailsSummary(Long stateId ,Long constituencyId , Long surveyUserTypeId)
+	public List<BigPictureVO> getBoothWiseTeamCollectedDetailsSummary(Long stateId ,Long constituencyId , Long surveyUserTypeId,String fromDate, String toDate)
 	{
 		List<BigPictureVO> returnList = null;
 		try 
 		{
-			DateUtilService dateUtilService = new DateUtilService();
-			Date todateDate = dateUtilService.getCurrentDateAndTime();
-			List<Object[]> boothWiseDetails = surveyDetailsInfoDAO.getBoothWiseTeamCollectedDetails(stateId,surveyUserTypeId, todateDate, constituencyId);
+			List<Object[]> boothWiseDetails = null;
+			if(fromDate.toString().equalsIgnoreCase("null") && toDate.toString().equalsIgnoreCase("null"))
+			{
+				DateUtilService dateUtilService = new DateUtilService();
+				Date todateDate = dateUtilService.getCurrentDateAndTime();
+				boothWiseDetails = surveyDetailsInfoDAO.getBoothWiseTeamCollectedDetails(stateId,surveyUserTypeId, todateDate, constituencyId,null,null);
+			}
+			else
+			{
+				SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
+				boothWiseDetails = surveyDetailsInfoDAO.getBoothWiseTeamCollectedDetails(stateId,surveyUserTypeId, null, constituencyId,originalFormat.parse(fromDate),originalFormat.parse(toDate));
+			}
 			if(boothWiseDetails != null && boothWiseDetails.size() > 0)
 			{
 				returnList = new ArrayList<BigPictureVO>();

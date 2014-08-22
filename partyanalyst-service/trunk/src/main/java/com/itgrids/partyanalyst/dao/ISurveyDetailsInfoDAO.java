@@ -162,15 +162,15 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	
 	public List<Object[]> getStartedBoothsDetailsByConstituencyWise();
 	public List<Long> getSurveyStartedDistrictDetails();	
-	public Long getSurveyUserCollectedVoters(Long stateId , Long surveyUserId);
+	public Long getSurveyUserCollectedVoters(Long stateId , Long surveyUserId,Date fromDate , Date toDate);
 	public Long getSurveyUserCompeletedBooths(Long surveyUserId);
 	public Long getSurveyUserCompeletedConstituencyes(Long surveyUserId);
 	public List<Long> getsurveyUserCollectedBooths(Long stateId,Long surveyUserTypeId);
-	public List<Object[]> getTodayTeamDetails(Long stateId , Date date);
-	public List<Object[]> getTeamDetailsInConstituencyLevel(Long stateId , Date date,Long userTypeId);
-	public List<Object[]> getTeamDetailsInBoothLevel(Long stateId,Long constituencyId , Long surveyUserTypeId,Date date);
-	public List<Object[]> getConstituecySummaryForQc(Long stateId);
-	public List<Object[]> getBoothWiseSummaryForQc(Long stateId , Long constituencyId);
+	public List<Object[]> getTodayTeamDetails(Long stateId , Date date,Date fromdate,Date toDate);
+	public List<Object[]> getTeamDetailsInConstituencyLevel(Long stateId , Date date,Long userTypeId,Date fromDate , Date toDate);
+	public List<Object[]> getTeamDetailsInBoothLevel(Long stateId,Long constituencyId , Long surveyUserTypeId,Date date,Date fromDate , Date toDate);
+	public List<Object[]> getConstituecySummaryForQc(Long stateId,Date fromDate , Date toDate);
+	public List<Object[]> getBoothWiseSummaryForQc(Long stateId , Long constituencyId,Date fromDate , Date toDate);
 	public List<Object[]> getTotalVotersAndBoothsAndConstituencyes(Long stateId);
 	public List<Object[]> getConstituencyWiseCasteCollectedDetailsByUserTypeId(Long surveyUserTypeId,
 			Long startDistrictId, Long endDistrictId);
@@ -190,9 +190,9 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 			List<Long> voterIds, Long surveyUserTypeId,Long boothId);
 	public List<Long> getConstituencyIds();
 	
-	public List<Object[]> getTodayTeamCollectedDetails(Long stateId,Date date);
-	public List<Object[]> getConstituencyWiseTeamCollectedDetails(Long stateId,Long surveyUsertypeId , Date date);
-	public List<Object[]> getBoothWiseTeamCollectedDetails(Long stateId,Long surveyUserTypeId,Date date,Long constituencyId);
+	public List<Object[]> getTodayTeamCollectedDetails(Long stateId,Date date,Date fromDate ,Date toDate);
+	public List<Object[]> getConstituencyWiseTeamCollectedDetails(Long stateId,Long surveyUsertypeId , Date date,Date fromDate ,Date toDate);
+	public List<Object[]> getBoothWiseTeamCollectedDetails(Long stateId,Long surveyUserTypeId,Date date,Long constituencyId,Date fromDate ,Date toDate);
 	
 	public List<Long> getBoothDetailsForConstituencyByUserTypeId(Long constituencyId,Long surveyUserTypeId);
 	public List<Object[]> getDVTotalBoothsByConstituencyIds(List<Long> constituencyIds);
