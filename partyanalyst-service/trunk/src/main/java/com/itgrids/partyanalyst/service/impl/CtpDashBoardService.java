@@ -791,10 +791,18 @@ public class CtpDashBoardService implements ICtpDashBoardService
 			 List<Object[]> totalBoothsDtls = null;
 			 
 			SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+			
+			 Date strtDt = null;
+			 Date endDt = null;
+			
+			if(!startDate.trim().equalsIgnoreCase("") && !endDate.trim().equalsIgnoreCase(""))
+			{
+				  strtDt = formatter.parse(startDate);
+				  endDt = formatter.parse(endDate);
+				
+			}
 			 
-			 Date strtDt = formatter.parse(startDate);
-			 Date endDt = formatter.parse(endDate);
-			 
+			
 			if (userTypeId.equals(IConstants.DATA_COLLECTOR_ROLE_ID)
 					|| userTypeId.equals(IConstants.THIRD_PARTY_ROLE_ID) 
 					|| userTypeId.equals(IConstants.VERIFIER_ROLE_ID))			 {

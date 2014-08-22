@@ -226,6 +226,22 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 	
 	public List<Object[]> getConstituencyWiseVerifiedVoters(Long startDistrictId,Long endDistrictId,Date startDate,Date endDate)
 	{
+		
+		StringBuffer queryString = new StringBuffer();
+		
+		queryString.append("select count(distinct SCS.voter.voterId)," +
+				"SCS.booth.constituency.constituencyId  " +
+				"from " +
+				"SurveyCallStatus SCS where SCS.matchedStatus is not null and " +
+				"SCS.booth.constituency.district.districtId >= :startDistrictId and " +
+				"SCS.booth.constituency.district.districtId <= :endDistrictId   ");
+		
+		if(startDate != null && endDate != null )
+			queryString.append("and date(SCS.insertedDate) >= :startDate and date(SCS.insertedDate) <= :endDate ");
+		
+		queryString.append("group by SCS.booth.constituency.constituencyId");
+			
+	/*	
 		Query query = getSession().createQuery("select count(distinct SCS.voter.voterId)," +
 				"SCS.booth.constituency.constituencyId  " +
 				"from " +
@@ -233,18 +249,40 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 				"SCS.booth.constituency.district.districtId >= :startDistrictId and " +
 				"SCS.booth.constituency.district.districtId <= :endDistrictId  and " +
 				"date(SCS.insertedDate) >= :startDate and date(SCS.insertedDate) <= :endDate " +
-				"group by SCS.booth.constituency.constituencyId ");
+				"group by SCS.booth.constituency.constituencyId ");*/
+		
+		Query query = getSession().createQuery(queryString.toString());
 		
 		query.setParameter("startDistrictId", startDistrictId);
 		query.setParameter("endDistrictId", endDistrictId);
-		query.setParameter("startDate", startDate);
-		query.setParameter("endDate", endDate);
+		
+		if(startDate != null && endDate != null )
+		{		
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}
 		
 		return query.list();
 		
 	}
 	public List<Object[]> getConstituencyWiseVerifiedBooths(Long startDistrictId,Long endDistrictId,Date startDate,Date endDate)
 	{
+		
+		StringBuffer queryString = new StringBuffer();
+		
+		queryString.append("select count(distinct SCS.booth.boothId)," +
+				"SCS.booth.constituency.constituencyId  " +
+				"from " +
+				"SurveyCallStatus SCS where SCS.matchedStatus is not null and " +
+				"SCS.booth.constituency.district.districtId >= :startDistrictId and " +
+				"SCS.booth.constituency.district.districtId <= :endDistrictId  ");
+		
+		if(startDate != null && endDate != null )
+			queryString.append("and date(SCS.insertedDate) >= :startDate and date(SCS.insertedDate) <= :endDate ");
+		
+		queryString.append("group by SCS.booth.constituency.constituencyId");
+		
+	/*	
 		Query query = getSession().createQuery("select count(distinct SCS.booth.boothId)," +
 				"SCS.booth.constituency.constituencyId  " +
 				"from " +
@@ -252,12 +290,17 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 				"SCS.booth.constituency.district.districtId >= :startDistrictId and " +
 				"SCS.booth.constituency.district.districtId <= :endDistrictId  and " +
 				"date(SCS.insertedDate) >= :startDate and date(SCS.insertedDate) <= :endDate " +				
-				"group by SCS.booth.constituency.constituencyId ");
+				"group by SCS.booth.constituency.constituencyId ");*/
+		Query query = getSession().createQuery(queryString.toString());
 		
 		query.setParameter("startDistrictId", startDistrictId);
 		query.setParameter("endDistrictId", endDistrictId);
-		query.setParameter("startDate", startDate);
-		query.setParameter("endDate", endDate);
+		
+		if(startDate != null && endDate != null )
+		{
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}
 		
 		
 		return query.list();

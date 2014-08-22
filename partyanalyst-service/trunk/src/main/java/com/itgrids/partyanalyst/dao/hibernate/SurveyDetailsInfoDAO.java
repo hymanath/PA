@@ -1949,27 +1949,58 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 	public List<Object[]> getConstituencyWiseCasteCollectedDetailsByUserTypeId(Long surveyUserTypeId,
 			Long startDistrictId, Long endDistrictId,Date startDate,Date endDate)	{
 		
-		Query query = getSession().createQuery("select count(distinct SDI.voter.voterId) ," +
+		StringBuffer queryString = new StringBuffer();
+		
+		queryString.append("select count(distinct SDI.voter.voterId) ," +
 				"SDI.booth.constituency.constituencyId from SurveyDetailsInfo SDI , " +
 				"SurveyConstituency SC where " +
 				"SDI.booth.constituency.constituencyId = SC.constituency.constituencyId and " +
 				"SDI.surveyUser.surveyUserType.surveyUsertypeId = :surveyUserTypeId and " +
 				"SC.constituency.district.districtId >= :startDistrictId and " +
-				"SC.constituency.district.districtId <= :endDistrictId  and " +
-				"date(SDI.date) >= :startDate and date(SDI.date) <= :endDate and " +
-				"SDI.caste.casteStateId is not null group by SDI.booth.constituency.constituencyId");
+				"SC.constituency.district.districtId <= :endDistrictId  and ");
+		
+		if(startDate != null && endDate != null)
+			queryString.append("date(SDI.date) >= :startDate and date(SDI.date) <= :endDate and");
+		
+		queryString.append("SDI.caste.casteStateId is not null group by SDI.booth.constituency.constituencyId");
+		
+		
+		Query query = getSession().createQuery(queryString.toString());
 		
 		query.setParameter("surveyUserTypeId", surveyUserTypeId);
 		query.setParameter("startDistrictId", startDistrictId);
 		query.setParameter("endDistrictId", endDistrictId);
-		query.setParameter("startDate", startDate);
-		query.setParameter("endDate", endDate);
+		
+		if(startDate != null && endDate != null)
+		{
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}
 		
 		return query.list();
 	}
 	
 	public List<Object[]> getConstituencyWiseCasteCollectedBoothsDetailsByUserTypeId(Long surveyUserTypeId,
 			Long startDistrictId, Long endDistrictId,Date startDate,Date endDate)	{
+		
+		StringBuffer queryString = new StringBuffer();
+		
+		queryString.append("select count(distinct SDI.booth.boothId) ," +
+				"SDI.booth.constituency.constituencyId from SurveyDetailsInfo SDI , " +
+				"SurveyConstituency SC where " +
+				"SDI.booth.constituency.constituencyId = SC.constituency.constituencyId and " +
+				"SDI.surveyUser.surveyUserType.surveyUsertypeId = :surveyUserTypeId and " +
+				"SC.constituency.district.districtId >= :startDistrictId and " +
+				"SC.constituency.district.districtId <= :endDistrictId  and ");
+		
+		if(startDate != null && endDate != null)
+			queryString.append("date(SDI.date) >= :startDate and date(SDI.date) <= :endDate and");
+		
+		queryString.append("SDI.caste.casteStateId is not null group by SDI.booth.constituency.constituencyId");
+		
+		Query query = getSession().createQuery(queryString.toString());
+		
+		/*
 		
 		Query query = getSession().createQuery("select count(distinct SDI.booth.boothId) ," +
 				"SDI.booth.constituency.constituencyId from SurveyDetailsInfo SDI , " +
@@ -1980,13 +2011,17 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 				"SC.constituency.district.districtId <= :endDistrictId  and " +
 				"date(SDI.date) >= :startDate and date(SDI.date) <= :endDate and " +
 				"SDI.caste.casteStateId is not null " +
-				"group by SDI.booth.constituency.constituencyId");
+				"group by SDI.booth.constituency.constituencyId");*/
 		
 		query.setParameter("surveyUserTypeId", surveyUserTypeId);
 		query.setParameter("startDistrictId", startDistrictId);
 		query.setParameter("endDistrictId", endDistrictId);
-		query.setParameter("startDate", startDate);
-		query.setParameter("endDate", endDate);
+		
+		if(startDate != null && endDate != null)
+		{
+		 query.setParameter("startDate", startDate);
+		 query.setParameter("endDate", endDate);
+		}
 		
 		return query.list();
 		
