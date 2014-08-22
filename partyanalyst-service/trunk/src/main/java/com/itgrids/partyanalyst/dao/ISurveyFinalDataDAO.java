@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
@@ -27,9 +28,9 @@ public interface ISurveyFinalDataDAO extends GenericDao<SurveyFinalData, Long>{
 	
 	public int updateDefaultCasteMatchStatus(Long voterId,Long casteStateId,Long boothId,Long statusId);
 	
-	public Long getQcCollectedMatchedUnMatchedDetails(Long stateId, List<Long> statusIds);
+	public Long getQcCollectedMatchedUnMatchedDetails(Long stateId, List<Long> statusIds,Date fromDate , Date toDate);
 	
-	public List<Object[]> getQcDataForSelection(Long stateId , List<Long> statusIds);
+	public List<Object[]> getQcDataForSelection(Long stateId , List<Long> statusIds,Date fromDate , Date toDate);
 	
-	public List<Object[]> getBoothWiseQcData(Long stateId , Long constituencyId , List<Long> statusIds);
+	public List<Object[]> getBoothWiseQcData(Long stateId , Long constituencyId , List<Long> statusIds,Date fromDate , Date toDate);
 }

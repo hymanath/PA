@@ -11,15 +11,15 @@ public interface ICtpDashBoardService
 {
 	public BigPictureVO getBigPictureDetails(Long stateId);
 	public BigPictureVO getInternalVerificationSummary(Long stateId);
-	public BigPictureVO getQcVerificationSummaryReport(Long stateId);
-	public BigPictureVO getTodayTeamDetails(Long stateId);
-	public List<BigPictureVO> getBoothWiseTeamDetails(Long stateId , Long constituencyId , Long surveyUserTypeId);
-	public List<BigPictureVO> getConstituencyWiseTeamDetails(Long stateId,Long type);
-	public List<BigPictureVO> getConstituencyWiseQcVerificationSummary(Long stateId , String type);
-	public List<BigPictureVO> getBoothWiseQcVerificationSummary(Long stateId , Long constituencyId,String type);
-	public BigPictureVO getTodayTeamCollectedDetails(Long stateId);
-	public List<BigPictureVO> getConstituencyWiseTeamCollectedSummary(Long stateId,Long type);
-	public List<BigPictureVO> getBoothWiseTeamCollectedDetailsSummary(Long stateId,Long constituencyId , Long surveyUserTypeId);
+	public BigPictureVO getQcVerificationSummaryReport(Long stateId,String fromDate ,String toDate);
+	public BigPictureVO getTodayTeamDetails(Long stateId,String fromDate , String toDate);
+	public List<BigPictureVO> getBoothWiseTeamDetails(Long stateId , Long constituencyId , Long surveyUserTypeId,String fromDate , String toDate);
+	public List<BigPictureVO> getConstituencyWiseTeamDetails(Long stateId,Long type,String fromDate , String toDate);
+	public List<BigPictureVO> getConstituencyWiseQcVerificationSummary(Long stateId , String type,String fromDate , String toDate);
+	public List<BigPictureVO> getBoothWiseQcVerificationSummary(Long stateId , Long constituencyId,String type,String fromDate , String toDate);
+	public BigPictureVO getTodayTeamCollectedDetails(Long stateId,String fromdate,String toDate);
+	public List<BigPictureVO> getConstituencyWiseTeamCollectedSummary(Long stateId,Long type,String fromdate,String toDate);
+	public List<BigPictureVO> getBoothWiseTeamCollectedDetailsSummary(Long stateId,Long constituencyId , Long surveyUserTypeId,String fromdate,String toDate);
 	public List<SurveyDashBoardVO> getCasteCollectedDetails(Long regionId,Long userTypeId);
 	public List<SurveyDashBoardVO> getSurveyDetailsByConstituencyId(
 			Long constituencyId, Long userTypeId);

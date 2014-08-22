@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -142,10 +143,15 @@ public class SurveyFinalDataDAO extends GenericDaoHibernate<SurveyFinalData, Lon
 		 return query.list();
 	}
 	
-	public Long getQcCollectedMatchedUnMatchedDetails(Long stateId , List<Long> statusIds)
+	public Long getQcCollectedMatchedUnMatchedDetails(Long stateId , List<Long> statusIds,Date fromDate , Date toDate)
 	{
 		StringBuffer queryString = new StringBuffer();
-		queryString.append("select count(distinct model.voterId) from SurveyFinalData model where model.surveyWmThirdPartyStatusId in (:statusIds)");
+		queryString.append("select count(distinct model.voterId) from SurveyFinalData model where model.surveyWmThirdPartyStatusId in (:statusIds)  ");
+		if(fromDate != null && toDate != null)
+		{
+			queryString.append("  and  date(model.insertedTime) >= :fromDate and date(model.insertedTime) <= :toDate ");
+		}
+		
 		if(stateId.longValue() == 1)
 		{
 			queryString.append("  and model.booth.constituency.district.districtId > 10 ");
@@ -155,14 +161,24 @@ public class SurveyFinalDataDAO extends GenericDaoHibernate<SurveyFinalData, Lon
 			queryString.append(" and model.booth.constituency.district.districtId <= 10");
 		}
 		Query query = getSession().createQuery(queryString.toString());
+		if(fromDate != null && toDate != null)
+		{
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
 		query.setParameterList("statusIds", statusIds);
 		return (Long)query.uniqueResult();
 	}
 	
-	public List<Object[]> getQcDataForSelection(Long stateId , List<Long> statusIds)
+	public List<Object[]> getQcDataForSelection(Long stateId , List<Long> statusIds,Date fromDate , Date toDate)
 	{
 		StringBuffer queryString = new StringBuffer();
 		queryString.append("select model.booth.constituency.constituencyId, model.booth.constituency.name , count(distinct model.booth.boothId) , count(model.voter.voterId) from SurveyFinalData model where model.surveyWmThirdPartyStatusId in (:statusIds) ");
+		if(fromDate != null && toDate != null)
+		{
+			queryString.append("  and  date(model.insertedTime) >= :fromDate and date(model.insertedTime) <= :toDate ");
+		}
+		
 		if(stateId.longValue() == 1)
 		{
 			queryString.append("  and model.booth.constituency.district.districtId > 10 ");
@@ -173,14 +189,23 @@ public class SurveyFinalDataDAO extends GenericDaoHibernate<SurveyFinalData, Lon
 		}
 		queryString.append("  group by model.booth.constituency.constituencyId");
 		Query query = getSession().createQuery(queryString.toString());
+		if(fromDate != null && toDate != null)
+		{
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
 		query.setParameterList("statusIds", statusIds);
 		return query.list();
 	}
 	
-	public List<Object[]> getBoothWiseQcData(Long stateId , Long constituencyId , List<Long> statusIds)
+	public List<Object[]> getBoothWiseQcData(Long stateId , Long constituencyId , List<Long> statusIds,Date fromDate,Date toDate)
 	{
 		StringBuffer queryString = new StringBuffer();
 		queryString.append("select model.booth.boothId, model.booth.partNo , model.surveyUser.surveyUserId , model.surveyUser.userName , model.surveyUser.mobileNo , count(distinct model.voter.voterId) from SurveyFinalData model where model.booth.constituency.constituencyId =:constituencyId and model.surveyWmThirdPartyStatusId in (:statusIds)   ");
+		if(fromDate != null && toDate != null)
+		{
+			queryString.append("  and  date(model.insertedTime) >= :fromDate and date(model.insertedTime) <= :toDate ");
+		}
 		if(stateId.longValue() == 1)
 		{
 			queryString.append("  and model.booth.constituency.district.districtId > 10 ");
@@ -191,6 +216,11 @@ public class SurveyFinalDataDAO extends GenericDaoHibernate<SurveyFinalData, Lon
 		}
 		queryString.append("  group by model.booth.boothId ");
 		Query query = getSession().createQuery(queryString.toString());
+		if(fromDate != null && toDate != null)
+		{
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
 		query.setParameterList("statusIds", statusIds);
 		query.setParameter("constituencyId", constituencyId);
 		return query.list();
