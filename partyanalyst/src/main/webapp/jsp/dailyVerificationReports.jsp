@@ -668,9 +668,9 @@ function setRegionLevel(regionId,divId)
 
   sRegionId = regionId;
 }
-function openConstituencyWiseWindow(userTypeId)
+function openConstituencyWiseWindow(userTypeId,searchType)
 {
-	window.open("surveyConstituencieOverview.action?constituencyId=1&regionId="+sRegionId+"&userTypeId="+userTypeId+"", "_blank");
+	window.open("surveyConstituencieOverview.action?constituencyId=1&regionId="+sRegionId+"&userTypeId="+userTypeId+"&task="+searchType+"", "_blank");
 }
 
 function setInternalVerificationRegionLevel(iRegionId,divId)
