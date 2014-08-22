@@ -10,7 +10,7 @@ import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 public interface ICtpDashBoardService
 {
 	public BigPictureVO getBigPictureDetails(Long stateId);
-	public BigPictureVO getInternalVerificationSummary(Long stateId);
+	public BigPictureVO getInternalVerificationSummary(Long stateId,String fromDate ,String toDate);
 	public BigPictureVO getQcVerificationSummaryReport(Long stateId,String fromDate ,String toDate);
 	public BigPictureVO getTodayTeamDetails(Long stateId,String fromDate , String toDate);
 	public List<BigPictureVO> getBoothWiseTeamDetails(Long stateId , Long constituencyId , Long surveyUserTypeId,String fromDate , String toDate);

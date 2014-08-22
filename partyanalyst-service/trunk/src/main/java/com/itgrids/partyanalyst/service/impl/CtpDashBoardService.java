@@ -88,7 +88,7 @@ public class CtpDashBoardService implements ICtpDashBoardService
 				}
 			}
 			
-			List<Object[]> verifierDetails = surveyCallStatusDAO.getVerifierCounts(stateId);
+			List<Object[]> verifierDetails = surveyCallStatusDAO.getVerifierCounts(stateId,null,null);
 			if(verifierDetails != null && verifierDetails.size() > 0)
 			{
 				for (Object[] objects : verifierDetails)
@@ -154,13 +154,21 @@ public class CtpDashBoardService implements ICtpDashBoardService
 	 * This Service is used for providing internal Verification Summary details
 	 * @return returnVO
 	 */
-	public BigPictureVO getInternalVerificationSummary(Long stateId)
+	public BigPictureVO getInternalVerificationSummary(Long stateId,String fromDate,String toDate)
 	{
 		BigPictureVO returnVO = new BigPictureVO();
 		try
 		{
-			
-			List<Object[]> verifierDetails = surveyCallStatusDAO.getVerifierCounts(stateId);
+			List<Object[]> verifierDetails = null;
+			if(fromDate.toString().equalsIgnoreCase("null") && toDate.toString().equalsIgnoreCase("null"))
+			{
+				verifierDetails = surveyCallStatusDAO.getVerifierCounts(stateId,null,null);
+			}
+			else
+			{
+				SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
+				verifierDetails = surveyCallStatusDAO.getVerifierCounts(stateId,originalFormat.parse(fromDate),originalFormat.parse(toDate));
+			}
 			if(verifierDetails != null && verifierDetails.size() > 0)
 			{
 				for (Object[] objects : verifierDetails)
@@ -194,7 +202,7 @@ public class CtpDashBoardService implements ICtpDashBoardService
 					}
 					
 				}
-				getRedoBooths(stateId,returnVO);
+				getRedoBooths(stateId,returnVO,fromDate,toDate);
 			}
 			
 			
@@ -211,11 +219,21 @@ public class CtpDashBoardService implements ICtpDashBoardService
 	 * This Service is used for getting redo booths
 	 * @param returnVO
 	 */
-	public void getRedoBooths(Long stateId , BigPictureVO returnVO)
+	public void getRedoBooths(Long stateId , BigPictureVO returnVO,String fromDate , String toDate)
 	{
 		try
 		{
-			List<Long> redoBooths = surveyDetailsInfoDAO.getsurveyUserCollectedBooths(stateId,4l);
+			List<Long> redoBooths = null;
+			if(fromDate.toString().equalsIgnoreCase("null") && toDate.toString().equalsIgnoreCase("null") )
+			{
+				redoBooths = surveyDetailsInfoDAO.getsurveyUserCollectedBooths(stateId,4l,null,null);
+			}
+			else
+			{
+				SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
+				 redoBooths = surveyDetailsInfoDAO.getsurveyUserCollectedBooths(stateId,4l,originalFormat.parse(fromDate),originalFormat.parse(toDate));
+			}
+			
 			if(redoBooths != null && redoBooths.size() > 0)
 			{
 				returnVO.setRedoBooths(redoBooths.size());

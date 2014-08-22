@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -188,10 +189,15 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 		return (Long) query.uniqueResult();
 	}
 	
-	public List<Object[]> getVerifierCounts(Long stateId)
+	public List<Object[]> getVerifierCounts(Long stateId,Date fromDate , Date toDate)
 	{
 		StringBuffer queryString = new StringBuffer();
 		queryString.append("select model.matchedStatus , count(distinct model.voter.voterId),count(distinct model.booth.constituency.constituencyId) ,count(distinct model.boothId) from SurveyCallStatus model where model.matchedStatus is not null  ");
+		if(fromDate != null && toDate != null)
+		{
+			queryString.append(" and date(model.insertedDate) >= :fromDate and date(model.insertedDate) <= :toDate ");
+		}
+		
 		if(stateId.longValue() == 1)
 		{
 			queryString.append("  and model.booth.constituency.district.districtId > 10 ");
@@ -202,7 +208,11 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 		}
 		queryString.append("  group by  model.matchedStatus ");
 		Query query = getSession().createQuery(queryString.toString());
-		
+		if(fromDate != null && toDate != null)
+		{
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
 		return query.list();
 	}
 	

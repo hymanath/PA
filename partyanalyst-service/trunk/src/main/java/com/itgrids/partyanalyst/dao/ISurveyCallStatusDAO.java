@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
@@ -34,7 +35,7 @@ public interface ISurveyCallStatusDAO extends GenericDao<SurveyCallStatus,Long>{
 	public Long getWmVerifiedBooths();
 	public Long getWmVerifiedConstituencyes();
 	public Long getWmVerifiedRecordsCount(String type);
-	public List<Object[]> getVerifierCounts(Long stateId);
+	public List<Object[]> getVerifierCounts(Long stateId,Date fromDate ,Date toDate);
 	public List<Object[]> getConstituencyWiseVerifiedVoters(Long startDistrictId,Long endDistrictId);
 	public List<Object[]> getConstituencyWiseVerifiedBooths(Long startDistrictId,Long endDistrictId);
 	public List<Object[]> getBoothWiseVerifiedDetailsByConstituencyId(Long constituencyId);
