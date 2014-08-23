@@ -402,7 +402,7 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 			resultList = ctpDashBoardService.getCountsForDC();
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Exception raised in getSurveyConstituencyStatus", e);
 		}
 		return Action.SUCCESS;
 	}
@@ -414,7 +414,20 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 			
 		}catch(Exception e)
 		{
-			e.printStackTrace();
+			LOG.error("Exception raised in getAllBoothsStatusDetailsByConstituencyId", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String buildConstituencyWiseSummaryReport()
+	{
+		try
+		{
+			bigPictureVOList = ctpDashBoardService.buildConstituencyWiseSummaryReport();
+			
+		}catch(Exception e)
+		{
+			LOG.error("Exception raised in buildConstituencyWiseSummaryReport", e);
 		}
 		return Action.SUCCESS;
 	}

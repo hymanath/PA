@@ -111,13 +111,16 @@ $('#boothId').multiselect({
 		<div class="row">
 			<div class="span12 m_top20 survey_nav">
 				<ul class="inline unstyled">
-					<li><a class="highlight selected" id="stateWiseReportTab" onclick="showHideReportTabs(this.id);"> State Wise Report </a></li>
-					<!--<li><a class="highlight" id="dataCollectorTab" value="1" onclick="showHideReportTabs(this.id);"> Data Collector Report </a></li>-->
-					<li><a class="highlight" id="userTrackingReportTab" onclick="showHideReportTabs(this.id);"> User Tracking Report</a></li>
+					<li><a class="highlight selected" id="dashboardReportTab" onclick="showHideReportTabs(this.id);"> Dashboard </a></li>
+					<li><a class="highlight" id="verificationReportTab" onclick="showHideReportTabs(this.id);"> Constituency Report</a></li>
+					<li><a class="highlight" id="boothWiseReportsTab" onclick="showHideReportTabs(this.id);">  Booth Wise Report</a></li>
 					<li><a class="highlight" id="thirdpPartyReportTab" onclick="showHideReportTabs(this.id);">QC Report</a></li>
-					<li><a class="highlight" id="dashboardReportTab" onclick="showHideReportTabs(this.id);"> Dashboard </a></li>
-					<li><a class="highlight" id="verificationReportTab" onclick="showHideReportTabs(this.id);"> Verification Report</a></li>
-					<li><a class="highlight" id="boothWiseReportsTab" onclick="showHideReportTabs(this.id);">  Booth Wise Status</a></li>
+					<li><a class="highlight" id="userTrackingReportTab" onclick="showHideReportTabs(this.id);"> User Tracking Report</a></li>
+					<!--<li><a class="highlight selected" id="stateWiseReportTab" onclick="showHideReportTabs(this.id);"> State Wise Report </a></li>-->
+					<!--<li><a class="highlight" id="dataCollectorTab" value="1" onclick="showHideReportTabs(this.id);"> Data Collector Report </a></li>-->
+					<!--<li><a class="highlight" id="verificationReportTab" onclick="showHideReportTabs(this.id);"> Verification Report</a></li>-->
+					
+					
 
 				</ul>
 			</div>
@@ -140,9 +143,36 @@ $('#boothId').multiselect({
 						<!-----Data Collection & Verification Main Div---->
 						<div class="row-fluid m_top10" >
 							<!----Data Collection (left)------>
-							<div class="span12 wiget-yellow">	
+							<div class="span12 wiget-yellow" style="height: 500px;">	
 								<h4 class="text-right">Big Picture
 								</h4>
+								<div class="row-fluid">
+									<div class="well well-small span2 text-center">
+										<h4><!--<a href="javascript:{getConstituencyWiseReport('${resultVO.startedConstituencyIds}');}">-->${resultVO.startedCount}<!--</a>--></h4>
+										<p>Started </br> Constituencies</p>
+									</div>
+									<div class="well well-small span2 text-center">
+										<h4><!--<a href="javascript:{getConstituencyWiseReport('${resultVO.processConstituencyIds}');}">-->${resultVO.completedCount}<!--</a>--></h4>
+										<p>Processing </br>Constituencies</p>
+									</div>
+									<div class="well well-small span2 text-center">
+										<h4><!--<a href="javascript:{getConstituencyWiseReport('${resultVO.completedConstituencyIds}');}">-->${resultVO.processingCount}<!--</a>--></h4>
+										<p>Completed </br>Constituencies</p>
+									</div>							
+								
+									<div class="well well-small span2 text-center">
+										<h4>207</h4>
+										<p>Total </br> Constituencies</p>
+									</div>
+									<div class="well well-small span2 text-center">
+										<h4 id="TotalcasteCount"><img src="./images/icons/search.gif" ></img></h4>
+										<p>Total Caste <br> Collected Count</p>
+									</div>
+									<div class="well well-small span2 text-center">
+										<h4 id="TodaycasteCount"><img src="./images/icons/search.gif" ></img></h4>
+										<p>Today Caste </br>Collected Count </p>
+									</div>							
+								</div>
 								<div class="row-fluid">
 									<div class="well well-small span2  text-center">
 										<h4 id="totalVoters"><img src="./images/icons/search.gif" ></img></h4>
@@ -198,6 +228,7 @@ $('#boothId').multiselect({
 									</div>							
 								</div>
 								
+								
 								<!--<div class="row-fluid">
 								<div class="well well-small span10 offset1  ">									
 									Planned Vs Actual Status  <span class="pull-right badge">5214</span>
@@ -210,7 +241,7 @@ $('#boothId').multiselect({
 						
 						<div class="row-fluid m_top20">
 							<!----Data Verification (right)---->
-							<div class="span6 wiget-yellow">	
+							<div class="span6 wiget-yellow" style="height: 282px;">	
 								<h4 class="text-right">Daily & Date Range <span class="pull-right btn-group   pull-right"><a onClick="getTeamCollectedDetailsSummaryReport(0,this.id)" id="allCollecetdId" class="btn btn-mini todayCollectdDetailsCls btn-success">ALL</a>|<a  onClick="getTeamCollectedDetailsSummaryReport(1,this.id)" id="apCollecetdId" class="btn btn-mini todayCollectdDetailsCls btn-success">AP</a>|<a  onClick="getTeamCollectedDetailsSummaryReport(2,this.id)" id="tsCollecetdId" class="btn btn-mini todayCollectdDetailsCls">TS</a></span></h4>
 								<input type="hidden" value="0" id="dailyDateRangeHidden"></input>
 								<div class="row-fluid">
@@ -232,20 +263,59 @@ $('#boothId').multiselect({
 								<div class="row-fluid">
 									<div class="well well-small span4  text-center">
 										<a onClick="getConstituencyWiseTeamCollecetdDetails(1)"><h4 style = "cursor: pointer;" id="dcDetailsId"><img src="./images/icons/search.gif" ></img></h4></a>
-										<p class="">Data Collection Completed</p>										
+										<p class="">DC </br>Completed</p>										
 									</div>
 									<div class="well well-small span4 text-center">
 										<a onClick="getConstituencyWiseTeamCollecetdDetails(4)"><h4 style = "cursor: pointer;" id="dvDetailsId"><img src="./images/icons/search.gif" ></img></h4></a>
-										<p>Verification Completed</p>
+										<p>DV </br>Completed</p>
 									</div>
 									<div class="well well-small span4 text-center">
 										<a onClick="getConstituencyWiseTeamCollecetdDetails(10)"><h4 style = "cursor: pointer;" id="qcDetailsId"><img src="./images/icons/search.gif" ></img></h4></a>
-										<p>QC Verification Completed</p>
+										<p>QC </br>Completed</p>
 									</div>							
 								</div>
 								
 							</div>	<!----Data Verification---->	
-						<!-------->
+							<!-------->
+							<div class="span6 wiget-yellow"  style="height: 282px;">	
+								<h4 class="text-right">Today Team Details <span class="pull-right btn-group   pull-right"><a  class="btn btn-mini todayTeamDetailsCls" id="allTeamId" onClick="getTodayTeamDetails(0,this.id)">ALL</a><a onClick="getTodayTeamDetails(1,this.id)" id= "apTeamId" class="btn btn-mini todayTeamDetailsCls">AP</a>|<a onClick="getTodayTeamDetails(2,this.id)" class="btn btn-mini todayTeamDetailsCls" id="tsTeamId">TS</a></span></h4>
+								<input type="hidden" value ="0" id="todatTeamHidden"></input>
+								<div class="row-fluid">
+									<div class="input-append span4">
+										<input type="text" class="span8 offset2 datepicker fromDatepicker" placeholder="From Date" id="teamDetailsFromDate">
+										<!--<span class="add-on"><i class="icon-calendar"></i></span>-->
+									</div>
+									<div class="input-append span4">
+										<input type="text" class="span8 datepicker toDatepicker" placeholder="To Date" id="teamDetailsToDate">
+										<!--<span class="add-on"><i class="icon-calendar"></i></span>-->
+									</div>	
+									
+									<div class="span4">
+										<a class="btn btn-mini" onClick="getTodayTeamDetailsBtDates();">Submit</a>
+									</div>
+								</div>
+								
+								<div class="row-fluid">
+									<div class="well well-small span4  text-center">
+										<h4  id="dcMembers" ><img src="./images/icons/search.gif" ></img></h4>
+										<p class="">DC </br> User</p>										
+									</div>
+									<div class="well well-small span4 text-center">
+										<h4  id="dvMembers" ><img src="./images/icons/search.gif" ></img></h4>
+										<p>DV </br> User</p>
+									</div>
+									<div class="well well-small span4 text-center">
+										<h4  id="qcMembers" ><img src="./images/icons/search.gif" ></img></h4></a>
+										<p>QC </br> User</p>
+									</div>
+								</div>							
+							</div>	<!-------->
+							
+							
+						</div>
+						
+						<div class="row-fluid m_top20">
+						
 							<div class="span6 wiget-yellow">	
 								<h4 class="text-right">Internal Verification
 								<span class="btn-group  pull-right"><a href="javascript:{setInternalVerificationRegionLevel(0,'allRegionsId1')}" class="btn btn-mini selectedCls1 btn-success" id="allRegionsId1">ALL</a><a href="javascript:{setInternalVerificationRegionLevel(2,'apRegionsId1')}" class="btn btn-mini selectedCls1" id="apRegionsId1">AP</a><a href="javascript:{setInternalVerificationRegionLevel(1,'tsRegionsId1')}" class="btn btn-mini selectedCls1" id="tsRegionsId1">TS</a></span>
@@ -285,11 +355,6 @@ $('#boothId').multiselect({
 									</div>						
 								</div>								
 							</div>	<!-------->
-							
-						</div>
-						
-						<div class="row-fluid m_top20">
-						
 							<!-------->
 							<div class="span6 wiget-yellow">	
 								<h4 class="text-right ">QC Verification <span class="pull-right btn-group  pull-right"><a  class="btn btn-mini qcCollectedDetailsCls" id="allQcCollecetdId" onClick="getQcVerificationSummaryReport(0,this.id)">ALL</a><a onClick="getQcVerificationSummaryReport(1,this.id)" id= "apQcColledcetdId" class="btn btn-mini qcCollectedDetailsCls">AP</a>|<a onClick="getQcVerificationSummaryReport(2,this.id)" class="btn btn-mini qcCollectedDetailsCls" id="tsQcCollectedId">TS</a></span></h4>
@@ -321,40 +386,44 @@ $('#boothId').multiselect({
 									</div>
 								</div>							
 							</div>	<!-------->
-								<!-------->
-							<div class="span6 wiget-yellow">	
-								<h4 class="text-right">Today Team Details <span class="pull-right btn-group   pull-right"><a  class="btn btn-mini todayTeamDetailsCls" id="allTeamId" onClick="getTodayTeamDetails(0,this.id)">ALL</a><a onClick="getTodayTeamDetails(1,this.id)" id= "apTeamId" class="btn btn-mini todayTeamDetailsCls">AP</a>|<a onClick="getTodayTeamDetails(2,this.id)" class="btn btn-mini todayTeamDetailsCls" id="tsTeamId">TS</a></span></h4>
-								<input type="hidden" value ="0" id="todatTeamHidden"></input>
-								<div class="row-fluid">
-									<div class="input-append span4">
-										<input type="text" class="span8 offset2 datepicker fromDatepicker" placeholder="From Date" id="teamDetailsFromDate">
-										<!--<span class="add-on"><i class="icon-calendar"></i></span>-->
-									</div>
-									<div class="input-append span4">
-										<input type="text" class="span8 datepicker toDatepicker" placeholder="To Date" id="teamDetailsToDate">
-										<!--<span class="add-on"><i class="icon-calendar"></i></span>-->
-									</div>	
-									
-									<div class="span4">
-										<a class="btn btn-mini" onClick="getTodayTeamDetailsBtDates();">Submit</a>
-									</div>
-								</div>
-								
-								<div class="row-fluid">
-									<div class="well well-small span4  text-center">
-										<h4  id="dcMembers" ><img src="./images/icons/search.gif" ></img></h4>
-										<p class="">Data Collectors</p>										
-									</div>
-									<div class="well well-small span4 text-center">
-										<h4  id="dvMembers" ><img src="./images/icons/search.gif" ></img></h4>
-										<p>Data Verifiers</p>
-									</div>
-									<div class="well well-small span4 text-center">
-										<h4  id="qcMembers" ><img src="./images/icons/search.gif" ></img></h4></a>
-										<p>Quality Check</p>
-									</div>
-								</div>							
-							</div>	<!-------->
+							
+						</div>
+						<div class="row-fluid " >
+				
+									  <div class="span12  m_top20  widgetservey" id="buldingConstituenciesDivId">
+										<!--<h4>Constituency Wise Processing Status</h4>-->
+										<img id="popupImgid1" src="./images/icons/search.gif" alt="Processing Image" style="display:block;margin-left:410px"/>
+									  </div>
+								 
+						</div>
+						<div class="row-fluid ">
+							<div class="span12 m_top20 widgetservey">
+								<h4>Districts Started</h4>
+									<ul class="inline unstyled Constituency-name-nav">	
+										<c:if test="${empty resultVO.started}">
+											SURVEY NOT STARTED IN ANY DISTRICT
+										</c:if>
+										<c:forEach var="startedDistrict" items="${resultVO.started}">
+											  <li><a href="javascript:{showConstituenciesDetails(${startedDistrict.locationId},'${startedDistrict.locationName}')}">${startedDistrict.locationName}</a></li>
+										</c:forEach>
+
+									</ul>
+							</div>
+						</div>
+						
+						<div class="row-fluid ">
+							<div class="span12 m_top20 widgetservey">
+								<h4>Districts Completed </h4>
+								<ul class="inline unstyled Constituency-name-nav">	
+										<c:if test="${empty resultVO.completed}">
+											SURVEY NOT COMPLETED IN ANY DISTRICT
+										</c:if>
+
+										<c:forEach var="completedDistrict" items="${resultVO.completed}">
+											  <li><a href="javascript:{showConstituenciesDetails(${completedDistrict.locationId},'${completedDistrict.locationName}')}">${completedDistrict.locationName}</a></li>
+										</c:forEach>
+									</ul>
+							</div>
 						</div>
 					</div>
 				</div>	<!----Constituency details main Div End---->
@@ -371,11 +440,11 @@ $('#boothId').multiselect({
 		<div class="span12">
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top30">
-							<h4>Verification report</h4>
+							<h4>Constituency Wise Summary Report</h4>
 							<img id="verificationImg" src="./images/Loading-data.gif" alt="Processing Image" class="offset5" 
 							style="width:70px;height:60px;display:none;"/>
 							<div class="row">
-						<div id="verifiedDiv" class="span10 offset1"></div>
+						<div id="verifiedDiv" class="span12"></div>
 						</div>
 			</div>
 			</div>
@@ -384,15 +453,15 @@ $('#boothId').multiselect({
   <!----- CTP Verification report END  -->
 
 		<!---- Survey monitoring---->	
-		<div class="span12" style="display:none;margin-top:20px;" id="stateWiseReportId">
-				<!-----State Overview Div ---->
+		<!--<div class="span12" style="display:none;margin-top:20px;" id="stateWiseReportId">
+
 				<div class="row-fluid">
 					<div class="span12 widgetservey_Red m_top20">
 						<h4>State Overview</h4>
 						<div class="row-fluid m_top20">
 							<div class="span3 wiget-yellow-normal">
 								<h3>Started Constituency Count</h3>
-								<!--<h2>80</h2>-->
+
 								<h2><a href="javascript:{getConstituencyWiseReport('${resultVO.startedConstituencyIds}');}">${resultVO.startedCount}</a></h2>
 							
 							</div>
@@ -413,19 +482,19 @@ $('#boothId').multiselect({
 						<div class="row-fluid m_top10">
 							<div class="span6 wiget-yellow-normal">
 								<h3>Total Caste Collected Count</h3>
-								<!-- <h2 id="TotalcasteCount">${resultVO.completedCount}</h2> -->
+								
 								<h2 id="TotalcasteCount">0</h2> 
 
 							</div>
 							<div class="span6 wiget-yellow-normal">
 							<h3>	Today Caste Collected Count 	</h3>
-							<!--	<h2 id="TodaycasteCount">${resultVO.completedCount}</h2> -->
+							
 							<h2 id="TodaycasteCount">0</h2> 
 
 							</div>
 						</div>
 					</div>		
-				</div><!-----State Overview Div end---->
+				</div>
 				
 				<div id="casteCountDiv" class="offset2" style="margin-top:20px;"></div>
 				<div id="dateWisecastePopupDiv">
@@ -433,8 +502,7 @@ $('#boothId').multiselect({
 				<img id="popupImg" src="./images/icons/search.gif" alt="Processing Image" style="display:none;"/>
 				</div>
 				</div>
-				
-				<!-- constituency Div -->
+
 				
 				<div class="row-fluid " >
 				
@@ -473,7 +541,7 @@ $('#boothId').multiselect({
 							</ul>
 					</div>
 				</div>
-		</div>
+		</div>-->
 		
 		
 		<div class="row" id="verifierReportId" style="dispaly:none;">
@@ -607,7 +675,7 @@ $('#boothId').multiselect({
 <script>
 var finalRes = null;
 var userTypeVal;
-showHideReportTabs('stateWiseReportTab');
+showHideReportTabs('dashboardReportTab');
 getTotalCasteCounts();
 
 function getVerifierReportCounts()

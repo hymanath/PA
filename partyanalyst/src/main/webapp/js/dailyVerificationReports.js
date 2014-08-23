@@ -809,9 +809,10 @@ function showHideReportTabs(id)
 		$("#thirdpPartyReport").hide();
 		$("#dashBoardDiv").hide();
 		$('#boothWiseDtlsId').hide();
-
+		
 		if(voterReportFlag == false)
-		getVerifierReportCounts();
+		getConstituencyWiseSummary();
+		//getVerifierReportCounts();
 		voterReportFlag = true;
 	}
 	else if(id == "boothWiseReportsTab")
@@ -1612,6 +1613,7 @@ function buildingSurveyCompletedLocationsDetailsForSurveyStartedConstituencies(r
 	 $("#buldingConstituenciesDivId").html('');
 	 $('#constituencyOverView').html('')
 	var str='';
+	str += '<h4>Constituency Wise Processing Status</h4>';
 	str+='<table class=" m_top20 table table-bordered table-hover table-striped" id="constituencyOverView">';
 	str+='<thead class="alert alert-success">';
 	str+='<tr>';
@@ -1729,7 +1731,8 @@ function buildCastCounts(result)
 {
 
 var str=''
-$("#TotalcasteCount").html('<a href="#" onclick="getDateWiseCount(\'\')">'+result.count+'</a>');
+//$("#TotalcasteCount").html('<a href="#" onclick="getDateWiseCount(\'\')">'+result.count+'</a>');
+$("#TotalcasteCount").html(''+result.count+'');
 $("#TodaycasteCount").html(''+result.casteCount+'');
 
 }
@@ -2247,9 +2250,8 @@ function buildBoothWiseStatusDetails(result)
 {
 	var str ='';
 
-    str+='<div class="span10 offset2">';
 	str+='<table class="table table-bordered m_top20 table-hover table-striped" id="boothWiseTable">';
-	 str+='<thead>';
+	 str+='<thead class="alert alert-success">';
       str+='<tr>';
 	    str+='<th>Boot No</th>';
 		str+='<th>DC</th>';
@@ -2273,7 +2275,6 @@ function buildBoothWiseStatusDetails(result)
 	 });
 	 str+='</tbody>';
 	str+='</table>';
-	str+='</div>';
 
 	$('#boothWiseStatusDtls').html(str);
 	$('#boothWiseTable').dataTable();
@@ -2281,6 +2282,111 @@ function buildBoothWiseStatusDetails(result)
 
 }
 
+function getConstituencyWiseSummary()
+{
+	$('#verificationImg').show();
+	$.ajax({
+		type:'GET',
+		url: 'buildConstituencyWiseSummaryReport.action',
+		dataType: 'json',
+		data: {},
+	}).done(function(result){
+		if(result != null)
+		{
+			buildConstituencyWiseSummary(result);
+		}
+		else
+		{
+			$('#verificationImg').hide();
+		}
+	});
+}
+
+function buildConstituencyWiseSummary(result)
+{
+	var str = '';
+	str+='<table class="table table-bordered m_top20 table-hover table-striped" id="boothWiseTable">';
+	 str+='<thead class="alert alert-success">';
+      str+='<tr>';
+	    str+='<th>CONSTITUENCY</th>';
+		str+='<th>TOTAL VOTERS</th>';
+		str+='<th>TOTAL BOOTHS</th>';
+		str+='<th>DC BOOTHS</th>';
+		str+='<th>DC BOOTHS % </th>';
+		str+='<th>DC CASTE TAGED</th>';
+		str+='<th>DC CASTE TAGED %</th>';
+		str+='<th>WM-DC BOOTHS</th>';
+		str+='<th>WM-DC CASTE TAGED</th>';
+		str+='<th>DV BOOTHS</th>';
+		str+='<th>DV CASTE TAGED</th>';
+		str+='<th>QC BOOTHS</th>';
+		str+='<th>QC CASTE TAGED</th>';
+		str+='<th>QC MATCHED</th>';
+		str+='<th>QC MATCHED %</th>';
+		str+='<th>QC UNMATCHED</th>';
+		str+='<th>QC UNMATCHED %</th>';
+      str+='</tr>';
+	 str+='</thead>';
+	 str+='<tbody>';
+	 for(var i in result)
+	 {
+		str += '<tr>';
+		str+='<td>'+result[i].name+'</td>';
+		str+='<td>'+result[i].totalVoters+'</td>';
+		str+='<td>'+result[i].totalConstituencyes+'</td>';
+		str+='<td>'+result[i].dcBoothsCount+'</td>';
+		str+='<td>'+result[i].dcPercentage+'</td>';
+		str+='<td>'+result[i].dcVotersCount+'</td>';
+		str+='<td>'+result[i].qcPercentage+'</td>';
+		str+='<td>'+result[i].redoBooths+'</td>';
+		str+='<td>'+result[i].redoVoters+'</td>';
+		str+='<td>'+result[i].verifierBoothsCount+'</td>';
+		str+='<td>'+result[i].verifierVotersCount+'</td>';
+		str+='<td>'+result[i].qcBoothsCount+'</td>';
+		str+='<td>'+result[i].qcVotersCount+'</td>';
+		str+='<td>'+result[i].matchedCount+'</td>';
+		if(result[i].matchedPerc != null)
+		{
+			str+='<td>'+result[i].matchedPerc+'</td>';
+		}
+		else
+		{
+			str+='<td>0</td>';
+		}
+		str+='<td>'+result[i].unMatchedCount+'</td>';
+		if(result[i].unMatchedPerc != null)
+		{
+			str+='<td>'+result[i].unMatchedPerc+'</td>';
+		}
+		else
+		{
+			str+='<td>0</td>';
+		}
+		 str+='</tr>';
+	 }
+	 
+	str+='</tbody>';
+	str+='</table>';
+	$('#verifiedDiv').html(str);
+	$('#verificationImg').hide();
+	generateExcel('verifiedDiv');
+	
+}
+var tableToExcel = (function() {
+var uri = 'data:application/vnd.ms-excel;base64,'
+, template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+, base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+, format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+return function(table, name) {
+if (!table.nodeType) table = document.getElementById(table)
+var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+window.location.href = uri + base64(format(template, ctx))
+}
+})()
+function generateExcel(id)
+{
+tableToExcel(id, 'Users Report');
+}
 function openInternalConstituencyWiseWindow(userTypeId,searchType)
 {
 	window.open("surveyConstituencieOverview.action?constituencyId=1&regionId="+internalRegionId+"&userTypeId="+userTypeId+"&startDate="+$('#internalVerificationFromDate').val()+"&endDate="+$('#internalVerificationToDate').val(), "_blank");
