@@ -1612,7 +1612,7 @@ $('.outerli').hover(function(){
 
 function openCtpProject()
 {
-	window.open("dailyVerificationReportsAction.action");
+	window.location.href = "dailyVerificationReportsAction.action";
 }
 </script>
 </body>
