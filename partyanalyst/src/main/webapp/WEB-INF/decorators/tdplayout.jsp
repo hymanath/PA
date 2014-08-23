@@ -309,7 +309,7 @@ margin-top:10px;
 					<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CALL_CENTER_ENTITLEMENT' ) }">
 					
 					<li><a href="callCenterAction.action"><span>Call Center</span></a></li>
-					<li><a href="dailyVerificationReportsAction.action"><span>CTP Project</span></a></li>
+					<li><a onClick="openCtpProject();"><span>CTP Project</span></a></li>
 					</c:if>
 					
 				</ul>
@@ -1610,6 +1610,10 @@ $('.outerli').hover(function(){
     $(this).addClass("active");
 });
 
+function openCtpProject()
+{
+	window.open("dailyVerificationReportsAction.action");
+}
 </script>
 </body>
 </html>
