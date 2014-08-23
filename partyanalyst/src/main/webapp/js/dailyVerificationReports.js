@@ -793,7 +793,7 @@ function showHideReportTabs(id)
 		$("#thirdpPartyReport").hide();
 		$("#verificationReportDiv").hide();
 		$('#boothWiseDtlsId').hide();
-		getBigPictureDetails(0);
+		//getBigPictureDetails(0);
 		
 	}
 	else if(id == "verificationReportTab")
@@ -1710,9 +1710,8 @@ function getConstituencyDetalReport(constituencyId,locationName){
 
 function getTotalCasteCounts()
 {
-var jObj = 
+	var jObj = 
 	{
-	
 	 task : "getCount"
 	}
 	$.ajax({
@@ -1724,7 +1723,9 @@ var jObj =
 
 				buildCastCounts(result);
 			});
-			setTimeout(getTotalCasteCounts, 30000);
+			setTimeout(getTotalCasteCounts, 100000);
+			getEntaieSelectionDetails(0,'all');
+			getBigPictureDetails(0);
 }
 
 function buildCastCounts(result)
@@ -1920,10 +1921,10 @@ function getEntaieSelectionDetails(stateId,divId)
 }
 function getBigPictureDetails(stateId)
 {
-	getInternalVerificationSummary(0,'allRegionsId1');
-	getQcVerificationSummaryReport(0,'allQcCollecetdId');
-	getTodayTeamDetails(0,'allTeamId');
-	getTeamCollectedDetailsSummaryReport(0,'allCollecetdId');
+	//getInternalVerificationSummary(0,'allRegionsId1');
+	//getQcVerificationSummaryReport(0,'allQcCollecetdId');
+	//getTodayTeamDetails(0,'allTeamId');
+	//getTeamCollectedDetailsSummaryReport(0,'allCollecetdId');
 	var jsObj = {
 		stateId : stateId
 	}
@@ -2369,7 +2370,7 @@ function buildConstituencyWiseSummary(result)
 	str+='</table>';
 	$('#verifiedDiv').html(str);
 	$('#verificationImg').hide();
-	generateExcel('verifiedDiv');
+	//generateExcel('verifiedDiv');
 	
 }
 var tableToExcel = (function() {
