@@ -1931,7 +1931,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 	public List<Object[]> getTotalVotersAndBoothsAndConstituencyes(Long stateId)
 	{
 		StringBuffer queryString = new StringBuffer();
-		queryString.append("select model.surveyUser.surveyUserType.surveyUsertypeId , count(distinct model.voter.voterId) , count(distinct model.booth.constituency.constituencyId),count(distinct model.booth.boothId) from SurveyDetailsInfo model where model.surveyUser.surveyUserType.surveyUsertypeId in (1,10) ");
+		queryString.append("select model.surveyUser.surveyUserType.surveyUsertypeId , count(distinct model.voter.voterId) , count(distinct model.booth.constituency.constituencyId),count(distinct model.booth.boothId) from SurveyDetailsInfo model where model.surveyUser.surveyUserType.surveyUsertypeId in (1,10) and model.caste is not null ");
 		if(stateId.longValue() == 1)
 		{
 			queryString.append("  and model.booth.constituency.district.districtId > 10 ");
@@ -2241,6 +2241,13 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		return query.list();
 		
 		
+	}
+	
+	public List<Object[]> getConstituencyWiseSummary()
+	{
+		Query query = getSession().createQuery("select model.booth.constituency.constituencyId , model.surveyUser.surveyUserType.surveyUsertypeId , count(distinct model.voter.voterId) , count(distinct model.booth.boothId)  from SurveyDetailsInfo model  group by model.booth.constituency.constituencyId , model.surveyUser.surveyUserType.surveyUsertypeId ");
+		
+		return query.list();
 	}
 	
 }

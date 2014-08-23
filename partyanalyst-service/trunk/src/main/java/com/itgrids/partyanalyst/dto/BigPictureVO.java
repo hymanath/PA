@@ -5,6 +5,9 @@ import java.io.Serializable;
 public class BigPictureVO implements Serializable
 {
 
+	private String name;
+	private Long id;
+	
 	private Integer dcVotersCount= 0;
 	private Integer dcBoothsCount= 0;
 	private Integer dcConstituencysCount= 0;
@@ -36,6 +39,9 @@ public class BigPictureVO implements Serializable
 	
 	private Integer matchedCount= 0;
 	private Integer unMatchedCount= 0;
+	
+	private String matchedPerc;
+	private String unMatchedPerc;
 	
 	public Integer getDcVotersCount() {
 		return dcVotersCount;
@@ -176,6 +182,30 @@ public class BigPictureVO implements Serializable
 	}
 	public void setUnMatchedCount(Integer unMatchedCount) {
 		this.unMatchedCount = unMatchedCount;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getMatchedPerc() {
+		return matchedPerc;
+	}
+	public void setMatchedPerc(String matchedPerc) {
+		this.matchedPerc = matchedPerc;
+	}
+	public String getUnMatchedPerc() {
+		return unMatchedPerc;
+	}
+	public void setUnMatchedPerc(String unMatchedPerc) {
+		this.unMatchedPerc = unMatchedPerc;
 	}
 	
 	

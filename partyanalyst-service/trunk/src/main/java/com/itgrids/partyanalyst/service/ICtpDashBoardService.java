@@ -28,6 +28,8 @@ public interface ICtpDashBoardService
 	public List<SurveyResponceVO> getBoothWiseCollectedcasteDetails(Long boothId,Long userTypeId);
 	public List<BoothWiseSurveyStatusDetailsVO> getAllBoothsStatusDetailsByConstituencyId(Long constituencyId);
 	public List<SurveyDashBoardVO> getCountsForDC();
+	
+	public List<BigPictureVO> buildConstituencyWiseSummaryReport();
 
 
 }

@@ -21,6 +21,7 @@ import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.ISurveyFinalDataDAO;
 import com.itgrids.partyanalyst.dto.BigPictureVO;
 import com.itgrids.partyanalyst.dto.BoothWiseSurveyStatusDetailsVO;
+import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.service.ICtpDashBoardService;
@@ -1201,10 +1202,235 @@ public class CtpDashBoardService implements ICtpDashBoardService
 			
 		}catch(Exception e)
 		{
-			e.printStackTrace();
 			LOG.error("Exception raised in getAllBoothsStatusDetailsByConstituencyId service method", e);
 		}
 		
 		return resultList;
+	}
+	
+	/**
+	 * This Service is used for getting constituency wise summary 
+	 * @return returnList
+	 */
+	public List<BigPictureVO> buildConstituencyWiseSummaryReport()
+	{
+		List<BigPictureVO> returnList = null;
+		try 
+		{
+			Map<Long,BigPictureVO> resultMap = null;
+			Map<Long,GenericVO> comstiDetailsMap = null;
+			Map<Long,GenericVO> wmDcDetailsMap = null;
+			Map<Long,GenericVO> wmDvDetailsMap = null;
+			Map<Long,Long> qcMatchedMap = null;
+			Map<Long,Long> qcUnMatchedMap = null;
+			List<Object[]> constituencyWiseList = surveyDetailsInfoDAO.getConstituencyWiseSummary();
+			if(constituencyWiseList != null && constituencyWiseList.size() > 0)
+			{
+				resultMap = new HashMap<Long, BigPictureVO>();
+				fillMainCasteCollectionDetails(constituencyWiseList,resultMap);
+			}
+			
+			List<Long> constituencyIds = new ArrayList<Long>(resultMap.keySet());
+			if(constituencyIds != null && constituencyIds.size() > 0)
+			{
+				List<Object[]> constituencyDetails = surveyConstituencyTempDAO.getTotalVotersAndBooths(constituencyIds);
+				if(constituencyDetails != null && constituencyDetails.size() > 0)
+				{
+					comstiDetailsMap = new HashMap<Long, GenericVO>();
+					fillConstituencyMapDetails(constituencyDetails,comstiDetailsMap);
+				}
+				
+				List<Object[]> wmDcDetails = surveyCallStatusDAO.getConstituencyWiseSummaryForWmDc();
+				if(wmDcDetails != null && wmDcDetails.size() > 0)
+				{
+					wmDcDetailsMap = new HashMap<Long, GenericVO>();
+					fillWmDetailsMap(wmDcDetails,wmDcDetailsMap);
+				}
+				
+				List<Object[]> wmDvDetails = surveyCallStatusDAO.getConstituencyWiseSummaryForWmDV();
+				if(wmDvDetails != null && wmDvDetails.size() > 0)
+				{
+					wmDvDetailsMap = new HashMap<Long, GenericVO>();
+					fillWmDetailsMap(wmDvDetails,wmDvDetailsMap);
+				}
+				List<Long> statusIds = new ArrayList<Long>();
+				statusIds.add(1l);
+				List<Object[]> qcMatched = surveyFinalDataDAO.getQcDataForSelection(0l, statusIds, null, null);
+				if(qcMatched != null && qcMatched.size() > 0)
+				{
+					qcMatchedMap = new HashMap<Long, Long>();
+					for (Object[] objects : qcMatched) {
+						qcMatchedMap.put((Long)objects[0], (Long)objects[3]);
+					}
+					
+				}
+				List<Long> unstatusIds = new ArrayList<Long>();
+				unstatusIds.add(2l);
+				unstatusIds.add(3l);
+				List<Object[]> qcUnMatched = 	surveyFinalDataDAO.getQcDataForSelection(0l, unstatusIds, null, null);
+				if(qcUnMatched != null && qcUnMatched.size() > 0 )
+				{
+					qcUnMatchedMap = new HashMap<Long, Long>();
+					for (Object[] objects : qcUnMatched)
+					{
+						qcUnMatchedMap.put((Long)objects[0], (Long)objects[3]);
+					}
+					
+				}
+			}
+			
+			if(comstiDetailsMap != null && comstiDetailsMap.size() > 0)
+			{
+				returnList = new ArrayList<BigPictureVO>();
+				fillResultList(comstiDetailsMap,resultMap, wmDcDetailsMap , wmDvDetailsMap, returnList,qcMatchedMap ,qcUnMatchedMap);
+			}
+			
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in buildConstituencyWiseSummaryReport service method", e);
+		}
+		return returnList;
+	}
+	
+	public void fillMainCasteCollectionDetails(List<Object[]> processList, Map<Long,BigPictureVO> resultMap)
+	{
+		try
+		{
+			for (Object[] objects : processList)
+			{
+				BigPictureVO bigPictureVO = resultMap.get((Long)objects[0]);
+				if(bigPictureVO == null)
+				{
+					bigPictureVO = new BigPictureVO();
+					resultMap.put((Long)objects[0], bigPictureVO);
+				}
+				if((Long)objects[1] == 1)
+				{
+					bigPictureVO.setDcVotersCount(Integer.valueOf(objects[2].toString()));
+					bigPictureVO.setDcBoothsCount(Integer.valueOf(objects[3].toString()));
+				}
+				else if((Long)objects[1] == 4)
+				{
+					bigPictureVO.setVerifierVotersCount(Integer.valueOf(objects[2].toString()));
+					bigPictureVO.setVerifierBoothsCount(Integer.valueOf(objects[3].toString()));
+				}
+				else
+				{
+					bigPictureVO.setQcVotersCount(Integer.valueOf(objects[2].toString()));
+					bigPictureVO.setQcBoothsCount(Integer.valueOf(objects[3].toString()));
+				}
+			}
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in fillMainCasteCollectionDetails service method", e);
+		}
+		
+	}
+	
+	public void fillConstituencyMapDetails(List<Object[]> processList , Map<Long,GenericVO> resultMap)
+	{
+		try
+		{
+			for (Object[] objects : processList)
+			{
+				GenericVO genericVO = new GenericVO();
+				genericVO.setCount((Long)objects[1]);// total voters
+				genericVO.setId((Long)objects[2]); // total booths
+				genericVO.setName(objects[3].toString()); // constituency name
+				resultMap.put((Long)objects[0], genericVO);
+			}
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in fillConstituencyMapDetails service method", e);
+		}
+		
+	}
+	
+	public void fillWmDetailsMap(List<Object[]> processList , Map<Long,GenericVO> resultMap)
+	{
+		try 
+		{
+			for (Object[] objects : processList) {
+				GenericVO genericVO = new GenericVO();
+				genericVO.setCount((Long)objects[1]);// booths count
+				genericVO.setId((Long)objects[2]); // voters count
+				resultMap.put((Long)objects[0], genericVO);
+			}
+		} 
+		catch (Exception e) 
+		{
+			LOG.error("Exception raised in fillWmDetailsMap service method", e);
+		}
+		
+	}
+	
+	
+	public void fillResultList(Map<Long,GenericVO> comstiDetailsMap,Map<Long,BigPictureVO> resultMap,Map<Long,GenericVO> wmDcDetailsMap , Map<Long,GenericVO> wmDvDetailsMap,List<BigPictureVO> returnList,Map<Long,Long> matchedMap ,Map<Long,Long> unMatchedMap )
+	{
+		try
+		{
+			for(Long constituencyId : comstiDetailsMap.keySet())
+			{
+				BigPictureVO bigPictureVO = new BigPictureVO();
+				BigPictureVO mainVO = resultMap.get(constituencyId);
+				bigPictureVO.setId(constituencyId);
+				
+				GenericVO constiVO = comstiDetailsMap.get(constituencyId);
+				if(constiVO != null)
+				{
+					bigPictureVO.setTotalVoters(Integer.valueOf(constiVO.getCount().toString()));
+					bigPictureVO.setTotalConstituencyes(Integer.valueOf(constiVO.getId().toString()));
+					bigPictureVO.setName(constiVO.getName());
+					
+					if(mainVO != null)
+					{
+						bigPictureVO.setDcVotersCount(mainVO.getDcVotersCount());
+						bigPictureVO.setDcBoothsCount(mainVO.getDcBoothsCount());
+						bigPictureVO.setDcPercentage(new BigDecimal(bigPictureVO.getDcBoothsCount()*(100.0)/bigPictureVO.getTotalConstituencyes()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+						bigPictureVO.setQcPercentage(new BigDecimal(bigPictureVO.getDcVotersCount()*(100.0)/bigPictureVO.getTotalVoters()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+						bigPictureVO.setVerifierVotersCount(mainVO.getVerifierVotersCount());
+						bigPictureVO.setVerifierBoothsCount(mainVO.getVerifierBoothsCount());
+						bigPictureVO.setQcVotersCount(mainVO.getQcVotersCount());
+						bigPictureVO.setQcBoothsCount(mainVO.getQcBoothsCount());
+					}
+					
+					GenericVO wmDcVO = wmDcDetailsMap.get(constituencyId);
+					if(wmDcVO != null)
+					{
+						bigPictureVO.setRedoBooths(Integer.valueOf(wmDcVO.getCount().toString())); // wm DC Booths count
+						bigPictureVO.setRedoVoters(Integer.valueOf(wmDcVO.getId().toString()));// wm Dc Voters Count
+					}
+					
+					GenericVO wmDvVO = wmDvDetailsMap.get(constituencyId);
+					if(wmDvVO != null )
+					{
+						bigPictureVO.setDcConstituencysCount(Integer.valueOf(wmDvVO.getCount().toString()) );// wm dv booth count
+						bigPictureVO.setQcConstituencyesCount(Integer.valueOf(wmDvVO.getCount().toString())); // wm dv voters count
+					}
+					Long matchedCount = matchedMap.get(constituencyId);
+					if(matchedCount != null)
+					{
+						bigPictureVO.setMatchedCount(Integer.valueOf(matchedCount.toString()));
+						bigPictureVO.setMatchedPerc(new BigDecimal(bigPictureVO.getMatchedCount()*(100.0)/bigPictureVO.getQcVotersCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					}
+					Long unMatchedCount = unMatchedMap.get(constituencyId);
+					if(unMatchedCount != null)
+					{
+						bigPictureVO.setUnMatchedCount(Integer.valueOf(unMatchedCount.toString()));
+						bigPictureVO.setUnMatchedPerc(new BigDecimal(bigPictureVO.getUnMatchedCount()*(100.0)/bigPictureVO.getQcVotersCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					}
+				}
+				
+				returnList.add(bigPictureVO);
+			}
+		} 
+		catch (Exception e) 
+		{
+			LOG.error("Exception raised in fillResultList service method", e);
+		}
+		
 	}
 }
