@@ -104,7 +104,8 @@ $('#boothId').multiselect({
 	$('.datepicker').datepicker({dateFormat: 'dd-mm-yy',minDate: '14-07-2014',maxDate: new Date()}); 
 	/*$(".toDatepicker").datepicker("setDate", new Date());
 	$(".fromDatepicker").datepicker("setDate", '14-07-2014');*/
-	
+	getDataAvalaiableConstituencyes();
+	getThirdAvaliableConstituencyes();
 });
   </script> 
 		<div class="container">
@@ -148,19 +149,19 @@ $('#boothId').multiselect({
 								</h4>
 								<div class="row-fluid">
 									<div class="well well-small span2 text-center">
-										<h4>207</h4>
+										<h4 id="totConsti"><img src="./images/icons/search.gif" ></img></h4>
 										<p>Total </br> Constituencies</p>
 									</div>
 									<div class="well well-small span2 text-center">
-										<h4><!--<a href="javascript:{getConstituencyWiseReport('${resultVO.startedConstituencyIds}');}">-->${resultVO.startedCount}<!--</a>--></h4>
+										<h4 id="startedConsti"><img src="./images/icons/search.gif" ></img></h4>
 										<p>Started </br> Constituencies</p>
 									</div>
 									<div class="well well-small span2 text-center">
-										<h4><!--<a href="javascript:{getConstituencyWiseReport('${resultVO.processConstituencyIds}');}">-->${resultVO.processingCount}<!--</a>--></h4>
+										<h4 id="processConsti"><img src="./images/icons/search.gif" ></img></h4>
 										<p>Processing </br>Constituencies</p>
 									</div>
 									<div class="well well-small span2 text-center">
-										<h4><!--<a href="javascript:{getConstituencyWiseReport('${resultVO.completedConstituencyIds}');}">-->${resultVO.completedCount}<!--</a>--></h4>
+										<h4 id="CompletedConsti"><img src="./images/icons/search.gif" ></img></h4>
 										<p>Completed </br>Constituencies</p>
 									</div>							
 
@@ -389,23 +390,16 @@ $('#boothId').multiselect({
 						</div>
 						<div class="row-fluid " >
 				
-									  <div class="span12  m_top20  widgetservey" id="buldingConstituenciesDivId">
-										<!--<h4>Constituency Wise Processing Status</h4>-->
-										<img id="popupImgid1" src="./images/icons/search.gif" alt="Processing Image" style="display:block;margin-left:410px"/>
-									  </div>
+							  <div class="span12  m_top20  widgetservey" id="buldingConstituenciesDivId">
+								<img id="popupImgid1" src="./images/icons/search.gif" alt="Processing Image" style="display:block;margin-left:410px"/>
+							  </div>
 								 
 						</div>
 						<div class="row-fluid ">
 							<div class="span12 m_top20 widgetservey">
 								<h4>Districts Started</h4>
-									<ul class="inline unstyled Constituency-name-nav">	
-										<c:if test="${empty resultVO.started}">
-											SURVEY NOT STARTED IN ANY DISTRICT
-										</c:if>
-										<c:forEach var="startedDistrict" items="${resultVO.started}">
-											  <li><a href="javascript:{showConstituenciesDetails(${startedDistrict.locationId},'${startedDistrict.locationName}')}">${startedDistrict.locationName}</a></li>
-										</c:forEach>
-
+									<ul class="inline unstyled Constituency-name-nav" id="districtStarted">	
+										SURVEY NOT STARTED IN ANY DISTRICT
 									</ul>
 							</div>
 						</div>
@@ -413,15 +407,9 @@ $('#boothId').multiselect({
 						<div class="row-fluid ">
 							<div class="span12 m_top20 widgetservey">
 								<h4>Districts Completed </h4>
-								<ul class="inline unstyled Constituency-name-nav">	
-										<c:if test="${empty resultVO.completed}">
-											SURVEY NOT COMPLETED IN ANY DISTRICT
-										</c:if>
-
-										<c:forEach var="completedDistrict" items="${resultVO.completed}">
-											  <li><a href="javascript:{showConstituenciesDetails(${completedDistrict.locationId},'${completedDistrict.locationName}')}">${completedDistrict.locationName}</a></li>
-										</c:forEach>
-									</ul>
+								<ul class="inline unstyled Constituency-name-nav" id="districtCompleted">	
+									SURVEY NOT COMPLETED IN ANY DISTRICT
+								</ul>
 							</div>
 						</div>
 					</div>
@@ -451,98 +439,6 @@ $('#boothId').multiselect({
 	    </div>
   <!----- CTP Verification report END  -->
 
-		<!---- Survey monitoring---->	
-		<!--<div class="span12" style="display:none;margin-top:20px;" id="stateWiseReportId">
-
-				<div class="row-fluid">
-					<div class="span12 widgetservey_Red m_top20">
-						<h4>State Overview</h4>
-						<div class="row-fluid m_top20">
-							<div class="span3 wiget-yellow-normal">
-								<h3>Started Constituency Count</h3>
-
-								<h2><a href="javascript:{getConstituencyWiseReport('${resultVO.startedConstituencyIds}');}">${resultVO.startedCount}</a></h2>
-							
-							</div>
-							<div class="span3 wiget-yellow-normal">
-								<h3>Completed Constituency Count</h3>
-								<h2><a href="javascript:{getConstituencyWiseReport('${resultVO.completedConstituencyIds}');}">${resultVO.completedCount}</a></h2>
-							</div>
-							<div class="span3 wiget-yellow-normal">
-								<h3>Processing Constituency Count</h3>
-								<h2><a href="javascript:{getConstituencyWiseReport('${resultVO.processConstituencyIds}');}">${resultVO.processingCount}</a></h2>
-							</div>
-							<div class="span3 wiget-yellow-normal">
-								<h3>Not Yet Started Constituency Count</h3>
-								<h2>${resultVO.notStartedCount}</h2>
-							</div>
-						</div>
-						
-						<div class="row-fluid m_top10">
-							<div class="span6 wiget-yellow-normal">
-								<h3>Total Caste Collected Count</h3>
-								
-								<h2 id="TotalcasteCount">0</h2> 
-
-							</div>
-							<div class="span6 wiget-yellow-normal">
-							<h3>	Today Caste Collected Count 	</h3>
-							
-							<h2 id="TodaycasteCount">0</h2> 
-
-							</div>
-						</div>
-					</div>		
-				</div>
-				
-				<div id="casteCountDiv" class="offset2" style="margin-top:20px;"></div>
-				<div id="dateWisecastePopupDiv">
-				<div id="PopupContentDiv">
-				<img id="popupImg" src="./images/icons/search.gif" alt="Processing Image" style="display:none;"/>
-				</div>
-				</div>
-
-				
-				<div class="row-fluid " >
-				
-				  <div class="span12  m_top20  widgetservey" id="buldingConstituenciesDivId">
-					<h4>Constituency Wise Processing Status</h4>
-					<img id="popupImgid1" src="./images/icons/search.gif" alt="Processing Image" style="display:block;margin-left:410px"/>
-				  </div>
-				 
-				</div>
-				<div class="row-fluid ">
-					<div class="span12 m_top20 widgetservey">
-						<h4>Districts Started</h4>
-							<ul class="inline unstyled Constituency-name-nav">	
-								<c:if test="${empty resultVO.started}">
-									SURVEY NOT STARTED IN ANY DISTRICT
-								</c:if>
-								<c:forEach var="startedDistrict" items="${resultVO.started}">
-									  <li><a href="javascript:{showConstituenciesDetails(${startedDistrict.locationId},'${startedDistrict.locationName}')}">${startedDistrict.locationName}</a></li>
-								</c:forEach>
-
-							</ul>
-					</div>
-				</div>
-				
-				<div class="row-fluid ">
-					<div class="span12 m_top20 widgetservey">
-						<h4>Districts Completed </h4>
-						<ul class="inline unstyled Constituency-name-nav">	
-						        <c:if test="${empty resultVO.completed}">
-									SURVEY NOT COMPLETED IN ANY DISTRICT
-								</c:if>
-
-								<c:forEach var="completedDistrict" items="${resultVO.completed}">
-									  <li><a href="javascript:{showConstituenciesDetails(${completedDistrict.locationId},'${completedDistrict.locationName}')}">${completedDistrict.locationName}</a></li>
-								</c:forEach>
-							</ul>
-					</div>
-				</div>
-		</div>-->
-		
-		
 		<div class="row" id="verifierReportId" style="dispaly:none;">
 			<div class="span12">
 				<div class="row-fluid ">
@@ -557,7 +453,7 @@ $('#boothId').multiselect({
 										
 										<div class="span3">
 											Select Constituency <font class="requiredFont">*</font> : 
-												<s:select theme="simple"  name="constituency" id="constituencyId"  headerKey="0" headerValue="Select Constituency" list="dataAvilableConstituencies" listKey="id" listValue="name" onChange="getBoothsDetailsByConstituencyId(this.value,'boothId'),getCasteCollectedDatesByConstituencyId(this.value);"/>
+												<select id="constituencyId" onChange="getBoothsDetailsByConstituencyId(this.value,'boothId'),getCasteCollectedDatesByConstituencyId(this.value);"><option value ="0">Select Constituency</option></select>
 										</div>
 										<div class="span3">
 											Select Booth <font class="requiredFont">*</font> : 
@@ -602,7 +498,7 @@ $('#boothId').multiselect({
 			<div class="span12">
 				<div class="row-fluid ">
 					<div class="span12 widgetservey_Red m_top20">
-							<h4>QC READY FOR REVIEV BOOTHS</h4>
+							<h4>QC READY FOR REVIEW BOOTHS</h4>
 								<img src='images/Loading-data.gif' class="offset5"  id="thirdPartyAjaxImg" style="width:70px;height:60px;display:none;"/>
 								<div class="row">
 									<div id="errorDivForThirdParty" class="span8 offset4"></div>
@@ -618,7 +514,8 @@ $('#boothId').multiselect({
 										<div class="span3">
 											 Constituency <font class="requiredFont">*</font></div>
 											<div class="span4">
-											 <s:select theme="simple"  name="constituency" id="constituencyForThirdParty"  headerKey="0" headerValue="Select Constituency" list="constituencies" listKey="id" listValue="name"/>
+											<select id="constituencyForThirdParty" onChange="getBoothsDetailsByConstituencyId(this.value,'boothId'),getCasteCollectedDatesByConstituencyId(this.value);"><option value ="0">Select Constituency</option></select>
+											
 										</div>												
 									</div>
 								</div>
@@ -646,7 +543,7 @@ $('#boothId').multiselect({
 										
 										<div class="span3">
 											Select Constituency <font class="requiredFont">*</font> : 
-												<s:select theme="simple"  name="constituency" id="bconstituencyId"  headerKey="0" headerValue="Select Constituency" list="dataAvilableConstituencies" listKey="id" listValue="name" />
+											<select id="bconstituencyId"><option value="0">Select Constituency</option></select>
 										</div>
 									</div>	
 									<div class="row-fluid">
@@ -665,10 +562,10 @@ $('#boothId').multiselect({
 				
 			</div>
 		</div>
-	
-	<div  style="display:none;margin-top:20px;" id="surveyUserTrackingId">
+		<div  style="display:none;margin-top:20px;" id="surveyUserTrackingId">
 		<jsp:include page="surveyUserTracking.jsp" flush="true"/>	
 	</div>
+
 </div>
 </div>
 <script>
