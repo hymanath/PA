@@ -779,6 +779,7 @@ function showHideReportTabs(id)
 		$('#boothWiseDtlsId').hide();
 		//getThirdPartySummaryDetails();
 		getTPTotalBoothsDetailsConstituencyWise();
+		//getThirdAvaliableConstituencyes();
 	}
 	else if(id == "dashboardReportTab")
 	{
@@ -827,14 +828,44 @@ function showHideReportTabs(id)
 		$("#saveBoothsPercentage").hide();
 		$("#thirdpPartyReport").hide();
 		$("#dashBoardDiv").hide();
-
+		//getDataAvalaiableConstituencyes();
 		$('#boothWiseDtlsId').show();
 	}
 
 }
+function getThirdAvaliableConstituencyes()
+{
+	var jsObj = {}
+	$.ajax({
+			type:'GET',
+			url: 'getThirdAvaliableConstituencyes.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		 }).done(function(result){	
+			fillSelectBox(result,'constituencyForThirdParty');
+		});	
+}
+function getDataAvalaiableConstituencyes()
+{
+	var jsObj = {}
+	$.ajax({
+			type:'GET',
+			url: 'dataAvaliableConstituencyes.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		 }).done(function(result){	
+			fillSelectBox(result,'bconstituencyId');
+		});	
+}
 
-
-
+function fillSelectBox(result,id)
+{
+	$("#"+id+" option").remove();
+	$("#"+id+"").append("<option value='0'>Select Constituency</option>");
+	for(var i in result){
+		$("#"+id+"").append("<option value="+result[i].id+">"+result[i].name+"</option>");
+	}
+}
 var availableDates;
 function getCasteCollectedDatesByConstituencyId(constituencyId)
 {
@@ -1724,10 +1755,50 @@ function getTotalCasteCounts()
 				buildCastCounts(result);
 			});
 			setTimeout(getTotalCasteCounts, 100000);
+			getSurveyCompletedDetails();
 			getEntaieSelectionDetails(0,'all');
 			getBigPictureDetails(0);
 }
-
+function getSurveyCompletedDetails()
+{
+	var jObj = 
+	{
+	 task : "getCount"
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getSurveyCompletedDetails.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)},
+			}).done(function(result){
+				if(result != null)
+				{
+					$('#startedConsti').html(result.startedCount);
+					$('#processConsti').html(result.processingCount);
+					$('#CompletedConsti').html(result.completedCount);
+					$('#totConsti').html(207);
+					if(result.started != null && result.started.length > 0)
+					{
+						var str = '';
+						for(var i in result.started)
+						{
+							str += '<li><a href="javascript:{showConstituenciesDetails('+result.started[i].locationId+','+result.started[i].locationName+')">'+result.started[i].locationName+'</a></li>';
+						}
+						$('#districtStarted').html(str);
+					}
+					if(result.completed != null && result.completed.length > 0)
+					{
+						var str = '';
+						for(var i in result.completed)
+						{
+							str += '<li><a href="javascript:{showConstituenciesDetails('+result.completed[i].locationId+','+result.completed[i].locationName+')">'+result.completed[i].locationName+'</a></li>';
+						}
+						$('#districtCompleted').html(str);
+					}
+					
+				}
+			});
+}
 function buildCastCounts(result)
 {
 
