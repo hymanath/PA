@@ -2251,6 +2251,8 @@ function buildBoothWiseStatusDetails(result)
 {
 	var str ='';
 
+    str+='<div class="span10 offset1">';
+	str+='<h4>'+$('#bconstituencyId :selected').text()+' CONSTITUENCY BOOTH WISE STATUS DETAILS</h4>';
 	str+='<table class="table table-bordered m_top20 table-hover table-striped" id="boothWiseTable">';
 	 str+='<thead class="alert alert-success">';
       str+='<tr>';
