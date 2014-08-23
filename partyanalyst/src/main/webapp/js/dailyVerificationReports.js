@@ -1782,7 +1782,7 @@ function getSurveyCompletedDetails()
 						var str = '';
 						for(var i in result.started)
 						{
-							str += '<li><a href="javascript:{showConstituenciesDetails('+result.started[i].locationId+','+result.started[i].locationName+')">'+result.started[i].locationName+'</a></li>';
+							str += '<li><a href="javascript:{showConstituenciesDetails('+result.started[i].locationId+',\''+result.started[i].locationName+'\')}">'+result.started[i].locationName+'</a></li>';
 						}
 						$('#districtStarted').html(str);
 					}
@@ -1791,7 +1791,7 @@ function getSurveyCompletedDetails()
 						var str = '';
 						for(var i in result.completed)
 						{
-							str += '<li><a href="javascript:{showConstituenciesDetails('+result.completed[i].locationId+','+result.completed[i].locationName+')">'+result.completed[i].locationName+'</a></li>';
+							str += '<li><a href="javascript:{showConstituenciesDetails('+result.completed[i].locationId+',\''+result.completed[i].locationName+'\')}">'+result.completed[i].locationName+'</a></li>';
 						}
 						$('#districtCompleted').html(str);
 					}
@@ -2321,7 +2321,6 @@ function getBoothWiseDetails()
 function buildBoothWiseStatusDetails(result)
 {
 	var str ='';
-
     str+='<div class="span10 offset1">';
 	str+='<h4>'+$('#bconstituencyId :selected').text()+' CONSTITUENCY BOOTH WISE STATUS DETAILS</h4>';
 	str+='<table class="table table-bordered m_top20 table-hover table-striped" id="boothWiseTable">';
