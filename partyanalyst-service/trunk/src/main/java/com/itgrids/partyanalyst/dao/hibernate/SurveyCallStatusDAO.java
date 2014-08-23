@@ -418,4 +418,18 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 			query.setParameterList("constituencyIds", constituencyIds);
 			return query.list();
 	}
+	
+	public List<Object[]>  getConstituencyWiseSummaryForWmDc()
+	{
+		Query query = getSession().createQuery(" select model.booth.constituency.constituencyId,count(distinct model.boothId), count(model.voterId) from SurveyCallStatus model where model.matchedStatus is not null group by model.booth.constituency.constituencyId ");
+		
+		return query.list();
+	}
+	
+	public List<Object[]>  getConstituencyWiseSummaryForWmDV()
+	{
+		Query query = getSession().createQuery(" select model.booth.constituency.constituencyId,count(distinct model.boothId), count(model.voterId) from SurveyCallStatus model where model.dvMatchedStatus is not null group by model.booth.constituency.constituencyId ");
+		
+		return query.list();
+	}
 }

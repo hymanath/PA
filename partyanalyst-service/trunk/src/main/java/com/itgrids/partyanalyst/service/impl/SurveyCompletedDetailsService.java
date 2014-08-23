@@ -25,6 +25,7 @@ import com.itgrids.partyanalyst.dao.ISurveyCallStatusDAO;
 import com.itgrids.partyanalyst.dao.ISurveyCompletedConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ISurveyCompletedLocationsDAO;
 import com.itgrids.partyanalyst.dao.ISurveyConstituencyDAO;
+import com.itgrids.partyanalyst.dao.ISurveyConstituencyTempDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.ISurveyFinalDataDAO;
 import com.itgrids.partyanalyst.dao.ISurveyWmThirdPartyStatusDAO;
@@ -94,7 +95,8 @@ public class SurveyCompletedDetailsService implements
 	@Autowired
 	private IDistrictDAO districtDAO;
 	
-	
+	@Autowired
+	private ISurveyConstituencyTempDAO surveyConstituencyTempDAO ;
 	
 	public List<SurveyReportVO> getSurveyCompletedLocationsDetailsForSurveyStartedConstituencies()
 	{
@@ -209,8 +211,8 @@ public class SurveyCompletedDetailsService implements
 				constituencyDetailsMap.put((Long)obj[0], obj[1].toString());
 			*/
 			
-			List<Object[]> votersCountList = boothPublicationVoterDAO.getTotalVotersForAllConstituencies(constituencyIds);
-			
+			//List<Object[]> votersCountList = boothPublicationVoterDAO.getTotalVotersForAllConstituencies(constituencyIds);
+			List<Object[]> votersCountList = surveyConstituencyTempDAO.getTotalVotersAndBoothsByConstituencyes(constituencyIds);
 			Map<Long,Long> votersCountMap = new HashMap<Long, Long>();
 			
 			for(Object[] obj:votersCountList)
