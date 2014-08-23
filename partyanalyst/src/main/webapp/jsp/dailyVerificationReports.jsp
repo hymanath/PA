@@ -148,22 +148,22 @@ $('#boothId').multiselect({
 								</h4>
 								<div class="row-fluid">
 									<div class="well well-small span2 text-center">
+										<h4>207</h4>
+										<p>Total </br> Constituencies</p>
+									</div>
+									<div class="well well-small span2 text-center">
 										<h4><!--<a href="javascript:{getConstituencyWiseReport('${resultVO.startedConstituencyIds}');}">-->${resultVO.startedCount}<!--</a>--></h4>
 										<p>Started </br> Constituencies</p>
 									</div>
 									<div class="well well-small span2 text-center">
-										<h4><!--<a href="javascript:{getConstituencyWiseReport('${resultVO.processConstituencyIds}');}">-->${resultVO.completedCount}<!--</a>--></h4>
+										<h4><!--<a href="javascript:{getConstituencyWiseReport('${resultVO.processConstituencyIds}');}">-->${resultVO.processingCount}<!--</a>--></h4>
 										<p>Processing </br>Constituencies</p>
 									</div>
 									<div class="well well-small span2 text-center">
-										<h4><!--<a href="javascript:{getConstituencyWiseReport('${resultVO.completedConstituencyIds}');}">-->${resultVO.processingCount}<!--</a>--></h4>
+										<h4><!--<a href="javascript:{getConstituencyWiseReport('${resultVO.completedConstituencyIds}');}">-->${resultVO.completedCount}<!--</a>--></h4>
 										<p>Completed </br>Constituencies</p>
 									</div>							
-								
-									<div class="well well-small span2 text-center">
-										<h4>207</h4>
-										<p>Total </br> Constituencies</p>
-									</div>
+
 									<div class="well well-small span2 text-center">
 										<h4 id="TotalcasteCount"><img src="./images/icons/search.gif" ></img></h4>
 										<p>Total Caste <br> Collected Count</p>
@@ -179,22 +179,21 @@ $('#boothId').multiselect({
 										<p>Target </br> Voters</p>
 									</div>
 									<div class="well well-small span2 text-center">
-										<h4 id="totalBooths"><img src="./images/icons/search.gif" ></img></h4>
-										<p>Target </br>Booths</p>
-									</div>
-									<div class="well well-small span2 text-center">
-										<h4 id="totalConstituencyes"><img src="./images/icons/search.gif" ></img></h4>
-										<p>Target </br>Constituencies</p>
-									</div>							
-								
-									<div class="well well-small span2 text-center">
 										<h4 id="dcVoters"><img src="./images/icons/search.gif" ></img></h4>
 										<p>DC </br> Voters</p>
+									</div>
+									<div class="well well-small span2 text-center">
+										<h4 id="totalBooths"><img src="./images/icons/search.gif" ></img></h4>
+										<p>Target </br>Booths</p>
 									</div>
 									<div class="well well-small span2 text-center">
 										<h4 id="dcBooths"><img src="./images/icons/search.gif" ></img></h4>
 										<p>DC </br>Booths</p>
 									</div>
+									<div class="well well-small span2 text-center">
+										<h4 id="totalConstituencyes"><img src="./images/icons/search.gif" ></img></h4>
+										<p>Target </br>Constituencies</p>
+									</div>							
 									<div class="well well-small span2 text-center">
 										<h4 id="dcConstituecyes"><img src="./images/icons/search.gif" ></img></h4>
 										<p>DC </br>Constituencies</p>
