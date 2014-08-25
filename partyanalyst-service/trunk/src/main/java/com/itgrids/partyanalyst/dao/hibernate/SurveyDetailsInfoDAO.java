@@ -2250,4 +2250,46 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		return query.list();
 	}
 	
+	public List<Object[]> getBoothWiseUserCollectedLocations(Long boothId , Long surveyUserId , Date todayDate , Date fromDate , Date toDate)
+	{
+		StringBuffer queryString = new StringBuffer();
+		queryString.append(" select distinct model.longitude , model.latitude from SurveyDetailsInfo  model where model.caste is not null");
+		if(boothId != null)
+		{
+			queryString.append(" and model.booth.boothId = :boothId ");
+		}
+		
+		if(surveyUserId != null)
+		{
+			queryString.append("  and model.surveyUser.surveyUserId = :surveyUserId ");
+		}
+		if(todayDate != null)
+		{
+			queryString.append("  and date(model.date) = :todayDate ");
+		}
+		if(fromDate != null && toDate != null)
+		{
+			queryString.append(" and date(model.date) >= :fromDate and date(model.date) <= :toDate  ");
+		}
+		Query query = getSession().createQuery(queryString.toString());
+		if(boothId != null)
+		{
+			query.setParameter("boothId", boothId);
+		}
+		if(surveyUserId != null)
+		{
+			query.setParameter("surveyUserId", surveyUserId);
+		}
+		if(todayDate != null)
+		{
+			query.setParameter("todayDate", todayDate);
+		}
+		if(fromDate != null && toDate != null)
+		{
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
+		return query.list();
+	}
+	
 }
