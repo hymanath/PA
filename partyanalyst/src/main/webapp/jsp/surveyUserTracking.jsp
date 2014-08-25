@@ -380,6 +380,24 @@ function getconstituencies()
 	
 	});
 }
+function getDataAvalaiableConstituencyesUser()
+{
+	var jsObj = {}
+	$.ajax({
+			type:'GET',
+			url: 'dataAvaliableConstituencyes.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		 }).done(function(result){	
+			$("#userTrackingConstituencyId option").remove();
+				$("#userTrackingConstituencyId").append("<option value='0'>Select Constituency</option>");
+				for(var i in result){
+					$("#userTrackingConstituencyId").append("<option value="+result[i].id+">"+result[i].name+"</option>");
+				}
+			
+		});	
+}
+
 </script>
 	<div class="container">
 		<!---- Survey monitoring---->		
@@ -395,8 +413,8 @@ function getconstituencies()
 									
 										<div class="span5">
 											<label>Select Constituency</label>
-										<!--<select name="constituency" id="constituencyId" list="constituenciesList" style="width:130px;"></select>-->
-										<s:select theme="simple"  name="constituency" id="userTrackingConstituencyId"  headerKey="0" headerValue="Select Constituency" list="dataAvilableConstituencies" listKey="id" listValue="name" value="userId"/>
+										<select name="constituency" id="userTrackingConstituencyId" list="constituenciesList" style="width:230px;"><option value="0">Select Constituency</option></select>
+										
 								
 										</div>
 										
@@ -427,5 +445,5 @@ function getconstituencies()
 		</div>
 	</div>
 	<script>
-	 //getconstituencies();
+	 getDataAvalaiableConstituencyesUser();
 	</script>
