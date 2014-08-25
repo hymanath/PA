@@ -1754,7 +1754,7 @@ function getTotalCasteCounts()
 
 				buildCastCounts(result);
 			});
-			setTimeout(getTotalCasteCounts, 300000);
+			setTimeout(getTotalCasteCounts, 500000);
 			getEntaieSelectionDetails(0,'all');
 			getSurveyCompletedDetails();
 			//getBigPictureDetails(0);
@@ -2023,6 +2023,11 @@ function getBigPictureDetails(stateId)
 				$('#dcConstituecyes').html(result.dcConstituencysCount);
 				$('#wmConstituencyes').html(result.verifierConstituencyCount);
 				$('#qcConstituencyes').html(result.qcConstituencyesCount);
+				
+				$('#dcVotersPerc').html(result.dcPercentage);
+				$('#dcBoothsPerc').html((Math.round(result.dcBoothsCount * 100)/result.totalBooths).toFixed(2));
+				$('#dcConstituencyPerc').html((Math.round(result.dcConstituencysCount * 100)/result.totalConstituencyes).toFixed(2));
+				
 				$('#totalState').show();
 			}
 		});	
