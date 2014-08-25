@@ -141,108 +141,11 @@ $('#boothId').multiselect({
 					<div class="span12 m_top20 widgetservey">
 						<h4>Caste Collection Dashboard <span id="totalState" style="display:none" class="pull-right btn-group   pull-right"><a onClick="getEntaieSelectionDetails(0,this.id)" id="all" class="btn btn-mini btn-success entaieSelection">ALL</a>|<a  onClick="getEntaieSelectionDetails(1,this.id)" id="ap" class="btn btn-mini entaieSelection ">AP</a>|<a  onClick="getEntaieSelectionDetails(2,this.id)" id="ts" class="btn btn-mini entaieSelection">TS</a></span></h4>						
 						
-						<!-----Data Collection & Verification Main Div---->
-						<div class="row-fluid m_top10" >
-							<!----Data Collection (left)------>
-							<div class="span12 wiget-yellow" style="height: 500px;">	
-								<h4 class="text-right">Big Picture
-								</h4>
-								<div class="row-fluid">
-									<div class="well well-small span2 text-center">
-										<h4 id="totConsti"><img src="./images/icons/search.gif" ></h4>
-										<p>Total </br> Constituencies</p>
-									</div>
-									<div class="well well-small span2 text-center">
-										<h4 id="startedConsti"><img src="./images/icons/search.gif" ></h4>
-										<p>Started </br> Constituencies</p>
-									</div>
-									<div class="well well-small span2 text-center">
-										<h4 id="processConsti"><img src="./images/icons/search.gif" ></h4>
-										<p>Processing </br>Constituencies</p>
-									</div>
-									<div class="well well-small span2 text-center">
-										<h4 id="CompletedConsti"><img src="./images/icons/search.gif" ></h4>
-										<p>Completed </br>Constituencies</p>
-									</div>							
-
-									<div class="well well-small span2 text-center">
-										<h4 id="TotalcasteCount"><img src="./images/icons/search.gif" ></img></h4>
-										<p>Total Caste <br> Collected Count</p>
-									</div>
-									<div class="well well-small span2 text-center">
-										<h4 id="TodaycasteCount"><img src="./images/icons/search.gif" ></img></h4>
-										<p>Today Caste </br>Collected Count </p>
-									</div>							
-								</div>
-								<div class="row-fluid">
-									<div class="well well-small span2  text-center">
-										<h4 id="totalVoters"><img src="./images/icons/search.gif" ></img></h4>
-										<p>Target </br> Voters</p>
-									</div>
-									<div class="well well-small span2 text-center">
-										<h4 id="dcVoters"><img src="./images/icons/search.gif" ></img></h4>
-										<p>DC </br> Voters</p>
-									</div>
-									<div class="well well-small span2 text-center">
-										<h4 id="totalBooths"><img src="./images/icons/search.gif" ></img></h4>
-										<p>Target </br>Booths</p>
-									</div>
-									<div class="well well-small span2 text-center">
-										<h4 id="dcBooths"><img src="./images/icons/search.gif" ></img></h4>
-										<p>DC </br>Booths</p>
-									</div>
-									<div class="well well-small span2 text-center">
-										<h4 id="totalConstituencyes"><img src="./images/icons/search.gif" ></img></h4>
-										<p>Target </br>Constituencies</p>
-									</div>							
-									<div class="well well-small span2 text-center">
-										<h4 id="dcConstituecyes"><img src="./images/icons/search.gif" ></img></h4>
-										<p>DC </br>Constituencies</p>
-									</div>							
-								</div>
-								<div class="row-fluid">
-									<div class="well well-small span2 text-center">
-										<h4 id="wmVoters"><img src="./images/icons/search.gif" ></img></h4>
-										<p>WM </br> Voters</p>
-									</div>
-									<div class="well well-small span2 text-center">
-										<h4 id="wmBooths"><img src="./images/icons/search.gif" ></img></h4>
-										<p>WM </br>Booths</p>
-									</div>
-									<div class="well well-small span2 text-center">
-										<h4 id="wmConstituencyes"><img src="./images/icons/search.gif" ></img></h4>
-										<p>WM </br>Constituencies</p>
-									</div>							
-								
-									<div class="well well-small span2 text-center">
-										<h4 id="qcVoters"><img src="./images/icons/search.gif" ></img></h4>
-										<p>QC </br> Voters</p>
-									</div>
-									<div class="well well-small span2 text-center">
-										<h4 id="qcBooths"><img src="./images/icons/search.gif" ></img></h4>
-										<p>QC </br>Booths</p>
-									</div>
-									<div class="well well-small span2 text-center">
-										<h4 id="qcConstituencyes"><img src="./images/icons/search.gif" ></img></h4>
-										<p>QC </br>Constituencies</p>
-									</div>							
-								</div>
-								
-								
-								<!--<div class="row-fluid">
-								<div class="well well-small span10 offset1  ">									
-									Planned Vs Actual Status  <span class="pull-right badge">5214</span>
-								</div>						
-								</div>-->
-							</div><!----Data Collection End------>
-							
 						
-						</div><!-----Data Collection & Verification Main Div---->	
-						
-						<div class="row-fluid m_top20">
+							<div class="row-fluid m_top10">
 							<!----Data Verification (right)---->
 							<div class="span6 wiget-yellow" style="height: 282px;">	
-								<h4 class="text-right">Daily & Date Range <span class="pull-right btn-group   pull-right"><a onClick="getTeamCollectedDetailsSummaryReport(0,this.id)" id="allCollecetdId" class="btn btn-mini todayCollectdDetailsCls btn-success">ALL</a>|<a  onClick="getTeamCollectedDetailsSummaryReport(1,this.id)" id="apCollecetdId" class="btn btn-mini todayCollectdDetailsCls btn-success">AP</a>|<a  onClick="getTeamCollectedDetailsSummaryReport(2,this.id)" id="tsCollecetdId" class="btn btn-mini todayCollectdDetailsCls">TS</a></span></h4>
+								<h4 class="text-right">Today Data Collection Details<span class="pull-right btn-group   pull-right"><a onClick="getTeamCollectedDetailsSummaryReport(0,this.id)" id="allCollecetdId" class="btn btn-mini todayCollectdDetailsCls btn-success">ALL</a>|<a  onClick="getTeamCollectedDetailsSummaryReport(1,this.id)" id="apCollecetdId" class="btn btn-mini todayCollectdDetailsCls btn-success">AP</a>|<a  onClick="getTeamCollectedDetailsSummaryReport(2,this.id)" id="tsCollecetdId" class="btn btn-mini todayCollectdDetailsCls">TS</a></span></h4>
 								<input type="hidden" value="0" id="dailyDateRangeHidden"></input>
 								<div class="row-fluid">
 									<div class="input-append span4">
@@ -263,15 +166,15 @@ $('#boothId').multiselect({
 								<div class="row-fluid">
 									<div class="well well-small span4  text-center">
 										<a onClick="getConstituencyWiseTeamCollecetdDetails(1)"><h4 style = "cursor: pointer;" id="dcDetailsId"><img src="./images/icons/search.gif" ></img></h4></a>
-										<p class="">DC </br>Completed</p>										
+										<p class="">Data Collection </br>Completed</p>										
 									</div>
 									<div class="well well-small span4 text-center">
 										<a onClick="getConstituencyWiseTeamCollecetdDetails(4)"><h4 style = "cursor: pointer;" id="dvDetailsId"><img src="./images/icons/search.gif" ></img></h4></a>
-										<p>DV </br>Completed</p>
+										<p>Data Verification </br>Completed</p>
 									</div>
 									<div class="well well-small span4 text-center">
 										<a onClick="getConstituencyWiseTeamCollecetdDetails(10)"><h4 style = "cursor: pointer;" id="qcDetailsId"><img src="./images/icons/search.gif" ></img></h4></a>
-										<p>QC </br>Completed</p>
+										<p>Quality Check </br>Completed</p>
 									</div>							
 								</div>
 								
@@ -306,13 +209,135 @@ $('#boothId').multiselect({
 									</div>
 									<div class="well well-small span4 text-center">
 										<h4  id="qcMembers" ><img src="./images/icons/search.gif" ></img></h4></a>
-										<p>Quality </br> Controle</p>
+										<p>Quality </br> Check</p>
 									</div>
 								</div>							
 							</div>	<!-------->
 							
 							
 						</div>
+						
+						<!-----Data Collection & Verification Main Div---->
+						<div class="row-fluid m_top20" >
+							<!----Data Collection (left)------>
+							<div class="span12 wiget-yellow" style="height: 550px;">	
+								<h4 class="text-right">Big Picture
+								</h4>
+								<div class="row-fluid">
+									<div class="well well-small span2 text-center">
+										<h4 id="totConsti"><img src="./images/icons/search.gif" ></h4>
+										<p>Total </br> Constituencies</p>
+									</div>
+									<div class="well well-small span2 text-center">
+										<h4 id="startedConsti"><img src="./images/icons/search.gif" ></h4>
+										<p>Started </br> Constituencies</p>
+									</div>
+									<div class="well well-small span2 text-center">
+										<h4 id="processConsti"><img src="./images/icons/search.gif" ></h4>
+										<p>Processing </br>Constituencies</p>
+									</div>
+									<div class="well well-small span2 text-center">
+										<h4 id="CompletedConsti"><img src="./images/icons/search.gif" ></h4>
+										<p>Completed </br>Constituencies</p>
+									</div>							
+
+									<!--<div class="well well-small span2 text-center">
+										<h4 id="TotalcasteCount"><img src="./images/icons/search.gif" ></img></h4>
+										<p>Total Caste <br> Collected Count</p>
+									</div>-->
+										
+									<div class="well well-small span2  text-center">
+										<h4 id="totalVoters"><img src="./images/icons/search.gif" ></img></h4>
+										<p>Target </br> Voters</p>
+									</div>	
+
+									<div class="well well-small span2 text-center">
+										<h4 id="totalBooths"><img src="./images/icons/search.gif" ></img></h4>
+										<p>Target </br>Booths</p>
+									</div>									
+								</div>
+								<div class="row-fluid">
+									
+									<div class="well well-small span2 text-center">
+										<h4 id="dcVoters"><img src="./images/icons/search.gif" ></img></h4>
+										<p>Data Collection <br> Completed </br> Voters</p>
+									</div> 
+									
+									<div class="well well-small span2 text-center">
+										<h4 id="dcVotersPerc"><img src="./images/icons/search.gif" ></img></h4>
+										<p>Data Collection <br> Completed </br> Voters %</p>
+									</div> 
+									
+									<div class="well well-small span2 text-center">
+										<h4 id="dcBooths"><img src="./images/icons/search.gif" ></img></h4>
+										<p>Data Collection <br> Completed </br> Booths</p>
+									</div>
+									
+									<div class="well well-small span2 text-center">
+										<h4 id="dcBoothsPerc"><img src="./images/icons/search.gif" ></img></h4>
+										<p>Data Collection <br> Completed </br> Booths %</p>
+									</div>
+									
+									<div class="well well-small span2 text-center">
+										<h4 id="dcConstituencyPerc"><img src="./images/icons/search.gif" ></img></h4>
+										<p>Data Collection <br> Completed </br> Constituencies %</p>
+									</div>
+									
+									<div class="well well-small span2 text-center">
+										<h4 id="TodaycasteCount"><img src="./images/icons/search.gif" ></img></h4>
+										<p>Today Caste </br>  Collected </br> Count </p>
+									</div>
+									<!--<div class="well well-small span2 text-center">
+										<h4 id="totalConstituencyes"><img src="./images/icons/search.gif" ></img></h4>
+										<p>Target </br>Constituencies</p>
+									</div>		-->					
+									<!--<div class="well well-small span2 text-center">
+										<h4 id="dcConstituecyes"><img src="./images/icons/search.gif" ></img></h4>
+										<p>Data Collection <br> Completed Constituencies</p>
+									</div>	-->	
+																	
+								</div>
+								<div class="row-fluid">
+																
+									<div class="well well-small span2 text-center">
+										<h4 id="wmVoters"><img src="./images/icons/search.gif" ></img></h4>
+										<p>Verification Completed </br> Voters</p>
+									</div>
+									<div class="well well-small span2 text-center">
+										<h4 id="wmBooths"><img src="./images/icons/search.gif" ></img></h4>
+										<p>Verification Completed </br>  Booths</p>
+									</div>
+									<div class="well well-small span2 text-center">
+										<h4 id="wmConstituencyes"><img src="./images/icons/search.gif" ></img></h4>
+										<p>Verification Completed </br> Constituencies</p>
+									</div>	
+									
+									<div class="well well-small span2 text-center">
+										<h4 id="qcVoters"><img src="./images/icons/search.gif" ></img></h4>
+										<p>Quality Check</br> Completed </br> Voters</p>
+									</div>
+									<div class="well well-small span2 text-center">
+										<h4 id="qcBooths"><img src="./images/icons/search.gif" ></img></h4>
+										<p>Quality Check</br>Completed </br>Booths</p>
+									</div>
+									<div class="well well-small span2 text-center">
+										<h4 id="qcConstituencyes"><img src="./images/icons/search.gif" ></img></h4>
+										<p>Quality Check</br>Completed Constituencies</p>
+									</div>							
+								</div>
+								
+								
+								<!--<div class="row-fluid">
+								<div class="well well-small span10 offset1  ">									
+									Planned Vs Actual Status  <span class="pull-right badge">5214</span>
+								</div>						
+								</div>-->
+							</div><!----Data Collection End------>
+							
+						
+						</div><!-----Data Collection & Verification Main Div---->	
+						
+					
 						
 						<div class="row-fluid m_top20">
 						
@@ -374,15 +399,15 @@ $('#boothId').multiselect({
 								<div class="row-fluid">
 									<div class="well well-small span4  text-center">
 										<h4 id="verifiedRecords"><img src="./images/icons/search.gif" ></img></h4>
-										<p class="">Records Verified</p>										
+										<p class="">Records <br/> Verified</p>										
 									</div>
 									<div class="well well-small span4 text-center">
 										<h4  id="qcMatched" ><img src="./images/icons/search.gif" ></img></h4>
-										<p>Matched Identified</p>
+										<p>Matched <br/> Identified</p>
 									</div>
 									<div class="well well-small span4 text-center">
 										<h4 id="qcUnMatched" ><img src="./images/icons/search.gif" ></img></h4></a>
-										<p>Records Collected</p>
+										<p>Records <br/> Collected</p>
 									</div>
 								</div>							
 							</div>	<!-------->
