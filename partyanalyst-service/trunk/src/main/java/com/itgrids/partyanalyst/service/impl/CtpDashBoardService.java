@@ -1433,4 +1433,49 @@ public class CtpDashBoardService implements ICtpDashBoardService
 		}
 		
 	}
+	
+	/**
+	 * This Servic is used for getting booth wise user location tracking
+	 * @param boothId
+	 * @param surveyUserUd
+	 * @param fromDate
+	 * @param toDate
+	 * @return
+	 */
+	public List<GenericVO> getUserWiseCollecetionDetails(Long boothId , Long surveyUserUd , String fromDate , String toDate)
+	{
+		List<GenericVO> returnList = null;
+		try
+		{
+			List<Object[]> boothWiseUserDetails = null;
+			if(fromDate.toString().equalsIgnoreCase("null") && toDate.toString().equalsIgnoreCase("null"))
+			{
+				DateUtilService dateUtilService = new DateUtilService();
+				Date todateDate = dateUtilService.getCurrentDateAndTime();
+				boothWiseUserDetails = surveyDetailsInfoDAO.getBoothWiseUserCollectedLocations(boothId,surveyUserUd,todateDate,null,null);
+			}
+			else
+			{
+				SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
+				boothWiseUserDetails = surveyDetailsInfoDAO.getBoothWiseUserCollectedLocations(boothId,surveyUserUd,null,originalFormat.parse(fromDate),originalFormat.parse(toDate));
+			}
+			
+			if(boothWiseUserDetails != null && boothWiseUserDetails.size() > 0)
+			{
+				returnList = new ArrayList<GenericVO>();
+				for (Object[] objects : boothWiseUserDetails)
+				{
+					GenericVO genericVO = new GenericVO();
+					genericVO.setName(objects[0] != null ? objects[0].toString() : ""); //longitude
+					genericVO.setDesc(objects[1] != null ? objects[1].toString() : ""); //latitude
+					returnList.add(genericVO);
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getUserWiseCollecetionDetails service method", e);
+		}
+		return returnList;
+	}
 }

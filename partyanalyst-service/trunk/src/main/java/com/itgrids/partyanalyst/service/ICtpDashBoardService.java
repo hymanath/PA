@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.BigPictureVO;
 import com.itgrids.partyanalyst.dto.BoothWiseSurveyStatusDetailsVO;
+import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 
@@ -30,6 +31,8 @@ public interface ICtpDashBoardService
 	public List<SurveyDashBoardVO> getCountsForDC();
 	
 	public List<BigPictureVO> buildConstituencyWiseSummaryReport();
+	
+	public List<GenericVO> getUserWiseCollecetionDetails(Long boothId , Long surveyUserUd , String fromDate , String toDate);
 
 
 }
