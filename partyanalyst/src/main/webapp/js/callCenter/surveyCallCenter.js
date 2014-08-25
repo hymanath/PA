@@ -2634,12 +2634,46 @@ function buildSummaryForFieldData(result)
 				  {
 					  str+='<tr>';
 					str+='<td>'+result[i].constituency+'</td>';
-					str+='<td>'+result[i].boothCount+'</td>';
-					str+='<td>'+result[i].totalCount+'</td>';
-					str+='<td>'+result[i].casteTagedBooths+'</td>';
-					str+='<td>'+result[i].casteCount+'</td>';
-					str+='<td>'+result[i].casteVerifiedBooths+'</td>';
-					
+					if(result[i].boothCount != null )
+					{
+						str+='<td>'+result[i].boothCount+'</td>';
+					}
+					else
+					{
+						str+='<td>-</td>';
+					}
+					if(result[i].totalCount != null )
+					{
+						str+='<td>'+result[i].totalCount+'</td>';
+					}
+					else
+					{
+						str+='<td>-</td>';
+					}
+					if(result[i].casteTagedBooths != null )
+					{
+						str+='<td>'+result[i].casteTagedBooths+'</td>';
+					}
+					else
+					{
+						str+='<td>-</td>';
+					}
+					if(result[i].casteCount != null )
+					{
+						str+='<td>'+result[i].casteCount+'</td>';
+					}
+					else
+					{
+						str+='<td>-</td>';
+					}
+					if(result[i].casteVerifiedBooths != null )
+					{
+						str+='<td>'+result[i].casteVerifiedBooths+'</td>';
+					}
+					else
+					{
+						str+='<td>-</td>';
+					}
 					if(result[i].casteErrorRate == null)
 						str+='<td>-</td>';
 					else
