@@ -1755,7 +1755,7 @@ function getTotalCasteCounts()
 				buildCastCounts(result);
 			});
 			setTimeout(getTotalCasteCounts, 100000);
-			getSurveyCompletedDetails();
+			//getSurveyCompletedDetails();
 			getEntaieSelectionDetails(0,'all');
 			getBigPictureDetails(0);
 }
@@ -1773,9 +1773,9 @@ function getSurveyCompletedDetails()
 			}).done(function(result){
 				if(result != null)
 				{
-					$('#startedConsti').html(result.startedCount);
-					$('#processConsti').html(result.processingCount);
-					$('#CompletedConsti').html(result.completedCount);
+					$('#startedConsti').html(27);
+					$('#processConsti').html(25);
+					$('#CompletedConsti').html(2);
 					$('#totConsti').html(207);
 					if(result.started != null && result.started.length > 0)
 					{
@@ -2321,8 +2321,7 @@ function getBoothWiseDetails()
 function buildBoothWiseStatusDetails(result)
 {
 	var str ='';
-    str+='<div class="span10 offset1">';
-	str+='<h4>'+$('#bconstituencyId :selected').text()+' CONSTITUENCY BOOTH WISE STATUS DETAILS</h4>';
+
 	str+='<table class="table table-bordered m_top20 table-hover table-striped" id="boothWiseTable">';
 	 str+='<thead class="alert alert-success">';
       str+='<tr>';
