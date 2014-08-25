@@ -6,26 +6,21 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
  <html>
   <head>	
-    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
 <script src="//code.jquery.com/jquery-1.10.2.js"></script>
 <script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
 <script src="//code.jquery.com/jquery-1.10.2.js"></script>
 <script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
+
 <script src="js/maps/leaflet.js"></script>
 <link rel="stylesheet" href="css/leaflet.css"></link>
 <script src="js/maps/google.js"></script>
 <script src="js/maps/Permalink.js"></script>
-<script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.js"></script>
-<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
 <script src="js/maps/googleMap.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/callCenter/surveyCallCenter.js"></script>
-<script src="js/callCenter/surveyCallCenter1.js"></script>
-<script type="text/javascript" src="js/jquery.dataTables.js"></script>
-<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
-
 		<style>
 		
 			body{background:#f0f0f0;}
@@ -137,6 +132,18 @@
 					<div id="boothWiseStatusDtls"></div>
 					
 				</div>		
+			</div>
+		</div>
+		
+		<div class="row-fluid">
+			<div class="span12" >
+				<div class="row-fluid ">
+					<div class="span12 widgetservey_Red m_top20" id="weathermap" style="display:none;">
+					<img src='images/Loading-data.gif' style="width:70px;height:60px;" class="hide offset6"  id="mapAhax"/>
+						<h4 id="heading">SURVEY DETAILS</h4>
+						<div id="map" style="width: 100%; height: 400px;cursor: pointer;"></div>
+					</div>
+				</div>
 			</div>
 		</div>
 		
@@ -409,7 +416,7 @@ function buildBoothWiseTeamCollecetedDetails(result,name)
 	{
 		str += '<tr>';
 		str += '<td>'+result[i].dcPercentage+'</td>';
-		str += '<td>'+result[i].qcPercentage+'</td>';
+		str += '<td><a onClick="getUserCollectedLocations('+result[i].dcVotersCount+','+result[i].verifierVotersCount+',\''+result[i].dcPercentage+'\',\''+name+'\')">'+result[i].qcPercentage+'</a></td>';
 		str += '<td>'+result[i].verifierPercentage+'</td>';
 		str += '<td>'+result[i].qcVotersCount+'</td>';
 		str += '</tr>';
@@ -525,7 +532,7 @@ function buildBoothWiseTeamDetails(result,name)
 	{
 		str += '<tr>';
 		str += '<td>'+result[i].dcPercentage+'</td>';
-		str += '<td>'+result[i].qcPercentage+'</td>';
+		str += '<td><a style="cursor: pointer;" onClick="getUserCollectedLocations('+result[i].dcVotersCount+','+result[i].verifierVotersCount+',\''+result[i].dcPercentage+'\',\''+name+'\')">'+result[i].qcPercentage+'</a></td>';
 		str += '<td>'+result[i].verifierPercentage+'</td>';
 		str += '<td>'+result[i].qcVotersCount+'</td>';
 		str += '</tr>';
@@ -765,6 +772,110 @@ function buildBoothWiseVerifiedCasteCollectedDetails(result,boothNo)
 		"aLengthMenu": [[50, 100, 150, -1], [50, 100, 150, "All"]]
 		});
 }
+
+
+function getUserCollectedLocations(boothId , surveyUserId,boothNo,constituency)
+{	
+	$('#mapDiv').show();
+	$('#mapAhax').show();
+	$('#weathermap').show();
+	var fromDate = '${fromDate}';
+	var toDate = '${toDate}';
+	var jsObj = {
+		boothId : boothId,
+		surveyUserId : surveyUserId,
+		fromDate : fromDate,
+		toDate : toDate
+	}
+	$.ajax({
+			type:'GET',
+			url: 'getUserWiseCollecetionDetails.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		 }).done(function(result){	
+			if(result != null)
+			{
+				buildUserLocationDetails(result,boothNo,constituency);
+			}
+		});	
+}
+var campus = {
+"type": "Point",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": []
+}
+var polyline = '';
+function buildUserLocationDetails(result,boothNo,constituency)
+{
+
+	$('#weathermap').html('');
+	$('html, body').animate({
+        scrollTop: $("#weathermap").offset().top
+    }, 2000);
+	document.getElementById('weathermap').innerHTML = "<h4>"+constituency+" Constituency Booth - "+boothNo+" Caste Collected Locations</h4><div class='span12 m_top20 widgetservey' id='map' style='height:500px'></div>";
+	
+	$.each(result,function(index,value){
+	if(value.desc != null && value.name != null)
+	{
+		var voterDetails = 
+		{ "type": "Feature",
+		"properties": {},
+			"geometry": { "type": "Polygon", "coordinates": [[[value.name,value.desc]]] }
+		};
+		campus.features.push(voterDetails);
+	}
+	});
+	
+	var map = new L.Map('map').setView(new L.LatLng(result[0].desc,result[0].name), 15);
+	var osm = new L.TileLayer('http://{s}.tile.osmosnimki.ru/kosmo/{z}/{x}/{y}.png');
+	var mpn = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+	var qst = new L.TileLayer('http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png', {attribution:'Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">'}).addTo(map);
+	
+
+	map.addControl(new L.Control.Scale({width: 100, position: 'bottomleft'}));
+	var link = new L.Control.Permalink();
+	map.addControl(link);
+	map.addControl(new L.Control.Layers({ 'Mapnik':mpn, 'MapQuest':qst,  'Google':new L.Google()},{}
+	 ));
+	L.geoJson(campus, {
+		
+		style: function (feature) {
+			return feature.properties && feature.properties.style;
+		},
+		
+		onEachFeature: onEachFeature,
+		pointToLayer: function (feature, latlng) {
+			return L.circleMarker(latlng, {
+				
+			});
+		}
+	}).addTo(map);
+	
+	for(var i in result)
+	{
+		if(result[i].desc != null && result[i].name != null)
+		{
+			var iconImg = 'images/DC.png';		
+			var icon = L.icon({
+			iconUrl: iconImg,
+
+			iconSize:     [30, 30], // size of the icon
+			shadowSize:   [10, 10], // size of the shadow
+			iconAnchor:   [10, 10], // point of the icon which will correspond to marker's location
+			shadowAnchor: [4, 62],  // the same for the shadow
+			popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+		   });
+			var markers = new L.Marker([result[i].desc,result[i].name],{icon: icon});
+			//var popuoContent = "<table class='table table-bordered m_top20 table-hover table-striped username'><tr><td>Name : </td><td>"+result[i].name+"</td></tr>";
+			map.addLayer(markers);	
+		}
+		
+	}
+	$('#mapAhax').hide();
+}
+function onEachFeature(feature, layer)
+{    
+}
 </script>
 <script>
 //boothWiseStatusDetailsByConstituency();
@@ -814,6 +925,7 @@ function buildBoothWiseStatusDetails(result)
 	$('#boothWiseStatusDtls').html(str);
 	$('#boothWiseStatusDtls1').css('display','block');
 }
+
 </script>
 </body>
 </html>

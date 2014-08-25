@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dto.BigPictureVO;
 import com.itgrids.partyanalyst.dto.BoothWiseSurveyStatusDetailsVO;
+import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
@@ -39,12 +40,25 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 	private List<SurveyDashBoardVO> resultList;
 	private List<SurveyResponceVO> collectedCasteDetails;
 	private List<BoothWiseSurveyStatusDetailsVO> boothWiseStatusList;
+	
+	private List<GenericVO> boothWiseUserLocations;
 	private String startDate;
 	private String endDate;
 	
 	@Autowired
 	private ICtpDashBoardService ctpDashBoardService;
 	
+
+	
+	public List<GenericVO> getBoothWiseUserLocations() {
+		return boothWiseUserLocations;
+	}
+
+
+	public void setBoothWiseUserLocations(List<GenericVO> boothWiseUserLocations) {
+		this.boothWiseUserLocations = boothWiseUserLocations;
+	}
+
 
 	public List<BoothWiseSurveyStatusDetailsVO> getBoothWiseStatusList() {
 		return boothWiseStatusList;
@@ -260,6 +274,19 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 		return Action.SUCCESS;
 	}
 	
+	public String getUserWiseCollecetionDetails()
+	{
+		try
+		{
+			jObj = new JSONObject(getTask());
+			boothWiseUserLocations = ctpDashBoardService.getUserWiseCollecetionDetails(jObj.getLong("boothId"),jObj.getLong("surveyUserId"),jObj.getString("fromDate"),jObj.getString("toDate"));
+		} 
+		catch (Exception e) 
+		{
+			LOG.error("Exception reised in getTodayTeamDetails", e);
+		}
+		return Action.SUCCESS;
+	}
 	public String getConstituencyWiseTeamDetails()
 	{
 		try
