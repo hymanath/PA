@@ -33,6 +33,8 @@ public class CandidateDetails extends BaseModel implements Serializable
  private Double howLongWorkingInParty;
  private Candidate candidate;
  
+ private Party previousParty;
+ 
  public CandidateDetails()
  {
 		super();
@@ -108,5 +110,18 @@ public Candidate getCandidate() {
 public void setCandidate(Candidate candidate) {
 	this.candidate = candidate;
 }
- 
+
+@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+@JoinColumn(name="previous_party")
+@LazyToOne(LazyToOneOption.NO_PROXY)
+@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+public Party getPreviousParty() {
+	return previousParty;
+}
+
+public void setPreviousParty(Party previousParty) {
+	this.previousParty = previousParty;
+}
+
+
 }

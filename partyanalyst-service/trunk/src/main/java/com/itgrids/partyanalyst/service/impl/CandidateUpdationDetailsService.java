@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -12,10 +13,12 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.ICandidateDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICasteDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
+import com.itgrids.partyanalyst.dao.hibernate.ConstituencyDAO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -40,8 +43,8 @@ private ICandidateDetailsDAO candidateDetailsDAO;
 private ICasteStateDAO casteStateDAO;
 private IEducationalQualificationsDAO educationalQualificationsDAO;
 private ICasteDAO casteDAO;
-
-
+@Autowired
+private IConstituencyDAO constituencyDAO;
 
 public IEducationalQualificationsDAO getEducationalQualificationsDAO() {
 	return educationalQualificationsDAO;
@@ -368,7 +371,92 @@ return status;
 		
 }
 
+@Override
+public List<CandidateVO> getCandidateInfo(Long electionId, String electionType) {
+	List<CandidateVO>  resultList = new ArrayList<CandidateVO>();
+	List<Object[]> list = null;
+	Double totalVotes = 0.0;
+	Double votesGained = 0.0;
+	List<Long> candidateIds = new ArrayList<Long>();
+	try{
+		if(electionType.equalsIgnoreCase("MPTC"))
+		{
+			list = candidateDetailsDAO.getMptcCandidateDetails(electionId);
+		}
+		else if(electionType.equalsIgnoreCase("ZPTC"))
+		{
+			list = candidateDetailsDAO.getZptcCandidateDetails(electionId);
+		}
+		
+		if(list != null && list.size() > 0)
+		{
+			for(Object[] params : list)
+			{
+				CandidateVO vo = new CandidateVO();
+				
+				BigInteger candidateId = new BigInteger (params[9].toString());
+				BigInteger constiId = new BigInteger (params[0].toString());
+				BigInteger rank = new BigInteger (params[6].toString());
+				 if(params[7] != null)
+				 votesGained =new Double(params[7].toString());
+				 if(params[8] != null)
+				 totalVotes = new Double(params[8].toString());
+				 candidateIds.add(candidateId.longValue());
+				vo.setConstituencyId(constiId.longValue());
+				vo.setTehsilName(params[1] != null ? params[1].toString() : "");
+				vo.setConstituencyName(params[2] !=null ? params[2].toString() : "");
+			
+				vo.setElectionType(params[3] != null ? params[3].toString() : "");
+				vo.setCandidateName(params[4] != null ? params[4].toString() : "");
+				vo.setParty(params[5]!= null ? params[5].toString() : "");
+				vo.setRank(rank.longValue());
+				vo.setVotesEarned(votesGained);
+				vo.setTotalvotes(totalVotes);
+				vo.setCandidateId(candidateId.longValue());
+				/*vo.setMobileNo(params[9] != null ? params[9].toString() : "");
+				vo.setPreviousParty(params[10] != null ? params[10].toString() : "");*/
+				resultList.add(vo);
+			}
+			if(candidateIds.size() > 0)
+			{
+			List<Object[]> list2 = candidateDetailsDAO.getMobileAndPreviousParty(candidateIds);
+			if(list2 != null && list2.size() > 0)
+				for(Object[] params : list2)
+				{
+					CandidateVO vo = getMatchedVo(resultList,(Long)params[0]);
+					if(vo != null)
+					{
+					vo.setMobileNo(params[2] != null ? params[2].toString() : "");
+					vo.setPreviousParty(params[1] != null ? params[1].toString() : "");
+					}
+				}
+			}
+		}
+		
+	}
+	catch (Exception e) {
+		e.printStackTrace();
+	}
+	return resultList;	
+}
 
+	public CandidateVO getMatchedVo(List<CandidateVO> resultList,Long candidateId)
+	{
+		try{
+		if(resultList == null)
+			return null;
+		for(CandidateVO vo : resultList)
+			if(vo.getCandidateId().longValue() == candidateId)
+				return vo;
+		
+		return null;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
 }
 class MyComparator implements Comparator<CandidateVO>
 {
