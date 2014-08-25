@@ -345,6 +345,7 @@
 			 <pattern>/partyCadreSearchAction*</pattern>
 			 <pattern>/duplicateMobileNumbers*</pattern>
 			 <pattern>/surveyConstituencieOverview*</pattern>
+			  <pattern>/candidateAnalysisAction*</pattern>
             <!--  <pattern>/dashBoardAction*</pattern> -->
        </decorator>
        

@@ -256,6 +256,18 @@ public String updateDetailsofACandidate()
 }
 
 
+public String getCandidateInfo()
+{
+	try{
+		jObj = new JSONObject(getTask());
+		candidateVOList = candidateUpdationDetailsService.getCandidateInfo(jObj.getLong("ElectionId"),jObj.getString("eleType"));	
+	}
+	catch (Exception e) {
+		 LOG.error("Exception Occured in getCandidateInfo() method", e);
+	     e.printStackTrace();
+	}
+	return Action.SUCCESS;
+}
 
 
 
