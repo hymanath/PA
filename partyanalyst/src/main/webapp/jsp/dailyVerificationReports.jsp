@@ -149,19 +149,19 @@ $('#boothId').multiselect({
 								</h4>
 								<div class="row-fluid">
 									<div class="well well-small span2 text-center">
-										<h4 id="totConsti"><img src="./images/icons/search.gif" ></img></h4>
+										<h4 id="totConsti">207</h4>
 										<p>Total </br> Constituencies</p>
 									</div>
 									<div class="well well-small span2 text-center">
-										<h4 id="startedConsti"><img src="./images/icons/search.gif" ></img></h4>
+										<h4 id="startedConsti">27</h4>
 										<p>Started </br> Constituencies</p>
 									</div>
 									<div class="well well-small span2 text-center">
-										<h4 id="processConsti"><img src="./images/icons/search.gif" ></img></h4>
+										<h4 id="processConsti">25</h4>
 										<p>Processing </br>Constituencies</p>
 									</div>
 									<div class="well well-small span2 text-center">
-										<h4 id="CompletedConsti"><img src="./images/icons/search.gif" ></img></h4>
+										<h4 id="CompletedConsti">2</h4>
 										<p>Completed </br>Constituencies</p>
 									</div>							
 
