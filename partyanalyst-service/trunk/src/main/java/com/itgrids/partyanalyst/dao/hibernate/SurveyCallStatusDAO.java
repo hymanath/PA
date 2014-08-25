@@ -223,11 +223,11 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 		queryString.append("select count(distinct model.voter.voterId),count(distinct model.booth.boothId) ,count(distinct model.booth.constituency.constituencyId) from SurveyCallStatus model where model.matchedStatus is not null ");
 		if(stateId.longValue() == 2)
 		{
-			queryString.append("  and model.booth.constituency.district.districtId > 10 ");
+			queryString.append("  and model.booth.constituency.district.districtId <= 10 ");
 		}
 		if(stateId.longValue() == 1)
 		{
-			queryString.append(" and model.booth.constituency.district.districtId <= 10");
+			queryString.append(" and model.booth.constituency.district.districtId  > 10");
 		}
 		Query query = getSession().createQuery(queryString.toString());
 		
