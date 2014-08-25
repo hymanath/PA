@@ -1483,4 +1483,20 @@
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="fileNewsTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.FileNewsTypeDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="fileDepartmentDAO" class="com.itgrids.partyanalyst.dao.hibernate.FileDepartmentDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="departmentDAO" class="com.itgrids.partyanalyst.dao.hibernate.DepartmentDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="newsTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.NewsTypeDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		

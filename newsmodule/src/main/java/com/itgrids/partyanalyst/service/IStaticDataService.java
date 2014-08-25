@@ -4,6 +4,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.AddressVO;
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
@@ -348,4 +349,7 @@ public interface IStaticDataService {/*
 
 */
 		public List<AddressVO> getUserLocationScopeDetilsByUserid(Long userId,String accessType,String accessValue);
+		
+		public List<BasicVO> getDepartments();
+		public List<BasicVO> getNewsTypes();
 }

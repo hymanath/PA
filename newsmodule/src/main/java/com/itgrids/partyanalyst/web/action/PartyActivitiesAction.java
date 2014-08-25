@@ -11,7 +11,6 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.jfree.util.Log;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;

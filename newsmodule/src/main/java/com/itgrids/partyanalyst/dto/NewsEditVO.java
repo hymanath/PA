@@ -34,12 +34,50 @@ public class NewsEditVO implements Serializable {
 	private FileVO fileVO;
 	private List<SelectOptionVO> keywordsList;
 	private List<SelectOptionVO> newsEdition; 
+	private List<BasicVO> departmentsList;
+	private List<BasicVO> newsTypesList;
+	private List<Long> selDeptsList;
+	private List<Long> selNewsTypesList;
 	
 	private String synopsysDescription;
 	private String synopsysCheckBox;
 	
 	
 	
+	
+	
+	public List<Long> getSelDeptsList() {
+		return selDeptsList;
+	}
+
+	public void setSelDeptsList(List<Long> selDeptsList) {
+		this.selDeptsList = selDeptsList;
+	}
+
+	public List<Long> getSelNewsTypesList() {
+		return selNewsTypesList;
+	}
+
+	public void setSelNewsTypesList(List<Long> selNewsTypesList) {
+		this.selNewsTypesList = selNewsTypesList;
+	}
+
+	public List<BasicVO> getDepartmentsList() {
+		return departmentsList;
+	}
+
+	public void setDepartmentsList(List<BasicVO> departmentsList) {
+		this.departmentsList = departmentsList;
+	}
+
+	public List<BasicVO> getNewsTypesList() {
+		return newsTypesList;
+	}
+
+	public void setNewsTypesList(List<BasicVO> newsTypesList) {
+		this.newsTypesList = newsTypesList;
+	}
+
 	public String getSynopsysDescription() {
 		return synopsysDescription;
 	}

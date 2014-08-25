@@ -55,8 +55,10 @@ import com.itgrids.partyanalyst.dao.IDesignationDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IFileDAO;
+import com.itgrids.partyanalyst.dao.IFileDepartmentDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dao.IFileKeywordDAO;
+import com.itgrids.partyanalyst.dao.IFileNewsTypeDAO;
 import com.itgrids.partyanalyst.dao.IFilePathsDAO;
 import com.itgrids.partyanalyst.dao.IFileSourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.IFileTypeDAO;
@@ -82,6 +84,7 @@ import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserCandidateRelationDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserNewsCategoryDAO;
+import com.itgrids.partyanalyst.dao.hibernate.FileDepartmentDAO;
 import com.itgrids.partyanalyst.dto.CandidatePartyDestinationVO;
 import com.itgrids.partyanalyst.dto.CandidatePartyNewsVO;
 import com.itgrids.partyanalyst.dto.CategoryVO;
@@ -101,9 +104,12 @@ import com.itgrids.partyanalyst.model.CandidatePartyKeyword;
 import com.itgrids.partyanalyst.model.CandidateRealatedNews;
 import com.itgrids.partyanalyst.model.Category;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.Department;
 import com.itgrids.partyanalyst.model.File;
+import com.itgrids.partyanalyst.model.FileDepartment;
 import com.itgrids.partyanalyst.model.FileGallary;
 import com.itgrids.partyanalyst.model.FileKeyword;
+import com.itgrids.partyanalyst.model.FileNewsType;
 import com.itgrids.partyanalyst.model.FilePaths;
 import com.itgrids.partyanalyst.model.FileSourceLanguage;
 import com.itgrids.partyanalyst.model.GallaryKeyword;
@@ -211,7 +217,27 @@ public class CandidateDetailsService implements ICandidateDetailsService {
     private IBenefitDAO benefitDAO;
     private ICandidatePartyCategoryDAO candidatePartyCategoryDAO;
     private IDesignationDAO designationDAO;
+    private IFileDepartmentDAO fileDepartmentDAO;
+    private IFileNewsTypeDAO fileNewsTypeDAO;
+    
+    
 	
+	public IFileDepartmentDAO getFileDepartmentDAO() {
+		return fileDepartmentDAO;
+	}
+
+	public void setFileDepartmentDAO(IFileDepartmentDAO fileDepartmentDAO) {
+		this.fileDepartmentDAO = fileDepartmentDAO;
+	}
+
+	public IFileNewsTypeDAO getFileNewsTypeDAO() {
+		return fileNewsTypeDAO;
+	}
+
+	public void setFileNewsTypeDAO(IFileNewsTypeDAO fileNewsTypeDAO) {
+		this.fileNewsTypeDAO = fileNewsTypeDAO;
+	}
+
 	public IElectionDAO getElectionDAO() {
 		return electionDAO;
 	}
@@ -982,6 +1008,66 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			  }
 			}
 			
+			if(fileVO.getCandidatePartyNewsVOList() !=null){
+				List<Long> departmentsList = new ArrayList<Long>();
+				List<Long> newsTypesList = new ArrayList<Long>();
+				
+				CandidatePartyNewsVO newsVO = fileVO.getCandidatePartyNewsVOList();
+				
+						if(newsVO != null){
+							String depts = newsVO.getDepartmentsList();
+							  if(depts != null && !depts.equalsIgnoreCase(""))
+							  {
+								String[] str = depts.split(",");
+								if(str != null)
+								 for(String keyword:str){
+								  if(keyword != null && !keyword.trim().equalsIgnoreCase("")){
+									  keyword = keyword.replace("\"", "");
+									  Long l = Long.parseLong(keyword);
+									  departmentsList.add(l);
+								  }
+								 }
+							  }
+							  
+							  String newsTypes = newsVO.getNewsTypesList();
+							  if(newsTypes != null && !newsTypes.equalsIgnoreCase(""))
+							  {
+								String[] str = newsTypes.split(",");
+								if(str != null)
+								 for(String keyword:str){
+								  if(keyword != null && !keyword.trim().equalsIgnoreCase("")){
+									  keyword = keyword.replace("\"", "");
+									  Long l = Long.parseLong(keyword);
+									  newsTypesList.add(l);
+								  }
+								 }
+							  }
+						}
+					
+				
+				Long fileId = file.getFileId();
+				
+				if(departmentsList!=null && departmentsList.size()>0){
+					for(Long dept:departmentsList){
+						FileDepartment fd = new FileDepartment();
+						fd.setFileId(fileId);
+						fd.setDepartmentId(dept);
+						
+						fileDepartmentDAO.save(fd);
+					}
+				}
+				if(newsTypesList!=null && newsTypesList.size()>0){
+					for(Long ntype:newsTypesList){
+						FileNewsType fn = new FileNewsType();
+						fn.setFileId(fileId);
+						fn.setNewsTypeId(ntype);
+						
+						fileNewsTypeDAO.save(fn);
+					}
+				}
+				
+			}
+			
 			//keywords saving
 			if(fileVO.getCandidatePartyNewsVOList() != null)
 			{
@@ -1022,6 +1108,8 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				   }
 			    }
 			}
+			
+			
 			
 			
 			if(fileVO.getCandidatePartyNewsVOList() != null)
@@ -9513,6 +9601,72 @@ public ResultStatus editUploadedFileForCandidateParty(final FileVO fileVO)
 			//deleating existing who and whome
 			candidatePartyFileDAO.deleteCandidatePartyFiles(file.getFileId());
 		}
+		
+		
+		if(fileVO.getCandidatePartyNewsVOList() !=null){
+			Long fileId = file.getFileId();
+			
+			fileDepartmentDAO.deleteFileDepartments(fileId);
+			fileNewsTypeDAO.deleteFileNewsTypes(fileId);
+		
+		CandidatePartyNewsVO newsVO = fileVO.getCandidatePartyNewsVOList();
+		
+		List<Long> departmentsList = new ArrayList<Long>();
+		List<Long> newsTypesList = new ArrayList<Long>();
+		
+		if(newsVO != null){
+			String depts = newsVO.getDepartmentsList();
+			  if(depts != null && !depts.equalsIgnoreCase(""))
+			  {
+				String[] str = depts.split(",");
+				if(str != null)
+				 for(String keyword:str){
+				  if(keyword != null && !keyword.trim().equalsIgnoreCase("")){
+					  keyword = keyword.trim().replace("\"", "");
+					  Long l = Long.parseLong(keyword);
+					  departmentsList.add(l);
+				  }
+				 }
+			  }
+			  
+			  String newsTypes = newsVO.getNewsTypesList();
+			  if(newsTypes != null && !newsTypes.equalsIgnoreCase(""))
+			  {
+				String[] str = newsTypes.split(",");
+				if(str != null)
+				 for(String keyword:str){
+				  if(keyword != null && !keyword.trim().equalsIgnoreCase("")){
+					  keyword = keyword.trim().replace("\"", "");
+					  Long l = Long.parseLong(keyword);
+					  newsTypesList.add(l);
+				  }
+				 }
+			  }
+		}
+	
+
+		
+		if(departmentsList!=null && departmentsList.size()>0){
+			for(Long dept:departmentsList){
+				FileDepartment fd = new FileDepartment();
+				fd.setFileId(fileId);
+				fd.setDepartmentId(dept);
+				
+				fileDepartmentDAO.save(fd);
+			}
+		}
+		if(newsTypesList!=null && newsTypesList.size()>0){
+			for(Long ntype:newsTypesList){
+				FileNewsType fn = new FileNewsType();
+				fn.setFileId(fileId);
+				fn.setNewsTypeId(ntype);
+				
+				fileNewsTypeDAO.save(fn);
+			}
+		}
+		
+		}
+		
 		//newly created keywords saving
 		saveNewKeyWords(fileVO);
 		

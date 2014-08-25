@@ -26,7 +26,24 @@ public class CandidatePartyDestinationVO implements Serializable{
 	private List<SelectOptionVO> canidateList;
 	private List<SelectOptionVO> fileKeywordList;
 	private List<SelectOptionVO> categoriesList;
+	
+	private String departmentsList;
+	private String newsTypesList;
+	
+	
 		
+	public String getDepartmentsList() {
+		return departmentsList;
+	}
+	public void setDepartmentsList(String departmentsList) {
+		this.departmentsList = departmentsList;
+	}
+	public String getNewsTypesList() {
+		return newsTypesList;
+	}
+	public void setNewsTypesList(String newsTypesList) {
+		this.newsTypesList = newsTypesList;
+	}
 	public List<CandidatePartyDestinationVO> getFileSourceVOList() {
 		return fileSourceVOList;
 	}
