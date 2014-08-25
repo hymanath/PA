@@ -637,8 +637,8 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 	public Long getTotalCastecollectedCountForToday(Date date)
 	{
 		Query query = getSession().createQuery("select count(distinct model.voter.voterId) from SurveyDetailsInfo model where " +
-				" (model.caste.casteStateId is not null or model.casteName is not null) " +
-				" and date(model.insertedTime) = date(:date) and model.surveyUser.surveyUserType.surveyUsertypeId = 1");
+				" " +
+				"  date(model.date) = :date and model.surveyUser.surveyUserType.surveyUsertypeId = 1");
 		query.setParameter("date",date);
 		return (Long) query.uniqueResult();
 	}
