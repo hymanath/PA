@@ -443,10 +443,35 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		
 		//resultVO =  surveyCompletedDetailsService.getCompletdConstituenciesDetails();
 		
-		resultVO =  surveyCompletedDetailsService.getCompletedLocationsDetails();
+		//resultVO =  surveyCompletedDetailsService.getCompletedLocationsDetails();
 		return Action.SUCCESS;
 	}
 
+	public String executeDashBoard()
+	{
+		HttpSession session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		if(user == null)
+			return Action.INPUT;
+		return Action.SUCCESS;
+	}
+	public String getSurveyCompletedDetails()
+	{
+		resultVO =  surveyCompletedDetailsService.getCompletedLocationsDetails();
+		return Action.SUCCESS;
+	}
+	
+	public String dataAvaliableConstituencyes()
+	{
+		dataAvilableConstituencies = surveyDataDetailsService.getSurveyStartedConstituencyList();
+		return Action.SUCCESS;
+	}
+	
+	public String getThirdAvaliableConstituencyes()
+	{
+		constituencies = surveyDashBoardService.getConstituencyListForThirdPartyReport();
+		return Action.SUCCESS;
+	}
 	
 	public String surveyDataDetailsexe()
 	{
