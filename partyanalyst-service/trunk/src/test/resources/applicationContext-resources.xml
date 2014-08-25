@@ -481,6 +481,7 @@
 				<value>com.itgrids.partyanalyst.model.SurveyWmThirdPartyStatus</value>
 				<value>com.itgrids.partyanalyst.model.SurveyConstituencyStatus</value>
 				<value>com.itgrids.partyanalyst.model.SurveyConstituencyTemp</value>
+				<value>com.itgrids.partyanalyst.model.ConstituencyTehsil</value>
 				
 			</list>
 		</property>
@@ -2507,5 +2508,8 @@
 
 <bean id="surveyConstituencyTempDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyConstituencyTempDAO" lazy-init="true" >
 		<property name="sessionFactory" ref="sessionFactory" />
-</bean>				
+</bean>		
+<bean id="constituencyTehsilDAO" class="com.itgrids.partyanalyst.dao.hibernate.ConstituencyTehsilDAO" lazy-init="true" >
+		<property name="sessionFactory" ref="sessionFactory" />
+</bean>		
 </beans>

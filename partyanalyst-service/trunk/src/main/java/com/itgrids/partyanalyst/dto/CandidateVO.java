@@ -52,6 +52,26 @@ public class CandidateVO {
 	private List<GenericVO> candidatescastes=new ArrayList<GenericVO>();
 	private List<GenericVO> candidatesEducations=new ArrayList<GenericVO>();
 	
+	private Double Totalvotes;
+	
+	private String previousParty;
+	
+	public String getPreviousParty() {
+		return previousParty;
+	}
+
+	public void setPreviousParty(String previousParty) {
+		this.previousParty = previousParty;
+	}
+
+	public Double getTotalvotes() {
+		return Totalvotes;
+	}
+
+	public void setTotalvotes(Double totalvotes) {
+		Totalvotes = totalvotes;
+	}
+
 	public Long getRank() {
 		return rank;
 	}
