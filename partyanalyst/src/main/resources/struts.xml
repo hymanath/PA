@@ -8249,5 +8249,15 @@
            		<param name="root">houseHoldsVOList</param>
         	</result>
       	</action>
+      	<action name="candidateAnalysisAction" class="candidateUpdateDetailsAction">
+			<result name="success">/jsp/candidateAnalysis.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=candidateAnalysisAction</result>
+		</action>
+		<action name="getCandidateAnalysisAction" class="candidateUpdateDetailsAction" method="getCandidateInfo">
+        	 <result type="json" name="success">
+           		<param name="root">candidateVOList</param>
+        	</result>
+      	</action>
+		
 </package>
 </struts>      
