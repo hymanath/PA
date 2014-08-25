@@ -1423,6 +1423,14 @@ function submitQuestionDetails()
 			}
    });
     
+	$('.relationCls').each(function(){
+     if($.trim($(this).val()).length == 0)
+	 {
+         str += 'Relationship is required for adding new person<br>';
+		 flag=false;
+		 return false;
+     }
+  });
   errorDivEle.innerHTML = str;
   if(flag == false)
   {
@@ -1592,7 +1600,7 @@ function addNewPersonOfFamily()
 			str+='<div style="float:left;width:89px;"><input type="text"  style="width:65px;" class="gaurdianCls" id="newPrsnGrdn'+newPersonsCount+'"/></div>';
 
 			str+='<div style="float:left;width:112px;">';
-            str+='<select style="width:100px;" id="newPrsnrltnType'+newPersonsCount+'">';  
+            str+='<select style="width:100px;" class="relationCls" id="newPrsnrltnType'+newPersonsCount+'">';  
 				<c:forEach items="${relationList}" var="relation"> 
 					str+='<option value="${relation.id}">${relation.name}</option>'; 
 				</c:forEach>
