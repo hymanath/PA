@@ -1403,7 +1403,15 @@ function submitQuestionDetails()
 		}
 	 }
    }); 
-   
+
+   $('.relationCls').each(function(){
+     if($.trim($(this).val()) == 0)
+	 {
+         str += 'Relationship is required for adding new person<br>';
+		 flag=false;
+		 return false;
+     }
+  });
    $('.mobileCls').each(function(){
      if($.trim($(this).val()).length == 0)
 	 {
@@ -1423,14 +1431,7 @@ function submitQuestionDetails()
 			}
    });
     
-	$('.relationCls').each(function(){
-     if($.trim($(this).val()).length == 0)
-	 {
-         str += 'Relationship is required for adding new person<br>';
-		 flag=false;
-		 return false;
-     }
-  });
+	
   errorDivEle.innerHTML = str;
   if(flag == false)
   {
