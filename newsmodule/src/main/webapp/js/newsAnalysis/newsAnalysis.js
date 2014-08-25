@@ -70,6 +70,12 @@ function callAjax(jsObj,url)
 			              window.open(myResults.url);
 					  }
 					}
+					else if(jsObj.task == "getDepartments"){
+					  buildDepartments(myResults,jsObj,'departmentsList');
+					}
+					else if(jsObj.task == "getNewsTypes"){
+					  buildDepartments(myResults,jsObj,'newsTypesList');
+					}
 				}
 				catch(e)
 				{   
@@ -1776,3 +1782,7 @@ $("#submitDataImg").hide();
 			this.click();	
 	});
   } 
+  
+
+  
+	

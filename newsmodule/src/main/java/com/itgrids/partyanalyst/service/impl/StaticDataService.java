@@ -4,16 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.WordUtils;
-import org.jfree.util.Log;
+import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
+import com.itgrids.partyanalyst.dao.IDepartmentDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
+import com.itgrids.partyanalyst.dao.IFileDepartmentDAO;
+import com.itgrids.partyanalyst.dao.IFileNewsTypeDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.INewsTypeDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dto.AddressVO;
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -23,10 +28,12 @@ import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class StaticDataService implements IStaticDataService {
 
+	private static final Logger LOG = Logger.getLogger(DateUtilService.class);
 	//private IElectionDAO electionDAO;
 	//private IPartyDAO partyDAO;
 	//private IElectionScopeDAO electionScopeDAO;
@@ -54,6 +61,11 @@ public class StaticDataService implements IStaticDataService {
 	//private IAreaTypeDAO areaTypeDAO;
 	//private IRegionServiceData regionServiceDataImp;
 	
+	private INewsTypeDAO newsTypeDAO;
+	private IDepartmentDAO departmentDAO;
+	private IFileNewsTypeDAO fileNewsTypeDAO;
+	private IFileDepartmentDAO fileDepartmentDAO;
+	
 	/*public IElectionDAO getElectionDAO() {
 		return electionDAO;
 	}
@@ -73,8 +85,34 @@ public class StaticDataService implements IStaticDataService {
 		this.electionScopeDAO = electionScopeDAO;
 	}
 	*/
+	
+	
 	public IStateDAO getStateDAO() {
 		return stateDAO;
+	}
+	public INewsTypeDAO getNewsTypeDAO() {
+		return newsTypeDAO;
+	}
+	public void setNewsTypeDAO(INewsTypeDAO newsTypeDAO) {
+		this.newsTypeDAO = newsTypeDAO;
+	}
+	public IDepartmentDAO getDepartmentDAO() {
+		return departmentDAO;
+	}
+	public void setDepartmentDAO(IDepartmentDAO departmentDAO) {
+		this.departmentDAO = departmentDAO;
+	}
+	public IFileNewsTypeDAO getFileNewsTypeDAO() {
+		return fileNewsTypeDAO;
+	}
+	public void setFileNewsTypeDAO(IFileNewsTypeDAO fileNewsTypeDAO) {
+		this.fileNewsTypeDAO = fileNewsTypeDAO;
+	}
+	public IFileDepartmentDAO getFileDepartmentDAO() {
+		return fileDepartmentDAO;
+	}
+	public void setFileDepartmentDAO(IFileDepartmentDAO fileDepartmentDAO) {
+		this.fileDepartmentDAO = fileDepartmentDAO;
 	}
 	public void setStateDAO(IStateDAO stateDAO) {
 		this.stateDAO = stateDAO;
@@ -8722,7 +8760,7 @@ public class StaticDataService implements IStaticDataService {
 
 */
 	public List<AddressVO> getUserLocationScopeDetilsByUserid(Long userId,String accessType,String accessValue){
-		Log.debug("entered into getUserLocationScopeDetilsByUserid() method in StaticDataService class.");
+		LOG.debug("entered into getUserLocationScopeDetilsByUserid() method in StaticDataService class.");
 		List<AddressVO> userAddress = new ArrayList<AddressVO>(); 
 		try {
 			AddressVO address = new AddressVO();
@@ -8758,8 +8796,52 @@ public class StaticDataService implements IStaticDataService {
 			userAddress.add(address);
 		} catch (Exception e) {
 			userAddress = null;
-			Log.error("entered into getUserLocationScopeDetilsByUserid() method in StaticDataService class.",e);
+			LOG.error("entered into getUserLocationScopeDetilsByUserid() method in StaticDataService class.",e);
 		}
 		return userAddress;
+	}
+	
+	public List<BasicVO> getDepartments(){
+		LOG.debug("In getDepartments()");
+		List<BasicVO> finalList = new ArrayList<BasicVO>();
+		
+		try{
+			List<Object[]> list = departmentDAO.getAllDepartments();
+			if(list!=null && list.size()>0){
+				for(Object[] obj:list){
+					BasicVO vo = new BasicVO();
+					vo.setId(Long.valueOf(obj[0].toString()));
+					vo.setName(obj[1].toString());
+					
+					finalList.add(vo);
+				}
+			}
+		}catch (Exception e) {
+			LOG.error("Exception Raised in getDepartments()" + e);
+		}
+		
+		return finalList;
+	}
+	
+	public List<BasicVO> getNewsTypes(){
+		LOG.debug("In getNewsTypes()");
+		List<BasicVO> finalList = new ArrayList<BasicVO>();
+		
+		try{
+			List<Object[]> list = newsTypeDAO.getAllNewsTypes();
+			if(list!=null && list.size()>0){
+				for(Object[] obj:list){
+					BasicVO vo = new BasicVO();
+					vo.setId(Long.valueOf(obj[0].toString()));
+					vo.setName(obj[1].toString());
+					
+					finalList.add(vo);
+				}
+			}
+		}catch (Exception e) {
+			LOG.error("Exception Raised in getNewsTypes()" + e);
+		}
+		
+		return finalList;
 	}
 }

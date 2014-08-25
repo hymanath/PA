@@ -35,10 +35,13 @@ import com.itgrids.partyanalyst.dao.ICategoryDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IContentNotesDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
+import com.itgrids.partyanalyst.dao.IDepartmentDAO;
 import com.itgrids.partyanalyst.dao.IDesignationDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IFileDepartmentDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dao.IFileKeywordDAO;
+import com.itgrids.partyanalyst.dao.IFileNewsTypeDAO;
 import com.itgrids.partyanalyst.dao.IFilePathsDAO;
 import com.itgrids.partyanalyst.dao.IFileSourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
@@ -50,6 +53,7 @@ import com.itgrids.partyanalyst.dao.IMainCategoryDAO;
 import com.itgrids.partyanalyst.dao.INewsFlagDAO;
 import com.itgrids.partyanalyst.dao.INewsImportanceDAO;
 import com.itgrids.partyanalyst.dao.INewsReportDAO;
+import com.itgrids.partyanalyst.dao.INewsTypeDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
@@ -62,6 +66,7 @@ import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IWardDAO;
 import com.itgrids.partyanalyst.dao.hibernate.FileDAO;
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CandidateNewsCountVO;
 import com.itgrids.partyanalyst.dto.CandidatePartyDestinationVO;
 import com.itgrids.partyanalyst.dto.FileSourceVO;
@@ -153,6 +158,46 @@ public class NewsMonitoringService implements INewsMonitoringService {
     private IHamletDAO hamletDAO;
     private IPartyDetailsService partyDetailsService;
     private IReportService reportService;
+    private IFileNewsTypeDAO fileNewsTypeDAO;
+    private IFileDepartmentDAO fileDepartmentDAO;
+    
+    private INewsTypeDAO newsTypeDAO;
+    private IDepartmentDAO departmentDAO;
+    
+    
+    
+
+	public INewsTypeDAO getNewsTypeDAO() {
+		return newsTypeDAO;
+	}
+
+	public void setNewsTypeDAO(INewsTypeDAO newsTypeDAO) {
+		this.newsTypeDAO = newsTypeDAO;
+	}
+
+	public IDepartmentDAO getDepartmentDAO() {
+		return departmentDAO;
+	}
+
+	public void setDepartmentDAO(IDepartmentDAO departmentDAO) {
+		this.departmentDAO = departmentDAO;
+	}
+
+	public IFileNewsTypeDAO getFileNewsTypeDAO() {
+		return fileNewsTypeDAO;
+	}
+
+	public void setFileNewsTypeDAO(IFileNewsTypeDAO fileNewsTypeDAO) {
+		this.fileNewsTypeDAO = fileNewsTypeDAO;
+	}
+
+	public IFileDepartmentDAO getFileDepartmentDAO() {
+		return fileDepartmentDAO;
+	}
+
+	public void setFileDepartmentDAO(IFileDepartmentDAO fileDepartmentDAO) {
+		this.fileDepartmentDAO = fileDepartmentDAO;
+	}
 
 	public ITehsilDAO getTehsilDAO() {
 		return tehsilDAO;
@@ -5608,7 +5653,19 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
         		List<SelectOptionVO> newsLocation = getFileScope(fileId);
         		List<SelectOptionVO> keywordsList = getTotalKeyWords();
         		
+        		List<BasicVO> newsTypeList = getNewsTypes();
+        		List<BasicVO> departmentsList = getDepartments();
+        		
+        		List<Long> selNewsTypeList = getSelectedNewsTypes(fileId);
+        		List<Long> selDepartmentsList = getSelectedDepartments(fileId);
+        		
+        		
+        		
         		result.setKeywordsList(keywordsList);
+        		result.setDepartmentsList(departmentsList);
+        		result.setNewsTypesList(newsTypeList);
+        		result.setSelDeptsList(selDepartmentsList);
+        		result.setSelNewsTypesList(selNewsTypeList);
         		result.setFileSourceVOList(newsInfo);
         		result.setNewsEdition(getNewsEditionDetails());
         		result.setSelectOptionVOList(newsLocation);
@@ -5640,8 +5697,61 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
     	newsEditionList.add(new SelectOptionVO(2l,"District/Sub Edition"));
       return newsEditionList;
     }
+    
+    
+    public List<Long> getSelectedDepartments(Long fileId){
+ 	   log.debug("entered into getDepartments() in NewsMonitoringSevice class.");
+ 	   List<SelectOptionVO> departments = new ArrayList<SelectOptionVO>();
+ 	   List<Long> selcDepts = new ArrayList<Long>();
+ 	   
+ 	   try {
+ 		   List<Object[]> keywords = fileDepartmentDAO.getDepartmentsOfFile(fileId);
+ 		   if(keywords.size() > 0){
+ 			  for (Object[] param : keywords) {
+ 				  SelectOptionVO vo = new SelectOptionVO();
+ 				   vo.setId(Long.valueOf(param[0].toString()));
+ 				   vo.setName(param[1].toString());
+ 				  departments.add(vo);
+ 				  selcDepts.add(Long.valueOf(param[0].toString()));
+ 			  }
+ 		   }
+ 	   }catch (Exception e) {
+ 		   departments = null;
+ 		   log.error(" Exception Occured in getDepartments method in NewsMonitoringSevice class, Exception - ",e);
+ 	   }
+ 	   return selcDepts;
+    }
+    
+    public List<Long> getSelectedNewsTypes(Long fileId){
+  	   log.debug("entered into getNewsTypes() in NewsMonitoringSevice class.");
+  	   List<SelectOptionVO> newsTypes = new ArrayList<SelectOptionVO>();
+  	   List<Long> selcNtypes = new ArrayList<Long>();
+  	   
+  	   try {
+  		   List<Object[]> keywords = fileNewsTypeDAO.getNewsTypes(fileId);
+  		   if(keywords.size() > 0){
+  			  for (Object[] param : keywords) {
+  				  SelectOptionVO vo = new SelectOptionVO();
+  				   vo.setId(Long.valueOf(param[0].toString()));
+  				   vo.setName(param[1].toString());
+  				   
+  				 selcNtypes.add(Long.valueOf(param[0].toString()));
+  				 
+  				 newsTypes.add(vo);
+  			  }
+  		   }
+  		 
+  	   }catch (Exception e) {
+  		   newsTypes = null;
+  		   log.error(" Exception Occured in getNewsTypes method in NewsMonitoringSevice class, Exception - ",e);
+  	   }
+  	   return selcNtypes;
+     }
+    
+    
+    
    public List<SelectOptionVO> getTotalKeyWords(){
-	   log.error("entered into getTotalKeyWords() in NewsMonitoringSevice class.");
+	   log.debug("entered into getTotalKeyWords() in NewsMonitoringSevice class.");
 	   List<SelectOptionVO> keywordsList = new ArrayList<SelectOptionVO>();
 	   try {
 		   
@@ -6317,5 +6427,49 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			  return resultStatus;
 		  }
+		}
+		
+		public List<BasicVO> getDepartments(){
+			log.debug("In getDepartments()");
+			List<BasicVO> finalList = new ArrayList<BasicVO>();
+			
+			try{
+				List<Object[]> list = departmentDAO.getAllDepartments();
+				if(list!=null && list.size()>0){
+					for(Object[] obj:list){
+						BasicVO vo = new BasicVO();
+						vo.setId(Long.valueOf(obj[0].toString()));
+						vo.setName(obj[1].toString());
+						
+						finalList.add(vo);
+					}
+				}
+			}catch (Exception e) {
+				log.error("Exception Raised in getDepartments()" + e);
+			}
+			
+			return finalList;
+		}
+		
+		public List<BasicVO> getNewsTypes(){
+			log.debug("In getNewsTypes()");
+			List<BasicVO> finalList = new ArrayList<BasicVO>();
+			
+			try{
+				List<Object[]> list = newsTypeDAO.getAllNewsTypes();
+				if(list!=null && list.size()>0){
+					for(Object[] obj:list){
+						BasicVO vo = new BasicVO();
+						vo.setId(Long.valueOf(obj[0].toString()));
+						vo.setName(obj[1].toString());
+						
+						finalList.add(vo);
+					}
+				}
+			}catch (Exception e) {
+				log.error("Exception Raised in getNewsTypes()" + e);
+			}
+			
+			return finalList;
 		}
 }

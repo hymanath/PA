@@ -152,7 +152,10 @@
 				<value>com.itgrids.partyanalyst.model.Observer</value>
 				<value>com.itgrids.partyanalyst.model.Channel</value>
 				
-				
+				<value>com.itgrids.partyanalyst.model.Department</value>
+				<value>com.itgrids.partyanalyst.model.NewsType</value>	
+				<value>com.itgrids.partyanalyst.model.FileDepartment</value>	
+				<value>com.itgrids.partyanalyst.model.FileNewsType</value>	
 			</list>
 		</property>
 	</bean>
@@ -337,6 +340,22 @@
 	</bean>
 	
 	<bean id="DebateSubjectDAO" class="com.itgrids.partyanalyst.dao.hibernate.DebateSubjectDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="fileNewsTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.FileNewsTypeDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="fileDepartmentDAO" class="com.itgrids.partyanalyst.dao.hibernate.FileDepartmentDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="departmentDAO" class="com.itgrids.partyanalyst.dao.hibernate.DepartmentDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="newsTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.NewsTypeDAO">
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	

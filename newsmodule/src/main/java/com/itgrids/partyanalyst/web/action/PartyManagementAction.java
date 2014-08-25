@@ -22,7 +22,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.AddressVO;
-import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -89,8 +89,18 @@ public class PartyManagementAction extends ActionSupport implements ServletReque
 	private List<SelectOptionVO> assemConstiList1 = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> categoriesList;
 	private List<AddressVO> userDetailsVO;
+	private List<BasicVO> basicVOList;
 	
 	
+
+	public List<BasicVO> getBasicVOList() {
+		return basicVOList;
+	}
+
+	public void setBasicVOList(List<BasicVO> basicVOList) {
+		this.basicVOList = basicVOList;
+	}
+
 	public List<AddressVO> getUserDetailsVO() {
 		return userDetailsVO;
 	}
@@ -463,6 +473,10 @@ public String execute()
 	if (registrationVO != null) 
 	{
 		
+		/*departmentsList = staticDataService.getDepartments();
+		newsTypesList = staticDataService.getNewsTypes();*/
+		
+		
 	// if("Admin".equalsIgnoreCase(registrationVO.getUserType()) || "subuser".equalsIgnoreCase(registrationVO.getUserType())  )
 		 if("Admin".equalsIgnoreCase(registrationVO.getUserAccessType()) || "subuser".equalsIgnoreCase(registrationVO.getUserAccessType())  )
 		 {
@@ -530,6 +544,22 @@ public String execute()
 		return IConstants.NOT_LOGGED_IN;
 	 
  }
+
+public String getDeptsNewsTypes(){
+	LOG.debug("In the getDeptsNewsTypes");
+	try {
+		jObj = new JSONObject(getTask());
+		String task = jObj.getString("task");
+		if(task.equalsIgnoreCase("getDepartments")){
+			basicVOList = staticDataService.getDepartments();
+		}else if(task.equalsIgnoreCase("getNewsTypes")){
+			basicVOList = staticDataService.getNewsTypes();
+		}
+	} catch (ParseException e) {
+		LOG.error("Exception Raised in getDeptsNewsTypes");
+	}
+	return Action.SUCCESS;
+}
 
 // @Override
  public void setServletContext(ServletContext context) {

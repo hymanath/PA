@@ -168,10 +168,12 @@
 	</bean>
 	-->
 	<bean name="staticDataService" class="com.itgrids.partyanalyst.service.impl.StaticDataService" >
-	<property name="constituencyDAO" ref="constituencyDAO" />
-	<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />		
-	<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
-	<property name="districtDAO" ref="districtDAO" />
+		<property name="constituencyDAO" ref="constituencyDAO" />
+		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />		
+		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
+		<property name="districtDAO" ref="districtDAO" />
+		<property name="departmentDAO" ref="departmentDAO" />
+		<property name="newsTypeDAO" ref="newsTypeDAO" />
 	<!-- <property name="electionDAO" ref="electionDAO" />  
 		<property name="partyDAO" ref="partyDAO" />
 		<property name="electionScopeDAO" ref="electionScopeDAO" />
@@ -1624,6 +1626,10 @@
 		<property name="candidatePartyCategoryDAO" ref="candidatePartyCategoryDAO" />
 		<property name="designationDAO" ref="designationDAO" />
 		<property name="electionDAO" ref="electionDAO" />
+		<property name="fileNewsTypeDAO" ref="fileNewsTypeDAO" />
+		<property name="fileDepartmentDAO" ref="fileDepartmentDAO" />
+		
+		
 	</bean>
 	
 	<bean name="loginService" class="com.itgrids.partyanalyst.service.impl.LoginService" >
@@ -1730,7 +1736,11 @@
 		<property name="hamletDAO" ref="hamletDAO" />
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
 		<property name="boothDAO" ref="boothDAO" />	
-		<property name="reportService" ref="reportService" />		
+		<property name="reportService" ref="reportService" />	
+		<property name="fileNewsTypeDAO" ref="fileNewsTypeDAO" />
+		<property name="fileDepartmentDAO" ref="fileDepartmentDAO" />
+		<property name="newsTypeDAO" ref="newsTypeDAO" />
+		<property name="departmentDAO" ref="departmentDAO" />	
    </bean>
    
    <bean name="newsAnalysisService" class="com.itgrids.partyanalyst.service.impl.NewsAnalysisService">
