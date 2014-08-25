@@ -514,8 +514,7 @@ $('#boothId').multiselect({
 										<div class="span3">
 											 Constituency <font class="requiredFont">*</font></div>
 											<div class="span4">
-											<s:select theme="simple" cssClass="selectBoxWidth span12" id="constituencyForThirdParty" list="constituencies" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" value="constituencyId" onChange="getBoothsDetailsByConstituencyId(this.value,'boothId'),getCasteCollectedDatesByConstituencyId(this.value);"/>
-											<!--<select id="constituencyForThirdParty" onChange="getBoothsDetailsByConstituencyId(this.value,'boothId'),getCasteCollectedDatesByConstituencyId(this.value);"><option value ="0">Select Constituency</option></select>-->
+											<select id="constituencyForThirdParty" onChange="getBoothsDetailsByConstituencyId(this.value,'boothId'),getCasteCollectedDatesByConstituencyId(this.value);"><option value ="0">Select Constituency</option></select>
 											
 										</div>												
 									</div>
@@ -544,8 +543,7 @@ $('#boothId').multiselect({
 										
 										<div class="span3">
 											Select Constituency <font class="requiredFont">*</font> : 
-											<s:select theme="simple" cssClass="selectBoxWidth span12" id="bconstituencyId" list="dataAvilableConstituencies" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" value="constituencyId" />
-											<!--<select id="bconstituencyId"><option value="0">Select Constituency</option></select>-->
+											<select id="bconstituencyId"><option value="0">Select Constituency</option></select>
 										</div>
 									</div>	
 									<div class="row-fluid">
