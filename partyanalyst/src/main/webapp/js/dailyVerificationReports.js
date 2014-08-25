@@ -1754,10 +1754,10 @@ function getTotalCasteCounts()
 
 				buildCastCounts(result);
 			});
-			setTimeout(getTotalCasteCounts, 100000);
-			getSurveyCompletedDetails();
+			//setTimeout(getTotalCasteCounts, 100000);
 			getEntaieSelectionDetails(0,'all');
-			getBigPictureDetails(0);
+			getSurveyCompletedDetails();
+			//getBigPictureDetails(0);
 }
 function getSurveyCompletedDetails()
 {
