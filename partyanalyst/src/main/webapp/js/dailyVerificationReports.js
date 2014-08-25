@@ -1755,7 +1755,7 @@ function getTotalCasteCounts()
 				buildCastCounts(result);
 			});
 			setTimeout(getTotalCasteCounts, 100000);
-			//getSurveyCompletedDetails();
+			getSurveyCompletedDetails();
 			getEntaieSelectionDetails(0,'all');
 			getBigPictureDetails(0);
 }
