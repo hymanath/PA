@@ -1967,6 +1967,7 @@ function getEntaieSelectionDetails(stateId,divId)
 {
 	$('.entaieSelection').removeClass('btn-success');
 	$('.datepicker').each(function(){ $(this).val('') ; });
+	getBigPictureDetails(stateId);
 	if(stateId == 1)
 	{
 		getInternalVerificationSummary(2,'apRegionsId1');
