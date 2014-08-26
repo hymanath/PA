@@ -4437,6 +4437,7 @@ var fileTitle = document.getElementById('newsfileTitle').value;
 //	var scope = document.getElementById("scopeDiv").value;
 	 var sourceArr1 = new Array();
 	var flag = true;
+	var newsType = "";
 
 	fileTitle = removeAllUnwantedCharacters1(fileTitle);	
 	fileDesc = removeAllUnwantedCharacters1(fileDesc);
@@ -4458,6 +4459,14 @@ var fileTitle = document.getElementById('newsfileTitle').value;
 		flag = false;
 	}
 
+	if($("#newsTypesId").val() !=null){
+		newsType = $("#newsTypesId").val();
+	}
+	if(newsType.trim().length == 0){
+		str += ' Please Select NewsType.<br>';
+		flag = false;
+	}
+	
 	$('.fileNewSourceCls').each(function() {
 
 		 var sourceId = $(this).val();			   

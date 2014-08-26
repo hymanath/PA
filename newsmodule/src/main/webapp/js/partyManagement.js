@@ -871,7 +871,6 @@ function showNewsUploadStatus1(myResult)
 	        });
 		uploadNewsForPartyAndCandidate(null);
 		//getKeywordList();
-		getDeptsAndNewsTypes();
 		
        setTimeout(showSuccessMsg,3000);
 	   
@@ -4863,15 +4862,22 @@ function deleteExistingImg(id){
 function buildDepartments(result,jsObj,id){
 		
 		$('#'+id+'').find('option').remove();
-		//$('#keywordsList').append('<option value="0">Select Categoery</option>');
 		$.each(result,function(index,value){
 			$('#'+id+'').append('<option value="'+value.id+'">'+value.name+'</option>');
 		});
 		
+		var headOptnName = "";
+		if(id=="departmentsList"){
+			headOptnName = "Select Department";
+		}else{
+			headOptnName = "Select NewsType";
+		}
+		
 			$('#'+id+'').multiselect({	
 					multiple: true,
-					selectedList: 1,
-					hide: "explode"	
+					selectedList: 0,
+					hide: "explode"	,
+					noneSelectedText :headOptnName
 			}).multiselectfilter({
 				header:"Select Department"    
 			});
