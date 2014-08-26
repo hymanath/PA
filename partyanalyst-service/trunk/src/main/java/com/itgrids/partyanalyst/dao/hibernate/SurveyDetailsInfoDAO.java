@@ -1480,12 +1480,14 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 	}
 	
 	
-	public List<SurveyDetailsInfo> getsurveyDetailsInfoByVoterId(Long surveyUserId, Long voterId)
+	public List<SurveyDetailsInfo> getsurveyDetailsInfoByVoterId(Long surveyUserTypeId,Long surveyUserId, Long voterId)
 	{
-		Query query = getSession().createQuery("select SDI from SurveyDetailsInfo SDI where SDI.voter.voterId = :voterId and SDI.surveyUser.surveyUserType.surveyUsertypeId = :surveyUserId ");
+		Query query = getSession().createQuery("select SDI from SurveyDetailsInfo SDI where SDI.voter.voterId = :voterId and " +
+				" SDI.surveyUser.surveyUserId = :surveyUserId  and SDI.surveyUser.surveyUserType.surveyUsertypeId = :surveyUserTypeId ");
 		
 		query.setParameter("voterId", voterId);
 		query.setParameter("surveyUserId", surveyUserId);
+		query.setParameter("surveyUserTypeId", surveyUserTypeId);
 		
 		return query.list();
 		
