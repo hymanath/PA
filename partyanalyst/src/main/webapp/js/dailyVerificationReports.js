@@ -1993,10 +1993,26 @@ function getEntaieSelectionDetails(stateId,divId)
 }
 function getBigPictureDetails(stateId)
 {
-	//getInternalVerificationSummary(0,'allRegionsId1');
-	//getQcVerificationSummaryReport(0,'allQcCollecetdId');
-	//getTodayTeamDetails(0,'allTeamId');
-	//getTeamCollectedDetailsSummaryReport(0,'allCollecetdId');
+	
+	$('#totalVoters').html('<img src="./images/icons/search.gif" ></img>');
+	$('#totalBooths').html('<img src="./images/icons/search.gif" ></img>');
+	$('#totalConstituencyes').html('<img src="./images/icons/search.gif" ></img>');
+	
+	$('#dcVoters').html('<img src="./images/icons/search.gif" ></img>');
+	$('#wmVoters').html('<img src="./images/icons/search.gif" ></img>');
+	$('#qcVoters').html('<img src="./images/icons/search.gif" ></img>');
+	
+	$('#dcBooths').html('<img src="./images/icons/search.gif" ></img>');
+	$('#wmBooths').html('<img src="./images/icons/search.gif" ></img>');
+	$('#qcBooths').html('<img src="./images/icons/search.gif" ></img>');
+	
+	$('#dcConstituecyes').html('<img src="./images/icons/search.gif" ></img>');
+	$('#wmConstituencyes').html('<img src="./images/icons/search.gif" ></img>');
+	$('#qcConstituencyes').html('<img src="./images/icons/search.gif" ></img>');
+	
+	$('#dcVotersPerc').html('<img src="./images/icons/search.gif" ></img>');
+	$('#dcBoothsPerc').html('<img src="./images/icons/search.gif" ></img>');
+	$('#dcConstituencyPerc').html('<img src="./images/icons/search.gif" ></img>');
 	var jsObj = {
 		stateId : stateId
 	}
