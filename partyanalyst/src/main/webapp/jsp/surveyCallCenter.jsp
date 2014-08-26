@@ -859,7 +859,7 @@ function buildTest(result)
 	$('#mainajaximg').hide();
 	$('#excelTableID1').show();
 	$('#dayWiseReportDiv1').html(str);
-	$('#daywisereportTableIdTemp').dataTable();
+	//$('#daywisereportTableIdTemp').dataTable();
 }
 </script>
 	
