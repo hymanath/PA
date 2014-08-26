@@ -1485,7 +1485,7 @@ function submitQuestionDetails()
 		
 	   if(this.checked)
 	   {
-			
+				relationsArr.push($('#memberPrsnrltnType'+this.value).val());
 				selectedVoterDtls =
 			       {
 			         familyMemberId:this.value,
