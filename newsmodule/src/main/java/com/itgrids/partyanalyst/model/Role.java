@@ -30,6 +30,7 @@ public class Role extends BaseModel implements Serializable{
 	private Long roleId;
 	private String roleType;
 	private Set<UserRoles> userRoles = new HashSet<UserRoles>(0);
+	private String homeUrl;
 	
 	public Role()
 	{}
@@ -69,4 +70,14 @@ public class Role extends BaseModel implements Serializable{
 		this.userRoles = userRoles;
 	}
 
+	@Column(name = "home_url")
+	public String getHomeUrl() {
+		return homeUrl;
+	}
+
+	public void setHomeUrl(String homeUrl) {
+		this.homeUrl = homeUrl;
+	}
+
+	
 }
