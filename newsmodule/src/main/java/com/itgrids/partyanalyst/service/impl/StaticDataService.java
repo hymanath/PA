@@ -8817,7 +8817,7 @@ public class StaticDataService implements IStaticDataService {
 				}
 			}
 		}catch (Exception e) {
-			LOG.error("Exception Raised in getDepartments()" + e);
+			LOG.error("Exception Raised in getDepartments()" , e);
 		}
 		
 		return finalList;
@@ -8839,7 +8839,7 @@ public class StaticDataService implements IStaticDataService {
 				}
 			}
 		}catch (Exception e) {
-			LOG.error("Exception Raised in getNewsTypes()" + e);
+			LOG.error("Exception Raised in getNewsTypes()" , e);
 		}
 		
 		return finalList;

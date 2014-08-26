@@ -12,7 +12,6 @@ public class PfbReportDAO extends GenericDaoHibernate<PfbReport, Long> implement
 		super(PfbReport.class);
 	}
 
-	@Override
 	public String getpfbDatils(Long userId, Long pfbId) {
 		Query query = getSession().createQuery("select distinct model.key from PfbReport model " +
 				" where model.user.userId = :userId and model.parlimentPoliticalFeedback.parlimentPoliticalFeedbackId =:pfbId " +
