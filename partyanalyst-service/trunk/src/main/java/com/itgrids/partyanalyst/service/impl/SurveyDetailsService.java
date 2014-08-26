@@ -2165,33 +2165,68 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 	public List<DcDvCollectedDataVO> getConstituencySummaryReport()
 	{
 		List<DcDvCollectedDataVO> resultList = new ArrayList<DcDvCollectedDataVO>();
-		List<Long> constituencyIds = new ArrayList<Long>();
+		//List<Long> constituencyIds = new ArrayList<Long>();
 		try{
-			List<Object[]> constituencys = surveyDetailsInfoDAO.getSurveyStartedConstituencyInfo();				
+			/*List<Object[]> constituencys = surveyDetailsInfoDAO.getSurveyStartedConstituencyInfo();				
 			
 			if(constituencys != null && constituencys.size() > 0)
 				for(Object[] params : constituencys)
-					constituencyIds.add((Long)params[0]);
+					constituencyIds.add((Long)params[0]);*/
 			
 					
 			//List<Object[]> list = boothPublicationVoterDAO.getTotalVotersForAllConstituencies(constituencyIds);
-			
-			List<Object[]> list = surveyConstituencyTempDAO.getTotalVotersAndBooths(constituencyIds);
-			
-			if(list !=null && list.size() > 0)
+			Map<Long,GenericVO> errorMap = new HashMap<Long, GenericVO>();
+			Map<Long,GenericVO> constituencyMap = null;
+			getConstituencyWiseCasteAndMobileErrorRate(errorMap);
+			if(errorMap != null && errorMap.size() > 0)
 			{
-				for(Object[] params : list)
-				{
-				DcDvCollectedDataVO vo = new DcDvCollectedDataVO();
-				vo.setId(params[0] != null ? (Long)params[0]:0L);
-				vo.setConstituency(params[3] != null ? params[3].toString():"");
-				vo.setTotalCount(params[1] != null ?(Long)params[1]:0L);
-				vo.setBoothCount(params[2] != null ? Long.valueOf(params[2].toString()) : 0L );
+				List<Object[]> list = surveyConstituencyTempDAO.getTotalVotersAndBooths(new ArrayList<Long>(errorMap.keySet()));
 				
-				resultList.add(vo);
+				if(list !=null && list.size() > 0)
+				{
+					constituencyMap = new HashMap<Long, GenericVO>();
+					for(Object[] params : list)
+					{
+						GenericVO vo = new GenericVO();
+						vo.setId(params[0] != null ? (Long)params[0]:0L);// constituency Id
+						vo.setName(params[3] != null ? params[3].toString():"");// constituency name
+						vo.setCount(params[1] != null ?(Long)params[1]:0L);// voters count
+						vo.setRank(params[2] != null ? Long.valueOf(params[2].toString()) : 0L ); // booths count
+						
+						constituencyMap.put( (Long)params[0], vo);
+					}
+					
 				}
 				
-				List<Object[]> list1 = surveyDetailsInfoDAO.getCasteTaggedVotersForAllConstituencies(1l);
+				if(constituencyMap != null && constituencyMap.size() > 0)
+				{
+					for (Long constituencyId :  constituencyMap.keySet())
+					{
+						DcDvCollectedDataVO mainVO = new DcDvCollectedDataVO();
+						GenericVO constiVO = constituencyMap.get(constituencyId);
+						if(constiVO != null)
+						{
+							mainVO.setBoothCount(constiVO.getRank());
+							mainVO.setConstituency(constiVO.getName());
+							mainVO.setTotalCount(constiVO.getCount());
+							
+							GenericVO errorVO = errorMap.get(constituencyId);
+							if(errorVO != null)
+							{
+								mainVO.setCasteTagedBooths(errorVO.getRank());
+								mainVO.setCasteCount(errorVO.getCount());
+								mainVO.setCasteVerifiedBooths(Long.valueOf(errorVO.getVerificationProcessCount()));
+								
+								mainVO.setCasteErrorRate(errorVO.getDesc());
+								mainVO.setMobileErrorRate(errorVO.getPercent());
+							}
+						}
+						
+						resultList.add(mainVO);
+					}
+				}
+			}
+				/*List<Object[]> list1 = surveyDetailsInfoDAO.getCasteTaggedVotersForAllConstituencies(1l);
 				if(list1 != null && list1.size() > 0)
 				for(Object[] params : list1)
 				{
@@ -2267,7 +2302,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 						}
 					}
 				}
-			}
+			}*/
 			
 		}
 		catch (Exception e) {
@@ -2276,7 +2311,129 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 		return resultList;
 	}
 	
-	
+	public void getConstituencyWiseCasteAndMobileErrorRate(Map<Long,GenericVO> returnMap)
+	{
+		
+		List<Object[]> casteCollecetdDetails = surveyDetailsInfoDAO.getConstituencyWiseCasteCollected();
+		if(casteCollecetdDetails != null && casteCollecetdDetails.size() > 0)
+		{
+			Map<Long,GenericVO> casteCollecetdMap = new HashMap<Long, GenericVO>();
+			Map<Long,GenericVO> casteVerifiedMap  = null ;
+			Map<Long,Long> verifiedBoothsMap = null;
+			Map<Long,Long> mobilesCollectedMap =null;
+			Map<Long,Long> mobilesVerifiedMap = null;
+			for (Object[] objects : casteCollecetdDetails) 
+			{
+				GenericVO casteCollecetdVO = new GenericVO();
+				
+				casteCollecetdVO.setId((Long)objects[0]);//constituencyId
+				casteCollecetdVO.setName(objects[1].toString());//constituency Name
+				casteCollecetdVO.setCount((Long)objects[2]);// total Voters
+				casteCollecetdVO.setRank((Long)objects[3]);// booths count
+				
+				casteCollecetdMap.put((Long)objects[0], casteCollecetdVO);
+			}
+			
+			List<Object[]> verifiedCasteDetails = surveyCallStatusDAO.getConstituencyWiseCasteUpdate();
+			if(verifiedCasteDetails != null && verifiedCasteDetails.size() > 0)
+			{
+				casteVerifiedMap = new HashMap<Long, GenericVO>();
+				for (Object[] objects : verifiedCasteDetails) 
+				{
+					GenericVO casteVerifiedVO = new GenericVO();
+					
+					casteVerifiedVO.setId((Long)objects[0]);//constituencyId
+					casteVerifiedVO.setName(objects[1].toString());//constituency Name
+					casteVerifiedVO.setCount((Long)objects[2]);// total Voters
+					casteVerifiedMap.put((Long)objects[0], casteVerifiedVO);
+				}
+			}
+			
+			List<Object[]> casteVerifedBooths = surveyCallStatusDAO.getConstituencyWiseBoothsCount();
+			if(casteVerifedBooths != null && casteVerifedBooths.size() > 0)
+			{
+				verifiedBoothsMap = new HashMap<Long, Long>();
+				for (Object[] objects : casteVerifedBooths)
+				{
+					verifiedBoothsMap.put((Long)objects[0], (Long)objects[1]);
+				}
+			}
+			
+			List<Object[]> mobileCollectedDetails = surveyDetailsInfoDAO.getConstituenyWiseMobilesCollected();
+			if(mobileCollectedDetails != null && mobileCollectedDetails.size() > 0)
+			{
+				mobilesCollectedMap = new HashMap<Long, Long>();
+				for (Object[] objects : mobileCollectedDetails)
+				{
+					mobilesCollectedMap.put((Long)objects[0], (Long)objects[1]);
+				}
+			}
+			
+			List<Object[]> mobileVerifiedDetails = surveyCallStatusDAO.getConstituencyWiseMobilesUnMatched();
+			if(mobileVerifiedDetails != null && mobileVerifiedDetails.size() > 0)
+			{
+				mobilesVerifiedMap = new HashMap<Long, Long>();
+				for (Object[] objects : mobileVerifiedDetails)
+				{
+					mobilesVerifiedMap.put((Long)objects[0], (Long)objects[1]);
+				}
+			}
+			
+			if(casteCollecetdMap != null && casteCollecetdMap.size() > 0)
+			{
+				for (Long constituencyId : casteCollecetdMap.keySet())
+				{
+					GenericVO genericVO = new GenericVO();
+					genericVO.setId(constituencyId);//constituencyId
+					GenericVO casteCollecetdVO = casteCollecetdMap.get(constituencyId);
+					genericVO.setName(casteCollecetdVO.getName());// constituency name
+					genericVO.setCount(casteCollecetdVO.getCount());//total voters
+					genericVO.setRank(casteCollecetdVO.getRank());// total booths count
+					Long verifiedBooths = verifiedBoothsMap.get(constituencyId);
+					if(verifiedBooths != null && verifiedBooths > 0)
+					{
+						genericVO.setVerificationProcessCount(Integer.valueOf(verifiedBooths.toString()));// verified Booths count
+					}
+					else
+					{
+						genericVO.setVerificationProcessCount(0);// verified Booths count
+					}
+					
+					Long mobilesCollected = mobilesCollectedMap.get(constituencyId);
+					Long mobilesVerified = mobilesVerifiedMap.get(constituencyId);
+					if(mobilesCollected != null && mobilesCollected > 0 && mobilesVerified != null && mobilesVerified > 0)
+					{
+						genericVO.setPercent(new BigDecimal(mobilesVerified*(100.0)/mobilesCollected).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					}
+					else
+					{
+						genericVO.setPercent("0.00");// mobile Error Rate
+					}
+					
+					GenericVO verifiedVO = casteVerifiedMap.get(constituencyId);
+					if(verifiedVO != null)
+					{
+						if(verifiedVO.getCount() != null && verifiedVO.getCount() > 0)
+						{
+							genericVO.setDesc(new BigDecimal(verifiedVO.getCount()*(100.0)/genericVO.getCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+						}
+						else
+						{
+							genericVO.setDesc("0.00");
+						}
+					}
+					else
+					{
+						genericVO.setDesc("0.00");
+					}
+					returnMap.put(constituencyId, genericVO);
+				}
+			}
+			
+		}
+		
+		
+	}
 	public void fullSurveyResponceVO(List<SurveyDetailsInfo> result,List<SurveyResponceVO> returnList,Long boothId )
 	{
 		for (SurveyDetailsInfo surveyDetailsInfo : result)
