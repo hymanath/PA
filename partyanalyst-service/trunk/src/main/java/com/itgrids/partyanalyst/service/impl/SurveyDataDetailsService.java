@@ -3283,193 +3283,6 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		}		
 		return result;
 	}
-	/*
-	public List<SurveyReportVO> getSurveyVotersList(Long constituencyId, Long boothId,Long leaderId,String searchDate){
-		List<SurveyReportVO> retultList = new ArrayList<SurveyReportVO>();
-		try {
-			
-			SurveyReportVO finalVO = new SurveyReportVO();
-			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-			//SimpleDateFormat finalFormat = new SimpleDateFormat("yyyy-MM-dd");
-			Date date = format.parse(searchDate);
-			//List<Object[]> usersList = surveyUserRelationDAO.getUsersByConstituencyAndLeader(leaderId, constituencyId);
-			
-			//Set<Long> assignedUserIds = new HashSet<Long>();
-			
-			//if(usersList != null && usersList.size()>0){
-				//for (Object[] user : usersList) {
-				//	assignedUserIds.add((Long) user[0]);
-				//}
-				
-				List<Long> ids = new ArrayList<Long>();
-				ids.add(leaderId);
-				List<Object[]> votersLsit = surveyDetailsInfoDAO.getVoterDetailsByBoothId(boothId,ids,date);
-
-				List<Object[]> verifiedList = surveyCallStatusDAO.getSurveyCallDtalsByboothId(boothId);
-				Map<Long,String> mobileMatched = new HashMap<Long,String>();
-				Map<Long,String> casteMatched = new HashMap<Long,String>();
-				Map<Long,String> newCasteMatched = new HashMap<Long,String>();
-				
-				if(verifiedList != null && verifiedList.size()>0){
-					for (Object[] param : verifiedList) {
-						if(param[1] != null)
-						{
-							if(!param[1].toString().equalsIgnoreCase("N")){
-								mobileMatched.put((Long)param[0], "Y");
-							}
-							else if(param[1].toString().equalsIgnoreCase("N")){
-								mobileMatched.put((Long)param[0], "N");
-							}
-							else{								
-								mobileMatched.put((Long)param[0], "Not Mapped");							
-							}
-						}
-						
-						if(param[2] != null)
-						{
-							if(!param[2].toString().equalsIgnoreCase("N")){
-								casteMatched.put((Long)param[0], "Y");
-							}
-							else if(param[2].toString().equalsIgnoreCase("N")){
-								casteMatched.put((Long)param[0], "N");
-							}
-							else{
-								casteMatched.put((Long)param[0], "Not Mapped");
-							}
-						}
-						
-						if(param[3] != null)
-						{
-								newCasteMatched.put((Long)param[0], param[3].toString());
-						}
-						
-					}
-				}
-				if(votersLsit != null && votersLsit.size()>0){
-					List<SurveyReportVO> resultList = new ArrayList<SurveyReportVO>();
-					for (Object[] voter : votersLsit) {
-						
-						SurveyReportVO reportVO = new SurveyReportVO();
-						
-						//reportVO.setUserName(voter[0] != null ? voter[0].toString():"");
-						reportVO.setVoterIDCardNo(voter[1] != null ? voter[1].toString():"");
-						if(voter[2] != null && !voter[2].toString().equalsIgnoreCase("null"))
-						{
-							reportVO.setMobileNo(voter[2] != null ? voter[2].toString():"");
-						}
-						
-						reportVO.setCaste(voter[3] != null ? voter[3].toString(): voter[4] != null ? voter[4].toString():"");
-						reportVO.setHamletName(voter[5] != null ? voter[5].toString():voter[6] != null ? voter[6].toString():"");
-						reportVO.setLocalArea(voter[7] != null ? voter[7].toString():"");
-						reportVO.setUserid(voter[8] != null ?(Long) voter[8]:0L);
-						reportVO.setVoterId(voter[9] != null ?(Long) voter[9]:0L);
-						reportVO.setCadre(voter[10] != null ? voter[10].toString():"");
-						reportVO.setInfluencePeople(voter[11] != null ? voter[11].toString():"");
-						reportVO.setUserName(voter[12] != null ? voter[12].toString():"");  // votername 
-						reportVO.setPartNo(voter[13] != null ? voter[13].toString():"");    // H.No
-						reportVO.setVoterName(voter[14] != null ? voter[14].toString():""); // relativeName
-						reportVO.setSerailNo(voter[15] != null ?(Long) voter[15]:0L);
-						if(voter[9] != null)
-								{
-									String casteMatchd = casteMatched.get((Long) voter[9]);
-									String mobilMatchd = mobileMatched.get((Long) voter[9]);
-		
-								if(casteMatchd != null && casteMatchd.equalsIgnoreCase("Y")){
-									reportVO.setCasteMatchedCount(1L);
-								}else if(casteMatchd != null && casteMatchd.equalsIgnoreCase("N")){
-									reportVO.setCasteMatchedCount(2L);
-								}else{							
-									reportVO.setCasteMatchedCount(0L);
-								}
-								
-								
-								if(mobilMatchd != null && mobilMatchd.equalsIgnoreCase("Y")){
-									reportVO.setMobileMatchedCount(1L);
-								}else if(mobilMatchd != null && mobilMatchd.equalsIgnoreCase("N")){
-									reportVO.setMobileMatchedCount(2L);
-								}else{							
-									reportVO.setMobileMatchedCount(0L);
-								}
-								
-								
-								if(newCasteMatched.get(voter[9] != null ?(Long) voter[9]:0L) != null){
-									reportVO.setCasteId(Long.valueOf(newCasteMatched.get((Long) voter[9])));
-								}
-							}
-						
-						resultList.add(reportVO);
-						
-					}
-					
-					if(resultList != null && resultList.size()>0){
-						finalVO.setSubList(resultList);
-						
-					}
-				}	
-				
-			//}
-					
-			List<GenericVO> casteListOfSamples = new ArrayList<GenericVO>();
-			List<Object[]> casteInfo = surveyDetailsInfoDAO.getCasteWiseCountInBooth(boothId);	
-			if(casteInfo != null && casteInfo.size()>0){
-				for (Object[] caste : casteInfo) {
-					GenericVO vo = new  GenericVO();
-					vo.setId(caste[0] != null ? (Long) caste[0]:0L);
-					vo.setName(caste[1] != null ? caste[1].toString():"");
-					vo.setCount(caste[2] != null ? (Long) caste[2]:0L);
-					
-					casteListOfSamples.add(vo);
-					
-				}
-			}
-			
-			finalVO.setCount(surveyDetailsInfoDAO.getTotalVotersinBooth(boothId));
-			
-		
-			if(casteListOfSamples != null && casteListOfSamples.size()>0){
-				
-				Collections.sort(casteListOfSamples, new Comparator<GenericVO>() {
-
-					public int compare(GenericVO o1, GenericVO o2) {
-						
-						return (int) (o2.getCount() - o1.getCount());
-					}
-				});
-				
-				finalVO.setGenericVOList(casteListOfSamples);
-			}
-			
-			retultList.add(finalVO);
-			
-			
-			SurveyReportVO allCastesVO = new SurveyReportVO();
-			
-			List<Object[]> castesList = casteStateDAO.getAllCasteDetailsForVoters(1L); // for AP state
-			List<GenericVO> stateCasteList = new ArrayList<GenericVO>();
-			
-			if(castesList != null && castesList.size()>0){
-				for (Object[] cast : castesList) {
-					GenericVO vo = new  GenericVO();
-					vo.setId(cast[0] != null ? (Long) cast[0]:0L);
-					vo.setName(cast[1] != null ? cast[1].toString():"");
-					
-					stateCasteList.add(vo);
-				}
-				
-				allCastesVO.setGenericVOList(stateCasteList);
-			}
-			
-			retultList.add(allCastesVO);
-			
-		} catch (Exception e) {
-			retultList = null;
-			LOG.error("Exception raised in getSurveyVotersList() service in SurveyDataDetailsService", e);
-			e.printStackTrace();
-		}		
-		return retultList;
-	}
-	
-	*/
 	
 	public void fillDcWmMap(Map<Long,GenericVO> dcWmMap , List<VerificationCompVO> resultList,String status)
 	{
@@ -3490,17 +3303,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				SurveyReportVO finalVO = new SurveyReportVO();
 				SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 				List<Long> voterIds = new ArrayList<Long>(0);
-				//SimpleDateFormat finalFormat = new SimpleDateFormat("yyyy-MM-dd");
 				Date date = format.parse(searchDate);
-				//List<Object[]> usersList = surveyUserRelationDAO.getUsersByConstituencyAndLeader(leaderId, constituencyId);
 				
-				//Set<Long> assignedUserIds = new HashSet<Long>();
-				
-				//if(usersList != null && usersList.size()>0){
-					//for (Object[] user : usersList) {
-					//	assignedUserIds.add((Long) user[0]);
-					//}
-					
 				String areaType = null;
 				
 				List<Booth> boothList = boothDAO.getBoothDetailsByBoothId(boothId);
@@ -3578,15 +3382,6 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					surveyUserids.add(surveyUserId);
 				}
 				
-				
-			/*	if(specialBoothList == null || specialBoothList.get(0).equals(0L))
-				{
-					surveyUserids.add(surveyUserId);
-
-				}else
-					surveyUserId = 0L;
-				*/
-					//List<Object[]> votersLsit = surveyDetailsInfoDAO.getVoterDetailsByBoothId(boothId,ids,date);
 					
 					List<Object[]> votersLsit = surveyDetailsInfoDAO.getVotersDetailsByBoothId(boothId,surveyUserids,date,casteStateId);
 					List<Object[]> verifiedList = null;
@@ -3626,7 +3421,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 						verifiedList = surveyCallStatusDAO.getDvSurveyCallDtalsByboothId(boothId,surveyUserId);
 					}
 					
-					
+					verifiedList.addAll(surveyCallStatusDAO. getSurveyCallDtalsByboothId(boothId,null)); // DC not collected , WM collected and verified by mobile no.
+					 
 					Map<Long,String> mobileMatched = new HashMap<Long,String>();
 					Map<Long,String> casteMatched = new HashMap<Long,String>();
 					Map<Long,String> newCasteMatched = new HashMap<Long,String>();
@@ -3704,8 +3500,10 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 						
 					}
 					
+					List<SurveyReportVO> resultList = new ArrayList<SurveyReportVO>();
+					
 					if(votersLsit != null && votersLsit.size()>0){
-						List<SurveyReportVO> resultList = new ArrayList<SurveyReportVO>();
+						
 						for (Object[] voterInfo : votersLsit) {
 							
 							SurveyReportVO reportVO = new SurveyReportVO();
@@ -3853,15 +3651,54 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 							//end verifying castes of all voters in a house no are same or not start
 						}
 						
-						if(resultList != null && resultList.size()>0){
-							finalVO.setSubList(resultList);
-							
-						}
+						
 						
 					}	
 					
 				//}
 						
+					
+					List<Object[]> actualVotersInBooth = boothPublicationVoterDAO.getCTPVoterDetailsByBooth(boothId);
+					
+					if(actualVotersInBooth != null && actualVotersInBooth.size()>0)
+					{
+						for (Object[] voter : actualVotersInBooth) 
+						{							
+							
+							if(!voterIds.contains((Long)voter[0]))
+							{
+								SurveyReportVO reportVO = new SurveyReportVO();
+								
+								reportVO.setVoterId(voter[0] != null ? (Long) voter[0]:0L);		
+								reportVO.setSerailNo(voter[1] != null ?(Long) voter[1]:0L);
+								reportVO.setPartNo(voter[2] != null ?voter[2].toString():"");
+								reportVO.setUserName(voter[3] != null ?voter[3].toString():"");	
+								reportVO.setVoterName(voter[4] != null ?voter[4].toString():"");								
+								reportVO.setVoterIDCardNo(voter[5] != null ?voter[5].toString():"");
+								reportVO.setMobileNo("");
+								reportVO.setUserid(0L);
+								reportVO.setCaste("");
+								
+								if(newCasteMatched.get( (Long)voter[0]) != null ){
+									reportVO.setCasteId(Long.valueOf(newCasteMatched.get((Long)voter[0])));
+								}
+								
+								if(newHamletStatus.get((Long)voter[0]) != null ){
+									reportVO.setHamletId(Long.valueOf(newHamletStatus.get((Long)voter[0])));
+								}
+								
+								resultList.add(reportVO);
+							}
+							
+							
+						}
+					}
+					
+					if(resultList != null && resultList.size()>0){
+						finalVO.setSubList(resultList);
+						
+					}
+					
 				List<GenericVO> casteListOfSamples = new ArrayList<GenericVO>();
 				List<Object[]> casteInfo = surveyDetailsInfoDAO.getCasteWiseCountInBooth(boothId,surveyUserids);	
 				if(casteInfo != null && casteInfo.size()>0){
@@ -3936,7 +3773,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			
 			SurveyCallStatus surveyCallStatus = null;
 						
-			List<SurveyDetailsInfo> surveyDetailsInfoList = surveyDetailsInfoDAO.getsurveyDetailsInfoByVoterId(surveyReportVO.getUserTypeId(),surveyReportVO.getVoterId());
+			List<SurveyDetailsInfo> surveyDetailsInfoList = surveyDetailsInfoDAO.getsurveyDetailsInfoByVoterId(surveyReportVO.getUserTypeId(),surveyReportVO.getUserid(),surveyReportVO.getVoterId());
 			
 			boolean isDCCasteCollected = false;
 			boolean isDCHamletCollected = false;
@@ -3995,7 +3832,14 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				surveyCallStatus.setInsertedDate(dateUtilService.getCurrentDateAndTime());
 			}
 			
-			surveyCallStatus.setSurveyUserId(surveyReportVO.getUserid());
+			if(surveyDetailsInfoList != null && surveyDetailsInfoList.size()>0)
+			{
+				surveyCallStatus.setSurveyUserId(surveyReportVO.getUserid());
+			}
+			else
+			{
+				surveyCallStatus.setSurveyUserId(null);
+			}
 			surveyCallStatus.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
 			//surveyCallStatus.setBooth(boothDAO.get(surveyReportVO.getBoothId()));
 			surveyCallStatus.setBoothId(surveyReportVO.getBoothId());
@@ -4073,7 +3917,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		{
 			SurveyCallStatus surveyCallStatus = null;
 			
-			List<SurveyDetailsInfo> surveyDetailsInfoList = surveyDetailsInfoDAO.getsurveyDetailsInfoByVoterId(surveyReportVO.getUserTypeId(),surveyReportVO.getVoterId());
+			List<SurveyDetailsInfo> surveyDetailsInfoList = surveyDetailsInfoDAO.getsurveyDetailsInfoByVoterId(surveyReportVO.getUserTypeId(),surveyReportVO.getUserid(),surveyReportVO.getVoterId());
 			
 			boolean isDVCasteCollected = false;
 			boolean isDVHamletCollected = false;
@@ -4129,7 +3973,16 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				surveyCallStatus.setVoterId(surveyReportVO.getVoterId());
 				surveyCallStatus.setInsertedDate(dateUtilService.getCurrentDateAndTime());
 			}
-			surveyCallStatus.setDvSurveyUserId(surveyReportVO.getUserid());
+			
+			
+			if(surveyDetailsInfoList != null && surveyDetailsInfoList.size()>0)
+			{
+				surveyCallStatus.setDvSurveyUserId(surveyReportVO.getUserid());
+			}
+			else
+			{
+				surveyCallStatus.setDvSurveyUserId(null);
+			}
 			
 			surveyCallStatus.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
 			surveyCallStatus.setBoothId(surveyReportVO.getBoothId());
