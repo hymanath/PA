@@ -1586,6 +1586,44 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		
 	}
 	
+	public List<Object[]> getBoothWiseCollectedDetailsForConstituencyByUserTypeAndCollectedType(
+			Long constituencyId, Long surveyUserTypeId, String collectedType)	{
+		
+		StringBuffer queryString = new StringBuffer();
+		
+		queryString.append("select  count(distinct SDI.voter.voterId),SDI.booth.boothId,SDI.booth.partNo from SurveyDetailsInfo SDI ");
+		
+		queryString.append("where SDI.surveyUser.surveyUserType.surveyUsertypeId = :surveyUserTypeId " +
+				"and SDI.booth.constituency.constituencyId = :constituencyId ");
+		
+		if(collectedType.equalsIgnoreCase("caste"))
+		{
+			queryString.append("and SDI.caste is not null ");
+			
+		}else if(collectedType.equalsIgnoreCase("hamlet"))
+		{
+			queryString.append("and SDI.hamlet is not null");
+			
+		}else if(collectedType.equalsIgnoreCase("mobileNumber"))
+		{
+			queryString.append("and SDI.mobileNumber is not null and  SDI.mobileNumber !=''");
+			
+		}else if(collectedType.equalsIgnoreCase("ward"))
+		{
+			queryString.append("and  SDI.wardId is not null");
+		}
+		
+		queryString.append(" group by SDI.booth.boothId");
+		
+		Query query = getSession().createQuery(queryString.toString());
+		
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("surveyUserTypeId", surveyUserTypeId);
+		
+		return query.list();
+		
+	}
+	
 	
 	
 	public List<Object[]> getTotalSamplesInBoothsOfUserType(Long constituencyId,Long surveyUserType){

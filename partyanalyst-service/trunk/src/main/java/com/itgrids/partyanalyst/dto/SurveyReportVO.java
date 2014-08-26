@@ -123,6 +123,36 @@ public class SurveyReportVO {
 	private Long statusId;
 	private Long wardId;
 	private String wardName ; 
+	
+	private CasteCollectedDetailsVO dcDetails = new CasteCollectedDetailsVO();
+	private CasteCollectedDetailsVO dvDetails = new CasteCollectedDetailsVO();
+	private CasteCollectedDetailsVO wmDcDetails = new CasteCollectedDetailsVO();
+	private CasteCollectedDetailsVO wmDvDetails = new CasteCollectedDetailsVO();
+
+	public CasteCollectedDetailsVO getWmDvDetails() {
+		return wmDvDetails;
+	}
+	public void setWmDvDetails(CasteCollectedDetailsVO wmDvDetails) {
+		this.wmDvDetails = wmDvDetails;
+	}
+	public CasteCollectedDetailsVO getWmDcDetails() {
+		return wmDcDetails;
+	}
+	public void setWmDcDetails(CasteCollectedDetailsVO wmDcDetails) {
+		this.wmDcDetails = wmDcDetails;
+	}
+	public CasteCollectedDetailsVO getDcDetails() {
+		return dcDetails;
+	}
+	public void setDcDetails(CasteCollectedDetailsVO dcDetails) {
+		this.dcDetails = dcDetails;
+	}
+	public CasteCollectedDetailsVO getDvDetails() {
+		return dvDetails;
+	}
+	public void setDvDetails(CasteCollectedDetailsVO dvDetails) {
+		this.dvDetails = dvDetails;
+	}
 		
 	
 	public Long getWardId() {

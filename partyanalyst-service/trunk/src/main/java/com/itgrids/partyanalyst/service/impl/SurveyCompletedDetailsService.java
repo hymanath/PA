@@ -38,8 +38,6 @@ import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
 import com.itgrids.partyanalyst.dto.SurveyReportVO;
 import com.itgrids.partyanalyst.dto.SurveyThirdPartyReportVO;
 import com.itgrids.partyanalyst.dto.VerificationCompVO;
-import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
-import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.SurveyCompletedConstituency;
 import com.itgrids.partyanalyst.model.SurveyCompletedLocations;
 import com.itgrids.partyanalyst.service.ISurveyCompletedDetailsService;
@@ -1888,6 +1886,261 @@ public class SurveyCompletedDetailsService implements
 		  LOG.error("Exception raised in setListDetailsToMap service method");
 		}
 		return count;
+		
+	}
+	
+	public List<SurveyReportVO> getBoothWiseDetails(Long constituencyId)
+	{
+		LOG.info("Entered into the getBoothWiseDetails service method");
+		List<SurveyReportVO> resultList = new ArrayList<SurveyReportVO>();
+		List<Object[]> casteDetails = null;
+		List<Object[]> hamletDetails = null;
+		List<Object[]> mobileDetails = null;
+		List<Object[]> wardDetails = null;
+		
+		
+		try
+		{
+			List<Object[]> boothDetails = boothPublicationVoterDAO.getBoothWiseTotalVotersByConstituencyId(constituencyId);
+			
+			for(Object[] obj:boothDetails)
+			{
+				SurveyReportVO boothVO = new SurveyReportVO();
+				
+				boothVO.setBoothId((Long)obj[1]);
+				boothVO.setPartNo(obj[2].toString());
+				boothVO.setTotalVoters((Long)obj[0]);
+				
+				resultList.add(boothVO);
+			}
+			
+	
+			// DC COLLECTED DETAILS START
+			casteDetails = surveyDetailsInfoDAO.getBoothWiseCollectedDetailsForConstituencyByUserTypeAndCollectedType(constituencyId, IConstants.DATA_COLLECTOR_ROLE_ID, "caste");
+			
+			
+			for(Object[] obj:casteDetails)
+			{
+				SurveyReportVO booth = getMatchedBoothVO(resultList,(Long)obj[1]);
+				booth.getDcDetails().setCasteCount((Long)obj[0]);
+			}
+			
+			hamletDetails = surveyDetailsInfoDAO.getBoothWiseCollectedDetailsForConstituencyByUserTypeAndCollectedType(constituencyId, IConstants.DATA_COLLECTOR_ROLE_ID, "hamlet");
+			
+			for(Object[] obj:hamletDetails)
+			{
+				SurveyReportVO booth = getMatchedBoothVO(resultList,(Long)obj[1]);
+				booth.getDcDetails().setHamletCount((Long)obj[0]);
+			}
+			
+			mobileDetails = surveyDetailsInfoDAO.getBoothWiseCollectedDetailsForConstituencyByUserTypeAndCollectedType(constituencyId, IConstants.DATA_COLLECTOR_ROLE_ID, "mobileNumber");
+			
+			for(Object[] obj:mobileDetails)
+			{
+				SurveyReportVO booth = getMatchedBoothVO(resultList,(Long)obj[1]);
+				booth.getDcDetails().setMobileNUmbersCount((Long)obj[0]);
+			}
+			
+			
+			wardDetails = surveyDetailsInfoDAO.getBoothWiseCollectedDetailsForConstituencyByUserTypeAndCollectedType(constituencyId, IConstants.DATA_COLLECTOR_ROLE_ID, "ward");
+			
+			for(Object[] obj:wardDetails)
+			{
+				SurveyReportVO booth = getMatchedBoothVO(resultList,(Long)obj[1]);
+				booth.getDcDetails().setWardCount((Long)obj[0]);
+			}
+			
+			//DC COLLECTED DETAILS END
+			
+			casteDetails =  surveyCallStatusDAO.getDcBoothWiseCasteCollectedDetailsForConstituency(constituencyId);
+			
+			for(Object[] obj:casteDetails)
+			{
+				SurveyReportVO booth = getMatchedBoothVO(resultList,(Long)obj[1]);
+				
+				if(obj[2] == null)
+					booth.getWmDcDetails().setNewlyCollectedCount((Long)obj[0]);
+				else if(obj[2].toString().equalsIgnoreCase("Y"))
+					booth.getWmDcDetails().setCasteMatchedCount((Long)obj[0]);
+				else if(obj[2].toString().equalsIgnoreCase("N"))
+					booth.getWmDcDetails().setCasteUnMatchedCount((Long)obj[0]);
+			}
+			
+			
+			mobileDetails =  surveyCallStatusDAO.getDcBoothWiseMobileCollectedDetailsForConstituency(constituencyId);
+			
+
+			for(Object[] obj:mobileDetails)
+			{
+				SurveyReportVO booth = getMatchedBoothVO(resultList,(Long)obj[1]);
+				
+				if(obj[2] != null)
+				{
+					 if(obj[2].toString().equalsIgnoreCase("Y"))
+						booth.getWmDcDetails().setMobileMatchedCount((Long)obj[0]);
+					else if(obj[2].toString().equalsIgnoreCase("N"))
+						booth.getWmDcDetails().setMobileUnmatchedCount((Long)obj[0]);
+				}
+			}
+			
+			
+			Map<Long,FinalSurveyReportVO> dvMatchedUnMatchedMap = new HashMap<Long, FinalSurveyReportVO>();
+			
+			
+			getVerifierMatchedUnMatchedDetails(constituencyId,dvMatchedUnMatchedMap);
+			
+			
+			for(Entry<Long,FinalSurveyReportVO> entry:dvMatchedUnMatchedMap.entrySet())
+			{
+				SurveyReportVO booth = getMatchedBoothVO(resultList,entry.getKey());
+				
+				if(booth != null)
+				{
+					booth.getDvDetails().setCasteMatchedCount(new Long(entry.getValue().getMatchedCount()));
+					booth.getDvDetails().setCasteUnMatchedCount(new Long(entry.getValue().getUnMatchedCount()));
+					booth.getDvDetails().setNotIdentifiedCount(new Long(entry.getValue().getNotIdentifedCount()));
+					
+				}
+			}
+			
+			
+
+			casteDetails =  surveyCallStatusDAO.getDvBoothWiseCasteCollectewdDetailsForConstituency(constituencyId);
+			
+			for(Object[] obj:casteDetails)
+			{
+				SurveyReportVO booth = getMatchedBoothVO(resultList,(Long)obj[1]);
+				if(obj[2] != null)
+				{
+					 if(obj[2].toString().equalsIgnoreCase("Y"))
+						booth.getWmDvDetails().setCasteMatchedCount((Long)obj[0]);
+					else if(obj[2].toString().equalsIgnoreCase("N"))
+						booth.getWmDvDetails().setCasteUnMatchedCount((Long)obj[0]);
+				}
+			}
+			
+			
+			setPercentageDetails(resultList);
+
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Exception raised in getBoothWiseDetails service method");
+		}
+		
+		return resultList;
+		
+	}
+	
+	public void setPercentageDetails(List<SurveyReportVO> resultList)
+	{
+		LOG.info("Entered into the setPercentageDetails service method");
+		try
+		{
+			for(SurveyReportVO boothVO:resultList)
+			{
+				
+				boothVO.getDcDetails()
+						.setCastePercent(
+								boothVO.getDcDetails() != null
+										&& boothVO.getDcDetails()
+												.getCasteCount() != 0 ? roundTo2DigitsFloatValue((float) boothVO
+										.getDcDetails().getCasteCount()
+										* 100f
+										/ boothVO.getTotalVoters()) : "0.00");
+				
+				boothVO.getDcDetails()
+				.setHamletPercent(
+						boothVO.getDcDetails() != null
+								&& boothVO.getDcDetails()
+										.getHamletCount() != 0 ? roundTo2DigitsFloatValue((float) boothVO
+								.getDcDetails().getHamletCount()
+								* 100f
+								/ boothVO.getTotalVoters()) : "0.00");
+				
+				boothVO.getDcDetails()
+				.setMobilePercent(
+						boothVO.getDcDetails() != null
+								&& boothVO.getDcDetails().getMobileNUmbersCount() != 0 ? roundTo2DigitsFloatValue((float) boothVO
+								.getDcDetails().getMobileNUmbersCount()
+								* 100f
+								/ boothVO.getTotalVoters()) : "0.00");
+				
+				Long wmDcMobileTotal = boothVO.getWmDcDetails().getMobileMatchedCount() + boothVO.getWmDcDetails().getMobileUnmatchedCount();
+				
+				boothVO.getWmDcDetails().setMobilePercent(
+						boothVO.getDcDetails() != null
+						&& boothVO.getWmDcDetails().getMobileUnmatchedCount() != 0 ? roundTo2DigitsFloatValue((float) boothVO.getWmDcDetails().getMobileUnmatchedCount()
+						* 100f
+						/wmDcMobileTotal) : "0.00");
+				
+				boothVO.getWmDcDetails().setTotalCount(
+						boothVO.getWmDcDetails().getNewlyCollectedCount()
+								+ boothVO.getWmDcDetails()
+										.getCasteMatchedCount()
+								+ boothVO.getWmDcDetails()
+										.getCasteUnMatchedCount());
+				
+				Long wmDcCasteTotal = boothVO.getWmDcDetails().getCasteMatchedCount() + boothVO.getWmDcDetails().getCasteUnMatchedCount();
+
+				
+				boothVO.getWmDcDetails().setCastePercent(
+						boothVO.getWmDcDetails() != null
+						&& boothVO.getWmDcDetails().getCasteUnMatchedCount() != 0 ? roundTo2DigitsFloatValue((float) boothVO.getWmDcDetails().getCasteUnMatchedCount()
+						* 100f
+						/wmDcCasteTotal) : "0.00");
+				
+				
+				Long totalDvCount = boothVO.getDvDetails()
+						.getCasteMatchedCount()
+						+ boothVO.getDvDetails().getCasteUnMatchedCount()
+						+ boothVO.getDvDetails().getNotIdentifiedCount();	
+				
+				
+				boothVO.getDvDetails().setMatchedPercent(
+						boothVO.getDvDetails() != null
+						&& boothVO.getDvDetails()
+						.getCasteMatchedCount() != 0 ? roundTo2DigitsFloatValue((float) boothVO.getDvDetails().getCasteMatchedCount()
+						* 100f
+						/totalDvCount) : "0.00");
+				
+				boothVO.getDvDetails().setUnmatchedPercent(
+						boothVO.getDvDetails() != null
+						&& boothVO.getWmDcDetails().getCasteUnMatchedCount() != 0 ? roundTo2DigitsFloatValue((float) boothVO.getDvDetails().getCasteUnMatchedCount()
+						* 100f
+						/totalDvCount) : "0.00");
+				
+				boothVO.getDvDetails().setNotIdentifiedPercent(
+						boothVO.getDvDetails() != null
+						&& boothVO.getDvDetails().getCasteUnMatchedCount() != 0 ? roundTo2DigitsFloatValue((float) boothVO.getDvDetails().getNotIdentifiedCount()
+						* 100f
+						/totalDvCount) : "0.00");
+				
+				Long emptyCount = boothVO.getWmDvDetails()
+						.getCasteMatchedCount()
+						+ boothVO.getWmDvDetails().getCasteUnMatchedCount()
+						- boothVO.getDvDetails().getCasteUnMatchedCount()
+						+ boothVO.getDvDetails().getNotIdentifiedCount();
+				
+				boothVO.getDvDetails().setEmptyCount(emptyCount);
+				
+			}
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Exception raised in setPercentageDetails service method");
+
+		}
+	}
+	
+	public SurveyReportVO getMatchedBoothVO(List<SurveyReportVO> boothsList,Long boothId)
+	{
+		for(SurveyReportVO boothVO:boothsList)
+			if(boothVO.getBoothId().equals(boothId))
+				return boothVO;
+		return null;
 		
 	}
 }

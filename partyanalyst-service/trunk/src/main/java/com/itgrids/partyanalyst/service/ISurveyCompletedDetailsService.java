@@ -26,4 +26,6 @@ public interface ISurveyCompletedDetailsService {
 	public List<SelectOptionVO> getSurveyStartedConstituencyDetails();
 	public List<SurveyReportVO> getConstituencyWiseReportForDashBoard(List<Long> constituencyIds);
 	public SurveyDashBoardVO getCompletedLocationsDetails();
+	public List<SurveyReportVO> getBoothWiseDetails(Long constituencyId);
+
 }
