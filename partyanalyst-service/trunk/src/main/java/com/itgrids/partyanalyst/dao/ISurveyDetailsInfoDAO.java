@@ -201,6 +201,9 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	
 	public List<Object[]> getBoothWiseUserCollectedLocations(Long boothId , Long surveyUserId , Date todayDate , Date fromDate , Date toDate,String type);
 	
+	public List<Object[]> getConstituencyWiseCasteCollected();
+	public List<Object[]> getConstituenyWiseMobilesCollected();
+	
 
 
 }

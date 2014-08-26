@@ -2303,4 +2303,18 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		return query.list();
 	}
 	
+	public List<Object[]> getConstituencyWiseCasteCollected()
+	{
+		Query query = getSession().createQuery("select model.booth.constituency.constituencyId , model.booth.constituency.name , count(distinct model.voter.voterId) , count(distinct model.booth.boothId)  from SurveyDetailsInfo  model where model.caste is not null and model.surveyUser.surveyUserType.surveyUsertypeId = 1   group by model.booth.constituency.constituencyId");
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getConstituenyWiseMobilesCollected()
+	{
+		Query query = getSession().createQuery("select model.booth.constituency.constituencyId , count(model.mobileNumber) from SurveyDetailsInfo  model where model.mobileNumber is not null and model.mobileNumber != '' and model.mobileNumber != 'null' and  model.surveyUser.surveyUserType.surveyUsertypeId = 1 group by model.booth.constituency.constituencyId ");
+		
+		return query.list();
+	}
+	
 }

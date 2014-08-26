@@ -56,4 +56,8 @@ public interface ISurveyCallStatusDAO extends GenericDao<SurveyCallStatus,Long>{
 	
 	public List<Object[]>  getConstituencyWiseSummaryForWmDc();
 	public List<Object[]>  getConstituencyWiseSummaryForWmDV();
+	
+	public List<Object[]> getConstituencyWiseCasteUpdate();
+	public List<Object[]> getConstituencyWiseBoothsCount();
+	public List<Object[]> getConstituencyWiseMobilesUnMatched();
 }

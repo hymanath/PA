@@ -38,7 +38,7 @@ public class SurveyFinalDataDAO extends GenericDaoHibernate<SurveyFinalData, Lon
 	
 	public List<Object[]> getBoothWiseVoterDetails(Long boothId)
 	{
-		Query query = getSession().createQuery("select model.booth.boothId,model.voter.voterId,model.voter.voterIDCardNo,model.voter.name,model.voter.gender,model.voter.age " +
+		Query query = getSession().createQuery(" select model.booth.boothId,model.voter.voterId,model.voter.voterIDCardNo,model.voter.name,model.voter.gender,model.voter.age " +
 				" , model.voter.houseNo , model.mobileNo,model.isCadre , model.isInfluencingPeople , model.casteStateId , model.casteName ," +
 				" model.hamletId , model.hamletName , model.wardId,model.localArea ,model.voter.relativeName,model.surveyWmThirdPartyStatus.surveyWmThirdPartyStatusId,model.uuid,bpv.serialNo,model.comment " +
 				"from SurveyFinalData model,BoothPublicationVoter bpv where model.boothId = :boothId and bpv.booth.boothId = model.boothId and bpv.voter.voterId = model.voter.voterId ");

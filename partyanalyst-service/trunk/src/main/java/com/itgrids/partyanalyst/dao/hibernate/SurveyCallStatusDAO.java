@@ -428,7 +428,28 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 	
 	public List<Object[]>  getConstituencyWiseSummaryForWmDV()
 	{
-		Query query = getSession().createQuery(" select model.booth.constituency.constituencyId,count(distinct model.boothId), count(model.voterId) from SurveyCallStatus model where model.dvMatchedStatus is not null group by model.booth.constituency.constituencyId ");
+		Query query = getSession().createQuery(" select model.booth.constituency.constituencyId,count(distinct model.boothId), count(distinct model.voterId) from SurveyCallStatus model where model.dvMatchedStatus is not null group by model.booth.constituency.constituencyId ");
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getConstituencyWiseCasteUpdate()
+	{
+		Query query = getSession().createQuery("select model.booth.constituency.constituencyId,model.booth.constituency.name , count(distinct model.voterId) from SurveyCallStatus model where model.matchedStatus = 'N'  group by model.booth.constituency.constituencyId");
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getConstituencyWiseBoothsCount()
+	{
+		Query query = getSession().createQuery("select model.booth.constituency.constituencyId,count(distinct model.boothId)  from SurveyCallStatus model where model.matchedStatus is not null group by model.booth.constituency.constituencyId");
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getConstituencyWiseMobilesUnMatched()
+	{
+		Query query = getSession().createQuery("select model.booth.constituency.constituencyId,count(model.mobileNoStatus)  from SurveyCallStatus model where model.mobileNoStatus = 'N' group by model.booth.constituency.constituencyId ");
 		
 		return query.list();
 	}
