@@ -44,19 +44,10 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 		queryString.append("select distinct model.voter.voterId, model.mobileNoStatus, model.matchedStatus,model.casteState.casteStateId,model.hamletStatus,model.hamletId from SurveyCallStatus model" +
 				" where model.booth.boothId =:boothId ");
 		
-		
-		if(surveyUserId == null)
-		{
-			queryString.append("and model.surveyUser.surveyUserId is null ");
-		}
-		else if(surveyUserId != 0)
-		{
+		if(surveyUserId != 0)
 			queryString.append("and model.surveyUser.surveyUserId = :surveyUserId ");
-		}			
 		else
-		{
 			queryString.append("and model.surveyUser.surveyUserType.surveyUsertypeId = 1 ");
-		}
 			
 	/*		
 		Query query = getSession().createQuery("select distinct model.voter.voterId, model.mobileNoStatus, model.matchedStatus,model.casteState.casteStateId,model.hamletStatus,model.hamletId from SurveyCallStatus model" +
@@ -66,7 +57,7 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 		
 		query.setParameter("boothId", boothId);
 		
-		if(surveyUserId != null && surveyUserId != 0)
+		if(surveyUserId != 0)
 		 query.setParameter("surveyUserId", surveyUserId);
 		return query.list();		
 	}
@@ -462,4 +453,36 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 		
 		return query.list();
 	}
+	
+	
+	public List<Object[]> getDcBoothWiseCasteCollectedDetailsForConstituency(Long constituencyId)
+	{
+		Query query = getSession().createQuery("select count(distinct SCS.voter.voterId),SCS.booth.boothId,SCS.matchedStatus from SurveyCallStatus SCS " +
+				"where SCS.booth.constituency.constituencyId = :constituencyId group by SCS.booth.boothId, SCS.matchedStatus");
+		
+		query.setParameter("constituencyId", constituencyId);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getDcBoothWiseMobileCollectedDetailsForConstituency(Long constituencyId)
+	{
+		Query query = getSession().createQuery("select count(distinct SCS.voter.voterId),SCS.booth.boothId,SCS.mobileNoStatus from SurveyCallStatus SCS " +
+				"where SCS.booth.constituency.constituencyId = :constituencyId group by SCS.booth.boothId, SCS.mobileNoStatus");
+		
+		query.setParameter("constituencyId", constituencyId);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getDvBoothWiseCasteCollectewdDetailsForConstituency(Long constituencyId)
+	{
+		Query query = getSession().createQuery("select count(distinct SCS.voter.voterId),SCS.booth.boothId,SCS.dvMatchedStatus from " +
+				"SurveyCallStatus SCS where SCS.booth.constituency.constituencyId = :constituencyId group by SCS.booth.boothId,SCS.dvMatchedStatus");
+		
+		query.setParameter("constituencyId", constituencyId);
+		
+		return query.list();
+	}
+	
 }
