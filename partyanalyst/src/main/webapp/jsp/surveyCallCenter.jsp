@@ -319,6 +319,10 @@
 							<div class="row text-center m_top20" style="margin-right:51px;"><button type="button" class="btn btn-success" onClick="getSurveyUserLoctionCount();">SUBMIT</button>
 							
 							<button type="button" class="btn btn-success" id="excelTableID" onClick="generateExcel('SurveyUsertable1');" style="display:none;">Export To Excel</button>
+
+							
+								<a href="duplicateMobileNumbers.action"  class="btn btn-success pull-right">Duplicate Mobile Numbers Report</a>
+
 							</div>
 							<div id="basicCountDiv" class="span10 m_top20" style="overflow-x:scroll;width:847px;display:none;"></div>
 							<img src='images/Loading-data.gif' class="offset5"  id="reportDataImg" style="width:70px;height:60px;display:none;"/>
@@ -354,7 +358,7 @@
 									</div>
 									</div>
 									</div>
-						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getFinalReport()">SUBMIT</button>		
+						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getFinalReportForConstituency()">SUBMIT</button>		
 						
 						
 						<button type="button" class="btn btn-success" id="excelTableID1" onClick="generateExcel('daywisereportTableIdTemp');" style="display:none;">Export To Excel</button>
@@ -402,8 +406,8 @@
 							<button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getBoothsStatusDetailsOfConstituency();"> Get Report </button>
 							
 							<button type="button" class="btn btn-success" id="excelTab" onClick="generateExcel('matchedUnMatchedTable1');" style="display:none;">Export To Excel</button>
-							
-								<a href="duplicateMobileNumbers.action"  class="btn btn-success pull-right">Duplicate Mobile Numbers Report</a>
+
+							<a href="duplicateMobileNumbers.action"  class="btn btn-success pull-right">Duplicate Mobile Numbers Report</a>
 						</div>
 						<img src='images/Loading-data.gif' class="offset5 hide"  id="stateStatusAjax" style="width:70px;height:60px;"/>	</img>
 						<div class="row-fluid " id= "tableForMatchedAndUnMatched" style="margin-top:10px;overflow-x:scroll;"></div>		
@@ -698,7 +702,6 @@
 			  });
 			  $("#toDateForUserReport").datepicker("setDate", new Date());
 			  $("#fromDateForUserReport").datepicker("setDate", '14-07-2014');
-			  
 		});	
 
 		buildConstituency();
@@ -759,6 +762,106 @@ function buildConstituency()
 		});
 		 }
 	</script>
+	<script>
+function getFinalReportForConstituency()
+{
+	$('#dayWiseReportDiv1').html('');
+
+	var constituencyId = $('#constituencyIdForVerfication').val();
+	if(constituencyId == 0)
+	{
+	 $("#errorDivForVerification").html("<font color='#FF0000'>Please Select Constituency</font>");
+	 return;
+	}
+	 $("#errorDivForVerification").html("");
+	$('#mainajaximg').show();
+
+	$.ajax({
+		type:'GET',
+		url: 'getBoothWiseDetails.action',
+		dataType: 'json',
+		data: {constituencyId:$('#constituencyIdForVerfication').val()},
+		}).done(function(result){
+			buildTest(result);
+		});
+}
+function buildTest(result)
+{
+	var str = '';
+	str+='<table class="table table-bordered m_top20 table-hover table-striped" id="daywisereportTableIdTemp">';
+ 	 str+='<thead>';
+	 str+='<tr>';
+	  str+='<th>Booth No</th>';
+	  str+='<th>Total Voters</th>';
+	  str+='<th>DC Caste Mapped</th>';
+	  str+='<th>DC Caste Mapped % </th>';
+	  str+='<th>DC Hamlet Mapped</th>';
+	  str+='<th>DC Hamlet Mapped %</th>';
+	  str+='<th>DC Mobile Collected</th>';
+	  str+='<th>DC Mobile Collected %</th>';
+	  str+='<th>WM DC Total</th>';
+	  str+='<th>WM DC Caste Matched</th>';
+	  str+='<th>WM DC Caste UnMatched</th>';
+	  str+='<th>WM DC Caste Error %</th>';
+	  str+='<th>WM DC Mobile Matched</th>';
+	  str+='<th>WM DC Mobile UnMatched</th>';
+	  str+='<th>WM DC Mobile Error %</th>';
+	  str+='<th>Newly Collected Count</th>';
+	  str+='<th>DV Matched</th>';
+	  str+='<th>DV Matched %</th>';
+	  str+='<th>DV Unmatched</th>';
+	  str+='<th>DV Unmatched %</th>';
+	  str+='<th>DV Not Verified</th>';
+	  str+='<th>WM-DV Y</th>';
+	  str+='<th>WM-DV N</th>';
+	  str+='<th>WM-DV EMPTY</th>';
+	 str+='</tr>';
+	 str+='</thead>';
+	 str+='<tbody>';
+	 $.each(result,function(index,value){
+		 str+='<tr>';
+		  str+='<td>'+value.partNo+'</td>';
+		  str+='<td>'+value.totalVoters+'</td>';
+		  str+='<td>'+value.dcDetails.casteCount+'</td>';
+		  str+='<td>'+value.dcDetails.castePercent+'</td>';
+		  str+='<td>'+value.dcDetails.hamletCount+'</td>';
+		  str+='<td>'+value.dcDetails.hamletPercent+'</td>';
+		  str+='<td>'+value.dcDetails.mobileNUmbersCount+'</td>';
+		  str+='<td>'+value.dcDetails.mobilePercent+'</td>';
+          str+='<td>'+value.wmDcDetails.totalCount+'</td>';
+		  str+='<td>'+value.wmDcDetails.casteMatchedCount+'</td>';
+		  str+='<td>'+value.wmDcDetails.casteUnMatchedCount+'</td>';
+          str+='<td>'+value.wmDcDetails.castePercent+'</td>';
+		  str+='<td>'+value.wmDcDetails.mobileMatchedCount+'</td>';
+		  str+='<td>'+value.wmDcDetails.mobileUnmatchedCount+'</td>';
+		  str+='<td>'+value.wmDcDetails.mobilePercent+'</td>';
+		  str+='<td>'+value.wmDcDetails.newlyCollectedCount+'</td>';
+		  str+='<td>'+value.dvDetails.casteMatchedCount+'</td>';
+		  str+='<td>'+value.dvDetails.matchedPercent+'</td>';
+		  str+='<td>'+value.dvDetails.casteUnMatchedCount+'</td>';
+
+		   if(isNaN(value.dvDetails.unmatchedPercent))
+			   str+='<td>0.00</td>';
+		   else
+			   str+='<td>'+value.dvDetails.unmatchedPercent+'</td>';
+
+		  str+='<td>'+value.dvDetails.notIdentifiedCount+'</td>';
+		  str+='<td>'+value.dvDetails.casteMatchedCount+'</td>';
+		  str+='<td>'+value.dvDetails.casteUnMatchedCount+'</td>';
+		  str+='<td>'+value.dvDetails.emptyCount+'</td>';
+		 str+='</tr>';
+	 });
+	  
+	 str+='</tbody>';
+	str+='</table>';
+
+
+	$('#mainajaximg').hide();
+	$('#excelTableID1').show();
+	$('#dayWiseReportDiv1').html(str);
+	$('#daywisereportTableIdTemp').dataTable();
+}
+</script>
 	
  </body>
  </html> 

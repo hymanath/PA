@@ -239,5 +239,19 @@ public class SurveyCompletedDetailsAction extends ActionSupport implements Servl
 		return Action.SUCCESS;
 	}
 	
+	public String getBoothWiseDetails()
+	{
+		HttpSession session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		
+		if(user == null)
+		{
+			return Action.INPUT;
+		}
+		
+		resultList = surveyCompletedDetailsService.getBoothWiseDetails(constituencyId);
+		return Action.SUCCESS;
+	}
+	
 	
 }
