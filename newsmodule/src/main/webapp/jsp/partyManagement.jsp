@@ -217,7 +217,7 @@ var cosntiId =  '${userDetailsVO[0].constituencyId}';
 </c:forEach>
 </script><script>
 
-	getDeptsAndNewsTypes();
+	//getDeptsAndNewsTypes();
   
 	function getDeptsAndNewsTypes(){
 		getDepartments();
@@ -648,7 +648,7 @@ function createNewParty()
 				<ul class="nav nav-tabs" id="myTab">
 					
 					
-					<li class="active"><a data-toggle="tab" value="Upload News" style="cursor:pointer;color: #005580;" onclick="clearDivsForGallary();uploadNewsForPartyAndCandidate(null);getDeptsAndNewsTypes();" style="cursor:pointer;color: #005580;" > Upload News</a>	
+					<li class="active"><a data-toggle="tab" value="Upload News" style="cursor:pointer;color: #005580;" onclick="clearDivsForGallary();uploadNewsForPartyAndCandidate(null);" style="cursor:pointer;color: #005580;" > Upload News</a>	
 					</li>
 					
 					<li class="">
@@ -2898,7 +2898,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 		else
 		 str +='<legend class="boxHeading text-center">Adding Response To Selected News</legend> ';
 
-			str+='<div class="well" style="border:1px solid #ADC248;width: 905px; margin-left: -10px;padding:5px 15px 15px 15px;" >';
+			str+='<div class="well" style="border:1px solid #ADC248;width: 905px; margin-left: -10px;padding:5px 15px 95px 15px;" >';
 	str+='	<legend class="">&nbsp; Basic Information of News  </legend>';
 	str+='	<div class="row-fluid">       ';
 	str+='<div class="span6">';
@@ -2930,8 +2930,8 @@ function uploadNewsForPartyAndCandidate(fileId)
 		
 		str +='</div>';
 		
-		str +='<div>Departments : <select id="departmentsList"></select></div>';
-		str +='<div>NewsTypes : <select id="newsTypesList"></select></div>';
+		str +='<div class="span1" style="margin-top:10px;margin-right:40px;"><label><strong>Departments</strong></label></div><div class="span3" style="margin-right:55px;"> <select id="departmentsList"></select></div>';
+		str +='<div class="span2" style="margin-top:10px;"><label><strong>News Types<span class="requiredFont">*</span></strong></label></div><div class="span3" style="margin-left:-10px;"><select id="newsTypesList" ></select></div>';
 		
 		str +='<input type="hidden" id="departments0Hidden" name="candidatePartyNewsVOList.departmentsList" />';
         str +='<input type="hidden" id="newsTypes0Hidden" name="candidatePartyNewsVOList.newsTypesList" />';	
@@ -3127,7 +3127,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 
 	 getBenefitList();
 	 getPartiesList("partiesList","partiesListForWhome");
-	 
+	 getDeptsAndNewsTypes();
 
 $("#keywordId").autoSuggest("getKeyWordsBySearchCriteria.action", {minChars: 4,selectedItemProp: "name", searchObjProps: "name"});
 

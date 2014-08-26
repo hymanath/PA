@@ -440,7 +440,7 @@ $(".destinationCandidateCloseImg").live("click",function(){
 		<div class="span12"> 
 		 <legend class="boxHeading text-center">Edit Selected News</legend> 
 
-		<div class="well" style="border:1px solid #ADC248;width: 905px; margin-left: -10px;padding:5px 15px 15px 15px;" >
+		<div class="well" style="border:1px solid #ADC248;width: 905px; margin-left: -10px;padding:5px 15px 95px 15px;" >
 			<legend class="">&nbsp; Basic Information of News  </legend>
 				<div class="row-fluid">       
 						<div class="span6">
@@ -508,9 +508,20 @@ $(".destinationCandidateCloseImg").live("click",function(){
 					
 				</div>
 				
-				 NewsTypes <s:select name="candidatePartyNewsVOList.newsTypesList"  id="newsTypesId" list="news.newsTypesList" theme="simple" listKey="id" listValue="name" value="news.selNewsTypesList" multiple="true"/>
+				<div class="span1" style="margin-right:20px;">
+					<label><strong>NewsTypes</strong><span class="requiredFont">*</span></label>
+				</div>
+				
+				<div class="span3" style="margin-right:55px;"> <s:select name="candidatePartyNewsVOList.newsTypesList"  id="newsTypesId" list="news.newsTypesList" theme="simple" listKey="id" listValue="name" value="news.selNewsTypesList" multiple="true"/>
+				</div>
 				 
-				 Departments <s:select name="candidatePartyNewsVOList.departmentsList"  id="departmentsId" list="news.departmentsList" theme="simple" listKey="id" listValue="name" value="news.selDeptsList" multiple="true"/>
+				<div class="span1"  style="margin-right:20px;">
+					<label><strong>Departments</strong></label>
+				</div>
+				
+				<div class="span3" >
+					<s:select name="candidatePartyNewsVOList.departmentsList"  id="departmentsId" list="news.departmentsList" theme="simple" listKey="id" listValue="name" value="news.selDeptsList" multiple="true"/>
+				</div>
 				 
 				<!--<input type="hidden" id="departments0Hidden" name="candidatePartyNewsVOList.destinationVOList[0].departmentsList" />
 				<input type="hidden" id="newsTypes0Hidden" name="candidatePartyNewsVOList.destinationVOList[0].newsTypesList" />	-->
@@ -982,6 +993,26 @@ $(".destinationCandidateCloseImg").live("click",function(){
 			 
 $("#newsimportance").val('${news.newsimportance}');
 uploadNewsForPartyAndCandidate(19);
+
+			$('#newsTypesId').multiselect({	
+					multiple: true,
+					selectedList: 0,
+					hide: "explode"	,
+					noneSelectedText:"Select NewsType"
+			}).multiselectfilter({
+				header:"Select NewsType"    
+			});
+			
+			
+			
+			$('#departmentsId').multiselect({	
+					multiple: true,
+					selectedList: 0,
+					hide: "explode",
+					noneSelectedText:"Select Department"					
+			}).multiselectfilter({
+				header:"Select NewsType"    
+			});
 
 function uploadNewsForPartyAndCandidate(fileId)
 {
