@@ -279,7 +279,7 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 		try
 		{
 			jObj = new JSONObject(getTask());
-			boothWiseUserLocations = ctpDashBoardService.getUserWiseCollecetionDetails(jObj.getLong("boothId"),jObj.getLong("surveyUserId"),jObj.getString("fromDate"),jObj.getString("toDate"));
+			boothWiseUserLocations = ctpDashBoardService.getUserWiseCollecetionDetails(jObj.getLong("boothId"),jObj.getLong("surveyUserId"),jObj.getString("fromDate"),jObj.getString("toDate"),jObj.getString("type"));
 		} 
 		catch (Exception e) 
 		{

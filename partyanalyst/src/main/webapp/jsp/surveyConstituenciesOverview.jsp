@@ -205,7 +205,8 @@ function buildTeamConstituencyWiseDetailsSummary(result,strTypr,stateId,fromDate
 	str += '<tr>';
 	str += '<th>Constituency</th>';
 	str += '<th>Booths</th>';
-	str += '<th>Voters</th>';
+	str += '<th>CollectedVoters</th>';
+	str += '<th>Map</th>';
 	str += '</tr>';
 	str += '</thead>';
 	str += '<tbody>';
@@ -215,6 +216,7 @@ function buildTeamConstituencyWiseDetailsSummary(result,strTypr,stateId,fromDate
 		str += '<td><a style="cursor: pointer;" onClick="getBoothWiseTeamCollecetdDetails('+result[i].dcVotersCount+',\''+strTypr+'\','+stateId+',\''+result[i].dcPercentage+'\')">'+result[i].dcPercentage+'</a></td>';
 		str += '<td>'+result[i].qcVotersCount+'</td>';
 		str += '<td>'+result[i].verifierVotersCount+'</td>';
+		str += '<td><a onClick="getUserCollectedLocations('+result[i].dcVotersCount+',0,null,\''+result[i].dcPercentage+'\',\'constituency\')"><img src="images/DC.png" style="height:30px;"></img></a></td>';
 		str += '</tr>';
 	}
 	str += '</tbody>';
@@ -409,6 +411,7 @@ function buildBoothWiseTeamCollecetedDetails(result,name)
 	str += '<th>Survey User</th>';
 	str += '<th>Mobile No</th>';
 	str += '<th>Voters</th>';
+	str += '<th>Map</th>';
 	str += '</tr>';
 	str += '</thead>';
 	str += '<tbody>';
@@ -416,9 +419,10 @@ function buildBoothWiseTeamCollecetedDetails(result,name)
 	{
 		str += '<tr>';
 		str += '<td>'+result[i].dcPercentage+'</td>';
-		str += '<td><a onClick="getUserCollectedLocations('+result[i].dcVotersCount+','+result[i].verifierVotersCount+',\''+result[i].dcPercentage+'\',\''+name+'\')">'+result[i].qcPercentage+'</a></td>';
+		str += '<td>'+result[i].qcPercentage+'</td>';
 		str += '<td>'+result[i].verifierPercentage+'</td>';
 		str += '<td>'+result[i].qcVotersCount+'</td>';
+		str += '<td><a style="cursor: pointer;" onClick="getUserCollectedLocations('+result[i].dcVotersCount+','+result[i].verifierVotersCount+',\''+result[i].dcPercentage+'\',\''+name+'\',\'booth\')"><img src="images/DC.png" style="height:30px;"></img></a></td>';
 		str += '</tr>';
 	}
 	str += '</tbody>';
@@ -463,6 +467,7 @@ function buildTeamConstituencyWiseSummary(result,strTypr,stateId,fromDate,toDate
 	str += '<th>Constituency</th>';
 	str += '<th>Booths</th>';
 	str += '<th>Users</th>';
+	str += '<th>Map</th>';
 	str += '</tr>';
 	str += '</thead>';
 	str += '<tbody>';
@@ -472,6 +477,7 @@ function buildTeamConstituencyWiseSummary(result,strTypr,stateId,fromDate,toDate
 		str += '<td><a style="cursor: pointer;" onClick="getBoothWiseTeamDetails('+result[i].qcVotersCount+',\''+strTypr+'\','+stateId+',\''+result[i].dcPercentage+'\')">'+result[i].dcPercentage+'</a></td>';
 		str += '<td>'+result[i].dcBoothsCount+'</td>';
 		str += '<td>'+result[i].dcConstituencysCount+'</td>';
+		str += '<td><a onClick="getUserCollectedLocations('+result[i].qcVotersCount+',0,null,\''+result[i].dcPercentage+'\',\'constituency\')"><img src="images/DC.png" style="height:30px;"></img></a></td>';
 		str += '</tr>';
 	}
 	str += '</tbody>';
@@ -524,7 +530,8 @@ function buildBoothWiseTeamDetails(result,name)
 	str += '<th>Booth</th>';
 	str += '<th>Survey User</th>';
 	str += '<th>Mobile No</th>';
-	str += '<th>Total Voters</th>';
+	str += '<th>Collected Voters</th>';
+	str += '<th>Map</th>';
 	str += '</tr>';
 	str += '</thead>';
 	str += '<tbody>';
@@ -532,9 +539,10 @@ function buildBoothWiseTeamDetails(result,name)
 	{
 		str += '<tr>';
 		str += '<td>'+result[i].dcPercentage+'</td>';
-		str += '<td><a style="cursor: pointer;" onClick="getUserCollectedLocations('+result[i].dcVotersCount+','+result[i].verifierVotersCount+',\''+result[i].dcPercentage+'\',\''+name+'\')">'+result[i].qcPercentage+'</a></td>';
+		str += '<td>'+result[i].qcPercentage+'</td>';
 		str += '<td>'+result[i].verifierPercentage+'</td>';
 		str += '<td>'+result[i].qcVotersCount+'</td>';
+		str += '<td><a style="cursor: pointer;" onClick="getUserCollectedLocations('+result[i].dcVotersCount+','+result[i].verifierVotersCount+',\''+result[i].dcPercentage+'\',\''+name+'\',\'booth\')"><img src="images/DC.png" style="height:30px;"></img></a></td>';
 		str += '</tr>';
 	}
 	str += '</tbody>';
@@ -774,7 +782,7 @@ function buildBoothWiseVerifiedCasteCollectedDetails(result,boothNo)
 }
 
 
-function getUserCollectedLocations(boothId , surveyUserId,boothNo,constituency)
+function getUserCollectedLocations(boothId , surveyUserId,boothNo,constituency,type)
 {	
 	$('#mapDiv').show();
 	$('#mapAhax').show();
@@ -785,7 +793,8 @@ function getUserCollectedLocations(boothId , surveyUserId,boothNo,constituency)
 		boothId : boothId,
 		surveyUserId : surveyUserId,
 		fromDate : fromDate,
-		toDate : toDate
+		toDate : toDate,
+		type : type
 	}
 	$.ajax({
 			type:'GET',
@@ -795,7 +804,7 @@ function getUserCollectedLocations(boothId , surveyUserId,boothNo,constituency)
 		 }).done(function(result){	
 			if(result != null)
 			{
-				buildUserLocationDetails(result,boothNo,constituency);
+				buildUserLocationDetails(result,boothNo,constituency,type);
 			}
 		});	
 }
@@ -805,14 +814,23 @@ var campus = {
 "features": []
 }
 var polyline = '';
-function buildUserLocationDetails(result,boothNo,constituency)
+function buildUserLocationDetails(result,boothNo,constituency,type)
 {
 
 	$('#weathermap').html('');
 	$('html, body').animate({
         scrollTop: $("#weathermap").offset().top
     }, 2000);
-	document.getElementById('weathermap').innerHTML = "<h4>"+constituency+" Constituency Booth - "+boothNo+" Caste Collected Locations</h4><div class='span12 m_top20 widgetservey' id='map' style='height:500px'></div>";
+	var headStr = '';
+	if(type == '')
+	{
+		headStr = " "+constituency+" Constituency Booth - "+boothNo+" Caste Collected Locations";
+	}
+	else
+	{
+		headStr = " "+constituency+" Constituency  Caste Collected Locations";
+	}
+	document.getElementById('weathermap').innerHTML = "<h4>"+headStr+"</h4><div class='span12 m_top20 widgetservey' id='map' style='height:500px'></div>";
 	
 	$.each(result,function(index,value){
 	if(value.desc != null && value.name != null)
@@ -825,8 +843,16 @@ function buildUserLocationDetails(result,boothNo,constituency)
 		campus.features.push(voterDetails);
 	}
 	});
-	
-	var map = new L.Map('map').setView(new L.LatLng(result[0].desc,result[0].name), 15);
+	var zoomSize = '';
+	if(type == 'booth')
+	{
+		zoomSize = 15;
+	}
+	else
+	{
+		zoomSize = 10;
+	}
+	var map = new L.Map('map').setView(new L.LatLng(result[0].desc,result[0].name), zoomSize);
 	var osm = new L.TileLayer('http://{s}.tile.osmosnimki.ru/kosmo/{z}/{x}/{y}.png');
 	var mpn = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
 	var qst = new L.TileLayer('http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png', {attribution:'Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">'}).addTo(map);
