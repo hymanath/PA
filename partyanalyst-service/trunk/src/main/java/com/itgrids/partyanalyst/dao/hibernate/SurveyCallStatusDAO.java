@@ -44,10 +44,19 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 		queryString.append("select distinct model.voter.voterId, model.mobileNoStatus, model.matchedStatus,model.casteState.casteStateId,model.hamletStatus,model.hamletId from SurveyCallStatus model" +
 				" where model.booth.boothId =:boothId ");
 		
-		if(surveyUserId != 0)
+		
+		if(surveyUserId == null)
+		{
+			queryString.append("and model.surveyUser.surveyUserId is null ");
+		}
+		else if(surveyUserId != 0)
+		{
 			queryString.append("and model.surveyUser.surveyUserId = :surveyUserId ");
+		}			
 		else
+		{
 			queryString.append("and model.surveyUser.surveyUserType.surveyUsertypeId = 1 ");
+		}
 			
 	/*		
 		Query query = getSession().createQuery("select distinct model.voter.voterId, model.mobileNoStatus, model.matchedStatus,model.casteState.casteStateId,model.hamletStatus,model.hamletId from SurveyCallStatus model" +
@@ -57,7 +66,7 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 		
 		query.setParameter("boothId", boothId);
 		
-		if(surveyUserId != 0)
+		if(surveyUserId != null && surveyUserId != 0)
 		 query.setParameter("surveyUserId", surveyUserId);
 		return query.list();		
 	}
