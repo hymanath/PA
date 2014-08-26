@@ -50,12 +50,9 @@ public class SurveyReportVO {
 	private String name;
     private String comment;
 	
-	public String getComment() {
-		return comment;
-	}
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
+    private Long dcWardId;
+    private Long dvWardId;
+	
 	private Long readyForReviewCount = 0L;
 	
 	private Long casteMatchedCount = 0l;
@@ -124,8 +121,28 @@ public class SurveyReportVO {
 	private boolean forThirdParty;
 	
 	private Long statusId;
+	private Long wardId;
+	private String wardName ; 
+		
 	
-	
+	public Long getWardId() {
+		return wardId;
+	}
+	public void setWardId(Long wardId) {
+		this.wardId = wardId;
+	}
+	public String getWardName() {
+		return wardName;
+	}
+	public void setWardName(String wardName) {
+		this.wardName = wardName;
+	}
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
 	public Long getStatusId() {
 		return statusId;
 	}
@@ -689,5 +706,18 @@ public class SurveyReportVO {
 	public void setReadyForReviewCount(Long readyForReviewCount) {
 		this.readyForReviewCount = readyForReviewCount;
 	}
+	public Long getDcWardId() {
+		return dcWardId;
+	}
+	public void setDcWardId(Long dcWardId) {
+		this.dcWardId = dcWardId;
+	}
+	public Long getDvWardId() {
+		return dvWardId;
+	}
+	public void setDvWardId(Long dvWardId) {
+		this.dvWardId = dvWardId;
+	}
+	
 	
 }
