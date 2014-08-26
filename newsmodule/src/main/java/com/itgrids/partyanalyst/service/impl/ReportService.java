@@ -41,6 +41,7 @@ import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IReportService;
 
 
+
 public class ReportService implements IReportService {
 	
 	private IReportFilesDAO reportFilesDAO;
@@ -219,6 +220,7 @@ public class ReportService implements IReportService {
 	 try{
 		 List<Object[]> stateLvlNews = null;
 		 List<Object[]> districtLvlNews = null;
+		 List<Object[]> nationalLevelNews = null;
 		 if(key == null || key.trim().length() == 0){
 		   Long count = newsReportDAO.checkValidUserForReport(userId, reportId);
 		   if(count > 0){
@@ -226,6 +228,8 @@ public class ReportService implements IReportService {
 			   stateLvlNews = reportFilesDAO.getStateLvlReportDetails(reportId, userId);
 			 //0fileId 1fileTitle,2fileDesc,3newsdesc,4scopid,5locval,6distid,7distName,8scopeType,9fontId,10descFontId,11fileDate,12userAddId 
 			   districtLvlNews = reportFilesDAO.getOtherLvlReportDetails(reportId, userId);
+			   nationalLevelNews = reportFilesDAO.getNationalAndInterNationalLvlReportDetails(reportId, userId);
+			   
 		   }else{
 			   returnVo.setName("Invalid User");
 		   }
@@ -234,13 +238,14 @@ public class ReportService implements IReportService {
 			 if(count > 0){
 			   stateLvlNews = reportFilesDAO.getStateLvlReportDetailsByKey(reportId, key);
 			   districtLvlNews = reportFilesDAO.getOtherLvlReportDetailsByKey(reportId,key);
+			   nationalLevelNews = reportFilesDAO.getNationalAndInterNationalLvlReportDetailsByKey(reportId,key);
 			   newsReportDAO.updateKey(key);
 			 }else{
 				 returnVo.setName("Invalid Key");
 				 return returnVo;
 			 }
 		 }
-		if((stateLvlNews == null || stateLvlNews.size() == 0) && (districtLvlNews == null || districtLvlNews.size() == 0)){
+		if((stateLvlNews == null || stateLvlNews.size() == 0) && (districtLvlNews == null || districtLvlNews.size() == 0) && (nationalLevelNews == null || nationalLevelNews.size() == 0)){
 			returnVo.setName("All Newses Deleted");
 			 return returnVo;
 		}
@@ -320,6 +325,42 @@ public class ReportService implements IReportService {
 				vo.getFileVOList().add(file);
 			}
 			returnVo.setFileVOList(new ArrayList<FileVO>(distLvlList.values()));//setting all news in all districts
+		}
+		
+		
+		if(nationalLevelNews != null && nationalLevelNews.size() > 0){
+			List<FileVO> nationalLevelList = new ArrayList<FileVO>();
+			for(Object[] news:nationalLevelNews){
+				
+				file = new FileVO();
+				newsMap.put((Long)news[0], file);
+				file.setFileId((Long)news[0]);
+				Date date= null;
+				    String newDate =null;
+			        if(news[5] != null)//fileDate
+				    {
+				      date= (Date)news[5];
+				      SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+                      newDate = formatter.format(date);
+				    }
+			    file.setFileDate(newDate != null ? newDate : "");
+				file.setTitle(news[1] != null?StringEscapeUtils.unescapeJava(news[1].toString()):"");
+				file.setDescription(news[2] != null?StringEscapeUtils.unescapeJava(news[2].toString()):"");
+				//file.setNewsDescription(news[3] != null?StringEscapeUtils.unescapeJava(news[3].toString()):"");
+				//file.setLocationId((Long)news[4]);
+				//file.setLocationVal((Long)news[5]);
+				if((Long)news[6] == 10)
+				file.setScope("National");
+				else
+				file.setScope("InterNational");
+				
+				if(news[3] != null)
+				  file.setEenadu(true);
+				if(news[4] != null)
+					  file.setDescEenadu(true);
+				nationalLevelList.add(file);
+			}
+			returnVo.setNationalList(nationalLevelList);//setting state level news
 		}
 		
 		List<Object[]> SourceIds = fileSourceLanguageDAO.getFileSourceByFileIds(newsMap.keySet());
@@ -515,9 +556,48 @@ public class ReportService implements IReportService {
 						fileVO.setCandidateName((candidateNames.get(fileVO.getFileId())).substring(0,(candidateNames.get(fileVO.getFileId())).length()-2));
 					else
 						fileVO.setCandidateName("");
+				} 
+		}
+		if(nationalLevelNews != null && nationalLevelNews.size() > 0)
+		{
+			if(returnVo.getNationalList()!=null && returnVo.getNationalList().size()>0)
+				for(FileVO fileVO :returnVo.getNationalList())
+				{
+					List<String> keyWordsList = fileSourceMap.get(fileVO.getFileId());
+					fileVO.setKeyWordsList(keyWordsList);
+					String str1="";
+					if(keyWordsList != null && keyWordsList.size() > 0){
+						for(String sourceVal:keyWordsList){
+						  int n = sourceVal.indexOf("(");
+						  if(n > 0){
+							  String sourceVal1 = sourceVal.substring(0,n);
+						      int n1=sourceVal.lastIndexOf(")");
+						      if(n1 > 0){
+							      String sourceVal3=sourceVal.substring(n,n1+1);
+							      sourceVal3 = sourceVal3.replace(")("," & ");
+							      if(sourceVal1.length()>0 && sourceVal3.length()>0){
+							       str1 = str1+"<span class='btn btn-small'><span>"+sourceVal1+ "</span>"+sourceVal3+ "</span>";
+							      }else{
+							       str1 = str1+"<span class='btn btn-small'><span>"+sourceVal+ "</span></span>";
+								  }
+						      }
+						      else{
+						    	  str1 = str1+"<span class='btn btn-small'><span>"+sourceVal+ "</span></span>";
+						      }
+						  }
+						  else{
+							  str1 = str1+"<span class='btn btn-small'><span>"+sourceVal+ "</span></span>";
+					      }
+						}	
+					}
+					fileVO.setNames(str1);
+					//for candidateNames
+					if(name != null && name.length() > 0 && candidateNames.get(fileVO.getFileId()) != null)
+						fileVO.setCandidateName((candidateNames.get(fileVO.getFileId())).substring(0,(candidateNames.get(fileVO.getFileId())).length()-2));
+					else
+						fileVO.setCandidateName("");
 				}
 		}
-		
 	 }catch(Exception e){
 		 LOG.error("Exception rised in getReportData ",e);
 	 }
@@ -749,6 +829,17 @@ public class ReportService implements IReportService {
 		    	}
 		    	boothMap.put(constituency.getConstituencyId(), resultStr);
 		    }
+		    else if(scope == 10L)
+		    {
+		    	
+		    	 locations.add("National");
+		    }
+		    else if(scope == 11L)
+		    {
+		    	
+		    	 locations.add("International");
+		    }
+		  
 		  
 		 }
 	   }

@@ -1626,6 +1626,7 @@ function getLocations(id,index){
    $("#showScopeSubs"+index).html(str);
    getStatesForSpecialPage(index);
   }
+
   else if(id==3)
   {
    
@@ -1805,6 +1806,21 @@ function getLocations(id,index){
     
    getStatesForSpecialPage(index);
   }
+   else if(id==10 || id==11)
+  {
+
+   str += '<div class="span2">';
+  
+   if(index == 0){
+	str +='<span style="display:none">changeDel</span>';
+	}else{
+	str +='<a href="javascript:{};" onclick="removeThisLocation(\'deleteMultiLoc'+index+'\')" title="Click here to remove this location" class="icon-trash delStyle"></a>';
+   }
+   str +='</div>';
+   $("#showScopeSubs"+index).html(str);
+ 
+  }
+
   // setTimeout("setStateId();",1000);
 
 }

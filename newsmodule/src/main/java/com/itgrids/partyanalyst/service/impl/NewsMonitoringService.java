@@ -6066,7 +6066,9 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 				newsAreaDetails = new ArrayList<SelectOptionVO>();
 				for (Object[] param : fileaddresList) {
 					Long scopeId = Long.valueOf(param[0].toString());
-					Long scopeValue = Long.valueOf(param[1].toString());
+					Long scopeValue =0l;
+					if(param[1] != null)
+					scopeValue = Long.valueOf(param[1].toString());
 					Long constituencyId = (Long)param[2];
 					String locationName =null;
 					String locationId = null;
@@ -6143,6 +6145,12 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 							Booth booth = boothDAO.get(scopeValue);
 							locationName = "Booth - "+booth.getPartNo()+" ("+booth.getLocation()+")";
 							locationId = booth.getBoothId().toString();
+						break;
+					case 10:
+						locationName = "National";
+						break;
+					case 11 :
+						locationName = "International";
 						break;
 					default:
 						break;

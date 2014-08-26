@@ -14,7 +14,7 @@ public class FileVO extends ResultStatus implements Serializable {
 	private List<String> fileName = new ArrayList<String>();
 	private List<String> fileTitle;
 	private List<String> fileDescription;
-	private List<FileVO> fileVOList;
+	private List<FileVO> fileVOList,nationalList;
 	private Long fileTypeId,gallaryId;
 	private Long fileId;
 	private Long problemFileId;
@@ -1464,6 +1464,14 @@ public class FileVO extends ResultStatus implements Serializable {
 
 	public void setActualConstiId(Long actualConstiId) {
 		this.actualConstiId = actualConstiId;
+	}
+
+	public List<FileVO> getNationalList() {
+		return nationalList;
+	}
+
+	public void setNationalList(List<FileVO> nationalList) {
+		this.nationalList = nationalList;
 	}
 
 	

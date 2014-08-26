@@ -89,5 +89,24 @@ public class ReportFilesDAO extends GenericDaoHibernate<ReportFiles, Long> imple
 		 return query.executeUpdate();
 		 
 	 }
-	
+	public List<Object[]> getNationalAndInterNationalLvlReportDetails(Long newsReportId,Long userId){
+		
+		Query query = getSession().createQuery("select distinct rf.file.fileId,rf.file.fileTitle,rf.file.fileDescription," +
+				" rf.file.font.fontId,rf.file.descFont.fontId,rf.file.fileDate,ua.regionScopes.regionScopesId from ReportFiles rf,UserAddress ua " +
+				" where rf.newsReport.newsReportId = :newsReportId  and rf.newsReport.user.userId = :userId and rf.file.fileId = ua.file.fileId and ua.regionScopes.regionScopesId in(10,11) and rf.file.isDeleted != 'Y'");
+		query.setParameter("newsReportId", newsReportId);
+		query.setParameter("userId", userId);
+		
+		return query.list();
+	}
+    public List<Object[]> getNationalAndInterNationalLvlReportDetailsByKey(Long newsReportId,String key){
+		
+    	Query query = getSession().createQuery("select distinct rf.file.fileId,rf.file.fileTitle,rf.file.fileDescription," +
+				" rf.file.font.fontId,rf.file.descFont.fontId,rf.file.fileDate,ua.regionScopes.regionScopesId from ReportFiles rf,UserAddress ua " +
+				" where  rf.newsReport.reportKey = :key and rf.file.fileId = ua.file.fileId and ua.regionScopes.regionScopesId in(10,11) and rf.file.isDeleted != 'Y'");
+		
+		query.setParameter("key", key);
+		
+		return query.list();
+	}
 }
