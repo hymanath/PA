@@ -211,6 +211,49 @@ line-height: 1;
   else{
 	  str+='<h5 style="text-align:center;font-weight:bold;font-size:16px;border-bottom:1px solid #333"><div>'+myResults.gallaryName+'</div>';
 		  str+='<div>'+myResults.gallaryDescription+'</div><br/></h5>';
+		  <!-- start -->
+		  if(myResults.nationalList != null  && myResults.nationalList.length > 0){
+		str+='<div class="btn btn-block" style="margin-bottom: 8px;"><b> NATIONAL/INTER NATIONAL</b></div>';
+		 for( var i in myResults.nationalList){
+			  str+='<div class="row-fluid"><div class="span12 well"><div class="media"><div class="media-body"><hgroup>';
+			  if(myResults.nationalList[i].eenadu){
+				str+='<p class="enadu">'+myResults.nationalList[i].title+'</p>';
+			  }else{
+				str+='<h4 class="media-heading fontclass">'+myResults.nationalList[i].title+'</h4>';
+			  }	
+	
+	var str1="";
+	if(myResults.nationalList[i].keyWordsList != null)
+	for(var k=0;k<myResults.nationalList[i].keyWordsList.length;k++){
+	    var sourceVal = myResults.nationalList[i].keyWordsList[k];
+		var n=sourceVal.indexOf("(");
+		var sourceVal1 = sourceVal.substring(0,n);
+		var n1=sourceVal.lastIndexOf(")");
+		var sourceVal3=sourceVal.substring(n,n1+1);
+		sourceVal3 = sourceVal3.replace(')(',' & ');
+		if(sourceVal1 != "" && sourceVal3 != "")
+		str1+='<span class="btn btn-small"><span class="">'+sourceVal1+ '</span>&nbsp;'+sourceVal3+ '</span>&nbsp;&nbsp;';
+		else
+		str1+='<span class="btn btn-small"><span class="">'+sourceVal+ '</span>&nbsp;</span>&nbsp;&nbsp;';
+	}
+			  
+				if(myResults.nationalList[i].keyWordsList != null)
+				str+='<h5 style="border-bottom:1px solid #333"><i>'+myResults.nationalList[i].scope+'</i><span class="pull-right">'+str1+'<span></h5>';
+				else{
+					str+='<h5 style="border-bottom:1px solid #333"> <i>'+myResults.nationalList[i].locationName+'</i></h5>';
+				}
+				str+='</hgroup>';
+              str+='<div>'+myResults.nationalList[i].fileDate+'</div>';
+			  if(myResults.nationalList[i].descEenadu){
+				 str+='<p class="enadu">'+myResults.nationalList[i].description+'</p>';	
+			  }else{
+					str+='<p class="fontclass">'+myResults.nationalList[i].description+'</p>';
+			  }
+			  if(myResults.nationalList[i].candidateName!=null && myResults.nationalList[i].candidateName.trim().length > 0)
+			  str+='<span class=""><span class="" >Candidate Name(s):</span>&nbsp;&nbsp;'+myResults.nationalList[i].candidateName+'</span>';
+			  str+='</div></div></div></div>';
+		 }
+		 <!-- end -->
 	  if(myResults.mainArticalsList != null  && myResults.mainArticalsList.length > 0){
 		str+='<div class="btn btn-block" style="margin-bottom: 8px;"><b>ANDHRA PRADESH STATE</b></div>';
 		 for( var i in myResults.mainArticalsList){
@@ -252,6 +295,14 @@ line-height: 1;
 			  str+='<span class=""><span class="" >Candidate Name(s):</span>&nbsp;&nbsp;'+myResults.mainArticalsList[i].candidateName+'</span>';
 			  str+='</div></div></div></div>';
 		 }
+		 
+		}
+		 
+		 
+		 
+		 
+		 
+		 
 		
 	}
 	if(myResults.fileVOList != null  && myResults.fileVOList.length > 0){

@@ -5235,6 +5235,16 @@ function getLocationsForEdit(id,index){
     
    getStatesForSpecialPageForEdit(index);
   }
+  else if(id==10 || id==11)
+  {
+
+   str += '<div class="span2" style="margin-left:15px;">';
+  
+   str +='</div>';
+
+   $("#showScopeSubs"+index+"").html(str);
+   
+  }
  }
 
 function buildResultsForEdit(results,jsObj){

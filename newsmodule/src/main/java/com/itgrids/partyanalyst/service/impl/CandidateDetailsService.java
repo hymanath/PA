@@ -953,11 +953,17 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			List<Long> constituencyIds = fileVO.getSelectedConstituId();
 			for(int i = 0;i<fileVO.getUploadPartyGalleryId().size();i++){
 				Long scopeId = fileVO.getUploadPartyGalleryId().get(i);
-				Long locationValue = fileVO.getUploadCandidateGalleryId().get(i);
+				Long locationValue = null;
+				if(fileVO.getUploadCandidateGalleryId() != null)
+				 locationValue = fileVO.getUploadCandidateGalleryId().get(i);
+				
 				Long constituencyId = null;
 				if(constituencyIds != null && i<constituencyIds.size())
 					constituencyId = constituencyIds.get(i);
-				if(scopeId != null && locationValue != null){
+				 if(scopeId != null &&(scopeId == 10l || scopeId == 11l))
+						 locationValue = 0l;
+				
+				 if(scopeId != null && locationValue != null){
 					Long mandalId=null;
 					if(fileVO.getUploadSPGalleryId() != null && i<fileVO.getUploadSPGalleryId().size()){
 						mandalId = fileVO.getUploadSPGalleryId().get(i);
@@ -1705,6 +1711,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		 userAddress.setCountry(countryDAO.get(1L));
 		 userAddress.setFile(file);
 		 userAddress.setRegionScopes(regionScopesDAO.get(locationId));
+		
 		 //userAddress.setLocationValue(locationValue);
 		 if(locationId.longValue() == 5l || locationId.longValue() == 6l || locationId.longValue() == 8l ){
 			 userAddress.setLocationValue(Long.parseLong(locationValue.toString().substring(1)));			
@@ -1714,6 +1721,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				userAddress.setLocationValue(localEleBodyId);				
 			}
 			else{
+				
 				userAddress.setLocationValue(locationValue);
 			}
 		if(locationId == 2L)
@@ -9577,7 +9585,10 @@ public ResultStatus editUploadedFileForCandidateParty(final FileVO fileVO)
 				Long scopeId = fileScopes.getLocationScope()!= null ?fileScopes.getLocationScope():0L;
 				Long locationValue = Long.valueOf(fileScopes.getLocationValue() != null ?fileScopes.getLocationValue():"0");
 				Long constituencyId = fileScopes.getActualConstiId();
-				if(scopeId != null && locationValue != null && scopeId != 0 && locationValue != 0){
+				if(scopeId != null &&(scopeId == 10l || scopeId == 11l))
+						 locationValue = 0l;
+				 
+				if(scopeId != null && locationValue != null && scopeId != 0){
 				      saveFileLocationInUserAddress(scopeId,locationValue,fileScopes.getLocation(),file,constituencyId);
 				}
 			   }
