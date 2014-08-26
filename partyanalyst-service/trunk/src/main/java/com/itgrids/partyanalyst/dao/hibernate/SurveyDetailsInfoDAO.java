@@ -2250,14 +2250,25 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		return query.list();
 	}
 	
-	public List<Object[]> getBoothWiseUserCollectedLocations(Long boothId , Long surveyUserId , Date todayDate , Date fromDate , Date toDate)
+	public List<Object[]> getBoothWiseUserCollectedLocations(Long boothId , Long surveyUserId , Date todayDate , Date fromDate , Date toDate,String type)
 	{
 		StringBuffer queryString = new StringBuffer();
 		queryString.append(" select distinct model.longitude , model.latitude from SurveyDetailsInfo  model where model.caste is not null");
-		if(boothId != null)
+		if(type.equalsIgnoreCase("booth"))
 		{
-			queryString.append(" and model.booth.boothId = :boothId ");
+			if(boothId != null)
+			{
+				queryString.append(" and model.booth.boothId = :boothId ");
+			}
 		}
+		else
+		{
+			if(boothId != null)
+			{
+				queryString.append(" and model.booth.constituency.constituencyId = :boothId ");
+			}
+		}
+		
 		
 		if(surveyUserId != null)
 		{

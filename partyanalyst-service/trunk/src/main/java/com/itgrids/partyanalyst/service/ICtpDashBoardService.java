@@ -32,7 +32,7 @@ public interface ICtpDashBoardService
 	
 	public List<BigPictureVO> buildConstituencyWiseSummaryReport();
 	
-	public List<GenericVO> getUserWiseCollecetionDetails(Long boothId , Long surveyUserUd , String fromDate , String toDate);
+	public List<GenericVO> getUserWiseCollecetionDetails(Long boothId , Long surveyUserUd , String fromDate , String toDate,String type);
 
 
 }

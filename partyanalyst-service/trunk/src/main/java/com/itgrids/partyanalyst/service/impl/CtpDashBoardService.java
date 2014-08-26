@@ -1442,22 +1442,26 @@ public class CtpDashBoardService implements ICtpDashBoardService
 	 * @param toDate
 	 * @return
 	 */
-	public List<GenericVO> getUserWiseCollecetionDetails(Long boothId , Long surveyUserUd , String fromDate , String toDate)
+	public List<GenericVO> getUserWiseCollecetionDetails(Long boothId , Long surveyUserUd , String fromDate , String toDate,String type)
 	{
 		List<GenericVO> returnList = null;
 		try
 		{
 			List<Object[]> boothWiseUserDetails = null;
+			if(surveyUserUd.longValue() == 0l)
+			{
+				surveyUserUd = null;
+			}
 			if(fromDate.toString().equalsIgnoreCase("null") && toDate.toString().equalsIgnoreCase("null"))
 			{
 				DateUtilService dateUtilService = new DateUtilService();
 				Date todateDate = dateUtilService.getCurrentDateAndTime();
-				boothWiseUserDetails = surveyDetailsInfoDAO.getBoothWiseUserCollectedLocations(boothId,surveyUserUd,todateDate,null,null);
+				boothWiseUserDetails = surveyDetailsInfoDAO.getBoothWiseUserCollectedLocations(boothId,surveyUserUd,todateDate,null,null,type);
 			}
 			else
 			{
 				SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
-				boothWiseUserDetails = surveyDetailsInfoDAO.getBoothWiseUserCollectedLocations(boothId,surveyUserUd,null,originalFormat.parse(fromDate),originalFormat.parse(toDate));
+				boothWiseUserDetails = surveyDetailsInfoDAO.getBoothWiseUserCollectedLocations(boothId,surveyUserUd,null,originalFormat.parse(fromDate),originalFormat.parse(toDate),type);
 			}
 			
 			if(boothWiseUserDetails != null && boothWiseUserDetails.size() > 0)
