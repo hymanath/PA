@@ -335,8 +335,7 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 			res=buildverifierData(userId, userTypeId,inputvo);
 			break;
 		case 10:
-			//res=buildThirdPartyVerifierData(userId, userTypeId,inputvo);
-			res=buildCollectorData(userId, userTypeId);
+			res=buildThirdPartyVerifierData(userId, userTypeId,inputvo);
 			break;
 		
 		default:break;
