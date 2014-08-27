@@ -1583,7 +1583,7 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 			for (Object[] parms : resultList) 
 			{
 				SurveyResponceVO surveyResponceVO = new SurveyResponceVO();
-				surveyResponceVO.setDataTypeId("2");
+				surveyResponceVO.setDataTypeId("1");
 				surveyResponceVO.setBoothId((Long)parms[0]);
 				if(parms[1] != null)
 				{
@@ -1595,10 +1595,10 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 					surveyResponceVO.setHouseNo(parms[6] != null ? parms[6].toString() : "-");
 					surveyResponceVO.setRelativeName(parms[16] != null ? parms[16].toString() : "-");
 				}
-				surveyResponceVO.setMobileNo(parms[7] != null ? parms[7].toString() : "-");
-				surveyResponceVO.setIsCadre(parms[8] != null ? parms[8].toString() : "-");
-				surveyResponceVO.setIsInfluencingPeople(parms[9] != null ? parms[9].toString() : "-");
-				if(parms[10] != null)
+				//surveyResponceVO.setMobileNo(parms[7] != null ? parms[7].toString() : "-");
+				//surveyResponceVO.setIsCadre(parms[8] != null ? parms[8].toString() : "-");
+				//surveyResponceVO.setIsInfluencingPeople(parms[9] != null ? parms[9].toString() : "-");
+				/*if(parms[10] != null)
 				{
 					if(parms[11] != null && parms[11].toString().trim().length() > 0)
 					{
@@ -1616,8 +1616,8 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 					{
 						surveyResponceVO.setCasteName(parms[11] != null ? parms[11].toString() : "-");
 					}
-				}
-				if(parms[12] != null)
+				}*/
+				/*if(parms[12] != null)
 				{
 					if(parms[13] != null && parms[13].toString().trim().length() > 0)
 					{
@@ -1635,18 +1635,18 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 					{
 						surveyResponceVO.setHamletName(parms[13] != null ? parms[13].toString() : "-");
 					}
-				}
-				surveyResponceVO.setWardId(parms[14] != null ? Long.valueOf(parms[14].toString()) :0l);
+				}*/
+				/*surveyResponceVO.setWardId(parms[14] != null ? Long.valueOf(parms[14].toString()) :0l);
 				surveyResponceVO.setLocalArea(parms[15] != null ? parms[15].toString() : "-");
-				surveyResponceVO.setUuid(parms[18] != null ? parms[18].toString() : "-");
-				if(parms[17] != null){
+				surveyResponceVO.setUuid(parms[18] != null ? parms[18].toString() : "-");*/
+				/*if(parms[17] != null){
 					surveyResponceVO.setStatusId(parms[17].toString());
-				}
+				}*/
 				
 					surveyResponceVO.setSerialNo((Long)parms[19]);
-					if(parms[20] != null){
+					/*if(parms[20] != null){
 					  surveyResponceVO.setComment(parms[20].toString());
-					}
+					}*/
 				
 				returnList.add(surveyResponceVO);
 			}
