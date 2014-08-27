@@ -1407,7 +1407,7 @@ function submitQuestionDetails()
    $('.relationCls').each(function(){
      if($.trim($(this).val()) == 0)
 	 {
-         str += 'Relationship is required for adding new person<br>';
+         str += 'Relationship is required for adding a person<br>';
 		 flag=false;
 		 return false;
      }
