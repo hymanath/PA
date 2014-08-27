@@ -1490,6 +1490,7 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 					vo.setHamletCount(obj.getLong("isHamletMatched"));
 					vo.setHamletId(obj.getLong("hamletId"));
 					vo.setName(obj.getString("updationType"));
+					vo.setLocalArea(obj.getString("surveyArea"));
 					verifiedList.add(vo);
 					
 				}
