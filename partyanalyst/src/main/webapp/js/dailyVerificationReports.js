@@ -1773,9 +1773,9 @@ function getSurveyCompletedDetails()
 			}).done(function(result){
 				if(result != null)
 				{
-					$('#startedConsti').html(27);
-					$('#processConsti').html(25);
-					$('#CompletedConsti').html(2);
+					$('#startedConsti').html(result.startedCount);
+					$('#processConsti').html(result.processingCount);
+					$('#CompletedConsti').html(result.completedCount);
 					$('#totConsti').html(207);
 					if(result.started != null && result.started.length > 0)
 					{
