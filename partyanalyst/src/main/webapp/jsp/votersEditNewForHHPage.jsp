@@ -326,7 +326,7 @@ function buildChildrenTable(myResults,hno){
 
 			str+="<td><input type='text' id='memberPrsnGrdn"+myResults[i].HHFamilyDetailsId+"' value='"+myResults[i].gaurdian+"'/></td>";
 
-					str+="<td><select id='memberPrsnrltnType"+myResults[i].HHFamilyDetailsId+"'>";
+					str+="<td><select class='relationCls' id='memberPrsnrltnType"+myResults[i].HHFamilyDetailsId+"'>";
 					for(var j in myResults[i].familyRelsList){
 						if(familyRelsSel==myResults[i].familyRelsList[j].id){
 							str+="<option value="+myResults[i].familyRelsList[j].id+" selected>"+myResults[i].familyRelsList[j].name+"</option>";
@@ -668,7 +668,7 @@ function buildVotersInFamilySearch(results,hno){
 			
 			var str="";
 			if(categ != null && categ.length > 0){
-			str+="<select id='"+voterID+"fmlyRltn'>";
+			str+="<select class='relationCls' id='"+voterID+"fmlyRltn'>";
 			 for(var i in categ){
 				
 					if(val==categ[i].id){
@@ -1253,7 +1253,7 @@ function saveHouseHoldInfo(){
 					str+="<td>"+temp[i].age+"</td>";
 					str+="<td>"+temp[i].gaurdian+"</td>";
 					
-					str+="<td><select id="+temp[i].voterId+"fmlyRltn>";
+					str+="<td><select class='relationCls' id="+temp[i].voterId+"fmlyRltn>";
 					for(var j in temp[i].familyRelsList){
 						if(familyRelsSel==temp[i].familyRelsList[j].id){
 							str+="<option value="+temp[i].familyRelsList[j].id+" selected>"+temp[i].familyRelsList[j].name+"</option>";
