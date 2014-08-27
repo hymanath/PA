@@ -1,6 +1,6 @@
 
-var newCasteArr = new Array();
-var newHamletsArr = new Array();
+var newCasteArr;
+var newHamletsArr;
 function getSurveyVotersList(userId,userName,mobileNo,leaderName,leaderMobile,boothId,boothNo,date,userType,searchType){
 
 $('#voterInfoDIv').html('');
@@ -495,7 +495,7 @@ $('#searchDataImg').show();
 				$('#userInfoDiv4').html(str2);
 				}
 				
-				var collectdVoters = results[0].subList.length;
+				var collectdVoters = results[0].completedCount;
 				var remainingCount = totalVoters - collectdVoters;
 				if( remainingCount!= 0)
 				{
@@ -525,6 +525,8 @@ $('#searchDataImg').show();
 			
 				 $('#casteInfoDiv').html(str1);
 				
+					newHamletsArr = new Array();
+					newCasteArr = new Array();
 					if(results[1] != null  && results[1].genericVOList.length > 0){
 						for(var k in results[1].genericVOList){
 							var objec = {
