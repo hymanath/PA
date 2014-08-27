@@ -386,5 +386,8 @@
 	<bean id="userDepartmentDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserDepartmentDAO">
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="userViewNewsDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserViewNewsDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 </beans>		
