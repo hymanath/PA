@@ -56,8 +56,15 @@ public class SurveyCallStatus implements java.io.Serializable{
 	private String dvMatchedStatus ;
 	private String dvhamletStatus;
 	private Hamlet dvHamlet;
-	private Long dvHamletId;	
-
+	private Long dvHamletId;
+	
+	private String dcWardStatus;
+	private String dvWardStatus;
+	private Constituency dcWard;
+	private Long dcWardId;
+	
+	private Constituency dvWard;
+	private Long dvWardId;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -323,8 +330,60 @@ public class SurveyCallStatus implements java.io.Serializable{
 	public void setDvHamletId(Long dvHamletId) {
 		this.dvHamletId = dvHamletId;
 	}
-
 	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "dc_ward_id",insertable = false , updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Constituency getDcWard() {
+		return dcWard;
+	}
+	public void setDcWard(Constituency dcWard) {
+		this.dcWard = dcWard;
+	}
 	
+	@Column(name="dc_ward_id")
+	public Long getDcWardId() {
+		return dcWardId;
+	}
+	public void setDcWardId(Long dcWardId) {
+		this.dcWardId = dcWardId;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "dv_ward_id",insertable = false , updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Constituency getDvWard() {
+		return dvWard;
+	}
+	public void setDvWard(Constituency dvWard) {
+		this.dvWard = dvWard;
+	}
+	
+	@Column(name="dv_ward_id")
+	public Long getDvWardId() {
+		return dvWardId;
+	}
+	public void setDvWardId(Long dvWardId) {
+		this.dvWardId = dvWardId;
+	}
+	
+	@Column(name="dc_ward_status")
+	public String getDcWardStatus() {
+		return dcWardStatus;
+	}
+	public void setDcWardStatus(String dcWardStatus) {
+		this.dcWardStatus = dcWardStatus;
+	}
+	
+	@Column(name="dv_ward_status")
+	public String getDvWardStatus() {
+		return dvWardStatus;
+	}
+	public void setDvWardStatus(String dvWardStatus) {
+		this.dvWardStatus = dvWardStatus;
+	}
+		
 	
 }
