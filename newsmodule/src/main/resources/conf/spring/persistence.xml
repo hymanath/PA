@@ -139,7 +139,7 @@
 				<value>com.itgrids.partyanalyst.model.NewsType</value>	
 				<value>com.itgrids.partyanalyst.model.FileDepartment</value>	
 				<value>com.itgrids.partyanalyst.model.FileNewsType</value>		
-				
+				<value>com.itgrids.partyanalyst.model.UserViewNews</value>	
 				<!-- <value>com.itgrids.partyanalyst.model.Article</value>
 				<value>com.itgrids.partyanalyst.model.Country</value>
 				<value>com.itgrids.partyanalyst.model.State</value>

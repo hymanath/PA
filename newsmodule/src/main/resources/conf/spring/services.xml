@@ -1741,6 +1741,8 @@
 		<property name="fileDepartmentDAO" ref="fileDepartmentDAO" />
 		<property name="newsTypeDAO" ref="newsTypeDAO" />
 		<property name="departmentDAO" ref="departmentDAO" />	
+		<property name="userViewNewsDAO" ref="userViewNewsDAO" />
+		
    </bean>
    
    <bean name="newsAnalysisService" class="com.itgrids.partyanalyst.service.impl.NewsAnalysisService">
