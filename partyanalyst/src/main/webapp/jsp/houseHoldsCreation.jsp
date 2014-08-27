@@ -103,7 +103,7 @@ createNewLeader();
 		<input type="button" class="btn btn-success"  style="margin-left:250px; " onClick="createQuestions();" value="Create Questions"></input>
 		<input type="button" class="btn btn-success"  onClick="createMainQuestions();" value="Create Main Question"></input>
 		<input type="button" class="btn btn-success"  onClick="createSubQuestions();" value="Create Sub Questions" />
-		<a class="btn btn-success" href="houseHoldsSummaryReportAction.action"> HouseHolds Report</a>
+		<a class="btn btn-success" href="houseHoldsSummaryReportAction.action"> House Holds Report</a>
 		<!--
 		<input type="button" class="btn btn-primary"  onclick="createNewLeader();" value ="Create Leader"></input>		
 		<input type="button" class="btn btn-primary" onclick="assignBoothOrBooks();" value ="Assign Booth / Books"></input>
