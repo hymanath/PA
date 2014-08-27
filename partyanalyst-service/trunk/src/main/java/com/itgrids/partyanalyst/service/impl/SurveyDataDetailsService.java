@@ -3682,10 +3682,10 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					
 				//}
 						
+					List<Object[]> actualVotersInBooth = boothPublicationVoterDAO.getCTPVoterDetailsByBooth(boothId);
 					
 					if(casteStateId == null || casteStateId == 0)
 					{
-						List<Object[]> actualVotersInBooth = boothPublicationVoterDAO.getCTPVoterDetailsByBooth(boothId);
 						
 						if(actualVotersInBooth != null && actualVotersInBooth.size()>0)
 						{
@@ -3742,7 +3742,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					}
 				}
 				
-				finalVO.setCount(surveyDetailsInfoDAO.getTotalVotersinBooth(boothId));
+				finalVO.setCount(Long.valueOf(String.valueOf(actualVotersInBooth.size())));
+				finalVO.setCompletedCount(Long.valueOf(String.valueOf(voterIds.size())));
 				
 				if(casteListOfSamples != null && casteListOfSamples.size()>0){
 					
@@ -3873,7 +3874,9 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					surveyCallStatus.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
 					surveyCallStatus.setBoothId(surveyReportVO.getBoothId());
 					surveyCallStatus.setUserId(userId);
-					surveyCallStatus.setDcWardId(wardId);
+					
+					if(wardId != null && wardId.longValue() != 0 )
+						surveyCallStatus.setDcWardId(wardId);
 					
 					if(surveyReportVO.getName().equalsIgnoreCase("notCastewise"))
 					{
@@ -4155,7 +4158,9 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					surveyCallStatus.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
 					surveyCallStatus.setBoothId(surveyReportVO.getBoothId());
 					surveyCallStatus.setDvWebMonterId(userId);
-					surveyCallStatus.setDvWardId(wardId);	
+					
+					if(wardId != null && wardId.longValue() != 0 )
+						surveyCallStatus.setDvWardId(wardId);	
 					
 					if(surveyReportVO.getName().equalsIgnoreCase("notCastewise"))
 					{
