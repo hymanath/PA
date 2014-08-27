@@ -156,6 +156,7 @@
 				<value>com.itgrids.partyanalyst.model.NewsType</value>	
 				<value>com.itgrids.partyanalyst.model.FileDepartment</value>	
 				<value>com.itgrids.partyanalyst.model.FileNewsType</value>	
+				<value>com.itgrids.partyanalyst.model.UserViewNews</value>
 			</list>
 		</property>
 	</bean>
@@ -356,6 +357,9 @@
 	</bean>
 	
 	<bean id="newsTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.NewsTypeDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="userViewNewsDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserViewNewsDAO">
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
