@@ -84,8 +84,8 @@ $('#searchDataImg').show();
 				}
 				str +='<th> Caste Matched  </th>';
 				str +='<th> Mobile Number </th>';
-				str +='<th> Hamlet </th>';
-				str +='<th> Hamlet Matched </th>';
+				str +='<th> Hamlet/ Ward </th>';
+				str +='<th> Hamlet/ Ward Matched </th>';
 				str +='<th> H.NO With Diff Castes </th>';
 				str +='</tr>';
 				str +='</thead>';
@@ -333,14 +333,15 @@ $('#searchDataImg').show();
 											if(result[i].hamletName != null && result[i].hamletName.trim().length != 0)
 											{
 											
-											str +=' <select id="hamletsListId'+i+'"   style="width:165px;" onchange="updateDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',10,'+result[i].voterId+','+result[i].userid+',\'hamlet\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');" disabled="true"><option value="0"> Select Hamlet </option> ';	
+											str +=' <select id="hamletsListId'+i+'"   style="width:165px;" onchange="updateDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',10,'+result[i].voterId+','+result[i].userid+',\'hamlet\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');" disabled="true"><option value="0"> Select </option> ';	
 											}
 											else
 											{
 											
-											str +='<select id="hamletsListId'+i+'"   style="width:165px;" onchange="updateDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',10,'+result[i].voterId+','+result[i].userid+',\'hamlet\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');" ><option value="0"> Select Hamlet </option> ';
+											str +='<select id="hamletsListId'+i+'"   style="width:165px;" onchange="updateDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',10,'+result[i].voterId+','+result[i].userid+',\'hamlet\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');" ><option value="0"> Select  </option> ';
 											}
-																						if(results[1] != null  && results[1].genericVOList1.length > 0)
+											
+											if(results[1] != null  && results[1].genericVOList1.length > 0)
 											{
 													for(var k in results[1].genericVOList1){
 													if(results[1].genericVOList1[k].id == result[i].hamletId)
@@ -380,7 +381,7 @@ $('#searchDataImg').show();
 													str +='</td>';
 													
 																					
-											str +='<td> <select id="hamletsListId'+i+'"   style="width:165px;" onchange="updateDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',10,'+result[i].voterId+','+result[i].userid+',\'hamlet\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');"  disabled="true"><option value="0"> Select Hamlet </option> ';
+											str +='<td> <select id="hamletsListId'+i+'"   style="width:165px;" onchange="updateDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',10,'+result[i].voterId+','+result[i].userid+',\'hamlet\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');"  disabled="true"><option value="0"> Select </option> ';
 
 												str +='</select></td>';
 											
@@ -407,7 +408,7 @@ $('#searchDataImg').show();
 											str +='<input type="hidden" value="8" id="isHamletMatched'+i+'"/>';		
 											str +='</td>';
 											
-											str +='<td> <select id="hamletsListId'+i+'"   style="width:165px;" onchange="updateDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',10,'+result[i].voterId+','+result[i].userid+',\'hamlet\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');" ><option value="0"> Select Hamlet </option> ';	
+											str +='<td> <select id="hamletsListId'+i+'"   style="width:165px;" onchange="updateDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',10,'+result[i].voterId+','+result[i].userid+',\'hamlet\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');" ><option value="0"> Select  </option> ';	
 											if(results[1] != null  && results[1].genericVOList1.length > 0)
 											{
 													for(var k in results[1].genericVOList1){
@@ -702,7 +703,7 @@ function updateStatusDetails(newHamletId,hamletFieldId,isCasteMatched,mobileMatc
 				else if(selectionType =='hamlet')
 				{
 					$('#'+newHamletId+'').find('option').remove();
-					$('#'+newHamletId+'').append('<option value="0"> Select Hamlet </option>');
+					$('#'+newHamletId+'').append('<option value="0"> Select  </option>');
 					
 					if(isHamletMatched == 7){
 						$('#updateHMBtnId'+updateBtnId+'').addClass('btn-success');
@@ -825,8 +826,8 @@ function buildCasteWiseVotersList(results,userId,boothId,date,casteId1,webConstI
 				}
 				str +='<th> Caste Matched  </th>';
 				str +='<th> Mobile Number </th>';
-				str +='<th> Hamlet </th>';
-				str +='<th> Hamlet Matched </th>';
+				str +='<th> Hamlet/ Ward </th>';
+				str +='<th> Hamlet/ Ward Matched </th>';
 				str +='<th> H.NO With Diff Castes </th>';
 				str +='</tr>';
 				str +='</thead>';
@@ -1077,12 +1078,12 @@ function buildCasteWiseVotersList(results,userId,boothId,date,casteId1,webConstI
 											if(result[i].hamletName != null && result[i].hamletName.trim().length != 0)
 											{
 											
-											str +=' <select id="hamletsListId'+i+'"   style="width:165px;" onchange="updateDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',10,'+result[i].voterId+','+result[i].userid+',\'hamlet\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');" disabled="true"><option value="0"> Select Hamlet </option> ';	
+											str +=' <select id="hamletsListId'+i+'"   style="width:165px;" onchange="updateDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',10,'+result[i].voterId+','+result[i].userid+',\'hamlet\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');" disabled="true"><option value="0"> Select  </option> ';	
 											}
 											else
 											{
 											
-											str +='<select id="hamletsListId'+i+'"   style="width:165px;" onchange="updateDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',10,'+result[i].voterId+','+result[i].userid+',\'hamlet\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');" ><option value="0"> Select Hamlet </option> ';
+											str +='<select id="hamletsListId'+i+'"   style="width:165px;" onchange="updateDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',10,'+result[i].voterId+','+result[i].userid+',\'hamlet\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');" ><option value="0"> Select  </option> ';
 											}
 											
 											if(results[1] != null  && results[1].genericVOList1.length > 0)
@@ -1125,7 +1126,7 @@ function buildCasteWiseVotersList(results,userId,boothId,date,casteId1,webConstI
 													str +='</td>';
 													
 																					
-											str +='<td> <select id="hamletsListId'+i+'"   style="width:165px;" onchange="updateDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',10,'+result[i].voterId+','+result[i].userid+',\'hamlet\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');"  disabled="true"><option value="0"> Select Hamlet </option> ';	
+											str +='<td> <select id="hamletsListId'+i+'"   style="width:165px;" onchange="updateDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',10,'+result[i].voterId+','+result[i].userid+',\'hamlet\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');"  disabled="true"><option value="0"> Select  </option> ';	
 												
 												str +='</select></td>';
 											
@@ -1152,7 +1153,7 @@ function buildCasteWiseVotersList(results,userId,boothId,date,casteId1,webConstI
 											str +='<input type="hidden" value="8" id="isHamletMatched'+i+'"/>';		
 											str +='</td>';
 											
-											str +='<td> <select id="hamletsListId'+i+'"   style="width:165px;" onchange="updateDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',10,'+result[i].voterId+','+result[i].userid+',\'hamlet\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');" ><option value="0"> Select Hamlet </option> ';
+											str +='<td> <select id="hamletsListId'+i+'"   style="width:165px;" onchange="updateDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',10,'+result[i].voterId+','+result[i].userid+',\'hamlet\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');" ><option value="0"> Select  </option> ';
 												if(results[1] != null  && results[1].genericVOList1.length > 0){
 													for(var k in results[1].genericVOList1){
 														if(results[1].genericVOList1[k].id == result[i].hamletId)
@@ -1394,9 +1395,9 @@ function ForUpdateDetails(value,userId,boothId,casteId1,webConstId1,date,userTyp
 	}
 	else if(value=='hamlet')
 	{
-	 str +='Select Hamlet : <font class="requiredFont">*</font>';
+	 str +='Select Hamlet/Ward : <font class="requiredFont">*</font>';
 	 str +='<select id="finalHamletList" disabled="disabled"> ';
-	 str +='<option value="0"> Select Hamlet </option>';
+	 str +='<option value="0"> Select  </option>';
      if(newHamletsArr.length > 0)
 	  {			
 	  for(var i in newHamletsArr)
