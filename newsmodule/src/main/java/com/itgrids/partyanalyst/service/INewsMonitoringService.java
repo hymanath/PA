@@ -104,6 +104,7 @@ public interface INewsMonitoringService {/*
     public NewsEditVO getInfoForFile(String userType,Long fileId,Long userId);
     
     public ResultStatus updateCandidatesAndParty(Long candidateId,Long partyId,String candidateName,Long designationId,Long loctionId,Long locationValue,boolean isMinister);
+    public ResultStatus saveUserViewNews(Long userId,Long fileId);
     //public List<ArticleVO> getArticleNews();
    
 }

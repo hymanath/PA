@@ -18,6 +18,7 @@ import java.util.UUID;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -64,6 +65,7 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.IUserViewNewsDAO;
 import com.itgrids.partyanalyst.dao.IWardDAO;
 import com.itgrids.partyanalyst.dao.hibernate.FileDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
@@ -99,6 +101,7 @@ import com.itgrids.partyanalyst.model.SourceLanguage;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.User;
+import com.itgrids.partyanalyst.model.UserViewNews;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.INewsMonitoringService;
 import com.itgrids.partyanalyst.service.IPartyDetailsService;
@@ -164,8 +167,17 @@ public class NewsMonitoringService implements INewsMonitoringService {
     private INewsTypeDAO newsTypeDAO;
     private IDepartmentDAO departmentDAO;
     
+    private IUserViewNewsDAO userViewNewsDAO;
     
     
+
+	public IUserViewNewsDAO getUserViewNewsDAO() {
+		return userViewNewsDAO;
+	}
+
+	public void setUserViewNewsDAO(IUserViewNewsDAO userViewNewsDAO) {
+		this.userViewNewsDAO = userViewNewsDAO;
+	}
 
 	public INewsTypeDAO getNewsTypeDAO() {
 		return newsTypeDAO;
@@ -6480,4 +6492,32 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 			
 			return finalList;
 		}
+		
+		public ResultStatus saveUserViewNews(Long userId,Long fileId)
+		{
+			ResultStatus result = new ResultStatus();
+			try{
+			
+			List list = userViewNewsDAO.checkFileExist(userId, fileId);
+			if(list == null || list.size() == 0)
+			{
+				UserViewNews userViewNews = new UserViewNews();
+				userViewNews.setUser(userDAO.get(userId));
+				userViewNews.setFile(fileDAO.get(fileId));
+				userViewNewsDAO.save(userViewNews);
+				result.setResultCode(ResultCodeMapper.SUCCESS);
+			}
+			else
+				result.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
+			
+			return result;
+			}
+			catch (Exception e) {
+				log.error("Exception Occured in saveUserViewNews()"+e);
+				result.setResultCode(ResultCodeMapper.FAILURE);
+			}
+			return result;
+			
+		}	
+		
 }
