@@ -89,6 +89,12 @@
 			
 			.wiget-yellow-normal:hover{ box-shadow: 0 -1px 5px rgb(51, 51, 51);}
 			.Constituency-name-nav li a:hover{color:#333333;border:1px solid #ffcc00;  background-color:rgb(204,204,204);}
+			
+			.datepicker{
+				cursor:text !important;
+				
+			}
+			
 		</style>	
 	
   </head>
@@ -102,8 +108,14 @@ $( document ).ready(function() {
 $('#boothId').multiselect({
 	  noneSelectedText:"Select Booth(s)"});
 	$('.datepicker').datepicker({dateFormat: 'dd-mm-yy',minDate: '14-07-2014',maxDate: new Date()}); 
-	/*$(".toDatepicker").datepicker("setDate", new Date());
-	$(".fromDatepicker").datepicker("setDate", '14-07-2014');*/
+	$(".toDatepicker").datepicker("setDate", new Date());
+	/*$(".fromDatepicker").datepicker("setDate", '14-07-2014');*/
+	
+	$("#dailyDateFromDate").datepicker("setDate", new Date());
+	$("#teamDetailsFromDate").datepicker("setDate", new Date());	
+	$("#internalVerificationFromDate").datepicker("setDate", '14-07-2014');
+	$("#qcVerificationFromDate").datepicker("setDate", '14-07-2014');
+	
 	getDataAvalaiableConstituencyes();
 	getThirdAvaliableConstituencyes();
 });
@@ -145,20 +157,40 @@ $('#boothId').multiselect({
 							<div class="row-fluid m_top10">
 							<!----Data Verification (right)---->
 							<div class="span6 wiget-yellow" style="height: 282px;">	
-								<h4 class="text-right">Today Data Collection Details<span class="pull-right btn-group   pull-right"><a onClick="getTeamCollectedDetailsSummaryReport(0,this.id)" id="allCollecetdId" class="btn btn-mini todayCollectdDetailsCls btn-success">ALL</a>|<a  onClick="getTeamCollectedDetailsSummaryReport(1,this.id)" id="apCollecetdId" class="btn btn-mini todayCollectdDetailsCls btn-success">AP</a>|<a  onClick="getTeamCollectedDetailsSummaryReport(2,this.id)" id="tsCollecetdId" class="btn btn-mini todayCollectdDetailsCls">TS</a></span></h4>
+								<h4 class="text-right">Today Data Collection Details</h4>
+									<div class="text-right"> <span class="pull-right btn-group   pull-right"><a onClick="getTeamCollectedDetailsSummaryReport(0,this.id)" id="allCollecetdId" class="btn btn-mini todayCollectdDetailsCls btn-success">ALL</a>|<a  onClick="getTeamCollectedDetailsSummaryReport(1,this.id)" id="apCollecetdId" class="btn btn-mini todayCollectdDetailsCls btn-success">AP</a>|<a  onClick="getTeamCollectedDetailsSummaryReport(2,this.id)" id="tsCollecetdId" class="btn btn-mini todayCollectdDetailsCls">TS</a></span> </div>
 								<input type="hidden" value="0" id="dailyDateRangeHidden"></input>
-								<div class="row-fluid">
+								
+								<div class="row-fluid span10" style="font-weight:bold;margin-top: -20px;">
+
+									<div class="span4">
+										<span> From Date : </span>
+										<input type="text" readonly=true class="span10 offset2 datepicker fromDatepicker" placeholder="From Date" id="dailyDateFromDate">
+									</div>
+
+									<div class="span4">									
+										<span> To Date : </span>
+										<input type="text" readonly=true  class="span10  datepicker toDatepicker" placeholder="To Date" id="dailtDateToDate">
+									</div>
+									
+									<div class="span4 m_top10">
+										<a class="btn btn-mini" onClick="getTodayTeamDetailsbtDeates();" style="margin-top: 15px;">Submit</a>
+									</div>	
+									
+								</div>
+							<!--	
+								<div class="row-fluid span10">
 									<div class="input-append span4">
-										<input type="text" class="span8 offset2 datepicker fromDatepicker" placeholder="From Date" id="dailyDateFromDate">
+										<input type="text" readonly=true class="span10 offset2 datepicker fromDatepicker" placeholder="From Date" id="dailyDateFromDate">
 									</div>
 									<div class="input-append span4">
-										<input type="text" class="span8  datepicker toDatepicker" placeholder="To Date" id="dailtDateToDate">
+										<input type="text" readonly=true  class="span10  datepicker toDatepicker" placeholder="To Date" id="dailtDateToDate">
 									</div>	
-									<div class="span4">
-										<a class="btn btn-mini" onClick="getTodayTeamDetailsbtDeates();">Submit</a>
+									<div class="span4 m_top10">
+										<a class="btn btn-mini" onClick="getTodayTeamDetailsbtDeates();" style="margin-left: -15px; margin-top: -5px;">Submit</a>
 									</div>									
 								</div>
-								
+							-->	
 								<!--<div class="row-fluid text-center">
 									<P CLASS="label">Today: Date</p>
 								</div>-->
@@ -181,23 +213,45 @@ $('#boothId').multiselect({
 							</div>	<!----Data Verification---->	
 							<!-------->
 							<div class="span6 wiget-yellow"  style="height: 282px;">	
-								<h4 class="text-right">Today Team Details <span class="pull-right btn-group   pull-right"><a  class="btn btn-mini todayTeamDetailsCls" id="allTeamId" onClick="getTodayTeamDetails(0,this.id)">ALL</a><a onClick="getTodayTeamDetails(1,this.id)" id= "apTeamId" class="btn btn-mini todayTeamDetailsCls">AP</a>|<a onClick="getTodayTeamDetails(2,this.id)" class="btn btn-mini todayTeamDetailsCls" id="tsTeamId">TS</a></span></h4>
+								<h4 class="text-right">Today Team Details  </h4>
+								<div class="text-right"><span class="pull-right btn-group   pull-right"><a  class="btn btn-mini todayTeamDetailsCls" id="allTeamId" onClick="getTodayTeamDetails(0,this.id)">ALL</a><a onClick="getTodayTeamDetails(1,this.id)" id= "apTeamId" class="btn btn-mini todayTeamDetailsCls">AP</a>|<a onClick="getTodayTeamDetails(2,this.id)" class="btn btn-mini todayTeamDetailsCls" id="tsTeamId">TS</a></span>
+								</div>
 								<input type="hidden" value ="0" id="todatTeamHidden"></input>
-								<div class="row-fluid">
-									<div class="input-append span4">
-										<input type="text" class="span8 offset2 datepicker fromDatepicker" placeholder="From Date" id="teamDetailsFromDate">
-										<!--<span class="add-on"><i class="icon-calendar"></i></span>-->
+							
+							<div class="row-fluid span10" style="font-weight:bold;margin-top: -20px;">
+
+									<div class="span4">
+										<span> From Date : </span>
+										<input type="text" readonly=true  class="span10 offset2 datepicker fromDatepicker" placeholder="From Date" id="teamDetailsFromDate">
 									</div>
-									<div class="input-append span4">
-										<input type="text" class="span8 datepicker toDatepicker" placeholder="To Date" id="teamDetailsToDate">
-										<!--<span class="add-on"><i class="icon-calendar"></i></span>-->
+
+									<div class="span4">									
+										<span> To Date : </span>
+										<input type="text" readonly=true  class="span10 datepicker toDatepicker" placeholder="To Date" id="teamDetailsToDate">
+									</div>
+									
+									<div class="span4 m_top10">
+										<a class="btn btn-mini" onClick="getTodayTeamDetailsBtDates();" style="margin-top: 15px;">Submit</a>
 									</div>	
 									
-									<div class="span4">
-										<a class="btn btn-mini" onClick="getTodayTeamDetailsBtDates();">Submit</a>
-									</div>
 								</div>
 								
+						<!--
+							<div class="row-fluid span10">
+									<div class="input-append span4">
+										<input type="text" readonly=true  class="span10 offset2 datepicker fromDatepicker" placeholder="From Date" id="teamDetailsFromDate">
+										<!--<span class="add-on"><i class="icon-calendar"></i></span>-->
+						<!--			</div>
+									<div class="input-append span4">
+										<input type="text" readonly=true  class="span10 datepicker toDatepicker" placeholder="To Date" id="teamDetailsToDate">
+										<!--<span class="add-on"><i class="icon-calendar"></i></span>-->
+						<!--			</div>	
+									
+									<div class="span4 m_top10">
+										<a class="btn btn-mini" onClick="getTodayTeamDetailsBtDates();" style="margin-left: -15px; margin-top: -5px;">Submit</a>
+									</div>
+								</div>
+						-->		
 								<div class="row-fluid">
 									<div class="well well-small span4  text-center">
 										<h4  id="dcMembers" ><img src="./images/icons/search.gif" ></img></h4>
@@ -343,23 +397,44 @@ $('#boothId').multiselect({
 						
 							<div class="span6 wiget-yellow">	
 								<h4 class="text-right">Internal Verification
-								<span class="btn-group  pull-right"><a href="javascript:{setInternalVerificationRegionLevel(0,'allRegionsId1')}" class="btn btn-mini selectedCls1 btn-success" id="allRegionsId1">ALL</a><a href="javascript:{setInternalVerificationRegionLevel(2,'apRegionsId1')}" class="btn btn-mini selectedCls1" id="apRegionsId1">AP</a><a href="javascript:{setInternalVerificationRegionLevel(1,'tsRegionsId1')}" class="btn btn-mini selectedCls1" id="tsRegionsId1">TS</a></span>
-
-
-								</h4>
 								
-								<div class="row-fluid">
-									<div class="input-append span4">
-										<input type="text" class="span8 datepicker offset2 fromDatepicker" placeholder="From Date" id="internalVerificationFromDate">
-									</div>
-									<div class="input-append span4">
-										<input type="text" class="span8 datepicker toDatepicker" placeholder="To Date" id="internalVerificationToDate">
-									</div>
-									<div class="span4">
-										<a class="btn btn-mini" onClick="getInternalVerificationSummaryBtDates()">Submit</a>
-									</div>									
+								</h4>
+								<div class="text-right"> <span class="btn-group  pull-right"><a href="javascript:{setInternalVerificationRegionLevel(0,'allRegionsId1')}" class="btn btn-mini selectedCls1 btn-success" id="allRegionsId1">ALL</a><a href="javascript:{setInternalVerificationRegionLevel(2,'apRegionsId1')}" class="btn btn-mini selectedCls1" id="apRegionsId1">AP</a><a href="javascript:{setInternalVerificationRegionLevel(1,'tsRegionsId1')}" class="btn btn-mini selectedCls1" id="tsRegionsId1">TS</a></span>
 								</div>
 								
+								
+							<div class="row-fluid span10" style="font-weight:bold;margin-top: -20px;">
+
+									<div class="span4">
+										<span> From Date : </span>
+										<input type="text" readonly=true  class="span10 datepicker offset2 fromDatepicker" placeholder="From Date" id="internalVerificationFromDate">
+									</div>
+
+									<div class="span4">									
+										<span> To Date : </span>
+										<input type="text" readonly=true  class="span10 datepicker toDatepicker" placeholder="To Date" id="internalVerificationToDate">
+									</div>
+									
+									<div class="span4 m_top10">
+										<a class="btn btn-mini" onClick="getInternalVerificationSummaryBtDates();" style="margin-top: 15px;">Submit</a>
+									</div>	
+									
+								</div>
+								
+								
+							<!--	
+								<div class="row-fluid span10">
+									<div class="input-append span4">
+										<input type="text" readonly=true  class="span10 datepicker offset2 fromDatepicker" placeholder="From Date" id="internalVerificationFromDate">
+									</div>
+									<div class="input-append span4">
+										<input type="text" readonly=true  class="span10 datepicker toDatepicker" placeholder="To Date" id="internalVerificationToDate">
+									</div>
+									<div class="span4 m_top10">
+										<a class="btn btn-mini" onClick="getInternalVerificationSummaryBtDates()" style="margin-left: -15px; margin-top: -5px;">Submit</a>
+									</div>									
+								</div>
+							-->	
 								<div class="row-fluid">
 									<div class="well well-small span4  text-center">
 										<h4 id="verifiedCount"><img src="./images/icons/search.gif" ></img></h4>
@@ -382,19 +457,43 @@ $('#boothId').multiselect({
 							</div>	<!-------->
 							<!-------->
 							<div class="span6 wiget-yellow">	
-								<h4 class="text-right ">QC Verification <span class="pull-right btn-group  pull-right"><a  class="btn btn-mini qcCollectedDetailsCls" id="allQcCollecetdId" onClick="getQcVerificationSummaryReport(0,this.id)">ALL</a><a onClick="getQcVerificationSummaryReport(1,this.id)" id= "apQcColledcetdId" class="btn btn-mini qcCollectedDetailsCls">AP</a>|<a onClick="getQcVerificationSummaryReport(2,this.id)" class="btn btn-mini qcCollectedDetailsCls" id="tsQcCollectedId">TS</a></span></h4>
+								<h4 class="text-right ">QC Verification </h4>
+								<div class="text-right"><span class="pull-right btn-group  pull-right"><a  class="btn btn-mini qcCollectedDetailsCls" id="allQcCollecetdId" onClick="getQcVerificationSummaryReport(0,this.id)">ALL</a><a onClick="getQcVerificationSummaryReport(1,this.id)" id= "apQcColledcetdId" class="btn btn-mini qcCollectedDetailsCls">AP</a>|<a onClick="getQcVerificationSummaryReport(2,this.id)" class="btn btn-mini qcCollectedDetailsCls" id="tsQcCollectedId">TS</a></span></div>
 								<input type="hidden" value="0" id="qcVerificationHidden"></input>
-								<div class="row-fluid">
+								
+								
+							<div class="row-fluid span10" style="font-weight:bold;margin-top: -20px;">
+
+									<div class="span4">
+										<span> From Date : </span>
+										<input type="text" readonly=true  class="span10 offset2 datepicker fromDatepicker" placeholder="From Date" id="qcVerificationFromDate">
+									</div>
+
+									<div class="span4">									
+										<span> To Date : </span>
+										<input type="text" readonly=true  class="span10 datepicker toDatepicker" placeholder="To Date" id="qcVerificationToDate">
+									</div>
+									
+									<div class="span4 m_top10">
+										<a class="btn btn-mini" onClick="getQcVerificationSummaryReportbtDeates();" style="margin-top: 15px;">Submit</a>
+									</div>	
+									
+								</div>
+								
+								
+								<!-- 
+								<div class="row-fluid span10">
 									<div class="input-append span4">
-										<input type="text" class="span8 offset2 datepicker fromDatepicker" placeholder="From Date" id="qcVerificationFromDate">
+										<input type="text" readonly=true  class="span10 offset2 datepicker fromDatepicker" placeholder="From Date" id="qcVerificationFromDate">
 									</div>
 									<div class="input-append span4">
-										<input type="text" class="span8 datepicker toDatepicker" placeholder="To Date" id="qcVerificationToDate">
+										<input type="text" readonly=true  class="span10 datepicker toDatepicker" placeholder="To Date" id="qcVerificationToDate">
 									</div>	
-									<div class="span4">
-										<a class="btn btn-mini" onClick="getQcVerificationSummaryReportbtDeates();">Submit</a>
+									<div class="span4 m_top10">
+										<a class="btn btn-mini" onClick="getQcVerificationSummaryReportbtDeates();" style="margin-left: -15px; margin-top: -5px;">Submit</a>
 									</div>										
 								</div>
+								-->
 								
 								<div class="row-fluid">
 									<div class="well well-small span4  text-center">
