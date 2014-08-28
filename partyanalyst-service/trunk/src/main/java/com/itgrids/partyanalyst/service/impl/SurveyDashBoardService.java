@@ -1179,6 +1179,30 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 		return resultStatus;
 	}
 	
+	
+	/**
+	 * This Service is used for providing third party details
+	 * @param boothId
+	 * @return returnList
+	 */
+	public  List<SurveyResponceVO> getThirdPartyFinalDetails1(Long boothId)
+	{
+		List<SurveyResponceVO> returnList = null;
+		try
+		{
+			List<Object[]> resultList = surveyFinalDataDAO.getBoothWiseVoterDetails(boothId);
+			if(resultList != null && resultList.size() > 0)
+			{
+				returnList = new ArrayList<SurveyResponceVO>();
+				fillSurveyResponceVO1(resultList,returnList);
+			}
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised in getThirdPartyFinalDetails service method",e);
+		}
+		return returnList;
+	}
 	/**
 	 * This Service is used for providing third party details
 	 * @param boothId
@@ -1193,7 +1217,7 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 			if(resultList != null && resultList.size() > 0)
 			{
 				returnList = new ArrayList<SurveyResponceVO>();
-				fillSurveyResponceVO1(resultList,returnList);
+				fillSurveyResponceVO2(resultList,returnList);
 			}
 		} 
 		catch (Exception e)
@@ -1307,7 +1331,7 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 		List<ThirdPartyCompressionVO> returnList = null;
 		try 
 		{
-			List<SurveyResponceVO> thirdPartyDetails = getThirdPartyFinalDetails(boothId);
+			List<SurveyResponceVO> thirdPartyDetails = getThirdPartyFinalDetails1(boothId);
 			if(thirdPartyDetails != null && thirdPartyDetails.size() > 0)
 			{
 				Map<Long,SurveyResponceVO> tpProvidedMap = new HashMap<Long, SurveyResponceVO>();
@@ -1577,6 +1601,87 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 	}
 	
 	public void fillSurveyResponceVO1(List<Object[]> resultList,List<SurveyResponceVO> returnList)
+	{
+		try 
+		{
+			for (Object[] parms : resultList) 
+			{
+				SurveyResponceVO surveyResponceVO = new SurveyResponceVO();
+				surveyResponceVO.setDataTypeId("1");
+				surveyResponceVO.setBoothId((Long)parms[0]);
+				if(parms[1] != null)
+				{
+					surveyResponceVO.setVoterId(parms[1] != null ? Long.valueOf(parms[1].toString()) :0l);
+					surveyResponceVO.setVoterCardNo(parms[2] != null ? parms[2].toString() : "-");
+					surveyResponceVO.setVoterName(parms[3] != null ? parms[3].toString() : "-");
+					surveyResponceVO.setGender(parms[4] != null ? parms[4].toString() : "-");
+					surveyResponceVO.setAge(parms[5] != null ? Long.valueOf(parms[5].toString()) : 0l);
+					surveyResponceVO.setHouseNo(parms[6] != null ? parms[6].toString() : "-");
+					surveyResponceVO.setRelativeName(parms[16] != null ? parms[16].toString() : "-");
+				}
+				surveyResponceVO.setMobileNo(parms[7] != null ? parms[7].toString() : "-");
+				surveyResponceVO.setIsCadre(parms[8] != null ? parms[8].toString() : "-");
+				surveyResponceVO.setIsInfluencingPeople(parms[9] != null ? parms[9].toString() : "-");
+				if(parms[10] != null)
+				{
+					if(parms[11] != null && parms[11].toString().trim().length() > 0)
+					{
+						surveyResponceVO.setCasteName(parms[11] != null ? parms[11].toString() : "-");
+					}
+					else
+					{
+						surveyResponceVO.setCasteName(casteStateDAO.get(Long.valueOf(parms[10].toString())).getCaste().getCasteName());
+					}
+					surveyResponceVO.setCasteId(parms[10] != null ? Long.valueOf(parms[10].toString()) :0l);
+				}
+				else
+				{
+					if(parms[11] != null && parms[11].toString().trim().length() > 0)
+					{
+						surveyResponceVO.setCasteName(parms[11] != null ? parms[11].toString() : "-");
+					}
+				}
+				if(parms[12] != null)
+				{
+					if(parms[13] != null && parms[13].toString().trim().length() > 0)
+					{
+						surveyResponceVO.setHamletName(parms[13] != null ? parms[13].toString() : "-");
+					}
+					else
+					{
+						surveyResponceVO.setHamletName(hamletDAO.get(Long.valueOf(parms[12].toString())).getHamletName());
+					}
+					surveyResponceVO.setHamletId(parms[12] != null ? Long.valueOf(parms[12].toString()) :0l);
+				}
+				else
+				{
+					if(parms[13] != null && parms[13].toString().trim().length() > 0)
+					{
+						surveyResponceVO.setHamletName(parms[13] != null ? parms[13].toString() : "-");
+					}
+				}
+				surveyResponceVO.setWardId(parms[14] != null ? Long.valueOf(parms[14].toString()) :0l);
+				surveyResponceVO.setLocalArea(parms[15] != null ? parms[15].toString() : "-");
+				surveyResponceVO.setUuid(parms[18] != null ? parms[18].toString() : "-");
+				if(parms[17] != null){
+					surveyResponceVO.setStatusId(parms[17].toString());
+				}
+				
+					surveyResponceVO.setSerialNo((Long)parms[19]);
+					if(parms[20] != null){
+					  surveyResponceVO.setComment(parms[20].toString());
+					}
+				
+				returnList.add(surveyResponceVO);
+			}
+		} 
+		catch (Exception e) {
+			LOG.error("Exception raised in fillSurveyResponceVO service method",e);
+		}
+	}
+	
+	
+	public void fillSurveyResponceVO2(List<Object[]> resultList,List<SurveyResponceVO> returnList)
 	{
 		try 
 		{
