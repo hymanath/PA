@@ -846,9 +846,9 @@ function buildTest(result)
 			   str+='<td>'+value.dvDetails.unmatchedPercent+'</td>';
 
 		  str+='<td>'+value.dvDetails.notIdentifiedCount+'</td>';
-		  str+='<td>'+value.dvDetails.casteMatchedCount+'</td>';
-		  str+='<td>'+value.dvDetails.casteUnMatchedCount+'</td>';
-		  str+='<td>'+value.dvDetails.emptyCount+'</td>';
+		  str+='<td>'+value.wmDvDetails.casteMatchedCount+'</td>';
+		  str+='<td>'+value.wmDvDetails.casteUnMatchedCount+'</td>';
+		  str+='<td>'+value.wmDvDetails.emptyCount+'</td>';
 		 str+='</tr>';
 	 });
 	  
