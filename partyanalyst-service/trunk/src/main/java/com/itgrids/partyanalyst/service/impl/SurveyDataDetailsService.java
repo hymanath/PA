@@ -3305,7 +3305,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				List<Long> voterIds = new ArrayList<Long>(0);
 				Date date = format.parse(searchDate);
 				
-				String areaType = null;
+				String areaType = "rural-urban";
 				
 				List<Booth> boothList = boothDAO.getBoothDetailsByBoothId(boothId);
 				List<GenericVO> hamletsList = new ArrayList<GenericVO>(0);
