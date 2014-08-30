@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -2142,5 +2143,171 @@ public class SurveyCompletedDetailsService implements
 				return boothVO;
 		return null;
 		
+	}
+	
+	public List<SurveyReportVO> getConstituencysReportByStatus(String constituencyStatus)
+	{
+		List<SurveyReportVO> returnList = new ArrayList<SurveyReportVO>(0);
+		
+		try {
+			
+						
+			List<Long> constituencyIds = new ArrayList<Long>();
+			List<Long> compeletedConsIds = new ArrayList<Long>();
+			
+			if(constituencyStatus.equalsIgnoreCase("proccessing") || constituencyStatus.equalsIgnoreCase("started"))
+			{
+				List<Long> startedContitIds = surveyDetailsInfoDAO.getSurveyStartedConstituenciesDetails();  // started constiteuncyList
+				
+				constituencyIds.addAll(startedContitIds);
+				
+			}
+			
+			if(constituencyStatus.equalsIgnoreCase("proccessing") || constituencyStatus.equalsIgnoreCase("completed"))
+			{				
+				List<Object[]> completedList = surveyCompletedLocationsDAO.getCompletedConstituencyDetails();  // completed constituency List
+				
+				if(completedList != null && completedList.size()>0)
+				{
+					for (Object[] param : completedList) {
+						
+						compeletedConsIds.add((Long) param[0]);
+						
+						if(constituencyIds.contains((Long) param[0]))
+						{
+							constituencyIds.remove((Long) param[0]);
+						}						
+					}
+				}
+			}
+			
+			if(constituencyStatus.equalsIgnoreCase("completed"))
+			{
+				constituencyIds.clear();
+				constituencyIds.addAll(compeletedConsIds);
+			}
+			
+			
+			if(constituencyStatus.equalsIgnoreCase("verified"))
+			{
+				//List<Object[]> dvVerifiedConstiInfo = surveyCompletedLocationsDAO.getSurveyCompletedLocations();
+				List<Object[]> verifierDetails = surveyCallStatusDAO.getConstituencyWiseBoothsCount();
+				Set<Long> constIds = new HashSet<Long>();
+				
+				if(verifierDetails != null && verifierDetails.size()>0)
+				{
+					for (Object[] constituency : verifierDetails) 
+					{
+						constIds.add((Long) constituency[0]);
+					}
+				}
+				
+				constituencyIds.clear();
+				constituencyIds.addAll(constIds);
+			}
+			
+			
+			Map<Long,String> constituencyDetailsMap = new HashMap<Long, String>();
+			Map<Long,Long> processingBoothsMap = new LinkedHashMap<Long, Long>();
+			
+			 List<Object[]> processingConstnsDtls = surveyDetailsInfoDAO.getDcProcessingConstituencyList(constituencyIds);
+			    
+			    Map<Long,Set<Long>> boothDtlsMap = new HashMap<Long, Set<Long>>();
+			    
+			    if(processingConstnsDtls != null && processingConstnsDtls.size() >0)
+			    {
+			    	for(Object[] obj:processingConstnsDtls)
+			    	{
+			    		constituencyDetailsMap.put((Long)obj[0], obj[1].toString());
+			    		
+			    		if(!constituencyIds.contains((Long)obj[0]))
+			    		  constituencyIds.add((Long)obj[0]);
+			    		
+			    		Set<Long> booths = null;
+			    		if(boothDtlsMap.get((Long)obj[0]) != null)
+			    		{
+			    			booths = boothDtlsMap.get((Long)obj[0]);
+			    			
+			    		}else
+			    		{
+			    			booths = new java.util.HashSet<Long>();
+				    		boothDtlsMap.put((Long)obj[0], booths);
+
+			    		}
+			    		booths.add((Long)obj[2]);
+			    	}
+			    }
+				
+			    for(Entry<Long,Set<Long>> entry:boothDtlsMap.entrySet())
+			    {
+			    	processingBoothsMap.put(entry.getKey(), new Long(entry.getValue().size()));
+			    	
+			    }
+			
+			// total booths details start
+			List<Object[]> boothDtls = boothDAO.getTotalBoothsCountByConstituencyIds(constituencyIds,IConstants.VOTER_DATA_PUBLICATION_ID);
+			
+			Map<Long,Long> totalBoothsMap = new LinkedHashMap<Long, Long>();
+			
+			if(boothDtls != null && boothDtls.size()>0)
+			{
+				for(Object[] obj:boothDtls)
+					totalBoothsMap.put((Long)obj[1], (Long)obj[0]);
+			}
+			
+			List<Object[]> completedList = surveyCompletedLocationsDAO.getCompletedBoothsDetailsByConstituencyIds(constituencyIds);
+			Map<Long,Long> completedBoothsMap = new LinkedHashMap<Long, Long>();
+			
+			if(completedList != null && completedList.size()> 0)
+			{
+				for(Object[] obj:completedList)
+					completedBoothsMap.put((Long)obj[1], (Long)obj[0]);
+				
+			}
+			
+			
+			Map<Long,Long> datacollectedCountMap = new HashMap<Long, Long>();
+			List<Object[]> list = surveyDetailsInfoDAO.getDataCollectedCountForConstituency(constituencyIds);
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					datacollectedCountMap.put((Long)params[0],(Long) params[1]);
+				}
+			}
+
+			List<Object[]> votersCountList = surveyConstituencyTempDAO.getTotalVotersAndBoothsByConstituencyes(constituencyIds);
+			Map<Long,Long> votersCountMap = new HashMap<Long, Long>();
+			
+			for(Object[] obj:votersCountList)
+				votersCountMap.put((Long)obj[0],(Long) obj[2]);
+			
+			List<Long> thitdPartyConstns = surveyDetailsInfoDAO.getThirdPartyStartedConstituencies();
+			
+			
+			for(Long constituencyId:constituencyIds)
+			{
+				SurveyReportVO constituencyVO = new SurveyReportVO();
+				constituencyVO.setId(constituencyId);
+				constituencyVO.setName(constituencyDetailsMap.get(constituencyId));
+				constituencyVO.setTotal(totalBoothsMap.get(constituencyId));
+				constituencyVO.setCompletedCount(completedBoothsMap.get(constituencyId) != null ?completedBoothsMap.get(constituencyId):0L);				
+				constituencyVO.setProcessingCount(processingBoothsMap.get(constituencyId) != null ?processingBoothsMap.get(constituencyId)-constituencyVO.getCompletedCount():0L);
+				constituencyVO.setNotStartedCount(constituencyVO.getTotal() - (constituencyVO.getProcessingCount()+constituencyVO.getCompletedCount()));
+				constituencyVO.setTotalVoters(votersCountMap.get(constituencyId));
+				constituencyVO.setTotalCollectedCount(datacollectedCountMap.get(constituencyVO.getId()) != null ? datacollectedCountMap.get(constituencyVO.getId()) : 0);
+				if(thitdPartyConstns != null)
+				constituencyVO.setForThirdParty(thitdPartyConstns.contains(constituencyId) ? true:false);
+		
+				returnList.add(constituencyVO);
+			}
+			
+			
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception raised in getConstituencysReportByStatus() service method");
+		}		
+		return returnList;
 	}
 }
