@@ -1640,9 +1640,9 @@ function getSurveyCompletedLocationsDetailsForSurveyStartedConstituencies()
 }
 function buildingSurveyCompletedLocationsDetailsForSurveyStartedConstituencies(result)
 {
-	// document.getElementById("popupImgid1").style.display="none";
+	 document.getElementById("popupImgid1").style.display="none";
 	 $("#buldingConstituenciesDivId").html('');
-	 $('#constituencyOverView').html('')
+	 $('#constituencyOverView').html('');
 	var str='';
 	str += '<h4>Constituency Wise Processing Status</h4>';
 	str+='<table class=" m_top20 table table-bordered table-hover table-striped" id="constituencyOverView">';
@@ -1773,9 +1773,9 @@ function getSurveyCompletedDetails()
 			}).done(function(result){
 				if(result != null)
 				{
-					$('#startedConsti').html(result.startedCount);
-					$('#processConsti').html(result.processingCount);
-					$('#CompletedConsti').html(result.completedCount);
+					$('#startedConsti').html('<a href="javascript:{getConstituencysReport(\'started\');}" style="color:#0174DF;">'+result.startedCount+'<a>');
+					$('#processConsti').html('<a href="javascript:{getConstituencysReport(\'proccessing\');}" style="color:#0174DF;">'+result.processingCount+'<a>');
+					$('#CompletedConsti').html('<a href="javascript:{getConstituencysReport(\'completed\');}" style="color:#0174DF;">'+result.completedCount+'<a>');
 					$('#totConsti').html(207);
 					if(result.started != null && result.started.length > 0)
 					{
@@ -2028,16 +2028,16 @@ function getBigPictureDetails(stateId)
 				$('#totalBooths').html(result.totalBooths);
 				$('#totalConstituencyes').html(result.totalConstituencyes);
 				
-				$('#dcVoters').html('<a href="javascript:{openConstituencyWiseWindow(1,\'DATA COLLECTION \')}">'+result.dcVotersCount+'</a>');
-				$('#wmVoters').html('<a href="javascript:{openConstituencyWiseWindow(0,\'VERIFICATION\')}">'+result.verifierVotersCount+'</a>');
-				$('#qcVoters').html('<a href="javascript:{openConstituencyWiseWindow(10,\'QC VERIFICATION\')}">'+result.qcVotersCount+'</a>');
+				$('#dcVoters').html('<a href="javascript:{openConstituencyWiseWindow(1,\'DATA COLLECTION \')}" style="color:#0174DF;">'+result.dcVotersCount+'</a>');
+				$('#wmVoters').html('<a href="javascript:{openConstituencyWiseWindow(0,\'VERIFICATION\')}" style="color:#0174DF;">'+result.verifierVotersCount+'</a>');
+				$('#qcVoters').html('<a href="javascript:{openConstituencyWiseWindow(10,\'QC VERIFICATION\')}" style="color:#0174DF;">'+result.qcVotersCount+'</a>');
 				
 				$('#dcBooths').html(result.dcBoothsCount);
 				$('#wmBooths').html(result.verifierBoothsCount);
 				$('#qcBooths').html(result.qcBoothsCount);
 				
 				$('#dcConstituecyes').html(result.dcConstituencysCount);
-				$('#wmConstituencyes').html(result.verifierConstituencyCount);
+				$('#wmConstituencyes').html('<a href="javascript:{getConstituencysReport(\'verified\');}" style="color:#0174DF;">'+result.verifierConstituencyCount+'</a>');
 				$('#qcConstituencyes').html(result.qcConstituencyesCount);
 				
 				$('#dcVotersPerc').html(result.dcPercentage);
@@ -2484,4 +2484,27 @@ tableToExcel(id, 'Users Report');
 function openInternalConstituencyWiseWindow(userTypeId,searchType)
 {
 	window.open("surveyConstituencieOverview.action?constituencyId=1&regionId="+internalRegionId+"&userTypeId="+userTypeId+"&startDate="+$('#internalVerificationFromDate').val()+"&endDate="+$('#internalVerificationToDate').val(), "_blank");
+}
+
+function getConstituencysReport(constiStatus)
+{
+		$('#constituencyOverView').html('');
+		$("#popupImgid1").show();
+		$('html, body').animate({
+        scrollTop: $('#buldingConstituenciesDivId').offset().top
+		}, 2000);
+		
+	var jsobj = {
+					searchType : constiStatus,
+					task: "getConstitencies"
+				}
+$.ajax({
+		type:'GET',
+		url: 'getConstituencysReportAction.action',
+		dataType: 'json',
+		data: {task:JSON.stringify(jsobj)},
+	}).done(function(result){
+		//console.log(result);
+		buildingSurveyCompletedLocationsDetailsForSurveyStartedConstituencies(result)
+	});
 }
