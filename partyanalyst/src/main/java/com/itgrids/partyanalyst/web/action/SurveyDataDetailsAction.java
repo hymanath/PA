@@ -2411,6 +2411,22 @@ public String getPanchayatsStatusDetails()
 		}
 		return Action.SUCCESS;
   	}
+
+  	public String getConstituencysReport()
+  	{
+  		LOG.debug("Entered Into getConstituencysReport() in SurveyDataDetailsAction class. ");
+  		
+		try	{
+			jObj = new JSONObject(getTask());
+			
+			reportList =  surveyCompletedDetailsService.getConstituencysReportByStatus(jObj.getString("searchType"));
+			
+		}catch(Exception e){
+			LOG.error("Exception Raised in getConstituencysReport() in SurveyDataDetailsAction class."+e);
+		}
+		return Action.SUCCESS;
+  		
+  	}
   	
 	
 }
