@@ -260,4 +260,17 @@ public class SurveyCompletedLocationsDAO extends GenericDaoHibernate<SurveyCompl
 		
 	}
 	
+	public List<Object[]> getCompletedConstituencyDetails()
+	{
+		
+		Query query = getSession().createQuery("select  distinct C.constituencyId,C.name" +
+				" from SurveyCompletedLocations SCL , Constituency C " +
+				" where SCL.locationValue = C.constituencyId and SCL.locationScopeId = :constituencyScopeId ");
+		
+		query.setParameter("constituencyScopeId", IConstants.CONSTITUENCY_SCOPE_ID);
+
+		
+		return query.list();
+	}
+	
 }
