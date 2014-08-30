@@ -2357,4 +2357,20 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		return query.list();
 	}
 	
+	
+	public List<Object[]> getDcProcessingConstituencyList(List<Long> constituencyIds)
+	{
+		Query query = getSession().createQuery(	" select SDI.booth.constituency.constituencyId, " +
+						" SDI.booth.constituency.name ,SDI.booth.boothId " +
+						" from SurveyDetailsInfo SDI where " +
+						" SDI.surveyUser.surveyUserType.surveyUsertypeId = :userTypeId  and SDI.booth.constituency.constituencyId in (:constituencyIds) " +
+						" group by SDI.booth.boothId ");
+		
+		query.setParameter("userTypeId", IConstants.DATA_COLLECTOR_ROLE_ID);
+		query.setParameterList("constituencyIds",constituencyIds);
+		
+		return query.list();
+				
+	}
+
 }
