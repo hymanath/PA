@@ -204,6 +204,8 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 
 	public List<Object[]> getBoothWiseCollectedDetailsForConstituencyByUserTypeAndCollectedType(
 			Long constituencyId, Long surveyUserTypeId, String collectedType);
-
+	
+	public List<Object[]> getDcProcessingConstituencyList(List<Long> constituencyIds);
+	
 }
 
