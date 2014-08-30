@@ -7470,6 +7470,12 @@
 				<param name="root">resultVO</param>
 			</result>
 		</action>
+				
+		<action name="getConstituencysReportAction" class="surveyDataDetailsAction" method="getConstituencysReport">
+			<result type="json" name="success">
+				<param name="root">reportList</param>
+			</result>
+		</action>
 		
 		<action name="updateServeyUserRelationDetailsAction" class="surveyDataDetailsAction" method="updateServeyUserRelationDetails">
 			<result type="json" name="success">
