@@ -7167,8 +7167,15 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 	
 	public List<Object[]> getVoterDetailsByBoothID(List<Long> boothId)
 	{
-		Query query = getSession().createQuery("select model.voter.voterId , model.voter.name,model.voter.voterIDCardNo," +
-				" model.voter.houseNo,model.boothId,model.voter.relativeName ,model.booth.partNo ,model.booth.panchayat.panchayatName  from  BoothPublicationVoter model " +
+		Query query = getSession().createQuery("select model.voter.voterId ," +
+				" model.voter.name," +
+				" model.voter.voterIDCardNo," +
+				" model.voter.houseNo," +
+				" model.boothId," +
+				" model.voter.relativeName ," +
+				" model.booth.partNo " +
+			//	" ,model.booth.panchayat.panchayatName  " +
+				" from  BoothPublicationVoter model " +
 				" where model.boothId in (:boothId)");
 		query.setParameterList("boothId", boothId);
 		return query.list();
