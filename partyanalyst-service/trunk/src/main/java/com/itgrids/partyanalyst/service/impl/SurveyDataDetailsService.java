@@ -3389,6 +3389,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					if(userType != null && userType.longValue() == 1l)
 					{
 						 verifiedList = surveyCallStatusDAO.getSurveyCallDtalsByboothId(boothId,surveyUserId);
+						 verifiedList.addAll(surveyCallStatusDAO. getSurveyCallDtalsByboothId(boothId,null)); // DC not collected , WM collected and verified by mobile no.
 					}
 					else
 					{
@@ -3419,9 +3420,11 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 							}
 						}
 						verifiedList = surveyCallStatusDAO.getDvSurveyCallDtalsByboothId(boothId,surveyUserId);
+						
+						verifiedList.addAll(surveyCallStatusDAO. getDVSurveyCallDtalsByboothId(boothId,null)); 
 					}
 					
-					verifiedList.addAll(surveyCallStatusDAO. getSurveyCallDtalsByboothId(boothId,null)); // DC not collected , WM collected and verified by mobile no.
+					//verifiedList.addAll(surveyCallStatusDAO. getSurveyCallDtalsByboothId(boothId,null)); // DC not collected , WM collected and verified by mobile no.
 					 
 					Map<Long,String> mobileMatched = new HashMap<Long,String>();
 					Map<Long,String> casteMatched = new HashMap<Long,String>();
