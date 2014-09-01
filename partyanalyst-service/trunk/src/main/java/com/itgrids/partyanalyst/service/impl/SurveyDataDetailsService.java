@@ -3421,7 +3421,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 						}
 						verifiedList = surveyCallStatusDAO.getDvSurveyCallDtalsByboothId(boothId,surveyUserId);
 						
-						verifiedList.addAll(surveyCallStatusDAO. getDVSurveyCallDtalsByboothId(boothId,null)); 
+						verifiedList.addAll(surveyCallStatusDAO. getDVSurveyCallDtailsByboothId(boothId,null)); 
 					}
 					
 					//verifiedList.addAll(surveyCallStatusDAO. getSurveyCallDtalsByboothId(boothId,null)); // DC not collected , WM collected and verified by mobile no.
