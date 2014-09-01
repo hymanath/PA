@@ -2372,5 +2372,20 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		return query.list();
 				
 	}
-
+	
+	public List<Object[]> getDaywiseDCReport(List<Long> constituencyIDs, Date reportDate)
+	{
+		
+		StringBuilder queryStr= new StringBuilder();
+		
+		queryStr.append(" select SU.surveyUserId, SU.userName,B.constituency.constituencyId, B.constituency.name,B.boothId, B.partNo, " +
+				" min(SDI.insertedTime), max(SDI.insertedTime), count(distinct SDI.voterId)   from SurveyDetailsInfo SDI, Booth B, SurveyUser SU  where " +
+				" SDI.booth.constituency.constituencyId in (:constituencyIDs) and " +
+				" date(SDI.insertedTime) = :reportDate group by SDI.booth.boothId order by min(SDI.insertedTime) asc ");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		return query.list();		
+	}
+	
 }
