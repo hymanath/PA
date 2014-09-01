@@ -3644,7 +3644,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 									VO.setVoterId(parms[0] != null ? (Long)parms[0]: null  );
 									VO.setHouseNo(parms[3] != null ? parms[3].toString() : "");
 									VO.setPartNo(parms[6] != null ? parms[6].toString() : "");
-									VO.setPanchayatName(parms[7] != null ? parms[7].toString() : "");
+									//VO.setPanchayatName(parms[7] != null ? parms[7].toString() : "");
 									if(mobileNoMap.get((Long)parms[0]) != null)
 									{
 										VO.setMobileNO(mobileNoMap.get((Long)parms[0]));
