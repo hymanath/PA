@@ -45,15 +45,19 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 	private String startDate;
 	private String endDate;
 	
-	@Autowired
 	private ICtpDashBoardService ctpDashBoardService;
 	
+	public ICtpDashBoardService getCtpDashBoardService() {
+		return ctpDashBoardService;
+	}
 
-	
+	public void setCtpDashBoardService(ICtpDashBoardService ctpDashBoardService) {
+		this.ctpDashBoardService = ctpDashBoardService;
+	}
+
 	public List<GenericVO> getBoothWiseUserLocations() {
 		return boothWiseUserLocations;
 	}
-
 
 	public void setBoothWiseUserLocations(List<GenericVO> boothWiseUserLocations) {
 		this.boothWiseUserLocations = boothWiseUserLocations;
