@@ -691,7 +691,7 @@ public String ajaxCallForLoginPopup(){
 					session.setAttribute(IWebConstants.FREE_USER_ROLE, true);
 					hasFreeUserRole = true;
 				}
-				List<String> activeUserSessionIds = loginService.deActivateAllOtherSimultaneousSessions(regVO.getRegistrationID());
+				//List<String> activeUserSessionIds = loginService.deActivateAllOtherSimultaneousSessions(regVO.getRegistrationID());
 				saveUserSessionDetails(IWebConstants.LOGIN);
 			}
 			
