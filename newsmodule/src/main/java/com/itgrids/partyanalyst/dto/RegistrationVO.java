@@ -64,6 +64,8 @@ public class RegistrationVO extends BaseDTO{
 	private String cadreOnlineRegFor;
 	private Long cadreRegiserForId;	
 	private String userAccessType;
+	private String homeUrl;
+	private Long usrDeptId;
 	
 	public String getLoginRestriction() {
 		return loginRestriction;
@@ -477,6 +479,22 @@ public class RegistrationVO extends BaseDTO{
 
 	public void setUserAccessType(String userAccessType) {
 		this.userAccessType = userAccessType;
+	}
+
+	public String getHomeUrl() {
+		return homeUrl;
+	}
+
+	public void setHomeUrl(String homeUrl) {
+		this.homeUrl = homeUrl;
+	}
+
+	public Long getUsrDeptId() {
+		return usrDeptId;
+	}
+
+	public void setUsrDeptId(Long usrDeptId) {
+		this.usrDeptId = usrDeptId;
 	}
 
 	

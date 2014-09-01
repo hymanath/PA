@@ -16,23 +16,7 @@
     			class="org.apache.struts2.views.jasperreports.JasperReportsResult"/>
 		</result-types>
 	
-	<!-- <interceptors>  
-        <interceptor name="userTrack" class="com.itgrids.partyanalyst.web.interceptor.UserTrackingInterceptor" />
-          
-        <interceptor-stack name="userTrackStack">  
-             <interceptor-ref name="userTrack"/>
-			 <interceptor-ref name="defaultStack"/>
-		</interceptor-stack> 
-         
-    </interceptors>  
-  <default-interceptor-ref name="userTrackStack"></default-interceptor-ref>
-     -->
 	
- 	<!--For each result that should go to a Tiles page, add a type attribute
-		-->
-		<!--result type="tiles" name="input">admin.login</result-->
-	<!--  <default-action-ref name="homePage"></default-action-ref> -->
-	 <!--<default-action-ref name="homePage"/>   -->
 	<global-results>
         <result name="exception">jsp/globalError.jsp</result>
     </global-results>
@@ -63,7 +47,7 @@
 		    <result name="success">/jsp/newhomePage.jsp</result>
 		    <result name="error" type="redirect" >loginPageAction.action</result>
 		    <result name="noAccess">/jsp/globalError.jsp</result>
-		    <result name="input" type="redirect" >partyManagementAction.action</result>
+		    <result name="urlToRedirect" type="redirect" >${redirectUrl}</result>
 		</action>
 	
 		<action name="loginInputAction" class="loginInputAction">
@@ -5354,6 +5338,7 @@
 		<action name="loginPageAction" class="loginPageAction">
 		  <result name="error">/jsp/homePage.jsp</result>
 		  <result name="success" type="redirect">homePage.action</result>
+		   <result name="urlToRedirect" type="redirect">${redirectUrl}</result>
 		</action>
 		
 		<action name="getAllNewsForAUser" class="newsDisplayAction"  method="getAllNewsForAUser">
@@ -6345,7 +6330,12 @@
 		  <result type="json" name="success">
 		    	<param name="root">resultStatus</param>
 		   </result>
-		</action>
+		</action>		 
+		 <action name="getAllEntitlements" class="anonymousUserAction" method="getEntitlements">
+					<result type="json" name="success">
+		    			<param name="root">statesList</param>
+		    		</result>
+		 </action>
         </package>
 		
 </struts>      

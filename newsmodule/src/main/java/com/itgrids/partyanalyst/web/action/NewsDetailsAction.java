@@ -286,8 +286,9 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 		session = request.getSession();
         RegistrationVO user = (RegistrationVO)session.getAttribute("USER"); 
         if(user == null)
-         return ERROR;
-        else
+           return ERROR;
+        else if(!user.getUserRoles().contains("ALLNEWS"))
+           return "noAccess";
          return Action.SUCCESS;
 	}
 	

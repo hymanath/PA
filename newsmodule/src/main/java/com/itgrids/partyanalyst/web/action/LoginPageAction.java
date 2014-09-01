@@ -25,6 +25,7 @@ public class LoginPageAction extends ActionSupport implements ServletContextAwar
 	private ServletContext context;
 	private HttpServletResponse response;
 	private ILoginService loginService;
+	private String redirectUrl;
 
 	public ILoginService getLoginService() {
 		return loginService;
@@ -46,6 +47,14 @@ public class LoginPageAction extends ActionSupport implements ServletContextAwar
 		this.response = response;
 	}
 	
+	public String getRedirectUrl() {
+		return redirectUrl;
+	}
+
+	public void setRedirectUrl(String redirectUrl) {
+		this.redirectUrl = redirectUrl;
+	}
+
 	public String execute()
 	{
 		session = request.getSession();
@@ -54,7 +63,8 @@ public class LoginPageAction extends ActionSupport implements ServletContextAwar
 		if(user == null)
 			return ERROR;
 		
-		return SUCCESS;
+		redirectUrl = user.getHomeUrl();
+    	return "urlToRedirect";    
 	}
 
 	

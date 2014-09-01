@@ -92,7 +92,7 @@ public String ajaxCallForLoginPopup(){
 			
 			if(resultStatus.getResultCode() == 0)
 			{
-				System.out.println("success");
+				
 				RegistrationVO regVO = loginService.getUserByUserNameAndPassword(userName, password);
 				session.setAttribute("USER", regVO);
 				
@@ -102,11 +102,10 @@ public String ajaxCallForLoginPopup(){
 					resultStatus.setResultCode(3);
 				if(regVO.getUserAccessType().equalsIgnoreCase("pfb"))
 					resultStatus.setResultCode(4);
+				
+				resultStatus.setMessage(regVO.getHomeUrl());
 			} 
-			else
-			{
-				System.out.println("failure");
-			}
+			
 			
 		}
 		

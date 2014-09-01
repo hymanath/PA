@@ -475,7 +475,9 @@ public String execute()
 		
 		/*departmentsList = staticDataService.getDepartments();
 		newsTypesList = staticDataService.getNewsTypes();*/
-		
+		if(!registrationVO.getUserRoles().contains("NEWSUPLOAD")){
+        	return "noAccess";
+		}
 		
 	// if("Admin".equalsIgnoreCase(registrationVO.getUserType()) || "subuser".equalsIgnoreCase(registrationVO.getUserType())  )
 		 if("Admin".equalsIgnoreCase(registrationVO.getUserAccessType()) || "subuser".equalsIgnoreCase(registrationVO.getUserAccessType())  )

@@ -148,6 +148,8 @@ public class NewsActivitiesAction extends ActionSupport implements ServletReques
 			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 			if(regVO == null){
 				return Action.ERROR;
+			}else if(!regVO.getUserRoles().contains("ACTIVITIES")){
+	        	return "noAccess";
 			}
 			districtsList =  staticDataService.getDistricts(0l);
 			return Action.SUCCESS;

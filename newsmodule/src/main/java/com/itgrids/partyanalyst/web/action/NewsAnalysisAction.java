@@ -386,11 +386,8 @@ public class NewsAnalysisAction extends ActionSupport implements ServletRequestA
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		if(regVO == null){
 			return Action.ERROR;
-		}else if(regVO.getUserAccessType() == null){
-		  return "fail";
-		}else if(!regVO.getUserAccessType().equalsIgnoreCase("Admin")){
-        	return "input";
-		}
+		}else if(!regVO.getUserRoles().contains("ANALYSIS"))
+        	return "noAccess";
 		
 		ConstituencyInfoVO constituencyInfoVO = staticDataService.getConstituenciesByElectionTypeAndStateId(2L,0L);
 		 ConstituencyInfoVO parliamantConstis = staticDataService.getConstituenciesByElectionTypeAndStateId(1L,0L);

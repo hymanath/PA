@@ -68,6 +68,7 @@ public class User extends BaseModel implements Serializable{
 	private Set<UserRoles> userRoles = new HashSet<UserRoles>(0);
 	private Set<File> files = new HashSet<File>();
 	private Role role;
+	private String projectType;
 	
 	private Set<UserEntitlementGroupRegion> userEntitlementGroupRegions = new HashSet<UserEntitlementGroupRegion>(0);
 	
@@ -510,6 +511,14 @@ public class User extends BaseModel implements Serializable{
 
 	public void setRole(Role role) {
 		this.role = role;
+	}
+	
+	@Column(name = "project_type")
+	public String getProjectType() {
+		return projectType;
+	}
+	public void setProjectType(String projectType) {
+		this.projectType = projectType;
 	}
 	
 	

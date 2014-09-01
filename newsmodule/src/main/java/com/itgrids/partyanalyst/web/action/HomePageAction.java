@@ -48,35 +48,29 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	
 	private HttpServletRequest request;
 	private List<SelectOptionVO> statesList,statesListForLocalBodyElection;
-	//private IStaticDataService staticDataService;
-	//private List<StateElectionsVO> stateElections;
+	
 	private HttpSession session;
 	private String task = null;
 	JSONObject jObj = null;
-	//private IStatePageService statePageService;
-	//private IRegionServiceData regionServiceDataImp;
+	
 	private ICandidateDetailsService candidateDetailsService ;
 	private List<SelectOptionVO> constituenciesList;
-	//private IProblemManagementReportService problemManagementReportService;
-	//private List<ProblemBeanVO> problemsList;
+	
 	private String loginStatus;
 	private ServletContext context;
 	private Map<String, List<FileVO>> resultMap ;
 	private String changedUserName = "false";
 	private String feedback = "true"; 
-   // private IProblemManagementService problemManagementService;
+   
 	private Long problemCount;
-	//private IOpinionPollService opinionPollService;
-	//private IAnanymousUserService ananymousUserService;
-	//private QuestionsOptionsVO questionsOptionsVO;
+	
 	private boolean notLogged ;
 
 	private OpinionPollVO opinionPollVO;
 //	private QuestionsOptionsVO questionsAndChoicesPercentage;
 	private Long freeUserConstituencyId;
 	private List<SelectOptionVO> states,candidatesList,candidatesList1;
-	//private List<SpecialPageVO> specialPageVOList;
-	//private ISpecialPageService specialPageService;
+	
 	private String homePageLoadingFirstTime;
 	private List<FileVO> fileList;
 	private List<FileVO> fileVOsList,responseFilesList;
@@ -91,6 +85,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private boolean tempVarable;
 	private String candidateName;
 	private List<SelectOptionVO> keywordsList;
+	private String redirectUrl;
 	
 	
 	private List<SelectOptionVO> gallariesList = new ArrayList<SelectOptionVO>();
@@ -210,16 +205,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	public void setOpinionPollVO(OpinionPollVO opinionPollVO) {
 		this.opinionPollVO = opinionPollVO;
 	}
-/*
-	public IOpinionPollService getOpinionPollService() {
-		return opinionPollService;
-	}
 
-	public void setOpinionPollService(IOpinionPollService opinionPollService) {
-		this.opinionPollService = opinionPollService;
-	}
-
-*/
 	
 	public void setResultMap(Map<String, List<FileVO>> resultMap) {
 		this.resultMap = resultMap;
@@ -289,25 +275,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	}
 	
 	
-	/*public IStaticDataService getStaticDataService() {
-		return staticDataService;
-	}
-
-
-	public void setStaticDataService(IStaticDataService staticDataService) {
-		this.staticDataService = staticDataService;
-	}	
-*/
-/*
-	public List<StateElectionsVO> getStateElections() {
-		return stateElections;
-	}
-
-
-	public void setStateElections(List<StateElectionsVO> stateElections) {
-		this.stateElections = stateElections;
-	}
-*/
+	
 	public HttpSession getSession() {
 		return session;
 	}
@@ -335,28 +303,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	public void setJObj(JSONObject obj) {
 		jObj = obj;
 	}
-/*
-	public IStatePageService getStatePageService() {
-		return statePageService;
-	}
 
-
-	public void setStatePageService(IStatePageService statePageService) {
-		this.statePageService = statePageService;
-	}
-
-	
-
-	public IRegionServiceData getRegionServiceDataImp() {
-		return regionServiceDataImp;
-	}
-
-
-	public void setRegionServiceDataImp(IRegionServiceData regionServiceDataImp) {
-		this.regionServiceDataImp = regionServiceDataImp;
-	}
-
-*/
 	public List<SelectOptionVO> getConstituenciesList() {
 		return constituenciesList;
 	}
@@ -366,35 +313,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		this.constituenciesList = constituenciesList;
 	}
 	
-	/*public IProblemManagementReportService getProblemManagementReportService() {
-		return problemManagementReportService;
-	}
-
-
-	public void setProblemManagementReportService(
-			IProblemManagementReportService problemManagementReportService) {
-		this.problemManagementReportService = problemManagementReportService;
-	}
-
-*/
-	/*public List<ProblemBeanVO> getProblemsList() {
-		return problemsList;
-	}
-
-
-	public void setProblemsList(List<ProblemBeanVO> problemsList) {
-		this.problemsList = problemsList;
-	}
-*/
-	/*public IProblemManagementService getProblemManagementService() {
-		return problemManagementService;
-	}
-
-	public void setProblemManagementService(
-			IProblemManagementService problemManagementService) {
-		this.problemManagementService = problemManagementService;
-	}
-*/
+	
 	public Long getProblemCount() {
 		return problemCount;
 	}
@@ -411,36 +330,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		this.freeUserConstituencyId = freeUserConstituencyId;
 	}
 
-	/*public IAnanymousUserService getAnanymousUserService() {
-		return ananymousUserService;
-	}
-
-	public void setAnanymousUserService(IAnanymousUserService ananymousUserService) {
-		this.ananymousUserService = ananymousUserService;
-	}
-	*/
-	/*public QuestionsOptionsVO getQuestionsOptionsVO() {
-		return questionsOptionsVO;
-	}
-	public void setQuestionsOptionsVO(QuestionsOptionsVO questionsOptionsVO) {
-		this.questionsOptionsVO = questionsOptionsVO;
-	}
-	*/
-/*	public List<SpecialPageVO> getSpecialPageVOList() {
-		return specialPageVOList;
-	}
-	public void setSpecialPageVOList(List<SpecialPageVO> specialPageVOList) {
-		this.specialPageVOList = specialPageVOList;
-	}*/
-		
-/*	public ISpecialPageService getSpecialPageService() {
-		return specialPageService;
-	}
-	public void setSpecialPageService(ISpecialPageService specialPageService) {
-		this.specialPageService = specialPageService;
-	}
 	
-	*/
 	public Long getOnlineRegId() {
 		return onlineRegId;
 	}
@@ -508,36 +398,27 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	public void setKeywordsList(List<SelectOptionVO> keywordsList) {
 		this.keywordsList = keywordsList;
 	}
+	
+	
+	public String getRedirectUrl() {
+		return redirectUrl;
+	}
+	public void setRedirectUrl(String redirectUrl) {
+		this.redirectUrl = redirectUrl;
+	}
 	public String execute()
 	{	
         request.setAttribute("notLogged",notLogged);
         session = request.getSession();
         RegistrationVO user = (RegistrationVO)session.getAttribute("USER"); 
-        if(user == null)
+        if(user == null){
          return ERROR;
-        if(user.getUserAccessType() != null && user.getUserAccessType().equalsIgnoreCase("subuser"))
-        	return "input";
-        if(user.getUserAccessType() != null && !user.getUserAccessType().equalsIgnoreCase("Admin"))
-        	return "noAccess";
-        String newsType = "Public"; 
-		 if(user.getUserAccessType()!=null)
-			 if(user.getUserAccessType().equals("Admin"))
-				 newsType = "";      
-		//latestGallariesList = candidateDetailsService.getLatestgallaries();
-		//resultMap = candidateDetailsService.getPhotosNewsVideosUpdateForACandidate(0,10,"",newsType);
-		//fileList  = candidateDetailsService.getVideosForSelectedParty(IConstants.TDPID,newsType);
-		//responseFilesList=candidateDetailsService.getLatestResponsedNews();
-		
-		//fileVOsList = candidateDetailsService.getRecentlyUploadedNewsTitles(0, 5, "News Gallary",872L,newsType);
-		
-		
-		
-		//keywordsList = candidateDetailsService.getTotalKeyWords(IConstants.TDPID,newsType);
-		//categoriesList = candidateDetailsService.getAllCategories(); 
-		//newsGallariesList = candidateDetailsService.getAllNewsGallaries(); 
-		
-		//gallariesList = candidateDetailsService.getLatestGalleries();
-		return Action.SUCCESS;
+        }else if(user.getUserRoles().contains("HOMEPAGE")){
+        	return Action.SUCCESS;
+        }else{
+        	redirectUrl = user.getHomeUrl();
+        	return "urlToRedirect";      	
+        }
 	}
 	
 	public String getResponseFileList(){
@@ -722,21 +603,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		return Action.SUCCESS;
 	}
 	
-	/*public String getSelectdGalleryDetails()
-	{
-		try {
-			session = request.getSession();
-	        RegistrationVO user = (RegistrationVO)session.getAttribute("USER"); 
-	        if(user == null)
-	         return ERROR;
-	        jObj = new JSONObject(getTask());
-	        Long galleryId = jObj.getLong("galleryId");
-	        galleriesDetails = candidateDetailsService.getSelectedGallaryDetails(galleryId);
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		return Action.SUCCESS;
-	}*/
+	
 	
 	public String ajaxHandler1()
 	{
