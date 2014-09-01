@@ -62,6 +62,28 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 		return query.list();		
 	}
 	
+
+	public List<Object[]> getDVSurveyCallDtailsByboothId(Long boothId,Long surveyUserId){
+		
+		StringBuffer queryString = new StringBuffer();
+		
+		queryString.append("select distinct model.voter.voterId, model.dvMobileNoStatus, model.dvMatchedStatus,model.dvCasteState.casteStateId,model.dvhamletStatus,model.dvHamletId,model.dvWardStatus,model.dvWardId  from SurveyCallStatus model" +
+				" where model.booth.boothId =:boothId ");
+		
+		if(surveyUserId != null && surveyUserId.longValue() != 0l)
+			queryString.append("and model.surveyUser.surveyUserId = :surveyUserId ");
+		else
+			queryString.append("and model.surveyUser.surveyUserType.surveyUsertypeId = 1 ");
+		
+		Query query = getSession().createQuery(queryString.toString());
+		
+		query.setParameter("boothId", boothId);
+		
+		if(surveyUserId != null && surveyUserId.longValue() != 0l)
+		 query.setParameter("surveyUserId", surveyUserId);
+		return query.list();		
+	}
+
 	public List<Object[]> getDvSurveyCallDtalsByboothId(Long boothId,Long surveyUserId){
 		Query query = getSession().createQuery("select distinct model.voter.voterId, model.dvMobileNoStatus, model.dvMatchedStatus,model.dvCasteState.casteStateId,model.dvhamletStatus,model.dvHamletId,model.dvWardStatus, model.dvWardId  from SurveyCallStatus model" +
 				" where model.booth.boothId =:boothId and model.dvSurveyUser.surveyUserId = :surveyUserId   order by model.surveyCallStatusId");
