@@ -429,6 +429,9 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 			{
 				return Action.ERROR;
 			}
+			if(!regVO.getUserRoles().contains("DEBATE")){
+	        	return "noAccess";
+			}
 			executeBasicDetails();
 		}
 		catch (Exception e) 

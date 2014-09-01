@@ -64,7 +64,7 @@ margin:-1px 0px 0px 0px ;
 
 
 .nav1 li.outerLi{float:left;list-style-type:none;margin:0.4px;position:relative;}
-.nav1 li a.innerA{color:#000;font-weight:bold;display:block;padding:23px;font-family:verdana,arial;font-size:14px;}
+.nav1 li a.innerA{color:#000;font-weight:bold;display:block;padding:22px;font-family:verdana,arial;font-size:14px;}
 
 .nav1 li.outerLi:hover a.innerA{color:red;background:#FFFF00;text-decoration:none;}
 .nav1 li.outerLi:hover{background:#FFFF00;border-bottom:4px solid red;}
@@ -129,7 +129,7 @@ margin:-1px 0px 0px 0px ;
 					   
 						<c:if test="${fn:contains(urlString, 'homePage')}">
    						
-						 <div class="btn-group" id="changePasswordTab" style="margin-left: 264px; margin-top: 5px;" >
+						 <div class="btn-group" id="changePasswordTab" style="margin-left: 87px; margin-top: 5px;" >
 								 <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
                                  <img src="images/userSettings.png" />
                                  <span class="caret"></span>
@@ -159,46 +159,37 @@ margin:-1px 0px 0px 0px ;
 					</div>
 					<!------Menu div-------->
 					<div class="span10" style="margin-top:-15px;height:80px;width:650px;">
-						<ul class="nav1 nav-pills1 navMen pull-right headerMenu" style="width: 680px;">
+					 <ul class="nav1 nav-pills1 navMen pull-right headerMenu" style="width: 680px;">
 
-						<c:if test="${sessionScope.USER != null}">
-						 <c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
+					  <c:if test="${sessionScope.USER != null}">
+						<s:if test="%{'HOMEPAGE' in #session.USER.userRoles}">
 						  <li class="outerLi" id="homeTabId"><a  href="homePage.action" class="innerA">Home</a></li>
-						<!--  <li class=""><a href="aboutUs.action">About Us</a></li>-->
-						 <li class="outerLi" id="newsTabId">
-						  <a href="newsDetailsAction.action" class="innerA">News</a></li>
-						 <!-- <li class="outerLi" id="videosTabId">
-						  <a href="showMoreVideos.action" class="innerA">Videos</a></li>-->
-						 
+						</s:if>
+						<s:if test="%{'ALLNEWS' in #session.USER.userRoles}">
+						  <li class="outerLi" id="newsTabId"><a href="newsDetailsAction.action" class="innerA">News</a></li>
+						</s:if>
+						<s:if test="%{'ANALYSIS' in #session.USER.userRoles}">
 						   <li class="outerLi" id="reportsTabId">
 								<a href="newsAnalysisAction.action" class="innerA">Analysis</a>
-									 <!--<ul>
-										<li><a href="candidateNewsDetailsAction.action?fromDate=&toDate=&requestFor=candidate"><span>Candidate News Report</span></a></li>
-										<li><a href="candidateNewsDetailsAction.action?fromDate=&toDate=&requestFor=opponent"><span>Opponent Party Critics Report</span></a></li>
-									</ul> -->
-							</li>
-							 <li class="outerLi" id="programsTabId">
-								<a href="newsActivitiesAction.action" class="innerA">Activities</a>
-									 <ul>
-										<li style="width:180px;"><a href="activitiesAnalysisAction.action"><span>Political Activities Analysis</span></a></li>
-										<li style="width:180px;"><a href="politicalActivitiesAction.action"><span>Update Political Activities</span></a></li>
-									</ul> 
-							</li> 
-						      <li class="outerLi" id="partyManagementTabId"><a href="partyManagementAction.action" class="innerA">Manage News</a></li>
-							   <li class="outerLi" id="debateTabId"><a href="debateAction.action" class="innerA"> Debate </a>
-							   <!--<ul>
-							   <li  id="debateTabId"><a href="debateAction.action" class=""> Debate </a></li>
-							   <li  id="debateTabId"><a href="politicalFeedBackAction.action" class=""> PFB </a></li>
-							   </ul>-->
-							   </li>
-							 
-						   
-						  
-						  <!--<li class=""><a href="contactUs.action">Contact Us</a></li>-->
-						   </c:if> </c:if>
-						  
-						</ul>
-					</div>
+						   </li>
+						</s:if>
+						<s:if test="%{'ACTIVITIES' in #session.USER.userRoles}">
+						   <li class="outerLi" id="programsTabId"><a href="newsActivitiesAction.action" class="innerA">Activities</a>
+							 <ul>
+								<li style="width:180px;"><a href="activitiesAnalysisAction.action"><span>Political Activities Analysis</span></a></li>
+								<li style="width:180px;"><a href="politicalActivitiesAction.action"><span>Update Political Activities</span></a></li>
+							</ul> 
+						  </li> 
+						</s:if>
+						<s:if test="%{'NEWSUPLOAD' in #session.USER.userRoles}">
+						  <li class="outerLi" id="partyManagementTabId"><a href="partyManagementAction.action" class="innerA">Manage News</a></li>
+						</s:if>
+						<s:if test="%{'DEBATE' in #session.USER.userRoles}">
+						  <li class="outerLi" id="debateTabId"><a href="debateAction.action" class="innerA"> Debate </a></li>
+						</s:if>	 
+					 </c:if>
+					</ul>
+				   </div>
 				</div>
 			</div>
 		</div>
@@ -342,7 +333,7 @@ $("#changePasswordBtn").live("click",function(){
  }
  else if(newPWD.length >0 && newPWD.length < 8)
  {
-  $("#changePasswordInnerDiv").find("#errorMsgDiv").html('New Password Minimum Of 8 Characters.').css("color","red");
+  $("#changePasswordInnerDiv").find("#errorMsgDiv").html('New Password Must Be Minimum Of 8 Characters.').css("color","red");
    return;
  }
  else if(confirmPWD.length==0)
@@ -354,12 +345,12 @@ $("#changePasswordBtn").live("click",function(){
  
  else if(currentPWD == newPWD)
  {
-   $("#changePasswordInnerDiv").find("#errorMsgDiv").html('Your new password is same as existing one').css("color","red");
+   $("#changePasswordInnerDiv").find("#errorMsgDiv").html('Your New Password Is Same As Existing One.').css("color","red");
    return;
  }
  else if(newPWD != confirmPWD)
  {
-   $("#changePasswordInnerDiv").find("#errorMsgDiv").html('New and confirm passwords are not same.').css("color","red");
+   $("#changePasswordInnerDiv").find("#errorMsgDiv").html('New And Confirm Passwords Must Be Same.').css("color","red");
    return;
  }
 

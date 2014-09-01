@@ -5,24 +5,16 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
-import com.itgrids.partyanalyst.model.BaseModel;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "entitlement")
@@ -36,7 +28,8 @@ public class Entitlement extends BaseModel implements Serializable {
 	
 	private Long entitlementId;
 	private String entitlementType;
-	private Set<GroupEntitlementRelation> groupEntitlementRelations = new HashSet<GroupEntitlementRelation>(0);
+	private String name;
+	private String projectType;
 	
 	/** Default Constructor */
 	public Entitlement(){
@@ -49,12 +42,11 @@ public class Entitlement extends BaseModel implements Serializable {
 	}
 
 	/** Parameterized Constructor */
-	public Entitlement(Long entitlementId, String entitlementType,
-			Set<GroupEntitlementRelation> groupEntitlementRelations) {
+	public Entitlement(Long entitlementId, String entitlementType) {
 		super();
 		this.entitlementId = entitlementId;
 		this.entitlementType = entitlementType;
-		this.groupEntitlementRelations = groupEntitlementRelations;
+		
 	}
 
 	@Id
@@ -77,16 +69,25 @@ public class Entitlement extends BaseModel implements Serializable {
 		this.entitlementType = entitlementType;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "entitlement")
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Set<GroupEntitlementRelation> getGroupEntitlementRelations() {
-		return groupEntitlementRelations;
+	@Column(name = "name")
+	public String getName() {
+		return name;
 	}
 
-	public void setGroupEntitlementRelations(
-			Set<GroupEntitlementRelation> groupEntitlementRelations) {
-		this.groupEntitlementRelations = groupEntitlementRelations;
+	public void setName(String name) {
+		this.name = name;
 	}
+
+	@Column(name = "project_type")
+	public String getProjectType() {
+		return projectType;
+	}
+
+	public void setProjectType(String projectType) {
+		this.projectType = projectType;
+	}
+
+	
 
 	
 

@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.service.ILoginService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IRegistrationService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -53,7 +54,7 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 	private IStaticDataService staticDataService;
 	private ConstituencyInfoVO constituencyInfoVO = null;
 	private ConstituencyInfoVO parliamantConstis;
-	private List<SelectOptionVO> districtsList;
+	private List<SelectOptionVO> districtsList,departmentList;
 	private Long districtId;
 	private Long parliamentId;
 	private Long assemblyId;
@@ -61,6 +62,9 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 	private Long stateId;
 	private List<SelectOptionVO> statesList;
 	private IRegionServiceData regionServiceDataImp;
+	private ILoginService loginService;
+	private String userRoleType;
+	private Long usrDeptId;
 	
 	
 	public IRegionServiceData getRegionServiceDataImp() {
@@ -274,6 +278,23 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 	}
 
 
+	public List<SelectOptionVO> getDepartmentList() {
+		return departmentList;
+	}
+
+	public void setDepartmentList(List<SelectOptionVO> departmentList) {
+		this.departmentList = departmentList;
+	}
+
+	public Long getUsrDeptId() {
+		return usrDeptId;
+	}
+
+	public void setUsrDeptId(Long usrDeptId) {
+		this.regVO.setUsrDeptId(usrDeptId);
+		this.usrDeptId = usrDeptId;
+	}
+
 	//@Override
 	public void prepare() throws Exception {
 		
@@ -360,19 +381,26 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 		this.accesslevel = accesslevel;
 	}
 
+	public ILoginService getLoginService() {
+		return loginService;
+	}
+
+	public void setLoginService(ILoginService loginService) {
+		this.loginService = loginService;
+	}
+
+	
+	public String getUserRoleType() {
+		return userRoleType;
+	}
+
+	public void setUserRoleType(String userRoleType) {
+		this.userRoleType = userRoleType;
+	}
+
 	public String execute()
 	{
-		/*HttpSession session = request.getSession();
-		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
-		userType = userService.checkForUserType(user.getRegistrationID());
 		
-		if(userType.equalsIgnoreCase("admin"))
-		{
-			return Action.SUCCESS;
-		}
-		else {
-			return Action.ERROR;
-		}*/
 		
 		return Action.SUCCESS;
 	}
@@ -391,25 +419,12 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 			type     = user.getUserAccessType();
 			if(getUserType() != null){
 			    if(getUserType().equalsIgnoreCase("1")){
-				  regVO.setUserAccessType("Admin");
 				 	
 				  regVO.setAccessType("STATE");
 				  regVO.setAccessValue("1");
 				  
 			    }
 				if(getUserType().equalsIgnoreCase("2") || getUserType().equalsIgnoreCase("4") ||  getUserType().equalsIgnoreCase("3")){
-					if(getUserType().equalsIgnoreCase("2"))
-					{
-						regVO.setUserAccessType("SubUser");
-					}
-					if(getUserType().equalsIgnoreCase("4"))
-					{
-						regVO.setUserAccessType("pfb");
-					}
-					if(getUserType().equalsIgnoreCase("3"))
-					{
-						regVO.setUserAccessType("debate");
-					}
 					if(accesslevel.longValue() == 1l){
 						regVO.setAccessType("STATE");
 						regVO.setAccessValue(stateId.toString());
@@ -426,6 +441,17 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 				}
 			}
 		}
+		
+		regVO.setUserType(getUserType());
+		List<Long> entitlementsList = new ArrayList<Long>();
+		if(userRoleType != null && userRoleType.trim().length() > 0){
+			
+			String[] entitlements = userRoleType.trim().split(",");
+			for(String entitlementId:entitlements){
+				entitlementsList.add(Long.valueOf(entitlementId.trim()));
+			}
+		}
+		regVO.setProfileOpts(entitlementsList);
 		if(!type.equalsIgnoreCase("admin"))
 		{
 			return Action.ERROR;
@@ -447,18 +473,14 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 		 List<SelectOptionVO>  assemConstiList1 =(List<SelectOptionVO>)assessLocs.get(3);
 		 constituencyInfoVO.setConstituencies(assemConstiList1);
 		 parliamantConstis.setConstituencies(parlConstiList1);
-		//constituencyInfoVO = staticDataService.getConstituenciesByElectionTypeAndStateId(2L,1L);
-		//constituencyInfoVO.getConstituencies().add(0,new SelectOptionVO(0L,"Select Assembly Constituency"));
-		//parliamantConstis = staticDataService.getConstituenciesByElectionTypeAndStateId(1L,1L);
-		//parliamantConstis.getConstituencies().add(0,new SelectOptionVO(0L,"Select Parliament Constituency"));
-		//districtsList =  staticDataService.getDistricts(1l);
-		//districtsList.add(0,new SelectOptionVO(0L,"Select District"));
-		userTypeList = new ArrayList<SelectOptionVO>();		
+		
+		userTypeList =  registrationService.getAllRoles();		
 		userTypeList.add(0,new SelectOptionVO(0l,"Select User Type"));
-		userTypeList.add(1,new SelectOptionVO(1l,"Admin"));
+		departmentList = registrationService.getAllDepartments();
+		/*userTypeList.add(1,new SelectOptionVO(1l,"Admin"));
 		userTypeList.add(2,new SelectOptionVO(2l,"SubUser"));
 		userTypeList.add(3,new SelectOptionVO(3l,"debate"));
-		userTypeList.add(4,new SelectOptionVO(4l,"pfb"));
+		userTypeList.add(4,new SelectOptionVO(4l,"pfb"));*/
         return Action.SUCCESS;
 			
 	}
@@ -497,6 +519,18 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 			}catch(Exception e){
 			log.debug(" exception occured in AnanymousUserAction getConstituenciesByElectionType method : ",e);
 		}			
+		return Action.SUCCESS;
+	}
+	
+	public String getEntitlements(){
+		try{
+			jObj = new JSONObject(getTask());
+			Long roleId = jObj.getLong("roleId");
+			statesList = loginService.getEntitlements(roleId);
+			
+		}catch(Exception e){
+			log.error("Exception rised in getEntitlements()",e);
+		}
 		return Action.SUCCESS;
 	}
 }

@@ -390,4 +390,8 @@
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="entitlementDAO" class="com.itgrids.partyanalyst.dao.hibernate.EntitlementDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		

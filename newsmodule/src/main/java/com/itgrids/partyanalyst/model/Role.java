@@ -13,11 +13,15 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
@@ -29,8 +33,9 @@ public class Role extends BaseModel implements Serializable{
 	
 	private Long roleId;
 	private String roleType;
-	private Set<UserRoles> userRoles = new HashSet<UserRoles>(0);
 	private String homeUrl;
+	private Entitlement entitlement;
+	private String projectType;
 	
 	public Role()
 	{}
@@ -60,16 +65,6 @@ public class Role extends BaseModel implements Serializable{
 		this.roleType = roleType;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "role")
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Set<UserRoles> getUserRoles() {
-		return userRoles;
-	}
-
-	public void setUserRoles(Set<UserRoles> userRoles) {
-		this.userRoles = userRoles;
-	}
-
 	@Column(name = "home_url")
 	public String getHomeUrl() {
 		return homeUrl;
@@ -79,5 +74,24 @@ public class Role extends BaseModel implements Serializable{
 		this.homeUrl = homeUrl;
 	}
 
-	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="default_entitlement_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Entitlement getEntitlement() {
+		return entitlement;
+	}
+
+	public void setEntitlement(Entitlement entitlement) {
+		this.entitlement = entitlement;
+	}
+
+	@Column(name = "project_type")
+	public String getProjectType() {
+		return projectType;
+	}
+
+	public void setProjectType(String projectType) {
+		this.projectType = projectType;
+	}
 }

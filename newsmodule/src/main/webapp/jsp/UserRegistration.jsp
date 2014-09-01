@@ -12,6 +12,10 @@
 	<!-------PT-sans font---->
 	<!-- <link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'> -->
 	<link  rel="stylesheet" type="text/css" href="js/jquery.google.api/googleAPIStyles.css"/>
+	<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
+	<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.filter.css" />
+	<script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.js"></script>
+    <script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.filter.js"></script>
 <style>
 .errorClass{
  color:red;font-weight:normal;
@@ -26,6 +30,10 @@
 #stateDIV,#districtDIV,#parliamentDIV,#assemblyDIV{
   display:none;
 }
+.ui-multiselect{
+    height: 30px;
+    width: 220px;
+  }
 </style>
 <script>
 
@@ -41,7 +49,7 @@
 <c:if test="${savedSuccessfully == true}">
 <div id="" style="color:green;text-align:center;"> Registered Successfully</div>
 </c:if>
- <s:form action="userRegistration.action?" id="registrationForm" method="POST" theme="simple" enctype="multipart/form-data" 
+ <s:form action="userRegistration" id="registrationForm" method="POST" theme="simple" enctype="multipart/form-data" 
 onsubmit="return validatefields()" cssClass="form-horizontal text-center">
 <div class="control-group">
 <div class="controls">
@@ -93,7 +101,26 @@ onsubmit="return validatefields()" cssClass="form-horizontal text-center">
 <span id="usrTypeId">
   </span>
 <div class="controls">
- <b style="color:red;font-size:20px">*</b>  &nbsp;&nbsp;<s:select name="userType" id="userTypeId" list="userTypeList"  onChange="validateUserType();"theme="simple" listKey="id" listValue="name"/>
+ <b style="color:red;font-size:20px">*</b>  &nbsp;&nbsp;<s:select name="userType" id="userTypeId" list="userTypeList"  onChange="validateUserType();getAllEntitleMents();" theme="simple" listKey="id" listValue="name"/>
+</div>
+
+</div>
+<div class="control-group">
+
+<span id="usrRolesId">
+  </span>
+<div class="controls">
+   &nbsp;&nbsp;&nbsp;&nbsp;<select id="usrRolesSelectId"></select>
+ <input type="hidden" id="userRoleTypeId" name="userRoleType" />
+</div>
+
+</div>
+<div class="control-group" id="usrDeptRolesMainId" style="display:none;">
+
+<span id="usrDeptRolesId">
+  </span>
+<div class="controls">
+   <b style="color:red;font-size:20px">*</b>  &nbsp;&nbsp;<s:select name="usrDeptId" id="usrDeptSelectId" list="departmentList" onChange="removeErrorMsg('usrDeptRolesId');" theme="simple" listKey="id" listValue="name"/>
 </div>
 
 </div>
@@ -110,30 +137,7 @@ onsubmit="return validatefields()" cssClass="form-horizontal text-center">
 	  
 	</select>
  </div>
-  <!--<div class="accesslvl">
-	<b style="color:red;font-size:20px">*&nbsp;</b>
-	<select>
-	  <option value="0">Select Access Level</option>
-	  <option value="1">State</option>
-	  <option value="2">District</option>
-	  <option value="3">Parliament Constituency</option>
-	  <option value="4">Assembly Constituency</option>
-	  
-	</select>
- </div>
-<div class="controls" style="margin-bottom: 15px; width: 300px;margin-left:355px" align="center">
 
- <label for="assemblyRadio" style="width: 100px;font-weight:bold;"> 
-	<input type="radio" name="electionType" id="assemblyRadio"  style="margin-top: 0px;" value="2" onclick="getConstituenciesForDistrict();" checked="true" /> 
-	 Assebly
- </label>
- 
- <label for="parliamentRadio" style="width: 100px; float: right; margin-top: -25px; margin-left: 90px;font-weight:bold;" >  
-	<input type="radio" name="electionType" id="parliamentRadio"  style="margin-top: 0px;margin-right: 5px;" value="1" onclick="getConstituenciesForDistrict();"/>
-	Parliament
- </label>
- 
-</div>-->
 
 <span id="locationErr">
   </span>
@@ -211,6 +215,52 @@ function showHide(state,dist,parl,assem){
 	}else{
 	  $("#assemblyDIV").hide();
 	}  
+}
+function getAllEntitleMents(){
+	var userType = $("#userTypeId").val();
+	 $("#usrRolesSelectId option").remove();
+	if(userType == 0){
+	    $('#usrRolesSelectId').multiselect({	
+			multiple: true,
+			selectedList: 0,
+			noneSelectedText:"Select Entitlements",
+			hide: "explode"	
+		}).multiselectfilter({ 
+			 header:"Select Entitlements"	
+		});
+	   $(".ui-multiselect").each(function(){
+		 $(this).attr("style","width: 220px");	
+	   });
+	   
+	   return;
+	}
+	 
+	 var jsObj=
+	 {
+		roleId:userType
+	 };
+	 
+	 $.ajax({
+		type: "POST",
+		url: "getAllEntitlements.action",
+		data: {task : JSON.stringify(jsObj)}
+		})
+		.done(function( result ) {
+		$.each(result,function(index,value){
+			$('#usrRolesSelectId').append('<option value="'+value.id+'">'+value.name+'</option>');
+		});
+		 $('#usrRolesSelectId').multiselect({	
+			multiple: true,
+			selectedList: 0,
+			noneSelectedText:"Select Entitlements",
+			hide: "explode"	
+		 }).multiselectfilter({ 
+			 header:"Select Entitlements"	
+		 });
+	     $(".ui-multiselect").each(function(){
+		   $(this).attr("style","width: 220px");	
+	     });
+     });
 }
 function getConstituenciesForDistrict(){
 	var assemblyRadioValue = document.getElementById("assemblyRadio");
@@ -499,6 +549,8 @@ function validateLastName()
 
 function validateUserType()
 {	
+	$("#usrDeptRolesMainId").hide();
+	$("#usrDeptRolesId").html();
 	var usrEle = document.getElementById("userTypeId");
 	var usrEleErr=document.getElementById("usrTypeId");
 	usrEleErr.innerHTML = "";
@@ -524,6 +576,8 @@ function validateUserType()
 			$('#selectLocLvl').append('<option value="0"> Select Access Level </option>');
 			$('#selectLocLvl').append('<option value="3"> Parliament Constituency </option>');
 		}
+	}else if(usrEle.value== 6 ){
+		$("#usrDeptRolesMainId").show();
 	}	
 	else
 	 return true;
@@ -531,7 +585,20 @@ function validateUserType()
 
 function validatefields()
 {
-	
+	$("#usrDeptRolesId").html();
+	var selEnts = "";
+	selectedEntsvalues = $("#usrRolesSelectId").multiselect("getChecked").map(function(){
+			return this.value;    
+		}).get();
+		
+	for(var i in selectedEntsvalues)
+	{
+	  selEnts = selEnts+""+selectedEntsvalues[i]+",";
+	}
+	if(selEnts.length > 0){
+	   selEnts = selEnts.substring(0, selEnts.length - 1);
+	}
+	$("#userRoleTypeId").val(selEnts);
 	var flag = true;
 	
 	
@@ -566,9 +633,33 @@ function validatefields()
          $("#accesslvlerr").html("");
       }	  
 	}
+	if($("#userTypeId").val() == 6){
+		  if($("#usrDeptSelectId").val() == 0){
+		    $("#usrDeptRolesId").html("Please Select Department ").css("color","red").css("margin-left","147px");
+			flag = false;
+	      }else{
+	         $("#usrDeptRolesId").html("");
+	      }	  
+		}
 	return flag;
 }
-
+function removeErrorMsg(id){
+	$("#"+id).html("");
+	
+}
+$(document).ready(function(){
+  $('#usrRolesSelectId').multiselect({	
+			multiple: true,
+			selectedList: 0,
+			noneSelectedText:"Select Entitlements",
+			hide: "explode"	
+	}).multiselectfilter({ 
+         header:"Select Entitlements"	
+	});
+   $(".ui-multiselect").each(function(){
+     $(this).attr("style","width: 220px");	
+   });
+});
 
 </script>
 </body>

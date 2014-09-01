@@ -313,14 +313,14 @@ function handleErrorMessageForpopup()
 							if(jsObj.task == "validateUserForLogin")
 							{	
 								$('#ajaxcallimage').css('display','none');
-								if(myResults.resultCode == 2){
+								if(myResults.resultCode != 1 && myResults.message != null){
 
 									$("#ajaxcallimage").show();
 									$('#ajaxcallimage').html('Login Successfull,Page is refreshing Please wait...');
 									
-									  window.location.href = "partyManagementAction.action";
+									  window.location.href = myResults.message;
 								}								
-								else if(myResults.resultCode == 0)
+								/*else if(myResults.resultCode == 0)
 								{
 									$("#ajaxcallimage").show();
 									$('#ajaxcallimage').html('Login Successfull,Page is refreshing Please wait...');
@@ -340,7 +340,7 @@ function handleErrorMessageForpopup()
 									$('#ajaxcallimage').html('Login Successfull,Page is refreshing Please wait...');
 									
 									  window.location.href = "politicalFeedBackAction.action";
-								}
+								}*/
 								else{
 									
 									$('#ajaxcallimage').html('');
