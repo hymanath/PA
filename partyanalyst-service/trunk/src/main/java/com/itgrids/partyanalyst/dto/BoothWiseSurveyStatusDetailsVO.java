@@ -5,6 +5,8 @@ import java.util.List;
 
 public class BoothWiseSurveyStatusDetailsVO {
 	
+	private Long id;
+	private String name;
 	private Long boothId;
 	private String partNo;
 	private String dcCompleted = "N";
@@ -28,6 +30,18 @@ public class BoothWiseSurveyStatusDetailsVO {
 	private List<BoothWiseSurveyStatusDetailsVO> boothWiseSurveyDetailsVOList = new ArrayList<BoothWiseSurveyStatusDetailsVO>(0);
 	
 	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	public List<String> getBoothList() {
 		return boothList;
 	}
