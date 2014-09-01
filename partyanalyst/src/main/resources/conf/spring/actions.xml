@@ -1464,7 +1464,9 @@
 	
 	<bean id="surveyCompletedDetailsAction" class="com.itgrids.partyanalyst.web.action.SurveyCompletedDetailsAction" singleton="false"></bean>
 	    
-	 <bean id="ctpDashBoardAction" class="com.itgrids.partyanalyst.web.action.CtpDashBoardAction" singleton="false"></bean>
+	 <bean id="ctpDashBoardAction" class="com.itgrids.partyanalyst.web.action.CtpDashBoardAction" singleton="false">
+	 	<property name="ctpDashBoardService" ref="ctpDashBoardService" />
+	 </bean>
 	
 </beans>	
 	
