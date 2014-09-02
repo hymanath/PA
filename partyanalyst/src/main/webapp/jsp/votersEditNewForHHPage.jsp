@@ -1404,6 +1404,20 @@ function submitQuestionDetails()
 	 }
    }); 
 
+
+   /*$('.relationCls').each(function(){
+	 if($.trim($(this).val()) == 0)
+	 {
+         str += 'Relationship is required for adding a person<br>';
+		 flag=false;
+		 return false;
+     }
+  });*/
+ 
+  
+  /*$('.familyMemberChkbx').each(function(index,value){
+	if(this.checked)
+	{
    $('.relationCls').each(function(){
      if($.trim($(this).val()) == 0)
 	 {
@@ -1412,6 +1426,36 @@ function submitQuestionDetails()
 		 return false;
      }
   });
+  }});*/
+  
+  $('.voterChkbx').each(function(index,value){
+	if(this.checked){
+		if($('#'+this.value+"fmlyRltn").val()==0){
+			str+= "<span style='color:red'>Please Select the Relation</span>" ;
+			flag=false;
+			return false;
+		}
+	}
+  });
+  
+   $('.familyMemberChkbx').each(function(index,value){
+	if(this.checked){
+		if($('#memberPrsnrltnType'+this.value).val()==0){
+			str+= "<span style='color:red'>Please Select the Relation</span>" ;
+			flag=false;
+			return false;
+		}
+	}
+  });
+  
+  for(var i=0;i<newPersons.length;i++){
+	if($('#newPrsnrltnType'+newPersons[i]).val()==0){
+		str+= "<span style='color:red'>Please Select the Relation</span>" ;
+			flag=false;
+			return false;
+	}
+  }
+  
    $('.mobileCls').each(function(){
      if($.trim($(this).val()).length == 0)
 	 {
