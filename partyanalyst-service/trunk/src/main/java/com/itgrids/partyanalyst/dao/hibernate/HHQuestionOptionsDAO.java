@@ -19,7 +19,7 @@ public class HHQuestionOptionsDAO extends GenericDaoHibernate<HHQuestionOptions,
 	public List<Object[]> getOptionsForQuestions(Long questionId){
 		Query query = getSession().createQuery(" select model.hhOptions.optionsId," +
 				" model.hhOptions.options," +
-				" model.hhSurveyQuestion.hhoptionType.optionTypeId " +
+				" model.hhSurveyQuestion.hhoptionType.optionTypeId,model.hhSurveyQuestion.surveyQuestionId,model.hhSurveyQuestion.question " +
 				" from HHQuestionOptions model" +
 				" where model.hhOptions.isDelete =:delStatus " +
 				" and model.hhSurveyQuestion.surveyQuestionId =:questionId ");

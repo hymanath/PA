@@ -6,6 +6,7 @@ import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.HHLeaderDetailsVO;
 import com.itgrids.partyanalyst.dto.HHQuestionDetailsVO;
 import com.itgrids.partyanalyst.dto.HHQuestionSummaryReportVO;
+import com.itgrids.partyanalyst.dto.HHReportVO;
 import com.itgrids.partyanalyst.dto.HHSurveyVO;
 import com.itgrids.partyanalyst.dto.HouseHoldVotersVO;
 import com.itgrids.partyanalyst.dto.HouseHoldsReportVO;
@@ -49,4 +50,5 @@ public interface IHouseHoldSurveyReportService {
 	 public List<HouseHoldsReportVO> getBooksDetailsOfHouseHolds(Long constituencyId);
 	public List<HouseHoldVotersVO> getAgeRangeWiseNonVotersDetails(Long panchayatId,int type,Long fromAge,Long toAge);
     public Object getBooksWiseSummaryReport(Long constituencyId);
+    public HHReportVO getPanchayatWiseDetails(Long constituencyId);
 }
