@@ -109,4 +109,23 @@ public class HHLeaderBooksDAO extends GenericDaoHibernate<HHLeaderBooks,Long> im
 		query.setParameter("leaderId", leaderId);
 		return query.list();
 	}
+	
+		
+	public List<Object[]> getAllBooksLeadersInConstituency(Long constituencyId){
+		Query query= getSession().createQuery(" select distinct model.hhLeaderBookId," +
+		" model.bookNo," +
+		" model.leader.name," +
+		" model.leader.voterId," +
+		" model.leader.mobileNo," +
+		" model.leader.id " +
+	//	" model1.booth.panchayat.panchayatId," +
+	//	" model1.booth.panchayat.panchayatName" +
+		" from HHLeaderBooks model,HHBoothLeader model1 where " +
+		" model.leader.id = model1.hhLeader.id and " +
+		" model1.constituency.constituencyId = :constituencyId" +
+		" and model1.hhLeader.is_active ='YES'" +
+		" and model.leader.id is not null");
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+		}
 }

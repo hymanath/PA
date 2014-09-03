@@ -18,4 +18,5 @@ public interface IHHLeaderBooksDAO extends GenericDao<HHLeaderBooks, Long>{
 	public List<Object[]> getAllBooksInConstituencyWithBookNo(Long constituencyId,Long bookNo);
 	public List<Object[]> getAllBooksNotAssignedWithBookNo(Long bookNo);
 	public List<Object[]> getBooksOfLeader(Long leaderId);
+	public List<Object[]> getAllBooksLeadersInConstituency(Long constituencyId);
 }

@@ -244,7 +244,7 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 
 	public List<Object[]> getAllPanchayatsInHouseHoldsOfConstituency(Long constituencyId){
 		Query query = getSession().createQuery(" select distinct model.houseHolds.panchayat.panchayatId," +//PANCHAYAT ID -- 1
-				" model.houseHolds.panchayat.panchayatName " +// 2 -- PANCHAYAT NAME
+				" model.houseHolds.panchayat.panchayatName, model1.constituency.name " +
 				" from HouseHoldVoter model,HHBoothLeader model1 where " +
 				" model.hhLeader.id = model1.hhLeader.id and " +
 				" model.isDelete = 'false'" +
@@ -318,6 +318,33 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 		query.setParameter("val", val);
 		return query.list();
 	}
+	
+	public List<Object[]> getFamilyAndVotersCountInHouseHoldsNew(Long val,int type){
+		StringBuffer sb = new StringBuffer();
+		sb.append(" select distinct model.houseHoldVoterId," +
+		" model.houseHolds.houseHoldId," +//3
+		" model.voterId," +
+		" model.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId," +
+		" model.voterFamilyRelation.voterFamilyRelationId " +
+		" from HouseHoldVoter model " +
+		" where " +
+		" model.isDelete ='false'" +
+		" and model.hhLeaderBooks.leader.is_active = 'YES'");
+		
+		if(type ==1){
+			sb.append(" and model.houseHolds.panchayat.panchayatId = :val");
+		}else if(type == 2){
+			sb.append(" and model.hhLeader.id =:val");
+		}else if(type == 3){
+			sb.append(" and model.hhLeaderBooks.hhLeaderBookId =:val");
+		}
+		sb.append(" order by model.houseHolds.houseHoldId desc");
+
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("val", val);
+		return query.list();
+		
+		}
 	
 	public List<Object[]> getFamilyHeadsUnderLeader(Long leaderId){
 		Query query = getSession().createQuery(" select distinct model.houseHoldVoterId," +
@@ -476,10 +503,10 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 				" model.houseHolds.panchayat.panchayatId," +
 				" model.houseHolds.panchayat.panchayatName " +
 				" from HouseHoldVoter model,HHBoothLeader model1 where " +
-				" model.hhLeader.id = model1.hhLeader.id" +
+				" model.hhLeaderBooks.leader.id = model1.hhLeader.id" +
 				" and model1.constituency.constituencyId = :constituencyId" +
 				" and model.isDelete = 'false'" +
-				" and model.hhLeader.is_active = 'YES'" );
+				" and model.hhLeaderBooks.leader.is_active = 'YES'" );
 		
 		if(fromAge!=null){
 			sb.append(" and model.houseHoldsFamilyDetails.age >= :fromAge ");
@@ -631,10 +658,10 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 				" model.hhLeaderBooks.hhLeaderBookId," +
 				" model.hhLeaderBooks.bookNo " +
 				" from HouseHoldVoter model,HHBoothLeader model1 where " +
-				" model.hhLeader.id = model1.hhLeader.id" +
+				" model.hhLeaderBooks.leader.id = model1.hhLeader.id" +
 				" and model1.constituency.constituencyId = :constituencyId" +
 				" and model.isDelete = 'false'" +
-				" and model.hhLeader.is_active = 'YES'" );
+				" and model.hhLeaderBooks.leader.is_active = 'YES'" );
 		
 		if(fromAge!=null){
 			sb.append(" and model.houseHoldsFamilyDetails.age >= :fromAge ");
@@ -675,4 +702,32 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 		return query.list();
 	}
 	
+	public List<Object[]> getBookWiseHouseHolds(Long constituencyId){
+		Query query = getSession().createQuery(" select distinct model.houseHoldVoterId," +
+		" model.hhLeaderBooks.hhLeaderBookId," +
+		" model.hhLeaderBooks.bookNo," +
+		" model.houseHolds.houseHoldId," +//3
+		" model.houseHolds.panchayat.tehsil.tehsilId," +//4
+		" model.houseHolds.panchayat.tehsil.tehsilName," +
+		" model.houseHolds.panchayat.panchayatId," +//6
+		" model.houseHolds.panchayat.panchayatName," +//7
+		" model.hhLeaderBooks.leader.name," +
+		" model.hhLeaderBooks.leader.voterId," +//9
+		" model.voterId," +
+		" model.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId," +
+		" model.voterFamilyRelation.voterFamilyRelationId ,model.hhLeaderBooks.leader.id " +
+		" from HouseHoldVoter model, HHBoothLeader model1" +
+		" where model.hhLeaderBooks.leader.id = model1.hhLeader.id " +
+		" and model.isDelete =:deleteStatus" +
+		" and model.hhLeaderBooks.leader.is_active = :activeStatus" +
+		" and model1.constituency.constituencyId = :constituencyId "+
+		//" and model.houseHolds.panchayat.panchayatId = 3311" +
+		" order by model.houseHolds.houseHoldId");
+
+		query.setParameter("deleteStatus", IConstants.FALSE);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("activeStatus", "YES");
+		return query.list();
+		}
+
 }

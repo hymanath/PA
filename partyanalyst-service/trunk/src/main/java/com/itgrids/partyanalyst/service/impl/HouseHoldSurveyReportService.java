@@ -45,6 +45,7 @@ import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.HHLeaderDetailsVO;
 import com.itgrids.partyanalyst.dto.HHQuestionDetailsVO;
 import com.itgrids.partyanalyst.dto.HHQuestionSummaryReportVO;
+import com.itgrids.partyanalyst.dto.HHReportVO;
 import com.itgrids.partyanalyst.dto.HHSurveyVO;
 import com.itgrids.partyanalyst.dto.HouseHoldVotersVO;
 import com.itgrids.partyanalyst.dto.HouseHoldsReportVO;
@@ -1754,7 +1755,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
     		if(leaderId!=null){
     			
     			Map<Long,HouseHoldsSummaryReportVO> hhCountMap = new HashMap<Long, HouseHoldsSummaryReportVO>();
-    			List<Object[]> hhList = houseHoldVoterDAO.getFamilyAndVotersCountInHouseHolds(leaderId, 2);
+    		/*	List<Object[]> hhList = houseHoldVoterDAO.getFamilyAndVotersCountInHouseHoldsNew(leaderId, 2);
     			if(hhList!=null && hhList.size()>0){
     				for(Object[] obj:hhList){
     					HouseHoldsSummaryReportVO tempVO = new HouseHoldsSummaryReportVO();
@@ -1765,7 +1766,59 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
     					hhCountMap.put(Long.valueOf(obj[0].toString()), tempVO);
     					
     				}
+    			}*/
+    			
+    			List<Object[]> list1 = houseHoldVoterDAO.getFamilyAndVotersCountInHouseHoldsNew(leaderId, 2);
+    			
+    			
+    			List<HHReportVO> hhList = new ArrayList<HHReportVO>();
+    			if(list1!=null && list1.size()>0){
+    				for(Object[] obj:list1){
+    					HHReportVO hv = getMatchedHouseHold(hhList, Long.valueOf(obj[1].toString()));
+    					boolean newlyAdded = false;
+    					if(hv==null){
+    						hv = new HHReportVO();
+    						hv.setVotersCount(0l);
+    						hv.setNonVotersCount(0l);
+    						
+    						newlyAdded = true;
+    					}
+    					
+    					hv.setHouseHoldId(Long.valueOf(obj[1].toString()));
+    					if(obj[2]!=null){
+    						hv.setVotersCount(hv.getVotersCount()+1);
+    					}
+    					if(obj[3]!=null){
+    						hv.setNonVotersCount(hv.getNonVotersCount()+1);
+    					}
+    					
+    					if(Long.valueOf(obj[4].toString())==1){
+    						hv.setRelationShipId(1l);
+    					}
+    					
+    					if(newlyAdded){
+    						hhList.add(hv);		
+    					}
+    					
+    				}
     			}
+    			
+    			List<HHReportVO> finalList = new ArrayList<HHReportVO>();
+    			if(hhList!=null && hhList.size()>0){
+    				for(HHReportVO hv:hhList){
+    					if(hv.getRelationShipId()!=null){
+    						finalList.add(hv);
+    						
+    						HouseHoldsSummaryReportVO tempVO = new HouseHoldsSummaryReportVO();
+    						tempVO.setHouseHoldId(hv.getHouseHoldId());
+    						tempVO.setVotersCount(hv.getVotersCount());
+    						tempVO.setNonVotersCount(hv.getNonVotersCount());
+    						
+    						hhCountMap.put(hv.getHouseHoldId(), tempVO);
+    					}
+    				}
+    			}
+    			
     			
     			List<Object[]> list = houseHoldVoterDAO.getFamilyHeadsUnderLeader(leaderId);
     			if(list!=null && list.size()>0){
@@ -1800,7 +1853,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
     		if(panchayatId!=null){
     			
     			Map<Long,HouseHoldsSummaryReportVO> hhCountMap = new HashMap<Long, HouseHoldsSummaryReportVO>();
-    			List<Object[]> hhList = houseHoldVoterDAO.getFamilyAndVotersCountInHouseHolds(panchayatId, 1);
+    			/*List<Object[]> hhList = houseHoldVoterDAO.getFamilyAndVotersCountInHouseHolds(panchayatId, 1);
     			if(hhList!=null && hhList.size()>0){
     				for(Object[] obj:hhList){
     					HouseHoldsSummaryReportVO tempVO = new HouseHoldsSummaryReportVO();
@@ -1810,6 +1863,56 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
     					
     					hhCountMap.put(Long.valueOf(obj[0].toString()), tempVO);
     					
+    				}
+    			}*/
+    			List<Object[]> list1 = houseHoldVoterDAO.getFamilyAndVotersCountInHouseHoldsNew(panchayatId, 1);
+    			
+    			
+    			List<HHReportVO> hhList = new ArrayList<HHReportVO>();
+    			if(list1!=null && list1.size()>0){
+    				for(Object[] obj:list1){
+    					HHReportVO hv = getMatchedHouseHold(hhList, Long.valueOf(obj[1].toString()));
+    					boolean newlyAdded = false;
+    					if(hv==null){
+    						hv = new HHReportVO();
+    						hv.setVotersCount(0l);
+    						hv.setNonVotersCount(0l);
+    						
+    						newlyAdded = true;
+    					}
+    					
+    					hv.setHouseHoldId(Long.valueOf(obj[1].toString()));
+    					if(obj[2]!=null){
+    						hv.setVotersCount(hv.getVotersCount()+1);
+    					}
+    					if(obj[3]!=null){
+    						hv.setNonVotersCount(hv.getNonVotersCount()+1);
+    					}
+    					
+    					if(Long.valueOf(obj[4].toString())==1){
+    						hv.setRelationShipId(1l);
+    					}
+    					
+    					if(newlyAdded){
+    						hhList.add(hv);		
+    					}
+    					
+    				}
+    			}
+    			
+    			List<HHReportVO> finalList = new ArrayList<HHReportVO>();
+    			if(hhList!=null && hhList.size()>0){
+    				for(HHReportVO hv:hhList){
+    					if(hv.getRelationShipId()!=null){
+    						finalList.add(hv);
+    						
+    						HouseHoldsSummaryReportVO tempVO = new HouseHoldsSummaryReportVO();
+    						tempVO.setHouseHoldId(hv.getHouseHoldId());
+    						tempVO.setVotersCount(hv.getVotersCount());
+    						tempVO.setNonVotersCount(hv.getNonVotersCount());
+    						
+    						hhCountMap.put(hv.getHouseHoldId(), tempVO);
+    					}
     				}
     			}
     			
@@ -1845,7 +1948,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
     		if(bookId!=null){
     			
     			Map<Long,HouseHoldsSummaryReportVO> hhCountMap = new HashMap<Long, HouseHoldsSummaryReportVO>();
-    			List<Object[]> hhList = houseHoldVoterDAO.getFamilyAndVotersCountInHouseHolds(bookId, 3);
+    		/*	List<Object[]> hhList = houseHoldVoterDAO.getFamilyAndVotersCountInHouseHolds(bookId, 3);
     			if(hhList!=null && hhList.size()>0){
     				for(Object[] obj:hhList){
     					HouseHoldsSummaryReportVO tempVO = new HouseHoldsSummaryReportVO();
@@ -1855,6 +1958,57 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
     					
     					hhCountMap.put(Long.valueOf(obj[0].toString()), tempVO);
     					
+    				}
+    			}
+    			*/
+    			List<Object[]> list1 = houseHoldVoterDAO.getFamilyAndVotersCountInHouseHoldsNew(bookId, 3);
+    			
+    			
+    			List<HHReportVO> hhList = new ArrayList<HHReportVO>();
+    			if(list1!=null && list1.size()>0){
+    				for(Object[] obj:list1){
+    					HHReportVO hv = getMatchedHouseHold(hhList, Long.valueOf(obj[1].toString()));
+    					boolean newlyAdded = false;
+    					if(hv==null){
+    						hv = new HHReportVO();
+    						hv.setVotersCount(0l);
+    						hv.setNonVotersCount(0l);
+    						
+    						newlyAdded = true;
+    					}
+    					
+    					hv.setHouseHoldId(Long.valueOf(obj[1].toString()));
+    					if(obj[2]!=null){
+    						hv.setVotersCount(hv.getVotersCount()+1);
+    					}
+    					if(obj[3]!=null){
+    						hv.setNonVotersCount(hv.getNonVotersCount()+1);
+    					}
+    					
+    					if(Long.valueOf(obj[4].toString())==1){
+    						hv.setRelationShipId(1l);
+    					}
+    					
+    					if(newlyAdded){
+    						hhList.add(hv);		
+    					}
+    					
+    				}
+    			}
+    			
+    			List<HHReportVO> finalList = new ArrayList<HHReportVO>();
+    			if(hhList!=null && hhList.size()>0){
+    				for(HHReportVO hv:hhList){
+    					if(hv.getRelationShipId()!=null){
+    						finalList.add(hv);
+    						
+    						HouseHoldsSummaryReportVO tempVO = new HouseHoldsSummaryReportVO();
+    						tempVO.setHouseHoldId(hv.getHouseHoldId());
+    						tempVO.setVotersCount(hv.getVotersCount());
+    						tempVO.setNonVotersCount(hv.getNonVotersCount());
+    						
+    						hhCountMap.put(hv.getHouseHoldId(), tempVO);
+    					}
     				}
     			}
     			
@@ -1994,16 +2148,17 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
      * */
     public HHQuestionSummaryReportVO getOptionsCountForQuestion(Long questionId,Long constituencyId){
     	Log.debug("Entered Into HouseHoldsSurveyReportService getOptionsCountForQuestion() ");
-    	List<HHQuestionSummaryReportVO> optionsList= new ArrayList<HHQuestionSummaryReportVO>();
     	
     	HHQuestionSummaryReportVO finalVO = new HHQuestionSummaryReportVO();
     	
     	
     	try{
-    		List<Object[]> list = hhSurveyAnswersDAO.getQuestionWiseSummaryCount(questionId, constituencyId);
+    		
+    		List<HHQuestionSummaryReportVO> optionsList= new ArrayList<HHQuestionSummaryReportVO>();
+    		//List<Object[]> list = hhSurveyAnswersDAO.getQuestionWiseSummaryCount(questionId, constituencyId);
     		List<Object[]> optsList = hhQuestionOptionsDAO.getOptionsForQuestions(questionId);
     		
-    		Map<Long,Long> optsCountMap = new HashMap<Long, Long>();
+    		/*Map<Long,Long> optsCountMap = new HashMap<Long, Long>();
     		
     		Long totalCount = 0l;
     		if(list!=null && list.size()>0){
@@ -2014,7 +2169,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
     			
     			finalVO.setTotalCount(totalCount);
     		}
-    		
+    	
     		if(optsList!=null && optsList.size()>0){
     			
     			finalVO.setQuestion(StringEscapeUtils.unescapeJava(list.get(0)[4].toString()));
@@ -2022,6 +2177,8 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
     			
     			for(Object[] obj:optsList){
     				HHQuestionSummaryReportVO opts = new HHQuestionSummaryReportVO();
+    				opts.setQuestionId(Long.valueOf(obj[3].toString()));
+    				opts.setQuestion(obj[4].toString());
     				opts.setOption(StringEscapeUtils.unescapeJava(obj[1].toString()));
     				opts.setOptionId(Long.valueOf(obj[0].toString()));
     				
@@ -2035,7 +2192,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
     				
     				optionsList.add(opts);
     			}
-    		}
+    		}*/
     		
     		
     		List<Object[]> pancList= hhSurveyAnswersDAO.getQuestionWiseSummaryCountByPanchayat(questionId, constituencyId);
@@ -2072,8 +2229,33 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
     		}
     		
     		finalVO.setPanchayatList(panchayatList);
-    		finalVO.setOptionsList(optionsList);
     		
+    		if(optsList!=null && optsList.size()>0){   			
+    			for(Object[] obj:optsList){
+    				HHQuestionSummaryReportVO opts = new HHQuestionSummaryReportVO();
+    				opts.setQuestionId(Long.valueOf(obj[3].toString()));
+    				opts.setQuestion(StringEscapeUtils.unescapeJava(obj[4].toString()));
+    				opts.setOption(StringEscapeUtils.unescapeJava(obj[1].toString()));
+    				opts.setOptionId(Long.valueOf(obj[0].toString()));
+    				opts.setOptsCount(0l);
+    				optionsList.add(opts);
+    			}
+    			finalVO.setOptionsList(optionsList);
+    		}
+    		
+    		List<HHQuestionSummaryReportVO> optnsresult = finalVO.getPanchayatList();
+    		for(HHQuestionSummaryReportVO vo:optnsresult){
+    				List<HHQuestionSummaryReportVO> optnList = vo.getOptionsList();
+    				if(optnList !=  null){
+	    				for(HHQuestionSummaryReportVO vo1 : optnList){
+	    					HHQuestionSummaryReportVO options = getMatchedOption(optionsList,vo1.getOptionId());
+	    					if(options != null){
+	    						options.setOptsCount(options.getOptsCount() + (vo1.getOptsCount()!=null?vo1.getOptsCount():0L));
+	    					}
+	    				}
+    				}
+				}
+    		    		
     	}catch (Exception e) {
     		Log.error("Exception In HouseHoldsSurveyReportService getOptionsCountForQuestion() " + e);
 		}
@@ -2180,9 +2362,9 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
     	List<HouseHoldVotersVO> ageRangeDetails = new ArrayList<HouseHoldVotersVO>();
     	try{
     		
-    		List<Object[]> list = houseHoldVoterDAO.getNonVoterAgeRangesInConstituency(constituencyId,null,IConstants.KPM_AGE1_MAX);   		 
+    		List<Object[]> list = houseHoldVoterDAO.getNonVoterAgeRangesInConstituency(constituencyId,IConstants.KPM_AGE1_MIN,IConstants.KPM_AGE1_MAX);   		 
 			List<Object[]> list1 = houseHoldVoterDAO.getNonVoterAgeRangesInConstituency(constituencyId,IConstants.KPM_AGE2_MIN,IConstants.KPM_AGE2_MAX);   		 
-			List<Object[]> list2 = houseHoldVoterDAO.getNonVoterAgeRangesInConstituency(constituencyId,IConstants.KPM_AGE3_MIN,null);
+			List<Object[]> list2 = houseHoldVoterDAO.getNonVoterAgeRangesInConstituency(constituencyId,IConstants.KPM_AGE3_MIN,IConstants.KPM_AGE3_MAX);
 	
 			for(Object[] params:list)
 			{ 				
@@ -2402,4 +2584,262 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 		return houseHoldsVoList;
 
 	} 
+  
+	public HHReportVO getPanchayatWiseDetails(Long constituencyId){
+	  
+	  HHReportVO resultVO = new HHReportVO();
+	  try {
+		
+		List<Object[]> list = houseHoldVoterDAO.getAllPanchayatsInHouseHoldsOfConstituency(constituencyId);
+
+		HHReportVO finalVO = new HHReportVO();
+		List<HHReportVO> panchayatsList = new ArrayList<HHReportVO>();
+		
+		if(list!=null && list.size()>0){
+			for(Object[] obj:list){
+				HHReportVO hv= new HHReportVO();
+				hv.setConstituency(obj[2].toString());
+				hv.setPanchayatId(Long.valueOf(obj[0].toString()));
+				hv.setPanchayatName(obj[1].toString());
+				hv.setVotersCount(0l);
+				hv.setNonVotersCount(0l);
+				hv.setLedersCount(0l);
+				hv.setLeadersList(new ArrayList<HHReportVO>());
+				hv.setLeaders(new ArrayList<Long>());
+				panchayatsList.add(hv);
+			}
+		}
+		
+		finalVO.setPanchayatList(panchayatsList);
+
+		List<Object[]> allList = houseHoldVoterDAO.getBookWiseHouseHolds(constituencyId);
+		List<Long> constituencyLeaders = new ArrayList<Long>();
+
+		if(allList!=null && allList.size()>0){
+			for(Object[] obj:allList){
+			
+				if(!constituencyLeaders.contains((Long)(obj[13])))
+					constituencyLeaders.add((Long)(obj[13]));
+				HHReportVO hv= getMatchedPanchayatList(finalVO.getPanchayatList(), Long.valueOf(obj[6].toString()));
+				if(hv!=null){
+					List<HHReportVO> hvList = hv.getHouseHoldsList();
+				if(hvList==null){
+					
+					hvList = new ArrayList<HHReportVO>();
+				}
+				
+				HHReportVO houseHold = getMatchedHouseHold(hvList, Long.valueOf(obj[3].toString()));
+				boolean newlyAdded = false;
+				
+				if(houseHold==null){
+					houseHold = new HHReportVO();
+					houseHold.setHouseHoldId(Long.valueOf(obj[3].toString()));
+					houseHold.setVotersCount(0l);
+					houseHold.setLedersCount(0l);
+					houseHold.setNonVotersCount(0l);
+					houseHold.setPanchayatId(Long.valueOf(obj[6].toString()));
+					houseHold.setPanchayatName(obj[7].toString());
+					houseHold.setLeaderBookId(Long.valueOf(obj[1].toString()));
+					houseHold.setBookNo(obj[2].toString());
+					houseHold.setLeaderName(obj[8].toString());
+					houseHold.setLeaderVoterId(obj[9].toString());
+					houseHold.setLeaderId(Long.valueOf(obj[13].toString()));
+					newlyAdded = true;
+				}
+		
+				if(obj[12]!=null){
+					if(Long.valueOf(obj[12].toString()).equals(1l)){
+						houseHold.setRelationShipId(Long.valueOf(obj[12].toString()));
+					//houseHold.setHeadName(obj[12].toString());
+					if(obj[10]!=null){
+						houseHold.setHeadVoterId(obj[10].toString());
+					}
+					}
+				}
+				
+				if(obj[10]!=null){
+					houseHold.setVotersCount(houseHold.getVotersCount()+1);
+				}
+				if(obj[11]!=null){
+					houseHold.setNonVotersCount(houseHold.getNonVotersCount()+1);
+				}
+				if(newlyAdded){
+					hvList.add(houseHold);
+				}
+					hv.setHouseHoldsList(hvList);
+				}
+		
+				}
+			}
+		
+			List<HHReportVO> pList = finalVO.getPanchayatList();
+			if(pList!=null && pList.size()>0){
+				for(HHReportVO hv:pList){
+					HHReportVO hr = getMatchedPanchayatList(pList, hv.getPanchayatId());
+					List<HHReportVO> hpList = null;
+						if(hr!=null){
+							hpList = hr.getHhListFinal();
+						if(hpList==null){
+								hpList = new ArrayList<HHReportVO>();
+							}
+						}
+					List<HHReportVO> hhList = hv.getHouseHoldsList();
+					if(hhList!=null && hhList.size()>0){
+						for(HHReportVO hh:hhList){
+							if(hh.getRelationShipId()!=null){
+								hpList.add(hh);
+								hr.setVotersCount(hh.getVotersCount()+hr.getVotersCount());
+								hr.setNonVotersCount(hh.getNonVotersCount()+hr.getNonVotersCount());
+								
+								if(!hr.getLeaders().contains(hh.getLeaderId())){
+									hr.getLeaders().add(hh.getLeaderId());
+									hr.setLedersCount(hr.getLedersCount()+1);				
+								}
+							}
+						}
+					}
+					hr.setHhListFinal(hpList);
+				}
+			}	
+			
+			List<Object[]> leaderBooks = hhLeaderBooksDAO.getAllBooksLeadersInConstituency(constituencyId);
+			List<HHReportVO> leadersList = new ArrayList<HHReportVO>();
+			for(Object[] obj:leaderBooks){
+				HHReportVO hv = new HHReportVO();
+				hv.setLeaderBookId(Long.valueOf(obj[0].toString()));
+				hv.setLeaderId(Long.valueOf(obj[5].toString()));
+				hv.setLeaderVoterId(obj[3].toString());
+				/*hv.setPanchayatId(Long.valueOf(obj[6].toString()));
+				hv.setPanchayatName(obj[7].toString());*/
+				hv.setBookNo(obj[1].toString());
+				hv.setLeaderName(obj[2].toString());
+				hv.setVotersCount(0l);
+				hv.setNonVotersCount(0l);
+				hv.setHouseHoldsCount(0l);
+				hv.setHouseHolds(new ArrayList<Long>());
+				hv.setPanchayatIds(new ArrayList<Long>());
+				leadersList.add(hv);
+			}
+			
+			List<HHReportVO> panchayats = finalVO.getPanchayatList();
+			Long constituencyVotersCount= 0l;
+			Long constituencyNonVotersCount= 0l;
+			Long constituencyHouseHoldsCount= 0l;
+			String constituency = "";
+			List<HHReportVO> resultList = new ArrayList<HHReportVO>();
+			for(HHReportVO hr:panchayats){
+				HHReportVO vo = new HHReportVO();
+				vo.setPanchayatId(hr.getPanchayatId());
+				vo.setPanchayatName(hr.getPanchayatName());
+				constituency= hr.getConstituency();
+				vo.setVotersCount(hr.getVotersCount());
+				vo.setNonVotersCount(hr.getNonVotersCount());
+				vo.setHouseHoldsCount(Long.valueOf(hr.getHhListFinal().size()));
+				vo.setLedersCount(hr.getLedersCount());
+				constituencyVotersCount = constituencyVotersCount + hr.getVotersCount();
+				constituencyNonVotersCount = constituencyNonVotersCount + hr.getNonVotersCount();
+				constituencyHouseHoldsCount = constituencyHouseHoldsCount + hr.getHhListFinal().size();
+				resultList.add(vo);
+			}
+			resultVO.setPanchayatList(resultList);
+			resultVO.setLedersCount(Long.valueOf(constituencyLeaders.size()));
+			resultVO.setVotersCount(constituencyVotersCount);
+			resultVO.setNonVotersCount(constituencyNonVotersCount);
+			resultVO.setHouseHoldsCount(constituencyHouseHoldsCount);
+			resultVO.setConstituency(constituency);
+			resultVO.setConstituencyId(constituencyId);
+			
+			
+			for(HHReportVO hr:panchayats){
+					List<HHReportVO> hList = hr.getHhListFinal();
+						if(hList!=null && hList.size()>0){
+							for(HHReportVO hv:hList){
+								HHReportVO temp = getMatchedLeaderBook(leadersList, hv.getLeaderBookId());
+								if(temp!=null){
+									temp.setVotersCount(temp.getVotersCount()+hv.getVotersCount());
+									temp.setNonVotersCount(temp.getNonVotersCount()+hv.getNonVotersCount());
+									
+									if(!temp.getHouseHolds().contains(hv.getHouseHoldId())){
+										temp.getHouseHolds().add(hv.getHouseHoldId());
+										temp.setHouseHoldsCount(temp.getHouseHoldsCount() + 1);				
+									}
+									
+									if(!temp.getPanchayatIds().contains(hv.getPanchayatId())){
+										temp.getPanchayatIds().add(hv.getPanchayatId());
+										if(temp.getPanchayatId() != null){
+											temp.setPanchayatName(temp.getPanchayatName()+','+hv.getPanchayatName());
+										}
+										else{								
+											temp.setPanchayatId(hv.getPanchayatId());
+											temp.setPanchayatName(hv.getPanchayatName());
+										}
+									}
+								}
+							}
+					}
+			 }
+			 List<HHReportVO> resultList1 = new ArrayList<HHReportVO>();
+			 for(HHReportVO hr1:leadersList){
+				 HHReportVO vo = new HHReportVO();
+				 	vo.setLeaderBookId(hr1.getLeaderBookId());
+					vo.setBookNo(hr1.getBookNo());
+					vo.setLeaderVoterId(hr1.getLeaderVoterId());
+					vo.setPanchayatName(hr1.getPanchayatName());
+					vo.setLeaderName(hr1.getLeaderName());
+					vo.setVotersCount(hr1.getVotersCount());
+					vo.setNonVotersCount(hr1.getNonVotersCount());
+					vo.setHouseHoldsCount(hr1.getHouseHoldsCount());
+					resultList1.add(vo);
+					}
+			 resultVO.setHhListFinal(resultList1);	 
+	  	}catch(Exception e) {
+	  		log.error("Exception raised in getPanchayatWiseDetails method",e);
+	  	}
+	  return resultVO;
+	}
+		
+  
+  
+  	public HHReportVO getMatchedPanchayatList(List<HHReportVO> list,Long id){
+		if(list!=null && list.size()>0 && id!=null){
+			for(HHReportVO hv:list){
+					if(hv.getPanchayatId().equals(id)){
+						return hv;
+					}
+				}
+			}
+			return null;
+	}
+
+	public HHReportVO getMatchedLeaderBook(List<HHReportVO> list,Long id){
+			if(list!=null && list.size()>0 && id!=null){
+				for(HHReportVO hv:list){
+					if(hv.getLeaderBookId().equals(id)){
+						return hv;
+					}
+				}
+			}
+			return null;
+	}
+
+	public HHReportVO getMatchedHouseHold(List<HHReportVO> list,Long id){
+			if(list!=null && list.size()>0 && id!=null){
+				for(HHReportVO hv:list){
+					if(hv.getHouseHoldId().equals(id)){
+						return hv;
+					}
+				}
+			}
+			return null;
+	}
+	public HHReportVO getMatchedLeaders(List<HHReportVO> list,Long id){
+		if(list!=null && list.size()>0 && id!=null){
+			for(HHReportVO hv:list){
+					if(hv.getLeaderId().equals(id)){
+						return hv;
+					}
+				}
+			}
+			return null;
+	}
 }
