@@ -2134,7 +2134,11 @@ function buildUserReport(result,userType)
 	str+='</table>';
 	$('#userWiseReport').html(str);
 	$('#userWiseReportImg').hide();
-	$('#userReportTable').dataTable();
+	$('#userReportTable').dataTable({
+		"iDisplayLength": 100,
+		"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]]
+	});
+	
 }
 function updateBoothStatusDetails(statusId,boothId,divId)
 {
