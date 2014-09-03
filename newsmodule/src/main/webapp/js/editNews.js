@@ -4462,7 +4462,7 @@ var fileTitle = document.getElementById('newsfileTitle').value;
 	if($("#newsTypesId").val() !=null){
 		newsType = $("#newsTypesId").val();
 	}
-	if(newsType.trim().length == 0){
+	if(newsType.length == 0){
 		str += ' Please Select NewsType.<br>';
 		flag = false;
 	}
