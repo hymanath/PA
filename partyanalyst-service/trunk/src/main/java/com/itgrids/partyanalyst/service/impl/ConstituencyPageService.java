@@ -536,7 +536,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		 }
 		 return null;
 		}catch (Exception e) {
-			log.error("Exception occured in getConstituencyElectionResults() Method, - "+e);
+			log.error("Exception occured in getConstituencyElectionResults() Method, - ",e);
 			return null;
 		}
 	}
@@ -600,7 +600,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		CandidateResult candidateResult = null;
 		for(Nomination nomination:nominationsList){
 			candidateResult = nomination.getCandidateResult();
-			if(candidateResult!=null && candidateResult.getRank().equals(new Long(1))){
+			if(candidateResult != null && candidateResult.getRank() != null && candidateResult.getRank().equals(new Long(1))){
 				candidateWon = new CandidateWonVO();	
 				Candidate candidate = nomination.getCandidate();
 				candidateWon.setCandidateId(candidate.getCandidateId());
@@ -642,7 +642,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		}
 		catch(Exception e)
 		{
-			log.error("Exception Occured in getCandidateWon() Method - "+e);
+			log.error("Exception Occured in getCandidateWon() Method - ",e);
 			return null;
 		}
 	}
@@ -716,7 +716,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		for(Nomination nomination:nominationsList){
 			candidateResult = nomination.getCandidateResult();
 			
-			if(candidateResult!=null && candidateResult.getRank().equals(new Long(rank))){
+			if(candidateResult != null && candidateResult.getRank() != null && candidateResult.getRank().equals(new Long(rank))){
 				candidateOpposition = new CandidateOppositionVO();
 				Candidate candidate = nomination.getCandidate();
 				candidateOpposition.setCandidateId(candidate.getCandidateId());
