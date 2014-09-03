@@ -8271,6 +8271,10 @@
 				<param name="root">resultList</param>
 		</result>
 		</action>
-      	
+      	<action name="getPanchayatWiseDetailsAction" class="houseHoldSurveyReportAction" method="getPanchayatWiseDetails">
+        	 <result type="json" name="success">
+           		<param name="root">houseHoldSummary</param>
+        	</result>
+      	</action>
 </package>
 </struts>      

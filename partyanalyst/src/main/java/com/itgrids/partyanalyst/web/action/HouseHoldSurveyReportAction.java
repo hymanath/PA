@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.HHLeaderDetailsVO;
 import com.itgrids.partyanalyst.dto.HHQuestionDetailsVO;
 import com.itgrids.partyanalyst.dto.HHQuestionSummaryReportVO;
+import com.itgrids.partyanalyst.dto.HHReportVO;
 import com.itgrids.partyanalyst.dto.HHSurveyVO;
 import com.itgrids.partyanalyst.dto.HouseHoldVotersVO;
 import com.itgrids.partyanalyst.dto.HouseHoldsReportVO;
@@ -82,7 +83,17 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 	private List<HouseHoldsReportVO> houseHoldBooks;
 	private List<HouseHoldsVO> houseHoldsVOList;
 	
+	private HHReportVO houseHoldSummary;
 	
+	
+	public HHReportVO getHouseHoldSummary() {
+		return houseHoldSummary;
+	}
+
+	public void setHouseHoldSummary(HHReportVO houseHoldSummary) {
+		this.houseHoldSummary = houseHoldSummary;
+	}
+
 	public List<HouseHoldsReportVO> getHouseHoldBooks() {
 		return houseHoldBooks;
 	}
@@ -895,6 +906,19 @@ public String getBooksWiseSummaryReport()
    }
 	
    return Action.SUCCESS;	
+}
+
+public String getPanchayatWiseDetails(){
+	try {		
+		jObj = new JSONObject(getTask());
+		
+		
+		String task = jObj.getString("task");
+		houseHoldSummary = houseHoldSurveyReportService.getPanchayatWiseDetails(jObj.getLong("constituencyId"));
+	}catch (Exception e){
+		e.printStackTrace();
+	}
+	return Action.SUCCESS;
 }
 }
 

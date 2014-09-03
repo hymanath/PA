@@ -45,23 +45,24 @@
 
 	<div id="mainDivId" class="container" style="padding:10px;">
 	<h4 class="offset4" style="color:red">HOUSEHOLDS REPORT</h4>
-	<div class='offset3' style="margin-top:15px;">SELECT CONSTITUENCY  <s:select theme="simple" style="width: 169px;"
+	<div id ="errorDiv" class="offset3" style="color:red"></div>
+	<div class='offset3' style="margin-top:15px;">SELECT CONSTITUENCY <font style="margin-left:5px;color:#ff0020;">*</font> <s:select theme="simple" style="width: 169px;"
 				 name="constituencyList" 
 				id="constituencyId" list="hhConstituenies" 
-				listKey="id" listValue="name" onChange="getSummary();getQuestions()"/>
+				listKey="id" listValue="name" onChange="getQuestions(),getLeadersOfConstituency();"/>
 	</div>
 	
-	<div class='offset3' style="margin-top:15px;display:none;" id="questionDivId">SELECT QUESTION  <select id="questionId" style="margin-left:24px;"><option val="0">Select</option></select></div>
+	<div class='offset3' style="margin-top:15px;display:none;" id="questionDivId">SELECT QUESTION <font style="color:#ff0020;">*</font> <select id="questionId" style="margin-left:33px;"><option val="0">Select</option></select></div>
 	
-	<div class='offset3' style="margin-top:15px;display:none;" id="leaderDivId">SELECT LEADER  <select id="leaderId" style="margin-left:36px;width:300px;" onchange="getBooksOfLeader()"><option val="0">Select</option></select></div> 
+	<div class='offset3' style="margin-top:15px;display:none;" id="leaderDivId">SELECT LEADER <font style="margin-left:5px;color:#ff0020;">*</font> <select id="leaderId" style="margin-left:36px;width:300px;" onchange="getBooksOfLeader()"><option val="0">Select</option></select></div> 
 	
-	<div class='offset3' style="margin-top:15px;display:none;" id="bookDivId">SELECT BOOK  <select id="bookId" style="margin-left:48px;" onclick="getHouseHoldsOfBook()"><option val="0">Select</option></select></div>
+	<div class='offset3' style="margin-top:15px;display:none;" id="bookDivId">SELECT BOOK <font style="margin-left:5px;color:#ff0020;">*</font> <select id="bookId" style="margin-left:48px;" onclick=""><option val="0">Select</option></select></div>
 	
 	
 	<div class="offset3" style="margin-top:10px;">
 		<span class="btn btn-error" onclick="getSummary();">Constituency Summary</span>
 		<span class="btn btn-error" onclick="getQuestionSummary()">Question Wise Summary</span>
-		<span class="btn btn-error" onclick="getBooksSummary()">Get Books Summary</span>
+		<span class="btn btn-error" onclick="getHouseHoldsOfBook()">Get Books Summary</span>
 	</div>
 	
 	
@@ -91,12 +92,12 @@
 	<script>
 	
 	function getBooksSummary(){
-		$("#panchayatSummaryDivId,#summariesId,#summariesId1,#summariesId2,#constiNonVotersSummaryDiv,#questSummary3,#consolidateReport,#ageRangeNonVotersSummaryDiv").html("");
+		$("#panchayatSummaryDivId,#summariesId,#summariesId1,#summariesId2,#constiNonVotersSummaryDiv,#questSummary3,#consolidateReport,#ageRangeNonVotersSummaryDiv,#constiSummaryDiv").html("");
 		$("#questSummary,#questSummary1,#question,#questSummary2,#booksWiseSummaryDiv").html("");
 		$("#leaderDivId,#bookDivId").css("display","block");
 		$("#questionDivId").css("display","none");
 		getLeadersOfConstituency();
-		getBooksOfLeader();
+	//	getBooksOfLeader();
 	}
 	
 	function getLeadersOfConstituency(){
@@ -146,7 +147,7 @@
 			  });
 			  }
 			  
-			  getHouseHoldsOfBook();
+			  //getHouseHoldsOfBook();
 			  }else{
 				$("#summariesId2").html("");
 				 $('#bookId').find('option').remove();
@@ -157,11 +158,18 @@
 	}
 	
 	function getHouseHoldsOfBook(){
-			var bookId = $("#bookId").val();
+	var bookId = $("#bookId").val();
+	if($("#constituencyId").val() == 0)
+	{
+		$("#errorDiv").html("Please Select Constituency");
+		return;
+	}
+	$("#errorDiv").html("")
 		var constnDtls={
              bookId:bookId,
 			 task:"familyHeadsUnderBook"
 	};
+	
 	$.ajax({
           type:'POST',
           url: 'getReportsOfHouseHolds.action',
@@ -202,7 +210,7 @@ function buildQuestions(result){
 		var str ="";
 		$("#questionDivId").html("");
 		str +="SELECT QUESTION ";
-		str +="<select id='questionId' onchange='getQuestionSummary()' style='margin-left:24px;'>";
+		str +="<select id='questionId' onchange='' style='margin-left:33px;'>";
 			for(var i in result){
 				str +="<option value="+result[i].questionId+">"+result[i].question+"</option>";
 			}
@@ -223,7 +231,13 @@ function getQuestionSummary(){
 
 	var constituencyId = $("#constituencyId").val();
 	var questionId = $("#questionId").val();
-	
+	if( constituencyId == 0)
+	{
+		$("#errorDiv").html("Please Select Constituency");
+		return;
+	}
+
+	$("#errorDiv").html("");
 	var constnDtls={
              constituencyId:constituencyId,
 			 questionId:questionId
@@ -250,7 +264,7 @@ function clearSummaryDivs(){
 function buildQuestionSummary(result){
 	$("#questSummary,#questSummary1,#questSummary2,#questSummary3").html("");
 	
-	$("#question").html("<h3>"+result.question+"</h3>");
+	$("#question").html("<h3>"+result.optionsList[0].question+"</h3>");
 	var str = "";
 	str+="<table class='questSummaryTab'>";
 		str +="<thead>";
@@ -339,18 +353,24 @@ function getSummary(){
 	
 	
 	var constituencyId = $("#constituencyId").val();
+	if( constituencyId == 0)
+	{
+		$("#errorDiv").html("Please Select Constituency");
+		return;
+	}
+	$("#errorDiv").html("");
 	var constnDtls={
              constituencyId:constituencyId,
 			 task:"constituencySummary"
 	};
 	$.ajax({
           type:'POST',
-          url: 'getReportsOfHouseHolds.action',
+          url: 'getPanchayatWiseDetailsAction.action',
           dataType: 'json',
           data: {task:JSON.stringify(constnDtls)},
 
           success: function(result){
-			buildPanchayatSummary(result);		  
+			buildPanchayatSummaryReport(result);		  
          },
           error:function() { 
            console.log('error', arguments);
@@ -596,8 +616,10 @@ function buildLeadersOfPanchayat(result){
 }
 
 function buildHouseHoldsUnderBook(result){
-
-	$("#summariesId1,#summariesId2").html("");
+		$("#panchayatSummaryDivId,#summariesId,#summariesId1,#summariesId2,#constiNonVotersSummaryDiv,#questSummary3,#consolidateReport,#ageRangeNonVotersSummaryDiv,#constiSummaryDiv").html("");
+		$("#questSummary,#questSummary1,#question,#questSummary2,#booksWiseSummaryDiv,#summariesId1,#summariesId2").html("");
+		$("#leaderDivId,#bookDivId").css("display","block");
+		$("#questionDivId").css("display","none");
 	var bookNo = $("#bookId :selected").text();
 	
 	if(result!=null && result.familyHeadsUnderBook!=null && result.familyHeadsUnderBook.length>0){
@@ -675,7 +697,12 @@ function buildHouseHolds(result){
 		str+= "</table>";
 		$("#summariesId1").html(str);
 		
-		$('.summeriesTable1').dataTable();
+		$('.summeriesTable1').dataTable({
+		   "aaSorting": [[ 5, "desc" ]],
+		   "aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
+		   "aoColumns": [null,null,null,null,null] 
+        });
+
 	}
 }
 
@@ -957,6 +984,123 @@ function buildAgeWiseNonVotersDetails(result,name,range){
 
 }
 
+function buildPanchayatSummaryReport(result){
+	$("#panchayatSummaryDivId").html("");
+	$("#constiSummaryDiv").html("");
+	
+	var str1 = "";
+		
+		str1 +="<table class='table'>";
+			str1 +="<tr>";
+				str1 +="<th>CONSTITUENCY</th>";
+				str1 +="<th>HOUSE HOLDS</th>";
+				str1 +="<th>LEADERS</th>";
+				str1 +="<th>VOTERS COVERED</th>";
+				str1 +="<th>NON-VOTERS</th>";
+			str1 +="</tr>";
+			
+				str1 +="<tr>";
+					str1 +="<th>"+result.constituency+"</th>";
+					str1 +="<th>"+result.houseHoldsCount+"</th>";
+					str1 +="<th>"+result.ledersCount+"</th>";
+					str1 +="<th>"+result.votersCount+"</th>";
+					str1 +="<th title='Click To See Non Voters Details' onClick='getNonVotersAgeRangeWiseCount("+result.constituencyId+")' style='cursor:pointer;'>"+result.nonVotersCount+"</th>";
+				str1 +="</tr>";
+			
+		str1 +="</table>";
+		
+	$("#constiSummaryDiv").html(str1);
+	
+	if(result.panchayatList!=null && result.panchayatList.length>0){
+		var str = "";
+		str +="<h4 class='offset3' style='color:red;margin-down:20px;margin-up:20px;'> PANCHAYAT WISE SUMMARY OF "+result.constituency+" CONSTITUENCY </h4>";
+		str+= "<table class='table table-bordered' id= 'tableId'>";
+			str +="<thead>";
+				str +="<tr>";
+					str +="<th>PANCHAYAT NAME</th>";	
+					str +="<th>HOUSE HOLDS</th>";	
+					str +="<th>LEADERS</th>";
+					str +="<th>VOTERS</th>";
+					str +="<th>NON-VOTERS</th>";
+				str +="</tr>";
+			str +="</thead>";
+			
+			str +="<tbody>";
+				for(var i in result.panchayatList){
+					str +="<tr>";
+						str +="<td>"+result.panchayatList[i].panchayatName+"</td>";
+						str +="<td title='Click To See HouseHolds In this Panchayat' onclick='getHouseHoldsUnderPanchayat("+result.panchayatList[i].panchayatId+") ' style='cursor:pointer;'>"+result.panchayatList[i].houseHoldsCount+"</td>";
+						str +="<td title='Click To See Leaders In this Panchayat' onclick='getLeadersUnderPanchayat("+result.panchayatList[i].panchayatId+") ' style='cursor:pointer;'>"+result.panchayatList[i].ledersCount+"</td>";
+						str +="<td>"+result.panchayatList[i].votersCount+"</td>";
+						str +="<td>"+result.panchayatList[i].nonVotersCount+"</td>";
+					str +="</tr>";
+				}
+			str +="</tbody>";
+		str+= "</table>";
+		
+		
+		}
+	
+	$("#panchayatSummaryDivId").html(str);
+	
+	$("#tableId").dataTable({        
+		   "aaSorting": [[ 5, "desc" ]],
+		   "aLengthMenu": [[10, 30, 90, -1], [15, 30, 90, "All"]],
+		   "aoColumns": [null,null,null,null,null] 
+        });
+	if(result.hhListFinal!=null && result.hhListFinal.length>0){
+	var str2='';
+	str2 +="<h4 class='offset3' style='color:red;margin-down:20px;margin-up:20px;'> BOOK WISE SUMMARY OF "+result.constituency+" CONSTITUENCY </h4>";
+	str2+= "<table class='table table-bordered summaryDivv'>";
+		str2 +="<thead>";
+			str2 +="<tr>";
+				str2 +="<th>BookNo</th>";	
+				//str2 +="<th>MandalName</th>";	
+				str2 +="<th>PanchayatName</th>";	
+				str2+="<th>Name</th>";
+				str2+="<th>VoterId</th>";
+				str2+="<th>VotersCount</th>";
+				str2+="<th>NonVotersCount</th>";
+				str2+="<th>FamiliesCount</th>";
+				str2 +="</tr>";
+		str2 +="</thead>";
+		
+		str +="<tbody>";
+			for(var i in result.hhListFinal)
+			{
+				str2 +="<tr>";
+				str2 +="<td>"+result.hhListFinal[i].bookNo+"</td>";
+				if(result.hhListFinal[i].panchayatName!=null)
+					str2 +="<td>"+result.hhListFinal[i].panchayatName+"</td>";
+				else
+					str2 +="<td>--</td>";
+				str2 +="<td>"+result.hhListFinal[i].leaderName+"</td>";
+				str2 +="<td>"+result.hhListFinal[i].leaderVoterId+"</td>";
+				str2 +="<td>"+result.hhListFinal[i].votersCount+"</td>";
+				if(result.hhListFinal[i].nonVotersCount!=null)
+				  str2 +="<td>"+result.hhListFinal[i].nonVotersCount+"</td>";
+				else
+				  str2 +="<td>0</td>";
+				if(result.hhListFinal[i].houseHoldsCount!=null)
+				  str2 +="<td>"+result.hhListFinal[i].houseHoldsCount+"</td>";
+                else
+				  str2 +="<td>0</td>";
+               str2 +="</tr>";
+			}
+		str2 +="</tbody>";
+	str2 += "</table>";
+	
+	$("#booksWiseSummaryDiv").html(str2);
+	$(".summaryDivv").dataTable({        
+		   "aaSorting": [[ 5, "desc" ]],
+		   "aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
+		   "aoColumns": [null,null,null,null,null,null,null] 
+        });
+
+	//getBooksOfHouseHold();
+	//getBooksWiseSummary();
+}
+}
 </script>
 </body>
 </html>
