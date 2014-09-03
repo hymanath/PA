@@ -1360,12 +1360,16 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 				return Action.INPUT;
 			}
 			Long userId = user.getRegistrationID();
-			
 			if(session.getAttribute(IConstants.USER) == null && 
-					!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.CASTE_SURVEY_CALL_CENTER))
+					!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.CASTE_SURVEY_CALL_CENTER) )
 				return INPUT;
-			if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CASTE_SURVEY_CALL_CENTER))
-				return INPUT;
+			if(user.getEntitlements() != null )
+			{
+				if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), user.getEntitlements().get(0)))
+					return INPUT;
+			}
+			
+			
 				constituenciesList = 	surveyDataDetailsService.getSurveyStartedConstituencyList();
 				constituencies = surveyDashBoardService.getConstituencyListForThirdPartyReport();
 				usersList = surveyDetailsService.getAssignedSurveyUsersForWebMontringTeam(user.getRegistrationID());
