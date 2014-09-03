@@ -295,6 +295,7 @@ public interface IConstants {
     public final static String HOUSEHOLDS_SURVEY_ENTITLEMENT = "HOUSEHOLDS_SURVEY_ENTITLEMENT";
     public final static String INFORMATION_MONITOTING_SYSTEM = "INFORMATION_MONITOTING_SYSTEM";
     public static final String CASTE_SURVEY_CALL_CENTER = "CASTE_SURVEY_CALL_CENTER";
+    public static final String VIZAG_WM = "VIZAG_WM";
     public static final String WEB_MONITORING_LEAD = "WEB_MONITORING_LEAD";
     public final static String NEW_LIVE_RESULTS = "NEW_LIVE_RESULTS"; 
     public final static String PARTY_CADRE_SEARCH = "PARTY_CADRE_SEARCH"; 
