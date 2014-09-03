@@ -7174,6 +7174,7 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 				" model.boothId," +
 				" model.voter.relativeName ," +
 				" model.booth.partNo " +
+				"  , model.booth.partNo " + 
 			//	" ,model.booth.panchayat.panchayatName  " +
 				" from  BoothPublicationVoter model " +
 				" where model.boothId in (:boothId)");
