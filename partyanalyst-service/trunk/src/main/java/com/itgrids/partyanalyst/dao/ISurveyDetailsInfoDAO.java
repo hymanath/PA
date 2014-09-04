@@ -153,7 +153,7 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	public List<Object[]> getTotalDataCollectedCount(List<Long> userIds,List<Long> boothIds);
 	public List<Long> getThirdPartyStartedConstituencies();
 	public List<Object[]> getBoothDetailsByForThirtyPartyVerifiers(Long constituencyId,Long surveyUserTypeId);
-	public List<SurveyDetailsInfo> getsurveyDetailsInfoByVoterId(Long surveyUserTypeId,Long surveyUserId, Long voterId);	
+	public List<SurveyDetailsInfo> getsurveyDetailsInfoByVoterId(Long surveyUserTypeId,Long voterId);	
 	public List<Object[]> getThirdPartyCollectedInfo(Long boothId);
 	public List<Long> getThirdPartyStartedBoothsDetailsByConstituencyId(Long constituencyId);
 	public List<Object[]> getDuplicateMobileNumbersByConstituencyIdsAndDates(Date startDate,Date endDate,List<Long> constituencyIds,Long frequencyCount);

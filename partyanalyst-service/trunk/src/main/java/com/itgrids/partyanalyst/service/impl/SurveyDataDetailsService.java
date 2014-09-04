@@ -3812,7 +3812,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				
 					SurveyCallStatus surveyCallStatus = null;
 								
-					List<SurveyDetailsInfo> surveyDetailsInfoList = surveyDetailsInfoDAO.getsurveyDetailsInfoByVoterId(surveyReportVO.getUserTypeId(),surveyReportVO.getUserid(),surveyReportVO.getVoterId());
+					List<SurveyDetailsInfo> surveyDetailsInfoList = surveyDetailsInfoDAO.getsurveyDetailsInfoByVoterId(surveyReportVO.getUserTypeId(),surveyReportVO.getVoterId());
 					
 					boolean isDCCasteCollected = false;
 					boolean isDCHamletCollected = false;
@@ -3820,7 +3820,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					
 					if(surveyDetailsInfoList != null && surveyDetailsInfoList.size()>0)
 					{
-						for (SurveyDetailsInfo surveyDetailsInfo : surveyDetailsInfoList) {
+						SurveyDetailsInfo surveyDetailsInfo = surveyDetailsInfoList.get(0);
+						//for (SurveyDetailsInfo surveyDetailsInfo : surveyDetailsInfoList) {
 							
 												
 							if(surveyDetailsInfo.getCaste() != null)
@@ -3849,7 +3850,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 							}
 						}
 						
-					}
+				//	}
 					
 					//Long surveyCallStatusId = surveyCallStatusDAO.getSurveyCallDtalsByVoterId(surveyReportVO.getVoterId());
 					
@@ -4093,7 +4094,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				
 					SurveyCallStatus surveyCallStatus = null;
 					
-					List<SurveyDetailsInfo> surveyDetailsInfoList = surveyDetailsInfoDAO.getsurveyDetailsInfoByVoterId(surveyReportVO.getUserTypeId(),surveyReportVO.getUserid(),surveyReportVO.getVoterId());
+					List<SurveyDetailsInfo> surveyDetailsInfoList = surveyDetailsInfoDAO.getsurveyDetailsInfoByVoterId(surveyReportVO.getUserTypeId(),surveyReportVO.getVoterId());
 					
 					boolean isDVCasteCollected = false;
 					boolean isDVHamletCollected = false;
@@ -4101,7 +4102,10 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					
 					if(surveyDetailsInfoList != null && surveyDetailsInfoList.size()>0)
 					{
-						for (SurveyDetailsInfo surveyDetailsInfo : surveyDetailsInfoList) {
+						
+						SurveyDetailsInfo surveyDetailsInfo = surveyDetailsInfoList.get(0);
+						
+					//	for (SurveyDetailsInfo surveyDetailsInfo : surveyDetailsInfoList) {
 							
 												
 							if(surveyDetailsInfo.getCaste() != null)
@@ -4130,7 +4134,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 							}
 						}
 						
-					}
+				//	}
 					
 					
 					//Long surveyCallStatusId = surveyCallStatusDAO.getSurveyCallDtalsByVoterId(surveyReportVO.getVoterId());
