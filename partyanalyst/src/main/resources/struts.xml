@@ -8250,6 +8250,15 @@
 				<param name="root">boothWiseStatusList</param>
 		</result>
 		</action>
+		
+		
+		<action name="dayWiseDCReportAction" class="ctpDashBoardAction" method="getDaywiseDCReport">
+			<result type="json" name="success">
+				<param name="root">boothWiseStatusList</param>
+			</result>
+		</action>
+		
+		
 		<action name="getBooksWiseSummaryAction" class="houseHoldSurveyReportAction" method="getBooksWiseSummaryReport">
         	 <result type="json" name="success">
            		<param name="root">houseHoldsVOList</param>
