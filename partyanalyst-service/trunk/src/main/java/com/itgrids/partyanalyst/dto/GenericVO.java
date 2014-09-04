@@ -27,7 +27,29 @@ public class GenericVO implements Serializable, Comparable<GenericVO>{
     private List<Long> verificationCompletionList = new ArrayList<Long>();
     private List<Long> verificationStartedList = new ArrayList<Long>();
     
+   private String startTime;
+   private String endTime;
+   private String workedTime;
+
    
+	public String getStartTime() {
+	return startTime;
+	}
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+	public String getEndTime() {
+		return endTime;
+	}
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
+	public String getWorkedTime() {
+		return workedTime;
+	}
+	public void setWorkedTime(String workedTime) {
+		this.workedTime = workedTime;
+	}
 	public List<Long> getVerificationProcessList() {
 		return verificationProcessList;
 	}
