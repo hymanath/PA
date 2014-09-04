@@ -21,6 +21,7 @@ function showHideTabs(id)
 		$('#saveBoothsPercentage').hide();
 		$("#verifierReportIdForVerifier").hide();;
 		$("#wmReportDiv").hide();
+		$('#dayWiseDCsReports').hide();
 	}
 	else if(id == "callCenterTab")
 	{
@@ -37,6 +38,7 @@ function showHideTabs(id)
 		$('#saveBoothsPercentage').hide();
 		$("#verifierReportIdForVerifier").hide();;
 		$("#wmReportDiv").hide();
+		$('#dayWiseDCsReports').hide();
 		
 	}
 	else if (id == "startTimeTab")
@@ -54,6 +56,7 @@ function showHideTabs(id)
 		$('#saveBoothsPercentage').hide();
 		$("#verifierReportIdForVerifier").hide();;
 		$("#wmReportDiv").hide();
+		$('#dayWiseDCsReports').hide();
 		if(fieldReportflg == false)
 		getFieldReportSummary();
 		fieldReportflg = true;
@@ -73,6 +76,7 @@ function showHideTabs(id)
 		$('#saveBoothsPercentage').hide();
 		$("#verifierReportIdForVerifier").hide();;
 		$("#wmReportDiv").hide();
+		$('#dayWiseDCsReports').hide();
 		if(fieldDataflg == false)
 		getDataReportSummary();
 		fieldDataflg = true;
@@ -92,6 +96,7 @@ function showHideTabs(id)
 		$('#saveBoothsPercentage').hide();
 		$("#verifierReportIdForVerifier").hide();;
 		$("#wmReportDiv").hide();
+		$('#dayWiseDCsReports').hide();
 	}
 	else if (id == "surveyUserWise")
 	{
@@ -107,6 +112,7 @@ function showHideTabs(id)
 		$('#saveBoothsPercentage').hide();
 		$("#verifierReportIdForVerifier").hide();;
 		$("#wmReportDiv").hide();
+		$('#dayWiseDCsReports').hide();
 	}
 	else if (id == "saveBoothPercentagesTab")
 	{
@@ -122,6 +128,7 @@ function showHideTabs(id)
 		$('#saveBoothsPercentage').show();
 		$("#verifierReportIdForVerifier").hide();;
 		$("#wmReportDiv").hide();
+		$('#dayWiseDCsReports').hide();
 	}
 	else if (id == "wmReportTab")
 	{
@@ -137,6 +144,7 @@ function showHideTabs(id)
 		$('#saveBoothsPercentage').hide();
 		$("#wmReportDiv").show();
 		$("#verifierReportIdForVerifier").hide();
+		$('#dayWiseDCsReports').hide();
 	}
 	else if (id == "verifierReportTab")
 	{
@@ -152,6 +160,7 @@ function showHideTabs(id)
 		$('#saveBoothsPercentage').hide();
 		$("#verifierReportIdForVerifier").show();;
 		$("#wmReportDiv").hide();
+		$('#dayWiseDCsReports').hide();
 	}
 	else if (id == "thirdPartyReportTab")
 	{
@@ -166,9 +175,28 @@ function showHideTabs(id)
 		$('#saveBoothsPercentage').hide();
 		$("#verifierReportIdForVerifier").hide();
 		$("#wmReportDiv").hide();
+		$('#dayWiseDCsReports').hide();
 		$("#thirdPartyReportDiv").show();
         getThirdPartySummaryDetails();
 		getTPTotalBoothsDetailsConstituencyWise();
+	}
+	else if(id =="daywiseDCReport")
+	{
+
+		$("#thirdPartyReportDiv").hide();
+		$('#statusReportDiv').hide();
+		$('#callCenter').hide();
+		$('#startTime').hide();
+		$('#boothWise').hide();
+		$('#dataCollector').hide();
+        $('#inActiveUsersDetails').hide();	
+		$('#completeBooths').hide();
+		$('#userReport').hide();
+		$('#saveBoothsPercentage').hide();
+		$("#verifierReportIdForVerifier").hide();;
+		$("#wmReportDiv").hide();
+		$('#dayWiseDCsReports').show();
+		//getDCDataAvalaiableConstituencyies();
 	}
 	else
 	{
@@ -185,7 +213,7 @@ function showHideTabs(id)
 		$("#verifierReportIdForVerifier").hide();;
 		$('#saveBoothsPercentage').hide();
 		$("#wmReportDiv").hide();
-
+		$('#dayWiseDCsReports').hide();
 	}
 }
 function  getThirdPartySummaryDetails()
@@ -4736,3 +4764,69 @@ function buildVerifiers(result){
 	
 }
 	
+	
+function getDayWiseDCReport()
+{
+	$('#dayWiseDCReportDiv').html('');
+	$('#DCmainajaximg').show();
+	var jsObj = {
+		constituencyArr : $('#DCConstituencyId').val(),
+		reportDate : $('#reportDateId').val()
+	}
+	$.ajax({
+			type:'GET',
+			url: 'dayWiseDCReportAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)},
+		 }).done(function(result){	
+			buildDcReport(result);
+		});	
+		
+}
+
+function buildDcReport(result)
+{
+	$('#DCmainajaximg').hide();
+	
+	if(result != null && result[0].boothWiseSurveyDetailsVOList != null)
+	{
+		var str = '';	
+			str +='<div> <button class="btn btn-success offset7" style="margin-top: -30px;" onclick="generateExcel()"> Export Excel </button></div>';
+			str+='<table class="table table-bordered m_top20 table-hover table-striped " id="dayWiseDCReportTable">';				
+				str+='<thead>';
+					str+='<tr>';
+						str+='<td> CONSTITUENCY NAME </td>';
+						str+='<td> DC_NAME </td>';
+						//str+='<td> NO. OF BOOTHS </td>';
+						str+='<td> BOOTH NO </td>';
+						str+='<td> FIRST RECORD TIME </td>';
+						str+='<td> LAST RECORD TIME </td>';
+						str+='<td> TOTAL TIME </td>';
+						str+='<td> TOTAL COUNT </td>';
+					str+='</tr>';
+				str+='</thead>';
+				str+='</tbody>';
+		for(var i in result[0].boothWiseSurveyDetailsVOList)
+		{
+			str+='<tr>';
+						str+='<td> '+result[0].boothWiseSurveyDetailsVOList[i].constituency+' </td>';
+						str+='<td> '+result[0].boothWiseSurveyDetailsVOList[i].name+' </td>';
+						//str+='<td> '+result[0].boothWiseSurveyDetailsVOList[i].boothInfo.length+' </td>';
+						str+='<td> '+result[0].boothWiseSurveyDetailsVOList[i].partNo+'</td>';
+						str+='<td> '+result[0].boothWiseSurveyDetailsVOList[i].startTime+ '</td>';
+						str+='<td> '+result[0].boothWiseSurveyDetailsVOList[i].endTime+ '</td>';
+						str+='<td> '+result[0].boothWiseSurveyDetailsVOList[i].workedTime+ ' </td>';
+						str+='<td> '+result[0].boothWiseSurveyDetailsVOList[i].count+ '</td>';
+			str+='</tr>';
+		}
+			str+='</tbody>';
+		str+='</table>';
+		
+		
+		$('#dayWiseDCReportDiv').html(str);
+		 $('#dayWiseDCReportTable').dataTable({
+		"iDisplayLength": 30,
+		"aLengthMenu": [[30,50,100, 200, -1], [30,50,100, 200, "All"]]
+		});
+	}
+}
