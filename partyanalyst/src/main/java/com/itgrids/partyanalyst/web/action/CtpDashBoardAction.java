@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -7,8 +8,8 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dto.BigPictureVO;
 import com.itgrids.partyanalyst.dto.BoothWiseSurveyStatusDetailsVO;
@@ -458,10 +459,39 @@ public class CtpDashBoardAction extends ActionSupport implements ServletRequestA
 			
 		}catch(Exception e)
 		{
-			LOG.error("Exception raised in buildConstituencyWiseSummaryReport", e);
+			LOG.error("Exception raised in buildConstituencyWiseSummaryReport() in CtpDashBoardAction class.", e);
 		}
 		return Action.SUCCESS;
 	}
 	
 	
+	public String getDaywiseDCReport(){
+		
+		try
+		{
+			jObj = new JSONObject(getTask());
+			JSONArray constituencyArr = jObj.getJSONArray("constituencyArr");
+			String reportDate  = jObj.getString("reportDate");
+			
+			List<Long> constituencyIds = new ArrayList<Long>();
+			
+			if(constituencyArr != null && constituencyArr.length() > 0)
+			{
+				for(int i=0 ; i< constituencyArr.length();i++)
+				{
+					String constiId = constituencyArr.get(i).toString().trim().replace("[", "").replace("]", "");
+					
+					constituencyIds.add(Long.valueOf(constiId));
+				}
+			}
+			
+			boothWiseStatusList = ctpDashBoardService.getDaywiseDCReport(constituencyIds,reportDate);
+			
+		}catch(Exception e)
+		{
+			LOG.error("Exception raised in getDaywiseDCReport in CtpDashBoardAction class.", e);
+		}
+		return Action.SUCCESS;
+		
+	}
 }
