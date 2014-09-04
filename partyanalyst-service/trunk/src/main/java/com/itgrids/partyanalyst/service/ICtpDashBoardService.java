@@ -34,5 +34,6 @@ public interface ICtpDashBoardService
 	
 	public List<GenericVO> getUserWiseCollecetionDetails(Long boothId , Long surveyUserUd , String fromDate , String toDate,String type);
 
+	public List<BoothWiseSurveyStatusDetailsVO> getDaywiseDCReport(List<Long> constituencyIds, String reportDate);
 
 }
