@@ -163,6 +163,9 @@
 						<li><a class="highlight" id="thirdPartyReportTab" onclick="showHideTabs(this.id);">QC Report</a></li>
 						
 						<li><a class="highlight" id="surveyUserWise" onclick="showHideTabs(this.id);">User Wise Report</a></li>
+						
+						<li><a class="highlight" id="daywiseDCReport" onclick="showHideTabs(this.id);">Day Wise DC Report </a></li>
+											
 					</c:if>
 					
 					
@@ -703,6 +706,44 @@
 			</div>
 		</div>
 		
+			<div class="row" id="dayWiseDCsReports" style="dispaly:none;">
+			<div class="span12">
+				<div class="row-fluid ">
+					<div class="span12 widgetservey_Red m_top30">
+							<h4 id="titleId"></h4>
+							<div class="row">
+						<div id="errorDiv" class="span8 offset1 clearCls"></div>
+						</div>
+								<div class="row">
+									<div class="offset3">
+										<div class="row-fluid">
+											
+											<div class="span10">
+												Select Constituency <font class="requiredFont">*</font> :
+												<s:select theme="simple"  name="constituency" id="DCConstituencyId"  headerKey="0" headerValue="Select Constituency" list="constituenciesList" listKey="id" listValue="name" multiple="true"/>
+											</div>
+										</div>	
+										<div class="row-fluid">
+											
+											<div class="span6 offset1">
+											Select Date  <font class="requiredFont">*</font> :
+											<div class="input-append">
+											 <input type="text" class="input-block-level datepicker" id="reportDateId" readonly style="width:200px;cursor:pointer;">
+											</div>
+										</div>
+										</div>	
+									</div>
+								</div>
+						<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="getDayWiseDCReport()">SUBMIT</button></div>
+						<div id="DCretunMsg" class="clearCls"></div>
+                           <div id="dayWiseDCReportDiv" class="clearCls" ></div>
+							<img src='images/Loading-data.gif' class="offset5"  id="DCmainajaximg" style="width:70px;height:60px;display:none;"/>
+					</div>
+				</div>
+			</div>	
+				
+			</div>
+			
 	</div>
 	<script>
 		var userIds = new Array();
@@ -728,18 +769,18 @@
 		$( document ).ready(function() {
 		$('#boothIdForVerfication').multiselect({
 			  noneSelectedText:"Select Booth(s)"});
-			 $('#userReportUserConstituency').multiselect({
+			 $('#userReportUserConstituency,#DCConstituencyId').multiselect({
 			  noneSelectedText:"Select Constituency(s)"});		
 		  
 			 $('#userReportUser').multiselect({
 			  noneSelectedText:"Select User(s)"});
 			  
-			  $('#toDateForUserReport,#fromDateForUserReport').datepicker({
+			  $('#toDateForUserReport,#fromDateForUserReport,#reportDateId').datepicker({
 			  maxDate : new Date(),
 			  minDate : '14-07-2014',
 			  dateFormat: 'dd-mm-yy'
 			  });
-			  $("#toDateForUserReport").datepicker("setDate", new Date());
+			  $("#toDateForUserReport,#reportDateId").datepicker("setDate", new Date());
 			  $("#fromDateForUserReport").datepicker("setDate", '14-07-2014');
 		});	
 
@@ -900,6 +941,25 @@ function buildTest(result)
 	$('#dayWiseReportDiv1').html(str);
 	//$('#daywisereportTableIdTemp').dataTable();
 }
+
+
+var tableToExcel = (function() {
+  var uri = 'data:application/vnd.ms-excel;base64,'
+    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+  return function(table, name) {
+    if (!table.nodeType) table = document.getElementById(table)
+    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+    window.location.href = uri + base64(format(template, ctx))
+  }
+})()
+function generateExcel()
+{
+   tableToExcel('dayWiseDCReportTable', 'DAY WISE DC REPORT ');
+}
+
+
 </script>
 	
  </body>
