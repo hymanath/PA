@@ -22,14 +22,21 @@ public class BoothWiseSurveyStatusDetailsVO {
 	private String leaderName;
 	private String leaderMobile;
 	private String constituency;
+	private Long constituencyId;
 	private Long count;
-	private List<String> boothList = new ArrayList<String>(0);
 	private String startTime;
 	private String endTime;
 	private String workedTime;
 	private List<BoothWiseSurveyStatusDetailsVO> boothWiseSurveyDetailsVOList = new ArrayList<BoothWiseSurveyStatusDetailsVO>(0);
+	private List<GenericVO> boothInfo = new ArrayList<GenericVO>();
 	
 	
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
 	public Long getId() {
 		return id;
 	}
@@ -42,11 +49,12 @@ public class BoothWiseSurveyStatusDetailsVO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public List<String> getBoothList() {
-		return boothList;
+
+	public List<GenericVO> getBoothInfo() {
+		return boothInfo;
 	}
-	public void setBoothList(List<String> boothList) {
-		this.boothList = boothList;
+	public void setBoothInfo(List<GenericVO> boothInfo) {
+		this.boothInfo = boothInfo;
 	}
 	public String getDcName() {
 		return dcName;
