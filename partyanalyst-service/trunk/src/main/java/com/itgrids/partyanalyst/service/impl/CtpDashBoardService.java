@@ -1482,4 +1482,172 @@ public class CtpDashBoardService implements ICtpDashBoardService
 		}
 		return returnList;
 	}
+	
+	public List<BoothWiseSurveyStatusDetailsVO> getDaywiseDCReport(List<Long> constituencyIds, String reportDate)
+	{
+		List<BoothWiseSurveyStatusDetailsVO> returnList = new ArrayList<BoothWiseSurveyStatusDetailsVO>();
+		
+		try {
+			BoothWiseSurveyStatusDetailsVO mainVO = new BoothWiseSurveyStatusDetailsVO();
+			
+			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+			Date date = format.parse(reportDate);
+			
+			List<Object[]> dcDayWiseInfo = surveyDetailsInfoDAO.getDaywiseDCReport(constituencyIds,date);
+			Map<Long,BoothWiseSurveyStatusDetailsVO> boothWiseMap = new HashMap<Long, BoothWiseSurveyStatusDetailsVO>();
+			
+			List<BoothWiseSurveyStatusDetailsVO> boothWiseList = null;
+			 SimpleDateFormat format1 = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
+			if(dcDayWiseInfo != null && dcDayWiseInfo.size()>0)
+			{
+				boothWiseList = new ArrayList<BoothWiseSurveyStatusDetailsVO>();
+				
+				for (Object[] param : dcDayWiseInfo) {
+					BoothWiseSurveyStatusDetailsVO vo = null;
+					
+					if(boothWiseMap.get((Long) param[0]) ==null)
+					{
+						vo = new BoothWiseSurveyStatusDetailsVO();
+						vo.setId(param[0] != null ? (Long) param[0]:0L);
+						vo.setName(param[1] != null ? param[1].toString():"");
+						vo.setConstituencyId(param[2] != null ? (Long) param[2]:0L);
+						vo.setConstituency(param[3]!= null ? param[3].toString():"");
+					
+					}
+					else
+					{
+						vo = boothWiseMap.get((Long) param[0]);
+					}
+					
+					if(vo.getPartNo() != null)
+					{
+						String partNo = param[5]!= null ? param[5].toString():"";
+						vo.setPartNo(vo.getPartNo()+", "+partNo);
+					}
+					else
+					{
+						vo.setPartNo(param[5]!= null ? param[5].toString():"");
+					}
+
+					if(vo.getStartTime() != null)
+					{
+						
+						String nextDate = param[6]!= null ? param[6].toString():"";
+					    String existingDate = vo.getStartTime();
+		   
+					    Date d1 = format1.parse(existingDate);
+					    Date d2 = format1.parse(nextDate);
+					   
+					    long firstTime = d1.getTime();
+					    long lastTime = d2.getTime();
+					    
+					    if(firstTime > lastTime)
+					    {
+					    	vo.setStartTime(String.valueOf(nextDate));
+					    }
+					    else
+					    {
+					    	vo.setStartTime(String.valueOf(existingDate));
+					    }					    					    
+					}
+					else
+					{
+						 vo.setStartTime(param[6]!= null ? param[6].toString():"");
+					}
+					
+					if(vo.getEndTime() != null)
+					{						
+						String nextDate = param[7]!= null ? param[7].toString():"";
+					    String existingDate = vo.getEndTime();
+		   
+					    Date d1 = format1.parse(existingDate);
+					    Date d2 = format1.parse(nextDate);
+					   
+					    long firstTime = d1.getTime();
+					    long lastTime = d2.getTime();
+					    
+					    if(firstTime > lastTime)
+					    {
+					    	vo.setEndTime(String.valueOf(existingDate));
+					    }
+					    else
+					    {
+					    	vo.setEndTime(String.valueOf(nextDate));
+					    }					    
+					}
+					else
+					{
+						vo.setEndTime(param[7]!= null ? param[7].toString():"");
+					}
+					
+					
+					String dateStart = vo.getStartTime();
+				    String dateStop  = vo.getEndTime();
+
+				    Date d1 = format1.parse(dateStart);
+				    Date d2 = format1.parse(dateStop);
+				   
+				    long diff = d2.getTime() - d1.getTime();
+				    long diffHours = diff / (60 * 60 * 1000);
+				    
+				    vo.setWorkedTime(String.valueOf(diffHours));
+				    
+				    
+				    if(vo.getCount() != null && vo.getCount().longValue() != 0L)
+				    {
+				    	Long existingCount = vo.getCount();
+				    	Long presentCount = param[8] != null ? (Long) param[8]:0L;
+				    	
+				    	Long totalCount = existingCount + presentCount;
+				    	
+				    	vo.setCount(totalCount);
+				    }
+				    else
+				    {
+				    	vo.setCount(param[8] != null ? (Long) param[8]:0L);
+				    }
+				    
+					boothWiseMap.put((Long) param[0],vo);
+					
+					//boothWiseList.add(vo);
+				}
+			}
+			if(boothWiseMap != null && boothWiseMap.size()>0)
+			{
+				for (Long surveyUserId : boothWiseMap.keySet()) {
+					BoothWiseSurveyStatusDetailsVO vo = boothWiseMap.get(surveyUserId);
+				/*	String formatTime = " AM";
+				
+					if(Long.valueOf(vo.getStartTime().substring(11, 13).trim()) >= 12L)
+					{
+						formatTime = " PM";
+					}
+					*/
+					vo.setStartTime(vo.getStartTime().substring(10, 16));
+					/*
+					if(Long.valueOf(vo.getEndTime().substring(11, 13).trim()) >= 12L)
+					{
+						formatTime = " PM";
+					}
+					*/
+					vo.setEndTime(vo.getEndTime().substring(10, 16));
+					
+					boothWiseList.add(vo);
+				}
+				
+				if(boothWiseList != null && boothWiseList.size()>0)
+				{
+					mainVO.setBoothWiseSurveyDetailsVOList(boothWiseList);
+				}
+			}
+			 
+			returnList.add(mainVO);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in getDaywiseDCReport service method", e);
+			e.printStackTrace();
+		}
+		
+		return returnList;
+	}
 }
