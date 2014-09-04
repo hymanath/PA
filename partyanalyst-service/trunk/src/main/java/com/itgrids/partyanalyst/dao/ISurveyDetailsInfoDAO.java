@@ -207,5 +207,7 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	
 	public List<Object[]> getDcProcessingConstituencyList(List<Long> constituencyIds);
 	
+	public List<Object[]> getDaywiseDCReport(List<Long> constituencyIDs, Date reportDate);
+	
 }
 
