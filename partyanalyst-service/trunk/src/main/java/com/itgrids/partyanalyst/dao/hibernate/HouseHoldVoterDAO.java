@@ -280,13 +280,13 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 		Query query = getSession().createQuery(" select model.houseHolds.panchayat.panchayatId," +
 				" model.houseHolds.panchayat.panchayatName," +
 				" count(distinct model.houseHolds.houseHoldId)," +
-				" model.hhLeader.id," +
-				" model.hhLeader.name ," +
-				" model.hhLeader.voterId," +
-				" model.hhLeader.mobileNo" +
+				" model.hhLeaderBooks.leader.id," +
+				" model.hhLeaderBooks.leader.name ," +
+				" model.hhLeaderBooks.leader.voterId," +
+				" model.hhLeaderBooks.leader.mobileNo" +
 				" from HouseHoldVoter model where " +
 				" model.isDelete = 'false'" +
-				" and model.hhLeader.is_active = 'YES'" +
+				" and model.hhLeaderBooks.leader.is_active = 'YES'" +
 				" and model.houseHolds.panchayat.panchayatId = :locationId " +
 				" group by model.hhLeader.id");
 		
@@ -336,7 +336,7 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 		}else if(type == 2){
 			sb.append(" and model.hhLeader.id =:val");
 		}else if(type == 3){
-			sb.append(" and model.hhLeaderBooks.hhLeaderBookId =:val");
+			sb.append(" and model.hhLeaderBooks.leader.id =:val");
 		}
 		sb.append(" order by model.houseHolds.houseHoldId desc");
 
