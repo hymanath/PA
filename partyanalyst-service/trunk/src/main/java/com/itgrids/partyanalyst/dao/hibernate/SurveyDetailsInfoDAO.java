@@ -2378,12 +2378,14 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		
 		StringBuilder queryStr= new StringBuilder();
 		
-		queryStr.append(" select SU.surveyUserId, SU.userName,B.constituency.constituencyId, B.constituency.name,B.boothId, B.partNo, " +
-				" min(SDI.insertedTime), max(SDI.insertedTime), count(distinct SDI.voterId)   from SurveyDetailsInfo SDI, Booth B, SurveyUser SU  where " +
+		queryStr.append(" select SDI.surveyUser.surveyUserId, SDI.surveyUser.userName, SDI.booth.constituency.constituencyId,  SDI.booth.constituency.name,SDI.boothId,SDI.booth.partNo, " +
+				" min(SDI.date), max(SDI.date), count(distinct SDI.voter.voterId)   from SurveyDetailsInfo SDI  where " +
 				" SDI.booth.constituency.constituencyId in (:constituencyIDs) and " +
-				" date(SDI.insertedTime) = :reportDate group by SDI.booth.boothId order by min(SDI.insertedTime) asc ");
-		
+				" date(SDI.date) = :reportDate group by SDI.boothId,SDI.surveyUser.surveyUserId  order by SDI.booth.partNo,SDI.booth.constituency.constituencyId asc ");
+
 		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("reportDate", reportDate);
+		query.setParameterList("constituencyIDs", constituencyIDs);
 		
 		return query.list();		
 	}
