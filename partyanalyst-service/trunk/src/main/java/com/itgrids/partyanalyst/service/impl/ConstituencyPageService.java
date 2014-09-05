@@ -24,8 +24,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import javassist.expr.NewArray;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
@@ -95,7 +93,6 @@ import com.itgrids.partyanalyst.dto.RevenueVillageElectionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 import com.itgrids.partyanalyst.dto.VillageBoothInfoVO;
-import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.dto.VotersWithDelimitationInfoVO;
 import com.itgrids.partyanalyst.model.BoothConstituencyElection;

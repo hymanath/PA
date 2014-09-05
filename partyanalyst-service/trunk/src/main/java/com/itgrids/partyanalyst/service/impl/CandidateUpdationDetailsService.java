@@ -371,7 +371,7 @@ return status;
 		
 }
 
-@Override
+//@Override
 public List<CandidateVO> getCandidateInfo(Long electionId, String electionType) {
 	List<CandidateVO>  resultList = new ArrayList<CandidateVO>();
 	List<Object[]> list = null;

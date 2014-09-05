@@ -102,6 +102,11 @@ public class Scheduler {
 		schedulerService.deleteSearchEngineAccessedURLsFromUserTracking(dateUtilService.getCurrentDateAndTime(),dateUtilService.getCurrentDateAndTime());
 	}
 	
+	public void runTheBatchJobForEveryDayMobilesInsert()
+	{
+		schedulerService.saveDailyWmCorrectedMobileNUmbers(dateUtilService.getCurrentDateAndTime());
+	}
+	
 	public void runTheBatchJobForEveryWeek()
 	{
 		if(!IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))

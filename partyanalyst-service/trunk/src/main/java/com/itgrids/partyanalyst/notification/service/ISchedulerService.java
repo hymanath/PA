@@ -10,4 +10,6 @@ public interface ISchedulerService {
 	public ResultStatus deleteSearchEngineAccessedURLsFromUserTracking(Date fromDate,Date toDate);
 	
 	public List<String> getAllSearchEngineIPAddresses();
+	
+	public void saveDailyWmCorrectedMobileNUmbers(Date fromDate);
 }
