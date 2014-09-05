@@ -2390,4 +2390,29 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		return query.list();		
 	}
 	
+	public Integer saveDailyCallCenterVerifiedDetails(Date todayDate)
+	{
+		Query query = getSession().createSQLQuery("insert into mobile_numbers " +
+				"( select null,SDI.mobile_number , 4 ,SCS.voter_id , B.constituency_id , SCS.booth_id ,NOW(), NOW()  " +
+				"  from survey_call_status SCS , booth B ,survey_details_info SDI,survey_user SU where SCS.booth_id = B.booth_id " +
+				"  and SCS.voter_id = SDI.voter_id and SDI.survey_user_id = SU.survey_user_id and SU.survey_user_type = 1 " +
+				" and mobile_no_status = 'Y' and date(SCS.inserted_date) = CURDATE() )");
+		int c = query.executeUpdate();
+		
+		return c;
+	}
+	
+	public Integer saveSMSMobileNumbers(Date todayDate)
+	{
+		Query query = getSession().createSQLQuery("insert into dakavara_pa.mobile_numbers " +
+		 		" ( select null, r.mobile_no , 2 , v.voter_id  , b.constituency_id ,b.booth_id ,NOW(), NOW() " +
+		 		" from survey.respondent r,dakavara_pa.voter v,survey.booth b,dakavara_pa.booth_publication_voter bpv, survey.verification_details vd " +
+		 		" where r.Mobile_No is not null and v.voter_id_card_no = r.voter_id and r.survey_answer_info_id = vd.survey_answer_info_id " +
+		 		" and b.booth_id = bpv.booth_id and bpv.voter_id = v.voter_id and b.publication_date_id = 11 " +
+		 		" and vd.verification_status_id in (3 , 4) and  date(vd.verified_time) = CURDATE() )");
+		int c = query.executeUpdate();
+		
+		return c;
+	}
+	
 }
