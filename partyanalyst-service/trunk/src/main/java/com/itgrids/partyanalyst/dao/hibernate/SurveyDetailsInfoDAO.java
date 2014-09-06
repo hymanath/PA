@@ -2345,7 +2345,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 	
 	public List<Object[]> getConstituencyWiseCasteCollected()
 	{
-		Query query = getSession().createQuery("select model.booth.constituency.constituencyId , model.booth.constituency.name , count(distinct model.voter.voterId) , count(distinct model.booth.boothId)  from SurveyDetailsInfo  model where model.caste is not null and model.surveyUser.surveyUserType.surveyUsertypeId = 1   group by model.booth.constituency.constituencyId");
+		Query query = getSession().createQuery("select model.booth.constituency.constituencyId , model.booth.constituency.name , count(distinct model.voter.voterId)   from SurveyDetailsInfo  model where model.caste is not null and model.surveyUser.surveyUserType.surveyUsertypeId = 1   group by model.booth.constituency.constituencyId,model.booth.boothId");
 		
 		return query.list();
 	}
