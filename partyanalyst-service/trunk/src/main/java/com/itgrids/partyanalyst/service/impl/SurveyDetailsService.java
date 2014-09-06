@@ -2322,18 +2322,55 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 			Map<Long,Long> verifiedBoothsMap = null;
 			Map<Long,Long> mobilesCollectedMap =null;
 			Map<Long,Long> mobilesVerifiedMap = null;
+			Map<Long,String> constituencyMap = new HashMap<Long, String>();
+			Map<Long,Long> constiBoothMap = new HashMap<Long, Long>();
+			Map<Long,Long> constiCollectedMap = new HashMap<Long, Long>();
 			for (Object[] objects : casteCollecetdDetails) 
 			{
-				GenericVO casteCollecetdVO = new GenericVO();
+				String constituencyName = constituencyMap.get((Long)objects[0]);
+				if(constituencyName == null)
+				{
+					constituencyMap.put((Long)objects[0], objects[1].toString());
+				}
+				Long boothCount = constiBoothMap.get((Long)objects[0]);
+				if(boothCount == null)
+				{
+					constiBoothMap.put((Long)objects[0], 1l);
+				}
+				else
+				{
+					constiBoothMap.put((Long)objects[0], 1 + boothCount);
+				}
+				Long votersCount = constiCollectedMap.get((Long)objects[0]);
+				if(votersCount == null)
+				{
+					constiCollectedMap.put((Long)objects[0], (Long)objects[2]);
+				}
+				else
+				{
+					constiCollectedMap.put((Long)objects[0], (Long)objects[2] + votersCount);
+				}
+				/*GenericVO casteCollecetdVO = new GenericVO();
 				
 				casteCollecetdVO.setId((Long)objects[0]);//constituencyId
 				casteCollecetdVO.setName(objects[1].toString());//constituency Name
 				casteCollecetdVO.setCount((Long)objects[2]);// total Voters
 				casteCollecetdVO.setRank((Long)objects[3]);// booths count
 				
-				casteCollecetdMap.put((Long)objects[0], casteCollecetdVO);
+				casteCollecetdMap.put((Long)objects[0], casteCollecetdVO);*/
 			}
 			
+			for(Long constiturncyId : constituencyMap.keySet())
+			{
+				GenericVO casteCollecetdVO = new GenericVO();
+				
+				casteCollecetdVO.setId(constiturncyId);//constituencyId
+				casteCollecetdVO.setName(constituencyMap.get(constiturncyId));//constituency Name
+				casteCollecetdVO.setCount(constiCollectedMap.get(constiturncyId));// total Voters
+				casteCollecetdVO.setRank(constiBoothMap.get(constiturncyId));// booths count
+				
+				casteCollecetdMap.put(constiturncyId, casteCollecetdVO);
+			}
 			List<Object[]> verifiedCasteDetails = surveyCallStatusDAO.getConstituencyWiseCasteUpdate();
 			if(verifiedCasteDetails != null && verifiedCasteDetails.size() > 0)
 			{
