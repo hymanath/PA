@@ -78,7 +78,7 @@ function showHideTabs(id)
 		$("#wmReportDiv").hide();
 		$('#dayWiseDCsReports').hide();
 		if(fieldDataflg == false)
-		getDataReportSummary();
+		//getDataReportSummary();
 		fieldDataflg = true;
 
 
