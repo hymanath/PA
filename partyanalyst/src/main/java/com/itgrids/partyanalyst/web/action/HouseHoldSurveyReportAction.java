@@ -804,6 +804,7 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 				input.setPanchayatId(Long.valueOf(jObj.getString("panchayatId")));
 			}else if(task.equalsIgnoreCase("familyHeadsUnderLeader")){
 				input.setLeaderId(Long.valueOf(jObj.getString("leaderId")));
+				input.setPanchayatId(Long.valueOf(jObj.getString("panchayatId")));
 			}else if(task.equalsIgnoreCase("familyHeadsUnderPanchayat")){
 				input.setPanchayatId(Long.valueOf(jObj.getString("panchayatId")));
 			}else if(task.equalsIgnoreCase("familyHeadsUnderBook")){

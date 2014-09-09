@@ -70,7 +70,7 @@
 	<div id="constiNonVotersSummaryDiv" style="margin:20px;"></div>
 	<div id="ageRangeNonVotersSummaryDiv" style="margin:20px;"></div>
 	<div id="consolidateReport" style="margin:20px;"></div>
-	<div id="booksWiseSummaryDiv" style="margin:20px"></div>
+	<div id="booksWiseSummaryDiv" style="margin:20px;overflow-x:scroll;"></div>
 	<div id="panchayatSummaryDivId" style="margin:20px;"></div>
 	
 	<div id="summariesId" style="margin:20px;"></div>
@@ -84,6 +84,7 @@
 	<div id="questSummary3" style="margin:20px;"></div>
 	<div id="questionSummary" style="margin:20px;"></div>
 	
+	<div class="offset5"><img id="ajaxImg" src="./images/Loading-data.gif" alt="Processing Image" style='height:65px;width:75px;display:none;' /></div>
 	
 	
 	</div>
@@ -158,13 +159,17 @@
 	}
 	
 	function getHouseHoldsOfBook(){
+		$("#leaderDivId,#bookDivId").css("display","block");
+		$("#questionDivId").css("display","none");
+		clearSummaryDivs();
 	var bookId = $("#bookId").val();
 	if($("#constituencyId").val() == 0)
 	{
 		$("#errorDiv").html("Please Select Constituency");
 		return;
 	}
-	$("#errorDiv").html("")
+	$("#errorDiv").html("");
+	$("#ajaxImg").show();
 		var constnDtls={
              bookId:bookId,
 			 task:"familyHeadsUnderBook"
@@ -238,6 +243,7 @@ function getQuestionSummary(){
 	}
 
 	$("#errorDiv").html("");
+	$("#ajaxImg").show();
 	var constnDtls={
              constituencyId:constituencyId,
 			 questionId:questionId
@@ -259,11 +265,13 @@ function getQuestionSummary(){
 
 function clearSummaryDivs(){
 	$("#constiSummaryDiv,#panchayatSummaryDivId,#summariesId,#summariesId1,#summariesId2,#constiNonVotersSummaryDiv,#questSummary3,#consolidateReport,#ageRangeNonVotersSummaryDiv,#booksWiseSummaryDiv").html("");
+	$("#questSummary,#questSummary1,#questSummary2,#question").html("");
+	
 }
 
 function buildQuestionSummary(result){
 	$("#questSummary,#questSummary1,#questSummary2,#questSummary3").html("");
-	
+	$("#ajaxImg").hide();
 	$("#question").html("<h3>"+result.optionsList[0].question+"</h3>");
 	var str = "";
 	str+="<table class='questSummaryTab'>";
@@ -311,7 +319,7 @@ function buildQuestionSummary(result){
 								if(result.panchayatList[i].optionsList[j].optsCount == null){
 									str1 +="<td> - </td>";	
 								}else{
-									str1 +="<td onclick='getFamilies("+result.panchayatList[i].optionsList[j].optionId+","+result.panchayatList[i].panchayatId+")'>"+result.panchayatList[i].optionsList[j].optsCount+"</td>";
+									str1 +="<td title='Click To See HouseHolds with option " + result.panchayatList[i].optionsList[j].option+"' onclick='getFamilies("+result.panchayatList[i].optionsList[j].optionId+","+result.panchayatList[i].panchayatId+")' style='cursor:pointer;'>"+result.panchayatList[i].optionsList[j].optsCount+"</td>";
 								}
 							}
 					str1 +="</tr>";	
@@ -325,6 +333,8 @@ function buildQuestionSummary(result){
 }
 
 function getFamilies(optionId,panchayatId){
+	$("#questSummary2").html("");
+	$("#ajaxImg").show();
 	//alert(optionId +" -- "+panchayatId);
 	var constnDtls={
 			 optionId:optionId,
@@ -348,7 +358,7 @@ function getFamilies(optionId,panchayatId){
 
 function getSummary(){
 
-	$("#questSummary,#questSummary1,#questSummary2,#question,#summariesId2,#constiNonVotersSummaryDiv,#questSummary3,#ageRangeNonVotersSummaryDiv").html("");
+	clearSummaryDivs();
 	$("#questionDivId,#leaderDivId,#bookDivId").css('display','none');
 	
 	
@@ -359,6 +369,7 @@ function getSummary(){
 		return;
 	}
 	$("#errorDiv").html("");
+	$("#ajaxImg").show();
 	var constnDtls={
              constituencyId:constituencyId,
 			 task:"constituencySummary"
@@ -407,7 +418,8 @@ function getBooksWiseSummary()
 }
 
 function getHouseHoldsUnderPanchayat(panchayatId){
-$("#summariesId1,#questSummary3,#summariesId").html("");
+	$("#summariesId1,#questSummary3,#summariesId").html("");
+	$("#ajaxImg").show();
 	var constnDtls={
              panchayatId:panchayatId,
 			 task:"familyHeadsUnderPanchayat"
@@ -428,8 +440,9 @@ $("#summariesId1,#questSummary3,#summariesId").html("");
 }
 
 function getLeadersUnderPanchayat(panchayatId){
-$("#summariesId").html("");
+	$("#summariesId").html("");
 	$("#summariesId1,#questSummary3").html("");
+	$("#ajaxImg").show();
 	var constnDtls={
              panchayatId:panchayatId,
 			 task:"leaderOfPanchayat"
@@ -441,6 +454,7 @@ $("#summariesId").html("");
           data: {task:JSON.stringify(constnDtls)},
 
           success: function(result){ 
+			$("#ajaxImg").hide();
 			buildLeadersOfPanchayat(result);
          },
           error:function() { 
@@ -449,10 +463,12 @@ $("#summariesId").html("");
     });
 }
 
-function getHouseHoldsUnderLeader(leaderId){
-	
+function getHouseHoldsUnderLeader(leaderId,panchayatId){
+	$("#summariesId1").html("");
+	$("#ajaxImg").show();
 	var constnDtls={
              leaderId:leaderId,
+			 panchayatId : panchayatId,
 			 task:"familyHeadsUnderLeader"
 	};
 	$.ajax({
@@ -601,10 +617,10 @@ function buildLeadersOfPanchayat(result){
 			str +="<tbody>";
 				for(var i in result.leadersOfPnchyt){
 					str +="<tr>";
-						str +="<td title='Click To See HouseHolds Under This Leader' onclick='getHouseHoldsUnderLeader("+result.leadersOfPnchyt[i].leaderId+")' style='cursor:pointer;'>"+result.leadersOfPnchyt[i].voterName+"</td>";
+						str +="<td title='Click To See HouseHolds Under This Leader' onclick='getHouseHoldsUnderLeader("+result.leadersOfPnchyt[i].leaderId+','+result.panchayatId+")' style='cursor:pointer;'>"+result.leadersOfPnchyt[i].voterName+"</td>";
 						str +="<td>"+result.leadersOfPnchyt[i].voterCardNo+"</td>";
 						str +="<td>"+result.leadersOfPnchyt[i].mobileNo+"</td>";
-						str +="<td title='Click To See HouseHolds Under This Leader' onclick='getHouseHoldsUnderLeader("+result.leadersOfPnchyt[i].leaderId+")' style='cursor:pointer;'>"+result.leadersOfPnchyt[i].houseHoldsCount+"</td>";
+						str +="<td title='Click To See HouseHolds Under This Leader' onclick='getHouseHoldsUnderLeader("+result.leadersOfPnchyt[i].leaderId+','+result.panchayatId+")' style='cursor:pointer;'>"+result.leadersOfPnchyt[i].houseHoldsCount+"</td>";
 					str +="</tr>";
 				}
 			str +="</tbody>";
@@ -616,10 +632,9 @@ function buildLeadersOfPanchayat(result){
 }
 
 function buildHouseHoldsUnderBook(result){
-		$("#panchayatSummaryDivId,#summariesId,#summariesId1,#summariesId2,#constiNonVotersSummaryDiv,#questSummary3,#consolidateReport,#ageRangeNonVotersSummaryDiv,#constiSummaryDiv").html("");
-		$("#questSummary,#questSummary1,#question,#questSummary2,#booksWiseSummaryDiv,#summariesId1,#summariesId2").html("");
-		$("#leaderDivId,#bookDivId").css("display","block");
-		$("#questionDivId").css("display","none");
+		
+		$("#ajaxImg").hide();
+		
 	var bookNo = $("#bookId :selected").text();
 	
 	if(result!=null && result.familyHeadsUnderBook!=null && result.familyHeadsUnderBook.length>0){
@@ -660,7 +675,7 @@ function buildHouseHoldsUnderBook(result){
 }
 
 function buildHouseHolds(result){
-	
+	$("#ajaxImg").hide();
 	if(result.panchayatName!=null){
 		$("#summariesId").html("");
 	}	
@@ -707,7 +722,7 @@ function buildHouseHolds(result){
 }
 
 function buildHouseHoldsUnderOptions(result){
-	
+	$("#ajaxImg").hide();
 	if(result.familyHeadsUnderOption!=null && result.familyHeadsUnderOption.length>0){
 		var str = "";
 			str +="<h4 class='offset3' style='color:red;margin-down:20px;margin-up:20px;'> HOUSEHOLDS UNDER "+result.panchayatName+" PANCHAYAT WITH OPTION "+result.option+"</h4>";
@@ -747,7 +762,8 @@ function buildHouseHoldsUnderOptions(result){
 }
 
 function getFamilyMembers(name,householdId){
-
+	$("#questSummary3").html("");
+	$("#ajaxImg").show();
 	var details={
              householdId:householdId,
 			 task:"familyMembersUnderHead"
@@ -759,6 +775,7 @@ function getFamilyMembers(name,householdId){
           data: {task:JSON.stringify(details)},
 
           success: function(result){ 
+		  $("#ajaxImg").hide();
 			buildHouseHoldsUnderFamilyHead(result,name);
          },
           error:function() { 
@@ -803,6 +820,9 @@ function buildHouseHoldsUnderFamilyHead(result,name){
 }
 
 function getNonVotersAgeRangeWiseCount(constiId){
+	$("#panchayatSummaryDivId").html("");
+	$("#consolidateReport,#summariesId1,#questSummary3,#booksWiseSummaryDiv").html("");
+	$("#ajaxImg").show();
 	var details={
              constituencyId:constiId,
 			 task:"NonVotersAgeRangeCount"
@@ -823,8 +843,8 @@ function getNonVotersAgeRangeWiseCount(constiId){
 }
 
 function buildNonVotersAgeRangeWiseDetails(result){
-	$("#panchayatSummaryDivId").html("");
-	$("#consolidateReport,#summariesId1,#questSummary3,#booksWiseSummaryDiv").html("");
+	$("#ajaxImg").hide();
+	
 	if(result!=null && result.length>0){
 		var str = "";
 			str +="<h4 class='offset3' style='color:red;margin-down:20px;margin-up:20px;'>NON VOTERS DETAILS</h4>";
@@ -924,7 +944,9 @@ if(result!=null && result.length>0){
 }
 
 function getAgeWiseNonVotersDetails(range,name,panchayatId){
-var age = range.split("-");
+	$("#ageRangeNonVotersSummaryDiv").html("");
+	$("#ajaxImg").show();
+	var age = range.split("-");
 	var details={
              panchayatId:panchayatId,
 			 fromAge:age[0],
@@ -948,7 +970,7 @@ var age = range.split("-");
 }
 
 function buildAgeWiseNonVotersDetails(result,name,range){
-
+	$("#ajaxImg").hide();
 	if(result!=null && result.length>0){
 		var str = "";
 			str +="<h4 class='offset3' style='color:red;margin-down:20px;margin-up:20px;'> ("+range+") AGE RANGE NON VOTERS DETAILS IN  "+ name.toUpperCase()+"</h4>";
@@ -987,7 +1009,7 @@ function buildAgeWiseNonVotersDetails(result,name,range){
 function buildPanchayatSummaryReport(result){
 	$("#panchayatSummaryDivId").html("");
 	$("#constiSummaryDiv").html("");
-	
+	$("#ajaxImg").hide();
 	var str1 = "";
 		
 		str1 +="<table class='table'>";
