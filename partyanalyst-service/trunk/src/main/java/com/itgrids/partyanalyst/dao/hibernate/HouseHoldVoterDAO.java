@@ -288,7 +288,8 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 				" model.isDelete = 'false'" +
 				" and model.hhLeaderBooks.leader.is_active = 'YES'" +
 				" and model.houseHolds.panchayat.panchayatId = :locationId " +
-				" group by model.hhLeader.id");
+				" and model.voterFamilyRelation.voterFamilyRelationId = 1 " +
+				" group by model.hhLeaderBooks.leader.id");
 		
 		query.setParameter("locationId", locationId);
 		
@@ -334,9 +335,9 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 		if(type ==1){
 			sb.append(" and model.houseHolds.panchayat.panchayatId = :val");
 		}else if(type == 2){
-			sb.append(" and model.hhLeader.id =:val");
-		}else if(type == 3){
 			sb.append(" and model.hhLeaderBooks.leader.id =:val");
+		}else if(type == 3){
+			sb.append(" and model.hhLeaderBooks.hhLeaderBookId =:val");
 		}
 		sb.append(" order by model.houseHolds.houseHoldId desc");
 
@@ -345,6 +346,28 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 		return query.list();
 		
 		}
+	
+	
+	public List<Object[]> getFamilyAndVotersCountInHouseHoldsNew1(Long val,Long type){
+		Query query = getSession().createQuery("select distinct model.houseHoldVoterId," +
+		" model.houseHolds.houseHoldId," +//3
+		" model.voterId," +
+		" model.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId," +
+		" model.voterFamilyRelation.voterFamilyRelationId " +
+		" from HouseHoldVoter model " +
+		" where " +
+		" model.isDelete ='false'" +
+		" and model.hhLeaderBooks.leader.is_active = 'YES' " +
+		" and model.hhLeaderBooks.leader.id =:val " +
+		" and model.houseHolds.panchayat.panchayatId = :type " +
+		" order by model.houseHolds.houseHoldId desc");
+		
+		query.setParameter("val", val);
+		query.setParameter("type", type);
+		return query.list();
+		
+		}
+
 	
 	public List<Object[]> getFamilyHeadsUnderLeader(Long leaderId){
 		Query query = getSession().createQuery(" select distinct model.houseHoldVoterId," +
@@ -358,7 +381,7 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 				" model.hhLeader.name " +
 				" from HouseHoldVoter model " +
 				" where model.isDelete = 'false' and model.voterFamilyRelation.voterFamilyRelationId = 1" +
-				" and model.hhLeader.id = :leaderId" );
+				" and model.hhLeaderBooks.leader.id = :leaderId" );
 		
 		query.setParameter("leaderId", leaderId);
 		return query.list();
