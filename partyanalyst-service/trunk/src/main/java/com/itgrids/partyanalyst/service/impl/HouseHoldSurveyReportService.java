@@ -1749,7 +1749,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
     		
     	}else if(task.equalsIgnoreCase("familyHeadsUnderLeader")){
     		Long leaderId = inputVO.getLeaderId();
-    		
+    		Long panchayatId = inputVO.getPanchayatId();
     		List<HouseHoldsSummaryReportVO> leadersInPnchyt = new ArrayList<HouseHoldsSummaryReportVO>();
     		
     		if(leaderId!=null){
@@ -1768,7 +1768,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
     				}
     			}*/
     			
-    			List<Object[]> list1 = houseHoldVoterDAO.getFamilyAndVotersCountInHouseHoldsNew(leaderId, 2);
+    			List<Object[]> list1 = houseHoldVoterDAO.getFamilyAndVotersCountInHouseHoldsNew1(leaderId, panchayatId);
     			
     			
     			List<HHReportVO> hhList = new ArrayList<HHReportVO>();
@@ -1836,9 +1836,10 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
     						HouseHoldsSummaryReportVO hhVO = hhCountMap.get(Long.valueOf(obj[1].toString()));
     						tempVO.setVotersCount(hhVO.getVotersCount());
     						tempVO.setNonVotersCount(hhVO.getNonVotersCount());
+    						leadersInPnchyt.add(tempVO);
     					}
     					
-    					leadersInPnchyt.add(tempVO);
+    					//leadersInPnchyt.add(tempVO);
     				}
     			}
     		}
