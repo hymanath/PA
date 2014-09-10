@@ -1685,6 +1685,27 @@ function buildingSurveyCompletedLocationsDetailsForSurveyStartedConstituencies(r
 			 else 
 			   str+='<td style="background:#12BB1B;" >N</td>';
 
+		}		
+		else if (result[i].id == 215)
+		{
+			str+='<td style="background:#12BB1B;" ><a href="javascript:{getConstituencyDetalReport('+result[i].id+',\''+result[i].name+'\')}"> '+result[i].name+'</a></td>';
+			 if(result[i].totalVoters==null)
+			 {
+			  str+='<td style="background:#12BB1B;" ></td>';
+			 }
+			 else{str+='<td style="background:#12BB1B;" >'+result[i].totalVoters+'</td>';}
+			 
+			 str+='<td style="background:#12BB1B;" >'+result[i].totalCollectedCount+'</td>';
+			 str+='<td style="background:#12BB1B;" >'+result[i].total+'</td>';
+			 str+='<td style="background:#12BB1B;" >'+result[i].completedCount+'</td>';
+			 str+='<td style="background:#12BB1B;" >0</td>';
+			 str+='<td style="background:#12BB1B;" >0</td>';
+			 if(result[i].forThirdParty == true)
+			   str+='<td style="background:#12BB1B;" >Y</td>';
+			 else 
+			   str+='<td style="background:#12BB1B;" >N</td>';
+
+		
 		}
 		else
 		{
