@@ -954,10 +954,12 @@ var tableToExcel = (function() {
     window.location.href = uri + base64(format(template, ctx))
   }
 })()
+/*
 function generateExcel()
 {
    tableToExcel('dayWiseDCReportTable', 'DAY WISE DC REPORT ');
-}
+} 
+*/
 
 
 </script>
