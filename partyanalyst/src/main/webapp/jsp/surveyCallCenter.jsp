@@ -864,6 +864,7 @@ function getFinalReportForConstituency()
 		data: {constituencyId:$('#constituencyIdForVerfication').val()},
 		}).done(function(result){
 			buildTest(result);
+			buildMyReport(result);
 		});
 }
 function buildTest(result)
