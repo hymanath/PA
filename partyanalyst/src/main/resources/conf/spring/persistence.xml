@@ -475,7 +475,7 @@
 				<value>com.itgrids.partyanalyst.model.SurveyConstituencyStatus</value>
 				<value>com.itgrids.partyanalyst.model.SurveyConstituencyTemp</value>
 				<value>com.itgrids.partyanalyst.model.ConstituencyTehsil</value>
-				
+				<value>com.itgrids.partyanalyst.model.DuplicateWrongMobileNumbers</value>
 				
 				
 			</list>
