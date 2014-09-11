@@ -51,4 +51,13 @@ public class MobileNumbersDAO extends GenericDaoHibernate<MobileNumbers, Long> i
 		return query.executeUpdate();
 	}
 
+	public List<Object[]> getMobileNumberDetailsByBoothId(Long boothId,Long constituencyId)
+	{
+		Query query = getSession().createQuery(" select model.mobileSourceTypeId,model.voterId, model.mobileNumber from  MobileNumbers model where model.boothId = :boothId ");
+		
+		query.setParameter("boothId", boothId);
+		//query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
+			 
 }
