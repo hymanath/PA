@@ -251,7 +251,220 @@ $('#searchDataImg').show();
 					}
 						
 					/* ending  caste available and not available details */
-					
+			
+								str +='<td>';
+													
+										str +='<ul>';
+										
+						if(result[i].mobileNo != null  && result[i].mobileNo.length != 0 )
+							{						
+										var mobNo = result[i].mobileNo	;
+													
+									str +='<li style="background-color:#D3D6FF;margin-top:8px;">';
+										str +=''+mobNo+'<div data-toggle="buttons-radio" class="btn-group">';
+																			
+										if(result[i].ctpMobileStatus == 1)
+										{
+											str +='<button class="btn btn-mini  btn-success " id="updateMBtnId'+i+'" type="button" onclick="updateDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',2,'+result[i].voterId+','+result[i].userid+',\'mobile\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');" >correct </button>';
+											
+											str +='<button class="btn btn-mini "  id="updateMBtnIdA'+i+'" type="button" onclick="updateDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',3,'+result[i].voterId+','+result[i].userid+',\'mobile\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');">wrong</button>';
+											
+											str +='<div id="mobileErrDiv'+i+'" style="color:#FF0020;font-size:12px;"> </div>';
+											str +='<input type="hidden" value="2" id="isTestedMobile'+i+'"/>';
+											str +='</div>';
+														
+										}
+										else if(result[i].ctpMobileStatus == 2)
+										{
+
+											str +='<button class="btn btn-mini "  id="updateMBtnId'+i+'" type="button" onclick="updateDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',2,'+result[i].voterId+','+result[i].userid+',\'mobile\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');">correct </button>';
+											
+											str +='<button class="btn btn-mini  btn-warning " id="updateMBtnIdA'+i+'" type="button"  onclick="updateDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',3,'+result[i].voterId+','+result[i].userid+',\'mobile\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');">wrong</button>';
+											
+											str +='<div id="mobileErrDiv'+i+'" style="color:#FF0020;font-size:12px;"> </div>';
+											str +='<input type="hidden" value="3" id="isTestedMobile'+i+'"/>';
+											str +='</div>';
+														
+										}
+										else
+										{	
+
+											str +='<button class="btn btn-mini "  type="button" id="updateMBtnId'+i+'" onclick="updateDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',2,'+result[i].voterId+','+result[i].userid+',\'mobile\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');" >correct </button>';
+										
+											str +='<button class="btn btn-mini "  id="updateMBtnIdA'+i+'" type="button" onclick="updateDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',3,'+result[i].voterId+','+result[i].userid+',\'mobile\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');">wrong</button>';
+										
+											str +='<div id="mobileErrDiv'+i+'" style="color:#FF0020;font-size:12px;"> </div>';
+											str +='<input type="hidden" id="isTestedMobile'+i+'"  value=""/>';
+											str +='</div>';
+											
+										}
+
+										//str +='(BY CTP)';
+								}	
+							else{	
+									str +='<li>';
+									str +='<input type="hidden" value="" id="isTestedMobile'+i+'"/>';
+								}	
+								str +='</li>';
+															
+						if(result[i].ceoMobileNoList != null  && result[i].ceoMobileNoList.length > 0 )
+							{						
+										var mobNo = result[i].ceoMobileNoList[0];
+										str +='<li style="background-color:#D3D6FF;margin-top:8px;">';							
+										str +=''+mobNo+'<div data-toggle="buttons-radio" class="btn-group">';
+																			
+										if(result[i].ceoMobileStatus == 1)
+										{
+											str +='<button class="btn btn-mini  btn-success " id="updateceoMBtnId'+i+'" type="button" onclick="updateMobileDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isceoTestedMobile'+i+'\',1,'+result[i].voterId+','+result[i].userid+',\'ceoMobileNumber\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');" >correct </button>';
+											
+											str +='<button class="btn btn-mini "  id="updateceoMBtnIdA'+i+'" type="button" onclick="updateMobileDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isceoTestedMobile'+i+'\',0,'+result[i].voterId+','+result[i].userid+',\'ceoMobileNumber\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');">wrong</button>';
+											
+											str +='<div id="mobileErrDiv'+i+'" style="color:#FF0020;font-size:12px;"> </div>';
+											str +='<input type="hidden" value="1" id="isceoTestedMobile'+i+'"/>';
+											str +='</div>';
+														
+										}
+										else if(result[i].ceoMobileStatus == 2)
+										{
+
+											str +='<button class="btn btn-mini "  id="updateceoMBtnId'+i+'" type="button" onclick="updateMobileDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isceoTestedMobile'+i+'\',1,'+result[i].voterId+','+result[i].userid+',\'ceoMobileNumber\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');">correct </button>';
+											
+											str +='<button class="btn btn-mini  btn-warning " id="updateceoMBtnIdA'+i+'" type="button"  onclick="updateMobileDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isceoTestedMobile'+i+'\',0,'+result[i].voterId+','+result[i].userid+',\'ceoMobileNumber\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');">wrong</button>';
+											
+											str +='<div id="mobileErrDiv'+i+'" style="color:#FF0020;font-size:12px;"> </div>';
+											str +='<input type="hidden" value="0" id="isceoTestedMobile'+i+'"/>';
+											str +='</div>';
+														
+										}
+										else
+										{	
+
+											str +='<button class="btn btn-mini "  type="button" id="updateceoMBtnId'+i+'" onclick="updateMobileDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isceoTestedMobile'+i+'\',1,'+result[i].voterId+','+result[i].userid+',\'ceoMobileNumber\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');" >correct </button>';
+										
+											str +='<button class="btn btn-mini "  id="updateceoMBtnIdA'+i+'" type="button" onclick="updateMobileDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isceoTestedMobile'+i+'\',0,'+result[i].voterId+','+result[i].userid+',\'ceoMobileNumber\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');">wrong</button>';
+										
+											str +='<div id="mobileErrDiv'+i+'" style="color:#FF0020;font-size:12px;"> </div>';
+											str +='<input type="hidden" id="isceoTestedMobile'+i+'"  value=""/>';
+											str +='</div>';
+											
+										}
+
+									//str +='(BY CEO)';	
+								}	
+							else{
+									str +='<li>';		
+											str +='<input type="hidden" value="" id="isceoTestedMobile'+i+'"/>';
+																					
+
+								}
+								str +='</li>';	
+								
+						if(result[i].surveyMobileNoList != null  && result[i].surveyMobileNoList.length > 0 )
+							{			
+										str +='<li style="background-color:#D3D6FF;margin-top:8px;">';	
+										var mobNo = result[i].surveyMobileNoList[0];
+									
+										str +=''+mobNo+'<div data-toggle="buttons-radio" class="btn-group">';
+																			
+										if(result[i].surveyMobileStatus == 1)
+										{
+											str +='<button class="btn btn-mini  btn-success " id="updateSurveyMBtnId'+i+'" type="button" onclick="updateMobileDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isSurveyTestedMobile'+i+'\',2,'+result[i].voterId+','+result[i].userid+',\'surveyMobileNumber\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');" >correct </button>';
+											
+											str +='<button class="btn btn-mini "  id="updateSurveyMBtnIdA'+i+'" type="button" onclick="updateMobileDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isSurveyTestedMobile'+i+'\',3,'+result[i].voterId+','+result[i].userid+',\'surveyMobileNumber\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');">wrong</button>';
+											
+											str +='<div id="mobileErrDiv'+i+'" style="color:#FF0020;font-size:12px;"> </div>';
+											str +='<input type="hidden" value="2" id="isSurveyTestedMobile'+i+'"/>';
+											str +='</div>';
+														
+										}
+										else if(result[i].surveyMobileStatus == 2)
+										{
+
+											str +='<button class="btn btn-mini "  id="updateSurveyMBtnId'+i+'" type="button" onclick="updateMobileDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isSurveyTestedMobile'+i+'\',2,'+result[i].voterId+','+result[i].userid+',\'surveyMobileNumber\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');">correct </button>';
+											
+											str +='<button class="btn btn-mini  btn-warning " id="updateSurveyMBtnIdA'+i+'" type="button"  onclick="updateMobileDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isSurveyTestedMobile'+i+'\',3,'+result[i].voterId+','+result[i].userid+',\'surveyMobileNumber\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');">wrong</button>';
+											
+											str +='<div id="mobileErrDiv'+i+'" style="color:#FF0020;font-size:12px;"> </div>';
+											str +='<input type="hidden" value="3" id="isSurveyTestedMobile'+i+'"/>';
+											str +='</div>';
+														
+										}
+										else
+										{	
+
+											str +='<button class="btn btn-mini "  type="button" id="updateSurveyMBtnId'+i+'" onclick="updateMobileDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isSurveyTestedMobile'+i+'\',2,'+result[i].voterId+','+result[i].userid+',\'surveyMobileNumber\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');" >correct </button>';
+										
+											str +='<button class="btn btn-mini "  id="updateSurveyMBtnIdA'+i+'" type="button" onclick="updateMobileDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isSurveyTestedMobile'+i+'\',3,'+result[i].voterId+','+result[i].userid+',\'surveyMobileNumber\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');">wrong</button>';
+										
+											str +='<div id="mobileErrDiv'+i+'" style="color:#FF0020;font-size:12px;"> </div>';
+											str +='<input type="hidden" id="isSurveyTestedMobile'+i+'"  value=""/>';
+											str +='</div>';
+											
+										}
+										//	str +='(BY SURVEY)';
+								}	
+							else{
+								str +='<li>';
+											str +='<input type="hidden" value="" id="isSurveyTestedMobile'+i+'"/>';
+	
+								}
+							str +='</li>';	
+							if(result[i].dataMobileNoList != null  && result[i].dataMobileNoList.length > 0 )
+							{				
+									str +='<li style="background-color:#D3D6FF;margin-top:8px;">';	
+										var mobNo = result[i].dataMobileNoList[0];
+								
+										str +=''+mobNo+'<div data-toggle="buttons-radio" class="btn-group">';
+																			
+										if(result[i].dataMobileStatus == 1)
+										{
+											str +='<button class="btn btn-mini  btn-success " id="updateDataMBtnId'+i+'" type="button" onclick="updateMobileDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isDataTestedMobile'+i+'\',4,'+result[i].voterId+','+result[i].userid+',\'dataMobileNumber\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');" >correct </button>';
+											
+											str +='<button class="btn btn-mini "  id="updateDataMBtnIdA'+i+'" type="button" onclick="updateMobileDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isDataTestedMobile'+i+'\',5,'+result[i].voterId+','+result[i].userid+',\'dataMobileNumber\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');">wrong</button>';
+											
+											str +='<div id="mobileErrDiv'+i+'" style="color:#FF0020;font-size:12px;"> </div>';
+											str +='<input type="hidden" value="4" id="isDataTestedMobile'+i+'"/>';
+											str +='</div>';
+														
+										}
+										else if(result[i].dataMobileStatus == 2)
+										{
+
+											str +='<button class="btn btn-mini "  id="updateDataMBtnId'+i+'" type="button" onclick="updateMobileDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isDataTestedMobile'+i+'\',4,'+result[i].voterId+','+result[i].userid+',\'dataMobileNumber\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');">correct </button>';
+											
+											str +='<button class="btn btn-mini  btn-warning " id="updateDataMBtnIdA'+i+'" type="button"  onclick="updateMobileDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isDataTestedMobile'+i+'\',5,'+result[i].voterId+','+result[i].userid+',\'dataMobileNumber\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');">wrong</button>';
+											
+											str +='<div id="mobileErrDiv'+i+'" style="color:#FF0020;font-size:12px;"> </div>';
+											str +='<input type="hidden" value="5" id="isDataTestedMobile'+i+'"/>';
+											str +='</div>';
+														
+										}
+										else
+										{	
+
+											str +='<button class="btn btn-mini "  type="button" id="updateDataMBtnId'+i+'" onclick="updateMobileDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isDataTestedMobile'+i+'\',4,'+result[i].voterId+','+result[i].userid+',\'dataMobileNumber\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');" >correct </button>';
+										
+											str +='<button class="btn btn-mini "  id="updateDataMBtnIdA'+i+'" type="button" onclick="updateMobileDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isDataTestedMobile'+i+'\',5,'+result[i].voterId+','+result[i].userid+',\'dataMobileNumber\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');">wrong</button>';
+										
+											str +='<div id="mobileErrDiv'+i+'" style="color:#FF0020;font-size:12px;"> </div>';
+											str +='<input type="hidden" id="isDataTestedMobile'+i+'"  value=""/>';
+											str +='</div>';
+											
+										}
+										
+									//	str +='(BY DATA)';
+								}	
+							else{
+									str +='<li>';
+											str +='<input type="hidden" value="" id="isDataTestedMobile'+i+'"/>';
+								}
+									str +='</li>';
+										str +='</ul>';
+								
+								str +='</td>';
+						
+						/*
+
 							var mobNo = '';
 							if(result[i].mobileNo != null  && result[i].mobileNo.length != 0 )
 							{						
@@ -301,6 +514,7 @@ $('#searchDataImg').show();
 											str +='</td>';
 
 								}			
+												*/
 												hamletCount = result[i].hamletCount;
 								
 							//	if(results[0].status.indexOf('urban') == 0)
@@ -551,6 +765,86 @@ $('#searchDataImg').show();
 
 
 }
+
+function updateMobileDetails(newHamletId,hamletFieldId,casteId,mobileId, value,voterId,surveyUserId,selectionType,userId,boothId,date,btnId,updateBtnId,userTYpe)
+{
+	
+	$('#'+mobileId+'').val(value);
+	
+	var mobileMachedId = $('#'+mobileId+'').val();
+	
+	if( selectionType =='ceoMobileNumber')
+	{
+		$('#updateceoMBtnId'+updateBtnId+'').removeClass('btn-success');
+		$('#updateceoMBtnIdA'+updateBtnId+'').removeClass('btn-warning');
+	}
+	else if( selectionType =='surveyMobileNumber')
+	{
+		$('#updateSurveyMBtnId'+updateBtnId+'').removeClass('btn-success');
+		$('#updateSurveyMBtnIdA'+updateBtnId+'').removeClass('btn-warning');
+	}
+	else if( selectionType =='dataMobileNumber')
+	{
+		$('#updateDataMBtnId'+updateBtnId+'').removeClass('btn-success');
+		$('#updateDataMBtnIdA'+updateBtnId+'').removeClass('btn-warning');
+	}
+			
+	var jsObj = {	
+		boothId : boothId,
+		surveyUserId:userId,
+		userType : userTYpe,
+		voterId:voterId,			
+		changetMobileType : selectionType,
+		statusId : mobileMachedId,
+		task : "getSurveyVotersMobileList"
+	}
+	
+	$.ajax({
+		type:'GET',
+		url: 'saveSurveyCallStatusMobileDetilsAction.action',
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)},
+		}).done(function(result){
+			
+			if(result != null)
+			{
+				if( selectionType =='ceoMobileNumber')
+				{
+					if(value == 1 )
+					{
+						$('#updateceoMBtnId'+updateBtnId+'').addClass('btn-success');
+					}
+					else if(value == 0 )
+					{
+						$('#updateceoMBtnIdA'+updateBtnId+'').addClass('btn-warning');
+					}
+				}
+				else if( selectionType =='surveyMobileNumber')
+				{
+					if(value == 2 )
+					{
+						$('#updateSurveyMBtnId'+updateBtnId+'').addClass('btn-success');
+					}
+					else if(value == 3 )
+					{
+						$('#updateSurveyMBtnIdA'+updateBtnId+'').addClass('btn-warning');
+					}					
+				}
+				else if( selectionType =='dataMobileNumber')
+				{
+				
+					if(value == 4 )
+					{
+						$('#updateDataMBtnId'+updateBtnId+'').addClass('btn-success');
+					}
+					else if(value == 5 )
+					{
+						$('#updateDataMBtnIdA'+updateBtnId+'').addClass('btn-warning');
+					}
+				}
+			}			
+		});
+}
 function updateDetails(newHamletId,hamletFieldId,casteId,mobileId, value,voterId,surveyUserId,selectionType,userId,boothId,date,newCasteId,updateBtnId,userTYpe)
 {
 	var casteMatched = $('#'+casteId+'').val();
@@ -670,7 +964,7 @@ function updateStatusDetails(newHamletId,hamletFieldId,isCasteMatched,mobileMatc
 		surveyUserId:userId,
 		updationType:"notCastewise",
 		userType : userType,
-		voterId:voterId	,
+		voterId:voterId ,
 		surveyArea:$('#surveyArea').val()
 	}
 	
@@ -995,7 +1289,7 @@ function buildCasteWiseVotersList(results,userId,boothId,date,casteId1,webConstI
 					
 					
 					/* ending  caste available and not available details */
-					
+					/*
 							var mobNo = '';
 							if(result[i].mobileNo != null  && result[i].mobileNo.length != 0 )
 							{						
@@ -1047,7 +1341,219 @@ function buildCasteWiseVotersList(results,userId,boothId,date,casteId1,webConstI
 											str +='<input type="hidden" value="" id="isTestedMobile'+i+'"/>';
 											str +='</td>';
 
-								}			
+								}
+						*/			
+
+							
+								str +='<td>';													
+								str +='<ul>';										
+						if(result[i].mobileNo != null  && result[i].mobileNo.length != 0 )
+							{						
+										var mobNo = result[i].mobileNo	;
+													
+									str +='<li style="background-color:#D3D6FF;margin-top:8px;">';
+										str +=''+mobNo+'<div data-toggle="buttons-radio" class="btn-group">';
+																			
+										if(result[i].ctpMobileStatus == 1)
+										{
+											str +='<button class="btn btn-mini  btn-success " id="updateMBtnId'+i+'" type="button" onclick="updateDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',2,'+result[i].voterId+','+result[i].userid+',\'mobile\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');" >correct </button>';
+											
+											str +='<button class="btn btn-mini "  id="updateMBtnIdA'+i+'" type="button" onclick="updateDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',3,'+result[i].voterId+','+result[i].userid+',\'mobile\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');">wrong</button>';
+											
+											str +='<div id="mobileErrDiv'+i+'" style="color:#FF0020;font-size:12px;"> </div>';
+											str +='<input type="hidden" value="2" id="isTestedMobile'+i+'"/>';
+											str +='</div>';
+														
+										}
+										else if(result[i].ctpMobileStatus == 2)
+										{
+
+											str +='<button class="btn btn-mini "  id="updateMBtnId'+i+'" type="button" onclick="updateDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',2,'+result[i].voterId+','+result[i].userid+',\'mobile\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');">correct </button>';
+											
+											str +='<button class="btn btn-mini  btn-warning " id="updateMBtnIdA'+i+'" type="button"  onclick="updateDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',3,'+result[i].voterId+','+result[i].userid+',\'mobile\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');">wrong</button>';
+											
+											str +='<div id="mobileErrDiv'+i+'" style="color:#FF0020;font-size:12px;"> </div>';
+											str +='<input type="hidden" value="3" id="isTestedMobile'+i+'"/>';
+											str +='</div>';
+														
+										}
+										else
+										{	
+
+											str +='<button class="btn btn-mini "  type="button" id="updateMBtnId'+i+'" onclick="updateDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',2,'+result[i].voterId+','+result[i].userid+',\'mobile\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');" >correct </button>';
+										
+											str +='<button class="btn btn-mini "  id="updateMBtnIdA'+i+'" type="button" onclick="updateDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',3,'+result[i].voterId+','+result[i].userid+',\'mobile\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');">wrong</button>';
+										
+											str +='<div id="mobileErrDiv'+i+'" style="color:#FF0020;font-size:12px;"> </div>';
+											str +='<input type="hidden" id="isTestedMobile'+i+'"  value=""/>';
+											str +='</div>';
+											
+										}
+
+										//str +='(BY CTP)';
+								}	
+							else{	
+									str +='<li>';
+									str +='<input type="hidden" value="" id="isTestedMobile'+i+'"/>';
+								}	
+								str +='</li>';
+															
+						if(result[i].ceoMobileNoList != null  && result[i].ceoMobileNoList.length > 0 )
+							{						
+										var mobNo = result[i].ceoMobileNoList[0];
+										str +='<li style="background-color:#D3D6FF;margin-top:8px;">';							
+										str +=''+mobNo+'<div data-toggle="buttons-radio" class="btn-group">';
+																			
+										if(result[i].ceoMobileStatus == 1)
+										{
+											str +='<button class="btn btn-mini  btn-success " id="updateceoMBtnId'+i+'" type="button" onclick="updateMobileDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isceoTestedMobile'+i+'\',1,'+result[i].voterId+','+result[i].userid+',\'ceoMobileNumber\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');" >correct </button>';
+											
+											str +='<button class="btn btn-mini "  id="updateceoMBtnIdA'+i+'" type="button" onclick="updateMobileDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isceoTestedMobile'+i+'\',0,'+result[i].voterId+','+result[i].userid+',\'ceoMobileNumber\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');">wrong</button>';
+											
+											str +='<div id="mobileErrDiv'+i+'" style="color:#FF0020;font-size:12px;"> </div>';
+											str +='<input type="hidden" value="1" id="isceoTestedMobile'+i+'"/>';
+											str +='</div>';
+														
+										}
+										else if(result[i].ceoMobileStatus == 2)
+										{
+
+											str +='<button class="btn btn-mini "  id="updateceoMBtnId'+i+'" type="button" onclick="updateMobileDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isceoTestedMobile'+i+'\',1,'+result[i].voterId+','+result[i].userid+',\'ceoMobileNumber\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');">correct </button>';
+											
+											str +='<button class="btn btn-mini  btn-warning " id="updateceoMBtnIdA'+i+'" type="button"  onclick="updateMobileDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isceoTestedMobile'+i+'\',0,'+result[i].voterId+','+result[i].userid+',\'ceoMobileNumber\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');">wrong</button>';
+											
+											str +='<div id="mobileErrDiv'+i+'" style="color:#FF0020;font-size:12px;"> </div>';
+											str +='<input type="hidden" value="0" id="isceoTestedMobile'+i+'"/>';
+											str +='</div>';
+														
+										}
+										else
+										{	
+
+											str +='<button class="btn btn-mini "  type="button" id="updateceoMBtnId'+i+'" onclick="updateMobileDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isceoTestedMobile'+i+'\',1,'+result[i].voterId+','+result[i].userid+',\'ceoMobileNumber\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');" >correct </button>';
+										
+											str +='<button class="btn btn-mini "  id="updateceoMBtnIdA'+i+'" type="button" onclick="updateMobileDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isceoTestedMobile'+i+'\',0,'+result[i].voterId+','+result[i].userid+',\'ceoMobileNumber\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');">wrong</button>';
+										
+											str +='<div id="mobileErrDiv'+i+'" style="color:#FF0020;font-size:12px;"> </div>';
+											str +='<input type="hidden" id="isceoTestedMobile'+i+'"  value=""/>';
+											str +='</div>';
+											
+										}
+
+									//str +='(BY CEO)';	
+								}	
+							else{
+									str +='<li>';		
+											str +='<input type="hidden" value="" id="isceoTestedMobile'+i+'"/>';
+																					
+
+								}
+								str +='</li>';	
+								
+						if(result[i].surveyMobileNoList != null  && result[i].surveyMobileNoList.length > 0 )
+							{			
+										str +='<li style="background-color:#D3D6FF;margin-top:8px;">';	
+										var mobNo = result[i].surveyMobileNoList[0];
+									
+										str +=''+mobNo+'<div data-toggle="buttons-radio" class="btn-group">';
+																			
+										if(result[i].surveyMobileStatus == 1)
+										{
+											str +='<button class="btn btn-mini  btn-success " id="updateSurveyMBtnId'+i+'" type="button" onclick="updateMobileDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isSurveyTestedMobile'+i+'\',2,'+result[i].voterId+','+result[i].userid+',\'surveyMobileNumber\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');" >correct </button>';
+											
+											str +='<button class="btn btn-mini "  id="updateSurveyMBtnIdA'+i+'" type="button" onclick="updateMobileDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isSurveyTestedMobile'+i+'\',3,'+result[i].voterId+','+result[i].userid+',\'surveyMobileNumber\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');">wrong</button>';
+											
+											str +='<div id="mobileErrDiv'+i+'" style="color:#FF0020;font-size:12px;"> </div>';
+											str +='<input type="hidden" value="2" id="isSurveyTestedMobile'+i+'"/>';
+											str +='</div>';
+														
+										}
+										else if(result[i].surveyMobileStatus == 2)
+										{
+
+											str +='<button class="btn btn-mini "  id="updateSurveyMBtnId'+i+'" type="button" onclick="updateMobileDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isSurveyTestedMobile'+i+'\',2,'+result[i].voterId+','+result[i].userid+',\'surveyMobileNumber\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');">correct </button>';
+											
+											str +='<button class="btn btn-mini  btn-warning " id="updateSurveyMBtnIdA'+i+'" type="button"  onclick="updateMobileDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isSurveyTestedMobile'+i+'\',3,'+result[i].voterId+','+result[i].userid+',\'surveyMobileNumber\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');">wrong</button>';
+											
+											str +='<div id="mobileErrDiv'+i+'" style="color:#FF0020;font-size:12px;"> </div>';
+											str +='<input type="hidden" value="3" id="isSurveyTestedMobile'+i+'"/>';
+											str +='</div>';
+														
+										}
+										else
+										{	
+
+											str +='<button class="btn btn-mini "  type="button" id="updateSurveyMBtnId'+i+'" onclick="updateMobileDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isSurveyTestedMobile'+i+'\',2,'+result[i].voterId+','+result[i].userid+',\'surveyMobileNumber\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');" >correct </button>';
+										
+											str +='<button class="btn btn-mini "  id="updateSurveyMBtnIdA'+i+'" type="button" onclick="updateMobileDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isSurveyTestedMobile'+i+'\',3,'+result[i].voterId+','+result[i].userid+',\'surveyMobileNumber\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');">wrong</button>';
+										
+											str +='<div id="mobileErrDiv'+i+'" style="color:#FF0020;font-size:12px;"> </div>';
+											str +='<input type="hidden" id="isSurveyTestedMobile'+i+'"  value=""/>';
+											str +='</div>';
+											
+										}
+										//	str +='(BY SURVEY)';
+								}	
+							else{
+								str +='<li>';
+											str +='<input type="hidden" value="" id="isSurveyTestedMobile'+i+'"/>';
+	
+								}
+							str +='</li>';	
+							if(result[i].dataMobileNoList != null  && result[i].dataMobileNoList.length > 0 )
+							{				
+									str +='<li style="background-color:#D3D6FF;margin-top:8px;">';	
+										var mobNo = result[i].dataMobileNoList[0];
+								
+										str +=''+mobNo+'<div data-toggle="buttons-radio" class="btn-group">';
+																			
+										if(result[i].dataMobileStatus == 1)
+										{
+											str +='<button class="btn btn-mini  btn-success " id="updateDataMBtnId'+i+'" type="button" onclick="updateMobileDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isDataTestedMobile'+i+'\',4,'+result[i].voterId+','+result[i].userid+',\'dataMobileNumber\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');" >correct </button>';
+											
+											str +='<button class="btn btn-mini "  id="updateDataMBtnIdA'+i+'" type="button" onclick="updateMobileDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isDataTestedMobile'+i+'\',5,'+result[i].voterId+','+result[i].userid+',\'dataMobileNumber\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');">wrong</button>';
+											
+											str +='<div id="mobileErrDiv'+i+'" style="color:#FF0020;font-size:12px;"> </div>';
+											str +='<input type="hidden" value="4" id="isDataTestedMobile'+i+'"/>';
+											str +='</div>';
+														
+										}
+										else if(result[i].dataMobileStatus == 2)
+										{
+
+											str +='<button class="btn btn-mini "  id="updateDataMBtnId'+i+'" type="button" onclick="updateMobileDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isDataTestedMobile'+i+'\',4,'+result[i].voterId+','+result[i].userid+',\'dataMobileNumber\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');">correct </button>';
+											
+											str +='<button class="btn btn-mini  btn-warning " id="updateDataMBtnIdA'+i+'" type="button"  onclick="updateMobileDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isDataTestedMobile'+i+'\',5,'+result[i].voterId+','+result[i].userid+',\'dataMobileNumber\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');">wrong</button>';
+											
+											str +='<div id="mobileErrDiv'+i+'" style="color:#FF0020;font-size:12px;"> </div>';
+											str +='<input type="hidden" value="5" id="isDataTestedMobile'+i+'"/>';
+											str +='</div>';
+														
+										}
+										else
+										{	
+
+											str +='<button class="btn btn-mini "  type="button" id="updateDataMBtnId'+i+'" onclick="updateMobileDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isDataTestedMobile'+i+'\',4,'+result[i].voterId+','+result[i].userid+',\'dataMobileNumber\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');" >correct </button>';
+										
+											str +='<button class="btn btn-mini "  id="updateDataMBtnIdA'+i+'" type="button" onclick="updateMobileDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isDataTestedMobile'+i+'\',5,'+result[i].voterId+','+result[i].userid+',\'dataMobileNumber\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');">wrong</button>';
+										
+											str +='<div id="mobileErrDiv'+i+'" style="color:#FF0020;font-size:12px;"> </div>';
+											str +='<input type="hidden" id="isDataTestedMobile'+i+'"  value=""/>';
+											str +='</div>';
+											
+										}
+										
+									//	str +='(BY DATA)';
+								}	
+							else{
+									str +='<li>';
+											str +='<input type="hidden" value="" id="isDataTestedMobile'+i+'"/>';
+								}
+									str +='</li>';
+										str +='</ul>';
+								
+								str +='</td>';
+						
 									hamletCount = result[i].hamletCount;
 								
 							//	if(results[0].status.indexOf('urban') == 0)
