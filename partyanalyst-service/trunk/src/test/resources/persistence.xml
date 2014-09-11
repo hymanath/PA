@@ -86,7 +86,8 @@
 		<class>com.itgrids.partyanalyst.model.SurveyCompletedStatus</class>
 		<class>com.itgrids.partyanalyst.model.SurveyFeedbackComments</class>
 		<class>com.itgrids.partyanalyst.model.SurveyCompletedLocations</class>
-		
+		<class>com.itgrids.partyanalyst.model.MobileSourceType</class>
+		<class>com.itgrids.partyanalyst.model.MobileNumbers</class>
 		 <properties> 
 			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
 			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/party_analyst_schema" />
