@@ -114,5 +114,6 @@ public interface ISurveyDataDetailsService
 	  public String roundTo2DigitsFloatValue(Float number);
 	  
 		public List<SurveyReportVO> getAllUsersDetilsByUserIdsForSelectedDate(Long constituencyId,Date date,List<Long> userIds);
+	public ResultStatus saveSurveyCallStatusMobileDetils(Long userId,Long voterId,Long boothId,Long surveyUserId,Long userTypeId, String  selectedMobileType, Long  mobileStatusId);
 
 }
