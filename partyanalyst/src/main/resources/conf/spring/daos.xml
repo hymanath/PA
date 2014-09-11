@@ -1630,5 +1630,9 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 </bean>
 
+<bean id="duplicateWrongMobileNumbersDAO" class="com.itgrids.partyanalyst.dao.hibernate.DuplicateWrongMobileNumbersDAO" >
+	<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+	
 	<!--  end -->
 </beans>		
