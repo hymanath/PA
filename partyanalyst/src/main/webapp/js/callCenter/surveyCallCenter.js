@@ -4791,7 +4791,7 @@ function buildDcReport(result)
 	if(result != null && result[0].boothWiseSurveyDetailsVOList != null)
 	{
 		var str = '';	
-			str +='<div> <button class="btn btn-success offset7" style="margin-top: -30px;" onclick="generateExcel()"> Export Excel </button></div>';
+			str +='<div> <button class="btn btn-success offset7" style="margin-top: -30px;" onclick="generateExcel(\'dayWiseDCReportTable\')"> Export Excel </button></div>';
 			str+='<table class="table table-bordered m_top20 table-hover table-striped " id="dayWiseDCReportTable">';				
 				str+='<thead>';
 					str+='<tr>';
