@@ -41,13 +41,14 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 		
 		StringBuffer queryString = new StringBuffer();
 		
-		queryString.append("select distinct model.voter.voterId, model.mobileNoStatus, model.matchedStatus,model.casteState.casteStateId,model.hamletStatus,model.hamletId,model.dcWardStatus,model.dcWardId  from SurveyCallStatus model" +
+		queryString.append("select distinct model.voter.voterId, model.mobileNoStatus, model.matchedStatus,model.casteState.casteStateId,model.hamletStatus,model.hamletId,model.dcWardStatus,model.dcWardId, " +
+				"  model.ctpMobileMatched, model.surveyMobileMatched, model.dataMobileMatched, model.ceoMobileMatched  from SurveyCallStatus model" +
 				" where model.booth.boothId =:boothId ");
 		
 		if(surveyUserId != null && surveyUserId.longValue() != 0l)
-			queryString.append("and model.surveyUser.surveyUserId = :surveyUserId ");
+			queryString.append("and model.surveyUser.surveyUserId = :surveyUserId and model.surveyUser.surveyUserType.surveyUsertypeId = 1");
 		else
-			queryString.append("and model.surveyUser.surveyUserType.surveyUsertypeId = 1 ");
+			queryString.append(" and model.surveyUserId is null");
 			
 	/*		
 		Query query = getSession().createQuery("select distinct model.voter.voterId, model.mobileNoStatus, model.matchedStatus,model.casteState.casteStateId,model.hamletStatus,model.hamletId from SurveyCallStatus model" +
@@ -71,9 +72,9 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 				" where model.booth.boothId =:boothId ");
 		
 		if(surveyUserId != null && surveyUserId.longValue() != 0l)
-			queryString.append("and model.surveyUser.surveyUserId = :surveyUserId ");
+			queryString.append("and model.surveyUser.surveyUserId = :surveyUserId and model.surveyUser.surveyUserType.surveyUsertypeId = 4 ");
 		else
-			queryString.append("and model.surveyUser.surveyUserType.surveyUsertypeId = 1 ");
+			queryString.append(" and model.dvSurveyUserId is null ");
 		
 		Query query = getSession().createQuery(queryString.toString());
 		
@@ -85,7 +86,8 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 	}
 
 	public List<Object[]> getDvSurveyCallDtalsByboothId(Long boothId,Long surveyUserId){
-		Query query = getSession().createQuery("select distinct model.voter.voterId, model.dvMobileNoStatus, model.dvMatchedStatus,model.dvCasteState.casteStateId,model.dvhamletStatus,model.dvHamletId,model.dvWardStatus, model.dvWardId  from SurveyCallStatus model" +
+		Query query = getSession().createQuery("select distinct model.voter.voterId, model.dvMobileNoStatus, model.dvMatchedStatus,model.dvCasteState.casteStateId,model.dvhamletStatus,model.dvHamletId,model.dvWardStatus, model.dvWardId,  " +
+				" model.ctpMobileMatched, model.surveyMobileMatched, model.dataMobileMatched, model.ceoMobileMatched  from SurveyCallStatus model" +
 				" where model.booth.boothId =:boothId and model.dvSurveyUser.surveyUserId = :surveyUserId   order by model.surveyCallStatusId");
 		
 		query.setParameter("boothId", boothId);
