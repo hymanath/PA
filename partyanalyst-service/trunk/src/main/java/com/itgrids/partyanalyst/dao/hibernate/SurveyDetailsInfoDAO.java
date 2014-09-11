@@ -2415,4 +2415,29 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		return c;
 	}
 	
+	
+	public List<Object[]> getDuplicateMobileNumbersByDates(Date startDate,Date endDate,Long frequencyCount)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		
+		queryStr.append(" select SDI.mobileNumber, count(SDI.mobileNumber)  from SurveyDetailsInfo SDI  ");
+		
+		if(startDate != null && endDate != null )
+		{
+			queryStr.append(" where date(SDI.date) >= :startDate and date(SDI.date) <= :endDate ");
+		}
+					
+		queryStr.append(" group by SDI.mobileNumber having  count(SDI.mobileNumber) >"+frequencyCount+" ");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+	
+		if(startDate != null && endDate != null )
+		{
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}
+			
+		return query.list();
+		
+	}
 }
