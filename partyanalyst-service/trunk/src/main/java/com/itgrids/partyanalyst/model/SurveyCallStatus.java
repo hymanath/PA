@@ -66,6 +66,12 @@ public class SurveyCallStatus implements java.io.Serializable{
 	private Constituency dvWard;
 	private Long dvWardId;
 	
+	private String ctpMobileMatched;
+	private String surveyMobileMatched;
+	private String dataMobileMatched;
+	private String ceoMobileMatched;
+	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="survey_call_status_id")
@@ -384,6 +390,39 @@ public class SurveyCallStatus implements java.io.Serializable{
 	public void setDvWardStatus(String dvWardStatus) {
 		this.dvWardStatus = dvWardStatus;
 	}
+	
+	@Column(name="ctp_mobile_status")
+	public String getCtpMobileMatched() {
+		return ctpMobileMatched;
+	}
+	public void setCtpMobileMatched(String ctpMobileMatched) {
+		this.ctpMobileMatched = ctpMobileMatched;
+	}
+	
+	@Column(name="survey_mobile_status")
+	public String getSurveyMobileMatched() {
+		return surveyMobileMatched;
+	}
+	public void setSurveyMobileMatched(String surveyMobileMatched) {
+		this.surveyMobileMatched = surveyMobileMatched;
+	}
+	
+	@Column(name="data_mobile_status")
+	public String getDataMobileMatched() {
+		return dataMobileMatched;
+	}
+	public void setDataMobileMatched(String dataMobileMatched) {
+		this.dataMobileMatched = dataMobileMatched;
+	}
+	
+	@Column(name="ceo_mobile_status")
+	public String getCeoMobileMatched() {
+		return ceoMobileMatched;
+	}
+	public void setCeoMobileMatched(String ceoMobileMatched) {
+		this.ceoMobileMatched = ceoMobileMatched;
+	}
 		
+	
 	
 }
