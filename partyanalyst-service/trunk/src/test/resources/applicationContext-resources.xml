@@ -483,6 +483,7 @@
 				<value>com.itgrids.partyanalyst.model.SurveyConstituencyStatus</value>
 				<value>com.itgrids.partyanalyst.model.SurveyConstituencyTemp</value>
 				<value>com.itgrids.partyanalyst.model.ConstituencyTehsil</value>
+				<value>com.itgrids.partyanalyst.model.DuplicateWrongMobileNumbers</value>
 				
 			</list>
 		</property>
@@ -2514,5 +2515,10 @@
 </bean>		
 <bean id="constituencyTehsilDAO" class="com.itgrids.partyanalyst.dao.hibernate.ConstituencyTehsilDAO" lazy-init="true" >
 		<property name="sessionFactory" ref="sessionFactory" />
-</bean>		
+</bean>	
+
+<bean id="duplicateWrongMobileNumbersDAO" class="com.itgrids.partyanalyst.dao.hibernate.DuplicateWrongMobileNumbersDAO" lazy-init="true">
+	<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+		
 </beans>
