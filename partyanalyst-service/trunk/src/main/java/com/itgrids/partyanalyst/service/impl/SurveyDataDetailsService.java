@@ -31,6 +31,7 @@ import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDuplicateWrongMobileNumbersDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IMobileNumbersDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
@@ -65,6 +66,7 @@ import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.dto.UserBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.VerificationCompVO;
 import com.itgrids.partyanalyst.model.Booth;
+import com.itgrids.partyanalyst.model.DuplicateWrongMobileNumbers;
 import com.itgrids.partyanalyst.model.SurveyCallStatus;
 import com.itgrids.partyanalyst.model.SurveyDetailsInfo;
 import com.itgrids.partyanalyst.model.SurveyFinalData;
@@ -179,6 +181,18 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	@Autowired
 	private IMobileNumbersDAO mobileNumbersDAO;
 	
+	private IDuplicateWrongMobileNumbersDAO duplicateWrongMobileNumbersDAO;
+	
+	
+	public IDuplicateWrongMobileNumbersDAO getDuplicateWrongMobileNumbersDAO() {
+		return duplicateWrongMobileNumbersDAO;
+	}
+
+	public void setDuplicateWrongMobileNumbersDAO(
+			IDuplicateWrongMobileNumbersDAO duplicateWrongMobileNumbersDAO) {
+		this.duplicateWrongMobileNumbersDAO = duplicateWrongMobileNumbersDAO;
+	}
+
 	/**
 	 * This Service is used for saving the user type details
 	 * @param userTypeDescription
@@ -3386,8 +3400,13 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				{
 					surveyUserids.add(surveyUserId);
 				}
-				
-				
+			/*	
+				try {
+					String status1 = updateDuplicateMobileNumberDetails(null,null,null);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			*/
 				List<Object[]> existingMobileNumbersList   =  mobileNumbersDAO.getMobileNumberDetailsByBoothId(boothId,0L);
 				
 				Map<Long,List<String>> ceoAndhraMobileNumbersMap = new HashMap<Long, List<String>>();
@@ -3468,6 +3487,19 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					}
 				}
 				
+				List<Object[]> inValidMobileNoList = duplicateWrongMobileNumbersDAO.getInvalidMobileNumbers();
+				Map<String,String> invalidMobilesMap = new HashMap<String, String>();
+				
+				if(inValidMobileNoList != null && inValidMobileNoList.size()>0)
+				{
+					for (Object[] parms : inValidMobileNoList) {
+						
+						if(invalidMobilesMap.get(parms[0].toString()) == null)
+						{
+							invalidMobilesMap.put(parms[0].toString(), parms[1].toString());
+						}
+					}
+				}
 					List<Object[]> votersLsit = surveyDetailsInfoDAO.getVotersDetailsByBoothId(boothId,surveyUserids,date,casteStateId);
 					List<Object[]> verifiedList = null;
 					Map<Long,GenericVO> dcWmMap = null;
@@ -3700,7 +3732,18 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 							}
 							
 							reportVO.setVoterIDCardNo(surveyDetailsInfo.getVoter().getVoterIDCardNo());
-							reportVO.setMobileNo(surveyDetailsInfo.getMobileNumber() != null ? surveyDetailsInfo.getMobileNumber():"");
+
+							String mobileNumber = surveyDetailsInfo.getMobileNumber() != null ? surveyDetailsInfo.getMobileNumber():"";
+							
+							if(mobileNumber != null)
+							{
+								if(invalidMobilesMap.get(mobileNumber) != null)
+								{
+									reportVO.setMobileStatus("Invalid");
+								}
+								reportVO.setMobileNo(mobileNumber);
+							}
+						
 							
 							if(surveyDetailsInfo.getCaste() != null){
 								reportVO.setCaste(surveyDetailsInfo.getCaste().getCaste().getCasteName());
@@ -5585,4 +5628,74 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			return usersList;
 		}
 		
+	  public String updateDuplicateMobileNumberDetails(String startDate,String endDate,Long frequencyCount)
+		{
+			LOG.info("Entered into the getDuplicateMobileNumbersDetails service method");
+			
+			String status = "";
+
+			try
+			{
+				
+				  transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+						protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+							
+							/*SimpleDateFormat originalFormat = new SimpleDateFormat("dd/MM/yyyy");
+							SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd" );
+							Date strtDt = originalFormat.parse(startDate);
+							Date endDt = originalFormat.parse(endDate);
+							*/
+							//Date convertedstrdate = targetFormat.parse(targetFormat.format(strtDt));			
+							//Date convertedenddate = targetFormat.parse(targetFormat.format(endDt));
+							
+							Date convertedstrdate = null;			
+							Date convertedenddate = null;
+							
+							List<Object[]> mobileNumbersList = surveyDetailsInfoDAO.getDuplicateMobileNumbersByDates(convertedstrdate,convertedenddate,5L); // consider morethan 5 times duplicate mobile numbers 
+							
+							if(mobileNumbersList != null && mobileNumbersList.size()>0)
+							{
+								for(Object[] mobileNumberDtls:mobileNumbersList)
+								{
+									if(!mobileNumberDtls[1].toString().trim().equalsIgnoreCase(""))
+									{
+										Long count = duplicateWrongMobileNumbersDAO.getIsExistMobileDetails(mobileNumberDtls[0].toString());
+										if(count == null || count.longValue() == 0L)
+										{
+											DuplicateWrongMobileNumbers duplicateWrongMobileNumbers = new DuplicateWrongMobileNumbers();
+											duplicateWrongMobileNumbers.setMobileNo(mobileNumberDtls[0].toString());
+											duplicateWrongMobileNumbers.setMobileType("duplicate");
+											duplicateWrongMobileNumbersDAO.save(duplicateWrongMobileNumbers);
+										}
+										
+									}
+								}
+							}
+							
+							
+							List<String> invalidMobileNumbersList = surveyCallStatusDAO.getInvalidMobileDetailsInCTP();
+									
+							for(String mobileNumber:invalidMobileNumbersList)
+							{	
+									Long count = duplicateWrongMobileNumbersDAO.getIsExistMobileDetails(mobileNumber);
+									if(count != null && count.longValue() == 0L)
+									{
+										DuplicateWrongMobileNumbers duplicateWrongMobileNumbers = new DuplicateWrongMobileNumbers();
+										duplicateWrongMobileNumbers.setMobileNo(mobileNumber);
+										duplicateWrongMobileNumbers.setMobileType("invalid");
+										duplicateWrongMobileNumbersDAO.save(duplicateWrongMobileNumbers);
+									}
+							}
+						}
+				  });
+				  status = "success";
+			}
+			catch(Exception e){
+				status = "failure";
+				LOG.error(" exception occured in the getDuplicateMobileNumbersDetails service method ",e);
+			}
+			
+			return status;
+			
+		}
 }
