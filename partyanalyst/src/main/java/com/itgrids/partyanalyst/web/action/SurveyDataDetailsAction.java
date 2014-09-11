@@ -1461,7 +1461,106 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		
 	}
 	
-  
+  public String saveSurveyCallStatusMobileDetils()
+  {
+
+	  try {
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			
+			if(user == null)
+			{
+				return Action.INPUT;
+			}
+			Long userId = user.getRegistrationID();
+			jObj = new JSONObject(getTask());
+			
+			Long voterId = jObj.getLong("voterId");
+			Long boothId = jObj.getLong("boothId");
+			Long surveyUserId = jObj.getLong("surveyUserId");			
+			Long userTypeId = jObj.getLong("userType");
+			String selectedMobileType = jObj.getString("changetMobileType");
+			Long mobileStatusId = jObj.getLong("statusId");
+				
+			resultStatus = surveyDataDetailsService.saveSurveyCallStatusMobileDetils(userId,voterId,boothId,surveyUserId,userTypeId,selectedMobileType,mobileStatusId);
+			
+					/*	
+					JSONArray ctpMobileArr = obj.getJSONArray("ctpMobileArr");
+					
+					if(ctpMobileArr != null && ctpMobileArr.length() > 0)
+					{
+						List<String> mobileStatusList = new ArrayList<String>();
+						for(int j=0;j<ctpMobileArr.length();i++)
+						{
+							mobileStatusList.add(ctpMobileArr.get(j).toString());
+						}
+						
+						if(mobileStatusList != null && mobileStatusList.size()>0)
+						{
+							vo.setCtpMobileNoList(mobileStatusList);
+						}
+					}
+					
+					JSONArray surveyMobileArr = obj.getJSONArray("surveyMobileArr");
+					
+					if(surveyMobileArr != null && surveyMobileArr.length() > 0)
+					{
+						List<String> mobileStatusList = new ArrayList<String>();
+						for(int j=0;j<surveyMobileArr.length();i++)
+						{
+							mobileStatusList.add(surveyMobileArr.get(j).toString());
+						}
+						
+						if(mobileStatusList != null && mobileStatusList.size()>0)
+						{
+							vo.setSurveyMobileNoList(mobileStatusList);
+						}
+					}
+					
+
+					JSONArray dataMobileArr = obj.getJSONArray("dataMobileArr");
+					
+					if(dataMobileArr != null && dataMobileArr.length() > 0)
+					{
+						List<String> mobileStatusList = new ArrayList<String>();
+						for(int j=0;j<dataMobileArr.length();i++)
+						{
+							mobileStatusList.add(dataMobileArr.get(j).toString());
+						}
+						
+						if(mobileStatusList != null && mobileStatusList.size()>0)
+						{
+							vo.setDataMobileNoList(mobileStatusList);
+						}
+					}
+					
+					
+					JSONArray ceoMobileArr = obj.getJSONArray("ceoMobileArr");
+					
+					if(ceoMobileArr != null && ceoMobileArr.length() > 0)
+					{
+						List<String> mobileStatusList = new ArrayList<String>();
+						for(int j=0;j<ceoMobileArr.length();i++)
+						{
+							mobileStatusList.add(ceoMobileArr.get(j).toString());
+						}
+						
+						if(mobileStatusList != null && mobileStatusList.size()>0)
+						{
+							vo.setCeoMobileNoList(mobileStatusList);
+						}
+					}
+					
+					verifiedList.add(vo);
+				*/	
+		
+			
+		} catch (Exception e) {
+			LOG.error(" exception occured in saveSurveyCallStatusDetils() ,ConstituencyDetailsAction class",e);
+		}
+		return Action.SUCCESS;
+	  
+  }
   public String saveSurveyCallStatusDetils(){
 	  
 	  try {
