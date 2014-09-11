@@ -35,7 +35,7 @@ public class MobileNumbers extends BaseModel implements Serializable{
 	private Long constituencyId;
 	private Long boothId;
 	
-	//private MobileSourceType mobileSourceType;
+	private MobileSourceType mobileSourceType;
 	private Voter voter;
 	private Constituency constituency;
 	private Booth booth;
@@ -105,17 +105,17 @@ public class MobileNumbers extends BaseModel implements Serializable{
 		this.constituency = constituency;
 	}
 	
-	/*@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "mobile_source_type_id" ,insertable = false , updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)*/
-	/*public MobileSourceType getMobileSourceType() {
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public MobileSourceType getMobileSourceType() {
 		return mobileSourceType;
 	}
 	public void setMobileSourceType(MobileSourceType mobileSourceType) {
 		this.mobileSourceType = mobileSourceType;
 	}
-	*/
+	
 	@Column(name="booth_id")
 	public Long getBoothId() {
 		return boothId;
