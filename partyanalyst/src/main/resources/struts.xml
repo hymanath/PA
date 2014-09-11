@@ -7634,6 +7634,11 @@
 		</action>
 		
 		
+		<action name="saveSurveyCallStatusMobileDetilsAction" class="surveyDataDetailsAction" method="saveSurveyCallStatusMobileDetils">
+			<result type="json" name="success">
+				<param name="root">resultStatus</param>
+			</result>
+		</action>
 		
 		
 		<action name="surveyAdmin" class="surveyDashBoardAction">
