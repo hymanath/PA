@@ -12,13 +12,13 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-/*@Entity
+@Entity
 @Table(name = "mobile_source_type")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)*/
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class MobileSourceType implements Serializable{
 
 	
-	/*private static final long serialVersionUID = -4306817062121192096L;
+	private static final long serialVersionUID = -4306817062121192096L;
 	private Long mobileSourceTypeId;
 	private String description;
 	
@@ -38,7 +38,7 @@ public class MobileSourceType implements Serializable{
 	}
 	public void setDescription(String description) {
 		this.description = description;
-	}*/
+	}
 	
 	
 }
