@@ -509,4 +509,11 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 		return query.list();
 	}
 	
+	public List<String> getInvalidMobileDetailsInCTP()
+	{
+		Query query = getSession().createQuery("select distinct SDI.mobileNumber from SurveyCallStatus SCS, SurveyDetailsInfo SDI where SCS.voterId = SDI.voter.voterId and " +
+				" (SCS.mobileNoStatus is not null and SCS.mobileNoStatus ='N' ) ");
+		
+		return query.list();
+	}
 }
