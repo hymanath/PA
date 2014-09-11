@@ -437,6 +437,7 @@
 		<value>com.itgrids.partyanalyst.model.VoterNames</value>
 		<value>com.itgrids.partyanalyst.model.CriticalPanchayats</value>
 		<value>com.itgrids.partyanalyst.model.MobileNumbers</value>
+		<value>com.itgrids.partyanalyst.model.MobileSourceType</value>
 		<value>com.itgrids.partyanalyst.model.StateSubRegionDistrict</value>
 		<value>com.itgrids.partyanalyst.model.StateSubRegion</value>
 				<value>com.itgrids.partyanalyst.model.CasteContainConstituency</value>
@@ -2412,7 +2413,9 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	
+	<bean id="mobileSourceTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.MobileSourceTypeDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="surveyUserTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.SurveyUserTypeDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
