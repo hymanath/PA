@@ -4830,3 +4830,104 @@ function buildDcReport(result)
 		});
 	}
 }
+
+function buildMyReport(result)
+{
+	var str = '';
+	str+='<table class="table table-bordered m_top20 table-hover table-striped" id="">';
+ 	 str+='<thead>';
+	 str+='<tr>';
+	  str+='<th>Booth No</th>';
+	  str+='<th>Total Voters</th>';
+	  str+='<th>DC Caste Mapped</th>';
+	  str+='<th>DC Caste Mapped % </th>';
+	  str+='<th>DC Hamlet Mapped</th>';
+	  str+='<th>DC Hamlet Mapped %</th>';
+	  str+='<th>DC Mobile Collected</th>';
+	  str+='<th>DC Mobile Collected %</th>';
+	  str+='<th>Ready for WMT- Configurable %.As of now >=80%</th>';
+	  str+='<th>WMT Done</th>';
+	  str+='<th>WM DC Total</th>';
+	  str+='<th>WM DC Total %</th>';
+	  str+='<th>DC VERIFIED RECORDS</th>';
+	  str+='<th>WMT:DC Caste Verified% (DC Records Verified/DC Records Present*100)</th>';
+	  str+='<th>WM DC Caste Matched</th>';
+	  str+='<th>WM DC Caste UnMatched</th>';
+	  str+='<th>WM DC Caste Error %</th>';
+	  str+='<th>WM DC Mobile Matched</th>';
+	  str+='<th>WM DC Mobile UnMatched</th>';
+	  str+='<th>WM DC Mobile Error %</th>';
+	  str+='<th>Newly Collected Count</th>';
+	  str+='<th>Ready for RTP </th>';
+
+	 str+='</tr>';
+	 str+='</thead>';
+	 str+='<tbody>';
+	 $.each(result,function(index,value){
+		 str+='<tr>';
+		  str+='<td>'+value.partNo+'</td>';
+		  str+='<td>'+value.totalVoters+'</td>';
+		  str+='<td>'+value.dcDetails.casteCount+'</td>';
+		  str+='<td>'+value.dcDetails.castePercent+'</td>';
+		  str+='<td>'+value.dcDetails.hamletCount+'</td>';
+		  str+='<td>'+value.dcDetails.hamletPercent+'</td>';
+		  str+='<td>'+value.dcDetails.mobileNUmbersCount+'</td>';
+		  str+='<td>'+value.dcDetails.mobilePercent+'</td>';
+		  
+		  var dcVerifiedRecords = (value.wmDcDetails.totalCount)-(value.wmDcDetails.newlyCollectedCount);
+		  var dcVerifiedRecordsPerc = (Math.round(dcVerifiedRecords * 100)/value.dcDetails.casteCount).toFixed(2);
+		  
+		  if(value.dcDetails.castePercent >= 85)
+		  {
+			str+='<td>Y</td>';
+		  }
+		  else
+		  {
+			str+='<td>N</td>';
+		  }
+		  
+		   if(dcVerifiedRecordsPerc >= 85)
+		  {
+			str+='<td>Y</td>';
+		  }
+		  else
+		  {
+			str+='<td>N</td>';
+		  }
+		  
+          var wmDcCompletedPerc = (Math.round(value.wmDcDetails.totalCount * 100)/value.totalVoters).toFixed(2);
+		  str+='<td>'+value.wmDcDetails.totalCount+'</td>';
+		  str+='<td>'+wmDcCompletedPerc+'</td>';
+		 
+		  str+='<td>'+dcVerifiedRecords+'</td>';
+		  str+='<td>'+dcVerifiedRecordsPerc+'</td>';
+		  
+		  
+		  str+='<td>'+value.wmDcDetails.casteMatchedCount+'</td>';
+		  str+='<td>'+value.wmDcDetails.casteUnMatchedCount+'</td>';
+          str+='<td>'+value.wmDcDetails.castePercent+'</td>';
+		  str+='<td>'+value.wmDcDetails.mobileMatchedCount+'</td>';
+		  str+='<td>'+value.wmDcDetails.mobileUnmatchedCount+'</td>';
+		  str+='<td>'+value.wmDcDetails.mobilePercent+'</td>';
+		  str+='<td>'+value.wmDcDetails.newlyCollectedCount+'</td>';
+		 
+		 if(wmDcCompletedPerc >= 95 && dcVerifiedRecordsPerc >= 85 && value.wmDcDetails.castePercent <= 5)
+		 {
+			str+='<td>Y</td>';
+		 }
+		 else
+		 {
+			str+='<td>N</td>';
+		 }
+		 str+='</tr>';
+	 });
+	  
+	 str+='</tbody>';
+	str+='</table>';
+
+
+	$('#mainajaximg').hide();
+	//$('#excelTableID1').show();
+	$('#dayWiseReportDiv2').html(str);
+	//$('#daywisereportTableIdTemp').dataTable();
+}
