@@ -107,6 +107,7 @@ public class SurveyReportVO {
 	private String wmCaste;
 	private String status;
 	private String MobileNumber; 
+	private String mobileStatus;
 	
 	private Long thirdPartyProcessing = 0L;
 	private Long thirdPartyCompleted = 0L;
@@ -140,6 +141,12 @@ public class SurveyReportVO {
 	private Long dataMobileStatus;
 	
 	
+	public String getMobileStatus() {
+		return mobileStatus;
+	}
+	public void setMobileStatus(String mobileStatus) {
+		this.mobileStatus = mobileStatus;
+	}
 	public Long getCtpMobileStatus() {
 		return ctpMobileStatus;
 	}
