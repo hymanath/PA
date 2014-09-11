@@ -1570,6 +1570,9 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="mobileSourceTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.MobileSourceTypeDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<!--  survey -->
 	

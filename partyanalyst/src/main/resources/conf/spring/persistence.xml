@@ -415,6 +415,7 @@
 				<value>com.itgrids.partyanalyst.model.VoterNamesTemp</value>
 				<value>com.itgrids.partyanalyst.model.CriticalPanchayats</value>
 				<value>com.itgrids.partyanalyst.model.MobileNumbers</value>
+				<value>com.itgrids.partyanalyst.model.MobileSourceType</value>
 				
 				<value>com.itgrids.partyanalyst.model.CasteContainConstituency</value>
 				<value>com.itgrids.partyanalyst.model.StrategyAssumptions</value>
