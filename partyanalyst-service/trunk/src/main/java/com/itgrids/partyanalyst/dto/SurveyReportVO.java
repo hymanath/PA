@@ -129,6 +129,65 @@ public class SurveyReportVO {
 	private CasteCollectedDetailsVO wmDcDetails = new CasteCollectedDetailsVO();
 	private CasteCollectedDetailsVO wmDvDetails = new CasteCollectedDetailsVO();
 
+	private List<String> ctpMobileNoList = new ArrayList<String>(); 
+	private List<String> ceoMobileNoList = new ArrayList<String>();
+	private List<String> dataMobileNoList = new ArrayList<String>() ;
+	private List<String> surveyMobileNoList = new ArrayList<String>();
+	
+	private Long ctpMobileStatus;
+	private Long ceoMobileStatus;
+	private Long surveyMobileStatus;
+	private Long dataMobileStatus;
+	
+	
+	public Long getCtpMobileStatus() {
+		return ctpMobileStatus;
+	}
+	public void setCtpMobileStatus(Long ctpMobileStatus) {
+		this.ctpMobileStatus = ctpMobileStatus;
+	}
+	public Long getCeoMobileStatus() {
+		return ceoMobileStatus;
+	}
+	public void setCeoMobileStatus(Long ceoMobileStatus) {
+		this.ceoMobileStatus = ceoMobileStatus;
+	}
+	public Long getSurveyMobileStatus() {
+		return surveyMobileStatus;
+	}
+	public void setSurveyMobileStatus(Long surveyMobileStatus) {
+		this.surveyMobileStatus = surveyMobileStatus;
+	}
+	public Long getDataMobileStatus() {
+		return dataMobileStatus;
+	}
+	public void setDataMobileStatus(Long dataMobileStatus) {
+		this.dataMobileStatus = dataMobileStatus;
+	}
+	public List<String> getCtpMobileNoList() {
+		return ctpMobileNoList;
+	}
+	public void setCtpMobileNoList(List<String> ctpMobileNoList) {
+		this.ctpMobileNoList = ctpMobileNoList;
+	}
+	public List<String> getCeoMobileNoList() {
+		return ceoMobileNoList;
+	}
+	public void setCeoMobileNoList(List<String> ceoMobileNoList) {
+		this.ceoMobileNoList = ceoMobileNoList;
+	}
+	public List<String> getDataMobileNoList() {
+		return dataMobileNoList;
+	}
+	public void setDataMobileNoList(List<String> dataMobileNoList) {
+		this.dataMobileNoList = dataMobileNoList;
+	}
+	public List<String> getSurveyMobileNoList() {
+		return surveyMobileNoList;
+	}
+	public void setSurveyMobileNoList(List<String> surveyMobileNoList) {
+		this.surveyMobileNoList = surveyMobileNoList;
+	}
 	public CasteCollectedDetailsVO getWmDvDetails() {
 		return wmDvDetails;
 	}
