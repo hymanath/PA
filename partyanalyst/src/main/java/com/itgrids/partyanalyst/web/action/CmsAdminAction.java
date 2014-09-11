@@ -54,7 +54,7 @@ public class CmsAdminAction extends ActionSupport implements ServletRequestAware
 
 	@Autowired
 	private IVoterReportService voterReportService;
-	@Override
+	
 	public void setServletRequest(HttpServletRequest arg0) {
 		this.request = arg0;
 		

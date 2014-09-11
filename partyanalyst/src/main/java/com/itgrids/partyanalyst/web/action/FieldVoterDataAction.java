@@ -103,7 +103,7 @@ public class FieldVoterDataAction extends ActionSupport implements ServletReques
 	public void setjObj(JSONObject jObj) {
 		this.jObj = jObj;
 	}
-	@Override
+	
 	public void setServletRequest(HttpServletRequest arg0) {
 		this.request = arg0;
 	}
