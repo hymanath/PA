@@ -2140,7 +2140,9 @@
           <property name="memberVoterMappingDetailsDAO" ref="memberVoterMappingDetailsDAO"></property>
    </bean>
    
-   <bean name="surveyDataDetailsService"  class="com.itgrids.partyanalyst.service.impl.SurveyDataDetailsService"  > </bean>
+   <bean name="surveyDataDetailsService"  class="com.itgrids.partyanalyst.service.impl.SurveyDataDetailsService"  > 
+      <property name="duplicateWrongMobileNumbersDAO" ref="duplicateWrongMobileNumbersDAO"/>
+   </bean>
    <bean name="candidateUpdationDetailsService"  class="com.itgrids.partyanalyst.service.impl.CandidateUpdationDetailsService"  >
    <property name="electionDAO" ref="electionDAO" />
    <property name="districtDAO" ref="districtDAO" />
