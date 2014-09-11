@@ -142,6 +142,9 @@
 						<li><a class="highlight" id="thirdPartyReportTab" onclick="showHideTabs(this.id);">QC Report</a></li>
 						
 						<li><a class="highlight" id="surveyUserWise" onclick="showHideTabs(this.id);">User Wise Report</a></li>
+						
+						<li><a class="highlight" id="daywiseDCReport" onclick="showHideTabs(this.id);">DC Daily Report </a></li>
+						
 					</c:if>
 					
 					<c:if test="${fn:contains(sessionScope.USER.entitlements, 'WEB_MONITORING_LEAD')}">
@@ -163,8 +166,6 @@
 						<li><a class="highlight" id="thirdPartyReportTab" onclick="showHideTabs(this.id);">QC Report</a></li>
 						
 						<li><a class="highlight" id="surveyUserWise" onclick="showHideTabs(this.id);">User Wise Report</a></li>
-						
-						<li><a class="highlight" id="daywiseDCReport" onclick="showHideTabs(this.id);">Day Wise DC Report </a></li>
 											
 					</c:if>
 					
@@ -954,13 +955,6 @@ var tableToExcel = (function() {
     window.location.href = uri + base64(format(template, ctx))
   }
 })()
-/*
-function generateExcel()
-{
-   tableToExcel('dayWiseDCReportTable', 'DAY WISE DC REPORT ');
-} 
-*/
-
 
 </script>
 	
