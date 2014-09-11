@@ -32,6 +32,7 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
+import com.itgrids.partyanalyst.dao.IMobileNumbersDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
 import com.itgrids.partyanalyst.dao.IPartialBoothPanchayatDAO;
@@ -170,10 +171,14 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	private IPartialBoothPanchayatDAO partialBoothPanchayatDAO;
 	
 	@Autowired
-	public ISurveyFinalDataDAO surveyFinalDataDAO;
+	private ISurveyFinalDataDAO surveyFinalDataDAO;
 	
 	@Autowired
-	public ISurveyWmThirdPartyStatusDAO surveyWmThirdPartyStatusDAO;
+	private ISurveyWmThirdPartyStatusDAO surveyWmThirdPartyStatusDAO;
+	
+	@Autowired
+	private IMobileNumbersDAO mobileNumbersDAO;
+	
 	/**
 	 * This Service is used for saving the user type details
 	 * @param userTypeDescription
@@ -3382,7 +3387,87 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					surveyUserids.add(surveyUserId);
 				}
 				
-					
+				
+				List<Object[]> existingMobileNumbersList   =  mobileNumbersDAO.getMobileNumberDetailsByBoothId(boothId,0L);
+				
+				Map<Long,List<String>> ceoAndhraMobileNumbersMap = new HashMap<Long, List<String>>();
+				Map<Long,List<String>> smsSurveyMobileNumbersMap = new HashMap<Long, List<String>>();
+				Map<Long,List<String>> dataSurveyMobileNumbersMap = new HashMap<Long, List<String>>();
+				Map<Long,List<String>> ctpMobileNumbersMap = new HashMap<Long, List<String>>();
+				
+				if(existingMobileNumbersList != null && existingMobileNumbersList.size()>0)
+				{
+					for (Object[] param : existingMobileNumbersList)
+					{						
+						List<String> mobileNumbersList = null;
+						
+						if((Long) param[0] == 1L)
+						{	
+							if(ceoAndhraMobileNumbersMap.get((Long) param[1]) == null)
+							{
+								mobileNumbersList = new ArrayList<String>();
+								mobileNumbersList.add(param[2].toString());
+							}
+							else
+							{
+								mobileNumbersList = ceoAndhraMobileNumbersMap.get((Long) param[1]);
+								mobileNumbersList.add(param[2].toString());
+							}
+							
+							ceoAndhraMobileNumbersMap.put((Long) param[1],mobileNumbersList);
+						}
+						
+						else if((Long) param[0] == 2L)
+						{	
+							if(smsSurveyMobileNumbersMap.get((Long) param[1]) == null)
+							{
+								mobileNumbersList = new ArrayList<String>();
+								mobileNumbersList.add(param[2].toString());
+							}
+							else
+							{
+								mobileNumbersList = smsSurveyMobileNumbersMap.get((Long) param[1]);
+								mobileNumbersList.add(param[2].toString());
+							}
+							
+							smsSurveyMobileNumbersMap.put((Long) param[1],mobileNumbersList);
+						}
+						
+						else if((Long) param[0] == 3L)
+						{	
+							if(dataSurveyMobileNumbersMap.get((Long) param[1]) == null)
+							{
+								mobileNumbersList = new ArrayList<String>();
+								mobileNumbersList.add(param[2].toString());
+							}
+							else
+							{
+								mobileNumbersList = dataSurveyMobileNumbersMap.get((Long) param[1]);
+								mobileNumbersList.add(param[2].toString());
+							}
+							
+							dataSurveyMobileNumbersMap.put((Long) param[1],mobileNumbersList);
+						}
+						
+						else if((Long) param[0] == 4L)
+						{	
+							if(ctpMobileNumbersMap.get((Long) param[1]) == null)
+							{
+								mobileNumbersList = new ArrayList<String>();
+								mobileNumbersList.add(param[2].toString());
+							}
+							else
+							{
+								mobileNumbersList = ctpMobileNumbersMap.get((Long) param[1]);
+								mobileNumbersList.add(param[2].toString());
+							}
+							
+							ctpMobileNumbersMap.put((Long) param[1],mobileNumbersList);
+						}
+						
+					}
+				}
+				
 					List<Object[]> votersLsit = surveyDetailsInfoDAO.getVotersDetailsByBoothId(boothId,surveyUserids,date,casteStateId);
 					List<Object[]> verifiedList = null;
 					Map<Long,GenericVO> dcWmMap = null;
@@ -3432,9 +3517,68 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					Map<Long,String> hamletStatus = new HashMap<Long,String>();
 					Map<Long,String> newHamletStatus = new HashMap<Long,String>();
 					
+					Map<Long,String> ceoMobileMatchedmap = new HashMap<Long,String>();
+					Map<Long,String> ctpMobileMatchedmap = new HashMap<Long,String>();
+					Map<Long,String> surveyMobileMatchedmap = new HashMap<Long,String>();
+					Map<Long,String> dataMobileMatchedmap = new HashMap<Long,String>();
+					
+			
 					if(verifiedList != null && verifiedList.size()>0){
 						for (Object[] param : verifiedList) {
-							if(param[1] != null)
+							
+							if(param[8] != null )
+							{
+								if(!param[8].toString().equalsIgnoreCase("N")){
+									ctpMobileMatchedmap.put((Long)param[0], "Y");
+								}
+								else if(param[8].toString().equalsIgnoreCase("N")){
+									ctpMobileMatchedmap.put((Long)param[0], "N");
+								}
+								else{								
+									ctpMobileMatchedmap.put((Long)param[0], "Not Mapped");							
+								}
+							}
+							
+							if(param[9] != null )
+							{
+								if(!param[9].toString().equalsIgnoreCase("N")){
+									surveyMobileMatchedmap.put((Long)param[0], "Y");
+								}
+								else if(param[9].toString().equalsIgnoreCase("N")){
+									surveyMobileMatchedmap.put((Long)param[0], "N");
+								}
+								else{								
+									surveyMobileMatchedmap.put((Long)param[0], "Not Mapped");							
+								}
+							}
+							
+							if(param[10] != null )
+							{
+								if(!param[10].toString().equalsIgnoreCase("N")){
+									dataMobileMatchedmap.put((Long)param[0], "Y");
+								}
+								else if(param[10].toString().equalsIgnoreCase("N")){
+									dataMobileMatchedmap.put((Long)param[0], "N");
+								}
+								else{								
+									dataMobileMatchedmap.put((Long)param[0], "Not Mapped");							
+								}
+							}
+							
+							if(param[11] != null )
+							{
+								if(!param[11].toString().equalsIgnoreCase("N")){
+									ceoMobileMatchedmap.put((Long)param[0], "Y");
+								}
+								else if(param[11].toString().equalsIgnoreCase("N")){
+									ceoMobileMatchedmap.put((Long)param[0], "N");
+								}
+								else{								
+									ceoMobileMatchedmap.put((Long)param[0], "Not Mapped");							
+								}
+							}
+							
+							if(param[1] != null )
 							{
 								if(!param[1].toString().equalsIgnoreCase("N")){
 									mobileMatched.put((Long)param[0], "Y");
@@ -3446,7 +3590,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 									mobileMatched.put((Long)param[0], "Not Mapped");							
 								}
 							}
-							
+											
 							if(param[2] != null)
 							{
 								if(!param[2].toString().equalsIgnoreCase("N")){
@@ -3532,10 +3676,28 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					
 					if(votersLsit != null && votersLsit.size()>0){
 						
-						for (Object[] voterInfo : votersLsit) {
+						for (Object[] voterInfo : votersLsit) 
+						{
 							
 							SurveyReportVO reportVO = new SurveyReportVO();
 							SurveyDetailsInfo surveyDetailsInfo = (SurveyDetailsInfo) voterInfo[0]; 
+							
+							if(ceoAndhraMobileNumbersMap != null && ceoAndhraMobileNumbersMap.size()>0  && ceoAndhraMobileNumbersMap.get(surveyDetailsInfo.getVoter().getVoterId()) != null )
+							{
+								reportVO.setCeoMobileNoList(ceoAndhraMobileNumbersMap.get(surveyDetailsInfo.getVoter().getVoterId()));
+							}							
+							if(smsSurveyMobileNumbersMap != null && smsSurveyMobileNumbersMap.size()>0  && smsSurveyMobileNumbersMap.get(surveyDetailsInfo.getVoter().getVoterId()) != null )
+							{
+								reportVO.setSurveyMobileNoList(smsSurveyMobileNumbersMap.get(surveyDetailsInfo.getVoter().getVoterId()));
+							}
+							if(dataSurveyMobileNumbersMap != null && dataSurveyMobileNumbersMap.size()>0  && dataSurveyMobileNumbersMap.get(surveyDetailsInfo.getVoter().getVoterId()) != null )
+							{
+								reportVO.setDataMobileNoList(dataSurveyMobileNumbersMap.get(surveyDetailsInfo.getVoter().getVoterId()));
+							}
+							if(ctpMobileNumbersMap != null && ctpMobileNumbersMap.size()>0 && ctpMobileNumbersMap.get(surveyDetailsInfo.getVoter().getVoterId()) != null)
+							{
+								reportVO.setCtpMobileNoList(ctpMobileNumbersMap.get(surveyDetailsInfo.getVoter().getVoterId()));
+							}
 							
 							reportVO.setVoterIDCardNo(surveyDetailsInfo.getVoter().getVoterIDCardNo());
 							reportVO.setMobileNo(surveyDetailsInfo.getMobileNumber() != null ? surveyDetailsInfo.getMobileNumber():"");
@@ -3578,7 +3740,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 										String casteMatchd = casteMatched.get(surveyDetailsInfo.getVoter().getVoterId());
 										String mobilMatchd = mobileMatched.get(surveyDetailsInfo.getVoter().getVoterId());
 										String hamletMatched = hamletStatus.get(surveyDetailsInfo.getVoter().getVoterId());
-										
+		
 									if(casteMatchd != null && casteMatchd.equalsIgnoreCase("Y")){
 										reportVO.setCasteMatchedCount(1L);
 									}else if(casteMatchd != null && casteMatchd.equalsIgnoreCase("N")){
@@ -3587,6 +3749,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 										reportVO.setCasteMatchedCount(0L);
 									}
 									
+										
 									if(hamletMatched != null && hamletMatched.equalsIgnoreCase("Y")){
 										reportVO.setHamletCount(1L);
 									}else if(hamletMatched != null && hamletMatched.equalsIgnoreCase("N")){
@@ -3595,12 +3758,20 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 										reportVO.setHamletCount(0L);
 									}
 									
-									if(mobilMatchd != null && mobilMatchd.equalsIgnoreCase("Y")){
+									
+									if(mobilMatchd != null && mobilMatchd.equalsIgnoreCase("Y"))
+									{
 										reportVO.setMobileMatchedCount(1L);
-									}else if(mobilMatchd != null && mobilMatchd.equalsIgnoreCase("N")){
+										reportVO.setCtpMobileStatus(1L);
+									}
+									else if(mobilMatchd != null && mobilMatchd.equalsIgnoreCase("N"))
+									{
 										reportVO.setMobileMatchedCount(2L);
-									}else{							
+										reportVO.setCtpMobileStatus(2L);
+									}else
+									{							
 										reportVO.setMobileMatchedCount(0L);
+										reportVO.setCtpMobileStatus(0L);
 									}
 																	
 									if(newCasteMatched.get( surveyDetailsInfo.getVoter().getVoterId()) != null ){
@@ -3611,7 +3782,37 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 										reportVO.setHamletId(Long.valueOf(newHamletStatus.get(surveyDetailsInfo.getVoter().getVoterId())));
 									}
 									
+									String ceoMobileMatched = ceoMobileMatchedmap.get(surveyDetailsInfo.getVoter().getVoterId());
+									//String ctpMobileMatched = ctpMobileMatchedmap.get(surveyDetailsInfo.getVoter().getVoterId());
+									String surveyMobileMatched = surveyMobileMatchedmap.get(surveyDetailsInfo.getVoter().getVoterId());
+									String dataMobileMatched = dataMobileMatchedmap.get(surveyDetailsInfo.getVoter().getVoterId());
+									
+									
+									if(ceoMobileMatched != null && ceoMobileMatched.equalsIgnoreCase("Y")){
+										reportVO.setCeoMobileStatus(1L);
+									}else if(ceoMobileMatched != null && ceoMobileMatched.equalsIgnoreCase("N")){
+										reportVO.setCeoMobileStatus(2L);
+									}else{							
+										reportVO.setCeoMobileStatus(0L);
+									}
+									
+									if(surveyMobileMatched != null && surveyMobileMatched.equalsIgnoreCase("Y")){
+										reportVO.setSurveyMobileStatus(1L);
+									}else if(surveyMobileMatched != null && surveyMobileMatched.equalsIgnoreCase("N")){
+										reportVO.setSurveyMobileStatus(2L);
+									}else{							
+										reportVO.setSurveyMobileStatus(0L);
+									}
+									
+									if(dataMobileMatched != null && dataMobileMatched.equalsIgnoreCase("Y")){
+										reportVO.setDataMobileStatus(1L);
+									}else if(dataMobileMatched != null && dataMobileMatched.equalsIgnoreCase("N")){
+										reportVO.setDataMobileStatus(2L);
+									}else{							
+										reportVO.setDataMobileStatus(0L);
+									}																		
 								}
+							
 							if(dcWmMap != null && dcWmMap.size() > 0)
 							{
 								GenericVO genVO = dcWmMap.get(reportVO.getVoterId());
@@ -3678,9 +3879,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 							
 							//end verifying castes of all voters in a house no are same or not start
 						}
-						
-						
-						
+												
 					}	
 					
 				//}
@@ -3719,9 +3918,10 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 									
 									resultList.add(reportVO);
 								}
-								
-								
+																
 							}
+							
+							finalVO.setCount(Long.valueOf(String.valueOf(actualVotersInBooth.size())));
 						}
 					}
 					
@@ -3745,7 +3945,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					}
 				}
 				
-				finalVO.setCount(Long.valueOf(String.valueOf(actualVotersInBooth.size())));
+				
 				finalVO.setCompletedCount(Long.valueOf(String.valueOf(voterIds.size())));
 				
 				if(casteListOfSamples != null && casteListOfSamples.size()>0){
@@ -3800,6 +4000,108 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			return retultList;
 		}
 	 
+	 public ResultStatus saveSurveyCallStatusMobileDetils(final Long userId,final Long voterId,final Long boothId,final Long surveyUserId,final Long userTypeId,
+			 final String  selectedMobileType, final Long  mobileStatusId)
+	 {
+		 ResultStatus status = new ResultStatus();
+			
+			try {
+				
+				
+			/*	transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+					protected void doInTransactionWithoutResult(TransactionStatus arg0) 
+					{
+					*/					
+						SurveyCallStatus surveyCallStatus = null;
+						Long surveyCallStatusId = null;		
+						
+						List<Long> surveyCallStatusIds = surveyCallStatusDAO.getSurveyCallDetailsByVoterId(voterId);
+						
+						if(surveyCallStatusIds != null && surveyCallStatusIds.size()>0)
+						{
+							surveyCallStatusId = surveyCallStatusIds.get(0);
+						}
+									
+						if(surveyCallStatusId != null && surveyCallStatusId != 0 )
+						{				
+							surveyCallStatus = surveyCallStatusDAO.get(surveyCallStatusId);
+						}	
+						if(surveyCallStatus == null )
+						{
+							surveyCallStatus = new SurveyCallStatus();
+							surveyCallStatus.setVoterId(voterId);
+							surveyCallStatus.setInsertedDate(dateUtilService.getCurrentDateAndTime());
+						}
+						
+						surveyCallStatus.setSurveyUserId(surveyUserId);
+						surveyCallStatus.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
+						surveyCallStatus.setBoothId(boothId);
+						surveyCallStatus.setUserId(userId);
+						
+						
+						if(selectedMobileType.toString().equalsIgnoreCase("ceoMobileNumber"))
+						{
+							if(mobileStatusId.longValue() == 1L)
+							{
+								surveyCallStatus.setCeoMobileMatched("Y");
+							}
+							else if(mobileStatusId.longValue() == 0L)
+							{
+								surveyCallStatus.setCeoMobileMatched("N");
+							} 
+							else
+							{
+								surveyCallStatus.setCeoMobileMatched(null);
+							}
+						}
+						else if(selectedMobileType.toString().equalsIgnoreCase("dataMobileNumber"))
+						{
+							if(mobileStatusId.longValue() == 4L)
+							{
+								surveyCallStatus.setDataMobileMatched("Y");
+							}
+							else if(mobileStatusId.longValue() == 5L)
+							{
+								surveyCallStatus.setDataMobileMatched("N");
+							} 
+							else
+							{
+								surveyCallStatus.setDataMobileMatched(null);
+							}
+						}
+						else if(selectedMobileType.toString().equalsIgnoreCase("surveyMobileNumber"))
+						{
+							if(mobileStatusId.longValue() == 2L)
+							{
+								surveyCallStatus.setSurveyMobileMatched("Y");
+							}
+							else if(mobileStatusId.longValue() == 3L)
+							{
+								surveyCallStatus.setSurveyMobileMatched("N");
+							} 
+							else
+							{
+								surveyCallStatus.setSurveyMobileMatched(null);
+							}
+						}
+						
+						surveyCallStatusDAO.save(surveyCallStatus);
+			/*		}
+					
+				});*/
+						
+				status.setResultCode(ResultCodeMapper.SUCCESS);
+				status.setMessage(" Survey Details Verified Successfully...");
+				
+			} catch (Exception e) {
+				status.setResultCode(ResultCodeMapper.FAILURE);
+				status.setMessage(" Exception occured while saving Survey Details. ");
+				LOG.error("Exception raised in saveSurveyCallStatusMobileDetils() service in SurveyDataDetailsService", e);
+				e.printStackTrace();			
+			}
+			
+			return status;
+	 }
 	 public ResultStatus saveCallCenterForDataCollector(final SurveyReportVO surveyReportVO,final Long userId)
 		{
 			ResultStatus status = new ResultStatus();
