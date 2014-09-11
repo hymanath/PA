@@ -210,6 +210,6 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 		
 	public Integer saveDailyCallCenterVerifiedDetails(Date todayDate);
 	public Integer saveSMSMobileNumbers(Date todayDate);
-	
+	public List<Object[]> getDuplicateMobileNumbersByDates(Date startDate,Date endDate,Long frequencyCount);
 }
 
