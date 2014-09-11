@@ -261,8 +261,14 @@ $('#searchDataImg').show();
 										var mobNo = result[i].mobileNo	;
 													
 									str +='<li style="background-color:#D3D6FF;margin-top:8px;">';
-										str +=''+mobNo+'<div data-toggle="buttons-radio" class="btn-group">';
-																			
+									str +=''+mobNo+'';
+									if(result[i].mobileStatus != null)
+									{
+										str +='<div data-toggle="buttons-radio"> Invalid Number </div>';
+									}
+									else
+									{		
+										str +='<div data-toggle="buttons-radio" class="btn-group">';										
 										if(result[i].ctpMobileStatus == 1)
 										{
 											str +='<button class="btn btn-mini  btn-success " id="updateMBtnId'+i+'" type="button" onclick="updateDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',2,'+result[i].voterId+','+result[i].userid+',\'mobile\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');" >correct </button>';
@@ -298,7 +304,7 @@ $('#searchDataImg').show();
 											str +='</div>';
 											
 										}
-
+									}
 										//str +='(BY CTP)';
 								}	
 							else{	
@@ -1352,8 +1358,14 @@ function buildCasteWiseVotersList(results,userId,boothId,date,casteId1,webConstI
 										var mobNo = result[i].mobileNo	;
 													
 									str +='<li style="background-color:#D3D6FF;margin-top:8px;">';
-										str +=''+mobNo+'<div data-toggle="buttons-radio" class="btn-group">';
-																			
+									str +=''+mobNo+'';
+									if(result[i].mobileStatus != null)
+									{
+										str +='<div data-toggle="buttons-radio"> Invalid Number </div>';
+									}
+									else
+									{		
+										str +='<div data-toggle="buttons-radio" class="btn-group">';
 										if(result[i].ctpMobileStatus == 1)
 										{
 											str +='<button class="btn btn-mini  btn-success " id="updateMBtnId'+i+'" type="button" onclick="updateDetails(\'hamletsListId'+i+'\',\'isHamletMatched'+i+'\',\'isCasteMatched'+i+'\',\'isTestedMobile'+i+'\',2,'+result[i].voterId+','+result[i].userid+',\'mobile\','+userId+','+boothId+',\''+date+'\',\'casteListId'+i+'\','+i+','+userType+');" >correct </button>';
@@ -1389,7 +1401,7 @@ function buildCasteWiseVotersList(results,userId,boothId,date,casteId1,webConstI
 											str +='</div>';
 											
 										}
-
+									}
 										//str +='(BY CTP)';
 								}	
 							else{	
