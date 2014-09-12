@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.MobileVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -48,4 +49,8 @@ public interface IMobileService {
 	public ResultStatus getMobileAppLastAuthorisedTime();
 	
 	public ResultStatus populateVoterData();
+	
+	public MobileVO getIvrMobileNumbers(Long scopeId,List<Long> locationIDs,Long fileFormatVal,int maxIndex);
+	 public List<SelectOptionVO> getDistrictsList(Long stateId)	;
+	 public List<SelectOptionVO> getConstituencyList(List<Long> distictIds);
 }

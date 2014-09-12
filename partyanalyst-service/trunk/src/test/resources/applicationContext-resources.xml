@@ -483,6 +483,7 @@
 				<value>com.itgrids.partyanalyst.model.SurveyConstituencyStatus</value>
 				<value>com.itgrids.partyanalyst.model.SurveyConstituencyTemp</value>
 				<value>com.itgrids.partyanalyst.model.ConstituencyTehsil</value>
+				<value>com.itgrids.partyanalyst.model.IvrMobile</value>
 				<value>com.itgrids.partyanalyst.model.DuplicateWrongMobileNumbers</value>
 				
 			</list>
@@ -2521,4 +2522,7 @@
 	<property name="sessionFactory" ref="sessionFactory" />
 </bean>
 		
+<bean id="ivrMobileDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrMobileDAO" lazy-init="true" >
+		<property name="sessionFactory" ref="sessionFactory" />
+</bean>
 </beans>
