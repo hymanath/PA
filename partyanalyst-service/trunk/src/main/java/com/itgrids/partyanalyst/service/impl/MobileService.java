@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.io.BufferedWriter;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -18,6 +19,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TimeZone;
@@ -52,6 +54,7 @@ import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dao.IInfluencingPeoplePositionDAO;
+import com.itgrids.partyanalyst.dao.IIvrMobileDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppPingingDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserAccessDAO;
@@ -85,6 +88,8 @@ import com.itgrids.partyanalyst.dao.IVotingTrendzDAO;
 import com.itgrids.partyanalyst.dao.IVotingTrendzPartiesResultDAO;
 import com.itgrids.partyanalyst.dao.IWardBoothDAO;
 import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
+import com.itgrids.partyanalyst.dao.hibernate.IvrMobileDAO;
+import com.itgrids.partyanalyst.dto.MobileVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -134,6 +139,7 @@ import com.itgrids.partyanalyst.model.WebServiceBaseUrl;
 import com.itgrids.partyanalyst.service.IMobileService;
 import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
+
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -198,7 +204,17 @@ public class MobileService implements IMobileService{
  private IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO;
  private IVoterDataAvailableConstituenciesDAO voterDataAvailableConstituenciesDAO;
  private IVotersAnalysisService votersAnalysisService;
+ private IIvrMobileDAO ivrMobileDAO;
  
+ 
+public IIvrMobileDAO getIvrMobileDAO() {
+	return ivrMobileDAO;
+}
+
+public void setIvrMobileDAO(IIvrMobileDAO ivrMobileDAO) {
+	this.ivrMobileDAO = ivrMobileDAO;
+}
+
 public IVotersAnalysisService getVotersAnalysisService() {
 	return votersAnalysisService;
 }
@@ -3183,5 +3199,114 @@ public List<SelectOptionVO> getConstituencyList()
 		  	  
 		}
 		return resultStatus;
+	}
+	 public List<SelectOptionVO> getDistrictsList(Long stateId)
+	  {
+		  List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
+		  try {
+			List<Object[]> districtsList = districtDAO.getDistrictIdAndNameByState(stateId);
+			if(districtsList != null&& districtsList.size() > 0)
+			{
+				for(Object[] params : districtsList)
+					returnList.add(new SelectOptionVO((Long)params[0],params[1].toString()));
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getDistrictsList(), Exception is -",e);
+		}
+		  return returnList;
+	  }
+	 public List<SelectOptionVO> getConstituencyList(List<Long> distictIds)
+	  {
+		  List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
+		  try {
+			List<Object[]> list = constituencyDAO.getConstituencies(distictIds);
+			if(list != null&& list.size() > 0)
+			{
+				for(Object[] params : list)
+					returnList.add(new SelectOptionVO((Long)params[0],params[1].toString()));
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getDistrictsList(), Exception is -",e);
+		}
+		  return returnList;
+	  }
+	 
+	
+	public MobileVO getIvrMobileNumbers(Long scopeId,List<Long> locationIDs,Long fileFormatVal,int maxIndex)
+	{
+		MobileVO result =new MobileVO();
+		List<MobileVO> resultList = new ArrayList<MobileVO>();
+		try{
+			boolean flag = false;
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			String date = sdf.format(new Date());
+			String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+			String path = IConstants.STATIC_CONTENT_FOLDER_URL+pathSeperator+"mobile_numbers";
+			Random rand = new Random();
+			int x = rand.nextInt(4);
+		    File f1 = null;
+			if(fileFormatVal == 1)
+			 f1 = new File(path + pathSeperator+"_"+date+x+".csv");//x is random number
+			else
+			f1 = new File(path + pathSeperator+"_"+date+x+".txt");	
+			 StringBuilder str = new StringBuilder();
+			 for(Long location :locationIDs)
+			 {
+			 MobileVO vo = new MobileVO();
+			 vo.setId(location);
+			 if(scopeId == 1)
+			 vo.setName(districtDAO.get(location).getDistrictName());
+			 else
+			 vo.setName(constituencyDAO.get(location).getName()); 
+			 List<Long> mobilenos = ivrMobileDAO.getMobilenos(scopeId,location,maxIndex);
+			 if(mobilenos != null && mobilenos.size() > 0)
+			{
+				flag = true;
+				vo.setCount(new Long(mobilenos.size()));
+					for(Long l : mobilenos)
+					{
+						str.append(l.toString());
+						str.append( "\r\n");
+					}
+			}
+			 resultList.add(vo);
+		}
+		
+			try{
+				if(flag == true)
+				{
+					 BufferedWriter outPut1 = new BufferedWriter(new FileWriter(f1));
+					 FileOutputStream fos = new FileOutputStream(path + pathSeperator+date+x+".zip");
+					 ZipOutputStream zos = new ZipOutputStream(fos);
+					 outPut1.write(str.toString());
+					 outPut1.close();
+					 System.gc();
+					 addToZipFile(f1.getAbsolutePath(), zos);
+					 zos.close();
+					 fos.close();
+					result.setResultCode(0);
+					result.setStatus("/mobile_numbers/"+date+x+".zip");
+					result.setList(resultList);
+			}
+				else
+				{
+					
+					result.setStatus("no data");
+					result.setResultCode(1);
+				}
+			 }catch(Exception e)
+			 {
+				 LOG.error("Exception Occured in Zipping Files");
+				 result.setResultCode(2);
+				 result.setStatus("Exception");
+			 }
+		}
+		catch (Exception e) {
+			 e.printStackTrace();
+		  	    LOG.error(" Exception Occured in getIvrMobileNumbers() method, Exception - "+e);
+		  	  	result.setResultCode(2);
+				result.setStatus("Exception");
+		}
+		return result;
 	}
 }
