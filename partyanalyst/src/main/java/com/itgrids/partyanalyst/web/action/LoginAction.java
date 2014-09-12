@@ -732,9 +732,9 @@ public String ajaxCallForLoginPopup(){
 		{
 			String ipAddress = request.getRemoteAddr();
 			boolean result = loginService.checkForUserAccessIPAddress(regVO.getRegistrationID(),ipAddress);
-			
+		/*	
 			if(!result)
-				loginService.sendMailToAdminGroup(regVO,ipAddress);
+				loginService.sendMailToAdminGroup(regVO,ipAddress);*/
 			
 			return result;
 		}else return true;

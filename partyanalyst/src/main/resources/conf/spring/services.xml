@@ -1886,6 +1886,8 @@
      <property name="voterDataAvailableConstituenciesDAO" ref="voterDataAvailableConstituenciesDAO"/>
       <property name="votersAnalysisService" ref="votersAnalysisService"></property>
       <property name="ivrMobileDAO" ref="ivrMobileDAO"></property>
+      <property name="mobileNumbersDAO" ref="mobileNumbersDAO"></property>
+      
       
     </bean>
     
