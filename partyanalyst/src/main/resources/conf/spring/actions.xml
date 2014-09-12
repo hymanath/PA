@@ -1288,6 +1288,7 @@
      <bean id="mobileDataAction" class="com.itgrids.partyanalyst.web.action.MobileDataAction" singleton="false">
       <property name="mobileService" ref="mobileService" />
       <property name="registrationService" ref="registrationService"/>
+      <property name="entitlementsHelper" ref="entitlementsHelper" />
     </bean>
     
     <bean id="messageCenterAction" class="com.itgrids.partyanalyst.web.action.MessageCenterAction" singleton="false">

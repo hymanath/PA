@@ -544,7 +544,10 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),IConstants.PARTY_CADRE_SEARCH)){
 			return "partyCadre";
 		}
-		
+		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.IVR_MOBILE_NUMBERS_RETRIVAL))
+		{
+			return "mobileNumbersRetrivalPage";
+		}
 		statesList = staticDataService.getParticipatedStatesForAnElectionType(Long.valueOf(2));
 		
 		//electionYearsList=staticDataService.getElectionYearsForBooths(1l,2l);

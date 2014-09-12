@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
+
 import java.util.List;
 
 
@@ -14,9 +16,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.EntitlementVO;
+import com.itgrids.partyanalyst.dto.MobileVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.model.Job;
 import com.itgrids.partyanalyst.service.IMobileService;
 import com.itgrids.partyanalyst.service.IRegistrationService;
@@ -24,6 +28,7 @@ import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
+
 
 public class MobileDataAction extends ActionSupport implements ServletRequestAware{
 
@@ -36,13 +41,40 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 	private IMobileService mobileService;
 	private ResultStatus resultStatus;
 	public static final Logger LOG = Logger.getLogger(MobileDataAction.class);
-	private List<SelectOptionVO> constituencyList,userList,superAdminUsersList,pcconstituencyList;
+	private List<SelectOptionVO> constituencyList,userList,superAdminUsersList,pcconstituencyList,districts;
 	private String filePath;
 	private IRegistrationService registrationService;
 	private EntitlementVO allRegisteredUsersData;
 	private Long populateID;
+	private MobileVO mobileVo;
+	private EntitlementsHelper entitlementsHelper;
+	  
 	
+
 	
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
+	public MobileVO getMobileVo() {
+		return mobileVo;
+	}
+
+	public void setMobileVo(MobileVO mobileVo) {
+		this.mobileVo = mobileVo;
+	}
+
+	public List<SelectOptionVO> getDistricts() {
+		return districts;
+	}
+
+	public void setDistricts(List<SelectOptionVO> districts) {
+		this.districts = districts;
+	}
 
 	public List<SelectOptionVO> getPcconstituencyList() {
 		return pcconstituencyList;
@@ -293,5 +325,68 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 		return Action.SUCCESS;
 	}
 	
-
+	
+	public String ivrExecute()
+	{
+		session = request.getSession();
+        RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+        if(user == null)
+    	  return ERROR;
+        if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.IVR_MOBILE_NUMBERS_RETRIVAL))
+			return INPUT;
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.IVR_MOBILE_NUMBERS_RETRIVAL))
+			return ERROR;
+        if(request.getRequestURL().toString().contains("localhost"))
+        	filePath = "/PartyAnalyst/mobileNumbers.txt";
+        else
+        	filePath = "/mobileNumbers.txt";
+      
+        return Action.SUCCESS;
+	}
+	public String getIvrMobileNumbers()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			JSONArray arr = jObj.getJSONArray("locationIds");
+			List<Long> locationIds = new ArrayList<Long>();
+			for(int i=0;i<arr.length();i++)
+				locationIds.add(new Long(arr.get(i).toString()));	
+			Long fileFormatVal = jObj.getLong("fileFormat");
+			mobileVo = mobileService.getIvrMobileNumbers(jObj.getLong("scopeId"),locationIds,fileFormatVal,jObj.getInt("maxIndex"));
+					
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
+	
+	
+	public String getDistrictList()
+	{
+		try{
+		districts = mobileService.getDistrictsList(1l);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getConstituencies()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			JSONArray arr = jObj.getJSONArray("districtIds");
+			List<Long> locationIds = new ArrayList<Long>();
+			for(int i=0;i<arr.length();i++)
+				locationIds.add(new Long(arr.get(i).toString()));
+				constituencyList = mobileService.getConstituencyList(locationIds);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
 }

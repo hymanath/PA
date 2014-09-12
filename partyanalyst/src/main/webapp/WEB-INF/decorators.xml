@@ -346,6 +346,8 @@
 			 <pattern>/duplicateMobileNumbers*</pattern>
 			 <pattern>/surveyConstituencieOverview*</pattern>
 			  <pattern>/candidateAnalysisAction*</pattern>
+			  <pattern>/ivrMobileAction*</pattern>
+			  
             <!--  <pattern>/dashBoardAction*</pattern> -->
        </decorator>
        
