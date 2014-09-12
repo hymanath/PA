@@ -1885,6 +1885,8 @@
      <property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO"/>
      <property name="voterDataAvailableConstituenciesDAO" ref="voterDataAvailableConstituenciesDAO"/>
       <property name="votersAnalysisService" ref="votersAnalysisService"></property>
+      <property name="ivrMobileDAO" ref="ivrMobileDAO"></property>
+      
     </bean>
     
      <bean name="voiceSmsService" class="com.itgrids.partyanalyst.service.impl.VoiceSmsService">
