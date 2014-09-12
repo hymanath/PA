@@ -27,18 +27,19 @@ public class MobileNumbers extends BaseModel implements Serializable{
 	
 
 	private static final long serialVersionUID = -7139152982408460524L;
-	
 	private Long mobileNumberId;
 	private String mobileNumber;
 	private Long mobileSourceTypeId;
 	private Long voterId;
 	private Long constituencyId;
 	private Long boothId;
-	
 	private MobileSourceType mobileSourceType;
 	private Voter voter;
 	private Constituency constituency;
 	private Booth booth;
+	private Panchayat panchayat;
+	private Tehsil tehsil;
+	private District district;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -136,76 +137,38 @@ public class MobileNumbers extends BaseModel implements Serializable{
 	}
 	
 	
-	
-	
-	/*private Long mobile;
-	private Long slnoinpart;
-	private String idcardNO;
-	private Long acId;
-	private Long partNo;
-	private Long distNo;
-	
-	
-	public MobileNumbers()
-	{
-		
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "district_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public District getDistrict() {
+		return district;
 	}
-	public MobileNumbers(Long mobile,Long slnoinpart,String idcardNO,Long acId,Long partNo,Long distNo)
-	{
-	this.mobile = mobile;
-	this.slnoinpart =slnoinpart;
-	this.idcardNO =idcardNO;
-	this.acId =acId;
-	this.partNo = partNo;
-	this.distNo = distNo;
-	}
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "IDCARD_NO", unique = true, nullable = false)
-	public String getIdcardNO() {
-		return idcardNO;
-	}
-	public void setIdcardNO(String idcardNO) {
-		this.idcardNO = idcardNO;
-	}
-	@Column(name = "mobile")
-	public Long getMobile() {
-		return mobile;
-	}
-	public void setMobile(Long mobile) {
-		this.mobile = mobile;
-	}
-	@Column(name = "slnoinpart")
-	public Long getSlnoinpart() {
-		return slnoinpart;
-	}
-	public void setSlnoinpart(Long slnoinpart) {
-		this.slnoinpart = slnoinpart;
+
+	public void setDistrict(District district) {
+		this.district = district;
 	}
 	
-	@Column(name = "AC_ID")
-	public Long getAcId() {
-		return acId;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "panchayat_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Panchayat getPanchayat() {
+		return panchayat;
 	}
-	public void setAcId(Long acId) {
-		this.acId = acId;
+
+	public void setPanchayat(Panchayat panchayat) {
+		this.panchayat = panchayat;
 	}
-	@Column(name = "PART_NO")
-	public Long getPartNo() {
-		return partNo;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "tehsil_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Tehsil getTehsil() {
+		return tehsil;
 	}
-	
-	public void setPartNo(Long partNo) {
-		this.partNo = partNo;
+	public void setTehsil(Tehsil tehsil) {
+		this.tehsil = tehsil;
 	}
-	@Column(name = "DIST_NO")
-	public Long getDistNo() {
-		return distNo;
-	}
-	public void setDistNo(Long distNo) {
-		this.distNo = distNo;
-	}
-	*/
-	
 
 }
