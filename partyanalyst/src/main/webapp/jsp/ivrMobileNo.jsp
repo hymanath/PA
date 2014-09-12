@@ -49,15 +49,13 @@ $(document).ready(function() {
 	</select>
 	</div>
 
-	</div>
-	<div style="margin-top: 20px;" class="row ">
-	<div class="span4">
-	<label>Enter No.of mobileNos From each location</label>
-    <input type="text" class="input-block-level" id="maxIndex">
+	<div class="span2">
+	<label>Enter No.of Mnos</label>
+    <input type="text" class="input-block-level mytooltip" data-toggle="tooltip" data-title="Enter No of Mobile no.s from each location" id="maxIndex">
 	</input>
 </div>
 
-<div class="span4">
+<div class="span2">
 	<label>Total</label>
     <input type="text" class="input-block-level" id="totalSize">
 	</input>
@@ -311,8 +309,12 @@ calculateMaxIndex();
 });
 </script>
 <script>
+
 correspondingCall(1);
 showHide();
+</script>
+<script>
+$(".mytooltip").tooltip();
 </script>
 </body>
 </html>
