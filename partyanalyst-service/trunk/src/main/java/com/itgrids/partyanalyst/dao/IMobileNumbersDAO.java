@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -17,4 +18,6 @@ public interface IMobileNumbersDAO extends GenericDao<MobileNumbers, Long>{
 	public Integer updateMobileNo(String mobileNo,Long userVoterDetailsId);
 	
 	public List<Object[]> getMobileNumberDetailsByBoothId(Long boothId,Long constituencyId);
+	public Set<String> getVotersMobilenos(Long scopeId,Long location,int maxIndex);
+	public Set<String> getIvrMobilenosBasedOnPriority(Long scopeId,Long location,int maxIndex,String priority) ;
 }

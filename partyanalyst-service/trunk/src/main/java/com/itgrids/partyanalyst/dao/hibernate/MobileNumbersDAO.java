@@ -1,12 +1,15 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IMobileNumbersDAO;
 import com.itgrids.partyanalyst.model.MobileNumbers;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class MobileNumbersDAO extends GenericDaoHibernate<MobileNumbers, Long> implements IMobileNumbersDAO{
 
@@ -59,5 +62,58 @@ public class MobileNumbersDAO extends GenericDaoHibernate<MobileNumbers, Long> i
 		//query.setParameter("constituencyId", constituencyId);
 		return query.list();
 	}
+	
+	
+	
+	
+	public Set<String> getVotersMobilenos(Long scopeId,Long location,int maxIndex) 
+	{
+		StringBuilder str = new StringBuilder(); 
+		str.append("select distinct model.mobileNumber from MobileNumbers model where");
+		if(scopeId == 1)
+		 str.append(" model.constituency.district.districtId =:location")	;
+		 else
+		 str.append(" model.constituency.constituencyId =:location");
+		 str.append(" and model.mobileNumber is not null and length(model.mobileNumber) = 10 and model.mobileNumber <> '9999999999' and model.voter.voterId is not null order by rand()");
+		 Query query = getSession().createQuery(str.toString());
+		 query.setParameter("location", location);
+		 if(maxIndex > 0)
+		 {
+			 query.setMaxResults(maxIndex);	 
+		 }
+		 return new HashSet(query.list());
+		 
+	}
+	
+	
+	public Set<String> getIvrMobilenosBasedOnPriority(Long scopeId,Long location,int maxIndex,String priority) 
+	{
+		StringBuilder str = new StringBuilder(); 
+		str.append("select distinct model.mobileNumber from MobileNumbers model where");
+		 if(scopeId == 1)
+		 str.append(" model.constituency.district.districtId =:location")	;
+		 else
+		 str.append(" model.constituency.constituencyId =:location");
+		 str.append(" and model.mobileNumber is not null and length(model.mobileNumber) = 10 and model.mobileNumber <> '9999999999' and model.voter.voterId is null");
+		 
+		 if(priority.equalsIgnoreCase(IConstants.PANCHAYAT))
+		  str.append(" and model.panchayat.panchayatId is not null order by rand()");
+		 else if(priority.equalsIgnoreCase(IConstants.TEHSIL))
+			 str.append(" and model.panchayat.panchayatId is null and model.tehsil.tehsilId is not null order by rand()"); 
+		 else if(priority.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			 str.append(" and model.panchayat.panchayatId is null and model.tehsil.tehsilId is null and constituency.constituencyId is not null order by rand()"); 
+		 
+		 Query query = getSession().createQuery(str.toString());
+		 query.setParameter("location", location);
+		 
+		 if(maxIndex > 0)
+		 {
+			 query.setMaxResults(maxIndex);	 
+		 }
+		 return new HashSet(query.list());
+		 
+	}
+	
+	
 			 
 }

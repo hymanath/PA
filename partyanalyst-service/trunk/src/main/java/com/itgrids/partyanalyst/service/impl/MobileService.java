@@ -61,6 +61,7 @@ import com.itgrids.partyanalyst.dao.IMobileAppUserAccessDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserAccessKeyDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserProfileDAO;
+import com.itgrids.partyanalyst.dao.IMobileNumbersDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
@@ -205,8 +206,17 @@ public class MobileService implements IMobileService{
  private IVoterDataAvailableConstituenciesDAO voterDataAvailableConstituenciesDAO;
  private IVotersAnalysisService votersAnalysisService;
  private IIvrMobileDAO ivrMobileDAO;
+ private IMobileNumbersDAO mobileNumbersDAO;
  
  
+public IMobileNumbersDAO getMobileNumbersDAO() {
+	return mobileNumbersDAO;
+}
+
+public void setMobileNumbersDAO(IMobileNumbersDAO mobileNumbersDAO) {
+	this.mobileNumbersDAO = mobileNumbersDAO;
+}
+
 public IIvrMobileDAO getIvrMobileDAO() {
 	return ivrMobileDAO;
 }
@@ -3258,12 +3268,75 @@ public List<SelectOptionVO> getConstituencyList()
 			 vo.setName(districtDAO.get(location).getDistrictName());
 			 else
 			 vo.setName(constituencyDAO.get(location).getName()); 
-			 List<Long> mobilenos = ivrMobileDAO.getMobilenos(scopeId,location,maxIndex);
-			 if(mobilenos != null && mobilenos.size() > 0)
+			// List<Long> mobilenos = ivrMobileDAO.getMobilenos(scopeId,location,maxIndex);
+			 Set<String> resultNumbers = new HashSet<String>();
+			 /* get mobile no for each location  */
+			 int tempMaxIndex = 0;
+			 Set<String> mobilenos = mobileNumbersDAO.getVotersMobilenos(scopeId,location,maxIndex);
+				 if((mobilenos != null && mobilenos.size() > 0))
+					 resultNumbers.addAll(mobilenos);
+				 
+					 if(resultNumbers.size() < maxIndex)
+					 tempMaxIndex = maxIndex -  resultNumbers.size();
+					 
+					 else if(resultNumbers.size() ==  maxIndex)
+					 tempMaxIndex = 0; 
+					 
+					 else
+					 tempMaxIndex = maxIndex;
+				 
+			 /* IVR Panchayat Numbers */
+			 if(tempMaxIndex > 0)
+			 {
+			     Set<String> panchayatMNos = mobileNumbersDAO.getIvrMobilenosBasedOnPriority(scopeId,location,tempMaxIndex,IConstants.PANCHAYAT);
+			     if((panchayatMNos != null && panchayatMNos.size() > 0))
+			          resultNumbers.addAll(panchayatMNos);
+			     
+				      if(resultNumbers.size() < maxIndex)
+					  tempMaxIndex = maxIndex -  resultNumbers.size(); 
+				      else if(resultNumbers.size() ==  maxIndex)
+							 tempMaxIndex = 0; 
+				      
+			    
+			  }
+			 
+			 
+			 /* IVR Tehsil Numbers */
+			  if(tempMaxIndex > 0)
+			 {
+			     Set<String> tehsilMNos = mobileNumbersDAO.getIvrMobilenosBasedOnPriority(scopeId,location,tempMaxIndex,IConstants.TEHSIL);
+			     if((tehsilMNos != null && tehsilMNos.size() > 0))
+			          resultNumbers.addAll(tehsilMNos);
+			     
+				      if(resultNumbers.size() < maxIndex)
+					  tempMaxIndex = maxIndex -  resultNumbers.size(); 
+				      else if(resultNumbers.size() ==  maxIndex)
+							 tempMaxIndex = 0; 
+				      
+			    
+			  }
+			 
+			 /* IVR Constituency Numbers */
+			  if(tempMaxIndex > 0)
+			 {
+			     Set<String> constituencyMNos = mobileNumbersDAO.getIvrMobilenosBasedOnPriority(scopeId,location,tempMaxIndex,IConstants.CONSTITUENCY);
+			     if((constituencyMNos != null && constituencyMNos.size() > 0))
+			          resultNumbers.addAll(constituencyMNos);
+			     
+				      if(resultNumbers.size() < maxIndex)
+					  tempMaxIndex = maxIndex -  resultNumbers.size(); 
+				      else if(resultNumbers.size() ==  maxIndex)
+							 tempMaxIndex = 0; 
+				      
+			    
+			  }
+			 
+		    if(resultNumbers != null && resultNumbers.size() > 0)
 			{
-				flag = true;
-				vo.setCount(new Long(mobilenos.size()));
-					for(Long l : mobilenos)
+				  
+				    flag = true;
+				    vo.setCount(new Long(mobilenos.size()));
+					for(String l : resultNumbers)
 					{
 						str.append(l.toString());
 						str.append( "\r\n");
