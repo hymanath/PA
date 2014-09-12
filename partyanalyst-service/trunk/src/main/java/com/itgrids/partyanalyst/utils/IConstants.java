@@ -299,7 +299,7 @@ public interface IConstants {
     public static final String WEB_MONITORING_LEAD = "WEB_MONITORING_LEAD";
     public final static String NEW_LIVE_RESULTS = "NEW_LIVE_RESULTS"; 
     public final static String PARTY_CADRE_SEARCH = "PARTY_CADRE_SEARCH"; 
-    
+    public final static String IVR_MOBILE_NUMBERS_RETRIVAL = "IVR_MOBILE_NUMBERS_RETRIVAL"; 
     public static final String NULL_POINTER_EXCEPTION = "NULL_POINTER_EXCEPTION";
     public static final String ARRAY_INDEX_OUT_OF_BOUNDS_EXCEPTION = "ARRAY_INDEX_OUT_OF_BOUNDS_EXCEPTION";
     public static final String NUMBER_FORMAT_EXCEPTION = "NUMBER_FORMAT_EXCEPTION";
