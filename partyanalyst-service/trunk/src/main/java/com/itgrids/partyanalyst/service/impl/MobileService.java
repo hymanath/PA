@@ -3244,8 +3244,12 @@ public List<SelectOptionVO> getConstituencyList()
 	
 	public MobileVO getIvrMobileNumbers(Long scopeId,List<Long> locationIDs,Long fileFormatVal,int maxIndex)
 	{
+		
 		MobileVO result =new MobileVO();
 		List<MobileVO> resultList = new ArrayList<MobileVO>();
+		String limit = "";
+		if(maxIndex == 0)
+			limit  = "ALL";
 		try{
 			boolean flag = false;
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -3286,7 +3290,7 @@ public List<SelectOptionVO> getConstituencyList()
 					 tempMaxIndex = maxIndex;
 				 
 			 /* IVR Panchayat Numbers */
-			 if(tempMaxIndex > 0)
+			 if(tempMaxIndex > 0 || limit.equalsIgnoreCase("ALL"))
 			 {
 			     Set<String> panchayatMNos = mobileNumbersDAO.getIvrMobilenosBasedOnPriority(scopeId,location,tempMaxIndex,IConstants.PANCHAYAT);
 			     if((panchayatMNos != null && panchayatMNos.size() > 0))
@@ -3302,7 +3306,7 @@ public List<SelectOptionVO> getConstituencyList()
 			 
 			 
 			 /* IVR Tehsil Numbers */
-			  if(tempMaxIndex > 0)
+			  if(tempMaxIndex > 0 || limit.equalsIgnoreCase("ALL"))
 			 {
 			     Set<String> tehsilMNos = mobileNumbersDAO.getIvrMobilenosBasedOnPriority(scopeId,location,tempMaxIndex,IConstants.TEHSIL);
 			     if((tehsilMNos != null && tehsilMNos.size() > 0))
@@ -3317,7 +3321,7 @@ public List<SelectOptionVO> getConstituencyList()
 			  }
 			 
 			 /* IVR Constituency Numbers */
-			  if(tempMaxIndex > 0)
+			  if(tempMaxIndex > 0 || limit.equalsIgnoreCase("ALL"))
 			 {
 			     Set<String> constituencyMNos = mobileNumbersDAO.getIvrMobilenosBasedOnPriority(scopeId,location,tempMaxIndex,IConstants.CONSTITUENCY);
 			     if((constituencyMNos != null && constituencyMNos.size() > 0))
@@ -3335,7 +3339,7 @@ public List<SelectOptionVO> getConstituencyList()
 			{
 				  
 				    flag = true;
-				    vo.setCount(new Long(mobilenos.size()));
+				    vo.setCount(new Long(resultNumbers.size()));
 					for(String l : resultNumbers)
 					{
 						str.append(l.toString());
