@@ -3407,12 +3407,13 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					e.printStackTrace();
 				}
 			*/
-				List<Object[]> existingMobileNumbersList   =  mobileNumbersDAO.getMobileNumberDetailsByBoothId(boothId,0L);
+				List<Object[]> existingMobileNumbersList   =  mobileNumbersDAO.getMobileNumberDetailsByBoothId(boothId);
 				
 				Map<Long,List<String>> ceoAndhraMobileNumbersMap = new HashMap<Long, List<String>>();
 				Map<Long,List<String>> smsSurveyMobileNumbersMap = new HashMap<Long, List<String>>();
 				Map<Long,List<String>> dataSurveyMobileNumbersMap = new HashMap<Long, List<String>>();
 				Map<Long,List<String>> ctpMobileNumbersMap = new HashMap<Long, List<String>>();
+				List<String> mobileNosList = new ArrayList<String>(0);
 				
 				if(existingMobileNumbersList != null && existingMobileNumbersList.size()>0)
 				{
@@ -3422,6 +3423,8 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 						
 						if((Long) param[0] == 1L)
 						{	
+							mobileNosList.add(param[2].toString());
+							
 							if(ceoAndhraMobileNumbersMap.get((Long) param[1]) == null)
 							{
 								mobileNumbersList = new ArrayList<String>();
@@ -3487,20 +3490,32 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					}
 				}
 				
-				List<Object[]> inValidMobileNoList = duplicateWrongMobileNumbersDAO.getInvalidMobileNumbers();
+				List<String> mobileNumbers = surveyDetailsInfoDAO.getVotersMobileNumbersByBoothId(boothId,surveyUserids);
+				mobileNosList.addAll(mobileNumbers);
+				List<Object[]> inValidMobileNoList = null ;
+				if(mobileNosList != null && mobileNosList.size() >0)
+				{
+					inValidMobileNoList = duplicateWrongMobileNumbersDAO.getIsExistMobileDetails(mobileNosList);
+				}
+				
 				Map<String,String> invalidMobilesMap = new HashMap<String, String>();
 				
-				if(inValidMobileNoList != null && inValidMobileNoList.size()>0)
-				{
-					for (Object[] parms : inValidMobileNoList) {
-						
-						if(invalidMobilesMap.get(parms[0].toString()) == null)
-						{
-							invalidMobilesMap.put(parms[0].toString(), parms[1].toString());
+					if(inValidMobileNoList != null && inValidMobileNoList.size() > 0)
+					{
+						for (Object[] parms : inValidMobileNoList)
+						{			
+							try{
+									if(parms[0] != null && parms[0].toString().trim().length() > 0 && invalidMobilesMap.get(parms[0].toString()) == null)
+									{
+										invalidMobilesMap.put(parms[0].toString(), parms[1].toString());
+									}
+							}catch(Exception e){
+								//e.printStackTrace();
+								LOG.error("invalid mobile numbers list ",e);
+							}
 						}
 					}
-				}
-					List<Object[]> votersLsit = surveyDetailsInfoDAO.getVotersDetailsByBoothId(boothId,surveyUserids,date,casteStateId);
+					
 					List<Object[]> verifiedList = null;
 					Map<Long,GenericVO> dcWmMap = null;
 					if(userType != null && userType.longValue() == 1l)
@@ -3554,7 +3569,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					Map<Long,String> surveyMobileMatchedmap = new HashMap<Long,String>();
 					Map<Long,String> dataMobileMatchedmap = new HashMap<Long,String>();
 					
-			
+					
 					if(verifiedList != null && verifiedList.size()>0){
 						for (Object[] param : verifiedList) {
 							
@@ -3703,8 +3718,9 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 						
 						
 					}
-					
+
 					List<SurveyReportVO> resultList = new ArrayList<SurveyReportVO>();
+					List<Object[]> votersLsit = surveyDetailsInfoDAO.getVotersDetailsByBoothId(boothId,surveyUserids,date,casteStateId);
 					
 					if(votersLsit != null && votersLsit.size()>0){
 						
@@ -3726,12 +3742,12 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 							{
 								reportVO.setDataMobileNoList(dataSurveyMobileNumbersMap.get(surveyDetailsInfo.getVoter().getVoterId()));
 							}
-							if(ctpMobileNumbersMap != null && ctpMobileNumbersMap.size()>0 && ctpMobileNumbersMap.get(surveyDetailsInfo.getVoter().getVoterId()) != null)
+						/*	if(ctpMobileNumbersMap != null && ctpMobileNumbersMap.size()>0 && ctpMobileNumbersMap.get(surveyDetailsInfo.getVoter().getVoterId()) != null)
 							{
 								reportVO.setCtpMobileNoList(ctpMobileNumbersMap.get(surveyDetailsInfo.getVoter().getVoterId()));
 							}
-							
-							reportVO.setVoterIDCardNo(surveyDetailsInfo.getVoter().getVoterIDCardNo());
+						*/	
+						//	reportVO.setVoterIDCardNo(surveyDetailsInfo.getVoter().getVoterIDCardNo());
 
 							String mobileNumber = surveyDetailsInfo.getMobileNumber() != null ? surveyDetailsInfo.getMobileNumber():"";
 							
@@ -3762,11 +3778,11 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 									reportVO.setHamletName(surveyDetailsInfo.getWardId() != null ? constituencyDAO.get(surveyDetailsInfo.getWardId()).getName():"");
 							}
 							
-							reportVO.setLocalArea(surveyDetailsInfo.getLocalArea() != null ? surveyDetailsInfo.getLocalArea():"");
+							//reportVO.setLocalArea(surveyDetailsInfo.getLocalArea() != null ? surveyDetailsInfo.getLocalArea():"");
 							reportVO.setUserid(surveyDetailsInfo.getSurveyUser().getSurveyUserId() != null ? surveyDetailsInfo.getSurveyUser().getSurveyUserId():0L);
 							reportVO.setVoterId(surveyDetailsInfo.getVoter() != null ? surveyDetailsInfo.getVoter().getVoterId():0L);
-							reportVO.setCadre(surveyDetailsInfo.getIsCadre() != null ? surveyDetailsInfo.getIsCadre():"");
-							reportVO.setInfluencePeople(surveyDetailsInfo.getIsInfluencingPeople() != null ? surveyDetailsInfo.getIsInfluencingPeople() :"");
+							//reportVO.setCadre(surveyDetailsInfo.getIsCadre() != null ? surveyDetailsInfo.getIsCadre():"");
+							//reportVO.setInfluencePeople(surveyDetailsInfo.getIsInfluencingPeople() != null ? surveyDetailsInfo.getIsInfluencingPeople() :"");
 							reportVO.setUserName(surveyDetailsInfo.getVoter() != null ? surveyDetailsInfo.getVoter().getName():"");
 							reportVO.setPartNo(surveyDetailsInfo.getVoter() != null ? surveyDetailsInfo.getVoter().getHouseNo():"");
 							reportVO.setVoterName(surveyDetailsInfo.getVoter() != null ? surveyDetailsInfo.getVoter().getRelativeName():"");
@@ -3926,7 +3942,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 					}	
 					
 				//}
-						
+					
 					List<Object[]> actualVotersInBooth = boothPublicationVoterDAO.getCTPVoterDetailsByBooth(boothId);
 					
 					if(casteStateId == null || casteStateId == 0)
@@ -3973,7 +3989,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 						finalVO.setSubList(resultList);
 						
 					}
-					
+
 				List<GenericVO> casteListOfSamples = new ArrayList<GenericVO>();
 				List<Object[]> casteInfo = surveyDetailsInfoDAO.getCasteWiseCountInBooth(boothId,surveyUserids);	
 				if(casteInfo != null && casteInfo.size()>0){
@@ -4008,7 +4024,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				
 				
 				SurveyReportVO allCastesVO = new SurveyReportVO();
-				
+
 				castesList = casteStateDAO.getAllCasteDetailsForVoters(1L); // for AP state
 				stateCasteList = new ArrayList<GenericVO>();
 				
@@ -4033,8 +4049,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				
 				retultList.add(finalVO);
 				retultList.add(allCastesVO);
-				
-				
+
 			} catch (Exception e) {
 				retultList = null;
 				LOG.error("Exception raised in getSurveyVotersList() service in SurveyDataDetailsService", e);
@@ -5639,53 +5654,119 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 				
 				  transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 						protected void doInTransactionWithoutResult(TransactionStatus arg0) {
-							
-							/*SimpleDateFormat originalFormat = new SimpleDateFormat("dd/MM/yyyy");
-							SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd" );
-							Date strtDt = originalFormat.parse(startDate);
-							Date endDt = originalFormat.parse(endDate);
-							*/
-							//Date convertedstrdate = targetFormat.parse(targetFormat.format(strtDt));			
-							//Date convertedenddate = targetFormat.parse(targetFormat.format(endDt));
-							
+														
 							Date convertedstrdate = null;			
 							Date convertedenddate = null;
 							
 							List<Object[]> mobileNumbersList = surveyDetailsInfoDAO.getDuplicateMobileNumbersByDates(convertedstrdate,convertedenddate,5L); // consider morethan 5 times duplicate mobile numbers 
 							
+							List<String> duplicateMobileNoList = new ArrayList<String>();
+							Map<String,Long> duplicateMobileMap = new HashMap<String, Long>();
+							
 							if(mobileNumbersList != null && mobileNumbersList.size()>0)
 							{
-								for(Object[] mobileNumberDtls:mobileNumbersList)
+								Long count = 0L;
+								
+								for(Object[] mobileNumberDtls1:mobileNumbersList)
 								{
-									if(!mobileNumberDtls[1].toString().trim().equalsIgnoreCase(""))
+									count = count+1;
+									
+									duplicateMobileNoList.add( mobileNumberDtls1[0].toString());
+									
+									if(count % 1000 == 0 || count.longValue() == Long.valueOf(String.valueOf(mobileNumbersList.size() - 1 )))
 									{
-										Long count = duplicateWrongMobileNumbersDAO.getIsExistMobileDetails(mobileNumberDtls[0].toString());
-										if(count == null || count.longValue() == 0L)
+										if(duplicateMobileNoList != null && duplicateMobileNoList.size()>0)
 										{
-											DuplicateWrongMobileNumbers duplicateWrongMobileNumbers = new DuplicateWrongMobileNumbers();
-											duplicateWrongMobileNumbers.setMobileNo(mobileNumberDtls[0].toString());
-											duplicateWrongMobileNumbers.setMobileType("duplicate");
-											duplicateWrongMobileNumbersDAO.save(duplicateWrongMobileNumbers);
+											List<Object[]> existingList = duplicateWrongMobileNumbersDAO.getIsExistMobileDetails(duplicateMobileNoList);
+											
+											if(existingList != null && existingList.size()>0)
+											{
+												for (Object[] mobileNumber : existingList) 
+												{
+													if(duplicateMobileMap.get(mobileNumber[0].toString()) == null)
+													{
+														duplicateMobileMap.put(mobileNumber[0].toString(), (Long) mobileNumber[1]);
+													}
+												}
+											}
 										}
 										
+										
+										if(mobileNumbersList != null && mobileNumbersList.size()>0)
+										{
+											for(Object[] mobileNumberDtls:mobileNumbersList)
+											{
+												if(!mobileNumberDtls[0].toString().trim().equalsIgnoreCase(""))
+												{										
+													if(duplicateMobileMap.get(mobileNumberDtls[0].toString()) == null )
+													{
+														DuplicateWrongMobileNumbers duplicateWrongMobileNumbers = new DuplicateWrongMobileNumbers();
+														duplicateWrongMobileNumbers.setMobileNo(mobileNumberDtls[0].toString());
+														duplicateWrongMobileNumbers.setMobileType("1");
+														duplicateWrongMobileNumbersDAO.save(duplicateWrongMobileNumbers);
+													}
+													
+												}
+											}
+										}
+										
+										duplicateMobileNoList.clear();
 									}
 								}
 							}
 							
 							
+							
 							List<String> invalidMobileNumbersList = surveyCallStatusDAO.getInvalidMobileDetailsInCTP();
+							
+							List<String> invalidMobileNoList = new ArrayList<String>();
+							Map<String,Long> invalidMobileMap = new HashMap<String, Long>();
+							
+							
+							if(invalidMobileNumbersList != null && invalidMobileNumbersList.size()>0)
+							{
+								Long count = 0L;
+								for(String mobileNumber1:invalidMobileNumbersList)
+								{
+									count = count+1;
+									invalidMobileNoList.add(mobileNumber1);
 									
-							for(String mobileNumber:invalidMobileNumbersList)
-							{	
-									Long count = duplicateWrongMobileNumbersDAO.getIsExistMobileDetails(mobileNumber);
-									if(count != null && count.longValue() == 0L)
+									if(count % 1000 == 0 || count.longValue() == Long.valueOf(String.valueOf(invalidMobileNumbersList.size() - 1 )))  // per every thousand records 
 									{
-										DuplicateWrongMobileNumbers duplicateWrongMobileNumbers = new DuplicateWrongMobileNumbers();
-										duplicateWrongMobileNumbers.setMobileNo(mobileNumber);
-										duplicateWrongMobileNumbers.setMobileType("invalid");
-										duplicateWrongMobileNumbersDAO.save(duplicateWrongMobileNumbers);
+										if(invalidMobileNoList != null && invalidMobileNoList.size()>0)
+										{
+											List<Object[]> existingList = duplicateWrongMobileNumbersDAO.getIsExistMobileDetails(invalidMobileNoList);
+											
+											if(existingList != null && existingList.size()>0)
+											{
+												for (Object[] mobileNumber : existingList) 
+												{
+													if(invalidMobileMap.get(mobileNumber[0].toString()) == null)
+													{
+														invalidMobileMap.put(mobileNumber[0].toString(), (Long) mobileNumber[1]);
+													}
+												}
+											}
+										}
+										
+										for(String mobileNumber:invalidMobileNumbersList)
+										{	
+												
+												if(mobileNumber != null && invalidMobileMap.get(mobileNumber) == null)
+												{
+													DuplicateWrongMobileNumbers duplicateWrongMobileNumbers = new DuplicateWrongMobileNumbers();
+													duplicateWrongMobileNumbers.setMobileNo(mobileNumber);
+													duplicateWrongMobileNumbers.setMobileType("invalid");
+													duplicateWrongMobileNumbersDAO.save(duplicateWrongMobileNumbers);
+												}
+										}
+										
+										invalidMobileNoList.clear();
 									}
+								}
 							}
+							
+							
 						}
 				  });
 				  status = "success";
