@@ -14,17 +14,17 @@ public class DuplicateWrongMobileNumbersDAO extends GenericDaoHibernate<Duplicat
 		super(DuplicateWrongMobileNumbers.class);
 	}
 	
-	public Long getIsExistMobileDetails(String mobileNo)
+	public List<Object[]> getIsExistMobileDetails(List<String> mobileNosList)
 	{
-		Query query = getSession().createQuery(" select count(model.mobileNo) from DuplicateWrongMobileNumbers model where model.mobileNo =:mobileNo ");		
-		query.setParameter("mobileNo", mobileNo);
+		Query query = getSession().createQuery(" select distinct model.mobileNo,count(model.mobileNo) from DuplicateWrongMobileNumbers model where model.mobileNo in(:mobileNosList) and  group by model.mobileNo");		
+		query.setParameterList("mobileNosList", mobileNosList);
 		
-		return (Long) query.uniqueResult();
+		return query.list();
 	}
 	
 	public List<Object[]> getInvalidMobileNumbers()
 	{
-		Query query = getSession().createQuery(" select distinct model.mobileNo, model.mobileType from DuplicateWrongMobileNumbers model ");
+		Query query = getSession().createQuery(" select distinct model.mobileNo, model.mobileType from DuplicateWrongMobileNumbers model where  model.mobileNo is not null  ");
 		return  query.list();
 	}
 }

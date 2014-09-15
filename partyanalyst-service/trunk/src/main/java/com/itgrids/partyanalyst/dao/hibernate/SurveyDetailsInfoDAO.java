@@ -2440,4 +2440,20 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		return query.list();
 		
 	}
+	
+	public List<String> getVotersMobileNumbersByBoothId(Long boothId, List<Long> surveyUserids)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		
+		queryStr.append(" select distinct SDI.mobileNumber from SurveyDetailsInfo SDI  ");
+		
+		queryStr.append(" where SDI.surveyUser.surveyUserId in (:surveyUserids) and SDI.boothId = :boothId ");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		query.setParameterList("surveyUserids", surveyUserids);
+		query.setParameter("boothId", boothId);
+	
+		return query.list();
+	}
 }
