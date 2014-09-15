@@ -2420,11 +2420,11 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 	{
 		StringBuilder queryStr = new StringBuilder();
 		
-		queryStr.append(" select SDI.mobileNumber, count(SDI.mobileNumber)  from SurveyDetailsInfo SDI  ");
+		queryStr.append(" select distinct SDI.mobileNumber, count(SDI.mobileNumber)  from SurveyDetailsInfo SDI  ");
 		
 		if(startDate != null && endDate != null )
 		{
-			queryStr.append(" where date(SDI.date) >= :startDate and date(SDI.date) <= :endDate ");
+			queryStr.append(" where date(SDI.date) >= :startDate and date(SDI.date) <= :endDate and ( SDI.mobileNumber is not null and SDI.mobileNumber !='' ) ");
 		}
 					
 		queryStr.append(" group by SDI.mobileNumber having  count(SDI.mobileNumber) >"+frequencyCount+" ");

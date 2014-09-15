@@ -5670,10 +5670,10 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 								for(Object[] mobileNumberDtls1:mobileNumbersList)
 								{
 									count = count+1;
+									if(mobileNumberDtls1[0] != null && mobileNumberDtls1[0].toString().trim().length()>0)
+										duplicateMobileNoList.add( mobileNumberDtls1[0].toString());
 									
-									duplicateMobileNoList.add( mobileNumberDtls1[0].toString());
-									
-									if(count % 1000 == 0 || count.longValue() == Long.valueOf(String.valueOf(mobileNumbersList.size() - 1 )))
+									if(count % 2000 == 0 || count.longValue() == Long.valueOf(String.valueOf(mobileNumbersList.size() - 1 )))
 									{
 										if(duplicateMobileNoList != null && duplicateMobileNoList.size()>0)
 										{
@@ -5696,12 +5696,12 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 										{
 											for(Object[] mobileNumberDtls:mobileNumbersList)
 											{
-												if(!mobileNumberDtls[0].toString().trim().equalsIgnoreCase(""))
+												if(mobileNumberDtls[0] != null && !mobileNumberDtls[0].toString().trim().equalsIgnoreCase("") && mobileNumberDtls[0].toString().length() >= 9 )
 												{										
-													if(duplicateMobileMap.get(mobileNumberDtls[0].toString()) == null )
+													if(duplicateMobileMap.get(mobileNumberDtls[0].toString().trim()) == null )
 													{
 														DuplicateWrongMobileNumbers duplicateWrongMobileNumbers = new DuplicateWrongMobileNumbers();
-														duplicateWrongMobileNumbers.setMobileNo(mobileNumberDtls[0].toString());
+														duplicateWrongMobileNumbers.setMobileNo(mobileNumberDtls[0].toString().trim());
 														duplicateWrongMobileNumbers.setMobileType("1");
 														duplicateWrongMobileNumbersDAO.save(duplicateWrongMobileNumbers);
 													}
@@ -5729,9 +5729,10 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 								for(String mobileNumber1:invalidMobileNumbersList)
 								{
 									count = count+1;
-									invalidMobileNoList.add(mobileNumber1);
+									if(mobileNumber1 != null && mobileNumber1.trim().length()>0)
+										invalidMobileNoList.add(mobileNumber1);
 									
-									if(count % 1000 == 0 || count.longValue() == Long.valueOf(String.valueOf(invalidMobileNumbersList.size() - 1 )))  // per every thousand records 
+									if(count % 2000 == 0 || count.longValue() == Long.valueOf(String.valueOf(invalidMobileNumbersList.size() - 1 )))  // per every thousand records 
 									{
 										if(invalidMobileNoList != null && invalidMobileNoList.size()>0)
 										{
@@ -5752,11 +5753,11 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 										for(String mobileNumber:invalidMobileNumbersList)
 										{	
 												
-												if(mobileNumber != null && invalidMobileMap.get(mobileNumber) == null)
+												if(mobileNumber != null && mobileNumber.trim().length() >= 9 && invalidMobileMap.get(mobileNumber) == null)
 												{
 													DuplicateWrongMobileNumbers duplicateWrongMobileNumbers = new DuplicateWrongMobileNumbers();
 													duplicateWrongMobileNumbers.setMobileNo(mobileNumber);
-													duplicateWrongMobileNumbers.setMobileType("invalid");
+													duplicateWrongMobileNumbers.setMobileType("2");
 													duplicateWrongMobileNumbersDAO.save(duplicateWrongMobileNumbers);
 												}
 										}
