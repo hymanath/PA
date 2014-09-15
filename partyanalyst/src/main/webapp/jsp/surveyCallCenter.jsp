@@ -125,25 +125,25 @@
 					</c:if>	
 					
 					<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CASTE_SURVEY_CALL_CENTER')}">
-						<li><a class="highlight selected" id="surveyStatusRprtTab" onclick="showHideTabs(this.id);">Survey Status</a></li> 
+						<li style="margin-left:-5px;"><a class="highlight selected" id="surveyStatusRprtTab" onclick="showHideTabs(this.id);">Survey Status</a></li> 
 						
-						<li><a class="highlight" id="startTimeTab" onclick="showHideTabs(this.id);">Field Report</a></li>
+						<li style="margin-left:-5px;"><a class="highlight" id="startTimeTab" onclick="showHideTabs(this.id);">Field Report</a></li>
 						
-						<li><a class="highlight" id="boothWiseTab" onclick="showHideTabs(this.id);">Data Report</a></li>
+						<li style="margin-left:-5px;"><a class="highlight" id="boothWiseTab" onclick="showHideTabs(this.id);">Data Report</a></li>
 						
-						<li id="webMontrId" style="display:none;"><a class="highlight" id="callCenterTab" onclick="showHideTabs(this.id);">Web Monitoring</a></li>
+						<li id="webMontrId" style="display:none;margin-left:-5px;"><a class="highlight" id="callCenterTab" onclick="showHideTabs(this.id);">Web Monitoring</a></li>
 						
-						<li><a class="highlight" id="dataCollectorWise" onclick="showHideTabs(this.id);">WM Verifier Report</a></li>
+						<li style="margin-left:-5px;"><a class="highlight" id="dataCollectorWise" onclick="showHideTabs(this.id);">WM Verifier Report</a></li>
 				
-						<li><a class="highlight" id="wmReportTab" value="3" onclick="showHideTabs(this.id);">WM Report</a></li>
+						<li style="margin-left:-5px;"><a class="highlight" id="wmReportTab" value="3" onclick="showHideTabs(this.id);">WM Report</a></li>
 						
-						<li><a class="highlight" id="verifierReportTab" value="2" onclick="showHideTabs(this.id);">Verifier Report</a></li>
+						<li style="margin-left:-5px;"><a class="highlight" id="verifierReportTab" value="2" onclick="showHideTabs(this.id);">Verifier Report</a></li>
 						
-						<li><a class="highlight" id="thirdPartyReportTab" onclick="showHideTabs(this.id);">QC Report</a></li>
+						<li style="margin-left:-5px;"><a class="highlight" id="thirdPartyReportTab" onclick="showHideTabs(this.id);">QC Report</a></li>
 						
-						<li><a class="highlight" id="surveyUserWise" onclick="showHideTabs(this.id);">User Wise Report</a></li>
+						<li style="margin-left:-5px;"><a class="highlight" id="surveyUserWise" onclick="showHideTabs(this.id);">User Wise Report</a></li>
 						
-						<li><a class="highlight" id="daywiseDCReport" onclick="showHideTabs(this.id);">DC Daily Report </a></li>
+						<li style="margin-left:-5px;"><a class="highlight" id="daywiseDCReport" onclick="showHideTabs(this.id);">DC Daily Report </a></li>
 						
 					</c:if>
 					
