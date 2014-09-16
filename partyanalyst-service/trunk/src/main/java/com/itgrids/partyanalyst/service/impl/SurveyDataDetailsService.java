@@ -3489,17 +3489,18 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 						
 					}
 				}
-				
-				List<String> mobileNumbers = surveyDetailsInfoDAO.getVotersMobileNumbersByBoothId(boothId,surveyUserids);
-				mobileNosList.addAll(mobileNumbers);
-				List<Object[]> inValidMobileNoList = null ;
-				if(mobileNosList != null && mobileNosList.size() >0)
-				{
-					inValidMobileNoList = duplicateWrongMobileNumbersDAO.getIsExistMobileDetails(mobileNosList);
-				}
-				
 				Map<String,String> invalidMobilesMap = new HashMap<String, String>();
-				
+				if(surveyUserids != null && surveyUserids.size() > 0)
+				{
+					List<String> mobileNumbers = surveyDetailsInfoDAO.getVotersMobileNumbersByBoothId(boothId,surveyUserids);
+					mobileNosList.addAll(mobileNumbers);
+					List<Object[]> inValidMobileNoList = null ;
+					if(mobileNosList != null && mobileNosList.size() >0)
+					{
+						inValidMobileNoList = duplicateWrongMobileNumbersDAO.getIsExistMobileDetails(mobileNosList);
+					}
+					
+					
 					if(inValidMobileNoList != null && inValidMobileNoList.size() > 0)
 					{
 						for (Object[] parms : inValidMobileNoList)
@@ -3515,6 +3516,10 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 							}
 						}
 					}
+				}
+				
+				
+				
 					
 					List<Object[]> verifiedList = null;
 					Map<Long,GenericVO> dcWmMap = null;
@@ -3751,14 +3756,18 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 
 							String mobileNumber = surveyDetailsInfo.getMobileNumber() != null ? surveyDetailsInfo.getMobileNumber():"";
 							
-							if(mobileNumber != null)
+							if(invalidMobilesMap != null && invalidMobilesMap.size() > 0)
 							{
-								if(invalidMobilesMap.get(mobileNumber) != null)
+								if(mobileNumber != null)
 								{
-									reportVO.setMobileStatus("Invalid");
+									if(invalidMobilesMap.get(mobileNumber) != null)
+									{
+										reportVO.setMobileStatus("Invalid");
+									}
+									reportVO.setMobileNo(mobileNumber);
 								}
-								reportVO.setMobileNo(mobileNumber);
 							}
+							
 						
 							
 							if(surveyDetailsInfo.getCaste() != null){
@@ -4053,7 +4062,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			} catch (Exception e) {
 				retultList = null;
 				LOG.error("Exception raised in getSurveyVotersList() service in SurveyDataDetailsService", e);
-				e.printStackTrace();
+			//	e.printStackTrace();
 			}		
 			return retultList;
 		}
