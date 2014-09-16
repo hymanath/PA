@@ -3556,7 +3556,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 								}
 							}
 						}
-						verifiedList = surveyCallStatusDAO.getDvSurveyCallDtalsByboothId(boothId,null);
+						verifiedList = surveyCallStatusDAO.getDVSurveyCallDtailsByboothId(boothId,null);
 						
 						//verifiedList.addAll(surveyCallStatusDAO. getDVSurveyCallDtailsByboothId(boothId,null)); 
 					}
