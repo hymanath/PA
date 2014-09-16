@@ -39,6 +39,15 @@ $(document).ready(function() {
 	</select>
 	</div>
 <div class="span3">
+    <label>Select Region</label>
+    <select id="regionId" class="input-block-level" onchange="getDistrictsForRegion();">
+	<option value="0">ALL</option>
+	<option value="1">Andhra</option>
+	<option value="2">Telangana</option>
+	</select>
+	</div>
+
+<div class="span3">
     <label>Select District</label>
     <select id="districtId"  multiple="true" onchange="getConstituencies();calculateTotal();" class="input-block-level">
 	</select>
@@ -49,20 +58,34 @@ $(document).ready(function() {
 	</select>
 	</div>
 
-	<div class="span2">
+</div>
+
+<div style="margin-top: 20px;" class="row form-inline">
+<div class="span2">
 	<label>Enter No.of Mnos</label>
     <input type="text" class="input-block-level mytooltip" data-toggle="tooltip" data-title="Enter No of Mobile no.s from each location" id="maxIndex">
 	</input>
 </div>
 
-<div class="span2">
+<div class="span1">
 	<label>Total</label>
     <input type="text" class="input-block-level" id="totalSize">
 	</input>
 </div>
+
+
+<div class="span3"  style="margin-top: 26px;">
+<label class="radio">Single File<input type="radio" onclick="showTextBox();" name="radiobtn" id="singleFileId" value="1" checked>
+  </label> <label class="radio">Multiple Files<input type="radio" name="radiobtn" id="multipleFileId" value="2" onclick="showTextBox();" >
+  </label>&nbsp;&nbsp;&nbsp;
+  </div>
+<div class="span2" style="margin-left: -21px;display:none;" id="noOfFileDiv">
+	<label>Enter No.of files</label>
+    <input type="text" class="input-block-level" id="noOfFileId">
+	</input>
 </div>
-	<div style="margin-top: 20px;" class="row ">
-  <div style="text-align: center; margin-top: 10px;" class="span12 form-inline ">
+
+<div class="span4" style="margin-top:26px;">
   <label>  Select File Format &nbsp;&nbsp;&nbsp;&nbsp;</label> <label class="radio">txt<input type="radio" name="optionsRadios" id="optionsRadios2" value="2" checked>
   </label> <label class="radio">csv<input type="radio" name="optionsRadios" id="optionsRadios2" value="1" >
   </label></div>
@@ -89,7 +112,7 @@ function correspondingCall()
 		$('#constituencyId').multiselect('refresh');
 		return;
 	}
-	getDistricts();
+	getDistrictsForRegion();
 	if(scopeId == 2) 
 	getConstituencies();
 
@@ -151,22 +174,30 @@ function getConstituencies()
 function createFile()
 {
 
-	 $("#downloadLink").css("display","none");
+	$("#downloadLink").css("display","none");
 	$("#loactionCountDiv").html('');
 	var flag = false;
+	
 	var locationIds ;
+	var multipleFileCheck = false;
 	var scopeId = $("#scopeId").val();
+	var radiobtnVal = $('input:radio[name=radiobtn]:checked').val();
+	
+	var noOfFiles = $.trim($('#noOfFileId').val());
+	if($.trim($('#noOfFileId').val()).length == 0)
+	noOfFiles = 0;
 	if(scopeId == 1) 
 	locationIds = $('#districtId').val();
 	else
 	locationIds = $('#constituencyId').val();
+	
 	var fileFormat = $('input:radio[name=optionsRadios]:checked').val();
 	var maxIndex = $.trim($('#maxIndex').val());
 	if(maxIndex.length == 0)
 	 maxIndex = 0;
-	
 	$("#errorDiv").html("");
 	var str='<font color="red" style="font-size: 12px; font-weight: bold;">';
+	
 	if(scopeId == 0)
 	{
 	str+='Please Select Scope<br/>';
@@ -189,6 +220,16 @@ function createFile()
 		str+='Enter number';
 		flag =true;
 	}
+	else if(radiobtnVal == 2)
+	{
+		multipleFileCheck = true;
+		if(noOfFiles == 0)
+		{
+		str+='No of files is required <br/>';
+		flag = true;
+	}
+	
+	}
 	str+='</font>';
 	$("#errorDiv").html(str);
 	if(flag == true)
@@ -201,6 +242,8 @@ function createFile()
 			fileFormat:fileFormat,
 			scopeId:scopeId,
 			maxIndex:maxIndex,
+			multipleFileCheck:multipleFileCheck,
+			noOfFiles:noOfFiles,
 			task : "createFilepath"
 	};
 	$.ajax({
@@ -236,7 +279,7 @@ function buildLocationData(result,jObj)
 	else
 	str+='<h3>Constituency wise mobile Numbers Info</h3>';
 
-	str+='<table class="table table-bordered offset3 " style="width: 50%;">';
+	str+='<table class="table table-bordered offset3 " style="width: 50%;font-family:verdana;">';
 	
 	if(jObj.scopeId == 1)
 	str+='<th>District</th>';
@@ -307,9 +350,48 @@ calculateTotal();
 $("#totalSize").blur(function() {
 calculateMaxIndex();
 });
+
+function getDistrictsForRegion()
+{
+	
+	$('#districtId').find('option').remove();
+	$("#constituencyId").find('option').remove();
+	$('#constituencyId').multiselect('refresh');
+	var stateType = $("#regionId option:selected").text();
+	var jObj = {
+	stateType :stateType,
+		task :   "district"
+		}
+	$.ajax({
+          type:'GET',
+          url: 'getElectionResultsLocations.action',
+          dataType: 'json',
+          data: {task:JSON.stringify(jObj)},
+		  success: function(result){ 
+			$.each(result,function(index,value){
+			$('#districtId').append('<option value="'+value.id+'">'+value.name+'</option>');
+		});
+		$('#districtId').multiselect('refresh');	  
+         },
+          error:function() { 
+           console.log('error', arguments);
+         }
+    });
+}
+function showTextBox()
+{
+var radiobtnVal = $('input:radio[name=radiobtn]:checked').val();
+if(radiobtnVal == 1)
+{
+$("#noOfFileDiv").hide();
+$('#noOfFileId').val('');
+}
+else
+
+$("#noOfFileDiv").show();
+}
 </script>
 <script>
-
 correspondingCall(1);
 showHide();
 </script>
