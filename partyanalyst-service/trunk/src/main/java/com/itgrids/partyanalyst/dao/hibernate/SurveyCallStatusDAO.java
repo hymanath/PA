@@ -47,12 +47,9 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 		
 		if(surveyUserId != null && surveyUserId.longValue() != 0l)
 			queryString.append("and model.surveyUser.surveyUserId = :surveyUserId and model.surveyUser.surveyUserType.surveyUsertypeId = 1");
-		else
-			queryString.append(" and model.surveyUserId is null");
+		//else
+		//	queryString.append(" and model.surveyUser.surveyUserType.surveyUsertypeId = 1 ");
 			
-	/*		
-		Query query = getSession().createQuery("select distinct model.voter.voterId, model.mobileNoStatus, model.matchedStatus,model.casteState.casteStateId,model.hamletStatus,model.hamletId from SurveyCallStatus model" +
-				" where model.booth.boothId =:boothId and model.surveyUser.surveyUserId = :surveyUserId   order by model.surveyCallStatusId");*/
 		
 		Query query = getSession().createQuery(queryString.toString());
 		
@@ -73,8 +70,8 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 		
 		if(surveyUserId != null && surveyUserId.longValue() != 0l)
 			queryString.append("and model.surveyUser.surveyUserId = :surveyUserId and model.surveyUser.surveyUserType.surveyUsertypeId = 4 ");
-		else
-			queryString.append(" and model.dvSurveyUserId is null ");
+		//else
+		//	queryString.append(" and model.dvSurveyUserId is null ");
 		
 		Query query = getSession().createQuery(queryString.toString());
 		
