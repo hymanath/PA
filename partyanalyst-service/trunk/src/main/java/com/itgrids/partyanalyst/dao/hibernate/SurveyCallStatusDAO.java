@@ -68,7 +68,7 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 		
 		StringBuffer queryString = new StringBuffer();
 		
-		queryString.append("select distinct model.voter.voterId, model.dvMobileNoStatus, model.dvMatchedStatus,model.dvCasteState.casteStateId,model.dvhamletStatus,model.dvHamletId,model.dvWardStatus,model.dvWardId  from SurveyCallStatus model" +
+		queryString.append("select distinct model.voter.voterId, model.dvMobileNoStatus, model.dvMatchedStatus,model.dvCasteState.casteStateId,model.dvhamletStatus,model.dvHamletId,model.dvWardStatus,model.dvWardId,model.ctpMobileMatched, model.surveyMobileMatched, model.dataMobileMatched, model.ceoMobileMatched  from SurveyCallStatus model" +
 				" where model.booth.boothId =:boothId ");
 		
 		if(surveyUserId != null && surveyUserId.longValue() != 0l)
