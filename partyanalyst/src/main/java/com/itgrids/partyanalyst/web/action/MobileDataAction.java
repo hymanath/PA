@@ -332,7 +332,7 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
         RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
         if(user == null)
     	  return ERROR;
-        if(session.getAttribute(IConstants.USER) == null && 
+       if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.IVR_MOBILE_NUMBERS_RETRIVAL))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.IVR_MOBILE_NUMBERS_RETRIVAL))
@@ -353,7 +353,7 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 			for(int i=0;i<arr.length();i++)
 				locationIds.add(new Long(arr.get(i).toString()));	
 			Long fileFormatVal = jObj.getLong("fileFormat");
-			mobileVo = mobileService.getIvrMobileNumbers(jObj.getLong("scopeId"),locationIds,fileFormatVal,jObj.getInt("maxIndex"));
+			mobileVo = mobileService.getIvrMobileNumbers(jObj.getLong("scopeId"),locationIds,fileFormatVal,jObj.getInt("maxIndex"),jObj.getBoolean("multipleFileCheck"),jObj.getInt("noOfFiles"));
 					
 		}
 		catch (Exception e) {
