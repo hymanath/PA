@@ -50,7 +50,7 @@ public interface IMobileService {
 	
 	public ResultStatus populateVoterData();
 	
-	public MobileVO getIvrMobileNumbers(Long scopeId,List<Long> locationIDs,Long fileFormatVal,int maxIndex);
-	 public List<SelectOptionVO> getDistrictsList(Long stateId)	;
-	 public List<SelectOptionVO> getConstituencyList(List<Long> distictIds);
+	public MobileVO getIvrMobileNumbers(Long scopeId,List<Long> locationIDs,Long fileFormatVal,int maxIndex,boolean multipleFiles,int NoOfFile);
+	public List<SelectOptionVO> getDistrictsList(Long stateId)	;
+	public List<SelectOptionVO> getConstituencyList(List<Long> distictIds);
 }
