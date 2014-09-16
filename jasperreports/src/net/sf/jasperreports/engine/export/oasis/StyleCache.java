@@ -23,6 +23,8 @@
  */
 package net.sf.jasperreports.engine.export.oasis;
 
+import in.cdac.ilcg.jasperreports.pdfexporter.CustomFonts;
+
 import java.awt.Color;
 import java.awt.font.TextAttribute;
 import java.io.IOException;
@@ -42,6 +44,7 @@ import net.sf.jasperreports.engine.fonts.FontFamily;
 import net.sf.jasperreports.engine.fonts.FontInfo;
 import net.sf.jasperreports.engine.util.JRColorUtil;
 import net.sf.jasperreports.engine.util.JRFontUtil;
+import net.sf.jasperreports.engine.util.JRTextAttribute;
 
 
 /**
@@ -214,9 +217,12 @@ public class StyleCache
 	/**
 	 *
 	 */
-	public String getTextSpanStyle(Map attributes, String text, Locale locale) throws IOException
+	public String getTextSpanStyle(Map attributes, String text, Locale locale,int count) throws IOException
 	{
 		String fontFamilyAttr = (String)attributes.get(TextAttribute.FAMILY);
+		String newFontFamily = (String)attributes.get(JRTextAttribute.PDF_FONT_NAME);
+		if(newFontFamily != null && CustomFonts.fonts.containsKey(newFontFamily))
+			fontFamilyAttr =CustomFonts.fonts.get(newFontFamily);
 		String fontFamily = fontFamilyAttr;
 		if (fontMap != null && fontMap.containsKey(fontFamilyAttr))
 		{
@@ -308,9 +314,11 @@ public class StyleCache
 			if (forecolorHexa != null)
 			{
 				styleWriter.write(" fo:color=\"#" + forecolorHexa+ "\"");
-			}
+			}//changed by mahesh
 			styleWriter.write(" style:font-name=\"" + fontFamily + "\"");
 			styleWriter.write(" fo:font-size=\"" + size + "pt\"");
+			styleWriter.write(" style:font-size-asian=\"" + size + "pt\"");
+			styleWriter.write(" style:font-size-complex=\"" + size + "pt\"");
 			if (posture != null)
 			{
 				styleWriter.write(" fo:font-style=\"" + posture + "\"");
