@@ -66,6 +66,7 @@ import net.sf.jasperreports.engine.JRPrintRectangle;
 import net.sf.jasperreports.engine.JRPrintText;
 import net.sf.jasperreports.engine.JRRenderable;
 import net.sf.jasperreports.engine.JRRuntimeException;
+import net.sf.jasperreports.engine.JRStyle;
 import net.sf.jasperreports.engine.JRWrappingSvgRenderer;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.base.JRBaseLineBox;
@@ -78,6 +79,8 @@ import net.sf.jasperreports.engine.export.JRGridLayout;
 import net.sf.jasperreports.engine.export.JRHyperlinkProducer;
 import net.sf.jasperreports.engine.export.zip.ExportZipEntry;
 import net.sf.jasperreports.engine.export.zip.FileBufferedZipEntry;
+import net.sf.jasperreports.engine.fill.JRTemplatePrintText;
+import net.sf.jasperreports.engine.fill.JRTemplateText;
 import net.sf.jasperreports.engine.type.ModeEnum;
 import net.sf.jasperreports.engine.util.JRStringUtil;
 import net.sf.jasperreports.engine.util.JRStyledText;
@@ -436,8 +439,29 @@ public abstract class JROpenDocumentExporter extends JRAbstractExporter
 			int emptyCellColSpan = 0;
 			int emptyCellWidth = 0;
 			int rowHeight = gridLayout.getRowHeight(row);
-
-			tableBuilder.buildRowStyle(row, rowHeight);
+     // changed by mahesh
+			String fontName = null;
+			/*for(int col = 0; col < grid[0].length; col++)
+			{
+				if(fontName == null){
+					JRExporterGridCell gridCell = grid[row][col];
+					if(gridCell.getType() != JRExporterGridCell.TYPE_OCCUPIED_CELL && gridCell.getWrapper() != null){
+						element = gridCell.getWrapper().getElement();
+						if (element instanceof JRTemplatePrintText){
+							JRTemplatePrintText textElement = (JRTemplatePrintText)element;
+							JRTemplateText templateText = (JRTemplateText)textElement.getTemplate();
+							if(templateText != null){
+							   JRStyle style = templateText.getStyle();
+							     if(style != null){
+							      fontName = style.getFontName();
+								}
+							}
+						}
+					}
+				}
+			}
+			fontName = null;*/
+			tableBuilder.buildRowStyle(row, rowHeight,fontName);
 			tableBuilder.buildRowHeader(row);
 
 			for(int col = 0; col < grid[0].length; col++)
@@ -694,16 +718,17 @@ public abstract class JROpenDocumentExporter extends JRAbstractExporter
 		int runLimit = 0;
 
 		AttributedCharacterIterator iterator = styledText.getAttributedString().getIterator();
-
+int i =0;// added by mahesh
 		while(runLimit < styledText.length() && (runLimit = iterator.getRunLimit()) <= styledText.length())
-		{
+		{//System.out.println(i);
 			exportStyledTextRun(
 				iterator.getAttributes(), 
 				text.substring(iterator.getIndex(), runLimit),
 				locale,
-				startedHyperlink
+				startedHyperlink,
+				i
 				);
-
+i++;
 			iterator.setIndex(runLimit);
 		}
 	}
@@ -712,9 +737,9 @@ public abstract class JROpenDocumentExporter extends JRAbstractExporter
 	/**
 	 *
 	 */
-	protected void exportStyledTextRun(Map attributes, String text, Locale locale, boolean startedHyperlink) throws IOException
+	protected void exportStyledTextRun(Map attributes, String text, Locale locale, boolean startedHyperlink,int count) throws IOException
 	{
-		String textSpanStyleName = styleCache.getTextSpanStyle(attributes, text, locale);
+		String textSpanStyleName = styleCache.getTextSpanStyle(attributes, text, locale,count);
 
 		tempBodyWriter.write("<text:span");
 		tempBodyWriter.write(" text:style-name=\"" + textSpanStyleName + "\"");
@@ -732,7 +757,7 @@ public abstract class JROpenDocumentExporter extends JRAbstractExporter
 		}
 		
 		if (text != null)
-		{
+		{    
 			tempBodyWriter.write(Utility.replaceNewLineWithLineBreak(JRStringUtil.xmlEncode(text)));//FIXMEODT try something nicer for replace
 		}
 

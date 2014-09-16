@@ -42,6 +42,10 @@ public static void main(String[] args) {
 	Connection connection = null;
 	Statement stmt = null;
 try {
+	System.out.println("పేదరికంపై గెలుపే ప్రభుత్వ లక్ష్యమని బాబు స్పష్టం చేశారు".length());
+	if(true){
+		return;
+	}
 String reportName = "C:\\Users\\Admin\\Desktop\\ireport\\report3";
 Map<String, Object> parameters = new HashMap<String, Object>();
 List<Student> results = new ArrayList<Student>();

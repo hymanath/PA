@@ -1,7 +1,9 @@
 package test;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -11,6 +13,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.itgrids.partyanalyst.dto.NewsActivityVO;
 
 
 import net.sf.jasperreports.engine.JRException;
@@ -41,7 +45,7 @@ public class GenerateSimplePdfReportWithJasperReports1 {
 public static void main(String[] args) {
 
 try {
-String reportName = "C:\\Users\\Admin\\Desktop\\ireport\\report6";
+/*String reportName = "C:\\Users\\Admin\\Desktop\\ireport\\report6";
 Map<String, Object> parameters = new HashMap<String, Object>();
 List<Student> activities = new ArrayList<Student>();
 Student category = new Student();
@@ -100,8 +104,52 @@ JasperPrint print = JasperFillManager.fillReport(reportName+".jasper", parameter
 JRExporter exporter = new JRPdfExporter();
 exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
 exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, new FileOutputStream(reportName + ".pdf")); // your output goes here
-exporter.exportReport();
-
+exporter.exportReport();*/
+	FileInputStream fileIn = new FileInputStream("D:/tmp/employee.ser");
+    ObjectInputStream in = new ObjectInputStream(fileIn);
+    NewsActivityVO vo = (NewsActivityVO) in.readObject();
+    List<NewsActivityVO> mainList = new ArrayList<NewsActivityVO>();
+    List<NewsActivityVO> categList = vo.getList();
+    for(NewsActivityVO categ:categList){
+    	List<NewsActivityVO> distList = categ.getList();
+    	for(NewsActivityVO dist:distList){
+    		List<NewsActivityVO> constiList = dist.getList();
+        	for(NewsActivityVO consti:constiList){
+        		//mainList.addAll(consti.getList());
+        		for(NewsActivityVO all:consti.getList()){
+        			all.setId(null);
+        			
+        			all.setDescription(all.getDescription());
+        			NewsActivityVO  vo1 = new NewsActivityVO();
+        			vo1.setFont(all.getTitleFont());
+        			
+        			    vo1.setDescription((all.getTitle()+"<style pdfFontName=\"Calibriabc\" size=\"12\">("+all.getPaper()+")</style>"));
+        			
+        			vo1.setId(1l);
+        			mainList.add(vo1);
+        			mainList.add(all);
+        			//System.out.println(all.getPaper());
+        		}
+        	}
+    	}
+    }
+    
+		String reportName = "C:\\Users\\Admin\\Desktop\\ireport\\subreport\\report2";
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		
+		// compiles jrxml
+		JasperCompileManager.compileReportToFile(reportName+".jrxml");
+		
+		JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(mainList);
+		// fills compiled report with parameters and a connection
+		JasperPrint print = JasperFillManager.fillReport(reportName+".jasper", parameters, dataSource);
+		//JasperPrint print = JasperFillManager.fillReport(reportName+".jasper", parameters, connection);
+		// exports report to pdf
+		JRExporter exporter = new JRPdfExporter();
+		exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
+		exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, new FileOutputStream(reportName + ".pdf")); // your output goes here
+		exporter.exportReport();
+		System.out.println("Completed");
 } catch (Exception e) {
 throw new RuntimeException("It's not possible to generate the pdf report.", e);
 } finally {

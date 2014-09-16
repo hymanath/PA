@@ -139,7 +139,7 @@ public class TableBuilder
 		bodyWriter.write("</table:table>\n");
 	}
 	
-	public void buildRowStyle(int rowIndex, int rowHeight) throws IOException 
+	public void buildRowStyle(int rowIndex, int rowHeight,String fontName) throws IOException 
 	{
 		String rowName = tableName + "_row_" + rowIndex;
 		styleWriter.write(" <style:style style:name=\"" + rowName + "\"");
@@ -147,7 +147,12 @@ public class TableBuilder
 		styleWriter.write("   <style:table-row-properties");		
 		styleWriter.write(" style:use-optimal-row-height=\"false\""); 
 //FIXMEODT check this		styleWriter.write(" style:use-optimal-row-height=\"true\""); 
-		styleWriter.write(" style:row-height=\"" + Utility.translatePixelsToInches(rowHeight) + "in\"");
+		//changed by mahesh
+		if(fontName != null && fontName.equalsIgnoreCase("Gautami")){
+			styleWriter.write(" style:row-height=\"" + Utility.translatePixelsToInches(rowHeight)*(2.60) + "in\"");
+		}else{
+		    styleWriter.write(" style:row-height=\"" + Utility.translatePixelsToInches(rowHeight) + "in\"");
+		}
 		styleWriter.write("/>\n");
 		styleWriter.write(" </style:style>\n");
 	}

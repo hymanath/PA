@@ -270,6 +270,7 @@
 				<include name="**/net/sf/jasperreports/view/JRViewer*.class"/>
 				<include name="**/net/sf/jasperreports/view/viewer.properties"/>
 				<include name="**/net/sf/jasperreports/view/images/*.GIF"/>
+				<include name="**/in/cdac/ilcg/jasperreports/pdfexporter/CustomFonts.class"/>
 				<include name="**/net/sf/jasperreports/view/save/JRPrintSaveContributor.class"/>
 				<include name="**/in/cdac/ilcg/jasperreports/pdfexporter/JRPdfExporter.class"/>
 				<include name="**/in/cdac/ilcg/jasperreports/pdfexporter/OOoOutputStream.class"/>
