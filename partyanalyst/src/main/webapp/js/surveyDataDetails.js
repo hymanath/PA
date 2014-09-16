@@ -2481,7 +2481,7 @@ function saveBoothPercentage(){
 				$("#boothImageForSavingPercent").hide();
 				$("#errorDivSB").html("<span style='color:blue'>"+result+"</span>");
 				setTimeout(function(){$('#errorDivSB').html('');}, 3000);
-				$("#constituencyForSP,#boothIdForSavePercentages").val(0);
+				//$("#constituencyForSP,#boothIdForSavePercentages").val(0);
 				$("#percenageForBooth").val("");
 		});	
 }
