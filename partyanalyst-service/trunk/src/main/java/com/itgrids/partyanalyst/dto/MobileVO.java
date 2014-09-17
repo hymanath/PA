@@ -13,8 +13,30 @@ public class MobileVO implements Serializable{
 	private List<MobileVO> list = new ArrayList();
 	private int resultCode ;
 	private Long total;
+	private List<MobileVO> tehsilList = new ArrayList();
+	private List<MobileVO> panchayatList = new ArrayList();
+	private List<MobileVO> constituencyList = new ArrayList();
 	
 	
+	
+	public List<MobileVO> getTehsilList() {
+		return tehsilList;
+	}
+	public void setTehsilList(List<MobileVO> tehsilList) {
+		this.tehsilList = tehsilList;
+	}
+	public List<MobileVO> getPanchayatList() {
+		return panchayatList;
+	}
+	public void setPanchayatList(List<MobileVO> panchayatList) {
+		this.panchayatList = panchayatList;
+	}
+	public List<MobileVO> getConstituencyList() {
+		return constituencyList;
+	}
+	public void setConstituencyList(List<MobileVO> constituencyList) {
+		this.constituencyList = constituencyList;
+	}
 	public Long getTotal() {
 		return total;
 	}
