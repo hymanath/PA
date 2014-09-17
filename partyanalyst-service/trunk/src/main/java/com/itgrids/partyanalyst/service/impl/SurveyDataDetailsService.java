@@ -3763,12 +3763,11 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 									if(invalidMobilesMap.get(mobileNumber) != null)
 									{
 										reportVO.setMobileStatus("Invalid");
-									}
-									reportVO.setMobileNo(mobileNumber);
+									}									
 								}
 							}
 							
-						
+							reportVO.setMobileNo(mobileNumber);
 							
 							if(surveyDetailsInfo.getCaste() != null){
 								reportVO.setCaste(surveyDetailsInfo.getCaste().getCaste().getCasteName());
