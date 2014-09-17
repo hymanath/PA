@@ -3976,6 +3976,50 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 									reportVO.setUserid(0L);
 									reportVO.setCaste("");
 									
+									if(ceoAndhraMobileNumbersMap != null && ceoAndhraMobileNumbersMap.size()>0  && ceoAndhraMobileNumbersMap.get(voter[0] != null ? (Long) voter[0]:0L) != null )
+									{
+										reportVO.setCeoMobileNoList(ceoAndhraMobileNumbersMap.get(voter[0] != null ? (Long) voter[0]:0L));
+									}							
+									if(smsSurveyMobileNumbersMap != null && smsSurveyMobileNumbersMap.size()>0  && smsSurveyMobileNumbersMap.get(voter[0] != null ? (Long) voter[0]:0L) != null )
+									{
+										reportVO.setSurveyMobileNoList(smsSurveyMobileNumbersMap.get(voter[0] != null ? (Long) voter[0]:0L));
+									}
+									if(dataSurveyMobileNumbersMap != null && dataSurveyMobileNumbersMap.size()>0  && dataSurveyMobileNumbersMap.get(voter[0] != null ? (Long) voter[0]:0L) != null )
+									{
+										reportVO.setDataMobileNoList(dataSurveyMobileNumbersMap.get(voter[0] != null ? (Long) voter[0]:0L));
+									}
+							
+									
+									String ceoMobileMatched = ceoMobileMatchedmap.get(voter[0] != null ? (Long) voter[0]:0L);
+									//String ctpMobileMatched = ctpMobileMatchedmap.get(surveyDetailsInfo.getVoter().getVoterId());
+									String surveyMobileMatched = surveyMobileMatchedmap.get(voter[0] != null ? (Long) voter[0]:0L);
+									String dataMobileMatched = dataMobileMatchedmap.get(voter[0] != null ? (Long) voter[0]:0L);
+									
+									
+									if(ceoMobileMatched != null && ceoMobileMatched.equalsIgnoreCase("Y")){
+										reportVO.setCeoMobileStatus(1L);
+									}else if(ceoMobileMatched != null && ceoMobileMatched.equalsIgnoreCase("N")){
+										reportVO.setCeoMobileStatus(2L);
+									}else{							
+										reportVO.setCeoMobileStatus(0L);
+									}
+									
+									if(surveyMobileMatched != null && surveyMobileMatched.equalsIgnoreCase("Y")){
+										reportVO.setSurveyMobileStatus(1L);
+									}else if(surveyMobileMatched != null && surveyMobileMatched.equalsIgnoreCase("N")){
+										reportVO.setSurveyMobileStatus(2L);
+									}else{							
+										reportVO.setSurveyMobileStatus(0L);
+									}
+									
+									if(dataMobileMatched != null && dataMobileMatched.equalsIgnoreCase("Y")){
+										reportVO.setDataMobileStatus(1L);
+									}else if(dataMobileMatched != null && dataMobileMatched.equalsIgnoreCase("N")){
+										reportVO.setDataMobileStatus(2L);
+									}else{							
+										reportVO.setDataMobileStatus(0L);
+									}	
+									
 									if(newCasteMatched.get( (Long)voter[0]) != null ){
 										reportVO.setCasteId(Long.valueOf(newCasteMatched.get((Long)voter[0])));
 									}
