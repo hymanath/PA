@@ -89,7 +89,7 @@ $(document).ready(function() {
 	</input>
 </div>
 
-<div class="span4" style="margin-top:26px;">
+<div class="span3" style="margin-top:26px;">
   <label>  Select File Format &nbsp;&nbsp;&nbsp;&nbsp;</label> <label class="radio">txt<input type="radio" name="optionsRadios" id="optionsRadios2" value="2" checked>
   </label> <label class="radio">csv<input type="radio" name="optionsRadios" id="optionsRadios2" value="1" >
   </label></div>
