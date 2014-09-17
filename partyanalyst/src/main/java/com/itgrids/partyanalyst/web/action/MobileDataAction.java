@@ -353,7 +353,8 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 			for(int i=0;i<arr.length();i++)
 				locationIds.add(new Long(arr.get(i).toString()));	
 			Long fileFormatVal = jObj.getLong("fileFormat");
-			mobileVo = mobileService.getIvrMobileNumbers(jObj.getLong("scopeId"),locationIds,fileFormatVal,jObj.getInt("maxIndex"),jObj.getBoolean("multipleFileCheck"),jObj.getInt("noOfFiles"));
+			//mobileVo = mobileService.getIvrMobileNumbers(jObj.getLong("scopeId"),locationIds,fileFormatVal,jObj.getInt("maxIndex"),jObj.getBoolean("multipleFileCheck"),jObj.getInt("noOfFiles"));
+			mobileVo = mobileService.getMobileNumbersByLocations(jObj.getLong("scopeId"),locationIds,fileFormatVal,jObj.getInt("maxIndex"),jObj.getInt("checkedTypeVal"),jObj.getInt("noOfFiles"));
 					
 		}
 		catch (Exception e) {

@@ -74,9 +74,13 @@ $(document).ready(function() {
 </div>
 
 
-<div class="span3"  style="margin-top: 26px;">
-<label class="radio">Single File<input type="radio" onclick="showTextBox();" name="radiobtn" id="singleFileId" value="1" checked>
-  </label> <label class="radio">Multiple Files<input type="radio" name="radiobtn" id="multipleFileId" value="2" onclick="showTextBox();" >
+<div class="span4"  style="margin-top: 26px;">
+ <label class="radio">single File<input type="radio" onclick="showTextBox();" name="radiobtn" id="singleFileId" value="1" checked>
+  </label>
+<label class="radio">each File<input type="radio" onclick="showTextBox();" name="radiobtn" id="singleFileId" value="2" >
+  </label>
+ 
+  <label class="radio">Multiple Files<input type="radio" name="radiobtn" id="multipleFileId" value="3" onclick="showTextBox();" >
   </label>&nbsp;&nbsp;&nbsp;
   </div>
 <div class="span2" style="margin-left: -21px;display:none;" id="noOfFileDiv">
@@ -177,12 +181,9 @@ function createFile()
 	$("#downloadLink").css("display","none");
 	$("#loactionCountDiv").html('');
 	var flag = false;
-	
 	var locationIds ;
-	var multipleFileCheck = false;
 	var scopeId = $("#scopeId").val();
-	var radiobtnVal = $('input:radio[name=radiobtn]:checked').val();
-	
+	var checkedTypeVal = $('input:radio[name=radiobtn]:checked').val();
 	var noOfFiles = $.trim($('#noOfFileId').val());
 	if($.trim($('#noOfFileId').val()).length == 0)
 	noOfFiles = 0;
@@ -197,7 +198,6 @@ function createFile()
 	 maxIndex = 0;
 	$("#errorDiv").html("");
 	var str='<font color="red" style="font-size: 12px; font-weight: bold;">';
-	
 	if(scopeId == 0)
 	{
 	str+='Please Select Scope<br/>';
@@ -220,15 +220,13 @@ function createFile()
 		str+='Enter number';
 		flag =true;
 	}
-	else if(radiobtnVal == 2)
+	else if(checkedTypeVal == 3)
 	{
-		multipleFileCheck = true;
 		if(noOfFiles == 0)
 		{
 		str+='No of files is required <br/>';
 		flag = true;
-	}
-	
+		}
 	}
 	str+='</font>';
 	$("#errorDiv").html(str);
@@ -242,7 +240,7 @@ function createFile()
 			fileFormat:fileFormat,
 			scopeId:scopeId,
 			maxIndex:maxIndex,
-			multipleFileCheck:multipleFileCheck,
+			checkedTypeVal:checkedTypeVal,
 			noOfFiles:noOfFiles,
 			task : "createFilepath"
 	};
@@ -386,8 +384,12 @@ if(radiobtnVal == 1)
 $("#noOfFileDiv").hide();
 $('#noOfFileId').val('');
 }
+else if(radiobtnVal == 2)
+	{
+	$("#noOfFileDiv").hide();
+    $('#noOfFileId').val('');
+	}
 else
-
 $("#noOfFileDiv").show();
 }
 </script>
