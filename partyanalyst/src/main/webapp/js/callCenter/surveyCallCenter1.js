@@ -264,6 +264,7 @@ $('#searchDataImg').show();
 									str +=''+mobNo+'';
 									if(result[i].mobileStatus != null)
 									{
+										str +='<input type="hidden" id="isTestedMobile'+i+'"  value=""/>';
 										str +='<div data-toggle="buttons-radio"> Invalid Number </div>';
 									}
 									else
@@ -1362,6 +1363,7 @@ function buildCasteWiseVotersList(results,userId,boothId,date,casteId1,webConstI
 									if(result[i].mobileStatus != null)
 									{
 										str +='<div data-toggle="buttons-radio"> Invalid Number </div>';
+										str +='<input type="hidden" id="isTestedMobile'+i+'"  value=""/>';
 									}
 									else
 									{		
