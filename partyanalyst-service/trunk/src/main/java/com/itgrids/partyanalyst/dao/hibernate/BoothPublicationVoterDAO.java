@@ -7251,14 +7251,13 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 
 	}
 	
-	public List<Object[]> getCTPVoterDetailsByBooth(Long boothId,List<Long> voterIds)
+	public List<Object[]> getCTPVoterDetailsByBooth(Long boothId)
 	{
 		
 		Query query = getSession().createQuery("select  V.voterId,BPV.serialNo, V.houseNo , V.name ,V.relativeName,V.voterIDCardNo  " +
 				" from  BoothPublicationVoter BPV, Booth B,   Voter V where BPV.voter.voterId = V.voterId and " +
-				" BPV.boothId = B.boothId and B.boothId = :boothId  and B.publicationDate.publicationDateId = :publicationDateId  and V.voterId not in (:voterIds) ");
+				" BPV.boothId = B.boothId and B.boothId = :boothId  and B.publicationDate.publicationDateId = :publicationDateId  ");
 		
-		query.setParameterList("voterIds", voterIds);
 		query.setParameter("boothId", boothId);
 		query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID);
 		
