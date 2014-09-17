@@ -20,4 +20,7 @@ public interface IMobileNumbersDAO extends GenericDao<MobileNumbers, Long>{
 	public List<Object[]> getMobileNumberDetailsByBoothId(Long boothId);
 	public Set<String> getVotersMobilenos(Long scopeId,Long location,int maxIndex);
 	public Set<String> getIvrMobilenosBasedOnPriority(Long scopeId,Long location,int maxIndex,String priority) ;
+	public Long getMobileNosCountByIds(Long Id,String type,Long scope);
+	public Set<String> getMobilenosBasedOnPriority(Long scopeId,Long location,int maxIndex,String priority);
+	public Long getMobileNosTotal(Long Id,String type,Long scopeId);
 }
