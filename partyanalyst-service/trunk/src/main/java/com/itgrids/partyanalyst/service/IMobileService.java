@@ -54,4 +54,6 @@ public interface IMobileService {
 	public List<SelectOptionVO> getDistrictsList(Long stateId)	;
 	public List<SelectOptionVO> getConstituencyList(List<Long> distictIds);
 	public MobileVO getMobileNumbersByLocations(Long scopeId,List<Long> locationIds,Long fileFormatVal,int maxIndex,int checkedTypeVal,int noOfFile);
+	 public List<SelectOptionVO> getTehsilList(List<Long> distictIds);
+	 public List<SelectOptionVO> getpcconstituencyList(Long regionId);
 }

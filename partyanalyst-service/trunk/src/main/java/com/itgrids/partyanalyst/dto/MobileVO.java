@@ -16,9 +16,16 @@ public class MobileVO implements Serializable{
 	private List<MobileVO> tehsilList = new ArrayList();
 	private List<MobileVO> panchayatList = new ArrayList();
 	private List<MobileVO> constituencyList = new ArrayList();
+	private String optionFilePath ;
 	
 	
 	
+	public String getOptionFilePath() {
+		return optionFilePath;
+	}
+	public void setOptionFilePath(String optionFilePath) {
+		this.optionFilePath = optionFilePath;
+	}
 	public List<MobileVO> getTehsilList() {
 		return tehsilList;
 	}

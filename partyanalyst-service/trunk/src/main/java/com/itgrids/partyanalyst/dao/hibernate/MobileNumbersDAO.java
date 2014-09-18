@@ -156,6 +156,9 @@ public class MobileNumbersDAO extends GenericDaoHibernate<MobileNumbers, Long> i
 		str.append(" model.constituency.district.districtId = :Id");
 		if(scopeId == 2)//Constituency
 		str.append(" model.constituency.constituencyId = :Id");
+		if(scopeId == 4)//Mandal
+		str.append(" model.tehsil.tehsilId = :Id");	
+		
 		str.append(" and model.mobileNumber is not null and length(model.mobileNumber) = 10 and model.mobileNumber <> '9999999999' ");
 		query = getSession().createQuery(str.toString());
 		query.setParameter("Id", Id);
@@ -184,6 +187,8 @@ public class MobileNumbersDAO extends GenericDaoHibernate<MobileNumbers, Long> i
 		str.append(" and model.constituency.district.districtId = :Id");
 		if(scopeId == 2)//Constituency
 		str.append(" and model.constituency.constituencyId = :Id");
+		if(scopeId == 4)//mandal
+		str.append(" and model.tehsil.tehsilId = :Id");
 		 str.append(" and model.mobileNumber is not null and length(model.mobileNumber) = 10 and model.mobileNumber <> '9999999999' ");
 		query = getSession().createQuery(str.toString());
 		query.setParameter("Id", Id);
@@ -196,8 +201,10 @@ public class MobileNumbersDAO extends GenericDaoHibernate<MobileNumbers, Long> i
 		str.append("select distinct model.mobileNumber from MobileNumbers model where");
 		 if(scopeId == 1)
 		 str.append(" model.constituency.district.districtId =:location")	;
-		 else
+		 if(scopeId == 2)
 		 str.append(" model.constituency.constituencyId =:location");
+		if(scopeId == 4)//mandal
+		str.append(" model.tehsil.tehsilId = :location");
 		 str.append(" and model.mobileNumber is not null and length(model.mobileNumber) = 10 and model.mobileNumber <> '9999999999' ");
 		 
 		 if(priority.equalsIgnoreCase(IConstants.PANCHAYAT))
