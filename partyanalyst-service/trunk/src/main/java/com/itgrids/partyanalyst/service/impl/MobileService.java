@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -3439,6 +3440,16 @@ public List<SelectOptionVO> getConstituencyList()
 			if(maxIndex == 0)
 				limit  = "ALL";
 		try{
+			if(scopeId == 3)
+			{
+				List<Long> acIds = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(locationIds);
+				locationIds = new ArrayList<Long>();
+				if(acIds != null && acIds.size() > 0)
+				{
+				locationIds.addAll(acIds);
+				}
+					
+			}
 			boolean flag = false;
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			String date = sdf.format(new Date());
@@ -3452,14 +3463,17 @@ public List<SelectOptionVO> getConstituencyList()
 			destDir.mkdir();
 			List<String> totlaMobileNos = new ArrayList<String>();
 			   int i=0; 
+			   if(locationIds != null && locationIds.size() > 0)
 			    for(Long location : locationIds)
 			    {
 			    	 MobileVO vo = new MobileVO();
 			    	 vo.setId(location);
 					 if(scopeId == 1)
 						vo.setName(districtDAO.get(location).getDistrictName());
-					 else
+					 if(scopeId == 2)
 						vo.setName(constituencyDAO.get(location).getName()); 
+					 if(scopeId == 4)
+							vo.setName(tehsilDAO.get(location).getTehsilName()); 
 			    	if(checkedTypeVal == 2) //each file for location
 			    	{
 			    		i++;
@@ -3472,18 +3486,25 @@ public List<SelectOptionVO> getConstituencyList()
 			    	 Set<String> resultNumbers = new HashSet<String>();
 			    	 Long Total  = 0l;
 			    	 Long districtTotal = 0l;
-			    	 
+			    	 Long constiTotal = 0l;
+			    	 Long tehsilTotal = 0l;
 				     if(scopeId == 1)
 				     {
 				    	 Total = mobileNumbersDAO.getMobileNosTotal(location,IConstants.DISTRICT,scopeId);
 				    	 districtTotal =  mobileNumbersDAO.getMobileNosCountByIds(location,IConstants.DISTRICT,scopeId);
+				    	 constiTotal =  mobileNumbersDAO.getMobileNosCountByIds(location,IConstants.CONSTITUENCY,scopeId);
 				    	
 				     }
 			    	else if(scopeId == 2)
 			    	{
 			    	    Total = mobileNumbersDAO.getMobileNosTotal(location,IConstants.CONSTITUENCY,scopeId);	
+			    	    constiTotal =  mobileNumbersDAO.getMobileNosCountByIds(location,IConstants.CONSTITUENCY,scopeId);
 			    	}
-				     	Long constiTotal =  mobileNumbersDAO.getMobileNosCountByIds(location,IConstants.CONSTITUENCY,scopeId);
+			    	else if(scopeId == 4)
+			    	{
+			    	   Total = mobileNumbersDAO.getMobileNosTotal(location,IConstants.TEHSIL,scopeId);	
+				    }
+				     	
 				        Long mandalTotal = mobileNumbersDAO.getMobileNosCountByIds(location,IConstants.TEHSIL,scopeId);
 				    	Long panchayatTotal = mobileNumbersDAO.getMobileNosCountByIds(location,IConstants.PANCHAYAT,scopeId);
 				    	
@@ -3495,6 +3516,7 @@ public List<SelectOptionVO> getConstituencyList()
 				    	int panchayatMaxIndex = (int) ((panchayatTotal * maxIndex)/Total.longValue());
 				    	int constisum = constiMaxIndex + mandalMaxIndex + panchayatMaxIndex;
 				    	int districtSum =0;
+				    	int tehsilSum = 0;
 				    	if(scopeId == 2 && constisum > maxIndex)
 				    	{
 				    		if(constiMaxIndex > 0)
@@ -3513,20 +3535,29 @@ public List<SelectOptionVO> getConstituencyList()
 						    	  
 						      
 				    	 }
-				    	
-					   
+				    	 if(scopeId == 4)
+				    	 {
+				    		 tehsilSum =   mandalMaxIndex + panchayatMaxIndex;
+				    		 if(tehsilSum > maxIndex)
+				    			 panchayatMaxIndex = panchayatMaxIndex - (tehsilSum - maxIndex);
+							  if(tehsilSum < maxIndex)
+							     panchayatMaxIndex = panchayatMaxIndex + (maxIndex - tehsilSum);
+				    		 
+				    	 }
 				        Set<String> panchayatNos = mobileNumbersDAO.getMobilenosBasedOnPriority(scopeId,location,panchayatMaxIndex,IConstants.PANCHAYAT);
 					        if(panchayatNos != null && panchayatNos.size() > 0)
 					        	resultNumbers.addAll(panchayatNos);
 				        Set<String> mandalNos = mobileNumbersDAO.getMobilenosBasedOnPriority(scopeId,location,mandalMaxIndex,IConstants.TEHSIL);
 				        if(mandalNos != null && mandalNos.size() > 0)
 				        	resultNumbers.addAll(mandalNos);
+				        if(scopeId == 1 || scopeId == 2)//District ,constituency
+				        {
 				        Set<String> constituencyNos = mobileNumbersDAO.getMobilenosBasedOnPriority(scopeId,location,constiMaxIndex,IConstants.CONSTITUENCY);
 				        if(constituencyNos != null && constituencyNos.size() > 0)
 				        	resultNumbers.addAll(constituencyNos);
+				        }
 				        
-				        
-				        if(scopeId == 1)
+				        if(scopeId == 1)//district
 					     {
 				        	Set<String> districtNos = mobileNumbersDAO.getMobilenosBasedOnPriority(scopeId,location,districtMaxIndex,IConstants.DISTRICT);
 					        if(districtNos != null && districtNos.size() > 0)
@@ -3594,10 +3625,12 @@ public List<SelectOptionVO> getConstituencyList()
 				else if(checkedTypeVal == 1 && totlaMobileNos.size() > 0)//Single file
 				{
 					str = new StringBuilder();
+					Random rand = new Random();
+					int x = rand.nextInt(4);
 					if(fileFormatVal == 1)
-					f1 = new File(path + pathSeperator+date+pathSeperator+1+".csv");
+					f1 = new File(path + pathSeperator+date+pathSeperator+x+".csv");
 					else
-					f1 = new File(path + pathSeperator+date+pathSeperator+1+".txt");	
+					f1 = new File(path + pathSeperator+date+pathSeperator+x+".txt");	
 					for(String no : totlaMobileNos)
 					{
 						str.append(no.toString());
@@ -3606,6 +3639,10 @@ public List<SelectOptionVO> getConstituencyList()
 					 BufferedWriter outPut1 = new BufferedWriter(new FileWriter(f1));
 					    outPut1.write(str.toString());
 						outPut1.close();
+						if(fileFormatVal == 1)
+						result.setOptionFilePath(path + pathSeperator+date+pathSeperator+x+".csv");
+						else
+						result.setOptionFilePath(path + pathSeperator+date+pathSeperator+x+".txt");	
 				}
 				
 				try{
@@ -3644,6 +3681,35 @@ public List<SelectOptionVO> getConstituencyList()
 			}
 			return result;
 		}
+	 public List<SelectOptionVO> getTehsilList(List<Long> distictIds)
+	  {
+		  List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
+		  try {
+			List<Object[]> list = tehsilDAO.getMandalsByDistricts(distictIds);
+			if(list != null&& list.size() > 0)
+			{
+				for(Object[] params : list)
+					returnList.add(new SelectOptionVO((Long)params[0],params[1].toString()));
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getDistrictsList(), Exception is -",e);
+		}
+		  return returnList;
+	  }
+	 public List<SelectOptionVO> getpcconstituencyList(Long regionId)
+	  {
+		  List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
+		  try {
+			List<Object[]> list = delimitationConstituencyAssemblyDetailsDAO.getPcListByRegion(regionId);
+			if(list != null&& list.size() > 0)
+			{
+				for(Object[] params : list)
+					returnList.add(new SelectOptionVO(new BigInteger(params[0].toString()).longValue(),params[1].toString()));
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getDistrictsList(), Exception is -",e);
+		}
+		  return returnList;
+	  }
 	 
-	
 }
