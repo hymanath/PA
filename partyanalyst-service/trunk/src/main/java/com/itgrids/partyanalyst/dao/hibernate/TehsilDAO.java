@@ -184,4 +184,12 @@ public List<Object[]> getAllTehsilDetails(Long districtId){
 		query.setParameter("tehsilId", tehsilId);
 		return (Long) query.uniqueResult();
 	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getMandalsByDistricts(List<Long> districtIds) {
+		Query query = getSession().createQuery("select distinct model.tehsilId , model.tehsilName from Tehsil model where model.district.districtId in(:districtIds)  order by model.tehsilName");
+		query.setParameterList("districtIds",districtIds);
+		return query.list();
+		
+	}
+	
 }
