@@ -25,6 +25,13 @@ $(document).ready(function() {
 			  noneSelectedText:"Select District"});
  $('#constituencyId').multiselect({
 			  noneSelectedText:"Select Constituency"});
+			  
+$('#parliamentId').multiselect({
+			  noneSelectedText:"Select Constituency"});
+$('#mandalId').multiselect({
+			  noneSelectedText:"Select Constituency"});
+			  
+			 
 
   });
 </script>
@@ -36,30 +43,71 @@ $(document).ready(function() {
     <label>Select Level</label>
     <select id="scopeId" onchange="showHide();correspondingCall();" class="input-block-level"><option value="0">Select Scope</option><option value="1">District</option>
 	<option value="2">Constituency</option>
+	<option value="3">Parliament</option>
+	<option value="4">Mandal</option>
 	</select>
 	</div>
 <div class="span3">
-    <label>Select Region</label>
-    <select id="regionId" class="input-block-level" onchange="getDistrictsForRegion();">
+    <label>Select State</label>
+    <select id="regionId" class="input-block-level" onchange="correspondingCall();">
 	<option value="0">ALL</option>
-	<option value="1">Andhra</option>
+	<option value="1">Andhra Pradesh</option>
 	<option value="2">Telangana</option>
 	</select>
 	</div>
 
-<div class="span3">
+<div class="span3" id="districtDiv">
     <label>Select District</label>
-    <select id="districtId"  multiple="true" onchange="getConstituencies();calculateTotal();" class="input-block-level">
+    <select id="districtId"  multiple="true" onchange="getConstituencies();getMandals();calculateTotal();" class="input-block-level">
 	</select>
 	</div>
-<div class="span3" id="constituencyDiv">
+<div class="span3" id="constituencyDiv" style="display:none;">
 	<label>Select Constituency</label>
     <select id="constituencyId" multiple="true" class="input-block-level" onchange="calculateTotal();">
 	</select>
 	</div>
+<div class="span3" id="parliamentDiv" style="display:none;">
+	<label>Select Parliamnet</label>
+    <select id="parliamentId" multiple="true" class="input-block-level" onchange="calculateTotal();">
+	</select>
+	</div>
+	<div class="span3" id="mandalDiv" style="display:none;">
+	<label>Select Tehsil</label>
+    <select id="mandalId" multiple="true" class="input-block-level" onchange="calculateTotal();">
+	</select>
+	</div>
 
 </div>
+<div class="row">
+<div class="span12 form-inline" style="margin-top:26px;">
+  <label>  Do you want to split the files as per Questions & options &nbsp;&nbsp;&nbsp;&nbsp;</label> <label class="radio">No<input type="radio" name="queOpt" checked value="1" class="QueRadio">
+  </label>
+  <label class="radio">Yes<input type="radio" name="queOpt"  value="2" class="QueRadio">
+  </label> 
+  </div>
+</div>
+<div class="row" style="text-align: center; margin-top: 20px;">
+<div class="span3" id="questionDiv" style="display:none;">
+	<label>Select No Of Quetions</label>
+	 <select id="questionID" class="input-block-level" onchange="showOptions();">
+	<option value="0">Select</option>
+	<option value="1">1</option>
+	<option value="2">2</option>
+	<option value="3">3</option>
+	<option value="4">4</option>
+	<option value="5">5</option>
+	<option value="6">6</option>
+	<option value="7">7</option>
+	<option value="8">8</option>
+	<option value="9">9</option>
+	<option value="10">10</option>
+	</select>
+	</div>
+	</div>
+	
+<div class="row well form-inline" id="OptionsDiv" style="display:none;margin-left: 0px; margin-top: 20px;">
 
+	</div>
 <div style="margin-top: 20px;" class="row form-inline">
 <div class="span2">
 	<label>Enter No.of Mnos</label>
@@ -74,7 +122,7 @@ $(document).ready(function() {
 </div>
 
 
-<div class="span4"  style="margin-top: 26px;">
+<div class="span4 "  style="margin-top: 26px;" id="radioBtnDiv">
  <label class="radio">single File<input type="radio" onclick="showTextBox();" name="radiobtn" id="singleFileId" value="1" checked>
   </label>
 <label class="radio">each File<input type="radio" onclick="showTextBox();" name="radiobtn" id="singleFileId" value="2" >
@@ -83,6 +131,7 @@ $(document).ready(function() {
   <label class="radio">Multiple Files<input type="radio" name="radiobtn" id="multipleFileId" value="3" onclick="showTextBox();" >
   </label>&nbsp;&nbsp;&nbsp;
   </div>
+
 <div class="span2" style="margin-left: -21px;display:none;" id="noOfFileDiv">
 	<label>Enter No.of files</label>
     <input type="text" class="input-block-level" id="noOfFileId">
@@ -94,6 +143,7 @@ $(document).ready(function() {
   </label> <label class="radio">csv<input type="radio" name="optionsRadios" id="optionsRadios2" value="1" >
   </label></div>
 </div>
+
 <div class="row" style="text-align: center; margin-top: 20px;">
     <input type="button" onclick="createFile();" class="btn" value="Submit"></input>
 	<img src="./images/icons/search.gif" id="ajaxImg" style="display:none"/>
@@ -107,7 +157,9 @@ $(document).ready(function() {
 			  
 function correspondingCall()
 {
+	
 	var scopeId = $("#scopeId").val();
+	
 	if(scopeId == 0)
 	{
 		$('#districtId').find('option').remove();
@@ -116,9 +168,16 @@ function correspondingCall()
 		$('#constituencyId').multiselect('refresh');
 		return;
 	}
+	if(scopeId == 1 || scopeId == 2 || scopeId == 4)
 	getDistrictsForRegion();
 	if(scopeId == 2) 
 	getConstituencies();
+	if(scopeId == 3) 
+	getParliamentConstituencies();
+	if(scopeId == 4)
+		getMandals();
+	
+
 
 }
 function getDistricts()
@@ -150,7 +209,7 @@ function getConstituencies()
 	$('#constituencyId').multiselect('refresh');
 	var scopeId = $("#scopeId").val();
 	var districtIds = $('#districtId').val();
-	if(scopeId == 0 || scopeId == 1)
+	if(scopeId != 2)
 		return;
 	if(districtIds == null)
 		return;
@@ -174,7 +233,36 @@ function getConstituencies()
 		
 	});		
 }
-
+function getMandals()
+{
+	$('#mandalId').find('option').remove();
+	$('#mandalId').multiselect('refresh');
+	var scopeId = $("#scopeId").val();
+	var districtIds = $('#districtId').val();
+	if(scopeId !=4)
+		return;
+	if(districtIds == null)
+		return;
+	var jsObj=
+	{
+		    districtIds : districtIds,
+			task : "getTehsils"
+	};
+	$.ajax({
+	type: "GET",
+	url: "gettehsilsAction.action",
+	dataType: 'json',
+	data: {task:JSON.stringify(jsObj)},
+	})
+	.done(function( result ) {
+	
+		$.each(result,function(index,value){
+			$('#mandalId').append('<option value="'+value.id+'">'+value.name+'</option>');
+		});
+			$('#mandalId').multiselect('refresh');	
+		
+	});		
+}
 function createFile()
 {
 
@@ -189,9 +277,12 @@ function createFile()
 	noOfFiles = 0;
 	if(scopeId == 1) 
 	locationIds = $('#districtId').val();
-	else
+	else if(scopeId == 2)
 	locationIds = $('#constituencyId').val();
-	
+	else if(scopeId == 3)
+	locationIds = $('#parliamentId').val();
+	else if(scopeId == 4)
+	locationIds = $('#mandalId').val();
 	var fileFormat = $('input:radio[name=optionsRadios]:checked').val();
 	var maxIndex = $.trim($('#maxIndex').val());
 	if(maxIndex.length == 0)
@@ -207,11 +298,23 @@ function createFile()
 	{
 		if(scopeId == 1)
 		str+='Select District';
-		else
+		else if(scopeId == 2)
 		{
 		if($('#districtId').val() == null)
 		str+='Select District<br/>';
 		str+='Select Constituency';
+		}
+		else if(scopeId == 3)
+		{
+		if($('#parliamentId').val() == null)
+		
+		str+='Select Parliament';
+		}
+		else if(scopeId == 4)
+		{
+		if($('#districtId').val() == null)
+		str+='Select District<br/>';
+		str+='Select Mandal';
 		}
 		flag =true;
 	}
@@ -234,6 +337,12 @@ function createFile()
 	return;
 	$("#errorDiv").html('');
 	$("#ajaxImg").show();
+	var queOptionsArr = new Array();
+	var obj = {
+		question : 1,
+		optionsCnt : 3
+	}
+queOptionsArr.push(obj);
 	var jsObj=
 	{
 			locationIds : locationIds,
@@ -242,6 +351,8 @@ function createFile()
 			maxIndex:maxIndex,
 			checkedTypeVal:checkedTypeVal,
 			noOfFiles:noOfFiles,
+			questions:true,
+			queOptionsArr:queOptionsArr,
 			task : "createFilepath"
 	};
 	$.ajax({
@@ -300,9 +411,60 @@ function showHide()
 {
 var scopeId = $("#scopeId").val();
 if(scopeId == 1)
+	{
 	$("#constituencyDiv").hide();
+	$("#mandalDiv").hide();
+	$("#parliamentDiv").hide();
+	$("#districtDiv").show();
+	}
 else if(scopeId == 2)
-$("#constituencyDiv").show();
+	{
+   $("#constituencyDiv").show();
+   $("#districtDiv").show();
+	$("#parliamentDiv").hide();
+	$("#mandalDiv").hide();
+	}
+	else if(scopeId == 3)
+	{
+	$("#constituencyDiv").hide();
+	$("#parliamentDiv").show();
+	$("#mandalDiv").hide();
+	$("#districtDiv").hide();
+	
+	}
+	else if(scopeId == 4)
+	{
+	$("#constituencyDiv").hide();
+	$("#parliamentDiv").hide();
+	$("#mandalDiv").show();
+	$("#districtDiv").show();
+	}
+}
+function getParliamentConstituencies()
+{
+	$('#parliamentId').find('option').remove();
+	$('#parliamentId').multiselect('refresh');
+	var regionId = $("#regionId").val();
+	
+	var jsObj=
+	{
+		    regionId : regionId,
+			task : "getPcs"
+	};
+	$.ajax({
+	type: "GET",
+	url: "getParliamnetsForRegionAction.action",
+	dataType: 'json',
+	data: {task:JSON.stringify(jsObj)},
+	})
+	.done(function( result ) {
+	
+		$.each(result,function(index,value){
+			$('#parliamentId').append('<option value="'+value.id+'">'+value.name+'</option>');
+		});
+			$('#parliamentId').multiselect('refresh');	
+		
+	});		
 }
 function calculateTotal()
 {
@@ -392,10 +554,56 @@ else if(radiobtnVal == 2)
 else
 $("#noOfFileDiv").show();
 }
+function ShowHideForQuestions()
+{
+var checkedVal = $('input:radio[name=queOpt]:checked').val();
+if(checkedVal == 2)
+{
+$("#radioBtnDiv").hide();
+$("#questionDiv").show();
+$("#OptionsDiv").show();
+}
+else
+	{
+$("#radioBtnDiv").show();
+$("#questionDiv").hide();
+$("#OptionsDiv").hide();
+}
+}
+function showOptions()
+{
+$("#OptionsDiv").html('');
+
+var queSize = $("#questionID").val();
+if(queSize == 0)
+return;
+$("#OptionsDiv").show();
+var str ='';
+str+='<h2>Enter No.of Options(files) for Question</h2>';
+
+var j = 0;
+
+for(var i=0;i<queSize;i++)
+	{
+	j++;
+str+='<div class="span2">';
+str+='<label>Question'+j+'</label>';
+str+='<input type="text" class="input-block-level span2" id="option'+j+'">';
+str+='</input>';
+str+='</div>';
+}
+
+$("#OptionsDiv").html(str);
+}
+$(".QueRadio").live("click",function(){
+ShowHideForQuestions();
+})
 </script>
 <script>
+
 correspondingCall(1);
 showHide();
+
 </script>
 <script>
 $(".mytooltip").tooltip();
