@@ -1,8 +1,15 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,7 +48,7 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 	private IMobileService mobileService;
 	private ResultStatus resultStatus;
 	public static final Logger LOG = Logger.getLogger(MobileDataAction.class);
-	private List<SelectOptionVO> constituencyList,userList,superAdminUsersList,pcconstituencyList,districts;
+	private List<SelectOptionVO> constituencyList,userList,superAdminUsersList,pcconstituencyList,districts,mandals;
 	private String filePath;
 	private IRegistrationService registrationService;
 	private EntitlementVO allRegisteredUsersData;
@@ -52,6 +59,14 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 	
 
 	
+	public List<SelectOptionVO> getMandals() {
+		return mandals;
+	}
+
+	public void setMandals(List<SelectOptionVO> mandals) {
+		this.mandals = mandals;
+	}
+
 	public EntitlementsHelper getEntitlementsHelper() {
 		return entitlementsHelper;
 	}
@@ -332,11 +347,11 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
         RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
         if(user == null)
     	  return ERROR;
-       if(session.getAttribute(IConstants.USER) == null && 
+      /* if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.IVR_MOBILE_NUMBERS_RETRIVAL))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.IVR_MOBILE_NUMBERS_RETRIVAL))
-			return ERROR;
+			return ERROR;*/
         if(request.getRequestURL().toString().contains("localhost"))
         	filePath = "/PartyAnalyst/mobileNumbers.txt";
         else
@@ -349,12 +364,57 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 		try{
 			jObj = new JSONObject(getTask());
 			JSONArray arr = jObj.getJSONArray("locationIds");
+			boolean questions = jObj.getBoolean("questions");
 			List<Long> locationIds = new ArrayList<Long>();
 			for(int i=0;i<arr.length();i++)
 				locationIds.add(new Long(arr.get(i).toString()));	
 			Long fileFormatVal = jObj.getLong("fileFormat");
+			JSONArray questionOptionsArray = jObj.getJSONArray("queOptionsArr");
 			//mobileVo = mobileService.getIvrMobileNumbers(jObj.getLong("scopeId"),locationIds,fileFormatVal,jObj.getInt("maxIndex"),jObj.getBoolean("multipleFileCheck"),jObj.getInt("noOfFiles"));
+			if(!questions)
 			mobileVo = mobileService.getMobileNumbersByLocations(jObj.getLong("scopeId"),locationIds,fileFormatVal,jObj.getInt("maxIndex"),jObj.getInt("checkedTypeVal"),jObj.getInt("noOfFiles"));
+			else
+			{
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				String date = sdf.format(new Date());
+				String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+				String path = IConstants.STATIC_CONTENT_FOLDER_URL+pathSeperator+"mobile_numbers";
+				File sourceDir = new File(path + pathSeperator+date);
+				File destDir = new File(path + pathSeperator+date+"QOpt");
+				destDir.mkdir();
+				for(int i=0;i<questionOptionsArray.length();i++)
+				{
+					JSONObject JSONObject = questionOptionsArray.getJSONObject(i);
+					int question = JSONObject.getInt("question");
+					int optionsCount = JSONObject.getInt("optionsCnt");
+					int maxIndex = jObj.getInt("maxIndex") / optionsCount;
+					int opt = 0;
+					for(int j=0;j<optionsCount;j++)
+					{
+						opt++;
+						
+					 mobileVo = mobileService.getMobileNumbersByLocations(jObj.getLong("scopeId"),locationIds,fileFormatVal,maxIndex,1,0);//single file
+					 File oldName = new File(mobileVo.getOptionFilePath());
+					 File newName = null;
+					 if(fileFormatVal == 1)
+						 oldName = new File(path + pathSeperator+date+pathSeperator+question+opt+".csv");
+				      else
+				      newName = new File(path + pathSeperator+date+pathSeperator+question+opt+".txt"); 
+					  oldName.renameTo(new File(path + pathSeperator+date+"QOpt" +pathSeperator+ newName.getName()));
+					
+					}
+				}
+				 
+				 FileOutputStream fos = new FileOutputStream(path + pathSeperator+date+"QOpt.zip");
+				 ZipOutputStream zos = new ZipOutputStream(fos);
+			     System.gc();
+				 for(File rf : destDir.listFiles())
+				 addToZip(rf.getAbsolutePath(), zos);
+				 zos.close();
+				 fos.close();
+				 mobileVo.setStatus("/mobile_numbers/"+date+"QOpt.zip");
+				 
+			}
 					
 		}
 		catch (Exception e) {
@@ -363,7 +423,26 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 		return Action.SUCCESS;
 	}
 	
-	
+	 public  void addToZip(String fileName, ZipOutputStream zos)
+  	 {
+			try {
+				File file = new File(fileName);
+				FileInputStream fis = new FileInputStream(file);
+				ZipEntry zipEntry = new ZipEntry(fileName);
+				zos.putNextEntry(zipEntry);
+
+				byte[] bytes = new byte[1024];
+				int length;
+				while ((length = fis.read(bytes)) >= 0){
+					zos.write(bytes, 0, length);
+				}
+				zos.closeEntry();
+				fis.close();
+			} catch (Exception e) {
+				LOG.error("Exception Occured in addToZipFile() Method ");
+			}
+			
+		}
 	public String getDistrictList()
 	{
 		try{
@@ -383,7 +462,37 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 			List<Long> locationIds = new ArrayList<Long>();
 			for(int i=0;i<arr.length();i++)
 				locationIds.add(new Long(arr.get(i).toString()));
+			
 				constituencyList = mobileService.getConstituencyList(locationIds);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getMandalsList()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			JSONArray arr = jObj.getJSONArray("districtIds");
+			List<Long> locationIds = new ArrayList<Long>();
+			for(int i=0;i<arr.length();i++)
+				locationIds.add(new Long(arr.get(i).toString()));
+				mandals = mobileService.getTehsilList(locationIds);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getParliamentConstituencies()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			pcconstituencyList = mobileService.getpcconstituencyList(jObj.getLong("regionId"));
+			
 		}
 		catch (Exception e) {
 			e.printStackTrace();

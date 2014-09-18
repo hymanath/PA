@@ -8312,5 +8312,17 @@
 		</result>
 		</action>
 		
+		<action name="gettehsilsAction" class="mobileDataAction" method="getMandalsList">
+			<result type="json" name="success">
+				<param name="root">mandals</param>
+		</result>
+		</action>
+		<action name="getParliamnetsForRegionAction" class="mobileDataAction" method="getParliamentConstituencies">
+			<result type="json" name="success">
+				<param name="root">pcconstituencyList</param>
+		</result>
+		</action>
+		
+		
 </package>
 </struts>      
