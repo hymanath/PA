@@ -2038,7 +2038,7 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 		
 		List<Object[]> nominations  = nominationDAO.findByConstituencyPartyAndElectionsYears(partyIds, constiIds, electionYear1);
 		//List candidateWin=nominationDAO.findCandidateNamePartyByConstituenciAndElections(constituencyId.toString(), electionYears);
-		List candidateWin=nominationDAO.findCandidateNamesPartyByConstituenciAndElections(constiIds, electionYear1);
+		//List candidateWin=nominationDAO.findCandidateNamesPartyByConstituenciAndElections(constiIds, electionYear1);
 		
 		BoothResultVO boothResultVO = null;
 		if(nominations != null && nominations.size()>0)
@@ -2062,7 +2062,7 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 		        	partyBoothPerformanceVO.setTotalVotes(nomination.getConstituencyElection().getConstituencyElectionResult().getTotalVotes() != null ? nomination.getConstituencyElection().getConstituencyElectionResult().getTotalVotes().longValue(): 0L);
 					partyBoothPerformanceVO.setVotingPercentage(nomination.getConstituencyElection().getConstituencyElectionResult().getVotingPercentage() != null ? nomination.getConstituencyElection().getConstituencyElectionResult().getVotingPercentage():"");
 					partyBoothPerformanceVO.setRank(nomination.getCandidateResult().getRank() != null ? nomination.getCandidateResult().getRank():0L);
-					partyBoothPerformanceVO.setWonCandidate(candidateWin);
+					//partyBoothPerformanceVO.setWonCandidate(candidateWin);
 					partyBoothPerformanceVO.setMarginVotes(nomination.getCandidateResult().getMarginVotes().longValue());
 					
 					
@@ -2445,7 +2445,7 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 					candidateVO.setPartyName(vo.getPartyName());
 					candidateVO.setRank(vo.getRank());
 					candidateVO.setMarginVotes(vo.getMarginVotes());
-					candidateVO.setWonCandidate(vo.getWonCandidate());
+					//candidateVO.setWonCandidate(vo.getWonCandidate());
 					candidatesList.add(candidateVO);
 					
 					
