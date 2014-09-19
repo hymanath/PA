@@ -1,5 +1,8 @@
 package com.itgrids.partyanalyst.excel.booth;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.itgrids.partyanalyst.dto.ResultStatus;
 
 public class BoothResultVO extends ResultStatus{
@@ -19,6 +22,7 @@ public class BoothResultVO extends ResultStatus{
 	private String oppPartyPercentage;
 	private String pollingPercentage;
 	private int totalBoothVoters;
+	private List<BoothResultVO> BoothResultVOList = new ArrayList<BoothResultVO>();
 	
 	public BoothResultVO(){
 		
@@ -39,6 +43,14 @@ public class BoothResultVO extends ResultStatus{
 	}
 	
 	
+	public List<BoothResultVO> getBoothResultVOList() {
+		return BoothResultVOList;
+	}
+
+	public void setBoothResultVOList(List<BoothResultVO> boothResultVOList) {
+		BoothResultVOList = boothResultVOList;
+	}
+
 	public String getPartNo() {
 		return partNo;
 	}
