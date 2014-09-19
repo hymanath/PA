@@ -168,10 +168,10 @@ public class DelimitationConstituencyDAOHibernateTest extends BaseDaoTestCase {
 	}*/
 	
 	public void testfindDelimitationConstituencyByConstituencyIDs(){
-		List<Long> idsList =new ArrayList<Long>(0);
-		idsList.add(282l);
-		idsList.add(232l);
-		List<DelimitationConstituency> value = delimitationConstituencyDAO.findLatestDelimitationConstituencyByConstituencyIDs(idsList);
+		//List<Long> idsList =new ArrayList<Long>(0);
+		//idsList.add(282l);
+		//idsList.add(232l);
+		List<DelimitationConstituency> value = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(478L,2009L);
 		System.out.println(value.size());
 	}
 }

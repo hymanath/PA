@@ -1,13 +1,11 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.net.InetAddress;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
-import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 	
@@ -571,7 +569,7 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 			 System.out.println(params[0]+":"+params[1]);
 	}*/
 	
-	public void testgetPartyWiseDelimationEffectBasedOnVoters()
+	/*public void testgetPartyWiseDelimationEffectBasedOnVoters()
 	{
 		List<Long> partyIds = new ArrayList<Long>();
 		partyIds.add(872l);
@@ -581,7 +579,7 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 		for (Object[] params : values) {
 			 System.out.println(params[0]+":"+params[1]);
 		}
-	}
+	}*/
 	/*public void testgetPartyWiseDelimationEffectBasedOnVoters()
 	{
 		List<Long> partyIds = new ArrayList<Long>();
@@ -760,4 +758,12 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 			 System.out.println(params[0]+":"+params[1]);
 		}
 	}*/
+	
+	public void testDetailss()
+	{
+		System.out.println(new Date());
+		List<Object[]> list = candidateBoothResultDAO.findboothWiseResultsForCandidate(65L,487137L);
+		System.out.println(list.size());
+		System.out.println(new Date());
+	}
 }

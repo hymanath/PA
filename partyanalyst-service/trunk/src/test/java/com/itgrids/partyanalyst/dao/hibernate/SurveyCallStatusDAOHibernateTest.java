@@ -27,7 +27,7 @@ public class SurveyCallStatusDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 		}*/
 		
-		public void test(){
+	/*	public void test(){
 			List<Long> boothIds = new ArrayList<Long>();
 			boothIds.add(439808l);
 			boothIds.add(439964l);
@@ -35,4 +35,14 @@ public class SurveyCallStatusDAOHibernateTest extends BaseDaoTestCase{
 			List<Object[]> list = surveyCallStatusDAO.getCasteStatusForBooth(boothIds);
 			System.out.println(list.size());
 		}
+		*/
+		
+		public void test(){
+			List<Object[]> list = surveyCallStatusDAO.getSurveyCallDtalsByboothId(403940L,null);
+			System.out.println(list.size());
+		}
+		
+		
+		
+		
 }

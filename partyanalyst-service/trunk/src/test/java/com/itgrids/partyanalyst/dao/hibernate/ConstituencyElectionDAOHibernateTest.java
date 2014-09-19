@@ -374,7 +374,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 		for(Object[] params : list)
 		System.out.println(params[0]+" "+params[1]);
 	}*/
-	
+	/*
 	public void test(){
 		List<Long> electionIds=new ArrayList<Long>();
 		List<Long> tehsilIds=new ArrayList<Long>();
@@ -465,5 +465,12 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 		
 		System.out.println(list.size());
 		
+	}
+	*/
+	
+	public void testDetails()
+	{
+		List<Object[]> list = constituencyElectionDAO.getParliamentConstiListForElectionYear(1L, "2014", 1L);
+		System.out.println(list.size());
 	}
 }

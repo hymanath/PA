@@ -1704,5 +1704,34 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		System.out.println(list.size());
 	}
 	*/
+	
+	public void testDetails()
+	{
+		List<Long> staticPartyList = new ArrayList<Long>();
+		staticPartyList.add(362L);  // INC
+		staticPartyList.add(163L);  // BJP
+		
+		
+		staticPartyList.add(872L);  // TDP
+		staticPartyList.add(1117L); // YSRC 
+		staticPartyList.add(514L);  // LSP
+		//staticPartyList.add(239L);  // BSP
+		staticPartyList.add(662L);  // PRP			
+		//staticPartyList.add(1712L); // JSP
+		staticPartyList.add(265L);  // CPI
+		staticPartyList.add(269L);  // CPM	
+	
+		staticPartyList.add(886L);  // TRS
+		staticPartyList.add(72L);   // AIMIM
+
+		List<Long> constituencyIds = new ArrayList<Long>();
+		constituencyIds.add(243L);
+		constituencyIds.add(282L);
+		@SuppressWarnings("unchecked")
+		List<Object[]> list = nominationDAO.findPartiesByConstituencListAndElection(constituencyIds,"2014");
+		
+		System.out.println(list.size());
+		
+	}
 }	
 	
