@@ -169,6 +169,32 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 		return query.list();
 	} 
 	
+
+	public List<Object[]> findAllParliamentDetailsAssembliesForTheGivenYear(List<Long> assemblyIds,Long electionYear){
+		Query query = getSession().createQuery(" select distinct model.delimitationConstituency.constituency.constituencyId, model.delimitationConstituency.constituency.name " +
+				" from DelimitationConstituencyAssemblyDetails model where model.constituency.constituencyId in (:assemblyIds) and " +
+				" model.delimitationConstituency.year = "+electionYear+" order by  model.delimitationConstituency.constituency.name ");
+		
+		query.setParameterList("assemblyIds", assemblyIds);
+		//query.setParameter("electionYear", electionYear);
+		return query.list();
+	} 
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> findAssemblyInfoByDelimitationConstituencyId(Long delimitationConstituencyId){
+		return getHibernateTemplate().find("select model.constituency.constituencyId, model.constituency.name from DelimitationConstituencyAssemblyDetails model where model.delimitationConstituency.delimitationConstituencyID = ?",delimitationConstituencyId);
+	}
+	
+	
+	public List<Object[]> getAllAssemblyDetailsOfParliament(Long parliamentId,Long electionYear)
+	{		
+		return getHibernateTemplate().find("select model.constituency.constituencyId, model.constituency.name, model.delimitationConstituency.year from " +
+				" DelimitationConstituencyAssemblyDetails model where model.delimitationConstituency.constituency.constituencyId = ? and model.delimitationConstituency.year ="+electionYear+" order by model.constituency.name ",parliamentId);
+	}
+
+	
+	
 	public List<Long> findAllAssembliesForParliamentForTheGivenYear(List<Long>  assemblyIds,Long parliamentId,Long electionYear){
 		Query query = getSession().createQuery("select model.constituency.constituencyId from DelimitationConstituencyAssemblyDetails model where " +
 				"model.delimitationConstituency.constituency.constituencyId = :parliamentId and model.delimitationConstituency.year = " +

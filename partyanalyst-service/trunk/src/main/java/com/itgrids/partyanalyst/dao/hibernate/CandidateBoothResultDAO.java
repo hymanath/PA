@@ -1644,4 +1644,46 @@ public List<Object[]> getlocalbodywardResults1(Long constituencyId, List<Long> e
 			query.setParameterList("boothIds", boothIds);
 			return query.list();
    }
+   
+ /*  public List<Object[]> findboothWiseResultsForCandidate(Long constituencyId, Long nominationId)
+   {
+	   
+	   Query query = getSession().createQuery("select model.boothConstituencyElection.booth, model.boothConstituencyElection.boothResult.validVotes, " +
+	   		" model.votesEarned from CandidateBoothResult model" +
+		   		"  where  " +
+		   		"  model.boothConstituencyElection.booth.constituency.constituencyId =:constituencyId  " +
+		   		"  and model.nomination.nominationId = :nominationId  ");
+	   
+			query.setParameter("constituencyId", constituencyId);
+			query.setParameter("nominationId", nominationId);
+			
+			return query.list();
+			
+   }*/
+   
+   public List<Object[]> findboothWiseResultsForCandidate(Long constituencyId, Long nominationId)
+   {
+	    
+	   Query query = getSession().createQuery("select " +
+		   		" model.boothConstituencyElection.booth.boothId, " +  //0
+		   		" model.boothConstituencyElection.booth.partNo, " +//1
+		   		" model.boothConstituencyElection.booth.location, " + //2
+		   		" model.boothConstituencyElection.booth.totalVoters, " + //3
+		   		" model.boothConstituencyElection.boothResult.validVotes, " + //4
+				" model.boothConstituencyElection.booth.villagesCovered, " + //5
+		   		" model.boothConstituencyElection.booth.localBody.localElectionBodyId, " + //6
+		   		" model.boothConstituencyElection.booth.tehsil, " + //7
+		   		" model.votesEarned " + //8
+		   		//" model.boothConstituencyElection.booth.boothLocalBodyWard " + //9
+		   		" from CandidateBoothResult model " + 
+			   		"  where  " +
+			   		"  model.boothConstituencyElection.booth.constituency.constituencyId =:constituencyId  " +
+			   		"  and model.nomination.nominationId = :nominationId  order by model.boothConstituencyElection.booth.partNo ");
+	   
+			query.setParameter("constituencyId", constituencyId);
+			query.setParameter("nominationId", nominationId);
+			
+			return query.list();
+			
+   }
 }

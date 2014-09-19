@@ -101,6 +101,22 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<Object[]> findByConstituencyPartyAndElectionsYears(List<Long> partyIds, List<Long> constituencyIds, String electionYear){
+
+		StringBuilder queryStr = new StringBuilder();
+		
+		queryStr.append(" select model.party.partyId, model from Nomination model where model.party.partyId in (:partyIds) and model.constituencyElection.election.electionYear="+electionYear+" ");
+		queryStr.append(" and model.constituencyElection.constituency.constituencyId in (:constituencyIds) group by model.party.partyId order by model.party.shortName asc ");
+		
+		Query qurQuery = getSession().createQuery(queryStr.toString());
+		qurQuery.setParameterList("constituencyIds", constituencyIds);
+		qurQuery.setParameterList("partyIds", partyIds);
+		
+		return qurQuery.list();	
+		
+	}
+	
+	@SuppressWarnings("unchecked")
     public List<Nomination> findByStatePartyAndElectionId(final Long stateId, final Long electionId, final Long partyId){
            
             return ( List<Nomination> ) getHibernateTemplate().execute( new HibernateCallback() {
@@ -167,6 +183,17 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				" where model.constituencyElection.constituency.constituencyId in (  " + constituencyIds +
 				") and model.constituencyElection.election.electionYear = ? " +
 				" and model.candidateResult.rank = 1", electionYear);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List findCandidateNamePartyByConstituenciAndElections(String constituencyId, List<String> electionYears) {
+		return getHibernateTemplate().find( "select upper(model.constituencyElection.constituency.name)," +
+				" upper(model.candidate.lastname), upper(model.party.shortName), " +
+				" model.constituencyElection.constituency.constituencyId , model.candidate.candidateId ," +
+				" model.party.partyFlag,model.constituencyElection.reservationZone,model.party.partyId from Nomination model " +
+				" where model.constituencyElection.constituency.constituencyId in (  " + constituencyId +
+				") and model.constituencyElection.election.electionYear in (?) " +
+				" and model.candidateResult.rank = 1", electionYears);
 	}
 	
 	public List findMPTCInfoByElectionTypeTehsilAndParty( Long tehsilID, Long partyId) {
@@ -5182,6 +5209,62 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			
 		}
 		
-
+		@SuppressWarnings("unchecked")
+		public List getPartyInfoThatParticipatedInAElection(Long electionyear,List<Long> constituencyIds,List<Long> partyIds)
+		{
+			Query query = getSession().createQuery("select distinct N.party.partyId,N.party.shortName from Nomination N " +
+					" where " +
+					" N.constituencyElection.election.electionYear = "+electionyear+"  and " +
+					" N.constituencyElection.constituency.constituencyId in (:constituencyIds) and N.party.partyId in (:partyIds) order by N.party.shortName asc ");
+			
+			query.setParameterList("constituencyIds", constituencyIds);
+			query.setParameterList("partyIds", partyIds);
+			
+			return query.list();
+		}
+		
+		@SuppressWarnings("unchecked")
+		public List findCandidateNamesPartyByConstituenciAndElections(List<Long> constituencyIds, String electionYear) {
+			
+			Query query = getSession().createQuery("select upper(model.constituencyElection.constituency.name)," +
+					" upper(model.candidate.lastname), upper(model.party.shortName), " +
+					" model.constituencyElection.constituency.constituencyId , model.candidate.candidateId ," +
+					" model.party.partyFlag,model.constituencyElection.reservationZone,model.party.partyId from Nomination model " +
+					" where model.constituencyElection.constituency.constituencyId in (:constituencyIds) and model.constituencyElection.election.electionYear ="+electionYear+") " +
+					" model.candidateResult.rank = 1");
+			
+			query.setParameterList("constituencyIds", constituencyIds);
+			
+			return query.list();
+			
+		}
+		@SuppressWarnings("unchecked")
+		public List getPartyInfoParticipatedInAElection(Long electionyear,List<Long> constituencyIds,List<Long> partyIds,Long electionScopeId)
+		{
+			Long stateId = 1L;
+			Query query = getSession().createQuery("select distinct N.party.partyId,N.party.shortName from Nomination N " +
+					" where " +
+					" N.constituencyElection.election.electionYear = "+electionyear+"  and N.constituencyElection.election.electionScope.electionScopeId = :electionScopeId and " +
+					" N.constituencyElection.constituency.constituencyId in (:constituencyIds) and N.party.partyId in (:partyIds) and  N.constituencyElection.constituency.state.stateId =:stateId order by N.party.shortName asc ");
+			
+			query.setParameterList("constituencyIds", constituencyIds);
+			query.setParameterList("partyIds", partyIds);
+			query.setParameter("stateId", stateId);
+			query.setParameter("electionScopeId", electionScopeId);
+			
+			return query.list();
+		}
+		
+		@SuppressWarnings("unchecked")
+		public List<Object[]> findPartiesByConstituencListAndElection(List<Long> constituencyIds, String electionYear) {
+			
+			Query query = getSession().createQuery("select distinct model.party.partyId,model.party.shortName  from Nomination model where model.constituencyElection.constituency.constituencyId in (:constituencyIds)" +
+					"  and model.constituencyElection.election.electionYear ="+electionYear+" ");
+			
+			query.setParameterList("constituencyIds", constituencyIds);
+			
+			return query.list();
+		}
+		
 }
 
