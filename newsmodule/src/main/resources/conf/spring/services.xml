@@ -301,7 +301,6 @@
    		<property name="candidateDAO" ref="candidateDAO" />
    		<property name="userDAO" ref="userDAO" />
    		<property name="debateReportDAO" ref="debateReportDAO" />
-   		<property name="fontDAO" ref="fontDAO" />
    </bean>
    
    <bean name="articleNewsService" class="com.itgrids.partyanalyst.service.impl.ArticleNewsService">

@@ -43,7 +43,7 @@ public class Debate extends BaseModel implements java.io.Serializable{
 	
 	//private Set<DebateObserver> debateObserver = new HashSet<DebateObserver>(0);
 	//private Set<DebateParticipant> debateParticipant = new HashSet<DebateParticipant>(0);
-	private Font font;
+
 	
 	//default constructor.
 	 
@@ -165,18 +165,7 @@ public class Debate extends BaseModel implements java.io.Serializable{
 	}*/
 	
 	
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "font_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
-	public Font getFont() {
-		return font;
-	}
-
-	public void setFont(Font font) {
-		this.font = font;
-	}
-
+	
 	
 	
 	

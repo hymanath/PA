@@ -26,7 +26,7 @@ public class DebateSubject {
 private Long debateSubjectId;
 private Debate debate;
 private String subject;
-private Font font;
+
 
 
 public DebateSubject(){}
@@ -72,17 +72,7 @@ public void setSubject(String subject) {
 	this.subject = subject;
 }
 
-@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-@JoinColumn(name = "font_id")
-@LazyToOne(LazyToOneOption.NO_PROXY)
-@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
-public Font getFont() {
-	return font;
-}
 
-public void setFont(Font font) {
-	this.font = font;
-}
 
 
 
