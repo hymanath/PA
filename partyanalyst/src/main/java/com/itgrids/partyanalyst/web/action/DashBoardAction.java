@@ -959,4 +959,38 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String boothwiseResults()
+	{
+		try {
+			session = request.getSession();
+			if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"MAHANADU")){
+				return "mahanadu";
+			}
+			if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),IConstants.CASTE_SURVEY_CALL_CENTER)){
+				return "webuser";
+			}
+			if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),IConstants.VIZAG_WM)){
+				return "webuser";
+			}
+			if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),IConstants.SURVEY_USER_CREATION)){
+				return "surveyUser";
+			}
+			if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),IConstants.PARTY_CADRE_SEARCH)){
+				return "partyCadre";
+			}
+			if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.IVR_MOBILE_NUMBERS_RETRIVAL))
+			{
+				return "mobileNumbersRetrivalPage";
+			}
+		
+		 }catch(Exception e){
+			  LOG.error("Exception rised in execute method ",e);
+			  return "userProfile";
+		  }
+			return Action.SUCCESS;
+		
+		
+	}
+	
 }
