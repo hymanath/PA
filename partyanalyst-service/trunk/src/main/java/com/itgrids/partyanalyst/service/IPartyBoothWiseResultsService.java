@@ -5,6 +5,7 @@ import java.util.List;
 import com.itgrids.partyanalyst.dto.ConstituencyVO;
 import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultListVO;
 import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 import com.itgrids.partyanalyst.excel.booth.PartyBoothPerformanceVO;
 
@@ -27,4 +28,17 @@ public interface IPartyBoothWiseResultsService {
 	public List getMandalAllElectionDetails(Long tehsilID, Long partyID, boolean allianceFlag);
 	
 	public PartyBoothPerformanceVO getVotingPercentageWiseBoothResult(PartyBoothPerformanceVO performanceVO,boolean isPollingPercentage,String path);
+	
+	public List<PartyBoothPerformanceVO> getBoothWiseElectionResults(List<Long> partyIds, Long constituencyId, List<String> electionYears);
+	
+	public SelectOptionVO getStateWiseDetailByStateType(Long stateTypeId, String electionType,Long electionYear,Long constituencyId);
+	
+	public PartyBoothPerformanceVO getVotingPercentagWiseBoothResult(List<PartyBoothPerformanceVO> performanceVOList,boolean isPollingPercentage,String path);
+	
+	public PartyBoothPerformanceVO segrigateBoothWiseResults(List<PartyBoothPerformanceVO> partyBoothPerformanceVOList);
+	
+	public SelectOptionVO getPartyDetailsForConstituencyAction(Long electionYear, Long constituencyId);
+	
+	public SelectOptionVO getAssemblyDetailsForParliamnt(Long parliamentCosntiID, Long electionYear);
+	
 }
