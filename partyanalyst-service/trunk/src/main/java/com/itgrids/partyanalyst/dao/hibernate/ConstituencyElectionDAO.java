@@ -816,6 +816,66 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 		return query.list();
 	}
 	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getElectionYearsForConstitenciesAndElectionType(Long electionTypeId,List<Long> cosntituencyIds) {
+
+		StringBuilder queryString = new StringBuilder();
+		queryString.append(" select distinct  model.election.electionId ,model.election.electionYear from ConstituencyElection model ");
+		queryString.append("  where model.election.electionScope.electionType.electionTypeId = :electionTypeId and model.constituency.constituencyId in (:cosntituencyIds) group by model.election.electionYear order by model.election.electionYear desc ");
+		
+		Query query = getSession().createQuery(queryString.toString());
+		query.setParameter("electionTypeId", electionTypeId);
+		query.setParameterList("cosntituencyIds", cosntituencyIds);
+		
+		return query.list();
+		
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List findPartyDetailsForElection(Long electionId, String partyIds) {
+		Object[] params = {electionId,electionId};
+		return getHibernateTemplate().find("select model.constituency.district.districtId, " +
+				"sum(model.constituencyElectionResult.validVotes) " +
+				"from ConstituencyElection model where model.election.electionId = ? and " +
+				"model.constituency.constituencyId in " +
+				"(select distinct model2.constituencyElection.constituency.constituencyId from Nomination model2 where" +
+				" model2.constituencyElection.election.electionId = ? and model2.party.partyId in ("+partyIds+")) "+
+				"group by model.constituency.district.districtId " +
+				"order by model.constituency.district.districtId",params);
+	}
+	
+	public List<Object[]> getParliamentElectionYearsForElectionYear(Long electionScopeId,String electionYear,Long stateId)
+	{
+		StringBuilder queryString = new StringBuilder();
+		queryString.append(" select distinct  model.election.electionId ,model.election.electionYear from ConstituencyElection model ");
+		queryString.append("  where model.election.electionScope.electionType.electionTypeId = :electionScopeId " +
+				"  and model.constituency.state.stateId =:stateId order by model.election.electionYear desc ");
+		
+		Query query = getSession().createQuery(queryString.toString());
+		query.setParameter("electionScopeId", electionScopeId);
+		//query.setParameter("electionYear", electionYear);
+		query.setParameter("stateId", stateId);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getParliamentConstiListForElectionYear(Long electionScopeId,String electionYear,Long stateId)
+	{
+		StringBuilder queryString = new StringBuilder();
+		queryString.append(" select distinct model.constituency.constituencyId ,model.constituency.name from ConstituencyElection model ");
+		queryString.append("  where model.election.electionScope.electionType.electionTypeId = :electionScopeId " +
+				"  and model.constituency.state.stateId =:stateId order by model.constituency.name ");
+		
+		Query query = getSession().createQuery(queryString.toString());
+		query.setParameter("electionScopeId", electionScopeId);
+		//query.setParameter("electionYear", electionYear);
+		query.setParameter("stateId", stateId);
+		
+		return query.list();
+	}
+	
 }
 
 

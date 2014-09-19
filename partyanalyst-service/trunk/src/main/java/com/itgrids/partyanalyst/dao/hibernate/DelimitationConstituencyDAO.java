@@ -9,6 +9,8 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
+import com.itgrids.partyanalyst.utils.IConstants;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 
@@ -301,6 +303,37 @@ IDelimitationConstituencyDAO {
 		query.setParameter("electionScopeId", electionScopeId);
 		query.setParameter("year", year);
 		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getLatestConstituenciesByElectionTypeIdAndYears(Long electionTypeId, List<Long> constituencyIdList,Long electionYear)
+	{
+
+		StringBuffer sb = new StringBuffer();
+		
+		
+		sb.append(" select distinct model.constituency.constituencyId,model.constituency.name from DelimitationConstituency model where " +
+				" model.constituency.electionScope.electionType.electionTypeId = :electionTypeId and model.constituency.constituencyId in (:constituencyIdList) ");
+		if(electionYear != null)			
+			sb.append(" and model.year = "+electionYear+"  order by model.constituency.name "); 
+		else
+			sb.append(" and model.year = "+Long.valueOf(IConstants.PRESENT_ELECTION_YEAR)+"  order by model.constituency.name "); 
+			
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameterList("constituencyIdList", constituencyIdList);
+		query.setParameter("electionTypeId", electionTypeId);
+		
+		return query.list();
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> findDelimitationConstituencyInfoByConstituencyID(Long constituencyID,Long year) {
+		
+		Object[] params = {constituencyID,year};
+		return getHibernateTemplate().find("select distinct model.delimitationConstituencyID from DelimitationConstituency model where " +
+				"model.constituency.constituencyId = ? and model.year = ?", 
+				params);
 	}
 	
 }
