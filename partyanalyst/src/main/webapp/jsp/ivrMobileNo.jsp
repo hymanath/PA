@@ -27,9 +27,9 @@ $(document).ready(function() {
 			  noneSelectedText:"Select Constituency"});
 			  
 $('#parliamentId').multiselect({
-			  noneSelectedText:"Select Constituency"});
+			  noneSelectedText:"Select Parliament"});
 $('#mandalId').multiselect({
-			  noneSelectedText:"Select Constituency"});
+			  noneSelectedText:"Select Mandal"});
 			  
 			 
 
@@ -209,10 +209,11 @@ function getConstituencies()
 	$('#constituencyId').multiselect('refresh');
 	var scopeId = $("#scopeId").val();
 	var districtIds = $('#districtId').val();
-	if(scopeId != 2)
-		return;
+	
 	if(districtIds == null)
 		return;
+	if(scopeId == 2)
+	{
 	var jsObj=
 	{
 		    districtIds : districtIds,
@@ -231,7 +232,8 @@ function getConstituencies()
 		});
 			$('#constituencyId').multiselect('refresh');	
 		
-	});		
+	});	
+	}
 }
 function getMandals()
 {
@@ -239,10 +241,11 @@ function getMandals()
 	$('#mandalId').multiselect('refresh');
 	var scopeId = $("#scopeId").val();
 	var districtIds = $('#districtId').val();
-	if(scopeId !=4)
-		return;
+	
 	if(districtIds == null)
 		return;
+	if(scopeId == 4)
+	{
 	var jsObj=
 	{
 		    districtIds : districtIds,
@@ -262,19 +265,25 @@ function getMandals()
 			$('#mandalId').multiselect('refresh');	
 		
 	});		
+	}
 }
 function createFile()
 {
-
 	$("#downloadLink").css("display","none");
 	$("#loactionCountDiv").html('');
 	var flag = false;
+	var questions = false;
+	var queOptionsArr = new Array();
 	var locationIds ;
 	var scopeId = $("#scopeId").val();
 	var checkedTypeVal = $('input:radio[name=radiobtn]:checked').val();
+	var queradio = $('input:radio[name=queOpt]:checked').val();
+	if(queradio == 2)
+	questions = true;
 	var noOfFiles = $.trim($('#noOfFileId').val());
 	if($.trim($('#noOfFileId').val()).length == 0)
 	noOfFiles = 0;
+
 	if(scopeId == 1) 
 	locationIds = $('#districtId').val();
 	else if(scopeId == 2)
@@ -283,10 +292,10 @@ function createFile()
 	locationIds = $('#parliamentId').val();
 	else if(scopeId == 4)
 	locationIds = $('#mandalId').val();
+
 	var fileFormat = $('input:radio[name=optionsRadios]:checked').val();
 	var maxIndex = $.trim($('#maxIndex').val());
-	if(maxIndex.length == 0)
-	 maxIndex = 0;
+	
 	$("#errorDiv").html("");
 	var str='<font color="red" style="font-size: 12px; font-weight: bold;">';
 	if(scopeId == 0)
@@ -318,10 +327,20 @@ function createFile()
 		}
 		flag =true;
 	}
+	else if(maxIndex.length == 0)
+	{
+	str+='No Of Mobile Nos is required';
+	flag =true;
+	}
 	else if(isNaN(maxIndex))
 	{
 		str+='Enter number';
 		flag =true;
+	}
+	else if(maxIndex < 100)
+	{
+	str+='minimum 100 mobileNo.s';
+	flag =true;
 	}
 	else if(checkedTypeVal == 3)
 	{
@@ -331,18 +350,49 @@ function createFile()
 		flag = true;
 		}
 	}
+	else if(questions == true)
+	{
+		var questionID = $("#questionID").val();
+		if(questionID == 0)
+		{
+		str+='No of Questions is required <br/>';
+		flag = true;
+		}
+		
+	$(".optionsCls").each(function(){
+		
+		var optionId = $(this).attr("id");
+		var optionsCnt = $.trim($(this).val());
+		var optnum = optionId.replace( /\D+/g, '');
+		$(".opterror"+optnum).html('');
+		if(optionsCnt == 0)
+		{
+		$(".opterror"+optnum).html("options count is required").css("color","red");
+		flag =true;
+	    }
+		else if(isNaN(optionsCnt))
+		{
+		str+='Enter number';
+		flag =true;
+		}
+		if(flag == true)
+			return;
+		var question = "Q".concat(optnum);
+		var obj = {
+		question : question,
+		optionsCnt : optionsCnt
+	  }
+	queOptionsArr.push(obj);
+	});
+}
 	str+='</font>';
 	$("#errorDiv").html(str);
+		console.log(queOptionsArr);
 	if(flag == true)
 	return;
 	$("#errorDiv").html('');
-	$("#ajaxImg").show();
-	var queOptionsArr = new Array();
-	var obj = {
-		question : 1,
-		optionsCnt : 3
-	}
-queOptionsArr.push(obj);
+	$("#ajaxImg").show(queOptionsArr);
+
 	var jsObj=
 	{
 			locationIds : locationIds,
@@ -351,7 +401,7 @@ queOptionsArr.push(obj);
 			maxIndex:maxIndex,
 			checkedTypeVal:checkedTypeVal,
 			noOfFiles:noOfFiles,
-			questions:true,
+			questions:questions,
 			queOptionsArr:queOptionsArr,
 			task : "createFilepath"
 	};
@@ -368,6 +418,7 @@ queOptionsArr.push(obj);
 	  $("#errorDiv").html("<font color='green' style='font-size: 12px; font-weight: bold;'>file created successfully</font>");
 	  $("#downloadLink").attr('href',result.status);
 	  $("#downloadLink").css("display","block").css("display","inline-block");
+	  if(jObj.scopeId != 3)
 	  buildLocationData(result,jsObj);
 		}
 		else if(result.resultCode == 2)
@@ -478,7 +529,10 @@ function calculateTotal()
 	locationIds = $('#districtId').val();
 	else if(scopeId == 2)
 	locationIds = $('#constituencyId').val();
-
+	else if(scopeId == 3)
+	locationIds = $('#parliamentId').val();
+	else if(scopeId == 4)
+	locationIds = $('#mandalId').val();
 	if(locationIds != null)
 	var total = locationIds.length * maxIndex;
 	if(total > 0)
@@ -557,10 +611,13 @@ $("#noOfFileDiv").show();
 function ShowHideForQuestions()
 {
 var checkedVal = $('input:radio[name=queOpt]:checked').val();
+$("#questionID").val(0);
+$("#OptionsDiv").html('');
 if(checkedVal == 2)
 {
 $("#radioBtnDiv").hide();
 $("#questionDiv").show();
+if($("#questionID").val() > 0)
 $("#OptionsDiv").show();
 }
 else
@@ -573,28 +630,27 @@ $("#OptionsDiv").hide();
 function showOptions()
 {
 $("#OptionsDiv").html('');
-
+$("#OptionsDiv").hide();
 var queSize = $("#questionID").val();
 if(queSize == 0)
 return;
 $("#OptionsDiv").show();
 var str ='';
 str+='<h2>Enter No.of Options(files) for Question</h2>';
-
 var j = 0;
-
 for(var i=0;i<queSize;i++)
 	{
 	j++;
 str+='<div class="span2">';
+str+='<span class="clearCls opterror'+j+'"></span>';
 str+='<label>Question'+j+'</label>';
-str+='<input type="text" class="input-block-level span2" id="option'+j+'">';
+str+='<input type="text" class="input-block-level span2 optionsCls" id="option'+j+'">';
 str+='</input>';
 str+='</div>';
 }
-
 $("#OptionsDiv").html(str);
 }
+
 $(".QueRadio").live("click",function(){
 ShowHideForQuestions();
 })
