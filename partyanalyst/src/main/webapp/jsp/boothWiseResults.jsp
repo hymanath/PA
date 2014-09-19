@@ -13,630 +13,838 @@
   google.load("visualization", "1", {packages:["corechart"]});
 </script>
 <script type="text/javascript" src="js/commonVoterDetails.js"></script>
-<style type="text/css">
-table tr.separator { height: 40px; }
 
-  #ajaxImage{
-    display:none; 
-  }
+  <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+<script src="js/maps/leaflet.js"></script>
+<link rel="stylesheet" href="css/leaflet.css"></link>
+<script src="js/maps/google.js"></script>
+<script src="js/maps/Permalink.js"></script>
+<script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.js"></script>
+<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
+<script src="js/maps/googleMap.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
+
+
   
-#buildTableDiv table,#buildTableDiv1 table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
-#buildTableDiv table tr:nth-child(even),#buildTableDiv1 table tr:nth-child(even){background:#EdF5FF;border:1px solid #d3d3d3;}
-#buildTableDiv table td,#buildTableDiv1 table td{border:1px solid #d3d3d3;padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
-#buildTableDiv table th,#buildTableDiv1 table th{
-background-color: #CDE6FC;
-    font-size: 13px;
-    font-weight: bold;
-    padding-bottom: 4px;
-    padding-left: 4px;
-    padding-right: 4px;
-    padding-top: 4px;
-    text-align: left;
-	color:#333333;
-	border:1px solid #d3d3d3;
-	}
-#buildTableDiv,#buildTableDiv1{
-	font-family : arial;
-	font-size: 13px;
-    margin-top:0px;
-	padding: 10px 10px 10px 0px;
-	 width: 900px;
-}
-</style>
 <style type="text/css">
-#boothResultsDiv {
-    text-align: left;
-	margin-left: 50px;
-	font-size: 12px;
+			.no-border{ border: medium none;}
+			.checkbox
+			{
+			float:none !important;
+			width: auto !important;
+			}
+			body{background:#f0f0f0;}
+			.m_top20{margin-top:20px;}
+			.widgetservey{background:#fafafa; display:block; border:1px solid #cccccc; width:100%; padding:0px 20px 20px 20px;}
+			.widgetservey_Red{background:#fafafa; display:block; border:1px solid #cccccc; width:100%; padding:0px 20px 20px 20px; border-top:3px solid #ff0000;}
+			.widgetservey h4{font-size:26px; color:#333; line-height:30px; border-bottom: 1px solid #cccccc;text-align:center; text-transform:uppercase; text-shadow: 0px 1px #4f4f4f;}
+			.widgetservey_Red h4{font-size:26px; color:#ff0000; line-height:30px; border-bottom: 1px solid #cccccc;text-align:center; text-transform:uppercase; text-shadow: 0px 1px #4f4f4f;}
+			.survey_nav{height:40px; background: #ffea51;
+					background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZWE1MSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZmE2MDAiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+					background: -moz-linear-gradient(top,  #ffea51 0%, #ffa600 100%);
+					background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffea51), color-stop(100%,#ffa600));
+					background: -webkit-linear-gradient(top,  #ffea51 0%,#ffa600 100%);
+					background: -o-linear-gradient(top,  #ffea51 0%,#ffa600 100%);
+					background: -ms-linear-gradient(top,  #ffea51 0%,#ffa600 100%);
+					background: linear-gradient(to bottom,  #ffea51 0%,#ffa600 100%);
+					filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffea51', endColorstr='#ffa600',GradientType=0 );
+					}
+			.survey_nav ul li{line-height:40px;}
+			.survey_nav ul li a{color:#333; font-weight:bold; font-size:12px; padding:12px 2px;text-decoration:none;text-shadow:0px 1px #ffcc00; }
+			.survey_nav ul li a:hover{background:rgba(255,0,0,0.1);}
+			.survey_nav ul li a.selected{color:#fff; background:red;text-shadow:0px 1px #4f4f4f; }
+			
+			table tr td a{color:#333;}
+
+			.wiget-yellow{background:#ffcc00; border:1px solid #ccc; width:100%; height:370px;padding:10px;}
+			.wiget-yellow:hover{box-shadow: 0px -1px 5px #333;}
+			.wiget-yellow small{color:red; font-size:18px;}
+			.wiget-yellow h4{font-size:22px;border-bottom:2px solid #eee; text-align:center;}
+			/*-----*/
+			.boothdetails-nav li a{color:#333333; background:#eee;padding:10px; width:136px; display:table;line-height:20px;border:1px solid #ccc;text-align:center; font-weight:bold; text-transform:uppercase; margin-bottom: 10px;text-decoration:none; font-size:16px;}
+			.boothdetails-nav li a:hover{ background:#ccc; border:1px solid #ffcc00;text-show:0px 1px #fff;}
+			.booths-Overview-widget{background:#ddd;padding:10px; width:100%;}
+			.booths-Overview-widget-nav li{color:#333333; background:#F6DD78;padding:10px; width:140px; display:table;line-height:20px;border:1px solid #ccc;text-align:center; font-weight:bold; text-transform:uppercase; margin: 10px;text-decoration:none; font-size:16px;}
+			.booths-Overview-widget-nav li hgroup h4,h5{font-size:15px;}
 	
-}
+			.requiredFont{
+				color:red;
+				font-size:13px;
+			}
 
-.boothResultHeadingDiv
-{
-   margin-top: 20px;
-   color:#23318B;
-   text-decoration: underline;
-   font-weight: bold;
-   font-size:13px;
-   font-family:verdana;
-}
-.yui-skin-sam th.yui-dt-asc, .yui-skin-sam th.yui-dt-desc 
-{
-	background:none;
-}
+			#errorDiv
+			{
+			 font-weight:bold;
+			 color:red;
+			}
+			
+			.highlight{
+			cursor: pointer;
+			}
+			
+			.datePickerCls{
+			 cursor: text !important;
+			}
+			
+			.survey_nav ul li .dropdown-menu{background:#ffcc00; border-top-left-radius:0px; border-top-right-radius:0px;margin-top:-1px; margin-right:5px;}
+			.survey_nav ul li .dropdown li a{color:#333; }
+			
+			.ui-multiselect{
+				width:200px !important;
+				}
 
-.yui-skin-sam thead .yui-dt-sortable {
-
-	background-color:#C4DEFF;
-	color:#3F546F;
-}
-
-.yui-skin-sam .yui-dt-liner {
-	padding:4px 8px;
-	max-width:350px;
-	word-wrap:break-word;
-}
-
-#boothResultsTableId th{
-	background-color:#C4DEFF;
-	text-align:center;
-	font-weight:bold;
-	color:#1031B6;
-	height:30px;
-}
-
-#boothResultsTableId td{
-
-	/*color:#180206;
-	font-weight:bold;
-	width:140px;
-	border: 1px solid #b0bec7;
-	padding: 0 0 0 10px;*/
-
-color:#5B5B5B;
-width: 660px;
-height: 25px;
-font-family: tahoma, arial, helvetica, verdana, sans-serif;
-font-size: 13px;
-font-weight: bold;
-text-decoration: none;
-background: transparent;
-border: 1px solid #b0bec7;
-padding: 0 0 0 10px;
-}
-#boothResultsTableId{width:95%;}
-#boothResultsTableId tr:nth-child(even){background:#F8FBFF;}
-#boothResultsTableId tr:nth-child(odd){background:#F8FBFF;}
-
-
-#titleDiv
-{
-	color: #ffffff;
-    font-size: 13px;
-    font-weight: bold;
-    margin-top: 20px;
-	margin-left:auto;
-	margin-right:auto;
-	background:#06ABEA;
-	padding:5px;
-	border-radius:5px;
-	padding-left: 30px;
-    width: 470px;
-}
-
-}
-.resultTableDiv{
-	width :100%;
-	margin-bottom:5px;
-}
-#mainDiv
-{
-	margin-left:auto;
-	margin-right:auto;
-	width:980px;
-}
-
-table#searchresultsTable {
-	font-family: verdana,arial,sans-serif;
-	font-size:11px;
-	color:#333333;
-	border-width: 1px;
-	border-color: #666666;
-	border-collapse: collapse;
-	margin-top:10px;
-}
-table#searchresultsTable th {
-	border-width: 1px;
-	padding: 8px;
-	border-style: solid;
-	border-color: #666666;
-	background-color: #dedede;
-}
-table#searchresultsTable td {
-	border-width: 1px;
-	padding: 8px;
-	border-style: solid;
-	border-color: #5B5B5B;
-	background-color: #ffffff;
-}
-
-#boothResultsMarkup table{border: 1px solid #C4DEFF;margin-right: 15px;
-	font-family:arial;
-	margin-bottom:20px;
+			#boothWiseResultsPage  thead th , #majarityCandidatesTab thead th ,#majarityCandidatesTab thead th, #majarityCandidatesTab  thead th{
+				font-weight: bold  !important;
+				background-color: #dff0d8  !important;
+				color : #468847 !important;
+				line-height: 15px !important;
+			}
+			
+			#boothWiseResultsPage  tbody td , #majarityCandidatesTab tbody td ,#majarityCandidatesTab tbody td, #majarityCandidatesTab  tbody td
+			{
+				text-align:center !important;
+			}
+			.errorRed{background:red;}
+			.errorYellow{background:yellow;}
+			.errorLgreen{background:lightgreen;}
+			.errorGreen{background:green;}
 	
-}
-
-a, .reg-form li a:hover, a.change:hover {
-    cursor: pointer;
-    outline: medium none;
-    text-decoration: none;
-}
-#headingImgStyle{
-	 background: none repeat scroll 0 0 #05A8E9;
-    border-radius: 5px 5px 5px 5px;
-    color: #FFFDFF;
-    padding: 6px;
-    text-align: center;
-    width: 940px;
-}
-#headDivStyle{
-	color: #ffffff;
-    font-size: 20px;
-    font-weight: normal;
-    padding:20px;
-	 
-	 
-	 
-}
-</style>
+		.ui-icon-closethick 
+		{
+			margin-top:-8px !important;
+			margin-left:-8px !important;
+		}
+		
+		h4{
+			font-size:20px !important;
+		}
+		</style>
 </head>
+		  
 <body>
-<div id="mainDiv" align="center">
-
-<!--<div id="boothWiseResult"></div>-->
- 	<div id= "headDivStyle">
-	<table border="0" cellpadding="0" cellspacing="0">          
-		<tr><!--<td><img src="images/icons/cadreReport/bg_left.png"/></td>-->
-			<td><div id="headingImgStyle"><span>&nbsp;Booth Wise Results</span></div></td>
-	       <!--<td><img src="images/icons/cadreReport/bg_right.png"/></td>-->
-	   </tr>
-		</table>
-	</div>
-				<div class="form-horizontal boothResults " name='boothSelection' style="display:block;border: 3px solid #d3d3d3;margin-top: -20px;margin-bottom: 20px;">
-
-				<div class="control-group" id="errorDiv" style="color:red;"></div>
-
-					<s:if test="#session.parlConstis  != null && #session.parlConstis.size() > 1">
-					<div class="control-group" align="center">
-					</s:if>
-					<s:else>
-					<div class="control-group" style="display:none">
-					</s:else>
+<div class="container">
+			<div class="row" id="boothWise">
+			<div class="span12">
+			
+				
+				<div class="row-fluid ">
+				
 						
-						<div  style="margin-left: 300px;">
-							<label class="span2" for="firstName">Election Type</label>
-							<label class="span3"  style="margin-left: auto;"><input type="radio" name="electionType" value="2" checked="checked">  Assembly  </input><input type="radio" name="electionType" value="1">  Parliament</input></label>
+					<div class="span12 widgetservey_Red m_top20">
+							<h4> Booth Wise Election Results
+								<span id="totalState" class="pull-right btn-group   pull-right">
+									<a  onClick="getEntaieSelectionDetails(0,'entaieSelection')" id="all" class="btn btn-mini btn-success entaieSelection">ALL</a>|
+									<a  onClick="getEntaieSelectionDetails(1,'APSelection')" id="ap" class="btn btn-mini APSelection ">AP</a>|
+									<a  onClick="getEntaieSelectionDetails(2,'TSSelection')" id="ts" class="btn btn-mini TSSelection">TS</a>
+								</span>
+							</h4>	
+							<img id="fieldDataSummaryimg" style="display: none;width: 70px; height: 60px;" src="./images/Loading-data.gif" alt="Processing Image"  class="offset5"></img>
+							<div class="row">
+									<div class="span12">
+										<div class="row-fluid">
+											<div class="span4 offset4 well well-small form-inline">
+												<label>	Election Type : </label>
+												<label class="radio"><input type="radio" onclick="getEntaieSelectionDetails(3,this.value)" checked="checked" value="Assembly" name="electionType">  Assembly</label>  
+												<label class="radio"><input type="radio" onclick="getEntaieSelectionDetails(3,this.value)" value="Parliament" name="electionType">  Parliament 
+											</div></label>
+
+									</div>
+								</div>
+							</div>
+						
+						<div class="row" style="display:none;" id="assemblyConstiListDiv">
+								<div class="span12">
+									<div class="row-fluid">
+									
+										<div class="span6 offset3">
+											<label>Select Parliament  
+											<span style="margin-left:15px;"> : 
+												<select class="input-xlarge" id="parliamentConstiId" onchange="getConstituenciesForParliament(this.value);"> 
+													<option value="0"> Select Parliament </option>
+												</select> 
+												</span>
+												<img src='images/ajaxImg2.gif' id="searchDataImg2" style="display:none;"/>	
+											</label>											
+										</div>
+									</div>	
+									
+								</div>
+							</div>
+							
+						<div class="row">
+								<div class="span12">
+									<div class="row-fluid">									
+										<div class="span6 offset3">
+											<label>Select Constituency : 
+												<select class="input-xlarge" id="constituencyId" onchange="getDetailsForConstituency(this.value);">
+													<option value="0"> Select Constituency </option>
+												</select>	
+												<img src='images/ajaxImg2.gif' id="searchDataImg1" style="display:none;"/>	
+											</label>											
+										</div>
+									</div>	
+									
+								</div>
+							</div>
+							
+							<div class="row">
+								<div class="span12">
+									<div class="row-fluid">
+									
+										<div class="span8 offset3 form-inline">
+											<label>Election Years : </label>		
+											<span id="electionYearsDiv"></span>
+											<img src='images/ajaxImg2.gif' id="searchDataImg3" style="display:none;"/>											
+										</div>
+									</div>	
+									
+								</div>
+							</div>
+							<div class="row">
+								<div class="span12">
+									<div class="row-fluid">									
+										<div class="span8 offset3 form-inline">
+											<label>Party Names :		 </label>	
+											<span id="partyListDiv"></span>
+										
+										</div>
+									</div>	
+									
+								</div>
+							</div>
+							
+						<!--
+						<div class="row text-center m_top20" style="margin-right:51px;">
+							<button type="button" class="btn btn-success" onClick="getSurveyUserLoctionCount();">SUBMIT</button>								
 						</div>
-						
-						
-					</div>
-					<table>
-					<tr class="separator">
-					<td><label class="span2" for="firstName">Select Year</label></td>
-					<td><s:select theme="simple" list="electionYearsList" name="electionYear" listKey="id" listValue="name" headerKey="0" headerValue="Select Year" id="electionYearsId" onChange="constituencyOptions('')"/> </td>
-					</tr>
-					<tr class="separator">
-					<td><label class="span2" for="firstName">Constituency</label></td>
-					<td><select id="constiId" onChange="getPartiesForElections('')" name="constituencyName">
-								<option value='0'>Select Constituency</option>
-							</select></td>
-					</tr>
-					<tr class="separator">
-					<td><label class="span2" for="firstName">Party</label></td>
-					<td><select id="partyId" name="partyName">
-								<option value='0'>Select Party</option>
-							</select></td>
-					</tr>
-					</table>
-					<button class="btn btn-small btnStyle" data-dismiss="modal" aria-hidden="true" onclick="submitRes()" style="margin-top:8px;">SUBMIT</button>
-
-</div>
-
-
-
+						-->
+			<img src='images/Loading-data.gif' class="offset5"  id="searchDataImg" style="width:70px;height:60px;display:none;"/>			
+			<div id="majarityCandidatesDiv"></div>
+			<div id="pollingPecentDiv"></div>
+			<div id="pollingVotesPercDiv"></div>
+			<div id="boothWiseResultsDiv" style="overflow:scroll;dispaly:none;height:500px;"></div>
+				</div>
+			</div>
+		</div>
+		
 		
 
-
-<!--<div id="boothResultsDiv"></div>-->
+		
+	</div>
 
 <script>
 
-var constituencyId = '${constituencyId}';
-function getPanchayatAssemblyResultDetails()
+
+var stateType = 0;
+var electionYear = 0;
+var globalelectionType = 0;
+getEntaieSelectionDetails(0,'entaieSelection');
+function getEntaieSelectionDetails(id,clsName)
 {
-	    var constituencyId = $("#constituencyId").val();
-		$("#ajaxImage").show();
-		  var jsObj = 
+
+if(id <3 )
+{
+	$('.btn-mini').removeClass('btn-success');
+	$('.'+clsName+'').addClass('btn-success');	
+	stateType = id;
+}
+$('#searchDataImg1').show();
+		$('#majarityCandidatesDiv').html('');
+		$('#boothWiseResultsDiv').html('');
+		$('#pollingVotesPercDiv').html('');
+		$('#pollingPecentDiv').html('');
+var electionType = $("input:radio[name=electionType]:checked").val();
+	//globalelectionType = electionType;
+ var jsObj = 
 	       {
-		      constituencyId:constituencyId,
-              effectElectionId : 38,
-			  partyId:872,
+		      stateType:stateType,
+			  electionType :electionType, 
+			  electionYear:electionYear,
+			  constituencyId : 0,
+			  task:"getStateDetails"             
 	       }	
 		    $.ajax({
 				type : "POST",
-				url : "getPanchayatAssemblyResultDetailsAction.action",
+				url : "getStatewiseDetailsAction.action",
 				data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
-					if(result != null && result.length > 0)
-					{
-						$("#ajaxImage").hide();
-					  buildChartResult(result);
-					  buildTableResult(result,1);
-                      buildTableResult1(result,2)
-					}
-					else{
-						  $("#ajaxImage").hide();
-		                  $("#buildGraphDiv").html("");
-		                  $("#buildTableDiv").html("");
-		                  $("#buildGraphDiv").html("<span style='color:red;font-weight:bold;font-size:12px;'>No Data Available</span>");
-					  }
+			$('#searchDataImg1').hide();
+				if(result != null )
+					buildElectionDetailsByResult(result);
+				else
+					alert(" No result available.");
 			});
 }
-      
-var dataArray = new Array();
 
-function buildChartResult(result)
+function buildElectionDetailsByResult(result)
 {
-
-	for(var j in result)
+	var electionType = $("input:radio[name=electionType]:checked").val();
+	$('#electionYearsDiv').html('');
+	$('#partyListDiv').html('');
+	if(result.selectOptionsList != null && result.selectOptionsList.length > 0)
 	{
-			var data = 
+		$('#parliamentConstiId').find('option').remove();
+		$('#constituencyId').find('option').remove();			
+		$('#parliamentConstiId').append('<option value="0"> Select Parliament </option>');
+		$('#constituencyId').append('<option value="0"> Select Constituency </option>');
+		
+		var constId = 282;
+		
+			if(electionType =='Assembly')
 			{
-				name : result[j].name+"-2009",
-				value : result[j].margin
-			}
-			dataArray.push(data);
-			var name = "";
-			var val = "";
-			if(result[j].rank == 1)
-			{
-					  
-			   if(result[j].winPartyName == "TDP")
+			
+			
+				$('#assemblyConstiListDiv').hide();
+				for(var i in result.selectOptionsList)
 				{
-					  var name = result[j].name+"-2013";
-					  var val  = result[j].margin;
+					if( i == 0 )
+					{				
+						constId = result.selectOptionsList[i].id;
+						$('#constituencyId').append('<option value="'+result.selectOptionsList[i].id+'" selected="selected">'+result.selectOptionsList[i].name+'</option>');
+					}
+					if(result.selectOptionsList[i].id == 282)
+					{				
+						constId = 282;
+						$('#constituencyId').append('<option value="'+result.selectOptionsList[i].id+'" selected="selected">'+result.selectOptionsList[i].name+'</option>');
+					}
+					else
+					{
+						$('#constituencyId').append('<option value="'+result.selectOptionsList[i].id+'">'+result.selectOptionsList[i].name+'</option>');
+					}
 				}
-				else{
-					var name = result[j].name+"-2013";
-					 var val   = parseFloat(result[j].margin)/2;
-				}								
+				
+						getDetailsForConstituency(constId);
 			}
 			else
 			{
-			   if(result[j].winPartyName == "TDP")
+				$('#assemblyConstiListDiv').show();
+
+				
+				for(var i in result.selectOptionsList)
 				{
-				   var name = result[j].name+"-2013";
-				   var val   = parseFloat(result[j].margin)*2;
+					if( i == 0 )
+					{				
+						constId = result.selectOptionsList[i].id;
+						$('#parliamentConstiId').append('<option value="'+result.selectOptionsList[i].id+'" selected="selected">'+result.selectOptionsList[i].name+'</option>');
+					}
+					else
+					{
+							$('#parliamentConstiId').append('<option value="'+result.selectOptionsList[i].id+'">'+result.selectOptionsList[i].name+'</option>');
+					}
 				}
-				else{
-					var name = result[j].name+"-2013";
-					var val   = result[j].margin;
+				getConstituenciesForParliament(constId);
+			}		
+		}
+		
+	
+	/*
+	if(result.selectOptionsList1 != null && result.selectOptionsList1.length > 0)
+	{
+		var str = ''; 
+		for(var i in result.selectOptionsList1)
+		{
+			if(parseInt(result.selectOptionsList1[i].name) > 2000){
+				if(i == 0)
+				{
+					str +=' <label class="radio"><input type="radio" id="'+result.selectOptionsList1[i].name+'RadoiId" name="PartiesName" key="'+result.selectOptionsList1[i].name+'"  value="'+result.selectOptionsList1[i].id+'" checked="true" onclick="getPartyDetailsForConstituency()">'+result.selectOptionsList1[i].name+'</label>';
 				}
-			  ;
+				else
+				{
+					str +=' <label class="radio"> <input  type="radio" id="'+result.selectOptionsList1[i].name+'RadoiId" name="PartiesName" key="'+result.selectOptionsList1[i].name+'" value="'+result.selectOptionsList1[i].id+'" onclick="getPartyDetailsForConstituency()">'+result.selectOptionsList1[i].name+'</label>';
+				}
+			
 			}
-			var data1 = 
+		}
+		$('#electionYearsDiv').html(str);
+	}
+	
+	if(result.selectOptionsList2 != null && result.selectOptionsList2.length > 0)
+	{
+		var str = ''; 
+		//str +=' <input  type="checkbox" id="AllPartiesId" class="PartiesNameCls" value="0"> All ';
+		for(var i in result.selectOptionsList2)
+		{
+			str +=' <label class="checkbox"> <input  type="checkbox" id="'+result.selectOptionsList2[i].name+'Id" class="PartiesNameCls" value="'+result.selectOptionsList2[i].id+'" checked="checked" onclick="getSurveyUserLoctionCount();">'+result.selectOptionsList2[i].name+'</label>';
+		}
+		$('#partyListDiv').html(str);
+	}
+	
+	*/
+}
+
+function getConstituenciesForParliament(parliamentConstiId)
+{
+		$('#searchDataImg2').show();
+	var jsObj = 
+	       {
+			  parliamentConstiId : parliamentConstiId,
+			  electionYear:2005,
+			  task:"getAssemblyDetailsForParliamnt"             
+	       }	
+		    $.ajax({
+				type : "POST",
+				url : "getAssemblyDetailsForParliamntAction.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+			$('#searchDataImg2').hide();
+				$('#constituencyId').find('option').remove();
+				$('#constituencyId').append('<option value="0"> Select Constituency </option>');
+							
+				if(result != null )
+				{
+					if(result.selectOptionsList != null && result.selectOptionsList.length > 0)
+						{						
+							for(var i in result.selectOptionsList)
+							{
+								if( i == 0 )
+								{				
+									constId = result.selectOptionsList[i].id;									
+									$('#constituencyId').append('<option value="'+result.selectOptionsList[i].id+'" selected="selected">'+result.selectOptionsList[i].name+'</option>');
+								}
+								else
+								{
+									$('#constituencyId').append('<option value="'+result.selectOptionsList[i].id+'">'+result.selectOptionsList[i].name+'</option>');
+								}
+							}
+							
+							getDetailsForConstituency(constId);
+						}	
+				}	
+				else
+					alert(" No result available.");
+			});		
+
+}
+function getDetailsForConstituency(constiId)
+{
+
+var electionType = $("input:radio[name=electionType]:checked").val();
+$('#searchDataImg1').show();
+ var jsObj = 
+	       {
+		      stateType:stateType,
+			  electionType :electionType, 
+			  electionYear:0,
+			  constituencyId : constiId,
+			  task:"getStateDetails"             
+	       }	
+		    $.ajax({
+				type : "POST",
+				url : "getStatewiseDetailsAction.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+			$('#searchDataImg1').hide();
+				if(result != null )
+					buildconstituencyDetailsByResult(result);
+				else
+					alert(" No result available.");
+			});						
+}
+
+function buildconstituencyDetailsByResult(result)
+{
+
+	$('#electionYearsDiv').html('');
+	$('#partyListDiv').html('');
+	
+	if(result.selectOptionsList1 != null && result.selectOptionsList1.length > 0)
+	{
+		var str = ''; 
+		for(var i in result.selectOptionsList1)
+		{
+			if(parseInt(result.selectOptionsList1[i].name) > 2000)
 			{
-				name : name,
-				value : val
+				if(i == 0)
+				{
+					str +='  <label class="radio"> <input  type="radio" id="'+result.selectOptionsList1[i].name+'RadoiId" name="PartiesName" key="'+result.selectOptionsList1[i].name+'" value="'+result.selectOptionsList1[i].id+'" checked="true" onclick="getPartyDetailsForConstituency()"> '+result.selectOptionsList1[i].name+'</label>';
+				}
+				else
+				{
+					str +=' <label class="radio"> <input  type="radio" id="'+result.selectOptionsList1[i].name+'RadoiId" name="PartiesName" key="'+result.selectOptionsList1[i].name+'" value="'+result.selectOptionsList1[i].id+'" onclick="getPartyDetailsForConstituency()">'+result.selectOptionsList1[i].name+'</label>';
+				}
 			}
-
-			dataArray.push(data1);
+		}
+		$('#electionYearsDiv').html(str);
 	}
-	var data = new google.visualization.DataTable();
-    data.addColumn('string', 'name');
-	data.addColumn('number', 'Margin Values');
-	data.addRows(dataArray.length);
-	for(var i = 0 ; i < dataArray.length ;i++)
+	
+	if(result.selectOptionsList2 != null && result.selectOptionsList2.length > 0)
 	{
-		data.setValue(i,0,dataArray[i].name);
-		data.setValue(i,1,dataArray[i].value);
-	}
-
-  
-		var title = 'Election Results Comparision Chart b/w 2009 Assembly & 2013 Panchayat'; 
-        var options = {'title':title,
-			vAxis: {
-              title: 'PANCHAYAT',
-			  'fontSize': 18
-            },
-            hAxis: {
-              title: 'MARGIN'
-            },
-		    'width': '100%',
-            'height': 1800,
-            'fontSize': 12,
-		    'chartArea': {top: 50, right: 50, bottom: 30, height:1800, width:'75%'}
-
-        };
-         var chart = new google.visualization.BarChart(document.getElementById('buildGraphDiv'));       
-	     chart.draw(data, options); 
-}
-function buildTableResult(result,rank)
-{
-		var str ="<div><b><center><h5>Election Results Comparision Chart b/w 2009 Assembly & 2013 Panchayat</h5></center></b></div><br/>";
-		str+="<table><tr>";
-		str+="<th>Panchayat</th>";
-		str+="<th>Total Votes</th>";
-		str+="<th>Votes Polled</th>";
-		str+="<th>TDP Gained</th>";
-		str+="<th>margin</th>";
-		str+="<th>2013 Total Votes</th>";
-		str+="<th>Win Party Name</th>";
-		str+="  </tr>";
-		
-		for(var j = 0 ; j< result.length ; j++){	
-	      if(result[j].rank == rank){
-         str+="<tr>";
-		 str+="<td>"+result[j].name+"</td>";
-		 str+="<td>"+result[j].totalVoters+"</td>";
-		 str+="<td>"+result[j].totalValidVotes+"</td>";
-		 str+="<td>"+result[j].selectedPartyTotalVoters+"</td>";
-		 str+="<td>"+result[j].margin+"</td>";
-		 str+="<td>"+result[j].winPartyTotal+"</td>";
-		 str+="<td>"+result[j].winPartyName+"</td>";
-		  }
-        }
-        str+="</table><br/>";		
-      $("#buildTableDiv").html(str);
-
-}
-
-function buildTableResult1(result,rank)
-{
-		var str ="<div><b><center><h5>Election Results Comparision Chart b/w 2009 Assembly & 2013 Panchayat</h5></center></b></div><br/>";
-		str+="<table><tr>";
-		str+="<th>Panchayat</th>";
-		str+="<th>Total Votes</th>";
-		str+="<th>Votes Polled</th>";
-		str+="<th>TDP Gained</th>";
-		str+="<th>margin</th>";
-		str+="<th>2013 Total Votes</th>";
-		str+="<th>Win Party Name</th>";
-		str+="  </tr>";
-		
-		for(var j = 0 ; j< result.length ; j++){	
-	     if(result[j].rank == rank){
-         str+="<tr>";
-		 str+="<td>"+result[j].name+"</td>";
-		 str+="<td>"+result[j].totalVoters+"</td>";
-		 str+="<td>"+result[j].totalValidVotes+"</td>";
-		 str+="<td>"+result[j].selectedPartyTotalVoters+"</td>";
-		 str+="<td>"+result[j].margin+"</td>";
-		 str+="<td>"+result[j].winPartyTotal+"</td>";
-		 str+="<td>"+result[j].winPartyName+"</td>";
+		var str = ''; 
+		//str +=' <input  type="checkbox" id="AllPartiesId" class="PartiesNameCls" value="0"> All ';
+		for(var i in result.selectOptionsList2)
+		{
+			str +='  <label class="checkbox"> <input type="checkbox" id="'+result.selectOptionsList2[i].name+'Id" class="PartiesNameCls" value="'+result.selectOptionsList2[i].id+'" checked="checked" onclick="getSurveyUserLoctionCount();">'+result.selectOptionsList2[i].name+'</label>';
 		}
-        }
-        str+="</table><br/>";		
-      $("#buildTableDiv1").html(str);
-}
-
-function submitRes(){
-	
-	var electionYear=$("#electionYearsId option:selected").text();
-	var val=$("#electionYearsId option:selected").val();
-	if(val==0){$('#errorDiv').html("Please Select Election Year"); return ;}
-	
-	var constituencyName=$("#constiId option:selected").val();
-	if(constituencyName==0){$('#errorDiv').html("Please Select Constituency;"); return;}
-	
-	var partyName=$("#partyId option:selected").val();
-	if(partyName==0){$('#errorDiv').html("Please Select Party"); return;}
-	
-	$('#errorDiv').html("");
-	var boothResultsWindow = window.open("partyBoothResult2Action.action?constituencyName="+constituencyName+"&electionYear="+electionYear+"&partyName="+partyName);
-
-
-		/*var jsObj =
-		{  	
-			constituencyName:constituencyName,
-			electionYear:electionYear,
-			partyName:partyName,
-           	task:'ajaxpartyBoothResult'
-		};
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "ajaxpartyBoothResult2Action.action?"+rparam;
+		$('#partyListDiv').html(str);
 		
-		callAjax(jsObj, url);*/
-
+		getSurveyUserLoctionCount();
+	}
+	
 }
 
-function callAjax(jsObj,url){
-		 var myResults;
 
-			 var callback = {			
- 		               success : function( o ) {
-							try {												
-								myResults = YAHOO.lang.JSON.parse(o.responseText);					
-								if(jsObj.task=="forConstituencies"){
-
-									if(jsObj.type == "default")
-										buildConstituenciesDefault(myResults);
-									else
- 									  buildConstituencies(myResults);
-								}
-								if(jsObj.task =="forParty")
-								{
-									buildPartiesSelectBox(myResults,jsObj.type);
-								}
-								if(jsObj.task =="ajaxpartyBoothResult")
-								{
-									buildPartyBoothResult(myResults,jsObj.type);
-								}
-								}catch (e) {
-							     
-								}  
- 		               },
- 		               scope : this,
- 		               failure : function( o ) {
- 		                		//alert( "Failed to load result" + o.status + " " + o.statusText);
- 		                         }
- 		               };
-
- 		YAHOO.util.Connect.asyncRequest('POST', url, callback);
- 	}
-
-function getPartiesForElections(type){
-	var electionYear=$("#electionYearsId option:selected").text();
-	var constiId=$("#constiId option:selected").val();
-	var jsObj =
-		{  	
-			electionYear:electionYear,
-			constituencyId:constiId,
-            type:type,
-			task:'forParty'
-		};
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
-		var url = "optionsForBoothAction.action?"+rparam;
-		callAjax(jsObj, url);
+function getPartyDetailsForConstituency()
+{
+	var constiteuncyId =  $('#constituencyId').val();
+	var electionYear = $("input:radio[name=PartiesName]:checked").attr('key');
+	$('#partyListDiv').html('');
+	$('#searchDataImg3').show();
+	var jsObj = 
+	       {
+			  constiteuncyId :constiteuncyId, 
+			  electionYear:electionYear,
+			  task:"getPartyDetails"             
+	       }	
+		    $.ajax({
+				type : "POST",
+				url : "getPartyDetailsForConstituencyAction.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+			$('#searchDataImg3').hide();
+			var str = ''; 
+				if(result != null )
+				{				
+					if(result.selectOptionsList != null && result.selectOptionsList.length >0)
+					{
+						for(var i in result.selectOptionsList)
+						{
+							str +='  <label class="checkbox"> <input type="checkbox" id="'+result.selectOptionsList[i].name+'Id" class="PartiesNameCls" value="'+result.selectOptionsList[i].id+'" checked="checked" onclick="getSurveyUserLoctionCount();">'+result.selectOptionsList[i].name+'</label>';
+						}
+						$('#partyListDiv').html(str)
+						
+						getSurveyUserLoctionCount();
+					}
+					else
+					{
+						str +=' No Data Avaialable.';
+					}
+				}				
+				else
+				{
+					str +=' No Data Avaialable.';
+					$('#partyListDiv').html(str);
+				}
+			});	
+			
 }
-function buildPartiesSelectBox(myResult ,type){
-	if(myResult == null || myResult.length == 0)
-		return;
-	
-	$('#errorDiv').html("");
-	var electionYearsElmt = document.getElementById("partyId");
-	electionYearsElmt.options.length=0;
 
-	var option = document.createElement('option');
-	option.value = "0";
-	option.text = "Select Party";
-	electionYearsElmt.add(option);
+function getSurveyUserLoctionCount(){
+
+	var constiteuncyId =  $('#constituencyId').val();
+	var partyList = new Array();
+	var electionYearsList = new Array();
+	var electionYear = $("input:radio[name=PartiesName]:checked").attr('key');
 	
-	
-	for(var i in myResult)
+	$('.PartiesNameCls').each(function(){
+		if($(this).is(':checked')){
+			partyList.push($(this).val());
+		}
+	});
+	var electionType = $("input:radio[name=electionType]:checked").val();
+	var searchType='assemblyWiseResults';
+	if(electionType == 'Parliament')
 	{
-		option = document.createElement('option');
-		option.value = myResult[i].id;
-		option.text = myResult[i].name;
-		try
-		{
-			electionYearsElmt.add(option,null); // standards compliant
-		}
-		catch(ex)
-		{
-			electionYearsElmt.add(option); // IE only
-		}
+		searchType='parliamentWiseResults';
 	}
-
-	if(type == "default")
-		$('#partyId').val(872);
-
-}
-function buildPartyBoothResult(myResult ,type){
-if(myResult == null || myResult.length == 0)
-		return;
-
-
-var str = ''; 
-str+='<div id="titleDiv"><s:property value="boothResult.constituencyName" /> Constituency Booth Results for '+myResult.partyName+' in  '+myResult.electionYear+'&nbsp;'+myResult.electionType+'</div>';
-str+='<div class="resultTableDiv">';
-str+='<div class="boothResultHeadingDiv" style="margin-eft:15px;">Candidate Details : </div>';
-str+='<table class="searchresultsTable" id="searchresultsTable" style="width: auto; float: left;">';
-str+='	<tr>';
-str+='		<th style="background-color:#C4DEFF;">Candidate Name</th>';
-str+='		<td style="background-color:#F8FBFF;">'+myResult.candidateName+'  [ Rank - '+myResult.rank+'  ]<br></td>';
-
-str+='		<th style="background-color:#C4DEFF;">Total Votes</th>';
-str+='		<td style="background-color:#F8FBFF;">'+myResult.totalVotes+'</td>';
-str+='	</tr>';
-
-str+='	<tr>';
-str+='	<th style="background-color:#C4DEFF;">Total Valid Votes</th>';
-str+='		<td style="background-color:#F8FBFF;">'+myResult.totalValidVotes+'</td>	';
+	else
+	{
+		searchType='assemblyWiseResults';
+	}
+	electionYearsList.push(electionYear);
+		$('#majarityCandidatesDiv').html('');
+		$('#boothWiseResultsDiv').html('');
+		$('#pollingVotesPercDiv').html('');
+		$('#pollingPecentDiv').html('');
 		
-str+='		<th style="background-color:#C4DEFF;">Voting Percentage</th>';
-str+='		<td style="background-color:#F8FBFF;">'+myResult.votingPercentage+'</td>';
+		$('#searchDataImg').show();
+		$('#boothWiseResultsDiv').hide();
+		var jsObj = 
+	       {
+			  constituencyId : constiteuncyId,
+			  partyList:partyList,
+			  electionYearsList : electionYearsList,
+			  task:"assemblyWiseResults"             
+	       }	
+		    $.ajax({
+				type : "POST",
+				url : "ajaxpartyBoothResult2Action.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+					$('#searchDataImg').hide();
+				if(result != null)
+				{
+					buildBoothWiseResultReport(result,electionYear);
+				}
+				else
+				{
+					alert("No Result Availabale.");
+				}
+			});			
+			
+}
+//<div id="majarityCandidatesDiv"></div>
+function buildBoothWiseResultReport(result,electionYear)
+{
+	var constiName = $('#constituencyId option:selected').text();
+	var str='';
+	str +='<h4> <br>'+constiName+' Assembly Constituency '+electionYear+' Election Booth Wise Results </h4> <br>';
 	
-str+='	</tr>';
-str+='	<tr>';
+
+	
+		if(result.partyBoothPerformanceVOList != null && result.partyBoothPerformanceVOList.length >0)
+		{
+					
+			str +='<table class="table table-bordered">';
+			str +='<th>Total Voters </th>';
+			str +='<td>'+result.partyBoothPerformanceVOList[0].totalVotes+'</td>';
+			str +='<th>Total Polled Voters </th>';
+			str +='<td> '+result.partyBoothPerformanceVOList[0].totalValidVotes+'</td>';
+			str +='<th>Voting Percentage </th>';
+			str +='<td>'+result.partyBoothPerformanceVOList[0].votingPercentage+' </td>';
+			str +='</table>';
+
+			
+				str +='<h4> Candidates Details  </h4>';
+				
+			str +='<table class="table table-bordered m_top20 " id="majarityCandidatesTab">';	
+			str +='<thead>';
+				str +='<tr>';
+					str +='<th> Candidate Name </th>';
+					//str +='<th> Total Votes </th>';
+					//str +='<th> Total Valid Votes </th>';
+					//str +='<th> Voting Percentage </th>';
+					str +='<th> Total Votes Gained </th>';	
+					str +='<th> Total Votes Gained Percentage </th>';
+					str +='<th> Margin Votes </th>';
+				str +='</tr>';
+			str +='</thead>';	
+			str +='<tbody>';
+			
+				for(var k in result.partyBoothPerformanceVOList)
+				{
+					if(result.partyBoothPerformanceVOList[k].rank ==1)
+					{
+						str +='<tr>';
+							str +='<td style="background:#DBEAF9;">'+result.partyBoothPerformanceVOList[k].candidateName+' - ('+result.partyBoothPerformanceVOList[k].partyName+')</td>';
+							str +='<td  style="background:#DBEAF9;">'+result.partyBoothPerformanceVOList[k].votesGained+'</td>';						
+							str +='<td  style="background:#DBEAF9;">'+result.partyBoothPerformanceVOList[k].percentage+'  </td>';
+							str +='<td  style="background:#DBEAF9;">'+result.partyBoothPerformanceVOList[k].marginVotes+' ( Won ) </td>';
+						str +='</tr>';
+				
+					}
+					else
+					{
+						str +='<tr>';
+							str +='<td>'+result.partyBoothPerformanceVOList[k].candidateName+' - ('+result.partyBoothPerformanceVOList[k].partyName+')</td>';
+							str +='<td>'+result.partyBoothPerformanceVOList[k].votesGained+'</td>';						
+							str +='<td>'+result.partyBoothPerformanceVOList[k].percentage+'  </td>';
+							str +='<td>'+result.partyBoothPerformanceVOList[k].marginVotes+'  </td>';
+						str +='</tr>';
+				
+					}
+						
+				}
 		
-str+='		<th style="background-color:#C4DEFF;">Total Votes Gained</th>';
-str+='		<td style="background-color:#F8FBFF;">'+myResult.votesGained+'</td>';
+			str +='</tbody>';
+			str +='</table>';
+		}
+	
+	$('#majarityCandidatesDiv').html(str);
+	
+	
+	str='';
 
-str+='		<th style="background-color:#C4DEFF;">Total Votes Gained Percentage</th>';
-str+='		<td style="background-color:#F8FBFF;">'+myResult.percentage+'</td>';
+		str +='<h4> Party Votes Percentage vs Polling Percentage <h4>';
+	var partiesSize = 0;
+	if(result.perWiseboothResults != null && result.perWiseboothResults.length >0)
+		{
+			str +='<table class="table table-bordered m_top20 " id="majarityCandidatesTab" style="font-size:12px;color:#000000;font-weight:normal;">';	
+			str +='<thead>';
+				str +='<tr>';				
+					str +='<th > Polling % Range </th>';
+					if(result.partyBoothPerformanceVOList != null && result.partyBoothPerformanceVOList.length >0)
+					{
+						partiesSize =  result.partyBoothPerformanceVOList.length;
+						for(var j in result.partyBoothPerformanceVOList)
+						{
+							str +='<th colspan="2" style="text-align:center"> '+result.partyBoothPerformanceVOList[j].partyName+' </th>';
+						}
+					}
+					
+				str +='</tr>';
+
+				str +='<tr>';
+				str +='<th></th>';
+					for(var p=0; p<partiesSize ; p++)
+					{
+						str +='<th> Total No of Booths </th>';
+						str +='<th> Party Votes % </th>';	
+					}								
+				str +='</tr>';
+			str +='</thead>';	
+			str +='<tbody>';
+			
+				for(var k in result.perWiseboothResults)
+				{
+						str +='<tr>';
+							str +='<td>'+result.perWiseboothResults[k].location+'</td>';
+							
+							if(result.perWiseboothResults[k].boothResultVOList != null && result.perWiseboothResults[k].boothResultVOList.length >0 )
+							{
+								for(var p=0; p<partiesSize ; p++)
+								{
+									str +='<td>'+result.perWiseboothResults[k].boothResultVOList[p].votesEarned+'</td>';
+									str +='<td>'+result.perWiseboothResults[k].boothResultVOList[p].percentage+' </td>';
+								}
+					
+							}
+							
+						str +='</tr>';						
+				}
+			
+			
+			str +='</tbody>';
+			str +='</table>';
+		}
 		
-str+='	</tr>';
-
-str+='	<tr id="wonInfo">';
+		$('#pollingVotesPercDiv').html(str);
 		
-str+='		<th style="background-color:#C4DEFF;">Winning Candidate</th>';
-str+='		<td style="background-color:#F8FBFF;">'+myResult.wonCandidate[0][1]+' - '+myResult.wonCandidate[0][2]+'</td>';
+	
+	str='';
+	str +='<h4> Polling Percentage vs Party Votes Percentage <h4>';	
+	partiesSize = 0;
+	if(result.partyPerWiseboothResults != null && result.partyPerWiseboothResults.length >0)
+		{
+			str +='<table class="table table-bordered m_top20 " id="majarityCandidatesTab" style="font-size:12px;color:#000000;font-weight:normal;">';	
+			str +='<thead>';
+				str +='<tr>';				
+					str +='<th > Party Votes % Range </th>';
+					if(result.partyBoothPerformanceVOList != null && result.partyBoothPerformanceVOList.length >0)
+					{
+					partiesSize =  result.partyBoothPerformanceVOList.length;
+						for(var j in result.partyBoothPerformanceVOList)
+						{
+							str +='<th colspan="2" style="text-align:center"> '+result.partyBoothPerformanceVOList[j].partyName+' </th>';
+						}
+					}
+					
+				str +='</tr>';
 
-str+='		<th style="background-color:#C4DEFF;">Margin Votes</th>';
-str+='		<td style="background-color:#F8FBFF;">'+myResult.marginVotes+'</td>';
+				str +='<tr>';
+				str +='<th></th>';
+					for(var p=0; p<partiesSize ; p++)
+					{
+						str +='<th> Total No of Booths </th>';
+						str +='<th> Polling  % </th>';	
+					}								
+				str +='</tr>';
+			str +='</thead>';	
+			str +='<tbody>';
+			
+				for(var k in result.partyPerWiseboothResults)
+				{
+						str +='<tr>';
+							str +='<td>'+result.partyPerWiseboothResults[k].location+'</td>';
+							
+							if(result.partyPerWiseboothResults[k].boothResultVOList != null && result.partyPerWiseboothResults[k].boothResultVOList.length >0 )
+							{
+								for(var p=0; p<partiesSize ; p++)
+								{
+									str +='<td>'+result.partyPerWiseboothResults[k].boothResultVOList[p].votesEarned+'</td>';
+									str +='<td>'+result.partyPerWiseboothResults[k].boothResultVOList[p].percentage+' </td>';
+								}
+					
+							}
+							
+						str +='</tr>';						
+				}
+			
+			
+			str +='</tbody>';
+			str +='</table>';
+		}
 		
-str+='	</tr>';
-
-str+='</table>';
-str+='</div>';
-
-
-
-str+='<BR><BR><BR><BR><BR><BR>';
-
-str+='<div style="float:left;width:auto;">';
-str+='<table><tr><td>';
-str+='			<div class="boothResultHeadingDiv" style="margin-left:70px;">Polling Percentage vs Party Votes Percentage</div><br>';
-str+='			<table id="boothResultsTableId">';
-str+='				<tr> ';	 	
-str+='			       <th>Polling % Range</th>';
-str+='				   <th>Total No of Booths</th>';
-str+='				   <th>Party Votes %</th></tr>';
-for(var i in myResult.perWiseboothResults){
-str+='				 <tr><td>'+myResult.perWiseboothResults[i].location+'</td>';
-if(myResult.perWiseboothResults[i].votesEarned = 0){
-str+='						<td id="partyvotesEarnedId"><a title="Click to Know all the Booths Details">'+myResult.perWiseboothResults[i].votesEarned+'</a></td>';
-}
-if(myResult.perWiseboothResults[i].votesEarned == 0){
-str+='						<td id="partyvotesEarnedId"><span style="color:#3983A8;">'+myResult.perWiseboothResults[i].votesEarned+'</span></td>';
-}
-str+='				   <td>'+myResult.perWiseboothResults[i].percentage+'</td>';
-str+='				 </tr>';
-}
-str+='			</table>';
-str+='	</td><td><div class="boothResultHeadingDiv" style="margin-left:80px;">Party Votes Percentage vs Polling Percentage</div><br>';
-str+='			<table id="boothResultsTableId">';
-str+='				<tr><th>Party Votes % Range</th>';
-str+='				   <th>Total No of Booths</th>';
-str+='				   <th>Polling %</th></tr>';
-for(var i in myResult.partyPerWiseboothResults){
-str+='				 <tr><td>'+myResult.partyPerWiseboothResults[i].location+'</td>';
-if(myResult.partyPerWiseboothResults[i].votesEarned != 0){
-str+='						<td id="pollingPercentId"><a title="Click to Know all the Booths Details">'+myResult.partyPerWiseboothResults[i].votesEarned+'</a></td>';
-}
-if(myResult.partyPerWiseboothResults[i].votesEarned == 0){
-str+='						<td id="pollingPercentId"><span style="color:#3983A8;">'+myResult.partyPerWiseboothResults[i].votesEarned+'</span></td>';
-}
-str+='				   <td>'+myResult.partyPerWiseboothResults[i].percentage+'</td>';
-str+='				 </tr>';
-}
-str+='			</table>';
-
-str+='		</td></tr></table></div>';
+		$('#pollingPecentDiv').html(str);
+		
+		
+		str='';
+		str +='<h4> Booth Wise Performance :  <h4>';
+		if(result.boothResults != null && result.boothResults.length >0)
+		{
+			str +='<table class="table table-bordered m_top20 " id="boothWiseResultsPage" style="font-size:12px;color:#000000;font-weight:normal;">';	
+			str +='<thead>';
+				str +='<tr>';				
+					str +='<th > Booth No  </th>';
+					str +='<th > Location  </th>';
+					str +='<th > Village Covered  </th>';
+					//str +='<th > Mandal </th>';
+					str +='<th > Polled Votes  </th>';	
+					str +='<th > Polling %   </th>';
+					if(result.partyBoothPerformanceVOList != null && result.partyBoothPerformanceVOList.length >0)
+					{
+						partiesSize =  result.partyBoothPerformanceVOList.length;
+						for(var j in result.partyBoothPerformanceVOList)
+						{
+							str +='<th colspan="2" style="text-align:center"> '+result.partyBoothPerformanceVOList[j].partyName+' </th>';
+						}
+					}
+					
+									
+				str +='</tr>';
 
 
+					
+				str +='<tr>';
+				str +='<th></th>';
+				str +='<th></th>';
+				str +='<th></th>';
+				str +='<th></th>';
+				str +='<th></th>';
+					for(var p=0; p<partiesSize ; p++)
+					{
+					str +='<th > Votes Earned  </th>';	
+					str +='<th > Votes %   </th>';		
+					}								
+				str +='</tr>';
+				
+			str +='</thead>';	
+			str +='<tbody>';	
+			for(var k in result.boothResults)
+			{
+					str +='<tr>';
+					str +='<td>'+result.boothResults[k].partNo+'</td>';
+						if(result.boothResults[k].boothResultVOList != null && result.boothResults[k].boothResultVOList.length>0)
+						{
+							str +='<td>'+result.boothResults[k].boothResultVOList[0].location+'</td>';
+							str +='<td>'+result.boothResults[k].boothResultVOList[0].villagesCovered+'</td>';
+							//str +='<td>'+result.boothResults[k].boothResultVOList[0].mandal+'</td>';
+							str +='<td>'+result.boothResults[k].boothResultVOList[0].totalVoters+'</td>';
+							str +='<td>'+result.boothResults[k].boothResultVOList[0].pollingPercentage+'</td>';
+							for(var m in result.boothResults[k].boothResultVOList)
+							{
+								str +='<td>'+result.boothResults[k].boothResultVOList[m].votesEarned+'</td>';
+								str +='<td>'+result.boothResults[k].boothResultVOList[m].percentage+'</td>';
+							}
+						}
+					str +='</tr>';						
+			}
+			
+			str +='</tbody>';
+			str +='</table>';
+		}
+		
+		
+		$('#boothWiseResultsDiv').html(str);
 
-
-
-
-
-$("#boothResultsDiv").html(str);
-
-
-
-
-
+		$('#boothWiseResultsDiv').show();
 }
 
 
