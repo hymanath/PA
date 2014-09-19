@@ -3435,252 +3435,276 @@ public List<SelectOptionVO> getConstituencyList()
 	 public MobileVO getMobileNumbersByLocations(Long scopeId,List<Long> locationIds,Long fileFormatVal,int maxIndex,int checkedTypeVal,int noOfFile)
 		{
 		 MobileVO result =new MobileVO();
+		
+		try{
+			if(scopeId == 3)
+			{
+				for(Long locationId :  locationIds)
+				{
+					List<Long> acIds = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesByParliament(locationId);
+					scopeId = 2l;	
+					locationIds = new ArrayList<Long>();
+						if(acIds != null && acIds.size() > 0)
+						{
+						maxIndex = maxIndex/ acIds.size() ; 
+						locationIds.addAll(acIds);
+						
+						getMobileNumbers(result,scopeId,locationIds,fileFormatVal,maxIndex,checkedTypeVal,noOfFile);
+						}
+				}
+			}
+			else
+			{
+			getMobileNumbers(result,scopeId,locationIds,fileFormatVal,maxIndex,checkedTypeVal,noOfFile);
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+			
+			return result;
+		}
+	 
+	 public MobileVO getMobileNumbers(MobileVO result,Long scopeId,List<Long> locationIds,Long fileFormatVal,int maxIndex,int checkedTypeVal,int noOfFile)
+	 {
 		 List<MobileVO> resultList = new ArrayList<MobileVO>();
 			String limit = "";
 			if(maxIndex == 0)
 				limit  = "ALL";
-		try{
-			if(scopeId == 3)
-			{
-				List<Long> acIds = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(locationIds);
-				locationIds = new ArrayList<Long>();
-				if(acIds != null && acIds.size() > 0)
-				{
-				locationIds.addAll(acIds);
-				}
-					
-			}
-			boolean flag = false;
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			String date = sdf.format(new Date());
-			String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
-			String path = IConstants.STATIC_CONTENT_FOLDER_URL+pathSeperator+"mobile_numbers";
-			int splitFileCnt = 0;
-			StringBuilder str = null;
-			File f1 = null;
-			int splitmaxCount =0 ;
-			File destDir = new File(path + pathSeperator+date);
-			destDir.mkdir();
-			List<String> totlaMobileNos = new ArrayList<String>();
-			   int i=0; 
-			   if(locationIds != null && locationIds.size() > 0)
-			    for(Long location : locationIds)
-			    {
-			    	 MobileVO vo = new MobileVO();
-			    	 vo.setId(location);
-					 if(scopeId == 1)
-						vo.setName(districtDAO.get(location).getDistrictName());
-					 if(scopeId == 2)
-						vo.setName(constituencyDAO.get(location).getName()); 
-					 if(scopeId == 4)
-							vo.setName(tehsilDAO.get(location).getTehsilName()); 
-			    	if(checkedTypeVal == 2) //each file for location
-			    	{
-			    		i++;
-				    	str = new StringBuilder();
-						 if(fileFormatVal == 1)
-						f1 = new File(path + pathSeperator+date+pathSeperator+i+".csv");//i is file number
-						else
-						f1 = new File(path + pathSeperator+date+pathSeperator+i+".txt");	
-			    	}
-			    	 Set<String> resultNumbers = new HashSet<String>();
-			    	 Long Total  = 0l;
-			    	 Long districtTotal = 0l;
-			    	 Long constiTotal = 0l;
-			    	 Long tehsilTotal = 0l;
-				     if(scopeId == 1)
-				     {
-				    	 Total = mobileNumbersDAO.getMobileNosTotal(location,IConstants.DISTRICT,scopeId);
-				    	 districtTotal =  mobileNumbersDAO.getMobileNosCountByIds(location,IConstants.DISTRICT,scopeId);
-				    	 constiTotal =  mobileNumbersDAO.getMobileNosCountByIds(location,IConstants.CONSTITUENCY,scopeId);
-				    	
-				     }
-			    	else if(scopeId == 2)
-			    	{
-			    	    Total = mobileNumbersDAO.getMobileNosTotal(location,IConstants.CONSTITUENCY,scopeId);	
-			    	    constiTotal =  mobileNumbersDAO.getMobileNosCountByIds(location,IConstants.CONSTITUENCY,scopeId);
-			    	}
-			    	else if(scopeId == 4)
-			    	{
-			    	   Total = mobileNumbersDAO.getMobileNosTotal(location,IConstants.TEHSIL,scopeId);	
-				    }
-				     	
-				        Long mandalTotal = mobileNumbersDAO.getMobileNosCountByIds(location,IConstants.TEHSIL,scopeId);
-				    	Long panchayatTotal = mobileNumbersDAO.getMobileNosCountByIds(location,IConstants.PANCHAYAT,scopeId);
-				    	
-			    	if(Total > 0)
-			    	{
-			    		int districtMaxIndex  =0;
-			    		int constiMaxIndex = (int) ((constiTotal * maxIndex)/Total);
-				    	int mandalMaxIndex =  (int) ((mandalTotal * maxIndex)/Total);
-				    	int panchayatMaxIndex = (int) ((panchayatTotal * maxIndex)/Total.longValue());
-				    	int constisum = constiMaxIndex + mandalMaxIndex + panchayatMaxIndex;
-				    	int districtSum =0;
-				    	int tehsilSum = 0;
-				    	if(scopeId == 2 && constisum > maxIndex)
+		 try{
+			 boolean flag = false;
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				String date = sdf.format(new Date());
+				String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+				String path = IConstants.STATIC_CONTENT_FOLDER_URL+pathSeperator+"mobile_numbers";
+				int splitFileCnt = 0;
+				StringBuilder str = null;
+				File f1 = null;
+				int splitmaxCount =0 ;
+				File destDir = new File(path + pathSeperator+date);
+				destDir.mkdir();
+				List<String> totlaMobileNos = new ArrayList<String>();
+				   int i=0; 
+				   if(locationIds != null && locationIds.size() > 0)
+				    for(Long location : locationIds)
+				    {
+				    	 MobileVO vo = new MobileVO();
+				    	 vo.setId(location);
+						 if(scopeId == 1)
+							vo.setName(districtDAO.get(location).getDistrictName());
+						 if(scopeId == 2)
+							vo.setName(constituencyDAO.get(location).getName()); 
+						 if(scopeId == 4)
+								vo.setName(tehsilDAO.get(location).getTehsilName()); 
+				    	if(checkedTypeVal == 2) //each file for location
 				    	{
-				    		if(constiMaxIndex > 0)
-				    		constiMaxIndex = constiMaxIndex - (constisum - maxIndex);
+				    		i++;
+					    	str = new StringBuilder();
+							 if(fileFormatVal == 1)
+							f1 = new File(path + pathSeperator+date+pathSeperator+vo.getName()+".csv");//i is file number
+							else
+							f1 = new File(path + pathSeperator+date+pathSeperator+vo.getName()+".txt");	
 				    	}
-				    	if(scopeId == 2 && constisum < maxIndex)
-				    		constiMaxIndex = constiMaxIndex + (maxIndex - constisum);	
-				    	 if(scopeId == 1)
-				    	 {
-						      districtMaxIndex = (int) ((districtTotal * maxIndex)/Total);
-						      districtSum = constisum + districtMaxIndex;
-						      if(districtSum > maxIndex)
-						      constiMaxIndex = constiMaxIndex - (districtSum - maxIndex);
-						      if(districtSum < maxIndex)
-						      constiMaxIndex = constiMaxIndex + (maxIndex - districtSum);	
-						    	  
-						      
-				    	 }
-				    	 if(scopeId == 4)
-				    	 {
-				    		 tehsilSum =   mandalMaxIndex + panchayatMaxIndex;
-				    		 if(tehsilSum > maxIndex)
-				    			 panchayatMaxIndex = panchayatMaxIndex - (tehsilSum - maxIndex);
-							  if(tehsilSum < maxIndex)
-							     panchayatMaxIndex = panchayatMaxIndex + (maxIndex - tehsilSum);
-				    		 
-				    	 }
-				        Set<String> panchayatNos = mobileNumbersDAO.getMobilenosBasedOnPriority(scopeId,location,panchayatMaxIndex,IConstants.PANCHAYAT);
-					        if(panchayatNos != null && panchayatNos.size() > 0)
-					        	resultNumbers.addAll(panchayatNos);
-				        Set<String> mandalNos = mobileNumbersDAO.getMobilenosBasedOnPriority(scopeId,location,mandalMaxIndex,IConstants.TEHSIL);
-				        if(mandalNos != null && mandalNos.size() > 0)
-				        	resultNumbers.addAll(mandalNos);
-				        if(scopeId == 1 || scopeId == 2)//District ,constituency
-				        {
-				        Set<String> constituencyNos = mobileNumbersDAO.getMobilenosBasedOnPriority(scopeId,location,constiMaxIndex,IConstants.CONSTITUENCY);
-				        if(constituencyNos != null && constituencyNos.size() > 0)
-				        	resultNumbers.addAll(constituencyNos);
-				        }
-				        
-				        if(scopeId == 1)//district
+				    	 Set<String> resultNumbers = new HashSet<String>();
+				    	 Long Total  = 0l;
+				    	 Long districtTotal = 0l;
+				    	 Long constiTotal = 0l;
+				    	 Long tehsilTotal = 0l;
+					     if(scopeId == 1)
 					     {
-				        	Set<String> districtNos = mobileNumbersDAO.getMobilenosBasedOnPriority(scopeId,location,districtMaxIndex,IConstants.DISTRICT);
-					        if(districtNos != null && districtNos.size() > 0)
-					        	resultNumbers.addAll(districtNos);
+					    	 Total = mobileNumbersDAO.getMobileNosTotal(location,IConstants.DISTRICT,scopeId);
+					    	 districtTotal =  mobileNumbersDAO.getMobileNosCountByIds(location,IConstants.DISTRICT,scopeId);
+					    	 constiTotal =  mobileNumbersDAO.getMobileNosCountByIds(location,IConstants.CONSTITUENCY,scopeId);
+					    	
 					     }
-			    	
-			    	}
-			    	
-			    	
-			    	 if(resultNumbers != null && resultNumbers.size() > 0)
-				      {
-									  
-						 flag = true;
-						 vo.setCount(new Long(resultNumbers.size()));
-						for(String l : resultNumbers)
-						{
-						 if(!totlaMobileNos.contains(l.toString()))
-						 totlaMobileNos.add(l.toString());
-						 if(checkedTypeVal == 2) //each file for location
-							 {
-							str.append(l.toString());
-							str.append( "\r\n");
-							 }
+				    	else if(scopeId == 2)
+				    	{
+				    	    Total = mobileNumbersDAO.getMobileNosTotal(location,IConstants.CONSTITUENCY,scopeId);	
+				    	    constiTotal =  mobileNumbersDAO.getMobileNosCountByIds(location,IConstants.CONSTITUENCY,scopeId);
+				    	}
+				    	else if(scopeId == 4)
+				    	{
+				    	   Total = mobileNumbersDAO.getMobileNosTotal(location,IConstants.TEHSIL,scopeId);	
+					    }
+					     	
+					        Long mandalTotal = mobileNumbersDAO.getMobileNosCountByIds(location,IConstants.TEHSIL,scopeId);
+					    	Long panchayatTotal = mobileNumbersDAO.getMobileNosCountByIds(location,IConstants.PANCHAYAT,scopeId);
+					    	
+				    	if(Total > 0)
+				    	{
+				    		int districtMaxIndex  =0;
+				    		int constiMaxIndex = (int) ((constiTotal * maxIndex)/Total);
+					    	int mandalMaxIndex =  (int) ((mandalTotal * maxIndex)/Total);
+					    	int panchayatMaxIndex = (int) ((panchayatTotal * maxIndex)/Total.longValue());
+					    	int constisum = constiMaxIndex + mandalMaxIndex + panchayatMaxIndex;
+					    	int districtSum =0;
+					    	int tehsilSum = 0;
+					    	if(scopeId == 2 && constisum > maxIndex)
+					    	{
+					    		if(constiMaxIndex > 0)
+					    		constiMaxIndex = constiMaxIndex - (constisum - maxIndex);
+					    	}
+					    	if(scopeId == 2 && constisum < maxIndex)
+					    		constiMaxIndex = constiMaxIndex + (maxIndex - constisum);	
+					    	 if(scopeId == 1)
+					    	 {
+							      districtMaxIndex = (int) ((districtTotal * maxIndex)/Total);
+							      districtSum = constisum + districtMaxIndex;
+							      if(districtSum > maxIndex)
+							      constiMaxIndex = constiMaxIndex - (districtSum - maxIndex);
+							      if(districtSum < maxIndex)
+							      constiMaxIndex = constiMaxIndex + (maxIndex - districtSum);	
+							    	  
+							      
+					    	 }
+					    	 if(scopeId == 4)
+					    	 {
+					    		 tehsilSum =   mandalMaxIndex + panchayatMaxIndex;
+					    		 if(tehsilSum > maxIndex)
+					    			 panchayatMaxIndex = panchayatMaxIndex - (tehsilSum - maxIndex);
+								  if(tehsilSum < maxIndex)
+								     panchayatMaxIndex = panchayatMaxIndex + (maxIndex - tehsilSum);
+					    		 
+					    	 }
+					        Set<String> panchayatNos = mobileNumbersDAO.getMobilenosBasedOnPriority(scopeId,location,panchayatMaxIndex,IConstants.PANCHAYAT);
+						        if(panchayatNos != null && panchayatNos.size() > 0)
+						        	resultNumbers.addAll(panchayatNos);
+					        Set<String> mandalNos = mobileNumbersDAO.getMobilenosBasedOnPriority(scopeId,location,mandalMaxIndex,IConstants.TEHSIL);
+					        if(mandalNos != null && mandalNos.size() > 0)
+					        	resultNumbers.addAll(mandalNos);
+					        if(scopeId == 1 || scopeId == 2)//District ,constituency
+					        {
+					        Set<String> constituencyNos = mobileNumbersDAO.getMobilenosBasedOnPriority(scopeId,location,constiMaxIndex,IConstants.CONSTITUENCY);
+					        if(constituencyNos != null && constituencyNos.size() > 0)
+					        	resultNumbers.addAll(constituencyNos);
+					        }
+					        
+					        if(scopeId == 1)//district
+						     {
+					        	Set<String> districtNos = mobileNumbersDAO.getMobilenosBasedOnPriority(scopeId,location,districtMaxIndex,IConstants.DISTRICT);
+						        if(districtNos != null && districtNos.size() > 0)
+						        	resultNumbers.addAll(districtNos);
+						     }
+				    	
+				    	}
+				    	
+				    	
+				    	 if(resultNumbers != null && resultNumbers.size() > 0)
+					      {
+										  
+							 flag = true;
+							 vo.setCount(new Long(resultNumbers.size()));
+							for(String l : resultNumbers)
+							{
+							 if(!totlaMobileNos.contains(l.toString()))
+							 totlaMobileNos.add(l.toString());
+							 if(checkedTypeVal == 2) //each file for location
+								 {
+								str.append(l.toString());
+								str.append( "\r\n");
+								 }
+							}
 						}
-					}
-					
-					resultList.add(vo);
-					if(checkedTypeVal == 2) //each file for location
+						
+						resultList.add(vo);
+						if(checkedTypeVal == 2) //each file for location
+						 {
+						    BufferedWriter outPut1 = new BufferedWriter(new FileWriter(f1));
+						    outPut1.write(str.toString());
+							outPut1.close();
+						 }
+				    	
+				   }
+				    
+				    /*  multiple file split based on totalMobileNumbers in all locations*/ 
+					if(checkedTypeVal == 3 && totlaMobileNos.size() > 0)
 					 {
-					    BufferedWriter outPut1 = new BufferedWriter(new FileWriter(f1));
-					    outPut1.write(str.toString());
-						outPut1.close();
+						splitFileCnt =  totlaMobileNos.size() / noOfFile;
+						for(int j=0;j<noOfFile;j++)
+						{
+							str = new StringBuilder();
+							if(fileFormatVal == 1)
+							f1 = new File(path + pathSeperator+date+pathSeperator+j+".csv");//j is file number
+							else
+							f1 = new File(path + pathSeperator+date+pathSeperator+j+".txt");
+							int inc = 0;
+							for(String no : totlaMobileNos.subList(splitmaxCount,  totlaMobileNos.size()- 0))
+							{
+								inc ++;
+								str.append(no.toString());
+								str.append( "\r\n");
+								if(inc >= splitFileCnt && j < noOfFile - 1)
+								 break;
+									
+							}
+							 BufferedWriter outPut1 = new BufferedWriter(new FileWriter(f1));
+							    outPut1.write(str.toString());
+								outPut1.close();
+								splitmaxCount = splitmaxCount + splitFileCnt;
+						}
 					 }
-			    	
-			   }
-			    
-			    /*  multiple file split based on totalMobileNumbers in all locations*/ 
-				if(checkedTypeVal == 3 && totlaMobileNos.size() > 0)
-				 {
-					splitFileCnt =  totlaMobileNos.size() / noOfFile;
-					for(int j=0;j<noOfFile;j++)
+					
+					else if(checkedTypeVal == 1 && totlaMobileNos.size() > 0)//Single file
 					{
 						str = new StringBuilder();
+						Random rand = new Random();
+						int x = rand.nextInt(4);
 						if(fileFormatVal == 1)
-						f1 = new File(path + pathSeperator+date+pathSeperator+j+".csv");//j is file number
+						f1 = new File(path + pathSeperator+date+pathSeperator+x+".csv");
 						else
-						f1 = new File(path + pathSeperator+date+pathSeperator+j+".txt");
-						int inc = 0;
-						for(String no : totlaMobileNos.subList(splitmaxCount,  totlaMobileNos.size()- 0))
+						f1 = new File(path + pathSeperator+date+pathSeperator+x+".txt");	
+						for(String no : totlaMobileNos)
 						{
-							inc ++;
 							str.append(no.toString());
 							str.append( "\r\n");
-							if(inc >= splitFileCnt && j < noOfFile - 1)
-							 break;
-								
 						}
 						 BufferedWriter outPut1 = new BufferedWriter(new FileWriter(f1));
 						    outPut1.write(str.toString());
 							outPut1.close();
-							splitmaxCount = splitmaxCount + splitFileCnt;
+							if(fileFormatVal == 1)
+							result.setOptionFilePath(path + pathSeperator+date+pathSeperator+x+".csv");
+							else
+							result.setOptionFilePath(path + pathSeperator+date+pathSeperator+x+".txt");	
 					}
-				 }
-				
-				else if(checkedTypeVal == 1 && totlaMobileNos.size() > 0)//Single file
-				{
-					str = new StringBuilder();
-					Random rand = new Random();
-					int x = rand.nextInt(4);
-					if(fileFormatVal == 1)
-					f1 = new File(path + pathSeperator+date+pathSeperator+x+".csv");
-					else
-					f1 = new File(path + pathSeperator+date+pathSeperator+x+".txt");	
-					for(String no : totlaMobileNos)
-					{
-						str.append(no.toString());
-						str.append( "\r\n");
+					
+					try{
+						if(flag == true)
+						{
+							
+							 FileOutputStream fos = new FileOutputStream(path + pathSeperator+date+".zip");
+							 ZipOutputStream zos = new ZipOutputStream(fos);
+						     System.gc();
+							 for(File rf : destDir.listFiles())
+							 addToZipFile(rf.getAbsolutePath(), zos);
+							 zos.close();
+							 fos.close();
+							result.setResultCode(0);
+							result.setStatus("/mobile_numbers/"+date+".zip");
+							result.setList(resultList);
 					}
-					 BufferedWriter outPut1 = new BufferedWriter(new FileWriter(f1));
-					    outPut1.write(str.toString());
-						outPut1.close();
-						if(fileFormatVal == 1)
-						result.setOptionFilePath(path + pathSeperator+date+pathSeperator+x+".csv");
 						else
-						result.setOptionFilePath(path + pathSeperator+date+pathSeperator+x+".txt");	
+						{
+							
+							result.setStatus("no data");
+							result.setResultCode(1);
+						}
+					 }catch(Exception e)
+					 {
+						 LOG.error("Exception Occured in Zipping Files");
+						 result.setResultCode(2);
+						 result.setStatus("Exception");
+					 }
 				}
-				
-				try{
-					if(flag == true)
-					{
-						
-						 FileOutputStream fos = new FileOutputStream(path + pathSeperator+date+".zip");
-						 ZipOutputStream zos = new ZipOutputStream(fos);
-					     System.gc();
-						 for(File rf : destDir.listFiles())
-						 addToZipFile(rf.getAbsolutePath(), zos);
-						 zos.close();
-						 fos.close();
-						result.setResultCode(0);
-						result.setStatus("/mobile_numbers/"+date+".zip");
-						result.setList(resultList);
+				catch (Exception e) {
+					 e.printStackTrace();
+				  	    LOG.error(" Exception Occured in getIvrMobileNumbers() method, Exception - "+e);
+				  	  	result.setResultCode(2);
+						result.setStatus("Exception");
 				}
-					else
-					{
-						
-						result.setStatus("no data");
-						result.setResultCode(1);
-					}
-				 }catch(Exception e)
-				 {
-					 LOG.error("Exception Occured in Zipping Files");
-					 result.setResultCode(2);
-					 result.setStatus("Exception");
-				 }
-			}
-			catch (Exception e) {
-				 e.printStackTrace();
-			  	    LOG.error(" Exception Occured in getIvrMobileNumbers() method, Exception - "+e);
-			  	  	result.setResultCode(2);
-					result.setStatus("Exception");
-			}
-			return result;
-		}
+				return result; 
+		 }
+		
+	 
 	 public List<SelectOptionVO> getTehsilList(List<Long> distictIds)
 	  {
 		  List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
