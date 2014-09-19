@@ -1,18 +1,23 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.excel.booth.PartyBoothPerformanceVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
 import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class PartyBoothResult2Action extends ActionSupport implements ServletRequestAware{
@@ -27,6 +32,37 @@ public class PartyBoothResult2Action extends ActionSupport implements ServletReq
 	private PartyBoothPerformanceVO boothResult;
 
 	
+	
+	private List<PartyBoothPerformanceVO> PartyBoothPerformanceVOList ;
+	private SelectOptionVO selectOptionVO;
+	JSONObject jObj;
+	private String task;
+	
+	public List<PartyBoothPerformanceVO> getPartyBoothPerformanceVOList() {
+		return PartyBoothPerformanceVOList;
+	}
+	public void setPartyBoothPerformanceVOList(
+			List<PartyBoothPerformanceVO> partyBoothPerformanceVOList) {
+		PartyBoothPerformanceVOList = partyBoothPerformanceVOList;
+	}
+	public SelectOptionVO getSelectOptionVO() {
+		return selectOptionVO;
+	}
+	public void setSelectOptionVO(SelectOptionVO selectOptionVO) {
+		this.selectOptionVO = selectOptionVO;
+	}
+	public JSONObject getjObj() {
+		return jObj;
+	}
+	public void setjObj(JSONObject jObj) {
+		this.jObj = jObj;
+	}
+	public String getTask() {
+		return task;
+	}
+	public void setTask(String task) {
+		this.task = task;
+	}
 	public IPartyBoothWiseResultsService getPartyBoothWiseResultsService() {
 		return partyBoothWiseResultsService;
 	}
@@ -134,4 +170,152 @@ public class PartyBoothResult2Action extends ActionSupport implements ServletReq
 		return SUCCESS;
 	}
 
+	public String ajaxHandler()
+	{
+		try {
+			
+			jObj = new JSONObject(getTask());
+			Long constituencyId = jObj.getLong("constituencyId");
+			JSONArray partyArr = jObj.getJSONArray("partyList");
+			List<Long> partyIds = new ArrayList<Long>();
+			
+			if(partyArr != null && partyArr.length()>0)
+			{
+				for (int i = 0; i < partyArr.length(); i++) {
+					partyIds.add(Long.valueOf(partyArr.get(i).toString()));
+				}
+			}
+			
+			JSONArray electionYearsArr = jObj.getJSONArray("electionYearsList");
+			List<String> electionyears = new ArrayList<String>();
+			
+			if(electionYearsArr != null && electionYearsArr.length()>0)
+			{
+				for (int i = 0; i < electionYearsArr.length(); i++) {
+					electionyears.add(electionYearsArr.get(i).toString());
+				}
+			}
+			
+			List<PartyBoothPerformanceVO> boothResults = partyBoothWiseResultsService.getBoothWiseElectionResults(partyIds, constituencyId, electionyears);
+			
+			String path = IWebConstants.STATIC_CONTENT_FOLDER_URL;
+
+			List<PartyBoothPerformanceVO> PartyBoothPerformanceVOList1 = new ArrayList<PartyBoothPerformanceVO>();
+			
+			if(jObj.getString("task").equalsIgnoreCase("assemblyWiseResults"))
+			{				
+				if(boothResults != null && boothResults.size()>0)
+				{
+					for (PartyBoothPerformanceVO vo : boothResults) 
+					{	
+						path = IWebConstants.STATIC_CONTENT_FOLDER_URL+""+vo.getPartyName();
+						PartyBoothPerformanceVO boothResult1 = partyBoothWiseResultsService.getVotingPercentageWiseBoothResult(vo,true,path);
+												boothResult1 = partyBoothWiseResultsService.getVotingPercentageWiseBoothResult(vo,false,null);
+						
+						PartyBoothPerformanceVOList1.add(boothResult1);
+					}
+				}
+			 
+			}
+			else if(jObj.getString("task").equalsIgnoreCase("parliamentWiseResults"))
+			{			
+				if(boothResults != null && boothResults.size()>0)
+				{
+					for (PartyBoothPerformanceVO vo : boothResults) 
+					{	
+						path = IWebConstants.STATIC_CONTENT_FOLDER_URL+""+vo.getPartyName();
+						PartyBoothPerformanceVO boothResult1 = partyBoothWiseResultsService.getVotingPercentageWiseBoothResult(vo,true,path);
+												boothResult1 = partyBoothWiseResultsService.getVotingPercentageWiseBoothResult(vo,false,null);
+						
+						PartyBoothPerformanceVOList1.add(boothResult1);
+					}
+				}
+			}
+			
+			boothResult = partyBoothWiseResultsService.segrigateBoothWiseResults(PartyBoothPerformanceVOList1);
+			
+		} catch (Exception e) {
+			LOG.error(" exception occured in ajaxHandler() in PartyBoothResult2Action action class.",e);
+		}
+		return SUCCESS;
+	}
+	
+	public String getStatewiseDetails()
+	{
+		try {
+			HttpSession session = request.getSession();
+			
+			if(session == null )
+				return Action.ERROR;
+			
+			
+			jObj = new JSONObject(getTask());
+			
+			Long stateTypeId = jObj.getLong("stateType");
+			String electionType = jObj.getString("electionType");
+			Long electionYear =   jObj.getLong("electionYear");
+			Long constituencyId = jObj.getLong("constituencyId");
+			
+			if(electionYear.longValue() == 0L)
+			{
+				electionYear = null;
+			}
+			
+			if(constituencyId.longValue() == 0L)
+			{
+				constituencyId = null;
+			}
+			
+			selectOptionVO = partyBoothWiseResultsService.getStateWiseDetailByStateType(stateTypeId,electionType,electionYear,constituencyId);
+			
+		} catch (Exception e) {
+			LOG.error(" exception occured in getStatewiseDetails() in PartyBoothResult2Action action class.",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getPartyDetailsForConstituency()
+	{
+		try {
+			HttpSession session = request.getSession();
+			
+			if(session == null )
+				return Action.ERROR;
+			
+			
+			jObj = new JSONObject(getTask());
+			
+			Long electionYear =   jObj.getLong("electionYear");
+			Long constituencyId = jObj.getLong("constiteuncyId");
+			
+			selectOptionVO = partyBoothWiseResultsService.getPartyDetailsForConstituencyAction(electionYear,constituencyId);
+			
+		} catch (Exception e) {
+			LOG.error(" exception occured in getPartyDetailsForConstituencyAction() in PartyBoothResult2Action action class.",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getAssemblyDetailsForParliamnt()
+	{
+		try {
+			
+			HttpSession session = request.getSession();
+			
+			if(session == null )
+				return Action.ERROR;
+			
+			
+			jObj = new JSONObject(getTask());
+			
+			Long electionYear =   jObj.getLong("electionYear");
+			Long parliamentConstiId = jObj.getLong("parliamentConstiId");
+			
+			selectOptionVO = partyBoothWiseResultsService.getAssemblyDetailsForParliamnt(electionYear,parliamentConstiId);
+			
+		} catch (Exception e) {
+			LOG.error(" exception occured in getAssemblyDetailsForParliamnt() in PartyBoothResult2Action action class.",e);
+		}
+		return Action.SUCCESS;
+	}
 }
