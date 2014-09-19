@@ -21,15 +21,8 @@ public class ParticipantVO implements Serializable{
 	private String expRoles;
 	private Double perc;
 	private List<SelectOptionVO> candidatesList;
-	private boolean participantFont;
 	
 	
-	public boolean isParticipantFont() {
-		return participantFont;
-	}
-	public void setParticipantFont(boolean participantFont) {
-		this.participantFont = participantFont;
-	}
 	public List<SelectOptionVO> getCandidatesList() {
 		return candidatesList;
 	}

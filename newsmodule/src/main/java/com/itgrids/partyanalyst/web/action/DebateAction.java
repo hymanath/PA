@@ -471,9 +471,6 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 			 //debateDetailsVO.setTelecasteTypeId(debateObj.getLong("telecastTimeId"));
 			 String startDate = debateObj.getString("startTime");
 			 String endDate = debateObj.getString("endTime");
-			 if(debateObj.getBoolean("summaryFont")){
-				 debateDetailsVO.setSummaryFont(true);
-			 }
 			 SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 			 debateDetailsVO.setStartDate(sdf.parse(startDate));
 			 debateDetailsVO.setEndDate(sdf.parse(endDate));
@@ -483,9 +480,7 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 			 List<SelectOptionVO> subjectsList = new ArrayList<SelectOptionVO>();
 			 for (int i = 0; i < subjectsArray.length(); i++) {
 				 SelectOptionVO selectOptionVO = new SelectOptionVO();
-				 JSONObject subjectObj = (JSONObject) subjectsArray.get(i);
-				 selectOptionVO.setName(subjectObj.getString("subject"));
-				 selectOptionVO.setFlag(subjectObj.getBoolean("font"));
+				 selectOptionVO.setName(subjectsArray.get(i).toString());
 				 subjectsList.add(selectOptionVO);
 			 }
 			 debateDetailsVO.setSubjectList(subjectsList);
@@ -506,7 +501,7 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 				 participantVO.setId(particepentObj.getLong("candidateId"));
 				 participantVO.setPartyId(particepentObj.getLong("partyId"));
 				 participantVO.setSummery(particepentObj.getString("summery")!= null && particepentObj.getString("summery").trim().length() > 0 ?particepentObj.getString("summery"):null );
-				 participantVO.setParticipantFont(particepentObj.getBoolean("candSummaryFont"));
+				 
 				 JSONArray scalsArray = particepentObj.getJSONArray("scale");
 				 List<SelectOptionVO> scaleList = new ArrayList<SelectOptionVO>();
 				 for (int j = 0; j < scalsArray.length(); j++) {
@@ -560,7 +555,6 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 				 JSONObject questionAnswerObj = (JSONObject) questionAnswerArray.get(i);
 				 questionAnswerVO.setId(questionAnswerObj.getLong("questionId"));
 				 questionAnswerVO.setName(questionAnswerObj.getString("answer"));
-				 questionAnswerVO.setFlag(questionAnswerObj.getBoolean("answerFont"));
 				 questionAnswerList.add(questionAnswerVO);
 			 }
 			 debateDetailsVO.setQuestionsList(questionAnswerList);
@@ -572,7 +566,6 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 				 SelectOptionVO selectOptionVO = new SelectOptionVO();
 				 JSONObject smsQuestionObj = (JSONObject) smsQuestion.get(i);
 				 selectOptionVO.setName(smsQuestionObj.getString("questionId"));
-				 selectOptionVO.setFlag(smsQuestionObj.getBoolean("questionFont"));
 				 smsQuestionList.add(selectOptionVO);
 			 }
 			 debateDetailsVO.setSmsQuestionList(smsQuestionList);
@@ -584,7 +577,6 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 				 //selectOptionVO.setId(smsQuestionObj.getLong("questionId"));
 				 selectOptionVO.setName(smsQuestionObj.getString("option"));
 				 selectOptionVO.setPerc(smsQuestionObj.getDouble("percentage"));
-				 selectOptionVO.setFlag(smsQuestionObj.getBoolean("optionFont"));
 				 smsOptionsList.add(selectOptionVO);
 			 }
 			 debateDetailsVO.setSmaOptionsList(smsOptionsList);

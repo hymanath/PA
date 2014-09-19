@@ -71,30 +71,6 @@
 		
 			
 	<style type="text/css">
-	
-	<!--@font-face
-	{
-		font-family:eFont;src: url('img/PRIYAANK.ttf');
-	}
-	@font-face{ font-family: 'eFont'; src: url('fonts/PRIYAANK.eot');}-->
-	@font-face
-	{
-		font-family:aFont;src: url('img/PRIYAANK.TTF');
-	}
-	@font-face{ font-family: 'aFont'; src: url('fonts/anu_fonts/PRIYAANK.eot');}
-	@font-face {
-		font-family: "aFont";
-		font-style: normal;
-		font-weight: normal;
-		src: local("?"), url("fonts/anu_fonts/PRIYAANK.woff") format("woff"), url("fonts/anu_fonts/PRIYAANK.TTF") format("truetype"), url("fonts/anu_fonts/PRIYAANK.svg") format("svg");
-	}
- 
-	.anu
-	{
-		font-family: aFont;
-		font-size:20px;
-	}
-	
 	#errorMsgDiv,#RerrDiv,#RerrDivForAnalysis,#errorForTotal{
 		font-weight:bold;
 		margin-bottom:10px;
@@ -356,7 +332,6 @@ var channelsArray = new Array();
 						<div class="span12">
 							<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Subject : <font class="requiredFont">*</font><span id="subject1Err" class="errDiv" style="margin-left: 100px;"> </span><a class="btn btn-mini pull-right" href="javascript:{}"  title="Click here to add another Subject" onClick="addMoreSubject();"><i class="icon-plus" style="margin-left:15px;"></i></a></label>
 							<input type="text" Class="subjectClass span12" name="subject1" id="subject1" />
-							<span style="font-size:13px;"> <input type="checkbox" class="subjectFontCls" id="anuFont1" onclick="changeFont('anuFont1','subject1');" name="fontCheckBox[1].subject">&nbsp;Please check for anu font</span>
 							<div id="addedSubjectDiv"></div>				
 							
 						</div>
@@ -418,7 +393,6 @@ var channelsArray = new Array();
 								Answer : <font class="requiredFont">*</font>
 								<span id="answer${i.index+1}Err" class="errDiv"></span>
 							<input type="text" Class="selectWidth debateAnswr input-block-level" name="answer${i.index+1}" id="answer${i.index+1}"/>	
-							<span style="font-size:13px;"> <input class="answerFontCls" type="checkbox" id="anuFontAnswer${i.index+1}" onclick="changeFont('anuFontAnswer${i.index+1}','answer${i.index+1}');" name="fontCheckBox[${i.index+1}].answers">&nbsp;Please check for anu font</span>
 						</div>
 
 							</div>
@@ -432,15 +406,13 @@ var channelsArray = new Array();
 						
 						<div class="smsPoleClass">
 						<div class="row">
-								<textarea placeholder="Please Enter SMS Question ..."class="input-block-level" rows="4" cols="50" name="smsques1" id="smsques1" ></textarea>
-								<span style="font-size:13px;"> <input type="checkbox" id="anuFontQuestion" onclick="changeFont('anuFontQuestion','smsques1');" name="smsQuestFont">&nbsp;Please check for anu font</span>								
+								<textarea placeholder="Please Enter SMS Question ..."class="input-block-level" rows="4" cols="50" name="smsques1" id="smsques1" ></textarea> 
 						</div>	<div class="row">
 								<div class="span7" >
 									<label>
 									<strong>Option : </strong><font class="requiredFont">*</font><span id="smsoption1Err" class="errDiv"></span>
 									</label>
 									<input type="text" Class="selectWidth smsOptin span12" name="smsoption1" id="smsoption1"/>
-									<span style="font-size:13px;font-weight:normal"> <input class="optionFontCls" type="checkbox" id="anuFontOption1" onclick="changeFont('anuFontOption1','smsoption1');" name="fontCheckBox[1].options">&nbsp;Please check for anu font</span>
 								</div>
 								<div class="span3">
 									<label><strong>Percentage : </strong><font class="requiredFont">*</font></label>				<span id="smsper1Err" class="errDiv"></span>			
@@ -465,7 +437,6 @@ var channelsArray = new Array();
 						<strong>Debate Summary : <font class="requiredFont">*</font></strong></label>-->
 
 						<textarea placeholder="Please Enter Debate Summary ..." rows="4" cols="50" class="span12" name="debetSum" id="debetSum" ></textarea>
-						<span style="font-size:13px;"> <input type="checkbox" id="anuFontSummary" onclick="changeFont('anuFontSummary','debetSum');" name="summaryFont">&nbsp;Please check for anu font</span>
 					</div>
 					
 							
