@@ -468,7 +468,7 @@ var debateDetails={
 				smaPoleObj.questionFont = $('#anuFontQuestion').is(":checked")
 				smaPoleObj.option      = $('#'+$(this).attr('key')).val();
 				smaPoleObj.percentage  = $(this).val() !="" ? $(this).val():0.0;
-				smaPoleObj.optionFont  = $(this).next().find('.optionFontCls').is(':checked');
+				smaPoleObj.optionFont  = $(this).parent().parent().find('.optionFontCls').is(':checked');
 				smsPole.push(smaPoleObj);		
 			});
 			//console.log(smsPole);
