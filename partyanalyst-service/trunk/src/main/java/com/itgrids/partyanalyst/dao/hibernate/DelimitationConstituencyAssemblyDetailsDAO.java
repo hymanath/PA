@@ -245,13 +245,22 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 	str.append(" dc.constituency_id = c.constituency_id and");
 	str.append(" dc.delimitation_constituency_id=dcad.delimitation_constituency_id and dc.year = '2009' and ");
 	str.append(" dcad.constituency_id=ac.constituency_id and c.election_scope_id=1 and c.state_id=1 and");
-	if(regionId == 1)
-	str.append(" ac.district_id between 1 and 10 and c.deform_date is null ");
 	if(regionId == 2)
+	str.append(" ac.district_id between 1 and 10 and c.deform_date is null ");
+	if(regionId == 1)
 	str.append(" ac.district_id between 11 and 23 and c.deform_date is null ");
 	if(regionId == 0)
 	str.append(" ac.district_id between 1 and 23 and c.deform_date is null ");	
 	Query query = getSession().createSQLQuery(str.toString());
 	return query.list();
 	}
+	@SuppressWarnings("unchecked")
+	public List<Long> findAssembliesConstituenciesByParliament(Long parliamentConstituencyId) 
+	{
+		Object[] params = {parliamentConstituencyId};
+		return getHibernateTemplate().find("select model.constituency.constituencyId from DelimitationConstituencyAssemblyDetails model where " +
+				"model.delimitationConstituency.constituency.constituencyId = ? and model.delimitationConstituency.year = " +
+				"(select max(model1.year) from DelimitationConstituency model1) order by model.constituency.name ",params);
+	}
+	
 }
