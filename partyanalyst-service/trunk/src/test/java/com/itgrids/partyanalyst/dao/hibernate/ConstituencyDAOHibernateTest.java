@@ -440,9 +440,16 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(type);
 	}*/
 	
-	public void testGetAreaTypesOfAConstituencyByElectionScope()
+	/*public void testGetAreaTypesOfAConstituencyByElectionScope()
 	{
 		List<Object[]> list = constituencyDAO.getAreaTypesOfAConstituencyByElectionScope(2l);
 		System.out.println(list.size());
+	}*/
+	
+	public void testGetAreaTypesOfAConstituencyByElectionScope()
+	{
+		List<Object[]> list = constituencyDAO.getAllAssemblyConstituenciesByStateTypeId(1L,1L,2014L);
+		System.out.println(list.size());
 	}
+	
 }
