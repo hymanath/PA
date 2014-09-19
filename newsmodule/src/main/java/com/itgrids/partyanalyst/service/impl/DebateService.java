@@ -43,6 +43,7 @@ import com.itgrids.partyanalyst.dao.IDebateRolesDAO;
 import com.itgrids.partyanalyst.dao.IDebateSmsQuestionDAO;
 import com.itgrids.partyanalyst.dao.IDebateSmsQuestionOptionDAO;
 import com.itgrids.partyanalyst.dao.IDebateSubjectDAO;
+import com.itgrids.partyanalyst.dao.IFontDAO;
 import com.itgrids.partyanalyst.dao.IObserverDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.ITelecastTypeDAO;
@@ -102,10 +103,18 @@ public class DebateService implements IDebateService{
 	private ICandidateDAO 						candidateDAO;
 	private IUserDAO 							userDAO;
 	private IDebateReportDAO 					debateReportDAO;
+	private IFontDAO							fontDAO;
+	
+	
+	
+	public IFontDAO getFontDAO() {
+		return fontDAO;
+	}
 
-	
-	
-	
+	public void setFontDAO(IFontDAO fontDAO) {
+		this.fontDAO = fontDAO;
+	}
+
 	public void setDebateReportDAO(IDebateReportDAO debateReportDAO) {
 		this.debateReportDAO = debateReportDAO;
 	}
@@ -261,6 +270,8 @@ public class DebateService implements IDebateService{
 					  debate.setIsDeleted("N");
 					  DateUtilService currentDate = new DateUtilService();
 					  debate.setCreatedDate(currentDate.getCurrentDateAndTime());
+					  if(debateDetailsVO.isSummaryFont())
+							debate.setFont(fontDAO.get(2));
 					  debate=debateDAO.save(debate);
 					  List<SelectOptionVO> subjectsList = debateDetailsVO.getSubjectList();
 					  if(subjectsList != null && subjectsList.size() > 0)
@@ -269,6 +280,8 @@ public class DebateService implements IDebateService{
 							DebateSubject debateSubject = new DebateSubject();
 							debateSubject.setSubject(escapeUnicode(StringEscapeUtils.escapeJava(selectOptionVO.getName())));
 							debateSubject.setDebate(debate);
+							if(selectOptionVO.isFlag())
+							  debateSubject.setFont(fontDAO.get(2));
 							debateSubject = debateSubjectDAO.save(debateSubject);
 						}
 					  }
@@ -303,6 +316,8 @@ public class DebateService implements IDebateService{
 							  }
 							  debateParticipant.setDebate(debate);
 							  debateParticipant.setSummary(participantVO.getSummery() != null ? escapeUnicode(StringEscapeUtils.escapeJava(participantVO.getSummery())):null);
+							  if(participantVO.isParticipantFont())
+								  debateParticipant.setFont(fontDAO.get(2));
 							  debateParticipant = debateParticipantDAO.save(debateParticipant);
 							  List<SelectOptionVO> rolesList = participantVO.getRoleList();
 							  if(rolesList != null && rolesList.size() > 0)
@@ -358,6 +373,8 @@ public class DebateService implements IDebateService{
 							{
 								debateQuestionAnswer.setDebateQuestions(debateQuestions);
 							}
+							if(selectOptionVO.isFlag())
+								debateQuestionAnswer.setFont(fontDAO.get(2));
 							debateQuestionAnswer = debateQuestionAnswerDAO.save(debateQuestionAnswer);
 						}
 					  }
@@ -371,6 +388,8 @@ public class DebateService implements IDebateService{
 							debateSmsQuestion.setDebate(debate);
 							debateSmsQuestion.setQuestion(escapeUnicode(StringEscapeUtils.escapeJava(selectOptionVO.getName())));
 							debateSmsQuestion.setIsDeleted("N");
+							if(selectOptionVO.isFlag())
+								debateSmsQuestion.setFont(fontDAO.get(2));
 							debateSmsQuestion = debateSmsQuestionDAO.save(debateSmsQuestion);
 						
 					  }
@@ -386,6 +405,8 @@ public class DebateService implements IDebateService{
 								debateSmsQuestionOption.setDebateSmsQuestion(debateSmsQuestion);
 							//}
 							debateSmsQuestionOption.setPercantage(selectOptionVO.getPerc());
+							if(selectOptionVO.isFlag())
+								debateSmsQuestionOption.setFont(fontDAO.get(2));
 							debateSmsQuestionOption = debateSmsQuestionOptionDAO.save(debateSmsQuestionOption);
 						}
 					  }

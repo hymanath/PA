@@ -32,7 +32,7 @@ public class DebateSmsQuestion extends BaseModel implements java.io.Serializable
 	private String isDeleted;
 	private Debate debate;
 	//private Set<DebateSmsQuestionOption> DebateSmsQuestionOption = new HashSet<DebateSmsQuestionOption>(0);
-
+	private Font font;
 	
 //default constructor.
 	
@@ -82,6 +82,19 @@ public class DebateSmsQuestion extends BaseModel implements java.io.Serializable
 
 	public void setDebate(Debate debate) {
 		this.debate = debate;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "font_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public Font getFont() {
+		return font;
+	}
+
+
+	public void setFont(Font font) {
+		this.font = font;
 	}
 
 	/*@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "DebateSmsQuestion")
