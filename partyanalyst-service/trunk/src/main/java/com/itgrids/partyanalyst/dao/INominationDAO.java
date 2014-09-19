@@ -677,4 +677,17 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	  
 	  public List<Object[]> getWinningCandidateInfoForAConstituency(Long constituencyId,Long electionId);
 		public List<Object[]> getVoteShareByConstituencyIdAndElectionId(Long constituencyId,Long electionId);
+		
+	public List<Object[]> findByConstituencyPartyAndElectionsYears(List<Long> partyIds, List<Long> constituencyId, String electionYear);
+	
+	public List findCandidateNamePartyByConstituenciAndElections(String constituencyId, List<String> electionYears);
+	
+	public List getPartyInfoThatParticipatedInAElection(Long electionyear,List<Long> constituencyIds,List<Long> partyIds);
+	
+	public List findCandidateNamesPartyByConstituenciAndElections(List<Long> constituencyId, String electionYear);
+
+	public List getPartyInfoParticipatedInAElection(Long electionyear,List<Long> constituencyIds,List<Long> partyIds,Long electionScopeId);
+	
+	public List<Object[]> findPartiesByConstituencListAndElection(List<Long> constituencyIds, String electionYear);
+	
 }

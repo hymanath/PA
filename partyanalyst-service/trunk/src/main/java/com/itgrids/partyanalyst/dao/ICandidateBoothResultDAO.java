@@ -253,4 +253,6 @@ public interface ICandidateBoothResultDAO extends GenericDao<CandidateBoothResul
 	 public Long findTotalVotesForAssembInAParliament(Set<Long> boothslist, Long electionId);
 	 
 	 public Long findPolledVotesForAssembInAParliament(Set<Long> boothslist, Long electionId);
+	 
+	 public List<Object[]> findboothWiseResultsForCandidate(Long constituencyId, Long nominationId);
 }
