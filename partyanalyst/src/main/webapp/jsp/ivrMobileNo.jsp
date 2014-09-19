@@ -80,9 +80,9 @@ $('#mandalId').multiselect({
 </div>
 <div class="row">
 <div class="span12 form-inline" style="margin-top:26px;">
-  <label>  Do you want to split the files as per Questions & options &nbsp;&nbsp;&nbsp;&nbsp;</label> <label class="radio">No<input type="radio" name="queOpt" checked value="1" class="QueRadio">
+  <label>  Do you want to split the files as per Questions & options &nbsp;&nbsp;&nbsp;&nbsp;</label> <label class="radio">No<input type="radio" name="queOpt" checked value="1" class="QueRadio" id="queOpt1">
   </label>
-  <label class="radio">Yes<input type="radio" name="queOpt"  value="2" class="QueRadio">
+  <label class="radio">Yes<input type="radio" name="queOpt"  value="2" class="QueRadio" id="queOpt2">
   </label> 
   </div>
 </div>
@@ -413,6 +413,7 @@ function createFile()
 	})
 	.done(function( result ) {
 		$("#ajaxImg").hide();
+		clearDiv();
 		if(result.resultCode == 0)
 		{
 	  $("#errorDiv").html("<font color='green' style='font-size: 12px; font-weight: bold;'>file created successfully</font>");
@@ -654,6 +655,24 @@ $("#OptionsDiv").html(str);
 $(".QueRadio").live("click",function(){
 ShowHideForQuestions();
 })
+function clearDiv()
+{
+		$('#districtId').find('option').remove();
+		$('#districtId').multiselect('refresh');
+		$('#constituencyId').find('option').remove();
+		$('#constituencyId').multiselect('refresh');
+		$('#parliamentId').find('option').remove();
+		$('#parliamentId').multiselect('refresh');
+		$('#mandalId').find('option').remove();
+		$('#mandalId').multiselect('refresh');
+		$('#regionId').val(0);
+		$("#maxIndex").val('');
+		$("#totalSize").val('');
+		$("#scopeId").val(0);
+		$( "#queOpt1" ).prop( "checked", true );
+		ShowHideForQuestions();
+		
+}
 </script>
 <script>
 
