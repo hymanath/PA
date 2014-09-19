@@ -225,9 +225,8 @@ function addMoreSubject(){
 var str = "";
 
 	str += "<span id='addedsubject"+subjCount+"'><label style='font-size: 17px;font-weight: bold;line-height: 1.5;'>Subject : <font class='requiredFont'>*</font><span id='subject"+subjCount+"Err' class='errDiv' style='margin-left: 100px;'></span><a href='javascript:{}'  title='Click here to remove another Subject' onclick='removeSubject(\"addedsubject"+subjCount+"\");'><i class='icon-trash pull-right' style='margin-left:15px;'></i></a></label>";
-	str +="<input type='text' Class='subjectClass span12' name='subject"+subjCount+"' id='subject"+subjCount+"' '/>";
-	str += "</br></span>";	
-	
+	str +="<input type='text' class='subjectClass span12' name='subject"+subjCount+"' id='subject"+subjCount+"'/>";
+	str += "<span style='font-size:13px;'> <input type='checkbox' class='subjectFontCls'  id='anuFont"+subjCount+"' onclick='changeFont(\"anuFont"+subjCount+"\",\"subject"+subjCount+"\");' name='fontCheckBox["+subjCount+"].subject'>&nbsp;Please check for anu font</span></span>";	
 	$('#addedSubjectDiv').append(str);
 subjCount++;
 }
@@ -315,6 +314,7 @@ function addMorePole(){
 	str += "<div class='span7'>";
 	str += "<label><strong>Option : <font class='requiredFont'>*</font></strong><span id='smsoption"+poleCount+"Err' class='errDiv'></span>";
 	str += "<input type='text' Class='selectWidth smsOptin span12' name='smsoption"+poleCount+"' id='smsoption"+poleCount+"'/>";
+	str += "<span style='font-size:13px;'> <input type='checkbox' class='optionFontCls'  id='anuFontOption"+poleCount+"' onclick='changeFont(\"anuFontOption"+poleCount+"\",\"smsoption"+poleCount+"\");' name='fontCheckBox["+poleCount+"].options'>&nbsp;Please check for anu font</span>";
 	str += "</div>";
 	str += "<div class='span3'>";
 	str += "<label><strong>Percentage : <font class='requiredFont'>*</font></strong><span id='smsper"+poleCount+"Err' class='errDiv'></span></label>";
@@ -381,7 +381,8 @@ var debateDetails={
 			startTime : '',
 			channelId : '',
 			telecastTimeId : '',
-			debetSummery : ''
+			debetSummery : '',
+			summaryFont : false
 			}; 
 			var  observer = new Array();
 			var  subjectArray = new Array();
@@ -389,7 +390,12 @@ var debateDetails={
 			var questionAnswer = new Array();
 			var smsPole= new Array();
 			$( ".subjectClass " ).each(function( index ) {
-				subjectArray.push($(this ).val());	
+				var font = $(this).next().find('.subjectFontCls').is(":checked")	
+				var obj ={
+				subject : $(this ).val(),
+				font :font 
+				}
+				subjectArray.push(obj);	
 			});
 			
 			debateDetails.endTime         = $('#endTime').val();
@@ -402,6 +408,7 @@ var debateDetails={
 					  partyId: '' ,
 					  candidateId : '' ,
 					  summery     : '',
+					  candSummaryFont : false,
 					  participantRoles:[],
 					  expparticipantRoles:[],
 					  scale : [
@@ -420,6 +427,7 @@ var debateDetails={
 					 scaleTotal : ''
 					}; 
 				participantObj.summery = $(this).closest("tr").find('.candSummary').val();
+				participantObj.candSummaryFont  = $(this).closest("tr").find('.candSummaryFontCls').is(":checked");
 				participantObj.scale = [];
 				for(var i=0;i <charsArray.length;i++)
 				{
@@ -449,20 +457,23 @@ var debateDetails={
 				j++;
 				var questionAnswerObj = {};
 				questionAnswerObj.questionId = $('#question'+j+'').val();	
-				questionAnswerObj.answer     = $('#answer'+j+'').val();	
+				questionAnswerObj.answer     = $('#answer'+j+'').val();
+				questionAnswerObj.answerFont = $(this).closest('div').find('.answerFontCls').is(':checked');
 				questionAnswer.push(questionAnswerObj);
 			});
 			
 			$( ".smsOptinPerc " ).each(function( index ) {
 				var smaPoleObj = {};
-				smaPoleObj.questionId  = $('#smsques1').val();	
+				smaPoleObj.questionId  = $('#smsques1').val();
+				smaPoleObj.questionFont = $('#anuFontQuestion').is(":checked")
 				smaPoleObj.option      = $('#'+$(this).attr('key')).val();
 				smaPoleObj.percentage  = $(this).val() !="" ? $(this).val():0.0;
+				smaPoleObj.optionFont  = $(this).next().find('.optionFontCls').is(':checked');
 				smsPole.push(smaPoleObj);		
 			});
 			//console.log(smsPole);
 			debateDetails.debetSummery = $('#debetSum').val();
-			
+			debateDetails.summaryFont = $('#anuFontSummary').is(":checked");
 				var jsObj = {
 						debateDetails :debateDetails,
 						participant   : participant,
@@ -547,7 +558,7 @@ function getValues(){
 		str += '</select></div><span id="1expparticipantRolesErr" class="errDiv"></span></td>';
 	
 	//str +='<td><!--<a  name="row1" class="icon-trash" title="Click here to add another Subject" onClick="removeCandidate(this.name);"></a></td>';
-	str += '<td><textarea placeholder="Please Enter Candidate Summary ..." rows="2" cols="25" class="candSummary" name="candSummary" id="candSummary1" ></textarea></td>';
+	str += '<td><textarea placeholder="Please Enter Candidate Summary ..." rows="2" cols="25" class="candSummary" name="candSummary" id="candSummary1" ></textarea><br><span style="font-size:11px;"> <input type="checkbox" id="anuFontCandSummary" class="candSummaryFontCls" onclick="changeFont(\'anuFontCandSummary\',\'candSummary1\');" name="candSummaryFont">&nbsp;Please check for anu font</span></td>';
 	str +='<td></td>';
     str +='</tr></table>';
     
@@ -616,7 +627,7 @@ function addMoreCandidates()
 		str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
 	}
 	str += '</select></div><span id="'+candCount+'expparticipantRolesErr" class="errDiv"></span></td>';
-	str += '<td><textarea placeholder="Please Enter Candidate Summary ..." rows="2" cols="25" class="candSummary" name="candSummary" id="candSummary'+candCount+'" ></textarea></td>';
+	str += '<td><textarea placeholder="Please Enter Candidate Summary ..." rows="2" cols="25" class="candSummary" name="candSummary" id="candSummary'+candCount+'" ></textarea><br><span style="font-size:11px;"> <input type="checkbox" class="candSummaryFontCls" id="anuFontCandSummary'+candCount+'" onclick="changeFont(\'anuFontCandSummary'+candCount+'\',\'candSummary'+candCount+'\');" name="candSummaryFont">&nbsp;Please check for anu font</span></td>';
 	str +='<td><a  name="row'+candCount+'" class="icon-trash" title="Click here to add another Subject" onClick="removeCandidate(this.name);" style="cursor: pointer;"></a></td>';
     str +='</tr>';
     
@@ -1533,4 +1544,11 @@ function getRespectiveSelection()
 		str +='<select id="candidateSelecction"><option value="0">Select Candidate</option></select>';
 		str += '</div>';
 		$('#reportTypeSelectionDiv').html(str);
+}
+function changeFont(ck,id){
+   if($('#'+ck).is(':checked')){
+     $('#'+id).addClass('anu');
+   }else{
+		 $('#'+id).removeClass('anu');
+   }
 }

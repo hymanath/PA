@@ -26,7 +26,7 @@ public class DebateQuestionAnswer extends BaseModel implements java.io.Serializa
 	private String answer;
 	private Debate debate;
 	private DebateQuestions debateQuestions;
-	
+	private Font font;
 	
 	//default constructor.
 	
@@ -80,15 +80,18 @@ public class DebateQuestionAnswer extends BaseModel implements java.io.Serializa
 	public void setDebateQuestions(DebateQuestions debateQuestions) {
 		this.debateQuestions = debateQuestions;
 	}
-	
-	
-    
-    
-    
-    
-	
-	
-	
-	
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "font_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public Font getFont() {
+		return font;
+	}
+
+
+	public void setFont(Font font) {
+		this.font = font;
+	}
 	
 }

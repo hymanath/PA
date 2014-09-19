@@ -21,7 +21,14 @@ public class DebateDetailsVO implements Serializable {
 	private List<SelectOptionVO> smsQuestionList;
 	private List<SelectOptionVO> smaOptionsList;
 	private String type;
+	private boolean summaryFont;
 	
+	public boolean isSummaryFont() {
+		return summaryFont;
+	}
+	public void setSummaryFont(boolean summaryFont) {
+		this.summaryFont = summaryFont;
+	}
 	public Long getDebateId() {
 		return debateId;
 	}
