@@ -8353,7 +8353,11 @@
 				<param name="root">pcconstituencyList</param>
 		</result>
 		</action>
-		
+		<action name="getLocationWiseMobileNosCountAction" class="mobileDataAction" method="getLocationWiseMobileNumbersCount">
+			<result type="json" name="success">
+				<param name="root">mobileVo</param>
+		</result>
+		</action>
 		
 </package>
 </struts>      
