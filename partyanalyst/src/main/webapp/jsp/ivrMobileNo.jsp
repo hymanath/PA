@@ -6,11 +6,14 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
 
 <script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
 <script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.js"></script>
 <link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
+
 <style>
 .ui-multiselect{
 width:200px !important;
@@ -36,7 +39,14 @@ $('#mandalId').multiselect({
   });
 </script>
 <div class="container "><div style="margin-top:20px;" class="widget ">
-<h2>Mobile Numbers Extraction For IVR</h2>
+<div class="row">
+<div class="span10">
+<h2>Mobile Numbers Extraction For IVR</h2></div>
+<div class="span1">
+<input class="btn" type="button" value="View Counts" onClick="openDialog()"></div>
+<div id="viewCountDialogDiv" style="display:none;"><div id="viewCountDialogInnerDiv"></div></div>
+</div>
+
    <div id="errorDiv"></div>
     <div class="row-fluid " style="margin-top: 20px;">
 	 <div class="span2">
@@ -673,6 +683,126 @@ function clearDiv()
 		ShowHideForQuestions();
 		
 }
+function openDialog(){
+$("#viewCountDialogDiv").dialog({
+width:600,
+height:500,
+modal: true,
+resizable: false,
+
+title:"View Counts"
+});
+
+var str='';
+str+='<div class="row-fluid " style="margin-top: 20px;">';
+str+='<div id ="dialogErrorDiv"></div>';
+
+str+='<div class="span3">';
+str+='<label>Select Region</label>';
+str+='<select id="dialogRegionId" class="input-block-level" onchange="correspondingCall();">';
+str+='<option value="0">ALL</option><option value="1">Andhra Pradesh</option><option value="2">Telangana</option>';
+str+='</select>';
+str+='</div>';
+str+='<div class="span3">';
+str+='<label>Select Scope</label>';
+str+='<select id="dialogScopeId" onchange="showHide();correspondingCall();" class="input-block-level"><option value="0">Select Scope</option><option value="2">District</option><option value="3">Constituency</option><option value="5">Mandal</option>';
+str+='</select>';
+str+='</div>';
+str+='<div class="span3">';
+str+='<input class="btn" type="button" value="Submit" style="margin-top: 20px;" onClick="getMobileNumbersCount()"></div>';
+str+='<img src="./images/icons/search.gif" id="dialogueAjaxImg" style="display:none"/>';
+str+='</div>';
+str+='<div id ="dialogDataDiv" style="margin-top:10px;"></div>';
+str+='</div>';
+
+$('#viewCountDialogInnerDiv').html(str);
+}
+
+function getMobileNumbersCount(){
+$("#dialogDataDiv").html('');
+var regionId = $("#dialogRegionId").val();
+var scopeId = $("#dialogScopeId").val();
+var region = $("#dialogRegionId option:selected").text();
+
+if(scopeId == 0)
+{
+$("#dialogErrorDiv").html("Please Select Scope").css("color","red");
+return;
+}
+$("#dialogErrorDiv").html("");
+$("#dialogueAjaxImg").show();
+var jsObj=
+{
+regionType: region,
+scopeId:scopeId,
+task : "mobileNumbersCount"
+};
+$.ajax({
+type: "GET",
+url: "getLocationWiseMobileNosCountAction.action",
+dataType: 'json',
+data: {task:JSON.stringify(jsObj)},
+})
+.done(function( result ) {
+$("#dialogueAjaxImg").hide();
+buildLocationWiseData(result.list,jsObj);
+});
+}
+function buildLocationWiseData(result,jsObj)
+{
+	var str = '';
+	str+='<table class="table table-bordered" id="datatableId">';
+	str+='<thead>';
+	str+='<tr>';
+	if(jsObj.scopeId == 2)
+	{
+	str+='<th>District</th>';
+	str+='<th>Total</th>';
+	str+='<th>DistrictWiseCount</th>';
+	str+='<th>ConstituencyWiseCount</th>';
+	}
+	else if(jsObj.scopeId == 3)
+	{
+	str+='<th>Constituency</th>';
+	str+='<th>Total</th>';
+	str+='<th>ConstituencyWiseCount</th>';
+	}
+	else if(jsObj.scopeId == 5)
+	{
+	str+='<th>Mandal</th>';
+	str+='<th>Total</th>';
+	}
+	str+='<th>MandalWiseCount</th>';
+	str+='<th>PanchayatWiseCount</th>';
+	str+='</tr>';
+	str+='</thead>';
+	str+='<tbody>';
+	for(var i in result)
+	{
+		str+='<tr>';
+		str+='<td>'+result[i].name+'</td>';
+		var total = result[i].distictWiseCount + result[i].constituencyWiseCount + 
+			result[i].tehsilWiseCount + result[i].panchayatWiseCount;
+		str+='<td>'+total+'</td>';
+		if(jsObj.scopeId == 2)
+		{
+		str+='<td>'+result[i].distictWiseCount+'</td>';
+		str+='<td>'+result[i].constituencyWiseCount+'</td>';
+		}
+		if(jsObj.scopeId == 3)
+		{
+		str+='<td>'+result[i].constituencyWiseCount+'</td>';
+		}
+		str+='<td>'+result[i].tehsilWiseCount+'</td>';
+		str+='<td>'+result[i].panchayatWiseCount+'</td>';
+		str+='</tr>';
+	}
+	str+='</tbody>';
+	str+='</table>';
+	$("#dialogDataDiv").html(str);
+	$("#datatableId").dataTable();
+}
+
 </script>
 <script>
 
