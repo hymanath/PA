@@ -192,4 +192,23 @@ public List<Object[]> getAllTehsilDetails(Long districtId){
 		
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getMandalsForRegion(String region) {
+		StringBuilder str = new StringBuilder();
+		str.append("select distinct model.tehsilId,model.tehsilName from Tehsil model where ");
+		if(region.equalsIgnoreCase("Telangana"))
+		str.append("model.district.districtId between 1 and 10 order by model.district.districtName");
+		else if(region.equalsIgnoreCase("Andhra Pradesh"))
+		{
+			str.append("model.district.districtId between 11 and 23 order by model.district.districtName");	
+		}
+		else
+		{
+			str.append("model.district.districtId between 1 and 23 order by model.district.districtName");	
+		}
+		Query query = getSession().createQuery(str.toString());
+		return query.list();
+		
+	}
+	
 }

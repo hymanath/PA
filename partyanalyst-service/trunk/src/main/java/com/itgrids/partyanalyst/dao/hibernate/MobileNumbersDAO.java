@@ -71,7 +71,7 @@ public class MobileNumbersDAO extends GenericDaoHibernate<MobileNumbers, Long> i
 		StringBuilder str = new StringBuilder(); 
 		str.append("select distinct model.mobileNumber from MobileNumbers model where");
 		if(scopeId == 1)
-		 str.append(" model.constituency.district.districtId =:location")	;
+		 str.append(" model.district.districtId =:location")	;
 		 else
 		 str.append(" model.constituency.constituencyId =:location");
 		 str.append(" and model.mobileNumber is not null and length(model.mobileNumber) = 10 and model.mobileNumber <> '9999999999' and model.voter.voterId is not null order by rand()");
@@ -91,7 +91,7 @@ public class MobileNumbersDAO extends GenericDaoHibernate<MobileNumbers, Long> i
 		StringBuilder str = new StringBuilder(); 
 		str.append("select distinct model.mobileNumber from MobileNumbers model where");
 		 if(scopeId == 1)
-		 str.append(" model.constituency.district.districtId =:location")	;
+		 str.append(" model.district.districtId =:location")	;
 		 else
 		 str.append(" model.constituency.constituencyId =:location");
 		 str.append(" and model.mobileNumber is not null and length(model.mobileNumber) = 10 and model.mobileNumber <> '9999999999' and model.voter.voterId is null");
@@ -153,7 +153,7 @@ public class MobileNumbersDAO extends GenericDaoHibernate<MobileNumbers, Long> i
 		str.append("select count(distinct model.mobileNumber)");
 		str.append(" from MobileNumbers model where");
 		if(scopeId == 1)//District
-		str.append(" model.constituency.district.districtId = :Id");
+		str.append(" model.district.districtId = :Id");
 		if(scopeId == 2)//Constituency
 		str.append(" model.constituency.constituencyId = :Id");
 		if(scopeId == 4)//Mandal
@@ -173,7 +173,7 @@ public class MobileNumbersDAO extends GenericDaoHibernate<MobileNumbers, Long> i
 		str.append("select count(distinct model.mobileNumber)");
 		str.append(" from MobileNumbers model where");
 		if(type.equalsIgnoreCase(IConstants.DISTRICT))
-			str.append(" model.constituency.district.districtId is not null and model.constituency.constituencyId is null and " +
+			str.append(" model.district.districtId is not null and model.constituency.constituencyId is null and " +
 					" model.tehsil.tehsilId is null and  model.panchayat.panchayatId is null");
 		else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
 			str.append(" model.constituency.constituencyId is not null and model.tehsil.tehsilId is null" +
@@ -184,7 +184,7 @@ public class MobileNumbersDAO extends GenericDaoHibernate<MobileNumbers, Long> i
 			str.append(" model.panchayat.panchayatId is not null");
 		
 		if(scopeId == 1)//District
-		str.append(" and model.constituency.district.districtId = :Id");
+		str.append(" and model.district.districtId = :Id");
 		if(scopeId == 2)//Constituency
 		str.append(" and model.constituency.constituencyId = :Id");
 		if(scopeId == 4)//mandal
@@ -200,7 +200,7 @@ public class MobileNumbersDAO extends GenericDaoHibernate<MobileNumbers, Long> i
 		StringBuilder str = new StringBuilder(); 
 		str.append("select distinct model.mobileNumber from MobileNumbers model where");
 		 if(scopeId == 1)
-		 str.append(" model.constituency.district.districtId =:location")	;
+		 str.append(" model.district.districtId =:location")	;
 		 if(scopeId == 2)
 		 str.append(" model.constituency.constituencyId =:location");
 		if(scopeId == 4)//mandal
@@ -215,7 +215,7 @@ public class MobileNumbersDAO extends GenericDaoHibernate<MobileNumbers, Long> i
 			 str.append(" and model.constituency.constituencyId is not null and model.tehsil.tehsilId is null" +
 						" and model.panchayat.panchayatId is null order by rand()"); 
 		 else if(priority.equalsIgnoreCase(IConstants.DISTRICT))
-			 str.append(" and model.constituency.district.districtId is not null and model.constituency.constituencyId is null " +
+			 str.append(" and model.district.districtId is not null and model.constituency.constituencyId is null " +
 						" and model.tehsil.tehsilId is null and  model.panchayat.panchayatId is null order by rand()");
 		 Query query = getSession().createQuery(str.toString());
 		 query.setParameter("location", location);
@@ -227,5 +227,39 @@ public class MobileNumbersDAO extends GenericDaoHibernate<MobileNumbers, Long> i
 		 return new HashSet(query.list());
 		 
 	}
-			 
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getMobileNosCountForLocation(List<Long> Ids,String type,Long scopeId)
+	{
+		StringBuilder str = new StringBuilder();
+		Query query = null;
+		str.append("select count(distinct model.mobileNumber)");
+		if(scopeId == 2)//District
+			str.append(" ,model.district.districtId,model.district.districtName");
+			if(scopeId == 3)//Constituency
+			str.append(" ,model.constituency.constituencyId, model.constituency.name");
+			if(scopeId == 5)//mandal
+			str.append(" ,model.tehsil.tehsilId,model.tehsil.tehsilName");
+		str.append(" from MobileNumbers model where");
+		if(type.equalsIgnoreCase(IConstants.DISTRICT))
+			str.append(" model.district.districtId is not null and model.constituency.constituencyId is null and " +
+					" model.tehsil.tehsilId is null and  model.panchayat.panchayatId is null");
+		else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			str.append(" model.constituency.constituencyId is not null and model.tehsil.tehsilId is null" +
+					" and model.panchayat.panchayatId is null");
+		else if(type.equalsIgnoreCase(IConstants.TEHSIL))
+		str.append(" model.tehsil.tehsilId is not null and model.panchayat.panchayatId is null");
+		else if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
+			str.append(" model.panchayat.panchayatId is not null");
+		 str.append(" and model.mobileNumber is not null and length(model.mobileNumber) = 10 and model.mobileNumber <> '9999999999' ");
+		if(scopeId == 2)//District
+		str.append(" and model.district.districtId in (:Ids) group by model.district.districtId");
+		if(scopeId == 3)//Constituency
+		str.append(" and model.constituency.constituencyId in (:Ids) group by model.constituency.constituencyId");
+		if(scopeId == 5)//mandal
+		str.append(" and model.tehsil.tehsilId in (:Ids) group by model.tehsil.tehsilId");
+		query = getSession().createQuery(str.toString());
+		query.setParameterList("Ids", Ids);
+		return query.list();
+		
+	}		 
 }
