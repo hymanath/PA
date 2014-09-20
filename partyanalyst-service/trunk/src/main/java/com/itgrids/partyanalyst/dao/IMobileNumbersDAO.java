@@ -23,4 +23,5 @@ public interface IMobileNumbersDAO extends GenericDao<MobileNumbers, Long>{
 	public Long getMobileNosCountByIds(Long Id,String type,Long scope);
 	public Set<String> getMobilenosBasedOnPriority(Long scopeId,Long location,int maxIndex,String priority);
 	public Long getMobileNosTotal(Long Id,String type,Long scopeId);
+	public List<Object[]> getMobileNosCountForLocation(List<Long> Ids,String type,Long scopeId);
 }

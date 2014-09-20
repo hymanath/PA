@@ -910,9 +910,26 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		query.setParameterList("constituencyIds", constituencyIds);
 		
 		return query.list();
-		
-		
-		
+		}
+	
+
+	@SuppressWarnings("unchecked")
+	public List getConstituenciesForRegion(String region){
+		StringBuilder str = new StringBuilder();
+		str.append("select distinct model.constituencyId,model.name from Constituency model where ");
+		if(region.equalsIgnoreCase("Telangana"))
+		str.append("model.district.districtId between 1 and 10");
+		else if(region.equalsIgnoreCase("Andhra Pradesh"))
+		{
+			str.append("model.district.districtId between 11 and 23");	
+		}
+		else
+		{
+			str.append("model.district.districtId between 1 and 23");	
+		}
+		str.append(" and model.deformDate is null and model.electionScope.electionType.electionTypeId = 2 order by model.name");
+		Query query = getSession().createQuery(str.toString());
+		return query.list();
 	}
 	
 }

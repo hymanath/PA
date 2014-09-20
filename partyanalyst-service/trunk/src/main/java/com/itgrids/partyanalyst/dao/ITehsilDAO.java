@@ -80,4 +80,5 @@ public List<Object[]> getAllTehsilInfoDetails();
 	
 	public Long getStateByTehsilId(Long tehsilId);
 	public List<Object[]> getMandalsByDistricts(List<Long> districtIds);
+	public List<Object[]> getMandalsForRegion(String region);
 }
