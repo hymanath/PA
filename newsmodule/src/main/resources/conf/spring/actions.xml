@@ -126,4 +126,9 @@
 	<bean id="keywordMergeAction" class="com.itgrids.partyanalyst.web.action.KeywordMergeAction" singleton="false">
 	 <property name="keywordsService" ref="keywordsService"/>			
 	</bean>	
+	
+	<bean id="debateAnalysisAction" class="com.itgrids.partyanalyst.web.action.DebateAnalysisAction" singleton="false">			
+	</bean>	
+	
+	
 	</beans>
