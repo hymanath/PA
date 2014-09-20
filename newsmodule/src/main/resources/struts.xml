@@ -6336,6 +6336,12 @@
 		    			<param name="root">statesList</param>
 		    		</result>
 		 </action>
+		 
+		 <action name="debateAnalysisAction" class="debateAnalysisAction" >
+		 	 <result name="success">/jsp/debateAnalysis.jsp</result>
+		 	 <result name="error" type="redirect">loginPageAction.action</result>
+		</action>
+		
         </package>
 		
 </struts>      
