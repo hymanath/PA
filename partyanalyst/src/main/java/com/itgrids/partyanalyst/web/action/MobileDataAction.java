@@ -499,4 +499,16 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 		}
 		return Action.SUCCESS;
 	}
+	public String getLocationWiseMobileNumbersCount()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			mobileVo = mobileService.getLocationWiseMobileNumbersCountByRegionAndScope(jObj.getLong("scopeId"),jObj.getString("regionType"));
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
+	
 }
