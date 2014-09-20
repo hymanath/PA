@@ -17,9 +17,36 @@ public class MobileVO implements Serializable{
 	private List<MobileVO> panchayatList = new ArrayList();
 	private List<MobileVO> constituencyList = new ArrayList();
 	private String optionFilePath ;
+	private Long DistictWiseCount = 0l;
+	private Long tehsilWiseCount = 0l;
+	private Long panchayatWiseCount = 0l;
+	private Long constituencyWiseCount = 0l;
 	
 	
-	
+	public Long getDistictWiseCount() {
+		return DistictWiseCount;
+	}
+	public void setDistictWiseCount(Long distictWiseCount) {
+		DistictWiseCount = distictWiseCount;
+	}
+	public Long getTehsilWiseCount() {
+		return tehsilWiseCount;
+	}
+	public void setTehsilWiseCount(Long tehsilWiseCount) {
+		this.tehsilWiseCount = tehsilWiseCount;
+	}
+	public Long getPanchayatWiseCount() {
+		return panchayatWiseCount;
+	}
+	public void setPanchayatWiseCount(Long panchayatWiseCount) {
+		this.panchayatWiseCount = panchayatWiseCount;
+	}
+	public Long getConstituencyWiseCount() {
+		return constituencyWiseCount;
+	}
+	public void setConstituencyWiseCount(Long constituencyWiseCount) {
+		this.constituencyWiseCount = constituencyWiseCount;
+	}
 	public String getOptionFilePath() {
 		return optionFilePath;
 	}
