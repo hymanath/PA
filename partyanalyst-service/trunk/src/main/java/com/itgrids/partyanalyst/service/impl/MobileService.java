@@ -3736,4 +3736,107 @@ public List<SelectOptionVO> getConstituencyList()
 		  return returnList;
 	  }
 	 
+	 public MobileVO getLocationWiseMobileNumbersCountByRegionAndScope(Long scopeId,String regionType)
+	 {
+		 MobileVO result = new MobileVO();
+		 List<MobileVO> resultList = new ArrayList<MobileVO>();
+		 List<Long> locationIds = new ArrayList<Long>();
+		 List<Object[]> list = null;
+		 try{
+			if(scopeId == 2)
+			{
+				list = districtDAO.getDistrictIdAndNameByStateForRegion(1l,regionType);
+			}
+			else if(scopeId == 3)
+			{
+				list = constituencyDAO.getConstituenciesForRegion(regionType);	
+			}
+			else if(scopeId == 5)
+			{
+				list = tehsilDAO.getMandalsForRegion(regionType);	
+			}
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					if(!locationIds.contains((Long)params[0]))
+					{
+						MobileVO vo = new MobileVO();
+						vo.setId((Long)params[0]);
+						vo.setName(params[1] != null ? params[1].toString() : "");
+						resultList.add(vo);
+						locationIds.add((Long)params[0]);
+					}
+				
+				}
+			}
+			
+			
+			List<Object[]> list1 = mobileNumbersDAO.getMobileNosCountForLocation(locationIds,IConstants.DISTRICT,scopeId);	
+			if(list1 != null && list1.size() > 0)
+			{
+				for(Object[] params : list1)
+				{
+				MobileVO vo = getMatchedVo(resultList,(Long)params[1]);
+				vo.setDistictWiseCount((Long)params[0]);
+				}
+				
+			}
+			List<Object[]> list2 = mobileNumbersDAO.getMobileNosCountForLocation(locationIds,IConstants.CONSTITUENCY,scopeId);
+			if(list2 != null && list2.size() > 0)
+			{
+				for(Object[] params : list2)
+				{
+				MobileVO vo = getMatchedVo(resultList,(Long)params[1]);
+				vo.setConstituencyWiseCount((Long)params[0]);
+				}
+				
+			}
+			List<Object[]> list3 = mobileNumbersDAO.getMobileNosCountForLocation(locationIds,IConstants.PANCHAYAT,scopeId);
+			if(list3 != null && list3.size() > 0)
+			{
+				for(Object[] params : list3)
+				{
+				MobileVO vo = getMatchedVo(resultList,(Long)params[1]);
+				vo.setPanchayatWiseCount((Long)params[0]);
+				}
+				
+			}
+			List<Object[]> list4 = mobileNumbersDAO.getMobileNosCountForLocation(locationIds,IConstants.TEHSIL,scopeId);
+			if(list4 != null && list4.size() > 0)
+			{
+				for(Object[] params : list4)
+				{
+				MobileVO vo = getMatchedVo(resultList,(Long)params[1]);
+				vo.setTehsilWiseCount((Long)params[0]);
+				}
+				
+			}
+			
+		 }
+		 catch (Exception e) {
+				LOG.error("Exception Occured in getLocationWiseMobileNumbersCountByRegionAndScope(), Exception is - ",e);
+		}
+		 result.setList(resultList);
+		return result;
+	 }
+		 public MobileVO getMatchedVo(List<MobileVO> resultList,Long Id)
+		 {
+			try{
+				if(resultList != null && resultList.size() > 0)
+					for(MobileVO vo : resultList)
+					{
+						if(vo.getId().longValue() == Id.longValue())
+							return vo;
+							
+					}
+				
+			}
+			catch (Exception e) {
+				LOG.error("Exception Occured in getMatchedVo(), Exception is - ",e);
+			}
+			return null;
+		
+		 }
+	 
 }
