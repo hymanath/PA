@@ -2,9 +2,10 @@ package com.itgrids.partyanalyst.dto;
 
 public class BaseCandidateResultVO {
 
-	
+	private Long candidateId;
 	private String candidateName;
 	
+	private Long partyId;
 	private String partyName;
 	
 	private Long count;
@@ -15,12 +16,42 @@ public class BaseCandidateResultVO {
 	private String votesPercengate;	
 	private String marginVotesPercentage;
 	private Double marginVotes;
-	
+	private String wonStatus;
 	private Integer status;
+	private String Reservation;
 	
 	
-	
-	
+	public String getWonStatus() {
+		return wonStatus;
+	}
+
+	public void setWonStatus(String wonStatus) {
+		this.wonStatus = wonStatus;
+	}
+
+	public Long getCandidateId() {
+		return candidateId;
+	}
+
+	public void setCandidateId(Long candidateId) {
+		this.candidateId = candidateId;
+	}
+
+	public Long getPartyId() {
+		return partyId;
+	}
+
+	public void setPartyId(Long partyId) {
+		this.partyId = partyId;
+	}
+
+	public String getReservation() {
+		return Reservation;
+	}
+
+	public void setReservation(String reservation) {
+		Reservation = reservation;
+	}
 
 	public Integer getStatus() {
 		return status;
