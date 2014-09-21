@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -1725,13 +1726,35 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		staticPartyList.add(72L);   // AIMIM
 
 		List<Long> constituencyIds = new ArrayList<Long>();
-		constituencyIds.add(243L);
-		constituencyIds.add(282L);
-		@SuppressWarnings("unchecked")
-		List<Object[]> list = nominationDAO.findPartiesByConstituencListAndElection(constituencyIds,"2014");
-		
-		System.out.println(list.size());
+		//constituencyIds.add(243L);
+		constituencyIds.add(65L);
+
+		try {
+			
+			System.out.println(new Date());
+			//	List<Object[]> list = nominationDAO.findPartiesByConstituencListAndElection(constituencyIds,"2014");
+			//List<Object[]> list = nominationDAO.findByConstituencyPartyAndElectionsYears(staticPartyList,constituencyIds,"2014");
+			
+			List<Object[]> list = nominationDAO.findByConstituencyPartyInfoAndElectionsYears(staticPartyList,constituencyIds,"2014");
+			System.out.println(new Date());
+			System.out.println(list.size());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
+	/*
+	public void testDetails()
+	{
+		List<Long> constituencyIds = new ArrayList<Long>();
+		constituencyIds.add(65L);
+		
+		List<Long> electionIdList = new ArrayList<Long>();
+		electionIdList.add(258L);
+		
+		List<Object[]> list  = nominationDAO.findWonCandidateInConstituency(constituencyIds, "2014", electionIdList);
+		System.out.println(list.size());
+	}
+	*/
 }	
 	

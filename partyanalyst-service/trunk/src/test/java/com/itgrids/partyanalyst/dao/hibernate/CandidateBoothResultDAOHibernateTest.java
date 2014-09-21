@@ -758,12 +758,22 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 			 System.out.println(params[0]+":"+params[1]);
 		}
 	}*/
-	
+	/*
 	public void testDetailss()
 	{
 		System.out.println(new Date());
 		List<Object[]> list = candidateBoothResultDAO.findboothWiseResultsForCandidate(65L,487137L);
 		System.out.println(list.size());
 		System.out.println(new Date());
+	}*/
+	
+
+	public void testDetailss()
+	{
+		System.out.println(new Date());
+		List<Object[]> list = candidateBoothResultDAO.findboothWiseResultsForNominators(232L,null);
+		System.out.println(list.size());
+		System.out.println(new Date());
 	}
+	
 }
