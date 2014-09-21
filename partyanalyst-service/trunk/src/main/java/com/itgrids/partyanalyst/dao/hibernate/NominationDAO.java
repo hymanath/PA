@@ -117,6 +117,70 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<Object[]> findByConstituencyPartyInfoAndElectionsYears(List<Long> partyIds, List<Long> constituencyIds, String electionYear){
+
+		StringBuilder queryStr = new StringBuilder();
+		
+		queryStr.append(" select model.party.partyId, " + //0
+				"model.party.shortName," + //1
+				" model.candidate.lastname," + //2
+				" model.constituencyElection.constituency.name , "); //3
+		
+		queryStr.append(" model.constituencyElection.election.electionScope.electionType.electionType, " + //4
+				" model.constituencyElection.election.electionYear,  "); //5
+		queryStr.append(" model.constituencyElection.constituencyElectionResult.totalVotesPolled, " + //6
+				" model.constituencyElection.constituencyElectionResult.validVotes, " +  //7
+				" model.constituencyElection.constituencyElectionResult.votingPercentage ,  "); //8
+		queryStr.append(" model.candidateResult.votesEarned,  " + //9
+				"  model.candidateResult.votesPercengate,  " + //10
+				"  model.candidateResult.rank,  " + //11
+				"  model.candidateResult.marginVotes, " + //12
+				"  model.nominationId," + //13
+				" sum(model1.totalVoters) "); //14
+		
+		queryStr.append(" from Nomination model, Booth model1  where model.party.partyId in (:partyIds) and model.constituencyElection.election.electionYear="+electionYear+" ");
+		queryStr.append(" and model.constituencyElection.constituency.constituencyId in (:constituencyIds) and model.constituencyElection.constituency.constituencyId = model1.constituency.constituencyId and model1.publicationDate.publicationDateId = 11  group by model.party.partyId,model1.constituency.constituencyId order by model.party.shortName asc ");
+		
+		Query qurQuery = getSession().createQuery(queryStr.toString());
+		qurQuery.setParameterList("constituencyIds", constituencyIds);
+		qurQuery.setParameterList("partyIds", partyIds);
+		
+		return qurQuery.list();	
+		
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> findWonCandidateInConstituency(List<Long> constituencyIds, String electionYear,List<Long> electionIdList)
+	{
+
+		StringBuilder queryStr = new StringBuilder();
+		
+		queryStr.append(" select  model.candidate.candidateId,upper(model.candidate.lastname),model.party.partyId, upper(model.party.shortName), model.constituencyElection.reservationZone,  ");
+		queryStr.append(" model.candidateResult.votesEarned,model.candidateResult.marginVotes,model.candidateResult.votesPercengate from Nomination model where model.constituencyElection.election.electionYear="+electionYear+" ");
+		queryStr.append(" and model.constituencyElection.constituency.constituencyId in (:constituencyIds) and model.constituencyElection.election.electionId in (:electionIdList) ");
+		queryStr.append(" and model.candidateResult.rank = 1 ");
+		Query qurQuery = getSession().createQuery(queryStr.toString());
+		qurQuery.setParameterList("constituencyIds", constituencyIds);
+		qurQuery.setParameterList("electionIdList", electionIdList);
+		
+		return qurQuery.list();	
+		
+	}
+	
+	
+	/*@SuppressWarnings("unchecked")
+	public List findCandidateNamePartyByConstituencyAndElection1111(String constituencyIds, String electionYear) {
+		return getHibernateTemplate().find( "select upper(model.constituencyElection.constituency.name)," +
+				" upper(model.candidate.lastname), upper(model.party.shortName), " +
+				" model.constituencyElection.constituency.constituencyId , model.candidate.candidateId ," +
+				" model.party.partyFlag,model.constituencyElection.reservationZone,model.party.partyId from Nomination model " +
+				" where model.constituencyElection.constituency.constituencyId in (  " + constituencyIds +
+				") and model.constituencyElection.election.electionYear = ? " +
+				" and model.candidateResult.rank = 1", electionYear);
+	}
+	*/
+	@SuppressWarnings("unchecked")
     public List<Nomination> findByStatePartyAndElectionId(final Long stateId, final Long electionId, final Long partyId){
            
             return ( List<Nomination> ) getHibernateTemplate().execute( new HibernateCallback() {
