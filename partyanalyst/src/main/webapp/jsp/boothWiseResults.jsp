@@ -108,10 +108,7 @@
 				line-height: 15px !important;
 			}
 			
-			#boothWiseResultsPage  tbody td , #majarityCandidatesTab tbody td ,#majarityCandidatesTab tbody td, #majarityCandidatesTab  tbody td
-			{
-				text-align:center !important;
-			}
+			
 			.errorRed{background:red;}
 			.errorYellow{background:yellow;}
 			.errorLgreen{background:lightgreen;}
@@ -127,6 +124,15 @@
 			font-size:20px !important;
 		}
 		</style>
+		
+		<script>
+		var constituencyListArr = new Array();
+		<c:forEach items="${constituencyList}" var="constituency"> 
+           constituencyListArr.push('${constituency.id}');
+        </c:forEach>
+				
+				//console.log(constituencyListArr);
+		</script>
 </head>
 		  
 <body>
@@ -220,17 +226,17 @@
 									
 								</div>
 							</div>
-							
-						<!--
-						<div class="row text-center m_top20" style="margin-right:51px;">
-							<button type="button" class="btn btn-success" onClick="getSurveyUserLoctionCount();">SUBMIT</button>								
+
+						<div class="row text-center m_top20" style="margin-right:51px;display:none;" id="excelBtnId">
+							<input type="button" class="btn btn-success" onclick="generateExcel('boothWiseResultsForExcelDiv');" value=" Export Excel "/>								
 						</div>
-						-->
+						
 			<img src='images/Loading-data.gif' class="offset5"  id="searchDataImg" style="width:70px;height:60px;display:none;"/>			
 			<div id="majarityCandidatesDiv"></div>
 			<div id="pollingPecentDiv"></div>
 			<div id="pollingVotesPercDiv"></div>
-			<div id="boothWiseResultsDiv" style="overflow:scroll;dispaly:none;height:500px;"></div>
+			<div id="boothWiseResultsDiv" style="dispaly:none;"></div>
+			<div id="boothWiseResultsForExcelDiv" style="display:none;"></div>
 				</div>
 			</div>
 		</div>
@@ -305,19 +311,22 @@ function buildElectionDetailsByResult(result)
 				$('#assemblyConstiListDiv').hide();
 				for(var i in result.selectOptionsList)
 				{
-					if( i == 0 )
-					{				
-						constId = result.selectOptionsList[i].id;
-						$('#constituencyId').append('<option value="'+result.selectOptionsList[i].id+'" selected="selected">'+result.selectOptionsList[i].name+'</option>');
-					}
-					if(result.selectOptionsList[i].id == 282)
-					{				
-						constId = 282;
-						$('#constituencyId').append('<option value="'+result.selectOptionsList[i].id+'" selected="selected">'+result.selectOptionsList[i].name+'</option>');
-					}
-					else
-					{
-						$('#constituencyId').append('<option value="'+result.selectOptionsList[i].id+'">'+result.selectOptionsList[i].name+'</option>');
+					if(constituencyListArr.indexOf('\''+result.selectOptionsList[i].id+'\'') == -1){
+
+						if( i == 0 )
+						{				
+							constId = result.selectOptionsList[i].id;
+							$('#constituencyId').append('<option value="'+result.selectOptionsList[i].id+'" selected="selected">'+result.selectOptionsList[i].name+'</option>');
+						}
+						if(result.selectOptionsList[i].id == 282)
+						{				
+							constId = 282;
+							$('#constituencyId').append('<option value="'+result.selectOptionsList[i].id+'" selected="selected">'+result.selectOptionsList[i].name+'</option>');
+						}
+						else
+						{
+							$('#constituencyId').append('<option value="'+result.selectOptionsList[i].id+'">'+result.selectOptionsList[i].name+'</option>');
+						}							
 					}
 				}
 				
@@ -404,14 +413,18 @@ function getConstituenciesForParliament(parliamentConstiId)
 						{						
 							for(var i in result.selectOptionsList)
 							{
-								if( i == 0 )
-								{				
-									constId = result.selectOptionsList[i].id;									
-									$('#constituencyId').append('<option value="'+result.selectOptionsList[i].id+'" selected="selected">'+result.selectOptionsList[i].name+'</option>');
-								}
-								else
+								if(constituencyListArr.indexOf('\''+result.selectOptionsList[i].id+'\'') == -1)
 								{
-									$('#constituencyId').append('<option value="'+result.selectOptionsList[i].id+'">'+result.selectOptionsList[i].name+'</option>');
+
+									if( i == 0 )
+									{				
+										constId = result.selectOptionsList[i].id;									
+										$('#constituencyId').append('<option value="'+result.selectOptionsList[i].id+'" selected="selected">'+result.selectOptionsList[i].name+'</option>');
+									}
+									else
+									{
+										$('#constituencyId').append('<option value="'+result.selectOptionsList[i].id+'">'+result.selectOptionsList[i].name+'</option>');
+									}
 								}
 							}
 							
@@ -563,9 +576,10 @@ function getSurveyUserLoctionCount(){
 		$('#boothWiseResultsDiv').html('');
 		$('#pollingVotesPercDiv').html('');
 		$('#pollingPecentDiv').html('');
+		$('#boothWiseResultsForExcelDiv').html('');
 		
 		$('#searchDataImg').show();
-		$('#boothWiseResultsDiv').hide();
+		$('#excelBtnId').hide();
 		var jsObj = 
 	       {
 			  constituencyId : constiteuncyId,
@@ -590,11 +604,14 @@ function getSurveyUserLoctionCount(){
 			});			
 			
 }
+
 //<div id="majarityCandidatesDiv"></div>
 function buildBoothWiseResultReport(result,electionYear)
 {
+	var mainStr = '';
 	var constiName = $('#constituencyId option:selected').text();
 	var str='';
+	var isWonCandidateAvailable = false;
 	str +='<h4> <br>'+constiName+' Assembly Constituency '+electionYear+' Election Booth Wise Results </h4> <br>';
 	
 
@@ -632,11 +649,12 @@ function buildBoothWiseResultReport(result,electionYear)
 				{
 					if(result.partyBoothPerformanceVOList[k].rank ==1)
 					{
+						isWonCandidateAvailable = true;
 						str +='<tr>';
 							str +='<td style="background:#DBEAF9;">'+result.partyBoothPerformanceVOList[k].candidateName+' - ('+result.partyBoothPerformanceVOList[k].partyName+')</td>';
 							str +='<td  style="background:#DBEAF9;">'+result.partyBoothPerformanceVOList[k].votesGained+'</td>';						
 							str +='<td  style="background:#DBEAF9;">'+result.partyBoothPerformanceVOList[k].percentage+'  </td>';
-							str +='<td  style="background:#DBEAF9;">'+result.partyBoothPerformanceVOList[k].marginVotes+' ( Won ) </td>';
+							str +='<td  style="background:#DBEAF9;">'+result.partyBoothPerformanceVOList[k].marginVotes+'  ( Rank - '+result.partyBoothPerformanceVOList[k].rank+') </td>';
 						str +='</tr>';
 				
 					}
@@ -646,21 +664,112 @@ function buildBoothWiseResultReport(result,electionYear)
 							str +='<td>'+result.partyBoothPerformanceVOList[k].candidateName+' - ('+result.partyBoothPerformanceVOList[k].partyName+')</td>';
 							str +='<td>'+result.partyBoothPerformanceVOList[k].votesGained+'</td>';						
 							str +='<td>'+result.partyBoothPerformanceVOList[k].percentage+'  </td>';
-							str +='<td>'+result.partyBoothPerformanceVOList[k].marginVotes+'  </td>';
+							str +='<td>'+result.partyBoothPerformanceVOList[k].marginVotes+'  ( Rank - '+result.partyBoothPerformanceVOList[k].rank+') </td>';
 						str +='</tr>';
 				
 					}
 						
-				}
-		
+				}		
+				if(!isWonCandidateAvailable)
+					{
+						str +='<tr>';
+							str +='<td style="background:#DBEAF9;">'+result.partyBoothPerformanceVOList[0].wonCandidate[0].candidateName+' - ('+result.partyBoothPerformanceVOList[0].wonCandidate[0].partyName+')</td>';
+							str +='<td  style="background:#DBEAF9;">'+result.partyBoothPerformanceVOList[0].wonCandidate[0].votesEarned+'</td>';						
+							str +='<td  style="background:#DBEAF9;">'+result.partyBoothPerformanceVOList[0].wonCandidate[0].votesPercengate+'  </td>';
+							str +='<td  style="background:#DBEAF9;">'+result.partyBoothPerformanceVOList[0].wonCandidate[0].marginVotes+' ( Rank - '+result.partyBoothPerformanceVOList[0].wonCandidate[0].rank+') </td>';
+						str +='</tr>';
+				
+					}
+					
 			str +='</tbody>';
 			str +='</table>';
 		}
 	
+	$('#boothWiseResultsForExcelDiv').html(str);
 	$('#majarityCandidatesDiv').html(str);
-	
-	
+	mainStr = mainStr+str;
 	str='';
+	str +='<h4> Polling Percentage vs Party Votes Percentage <h4>';	
+	partiesSize = 0;
+	if(result.partyPerWiseboothResults != null && result.partyPerWiseboothResults.length >0)
+		{
+			str +='<table class="table table-bordered m_top20 " id="majarityCandidatesTab" style="font-size:12px;color:#000000;font-weight:normal;">';	
+			str +='<thead>';
+				str +='<tr>';				
+					str +='<th > Polling % Range </th>';
+					str +='<th> Total No of Booths </th>';
+					if(result.partyBoothPerformanceVOList != null && result.partyBoothPerformanceVOList.length >0)
+					{
+					partiesSize =  result.partyBoothPerformanceVOList.length;
+						for(var j in result.partyBoothPerformanceVOList)
+						{
+							str +='<th colspan="2" style="text-align:center"> '+result.partyBoothPerformanceVOList[j].partyName+' </th>';
+						}
+					}
+					
+				str +='</tr>';
+
+				str +='<tr>';
+				str +='<th></th>';
+				str +='<th></th>';
+					for(var p=0; p<partiesSize ; p++)
+					{						
+						str +='<th> Party Votes % </th>';
+						str +='<th> Won Booths  </th>';					
+					}								
+				str +='</tr>';
+			str +='</thead>';	
+			str +='<tbody>';
+			
+				for(var k in result.partyPerWiseboothResults)
+				{
+						str +='<tr>';
+							str +='<td  style="text-align:center">'+result.partyPerWiseboothResults[k].location+'</td>';
+							str +='<td  style="text-align:center">'+result.partyPerWiseboothResults[k].boothResultVOList[0].votesEarned+'</td>';
+							if(result.partyPerWiseboothResults[k].boothResultVOList != null && result.partyPerWiseboothResults[k].boothResultVOList.length >0 )
+							{
+								for(var p=0; p<partiesSize ; p++)
+								{
+									str +='<td  style="text-align:center">'+result.partyPerWiseboothResults[k].boothResultVOList[p].percentage+'</td> ';
+									
+									if(result.partyPerWiseboothResults[k].boothResultVOList[p].boothResultVOList != null && result.partyPerWiseboothResults[k].boothResultVOList[p].boothResultVOList.length >0)
+									{
+										var isBuild = true;
+										for(var r in result.partyPerWiseboothResults[k].boothResultVOList[p].boothResultVOList)
+										{
+											if(result.partyPerWiseboothResults[k].boothResultVOList[p].boothResultVOList[r].wonParty == result.partyPerWiseboothResults[k].boothResultVOList[p].message)
+											{
+												isBuild = false;
+												//console.log(result.partyPerWiseboothResults[k].boothResultVOList[p].boothResultVOList[r].wonParty);
+												str+='<td  style="text-align:center">'+result.partyPerWiseboothResults[k].boothResultVOList[p].boothResultVOList[r].resultState+'</td>';
+											}
+										}
+
+										if(isBuild)
+										{
+												str+='<td  style="text-align:center"> -- </td>';
+										}										
+									}
+									else
+									{
+												str+='<td  style="text-align:center"> -- </td>';
+									}
+								}
+					
+							}
+							
+						str +='</tr>';						
+				}
+			
+			
+			str +='</tbody>';
+			str +='</table>';
+		}
+			$('#boothWiseResultsForExcelDiv').append(str);
+		$('#pollingPecentDiv').html(str);
+		
+		mainStr = mainStr+str;
+		str='';
 
 		str +='<h4> Party Votes Percentage vs Polling Percentage <h4>';
 	var partiesSize = 0;
@@ -669,7 +778,7 @@ function buildBoothWiseResultReport(result,electionYear)
 			str +='<table class="table table-bordered m_top20 " id="majarityCandidatesTab" style="font-size:12px;color:#000000;font-weight:normal;">';	
 			str +='<thead>';
 				str +='<tr>';				
-					str +='<th > Polling % Range </th>';
+					str +='<th > Party Votes % Range </th>';
 					if(result.partyBoothPerformanceVOList != null && result.partyBoothPerformanceVOList.length >0)
 					{
 						partiesSize =  result.partyBoothPerformanceVOList.length;
@@ -686,7 +795,7 @@ function buildBoothWiseResultReport(result,electionYear)
 					for(var p=0; p<partiesSize ; p++)
 					{
 						str +='<th> Total No of Booths </th>';
-						str +='<th> Party Votes % </th>';	
+						str +='<th> Polling % </th>';	
 					}								
 				str +='</tr>';
 			str +='</thead>';	
@@ -695,14 +804,14 @@ function buildBoothWiseResultReport(result,electionYear)
 				for(var k in result.perWiseboothResults)
 				{
 						str +='<tr>';
-							str +='<td>'+result.perWiseboothResults[k].location+'</td>';
+							str +='<td  style="text-align:center">'+result.perWiseboothResults[k].location+'</td>';
 							
 							if(result.perWiseboothResults[k].boothResultVOList != null && result.perWiseboothResults[k].boothResultVOList.length >0 )
 							{
 								for(var p=0; p<partiesSize ; p++)
 								{
-									str +='<td>'+result.perWiseboothResults[k].boothResultVOList[p].votesEarned+'</td>';
-									str +='<td>'+result.perWiseboothResults[k].boothResultVOList[p].percentage+' </td>';
+									str +='<td  style="text-align:center">'+result.perWiseboothResults[k].boothResultVOList[p].votesEarned+'</td>';
+									str +='<td  style="text-align:center">'+result.perWiseboothResults[k].boothResultVOList[p].percentage+' </td>';
 								}
 					
 							}
@@ -714,66 +823,9 @@ function buildBoothWiseResultReport(result,electionYear)
 			str +='</tbody>';
 			str +='</table>';
 		}
-		
+		$('#boothWiseResultsForExcelDiv').append(str);
 		$('#pollingVotesPercDiv').html(str);
-		
-	
-	str='';
-	str +='<h4> Polling Percentage vs Party Votes Percentage <h4>';	
-	partiesSize = 0;
-	if(result.partyPerWiseboothResults != null && result.partyPerWiseboothResults.length >0)
-		{
-			str +='<table class="table table-bordered m_top20 " id="majarityCandidatesTab" style="font-size:12px;color:#000000;font-weight:normal;">';	
-			str +='<thead>';
-				str +='<tr>';				
-					str +='<th > Party Votes % Range </th>';
-					if(result.partyBoothPerformanceVOList != null && result.partyBoothPerformanceVOList.length >0)
-					{
-					partiesSize =  result.partyBoothPerformanceVOList.length;
-						for(var j in result.partyBoothPerformanceVOList)
-						{
-							str +='<th colspan="2" style="text-align:center"> '+result.partyBoothPerformanceVOList[j].partyName+' </th>';
-						}
-					}
-					
-				str +='</tr>';
-
-				str +='<tr>';
-				str +='<th></th>';
-					for(var p=0; p<partiesSize ; p++)
-					{
-						str +='<th> Total No of Booths </th>';
-						str +='<th> Polling  % </th>';	
-					}								
-				str +='</tr>';
-			str +='</thead>';	
-			str +='<tbody>';
-			
-				for(var k in result.partyPerWiseboothResults)
-				{
-						str +='<tr>';
-							str +='<td>'+result.partyPerWiseboothResults[k].location+'</td>';
-							
-							if(result.partyPerWiseboothResults[k].boothResultVOList != null && result.partyPerWiseboothResults[k].boothResultVOList.length >0 )
-							{
-								for(var p=0; p<partiesSize ; p++)
-								{
-									str +='<td>'+result.partyPerWiseboothResults[k].boothResultVOList[p].votesEarned+'</td>';
-									str +='<td>'+result.partyPerWiseboothResults[k].boothResultVOList[p].percentage+' </td>';
-								}
-					
-							}
-							
-						str +='</tr>';						
-				}
-			
-			
-			str +='</tbody>';
-			str +='</table>';
-		}
-		
-		$('#pollingPecentDiv').html(str);
-		
+		mainStr = mainStr+str;
 		
 		str='';
 		str +='<h4> Booth Wise Performance :  <h4>';
@@ -841,12 +893,16 @@ function buildBoothWiseResultReport(result,electionYear)
 			str +='</table>';
 		}
 		
-		
+		$('#boothWiseResultsForExcelDiv').append(str);
 		$('#boothWiseResultsDiv').html(str);
 
-		$('#boothWiseResultsDiv').show();
+		$('#excelBtnId').show();
 }
 
+function generateExcel(id)
+{
+	tableToExcel(id, 'Booth Wise Results  Report');
+}
 
 </script>
 </body>
