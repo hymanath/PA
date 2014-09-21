@@ -211,5 +211,7 @@ public interface IElectionDAO extends GenericDao<Election, Long>{
 	public List<Object[]> getCandidateDetailsForMPTC(Long publicationDateId,Long electionScopeId,Long electionId,List<Long> districtIds);
 	public List<Object[]> getCandidateDetailsForZPTC(Long publicationDateId,Long electionScopeId,Long electionId,List<Long> districtIds);
 	public List<Object[]> getCandidateDetailsForMunicipality(Long electionId,List<Long> districtIds);
-	public List<Object[]> getCandidateDetailsForCorporation(Long electionId,List<Long> districtIds);		
+	public List<Object[]> getCandidateDetailsForCorporation(Long electionId,List<Long> districtIds);	
+
+	public List<Long> getElectionDetailsByYearAndElectionType(String year,Long electionTypeId,Long stateId);
 }
