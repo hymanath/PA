@@ -23,6 +23,7 @@ public class BoothResultVO extends ResultStatus{
 	private String pollingPercentage;
 	private int totalBoothVoters;
 	private List<BoothResultVO> BoothResultVOList = new ArrayList<BoothResultVO>();
+	private String wonParty;
 	
 	public BoothResultVO(){
 		
@@ -43,6 +44,14 @@ public class BoothResultVO extends ResultStatus{
 	}
 	
 	
+	public String getWonParty() {
+		return wonParty;
+	}
+
+	public void setWonParty(String wonParty) {
+		this.wonParty = wonParty;
+	}
+
 	public List<BoothResultVO> getBoothResultVOList() {
 		return BoothResultVOList;
 	}
