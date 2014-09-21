@@ -730,7 +730,10 @@ function buildBoothWiseResultReport(result,electionYear)
 							{
 								for(var p=0; p<partiesSize ; p++)
 								{
-									str +='<td  style="text-align:center">'+result.partyPerWiseboothResults[k].boothResultVOList[p].percentage+'</td> ';
+									if(result.partyPerWiseboothResults[k].boothResultVOList[p].percentage != null)
+										str +='<td  style="text-align:center">'+result.partyPerWiseboothResults[k].boothResultVOList[p].percentage+'</td> ';
+									else
+										str +='<td  style="text-align:center"> -- </td> ';
 									
 									if(result.partyPerWiseboothResults[k].boothResultVOList[p].boothResultVOList != null && result.partyPerWiseboothResults[k].boothResultVOList[p].boothResultVOList.length >0)
 									{
@@ -810,8 +813,14 @@ function buildBoothWiseResultReport(result,electionYear)
 							{
 								for(var p=0; p<partiesSize ; p++)
 								{
-									str +='<td  style="text-align:center">'+result.perWiseboothResults[k].boothResultVOList[p].votesEarned+'</td>';
-									str +='<td  style="text-align:center">'+result.perWiseboothResults[k].boothResultVOList[p].percentage+' </td>';
+									if(result.perWiseboothResults[k].boothResultVOList[p].votesEarned != null)
+										str +='<td  style="text-align:center">'+result.perWiseboothResults[k].boothResultVOList[p].votesEarned+'</td>';
+									else
+										str+='<td  style="text-align:center"> -- </td>';
+									if(result.perWiseboothResults[k].boothResultVOList[p].percentage != null)
+										str +='<td  style="text-align:center">'+result.perWiseboothResults[k].boothResultVOList[p].percentage+' </td>';
+									else
+										str+='<td  style="text-align:center"> -- </td>';
 								}
 					
 							}
