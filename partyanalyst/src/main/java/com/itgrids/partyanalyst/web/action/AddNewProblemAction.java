@@ -528,7 +528,8 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 	
   }
 	private void getDataForPAUser(){
-
+		final HttpSession session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		final String accessType =user.getAccessType();
 		final Long accessValue= Long.valueOf(user.getAccessValue());
 		final Long problemScopeId=problemBeanVO.getProblemScopeId();
