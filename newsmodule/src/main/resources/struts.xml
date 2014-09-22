@@ -6292,6 +6292,14 @@
 		    			<param name="root">partiesList1</param>
 		    		</result>
 		 </action>
+		 
+		<action name="getPartyWiseTotalDebatesAndScalesService" class="debateAction" method="getPartyWiseTotalDebatesAndScalesService">
+					<result type="json" name="success">
+		    			<param name="root">debateReportList</param>
+		    		</result>
+		 </action>
+		 
+		
 		  <action name="getPartiesForAStateAction" class="newsPaginationAction" method="ajaxHandler">
 		  <result type="json" name="success">
 		    	<param name="root">partiesList</param>

@@ -783,7 +783,10 @@ function callAjax(jsObj,url)
 						alert("Error Occured While Deleting");
 					}
 				}
-			 		
+			 	else if(jsObj.task == "getEachTopicWisePartyAndCandidateDetails")
+				{
+						buildEachTopicWisePartyAndCandidateDetails(myResults);
+				}				
 			}catch(e)
 			{   
 			 $("#submitDataImg").hide();
@@ -1409,10 +1412,12 @@ function showNewDebateDiv(){
 	$('#newDibateDiv').show();
 	$('#debateReportDiv').hide();
 	$('#debateAnalysisDiv').hide();
+	$('#newDebateAnalysisDiv').hide();
 }
 function showDebateReportDiv(){
 	$('#newDibateDiv').hide();
 	$('#dateWiseReportDiv').html('');
+	$('#newDebateAnalysisDiv').hide();
 	$('#fromDateId').val('');
 	$('#toDateId').val('');
 	$('#debateReportDiv').show();
@@ -1423,8 +1428,17 @@ function showDebateAnalysisDiv(){
 	$('#newDibateDiv').hide();
 	$('#debateAnalysisDiv').show();
 	$('#debateReportDiv').hide();
+	$('#newDebateAnalysisDiv').hide();
 	$('#fromDateIdForAnalysis').val('');
 	$('#toDateIdForAnalysis').val('');
+}
+
+function showNewDebateAnalysisDiv()
+{
+	$('#newDibateDiv').hide();
+	$('#debateAnalysisDiv').hide();
+	$('#debateReportDiv').hide();
+	$('#newDebateAnalysisDiv').show();
 }
 function buildDebateAnalysisDiv()
 {
@@ -1533,4 +1547,58 @@ function getRespectiveSelection()
 		str +='<select id="candidateSelecction"><option value="0">Select Candidate</option></select>';
 		str += '</div>';
 		$('#reportTypeSelectionDiv').html(str);
+}
+getEachTopicWisePartyAndCandidateDetails();
+function getEachTopicWisePartyAndCandidateDetails()
+{
+	var jsObj = {
+			task : "getEachTopicWisePartyAndCandidateDetails"	
+	};
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getPartyWiseTotalDebatesAndScalesService.action?"+rparam;
+	callAjax(jsObj,url);
+}
+
+function buildEachTopicWisePartyAndCandidateDetails(result)
+{
+	var str = '';
+	str += '<table class="table table-bordered table-hover table-striped">';
+	str += '<thead class="alert alert-success">';
+	str += '<tr>';
+	str += '<th>Topic</th>';
+	var partiesList = result[0].subList;
+	for(var i in partiesList)
+	{
+		str += '<th colspan=2>'+partiesList[i].party+'</th>';
+	}
+	str += '</tr>';
+	str += '<tr>';
+	str += '<th></th>';
+	for(var i in partiesList)
+	{
+		str += '<th>Candidate</th>';
+		str += '<th>Performance Count</th>';
+	}
+	str += '</tr>';
+	str += '</thead>';
+	str += '<tbody>';
+	for(var i in result)
+	{
+		str += '<tr>';
+		str += '<td>'+result[i].subject+'</td>';
+		var details = result[i].subList;
+		for(var j in details)
+		{
+			str += '<td>'+details[j].candidate+'</td>';
+			if(details[j].countScale  != null)
+			str += '<td>'+details[j].countScale+'</td>';
+			else
+			str += '<td>-</td>';
+		}
+		str += '</tr>';
+	}
+	str += '</tbody>';
+	str += '</table>';
+	$('#partyCandidatePerformanceDiv').html(str);
 }

@@ -111,6 +111,7 @@
 	 	<property name="debateService" ref="debateService"/>
 	 	<property name="candidateDetailsService" ref="candidateDetailsService"/>
 	 	<property name="staticDataService" ref="staticDataService"/>
+	 	<property name="debateAnalysisService" ref="debateAnalysisService"/>
 	</bean>
 	
 	<bean id="politicalFeedBackAction" class="com.itgrids.partyanalyst.web.action.PoliticalFeedBackAction" singleton="false">

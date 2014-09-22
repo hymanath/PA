@@ -315,6 +315,9 @@ var channelsArray = new Array();
 					<li class="">
 					<a data-toggle="tab" value="News Gallery" id="responseNewsId" onClick="showDebateAnalysisDiv()" style="cursor:pointer;color: #005580;">Debate Analysis</a>
 					</li>
+					<li class="">
+					<a data-toggle="tab" value="News Gallery" id="newDebateAnalysis" onClick="showNewDebateAnalysisDiv()" style="cursor:pointer;color: #005580;">New Debate Analysis</a>
+					</li>
 				</c:if>	
 				</c:if>	
 				</ul>
@@ -521,6 +524,260 @@ var channelsArray = new Array();
 		
 		</div>
 		<div id="analysisDiv"></div>
+	</div>
+	
+	<div id="newDebateAnalysisDiv" style="display:none;" >
+		<div class="container">
+		
+		<div class="row">
+			<div class="span12">
+				<div class="row">
+					<div class="span12  widgetservey_Red m_top20">
+							<h4>PARTY WISE OVER ALL PERFORMANCE</h4>
+						<div class="row">
+						 <div class="span12">
+							<table class="table table-bordered table-hover table-striped">
+								<thead class="alert alert-success">
+									<tr>
+										<th>Party</th>
+										<th>Total Debates</th>
+										<th>Ranking</th>
+										<th>Presentation</th>
+										<th>Counter Attack</th>
+										<th>Body Language</th>
+										<th>Subject</th>
+										
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td >TDP</td>
+										<td >20 / 13</td>										
+										<td>1-2/2-3/3-1</td>
+										<td>3</td>
+										<td>2</td>
+										<td>4</td>
+										<td>4</td>
+										
+										
+									</tr>
+									
+									
+									<tr>
+										<td>YSRC</td>
+										<td>15 /13</td>
+										<td>4</td>
+										<td>3</td>
+										<td>3</td>
+										<td>3</td>
+										<td>3</td>
+										
+									</tr>
+									<!--------->
+									<tr>
+										<td>INC</td>
+										<td>10/19/2014</td>										
+										<td>10</td>
+										<td>2</td>
+										<td>4</td>
+										<td>2</td>
+										<td>2</td>
+									
+									</tr>
+									
+									
+								</tbody>
+							</table>	
+							
+						</div>
+						</div>
+						<!--<div class="row text-center m_top20"><button class="btn btn-large btn-success" type="button">UPDATE STATUS</button></div>-->
+							
+					</div>
+					
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="span12">
+				<div class="row ">
+					<div class="span12  widgetservey_Red m_top20">
+							<h4>PARTY CANDIDATE PERFORMANCE</h4>
+						<div class="row">
+						 <div class="span12" id="partyCandidatePerformanceDiv">							
+						  </div>
+						</div>
+						<!--<div class="row text-center m_top20"><button class="btn btn-large btn-success" type="button">UPDATE STATUS</button></div>-->
+							
+					</div>
+					
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="span12">
+				<div class="row ">
+					<div class="span12  widgetservey_Red m_top20">
+							<h4>PARTY WISE CANDIDATE PERFORMANCE WITH ATTRIBUTES</h4>
+						<div class="row">
+						 <div class="span12">
+							<table class="table table-bordered table-hover table-striped">
+								<thead class="alert alert-success">
+									<tr>
+										<th>PARTY</th>
+										<th >CANDIDATE</th>
+										<th >TOTAL DEBATS</th>
+										<th >PERFORMANCE COUNT</th>
+										<th >PRESENTATION</th>	
+										<th >COUNTER ATTACK</th>	
+										<th >BODY LANGUAGE</th>	
+										<th >SUBJECT</th>	
+									</tr>
+								</thead>
+								<tbody>
+								
+									
+									<tr>
+										<td >TDP</td>	
+										<td >Candidate1</td>										
+										<td >20</td>
+										<td >13</td>										
+										<td >3</td>
+										<td >2</td>										
+										<td >4</td>
+										<td >4</td>										
+									
+										
+										
+									</tr>
+									
+									
+									<tr>
+										<td >YSRC</td>	
+										<td >Candidate2</td>										
+										<td >20</td>
+										<td >13</td>										
+										<td >3</td>
+										<td >2</td>										
+										<td >4</td>
+										<td >4</td>										
+									
+										
+										
+									</tr>
+									<!--------->
+									<tr>
+										<td >INC</td>	
+										<td >Candidate3</td>										
+										<td >20</td>
+										<td >13</td>										
+										<td >3</td>
+										<td >2</td>										
+										<td >4</td>
+										<td >4</td>										
+									
+										
+										
+									</tr>
+								
+									
+									
+								</tbody>
+							</table>	
+							
+						</div>
+						</div>
+						<!--<div class="row text-center m_top20"><button class="btn btn-large btn-success" type="button">UPDATE STATUS</button></div>-->
+							
+					</div>
+					
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="span12">
+				<div class="row">
+					<div class="span12  widgetservey_Red m_top20">
+							<h4>CANDIDATE AND PARTY PERFORMANCE - DETAILS(WITH ATTRIBUTES)</h4>
+						<div class="row">
+						 <div class="span12">
+							<table class="table table-bordered table-hover table-striped">
+								<thead class="alert alert-success">
+									<tr>
+										<th colspan="6" class="aligntxt">TDP</th>
+										<th colspan="6" class="aligntxt">YSRC</th>
+										
+									</tr>
+								</thead>
+								<tbody>
+								
+									
+									<tr>
+										<td >Topic</td>
+										<td >Candidate1</td>										
+										<td >Subject</td>
+										<td >Presentation</td>
+										<td >Counter Attack</td>										
+										<td >Body Language</td>
+										<td >Candidate1</td>										
+										<td >Subject</td>
+										<td >Presentation</td>
+										<td >Counter Attack</td>										
+										<td >Body Language</td>
+										</tr>
+										
+									
+									
+									<tr>
+										<td>Topic1</td>
+										<td >Candidate1</td>		
+										<td>14</td>
+										<td >3</td>		
+										<td >3</td>	
+										<td >2</td>		
+										<td>Candidate1</td>
+										<td >3</td>		
+										<td >3</td>
+										<td >3</td>
+										<td >3</td>
+										
+										
+									</tr>
+									<!--------->
+									<tr>
+										<td>Topic1</td>
+										<td >Candidate1</td>		
+										<td>14</td>
+										<td >3</td>		
+										<td >3</td>	
+										<td >2</td>		
+										<td>Candidate1</td>
+										<td >3</td>		
+										<td >3</td>
+										<td >3</td>
+										<td >3</td>
+										
+										
+									</tr>
+								
+									
+									
+								</tbody>
+							</table>	
+							
+						</div>
+						</div>
+						<!--<div class="row text-center m_top20"><button class="btn btn-large btn-success" type="button">UPDATE STATUS</button></div>-->
+							
+					</div>
+					
+				</div>
+			</div>
+		</div>
+	</div>
 	</div>
 	</c:if>
 	</c:if>

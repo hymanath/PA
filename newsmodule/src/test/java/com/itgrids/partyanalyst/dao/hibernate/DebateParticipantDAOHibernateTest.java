@@ -37,6 +37,22 @@ public class DebateParticipantDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
+	/*public void testgetDebateTotalScaleForEachParty()
+	{
+		try {
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			String fromDateStr = "01/01/2013";
+			String toDateStr = "02/05/2014";
+			List<Object[]> values = debateParticipantDAO.getTotalDabtesCountsForEachCandidate(sdf.parse(fromDateStr),sdf.parse(toDateStr));
+			for (Object[] objects : values) {
+				System.out.println(objects[0] +":"+ objects[1] +":"+ objects[2]+":"+ objects[3] +":"+ objects[4]);
+			}
+		} catch (Exception e) {
+		}
+		
+	}*/
+	
 	public void testgetDebateTotalScaleForEachParty()
 	{
 		try {
