@@ -822,9 +822,11 @@ function buildBoothWiseResultReport(result,electionYear)
 			str+='<div class="row" style="font-size : 15px;color:#000000;">';
 			str+='	<div class="span12">';
 			str+='		<div class="row-fluid">						';			
-			str+='			<div class="span6 form-inline"> <label style="font-weight:bold;"> Select Options : </label>';
+			str+='			<div class="span8 form-inline"> <label style="font-weight:bold;"> Select Options : </label>';
+			str +='  <label class="checkbox"> <input type="checkbox"  id="locationId" onclick="hideAndShow();"> Show Location </label>';
 			str +='  <label class="checkbox"> <input type="checkbox" id="villageId" onclick="hideAndShow();"> Show Villages </label>';
 			str +='  <label class="checkbox"> <input type="checkbox"  id="mandalId" onclick="hideAndShow();"> Show Mandal </label>';			
+			
 			str+='			</div>';
 			str+='		</div>						';
 			str+='	</div>';
@@ -835,7 +837,7 @@ function buildBoothWiseResultReport(result,electionYear)
 				str1 +='<tr>';				
 					str1 +='<th> S.No  </th>';
 					str1 +='<th> Booth No  </th>';
-					str1 +='<th> Location  </th>';
+					//str1 +='<th> Location  </th>';
 					//str1 +='<th> Village Covered  </th>';
 					//str1 +='<th> Mandal </th>';
 					str1 +='<th >   Polled Votes </th>';	
@@ -882,7 +884,7 @@ function buildBoothWiseResultReport(result,electionYear)
 						{
 							
 							
-							str1 +='<td>'+result.boothResults[k].boothResultVOList[0].location+'</td>';
+							//str1 +='<td>'+result.boothResults[k].boothResultVOList[0].location+'</td>';
 							//str1 +='<td>'+result.boothResults[k].boothResultVOList[0].villagesCovered+'</td>';
 							//str1 +='<td>'+result.boothResults[k].boothResultVOList[0].mandal+'</td>';
 							str1 +='<td>'+result.boothResults[k].boothResultVOList[0].totalVoters+'</td>';
@@ -920,12 +922,13 @@ function hideAndShow()
 {
 	var isVillage = $('#villageId').is(":checked");
 	var isMandal = $('#mandalId').is(":checked");
+	var isLocation = $('#locationId').is(":checked");
 	$('#boothWiseResultsDiv').html('');
-	buildSelectionWiseTable(isVillage,isMandal);
+	buildSelectionWiseTable(isVillage,isMandal,isLocation);
 
 }
 
-function buildSelectionWiseTable(isVillage,isMandal)
+function buildSelectionWiseTable(isVillage,isMandal,isLocation)
 {
 
 var result = mainArr[0];
@@ -936,7 +939,8 @@ var result = mainArr[0];
 				str1 +='<tr>';				
 					str1 +='<th> S.No  </th>';
 					str1 +='<th> Booth No  </th>';
-					str1 +='<th> Location  </th>';
+					if(isLocation)
+						str1 +='<th> Location  </th>';
 					if(isVillage)
 						str1 +='<th> Village Covered  </th>';
 					if(isMandal)
@@ -968,7 +972,8 @@ var result = mainArr[0];
 					str1 +='<td> Booth-'+result.boothResults[k].partNo+'</td>';
 						if(result.boothResults[k].boothResultVOList != null && result.boothResults[k].boothResultVOList.length>0)
 						{
-							str1 +='<td>'+result.boothResults[k].boothResultVOList[0].location+'</td>';
+							if(isLocation)
+								str1 +='<td>'+result.boothResults[k].boothResultVOList[0].location+'</td>';
 							if(isVillage)
 								str1 +='<td>'+result.boothResults[k].boothResultVOList[0].villagesCovered+'</td>';
 							if(isMandal)
@@ -1010,7 +1015,8 @@ var constiName = $('#constituencyId option:selected').text();
 	var isWonCandidateAvailable = false;
 	var isVillage = $('#villageId').is(":checked");
 	var isMandal = $('#mandalId').is(":checked");
-
+	var isLocation = $('#locationId').is(":checked");
+	
 var result = mainArr[0];
 	str +='<h4> <br>  '+constiName+' Assembly Booth Wise '+electionYear+' Election Results </h4> <br>';
 	var remainingVotes = 0;
@@ -1275,7 +1281,8 @@ var result = mainArr[0];
 				str1 +='<tr>';				
 					str1 +='<th> S.No  </th>';
 					str1 +='<th> Booth No  </th>';
-					str1 +='<th> Location  </th>';
+					if(isLocation)
+						str1 +='<th> Location  </th>';
 					if(isVillage)
 						str1 +='<th id="villageClm" > Village Covered  </th>';
 					if(isMandal)
@@ -1308,8 +1315,8 @@ var result = mainArr[0];
 						if(result.boothResults[k].boothResultVOList != null && result.boothResults[k].boothResultVOList.length>0)
 						{
 							
-							
-							str1 +='<td>'+result.boothResults[k].boothResultVOList[0].location+'</td>';
+							if(isLocation)
+								str1 +='<td>'+result.boothResults[k].boothResultVOList[0].location+'</td>';
 							if(isVillage)
 								str1 +='<td>'+result.boothResults[k].boothResultVOList[0].villagesCovered+'</td>';
 							if(isMandal)
