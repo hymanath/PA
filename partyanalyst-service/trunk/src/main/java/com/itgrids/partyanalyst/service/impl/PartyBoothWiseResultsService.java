@@ -2456,7 +2456,7 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 								{
 									LocalElectionBody localElectionBody = localElectionBodyDAO.get(param1[6] != null ? (Long)param1[6] :0L);
 									boothResultVO = new BoothResultVO(param1[1] != null ? param1[1].toString() :"",
-											param1[2] != null ? param1[2].toString() :"", param1[5] != null ? param1[5].toString() :"", 
+											param1[2] != null ? param1[2].toString() :"", param1[5] != null ? param1[5].toString().replace(",", ", ") :"", 
 											votesEarned, totalValidVotes, percentage, localElectionBody.getName()+" "+
 													localElectionBody.getElectionType().getElectionType(), false,pollPercent);
 								}
@@ -2465,14 +2465,14 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 								{
 									Tehsil tehsil = (Tehsil) param1[7];
 									boothResultVO = new BoothResultVO(param1[1] != null ? param1[1].toString() :"",
-											param1[2] != null ? param1[2].toString() :"", param1[5] != null ? param1[5].toString() :"", 
+											param1[2] != null ? param1[2].toString() :"", param1[5] != null ? param1[5].toString().replace(",", ", ") :"", 
 											votesEarned, totalValidVotes, percentage, tehsil.getTehsilName(), false,pollPercent);
 								}
 									
 								else
 								{
 									boothResultVO = new BoothResultVO(param1[1] != null ? param1[1].toString() :"",
-											param1[2] != null ? param1[2].toString() :"", param1[5] != null ? param1[5].toString() :"", 
+											param1[2] != null ? param1[2].toString() :"", param1[5] != null ? param1[5].toString().replace(",", ", ") :"", 
 											votesEarned, totalValidVotes, percentage, "", true,pollPercent);
 								}
 									
@@ -2596,11 +2596,11 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 					for (Object[] param : AconstituencyList)
 					{
 						SelectOptionVO vo = new SelectOptionVO();
-						vo.setId(param[0] != null ? (Long) param[0] :0L);
+						vo.setId(param[0] != null ? Long.valueOf(param[0].toString()) :0L);
 						vo.setName(param[1] != null ? param[1].toString():"");					
 						constituencyVOList.add(vo);
 						
-						constiIds.add(param[0] != null ? (Long) param[0] :0L);
+						constiIds.add(param[0] != null ? Long.valueOf(param[0].toString()) :0L);
 					}
 				}			
 			}
@@ -2643,7 +2643,7 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 					for (Object[] param : electionYears) 
 					{
 						SelectOptionVO vo = new SelectOptionVO();
-						vo.setId(param[0] != null ? (Long) param[0] :0L);
+						vo.setId(param[0] != null ? Long.valueOf(param[0].toString()) :0L);
 						vo.setName(param[1] != null ? param[1].toString():"");		
 						
 						electionYrs.add(vo);
@@ -2659,11 +2659,12 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 					
 					if(stateTypeId == 0)
 					{
-						PconstituencyList = constituencyDAO.getParliamentConstituencies();							
+						PconstituencyList = delimitationConstituencyAssemblyDetailsDAO.getPcListByRegion(0L);							
 					}
 					else
 					{
-						PconstituencyList= delimitationConstituencyAssemblyDetailsDAO.findAllParliamentDetailsAssembliesForTheGivenYear(constiIds,Long.valueOf(IConstants.PRESENT_ELECTION_YEAR));
+						//PconstituencyList= delimitationConstituencyAssemblyDetailsDAO.findAllParliamentDetailsAssembliesForTheGivenYear(constiIds,Long.valueOf(IConstants.PRESENT_ELECTION_YEAR));
+						PconstituencyList= delimitationConstituencyAssemblyDetailsDAO.getPcListByRegion(stateTypeId);
 					}
 				}
 			
@@ -2674,11 +2675,11 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 					for (Object[] param : PconstituencyList)
 					{
 						SelectOptionVO vo = new SelectOptionVO();
-						vo.setId(param[0] != null ? (Long) param[0] :0L);
+						vo.setId(param[0] != null ? Long.valueOf(param[0].toString()) :0L);
 						vo.setName(param[1] != null ? param[1].toString():"");					
 						constituencyVOList.add(vo);
 						
-						constiIds.add(param[0] != null ? (Long) param[0] :0L);
+						constiIds.add(param[0] != null ? Long.valueOf(param[0].toString()) :0L);
 					}
 				}
 			}
@@ -2715,7 +2716,7 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 				{
 					
 					SelectOptionVO vo = new SelectOptionVO();
-					vo.setId(param[0] != null ? (Long) param[0] :0L);
+					vo.setId(param[0] != null ? Long.valueOf(param[0].toString()) :0L);
 					vo.setName(param[1] != null ? param[1].toString():"");		
 					
 					partyDEtails.add(vo);
