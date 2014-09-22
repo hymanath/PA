@@ -257,4 +257,6 @@ public interface ICandidateBoothResultDAO extends GenericDao<CandidateBoothResul
 	 public List<Object[]> findboothWiseResultsForCandidate(Long constituencyId, Long nominationId);
 	 
 	 public List<Object[]> findboothWiseResultsForNominators(Long constituencyId,List<Long> electionIds);
+	 
+	 public List<Object[]> findboothWiseResultsForNonParties(Long constituencyId, List<Long> partyIds,List<Long> electionIds);
 }
