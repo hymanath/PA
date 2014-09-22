@@ -6349,7 +6349,12 @@
 		 	 <result name="success">/jsp/debateAnalysis.jsp</result>
 		 	 <result name="error" type="redirect">loginPageAction.action</result>
 		</action>
-		
+		 
+		 <action name="getCandidateCharacteristicsDetailsAction" class="debateAnalysisAction" method="getDebateCandidateCharacteristicsDetailsByParty">
+					<result type="json" name="success">
+		    			<param name="root">candidateCharcDetails</param>
+		    		</result>
+		 </action>
         </package>
 		
 </struts>      

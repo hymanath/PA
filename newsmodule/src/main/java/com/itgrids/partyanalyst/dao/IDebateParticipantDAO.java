@@ -26,4 +26,6 @@ public interface IDebateParticipantDAO extends GenericDao<DebateParticipant, Lon
 	public List<Object[]> getTotalDabtesCountsForEachCandidate(Date fromDate , Date toDate);
 	
 	public List<Object[]> getCanidatesListForDebateForSelectedDates(Date fromDate,Date toDate);
+	
+	public List<Object[]> getDebateCandidateCharacteristicsDetails();
 }

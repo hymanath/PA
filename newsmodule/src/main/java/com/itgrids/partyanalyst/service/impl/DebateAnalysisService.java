@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dao.IDebateParticipantCharcsDAO;
 import com.itgrids.partyanalyst.dao.IDebateParticipantDAO;
+import com.itgrids.partyanalyst.dto.DebateCandidateCharcVO;
 import com.itgrids.partyanalyst.dto.DebatePartyWiseCountVO;
 import com.itgrids.partyanalyst.dto.DebateRankingVO;
 import com.itgrids.partyanalyst.dto.DebateTopicVO;
@@ -276,5 +277,151 @@ public class DebateAnalysisService implements IDebateAnalysisService
 			LOG.error("Exception raised in fillVoForTopicWiseEachCandidateAndPartyResult in DebateAnalysisService class", e);
 		}
 	}
+	public DebateCandidateCharcVO getPartyWiseCandidateCharacteristicsDetails() {
+		DebateCandidateCharcVO resultVO = new DebateCandidateCharcVO();
+		try 
+		{
+		LOG.info("Enterd into getPartyWiseCandidateCharacteristicsDetails method");
+		
+	 	List<Object[]> list = debateParticipantDAO.getDebateCandidateCharacteristicsDetails();
+	 	
+	 	List<DebateCandidateCharcVO> debateSubjectList = new ArrayList<DebateCandidateCharcVO>();
+	 	//List<DebateCandidateCharcVO> debatePartiesList = null;
+	 	List<Long> debateSubjectIds = new ArrayList<Long>();
+		
+		
+	 	
+			for (Object[] debateSubject : list) {
+				if(!debateSubjectIds.contains((Long)debateSubject[2])){
+					DebateCandidateCharcVO ds= new DebateCandidateCharcVO();
+					ds.setDebateSubjectId((Long)debateSubject[2]);
+					ds.setDebateSubject(StringEscapeUtils.unescapeJava(debateSubject[3].toString()));
+					debateSubjectIds.add((Long)debateSubject[2]);
+					ds.setPartyList(setParties(list));
+					debateSubjectList.add(ds);
+				}			
+			}
 	
+	 	resultVO.setDebateSubjectList(debateSubjectList);
+	 	
+	 	for (Object[] params : list) {
+	 			 		
+	 		DebateCandidateCharcVO debateSubject = getMatchedDebateSubjectVO(debateSubjectList,(Long)params[2]);
+	 		
+	 		if(debateSubject != null){
+	 			DebateCandidateCharcVO party = getMatchedPartyVO(debateSubject.getPartyList(),(Long)params[0]);
+	 			
+	 			if(party != null){
+	 				if(!party.getCandidateIds().contains((Long)params[4])){ 					
+		 				DebateCandidateCharcVO vo =  new DebateCandidateCharcVO();
+		 				vo.setCandidateId((Long) params[4]);
+		 				vo.setCandidateName(params[5].toString());
+		 				party.getCandidateIds().add((Long) params[4]);
+		 				party.getCandidatesList().add(vo);
+	 				}
+	 			} 		
+	 		}
+	 	}
+	 	for (Object[] param : list) {	
+		 		DebateCandidateCharcVO debateSubject = getMatchedDebateSubjectVO(debateSubjectList,(Long)param[2]);
+		 		
+		 		if(debateSubject != null){
+		 			DebateCandidateCharcVO party = getMatchedPartyVO(debateSubject.getPartyList(),(Long)param[0]);
+		 			
+		 			if(party != null){ 	
+		 				for(DebateCandidateCharcVO VO :debateSubject.getPartyList()){
+		 			
+			 				DebateCandidateCharcVO candidate = getMatchedCandidateVO(VO.getCandidatesList(),(Long)param[4]);
+			 				//List<DebateCandidateCharcVO> characteristicsList = new ArrayList<DebateCandidateCharcVO>();
+			 				if(candidate != null){ 	
+				 				DebateCandidateCharcVO vo1 =  new DebateCandidateCharcVO();
+				 				vo1.setCharacteristics(param[7].toString());			
+				 				vo1.setScale(param[8].toString());
+				 				//characteristicsList.add(vo1);
+				 				party.getCharacList().add(vo1);
+			 				}
+			 				
+		 				}
+		 			}
+	 			
+	 			
+	 		}
+		}	
+	 	
+	 	}catch (Exception e){
+			LOG.error("Error occured in getPartyWiseCandidateCharacteristicsDetails()",e);
+		}
+		
+	 		
+		return resultVO;
+	 }
+	 
+	
+	public DebateCandidateCharcVO getMatchedDebateSubjectVO(List<DebateCandidateCharcVO> debateSubjectList,Long debateSubjectId){
+	
+		try{
+			if(debateSubjectList == null)
+				return null;
+			for(DebateCandidateCharcVO vo : debateSubjectList){
+				if(debateSubjectId.longValue() == vo.getDebateSubjectId().longValue())
+					return vo;
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			
+		}
+		return null;
+	}
+	
+	
+	public DebateCandidateCharcVO getMatchedPartyVO(List<DebateCandidateCharcVO> partiesList,Long partyId){
+	
+		try{
+			if(partiesList == null)
+				return null;
+			for(DebateCandidateCharcVO vo : partiesList){
+				if(partyId.longValue() == vo.getPartyId().longValue())
+					return vo;
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();			
+		}
+		return null;
+	}
+	
+	public DebateCandidateCharcVO getMatchedCandidateVO(List<DebateCandidateCharcVO> candidatesList,Long candidateId){
+		
+		try{
+			if(candidatesList == null)
+				return null;
+			for(DebateCandidateCharcVO vo : candidatesList){
+				if(candidateId.longValue() == vo.getCandidateId().longValue())
+					return vo;
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();			
+		}
+		return null;
+	}
+	
+	public List<DebateCandidateCharcVO> setParties(List<Object[]> list){
+		
+		List<Long> partyIds = new ArrayList<Long>();
+		List<DebateCandidateCharcVO> debatePartiesList= new ArrayList<DebateCandidateCharcVO>();
+		if(list != null && list.size()>0){
+			for (Object[] parties : list) {
+				if(!partyIds.contains((Long)parties[0])){
+					DebateCandidateCharcVO party= new DebateCandidateCharcVO();
+					party.setPartyId((Long)parties[0]);
+					party.setPartyName(parties[1].toString());
+					partyIds.add((Long)parties[0]);
+					debatePartiesList.add(party);
+				}
+			}
+		}
+		return debatePartiesList;
+	}
 }

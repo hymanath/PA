@@ -128,7 +128,8 @@
 	 <property name="keywordsService" ref="keywordsService"/>			
 	</bean>	
 	
-	<bean id="debateAnalysisAction" class="com.itgrids.partyanalyst.web.action.DebateAnalysisAction" singleton="false">			
+	<bean id="debateAnalysisAction" class="com.itgrids.partyanalyst.web.action.DebateAnalysisAction" singleton="false">	
+			<property name="debateAnalysisService" ref="debateAnalysisService"/>	
 	</bean>	
 	
 	

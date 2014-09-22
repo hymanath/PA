@@ -1602,3 +1602,89 @@ function buildEachTopicWisePartyAndCandidateDetails(result)
 	str += '</table>';
 	$('#partyCandidatePerformanceDiv').html(str);
 }
+function getCandidateCharacteristicsDetails(){
+	var jsObj={
+			task:"candidateDetails"
+	}
+	$.ajax({
+          type:'GET',
+          url: 'getCandidateCharacteristicsDetailsAction.action',
+          dataType: 'json',
+          data: {task:JSON.stringify(jsObj)},
+	}).done(function(result){
+			buildCandidateCharacteristics(result);
+	});
+}
+	getCandidateCharacteristicsDetails();
+function buildCandidateCharacteristics(myResults){
+	var result = myResults.debateSubjectList;
+	$('#sampleId').html('');
+	if(result != null && result.length > 0){
+		 var str = '';
+		 str += '<table class="table table-bordered table-hover table-striped " >';
+		
+		 str += '<tr>';
+		 str += '<th rowspan="2" class="alert alert-success">Topic</th>';
+		 for(var i in result[0].partyList){
+			str += '<th colspan="5" class="alert alert-success">'+result[0].partyList[i].partyName+'</th>';
+		 }
+		 
+		  str += '</tr>';
+		  str += '<tr>';
+		  
+			
+			for(var j in result[0].partyList){
+					str += '<td  class="alert alert-success"> Candidate Name</td>';
+						for(var l in result[0].partyList[0].characList){
+						
+							str += '<td  class="alert alert-success">'+result[0].partyList[0].characList[l].characteristics+'</td>';
+					
+					
+				}
+			
+			}
+		
+		str += '</tr>';
+		str += '<tr>';
+		 for(var i in result){
+			str += '<tr>';		
+			str += '<td>'+result[i].debateSubject+'</td>';
+			if(result[i].partyList.length > 0){
+				for(var j in result[i].partyList){
+					if(result[i].partyList[j].candidatesList.length > 0 ){
+						for(var k in result[i].partyList[j].candidatesList){
+							str += '<td>'+result[i].partyList[j].candidatesList[k].candidateName+'</td>';
+						}
+					}
+					else{	
+					    str += '<td>-</td>';
+					}	
+					if(result[i].partyList[j].characList.length > 0){
+						for(var l in result[i].partyList[j].characList){
+							str += '<td>'+result[i].partyList[j].characList[l].scale+'</td>';
+						}
+					}
+					else{
+						 str += '<td>-</td>';
+						  str += '<td>-</td>';
+						   str += '<td>-</td>';
+						    str += '<td>-</td>';
+							 
+					}
+				}			
+			}
+			else{
+			str += '<td>-</td>';
+			str += '<td>-</td>';
+			str += '<td>-</td>';
+			str += '<td>-</td>';
+			str += '<td>-</td>';
+			
+			}
+			str += '</tr>';
+		 }
+		 str += '</table>';
+		 $('#candidatePartyPerformanceId').html(str);
+		
+	}
+}
