@@ -622,7 +622,7 @@ var channelsArray = new Array();
 					<div class="span12  widgetservey_Red m_top20">
 							<h4>PARTY WISE CANDIDATE PERFORMANCE WITH ATTRIBUTES</h4>
 						<div class="row">
-						 <div class="span12">
+						 <div class="span12" id="">
 							<table class="table table-bordered table-hover table-striped">
 								<thead class="alert alert-success">
 									<tr>
@@ -703,8 +703,8 @@ var channelsArray = new Array();
 					<div class="span12  widgetservey_Red m_top20">
 							<h4>CANDIDATE AND PARTY PERFORMANCE - DETAILS(WITH ATTRIBUTES)</h4>
 						<div class="row">
-						 <div class="span12">
-							<table class="table table-bordered table-hover table-striped">
+						 <div class="span12" id= "candidatePartyPerformanceId" style="width: 960px;height:800px; overflow-x: scroll;">
+							<!--<table class="table table-bordered table-hover table-striped">
 								<thead class="alert alert-success">
 									<tr>
 										<th colspan="6" class="aligntxt">TDP</th>
@@ -747,7 +747,7 @@ var channelsArray = new Array();
 										
 									</tr>
 									<!--------->
-									<tr>
+									<!--<tr>
 										<td>Topic1</td>
 										<td >Candidate1</td>		
 										<td>14</td>
@@ -766,7 +766,7 @@ var channelsArray = new Array();
 									
 									
 								</tbody>
-							</table>	
+							</table>	-->
 							
 						</div>
 						</div>

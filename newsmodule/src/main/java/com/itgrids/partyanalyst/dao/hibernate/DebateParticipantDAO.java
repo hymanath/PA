@@ -138,5 +138,16 @@ public class DebateParticipantDAO extends GenericDaoHibernate<DebateParticipant,
 		return query.list();
 	}
 	
+	public List<Object[]> getDebateCandidateCharacteristicsDetails(){
+		
+		Query query = getSession().createQuery("select DP.party.partyId ,DP.party.shortName, DS.debateSubjectId ,DS.subject," +
+				" DP.candidate.candidateId,DP.candidate.lastname," +
+				" DPC.characteristics.characteristicsId ,DPC.characteristics.name, sum(DPC.scale) " +
+				" from DebateSubject DS , DebateParticipant DP , DebateParticipantCharcs DPC where " +
+				" DS.debate.debateId = DP.debate.debateId and DP.debateParticipantId = DPC.debateParticipant.debateParticipantId " +
+				" and DPC.characteristics.isDeleted = 'N' and DS.debate.isDeleted = 'N'" +
+				" group by DS.debateSubjectId,DP.party.partyId , DPC.characteristics.characteristicsId");
+		return query.list();
+	}
 	
 }

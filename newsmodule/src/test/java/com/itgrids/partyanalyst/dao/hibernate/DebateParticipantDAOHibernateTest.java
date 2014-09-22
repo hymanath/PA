@@ -53,7 +53,7 @@ public class DebateParticipantDAOHibernateTest extends BaseDaoTestCase{
 		
 	}*/
 	
-	public void testgetDebateTotalScaleForEachParty()
+	/*public void testgetDebateTotalScaleForEachParty()
 	{
 		try {
 			
@@ -63,6 +63,19 @@ public class DebateParticipantDAOHibernateTest extends BaseDaoTestCase{
 			List<Object[]> values = debateParticipantDAO.getTotalDabtesCountsForEachCandidate(sdf.parse(fromDateStr),sdf.parse(toDateStr));
 			for (Object[] objects : values) {
 				System.out.println(objects[0] +":"+ objects[1] +":"+ objects[2]+":"+ objects[3] +":"+ objects[4]);
+			}
+		} catch (Exception e) {
+		}
+		
+	}*/
+	
+	public void testDebateCandidateCharacteristicsDetails()
+	{
+		try {
+			
+			List<Object[]> values = debateParticipantDAO.getDebateCandidateCharacteristicsDetails();
+			for (Object[] objects : values) {
+				System.out.println((Long)objects[0] +":"+ objects[1].toString() +":"+ (Long)objects[2]+":" + (Long)objects[4]+":"+ objects[5].toString()+ (Long)objects[6]+":"+ objects[7].toString() + ":"+ objects[8].toString());
 			}
 		} catch (Exception e) {
 		}
