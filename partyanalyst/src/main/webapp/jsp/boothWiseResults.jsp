@@ -823,6 +823,8 @@ function buildBoothWiseResultReport(result,electionYear)
 			str+='	<div class="span12">';
 			str+='		<div class="row-fluid">						';			
 			str+='			<div class="span8 form-inline"> <label style="font-weight:bold;"> Select Options : </label>';
+			
+			//str +='  <label class="checkbox"> <input type="checkbox"  id="locationId" onclick="hideAndShow();"> Show Location </label>';
 			str +='  <label class="checkbox"> <input type="checkbox"  id="locationId" onclick="hideAndShow();"> Show Location </label>';
 			str +='  <label class="checkbox"> <input type="checkbox" id="villageId" onclick="hideAndShow();"> Show Villages </label>';
 			str +='  <label class="checkbox"> <input type="checkbox"  id="mandalId" onclick="hideAndShow();"> Show Mandal </label>';			
