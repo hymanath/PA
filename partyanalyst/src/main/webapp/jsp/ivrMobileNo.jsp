@@ -758,14 +758,14 @@ function buildLocationWiseData(result,jsObj)
 	str+='<table class="table table-bordered" id="datatableId">';
 	str+='<thead>';
 	str+='<tr>';
-	if(jsObj.scopeId == 2 || jsObj.scopeId == 4)
+	if(jsObj.scopeId == 2)
 	{
 	str+='<th>District</th>';
 	str+='<th>Total</th>';
 	str+='<th>DistrictWiseCount</th>';
 	str+='<th>ConstituencyWiseCount</th>';
 	}
-	else if(jsObj.scopeId == 3)
+	else if(jsObj.scopeId == 3 || jsObj.scopeId == 4)
 	{
 	str+='<th>Constituency</th>';
 	str+='<th>Total</th>';
@@ -788,12 +788,12 @@ function buildLocationWiseData(result,jsObj)
 		var total = result[i].distictWiseCount + result[i].constituencyWiseCount + 
 			result[i].tehsilWiseCount + result[i].panchayatWiseCount;
 		str+='<td>'+total+'</td>';
-		if(jsObj.scopeId == 2 || jsObj.scopeId == 4)
+		if(jsObj.scopeId == 2)
 		{
 		str+='<td>'+result[i].distictWiseCount+'</td>';
 		str+='<td>'+result[i].constituencyWiseCount+'</td>';
 		}
-		if(jsObj.scopeId == 3)
+		if(jsObj.scopeId == 3 || jsObj.scopeId == 4)
 		{
 		str+='<td>'+result[i].constituencyWiseCount+'</td>';
 		}
