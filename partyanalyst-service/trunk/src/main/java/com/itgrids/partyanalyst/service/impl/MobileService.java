@@ -3930,6 +3930,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 	 
 	 public MobileVO getLocationWiseMobileNumbersCountByRegionAndScope(Long scopeId,String regionType)
 	 {
+		 
 		 MobileVO result = new MobileVO();
 		 List<MobileVO> resultList = new ArrayList<MobileVO>();
 		 List<Long> locationIds = new ArrayList<Long>();
@@ -3937,24 +3938,24 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 		 try{
 			if(scopeId == 2)
 			{
-				list = districtDAO.getDistrictIdAndNameByStateForRegion(1l,regionType);
+				list = districtDAO.getDistrictIdAndNameByStateForRegion(1l,regionType); // District
 			}
 			else if(scopeId == 3)
 			{
-				list = constituencyDAO.getConstituenciesForRegion(regionType);	
+				list = constituencyDAO.getConstituenciesForRegion(regionType);	//Constituency
 			}
 			else if(scopeId == 4)
 			{
 				
 				if(regionType.equalsIgnoreCase("Andhra Pradesh"))
-				 list = delimitationConstituencyAssemblyDetailsDAO.getPcListByRegion(1l);
+				 list = delimitationConstituencyAssemblyDetailsDAO.getPcListByRegion(1l); //Parliament
 				 else
 				list = delimitationConstituencyAssemblyDetailsDAO.getPcListByRegion(2l);
 				
 			}
 			else if(scopeId == 5)
 			{
-				list = tehsilDAO.getMandalsForRegion(regionType);	
+				list = tehsilDAO.getMandalsForRegion(regionType);	//Tehsil
 			}
 			if(list != null && list.size() > 0)
 			{
