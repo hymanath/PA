@@ -27,14 +27,14 @@ function validateFields(){
 	var debetSum = $("#debetSum").val();
 	var partiRol1e = $(".partiRoleClass").val();
 
-		$( ".subjectClass" ).each(function( index ) {
+		/*$( ".subjectClass" ).each(function( index ) {
 		 var subject = $( this ).val();
 			if(subject.trim().length <= 0){
 				var divId = $(this ).attr("id");			
 				$("#"+divId+"Err").html("Please enter subject.");
 				flag = false;
 			}
-		});
+		});*/
 		if(channel <=0){		
 				$("#channelErr").html('Please Select Channel.');
 			flag = false;
@@ -172,7 +172,7 @@ function validateFields(){
 					flag = false;
 				}
 		});
-		$(".debateAnswr ").each(function(index){
+		/*$(".debateAnswr ").each(function(index){
 			var answr = $( this ).val();
 			if(answr == null || answr.trim().length <= 0){
 				var divId = $(this ).attr("id");				
@@ -180,7 +180,7 @@ function validateFields(){
 				flag = false;
 			}
 				
-		});
+		});*/
 		/*if(smsQuestin == null || smsQuestin.trim().length <= 0){
 				$("#smsques1").css("border","1px solid #D14719");
 				flag = false;
@@ -211,10 +211,10 @@ function validateFields(){
 				flag = false;
 			}
 		}
-		if(debetSum == null || debetSum.trim().length <= 0){
+		/*if(debetSum == null || debetSum.trim().length <= 0){
 				$("#debetSumErr").html('Debate Summary is Required.');
 				flag = false;
-		}	
+		}	*/
 
 	return flag;
 
