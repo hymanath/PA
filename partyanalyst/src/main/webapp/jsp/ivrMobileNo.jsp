@@ -40,9 +40,11 @@ $('#mandalId').multiselect({
 </script>
 <div class="container "><div style="margin-top:20px;" class="widget ">
 <div class="row">
-<div class="span10">
+<div class="span8">
+
 <h2>Mobile Numbers Extraction For IVR</h2></div>
-<div class="span1">
+<div class="span3">
+<input type="button" onclick="reselMobileNumbers();" class="btn mytooltip" value="ResetallNos" data-toggle="tooltip" data-title="Do you want to reset all mobile as not used ? click here"></input><img src="./images/icons/search.gif" id="ajaxImg1" style="display:none"/>
 <input class="btn" type="button" value="View Counts" onClick="openDialog()"></div>
 <div id="viewCountDialogDiv" style="display:none;"><div id="viewCountDialogInnerDiv"></div></div>
 </div>
@@ -155,6 +157,7 @@ $('#mandalId').multiselect({
 </div>
 
 <div class="row" style="text-align: center; margin-top: 20px;">
+
     <input type="button" onclick="createFile();" class="btn" value="Submit"></input>
 	<img src="./images/icons/search.gif" id="ajaxImg" style="display:none"/>
 	   <a id="downloadLink" style="margin-left: 11px;display:none;" href="${filePath}" class="btn btn-info" download>Download link</a>
@@ -275,6 +278,31 @@ function getMandals()
 			$('#mandalId').multiselect('refresh');	
 		
 	});		
+	}
+}
+function reselMobileNumbers()
+{
+	if(confirm("Do you want to proceed to reset all mobile numbers as not used ? "))
+	{
+	var jsObj = {
+		task : "reset"
+	}
+	$("#errorDiv").html('');
+	$("#ajaxImg1").css("display","inline-block");
+	$.ajax({
+	type: "GET",
+	url: "resetMobileNoAction.action",
+	dataType: 'json',
+	data: {task:JSON.stringify(jsObj)},
+	})
+	.done(function( result ) {
+		$("#ajaxImg1").css("display","none");
+		if(result.resultCode == 0)
+			$("#errorDiv").html(" Reset Successfully..").css("color","green");
+		else
+	$("#errorDiv").html(" Exception Occured ,Try again..").css("color","red");
+	
+	});	
 	}
 }
 function createFile()
@@ -401,7 +429,7 @@ function createFile()
 	if(flag == true)
 	return;
 	$("#errorDiv").html('');
-	$("#ajaxImg").show(queOptionsArr);
+	$("#ajaxImg").show();
 
 	var jsObj=
 	{
