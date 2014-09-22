@@ -406,6 +406,7 @@
 						<img src='images/Loading-data.gif' class="offset5"  id="mainajaximg" style="width:70px;height:60px;display:none;"/>
 						
                              <div id="dayWiseReportDiv1" style="overflow-x:scroll;width:870px;" class=" m_top20"></div>
+                             <div id="dayWiseReportDiv2" style="overflow-x:scroll;width:870px;" class=" m_top20"></div>
 							
 					</div>
 				</div>
