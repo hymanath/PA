@@ -160,6 +160,7 @@ public class MobileNumbersDAO extends GenericDaoHibernate<MobileNumbers, Long> i
 		str.append(" model.tehsil.tehsilId = :Id");	
 		
 		str.append(" and model.mobileNumber is not null and length(model.mobileNumber) = 10 and model.mobileNumber <> '9999999999' ");
+		str.append("and model.isUsed = 'N' and model.isDeleted = 'N' ");
 		query = getSession().createQuery(str.toString());
 		query.setParameter("Id", Id);
 		return (Long) query.uniqueResult();
@@ -190,6 +191,7 @@ public class MobileNumbersDAO extends GenericDaoHibernate<MobileNumbers, Long> i
 		if(scopeId == 4)//mandal
 		str.append(" and model.tehsil.tehsilId = :Id");
 		 str.append(" and model.mobileNumber is not null and length(model.mobileNumber) = 10 and model.mobileNumber <> '9999999999' ");
+		 str.append("and model.isUsed = 'N' and model.isDeleted = 'N' ");
 		query = getSession().createQuery(str.toString());
 		query.setParameter("Id", Id);
 		return (Long) query.uniqueResult();
@@ -206,7 +208,7 @@ public class MobileNumbersDAO extends GenericDaoHibernate<MobileNumbers, Long> i
 		if(scopeId == 4)//mandal
 		str.append(" model.tehsil.tehsilId = :location");
 		 str.append(" and model.mobileNumber is not null and length(model.mobileNumber) = 10 and model.mobileNumber <> '9999999999' ");
-		 
+		 str.append("and model.isUsed = 'N' and model.isDeleted = 'N' ");
 		 if(priority.equalsIgnoreCase(IConstants.PANCHAYAT))
 		  str.append(" and model.panchayat.panchayatId is not null order by rand()");
 		 else if(priority.equalsIgnoreCase(IConstants.TEHSIL))
@@ -251,6 +253,7 @@ public class MobileNumbersDAO extends GenericDaoHibernate<MobileNumbers, Long> i
 		else if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
 			str.append(" model.panchayat.panchayatId is not null");
 		 str.append(" and model.mobileNumber is not null and length(model.mobileNumber) = 10 and model.mobileNumber <> '9999999999' ");
+		 str.append("and model.isUsed = 'N' and model.isDeleted = 'N' ");
 		if(scopeId == 2)//District
 		str.append(" and model.district.districtId in (:Ids) group by model.district.districtId");
 		if(scopeId == 3)//Constituency
@@ -278,6 +281,7 @@ public class MobileNumbersDAO extends GenericDaoHibernate<MobileNumbers, Long> i
 		str.append(" model.tehsil.tehsilId in (:Ids)");	
 		
 		str.append(" and model.mobileNumber is not null and length(model.mobileNumber) = 10 and model.mobileNumber <> '9999999999' ");
+		str.append("and model.isUsed = 'N' and model.isDeleted = 'N' ");
 		query = getSession().createQuery(str.toString());
 		query.setParameterList("Ids", Ids);
 		return (Long) query.uniqueResult();
@@ -308,6 +312,7 @@ public class MobileNumbersDAO extends GenericDaoHibernate<MobileNumbers, Long> i
 		if(scopeId == 4)//mandal
 		str.append(" and model.tehsil.tehsilId in (:Ids)");
 		 str.append(" and model.mobileNumber is not null and length(model.mobileNumber) = 10 and model.mobileNumber <> '9999999999' ");
+		 str.append("and model.isUsed = 'N' and model.isDeleted = 'N' ");
 		query = getSession().createQuery(str.toString());
 		query.setParameterList("Ids", Ids);
 		return (Long) query.uniqueResult();
@@ -323,7 +328,7 @@ public class MobileNumbersDAO extends GenericDaoHibernate<MobileNumbers, Long> i
 		if(scopeId == 4)//mandal
 		str.append(" model.tehsil.tehsilId in(:locations)");
 		 str.append(" and model.mobileNumber is not null and length(model.mobileNumber) = 10 and model.mobileNumber <> '9999999999' ");
-		 
+		 str.append("and model.isUsed = 'N' and model.isDeleted = 'N' ");
 		 if(priority.equalsIgnoreCase(IConstants.PANCHAYAT))
 		  str.append(" and model.panchayat.panchayatId is not null order by rand()");
 		 else if(priority.equalsIgnoreCase(IConstants.TEHSIL))
@@ -344,4 +349,16 @@ public class MobileNumbersDAO extends GenericDaoHibernate<MobileNumbers, Long> i
 		 return new HashSet(query.list());
 		 
 	}
+	public Integer updateMobileNos()
+	{
+		Query query = getSession().createQuery("update MobileNumbers model set model.isUsed = 'N' where model.isUsed = 'Y' ");
+		return query.executeUpdate();
+	}
+	public Integer updateUsedMobileNos(List<String> mobileNos)
+	{
+		Query query = getSession().createQuery("update MobileNumbers model set model.isUsed = 'Y' where model.isUsed = 'N' and model.mobileNumber in(:mobileNos)");
+		query.setParameterList("mobileNos", mobileNos);
+		return query.executeUpdate();
+	}
+	
 }

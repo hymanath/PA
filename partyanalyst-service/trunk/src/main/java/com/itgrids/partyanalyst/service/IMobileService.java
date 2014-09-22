@@ -57,4 +57,5 @@ public interface IMobileService {
 	public List<SelectOptionVO> getTehsilList(List<Long> distictIds);
 	public List<SelectOptionVO> getpcconstituencyList(Long regionId);
 	public MobileVO getLocationWiseMobileNumbersCountByRegionAndScope(Long scopeId,String regionType);
+	public ResultStatus resetAllMobileNos();
 }

@@ -27,6 +27,8 @@ import java.util.TimeZone;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import javax.print.DocFlavor.STRING;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
@@ -3512,7 +3514,27 @@ public List<SelectOptionVO> getConstituencyList()
 				    		  vo.setCount(new Long(totlaMobileNos.size()));
 				    		  vo.setTotalMobileNos(totlaMobileNos);
 					      }
-				    	
+					    if(resultNumbers != null && resultNumbers.size() > 0)
+					    {
+					    	List<String> nos = new ArrayList<String>(resultNumbers);
+					    	int size = resultNumbers.size();
+					    	  int fromIndex = 0;
+							  int toIndex = 2000;
+								if(size >=2000)
+								{
+									 while(fromIndex <= toIndex)
+									  {
+										  mobileNumbersDAO.updateUsedMobileNos(nos.subList(fromIndex, toIndex));
+										  fromIndex += 2000;
+										  toIndex += 2000;
+										  if(toIndex >= size)
+											toIndex = size;
+									  }
+								}
+								else
+									mobileNumbersDAO.updateUsedMobileNos(nos);
+									
+					    }// update is_used status 'Y'
 						resultList.add(vo);
 		 				}
 				catch (Exception e) {
@@ -3572,7 +3594,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 		    outPut1.write(str.toString());
 			outPut1.close();
 		 }
-   	
+		
 	}
 	    /*  multiple file split based on totalMobileNumbers in all locations*/ 
 		if(checkedTypeVal == 3 && totalNos.size() > 0)
@@ -3796,6 +3818,24 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 								str.append( "\r\n");
 								 }
 							}
+							List<String> nos = new ArrayList<String>(resultNumbers);
+					    	int size = resultNumbers.size();
+					    	  int fromIndex = 0;
+							  int toIndex = 2000;
+							if(size >=2000)
+							{
+								 while(fromIndex <= toIndex)
+								  {
+									  mobileNumbersDAO.updateUsedMobileNos(nos.subList(fromIndex, toIndex));
+									  fromIndex += 2000;
+									  toIndex += 2000;
+									  if(toIndex >= size)
+										toIndex = size;
+								  }
+							}
+							else
+								mobileNumbersDAO.updateUsedMobileNos(nos);
+							
 						}
 						
 						resultList.add(vo);
@@ -3805,9 +3845,9 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 						    outPut1.write(str.toString());
 							outPut1.close();
 						 }
-				    	
+						  // update is_used status 'Y'
 				   }
-				    
+				  
 				    /*  multiple file split based on totalMobileNumbers in all locations*/ 
 					if(checkedTypeVal == 3 && totlaMobileNos.size() > 0)
 					 {
@@ -4103,6 +4143,36 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 			}
 			return null;
 		
+		 }
+		 
+		 public void updateUsedMobileNos(List<String> mobileNos)
+		 {
+			 
+			 try{
+				 if(mobileNos != null && mobileNos.size() > 0)
+				 mobileNumbersDAO.updateUsedMobileNos(mobileNos);
+				
+			 }
+			 catch (Exception e) {
+				 LOG.error("Exception Occured in updateUsedMobileNos(), Exception is - ",e);
+				
+			}
+			
+		 }
+		 public ResultStatus resetAllMobileNos()
+		 {
+			 ResultStatus rs = new ResultStatus();
+			 try{
+				 
+				 int count = mobileNumbersDAO.updateMobileNos();
+				 if(count > 0)
+				 rs.setResultCode(ResultCodeMapper.SUCCESS);
+			 }
+			 catch (Exception e) {
+				 LOG.error("Exception Occured in resetAllMobileNos(), Exception is - ",e);
+				 rs.setResultCode(ResultCodeMapper.FAILURE);
+			}
+			return rs;
 		 }
 	 
 }
