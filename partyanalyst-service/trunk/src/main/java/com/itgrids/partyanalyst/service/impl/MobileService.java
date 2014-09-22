@@ -4051,17 +4051,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 			 List<Long> locationIds = new ArrayList<Long>();
 			
 			 locationIds = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesByParliament(pcVo.getId()) ;
-			 List<Object[]> list1 = mobileNumbersDAO.getMobileNosCountForLocation(locationIds,IConstants.DISTRICT,scopeId);	
-				if(list1 != null && list1.size() > 0)
-				{
-					Long districtWiseCnt = 0l;
-					for(Object[] params : list1)
-					{
-						pcVo.setDistictWiseCount(districtWiseCnt + (Long)params[0]);
-					}
-					
-				}
-				List<Object[]> list2 = mobileNumbersDAO.getMobileNosCountForLocation(locationIds,IConstants.CONSTITUENCY,scopeId);
+			 List<Object[]> list2 = mobileNumbersDAO.getMobileNosCountForLocation(locationIds,IConstants.CONSTITUENCY,scopeId);
 				if(list2 != null && list2.size() > 0)
 				{
 					Long constituenycWiseCnt = 0l;
