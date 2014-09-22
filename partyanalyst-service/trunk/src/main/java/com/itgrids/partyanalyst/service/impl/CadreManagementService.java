@@ -2216,14 +2216,21 @@ public class CadreManagementService {
 		cadreInfo.setNoOfFamilyMembers(cadre.getNoOfFamilyMembers()!=null?cadre.getNoOfFamilyMembers():"");
 		cadreInfo.setNoOfVoters(cadre.getNoOfVoters());
 		Date dob = cadre.getDateOfBirth();
-		Date today = new Date();			
+		Date today = new Date();
+		if(dob != null){
 		Integer age = today.getYear() - dob.getYear(); 
 		cadreInfo.setAge(age.toString());
 		cadreInfo.setDateOfBirth(sdf.format(dob));
 		if(IConstants.TRUE.equals(cadre.getExactDateOfBirth()))
 			cadreInfo.setDobOption("Date Of Birth");
 		if(IConstants.FALSE.equals(cadre.getExactDateOfBirth()))
-			cadreInfo.setDobOption("Age");		
+			cadreInfo.setDobOption("Age");
+		}else{
+			cadreInfo.setAge("0");
+			cadreInfo.setDateOfBirth(sdf.format(new Date()));
+			cadreInfo.setDobOption("Age");
+		}
+				
 		cadreInfo.setGender(cadre.getGender());
 		cadreInfo.setMobile(cadre.getMobile());
 		cadreInfo.setTelephone(cadre.getTelephone());
@@ -2298,6 +2305,9 @@ public class CadreManagementService {
 			cadreInfo.setBoothName("Booth No"+boothCA.getPartNo()+" - "+boothCA.getLocation());
 		}
 		//check whether the current address is same as official address
+		if(officialAddress == null){
+			officialAddress = currentAddress;
+		}
 		if (currentAddress.getUserAddressId() == officialAddress.getUserAddressId()) {
 			cadreInfo.setSameAsCA(true);
 			cadreInfo.setPhouseNo(currentAddress.getHouseNo());
@@ -2503,7 +2513,7 @@ public class CadreManagementService {
 		}
 		
 		cadreInfo.setMemberType(cadre.getMemberType());
-		if (IConstants.CADRE_MEMBER_TYPE_ACTIVE.equals(cadre.getMemberType())) {
+		if (IConstants.CADRE_MEMBER_TYPE_ACTIVE.equals(cadre.getMemberType()) && cadre.getCadreLevel() != null) {
 			String level = cadre.getCadreLevel().getLevel();
 			cadreInfo.setCadreLevel(cadre.getCadreLevel().getCadreLevelID());
 			cadreInfo.setStrCadreLevel(level);
