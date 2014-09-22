@@ -2360,6 +2360,7 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 			}
 		}
 			
+			//List<Object[]> candidateList = candidateBoothResultDAO.findboothWiseResultsForNonParties(constituencyId,partyIds,electionIds);
 			
 		//List<Object[]> nominations  = nominationDAO.findByConstituencyPartyAndElectionsYears(partyIds, constiIds, electionYear1);
 		

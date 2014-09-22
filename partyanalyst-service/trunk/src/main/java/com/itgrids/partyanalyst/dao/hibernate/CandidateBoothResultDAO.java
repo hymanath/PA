@@ -1700,22 +1700,32 @@ public List<Object[]> getlocalbodywardResults1(Long constituencyId, List<Long> e
 			   		" CE.election.electionId in (:electionIds) and " +
 			   		" CE.constituency.constituencyId = :constituencyId order by B.boothId,CBR.votesEarned desc ");
 	   
-	   
-	   
-	  /* Query query = getSession().createQuery("select model.nomination.candidate.lastname, " +
-		   		" model.boothConstituencyElection.booth.boothId, " +  //0
-		   		" model.boothConstituencyElection.booth.partNo, " +//1
-		   		" max(model.votesEarned),model.nomination.party.shortName  " + //8
-		   		" from CandidateBoothResult model " + 
-			   		"  where  " +
-			   		"  model.boothConstituencyElection.booth.constituency.constituencyId =:constituencyId  " +
-			   		"  and model.nomination.constituencyElection.election.electionId = :electionId  group by model.boothConstituencyElection.booth.boothId " +
-			   		" order by model.boothConstituencyElection.booth.partNo ");
-	   
-	   */
 			query.setParameter("constituencyId", constituencyId);
 			query.setParameterList("electionIds", electionIds);
 			
+			return query.list();
+			
+   }
+   
+   public List<Object[]> findboothWiseResultsForNonParties(Long constituencyId, List<Long> partyIds,List<Long> electionIds)
+   {
+	    
+	   Query query = getSession().createQuery("select " +
+		   		" model.boothConstituencyElection.booth.boothId, " +  //0
+		   		" model.boothConstituencyElection.booth.partNo, " +//1
+		   		" model.boothConstituencyElection.booth.totalVoters, " + //2
+		   		" model.boothConstituencyElection.boothResult.validVotes, " + //3
+		   		" model.votesEarned " + //4
+		   		" from CandidateBoothResult model " + 
+			   		"  where  " +
+			   		"  model.boothConstituencyElection.booth.constituency.constituencyId =:constituencyId  " +
+			   		"  and model.nomination.party.partyId not in (:partyIds) " +
+			   		"  and model.boothConstituencyElection.constituencyElection.election.electionId in (:electionIds) " +
+			   		"  order by model.boothConstituencyElection.booth.partNo ");
+	   
+			query.setParameter("constituencyId", constituencyId);
+			query.setParameterList("partyIds", partyIds);
+			query.setParameterList("electionIds", electionIds);
 			return query.list();
 			
    }
