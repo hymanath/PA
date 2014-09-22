@@ -21,8 +21,15 @@ public class MobileVO implements Serializable{
 	private Long tehsilWiseCount = 0l;
 	private Long panchayatWiseCount = 0l;
 	private Long constituencyWiseCount = 0l;
+	private List<String> totalMobileNos = new ArrayList<String>(); 
 	
 	
+	public List<String> getTotalMobileNos() {
+		return totalMobileNos;
+	}
+	public void setTotalMobileNos(List<String> totalMobileNos) {
+		this.totalMobileNos = totalMobileNos;
+	}
 	public Long getDistictWiseCount() {
 		return DistictWiseCount;
 	}

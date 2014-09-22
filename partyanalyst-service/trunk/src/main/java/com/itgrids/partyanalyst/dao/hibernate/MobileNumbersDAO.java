@@ -261,5 +261,87 @@ public class MobileNumbersDAO extends GenericDaoHibernate<MobileNumbers, Long> i
 		query.setParameterList("Ids", Ids);
 		return query.list();
 		
-	}		 
+	}	
+	
+	@SuppressWarnings("unchecked")
+	public Long getMobileNosTotalForLocationIDs(List<Long> Ids,String type,Long scopeId)
+	{
+		StringBuilder str = new StringBuilder();
+		Query query = null;
+		str.append("select count(distinct model.mobileNumber)");
+		str.append(" from MobileNumbers model where");
+		if(scopeId == 1)//District
+		str.append(" model.district.districtId in (:Ids)");
+		if(scopeId == 2)//Constituency
+		str.append(" model.constituency.constituencyId in (:Ids)");
+		if(scopeId == 4)//Mandal
+		str.append(" model.tehsil.tehsilId in (:Ids)");	
+		
+		str.append(" and model.mobileNumber is not null and length(model.mobileNumber) = 10 and model.mobileNumber <> '9999999999' ");
+		query = getSession().createQuery(str.toString());
+		query.setParameterList("Ids", Ids);
+		return (Long) query.uniqueResult();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Long getMobileNosCountByIdsForLocationIDs(List<Long> Ids,String type,Long scopeId)
+	{
+		StringBuilder str = new StringBuilder();
+		Query query = null;
+		str.append("select count(distinct model.mobileNumber)");
+		str.append(" from MobileNumbers model where");
+		if(type.equalsIgnoreCase(IConstants.DISTRICT))
+			str.append(" model.district.districtId is not null and model.constituency.constituencyId is null and " +
+					" model.tehsil.tehsilId is null and  model.panchayat.panchayatId is null");
+		else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			str.append(" model.constituency.constituencyId is not null and model.tehsil.tehsilId is null" +
+					" and model.panchayat.panchayatId is null");
+		else if(type.equalsIgnoreCase(IConstants.TEHSIL))
+		str.append(" model.tehsil.tehsilId is not null and model.panchayat.panchayatId is null");
+		else if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
+			str.append(" model.panchayat.panchayatId is not null");
+		
+		if(scopeId == 1)//District
+		str.append(" and model.district.districtId in (:Ids)");
+		if(scopeId == 2)//Constituency
+		str.append(" and model.constituency.constituencyId in (:Ids)");
+		if(scopeId == 4)//mandal
+		str.append(" and model.tehsil.tehsilId in (:Ids)");
+		 str.append(" and model.mobileNumber is not null and length(model.mobileNumber) = 10 and model.mobileNumber <> '9999999999' ");
+		query = getSession().createQuery(str.toString());
+		query.setParameterList("Ids", Ids);
+		return (Long) query.uniqueResult();
+	}
+	public Set<String> getMobilenosBasedOnPriorityForLocationIDs(Long scopeId,List<Long> locations,int maxIndex,String priority) 
+	{
+		StringBuilder str = new StringBuilder(); 
+		str.append("select distinct model.mobileNumber from MobileNumbers model where");
+		 if(scopeId == 1)
+		 str.append(" model.district.districtId in(:locations)")	;
+		 if(scopeId == 2)
+		 str.append(" model.constituency.constituencyId in(:locations)");
+		if(scopeId == 4)//mandal
+		str.append(" model.tehsil.tehsilId in(:locations)");
+		 str.append(" and model.mobileNumber is not null and length(model.mobileNumber) = 10 and model.mobileNumber <> '9999999999' ");
+		 
+		 if(priority.equalsIgnoreCase(IConstants.PANCHAYAT))
+		  str.append(" and model.panchayat.panchayatId is not null order by rand()");
+		 else if(priority.equalsIgnoreCase(IConstants.TEHSIL))
+			 str.append(" and model.tehsil.tehsilId is not null and model.panchayat.panchayatId is null order by rand()"); 
+		 else if(priority.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			 str.append(" and model.constituency.constituencyId is not null and model.tehsil.tehsilId is null" +
+						" and model.panchayat.panchayatId is null order by rand()"); 
+		 else if(priority.equalsIgnoreCase(IConstants.DISTRICT))
+			 str.append(" and model.district.districtId is not null and model.constituency.constituencyId is null " +
+						" and model.tehsil.tehsilId is null and  model.panchayat.panchayatId is null order by rand()");
+		 Query query = getSession().createQuery(str.toString());
+		 query.setParameterList("locations", locations);
+		 
+		 if(maxIndex > 0)
+		 {
+			 query.setMaxResults(maxIndex);	 
+		 }
+		 return new HashSet(query.list());
+		 
+	}
 }
