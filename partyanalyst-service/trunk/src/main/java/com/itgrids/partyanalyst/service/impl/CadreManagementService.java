@@ -5131,8 +5131,16 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 				cadreInfo.setMiddleName(cadre.getMiddleName());
 				cadreInfo.setLastName(cadre.getLastName());
 				cadreInfo.setMemberType(cadre.getMemberType());
-				cadreInfo.setEducationStr(cadre.getEducation().getQualification());
-				cadreInfo.setProfessionStr(cadre.getOccupation().getOccupation());
+				if(cadre.getEducation() != null){
+				  cadreInfo.setEducationStr(cadre.getEducation().getQualification());
+				}else{
+					cadreInfo.setEducationStr("");
+				}
+				if(cadre.getOccupation() != null){
+				  cadreInfo.setProfessionStr(cadre.getOccupation().getOccupation());
+				}else{
+					 cadreInfo.setProfessionStr("");
+				}
 				
 				if(casteDetailsMap.get(cadre.getCadreId()) != null)
 				 // cadreInfo.setCasteCategoryStr(cadre.getCasteCategory().getCategory());
