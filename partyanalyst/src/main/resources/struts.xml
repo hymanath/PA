@@ -6964,11 +6964,11 @@
 		<action name="boothWiseResultsAction" class="dashBoardAction">
 			<result name="success">/jsp/boothWiseResults.jsp</result>			
 		</action>
-		<!--
-		<action name="boothWiseResultsAction" class="dashBoardAction" method="boothwiseResults">
-			<result name="success">/jsp/boothWiseResults.jsp</result>			
+		
+		<action name="boothWiseResultsTempAction" class="dashBoardAction">
+			<result name="success">/jsp/boothWiseResultsTemp.jsp</result>			
 		</action>
-		-->
+		
 		<action name="casteContainConstituencies" class="stratagicReportsAction" method="getCasteContainConstituency">
            <result type="json" name="success">
            		<param name="root">casteContainConstiList</param>
