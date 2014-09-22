@@ -510,5 +510,16 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 		}
 		return Action.SUCCESS;
 	}
+	public String resetAllMobileNos()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			resultStatus = mobileService.resetAllMobileNos();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
 	
 }
