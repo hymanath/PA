@@ -429,7 +429,7 @@ function createFile()
 	  $("#errorDiv").html("<font color='green' style='font-size: 12px; font-weight: bold;'>file created successfully</font>");
 	  $("#downloadLink").attr('href',result.status);
 	  $("#downloadLink").css("display","block").css("display","inline-block");
-	  if(jObj.scopeId != 3)
+	 
 	  buildLocationData(result,jsObj);
 		}
 		else if(result.resultCode == 2)
@@ -447,8 +447,12 @@ function buildLocationData(result,jObj)
 	var str ='';
 	if(jObj.scopeId == 1)
 	str+='<h3>District wise mobile Numbers Info</h3>';
-	else
+	else if(jObj.scopeId == 2)
 	str+='<h3>Constituency wise mobile Numbers Info</h3>';
+	else if(jObj.scopeId == 3)
+	str+='<h3>Parliament wise mobile Numbers Info</h3>';
+	else if(jObj.scopeId == 4)
+	str+='<h3>Mandal wise mobile Numbers Info</h3>';
 
 	str+='<table class="table table-bordered offset3 " style="width: 50%;font-family:verdana;">';
 	
@@ -705,7 +709,7 @@ str+='</select>';
 str+='</div>';
 str+='<div class="span3">';
 str+='<label>Select Scope</label>';
-str+='<select id="dialogScopeId" onchange="showHide();correspondingCall();" class="input-block-level"><option value="0">Select Scope</option><option value="2">District</option><option value="3">Constituency</option><option value="5">Mandal</option>';
+str+='<select id="dialogScopeId" onchange="showHide();correspondingCall();" class="input-block-level"><option value="0">Select Scope</option><option value="2">District</option><option value="3">Constituency</option><option value="4">Parliament</option><option value="5">Mandal</option>';
 str+='</select>';
 str+='</div>';
 str+='<div class="span3">';
