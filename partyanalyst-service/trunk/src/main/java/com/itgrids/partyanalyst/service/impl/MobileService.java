@@ -3979,7 +3979,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 			}
 			if(scopeId == 4)
 			{
-				scopeId = 2l;
+				scopeId = 3l;
 				setCountsForParliamnet(resultList,scopeId);
 			}
 			else
