@@ -843,17 +843,29 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 			session.setAttribute(ISessionConstants.MANDALS, mandals_c);
 			
 			//get villages
-			List<SelectOptionVO> villageNames_c = regionServiceDataImp.getHamletsOrWards(Long.valueOf(cadreInfo.getMandal()),IConstants.PRESENT_YEAR);
+			List<SelectOptionVO> villageNames_c = null;
+			if(cadreInfo.getMandal() != null){
+			 villageNames_c = regionServiceDataImp.getHamletsOrWards(Long.valueOf(cadreInfo.getMandal()),IConstants.PRESENT_YEAR);
+			}else{
+				villageNames_c = new ArrayList<SelectOptionVO>();
+			}
 			SelectOptionVO obj3 = new SelectOptionVO(0L,"Select Village");
 			villageNames_c.add(0, obj3);
 			
 			session.setAttribute(ISessionConstants.VILLAGES, villageNames_c);
-			List<SelectOptionVO> boothsList_c;
-			if(cadreInfo.getMandalName().contains(IConstants.GREATER_ELECTION_TYPE))
-				boothsList_c = getRegionServiceDataImp().getboothsInWard(Long.valueOf(cadreInfo.getVillage()),Long.valueOf(IConstants.PRESENT_ELECTION_YEAR),Long.valueOf(cadreInfo.getConstituencyID()));
-			else 
+			List<SelectOptionVO> boothsList_c = null;
+			if(cadreInfo.getMandalName() != null && cadreInfo.getMandalName().contains(IConstants.GREATER_ELECTION_TYPE)){
+				 if(cadreInfo.getVillage() != null){
+					boothsList_c = getRegionServiceDataImp().getboothsInWard(Long.valueOf(cadreInfo.getVillage()),Long.valueOf(IConstants.PRESENT_ELECTION_YEAR),Long.valueOf(cadreInfo.getConstituencyID()));
+				 }
+			 }else if(cadreInfo.getMandal() != null){ 
 				boothsList_c = getRegionServiceDataImp().getBoothsInTehsilOrMunicipality(Long.valueOf(cadreInfo.getMandal()),Long.valueOf(IConstants.PRESENT_ELECTION_YEAR),Long.valueOf(cadreInfo.getConstituencyID()));
+			 }
 			if(boothsList_c != null){
+				SelectOptionVO obj = new SelectOptionVO(0L,"Select Location");
+				boothsList_c.add(0, obj);
+			}else{
+				boothsList_c = new ArrayList<SelectOptionVO>();
 				SelectOptionVO obj = new SelectOptionVO(0L,"Select Location");
 				boothsList_c.add(0, obj);
 			}
