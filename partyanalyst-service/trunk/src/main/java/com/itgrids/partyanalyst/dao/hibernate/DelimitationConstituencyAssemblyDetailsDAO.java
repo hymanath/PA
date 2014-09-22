@@ -277,6 +277,8 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 	str.append(" ac.district_id between 11 and 23 and c.deform_date is null ");
 	if(regionId == 0)
 	str.append(" ac.district_id between 1 and 23 and c.deform_date is null ");	
+	
+	str.append(" order by c.name ");
 	Query query = getSession().createSQLQuery(str.toString());
 	return query.list();
 	}
