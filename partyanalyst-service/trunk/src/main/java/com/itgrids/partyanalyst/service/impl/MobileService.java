@@ -4048,7 +4048,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 			 for(MobileVO pcVo : resultList)
 			 {
 			 List<Long> locationIds = new ArrayList<Long>();
-			 MobileVO vo = new MobileVO();
+			
 			 locationIds = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesByParliament(pcVo.getId()) ;
 			 List<Object[]> list1 = mobileNumbersDAO.getMobileNosCountForLocation(locationIds,IConstants.DISTRICT,scopeId);	
 				if(list1 != null && list1.size() > 0)
@@ -4056,7 +4056,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 					Long districtWiseCnt = 0l;
 					for(Object[] params : list1)
 					{
-						vo.setDistictWiseCount(districtWiseCnt + (Long)params[0]);
+						pcVo.setDistictWiseCount(districtWiseCnt + (Long)params[0]);
 					}
 					
 				}
@@ -4066,7 +4066,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 					Long constituenycWiseCnt = 0l;
 					for(Object[] params : list2)
 					{
-						vo.setConstituencyWiseCount(constituenycWiseCnt + (Long)params[0]);
+						pcVo.setConstituencyWiseCount(constituenycWiseCnt + (Long)params[0]);
 					}
 					
 				}
@@ -4076,7 +4076,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 					Long panchayatWiseCnt = 0l;
 					for(Object[] params : list3)
 					{
-						vo.setPanchayatWiseCount(panchayatWiseCnt + (Long)params[0]);
+						pcVo.setPanchayatWiseCount(panchayatWiseCnt + (Long)params[0]);
 					}
 					
 				}
@@ -4086,7 +4086,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 					Long tehsilWiseCnt = 0l;
 					for(Object[] params : list4)
 					{
-						vo.setTehsilWiseCount(tehsilWiseCnt + (Long)params[0]);
+						pcVo.setTehsilWiseCount(tehsilWiseCnt + (Long)params[0]);
 					}
 					
 				}
