@@ -14,15 +14,18 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.DebateDetailsVO;
+import com.itgrids.partyanalyst.dto.DebateTopicVO;
 import com.itgrids.partyanalyst.dto.DebateVO;
 import com.itgrids.partyanalyst.dto.ParticipantVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
+import com.itgrids.partyanalyst.service.IDebateAnalysisService;
 import com.itgrids.partyanalyst.service.IDebateService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.opensymphony.xwork2.Action;
@@ -69,6 +72,10 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 
 	private ICandidateDetailsService 	candidateDetailsService;
 	private IDebateService 				debateService;
+	
+	private IDebateAnalysisService      debateAnalysisService;
+	
+	private List<DebateTopicVO>         debateReportList;
 	
 	private String fromDate;
 	private String toDate;
@@ -416,6 +423,25 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 
 	public void setCandidateWiseList(List<SelectOptionVO> candidateWiseList) {
 		this.candidateWiseList = candidateWiseList;
+	}
+
+	
+	public List<DebateTopicVO> getDebateReportList() {
+		return debateReportList;
+	}
+
+	public void setDebateReportList(List<DebateTopicVO> debateReportList) {
+		this.debateReportList = debateReportList;
+	}
+
+	
+	public IDebateAnalysisService getDebateAnalysisService() {
+		return debateAnalysisService;
+	}
+
+	public void setDebateAnalysisService(
+			IDebateAnalysisService debateAnalysisService) {
+		this.debateAnalysisService = debateAnalysisService;
 	}
 
 	public String execute()
@@ -921,6 +947,21 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 		try {
 			jObj=new JSONObject(getTask());
 			partiesList1 = candidateDetailsService.getPartiesListByStateId(jObj.getLong("stateId"));
+			
+			return Action.SUCCESS;
+		} catch (Exception e) {
+			LOG.error(" Exception occured in getPartiesListByStateId() in DebateAction class. "+e);
+		}
+		
+		
+		return Action.SUCCESS;
+	}
+	
+	public String getPartyWiseTotalDebatesAndScalesService()
+	{
+		try {
+			jObj=new JSONObject(getTask());
+			debateReportList = debateAnalysisService.getPartyCandidatePerfortmanceTopicWise();
 			
 			return Action.SUCCESS;
 		} catch (Exception e) {

@@ -328,5 +328,10 @@
    		<property name="districtDAO" ref="districtDAO" /> 
    		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />		
    </bean>
+   
+    <bean name="debateAnalysisService" class="com.itgrids.partyanalyst.service.impl.DebateAnalysisService">
+        <property name="debateParticipantCharcsDAO" ref="debateParticipantCharcsDAO"></property>
+        <property name="debateParticipantDAO" ref="debateParticipantDAO"></property>
+    </bean>
 </beans>		
 	
