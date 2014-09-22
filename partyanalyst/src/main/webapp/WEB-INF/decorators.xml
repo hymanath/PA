@@ -311,6 +311,7 @@
 		<pattern>/voterModificationReportAction*</pattern>
 		<pattern>/importentFamilyResultsAction*</pattern>	
 		<pattern>/boothWiseResultsAction*</pattern>
+		<pattern>/boothWiseResultsTempAction*</pattern>
 		<pattern>/userEntitlementAction*</pattern>
 		<pattern>/userAccessRegionAction*</pattern>
 		<pattern>/manageUserMessageCreditsAction*</pattern>
