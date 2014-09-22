@@ -40,6 +40,8 @@ public class MobileNumbers extends BaseModel implements Serializable{
 	private Panchayat panchayat;
 	private Tehsil tehsil;
 	private District district;
+	private String isUsed;
+	private String isDeleted;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -170,5 +172,20 @@ public class MobileNumbers extends BaseModel implements Serializable{
 	public void setTehsil(Tehsil tehsil) {
 		this.tehsil = tehsil;
 	}
+	@Column(name="is_used")
+	public String getIsUsed() {
+		return isUsed;
+	}
+	public void setIsUsed(String isUsed) {
+		this.isUsed = isUsed;
+	}
+	@Column(name="is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
 
+	
 }
