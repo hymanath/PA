@@ -25,6 +25,8 @@ public class DepartmentDAOHibernateTest  extends BaseDaoTestCase{
 		List<Object[]> list = departmentDAO.getAllDepartments();
 		System.out.println(list.size());
 	}
+	
+	
 
 	
 }

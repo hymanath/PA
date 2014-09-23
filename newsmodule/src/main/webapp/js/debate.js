@@ -1,4 +1,3 @@
-
 var subjCount = 2;
 var candCount = 2;
 var questionCount = 2;
@@ -786,7 +785,12 @@ function callAjax(jsObj,url)
 			 	else if(jsObj.task == "getEachTopicWisePartyAndCandidateDetails")
 				{
 						buildEachTopicWisePartyAndCandidateDetails(myResults);
-				}				
+				}	
+				else if(jsObj.task == "partyWiseCandidatePerformance")
+				{
+						buildpartyWiseCandidatePerformance(myResults);
+				}
+				
 			}catch(e)
 			{   
 			 $("#submitDataImg").hide();
@@ -1687,4 +1691,50 @@ function buildCandidateCharacteristics(myResults){
 		 $('#candidatePartyPerformanceId').html(str);
 		
 	}
+
+partyWiseCandidatePerformance();
+function partyWiseCandidatePerformance()
+{
+	var jsObj = {
+			task : "partyWiseCandidatePerformance"	
+	};
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "partyWiseCandidatePerformance.action?"+rparam;
+	callAjax(jsObj,url);
+}
+function buildpartyWiseCandidatePerformance(result)
+{
+	var str = '';
+	str += '<table class="table table-bordered table-hover table-striped">';
+	str += '<thead class="alert alert-success">';
+	str += '<tr>';
+	str += '<th>PARTY</th>';
+	str += '<th>CANDIDATE</th>';
+	str += '<th>TOTAL DEBATS</th>';
+	str += '<th>PERFORMANCE COUNT</th>';
+	str += '<th>PRESENTATION</th>';
+	str += '<th>COUNTER ATTACK</th>';
+	str += '<th>BODY LANGUAGE</th>';
+	str += '<th>SUBJECT</th>';
+	str += '</tr>';
+	str += '</thead>';
+	str += '<tbody>';
+	for(var i in result)
+	{
+		str += '<tr>';
+		str += '<td>'+result[i].partyName+'</td>';
+		str += '<td>'+result[i].candidate+'</td>';
+		str += '<td>'+result[i].totalDebates+'</td>';
+		str += '<td>'+result[i].performanceCount+'</td>';
+		str += '<td>'+result[i].presentation+'</td>';
+		str += '<td>'+result[i].counterAttack+'</td>';
+		str += '<td>'+result[i].bodyLanguage+'</td>';
+		str += '<td>'+result[i].subject+'</td>';
+		str += '<tr>';
+	}
+	str += '</tbody>';
+	str += '</table>';
+	$('#eachAttributePartyCandidateId').html(str);
+	
 }

@@ -24,6 +24,8 @@ public class DebateParticipantCharcs {
 
 	
 	private Long debateParticipantCharcsId;
+	private Long debateParticipantId;
+	private Long characteristicsId;
 	private DebateParticipant debateParticipant;
 	private Characteristics characteristics;
 	private Double scale;
@@ -45,6 +47,27 @@ public class DebateParticipantCharcs {
 	public void setDebateParticipantCharcsId(Long debateParticipantCharcsId) {
 		this.debateParticipantCharcsId = debateParticipantCharcsId;
 	}
+	
+	@Column(name ="debate_participant_id", insertable=false, updatable=false)
+	public Long getDebateParticipantId() {
+		return debateParticipantId;
+	}
+
+
+	public void setDebateParticipantId(Long debateParticipantId) {
+		this.debateParticipantId = debateParticipantId;
+	}
+
+	@Column(name ="characteristics_id", insertable=false, updatable=false)
+	public Long getCharacteristicsId() {
+		return characteristicsId;
+	}
+
+
+	public void setCharacteristicsId(Long characteristicsId) {
+		this.characteristicsId = characteristicsId;
+	}
+
 
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name = "debate_participant_id")
@@ -85,23 +108,6 @@ public class DebateParticipantCharcs {
 	public void setScale(Double scale) {
 		this.scale = scale;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 }

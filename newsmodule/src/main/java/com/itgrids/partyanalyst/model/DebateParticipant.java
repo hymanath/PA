@@ -23,6 +23,9 @@ import org.hibernate.annotations.NotFoundAction;
 public class DebateParticipant {
 
 	private Integer debateParticipantId;
+	private Long debateId;
+	private Long partyId;
+	private Long candidateId;
 	private Debate debate;
 	private Candidate candidate;
 	private Party party;
@@ -42,6 +45,34 @@ public class DebateParticipant {
 	public void setDebateParticipantId(Integer debateParticipantId) {
 		this.debateParticipantId = debateParticipantId;
 	}
+	
+	@Column(name ="debate_id", insertable=false, updatable=false)
+	public Long getDebateId() {
+		return debateId;
+	}
+
+	public void setDebateId(Long debateId) {
+		this.debateId = debateId;
+	}
+	
+	@Column(name ="party_id", insertable=false, updatable=false)
+	public Long getPartyId() {
+		return partyId;
+	}
+
+	public void setPartyId(Long partyId) {
+		this.partyId = partyId;
+	}
+	
+	@Column(name ="candidate_id", insertable=false, updatable=false)
+	public Long getCandidateId() {
+		return candidateId;
+	}
+
+	public void setCandidateId(Long candidateId) {
+		this.candidateId = candidateId;
+	}
+
 
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name = "debate_id")
@@ -90,23 +121,6 @@ public class DebateParticipant {
 
 	public void setCandidate(Candidate candidate) {
 		this.candidate = candidate;
-	}
-	
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	}	
 	
 }

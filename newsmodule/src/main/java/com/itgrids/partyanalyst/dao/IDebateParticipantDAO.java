@@ -2,9 +2,11 @@ package com.itgrids.partyanalyst.dao;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.dto.DebateAnalysisVO;
 import com.itgrids.partyanalyst.model.DebateParticipant;
 
 public interface IDebateParticipantDAO extends GenericDao<DebateParticipant, Long>{
@@ -27,5 +29,8 @@ public interface IDebateParticipantDAO extends GenericDao<DebateParticipant, Lon
 	
 	public List<Object[]> getCanidatesListForDebateForSelectedDates(Date fromDate,Date toDate);
 	
+	public List<Object[]> getPartiesAndCanidatesIds();
+	
 	public List<Object[]> getDebateCandidateCharacteristicsDetails();
+}
 }

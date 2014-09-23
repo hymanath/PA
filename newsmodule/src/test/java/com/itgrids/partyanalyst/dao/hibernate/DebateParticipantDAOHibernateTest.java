@@ -3,11 +3,8 @@
  */
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
-
 import org.appfuse.dao.BaseDaoTestCase;
-
 import com.itgrids.partyanalyst.dao.IDebateParticipantDAO;
 
 /**
@@ -21,6 +18,7 @@ public class DebateParticipantDAOHibernateTest extends BaseDaoTestCase{
 	public void setDebateParticipantDAO(IDebateParticipantDAO debateParticipantDAO) {
 		this.debateParticipantDAO = debateParticipantDAO;
 	}
+
 	
 	/*public void testAll()
 	{
@@ -69,7 +67,7 @@ public class DebateParticipantDAOHibernateTest extends BaseDaoTestCase{
 		
 	}*/
 	
-	public void testDebateCandidateCharacteristicsDetails()
+	/*public void testDebateCandidateCharacteristicsDetails()
 	{
 		try {
 			
@@ -80,5 +78,36 @@ public class DebateParticipantDAOHibernateTest extends BaseDaoTestCase{
 		} catch (Exception e) {
 		}
 		
+	}*/
+/*	public void testgetDebateTotalScaleForEachParty()
+	{
+		try {
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			String fromDateStr = "01/01/2013";
+			String toDateStr = "02/05/2014";
+			List<Object[]> values = debateParticipantDAO.getTotalDabtesCountsForEachCandidate(sdf.parse(fromDateStr),sdf.parse(toDateStr));
+			for (Object[] objects : values) {
+				System.out.println(objects[0] +":"+ objects[1] +":"+ objects[2]+":"+ objects[3] +":"+ objects[4]);
+			}
+		} catch (Exception e) {
+		}
+		
+	}*/
+	
+	public void testgetPartiesAndCandidateIds()
+	{
+		try {
+			List<Object[]> values = debateParticipantDAO.getPartiesAndCanidatesIds();
+			for(Object[] objects:values){
+				System.out.println(objects[0]+"..."+objects[1]+"..."+objects[2]+"..."+objects[3]+"..."+objects[4]);
+			
+			}
+			
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
 	}
+
 }

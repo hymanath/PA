@@ -8,11 +8,9 @@ import java.util.TreeMap;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dao.IDebateParticipantCharcsDAO;
 import com.itgrids.partyanalyst.dao.IDebateParticipantDAO;
-import com.itgrids.partyanalyst.dto.DebateCandidateCharcVO;
 import com.itgrids.partyanalyst.dto.DebatePartyWiseCountVO;
 import com.itgrids.partyanalyst.dto.DebateRankingVO;
 import com.itgrids.partyanalyst.dto.DebateTopicVO;
@@ -424,4 +422,129 @@ public class DebateAnalysisService implements IDebateAnalysisService
 		}
 		return debatePartiesList;
 	}
+	
+	public List<DebateAnalysisVO> partyWiseCandidatePerformance(){
+		Map<Long, DebateAnalysisVO> partiesAndCandidatesMap=null;
+		Map<Long, Double> performanceCountMap=null;
+		Map<Long, DebateAnalysisVO> charsCountMap=null;
+		
+		List<DebateAnalysisVO> finalResult=null;
+		
+		try {
+			LOG.info("Entered into partyWiseCandidatePerformance method in DebateAnalysisService Class");
+			List<Object[]> result1 = debateParticipantDAO.getPartiesAndCanidatesIds();
+			if(result1 != null && result1.size() > 0)
+			{
+				partiesAndCandidatesMap = new HashMap<Long, DebateAnalysisVO>();
+				setPartiesAndCandidatesInfo(result1,partiesAndCandidatesMap);
+			}
+			
+			List<Object[]> result2 = debateParticipantCharcsDAO.getDebatePerformanceCount();
+			if(result2 != null && result2.size() > 0)
+			{
+				performanceCountMap = new HashMap<Long, Double>();
+				setPerformanceCountInfo(result2,performanceCountMap);
+			}
+			
+			List<Object[]> result3 = debateParticipantCharcsDAO.getDebatePerformanceCountCharcs();
+			if(result3 != null && result3.size() > 0)
+			{
+				charsCountMap = new HashMap<Long, DebateAnalysisVO>();
+				setCharsCountInfo(result3,charsCountMap);
+			}	
+			
+			finalResult = new ArrayList<DebateAnalysisVO>();
+			setPartyWiseCandidatePerformanceInfo(partiesAndCandidatesMap,performanceCountMap,charsCountMap,finalResult);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in getPartiesAndCandidateIds method in DebateAnalysisService Class", e);
+		}				
+		
+		return finalResult;
+	}
+	
+	public void setPartiesAndCandidatesInfo(List<Object[]> result,Map<Long, DebateAnalysisVO> resultMap)
+	{
+		for (Object[] objects : result)
+		{
+			if(objects[2] != null)
+			{
+				DebateAnalysisVO debateAnalysisVO = resultMap.get(objects[2] );
+				if(debateAnalysisVO == null)
+				{
+					debateAnalysisVO = new DebateAnalysisVO();
+					resultMap.put((Long)objects[2], debateAnalysisVO);
+				}
+				debateAnalysisVO.setPartyId(objects[0] != null ? (Long)objects[0] : 0l);
+				debateAnalysisVO.setPartyName(objects[1] != null ? objects[1].toString() : "");
+				debateAnalysisVO.setCandidateId(objects[2] != null ? (Long)objects[2] : 0l);
+				debateAnalysisVO.setCandidate(objects[3] != null ? objects[3].toString() : "");
+				debateAnalysisVO.setTotalDebates(objects[4] != null ? (Long)objects[4] : 0l);
+			}
+			
+		}
+	}
+	
+	public void setPerformanceCountInfo(List<Object[]> result,Map<Long, Double> resultMap)
+	{
+		for (Object[] objects : result)
+		{
+			if(objects[0] != null && objects[1] != null)
+			{
+				resultMap.put((Long)objects[0], (Double)objects[1]);
+				
+			}			
+		}
+	}
+	
+	public void setCharsCountInfo(List<Object[]> result,Map<Long, DebateAnalysisVO> resultMap)
+	{
+		for (Object[] objects : result)
+		{
+			if(objects[0] != null)
+			{
+				DebateAnalysisVO debateAnalysisVO = resultMap.get(objects[0] );
+				if(debateAnalysisVO == null)
+				{
+					debateAnalysisVO = new DebateAnalysisVO();
+					resultMap.put((Long)objects[0], debateAnalysisVO);
+				}
+				if((Long)objects[1] == 1 ){
+					debateAnalysisVO.setSubject(objects[3] != null ? (Double)objects[3] : 0l);
+				}else if((Long)objects[1] == 2 ){
+					debateAnalysisVO.setPresentation(objects[3] != null ? (Double)objects[3] : 0l);
+				}else if((Long)objects[1] == 3 ){
+					debateAnalysisVO.setCounterAttack(objects[3] != null ? (Double)objects[3] : 0l);
+				}else if((Long)objects[1] == 4 ){
+					debateAnalysisVO.setBodyLanguage(objects[3] != null ? (Double)objects[3] : 0l);
+				}
+				debateAnalysisVO.setCount(objects[3] != null ? (Double)objects[3] : 0.0D);
+			}
+			
+		}
+	}	
+	
+	
+	public void setPartyWiseCandidatePerformanceInfo(Map<Long, DebateAnalysisVO> partiesAndCandidatesMap,Map<Long, Double> performanceCountMap,Map<Long, DebateAnalysisVO> charsCountMap,List<DebateAnalysisVO> finalResult){
+		for(Long candidateId:partiesAndCandidatesMap.keySet()) {
+		    DebateAnalysisVO partiesCandidates=partiesAndCandidatesMap.get(candidateId);
+	        Long totalDebates=partiesCandidates.getTotalDebates();	        
+	        DebateAnalysisVO result=new DebateAnalysisVO();
+	        result.setCandidateId(partiesCandidates.getCandidateId());
+	        result.setPartyId(partiesCandidates.getPartyId());
+	        result.setCandidate(partiesCandidates.getCandidate());
+	        result.setPartyName(partiesCandidates.getPartyName());
+	        result.setTotalDebates(totalDebates);
+	        
+	        result.setPerformanceCount((Double)performanceCountMap.get(candidateId)/totalDebates);
+	        
+	        DebateAnalysisVO charsCount=charsCountMap.get(candidateId);
+	        result.setPresentation(charsCount.getPresentation()/totalDebates);
+	        result.setBodyLanguage(charsCount.getBodyLanguage()/totalDebates);
+	        result.setCounterAttack(charsCount.getCounterAttack()/totalDebates);
+	        result.setSubject(charsCount.getSubject());
+	        finalResult.add(result);
+	    }		
+	
+	}	
 }
