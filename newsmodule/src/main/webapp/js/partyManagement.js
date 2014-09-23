@@ -3485,15 +3485,18 @@ function getNewsReports()
     var str ='';
 	str+='<div class="container well">';
 	str+='<div class="row clearfix">';
+	//str +='<div id="paginationAtFirst" style="margin-left:255px"></div>';
 	str+='<div class="row-fluid"><div class="span12 well-small yui-skin-sam yui-dt-sortable yui-dt yui-dt-paginator yui-pg-container" id="reportsDiv">';
 	str+=' </div>';
+	str +='<div id="paginationAtEnd" style="margin-left:255px"></div>';
     str+='</div>';
 	str+='</div>';
 	str+='</div>';
 	document.getElementById("newsReportsMainDiv").innerHTML = str;
 	//getReports();
 	
-	getNewsReport();
+	//getNewsReport();
+	getNewsReport(0,10); // startIndex, maxResults
 }
 function showUploadStatus()
 {
@@ -4005,6 +4008,106 @@ function builddesignationsList(results,jsObj)
   }
 }
 
+
+function callAjaxToGetTheResults(selectedvalue)
+{
+	var startIndex = 0;
+	var endIndex = 10; 
+	var selectedvalue1 = 0;
+	if(selectedvalue == "1")
+		startIndex = 0;
+	else{
+		selectedvalue1 = selectedvalue - 1;
+		startIndex = selectedvalue1*10;
+	}
+	getNewsReport(startIndex,endIndex);
+}
+
+
+
+function getNewsReport(startIndexValue,maxIndexValue)
+{
+  $.ajaxSetup({
+	   jsonp: null,
+	   jsonpCallback: null
+	}); 
+
+	var jsObj = { 
+		startIndex : startIndexValue,
+		maxIndex : maxIndexValue,
+		task:"getAllNewsReportsForAUser"
+	}
+	
+	$.ajax({
+	  type:'POST',
+	  url: 'getAllNewsReportsForAUser.action',
+	  dataType: 'json',
+	  data : {task:JSON.stringify(jsObj)} ,
+		 
+	  success: function(results){ 
+		   buildNewsReport(results,startIndexValue,maxIndexValue);
+	 },
+	  error:function() { 
+	  }
+	});
+
+	
+}
+
+function buildNewsReport(result,startIndexValue,maxIndexValue)
+{
+
+
+	var str = '';
+	if(result.fileVOList != null && result.fileVOList.length >0)
+	{
+		str +='<table class="table table-bordered" id="newsreportTab" style="margin-top:40px;">';
+		str +='<thead>';
+		str +='<tr>';
+		str+='<th> NewsReport </th>';
+		str+='<th> Created Date </th>';
+		str+='<th> View Report </th>';
+		str+='<th> Generate Url For Creating Pdf </th>';
+		str+='<th>  </th>';
+		str +='</tr>';
+		str +='</thead>';
+		str +='<tbody>';
+		
+		for(var i in result.fileVOList)
+		{
+			str +='<tr>';
+			str+='<td>'+result.fileVOList[0].description+'  </td>';
+			str+='<td>'+result.fileVOList[0].identifiedDateOn+'  </td>';
+			str+='<td><input type="button" value="View" onclick="getReportFiles('+result.fileVOList[0].newsImportanceId+')" class="btn btn-info" id="reportFiles">  </td>';
+			str+='<td><input  class="btn btn-info" type="button" onclick="generateKey('+result.fileVOList[0].newsImportanceId+',\'generatedUrl'+result.fileVOList[0].newsImportanceId+'\')" value="Generate Url" />  </td>';
+			str+='<td><textarea id=\'generatedUrl'+result.fileVOList[0].newsImportanceId+'\'></textarea>  </td>';
+			str +='</tr>';
+		}
+		
+		str +='</tbody>';
+	}
+	
+	$('#reportsDiv').html(str);
+
+	   var itemsCount=result.count;
+
+	   var maxResults=maxIndexValue;
+	   if(startIndexValue==0){
+		$("#paginationAtEnd").pagination({
+			items: itemsCount,
+			itemsOnPage: maxResults,
+			cssStyle: 'light-theme'
+		});
+	   }
+		if(startIndexValue==0){
+		$("#paginationAtFirst").pagination({
+			items: itemsCount,
+			itemsOnPage: maxResults,
+			cssStyle: 'light-theme'
+		});
+	   }
+}			
+/*
 function getNewsReport()
 {
   
@@ -4081,7 +4184,7 @@ return oPayload;
 }
   
 }
-
+*/
 function getNewsDetailsForNewsReportGeneration()
 {
 $("#createNewsreport").css("display","block");
