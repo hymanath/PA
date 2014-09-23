@@ -1641,7 +1641,7 @@ function buildSurveyBoothDetailsTable(result,statusId)
 				}
 				if(statusId == 9 || statusId == 10){
 					for(var j in result[0].subList){
-						str +='<th>'+result[i].subList[j].status+'</th>';
+						str +='<th>'+result[0].subList[j].status+'</th>';
 				}
 				}
 				str += ' <th> Update Status </th>';
