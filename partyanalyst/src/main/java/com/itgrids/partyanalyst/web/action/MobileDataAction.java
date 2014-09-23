@@ -387,7 +387,7 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 					JSONObject JSONObject = questionOptionsArray.getJSONObject(i);
 					String question = JSONObject.getString("question");
 					int optionsCount = JSONObject.getInt("optionsCnt");
-					int maxIndex = jObj.getInt("maxIndex") / optionsCount;
+					int maxIndex = jObj.getInt("maxIndex") /(questionOptionsArray.length() * optionsCount);
 					int opt = 0;
 					for(int j=0;j<optionsCount;j++)
 					{
