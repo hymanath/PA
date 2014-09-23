@@ -3267,6 +3267,12 @@ public List<SelectOptionVO> getConstituencyList()
 			    List<String> totlaMobileNos = new ArrayList<String>();	
 			    for(Long location :locationIDs)
 					{
+			    	 MobileVO vo = new MobileVO();
+					 vo.setId(location);
+					 if(scopeId == 1)
+						vo.setName(districtDAO.get(location).getDistrictName());
+					 else
+						vo.setName(constituencyDAO.get(location).getName()); 
 			    	if(!multipleFiles)
 			    	{
 			    		i++;
@@ -3278,12 +3284,7 @@ public List<SelectOptionVO> getConstituencyList()
 						f1 = new File(path + pathSeperator+date+pathSeperator+i+".txt");	
 			    	}
 				    int inc = 0;
-			    	 MobileVO vo = new MobileVO();
-					 vo.setId(location);
-					 if(scopeId == 1)
-						vo.setName(districtDAO.get(location).getDistrictName());
-					 else
-						vo.setName(constituencyDAO.get(location).getName()); 
+			    	
 					 Set<String> resultNumbers = new HashSet<String>();
 						/* get mobile no for each location*/  
 						int tempMaxIndex = 0;
@@ -3439,7 +3440,7 @@ public List<SelectOptionVO> getConstituencyList()
 		    MobileVO result =new MobileVO();
 		    List<MobileVO> resultList = new ArrayList<MobileVO>();
 		try{
-			if(scopeId == 3)
+			if(scopeId == 3) // Parliament
 			{
 				for(Long locationId :  locationIds)
 				{
@@ -3724,19 +3725,19 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 				    	 Long districtTotal = 0l;
 				    	 Long constiTotal = 0l;
 				    	 Long tehsilTotal = 0l;
-					     if(scopeId == 1)
+					     if(scopeId == 1) // District
 					     {
 					    	 Total = mobileNumbersDAO.getMobileNosTotal(location,IConstants.DISTRICT,scopeId);
 					    	 districtTotal =  mobileNumbersDAO.getMobileNosCountByIds(location,IConstants.DISTRICT,scopeId);
 					    	 constiTotal =  mobileNumbersDAO.getMobileNosCountByIds(location,IConstants.CONSTITUENCY,scopeId);
 					    	
 					     }
-				    	else if(scopeId == 2)
+				    	else if(scopeId == 2) //Constituency
 				    	{
 				    	    Total = mobileNumbersDAO.getMobileNosTotal(location,IConstants.CONSTITUENCY,scopeId);	
 				    	    constiTotal =  mobileNumbersDAO.getMobileNosCountByIds(location,IConstants.CONSTITUENCY,scopeId);
 				    	}
-				    	else if(scopeId == 4)
+				    	else if(scopeId == 4) // Mandal
 				    	{
 				    	   Total = mobileNumbersDAO.getMobileNosTotal(location,IConstants.TEHSIL,scopeId);	
 					    }
