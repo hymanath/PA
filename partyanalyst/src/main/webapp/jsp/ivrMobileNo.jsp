@@ -457,7 +457,7 @@ function createFile()
 	  $("#errorDiv").html("<font color='green' style='font-size: 12px; font-weight: bold;'>file created successfully</font>");
 	  $("#downloadLink").attr('href',result.status);
 	  $("#downloadLink").css("display","block").css("display","inline-block");
-	 
+	 if(jsObj.questions == false)
 	  buildLocationData(result,jsObj);
 		}
 		else if(result.resultCode == 2)
