@@ -427,7 +427,6 @@ function callAjax(jsObj,url)
 			else if(jsObj.task == "deleteFileForReport")
 			 buildDeleteFileForReport(myResults,jsObj);
 			 
-			 
 		}
 		catch(e)
 		{  
@@ -870,10 +869,10 @@ function showNewsUploadStatus1(myResult)
 	            $(this).remove();
 	        });
 		uploadNewsForPartyAndCandidate(null);
+		
 		//getKeywordList();
 		
        setTimeout(showSuccessMsg,3000);
-	   
 	 
 	}
 	else if(result.search('fail') != -1) 
@@ -1625,7 +1624,6 @@ function getLocations(id,index){
    $("#showScopeSubs"+index).html(str);
    getStatesForSpecialPage(index);
   }
-
   else if(id==3)
   {
    
@@ -1805,21 +1803,6 @@ function getLocations(id,index){
     
    getStatesForSpecialPage(index);
   }
-   else if(id==10 || id==11)
-  {
-
-   str += '<div class="span2">';
-  
-   if(index == 0){
-	str +='<span style="display:none">changeDel</span>';
-	}else{
-	str +='<a href="javascript:{};" onclick="removeThisLocation(\'deleteMultiLoc'+index+'\')" title="Click here to remove this location" class="icon-trash delStyle"></a>';
-   }
-   str +='</div>';
-   $("#showScopeSubs"+index).html(str);
- 
-  }
-
   // setTimeout("setStateId();",1000);
 
 }
@@ -2503,12 +2486,6 @@ var callback = {
 			   showNewsCountDetails(myResults,jsObj);
 			   hideImg();
 			 }
-			 else if(jsObj.task == "getDepartments"){
-			    buildDepartments(myResults,jsObj,"departmentsList");
-			}
-			else if(jsObj.task == "getNewsTypes"){
-			    buildDepartments(myResults,jsObj,"newsTypesList");
-			}
 			 else if(jsObj.queryType == "getNews")
 			 {	
 				newsDetails = myResults;
@@ -2612,7 +2589,6 @@ var callback = {
 			{
 			  buildAllKeywords(myResults);			 
 			}
-			
 
 			
 			}catch (e) {   		
@@ -2781,12 +2757,6 @@ function validateUploadFileDetails()
 	if(newsImporatnce == 0)
 	{
 		str += ' News Importance is Required.<br>';
-		flag = false;
-	}
-	
-	var newsType = $("#newsTypes0Hidden").val();
-	if(newsType.length == 0){
-		str += ' Please Select NewsType.<br>';
 		flag = false;
 	}
 	
@@ -3226,31 +3196,6 @@ function isValidKeyword(str){
 }
 function uploadFile()
 {
-	var departmentsList = "";
-	var newsTypesList = "";
-	
-	var selected_values = $("#departmentsList").multiselect("getChecked").map(function(){return this.value;}).get();
-	for(var i in selected_values){
-		departmentsList = departmentsList+""+selected_values[i]+",";
-    }	
-	
-	/*if(departmentsList.length == 0){
-		alert('Please select atleast one keyword');
-		return;
-	}*/
-	$("#departments0Hidden").val(departmentsList);
-
-	var selectedNTypes = $("#newsTypesList").multiselect("getChecked").map(function(){return this.value;}).get();
-	for(var i in selectedNTypes){
-		newsTypesList = newsTypesList+""+selectedNTypes[i]+",";
-    }	
-	/*if(newsTypesList.length == 0){
-		alert('Please select atleast one NewsType');
-		return;
-	}*/	
-	
-	$("#newsTypes0Hidden").val(newsTypesList);
-	
 	
  if(validateUploadFileDetails())
  {
@@ -4859,26 +4804,3 @@ function deleteExistingImg(id){
 	$("#"+id+"").val("");
 
 }
-function buildDepartments(result,jsObj,id){
-		
-		$('#'+id+'').find('option').remove();
-		$.each(result,function(index,value){
-			$('#'+id+'').append('<option value="'+value.id+'">'+value.name+'</option>');
-		});
-		
-		var headOptnName = "";
-		if(id=="departmentsList"){
-			headOptnName = "Select Department";
-		}else{
-			headOptnName = "Select NewsType";
-		}
-		
-			$('#'+id+'').multiselect({	
-					multiple: true,
-					selectedList: 0,
-					hide: "explode"	,
-					noneSelectedText :headOptnName
-			}).multiselectfilter({
-				header:"Select Department"    
-			});
-	}
