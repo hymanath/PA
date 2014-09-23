@@ -1951,6 +1951,18 @@ public class SurveyCompletedDetailsService implements
 				booth.getDcDetails().setWardCount((Long)obj[0]);
 			}
 			
+			
+			// NEWLY Collected Caste
+			
+			List<Object[]> newlyCasteList = surveyCallStatusDAO.getNewlyCollectdCasteDetails(constituencyId);
+			if(newlyCasteList != null && newlyCasteList.size() > 0)
+			{
+				for (Object[] obj : newlyCasteList) {
+					SurveyReportVO booth = getMatchedBoothVO(resultList,(Long)obj[1]);
+					booth.getWmDcDetails().setNewlyCollectedCount((Long)obj[0]);
+				}
+				
+			}
 			//DC COLLECTED DETAILS END
 			
 			casteDetails =  surveyCallStatusDAO.getDcBoothWiseCasteCollectedDetailsForConstituency(constituencyId);
@@ -1959,12 +1971,16 @@ public class SurveyCompletedDetailsService implements
 			{
 				SurveyReportVO booth = getMatchedBoothVO(resultList,(Long)obj[1]);
 				
-				if(obj[2] == null)
-					booth.getWmDcDetails().setNewlyCollectedCount((Long)obj[0]);
-				else if(obj[2].toString().equalsIgnoreCase("Y"))
-					booth.getWmDcDetails().setCasteMatchedCount((Long)obj[0]);
-				else if(obj[2].toString().equalsIgnoreCase("N"))
-					booth.getWmDcDetails().setCasteUnMatchedCount((Long)obj[0]);
+				/*if(obj[2] == null)
+					booth.getWmDcDetails().setNewlyCollectedCount((Long)obj[0]);*/
+				if(obj[2] != null)
+				{
+					if(obj[2].toString().equalsIgnoreCase("Y"))
+						booth.getWmDcDetails().setCasteMatchedCount((Long)obj[0]);
+					else if(obj[2].toString().equalsIgnoreCase("N"))
+						booth.getWmDcDetails().setCasteUnMatchedCount((Long)obj[0]);
+				}
+				
 			}
 			
 			
@@ -2026,8 +2042,8 @@ public class SurveyCompletedDetailsService implements
 			
 		}catch(Exception e)
 		{
-			e.printStackTrace();
-			LOG.error("Exception raised in getBoothWiseDetails service method");
+			//e.printStackTrace();
+			LOG.error("Exception raised in getBoothWiseDetails service method",e);
 		}
 		
 		return resultList;
