@@ -721,16 +721,11 @@ public class NewsDisplayAction implements ServletRequestAware{
 		  if(regVo == null)
 			  return Action.ERROR;
 		   Long userId = regVo.getRegistrationID();  
-		   jObj =new JSONObject(getTask());
-		   String startIndex = jObj.getString("startIndex");
-		   String results = jObj.getString("maxIndex");
-		   
 		   	//if(regVo.getUserAccessType().equalsIgnoreCase("Admin"))
 		   		//userId = 0l;
 			//if(jObj.getString("task").trim().equalsIgnoreCase("getAllNewsReports"))
 		    //{
-		   //fileVO = newsMonitoringService.getNewsReports(userId,Integer.parseInt(request.getParameter("startIndex")),Integer.parseInt(request.getParameter("results")));
-		    	fileVO = newsMonitoringService.getNewsReports(userId,Integer.parseInt(startIndex),Integer.parseInt(results));
+		    	fileVO = newsMonitoringService.getNewsReports(userId,Integer.parseInt(request.getParameter("startIndex")),Integer.parseInt(request.getParameter("results")));
 		    //}
 	   }
 	   catch (Exception e) {
