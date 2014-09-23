@@ -605,7 +605,7 @@ var channelsArray = new Array();
 					<div class="span12  widgetservey_Red m_top20">
 							<h4>PARTY CANDIDATE PERFORMANCE</h4>
 						<div class="row">
-						 <div class="span12" id="partyCandidatePerformanceDiv">							
+						 <div class="span12" id="partyCandidatePerformanceDiv" style="width: 960px;height:500px; overflow-x: scroll;">							
 						  </div>
 						</div>
 						<!--<div class="row text-center m_top20"><button class="btn btn-large btn-success" type="button">UPDATE STATUS</button></div>-->
@@ -703,71 +703,7 @@ var channelsArray = new Array();
 					<div class="span12  widgetservey_Red m_top20">
 							<h4>CANDIDATE AND PARTY PERFORMANCE - DETAILS(WITH ATTRIBUTES)</h4>
 						<div class="row">
-						 <div class="span12" id= "candidatePartyPerformanceId" style="width: 960px;height:800px; overflow-x: scroll;">
-							<!--<table class="table table-bordered table-hover table-striped">
-								<thead class="alert alert-success">
-									<tr>
-										<th colspan="6" class="aligntxt">TDP</th>
-										<th colspan="6" class="aligntxt">YSRC</th>
-										
-									</tr>
-								</thead>
-								<tbody>
-								
-									
-									<tr>
-										<td >Topic</td>
-										<td >Candidate1</td>										
-										<td >Subject</td>
-										<td >Presentation</td>
-										<td >Counter Attack</td>										
-										<td >Body Language</td>
-										<td >Candidate1</td>										
-										<td >Subject</td>
-										<td >Presentation</td>
-										<td >Counter Attack</td>										
-										<td >Body Language</td>
-										</tr>
-										
-									
-									
-									<tr>
-										<td>Topic1</td>
-										<td >Candidate1</td>		
-										<td>14</td>
-										<td >3</td>		
-										<td >3</td>	
-										<td >2</td>		
-										<td>Candidate1</td>
-										<td >3</td>		
-										<td >3</td>
-										<td >3</td>
-										<td >3</td>
-										
-										
-									</tr>
-									<!--------->
-									<!--<tr>
-										<td>Topic1</td>
-										<td >Candidate1</td>		
-										<td>14</td>
-										<td >3</td>		
-										<td >3</td>	
-										<td >2</td>		
-										<td>Candidate1</td>
-										<td >3</td>		
-										<td >3</td>
-										<td >3</td>
-										<td >3</td>
-										
-										
-									</tr>
-								
-									
-									
-								</tbody>
-							</table>	-->
-							
+						 <div class="span12" id= "candidatePartyPerformanceId" style="width: 960px;height:500px; overflow-x: scroll;">
 						</div>
 						</div>
 						<!--<div class="row text-center m_top20"><button class="btn btn-large btn-success" type="button">UPDATE STATUS</button></div>-->
