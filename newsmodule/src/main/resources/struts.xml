@@ -6305,6 +6305,12 @@
 		    		</result>
 		 </action>
 		 
+		 <action name="getPartyWiseOverAllPerformance" class="debateAction" method="getPartyWiseOverAllPerformance">
+					<result type="json" name="success">
+		    			<param name="root">overllPartyWiseList</param>
+		    		</result>
+		 </action>
+		 
 		
 		  <action name="getPartiesForAStateAction" class="newsPaginationAction" method="ajaxHandler">
 		  <result type="json" name="success">

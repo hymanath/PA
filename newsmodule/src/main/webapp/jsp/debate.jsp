@@ -40,7 +40,8 @@
 	<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
 	<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.filter.css" />
 	<link rel="stylesheet" type="text/css" href="styles/custom-yui-styles.css">	
-		
+	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 	
 		 
 		 		
 	<!-- JQuery files (Start) -->
@@ -277,7 +278,27 @@ var channelsArray = new Array();
 </c:forEach>
 
 </script>
+<script>
 
+function generateExcelReport(id)
+{
+	tableToExcel(id, 'Debate Report');
+}
+
+
+var tableToExcel = (function() {
+var uri = 'data:application/vnd.ms-excel;base64,'
+, template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+, base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+, format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+return function(table, name) {
+if (!table.nodeType) table = document.getElementById(table)
+var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+window.location.href = uri + base64(format(template, ctx))
+}
+})()
+
+</script>
 
 <body>
 <br>
@@ -533,62 +554,10 @@ var channelsArray = new Array();
 			<div class="span12">
 				<div class="row">
 					<div class="span12  widgetservey_Red m_top20">
-							<h4>PARTY WISE OVER ALL PERFORMANCE</h4>
-						<div class="row">
-						 <div class="span12">
-							<table class="table table-bordered table-hover table-striped">
-								<thead class="alert alert-success">
-									<tr>
-										<th>Party</th>
-										<th>Total Debates</th>
-										<th>Ranking</th>
-										<th>Presentation</th>
-										<th>Counter Attack</th>
-										<th>Body Language</th>
-										<th>Subject</th>
-										
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<td >TDP</td>
-										<td >20 / 13</td>										
-										<td>1-2/2-3/3-1</td>
-										<td>3</td>
-										<td>2</td>
-										<td>4</td>
-										<td>4</td>
-										
-										
-									</tr>
-									
-									
-									<tr>
-										<td>YSRC</td>
-										<td>15 /13</td>
-										<td>4</td>
-										<td>3</td>
-										<td>3</td>
-										<td>3</td>
-										<td>3</td>
-										
-									</tr>
-									<!--------->
-									<tr>
-										<td>INC</td>
-										<td>10/19/2014</td>										
-										<td>10</td>
-										<td>2</td>
-										<td>4</td>
-										<td>2</td>
-										<td>2</td>
-									
-									</tr>
-									
-									
-								</tbody>
-							</table>	
 							
+							<legend class="boxHeading">Party Wise Over All Performance <a class="btn btn-info  btn-mini" style="float:right" onClick="generateExcelReport('firstReport')" >Export Excel </a></legend>
+						<div class="row">
+						 <div class="span12" id="partyOverallSummery">							
 						</div>
 						</div>					
 					</div>
@@ -601,10 +570,13 @@ var channelsArray = new Array();
 			<div class="span12">
 				<div class="row ">
 					<div class="span12  widgetservey_Red m_top20">
-							<h4>PARTY CANDIDATE PERFORMANCE</h4>
+					<legend class="boxHeading">Party Wise Each Candidate Performance With Attributes<a class="btn btn-info  btn-mini" style="float:right" onClick="generateExcelReport('secondReport')" >Export Excel</a></legend>
+							
 						<div class="row">
-						 <div class="span12" id="partyCandidatePerformanceDiv" style="width: 960px;height:500px; overflow-x: scroll;">							
-						  </div>
+						 <div class="span12" id="eachAttributePartyCandidateId" style="width: 960px;height:500px; overflow-x: scroll;">
+							
+							
+						</div>
 						</div>
 					</div>
 					
@@ -616,12 +588,11 @@ var channelsArray = new Array();
 			<div class="span12">
 				<div class="row ">
 					<div class="span12  widgetservey_Red m_top20">
-							<h4>PARTY WISE CANDIDATE PERFORMANCE WITH ATTRIBUTES</h4>
+						
+							<legend class="boxHeading">Topic Wise Each Candidate Performance<a class="btn btn-info  btn-mini" style="float:right" onClick="generateExcelReport('thirdReport')" >Export Excel</a></legend>
 						<div class="row">
-						 <div class="span12" id="eachAttributePartyCandidateId">
-							
-							
-						</div>
+						 <div class="span12" id="partyCandidatePerformanceDiv" style="width: 960px;height:500px; overflow-x: scroll;">							
+						  </div>
 						</div>
 					</div>
 					
@@ -629,11 +600,13 @@ var channelsArray = new Array();
 			</div>
 		</div>
 		
+		
+		
 		<div class="row">
 			<div class="span12">
 				<div class="row">
 					<div class="span12  widgetservey_Red m_top20">
-							<h4>CANDIDATE AND PARTY PERFORMANCE - DETAILS(WITH ATTRIBUTES)</h4>
+							<legend class="boxHeading">Topic Wise Each Candidate Performance With Attributes<a class="btn btn-info btn-mini" style="float:right" onClick="generateExcelReport('fourthReport')" >Export Excel</a></legend>
 						<div class="row">
 						 <div class="span12" id= "candidatePartyPerformanceId" style="width: 960px;height:500px; overflow-x: scroll;">
 						</div>
@@ -659,31 +632,7 @@ var channelsArray = new Array();
 
 				<tr><td>Candidate Name</td>
 				<td><input type="text" id="newCandidateName"/></td></tr>
-				<!--<tr>
-				<td>Designation</td>
-				<td><select id="designationsList"></select></td>
-				</tr>
-				<tr>
-				<td>Location</td>
-				<td>
-					<select id="locationId" onChange="getTypeOfConstituency(this.value);">
-						<option value=0>Select Location</option>
-						<option value=3>Country</option>
-						<option value=1>Assembly Constituency</option>
-						<option value=2>Parliment Constituency</option>
-					</select>
-				</td>
-				</tr>  
-				<tr id="pcConstituencyRow">
-				<td>Constituency</td>
-				<td>
-				<s:select name="parliamSelReport"  id="parliamSelReportId" list="parlConstiList1" theme="simple" listKey="id" listValue="name"/></td>
-				</tr>
-				<tr id="acConstituencyRow">
-				<td>Constituency</td>
-				<td>
-				<s:select name="assembSelReport"  id="assembSelReportId" list="assemConstiList1" theme="simple" listKey="id" listValue="name"/></td>
-				</tr>-->
+				
 				</table>
 				<input type="button" value="submit" class="btn" id="createCandidateId" key="'+key+'" partyListId="'+partyListId+'"/>
 

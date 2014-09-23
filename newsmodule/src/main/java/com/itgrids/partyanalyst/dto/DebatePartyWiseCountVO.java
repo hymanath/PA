@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class DebatePartyWiseCountVO implements Serializable{
 
@@ -12,6 +13,9 @@ public class DebatePartyWiseCountVO implements Serializable{
 	private Long charId;
 	private String charsName;
 	private Double debateScale;
+	private String perc;
+	
+	private List<DebatePartyWiseCountVO> subList;
 	
 	
 	public Long getPartyId() {
@@ -49,6 +53,18 @@ public class DebatePartyWiseCountVO implements Serializable{
 	}
 	public void setCharsName(String charsName) {
 		this.charsName = charsName;
+	}
+	public List<DebatePartyWiseCountVO> getSubList() {
+		return subList;
+	}
+	public void setSubList(List<DebatePartyWiseCountVO> subList) {
+		this.subList = subList;
+	}
+	public String getPerc() {
+		return perc;
+	}
+	public void setPerc(String perc) {
+		this.perc = perc;
 	}
 	
 	
