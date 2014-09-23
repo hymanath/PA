@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.web.action;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,11 +13,11 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.DebateAnalysisVO;
 import com.itgrids.partyanalyst.dto.DebateDetailsVO;
+import com.itgrids.partyanalyst.dto.DebatePartyWiseCountVO;
 import com.itgrids.partyanalyst.dto.DebateTopicVO;
 import com.itgrids.partyanalyst.dto.DebateVO;
 import com.itgrids.partyanalyst.dto.ParticipantVO;
@@ -78,6 +77,7 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 	
 	private List<DebateTopicVO>         debateReportList;
 	private List<DebateAnalysisVO>      debateAnalysisList;
+	private List<DebatePartyWiseCountVO>overllPartyWiseList;
 	
 	private String fromDate;
 	private String toDate;
@@ -453,6 +453,16 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 
 	public void setDebateAnalysisList(List<DebateAnalysisVO> debateAnalysisList) {
 		this.debateAnalysisList = debateAnalysisList;
+	}
+
+	
+	public List<DebatePartyWiseCountVO> getOverllPartyWiseList() {
+		return overllPartyWiseList;
+	}
+
+	public void setOverllPartyWiseList(
+			List<DebatePartyWiseCountVO> overllPartyWiseList) {
+		this.overllPartyWiseList = overllPartyWiseList;
 	}
 
 	public String execute()
@@ -988,6 +998,21 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 		try {
 			jObj=new JSONObject(getTask());
 			debateAnalysisList = debateAnalysisService.partyWiseCandidatePerformance();
+			
+			return Action.SUCCESS;
+		} catch (Exception e) {
+			LOG.error(" Exception occured in getPartiesListByStateId() in DebateAction class. "+e);
+		}
+		
+		
+		return Action.SUCCESS;
+	}
+	
+	public String getPartyWiseOverAllPerformance()
+	{
+		try {
+			jObj=new JSONObject(getTask());
+			overllPartyWiseList = debateAnalysisService.getPartyWiseOverAllPerformance();
 			
 			return Action.SUCCESS;
 		} catch (Exception e) {

@@ -165,4 +165,11 @@ public class DebateParticipantDAO extends GenericDaoHibernate<DebateParticipant,
 				" group by DS.debateSubjectId,DP.party.partyId , DPC.characteristics.characteristicsId");
 		return query.list();
 	}
+	public List<Object[]> getDistinctDebateParties()
+	{
+		Query query = getSession().createQuery("select distinct model.party.partyId,model.party.shortName from DebateParticipant model");
+		
+		return query.list();
+	}
+	
 }
