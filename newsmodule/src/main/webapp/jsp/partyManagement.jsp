@@ -78,28 +78,7 @@
 <link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.filter.css" />
 <script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.filter.js"></script>
 <script type="text/javascript" src="js/blockui.js"></script>
-
-<script type="text/javascript" src="js/jquery.dataTables.js"></script>
-<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
-
-<script type="text/javascript" src="pagination/jquery.simplePagination.js"></script>
-<link rel="stylesheet" type="text/css" href="pagination/simplePagination.css">
-<script type="text/javascript" src="pagination/pagination1.js"></script>
-<script type="text/javascript" src="pagination/jquery.simplePagination.js"></script>	
-
-	
-
 <style type="text/css">
-
-#newsreportTab  thead th {
-	border-bottom: 1px solid black  !important;
-	cursor: pointer  !important;
-	font-weight: bold  !important;
-	background-color: #dff0d8  !important;
-	color : #468847 !important;
-	line-height: 30px !important;
-}
-			
 @font-face
 {
 font-family:eFont;src: url('img/eenadu.ttf');
@@ -3135,7 +3114,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 	getPartyGallariesForUplaod("News Gallary","whomegallaryId");
 
 	$("#newsdatedatepic").datepicker({ dateFormat: 'dd/mm/yy',maxDate:new Date() });
-    //$("#newsdatedatepic").datepicker("setDate", new Date());
+    $("#newsdatedatepic").datepicker("setDate", new Date());
 	
 	 getScopes(0);
 	 getSource("filesourceId0");
