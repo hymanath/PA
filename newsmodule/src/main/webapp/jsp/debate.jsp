@@ -590,9 +590,7 @@ var channelsArray = new Array();
 							</table>	
 							
 						</div>
-						</div>
-						<!--<div class="row text-center m_top20"><button class="btn btn-large btn-success" type="button">UPDATE STATUS</button></div>-->
-							
+						</div>					
 					</div>
 					
 				</div>
@@ -608,8 +606,6 @@ var channelsArray = new Array();
 						 <div class="span12" id="partyCandidatePerformanceDiv" style="width: 960px;height:500px; overflow-x: scroll;">							
 						  </div>
 						</div>
-						<!--<div class="row text-center m_top20"><button class="btn btn-large btn-success" type="button">UPDATE STATUS</button></div>-->
-							
 					</div>
 					
 				</div>
@@ -622,75 +618,9 @@ var channelsArray = new Array();
 					<div class="span12  widgetservey_Red m_top20">
 							<h4>PARTY WISE CANDIDATE PERFORMANCE WITH ATTRIBUTES</h4>
 						<div class="row">
-						 <div class="span12" id="">
-							<table class="table table-bordered table-hover table-striped">
-								<thead class="alert alert-success">
-									<tr>
-										<th>PARTY</th>
-										<th >CANDIDATE</th>
-										<th >TOTAL DEBATS</th>
-										<th >PERFORMANCE COUNT</th>
-										<th >PRESENTATION</th>	
-										<th >COUNTER ATTACK</th>	
-										<th >BODY LANGUAGE</th>	
-										<th >SUBJECT</th>	
-									</tr>
-								</thead>
-								<tbody>
-								
-									
-									<tr>
-										<td >TDP</td>	
-										<td >Candidate1</td>										
-										<td >20</td>
-										<td >13</td>										
-										<td >3</td>
-										<td >2</td>										
-										<td >4</td>
-										<td >4</td>										
-									
-										
-										
-									</tr>
-									
-									
-									<tr>
-										<td >YSRC</td>	
-										<td >Candidate2</td>										
-										<td >20</td>
-										<td >13</td>										
-										<td >3</td>
-										<td >2</td>										
-										<td >4</td>
-										<td >4</td>										
-									
-										
-										
-									</tr>
-									<!--------->
-									<tr>
-										<td >INC</td>	
-										<td >Candidate3</td>										
-										<td >20</td>
-										<td >13</td>										
-										<td >3</td>
-										<td >2</td>										
-										<td >4</td>
-										<td >4</td>										
-									
-										
-										
-									</tr>
-								
-									
-									
-								</tbody>
-							</table>	
-							
+						 <div class="span12" id="">							
 						</div>
 						</div>
-						<!--<div class="row text-center m_top20"><button class="btn btn-large btn-success" type="button">UPDATE STATUS</button></div>-->
-							
 					</div>
 					
 				</div>
@@ -706,8 +636,6 @@ var channelsArray = new Array();
 						 <div class="span12" id= "candidatePartyPerformanceId" style="width: 960px;height:500px; overflow-x: scroll;">
 						</div>
 						</div>
-						<!--<div class="row text-center m_top20"><button class="btn btn-large btn-success" type="button">UPDATE STATUS</button></div>-->
-							
 					</div>
 					
 				</div>
