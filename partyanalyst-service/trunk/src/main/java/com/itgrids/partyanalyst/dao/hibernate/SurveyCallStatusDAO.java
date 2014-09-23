@@ -486,6 +486,15 @@ public class SurveyCallStatusDAO extends GenericDaoHibernate<SurveyCallStatus,Lo
 		return query.list();
 	}
 	
+	public List<Object[]> getNewlyCollectdCasteDetails(Long constituencyId)
+	{
+		Query query = getSession().createQuery("select count(distinct SCS.voter.voterId),SCS.booth.boothId from SurveyCallStatus SCS " +
+				"where SCS.booth.constituency.constituencyId = :constituencyId and SCS.matchedStatus is null and SCS.casteState is not null   group by SCS.booth.boothId");
+		
+		query.setParameter("constituencyId", constituencyId);
+		
+		return query.list();
+	}
 	public List<Object[]> getDcBoothWiseMobileCollectedDetailsForConstituency(Long constituencyId)
 	{
 		Query query = getSession().createQuery("select count(distinct SCS.voter.voterId),SCS.booth.boothId,SCS.mobileNoStatus from SurveyCallStatus SCS " +
