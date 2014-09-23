@@ -397,9 +397,9 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 					 File oldName = new File(mobileVo.getOptionFilePath());
 					 File newName = null;
 					 if(fileFormatVal == 1)
-						 oldName = new File(path + pathSeperator+date+pathSeperator+question+opt+".csv");
+						 oldName = new File(path + pathSeperator+date+pathSeperator+question+"Opt"+opt+".csv");
 				      else
-				      newName = new File(path + pathSeperator+date+pathSeperator+question+opt+".txt"); 
+				      newName = new File(path + pathSeperator+date+pathSeperator+question+"Opt"+opt+".txt"); 
 					  oldName.renameTo(new File(path + pathSeperator+date+"QOpt" +pathSeperator+ newName.getName()));
 					
 					}
