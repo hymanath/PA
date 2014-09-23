@@ -44,7 +44,7 @@ $('#mandalId').multiselect({
 
 <h2>Mobile Numbers Extraction For IVR</h2></div>
 <div class="span3">
-<input type="button" onclick="reselMobileNumbers();" class="btn mytooltip" value="ResetallNos" data-toggle="tooltip" data-title="Do you want to reset all mobile as not used ? click here"></input><img src="./images/icons/search.gif" id="ajaxImg1" style="display:none"/>
+<input type="button" onclick="reselMobileNumbers();" class="btn mytooltip" value="Reset" data-toggle="tooltip" data-title="Do you want to reset all mobile as not used ? click here"></input><img src="./images/icons/search.gif" id="ajaxImg1" style="display:none"/>
 <input class="btn" type="button" value="View Counts" onClick="openDialog()"></div>
 <div id="viewCountDialogDiv" style="display:none;"><div id="viewCountDialogInnerDiv"></div></div>
 </div>
