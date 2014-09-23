@@ -4095,30 +4095,31 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 			 List<Object[]> list2 = mobileNumbersDAO.getMobileNosCountForLocation(locationIds,IConstants.CONSTITUENCY,scopeId);
 				if(list2 != null && list2.size() > 0)
 				{
-					Long constituenycWiseCnt = 0l;
+					
 					for(Object[] params : list2)
 					{
-						pcVo.setConstituencyWiseCount(constituenycWiseCnt + (Long)params[0]);
+						
+						pcVo.setConstituencyWiseCount(pcVo.getConstituencyWiseCount() + (Long)params[0]);
 					}
 					
 				}
 				List<Object[]> list3 = mobileNumbersDAO.getMobileNosCountForLocation(locationIds,IConstants.PANCHAYAT,scopeId);
 				if(list3 != null && list3.size() > 0)
 				{
-					Long panchayatWiseCnt = 0l;
+					
 					for(Object[] params : list3)
 					{
-						pcVo.setPanchayatWiseCount(panchayatWiseCnt + (Long)params[0]);
+						pcVo.setPanchayatWiseCount(pcVo.getPanchayatWiseCount() + (Long)params[0]);
 					}
 					
 				}
 				List<Object[]> list4 = mobileNumbersDAO.getMobileNosCountForLocation(locationIds,IConstants.TEHSIL,scopeId);
 				if(list4 != null && list4.size() > 0)
 				{
-					Long tehsilWiseCnt = 0l;
+					
 					for(Object[] params : list4)
 					{
-						pcVo.setTehsilWiseCount(tehsilWiseCnt + (Long)params[0]);
+						pcVo.setTehsilWiseCount(pcVo.getTehsilWiseCount() + (Long)params[0]);
 					}
 					
 				}
