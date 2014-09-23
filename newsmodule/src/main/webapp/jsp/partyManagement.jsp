@@ -215,33 +215,7 @@ var cosntiId =  '${userDetailsVO[0].constituencyId}';
 	}
 	parliamentConstiArr.push(parliamentConstiList);
 </c:forEach>
-</script><script>
 
-	//getDeptsAndNewsTypes();
-  
-	function getDeptsAndNewsTypes(){
-		getDepartments();
-		getNewsTypes();
-	}
-	
-	
-  
-  function getDepartments(){
-		var jsObj ={task : "getDepartments"};
-
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getDepartmentsAction.action?"+rparam;
-		callAjax1(jsObj,url);
-	}
-	
-	function getNewsTypes(){
-		var jsObj ={task : "getNewsTypes"};
-
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getDepartmentsAction.action?"+rparam;
-		callAjax1(jsObj,url);
-	}
-  
 var gGallaryId;
 		var timeST = new Date().getTime();
 		var sizeOfArray;
@@ -2875,7 +2849,7 @@ $(".keywords").each(function() {
 	callnewAjax(jsObj,url);
 
 }
-</script><script>
+
 function uploadNewsForPartyAndCandidate(fileId)
 {
 
@@ -2898,7 +2872,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 		else
 		 str +='<legend class="boxHeading text-center">Adding Response To Selected News</legend> ';
 
-			str+='<div class="well" style="border:1px solid #ADC248;width: 905px; margin-left: -10px;padding:5px 15px 95px 15px;" >';
+			str+='<div class="well" style="border:1px solid #ADC248;width: 905px; margin-left: -10px;padding:5px 15px 15px 15px;" >';
 	str+='	<legend class="">&nbsp; Basic Information of News  </legend>';
 	str+='	<div class="row-fluid">       ';
 	str+='<div class="span6">';
@@ -2922,20 +2896,9 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='<div class="span3"><label class="radio"><input type="radio" id="newsprivateRadioId" name="visibility" value="private"><b><font>Mark This News As Private</font></b></label></div>';
 
 		str+='<div class="row-fluid">       <div class="span8 ">         <label><strong>Short News<span class="requiredFont">*</span><strong></strong></strong></label>         <textarea id="newsfileDescription" class="input-block-level" cols="20" rows="2" name="fileDescription" maxlength="1800"></textarea><span class="help-block"> <input type="checkbox" id="sourceDescTelugu" onclick="changeLanguage();" name="descCheckBox">&nbsp;Please check if Short News is from eenadu.net</span>       </div>';
-		
-		
 		str+='<div class="span4 ">      ';
 		str+='<label><strong>Image To Display</strong></label>';
-		 str+='<input type="file" class="m_top10" name="imageForDisplay" id="mainImgId" style="width: 225px;"/><span class="icon-remove" style="cursor: pointer; margin-left: 15px; margin-top: 8px;" title="Click Here To remove Image" onclick="deleteExistingImg(\'mainImgId\');"></span><div>( .jpeg or .jpg or .png or .gif formats only)</div></div>   '
-		
-		str +='</div>';
-		
-		str +='<div class="span1" style="margin-top:10px;margin-right:40px;"><label><strong>Departments</strong></label></div><div class="span3" style="margin-right:55px;"> <select id="departmentsList"></select></div>';
-		str +='<div class="span2" style="margin-top:10px;"><label><strong>News Types<span class="requiredFont">*</span></strong></label></div><div class="span3" style="margin-left:-10px;"><select id="newsTypesList" ></select></div>';
-		
-		str +='<input type="hidden" id="departments0Hidden" name="candidatePartyNewsVOList.departmentsList" />';
-        str +='<input type="hidden" id="newsTypes0Hidden" name="candidatePartyNewsVOList.newsTypesList" />';	
-		 
+		 str+='<input type="file" class="m_top10" name="imageForDisplay" id="mainImgId" style="width: 225px;"/><span class="icon-remove" style="cursor: pointer; margin-left: 15px; margin-top: 8px;" title="Click Here To remove Image" onclick="deleteExistingImg(\'mainImgId\');"></span><div>( .jpeg or .jpg or .png or .gif formats only)</div></div>    </div>';
 		str+='<div class="row-fluid" style="display:none">       <div class="span8 ">         <label><strong>News Synopsys<span class="requiredFont">*</span><strong></strong></strong></label>         <textarea id="newsSynopsysDesc" class="input-block-level" cols="20" rows="2" name="newsSynopsysDesc" maxlength="1800">s</textarea><span class="help-block"> <input type="checkbox" id="newsSynopsysDescTelugu" onclick="changeLanguage();" name="synopsysCheckBox">&nbsp;Please check if news synopsys is from eenadu.net</span>       </div>   </div>';
 		
 	str+='</div></div></div>';
@@ -3018,9 +2981,6 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='</div>';
 		str +='<input type="hidden" id="keywordId0Hidden" name="candidatePartyNewsVOList.destinationVOList[0].keywordsList" />';
         str +='<input type="hidden" id="keywordIdHiddenCat0" name="candidatePartyNewsVOList.destinationVOList[0].categoryIdsStr" />';		   	   
-		
-			   	   
-		
 		str+='</div></div>';
 		
 				   
@@ -3127,7 +3087,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 
 	 getBenefitList();
 	 getPartiesList("partiesList","partiesListForWhome");
-	 getDeptsAndNewsTypes();
+	 
 
 $("#keywordId").autoSuggest("getKeyWordsBySearchCriteria.action", {minChars: 4,selectedItemProp: "name", searchObjProps: "name"});
 
@@ -3360,8 +3320,7 @@ var str ='';
 
 		str+='</div>';
 		str +='<input type="hidden" id="keywordId'+whome+'Hidden" name="candidatePartyNewsVOList.destinationVOList['+whome+'].keywordsList" />';
-        str +='<input type="hidden" id="keywordIdHiddenCat'+whome+'" name="candidatePartyNewsVOList.destinationVOList['+whome+'].categoryIdsStr" />';
-		
+        str +='<input type="hidden" id="keywordIdHiddenCat'+whome+'" name="candidatePartyNewsVOList.destinationVOList['+whome+'].categoryIdsStr" />';		   
 		str+='<div style="margin-left: 0px;" class="span12"><p>If you want to delete this block please click on this Button <a href="javascript:void(0);" onclick="deletethisDiv(\'whomecandidate'+whome+'\');" class="btn"><i class="icon-trash"></i> Delete This Block</a>    </p></div>	   </div>';
 
 
@@ -4393,10 +4352,6 @@ function getStatesForSpecialPage(index)
 function openMergeKeywordWindow(){
 	window.open("keyWordsMergeAction.action");
 }
-
-
-	
-	
 </script>
 </body>
 </html>

@@ -4437,7 +4437,6 @@ var fileTitle = document.getElementById('newsfileTitle').value;
 //	var scope = document.getElementById("scopeDiv").value;
 	 var sourceArr1 = new Array();
 	var flag = true;
-	var newsType = "";
 
 	fileTitle = removeAllUnwantedCharacters1(fileTitle);	
 	fileDesc = removeAllUnwantedCharacters1(fileDesc);
@@ -4459,14 +4458,6 @@ var fileTitle = document.getElementById('newsfileTitle').value;
 		flag = false;
 	}
 
-	if($("#newsTypesId").val() !=null){
-		newsType = $("#newsTypesId").val();
-	}
-	if(newsType.length == 0){
-		str += ' Please Select NewsType.<br>';
-		flag = false;
-	}
-	
 	$('.fileNewSourceCls').each(function() {
 
 		 var sourceId = $(this).val();			   
@@ -5243,16 +5234,6 @@ function getLocationsForEdit(id,index){
    $("#showScopeSubs"+index+"").html(str);
     
    getStatesForSpecialPageForEdit(index);
-  }
-  else if(id==10 || id==11)
-  {
-
-   str += '<div class="span2" style="margin-left:15px;">';
-  
-   str +='</div>';
-
-   $("#showScopeSubs"+index+"").html(str);
-   
   }
  }
 
