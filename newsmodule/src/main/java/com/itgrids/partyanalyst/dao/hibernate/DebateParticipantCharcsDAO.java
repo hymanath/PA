@@ -25,6 +25,26 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 				" model.debateParticipant.debate.debateId = ? ",debateId);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getDebatePerformanceCount(){
+		Query query = getSession().createQuery("select DP.candidateId , sum(DPC.scale) "+
+	          "from DebateParticipantCharcs DPC, DebateParticipant DP, Debate D "+
+			  "where D.debateId = DP.debateId and DP.debateParticipantId = DPC.debateParticipantId "+
+	          "group by DP.candidateId");
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getDebatePerformanceCountCharcs(){
+		Query query = getSession().createQuery("select DP.candidateId ,DPC.characteristicsId, C.name, sum(DPC.scale) " +
+				" 	from DebateParticipantCharcs DPC, DebateParticipant DP ,  Debate D , Characteristics C" +
+				"	where D.debateId = DP.debateId and " +
+				" 	DP.debateParticipantId = DPC.debateParticipantId " +
+				"   and DPC.characteristicsId = C.characteristicsId"+
+				"  group by DP.candidateId , DPC.characteristicsId");
+		return query.list();
+	}
+	
 	public List<Object[]> getPartyWiseTotalDebatesAndScales()
 	{
 		Query query = getSession().createQuery("select distinct model.debateParticipant.party.partyId ,model.debateParticipant.party.shortName ,count(distinct model.debateParticipant.debate.debateId) ,sum(model.scale) from DebateParticipantCharcs model group by model.debateParticipant.party.partyId");
@@ -55,4 +75,5 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 		
 		return query.list();
 	}
+	
 }

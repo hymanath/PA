@@ -6299,6 +6299,12 @@
 		    		</result>
 		 </action>
 		 
+		 <action name="partyWiseCandidatePerformance" class="debateAction" method="partyWiseCandidatePerformance">
+					<result type="json" name="success">
+		    			<param name="root">debateAnalysisList</param>
+		    		</result>
+		 </action>
+		 
 		
 		  <action name="getPartiesForAStateAction" class="newsPaginationAction" method="ajaxHandler">
 		  <result type="json" name="success">

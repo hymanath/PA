@@ -1,15 +1,10 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IDebateParticipantCharcsDAO;
-import com.itgrids.partyanalyst.dto.DebateTopicVO;
 
 public class DebateParticipantCharcsDAOHibernateTest extends BaseDaoTestCase{
 
@@ -43,7 +38,7 @@ public class DebateParticipantCharcsDAOHibernateTest extends BaseDaoTestCase{
 		
 	}*/
 	
-	public void testgetPartyCandidateDetailsTopicWise()
+	/*public void testgetPartyCandidateDetailsTopicWise()
 	{
 		List<DebateTopicVO> returnList = new ArrayList<DebateTopicVO>();
 		Map<Long,List<DebateTopicVO>> subjectWiseMap = new HashMap<Long, List<DebateTopicVO>>();
@@ -156,5 +151,15 @@ public class DebateParticipantCharcsDAOHibernateTest extends BaseDaoTestCase{
 			
 		}
 		
-	}
+	}*/
+	
+	public void testgetDebatePerformanceCount(){
+		try {
+			List<Object[]> values = debateParticipantCharcsDAO.getDebatePerformanceCountCharcs();
+			for (Object[] objects : values) {
+				System.out.println(objects[0]+"..."+objects[1] +"..."+ objects[2] + "..." + objects[3]);
+			}
+		} catch (Exception e) {
+		}
+}
 }

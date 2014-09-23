@@ -1,13 +1,18 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IDebateParticipantDAO;
+import com.itgrids.partyanalyst.dto.DebateAnalysisVO;
 import com.itgrids.partyanalyst.model.DebateParticipant;
+
 
 public class DebateParticipantDAO extends GenericDaoHibernate<DebateParticipant, Long> implements IDebateParticipantDAO{
 
@@ -137,6 +142,17 @@ public class DebateParticipantDAO extends GenericDaoHibernate<DebateParticipant,
 		query.setParameter("toDate", toDate);
 		return query.list();
 	}
+
+
+	public List<Object[]> getPartiesAndCanidatesIds()
+	{  
+		Query query = getSession().createQuery("select DP.partyId ,DP.party.shortName, DP.candidateId ,DP.candidate.lastname, count(*) " +
+				                                       "from DebateParticipant DP " +
+				                                        "where DP.debate.debateId = DP.debateId " +
+				                                        "group by DP.partyId , DP.candidateId " +
+				                                        "order by DP.partyId");
+		return query.list();
+	}
 	
 	public List<Object[]> getDebateCandidateCharacteristicsDetails(){
 		
@@ -149,5 +165,4 @@ public class DebateParticipantDAO extends GenericDaoHibernate<DebateParticipant,
 				" group by DS.debateSubjectId,DP.party.partyId , DPC.characteristics.characteristicsId");
 		return query.list();
 	}
-	
 }

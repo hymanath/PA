@@ -17,6 +17,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
+import com.itgrids.partyanalyst.dto.DebateAnalysisVO;
 import com.itgrids.partyanalyst.dto.DebateDetailsVO;
 import com.itgrids.partyanalyst.dto.DebateTopicVO;
 import com.itgrids.partyanalyst.dto.DebateVO;
@@ -76,6 +77,7 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 	private IDebateAnalysisService      debateAnalysisService;
 	
 	private List<DebateTopicVO>         debateReportList;
+	private List<DebateAnalysisVO>      debateAnalysisList;
 	
 	private String fromDate;
 	private String toDate;
@@ -442,6 +444,15 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 	public void setDebateAnalysisService(
 			IDebateAnalysisService debateAnalysisService) {
 		this.debateAnalysisService = debateAnalysisService;
+	}
+
+	
+	public List<DebateAnalysisVO> getDebateAnalysisList() {
+		return debateAnalysisList;
+	}
+
+	public void setDebateAnalysisList(List<DebateAnalysisVO> debateAnalysisList) {
+		this.debateAnalysisList = debateAnalysisList;
 	}
 
 	public String execute()
@@ -962,6 +973,21 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 		try {
 			jObj=new JSONObject(getTask());
 			debateReportList = debateAnalysisService.getPartyCandidatePerfortmanceTopicWise();
+			
+			return Action.SUCCESS;
+		} catch (Exception e) {
+			LOG.error(" Exception occured in getPartiesListByStateId() in DebateAction class. "+e);
+		}
+		
+		
+		return Action.SUCCESS;
+	}
+	
+	public String partyWiseCandidatePerformance()
+	{
+		try {
+			jObj=new JSONObject(getTask());
+			debateAnalysisList = debateAnalysisService.partyWiseCandidatePerformance();
 			
 			return Action.SUCCESS;
 		} catch (Exception e) {

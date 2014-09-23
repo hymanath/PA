@@ -618,7 +618,9 @@ var channelsArray = new Array();
 					<div class="span12  widgetservey_Red m_top20">
 							<h4>PARTY WISE CANDIDATE PERFORMANCE WITH ATTRIBUTES</h4>
 						<div class="row">
-						 <div class="span12" id="">							
+						 <div class="span12" id="eachAttributePartyCandidateId">
+							
+							
 						</div>
 						</div>
 					</div>
