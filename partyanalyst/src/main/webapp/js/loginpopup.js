@@ -1,4 +1,12 @@
+var ipaddress;
+function setIp()
+{
+$.get("http://ipinfo.io", function(response) {
+ ipaddress =response.ip;
+}, "jsonp");
+}
 
+window.onload = setIp; 
 function openDialogForLoginWindowForPostProblem(){
 	$('#logInDiv').prev().find('a').trigger('click');
 	$('#login').trigger('click');
@@ -11,7 +19,7 @@ str+='<div id="forgot_password_window_inner1" style="font-size:0.8em"></div>';
 str+='</div>';
 
 str+='<div class="span3 well" style="border: 5px solid rgb(227, 227, 227); width: 360px;align:center">';
-str+='<form name="loginForm" method="POST" onsubmit="javascript: ajaxCallForLoginPopup(); return false;">';
+str+='<form name="loginForm" method="POST" onsubmit="javascript:ajaxCallForLoginPopup(); return false;">';
 str+='<div id ="LoginErrorMessageDiv" style="color:red; margin-left: 55px;">';
 str+='</div>';
 //str+='<div id="validate"></div>';
@@ -60,7 +68,7 @@ $("#login_window_inner").html(str);
 //ajax call 
 
 function ajaxCallForLoginPopup(){
-
+//setIp();
 var validInd=handleErrorMessageForpopup();
 
 if(!validInd)
@@ -81,7 +89,7 @@ task="validateUserForLogin";
 	task:task		
 };
 		//var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "loginPopUpsAction.action?&userName="+userName1+"&password="+password1+"&task="+task;	
+		var url = "loginPopUpsAction.action?&userName="+userName1+"&password="+password1+"&task="+task+"&ipaddress="+ipaddress;	
 		callHomePageAjax11(jsObj,url);
 		$("#ajaxcallimage").show();
 

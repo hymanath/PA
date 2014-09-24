@@ -32,6 +32,7 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 	private ServletContext context;
 	private String userName = null;
 	private String password = null;
+	private String ipaddress = null;
 	private ILoginService loginService;
 	private String userFullName = null;
 	private String src = null;
@@ -630,6 +631,14 @@ public String saveUserSessionDetails(String status)
 	}
 }
 
+public String getIpaddress() {
+	return ipaddress;
+}
+
+public void setIpaddress(String ipaddress) {
+	this.ipaddress = ipaddress;
+}
+
 public String ajaxCallForLoginPopup(){
 	
 	//String param = null;
@@ -643,11 +652,11 @@ public String ajaxCallForLoginPopup(){
 		{
 			userName = getUserName();
 			password=getPassword();
-			 
+			 ipaddress = getIpaddress();
 			session = request.getSession();
 			
 			RegistrationVO regVO = loginService.checkForValidUser(userName, password);
-			
+			regVO.setIpAddress(ipaddress);
 			//Check User Availability
 			if (regVO == null || regVO.getRegistrationID() == null)
 			{
@@ -730,7 +739,7 @@ public String ajaxCallForLoginPopup(){
 		
 		if(restiction.equalsIgnoreCase("true"))
 		{
-			String ipAddress = request.getRemoteAddr();
+			String ipAddress = regVO.getIpAddress();
 			boolean result = loginService.checkForUserAccessIPAddress(regVO.getRegistrationID(),ipAddress);
 		/*	
 			if(!result)
