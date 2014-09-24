@@ -315,7 +315,7 @@ public interface IConstants {
     public static final String CONST_TYPE_RURAL_URBAN = "RURAL-URBAN";
     public static final String URBAN_TYPE = "1";
     public static final String RURAL_TYPE = "2";
-   
+    public final static String IVR_MOBILE_NUMBERS_RETRIVAL_REDIRECT = "IVR_MOBILE_NUMBERS_RETRIVAL_REDIRECT"; 
     public static final String SURVEY_USER_CREATION = "SURVEY_USER_CREATION";
 
     //Problem Management
