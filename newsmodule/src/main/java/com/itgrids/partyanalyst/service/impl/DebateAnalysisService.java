@@ -643,6 +643,7 @@ public class DebateAnalysisService implements IDebateAnalysisService
 		        
 		        result.setPerformanceCount(Double.parseDouble(new BigDecimal((performanceCountMap.get(candidateId))/totalDebates).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
 		        
+		        
 		        DebateAnalysisVO charsCount=charsCountMap.get(candidateId);
 		        result.setPresentation(Double.parseDouble(new BigDecimal((charsCount.getPresentation())/totalDebates).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
 		        result.setBodyLanguage(Double.parseDouble(new BigDecimal((charsCount.getBodyLanguage())/totalDebates).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
@@ -699,11 +700,34 @@ public class DebateAnalysisService implements IDebateAnalysisService
 						debateTopicVO.setParty(objects[1].toString());
 						if(topTopicesPartyWiseMap.get((Long)objects[0]) != null)
 						{
-							debateTopicVO.setTop(topTopicesPartyWiseMap.get((Long)objects[0]));
+							List<DebateTopicVO> listForTop = new ArrayList<DebateTopicVO>();
+							List<DebateTopicVO> list = topTopicesPartyWiseMap.get((Long)objects[0]);
+							if(list != null && list.size() > 0)
+							{
+								for (DebateTopicVO debateTopicVO2 : list) 
+								{
+									if(topTopicesMap.get(debateTopicVO2.getSubjectId()) != null)
+									debateTopicVO2.setCount(topTopicesMap.get(debateTopicVO2.getSubjectId()).getCount());
+									listForTop.add(debateTopicVO2);
+								}
+							}
+							debateTopicVO.setTop(listForTop);
+							
 						}
 						if(weakTopicesPartyWiseMap.get((Long)objects[0]) != null)
 						{
-							debateTopicVO.setWeak(weakTopicesPartyWiseMap.get((Long)objects[0]));
+							List<DebateTopicVO> listForWeak  = new ArrayList<DebateTopicVO>();
+							List<DebateTopicVO> list = weakTopicesPartyWiseMap.get((Long)objects[0]);
+							if(list != null && list.size() > 0)
+							{
+								for (DebateTopicVO debateTopicVO2 : list) 
+								{
+									if(weakTopicesMap.get(debateTopicVO2.getSubjectId()) != null)
+									debateTopicVO2.setCount(weakTopicesMap.get(debateTopicVO2.getSubjectId()).getCount());
+									listForWeak.add(debateTopicVO2);
+								}
+							}
+							debateTopicVO.setWeak(listForWeak);
 						}
 						returnList.add(debateTopicVO);
 					}
