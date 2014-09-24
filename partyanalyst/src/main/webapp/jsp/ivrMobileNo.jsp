@@ -444,7 +444,7 @@ function createFile()
 			task : "createFilepath"
 	};
 	$.ajax({
-	type: "GET",
+	type: "POST",
 	url: "getivrMobileNoAction.action",
 	dataType: 'json',
 	data: {task:JSON.stringify(jsObj)},
@@ -593,7 +593,10 @@ function calculateMaxIndex()
 	locationIds = $('#districtId').val();
 	else if(scopeId == 2)
 	locationIds = $('#constituencyId').val();
-	
+	else if(scopeId == 3)
+	locationIds = $('#parliamentId').val();
+	else if(scopeId == 4)
+	locationIds = $('#mandalId').val();
 	if(locationIds != null)
 	{
     var total =  totalSize / locationIds.length;
@@ -770,7 +773,7 @@ scopeId:scopeId,
 task : "mobileNumbersCount"
 };
 $.ajax({
-type: "GET",
+type: "POST",
 url: "getLocationWiseMobileNosCountAction.action",
 dataType: 'json',
 data: {task:JSON.stringify(jsObj)},
