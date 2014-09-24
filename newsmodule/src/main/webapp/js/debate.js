@@ -1772,21 +1772,25 @@ function getCandidatesForSelectedParty(partyId,searchType)
 {
 
 	var candidateListId = "candidateSelecction";
+	var partyArr;
 	if(searchType == 1)
 	{
 		candidateListId = "candidateSelecction";
+		partyArr = $("#partySelecction").multiselect("getChecked").map(function(){
+			return this.value;
+		}).get();
 	}
 	else if(searchType == 2)
 	{
 		candidateListId = "candidatesList";
+		partyArr = $("#partysList").multiselect("getChecked").map(function(){
+			return this.value;
+		}).get();
 	}
 	
-	var partyIdList = $('#partySelecction').val();
-	
-	var partyArr = $("#partySelecction").multiselect("getChecked").map(function(){
-       return this.value;
-     }).get();
-	
+	$('#'+candidateListId+'').find('option').remove();
+	$('#'+candidateListId+'').multiselect("refresh");
+
 	var jsObj = {
 			partyArr :partyArr,
 			selectedVal :candidateListId,
@@ -1796,6 +1800,7 @@ function getCandidatesForSelectedParty(partyId,searchType)
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getCandidatesListForDebateAction.action?"+rparam;
 	callAjax(jsObj,url);	
+	
 }
 
 function getRespectiveSelection()
