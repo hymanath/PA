@@ -1,12 +1,11 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
-
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.commons.lang.StringEscapeUtils;
@@ -61,13 +60,13 @@ public class DebateAnalysisService implements IDebateAnalysisService
 	 * Date 23-09-2014
 	 * @return returnList
 	 */
-	public List<DebatePartyWiseCountVO> getPartyWiseOverAllPerformance()
+	public List<DebatePartyWiseCountVO> getPartyWiseOverAllPerformance(Date fromDate, Date toDate, List<Long> channelIds, List<Long> partyIdsList,  List<Long> candidatesIds)
 	{
 		List<DebatePartyWiseCountVO> returnList = null;
 		try {
-			Map<Long,DebatePartyWiseCountVO> partyWiseTotalDebatesMap = getPartyWiseTotalDebatesAndScalesService();
-			Map<Long,DebatePartyWiseCountVO> partyWiseTotalDebatesCharsMap = getPartyWiseTotalDebatePartiCharsCountService(partyWiseTotalDebatesMap);
-			Map<Long,DebateRankingVO> rankingMap = calucateEachDebateWiseRanking();
+			Map<Long,DebatePartyWiseCountVO> partyWiseTotalDebatesMap = getPartyWiseTotalDebatesAndScalesService(fromDate,toDate,channelIds,partyIdsList,candidatesIds);
+			Map<Long,DebatePartyWiseCountVO> partyWiseTotalDebatesCharsMap = getPartyWiseTotalDebatePartiCharsCountService(partyWiseTotalDebatesMap,fromDate,toDate,channelIds,partyIdsList,candidatesIds);
+			Map<Long,DebateRankingVO> rankingMap = calucateEachDebateWiseRanking(fromDate,toDate,channelIds,partyIdsList,candidatesIds);
 			if(partyWiseTotalDebatesMap != null && partyWiseTotalDebatesMap.size() > 0 && partyWiseTotalDebatesCharsMap != null && partyWiseTotalDebatesCharsMap.size() > 0)
 			{
 				returnList = new ArrayList<DebatePartyWiseCountVO>();
@@ -94,12 +93,12 @@ public class DebateAnalysisService implements IDebateAnalysisService
 	 * Date 22-09-2014
 	 * @return returnMap
 	 */
-	public Map<Long,DebatePartyWiseCountVO> getPartyWiseTotalDebatesAndScalesService()
+	public Map<Long,DebatePartyWiseCountVO> getPartyWiseTotalDebatesAndScalesService(Date fromDate, Date toDate, List<Long> channelIds, List<Long> partyIdsList,  List<Long> candidatesIds)
 	{
 		Map<Long,DebatePartyWiseCountVO> returnMap = null;
 		try {
 			
-			List<Object[]> partyDebateCount = debateParticipantCharcsDAO.getPartyWiseTotalDebatesAndScales();
+			List<Object[]> partyDebateCount = debateParticipantCharcsDAO.getPartyWiseTotalDebatesAndScalForSelection(fromDate,toDate,channelIds, partyIdsList, candidatesIds);
 			if(partyDebateCount != null && partyDebateCount.size() > 0)
 			{
 				returnMap = new TreeMap<Long, DebatePartyWiseCountVO>();
@@ -134,12 +133,12 @@ public class DebateAnalysisService implements IDebateAnalysisService
 	 * Date 22-09-2014
 	 * @return returnMap
 	 */
-	public Map<Long,DebatePartyWiseCountVO> getPartyWiseTotalDebatePartiCharsCountService(Map<Long,DebatePartyWiseCountVO> partyWiseTotalDebatesMap)
+	public Map<Long,DebatePartyWiseCountVO> getPartyWiseTotalDebatePartiCharsCountService(Map<Long,DebatePartyWiseCountVO> partyWiseTotalDebatesMap,Date fromDate,Date toDate,List<Long> channelIds,List<Long>  partyIdsList,List<Long>  candidatesIds)
 	{
 		Map<Long,DebatePartyWiseCountVO> returnMap = null;
 		try {
 			
-			List<Object[]> debatePariCharsList = debateParticipantCharcsDAO.getPartyWiseDebatePartiCharsCount();
+			List<Object[]> debatePariCharsList = debateParticipantCharcsDAO.getPartyWiseDebatePartiCharsCountsForSelection(fromDate,toDate, channelIds,  partyIdsList,candidatesIds);
 			if(debatePariCharsList != null && debatePariCharsList.size() > 0)
 			{
 				returnMap = new HashMap<Long, DebatePartyWiseCountVO>();
@@ -188,12 +187,12 @@ public class DebateAnalysisService implements IDebateAnalysisService
 	 * @return returnMap
 	 */
 	
-	public Map<Long,DebateRankingVO> calucateEachDebateWiseRanking()
+	public Map<Long,DebateRankingVO> calucateEachDebateWiseRanking(Date fromDate, Date toDate, List<Long> channelIds, List<Long> partyIdsList,  List<Long> candidatesIds)
 	{
 		Map<Long,DebateRankingVO> returnMap = null;
 		try {
 			
-			List<Object[]> result = debateParticipantCharcsDAO.getPartyWiseEachDebateCharsCount();
+			List<Object[]> result = debateParticipantCharcsDAO.getPartyWiseEachDebateCharsCounttsForSelection(fromDate,toDate,channelIds, partyIdsList, candidatesIds);
 			if(result != null && result.size() > 0)
 			{
 				Map<Long,DebatePartyWiseCountVO> resultMap = new HashMap<Long, DebatePartyWiseCountVO>();
@@ -254,13 +253,14 @@ public class DebateAnalysisService implements IDebateAnalysisService
 	 * Date 22-09-2014
 	 * @return returnList
 	 */
-	public List<DebateTopicVO> getPartyCandidatePerfortmanceTopicWise()
+	public List<DebateTopicVO> getPartyCandidatePerfortmanceTopicWise(Date fromDate, Date toDate, List<Long> channelIds, List<Long> partyIdsList,  List<Long> candidatesIds )
 	{
 		List<DebateTopicVO> returnList = null;
 		try {
 			Map<Long,List<DebateTopicVO>> subjectWiseMap = new HashMap<Long, List<DebateTopicVO>>();
 			
-			List<Object[]> result =   debateParticipantCharcsDAO.getPartyCandidateDetailsTopicWise();
+			List<Object[]> result =   debateParticipantCharcsDAO.getPartyCandidateDetailsTopicWiseForSelection(fromDate, toDate, channelIds, partyIdsList, candidatesIds);
+			
 			if(result != null && result.size() > 0)
 			{
 				for (Object[] parms : result) {
@@ -287,8 +287,8 @@ public class DebateAnalysisService implements IDebateAnalysisService
 					
 					resultList.add(debateTopicVO);
 				}
-				List<Long> partyIds = new ArrayList<Long>();
-				List<Object[]> partiesList = debateParticipantDAO.getDistinctDebateParties();
+				
+				List<Object[]> partiesList = debateParticipantDAO.getDistinctDebatePartiesForSelection(fromDate, toDate,partyIdsList);;
 				
 				
 				if(subjectWiseMap != null && subjectWiseMap.size() > 0)
@@ -358,13 +358,14 @@ public class DebateAnalysisService implements IDebateAnalysisService
 	}
 	
 	
-	public DebateCandidateCharcVO getPartyWiseCandidateCharacteristicsDetails() {
+	public DebateCandidateCharcVO getPartyWiseCandidateCharacteristicsDetails(Date fromDate, Date toDate, List<Long> channelIds, List<Long> partyIdsList,  List<Long> candidatesIds)
+	{
 		DebateCandidateCharcVO resultVO = new DebateCandidateCharcVO();
 		try 
 		{
 		LOG.info("Enterd into getPartyWiseCandidateCharacteristicsDetails method");
-		
-	 	List<Object[]> list = debateParticipantDAO.getDebateCandidateCharacteristicsDetails();
+		 
+	 	List<Object[]> list = debateParticipantDAO.getDebateCandidateCharacteristicsDetailForSelection(fromDate,toDate,channelIds,partyIdsList,candidatesIds);
 	 	
 	 	List<DebateCandidateCharcVO> debateSubjectList = new ArrayList<DebateCandidateCharcVO>();
 	 	//List<DebateCandidateCharcVO> debatePartiesList = null;
@@ -512,7 +513,8 @@ public class DebateAnalysisService implements IDebateAnalysisService
 		return debatePartiesList;
 	}
 	
-	public List<DebateAnalysisVO> partyWiseCandidatePerformance(){
+	public List<DebateAnalysisVO> partyWiseCandidatePerformance(Date fromDate, Date toDate, List<Long> channelIds, List<Long> partyIdsList,  List<Long> candidatesIds)
+	{
 		Map<Long, DebateAnalysisVO> partiesAndCandidatesMap=null;
 		Map<Long, Double> performanceCountMap=null;
 		Map<Long, DebateAnalysisVO> charsCountMap=null;
@@ -521,21 +523,22 @@ public class DebateAnalysisService implements IDebateAnalysisService
 		
 		try {
 			LOG.info("Entered into partyWiseCandidatePerformance method in DebateAnalysisService Class");
-			List<Object[]> result1 = debateParticipantDAO.getPartiesAndCanidatesIds();
+			
+			List<Object[]> result1 = debateParticipantDAO.getPartiesAndCanidatesIdForSelection(fromDate, toDate, channelIds, partyIdsList, candidatesIds);
 			if(result1 != null && result1.size() > 0)
 			{
 				partiesAndCandidatesMap = new HashMap<Long, DebateAnalysisVO>();
 				setPartiesAndCandidatesInfo(result1,partiesAndCandidatesMap);
 			}
 			
-			List<Object[]> result2 = debateParticipantCharcsDAO.getDebatePerformanceCount();
+			List<Object[]> result2 = debateParticipantCharcsDAO.getDebatePerformanceCountsForSelection(fromDate, toDate, channelIds, partyIdsList, candidatesIds);
 			if(result2 != null && result2.size() > 0)
 			{
 				performanceCountMap = new HashMap<Long, Double>();
 				setPerformanceCountInfo(result2,performanceCountMap);
 			}
 			
-			List<Object[]> result3 = debateParticipantCharcsDAO.getDebatePerformanceCountCharcs();
+			List<Object[]> result3 = debateParticipantCharcsDAO.getDebatePerformanceCountCharForSelection(fromDate, toDate, channelIds, partyIdsList, candidatesIds);
 			if(result3 != null && result3.size() > 0)
 			{
 				charsCountMap = new HashMap<Long, DebateAnalysisVO>();
@@ -599,29 +602,34 @@ public class DebateAnalysisService implements IDebateAnalysisService
 	public void setCharsCountInfo(List<Object[]> result,Map<Long, DebateAnalysisVO> resultMap)
 	{
 		try {
-			for (Object[] objects : result)
+			
+			if(result != null && result.size()>0)
 			{
-				if(objects[0] != null)
+				for (Object[] objects : result)
 				{
-					DebateAnalysisVO debateAnalysisVO = resultMap.get(objects[0] );
-					if(debateAnalysisVO == null)
+					if(objects[0] != null)
 					{
-						debateAnalysisVO = new DebateAnalysisVO();
-						resultMap.put((Long)objects[0], debateAnalysisVO);
+						DebateAnalysisVO debateAnalysisVO = resultMap.get(objects[0] );
+						if(debateAnalysisVO == null)
+						{
+							debateAnalysisVO = new DebateAnalysisVO();
+							resultMap.put((Long)objects[0], debateAnalysisVO);
+						}
+						if((Long)objects[1] == 1 ){
+							debateAnalysisVO.setSubject(objects[3] != null ? (Double)objects[3] : 0l);
+						}else if((Long)objects[1] == 2 ){
+							debateAnalysisVO.setPresentation(objects[3] != null ? (Double)objects[3] : 0l);
+						}else if((Long)objects[1] == 3 ){
+							debateAnalysisVO.setCounterAttack(objects[3] != null ? (Double)objects[3] : 0l);
+						}else if((Long)objects[1] == 4 ){
+							debateAnalysisVO.setBodyLanguage(objects[3] != null ? (Double)objects[3] : 0l);
+						}
+						debateAnalysisVO.setCount(objects[3] != null ? (Double)objects[3] : 0.0D);
 					}
-					if((Long)objects[1] == 1 ){
-						debateAnalysisVO.setSubject(objects[3] != null ? (Double)objects[3] : 0l);
-					}else if((Long)objects[1] == 2 ){
-						debateAnalysisVO.setPresentation(objects[3] != null ? (Double)objects[3] : 0l);
-					}else if((Long)objects[1] == 3 ){
-						debateAnalysisVO.setCounterAttack(objects[3] != null ? (Double)objects[3] : 0l);
-					}else if((Long)objects[1] == 4 ){
-						debateAnalysisVO.setBodyLanguage(objects[3] != null ? (Double)objects[3] : 0l);
-					}
-					debateAnalysisVO.setCount(objects[3] != null ? (Double)objects[3] : 0.0D);
+					
 				}
-				
 			}
+			
 		} catch (Exception e) {
 			LOG.error("Exception raised in setCharsCountInfo method in DebateAnalysisService Class", e);
 		}
@@ -664,13 +672,13 @@ public class DebateAnalysisService implements IDebateAnalysisService
 	 * Date 24-09-2014 
 	 * @return returnList
 	 */
-	public List<DebateTopicVO> getPartyWiseStrongAndWeakTopicAndCandidates()
-	{
+	public List<DebateTopicVO> getPartyWiseStrongAndWeakTopicAndCandidates(Date fromDate, Date toDate, List<Long> channelIds, List<Long> partyIdsList,  List<Long> candidatesIds)
+	{  
 		List<DebateTopicVO> returnList = null;
 		try {
 			Map<Long,DebateTopicVO> topTopicesMap = null;
 			Map<Long,List<DebateTopicVO>> topTopicesPartyWiseMap = null;
-			List<Object[]> topTopicesList = debateParticipantCharcsDAO.getTopicWiseStrongOrWeakCandidates("desc");
+			List<Object[]> topTopicesList = debateParticipantCharcsDAO.getTopicWiseStrongOrWeakCandidatsForSelection(fromDate,toDate,channelIds,partyIdsList,candidatesIds,"desc");
 			if(topTopicesList != null)
 			{
 				topTopicesMap = new HashMap<Long, DebateTopicVO>();
@@ -679,7 +687,7 @@ public class DebateAnalysisService implements IDebateAnalysisService
 			}
 			Map<Long,DebateTopicVO> weakTopicesMap = null;
 			Map<Long,List<DebateTopicVO>> weakTopicesPartyWiseMap = null;
-			List<Object[]> weakTopicesList = debateParticipantCharcsDAO.getTopicWiseStrongOrWeakCandidates("asc");
+			List<Object[]> weakTopicesList = debateParticipantCharcsDAO.getTopicWiseStrongOrWeakCandidatsForSelection(fromDate,toDate,channelIds,partyIdsList,candidatesIds,"asc");
 			if(weakTopicesList != null)
 			{
 				weakTopicesMap = new HashMap<Long, DebateTopicVO>();
