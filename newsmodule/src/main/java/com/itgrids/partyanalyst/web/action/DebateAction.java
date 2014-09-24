@@ -727,7 +727,124 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 					return Action.ERROR;
 				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 				
-				debateVO = debateService.getDebateDetailsForSelectedCriteria(sdf.parse(fromDate), sdf.parse(toDate),channel,partyId,candidateId, sort,dir, startIndex, results);
+				//debateVO = debateService.getDebateDetailsForSelectedCriteria(sdf.parse(fromDate), sdf.parse(toDate),channel,partyId,candidateId, sort,dir, startIndex, results);
+				
+				 jObj = new JSONObject(getTask());
+				 String startDate = jObj.getString("fromDate");
+				 String endDate = jObj.getString("toDate");
+				
+				 JSONArray channelArr = jObj.getJSONArray("channelIdArr");
+				
+				 List<Long> channelIds = new ArrayList<Long>(0);
+					
+					if( channelArr != null && channelArr.length() >0 )
+					{
+						for(int i=0;i<channelArr.length();i++)
+						{
+							if(channelArr.get(i) != null)
+							{
+								String channelId = channelArr.get(i).toString().trim().replace("[", "").replace("]", "").replace("\"", "").trim();
+								
+								if(channelId.length() > 0 && !channelId.equalsIgnoreCase("0"))
+								{
+									channelIds.add(Long.valueOf(channelId));
+								}
+							}
+						}
+					}
+					
+					if(channelIds != null && channelIds.size() == 1)
+					{
+						Long channelId = channelIds.get(0);
+						
+						if(channelId.longValue() == 0L)
+						{
+							channelIds = null;
+						}
+					}
+					
+					else if(channelIds.size() == 0)
+					{
+						channelIds = null;						
+					}
+					
+					
+				 JSONArray partyArr = jObj.getJSONArray("partyIdArr");
+					
+					List<Long> partyIds = new ArrayList<Long>(0);
+					
+					if( partyArr != null && partyArr.length() >0 )
+					{
+						for(int i=0;i<partyArr.length();i++)
+						{
+							if(partyArr.get(i) != null)
+							{
+								String partyId = partyArr.get(i).toString().trim().replace("[", "").replace("]", "").replace("\"", "").trim();
+								
+								if(partyId.length() > 0 && !partyId.equalsIgnoreCase("0"))
+								{
+									partyIds.add(Long.valueOf(partyId));
+								}
+							}
+						}
+					}
+					
+					if(partyIds != null && partyIds.size() == 1)
+					{
+						Long partyId = partyIds.get(0);
+						
+						if(partyId.longValue() == 0L)
+						{
+							partyIds = null;
+						}
+					}
+					else if(partyIds.size() == 0)
+					{
+						partyIds = null;						
+					}
+					
+				 JSONArray candidateArr = jObj.getJSONArray("candidateIdArr");
+				 
+				 List<Long> candidateIds = new ArrayList<Long>(0);
+					
+					if( candidateArr != null && candidateArr.length() >0 )
+					{
+						for(int i=0;i<candidateArr.length();i++)
+						{
+							if(candidateArr.get(i) != null)
+							{
+								String candidateId = candidateArr.get(i).toString().trim().replace("[", "").replace("]", "").replace("\"", "").trim();
+								
+								if(candidateId.length() > 0 && !candidateId.equalsIgnoreCase("0"))
+								{
+									candidateIds.add(Long.valueOf(candidateId));
+								}
+							}
+						}
+					}
+					
+					if(candidateIds != null && candidateIds.size() == 1)
+					{
+						Long candidateId = candidateIds.get(0);
+						
+						if(candidateId.longValue() == 0L)
+						{
+							candidateIds = null;
+						}
+					}
+					
+					else if(candidateIds.size() == 0)
+					{
+						candidateIds = null;						
+					}
+					
+				 String sortBy = " ";
+				 String direction = " ";
+				 int minIndex  =  jObj.getInt("startIndex");
+				 int maxResults  = jObj.getInt("maxIndex");
+				 
+				//debateVO = debateService.getDebateDetailsForSelectedCriteria(sdf.parse(startDate), sdf.parse(endDate),selectedChannelId,selectedPartyId,politicianId, sortBy,direction, minIndex, maxResults);
+				 debateVO = debateService.getDebateDetailsForSelectedCriteria(sdf.parse(startDate), sdf.parse(endDate),channelIds,partyIds,candidateIds, sortBy,direction, minIndex, maxResults);
 		} 
 		catch (Exception e)
 		{
@@ -788,7 +905,29 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 		{
 			LOG.info(" Entered into deleteDebateReport() in DebateAction class. ");
 			jObj = new JSONObject(getTask());
-			candidatesList = debateService.getCandidatesForDebate(jObj.getLong("partyId"));
+			
+			JSONArray partyArr = jObj.getJSONArray("partyArr");
+			
+			List<Long> partyIds = new ArrayList<Long>(0);
+			
+			if( partyArr != null && partyArr.length() >0 )
+			{
+				for(int i=0;i<partyArr.length();i++)
+				{
+					if(partyArr.get(i) != null)
+					{
+						String partyId = partyArr.get(i).toString().trim().replace("[", "").replace("]", "").replace("\"", "").trim();
+						
+						if(partyId.length() > 0)
+						{
+							partyIds.add(Long.valueOf(partyId));
+						}
+					}
+				}
+			}
+			
+			candidatesList = debateService.getCandidatesForDebate(partyIds);
+			
 		} catch (Exception e)
 		{
 			LOG.error(" Exception occured in deleteDebateReport() in DebateAction class. ",e);
@@ -982,7 +1121,119 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 	{
 		try {
 			jObj=new JSONObject(getTask());
-			debateReportList = debateAnalysisService.getPartyCandidatePerfortmanceTopicWise();
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+
+			 String startDate = jObj.getString("fromDate");
+			 String endDate = jObj.getString("toDate");
+			
+			 JSONArray channelArr = jObj.getJSONArray("channelIdArr");
+			
+			 List<Long> channelIds = new ArrayList<Long>(0);
+				
+				if( channelArr != null && channelArr.length() >0 )
+				{
+					for(int i=0;i<channelArr.length();i++)
+					{
+						if(channelArr.get(i) != null)
+						{
+							String channelId = channelArr.get(i).toString().trim().replace("[", "").replace("]", "").replace("\"", "").trim();
+							
+							if(channelId.length() > 0 && !channelId.equalsIgnoreCase("0"))
+							{
+								channelIds.add(Long.valueOf(channelId));
+							}
+						}
+					}
+				}
+				
+				if(channelIds != null && channelIds.size() == 1)
+				{
+					Long channelId = channelIds.get(0);
+					
+					if(channelId.longValue() == 0L)
+					{
+						channelIds = null;
+					}
+				}
+				
+				else if(channelIds.size() == 0)
+				{
+					channelIds = null;						
+				}
+				
+				
+			 JSONArray partyArr = jObj.getJSONArray("partyIdArr");
+				
+				List<Long> partyIds = new ArrayList<Long>(0);
+				
+				if( partyArr != null && partyArr.length() >0 )
+				{
+					for(int i=0;i<partyArr.length();i++)
+					{
+						if(partyArr.get(i) != null)
+						{
+							String partyId = partyArr.get(i).toString().trim().replace("[", "").replace("]", "").replace("\"", "").trim();
+							
+							if(partyId.length() > 0 && !partyId.equalsIgnoreCase("0"))
+							{
+								partyIds.add(Long.valueOf(partyId));
+							}
+						}
+					}
+				}
+				
+				if(partyIds != null && partyIds.size() == 1)
+				{
+					Long partyId = partyIds.get(0);
+					
+					if(partyId.longValue() == 0L)
+					{
+						partyIds = null;
+					}
+				}
+				else if(partyIds.size() == 0)
+				{
+					partyIds = null;						
+				}
+				
+			 JSONArray candidateArr = jObj.getJSONArray("candidateIdArr");
+			 
+			 List<Long> candidateIds = new ArrayList<Long>(0);
+				
+				if( candidateArr != null && candidateArr.length() >0 )
+				{
+					for(int i=0;i<candidateArr.length();i++)
+					{
+						if(candidateArr.get(i) != null)
+						{
+							String candidateId = candidateArr.get(i).toString().trim().replace("[", "").replace("]", "").replace("\"", "").trim();
+							
+							if(candidateId.length() > 0 && !candidateId.equalsIgnoreCase("0"))
+							{
+								candidateIds.add(Long.valueOf(candidateId));
+							}
+						}
+					}
+				}
+				
+				if(candidateIds != null && candidateIds.size() == 1)
+				{
+					Long candidateId = candidateIds.get(0);
+					
+					if(candidateId.longValue() == 0L)
+					{
+						candidateIds = null;
+					}
+				}
+				
+				else if(candidateIds.size() == 0)
+				{
+					candidateIds = null;						
+				}
+				
+				debateReportList = debateAnalysisService.getPartyCandidatePerfortmanceTopicWise(sdf.parse(startDate),sdf.parse(endDate),channelIds,partyIds,candidateIds);
+				
+			//debateReportList = debateAnalysisService.getPartyCandidatePerfortmanceTopicWise();
 			
 			return Action.SUCCESS;
 		} catch (Exception e) {
@@ -997,7 +1248,118 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 	{
 		try {
 			jObj=new JSONObject(getTask());
-			debateAnalysisList = debateAnalysisService.partyWiseCandidatePerformance();
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+
+			 String startDate = jObj.getString("fromDate");
+			 String endDate = jObj.getString("toDate");
+			
+			 JSONArray channelArr = jObj.getJSONArray("channelIdArr");
+			
+			 List<Long> channelIds = new ArrayList<Long>(0);
+				
+				if( channelArr != null && channelArr.length() >0 )
+				{
+					for(int i=0;i<channelArr.length();i++)
+					{
+						if(channelArr.get(i) != null)
+						{
+							String channelId = channelArr.get(i).toString().trim().replace("[", "").replace("]", "").replace("\"", "").trim();
+							
+							if(channelId.length() > 0 && !channelId.equalsIgnoreCase("0"))
+							{
+								channelIds.add(Long.valueOf(channelId));
+							}
+						}
+					}
+				}
+				
+				if(channelIds != null && channelIds.size() == 1)
+				{
+					Long channelId = channelIds.get(0);
+					
+					if(channelId.longValue() == 0L)
+					{
+						channelIds = null;
+					}
+				}
+				
+				else if(channelIds.size() == 0)
+				{
+					channelIds = null;						
+				}
+				
+				
+			 JSONArray partyArr = jObj.getJSONArray("partyIdArr");
+				
+				List<Long> partyIds = new ArrayList<Long>(0);
+				
+				if( partyArr != null && partyArr.length() >0 )
+				{
+					for(int i=0;i<partyArr.length();i++)
+					{
+						if(partyArr.get(i) != null)
+						{
+							String partyId = partyArr.get(i).toString().trim().replace("[", "").replace("]", "").replace("\"", "").trim();
+							
+							if(partyId.length() > 0 && !partyId.equalsIgnoreCase("0"))
+							{
+								partyIds.add(Long.valueOf(partyId));
+							}
+						}
+					}
+				}
+				
+				if(partyIds != null && partyIds.size() == 1)
+				{
+					Long partyId = partyIds.get(0);
+					
+					if(partyId.longValue() == 0L)
+					{
+						partyIds = null;
+					}
+				}
+				else if(partyIds.size() == 0)
+				{
+					partyIds = null;						
+				}
+				
+			 JSONArray candidateArr = jObj.getJSONArray("candidateIdArr");
+			 
+			 List<Long> candidateIds = new ArrayList<Long>(0);
+				
+				if( candidateArr != null && candidateArr.length() >0 )
+				{
+					for(int i=0;i<candidateArr.length();i++)
+					{
+						if(candidateArr.get(i) != null)
+						{
+							String candidateId = candidateArr.get(i).toString().trim().replace("[", "").replace("]", "").replace("\"", "").trim();
+							
+							if(candidateId.length() > 0 && !candidateId.equalsIgnoreCase("0"))
+							{
+								candidateIds.add(Long.valueOf(candidateId));
+							}
+						}
+					}
+				}
+				
+				if(candidateIds != null && candidateIds.size() == 1)
+				{
+					Long candidateId = candidateIds.get(0);
+					
+					if(candidateId.longValue() == 0L)
+					{
+						candidateIds = null;
+					}
+				}
+				
+				else if(candidateIds.size() == 0)
+				{
+					candidateIds = null;						
+				}
+				
+				
+			debateAnalysisList = debateAnalysisService.partyWiseCandidatePerformance(sdf.parse(startDate),sdf.parse(endDate),channelIds,partyIds,candidateIds);
 			
 			return Action.SUCCESS;
 		} catch (Exception e) {
@@ -1010,9 +1372,122 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 	
 	public String getPartyWiseOverAllPerformance()
 	{
-		try {
+		try {  
 			jObj=new JSONObject(getTask());
-			overllPartyWiseList = debateAnalysisService.getPartyWiseOverAllPerformance();
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+
+			 String startDate = jObj.getString("fromDate");
+			 String endDate = jObj.getString("toDate");
+			
+			 JSONArray channelArr = jObj.getJSONArray("channelIdArr");
+			
+			 List<Long> channelIds = new ArrayList<Long>(0);
+				
+				if( channelArr != null && channelArr.length() >0 )
+				{
+					for(int i=0;i<channelArr.length();i++)
+					{
+						if(channelArr.get(i) != null)
+						{
+							String channelId = channelArr.get(i).toString().trim().replace("[", "").replace("]", "").replace("\"", "").trim();
+							
+							if(channelId.length() > 0 && !channelId.equalsIgnoreCase("0"))
+							{
+								channelIds.add(Long.valueOf(channelId));
+							}
+						}
+					}
+				}
+				
+				if(channelIds != null && channelIds.size() == 1)
+				{
+					Long channelId = channelIds.get(0);
+					
+					if(channelId.longValue() == 0L)
+					{
+						channelIds = null;
+					}
+				}
+				
+				else if(channelIds.size() == 0)
+				{
+					channelIds = null;						
+				}
+				
+				
+			 JSONArray partyArr = jObj.getJSONArray("partyIdArr");
+				
+				List<Long> partyIds = new ArrayList<Long>(0);
+				
+				if( partyArr != null && partyArr.length() >0 )
+				{
+					for(int i=0;i<partyArr.length();i++)
+					{
+						if(partyArr.get(i) != null)
+						{
+							String partyId = partyArr.get(i).toString().trim().replace("[", "").replace("]", "").replace("\"", "").trim();
+							
+							if(partyId.length() > 0 && !partyId.equalsIgnoreCase("0"))
+							{
+								partyIds.add(Long.valueOf(partyId));
+							}
+						}
+					}
+				}
+				
+				if(partyIds != null && partyIds.size() == 1)
+				{
+					Long partyId = partyIds.get(0);
+					
+					if(partyId.longValue() == 0L)
+					{
+						partyIds = null;
+					}
+				}
+				else if(partyIds.size() == 0)
+				{
+					partyIds = null;						
+				}
+				
+			 JSONArray candidateArr = jObj.getJSONArray("candidateIdArr");
+			 
+			 List<Long> candidateIds = new ArrayList<Long>(0);
+				
+				if( candidateArr != null && candidateArr.length() >0 )
+				{
+					for(int i=0;i<candidateArr.length();i++)
+					{
+						if(candidateArr.get(i) != null)
+						{
+							String candidateId = candidateArr.get(i).toString().trim().replace("[", "").replace("]", "").replace("\"", "").trim();
+							
+							if(candidateId.length() > 0 && !candidateId.equalsIgnoreCase("0"))
+							{
+								candidateIds.add(Long.valueOf(candidateId));
+							}
+						}
+					}
+				}
+				
+				if(candidateIds != null && candidateIds.size() == 1)
+				{
+					Long candidateId = candidateIds.get(0);
+					
+					if(candidateId.longValue() == 0L)
+					{
+						candidateIds = null;
+					}
+				}
+				
+				else if(candidateIds.size() == 0)
+				{
+					candidateIds = null;						
+				}
+				
+				
+				overllPartyWiseList = debateAnalysisService.getPartyWiseOverAllPerformance(sdf.parse(startDate),sdf.parse(endDate),channelIds,partyIds,candidateIds);
+			
+			//overllPartyWiseList = debateAnalysisService.getPartyWiseOverAllPerformance();
 			
 			return Action.SUCCESS;
 		} catch (Exception e) {
@@ -1027,7 +1502,120 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 	{
 		try {
 			jObj=new JSONObject(getTask());
-			debateReportList = debateAnalysisService.getPartyWiseStrongAndWeakTopicAndCandidates();
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+
+			 String startDate = jObj.getString("fromDate");
+			 String endDate = jObj.getString("toDate");
+			
+			 JSONArray channelArr = jObj.getJSONArray("channelIdArr");
+			
+			 List<Long> channelIds = new ArrayList<Long>(0);
+				
+				if( channelArr != null && channelArr.length() >0 )
+				{
+					for(int i=0;i<channelArr.length();i++)
+					{
+						if(channelArr.get(i) != null)
+						{
+							String channelId = channelArr.get(i).toString().trim().replace("[", "").replace("]", "").replace("\"", "").trim();
+							
+							if(channelId.length() > 0 && !channelId.equalsIgnoreCase("0"))
+							{
+								channelIds.add(Long.valueOf(channelId));
+							}
+						}
+					}
+				}
+				
+				if(channelIds != null && channelIds.size() == 1)
+				{
+					Long channelId = channelIds.get(0);
+					
+					if(channelId.longValue() == 0L)
+					{
+						channelIds = null;
+					}
+				}
+				
+				else if(channelIds.size() == 0)
+				{
+					channelIds = null;						
+				}
+				
+				
+			 JSONArray partyArr = jObj.getJSONArray("partyIdArr");
+				
+				List<Long> partyIds = new ArrayList<Long>(0);
+				
+				if( partyArr != null && partyArr.length() >0 )
+				{
+					for(int i=0;i<partyArr.length();i++)
+					{
+						if(partyArr.get(i) != null)
+						{
+							String partyId = partyArr.get(i).toString().trim().replace("[", "").replace("]", "").replace("\"", "").trim();
+							
+							if(partyId.length() > 0 && !partyId.equalsIgnoreCase("0"))
+							{
+								partyIds.add(Long.valueOf(partyId));
+							}
+						}
+					}
+				}
+				
+				if(partyIds != null && partyIds.size() == 1)
+				{
+					Long partyId = partyIds.get(0);
+					
+					if(partyId.longValue() == 0L)
+					{
+						partyIds = null;
+					}
+				}
+				else if(partyIds.size() == 0)
+				{
+					partyIds = null;						
+				}
+				
+			 JSONArray candidateArr = jObj.getJSONArray("candidateIdArr");
+			 
+			 List<Long> candidateIds = new ArrayList<Long>(0);
+				
+				if( candidateArr != null && candidateArr.length() >0 )
+				{
+					for(int i=0;i<candidateArr.length();i++)
+					{
+						if(candidateArr.get(i) != null)
+						{
+							String candidateId = candidateArr.get(i).toString().trim().replace("[", "").replace("]", "").replace("\"", "").trim();
+							
+							if(candidateId.length() > 0 && !candidateId.equalsIgnoreCase("0"))
+							{
+								candidateIds.add(Long.valueOf(candidateId));
+							}
+						}
+					}
+				}
+				
+				if(candidateIds != null && candidateIds.size() == 1)
+				{
+					Long candidateId = candidateIds.get(0);
+					
+					if(candidateId.longValue() == 0L)
+					{
+						candidateIds = null;
+					}
+				}
+				
+				else if(candidateIds.size() == 0)
+				{
+					candidateIds = null;						
+				}
+				
+				
+				debateReportList = debateAnalysisService.getPartyWiseStrongAndWeakTopicAndCandidates(sdf.parse(startDate),sdf.parse(endDate),channelIds,partyIds,candidateIds);
+			
+			//debateReportList = debateAnalysisService.getPartyWiseStrongAndWeakTopicAndCandidates();
 			
 			return Action.SUCCESS;
 		} catch (Exception e) {
