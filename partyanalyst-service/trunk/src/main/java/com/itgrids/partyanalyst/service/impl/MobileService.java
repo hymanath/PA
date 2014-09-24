@@ -3486,6 +3486,8 @@ public List<SelectOptionVO> getConstituencyList()
 					     Long panchayatTotal = mobileNumbersDAO.getMobileNosCountByIdsForLocationIDs(locationIds,IConstants.PANCHAYAT,2l);
 					    if(Total > 0)
 				    	{
+					    	if(Total < maxIndex)
+					    		maxIndex = Total.intValue();
 					    	int constiMaxIndex = (int) ((constiTotal * maxIndex)/Total);
 					    	int mandalMaxIndex =  (int) ((mandalTotal * maxIndex)/Total);
 					    	int panchayatMaxIndex = (int) ((panchayatTotal * maxIndex)/Total.longValue());
@@ -3748,6 +3750,8 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 				    	if(Total > 0)
 				    	{
 				    		int districtMaxIndex  =0;
+				    		if(Total < maxIndex)
+				    		maxIndex = Total.intValue();
 				    		int constiMaxIndex = (int) ((constiTotal * maxIndex)/Total);
 					    	int mandalMaxIndex =  (int) ((mandalTotal * maxIndex)/Total);
 					    	int panchayatMaxIndex = (int) ((panchayatTotal * maxIndex)/Total.longValue());
