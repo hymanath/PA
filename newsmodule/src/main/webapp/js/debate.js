@@ -1767,11 +1767,24 @@ var str = '';
 	str += '<tr>';
 	str += '<th>Party</th>';
 	str += '<th>Total Debates</th>';
-	//str += '<th>Ranking</th>';
+	str += '<th colspan=4>Ranking</th>';
 	str += '<th>Subject</th>';
 	str += '<th>Presentation</th>	';
 	str += '<th>Counter Attack</th>';
 	str += '<th>Body Language</th>';						
+	str += '</tr>';
+	
+	str += '<tr>';
+	str += '<th></th>';
+	str += '<th></th>';
+	str += '<th>1 st</th>';
+	str += '<th>2 nd</th>';
+	str += '<th>3 rd</th>';
+	str += '<th>4 th</th>';
+	str += '<th></th>';
+	str += '<th></th>	';
+	str += '<th></th>';
+	str += '<th></th>';						
 	str += '</tr>';
 	str += '</thead>';
 	str += '<tbody>';
@@ -1780,7 +1793,10 @@ var str = '';
 		str += '<tr>';
 		str += '<td>'+result[i].partyName+'</td>';
 		str += '<td>'+result[i].totalDebates+'</td>';
-	//	str += '<td>'+result[i].totalDebates+'</td>';
+		str += '<td>'+result[i].rankingVO.firstRank+'</td>';
+		str += '<td>'+result[i].rankingVO.secondRank+'</td>';
+		str += '<td>'+result[i].rankingVO.thirdRank+'</td>';
+		str += '<td>'+result[i].rankingVO.fourthRank+'</td>';
 		for(var j in result[i].subList)
 		{
 			str += '<td>'+result[i].subList[j].debateScale+'</td>';
