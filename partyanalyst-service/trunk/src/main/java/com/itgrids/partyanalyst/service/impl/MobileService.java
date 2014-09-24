@@ -4037,6 +4037,8 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 	 public List<MobileVO> setCounts(List<MobileVO> resultList,List<Long>locationIds,Long scopeId)
 	 {
 		 try{
+			 if(scopeId == 2)
+			 {
 			 List<Object[]> list1 = mobileNumbersDAO.getMobileNosCountForLocation(locationIds,IConstants.DISTRICT,scopeId);	
 				if(list1 != null && list1.size() > 0)
 				{
@@ -4047,6 +4049,9 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 					}
 					
 				}
+			 }
+			 if(scopeId == 2 || scopeId == 3)
+			 {
 				List<Object[]> list2 = mobileNumbersDAO.getMobileNosCountForLocation(locationIds,IConstants.CONSTITUENCY,scopeId);
 				if(list2 != null && list2.size() > 0)
 				{
@@ -4057,6 +4062,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 					}
 					
 				}
+			 }
 				List<Object[]> list3 = mobileNumbersDAO.getMobileNosCountForLocation(locationIds,IConstants.PANCHAYAT,scopeId);
 				if(list3 != null && list3.size() > 0)
 				{
