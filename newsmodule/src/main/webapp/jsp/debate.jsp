@@ -337,7 +337,7 @@ window.location.href = uri + base64(format(template, ctx))
 					<a data-toggle="tab" value="News Gallery" id="responseNewsId" onClick="showDebateAnalysisDiv()" style="cursor:pointer;color: #005580;">Debate Analysis</a>
 					</li>
 					<li class="">
-					<a data-toggle="tab" value="News Gallery" id="newDebateAnalysis" onClick="showNewDebateAnalysisDiv()" style="cursor:pointer;color: #005580;">New Debate Analysis</a>
+					<a data-toggle="tab" value="News Gallery" id="newDebateAnalysis" onClick="showNewDebateAnalysisDiv()" style="cursor:pointer;color: #005580;">Debate Reports</a>
 					</li>
 				</c:if>	
 				</c:if>	
