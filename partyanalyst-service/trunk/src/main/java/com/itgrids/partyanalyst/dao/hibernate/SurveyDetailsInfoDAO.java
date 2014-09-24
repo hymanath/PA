@@ -198,7 +198,7 @@ public class SurveyDetailsInfoDAO extends GenericDaoHibernate<SurveyDetailsInfo,
 	
 	public List<Long> getDataCollectedVoterIdsByBoothIds(List<Long> boothIds)
 	{
-		Query query = getSession().createQuery("select distinct SDI.voter.voterId from SurveyDetailsInfo SDI where SDI.booth.boothId in(:boothIds)");
+		Query query = getSession().createQuery("select distinct SDI.voter.voterId from SurveyDetailsInfo SDI where SDI.booth.boothId in(:boothIds) and SDI.surveyUser.surveyUserType.surveyUsertypeId = 1");
 		
 		query.setParameterList("boothIds", boothIds);
 		
