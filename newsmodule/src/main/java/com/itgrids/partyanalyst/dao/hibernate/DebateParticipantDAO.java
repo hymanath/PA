@@ -1,16 +1,12 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IDebateParticipantDAO;
-import com.itgrids.partyanalyst.dto.DebateAnalysisVO;
 import com.itgrids.partyanalyst.model.DebateParticipant;
 
 
@@ -146,11 +142,55 @@ public class DebateParticipantDAO extends GenericDaoHibernate<DebateParticipant,
 
 	public List<Object[]> getPartiesAndCanidatesIds()
 	{  
-		Query query = getSession().createQuery("select DP.partyId ,DP.party.shortName, DP.candidateId ,DP.candidate.lastname, count(*) " +
+		Query query = getSession().createQuery(" select DP.partyId ,DP.party.shortName, DP.candidateId ,DP.candidate.lastname, count(*) " +
 				                                       "from DebateParticipant DP " +
 				                                        "where DP.debate.debateId = DP.debateId " +
 				                                        "group by DP.partyId , DP.candidateId " +
 				                                        "order by DP.partyId");
+		return query.list();
+	}
+	
+	public List<Object[]> getPartiesAndCanidatesIdForSelection(Date fromDate,Date toDate,List<Long> channelIds,List<Long> partyIds,List<Long> candidateIds)
+	{
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("select DP.partyId ,DP.party.shortName, DP.candidateId ,DP.candidate.lastname, count(*) " +
+				                                       "from DebateParticipant DP  ");	
+		sb.append(" where DP.debate.debateId = DP.debateId and DP.debate.isDeleted = 'N' and  ");
+
+		sb.append(" date(DP.debate.startTime) >= :fromDate and date(DP.debate.startTime) <= :toDate ");
+		
+		if(channelIds != null && channelIds.size()>0)
+		{
+			sb.append(" and DP.debate.channel.channelId in (:channelIds) ");
+		}
+		
+		if(candidateIds != null  && candidateIds.size()>0)
+		{
+			sb.append(" and DP.candidate.candidateId in (:candidateIds) and DP.party.partyId in (:partyIds)  ");
+		}
+		else if(partyIds != null  && partyIds.size()>0)
+		{
+			sb.append(" and  DP.party.partyId in (:partyIds)  ");
+		}
+		sb.append(" group by DP.partyId , DP.candidateId order by DP.partyId ");
+		
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("fromDate", fromDate);
+		query.setParameter("toDate", toDate);
+		if(channelIds != null   && channelIds.size()>0)
+		{
+			query.setParameterList("channelIds", channelIds);
+		}
+		if(candidateIds != null   && candidateIds.size()>0)
+		{
+			query.setParameterList("partyIds", partyIds);
+			query.setParameterList("candidateIds", candidateIds);
+		}
+		else if(partyIds != null   && partyIds.size()>0)
+		{
+			query.setParameterList("partyIds", partyIds);
+		}
 		return query.list();
 	}
 	
@@ -165,6 +205,55 @@ public class DebateParticipantDAO extends GenericDaoHibernate<DebateParticipant,
 				" group by DS.debateSubjectId,DP.party.partyId , DPC.characteristics.characteristicsId");
 		return query.list();
 	}
+	
+public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date fromDate,Date toDate,List<Long> channelIds,List<Long> partyIds,List<Long> candidateIds)
+	{
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("select DP.party.partyId ,DP.party.shortName, DS.debateSubjectId ,DS.subject, " +
+				" DP.candidate.candidateId,DP.candidate.lastname, " +
+				" DPC.characteristics.characteristicsId ,DPC.characteristics.name, sum(DPC.scale)  ");	
+		sb.append("  from DebateSubject DS , DebateParticipant DP , DebateParticipantCharcs DPC where ");
+		
+		sb.append(" DS.debate.debateId = DP.debate.debateId and DP.debateParticipantId = DPC.debateParticipant.debateParticipantId ");
+		sb.append(" and DPC.characteristics.isDeleted = 'N' and DS.debate.isDeleted = 'N' and ");
+		
+		sb.append(" date(DS.debate.startTime) >= :fromDate and date(DS.debate.startTime) <= :toDate ");
+		
+		if(channelIds != null && channelIds.size()>0)
+		{
+			sb.append(" and DS.debate.channel.channelId in (:channelIds) ");
+		}
+		
+		if(candidateIds != null  && candidateIds.size()>0)
+		{
+			sb.append(" and DP.candidate.candidateId in (:candidateIds) and DP.party.partyId in (:partyIds)  ");
+		}
+		else if(partyIds != null  && partyIds.size()>0)
+		{
+			sb.append(" and  DP.party.partyId in (:partyIds)  ");
+		}
+		sb.append(" group by DS.debateSubjectId,DP.party.partyId , DPC.characteristics.characteristicsId");
+		
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("fromDate", fromDate);
+		query.setParameter("toDate", toDate);
+		if(channelIds != null   && channelIds.size()>0)
+		{
+			query.setParameterList("channelIds", channelIds);
+		}
+		if(candidateIds != null   && candidateIds.size()>0)
+		{
+			query.setParameterList("partyIds", partyIds);
+			query.setParameterList("candidateIds", candidateIds);
+		}
+		else if(partyIds != null   && partyIds.size()>0)
+		{
+			query.setParameterList("partyIds", partyIds);
+		}
+		return query.list();
+	}
+
 	public List<Object[]> getDistinctDebateParties()
 	{
 		Query query = getSession().createQuery("select distinct model.party.partyId,model.party.shortName from DebateParticipant model");
@@ -172,4 +261,23 @@ public class DebateParticipantDAO extends GenericDaoHibernate<DebateParticipant,
 		return query.list();
 	}
 	
+	public List<Object[]> getDistinctDebatePartiesForSelection(Date fromDate,Date toDate, List<Long> partyIds)
+	{
+		StringBuilder br = new StringBuilder();
+		br.append(" select distinct model.party.partyId,model.party.shortName from DebateParticipant model where model.debate.isDeleted = 'N' and " +
+				" date(model.debate.startTime) >= :fromDate and date(model.debate.endTime) >= :toDate  ");
+		if(partyIds != null && partyIds.size()>0)
+		{
+			br.append(" and model.party.partyId in (:partyIds)");
+		}
+		Query query = getSession().createQuery(br.toString());
+		
+		query.setParameter("fromDate", fromDate);
+		query.setParameter("toDate", toDate);
+		if(partyIds != null && partyIds.size()>0)
+		{
+			query.setParameterList("partyIds", partyIds);
+		}
+		return query.list();
+	}
 }
