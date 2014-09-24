@@ -48,9 +48,11 @@ public interface IDebateService {
 	
 	public String deleteDebateReportUrl(String key);
 	
-	public List<SelectOptionVO> getCandidatesForDebate(Long partyId);
+	public List<SelectOptionVO> getCandidatesForDebate(List<Long> partyIds);
 	
-	public DebateVO getDebateDetailsForSelectedCriteria(Date fromDate,Date toDate,String channel,String party,String candidate,String sortBy,String sort ,int minIndex,int maxIndex);
+	//public DebateVO getDebateDetailsForSelectedCriteria(Date fromDate,Date toDate,String channel,String party,String candidate,String sortBy,String sort ,int minIndex,int maxIndex);
+	
+	public DebateVO getDebateDetailsForSelectedCriteria(Date fromDate,Date toDate,List<Long> channelIds,List<Long> partyIds,List<Long> candidateIds,String sortBy,String sort ,int minIndex,int maxIndex);
 	
 	public List<SelectOptionVO> getDebateAnalysisBycandidateForScaling(Date fromDate , Date toDate);
 	
