@@ -650,7 +650,6 @@ questionCount++;
 
 function getCandidatesOfSelectedParty(partyId,divId,id)
 {
-
 	if(partyId == 872)
 	{
 		var str  = '';
@@ -691,7 +690,7 @@ var addedCandidteId=0;
 function fillSelectOptionsVO(results,selectedVal)
 {
 	$('#'+selectedVal+'').find('option').remove();
-	$('#'+selectedVal+'').append('<option value="0">Select</option>');
+	//$('#'+selectedVal+'').append('<option value="0">Select</option>');
 				
 	if(results != null)
 	{
@@ -699,13 +698,15 @@ function fillSelectOptionsVO(results,selectedVal)
 		{
 			$('#'+selectedVal+'').append('<option value="'+results[i].id+'">'+results[i].name+'</option>');	
 		}		
-	$('#'+selectedVal+'').val(candidateIdEdit);	
+		$('#'+selectedVal+'').val(candidateIdEdit);	
+			$('#'+selectedVal+'').multiselect("refresh");
 	}
 	var name1 = candidteName.trim().toLowerCase();
 	var designtion = $("#designationsList option :selected").text();
 		
 	if(name1.length >0 && name1 != '')
 		$("#"+selectedVal+" option:contains("+name1+" ("+designtion.toLowerCase()+")").attr('selected', true);	
+		
 }
 
 function callAjax(jsObj,url)
@@ -964,6 +965,193 @@ function buildPartyList(results,jsObj)
     $("#"+jsObj.partiesListForWhome+"").append('<option value="'+results[i].id+'">'+results[i].name+'</option>');
   }
 }
+
+
+function callAjaxToGetTheResults(selectedvalue)
+{
+	var startIndex = 0;
+	var endIndex = 10; 
+	var selectedvalue1 = 0;
+	if(selectedvalue == "1")
+		startIndex = 0;
+	else{
+		selectedvalue1 = selectedvalue - 1;
+		startIndex = selectedvalue1*10;
+	}
+	
+	var startDate = $('#fromDateId').val();
+	var endDate = $('#toDateId').val();
+	$("#RerrDiv").html('');
+	$("#dateWiseReportDiv").html("");
+	$("#dateWiseReportDiv").hide();
+	if(startDate != undefined && startDate.length <=0){
+		$("#RerrDiv").html("From Date is Required.");
+		return;
+	}
+	if(endDate != undefined && endDate.length <=0){	
+		$("#RerrDiv").html("To Date is Required.");
+		return;		
+	}
+	
+	var fromDateArrr = startDate.split("/");			
+			var frommonth=fromDateArrr[0];
+			var fromDat=fromDateArrr[1];
+			var fromyear=fromDateArrr[2];
+			
+	var toDateArr = endDate.split("/");			
+			var tomonth=toDateArr[0];
+			var toDat=toDateArr[1];
+			var toyear=toDateArr[2];
+	
+	if(fromyear>toyear){
+		$("#RerrDiv").html('From Date should not greater then To Date ');	
+		return;
+	}
+	 if(frommonth>tomonth){
+		   if(fromyear == toyear){
+			$("#RerrDiv").html('From Date should not greater then To Date ');		
+		return;
+		}		
+	}
+	
+	if(fromDat>toDat){	
+		if(frommonth == tomonth && fromyear == toyear){
+			$("#RerrDiv").html('From Date should not greater then End Date ');		
+			return;				
+		   }
+	}
+	
+	$("#RerrDiv").html('');
+	var partyIds = $("#partySelecction").multiselect("getChecked").map(function(){
+       return this.value;
+     }).get();
+	
+	var candidateIds = $("#candidateSelecction").multiselect("getChecked").map(function(){
+       return this.value;
+     }).get();
+	 
+	 var channelIds = $("#channelSelecction").multiselect("getChecked").map(function(){
+       return this.value;
+     }).get();
+
+	if(channelIds.length == 0)
+	{
+		channelIds.push("0");
+	}
+
+	if(partyIds.length == 0)
+	{
+		partyIds.push("0");
+	}
+
+	if(candidateIds.length == 0)
+	{
+		candidateIds.push("0");
+	}
+	
+	
+	
+	getDebateDetailsBetwinDates($('#fromDateId').val(),$('#toDateId').val(),channelIds,partyIds,candidateIds,startIndex,endIndex);
+}
+
+
+function getDebateDetailsBetwinDates(fromDate,toDate,channelId,partyId,candidateId,startIndex,endIndex)
+{
+	 $.ajaxSetup({
+	   jsonp: null,
+	   jsonpCallback: null
+	}); 
+
+	var jsObj = { 
+		fromDate : fromDate,
+		toDate : toDate,
+		channelIdArr : channelId,
+		partyIdArr : partyId,
+		candidateIdArr : candidateId,	
+		startIndex : startIndex,
+		maxIndex : endIndex,
+		task:"getAllNewsReportsForAUser"
+	}
+	
+	$.ajax({
+	  type:'POST',
+	  url: 'debateDetaildBtDatesAction.action',
+	  dataType: 'json',
+	  data : {task:JSON.stringify(jsObj)} ,
+		 
+	  success: function(results){ 
+		   buildgetDebatesDetailsBetwinDates(results,fromDate,toDate,channelId,partyId,candidateId,startIndex,endIndex);
+	 },
+	  error:function() { 
+	  }
+	});
+
+}
+
+function buildgetDebatesDetailsBetwinDates(result,fromDate,toDate,channelId,partyId,candidateId,startIndexValue,maxIndexValue)
+{
+
+	var str = '';
+	if(result.smsPoleList != null && result.smsPoleList.length >0)
+	{
+		str +='<table class="table table-bordered" id="newsreportTab" style="margin-top:40px;">';
+		str +='<thead>';
+		str +='<tr>';
+			str+='<th> SUBJECT </th>';
+			str+='<th> CREATED DATE </th>';
+			str+='<th> VIEW REPORT </th>';
+			str+='<th> EDIT </th>';
+			str+='<th> DELETE </th>';
+			str+='<th> GENERATE URL </th>';
+			str+='<th> URL </th>';
+		str +='</tr>';
+		str +='</thead>';
+		str +='<tbody>';
+		
+		for(var i in result.smsPoleList)
+		{
+			str +='<tr>';
+			str+='<td>'+result.smsPoleList[i].name+'  </td>';
+			str+='<td>'+result.smsPoleList[i].type+'  </td>';
+			
+			str +='<td><a class="btn btn-info" value="'+result.smsPoleList[i].id+'" onClick="openDebateReport('+result.smsPoleList[i].id+')"> view </a></td>';
+			
+			str+='<td><a class="btn btn-info" value="'+result.smsPoleList[i].id+'" onClick="editDebateReport('+result.smsPoleList[i].id+')">Edit</a> </td>';
+			
+			str +='<td><a class="btn btn-info" value="'+result.smsPoleList[i].id+'" onClick="deleteDebateReport('+result.smsPoleList[i].id+')">Delete</a></td>';
+		
+			str+='<td><input type="button" class="btn btn-info" value="Generate URL " onCLick="generateURL('+result.smsPoleList[i].id+',\'reportId'+result.smsPoleList[i].id+'\',\''+result.smsPoleList[i].name+'\')"/>  </td>';
+			str+='<td> <textarea id="reportId'+result.smsPoleList[i].id+'" placeholder="Generated URL Details..."></textarea> </td>';
+			str +='</tr>';
+		}
+		
+		str +='</tbody>';
+		
+		var itemsCount=result.totalCount;
+
+	   var maxResults=maxIndexValue;
+	   if(startIndexValue==0){
+		$("#paginationAtEnd").pagination({
+			items: itemsCount,
+			itemsOnPage: maxResults,
+			cssStyle: 'light-theme'
+		});
+	   }
+	   	$("#paginationAtEnd").show();
+	}
+	else
+	{
+		str+='<div align="center"> No News Availabale.</div>';
+			$("#paginationAtEnd").hide();
+	}
+	
+	$('#dateWiseReportDiv').html(str);
+	$("#dateWiseReportDiv").show();
+
+	  
+		
+}
+/*
 function getDebateDetailsBetwinDates(fromDate,toDate,channelId,partyId,candidateId)
 {
 
@@ -1026,6 +1214,8 @@ function getDebateDetailsBetwinDates(fromDate,toDate,channelId,partyId,candidate
   var newsReportColumns = [
    {key:"name",label:"SUBJECT",width:400},
    {key:"type",label:"CREATED DATE"},
+   
+   
    {key:"viewReport",label:"VIEW REPORT",formatter:YAHOO.widget.DataTable.generatePDF},
    {key:"editReport",label:"EDIT",formatter:YAHOO.widget.DataTable.editReport},
    {key:"deleteReport",label:"DELETE",formatter:YAHOO.widget.DataTable.deleteReport},
@@ -1063,6 +1253,7 @@ return oPayload;
 
 }
 }
+*/
 function getDebateAnalysisDetails(task)
 {
 	var startDate = $('#fromDateIdForAnalysis').val();
@@ -1125,6 +1316,7 @@ function getDebateDetailsBtDates()
 	var startDate = $('#fromDateId').val();
 	var endDate = $('#toDateId').val();
 	$("#RerrDiv").html('');
+	$("#dateWiseReportDiv").hide();
 	$("#dateWiseReportDiv").html("");
 	if(startDate != undefined && startDate.length <=0){
 		$("#RerrDiv").html("From Date is Required.");
@@ -1164,7 +1356,9 @@ function getDebateDetailsBtDates()
 	}
 	
 	$("#RerrDiv").html('');
+	/*
 	var partyId = $('#partySelecction').val();
+	
 	if(partyId == undefined)
 	{
 		partyId = "0";
@@ -1179,7 +1373,39 @@ function getDebateDetailsBtDates()
 	{
 		channelId = "0";
 	}
-	getDebateDetailsBetwinDates($('#fromDateId').val(),$('#toDateId').val(),channelId,partyId,candidateId);
+	*/
+	var partyIds = $("#partySelecction").multiselect("getChecked").map(function(){
+       return this.value;
+     }).get();
+	
+	var candidateIds = $("#candidateSelecction").multiselect("getChecked").map(function(){
+       return this.value;
+     }).get();
+	 
+	 var channelIds = $("#channelSelecction").multiselect("getChecked").map(function(){
+       return this.value;
+     }).get();
+
+	if(channelIds.length == 0)
+	{
+		channelIds.push("0");
+	}
+
+	if(partyIds.length == 0)
+	{
+		partyIds.push("0");
+	}
+
+	if(candidateIds.length == 0)
+	{
+		candidateIds.push("0");
+	}
+	
+	
+	//getDebateDetailsBetwinDates($('#fromDateId').val(),$('#toDateId').val(),channelId,partyId,candidateId,0,10);
+	
+	getDebateDetailsBetwinDates($('#fromDateId').val(),$('#toDateId').val(),channelIds,partyIds,candidateIds,0,10);
+	
 }
 
 function openDebateReport(debateId)
@@ -1261,7 +1487,7 @@ function  buildDebateBTDatesTable(results)
 		str +='</table>';
 		
 		$("#dateWiseReportDiv").html(str);
-		
+		$("#dateWiseReportDiv").show();
 		$("#debatesTab").dataTable({
 		"aaSorting": [[ 1, "desc" ]],
 		"iDisplayLength": 15,
@@ -1414,6 +1640,7 @@ function showNewDebateDiv(){
 function showDebateReportDiv(){
 	$('#newDibateDiv').hide();
 	$('#dateWiseReportDiv').html('');
+	$("#dateWiseReportDiv").hide();
 	$('#newDebateAnalysisDiv').hide();
 	$('#fromDateId').val('');
 	$('#toDateId').val('');
@@ -1514,11 +1741,22 @@ function getCandidatesList(partyId)
 	var url = "getCandidatesListForDebateAction.action?"+rparam;
 	callAjax(jsObj,url);
 }
-function getCandidatesForSelectedParty(partyId)
+/*
+function getCandidatesForSelectedParty(partyId,searchType)
 {
+
+var candidateListId = "candidateSelecction";
+if(searchType == 1)
+{
+	candidateListId = "candidateSelecction";
+}
+else if(searchType == 2)
+{
+	candidateListId = "candidatesList";
+}
 	var jsObj = {
-			partyId :partyId,
-			selectedVal :"candidateSelecction",
+			partyId :1117,
+			selectedVal :candidateListId,
 			task : "getCandidatesOfAParty"	
 	};
 	
@@ -1527,15 +1765,49 @@ function getCandidatesForSelectedParty(partyId)
 	callAjax(jsObj,url);
 }
 
+*/
+
+
+function getCandidatesForSelectedParty(partyId,searchType)
+{
+
+	var candidateListId = "candidateSelecction";
+	if(searchType == 1)
+	{
+		candidateListId = "candidateSelecction";
+	}
+	else if(searchType == 2)
+	{
+		candidateListId = "candidatesList";
+	}
+	
+	var partyIdList = $('#partySelecction').val();
+	
+	var partyArr = $("#partySelecction").multiselect("getChecked").map(function(){
+       return this.value;
+     }).get();
+	
+	var jsObj = {
+			partyArr :partyArr,
+			selectedVal :candidateListId,
+			task : "getCandidatesOfAParty"	
+	};
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getCandidatesListForDebateAction.action?"+rparam;
+	callAjax(jsObj,url);	
+}
+
 function getRespectiveSelection()
 {
 		var str = '';
 		str += '<div class="span4" > ';
 		str += '<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Party  </label>'; 
-		str +='<select id="partySelecction" onChange="getCandidatesForSelectedParty(this.value)">';
+		str +='<select id="partySelecction" onChange="getCandidatesForSelectedParty(this.value,1)">';
 		for(var i in partiesArray)
 		{
-			str +='<option value="'+partiesArray[i].id+'">'+partiesArray[i].name+'</option>';
+			if(i >0)
+				str +='<option value="'+partiesArray[i].id+'">'+partiesArray[i].name+'</option>';
 		}
 		str +='</select>';
 		str += '</div>';
@@ -1544,14 +1816,149 @@ function getRespectiveSelection()
 		str +='<select id="candidateSelecction"><option value="0">Select Candidate</option></select>';
 		str += '</div>';
 		$('#reportTypeSelectionDiv').html(str);
+
+		$('#partySelecction,#candidateSelecction').multiselect({	
+			multiple: true,
+			selectedList: 1,
+			hide: "explode"	
+		}).multiselectfilter({    
+		});
+		
 }
 
-getEachTopicWisePartyAndCandidateDetails();
+
+
+function getRespectiveSelectionForAnalysis()
+{
+		var str = '';
+		str += '<div class="span5" > ';
+		str += '<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Party  </label>'; 
+		str +='<select id="partysList" onChange="getCandidatesForSelectedParty(this.value,2)">';
+		for(var i in partiesArray)
+		{
+			if(i >0)
+				str +='<option value="'+partiesArray[i].id+'">'+partiesArray[i].name+'</option>';
+		}
+		str +='</select>';
+		str += '</div>';
+		str += '<div class="span4" style="margin-left:-70px" > ';
+		str += '<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Candidate  </label>'; 
+		str +='<select id="candidatesList"><option value="0">Select Candidate</option></select>';
+		str += '</div>';
+		$('#reportTypesDiv').html(str);
+		
+		$('#candidatesList').multiselect({	
+			multiple: true,
+			selectedList: 1,
+			hide: "explode"	
+		}).multiselectfilter({    
+		});
+		
+		$('#partysList').multiselect({	
+			multiple: true,
+			selectedList: 1,
+			hide: "explode"	
+		}).multiselectfilter({    
+		});
+		
+}
+
+//getEachTopicWisePartyAndCandidateDetails();
 function getEachTopicWisePartyAndCandidateDetails()
 {
-	var jsObj={
-			task:"getEachTopicWisePartyAndCandidateDetails"
+	$('#partyCandidatePerformanceDivRow').hide();
+	$('#partyCandidatePerformanceDiv').html('');
+	var startDate = $('#startDateId').val();
+	var endDate = $('#endDateId').val();
+	$("#RRerrDiv").html('');
+	$("#dateWiseReportDiv").html("");
+	$("#dateWiseReportDiv").hide();
+	if(startDate != undefined && startDate.length <=0){
+		$("#RRerrDiv").html("From Date is Required.");
+		return;
 	}
+	if(endDate != undefined && endDate.length <=0){	
+		$("#RRerrDiv").html("To Date is Required.");
+		return;		
+	}
+	
+	if(startDate != undefined)
+	{
+			var fromDateArrr = startDate.split("/");			
+			var frommonth=fromDateArrr[0];
+			var fromDat=fromDateArrr[1];
+			var fromyear=fromDateArrr[2];
+	}
+
+	if(endDate != undefined)
+	{	
+			var toDateArr = endDate.split("/");			
+			var tomonth=toDateArr[0];
+			var toDat=toDateArr[1];	
+			var toyear=toDateArr[2];
+	}
+	
+		
+	if(startDate != undefined && endDate != undefined )
+	{
+	
+		if(fromyear>toyear){
+		$("#RRerrDiv").html('From Date should not greater then To Date ');	
+		return;
+		}
+		 if(frommonth>tomonth){
+			   if(fromyear == toyear){
+				$("#RRerrDiv").html('From Date should not greater then To Date ');		
+			return;
+			}		
+		}
+		
+		if(fromDat>toDat){	
+			if(frommonth == tomonth && fromyear == toyear){
+				$("#RRerrDiv").html('From Date should not greater then End Date ');		
+				return;				
+			   }
+		}
+	}
+	
+	
+	$("#RRerrDiv").html('');
+	var partyIds = $("#partysList").multiselect("getChecked").map(function(){
+       return this.value;
+     }).get();
+	
+	var candidateIds = $("#candidatesList").multiselect("getChecked").map(function(){
+       return this.value;
+     }).get();
+	 
+	 var channelIds = $("#channelsList").multiselect("getChecked").map(function(){
+       return this.value;
+     }).get();
+
+	if(channelIds == undefined || channelIds.length == 0)
+	{
+		channelIds.push("0");
+	}
+
+	if( partyIds == undefined ||  partyIds.length == 0)
+	{
+		partyIds.push("0");
+	}
+
+	if(candidateIds == undefined ||  candidateIds.length == 0)
+	{
+		candidateIds.push("0");
+	}
+
+	var jsObj = { 
+		fromDate : startDate,
+		toDate : endDate,
+		channelIdArr : channelIds,
+		partyIdArr : partyIds,
+		candidateIdArr : candidateIds,	
+		task:"getEachTopicWisePartyAndCandidateDetails"
+	}
+	
 	$.ajax({
           type:'GET',
           url: 'getPartyWiseTotalDebatesAndScalesService.action',
@@ -1603,12 +2010,105 @@ function buildEachTopicWisePartyAndCandidateDetails(result)
 	str += '</tbody>';
 	str += '</table>';
 	$('#partyCandidatePerformanceDiv').html(str);
+	$('#partyCandidatePerformanceDivRow').show();
 	//$('#secondReport').dataTable();
 }
 function getCandidateCharacteristicsDetails(){
-	var jsObj={
-			task:"candidateDetails"
+
+$('#candidatePartyPerformanceIdRow').hide();
+$('#candidatePartyPerformanceId').html('');
+	var startDate = $('#startDateId').val();
+	var endDate = $('#endDateId').val();
+	$("#RRerrDiv").html('');
+	$("#dateWiseReportDiv").html("");
+	$("#dateWiseReportDiv").hide();
+	if(startDate != undefined && startDate.length <=0){
+		$("#RRerrDiv").html("From Date is Required.");
+		return;
 	}
+	if(endDate != undefined && endDate.length <=0){	
+		$("#RRerrDiv").html("To Date is Required.");
+		return;		
+	}
+	
+	if(startDate != undefined)
+	{
+			var fromDateArrr = startDate.split("/");			
+			var frommonth=fromDateArrr[0];
+			var fromDat=fromDateArrr[1];
+			var fromyear=fromDateArrr[2];
+	}
+
+	if(endDate != undefined)
+	{	
+			var toDateArr = endDate.split("/");			
+			var tomonth=toDateArr[0];
+			var toDat=toDateArr[1];	
+			var toyear=toDateArr[2];
+	}
+	
+		
+	if(startDate != undefined && endDate != undefined )
+	{
+	
+		if(fromyear>toyear){
+		$("#RRerrDiv").html('From Date should not greater then To Date ');	
+		return;
+		}
+		 if(frommonth>tomonth){
+			   if(fromyear == toyear){
+				$("#RRerrDiv").html('From Date should not greater then To Date ');		
+			return;
+			}		
+		}
+		
+		if(fromDat>toDat){	
+			if(frommonth == tomonth && fromyear == toyear){
+				$("#RRerrDiv").html('From Date should not greater then End Date ');		
+				return;				
+			   }
+		}
+	}
+	
+	
+	$("#RRerrDiv").html('');
+	var partyIds = $("#partysList").multiselect("getChecked").map(function(){
+       return this.value;
+     }).get();
+	
+	var candidateIds = $("#candidatesList").multiselect("getChecked").map(function(){
+       return this.value;
+     }).get();
+	 
+	 var channelIds = $("#channelsList").multiselect("getChecked").map(function(){
+       return this.value;
+     }).get();
+
+	if(channelIds == undefined || channelIds.length == 0)
+	{
+		channelIds.push("0");
+	}
+
+	if( partyIds == undefined ||  partyIds.length == 0)
+	{
+		partyIds.push("0");
+	}
+
+	if(candidateIds == undefined ||  candidateIds.length == 0)
+	{
+		candidateIds.push("0");
+	}
+	
+	
+	var jsObj = { 
+		fromDate : startDate,
+		toDate : endDate,
+		channelIdArr : channelIds,
+		partyIdArr : partyIds,
+		candidateIdArr : candidateIds,	
+		task:"candidateDetails"
+	}
+	
 	$.ajax({
           type:'GET',
           url: 'getCandidateCharacteristicsDetailsAction.action',
@@ -1618,7 +2118,7 @@ function getCandidateCharacteristicsDetails(){
 			buildCandidateCharacteristics(result);
 	});
 }
-getCandidateCharacteristicsDetails();
+//getCandidateCharacteristicsDetails();
 function buildCandidateCharacteristics(myResults){
 	var result = myResults.debateSubjectList;
 	$('#sampleId').html('');
@@ -1689,15 +2189,108 @@ function buildCandidateCharacteristics(myResults){
 		 str += '</tbody>';
 		 str += '</table>';
 		 $('#candidatePartyPerformanceId').html(str);
+		 $('#candidatePartyPerformanceIdRow').show();
 		//$('#fourthReport').dataTable();
 	}
 }
-partyWiseCandidatePerformance();
+//partyWiseCandidatePerformance();
 function partyWiseCandidatePerformance()
 {
-	var jsObj={
-			task:"partyWiseCandidatePerformance"
+	$('#eachAttributePartyCandidateIdRow').hide();
+	$('#eachAttributePartyCandidateId').html('');
+	var startDate = $('#startDateId').val();
+	var endDate = $('#endDateId').val();
+	$("#RRerrDiv").html('');
+	$("#dateWiseReportDiv").html("");
+	$("#dateWiseReportDiv").hide();
+	if(startDate != undefined && startDate.length <=0){
+		$("#RRerrDiv").html("From Date is Required.");
+		return;
 	}
+	if(endDate != undefined && endDate.length <=0){	
+		$("#RRerrDiv").html("To Date is Required.");
+		return;		
+	}
+	
+	if(startDate != undefined)
+	{
+			var fromDateArrr = startDate.split("/");			
+			var frommonth=fromDateArrr[0];
+			var fromDat=fromDateArrr[1];
+			var fromyear=fromDateArrr[2];
+	}
+
+	if(endDate != undefined)
+	{	
+			var toDateArr = endDate.split("/");			
+			var tomonth=toDateArr[0];
+			var toDat=toDateArr[1];	
+			var toyear=toDateArr[2];
+	}
+	
+		
+	if(startDate != undefined && endDate != undefined )
+	{
+	
+		if(fromyear>toyear){
+		$("#RRerrDiv").html('From Date should not greater then To Date ');	
+		return;
+		}
+		 if(frommonth>tomonth){
+			   if(fromyear == toyear){
+				$("#RRerrDiv").html('From Date should not greater then To Date ');		
+			return;
+			}		
+		}
+		
+		if(fromDat>toDat){	
+			if(frommonth == tomonth && fromyear == toyear){
+				$("#RRerrDiv").html('From Date should not greater then End Date ');		
+				return;				
+			   }
+		}
+	}
+	
+	
+	$("#RRerrDiv").html('');
+	var partyIds = $("#partysList").multiselect("getChecked").map(function(){
+       return this.value;
+     }).get();
+	
+	var candidateIds = $("#candidatesList").multiselect("getChecked").map(function(){
+       return this.value;
+     }).get();
+	 
+	 var channelIds = $("#channelsList").multiselect("getChecked").map(function(){
+       return this.value;
+     }).get();
+
+	if(channelIds == undefined || channelIds.length == 0)
+	{
+		channelIds.push("0");
+	}
+
+	if( partyIds == undefined ||  partyIds.length == 0)
+	{
+		partyIds.push("0");
+	}
+
+	if(candidateIds == undefined ||  candidateIds.length == 0)
+	{
+		candidateIds.push("0");
+	}
+	
+	
+	var jsObj = { 
+		fromDate : startDate,
+		toDate : endDate,
+		channelIdArr : channelIds,
+		partyIdArr : partyIds,
+		candidateIdArr : candidateIds,	
+		task:"partyWiseCandidatePerformance"
+	}
+
+	
 	$.ajax({
           type:'GET',
           url: 'partyWiseCandidatePerformance.action',
@@ -1740,15 +2333,108 @@ function buildpartyWiseCandidatePerformance(result)
 	str += '</tbody>';
 	str += '</table>';
 	$('#eachAttributePartyCandidateId').html(str);
+	$('#eachAttributePartyCandidateIdRow').show();
 	//$('#thirdReport').dataTable();
 }
 
-getPartyWiseOverAllSummery();
+//getPartyWiseOverAllSummery();
 function getPartyWiseOverAllSummery()
 {
-	var jsObj={
-			task:"getPartyWiseOverAllSummery"
+
+	$('#partyOverallSummeryRow').hide();
+	$('#partyOverallSummery').html("");
+	var startDate = $('#startDateId').val();
+	var endDate = $('#endDateId').val();
+	$("#RRerrDiv").html('');
+	$("#dateWiseReportDiv").html("");
+	$("#dateWiseReportDiv").hide();
+	if(startDate != undefined && startDate.length <=0){
+		$("#RRerrDiv").html("From Date is Required.");
+		return;
 	}
+	if(endDate != undefined && endDate.length <=0){	
+		$("#RRerrDiv").html("To Date is Required.");
+		return;		
+	}
+	
+	if(startDate != undefined)
+	{
+			var fromDateArrr = startDate.split("/");			
+			var frommonth=fromDateArrr[0];
+			var fromDat=fromDateArrr[1];
+			var fromyear=fromDateArrr[2];
+	}
+
+	if(endDate != undefined)
+	{	
+			var toDateArr = endDate.split("/");			
+			var tomonth=toDateArr[0];
+			var toDat=toDateArr[1];	
+			var toyear=toDateArr[2];
+	}
+	
+		
+	if(startDate != undefined && endDate != undefined )
+	{
+	
+		if(fromyear>toyear){
+		$("#RRerrDiv").html('From Date should not greater then To Date ');	
+		return;
+		}
+		 if(frommonth>tomonth){
+			   if(fromyear == toyear){
+				$("#RRerrDiv").html('From Date should not greater then To Date ');		
+			return;
+			}		
+		}
+		
+		if(fromDat>toDat){	
+			if(frommonth == tomonth && fromyear == toyear){
+				$("#RRerrDiv").html('From Date should not greater then End Date ');		
+				return;				
+			   }
+		}
+	}
+	
+	
+	$("#RRerrDiv").html('');
+	var partyIds = $("#partysList").multiselect("getChecked").map(function(){
+       return this.value;
+     }).get();
+	
+	var candidateIds = $("#candidatesList").multiselect("getChecked").map(function(){
+       return this.value;
+     }).get();
+	 
+	 var channelIds = $("#channelsList").multiselect("getChecked").map(function(){
+       return this.value;
+     }).get();
+
+	if(channelIds == undefined || channelIds.length == 0)
+	{
+		channelIds.push("0");
+	}
+
+	if( partyIds == undefined ||  partyIds.length == 0)
+	{
+		partyIds.push("0");
+	}
+
+	if(candidateIds == undefined ||  candidateIds.length == 0)
+	{
+		candidateIds.push("0");
+	}
+	
+	
+	var jsObj = { 
+		fromDate : startDate,
+		toDate : endDate,
+		channelIdArr : channelIds,
+		partyIdArr : partyIds,
+		candidateIdArr : candidateIds,	
+		task:"getPartyWiseOverAllSummery"
+	}
+	
 	$.ajax({
           type:'GET',
           url: 'getPartyWiseOverAllPerformance.action',
@@ -1806,14 +2492,106 @@ var str = '';
 	str += '</tbody>';
 	str += '</table>';	
 	$('#partyOverallSummery').html(str);
+	$('#partyOverallSummeryRow').show();
 	//$('#firstReport').dataTable();
 }
-getStrongAndWeakTopicsByPartyWise();
+//getStrongAndWeakTopicsByPartyWise();
 function getStrongAndWeakTopicsByPartyWise()
 {
-	var jsObj={
-			task:"getStrongAndWeakTopicsByPartyWise"
+$('#topicwiseStrongAndWeakRow').hide();
+$('#topicwiseStrongAndWeak').html('');
+	var startDate = $('#startDateId').val();
+	var endDate = $('#endDateId').val();
+	$("#RRerrDiv").html('');
+	$("#dateWiseReportDiv").html("");
+	$("#dateWiseReportDiv").hide();
+	if(startDate != undefined && startDate.length <=0){
+		$("#RRerrDiv").html("From Date is Required.");
+		return;
 	}
+	if(endDate != undefined && endDate.length <=0){	
+		$("#RRerrDiv").html("To Date is Required.");
+		return;		
+	}
+	
+	if(startDate != undefined)
+	{
+			var fromDateArrr = startDate.split("/");			
+			var frommonth=fromDateArrr[0];
+			var fromDat=fromDateArrr[1];
+			var fromyear=fromDateArrr[2];
+	}
+
+	if(endDate != undefined)
+	{	
+			var toDateArr = endDate.split("/");			
+			var tomonth=toDateArr[0];
+			var toDat=toDateArr[1];	
+			var toyear=toDateArr[2];
+	}
+	
+		
+	if(startDate != undefined && endDate != undefined )
+	{
+	
+		if(fromyear>toyear){
+		$("#RRerrDiv").html('From Date should not greater then To Date ');	
+		return;
+		}
+		 if(frommonth>tomonth){
+			   if(fromyear == toyear){
+				$("#RRerrDiv").html('From Date should not greater then To Date ');		
+			return;
+			}		
+		}
+		
+		if(fromDat>toDat){	
+			if(frommonth == tomonth && fromyear == toyear){
+				$("#RRerrDiv").html('From Date should not greater then End Date ');		
+				return;				
+			   }
+		}
+	}
+	
+	
+	$("#RRerrDiv").html('');
+	var partyIds = $("#partysList").multiselect("getChecked").map(function(){
+       return this.value;
+     }).get();
+	
+	var candidateIds = $("#candidatesList").multiselect("getChecked").map(function(){
+       return this.value;
+     }).get();
+	 
+	 var channelIds = $("#channelsList").multiselect("getChecked").map(function(){
+       return this.value;
+     }).get();
+
+	if(channelIds == undefined || channelIds.length == 0)
+	{
+		channelIds.push("0");
+	}
+
+	if( partyIds == undefined ||  partyIds.length == 0)
+	{
+		partyIds.push("0");
+	}
+
+	if(candidateIds == undefined ||  candidateIds.length == 0)
+	{
+		candidateIds.push("0");
+	}
+	
+	
+	var jsObj = { 
+		fromDate : startDate,
+		toDate : endDate,
+		channelIdArr : channelIds,
+		partyIdArr : partyIds,
+		candidateIdArr : candidateIds,	
+		task:"getStrongAndWeakTopicsByPartyWise"
+	}
+	
 	$.ajax({
           type:'GET',
           url: 'getPartyWiseStrongAndWeakTopicAndCandidates.action',
@@ -1899,8 +2677,15 @@ function buildStrongAndWeakTopicsByPartyWise(result)
 	}
 	
 	$('#topicwiseStrongAndWeak').html(str);
+	$('#topicwiseStrongAndWeakRow').show();
 	
-	
-	
-	
+}
+
+function getNewsDebateAnalysisReport()
+{
+	getEachTopicWisePartyAndCandidateDetails();
+	partyWiseCandidatePerformance();
+	getPartyWiseOverAllSummery();
+	getCandidateCharacteristicsDetails();
+	getStrongAndWeakTopicsByPartyWise();
 }
