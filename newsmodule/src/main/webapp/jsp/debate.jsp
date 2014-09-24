@@ -69,15 +69,28 @@
 
 		 
 	<script src="js/debate.js"></script>
-		
+
+	<script type="text/javascript" src="pagination/jquery.simplePagination.js"></script>
+<link rel="stylesheet" type="text/css" href="pagination/simplePagination.css">
+<script type="text/javascript" src="pagination/pagination1.js"></script>
+<script type="text/javascript" src="pagination/jquery.simplePagination.js"></script>	
+
+	
+	
 			
 	<style type="text/css">
-	#errorMsgDiv,#RerrDiv,#RerrDivForAnalysis,#errorForTotal{
+	#errorMsgDiv,#RerrDiv,#RerrDivForAnalysis,#errorForTotal,#RRerrDiv{
 		font-weight:bold;
 		margin-bottom:10px;
 		color:red;
 	}
 	
+	#newsreportTab  thead th{
+				background-color: #dff0d8  !important;
+				color : #468847 !important;
+				line-height: 15px !important;
+			}
+			
 	#debatesTab > thead {
 	background:#CDE6FC;
 	}
@@ -129,7 +142,7 @@ function buildDebateDetailsAfterEdit(){
 	$('#partySelecction').val(partyIdEdit);
 	getCandidatesForSelectedParty(partyIdEdit);
 	if(fromDateEdit.trim().length >0 && toDateEdit.trim().length > 0){
-		getDebateDetailsBetwinDates(fromDateEdit,toDateEdit,channelEdit,partyIdEdit,candidateIdEdit)
+		getDebateDetailsBetwinDates(fromDateEdit,toDateEdit,channelEdit,partyIdEdit,candidateIdEdit,0,10)
 	}
 }
 $(function () {
@@ -146,10 +159,10 @@ $(function () {
 	sliderAccessArgs: { touchonly: false }
     });
 	
-	$('#fromDateId').datepicker({
+	$('#fromDateId,#startDateId').datepicker({
 	maxDate:new Date()
 	});
-	$('#toDateId').datepicker({
+	$('#toDateId,#endDateId').datepicker({
 	maxDate:new Date()
 	});
 	$('#fromDateIdForAnalysis').datepicker({
@@ -168,7 +181,14 @@ $( document ).ready(function() {
 		$('#acConstituencyRow').hide();
 		getValues();
 		getRespectiveSelection();
+		getRespectiveSelectionForAnalysis();
 		buildDebateDetailsAfterEdit();
+		$('#channelsList,#channelSelecction').multiselect({	
+			multiple: true,
+			selectedList: 1,
+			hide: "explode"	
+		}).multiselectfilter({    
+		});
 	$("#createCandidateId").live("click",function(){
 		
 		$("#errorMsgDiv").html('');
@@ -501,8 +521,7 @@ window.location.href = uri + base64(format(template, ctx))
 				<div class="span4" >
 				<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Channel :    </label>
 				<s:select name="channel"  id="channelSelecction" list="channelList" theme="simple" listKey="id" listValue="name"/>
-				</div>
-					
+				</div>					
 				</div>
 				
 				<div class="row-fluid" id="reportTypeSelectionDiv"></div>
@@ -515,7 +534,8 @@ window.location.href = uri + base64(format(template, ctx))
 			
 			</div>
 			
-			<div id="dateWiseReportDiv" class="span12 well-small yui-skin-sam yui-dt-sortable yui-dt-paginator yui-pg-container yui-dt" style="overflow-x: scroll;"></div>
+			<div id="dateWiseReportDiv" class="span12 well-small yui-skin-sam yui-dt-sortable yui-dt-paginator yui-pg-container yui-dt" style="overflow-x: scroll;display:none;"></div>
+			<div id="paginationAtEnd" style="margin-left:255px;"> </div>
 	</div>
 	
 	
@@ -549,15 +569,41 @@ window.location.href = uri + base64(format(template, ctx))
 	
 	<div id="newDebateAnalysisDiv" style="display:none;" >
 		<div class="container">
-		
-		<div class="row">
+		<div id="RRerrDiv"></div>
+			<legend class="boxHeading">Debate Analysis Report :</legend>
+			<h4>  </h4>
+			
+		<div class="row-fluid" >
+					<div class="span4" > 
+					<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">From Date  <font class="requiredFont">*</font></label> <input type="text" id="startDateId"></input>
+					</div>
+					
+					<div class="span4" > 
+					<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">To Date  <font class="requiredFont">*</font></label>  <input type="text" id="endDateId"></input>
+					</div>
+				<div class="span4" >
+				<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Channel :    </label>
+				<s:select name="channel"  id="channelsList" list="channelList" theme="simple" listKey="id" listValue="name" />
+				</div>
+				
+
+				<div class="row-fluid" id="reportTypesDiv"></div>
+				
+				<div align="center" style="margin-bottom: 15px; margin-top: 10px;">
+					<a class="btn btn-success" onClick="getNewsDebateAnalysisReport();">Submit</a>
+				</div>
+				
+		</div>
+				
+				
+		<div class="row" id="partyOverallSummeryRow" style="display:none;">
 			<div class="span12">
 				<div class="row">
 					<div class="span12  widgetservey_Red m_top20">
 							
 							<legend class="boxHeading">Party Wise Over All Performance <a class="btn btn-info  btn-mini" style="float:right" onClick="generateExcelReport('firstReport')" >Export Excel </a></legend>
 						<div class="row">
-						 <div class="span12" id="partyOverallSummery">							
+						 <div class="span12" id="partyOverallSummery" >							
 						</div>
 						</div>					
 					</div>
@@ -566,7 +612,7 @@ window.location.href = uri + base64(format(template, ctx))
 			</div>
 		</div>
 		
-		<div class="row">
+		<div class="row"  id="topicwiseStrongAndWeakRow" style="display:none;">
 			<div class="span12">
 				<div class="row">
 					<div class="span12  widgetservey_Red m_top20">
@@ -578,7 +624,7 @@ window.location.href = uri + base64(format(template, ctx))
 				</div>
 			</div>
 		</div>
-		<div class="row">
+		<div class="row" id="eachAttributePartyCandidateIdRow" style="display:none;">
 			<div class="span12">
 				<div class="row ">
 					<div class="span12  widgetservey_Red m_top20">
@@ -596,7 +642,7 @@ window.location.href = uri + base64(format(template, ctx))
 			</div>
 		</div>
 		
-		<div class="row">
+		<div class="row"  id="partyCandidatePerformanceDivRow" style="display:none;">
 			<div class="span12">
 				<div class="row ">
 					<div class="span12  widgetservey_Red m_top20">
@@ -614,7 +660,7 @@ window.location.href = uri + base64(format(template, ctx))
 		
 		
 		
-		<div class="row">
+		<div class="row" id="candidatePartyPerformanceIdRow"  style="display:none;">
 			<div class="span12">
 				<div class="row">
 					<div class="span12  widgetservey_Red m_top20">
