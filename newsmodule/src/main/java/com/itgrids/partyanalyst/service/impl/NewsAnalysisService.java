@@ -48,6 +48,7 @@ import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.ICandidatePartyCategoryDAO;
 import com.itgrids.partyanalyst.dao.ICandidatePartyFileDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IFileDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
@@ -90,6 +91,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 	private IActivityReportFilesDAO activityReportFilesDAO;
 	private ICandidatePartyFileDAO candidatePartyFileDAO;
 	private ICandidateDAO candidateDAO;
+	private IDistrictDAO districtDAO;
 	
 	
 	
@@ -208,6 +210,13 @@ public class NewsAnalysisService implements INewsAnalysisService {
 	}
 	public void setCandidateDAO(ICandidateDAO candidateDAO) {
 		this.candidateDAO = candidateDAO;
+	}
+	
+	public IDistrictDAO getDistrictDAO() {
+		return districtDAO;
+	}
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
 	}
 	public NewsAnalysisVO analyseNewsWithSelectedParameters(AnalysisVO analysisVO){
 		if(LOG.isInfoEnabled()){
@@ -5861,4 +5870,46 @@ public class NewsAnalysisService implements INewsAnalysisService {
 			}
 		  return selectOptionVO;
 	  }
+      
+      
+      
+    public List<SelectOptionVO> getAssemblyConstituenciesForStatesList(List<Long> stateIds)
+  	{
+    	List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
+    	try{
+    		
+    		List<Object[]> consList =  constituencyDAO.getAssemblyConstisByStateIds(stateIds);
+	  		if(consList != null && consList.size() > 0){
+	  			for(Object[] params : consList){
+	  				SelectOptionVO vo = new SelectOptionVO();
+	  				vo.setId((Long)params[0]);
+	  				vo.setName(params[1].toString());
+	  				returnList.add(vo);
+	  			}
+	  		}
+		}catch(Exception e){
+			LOG.error("Exception raised in getAssemblyConstituenciesForStatesList ",e);
+		}
+	return returnList;
+  	}
+    
+    public List<SelectOptionVO> getDistrictsForStatesList(List<Long> stateIds)
+   	{
+     	List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
+     	try{
+     		
+     		List<Object[]> districtsList =  districtDAO.getDistrictsByStateId(stateIds);
+ 	  		if(districtsList != null && districtsList.size() > 0){
+ 	  			for(Object[] params : districtsList){
+ 	  				SelectOptionVO vo = new SelectOptionVO();
+ 	  				vo.setId((Long)params[0]);
+ 	  				vo.setName(params[1].toString());
+ 	  				returnList.add(vo);
+ 	  			}
+ 	  		}
+ 		}catch(Exception e){
+ 			LOG.error("Exception raised in getDistrictsForStatesList ",e);
+ 		}
+ 	return returnList;
+   	}
 }

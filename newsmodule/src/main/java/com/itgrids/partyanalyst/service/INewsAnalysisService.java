@@ -41,4 +41,8 @@ public interface INewsAnalysisService {
 	public TreeMap<Long,String> getPartyNames(String partyIds);
 	
 	public SelectOptionVO generateExcelForAnalysis(Date startDate,Date endDate,String ids,String[] partyIds,Long locationLevelId,String locationLevelValue,Long candidatateId);
+	
+	public List<SelectOptionVO> getAssemblyConstituenciesForStatesList(List<Long> stateIds);
+	
+	public List<SelectOptionVO> getDistrictsForStatesList(List<Long> stateIds);
 }

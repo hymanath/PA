@@ -265,6 +265,7 @@
        <property name="activityReportFilesDAO" ref="activityReportFilesDAO" />
        <property name="candidatePartyFileDAO" ref="candidatePartyFileDAO" />
        <property name="candidateDAO" ref="candidateDAO" />
+       <property name="districtDAO" ref="districtDAO" />
    </bean>
    
     <bean name="politicalFeedBackService" class="com.itgrids.partyanalyst.service.impl.PoliticalFeedBackService">
