@@ -80,10 +80,20 @@ public class RegistrationVO extends BaseDTO{
 	private Long publicationDateId;
 	private String designation;
 	private String createdTime;
+	private String ipAddress;
+	
 private String randomNumber;
 	
 	
 	
+	public String getIpAddress() {
+	return ipAddress;
+}
+
+public void setIpAddress(String ipAddress) {
+	this.ipAddress = ipAddress;
+}
+
 	public String getRandomNumber() {
 		return randomNumber;
 	}

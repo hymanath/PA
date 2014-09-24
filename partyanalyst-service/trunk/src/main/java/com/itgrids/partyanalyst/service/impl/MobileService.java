@@ -3949,7 +3949,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 					returnList.add(new SelectOptionVO((Long)params[0],params[1].toString()));
 			}
 		} catch (Exception e) {
-			LOG.error("Exception Occured in getDistrictsList(), Exception is -",e);
+			LOG.error("Exception Occured in getTehsilList(), Exception is -",e);
 		}
 		  return returnList;
 	  }
@@ -3964,7 +3964,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 					returnList.add(new SelectOptionVO(new BigInteger(params[0].toString()).longValue(),params[1].toString()));
 			}
 		} catch (Exception e) {
-			LOG.error("Exception Occured in getDistrictsList(), Exception is -",e);
+			LOG.error("Exception Occured in getpcconstituencyList(), Exception is -",e);
 		}
 		  return returnList;
 	  }
@@ -4132,7 +4132,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 			 }
 		 }
 		 catch (Exception e) {
-			 LOG.error("Exception Occured in setCounts(), Exception is - ",e);
+			 LOG.error("Exception Occured in setCountsForParliamnet(), Exception is - ",e);
 		}
 		return resultList;
 	 }
