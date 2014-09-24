@@ -26,6 +26,8 @@ public class DebateAnalysisVO implements Serializable {
 	
 	private Double count;	
 	
+	private String perc;
+	
 	
 	public Long getDebateId() {
 		return debateId;
@@ -98,6 +100,12 @@ public class DebateAnalysisVO implements Serializable {
 	}
 	public void setCandidate(String candidate) {
 		this.candidate = candidate;
+	}
+	public String getPerc() {
+		return perc;
+	}
+	public void setPerc(String perc) {
+		this.perc = perc;
 	}
 	
 	

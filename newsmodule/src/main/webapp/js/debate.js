@@ -1766,7 +1766,7 @@ var str = '';
 	str += '<thead class="alert alert-success">';
 	str += '<tr>';
 	str += '<th>Party</th>';
-	str += '<th>Total Debates</th>';
+	str += '<th>Total Debates/</br>Performance Count</th>';
 	str += '<th colspan=4>Ranking</th>';
 	str += '<th>Subject</th>';
 	str += '<th>Presentation</th>	';
@@ -1792,7 +1792,7 @@ var str = '';
 	{
 		str += '<tr>';
 		str += '<td>'+result[i].partyName+'</td>';
-		str += '<td>'+result[i].totalDebates+'</td>';
+		str += '<td>'+result[i].totalDebates+'/'+result[i].debateScale+'</td>';
 		str += '<td>'+result[i].rankingVO.firstRank+'</td>';
 		str += '<td>'+result[i].rankingVO.secondRank+'</td>';
 		str += '<td>'+result[i].rankingVO.thirdRank+'</td>';
