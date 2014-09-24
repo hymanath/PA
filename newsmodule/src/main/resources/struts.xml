@@ -6311,6 +6311,11 @@
 		    		</result>
 		 </action>
 		 
+		 <action name="getPartyWiseStrongAndWeakTopicAndCandidates" class="debateAction" method="getPartyWiseStrongAndWeakTopicAndCandidates">
+					<result type="json" name="success">
+		    			<param name="root">debateReportList</param>
+		    		</result>
+		 </action>
 		
 		  <action name="getPartiesForAStateAction" class="newsPaginationAction" method="ajaxHandler">
 		  <result type="json" name="success">

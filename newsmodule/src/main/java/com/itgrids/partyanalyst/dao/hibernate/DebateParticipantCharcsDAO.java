@@ -76,4 +76,14 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 		return query.list();
 	}
 	
+	public List<Object[]> getTopicWiseStrongOrWeakCandidates(String sortOrder)
+	{
+		Query query = getSession().createQuery("select model.debateParticipant.party.partyId ,model.debateParticipant.party.shortName ,model.debateParticipant.debate.debateId ," +
+				" model2.debateSubjectId ,model2.subject , model.debateParticipant.candidate.candidateId, model.debateParticipant.candidate.lastname , " +
+				" sum(model.scale) ,model.debateParticipant.debate.channel.channelName from DebateParticipantCharcs model ,DebateSubject model2 where model.debateParticipant.debate.debateId = model2.debate.debateId" +
+				" group by model.debateParticipant.party.partyId,model.debateParticipant.debate.debateId order by model.debateParticipant.debate.debateId ,sum(model.scale) " + sortOrder);
+		
+		return query.list();
+	}
+	
 }

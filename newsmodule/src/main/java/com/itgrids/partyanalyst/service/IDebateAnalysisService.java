@@ -13,4 +13,5 @@ public interface IDebateAnalysisService {
 	public List<DebateAnalysisVO> partyWiseCandidatePerformance();
 	public List<DebateTopicVO> getPartyCandidatePerfortmanceTopicWise();
 	public List<DebatePartyWiseCountVO> getPartyWiseOverAllPerformance();
+	public List<DebateTopicVO> getPartyWiseStrongAndWeakTopicAndCandidates();
 }
