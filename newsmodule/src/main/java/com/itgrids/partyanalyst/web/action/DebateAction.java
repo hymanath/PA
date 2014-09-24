@@ -1022,5 +1022,20 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 		
 		return Action.SUCCESS;
 	}
+	
+	public String getPartyWiseStrongAndWeakTopicAndCandidates()
+	{
+		try {
+			jObj=new JSONObject(getTask());
+			debateReportList = debateAnalysisService.getPartyWiseStrongAndWeakTopicAndCandidates();
+			
+			return Action.SUCCESS;
+		} catch (Exception e) {
+			LOG.error(" Exception occured in getPartiesListByStateId() in DebateAction class. "+e);
+		}
+		
+		
+		return Action.SUCCESS;
+	}
 
 }

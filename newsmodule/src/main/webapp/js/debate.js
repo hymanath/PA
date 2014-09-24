@@ -1792,3 +1792,99 @@ var str = '';
 	$('#partyOverallSummery').html(str);
 	//$('#firstReport').dataTable();
 }
+getStrongAndWeakTopicsByPartyWise();
+function getStrongAndWeakTopicsByPartyWise()
+{
+	var jsObj={
+			task:"getStrongAndWeakTopicsByPartyWise"
+	}
+	$.ajax({
+          type:'GET',
+          url: 'getPartyWiseStrongAndWeakTopicAndCandidates.action',
+          dataType: 'json',
+          data: {task:JSON.stringify(jsObj)},
+	}).done(function(result){
+			buildStrongAndWeakTopicsByPartyWise(result);
+	});
+}
+function buildStrongAndWeakTopicsByPartyWise(result)
+{
+	var str = '';
+	for(var i in result)
+	{
+		str += '<div class="row">';
+		str += '<div class="span6">';
+		str += '<h4>'+result[i].party+' Strong</h4>';
+		str += '<table class="table table-bordered table-hover table-striped" >';
+		str += '<thead class="alert alert-success">';
+		str += '<tr>';
+		str += '<th>Topic</th>';
+		str += '<th>Channel</th>';
+		str += '<th>Candidate</th>';
+		str += '</tr>';
+		str += '</thead>';
+		str += '<tbody>';
+		if(result[i].top != null && result[i].top.length > 0)
+		{
+			for(var j in result[i].top)
+			{
+				str += '<tr>';
+				if(result[i].top[j].count > 1)
+				{
+					str += '<td>'+result[i].top[j].subject+'('+result[i].top[j].count+')</td>';
+				}
+				else
+				{
+					str += '<td>'+result[i].top[j].subject+'</td>';
+				}
+				
+				str += '<td>'+result[i].top[j].channel+'</td>';
+				str += '<td>'+result[i].top[j].candidate+'</td>';
+				str += '</tr>';
+			}
+		}
+		str += '</tbody>';
+		str += '</table>';
+		str += '</div>';
+		
+		str += '<div class="span6">';
+		str += '<h4>'+result[i].party+' Weak</h4>';
+		str += '<table class="table table-bordered table-hover table-striped" >';
+		str += '<thead class="alert alert-success">';
+		str += '<tr>';
+		str += '<th>Topic</th>';
+		str += '<th>Channel</th>';
+		str += '<th>Candidate</th>';
+		str += '</tr>';
+		str += '</thead>';
+		str += '<tbody>';
+		if(result[i].weak != null && result[i].weak.length > 0)
+		{
+			for(var j in result[i].weak)
+			{
+				str += '<tr>';
+				if(result[i].weak[j].count > 1)
+				{
+					str += '<td>'+result[i].weak[j].subject+'('+result[i].weak[j].count+')</td>';
+				}
+				else
+				{
+					str += '<td>'+result[i].weak[j].subject+'</td>';
+				}
+				str += '<td>'+result[i].weak[j].channel+'</td>';
+				str += '<td>'+result[i].weak[j].candidate+'</td>';
+				str += '</tr>';
+			}
+		}
+		str += '</tbody>';
+		str += '</table>';
+		str += '</div>';
+		str += '</div>';
+	}
+	
+	$('#topicwiseStrongAndWeak').html(str);
+	
+	
+	
+	
+}

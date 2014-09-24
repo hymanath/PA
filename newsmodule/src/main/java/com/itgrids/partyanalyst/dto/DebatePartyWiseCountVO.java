@@ -17,6 +17,8 @@ public class DebatePartyWiseCountVO implements Serializable{
 	
 	private List<DebatePartyWiseCountVO> subList;
 	
+	private DebateRankingVO rankingVO;
+	
 	
 	public Long getPartyId() {
 		return partyId;
@@ -65,6 +67,12 @@ public class DebatePartyWiseCountVO implements Serializable{
 	}
 	public void setPerc(String perc) {
 		this.perc = perc;
+	}
+	public DebateRankingVO getRankingVO() {
+		return rankingVO;
+	}
+	public void setRankingVO(DebateRankingVO rankingVO) {
+		this.rankingVO = rankingVO;
 	}
 	
 	

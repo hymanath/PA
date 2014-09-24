@@ -18,8 +18,16 @@ public class DebateTopicVO implements Serializable{
 	
 	private Double countScale;
 	
+	private Long channelId;
+	private String channel = "-";
+	
 	
 	private List<DebateTopicVO> subList;
+	
+	private Long count = 0l;
+	
+	private List<DebateTopicVO> top;
+	private List<DebateTopicVO> weak;
 
 	public Long getPartyId() {
 		return partyId;
@@ -83,6 +91,46 @@ public class DebateTopicVO implements Serializable{
 
 	public void setCountScale(Double countScale) {
 		this.countScale = countScale;
+	}
+
+	public Long getChannelId() {
+		return channelId;
+	}
+
+	public void setChannelId(Long channelId) {
+		this.channelId = channelId;
+	}
+
+	public String getChannel() {
+		return channel;
+	}
+
+	public void setChannel(String channel) {
+		this.channel = channel;
+	}
+
+	public Long getCount() {
+		return count;
+	}
+
+	public void setCount(Long count) {
+		this.count = count;
+	}
+
+	public List<DebateTopicVO> getTop() {
+		return top;
+	}
+
+	public void setTop(List<DebateTopicVO> top) {
+		this.top = top;
+	}
+
+	public List<DebateTopicVO> getWeak() {
+		return weak;
+	}
+
+	public void setWeak(List<DebateTopicVO> weak) {
+		this.weak = weak;
 	}
 
 	

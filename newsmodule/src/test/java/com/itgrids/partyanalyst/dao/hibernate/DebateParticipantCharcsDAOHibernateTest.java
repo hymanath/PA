@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IDebateParticipantCharcsDAO;
 import com.itgrids.partyanalyst.dto.DebatePartyWiseCountVO;
+import com.itgrids.partyanalyst.dto.DebateRankingVO;
+import com.itgrids.partyanalyst.dto.DebateTopicVO;
 
 public class DebateParticipantCharcsDAOHibernateTest extends BaseDaoTestCase{
 
@@ -168,7 +169,7 @@ public class DebateParticipantCharcsDAOHibernateTest extends BaseDaoTestCase{
 		}
 }*/
 	
-	public void testgetPartyWiseTotalDebatesAndScales()
+	/*public void testgetPartyWiseTotalDebatesAndScales()
 	{
 		List<Object[]> partyDebateCount =  debateParticipantCharcsDAO.getPartyWiseTotalDebatesAndScales();
 		if(partyDebateCount != null && partyDebateCount.size() > 0)
@@ -227,9 +228,9 @@ public class DebateParticipantCharcsDAOHibernateTest extends BaseDaoTestCase{
 		}
 		
 		
-	}
+	}*/
 	
-	public void fillDebatePartyWiseCountVO(List<Object[]> resultList,Map<Long,DebatePartyWiseCountVO> returnMap,String type)
+	/*public void fillDebatePartyWiseCountVO(List<Object[]> resultList,Map<Long,DebatePartyWiseCountVO> returnMap,String type)
 	{
 		try {
 			for (Object[] parms : resultList) {
@@ -262,5 +263,159 @@ public class DebateParticipantCharcsDAOHibernateTest extends BaseDaoTestCase{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}*/
+	
+	/*public void testGetPartyWiseEachDebateCharsCount()
+	{
+		List<Object[]> result = debateParticipantCharcsDAO.getPartyWiseEachDebateCharsCount();
+		if(result != null && result.size() > 0)
+		{
+			Map<Long,DebatePartyWiseCountVO> resultMap = new HashMap<Long, DebatePartyWiseCountVO>();
+			Map<Long,DebateRankingVO> partyRankCountMap = new HashMap<Long, DebateRankingVO>();
+			Long count = 0l;
+			for (Object[] objects : result)
+			{
+				if(objects[2] != null)
+				{
+					DebatePartyWiseCountVO dabateVO = resultMap.get((Long)objects[2]);
+					if(dabateVO == null)
+					{
+						count = 0l;
+						dabateVO = new DebatePartyWiseCountVO();
+						resultMap.put((Long)objects[2], dabateVO);		
+					}
+					
+					count++;
+					DebateRankingVO rankVO = partyRankCountMap.get((Long)objects[0]);
+					if(rankVO == null)
+					{
+						rankVO = new DebateRankingVO();
+						partyRankCountMap.put((Long)objects[0], rankVO);
+						
+					}
+					if(count.longValue() == 1l)
+					{
+						rankVO.setFirstRank(partyRankCountMap.get((Long)objects[0]).getFirstRank() + 1);
+					}
+					else if(count.longValue() == 2l)
+					{
+						rankVO.setSecondRank(partyRankCountMap.get((Long)objects[0]).getSecondRank() + 1);
+					}
+					else if(count.longValue() == 3l)
+					{
+						rankVO.setThirdRank(partyRankCountMap.get((Long)objects[0]).getThirdRank() + 1);
+					}
+					else if(count.longValue() == 4l)
+					{
+						rankVO.setFourthRank(partyRankCountMap.get((Long)objects[0]).getFourthRank() + 1);
+					}
+						
+					
+				}
+				
+			}
+			
+			for(Long partyId : partyRankCountMap.keySet())
+			{
+				DebateRankingVO rankVO = partyRankCountMap.get(partyId);
+				System.out.println(partyId);
+				System.out.println(rankVO.getFirstRank() +":"+ rankVO.getSecondRank() +":"+ rankVO.getThirdRank() +":"+ rankVO.getFourthRank());
+			}
+		}
+	}*/
+	
+	public void testGetTopicWiseStrongOrWeakCandidates()
+	{
+		try {
+			List<Object[]> topTopicesList = debateParticipantCharcsDAO.getTopicWiseStrongOrWeakCandidates("asc");
+			if(topTopicesList != null && topTopicesList.size() > 0)
+			{
+				Map<Long,DebateTopicVO> topTopicesMap = new HashMap<Long, DebateTopicVO>();
+				Map<Long,List<DebateTopicVO>> topTopicesPartyWiseMap = new HashMap<Long, List<DebateTopicVO>>();
+				Long count = 0l;
+				Double scaleCount = 0.0;
+				for (Object[] objects : topTopicesList)
+				{
+					if(objects[2] != null)
+					{
+						DebateTopicVO debateTopicVO = topTopicesMap.get((Long)objects[2]);
+						if(debateTopicVO == null)
+						{
+							debateTopicVO = new DebateTopicVO();
+							topTopicesMap.put((Long)objects[2], debateTopicVO);
+							debateTopicVO.setSubjectId(objects[3] != null ? (Long)objects[3]:0l);
+							debateTopicVO.setSubject(objects[4] != null ? objects[4] .toString() : "");
+							count = 0l;
+						}
+						count ++;
+						List<DebateTopicVO> partyWiseVOList = topTopicesPartyWiseMap.get((Long)objects[0]);
+						if(partyWiseVOList == null)
+						{
+							partyWiseVOList = new ArrayList<DebateTopicVO>();
+							topTopicesPartyWiseMap.put((Long)objects[0], partyWiseVOList);
+							scaleCount = 0.0;
+						}
+						DebateTopicVO partyWiseVO = new DebateTopicVO();
+						if(count == 1)
+						{
+							partyWiseVO.setPartyId(objects[0] != null ? (Long)objects[0]:0l);
+							partyWiseVO.setParty(objects[1] != null ? objects[1] .toString() : "");
+							partyWiseVO.setSubjectId(objects[3] != null ? (Long)objects[3]:0l);
+							partyWiseVO.setSubject(objects[4] != null ? objects[4] .toString() : "");
+							partyWiseVO.setCandidateId(objects[5] != null ? (Long)objects[5]:0l);
+							partyWiseVO.setCandidate(objects[6] != null ? objects[6] .toString() : "");
+							partyWiseVO.setCountScale(objects[7] != null ? (Double)objects[7]:0l);
+							partyWiseVO.setChannel(objects[8] != null ? objects[8] .toString() : "");
+							scaleCount = (Double)objects[7];
+							partyWiseVOList.add(partyWiseVO);
+						}
+						else
+						{
+							if((Double)objects[7] == scaleCount.doubleValue())
+							{
+								partyWiseVO.setPartyId(objects[0] != null ? (Long)objects[0]:0l);
+								partyWiseVO.setParty(objects[1] != null ? objects[1] .toString() : "");
+								partyWiseVO.setSubjectId(objects[3] != null ? (Long)objects[3]:0l);
+								partyWiseVO.setSubject(objects[4] != null ? objects[4] .toString() : "");
+								partyWiseVO.setCandidateId(objects[5] != null ? (Long)objects[5]:0l);
+								partyWiseVO.setCandidate(objects[6] != null ? objects[6] .toString() : "");
+								partyWiseVO.setCountScale(objects[7] != null ? (Double)objects[7]:0l);
+								partyWiseVO.setChannel(objects[8] != null ? objects[8] .toString() : "");
+								scaleCount = (Double)objects[7];
+								partyWiseVOList.add(partyWiseVO);
+								debateTopicVO.setCount(count);
+							}
+						}
+					}
+					
+				}
+				
+				for(Long debateId : topTopicesMap.keySet())
+				{
+					DebateTopicVO debateTopicVO = topTopicesMap.get(debateId);
+					if(debateTopicVO.getCount() > 1)
+					{
+						System.out.println(debateTopicVO.getSubjectId());
+					}
+				}
+				System.out.println("*************************************");
+				
+				for(Long partyId : topTopicesPartyWiseMap.keySet())
+				{
+					List<DebateTopicVO> partyWiseVOList = topTopicesPartyWiseMap.get(partyId);
+					System.out.println(partyId);
+					for (DebateTopicVO debateTopicVO : partyWiseVOList) 
+					{
+						System.out.println(debateTopicVO.getSubjectId() +":"+ debateTopicVO.getCandidate() +":"+ debateTopicVO.getChannel() +":"+ debateTopicVO.getCountScale());
+					}
+					System.out.println("______________________________________");
+					
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
+		
 }

@@ -568,6 +568,18 @@ window.location.href = uri + base64(format(template, ctx))
 		
 		<div class="row">
 			<div class="span12">
+				<div class="row">
+					<div class="span12  widgetservey_Red m_top20">
+							
+							<legend class="boxHeading">Topic Wise Each Party Strong And Weak<a class="btn btn-info  btn-mini" style="float:right" onClick="generateExcelReport('topicwiseStrongAndWeak')" >Export Excel </a></legend>
+						<div id="topicwiseStrongAndWeak"></div>
+					
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="span12">
 				<div class="row ">
 					<div class="span12  widgetservey_Red m_top20">
 					<legend class="boxHeading">Party Wise Each Candidate Performance With Attributes<a class="btn btn-info  btn-mini" style="float:right" onClick="generateExcelReport('secondReport')" >Export Excel</a></legend>

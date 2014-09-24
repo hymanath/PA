@@ -5,10 +5,11 @@ import java.io.Serializable;
 public class DebateRankingVO implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-	private Long firstRank;
-	private Long secondRank;
-	private Long thirdRank;
-	private Long fourthRank;
+	private Long firstRank = 0l;
+	private Long secondRank = 0l;
+	private Long thirdRank = 0l;
+	private Long fourthRank = 0l;
+	
 	public Long getFirstRank() {
 		return firstRank;
 	}

@@ -15,4 +15,5 @@ public interface IDebateParticipantCharcsDAO extends GenericDao<DebateParticipan
 	public List<Object[]> getPartyWiseDebatePartiCharsCount();
 	public List<Object[]> getPartyWiseEachDebateCharsCount();
 	public List<Object[]> getPartyCandidateDetailsTopicWise();
+	public List<Object[]> getTopicWiseStrongOrWeakCandidates(String sortOrder);
 }
