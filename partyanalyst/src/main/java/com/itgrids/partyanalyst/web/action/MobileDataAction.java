@@ -347,11 +347,11 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
         RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
         if(user == null)
     	  return ERROR;
-      /* if(session.getAttribute(IConstants.USER) == null && 
+        if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.IVR_MOBILE_NUMBERS_RETRIVAL))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.IVR_MOBILE_NUMBERS_RETRIVAL))
-			return ERROR;*/
+			return ERROR;
         if(request.getRequestURL().toString().contains("localhost"))
         	filePath = "/PartyAnalyst/mobileNumbers.txt";
         else
