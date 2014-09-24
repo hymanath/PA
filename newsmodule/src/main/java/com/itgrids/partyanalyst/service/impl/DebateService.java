@@ -1355,17 +1355,21 @@ public class DebateService implements IDebateService{
 		 List<SelectOptionVO> returnList = null;
 		 try {
 			 LOG.info("Enterd into getCandidatesForDebate() in DebateService class");
-			 List<Object[]> candidatesList = candidateDAO.getCandidatesForDebateParties(partyIds);
-			 if(candidatesList != null && candidatesList.size() > 0)
+			 if(partyIds != null && partyIds.size()>0)
 			 {
-				 returnList = new ArrayList<SelectOptionVO>();
-				 for (Object[] parms : candidatesList) {
-					 SelectOptionVO selectOptionVO = new SelectOptionVO();
-					 selectOptionVO.setId((Long)parms[0]);
-					 selectOptionVO.setName(parms[1].toString());
-					 returnList.add(selectOptionVO);
-				}
+				 List<Object[]> candidatesList = candidateDAO.getCandidatesForDebateParties(partyIds);
+				 if(candidatesList != null && candidatesList.size() > 0)
+				 {
+					 returnList = new ArrayList<SelectOptionVO>();
+					 for (Object[] parms : candidatesList) {
+						 SelectOptionVO selectOptionVO = new SelectOptionVO();
+						 selectOptionVO.setId((Long)parms[0]);
+						 selectOptionVO.setName(parms[1].toString());
+						 returnList.add(selectOptionVO);
+					}
+				 }
 			 }
+			
 		} catch (Exception e) {
 			LOG.error(" Exception Occured in getCandidatesForDebate method, Exception - ",e);
 		}
