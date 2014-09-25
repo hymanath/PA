@@ -362,6 +362,7 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 	public String getIvrMobileNumbers()
 	{
 		try{
+			List<String> checkedLevels = new ArrayList<String>();
 			jObj = new JSONObject(getTask());
 			JSONArray arr = jObj.getJSONArray("locationIds");
 			boolean questions = jObj.getBoolean("questions");
@@ -370,9 +371,12 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 				locationIds.add(new Long(arr.get(i).toString()));	
 			Long fileFormatVal = jObj.getLong("fileFormat");
 			JSONArray questionOptionsArray = jObj.getJSONArray("queOptionsArr");
+			JSONArray levelsarr = jObj.getJSONArray("levelsarr");
+			for(int j=0;j<levelsarr.length();j++)
+				checkedLevels.add(levelsarr.get(j).toString());
 			//mobileVo = mobileService.getIvrMobileNumbers(jObj.getLong("scopeId"),locationIds,fileFormatVal,jObj.getInt("maxIndex"),jObj.getBoolean("multipleFileCheck"),jObj.getInt("noOfFiles"));
 			if(!questions)
-			mobileVo = mobileService.getMobileNumbersByLocations(jObj.getLong("scopeId"),locationIds,fileFormatVal,jObj.getInt("maxIndex"),jObj.getInt("checkedTypeVal"),jObj.getInt("noOfFiles"));
+			mobileVo = mobileService.getMobileNumbersByLocations(jObj.getLong("scopeId"),locationIds,fileFormatVal,jObj.getInt("maxIndex"),jObj.getInt("checkedTypeVal"),jObj.getInt("noOfFiles"),checkedLevels);
 			else
 			{
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -393,7 +397,7 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 					{
 						opt++;
 						
-					 mobileVo = mobileService.getMobileNumbersByLocations(jObj.getLong("scopeId"),locationIds,fileFormatVal,maxIndex,1,0);//single file
+					 mobileVo = mobileService.getMobileNumbersByLocations(jObj.getLong("scopeId"),locationIds,fileFormatVal,maxIndex,1,0,checkedLevels);//single file
 					 File oldName = new File(mobileVo.getOptionFilePath());
 					 File newName = null;
 					 if(fileFormatVal == 1)

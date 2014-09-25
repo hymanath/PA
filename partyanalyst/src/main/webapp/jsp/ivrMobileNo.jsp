@@ -18,7 +18,11 @@
 .ui-multiselect{
 width:200px !important;
 }
-
+.checkbox {
+    float: left;
+    height: auto;
+    width: auto;
+}
 </style>
 </head>
 <body>
@@ -90,6 +94,24 @@ $('#mandalId').multiselect({
 	</div>
 
 </div>
+<div class="row scopeLevelDiv" style="display:none;">
+<div class="span12" style="margin-top:20px;">
+   <label class="checkbox inline" id="districtCheck">
+    <input type="checkbox"  value="DISTRICT"  class="scopeLevel" id="districtCheckId"> district &nbsp;&nbsp;&nbsp;</input>
+  </label>
+     <label class="checkbox inline"  id="constituencyCheck">
+    <input type="checkbox"  value="CONSTITUENCY"   class="scopeLevel" id="constituencyCheckId"> constituency &nbsp;&nbsp;&nbsp;</input>
+	  </label>
+      <label class="checkbox inline" id="mandalCheck" >
+    <input type="checkbox" value="TEHSIL"  class="scopeLevel" id="mandalCheckId"> mandal &nbsp;&nbsp;&nbsp;</input>
+	  </label>
+      <label class="checkbox inline" id="panchayatCheck">
+    <input type="checkbox" value="PANCHAYAT"   class="scopeLevel" id="panchayatCheckId"> panchayat</input>
+      </label>
+	</div>
+
+	</div>
+
 <div class="row">
 <div class="span12 form-inline" style="margin-top:26px;">
   <label>  Do you want to split the files as per Questions & options &nbsp;&nbsp;&nbsp;&nbsp;</label> <label class="radio">No<input type="radio" name="queOpt" checked value="1" class="QueRadio" id="queOpt1">
@@ -333,7 +355,15 @@ function createFile()
 
 	var fileFormat = $('input:radio[name=optionsRadios]:checked').val();
 	var maxIndex = $.trim($('#maxIndex').val());
-	
+	var levelsarr = [];
+
+	$(".scopeLevel").each(function()
+	{
+		if($(this).is(':checked'))
+		{
+		levelsarr.push($(this).val());
+		}
+	});
 	$("#errorDiv").html("");
 	var str='<font color="red" style="font-size: 12px; font-weight: bold;">';
 	if(scopeId == 0)
@@ -388,6 +418,12 @@ function createFile()
 		flag = true;
 		}
 	}
+	
+	else if(levelsarr.length == 0)
+	{
+	str+='atleast one level is required <br/>';
+	flag = true;
+	}
 	else if(questions == true)
 	{
 		var questionID = $("#questionID").val();
@@ -424,6 +460,7 @@ function createFile()
 	});
 }
 	str+='</font>';
+	
 	$("#errorDiv").html(str);
 		console.log(queOptionsArr);
 	if(flag == true)
@@ -441,6 +478,7 @@ function createFile()
 			noOfFiles:noOfFiles,
 			questions:questions,
 			queOptionsArr:queOptionsArr,
+			levelsarr:levelsarr,
 			task : "createFilepath"
 	};
 	$.ajax({
@@ -503,13 +541,26 @@ function buildLocationData(result,jObj)
 }
 function showHide()
 {
+
 var scopeId = $("#scopeId").val();
+
+if(scopeId == 0)
+	{
+$(".scopeLevelDiv").hide();
+return;
+	}
+$(".scopeLevelDiv").show();
 if(scopeId == 1)
 	{
 	$("#constituencyDiv").hide();
 	$("#mandalDiv").hide();
 	$("#parliamentDiv").hide();
 	$("#districtDiv").show();
+	$("#districtCheck").show();
+	$("#constituencyCheck").show();
+	$("#mandalCheck").show();
+	$("#panchayatCheck").show();
+	$("#districtCheckId").attr('checked', 'checked');
 	}
 else if(scopeId == 2)
 	{
@@ -517,6 +568,11 @@ else if(scopeId == 2)
    $("#districtDiv").show();
 	$("#parliamentDiv").hide();
 	$("#mandalDiv").hide();
+	$("#districtCheck").hide();
+	$("#constituencyCheck").show();
+	$("#mandalCheck").show();
+	$("#panchayatCheck").show();
+	$("#constituencyCheckId").attr('checked', 'checked');
 	}
 	else if(scopeId == 3)
 	{
@@ -524,7 +580,11 @@ else if(scopeId == 2)
 	$("#parliamentDiv").show();
 	$("#mandalDiv").hide();
 	$("#districtDiv").hide();
-	
+	$("#constituencyCheck").show();
+	$("#mandalCheck").show();
+	$("#panchayatCheck").show();
+	$("#districtCheck").hide();
+	$("#constituencyCheckId").attr('checked', 'checked');
 	}
 	else if(scopeId == 4)
 	{
@@ -532,6 +592,11 @@ else if(scopeId == 2)
 	$("#parliamentDiv").hide();
 	$("#mandalDiv").show();
 	$("#districtDiv").show();
+	$("#constituencyCheck").hide();
+	$("#mandalCheck").show();
+	$("#panchayatCheck").show();
+	$("#districtCheck").hide();
+	$("#mandalCheckId").attr('checked', 'checked');
 	}
 }
 function getParliamentConstituencies()
