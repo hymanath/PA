@@ -142,6 +142,11 @@
 				<value>com.itgrids.partyanalyst.model.UserEntitlement</value>
 				<value>com.itgrids.partyanalyst.model.UserDepartment</value>
 				<value>com.itgrids.partyanalyst.model.UserViewNews</value>	
+				
+				<value>com.itgrids.partyanalyst.model.NewsBullition</value>	
+				<value>com.itgrids.partyanalyst.model.NewsBullitionType</value>	
+				<value>com.itgrids.partyanalyst.model.NewsBullitionNewsType</value>	
+				<value>com.itgrids.partyanalyst.model.NewsBullitionValues</value>	
 			</list>
 			
 		</property>

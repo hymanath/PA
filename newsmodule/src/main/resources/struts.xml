@@ -6372,6 +6372,13 @@
 		    			<param name="root">candidateCharcDetails</param>
 		    		</result>
 		 </action>
+		 
+		  <action name="newsBullition" class="newsBullitionAction">
+		 	 <result name="success">/jsp/newsBullition.jsp</result>
+		 	 <result name="error" type="redirect">loginPageAction.action</result>
+		  </action>
+		
+		  
       		
 		<action name="benefitAnalysisAction" class="benefitAnalysisAction" >
 		  	<result name="success">/jsp/benefitAnalysis.jsp</result>

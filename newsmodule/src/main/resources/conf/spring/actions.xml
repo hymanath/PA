@@ -132,6 +132,10 @@
 			<property name="debateAnalysisService" ref="debateAnalysisService"/>	
 	</bean>	
 	
+	<bean id="newsBullitionAction" class="com.itgrids.partyanalyst.web.action.NewsBullitionAction" singleton="false">	
+			<property name="newsBullitionService" ref="newsBullitionService"/>	
+	</bean>	
+
 	<bean id="benefitAnalysisAction" class="com.itgrids.partyanalyst.web.action.BenefitAnalysisAction" singleton="false">
 			<property name="newsAnalysisService" ref="newsAnalysisService"/>
 	</bean>	

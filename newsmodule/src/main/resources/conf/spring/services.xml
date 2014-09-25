@@ -334,5 +334,12 @@
         <property name="debateParticipantCharcsDAO" ref="debateParticipantCharcsDAO"></property>
         <property name="debateParticipantDAO" ref="debateParticipantDAO"></property>
     </bean>
+    
+    <bean name="newsBullitionService" class="com.itgrids.partyanalyst.service.impl.NewsBullitionService">
+   		<property name="newsBullitionDAO" ref="newsBullitionDAO" /> 
+   		<property name="newsBullitionTypeDAO" ref="newsBullitionTypeDAO" />
+   		<property name="newsBullitionNewsTypeDAO" ref="newsBullitionNewsTypeDAO" /> 
+   		<property name="newsBullitionValuesDAO" ref="newsBullitionValuesDAO" />		
+   </bean>
 </beans>		
 	
