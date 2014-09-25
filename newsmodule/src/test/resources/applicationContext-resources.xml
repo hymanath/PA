@@ -157,6 +157,12 @@
 				<value>com.itgrids.partyanalyst.model.FileDepartment</value>	
 				<value>com.itgrids.partyanalyst.model.FileNewsType</value>	
 				<value>com.itgrids.partyanalyst.model.UserViewNews</value>
+				
+				<value>com.itgrids.partyanalyst.model.NewsBullition</value>	
+				<value>com.itgrids.partyanalyst.model.NewsBullitionType</value>	
+				<value>com.itgrids.partyanalyst.model.NewsBullitionNewsType</value>	
+				<value>com.itgrids.partyanalyst.model.NewsBullitionValues</value>
+				
 			</list>
 		</property>
 	</bean>
@@ -362,6 +368,22 @@
 	<bean id="userViewNewsDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserViewNewsDAO">
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	
+	<bean id="newsBullitionValuesDAO" class="com.itgrids.partyanalyst.dao.hibernate.NewsBullitionValuesDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="newsBullitionNewsTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.NewsBullitionNewsTypeDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="newsBullitionTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.NewsBullitionTypeDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="newsBullitionDAO" class="com.itgrids.partyanalyst.dao.hibernate.NewsBullitionDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
 	
 	<!-- End od Debate DAOS -->
 </beans>

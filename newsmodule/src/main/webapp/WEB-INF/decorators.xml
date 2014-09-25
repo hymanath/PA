@@ -263,6 +263,7 @@
 		<pattern>/activitiesAnalysisAction*</pattern>
 		<pattern>/keyWordsMergeAction*</pattern>
 		<pattern>/benefitAnalysisAction*</pattern>
+		<pattern>/newsBullition*</pattern>
     	 </decorator>
 
 </decorators>

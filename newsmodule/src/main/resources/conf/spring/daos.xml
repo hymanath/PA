@@ -394,4 +394,20 @@
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="newsBullitionValuesDAO" class="com.itgrids.partyanalyst.dao.hibernate.NewsBullitionValuesDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="newsBullitionNewsTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.NewsBullitionNewsTypeDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="newsBullitionTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.NewsBullitionTypeDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="newsBullitionDAO" class="com.itgrids.partyanalyst.dao.hibernate.NewsBullitionDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		
