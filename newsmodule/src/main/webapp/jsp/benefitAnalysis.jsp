@@ -5,9 +5,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Benefits Analysis</title>
-
- <link rel="stylesheet" type="text/css" media="screen" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/themes/base/jquery-ui.css">
-</head>
+<script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.js"></script>
+<script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.filter.js"></script>
+<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
+<link  rel="stylesheet" type="text/css" href="js/jquery.google.api/jquery-ui.css"/>
+<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.filter.css" />
+ </head>
 <body>
 <style>
 
@@ -21,15 +24,18 @@
 	display:none!important;
 	visibility:hidden!important
 }
+#calenderRadioDiv{
+   margin-left: 160px;
+}
 </style>
 
-<div class="container "><div style="margin-top:20px;">
+<div class="container" style="min-height:350px;"><div style="margin-top:20px;">
 <h2></h2>
    <div id="errorDiv"></div>
     <div class="row offset3" style="margin-top: 20px;">
 
 		<div>
-			<label class="span2">Select State:</label>
+			<label class="span2"><b>Select State:</b></label>
 			<select id="stateId" class="input-block-level span3" onChange="clearDivs()">
 			<option value="0">ALL</option>
 			<option value="1">Andhra Pradesh</option>
@@ -38,23 +44,27 @@
 		</div>
 		
 		<div>
-			<label class="span2">Select Type:</label>
+			<label class="span2"><b>Select Report Type:</b></label>
 			<select id="typeId" class="input-block-level span3" onChange="showCorrespondingDivs(this.value)">
-			<option value="0">Select Type</option>
+			<option value="0">Select Report Type</option>
 			<option value="1">Category Wise</option>
 			<option value="2">Candidate Wise</option>
-			<option value="3">location Wise</option>
+			<option value="3">Location Wise</option>
 			</select>
 		</div>
+		<div id="partiesMultiSelDiv" style="display:none;">
+			<label  class="span2"><b>Select Party:</b></label>
+			<select id="partiesMultiSelId"></select>
+		</div>
 		<div  id="groupDiv" style="display:none;">
-			<label class="span2">Select Group:</label>
+			<label class="span2"><b>Select Group:</b></label>
 			<select id="groupId" class="input-block-level span3">
 			<option value="0">Select Group</option>
 			</select>
 		</div>
 		
 		<div id="locationDiv" style="display:none;">
-			<label  class="span2">Select Location</label>
+			<label  class="span2"><b>Select Location:</b></label>
 			<select id="locationId" class="input-block-level span3" onChange="getLocationDetails(this.value)">
 			<option value="0">Select Location</option>
 			<option value="1">State</option>
@@ -63,12 +73,12 @@
 			</select>
 		</div>
 		<div id="locationValueDiv" style="display:none;">
-			<label  class="span2">Select Location Value</label>
+			<label  class="span2"><b>Select Location Value:</b></label>
 			<select id="locationValueId" class="input-block-level span3">
 			</select>
 		</div>
 	</div>
-	<div class="row offset3" style="margin-top: 10px;">
+	<div class="row offset3">
 	<div id="calenderRadioDiv" class="span3">
 	 	  <label class="radio inline"><input id="dailyRadio" type="radio" value="dailyCalender" name="calendersRadio" class="calendersRadioCls" checked="true"/>Daily</label>
 		  <label class="radio inline"><input id="weeklyRadio" type="radio" value="weeklyCalender" name="calendersRadio" class="calendersRadioCls"/>Weekly</label>
@@ -77,41 +87,48 @@
 	</div>
 	<div class="row offset3" style="margin-top: 10px;">
  	<div id="dailyCalenderDiv">
-			<label class="span2">Select Date:</label>
- 			<input type="text" readonly="true" id="dailyCalenderId" style="height:30px" class="input-block-level span3" >
+			<label class="span2"><b>Select Date:</b></label>
+ 			<input type="text" readonly="true" id="dailyCalenderId" style="height:30px;width:220px;" class="input-block-level span3" >
  	</div>
  	<div id="weeklyCalenderDiv" style="display:none;">
-		<!--<span id="startDate"></span> - <span id="endDate"></span>-->
-		<label class="span2">Select Week</label>
- 			<input type="text" readonly="true" id="startDate" class="input-block-level span2" style="height:30px">
-			<input type="text" readonly="true" id="endDate" class="input-block-level span2" style="height:30px">
+		<label class="span2"><b>Select Week:</b></label>
+ 			<input type="text" readonly="true" id="startDate" class="input-block-level span2" style="height:30px;width:220px;">
  	</div>
  	<div id="monthlyCalenderDiv" style="display:none;">
-			<label class="span2">Select Month:</label>
- 			<input type="text" readonly="true" id="monthlyCalenderId" style="height:30px" class="input-block-level span3">
+			<label class="span2"><b>Select Month:</b></label>
+ 			<input type="text" readonly="true" id="monthlyCalenderId" style="height:30px;width:220px;" class="input-block-level span3">
  	</div>
 	</div>
 </div></div>
 
-<script>
+<script type="text/javascript">
 function clearDivs(){
 	$("#locationValueDiv,#typeDiv").hide();
 	$("#groupId,#locationId,#locationValueId,#typeId").val(0);
 }
 function showCorrespondingDivs(value){
-	if(value == 2){		
+    if(value == 1){ 
+	     $("#partiesMultiSelDiv").show();
+		 $("#locationDiv").hide();
+		 $("#locationValueDiv").hide();
+		 $("#groupDiv").hide();	
+	}else if(value == 2){		
 		$("#locationDiv").hide();
 		$("#locationValueDiv").hide();
-		$("#groupDiv").show();		
+		$("#groupDiv").show();	
+        $("#partiesMultiSelDiv").hide();		
 	}
 	else if(value == 3){
 		$("#groupDiv").hide();
 		$("#locationDiv").show();
+		
+		$("#partiesMultiSelDiv").hide();	
 	}
 	else{
 		$("#locationDiv").hide();
 		$("#groupDiv").hide();
 		$("#locationValueDiv").hide();
+		$("#partiesMultiSelDiv").hide();
 	}
 }
  function getLocationDetails(locationValue){
@@ -191,7 +208,7 @@ function showCorrespondingDivs(value){
  
  $(document).ready(function() {
 	 $("#dailyCalenderId").datepicker({
-		dateFormat: "mm/dd/yy",
+		dateFormat: "dd/mm/yy",
 		changeMonth: true,
    		changeYear: true,
 		maxDate: new Date(),	
@@ -205,7 +222,8 @@ function showCorrespondingDivs(value){
 	$('#monthlyCalenderId').datepicker({
      changeMonth: true,
      changeYear: true,
-     dateFormat: 'MM yy',
+	 maxDate: new Date(),
+     dateFormat: 'mm/yy',
 	
 	  onClose: function() {
         iMonth = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
@@ -219,7 +237,7 @@ function showCorrespondingDivs(value){
 		  $("#ui-datepicker-div").addClass("hideCalendar");
 		  $("#ui-datepicker-div").addClass('hideTodayButton');
           iYear = selDate.substring(selDate.length - 4, selDate.length);
-          iMonth = jQuery.inArray(selDate.substring(0, selDate.length - 5), $(this).datepicker('option', 'monthNames'));
+          iMonth = selDate.substring(0, selDate.length - 5);
           $(this).datepicker('option', 'defaultDate', new Date(iYear, iMonth, 1));
           $(this).datepicker('setDate', new Date(iYear, iMonth, 1));
        }
@@ -234,20 +252,22 @@ $(function() {
     
     var selectCurrentWeek = function() {
         window.setTimeout(function () {
-            $('#weeklyCalenderDiv').find('.ui-datepicker-current-day a').addClass('ui-state-active')
+            $('#ui-datepicker-div').find('.ui-datepicker-current-day a').addClass('ui-state-active')
         }, 1);
     }
     
-    $('#weeklyCalenderDiv').datepicker( {
+    $('#startDate').datepicker( {
         showOtherMonths: true,
         selectOtherMonths: true,
+		dateFormat: "dd/mm/yy",
+		maxDate: new Date(),
         onSelect: function(dateText, inst) { 
             var date = $(this).datepicker('getDate');
             startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay());
             endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + 6);
             var dateFormat = inst.settings.dateFormat || $.datepicker._defaults.dateFormat;
-            $('#startDate').val($.datepicker.formatDate( dateFormat, startDate, inst.settings ));
-            $('#endDate').val($.datepicker.formatDate( dateFormat, endDate, inst.settings ));          
+            $('#startDate').val($.datepicker.formatDate( dateFormat, startDate, inst.settings )+" to "+$.datepicker.formatDate( dateFormat, endDate, inst.settings ));
+                    
             selectCurrentWeek();
         },
         beforeShowDay: function(date) {
@@ -261,10 +281,41 @@ $(function() {
         }
     });
     
-    $('#weeklyCalenderDiv .ui-datepicker-calendar tr').live('mousemove', function() { $(this).find('td a').addClass('ui-state-hover'); });
-    $('#weeklyCalenderDiv .ui-datepicker-calendar tr').live('mouseleave', function() { $(this).find('td a').removeClass('ui-state-hover'); });
+    //$('#startDate .ui-datepicker-calendar tr').live('mousemove', function() { $(this).find('td a').addClass('ui-state-hover'); });
+    //$('#startDate .ui-datepicker-calendar tr').live('mouseleave', function() { $(this).find('td a').removeClass('ui-state-hover'); });
 });
 
+function getPartiesList()
+{
+	var jsObj=
+	{
+		task:'getPartyList'
+	};
+	 $.ajax({
+		type: "POST",
+		url: "getPartiesListAction.action",
+		data: {task : JSON.stringify(jsObj)}
+		})
+		.done(function( result ) {
+		
+		$('#partiesMultiSelId').find('option').remove();
+		$.each(result,function(index,value){
+			$('#partiesMultiSelId').append('<option value="'+value.id+'">'+value.name+'</option>');
+		});
+		 $('#partiesMultiSelId').multiselect({	
+				multiple: true,
+				selectedList: 1,
+				noneSelectedText:"Select Party",
+				hide: "explode"	
+		        }).multiselectfilter({  
+                  			
+		       }); 
+			    $(".ui-multiselect").each(function(){
+		         $(this).attr("style","width:220px;height:30px;");
+	          });
+     });
+}
+getPartiesList();
 </script>
 
 </body>

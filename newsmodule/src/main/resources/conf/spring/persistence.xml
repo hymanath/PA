@@ -141,7 +141,9 @@
 				<value>com.itgrids.partyanalyst.model.FileNewsType</value>		
 				<value>com.itgrids.partyanalyst.model.UserEntitlement</value>
 				<value>com.itgrids.partyanalyst.model.UserDepartment</value>
-				<value>com.itgrids.partyanalyst.model.UserViewNews</value>	
+				<value>com.itgrids.partyanalyst.model.UserViewNews</value>
+				<value>com.itgrids.partyanalyst.model.CandidateGroup</value>	
+				
 				
 				<value>com.itgrids.partyanalyst.model.NewsBullition</value>	
 				<value>com.itgrids.partyanalyst.model.NewsBullitionType</value>	

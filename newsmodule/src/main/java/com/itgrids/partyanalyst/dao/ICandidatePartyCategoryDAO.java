@@ -50,4 +50,8 @@ public interface ICandidatePartyCategoryDAO extends GenericDao<CandidatePartyCat
 	 public List<Object[]> getProblemsCount(Date fromDate,Date toDate,Long locationType,List<Long> locationIds,Long categoryId);
 	 
 	 public List<Object[]> getElectionIssues(Date fromDate,Date toDate,Long locationType,List<Long> locationIds,Long categoryId,List<Long> partyIds);
+	 
+	 public List<Object[]> getCategoryWiseBenifit(Date fromDate,Date toDate,Long stateId,Long partyId);
+	 
+	 public List<Object[]>  getCategoryBenifitWiseNews(Date fromDate,Date toDate,Long partyId,Long categoryId,Long benfitId,Long stateId);
 }

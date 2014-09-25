@@ -157,12 +157,12 @@
 				<value>com.itgrids.partyanalyst.model.FileDepartment</value>	
 				<value>com.itgrids.partyanalyst.model.FileNewsType</value>	
 				<value>com.itgrids.partyanalyst.model.UserViewNews</value>
-				
+				<value>com.itgrids.partyanalyst.model.CandidateGroup</value>
+								
 				<value>com.itgrids.partyanalyst.model.NewsBullition</value>	
 				<value>com.itgrids.partyanalyst.model.NewsBullitionType</value>	
 				<value>com.itgrids.partyanalyst.model.NewsBullitionNewsType</value>	
 				<value>com.itgrids.partyanalyst.model.NewsBullitionValues</value>
-				
 			</list>
 		</property>
 	</bean>
