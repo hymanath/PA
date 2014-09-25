@@ -339,7 +339,8 @@
    		<property name="newsBullitionDAO" ref="newsBullitionDAO" /> 
    		<property name="newsBullitionTypeDAO" ref="newsBullitionTypeDAO" />
    		<property name="newsBullitionNewsTypeDAO" ref="newsBullitionNewsTypeDAO" /> 
-   		<property name="newsBullitionValuesDAO" ref="newsBullitionValuesDAO" />		
+   		<property name="newsBullitionValuesDAO" ref="newsBullitionValuesDAO" />	
+   		<property name="transactionTemplate" ref="transactionTemplate" />		
    </bean>
 </beans>		
 	
