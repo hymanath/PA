@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -69,7 +70,7 @@ public class CandidatePartyFileDAOHibernateTest extends BaseDaoTestCase{
 	}
 	*/
 	
-	public void testGetNews(){
+	/*public void testGetNews(){
 		Calendar c= Calendar.getInstance();
 		c.set(2014,0, 3);
 		Date date1 = new Date();
@@ -99,7 +100,7 @@ public class CandidatePartyFileDAOHibernateTest extends BaseDaoTestCase{
 		districtIds.add(12l);
 		districtIds.add(9l);
 		districtIds.add(15l);
-		/*List<Object[]> result = candidatePartyFileDAO.getPoliticalActivitiesNews(c.getTime(), date1,categoryIds,districtIds,0,10000);
+		List<Object[]> result = candidatePartyFileDAO.getPoliticalActivitiesNews(c.getTime(), date1,categoryIds,districtIds,0,10000);
 		Long result1 = candidatePartyFileDAO.getPoliticalActivitiesNewsCount(c.getTime(), date1,categoryIds,districtIds);
 		System.out.println(result.size());
 		System.out.println(result1);
@@ -110,13 +111,25 @@ public class CandidatePartyFileDAOHibernateTest extends BaseDaoTestCase{
 		for(Long res:result1){
 			System.out.println(res);
 			
-		}*/
+		}
 		List<Long> partyIds = new ArrayList<Long>();
 		partyIds.add(872l);
 		List<Object[]> result1 = candidatePartyFileDAO.getAllPoliticalActivitiesCount(c.getTime(), date1,districtIds,1l,partyIds,3991l);
 		for(Object[] res:result1){
 			System.out.println(res[0].toString()+" : "+res[1].toString()+" : "+res[2].toString()+" : "+res[3].toString()+" : "+res[4].toString()+" : "+res[5].toString());
 			
+		}
+	}*/
+	
+	public void testGetCandidateGroupWiseBenifit(){
+		try{
+			String dt1 = "2013-06-01";
+			String dt2 = "2015-06-20";
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			List<Object[]> result = candidatePartyFileDAO.getCandidateGroupWiseBenifit(sdf.parse(dt1), sdf.parse(dt2), null, 1l,872l);
+		System.out.println(result.size());
+		}catch(Exception e){
+			e.printStackTrace();
 		}
 	}
 }

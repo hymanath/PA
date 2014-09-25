@@ -1126,4 +1126,54 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 				
 				return query.list();
 			}
+           
+           public List<Object[]> getCandidateGroupWiseBenifit(Date fromDate,Date toDate,Long stateId,Long groupId,Long partyId){
+        	   StringBuilder queryStr = new StringBuilder();
+        	   // 0 count,1 candidateId, 2 benfitId
+        	   queryStr.append("select count(distinct cpf.file.fileId),CASE WHEN (cpf.sourceCandidate.candidateId is not null and cpf.sourceCandidate.candidateId = cg.candidate.candidateId) THEN cpf.sourceCandidate.candidateId ELSE  cpf.destinationCandidate.candidateId end," +
+        	   		" CASE WHEN (cpf.sourceCandidate.candidateId is not null and cpf.sourceCandidate.candidateId = cg.candidate.candidateId) THEN cpf.sourceBenefit.benefitId ELSE  cpf.destinationBenefit.benefitId end from CandidatePartyFile cpf,CandidateGroup cg ");
+        	   		if(stateId != null && stateId.longValue() > 0 ){
+        				 queryStr.append(" ,UserAddress ua ");
+        			 }
+        	   queryStr.append("  where date(cpf.file.fileDate) >= :fromDate and date(cpf.file.fileDate) <= :toDate and cpf.file.isDeleted ='N' and  " +
+        	   		" ((cpf.sourceCandidate.candidateId is not null and cpf.sourceCandidate.candidateId = cg.candidate.candidateId)  or (cpf.destinationCandidate.candidateId is not null and cpf.destinationCandidate.candidateId = cg.candidate.candidateId)) " +
+        	   		" and cg.group.groupId =:groupId and cg.isDeleted ='N'  ");
+        	   if(partyId != null && partyId.longValue() > 0 ){
+        			 queryStr.append(" and cg.candidate.party.partyId =:partyId ");
+        		   }
+        	   if(stateId != null && stateId.longValue() > 0 ){
+      			 queryStr.append(" and cpf.file.fileId =  ua.file.fileId and ua.state.stateId =:stateId ");
+      		   }
+        	   queryStr.append(" group by CASE WHEN (cpf.sourceCandidate.candidateId is not null and cpf.sourceCandidate.candidateId = cg.candidate.candidateId) THEN cpf.sourceCandidate.candidateId ELSE  cpf.destinationCandidate.candidateId end," +
+        	   		" CASE WHEN (cpf.sourceCandidate.candidateId is not null and cpf.sourceCandidate.candidateId = cg.candidate.candidateId) THEN cpf.sourceBenefit.benefitId ELSE  cpf.destinationBenefit.benefitId end");
+        	   Query query =  getSession().createQuery(queryStr.toString());
+        	   
+        	    query.setDate("fromDate", fromDate);
+				query.setDate("toDate", toDate);
+				if(partyId != null && partyId.longValue() > 0){
+				    query.setParameter("partyId", partyId);
+				}
+				if(stateId != null && stateId.longValue() > 0 ){
+					query.setParameter("stateId", stateId);
+				}
+				
+				query.setParameter("groupId", groupId);
+			
+        	   return query.list();
+           }
+           
+           public List<Object[]>  getCandidateGroupBenifitWiseNews(Date fromDate,Date toDate,Long candidateId,Long benfitId){
+      		 StringBuilder queryStr = new StringBuilder();
+      		 queryStr.append("select distinct cpf.file.fileTitle,cpf.file.font.fontId,cpf.file.fileDescription,cpf.file.descFont.fontId from  CandidatePartyFile cpf "+
+      			 " where ((cpf.sourceCandidate.candidateId = :candidateId and cpf.sourceBenefit.benefitId =:benfitId) or (cpf.destinationCandidate.candidateId = :candidateId and cpf.destinationBenefit.benefitId =:benfitId ))"+
+      		     " and date(cpf.file.fileDate) >= :fromDate and date(cpf.file.fileDate) <= :toDate and cpf.file.isDeleted ='N' order by cpf.file.fileDate desc, cpf.file.updatedDate desc");
+
+      		 Query query = getSession().createQuery(queryStr.toString());
+      		 query.setDate("fromDate", fromDate);
+      		 query.setDate("toDate", toDate);
+      		 query.setParameter("candidateId", candidateId);
+      		 query.setParameter("benfitId", benfitId);
+      		 
+      		 return query.list();
+      	 }
 }

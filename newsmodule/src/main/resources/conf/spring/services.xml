@@ -335,6 +335,14 @@
         <property name="debateParticipantDAO" ref="debateParticipantDAO"></property>
     </bean>
     
+    <bean name="benefitAnalysisService" class="com.itgrids.partyanalyst.service.impl.BenefitAnalysisService">
+        <property name="candidatePartyCategoryDAO" ref="candidatePartyCategoryDAO"></property>
+        <property name="partyDAO" ref="partyDAO"></property>
+        <property name="gallaryDAO" ref="gallaryDAO"></property>
+        <property name="candidatePartyFileDAO" ref="candidatePartyFileDAO"></property>
+        <property name="candidateDAO" ref="candidateDAO"></property>
+    </bean>
+    
     <bean name="newsBullitionService" class="com.itgrids.partyanalyst.service.impl.NewsBullitionService">
    		<property name="newsBullitionDAO" ref="newsBullitionDAO" /> 
    		<property name="newsBullitionTypeDAO" ref="newsBullitionTypeDAO" />

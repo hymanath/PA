@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.util.List;
 
 public class NewsActivityVO implements Serializable{
+   /**
+	 * 
+	 */
+   private static final long serialVersionUID = 3211106698708008720L;
    private String name;
    private String date;
    private String description;

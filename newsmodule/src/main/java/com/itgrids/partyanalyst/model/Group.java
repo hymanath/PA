@@ -17,27 +17,15 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Group extends BaseModel implements Serializable {
 
-	
-	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6426930945673244433L;
 	private Long groupId;
-	private String groupName;
-	private String comments;
-//	private List<AllianceGroup> allianceGroups;
+	private String name;
 
 
-	
-	public Group() {
-		super();
-	}
-
-	/*public Group(Long groupId, String groupName, String comments,
-			List<AllianceGroup> allianceGroups) {
-		super();
-		this.groupId = groupId;
-		this.groupName = groupName;
-		this.comments = comments;
-		this.allianceGroups = allianceGroups;
-	}*/
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -50,30 +38,14 @@ public class Group extends BaseModel implements Serializable {
 		this.groupId = groupId;
 	}
 
-	@Column(name="group_name")
-	public String getGroupName() {
-		return groupName;
+	@Column(name = "name")
+	public String getName() {
+		return name;
 	}
 
-	public void setGroupName(String groupName) {
-		this.groupName = groupName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	@Column(name="comments")
-	public String getComments() {
-		return comments;
-	}
-
-	public void setComments(String comments) {
-		this.comments = comments;
-	}
-
-	/*@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "group")
-	public List<AllianceGroup> getAllianceGroups() {
-		return allianceGroups;
-	}
-
-	public void setAllianceGroups(List<AllianceGroup> allianceGroups) {
-		this.allianceGroups = allianceGroups;
-	}*/
+	
 }

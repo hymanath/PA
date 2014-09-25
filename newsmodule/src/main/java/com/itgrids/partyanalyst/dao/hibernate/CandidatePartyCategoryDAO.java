@@ -619,4 +619,56 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 		 query.setParameterList("partyIds", partyIds);
 		 return query.list();
 	 }
+	 
+	 public List<Object[]> getCategoryWiseBenifit(Date fromDate,Date toDate,Long stateId,Long partyId){
+		 StringBuilder queryStr = new StringBuilder();
+		 //0 count,1 benifitId,2 categoryId,3 partyId
+		 queryStr.append("select count(distinct cpc.candidatePartyFile.file.fileId),CASE WHEN cpc.candidatePartyFile.sourceParty.partyId is not null THEN cpc.candidatePartyFile.sourceBenefit.benefitId ELSE  " +
+		 		" cpc.candidatePartyFile.destinationBenefit.benefitId END,cpc.gallary.gallaryId,"+partyId+"l from CandidatePartyCategory cpc ");
+		 if(stateId != null && stateId.longValue() > 0 ){
+			 queryStr.append(" ,UserAddress ua ");
+		 }
+		 queryStr.append(" where date(cpc.candidatePartyFile.file.fileDate) >= :fromDate and date(cpc.candidatePartyFile.file.fileDate) <= :toDate" +
+		 		" and cpc.candidatePartyFile.file.isDeleted ='N' and (cpc.candidatePartyFile.sourceParty.partyId = :partyId or cpc.candidatePartyFile.destinationParty.partyId = :partyId ) ");
+		 
+		 if(stateId != null && stateId.longValue() > 0 ){
+			 queryStr.append(" and cpc.candidatePartyFile.file.fileId =  ua.file.fileId and ua.state.stateId =:stateId ");
+		 }
+		 
+		 queryStr.append("  group by cpc.gallary.gallaryId,CASE WHEN cpc.candidatePartyFile.sourceParty.partyId is not null THEN cpc.candidatePartyFile.sourceBenefit.benefitId ELSE cpc.candidatePartyFile.destinationBenefit.benefitId END");
+		 Query query = getSession().createQuery(queryStr.toString());	
+		 query.setParameter("partyId", partyId);
+		 query.setDate("fromDate", fromDate);
+		 query.setDate("toDate", toDate);
+		 if(stateId != null && stateId.longValue() > 0 ){
+			 query.setParameter("stateId", stateId);
+		 }
+		 return query.list();
+		 
+	 }
+	 
+	 public List<Object[]>  getCategoryBenifitWiseNews(Date fromDate,Date toDate,Long partyId,Long categoryId,Long benfitId,Long stateId){
+		 StringBuilder queryStr = new StringBuilder();
+		 queryStr.append("select distinct cpc.candidatePartyFile.file.fileTitle,cpc.candidatePartyFile.file.font.fontId,cpc.candidatePartyFile.file.fileDescription,cpc.candidatePartyFile.file.descFont.fontId from CandidatePartyCategory cpc ");
+		 if(stateId != null && stateId.longValue() > 0 ){
+			 queryStr.append(" ,UserAddress ua ");
+		 }
+		 queryStr.append(" where date(cpc.candidatePartyFile.file.fileDate) >= :fromDate and date(cpc.candidatePartyFile.file.fileDate) <= :toDate and cpc.candidatePartyFile.file.isDeleted !='Y' " +
+			 " and ((cpc.candidatePartyFile.sourceParty.partyId = :partyId and cpc.candidatePartyFile.sourceBenefit.benefitId =:benfitId) or (cpc.candidatePartyFile.destinationParty.partyId = :partyId and cpc.candidatePartyFile.destinationBenefit.benefitId =:benfitId ))" +
+			 " and  cpc.gallary.gallaryId =:categoryId ");
+		 if(stateId != null && stateId.longValue() > 0 ){
+			 queryStr.append(" and cpc.candidatePartyFile.file.fileId =  ua.file.fileId and ua.state.stateId =:stateId ");
+		 }
+		 queryStr.append(" order by cpc.candidatePartyFile.file.fileDate desc, cpc.candidatePartyFile.file.updatedDate desc");
+		 Query query = getSession().createQuery(queryStr.toString());
+		 query.setDate("fromDate", fromDate);
+		 query.setDate("toDate", toDate);
+		 query.setParameter("partyId", partyId);
+		 query.setParameter("categoryId", categoryId);
+		 query.setParameter("benfitId", benfitId);
+		 if(stateId != null && stateId.longValue() > 0 ){
+			 query.setParameter("stateId", stateId);
+		 }
+		 return query.list();
+	 }
 }
