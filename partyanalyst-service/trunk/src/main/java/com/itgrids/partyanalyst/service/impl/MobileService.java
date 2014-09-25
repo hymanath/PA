@@ -3580,6 +3580,8 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 {
 	MobileVO result = new MobileVO();
 	try{
+		 Random rand = new Random();
+			int randNO = rand.nextInt(4);
 	int splitFileCnt = 0;
 	boolean flag = false;
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -3589,7 +3591,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 	StringBuilder str = null;
 	File f1 = null;
 	int splitmaxCount =0 ;
-	File destDir = new File(path + pathSeperator+date);
+	File destDir = new File(path + pathSeperator+date+randNO);
 	destDir.mkdir();
 	List<String> totalNos = new ArrayList<String>();
 	if(resultList != null && resultList.size() > 0)
@@ -3600,9 +3602,9 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
     	{
 			str = new StringBuilder();
 			 if(fileFormatVal == 1)
-			f1 = new File(path + pathSeperator+date+pathSeperator+vo.getName()+".csv");
+			f1 = new File(path + pathSeperator+date+randNO+pathSeperator+vo.getName()+".csv");
 			else
-			f1 = new File(path + pathSeperator+date+pathSeperator+vo.getName()+".txt");	
+			f1 = new File(path + pathSeperator+date+randNO+pathSeperator+vo.getName()+".txt");	
     	}
 		if(vo.getTotalMobileNos() != null && vo.getTotalMobileNos().size() > 0)
 		{
@@ -3634,9 +3636,9 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 			{
 				str = new StringBuilder();
 				if(fileFormatVal == 1)
-				f1 = new File(path + pathSeperator+date+pathSeperator+j+".csv");//j is file number
+				f1 = new File(path + pathSeperator+date+randNO+pathSeperator+j+".csv");//j is file number
 				else
-				f1 = new File(path + pathSeperator+date+pathSeperator+j+".txt");
+				f1 = new File(path + pathSeperator+date+randNO+pathSeperator+j+".txt");
 				int inc = 0;
 				for(String no : totalNos.subList(splitmaxCount,  totalNos.size()- 0))
 				{
@@ -3657,12 +3659,12 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 		else if(checkedTypeVal == 1 && totalNos.size() > 0)//Single file
 		{
 			str = new StringBuilder();
-			Random rand = new Random();
-			int x = rand.nextInt(4);
+			Random rand1 = new Random();
+			int x = rand1.nextInt(4);
 			if(fileFormatVal == 1)
-			f1 = new File(path + pathSeperator+date+pathSeperator+x+".csv");
+			f1 = new File(path + pathSeperator+date+randNO+pathSeperator+x+".csv");
 			else
-			f1 = new File(path + pathSeperator+date+pathSeperator+x+".txt");	
+			f1 = new File(path + pathSeperator+date+randNO+pathSeperator+x+".txt");	
 			for(String no : totalNos)
 			{
 				str.append(no.toString());
@@ -3672,15 +3674,15 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 			    outPut1.write(str.toString());
 				outPut1.close();
 				if(fileFormatVal == 1)
-				result.setOptionFilePath(path + pathSeperator+date+pathSeperator+x+".csv");
+				result.setOptionFilePath(path + pathSeperator+date+randNO+pathSeperator+x+".csv");
 				else
-				result.setOptionFilePath(path + pathSeperator+date+pathSeperator+x+".txt");	
+				result.setOptionFilePath(path + pathSeperator+date+randNO+pathSeperator+x+".txt");	
 		}
 		try{
 			if(flag == true)
 			{
 				
-				 FileOutputStream fos = new FileOutputStream(path + pathSeperator+date+".zip");
+				 FileOutputStream fos = new FileOutputStream(path + pathSeperator+date+randNO+".zip");
 				 ZipOutputStream zos = new ZipOutputStream(fos);
 			     System.gc();
 				 for(File rf : destDir.listFiles())
@@ -3688,7 +3690,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 				 zos.close();
 				 fos.close();
 				result.setResultCode(0);
-				result.setStatus("/mobile_numbers/"+date+".zip");
+				result.setStatus("/mobile_numbers/"+date+randNO+".zip");
 				result.setList(resultList);
 		}
 			else
@@ -3716,7 +3718,9 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 			if(maxIndex == 0)
 				limit  = "ALL";
 		 try{
-			 boolean flag = false;
+				boolean flag = false;
+				Random rand = new Random();
+				int randNO = rand.nextInt(4);
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				String date = sdf.format(new Date());
 				String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
@@ -3725,7 +3729,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 				StringBuilder str = null;
 				File f1 = null;
 				int splitmaxCount =0 ;
-				File destDir = new File(path + pathSeperator+date);
+				File destDir = new File(path + pathSeperator+date+randNO);
 				destDir.mkdir();
 				List<String> totlaMobileNos = new ArrayList<String>();
 				   int i=0; 
@@ -3745,9 +3749,9 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 				    		i++;
 					    	str = new StringBuilder();
 							 if(fileFormatVal == 1)
-							f1 = new File(path + pathSeperator+date+pathSeperator+vo.getName()+".csv");//i is file number
+							f1 = new File(path + pathSeperator+date+randNO+pathSeperator+vo.getName()+".csv");//i is file number
 							else
-							f1 = new File(path + pathSeperator+date+pathSeperator+vo.getName()+".txt");	
+							f1 = new File(path + pathSeperator+date+randNO+pathSeperator+vo.getName()+".txt");	
 				    	}
 				    	 Set<String> resultNumbers = new HashSet<String>();
 				    	 Long Total  = 0l;
@@ -3910,9 +3914,9 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 						{
 							str = new StringBuilder();
 							if(fileFormatVal == 1)
-							f1 = new File(path + pathSeperator+date+pathSeperator+j+".csv");//j is file number
+							f1 = new File(path + pathSeperator+date+randNO+pathSeperator+j+".csv");//j is file number
 							else
-							f1 = new File(path + pathSeperator+date+pathSeperator+j+".txt");
+							f1 = new File(path + pathSeperator+date+randNO+pathSeperator+j+".txt");
 							int inc = 0;
 							for(String no : totlaMobileNos.subList(splitmaxCount,  totlaMobileNos.size()- 0))
 							{
@@ -3933,12 +3937,12 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 					else if(checkedTypeVal == 1 && totlaMobileNos.size() > 0)//Single file
 					{
 						str = new StringBuilder();
-						Random rand = new Random();
-						int x = rand.nextInt(4);
+						Random rand1 = new Random();
+						int x = rand1.nextInt(4);
 						if(fileFormatVal == 1)
-						f1 = new File(path + pathSeperator+date+pathSeperator+x+".csv");
+						f1 = new File(path + pathSeperator+date+randNO+pathSeperator+x+".csv");
 						else
-						f1 = new File(path + pathSeperator+date+pathSeperator+x+".txt");	
+						f1 = new File(path + pathSeperator+date+randNO+pathSeperator+x+".txt");	
 						for(String no : totlaMobileNos)
 						{
 							str.append(no.toString());
@@ -3948,16 +3952,16 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 						    outPut1.write(str.toString());
 							outPut1.close();
 							if(fileFormatVal == 1)
-							result.setOptionFilePath(path + pathSeperator+date+pathSeperator+x+".csv");
+							result.setOptionFilePath(path + pathSeperator+date+randNO+pathSeperator+x+".csv");
 							else
-							result.setOptionFilePath(path + pathSeperator+date+pathSeperator+x+".txt");	
+							result.setOptionFilePath(path + pathSeperator+date+randNO+pathSeperator+x+".txt");	
 					}
 					
 					try{
 						if(flag == true)
 						{
 							
-							 FileOutputStream fos = new FileOutputStream(path + pathSeperator+date+".zip");
+							 FileOutputStream fos = new FileOutputStream(path + pathSeperator+date+randNO+".zip");
 							 ZipOutputStream zos = new ZipOutputStream(fos);
 						     System.gc();
 							 for(File rf : destDir.listFiles())
@@ -3965,7 +3969,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 							 zos.close();
 							 fos.close();
 							result.setResultCode(0);
-							result.setStatus("/mobile_numbers/"+date+".zip");
+							result.setStatus("/mobile_numbers/"+date+randNO+".zip");
 							result.setList(resultList);
 					}
 						else
