@@ -49,11 +49,10 @@ public interface IMobileService {
 	public ResultStatus getMobileAppLastAuthorisedTime();
 	
 	public ResultStatus populateVoterData();
-	
-	public MobileVO getIvrMobileNumbers(Long scopeId,List<Long> locationIDs,Long fileFormatVal,int maxIndex,boolean multipleFiles,int NoOfFile);
+	//public MobileVO getIvrMobileNumbers(Long scopeId,List<Long> locationIDs,Long fileFormatVal,int maxIndex,boolean multipleFiles,int NoOfFile);
 	public List<SelectOptionVO> getDistrictsList(Long stateId)	;
 	public List<SelectOptionVO> getConstituencyList(List<Long> distictIds);
-	public MobileVO getMobileNumbersByLocations(Long scopeId,List<Long> locationIds,Long fileFormatVal,int maxIndex,int checkedTypeVal,int noOfFile);
+	public MobileVO getMobileNumbersByLocations(Long scopeId,List<Long> locationIds,Long fileFormatVal,int maxIndex,int checkedTypeVal,int noOfFile,List<String> checkedLevels);
 	public List<SelectOptionVO> getTehsilList(List<Long> distictIds);
 	public List<SelectOptionVO> getpcconstituencyList(Long regionId);
 	public MobileVO getLocationWiseMobileNumbersCountByRegionAndScope(Long scopeId,String regionType);

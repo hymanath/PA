@@ -31,6 +31,7 @@ import javax.print.DocFlavor.STRING;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
+import org.apache.sanselan.icc.IccConstants;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -3243,7 +3244,7 @@ public List<SelectOptionVO> getConstituencyList()
 		}
 		  return returnList;
 	  }
-	 public MobileVO getIvrMobileNumbers(Long scopeId,List<Long> locationIDs,Long fileFormatVal,int maxIndex,boolean multipleFiles,int noOfFile)
+/*	 public MobileVO getIvrMobileNumbers(Long scopeId,List<Long> locationIDs,Long fileFormatVal,int maxIndex,boolean multipleFiles,int noOfFile)
 	{
 		
 		MobileVO result =new MobileVO();
@@ -3286,7 +3287,7 @@ public List<SelectOptionVO> getConstituencyList()
 				    int inc = 0;
 			    	
 					 Set<String> resultNumbers = new HashSet<String>();
-						/* get mobile no for each location*/  
+						 get mobile no for each location  
 						int tempMaxIndex = 0;
 						 Set<String> mobilenos = mobileNumbersDAO.getVotersMobilenos(scopeId,location,maxIndex);
 						 if((mobilenos != null && mobilenos.size() > 0))
@@ -3300,7 +3301,7 @@ public List<SelectOptionVO> getConstituencyList()
 						 else
 						 tempMaxIndex = maxIndex;
 										 
-						 /* IVR Panchayat Numbers*/ 
+						  IVR Panchayat Numbers 
 							 if(tempMaxIndex > 0 || limit.equalsIgnoreCase("ALL"))
 							 {
 								Set<String> panchayatMNos = mobileNumbersDAO.getIvrMobilenosBasedOnPriority(scopeId,location,tempMaxIndex,IConstants.PANCHAYAT);
@@ -3316,7 +3317,7 @@ public List<SelectOptionVO> getConstituencyList()
 							}
 									 
 									 
-									/*  IVR Tehsil Numbers*/ 
+									  IVR Tehsil Numbers 
 							 if(tempMaxIndex > 0 || limit.equalsIgnoreCase("ALL"))
 								 {
 							Set<String> tehsilMNos = mobileNumbersDAO.getIvrMobilenosBasedOnPriority(scopeId,location,tempMaxIndex,IConstants.TEHSIL);
@@ -3331,7 +3332,7 @@ public List<SelectOptionVO> getConstituencyList()
 									    
 						    }
 									 
-							/* IVR Constituency Numbers*/ 
+							 IVR Constituency Numbers 
 						 if(tempMaxIndex > 0 || limit.equalsIgnoreCase("ALL"))
 						 {
 						 Set<String> constituencyMNos = mobileNumbersDAO.getIvrMobilenosBasedOnPriority(scopeId,location,tempMaxIndex,IConstants.CONSTITUENCY);
@@ -3370,7 +3371,7 @@ public List<SelectOptionVO> getConstituencyList()
 							outPut1.close();
 						 }
 				}
-			    /*  multiple file split*/ 
+			      multiple file split 
 			if(multipleFiles && totlaMobileNos.size() > 0)
 			 {
 				splitFileCnt =  totlaMobileNos.size() / noOfFile;
@@ -3433,9 +3434,9 @@ public List<SelectOptionVO> getConstituencyList()
 				result.setStatus("Exception");
 		}
 		return result;
-	}
+	}*/
 	 
-	 public MobileVO getMobileNumbersByLocations(Long scopeId,List<Long> locationIds,Long fileFormatVal,int maxIndex,int checkedTypeVal,int noOfFile)
+	 public MobileVO getMobileNumbersByLocations(Long scopeId,List<Long> locationIds,Long fileFormatVal,int maxIndex,int checkedTypeVal,int noOfFile,List<String>checkedLevels)
 		{
 		    MobileVO result =new MobileVO();
 		    List<MobileVO> resultList = new ArrayList<MobileVO>();
@@ -3450,7 +3451,7 @@ public List<SelectOptionVO> getConstituencyList()
 						if(acIds != null && acIds.size() > 0)
 						{
 						locationIds.addAll(acIds);
-						getMobileNumbersForParliament(resultList,locationIds,fileFormatVal,maxIndex,checkedTypeVal,noOfFile,locationId);
+						getMobileNumbersForParliament(resultList,locationIds,fileFormatVal,maxIndex,checkedTypeVal,noOfFile,locationId,checkedLevels);
 						}
 				}
 				result = fileSplitForParlaiment(resultList,checkedTypeVal,noOfFile,fileFormatVal,maxIndex);
@@ -3458,7 +3459,7 @@ public List<SelectOptionVO> getConstituencyList()
 			}
 				else
 				{
-				getMobileNumbers(result,scopeId,locationIds,fileFormatVal,maxIndex,checkedTypeVal,noOfFile);
+				getMobileNumbers(result,scopeId,locationIds,fileFormatVal,maxIndex,checkedTypeVal,noOfFile,checkedLevels);
 				}
 		}
 		catch (Exception e) {
@@ -3467,48 +3468,74 @@ public List<SelectOptionVO> getConstituencyList()
 			
 			return result;
 		}
-	 public List<MobileVO> getMobileNumbersForParliament(List<MobileVO> resultList,List<Long> locationIds,Long fileFormatVal,int maxIndex,int checkedTypeVal,int noOfFile,Long pcId)
+	 public List<MobileVO> getMobileNumbersForParliament(List<MobileVO> resultList,List<Long> locationIds,Long fileFormatVal,int maxIndex,int checkedTypeVal,int noOfFile,Long pcId,List<String> checkedLevels)
 	 {
 		 try{
-			 	
-				
-				MobileVO vo = new MobileVO();
+			 	MobileVO vo = new MobileVO();
 				vo.setId(pcId);
 				vo.setName(constituencyDAO.get(pcId).getName()); 
 				
 				    	 Set<String> resultNumbers = new HashSet<String>();
 				    	 Long Total  = 0l;
 				    	 Long constiTotal = 0l;
-				    	 Long tehsilTotal = 0l;
-				    	 Total = mobileNumbersDAO.getMobileNosTotalForLocationIDs(locationIds,IConstants.CONSTITUENCY,2l);	
+				    	 Long mandalTotal = 0l;
+				    	 Long panchayatTotal = 0l;
+				    	 String firstEle  = checkedLevels.get(0); 
+				    	// Total = mobileNumbersDAO.getMobileNosTotalForLocationIDs(locationIds,IConstants.CONSTITUENCY,2l);	
+				    	 if(checkedLevels.contains(IConstants.CONSTITUENCY))
 				    	 constiTotal =  mobileNumbersDAO.getMobileNosCountByIdsForLocationIDs(locationIds,IConstants.CONSTITUENCY,2l);
-				    	 Long mandalTotal = mobileNumbersDAO.getMobileNosCountByIdsForLocationIDs(locationIds,IConstants.TEHSIL,2l);
-					     Long panchayatTotal = mobileNumbersDAO.getMobileNosCountByIdsForLocationIDs(locationIds,IConstants.PANCHAYAT,2l);
+				    	 else if(checkedLevels.contains(IConstants.TEHSIL))
+				    	 mandalTotal = mobileNumbersDAO.getMobileNosCountByIdsForLocationIDs(locationIds,IConstants.TEHSIL,2l);
+				    	 else if(checkedLevels.contains(IConstants.PANCHAYAT))
+					      panchayatTotal = mobileNumbersDAO.getMobileNosCountByIdsForLocationIDs(locationIds,IConstants.PANCHAYAT,2l);
+				    	 Total = constiTotal + mandalTotal + panchayatTotal;
 					    if(Total > 0)
 				    	{
 					    	if(Total < maxIndex)
 					    		maxIndex = Total.intValue();
+					    	
 					    	int constiMaxIndex = (int) ((constiTotal * maxIndex)/Total);
 					    	int mandalMaxIndex =  (int) ((mandalTotal * maxIndex)/Total);
 					    	int panchayatMaxIndex = (int) ((panchayatTotal * maxIndex)/Total.longValue());
-					    	int constisum = constiMaxIndex + mandalMaxIndex + panchayatMaxIndex;
+					    	int sum = constiMaxIndex + mandalMaxIndex + panchayatMaxIndex;
 					    	
-					    	if(constisum > maxIndex)
+					    	if(sum > maxIndex)
 					    	{
-					    		if(constiMaxIndex > 0)
-					    		constiMaxIndex = constiMaxIndex - (constisum - maxIndex);
+					    		if(firstEle.equalsIgnoreCase(IConstants.CONSTITUENCY))
+					    		constiMaxIndex = constiMaxIndex - (sum - maxIndex);
+					    		else if(firstEle.equalsIgnoreCase(IConstants.TEHSIL))
+					    			mandalMaxIndex = mandalMaxIndex - (sum - maxIndex);
+					    		else if(firstEle.equalsIgnoreCase(IConstants.PANCHAYAT))
+					    			panchayatMaxIndex = panchayatMaxIndex - (sum - maxIndex);
+					    			
 					    	}
-					    	if(constisum < maxIndex)
-					    		constiMaxIndex = constiMaxIndex + (maxIndex - constisum);	
-					    	Set<String> panchayatNos = mobileNumbersDAO.getMobilenosBasedOnPriorityForLocationIDs(2l,locationIds,panchayatMaxIndex,IConstants.PANCHAYAT);
-						        if(panchayatNos != null && panchayatNos.size() > 0)
-						        	resultNumbers.addAll(panchayatNos);
-					        Set<String> mandalNos = mobileNumbersDAO.getMobilenosBasedOnPriorityForLocationIDs(2l,locationIds,mandalMaxIndex,IConstants.TEHSIL);
-					        if(mandalNos != null && mandalNos.size() > 0)
-					        	resultNumbers.addAll(mandalNos);
-					        Set<String> constituencyNos = mobileNumbersDAO.getMobilenosBasedOnPriorityForLocationIDs(2l,locationIds,constiMaxIndex,IConstants.CONSTITUENCY);
-					        if(constituencyNos != null && constituencyNos.size() > 0)
-					        	resultNumbers.addAll(constituencyNos);
+					    	if(sum < maxIndex)
+					    	{
+					    		if(firstEle.equalsIgnoreCase(IConstants.CONSTITUENCY))
+					    		constiMaxIndex = constiMaxIndex + (maxIndex - sum);	
+					    		else if(firstEle.equalsIgnoreCase(IConstants.TEHSIL))
+					    			mandalMaxIndex = mandalMaxIndex + (maxIndex - sum);	
+					    		else if(firstEle.equalsIgnoreCase(IConstants.PANCHAYAT))
+					    			panchayatMaxIndex = panchayatMaxIndex + (maxIndex - sum);	
+					    	}
+					    	 if(checkedLevels.contains(IConstants.PANCHAYAT))
+					    	 {
+						    	Set<String> panchayatNos = mobileNumbersDAO.getMobilenosBasedOnPriorityForLocationIDs(2l,locationIds,panchayatMaxIndex,IConstants.PANCHAYAT);
+							        if(panchayatNos != null && panchayatNos.size() > 0)
+							        	resultNumbers.addAll(panchayatNos);
+					    	 }
+					    	 if(checkedLevels.contains(IConstants.TEHSIL))
+					    	 {
+							        Set<String> mandalNos = mobileNumbersDAO.getMobilenosBasedOnPriorityForLocationIDs(2l,locationIds,mandalMaxIndex,IConstants.TEHSIL);
+							        if(mandalNos != null && mandalNos.size() > 0)
+							        	resultNumbers.addAll(mandalNos);
+					    	 }
+					    	 if(checkedLevels.contains(IConstants.CONSTITUENCY))
+					    	 {
+						        Set<String> constituencyNos = mobileNumbersDAO.getMobilenosBasedOnPriorityForLocationIDs(2l,locationIds,constiMaxIndex,IConstants.CONSTITUENCY);
+						        if(constituencyNos != null && constituencyNos.size() > 0)
+						        	resultNumbers.addAll(constituencyNos);
+				    	     }
 					     
 				    	}
 					    if(resultNumbers != null && resultNumbers.size() > 0)
@@ -3682,7 +3709,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 	}
 	return result;
 }
-	 public MobileVO getMobileNumbers(MobileVO result,Long scopeId,List<Long> locationIds,Long fileFormatVal,int maxIndex,int checkedTypeVal,int noOfFile)
+	 public MobileVO getMobileNumbers(MobileVO result,Long scopeId,List<Long> locationIds,Long fileFormatVal,int maxIndex,int checkedTypeVal,int noOfFile,List<String> checkedLevels)
 	 {
 		 List<MobileVO> resultList = new ArrayList<MobileVO>();
 			String limit = "";
@@ -3726,89 +3753,111 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 				    	 Long Total  = 0l;
 				    	 Long districtTotal = 0l;
 				    	 Long constiTotal = 0l;
-				    	 Long tehsilTotal = 0l;
+				    	 Long mandalTotal = 0l;
+				    	 Long panchayatTotal = 0l;
+				    	 String firstElement = checkedLevels.get(0);
 					     if(scopeId == 1) // District
 					     {
-					    	 Total = mobileNumbersDAO.getMobileNosTotal(location,IConstants.DISTRICT,scopeId);
-					    	 districtTotal =  mobileNumbersDAO.getMobileNosCountByIds(location,IConstants.DISTRICT,scopeId);
-					    	 constiTotal =  mobileNumbersDAO.getMobileNosCountByIds(location,IConstants.CONSTITUENCY,scopeId);
-					    	
+					    	 if(checkedLevels.contains(IConstants.DISTRICT)) 
+					    	districtTotal =  mobileNumbersDAO.getMobileNosCountByIds(location,IConstants.DISTRICT,scopeId);	
+					    	else if(checkedLevels.contains(IConstants.CONSTITUENCY))
+					    	constiTotal =  mobileNumbersDAO.getMobileNosCountByIds(location,IConstants.CONSTITUENCY,scopeId);
+					    	else if(checkedLevels.contains(IConstants.TEHSIL))
+					    		mandalTotal = mobileNumbersDAO.getMobileNosCountByIds(location,IConstants.TEHSIL,scopeId);	
+					    	else if(checkedLevels.contains(IConstants.PANCHAYAT))
+					    		panchayatTotal = mobileNumbersDAO.getMobileNosCountByIds(location,IConstants.PANCHAYAT,scopeId);;	
+					    		Total = districtTotal + constiTotal + mandalTotal + panchayatTotal;
 					     }
 				    	else if(scopeId == 2) //Constituency
 				    	{
-				    	    Total = mobileNumbersDAO.getMobileNosTotal(location,IConstants.CONSTITUENCY,scopeId);	
-				    	    constiTotal =  mobileNumbersDAO.getMobileNosCountByIds(location,IConstants.CONSTITUENCY,scopeId);
+				    			if(checkedLevels.contains(IConstants.CONSTITUENCY))
+						    	constiTotal =  mobileNumbersDAO.getMobileNosCountByIds(location,IConstants.CONSTITUENCY,scopeId);
+						    	else if(checkedLevels.contains(IConstants.TEHSIL))
+						    		mandalTotal = mobileNumbersDAO.getMobileNosCountByIds(location,IConstants.TEHSIL,scopeId);	
+						    	else if(checkedLevels.contains(IConstants.PANCHAYAT))
+						    		panchayatTotal = mobileNumbersDAO.getMobileNosCountByIds(location,IConstants.PANCHAYAT,scopeId);;	
+						    		Total = constiTotal + mandalTotal + panchayatTotal;
 				    	}
 				    	else if(scopeId == 4) // Mandal
 				    	{
-				    	   Total = mobileNumbersDAO.getMobileNosTotal(location,IConstants.TEHSIL,scopeId);	
+				    		if(checkedLevels.contains(IConstants.TEHSIL))
+					    		mandalTotal = mobileNumbersDAO.getMobileNosCountByIds(location,IConstants.TEHSIL,scopeId);	
+					    	else if(checkedLevels.contains(IConstants.PANCHAYAT))
+					    		panchayatTotal = mobileNumbersDAO.getMobileNosCountByIds(location,IConstants.PANCHAYAT,scopeId);;	
+					    		Total = mandalTotal + panchayatTotal;
 					    }
-					     	
-					        Long mandalTotal = mobileNumbersDAO.getMobileNosCountByIds(location,IConstants.TEHSIL,scopeId);
-					    	Long panchayatTotal = mobileNumbersDAO.getMobileNosCountByIds(location,IConstants.PANCHAYAT,scopeId);
-					    	
-				    	if(Total > 0)
+					    if(Total > 0)
 				    	{
-				    		int districtMaxIndex  =0;
+				    		
 				    		if(Total < maxIndex)
 				    		maxIndex = Total.intValue();
+				    		int districtMaxIndex = (int) ((districtTotal * maxIndex)/Total);
 				    		int constiMaxIndex = (int) ((constiTotal * maxIndex)/Total);
 					    	int mandalMaxIndex =  (int) ((mandalTotal * maxIndex)/Total);
 					    	int panchayatMaxIndex = (int) ((panchayatTotal * maxIndex)/Total.longValue());
-					    	int constisum = constiMaxIndex + mandalMaxIndex + panchayatMaxIndex;
-					    	int districtSum =0;
-					    	int tehsilSum = 0;
-					    	if(scopeId == 2 && constisum > maxIndex)
+					    	int sum = districtMaxIndex + constiMaxIndex + mandalMaxIndex + panchayatMaxIndex;
+					    	
+					    	if(sum > maxIndex)
 					    	{
-					    		if(constiMaxIndex > 0)
-					    		constiMaxIndex = constiMaxIndex - (constisum - maxIndex);
+					    		if(firstElement.equalsIgnoreCase(IConstants.DISTRICT))
+					    			districtMaxIndex = districtMaxIndex - (sum - maxIndex);
+						    		else if(firstElement.equalsIgnoreCase(IConstants.CONSTITUENCY))
+						    		constiMaxIndex = constiMaxIndex - (sum - maxIndex);
+						    		else if(firstElement.equalsIgnoreCase(IConstants.TEHSIL))
+						    			mandalMaxIndex = mandalMaxIndex - (sum - maxIndex);
+						    		else if(firstElement.equalsIgnoreCase(IConstants.PANCHAYAT))
+						    			panchayatMaxIndex = panchayatMaxIndex - (sum - maxIndex);
+					    		
+					    		
 					    	}
-					    	if(scopeId == 2 && constisum < maxIndex)
-					    		constiMaxIndex = constiMaxIndex + (maxIndex - constisum);	
-					    	 if(scopeId == 1)
-					    	 {
-							      districtMaxIndex = (int) ((districtTotal * maxIndex)/Total);
-							      districtSum = constisum + districtMaxIndex;
-							      if(districtSum > maxIndex)
-							      constiMaxIndex = constiMaxIndex - (districtSum - maxIndex);
-							      if(districtSum < maxIndex)
-							      constiMaxIndex = constiMaxIndex + (maxIndex - districtSum);	
-							    	  
-							      
-					    	 }
-					    	 if(scopeId == 4)
-					    	 {
-					    		 tehsilSum =   mandalMaxIndex + panchayatMaxIndex;
-					    		 if(tehsilSum > maxIndex)
-					    			 panchayatMaxIndex = panchayatMaxIndex - (tehsilSum - maxIndex);
-								  if(tehsilSum < maxIndex)
-								     panchayatMaxIndex = panchayatMaxIndex + (maxIndex - tehsilSum);
-					    		 
-					    	 }
-					        Set<String> panchayatNos = mobileNumbersDAO.getMobilenosBasedOnPriority(scopeId,location,panchayatMaxIndex,IConstants.PANCHAYAT);
-						        if(panchayatNos != null && panchayatNos.size() > 0)
-						        	resultNumbers.addAll(panchayatNos);
-					        Set<String> mandalNos = mobileNumbersDAO.getMobilenosBasedOnPriority(scopeId,location,mandalMaxIndex,IConstants.TEHSIL);
-					        if(mandalNos != null && mandalNos.size() > 0)
-					        	resultNumbers.addAll(mandalNos);
+					    	if(sum < maxIndex)
+					    	{
+					    		if(firstElement.equalsIgnoreCase(IConstants.DISTRICT))
+					    			districtMaxIndex = districtMaxIndex + (maxIndex - sum);
+						    	else if(firstElement.equalsIgnoreCase(IConstants.CONSTITUENCY))
+						    		constiMaxIndex = constiMaxIndex + (maxIndex - sum);	
+						    	else if(firstElement.equalsIgnoreCase(IConstants.TEHSIL))
+					    			mandalMaxIndex = mandalMaxIndex + (maxIndex - sum);
+					    		else if(firstElement.equalsIgnoreCase(IConstants.PANCHAYAT))
+					    			panchayatMaxIndex = panchayatMaxIndex + (maxIndex - sum);
+					    	}
+					    	
+					    	
+					    	 
+					    	if(checkedLevels.contains(IConstants.PANCHAYAT))
+					    	{
+						        Set<String> panchayatNos = mobileNumbersDAO.getMobilenosBasedOnPriority(scopeId,location,panchayatMaxIndex,IConstants.PANCHAYAT);
+							        if(panchayatNos != null && panchayatNos.size() > 0)
+							        	resultNumbers.addAll(panchayatNos);
+					    	}
+					    	if(checkedLevels.contains(IConstants.TEHSIL))
+					    	{
+						        Set<String> mandalNos = mobileNumbersDAO.getMobilenosBasedOnPriority(scopeId,location,mandalMaxIndex,IConstants.TEHSIL);
+						        if(mandalNos != null && mandalNos.size() > 0)
+						        	resultNumbers.addAll(mandalNos);
+					    	}
 					        if(scopeId == 1 || scopeId == 2)//District ,constituency
 					        {
-					        Set<String> constituencyNos = mobileNumbersDAO.getMobilenosBasedOnPriority(scopeId,location,constiMaxIndex,IConstants.CONSTITUENCY);
-					        if(constituencyNos != null && constituencyNos.size() > 0)
-					        	resultNumbers.addAll(constituencyNos);
+					        	if(checkedLevels.contains(IConstants.CONSTITUENCY))	
+					        	{
+						        Set<String> constituencyNos = mobileNumbersDAO.getMobilenosBasedOnPriority(scopeId,location,constiMaxIndex,IConstants.CONSTITUENCY);
+						        if(constituencyNos != null && constituencyNos.size() > 0)
+						        	resultNumbers.addAll(constituencyNos);
+					        	}
 					        }
 					        
 					        if(scopeId == 1)//district
 						     {
-					        	Set<String> districtNos = mobileNumbersDAO.getMobilenosBasedOnPriority(scopeId,location,districtMaxIndex,IConstants.DISTRICT);
-						        if(districtNos != null && districtNos.size() > 0)
-						        	resultNumbers.addAll(districtNos);
+						        	if(checkedLevels.contains(IConstants.DISTRICT))
+						        	{
+						        	Set<String> districtNos = mobileNumbersDAO.getMobilenosBasedOnPriority(scopeId,location,districtMaxIndex,IConstants.DISTRICT);
+							        if(districtNos != null && districtNos.size() > 0)
+							        	resultNumbers.addAll(districtNos);
+						        	}
 						     }
 				    	
 				    	}
-				    	
-				    	
-				    	 if(resultNumbers != null && resultNumbers.size() > 0)
+					     if(resultNumbers != null && resultNumbers.size() > 0)
 					      {
 										  
 							 flag = true;
