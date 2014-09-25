@@ -265,7 +265,7 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 	{
 		StringBuilder br = new StringBuilder();
 		br.append(" select distinct model.party.partyId,model.party.shortName from DebateParticipant model where model.debate.isDeleted = 'N' and " +
-				" date(model.debate.startTime) >= :fromDate and date(model.debate.endTime) >= :toDate  ");
+				" date(model.debate.startTime) >= :fromDate and date(model.debate.endTime) <= :toDate  ");
 		if(partyIds != null && partyIds.size()>0)
 		{
 			br.append(" and model.party.partyId in (:partyIds)");
