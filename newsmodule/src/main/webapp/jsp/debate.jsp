@@ -593,6 +593,11 @@ window.location.href = uri + base64(format(template, ctx))
 					<a class="btn btn-success" onClick="getNewsDebateAnalysisReport();">Submit</a>
 				</div>
 				
+				<div align="center" style="margin-bottom: 15px; margin-top: 10px;">
+						<img src='images/Loading-data.gif'  id="searchDataImg" style="width:70px;height:60px;display:none;"/>
+				</div>
+				
+			
 		</div>
 				
 				
@@ -601,7 +606,7 @@ window.location.href = uri + base64(format(template, ctx))
 				<div class="row">
 					<div class="span12  widgetservey_Red m_top20">
 							
-							<legend class="boxHeading">Party Wise Over All Performance <a class="btn btn-info  btn-mini" style="float:right" onClick="generateExcelReport('firstReport')" >Export Excel </a></legend>
+							<legend class="boxHeading">Party Wise Over All Performance <a class="btn btn-info  btn-mini" style="float:right;display:none;" onClick="generateExcelReport('firstReport')"  id="summeryExoperExcelId" >Export Excel </a></legend>
 						<div class="row">
 						 <div class="span12" id="partyOverallSummery" >							
 						</div>
@@ -617,7 +622,7 @@ window.location.href = uri + base64(format(template, ctx))
 				<div class="row">
 					<div class="span12  widgetservey_Red m_top20">
 							
-							<legend class="boxHeading">Topic Wise Each Party Strong And Weak<a class="btn btn-info  btn-mini" style="float:right" onClick="generateExcelReport('topicwiseStrongAndWeak')" >Export Excel </a></legend>
+							<legend class="boxHeading">Topic Wise Each Party Strong And Weak<a class="btn btn-info  btn-mini" style="float:right;display:none;" onClick="generateExcelReport('topicwiseStrongAndWeak')" id="StrongAndWeakExoperExcelId" >Export Excel </a></legend>
 						<div id="topicwiseStrongAndWeak"></div>
 					
 					</div>
@@ -628,7 +633,7 @@ window.location.href = uri + base64(format(template, ctx))
 			<div class="span12">
 				<div class="row ">
 					<div class="span12  widgetservey_Red m_top20">
-					<legend class="boxHeading">Party Wise Each Candidate Performance With Attributes<a class="btn btn-info  btn-mini" style="float:right" onClick="generateExcelReport('secondReport')" >Export Excel</a></legend>
+					<legend class="boxHeading">Party Wise Each Candidate Performance With Attributes<a class="btn btn-info  btn-mini" style="float:right;display:none;" onClick="generateExcelReport('secondReport')" id="candidateIdExoperExcelId">Export Excel</a></legend>
 							
 						<div class="row">
 						 <div class="span12" id="eachAttributePartyCandidateId" style="width: 960px;height:500px; overflow-x: scroll;">
@@ -647,7 +652,7 @@ window.location.href = uri + base64(format(template, ctx))
 				<div class="row ">
 					<div class="span12  widgetservey_Red m_top20">
 						
-							<legend class="boxHeading">Topic Wise Each Candidate Performance<a class="btn btn-info  btn-mini" style="float:right" onClick="generateExcelReport('thirdReport')" >Export Excel</a></legend>
+							<legend class="boxHeading">Topic Wise Each Candidate Performance<a class="btn btn-info  btn-mini" style="float:right;display:none;" onClick="generateExcelReport('thirdReport')" id="performanceExoperExcelId">Export Excel</a></legend>
 						<div class="row">
 						 <div class="span12" id="partyCandidatePerformanceDiv" style="width: 960px;height:500px; overflow-x: scroll;">							
 						  </div>
@@ -664,7 +669,7 @@ window.location.href = uri + base64(format(template, ctx))
 			<div class="span12">
 				<div class="row">
 					<div class="span12  widgetservey_Red m_top20">
-							<legend class="boxHeading">Topic Wise Each Candidate Performance With Attributes<a class="btn btn-info btn-mini" style="float:right" onClick="generateExcelReport('fourthReport')" >Export Excel</a></legend>
+							<legend class="boxHeading">Topic Wise Each Candidate Performance With Attributes<a class="btn btn-info btn-mini" style="float:right;display:none;" onClick="generateExcelReport('fourthReport')"  id="candidatePartyExoperExcelId">Export Excel</a></legend>
 						<div class="row">
 						 <div class="span12" id= "candidatePartyPerformanceId" style="width: 960px;height:500px; overflow-x: scroll;">
 						</div>
