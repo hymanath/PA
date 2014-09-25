@@ -675,8 +675,11 @@ function getCandidatesOfSelectedParty(partyId,divId,id)
 	}
 	var numb = divId.match(/\d/g);
 	//$('#candidate1').find('option').remove();
+	
+	var partyArr = new Array();
+	partyArr.push(partyId);
 	var jsObj = {
-			partyId :partyId,
+			partyArr :partyArr,
 			selectedVal :"candidate"+numb+"",
 			task : "getCandidatesOfAParty"	
 	};
@@ -1732,8 +1735,10 @@ function getAnalysedData()
 }
 function getCandidatesList(partyId)
 {
+	var partyArr = new Array();
+	partyArr.push(partyId);
 	var jsObj = {
-			partyId :partyId,
+			partyArr :partyArr,
 			task : "getCandidatesLIstOfAParty"	
 	};
 	
