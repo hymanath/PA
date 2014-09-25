@@ -490,6 +490,7 @@ function createFile()
 	.done(function( result ) {
 		$("#ajaxImg").hide();
 		clearDiv();
+		$(".scopeLevelDiv").hide();
 		if(result.resultCode == 0)
 		{
 	  $("#errorDiv").html("<font color='green' style='font-size: 12px; font-weight: bold;'>file created successfully</font>");
