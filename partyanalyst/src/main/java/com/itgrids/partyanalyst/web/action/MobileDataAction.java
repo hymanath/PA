@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -379,12 +380,14 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 			mobileVo = mobileService.getMobileNumbersByLocations(jObj.getLong("scopeId"),locationIds,fileFormatVal,jObj.getInt("maxIndex"),jObj.getInt("checkedTypeVal"),jObj.getInt("noOfFiles"),checkedLevels);
 			else
 			{
+				 Random rand = new Random();
+					int randNO = rand.nextInt(4);
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				String date = sdf.format(new Date());
 				String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
 				String path = IConstants.STATIC_CONTENT_FOLDER_URL+pathSeperator+"mobile_numbers";
-				File sourceDir = new File(path + pathSeperator+date);
-				File destDir = new File(path + pathSeperator+date+"QOpt");
+				
+				File destDir = new File(path + pathSeperator+date+randNO+"QOpt");
 				destDir.mkdir();
 				for(int i=0;i<questionOptionsArray.length();i++)
 				{
@@ -401,22 +404,22 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 					 File oldName = new File(mobileVo.getOptionFilePath());
 					 File newName = null;
 					 if(fileFormatVal == 1)
-						 oldName = new File(path + pathSeperator+date+pathSeperator+question+"Opt"+opt+".csv");
+						 oldName = new File(path + pathSeperator+date+randNO+pathSeperator+question+"Opt"+opt+".csv");
 				      else
-				      newName = new File(path + pathSeperator+date+pathSeperator+question+"Opt"+opt+".txt"); 
-					  oldName.renameTo(new File(path + pathSeperator+date+"QOpt" +pathSeperator+ newName.getName()));
+				      newName = new File(path + pathSeperator+date+randNO+pathSeperator+question+"Opt"+opt+".txt"); 
+					  oldName.renameTo(new File(path + pathSeperator+date+randNO+"QOpt" +pathSeperator+ newName.getName()));
 					
 					}
 				}
 				 
-				 FileOutputStream fos = new FileOutputStream(path + pathSeperator+date+"QOpt.zip");
+				 FileOutputStream fos = new FileOutputStream(path + pathSeperator+date+randNO+"QOpt.zip");
 				 ZipOutputStream zos = new ZipOutputStream(fos);
 			     System.gc();
 				 for(File rf : destDir.listFiles())
 				 addToZip(rf.getAbsolutePath(), zos);
 				 zos.close();
 				 fos.close();
-				 mobileVo.setStatus("/mobile_numbers/"+date+"QOpt.zip");
+				 mobileVo.setStatus("/mobile_numbers/"+date+randNO+"QOpt.zip");
 				 
 			}
 					
