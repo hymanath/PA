@@ -1954,7 +1954,7 @@ function getEachTopicWisePartyAndCandidateDetails()
 	{
 		candidateIds.push("0");
 	}
-
+	$('#searchDataImg').show();
 	var jsObj = { 
 		fromDate : startDate,
 		toDate : endDate,
@@ -1976,47 +1976,61 @@ function getEachTopicWisePartyAndCandidateDetails()
 
 function buildEachTopicWisePartyAndCandidateDetails(result)
 {
-	var str = '';
-	str += '<table class="table table-bordered table-hover table-striped" id="thirdReport">';
-	str += '<thead class="alert alert-success">';
-	str += '<tr>';
-	str += '<th>Topic</th>';
-	var partiesList = result[0].subList;
-	for(var i in partiesList)
+	if(result != null)
 	{
-		str += '<th colspan=2>'+partiesList[i].party+'</th>';
-	}
-	str += '</tr>';
-	str += '<tr>';
-	str += '<th></th>';
-	for(var i in partiesList)
-	{
-		str += '<th>Candidate</th>';
-		str += '<th>Performance Count</th>';
-	}
-	str += '</tr>';
-	str += '</thead>';
-	str += '<tbody>';
-	for(var i in result)
-	{
+		var str = '';
+		str += '<table class="table table-bordered table-hover table-striped" id="thirdReport">';
+		str += '<thead class="alert alert-success">';
 		str += '<tr>';
-		str += '<td>'+result[i].subject+'</td>';
-		var details = result[i].subList;
-		for(var j in details)
+		str += '<th>Topic</th>';
+		var partiesList = result[0].subList;
+		for(var i in partiesList)
 		{
-			str += '<td>'+details[j].candidate+'</td>';
-			if(details[j].countScale  != null)
-			str += '<td>'+details[j].countScale+'</td>';
-			else
-			str += '<td>-</td>';
+			str += '<th colspan=2>'+partiesList[i].party+'</th>';
 		}
 		str += '</tr>';
+		str += '<tr>';
+		str += '<th></th>';
+		for(var i in partiesList)
+		{
+			str += '<th>Candidate</th>';
+			str += '<th>Performance Count</th>';
+		}
+		str += '</tr>';
+		str += '</thead>';
+		str += '<tbody>';
+		for(var i in result)
+		{
+			str += '<tr>';
+			str += '<td>'+result[i].subject+'</td>';
+			var details = result[i].subList;
+			for(var j in details)
+			{
+				str += '<td>'+details[j].candidate+'</td>';
+				if(details[j].countScale  != null)
+				str += '<td>'+details[j].countScale+'</td>';
+				else
+				str += '<td>-</td>';
+			}
+			str += '</tr>';
+		}
+		str += '</tbody>';
+		str += '</table>';
+		$('#partyCandidatePerformanceDiv').html(str);
+		$('#partyCandidatePerformanceDivRow').show();
+		$('#searchDataImg').hide();
+		$('#performanceExoperExcelId').show();
+		//$('#secondReport').dataTable();
+		
 	}
-	str += '</tbody>';
-	str += '</table>';
-	$('#partyCandidatePerformanceDiv').html(str);
-	$('#partyCandidatePerformanceDivRow').show();
-	//$('#secondReport').dataTable();
+	else{
+	
+			$('#searchDataImg').hide();
+			$('#partyCandidatePerformanceDiv').html('<div align="center"> <b>No Data Available </b>.</div>');
+			$('#partyCandidatePerformanceDivRow').show();
+			$('#performanceExoperExcelId').hide();
+	}
+	
 }
 function getCandidateCharacteristicsDetails(){
 
@@ -2104,6 +2118,7 @@ $('#candidatePartyPerformanceId').html('');
 		candidateIds.push("0");
 	}
 	
+	$('#searchDataImg').show();
 	
 	var jsObj = { 
 		fromDate : startDate,
@@ -2125,77 +2140,89 @@ $('#candidatePartyPerformanceId').html('');
 }
 //getCandidateCharacteristicsDetails();
 function buildCandidateCharacteristics(myResults){
-	var result = myResults.debateSubjectList;
-	$('#sampleId').html('');
-	if(result != null && result.length > 0){
-		 var str = '';
-		 str += '<table class="table table-bordered table-hover table-striped " id="fourthReport">';
-		str += '<thead class="alert alert-success">';
-		 str += '<tr>';
-		 str += '<th>Topic</th>';
-		 for(var i in result[0].partyList){
-			str += '<th colspan="5" align="center">'+result[0].partyList[i].partyName+'</th>';
-		 }
-		  str += '</tr>';
-		  str += '<tr>';
-		   str += '<th></th>';
-			
-			for(var j in result[0].partyList){
-					str += '<th> Candidate Name</th>';
-						for(var l in result[0].partyList[0].characList){
+	if(myResults != null)
+	{
+		var result = myResults.debateSubjectList;
+		$('#sampleId').html('');
+		if(result != null && result.length > 0){
+			 var str = '';
+			 str += '<table class="table table-bordered table-hover table-striped " id="fourthReport">';
+			str += '<thead class="alert alert-success">';
+			 str += '<tr>';
+			 str += '<th>Topic</th>';
+			 for(var i in result[0].partyList){
+				str += '<th colspan="5" align="center">'+result[0].partyList[i].partyName+'</th>';
+			 }
+			  str += '</tr>';
+			  str += '<tr>';
+			   str += '<th></th>';
+				
+				for(var j in result[0].partyList){
+						str += '<th> Candidate Name</th>';
+							for(var l in result[0].partyList[0].characList){
+							
+								str += '<th  class="alert alert-success">'+result[0].partyList[0].characList[l].characteristics+'</th>';
 						
-							str += '<th  class="alert alert-success">'+result[0].partyList[0].characList[l].characteristics+'</th>';
-					
-					
+						
+					}
+				
 				}
 			
-			}
-		
-		str += '</tr>';
-		str += '</thead>';
-		str += '<tbody>';
-		 for(var i in result){
-			str += '<tr>';		
-			str += '<td>'+result[i].debateSubject+'</td>';
-			if(result[i].partyList.length > 0){
-				for(var j in result[i].partyList){
-					if(result[i].partyList[j].candidatesList.length > 0 ){
-						for(var k in result[i].partyList[j].candidatesList){
-							str += '<td>'+result[i].partyList[j].candidatesList[k].candidateName+'</td>';
-						}
-					}
-					else{	
-					    str += '<td>-</td>';
-					}	
-					if(result[i].partyList[j].characList.length > 0){
-						for(var l in result[i].partyList[j].characList){
-							str += '<td>'+result[i].partyList[j].characList[l].scale+'</td>';
-						}
-					}
-					else{
-						 str += '<td>-</td>';
-						  str += '<td>-</td>';
-						   str += '<td>-</td>';
-						    str += '<td>-</td>';
-							 
-					}
-				}			
-			}
-			else{
-			str += '<td>-</td>';
-			str += '<td>-</td>';
-			str += '<td>-</td>';
-			str += '<td>-</td>';
-			str += '<td>-</td>';
-			
-			}
 			str += '</tr>';
-		 }
-		 str += '</tbody>';
-		 str += '</table>';
-		 $('#candidatePartyPerformanceId').html(str);
-		 $('#candidatePartyPerformanceIdRow').show();
-		//$('#fourthReport').dataTable();
+			str += '</thead>';
+			str += '<tbody>';
+			 for(var i in result){
+				str += '<tr>';		
+				str += '<td>'+result[i].debateSubject+'</td>';
+				if(result[i].partyList.length > 0){
+					for(var j in result[i].partyList){
+						if(result[i].partyList[j].candidatesList.length > 0 ){
+							for(var k in result[i].partyList[j].candidatesList){
+								str += '<td>'+result[i].partyList[j].candidatesList[k].candidateName+'</td>';
+							}
+						}
+						else{	
+							str += '<td>-</td>';
+						}	
+						if(result[i].partyList[j].characList.length > 0){
+							for(var l in result[i].partyList[j].characList){
+								str += '<td>'+result[i].partyList[j].characList[l].scale+'</td>';
+							}
+						}
+						else{
+							 str += '<td>-</td>';
+							  str += '<td>-</td>';
+							   str += '<td>-</td>';
+								str += '<td>-</td>';
+								 
+						}
+					}			
+				}
+				else{
+				str += '<td>-</td>';
+				str += '<td>-</td>';
+				str += '<td>-</td>';
+				str += '<td>-</td>';
+				str += '<td>-</td>';
+				
+				}
+				str += '</tr>';
+			 }
+			 str += '</tbody>';
+			 str += '</table>';
+			 $('#candidatePartyPerformanceId').html(str);
+			 $('#candidatePartyPerformanceIdRow').show();
+			 $('#candidatePartyExoperExcelId').show();
+			//$('#fourthReport').dataTable();
+			$('#searchDataImg').hide();
+		}
+		
+	}
+	else{	
+			$('#searchDataImg').hide();
+			$('#candidatePartyExoperExcelId').hide();
+			$('#candidatePartyPerformanceId').html('<div align="center"> <b>No Data Available </b>.</div>');
+			$('#candidatePartyPerformanceIdRow').show();
 	}
 }
 //partyWiseCandidatePerformance();
@@ -2285,7 +2312,7 @@ function partyWiseCandidatePerformance()
 		candidateIds.push("0");
 	}
 	
-	
+	$('#searchDataImg').show();
 	var jsObj = { 
 		fromDate : startDate,
 		toDate : endDate,
@@ -2307,39 +2334,51 @@ function partyWiseCandidatePerformance()
 }
 function buildpartyWiseCandidatePerformance(result)
 {
-	var str = '';
-	str += '<table class="table table-bordered table-hover table-striped" id="secondReport">';
-	str += '<thead class="alert alert-success">';
-	str += '<tr>';
-	str += '<th>Party</th>';
-	str += '<th>Candidate</th>';
-	str += '<th>Total Debates</th>';
-	str += '<th>performance Count</th>';
-	str += '<th>Subject</th>';
-	str += '<th>Presentation</th>	';
-	str += '<th>Counter Attack</th>';
-	str += '<th>Body Language</th>';
-	str += '</tr>';
-	str += '</thead>';
-	str += '<tbody>';
-	for(var i in result)
+	if(result != null && result.length > 0)
 	{
+		var str = '';
+		str += '<table class="table table-bordered table-hover table-striped" id="secondReport">';
+		str += '<thead class="alert alert-success">';
 		str += '<tr>';
-		str += '<td>'+result[i].partyName+'</td>';
-		str += '<td>'+result[i].candidate+'</td>';
-		str += '<td>'+result[i].totalDebates+'</td>';
-		str += '<td>'+result[i].performanceCount+'</td>';
-		str += '<td>'+result[i].subject+'</td>';
-		str += '<td>'+result[i].presentation+'</td>';
-		str += '<td>'+result[i].counterAttack+'</td>';
-		str += '<td>'+result[i].bodyLanguage+'</td>';
+		str += '<th>Party</th>';
+		str += '<th>Candidate</th>';
+		str += '<th>Total Debates</th>';
+		str += '<th>performance Count</th>';
+		str += '<th>Subject</th>';
+		str += '<th>Presentation</th>	';
+		str += '<th>Counter Attack</th>';
+		str += '<th>Body Language</th>';
 		str += '</tr>';
+		str += '</thead>';
+		str += '<tbody>';
+		for(var i in result)
+		{
+			str += '<tr>';
+			str += '<td>'+result[i].partyName+'</td>';
+			str += '<td>'+result[i].candidate+'</td>';
+			str += '<td>'+result[i].totalDebates+'</td>';
+			str += '<td>'+result[i].performanceCount+'</td>';
+			str += '<td>'+result[i].subject+'</td>';
+			str += '<td>'+result[i].presentation+'</td>';
+			str += '<td>'+result[i].counterAttack+'</td>';
+			str += '<td>'+result[i].bodyLanguage+'</td>';
+			str += '</tr>';
+		}
+		str += '</tbody>';
+		str += '</table>';
+		$('#eachAttributePartyCandidateId').html(str);
+		$('#eachAttributePartyCandidateIdRow').show();
+		$('#searchDataImg').hide();
+		$('#candidateIdExoperExcelId').show();
+		//$('#thirdReport').dataTable();
+		
 	}
-	str += '</tbody>';
-	str += '</table>';
-	$('#eachAttributePartyCandidateId').html(str);
-	$('#eachAttributePartyCandidateIdRow').show();
-	//$('#thirdReport').dataTable();
+	else{	
+			$('#searchDataImg').hide();
+			$('#candidateIdExoperExcelId').hide();
+			$('#eachAttributePartyCandidateId').html('<div align="center"> <b>No Data Available </b>.</div>');
+			$('#eachAttributePartyCandidateIdRow').show();
+	}
 }
 
 //getPartyWiseOverAllSummery();
@@ -2429,7 +2468,7 @@ function getPartyWiseOverAllSummery()
 	{
 		candidateIds.push("0");
 	}
-	
+	$('#searchDataImg').show();
 	
 	var jsObj = { 
 		fromDate : startDate,
@@ -2452,53 +2491,65 @@ function getPartyWiseOverAllSummery()
 
 function buildPartyWiseOverAllSummery(result)
 {
-var str = '';
-	str += '<table class="table table-bordered table-hover table-striped" id="firstReport">';
-	str += '<thead class="alert alert-success">';
-	str += '<tr>';
-	str += '<th>Party</th>';
-	str += '<th>Total Debates/</br>Performance Count</th>';
-	str += '<th colspan=4>Ranking</th>';
-	str += '<th>Subject</th>';
-	str += '<th>Presentation</th>	';
-	str += '<th>Counter Attack</th>';
-	str += '<th>Body Language</th>';						
-	str += '</tr>';
-	
-	str += '<tr>';
-	str += '<th></th>';
-	str += '<th></th>';
-	str += '<th>1 st</th>';
-	str += '<th>2 nd</th>';
-	str += '<th>3 rd</th>';
-	str += '<th>4 th</th>';
-	str += '<th></th>';
-	str += '<th></th>	';
-	str += '<th></th>';
-	str += '<th></th>';						
-	str += '</tr>';
-	str += '</thead>';
-	str += '<tbody>';
-	for(var i in result)
+	if(result != null)
 	{
+		var str = '';
+		str += '<table class="table table-bordered table-hover table-striped" id="firstReport">';
+		str += '<thead class="alert alert-success">';
 		str += '<tr>';
-		str += '<td>'+result[i].partyName+'</td>';
-		str += '<td>'+result[i].totalDebates+'/'+result[i].debateScale+'</td>';
-		str += '<td>'+result[i].rankingVO.firstRank+'</td>';
-		str += '<td>'+result[i].rankingVO.secondRank+'</td>';
-		str += '<td>'+result[i].rankingVO.thirdRank+'</td>';
-		str += '<td>'+result[i].rankingVO.fourthRank+'</td>';
-		for(var j in result[i].subList)
-		{
-			str += '<td>'+result[i].subList[j].debateScale+'</td>';
-		}
+		str += '<th>Party</th>';
+		str += '<th>Total Debates/</br>Performance Count</th>';
+		str += '<th colspan=4>Ranking</th>';
+		str += '<th>Subject</th>';
+		str += '<th>Presentation</th>	';
+		str += '<th>Counter Attack</th>';
+		str += '<th>Body Language</th>';						
 		str += '</tr>';
+		
+		str += '<tr>';
+		str += '<th></th>';
+		str += '<th></th>';
+		str += '<th>1 st</th>';
+		str += '<th>2 nd</th>';
+		str += '<th>3 rd</th>';
+		str += '<th>4 th</th>';
+		str += '<th></th>';
+		str += '<th></th>	';
+		str += '<th></th>';
+		str += '<th></th>';						
+		str += '</tr>';
+		str += '</thead>';
+		str += '<tbody>';
+		for(var i in result)
+		{
+			str += '<tr>';
+			str += '<td>'+result[i].partyName+'</td>';
+			str += '<td>'+result[i].totalDebates+'/'+result[i].debateScale+'</td>';
+			str += '<td>'+result[i].rankingVO.firstRank+'</td>';
+			str += '<td>'+result[i].rankingVO.secondRank+'</td>';
+			str += '<td>'+result[i].rankingVO.thirdRank+'</td>';
+			str += '<td>'+result[i].rankingVO.fourthRank+'</td>';
+			for(var j in result[i].subList)
+			{
+				str += '<td>'+result[i].subList[j].debateScale+'</td>';
+			}
+			str += '</tr>';
+		}
+		str += '</tbody>';
+		str += '</table>';	
+		$('#partyOverallSummery').html(str);
+		$('#partyOverallSummeryRow').show();
+		$('#searchDataImg').hide();
+		$('#summeryExoperExcelId').show();
+		//$('#firstReport').dataTable();
+		
 	}
-	str += '</tbody>';
-	str += '</table>';	
-	$('#partyOverallSummery').html(str);
-	$('#partyOverallSummeryRow').show();
-	//$('#firstReport').dataTable();
+	else{	
+			$('#searchDataImg').hide();
+			$('#partyOverallSummery').html('<div align="center"> <b>No Data Available </b>.</div>');
+			$('#partyOverallSummeryRow').show();
+			$('#summeryExoperExcelId').hide();
+	}
 }
 //getStrongAndWeakTopicsByPartyWise();
 function getStrongAndWeakTopicsByPartyWise()
@@ -2586,7 +2637,7 @@ $('#topicwiseStrongAndWeak').html('');
 	{
 		candidateIds.push("0");
 	}
-	
+	$('#searchDataImg').show();
 	
 	var jsObj = { 
 		fromDate : startDate,
@@ -2609,80 +2660,92 @@ $('#topicwiseStrongAndWeak').html('');
 function buildStrongAndWeakTopicsByPartyWise(result)
 {
 	var str = '';
-	for(var i in result)
+	if(result != null )
 	{
-		str += '<div class="row">';
-		str += '<div class="span6">';
-		str += '<h4>'+result[i].party+' Strong</h4>';
-		str += '<table class="table table-bordered table-hover table-striped" >';
-		str += '<thead class="alert alert-success">';
-		str += '<tr>';
-		str += '<th>Topic</th>';
-		str += '<th>Channel</th>';
-		str += '<th>Candidate</th>';
-		str += '</tr>';
-		str += '</thead>';
-		str += '<tbody>';
-		if(result[i].top != null && result[i].top.length > 0)
-		{
-			for(var j in result[i].top)
+			for(var i in result)
 			{
+				str += '<div class="row">';
+				str += '<div class="span6">';
+				str += '<h4>'+result[i].party+' Strong</h4>';
+				str += '<table class="table table-bordered table-hover table-striped" >';
+				str += '<thead class="alert alert-success">';
 				str += '<tr>';
-				if(result[i].top[j].count > 1)
+				str += '<th>Topic</th>';
+				str += '<th>Channel</th>';
+				str += '<th>Candidate</th>';
+				str += '</tr>';
+				str += '</thead>';
+				str += '<tbody>';
+				if(result[i].top != null && result[i].top.length > 0)
 				{
-					str += '<td>'+result[i].top[j].subject+'('+result[i].top[j].count+')</td>';
+					for(var j in result[i].top)
+					{
+						str += '<tr>';
+						if(result[i].top[j].count > 1)
+						{
+							str += '<td>'+result[i].top[j].subject+'('+result[i].top[j].count+')</td>';
+						}
+						else
+						{
+							str += '<td>'+result[i].top[j].subject+'</td>';
+						}
+						
+						str += '<td>'+result[i].top[j].channel+'</td>';
+						str += '<td>'+result[i].top[j].candidate+'</td>';
+						str += '</tr>';
+					}
 				}
-				else
-				{
-					str += '<td>'+result[i].top[j].subject+'</td>';
-				}
+				str += '</tbody>';
+				str += '</table>';
+				str += '</div>';
 				
-				str += '<td>'+result[i].top[j].channel+'</td>';
-				str += '<td>'+result[i].top[j].candidate+'</td>';
-				str += '</tr>';
-			}
-		}
-		str += '</tbody>';
-		str += '</table>';
-		str += '</div>';
-		
-		str += '<div class="span6">';
-		str += '<h4>'+result[i].party+' Weak</h4>';
-		str += '<table class="table table-bordered table-hover table-striped" >';
-		str += '<thead class="alert alert-success">';
-		str += '<tr>';
-		str += '<th>Topic</th>';
-		str += '<th>Channel</th>';
-		str += '<th>Candidate</th>';
-		str += '</tr>';
-		str += '</thead>';
-		str += '<tbody>';
-		if(result[i].weak != null && result[i].weak.length > 0)
-		{
-			for(var j in result[i].weak)
-			{
+				str += '<div class="span6">';
+				str += '<h4>'+result[i].party+' Weak</h4>';
+				str += '<table class="table table-bordered table-hover table-striped" >';
+				str += '<thead class="alert alert-success">';
 				str += '<tr>';
-				if(result[i].weak[j].count > 1)
-				{
-					str += '<td>'+result[i].weak[j].subject+'('+result[i].weak[j].count+')</td>';
-				}
-				else
-				{
-					str += '<td>'+result[i].weak[j].subject+'</td>';
-				}
-				str += '<td>'+result[i].weak[j].channel+'</td>';
-				str += '<td>'+result[i].weak[j].candidate+'</td>';
+				str += '<th>Topic</th>';
+				str += '<th>Channel</th>';
+				str += '<th>Candidate</th>';
 				str += '</tr>';
+				str += '</thead>';
+				str += '<tbody>';
+				if(result[i].weak != null && result[i].weak.length > 0)
+				{
+					for(var j in result[i].weak)
+					{
+						str += '<tr>';
+						if(result[i].weak[j].count > 1)
+						{
+							str += '<td>'+result[i].weak[j].subject+'('+result[i].weak[j].count+')</td>';
+						}
+						else
+						{
+							str += '<td>'+result[i].weak[j].subject+'</td>';
+						}
+						str += '<td>'+result[i].weak[j].channel+'</td>';
+						str += '<td>'+result[i].weak[j].candidate+'</td>';
+						str += '</tr>';
+					}
+				}
+				str += '</tbody>';
+				str += '</table>';
+				str += '</div>';
+				str += '</div>';
+				$('#searchDataImg').hide();
 			}
-		}
-		str += '</tbody>';
-		str += '</table>';
-		str += '</div>';
-		str += '</div>';
+			
+			$('#topicwiseStrongAndWeak').html(str);
+			$('#topicwiseStrongAndWeakRow').show();
+			$('#StrongAndWeakExoperExcelId').show();
 	}
+	else{
 	
-	$('#topicwiseStrongAndWeak').html(str);
-	$('#topicwiseStrongAndWeakRow').show();
+			$('#searchDataImg').hide();
+			$('#topicwiseStrongAndWeak').html('<div align="center"> <b>No Data Available </b>.</div>');
+			$('#topicwiseStrongAndWeakRow').show();
+			$('#StrongAndWeakExoperExcelId').hide();
+	}
 	
 }
 
