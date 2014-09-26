@@ -29,8 +29,9 @@
 }
 </style>
 
-<div class="container" style="min-height:350px;"><div style="margin-top:20px;">
-<h2></h2>
+<div class="container"><div style="margin-top:20px;">
+<legend class="boxHeading text-center" style="border-left:1px solid #d3d3d3;border-right:1px solid #d3d3d3;border-top:1px solid #d3d3d3;">Benefit Wise Analysis</legend>
+<div class="span12 content_widget" style="margin-left:0px;margin-top:-20px;border-left:1px solid #d3d3d3;border-right:1px solid #d3d3d3;border-bottom:1px solid #d3d3d3;min-height:350px;width: 944px;">
    <div id="errorDiv"></div>
     <div class="row offset3" style="margin-top: 20px;">
 
@@ -99,7 +100,7 @@
  			<input type="text" readonly="true" id="monthlyCalenderId" style="height:30px;width:220px;" class="input-block-level span3">
  	</div>
 	</div>
-</div></div>
+</div></div></div>
 
 <script type="text/javascript">
 function clearDivs(){
