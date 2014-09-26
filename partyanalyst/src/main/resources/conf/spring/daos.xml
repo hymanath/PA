@@ -1635,6 +1635,18 @@
 <bean id="duplicateWrongMobileNumbersDAO" class="com.itgrids.partyanalyst.dao.hibernate.DuplicateWrongMobileNumbersDAO" >
 	<property name="sessionFactory" ref="sessionFactory" />
 </bean>
+
+<bean id="tdpCadreDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreDAO" >
+	<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
+<bean id="cadrePreviousRolesDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadrePreviousRolesDAO" >
+	<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
+<bean id="cadreParticipatedElectionDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreParticipatedElectionDAO" >
+	<property name="sessionFactory" ref="sessionFactory" />
+</bean>
 	
 	<!--  end -->
 </beans>		

@@ -477,6 +477,11 @@
 				<value>com.itgrids.partyanalyst.model.ConstituencyTehsil</value>
 				<value>com.itgrids.partyanalyst.model.DuplicateWrongMobileNumbers</value>
 				<value>com.itgrids.partyanalyst.model.IvrMobile</value>
+				
+				
+				<value>com.itgrids.partyanalyst.model.TdpCadre</value>
+				<value>com.itgrids.partyanalyst.model.CadrePreviousRoles</value>
+				<value>com.itgrids.partyanalyst.model.CadreParticipatedElection</value>
 				</list>
 			
 		</property>
