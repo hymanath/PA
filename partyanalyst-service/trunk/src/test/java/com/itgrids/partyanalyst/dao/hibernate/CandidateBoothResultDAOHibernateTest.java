@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -767,11 +768,26 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(new Date());
 	}*/
 	
-
+/*
 	public void testDetailss()
 	{
 		System.out.println(new Date());
 		List<Object[]> list = candidateBoothResultDAO.findboothWiseResultsForNominators(232L,null);
+		System.out.println(list.size());
+		System.out.println(new Date());
+	}*/
+	
+	
+
+
+	public void testDetailss()
+	{
+		List<Long> partyIds = new ArrayList<Long>();
+		partyIds.add(872l);
+		partyIds.add(362l);
+		partyIds.add(1117l);
+		System.out.println(new Date());
+		List<Object[]> list = candidateBoothResultDAO.findboothWiseResultsForNonParties(282L,partyIds,partyIds);
 		System.out.println(list.size());
 		System.out.println(new Date());
 	}
