@@ -6409,6 +6409,23 @@
 		    			<param name="root">countResult</param>
 		    		</result>
 		 </action>
+		 <action name="getCategoryWiseBenifitAction" class="benefitAnalysisAction" method="getCategoryWiseBenifit">
+					<result type="json" name="success">
+		    			<param name="root">categoryBenefits</param>
+		    		</result>
+		 </action>
+		 
+		<action name="getCategoryBenifitNewsAction" class="benefitAnalysisAction" method="getCategoryBenifitNews">
+		  <result name="success">/jsp/viewCategoryBenefitNews.jsp</result>
+		  <result name="error" type="redirect">loginPageAction.action</result>
+		</action>
+	
+		 <action name="getCategoryBenifitWiseNewsAction" class="benefitAnalysisAction" method="getCategoryBenifitWiseNews">
+					<result type="json" name="success">
+		    			<param name="root">newsResult</param>
+		    		</result>
+		 </action>	 
+	
 	 </package>
 		
 </struts>      

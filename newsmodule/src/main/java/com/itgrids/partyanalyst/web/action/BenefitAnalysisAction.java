@@ -33,10 +33,91 @@ public class BenefitAnalysisAction extends ActionSupport implements ServletReque
 	private List<SelectOptionVO> resultList;
 	private INewsAnalysisService newsAnalysisService;
 	private IBenefitAnalysisService benefitAnalysisService;
+	private List<BenfitVO> categoryBenefits;
+	private HttpSession session ; 
+	private Long partyId;
+	private Long categoryId;
+	private Long benefitId;
+	private Long stateId;
+	private String fromDate;
+	private String toDate;
+	private Integer startValue;
+	private Integer endValue;
 	private List<BenfitVO> countResult;
 	private List<NewsActivityVO> newsResult;
-	private HttpSession session;
 	
+	public Integer getStartValue() {
+		return startValue;
+	}
+
+	public void setStartValue(Integer startValue) {
+		this.startValue = startValue;
+	}
+
+	public Integer getEndValue() {
+		return endValue;
+	}
+
+	public void setEndValue(Integer endValue) {
+		this.endValue = endValue;
+	}
+
+	public HttpSession getSession() {
+		return session;
+	}
+
+	public void setSession(HttpSession session) {
+		this.session = session;
+	}
+
+	public Long getPartyId() {
+		return partyId;
+	}
+
+	public void setPartyId(Long partyId) {
+		this.partyId = partyId;
+	}
+
+	public Long getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
+	}
+
+	public Long getBenefitId() {
+		return benefitId;
+	}
+
+	public void setBenefitId(Long benefitId) {
+		this.benefitId = benefitId;
+	}
+
+	public Long getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+
+	public String getFromDate() {
+		return fromDate;
+	}
+
+	public void setFromDate(String fromDate) {
+		this.fromDate = fromDate;
+	}
+
+	public String getToDate() {
+		return toDate;
+	}
+
+	public void setToDate(String toDate) {
+		this.toDate = toDate;
+	}
+
 	public HttpServletRequest getRequest() {
 		return request;
 	}
@@ -91,7 +172,17 @@ public class BenefitAnalysisAction extends ActionSupport implements ServletReque
 			IBenefitAnalysisService benefitAnalysisService) {
 		this.benefitAnalysisService = benefitAnalysisService;
 	}
+	
+	public List<BenfitVO> getCategoryBenefits() {
+		return categoryBenefits;
+	}
 
+	public void setCategoryBenefits(List<BenfitVO> categoryBenefits) {
+		this.categoryBenefits = categoryBenefits;
+	}
+
+	
+	
 	public List<BenfitVO> getCountResult() {
 		return countResult;
 	}
@@ -143,16 +234,7 @@ public class BenefitAnalysisAction extends ActionSupport implements ServletReque
 		return Action.SUCCESS;
 	}
 	
-	public String getCategoryWiseBenifit(){
-	  try{
-		jObj = new JSONObject(getTask());
-		
-		
-	  }catch(Exception e){
-		  LOG.error(" Exception occured in getCategoryWiseBenifit ",e);
-	  }
-		return Action.SUCCESS;
-	}
+	
 	
 	public String getCandidateGroupWiseBenifit(){
 		  try{
@@ -196,7 +278,7 @@ public class BenefitAnalysisAction extends ActionSupport implements ServletReque
 		 Date[] dates = new Date[2];
 		 Date fromDate = null;
 		 Date toDate = null;
-		 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		 if(type.equalsIgnoreCase("monthly")){
 				String[] monthStr = fromDateStr.split("/");
 				int month = Integer.parseInt(monthStr[0].trim());
@@ -220,4 +302,65 @@ public class BenefitAnalysisAction extends ActionSupport implements ServletReque
 		 dates[1] = toDate;
 		 return dates;
 	}
+
+	  public String getCategoryBenifitNews(){
+			session = request.getSession();
+	        RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+	        if(user == null){
+	        	return ERROR;
+	        }
+	        
+	        return Action.SUCCESS;
+		}
+	  
+	  public String getCategoryWiseBenifit(){
+		  try{
+			jObj = new JSONObject(getTask());
+			
+		    // SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			// String startDate = jObj.getString("fromDate");
+			// String endDate = jObj.getString("toDate");
+			 
+			 Long stateId = jObj.getLong("stateId");
+			 
+			 Date[] dates = getDates(jObj.getString("type"),jObj.getString("fromDate"),jObj.getString("toDate"));		
+			 
+			 String[] partyId  = jObj.getString("partyIds").split(",");
+				List<Long> partyIds = new ArrayList<Long>();
+				for(String id:partyId){
+					partyIds.add(Long.valueOf(id.trim()));
+				}
+			categoryBenefits = benefitAnalysisService.getCategoryWiseBenifit(dates[0], dates[1], stateId, partyIds);
+			
+		  }catch(Exception e){
+			  LOG.error(" Exception occured in getCategoryWiseBenifit ",e);
+		  }
+			return Action.SUCCESS;
+		}
+	  
+	  public String getCategoryBenifitWiseNews(){
+		  try{
+			
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+    		 
+    		 Date startDate = (getFromDate()!=null && getFromDate().trim().length() > 0)?format.parse(getFromDate()):null;
+    		 Date endDate = (getToDate()!=null && getToDate().trim().length() >0)?format.parse(getToDate()):null;
+			  
+			///Date[] dates = getDates(jObj.getString("type"),jObj.getString("fromDate"),jObj.getString("toDate"));
+    		 Integer startIndex = null;
+    		 Integer maxIndex = null;
+    		 if(startValue != null && startValue > 0){
+    			 startIndex = startValue;
+    		 }
+    		 if(endValue != null && endValue > 0){
+    			 maxIndex = endValue;
+    		 }
+			
+    		 newsResult = benefitAnalysisService.getCategoryBenifitWiseNews(startDate,endDate,partyId,categoryId,benefitId,stateId);
+			
+		 }catch(Exception e){
+			  LOG.error(" Exception occured in getCategoryWiseBenifit ",e);
+		  }
+			return Action.SUCCESS;
+		}
 }

@@ -15,4 +15,6 @@ public interface IBenefitAnalysisService {
 	public List<NewsActivityVO> getCandidateGroupWiseBenifitNews(Date fromDate,Date toDate,Long candidateId,Long benfitId,int startIndex,int maxIndex);
 	
 	public List<BenfitVO> getCandidateGroups();
+
+	 public List<NewsActivityVO> getCategoryBenifitWiseNews(Date fromDate,Date toDate,Long partyId,Long categoryId,Long benfitId,Long stateId);
 }

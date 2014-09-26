@@ -102,11 +102,10 @@ public class BenefitAnalysisService implements IBenefitAnalysisService {
 				List<Object[]> categoryWiseBenfitsList =  candidatePartyCategoryDAO.getCategoryWiseBenifit(fromDate, toDate, stateId, partyId);
 				allCategoryWiseBenfitsList.addAll(categoryWiseBenfitsList);
 			}
-			
+			populateDataToMap(allCategoryWiseBenfitsList,categoryMap);
 			if(categoryMap.size() >0){
 				populatePartyNames(partyNames,partyIds);
-				populateCategoryNames(categoryNames,new ArrayList<Long>(categoryMap.keySet()));
-				populateDataToMap(allCategoryWiseBenfitsList,categoryMap);
+				populateCategoryNames(categoryNames,new ArrayList<Long>(categoryMap.keySet()));	
 				populateDataToBenfitVO(resultsList,categoryMap,partyNames,categoryNames,partyIds);
 				Collections.sort(resultsList,benefitSort);
 			}
@@ -180,7 +179,7 @@ public class BenefitAnalysisService implements IBenefitAnalysisService {
 				}
 				parties.add(partyVO);
 			}
-			
+			categoryVO.setBenfitVOList(parties);
 			resultsList.add(categoryVO);
 		}
 	}
