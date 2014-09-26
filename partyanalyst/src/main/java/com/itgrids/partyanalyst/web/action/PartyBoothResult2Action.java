@@ -209,8 +209,8 @@ public class PartyBoothResult2Action extends ActionSupport implements ServletReq
 					for (PartyBoothPerformanceVO vo : boothResults) 
 					{	
 						path = IWebConstants.STATIC_CONTENT_FOLDER_URL+""+vo.getPartyName();
-						PartyBoothPerformanceVO boothResult1 = partyBoothWiseResultsService.getVotingPercentageWiseBoothResult(vo,true,path);
-												boothResult1 = partyBoothWiseResultsService.getVotingPercentageWiseBoothResult(vo,false,null);
+						PartyBoothPerformanceVO boothResult1 = partyBoothWiseResultsService.getVotingPercentageWiseBoothResultForParties(vo,true,path,partyIds);
+												boothResult1 = partyBoothWiseResultsService.getVotingPercentageWiseBoothResultForParties(vo,false,null,partyIds);
 						
 						PartyBoothPerformanceVOList1.add(boothResult1);
 					}
@@ -224,8 +224,8 @@ public class PartyBoothResult2Action extends ActionSupport implements ServletReq
 					for (PartyBoothPerformanceVO vo : boothResults) 
 					{	
 						path = IWebConstants.STATIC_CONTENT_FOLDER_URL+""+vo.getPartyName();
-						PartyBoothPerformanceVO boothResult1 = partyBoothWiseResultsService.getVotingPercentageWiseBoothResult(vo,true,path);
-												boothResult1 = partyBoothWiseResultsService.getVotingPercentageWiseBoothResult(vo,false,null);
+						PartyBoothPerformanceVO boothResult1 = partyBoothWiseResultsService.getVotingPercentageWiseBoothResultForParties(vo,true,path,partyIds);
+												boothResult1 = partyBoothWiseResultsService.getVotingPercentageWiseBoothResultForParties(vo,false,null,partyIds);
 						
 						PartyBoothPerformanceVOList1.add(boothResult1);
 					}
