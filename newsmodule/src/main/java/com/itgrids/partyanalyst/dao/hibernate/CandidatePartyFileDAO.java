@@ -1164,7 +1164,7 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
            
            public List<Object[]>  getCandidateGroupBenifitWiseNews(Date fromDate,Date toDate,Long candidateId,Long benfitId,int startIndex,int maxIndex){
       		 StringBuilder queryStr = new StringBuilder();
-      		 queryStr.append("select distinct cpf.file.fileTitle,cpf.file.font.fontId,cpf.file.fileDescription,cpf.file.descFont.fontId from  CandidatePartyFile cpf "+
+      		 queryStr.append("select distinct cpf.file.fileTitle,cpf.file.font.fontId,cpf.file.fileDescription,cpf.file.descFont.fontId,cpf.file.fileId from  CandidatePartyFile cpf "+
       			 " where ((cpf.sourceCandidate.candidateId = :candidateId and cpf.sourceBenefit.benefitId =:benfitId) or (cpf.destinationCandidate.candidateId = :candidateId and cpf.destinationBenefit.benefitId =:benfitId ))"+
       		     " and date(cpf.file.fileDate) >= :fromDate and date(cpf.file.fileDate) <= :toDate and cpf.file.isDeleted ='N' order by cpf.file.fileDate desc, cpf.file.updatedDate desc");
 

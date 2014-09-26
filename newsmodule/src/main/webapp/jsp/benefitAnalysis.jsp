@@ -32,8 +32,8 @@
 <div class="container"><div style="margin-top:20px;">
 <legend class="boxHeading text-center" style="border-left:1px solid #d3d3d3;border-right:1px solid #d3d3d3;border-top:1px solid #d3d3d3;">Benefit Wise Analysis</legend>
 <div class="span12 content_widget" style="margin-left:0px;margin-top:-20px;border-left:1px solid #d3d3d3;border-right:1px solid #d3d3d3;border-bottom:1px solid #d3d3d3;min-height:350px;width: 944px;">
-   <div id="errorDiv"></div>
-    <div class="row offset3" style="margin-top: 20px;">
+   <div class="row offset3" style="padding-left:20px;padding-top: 10px;" id="errorDiv"></div>
+    <div class="row offset3" style="margin-top: 10px;">
 
 		<div>
 			<label class="span2"><b>Select State:</b></label>
@@ -100,11 +100,11 @@
  			<input type="text" readonly="true" id="monthlyCalenderId" style="height:30px;width:220px;" class="input-block-level span3">
  	</div>
 	</div>
-	<div class="row offset3" style="margin-top: 10px;"><button class="btn btn-success offset1" onclick="getBenefitDetails()" id="buttonId"> Get Details</button>
+	<div class="row offset3" style="margin-top: 10px;margin-left: 340px;"><button class="btn btn-success offset1" onclick="getBenefitDetails()" id="buttonId"> Get Details</button><img src="images/search.jpg" style="display: none;margin-left:10px;" id="submitDataImg">
 	</div>
-	
+	<div id="categoryBenefitsDiv" style="margin-top: 40px;"></div>
 </div></div></div>
-	<div id="categoryBenefitsDiv" style="margin-top: 10px;"></div>
+	
 <script type="text/javascript">
 
 function clearDivs(){
@@ -385,6 +385,8 @@ function getCandidateGroupWiseBenifit(){
 	var stateId = $('#stateId').val();
 	var partyId = 872;
 	if(errorStr.length == 0){
+	  $("#submitDataImg").show();
+	  $("#buttonId").attr('disabled','disabled');
 		var jsObj= 
 			{
 				type:type,
@@ -400,14 +402,19 @@ function getCandidateGroupWiseBenifit(){
 			data: {task : JSON.stringify(jsObj)}
 			})
 			.done(function( result ) {
+			  $("#submitDataImg").hide();
+			  $("#buttonId").removeAttr('disabled');
 			  var str ="";
 			   if(result != null && result.length > 0){
-				   str+="<table>";
+			       str += '<table class="table table-bordered " >';
+		           str += '<thead class="alert alert-success">';
 				   str+="  <tr>";
 				   str+="    <th><b>Candidate Name</b></th>";
 				   str+="    <th><b>Positive News Count</b></th>";
 				   str+="    <th><b>Negative News Count</b></th>";
 				   str+="  </tr>";
+				   str += '</thead>';
+				   str += '<tbody>';
 					for(var i in result){
 						   str+="  <tr>";
 						   str+="    <td>"+result[i].name+"</td>";
@@ -415,8 +422,11 @@ function getCandidateGroupWiseBenifit(){
 						   str+="    <td><a href='javascript:{}' onclick='getCandidateGroupNews(\""+type+"\",\""+fromDate+"\",\""+toDate+"\","+result[i].id+",2);'>"+result[i].negCount+"</a></td>";
 						   str+="  </tr>";
 					}
+				   str += '</tbody>';
 				   str+="</table>";
+				   $('#categoryBenefitsDiv').html(str);
 			   }else{
+			         $('#categoryBenefitsDiv').html('<div style="padding-left: 165px;font-weight:bold;" class="row offset3">No News Available</div>');
 				     
 			   }		 
 	     });
@@ -426,14 +436,27 @@ function getCandidateGroupWiseBenifit(){
 }
 function getCandidateGroupNews(type,fromDate,toDate,candidateId,benfitId){
 	
-       var browser1 = window.open("getAllNewsAction.action?type="+type+"&fromDate="+fromDate+"&toDate="+toDate+"&candidateId="+candidateId+"&benfitId="+benfitId,"viewNewsWindow","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+       var browser1 = window.open("getCategoryBenifitNewsAction.action?type="+type+"&fromDate="+fromDate+"&toDate="+toDate+"&candidateId="+candidateId+"&benefitId="+benfitId+"&buildType=candidate","viewNewsWindow","scrollbars=yes,height=600,width=1050,left=200,top=200");	
         browser1.focus();
 
 }
 
-
-
 function getBenefitDetails(){
+   $('#categoryBenefitsDiv').html("");
+    $("#errorDiv").html("");
+    var type = $("#typeId").val();
+	if(type == 0){
+	$("#errorDiv").html("<div style='color:red;font-weight:bold;'>Please Select Report Type</div>");
+	return;
+	}
+	if(type == 1){
+	  getCategoryBenefitDetails();
+	}else if(type == 2){
+	  getCandidateGroupWiseBenifit();
+	}
+}
+
+function getCategoryBenefitDetails(){
 	
 	$("#errorDiv").html("");
 	var typeChecked = $('input[name=calendersRadio]:checked').val();
@@ -470,7 +493,7 @@ function getBenefitDetails(){
 	var partyIds= "";
 	
 	var typesId = $("#typeId").val();
-	if(typesId = 3){
+	
 
 		var partyId = $("#partiesMultiSelId").multiselect("getChecked").map(function(){
 			return this.value;
@@ -478,9 +501,14 @@ function getBenefitDetails(){
 		for(var i in partyId){
 			partyIds = partyIds+""+partyId[i]+",";
 		}
-	
-	}
+		if(partyIds.length > 0){
+		    partyIds = partyIds.substring(0, partyIds.length - 1);
+		}else{
+		  errorStr=errorStr+"<div>Please Select Party<br/></div>";
+		}
 	if(errorStr.length == 0){
+	    $("#submitDataImg").show();
+		 $("#buttonId").attr('disabled','disabled');
 		var jsObj=
 		{
 			type:type,
@@ -495,12 +523,16 @@ function getBenefitDetails(){
 			url: "getCategoryWiseBenifitAction.action",
 			data: {task : JSON.stringify(jsObj)}
 			}).done(function( result ) {
-				buildCategoryWiseBenefitDetails(result,stateId,fromDate,toDate);	
+			    $("#submitDataImg").hide();
+				$("#buttonId").removeAttr('disabled');
+				buildCategoryWiseBenefitDetails(result,stateId,fromDate,toDate,type);	
 			});
-}
+}else{
+		$("#errorDiv").html("<div style='color:red;font-weight:bold;'>"+errorStr+"</div>");
+	}
 }
 
-function buildCategoryWiseBenefitDetails(result,stateId,fromDate,toDate){
+function buildCategoryWiseBenefitDetails(result,stateId,fromDate,toDate,type){
 	$('#categoryBenefitsDiv').html("");
 	if(result != null && result.length > 0){
 		var str = '';
@@ -523,39 +555,44 @@ function buildCategoryWiseBenefitDetails(result,stateId,fromDate,toDate){
 		str += '</tr>';
 		str += '<thead>';
 		str += '<tbody>';
-		
+		var rows = 0;
 		for(var i in result)
 		{
+		    rows= rows+1;
+			if(rows < 6){
 			str += '<tr>';
 			str += '<td>'+result[i].name+'</td>';
 			for(var j in result[i].benfitVOList){
 				if(result[i].benfitVOList[j].count > 0){
-					str += '<td title="Click To See News" onclick="getCategoryBenefitNews('+result[i].benfitVOList[j].id+','+result[i].id+',1,'+stateId+',\''+fromDate+'\',\''+toDate+'\') " style="cursor:pointer;">'+result[i].benfitVOList[j].count+'</td>';
+					str += '<td title="Click To See News" onclick="getCategoryBenefitNews('+result[i].benfitVOList[j].id+','+result[i].id+',1,'+stateId+',\''+fromDate+'\',\''+toDate+'\',\''+type+'\') " style="cursor:pointer;">'+result[i].benfitVOList[j].count+'</td>';
 				}
 				else{
 					str += '<td>'+result[i].benfitVOList[j].count+'</td>';
 				}
 				if(result[i].benfitVOList[j].negCount > 0){
-					str += '<td title="Click To See News" onclick="getCategoryBenefitNews('+result[i].benfitVOList[j].id+','+result[i].id+',2,'+stateId+',\''+fromDate+'\',\''+toDate+'\') " style="cursor:pointer;">'+result[i].benfitVOList[j].negCount+'</td>';
+					str += '<td title="Click To See News" onclick="getCategoryBenefitNews('+result[i].benfitVOList[j].id+','+result[i].id+',2,'+stateId+',\''+fromDate+'\',\''+toDate+'\',\''+type+'\') " style="cursor:pointer;">'+result[i].benfitVOList[j].negCount+'</td>';
 				}
 				else{
 					str += '<td >'+result[i].benfitVOList[j].negCount+'</td>';
 				}
 			}
 			str += '</tr>';
+		  }
 		}
 		
 		str += '</tbody>';
 		str += '</table>';
 		$('#categoryBenefitsDiv').html(str);
 		
+	}else{
+	    $('#categoryBenefitsDiv').html('<div style="padding-left: 165px;font-weight:bold;" class="row offset3">No News Available</div>');
 	}
 }
 
 
-function getCategoryBenefitNews(partyId,categoryId,benefitId,stateId,fromDate,toDate){
+function getCategoryBenefitNews(partyId,categoryId,benefitId,stateId,fromDate,toDate,type){
 
-	var browser1 = window.open("getCategoryBenifitNewsAction.action?fromDate="+fromDate+"&toDate="+toDate+"&stateId="+stateId+"&benefitId="+benefitId+"&categoryId="+categoryId+"&partyId="+partyId,"viewNewsWindow","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+	var browser1 = window.open("getCategoryBenifitNewsAction.action?fromDate="+fromDate+"&toDate="+toDate+"&stateId="+stateId+"&benefitId="+benefitId+"&categoryId="+categoryId+"&partyId="+partyId+"&type="+type+"&buildType=category","viewNewsWindow","scrollbars=yes,height=600,width=1050,left=200,top=200");	
 	 browser1.focus();
 }
 
