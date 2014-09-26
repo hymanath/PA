@@ -29,6 +29,8 @@ public interface IPartyBoothWiseResultsService {
 	
 	public PartyBoothPerformanceVO getVotingPercentageWiseBoothResult(PartyBoothPerformanceVO performanceVO,boolean isPollingPercentage,String path);
 	
+	public PartyBoothPerformanceVO getVotingPercentageWiseBoothResultForParties(PartyBoothPerformanceVO performanceVO,boolean isPollingPercentage,String path,List<Long> partyIds);
+	
 	public List<PartyBoothPerformanceVO> getBoothWiseElectionResults(List<Long> partyIds, Long constituencyId, List<String> electionYears);
 	
 	public SelectOptionVO getStateWiseDetailByStateType(Long stateTypeId, String electionType,Long electionYear,Long constituencyId);
