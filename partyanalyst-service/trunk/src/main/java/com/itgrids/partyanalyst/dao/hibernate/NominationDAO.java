@@ -139,7 +139,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				"  model.constituencyElection.constituencyElectionResult.totalVotes "); //14
 		
 		queryStr.append(" from Nomination model  where model.party.partyId in (:partyIds) and model.constituencyElection.election.electionYear="+electionYear+" and model.constituencyElection.election.electionScope.electionScopeId = 2 ");
-		queryStr.append(" and model.constituencyElection.constituency.constituencyId in (:constituencyIds) group by model.party.partyId order by model.party.shortName asc ");
+		queryStr.append(" and model.constituencyElection.constituency.constituencyId in (:constituencyIds) group by model.party.partyId order by model.candidateResult.votesEarned desc ");
 		
 		Query qurQuery = getSession().createQuery(queryStr.toString());
 		qurQuery.setParameterList("constituencyIds", constituencyIds);
