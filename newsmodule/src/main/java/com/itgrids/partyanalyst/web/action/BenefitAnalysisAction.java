@@ -1,6 +1,9 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +13,8 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.BenfitVO;
+import com.itgrids.partyanalyst.dto.NewsActivityVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IBenefitAnalysisService;
@@ -27,7 +32,8 @@ public class BenefitAnalysisAction extends ActionSupport implements ServletReque
 	private List<SelectOptionVO> resultList;
 	private INewsAnalysisService newsAnalysisService;
 	private IBenefitAnalysisService benefitAnalysisService;
-	
+	private List<BenfitVO> countResult;
+	private List<NewsActivityVO> newsResult;
 	
 	public HttpServletRequest getRequest() {
 		return request;
@@ -84,6 +90,22 @@ public class BenefitAnalysisAction extends ActionSupport implements ServletReque
 		this.benefitAnalysisService = benefitAnalysisService;
 	}
 
+	public List<BenfitVO> getCountResult() {
+		return countResult;
+	}
+
+	public void setCountResult(List<BenfitVO> countResult) {
+		this.countResult = countResult;
+	}
+
+	public List<NewsActivityVO> getNewsResult() {
+		return newsResult;
+	}
+
+	public void setNewsResult(List<NewsActivityVO> newsResult) {
+		this.newsResult = newsResult;
+	}
+
 	public String execute()
 	{
 		return Action.SUCCESS;
@@ -124,5 +146,71 @@ public class BenefitAnalysisAction extends ActionSupport implements ServletReque
 	  }
 		return Action.SUCCESS;
 	}
+	
+	public String getCandidateGroupWiseBenifit(){
+		  try{
+			jObj = new JSONObject(getTask());
+			
+			Date[] dates = getDates(jObj.getString("type"),jObj.getString("fromDate"),jObj.getString("toDate"));
+			
+			countResult = benefitAnalysisService.getCandidateGroupWiseBenifit(jObj.getLong("groupId"),dates[0],dates[1],jObj.getLong("stateId"),jObj.getLong("partyId"));
+		  }catch(Exception e){
+			  LOG.error(" Exception occured in getCandidateGroupWiseBenifitNews ",e);
+		  }
+		  
+		 return Action.SUCCESS;
+	}
 
+	public String getCandidateGroupWiseBenifitNews(){
+		  try{
+			jObj = new JSONObject(getTask());
+			Date[] dates = getDates(jObj.getString("type"),jObj.getString("fromDate"),jObj.getString("toDate"));
+			newsResult = benefitAnalysisService.getCandidateGroupWiseBenifitNews(dates[0],dates[1],jObj.getLong("candidateId"),jObj.getLong("benfitId"));
+		  }catch(Exception e){
+			  LOG.error(" Exception occured in getCandidateGroupWiseBenifitNews ",e);
+		  }
+		  
+		 return Action.SUCCESS;
+	}
+	
+	public String getCandidateGroups(){
+		try{
+			
+			countResult = benefitAnalysisService.getCandidateGroups();
+			
+		}catch(Exception e){
+			 LOG.error(" Exception occured in getCandidateGroups ",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public Date[] getDates(String type,String fromDateStr,String toDateStr) throws Exception{
+		 Date[] dates = new Date[2];
+		 Date fromDate = null;
+		 Date toDate = null;
+		 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		 if(type.equalsIgnoreCase("monthly")){
+				String[] monthStr = fromDateStr.split("/");
+				int month = Integer.parseInt(monthStr[0].trim());
+				int year = Integer.parseInt(monthStr[1].trim());
+				Calendar fromCalendar = Calendar.getInstance();
+				  fromCalendar.set(Calendar.MONTH, month-1);
+				  fromCalendar.set(Calendar.YEAR, year);
+				  fromCalendar.set(Calendar.DAY_OF_MONTH,1);
+				 fromDate = fromCalendar.getTime();
+				  
+			    Calendar toCalendar = Calendar.getInstance();
+			      toCalendar.set(Calendar.MONTH, month-1);
+			      toCalendar.set(Calendar.YEAR, year);
+			      toCalendar.set(Calendar.DAY_OF_MONTH,toCalendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+			     toDate = toCalendar.getTime();
+			}else{
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+		 dates[0] = fromDate;
+		 dates[1] = toDate;
+		 return dates;
+	}
 }

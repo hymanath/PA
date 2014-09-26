@@ -319,7 +319,112 @@ function getPartiesList()
 	          });
      });
 }
+
+
+function getCandidateGroups(){
+	$.ajax({
+		type: "POST",
+		url: "getCandidateGroups.action"
+		})
+		.done(function( result ) {
+		
+		$('#groupId').find('option').remove();
+		$('#groupId').append('<option value="0">Select Group</option>');
+		$.each(result,function(index,value){
+			$('#groupId').append('<option value="'+value.id+'">'+value.name+'</option>');
+		});
+		 
+     });
+}
+
 getPartiesList();
+getCandidateGroups();
+
+function getCandidateGroupWiseBenifit(){
+	$("#errorDiv").html("");
+	var typeChecked = $('input[name=calendersRadio]:checked').val();
+	var type = "";
+	var fromDate = "";
+	var toDate = "";
+	var errorStr ="";
+	if(typeChecked == "dailyCalender"){
+		type = "daily";
+		fromDate = $("#dailyCalenderId").val();
+		if($.trim(fromDate).length == 0){
+			errorStr=errorStr+"<div>Please Select Date<br/></div>";
+		}
+		toDate = fromDate;
+	}else if(typeChecked == "weeklyCalender"){
+		type = "weekly";
+		var dateStr = $("#startDate").val();
+		if($.trim(dateStr).length > 0){
+			var actualDates = dateStr.split(to);
+			fromDate = $.trim(actualDates[0]);
+			toDate = $.trim(actualDates[1]);
+	    }else{
+	    	errorStr=errorStr+"<div>Please Select Week<br/></div>";
+	    }
+	}else if(typeChecked == "monthlyCalender"){
+		type = "monthly";
+		fromDate =  $("#monthlyCalenderId").val();
+		if($.trim(fromDate).length == 0){
+			errorStr=errorStr+"<div>Please Select Month<br/></div>";
+		}
+	}
+	
+	var groupId = $('#groupId').val();
+	
+	if(groupId == 0){
+		errorStr=errorStr+"<div>Please Select Group<br/></div>";
+	}
+	var stateId = $('#stateId').val();
+	var partyId = 872;
+	if(errorStr.length == 0){
+		var jsObj= 
+			{
+				type:type,
+				fromDate:fromDate,
+				toDate:toDate,
+				groupId:groupId,
+				stateId:stateId,
+				partyId:partyId
+			};
+		$.ajax({
+			type: "POST",
+			url: "getCandidateGroupWiseBenifit.action",
+			data: {task : JSON.stringify(jsObj)}
+			})
+			.done(function( result ) {
+			  var str ="";
+			   if(result != null && result.length > 0){
+				   str+="<table>";
+				   str+="  <tr>";
+				   str+="    <th><b>Candidate Name</b></th>";
+				   str+="    <th><b>Positive News Count</b></th>";
+				   str+="    <th><b>Negative News Count</b></th>";
+				   str+="  </tr>";
+					for(var i in result){
+						   str+="  <tr>";
+						   str+="    <td>"+result[i].name+"</td>";
+						   str+="    <td><a href='javascript:{}' onclick='getCandidateGroupNews(\""+type+"\",\""+fromDate+"\",\""+toDate+"\","+result[i].id+",1);'>"+result[i].count+"</a></td>";
+						   str+="    <td><a href='javascript:{}' onclick='getCandidateGroupNews(\""+type+"\",\""+fromDate+"\",\""+toDate+"\","+result[i].id+",2);'>"+result[i].negCount+"</a></td>";
+						   str+="  </tr>";
+					}
+				   str+="</table>";
+			   }else{
+				     
+			   }		 
+	     });
+	}else{
+		$("#errorDiv").html("<div style='color:red;font-weight:bold;'>"+errorStr+"</div>");
+	}
+}
+function getCandidateGroupNews(type,fromDate,toDate,candidateId,benfitId){
+	
+       var browser1 = window.open("getAllNewsAction.action?type="+type+"&fromDate="+fromDate+"&toDate="+toDate+"&candidateId="+candidateId+"&benfitId="+benfitId,"viewNewsWindow","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+        browser1.focus();
+
+}
 </script>
 
 </body>
