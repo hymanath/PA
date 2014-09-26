@@ -384,6 +384,6 @@
 	
 	<bean id="newsBullitionDAO" class="com.itgrids.partyanalyst.dao.hibernate.NewsBullitionDAO">
 	  <property name="sessionFactory" ref="sessionFactory" />
-	
+	</bean>
 	<!-- End od Debate DAOS -->
 </beans>
