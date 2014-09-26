@@ -5,17 +5,10 @@ import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 import org.easymock.EasyMock;
-import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
-import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
-import com.itgrids.partyanalyst.model.Election;
-import com.itgrids.partyanalyst.model.ElectionScope;
-import com.itgrids.partyanalyst.model.ElectionType;
-import com.itgrids.partyanalyst.service.impl.BoothPopulationService;
-import com.itgrids.partyanalyst.service.impl.PartyBoothWiseResultsService;
+import com.itgrids.partyanalyst.excel.booth.PartyBoothPerformanceVO;
 
 
 public class PartyBoothWiseResultsServiceTest extends BaseDaoTestCase{
@@ -234,7 +227,7 @@ public class PartyBoothWiseResultsServiceTest extends BaseDaoTestCase{
 		for(PartyElectionVotersVO party:constituencyVO.getPartiesCombinedResults())
 			System.out.println(party.getParty()+"\t"+party.getPresVotesEarned()+"\t"+party.getPresPercentage()+"\t"+party.getPrevVotesEarned()+"\t"+party.getPrevPercentage());
 	}*/
-	
+	/*
 	
 	@Test
 	public void testGetMandalAllElectionDetails(){
@@ -286,6 +279,38 @@ public class PartyBoothWiseResultsServiceTest extends BaseDaoTestCase{
 		Assert.assertEquals("35.0", actualObj1.getPartyVotesPercentage());
 		Assert.assertEquals("50.0", actualObj2.getPartyVotesPercentage());
 	}
+	*/
 	
+/*
+	
+	
+	public void testGetMandalAllElectionDetails(){
+		List<Long> partyIds = new ArrayList<Long>();
+		List<String> electionyears = new ArrayList<String>();
+		electionyears.add("2014");
+		partyIds.add(1117L);
+		partyIds.add(872L);
+		partyIds.add(362L);
+		partyIds.add(163L);
+		partyIds.add(886L);
+
+		List<PartyBoothPerformanceVO> boothResults = partyBoothWiseResultsService.getBoothWiseElectionResults(partyIds, 65L, electionyears);
+		
+		List<PartyBoothPerformanceVO> PartyBoothPerformanceVOList1 = new ArrayList<PartyBoothPerformanceVO>();
+				
+			if(boothResults != null && boothResults.size()>0)
+			{
+				for (PartyBoothPerformanceVO vo : boothResults) 
+				{	
+					PartyBoothPerformanceVO boothResult1 = partyBoothWiseResultsService.getVotingPercentageWiseBoothResult(vo,true,null);
+											boothResult1 = partyBoothWiseResultsService.getVotingPercentageWiseBoothResult(vo,false,null);
+					
+					PartyBoothPerformanceVOList1.add(boothResult1);
+				}
+			}
+
+		partyBoothWiseResultsService.segrigateBoothWiseResults(PartyBoothPerformanceVOList1);
+	}
+	*/
 	
 }
