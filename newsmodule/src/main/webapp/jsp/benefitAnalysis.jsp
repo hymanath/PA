@@ -530,13 +530,13 @@ function buildCategoryWiseBenefitDetails(result,stateId,fromDate,toDate){
 			str += '<td>'+result[i].name+'</td>';
 			for(var j in result[i].benfitVOList){
 				if(result[i].benfitVOList[j].count > 0){
-					str += '<td title="Click To See News" onclick="getCategoryBenefitNews('+result[i].benfitVOList[j].id+','+result[i].id+',1,'+stateId+','+fromDate+','+toDate+') " style="cursor:pointer;">'+result[i].benfitVOList[j].count+'</td>';
+					str += '<td title="Click To See News" onclick="getCategoryBenefitNews('+result[i].benfitVOList[j].id+','+result[i].id+',1,'+stateId+',\''+fromDate+'\',\''+toDate+'\') " style="cursor:pointer;">'+result[i].benfitVOList[j].count+'</td>';
 				}
 				else{
 					str += '<td>'+result[i].benfitVOList[j].count+'</td>';
 				}
 				if(result[i].benfitVOList[j].negCount > 0){
-					str += '<td title="Click To See News" onclick="getCategoryBenefitNews('+result[i].benfitVOList[j].id+','+result[i].id+',2,'+stateId+','+fromDate+','+toDate+') " style="cursor:pointer;">'+result[i].benfitVOList[j].negCount+'</td>';
+					str += '<td title="Click To See News" onclick="getCategoryBenefitNews('+result[i].benfitVOList[j].id+','+result[i].id+',2,'+stateId+',\''+fromDate+'\',\''+toDate+'\') " style="cursor:pointer;">'+result[i].benfitVOList[j].negCount+'</td>';
 				}
 				else{
 					str += '<td >'+result[i].benfitVOList[j].negCount+'</td>';
