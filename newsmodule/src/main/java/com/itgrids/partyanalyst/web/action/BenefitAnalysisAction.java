@@ -165,7 +165,7 @@ public class BenefitAnalysisAction extends ActionSupport implements ServletReque
 		  try{
 			jObj = new JSONObject(getTask());
 			Date[] dates = getDates(jObj.getString("type"),jObj.getString("fromDate"),jObj.getString("toDate"));
-			newsResult = benefitAnalysisService.getCandidateGroupWiseBenifitNews(dates[0],dates[1],jObj.getLong("candidateId"),jObj.getLong("benfitId"));
+			newsResult = benefitAnalysisService.getCandidateGroupWiseBenifitNews(dates[0],dates[1],jObj.getLong("candidateId"),jObj.getLong("benfitId"),jObj.getInt("startIndex"),jObj.getInt("maxIndex"));
 		  }catch(Exception e){
 			  LOG.error(" Exception occured in getCandidateGroupWiseBenifitNews ",e);
 		  }

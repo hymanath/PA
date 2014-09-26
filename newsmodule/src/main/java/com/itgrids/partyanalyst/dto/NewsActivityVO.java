@@ -16,6 +16,7 @@ public class NewsActivityVO implements Serializable{
    private String titleFont;
    private String paper;
    private Long id;
+   private Long count;
    
    private List<NewsActivityVO> list;
 
@@ -89,6 +90,14 @@ public class NewsActivityVO implements Serializable{
 
 	public void setPaper(String paper) {
 		this.paper = paper;
+	}
+
+	public Long getCount() {
+		return count;
+	}
+
+	public void setCount(Long count) {
+		this.count = count;
 	}
 	   
    
