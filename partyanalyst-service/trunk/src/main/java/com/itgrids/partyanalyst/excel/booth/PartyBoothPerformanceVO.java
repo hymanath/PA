@@ -30,6 +30,8 @@ public class PartyBoothPerformanceVO implements Serializable{
 	private Long marginVotes;
 	private String url;
 	private List<PartyBoothPerformanceVO> PartyBoothPerformanceVOList = new ArrayList<PartyBoothPerformanceVO>();
+	private List<String> selectedPartyList = new ArrayList<String>();
+	
 	
 	public PartyBoothPerformanceVO(String partyName, String candidateName,
 			String electionYear, String electionType, int totalValidVotes, int votesGained,
@@ -46,6 +48,18 @@ public class PartyBoothPerformanceVO implements Serializable{
 	
     
 	
+	public List<String> getSelectedPartyList() {
+		return selectedPartyList;
+	}
+
+
+
+	public void setSelectedPartyList(List<String> selectedPartyList) {
+		this.selectedPartyList = selectedPartyList;
+	}
+
+
+
 	public List<PartyBoothPerformanceVO> getPartyBoothPerformanceVOList() {
 		return PartyBoothPerformanceVOList;
 	}
