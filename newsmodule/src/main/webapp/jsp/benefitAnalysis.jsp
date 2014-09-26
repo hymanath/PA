@@ -100,9 +100,13 @@
  			<input type="text" readonly="true" id="monthlyCalenderId" style="height:30px;width:220px;" class="input-block-level span3">
  	</div>
 	</div>
+	<div class="row offset3" style="margin-top: 10px;"><button class="btn btn-success offset1" onclick="getBenefitDetails()" id="buttonId"> Get Details</button>
+	</div>
+	
 </div></div></div>
-
+	<div id="categoryBenefitsDiv" style="margin-top: 10px;"></div>
 <script type="text/javascript">
+
 function clearDivs(){
 	$("#locationValueDiv,#typeDiv").hide();
 	$("#groupId,#locationId,#locationValueId,#typeId").val(0);
@@ -426,6 +430,135 @@ function getCandidateGroupNews(type,fromDate,toDate,candidateId,benfitId){
         browser1.focus();
 
 }
+
+
+
+function getBenefitDetails(){
+	
+	$("#errorDiv").html("");
+	var typeChecked = $('input[name=calendersRadio]:checked').val();
+	var type = "";
+	var fromDate = "";
+	var toDate = "";
+	var errorStr ="";
+	if(typeChecked == "dailyCalender"){
+		type = "daily";
+		fromDate = $("#dailyCalenderId").val();
+		if($.trim(fromDate).length == 0){
+			errorStr=errorStr+"<div>Please Select Date<br/></div>";
+		}
+		toDate = fromDate;
+	}else if(typeChecked == "weeklyCalender"){
+		type = "weekly";
+		var dateStr = $("#startDate").val();
+		if($.trim(dateStr).length > 0){
+			var actualDates = dateStr.split("to");
+			fromDate = $.trim(actualDates[0]);
+			toDate = $.trim(actualDates[1]);
+	    }else{
+	    	errorStr=errorStr+"<div>Please Select Week<br/></div>";
+	    }
+	}else if(typeChecked == "monthlyCalender"){
+		type = "monthly";
+		fromDate =  $("#monthlyCalenderId").val();
+		if($.trim(fromDate).length == 0){
+			errorStr=errorStr+"<div>Please Select Month<br/></div>";
+		}
+	}
+	var stateId = $('#stateId').val();
+	
+	var partyIds= "";
+	
+	var typesId = $("#typeId").val();
+	if(typesId = 3){
+
+		var partyId = $("#partiesMultiSelId").multiselect("getChecked").map(function(){
+			return this.value;
+		}).get();
+		for(var i in partyId){
+			partyIds = partyIds+""+partyId[i]+",";
+		}
+	
+	}
+	if(errorStr.length == 0){
+		var jsObj=
+		{
+			type:type,
+			stateId : stateId,
+			partyIds :partyIds,
+			fromDate : fromDate,
+			toDate : toDate,
+			task:'categoryBenefits'
+		};
+		 $.ajax({
+			type: "POST",
+			url: "getCategoryWiseBenifitAction.action",
+			data: {task : JSON.stringify(jsObj)}
+			}).done(function( result ) {
+				buildCategoryWiseBenefitDetails(result,stateId,fromDate,toDate);	
+			});
+}
+}
+
+function buildCategoryWiseBenefitDetails(result,stateId,fromDate,toDate){
+	$('#categoryBenefitsDiv').html("");
+	if(result != null && result.length > 0){
+		var str = '';
+		str += '<table class="table table-bordered " >';
+		str += '<thead class="alert alert-success">';
+		str += '<tr>';
+		str += '<th rowspan="2">Category</th>';
+		for(var i in result[0].benfitVOList)
+		{
+		
+		  str += '<th colspan="2">'+result[0].benfitVOList[i].name+'</th>';
+		}	
+		str += '</tr>';
+		for(var i=0;i<result[0].benfitVOList.length;i++)
+		{
+			str += '<th> +ve </th>';
+			str += '<th> -ve </th>';
+		}
+		str += '<tr>';
+		str += '</tr>';
+		str += '<thead>';
+		str += '<tbody>';
+		
+		for(var i in result)
+		{
+			str += '<tr>';
+			str += '<td>'+result[i].name+'</td>';
+			for(var j in result[i].benfitVOList){
+				if(result[i].benfitVOList[j].count > 0){
+					str += '<td title="Click To See News" onclick="getCategoryBenefitNews('+result[i].benfitVOList[j].id+','+result[i].id+',1,'+stateId+','+fromDate+','+toDate+') " style="cursor:pointer;">'+result[i].benfitVOList[j].count+'</td>';
+				}
+				else{
+					str += '<td>'+result[i].benfitVOList[j].count+'</td>';
+				}
+				if(result[i].benfitVOList[j].negCount > 0){
+					str += '<td title="Click To See News" onclick="getCategoryBenefitNews('+result[i].benfitVOList[j].id+','+result[i].id+',2,'+stateId+','+fromDate+','+toDate+') " style="cursor:pointer;">'+result[i].benfitVOList[j].negCount+'</td>';
+				}
+				else{
+					str += '<td >'+result[i].benfitVOList[j].negCount+'</td>';
+				}
+			}
+			str += '</tr>';
+		}
+		
+		str += '</tbody>';
+		str += '</table>';
+		$('#categoryBenefitsDiv').html(str);
+		
+	}
+}
+
+
+function getCategoryBenefitNews(partyId,categoryId,benefitId,stateId,fromDate,toDate){
+
+	var browser1 = window.open("getCategoryBenifitNewsAction.action?fromDate="+fromDate+"&toDate="+toDate+"&stateId="+stateId+"&benefitId="+benefitId+"&categoryId="+categoryId+"&partyId="+partyId,"viewNewsWindow","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+	 browser1.focus();
+}
+
 </script>
 
 </body>
