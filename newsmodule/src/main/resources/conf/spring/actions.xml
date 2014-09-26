@@ -138,6 +138,7 @@
 
 	<bean id="benefitAnalysisAction" class="com.itgrids.partyanalyst.web.action.BenefitAnalysisAction" singleton="false">
 			<property name="newsAnalysisService" ref="newsAnalysisService"/>
+			<property name="benefitAnalysisService" ref="benefitAnalysisService"/>		
 	</bean>	
 	
 	</beans>
