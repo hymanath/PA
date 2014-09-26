@@ -238,6 +238,7 @@ function showCorrespondingDivs(value){
 		  $("#ui-datepicker-div").addClass('hideTodayButton');
           iYear = selDate.substring(selDate.length - 4, selDate.length);
           iMonth = selDate.substring(0, selDate.length - 5);
+		  iMonth = parseInt(iMonth)-1;
           $(this).datepicker('option', 'defaultDate', new Date(iYear, iMonth, 1));
           $(this).datepicker('setDate', new Date(iYear, iMonth, 1));
        }
@@ -280,7 +281,10 @@ $(function() {
             selectCurrentWeek();
         }
     });
-    
+    $('#startDate').live('click',
+	function(){
+	selectCurrentWeek();
+	});
     //$('#startDate .ui-datepicker-calendar tr').live('mousemove', function() { $(this).find('td a').addClass('ui-state-hover'); });
     //$('#startDate .ui-datepicker-calendar tr').live('mouseleave', function() { $(this).find('td a').removeClass('ui-state-hover'); });
 });

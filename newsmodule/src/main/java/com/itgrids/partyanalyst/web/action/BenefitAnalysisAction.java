@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.service.IBenefitAnalysisService;
 import com.itgrids.partyanalyst.service.INewsAnalysisService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -25,6 +26,7 @@ public class BenefitAnalysisAction extends ActionSupport implements ServletReque
 	private String task;
 	private List<SelectOptionVO> resultList;
 	private INewsAnalysisService newsAnalysisService;
+	private IBenefitAnalysisService benefitAnalysisService;
 	
 	
 	public HttpServletRequest getRequest() {
@@ -73,6 +75,15 @@ public class BenefitAnalysisAction extends ActionSupport implements ServletReque
 		this.newsAnalysisService = newsAnalysisService;
 	}
 
+	public IBenefitAnalysisService getBenefitAnalysisService() {
+		return benefitAnalysisService;
+	}
+
+	public void setBenefitAnalysisService(
+			IBenefitAnalysisService benefitAnalysisService) {
+		this.benefitAnalysisService = benefitAnalysisService;
+	}
+
 	public String execute()
 	{
 		return Action.SUCCESS;
@@ -100,6 +111,17 @@ public class BenefitAnalysisAction extends ActionSupport implements ServletReque
 			LOG.error(" Exception occured in getAssemblyConstituenciesAndDistricts()",e);
 		}
 		
+		return Action.SUCCESS;
+	}
+	
+	public String getCategoryWiseBenifit(){
+	  try{
+		jObj = new JSONObject(getTask());
+		
+		
+	  }catch(Exception e){
+		  LOG.error(" Exception occured in getCategoryWiseBenifit ",e);
+	  }
 		return Action.SUCCESS;
 	}
 
