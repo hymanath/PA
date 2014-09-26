@@ -50,7 +50,7 @@
 			<option value="0">Select Report Type</option>
 			<option value="1">Category Wise</option>
 			<option value="2">Candidate Wise</option>
-			<option value="3">Location Wise</option>
+			<!-- <option value="3">Location Wise</option>-->
 			</select>
 		</div>
 		<div id="partiesMultiSelDiv" style="display:none;">

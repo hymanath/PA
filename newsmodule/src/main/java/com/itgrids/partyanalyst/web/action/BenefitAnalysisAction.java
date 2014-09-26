@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IBenefitAnalysisService;
 import com.itgrids.partyanalyst.service.INewsAnalysisService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -34,6 +35,7 @@ public class BenefitAnalysisAction extends ActionSupport implements ServletReque
 	private IBenefitAnalysisService benefitAnalysisService;
 	private List<BenfitVO> countResult;
 	private List<NewsActivityVO> newsResult;
+	private HttpSession session;
 	
 	public HttpServletRequest getRequest() {
 		return request;
@@ -108,6 +110,11 @@ public class BenefitAnalysisAction extends ActionSupport implements ServletReque
 
 	public String execute()
 	{
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute(IConstants.USER);
+		if(user == null){
+			return "error";
+		}
 		return Action.SUCCESS;
 	}
 	
