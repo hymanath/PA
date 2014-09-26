@@ -8340,7 +8340,11 @@
 		<action name="getConstituenciesAction" class="mobileDataAction" method="getConstituencies">
 			<result type="json" name="success">
 				<param name="root">constituencyList</param>
-		</result>
+			</result>
+		</action>
+		
+		<action name="cadreRegistration" class="cadreRegistrationAction">
+			<result name="success">/jsp/cadreRegistration.jsp</result>
 		</action>
 		
 		<action name="gettehsilsAction" class="mobileDataAction" method="getMandalsList">

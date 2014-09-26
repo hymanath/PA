@@ -1468,6 +1468,11 @@
 	 <bean id="ctpDashBoardAction" class="com.itgrids.partyanalyst.web.action.CtpDashBoardAction" singleton="false">
 	 	<property name="ctpDashBoardService" ref="ctpDashBoardService" />
 	 </bean>
+	 
+	  <bean id="cadreRegistrationAction" class="com.itgrids.partyanalyst.web.action.CadreRegistrationAction" singleton="false">
+	 	<property name="cadreRegistrationService" ref="cadreRegistrationService" />
+	  </bean>
+	 
 	
 </beans>	
 	

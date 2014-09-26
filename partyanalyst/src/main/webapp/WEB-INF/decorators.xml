@@ -347,7 +347,8 @@
 			 <pattern>/duplicateMobileNumbers*</pattern>
 			 <pattern>/surveyConstituencieOverview*</pattern>
 			  <pattern>/candidateAnalysisAction*</pattern>
-			  <pattern>/ivrMobileAction*</pattern>
+			  <pattern>/ivrMobileAction*</pattern>]
+			  <pattern>/cadreRegistration*</pattern>
 			  
             <!--  <pattern>/dashBoardAction*</pattern> -->
        </decorator>
