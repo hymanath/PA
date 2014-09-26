@@ -418,28 +418,28 @@
 				<value>com.itgrids.partyanalyst.model.VoterTag</value>
 				<value>com.itgrids.partyanalyst.model.BoothActivities</value>
 				<value>com.itgrids.partyanalyst.model.VoterBoothActivities</value>
-		<value>com.itgrids.partyanalyst.model.HouseHoldsFamilyDetails</value>
-		
-		<value>com.itgrids.partyanalyst.model.HHLeader</value>
-		<value>com.itgrids.partyanalyst.model.HHBoothLeader</value>
-		<value>com.itgrids.partyanalyst.model.HHLeaderBooks</value>
-		<value>com.itgrids.partyanalyst.model.PRPWeighteges</value>
-	    <value>com.itgrids.partyanalyst.model.PartyTrends</value>
-	    
-	    <value>com.itgrids.partyanalyst.model.PanchayatResult</value>	
-	    <value>com.itgrids.partyanalyst.model.StrategyMergePanchayat</value>
-		<value>com.itgrids.partyanalyst.model.StrategyMergPancList</value>
-		<value>com.itgrids.partyanalyst.model.ReceiverType</value>
-		<value>com.itgrids.partyanalyst.model.SmsSentType</value>
-		<value>com.itgrids.partyanalyst.model.UserSmsSent</value>
-		<value>com.itgrids.partyanalyst.model.UserSmsReceiver</value>
-		<value>com.itgrids.partyanalyst.model.VoterNamesTemp</value>
-		<value>com.itgrids.partyanalyst.model.VoterNames</value>
-		<value>com.itgrids.partyanalyst.model.CriticalPanchayats</value>
-		<value>com.itgrids.partyanalyst.model.MobileNumbers</value>
-		<value>com.itgrids.partyanalyst.model.MobileSourceType</value>
-		<value>com.itgrids.partyanalyst.model.StateSubRegionDistrict</value>
-		<value>com.itgrids.partyanalyst.model.StateSubRegion</value>
+				<value>com.itgrids.partyanalyst.model.HouseHoldsFamilyDetails</value>
+				
+				<value>com.itgrids.partyanalyst.model.HHLeader</value>
+				<value>com.itgrids.partyanalyst.model.HHBoothLeader</value>
+				<value>com.itgrids.partyanalyst.model.HHLeaderBooks</value>
+				<value>com.itgrids.partyanalyst.model.PRPWeighteges</value>
+			    <value>com.itgrids.partyanalyst.model.PartyTrends</value>
+			    
+			    <value>com.itgrids.partyanalyst.model.PanchayatResult</value>	
+			    <value>com.itgrids.partyanalyst.model.StrategyMergePanchayat</value>
+				<value>com.itgrids.partyanalyst.model.StrategyMergPancList</value>
+				<value>com.itgrids.partyanalyst.model.ReceiverType</value>
+				<value>com.itgrids.partyanalyst.model.SmsSentType</value>
+				<value>com.itgrids.partyanalyst.model.UserSmsSent</value>
+				<value>com.itgrids.partyanalyst.model.UserSmsReceiver</value>
+				<value>com.itgrids.partyanalyst.model.VoterNamesTemp</value>
+				<value>com.itgrids.partyanalyst.model.VoterNames</value>
+				<value>com.itgrids.partyanalyst.model.CriticalPanchayats</value>
+				<value>com.itgrids.partyanalyst.model.MobileNumbers</value>
+				<value>com.itgrids.partyanalyst.model.MobileSourceType</value>
+				<value>com.itgrids.partyanalyst.model.StateSubRegionDistrict</value>
+				<value>com.itgrids.partyanalyst.model.StateSubRegion</value>
 				<value>com.itgrids.partyanalyst.model.CasteContainConstituency</value>
 			<value>com.itgrids.partyanalyst.model.AnnualIncome</value>
 				<value>com.itgrids.partyanalyst.model.SourceIncome</value>
@@ -485,6 +485,10 @@
 				<value>com.itgrids.partyanalyst.model.ConstituencyTehsil</value>
 				<value>com.itgrids.partyanalyst.model.IvrMobile</value>
 				<value>com.itgrids.partyanalyst.model.DuplicateWrongMobileNumbers</value>
+				
+				<value>com.itgrids.partyanalyst.model.TdpCadre</value>
+				<value>com.itgrids.partyanalyst.model.CadrePreviousRoles</value>
+				<value>com.itgrids.partyanalyst.model.CadreParticipatedElection</value>
 				
 			</list>
 		</property>
@@ -2525,4 +2529,18 @@
 <bean id="ivrMobileDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrMobileDAO" lazy-init="true" >
 		<property name="sessionFactory" ref="sessionFactory" />
 </bean>
+
+<bean id="tdpCadreDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreDAO" >
+	<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
+<bean id="cadrePreviousRolesDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadrePreviousRolesDAO" >
+	<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
+<bean id="cadreParticipatedElectionDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreParticipatedElectionDAO" >
+	<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
+
 </beans>
