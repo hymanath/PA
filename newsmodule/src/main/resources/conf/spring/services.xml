@@ -341,6 +341,7 @@
         <property name="gallaryDAO" ref="gallaryDAO"></property>
         <property name="candidatePartyFileDAO" ref="candidatePartyFileDAO"></property>
         <property name="candidateDAO" ref="candidateDAO"></property>
+        <property name="groupDAO" ref="groupDAO"></property>     
     </bean>
     
     <bean name="newsBullitionService" class="com.itgrids.partyanalyst.service.impl.NewsBullitionService">

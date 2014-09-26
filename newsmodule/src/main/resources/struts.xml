@@ -6391,7 +6391,24 @@
 		    			<param name="root">resultList</param>
 		    		</result>
 		 </action>
-		
+		 
+		<action name="getCandidateGroupWiseBenifit" class="benefitAnalysisAction" method="getCandidateGroupWiseBenifit">
+					<result type="json" name="success">
+		    			<param name="root">countResult</param>
+		    		</result>
+		 </action>
+		 
+		 <action name="getCandidateGroupWiseBenifitNews" class="benefitAnalysisAction" method="getCandidateGroupWiseBenifitNews">
+					<result type="json" name="success">
+		    			<param name="root">newsResult</param>
+		    		</result>
+		 </action>
+		 
+		 <action name="getCandidateGroups" class="benefitAnalysisAction" method="getCandidateGroups">
+					<result type="json" name="success">
+		    			<param name="root">countResult</param>
+		    		</result>
+		 </action>
 	 </package>
 		
 </struts>      

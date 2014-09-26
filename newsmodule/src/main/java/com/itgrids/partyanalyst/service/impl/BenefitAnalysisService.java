@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +16,7 @@ import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.ICandidatePartyCategoryDAO;
 import com.itgrids.partyanalyst.dao.ICandidatePartyFileDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
+import com.itgrids.partyanalyst.dao.IGroupDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dto.BenfitVO;
 import com.itgrids.partyanalyst.dto.NewsActivityVO;
@@ -27,6 +30,7 @@ public class BenefitAnalysisService implements IBenefitAnalysisService {
 	private IGallaryDAO gallaryDAO;
 	private ICandidatePartyFileDAO candidatePartyFileDAO;
 	private ICandidateDAO candidateDAO;
+	private IGroupDAO groupDAO;
 	
 	public ICandidatePartyCategoryDAO getCandidatePartyCategoryDAO() {
 		return candidatePartyCategoryDAO;
@@ -70,10 +74,22 @@ public class BenefitAnalysisService implements IBenefitAnalysisService {
 		this.candidateDAO = candidateDAO;
 	}
 
+	public IGroupDAO getGroupDAO() {
+		return groupDAO;
+	}
+
+	public void setGroupDAO(IGroupDAO groupDAO) {
+		this.groupDAO = groupDAO;
+	}
+
 	public List<BenfitVO> getCategoryWiseBenifit(Date fromDate,Date toDate,Long stateId,List<Long> partyIds){
 		
 		List<BenfitVO> resultsList = new ArrayList<BenfitVO>();
 		try{
+			if(partyIds.contains(872l)){
+				partyIds.remove(872l);
+				partyIds.add(0,872l);
+			}
 			List<Object[]> allCategoryWiseBenfitsList = new ArrayList<Object[]>();
 			Map<Long,String> partyNames = new HashMap<Long,String>();
 			Map<Long,String> categoryNames = new HashMap<Long,String>();
@@ -92,6 +108,7 @@ public class BenefitAnalysisService implements IBenefitAnalysisService {
 				populateCategoryNames(categoryNames,new ArrayList<Long>(categoryMap.keySet()));
 				populateDataToMap(allCategoryWiseBenfitsList,categoryMap);
 				populateDataToBenfitVO(resultsList,categoryMap,partyNames,categoryNames,partyIds);
+				Collections.sort(resultsList,benefitSort);
 			}
 		}catch(Exception e){
 			LOG.error("Exception rised in getCategoryWiseBenifit ",e);
@@ -136,7 +153,7 @@ public class BenefitAnalysisService implements IBenefitAnalysisService {
 			categoryVO = new BenfitVO();
 			categoryVO.setId(categoryId);
 			categoryVO.setName(categoryNames.get(categoryId));
-			
+			categoryVO.setCount(0l);
 			partyMap = categoryMap.get(categoryId);
 			
 			parties = new ArrayList<BenfitVO>();
@@ -153,10 +170,13 @@ public class BenefitAnalysisService implements IBenefitAnalysisService {
 				if(benfitMap != null){
 					if(benfitMap.get(1l) != null){
 						partyVO.setCount(benfitMap.get(1l));
+						categoryVO.setCount(categoryVO.getCount()+benfitMap.get(1l));
 					}
 					if(benfitMap.get(2l) != null){
 						partyVO.setNegCount(benfitMap.get(2l));
+						categoryVO.setCount(categoryVO.getCount()+benfitMap.get(2l));
 					}
+					
 				}
 				parties.add(partyVO);
 			}
@@ -204,6 +224,15 @@ public class BenefitAnalysisService implements IBenefitAnalysisService {
     	 
     	 return results;
     }
+    
+    public Comparator<BenfitVO> benefitSort = new Comparator<BenfitVO>()
+		{
+					  
+		   public int compare(BenfitVO vo1, BenfitVO vo2)
+			{
+		       return (vo1.getCount().intValue()) - (vo2.getCount().intValue());
+			}
+		};
 	
      public List<BenfitVO> getCandidateGroupWiseBenifit(Long groupId,Date fromDate,Date toDate,Long stateId,Long partyId){
     	 Map<Long,BenfitVO> resultMap = new HashMap<Long,BenfitVO>();
@@ -233,9 +262,9 @@ public class BenefitAnalysisService implements IBenefitAnalysisService {
 	 				 vo.setNegCount(0l);
 	 				resultMap.put((Long)candidate[1],vo);
 	    		 }
-	    		 if(((Long)candidate[2]).longValue() != 1l){
+	    		 if(((Long)candidate[2]).longValue() == 1l){
 	    			 vo.setCount((Long)candidate[0]);
-	    		 }else if(((Long)candidate[2]).longValue() != 2l){
+	    		 }else if(((Long)candidate[2]).longValue() == 2l){
 	    			 vo.setNegCount((Long)candidate[0]);
 	    		 }
     	    }
@@ -284,4 +313,23 @@ public class BenefitAnalysisService implements IBenefitAnalysisService {
     	 
     	 return results;
     }
+     
+     public List<BenfitVO> getCandidateGroups(){
+    	 List<BenfitVO> groups = new ArrayList<BenfitVO>();
+    	 try{
+    		 BenfitVO vo = null;
+    		 List<Object[]> groupsList = groupDAO.getAllGroups();
+    		 for(Object[] group:groupsList){
+    			 vo = new BenfitVO();
+    			 vo.setId((Long)group[0]);
+    			 vo.setName(group[1].toString());
+    			 groups.add(vo);
+    		 }
+    		 
+    	 }catch(Exception e){
+    		 LOG.error("Exception rised in getCandidateGroups",e);
+    	 }
+    	 
+    	 return groups;
+     }
 }
