@@ -293,13 +293,13 @@ public class BenefitAnalysisService implements IBenefitAnalysisService {
     	 return candidateNames;
      }
      
-     public List<NewsActivityVO> getCandidateGroupWiseBenifitNews(Date fromDate,Date toDate,Long candidateId,Long benfitId){
+     public List<NewsActivityVO> getCandidateGroupWiseBenifitNews(Date fromDate,Date toDate,Long candidateId,Long benfitId,int startIndex,int maxIndex){
      	
     	 List<NewsActivityVO> results = new ArrayList<NewsActivityVO>();
     	 NewsActivityVO vo = null;
     	 // 0 title,1 title font,2 desc,3 desc font
-    	 List<Object[]>  newsList = candidatePartyFileDAO.getCandidateGroupBenifitWiseNews(fromDate, toDate, candidateId, benfitId);
-    	 
+    	 List<Object[]>  newsList = candidatePartyFileDAO.getCandidateGroupBenifitWiseNews(fromDate, toDate, candidateId, benfitId,startIndex,maxIndex);
+    	 Long count  = candidatePartyFileDAO.getCandidateGroupBenifitWiseNewsCount(fromDate, toDate, candidateId, benfitId);
     	 for(Object[] news:newsList){
     		 vo = new NewsActivityVO();
     		 vo.setTitle(StringEscapeUtils.unescapeJava(news[0].toString()));
@@ -310,7 +310,9 @@ public class BenefitAnalysisService implements IBenefitAnalysisService {
     		   vo.setFont("1");
     		 results.add(vo);
     	 }
-    	 
+    	 if(results.size() > 0){
+    		 results.get(0).setCount(count);
+    	 }
     	 return results;
     }
      

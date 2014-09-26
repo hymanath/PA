@@ -12,7 +12,7 @@ public interface IBenefitAnalysisService {
 	
 	public List<BenfitVO> getCandidateGroupWiseBenifit(Long groupId,Date fromDate,Date toDate,Long stateId,Long partyId);
 	
-	public List<NewsActivityVO> getCandidateGroupWiseBenifitNews(Date fromDate,Date toDate,Long candidateId,Long benfitId);
+	public List<NewsActivityVO> getCandidateGroupWiseBenifitNews(Date fromDate,Date toDate,Long candidateId,Long benfitId,int startIndex,int maxIndex);
 	
-	 public List<BenfitVO> getCandidateGroups();
+	public List<BenfitVO> getCandidateGroups();
 }

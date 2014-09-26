@@ -1162,7 +1162,7 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
         	   return query.list();
            }
            
-           public List<Object[]>  getCandidateGroupBenifitWiseNews(Date fromDate,Date toDate,Long candidateId,Long benfitId){
+           public List<Object[]>  getCandidateGroupBenifitWiseNews(Date fromDate,Date toDate,Long candidateId,Long benfitId,int startIndex,int maxIndex){
       		 StringBuilder queryStr = new StringBuilder();
       		 queryStr.append("select distinct cpf.file.fileTitle,cpf.file.font.fontId,cpf.file.fileDescription,cpf.file.descFont.fontId from  CandidatePartyFile cpf "+
       			 " where ((cpf.sourceCandidate.candidateId = :candidateId and cpf.sourceBenefit.benefitId =:benfitId) or (cpf.destinationCandidate.candidateId = :candidateId and cpf.destinationBenefit.benefitId =:benfitId ))"+
@@ -1173,7 +1173,23 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
       		 query.setDate("toDate", toDate);
       		 query.setParameter("candidateId", candidateId);
       		 query.setParameter("benfitId", benfitId);
-      		 
+      		 query.setFirstResult(startIndex);
+      		 query.setMaxResults(maxIndex);
       		 return query.list();
       	 }
+          
+           public Long  getCandidateGroupBenifitWiseNewsCount(Date fromDate,Date toDate,Long candidateId,Long benfitId){
+        		 StringBuilder queryStr = new StringBuilder();
+        		 queryStr.append("select count(distinct cpf.file.fileId) from  CandidatePartyFile cpf "+
+        			 " where ((cpf.sourceCandidate.candidateId = :candidateId and cpf.sourceBenefit.benefitId =:benfitId) or (cpf.destinationCandidate.candidateId = :candidateId and cpf.destinationBenefit.benefitId =:benfitId ))"+
+        		     " and date(cpf.file.fileDate) >= :fromDate and date(cpf.file.fileDate) <= :toDate and cpf.file.isDeleted ='N' order by cpf.file.fileDate desc, cpf.file.updatedDate desc");
+
+        		 Query query = getSession().createQuery(queryStr.toString());
+        		 query.setDate("fromDate", fromDate);
+        		 query.setDate("toDate", toDate);
+        		 query.setParameter("candidateId", candidateId);
+        		 query.setParameter("benfitId", benfitId);
+        		 
+        		 return (Long)query.uniqueResult();
+        	 }
 }

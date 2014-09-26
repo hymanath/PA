@@ -89,5 +89,7 @@ public interface ICandidatePartyFileDAO extends GenericDao<CandidatePartyFile, L
 	
 	public List<Object[]> getCandidateGroupWiseBenifit(Date fromDate,Date toDate,Long stateId,Long groupId,Long partyId);
 	
-	public List<Object[]>  getCandidateGroupBenifitWiseNews(Date fromDate,Date toDate,Long candidateId,Long benfitId);
+	public List<Object[]>  getCandidateGroupBenifitWiseNews(Date fromDate,Date toDate,Long candidateId,Long benfitId,int startIndex,int maxIndex);
+	
+	public Long  getCandidateGroupBenifitWiseNewsCount(Date fromDate,Date toDate,Long candidateId,Long benfitId);
 }
