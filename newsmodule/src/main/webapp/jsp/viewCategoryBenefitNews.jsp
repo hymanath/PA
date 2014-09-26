@@ -1,5 +1,7 @@
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
+<%@ taglib prefix="s" uri="/struts-tags" %>  
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="java.util.ResourceBundle;" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -63,7 +65,7 @@ font-size:20px;
 <font>Please wait...</font>
 <img src="images/icons/goldAjaxLoad.gif" style="width: 150px; height: 15px;" width="18" height="11"/>
 </div>
-<div class="span12" id="newsDisplayCategoryDiv" style="text-align: left;">	<div id="ajaximg"><img width="18" height="11" src="images/icons/goldAjaxLoad.gif" style="width: 150px; height: 15px;margin-left:400px;margin-top:100px;" id=""></div>					
+<div class="span12" id="newsDisplayDiv" style="text-align: left;">	<div id="ajaximg"><img width="18" height="11" src="images/icons/goldAjaxLoad.gif" style="width: 150px; height: 15px;margin-left:400px;margin-top:100px;" id=""></div>					
 </div>
 
 
@@ -72,15 +74,16 @@ font-size:20px;
 </div>
 </div>
 </div>
-<script>
+<script type="text/javascript">
 		var fromDate = '${fromDate}';
 		var toDate = '${toDate}';
 		var stateId = '${stateId}';
 		var benefitId = '${benefitId}';
 		var categoryId = '${categoryId}';
 		var partyId = '${partyId}';
-		getCategoryBenefitNewsDetails(0,1000);
-            
+		var candidateId = '${candidateId}';
+		var type = '${type}';
+<s:if test="buildType == 'category'">      
 function getCategoryBenefitNewsDetails(startIndex,endIndex)
 {
    $.ajaxSetup({
@@ -99,23 +102,103 @@ function getCategoryBenefitNewsDetails(startIndex,endIndex)
 			 stateId : stateId,
 			 categoryId:categoryId,
 			 benefitId:benefitId,
-			 partyId: partyId
+			 partyId: partyId,
+			 type:type
 	  },
 		 
 	  success: function(results){ 
-		   buildCategoryBenefitNewsDetails(results,0,startIndex,endIndex);
+		   buildFilesInGallaryDetails(results,0,startIndex,endIndex);
 	 },
 	  error:function() { 
-	     $("#newsDisplayCategoryDiv").html('');
+	     $("#newsDisplayDiv").html('');
 	  }
 	});
 
 }
-buildFilesInGallaryDetails(results,0,startIndex,endIndex){
-}
+</s:if>
+<s:if test="buildType == 'candidate'">            
+function getCategoryBenefitNewsDetails(startIndex,endIndex)
+{
+   $.ajaxSetup({
+	   jsonp: null,
+	   jsonpCallback: null
+	}); 
 
-function buildFilesInGallaryDetails1(results,selectedvalue,index,endValue)
-{  
+	$.ajax({
+	  type:'POST',
+	  url: 'getCandidateGroupWiseBenifitNews.action',
+	  dataType: 'json',
+	  data: {
+	         type:type,
+			 fromDate:fromDate,
+			 toDate:toDate,
+			 candidateId:candidateId,
+	         benefitId:benefitId,
+	         startValue:startIndex,
+			 endValue : endIndex 
+	  },
+		 
+	  success: function(results){ 
+		   buildFilesInGallaryDetails(results,0,startIndex,endIndex);
+	 },
+	  error:function() { 
+	     $("#newsDisplayDiv").html('');
+	  }
+	});
+
+}
+</s:if>
+function buildFilesInGallaryDetails(results,selectedvalue,index,endValue)
+{   
+	var totalPages;
+	var requestedFor = "";
+	$('#imageForMail').css("display","none");
+	$("#newsDisplayDiv").html('');
+  if(results == null || results.length == 0)
+  {
+    $("#newsDisplayDiv").html('No Data Found.');
+	return;
+  }
+	
+
+   var str='';
+
+   str+='<div class="span12">';
+   str+='<ul class="unstyled pad10">';
+   for(var i in results)
+   {
+	str+='<li>';
+	str+='<div class="">';
+	
+	var fontId = results[i].titleFont;
+	if(fontId != null)
+	{
+		str+='<h4 style="" class="enadu"><a style="color: #005580;font-size: 25px;" href="javascript:{getNewsDetailsByContentId('+results[i].id+')}">'+results[i].title+'</a></h4>';
+	}
+	else
+	{
+		str+='<h4 style="text-transform: capitalize;"> <a style="color: #005580;font-size: 18px;" href="javascript:{getNewsDetailsByContentId('+results[i].id+')}">'+results[i].title+'</a></h4>';
+	}
+		
+
+		str+='<div class="row-fluid">';
+		
+		
+		if(results[i].font != null)
+		{
+			str+='<p class="span11 enadu" style="font-size: 25px;">'+results[i].description+'</p>';
+		}
+		else
+		{
+			str+='<p class="span11" style="font-size: 18px;">'+results[i].description+'</p>';
+		}
+		str+='</div>';
+		
+	str+='</div>';
+	str+='</li>';
+   }
+    str+='</ul>';
+   str+='</div>';
 $("#newsDisplayDiv").html(str);
 var itemsCount=results[0].count;
 
@@ -131,8 +214,6 @@ if(index==0){
         scrollTop: $("#mainDiv").offset().top},
         'slow');
 }
-
-
 function callAjaxToGetTheResults(selectedvalue)
 {
 	var startIndex = 0;
@@ -146,6 +227,8 @@ function callAjaxToGetTheResults(selectedvalue)
 	}
 	getCategoryBenefitNewsDetails(startIndex,endIndex)
 }
+getCategoryBenefitNewsDetails(0,1000);
+
 function getNewsDetailsByContentId(contentId)
 {
   var urlstr = "newsDetailsPopupAction.action?contentId="+contentId+"&";

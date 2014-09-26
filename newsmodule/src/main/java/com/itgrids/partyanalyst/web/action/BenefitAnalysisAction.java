@@ -45,6 +45,9 @@ public class BenefitAnalysisAction extends ActionSupport implements ServletReque
 	private Integer endValue;
 	private List<BenfitVO> countResult;
 	private List<NewsActivityVO> newsResult;
+	private String buildType;
+	private String type;
+	private Long candidateId;
 	
 	public Integer getStartValue() {
 		return startValue;
@@ -199,6 +202,30 @@ public class BenefitAnalysisAction extends ActionSupport implements ServletReque
 		this.newsResult = newsResult;
 	}
 
+	public String getBuildType() {
+		return buildType;
+	}
+
+	public void setBuildType(String buildType) {
+		this.buildType = buildType;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public Long getCandidateId() {
+		return candidateId;
+	}
+
+	public void setCandidateId(Long candidateId) {
+		this.candidateId = candidateId;
+	}
+
 	public String execute()
 	{
 		session = request.getSession();
@@ -244,7 +271,7 @@ public class BenefitAnalysisAction extends ActionSupport implements ServletReque
 			
 			countResult = benefitAnalysisService.getCandidateGroupWiseBenifit(jObj.getLong("groupId"),dates[0],dates[1],jObj.getLong("stateId"),jObj.getLong("partyId"));
 		  }catch(Exception e){
-			  LOG.error(" Exception occured in getCandidateGroupWiseBenifitNews ",e);
+			  LOG.error(" Exception occured in getCandidateGroupWiseBenifit ",e);
 		  }
 		  
 		 return Action.SUCCESS;
@@ -252,9 +279,9 @@ public class BenefitAnalysisAction extends ActionSupport implements ServletReque
 
 	public String getCandidateGroupWiseBenifitNews(){
 		  try{
-			jObj = new JSONObject(getTask());
-			Date[] dates = getDates(jObj.getString("type"),jObj.getString("fromDate"),jObj.getString("toDate"));
-			newsResult = benefitAnalysisService.getCandidateGroupWiseBenifitNews(dates[0],dates[1],jObj.getLong("candidateId"),jObj.getLong("benfitId"),jObj.getInt("startIndex"),jObj.getInt("maxIndex"));
+			
+			Date[] dates = getDates(type,fromDate,toDate);
+			newsResult = benefitAnalysisService.getCandidateGroupWiseBenifitNews(dates[0],dates[1],candidateId,benefitId,startValue,endValue);
 		  }catch(Exception e){
 			  LOG.error(" Exception occured in getCandidateGroupWiseBenifitNews ",e);
 		  }
@@ -341,12 +368,7 @@ public class BenefitAnalysisAction extends ActionSupport implements ServletReque
 	  public String getCategoryBenifitWiseNews(){
 		  try{
 			
-			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-    		 
-    		 Date startDate = (getFromDate()!=null && getFromDate().trim().length() > 0)?format.parse(getFromDate()):null;
-    		 Date endDate = (getToDate()!=null && getToDate().trim().length() >0)?format.parse(getToDate()):null;
-			  
-			///Date[] dates = getDates(jObj.getString("type"),jObj.getString("fromDate"),jObj.getString("toDate"));
+			Date[] dates = getDates(type,fromDate,toDate);
     		 Integer startIndex = null;
     		 Integer maxIndex = null;
     		 if(startValue != null && startValue > 0){
@@ -356,7 +378,7 @@ public class BenefitAnalysisAction extends ActionSupport implements ServletReque
     			 maxIndex = endValue;
     		 }
 			
-    		 newsResult = benefitAnalysisService.getCategoryBenifitWiseNews(startDate,endDate,partyId,categoryId,benefitId,stateId);
+    		 newsResult = benefitAnalysisService.getCategoryBenifitWiseNews(dates[0],dates[1],partyId,categoryId,benefitId,stateId);
 			
 		 }catch(Exception e){
 			  LOG.error(" Exception occured in getCategoryWiseBenifit ",e);
