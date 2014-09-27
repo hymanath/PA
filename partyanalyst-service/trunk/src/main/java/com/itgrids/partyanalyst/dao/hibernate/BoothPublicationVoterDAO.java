@@ -8,6 +8,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.BoothPublicationVoter;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.Candidate;
@@ -7261,6 +7262,14 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		query.setParameter("boothId", boothId);
 		query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID);
 		
+		return query.list();
+	}
+	
+	public List<Booth> getVoterAddressDetails(Long voterId)
+	{
+		Query query = getSession().createQuery("select BPV.booth from BoothPublicationVoter BPV  where BPV.voter.voterId = :voterId and BPV.booth.publicationDate.publicationDateId = :publicationDateId");
+		query.setParameter("voterId", voterId);
+		query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID);
 		return query.list();
 	}
 }

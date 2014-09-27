@@ -6,6 +6,7 @@ import java.util.Set;
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dto.SmsVO;
+import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.BoothPublicationVoter;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.Candidate;
@@ -688,4 +689,6 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<Object[]> getBoothWiseTotalVotersByConstituencyId(Long constituencyId);
 
 	  public List<Object[]> getCTPVoterDetailsByBooth(Long boothId);
+	  
+	  public List<Booth> getVoterAddressDetails(Long voterId);
 }

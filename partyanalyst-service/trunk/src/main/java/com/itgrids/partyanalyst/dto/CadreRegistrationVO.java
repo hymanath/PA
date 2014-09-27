@@ -26,6 +26,12 @@ public class CadreRegistrationVO implements Serializable{
 	private Long educationId;
 	private Long occupationId;
 	private String houseNo;
+	private Long age;
+	private String lastName;
+	private String landMobileNo;
+	private Long enrollmentNumber;
+	private Long createdUserId;
+	private Long updatedUserId;
 	
 	private List<CadrePreviousRollesVO> previousRollesList;
 	
@@ -140,6 +146,42 @@ public class CadreRegistrationVO implements Serializable{
 	public void setPreviousParicaptedElectionsList(
 			List<CadrePreviousRollesVO> previousParicaptedElectionsList) {
 		this.previousParicaptedElectionsList = previousParicaptedElectionsList;
+	}
+	public Long getAge() {
+		return age;
+	}
+	public void setAge(Long age) {
+		this.age = age;
+	}
+	public String getLastName() {
+		return lastName;
+	}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	public String getLandMobileNo() {
+		return landMobileNo;
+	}
+	public void setLandMobileNo(String landMobileNo) {
+		this.landMobileNo = landMobileNo;
+	}
+	public Long getEnrollmentNumber() {
+		return enrollmentNumber;
+	}
+	public void setEnrollmentNumber(Long enrollmentNumber) {
+		this.enrollmentNumber = enrollmentNumber;
+	}
+	public Long getCreatedUserId() {
+		return createdUserId;
+	}
+	public void setCreatedUserId(Long createdUserId) {
+		this.createdUserId = createdUserId;
+	}
+	public Long getUpdatedUserId() {
+		return updatedUserId;
+	}
+	public void setUpdatedUserId(Long updatedUserId) {
+		this.updatedUserId = updatedUserId;
 	}
 	
 	

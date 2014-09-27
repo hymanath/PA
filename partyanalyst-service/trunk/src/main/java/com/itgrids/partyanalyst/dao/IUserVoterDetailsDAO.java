@@ -16,6 +16,8 @@ import org.appfuse.dao.GenericDao;
 import com.itgrids.partyanalyst.dto.SMSSearchCriteriaVO;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.Candidate;
+import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.Locality;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
@@ -345,4 +347,6 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	public UserVoterDetails getUserVoterDetailsByUserIdAndVoterId(Long userId,Long voterId);
 	
 	public List<Object[]> getVoterNamesByVoterIdsList(List<Long> voterIds);
+	public List<Hamlet> getHamletByVoterId(Long voterId);
+	public List<Constituency> getWardByVoterId(Long voterId);
 }

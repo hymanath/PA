@@ -10,6 +10,8 @@ import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dto.SMSSearchCriteriaVO;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.Candidate;
+import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.Locality;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
@@ -3228,6 +3230,21 @@ IUserVoterDetailsDAO{
 		 query.setParameter("userId", userId);
 		 
 		 return query.list();
+	 }
+	 
+	 public List<Hamlet> getHamletByVoterId(Long voterId)
+	 {
+		 Query query = getSession().createQuery("select UVD.hamlet from UserVoterDetails UVD where UVD.voter.voterId = :voterId");
+		 query.setParameter("voterId", voterId);
+		 return query.list(); 
+	 }
+	 
+	 public List<Constituency> getWardByVoterId(Long voterId)
+	 {
+		 Query query = getSession().createQuery("select UVD.ward from UserVoterDetails UVD where UVD.voter.voterId = :voterId");
+		 query.setParameter("voterId", voterId);
+		 return query.list();
+				 
 	 }
 	 
 	
