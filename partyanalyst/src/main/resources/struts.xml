@@ -8362,11 +8362,13 @@
 				<param name="root">mobileVo</param>
 		</result>
 		</action>
+		
 		<action name="resetMobileNoAction" class="mobileDataAction" method="resetAllMobileNos">
 			<result type="json" name="success">
 				<param name="root">resultStatus</param>
 		</result>
 		</action>
 		
+	
 </package>
 </struts>      

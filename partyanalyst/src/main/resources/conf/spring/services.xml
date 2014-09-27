@@ -2163,7 +2163,19 @@
      <bean name="surveyCompletedDetailsService"  class="com.itgrids.partyanalyst.service.impl.SurveyCompletedDetailsService"></bean>
      <bean name="ctpDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CtpDashBoardService"></bean>
        
-     <bean name="cadreRegistrationService"  class="com.itgrids.partyanalyst.service.impl.CadreRegistrationService"></bean>
+     <bean name="cadreRegistrationService"  class="com.itgrids.partyanalyst.service.impl.CadreRegistrationService">
+         
+         <property name="tdpCadreDAO" ref="tdpCadreDAO" />
+         <property name="transactionTemplate" ref="transactionTemplate" />
+         <property name="cadrePreviousRolesDAO" ref="cadrePreviousRolesDAO" />
+         <property name="cadreParticipatedElectionDAO" ref="cadreParticipatedElectionDAO" />
+         <property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" />
+         <property name="countryDAO" ref="countryDAO" />
+         <property name="stateDAO" ref="stateDAO" />
+         <property name="userVoterDetailsDAO" ref="userVoterDetailsDAO" />
+         <property name="userAddressDAO" ref="userAddressDAO" />
+         <property name="dateUtilService" ref="dateUtilService" />
+     </bean>
       
    
 </beans>		
