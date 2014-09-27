@@ -805,4 +805,6 @@ public interface IConstants {
     public static final Long KPM_AGE2_MAX = 21L;
     public static final Long KPM_AGE3_MIN = 22L;
     public static final Long KPM_AGE3_MAX = 120L;
+    
+    public static final Long CADRE_ENROLLMENT_NUMBER = 2014l;
 }

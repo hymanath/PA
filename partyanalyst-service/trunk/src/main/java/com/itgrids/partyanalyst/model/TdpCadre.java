@@ -49,7 +49,6 @@ public class TdpCadre {
 	private Long 						casteStateId;
 	private Date 						partyMemberSince;
 	private String 						previousEnrollmentNo;
-	private Long 						addressId;
 	private Date 						insertedTime;
 	private Date 						updatedTime;
 	private Long 						enrollmentYear;
@@ -227,14 +226,6 @@ public class TdpCadre {
 		this.previousEnrollmentNo = previousEnrollmentNo;
 	}
 	
-	@Column(name="address_id")
-	public Long getAddressId() {
-		return addressId;
-	}
-	public void setAddressId(Long addressId) {
-		this.addressId = addressId;
-	}
-	
 	@Column(name="inserted_time")
 	public Date getInsertedTime() {
 		return insertedTime;
@@ -332,7 +323,7 @@ public class TdpCadre {
 	}
 	
 	@ManyToOne(fetch = FetchType.LAZY )
-	@JoinColumn(name = "address_id" , insertable = false, updatable = false)
+	@JoinColumn(name = "address_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public UserAddress getUserAddress() {
