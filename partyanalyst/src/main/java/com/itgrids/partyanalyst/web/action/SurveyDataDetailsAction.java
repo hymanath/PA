@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -2222,7 +2223,7 @@ public String getPanchayatsStatusDetails()
  		}
  		return Action.SUCCESS;
  	}
-  public String saveBoothsPercentageForCasteSurvey(){
+  /*public String saveBoothsPercentageForCasteSurvey(){
 	  try{
 			HttpSession session = request.getSession();
 			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
@@ -2234,6 +2235,31 @@ public String getPanchayatsStatusDetails()
 			String percentage = jObj.getString("percentage");
 			
 			status = surveyDetailsService.savePercentageOfBoothForCasteSurvey(boothId,percentage);
+		} 
+		catch (Exception e)	{
+			LOG.error("Exception raised in saveBoothsPercentageForCasteSurvey", e);
+		}
+	  
+	  return Action.SUCCESS;
+  }*/
+  
+  public String saveBoothsPercentageForCasteSurvey(){
+	  try{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null){
+				return Action.INPUT;
+			}
+			jObj = new JSONObject(getTask());
+			List<Long> boothIds=new ArrayList();
+			JSONArray jarray = jObj.getJSONArray("boothIds");
+ 			for (Integer i = 0; i < jarray.length(); i++){
+ 				boothIds.add(Long.valueOf(jarray.get(i).toString()));
+ 			}
+			
+			String percentage = jObj.getString("percentage");
+			
+			status = surveyDetailsService.savePercentageOfBoothForCasteSurvey(boothIds,percentage);
 		} 
 		catch (Exception e)	{
 			LOG.error("Exception raised in saveBoothsPercentageForCasteSurvey", e);
