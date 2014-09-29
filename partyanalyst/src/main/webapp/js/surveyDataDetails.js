@@ -2348,11 +2348,26 @@ $("#errorDivSB").html("");
 		  }).done(function(result){				
 				//buildDayWiseReportByUserType(result);		
 				//$("#boothImage").hide();
-				$('#'+divId+'').find('option:not(:first)').remove();
+				if(divId == 'boothIdForSavePercentages')
+				{
+					$('#'+divId+'').find('option').remove();
+				}
+				else
+				{
+					$('#'+divId+'').find('option:not(:first)').remove();
+				}
+				
 
 				$.each(result,function(index,value){
 					$('#'+divId+'').append('<option value="'+value.boothId+'">Booth - '+value.partNo+'</option>');
 				});
+				
+				if(divId == 'boothIdForSavePercentages')
+				{
+					$('#'+divId+'').multiselect('refresh');
+				}
+				
+				
 			
 
 		});	
@@ -2443,7 +2458,7 @@ function removeThirdPartyDetails(boothId)
 			$('#ajaxImgForTPForRemove').hide();
 		});
 }
-function saveBoothPercentage(){
+/*function saveBoothPercentage(){
 	$("#boothImageForSavingPercent").show();
 	var consId = $("#constituencyForSP").val();
 	var boothId = $("#boothIdForSavePercentages").val();
@@ -2469,6 +2484,53 @@ function saveBoothPercentage(){
 	
 	var jObj ={
 	  boothId:boothId,
+	  percentage:percentage
+	};
+
+	 $.ajax({
+			type:'GET',
+			url: 'saveBoothPercentageForCasteSurveyAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jObj)}
+		  }).done(function(result){		
+				$("#boothImageForSavingPercent").hide();
+				$("#errorDivSB").html("<span style='color:blue'>"+result+"</span>");
+				setTimeout(function(){$('#errorDivSB').html('');}, 3000);
+				//$("#constituencyForSP,#boothIdForSavePercentages").val(0);
+				$("#percenageForBooth").val("");
+		});	
+}*/
+
+function saveBoothPercentage(){
+	$("#boothImageForSavingPercent").show();
+	var consId = $("#constituencyForSP").val();
+	
+	var boothIds = new Array();
+	
+	boothIds = $( "#boothIdForSavePercentages" ).val();
+	
+	var percentage =$("#percenageForBooth").val();
+	
+	$("#errorDivSB").html("");
+	
+	if(consId == 0){
+		$("#errorDivSB").html("<span style='color:red'>Please Select Constituency</span>");
+		$("#boothImageForSavingPercent").hide();
+		return;
+	}
+	if(boothIds == null){
+		$("#errorDivSB").html("<span style='color:red'>Please Select atleast one Booth</span>");
+		$("#boothImageForSavingPercent").hide();
+		return;
+	}
+	if(percentage==""){
+		$("#errorDivSB").html("<span style='color:red'>Please Enter Percentage</span>");
+		$("#boothImageForSavingPercent").hide();
+		return;
+	}
+	
+	var jObj ={
+	  boothIds:boothIds,
 	  percentage:percentage
 	};
 

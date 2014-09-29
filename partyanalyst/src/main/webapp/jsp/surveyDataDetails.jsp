@@ -87,7 +87,10 @@
 	$('#webMonitorUserIds').multiselect({
 	  noneSelectedText:"Select User(s)"});
 	showHideTabs('userCreationTab');
-
+	
+	
+	$('#boothIdForSavePercentages').multiselect({
+	  noneSelectedText:"Select Booth(s)"});
 
 
 });
@@ -218,23 +221,26 @@
 													
 											</div>
 											
-											<div class="span3">
-												Select Booth <font class="requiredFont">*</font> : 
-												<select class="input-block-level" id = "boothIdForSavePercentages" > <option value="0">Select Booth</option></select>
+											<div class="span4">
+												Select Booth(s) <font class="requiredFont">*</font> : 
+												<select class="input-block-level" id = "boothIdForSavePercentages" multiple="multiple"> <option value="0">Select Booth(s)</option></select>
 											</div>
 												
 												
-											<div class="span3">
+											<div class="span4">
 												Percentage <font class="requiredFont">*</font> : 
-												<input type="text" placeholder="Enter Percentage" id="percenageForBooth"/></div>
-												<div class="span1" style="margin:25px -8px 0 8px;width: 15px;">
-													<img id="boothImageForSavingPercent" style="display: none;" src="./images/icons/search.gif" alt="Processing Image"></img>
-												</div>
+												<input type="text" placeholder="Enter Percentage" id="percenageForBooth" style="width:180px"/></div>
+												
 											</div>
 											
 										</div>	
 									</div>
-									<div class="row text-center m_top20"><button type="button" class="btn btn-success" style="cursor:pointer;" onclick="saveBoothPercentage()">SUBMIT</button></div>
+									 
+									 
+									<div class="row text-center m_top20">
+									<button type="button" class="btn btn-success" style="cursor:pointer;" onclick="saveBoothPercentage()">SUBMIT</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img id="boothImageForSavingPercent" style="display: none;" src="./images/icons/search.gif" alt="Processing Image" style="margin-right: 30px"></img>
+									 
+									</div>
 						<div id="retunMsg" class="clearCls"></div>
 						<img src='images/Loading-data.gif' class="offset5"  id="mainajaximgForWm" style="width:70px;height:60px;display:none;"/>
 								</div>
