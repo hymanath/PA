@@ -2109,6 +2109,39 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 		return status;
 	}
 	
+	public String savePercentageOfBoothForCasteSurvey(List<Long> boothIds,String percentage){
+		String status = "Saved Successfully";
+		
+		try{
+			for (Long boothId : boothIds)
+			{
+				Long verifierBoothPercentageId = verifierBoothPercentageDAO.checkForBoothPercentages(boothId);
+				VerifierBoothPercentage vb = null;
+
+				if(verifierBoothPercentageId ==  null)
+				{
+					vb = new VerifierBoothPercentage();
+					vb.setBoothId(boothId);
+				}
+				else
+				{
+					vb = verifierBoothPercentageDAO.get(verifierBoothPercentageId);
+				}
+				vb.setPercentage(percentage);			
+			    VerifierBoothPercentage vbs = verifierBoothPercentageDAO.save(vb);
+				if(vbs==null){
+					status = "Not Saved, Please Try Again";
+				}
+			}
+								
+		}catch (Exception e) {
+			status = "Not Saved, Please Try Again";
+			LOG.error("Exception raised in savePercentageOfBoothForCasteSurvey", e);
+		}
+		
+		return status;
+	}
+	
 	/**
 	 * This Service is used for getting all verifiers Collected , verified and updated count details
 	 * @param surveyUserId

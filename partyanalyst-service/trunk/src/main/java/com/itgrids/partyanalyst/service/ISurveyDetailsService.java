@@ -43,6 +43,7 @@ public interface ISurveyDetailsService {
 	
 	 
 	 public String savePercentageOfBoothForCasteSurvey(Long boothId,String percentage);
+	 public String savePercentageOfBoothForCasteSurvey(List<Long> boothIds,String percentage);
 	 public List<DcDvCollectedDataVO> getVerifierCollectedDetails(Long surveyUserId,Long boothId);
 	 public List<DcDvCollectedDataVO> getConstituencySummaryReport();
 	 public List<SurveyResponceVO> getThirdPartyVerificationDetails(Long boothId, Long userId);
