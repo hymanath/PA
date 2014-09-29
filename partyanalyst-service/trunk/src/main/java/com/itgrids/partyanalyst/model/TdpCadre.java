@@ -64,6 +64,8 @@ public class TdpCadre {
 	private UserAddress 				userAddress;
 	private User 						updatedBy;
 	private User 						insertedBy;
+	private Date                        surveyTime;
+	private String                      isDeleted;
 	
 	
 	@Id
@@ -353,6 +355,24 @@ public class TdpCadre {
 	}
 	public void setInsertedBy(User insertedBy) {
 		this.insertedBy = insertedBy;
+	}	
+	
+	@Column(name="survey_time")
+	public Date getSurveyTime() {
+		return surveyTime;
+	}
+	
+	public void setSurveyTime(Date surveyTime) {
+		this.surveyTime = surveyTime;
+	}
+	
+	@Column(name="is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 	
 	
