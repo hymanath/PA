@@ -623,7 +623,7 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 	 public List<Object[]> getCategoryWiseBenifit(Date fromDate,Date toDate,Long stateId,Long partyId){
 		 StringBuilder queryStr = new StringBuilder();
 		 //0 count,1 benifitId,2 categoryId,3 partyId
-		 queryStr.append("select count(distinct cpc.candidatePartyFile.file.fileId),CASE WHEN cpc.candidatePartyFile.sourceParty.partyId is not null THEN cpc.candidatePartyFile.sourceBenefit.benefitId ELSE  " +
+		 queryStr.append("select count(distinct cpc.candidatePartyFile.file.fileId),CASE WHEN cpc.candidatePartyFile.sourceParty.partyId is not null and cpc.candidatePartyFile.sourceParty.partyId =:partyId THEN cpc.candidatePartyFile.sourceBenefit.benefitId ELSE  " +
 		 		" cpc.candidatePartyFile.destinationBenefit.benefitId END,cpc.gallary.gallaryId,"+partyId+"l from CandidatePartyCategory cpc ");
 		 if(stateId != null && stateId.longValue() > 0 ){
 			 queryStr.append(" ,UserAddress ua ");
@@ -635,7 +635,7 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 			 queryStr.append(" and cpc.candidatePartyFile.file.fileId =  ua.file.fileId and ua.state.stateId =:stateId ");
 		 }
 		 
-		 queryStr.append("  group by cpc.gallary.gallaryId,CASE WHEN cpc.candidatePartyFile.sourceParty.partyId is not null THEN cpc.candidatePartyFile.sourceBenefit.benefitId ELSE cpc.candidatePartyFile.destinationBenefit.benefitId END");
+		 queryStr.append("  group by cpc.gallary.gallaryId,CASE WHEN cpc.candidatePartyFile.sourceParty.partyId is not null and cpc.candidatePartyFile.sourceParty.partyId =:partyId THEN cpc.candidatePartyFile.sourceBenefit.benefitId ELSE cpc.candidatePartyFile.destinationBenefit.benefitId END");
 		 Query query = getSession().createQuery(queryStr.toString());	
 		 query.setParameter("partyId", partyId);
 		 query.setDate("fromDate", fromDate);
