@@ -8378,22 +8378,34 @@
 		<action name="tdpCadreSearchAction" class="cadreRegistrationAction" method="tdpCadreSearchPage">
 			<result name="success">/jsp/tdpCadreSearch.jsp</result>
 		</action>
-
-		<action name="tdpCadreSearchDetailsAction" class="cadreRegistrationAction" method="tdpCadreSearchDetailsPage">
-			<result name="success">/jsp/tdpCadreSearchDetails.jsp</result>
+		
+		<action name="getconstituencyDetailsByConstiteuncyAction" class="cadreRegistrationAction" method="getconstituencyDetailsByConstiteuncy">
+			<result type="json" name="success">
+				<param name="root">genericVOList</param>
+			</result>
 		</action>
-
+		
+		<action name="getBoothsDetailsByLocationAction" class="cadreRegistrationAction" method="getBoothsDetailsByLocation">
+			<result type="json" name="success">
+				<param name="root">genericVOList</param>
+			</result>
+		</action>
+		
+		
+		<action name="getBoothCoverdVillagesDetailsAction" class="cadreRegistrationAction" method="getBoothCoverdVillagesDetails">
+			<result type="json" name="success">
+				<param name="root">genericVOList</param>
+			</result>
+		</action>
+		
 		<action name="tdpCadreRegistrationAction" class="cadreRegistrationAction" method="tdpCadreRegistrationPage">
 			<result name="success">/jsp/tdpCadreRegistration.jsp</result>
 		</action>
 		
-		<action name="tdpCadreRegistrationAction" class="cadreRegistrationAction" method="saveCadreDetails">
-			<result name="success">/jsp/tdpCadreRegistration.jsp</result>
-		</action>
-				
-	     <action name="cadreDashBoardAction" class="cadreDashBoardAction">
+		 <action name="cadreDashBoardAction" class="cadreDashBoardAction">
 			<result name="success">/jsp/cadreDashBoard.jsp</result>
 		</action>
 		
 </package>
+
 </struts>      
