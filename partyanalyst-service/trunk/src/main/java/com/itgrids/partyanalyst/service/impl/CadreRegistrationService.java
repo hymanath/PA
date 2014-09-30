@@ -591,6 +591,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						vo.setRelativeName(cadre[3] != null ? cadre[3].toString().trim():"");
 						
 						String dateOfBirth = cadre[4] != null ? cadre[4].toString().trim():"";
+						if(dateOfBirth != null && dateOfBirth.length() == 9)
+						{
+							dateOfBirth = dateOfBirth+" ";
+						}
 						
 						if(dateOfBirth != null && dateOfBirth.trim().length()>0)
 						{
@@ -678,7 +682,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				{
 					if(voterVO.getId().longValue() == id.longValue())
 					{
-						return voterInfoVO;
+						return voterVO;
 					}
 				}
 			}
