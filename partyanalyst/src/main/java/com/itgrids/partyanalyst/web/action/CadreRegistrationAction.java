@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.io.InputStream;
+import java.io.StringBufferInputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,6 +19,7 @@ import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
@@ -54,6 +57,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private String 								candidateName;
 	private String 								voterCardNo;
 	private String								houseNo;
+	private InputStream 						inputStream;
 	
 	
 
@@ -231,6 +235,14 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	}
 
 
+	public InputStream getInputStream() {
+		return inputStream;
+	}
+
+	public void setInputStream(InputStream inputStream) {
+		this.inputStream = inputStream;
+	}
+
 	public String execute()
 	{
 		try {
@@ -247,43 +259,39 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	{
 		try {
 			LOG.info("Entered into saveCadreDetails method in CadreRegistrationAction Action");
-			session = request.getSession();
-			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
-			cadreRegistrationVO.setCreatedUserId(user.getRegistrationID());
-			cadreRegistrationVO.setDob(convertToDateFormet(cadreRegistrationVO.getDobStr()));
-			cadreRegistrationVO.setPartyMemberSince(convertToDateFormet(cadreRegistrationVO.getPartyMemberSinceStr()));
-			
-			List<CadrePreviousRollesVO> rolesVOList = cadreRegistrationVO.getPreviousRollesList();
-			if(rolesVOList != null && rolesVOList.size() > 0)
+			if(cadreRegistrationVO != null)
 			{
-				List<CadrePreviousRollesVO> rolesList = new ArrayList<CadrePreviousRollesVO>();
-				for (CadrePreviousRollesVO cadrePreviousRollesVO : rolesVOList) 
+				session = request.getSession();
+				RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+				cadreRegistrationVO.setCreatedUserId(user.getRegistrationID());
+				cadreRegistrationVO.setDob(convertToDateFormet(cadreRegistrationVO.getDobStr()));
+				cadreRegistrationVO.setPartyMemberSince(convertToDateFormet(cadreRegistrationVO.getPartyMemberSinceStr()));
+				
+				List<CadrePreviousRollesVO> rolesVOList = cadreRegistrationVO.getPreviousRollesList();
+				if(rolesVOList != null && rolesVOList.size() > 0)
 				{
-					CadrePreviousRollesVO rolesVO = new CadrePreviousRollesVO();
-					rolesVO.setDesignationLevelId(1l);
-					rolesVO.setDesignationLevelValue(1l);
-					rolesVO.setFromDate(convertToDateFormet(cadrePreviousRollesVO.getFromDateStr()));
-					rolesVO.setToDate(convertToDateFormet(cadrePreviousRollesVO.getToDateStr()));
-					rolesList.add(rolesVO);
+					List<CadrePreviousRollesVO> rolesList = new ArrayList<CadrePreviousRollesVO>();
+					for (CadrePreviousRollesVO cadrePreviousRollesVO : rolesVOList) 
+					{
+						CadrePreviousRollesVO rolesVO = new CadrePreviousRollesVO();
+						rolesVO.setDesignationLevelId(1l);
+						rolesVO.setDesignationLevelValue(1l);
+						rolesVO.setFromDate(convertToDateFormet(cadrePreviousRollesVO.getFromDateStr()));
+						rolesVO.setToDate(convertToDateFormet(cadrePreviousRollesVO.getToDateStr()));
+						rolesList.add(rolesVO);
+					}
+					cadreRegistrationVO.setPreviousRollesList(rolesList);
 				}
-				cadreRegistrationVO.setPreviousRollesList(rolesList);
+				resultStatus = cadreRegistrationService.saveCadreRegistration(cadreRegistrationVO,"WEB");
+				if(resultStatus.getResultCode() == ResultCodeMapper.SUCCESS){
+					LOG.debug("fileuploades is sucess Method");
+					if(resultStatus.getHost() != null && Long.valueOf(resultStatus.getHost()) > 0 ){
+						inputStream = new StringBufferInputStream("SUCCESS" +"," +resultStatus.getHost() +",");
+					}
+				}
+				else
+					inputStream = new StringBufferInputStream("fail");
 			}
-			
-			/*List<CadrePreviousRollesVO> electionVOList = cadreRegistrationVO.getPreviousParicaptedElectionsList();
-			if(electionVOList != null && electionVOList.size() > 0)
-			{
-				List<CadrePreviousRollesVO> electionList = new ArrayList<CadrePreviousRollesVO>();
-				for (CadrePreviousRollesVO cadrePreviousRollesVO : electionVOList) 
-				{
-					CadrePreviousRollesVO electionVO = new CadrePreviousRollesVO();
-					electionVO.setConstituencyId(cadrePreviousRollesVO.getConstituencyId());
-					electionVO.setElectionTypeId(cadrePreviousRollesVO.getElectionTypeId());
-					electionVO.setElectionYear(cadrePreviousRollesVO.getElectionYear());
-					electionList.add(electionVO);
-				}
-				cadreRegistrationVO.setPreviousParicaptedElectionsList(electionList);
-			}*/
-			resultStatus = cadreRegistrationService.saveCadreRegistration(cadreRegistrationVO,"WEB");
 		} catch (Exception e) {
 			LOG.error("Exception raised in saveCadreDetails method in CadreRegistrationAction Action",e);
 		}

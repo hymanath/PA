@@ -8402,7 +8402,13 @@
 			<result name="success">/jsp/tdpCadreRegistration.jsp</result>
 		</action>
 		
-		 <action name="cadreDashBoardAction" class="cadreDashBoardAction">
+		<action name="tdpCadreSaveRegistrationAction" class="cadreRegistrationAction" method="saveCadreDetails">
+			 <result name="success" type="stream">			   
+			    <param name="inputName">inputStream</param>
+		  </result>	
+		</action>
+				
+	     <action name="cadreDashBoardAction" class="cadreDashBoardAction">
 			<result name="success">/jsp/cadreDashBoard.jsp</result>
 		</action>
 		
