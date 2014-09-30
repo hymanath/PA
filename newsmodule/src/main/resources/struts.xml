@@ -6426,6 +6426,17 @@
 		    		</result>
 		 </action>	 
 	
+		<action name="getLocationWiseBenifitAction" class="benefitAnalysisAction" method="getLocationWiseBenifit">
+					<result type="json" name="success">
+		    			<param name="root">countResult</param>
+		    		</result>
+		 </action>	
+		 
+		 <action name="getLocationBenifitNewsAction" class="benefitAnalysisAction" method="getLocationBenifitNews">
+					<result type="json" name="success">
+		    			<param name="root">newsResult</param>
+		    		</result>
+		 </action>
 	 </package>
 		
 </struts>      

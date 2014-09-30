@@ -3,6 +3,8 @@ package com.itgrids.partyanalyst.web.action;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -48,7 +50,26 @@ public class BenefitAnalysisAction extends ActionSupport implements ServletReque
 	private String buildType;
 	private String type;
 	private Long candidateId;
+	private Long locationId;
+	private String name;
 	
+		
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Long getLocationId() {
+		return locationId;
+	}
+
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
+	}
+
 	public Integer getStartValue() {
 		return startValue;
 	}
@@ -385,4 +406,46 @@ public class BenefitAnalysisAction extends ActionSupport implements ServletReque
 		  }
 			return Action.SUCCESS;
 		}
+	  
+	  public String getLocationWiseBenifit(){
+		  try{
+			jObj = new JSONObject(getTask());
+			
+			 Date[] dates = getDates(jObj.getString("type"),jObj.getString("fromDate"),jObj.getString("toDate"));		
+			 if(jObj.getString("task").equalsIgnoreCase("districtWiseBenefits"))	{
+				 countResult = benefitAnalysisService.getDistrictWiseBenifit(dates[0], dates[1], jObj.getLong("stateId"), jObj.getLong("partyId"));
+			 }
+			 else if(jObj.getString("task").equalsIgnoreCase("parliamentWiseBenefits")){
+				 countResult = benefitAnalysisService.getConstituencyWiseBenifit(dates[0], dates[1], jObj.getLong("stateId"), jObj.getLong("partyId"),"parliament");
+			 }
+			 else if(jObj.getString("task").equalsIgnoreCase("assemblyWiseBenefits")){
+				 countResult = benefitAnalysisService.getConstituencyWiseBenifit(dates[0], dates[1], jObj.getLong("stateId"), jObj.getLong("partyId"),"assembly");
+			 }
+			 Collections.sort(countResult,benefitSort);
+		  }catch(Exception e){
+			  LOG.error(" Exception occured in getLocationWiseBenifit ",e);
+		  }
+			return Action.SUCCESS;
+		}
+	  
+	  public String getLocationBenifitNews(){
+		  try{
+			
+			Date[] dates = getDates(type,fromDate,toDate);
+			 newsResult = benefitAnalysisService.getLocationBenifitNews(dates[0],dates[1],locationId,benefitId,startValue,endValue,name);
+		  }catch(Exception e){
+			  LOG.error(" Exception occured in getLocationBenifitNews ",e);
+		  }
+		  
+		 return Action.SUCCESS;
+	}
+	  
+	public Comparator<BenfitVO> benefitSort = new Comparator<BenfitVO>()
+	{
+				  
+	   public int compare(BenfitVO vo1, BenfitVO vo2)
+		{
+	       return (vo2.getNegCount().intValue()) - (vo1.getNegCount().intValue());
+		}
+	};
 }

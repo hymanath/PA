@@ -25,7 +25,7 @@
 	visibility:hidden!important
 }
 #calenderRadioDiv{
-   margin-left: 160px;
+   margin-left: 100px;
 }
 </style>
 
@@ -44,14 +44,14 @@
 			</select>
 		</div>
 		
-		<div>
+		<!--<div>
 			<label class="span2"><b>Select Report Type:</b></label>
 			<select id="typeId" class="input-block-level span3" onChange="showCorrespondingDivs(this.value)">
 			<option value="0">Select Report Type</option>
 			<option value="1">Category Wise</option>
 			<option value="2">Candidate Wise</option>
-			<!-- <option value="3">Location Wise</option>-->
-			</select>
+			 <!--<option value="3">Location Wise</option>-->
+			<!--</select>
 		</div>
 		<div id="partiesMultiSelDiv" style="display:none;">
 			<label  class="span2"><b>Select Party:</b></label>
@@ -77,32 +77,51 @@
 			<label  class="span2"><b>Select Location Value:</b></label>
 			<select id="locationValueId" class="input-block-level span3">
 			</select>
-		</div>
+		</div>-->
 	</div>
-	<div class="row offset3">
-	<div id="calenderRadioDiv" class="span3">
+	<div class="row offset2">
+	<div id="calenderRadioDiv" class="span5">
 	 	  <label class="radio inline"><input id="dailyRadio" type="radio" value="dailyCalender" name="calendersRadio" class="calendersRadioCls" checked="true"/>Daily</label>
 		  <label class="radio inline"><input id="weeklyRadio" type="radio" value="weeklyCalender" name="calendersRadio" class="calendersRadioCls"/>Weekly</label>
 		  <label class="radio inline"><input id="monthlyRadio" type="radio" value="monthlyCalender" name="calendersRadio" class="calendersRadioCls"/>Monthly</label>
+		  <label class="radio inline"><input id="betweenDatesRadio" type="radio" value="betweenDates" name="calendersRadio" class="calendersRadioCls"/>Between Date</label>
  	</div>
 	</div>
 	<div class="row offset3" style="margin-top: 10px;">
- 	<div id="dailyCalenderDiv">
-			<label class="span2"><b>Select Date:</b></label>
- 			<input type="text" readonly="true" id="dailyCalenderId" style="height:30px;width:220px;" class="input-block-level span3" >
- 	</div>
- 	<div id="weeklyCalenderDiv" style="display:none;">
-		<label class="span2"><b>Select Week:</b></label>
- 			<input type="text" readonly="true" id="startDate" class="input-block-level span2" style="height:30px;width:220px;">
- 	</div>
- 	<div id="monthlyCalenderDiv" style="display:none;">
-			<label class="span2"><b>Select Month:</b></label>
- 			<input type="text" readonly="true" id="monthlyCalenderId" style="height:30px;width:220px;" class="input-block-level span3">
- 	</div>
+		<div id="dailyCalenderDiv">
+				<label class="span2"><b>Select Date:</b></label>
+				<input type="text" readonly="true" id="dailyCalenderId" style="height:30px;width:220px;" class="input-block-level span3" >
+		</div>
+		<div id="weeklyCalenderDiv" style="display:none;">
+			<label class="span2"><b>Select Week:</b></label>
+				<input type="text" readonly="true" id="startDate" class="input-block-level span2" style="height:30px;width:220px;">
+		</div>
+		<div id="monthlyCalenderDiv" style="display:none;">
+				<label class="span2"><b>Select Month:</b></label>
+				<input type="text" readonly="true" id="monthlyCalenderId" style="height:30px;width:220px;" class="input-block-level span3">
+		</div>
+		<div id="betweenDatesDiv" style="display:none;">
+				<div>
+					<label class="span2"><b>Select From Date:</b></label>
+					<input type="text" placeholder="Select Date" class="input-block-level span2 date" style="height:30px;width:220px;" id="fromDateId" readonly/>
+				</div>
+				<div>
+					<label class="span2"><b>Select To Date:</b></label>
+					<input type="text" placeholder="Select Date" class="input-block-level span2 date" style="height:30px;width:220px;" id="toDateId" readonly/>
+					</div>
+				
+		</div>
 	</div>
 	<div class="row offset3" style="margin-top: 10px;margin-left: 340px;"><button class="btn btn-success offset1" onclick="getBenefitDetails()" id="buttonId"> Get Details</button><img src="images/search.jpg" style="display: none;margin-left:10px;" id="submitDataImg">
 	</div>
 	<div id="categoryBenefitsDiv" style="margin-top: 40px;"></div>
+	<div id="candidateBenefitsDiv1" style="margin-top: 40px;"></div>
+	<div id="candidateBenefitsDiv2" style="margin-top: 40px;"></div>
+	<div id="candidateBenefitsDiv3" style="margin-top: 40px;"></div>
+	<div id="locationBenefitsDiv1" style="margin-top: 40px;"></div>
+	<div id="locationBenefitsDiv2" style="margin-top: 40px;"></div>
+	<div id="locationBenefitsDiv3" style="margin-top: 40px;"></div>
+	
 </div></div></div>
 	
 <script type="text/javascript">
@@ -192,6 +211,7 @@ function showCorrespondingDivs(value){
 	    $("#weeklyCalenderDiv").show();
 		$("#ui-datepicker-div").removeClass("hideCalendar");
 		$("#ui-datepicker-div").removeClass('hideTodayButton');
+		$("#betweenDatesDiv").hide();
 	 }
 	 else if(radioValue == "monthlyCalender")
 	 {
@@ -200,6 +220,15 @@ function showCorrespondingDivs(value){
 		  $("#monthlyCalenderDiv").show();
 		  $("#ui-datepicker-div").addClass("hideCalendar");
 		  $("#ui-datepicker-div").addClass('hideTodayButton');
+		  $("#betweenDatesDiv").hide();
+	 }
+	 else if(radioValue == "betweenDates"){
+		 $("#weeklyCalenderDiv").hide();
+		 $("#monthlyCalenderDiv").hide();
+		 $("#dailyCalenderDiv").hide();
+		 $("#ui-datepicker-div").removeClass("hideCalendar");
+		 $("#ui-datepicker-div").removeClass('hideTodayButton');
+		 $("#betweenDatesDiv").show();
 	 }
 	 else{
 		 $("#weeklyCalenderDiv").hide();
@@ -207,6 +236,7 @@ function showCorrespondingDivs(value){
 		 $("#dailyCalenderDiv").show();
 		 $("#ui-datepicker-div").removeClass("hideCalendar");
 		 $("#ui-datepicker-div").removeClass('hideTodayButton');
+		 $("#betweenDatesDiv").hide();
 	 } 
 		 
 	});
@@ -219,6 +249,13 @@ function showCorrespondingDivs(value){
 		maxDate: new Date(),	
 	});
 	$('#dailyCalenderId').datepicker('setDate', new Date());
+	$('.date').datepicker({
+		dateFormat: "dd/mm/yy",
+		changeMonth: true,
+		changeYear: true,
+		maxDate: new Date(),
+	});
+	$('.date').datepicker("setDate", new Date());
 	
 	var date = new Date();
 	var iMonth =date.getMonth();
@@ -342,11 +379,12 @@ function getCandidateGroups(){
      });
 }
 
-getPartiesList();
-getCandidateGroups();
+//getPartiesList();
+//getCandidateGroups();
 
-function getCandidateGroupWiseBenifit(){
+function getCandidateGroupWiseBenifit(groupId){
 	$("#errorDiv").html("");
+	$('#candidateBenefitsDiv1,#candidateBenefitsDiv2,#candidateBenefitsDiv3').html("");
 	var typeChecked = $('input[name=calendersRadio]:checked').val();
 	var type = "";
 	var fromDate = "";
@@ -363,7 +401,7 @@ function getCandidateGroupWiseBenifit(){
 		type = "weekly";
 		var dateStr = $("#startDate").val();
 		if($.trim(dateStr).length > 0){
-			var actualDates = dateStr.split(to);
+			var actualDates = dateStr.split("to");
 			fromDate = $.trim(actualDates[0]);
 			toDate = $.trim(actualDates[1]);
 	    }else{
@@ -376,12 +414,40 @@ function getCandidateGroupWiseBenifit(){
 			errorStr=errorStr+"<div>Please Select Month<br/></div>";
 		}
 	}
+	else if(typeChecked == "betweenDates"){
+		type = "betweenDates";
+		fromDate =  $("#fromDateId").val();
+		toDate = $("#toDateId").val();
+		if($.trim(fromDate).length == 0){
+			errorStr=errorStr+"<div>Please Select From Date<br/></div>";
+		}
+		else if($.trim(toDate).length == 0){
+			errorStr=errorStr+"<div>Please Select To Date<br/></div>";
+		}
+		if(fromDate.length > 0 && toDate.length > 0 )
+		{		    
+		  var dt1  = parseInt(fromDate.substring(0,2),10);
+		  var mon1 = parseInt(fromDate.substring(3,5),10);
+		  var yr1  = parseInt(fromDate.substring(6,10),10);
+		  var dt2  = parseInt(toDate.substring(0,2),10);
+		  var mon2 = parseInt(toDate.substring(3,5),10);
+		  var yr2  = parseInt(toDate.substring(6,10),10);
+		  var date1 = new Date(yr1, mon1, dt1);
+		  var date2 = new Date(yr2, mon2, dt2);
+
+		if(date2 < date1)
+		{ 
+		 $('#errorDiv').html("From Date should be Less Than To Date");
+		 return;
+		}
+		}
+	}	
 	
-	var groupId = $('#groupId').val();
+	/*var groupId = $('#groupId').val();
 	
 	if(groupId == 0){
 		errorStr=errorStr+"<div>Please Select Group<br/></div>";
-	}
+	}*/
 	var stateId = $('#stateId').val();
 	var partyId = 872;
 	if(errorStr.length == 0){
@@ -410,7 +476,7 @@ function getCandidateGroupWiseBenifit(){
 		           str += '<thead class="alert alert-success">';
 				   str+="  <tr>";
 				   str+="    <th><b>Candidate Name</b></th>";
-				   str+="    <th><b>Positive News Count</b></th>";
+				   //str+="    <th><b>Positive News Count</b></th>";
 				   str+="    <th><b>Negative News Count</b></th>";
 				   str+="  </tr>";
 				   str += '</thead>';
@@ -418,15 +484,29 @@ function getCandidateGroupWiseBenifit(){
 					for(var i in result){
 						   str+="  <tr>";
 						   str+="    <td>"+result[i].name+"</td>";
-						   str+="    <td><a href='javascript:{}' onclick='getCandidateGroupNews(\""+type+"\",\""+fromDate+"\",\""+toDate+"\","+result[i].id+",1);'>"+result[i].count+"</a></td>";
-						   str+="    <td><a href='javascript:{}' onclick='getCandidateGroupNews(\""+type+"\",\""+fromDate+"\",\""+toDate+"\","+result[i].id+",2);'>"+result[i].negCount+"</a></td>";
-						   str+="  </tr>";
+						  // str+="    <td><a href='javascript:{}' onclick='getCandidateGroupNews(\""+type+"\",\""+fromDate+"\",\""+toDate+"\","+result[i].id+",1);'>"+result[i].count+"</a></td>";
+						  if(result[i].negCount > 0){
+						   str+="    <td><a href='javascript:{}' onclick='getCandidateGroupNews(\""+type+"\",\""+fromDate+"\",\""+toDate+"\","+result[i].id+",2);'>"+result[i].negCount+"</a></td>";  
+						   }
+						   else{
+						   str+="<td>"+result[i].negCount+"</td>";
+						  
+						   }
+						    str+="  </tr>";
 					}
 				   str += '</tbody>';
 				   str+="</table>";
-				   $('#categoryBenefitsDiv').html(str);
+				   if(groupId == 1){
+					$('#candidateBenefitsDiv1').html(str);
+				   }
+				   else if(groupId == 2){
+					$('#candidateBenefitsDiv2').html(str);
+				   }
+				   else{
+					$('#candidateBenefitsDiv3').html(str);
+				   }
 			   }else{
-			         $('#categoryBenefitsDiv').html('<div style="padding-left: 165px;font-weight:bold;" class="row offset3">No News Available</div>');
+			        // $('#candidateBenefitsDiv1').html('<div style="padding-left: 165px;font-weight:bold;" class="row offset3">No News Available</div>');
 				     
 			   }		 
 	     });
@@ -441,7 +521,7 @@ function getCandidateGroupNews(type,fromDate,toDate,candidateId,benfitId){
 
 }
 
-function getBenefitDetails(){
+/*function getBenefitDetails(){
    $('#categoryBenefitsDiv').html("");
     $("#errorDiv").html("");
     var type = $("#typeId").val();
@@ -454,8 +534,17 @@ function getBenefitDetails(){
 	}else if(type == 2){
 	  getCandidateGroupWiseBenifit();
 	}
+}*/
+function getBenefitDetails(){
+ getCategoryBenefitDetails();
+ getCandidateGroupWiseBenifit(1);
+ getCandidateGroupWiseBenifit(2);
+ getCandidateGroupWiseBenifit(3);
+ getLocationBenefitDetails("districtWiseBenefits");
+ getLocationBenefitDetails("parliamentWiseBenefits");
+ getLocationBenefitDetails("assemblyWiseBenefits");
+ 
 }
-
 function getCategoryBenefitDetails(){
 	
 	$("#errorDiv").html("");
@@ -488,24 +577,50 @@ function getCategoryBenefitDetails(){
 			errorStr=errorStr+"<div>Please Select Month<br/></div>";
 		}
 	}
-	var stateId = $('#stateId').val();
-	
-	var partyIds= "";
-	
-	var typesId = $("#typeId").val();
-	
+	else if(typeChecked == "betweenDates"){
+		type = "betweenDates";
+		fromDate =  $("#fromDateId").val();
+		toDate = $("#toDateId").val();
+		if($.trim(fromDate).length == 0){
+			errorStr=errorStr+"<div>Please Select From Date<br/></div>";
+		}
+		else if($.trim(toDate).length == 0){
+			errorStr=errorStr+"<div>Please Select To Date<br/></div>";
+		}
+		if(fromDate.length > 0 && toDate.length > 0 )
+		{		    
+		  var dt1  = parseInt(fromDate.substring(0,2),10);
+		  var mon1 = parseInt(fromDate.substring(3,5),10);
+		  var yr1  = parseInt(fromDate.substring(6,10),10);
+		  var dt2  = parseInt(toDate.substring(0,2),10);
+		  var mon2 = parseInt(toDate.substring(3,5),10);
+		  var yr2  = parseInt(toDate.substring(6,10),10);
+		  var date1 = new Date(yr1, mon1, dt1);
+		  var date2 = new Date(yr2, mon2, dt2);
 
-		var partyId = $("#partiesMultiSelId").multiselect("getChecked").map(function(){
-			return this.value;
-		}).get();
-		for(var i in partyId){
-			partyIds = partyIds+""+partyId[i]+",";
+		if(date2 < date1)
+		{ 
+		 $('#errorDiv').html("From Date should be Less Than To Date");
+		 return;
 		}
-		if(partyIds.length > 0){
-		    partyIds = partyIds.substring(0, partyIds.length - 1);
-		}else{
-		  errorStr=errorStr+"<div>Please Select Party<br/></div>";
 		}
+	}
+	var stateId = $('#stateId').val();
+	var partyIds = 872;
+	
+	//var typesId = $("#typeId").val();
+	/*var partyId = $("#partiesMultiSelId").multiselect("getChecked").map(function(){
+		return this.value;
+	}).get();
+	for(var i in partyId){
+		partyIds = partyIds+""+partyId[i]+",";
+	}
+	if(partyIds.length > 0){
+		partyIds = partyIds.substring(0, partyIds.length - 1);
+	}else{
+	  errorStr=errorStr+"<div>Please Select Party<br/></div>";
+	}*/
+	
 	if(errorStr.length == 0){
 	    $("#submitDataImg").show();
 		 $("#buttonId").attr('disabled','disabled');
@@ -539,17 +654,17 @@ function buildCategoryWiseBenefitDetails(result,stateId,fromDate,toDate,type){
 		str += '<table class="table table-bordered " >';
 		str += '<thead class="alert alert-success">';
 		str += '<tr>';
-		str += '<th rowspan="2">Category</th>';
+		str += '<th rowspan="2"><b>Category</b></th>';
 		for(var i in result[0].benfitVOList)
 		{
 		
-		  str += '<th colspan="2">'+result[0].benfitVOList[i].name+'</th>';
+		  str += '<th colspan="2"><b>'+result[0].benfitVOList[i].name+'</b></th>';
 		}	
 		str += '</tr>';
 		for(var i=0;i<result[0].benfitVOList.length;i++)
 		{
-			str += '<th> +ve </th>';
-			str += '<th> -ve </th>';
+			//str += '<th> +ve </th>';
+			str += '<th><b>Negative News Count</b></th>';
 		}
 		str += '<tr>';
 		str += '</tr>';
@@ -563,12 +678,12 @@ function buildCategoryWiseBenefitDetails(result,stateId,fromDate,toDate,type){
 			str += '<tr>';
 			str += '<td>'+result[i].name+'</td>';
 			for(var j in result[i].benfitVOList){
-				if(result[i].benfitVOList[j].count > 0){
+				/*if(result[i].benfitVOList[j].count > 0){
 					str += '<td title="Click To See News" onclick="getCategoryBenefitNews('+result[i].benfitVOList[j].id+','+result[i].id+',1,'+stateId+',\''+fromDate+'\',\''+toDate+'\',\''+type+'\') " style="cursor:pointer;">'+result[i].benfitVOList[j].count+'</td>';
 				}
 				else{
 					str += '<td>'+result[i].benfitVOList[j].count+'</td>';
-				}
+				}*/
 				if(result[i].benfitVOList[j].negCount > 0){
 					str += '<td title="Click To See News" onclick="getCategoryBenefitNews('+result[i].benfitVOList[j].id+','+result[i].id+',2,'+stateId+',\''+fromDate+'\',\''+toDate+'\',\''+type+'\') " style="cursor:pointer;">'+result[i].benfitVOList[j].negCount+'</td>';
 				}
@@ -595,6 +710,154 @@ function getCategoryBenefitNews(partyId,categoryId,benefitId,stateId,fromDate,to
 	var browser1 = window.open("getCategoryBenifitNewsAction.action?fromDate="+fromDate+"&toDate="+toDate+"&stateId="+stateId+"&benefitId="+benefitId+"&categoryId="+categoryId+"&partyId="+partyId+"&type="+type+"&buildType=category","viewNewsWindow","scrollbars=yes,height=600,width=1050,left=200,top=200");	
 	 browser1.focus();
 }
+
+function getLocationBenefitDetails(task){
+	
+	$("#errorDiv").html("");
+	var typeChecked = $('input[name=calendersRadio]:checked').val();
+	var type = "";
+	var fromDate = "";
+	var toDate = "";
+	var errorStr ="";
+	if(typeChecked == "dailyCalender"){
+		type = "daily";
+		fromDate = $("#dailyCalenderId").val();
+		if($.trim(fromDate).length == 0){
+			errorStr=errorStr+"<div>Please Select Date<br/></div>";
+		}
+		toDate = fromDate;
+	}else if(typeChecked == "weeklyCalender"){
+		type = "weekly";
+		var dateStr = $("#startDate").val();
+		if($.trim(dateStr).length > 0){
+			var actualDates = dateStr.split("to");
+			fromDate = $.trim(actualDates[0]);
+			toDate = $.trim(actualDates[1]);
+	    }else{
+	    	errorStr=errorStr+"<div>Please Select Week<br/></div>";
+	    }
+	}else if(typeChecked == "monthlyCalender"){
+		type = "monthly";
+		fromDate =  $("#monthlyCalenderId").val();
+		if($.trim(fromDate).length == 0){
+			errorStr=errorStr+"<div>Please Select Month<br/></div>";
+		}
+	}
+	else if(typeChecked == "betweenDates"){
+		type = "betweenDates";
+		fromDate =  $("#fromDateId").val();
+		toDate = $("#toDateId").val();
+		if($.trim(fromDate).length == 0){
+			errorStr=errorStr+"<div>Please Select From Date<br/></div>";
+		}
+		else if($.trim(toDate).length == 0){
+			errorStr=errorStr+"<div>Please Select To Date<br/></div>";
+		}
+		if(fromDate.length > 0 && toDate.length > 0 )
+		{		    
+		  var dt1  = parseInt(fromDate.substring(0,2),10);
+		  var mon1 = parseInt(fromDate.substring(3,5),10);
+		  var yr1  = parseInt(fromDate.substring(6,10),10);
+		  var dt2  = parseInt(toDate.substring(0,2),10);
+		  var mon2 = parseInt(toDate.substring(3,5),10);
+		  var yr2  = parseInt(toDate.substring(6,10),10);
+		  var date1 = new Date(yr1, mon1, dt1);
+		  var date2 = new Date(yr2, mon2, dt2);
+
+		if(date2 < date1)
+		{ 
+		 $('#errorDiv').html("From Date should be Less Than To Date");
+		 return;
+		}
+		}
+	}
+	var stateId = $('#stateId').val();
+	var partyId = 872;
+		
+	if(errorStr.length == 0){
+	    $("#submitDataImg").show();
+		 $("#buttonId").attr('disabled','disabled');
+		var jsObj=
+		{
+			type:type,
+			stateId : stateId,
+			partyId :partyId,
+			fromDate : fromDate,
+			toDate : toDate,
+			task : task
+		};
+		 $.ajax({
+			type: "POST",
+			url: "getLocationWiseBenifitAction.action",
+			data: {task : JSON.stringify(jsObj)}
+			}).done(function( result ) {
+			    $("#submitDataImg").hide();
+				$("#buttonId").removeAttr('disabled');
+				var str ="";
+			   if(result != null && result.length > 0){
+			       str += '<table class="table table-bordered " >';
+		           str += '<thead class="alert alert-success">';
+				   str+="  <tr>";
+				   if(task == "districtWiseBenefits"){
+				   str+="    <th><b>District Name</b></th>";
+				   }
+				    else if(task == "parliamentWiseBenefits"){
+					str+="    <th><b>Parliament Constitutency Name</b></th>";
+				   }
+				   else{
+					str+="    <th><b>Assembly Constitutency Name</b></th>";
+				   }
+				   //str+="    <th><b>Positive News Count</b></th>";
+				   str+="    <th><b>Negative News Count</b></th>";
+				   str+="  </tr>";
+				   str += '</thead>';
+				   str += '<tbody>';
+				   var rows=0;
+					for(var i in result){
+					 rows= rows+1;
+					if(rows < 6){
+						   str+="  <tr>";
+						   str+="    <td>"+result[i].name+"</td>";
+						   //str+="    <td><a href='javascript:{}' onclick='getLocationNews(\""+type+"\",\""+fromDate+"\",\""+toDate+"\","+result[i].id+",1,\""+task+"\");'>"+result[i].count+"</a></td>";
+						  if(result[i].negCount >0){
+						   str+="    <td><a href='javascript:{}' onclick='getLocationNews(\""+type+"\",\""+fromDate+"\",\""+toDate+"\","+result[i].id+",2,\""+task+"\");'>"+result[i].negCount+"</a></td>";
+						   
+						   }
+						   else{
+								str+="    <td>"+result[i].negCount+"</td>";
+						   }
+						   str+="  </tr>";
+					}
+					}
+				   str += '</tbody>';
+				   str+="</table>";
+				   if(task == "districtWiseBenefits"){
+					$('#locationBenefitsDiv1').html(str);
+				   }
+				   else if(task == "parliamentWiseBenefits"){
+					$('#locationBenefitsDiv2').html(str);
+				   }
+				   else{
+					$('#locationBenefitsDiv3').html(str);
+				   }
+				  }
+				 
+			});
+
+		}
+		else{
+			$("#errorDiv").html("<div style='color:red;font-weight:bold;'>"+errorStr+"</div>");
+		}
+}
+
+function getLocationNews(type,fromDate,toDate,locationId,benfitId,name){
+	
+       var browser1 = window.open("getCategoryBenifitNewsAction.action?type="+type+"&fromDate="+fromDate+"&toDate="+toDate+"&locationId="+locationId+"&benefitId="+benfitId+"&name="+name+"&buildType=location","viewNewsWindow","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+        browser1.focus();
+
+}
+
+
 
 </script>
 

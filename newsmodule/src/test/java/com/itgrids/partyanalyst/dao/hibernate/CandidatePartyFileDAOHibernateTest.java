@@ -121,12 +121,24 @@ public class CandidatePartyFileDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testGetCandidateGroupWiseBenifit(){
+/*	public void testGetCandidateGroupWiseBenifit(){
 		try{
 			String dt1 = "2013-06-01";
 			String dt2 = "2015-06-20";
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			List<Object[]> result = candidatePartyFileDAO.getCandidateGroupWiseBenifit(sdf.parse(dt1), sdf.parse(dt2), null, 1l,872l);
+		System.out.println(result.size());
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}*/
+	
+	public void testGetCandidateGroupWiseBenifit1(){
+		try{
+			String dt1 = "2014-06-20";
+			String dt2 = "2014-06-20";
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			List<Object[]> result = candidatePartyFileDAO.getDistrictWiseBenifit(sdf.parse(dt1), sdf.parse(dt2), null,872l);
 		System.out.println(result.size());
 		}catch(Exception e){
 			e.printStackTrace();
