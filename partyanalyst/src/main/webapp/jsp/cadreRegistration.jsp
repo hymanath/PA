@@ -118,7 +118,7 @@
 	<form action="tdpCadreRegistrationAction.action" method="POST" name="cadreForm">	
 		<div class="container m_top10"style="position: relative;">
 		
-				<div class="span12" >
+			<div class="span12" >
 				<div class="row-fluid">
 					<div class="span6   show-grid"  id="fadeInLeft">
 											<h5 class="text-align1">CANDIDATE NAME</h5>
@@ -134,9 +134,9 @@
 													
 													<h5 class="text-align1">GENDER</h5>	
 												<div class="row-fluid form-inline" style="margin-left:5px;">
-														<label class="radio"><input type="radio" value="option1"  name="cadreRegistrationVO.gender">MALE</input></label>
+														<label class="radio"><input type="radio" value="MALE"  name="cadreRegistrationVO.gender">MALE</input></label>
 														&nbsp;&nbsp;&nbsp;&nbsp;
-														<label class="radio"><input type="radio" value="option1"  name="cadreRegistrationVO.gender">FEMALE</input></label>
+														<label class="radio"><input type="radio" value="FEMALE"  name="cadreRegistrationVO.gender">FEMALE</input></label>
 												</div>			
 										</div>
 								
@@ -230,7 +230,7 @@
 							</div>
 						
 					</div>
-			</div>
+				</div>
 		
 		</div>
 	</div>
@@ -293,51 +293,51 @@
 	</div>
 	<div id="fadeInUp1">
 		<div class="container m_top10">
-		<div class="span12 show-grid" style="position: relative;">
-			<h3 class="text-align ">PREVIOUSLY PARTICIPATED IN ELECTION</h3>
-		</div>
+			<div class="span12 show-grid" style="position: relative;">
+				<h3 class="text-align ">PREVIOUSLY PARTICIPATED IN ELECTION</h3>
+			</div>
 		</div>
 		<div class="container m_top10">
-		<div class="span12 show-grid" style="position: relative;">
-		<div class="row-fluid">
-		<div class="span4">
-		<div class=" m_top20" >
-		<h5 class="text-align1">Election Type</h5>
-						<select class="form-control border-radius-0 text-align1" name="cadreRegistrationVO.previousParicaptedElectionsList[0].electionTypeId">
+			<div class="span12 show-grid" style="position: relative;">
+				<div class="row-fluid">
+					<div class="span4">
+						<div class=" m_top20" >
+							<h5 class="text-align1">Election Type</h5>
+							<select class="form-control border-radius-0 text-align1" name="cadreRegistrationVO.previousParicaptedElectionsList[0].electionTypeId">
 							  <option value ="1">kuppam</option>
 							  <option value = "2">Nellore</option>
 							  <option value = "3">Anantapur</option>
-				  </select>
-			</div>
-		</div>
-		<div class="span4">
-		<div class=" m_top20" >
-		<h5 class="text-align1">Year</h5>
-				<select class="form-control border-radius-0 text-align1" name="cadreRegistrationVO.previousParicaptedElectionsList[0].electionYear">
-				 <option value ="1">kuppam</option>
+							 </select>
+						</div>
+					</div>
+					<div class="span4">
+						<div class=" m_top20" >
+							<h5 class="text-align1">Year</h5>
+							<select class="form-control border-radius-0 text-align1" name="cadreRegistrationVO.previousParicaptedElectionsList[0].electionYear">
+							  <option value ="1">kuppam</option>
 							  <option value = "2">Nellore</option>
 							  <option value = "3">Anantapur</option>
-				  </select>
-			</div>
-		</div>
-		<div class="span4">
-		<div class=" m_top20" >
-		<h5 class="text-align1">Constituency</h5>
-						<select class="form-control border-radius-0 text-align1" name="cadreRegistrationVO.previousParicaptedElectionsList[0].constituencyId">
-				  <option value ="1">kuppam</option>
+							  </select>
+						</div>
+					</div>
+					<div class="span4">
+						<div class=" m_top20" >
+							<h5 class="text-align1">Constituency</h5>
+							<select class="form-control border-radius-0 text-align1" name="cadreRegistrationVO.previousParicaptedElectionsList[0].constituencyId">
+							  <option value ="1">kuppam</option>
 							  <option value = "2">Nellore</option>
 							  <option value = "3">Anantapur</option>
-				  </select>
+							  </select>
+						</div>
+					</div>
+				</div>
 			</div>
-		</div>
-		</div>
-		</div>
 		</div>
 		<div class="container m_top10">
-		<div class="span12 show-grid" style="position: relative;">
-		<a class="btn btn-primary m_top20 border-radius-0 text-align2" href="search-constituency.html"><span class="icon-chevron-left icon-white"></span>&nbsp;&nbsp;Back </a>
-		<input type="submit" class="btn btn-success text-align3 m_top20 pull-right border-radius-0" value="Next"> &nbsp;&nbsp;<span class=" icon-chevron-right icon-white"></span></input>
-		</div>
+			<div class="span12 show-grid" style="position: relative;">
+				<a class="btn btn-primary m_top20 border-radius-0 text-align2" href="search-constituency.html"><span class="icon-chevron-left icon-white"></span>&nbsp;&nbsp;Back </a>
+				<input type="submit" class="btn btn-success text-align3 m_top20 pull-right border-radius-0" value="Next"> &nbsp;&nbsp;<span class=" icon-chevron-right icon-white"></span></input>
+			</div>
 		</div>
 	</div>
 </form>
