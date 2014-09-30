@@ -688,6 +688,8 @@ public interface IBoothPublicationVoterDAO extends
 	  public Long getTotalVoterByBooths(List<Long> boothIds);
 	  public List<Object[]> getBoothWiseTotalVotersByConstituencyId(Long constituencyId);
 
+	  public List getVotersDetailsForCadreRegistratiobByconstituencId(Long constituencyId, Long publicationDate,String queryStr);
+	  
 	  public List<Object[]> getCTPVoterDetailsByBooth(Long boothId);
 	  
 	  public List<Booth> getVoterAddressDetails(Long voterId);
