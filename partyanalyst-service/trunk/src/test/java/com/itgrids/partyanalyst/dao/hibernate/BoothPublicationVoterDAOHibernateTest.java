@@ -460,7 +460,7 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 			searchQuery.append(" BPV.voter.houseNo like '%1-165%' and ");
 				
 			System.out.println(new Date());
-			List list = boothPublicationVoterDAO.getVotersDetailsForCadreRegistratiobByconstituencId(65L, 11L, searchQuery.toString());
+			List list = null;//boothPublicationVoterDAO.getVotersDetailsForCadreRegistratiobByconstituencId(65L, 11L, searchQuery.toString());
 			System.out.println(new Date());
 			System.out.println(list.size());
 		}
