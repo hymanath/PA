@@ -246,55 +246,41 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	{
 		try {
 			LOG.info("Entered into saveCadreDetails method in CadreRegistrationAction Action");
-			/*CadreRegistrationVO cadreRegistrationVO = new CadreRegistrationVO();
-			cadreRegistrationVO.setVoterName("PRASAD");
-			cadreRegistrationVO.setDob(convertToDateFormet("22-12-2014"));
-			cadreRegistrationVO.setGender("M");
-			cadreRegistrationVO.setRelativeName("PRASAD");
-			cadreRegistrationVO.setVoterId(13812457l);
-			cadreRegistrationVO.setPreviousEnrollmentNumber("12345678");
-			cadreRegistrationVO.setPartyMemberSince(convertToDateFormet("22-12-2014"));
-			cadreRegistrationVO.setBloodGroupId(3l);
-			cadreRegistrationVO.setCasteId(23l);
-			cadreRegistrationVO.setEducationId(2l);
-			cadreRegistrationVO.setOccupationId(2l);
-			cadreRegistrationVO.setMobileNumber("9494302021");
-			cadreRegistrationVO.setPreviousEnrollmentNumber("123456");
-			cadreRegistrationVO.setHouseNo("123");
 			
-			CadrePreviousRollesVO rolesVO1 = new CadrePreviousRollesVO();
+			cadreRegistrationVO.setDob(convertToDateFormet(cadreRegistrationVO.getDobStr()));
+			cadreRegistrationVO.setPartyMemberSince(convertToDateFormet(cadreRegistrationVO.getPartyMemberSinceStr()));
 			
-			rolesVO1.setDesignationLevelId(1l);
-			rolesVO1.setDesignationLevelValue(1l);
-			rolesVO1.setFromDate(convertToDateFormet("22-12-2014"));
-			rolesVO1.setToDate(convertToDateFormet("22-12-2014"));
+			List<CadrePreviousRollesVO> rolesVOList = cadreRegistrationVO.getPreviousRollesList();
+			if(rolesVOList != null && rolesVOList.size() > 0)
+			{
+				List<CadrePreviousRollesVO> rolesList = new ArrayList<CadrePreviousRollesVO>();
+				for (CadrePreviousRollesVO cadrePreviousRollesVO : rolesVOList) 
+				{
+					CadrePreviousRollesVO rolesVO = new CadrePreviousRollesVO();
+					rolesVO.setDesignationLevelId(1l);
+					rolesVO.setDesignationLevelValue(1l);
+					rolesVO.setFromDate(convertToDateFormet(cadrePreviousRollesVO.getFromDateStr()));
+					rolesVO.setToDate(convertToDateFormet(cadrePreviousRollesVO.getToDateStr()));
+					rolesList.add(rolesVO);
+				}
+				cadreRegistrationVO.setPreviousRollesList(rolesList);
+			}
 			
-			
-			CadrePreviousRollesVO rolesVO2 = new CadrePreviousRollesVO();
-			
-			rolesVO2.setDesignationLevelId(2l);
-			rolesVO2.setDesignationLevelValue(2l);
-			rolesVO2.setFromDate(convertToDateFormet("22-12-2014"));
-			rolesVO2.setToDate(convertToDateFormet("22-12-2014"));
-			
-			
-			CadrePreviousRollesVO electionVO = new CadrePreviousRollesVO();
-			
-			electionVO.setElectionTypeId(1l);
-			electionVO.setConstituencyId(232l);
-			
-			List<CadrePreviousRollesVO> 	previousRollesList = new ArrayList<CadrePreviousRollesVO>();
-			List<CadrePreviousRollesVO> 	previousElectionssList = new ArrayList<CadrePreviousRollesVO>();
-			
-			
-			previousRollesList.add(rolesVO1);
-			previousRollesList.add(rolesVO2);
-			previousElectionssList.add(electionVO);
-			
-			cadreRegistrationVO.setPreviousRollesList(previousRollesList);
-			cadreRegistrationVO.setPreviousParicaptedElectionsList(previousElectionssList);*/
-			
-			resultStatus = cadreRegistrationService.saveCadreRegistration(cadreRegistrationVO);
+			/*List<CadrePreviousRollesVO> electionVOList = cadreRegistrationVO.getPreviousParicaptedElectionsList();
+			if(electionVOList != null && electionVOList.size() > 0)
+			{
+				List<CadrePreviousRollesVO> electionList = new ArrayList<CadrePreviousRollesVO>();
+				for (CadrePreviousRollesVO cadrePreviousRollesVO : electionVOList) 
+				{
+					CadrePreviousRollesVO electionVO = new CadrePreviousRollesVO();
+					electionVO.setConstituencyId(cadrePreviousRollesVO.getConstituencyId());
+					electionVO.setElectionTypeId(cadrePreviousRollesVO.getElectionTypeId());
+					electionVO.setElectionYear(cadrePreviousRollesVO.getElectionYear());
+					electionList.add(electionVO);
+				}
+				cadreRegistrationVO.setPreviousParicaptedElectionsList(electionList);
+			}*/
+			resultStatus = cadreRegistrationService.saveCadreRegistration(cadreRegistrationVO,"WEB");
 		} catch (Exception e) {
 			LOG.error("Exception raised in saveCadreDetails method in CadreRegistrationAction Action",e);
 		}

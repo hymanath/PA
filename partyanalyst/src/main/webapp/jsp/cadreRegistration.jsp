@@ -17,13 +17,95 @@
 	<!-- icheck Css-->
 	<link href="icheck/skins/all.css?v=1.0.2" rel="stylesheet">
 	
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+   <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+<!-- iCheck -->
+	
+    <script>$('#yourElement').addClass('animated fadeInDown');</script>
+    <script>$('#fadeInLeft').addClass('animated fadeInLeft');</script>
+    <script>$('#fadeInRight').addClass('animated fadeInRight');</script>
+    <script>$('#fadeInUp').addClass('animated fadeInUp');</script>
+    <script>$('#fadeInUp1').addClass('animated fadeInUp');</script>
+
+
 	<style>
 	.show-grid:hover .block-hover-addBtn{display:table-cell; margin-right:-22px; top:-10px;}/*visibility: visible;*/
 	.block-hover-addBtn{display:none; position: relative;}/*visibility: hidden;*/
 	.border-none{border:none;}
 	 .bgc{background-color:#3598db}
+	 
+	 .datePickerCls{
+			 cursor: text !important;
+			}
 	</style>
-   
+   	<script>
+	
+	$(document).ready(function(){
+	    $('.datePickerCls').datepicker({dateFormat: 'dd-mm-yy',minDate: '01-01-1900',maxDate: new Date()});
+	});
+
+	var rolesSize = 1;
+	function createNewForm()
+	{
+		var str = '';
+		str += '<div class="row rolesList'+rolesSize+'">';
+		str += '<div class="span3">';
+		str += '<div class=" m_top20" >';
+		str += '<h5 class="text-align1">OCCUPATION</h5>';
+		str += '<select class="form-control border-radius-0 text-align1" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].designationLevelId">';
+		str += '<option value = "1">kuppam</option>';
+		str += '<option value = "2">Nellore</option>';
+		str += '<option value = "3">Anantapur</option>';
+		str += '</select>';
+		str += '</div>';
+		str += '</div>';
+		str += '<div class="span3">';
+		str += '<div class=" m_top20" >';
+		str += '<h5 class="text-align1">OCCUPATION</h5>';
+		str += '<select class="form-control border-radius-0 text-align1" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].designationLevelValue">';
+		str += '<option value = "1">kuppam</option>';
+		str += '<option value = "2">Nellore</option>';
+		str += '<option value = "3">Anantapur</option>';
+		str += '</select>';
+		str += '</div>';
+		str += '</div>';
+		str += '<div class="span2">';
+		str += '<div class=" m_top20" >';
+		str += '<h5 class="text-align1">From Date</h5>';
+		str += '<div class="input-prepend text-align2 ">';
+		str += '<input type="text" class="form-control span2 border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].fromDateStr"></input></span>';
+		str += '</div>';
+		str += '</div>';
+		str += '</div>';
+		str += '<div class="span2 ">';
+		str += '<div class=" m_top20" >';
+		str += '<h5 class="text-align1">To Date</h5>';
+		str += '<div class="input-prepend  ">';
+		str += '<input type="text" class="form-control span2  border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].toDateStr"></input></span>';
+		str += '</div>';
+		str += '</div>';
+		str += '</div>';
+		str += '<div class="span2">';
+		str += '<a onClick="deleteRollesForm(\'rolesList'+rolesSize+'\')" class="btn btn-success"></a>';
+		str += '<div>';
+		str += '</div>';
+		
+		rolesSize++;
+		alert(rolesSize);
+		
+		$('#rollesDiv').append(str);
+		$('.datePickerCls').datepicker({dateFormat: 'dd-mm-yy',minDate: '01-01-1900',maxDate: new Date()});
+	}
+	
+	function deleteRollesForm(id)
+	{
+		$('.'+id).remove();
+	}
+	</script>
 	
 </head>
   <body class="bgc">
@@ -46,15 +128,15 @@
 											<h5 class="text-align1">DATE OF BIRTH</h5>
 												
 												<div class="input-prepend text-align2 ">
-													<span class="add-on "><span class="icon-calendar "></span></span>
-													<input type="text" class="form-control  span12 border-radius-0 border-right-0 " name="cadreRegistrationVO.dobStr"></input></span>
+													
+													<input type="text" class="datePickerCls" name="cadreRegistrationVO.dobStr"></input>
 													</div>
 													
 													<h5 class="text-align1">GENDER</h5>	
 												<div class="row-fluid form-inline" style="margin-left:5px;">
-														<label class="radio"><input type="radio" value="option1"  name="cadreRegistrationVO.gender"> MALE</input></label>
+														<label class="radio"><input type="radio" value="option1"  name="cadreRegistrationVO.gender">MALE</input></label>
 														&nbsp;&nbsp;&nbsp;&nbsp;
-														<label class="radio"><input type="radio" value="option1"  name="cadreRegistrationVO.gender"> FEMALE</input></label>
+														<label class="radio"><input type="radio" value="option1"  name="cadreRegistrationVO.gender">FEMALE</input></label>
 												</div>			
 										</div>
 								
@@ -89,7 +171,7 @@
 										
 											<div class="span6">
 											<h5 class="text-align1">PARTY MEMBER SINCES</h5>
-												<input type="text" class="form-control border-radius-0 text-align2" placeholder="" name="cadreRegistrationVO.partyMemberSinceStr"></input>
+												<input type="text" class="form-control border-radius-0 text-align2 datePickerCls" placeholder="" name="cadreRegistrationVO.partyMemberSinceStr"></input>
 											</div>
 											
 											<div class="span6">
@@ -159,16 +241,12 @@
 			</div>
 		</div>
 		<div class="container m_top10">
-			<div class="span12 show-grid" style="position: relative;">
-				<div class="row" >
-				
-					<div class="block-hover-addBtn pull-right">
-						<div class="btn-group-vertical">
-							<a href="" class="btn btn-default btn-xs border-radius-0 btn-plus border-none"><span class="icon-plus"></span></a>
-							<a href="" class="btn btn-default btn-xs border-radius-0 btn-minus border-none"><span class="icon-minus"></span></a>
-						</div>
-					</div>
-					
+			
+			<div class="span12 show-grid" style="position: relative;" id="rollesDiv">	
+				<div class="row">
+					<a class="btn btn-success" style="float:right" onClick="createNewForm();">Add More</a>
+				</div>
+				<div class="row rolesList">
 					<div class="span3">
 							<div class=" m_top20" >
 								<h5 class="text-align1">OCCUPATION</h5>
@@ -191,22 +269,22 @@
 		
 					</div>
 		
-					<div class="span3">
+					<div class="span2">
 						<div class=" m_top20" >
-							<h5 class="text-align1">FROM</h5>
+							<h5 class="text-align1">From Date</h5>
 								<div class="input-prepend text-align2 ">
-													<span class="add-on "><span class="icon-calendar "></span></span>
-													<input type="text" class="form-control span2 border-radius-0 border-right-0 " name="cadreRegistrationVO.previousRollesList[0].fromDateStr"></input></span>
-													</div>
+													
+									<input type="text" class="form-control span2 border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList[0].fromDateStr"></input></span>
+								</div>
 						</div>
 					</div>
-					<div class="span3 ">
+					<div class="span2 ">
 						<div class=" m_top20" >
-							<h5 class="text-align1">TO</h5>
+							<h5 class="text-align1">To Date</h5>
 								<div class="input-prepend  ">
-													<span class="add-on "><span class="icon-calendar "></span></span>
-													<input type="text" class="form-control span2  border-radius-0 border-right-0 " name="cadreRegistrationVO.previousRollesList[0].toDateStr"></input></span>
-													</div>
+													
+									<input type="text" class="form-control span2  border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList[0].toDateStr"></input></span>
+								</div>
 						</div>
 					</div>
 				</div>
@@ -258,35 +336,11 @@
 		<div class="container m_top10">
 		<div class="span12 show-grid" style="position: relative;">
 		<a class="btn btn-primary m_top20 border-radius-0 text-align2" href="search-constituency.html"><span class="icon-chevron-left icon-white"></span>&nbsp;&nbsp;Back </a>
-		<input type="submit" class="btn btn-success text-align3 m_top20 pull-right border-radius-0">Success &nbsp;&nbsp;<span class=" icon-chevron-right icon-white"></span></input>
+		<input type="submit" class="btn btn-success text-align3 m_top20 pull-right border-radius-0" value="Next"> &nbsp;&nbsp;<span class=" icon-chevron-right icon-white"></span></input>
 		</div>
 		</div>
 	</div>
 </form>
 </div>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>
-	<script src="icheck/jquery.js"></script>
-	 <script src="icheck/icheck.js"></script>
-<!-- iCheck -->
-	<script>
-		$(document).ready(function(){
-		  $('input').iCheck({
-			checkboxClass: 'icheckbox_square-blue',
-			radioClass: 'iradio_square-blue',
-			increaseArea: '20%' // optional
-		  });
-		});
-		</script>
-    <script>$('#yourElement').addClass('animated fadeInDown');</script>
-    <script>$('#fadeInLeft').addClass('animated fadeInLeft');</script>
-    <script>$('#fadeInRight').addClass('animated fadeInRight');</script>
-    <script>$('#fadeInUp').addClass('animated fadeInUp');</script>
-    <script>$('#fadeInUp1').addClass('animated fadeInUp');</script>
-	<!----->
-	
-	
-  </body>
+</body>
 </html>
