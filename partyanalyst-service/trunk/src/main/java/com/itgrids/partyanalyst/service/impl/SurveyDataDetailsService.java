@@ -5832,4 +5832,21 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			return status;
 			
 		}
+	  
+	  public List<SelectOptionVO> getAssemblyConstituenciesByStateId(Long stateType, Long stateId)
+		{
+			List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>();
+			try {
+				List<Object[]> constituenciesList = constituencyDAO.getAllAssemblyConstituenciesByStateTypeId(stateType,stateId,null);
+				
+				for(Object[] obj:constituenciesList)
+				{
+					resultList.add(new SelectOptionVO((Long)obj[0],obj[1].toString()));
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return resultList;
+		}
 }
