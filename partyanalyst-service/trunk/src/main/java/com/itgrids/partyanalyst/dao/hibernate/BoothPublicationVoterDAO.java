@@ -7252,14 +7252,53 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 
 	}
 	
-	public List getVotersDetailsForCadreRegistratiobByconstituencId(Long constituencyId, Long publicationDate,String queryStr)
+	public List getVotersDetailsForCadreRegistratiobByconstituencId(Long constituencyId, Long publicationDate,String queryStr,Long panchayatId,Long boothId,Long locationId)
 	{
 		
-		Query query = getSession().createQuery("select BPV.voter.voterId,BPV.voter.name, BPV.voter.relativeName, BPV.voter.age, BPV.voter.houseNo, BPV.voter.relationshipType, BPV.voter.gender  from BoothPublicationVoter BPV where "+queryStr+" " +
-				" BPV.booth.constituency.constituencyId = :constituencyId and BPV.booth.publicationDate.publicationDateId = :publicationDate ");
+		StringBuilder queryStr1 = new StringBuilder();
 		
+		queryStr1.append(" select BPV.voter.voterId,BPV.voter.name, BPV.voter.relativeName, BPV.voter.age, BPV.voter.houseNo, BPV.voter.relationshipType, BPV.voter.gender ");
+		queryStr1.append("   from BoothPublicationVoter BPV where "+queryStr+"   ");
+		queryStr1.append(" BPV.booth.constituency.constituencyId = :constituencyId and BPV.booth.publicationDate.publicationDateId = :publicationDate ");
+		
+		if(panchayatId.longValue() != 0L)
+		{
+			queryStr1.append(" and BPV.booth.panchayat.panchayatId = :panchayatId ");
+		}
+		
+		if(boothId.longValue() != 0L)
+		{
+			queryStr1.append(" and BPV.booth.boothId = :boothId ");
+		}
+		
+		if(locationId.longValue() != 0L)
+		{
+			queryStr1.append(" and BPV.booth.boothId = :boothId ");
+		}
+		
+	/*	Query query = getSession().createQuery("select BPV.voter.voterId,BPV.voter.name, BPV.voter.relativeName, BPV.voter.age, BPV.voter.houseNo, BPV.voter.relationshipType, BPV.voter.gender  from BoothPublicationVoter BPV where "+queryStr+" " +
+				" BPV.booth.constituency.constituencyId = :constituencyId and BPV.booth.publicationDate.publicationDateId = :publicationDate ");
+		*/
+		
+		Query query = getSession().createQuery(queryStr1.toString());
 		query.setParameter("constituencyId", constituencyId);
 		query.setParameter("publicationDate", publicationDate);
+		
+		if(panchayatId.longValue() != 0L)
+		{
+			query.setParameter("panchayatId", panchayatId);
+		}
+		
+		if(boothId.longValue() != 0L)
+		{
+			query.setParameter("boothId", boothId);
+		}
+		
+		if(locationId.longValue() != 0L)
+		{
+			query.setParameter("boothId", locationId);
+		}
+		
 		return query.list();	
 		
 	}

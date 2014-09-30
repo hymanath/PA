@@ -457,7 +457,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 	    @SuppressWarnings("unchecked")
 		public List<Object[]> getBoothIdsByPanchayatIdsInAPublication(List<Long> panchayatIds,Long publicationDateId)
 	    {
-	    	Query query = getSession().createQuery("select model.boothId, model.panchayat.panchayatId from Booth model where model.panchayat.panchayatId in(:panchayatIds) and " +
+	    	Query query = getSession().createQuery("select model.boothId, model.panchayat.panchayatId, model.partNo from Booth model where model.panchayat.panchayatId in(:panchayatIds) and " +
 	    			" model.publicationDate.publicationDateId = :publicationDateId and model.localBody is null ");
 	    	query.setParameterList("panchayatIds", panchayatIds);
 	    	query.setParameter("publicationDateId",publicationDateId);
@@ -1065,7 +1065,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		@SuppressWarnings("unchecked")
 		public List<Object[]> getBoothsByBoothIdsList(List<Long> boothIdsList)
 		{
-			Query query = getSession().createQuery("select model.boothId,model.partNo from Booth model where model.boothId in (:boothIdsList)");
+			Query query = getSession().createQuery("select model.boothId,model.partNo,model.villagesCovered from Booth model where model.boothId in (:boothIdsList)");
 			query.setParameterList("boothIdsList", boothIdsList);
 			return query.list();
 			
