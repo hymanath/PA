@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
@@ -307,14 +308,14 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		LOG.info("Entered into searchVoterAndCadreInfoBySearchCriteria method in CadreRegistrationAction Action");
 	
 		try {
-			
+			/*	
 			session = request.getSession();
 			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 			if(user == null)
 			{
 				voterInfoVOList = null;			
 				return ERROR;
-			}
+			}*/
 			
 			jobj = new JSONObject(getTask());
 			
@@ -323,8 +324,11 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			String candidateName = jobj.getString("candidateName");
 			String houseNo = jobj.getString("houseNo");
 			String voterCardNo = jobj.getString("voterCardNo");
+			Long panchayatId = jobj.getLong("panchayatId");
+			Long boothId = jobj.getLong("boothId");
+			Long locationId = jobj.getLong("locationId");
 			
-			voterInfoVOList = cadreRegistrationService.getSearchDetailsCadreRegistration(constituencyId,searchType,candidateName,voterCardNo,houseNo);
+			voterInfoVOList = cadreRegistrationService.getSearchDetailsCadreRegistration(constituencyId,searchType,candidateName,voterCardNo,houseNo,panchayatId,boothId,locationId);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in searchVoterAndCadreInfoBySearchCriteria method in CadreRegistrationAction Action",e);
@@ -339,10 +343,12 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			
 			HttpSession session = request.getSession();
 			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-			if(user == null)
-				return Action.INPUT;
-			
-			selectOptionVOList = 	surveyDataDetailsService.getAllAssemblyConstituenciesByStateId();
+			/*if(user == null)
+				return Action.INPUT;*/
+			Long stateTypeId = 0L; // 0 for All, 1 for AP, 2 for TG 
+			Long stateId = 1L;
+
+			selectOptionVOList = 	surveyDataDetailsService.getAssemblyConstituenciesByStateId(stateTypeId,stateId);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in tdpCadreSearchPage method in CadreRegistrationAction Action",e);
@@ -350,38 +356,18 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	
 		return Action.SUCCESS;
 	}
-	
-	
-	public String tdpCadreSearchDetailsPage()
-	{
-
-		LOG.info("Entered into tdpCadreSearchDetailsPage method in CadreRegistrationAction Action");
-		try {
-			
-			HttpSession session = request.getSession();
-			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-			if(user == null)
-				return Action.INPUT;
-			
-		} catch (Exception e) {
-			LOG.error("Exception raised in tdpCadreSearchDetailsPage method in CadreRegistrationAction Action",e);
-		}
-	
-		return Action.SUCCESS;
-	}
-	
-	
+		
 	public String tdpCadreRegistrationPage()
 	{
 
 		LOG.info("Entered into tdpCadreRegistrationPage method in CadreRegistrationAction Action");
 		try {
 			
-			session = request.getSession();
+		/*	session = request.getSession();
 			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 			if(user == null)
 				return ERROR;
-			
+			*/
 			genericVOList = candidateUpdationDetailsService.gettingEducationDetails();
 			selectOptionVOList = staticDataService.getAllOccupations();
 			voterInfoVOList = cadreRegistrationService.getCandidateInfoBySearchCriteria(searchType,Long.valueOf(candidateId));
@@ -391,6 +377,62 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			LOG.error("Exception raised in tdpCadreRegistrationPage method in CadreRegistrationAction Action",e);
 		}
 	
+		return Action.SUCCESS;
+	}
+	
+	public String getconstituencyDetailsByConstiteuncy()
+	{
+		LOG.info("Entered into getconstituencyDetailsByConstiteuncy method in CadreRegistrationAction Action");
+		try {
+			jobj = new JSONObject(getTask());
+			
+			Long constituencyId = jobj.getLong("constituencyId");
+			
+			genericVOList = cadreRegistrationService.getConstiteuncyDetailsByConstiteuncy(constituencyId);
+			
+		} catch (Exception e) {
+			LOG.info("Entered into getconstituencyDetailsByConstiteuncy method in CadreRegistrationAction Action");
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getBoothsDetailsByLocation()
+	{
+		LOG.info("Entered into getconstituencyDetailsByConstiteuncy method in CadreRegistrationAction Action");
+		try {
+			jobj = new JSONObject(getTask());
+			
+			Long constituencyId = jobj.getLong("constituencyId");
+			Long locationId = jobj.getLong("locationId");
+			
+			genericVOList = cadreRegistrationService.getBoothForPanchayats(constituencyId,locationId);
+			
+		} catch (Exception e) {			
+			LOG.info("Entered into getconstituencyDetailsByConstiteuncy method in CadreRegistrationAction Action");
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getBoothCoverdVillagesDetails()
+	{
+		LOG.info("Entered into getconstituencyDetailsByConstiteuncy method in CadreRegistrationAction Action");
+		try {
+			jobj = new JSONObject(getTask());
+			
+			JSONArray boothsArr = jobj.getJSONArray("boothsArr");
+			List<Long> boothIds = new ArrayList<Long>();
+			if(boothsArr.length()>0)
+			{
+				for(int i  = 0 ;i<boothsArr.length();i++)
+				{
+					boothIds.add(Long.valueOf(boothsArr.get(i).toString()));
+				}
+			}
+			genericVOList = cadreRegistrationService.getBoothCoverdVillagesDetails(boothIds);
+			
+		} catch (Exception e) {			
+			LOG.info("Entered into getconstituencyDetailsByConstiteuncy method in CadreRegistrationAction Action");
+		}
 		return Action.SUCCESS;
 	}
 	
