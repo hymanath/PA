@@ -8386,6 +8386,10 @@
 		<action name="tdpCadreRegistrationAction" class="cadreRegistrationAction" method="tdpCadreRegistrationPage">
 			<result name="success">/jsp/tdpCadreRegistration.jsp</result>
 		</action>
-
+				
+	     <action name="cadreDashBoardAction" class="cadreDashBoardAction">
+			<result name="success">/jsp/cadreDashBoard.jsp</result>
+		</action>
+		
 </package>
 </struts>      

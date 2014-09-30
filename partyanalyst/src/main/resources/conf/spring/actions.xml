@@ -1476,6 +1476,9 @@
 	 	<property name="surveyDataDetailsService" ref="surveyDataDetailsService" />
 	  </bean>
 	 
+	 <bean id="cadreDashBoardAction" class="com.itgrids.partyanalyst.web.action.CadreDashBoardAction" singleton="false">
+	 	<property name="cadreDashBoardService" ref="cadreDashBoardService" />
+	  </bean>
 	
 </beans>	
 	
