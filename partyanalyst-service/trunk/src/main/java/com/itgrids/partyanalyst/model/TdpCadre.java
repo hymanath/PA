@@ -70,6 +70,8 @@ public class TdpCadre {
 	private String 						latitude;
 	private String 						longititude;
 	
+	private String 						dataSourceType;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "tdp_cadre_id", unique = true, nullable = false)
@@ -390,6 +392,14 @@ public class TdpCadre {
 	}
 	public void setLongititude(String longititude) {
 		this.longititude = longititude;
+	}
+	
+	@Column(name="data_source_type")
+	public String getDataSourceType() {
+		return dataSourceType;
+	}
+	public void setDataSourceType(String dataSourceType) {
+		this.dataSourceType = dataSourceType;
 	}
 	
 	

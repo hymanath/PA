@@ -8,7 +8,7 @@ import com.itgrids.partyanalyst.dto.VoterInfoVO;
 
 public interface ICadreRegistrationService {
 
-	public ResultStatus saveCadreRegistration(final CadreRegistrationVO cadreRegistrationVO);
+	public ResultStatus saveCadreRegistration(final CadreRegistrationVO cadreRegistrationVO,String registrationType);
 	
 	public List<VoterInfoVO> getSearchDetailsCadreRegistration(Long constituencyId, String seachType, String candidateName, String voterCardId, String houseNo);
 	

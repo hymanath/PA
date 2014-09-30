@@ -166,7 +166,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	 * @param inputsList
 	 * @return resultStatus
 	 */
-	public ResultStatus saveCadreRegistration(final CadreRegistrationVO cadreRegistrationVO)
+	public ResultStatus saveCadreRegistration(final CadreRegistrationVO cadreRegistrationVO,final String registrationType)
 	{
 		final ResultStatus resultStatus = new ResultStatus();
 		
@@ -180,6 +180,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							{
 								TdpCadre tdpCadre = new TdpCadre();
 								
+								if(registrationType != null && !registrationType.equalsIgnoreCase("null") && registrationType.trim().length() > 0)
+								{
+									tdpCadre.setDataSourceType(registrationType.trim().toUpperCase());
+								}
 								if(cadreRegistrationVO.getVoterName() != null && !cadreRegistrationVO.getVoterName().equalsIgnoreCase("null") && cadreRegistrationVO.getVoterName().trim().length() > 0)
 								{
 									tdpCadre.setFirstname(cadreRegistrationVO.getVoterName());
@@ -291,29 +295,33 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								{
 									for (CadrePreviousRollesVO rolesVO : previousRollesPartList)
 									{
-										if(tdpCadre != null)
+										if(rolesVO != null)
 										{
-											CadrePreviousRoles cadrePreviousRoles = new CadrePreviousRoles();
-											cadrePreviousRoles.setTdpCadreId(tdpCadre.getTdpCadreId());
-											
-											if(rolesVO.getDesignationLevelId() != null && rolesVO.getDesignationLevelId().longValue() > 0)
+											if(tdpCadre != null)
 											{
-												cadrePreviousRoles.setCadreLevelId(rolesVO.getDesignationLevelId());
+												CadrePreviousRoles cadrePreviousRoles = new CadrePreviousRoles();
+												cadrePreviousRoles.setTdpCadreId(tdpCadre.getTdpCadreId());
+												
+												if(rolesVO.getDesignationLevelId() != null && rolesVO.getDesignationLevelId().longValue() > 0)
+												{
+													cadrePreviousRoles.setCadreLevelId(rolesVO.getDesignationLevelId());
+												}
+												if(rolesVO.getDesignationLevelValue() != null && rolesVO.getDesignationLevelValue().longValue() > 0)
+												{
+													cadrePreviousRoles.setPartyDesignationId(rolesVO.getDesignationLevelValue());
+												}
+												if(rolesVO.getFromDate() != null)
+												{
+													cadrePreviousRoles.setFromDate(rolesVO.getFromDate());
+												}
+												if(rolesVO.getToDate() != null)
+												{
+													cadrePreviousRoles.setToDate(rolesVO.getToDate());
+												}
+												cadrePreviousRolesDAO.save(cadrePreviousRoles);
 											}
-											if(rolesVO.getDesignationLevelValue() != null && rolesVO.getDesignationLevelValue().longValue() > 0)
-											{
-												cadrePreviousRoles.setPartyDesignationId(rolesVO.getDesignationLevelValue());
-											}
-											if(rolesVO.getFromDate() != null)
-											{
-												cadrePreviousRoles.setFromDate(rolesVO.getFromDate());
-											}
-											if(rolesVO.getToDate() != null)
-											{
-												cadrePreviousRoles.setToDate(rolesVO.getToDate());
-											}
-											cadrePreviousRolesDAO.save(cadrePreviousRoles);
 										}
+										
 									}
 								}
 								
@@ -322,23 +330,27 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								{
 									for (CadrePreviousRollesVO electionVO : previousElectionPartList)
 									{
-										if(tdpCadre != null)
+										if(electionVO != null)
 										{
-											CadreParticipatedElection cadreParticipatedElection = new CadreParticipatedElection();
-											
-											cadreParticipatedElection.setTdpCadreId(tdpCadre.getTdpCadreId());
-											
-											if(electionVO.getElectionTypeId() != null && electionVO.getElectionTypeId().longValue() > 0)
+											if(tdpCadre != null)
 											{
-												cadreParticipatedElection.setElectionId(electionVO.getElectionTypeId());
+												CadreParticipatedElection cadreParticipatedElection = new CadreParticipatedElection();
+												
+												cadreParticipatedElection.setTdpCadreId(tdpCadre.getTdpCadreId());
+												
+												if(electionVO.getElectionTypeId() != null && electionVO.getElectionTypeId().longValue() > 0)
+												{
+													cadreParticipatedElection.setElectionId(electionVO.getElectionTypeId());
+												}
+												
+												if(electionVO.getConstituencyId() != null && electionVO.getConstituencyId().longValue() > 0)
+												{
+													cadreParticipatedElection.setConstituencyId(electionVO.getConstituencyId());
+												}
+												cadreParticipatedElectionDAO.save(cadreParticipatedElection);
 											}
-											
-											if(electionVO.getConstituencyId() != null && electionVO.getConstituencyId().longValue() > 0)
-											{
-												cadreParticipatedElection.setConstituencyId(electionVO.getConstituencyId());
-											}
-											cadreParticipatedElectionDAO.save(cadreParticipatedElection);
 										}
+										
 										
 									}
 								}
