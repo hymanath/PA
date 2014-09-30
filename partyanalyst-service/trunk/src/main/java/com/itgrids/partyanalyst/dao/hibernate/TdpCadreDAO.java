@@ -56,4 +56,11 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		Query query = getSession().createQuery(queryStr.toString());
 		return query.list();
 	}
+	
+	public String getLatestMemberNumber()
+	{
+		Query query = getSession().createQuery("select model.memberShipNo from TdpCadre model order by model.tdpCadreId desc ");
+		query.setMaxResults(1);
+		return (String)query.uniqueResult();
+	}
 }
