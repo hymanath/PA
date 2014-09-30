@@ -7252,6 +7252,18 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 
 	}
 	
+	public List getVotersDetailsForCadreRegistratiobByconstituencId(Long constituencyId, Long publicationDate,String queryStr)
+	{
+		
+		Query query = getSession().createQuery("select BPV.voter.voterId,BPV.voter.name, BPV.voter.relativeName, BPV.voter.age, BPV.voter.houseNo, BPV.voter.relationshipType, BPV.voter.gender  from BoothPublicationVoter BPV where "+queryStr+" " +
+				" BPV.booth.constituency.constituencyId = :constituencyId and BPV.booth.publicationDate.publicationDateId = :publicationDate ");
+		
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationDate", publicationDate);
+		return query.list();	
+		
+	}
+	
 	public List<Object[]> getCTPVoterDetailsByBooth(Long boothId)
 	{
 		
