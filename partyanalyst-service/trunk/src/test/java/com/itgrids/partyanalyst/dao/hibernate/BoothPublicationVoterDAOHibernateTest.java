@@ -1,11 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
@@ -405,7 +401,7 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 			}
 			
 		}*/
-	
+	/*
 		public void test2()
 		{
 			try{
@@ -453,5 +449,19 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 				e.printStackTrace();
 			}
 		}
-	    
+	    */
+	
+		public void testDetaisl()
+		{
+			StringBuilder searchQuery = new StringBuilder();
+		
+			//searchQuery.append(" BPV.voter.name like '%sri%'");
+			//searchQuery.append(" and BPV.voter.voterIDCardNo like '%143%'");
+			searchQuery.append(" BPV.voter.houseNo like '%1-165%' and ");
+				
+			System.out.println(new Date());
+			List list = boothPublicationVoterDAO.getVotersDetailsForCadreRegistratiobByconstituencId(65L, 11L, searchQuery.toString());
+			System.out.println(new Date());
+			System.out.println(list.size());
+		}
 	}
