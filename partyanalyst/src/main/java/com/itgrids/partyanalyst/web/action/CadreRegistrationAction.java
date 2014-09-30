@@ -246,7 +246,9 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	{
 		try {
 			LOG.info("Entered into saveCadreDetails method in CadreRegistrationAction Action");
-			
+			session = request.getSession();
+			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+			cadreRegistrationVO.setCreatedUserId(user.getRegistrationID());
 			cadreRegistrationVO.setDob(convertToDateFormet(cadreRegistrationVO.getDobStr()));
 			cadreRegistrationVO.setPartyMemberSince(convertToDateFormet(cadreRegistrationVO.getPartyMemberSinceStr()));
 			
