@@ -482,6 +482,9 @@
 				<value>com.itgrids.partyanalyst.model.TdpCadre</value>
 				<value>com.itgrids.partyanalyst.model.CadrePreviousRoles</value>
 				<value>com.itgrids.partyanalyst.model.CadreParticipatedElection</value>
+				
+				<value>com.itgrids.partyanalyst.model.CadreSurveyUserAssignDetails</value>
+				<value>com.itgrids.partyanalyst.model.CadreSurveyUser</value>
 				</list>
 			
 		</property>
