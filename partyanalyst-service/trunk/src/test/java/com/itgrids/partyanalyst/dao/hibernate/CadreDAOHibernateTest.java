@@ -1,27 +1,26 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
-import com.itgrids.partyanalyst.dao.columns.enums.CadreColumnNames;
-import com.itgrids.partyanalyst.dao.columns.enums.EducationQualificationColumnNames;
-import com.itgrids.partyanalyst.dto.CadreVo;
+import com.itgrids.partyanalyst.dto.VoterInfoVO;
 import com.itgrids.partyanalyst.model.Cadre;
-import com.itgrids.partyanalyst.model.UserAddress;
-import com.itgrids.partyanalyst.model.Constituency;
-import com.itgrids.partyanalyst.model.Voter;
-import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CadreDAOHibernateTest extends BaseDaoTestCase {
 	ICadreDAO cadreDAO;
 	IUserAddressDAO userAddressDAO;
 	ILocalElectionBodyDAO localElectionBodyDAO;
+	
+	SimpleDateFormat format  = new SimpleDateFormat("yy-MM-dd");
 	
 	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
 		return localElectionBodyDAO;
@@ -583,6 +582,94 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		}
 		 returnList.add(null);
 	}*/
+	
+	/*public void testDtails()
+	{
+		StringBuilder searchQuery = new StringBuilder();
+		List<VoterInfoVO> returnList = null;
+
+		
+		searchQuery.append(" C.firstName like '%raj%' OR C.lastName like '%raj%' and ");
+		System.out.println(new Date());
+		List<Object[]> searchList = cadreDAO.getCadreDetailsForCadreRegistratiobByconstituencId(232L, searchQuery.toString());
+		System.out.println(new Date());
+		if(searchList != null && searchList.size()>0 )
+		{
+			returnList = new ArrayList<VoterInfoVO>();
+			
+			for (Object param : searchList)
+			{
+				try {
+					
+					Object[] cadre = (Object[]) param;
+					VoterInfoVO vo = new VoterInfoVO();
+					vo.setId(cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L);
+					vo.setName(cadre[1] != null ? cadre[1].toString().trim():"");
+					vo.setName(vo.getName() + (cadre[2] != null ? " "+cadre[2].toString().trim():" "));
+					
+					vo.setRelativeName(cadre[3] != null ? cadre[3].toString().trim():"");
+					
+					
+					String dateOfBirth = cadre[4] != null ? cadre[4].toString().trim():"";
+					
+					if(dateOfBirth != null && dateOfBirth.trim().length()>0)
+					{
+						Calendar startDate = new GregorianCalendar();
+						Calendar endDate = new GregorianCalendar();
+						
+						startDate.setTime(format.parse(dateOfBirth.substring(0,10)));
+						
+						endDate.setTime(new Date());
+
+						int diffYear = endDate.get(Calendar.YEAR) - startDate.get(Calendar.YEAR);
+						
+						vo.setAge(String.valueOf(diffYear));
+					}
+					else if(cadre[5] != null )
+					{
+						vo.setAge(cadre[5] != null ? cadre[5].toString().trim():"");
+					}
+					
+					
+					vo.setHouseNo(" -- ");
+					vo.setRelationType(" -- ");
+					
+					vo.setGender(cadre[6] != null ? cadre[6].toString().trim():"");
+					
+					returnList.add(vo);
+				
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+			}
+		}
+		
+		System.out.println(returnList);
+	}*/
+	
+	
+	
+	public void testDtails()
+	{
+		List<Long> ids = new ArrayList<Long>();
+		ids.add(601L);
+		ids.add(602L);
+		ids.add(603L);
+		ids.add(604L);
+		ids.add(605L);
+		StringBuilder searchQuery = new StringBuilder();
+
+		searchQuery.append(" C.firstName like '%raj%' OR C.lastName like '%raj%' ");
+		searchQuery.append(" and V.voterIDCardNo like '%AP%'");
+		searchQuery.append(" and V.houseNo like '%1-165%' ");
+	
+		System.out.println(new Date());
+		List<Object[]> searchList = cadreDAO.getvoterdetailsByCadreIds(ids,searchQuery.toString());
+		
+		System.out.println(new Date());
+		System.out.println(searchList.size());
+	}
+	
 }
 	
 
