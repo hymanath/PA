@@ -60,6 +60,7 @@ public class UserAddress implements java.io.Serializable {
 	private Cadre cadreCurrentAddress; 
 	private Cadre cadrePermanentAddress;
 	private InfluencingPeople influencingPeople;
+	private String localArea;
 	
 	private Set<Survey> survey = new HashSet<Survey>(0);
 	private Set<UserAddress> userAddress = new HashSet<UserAddress>(0);
@@ -290,8 +291,16 @@ public class UserAddress implements java.io.Serializable {
 	public void setPanchayatId(Long panchayatId) {
 		this.panchayatId = panchayatId;
 	}
+
 	
-	
+	@Column(name="local_area")
+	public String getLocalArea() {
+		return localArea;
+	}
+
+	public void setLocalArea(String localArea) {
+		this.localArea = localArea;
+	}
 	
 	
 }
