@@ -1,20 +1,27 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+
 import java.util.Date;
 
 public class CadrePreviousRollesVO implements Serializable {
 
 	
-	private static final long serialVersionUID = 6426809253013344836L;
-	private Long designationLevelId;
-	private Long designationLevelValue;
-	private Date fromDate;
-	private Date toDate;
+	private static final long 	serialVersionUID = 6426809253013344836L;
+	private Long 				designationLevelId;
+	private Long 				designationLevelValue;
+	private Date 				fromDate;
+	private Date 				toDate;
+	
+	private String 				fromDateStr;
+	private String 				toDateStr;
 	
 	private Long electionTypeId;
 	private String year;
 	private Long constituencyId;
+	private Long electionYear;
+	
+	
 	public Long getDesignationLevelId() {
 		return designationLevelId;
 	}
@@ -57,6 +64,26 @@ public class CadrePreviousRollesVO implements Serializable {
 	public void setConstituencyId(Long constituencyId) {
 		this.constituencyId = constituencyId;
 	}
+	public String getFromDateStr() {
+		return fromDateStr;
+	}
+	public void setFromDateStr(String fromDateStr) {
+		this.fromDateStr = fromDateStr;
+	}
+	public String getToDateStr() {
+		return toDateStr;
+	}
+	public void setToDateStr(String toDateStr) {
+		this.toDateStr = toDateStr;
+	}
+	public Long getElectionYear() {
+		return electionYear;
+	}
+	public void setElectionYear(Long electionYear) {
+		this.electionYear = electionYear;
+	}
+	
+	
 	
 	
 	

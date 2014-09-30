@@ -106,7 +106,7 @@ public class Cadre extends BaseModel{
 	 private Long memberId;
 	 
 	 
-	@Id
+	 @Id
 	 @GeneratedValue(strategy = GenerationType.AUTO)
 	 @Column(name = "cadre_id", unique = true, nullable = false)
 	 public Long getCadreId() {

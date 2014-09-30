@@ -490,6 +490,9 @@
 				<value>com.itgrids.partyanalyst.model.CadrePreviousRoles</value>
 				<value>com.itgrids.partyanalyst.model.CadreParticipatedElection</value>
 				
+				<value>com.itgrids.partyanalyst.model.CadreSurveyUserAssignDetails</value>
+				<value>com.itgrids.partyanalyst.model.CadreSurveyUser</value>
+				
 			</list>
 		</property>
 	</bean>
@@ -2542,6 +2545,14 @@
 </bean>
 
 <bean id="cadreParticipatedElectionDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreParticipatedElectionDAO" >
+	<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
+<bean id="cadreSurveyUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreSurveyUserDAO" >
+	<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
+<bean id="cadreSurveyUserAssignDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreSurveyUserAssignDetailsDAO" >
 	<property name="sessionFactory" ref="sessionFactory" />
 </bean>
 
