@@ -8369,6 +8369,23 @@
 		</result>
 		</action>
 		
-	
+		<action name="searchVoterAndCadreInfoBySearchCriteriaAction" class="cadreRegistrationAction" method="searchVoterAndCadreInfoBySearchCriteria">
+			<result type="json" name="success">
+				<param name="root">voterInfoVOList</param>
+			</result>
+		</action>
+		
+		<action name="tdpCadreSearchAction" class="cadreRegistrationAction" method="tdpCadreSearchPage">
+			<result name="success">/jsp/tdpCadreSearch.jsp</result>
+		</action>
+
+		<action name="tdpCadreSearchDetailsAction" class="cadreRegistrationAction" method="tdpCadreSearchDetailsPage">
+			<result name="success">/jsp/tdpCadreSearchDetails.jsp</result>
+		</action>
+
+		<action name="tdpCadreRegistrationAction" class="cadreRegistrationAction" method="tdpCadreRegistrationPage">
+			<result name="success">/jsp/tdpCadreRegistration.jsp</result>
+		</action>
+
 </package>
 </struts>      
