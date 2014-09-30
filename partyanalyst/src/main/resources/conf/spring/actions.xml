@@ -1471,6 +1471,9 @@
 	 
 	  <bean id="cadreRegistrationAction" class="com.itgrids.partyanalyst.web.action.CadreRegistrationAction" singleton="false">
 	 	<property name="cadreRegistrationService" ref="cadreRegistrationService" />
+	 	<property name="candidateUpdationDetailsService" ref="candidateUpdationDetailsService" />
+	 	<property name="staticDataService" ref="staticDataService" />
+	 	<property name="surveyDataDetailsService" ref="surveyDataDetailsService" />
 	  </bean>
 	 
 	
