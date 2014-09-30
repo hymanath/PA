@@ -2176,7 +2176,15 @@
         <property name="stateDAO" ref="stateDAO" />
         <property name="userVoterDetailsDAO" ref="userVoterDetailsDAO" />
         <property name="userAddressDAO" ref="userAddressDAO" />
-        <property name="dateUtilService" ref="dateUtilService" />
+        <property name="dateUtilService" ref="dateUtilService" />		
+		<property name="constituencyDAO" ref="constituencyDAO" />
+		<property name="tehsilDAO" ref="tehsilDAO" />
+		<property name="panchayatDAO" ref="panchayatDAO" />
+		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+		<property name="boothDAO" ref="boothDAO" />
+		<property name="casteStateDAO" ref="casteStateDAO" />
+		<property name="bloodGroupDAO" ref="bloodGroupDAO" />
+							
      </bean>
       
       <bean name="cadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CadreDashBoardService">
