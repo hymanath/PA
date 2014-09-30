@@ -26,8 +26,22 @@ public class VoterInfoVO implements java.io.Serializable
 	private Long cadreId;
 	
 	private List<VoterInfoVO> voterInfoVOList = new ArrayList<VoterInfoVO>();
+	private List<GenericVO> genericVOList = new ArrayList<GenericVO>();
+	private List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>();
 	
 	
+	public List<SelectOptionVO> getSelectOptionVOList() {
+		return selectOptionVOList;
+	}
+	public void setSelectOptionVOList(List<SelectOptionVO> selectOptionVOList) {
+		this.selectOptionVOList = selectOptionVOList;
+	}
+	public List<GenericVO> getGenericVOList() {
+		return genericVOList;
+	}
+	public void setGenericVOList(List<GenericVO> genericVOList) {
+		this.genericVOList = genericVOList;
+	}
 	public Long getVoterId() {
 		return voterId;
 	}
