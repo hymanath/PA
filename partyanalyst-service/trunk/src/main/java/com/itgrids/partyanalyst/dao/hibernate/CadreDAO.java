@@ -1195,19 +1195,51 @@ public List<Object[]> searchCadreInfoByConstidAndNameORMobile(Long constiId,Stri
 		return query.list();
 	}
 	
-	public List<Object[]> getCadreDetailsForCadreRegistratiobByconstituencId(Long constituencyId, String queryStr)
+	public List<Object[]> getCadreDetailsForCadreRegistratiobByconstituencId(Long constituencyId, String queryStr,Long panchayatId,Long boothId,Long locationId)
 	{
 		StringBuilder str = new StringBuilder();
 		
-		str.append(" select C.cadreId, C.firstName, C.lastName, C.fatherOrSpouseName, C.dateOfBirth, C.age, C.gender,C.voter, C. from Cadre C where "+queryStr+" C.currentAddress.constituency.constituencyId = :constituencyId ");
+		str.append(" select C.cadreId, C.firstName, C.lastName, C.fatherOrSpouseName, C.dateOfBirth, C.age, C.gender from Cadre C where "+queryStr+" C.currentAddress.constituency.constituencyId = :constituencyId ");
 		str.append(" and C.memberType like '%Active%' ");
+		
+
+		if(panchayatId.longValue() != 0L)
+		{
+			str.append(" and C.currentAddress.booth.panchayatId = :panchayatId ");
+		}
+		
+		if(boothId.longValue() != 0L)
+		{
+			str.append(" and C.currentAddress.booth.boothId = :boothId ");
+		}
+		
+		if(locationId.longValue() != 0L)
+		{
+			str.append(" and C.currentAddress.booth.boothId = :boothId ");
+		}
+		
+		
 		Query query = getSession().createQuery(str.toString()); 
 		
 		query.setParameter("constituencyId", constituencyId);
 		
-		query.setFirstResult(0);
-		query.setMaxResults(10);
+
+		if(panchayatId.longValue() != 0L)
+		{
+			query.setParameter("panchayatId", panchayatId);
+		}
 		
+		if(boothId.longValue() != 0L)
+		{
+			query.setParameter("boothId", boothId);
+		}
+		
+		if(locationId.longValue() != 0L)
+		{
+			query.setParameter("boothId", locationId);
+		}
+		
+
 		return query.list();
 	}
 	
@@ -1220,10 +1252,7 @@ public List<Object[]> searchCadreInfoByConstidAndNameORMobile(Long constiId,Stri
 		Query query = getSession().createQuery(str.toString()); 
 		
 		query.setParameterList("cadreIds", cadreIds);
-		
-		query.setFirstResult(0);
-		query.setMaxResults(10);
-		
+
 		return query.list();
 	}
 }

@@ -191,4 +191,16 @@ public String getLocalElectionBodyName(Long localElectionBodyId){
 		
 		
 	}
+  
+  public List<Object[]> getMuncipalitiesAndCorporationsInAConstituency(List<Long> tehsilIds){
+		
+		Query query = getSession().createQuery("select model.localElectionBodyId, model.name from LocalElectionBody " +
+				"model where model.tehsil.tehsilId in(:tehsilIds)");
+		
+		query.setParameterList("tehsilIds", tehsilIds);
+		
+		return query.list();
+		
+	}
+  
 }
