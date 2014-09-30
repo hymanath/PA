@@ -112,11 +112,11 @@ public class CandidatePartyCategoryDAOHibernateTest extends BaseDaoTestCase{
 	}*/
 	public void testGetCategoryWiseBenifit(){
 		try{
-		String dt1 = "2014-06-01";
-		String dt2 = "2014-06-20";
+		String dt1 = "2014-06-08";
+		String dt2 = "2014-06-14";
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
-		List<Object[]>  result = candidatePartyCategoryDAO.getCategoryWiseBenifit(sdf.parse(dt1), sdf.parse(dt2), null, 872l);
+		List<Object[]>  result = candidatePartyCategoryDAO.getCategoryWiseBenifit(sdf.parse(dt1), sdf.parse(dt2), 0L, 872l);
 		System.out.println(result.size());
 		}catch(Exception e){
 			e.printStackTrace();

@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -207,5 +208,14 @@ public List<Object[]> getAllDistrictInfoDetails(){
 	  
 	  query.setParameter("stateId", stateId);
 	  return query.list();
+	}
+	
+	public List<Object[]> getDistrictNamesByDistrictIds(Set<Long> districtIdsList)
+	{
+		Query query = getSession().createQuery(" select model.districtId, model.districtName from District model where model.districtId in (:districtIdsList) " +
+				" order by model.districtName ");
+		
+		query.setParameterList("districtIdsList", districtIdsList);
+		return query.list();
 	}
 }

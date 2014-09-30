@@ -5,6 +5,7 @@
 package com.itgrids.partyanalyst.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -87,4 +88,5 @@ public interface IDistrictDAO extends GenericDao<District, Long>{/*
 	
 	public List<Object[]> getDistrictsByStateId(Long stateId);
 	public List<Long> getAllDistrictByStateIds(List<Long> stateIds);
+	public List<Object[]> getDistrictNamesByDistrictIds(Set<Long> districtIdsList);
 }

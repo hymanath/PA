@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.HibernateException;
@@ -668,6 +669,13 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 				" and model.state.stateId in(:stateIds) order by model.state.stateId,model.name");
 		
 		query.setParameterList("stateIds", stateIds);
+		return query.list();
+	}
+	
+	public List<Object[]> getConstituenciesByConstituencyIds(Set<Long> constituenciesList)
+	{
+		Query query = getSession().createQuery("select model.constituencyId, model.name from Constituency model where model.constituencyId in(:constituenciesList)");
+		query.setParameterList("constituenciesList",constituenciesList);
 		return query.list();
 	}
 }

@@ -83,6 +83,9 @@ font-size:20px;
 		var partyId = '${partyId}';
 		var candidateId = '${candidateId}';
 		var type = '${type}';
+		var name = '${name}';
+		var locationId= '${locationId}';
+		
 <s:if test="buildType == 'category'">      
 function getCategoryBenefitNewsDetails(startIndex,endIndex)
 {
@@ -148,6 +151,40 @@ function getCategoryBenefitNewsDetails(startIndex,endIndex)
 
 }
 </s:if>
+<s:if test="buildType == 'location'">            
+function getCategoryBenefitNewsDetails(startIndex,endIndex)
+{
+   $.ajaxSetup({
+	   jsonp: null,
+	   jsonpCallback: null
+	}); 
+
+	$.ajax({
+	  type:'POST',
+	  url: 'getLocationBenifitNewsAction.action',
+	  dataType: 'json',
+	  data: {
+	         type:type,
+			 fromDate:fromDate,
+			 toDate:toDate,
+			 locationId:locationId,
+			 name:name,
+	         benefitId:benefitId,
+	         startValue:startIndex,
+			 endValue : endIndex 
+	  },
+		 
+	  success: function(results){ 
+		   buildFilesInGallaryDetails(results,0,startIndex,endIndex);
+	 },
+	  error:function() { 
+	     $("#newsDisplayDiv").html('');
+	  }
+	});
+
+}
+</s:if>
+
 function buildFilesInGallaryDetails(results,selectedvalue,index,endValue)
 {   
 	var totalPages;

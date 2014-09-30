@@ -15,6 +15,8 @@ import org.apache.log4j.Logger;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.ICandidatePartyCategoryDAO;
 import com.itgrids.partyanalyst.dao.ICandidatePartyFileDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
 import com.itgrids.partyanalyst.dao.IGroupDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
@@ -31,7 +33,18 @@ public class BenefitAnalysisService implements IBenefitAnalysisService {
 	private ICandidatePartyFileDAO candidatePartyFileDAO;
 	private ICandidateDAO candidateDAO;
 	private IGroupDAO groupDAO;
+	private IDistrictDAO districtDAO;
+	private IConstituencyDAO constituencyDAO;
 	
+	
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+
 	public ICandidatePartyCategoryDAO getCandidatePartyCategoryDAO() {
 		return candidatePartyCategoryDAO;
 	}
@@ -80,6 +93,15 @@ public class BenefitAnalysisService implements IBenefitAnalysisService {
 
 	public void setGroupDAO(IGroupDAO groupDAO) {
 		this.groupDAO = groupDAO;
+	}
+
+	
+	public IDistrictDAO getDistrictDAO() {
+		return districtDAO;
+	}
+
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
 	}
 
 	public List<BenfitVO> getCategoryWiseBenifit(Date fromDate,Date toDate,Long stateId,List<Long> partyIds){
@@ -343,4 +365,165 @@ public class BenefitAnalysisService implements IBenefitAnalysisService {
     	 
     	 
      }
+     
+     public List<BenfitVO> getDistrictWiseBenifit(Date fromDate,Date toDate,Long stateId,Long partyId){
+    	 Map<Long,BenfitVO> resultMap = new HashMap<Long,BenfitVO>();
+    	 try{
+    		 // 0 count,1 benfitId,2 districtId,3 partyId
+    		   List<Object[]> districtWiseBenfitsList =  candidatePartyFileDAO.getDistrictWiseBenifit(fromDate, toDate, stateId,partyId);
+    		   
+    		   populateResultsToMap(districtWiseBenfitsList,resultMap);
+    		   
+    		   populateDistrictNames(resultMap,getDistrictNames(resultMap.keySet()));
+    	 }catch(Exception e){
+ 			LOG.error("Exception rised in getLocationWiseBenifit ",e);
+ 		}
+    	 
+    	 return new ArrayList<BenfitVO>(resultMap.values());
+     }
+     
+     public void populateResultsToMap(List<Object[]> districtWiseBenfitsList,Map<Long,BenfitVO> resultMap){
+    	 
+    	 for(Object[] district:districtWiseBenfitsList){
+    		 if(district[1] != null && ((Long)district[1]).longValue() != 3l){
+	    		 BenfitVO vo = resultMap.get((Long)district[2]);
+	    		 if(vo == null){
+	    			 vo = new BenfitVO();
+	    			 vo.setId((Long)district[2]);
+	    			 vo.setCount(0l);
+	 				 vo.setNegCount(0l);
+	 				resultMap.put((Long)district[2],vo);
+	    		 }
+	    		 if(((Long)district[1]).longValue() == 1l){
+	    			 vo.setCount((Long)district[0]);
+	    		 }else if(((Long)district[1]).longValue() == 2l){
+	    			 vo.setNegCount((Long)district[0]);
+	    		 }
+    	    }
+    	 }
+     }
+     
+     public void populateDistrictNames(Map<Long,BenfitVO> resultMap,Map<Long,String> districtNames){
+    	 
+    	 for(Long key:resultMap.keySet()){  		 
+    		 resultMap.get(key).setName(districtNames.get(key));
+    	 }
+     }
+     
+     public Map<Long,String> getDistrictNames(Set<Long> districtIds){
+    	 
+    	 Map<Long,String> districtNames = new HashMap<Long,String>();
+    	 
+    	 if(districtIds.size() > 0){
+    		 //0 id,1 name
+    		 List<Object[]> districtNamesList = districtDAO.getDistrictNamesByDistrictIds(districtIds);
+    		 for(Object[] district:districtNamesList){
+    			 districtNames.put((Long)district[0], district[1].toString());
+        	 }
+    	 }
+    	 
+    	 return districtNames;
+     }
+     
+     public List<BenfitVO> getConstituencyWiseBenifit(Date fromDate,Date toDate,Long stateId,Long partyId,String name){
+    	 Map<Long,BenfitVO> resultMap = new HashMap<Long,BenfitVO>();
+    	 try{
+    		 // 0 count,1 benfitId,2 districtId,3 partyId
+    		 if(name.equalsIgnoreCase("parliament")){ 
+    		 List<Object[]> constiWiseBenfitsList =  candidatePartyFileDAO.getParliamentWiseBenifit(fromDate, toDate, stateId,partyId);
+    		 populateToMap(constiWiseBenfitsList,resultMap);
+    		 }
+    		 else if(name.equalsIgnoreCase("assembly")){
+    			 List<Object[]> constiWiseBenfitsList =  candidatePartyFileDAO.getAssemblyWiseBenifit(fromDate, toDate, stateId,partyId);
+        		 populateToMap(constiWiseBenfitsList,resultMap);
+    		 }
+    		   populateConstituencyNames(resultMap,getConstituencyNames(resultMap.keySet()));
+    		   
+    	 }catch(Exception e){
+ 			LOG.error("Exception rised in getConstituencyWiseBenifit ",e);
+ 		}
+    	 
+    	 return new ArrayList<BenfitVO>(resultMap.values());
+     }
+     
+     public void populateToMap(List<Object[]> constiWiseBenfitsList,Map<Long,BenfitVO> resultMap){
+    	 
+    	 for(Object[] consti:constiWiseBenfitsList){
+    		 if(consti[1] != null && ((Long)consti[1]).longValue() != 3l){
+	    		 BenfitVO vo = resultMap.get((Long)consti[2]);
+	    		 if(vo == null){
+	    			 vo = new BenfitVO();
+	    			 vo.setId((Long)consti[2]);
+	    			 vo.setCount(0l);
+	 				 vo.setNegCount(0l);
+	 				resultMap.put((Long)consti[2],vo);
+	    		 }
+	    		 if(((Long)consti[1]).longValue() == 1l){
+	    			 vo.setCount((Long)consti[0]);
+	    		 }else if(((Long)consti[1]).longValue() == 2l){
+	    			 vo.setNegCount((Long)consti[0]);
+	    		 }
+    	    }
+    	 }
+     }
+     
+     public void populateConstituencyNames(Map<Long,BenfitVO> resultMap,Map<Long,String> constiNames){
+    	 
+    	 for(Long key:resultMap.keySet()){  		 
+    		 resultMap.get(key).setName(constiNames.get(key));
+    	 }
+     }
+     
+     public Map<Long,String> getConstituencyNames(Set<Long> constiIds){
+    	 
+    	 Map<Long,String> constiNames = new HashMap<Long,String>();
+    	 
+    	 if(constiIds.size() > 0){
+    		 //0 id,1 name
+    		 List<Object[]> constiNamesList = constituencyDAO.getConstituenciesByConstituencyIds(constiIds);
+    		 for(Object[] params:constiNamesList){
+    			 constiNames.put((Long)params[0], params[1].toString());
+        	 }
+    	 }
+    	 
+    	 return constiNames;
+     }
+     
+     
+     public List<NewsActivityVO> getLocationBenifitNews(Date fromDate,Date toDate,Long locationId,Long benfitId,int startIndex,int maxIndex,String name){
+      	
+    	 List<NewsActivityVO> results = new ArrayList<NewsActivityVO>();
+    	 NewsActivityVO vo = null;
+    	 // 0 title,1 title font,2 desc,3 desc font, 4 count
+    	 List<Object[]>  newsList = new ArrayList<Object[]>();
+    	 Long count = 0L;
+    	 if(name.equalsIgnoreCase("districtWiseBenefits") ){
+	    	  newsList = candidatePartyFileDAO.getDistrictBenifitNews(fromDate, toDate, locationId, benfitId,startIndex,maxIndex);
+	    	  count  = candidatePartyFileDAO.getDistrictBenifitNewsCount(fromDate, toDate, locationId, benfitId);
+    	 }
+    	 else if(name.equalsIgnoreCase("parliamentWiseBenefits") ){
+    		 newsList = candidatePartyFileDAO.getParliamentBenifitNews(fromDate, toDate, locationId, benfitId,startIndex,maxIndex);
+	    	  count  = candidatePartyFileDAO.getParliamentBenifitNewsCount(fromDate, toDate, locationId, benfitId);
+    	 }
+    	 else if(name.equalsIgnoreCase("assemblyWiseBenefits") ){
+    		 newsList = candidatePartyFileDAO.getAssemblyBenifitNews(fromDate, toDate, locationId, benfitId,startIndex,maxIndex);
+	    	  count  = candidatePartyFileDAO.getAssemblyBenifitNewsCount(fromDate, toDate, locationId, benfitId);
+    	 }
+    	 
+    	 for(Object[] news:newsList){
+    		 vo = new NewsActivityVO();
+    		 vo.setTitle(StringEscapeUtils.unescapeJava(news[1].toString()));
+    		 if(news[2] != null)
+    		   vo.setTitleFont("1");
+    		 vo.setDescription(StringEscapeUtils.unescapeJava(news[3].toString()));
+    		 if(news[0] != null)
+    		   vo.setFont("1");
+    		 vo.setId((Long)news[0]);
+    		 results.add(vo);
+    	 }
+    	 if(results.size() > 0){
+    		 results.get(0).setCount(count);
+    	 }
+    	 return results;
+    }
 }
