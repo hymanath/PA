@@ -349,6 +349,9 @@
 			  <pattern>/candidateAnalysisAction*</pattern>
 			  <pattern>/ivrMobileAction*</pattern>]
 			  <pattern>/cadreRegistration*</pattern>
+			  <pattern>/tdpCadreSearchAction*</pattern>
+			  <pattern>/tdpCadreSearchDetailsAction*</pattern>
+			  <pattern>/tdpCadreRegistrationAction*</pattern>
 			  
             <!--  <pattern>/dashBoardAction*</pattern> -->
        </decorator>
