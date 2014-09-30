@@ -234,7 +234,6 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	{
 		try {
 			LOG.info("Entered into execute method in CadreRegistrationAction Action");
-			saveCadreDetails();
 		} catch (Exception e) {
 			LOG.error("Exception raised in execute method in CadreRegistrationAction Action",e);
 		}
@@ -247,7 +246,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	{
 		try {
 			LOG.info("Entered into saveCadreDetails method in CadreRegistrationAction Action");
-			CadreRegistrationVO cadreRegistrationVO = new CadreRegistrationVO();
+			/*CadreRegistrationVO cadreRegistrationVO = new CadreRegistrationVO();
 			cadreRegistrationVO.setVoterName("PRASAD");
 			cadreRegistrationVO.setDob(convertToDateFormet("22-12-2014"));
 			cadreRegistrationVO.setGender("M");
@@ -293,7 +292,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			previousElectionssList.add(electionVO);
 			
 			cadreRegistrationVO.setPreviousRollesList(previousRollesList);
-			cadreRegistrationVO.setPreviousParicaptedElectionsList(previousElectionssList);
+			cadreRegistrationVO.setPreviousParicaptedElectionsList(previousElectionssList);*/
 			
 			resultStatus = cadreRegistrationService.saveCadreRegistration(cadreRegistrationVO);
 		} catch (Exception e) {
