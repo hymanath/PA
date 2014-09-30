@@ -1194,4 +1194,36 @@ public List<Object[]> searchCadreInfoByConstidAndNameORMobile(Long constiId,Stri
 		query.setParameter("panchayatId", panchayatId);
 		return query.list();
 	}
+	
+	public List<Object[]> getCadreDetailsForCadreRegistratiobByconstituencId(Long constituencyId, String queryStr)
+	{
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" select C.cadreId, C.firstName, C.lastName, C.fatherOrSpouseName, C.dateOfBirth, C.age, C.gender,C.voter, C. from Cadre C where "+queryStr+" C.currentAddress.constituency.constituencyId = :constituencyId ");
+		str.append(" and C.memberType like '%Active%' ");
+		Query query = getSession().createQuery(str.toString()); 
+		
+		query.setParameter("constituencyId", constituencyId);
+		
+		query.setFirstResult(0);
+		query.setMaxResults(10);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getvoterdetailsByCadreIds(List<Long> cadreIds,String queryStr)
+	{
+		StringBuilder str = new StringBuilder();		
+		str.append(" select C.cadreId, V.name, V.relativeName, V.age, V.gender, V.houseNo, V.relationshipType from Cadre C, Voter V where "+queryStr+"  " +
+				"  C.voter.voterId = V.voterId and C.cadreId in (:cadreIds)  ");
+		str.append(" and C.memberType like '%Active%' ");
+		Query query = getSession().createQuery(str.toString()); 
+		
+		query.setParameterList("cadreIds", cadreIds);
+		
+		query.setFirstResult(0);
+		query.setMaxResults(10);
+		
+		return query.list();
+	}
 }
