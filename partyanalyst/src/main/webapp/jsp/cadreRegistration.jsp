@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="s" uri="/struts-tags"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
  <head>
@@ -122,7 +124,7 @@
 				<div class="row-fluid">
 					<div class="span6   show-grid"  id="fadeInLeft">
 											<h5 class="text-align1">CANDIDATE NAME</h5>
-											<input type="text" class="form-control border-radius-0 text-align2" placeholder="Text input" name="cadreRegistrationVO.voterName"></input>
+											<input type="text" class="form-control border-radius-0 text-align2" placeholder="Text input" name="cadreRegistrationVO.voterName"  value="${voterInfoVOList[0].name}"></input>
 									<div class="row-fluid">
 										<div class="span7">
 											<h5 class="text-align1">DATE OF BIRTH</h5>
@@ -134,9 +136,26 @@
 													
 													<h5 class="text-align1">GENDER</h5>	
 												<div class="row-fluid form-inline" style="margin-left:5px;">
-														<label class="radio"><input type="radio" value="MALE"  name="cadreRegistrationVO.gender">MALE</input></label>
+												<s:if test="%{voterInfoVOList[0].gender != null}">
+												
+													<c:if test="${voterInfoVOList[0].gender == 'M'}">
+													   <label class="radio"><input type="radio" value="MALE"  name="cadreRegistrationVO.gender" checked="true" >MALE</input></label>
 														&nbsp;&nbsp;&nbsp;&nbsp;
 														<label class="radio"><input type="radio" value="FEMALE"  name="cadreRegistrationVO.gender">FEMALE</input></label>
+													</c:if>
+													<c:if test="${voterInfoVOList[0].gender == 'F'}">												
+														<label class="radio"><input type="radio" value="MALE"  name="cadreRegistrationVO.gender" >MALE</input></label>
+														&nbsp;&nbsp;&nbsp;&nbsp;
+														<label class="radio"><input type="radio" value="FEMALE"  name="cadreRegistrationVO.gender"  checked="true">FEMALE</input></label>
+													</c:if>
+												
+												</s:if>
+												<s:else>
+												  <label class="radio"><input type="radio" value="MALE"  name="cadreRegistrationVO.gender" >MALE</input></label>
+													&nbsp;&nbsp;&nbsp;&nbsp;
+													<label class="radio"><input type="radio" value="FEMALE"  name="cadreRegistrationVO.gender" >FEMALE</input></label>
+												</s:else>
+														
 												</div>			
 										</div>
 								
@@ -150,18 +169,18 @@
 								
 									</div>
 										<h5 class="text-align1">GURIDIAN NAME</h5>
-										<input type="text" class="form-control border-radius-0 text-align2" placeholder="Text input" name="cadreRegistrationVO.relativeName"></input>
+										<input type="text" class="form-control border-radius-0 text-align2" placeholder="Text input" name="cadreRegistrationVO.relativeName"   value="${voterInfoVOList[0].relativeName}"></input>
 								<div class="m_top10">
 										<div class="row-fluid">
 										
 											<div class="span6">
 											<h5 class="text-align1">VOTER ID</h5>
-												<input type="text" class="form-control border-radius-0 text-align2" placeholder="Voter Id" name="cadreRegistrationVO.voterCardNumber"></input>
+												<input type="text" class="form-control border-radius-0 text-align2" placeholder="Voter Id" name="cadreRegistrationVO.voterCardNumber"   value="${voterInfoVOList[0].voterCardNo}"></input>
 											</div>
 											
 											<div class="span6">
 											<h5 class="text-align1">H NO</h5>
-												<input type="text" class="form-control border-radius-0 " placeholder="House Number" name="cadreRegistrationVO.houseNo"></input>
+												<input type="text" class="form-control border-radius-0 " placeholder="House Number" name="cadreRegistrationVO.houseNo"   value="${voterInfoVOList[0].houseNo}"></input>
 											</div>
 										</div>
 								</div>	
@@ -171,15 +190,12 @@
 										
 											<div class="span6">
 											<h5 class="text-align1">PARTY MEMBER SINCES</h5>
-												<input type="text" class="form-control border-radius-0 text-align2 datePickerCls" placeholder="" name="cadreRegistrationVO.partyMemberSinceStr"></input>
+												<input type="text" class="form-control border-radius-0 text-align2 datePickerCls" placeholder="" name="cadreRegistrationVO.partyMemberSinceStr"  value="${voterInfoVOList[0].activeDate}"></input>
 											</div>
 											
 											<div class="span6">
-											<h5 class="text-align1">BLOOD GROUP</h5>
-												<select id="bloodGroupId" name="cadreRegistrationVO.bloodGroupId">
-													<option value="1">A +</option>
-												</select>
-												
+											<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="bloodgroupId" list="voterInfoVOList[0].selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Blood Group" style="width:220px;" name="cadreRegistrationVO.bloodGroupId"  value="%{voterInfoVOList[0].blodGroupId}"/>
+											
 											</div>
 										</div>
 								</div>	
@@ -199,10 +215,8 @@
 								</div>	
 							<div class=" m_top20" >
 										<h5 class="text-align1">CASTE NAME</h5>
-										<select id="casteStateId" name="cadreRegistrationVO.casteId">
-												<option value="1">Mala</option>
-										</select>
-										
+									<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="casteId" list="voterInfoVOList[0].genericVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Caste" style="width:220px;" name="cadreRegistrationVO.casteId" value="%{voterInfoVOList[0].casteName}" />
+									
 							</div>
 							<div class=" m_top20" >
 										<h5 class="text-align1">MOBILE NUMBER</h5>
@@ -210,19 +224,12 @@
 							</div>
 							<div class=" m_top20" >
 								<h5 class="text-align1">EDUCATION</h5>
-								<select class="form-control border-radius-0 input-block-level" name="cadreRegistrationVO.educationId">
-									<option value = "1">kuppam</option>
-									<option value = "2">Nellore</option>
-									<option value = "3">Anantapur</option>
-								</select>
+								<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="educationId" list="genericVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Education " style="width:220px;" name="cadreRegistrationVO.educationId" value="%{voterInfoVOList[0].education}"/>
 							</div>
 							<div class=" m_top20" >
 								<h5 class="text-align1">OCCUPATION</h5>
-								<select class="form-control border-radius-0 input-block-level" name="cadreRegistrationVO.occupationId">
-									<option value = "1">kuppam</option>
-									<option value = "2">Nellore</option>
-									<option value = "3">Anantapur</option>
-								  </select>
+							<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="occupationId" list="selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Occupation " style="width:220px;" name="cadreRegistrationVO.occupationId" value="%{voterInfoVOList[0].occupation}"/>
+							
 							</div>
 							<div class=" m_top20" >
 									<h5 class="text-align1">PREVIOUS ENROLLMENT NUMBER</h5>
@@ -237,7 +244,7 @@
 	<div id="fadeInUp">
 		<div class="container m_top10">
 			<div class="span12 show-grid" style="position: relative;">
-				<h3 class="text-align ">PREVIOUS ROLS PARTICIPATED IN PARTIES</h3>
+				<h3 class="text-align ">PREVIOUS ROLLS PARTICIPATED IN PARTIES</h3>
 			</div>
 		</div>
 		<div class="container m_top10">
@@ -249,7 +256,7 @@
 				<div class="row rolesList">
 					<div class="span3">
 							<div class=" m_top20" >
-								<h5 class="text-align1">OCCUPATION</h5>
+								<h5 class="text-align1"> Select Level </h5>
 									<select class="form-control border-radius-0 text-align1" name="cadreRegistrationVO.previousRollesList[0].designationLevelId">
 									    <option value = "1">kuppam</option>
 										<option value = "2">Nellore</option>
@@ -259,7 +266,7 @@
 					</div>
 					<div class="span3">
 						<div class=" m_top20" >
-							<h5 class="text-align1">OCCUPATION</h5>
+							<h5 class="text-align1">Party Designation </h5>
 								<select class="form-control border-radius-0 text-align1" name="cadreRegistrationVO.previousRollesList[0].designationLevelValue">
 								  <option value = "1">kuppam</option>
 								  <option value = "2">Nellore</option>
