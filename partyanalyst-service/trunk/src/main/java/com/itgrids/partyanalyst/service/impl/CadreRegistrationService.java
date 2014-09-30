@@ -21,6 +21,7 @@ import com.itgrids.partyanalyst.dao.ICadrePreviousRolesDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
+import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
@@ -42,6 +43,7 @@ import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.CadreParticipatedElection;
 import com.itgrids.partyanalyst.model.CadrePreviousRoles;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.UserAddress;
@@ -67,7 +69,6 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private IUserAddressDAO					userAddressDAO;
 	private DateUtilService					dateUtilService;
 
-	private ICadreDAO 						cadreDAO;
 	private IVoterDAO						voterDAO;
 	private IConstituencyDAO				constituencyDAO; 					
 	private ITehsilDAO 						tehsilDAO;
@@ -76,122 +77,15 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private IBoothDAO						boothDAO;
 	private ICasteStateDAO					casteStateDAO;
 	private IBloodGroupDAO					bloodGroupDAO;
-	
-	
-	public IBloodGroupDAO getBloodGroupDAO() {
-		return bloodGroupDAO;
-	}
+	private IElectionDAO					electionDAO;
+	private ICadreDAO						cadreDAO;
 
-	public void setBloodGroupDAO(IBloodGroupDAO bloodGroupDAO) {
-		this.bloodGroupDAO = bloodGroupDAO;
-	}
-
-	public ICasteStateDAO getCasteStateDAO() {
-		return casteStateDAO;
-	}
-
-	public void setCasteStateDAO(ICasteStateDAO casteStateDAO) {
-		this.casteStateDAO = casteStateDAO;
-	}
-
-	public IVoterDAO getVoterDAO() {
-		return voterDAO;
-	}
-
-	public IBoothDAO getBoothDAO() {
-		return boothDAO;
-	}
-
-	public void setBoothDAO(IBoothDAO boothDAO) {
-		this.boothDAO = boothDAO;
-	}
-
-	public IConstituencyDAO getConstituencyDAO() {
-		return constituencyDAO;
-	}
-
-	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
-		this.constituencyDAO = constituencyDAO;
-	}
-
-	public ITehsilDAO getTehsilDAO() {
-		return tehsilDAO;
-	}
-
-	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
-		this.tehsilDAO = tehsilDAO;
-	}
-
-	public IPanchayatDAO getPanchayatDAO() {
-		return panchayatDAO;
-	}
-
-	public void setPanchayatDAO(IPanchayatDAO panchayatDAO) {
-		this.panchayatDAO = panchayatDAO;
-	}
-
-	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
-		return localElectionBodyDAO;
-	}
-
-	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
-		this.localElectionBodyDAO = localElectionBodyDAO;
-	}
-
-	public ICadreDAO getCadreDAO() {
-		return cadreDAO;
-	}
-
-	public void setCadreDAO(ICadreDAO cadreDAO) {
-		this.cadreDAO = cadreDAO;
-	}
-
-	public ITdpCadreDAO getTdpCadreDAO() {
-		return tdpCadreDAO;
-	}
-
-	public TransactionTemplate getTransactionTemplate() {
-		return transactionTemplate;
-	}
-
-	public ICadrePreviousRolesDAO getCadrePreviousRolesDAO() {
-		return cadrePreviousRolesDAO;
-	}
-
-	public ICadreParticipatedElectionDAO getCadreParticipatedElectionDAO() {
-		return cadreParticipatedElectionDAO;
-	}
-
-	public IBoothPublicationVoterDAO getBoothPublicationVoterDAO() {
-		return boothPublicationVoterDAO;
-	}
-
-	public ICountryDAO getCountryDAO() {
-		return countryDAO;
-	}
-
-	public IStateDAO getStateDAO() {
-		return stateDAO;
-	}
-
-	public IUserVoterDetailsDAO getUserVoterDetailsDAO() {
-		return userVoterDetailsDAO;
-	}
-
-	public IUserAddressDAO getUserAddressDAO() {
-		return userAddressDAO;
-	}
-
-	public DateUtilService getDateUtilService() {
-		return dateUtilService;
+	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
+		this.tdpCadreDAO = tdpCadreDAO;
 	}
 
 	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 		this.transactionTemplate = transactionTemplate;
-	}
-
-	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
-		this.tdpCadreDAO = tdpCadreDAO;
 	}
 
 	public void setCadrePreviousRolesDAO(
@@ -209,7 +103,6 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		this.boothPublicationVoterDAO = boothPublicationVoterDAO;
 	}
 
-	
 	public void setCountryDAO(ICountryDAO countryDAO) {
 		this.countryDAO = countryDAO;
 	}
@@ -221,19 +114,53 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	public void setUserVoterDetailsDAO(IUserVoterDetailsDAO userVoterDetailsDAO) {
 		this.userVoterDetailsDAO = userVoterDetailsDAO;
 	}
-	
-
-	public void setDateUtilService(DateUtilService dateUtilService) {
-		this.dateUtilService = dateUtilService;
-	}
 
 	public void setUserAddressDAO(IUserAddressDAO userAddressDAO) {
 		this.userAddressDAO = userAddressDAO;
 	}
 
-	
+	public void setDateUtilService(DateUtilService dateUtilService) {
+		this.dateUtilService = dateUtilService;
+	}
+
 	public void setVoterDAO(IVoterDAO voterDAO) {
 		this.voterDAO = voterDAO;
+	}
+
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+
+	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
+		this.tehsilDAO = tehsilDAO;
+	}
+
+	public void setPanchayatDAO(IPanchayatDAO panchayatDAO) {
+		this.panchayatDAO = panchayatDAO;
+	}
+
+	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
+		this.localElectionBodyDAO = localElectionBodyDAO;
+	}
+
+	public void setBoothDAO(IBoothDAO boothDAO) {
+		this.boothDAO = boothDAO;
+	}
+
+	public void setCasteStateDAO(ICasteStateDAO casteStateDAO) {
+		this.casteStateDAO = casteStateDAO;
+	}
+
+	public void setBloodGroupDAO(IBloodGroupDAO bloodGroupDAO) {
+		this.bloodGroupDAO = bloodGroupDAO;
+	}
+
+	public void setElectionDAO(IElectionDAO electionDAO) {
+		this.electionDAO = electionDAO;
+	}
+
+	public void setCadreDAO(ICadreDAO cadreDAO) {
+		this.cadreDAO = cadreDAO;
 	}
 
 	/**
@@ -298,7 +225,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								}
 								if(cadreRegistrationVO.getPreviousEnrollmentNumber() != null && !cadreRegistrationVO.getPreviousEnrollmentNumber().equalsIgnoreCase("null") && cadreRegistrationVO.getPreviousEnrollmentNumber().trim().length() > 0)
 								{
-									tdpCadre.setMemberShipNo(cadreRegistrationVO.getPreviousEnrollmentNumber());
+									tdpCadre.setPreviousEnrollmentNo(cadreRegistrationVO.getPreviousEnrollmentNumber());
 								}
 								if(cadreRegistrationVO.getPartyMemberSince() != null)
 								{
@@ -346,7 +273,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								}
 								
 								UserAddress userAddress = new UserAddress();
-								getVoterAddressDetails(cadreRegistrationVO.getVoterId(),userAddress);
+								getVoterAddressDetails(tdpCadre.getVoterId(),userAddress);
 								userAddress = userAddressDAO.save(userAddress);
 								tdpCadre.setUserAddress(userAddress);						
 								tdpCadre.setInsertedTime(dateUtilService.getCurrentDateAndTime());
@@ -366,6 +293,19 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								{
 									tdpCadre.setSurveyTime(cadreRegistrationVO.getSurveyTime());
 								}
+								synchronized (resultStatus) {
+									String memberNumber = tdpCadreDAO.getLatestMemberNumber();
+									if(memberNumber == null)
+									{
+										tdpCadre.setMemberShipNo("10000001");
+									}
+									else
+									{
+										tdpCadre.setMemberShipNo(String.valueOf((Long.valueOf(memberNumber) + 1l)));
+										resultStatus.setHost(tdpCadre.getMemberShipNo());
+									}
+								}
+								
 								tdpCadre = tdpCadreDAO.save(tdpCadre);						
 								List<CadrePreviousRollesVO> previousRollesPartList = cadreRegistrationVO.getPreviousRollesList();
 								if(previousRollesPartList != null && previousRollesPartList.size() > 0)
@@ -415,9 +355,14 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 												
 												cadreParticipatedElection.setTdpCadreId(tdpCadre.getTdpCadreId());
 												
-												if(electionVO.getElectionTypeId() != null && electionVO.getElectionTypeId().longValue() > 0)
+												
+												List<Election> electionsList = electionDAO.findByElectionTypeYearAndState(electionVO.getElectionTypeId(),String.valueOf(electionVO.getElectionYear()),1l,1l);
+												if(electionsList != null && electionsList.size() > 0)
 												{
-													cadreParticipatedElection.setElectionId(electionVO.getElectionTypeId());
+													if(electionsList.get(0) != null)
+													{
+														cadreParticipatedElection.setElectionId(electionsList.get(0).getElectionId());
+													}
 												}
 												
 												if(electionVO.getConstituencyId() != null && electionVO.getConstituencyId().longValue() > 0)
@@ -434,6 +379,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							}
 							resultStatus.setMessage("Saved Successfully");
 							resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+							
 
 				}});
 
@@ -591,10 +537,6 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						vo.setRelativeName(cadre[3] != null ? cadre[3].toString().trim():"");
 						
 						String dateOfBirth = cadre[4] != null ? cadre[4].toString().trim():"";
-						if(dateOfBirth != null && dateOfBirth.length() == 9)
-						{
-							dateOfBirth = dateOfBirth+" ";
-						}
 						
 						if(dateOfBirth != null && dateOfBirth.trim().length()>0)
 						{
@@ -682,7 +624,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				{
 					if(voterVO.getId().longValue() == id.longValue())
 					{
-						return voterVO;
+						return voterInfoVO;
 					}
 				}
 			}
