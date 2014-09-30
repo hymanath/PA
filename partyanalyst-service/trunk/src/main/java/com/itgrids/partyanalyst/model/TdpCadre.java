@@ -62,11 +62,13 @@ public class TdpCadre {
 	private EducationalQualifications 	educationalQualifications;
 	private CasteState 					casteState;
 	private UserAddress 				userAddress;
-	private User 						updatedBy;
-	private User 						insertedBy;
+	private CadreSurveyUser				updatedBy;
+	private CadreSurveyUser				insertedBy;
 	private Date                        surveyTime;
 	private String                      isDeleted;
 	
+	private String 						latitude;
+	private String 						longititude;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -339,10 +341,10 @@ public class TdpCadre {
 	@JoinColumn(name = "updated_by" , insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public User getUpdatedBy() {
+	public CadreSurveyUser getUpdatedBy() {
 		return updatedBy;
 	}
-	public void setUpdatedBy(User updatedBy) {
+	public void setUpdatedBy(CadreSurveyUser updatedBy) {
 		this.updatedBy = updatedBy;
 	}
 	
@@ -350,10 +352,10 @@ public class TdpCadre {
 	@JoinColumn(name = "created_by" , insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public User getInsertedBy() {
+	public CadreSurveyUser getInsertedBy() {
 		return insertedBy;
 	}
-	public void setInsertedBy(User insertedBy) {
+	public void setInsertedBy(CadreSurveyUser insertedBy) {
 		this.insertedBy = insertedBy;
 	}	
 	
@@ -374,6 +376,23 @@ public class TdpCadre {
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
 	}
+	
+	@Column(name="latitude")
+	public String getLatitude() {
+		return latitude;
+	}
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+	@Column(name="longititude")
+	public String getLongititude() {
+		return longititude;
+	}
+	public void setLongititude(String longititude) {
+		this.longititude = longititude;
+	}
+	
+	
 	
 	
 

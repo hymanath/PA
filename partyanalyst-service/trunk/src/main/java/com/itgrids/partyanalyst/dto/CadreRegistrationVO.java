@@ -10,28 +10,36 @@ public class CadreRegistrationVO implements Serializable{
 	private static final long serialVersionUID = 1951217282876724276L;
 	
 	
-	private String voterName;
-	private Date dob;
-	private String gender;
-	private String relativeName;
-	private Long voterId;
-	private String previousEnrollmentNumber;
-	private String voterCardNo;
-	private Date partyMemberSince;
-	private Long bloodGroupId;
-	private String street;
-	private Long casteId;
-	private String casteName;
-	private String mobileNumber;
-	private Long educationId;
-	private Long occupationId;
-	private String houseNo;
-	private Long age;
-	private String lastName;
-	private String landMobileNo;
-	private Long enrollmentNumber;
-	private Long createdUserId;
-	private Long updatedUserId;
+	private String 			 voterName;
+	private Date		 	 dob;
+	private String		 	 dobStr;
+	private String			 gender;
+	private String 			 relativeName;
+	private Long 			 voterId;
+	private String 			 previousEnrollmentNumber;
+	private String 			 voterCardNo;
+	private Date 			 partyMemberSince;
+	private String 			 partyMemberSinceStr;
+	private Long 			 bloodGroupId;
+	private String 			 street;
+	private Long 			 casteId;
+	private String 			 casteName;
+	private String 			 mobileNumber;
+	private Long 			 educationId;
+	private Long 			 occupationId;
+	private String 			 houseNo;
+	private Long 			 age;
+	private String 			 lastName;
+	private String 			 landMobileNo;
+	private Long 			 enrollmentNumber;
+	private Long 			 createdUserId;
+	private Long 			 updatedUserId;
+	
+	private String  		 longititude;
+	private String 			 latitude;
+	private Date 			 surveyTime;
+	
+	private String 			 voterCardNumber;
 	
 	private List<CadrePreviousRollesVO> previousRollesList;
 	
@@ -182,6 +190,42 @@ public class CadreRegistrationVO implements Serializable{
 	}
 	public void setUpdatedUserId(Long updatedUserId) {
 		this.updatedUserId = updatedUserId;
+	}
+	public String getLongititude() {
+		return longititude;
+	}
+	public void setLongititude(String longititude) {
+		this.longititude = longititude;
+	}
+	public String getLatitude() {
+		return latitude;
+	}
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+	public Date getSurveyTime() {
+		return surveyTime;
+	}
+	public void setSurveyTime(Date surveyTime) {
+		this.surveyTime = surveyTime;
+	}
+	public String getVoterCardNumber() {
+		return voterCardNumber;
+	}
+	public void setVoterCardNumber(String voterCardNumber) {
+		this.voterCardNumber = voterCardNumber;
+	}
+	public String getDobStr() {
+		return dobStr;
+	}
+	public void setDobStr(String dobStr) {
+		this.dobStr = dobStr;
+	}
+	public String getPartyMemberSinceStr() {
+		return partyMemberSinceStr;
+	}
+	public void setPartyMemberSinceStr(String partyMemberSinceStr) {
+		this.partyMemberSinceStr = partyMemberSinceStr;
 	}
 	
 	

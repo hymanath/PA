@@ -56,9 +56,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private IUserVoterDetailsDAO			userVoterDetailsDAO; 
 	private IUserAddressDAO					userAddressDAO;
 	private DateUtilService					dateUtilService;
+	private IVoterDAO						voterDAO;
 
 	private ICadreDAO 						cadreDAO;
-	private IVoterDAO						voterDAO;
 
 	
 	public ICadreDAO getCadreDAO() {
@@ -67,14 +67,6 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 
 	public void setCadreDAO(ICadreDAO cadreDAO) {
 		this.cadreDAO = cadreDAO;
-	}
-
-	public IVoterDAO getVoterDAO() {
-		return voterDAO;
-	}
-
-	public void setVoterDAO(IVoterDAO voterDAO) {
-		this.voterDAO = voterDAO;
 	}
 
 	public ITdpCadreDAO getTdpCadreDAO() {
@@ -162,6 +154,11 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		this.userAddressDAO = userAddressDAO;
 	}
 
+	
+	public void setVoterDAO(IVoterDAO voterDAO) {
+		this.voterDAO = voterDAO;
+	}
+
 	/**
 	 * This service is used for saving cadre data from tab as well web also
 	 * @author Prasad Thiragabathina
@@ -202,6 +199,21 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								if(cadreRegistrationVO.getVoterId() != null && cadreRegistrationVO.getVoterId().longValue() > 0)
 								{
 									tdpCadre.setVoterId(cadreRegistrationVO.getVoterId());
+								}
+								else if(cadreRegistrationVO.getVoterCardNumber() != null && !cadreRegistrationVO.getVoterCardNumber().equalsIgnoreCase("null") && cadreRegistrationVO.getVoterCardNumber().trim().length() > 0)
+								{
+									List<Long> voterCardNumbersList = voterDAO.getVoterId(cadreRegistrationVO.getVoterCardNumber());
+									if(voterCardNumbersList != null && voterCardNumbersList.size() > 0)
+									{
+										tdpCadre.setVoterId(voterDAO.getVoterId(cadreRegistrationVO.getVoterCardNumber()).get(0));
+									}
+									else
+									{
+										resultStatus.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
+										resultStatus.setMessage("Data Not Found");
+										return;
+									}
+									
 								}
 								if(cadreRegistrationVO.getPreviousEnrollmentNumber() != null && !cadreRegistrationVO.getPreviousEnrollmentNumber().equalsIgnoreCase("null") && cadreRegistrationVO.getPreviousEnrollmentNumber().trim().length() > 0)
 								{
@@ -251,6 +263,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								{
 									tdpCadre.setUpdatedUserId(cadreRegistrationVO.getUpdatedUserId().longValue());
 								}
+								
 								UserAddress userAddress = new UserAddress();
 								getVoterAddressDetails(cadreRegistrationVO.getVoterId(),userAddress);
 								userAddress = userAddressDAO.save(userAddress);
@@ -258,6 +271,20 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								tdpCadre.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 								tdpCadre.setUpdatedTime(dateUtilService.getCurrentDateAndTime());		
 								tdpCadre.setEnrollmentYear(IConstants.CADRE_ENROLLMENT_NUMBER);
+								if(cadreRegistrationVO.getLongititude() != null && !cadreRegistrationVO.getLongititude().equalsIgnoreCase("null") && cadreRegistrationVO.getLongititude().trim().length() > 0)
+								{
+									tdpCadre.setLongititude(cadreRegistrationVO.getLongititude());
+								}
+								
+								if(cadreRegistrationVO.getLatitude() != null && !cadreRegistrationVO.getLatitude().equalsIgnoreCase("null") && cadreRegistrationVO.getLatitude().trim().length() > 0)
+								{
+									tdpCadre.setLatitude(cadreRegistrationVO.getLatitude());
+								}
+								tdpCadre.setIsDeleted("N");
+								if(cadreRegistrationVO.getSurveyTime() != null)
+								{
+									tdpCadre.setSurveyTime(cadreRegistrationVO.getSurveyTime());
+								}
 								tdpCadre = tdpCadreDAO.save(tdpCadre);						
 								List<CadrePreviousRollesVO> previousRollesPartList = cadreRegistrationVO.getPreviousRollesList();
 								if(previousRollesPartList != null && previousRollesPartList.size() > 0)
@@ -316,12 +343,14 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 									}
 								}
 							}
+							resultStatus.setMessage("Saved Successfully");
 							resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 
 				}});
 
 		} catch (Exception e) {
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setMessage("Exception Raised");
 			LOG.error("Exception raised in saveCadreRegistration in CadreRegistrationService service", e);
 		}
 		
@@ -410,7 +439,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				{
 					searchQuery.append(" BPV.voter.name like '%"+candidateName+"%' and");
 				}
-				if(voterCardId != null  && houseNo.trim().length()>0)
+				if(voterCardId != null  && voterCardId.trim().length()>0)
 				{
 					searchQuery.append("  BPV.voter.voterIDCardNo like '%"+voterCardId+"%' and");
 				}
@@ -684,7 +713,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							returnList.add(vo);
 						
 						} catch (Exception e) {
-							e.printStackTrace();
+							LOG.error("Exception raised in getCandidateInfoBySearchCriteria in CadreRegistrationService service", e);
 						}
 					}
 				}

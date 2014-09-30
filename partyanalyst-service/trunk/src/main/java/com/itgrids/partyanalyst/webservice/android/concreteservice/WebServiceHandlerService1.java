@@ -1,8 +1,10 @@
 package com.itgrids.partyanalyst.webservice.android.concreteservice;
        
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -15,6 +17,8 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.ICadreSurveyUserAssignDetailsDAO;
+import com.itgrids.partyanalyst.dao.ICadreSurveyUserDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppPingingDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserAccessKeyDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserDAO;
@@ -28,8 +32,14 @@ import com.itgrids.partyanalyst.dao.IVoiceRecordingDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterBoothActivitiesDAO;
 import com.itgrids.partyanalyst.dao.IVoterTagDAO;
 import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
+import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
+import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
+import com.itgrids.partyanalyst.dto.LoginResponceVO;
+import com.itgrids.partyanalyst.dto.LoginStatusVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
+import com.itgrids.partyanalyst.model.CadreSurveyUserAssignDetails;
+import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.itgrids.partyanalyst.service.ILoginService;
 import com.itgrids.partyanalyst.service.IMailService;
@@ -41,7 +51,6 @@ import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
 import com.itgrids.partyanalyst.service.ISurveyDetailsService;
 import com.itgrids.partyanalyst.service.IVoiceSmsService;
 import com.itgrids.partyanalyst.service.IVoterReportService;
-import com.itgrids.partyanalyst.service.impl.SurveyDashBoardService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.webservice.android.abstractservice.IWebServiceHandlerService1;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.BoothVoterVO;
@@ -112,6 +121,14 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	
 	@Autowired
 	private ISurveyDashBoardService  surveyDashBoardService;
+	
+	@Autowired
+	private ICadreSurveyUserDAO cadreSurveyUserDAO ;
+	
+	@Autowired
+	private ICadreSurveyUserAssignDetailsDAO cadreSurveyUserAssignDetailsDAO;
+	
+	@Autowired ICadreRegistrationService cadreRegistrationService;
 	
 	
     
@@ -614,7 +631,103 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 		//process data 
 		return responseVo;
 	}
+	
+	
+	
+	
+	public LoginResponceVO checkForUserAuthenticationForCadre(UserLoginVO inputvo)
+	{
+		 LoginResponceVO returnVO = null;
+		LOG.debug("Entered into the checkForUserAuthenticationForCadre  method in WebServiceHandlerService");
+		try
+		{
+			List<Long> userIds=cadreSurveyUserDAO.getUserByUserNameAndPassword(inputvo.getUserName(), inputvo.getPassWord());
+			 if(userIds != null && userIds.size() > 0)
+			 {
+				 returnVO = new LoginResponceVO();
+				 prepareResponce(userIds.get(0),returnVO);
+			 }
+			
+		
+		}catch(Exception e)
+		{
+			LOG.error("Exception raised in checkForUserAuthenticationForCadre  method in WebServiceHandlerService",e);
 
+		}
+		return returnVO;
+	}
+	
+	public void prepareResponce(Long userId,LoginResponceVO loginResponceVO)
+	{
+		try {
+			LOG.debug("Entered into the prepareResponce  method in WebServiceHandlerService");
+			List<CadreSurveyUserAssignDetails> resultList = cadreSurveyUserAssignDetailsDAO.getCadreAssinedDetails(userId);
+			if(resultList != null && resultList.size() > 0)
+			{
+				loginResponceVO.setStatusMsg("SUCCUESS");
+				loginResponceVO.setConstituencyId(resultList.get(0).getConstituencyId());
+				loginResponceVO.setConstituencyName(resultList.get(0).getConstituency() != null ? resultList.get(0).getConstituency().getName() : null);
+				loginResponceVO.setUserId(userId);
+				List<LoginStatusVO> subList = new ArrayList<LoginStatusVO>();
+				Map<Long, List<Long>> subListMap = new HashMap<Long, List<Long>>();
+				for (CadreSurveyUserAssignDetails cadreSurveyUserAssignDetails : resultList) 
+				{
+					
+					List<Long> ids = subListMap.get(cadreSurveyUserAssignDetails.getLevelId());
+					if(ids == null)
+					{
+						ids = new ArrayList<Long>();
+						subListMap.put(cadreSurveyUserAssignDetails.getLevelId(), ids);
+					}
+					ids.add(cadreSurveyUserAssignDetails.getLevelValue());
+					
+				}
+				if(subListMap != null && subListMap.size() > 0)
+				{
+					for(Long statusId : subListMap.keySet())
+					{
+						LoginStatusVO loginStatusVO = new LoginStatusVO();
+						loginStatusVO.setStatusId(statusId);
+						loginStatusVO.setStatusRelatedValues(subListMap.get(statusId));
+						subList.add(loginStatusVO);
+					}
+					loginResponceVO.setStatusList(subList);
+				}
+				
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in prepareResponce  method in WebServiceHandlerService",e);
+		}
+	}
+
+	
+	public Object saveSurveyFieldUsersForCadre(CadreRegistrationVO inputResponse)
+	{
+		ResultStatus  rs = null;
+		LOG.debug(inputResponse.toString());
+		
+		LOG.error("Voter Name " + inputResponse.getVoterName() + "-" +"Date Of Birth "+ inputResponse.getDob() +"-"+ "Gender" +inputResponse.getGender()+  "-" +"Relative Name"+ inputResponse.getRelativeName() +"-" +"VoterCardNumber"+  inputResponse.getVoterCardNo() + "-" + "H.NO" + inputResponse.getHouseNo() + "-" +"Party Member Since" +inputResponse.getPartyMemberSince()  + "-" + "Blood Group " + inputResponse.getBloodGroupId() + "-" + "Street/hamle" +inputResponse.getStreet() +"-" +"Caste" + inputResponse.getCasteId() + "-" + "Mobile No" + inputResponse.getMobileNumber() + "-" + "Education" +inputResponse.getEducationId() + "-" + "Occupation " +inputResponse.getOccupationId() + "-" + "Previous Enroll Ment No " + inputResponse.getPreviousEnrollmentNumber());
+		if(inputResponse.getPreviousParicaptedElectionsList() != null && inputResponse.getPreviousParicaptedElectionsList().size() > 0)
+		{
+			for (CadrePreviousRollesVO electionVO : inputResponse.getPreviousParicaptedElectionsList())
+			{
+				LOG.error("Designation Level" +electionVO.getDesignationLevelId() + "-" +  "Designation Level Value" + electionVO.getDesignationLevelValue() + "-" + "From Date" + electionVO.getFromDate() + "-" + "To Date" + electionVO.getToDate()  );
+			}
+		}
+		if(inputResponse.getPreviousRollesList() != null && inputResponse.getPreviousRollesList().size() > 0)
+		{
+			for (CadrePreviousRollesVO electionVO : inputResponse.getPreviousRollesList())
+			{
+				LOG.error("Election Id" +electionVO.getElectionTypeId() + "-" +  "Constituency Id" + electionVO.getConstituencyId() );
+			}
+		}
+		if(inputResponse != null)
+		{
+			  rs=cadreRegistrationService.saveCadreRegistration(inputResponse);	
+		}
+		return rs;
+		
+	}
 	
 }
 
