@@ -2184,7 +2184,7 @@
 		<property name="boothDAO" ref="boothDAO" />
 		<property name="casteStateDAO" ref="casteStateDAO" />
 		<property name="bloodGroupDAO" ref="bloodGroupDAO" />
-							
+         <property name="electionDAO" ref="electionDAO" />
      </bean>
       
       <bean name="cadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CadreDashBoardService">

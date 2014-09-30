@@ -27,6 +27,40 @@
     <script src="js/bootstrap.min.js"></script>
 <!-- iCheck -->
 	
+	
+	<!-- YUI Dependency files (Start) -->
+	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/element-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/button-min.js"></script> 	
+	<script src="js/yahoo/resize-min.js"></script> 
+	<script src="js/yahoo/layout-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/container-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dom-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
+	<script type="text/javascript" src="js/json/json-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/connection-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/tabview-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/datasource-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/get-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
+	<!-- Skin CSS files resize.css must load before layout.css --> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/layout.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css"> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/button.css"> 
+ 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/tabview.css">
+	<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css">      
+
+	<!-- YUI Dependency files (End) -->
+	
+	
     <script>$('#yourElement').addClass('animated fadeInDown');</script>
     <script>$('#fadeInLeft').addClass('animated fadeInLeft');</script>
     <script>$('#fadeInRight').addClass('animated fadeInRight');</script>
@@ -107,6 +141,21 @@
 	{
 		$('.'+id).remove();
 	}
+	
+	function submitCadreForm()
+	{
+		var uploadHandler = {
+				upload: function(o) {
+					uploadResult = o.responseText;
+					console.log(uploadResult);
+					/*showUploadStatus(uploadResult);	
+					 $("#cadreSaveBth").removeAttr('disabled'); */
+				}
+			};
+
+		YAHOO.util.Connect.setForm('uploadCadreForm',true);
+		YAHOO.util.Connect.asyncRequest('POST','tdpCadreRegistrationAction.action',uploadHandler);
+	}
 	</script>
 	
 </head>
@@ -117,7 +166,7 @@
 		</div>
 	</div>
 <div>
-	<form action="tdpCadreRegistrationAction.action" method="POST" name="cadreForm">	
+	<form action="tdpCadreRegistrationAction.action" method="POST" name="uploadCadreForm">	
 		<div class="container m_top10"style="position: relative;">
 		
 			<div class="span12" >
@@ -321,7 +370,7 @@
 						<div class=" m_top20" >
 							<h5 class="text-align1">Year</h5>
 							<select class="form-control border-radius-0 text-align1" name="cadreRegistrationVO.previousParicaptedElectionsList[0].electionYear">
-							  <option value ="1">kuppam</option>
+							  <option value ="2006">2009</option>
 							  <option value = "2">Nellore</option>
 							  <option value = "3">Anantapur</option>
 							  </select>
@@ -343,7 +392,7 @@
 		<div class="container m_top10">
 			<div class="span12 show-grid" style="position: relative;">
 				<a class="btn btn-primary m_top20 border-radius-0 text-align2" href="search-constituency.html"><span class="icon-chevron-left icon-white"></span>&nbsp;&nbsp;Back </a>
-				<input type="submit" class="btn btn-success text-align3 m_top20 pull-right border-radius-0" value="Next"> &nbsp;&nbsp;<span class=" icon-chevron-right icon-white"></span></input>
+				<a  onClick="submitCadreForm();" class="btn btn-success text-align3 m_top20 pull-right border-radius-0"> &nbsp;&nbsp;Next<span class=" icon-chevron-right icon-white"></span></a>
 			</div>
 		</div>
 	</div>
