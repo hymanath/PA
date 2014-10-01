@@ -490,7 +490,7 @@ public class BenefitAnalysisService implements IBenefitAnalysisService {
      }
      
      
-     public List<NewsActivityVO> getLocationBenifitNews(Date fromDate,Date toDate,Long locationId,Long benfitId,int startIndex,int maxIndex,String name){
+     public List<NewsActivityVO> getLocationBenifitNews(Date fromDate,Date toDate,Long locationId,Long benfitId,int startIndex,int maxIndex,String name,Long partyId){
       	
     	 List<NewsActivityVO> results = new ArrayList<NewsActivityVO>();
     	 NewsActivityVO vo = null;
@@ -498,16 +498,16 @@ public class BenefitAnalysisService implements IBenefitAnalysisService {
     	 List<Object[]>  newsList = new ArrayList<Object[]>();
     	 Long count = 0L;
     	 if(name.equalsIgnoreCase("districtWiseBenefits") ){
-	    	  newsList = candidatePartyFileDAO.getDistrictBenifitNews(fromDate, toDate, locationId, benfitId,startIndex,maxIndex);
-	    	  count  = candidatePartyFileDAO.getDistrictBenifitNewsCount(fromDate, toDate, locationId, benfitId);
+	    	  newsList = candidatePartyFileDAO.getDistrictBenifitNews(fromDate, toDate, locationId, benfitId,partyId,startIndex,maxIndex);
+	    	  count  = candidatePartyFileDAO.getDistrictBenifitNewsCount(fromDate, toDate, locationId, benfitId,partyId);
     	 }
     	 else if(name.equalsIgnoreCase("parliamentWiseBenefits") ){
-    		 newsList = candidatePartyFileDAO.getParliamentBenifitNews(fromDate, toDate, locationId, benfitId,startIndex,maxIndex);
-	    	  count  = candidatePartyFileDAO.getParliamentBenifitNewsCount(fromDate, toDate, locationId, benfitId);
+    		 newsList = candidatePartyFileDAO.getParliamentBenifitNews(fromDate, toDate, locationId, benfitId,partyId,startIndex,maxIndex);
+	    	  count  = candidatePartyFileDAO.getParliamentBenifitNewsCount(fromDate, toDate, locationId, benfitId,partyId);
     	 }
     	 else if(name.equalsIgnoreCase("assemblyWiseBenefits") ){
-    		 newsList = candidatePartyFileDAO.getAssemblyBenifitNews(fromDate, toDate, locationId, benfitId,startIndex,maxIndex);
-	    	  count  = candidatePartyFileDAO.getAssemblyBenifitNewsCount(fromDate, toDate, locationId, benfitId);
+    		 newsList = candidatePartyFileDAO.getAssemblyBenifitNews(fromDate, toDate, locationId, benfitId,partyId,startIndex,maxIndex);
+	    	  count  = candidatePartyFileDAO.getAssemblyBenifitNewsCount(fromDate, toDate, locationId, benfitId,partyId);
     	 }
     	 
     	 for(Object[] news:newsList){
@@ -526,4 +526,7 @@ public class BenefitAnalysisService implements IBenefitAnalysisService {
     	 }
     	 return results;
     }
+     
+     
+   
 }
