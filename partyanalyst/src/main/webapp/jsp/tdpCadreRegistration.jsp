@@ -165,24 +165,62 @@
 	
 	function showUploadStatus(myResult)
 	{
+		$('#mainDiv').html('');
 		var result = (String)(myResult);
 		var errorDivEle = document.getElementById('errorMsgDiv');
 		var str = '';
-		alert(result.search('success'));
 		if(result.search('SUCCESS') != -1)
 		{
-			str += '<font color="green"><b>Cadre Added Successfully.</b></font>';
+			str+= '<div class="container m_top10" id="yourElement">';
+			str+= '<div class="span12  show-grid" style="position: relative;">';
+			str+= '<p class="text-align">Thank You For Your Registration</p>';
+			str+= '<h3 class="text-align">Successfully Registration Completed</h3>';
+			str+= '</div>';
+			str+= '</div>';
+			str+= '<div class="container m_top10" id="yourElement">';
+			str+= '<div class="span12  show-grid" style="position: relative;">';
+			str+= '<a href="tdpCadreSearchAction.action" class="btn btn-success  offset5 border-radius-0"  >Continue  <span class="glyphicon glyphicon-chevron-right"></span></a>';
+			str+= '</div>';
+			str+= '</div>';
 		}
-		else if(result.search('update') != -1)
+		else if(result.search('FAILURE') != -1)
 		{
-			str += '<font color="green"><b>Cadre Updated Successfully.</b></font>';
+			str+= '<div class="container m_top10" id="yourElement">';
+			str+= '<div class="span12  show-grid" style="position: relative;">';
+			str+= '<p class="text-align">Thank You For Your Registration</p>';
+			str+= '<h3 class="text-align">Exception raised while cadre registration</h3>';
+			str+= '</div>';
+			str+= '</div>';
+			str+= '<div class="container m_top10" id="yourElement">';
+			str+= '<div class="span12  show-grid" style="position: relative;">';
+			str+= '<a href="tdpCadreSearchAction.action" class="btn btn-success  offset5 border-radius-0"  >Continue  <span class="glyphicon glyphicon-chevron-right"></span></a>';
+			str+= '</div>';
+			str+= '</div>';
 		}
-		alert(str);
+		else
+		{
+			str+= '<div class="container m_top10" id="yourElement">';
+			str+= '<div class="span12  show-grid" style="position: relative;">';
+			str+= '<p class="text-align">Thank You For Your Registration</p>';
+			str+= '<h3 class="text-align">Data Not Found For your Voter Id</h3>';
+			str+= '</div>';
+			str+= '</div>';
+			str+= '<div class="container m_top10" id="yourElement">';
+			str+= '<div class="span12  show-grid" style="position: relative;">';
+			str+= '<a href="tdpCadreSearchAction.action" class="btn btn-success  offset5 border-radius-0"  >Continue  <span class="glyphicon glyphicon-chevron-right"></span></a>';
+			str+= '</div>';
+			str+= '</div>';
+			
+		}
+		$('#statusDiv').html(str);
 	}
 	var cadreLevelArr = [];
 	var partyDesignationArr = [];
 	
-	
+	function openSearchForm()
+	{
+		window.location.assign('tdpCadreSearchAction.action')
+	}
 	function prepopulateOptions()
 	{
 		var jsObj = 
@@ -291,11 +329,13 @@
 	
 </head>
   <body class="bgc">
+
 	<div class="container m_top10 " id="yourElement">
 		<div class="span12 show-grid" style="position: relative;">
 			<h3 class="text-align">CADRE REGISTRATION</h3>
 		</div>
 	</div>
+	  <div id="mainDiv">
 <div>
 	<form action="tdpCadreSaveRegistrationAction.action" method="POST" enctype="multipart/form-data" name="uploadCadreForm">	
 		<div class="container m_top10"style="position: relative;">
@@ -501,11 +541,8 @@
 					<div class="span4">
 						<div class=" m_top20" >
 							<h5 class="text-align1">Constituency</h5>
-							<select class="form-control border-radius-0 text-align1" name="cadreRegistrationVO.previousParicaptedElectionsList[0].constituencyId">
-							  <option value ="1">kuppam</option>
-							  <option value = "2">Nellore</option>
-							  <option value = "3">Anantapur</option>
-							  </select>
+							
+							<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level"  list="constituencyesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" style="width:220px;" name="cadreRegistrationVO.previousParicaptedElectionsList[0].constituencyId"/>
 						</div>
 					</div>
 				</div>
@@ -519,6 +556,10 @@
 		</div>
 	</div>
 </form>
+</div>
+</div>
+
+<div id="statusDiv">
 </div>
 </body>
 </html>
