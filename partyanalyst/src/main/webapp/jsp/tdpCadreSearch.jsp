@@ -11,16 +11,22 @@
     <title>TDP Cadre Search </title>
 
     <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">	
+    <link href="css/bootstrap.min.css" rel="stylesheet"/>	
 	<!-- Custom Styles-->
-    <link href="css/style.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet"/>
 	<!-- CSS animation -->
-    <link href="css/animate.css" rel="stylesheet">	
+    <link href="css/animate.css" rel="stylesheet"/>	
 	<!-- icheck Css-->
-	<link href="styles/icheck_skins/all.css?v=1.0.2" rel="stylesheet">
-	
+	<link href="styles/icheck_skins/all.css?v=1.0.2" rel="stylesheet"/>
+			
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+	 <script src="js/icheck/icheck.js"></script>
+	<!-- iCheck -->
+
 	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
-	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
+	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
 	
 	<style>
 	.show-grid:hover .block-hover-addBtn{display:table-cell; margin-right:-22px; top:-10px;}/*visibility: visible;*/
@@ -96,14 +102,7 @@
 	
 		</div>
 	</div>
-		
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-     <script src="js2.3.2/bootstrap.min.js"></script>
-		<script src="js/icheck/jquery.js"></script>
-	 <script src="js/icheck/icheck.js"></script>
-<!-- iCheck -->
+
 	<script>
 		$(document).ready(function(){
 		  $('input').iCheck({
@@ -233,7 +232,7 @@
 	{
 
 	var str = '';
-			str +='<table class="table table-bordered" id="seachDetalsTab">';
+			str +='<table class="table table-bordered m_top20 table-hover table-striped"  id="seachDetalsTab">';
 			str +='<thead>';
 			str +='<tr>';
 			str +='<th class="text-align1">NAME</th>';
@@ -264,12 +263,27 @@
 		$('#searchDetailsDiv').html(str);
 		$('#tableElement').show();
 		 
-		 $('#seachDetalsTab').dateTable();
+		 $('#seachDetalsTab').dataTable({
+			"iDisplayLength": 100,
+			"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]]
+			});
+			
+			$('input').iCheck({
+			checkboxClass: 'icheckbox_square-blue',
+			radioClass: 'iradio_square-blue',
+			increaseArea: '20%' // optional
+		  });
+		  
+		   $('input[name="optionsRadios"]').on('ifClicked', function (event) {
+				//alert("You clicked " + this.value);
+				getDetailsForUser(this.value);
+				
+			});
 	}
 	
-	function getDetailsForUser()
+	function getDetailsForUser(candidateId)
 	{
-		var candidateId = $('input[name="optionsRadios"]:checked').val();
+		//var candidateId = $('input[name="optionsRadios"]:checked').val();
 		var searchType = $('input[name="searchTypeRadio"]:checked').val();
 
 		window.open('tdpCadreRegistrationAction.action?candidateId='+candidateId+'&searchType='+searchType+'');
