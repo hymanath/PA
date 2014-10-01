@@ -8412,6 +8412,39 @@
 			<result name="success">/jsp/cadreDashBoard.jsp</result>
 		</action>
 		
+		<action name="getConstituncyWiseDetailsAction" class="cadreRegistrationAction" method="getconstituencyDetailsByConstiteuncy">
+			<result type="json" name="success">
+				<param name="root">genericVOList</param>
+			</result>
+		</action>
+		
+		<action name="getLocationWiseDetailsAction" class="cadreRegistrationAction" method="getBoothsDetailsByLocation">
+			<result type="json" name="success">
+				<param name="root">genericVOList</param>
+			</result>
+		</action>
+		
+		<action name="getBoothCoverdVillagesDetailsAction" class="cadreRegistrationAction" method="getBoothCoverdVillagesDetails">
+			<result type="json" name="success">
+				<param name="root">genericVOList</param>
+			</result>
+		</action>
+		
+		<action name="getOptionDetailsForCadreAction" class="cadreRegistrationAction" method="getOptionDetailsForCadre">
+			<result type="json" name="success">
+				<param name="root">selectOptionVOList</param>
+			</result>
+		</action>
+			
+		<action name="getElectionOptionDetailsForCadreAction" class="cadreRegistrationAction" method="getElectionOptionDetailsForCadre">
+			<result type="json" name="success">
+				<param name="root">selectOptionVOList</param>
+			</result>
+		</action>
+		
+		
+		
+		
 </package>
 
 </struts>      
