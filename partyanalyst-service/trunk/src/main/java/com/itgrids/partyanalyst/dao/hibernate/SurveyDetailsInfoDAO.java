@@ -416,9 +416,18 @@ public List<Object[]> getsurveyDetailsInfoByboothId(Long boothId,Long surveyUser
 		
 	}
 
-	public List<Object[]> getSurveyStartedConstituencyInfo()
+	/*public List<Object[]> getSurveyStartedConstituencyInfo()
 	{
 		Query query = getSession().createQuery("select distinct SDI.booth.constituency.constituencyId,SDI.booth.constituency.name from SurveyDetailsInfo SDI order by SDI.booth.constituency.name asc ");
+		
+		return query.list();
+		
+	}*/
+	
+	public List<Object[]> getSurveyStartedConstituencyInfo()
+	{
+		Query query = getSession().createQuery("select distinct model.constituency.constituencyId,model.constituency.name from Booth model where model.boothId in(" +
+				" select distinct model2.booth.boothId from SurveyDetailsInfo model2) order by model.constituency.name");
 		
 		return query.list();
 		
