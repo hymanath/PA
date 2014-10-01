@@ -334,9 +334,9 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			String voterCardNo = jobj.getString("voterCardNo");
 			Long panchayatId = jobj.getLong("panchayatId");
 			Long boothId = jobj.getLong("boothId");
-			Long locationId = jobj.getLong("locationId");
+			String vilagesCovered = jobj.getString("locationId");
 			
-			voterInfoVOList = cadreRegistrationService.getSearchDetailsCadreRegistration(constituencyId,searchType,candidateName,voterCardNo,houseNo,panchayatId,boothId,locationId);
+			voterInfoVOList = cadreRegistrationService.getSearchDetailsCadreRegistration(constituencyId,searchType,candidateName,voterCardNo,houseNo,panchayatId,boothId,vilagesCovered);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in searchVoterAndCadreInfoBySearchCriteria method in CadreRegistrationAction Action",e);
@@ -444,5 +444,30 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		return Action.SUCCESS;
 	}
 	
+	public String getOptionDetailsForCadre()
+	{
+		LOG.info("Entered into getOptionDetailsForCadre method in CadreRegistrationAction Action");
+		try {			
+			selectOptionVOList = cadreRegistrationService.getOptionDetailsForCadre();
+			
+		} catch (Exception e) {			
+			LOG.info("Entered into getOptionDetailsForCadre method in CadreRegistrationAction Action");
+		}
+		return Action.SUCCESS;
+		
+	}
+	
+	public String getElectionOptionDetailsForCadre()
+	{
+		LOG.info("Entered into getOptionDetailsForCadre method in CadreRegistrationAction Action");
+		try {			
+			selectOptionVOList = cadreRegistrationService.getElectionOptionDetailsForCadre();
+			
+		} catch (Exception e) {			
+			LOG.info("Entered into getOptionDetailsForCadre method in CadreRegistrationAction Action");
+		}
+		return Action.SUCCESS;
+		
+	}
 	
 }
