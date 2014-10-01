@@ -99,13 +99,13 @@ public class UserTrackingInterceptor extends AbstractInterceptor implements Serv
 			
 			if(userRoles.contains(IConstants.PARTY_ANALYST_USER) && registrationVO.isMultipleAccessRestriction())
 			{
-				String sessionId = accessRestrictedSessionDAO.verifySessionIdAvailability(session.getId());
+				/*String sessionId = accessRestrictedSessionDAO.verifySessionIdAvailability(session.getId());
 	    		if(sessionId != null)
 	    		{
 	    			accessRestrictedSessionDAO.deleteSessionsFromAccessRestrictedSession(session.getId());
 	    			session.invalidate();
 	    			return "multipleAccess";
-	    		}
+	    		}*/
 			}
 		}
 		if(invocation.getProxy().getMethod().equalsIgnoreCase("execute"))
