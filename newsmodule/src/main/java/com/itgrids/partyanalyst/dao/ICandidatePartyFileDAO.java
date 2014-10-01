@@ -99,15 +99,15 @@ public interface ICandidatePartyFileDAO extends GenericDao<CandidatePartyFile, L
 	
 	public List<Object[]> getParliamentWiseBenifit(Date fromDate,Date toDate,Long stateId,Long partyId);
 	
-	public Long getAssemblyBenifitNewsCount(Date fromDate,Date toDate,Long constituencyId,Long benfitId);
+	public Long getAssemblyBenifitNewsCount(Date fromDate,Date toDate,Long constituencyId,Long benfitId,Long partyId);
 	  
-	public List<Object[]>  getAssemblyBenifitNews(Date fromDate,Date toDate,Long constituencyId,Long benfitId,int startIndex,int maxIndex);
+	public List<Object[]>  getAssemblyBenifitNews(Date fromDate,Date toDate,Long constituencyId,Long benfitId,Long partyId,int startIndex,int maxIndex);
 	
-	public Long getParliamentBenifitNewsCount(Date fromDate,Date toDate,Long pcID,Long benfitId);
+	public Long getParliamentBenifitNewsCount(Date fromDate,Date toDate,Long pcID,Long benfitId,Long partyId);
 	
-	public List<Object[]>  getParliamentBenifitNews(Date fromDate,Date toDate,Long pcID,Long benfitId,int startIndex,int maxIndex);
+	public List<Object[]>  getParliamentBenifitNews(Date fromDate,Date toDate,Long pcID,Long benfitId,Long partyId,int startIndex,int maxIndex);
 	
-	public Long getDistrictBenifitNewsCount(Date fromDate,Date toDate,Long districtId,Long benfitId);
+	public Long getDistrictBenifitNewsCount(Date fromDate,Date toDate,Long districtId,Long benfitId,Long partyId);
 	
-	public List<Object[]>  getDistrictBenifitNews(Date fromDate,Date toDate,Long districtId,Long benfitId,int startIndex,int maxIndex);
+	public List<Object[]>  getDistrictBenifitNews(Date fromDate,Date toDate,Long districtId,Long benfitId,Long partyId,int startIndex,int maxIndex);
 }

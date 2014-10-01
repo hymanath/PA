@@ -1219,19 +1219,19 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
       		   return query.list();	      		 
            }
            
-           public List<Object[]>  getDistrictBenifitNews(Date fromDate,Date toDate,Long districtId,Long benfitId,int startIndex,int maxIndex){
+           public List<Object[]>  getDistrictBenifitNews(Date fromDate,Date toDate,Long districtId,Long benfitId,Long partyId,int startIndex,int maxIndex){
       		 StringBuilder queryStr = new StringBuilder();
       		 queryStr.append("select distinct cpf.file.fileId,cpf.file.fileTitle,cpf.file.font.fontId,cpf.file.fileDescription,cpf.file.descFont.fontId  from CandidatePartyFile cpf ,UserAddress ua ");
       		
       		 queryStr.append(" where cpf.file.fileId =  ua.file.fileId and date(cpf.file.fileDate) >= :fromDate and date(cpf.file.fileDate) <= :toDate and cpf.file.isDeleted !='Y' " +
-      			 " and ((cpf.sourceBenefit.benefitId =:benfitId) or (cpf.destinationBenefit.benefitId =:benfitId )) " +
+      			 " and ((cpf.sourceBenefit.benefitId =:benfitId) or (cpf.destinationBenefit.benefitId =:benfitId )) and (cpf.sourceParty.partyId = :partyId or cpf.destinationParty.partyId = :partyId ) " +
       			 " and ua.district.districtId =:districtId and (ua.regionScopes.regionScopesId = 3 or ua.regionScopes.regionScopesId = 4)");
       				
       		 queryStr.append(" order by cpf.file.fileDate desc, cpf.file.updatedDate desc");
       		 Query query = getSession().createQuery(queryStr.toString());
       		 query.setDate("fromDate", fromDate);
       		 query.setDate("toDate", toDate);
-      		
+      		 query.setParameter("partyId", partyId);
       		 query.setParameter("districtId", districtId);
       		 query.setParameter("benfitId", benfitId);
       		 query.setFirstResult(startIndex);
@@ -1239,12 +1239,12 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
       		 return query.list();
       	 }
            
-           public Long getDistrictBenifitNewsCount(Date fromDate,Date toDate,Long districtId,Long benfitId){
+           public Long getDistrictBenifitNewsCount(Date fromDate,Date toDate,Long districtId,Long benfitId,Long partyId){
       		 StringBuilder queryStr = new StringBuilder();
       		 queryStr.append("select count(distinct cpf.file.fileId) from  CandidatePartyFile cpf ,UserAddress ua");
       	
       		 queryStr.append(" where cpf.file.fileId =  ua.file.fileId and date(cpf.file.fileDate) >= :fromDate and date(cpf.file.fileDate) <= :toDate and cpf.file.isDeleted !='Y' " +
-      			 " and (( cpf.sourceBenefit.benefitId =:benfitId) or ( cpf.destinationBenefit.benefitId =:benfitId ))" +
+      			 " and (( cpf.sourceBenefit.benefitId =:benfitId) or ( cpf.destinationBenefit.benefitId =:benfitId )) and (cpf.sourceParty.partyId = :partyId or cpf.destinationParty.partyId = :partyId )" +
       			 " and ua.district.districtId =:districtId  and (ua.regionScopes.regionScopesId = 3 or ua.regionScopes.regionScopesId = 4) ");
       		
       		 
@@ -1253,7 +1253,7 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
       		 query.setDate("toDate", toDate);		 
       		 query.setParameter("districtId", districtId);
       		 query.setParameter("benfitId", benfitId);
-      		
+      		query.setParameter("partyId", partyId);
       		 return (Long)query.uniqueResult();
       	 }
            
@@ -1283,19 +1283,19 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
   	      		 
              }
            
-           public List<Object[]>  getParliamentBenifitNews(Date fromDate,Date toDate,Long pcID,Long benfitId,int startIndex,int maxIndex){
+           public List<Object[]>  getParliamentBenifitNews(Date fromDate,Date toDate,Long pcID,Long benfitId,Long partyId,int startIndex,int maxIndex){
         		 StringBuilder queryStr = new StringBuilder();
         		 queryStr.append("select distinct cpf.file.fileId,cpf.file.fileTitle,cpf.file.font.fontId,cpf.file.fileDescription,cpf.file.descFont.fontId from CandidatePartyFile cpf ,UserAddress ua ");
         		
         		 queryStr.append(" where cpf.file.fileId =  ua.file.fileId and date(cpf.file.fileDate) >= :fromDate and date(cpf.file.fileDate) <= :toDate and cpf.file.isDeleted !='Y' " +
-        			 " and ((cpf.sourceBenefit.benefitId =:benfitId) or (cpf.destinationBenefit.benefitId =:benfitId )) " +
+        			 " and ((cpf.sourceBenefit.benefitId =:benfitId) or (cpf.destinationBenefit.benefitId =:benfitId )) and (cpf.sourceParty.partyId = :partyId or cpf.destinationParty.partyId = :partyId )" +
         			 " and ua.parliamentConstituency.constituencyId =:pcID and ua.regionScopes.regionScopesId = 4 ");
         				
         		 queryStr.append(" order by cpf.file.fileDate desc, cpf.file.updatedDate desc");
         		 Query query = getSession().createQuery(queryStr.toString());
         		 query.setDate("fromDate", fromDate);
         		 query.setDate("toDate", toDate);
-        		
+        		 query.setParameter("partyId", partyId);
         		 query.setParameter("pcID", pcID);
         		 query.setParameter("benfitId", benfitId);
         		 query.setFirstResult(startIndex);
@@ -1303,12 +1303,12 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
         		 return query.list();
         	 }
              
-             public Long getParliamentBenifitNewsCount(Date fromDate,Date toDate,Long pcID,Long benfitId){
+             public Long getParliamentBenifitNewsCount(Date fromDate,Date toDate,Long pcID,Long benfitId,Long partyId){
         		 StringBuilder queryStr = new StringBuilder();
         		 queryStr.append("select count(distinct cpf.file.fileId) from  CandidatePartyFile cpf ,UserAddress ua");
         	
         		 queryStr.append(" where cpf.file.fileId =  ua.file.fileId and date(cpf.file.fileDate) >= :fromDate and date(cpf.file.fileDate) <= :toDate and cpf.file.isDeleted !='Y' " +
-        			 " and (( cpf.sourceBenefit.benefitId =:benfitId) or ( cpf.destinationBenefit.benefitId =:benfitId ))" +
+        			 " and (( cpf.sourceBenefit.benefitId =:benfitId) or ( cpf.destinationBenefit.benefitId =:benfitId )) and (cpf.sourceParty.partyId = :partyId or cpf.destinationParty.partyId = :partyId )" +
         			 " and ua.parliamentConstituency.constituencyId =:pcID and ua.regionScopes.regionScopesId = 4  ");
         		
         		
@@ -1317,7 +1317,7 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
         		 query.setDate("toDate", toDate);		 
         		 query.setParameter("pcID", pcID);
         		 query.setParameter("benfitId", benfitId);
-        		
+        		 query.setParameter("partyId", partyId);
         		 return (Long)query.uniqueResult();
         	 }
              
@@ -1350,19 +1350,19 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
   	      		 
              }
              
-             public List<Object[]>  getAssemblyBenifitNews(Date fromDate,Date toDate,Long constituencyId,Long benfitId,int startIndex,int maxIndex){
+             public List<Object[]>  getAssemblyBenifitNews(Date fromDate,Date toDate,Long constituencyId,Long benfitId,Long partyId,int startIndex,int maxIndex){
           		 StringBuilder queryStr = new StringBuilder();
           		 queryStr.append("select distinct cpf.file.fileId,cpf.file.fileTitle,cpf.file.font.fontId,cpf.file.fileDescription,cpf.file.descFont.fontId from CandidatePartyFile cpf ,UserAddress ua ");
           		
           		 queryStr.append(" where cpf.file.fileId =  ua.file.fileId and date(cpf.file.fileDate) >= :fromDate and date(cpf.file.fileDate) <= :toDate and cpf.file.isDeleted !='Y' " +
-          			 " and ((cpf.sourceBenefit.benefitId =:benfitId) or (cpf.destinationBenefit.benefitId =:benfitId )) " +
+          			 " and ((cpf.sourceBenefit.benefitId =:benfitId) or (cpf.destinationBenefit.benefitId =:benfitId )) and (cpf.sourceParty.partyId = :partyId or cpf.destinationParty.partyId = :partyId )" +
           			 " and ua.constituency.constituencyId =:constituencyId ");
           				
           		 queryStr.append(" order by cpf.file.fileDate desc, cpf.file.updatedDate desc");
           		 Query query = getSession().createQuery(queryStr.toString());
           		 query.setDate("fromDate", fromDate);
           		 query.setDate("toDate", toDate);
-          		
+          		 query.setParameter("partyId", partyId);
           		 query.setParameter("constituencyId", constituencyId);
           		 query.setParameter("benfitId", benfitId);
           		 query.setFirstResult(startIndex);
@@ -1371,16 +1371,17 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
           		 return query.list();
           	 }
                
-               public Long getAssemblyBenifitNewsCount(Date fromDate,Date toDate,Long constituencyId,Long benfitId){
+               public Long getAssemblyBenifitNewsCount(Date fromDate,Date toDate,Long constituencyId,Long benfitId,Long partyId){
           		 StringBuilder queryStr = new StringBuilder();
           		 queryStr.append("select count(distinct cpf.file.fileId) from  CandidatePartyFile cpf ,UserAddress ua");
           	
           		 queryStr.append(" where cpf.file.fileId =  ua.file.fileId and date(cpf.file.fileDate) >= :fromDate and date(cpf.file.fileDate) <= :toDate and cpf.file.isDeleted !='Y' " +
-          			 " and (( cpf.sourceBenefit.benefitId =:benfitId) or ( cpf.destinationBenefit.benefitId =:benfitId ))" +
+          			 " and (( cpf.sourceBenefit.benefitId =:benfitId) or ( cpf.destinationBenefit.benefitId =:benfitId ))  and (cpf.sourceParty.partyId = :partyId or cpf.destinationParty.partyId = :partyId )" +
           			 " and ua.constituency.constituencyId =:constituencyId  ");
           		 Query query = getSession().createQuery(queryStr.toString());
           		 query.setDate("fromDate", fromDate);
-          		 query.setDate("toDate", toDate);		 
+          		 query.setDate("toDate", toDate);	
+          		query.setParameter("partyId", partyId);
           		 query.setParameter("constituencyId", constituencyId);
           		 query.setParameter("benfitId", benfitId);
           		
