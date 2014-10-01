@@ -63,4 +63,48 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		query.setMaxResults(1);
 		return (String)query.uniqueResult();
 	}
+
+	public List<Object[]> getCadreDetailsForCadreRegistratiobByconstituencId(Long constituencyId, String queryStr,Long panchayatId,Long boothId,String villagesCovered)
+	{
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" select distinct TC.tdpCadreId, TC.firstname, TC.relativename, TC.dateOfBirth, TC.age, TC.gender, UA.houseNo, UA.userAddressId from TdpCadre TC, UserAddress UA where "+queryStr+" TC.userAddress.constituency.constituencyId = :constituencyId ");
+
+		if(panchayatId.longValue() != 0L)
+		{
+			str.append(" and TC.userAddress.panchayatId = :panchayatId ");
+		}
+		
+		if(boothId.longValue() != 0L)
+		{
+			str.append(" and TC.userAddress.booth.boothId = :boothId ");
+		}
+		
+		if(villagesCovered != null && villagesCovered.trim().length()>0)
+		{
+			str.append(" ");
+		}
+		
+		str.append(" and TC.userAddress.userAddressId = UA.userAddressId order by TC.houseNo ");
+		
+		Query query = getSession().createQuery(str.toString()); 
+		
+		query.setParameter("constituencyId", constituencyId);
+		
+
+		if(panchayatId.longValue() != 0L)
+		{
+			query.setParameter("panchayatId", panchayatId);
+		}
+		
+		if(boothId.longValue() != 0L)
+		{
+			query.setParameter("boothId", boothId);
+		}
+		
+		
+		return query.list();
+	}
+	
+	
 }
