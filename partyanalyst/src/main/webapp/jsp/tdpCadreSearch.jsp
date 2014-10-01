@@ -44,11 +44,13 @@
 
 			<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="userConstituencyId" list="selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" style="width:350px;" />
 			<span style="float:right;margin-top:-40px"><a href="javascript:{getConstituencyWiseDetails();}" id="getTypebtnId" class="btn btn-success"> Filter Search </a></span>
-			
+			<img src='images/icons/search.gif' id="loadingImg" style="display:none;"/>
+				<div id="filterSearchDiv" style="display:none;">
 					<select style="width:150px;" id="panchayatList" onchange="getLocationWiseDetails();"><option value="0"> Select Panchayat </option></select> 			
 					<select style="width:150px;" id="boothsList" onchange="getBoothCoverdVillagesDetails();"> <option value="0"> Select Booth </option> </select> 		
 					<select style="width:150px;" id="vilagecovrdList"> <option value="0"> Select Covered Village </option> </select> 
-		
+				</div>
+				
 				<h5 class="text-align small m_top15">SEARCH BY</h5>
 					<div class="span6">
 					
@@ -252,11 +254,7 @@
 				str +='<td>'+result[i].age+'</td>';
 				str +='<td>'+result[i].gender+'</td>';
 				str +='<td>'+result[i].relationType+'</td>';
-				if(result[i].houseNo.trim() =='null')
-					str +='<td> -- <label class="pull-right">';
-				else
-					str +='<td>'+result[i].houseNo+'<label class="pull-right">';
-					
+				str +='<td>'+result[i].houseNo+'<label class="pull-right">';
 				str +='<input type="radio" value="'+result[i].id+'" name="optionsRadios" onClick="getDetailsForUser();"></label></td>';
 				str +='</tr>';
 			}
@@ -281,12 +279,15 @@
 	function getConstituencyWiseDetails()
 	{
 		var cosntiteucnyId = $('#userConstituencyId').val();
+		
 		$('#errorDiv').html('');
 		if(cosntiteucnyId == 0 )
 		{
 			$('#errorDiv').html('Please Select Constituency.');
 			return;
 		}
+		$('#filterSearchDiv').show();
+		$('#loadingImg').show();
 		var jsObj = 
 			   {
 				  constituencyId:cosntiteucnyId,				
@@ -299,7 +300,7 @@
 				}).done(function(result){
 						$('#panchayatList').find('option').remove();
 						$('#panchayatList').append('<option value="0"> Select Panchayat </option>');
-						
+							$('#loadingImg').hide();
 					if(result != null )
 					{
 						for(var i in result)
