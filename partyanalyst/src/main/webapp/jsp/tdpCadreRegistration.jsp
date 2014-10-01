@@ -16,9 +16,9 @@
 	<link href="styles/icheck_skins/all.css?v=1.0.2" rel="stylesheet"/>
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	 <script src="js/icheck/icheck.js"></script>
-	 
+	 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
 	 	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
-	<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+		<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
 	
 	 
 	<!-- YUI Dependency files (Start) -->
