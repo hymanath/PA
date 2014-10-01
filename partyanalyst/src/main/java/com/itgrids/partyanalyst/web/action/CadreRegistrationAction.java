@@ -49,7 +49,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	
 	private List<VoterInfoVO> 					voterInfoVOList;
 	private List<GenericVO> 					genericVOList;
-	private List<SelectOptionVO> 				selectOptionVOList;
+	private List<SelectOptionVO> 				selectOptionVOList,constituencyesList;
 	private ICandidateUpdationDetailsService	candidateUpdationDetailsService;
 	private IStaticDataService					staticDataService;
 	private ISurveyDataDetailsService			surveyDataDetailsService;
@@ -255,6 +255,15 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		this.surveyCadreResponceVO = surveyCadreResponceVO;
 	}
 
+	
+	public List<SelectOptionVO> getConstituencyesList() {
+		return constituencyesList;
+	}
+
+	public void setConstituencyesList(List<SelectOptionVO> constituencyesList) {
+		this.constituencyesList = constituencyesList;
+	}
+
 	public String execute()
 	{
 		try {
@@ -395,6 +404,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			if(user == null)
 				return ERROR;
 			*/
+			constituencyesList = 	surveyDataDetailsService.getAssemblyConstituenciesByStateId(0l,1l);
 			genericVOList = candidateUpdationDetailsService.gettingEducationDetails();
 			selectOptionVOList = staticDataService.getAllOccupations();
 			if(Long.valueOf(candidateId) != 0L )
