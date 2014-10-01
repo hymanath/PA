@@ -266,8 +266,14 @@ public class SurveyDetailsInfoDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}*/
 	
-	public void test(){
+	/*public void test(){
 		List<Object[]> list = surveyDetailsInfoDAO.getTotalSamplesInBoothsOfUserType(217l, 10l);
+		System.out.println(list.size());
+	}*/
+	
+	public void testGetSurveyStartedConstituencyInfo()
+	{
+		List<Object[]> list = surveyDetailsInfoDAO.getSurveyStartedConstituencyInfo();
 		System.out.println(list.size());
 	}
 	
