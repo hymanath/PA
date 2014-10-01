@@ -156,6 +156,91 @@
 		YAHOO.util.Connect.setForm('uploadCadreForm',true);
 		YAHOO.util.Connect.asyncRequest('POST','tdpCadreSaveRegistrationAction.action',uploadHandler);
 	}
+	
+
+	function prepopulateOptions()
+	{
+		var jsObj = 
+			   {				
+				  task:"getConstituncyWiseDetails"             
+			   }				   
+			   $.ajax({
+					type : "POST",
+					url : "getOptionDetailsForCadreAction.action",
+					data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+						console.log(result);
+						
+						if(result != null && result.length >0)
+						{
+							if(result[0].selectOptionsList != null && result[0].selectOptionsList.length >0)
+							{
+								for(var i in result[0].selectOptionsList)
+								{
+									$('#cadreLevelId').append('<option value="'+result[0].selectOptionsList[i].id+'">'+result[0].selectOptionsList[i].name+'</option>');
+								
+								}
+							
+							}
+							
+							if(result[0].selectOptionsList1 != null && result[0].selectOptionsList1.length >0)
+							{
+								for(var i in result[0].selectOptionsList1)
+								{
+									$('#partyDesignationId').append('<option value="'+result[0].selectOptionsList1[i].id+'">'+result[0].selectOptionsList1[i].name+'</option>');
+								}							
+							}
+							
+							if(result[0].selectOptionsList2 != null && result[0].selectOptionsList2.length >0)
+							{
+								for(var i in result[0].selectOptionsList1)
+								{
+									$('#electionTypeId').append('<option value="'+result[0].selectOptionsList2[i].id+'">'+result[0].selectOptionsList2[i].name+'</option>');			
+								}
+							
+							}
+						}
+				});
+	}
+	
+	function prepopulateElctionOptions()
+	{
+		var jsObj = 
+			   {				
+				  task:"getConstituncyWiseDetails"             
+			   }				   
+			   $.ajax({
+					type : "POST",
+					url : "getElectionOptionDetailsForCadreAction.action",
+					data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+						console.log(result);
+						
+						if(result != null && result.length >0)
+						{
+							if(result[0].selectOptionsList != null && result[0].selectOptionsList.length >0)
+							{
+								for(var i in result[0].selectOptionsList)
+								{
+									$('#electionTypeId').append('<option value="'+result[0].selectOptionsList[i].id+'">'+result[0].selectOptionsList[i].name+'</option>');			
+								}
+							
+							}
+							
+							if(result[0].selectOptionsList1 != null && result[0].selectOptionsList1.length >0)
+							{
+								for(var i in result[0].selectOptionsList1)
+								{
+									$('#electionYearId').append('<option value="'+result[0].selectOptionsList1[i].id+'">'+result[0].selectOptionsList1[i].name+'</option>');			
+								}
+							
+							}
+							
+						}
+				});
+	}
+	
+	
 	</script>
 	
 </head>
@@ -307,20 +392,14 @@
 					<div class="span3">
 							<div class=" m_top20" >
 								<h5 class="text-align1"> Select Level </h5>
-									<select class="form-control border-radius-0 text-align1" name="cadreRegistrationVO.previousRollesList[0].designationLevelId">
-									    <option value = "1">kuppam</option>
-										<option value = "2">Nellore</option>
-										<option value = "3">Anantapur</option>
+									<select class="form-control border-radius-0 text-align1" name="cadreRegistrationVO.previousRollesList[0].designationLevelId" id="cadreLevelId">
 									 </select>
 							</div>
 					</div>
 					<div class="span3">
 						<div class=" m_top20" >
 							<h5 class="text-align1">Party Designation </h5>
-								<select class="form-control border-radius-0 text-align1" name="cadreRegistrationVO.previousRollesList[0].designationLevelValue">
-								  <option value = "1">kuppam</option>
-								  <option value = "2">Nellore</option>
-								  <option value = "3">Anantapur</option>
+								<select class="form-control border-radius-0 text-align1" name="cadreRegistrationVO.previousRollesList[0].designationLevelValue" id="partyDesignationId">								
 								  </select>
 						</div>
 		
@@ -360,20 +439,14 @@
 					<div class="span4">
 						<div class=" m_top20" >
 							<h5 class="text-align1">Election Type</h5>
-							<select class="form-control border-radius-0 text-align1" name="cadreRegistrationVO.previousParicaptedElectionsList[0].electionTypeId">
-							  <option value ="1">kuppam</option>
-							  <option value = "2">Nellore</option>
-							  <option value = "3">Anantapur</option>
+							<select class="form-control border-radius-0 text-align1" name="cadreRegistrationVO.previousParicaptedElectionsList[0].electionTypeId" id="electionTypeId">
 							 </select>
 						</div>
 					</div>
 					<div class="span4">
 						<div class=" m_top20" >
 							<h5 class="text-align1">Year</h5>
-							<select class="form-control border-radius-0 text-align1" name="cadreRegistrationVO.previousParicaptedElectionsList[0].electionYear">
-							  <option value ="2006">2009</option>
-							  <option value = "2">Nellore</option>
-							  <option value = "3">Anantapur</option>
+							<select class="form-control border-radius-0 text-align1" name="cadreRegistrationVO.previousParicaptedElectionsList[0].electionYear" id="electionYearId">							
 							  </select>
 						</div>
 					</div>
@@ -393,7 +466,7 @@
 		<div class="container m_top10">
 			<div class="span12 show-grid" style="position: relative;">
 				<a class="btn btn-primary m_top20 border-radius-0 text-align2" href="search-constituency.html"><span class="icon-chevron-left icon-white"></span>&nbsp;&nbsp;Back </a>
-				<a  onClick="submitCadreForm();" class="btn btn-success text-align3 m_top20 pull-right border-radius-0"> &nbsp;&nbsp;Next<span class=" icon-chevron-right icon-white"></span></a>
+				<input type="submit" class="btn btn-success text-align3 m_top20 pull-right border-radius-0" value="Next"> &nbsp;&nbsp;<span class=" icon-chevron-right icon-white"></span></input>
 			</div>
 		</div>
 	</div>
