@@ -170,6 +170,7 @@ function getCategoryBenefitNewsDetails(startIndex,endIndex)
 			 locationId:locationId,
 			 name:name,
 	         benefitId:benefitId,
+			  partyId: partyId,
 	         startValue:startIndex,
 			 endValue : endIndex 
 	  },

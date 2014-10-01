@@ -820,7 +820,7 @@ function getLocationBenefitDetails(task){
 						   str+="    <td>"+result[i].name+"</td>";
 						   //str+="    <td><a href='javascript:{}' onclick='getLocationNews(\""+type+"\",\""+fromDate+"\",\""+toDate+"\","+result[i].id+",1,\""+task+"\");'>"+result[i].count+"</a></td>";
 						  if(result[i].negCount >0){
-						   str+="    <td><a href='javascript:{}' onclick='getLocationNews(\""+type+"\",\""+fromDate+"\",\""+toDate+"\","+result[i].id+",2,\""+task+"\");'>"+result[i].negCount+"</a></td>";
+						   str+="    <td><a href='javascript:{}' onclick='getLocationNews(\""+type+"\",\""+fromDate+"\",\""+toDate+"\","+result[i].id+",2,\""+task+"\","+partyId+");'>"+result[i].negCount+"</a></td>";
 						   
 						   }
 						   else{
@@ -850,9 +850,9 @@ function getLocationBenefitDetails(task){
 		}
 }
 
-function getLocationNews(type,fromDate,toDate,locationId,benfitId,name){
+function getLocationNews(type,fromDate,toDate,locationId,benfitId,name,partyId){
 	
-       var browser1 = window.open("getCategoryBenifitNewsAction.action?type="+type+"&fromDate="+fromDate+"&toDate="+toDate+"&locationId="+locationId+"&benefitId="+benfitId+"&name="+name+"&buildType=location","viewNewsWindow","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+       var browser1 = window.open("getCategoryBenifitNewsAction.action?type="+type+"&fromDate="+fromDate+"&toDate="+toDate+"&locationId="+locationId+"&benefitId="+benfitId+"&partyId="+partyId+"&name="+name+"&buildType=location","viewNewsWindow","scrollbars=yes,height=600,width=1050,left=200,top=200");	
         browser1.focus();
 
 }
