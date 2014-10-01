@@ -276,7 +276,9 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 				session = request.getSession();
 				RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 				cadreRegistrationVO.setCreatedUserId(user.getRegistrationID());
+				if(cadreRegistrationVO.getDobStr() != null && cadreRegistrationVO.getDobStr().trim().length() > 0)
 				cadreRegistrationVO.setDob(convertToDateFormet(cadreRegistrationVO.getDobStr()));
+				if(cadreRegistrationVO.getPartyMemberSinceStr() != null && cadreRegistrationVO.getPartyMemberSinceStr().trim().length() > 0)
 				cadreRegistrationVO.setPartyMemberSince(convertToDateFormet(cadreRegistrationVO.getPartyMemberSinceStr()));
 				
 				List<CadrePreviousRollesVO> rolesVOList = cadreRegistrationVO.getPreviousRollesList();
@@ -288,7 +290,9 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 						CadrePreviousRollesVO rolesVO = new CadrePreviousRollesVO();
 						rolesVO.setDesignationLevelId(1l);
 						rolesVO.setDesignationLevelValue(1l);
+						if(cadrePreviousRollesVO.getFromDateStr() != null && cadrePreviousRollesVO.getFromDateStr().trim().length() > 0)
 						rolesVO.setFromDate(convertToDateFormet(cadrePreviousRollesVO.getFromDateStr()));
+						if(cadrePreviousRollesVO.getToDateStr() != null && cadrePreviousRollesVO.getToDateStr().trim().length() > 0)
 						rolesVO.setToDate(convertToDateFormet(cadrePreviousRollesVO.getToDateStr()));
 						rolesList.add(rolesVO);
 					}
