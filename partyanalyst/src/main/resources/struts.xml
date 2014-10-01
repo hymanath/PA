@@ -8400,6 +8400,7 @@
 		
 		<action name="tdpCadreRegistrationAction" class="cadreRegistrationAction" method="tdpCadreRegistrationPage">
 			<result name="success">/jsp/tdpCadreRegistration.jsp</result>
+			<result name="input">/jsp/tdpCadreRegistration.jsp</result>
 		</action>
 		
 		<action name="tdpCadreSaveRegistrationAction" class="cadreRegistrationAction" method="saveCadreDetails">
@@ -8441,9 +8442,6 @@
 				<param name="root">selectOptionVOList</param>
 			</result>
 		</action>
-		
-		
-		
 		
 </package>
 
