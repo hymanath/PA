@@ -155,8 +155,7 @@
 				upload: function(o) {
 					uploadResult = o.responseText;
 					console.log(uploadResult);
-					/*showUploadStatus(uploadResult);	
-					 $("#cadreSaveBth").removeAttr('disabled'); */
+					showUploadStatus(uploadResult);	
 				}
 			};
 
@@ -164,8 +163,25 @@
 		YAHOO.util.Connect.asyncRequest('POST','tdpCadreSaveRegistrationAction.action',uploadHandler);
 	}
 	
+	function showUploadStatus(myResult)
+	{
+		var result = (String)(myResult);
+		var errorDivEle = document.getElementById('errorMsgDiv');
+		var str = '';
+		alert(result.search('success'));
+		if(result.search('SUCCESS') != -1)
+		{
+			str += '<font color="green"><b>Cadre Added Successfully.</b></font>';
+		}
+		else if(result.search('update') != -1)
+		{
+			str += '<font color="green"><b>Cadre Updated Successfully.</b></font>';
+		}
+		alert(str);
+	}
 	var cadreLevelArr = [];
 	var partyDesignationArr = [];
+	
 	
 	function prepopulateOptions()
 	{
@@ -471,14 +487,14 @@
 					<div class="span4">
 						<div class=" m_top20" >
 							<h5 class="text-align1">Election Type</h5>
-							<select class="form-control border-radius-0 text-align1" name="cadreRegistrationVO.previousParicaptedElectionsList[0].electionTypeId" id="electionTypeId">
+							<select class="form-control border-radius-0 text-align1"  id="electionTypeId">
 							 </select>
 						</div>
 					</div>
 					<div class="span4">
 						<div class=" m_top20" >
 							<h5 class="text-align1">Year</h5>
-							<select class="form-control border-radius-0 text-align1" name="cadreRegistrationVO.previousParicaptedElectionsList[0].electionYear" id="electionYearId">							
+							<select class="form-control border-radius-0 text-align1" name="cadreRegistrationVO.previousParicaptedElectionsList[0].electionTypeId" id="electionYearId">							
 							  </select>
 						</div>
 					</div>
@@ -498,7 +514,7 @@
 		<div class="container m_top10">
 			<div class="span12 show-grid" style="position: relative;">
 				<a class="btn btn-primary m_top20 border-radius-0 text-align2" href="search-constituency.html"><span class="icon-chevron-left icon-white"></span>&nbsp;&nbsp;Back </a>
-				<input type="submit" class="btn btn-success text-align3 m_top20 pull-right border-radius-0" value="Next"> &nbsp;&nbsp;<span class=" icon-chevron-right icon-white"></span></input>
+				<a  class="btn btn-success text-align3 m_top20 pull-right border-radius-0"  onClick="submitCadreForm();"> &nbsp;&nbsp;Next<span class=" icon-chevron-right icon-white"></span></a>
 			</div>
 		</div>
 	</div>
