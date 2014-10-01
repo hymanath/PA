@@ -378,8 +378,10 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			*/
 			genericVOList = candidateUpdationDetailsService.gettingEducationDetails();
 			selectOptionVOList = staticDataService.getAllOccupations();
-			voterInfoVOList = cadreRegistrationService.getCandidateInfoBySearchCriteria(searchType,Long.valueOf(candidateId));
-			
+			if(Long.valueOf(candidateId) != 0L )
+				voterInfoVOList = cadreRegistrationService.getCandidateInfoBySearchCriteria(searchType,Long.valueOf(candidateId));
+			else
+				return INPUT;
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in tdpCadreRegistrationPage method in CadreRegistrationAction Action",e);
