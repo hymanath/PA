@@ -16,14 +16,17 @@ import com.itgrids.partyanalyst.dao.IBloodGroupDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICadreDAO;
+import com.itgrids.partyanalyst.dao.ICadreLevelDAO;
 import com.itgrids.partyanalyst.dao.ICadreParticipatedElectionDAO;
 import com.itgrids.partyanalyst.dao.ICadrePreviousRolesDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
+import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
+import com.itgrids.partyanalyst.dao.IPartyDesignationDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
@@ -39,11 +42,11 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
 import com.itgrids.partyanalyst.model.BloodGroup;
 import com.itgrids.partyanalyst.model.Booth;
-import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.CadreParticipatedElection;
 import com.itgrids.partyanalyst.model.CadrePreviousRoles;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Election;
+import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.UserAddress;
@@ -69,6 +72,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private IUserAddressDAO					userAddressDAO;
 	private DateUtilService					dateUtilService;
 
+	private ICadreDAO 						cadreDAO;
 	private IVoterDAO						voterDAO;
 	private IConstituencyDAO				constituencyDAO; 					
 	private ITehsilDAO 						tehsilDAO;
@@ -77,15 +81,160 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private IBoothDAO						boothDAO;
 	private ICasteStateDAO					casteStateDAO;
 	private IBloodGroupDAO					bloodGroupDAO;
-	private IElectionDAO					electionDAO;
-	private ICadreDAO						cadreDAO;
+	
+	private IElectionDAO 					electionDAO;
+	private ICadreLevelDAO					cadreLevelDAO;
+	private IPartyDesignationDAO 			partyDesignationDAO;
+	private IElectionTypeDAO				electionTypeDAO;
+	
+	
 
-	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
-		this.tdpCadreDAO = tdpCadreDAO;
+	public IElectionDAO getElectionDAO() {
+		return electionDAO;
+	}
+
+	public void setElectionDAO(IElectionDAO electionDAO) {
+		this.electionDAO = electionDAO;
+	}
+
+	public ICadreLevelDAO getCadreLevelDAO() {
+		return cadreLevelDAO;
+	}
+
+	public void setCadreLevelDAO(ICadreLevelDAO cadreLevelDAO) {
+		this.cadreLevelDAO = cadreLevelDAO;
+	}
+
+	public IPartyDesignationDAO getPartyDesignationDAO() {
+		return partyDesignationDAO;
+	}
+
+	public void setPartyDesignationDAO(IPartyDesignationDAO partyDesignationDAO) {
+		this.partyDesignationDAO = partyDesignationDAO;
+	}
+
+	public IElectionTypeDAO getElectionTypeDAO() {
+		return electionTypeDAO;
+	}
+
+	public void setElectionTypeDAO(IElectionTypeDAO electionTypeDAO) {
+		this.electionTypeDAO = electionTypeDAO;
+	}
+
+	public IBloodGroupDAO getBloodGroupDAO() {
+		return bloodGroupDAO;
+	}
+
+	public void setBloodGroupDAO(IBloodGroupDAO bloodGroupDAO) {
+		this.bloodGroupDAO = bloodGroupDAO;
+	}
+
+	public ICasteStateDAO getCasteStateDAO() {
+		return casteStateDAO;
+	}
+
+	public void setCasteStateDAO(ICasteStateDAO casteStateDAO) {
+		this.casteStateDAO = casteStateDAO;
+	}
+
+	public IVoterDAO getVoterDAO() {
+		return voterDAO;
+	}
+
+	public IBoothDAO getBoothDAO() {
+		return boothDAO;
+	}
+
+	public void setBoothDAO(IBoothDAO boothDAO) {
+		this.boothDAO = boothDAO;
+	}
+
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+
+	public ITehsilDAO getTehsilDAO() {
+		return tehsilDAO;
+	}
+
+	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
+		this.tehsilDAO = tehsilDAO;
+	}
+
+	public IPanchayatDAO getPanchayatDAO() {
+		return panchayatDAO;
+	}
+
+	public void setPanchayatDAO(IPanchayatDAO panchayatDAO) {
+		this.panchayatDAO = panchayatDAO;
+	}
+
+	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
+		return localElectionBodyDAO;
+	}
+
+	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
+		this.localElectionBodyDAO = localElectionBodyDAO;
+	}
+
+	public ICadreDAO getCadreDAO() {
+		return cadreDAO;
+	}
+
+	public void setCadreDAO(ICadreDAO cadreDAO) {
+		this.cadreDAO = cadreDAO;
+	}
+
+	public ITdpCadreDAO getTdpCadreDAO() {
+		return tdpCadreDAO;
+	}
+
+	public TransactionTemplate getTransactionTemplate() {
+		return transactionTemplate;
+	}
+
+	public ICadrePreviousRolesDAO getCadrePreviousRolesDAO() {
+		return cadrePreviousRolesDAO;
+	}
+
+	public ICadreParticipatedElectionDAO getCadreParticipatedElectionDAO() {
+		return cadreParticipatedElectionDAO;
+	}
+
+	public IBoothPublicationVoterDAO getBoothPublicationVoterDAO() {
+		return boothPublicationVoterDAO;
+	}
+
+	public ICountryDAO getCountryDAO() {
+		return countryDAO;
+	}
+
+	public IStateDAO getStateDAO() {
+		return stateDAO;
+	}
+
+	public IUserVoterDetailsDAO getUserVoterDetailsDAO() {
+		return userVoterDetailsDAO;
+	}
+
+	public IUserAddressDAO getUserAddressDAO() {
+		return userAddressDAO;
+	}
+
+	public DateUtilService getDateUtilService() {
+		return dateUtilService;
 	}
 
 	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 		this.transactionTemplate = transactionTemplate;
+	}
+
+	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
+		this.tdpCadreDAO = tdpCadreDAO;
 	}
 
 	public void setCadrePreviousRolesDAO(
@@ -103,6 +252,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		this.boothPublicationVoterDAO = boothPublicationVoterDAO;
 	}
 
+	
 	public void setCountryDAO(ICountryDAO countryDAO) {
 		this.countryDAO = countryDAO;
 	}
@@ -114,53 +264,19 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	public void setUserVoterDetailsDAO(IUserVoterDetailsDAO userVoterDetailsDAO) {
 		this.userVoterDetailsDAO = userVoterDetailsDAO;
 	}
-
-	public void setUserAddressDAO(IUserAddressDAO userAddressDAO) {
-		this.userAddressDAO = userAddressDAO;
-	}
+	
 
 	public void setDateUtilService(DateUtilService dateUtilService) {
 		this.dateUtilService = dateUtilService;
 	}
 
+	public void setUserAddressDAO(IUserAddressDAO userAddressDAO) {
+		this.userAddressDAO = userAddressDAO;
+	}
+
+	
 	public void setVoterDAO(IVoterDAO voterDAO) {
 		this.voterDAO = voterDAO;
-	}
-
-	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
-		this.constituencyDAO = constituencyDAO;
-	}
-
-	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
-		this.tehsilDAO = tehsilDAO;
-	}
-
-	public void setPanchayatDAO(IPanchayatDAO panchayatDAO) {
-		this.panchayatDAO = panchayatDAO;
-	}
-
-	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
-		this.localElectionBodyDAO = localElectionBodyDAO;
-	}
-
-	public void setBoothDAO(IBoothDAO boothDAO) {
-		this.boothDAO = boothDAO;
-	}
-
-	public void setCasteStateDAO(ICasteStateDAO casteStateDAO) {
-		this.casteStateDAO = casteStateDAO;
-	}
-
-	public void setBloodGroupDAO(IBloodGroupDAO bloodGroupDAO) {
-		this.bloodGroupDAO = bloodGroupDAO;
-	}
-
-	public void setElectionDAO(IElectionDAO electionDAO) {
-		this.electionDAO = electionDAO;
-	}
-
-	public void setCadreDAO(ICadreDAO cadreDAO) {
-		this.cadreDAO = cadreDAO;
 	}
 
 	/**
@@ -458,15 +574,17 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		}
 	}
 	
-	public List<VoterInfoVO> getSearchDetailsCadreRegistration(Long constituencyId, String seachType, String candidateName, String voterCardId, String houseNo,Long panchayatId,Long boothId,Long locationId)
+
+	public List<VoterInfoVO> getSearchDetailsCadreRegistration(Long constituencyId, String seachType, String candidateName, String voterCardId, String houseNo,Long panchayatId,Long boothId,String villagesCovered)
 	{
 		
 		StringBuilder searchQuery = new StringBuilder();
 		List<VoterInfoVO> returnList = null;
 		List searchList = null;
-		SimpleDateFormat format  = new SimpleDateFormat("yy/MM/dd");
+		SimpleDateFormat format  = new SimpleDateFormat("yy-MM-dd");
 		
 		try {
+
 			
 			if(seachType.equalsIgnoreCase("voter"))
 			{
@@ -483,7 +601,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					searchQuery.append(" BPV.voter.houseNo like '%"+houseNo+"%' and" );
 				}
 
-				searchList = 	boothPublicationVoterDAO.getVotersDetailsForCadreRegistratiobByconstituencId(constituencyId,IConstants.VOTER_DATA_PUBLICATION_ID,searchQuery.toString(),panchayatId,boothId,locationId);
+				searchList = boothPublicationVoterDAO.getVotersDetailsForCadreRegistratiobByconstituencId(constituencyId,IConstants.VOTER_DATA_PUBLICATION_ID,searchQuery.toString(),panchayatId,boothId,villagesCovered);
 				
 				if(searchList != null && searchList.size()>0 )
 				{
@@ -509,41 +627,49 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			
 			else if(seachType.equalsIgnoreCase("cadre"))
 			{
-				if(candidateName != null   && candidateName.trim().length()>0)
+				
+				if(candidateName != null && candidateName.trim().length()>0)
 				{
-					searchQuery.append(" C.firstName like '%"+candidateName+"%' OR C.lastName like '%"+candidateName+"%' and ");
+					searchQuery.append(" TC.firstname like '%"+candidateName+"%' and");
 				}
+				if(voterCardId != null  && voterCardId.trim().length()>0)
+				{
+					//searchQuery.append("  BPV.voter.voterIDCardNo like '%"+voterCardId+"%' and");
+				}
+				if(houseNo != null  && houseNo.trim().length()>0)
+				{
+					searchQuery.append("  UA.houseNo like '%"+houseNo+"%' and" );
+				}
+
 				
-				searchList = cadreDAO.getCadreDetailsForCadreRegistratiobByconstituencId(constituencyId,searchQuery.toString(),panchayatId,boothId,locationId);
-				
-				List<Long> cadreIdList = new ArrayList<Long>();
+				searchList = tdpCadreDAO.getCadreDetailsForCadreRegistratiobByconstituencId(constituencyId, searchQuery.toString(), panchayatId, boothId, villagesCovered);
 				
 				if(searchList != null && searchList.size()>0 )
 				{
 					returnList = new ArrayList<VoterInfoVO>();
 					
-					for (Object param : searchList)
+					for (Object voter1 : searchList)
 					{
-						Object[] cadre = (Object[]) param;
-						
-						cadreIdList.add(cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L);
-						
+						Object[] voter = (Object[]) voter1;
 						
 						VoterInfoVO vo = new VoterInfoVO();
-						vo.setId(cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L);
-						vo.setCadreId(cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L);
-						vo.setName(cadre[1] != null ? cadre[1].toString().trim():"");
+						vo.setId(voter[0] != null ? Long.valueOf(voter[0].toString().trim()):0L);
+						vo.setCadreId(voter[0] != null ? Long.valueOf(voter[0].toString().trim()):0L);
+						vo.setName(voter[1] != null ? voter[1].toString().trim():" -- ");
+						vo.setRelativeName(voter[2] != null ? voter[2].toString().trim():" -- ");
+						//vo.setAge(voter[3] != null ? voter[3].toString().trim():" -- ");
+						vo.setHouseNo(voter[6] != null ? voter[6].toString().trim():" -- ");
+						vo.setGender(voter[5] != null ? voter[5].toString().trim():" -- ");
+						vo.setRelationType(" -- ");
 						
-						vo.setRelativeName(cadre[3] != null ? cadre[3].toString().trim():"");
-						
-						String dateOfBirth = cadre[4] != null ? cadre[4].toString().trim():"";
+						String dateOfBirth = 	voter[3] != null ? voter[3].toString().substring(0, 10):" "	;
 						
 						if(dateOfBirth != null && dateOfBirth.trim().length()>0)
 						{
 							Calendar startDate = new GregorianCalendar();
 							Calendar endDate = new GregorianCalendar();
 							
-							startDate.setTime(format.parse(dateOfBirth.toString().substring(0, 10))); 
+							startDate.setTime(format.parse(dateOfBirth.trim()));
 							
 							endDate.setTime(new Date());
 
@@ -551,59 +677,15 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							
 							vo.setAge(String.valueOf(diffYear));
 						}
-						else if(cadre[5] != null )
+						else if(voter[4] != null && voter[4].toString().trim().length()>0 )
 						{
-							vo.setAge(cadre[5] != null ? cadre[5].toString().trim():"");
+							vo.setAge(voter[4].toString());
 						}
-						
-						vo.setHouseNo(" -- ");
-						vo.setRelationType(" -- ");
-						
-						vo.setGender(cadre[6] != null ? cadre[6].toString().trim():"");
-						
 						
 						returnList.add(vo);
 					}
 				}
 				
-				
-				if(cadreIdList != null && cadreIdList.size()>0)
-				{
-					if(voterCardId != null   && voterCardId.trim().length()>0)
-					{
-						searchQuery.append("  V.voterIDCardNo like '%"+voterCardId+"%' and");
-					}
-					if(houseNo != null   && voterCardId.trim().length()>0)
-					{
-						searchQuery.append("  V.houseNo like '%"+houseNo+"%' and");
-					}
-					
-					List<Object[]> cadreDetails = cadreDAO.getvoterdetailsByCadreIds(cadreIdList,searchQuery.toString());
-					
-					if(cadreDetails != null && cadreDetails.size()>0)
-					{
-						for (Object[] cadre : cadreDetails) 
-						{
-							VoterInfoVO vo = getMatchedVOById(returnList, Long.valueOf(cadre[0].toString()));
-							
-							if(vo != null )
-							{
-								vo.setCadreId(cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L);
-								vo.setName(cadre[1] != null ? cadre[1].toString().trim():"");
-								vo.setId(cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L);
-								vo.setRelativeName(cadre[ 2] != null ? cadre[2].toString().trim():"");
-								
-								if(cadre[3] != null )
-								{
-									vo.setAge(cadre[3] != null ? cadre[3].toString().trim():"");
-								}
-								vo.setGender(cadre[4] != null ? cadre[4].toString().trim():"");
-								vo.setHouseNo(cadre[5] != null ? cadre[5].toString().trim():"");
-								vo.setRelationType(cadre[6] != null ? cadre[6].toString().trim():"");
-							}
-						}
-					}
-				}				
 			}
 			
 		} catch (Exception e) {
@@ -613,28 +695,6 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		return returnList;
 	}
 	
-	private VoterInfoVO getMatchedVOById(List<VoterInfoVO> list , Long id)
-	{
-		VoterInfoVO voterInfoVO = null;
-		try {
-
-			if(list != null && list.size()>0)
-			{
-				for (VoterInfoVO voterVO : list) 
-				{
-					if(voterVO.getId().longValue() == id.longValue())
-					{
-						return voterInfoVO;
-					}
-				}
-			}
-			
-		} catch (Exception e) {
-			LOG.error("Exception raised in getMatchedVOById in CadreRegistrationService service", e);
-		}
-		
-		return voterInfoVO;
-	}
 	public List<VoterInfoVO> getCandidateInfoBySearchCriteria(String searchType, Long candidateId)
 	{
 		List<VoterInfoVO> returnList = null;
@@ -679,35 +739,34 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			else if(searchType.equalsIgnoreCase("cadre"))
 			{
 				
-				Cadre cadre = cadreDAO.get(candidateId);
+				TdpCadre tdpCadre = tdpCadreDAO.get(candidateId);
 				
-				if(cadre != null )
+				if(tdpCadre != null )
 				{
 					returnList = new ArrayList<VoterInfoVO>();
 					vo = new VoterInfoVO();
 					try {
-							vo.setCadreId(cadre.getCadreId());
-							String dateOfBirth = cadre.getDateOfBirth() != null ? cadre.getDateOfBirth().toString().substring(0, 10):"";
+							vo.setCadreId(tdpCadre.getTdpCadreId());
+							String dateOfBirth = tdpCadre.getDateOfBirth() != null ? tdpCadre.getDateOfBirth().toString().substring(0, 10):"";
 							vo.setDateOfBirth(dateOfBirth);
 							
-							if(cadre.getVoter() != null)
+							if(tdpCadre.getVoter() != null)
 							{
-								vo.setHouseNo(cadre.getVoter().getHouseNo());
-								vo.setName(cadre.getVoter().getName());
-								vo.setRelativeName(cadre.getVoter().getRelativeName());
-								vo.setRelationType(cadre.getVoter().getRelationshipType());
-								vo.setAge(cadre.getVoter().getAge().toString());
-								vo.setGender(cadre.getVoter().getGender());
-								vo.setVoterId(cadre.getVoter() != null ? cadre.getVoter().getVoterId(): 0L);
-								vo.setVoterCardNo(cadre.getVoter() != null ? cadre.getVoter().getVoterIDCardNo():"");
+								vo.setHouseNo(tdpCadre.getVoter().getHouseNo());
+								vo.setName(tdpCadre.getVoter().getName());
+								vo.setRelativeName(tdpCadre.getVoter().getRelativeName());
+								vo.setRelationType(tdpCadre.getVoter().getRelationshipType());
+								vo.setAge(tdpCadre.getVoter().getAge().toString());
+								vo.setGender(tdpCadre.getVoter().getGender());
+								vo.setVoterId(tdpCadre.getVoter() != null ? tdpCadre.getVoter().getVoterId(): 0L);
+								vo.setVoterCardNo(tdpCadre.getVoter() != null ? tdpCadre.getVoter().getVoterIDCardNo():"");
 																
 							}
 							else
 							{
-								vo.setName(cadre.getFirstName() != null? cadre.getFirstName():"");
-								vo.setName(vo.getName() + " "+(cadre.getLastName() != null ? cadre.getLastName():""));
-								vo.setRelativeName(cadre.getFatherOrSpouseName() != null ? cadre.getFatherOrSpouseName():"");
-								vo.setGender(cadre.getGender() != null ? cadre.getGender().toString():"");
+								vo.setName(tdpCadre.getFirstname() != null? tdpCadre.getFirstname():"");
+								vo.setRelativeName(tdpCadre.getRelativename() != null ? tdpCadre.getRelativename():"");
+								vo.setGender(tdpCadre.getGender() != null ? tdpCadre.getGender().toString():"");
 								
 								vo.setVoterId(0L);
 								vo.setVoterCardNo(" -- ");
@@ -727,19 +786,18 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 									
 									vo.setAge(String.valueOf(diffYear));
 								}
-								else if(cadre.getAge() != null && cadre.getAge().toString().trim().length()>0 )
+								else if(tdpCadre.getAge() != null && tdpCadre.getAge().toString().trim().length()>0 )
 								{
-									vo.setAge(cadre.getAge().toString());
+									vo.setAge(tdpCadre.getAge().toString());
 								}
 							}
 							
-							vo.setBlodGroupId(cadre.getBloodGroup() != null ? cadre.getBloodGroupId():0L);
-							vo.setCasteName(cadre.getCasteState() != null ? cadre.getCasteState().getCasteStateId().toString():"0");
-							vo.setActiveDate(cadre.getActiveDateField() != null ? cadre.getActiveDateField().toString().substring(0, 10):"");
-							vo.setEducation(cadre.getEducation() != null ? cadre.getEducation().getEduQualificationId().toString():"0");
-							vo.setOccupation(cadre.getOccupation() != null ? cadre.getOccupation().getOccupationId().toString():"0");
-							vo.setLocation(cadre.getCurrentAddress() != null ? (cadre.getCurrentAddress().getHamlet() != null ?cadre.getCurrentAddress().getHamlet().getHamletName().toString():""):"");
-							vo.setMobileNo(cadre.getMobile() != null ? cadre.getMobile():"");
+							vo.setBlodGroupId(tdpCadre.getBloodGroup() != null ? tdpCadre.getBloodGroupId():0L);
+							vo.setCasteName(tdpCadre.getCasteState() != null ? tdpCadre.getCasteState().getCasteStateId().toString():"0");
+							vo.setEducation(tdpCadre.getEducationalQualifications() != null ? tdpCadre.getEducationalQualifications().getEduQualificationId().toString():"0");
+							vo.setOccupation(tdpCadre.getOccupation() != null ? tdpCadre.getOccupation().getOccupationId().toString():"0");
+							vo.setLocation(tdpCadre.getUserAddress() != null ? (tdpCadre.getUserAddress().getHamlet() != null ?tdpCadre.getUserAddress().getHamlet().getHamletName().toString():""):"");
+							vo.setMobileNo(tdpCadre.getMobileNo() != null ? tdpCadre.getMobileNo():"");
 							
 						
 						} catch (Exception e) {
@@ -762,8 +820,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					
 					stateCasteList.add(castevo);
 				}
-			vo.setGenericVOList(stateCasteList);
-			
+				
+				vo.setGenericVOList(stateCasteList);			
 			}
 			
 			List<SelectOptionVO> bloodGroups = null;
@@ -845,7 +903,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								GenericVO vo = new GenericVO();
 								
 								vo.setId(param[0] != null ? Long.valueOf(param[0].toString()):0L);
-								vo.setName(param[1] != null ? param[1].toString():"");
+								vo.setName(param[1] != null ? param[1].toString()+" Muncipality/Corporation ":"");
 								
 								returnList.add(vo);
 								
@@ -866,7 +924,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							GenericVO vo = new GenericVO();
 							
 							vo.setId(param[0] != null ? Long.valueOf(param[0].toString()):0L);
-							vo.setName(param[1] != null ? param[1].toString():"");
+							vo.setName(param[1] != null ? param[1].toString()+" Muncipality/Corporation ":"");
 							
 							returnList.add(vo);
 							
@@ -918,7 +976,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						}
 					}
 					
-					if(localElectionBodyId != null && localElectionBodyId.longValue() != 0L)
+					if(localElectionBodyId != null && localElectionBodyId.longValue() != 0L && localElectionBodyId == locationId)
 					{
 						List<Object[]> boothList = boothDAO.getAllBoothsInAMuncipality(localElectionBodyId, IConstants.VOTER_DATA_PUBLICATION_ID);
 						
@@ -929,7 +987,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								GenericVO vo = new GenericVO();
 								
 								vo.setId(param[0] != null ? Long.valueOf(param[0].toString()):0L);
-								vo.setName(param[1] != null ? param[1].toString():"");
+								vo.setName(param[1] != null ? "Booth - "+param[1].toString():"");
 								
 								returnList.add(vo);
 								
@@ -951,7 +1009,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								GenericVO vo = new GenericVO();
 								
 								vo.setId(param[0] != null ? Long.valueOf(param[0].toString()):0L);
-								vo.setName(param[2] != null ? param[2].toString():"");
+								vo.setName(param[2] != null ? "Booth - "+param[2].toString():"");
 								
 								returnList.add(vo);
 								
@@ -959,11 +1017,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						}
 						
 					}
-					
 				}
 				else
 				{
-					
 					List<Object[]> boothList = boothDAO.getAllBoothsInAMuncipality(locationId, IConstants.VOTER_DATA_PUBLICATION_ID);
 					
 					if(boothList != null && boothList.size()>0)
@@ -973,7 +1029,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							GenericVO vo = new GenericVO();
 							
 							vo.setId(param[0] != null ? Long.valueOf(param[0].toString()):0L);
-							vo.setName(param[2] != null ? param[2].toString():"");
+							vo.setName(param[2] != null ? "Booth - "+param[2].toString():"");
 							
 							returnList.add(vo);
 							
@@ -1018,4 +1074,284 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		
 		return returnList;
 	}
+	
+
+	/*
+	public List<VoterInfoVO> getSearchDetailsCadreRegistration(Long constituencyId, String seachType, String candidateName, String voterCardId, String houseNo,Long panchayatId,Long boothId,Long locationId)
+	{
+		
+		StringBuilder searchQuery = new StringBuilder();
+		List<VoterInfoVO> returnList = null;
+		List searchList = null;
+		SimpleDateFormat format  = new SimpleDateFormat("yy/MM/dd");
+		
+		try {
+			
+			if(seachType.equalsIgnoreCase("voter"))
+			{
+				if(candidateName != null && candidateName.trim().length()>0)
+				{
+					searchQuery.append(" BPV.voter.name like '%"+candidateName+"%' and");
+				}
+				if(voterCardId != null  && voterCardId.trim().length()>0)
+				{
+					searchQuery.append("  BPV.voter.voterIDCardNo like '%"+voterCardId+"%' and");
+				}
+				if(houseNo != null  && houseNo.trim().length()>0)
+				{
+					searchQuery.append(" BPV.voter.houseNo like '%"+houseNo+"%' and" );
+				}
+
+				searchList = 	boothPublicationVoterDAO.getVotersDetailsForCadreRegistratiobByconstituencId(constituencyId,IConstants.VOTER_DATA_PUBLICATION_ID,searchQuery.toString(),panchayatId,boothId,locationId);
+				
+				if(searchList != null && searchList.size()>0 )
+				{
+					returnList = new ArrayList<VoterInfoVO>();
+					
+					for (Object param : searchList)
+					{
+						Object[] voter = (Object[]) param;
+						VoterInfoVO vo = new VoterInfoVO();
+						vo.setId(voter[0] != null ? Long.valueOf(voter[0].toString().trim()):0L);
+						vo.setVoterId(voter[0] != null ? Long.valueOf(voter[0].toString().trim()):0L);
+						vo.setName(voter[1] != null ? voter[1].toString().trim():"");
+						vo.setRelativeName(voter[2] != null ? voter[2].toString().trim():"");
+						vo.setAge(voter[3] != null ? voter[3].toString().trim():"");
+						vo.setHouseNo(voter[4] != null ? voter[4].toString().trim():"");
+						vo.setRelationType(voter[5] != null ? voter[5].toString().trim():"");
+						vo.setGender(voter[6] != null ? voter[6].toString().trim():"");
+						
+						returnList.add(vo);
+					}
+				}
+			}
+			
+			else if(seachType.equalsIgnoreCase("cadre"))
+			{
+				if(candidateName != null   && candidateName.trim().length()>0)
+				{
+					searchQuery.append(" C.firstName like '%"+candidateName+"%' OR C.lastName like '%"+candidateName+"%' and ");
+				}
+				
+				searchList = cadreDAO.getCadreDetailsForCadreRegistratiobByconstituencId(constituencyId,searchQuery.toString(),panchayatId,boothId,locationId);
+				
+				List<Long> cadreIdList = new ArrayList<Long>();
+				
+				if(searchList != null && searchList.size()>0 )
+				{
+					returnList = new ArrayList<VoterInfoVO>();
+					
+					for (Object param : searchList)
+					{
+						Object[] cadre = (Object[]) param;
+						
+						cadreIdList.add(cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L);
+						
+						
+						VoterInfoVO vo = new VoterInfoVO();
+						vo.setId(cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L);
+						vo.setCadreId(cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L);
+						vo.setName(cadre[1] != null ? cadre[1].toString().trim():"");
+						
+						vo.setRelativeName(cadre[3] != null ? cadre[3].toString().trim():"");
+						
+						String dateOfBirth = cadre[4] != null ? cadre[4].toString().trim():"";
+						
+						if(dateOfBirth != null && dateOfBirth.trim().length() == 9)
+						{
+							dateOfBirth = dateOfBirth + " ";
+						}
+						if(dateOfBirth != null && dateOfBirth.trim().length()>0)
+						{
+							Calendar startDate = new GregorianCalendar();
+							Calendar endDate = new GregorianCalendar();
+							
+							startDate.setTime(format.parse(dateOfBirth.toString().substring(0, 10))); 
+							
+							endDate.setTime(new Date());
+
+							int diffYear = endDate.get(Calendar.YEAR) - startDate.get(Calendar.YEAR);
+							
+							vo.setAge(String.valueOf(diffYear));
+						}
+						else if(cadre[5] != null )
+						{
+							vo.setAge(cadre[5] != null ? cadre[5].toString().trim():"");
+						}
+						
+						vo.setHouseNo(" -- ");
+						vo.setRelationType(" -- ");
+						
+						vo.setGender(cadre[6] != null ? cadre[6].toString().trim():"");
+						
+						
+						returnList.add(vo);
+					}
+				}
+				
+				
+				if(cadreIdList != null && cadreIdList.size()>0)
+				{
+					if(voterCardId != null   && voterCardId.trim().length()>0)
+					{
+						searchQuery.append("  V.voterIDCardNo like '%"+voterCardId+"%' and");
+					}
+					if(houseNo != null   && voterCardId.trim().length()>0)
+					{
+						searchQuery.append("  V.houseNo like '%"+houseNo+"%' and");
+					}
+					
+					List<Object[]> cadreDetails = cadreDAO.getvoterdetailsByCadreIds(cadreIdList,searchQuery.toString());
+					
+					if(cadreDetails != null && cadreDetails.size()>0)
+					{
+						for (Object[] cadre : cadreDetails) 
+						{
+							VoterInfoVO vo = getMatchedVOById(returnList, Long.valueOf(cadre[0].toString()));
+							
+							if(vo != null )
+							{
+								vo.setCadreId(cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L);
+								vo.setName(cadre[1] != null ? cadre[1].toString().trim():"");
+								vo.setId(cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L);
+								vo.setRelativeName(cadre[ 2] != null ? cadre[2].toString().trim():"");
+								
+								if(cadre[3] != null )
+								{
+									vo.setAge(cadre[3] != null ? cadre[3].toString().trim():"");
+								}
+								vo.setGender(cadre[4] != null ? cadre[4].toString().trim():"");
+								vo.setHouseNo(cadre[5] != null ? cadre[5].toString().trim():"");
+								vo.setRelationType(cadre[6] != null ? cadre[6].toString().trim():"");
+							}
+						}
+					}
+				}				
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in getSearchDetailsCadreRegistration in CadreRegistrationService service", e);
+		}
+		
+		return returnList;
+	}
+	*/
+	
+	public List<SelectOptionVO> getOptionDetailsForCadre()
+	{
+		List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
+		SelectOptionVO mainVO = new SelectOptionVO();
+		
+		try{
+			List<Object[]> cadreLevelsList = cadreLevelDAO.getCadreLevelDetails();
+			List<SelectOptionVO> cadreLevels = null;
+			
+			if(cadreLevelsList != null && cadreLevelsList.size()>0)
+			{
+				cadreLevels = new ArrayList<SelectOptionVO>();
+				
+				for (Object[] param : cadreLevelsList) 
+				{
+					SelectOptionVO vo = new SelectOptionVO();
+					vo.setId(param[0] != null ? Long.valueOf(param[0].toString().trim()):0L);
+					vo.setName(param[1] != null ? param[1].toString().trim():"");
+					
+					cadreLevels.add(vo);
+				}
+			}
+			
+			mainVO.setSelectOptionsList(cadreLevels);
+			
+			
+			List<Object[]> designationList = partyDesignationDAO.getAllPartyDesignation();
+			List<SelectOptionVO> designations = null;
+			
+			if(designationList != null && designationList.size()>0)
+			{
+				designations = new ArrayList<SelectOptionVO>();
+				
+				for (Object[] param : designationList) 
+				{
+					SelectOptionVO vo = new SelectOptionVO();
+					vo.setId(param[0] != null ? Long.valueOf(param[0].toString().trim()):0L);
+					vo.setName(param[1] != null ? param[1].toString().trim():"");
+					
+					designations.add(vo);
+				}
+			}
+			
+			mainVO.setSelectOptionsList1(designations);
+			
+		
+			returnList.add(mainVO);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in getOptionDetailsForCadre in CadreRegistrationService service", e);
+		}
+		
+		return returnList;
+		
+	}
+	
+	
+	
+	public List<SelectOptionVO> getElectionOptionDetailsForCadre()
+	{
+		List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
+		SelectOptionVO mainVO = new SelectOptionVO();
+		
+		try{
+						
+			List<ElectionType> electionTypeList = electionTypeDAO.getElectionTypeList();
+			
+			List<SelectOptionVO> electionTypes = null;
+			
+			if(electionTypeList != null && electionTypeList.size()>0)
+			{
+				electionTypes = new ArrayList<SelectOptionVO>();
+				
+				for (ElectionType electionType : electionTypeList) 
+				{
+					SelectOptionVO vo = new SelectOptionVO();
+					vo.setId(electionType.getElectionTypeId() != null ? electionType.getElectionTypeId():0L);
+					vo.setName(electionType.getElectionType() != null ? electionType.getElectionType():"");
+					
+					electionTypes.add(vo);
+				}
+			}
+			
+			mainVO.setSelectOptionsList(electionTypes);
+			
+			
+			@SuppressWarnings("unchecked")
+			List<Object[]> electionIdList = electionDAO.findElectionYearsForElectionTypeAndStateId(2L,1L);
+			
+			List<SelectOptionVO> electionList = null;
+			
+			if(electionIdList != null && electionIdList.size()>0)
+			{
+				electionList = new ArrayList<SelectOptionVO>();
+				
+				for (Object[] param : electionIdList) 
+				{
+					SelectOptionVO vo = new SelectOptionVO();
+					vo.setId(param[0] != null ? Long.valueOf(param[0].toString().trim()):0L);
+					vo.setName(param[1] != null ? param[1].toString().trim():"");
+					
+					electionList.add(vo);
+				}
+			}
+			
+			mainVO.setSelectOptionsList1(electionList);
+			
+			returnList.add(mainVO);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in getOptionDetailsForCadre in CadreRegistrationService service", e);
+		}
+		
+		return returnList;
+		
+	}
+	
 }
