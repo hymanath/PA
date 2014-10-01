@@ -16,7 +16,6 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserTrackingVO;
 import com.itgrids.partyanalyst.service.ILoginService;
-import com.itgrids.partyanalyst.service.ISoundexService;
 import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -740,7 +739,11 @@ public String ajaxCallForLoginPopup(){
 		if(restiction.equalsIgnoreCase("true"))
 		{
 			String ipAddress = regVO.getIpAddress();
+			LOG.error("IP Address -->"+ipAddress);
+			
 			boolean result = loginService.checkForUserAccessIPAddress(regVO.getRegistrationID(),ipAddress);
+			
+			LOG.error("--->"+result);
 		/*	
 			if(!result)
 				loginService.sendMailToAdminGroup(regVO,ipAddress);*/
