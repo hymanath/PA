@@ -13,4 +13,5 @@ public interface ICadreLevelDAO extends GenericDao<CadreLevel, Long> {
 	
 	public List<CadreLevel> getCadreLevelList();
 	
+	public List<Object[]> getCadreLevelDetails();
 }

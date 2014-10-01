@@ -13,6 +13,8 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	
 	public List<Object[]> getRegisterCadreInfoConstituencyWise();
 	
+	public List<Object[]> getCadreDetailsForCadreRegistratiobByconstituencId(Long constituencyId, String queryStr,Long panchayatId,Long boothId,String villagesCovered);
+	
 	public List<Object[]> getRegisterCadreInfoDistrictWise();
 	
 	public String getLatestMemberNumber();
