@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.webservice.android.components;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.Consumes;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.LoginResponceVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.webservice.android.abstractservice.IWebServiceHandlerService1;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLocationTrackingVo;
@@ -169,22 +171,22 @@ public class WebServiceHandler2 {
 	@Path("/saveFieldDataForCadre")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Object saveFieldDataForCadre (CadreRegistrationVO inputs)
+	public Object saveFieldDataForCadre (List<CadreRegistrationVO> inputs)
 	{
-		LOG.debug("inside save field data");
+		LOG.debug("inside save field data for cadre");
 		LOG.debug(inputs.toString());
-		ResultStatus out=null;
+		SurveyCadreResponceVO out=null;
 		Map<String,String> userDetails= new HashMap<String, String>();
 		userDetails.put("","");
 		try{ 
-			out=(ResultStatus) webServiceHandlerService1.saveSurveyFieldUsersForCadre(inputs);
+			out=(SurveyCadreResponceVO) webServiceHandlerService1.saveSurveyFieldUsersForCadre(inputs);
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
 		
-		if(!out.getMessage().equalsIgnoreCase("Success"))
+		if(!out.getStatus().equalsIgnoreCase("Success"))
 			return "{\"status\":\"Failure\"}";
 		
 		 else return "{\"status\":\"Success\"}";

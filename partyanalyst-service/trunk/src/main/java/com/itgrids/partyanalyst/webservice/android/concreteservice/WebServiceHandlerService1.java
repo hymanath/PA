@@ -37,6 +37,7 @@ import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.LoginResponceVO;
 import com.itgrids.partyanalyst.dto.LoginStatusVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.model.CadreSurveyUserAssignDetails;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
@@ -701,31 +702,38 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	}
 
 	
-	public Object saveSurveyFieldUsersForCadre(CadreRegistrationVO inputResponse)
+	public Object saveSurveyFieldUsersForCadre(List<CadreRegistrationVO> inputResponseList)
 	{
-		ResultStatus  rs = null;
-		LOG.debug(inputResponse.toString());
+		SurveyCadreResponceVO  surveyCadreResponceVO = null;
+		if(inputResponseList != null && inputResponseList.size() > 0)
+		{
+			for (CadreRegistrationVO inputResponse : inputResponseList)
+			{
+				LOG.debug(inputResponse.toString());
+				
+				LOG.error("Voter Name  " + "-" + inputResponse.getVoterName() + "-" +"Date Of Birth "+  "-" + inputResponse.getDob() +"-"+ "Gender " +inputResponse.getGender()+  "-" +"Relative Name"+ inputResponse.getRelativeName() +"-" +"VoterCardNumber"+  inputResponse.getVoterCardNo() + "-" + "H.NO" + inputResponse.getHouseNo() + "-" +"Party Member Since" +inputResponse.getPartyMemberSince()  + "-" + "Blood Group " + inputResponse.getBloodGroupId() + "-" + "Street/hamle" +inputResponse.getStreet() +"-" +"Caste" + inputResponse.getCasteId() + "-" + "Mobile No" + inputResponse.getMobileNumber() + "-" + "Education" +inputResponse.getEducationId() + "-" + "Occupation " +inputResponse.getOccupationId() + "-" + "Previous Enroll Ment No " + inputResponse.getPreviousEnrollmentNumber());
+				if(inputResponse.getPreviousParicaptedElectionsList() != null && inputResponse.getPreviousParicaptedElectionsList().size() > 0)
+				{
+					for (CadrePreviousRollesVO electionVO : inputResponse.getPreviousParicaptedElectionsList())
+					{
+						LOG.error("Designation Level" +electionVO.getDesignationLevelId() + "-" +  "Designation Level Value" + electionVO.getDesignationLevelValue() + "-" + "From Date" + electionVO.getFromDate() + "-" + "To Date" + electionVO.getToDate()  );
+					}
+				}
+				if(inputResponse.getPreviousRollesList() != null && inputResponse.getPreviousRollesList().size() > 0)
+				{
+					for (CadrePreviousRollesVO electionVO : inputResponse.getPreviousRollesList())
+					{
+						LOG.error("Election Id" +electionVO.getElectionTypeId() + "-" +  "Constituency Id" + electionVO.getConstituencyId() );
+					}
+				}
+				if(inputResponse != null)
+				{
+					surveyCadreResponceVO=cadreRegistrationService.saveCadreRegistration(inputResponseList,"TAB");	
+				}
+			}
+		}
 		
-		LOG.error("Voter Name " + inputResponse.getVoterName() + "-" +"Date Of Birth "+ inputResponse.getDob() +"-"+ "Gender" +inputResponse.getGender()+  "-" +"Relative Name"+ inputResponse.getRelativeName() +"-" +"VoterCardNumber"+  inputResponse.getVoterCardNo() + "-" + "H.NO" + inputResponse.getHouseNo() + "-" +"Party Member Since" +inputResponse.getPartyMemberSince()  + "-" + "Blood Group " + inputResponse.getBloodGroupId() + "-" + "Street/hamle" +inputResponse.getStreet() +"-" +"Caste" + inputResponse.getCasteId() + "-" + "Mobile No" + inputResponse.getMobileNumber() + "-" + "Education" +inputResponse.getEducationId() + "-" + "Occupation " +inputResponse.getOccupationId() + "-" + "Previous Enroll Ment No " + inputResponse.getPreviousEnrollmentNumber());
-		if(inputResponse.getPreviousParicaptedElectionsList() != null && inputResponse.getPreviousParicaptedElectionsList().size() > 0)
-		{
-			for (CadrePreviousRollesVO electionVO : inputResponse.getPreviousParicaptedElectionsList())
-			{
-				LOG.error("Designation Level" +electionVO.getDesignationLevelId() + "-" +  "Designation Level Value" + electionVO.getDesignationLevelValue() + "-" + "From Date" + electionVO.getFromDate() + "-" + "To Date" + electionVO.getToDate()  );
-			}
-		}
-		if(inputResponse.getPreviousRollesList() != null && inputResponse.getPreviousRollesList().size() > 0)
-		{
-			for (CadrePreviousRollesVO electionVO : inputResponse.getPreviousRollesList())
-			{
-				LOG.error("Election Id" +electionVO.getElectionTypeId() + "-" +  "Constituency Id" + electionVO.getConstituencyId() );
-			}
-		}
-		if(inputResponse != null)
-		{
-			  rs=cadreRegistrationService.saveCadreRegistration(inputResponse,"TAB");	
-		}
-		return rs;
+		return surveyCadreResponceVO;
 		
 	}
 	

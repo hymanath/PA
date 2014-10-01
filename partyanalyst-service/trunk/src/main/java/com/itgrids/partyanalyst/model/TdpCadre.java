@@ -71,6 +71,7 @@ public class TdpCadre {
 	private String 						longititude;
 	
 	private String 						dataSourceType;
+	private String						uniqueKey;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -400,6 +401,14 @@ public class TdpCadre {
 	}
 	public void setDataSourceType(String dataSourceType) {
 		this.dataSourceType = dataSourceType;
+	}
+	
+	@Column(name="unique_key")
+	public String getUniqueKey() {
+		return uniqueKey;
+	}
+	public void setUniqueKey(String uniqueKey) {
+		this.uniqueKey = uniqueKey;
 	}
 	
 	
