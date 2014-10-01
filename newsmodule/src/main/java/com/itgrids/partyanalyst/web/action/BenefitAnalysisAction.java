@@ -432,7 +432,7 @@ public class BenefitAnalysisAction extends ActionSupport implements ServletReque
 		  try{
 			
 			Date[] dates = getDates(type,fromDate,toDate);
-			 newsResult = benefitAnalysisService.getLocationBenifitNews(dates[0],dates[1],locationId,benefitId,startValue,endValue,name);
+			 newsResult = benefitAnalysisService.getLocationBenifitNews(dates[0],dates[1],locationId,benefitId,startValue,endValue,name,partyId);
 		  }catch(Exception e){
 			  LOG.error(" Exception occured in getLocationBenifitNews ",e);
 		  }
