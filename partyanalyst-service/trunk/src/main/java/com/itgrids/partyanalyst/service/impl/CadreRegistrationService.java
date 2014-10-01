@@ -50,7 +50,6 @@ import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.CadreParticipatedElection;
 import com.itgrids.partyanalyst.model.CadrePreviousRoles;
 import com.itgrids.partyanalyst.model.Constituency;
-import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.TdpCadre;
@@ -506,7 +505,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 															cadreParticipatedElection.setElectionId(electionsList.get(0).getElectionId());
 														}
 													}*/
-													cadreParticipatedElection.setElectionId(electionVO.getElectionTypeId());
+													if(electionVO.getElectionTypeId() != null && electionVO.getElectionTypeId() > 0)
+													{
+														cadreParticipatedElection.setElectionId(electionVO.getElectionTypeId());
+													}
 													if(electionVO.getConstituencyId() != null && electionVO.getConstituencyId().longValue() > 0)
 													{
 														cadreParticipatedElection.setConstituencyId(electionVO.getConstituencyId());
