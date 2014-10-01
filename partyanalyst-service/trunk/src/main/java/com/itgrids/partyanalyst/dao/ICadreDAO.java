@@ -22,7 +22,8 @@ public interface ICadreDAO extends GenericDao<Cadre, Long>{
 	public List findMandalsByDistrictID(String districtID);
 	public List findVillagesByTehsilID(String tehsilID);
 	public List findHamletsByTehsilIds(String tehsilIds);
-	public List findCadreSizeStateWise(Long userID); //findTotalStateZeroSizeCadres	public List findCadreSizeDistrictWise(Long userID);//findTotalDistrictZeroSizeCadres
+	public List findCadreSizeStateWise(Long userID); //findTotalStateZeroSizeCadres	
+	public List findCadreSizeDistrictWise(Long userID);//findTotalDistrictZeroSizeCadres
 	public List findCadreSizeMandalWise(Long userID);//findTotalMandalZeroSizeCadres
 	public List findCadreSizeVillageWise(Long userID);//findTotalVillageZeroSizeCadres
 	public List findCadreSizeLocalElectionBodywise(Long userId);
