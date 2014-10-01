@@ -18,4 +18,9 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> getRegisterCadreInfoDistrictWise();
 	
 	public String getLatestMemberNumber();
+	
+	public Long getWorkStartedConstituencyCount(String state);
+	
+	public Long getWorkStartedConstituencyYearCount(Long year);
+	
 }
