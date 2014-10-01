@@ -8,7 +8,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Community News Portal</title>
+    <title>Tdp Cadre Registration</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet"/>	
     <link href="css/style.css" rel="stylesheet"/>
@@ -65,7 +65,7 @@
 	.show-grid:hover .block-hover-addBtn{display:table-cell; margin-right:-22px; top:-10px;}/*visibility: visible;*/
 	.block-hover-addBtn{display:none; position: relative;}/*visibility: hidden;*/
 	.border-none{border:none;}
-	 .bgc{background-color:#3598db}
+	 .bgc{background-color:#3598db !important;}
 	 
 	 .datePickerCls{
 			 cursor: text !important;
@@ -256,7 +256,21 @@
 						}
 				});
 	}
-
+	
+	function changeImg()
+	{
+		var photoElmt = document.getElementById("uploadFileId");
+		var file = photoElmt.files[0];
+		var reader = new FileReader();
+		reader.onloadend = handleReaderLoadEnd;
+		reader.readAsDataURL(file);
+	}
+	function handleReaderLoadEnd(evt)
+	{
+		var img = document.getElementById("actuploadImg");
+		img.src = evt.target.result;
+		evt=null;
+	} 
 	</script>
 	
 </head>
@@ -267,7 +281,7 @@
 		</div>
 	</div>
 <div>
-	<form action="tdpCadreSaveRegistrationAction.action" method="POST" name="uploadCadreForm">	
+	<form action="tdpCadreSaveRegistrationAction.action" method="POST" enctype="multipart/form-data" name="uploadCadreForm">	
 		<div class="container m_top10"style="position: relative;">
 		
 			<div class="span12" >
@@ -312,8 +326,10 @@
 								
 										<div class="span4  m_top10">
 											<div class="well  pad-5">
-												<img src="user.jpg" class="img-responsive" />
-											<button class="btn btn-primary btn-xs btn-block border-radius-0 m_top10 " type="button" >Upload Photo </button>
+												<!--<img src="user.jpg" class="img-responsive" />-->
+												<span id="uploadImg"><img  style="width: 140px; height: 120px;" id="actuploadImg" src="images/mahaNadu/user image.jpg"></span>
+												<input type="file" style="width: 79px;margin-left: 10px;" id="uploadFileId" onchange="changeImg();" name="cadreRegistrationVO.uploadImage" class="m_top10">
+												<!--<button class="btn btn-primary btn-xs btn-block border-radius-0 m_top10 " type="button" >Upload Photo </button>-->
 											</div>
 										</div>
 								

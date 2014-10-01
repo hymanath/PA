@@ -22,11 +22,13 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.ICandidateUpdationDetailsService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -43,6 +45,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private List<CadrePreviousRollesVO> 		previousRollesList;
 	private List<CadrePreviousRollesVO> 		previousElectionssList;
 	private ResultStatus						resultStatus;
+	private SurveyCadreResponceVO				surveyCadreResponceVO;
 	
 	private List<VoterInfoVO> 					voterInfoVOList;
 	private List<GenericVO> 					genericVOList;
@@ -243,6 +246,15 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		this.inputStream = inputStream;
 	}
 
+	
+	public SurveyCadreResponceVO getSurveyCadreResponceVO() {
+		return surveyCadreResponceVO;
+	}
+
+	public void setSurveyCadreResponceVO(SurveyCadreResponceVO surveyCadreResponceVO) {
+		this.surveyCadreResponceVO = surveyCadreResponceVO;
+	}
+
 	public String execute()
 	{
 		try {
@@ -282,11 +294,14 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 					}
 					cadreRegistrationVO.setPreviousRollesList(rolesList);
 				}
-				resultStatus = cadreRegistrationService.saveCadreRegistration(cadreRegistrationVO,"WEB");
-				if(resultStatus.getResultCode() == ResultCodeMapper.SUCCESS){
+				List<CadreRegistrationVO> cadreRegistrationVOList = new ArrayList<CadreRegistrationVO>();
+				cadreRegistrationVO.setPath(IWebConstants.STATIC_CONTENT_FOLDER_URL);
+				cadreRegistrationVOList.add(cadreRegistrationVO);
+				surveyCadreResponceVO = cadreRegistrationService.saveCadreRegistration(cadreRegistrationVOList,"WEB");
+				if(surveyCadreResponceVO.getResultCode() == ResultCodeMapper.SUCCESS){
 					LOG.debug("fileuploades is sucess Method");
-					if(resultStatus.getHost() != null && Long.valueOf(resultStatus.getHost()) > 0 ){
-						inputStream = new StringBufferInputStream("SUCCESS" +"," +resultStatus.getHost() +",");
+					if(surveyCadreResponceVO.getEnrollmentNumber() != null && Long.valueOf(surveyCadreResponceVO.getEnrollmentNumber() ) > 0 ){
+						inputStream = new StringBufferInputStream("SUCCESS" +"," +surveyCadreResponceVO.getEnrollmentNumber()  +",");
 					}
 				}
 				else
