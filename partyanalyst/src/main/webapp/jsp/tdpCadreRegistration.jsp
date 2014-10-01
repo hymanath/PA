@@ -82,6 +82,8 @@
 	
 	$(document).ready(function(){
 	    $('.datePickerCls').datepicker({dateFormat: 'dd-mm-yy',minDate: '01-01-1900',maxDate: new Date()});
+		prepopulateOptions();
+		prepopulateElctionOptions();
 	});
 
 	var rolesSize = 1;
