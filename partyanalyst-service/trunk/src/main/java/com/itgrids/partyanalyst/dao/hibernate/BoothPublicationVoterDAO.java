@@ -7252,7 +7252,7 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 
 	}
 	
-	public List getVotersDetailsForCadreRegistratiobByconstituencId(Long constituencyId, Long publicationDate,String queryStr,Long panchayatId,Long boothId,Long locationId)
+	public List getVotersDetailsForCadreRegistratiobByconstituencId(Long constituencyId, Long publicationDate,String queryStr,Long panchayatId,Long boothId,String villageCovered)
 	{
 		
 		StringBuilder queryStr1 = new StringBuilder();
@@ -7271,16 +7271,13 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 			queryStr1.append(" and BPV.booth.boothId = :boothId ");
 		}
 		
-		if(locationId.longValue() != 0L)
+		if(villageCovered != null && villageCovered.trim().length()>0)
 		{
-			queryStr1.append(" and BPV.booth.boothId = :boothId ");
+			queryStr1.append(" and BPV.booth.villagesCovered like '%"+villageCovered+"%' ");
 		}
 		
-	/*	Query query = getSession().createQuery("select BPV.voter.voterId,BPV.voter.name, BPV.voter.relativeName, BPV.voter.age, BPV.voter.houseNo, BPV.voter.relationshipType, BPV.voter.gender  from BoothPublicationVoter BPV where "+queryStr+" " +
-				" BPV.booth.constituency.constituencyId = :constituencyId and BPV.booth.publicationDate.publicationDateId = :publicationDate ");
-		*/
-		
 		Query query = getSession().createQuery(queryStr1.toString());
+			
 		query.setParameter("constituencyId", constituencyId);
 		query.setParameter("publicationDate", publicationDate);
 		
@@ -7292,11 +7289,6 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		if(boothId.longValue() != 0L)
 		{
 			query.setParameter("boothId", boothId);
-		}
-		
-		if(locationId.longValue() != 0L)
-		{
-			query.setParameter("boothId", locationId);
 		}
 		
 		return query.list();	
