@@ -1,11 +1,14 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.log4j.Logger;
+import org.jfree.util.Log;
 
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
@@ -125,4 +128,27 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		return returnList;
 	}
 	
+	public List<CadreRegisterInfo> getWorkStartedConstituencyCount(){
+		List<CadreRegisterInfo> returnList = new ArrayList<CadreRegisterInfo>();
+		try{
+			
+			 Long tsCount=tdpCadreDAO.getWorkStartedConstituencyCount("TS");
+			 Long apCount=tdpCadreDAO.getWorkStartedConstituencyCount("AP");
+			 Long count_2012=tdpCadreDAO.getWorkStartedConstituencyYearCount(2012L);
+			 Long count_2014=tdpCadreDAO.getWorkStartedConstituencyYearCount(2014L);
+			 Long percentage=(count_2012*count_2014)/100;
+			 CadreRegisterInfo vo=new CadreRegisterInfo();
+			 vo.setApCount(apCount);
+			 vo.setTgCount(tsCount);
+			 vo.setCount_2012(count_2012);
+			 vo.setCount_2014(count_2014);
+			 vo.setPercentage(percentage);
+			 returnList.add(vo);
+			
+		}catch(Exception e){
+			LOG.error("Exception rised in getWorkStartedConstituencyCount",e);
+		}
+		return returnList;
+	}
+		
 }
