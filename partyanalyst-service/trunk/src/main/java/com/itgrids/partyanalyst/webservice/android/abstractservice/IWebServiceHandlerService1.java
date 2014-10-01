@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.webservice.android.abstractservice;
 
+import java.util.List;
+
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.LoginResponceVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -14,7 +16,7 @@ public interface IWebServiceHandlerService1 {
 	public ResultStatus saveUserTrackingLocation(UserLocationTrackingVo userLocationTrackingVo);
 
 	public LoginResponceVO checkForUserAuthenticationForCadre(UserLoginVO inputvo);
-	public Object saveSurveyFieldUsersForCadre(CadreRegistrationVO inputResponse);
+	public Object saveSurveyFieldUsersForCadre(List<CadreRegistrationVO> inputResponse);
 
 /*	public ResultStatus checkUserAuthenticationAndUpdateAuthorisedTime(String userId,String macAdressId);
 */	
