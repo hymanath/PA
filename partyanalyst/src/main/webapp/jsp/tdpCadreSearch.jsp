@@ -10,20 +10,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>TDP Cadre Search </title>
 
-    <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet"/>	
-	<!-- Custom Styles-->
     <link href="css/style.css" rel="stylesheet"/>
-	<!-- CSS animation -->
     <link href="css/animate.css" rel="stylesheet"/>	
-	<!-- icheck Css-->
 	<link href="styles/icheck_skins/all.css?v=1.0.2" rel="stylesheet"/>
-			
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
 	 <script src="js/icheck/icheck.js"></script>
-	<!-- iCheck -->
 
 	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
 	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
@@ -48,14 +40,10 @@
 		<div class="span6 offset2 show-grid pad-10b" style="">
 			<h5 class="text-align">SELECT CONSTITUENCY</h5>
 
-			<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="userConstituencyId" list="selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" style="width:350px;" />
-			<span style="float:right;margin-top:-40px"><a href="javascript:{getConstituencyWiseDetails();}" id="getTypebtnId" class="btn btn-success"> Filter Search </a></span>
+			<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="userConstituencyId" list="selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" style="width:460px;" onChange="getConstituencyWiseDetails();"/>
+			<select style="width:150px;" id="panchayatList" onchange="getLocationWiseDetails();"><option value="0"> Select Panchayat </option></select>		
+			<select style="width:150px;" id="boothsList" onchange="getBoothCoverdVillagesDetails();"> <option value="0"> Select Booth </option> </select> 	<select style="width:150px;" id="vilagecovrdList"> <option value="0"> Select Covered Village </option> </select> 
 			<img src='images/icons/search.gif' id="loadingImg" style="display:none;"/>
-				<div id="filterSearchDiv" style="display:none;">
-					<select style="width:150px;" id="panchayatList" onchange="getLocationWiseDetails();"><option value="0"> Select Panchayat </option></select> 			
-					<select style="width:150px;" id="boothsList" onchange="getBoothCoverdVillagesDetails();"> <option value="0"> Select Booth </option> </select> 		
-					<select style="width:150px;" id="vilagecovrdList"> <option value="0"> Select Covered Village </option> </select> 
-				</div>
 				
 				<h5 class="text-align small m_top15">SEARCH BY</h5>
 					<div class="span6">
@@ -93,13 +81,11 @@
 	<img src='images/Loading-data.gif' class="offset7"  id="searchDataImg" style="width:70px;height:60px;display:none;"/>
 	<div class="container" id="tableElement" style="margin-top:25px;display:none;">
 		<div class="col-xs-8 col-xs-offset-2 show-grid">
+		<a class="btn btn-default active col-xs-1 m_top20 pull-right border-radius-0 " href="javascript:{getDetailsForUser(0)}">Skip 	
+			<span class="glyphicon glyphicon-chevron-right"></span></a>
 			<h3 class="text-align">SEARCH DETAILS</h3>
 			<div class="table-responsive" id="searchDetailsDiv" ></div>
-			<a href="search-constituency.html" class="btn btn-default active col-xs-1 m_top20 pull-right border-radius-0 ">Skip 	
-			<span class="glyphicon glyphicon-chevron-right"></span></a>
-			<a href="javascript:{getDetailsForUser()}" class="btn btn-success col-xs-1 m_top20 pull-right m-right17 border-radius-0">Ok 
-			<span class="glyphicon glyphicon-chevron-right"></span></a>
-	
+
 		</div>
 	</div>
 
@@ -110,9 +96,10 @@
 			radioClass: 'iradio_square-blue',
 			increaseArea: '20%' // optional
 		  });
+		 
 		});
 		
-	var isSubmit = true;	
+	var request;	
 	function searchCandidatesDetailsBySearchCriteria(type)
 	{
 	
@@ -131,60 +118,64 @@
 			$('#errorDiv').html('Please Select Constituency.');
 			return;
 		}
-			
-	if(type == 1 && candidateName != null && candidateName.length >2 && isSubmit)
-	{			
-		isSubmit = false;
-		$('#searchDetailsDiv').html('');
-		$('#tableElement').hide();
-		
-		if(villageCoveredId != 0)
+		if(panchayatId == 0)
 		{
-			villageCovered = $("#vilagecovrdList option:selected").text();
+			$('#errorDiv').html('Please Select Panchayat.');
+			return;
 		}
 		
+		var isError = false ;
 		
-		$('#searchDataImg').show();
-
-		var jsObj = 
-			   {
-				  constituencyId:cosntiteucnyId,
-				  searchType :searchType, 
-				  candidateName:candidateName,
-				  houseNo : houseNo,
-				  voterCardNo : voterCardNo,
-				  panchayatId : panchayatId,
-				  boothId : boothId ,
-				  locationId : villageCovered,
-				  task:"searchCandidatesDtailsBySearchCriteria"             
-			   }
-
-			   
-			   
-			   $.ajax({
-					type : "POST",
-					url : "searchVoterAndCadreInfoBySearchCriteriaAction.action",
-					data : {task:JSON.stringify(jsObj)} ,
-				}).done(function(result){
-					isSubmit = true;
-					$('#searchDataImg').hide();
-					if(result != null && result.length >0)
-					{
-						buildSearchDetails(result);
-					}
-					else
-					{
-						$('#searchDetailsDiv').html('No Data Available...');
-						$('#tableElement').show();
-					}
-				});
-		}
-			else if(type ==2)
+		
+			if(voterCardNo == null || voterCardNo.length == 0)
+			{	
+				$('#errorDiv').html('Enter any search criteria for details.');
+				 isError = true ;
+			}
+			else
 			{
-				isSubmit = false;
+				isError = false ;
+			}
+			
+			if(houseNo == null || houseNo.length == 0)
+			{	
+				$('#errorDiv').html('Enter any search criteria for details.');
+				 isError = true ;
+			}
+			else
+			{
+				isError = false ;
+			}
+			
+			if(candidateName == null || candidateName.length <=2)
+			{	
+				$('#errorDiv').html('Candidate Name should containse atleast 3 Charactors.');
+				 isError = true ;
+			}
+			else
+			{
+				isError = false ;
+			}
+			
+			if((voterCardNo == null || voterCardNo.length == 0) && (houseNo == null || houseNo.length == 0) && (candidateName == null || candidateName.length <=2))
+			{
+				$('#errorDiv').html('Enter any search criteria for details.');
+				 isError = true ;
+			}
+		
+		
+		if(!isError)
+		{			
+			$('#errorDiv').html('');
+			
 			$('#searchDetailsDiv').html('');
 			$('#tableElement').hide();
 			
+			if(typeof(request) != "undefined")
+			{
+				request.abort();
+			}
+		
 			if(villageCoveredId != 0)
 			{
 				villageCovered = $("#vilagecovrdList option:selected").text();
@@ -193,39 +184,40 @@
 			
 			$('#searchDataImg').show();
 
-		var jsObj = 
-			   {
-				  constituencyId:cosntiteucnyId,
-				  searchType :searchType, 
-				  candidateName:candidateName,
-				  houseNo : houseNo,
-				  voterCardNo : voterCardNo,
-				  panchayatId : panchayatId,
-				  boothId : boothId ,
-				  locationId : villageCovered,
-				  task:"searchCandidatesDtailsBySearchCriteria"             
-			   }
+			var jsObj = 
+				   {
+					  constituencyId:cosntiteucnyId,
+					  searchType :searchType, 
+					  candidateName:candidateName,
+					  houseNo : houseNo,
+					  voterCardNo : voterCardNo,
+					  panchayatId : panchayatId,
+					  boothId : boothId ,
+					  locationId : villageCovered,
+					  task:"searchCandidatesDtailsBySearchCriteria"             
+				   }
 
-			   
-			   
-			   $.ajax({
-					type : "POST",
-					url : "searchVoterAndCadreInfoBySearchCriteriaAction.action",
-					data : {task:JSON.stringify(jsObj)} ,
-				}).done(function(result){
-					isSubmit = true;
-					$('#searchDataImg').hide();
-					if(result != null && result.length >0)
-					{
-						buildSearchDetails(result);
-					}
-					else
-					{
-						$('#searchDetailsDiv').html('No Data Available...');
-						$('#tableElement').show();
-					}
-				});
+				   
+				   
+				request =   $.ajax({
+						type : "POST",
+						url : "searchVoterAndCadreInfoBySearchCriteriaAction.action",
+						data : {task:JSON.stringify(jsObj)} ,
+					}).done(function(result){
+						isSubmit = true;
+						$('#searchDataImg').hide();
+						if(result != null && result.length >0)
+						{
+							buildSearchDetails(result);
+						}
+						else
+						{
+							$('#searchDetailsDiv').html('No Data Available...');
+							$('#tableElement').show();
+						}
+					});
 		}
+			
 	}
 	
 	function buildSearchDetails(result)
@@ -248,12 +240,12 @@
 			for(var i in result)
 			{
 				str +='<tr>';
-				str +='<td>'+result[i].name+'</td>';
-				str +='<td>'+result[i].relativeName+'</td>';
-				str +='<td>'+result[i].age+'</td>';
-				str +='<td>'+result[i].gender+'</td>';
-				str +='<td>'+result[i].relationType+'</td>';
-				str +='<td>'+result[i].houseNo+'<label class="pull-right">';
+				str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].name+'</span></td>';
+				str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].relativeName+'</span></td>';
+				str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].age+'</span></td>';
+				str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].gender+'</span></td>';
+				str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].relationType+'</span></td>';
+				str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].houseNo+'</span><label class="pull-right">';
 				str +='<input type="radio" value="'+result[i].id+'" name="optionsRadios" onClick="getDetailsForUser();"></label></td>';
 				str +='</tr>';
 			}
@@ -279,6 +271,11 @@
 				getDetailsForUser(this.value);
 				
 			});
+			 $(".detailsCls").click(function(){
+			var id = $(this).attr('id');
+			getDetailsForUser(id);
+		  
+		  });
 	}
 	
 	function getDetailsForUser(candidateId)
@@ -329,7 +326,9 @@
 	{
 		var cosntiteucnyId = $('#userConstituencyId').val();
 		var locationId = $('#panchayatList').val();
-		
+		$('#boothsList').find('option').remove();
+		$('#boothsList').append('<option value="0"> Select Booth </option>');
+		$('#loadingImg').show();			
 		var jsObj = 
 			   {
 					constituencyId:cosntiteucnyId,	
@@ -341,9 +340,7 @@
 					url : "getLocationWiseDetailsAction.action",
 					data : {task:JSON.stringify(jsObj)} ,
 				}).done(function(result){
-					$('#boothsList').find('option').remove();
-						$('#boothsList').append('<option value="0"> Select Booth </option>');
-						
+					$('#loadingImg').hide();
 					if(result != null )
 					{
 						for(var i in result)
@@ -359,7 +356,9 @@
 		var boothsArr = [];	
 		var locationId = $('#boothsList').val();		
 		boothsArr.push(locationId);
-		
+		$('#vilagecovrdList').find('option').remove();
+		$('#vilagecovrdList').append('<option value="0"> Select Booth </option>');
+		$('#loadingImg').show();
 		var jsObj = 
 			   {
 				  boothsArr:boothsArr,				
@@ -370,9 +369,7 @@
 					url : "getBoothCoverdVillagesDetailsAction.action",
 					data : {task:JSON.stringify(jsObj)} ,
 				}).done(function(result){
-					$('#vilagecovrdList').find('option').remove();
-						$('#vilagecovrdList').append('<option value="0"> Select Booth </option>');
-						
+					$('#loadingImg').hide();				
 					if(result != null )
 					{
 						for(var i in result)

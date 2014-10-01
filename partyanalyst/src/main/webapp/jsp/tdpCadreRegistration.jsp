@@ -10,24 +10,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Community News Portal</title>
 
-    <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">	
-	<!-- Custom Styles-->
-    <link href="css/style.css" rel="stylesheet">
-	<!-- CSS animation -->
-    <link href="css/animate.css" rel="stylesheet">	
-	<!-- icheck Css-->
-	<link href="icheck/skins/all.css?v=1.0.2" rel="stylesheet">
-	
-	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-   <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
-	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <link href="css/bootstrap.min.css" rel="stylesheet"/>	
+    <link href="css/style.css" rel="stylesheet"/>
+    <link href="css/animate.css" rel="stylesheet"/>	
+	<link href="styles/icheck_skins/all.css?v=1.0.2" rel="stylesheet"/>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	 <script src="js/icheck/icheck.js"></script>
+	 
+	 	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
 	<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>
-<!-- iCheck -->
 	
-	
+	 
 	<!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
@@ -82,8 +75,10 @@
 	
 	$(document).ready(function(){
 	    $('.datePickerCls').datepicker({dateFormat: 'dd-mm-yy',minDate: '01-01-1900',maxDate: new Date()});
+		
 		prepopulateOptions();
 		prepopulateElctionOptions();
+		 
 	});
 
 	var rolesSize = 1;
@@ -93,21 +88,31 @@
 		str += '<div class="row rolesList'+rolesSize+'">';
 		str += '<div class="span3">';
 		str += '<div class=" m_top20" >';
-		str += '<h5 class="text-align1">OCCUPATION</h5>';
+		str += '<h5 class="text-align1">Select Level </h5>';
 		str += '<select class="form-control border-radius-0 text-align1" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].designationLevelId">';
-		str += '<option value = "1">kuppam</option>';
-		str += '<option value = "2">Nellore</option>';
-		str += '<option value = "3">Anantapur</option>';
+		str += '<option value = "0"> Select Level</option>';
+			if(cadreLevelArr != null && cadreLevelArr.length>0)
+			{
+				for(var i in cadreLevelArr)
+				{
+					str += '<option value = "'+cadreLevelArr[i].id+'">'+cadreLevelArr[i].name+'</option>';
+				}
+			}
 		str += '</select>';
 		str += '</div>';
 		str += '</div>';
 		str += '<div class="span3">';
 		str += '<div class=" m_top20" >';
-		str += '<h5 class="text-align1">OCCUPATION</h5>';
+		str += '<h5 class="text-align1">Party Designation </h5>';
 		str += '<select class="form-control border-radius-0 text-align1" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].designationLevelValue">';
-		str += '<option value = "1">kuppam</option>';
-		str += '<option value = "2">Nellore</option>';
-		str += '<option value = "3">Anantapur</option>';
+		str += '<option value = "0"> Select Designation </option>';
+			if(partyDesignationArr != null && partyDesignationArr.length>0)
+			{
+				for(var i in partyDesignationArr)
+				{
+					str += '<option value = "'+partyDesignationArr[i].id+'">'+partyDesignationArr[i].name+'</option>';
+				}
+			}
 		str += '</select>';
 		str += '</div>';
 		str += '</div>';
@@ -133,7 +138,7 @@
 		str += '</div>';
 		
 		rolesSize++;
-		alert(rolesSize);
+		//alert(rolesSize);
 		
 		$('#rollesDiv').append(str);
 		$('.datePickerCls').datepicker({dateFormat: 'dd-mm-yy',minDate: '01-01-1900',maxDate: new Date()});
@@ -159,7 +164,9 @@
 		YAHOO.util.Connect.asyncRequest('POST','tdpCadreSaveRegistrationAction.action',uploadHandler);
 	}
 	
-
+	var cadreLevelArr = [];
+	var partyDesignationArr = [];
+	
 	function prepopulateOptions()
 	{
 		var jsObj = 
@@ -171,8 +178,8 @@
 					url : "getOptionDetailsForCadreAction.action",
 					data : {task:JSON.stringify(jsObj)} ,
 				}).done(function(result){
-						console.log(result);
-						
+						$('#cadreLevelId').append('<option value="0"> Select Level </option>');
+							$('#partyDesignationId').append('<option value="0"> Select Designation </option>');
 						if(result != null && result.length >0)
 						{
 							if(result[0].selectOptionsList != null && result[0].selectOptionsList.length >0)
@@ -180,27 +187,35 @@
 								for(var i in result[0].selectOptionsList)
 								{
 									$('#cadreLevelId').append('<option value="'+result[0].selectOptionsList[i].id+'">'+result[0].selectOptionsList[i].name+'</option>');
-								
+									var cadreObj = 
+									{
+										id		:	result[0].selectOptionsList[i].id,
+										name	:	result[0].selectOptionsList[i].name								
+									}
+									
+									cadreLevelArr.push(cadreObj);
+									
 								}
 							
 							}
 							
 							if(result[0].selectOptionsList1 != null && result[0].selectOptionsList1.length >0)
 							{
+							
 								for(var i in result[0].selectOptionsList1)
 								{
 									$('#partyDesignationId').append('<option value="'+result[0].selectOptionsList1[i].id+'">'+result[0].selectOptionsList1[i].name+'</option>');
+									
+									var cadreObj = 
+									{
+										id		:	result[0].selectOptionsList1[i].id,
+										name	:	result[0].selectOptionsList1[i].name								
+									}
+									
+									partyDesignationArr.push(cadreObj);
+									
 								}							
-							}
-							
-							if(result[0].selectOptionsList2 != null && result[0].selectOptionsList2.length >0)
-							{
-								for(var i in result[0].selectOptionsList1)
-								{
-									$('#electionTypeId').append('<option value="'+result[0].selectOptionsList2[i].id+'">'+result[0].selectOptionsList2[i].name+'</option>');			
-								}
-							
-							}
+							}	
 						}
 				});
 	}
@@ -216,15 +231,15 @@
 					url : "getElectionOptionDetailsForCadreAction.action",
 					data : {task:JSON.stringify(jsObj)} ,
 				}).done(function(result){
-						console.log(result);
-						
+						$('#electionTypeId').append('<option value="0"> Select Election </option>');
+							$('#electionYearId').append('<option value="0"> Select Year </option>');
 						if(result != null && result.length >0)
 						{
 							if(result[0].selectOptionsList != null && result[0].selectOptionsList.length >0)
 							{
 								for(var i in result[0].selectOptionsList)
 								{
-									$('#electionTypeId').append('<option value="'+result[0].selectOptionsList[i].id+'">'+result[0].selectOptionsList[i].name+'</option>');			
+									$('#electionTypeId').append('<option value="'+result[0].selectOptionsList[i].id+'">'+result[0].selectOptionsList[i].name+'</option>');		
 								}
 							
 							}
@@ -233,7 +248,7 @@
 							{
 								for(var i in result[0].selectOptionsList1)
 								{
-									$('#electionYearId').append('<option value="'+result[0].selectOptionsList1[i].id+'">'+result[0].selectOptionsList1[i].name+'</option>');			
+									$('#electionYearId').append('<option value="'+result[0].selectOptionsList1[i].id+'">'+result[0].selectOptionsList1[i].name+'</option>');														
 								}
 							
 							}
@@ -241,8 +256,7 @@
 						}
 				});
 	}
-	
-	
+
 	</script>
 	
 </head>
