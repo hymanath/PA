@@ -100,11 +100,43 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		if(boothId.longValue() != 0L)
 		{
 			query.setParameter("boothId", boothId);
-		}
-		
+		}		
 		
 		return query.list();
 	}
 	
+	public Long getWorkStartedConstituencyCount(String state){
+        StringBuilder str = new StringBuilder();
+		
+		str.append("select count(distinct model.userAddress.constituency.constituencyId)  " +
+				"from TdpCadre model ");
+		if(state.equalsIgnoreCase("TS"))
+		{
+			str.append(" where model.userAddress.district.districtId <= 10 ");
+		}
+		
+		if(state.equalsIgnoreCase("AP"))
+		{
+			str.append(" where model.userAddress.district.districtId <= 23 ");
+		}
+				
+		str.append(" and model.userAddress.state.stateId = 1 ");
+		
+		Query query = getSession().createQuery(str.toString());
+		
+		return (Long) query.uniqueResult();
+	}
+	
+	
+	public Long getWorkStartedConstituencyYearCount(Long year){
+        	
+		Query query = getSession().createQuery("select count(*)  " +
+				"from TdpCadre model " +
+				"where model.enrollmentYear = :year "+
+				"and model.isDeleted = 'N' ");
+		query.setParameter("year", year);
+		
+		return (Long) query.uniqueResult();
+	}
 	
 }
