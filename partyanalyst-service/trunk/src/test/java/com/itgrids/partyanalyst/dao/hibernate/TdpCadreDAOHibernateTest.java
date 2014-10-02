@@ -24,8 +24,8 @@ public class TdpCadreDAOHibernateTest extends BaseDaoTestCase {
 	public void testgetWorkStartedConstituencyCount(){
 		Long tsCount=tdpCadreDAO.getWorkStartedConstituencyCount("TS");
 		Long apCount=tdpCadreDAO.getWorkStartedConstituencyCount("AP");
-		Long count_2012=tdpCadreDAO.getWorkStartedConstituencyYearCount(2012L);
-		Long count_2014=tdpCadreDAO.getWorkStartedConstituencyYearCount(2014L);
+		Long count_2012=tdpCadreDAO.getWorkStartedConstituencyYearCount(2012l,"AP");
+		Long count_2014=tdpCadreDAO.getWorkStartedConstituencyYearCount(2014L,"AP");
 		System.out.println("AP Count is:"+apCount);
 		System.out.println("TS Count is:"+tsCount);
 		System.out.println("2012 Count is:"+count_2012);
