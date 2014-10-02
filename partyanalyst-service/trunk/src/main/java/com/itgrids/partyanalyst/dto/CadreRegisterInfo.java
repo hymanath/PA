@@ -13,9 +13,9 @@ public class CadreRegisterInfo implements Serializable{
 	private Long apCount;
 	private Long tgCount;
 	private String name;
+	private String area;
+	private String location;
 	private Long percentage;
-	private Long count_2012;
-	private Long count_2014;
 	
 	public Long getTotalCount() {
 		return totalCount;
@@ -49,29 +49,28 @@ public class CadreRegisterInfo implements Serializable{
 		this.name = name;
 	}
 
+	public String getArea() {
+		return area;
+	}
+
+	public void setArea(String area) {
+		this.area = area;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
 	public Long getPercentage() {
 		return percentage;
 	}
 
 	public void setPercentage(Long percentage) {
 		this.percentage = percentage;
-	}
-
-	public Long getCount_2012() {
-		return count_2012;
-	}
-
-	public void setCount_2012(Long count_2012) {
-		this.count_2012 = count_2012;
-	}
-
-	public Long getCount_2014() {
-		return count_2014;
-	}
-
-	public void setCount_2014(Long count_2014) {
-		this.count_2014 = count_2014;
-	}
-	
+	}	
 	
 }

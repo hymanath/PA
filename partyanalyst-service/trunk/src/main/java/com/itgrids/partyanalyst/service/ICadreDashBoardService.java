@@ -8,4 +8,12 @@ public interface ICadreDashBoardService {
 	
 	public List<CadreRegisterInfo> getWorkStartedConstituencyCount();
 
+	public List<CadreRegisterInfo> getDashBoardBasicInfo();
+	
+	public  List<CadreRegisterInfo> getRecentlyRegisteredCadresInfo();
+	
+	public List<CadreRegisterInfo> getAssemblyWiseCompletedPercentage(Long assemblyId,Long stateId);
+	
+	public List<CadreRegisterInfo> getDistrictWiseCompletedPercentage(Long districtId,Long stateId);
+	
 }
