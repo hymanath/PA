@@ -343,7 +343,8 @@
 			<div class="span12" >
 				<div class="row-fluid">
 					<div class="span6   show-grid"  id="fadeInLeft">
-											<h5 class="text-align1">CANDIDATE NAME</h5>
+					<input type="hidden" class="form-control border-radius-0 text-align2" value="${voterInfoVOList[0].voterId}" > 
+											<h5 class="text-align1"> CANDIDATE NAME </h5>
 											<input type="text" class="form-control border-radius-0 text-align2" placeholder="Text input" name="cadreRegistrationVO.voterName"  value="${voterInfoVOList[0].name}"></input>
 									<div class="row-fluid">
 										<div class="span7">
@@ -351,7 +352,7 @@
 												
 												<div class="input-prepend text-align2 ">
 													
-													<input type="text" class="datePickerCls" name="cadreRegistrationVO.dobStr"></input>
+													<input type="text" class="datePickerCls" name="cadreRegistrationVO.dobStr" value="${voterInfoVOList[0].dateOfBirth}" ></input>
 													</div>
 													
 													<h5 class="text-align1">GENDER</h5>	
@@ -434,7 +435,7 @@
 					
 								<div class=" m_top20" >
 										<h5 class="text-align1">STREET/HAMLET</h5>
-										<input type="text" class="form-control border-radius-0  input-block-level" placeholder="Text input" name="cadreRegistrationVO.street"></input>
+										<input type="text" class="form-control border-radius-0  input-block-level" placeholder="Text input" name="cadreRegistrationVO.street"  value="${voterInfoVOList[0].location}"></input>
 								</div>	
 							<div class=" m_top20" >
 										<h5 class="text-align1">CASTE NAME</h5>
@@ -443,7 +444,7 @@
 							</div>
 							<div class=" m_top20" >
 										<h5 class="text-align1">MOBILE NUMBER</h5>
-										<input type="text" class="form-control border-radius-0 input-block-level" placeholder="Text input"  name="cadreRegistrationVO.mobileNumber"></input>
+										<input type="text" class="form-control border-radius-0 input-block-level" placeholder="Text input"  name="cadreRegistrationVO.mobileNumber"  value="${voterInfoVOList[0].mobileNo}" ></input>
 							</div>
 							<div class=" m_top20" >
 								<h5 class="text-align1">EDUCATION</h5>
@@ -456,7 +457,7 @@
 							</div>
 							<div class=" m_top20" >
 									<h5 class="text-align1">PREVIOUS ENROLLMENT NUMBER</h5>
-									<input type="text" class="form-control border-radius-0 input-block-level" placeholder="Text input" name="cadreRegistrationVO.previousEnrollmentNumber"></input>
+									<input type="text" class="form-control border-radius-0 input-block-level" placeholder="Text input" name="cadreRegistrationVO.previousEnrollmentNumber" value="${voterInfoVOList[0].memberShipId}"></input>
 							</div>
 						
 					</div>
@@ -464,6 +465,61 @@
 		
 		</div>
 	</div>
+	<!----  srishailam starts  -->
+	
+		<div class="span12" >
+				<div class="row-fluid">
+					<div class="span  offset3 show-grid m_top10"  id="fadeInLeft" style="margin-left:200px;margin-bottom:10px;">						<div 	
+						<div class="m_top10">
+						<div class="span12 " style="position: relative;">
+							<h3 class="text-align "> FAMILY DETAILS </h3>
+						</div>
+								<div class="row-fluid">		
+											<table>
+											<thead>
+											<tr>
+												<th> VOTER NAME </th>
+												<th> VOTER CARD NO</th>
+												<th  style="width:50px;"> AGE </th>
+												<th  style="width:50px;"> GENDER </th>
+												<th  style="width:100px;"> EDUCATION  </th>
+												<th  style="width:100px;"> OCCUPATION </th>
+											</tr>
+											</thead>
+											<tbody>
+									<c:forEach var="familyVO" items="${voterInfoVOList[0].voterInfoVOList}">
+											<tr>
+												<td> 
+													<input type="text" class="form-control border-radius-0 text-align2" placeholder="Voter Card No " value="${familyVO.name}" > 
+													<input type="hidden" class="form-control border-radius-0 text-align2" value="${familyVO.voterId}" > 
+												</td>
+												<td> 
+													<input type="text" class="form-control border-radius-0 text-align2" placeholder="Voter Card No " value="${familyVO.voterCardNo}" >
+												</td>
+												<td style="width:50px;"> 
+													<input type="text" class="form-control border-radius-0 text-align2" placeholder="Voter Card No " value="${familyVO.age}" style="width:50px;"> 
+												</td>
+												<td style="width:50px;">
+													<input type="text" class="form-control border-radius-0 text-align2" placeholder="Voter Card No " value="${familyVO.gender}" style="width:50px;"> 
+												</td>
+												<td style="width:100px;"> 
+													<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="educationId" list="genericVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Education " style="width:150px;" name="cadreRegistrationVO.educationId" value="%{voterInfoVOList[0].education}"/>  
+												</td>
+												<td style="width:100px;"> 
+													<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="occupationId" list="selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Occupation " style="width:150px;" name="cadreRegistrationVO.occupationId" value="%{voterInfoVOList[0].occupation}"/> 
+												</td>
+											</tr>
+									</c:forEach>
+								</tbody>									
+								</table>
+								</div>
+						</div>
+					</div>
+				
+	</div>
+	</div>
+	<!----  srishailam end  -->
+	
 	<div id="fadeInUp">
 		<div class="container m_top10">
 			<div class="span12 show-grid" style="position: relative;">
