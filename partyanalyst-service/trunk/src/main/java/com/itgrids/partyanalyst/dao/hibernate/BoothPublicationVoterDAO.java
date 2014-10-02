@@ -7315,4 +7315,16 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID);
 		return query.list();
 	}
+	
+	public List<Object[]> getFamilyDetaislByHouseNoAndBoothId(Long boothId,String houseNo)
+	{
+		Query query = getSession().createQuery("select model.voter.voterId,model.voter.name, model.voter.relativeName, model.voter.relationshipType, model.voter.gender, model.voter.age, " +
+				" model.voter.voterIDCardNo from BoothPublicationVoter model " +
+				" where model.booth.boothId = :boothId and model.voter.houseNo = :houseNo order by model.voter.age desc");
+		query.setParameter("boothId",boothId);
+		query.setParameter("houseNo",houseNo);
+		return query.list();
+	}
+	
+	
 }

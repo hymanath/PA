@@ -693,4 +693,7 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<Object[]> getCTPVoterDetailsByBooth(Long boothId);
 	  
 	  public List<Booth> getVoterAddressDetails(Long voterId);
+	  
+	  public List<Object[]> getFamilyDetaislByHouseNoAndBoothId(Long boothId,String houseNo);
+	  
 }
