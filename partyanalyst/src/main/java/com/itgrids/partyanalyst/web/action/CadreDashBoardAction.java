@@ -16,14 +16,12 @@ import com.opensymphony.xwork2.Action;
 
 public class CadreDashBoardAction implements ServletRequestAware {
 
-	public static final Logger LOG = Logger.getLogger(SurveyDataDetailsAction.class);
+	private static Logger LOG = Logger.getLogger(CadreDashBoardAction.class);
 	
 	private HttpServletRequest request;
 	
-	@Autowired
 	private ICadreDashBoardService cadreDashBoardService;
-	
-	List<CadreRegisterInfo> returnList;
+	private List<CadreRegisterInfo> result;
 	
 	public ICadreDashBoardService getCadreDashBoardService() {
 		return cadreDashBoardService;
@@ -38,50 +36,37 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		this.request = request;
 	}
 
+	public List<CadreRegisterInfo> getResult() {
+		return result;
+	}
+
+	public void setResult(List<CadreRegisterInfo> result) {
+		this.result = result;
+	}
+
 	public String execute(){
 		
 		return Action.SUCCESS;
 	}
 	
-	public String getDashBoardBasicInfo(){
-		
-		
-		return Action.SUCCESS;
-	}
-	
-    public String getRecentlyRegisteredCadresInfo(){
-		
-		
-		return Action.SUCCESS;
-	}
-    
-   public String getAssemblyWiseCompletedPercentage(){
-		
-		
-		return Action.SUCCESS;
-	}
-   
-   public String getDistrictWiseCompletedPercentage(){
-		
-		
-		return Action.SUCCESS;
-	}
-   
-    public String getWorkStartedConstituencyCount(){
-		  try{
-				HttpSession session = request.getSession();
-				RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-				if(user == null){
-					return Action.INPUT;
-				}						
-				returnList = cadreDashBoardService.getWorkStartedConstituencyCount();
-				
-			} 
-			catch (Exception e)	{
-				LOG.error("Exception raised in getWorkStartedConstituencyCount", e);
+	public String getCadreDashBoardBasicInfo(){
+		try{
+			String task = request.getParameter("task");
+			if(task.equalsIgnoreCase("basicInfo")){
+		       result = cadreDashBoardService.getDashBoardBasicInfo();
+			}else if(task.equalsIgnoreCase("recentlyRegistered")){
+				 result = cadreDashBoardService.getRecentlyRegisteredCadresInfo();
+			}else if(task.equalsIgnoreCase("assemblyWise")){
+				result = cadreDashBoardService.getAssemblyWiseCompletedPercentage(Long.parseLong(request.getParameter("assemblyId")),Long.parseLong(request.getParameter("stateId")));
+			}else if(task.equalsIgnoreCase("districtWise")){
+				result = cadreDashBoardService.getDistrictWiseCompletedPercentage(Long.parseLong(request.getParameter("districtId")),Long.parseLong(request.getParameter("stateId")));
+			}else if(task.equalsIgnoreCase("workStartedConstituency")){
+				result = cadreDashBoardService.getWorkStartedConstituencyCount();
 			}
-		  
-		  return Action.SUCCESS;
-	 }
+		}catch(Exception e){
+			LOG.error("Exception rised in getCadreDashBoardBasicInfo ",e);
+		}
+		return Action.SUCCESS;
+	}
     
 }
