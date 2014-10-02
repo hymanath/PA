@@ -352,6 +352,7 @@
 			  <pattern>/tdpCadreSearchAction*</pattern>
 			  <pattern>/tdpCadreSearchDetailsAction*</pattern>
 			  <pattern>/tdpCadreRegistrationAction*</pattern>
+			  <pattern>/cadreDashBoardAction*</pattern>
 			  
             <!--  <pattern>/dashBoardAction*</pattern> -->
        </decorator>
