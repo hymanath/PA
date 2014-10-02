@@ -766,6 +766,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		VoterInfoVO vo = null;
 		try {
 			
+			Long voterId = 0L;
+			String houseNo = null;
+			List<VoterInfoVO> familyList = null;
 			if(searchType.equalsIgnoreCase("voter"))
 			{
 				Voter voter = voterDAO.get(candidateId);
@@ -798,6 +801,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						}
 						vo.setMobileNo(mobile != null ? mobile:"");
 					}
+					
+					voterId = voter.getVoterId();
+					houseNo = voter.getHouseNo() != null ? voter.getHouseNo().toString():"";
 				}
 			}
 			else if(searchType.equalsIgnoreCase("cadre"))
@@ -824,7 +830,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								vo.setGender(tdpCadre.getVoter().getGender());
 								vo.setVoterId(tdpCadre.getVoter() != null ? tdpCadre.getVoter().getVoterId(): 0L);
 								vo.setVoterCardNo(tdpCadre.getVoter() != null ? tdpCadre.getVoter().getVoterIDCardNo():"");
-																
+								
+								voterId = tdpCadre.getVoter() != null ? tdpCadre.getVoter().getVoterId(): 0L;
+								houseNo = tdpCadre.getVoter().getHouseNo() != null ? tdpCadre.getVoter().getHouseNo().toString():"";								
 							}
 							else
 							{
@@ -862,8 +870,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							vo.setOccupation(tdpCadre.getOccupation() != null ? tdpCadre.getOccupation().getOccupationId().toString():"0");
 							vo.setLocation(tdpCadre.getUserAddress() != null ? (tdpCadre.getUserAddress().getHamlet() != null ?tdpCadre.getUserAddress().getHamlet().getHamletName().toString():""):"");
 							vo.setMobileNo(tdpCadre.getMobileNo() != null ? tdpCadre.getMobileNo():"");
+							vo.setMemberShipId(tdpCadre.getMemberShipNo() != null ? tdpCadre.getMemberShipNo().toString():"");
+							vo.setActiveDate(tdpCadre.getPartyMemberSince() != null ? tdpCadre.getPartyMemberSince().toString():"");
 							
-						
 						} catch (Exception e) {
 							LOG.error("Exception raised in getCandidateInfoBySearchCriteria in CadreRegistrationService service", e);
 						}
@@ -872,6 +881,52 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			
 
 			
+			if(voterId != null && voterId.longValue() != 0L)
+			{
+				List<Long> votersList = new ArrayList<Long>();
+				votersList.add(voterId);
+				
+				List<Object[]> voterInfo = boothPublicationVoterDAO.getBoothIdsDetailsOfVoterIds(votersList, IConstants.VOTER_DATA_PUBLICATION_ID);
+				
+				if(voterInfo != null && voterInfo.size()>0)
+				{
+					Object boothPublicationVoter = voterInfo.get(0);
+					Object[] boothInfo = (Object[]) boothPublicationVoter;
+					
+					Long boothId = boothInfo[2] != null ?Long.valueOf(boothInfo[2].toString()):0L;
+					
+					if((houseNo != null && houseNo.toString().trim().length()>0) && (boothId != null && boothId.longValue() >0L))
+					{
+						List<Object[]> familyInfo = boothPublicationVoterDAO.getFamilyDetaislByHouseNoAndBoothId(boothId,houseNo);
+						
+						if(familyInfo != null && familyInfo.size()>0)
+						{
+							familyList = new ArrayList<VoterInfoVO>();
+							
+							for (Object[] family : familyInfo) 
+							{
+								Long familyVoterID = family[0] != null ? Long.valueOf(family[0].toString().trim()):0L;
+								
+								if( familyVoterID != voterId)
+								{
+									VoterInfoVO fmilyVO = new VoterInfoVO();
+									fmilyVO.setVoterId(family[0] != null ? Long.valueOf(family[0].toString().trim()):0L);
+									fmilyVO.setName(family[1] != null ? family[1].toString():"");
+									fmilyVO.setRelativeName(family[2] != null ? family[2].toString():"");
+									fmilyVO.setRelationType(family[3] != null ? family[3].toString():"");
+									fmilyVO.setGender(family[4] != null ? family[4].toString():"");
+									fmilyVO.setAge(family[5] != null ? family[5].toString():"");								
+									fmilyVO.setVoterCardNo(family[6] != null ? family[6].toString():"");
+									
+									familyList.add(fmilyVO);
+								}
+							}
+							
+							vo.setVoterInfoVOList(familyList);
+						}
+					}
+				}
+			}
 			List<Object[]> castesList = casteStateDAO.getAllCasteDetailsForVoters(1L); // for AP state
 			
 			List<GenericVO> stateCasteList = new ArrayList<GenericVO>();
