@@ -24,12 +24,19 @@ public class VoterInfoVO implements java.io.Serializable
 	private String occupation;
 	private Long voterId;
 	private Long cadreId;
+	private String memberShipId;
 	
 	private List<VoterInfoVO> voterInfoVOList = new ArrayList<VoterInfoVO>();
 	private List<GenericVO> genericVOList = new ArrayList<GenericVO>();
 	private List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>();
 	
 	
+	public String getMemberShipId() {
+		return memberShipId;
+	}
+	public void setMemberShipId(String memberShipId) {
+		this.memberShipId = memberShipId;
+	}
 	public List<SelectOptionVO> getSelectOptionVOList() {
 		return selectOptionVOList;
 	}
