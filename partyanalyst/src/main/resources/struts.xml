@@ -8442,12 +8442,13 @@
 				<param name="root">selectOptionVOList</param>
 			</result>
 		</action>
-		
-		<action name="getWorkStartedConstituencyCount" class="cadreDashBoardAction" method="getWorkStartedConstituencyCount">
+				
+		<action name="getCadreDashBoardBasicInfo" class="cadreDashBoardAction" method="getCadreDashBoardBasicInfo">
 			<result type="json" name="success">
-				<param name="root">returnList</param>
+				<param name="root">result</param>
 			</result>
 		</action>
+		
 		
 </package>
 
