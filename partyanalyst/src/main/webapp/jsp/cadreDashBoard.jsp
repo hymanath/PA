@@ -257,7 +257,7 @@ $('#membersCount').addClass('animated fadeInX');
 			     str+='</tbody></table>';
 			   $("#recentRegisterCadresDiv").html(str);
 			}else{
-               $("#recentRegisterCadresDiv").html("<b>N/A</b>");
+               $("#recentRegisterCadresDiv").html('<div style="margin-left: 65px; margin-top: 75px;"><b>No Data Available</b></div>');
             }			
 	   });
    }
@@ -305,7 +305,7 @@ $('#membersCount').addClass('animated fadeInX');
 			}
 			$("#constituencyWiseSelDivRes").html(str);
 		  }else{
-		    $("#constituencyWiseSelDivRes").html("<b>No Data Available</b>");
+		    $("#constituencyWiseSelDivRes").html("<div style='margin-left: 150px;margin-top: 100px;'><b>No Data Available</b></div>");
 		  }
 	   });
    }
@@ -353,7 +353,7 @@ $('#membersCount').addClass('animated fadeInX');
 			}
 			 $("#districtWiseSelDivRes").html(str);
 		  }else{
-		    $("#districtWiseSelDivRes").html("<b>No Data Available</b>");
+		    $("#districtWiseSelDivRes").html("<div style='margin-left: 150px;margin-top: 100px;'><b>No Data Available</b></div>");
 		  }
 	   });
    }
