@@ -219,4 +219,11 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		query.setParameterList("districtIds", districtIds);
 		return query.list();
 	}
+	
+	public Long getWorkingMembersCount(Date date){
+		Query query = getSession().createQuery("select count(distinct model.insertedBy.cadreSurveyUserId) from TdpCadre model where model.enrollmentYear = 2014 and model.isDeleted = 'N' and model.dataSourceType='TAB' and date(surveyTime) =:date ");
+		
+		query.setDate("date", date);
+		return (Long)query.uniqueResult();
+	}
 }
