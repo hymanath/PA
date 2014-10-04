@@ -49,7 +49,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	
 	private List<VoterInfoVO> 					voterInfoVOList;
 	private List<GenericVO> 					genericVOList;
-	private List<SelectOptionVO> 				selectOptionVOList,constituencyesList;
+	private List<SelectOptionVO> 				selectOptionVOList,constituencyesList,eletionTypesList;
 	private ICandidateUpdationDetailsService	candidateUpdationDetailsService;
 	private IStaticDataService					staticDataService;
 	private ISurveyDataDetailsService			surveyDataDetailsService;
@@ -264,6 +264,15 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		this.constituencyesList = constituencyesList;
 	}
 
+	
+	public List<SelectOptionVO> getEletionTypesList() {
+		return eletionTypesList;
+	}
+
+	public void setEletionTypesList(List<SelectOptionVO> eletionTypesList) {
+		this.eletionTypesList = eletionTypesList;
+	}
+
 	public String execute()
 	{
 		try {
@@ -284,6 +293,11 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			{
 				session = request.getSession();
 				RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+				if(user == null)
+				{
+					inputStream = new StringBufferInputStream("notlogged");
+					return Action.SUCCESS;
+				}
 				cadreRegistrationVO.setCreatedUserId(user.getRegistrationID());
 				if(cadreRegistrationVO.getDobStr() != null && cadreRegistrationVO.getDobStr().trim().length() > 0)
 				cadreRegistrationVO.setDob(convertToDateFormet(cadreRegistrationVO.getDobStr()));
@@ -407,6 +421,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			constituencyesList = 	surveyDataDetailsService.getAssemblyConstituenciesByStateId(0l,1l);
 			genericVOList = candidateUpdationDetailsService.gettingEducationDetails();
 			selectOptionVOList = staticDataService.getAllOccupations();
+			eletionTypesList = cadreRegistrationService.getElectionOptionDetailsForCadre();
 			if(Long.valueOf(candidateId) != 0L )
 				voterInfoVOList = cadreRegistrationService.getCandidateInfoBySearchCriteria(searchType,Long.valueOf(candidateId));
 			else
@@ -500,5 +515,21 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		return Action.SUCCESS;
 		
 	}
+	
+	public String getElectionYearsByElectionType()
+	{
+		LOG.info("Entered into getOptionDetailsForCadre method in CadreRegistrationAction Action");
+		try {		
+			jobj = new JSONObject(getTask());
+			selectOptionVOList = cadreRegistrationService.getElectionYearsByElectionType(jobj.getLong("eletionTypeId"));
+			
+		} catch (Exception e) {			
+			LOG.info("Entered into getOptionDetailsForCadre method in CadreRegistrationAction Action");
+		}
+		return Action.SUCCESS;
+		
+	}
+	
+	
 	
 }

@@ -1655,6 +1655,11 @@
 <bean id="cadreSurveyUserAssignDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreSurveyUserAssignDetailsDAO" >
 	<property name="sessionFactory" ref="sessionFactory" />
 </bean>
+
+<bean id="tdpCadreFamilyDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreFamilyDetailsDAO" >
+	<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+	
 	
 	<!--  end -->
 </beans>		

@@ -121,6 +121,9 @@
 		<pattern>/mobileAppUserInfo.action*</pattern>
 		<pattern>/flaggedvoterDetailsAction*</pattern>
 		<pattern>/mahaNaduAction*</pattern>
+		<pattern>/tdpCadreSearchAction*</pattern>
+		<pattern>/tdpCadreSearchDetailsAction*</pattern>
+		<pattern>/tdpCadreRegistrationAction*</pattern>
 	
 	</excludes>  
 	
@@ -347,11 +350,9 @@
 			 <pattern>/duplicateMobileNumbers*</pattern>
 			 <pattern>/surveyConstituencieOverview*</pattern>
 			  <pattern>/candidateAnalysisAction*</pattern>
-			  <pattern>/ivrMobileAction*</pattern>]
+			  <pattern>/ivrMobileAction*</pattern>
 			  <pattern>/cadreRegistration*</pattern>
-			  <pattern>/tdpCadreSearchAction*</pattern>
-			  <pattern>/tdpCadreSearchDetailsAction*</pattern>
-			  <pattern>/tdpCadreRegistrationAction*</pattern>
+
 			  <pattern>/cadreDashBoardAction*</pattern>
 			  
             <!--  <pattern>/dashBoardAction*</pattern> -->
