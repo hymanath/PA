@@ -3,15 +3,15 @@ package com.itgrids.partyanalyst.web.action;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 
 public class CadreDashBoardAction implements ServletRequestAware {
@@ -23,6 +23,7 @@ public class CadreDashBoardAction implements ServletRequestAware {
 	private ICadreDashBoardService cadreDashBoardService;
 	private List<CadreRegisterInfo> result;
 	private CadreRegisterInfo info;
+	private EntitlementsHelper entitlementsHelper;
 	
 	public ICadreDashBoardService getCadreDashBoardService() {
 		return cadreDashBoardService;
@@ -53,8 +54,30 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		this.info = info;
 	}
 
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
 	public String execute(){
 		
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		boolean noaccess = false;
+		if(regVO==null){
+			return "input";
+		}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADREDASHBOARD")){
+			noaccess = true ;
+			
+		}
+		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+			noaccess = false;
+		}
+		if(noaccess){
+			return "error";
+		}
 		return Action.SUCCESS;
 	}
 	
