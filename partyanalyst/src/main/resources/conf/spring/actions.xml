@@ -1478,6 +1478,8 @@
 	 
 	 <bean id="cadreDashBoardAction" class="com.itgrids.partyanalyst.web.action.CadreDashBoardAction" singleton="false">
 	 	<property name="cadreDashBoardService" ref="cadreDashBoardService" />
+	 	<property name="entitlementsHelper" ref="entitlementsHelper" />
+	 	
 	  </bean>
 	
 </beans>	

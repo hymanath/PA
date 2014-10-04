@@ -321,6 +321,9 @@ a.tdp-text-error:hover {
 					
 					<li><a href="callCenterAction.action"><span>Call Center</span></a></li>
 					<li><a href="dailyVerificationReportsAction.action"><span>CTP Project</span></a></li>
+					<c:if test="${sessionScope.USER.isAdmin == 'true'}">
+						<li><a href="cadreDashBoardAction.action"><span>2014 Cadre Dashboard</span></a></li>
+					</c:if>
 					</c:if>
 					
 				</ul>

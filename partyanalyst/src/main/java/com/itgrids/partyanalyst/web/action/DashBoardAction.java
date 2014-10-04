@@ -532,6 +532,9 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"MAHANADU")){
 			return "mahanadu";
 		}
+		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"CADREDASHBOARD")){
+			return "cadreDashBoard";
+		}
 		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),IConstants.CASTE_SURVEY_CALL_CENTER)){
 			return "webuser";
 		}
