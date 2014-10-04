@@ -35,6 +35,7 @@ public class CadrePreviousRoles {
 	private Long 				partyDesignationId;
 	private Date 				fromDate;
 	private Date 				toDate;
+	private String				isDeleted;
 	
 	private TdpCadre 			tdpCadre;
 	private CadreLevel 			cadreLevel;
@@ -122,6 +123,14 @@ public class CadrePreviousRoles {
 	}
 	public void setPartyDesignation(PartyDesignation partyDesignation) {
 		this.partyDesignation = partyDesignation;
+	}
+	
+	@Column(name="is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 	
 	

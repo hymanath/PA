@@ -17,7 +17,7 @@ public class CadreRegistrationVO implements Serializable{
 	private String		 	 dobStr;
 	private String			 gender;
 	private String 			 relativeName;
-	private Long 			 voterId;
+	private String 			 voterId;
 	private String 			 previousEnrollmentNumber;
 	private String 			 voterCardNo;
 	private Date 			 partyMemberSince;
@@ -54,6 +54,8 @@ public class CadreRegistrationVO implements Serializable{
 	
 	private List<CadrePreviousRollesVO> previousParicaptedElectionsList;
 	
+	private List<CadreFamilyVO> cadreFamilyDetails;
+	
 	
 	public String getVoterName() {
 		return voterName;
@@ -79,10 +81,10 @@ public class CadreRegistrationVO implements Serializable{
 	public void setRelativeName(String relativeName) {
 		this.relativeName = relativeName;
 	}
-	public Long getVoterId() {
+	public String getVoterId() {
 		return voterId;
 	}
-	public void setVoterId(Long voterId) {
+	public void setVoterId(String voterId) {
 		this.voterId = voterId;
 	}
 	public String getPreviousEnrollmentNumber() {
@@ -265,6 +267,12 @@ public class CadreRegistrationVO implements Serializable{
 	}
 	public void setPath(String path) {
 		this.path = path;
+	}
+	public List<CadreFamilyVO> getCadreFamilyDetails() {
+		return cadreFamilyDetails;
+	}
+	public void setCadreFamilyDetails(List<CadreFamilyVO> cadreFamilyDetails) {
+		this.cadreFamilyDetails = cadreFamilyDetails;
 	}
 	
 	

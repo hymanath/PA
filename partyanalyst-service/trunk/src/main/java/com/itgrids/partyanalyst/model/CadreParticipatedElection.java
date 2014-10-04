@@ -32,6 +32,7 @@ public class CadreParticipatedElection {
 	private Long 				tdpCadreId;
 	private Long 				electionId;
 	private Long 				constituencyId;
+	private String 				isDeleted;
 	
 	private TdpCadre 			tdpCadre;
 	private Election 			election;
@@ -104,6 +105,13 @@ public class CadreParticipatedElection {
 		this.constituency = constituency;
 	}
 	
+	@Column(name="is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
 	
 	
 	 

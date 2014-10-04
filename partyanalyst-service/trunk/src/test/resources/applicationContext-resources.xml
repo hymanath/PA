@@ -493,6 +493,8 @@
 				<value>com.itgrids.partyanalyst.model.CadreSurveyUserAssignDetails</value>
 				<value>com.itgrids.partyanalyst.model.CadreSurveyUser</value>
 				
+				<value>com.itgrids.partyanalyst.model.TdpCadreFamilyDetails</value>
+				
 			</list>
 		</property>
 	</bean>
@@ -2556,5 +2558,8 @@
 	<property name="sessionFactory" ref="sessionFactory" />
 </bean>
 
-
+<bean id="tdpCadreFamilyDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreFamilyDetailsDAO" >
+	<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+	
 </beans>
