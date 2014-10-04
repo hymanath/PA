@@ -26,4 +26,6 @@ public interface ICadreRegistrationService {
 	
 	public List<SelectOptionVO> getElectionOptionDetailsForCadre();
 	
+	public List<SelectOptionVO> getElectionYearsByElectionType(Long electionTypeId);
+	
 }

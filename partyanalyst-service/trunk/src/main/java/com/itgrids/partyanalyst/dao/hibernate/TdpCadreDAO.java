@@ -169,7 +169,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		query.setMaxResults(5);
 		return query.list();
 	}
-	
+
 	public List<Long> getCadreAvailableConstituencies(Long stateId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append("select distinct model.userAddress.constituency.constituencyId from TdpCadre model where model.isDeleted = 'N' and  model.userAddress.state.stateId = 1  and model.enrollmentYear = 2014 ");
@@ -225,5 +225,12 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		
 		query.setDate("date", date);
 		return (Long)query.uniqueResult();
+	}
+	
+	public List<TdpCadre> getVoterByVoterId(Long voterId)
+	{
+		Query query = getSession().createQuery("select model  from TdpCadre model where model.voterId = :voterId");
+		query.setParameter("voterId", voterId);
+		return query.list();
 	}
 }

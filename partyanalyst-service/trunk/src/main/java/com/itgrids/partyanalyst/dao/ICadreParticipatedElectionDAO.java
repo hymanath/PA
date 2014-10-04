@@ -5,5 +5,6 @@ import org.appfuse.dao.GenericDao;
 import com.itgrids.partyanalyst.model.CadreParticipatedElection;
 
 public interface ICadreParticipatedElectionDAO extends GenericDao<CadreParticipatedElection, Long>{
-
+	
+	public Integer inActiveCadreElectionDetailsById(Long tdpCadreId);
 }
