@@ -67,7 +67,7 @@
 		<!-- Title Row -->
 		<div class="row-fluid" id="fadeInDown">
 			<div class="span12 well well-small  border-radius-0 mb-10 " style="background:#ffffff;">
-				<h3 class="text-center text-uppercase">Cadre Admin Dashboard</h3>
+				<h3 class="text-center text-uppercase">2014 Cadre Admin Dashboard</h3>
 			</div>
 		</div><!-- Title Row End-->
 		
@@ -176,7 +176,7 @@
 				<table class="table table-bordered border-radius-0" style="margin-top: 5px;">
 					<tbody >
 						<tr>
-							<td><h2>500</h2><p>Members <br/>Registered in<span class="text-red">2012</span></p></td>
+							<td><div id="totalMembersWorkingTodayId"><img style=" margin-top: 36px;padding-left: 110px;" src="images/icons/search.gif"/></div></td>
 							<td><h2>500</h2><p>Members <br/>Registered in <span class="text-green">2014</span></p></td>
 						</tr>
 					</tbody>
@@ -227,7 +227,7 @@ $('#membersCount').addClass('animated fadeInX');
        }).done(function(result){
 			$("#todayRegisCount").html('<h2>'+result[0].totalCount+'</h2><p>Members <br/> Registered <span class="text-red">Today</span></p></div></td>');
 			$("#thisWeekRegisCount").html('<h2>'+result[1].totalCount+'</h2><p>Members <br/>Registered <span class="text-orange">This week</span></p></div></td>');
-			$("#monthRegisCount").html('<h2>'+result[2].totalCount+'</h2><p>Members <br/>Registered <span class="text-skyblue">Month</span></p></div></td>');
+			$("#monthRegisCount").html('<h2>'+result[2].totalCount+'</h2><p>Members <br/>Registered <span class="text-skyblue">This Month</span></p></div></td>');
 			$("#totalRegisCount").html('<h2>'+result[3].totalCount+'</h2><p>Members <br/>In <span class="text-green">Total Party</span></p></div></td>');	
 			
 			$("#todayApTgRegisCount").html('<div class="span6"><strong>AP </strong> <br/>'+result[0].apCount+'</div><div class="span6 text-right"><strong>TS </strong><br/> '+result[0].tgCount+'</div>');				
@@ -375,13 +375,13 @@ $('#membersCount').addClass('animated fadeInX');
        }).done(function(result){
 			
 			$("#tsConstiCountId").html('<h2>'+result[1].totalCount+'</h2><p>Constituency Data Collecting and Processing</p></div></td>');
-			$("#ts2012CountId").html('<h2>'+result[1].apCount+'</h2><p>Members <br/>Registered in<span class="text-red">2012</span></p></div></td>');
-			$("#ts2014CountId").html('<h2>'+result[1].tgCount+'</h2><p>Members <br/>Registered in<span class="text-green">2014</span></p></div></td>');
+			$("#ts2012CountId").html('<h2>'+result[1].apCount+'</h2><p>Members <br/>Registered in&nbsp;<span class="text-red">2012</span></p></div></td>');
+			$("#ts2014CountId").html('<h2>'+result[1].tgCount+'</h2><p>Members <br/>Registered in&nbsp;<span class="text-green">2014</span></p></div></td>');
 			$("#tsPercCountId").html('<h2>'+result[1].percentage+'%</h2><p>Members <br/>In <span class="text-orange">Total Party</span></p></div></td>');
 							
 			$("#apConstiCountId").html('<h2>'+result[0].totalCount+'</h2><p>Constituency Data Collecting and Processing</p></div></td>');
-			$("#ap2012CountId").html('<h2>'+result[0].apCount+'</h2><p>Members <br/>Registered in<span class="text-red">2012</span></p></div></td>');
-			$("#ap2014CountId").html('<h2>'+result[0].tgCount+'</h2><p>Members <br/>Registered in <span class="text-green">2014</span></p></div></td>');
+			$("#ap2012CountId").html('<h2>'+result[0].apCount+'</h2><p>Members <br/>Registered in&nbsp;<span class="text-red">2012</span></p></div></td>');
+			$("#ap2014CountId").html('<h2>'+result[0].tgCount+'</h2><p>Members <br/>Registered in&nbsp;<span class="text-green">2014</span></p></div></td>');
 			$("#apPercCountId").html('<h2>'+result[0].percentage+'%</h2><p>Members <br/>In <span class="text-orange">Total Party</span></p></div></td>');	
 								
 	   });
@@ -400,11 +400,22 @@ $('#membersCount').addClass('animated fadeInX');
 	  }
      getDistrictWiseCompletedPercentage(id,stateId);
    }
+   function getWorkingMembersInfo(){
+        $("#totalMembersWorkingTodayId").html('<img style=" margin-top: 36px;padding-left: 110px;" src="images/icons/search.gif"/>');
+         $.ajax({
+          type:'GET',
+          url: 'getWorkingMembersInfo.action',
+          data: {task:"workingCount"}
+       }).done(function(result){
+	      $("#totalMembersWorkingTodayId").html('<h2>'+result.totalCount+'</h2><p>Members <br/>In Field Today</p>');
+	   });
+   }
        getWorkStartedConstituencyCount();
 	   getDistrictWiseCompletedPercentage(0,1);
 	   getAssemblyWiseCompletedPercentage(0,1);
 	   getRecentlyRegisteredCadresInfo();
 	   getDashBoardBasicInfo();
+	   getWorkingMembersInfo();
 </script>
 </body>
 </html>

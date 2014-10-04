@@ -22,6 +22,7 @@ public class CadreDashBoardAction implements ServletRequestAware {
 	
 	private ICadreDashBoardService cadreDashBoardService;
 	private List<CadreRegisterInfo> result;
+	private CadreRegisterInfo info;
 	
 	public ICadreDashBoardService getCadreDashBoardService() {
 		return cadreDashBoardService;
@@ -42,6 +43,14 @@ public class CadreDashBoardAction implements ServletRequestAware {
 
 	public void setResult(List<CadreRegisterInfo> result) {
 		this.result = result;
+	}
+
+	public CadreRegisterInfo getInfo() {
+		return info;
+	}
+
+	public void setInfo(CadreRegisterInfo info) {
+		this.info = info;
 	}
 
 	public String execute(){
@@ -66,6 +75,18 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		}catch(Exception e){
 			LOG.error("Exception rised in getCadreDashBoardBasicInfo ",e);
 		}
+		return Action.SUCCESS;
+	}
+	
+	public String getWorkingMembersInfo(){
+	  try{
+		String task = request.getParameter("task");
+		if(task.equalsIgnoreCase("workingCount")){
+			info = cadreDashBoardService.getWorkingMembersInfo();
+		}
+	  }catch(Exception e){
+		  LOG.error("Exception rised in getWorkingMembersInfo ",e);
+	  }
 		return Action.SUCCESS;
 	}
     
