@@ -485,6 +485,8 @@
 				
 				<value>com.itgrids.partyanalyst.model.CadreSurveyUserAssignDetails</value>
 				<value>com.itgrids.partyanalyst.model.CadreSurveyUser</value>
+				
+				<value>com.itgrids.partyanalyst.model.TdpCadreFamilyDetails</value>
 				</list>
 			
 		</property>

@@ -8449,6 +8449,12 @@
 			</result>
 		</action>
 		
+		<action name="getElectionYearsByElectionType" class="cadreRegistrationAction" method="getElectionYearsByElectionType">
+			<result type="json" name="success">
+				<param name="root">selectOptionVOList</param>
+			</result>
+		</action>
+		
 		<action name="getWorkingMembersInfo" class="cadreDashBoardAction" method="getWorkingMembersInfo">
 			<result type="json" name="success">
 				<param name="root">info</param>
