@@ -34,4 +34,6 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> getCadreInfoDistrictWise(List<Long> districtIds);
 	
 	public List<Long> getCadreAvailableDistricts(Long stateId);
+	
+	public Long getWorkingMembersCount(Date date);
 }

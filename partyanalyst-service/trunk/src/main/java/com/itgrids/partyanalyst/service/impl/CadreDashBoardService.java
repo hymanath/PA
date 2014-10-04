@@ -322,4 +322,17 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		
 		return returnList;
 	}
+	
+	public CadreRegisterInfo getWorkingMembersInfo(){
+		CadreRegisterInfo info = new CadreRegisterInfo();
+		try{
+			Date date = dateService.getCurrentDateAndTime();
+			Long count = tdpCadreDAO.getWorkingMembersCount(date);
+			info.setTotalCount(count);
+		}catch(Exception e){
+			LOG.error("Exception rised in getWorkingMembersInfo",e);
+		}
+		
+		return info;
+	}
 }

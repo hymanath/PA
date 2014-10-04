@@ -16,4 +16,6 @@ public interface ICadreDashBoardService {
 	
 	public List<CadreRegisterInfo> getDistrictWiseCompletedPercentage(Long districtId,Long stateId);
 	
+	public CadreRegisterInfo getWorkingMembersInfo();
+	
 }
