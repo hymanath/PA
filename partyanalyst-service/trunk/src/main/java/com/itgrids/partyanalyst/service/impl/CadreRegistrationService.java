@@ -434,7 +434,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				if(cadreRegistrationVO.getSurveyTime() != null)
 				{
 					tdpCadre.setSurveyTime(cadreRegistrationVO.getSurveyTime());
-				}else if(registrationType != null && (registrationType.equalsIgnoreCase("WEB") || registrationType.equalsIgnoreCase("ONLINE"))){
+				}else if( insertType.equalsIgnoreCase("new") && registrationType != null && (registrationType.equalsIgnoreCase("WEB") || registrationType.equalsIgnoreCase("ONLINE"))){
 					tdpCadre.setSurveyTime(tdpCadre.getInsertedTime());
 				}
 				synchronized (surveyCadreResponceVO) {
