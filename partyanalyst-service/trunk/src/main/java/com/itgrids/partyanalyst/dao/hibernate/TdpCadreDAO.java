@@ -119,18 +119,18 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
         StringBuilder str = new StringBuilder();
 		
 		str.append("select count(distinct model.userAddress.constituency.constituencyId)  " +
-				"from TdpCadre model ");
+				"from TdpCadre model where model.enrollmentYear = 2014 and ");
 		if(state.equalsIgnoreCase("TS"))
 		{
-			str.append(" where model.userAddress.district.districtId <= 10 ");
+			str.append("  model.userAddress.district.districtId <= 10 ");
 		}
 		
 		if(state.equalsIgnoreCase("AP"))
 		{
-			str.append(" where model.userAddress.district.districtId >= 11 ");
+			str.append("  model.userAddress.district.districtId >= 11 ");
 		}
 				
-		str.append(" and model.userAddress.state.stateId = 1 ");
+		str.append(" and model.userAddress.state.stateId = 1   ");
 		
 		Query query = getSession().createQuery(str.toString());
 		
