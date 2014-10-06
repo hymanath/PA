@@ -421,6 +421,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				if(cadreRegistrationVO.getSurveyTime() != null)
 				{
 					tdpCadre.setSurveyTime(cadreRegistrationVO.getSurveyTime());
+				}else if(registrationType != null && registrationType.equalsIgnoreCase("WEB")){
+					tdpCadre.setSurveyTime(tdpCadre.getInsertedTime());
 				}
 				synchronized (surveyCadreResponceVO) {
 					String memberNumber = tdpCadreDAO.getLatestMemberNumber();
