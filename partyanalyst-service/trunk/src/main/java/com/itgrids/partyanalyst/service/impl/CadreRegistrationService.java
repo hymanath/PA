@@ -8,10 +8,15 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageOutputStream;
 
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
+import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -228,7 +233,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 										if(voterIdsList.size()  == 0)
 										{
 											TdpCadre tdpCadre = new TdpCadre();
-											tdpCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,tdpCadre);
+											tdpCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,tdpCadre,"new");
 										}
 										else
 										{
@@ -238,7 +243,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 												cadreParticipatedElectionDAO.inActiveCadreElectionDetailsById(voterIdsList.get(0).getTdpCadreId());
 												tdpCadreFamilyDetailsDAO.inActiveCadreFamilyDetailsById(voterIdsList.get(0).getTdpCadreId());
 												emptyTdpCadreData(voterIdsList.get(0));
-												tdpCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,voterIdsList.get(0));
+												tdpCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,voterIdsList.get(0),"update");
 											}
 											
 										}
@@ -261,7 +266,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 												if(voterIdsList.size()  == 0)
 												{
 													TdpCadre tdpCadre = new TdpCadre();
-													tdpCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,tdpCadre);
+													tdpCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,tdpCadre,"new");
 												}
 												else
 												{
@@ -271,7 +276,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 														cadreParticipatedElectionDAO.inActiveCadreElectionDetailsById(voterIdsList.get(0).getTdpCadreId());
 														tdpCadreFamilyDetailsDAO.inActiveCadreFamilyDetailsById(voterIdsList.get(0).getTdpCadreId());
 														emptyTdpCadreData(voterIdsList.get(0));
-														tdpCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,voterIdsList.get(0));
+														tdpCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,voterIdsList.get(0),"update");
 													}
 												}
 											}
@@ -310,7 +315,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	 * @param cadreRegistrationVO
 	 * @param surveyCadreResponceVO
 	 */
-	public void tdpCadreSavingLogic(String registrationType,List<CadreRegistrationVO> cadreRegistrationVOList , CadreRegistrationVO cadreRegistrationVO,SurveyCadreResponceVO surveyCadreResponceVO,TdpCadre tdpCadre)
+	public void tdpCadreSavingLogic(String registrationType,List<CadreRegistrationVO> cadreRegistrationVOList , CadreRegistrationVO cadreRegistrationVO,SurveyCadreResponceVO surveyCadreResponceVO,TdpCadre tdpCadre,String insertType)
 	{
 		try {	
 				if(registrationType != null && !registrationType.equalsIgnoreCase("null") && registrationType.trim().length() > 0)
@@ -394,11 +399,19 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				}
 				if(cadreRegistrationVO.getCreatedUserId() != null && cadreRegistrationVO.getCreatedUserId().longValue() > 0  )
 				{
-					tdpCadre.setInsertedUserId(cadreRegistrationVO.getCreatedUserId().longValue());
+					if(registrationType.equalsIgnoreCase("TAB")){
+					    tdpCadre.setInsertedUserId(cadreRegistrationVO.getCreatedUserId().longValue());
+					}else{
+						tdpCadre.setInsertedWebUserId(cadreRegistrationVO.getCreatedUserId().longValue());
+					}
 				}
 				if(cadreRegistrationVO.getUpdatedUserId() != null && cadreRegistrationVO.getUpdatedUserId().longValue() > 0)
 				{
-					tdpCadre.setUpdatedUserId(cadreRegistrationVO.getUpdatedUserId().longValue());
+					if(registrationType.equalsIgnoreCase("TAB")){
+					     tdpCadre.setUpdatedUserId(cadreRegistrationVO.getUpdatedUserId().longValue());
+					}else{
+						 tdpCadre.setUpdatedWebUserId(cadreRegistrationVO.getUpdatedUserId().longValue());
+					}
 				}
 				
 				UserAddress userAddress = new UserAddress();
@@ -421,7 +434,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				if(cadreRegistrationVO.getSurveyTime() != null)
 				{
 					tdpCadre.setSurveyTime(cadreRegistrationVO.getSurveyTime());
-				}else if(registrationType != null && registrationType.equalsIgnoreCase("WEB")){
+				}else if(registrationType != null && (registrationType.equalsIgnoreCase("WEB") || registrationType.equalsIgnoreCase("ONLINE"))){
 					tdpCadre.setSurveyTime(tdpCadre.getInsertedTime());
 				}
 				synchronized (surveyCadreResponceVO) {
@@ -457,7 +470,24 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					}
 				}
 				
-				tdpCadre = tdpCadreDAO.save(tdpCadre);						
+				if(registrationType != null && (registrationType.equalsIgnoreCase("WEB") || registrationType.equalsIgnoreCase("ONLINE")) && insertType.equalsIgnoreCase("new")){
+					String userId = "0000";
+					if(cadreRegistrationVO.getCreatedUserId() != null){
+					   userId = cadreRegistrationVO.getCreatedUserId().toString();
+					}
+					String ref = getReferenceNo(userId,registrationType);
+					synchronized (surveyCadreResponceVO) {
+						ref = getUniueRefNo(ref,registrationType);
+						tdpCadre.setRefNo(ref);
+						cadreRegistrationVO.setRefNo(ref);
+						tdpCadre = tdpCadreDAO.save(tdpCadre);	
+					}
+				}else{
+				  if(insertType.equalsIgnoreCase("new")){
+					tdpCadre.setRefNo(cadreRegistrationVO.getRefNo());
+				  }
+					tdpCadre = tdpCadreDAO.save(tdpCadre);	
+				}
 				List<CadrePreviousRollesVO> previousRollesPartList = cadreRegistrationVO.getPreviousRollesList();
 				if(previousRollesPartList != null && previousRollesPartList.size() > 0)
 				{
@@ -586,7 +616,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				}
 				surveyCadreResponceVO.setStatus("SUCCESS");
 				surveyCadreResponceVO.setResultCode(ResultCodeMapper.SUCCESS);
-
+				if(insertType.equalsIgnoreCase("new") && cadreRegistrationVO.getMobileNumber() != null && cadreRegistrationVO.getMobileNumber().trim().length() > 0 && cadreRegistrationVO.getRefNo() != null){
+				   sendSMS(cadreRegistrationVO.getMobileNumber().trim(), "Thank You for registering as TDP cadre.For further queries use Ref No "+cadreRegistrationVO.getRefNo());
+				}
 		} catch (Exception e) {
 			LOG.error("Exception raised in tdpCadreSavingLogic in CadreRegistrationService service", e);
 		}
@@ -1429,4 +1461,89 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		return returnList;
 	}
  	
+	private String sendSMS(String mobileNo,String message){
+
+		HttpClient client = new HttpClient(new MultiThreadedHttpConnectionManager());
+		client.getHttpConnectionManager().getParams().setConnectionTimeout(
+			Integer.parseInt("30000"));
+	
+		boolean isEnglish = true;
+		
+		PostMethod post = new PostMethod("http://smscountry.com/SMSCwebservice_Bulk.aspx");
+		
+		post.addParameter("User",IConstants.ADMIN_USERNAME_FOR_SMS);
+		post.addParameter("passwd",IConstants.ADMIN_PASSWORD_FOR_SMS);
+		//post.addParameter("sid",IConstants.ADMIN_SENDERID_FOR_SMS);
+	    post.addParameter("mobilenumber", mobileNo);
+		post.addParameter("message", message);
+		post.addParameter("mtype", isEnglish ? "N" : "OL");
+		post.addParameter("DR", "Y");
+		
+		/* PUSH the URL */
+		try 
+		{
+			int statusCode = client.executeMethod(post);
+			
+			if (statusCode != HttpStatus.SC_OK) {
+				LOG.error("SmsCountrySmsService.sendSMS failed: "+ post.getStatusLine());
+				return "error";
+			}
+			else{
+				return "success";
+			}
+
+		}catch (Exception e) {
+				LOG.error("Exception rised in sending sms while cadre registration",e);
+				return "exception";
+		} finally {
+				post.releaseConnection();
+		}
+		
+	}
+	
+	public String getRandomNo(){
+		String number ="";
+		Random randomNum = new Random();
+		number = number+randomNum.nextInt(999999);
+		if(number.length()<6){
+			for(int i=number.length();i<6;i++){
+				number="0"+number;
+			}
+		}
+		return number;
+	}
+	
+	public String getReferenceNo(String userId,String registrationType){
+		if(userId.length()> 4){
+			userId = userId.substring(0,4);
+		}else if(userId.length() < 4){
+			if(userId.length() == 1){
+				userId ="000"+userId;
+			}else if(userId.length() == 2){
+				userId ="00"+userId;
+			}else if(userId.length() == 3){
+				userId ="0"+userId;
+			}
+		}
+		String ref="TRW"+userId;
+		if(registrationType.equalsIgnoreCase("ONLINE")){
+			ref="TRO"+userId;
+		}
+		
+		return ref;
+	}
+	
+	public String getUniueRefNo(String ref,String dataSource){
+		String randomNo = null;
+		while(true){
+			 randomNo = ref+getRandomNo();
+			Long count = tdpCadreDAO.checkRandomNoExistsOrNot(dataSource, randomNo);
+			if(count.longValue() == 0l){
+				break;
+			}
+			
+		}
+		
+		return randomNo;
+	}
 }

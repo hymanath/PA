@@ -49,6 +49,7 @@ public class CadreRegistrationVO implements Serializable{
 	private String 			 uploadImageFileName;
 	
 	private String 			 path;
+	private String           refNo;
 	
 	private List<CadrePreviousRollesVO> previousRollesList;
 	
@@ -273,6 +274,12 @@ public class CadreRegistrationVO implements Serializable{
 	}
 	public void setCadreFamilyDetails(List<CadreFamilyVO> cadreFamilyDetails) {
 		this.cadreFamilyDetails = cadreFamilyDetails;
+	}
+	public String getRefNo() {
+		return refNo;
+	}
+	public void setRefNo(String refNo) {
+		this.refNo = refNo;
 	}
 	
 	

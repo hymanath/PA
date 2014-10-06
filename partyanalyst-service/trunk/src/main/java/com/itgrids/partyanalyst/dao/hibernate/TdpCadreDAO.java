@@ -221,7 +221,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 	}
 	
 	public Long getWorkingMembersCount(Date date){
-		Query query = getSession().createQuery("select count(distinct model.insertedBy.cadreSurveyUserId) from TdpCadre model where model.enrollmentYear = 2014 and model.isDeleted = 'N' and model.dataSourceType='TAB' and date(surveyTime) =:date ");
+		Query query = getSession().createQuery("select count(distinct model.insertedBy.cadreSurveyUserId) from TdpCadre model where model.enrollmentYear = 2014 and model.isDeleted = 'N' and model.dataSourceType='TAB' and date(model.surveyTime) =:date ");
 		
 		query.setDate("date", date);
 		return (Long)query.uniqueResult();
@@ -232,5 +232,13 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		Query query = getSession().createQuery("select model  from TdpCadre model where model.voterId = :voterId");
 		query.setParameter("voterId", voterId);
 		return query.list();
+	}
+	
+	public Long checkRandomNoExistsOrNot(String dataSource,String randomNo){
+        Query query = getSession().createQuery("select count(*) from TdpCadre model where model.enrollmentYear = 2014 and model.isDeleted = 'N' and model.dataSourceType=:dataSource and model.refNo =:randomNo ");
+		
+		query.setParameter("dataSource", dataSource);
+		query.setParameter("randomNo", randomNo);
+		return (Long)query.uniqueResult();
 	}
 }

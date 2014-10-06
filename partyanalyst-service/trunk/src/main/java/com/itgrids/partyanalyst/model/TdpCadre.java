@@ -56,6 +56,11 @@ public class TdpCadre {
 	private Long 						updatedUserId;
 	private Long 						insertedUserId;
 	
+	private Long 						updatedWebUserId;
+	private Long 						insertedWebUserId;
+	private User				        updatedWebUser;
+	private User				         insertedWebUser;
+	
 	private Voter 						voter;
 	private BloodGroup 					bloodGroup;
 	private Occupation 					occupation;
@@ -72,6 +77,7 @@ public class TdpCadre {
 	
 	private String 						dataSourceType;
 	private String						uniqueKey;
+	private String                      refNo;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -409,6 +415,54 @@ public class TdpCadre {
 	}
 	public void setUniqueKey(String uniqueKey) {
 		this.uniqueKey = uniqueKey;
+	}
+	@Column(name="ref_no")
+	public String getRefNo() {
+		return refNo;
+	}
+	public void setRefNo(String refNo) {
+		this.refNo = refNo;
+	}
+	
+	@Column(name="updated_web_user_id")
+	public Long getUpdatedWebUserId() {
+		return updatedWebUserId;
+	}
+	public void setUpdatedWebUserId(Long updatedWebUserId) {
+		this.updatedWebUserId = updatedWebUserId;
+	}
+	
+	@Column(name="inserted_web_user_id")
+	public Long getInsertedWebUserId() {
+		return insertedWebUserId;
+	}
+	
+	public void setInsertedWebUserId(Long insertedWebUserId) {
+		this.insertedWebUserId = insertedWebUserId;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "updated_web_user_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUpdatedWebUser() {
+		return updatedWebUser;
+	}
+	
+	public void setUpdatedWebUser(User updatedWebUser) {
+		this.updatedWebUser = updatedWebUser;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "inserted_web_user_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getInsertedWebUser() {
+		return insertedWebUser;
+	}
+	
+	public void setInsertedWebUser(User insertedWebUser) {
+		this.insertedWebUser = insertedWebUser;
 	}
 	
 	

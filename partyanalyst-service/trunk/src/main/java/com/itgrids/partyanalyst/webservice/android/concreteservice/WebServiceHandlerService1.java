@@ -726,11 +726,9 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 						LOG.error("Election Id" +electionVO.getElectionTypeId() + "-" +  "Constituency Id" + electionVO.getConstituencyId() );
 					}
 				}
-				if(inputResponse != null)
-				{
-					surveyCadreResponceVO=cadreRegistrationService.saveCadreRegistration(inputResponseList,"TAB");	
-				}
+				
 			}
+				surveyCadreResponceVO=cadreRegistrationService.saveCadreRegistration(inputResponseList,"TAB");	
 		}
 		
 		return surveyCadreResponceVO;

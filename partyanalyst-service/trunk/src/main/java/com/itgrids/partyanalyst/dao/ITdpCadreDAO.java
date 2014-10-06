@@ -39,4 +39,6 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	
 	public List<TdpCadre> getVoterByVoterId(Long voterId);
 	
+	public Long checkRandomNoExistsOrNot(String dataSource,String randomNo);
+	
 }
