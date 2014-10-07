@@ -16,6 +16,7 @@ public class CadreRegisterInfo implements Serializable{
 	private String area;
 	private String location;
 	private Long percentage;
+	private String date;
 	
 	public Long getTotalCount() {
 		return totalCount;
@@ -71,6 +72,14 @@ public class CadreRegisterInfo implements Serializable{
 
 	public void setPercentage(Long percentage) {
 		this.percentage = percentage;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
 	}	
 	
 }

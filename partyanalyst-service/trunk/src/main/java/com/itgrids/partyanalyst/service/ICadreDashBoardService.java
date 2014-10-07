@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
@@ -17,5 +18,7 @@ public interface ICadreDashBoardService {
 	public List<CadreRegisterInfo> getDistrictWiseCompletedPercentage(Long districtId,Long stateId);
 	
 	public CadreRegisterInfo getWorkingMembersInfo();
+	
+	public List<CadreRegisterInfo> getCandidateDataCollectionInfo(Date fromDate,Date toDate);
 	
 }

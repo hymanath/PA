@@ -17,6 +17,7 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -617,7 +618,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				surveyCadreResponceVO.setStatus("SUCCESS");
 				surveyCadreResponceVO.setResultCode(ResultCodeMapper.SUCCESS);
 				if(insertType.equalsIgnoreCase("new") && cadreRegistrationVO.getMobileNumber() != null && cadreRegistrationVO.getMobileNumber().trim().length() > 0 && cadreRegistrationVO.getRefNo() != null){
-				   sendSMS(cadreRegistrationVO.getMobileNumber().trim(), "Thank You for registering as TDP cadre.For further queries use Ref No "+cadreRegistrationVO.getRefNo());
+				   //sendSMS(cadreRegistrationVO.getMobileNumber().trim(), "Thank You for registering as TDP cadre.For further queries use Ref No "+cadreRegistrationVO.getRefNo());
+				   sendSMSInTelugu(cadreRegistrationVO.getMobileNumber().trim(), getUniCodeMessage(StringEscapeUtils.unescapeJava("\u0C24\u0C46\u0C32\u0C41\u0C17\u0C41 \u0C26\u0C47\u0C36\u0C02 \u0C2A\u0C3E\u0C30\u0C4D\u0C1F\u0C40 \u0C15\u0C3E\u0C30\u0C4D\u0C2F\u0C15\u0C30\u0C4D\u0C24\u0C17\u0C3E \u0C28\u0C2E\u0C4B\u0C26\u0C41 \u0C1A\u0C47\u0C38\u0C41\u0C15\u0C41\u0C28\u0C4D\u0C28\u0C02\u0C26\u0C41\u0C15\u0C41 \u0C27\u0C28\u0C4D\u0C2F\u0C35\u0C3E\u0C26\u0C3E\u0C32\u0C41. \u0C2E\u0C40 \u0C2F\u0C4A\u0C15\u0C4D\u0C15 \u0C30\u0C3F\u0C2B\u0C30\u0C46\u0C28\u0C4D\u0C38\u0C4D \u0C28\u0C46\u0C02\u0C2C\u0C30\u0C4D : ")+cadreRegistrationVO.getRefNo()));
 				}
 		} catch (Exception e) {
 			LOG.error("Exception raised in tdpCadreSavingLogic in CadreRegistrationService service", e);
@@ -1581,5 +1583,63 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		}
 		
 		return randomNo;
+	}
+	
+	private  String sendSMSInTelugu(String mobileNo,String message){
+
+		HttpClient client = new HttpClient(new MultiThreadedHttpConnectionManager());
+		client.getHttpConnectionManager().getParams().setConnectionTimeout(
+			Integer.parseInt("30000"));
+	
+		boolean isEnglish = false;
+		
+		PostMethod post = new PostMethod("http://smscountry.com/SMSCwebservice_Bulk.aspx");
+		
+		post.addParameter("User",IConstants.ADMIN_USERNAME_FOR_SMS);
+		post.addParameter("passwd",IConstants.ADMIN_PASSWORD_FOR_SMS);
+		//post.addParameter("sid",IConstants.ADMIN_SENDERID_FOR_SMS);
+	    post.addParameter("mobilenumber", mobileNo);
+		post.addParameter("message", message);
+		post.addParameter("mtype", isEnglish ? "N" : "OL");
+		post.addParameter("DR", "Y");
+		
+		/* PUSH the URL */
+		try 
+		{
+			int statusCode = client.executeMethod(post);
+			
+			if (statusCode != HttpStatus.SC_OK) {
+				LOG.error("SmsCountrySmsService.sendSMS failed: "+ post.getStatusLine());
+				return "error";
+			}
+			else{
+				return "success";
+			}
+
+		}catch (Exception e) {
+				LOG.error("Exception rised in sending sms while cadre registration",e);
+				return "exception";
+		} finally {
+				post.releaseConnection();
+		}
+		
+	}
+	
+	public String  getUniCodeMessage(String message){
+	        String returnMessage = "";
+			for(int i=0;i<message.length();i++){
+				String character = Integer.toHexString(message.charAt(i));
+				if(character.length() == 1){
+					returnMessage=returnMessage+"000"+character;
+				}else if(character.length() == 2){
+					returnMessage=returnMessage+"00"+character;
+				}else if(character.length() == 3){
+					returnMessage=returnMessage+"0"+character;
+				}else{
+					returnMessage=returnMessage+""+character;
+				}
+				
+			}
+		return returnMessage; 
 	}
 }
