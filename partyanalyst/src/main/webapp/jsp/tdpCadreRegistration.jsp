@@ -19,7 +19,7 @@
 	 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
 	 	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
 		<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
-	
+		<script src="js/icheck/icheck.js"></script>
 	 
 	<!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
@@ -78,6 +78,11 @@
 		
 		prepopulateOptions();
 		//prepopulateElctionOptions();
+		$('input').iCheck({
+			checkboxClass: 'icheckbox_square-blue',
+			radioClass: 'iradio_square-blue',
+			increaseArea: '20%' // optional
+		  });
 		 
 	});
 
@@ -464,21 +469,21 @@
 												<s:if test="%{voterInfoVOList[0].gender != null}">
 												
 													<c:if test="${voterInfoVOList[0].gender == 'M'}">
-													   <label class="radio"><input type="radio" value="MALE"  name="cadreRegistrationVO.gender" checked="true" >MALE</input></label>
+													   <label class="radio"><input type="radio" value="MALE"  name="cadreRegistrationVO.gender" checked="true" > MALE</input></label>
 														&nbsp;&nbsp;&nbsp;&nbsp;
-														<label class="radio"><input type="radio" value="FEMALE"  name="cadreRegistrationVO.gender">FEMALE</input></label>
+														<label class="radio"><input type="radio" value="FEMALE"  name="cadreRegistrationVO.gender"> FEMALE</input></label>
 													</c:if>
 													<c:if test="${voterInfoVOList[0].gender == 'F'}">												
-														<label class="radio"><input type="radio" value="MALE"  name="cadreRegistrationVO.gender" >MALE</input></label>
+														<label class="radio"><input type="radio" value="MALE"  name="cadreRegistrationVO.gender" > MALE</input></label>
 														&nbsp;&nbsp;&nbsp;&nbsp;
-														<label class="radio"><input type="radio" value="FEMALE"  name="cadreRegistrationVO.gender"  checked="true">FEMALE</input></label>
+														<label class="radio"><input type="radio" value="FEMALE"  name="cadreRegistrationVO.gender"  checked="true"> FEMALE</input></label>
 													</c:if>
 												
 												</s:if>
 												<s:else>
-												  <label class="radio"><input type="radio" value="MALE"  name="cadreRegistrationVO.gender" >MALE</input></label>
+												  <label class="radio"><input type="radio" value="MALE"  name="cadreRegistrationVO.gender" > MALE</input></label>
 													&nbsp;&nbsp;&nbsp;&nbsp;
-													<label class="radio"><input type="radio" value="FEMALE"  name="cadreRegistrationVO.gender" >FEMALE</input></label>
+													<label class="radio"><input type="radio" value="FEMALE"  name="cadreRegistrationVO.gender" > FEMALE</input></label>
 												</s:else>
 														
 												</div>			
