@@ -9,40 +9,9 @@
 <title>Voters Search</title>
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
    <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
-<script type="text/javascript" src="js/voterAnalysis/voterAnalysis.js"></script>
-<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
-	<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/element-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/button-min.js"></script> 	
-	<script src="js/yahoo/resize-min.js"></script> 
-	<script src="js/yahoo/layout-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/container-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/dom-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
-	<script type="text/javascript" src="js/json/json-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/connection-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/tabview-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/datasource-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/get-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
-			<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+ <script type="text/javascript" src="js/voterAnalysis/voterAnalysis.js"></script>
  
- <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.9.0/build/tabview/assets/skins/sam/tabview.css"> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/layout.css">
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css"> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/button.css"> 
- 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/tabview.css">
-	<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css"> 
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">    
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css"> 
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
 <style type="text/css">
 
 .labelClass{
