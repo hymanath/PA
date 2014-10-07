@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,7 +13,10 @@ import sun.security.action.GetLongAction;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
+import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
+import com.itgrids.partyanalyst.dao.hibernate.ConstituencyDAO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.Voter;
@@ -28,6 +32,10 @@ public class CtpCasteReportService implements ICtpCasteReportService{
 	private IUserVoterDetailsDAO userVoterDetailsDAO;
 	@Autowired
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+	@Autowired
+	private IVoterInfoDAO voterInfoDAO;
+	@Autowired
+	private IConstituencyDAO constituencyDAO;
 	
 	public VoterHouseInfoVO getVoterDetailsForSearch(VoterHouseInfoVO inputVo ,String locationType,Long id)
 	{
@@ -150,5 +158,68 @@ public class CtpCasteReportService implements ICtpCasteReportService{
 		    	votersList.add(voterHouseInfoVO);
 		 }
 		   
+	 }
+	 public VoterHouseInfoVO getCTPVoterCount(Long userId)
+	 {
+		 VoterHouseInfoVO result = new VoterHouseInfoVO();
+		 List<VoterHouseInfoVO> resultList = new ArrayList<VoterHouseInfoVO>();
+		 List<Long> constituneycIds = new ArrayList<Long>();
+		 result.setVotersList(resultList);
+		 try{
+			
+			List<Object[]> list = userVoterDetailsDAO.getCasteCountByConstituencyIds(IConstants.VOTER_DATA_PUBLICATION_ID,userId);
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params :list)
+				{
+					VoterHouseInfoVO vo = new VoterHouseInfoVO();
+					vo.setConstituencyId((Long)params[0]);
+					vo.setName(params[1] != null ? params[1].toString() : "");
+					vo.setDistrictName(params[4] != null ? params[4].toString() : "");
+					vo.setDistrictId((Long)params[3]);
+					vo.setCasteCount((Long)params[2]);
+					resultList.add(vo);
+					constituneycIds.add((Long)params[0]);
+				}
+				List<Object[]> votersCount = voterInfoDAO.getVotersCountForAllConstituencies(IConstants.VOTER_DATA_PUBLICATION_ID,constituneycIds);
+				if(votersCount != null && votersCount.size() > 0)
+				{
+					for(Object[] params : votersCount)
+					{
+						VoterHouseInfoVO constInfoVO = getMatchedVo(resultList, (Long)params[0]);
+						constInfoVO.setCount((Long)params[1]);
+					}
+					
+				}
+			}
+			
+			if(resultList != null && resultList.size() > 0)
+			for(VoterHouseInfoVO vo1 : resultList)
+			{
+				vo1.setPercentage(new BigDecimal(vo1.getCasteCount()*(100.0)/vo1.getCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			}
+			 
+		 }
+		 catch (Exception e) {
+			 LOG.error("Exception Occured in getCTPVoterCount()", e);
+		}
+		return result;
+	 }
+	 
+	 public VoterHouseInfoVO getMatchedVo(List<VoterHouseInfoVO> list ,Long id)
+	 {
+		 try{
+			 if(list == null || list.size() == 0)
+				 return null;
+			 for(VoterHouseInfoVO vo : list)
+			 {
+				 if(vo.getConstituencyId().longValue() == id.longValue())
+					 return vo;
+			 }
+		 }
+		 catch (Exception e) {
+			 LOG.error("Exception Occured in getMatchedVo()", e);
+		}
+		return null;
 	 }
 }

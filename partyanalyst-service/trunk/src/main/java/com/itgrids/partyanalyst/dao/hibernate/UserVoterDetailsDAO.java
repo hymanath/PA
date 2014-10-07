@@ -3247,6 +3247,20 @@ IUserVoterDetailsDAO{
 				 
 	 }
 	 
+	 public List<Object[]> getCasteCountByConstituencyIds(Long publicationDateId,Long userId)
+	 {
+		 StringBuilder str = new StringBuilder();
+		   str.append("select distinct model.booth.constituency.constituencyId,model.booth.constituency.name,count(uvd.casteState.caste.casteId), model.booth.constituency.district.districtId,model.booth.constituency.district.districtName from BoothPublicationVoter model,UserVoterDetails uvd " +
+		   		" where model.voter.voterId = uvd.voter.voterId and model.booth.publicationDate.publicationDateId = :publicationDateId ");
+		   str.append(" and uvd.user.userId = :userId and uvd.casteInsertType.casteInsertTypeId = :casteInsertTypeId  group by model.booth.constituency.constituencyId ");
+		   Query query = getSession().createQuery(str.toString());
+		   		
+		   		query.setParameter("userId", userId);
+		   		query.setParameter("publicationDateId", publicationDateId);
+		   		query.setParameter("casteInsertTypeId", IConstants.CTP_CASTE_INSERT_TYPE);
+		   		return query.list();	 
+	 }
+	 
 	
 }
 
