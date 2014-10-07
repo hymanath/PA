@@ -1460,7 +1460,36 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		}
 		return returnList;
 	}
- 	
+	
+	public List<GenericVO> getExistingCadreInfo(String candidateName,Long constituencyId,Long panchayatId){
+ 		LOG.info("Entered into getExistingCadreInfo method in CadreRegistrationService class");
+ 		List<GenericVO>  returnList = null;
+ 		try {
+			
+ 			List<Object[]> cadreInfo = tdpCadreDAO.getexistringCadreInfoByLocation(candidateName,constituencyId,panchayatId);
+				if(cadreInfo != null && cadreInfo.size()>0)
+				{
+					returnList = new ArrayList<GenericVO>();
+					for (Object[] param : cadreInfo)
+					{
+						GenericVO vo = new GenericVO();
+						
+						vo.setName(param[0] != null ? param[0].toString().trim():"");
+						vo.setDesc(param[1] != null ? param[1].toString().trim():"");
+						vo.setRank(param[2] != null ? Long.valueOf(param[2].toString().trim()):0L);
+						
+						vo.setId(param[3] != null ? Long.valueOf(param[3].toString().trim()):0L);
+						
+						returnList.add(vo);
+					}
+				}
+				
+		} catch (Exception e) {
+			LOG.error("Entered into getExistingCadreInfo method in CadreRegistrationService class",e);
+		}
+ 		
+ 		return returnList;
+ 	}
 	private String sendSMS(String mobileNo,String message){
 
 		HttpClient client = new HttpClient(new MultiThreadedHttpConnectionManager());
