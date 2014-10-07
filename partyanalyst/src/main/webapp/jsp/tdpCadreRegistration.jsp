@@ -15,7 +15,6 @@
     <link href="css/animate.css" rel="stylesheet"/>	
 	<link href="styles/icheck_skins/all.css?v=1.0.2" rel="stylesheet"/>
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-	 <script src="js/icheck/icheck.js"></script>
 	 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
 	 	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
 		<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
@@ -466,7 +465,7 @@
 													
 													<h5 class="text-align1">GENDER</h5>	
 												<div class="row-fluid form-inline" style="margin-left:5px;">
-												<s:if test="%{voterInfoVOList[0].gender != null}">
+												<s:if test="%{voterInfoVOList[0].gender != null && voterInfoVOList[0].gender.trim().length > 0}">
 												
 													<c:if test="${voterInfoVOList[0].gender == 'M'}">
 													   <label class="radio"><input type="radio" value="MALE"  name="cadreRegistrationVO.gender" checked="true" > MALE</input></label>
