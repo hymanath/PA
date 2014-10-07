@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -334,5 +335,43 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		}
 		
 		return info;
+	}
+	
+	public List<CadreRegisterInfo> getCandidateDataCollectionInfo(Date fromDate,Date toDate){
+		List<CadreRegisterInfo> returnList = new ArrayList<CadreRegisterInfo>();
+		CadreRegisterInfo vo = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		SimpleDateFormat timeFormate = new SimpleDateFormat("hh:mm");
+		try{
+			List<Date> datesList = new ArrayList<Date>();
+			//0 count,1 name,2 min,3 max,4 date,5 id
+			List<Object[]> dataCollectedInfo = tdpCadreDAO.getCandidateDataCollectionInfo(fromDate, toDate);
+			
+			for(Object[] data:dataCollectedInfo){
+				vo = new CadreRegisterInfo() ;
+				vo.setName(data[1].toString());
+				vo.setDate(sdf.format((Date)data[2]));
+				vo.setArea(convertTimeTo12HrsFormat(timeFormate.format((Date)data[2])));
+				vo.setLocation(convertTimeTo12HrsFormat(timeFormate.format((Date)data[3])));
+				vo.setTotalCount((Long)data[0]);
+				returnList.add(vo);
+			}
+		}catch(Exception e){
+			LOG.error("Exception rised in getCandidateDataCollectionInfo",e);
+		}
+		return returnList;
+	}
+	
+	private String convertTimeTo12HrsFormat(String time){
+		String[] timeArray = time.split(":");
+		int hours = Integer.parseInt(timeArray[0].trim());
+		if(hours > 11){
+			if(hours != 12){
+			   hours = hours-12;
+			}
+			return hours+":"+timeArray[2]+" PM";
+		}
+		
+		return time+" AM";
 	}
 }
