@@ -937,9 +937,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					try {
 							vo.setCadreId(tdpCadre.getTdpCadreId());
 							String dateOfBirth = tdpCadre.getDateOfBirth() != null ? tdpCadre.getDateOfBirth().toString().substring(0, 10):"";
-							vo.setDateOfBirth(dateOfBirth);
+							vo.setDateOfBirth(dateOfBirth != null ? new SimpleDateFormat("dd-MM-yyyy").format(new SimpleDateFormat("yy-MM-dd").parse(tdpCadre.getDateOfBirth().toString())):"");
 							
 							if(tdpCadre.getVoter() != null)
+								
 							{
 								vo.setHouseNo(tdpCadre.getVoter().getHouseNo());
 								vo.setName(tdpCadre.getVoter().getName());
@@ -960,16 +961,16 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								vo.setGender(tdpCadre.getGender() != null ? tdpCadre.getGender().toString():"");
 								
 								vo.setVoterId(0L);
-								vo.setVoterCardNo(" -- ");
-								vo.setHouseNo(" -- ");
-								vo.setRelationType(" -- ");
+								vo.setVoterCardNo("");
+								vo.setHouseNo("");
+								vo.setRelationType("");
 								
 								if(dateOfBirth != null && dateOfBirth.trim().length()>0)
 								{
 									Calendar startDate = new GregorianCalendar();
 									Calendar endDate = new GregorianCalendar();
 									
-									startDate.setTime(format.parse(dateOfBirth));
+									startDate.setTime(new SimpleDateFormat("yy-MM-dd").parse(dateOfBirth));
 									
 									endDate.setTime(new Date());
 
@@ -984,14 +985,20 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							}
 							
 							vo.setBlodGroupId(tdpCadre.getBloodGroup() != null ? tdpCadre.getBloodGroupId():0L);
-							vo.setCasteName(tdpCadre.getCasteState() != null ? tdpCadre.getCasteState().getCasteStateId().toString():"0");
+							
+							vo.setCasteId(tdpCadre.getCasteState() != null ? tdpCadre.getCasteState().getCasteStateId():0L);							
+							vo.setCasteName(tdpCadre.getCasteState() != null ? tdpCadre.getCasteState().getCaste().getCasteName().toString():"");	
+							
+							vo.setOccupationId(tdpCadre.getOccupation() != null ? tdpCadre.getOccupation().getOccupationId():0L);
+							vo.setOccupation(tdpCadre.getOccupation() != null ? tdpCadre.getOccupation().getOccupation():"");
+							
 							vo.setEducation(tdpCadre.getEducationalQualifications() != null ? tdpCadre.getEducationalQualifications().getEduQualificationId().toString():"0");
-							vo.setOccupation(tdpCadre.getOccupation() != null ? tdpCadre.getOccupation().getOccupationId().toString():"0");
+							
 							vo.setLocation(tdpCadre.getUserAddress() != null ? (tdpCadre.getUserAddress().getHamlet() != null ?tdpCadre.getUserAddress().getHamlet().getHamletName().toString():""):"");
 							vo.setMobileNo(tdpCadre.getMobileNo() != null ? tdpCadre.getMobileNo():"");
 							vo.setMemberShipId(tdpCadre.getMemberShipNo() != null ? tdpCadre.getMemberShipNo().toString():"");
-							vo.setActiveDate(tdpCadre.getPartyMemberSince() != null ? tdpCadre.getPartyMemberSince().toString():"");
-							
+							vo.setActiveDate(tdpCadre.getPartyMemberSince() != null ? new SimpleDateFormat("dd-MM-yyyy").format(new SimpleDateFormat("yy-MM-dd").parse(tdpCadre.getPartyMemberSince().toString())):"");
+							 
 						} catch (Exception e) {
 							LOG.error("Exception raised in getCandidateInfoBySearchCriteria in CadreRegistrationService service", e);
 						}
@@ -1026,7 +1033,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							{
 								Long familyVoterID = family[0] != null ? Long.valueOf(family[0].toString().trim()):0L;
 								
-								if( familyVoterID != voterId)
+								if( familyVoterID.longValue() != voterId.longValue())
 								{
 									VoterInfoVO fmilyVO = new VoterInfoVO();
 									fmilyVO.setVoterId(family[0] != null ? Long.valueOf(family[0].toString().trim()):0L);
