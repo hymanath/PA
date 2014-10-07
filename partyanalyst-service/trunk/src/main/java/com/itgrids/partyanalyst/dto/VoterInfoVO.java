@@ -18,9 +18,11 @@ public class VoterInfoVO implements java.io.Serializable
 	private Long blodGroupId;
 	private String activeDate;
 	private String location;
+	private Long casteId;
 	private String casteName;
 	private String mobileNo;
 	private String education;
+	private Long occupationId;
 	private String occupation;
 	private Long voterId;
 	private Long cadreId;
@@ -31,6 +33,18 @@ public class VoterInfoVO implements java.io.Serializable
 	private List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>();
 	
 	
+	public Long getCasteId() {
+		return casteId;
+	}
+	public void setCasteId(Long casteId) {
+		this.casteId = casteId;
+	}
+	public Long getOccupationId() {
+		return occupationId;
+	}
+	public void setOccupationId(Long occupationId) {
+		this.occupationId = occupationId;
+	}
 	public String getMemberShipId() {
 		return memberShipId;
 	}
