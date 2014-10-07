@@ -163,4 +163,27 @@ public class CtpCasteReportAction extends ActionSupport implements ServletReques
 		}
 		return Action.SUCCESS;
 	}
+	public String getctpVoterCounts()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			session = request.getSession();
+			RegistrationVO user =  (RegistrationVO) session.getAttribute(IConstants.USER);
+			Long userId = null;
+			if(user != null && user.getRegistrationID() != null)
+				if(user.getParentUserId()!=null)
+					userId=user.getMainAccountId();
+				else
+					userId = user.getRegistrationID();
+			else 
+			  return "error";
+			voterHouseInfoVO = 	ctpCasteReportService.getCTPVoterCount(userId);
+			
+		}
+		catch (Exception e) {
+			LOG.error("Exception Occured in getctpVoterCounts() method", e);
+		}
+		return Action.SUCCESS;
+		}
+	
 }
