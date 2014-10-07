@@ -7326,5 +7326,17 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		return query.list();
 	}
 	
-	
+   public List<Object[]> getVotersDetailsByCTPSearchCriteria(Long publicationDateId,Long id,String queryString,Long userId)
+   {
+	   StringBuilder str = new StringBuilder();
+	   str.append("select uvd.voter,model.booth.boothId,model.booth.partNo,model.serialNo,uvd.casteState.caste.casteName from BoothPublicationVoter model,UserVoterDetails uvd " +
+	   		" where model.voter.voterId = uvd.voter.voterId and model.booth.publicationDate.publicationDateId = :publicationDateId "+queryString);
+	   str.append(" and uvd.user.userId = :userId and uvd.casteInsertType.casteInsertTypeId = :casteInsertTypeId");
+	   Query query = getSession().createQuery(str.toString());
+	   		query.setParameter("id", id);
+	   		query.setParameter("userId", userId);
+	   		query.setParameter("publicationDateId", publicationDateId);
+	   		query.setParameter("casteInsertTypeId", IConstants.CTP_CASTE_INSERT_TYPE);
+	   		return query.list();
+   }
 }
