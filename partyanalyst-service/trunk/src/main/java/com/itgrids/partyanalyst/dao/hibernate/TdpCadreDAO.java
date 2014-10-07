@@ -241,4 +241,39 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		query.setParameter("randomNo", randomNo);
 		return (Long)query.uniqueResult();
 	}
+	public List<Object[]> getexistringCadreInfoByLocation(String candidateName, Long constid, Long panchayatId)
+	{
+		
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select model.firstname, model.relativename, model.memberShipNo, model.tdpCadreId ");
+		queryStr.append(" from TdpCadre model where model.firstname like '%"+candidateName+"%'  ");
+		
+		if(constid != null && constid.longValue() != 0L)
+		{
+			queryStr.append(" and model.userAddress.constituency.constituencyId = :constid ");
+		}
+		
+		if(panchayatId != null && panchayatId.longValue() != 0L)
+		{
+			queryStr.append(" and model.userAddress.panchayatId = :panchayatId ");
+		}
+		queryStr.append(" order by model.tdpCadreId ");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		if(constid != null && constid.longValue() != 0L)
+		{
+			query.setParameter("constid", constid);
+		}
+		
+		if(panchayatId != null && panchayatId.longValue() != 0L)
+		{
+			query.setParameter("panchayatId", panchayatId);
+		}
+		
+		
+		return query.list();
+		
+	}
+	
 }
