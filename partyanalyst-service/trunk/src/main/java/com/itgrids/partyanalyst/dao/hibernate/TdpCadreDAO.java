@@ -245,7 +245,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 	{
 		
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select model.firstname, model.relativename, model.memberShipNo, model.tdpCadreId ");
+		queryStr.append(" select model.firstname, model.relativename, model.previousEnrollmentNo, model.tdpCadreId ");
 		queryStr.append(" from TdpCadre model where model.firstname like '%"+candidateName+"%'  ");
 		
 		if(constid != null && constid.longValue() != 0L)
