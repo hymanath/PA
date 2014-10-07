@@ -8464,6 +8464,11 @@
 				<param name="root">info</param>
 			</result>
 		</action>
+		<action name="getExistingCadreInfo" class="cadreRegistrationAction" method="getExistingCadreInfo">
+			<result type="json" name="success">
+			<param name="root">selectOptionVO</param>
+			</result>
+		</action>
 		
 </package>
 
