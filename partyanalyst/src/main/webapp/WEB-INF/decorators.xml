@@ -355,6 +355,9 @@
 
 			  <pattern>/cadreDashBoardAction*</pattern>
 			  
+			  <pattern>/ctpCasteReportAction*</pattern>
+			  
+			  
             <!--  <pattern>/dashBoardAction*</pattern> -->
        </decorator>
        

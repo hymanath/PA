@@ -8469,6 +8469,17 @@
 			<param name="root">selectOptionVO</param>
 			</result>
 		</action>
+		 <action name="ctpCasteReportAction" class="ctpCasteReportAction">
+			<result name="success">/jsp/ctpcastereport.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=ctpCasteReportAction</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>	
+		</action>
+		<action name="getctpSearchVoterDetails" class="ctpCasteReportAction" method="getVoterInfoForCTP">
+			<result type="json" name="success">
+				<param name="root">voterHouseInfoVO</param>
+			</result>
+		</action>
+		
 		
 </package>
 
