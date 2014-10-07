@@ -68,6 +68,7 @@ import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.ImageAndStringConverter;
 
 public class CadreRegistrationService implements ICadreRegistrationService {
 	
@@ -100,7 +101,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private IPartyDesignationDAO 			partyDesignationDAO;
 	private IElectionTypeDAO				electionTypeDAO;
 	private ITdpCadreFamilyDetailsDAO		tdpCadreFamilyDetailsDAO;
-	
+	private ImageAndStringConverter 		imageAndStringConverter = new ImageAndStringConverter();
 	
 	
 	
@@ -469,6 +470,17 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					{
 						tdpCadre.setImage(tdpCadre.getMemberShipNo()+"."+cadreRegistrationVO.getUploadImageContentType().split("/")[1]);
 					}
+				}
+				
+				if(registrationType.equalsIgnoreCase("TAB") && cadreRegistrationVO.getImageBase64String() != null && 
+						cadreRegistrationVO.getImageBase64String().trim().length() > 0)
+				{
+						String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+						String filePath = cadreRegistrationVO.getPath() + "images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator + tdpCadre.getMemberShipNo()+".jpg";
+						boolean status = imageAndStringConverter.convertBase64StringToImage(cadreRegistrationVO.getImageBase64String(),filePath);
+						
+						if(status)
+							tdpCadre.setImage(tdpCadre.getMemberShipNo()+".jpg");
 				}
 				
 				if(registrationType != null && (registrationType.equalsIgnoreCase("WEB") || registrationType.equalsIgnoreCase("ONLINE")) && insertType.equalsIgnoreCase("new")){
