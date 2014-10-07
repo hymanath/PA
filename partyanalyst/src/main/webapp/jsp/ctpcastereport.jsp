@@ -348,8 +348,10 @@ function clearFieldsData(){
   <div style="width:960px;margin-left:auto;margin-right:auto;">
 
 	
-      <div class="titleHeading">VOTER SEARCH</div>
-    
+      <div class="titleHeading">VOTER SEARCH
+	  <input style="float:right;" onclick="buildPopup();" class="btn btn-success" type="button" value="Status Report"></input></div>
+	   
+    <div id="statuspopup"><div id="popupInnerContent"></div></div>
 	  <fieldset id="mainFieldset">
       <div id="AlertMsg" style="font-family: verdana;font-size: 13px;color:red;"></div>
 	  <div id="errorMsgAlert" style="font-family: verdana;font-size:14px;color:red;margin-left:100px;height: 40px;"></div>
@@ -886,6 +888,55 @@ if(!flag){
 	    });
 		}
 	}
+	function getVotersCountDetails()
+	{
+		$("#popupInnerContent").html('');
+		var jObj ={
+			task : "getVoterCount"
+		}
+	$.ajax({
+	          type:'POST',
+	          url: 'getctpVoterCountDetails.action',
+	          dataType: 'json',
+	          data: {task:JSON.stringify(jObj)},
+			  success: function(result){ 
+			  buildVoterCount(result.votersList);
+				  },
+	          error:function() { 
+	           console.log('error', arguments);
+	         }
+	    });
+		
+	}
+	function buildVoterCount(result)
+	{
+		var str = '';
+		str+='<table class="table table-bordered">';
+		str+='<th>District</th>';
+		str+='<th>Constituency</th>';
+		str+='<th>Total Voters</th>';
+		str+='<th>Caste</th>';
+		str+='<th>Caste Percentage</th>';
+		for(var i in result)
+		{
+		str+='<tr>';
+		str+='<td>'+result[i].districtName+'</td>';
+		str+='<td>'+result[i].name+'</td>';
+		str+='<td>'+result[i].count+'</td>';
+		str+='<td>'+result[i].casteCount+'</td>';
+		str+='<td>'+result[i].percentage+'</td>';
+		str+='</tr>';
+		}
+		str+='</table>';
+		$("#popupInnerContent").html(str);
+		$("#statuspopup").dialog({                   
+		    modal: true,
+            title: "<b>Voter Count Details</b>",
+			width: 750,
+            height: 550
+     });
+
+	}
 	function buildVoterDetails(result)
 	{
 		var str = '';
@@ -919,6 +970,12 @@ if(!flag){
 		str+='</table>';
 		$("#voterDetailsDiv").html(str);
 		$("#voterDataTable").dataTable();
+	}
+
+	function buildPopup()
+	{
+		getVotersCountDetails();
+		
 	}
 </script>
 </body>

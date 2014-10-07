@@ -8479,6 +8479,11 @@
 				<param name="root">voterHouseInfoVO</param>
 			</result>
 		</action>
+			<action name="getctpVoterCountDetails" class="ctpCasteReportAction" method="getctpVoterCounts">
+			<result type="json" name="success">
+				<param name="root">voterHouseInfoVO</param>
+			</result>
+		</action>
 		
 		
 </package>
