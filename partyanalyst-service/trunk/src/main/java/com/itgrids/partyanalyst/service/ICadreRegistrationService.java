@@ -28,4 +28,6 @@ public interface ICadreRegistrationService {
 	
 	public List<SelectOptionVO> getElectionYearsByElectionType(Long electionTypeId);
 	
+	public List<GenericVO> getExistingCadreInfo(String candidateName,Long constituencyId,Long panchayatId);
+	
 }
