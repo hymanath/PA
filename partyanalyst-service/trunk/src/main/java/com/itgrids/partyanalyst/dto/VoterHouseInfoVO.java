@@ -73,7 +73,7 @@ public class VoterHouseInfoVO implements Comparable<VoterHouseInfoVO>{
 	private Boolean isCadrePerson;
 	private Boolean isPoliticion;
 	private Long subLocalityId;
-	private Long count;
+	private Long count =0l;
 	private List<SelectOptionVO> userCategoriesList;
 	private List<SelectOptionVO> subLocalities;	
 	private String partNo;
@@ -127,9 +127,34 @@ public class VoterHouseInfoVO implements Comparable<VoterHouseInfoVO>{
     
     private Long boothLeaderBookId;
     private List<GenericVO> leaderBooksList;
+    private Long districtId;
+    private Long casteCount =0l;
+    private String percentage ;
     
-    
-    
+	public String getPercentage() {
+		return percentage;
+	}
+
+	public void setPercentage(String percentage) {
+		this.percentage = percentage;
+	}
+
+	public Long getCasteCount() {
+		return casteCount;
+	}
+
+	public void setCasteCount(Long casteCount) {
+		this.casteCount = casteCount;
+	}
+
+	public Long getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+
 	public List<GenericVO> getLeaderBooksList() {
 		return leaderBooksList;
 	}
