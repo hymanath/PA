@@ -15,6 +15,7 @@
     <link href="css/animate.css" rel="stylesheet"/>	
 	<link href="styles/icheck_skins/all.css?v=1.0.2" rel="stylesheet"/>
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	 <script src="js/icheck/icheck.js"></script>
 	 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
 	 	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
 		<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
@@ -633,14 +634,14 @@
 													
 													<h5 class="text-align1">GENDER</h5>	 
 												<div class="row-fluid form-inline" style="margin-left:5px;">
-												<s:if test="%{voterInfoVOList[0].gender != null && voterInfoVOList[0].gender.trim().length > 0}">
+												<s:if test="%{voterInfoVOList[0].gender != null}">
 												
-													<c:if test="${voterInfoVOList[0].gender == 'M'}">
+													<c:if test="${voterInfoVOList[0].gender == 'M' || voterInfoVOList[0].gender == 'Male'}">
 													   <label class="radio"><input type="radio" value="MALE"  name="cadreRegistrationVO.gender" checked="true" > MALE</input></label>
 														&nbsp;&nbsp;&nbsp;&nbsp;
 														<label class="radio"><input type="radio" value="FEMALE"  name="cadreRegistrationVO.gender"> FEMALE</input></label>
 													</c:if>
-													<c:if test="${voterInfoVOList[0].gender == 'F'}">												
+													<c:if test="${voterInfoVOList[0].gender == 'F' || voterInfoVOList[0].gender == 'Female'}">												
 														<label class="radio"><input type="radio" value="MALE"  name="cadreRegistrationVO.gender" > MALE</input></label>
 														&nbsp;&nbsp;&nbsp;&nbsp;
 														<label class="radio"><input type="radio" value="FEMALE"  name="cadreRegistrationVO.gender"  checked="true"> FEMALE</input></label>
@@ -1002,8 +1003,12 @@ var existingCadreArr = [];
 var existingCadreInfoArr = [];
 function getExistingCadreInfo()
 {
+
 	var value = $('#preEnrollNoValue').val();
 	$('#preEnrollNo').val('');
+	var constituencyId = '${constiteucnyId}';
+	var panchayatId = '${houseNo}';  // panchayat Id 
+	
 	if(value.trim().length >2)
 	{
 		existingCadreArr = [];
@@ -1011,8 +1016,8 @@ function getExistingCadreInfo()
 			var jsObj = 
 			   {	
 				name : value,
-				constituencyId : 282,
-				panchayatId : 0,
+				constituencyId : constituencyId,
+				panchayatId : panchayatId,
 				task:"getExistingCadreInfo"             
 			   }
 			   
