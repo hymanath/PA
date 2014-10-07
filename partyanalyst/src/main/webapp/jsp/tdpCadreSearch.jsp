@@ -282,8 +282,9 @@
 	{
 		//var candidateId = $('input[name="optionsRadios"]:checked').val();
 		var searchType = $('input[name="searchTypeRadio"]:checked').val();
-
-		window.open('tdpCadreRegistrationAction.action?candidateId='+candidateId+'&searchType='+searchType+'');
+		var cosntiteucnyId = $('#userConstituencyId').val();	
+		var houseNo = $('#panchayatList').val();	
+		window.open('tdpCadreRegistrationAction.action?candidateId='+candidateId+'&searchType='+searchType+'&constiteucnyId='+cosntiteucnyId+'&houseNo='+houseNo+'');
 		
 	}
 	
