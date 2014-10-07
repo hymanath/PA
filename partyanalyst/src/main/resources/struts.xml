@@ -177,6 +177,8 @@
 			<result type="redirect" name="voterAnalysisAction">votersAnalysisAction.action</result>
 			<result type="redirect" name="mahaNaduAction">mahaNaduAction.action</result>
 			<result type="redirect" name="mahanadu">mahaNaduAction.action</result>
+			<result type="redirect" name="tdpCadreSearchAction">tdpCadreSearchAction.action</result>
+			<result type="redirect" name="cadreRegistration2014">tdpCadreSearchAction.action</result>
 			<result type="redirect" name="casteAndElectionResultsComparisonAction">casteAndElectionResultsComparisonAction.action</result>
 			<result type="redirect" name="votersAnalysisNewAction">votersAnalysisNewAction.action</result>
 			<result type="redirect" name="votersSearchAndEditAction">votersSearchAction.action</result>
@@ -8379,6 +8381,7 @@
 		
 		<action name="tdpCadreSearchAction" class="cadreRegistrationAction" method="tdpCadreSearchPage">
 			<result name="success">/jsp/tdpCadreSearch.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=tdpCadreSearchAction</result>
 		</action>
 		
 		<action name="getconstituencyDetailsByConstiteuncyAction" class="cadreRegistrationAction" method="getconstituencyDetailsByConstiteuncy">
@@ -8402,7 +8405,7 @@
 		
 		<action name="tdpCadreRegistrationAction" class="cadreRegistrationAction" method="tdpCadreRegistrationPage">
 			<result name="success">/jsp/tdpCadreRegistration.jsp</result>
-			<result name="input">/jsp/tdpCadreRegistration.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=tdpCadreSearchAction</result>
 		</action>
 		
 		<action name="tdpCadreSaveRegistrationAction" class="cadreRegistrationAction" method="saveCadreDetails">
