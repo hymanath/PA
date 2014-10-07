@@ -44,7 +44,7 @@
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-orm/2.5/spring-orm-2.5.jar" sourcepath="M2_REPO/org/springframework/spring-orm/2.5/spring-orm-2.5-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/acegisecurity/acegi-security-tiger/1.0.5/acegi-security-tiger-1.0.5.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/acegisecurity/acegi-security/1.0.5/acegi-security-1.0.5.jar"/>
-	<classpathentry kind="var" path="M2_REPO/commons-codec/commons-codec/1.2/commons-codec-1.2.jar"/>
+	<classpathentry kind="var" path="M2_REPO/commons-codec/commons-codec/1.4/commons-codec-1.4.jar"/>
 	<classpathentry kind="var" path="M2_REPO/oro/oro/2.0.8/oro-2.0.8.jar" sourcepath="M2_REPO/oro/oro/2.0.8/oro-2.0.8-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-aop/2.5.4/spring-aop-2.5.4.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/appfuse/appfuse-jpa/2.0.2/appfuse-jpa-2.0.2.jar"/>
