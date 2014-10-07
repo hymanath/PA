@@ -52,8 +52,81 @@ public class BenefitAnalysisAction extends ActionSupport implements ServletReque
 	private Long candidateId;
 	private Long locationId;
 	private String name;
+	private String  districtIds ;
+	private String acIds;
+	private String pcIds;
+    private String candidateGrp1;
+	private String candidateGrp2;
+	private String candidateGrp3;
+	private NewsActivityVO newsDetails;
+	private String categoryIds;
 	
-		
+	
+	
+	public String getAcIds() {
+		return acIds;
+	}
+
+	public void setAcIds(String acIds) {
+		this.acIds = acIds;
+	}
+	
+	public String getCategoryIds() {
+		return categoryIds;
+	}
+
+	public void setCategoryIds(String categoryIds) {
+		this.categoryIds = categoryIds;
+	}
+
+	public String getDistrictIds() {
+		return districtIds;
+	}
+
+	public void setDistrictIds(String districtIds) {
+		this.districtIds = districtIds;
+	}
+
+	public NewsActivityVO getNewsDetails() {
+		return newsDetails;
+	}
+
+	public void setNewsDetails(NewsActivityVO newsDetails) {
+		this.newsDetails = newsDetails;
+	}
+
+	public String getPcIds() {
+		return pcIds;
+	}
+
+	public void setPcIds(String pcIds) {
+		this.pcIds = pcIds;
+	}
+
+	public String getCandidateGrp1() {
+		return candidateGrp1;
+	}
+
+	public void setCandidateGrp1(String candidateGrp1) {
+		this.candidateGrp1 = candidateGrp1;
+	}
+
+	public String getCandidateGrp2() {
+		return candidateGrp2;
+	}
+
+	public void setCandidateGrp2(String candidateGrp2) {
+		this.candidateGrp2 = candidateGrp2;
+	}
+
+	public String getCandidateGrp3() {
+		return candidateGrp3;
+	}
+
+	public void setCandidateGrp3(String candidateGrp3) {
+		this.candidateGrp3 = candidateGrp3;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -448,4 +521,71 @@ public class BenefitAnalysisAction extends ActionSupport implements ServletReque
 	       return (vo2.getNegCount().intValue()) - (vo1.getNegCount().intValue());
 		}
 	};
+	
+
+	public String getBenifitNewsDetails(){
+		  try{
+			
+			Date[] dates = getDates(type,fromDate,toDate);
+			List<Long> categoryIdList = new ArrayList<Long>();
+			List<Long> districtIdList = new ArrayList<Long>();
+			List<Long> acIdList = new ArrayList<Long>();
+			List<Long> pcIdList = new ArrayList<Long>();
+			List<Long> candidateGrp1Ids = new ArrayList<Long>();
+			List<Long> candidateGrp2Ids = new ArrayList<Long>();
+			List<Long> candidateGrp3Ids = new ArrayList<Long>();
+			
+			
+				if(!districtIds.isEmpty()){
+				    String[] districtId  = districtIds.split(",");			
+					for(String id:districtId){
+						districtIdList.add(Long.valueOf(id.trim()));
+					}
+				}
+				if(!acIds.isEmpty()){
+					String[] acId  = acIds.split(",");				
+					for(String id:acId){
+						acIdList.add(Long.valueOf(id.trim()));
+					}
+				}
+				if(!pcIds.isEmpty()){
+					String[] pcId  = pcIds.split(",");
+					for(String id:pcId){
+						pcIdList.add(Long.valueOf(id.trim()));
+					}
+				}
+				if(!categoryIds.isEmpty()){
+				String[] categoryId  = categoryIds.split(",");			
+				for(String id:categoryId){
+					categoryIdList.add(Long.valueOf(id.trim()));
+				}
+				
+				if(!candidateGrp1.isEmpty()){
+					String[] candidateId  = candidateGrp1.split(",");			
+					for(String id:candidateId){
+						candidateGrp1Ids.add(Long.valueOf(id.trim()));
+					}
+				}
+				if(!candidateGrp3.isEmpty()){
+					String[] candidateId  = candidateGrp2.split(",");			
+					for(String id:candidateId){
+						candidateGrp2Ids.add(Long.valueOf(id.trim()));
+					}
+				}
+				
+				if(!candidateGrp3.isEmpty()){
+					String[] candidateId  = candidateGrp3.split(",");			
+					for(String id:candidateId){
+						candidateGrp3Ids.add(Long.valueOf(id.trim()));
+					}
+				}
+		  }
+				
+			 newsDetails = benefitAnalysisService.getAllBenefitNewsDetails(dates[0],dates[1],partyId,benefitId,districtIdList,acIdList,pcIdList,categoryIdList,candidateGrp1Ids,candidateGrp2Ids,candidateGrp3Ids,stateId);
+		  }catch(Exception e){
+			  LOG.error(" Exception occured in getBenifitNewsDetails ",e);
+		  }
+		  
+		 return Action.SUCCESS;
+	}
 }

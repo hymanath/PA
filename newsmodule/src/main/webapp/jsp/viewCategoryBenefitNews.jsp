@@ -80,12 +80,19 @@ font-size:20px;
 		var stateId = '${stateId}';
 		var benefitId = '${benefitId}';
 		var categoryId = '${categoryId}';
+		var locationId = '${locationId}';
 		var partyId = '${partyId}';
 		var candidateId = '${candidateId}';
 		var type = '${type}';
 		var name = '${name}';
-		var locationId= '${locationId}';
-		
+		var districtIds= '${districtIds}';
+		var acIds= '${acIds}';
+		var pcIds= '${pcIds}';
+		var candidateGrp1= '${candidateGrp1}';
+		var candidateGrp2= '${candidateGrp2}';
+		var candidateGrp3= '${candidateGrp3}';
+		var categoryIds = '${categoryIds}';
+	
 <s:if test="buildType == 'category'">      
 function getCategoryBenefitNewsDetails(startIndex,endIndex)
 {
@@ -185,6 +192,407 @@ function getCategoryBenefitNewsDetails(startIndex,endIndex)
 
 }
 </s:if>
+<s:if test="buildType == 'newsDetails'">
+function getCategoryBenefitNewsDetails(startIndex,endIndex){
+  $.ajaxSetup({
+	   jsonp: null,
+	   jsonpCallback: null
+	}); 
+
+	$.ajax({
+	  type:'POST',
+	  url: 'getBenifitNewsDetailsAction.action',
+	  dataType: 'json',
+	  data: {			
+	         type:type,
+			 fromDate:fromDate,
+			 toDate:toDate,
+			 districtIds : districtIds,
+			 acIds:acIds,
+			 pcIds:pcIds,
+			 stateId :stateId,
+	         benefitId:benefitId,
+			 partyId: partyId,
+			 categoryIds : categoryIds,
+			 candidateGrp1 : candidateGrp1,
+			 candidateGrp2 :candidateGrp2,
+			 candidateGrp3 :candidateGrp3
+	 
+	  },
+		 
+	  success: function(results){ 
+		   buildFilesInGallaryDetails1(results,0,startIndex,endIndex);
+	 },
+	  error:function() { 
+	     $("#newsDisplayDiv").html('');
+	  }
+	});
+}
+</s:if>
+
+function buildFilesInGallaryDetails1(results,selectedvalue,index,endValue)
+{
+	var totalPages;
+	var requestedFor = "";
+	$('#imageForMail').css("display","none");
+	$("#newsDisplayDiv").html('');
+  if(results == null || results.length == 0)
+  {
+    $("#newsDisplayDiv").html('No Data Found.');
+	return;
+  }
+	
+
+   var str='';
+
+   str+='<div class="span12">';
+   str+='<h4>Category Wise News</h4>';
+   str+='<ul class="unstyled">';
+  
+   if(results.categoryList.length > 0){
+   
+   for(var i in results.categoryList)
+   {
+		
+	str+='<div class="">';
+	str+='<h4>'+results.categoryList[i].name+'</h4>';
+    for(var j in results.categoryList[i].list)
+   {
+	str+='<li>';
+	str+='<div class="">';
+	
+	var fontId = results.categoryList[i].list[j].titleFont;
+	if(fontId != null)
+	{
+		str+='<h4 style="" class="enadu"><a style="color: #005580;font-size: 25px;" href="javascript:{getNewsDetailsByContentId('+results.categoryList[i].list[j].id+')}">'+results.categoryList[i].list[j].title+'</a></h4>';
+	}
+	else
+	{
+		str+='<h4 style="text-transform: capitalize;"> <a style="color: #005580;font-size: 18px;" href="javascript:{getNewsDetailsByContentId('+results.categoryList[i].list[j].id+')}">'+results.categoryList[i].list[j].title+'</a></h4>';
+	}
+		
+	str+='<div class="row-fluid">';
+	
+	
+	if(results.categoryList[i].list[j].font != null)
+	{
+		str+='<p class="span11 enadu" style="font-size: 25px;">'+results.categoryList[i].list[j].description+'</p>';
+	}
+	else
+	{
+		str+='<p class="span11" style="font-size: 18px;">'+results.categoryList[i].list[j].description+'</p>';
+	}
+	str+='</div>';
+		
+	str+='</div>';
+	str+='</li>';
+   }
+	str+='</div>';
+	
+   }
+    str+='</ul>';
+   str+='</div>';
+   }
+   
+  
+   str+='<div class="span12">';
+   str+='<h4>MLA Candidate Wise News</h4>';
+   str+='<ul class="unstyled">';
+   if(results.groupList1.length > 0){
+   
+   for(var i in results.groupList1)
+   {
+		
+	    str+='<div class="">';
+		str+='<h5>'+results.groupList1[i].name+'</h5>';
+    for(var j in results.groupList1[i].list)
+   {
+	str+='<li>';
+	str+='<div class="">';
+	
+	var fontId = results.groupList1[i].list[j].titleFont;
+	if(fontId != null)
+	{
+		str+='<h5 style="" class="enadu"><a style="color: #005580;font-size: 25px;" href="javascript:{getNewsDetailsByContentId('+results.groupList1[i].list[j].id+')}">'+results.groupList1[i].list[j].title+'</a></h5>';
+	}
+	else
+	{
+		str+='<h5 style="text-transform: capitalize;"> <a style="color: #005580;font-size: 18px;" href="javascript:{getNewsDetailsByContentId('+results.groupList1[i].list[j].id+')}">'+results.groupList1[i].list[j].title+'</a></h5>';
+	}
+		
+	str+='<div class="row-fluid">';
+		
+	if(results.groupList1[i].list[j].font != null)
+	{
+		str+='<p class="span11 enadu" style="font-size: 25px;">'+results.groupList1[i].list[j].description+'</p>';
+	}
+	else
+	{
+		str+='<p class="span11" style="font-size: 18px;">'+results.groupList1[i].list[j].description+'</p>';
+	}
+	str+='</div>';
+		
+	str+='</div>';
+	str+='</li>';
+   }
+	str+='</div>';
+	
+   }
+   str+='</ul>';
+   str+='</div>';
+
+   }
+   str+='<div class="span12">';
+   str+='<h4>MP Candidate Wise News</h4>';
+   str+='<ul class="unstyled">';
+    if(results.groupList2.length > 0){
+   
+   for(var i in results.groupList2)
+   {
+		
+	str+='<div class="">';
+	str+='<h5>'+results.groupList2[i].name+'</h5>';
+    for(var j in results.groupList2[i].list)
+   {
+	str+='<li class="unstyled">';
+	str+='<div class="">';
+	
+	var fontId = results.groupList2[i].list[j].titleFont;
+	if(fontId != null)
+	{
+		str+='<h5 style="" class="enadu"><a style="color: #005580;font-size: 25px;" href="javascript:{getNewsDetailsByContentId('+results.groupList2[i].list[j].id+')}">'+results.groupList2[i].list[j].title+'</a></h5>';
+	}
+	else
+	{
+		str+='<h5 style="text-transform: capitalize;"> <a style="color: #005580;font-size: 18px;" href="javascript:{getNewsDetailsByContentId('+results.groupList2[i].list[j].id+')}">'+results.groupList2[i].list[j].title+'</a></h5>';
+	}
+		
+
+	str+='<div class="row-fluid">';
+	
+	
+	if(results.groupList2[i].list[j].font != null)
+	{
+		str+='<p class="span11 enadu" style="font-size: 25px;">'+results.groupList2[i].list[j].description+'</p>';
+	}
+	else
+	{
+		str+='<p class="span11" style="font-size: 18px;">'+results.groupList2[i].list[j].description+'</p>';
+	}
+	str+='</div>';
+	
+	str+='</div>';
+	str+='</li>';
+   }
+	str+='</div>';
+	
+   }
+    str+='</ul>';
+   str+='</div>';
+
+   }
+   
+   str+='<div class="span12">';
+   str+='<h4>Minister Candidate Wise News</h4>';
+   str+='<ul class="unstyled">';
+    if(results.groupList3.length > 0){
+   
+   for(var i in results.groupList3)
+   {
+		
+	    str+='<div class="">';
+		str+='<h5>'+results.groupList3[i].name+'</h5>';
+    for(var j in results.groupList3[i].list)
+   {
+	str+='<li>';
+	str+='<div class="">';
+	
+	var fontId = results.groupList3[i].list[j].titleFont;
+	if(fontId != null)
+	{
+		str+='<h5 style="" class="enadu"><a style="color: #005580;font-size: 25px;" href="javascript:{getNewsDetailsByContentId('+results.groupList3[i].list[j].id+')}">'+results.groupList3[i].list[j].title+'</a></h5>';
+	}
+	else
+	{
+		str+='<h5 style="text-transform: capitalize;"> <a style="color: #005580;font-size: 18px;" href="javascript:{getNewsDetailsByContentId('+results.groupList3[i].list[j].id+')}">'+results.groupList3[i].list[j].title+'</a></h5>';
+	}
+		
+
+	str+='<div class="row-fluid">';
+	
+	if(results.groupList3[i].list[j].font != null)
+	{
+		str+='<p class="span11 enadu" style="font-size: 25px;">'+results.groupList3[i].list[j].description+'</p>';
+	}
+	else
+	{
+		str+='<p class="span11" style="font-size: 18px;">'+results.groupList3[i].list[j].description+'</p>';
+	}
+	str+='</div>';
+		
+	str+='</div>';
+	str+='</li>';
+   }
+	str+='</div>';
+	
+   }
+    str+='</ul>';
+   str+='</div>';
+
+   }
+   
+    str+='<div class="span12">';
+   str+='<h4>District Wise News</h4>';
+   str+='<ul class="unstyled">';
+   if(results.districtsList.length > 0){
+   
+   for(var i in results.districtsList)
+   {
+		
+	str+='<div class="">';
+	str+='<h5>'+results.districtsList[i].name+'</h5>';
+    for(var j in results.districtsList[i].list)
+   {
+	str+='<li>';
+	str+='<div class="">';
+	
+	var fontId = results.districtsList[i].list[j].titleFont;
+	if(fontId != null)
+	{
+		str+='<h5 style="" class="enadu"><a style="color: #005580;font-size: 25px;" href="javascript:{getNewsDetailsByContentId('+results.districtsList[i].list[j].id+')}">'+results.districtsList[i].list[j].title+'</a></h5>';
+	}
+	else
+	{
+		str+='<h5 style="text-transform: capitalize;"> <a style="color: #005580;font-size: 18px;" href="javascript:{getNewsDetailsByContentId('+results.districtsList[i].list[j].id+')}">'+results.districtsList[i].list[j].title+'</a></h5>';
+	}
+		
+
+	str+='<div class="row-fluid">';
+	
+	
+	if(results.districtsList[i].list[j].font != null)
+	{
+		str+='<p class="span11 enadu" style="font-size: 25px;">'+results.districtsList[i].list[j].description+'</p>';
+	}
+	else
+	{
+		str+='<p class="span11" style="font-size: 18px;">'+results.districtsList[i].list[j].description+'</p>';
+	}
+	str+='</div>';
+		
+	str+='</div>';
+	str+='</li>';
+   }
+	str+='</div>';
+	
+   }
+    str+='</ul>';
+   str+='</div>';
+
+   }
+   
+   str+='<div class="span12">';
+   str+='<h4>Assembly Wise News</h4>';
+   str+='<ul class="unstyled">';
+   if(results.acList.length > 0){
+   
+   for(var i in results.acList)
+   {
+		
+	str+='<div class="">';
+	str+='<h4>'+results.acList[i].name+'</h4>';
+    for(var j in results.acList[i].list)
+   {
+	str+='<li>';
+	str+='<div class="">';
+	
+	var fontId = results.acList[i].list[j].titleFont;
+	if(fontId != null)
+	{
+		str+='<h5 style="" class="enadu"><a style="color: #005580;font-size: 25px;" href="javascript:{getNewsDetailsByContentId('+results.acList[i].list[j].id+')}">'+results.acList[i].list[j].title+'</a></h5>';
+	}
+	else
+	{
+		str+='<h5 style="text-transform: capitalize;"> <a style="color: #005580;font-size: 18px;" href="javascript:{getNewsDetailsByContentId('+results.acList[i].list[j].id+')}">'+results.acList[i].list[j].title+'</a></h5>';
+	}
+		
+
+	str+='<div class="row-fluid">';
+		
+	if(results.acList[i].list[j].font != null)
+	{
+		str+='<p class="span11 enadu" style="font-size: 25px;">'+results.acList[i].list[j].description+'</p>';
+	}
+	else
+	{
+		str+='<p class="span11" style="font-size: 18px;">'+results.acList[i].list[j].description+'</p>';
+	}
+	str+='</div>';
+		
+	str+='</div>';
+	str+='</li>';
+   }
+	str+='</div>';
+	
+   }
+    str+='</ul>';
+   str+='</div>';
+
+   }
+   str+='<div class="span12">';
+   str+='<h4>Parliament Wise News</h4>';
+   str+='<ul class="unstyled">';
+   if(results.pcList.length > 0){
+   
+   for(var i in results.pcList)
+   {
+		
+	str+='<div class="">';
+	str+='<h4>'+results.pcList[i].name+'</h4>';
+    for(var j in results.pcList[i].list)
+   {
+	str+='<li>';
+	str+='<div class="">';
+	
+	var fontId = results.pcList[i].list[j].titleFont;
+	if(fontId != null)
+	{
+		str+='<h5 style="" class="enadu"><a style="color: #005580;font-size: 25px;" href="javascript:{getNewsDetailsByContentId('+results.pcList[i].list[j].id+')}">'+results.pcList[i].list[j].title+'</a></h5>';
+	}
+	else
+	{
+		str+='<h5 style="text-transform: capitalize;"> <a style="color: #005580;font-size: 18px;" href="javascript:{getNewsDetailsByContentId('+results.pcList[i].list[j].id+')}">'+results.pcList[i].list[j].title+'</a></h5>';
+	}
+		
+
+	str+='<div class="row-fluid">';
+		
+	if(results.pcList[i].list[j].font != null)
+	{
+		str+='<p class="span11 enadu" style="font-size: 25px;">'+results.pcList[i].list[j].description+'</p>';
+	}
+	else
+	{
+		str+='<p class="span11" style="font-size: 18px;">'+results.pcList[i].list[j].description+'</p>';
+	}
+	str+='</div>';
+		
+	str+='</div>';
+	str+='</li>';
+   }
+	str+='</div>';
+	
+   }
+    str+='</ul>';
+   str+='</div>';
+
+   }
+   
+$("#newsDisplayDiv").html(str);
+
+
+}
+
 
 function buildFilesInGallaryDetails(results,selectedvalue,index,endValue)
 {   
@@ -252,6 +660,7 @@ if(index==0){
         scrollTop: $("#mainDiv").offset().top},
         'slow');
 }
+
 function callAjaxToGetTheResults(selectedvalue)
 {
 	var startIndex = 0;

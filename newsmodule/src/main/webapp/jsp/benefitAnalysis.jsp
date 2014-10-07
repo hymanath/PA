@@ -84,7 +84,7 @@
 	 	  <label class="radio inline"><input id="dailyRadio" type="radio" value="dailyCalender" name="calendersRadio" class="calendersRadioCls" checked="true"/>Daily</label>
 		  <label class="radio inline"><input id="weeklyRadio" type="radio" value="weeklyCalender" name="calendersRadio" class="calendersRadioCls"/>Weekly</label>
 		  <label class="radio inline"><input id="monthlyRadio" type="radio" value="monthlyCalender" name="calendersRadio" class="calendersRadioCls"/>Monthly</label>
-		  <label class="radio inline"><input id="betweenDatesRadio" type="radio" value="betweenDates" name="calendersRadio" class="calendersRadioCls"/>Between Date</label>
+		  <!-- <label class="radio inline"><input id="betweenDatesRadio" type="radio" value="betweenDates" name="calendersRadio" class="calendersRadioCls"/>Between Date</label>-->
  	</div>
 	</div>
 	<div class="row offset3" style="margin-top: 10px;">
@@ -121,7 +121,7 @@
 	<div id="locationBenefitsDiv1" style="margin-top: 40px;"></div>
 	<div id="locationBenefitsDiv2" style="margin-top: 40px;"></div>
 	<div id="locationBenefitsDiv3" style="margin-top: 40px;"></div>
-	
+	<div class="row offset3" id="getAllNewsBtn" style="margin-top: 10px;margin-left: 340px;display:none;"><button class="btn btn-success offset5" onclick="getAllNewsDetails()"> Get News Details
 </div></div></div>
 	
 <script type="text/javascript">
@@ -381,7 +381,7 @@ function getCandidateGroups(){
 
 //getPartiesList();
 //getCandidateGroups();
-
+var candidateIds= new Array();
 function getCandidateGroupWiseBenifit(groupId){
 	$("#errorDiv").html("");
 	$('#candidateBenefitsDiv1,#candidateBenefitsDiv2,#candidateBenefitsDiv3').html("");
@@ -471,6 +471,7 @@ function getCandidateGroupWiseBenifit(groupId){
 			  $("#submitDataImg").hide();
 			  $("#buttonId").removeAttr('disabled');
 			  var str ="";
+			 
 			   if(result != null && result.length > 0){
 			       str += '<table class="table table-bordered " >';
 		           str += '<thead class="alert alert-success">';
@@ -484,6 +485,11 @@ function getCandidateGroupWiseBenifit(groupId){
 					for(var i in result){
 						   str+="  <tr>";
 						   str+="    <td>"+result[i].name+"</td>";
+						    var obj = {
+								name: groupId,
+								id: result[i].id
+								}
+							candidateIds.push(obj);
 						  // str+="    <td><a href='javascript:{}' onclick='getCandidateGroupNews(\""+type+"\",\""+fromDate+"\",\""+toDate+"\","+result[i].id+",1);'>"+result[i].count+"</a></td>";
 						  if(result[i].negCount > 0){
 						   str+="    <td><a href='javascript:{}' onclick='getCandidateGroupNews(\""+type+"\",\""+fromDate+"\",\""+toDate+"\","+result[i].id+",2);'>"+result[i].negCount+"</a></td>";  
@@ -494,6 +500,10 @@ function getCandidateGroupWiseBenifit(groupId){
 						   }
 						    str+="  </tr>";
 					}
+					str += '<input type="hidden" class="candidateIds" value='+candidateIds+' />';
+					str += '<input type="hidden" id="dateTypeId" value='+type+' />';
+					str += '<input type="hidden" id="fromDate1Id" value='+fromDate+' />';
+					str += '<input type="hidden" id="toDate1Id" value='+toDate+' />';
 				   str += '</tbody>';
 				   str+="</table>";
 				   if(groupId == 1){
@@ -646,7 +656,7 @@ function getCategoryBenefitDetails(){
 		$("#errorDiv").html("<div style='color:red;font-weight:bold;'>"+errorStr+"</div>");
 	}
 }
-
+var categoryIds = new Array();
 function buildCategoryWiseBenefitDetails(result,stateId,fromDate,toDate,type){
 	$('#categoryBenefitsDiv').html("");
 	if(result != null && result.length > 0){
@@ -677,6 +687,8 @@ function buildCategoryWiseBenefitDetails(result,stateId,fromDate,toDate,type){
 			if(rows < 6){
 			str += '<tr>';
 			str += '<td>'+result[i].name+'</td>';
+			//categoryIds.push(result[i].id);
+			categoryIds = categoryIds+""+result[i].id+",";
 			for(var j in result[i].benfitVOList){
 				/*if(result[i].benfitVOList[j].count > 0){
 					str += '<td title="Click To See News" onclick="getCategoryBenefitNews('+result[i].benfitVOList[j].id+','+result[i].id+',1,'+stateId+',\''+fromDate+'\',\''+toDate+'\',\''+type+'\') " style="cursor:pointer;">'+result[i].benfitVOList[j].count+'</td>';
@@ -694,7 +706,8 @@ function buildCategoryWiseBenefitDetails(result,stateId,fromDate,toDate,type){
 			str += '</tr>';
 		  }
 		}
-		
+		str += '<input type="hidden" value = '+categoryIds+' />';
+		str += '<input type="hidden" value = '+stateId+' id="stateHiddenId" />';
 		str += '</tbody>';
 		str += '</table>';
 		$('#categoryBenefitsDiv').html(str);
@@ -710,7 +723,7 @@ function getCategoryBenefitNews(partyId,categoryId,benefitId,stateId,fromDate,to
 	var browser1 = window.open("getCategoryBenifitNewsAction.action?fromDate="+fromDate+"&toDate="+toDate+"&stateId="+stateId+"&benefitId="+benefitId+"&categoryId="+categoryId+"&partyId="+partyId+"&type="+type+"&buildType=category","viewNewsWindow","scrollbars=yes,height=600,width=1050,left=200,top=200");	
 	 browser1.focus();
 }
-
+var locationIds= new Array();
 function getLocationBenefitDetails(task){
 	
 	$("#errorDiv").html("");
@@ -818,6 +831,11 @@ function getLocationBenefitDetails(task){
 					if(rows < 6){
 						   str+="  <tr>";
 						   str+="    <td>"+result[i].name+"</td>";
+						   var obj = {
+								name: task,
+								id: result[i].id
+								}
+						   locationIds.push(obj);
 						   //str+="    <td><a href='javascript:{}' onclick='getLocationNews(\""+type+"\",\""+fromDate+"\",\""+toDate+"\","+result[i].id+",1,\""+task+"\");'>"+result[i].count+"</a></td>";
 						  if(result[i].negCount >0){
 						   str+="    <td><a href='javascript:{}' onclick='getLocationNews(\""+type+"\",\""+fromDate+"\",\""+toDate+"\","+result[i].id+",2,\""+task+"\","+partyId+");'>"+result[i].negCount+"</a></td>";
@@ -829,6 +847,7 @@ function getLocationBenefitDetails(task){
 						   str+="  </tr>";
 					}
 					}
+					str += '<input type="hidden" value = '+locationIds+'/>';
 				   str += '</tbody>';
 				   str+="</table>";
 				   if(task == "districtWiseBenefits"){
@@ -848,6 +867,7 @@ function getLocationBenefitDetails(task){
 		else{
 			$("#errorDiv").html("<div style='color:red;font-weight:bold;'>"+errorStr+"</div>");
 		}
+		$("#getAllNewsBtn").show();
 }
 
 function getLocationNews(type,fromDate,toDate,locationId,benfitId,name,partyId){
@@ -856,7 +876,52 @@ function getLocationNews(type,fromDate,toDate,locationId,benfitId,name,partyId){
         browser1.focus();
 
 }
+var districtIds="";
+var acIds=""
+var pcIds=""
+var candidateGrp1 = [];
+var candidateGrp2 = [];
+var candidateGrp3 = [];
 
+function getAllNewsDetails(){
+var type = $("#dateTypeId").val();
+var fromDate = $("#fromDate1Id").val();
+var toDate = $("#toDate1Id").val();
+var stateId = $("#stateHiddenId").val();
+var benefitId = 2;
+var partyId = 872;
+
+$.each(locationIds, function(){
+    if(this.name == "districtWiseBenefits"){
+		districtIds = districtIds+""+this.id+",";
+	}
+	else if(this.name == "parliamentWiseBenefits"){	
+		pcIds = pcIds+""+this.id+",";
+	}
+	else{
+		acIds = acIds+""+this.id+",";
+		
+	}
+});
+$.each(candidateIds, function(){
+    if(this.name == 1){
+		candidateGrp1= candidateGrp1+''+this.id+",";
+	}
+	else if(this.name == 2){
+		
+		candidateGrp2= candidateGrp2+''+this.id+",";
+	}
+	else{
+
+		candidateGrp3= candidateGrp3+''+this.id+",";
+	}
+	});
+	
+	
+	var browser1 = window.open("getCategoryBenifitNewsAction.action?type="+type+"&fromDate="+fromDate+"&toDate="+toDate+"&stateId="+stateId+"&districtIds="+districtIds+"&acIds="+acIds+"&pcIds="+pcIds+"&candidateGrp1="+candidateGrp1+"&candidateGrp2="+candidateGrp2+"&candidateGrp3="+candidateGrp3+"&categoryIds="+categoryIds+"&benefitId="+benefitId+"&partyId="+partyId+"&buildType=newsDetails","viewNewsWindow","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+    browser1.focus();
+ }
+ 
 
 
 </script>
