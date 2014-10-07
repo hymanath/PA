@@ -529,6 +529,18 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		return Action.SUCCESS;
 		
 	}
+	public String getExistingCadreInfo(){
+		LOG.info("Entered into getExistingCadreInfo method in CadreRegistrationAction Action");
+		try {		
+			jobj = new JSONObject(getTask());
+			
+			genericVOList = cadreRegistrationService.getExistingCadreInfo(jobj.getString("name"),jobj.getLong("constituencyId"),jobj.getLong("panchayatId"));	
+		}
+		catch(Exception e){
+			LOG.error("Exception raised in getExistingCadreInfo method in CadreRegistrationAction action", e);
+		}
+		return Action.SUCCESS;
+	}
 	
 	
 	
