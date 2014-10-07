@@ -23,4 +23,6 @@ public interface IBenefitAnalysisService {
 	public List<BenfitVO> getConstituencyWiseBenifit(Date fromDate,Date toDate,Long stateId,Long partyId,String name);
 	
 	public List<NewsActivityVO> getLocationBenifitNews(Date fromDate,Date toDate,Long locationId,Long benfitId,int startIndex,int maxIndex,String name,Long partyId);
+	
+	public NewsActivityVO getAllBenefitNewsDetails(Date fromDate,Date toDate,Long partyId,Long benfitId,List<Long> districtIds,List<Long> acIds,List<Long> pcIds,List<Long> categoryIds,List<Long> candidateGrp1Ids,List<Long> candidateGrp2Ids,List<Long> candidateGrp3Ids,Long stateId);
 }

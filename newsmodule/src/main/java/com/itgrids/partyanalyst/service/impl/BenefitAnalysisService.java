@@ -504,10 +504,12 @@ public class BenefitAnalysisService implements IBenefitAnalysisService {
     	 else if(name.equalsIgnoreCase("parliamentWiseBenefits") ){
     		 newsList = candidatePartyFileDAO.getParliamentBenifitNews(fromDate, toDate, locationId, benfitId,partyId,startIndex,maxIndex);
 	    	  count  = candidatePartyFileDAO.getParliamentBenifitNewsCount(fromDate, toDate, locationId, benfitId,partyId);
+	    	  
     	 }
     	 else if(name.equalsIgnoreCase("assemblyWiseBenefits") ){
     		 newsList = candidatePartyFileDAO.getAssemblyBenifitNews(fromDate, toDate, locationId, benfitId,partyId,startIndex,maxIndex);
 	    	  count  = candidatePartyFileDAO.getAssemblyBenifitNewsCount(fromDate, toDate, locationId, benfitId,partyId);
+	    	  
     	 }
     	 
     	 for(Object[] news:newsList){
@@ -527,6 +529,112 @@ public class BenefitAnalysisService implements IBenefitAnalysisService {
     	 return results;
     }
      
-     
-   
+	 public NewsActivityVO getAllBenefitNewsDetails(Date fromDate,Date toDate,Long partyId,Long benfitId,List<Long> districtIds,List<Long> acIds,List<Long> pcIds,List<Long> categoryIds,List<Long> candidateGrp1Ids,List<Long> candidateGrp2Ids,List<Long> candidateGrp3Ids,Long stateId){
+		 NewsActivityVO resultVO = new NewsActivityVO();
+		
+		 try{
+			 if(districtIds.size() > 0){
+				 List<Object[]>  newsList = new ArrayList<Object[]>();
+				 
+				 newsList = candidatePartyFileDAO.getDistrictBenifitNewsDetails(fromDate, toDate, districtIds, benfitId,partyId);
+				
+		    	 setData(newsList,resultVO.getDistrictsList());
+			 }  
+			 
+			 if(acIds.size() > 0){
+				 List<Object[]>  newsList = new ArrayList<Object[]>();
+				 
+				 newsList = candidatePartyFileDAO.getAssemblyBenifitNewsDetails(fromDate, toDate, acIds, benfitId,partyId);
+		    	 
+		    	 setData(newsList,resultVO.getAcList());
+			 }  
+			 if(pcIds.size() > 0){
+				 List<Object[]>  newsList = new ArrayList<Object[]>();
+					 
+				 newsList = candidatePartyFileDAO.getParliamentBenifitNewsDetails(fromDate, toDate, pcIds, benfitId,partyId);
+		    	
+		    	 setData(newsList,resultVO.getPcList());
+			 }  
+			 if(categoryIds.size() > 0){
+				 List<Object[]>  newsList = new ArrayList<Object[]>();
+				 
+				 newsList = candidatePartyCategoryDAO.getCategoryBenifitWiseNewsDetails(fromDate, toDate,partyId, categoryIds, benfitId,stateId);
+		    	
+		    	 setData(newsList,resultVO.getCategoryList());
+			 }
+			 
+			 if(candidateGrp1Ids.size() > 0){
+				 List<Object[]>  newsList = new ArrayList<Object[]>();
+		 
+				 newsList = candidatePartyFileDAO.getCandidateGroupBenifitWiseNewsDetails(fromDate, toDate, candidateGrp1Ids, benfitId);
+		    	 
+		    	 setData(newsList,resultVO.getGroupList1());
+			 }  
+			 
+			 if(candidateGrp2Ids.size() > 0){
+				 List<Object[]>  newsList = new ArrayList<Object[]>();
+	 
+				 newsList = candidatePartyFileDAO.getCandidateGroupBenifitWiseNewsDetails(fromDate, toDate, candidateGrp2Ids, benfitId);
+
+		    	 setData(newsList,resultVO.getGroupList2());
+			 }  
+			 
+			 if(candidateGrp3Ids.size() > 0){
+				 List<Object[]>  newsList = new ArrayList<Object[]>();
+				 
+				 newsList = candidatePartyFileDAO.getCandidateGroupBenifitWiseNewsDetails(fromDate, toDate, candidateGrp3Ids, benfitId);
+		    	
+		    	 setData(newsList,resultVO.getGroupList3());
+			 }  
+					 
+	 	}catch(Exception e){
+			LOG.error("Exception rised in getAllBenefitNewsDetails ",e);
+		}
+		 return resultVO;
+		 
+	 }
+	 
+	 public void  setData(List<Object[]> newsList,List<NewsActivityVO> voList){
+		 	
+    		 List<Long> ids = new ArrayList<Long>();
+        	 for(Object[] news:newsList){ 		
+        		 if(!ids.contains((Long)news[5])){
+        			 NewsActivityVO vo1 = new NewsActivityVO();
+    	    		 vo1.setId((Long)news[5]);
+    	    		 vo1.setName(news[6].toString());
+    	    		 
+    	    		 ids.add((Long)news[5]);
+    	    		 voList.add(vo1);
+        		 }
+        	 }
+        	 for(Object[] news:newsList){
+        		 NewsActivityVO vo1 = getMatchedVO(voList,(Long)news[5]);
+	    		 if(vo1 != null){	    			     	 	    		
+	    			 NewsActivityVO vo = new NewsActivityVO();
+	    	    		 vo.setTitle(StringEscapeUtils.unescapeJava(news[1].toString()));
+	    	    		 if(news[2] != null)
+	    	    		   vo.setTitleFont("1");
+	    	    		 vo.setDescription(StringEscapeUtils.unescapeJava(news[3].toString()));
+	    	    		 if(news[0] != null)
+	    	    		   vo.setFont("1");
+	    	    		 vo.setId((Long)news[0]);
+	    	    		 
+	    	    		 vo1.getList().add(vo);
+	    			
+	    		 }
+        	 }
+        	 
+	 }
+	 
+	 public NewsActivityVO getMatchedVO(List<NewsActivityVO> list,Long id){
+	 	if(list!=null && list.size()>0 && id!=null){
+	 		for(NewsActivityVO vo:list){
+	 			if(vo.getId().equals(id)){
+	 						return vo;
+	 					}
+	 			}
+	 		}
+	 	return null;
+	 }
+	 
 }

@@ -56,4 +56,7 @@ public interface ICandidatePartyCategoryDAO extends GenericDao<CandidatePartyCat
 	 public List<Object[]>  getCategoryBenifitWiseNews(Date fromDate,Date toDate,Long partyId,Long categoryId,Long benfitId,Long stateId);
 	 
 	 public Long getCategoryBenifitWiseNewsCount(Date fromDate,Date toDate,Long partyId,Long categoryId,Long benfitId,Long stateId);
+	 
+	 public List<Object[]>  getCategoryBenifitWiseNewsDetails(Date fromDate,Date toDate,Long partyId,List<Long> categoryId,Long benfitId,Long stateId);
+	
 }

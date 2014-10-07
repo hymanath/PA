@@ -6437,6 +6437,12 @@
 		    			<param name="root">newsResult</param>
 		    		</result>
 		 </action>
+		 
+		  <action name="getBenifitNewsDetailsAction" class="benefitAnalysisAction" method="getBenifitNewsDetails">
+					<result type="json" name="success">
+		    			<param name="root">newsDetails</param>
+		    		</result>
+		 </action>
 	 </package>
 		
 </struts>      
