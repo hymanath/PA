@@ -50,6 +50,7 @@ public class CadreRegistrationVO implements Serializable{
 	
 	private String 			 path;
 	private String           refNo;
+	private String 			 imageBase64String;
 	
 	private List<CadrePreviousRollesVO> previousRollesList;
 	
@@ -280,6 +281,12 @@ public class CadreRegistrationVO implements Serializable{
 	}
 	public void setRefNo(String refNo) {
 		this.refNo = refNo;
+	}
+	public String getImageBase64String() {
+		return imageBase64String;
+	}
+	public void setImageBase64String(String imageBase64String) {
+		this.imageBase64String = imageBase64String;
 	}
 	
 	
