@@ -393,8 +393,9 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			
 			HttpSession session = request.getSession();
 			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-			/*if(user == null)
-				return Action.INPUT;*/
+			if(user == null)
+				return Action.INPUT;
+			
 			Long stateTypeId = 0L; // 0 for All, 1 for AP, 2 for TG 
 			Long stateId = 1L;
 
@@ -413,19 +414,16 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		LOG.info("Entered into tdpCadreRegistrationPage method in CadreRegistrationAction Action");
 		try {
 			
-		/*	session = request.getSession();
+			session = request.getSession();
 			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 			if(user == null)
 				return ERROR;
-			*/
+			
 			constituencyesList = 	surveyDataDetailsService.getAssemblyConstituenciesByStateId(0l,1l);
 			genericVOList = candidateUpdationDetailsService.gettingEducationDetails();
 			selectOptionVOList = staticDataService.getAllOccupations();
 			eletionTypesList = cadreRegistrationService.getElectionOptionDetailsForCadre();
-			if(Long.valueOf(candidateId) != 0L )
-				voterInfoVOList = cadreRegistrationService.getCandidateInfoBySearchCriteria(searchType,Long.valueOf(candidateId));
-			else
-				return INPUT;
+			voterInfoVOList = cadreRegistrationService.getCandidateInfoBySearchCriteria(searchType,Long.valueOf(candidateId));
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in tdpCadreRegistrationPage method in CadreRegistrationAction Action",e);
