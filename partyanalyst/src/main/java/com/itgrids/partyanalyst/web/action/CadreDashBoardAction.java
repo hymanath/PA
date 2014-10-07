@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -94,6 +95,9 @@ public class CadreDashBoardAction implements ServletRequestAware {
 				result = cadreDashBoardService.getDistrictWiseCompletedPercentage(Long.parseLong(request.getParameter("districtId")),Long.parseLong(request.getParameter("stateId")));
 			}else if(task.equalsIgnoreCase("workStartedConstituency")){
 				result = cadreDashBoardService.getWorkStartedConstituencyCount();
+			}else if(task.equalsIgnoreCase("candidateDataCollectionInfo")){
+				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+				result = cadreDashBoardService.getCandidateDataCollectionInfo(sdf.parse(request.getParameter("fromDate")),sdf.parse(request.getParameter("toDate")));
 			}
 		}catch(Exception e){
 			LOG.error("Exception rised in getCadreDashBoardBasicInfo ",e);

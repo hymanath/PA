@@ -416,6 +416,10 @@ $('#membersCount').addClass('animated fadeInX');
 	   getRecentlyRegisteredCadresInfo();
 	   getDashBoardBasicInfo();
 	   getWorkingMembersInfo();
+	   setInterval(function(){getWorkStartedConstituencyCount()},600000);
+	   setInterval(function(){getRecentlyRegisteredCadresInfo()},600000);
+	   setInterval(function(){getDashBoardBasicInfo()},600000);
+	   setInterval(function(){getWorkingMembersInfo()},600000);
 </script>
 </body>
 </html>
