@@ -45,4 +45,6 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	
 	public List<Object[]> getCandidateDataCollectionInfo(Date fromDate,Date toDate);
 	
+	public Long checkMemberShipExistsOrNot(String randomNo);
+	
 }

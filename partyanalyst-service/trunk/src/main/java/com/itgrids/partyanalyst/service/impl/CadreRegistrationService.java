@@ -69,6 +69,7 @@ import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.ImageAndStringConverter;
+import com.itgrids.partyanalyst.utils.RandomNumberGeneraion;
 
 public class CadreRegistrationService implements ICadreRegistrationService {
 	
@@ -439,7 +440,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				}else if( insertType.equalsIgnoreCase("new") && registrationType != null && (registrationType.equalsIgnoreCase("WEB") || registrationType.equalsIgnoreCase("ONLINE"))){
 					tdpCadre.setSurveyTime(tdpCadre.getInsertedTime());
 				}
-				synchronized (surveyCadreResponceVO) {
+				/*synchronized (surveyCadreResponceVO) {
 					String memberNumber = tdpCadreDAO.getLatestMemberNumber();
 					if(memberNumber == null)
 					{
@@ -451,7 +452,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						tdpCadre.setMemberShipNo(String.valueOf((Long.valueOf(memberNumber) + 1l)));
 						surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getMemberShipNo());
 					}
-				}
+				}*/
 				if(cadreRegistrationVO.getUniqueKey() != null && !cadreRegistrationVO.getUniqueKey().equalsIgnoreCase("null") && cadreRegistrationVO.getUniqueKey().trim().length() > 0)
 				{
 					tdpCadre.setUniqueKey(cadreRegistrationVO.getUniqueKey());
@@ -463,25 +464,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						surveyCadreResponceVO.setRelativeName(cadreRegistrationVO.getRelativeName());
 					}
 				}
-				if(cadreRegistrationVO.getUploadImage() != null && !cadreRegistrationVO.getUploadImage().toString().equalsIgnoreCase("null"))
-				{
-					String result = uploadCadreImage(tdpCadre.getMemberShipNo() , cadreRegistrationVO.getPath() , cadreRegistrationVO.getUploadImageContentType() , cadreRegistrationVO.getUploadImage());
-					if(result != null)
-					{
-						tdpCadre.setImage(tdpCadre.getMemberShipNo()+"."+cadreRegistrationVO.getUploadImageContentType().split("/")[1]);
-					}
-				}
 				
-				if(registrationType.equalsIgnoreCase("TAB") && cadreRegistrationVO.getImageBase64String() != null && 
-						cadreRegistrationVO.getImageBase64String().trim().length() > 0)
-				{
-						String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
-						String filePath = cadreRegistrationVO.getPath() + "images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator + tdpCadre.getMemberShipNo()+".jpg";
-						boolean status = imageAndStringConverter.convertBase64StringToImage(cadreRegistrationVO.getImageBase64String(),filePath);
-						
-						if(status)
-							tdpCadre.setImage(tdpCadre.getMemberShipNo()+".jpg");
-				}
 				
 				if(registrationType != null && (registrationType.equalsIgnoreCase("WEB") || registrationType.equalsIgnoreCase("ONLINE")) && insertType.equalsIgnoreCase("new")){
 					String userId = "0000";
@@ -489,17 +472,30 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					   userId = cadreRegistrationVO.getCreatedUserId().toString();
 					}
 					String ref = getReferenceNo(userId,registrationType);
-					synchronized (surveyCadreResponceVO) {
+					synchronized (CadreRegistrationService.class) {
 						ref = getUniueRefNo(ref,registrationType);
 						tdpCadre.setRefNo(ref);
 						cadreRegistrationVO.setRefNo(ref);
+						String membershipNo = getMemberShipNo(userAddress.getDistrict().getDistrictId());
+						tdpCadre.setMemberShipNo(membershipNo);
+						surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getMemberShipNo());
+						uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre);
 						tdpCadre = tdpCadreDAO.save(tdpCadre);	
 					}
 				}else{
 				  if(insertType.equalsIgnoreCase("new")){
-					tdpCadre.setRefNo(cadreRegistrationVO.getRefNo());
-				  }
+					  synchronized (CadreRegistrationService.class) {
+					     tdpCadre.setRefNo(cadreRegistrationVO.getRefNo());
+					     String membershipNo = getMemberShipNo(userAddress.getDistrict().getDistrictId());
+							tdpCadre.setMemberShipNo(membershipNo);
+							surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getMemberShipNo());
+							uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre);
+					     tdpCadre = tdpCadreDAO.save(tdpCadre);	
+					  }
+				  }else{
+					  uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre);
 					tdpCadre = tdpCadreDAO.save(tdpCadre);	
+				  }
 				}
 				List<CadrePreviousRollesVO> previousRollesPartList = cadreRegistrationVO.getPreviousRollesList();
 				if(previousRollesPartList != null && previousRollesPartList.size() > 0)
@@ -1683,5 +1679,44 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				
 			}
 		return returnMessage; 
+	}
+	
+	private String getMemberShipNo(Long districtId){
+		String memberShipNo ="AP14";
+		if(districtId != null && districtId.longValue() < 11l){
+			memberShipNo = "TS14";
+		}
+		String randomNo = "";
+		while(true){
+			randomNo = memberShipNo+RandomNumberGeneraion.randomGenerator(8);
+			Long count = tdpCadreDAO.checkMemberShipExistsOrNot(randomNo);
+			if(count.longValue() == 0l){
+				break;
+			}
+			
+		}
+		return randomNo;
+	}
+	
+	public void uploadProfileImage(CadreRegistrationVO cadreRegistrationVO,String registrationType,TdpCadre tdpCadre){
+		if(cadreRegistrationVO.getUploadImage() != null && !cadreRegistrationVO.getUploadImage().toString().equalsIgnoreCase("null"))
+		{
+			String result = uploadCadreImage(tdpCadre.getMemberShipNo() , cadreRegistrationVO.getPath() , cadreRegistrationVO.getUploadImageContentType() , cadreRegistrationVO.getUploadImage());
+			if(result != null)
+			{
+				tdpCadre.setImage(tdpCadre.getMemberShipNo()+"."+cadreRegistrationVO.getUploadImageContentType().split("/")[1]);
+			}
+		}
+		
+		if(registrationType.equalsIgnoreCase("TAB") && cadreRegistrationVO.getImageBase64String() != null && 
+				cadreRegistrationVO.getImageBase64String().trim().length() > 0)
+		{
+				String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+				String filePath = cadreRegistrationVO.getPath() + "images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator + tdpCadre.getMemberShipNo()+".jpg";
+				boolean status = imageAndStringConverter.convertBase64StringToImage(cadreRegistrationVO.getImageBase64String(),filePath);
+				
+				if(status)
+					tdpCadre.setImage(tdpCadre.getMemberShipNo()+".jpg");
+		}
 	}
 }
