@@ -131,7 +131,7 @@ function clearDivs(){
 	//$("#locationValueDiv,#typeDiv").hide();
 	//$("#groupId,#locationId,#locationValueId,#typeId").val(0);
 	$("#categoryBenefitsDiv,#candidateBenefitsDiv1,#candidateBenefitsDiv2,#locationBenefitsDiv1,#locationBenefitsDiv2,#locationBenefitsDiv3").html("");
-	
+	$("#getAllNewsBtn").hide();
 }
 var flag= false;
 function showCorrespondingDivs(value){
