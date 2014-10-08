@@ -38,7 +38,7 @@ public class Panchayat extends BaseModel implements java.io.Serializable{
 	private Tehsil tehsil;
 	private Set<PanchayatHamlet> panchayatHamlets = new HashSet<PanchayatHamlet>(0);
 	private Set<Booth> booths = new HashSet<Booth>(0);
-	
+	private String localName;
 	public Panchayat()
 	{}
 	
@@ -100,5 +100,15 @@ public class Panchayat extends BaseModel implements java.io.Serializable{
 		this.booths = booths;
 	}
 
+	@Column(name="name_local")
+	public String getLocalName() {
+		return localName;
+	}
+
+	public void setLocalName(String localName) {
+		this.localName = localName;
+	}
+
+	
 	
 }

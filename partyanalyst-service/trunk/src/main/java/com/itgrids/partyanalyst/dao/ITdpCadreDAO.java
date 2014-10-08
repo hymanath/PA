@@ -44,7 +44,13 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> getexistringCadreInfoByLocation(String candidateName, Long constid, Long panchayatId);
 	
 	public List<Object[]> getCandidateDataCollectionInfo(Date fromDate,Date toDate);
-	
+
 	public Long checkMemberShipExistsOrNot(String randomNo);
+	
+	public List<Object[]> getCadreDetailsByMemberId(String memberCardNo);
+	
+	public List<Object[]> getPanchayatWiseCadreDetails(Long panchayatId);
+	
+	public Integer updateNFCCardNumberByVoterId(Long voterId , String nfcCardNo);
 	
 }

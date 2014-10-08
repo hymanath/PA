@@ -26,6 +26,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 /**
@@ -65,6 +67,8 @@ public class UserAddress implements java.io.Serializable {
 	private Set<Survey> survey = new HashSet<Survey>(0);
 	private Set<UserAddress> userAddress = new HashSet<UserAddress>(0);
 	private Long panchayatId;
+	
+	private Panchayat panchayat;
 	public UserAddress() {
 		super();		
 	}
@@ -301,6 +305,21 @@ public class UserAddress implements java.io.Serializable {
 	public void setLocalArea(String localArea) {
 		this.localArea = localArea;
 	}
+
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "panchayat_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Panchayat getPanchayat() {
+		return panchayat;
+	}
+
+	public void setPanchayat(Panchayat panchayat) {
+		this.panchayat = panchayat;
+	}
+	
+	
 	
 	
 }

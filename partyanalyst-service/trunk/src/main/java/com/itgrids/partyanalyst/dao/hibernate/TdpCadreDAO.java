@@ -8,6 +8,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.model.TdpCadre;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements ITdpCadreDAO{
 
@@ -241,6 +242,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		query.setParameter("randomNo", randomNo);
 		return (Long)query.uniqueResult();
 	}
+
 	public List<Object[]> getexistringCadreInfoByLocation(String candidateName, Long constid, Long panchayatId)
 	{
 		
@@ -289,5 +291,31 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
         Query query = getSession().createQuery("select count(*) from TdpCadre model where model.enrollmentYear = 2014 and model.memberShipNo =:randomNo ");
 		query.setParameter("randomNo", randomNo);
 		return (Long)query.uniqueResult();
+	}
+	
+	public List<Object[]> getCadreDetailsByMemberId(String memberCardNo)
+	{
+		Query query = getSession().createQuery("select model.memberShipNo , model.voterId,model.firstname,model.relativename,model.voter.voterId,model.voter.voterIDCardNo from TdpCadre model where model.refNo = :memberCardNo");
+		query.setParameter("memberCardNo", memberCardNo);
+		return query.list();
+	}
+	
+	public List<Object[]> getPanchayatWiseCadreDetails(Long panchayatId)
+	{
+		Query query = getSession().createQuery("select model.refNo , model.firstname from TdpCadre model where model.userAddress.panchayat.panchayatId = :panchayatId and model.enrollmentYear = :year order by model.firstname ");
+		query.setParameter("panchayatId", panchayatId);
+		query.setParameter("year", IConstants.CADRE_ENROLLMENT_NUMBER);
+		return query.list();
+	}
+	
+	public Integer updateNFCCardNumberByVoterId(Long voterId , String nfcCardNo)
+	{
+		Query query = getSession().createQuery("update TdpCadre model set model.cardNumber = :nfcCardNo where model.voterId = :voterId and  model.enrollmentYear = :year ");
+		query.setParameter("nfcCardNo", nfcCardNo);
+		query.setParameter("year", IConstants.CADRE_ENROLLMENT_NUMBER);
+		query.setParameter("voterId", voterId);
+		Integer c = query.executeUpdate();
+		
+		return c;
 	}
 }

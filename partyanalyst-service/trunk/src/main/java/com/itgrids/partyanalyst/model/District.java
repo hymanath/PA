@@ -62,7 +62,7 @@ public class District extends BaseModel implements java.io.Serializable {
 	private StateRegionDistrict stateRegionDistrict;
 	private Set<ElectionGoverningBody> electionGoverningBody = new HashSet<ElectionGoverningBody>(0);
 	private Set<User> users = new HashSet<User>(0);
-	
+	private String localName;
 	// Constructors
 
 	/** default constructor */
@@ -271,5 +271,15 @@ public class District extends BaseModel implements java.io.Serializable {
 	public void setUsers(Set<User> users) {
 		this.users = users;
 	}
+
+	@Column(name="name_local")
+	public String getLocalName() {
+		return localName;
+	}
+
+	public void setLocalName(String localName) {
+		this.localName = localName;
+	}
+	
 	
 }

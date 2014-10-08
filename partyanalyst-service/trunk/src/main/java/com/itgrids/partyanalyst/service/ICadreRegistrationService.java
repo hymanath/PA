@@ -2,6 +2,8 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.CadrePrintVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -27,7 +29,13 @@ public interface ICadreRegistrationService {
 	public List<SelectOptionVO> getElectionOptionDetailsForCadre();
 	
 	public List<SelectOptionVO> getElectionYearsByElectionType(Long electionTypeId);
-	
+
 	public List<GenericVO> getExistingCadreInfo(String candidateName,Long constituencyId,Long panchayatId);
+	
+	public CadrePrintVO getCadreDetailsForPrinting(String memberCardNo);
+	
+	public List<BasicVO> getSelectedLevelCadreDetails(Long panchayatId);
+	
+	public String tagCardIdForNFCReader(String cardNumber,Long voterId);
 	
 }

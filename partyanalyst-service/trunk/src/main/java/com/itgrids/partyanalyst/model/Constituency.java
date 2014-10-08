@@ -81,7 +81,7 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 	//private Set<ConstiCasteGroupPerc> constiCasteGroupPerc = new HashSet<ConstiCasteGroupPerc>(0);
 	// Constructors
 	private Set<UserSurveyBooths> userSurveyBooths = new HashSet<UserSurveyBooths>(0);
-
+	private String localName;
 	
 
 	/** default constructor */
@@ -452,6 +452,15 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 
 	public void setUserSurveyBooths(Set<UserSurveyBooths> userSurveyBooths) {
 		this.userSurveyBooths = userSurveyBooths;
+	}
+
+	@Column(name="name_local")
+	public String getLocalName() {
+		return localName;
+	}
+
+	public void setLocalName(String localName) {
+		this.localName = localName;
 	}
 	
 	
