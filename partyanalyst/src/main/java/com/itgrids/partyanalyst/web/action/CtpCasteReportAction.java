@@ -185,5 +185,26 @@ public class CtpCasteReportAction extends ActionSupport implements ServletReques
 		}
 		return Action.SUCCESS;
 		}
-	
+	public String getVotersCountInRegion()
+	{
+		try{
+		jObj = new JSONObject(getTask());	
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute(IConstants.USER);
+		Long userId = null;
+		if(user != null && user.getRegistrationID() != null)
+			if(user.getParentUserId() != null)
+			userId = user.getMainAccountId();
+		else
+			userId = user.getRegistrationID();
+		else
+			return Action.ERROR;
+		voterHouseInfoVO = ctpCasteReportService.getVotersCountInRegion(jObj.getLong("constituencyId"),jObj.getString("locationType"),userId);
+		
+		}
+		catch (Exception e) {
+			LOG.error("Exception Occured in getVotersCountInRegion() method", e);
+		}
+		return Action.SUCCESS;
+	}
 }
