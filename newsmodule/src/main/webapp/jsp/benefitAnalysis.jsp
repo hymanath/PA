@@ -37,7 +37,7 @@
 
 		<div>
 			<label class="span2"><b>Select State:</b></label>
-			<select id="stateId" class="input-block-level span3" onChange="clearDivs()">
+			<select id="stateId" class="input-block-level span3">
 			<option value="0">ALL</option>
 			<option value="1">Andhra Pradesh</option>
 			<option value="36">Telangana</option>
@@ -112,8 +112,9 @@
 				
 		</div>
 	</div>
-	<div class="row offset3" style="margin-top: 10px;margin-left: 340px;"><button class="btn btn-success offset1" onclick="getBenefitDetails()" id="buttonId"> Get Details</button><img src="images/search.jpg" style="display: none;margin-left:10px;" id="submitDataImg">
-	</div>
+	<div class="row offset3" style="margin-top: 10px;margin-left: 340px;"><button class="btn btn-success offset1" onclick="getBenefitDetails()" id="buttonId"> Get Details</button><img src="images/search.jpg" style="display: none;margin-left:10px;" id="submitDataImg"><img src="images/search.jpg" style="display: none;margin-left:10px;" id="submitDataImg1"><img src="images/search.jpg" style="display: none;margin-left:10px;" id="submitDataImg2"></div>
+	
+	
 	<div id="categoryBenefitsDiv" style="margin-top: 40px;"></div>
 	<div id="candidateBenefitsDiv1" style="margin-top: 40px;"></div>
 	<div id="candidateBenefitsDiv2" style="margin-top: 40px;"></div>
@@ -121,15 +122,18 @@
 	<div id="locationBenefitsDiv1" style="margin-top: 40px;"></div>
 	<div id="locationBenefitsDiv2" style="margin-top: 40px;"></div>
 	<div id="locationBenefitsDiv3" style="margin-top: 40px;"></div>
-	<div class="row offset3" id="getAllNewsBtn" style="margin-top: 10px;margin-left: 340px;display:none;"><button class="btn btn-success offset5" onclick="getAllNewsDetails()"> Get News Details
+	<div class="row offset3" id="getAllNewsBtn" style="margin-top: 10px;margin-left: 340px;display:none;"><button class="btn btn-success offset5" onclick="getAllNewsDetails()"> Get News Details</div>
 </div></div></div>
 	
 <script type="text/javascript">
 
 function clearDivs(){
-	$("#locationValueDiv,#typeDiv").hide();
-	$("#groupId,#locationId,#locationValueId,#typeId").val(0);
+	//$("#locationValueDiv,#typeDiv").hide();
+	//$("#groupId,#locationId,#locationValueId,#typeId").val(0);
+	$("#categoryBenefitsDiv,#candidateBenefitsDiv1,#candidateBenefitsDiv2,#locationBenefitsDiv1,#locationBenefitsDiv2,#locationBenefitsDiv3").html("");
+	
 }
+var flag= false;
 function showCorrespondingDivs(value){
     if(value == 1){ 
 	     $("#partiesMultiSelDiv").show();
@@ -451,7 +455,9 @@ function getCandidateGroupWiseBenifit(groupId){
 	var stateId = $('#stateId').val();
 	var partyId = 872;
 	if(errorStr.length == 0){
-	  $("#submitDataImg").show();
+	  $("#submitDataImg1").show();
+	  $("#submitDataImg").hide();
+	  $("#submitDataImg2").hide();
 	  $("#buttonId").attr('disabled','disabled');
 		var jsObj= 
 			{
@@ -468,11 +474,14 @@ function getCandidateGroupWiseBenifit(groupId){
 			data: {task : JSON.stringify(jsObj)}
 			})
 			.done(function( result ) {
-			  $("#submitDataImg").hide();
-			  $("#buttonId").removeAttr('disabled');
+				if(groupId==3){
+				  $("#submitDataImg1").hide();
+				  $("#buttonId").removeAttr('disabled');
+			  }
 			  var str ="";
 			 
 			   if(result != null && result.length > 0){
+					flag = true;
 			       str += '<table class="table table-bordered " >';
 		           str += '<thead class="alert alert-success">';
 				   str+="  <tr>";
@@ -546,6 +555,8 @@ function getCandidateGroupNews(type,fromDate,toDate,candidateId,benfitId){
 	}
 }*/
 function getBenefitDetails(){
+	clearDivs();
+	flag= false;
  getCategoryBenefitDetails();
  getCandidateGroupWiseBenifit(1);
  getCandidateGroupWiseBenifit(2);
@@ -633,7 +644,9 @@ function getCategoryBenefitDetails(){
 	
 	if(errorStr.length == 0){
 	    $("#submitDataImg").show();
-		 $("#buttonId").attr('disabled','disabled');
+		$("#submitDataImg1").hide();
+		$("#submitDataImg2").hide();
+		$("#buttonId").attr('disabled','disabled');
 		var jsObj=
 		{
 			type:type,
@@ -660,6 +673,7 @@ var categoryIds = new Array();
 function buildCategoryWiseBenefitDetails(result,stateId,fromDate,toDate,type){
 	$('#categoryBenefitsDiv').html("");
 	if(result != null && result.length > 0){
+		flag = true;
 		var str = '';
 		str += '<table class="table table-bordered " >';
 		str += '<thead class="alert alert-success">';
@@ -788,7 +802,9 @@ function getLocationBenefitDetails(task){
 	var partyId = 872;
 		
 	if(errorStr.length == 0){
-	    $("#submitDataImg").show();
+		 $("#submitDataImg2").show();
+		  $("#submitDataImg1").hide();
+		   $("#submitDataImg").hide();
 		 $("#buttonId").attr('disabled','disabled');
 		var jsObj=
 		{
@@ -804,10 +820,11 @@ function getLocationBenefitDetails(task){
 			url: "getLocationWiseBenifitAction.action",
 			data: {task : JSON.stringify(jsObj)}
 			}).done(function( result ) {
-			    $("#submitDataImg").hide();
-				$("#buttonId").removeAttr('disabled');
+		
+			    
 				var str ="";
 			   if(result != null && result.length > 0){
+					flag= true;
 			       str += '<table class="table table-bordered " >';
 		           str += '<thead class="alert alert-success">';
 				   str+="  <tr>";
@@ -859,7 +876,17 @@ function getLocationBenefitDetails(task){
 				   else{
 					$('#locationBenefitsDiv3').html(str);
 				   }
-				  }
+				  }	
+				  if(task == "assemblyWiseBenefits"){  
+					if(flag){
+						$("#getAllNewsBtn").show();
+					}
+					else{
+						$("#getAllNewsBtn").hide();
+					}
+					$("#submitDataImg2").hide();
+					$("#buttonId").removeAttr('disabled');
+				}
 				 
 			});
 
@@ -867,7 +894,7 @@ function getLocationBenefitDetails(task){
 		else{
 			$("#errorDiv").html("<div style='color:red;font-weight:bold;'>"+errorStr+"</div>");
 		}
-		$("#getAllNewsBtn").show();
+		
 }
 
 function getLocationNews(type,fromDate,toDate,locationId,benfitId,name,partyId){
