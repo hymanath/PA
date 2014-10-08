@@ -15,7 +15,9 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
+import com.itgrids.partyanalyst.dto.CadrePrintVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -61,6 +63,9 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private String 								voterCardNo;
 	private String								houseNo;
 	private InputStream 						inputStream;
+	
+	private CadrePrintVO						cadrePrintVO;
+	private List<BasicVO>						basicVOList;
 	
 	
 
@@ -271,6 +276,24 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 
 	public void setEletionTypesList(List<SelectOptionVO> eletionTypesList) {
 		this.eletionTypesList = eletionTypesList;
+	}
+
+	
+	public CadrePrintVO getCadrePrintVO() {
+		return cadrePrintVO;
+	}
+
+	public void setCadrePrintVO(CadrePrintVO cadrePrintVO) {
+		this.cadrePrintVO = cadrePrintVO;
+	}
+
+	
+	public List<BasicVO> getBasicVOList() {
+		return basicVOList;
+	}
+
+	public void setBasicVOList(List<BasicVO> basicVOList) {
+		this.basicVOList = basicVOList;
 	}
 
 	public String execute()
@@ -541,5 +564,46 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	}
 	
 	
+	public String getCadrePrintDetails()
+	{
+		LOG.info("Entered into getOptionDetailsForCadre method in CadreRegistrationAction Action");
+		try {		
+			jobj = new JSONObject(getTask());
+			cadrePrintVO = cadreRegistrationService.getCadreDetailsForPrinting(jobj.getString("memberNo"));
+			
+		} catch (Exception e) {			
+			LOG.info("Entered into getCadrePrintDetails method in CadreRegistrationAction Action");
+		}
+		return Action.SUCCESS;
+		
+	}
+	
+	public String getSelectedLevelCadreDetails()
+	{
+		LOG.info("Entered into getOptionDetailsForCadre method in CadreRegistrationAction Action");
+		try {		
+			jobj = new JSONObject(getTask());
+			basicVOList = cadreRegistrationService.getSelectedLevelCadreDetails(jobj.getLong("panchayatId"));
+			
+		} catch (Exception e) {			
+			LOG.info("Entered into getSelectedLevelCadreDetails method in CadreRegistrationAction Action");
+		}
+		return Action.SUCCESS;
+		
+	}
+	
+	public String tagCardIdForNFCReader()
+	{
+		LOG.info("Entered into getOptionDetailsForCadre method in CadreRegistrationAction Action");
+		try {		
+			jobj = new JSONObject(getTask());
+			searchType = cadreRegistrationService.tagCardIdForNFCReader(jobj.getString("cardNo"),jobj.getLong("voterId"));
+			
+		} catch (Exception e) {			
+			LOG.info("Entered into tagCardIdForNFCReader method in CadreRegistrationAction Action");
+		}
+		return Action.SUCCESS;
+		
+	}
 	
 }

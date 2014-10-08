@@ -3,11 +3,9 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="s" uri="/struts-tags"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="en">
+<html>
   <head>
-   <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html" charset="utf-8">
     <title>TDP Cadre Search </title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet"/>	
@@ -34,8 +32,10 @@
    
 	
 </head>
-  <body>
+  <body class="bgc">
 	<div class="container" id="yourElement">
+	<div id="myDiv"></div>
+	<div id="tableDivForCadre" class="table-responsive"></div>
 	<div id="errorDiv" style="color:#ff0020;" class="span6 offset2 show-grid pad-10b"></div>
 		<div class="span6 offset2 show-grid pad-10b" style="">
 			<h5 class="text-align">SELECT CONSTITUENCY</h5>
@@ -380,7 +380,156 @@
 					}
 				});
 	}
+	function getPrintDetails()
+	{
+		var jsObj = 
+			   {
+				  memberNo:'TRW0001546209',				
+				  task:"getBoothCoverdVillagesDetails"             
+			   }	
+		 $.ajax({
+					type : "POST",
+					url : "getCadrePrintDetails.action",
+					data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+					if(result != null)
+					{
+						var str = '';
+						str += '<img src="images/Empty.jpg" style="width:1011px;height:638px;">';
+						str += '<div style="position: absolute; top: 0px; left: 0px;">';
+						str += '<img src="images/prasad.jpg" style="margin-top: 94px; height: 211px; width: 160px; margin-left: 260px;"></img>';
+						str += '<h4 style="font-weight: bold; font-family: Gautami; font-size: 33px; color: yellow; margin-top: -202px; margin-left: 435px;">APN-14</h4>';
+						str += '<h4 style="font-weight: bold; font-family: Gautami; font-size: 33px; color: yellow; margin-top: 17px; margin-left: 433px;">05305919</h4>';
+						str += '<h4 style="font-weight: bold; font-size: 30px; margin-top: 26px; margin-left: 439px;">'+result.districtName+'</h4>';
+						str += '<h4 style="font-weight: bold; font-size: 30px; margin-top: -2px; margin-left: 437px;">'+result.districtName+'  '+result.districtName+' </h4>';
+						str += '<h4 style="font-weight: bold; font-size: 30px; margin-top: 14px; margin-left: 438px;">'+result.districtName+' </h4>';
+						str += '</div>';
+						$('#myDiv').html(str);
+						printDiv('myDiv');
+					}
+					
+				});
 	
+	}
+	function printDiv(divName) 
+	{
+		 var printContents = document.getElementById(divName).innerHTML;
+		 var originalContents = document.body.innerHTML;
+		 document.body.innerHTML = printContents;
+		 document.body.innerHTML = originalContents;
+		 window.print();
+	}
+	//getCadreDetailsByPanchayat();
+	function getCadreDetailsByPanchayat()
+	{
+		var jsObj = 
+			   {
+				  panchayatId:'3297',				
+				  task:"getSelectedLevelCadreDetails"             
+			   }	
+		 $.ajax({
+					type : "POST",
+					url : "getSelectedLevelCadreDetails.action",
+					data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+					if(result != null)
+					{
+						var str = '';
+						str +='<table class="table table-bordered m_top20 table-hover table-striped"  id="seachDetalsTab">';
+						str +='<thead>';
+						str +='<tr>';
+						str +='<th class="text-align1">TR NUMBER</th>';
+						str +='<th class="text-align1">VOTER NAME</th>';
+						str +='<th class="text-align1">OPTIONS</th>';
+						str +='</tr>';
+						str +='</thead>';
+						str +='<tbody>';
+						
+						for(var i in result)
+						{
+							str +='<tr>';
+							str +='<td>'+result[i].name+'</td>';
+							str +='<td>'+result[i].mandalName+'</td>';
+							str +='<td><a class="btn btn-success" onClick="openFormForCadreDetails(\''+result[i].name+'\')">Get Details</a></td>';
+							str +='</tr>';
+						}
+						
+						str +='</tbody>';
+						str +='</table>';
+						
+						$('#tableDivForCadre').html(str);
+					}
+					
+				});
+	}
+	
+	function openFormForCadreDetails(refNum)
+	{
+		var jsObj = 
+			   {
+				  memberNo:refNum,				
+				  task:"getBoothCoverdVillagesDetails"             
+			   }	
+		 $.ajax({
+					type : "POST",
+					url : "getCadrePrintDetails.action",
+					data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+					var str = '';
+						str +='<table class="table table-bordered m_top20 table-hover table-striped"  id="seachDetalsTab">';
+						str +='<thead>';
+						str +='<tr>';
+						str +='<th class="text-align1">MEMBER SHIP NUMBER</th>';
+						str +='<th class="text-align1">VOTER NAME</th>';
+						str +='<th class="text-align1">RELATIVE NAME</th>';
+						str +='<th class="text-align1">DISTRICT</th>';
+						str +='<th class="text-align1">CONSTITUENCY</th>';
+						str +='<th class="text-align1">MANDAL</th>';
+						str +='<th class="text-align1">VILLAGE</th>';
+						str +='<th class="text-align1">NFC NUMBER</th>';
+						str +='<th class="text-align1">TAG</th>';
+						str +='</tr>';
+						str +='</thead>';
+						str +='<tbody>';
+
+							str +='<tr>';
+							str +='<td>'+result.firstCode+'</td>';
+							str +='<td>'+result.voterName+'</td>';
+							str +='<td>'+result.relativeName+'</td>';
+							str +='<td>'+result.districtEng+'</td>';
+							str +='<td>'+result.constiEng+'</td>';
+							str +='<td>'+result.mandalEng+'</td>';
+							str +='<td>'+result.villageEng+'</td>';
+							str +='<td><input type="text" id="cardNumber"></input></td>';
+							str +='<td><a class="btn btn-success" onClick="tagVoterNFCNumber(\''+result.firstCode+'\','+result.voterId+')">Get Details</a></td>';
+							str +='</tr>';
+
+						
+						str +='</tbody>';
+						str +='</table>';
+						$('#tableDivForCadre').html(str);
+				});
+	}
+	
+	function tagVoterNFCNumber(cardNumber,voterId)
+	{
+			var jsObj = 
+			   {
+				  cardNo:cardNumber,	
+				  voterId:voterId,					  
+				  task:"tagCardIdForNFCReader"             
+			   }	
+		 $.ajax({
+					type : "POST",
+					url : "tagCardIdForNFCReader.action",
+					data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+					if(result == 'success')
+					{
+						getPrintDetails();
+					}
+				});
+	}
 		</script>
 		 <script>$('#yourElement').addClass('animated fadeInDown');</script>
 	<!----->
