@@ -8488,6 +8488,11 @@
 				<param name="root">voterHouseInfoVO</param>
 			</result>
 		</action>
+		<action name="getVotersCountInRegionAction" class="ctpCasteReportAction" method="getVotersCountInRegion">
+			<result type="json" name="success">
+				<param name="root">voterHouseInfoVO</param>
+			</result>
+		</action>
 		
 		
 		<action name="getCadrePrintDetails" class="cadreRegistrationAction" method="getCadrePrintDetails">

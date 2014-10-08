@@ -11,6 +11,8 @@
    <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
  <script type="text/javascript" src="js/voterAnalysis/voterAnalysis.js"></script>
+ <script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
+ <script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/tab.js"></script>
  
 <style type="text/css">
 
@@ -76,7 +78,6 @@ input[type="text"]{
 <script type="text/javascript">
 var presentPublication = 11;
 
- 
 function getDistrictsInAState(){
 
 	var jsObj=
@@ -338,25 +339,58 @@ function clearFieldsData(){
 	}
 	function clearErrDiv(){
 	$("#errorMsgAlert").html("");
+	$("#errorMsgAlert1").html("");
 	}
+	function clearData()
+	{
+	
+	$('#reportLevel').val(1);
+	$('#reportLevel1').val(0);
+	$('#constituencyList').val(0);
+	$('#constituencyList1').val(0);
+	$("#mandalDiv").hide();
+	$("#panchayatDiv").hide();
+	$("#pollingStationDiv").hide();
+	$("#voterId").val('');
+	$("#reqHouseNo").val('');
+	$("#voterName").val('');
+	$("#gaurdianName").val('');
+		$("#fromAge").val('');
+		$("#toAge").val('');
+		$("#fromSno").val('');
+		$("#toSno").val('');
+	
+	
+	
+}
 </script>
 </head>
 <body>
 
-   
+ <div style="width:960px;margin-left:auto;margin-right:auto;margin-top:20px;">
+    <ul class="nav nav-tabs" id="myTab">
+	<li class="active"><a href="#statusDiv" onclick="getVotersCountDetails();">STATUS REPORT </a></li>
+<li ><a href="#voterSearchDiv">VOTER SEARCH </a></li>
+<li><a href="#voterCountDetailsDiv">VOTER COUNT </a></li>
 
-  <div style="width:960px;margin-left:auto;margin-right:auto;">
+</ul>
+ 
 
-	
-      <div class="titleHeading">VOTER SEARCH
-	  <input style="float:right;" onclick="buildPopup();" class="btn btn-success" type="button" value="Status Report"></input></div>
-	   
-    <div id="statuspopup"><div id="popupInnerContent"></div></div>
-	  <fieldset id="mainFieldset">
+	 <div class="tab-content widget" style="margin-top:-20px;">
+	 <div id="statusDiv"  class="tab-pane active">
+	    <div class="titleHeading" >CONSTITUENCY WISE OVERVIEW
+	 </div>
+   <div id="statusContentDiv"></div>
+	</div>
+	<div id="voterSearchDiv"  class="tab-pane ">
+      <div class="titleHeading" >VOTER SEARCH
+	 </div>
+	 
       <div id="AlertMsg" style="font-family: verdana;font-size: 13px;color:red;"></div>
-	  <div id="errorMsgAlert" style="font-family: verdana;font-size:14px;color:red;margin-left:100px;height: 40px;"></div>
+	  <div id="errorMsgAlert" style="font-family: verdana;font-size:14px;color:red;margin-left:100px;"></div>
    
 	  <div id="reportLevelDiv" class="selectDiv">Select Level<font class="requiredFont">*</font><select id="reportLevel" class="selectWidth" style="margin-left:76px;width:165px;" name="constituencyList" onchange="clearFieldsData(),showReportLevel1(this.options[this.selectedIndex].value);">
+
 		<option value=1>Constituency</option>
 		<option value=2>Mandal</option>
 	    <option value=3>Panchayat</option>
@@ -446,11 +480,47 @@ function clearFieldsData(){
 	  </div>
   
 	  <input style="margin-left:240px;margin-bottom:10px;" onclick="getVotersInfoForCTP();" class="btn btn-success" type="button" id="searchbtnId" value="Search"/>
-  </fieldset>
+
 <div id="errorMessageDiv" style="display:none;font-weight:bold;color:red" align="center"></div>
 	<div id="voterDetailsDiv"></div>
+	</div>
+	<div id="voterCountDetailsDiv" class="tab-pane" >
+	 <div class="titleHeading" >VOTER COUNT
+	 </div>
+	
+	 
+	 <div class="row-fluid">
+	  <div  class="span10 form-inline offset2">
+	    <div id="errorMsgAlert1" style="font-family: verdana;font-size:14px;color:red;"></div>
+		<label id="ConstituencyDiv1"> Select Constituency <font class="requiredFont">*</font><s:select theme="simple"  label="Select Your State" name="constituencyList" id="constituencyList1" list="constituencyList" listKey="id" listValue="name" onchange="clearErrDiv(),getMandalOrMuncipalityList();"/></label>&nbsp;&nbsp;
+		
+	   <label id="reportLevelDiv1" >Select Level<font class="requiredFont">*</font><select id="reportLevel1"  name="constituencyList">
+	   <option value=0>Select Region Level</option>
+		<option value=2>Mandal</option>
+	    <option value=3>Panchayat</option>
+		<option value=4>PollingStation</option>
+		</select>
+      </label>&nbsp;&nbsp;
+	   <input onclick="getVotersCountInRegion();" class="btn btn-success" type="button"  value="submit"/>
+	
+	  </div>
+	 	</div>
+		<div id="voterCountData" style="margin-top:10px;"></div>
+		<div id="errorMessageDiv1" style="display:none;font-weight:bold;color:red" align="center"></div>
+	 
+	  <span style='display:none;' id='ajaxLoad1'><img src='./images/icons/search.gif' /></span>
+
+	</div>
+	   
 </div>
 <script>
+    $('#myTab a').click(function (e) {
+
+	clearData();
+    e.preventDefault();
+    $(this).tab('show');
+    })
+	
 function getMandalOrMuncipalityList()
 {
     var tempVar = "mandalList";
@@ -890,7 +960,7 @@ if(!flag){
 	}
 	function getVotersCountDetails()
 	{
-		$("#popupInnerContent").html('');
+		$("#statusContentDiv").html('');
 		var jObj ={
 			task : "getVoterCount"
 		}
@@ -928,13 +998,8 @@ if(!flag){
 		str+='</tr>';
 		}
 		str+='</table>';
-		$("#popupInnerContent").html(str);
-		$("#statuspopup").dialog({                   
-		    modal: true,
-            title: "<b>Voter Count Details</b>",
-			width: 750,
-            height: 550
-     });
+		$("#statusContentDiv").html(str);
+		
 
 	}
 	function buildVoterDetails(result)
@@ -972,11 +1037,128 @@ if(!flag){
 		$("#voterDataTable").dataTable();
 	}
 
-	function buildPopup()
+	
+		
+	
+	function showHide(id)
 	{
-		getVotersCountDetails();
+	
+		if(id == "voterSearchDiv")
+		{
+			
+			$("#voterSearchDiv").show();
+			$("#voterCountDetailsDiv").hide();
+		}
+		else
+		{
+			$("#voterSearchDiv").hide();
+			$("#voterCountDetailsDiv").show();
+			}
+	}
+	function getVotersCountInRegion()
+	{
+		
+	$("#voterCountData").html('');
+	$('#errorMessageDiv1').html('');
+	var constituencyId = $("#constituencyList1").val();
+	var regionVal = $("#reportLevel1").val();
+	var regionType = $("#reportLevel1 option:selected").text();
+	if(constituencyId == 0)
+		{
+	$("#errorMsgAlert1").html('Please Select Constituency');
+	return;
+		}
+		else if(regionVal == 0)
+		{
+	$("#errorMsgAlert1").html('Please Select region level');
+	return;
+		}
+		if(regionVal == 4)
+			regionType = "BOOTH";
+		$("#ajaxLoad1").show();
+		$("#errorMsgAlert1").html('');
+	var jObj = {
+		constituencyId :constituencyId,
+		locationType : regionType
+	}
+	$.ajax({
+	type : 'GET',
+	url : 'getVotersCountInRegionAction.action',
+	dataType:'json',
+	data:{task:JSON.stringify(jObj)},
+	success:function(result)
+		{
+		$("#ajaxLoad1").hide();
+		
+		buildVoterCountData(result,jObj.locationType);
+				  },
+	          error:function() { 
+	           console.log('error', arguments);
+	         }
+	});
+	}
+	function buildVoterCountData(resultList,type)
+	{
+		var result = resultList.votersList;
+		var result1 =  resultList.localbodyList;
+		if(result.length == 0)
+		{
+			
+			 $('#errorMessageDiv1').show().html('No Data Avalible ');
+			return;
+		}
+
+		var str = '';
+		str+='<table class="table table-bordered">';
+		if(type == "Mandal")
+		str+='<th>Mandal</th>';
+		if(type == "Panchayat")
+		str+='<th>Panchayat</th>';
+		if(type == "BOOTH")
+		str+='<th>Booth</th>';
+
+		str+='<th>Total Voters</th>';
+		str+='<th>male Caste Voters</th>';
+		str+='<th>female Caste Voters</th>';
+		str+='<th>Caste Voters</th>';
+		str+='<th>Caste Percentage</th>';
+		for(var i in result)
+		{
+		str+='<tr>';
+		
+		str+='<td>'+result[i].name+'</td>';
+		str+='<td>'+result[i].count+'</td>';
+		str+='<td>'+result[i].maleCnt+'</td>';
+		str+='<td>'+result[i].femaleCnt+'</td>';
+		str+='<td>'+result[i].casteCount+'</td>';
+		str+='<td>'+result[i].percentage+'</td>';
+		str+='</tr>';
+		}
+			if(type == "Mandal" &&  result1 != null)
+			{
+				for(var j in result1)
+				{
+					str+='<tr>';
+					
+					str+='<td>'+result1[j].name+'</td>';
+					str+='<td>'+result1[j].count+'</td>';
+					str+='<td>'+result1[j].maleCnt+'</td>';
+					str+='<td>'+result1[j].femaleCnt+'</td>';
+					str+='<td>'+result1[j].casteCount+'</td>';
+					str+='<td>'+result1[i].percentage+'</td>';
+					str+='</tr>';
+				}
+			}
+		
+		str+='</table>';
+		$("#voterCountData").html(str);
+		
 		
 	}
+	
+</script>
+<script>
+getVotersCountDetails();
 </script>
 </body>
 </html>
