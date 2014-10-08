@@ -38,6 +38,7 @@ public class CadreSurveyUserAssignDetails implements Serializable{
 	private Long                cadreSurveyUserId;
 	
 	private CadreSurveyUser     cadreSurveyUser;
+	private String 				tabNo;
 	
 	 @Id
 	 @GeneratedValue(strategy = GenerationType.AUTO)
@@ -125,6 +126,14 @@ public class CadreSurveyUserAssignDetails implements Serializable{
 	}
 	public void setConstituency(Constituency constituency) {
 		this.constituency = constituency;
+	}
+	
+	@Column(name="tab_no")
+	public String getTabNo() {
+		return tabNo;
+	}
+	public void setTabNo(String tabNo) {
+		this.tabNo = tabNo;
 	}
 	
 	

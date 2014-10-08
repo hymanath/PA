@@ -12,7 +12,7 @@ public class LoginResponceVO implements Serializable{
 	private String statusMsg;
 	private Long userId;
 	private List<LoginStatusVO> statusList;
-	
+	private String tabNo;
 	
 	public Long getConstituencyId() {
 		return constituencyId;
@@ -43,6 +43,12 @@ public class LoginResponceVO implements Serializable{
 	}
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}
+	public String getTabNo() {
+		return tabNo;
+	}
+	public void setTabNo(String tabNo) {
+		this.tabNo = tabNo;
 	}
 	
 	
