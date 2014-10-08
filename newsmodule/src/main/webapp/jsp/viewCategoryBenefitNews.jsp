@@ -244,12 +244,11 @@ function buildFilesInGallaryDetails1(results,selectedvalue,index,endValue)
 	
 
    var str='';
-
+if(results.categoryList.length > 0){
    str+='<div class="span12">';
    str+='<h4>Category Wise News</h4>';
    str+='<ul class="unstyled">';
   
-   if(results.categoryList.length > 0){
    
    for(var i in results.categoryList)
    {
@@ -294,11 +293,11 @@ function buildFilesInGallaryDetails1(results,selectedvalue,index,endValue)
    str+='</div>';
    }
    
-  
+   if(results.groupList1.length > 0){ 
    str+='<div class="span12">';
    str+='<h4>MLA Candidate Wise News</h4>';
    str+='<ul class="unstyled">';
-   if(results.groupList1.length > 0){
+ 
    
    for(var i in results.groupList1)
    {
@@ -342,10 +341,10 @@ function buildFilesInGallaryDetails1(results,selectedvalue,index,endValue)
    str+='</div>';
 
    }
+    if(results.groupList2.length > 0){
    str+='<div class="span12">';
    str+='<h4>MP Candidate Wise News</h4>';
    str+='<ul class="unstyled">';
-    if(results.groupList2.length > 0){
    
    for(var i in results.groupList2)
    {
@@ -392,10 +391,10 @@ function buildFilesInGallaryDetails1(results,selectedvalue,index,endValue)
 
    }
    
+    if(results.groupList3.length > 0){
    str+='<div class="span12">';
    str+='<h4>Minister Candidate Wise News</h4>';
    str+='<ul class="unstyled">';
-    if(results.groupList3.length > 0){
    
    for(var i in results.groupList3)
    {
@@ -441,10 +440,10 @@ function buildFilesInGallaryDetails1(results,selectedvalue,index,endValue)
 
    }
    
+   if(results.districtsList.length > 0){
     str+='<div class="span12">';
    str+='<h4>District Wise News</h4>';
    str+='<ul class="unstyled">';
-   if(results.districtsList.length > 0){
    
    for(var i in results.districtsList)
    {
@@ -490,11 +489,10 @@ function buildFilesInGallaryDetails1(results,selectedvalue,index,endValue)
    str+='</div>';
 
    }
-   
+  if(results.acList.length > 0){ 
    str+='<div class="span12">';
    str+='<h4>Assembly Wise News</h4>';
    str+='<ul class="unstyled">';
-   if(results.acList.length > 0){
    
    for(var i in results.acList)
    {
@@ -539,10 +537,11 @@ function buildFilesInGallaryDetails1(results,selectedvalue,index,endValue)
    str+='</div>';
 
    }
+    if(results.pcList.length > 0){
    str+='<div class="span12">';
    str+='<h4>Parliament Wise News</h4>';
    str+='<ul class="unstyled">';
-   if(results.pcList.length > 0){
+  
    
    for(var i in results.pcList)
    {
