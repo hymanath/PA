@@ -327,7 +327,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 				surveyCadreResponceVO = cadreRegistrationService.saveCadreRegistration(cadreRegistrationVOList,"WEB");
 				if(surveyCadreResponceVO.getResultCode() == ResultCodeMapper.SUCCESS){
 					LOG.debug("fileuploades is sucess Method");
-					if(surveyCadreResponceVO.getEnrollmentNumber() != null && Long.valueOf(surveyCadreResponceVO.getEnrollmentNumber() ) > 0 ){
+					if(surveyCadreResponceVO.getEnrollmentNumber() != null && surveyCadreResponceVO.getEnrollmentNumber().trim().length() > 0 ){
 						inputStream = new StringBufferInputStream("SUCCESS" +"," +surveyCadreResponceVO.getEnrollmentNumber()  +",");
 					}
 				}
