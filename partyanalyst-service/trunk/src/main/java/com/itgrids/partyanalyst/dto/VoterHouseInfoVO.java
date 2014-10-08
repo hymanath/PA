@@ -47,7 +47,7 @@ public class VoterHouseInfoVO implements Comparable<VoterHouseInfoVO>{
 	private Long casteStateId;
 	private String voterIdCardNo;	
 	private List<VoterHouseInfoVO> votersList;
-	private List<VoterHouseInfoVO> boothsList;
+	private List<VoterHouseInfoVO> boothsList,localbodyList;
 	private List<VoterHouseInfoVO> familiesList;
 	private Long publicationId;
 	private Long toAge;
@@ -130,7 +130,42 @@ public class VoterHouseInfoVO implements Comparable<VoterHouseInfoVO>{
     private Long districtId;
     private Long casteCount =0l;
     private String percentage ;
+    private Long id;
+    private Long maleCnt = 0l;
+    private Long femaleCnt = 0l;
     
+	public List<VoterHouseInfoVO> getLocalbodyList() {
+		return localbodyList;
+	}
+
+	public void setLocalbodyList(List<VoterHouseInfoVO> localbodyList) {
+		this.localbodyList = localbodyList;
+	}
+
+	public Long getMaleCnt() {
+		return maleCnt;
+	}
+
+	public void setMaleCnt(Long maleCnt) {
+		this.maleCnt = maleCnt;
+	}
+
+	public Long getFemaleCnt() {
+		return femaleCnt;
+	}
+
+	public void setFemaleCnt(Long femaleCnt) {
+		this.femaleCnt = femaleCnt;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public String getPercentage() {
 		return percentage;
 	}

@@ -405,9 +405,31 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 	public List<Object[]> getVotersCountForAllConstituencies(Long publicationDateId,List<Long> constituencyIds)
 	{
 		Query query = getSession().createQuery("Select distinct model.reportLevelValue,model.totalVoters from VoterInfo model where model.voterReportLevel.voterReportLevelId = 1 and " +
-				" model.publicationDate.publicationDateId = :publicationDateId and model.reportLevelValue in(:constituencyIds)");
+				" model.publicationDate.publicationDateId = :publicationDateId and model.constituencyId in(:constituencyIds)");
 		query.setParameter("publicationDateId",publicationDateId);
 		query.setParameterList("constituencyIds",constituencyIds);
 		return query.list();
 	}
+	public List<Object[]> getVotersCountByLocationType(Long publicationDateId,List<Long> locationIds,String locationType,Long constituencyId)
+	{
+		StringBuilder str = new StringBuilder();
+		
+		str.append("Select distinct model.reportLevelValue,model.totalVoters from VoterInfo model where  " +
+				" model.publicationDate.publicationDateId = :publicationDateId and model.constituencyId = :constituencyId");
+		if(locationType.equalsIgnoreCase(IConstants.MANDAL))
+			   str.append(" and model.voterReportLevel.voterReportLevelId = 2");
+		else if(locationType.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+			 str.append(" and model.voterReportLevel.voterReportLevelId = 5");
+			 else if(locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
+				 str.append(" and model.voterReportLevel.voterReportLevelId = 3");
+			 else if(locationType.equalsIgnoreCase(IConstants.BOOTH))
+				 str.append(" and model.voterReportLevel.voterReportLevelId = 4");
+		str.append(" and model.reportLevelValue in(:locationIds)");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("publicationDateId",publicationDateId);
+		query.setParameterList("locationIds",locationIds);
+		query.setParameter("constituencyId",constituencyId);
+		return query.list();
+	}
+	
 }

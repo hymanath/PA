@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
+
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,6 +10,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
@@ -169,7 +172,7 @@ public class CtpCasteReportService implements ICtpCasteReportService{
 				for(Object[] params :list)
 				{
 					VoterHouseInfoVO vo = new VoterHouseInfoVO();
-					vo.setConstituencyId((Long)params[0]);
+					vo.setId((Long)params[0]);
 					vo.setName(params[1] != null ? params[1].toString() : "");
 					vo.setDistrictName(params[4] != null ? params[4].toString() : "");
 					vo.setDistrictId((Long)params[3]);
@@ -209,7 +212,7 @@ public class CtpCasteReportService implements ICtpCasteReportService{
 				 return null;
 			 for(VoterHouseInfoVO vo : list)
 			 {
-				 if(vo.getConstituencyId().longValue() == id.longValue())
+				 if(vo.getId().longValue() == id.longValue())
 					 return vo;
 			 }
 		 }
@@ -217,5 +220,94 @@ public class CtpCasteReportService implements ICtpCasteReportService{
 			 LOG.error("Exception Occured in getMatchedVo()", e);
 		}
 		return null;
+	 }
+	 
+	 public VoterHouseInfoVO getVotersCountInRegion(Long constituencyId,String locationType,Long userId)
+	 {
+		 VoterHouseInfoVO result = new VoterHouseInfoVO();
+		 List<VoterHouseInfoVO> resultList = new ArrayList<VoterHouseInfoVO>();
+
+		 List<VoterHouseInfoVO> localbodyList = new ArrayList<VoterHouseInfoVO>();
+		 result.setVotersList(resultList);
+		 try{
+			if(locationType.equalsIgnoreCase(IConstants.MANDAL))
+			{
+			List<Object[]> list1 = userVoterDetailsDAO.getCasteCountBylocationType(IConstants.VOTER_DATA_PUBLICATION_ID,userId,constituencyId,IConstants.LOCAL_ELECTION_BODY);
+			result.setLocalbodyList(localbodyList);
+			setDataToList(list1,localbodyList,IConstants.LOCAL_ELECTION_BODY,constituencyId);
+			}
+			List<Object[]> list = userVoterDetailsDAO.getCasteCountBylocationType(IConstants.VOTER_DATA_PUBLICATION_ID,userId,constituencyId,locationType);
+			setDataToList(list,resultList,locationType,constituencyId);
+			
+			
+			if(resultList != null && resultList.size() > 0)
+			for(VoterHouseInfoVO vo1 : resultList)
+			{
+				if(vo1.getCount() == 0)
+					vo1.setPercentage("-");
+				else
+				vo1.setPercentage(new BigDecimal(vo1.getCasteCount()*(100.0)/vo1.getCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			}
+			if(localbodyList != null && localbodyList.size() > 0)
+				for(VoterHouseInfoVO vo2 : localbodyList)
+				{
+					if(vo2.getCount() == 0)
+						vo2.setPercentage("-");
+					else
+					vo2.setPercentage(new BigDecimal(vo2.getCasteCount()*(100.0)/vo2.getCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				}
+			 
+		 }
+		 catch (Exception e) {
+			 LOG.error("Exception Occured in getCTPVoterCount()", e);
+		}
+		return result;
+	 }
+	 
+	 public void setDataToList(List<Object[]> list,List<VoterHouseInfoVO> resultList,String locationType,Long constituencyId)
+	 {
+		 List<Long> locationIds = new ArrayList<Long>();
+		 if(list != null && list.size() > 0)
+			{
+				for(Object[] params :list)
+				{
+					if(!locationIds.contains((Long)params[0]))
+					{
+					VoterHouseInfoVO vo = new VoterHouseInfoVO();
+					vo.setId((Long)params[0]);
+					if(locationType.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+					vo.setName(params[1] != null ? params[1].toString() + " Muncipality" : "");
+					else
+						vo.setName(params[1] != null ? params[1].toString() : "");	
+					
+					vo.setCasteCount(0l);
+					resultList.add(vo);
+					locationIds.add((Long)params[0]);
+					}
+				}
+				
+				for(Object[] params :list)
+				{
+					VoterHouseInfoVO vo = getMatchedVo(resultList, (Long)params[0]);
+					if(vo != null)
+					{
+						if(params[3] != null && params[3].toString().equalsIgnoreCase("M"))
+							vo.setMaleCnt((Long)params[2]);
+						else if(params[3] != null && params[3].toString().equalsIgnoreCase("F"))
+							vo.setFemaleCnt((Long)params[2]);
+						vo.setCasteCount(vo.getMaleCnt() + vo.getFemaleCnt());
+					}
+				}
+				List<Object[]> votersCount = voterInfoDAO.getVotersCountByLocationType(IConstants.VOTER_DATA_PUBLICATION_ID,locationIds,locationType,constituencyId);
+				if(votersCount != null && votersCount.size() > 0)
+				{
+					for(Object[] params : votersCount)
+					{
+						VoterHouseInfoVO constInfoVO = getMatchedVo(resultList, (Long)params[0]);
+						constInfoVO.setCount((Long)params[1]);
+					}
+					
+				}
+			}
 	 }
 }
