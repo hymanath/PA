@@ -482,7 +482,17 @@ function getCandidateGroupWiseBenifit(groupId){
 			 
 			   if(result != null && result.length > 0){
 					flag = true;
-			       str += '<table class="table table-bordered " >';
+					
+					if(groupId == 1){
+					str+='<div style= "color:#468847"><b><h5 >Top 5 MLA Candidates Negative News Count</h5></b></div>';
+				   }
+				   else if(groupId == 2){
+					str+='<div style= "color:#468847"><b><h5 >Top 5 MP Candidates Negative News Count</h5></b></div>';
+				   }
+				   else{
+					str+='<div style= "color:#468847"><b><h5 >Top 5 Ministers Negative News Count</h5></b></div>';
+				   }					
+				   str += '<table class="table table-bordered " >';
 		           str += '<thead class="alert alert-success">';
 				   str+="  <tr>";
 				   str+="    <th><b>Candidate Name</b></th>";
@@ -675,6 +685,7 @@ function buildCategoryWiseBenefitDetails(result,stateId,fromDate,toDate,type){
 	if(result != null && result.length > 0){
 		flag = true;
 		var str = '';
+		str+='<div style= "color:#468847"><b><h5 >Top 5 Categories Negative News Count</h5></b></div>';
 		str += '<table class="table table-bordered " >';
 		str += '<thead class="alert alert-success">';
 		str += '<tr>';
@@ -825,6 +836,16 @@ function getLocationBenefitDetails(task){
 				var str ="";
 			   if(result != null && result.length > 0){
 					flag= true;
+					 if(task == "districtWiseBenefits"){
+				   str+='<div style= "color:#468847"><b><h5 >Top 5 Districts Negative News Count</h5></b></div>';
+				   }
+				    else if(task == "parliamentWiseBenefits"){
+					str+='<div style= "color:#468847"><b><h5 >Top 5 Parliament Constituencies Negative News Count</h5></b></div>';
+				   }
+				   else{
+					str+='<div style= "color:#468847"><b><h5 >Top 5 Assembly Constituencies Negative News Count</h5></b></div>';
+				   }
+				   
 			       str += '<table class="table table-bordered " >';
 		           str += '<thead class="alert alert-success">';
 				   str+="  <tr>";
