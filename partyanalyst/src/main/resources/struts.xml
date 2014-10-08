@@ -5602,9 +5602,10 @@
 		    <result name="mahanadu" type="redirect">mahaNaduAction.action</result>
 		    <result name="webuser" type="redirect">surveyCallCenterAction.action</result>
 		    <result name="surveyUser" type="redirect">surveyDataDetailsAction.action</result>
+		    <result name="surveyUser" type="redirect">surveyDataDetailsAction.action</result>
 		    <result name="partyCadre" type="redirect">partyCadreSearchAction.action</result>
 		    <result name="cadreDashBoard" type="redirect">cadreDashBoardAction.action</result>
-		    <result name="mobileNumbersRetrivalPage" type="redirect">ivrMobileAction.action</result>
+		    <result name="cadreRegistration" type="redirect">tdpCadreSearchAction.action</result>
 		     
 		</action>
 		
@@ -8488,6 +8489,24 @@
 			</result>
 		</action>
 		
+		
+		<action name="getCadrePrintDetails" class="cadreRegistrationAction" method="getCadrePrintDetails">
+			<result type="json" name="success">
+				<param name="root">cadrePrintVO</param>
+			</result>
+		</action>
+		
+		<action name="getSelectedLevelCadreDetails" class="cadreRegistrationAction" method="getSelectedLevelCadreDetails">
+			<result type="json" name="success">
+				<param name="root">basicVOList</param>
+			</result>
+		</action>
+		
+		<action name="tagCardIdForNFCReader" class="cadreRegistrationAction" method="tagCardIdForNFCReader">
+			<result type="json" name="success">
+				<param name="root">searchType</param>
+			</result>
+		</action>
 		
 </package>
 
