@@ -669,6 +669,7 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 				loginResponceVO.setConstituencyId(resultList.get(0).getConstituencyId());
 				loginResponceVO.setConstituencyName(resultList.get(0).getConstituency() != null ? resultList.get(0).getConstituency().getName() : null);
 				loginResponceVO.setUserId(userId);
+				loginResponceVO.setTabNo(resultList.get(0).getTabNo());
 				List<LoginStatusVO> subList = new ArrayList<LoginStatusVO>();
 				Map<Long, List<Long>> subListMap = new HashMap<Long, List<Long>>();
 				for (CadreSurveyUserAssignDetails cadreSurveyUserAssignDetails : resultList) 
