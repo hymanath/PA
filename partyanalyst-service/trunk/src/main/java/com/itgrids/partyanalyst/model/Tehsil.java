@@ -55,7 +55,7 @@ public class Tehsil implements java.io.Serializable {
 	private Set<LocalGroupRegion> localGroupRegion = new HashSet<LocalGroupRegion>(0);
 	private Set<Panchayat> pachayats = new HashSet<Panchayat>(0);
 	private Set<ElectionGoverningBody> electionGoverningBody = new HashSet<ElectionGoverningBody>(0);
-
+	private String localName;
 	// Constructors
 
 	/** default constructor */
@@ -196,7 +196,17 @@ public class Tehsil implements java.io.Serializable {
 	public void setElectionGoverningBody(
 			Set<ElectionGoverningBody> electionGoverningBody) {
 		this.electionGoverningBody = electionGoverningBody;
+	}
+
+	@Column(name="name_local")
+	public String getLocalName() {
+		return localName;
+	}
+
+	public void setLocalName(String localName) {
+		this.localName = localName;
 	}	
 
+	
 	
 }

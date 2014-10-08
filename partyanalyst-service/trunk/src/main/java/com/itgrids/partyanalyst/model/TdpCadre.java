@@ -78,6 +78,7 @@ public class TdpCadre {
 	private String 						dataSourceType;
 	private String						uniqueKey;
 	private String                      refNo;
+	private String						cardNumber;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -463,6 +464,14 @@ public class TdpCadre {
 	
 	public void setInsertedWebUser(User insertedWebUser) {
 		this.insertedWebUser = insertedWebUser;
+	}
+	
+	@Column(name="card_number")
+	public String getCardNumber() {
+		return cardNumber;
+	}
+	public void setCardNumber(String cardNumber) {
+		this.cardNumber = cardNumber;
 	}
 	
 	
