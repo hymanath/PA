@@ -193,7 +193,8 @@
 			<result type="redirect" name="constituencyDetailReport">constituencyDetailReportAction.action</result>
 			<result type="redirect" name="surveyCallCenter">surveyCallCenterAction.action</result>
 			<result type="redirect" name="surveyDataDetailsAction">surveyDataDetailsAction.action</result>
-			<result type="redirect" name="candidateUpdateDetailsAction">candidateUpdateDetailsAction.action</result>
+			<result type="redirect" name="candidateUpdateDetailsAction">candidateUpdateDetailsAction.action</result> 
+			<result type="redirect" name="tdpCadreSurveyUsersDetailsAction">tdpCadreSurveyUsersDetailsAction.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
 			 <!-- Problem Management Flow From Different Pages -->
 			 <interceptor-ref name="basicStack"/>
@@ -8384,6 +8385,13 @@
 			<result name="input">/jsp/loginForm.jsp?src=tdpCadreSearchAction</result>
 		</action>
 		
+		<action name="tdpCadreSurveyUsersDetailsAction" class="cadreRegistrationAction" method="cadreSurveyUserDetailsPage">
+			<result name="success">/jsp/tdpCadreSurveyUsersDetails.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=tdpCadreSurveyUsersDetailsAction</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+		</action>
+		
+		
 		<action name="getconstituencyDetailsByConstiteuncyAction" class="cadreRegistrationAction" method="getconstituencyDetailsByConstiteuncy">
 			<result type="json" name="success">
 				<param name="root">genericVOList</param>
@@ -8517,6 +8525,56 @@
 			<result name="input">/jsp/loginForm.jsp</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>	
 		</action>
+		
+		<action name="saveNewCadreSurveyUserAction" class="cadreRegistrationAction" method="saveNewCadreSurveyUser">
+			<result type="json" name="success">
+				<param name="root">resultStatus</param>
+			</result>
+		</action>
+		
+		<action name="getSurveyCadreUsersListAction" class="cadreRegistrationAction" method="getSurveyCadreUsersList">
+			<result type="json" name="success">
+				<param name="root">genericVOList</param>
+			</result>
+		</action>
+		
+		<action name="getSurveyCadreAssignedConstituencyListAction" class="cadreRegistrationAction" method="getSurveyCadreAssignedConstituencyList">
+			<result type="json" name="success">
+				<param name="root">selectOptionVOList</param>
+			</result>
+		</action>
+		
+		<action name="getSurveyCadreAssignedUsersListAction" class="cadreRegistrationAction" method="getSurveyCadreAssignedUsersList">
+			<result type="json" name="success">
+				<param name="root">genericVOList</param>
+			</result>
+		</action>
+		
+		<action name="releaseCadreSurveyUserAction" class="cadreRegistrationAction" method="releaseCadreSurveyUser">
+			<result type="json" name="success">
+				<param name="root">resultStatus</param>
+			</result>
+		</action>
+		
+		<action name="assignUserForLocationAction" class="cadreRegistrationAction" method="assignUserForLocation">
+			<result type="json" name="success">
+				<param name="root">resultStatus</param>
+			</result>
+		</action>
+		
+		<action name="getSubRegionsInConstituencyAction" class="cadreRegistrationAction" method="getSubRegionsInConstituency">
+			<result type="json" name="success">
+				<param name="root">selectOptionVOList</param>
+			</result>
+		</action>
+		
+		
+		<action name="isTabAssignedAlreadyAction" class="cadreRegistrationAction" method="isTabAssignedAlready">
+			<result type="json" name="success">
+				<param name="root">task</param>
+			</result>
+		</action>
+		
 		
 </package>
 
