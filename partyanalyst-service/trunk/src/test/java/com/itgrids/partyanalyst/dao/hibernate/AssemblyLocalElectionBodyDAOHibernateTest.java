@@ -126,7 +126,7 @@ public class AssemblyLocalElectionBodyDAOHibernateTest  extends BaseDaoTestCase 
 		}
 	}*/
 	
-	public void testgetAssemblyLocalElectionBodyIdsList()
+/*	public void testgetAssemblyLocalElectionBodyIdsList()
 	{
 		List<Long> constituencyids = new ArrayList<Long>();
 		constituencyids.add(347l);
@@ -135,7 +135,7 @@ public class AssemblyLocalElectionBodyDAOHibernateTest  extends BaseDaoTestCase 
 			System.out.println(objects[0] +":"+ objects[1]);
 		}
 	}
-	
+	*/
 	
 	/*public void testGeLocalElectionBodyListForVotersAnalysis()
 	{
@@ -162,7 +162,7 @@ public class AssemblyLocalElectionBodyDAOHibernateTest  extends BaseDaoTestCase 
 	
 	public void testgetMuncipalityDetails()
 	{
-		Object[] values = assemblyLocalElectionBodyDAO.getMuncipalityDetails(232l);
-		System.out.println(values[0] +":"+ values[1]);
+		List<Object[]> values = assemblyLocalElectionBodyDAO.findByConstituencyIdForUrbanType(298L,6L);
+		System.out.println(values);
 	}
 }
