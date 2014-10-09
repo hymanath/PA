@@ -124,7 +124,8 @@
 		<pattern>/tdpCadreSearchAction*</pattern>
 		<pattern>/tdpCadreSearchDetailsAction*</pattern>
 		<pattern>/tdpCadreRegistrationAction*</pattern>
-	
+		<pattern>/tdpCadreSurveyUsersDetailsAction*</pattern>
+		
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
