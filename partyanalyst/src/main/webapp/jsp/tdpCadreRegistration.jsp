@@ -70,6 +70,9 @@
 	 .datePickerCls{
 			 cursor: text !important;
 			}
+	.header-bg{background:#3598DB url('./images/cadre_images/2014-Header-BG.png') repeat-x; height:179px;}
+	.color-white{color:#f9f9f9;}
+	
 	</style>
 	
 		
@@ -606,7 +609,12 @@
 
 </head>
   <body class="bgc">
-
+		<!-- Header Row -->
+		<div class="row-fluid">
+			<div class="span12 header-bg text-center">
+				<img src="images/cadre_images/2014-cadre-Registration-Logo.png" />
+			</div>
+		</div><!-- Header Row End-->
 	<div class="container m_top10 " id="yourElement">
 		<div class="span12 show-grid" style="position: relative;">
 			<h3 class="text-align">CADRE REGISTRATION</h3>
@@ -997,6 +1005,15 @@
 
 <div id="statusDiv">
 </div>
+	<!-- Footer Row -->
+		<div class="row-fluid">
+			<div class="span12 text-center m_top5 color-white">
+					Cadre Registration Drive
+				<p>Copyright &copy; 2014,  All Rights Reserved</p>
+			</div>
+		</div>
+	<!-- Footer Row End-->
+		
 </body>
 <script type="text/javascript">
 var existingCadreArr = [];
