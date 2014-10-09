@@ -27,17 +27,29 @@
 	.dataTables_length, .dataTables_filter , .dataTables_info {
 		color : #666666 !important;
 	}
-	
+
+	.header-bg{background:#3598DB url('./images/cadre_images/2014-Header-BG.png') repeat-x; height:179px;}
+	.color-white{color:#f9f9f9;}
+
 	</style>
    
 	
 </head>
   <body class="bgc">
+  
+  	<!-- Header Row -->
+		<div class="row-fluid">
+			<div class="span12 header-bg text-center">
+				<img src="images/cadre_images/2014-cadre-Registration-Logo.png" />
+			</div>
+		</div><!-- Header Row End-->
+		
 	<div class="container" id="yourElement">
 	<div id="myDiv"></div>
 	<div id="tableDivForCadre" class="table-responsive"></div>
-	<div id="errorDiv" style="color:#ff0020;" class="span6 offset2 show-grid pad-10b"></div>
-		<div class="span6 offset2 show-grid pad-10b" style="">
+	
+		<div class="span6 offset3 show-grid pad-10b" style="">
+		<div id="errorDiv" style="color:#ff0020;"></div>
 			<h5 class="text-align">SELECT CONSTITUENCY</h5>
 
 			<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="userConstituencyId" list="selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" style="width:460px;" onChange="getConstituencyWiseDetails();"/>
@@ -80,7 +92,7 @@
 	</div>
 	<img src='images/Loading-data.gif' class="offset7"  id="searchDataImg" style="width:70px;height:60px;display:none;"/>
 	<div class="container" id="tableElement" style="margin-top:25px;display:none;">
-		<div class="col-xs-8 col-xs-offset-2 show-grid">
+		<div class="span10 offset1 show-grid pad-5 m-bottom-10">
 		<a class="btn btn-default active col-xs-1 m_top20 pull-right border-radius-0 " href="javascript:{getDetailsForUser(0)}">Skip 	
 			<span class="glyphicon glyphicon-chevron-right"></span></a>
 			<h3 class="text-align">SEARCH DETAILS</h3>
@@ -89,6 +101,15 @@
 		</div>
 	</div>
 
+		<!-- Footer Row -->
+		<div class="row-fluid">
+			<div class="span12 text-center m_top5 color-white">
+					Cadre Registration Drive
+				<p>Copyright &copy; 2014,  All Rights Reserved</p>
+			</div>
+		</div>
+	<!-- Footer Row End-->
+	
 	<script>
 		$(document).ready(function(){
 		  $('input').iCheck({
