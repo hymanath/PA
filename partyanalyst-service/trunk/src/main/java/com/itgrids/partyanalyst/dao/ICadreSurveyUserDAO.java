@@ -10,4 +10,6 @@ public interface ICadreSurveyUserDAO extends GenericDao<CadreSurveyUser, Long>{
 	
 	public List<Long> getUserByUserNameAndPassword(String userName , String password);
 
+	public List<Object[]> getCadreSurveyUsersList(List<Long> getCadreSurveyUsersList);
+	
 }
