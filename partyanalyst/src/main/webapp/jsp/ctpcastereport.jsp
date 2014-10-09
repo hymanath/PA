@@ -363,9 +363,8 @@ function clearFieldsData(){
 		$("#toAge").val('');
 		$("#fromSno").val('');
 		$("#toSno").val('');
-	
-	
-	
+	$('#startWith').attr('checked', 'checked');  
+	$('#allGenderId').attr('checked', 'checked');  
 }
 </script>
 </head>
@@ -461,7 +460,7 @@ function clearFieldsData(){
 	    <div class="row "style="padding: 0px 0px 0px 162px; margin-top: -22px; ">
 		   <div class="span">
 		   <label class="radio">
-	   <input type="radio" checked="true"  value="all" name="genderChkBox" /><b style="font-size: 12px; font-family: verdana;"> All </b>
+	   <input type="radio" checked="true"  value="all" name="genderChkBox" id="allGenderId"/><b style="font-size: 12px; font-family: verdana;"> All </b>
 	    </label>
 		 </div>
 		 	   <div class="span">
