@@ -30,6 +30,8 @@ import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.ICadreLevelDAO;
 import com.itgrids.partyanalyst.dao.ICadreParticipatedElectionDAO;
 import com.itgrids.partyanalyst.dao.ICadrePreviousRolesDAO;
+import com.itgrids.partyanalyst.dao.ICadreSurveyUserAssignDetailsDAO;
+import com.itgrids.partyanalyst.dao.ICadreSurveyUserDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
@@ -52,6 +54,7 @@ import com.itgrids.partyanalyst.dto.CadrePrintVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
@@ -59,6 +62,8 @@ import com.itgrids.partyanalyst.model.BloodGroup;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.CadreParticipatedElection;
 import com.itgrids.partyanalyst.model.CadrePreviousRoles;
+import com.itgrids.partyanalyst.model.CadreSurveyUser;
+import com.itgrids.partyanalyst.model.CadreSurveyUserAssignDetails;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.Hamlet;
@@ -68,6 +73,7 @@ import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
+import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.ImageAndStringConverter;
@@ -106,8 +112,31 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private ITdpCadreFamilyDetailsDAO		tdpCadreFamilyDetailsDAO;
 	private ImageAndStringConverter 		imageAndStringConverter = new ImageAndStringConverter();
 	
+	private ICadreSurveyUserAssignDetailsDAO  cadreSurveyUserAssignDetailsDAO;
+	private ICadreSurveyUserDAO cadreSurveyUserDAO;
+	private IRegionServiceData regionServiceDataImp;
 	
 	
+	public void setImageAndStringConverter(
+			ImageAndStringConverter imageAndStringConverter) {
+		this.imageAndStringConverter = imageAndStringConverter;
+	}
+
+	
+	public void setRegionServiceDataImp(IRegionServiceData regionServiceDataImp) {
+		this.regionServiceDataImp = regionServiceDataImp;
+	}
+
+
+	public void setCadreSurveyUserAssignDetailsDAO(
+			ICadreSurveyUserAssignDetailsDAO cadreSurveyUserAssignDetailsDAO) {
+		this.cadreSurveyUserAssignDetailsDAO = cadreSurveyUserAssignDetailsDAO;
+	}
+
+	public void setCadreSurveyUserDAO(ICadreSurveyUserDAO cadreSurveyUserDAO) {
+		this.cadreSurveyUserDAO = cadreSurveyUserDAO;
+	}
+
 	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
 		this.tdpCadreDAO = tdpCadreDAO;
 	}
@@ -900,6 +929,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			Long voterId = 0L;
 			String houseNo = null;
 			List<VoterInfoVO> familyList = null;
+			List<VoterInfoVO> existingFamilyInfo = null;
+			
 			if(candidateId != null && candidateId != 0L)
 			{
 				if(searchType.equalsIgnoreCase("voter"))
@@ -937,6 +968,21 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						
 						voterId = voter.getVoterId();
 						houseNo = voter.getHouseNo() != null ? voter.getHouseNo().toString():"";
+						
+						List<TdpCadre> tdpCadreList = tdpCadreDAO.getVoterByVoterId(voterId);
+						
+						if(tdpCadreList != null && tdpCadreList.size()>0)
+						{
+							TdpCadre tdpCadre =  (TdpCadre) tdpCadreList.get(0);
+							
+							if(tdpCadre != null)
+							{
+								Long tdpCadreId = tdpCadre.getTdpCadreId();
+								
+								existingFamilyInfo =  getExistingCadreFamilyInfo(tdpCadreId);
+							}
+						}
+						
 					}
 				}
 				else if(searchType.equalsIgnoreCase("cadre"))
@@ -1016,10 +1062,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							} catch (Exception e) {
 								LOG.error("Exception raised in getCandidateInfoBySearchCriteria in CadreRegistrationService service", e);
 							}
+						
+						existingFamilyInfo =  getExistingCadreFamilyInfo(tdpCadre.getTdpCadreId());
 					}
 				}
-				
-
 				
 				if(voterId != null && voterId.longValue() != 0L)
 				{
@@ -1058,14 +1104,23 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 										fmilyVO.setAge(family[5] != null ? family[5].toString():"");								
 										fmilyVO.setVoterCardNo(family[6] != null ? family[6].toString():"");
 										
+										VoterInfoVO existingFamilyMember = getmatchedVOByVoterId(existingFamilyInfo,family[0] != null ? Long.valueOf(family[0].toString().trim()):0L);
+										
+										if(existingFamilyMember != null)
+										{
+											fmilyVO.setEducation(existingFamilyMember.getEducation());
+											fmilyVO.setOccupation(existingFamilyMember.getOccupation());
+											fmilyVO.setOccupationId(existingFamilyMember.getOccupationId());
+										}
+										
 										familyList.add(fmilyVO);
 									}
 								}
-								
 								vo.setVoterInfoVOList(familyList);
 							}
 						}
-					}
+					} 
+					
 				}
 			}
 			else
@@ -1137,10 +1192,63 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		
 		return returnList;
 	}
+	
+	public VoterInfoVO getmatchedVOByVoterId(List<VoterInfoVO> existingFamilyList, Long voterId)
+	{
+		VoterInfoVO voterVO = null;
+		try {
+			if(existingFamilyList != null && existingFamilyList.size()>0)
+			{
+				for (VoterInfoVO voterInfoVO : existingFamilyList) 
+				{
+					if(voterInfoVO.getVoterId().longValue() == voterId.longValue())
+					{
+						return voterInfoVO;
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in getmatchedVOByVoterId in CadreRegistrationService service",e);
+		}
+		return voterVO;
+	}
+	
+	public List<VoterInfoVO> getExistingCadreFamilyInfo(Long tdpCadreId)
+	{
+		List<VoterInfoVO> returnList = null;	
+		
+		try {
+				List<Object[]> cadreFamilyInfo = tdpCadreFamilyDetailsDAO.getCadreFamilyDetailsBytdpCadreId(tdpCadreId);
+
+				if(cadreFamilyInfo != null && cadreFamilyInfo.size()>0)
+				{
+					returnList = new ArrayList<VoterInfoVO>();
+					
+					for (Object[] voter : cadreFamilyInfo) 
+					{
+						VoterInfoVO voterVO = new VoterInfoVO();
+						voterVO.setVoterId(voter[0] != null ? Long.valueOf(voter[0].toString().trim()):0L);
+						voterVO.setEducation(voter[1] != null ? voter[1].toString().trim():"");
+						voterVO.setOccupationId(voter[2] != null ? Long.valueOf(voter[2].toString().trim()):0L);
+						voterVO.setOccupation(voter[3] != null ? voter[3].toString().trim():"");
+						
+						returnList.add(voterVO);
+					}
+				}
+
+			return returnList;
+			
+		} catch (Exception e)
+		{
+			LOG.error("Exception raised in getExistingCadreFamilyInfo in CadreRegistrationService service",e);
+			return null;
+		}
+		
+	}
 
 	public List<GenericVO> getConstiteuncyDetailsByConstiteuncy(Long constituencyId)
 	{
-		LOG.info("Exception raised in getConstiteuncyDetailsByConstiteuncy in CadreRegistrationService service");
+		LOG.info("entered into getConstiteuncyDetailsByConstiteuncy in CadreRegistrationService service");
 		List<GenericVO> returnList = null;
 		try {
 			Constituency constituency = constituencyDAO.get(constituencyId);
@@ -1664,6 +1772,262 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		}
 		
 	}
+
+
+	public ResultStatus saveNewCadreSurveyUser(final Long userId, final String surveyUserName, final String  password, final String mobileNo)
+	{
+		ResultStatus status = new ResultStatus();
+		try {			
+			List<Long> existingUserIds = cadreSurveyUserDAO.getUserByUserNameAndPassword(surveyUserName, password);
+			
+			if(existingUserIds == null || existingUserIds.size() == 0)
+			{
+				transactionTemplate.execute(new TransactionCallbackWithoutResult()
+				{
+					public void doInTransactionWithoutResult(TransactionStatus status) 
+					{
+						DateUtilService dateUtilService = new DateUtilService();
+						
+							CadreSurveyUser cadreSurveyUser = new CadreSurveyUser();
+							
+							cadreSurveyUser.setUserName(surveyUserName);
+							cadreSurveyUser.setPassword(password);
+							cadreSurveyUser.setMobileNo(mobileNo);
+							cadreSurveyUser.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							cadreSurveyUser.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+							cadreSurveyUser.setIsDeleted("N");
+							
+							cadreSurveyUserDAO.save(cadreSurveyUser);
+					}
+				});
+				
+				status.setMessage("Cadre Survey User Created Successfully...");
+				status.setResultCode(ResultCodeMapper.SUCCESS);
+			}
+			else
+			{
+				status.setMessage("Cadre Survey User already exist.");
+				status.setResultCode(ResultCodeMapper.FAILURE);
+			}
+		} catch (Exception e) {
+			status.setMessage(" Error occured while saving new Cadre Survey User details.");
+			status.setResultCode(ResultCodeMapper.FAILURE);
+			
+			LOG.error("exception occured in saveNewCadreSurveyUser method in CadreRegistrationService class",e);
+		}
+		return status;
+	}
+	
+	public List<GenericVO> getSurveyCadreUsersList()
+	{
+		LOG.info("Entered into getSurveyCadreUsersList method in CadreRegistrationService class");
+		
+		List<GenericVO> returnList = new ArrayList<GenericVO>();
+		try {
+			List<Long> assignedUsersIds = cadreSurveyUserAssignDetailsDAO.getCadreSurveyAssignUsersList();
+			
+			if(assignedUsersIds != null && assignedUsersIds.size()>0)
+			{
+				List<Object[]> notAssignedUsers = cadreSurveyUserDAO.getCadreSurveyUsersList(assignedUsersIds);
+				
+				if(notAssignedUsers != null && notAssignedUsers.size()>0)
+				{
+					for (Object[] user : notAssignedUsers)
+					{
+						GenericVO cadreSurveyVO = new GenericVO();
+						cadreSurveyVO.setId(user[0] != null ? Long.valueOf(user[0].toString().trim()):0L);
+						cadreSurveyVO.setName(user[1] != null ? user[1].toString().trim():"");
+						
+						returnList.add(cadreSurveyVO);
+					}
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("exception occured in getSurveyCadreUsersList method in CadreRegistrationService class",e);
+		}
+		return returnList;
+	}	
+	
+	public List<SelectOptionVO> getSurveyCadreAssignedConstituencyList()
+	{
+		LOG.info("Entered into getSurveyCadreAssignedConstituencyList method in CadreRegistrationService class");
+		List<SelectOptionVO> returnList = null;
+		try {
+			List<Object[]> assignedConstituencies = cadreSurveyUserAssignDetailsDAO.getCadreSurveyAssignConstituencyList();			
+						
+			if(assignedConstituencies != null && assignedConstituencies.size()>0)
+			{
+				returnList = new ArrayList<SelectOptionVO>();
+				
+				for (Object[] user : assignedConstituencies)
+				{
+					SelectOptionVO cadreSurveyVO = new SelectOptionVO();
+					cadreSurveyVO.setId(user[0] != null ? Long.valueOf(user[0].toString().trim()):0L);
+					cadreSurveyVO.setName(user[1] != null ? user[1].toString().trim():"");
+					
+					returnList.add(cadreSurveyVO);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("exception occured in getSurveyCadreAssignedConstituencyList method in CadreRegistrationService class",e);
+		}
+		return returnList;
+	}
+	
+	public List<GenericVO> getSurveyCadreAssignedUsersList(Long constiteuncyId)
+	{
+		LOG.info("Entered into getSurveyCadreAssignedUsersList method in CadreRegistrationService class");
+		List<GenericVO> returnList = null;
+		try {
+			List<Object[]> assignedUsers = cadreSurveyUserAssignDetailsDAO.getCadreSurveyAssignUsersListByConstituency(constiteuncyId);			
+						
+			if(assignedUsers != null && assignedUsers.size()>0)
+			{
+				returnList = new ArrayList<GenericVO>();
+				
+				for (Object[] user : assignedUsers)
+				{
+					GenericVO cadreSurveyVO = new GenericVO();
+					cadreSurveyVO.setId(user[0] != null ? Long.valueOf(user[0].toString().trim()):0L);
+					cadreSurveyVO.setName(user[1] != null ? user[1].toString().trim():"");
+					
+					returnList.add(cadreSurveyVO);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("exception occured in getSurveyCadreAssignedUsersList method in CadreRegistrationService class",e);
+		}
+		return returnList;
+	}
+	
+	public ResultStatus releaseCadreSurveyUser(final Long cadreSurveyUserAssignedId)
+	{
+		ResultStatus status = new ResultStatus();
+		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult()
+			{
+				public void doInTransactionWithoutResult(TransactionStatus status) 
+				{
+					CadreSurveyUserAssignDetails cadreSurveyUserAssignDetails = cadreSurveyUserAssignDetailsDAO.get(cadreSurveyUserAssignedId);
+					if(cadreSurveyUserAssignDetails != null)
+					{
+						cadreSurveyUserAssignDetails.setIsDeleted("Y");
+						cadreSurveyUserAssignDetails.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+						
+						cadreSurveyUserAssignDetailsDAO.save(cadreSurveyUserAssignDetails);
+					}
+				}
+			});
+			
+			status.setMessage("Cadre Survey User released Successfully...");
+			status.setResultCode(ResultCodeMapper.SUCCESS);
+			
+		} catch (Exception e) {
+			status.setMessage(" Error occured while releasing Cadre Survey User .");
+			status.setResultCode(ResultCodeMapper.FAILURE);
+			
+			LOG.error("exception occured in releaseCadreSurveyUser method in CadreRegistrationService class",e);
+		}
+		return status;
+	}
+	
+	public String isTabAssignedAlready(String TabNo)
+	{
+		String status  = null;
+		try {
+			List<Long> existingUserIds = cadreSurveyUserAssignDetailsDAO.isTabAssignedAlready(TabNo);
+			if(existingUserIds != null && existingUserIds.size()>0)
+			{
+				status ="Tab No already Assigned.";
+			}
+			else 
+			{
+				status ="Tab No available for Assign.";
+			}
+	} catch (Exception e) {
+		LOG.error("exception occured in getSubRegionsInConstituency method in CadreRegistrationService class",e);
+	}
+	return status;
+		
+	}
+	
+	public ResultStatus assignUserForLocation(final Long surveyUserId, final Long levelId, final Long levelValue,final Long constituencyId,final String TabNo)
+	{
+		ResultStatus status = new ResultStatus();
+		try {			
+			List<Long> existingUserIds = cadreSurveyUserAssignDetailsDAO.checkIsAlreadyAssigned(surveyUserId, levelId,levelValue,constituencyId);
+			List<Long> tabExistCount = cadreSurveyUserAssignDetailsDAO.isTabAssignedAlready(TabNo);
+			
+			if((existingUserIds == null || existingUserIds.size() == 0) && (tabExistCount == null || tabExistCount.size() == 0))
+			{
+				transactionTemplate.execute(new TransactionCallbackWithoutResult()
+				{
+					public void doInTransactionWithoutResult(TransactionStatus status) 
+					{
+						DateUtilService dateUtilService = new DateUtilService();
+						
+							CadreSurveyUserAssignDetails cadreSurveyUserAssignDetails = new CadreSurveyUserAssignDetails();
+							
+							cadreSurveyUserAssignDetails.setCadreSurveyUserId(surveyUserId);
+							cadreSurveyUserAssignDetails.setConstituencyId(constituencyId);
+							cadreSurveyUserAssignDetails.setLevelId(levelId);
+							cadreSurveyUserAssignDetails.setLevelValue(levelValue);
+							cadreSurveyUserAssignDetails.setTabNo(TabNo);
+							
+							cadreSurveyUserAssignDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							cadreSurveyUserAssignDetails.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+							cadreSurveyUserAssignDetails.setIsDeleted("N");
+							
+							cadreSurveyUserAssignDetailsDAO.save(cadreSurveyUserAssignDetails);
+					}
+				});
+				
+				status.setMessage("Cadre Survey User Assigned Successfully...");
+				status.setResultCode(ResultCodeMapper.SUCCESS);
+			}
+			else if(existingUserIds != null && existingUserIds.size() > 0)
+			{
+				status.setMessage("Cadre Survey User already Assigned.");
+				status.setResultCode(ResultCodeMapper.FAILURE);
+			}
+			else if(tabExistCount != null && tabExistCount.size() > 0)
+			{
+				status.setMessage(" Tab No already Assigned .");
+				status.setResultCode(ResultCodeMapper.FAILURE);
+			}
+		} catch (Exception e) {
+			status.setMessage(" Error occured while Assigning Cadre Survey User details.");
+			status.setResultCode(ResultCodeMapper.FAILURE);
+			
+			LOG.error("exception occured in saveNewCadreSurveyUser method in CadreRegistrationService class",e);
+		}
+		return status;
+	}
+	
+	
+	public List<SelectOptionVO> getSubRegionsInConstituency(Long constituencyId, String scope) 
+	{
+		List<SelectOptionVO> subRegionsList = new ArrayList<SelectOptionVO>();
+		try {
+				if(scope != null && scope.equalsIgnoreCase(IConstants.CONST_TYPE_RURAL))
+				{
+					subRegionsList = regionServiceDataImp.getTehsilsInConstituency(constituencyId);
+				} else if(scope != null && scope.equalsIgnoreCase(IConstants.MUNCIPLE_ELECTION_TYPE))
+				{
+					subRegionsList = regionServiceDataImp.getLocalElectionBodiesByUrbanType(constituencyId, 5L);
+				} 
+				else if(scope != null && scope.equalsIgnoreCase(IConstants.CORPORATION_ELECTION_TYPE))	
+				{
+					subRegionsList = regionServiceDataImp.getLocalElectionBodiesByUrbanType(constituencyId, 6L);
+				}
+				
+		} catch (Exception e) {
+			LOG.error("exception occured in getSubRegionsInConstituency method in CadreRegistrationService class",e);
+		}
+		
+		return subRegionsList;
+	}
 	
 	public String  getUniCodeMessage(String message){
 	        String returnMessage = "";
@@ -1816,5 +2180,6 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		}
 		return status;
 	}
+
 	
 }

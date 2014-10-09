@@ -1648,6 +1648,32 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		}
 	}
 	
+	/**
+	 * This method returns all the local election bodies in a constituency.This method is invoked from getSubRegionsInConstituency() method
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public  List<SelectOptionVO> getLocalElectionBodiesByUrbanType(Long constituencyId, Long urbanTypeId)
+	{
+		log.debug("Inside getLocalElectionBodies method in RegionServiceDataImp Class");
+		List<SelectOptionVO> localElectionBodiesList = new ArrayList<SelectOptionVO>(); 
+		try
+		{
+			List<Object[]> result = assemblyLocalElectionBodyDAO.findByConstituencyIdForUrbanType(constituencyId,urbanTypeId);
+			
+			for(int i=0; i<result.size(); i++){
+				Object[] obj = (Object[]) result.get(i);
+				localElectionBodiesList.add(new SelectOptionVO(new Long(IConstants.URBAN_TYPE+obj[0].toString()),obj[1].toString()+" "+ (obj[2])));
+			}
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			log.debug("Exception arised while retrieving local election bodies");
+		}
+		
+		return localElectionBodiesList;
+	}
+	
 }
 	
  
