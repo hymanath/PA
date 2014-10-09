@@ -77,7 +77,7 @@ public class CadreManagementServiceTest {
 		Object[] obj117 = {new Long(33), new Long(12)};
 		cadreSizeDistrictWise.add(obj1110); cadreSizeDistrictWise.add(obj1120); cadreSizeDistrictWise.add(obj113); 
 		cadreSizeDistrictWise.add(obj114); cadreSizeDistrictWise.add(obj115);  cadreSizeDistrictWise.add(obj116); cadreSizeDistrictWise.add(obj117); 
-		EasyMock.expect(cadreDAO.findCadreSizeDistrictWise(userCadreInfo.getUserID())).andReturn(cadreSizeDistrictWise);
+		//EasyMock.expect(cadreDAO.findCadreSizeDistrictWise(userCadreInfo.getUserID())).andReturn(cadreSizeDistrictWise);
 
 		List mandals = DummyCadreData.getMandals();
 		EasyMock.expect(cadreDAO.findMandalsByDistrictID("10,12,14,22,25,31,33")).andReturn(mandals);
@@ -178,7 +178,7 @@ public class CadreManagementServiceTest {
 		Object[] obj117 = {new Long(33), new Long(12)};
 		cadreSizeDistrictWise.add(obj1110); cadreSizeDistrictWise.add(obj1120); cadreSizeDistrictWise.add(obj113); 
 		cadreSizeDistrictWise.add(obj114); cadreSizeDistrictWise.add(obj115);  cadreSizeDistrictWise.add(obj116); cadreSizeDistrictWise.add(obj117); 
-		EasyMock.expect(cadreDAO.findCadreSizeDistrictWise(userCadreInfo.getUserID())).andReturn(cadreSizeDistrictWise);
+		//EasyMock.expect(cadreDAO.findCadreSizeDistrictWise(userCadreInfo.getUserID())).andReturn(cadreSizeDistrictWise);
 
 		List mandals = DummyCadreData.getMandals();
 		EasyMock.expect(cadreDAO.findMandalsByDistrictID("10,12,14,22,25,31,33")).andReturn(mandals);
@@ -248,7 +248,7 @@ public class CadreManagementServiceTest {
 		Object[] obj117 = {new Long(33), new Long(12)};
 		data11.add(obj1110); data11.add(obj1120); data11.add(obj113); 
 		data11.add(obj114); data11.add(obj115);  data11.add(obj116); data11.add(obj117); 
-		EasyMock.expect(cadreDAO.findCadreSizeDistrictWise(userCadreInfo.getUserID())).andReturn(data11);
+		//EasyMock.expect(cadreDAO.findCadreSizeDistrictWise(userCadreInfo.getUserID())).andReturn(data11);
 		
 		List mandals = DummyCadreData.getMandals(); 
 		EasyMock.expect(cadreDAO.findMandalsByDistrictID("10,12,14,22,25,31,33")).andReturn(mandals);

@@ -91,5 +91,5 @@ public class CadreRegisterInfo implements Serializable{
 	public void setInfoList(List<CadreRegisterInfo> infoList) {
 		this.infoList = infoList;
 	}	
-	
+
 }
