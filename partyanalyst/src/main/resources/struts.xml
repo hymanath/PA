@@ -5602,7 +5602,6 @@
 		    <result name="mahanadu" type="redirect">mahaNaduAction.action</result>
 		    <result name="webuser" type="redirect">surveyCallCenterAction.action</result>
 		    <result name="surveyUser" type="redirect">surveyDataDetailsAction.action</result>
-		    <result name="surveyUser" type="redirect">surveyDataDetailsAction.action</result>
 		    <result name="partyCadre" type="redirect">partyCadreSearchAction.action</result>
 		    <result name="cadreDashBoard" type="redirect">cadreDashBoardAction.action</result>
 		    <result name="cadreRegistration" type="redirect">tdpCadreSearchAction.action</result>
@@ -8511,6 +8510,12 @@
 			<result type="json" name="success">
 				<param name="root">searchType</param>
 			</result>
+		</action>
+				
+		 <action name="cadreRegistrationReportAction" class="cadreDashBoardAction">
+			<result name="success">/jsp/cadreRegistrationReport.jsp</result>
+			<result name="input">/jsp/loginForm.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>	
 		</action>
 		
 </package>
