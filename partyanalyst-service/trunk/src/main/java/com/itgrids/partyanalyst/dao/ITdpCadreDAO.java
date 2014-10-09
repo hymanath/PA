@@ -53,4 +53,19 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	
 	public Integer updateNFCCardNumberByVoterId(Long voterId , String nfcCardNo);
 	
+	public List<Object[]> getConstituencyWiseAgeRangeCadreCount(Long constituencyId,String ageRange);
+	
+	public Long getConstituencyWiseYearCount(Long constituencyId,Long enrollmentYear);
+	
+	public List<Object[]> getDistrictWiseAgeRangeCadreCount(Long districtId,String ageRange);
+	
+	public Long getDistrictWiseYearCount(Long districtId,Long enrollmentYear);
+	
+	public List<Object[]> getConstituencyWiseGenderCadreCount(Long constituencyId);
+	
+	public List<Object[]> getDistrictWiseGenderCadreCount(Long districtId);
+	
+	public List<Object[]> getConstituencyWiseCastCadreCount(Long constituencyId);
+	
+	public List<Object[]> getDistrictWiseCastCadreCount(Long districtId);
 }
