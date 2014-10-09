@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -21,9 +20,9 @@ public class DelimitationConstituencyMandalDAOHibernateTest extends
 			IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO) {
 		this.delimitationConstituencyMandalDAO = delimitationConstituencyMandalDAO;
 	}
-	public void testGetAll(){
+	/*public void testGetAll(){
 		delimitationConstituencyMandalDAO.getAll();
-	}
+	}*/
 /*	public void testMandalsForAConstituency(){
 		List<Tehsil> tehsil = delimitationConstituencyMandalDAO.getTehsilsByDelimitationConstituencyID(new Long(3382));
 		System.out.println(tehsil.size());
@@ -110,14 +109,14 @@ public class DelimitationConstituencyMandalDAOHibernateTest extends
 		for (Object[] parms : list) 
 			System.out.println(parms[0]+" "+parms[1]);
 	}*/
-	public void testGetIspartialForMandalByMandalIdsList()
+	/*public void testGetIspartialForMandalByMandalIdsList()
 	{
 		List<Long> mandalIdsList = new ArrayList<Long>(0);
 		mandalIdsList.add(228l);
 		List<Object[]> list = delimitationConstituencyMandalDAO.getTehsilsForRuralConstituencyes(mandalIdsList, 2009l);
 		for (Object[] parms : list) 
 			System.out.println(parms[0]+" "+parms[1]);
-	}
+	}*/
 	/*public void testgetTehsilsByDelimitationConstituencyIds(){
 		List<Long> mandalIdsList = new ArrayList<Long>(0);
 		mandalIdsList.add(232l);
@@ -143,16 +142,13 @@ public class DelimitationConstituencyMandalDAOHibernateTest extends
 		}
 	}*/
 	
-	/*public void testGetAssemblyConstituencyAndMandalsInAState()
+	public void testGetAssemblyConstituencyAndMandalsInAState()
 	{
-		List<Object[]> list = delimitationConstituencyMandalDAO.getAssemblyConstituencyAndMandalsInAState(1l);
+		List<Tehsil> list = delimitationConstituencyMandalDAO.getTehsilsByDelimitationConstituencyID(1l);
 		System.out.println(list.size());
 		
-		for(Object[] params : list)
-		{
-			System.out.println();
-			for(Object obj : params)
-				System.out.print("\t"+obj.toString());
-		}
-	}*/
+	}
+	
+	
+	
 }
