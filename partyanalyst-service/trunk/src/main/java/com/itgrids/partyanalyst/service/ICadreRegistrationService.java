@@ -6,6 +6,7 @@ import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
@@ -38,4 +39,19 @@ public interface ICadreRegistrationService {
 	
 	public String tagCardIdForNFCReader(String cardNumber,Long voterId);
 	
+	public ResultStatus saveNewCadreSurveyUser(final Long userId, final String surveyUserName, final String  password, final String mobileNo);
+
+	public List<GenericVO> getSurveyCadreUsersList();
+	
+	public List<SelectOptionVO> getSurveyCadreAssignedConstituencyList();
+	
+	public List<GenericVO> getSurveyCadreAssignedUsersList(Long constiteuncyId);
+	
+	public ResultStatus releaseCadreSurveyUser(final Long cadreSurveyUserAssignedId);
+	
+	public ResultStatus assignUserForLocation(final Long surveyUserId, final Long levelId, final Long levelValue,final Long constituencyId,final String TabNo);
+	
+	public List<SelectOptionVO> getSubRegionsInConstituency(Long constituencyId, String scope) ;
+	
+	public String isTabAssignedAlready(String TabNo);
 }
