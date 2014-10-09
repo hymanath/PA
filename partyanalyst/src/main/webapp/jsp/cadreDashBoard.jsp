@@ -176,8 +176,8 @@
 				<table class="table table-bordered border-radius-0" style="margin-top: 5px;">
 					<tbody >
 						<tr>
-							<td><div id="totalMembersWorkingTodayId"><img style=" margin-top: 36px;padding-left: 110px;" src="images/icons/search.gif"/></div></td>
-							<td><h2>500</h2><p>Members <br/>Registered in <span class="text-green">2014</span></p></td>
+							<td><div style="text-align:center;" id="totalMembersWorkingTodayId"><img style=" margin-top: 36px;padding-left: 110px;" src="images/icons/search.gif"/></div></td>
+							<td style="width:50%;text-align:center;"><div style="margin-top:20px;"><a href="javascript:{}" onclick="openDialogToTrack();">Click Here To View</br> Users Working Status</a></div></b></td>
 						</tr>
 					</tbody>
 				</table>
@@ -192,6 +192,10 @@
 		</div>
 	</div>
 <script type="text/javascript">
+function openDialogToTrack(){
+    window.open('cadreRegistrationReportAction.action','_blank');
+}
+
 $(document).ready(function(){
 	  $('input').iCheck({
 		checkboxClass: 'icheckbox_square-blue',

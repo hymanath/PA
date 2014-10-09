@@ -354,7 +354,7 @@
 			  <pattern>/cadreRegistration*</pattern>
 
 			  <pattern>/cadreDashBoardAction*</pattern>
-			  
+			  <pattern>/cadreRegistrationReportAction*</pattern>
 			  <pattern>/ctpCasteReportAction*</pattern>
 			  
 			  
