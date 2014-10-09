@@ -2189,7 +2189,10 @@
 		<property name="electionTypeDAO" ref="electionTypeDAO" />
 		<property name="electionDAO" ref="electionDAO" />
 		<property name="tdpCadreFamilyDetailsDAO" ref="tdpCadreFamilyDetailsDAO" />
-			
+		<property name="cadreSurveyUserAssignDetailsDAO" ref="cadreSurveyUserAssignDetailsDAO" />
+		<property name="cadreSurveyUserDAO" ref="cadreSurveyUserDAO" />	
+		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
+				
      </bean>
       
       <bean name="cadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CadreDashBoardService">
