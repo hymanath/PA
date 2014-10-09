@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.ICandidateUpdationDetailsService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -64,10 +65,15 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private String								houseNo;
 	private InputStream 						inputStream;
 	
+	private EntitlementsHelper 					entitlementsHelper;
 	private CadrePrintVO						cadrePrintVO;
 	private List<BasicVO>						basicVOList;
 	
 	
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
 
 	public String getConstiteucnyId() {
 		return constiteucnyId;
@@ -300,10 +306,20 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	{
 		try {
 			LOG.info("Entered into execute method in CadreRegistrationAction Action");
+			session = request.getSession();
+			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+			
+			if(user == null)
+				return Action.INPUT;
+			
+			if(entitlementsHelper.checkForEntitlementToViewReport(user,"CADRE_REGISTRATION_2014")){
+				return Action.SUCCESS;
+			}
+			
 		} catch (Exception e) {
 			LOG.error("Exception raised in execute method in CadreRegistrationAction Action",e);
 		}
-		return Action.SUCCESS;
+		return Action.ERROR;
 	}
 	
 	
@@ -605,5 +621,209 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		return Action.SUCCESS;
 		
 	}
+	
+	public String cadreSurveyUserDetailsPage()
+	{
+		LOG.info("Entered into cadreSurveyUserDetailsPage method in CadreRegistrationAction Action");
+		try {
+			/*session = request.getSession();
+			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+			
+			if(user == null)
+				return Action.INPUT;
+			
+			if(entitlementsHelper.checkForEntitlementToViewReport(user,"CADRE_REGISTRATION_2014")){
+				
+				genericVOList = cadreRegistrationService.getSurveyCadreUsersList();
+				constituencyesList = 	surveyDataDetailsService.getAssemblyConstituenciesByStateId(0l,1l);
+				selectOptionVOList = cadreRegistrationService.getSurveyCadreAssignedConstituencyList();
+				
+				return Action.SUCCESS;
+			}
+			*/
+			
+			genericVOList = cadreRegistrationService.getSurveyCadreUsersList();
+			constituencyesList = 	surveyDataDetailsService.getAssemblyConstituenciesByStateId(0l,1l);
+			selectOptionVOList = cadreRegistrationService.getSurveyCadreAssignedConstituencyList();
+			
+			return Action.SUCCESS;
+			
+		} catch (Exception e) {			
+			LOG.info("Entered into cadreSurveyUserDetailsPage method in CadreRegistrationAction Action");
+		}
+		return Action.ERROR;
+	}
+	
+	
+	public String saveNewCadreSurveyUser()
+	{
+		LOG.info("Entered into saveNewCadreSurveyUser method in CadreRegistrationAction Action");
+		try {		
+			session = request.getSession();
+			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+			
+			if(user != null)
+			{
+				jobj = new JSONObject(getTask());
+				resultStatus = cadreRegistrationService.saveNewCadreSurveyUser(user.getRegistrationID(),jobj.getString("surveyUserName"),jobj.getString("password"),jobj.getString("mobileNo"));
+			}					
+			else
+			{
+				resultStatus = new ResultStatus();
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				resultStatus.setMessage("Please Longin to update details.");
+			}
+		}
+		catch(Exception e){
+			LOG.error("Exception raised in saveNewCadreSurveyUser method in CadreRegistrationAction action", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getSurveyCadreUsersList()
+	{
+		LOG.info("Entered into getSurveyCadreUsersList method in CadreRegistrationAction Action");
+		try {		
+			session = request.getSession();
+			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+			
+			if(user != null)
+			{
+				genericVOList = cadreRegistrationService.getSurveyCadreUsersList();
+			}					
+			else
+			{
+				genericVOList = null;
+			}
+		}
+		catch(Exception e){
+			LOG.error("Exception raised in getSurveyCadreUsersList method in CadreRegistrationAction action", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getSurveyCadreAssignedConstituencyList()
+	{
+		LOG.info("Entered into getSurveyCadreAssignedConstituencyList method in CadreRegistrationAction Action");
+		try {		
+			session = request.getSession();
+			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+			
+			if(user != null)
+			{
+				selectOptionVOList = cadreRegistrationService.getSurveyCadreAssignedConstituencyList();
+			}					
+			else
+			{
+				genericVOList = null;
+			}
+		}
+		catch(Exception e){
+			LOG.error("Exception raised in getSurveyCadreAssignedConstituencyList method in CadreRegistrationAction action", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getSurveyCadreAssignedUsersList()
+	{
+		LOG.info("Entered into getSurveyCadreAssignedConstituencyList method in CadreRegistrationAction Action");
+		try {		
+			session = request.getSession();
+			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+			
+			if(user != null)
+			{
+				jobj = new JSONObject(getTask());
+				genericVOList = cadreRegistrationService.getSurveyCadreAssignedUsersList(jobj.getLong("constituencyId"));
+			}					
+			else
+			{
+				genericVOList = null;
+			}
+		}
+		catch(Exception e){
+			LOG.error("Exception raised in getSurveyCadreAssignedConstituencyList method in CadreRegistrationAction action", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String releaseCadreSurveyUser()
+	{
+		LOG.info("Entered into saveNewCadreSurveyUser method in CadreRegistrationAction Action");
+		try {		
+			session = request.getSession();
+			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+			
+			if(user != null)
+			{
+				jobj = new JSONObject(getTask());
+				resultStatus = cadreRegistrationService.releaseCadreSurveyUser(jobj.getLong("cadreSurveyUserAssignedId"));
+			}					
+			else
+			{
+				resultStatus = new ResultStatus();
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				resultStatus.setMessage("Please Longin to update details.");
+			}
+		}
+		catch(Exception e){
+			LOG.error("Exception raised in saveNewCadreSurveyUser method in CadreRegistrationAction action", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String assignUserForLocation()
+	{
+		LOG.info("Entered into assignUserForLocation method in CadreRegistrationAction Action");
+		try {		
+			session = request.getSession();
+			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+			
+			if(user != null)
+			{
+				jobj = new JSONObject(getTask());
+				resultStatus = cadreRegistrationService.assignUserForLocation(jobj.getLong("cadreSurveyUserId"),jobj.getLong("levelId"),jobj.getLong("levelValue"),jobj.getLong("constituencyId"),jobj.getString("tabNo"));
+			}					
+			else
+			{
+				resultStatus = new ResultStatus();
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				resultStatus.setMessage("Please Longin to update details.");
+			}
+		}
+		catch(Exception e){
+			LOG.error("Exception raised in assignUserForLocation method in CadreRegistrationAction action", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getSubRegionsInConstituency()
+	{
+		LOG.info("Entered into assignUserForLocation method in CadreRegistrationAction Action");
+		try {		
+			jobj = new JSONObject(getTask());
+			selectOptionVOList = cadreRegistrationService.getSubRegionsInConstituency(jobj.getLong("constituencyId"),jobj.getString("scope"));
+		}
+		catch(Exception e){
+			LOG.error("Exception raised in assignUserForLocation method in CadreRegistrationAction action", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	
+	public String isTabAssignedAlready()
+	{
+		LOG.info("Entered into assignUserForLocation method in CadreRegistrationAction Action");
+		try {		
+			jobj = new JSONObject(getTask());
+			task = cadreRegistrationService.isTabAssignedAlready(jobj.getString("tabNo"));
+		}
+		catch(Exception e){
+			LOG.error("Exception raised in assignUserForLocation method in CadreRegistrationAction action", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	
 	
 }
