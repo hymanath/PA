@@ -341,20 +341,55 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		List<CadreRegisterInfo> returnList = new ArrayList<CadreRegisterInfo>();
 		CadreRegisterInfo vo = null;
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-		SimpleDateFormat timeFormate = new SimpleDateFormat("hh:mm");
+		SimpleDateFormat timeFormate = new SimpleDateFormat("HH:mm");
 		try{
 			List<Date> datesList = new ArrayList<Date>();
+			Map<Long,Map<Date,CadreRegisterInfo>> userMap = new HashMap<Long,Map<Date,CadreRegisterInfo>>();//Map<userId,Map<Date,info>>
+			Map<Date,CadreRegisterInfo> dateMap = new HashMap<Date,CadreRegisterInfo>();//Map<Date,info>
+			Map<Long,String> userNames = new HashMap<Long,String>();
 			//0 count,1 name,2 min,3 max,4 date,5 id
 			List<Object[]> dataCollectedInfo = tdpCadreDAO.getCandidateDataCollectionInfo(fromDate, toDate);
 			
 			for(Object[] data:dataCollectedInfo){
+				if(!datesList.contains((Date)data[4])){
+					datesList.add((Date)data[4]);
+				}
+				userNames.put((Long)data[5], data[1].toString());
+				dateMap = userMap.get((Long)data[5]);
+				if(dateMap == null){
+					dateMap = new HashMap<Date,CadreRegisterInfo>();
+					userMap.put((Long)data[5],dateMap);
+				}
 				vo = new CadreRegisterInfo() ;
-				vo.setName(data[1].toString());
-				vo.setDate(sdf.format((Date)data[2]));
 				vo.setArea(convertTimeTo12HrsFormat(timeFormate.format((Date)data[2])));
 				vo.setLocation(convertTimeTo12HrsFormat(timeFormate.format((Date)data[3])));
 				vo.setTotalCount((Long)data[0]);
+				dateMap.put((Date)data[4], vo);
+			}
+			int count = 0;
+			for(Long key:userMap.keySet()){
+				dateMap = userMap.get(key);
+				vo = new CadreRegisterInfo();
+				vo.setName(userNames.get(key));
+				List<CadreRegisterInfo> daysList = new ArrayList<CadreRegisterInfo>();
+				for(Date date:datesList){
+					if(dateMap.get(date) != null){
+						CadreRegisterInfo day = dateMap.get(date);
+					    if(count == 0){
+						  day.setDate(sdf.format(date));
+					    }
+						daysList.add(day);
+					}else{
+						CadreRegisterInfo day = new CadreRegisterInfo();
+						if(count == 0){
+						   day.setDate(sdf.format(date));
+						 }
+						daysList.add(day);
+					}
+				}
+				vo.setInfoList(daysList);
 				returnList.add(vo);
+				count++;
 			}
 		}catch(Exception e){
 			LOG.error("Exception rised in getCandidateDataCollectionInfo",e);
@@ -369,7 +404,10 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			if(hours != 12){
 			   hours = hours-12;
 			}
-			return hours+":"+timeArray[2]+" PM";
+			return hours+":"+timeArray[1]+" PM";
+		}
+		if(hours == 0){
+			return "12:"+timeArray[1]+" AM";
 		}
 		
 		return time+" AM";
