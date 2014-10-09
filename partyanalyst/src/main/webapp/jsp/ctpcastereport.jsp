@@ -71,8 +71,12 @@ input[type="text"]{
 		line-height: 18px;
 		padding: 4px;
 	}
-		
-		
+	
+.nav-tabs > .active > a, .nav-tabs > .active > a:hover {
+  
+    background-color: #81BEF7 !important;
+   
+}	
 </style>
 
 <script type="text/javascript">
@@ -369,7 +373,7 @@ function clearFieldsData(){
 
  <div style="width:960px;margin-left:auto;margin-right:auto;margin-top:20px;">
     <ul class="nav nav-tabs" id="myTab">
-	<li class="active"><a href="#statusDiv" onclick="getVotersCountDetails();">STATUS REPORT </a></li>
+	<li class="active"><a href="#statusDiv" >STATUS REPORT </a></li>
 <li ><a href="#voterSearchDiv">VOTER SEARCH </a></li>
 <li><a href="#voterCountDetailsDiv">VOTER COUNT </a></li>
 
@@ -514,13 +518,15 @@ function clearFieldsData(){
 	   
 </div>
 <script>
+
     $('#myTab a').click(function (e) {
 
 	clearData();
     e.preventDefault();
     $(this).tab('show');
-    })
 	
+    })
+
 function getMandalOrMuncipalityList()
 {
     var tempVar = "mandalList";
