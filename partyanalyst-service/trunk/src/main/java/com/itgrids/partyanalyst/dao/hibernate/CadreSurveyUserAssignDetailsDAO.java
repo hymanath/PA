@@ -21,4 +21,60 @@ public class CadreSurveyUserAssignDetailsDAO extends GenericDaoHibernate<CadreSu
 		query.setParameter("cadreSurveyUserId", cadreSurveyUserId);
 		return query.list();
 	}
+	
+	public List<Long> getCadreSurveyAssignUsersList()
+	{
+		Query query = getSession().createQuery("select model.cadreSurveyUserId from CadreSurveyUserAssignDetails model where " +
+				" model.isDeleted = 'N' ");
+		
+		return query.list();
+		
+	}
+
+	
+	public List<Object[]> getCadreSurveyAssignUsersListByConstituency(Long constituencyId)
+	{
+		Query query = getSession().createQuery("select model.cadreSurveyUserAssignDetails, model.cadreSurveyUser.userName from CadreSurveyUserAssignDetails model where " +
+				" model.isDeleted = 'N' and model.constituencyId = :constituencyId ");
+	
+		query.setParameter("constituencyId", constituencyId);
+		
+		return query.list();
+		
+	}
+	
+	public List<Object[]> getCadreSurveyAssignConstituencyList()
+	{
+		Query query = getSession().createQuery("select distinct model.constituency.constituencyId, model.constituency.name from CadreSurveyUserAssignDetails model where " +
+				" model.isDeleted = 'N' order by  model.constituency.name ");
+		
+		return query.list();
+		
+	}
+	
+	public List<Long> checkIsAlreadyAssigned(Long cadreSurveyUserId, Long levelId, Long levelValue, Long constituencyId)
+	{
+		Query query = getSession().createQuery("select model.cadreSurveyUserAssignDetails from CadreSurveyUserAssignDetails model where " +
+				" model.cadreSurveyUser.cadreSurveyUserId = :cadreSurveyUserId and model.levelId = :levelId and model.levelValue = :levelValue and model.constituencyId = :constituencyId " +
+				" and model.isDeleted = 'N'");
+	
+		query.setParameter("cadreSurveyUserId", cadreSurveyUserId);
+		query.setParameter("levelId", levelId);
+		query.setParameter("levelValue", levelValue);
+		query.setParameter("constituencyId", constituencyId);
+		
+		return query.list();
+	}
+	
+	
+	
+	public List<Long> isTabAssignedAlready(String tabNo)
+	{
+		Query query = getSession().createQuery("select model.cadreSurveyUserAssignDetails from CadreSurveyUserAssignDetails model where " +
+				" model.tabNo like '%"+tabNo+"%'  and model.isDeleted = 'N'");
+	
+		return query.list();
+	}
+	
+	
 }
