@@ -1474,6 +1474,7 @@
 	 	<property name="candidateUpdationDetailsService" ref="candidateUpdationDetailsService" />
 	 	<property name="staticDataService" ref="staticDataService" />
 	 	<property name="surveyDataDetailsService" ref="surveyDataDetailsService" />
+	 	<property name="entitlementsHelper" ref="entitlementsHelper" />	
 	  </bean>
 	 
 	 <bean id="cadreDashBoardAction" class="com.itgrids.partyanalyst.web.action.CadreDashBoardAction" singleton="false">
