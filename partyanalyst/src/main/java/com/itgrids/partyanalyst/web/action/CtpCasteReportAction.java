@@ -171,10 +171,7 @@ public class CtpCasteReportAction extends ActionSupport implements ServletReques
 			RegistrationVO user =  (RegistrationVO) session.getAttribute(IConstants.USER);
 			Long userId = null;
 			if(user != null && user.getRegistrationID() != null)
-				if(user.getParentUserId()!=null)
-					userId=user.getMainAccountId();
-				else
-					userId = user.getRegistrationID();
+				userId = user.getRegistrationID();
 			else 
 			  return "error";
 			voterHouseInfoVO = 	ctpCasteReportService.getCTPVoterCount(userId);
@@ -193,9 +190,6 @@ public class CtpCasteReportAction extends ActionSupport implements ServletReques
 		RegistrationVO user = (RegistrationVO) session.getAttribute(IConstants.USER);
 		Long userId = null;
 		if(user != null && user.getRegistrationID() != null)
-			if(user.getParentUserId() != null)
-			userId = user.getMainAccountId();
-		else
 			userId = user.getRegistrationID();
 		else
 			return Action.ERROR;
