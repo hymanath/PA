@@ -12,4 +12,5 @@ public interface IOccupationDAO extends GenericDao<Occupation, Long> {
 	
 	public List<Occupation> getOccupationList();
 	
+	public String getOccupationNameByOccupationId(Long occupationId);
 }
