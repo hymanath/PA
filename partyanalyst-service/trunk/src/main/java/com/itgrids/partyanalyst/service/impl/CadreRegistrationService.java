@@ -38,6 +38,7 @@ import com.itgrids.partyanalyst.dao.ICountryDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyDesignationDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
@@ -115,8 +116,14 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private ICadreSurveyUserAssignDetailsDAO  cadreSurveyUserAssignDetailsDAO;
 	private ICadreSurveyUserDAO cadreSurveyUserDAO;
 	private IRegionServiceData regionServiceDataImp;
+	private IOccupationDAO occupationDAO;
 	
 	
+	
+	public void setOccupationDAO(IOccupationDAO occupationDAO) {
+		this.occupationDAO = occupationDAO;
+	}
+
 	public void setImageAndStringConverter(
 			ImageAndStringConverter imageAndStringConverter) {
 		this.imageAndStringConverter = imageAndStringConverter;
@@ -525,6 +532,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					  }
 				  }else{
 					  uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre);
+					  surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getMemberShipNo());
 					tdpCadre = tdpCadreDAO.save(tdpCadre);	
 				  }
 				}
@@ -886,7 +894,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						vo.setGender(voter[5] != null ? voter[5].toString().trim():" -- ");
 						vo.setRelationType(" -- ");
 						
-						String dateOfBirth = 	voter[3] != null ? voter[3].toString().substring(0, 10):" "	;
+						String dateOfBirth = 	voter[3] != null ? voter[3].toString().substring(0,10):" "	;
 						
 						if(dateOfBirth != null && dateOfBirth.trim().length()>0)
 						{
@@ -904,6 +912,26 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						else if(voter[4] != null && voter[4].toString().trim().length()>0 )
 						{
 							vo.setAge(voter[4].toString());
+						}
+						
+						if(voter[7] != null)
+						{
+							try {
+								
+								Voter voterEntity = voterDAO.getVoterByVoterID(voter[7]!= null? Long.valueOf(voter[7].toString()):0L);
+								
+								if(voterEntity != null)
+								{
+									vo.setName(voterEntity.getName() != null ? voterEntity.getName().toString():" -- ");
+									vo.setRelativeName(voterEntity.getRelativeName() != null ? voterEntity.getRelativeName().toString():" -- ");
+									vo.setAge(voterEntity.getAge() != null ? voterEntity.getAge().toString():"--");
+									vo.setHouseNo(voterEntity.getHouseNo() != null ? voterEntity.getHouseNo().toString():" -- ");
+									vo.setGender(voterEntity.getGender() != null ? voterEntity.getGender().toString():" -- ");
+									vo.setRelationType(voterEntity.getRelationshipType() != null ? voterEntity.getRelationshipType().toString():" -- ");
+									vo.setVoterId(voterEntity.getVoterId()!= null ? voterEntity.getVoterId():0L);
+								}
+							} catch (Exception e) {}
+							
 						}
 						
 						returnList.add(vo);
@@ -930,6 +958,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			String houseNo = null;
 			List<VoterInfoVO> familyList = null;
 			List<VoterInfoVO> existingFamilyInfo = null;
+			List<GenericVO> existingParticipationDetails = null;
+			List<GenericVO> existingrollsDetails = null;
 			
 			if(candidateId != null && candidateId != 0L)
 			{
@@ -979,7 +1009,24 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							{
 								Long tdpCadreId = tdpCadre.getTdpCadreId();
 								
+								vo.setBlodGroupId(tdpCadre.getBloodGroup() != null ? tdpCadre.getBloodGroupId():0L);
+								
+								vo.setCasteId(tdpCadre.getCasteState() != null ? tdpCadre.getCasteState().getCasteStateId():0L);							
+								vo.setCasteName(tdpCadre.getCasteState() != null ? tdpCadre.getCasteState().getCaste().getCasteName().toString():"");	
+								vo.setDateOfBirth(tdpCadre.getDateOfBirth() != null ? new SimpleDateFormat("dd-MM-yyyy").format(new SimpleDateFormat("yy-MM-dd").parse(tdpCadre.getDateOfBirth().toString())):"");
+								vo.setOccupationId(tdpCadre.getOccupation() != null ? tdpCadre.getOccupation().getOccupationId():0L);
+								vo.setOccupation(tdpCadre.getOccupation() != null ? tdpCadre.getOccupation().getOccupation():"");
+								
+								vo.setEducation(tdpCadre.getEducationalQualifications() != null ? tdpCadre.getEducationalQualifications().getEduQualificationId().toString():"0");
+								
+								vo.setLocation(tdpCadre.getUserAddress() != null ? (tdpCadre.getUserAddress().getStreet() != null ?tdpCadre.getUserAddress().getStreet().toString():""):"");
+								vo.setMobileNo(tdpCadre.getMobileNo() != null ? tdpCadre.getMobileNo():"");
+								vo.setMemberShipId(tdpCadre.getMemberShipNo() != null ? tdpCadre.getMemberShipNo().toString():"");
+								vo.setActiveDate(tdpCadre.getPartyMemberSince() != null ? new SimpleDateFormat("dd-MM-yyyy").format(new SimpleDateFormat("yy-MM-dd").parse(tdpCadre.getPartyMemberSince().toString())):"");
+								 
 								existingFamilyInfo =  getExistingCadreFamilyInfo(tdpCadreId);
+								existingParticipationDetails = getExistingCadreParticipationInfo(tdpCadreId);
+								existingrollsDetails = getExistingRollsInfo(tdpCadreId);
 							}
 						}
 						
@@ -1054,7 +1101,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								
 								vo.setEducation(tdpCadre.getEducationalQualifications() != null ? tdpCadre.getEducationalQualifications().getEduQualificationId().toString():"0");
 								
-								vo.setLocation(tdpCadre.getUserAddress() != null ? (tdpCadre.getUserAddress().getHamlet() != null ?tdpCadre.getUserAddress().getHamlet().getHamletName().toString():""):"");
+								vo.setLocation(tdpCadre.getUserAddress() != null ? (tdpCadre.getUserAddress().getStreet() != null ?tdpCadre.getUserAddress().getStreet().toString():""):"");
 								vo.setMobileNo(tdpCadre.getMobileNo() != null ? tdpCadre.getMobileNo():"");
 								vo.setMemberShipId(tdpCadre.getMemberShipNo() != null ? tdpCadre.getMemberShipNo().toString():"");
 								vo.setActiveDate(tdpCadre.getPartyMemberSince() != null ? new SimpleDateFormat("dd-MM-yyyy").format(new SimpleDateFormat("yy-MM-dd").parse(tdpCadre.getPartyMemberSince().toString())):"");
@@ -1064,6 +1111,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							}
 						
 						existingFamilyInfo =  getExistingCadreFamilyInfo(tdpCadre.getTdpCadreId());
+						existingParticipationDetails = getExistingCadreParticipationInfo(tdpCadre.getTdpCadreId());
+						existingrollsDetails = getExistingRollsInfo(tdpCadre.getTdpCadreId());
+						
+						
 					}
 				}
 				
@@ -1098,8 +1149,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 										VoterInfoVO fmilyVO = new VoterInfoVO();
 										fmilyVO.setVoterId(family[0] != null ? Long.valueOf(family[0].toString().trim()):0L);
 										fmilyVO.setName(family[1] != null ? family[1].toString():"");
-										fmilyVO.setRelativeName(family[2] != null ? family[2].toString():"");
-										fmilyVO.setRelationType(family[3] != null ? family[3].toString():"");
+										//fmilyVO.setRelativeName(family[2] != null ? family[2].toString():"");
+										//fmilyVO.setRelationType(family[3] != null ? family[3].toString():"");
 										fmilyVO.setGender(family[4] != null ? family[4].toString():"");
 										fmilyVO.setAge(family[5] != null ? family[5].toString():"");								
 										fmilyVO.setVoterCardNo(family[6] != null ? family[6].toString():"");
@@ -1111,9 +1162,33 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 											fmilyVO.setEducation(existingFamilyMember.getEducation());
 											fmilyVO.setOccupation(existingFamilyMember.getOccupation());
 											fmilyVO.setOccupationId(existingFamilyMember.getOccupationId());
+											existingFamilyInfo.remove(existingFamilyMember);
 										}
 										
+										
 										familyList.add(fmilyVO);
+									}
+								}
+								
+								if(existingFamilyInfo != null && existingFamilyInfo.size()>0)
+								{
+									for (VoterInfoVO family : existingFamilyInfo) 
+									{
+										
+										if( family.getVoterId().longValue() != voterId.longValue())
+										{
+											VoterInfoVO fmilyVO = new VoterInfoVO();
+											fmilyVO.setVoterId(family.getVoterId() != null ? family.getVoterId():0L);
+											fmilyVO.setName(family.getName() != null? family.getName():"");	
+											fmilyVO.setGender(family.getGender() != null ? family.getGender():"");
+											fmilyVO.setAge(family.getAge() != null ? family.getAge():"");								
+											fmilyVO.setVoterCardNo(family.getVoterCardNo() != null ?family.getVoterCardNo():"");											
+											fmilyVO.setEducation(family.getEducation());
+											fmilyVO.setOccupation(family.getOccupation());
+											fmilyVO.setOccupationId(family.getOccupationId());
+											
+											familyList.add(fmilyVO);
+										}
 									}
 								}
 								vo.setVoterInfoVOList(familyList);
@@ -1184,10 +1259,95 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				vo.setSelectOptionVOList(bloodGroups);
 			}
 			
+			vo.setPreviousParticipationInfoList(existingParticipationDetails);
+			vo.setCadreRolesList(existingrollsDetails);
+			
+			
 			returnList.add(vo);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in getCandidateInfoBySearchCriteria in CadreRegistrationService service", e);
+		}
+		
+		return returnList;
+	}
+	
+	
+	public List<GenericVO> getExistingCadreParticipationInfo(Long tdpCadreId)
+	{
+		List<GenericVO> returnList = new ArrayList<GenericVO>();
+		
+		try {
+			
+			List<Object[]> participationInfo = cadreParticipatedElectionDAO.getPreviousParticipationInfoByTdpCadreId(tdpCadreId);
+			
+			if(participationInfo != null && participationInfo.size()>0)
+			{
+				for (Object[] participation : participationInfo)
+				{
+					GenericVO vo = new GenericVO();
+					vo.setId(participation[0] != null ? Long.valueOf(participation[0].toString().trim()):0L);		//electionScopeId
+					vo.setCount(participation[1] != null ? Long.valueOf(participation[1].toString().trim()):0L);	// election Id
+					vo.setRank(participation[2] != null ? Long.valueOf(participation[2].toString().trim()):0L);		// constituencyId
+					
+					List<SelectOptionVO> electionTypeList = getElectionYearsByElectionType(participation[0] != null ? Long.valueOf(participation[0].toString().trim()):0L);
+					List<GenericVO> electionsList = new ArrayList<GenericVO>();
+					
+					if(electionTypeList != null && electionTypeList.size()>0)
+					{
+						for (SelectOptionVO selectOptionVO : electionTypeList) 
+						{
+							GenericVO electionVo = new GenericVO();
+							electionVo.setId(selectOptionVO.getId());
+							electionVo.setName(selectOptionVO.getName());
+							
+							electionsList.add(electionVo);	
+						}
+						
+						vo.setGenericVOList(electionsList);						
+						returnList.add(vo);
+						
+					}
+					else
+					{
+						returnList.add(vo);
+					}
+					
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in getExistingCadreParticipationInfo in CadreRegistrationService service", e);
+		}
+		
+		return returnList;
+	}
+	
+	public List<GenericVO> getExistingRollsInfo(Long tdpCadreId)
+	{
+		List<GenericVO> returnList = new ArrayList<GenericVO>();
+		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		
+		try {
+			
+			List<Object[]> participationInfo = cadrePreviousRolesDAO.getexistingRolesForTdpCadreByTdpCadreId(tdpCadreId);
+			
+			if(participationInfo != null && participationInfo.size()>0)
+			{
+				for (Object[] participation : participationInfo)
+				{
+					GenericVO vo = new GenericVO();
+					vo.setId(participation[0] != null ? Long.valueOf(participation[0].toString().trim()):0L);		//cadre level Id
+					vo.setCount(participation[1] != null ? Long.valueOf(participation[1].toString().trim()):0L);	// designation Id
+					vo.setStartTime(participation[2] != null ?format.format(format1.parse(participation[2].toString())):"");		// from date
+					vo.setEndTime(participation[3] != null ? format.format(format1.parse(participation[3].toString())):"");		// to date 
+					
+					returnList.add(vo);
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in getExistingCadreParticipationInfo in CadreRegistrationService service", e);
 		}
 		
 		return returnList;
@@ -1227,10 +1387,27 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					for (Object[] voter : cadreFamilyInfo) 
 					{
 						VoterInfoVO voterVO = new VoterInfoVO();
-						voterVO.setVoterId(voter[0] != null ? Long.valueOf(voter[0].toString().trim()):0L);
+						Voter voter1 = (Voter) (voter[0] != null ? voter[0]:null);
+						
+						if(voter1 != null)
+						{
+							voterVO.setVoterId(voter1 != null ? voter1.getVoterId():0L);
+							voterVO.setName(voter1.getName() != null ? voter1.getName():"");
+							voterVO.setAge(voter1.getAge() != null ? voter1.getAge().toString():"");
+							voterVO.setGender(voter1.getGender() != null ? voter1.getGender():"");
+							voterVO.setVoterCardNo(voter1.getVoterIDCardNo() != null ? voter1.getVoterIDCardNo():"");
+						}
+						else
+						{
+							voterVO.setName(voter[3] != null ? voter[3].toString().trim():"");
+						}
+						
 						voterVO.setEducation(voter[1] != null ? voter[1].toString().trim():"");
 						voterVO.setOccupationId(voter[2] != null ? Long.valueOf(voter[2].toString().trim()):0L);
-						voterVO.setOccupation(voter[3] != null ? voter[3].toString().trim():"");
+						
+						
+						String occupation = occupationDAO.getOccupationNameByOccupationId(voterVO.getOccupationId());
+						voterVO.setOccupation(occupation != null ? occupation.trim():"");
 						
 						returnList.add(voterVO);
 					}
