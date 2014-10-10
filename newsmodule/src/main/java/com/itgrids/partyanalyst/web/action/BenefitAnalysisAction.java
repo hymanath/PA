@@ -326,6 +326,8 @@ public class BenefitAnalysisAction extends ActionSupport implements ServletReque
 		RegistrationVO user = (RegistrationVO) session.getAttribute(IConstants.USER);
 		if(user == null){
 			return "error";
+		}else if(!user.getUserRoles().contains("ANALYSIS")){
+        	return "noAccess";
 		}
 		return Action.SUCCESS;
 	}
@@ -429,8 +431,9 @@ public class BenefitAnalysisAction extends ActionSupport implements ServletReque
 	        RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 	        if(user == null){
 	        	return ERROR;
+	        }else if(!user.getUserRoles().contains("ANALYSIS")){
+	        	return "noAccess";
 	        }
-	        
 	        return Action.SUCCESS;
 		}
 	  
