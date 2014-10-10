@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
@@ -20,4 +22,13 @@ public class CadreParticipatedElectionDAO extends GenericDaoHibernate<CadreParti
 		
 		return count;
 	}
+	
+	public List<Object[]> getPreviousParticipationInfoByTdpCadreId(Long tdpCadreId)
+	{
+		Query query = getSession().createQuery("select model.election.electionScope.electionType.electionTypeId ,model.electionId, model.constituencyId  from  " +
+				" CadreParticipatedElection model  where model.tdpCadreId = :tdpCadreId and model.isDeleted = 'N' order by model.cadreParticipatedElectionId ");
+		query.setParameter("tdpCadreId", tdpCadreId);
+		return query.list();
+	}
+	
 }

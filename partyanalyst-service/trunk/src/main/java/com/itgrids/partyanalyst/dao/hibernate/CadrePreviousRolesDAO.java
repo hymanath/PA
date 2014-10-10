@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
@@ -22,4 +24,13 @@ public class CadrePreviousRolesDAO extends GenericDaoHibernate<CadrePreviousRole
 		return count;
 	}
 
+	public List<Object[]> getexistingRolesForTdpCadreByTdpCadreId(Long tdpCadreId)
+	{
+		
+		Query query = getSession().createQuery(" select model.cadreLevelId, model.partyDesignationId, model.fromDate, model.toDate  from CadrePreviousRoles model  where " +
+				"  model.tdpCadreId = :tdpCadreId and model.isDeleted = 'N' order by  model.cadrePreviousRolesId ");
+		query.setParameter("tdpCadreId", tdpCadreId);
+				
+		return query.list();		
+	}
 }
