@@ -1201,7 +1201,7 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
         	   queryStr.append(" select count(distinct cpf.file.fileId),CASE WHEN cpf.sourceParty.partyId is not null and cpf.sourceParty.partyId =:partyId THEN cpf.sourceBenefit.benefitId ELSE  " +
 		 		" cpf.destinationBenefit.benefitId END,ua.district.districtId,"+partyId+"l from CandidatePartyFile cpf ,UserAddress ua ");
         	   
-        	   queryStr.append(" where cpf.file.fileId =  ua.file.fileId and date(cpf.file.fileDate) >= :fromDate and date(cpf.file.fileDate) <= :toDate and cpf.file.isDeleted ='N' " +
+        	   queryStr.append(" where  date(cpf.file.fileDate) >= :fromDate and date(cpf.file.fileDate) <= :toDate and cpf.file.fileId =  ua.file.fileId and cpf.file.isDeleted ='N' " +
        		 		" and (cpf.sourceParty.partyId = :partyId or cpf.destinationParty.partyId = :partyId ) and ua.district.districtId is not null  and (ua.regionScopes.regionScopesId = 3 or ua.regionScopes.regionScopesId = 4) ");
         
         	   if(stateId != null && stateId.longValue() > 0 ){

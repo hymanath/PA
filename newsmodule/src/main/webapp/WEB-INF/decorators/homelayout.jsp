@@ -168,8 +168,10 @@ margin:-1px 0px 0px 0px ;
 						  <li class="outerLi" id="newsTabId"><a href="newsDetailsAction.action" class="innerA">News</a></li>
 						</s:if>
 						<s:if test="%{'ANALYSIS' in #session.USER.userRoles}">
-						   <li class="outerLi" id="reportsTabId">
-								<a href="newsAnalysisAction.action" class="innerA">Analysis</a>
+						   <li class="outerLi" id="reportsTabId"><a href="newsAnalysisAction.action" class="innerA">Analysis</a>
+							  <ul>
+								<li style="width:180px;"><a href="benefitAnalysisAction.action"><span>Benefit Analysis</span></a></li>
+							  </ul> 
 						   </li>
 						</s:if>
 						<s:if test="%{'ACTIVITIES' in #session.USER.userRoles}">
