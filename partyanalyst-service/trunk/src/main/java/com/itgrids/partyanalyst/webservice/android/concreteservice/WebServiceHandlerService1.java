@@ -33,6 +33,7 @@ import com.itgrids.partyanalyst.dao.IVoterBoothActivitiesDAO;
 import com.itgrids.partyanalyst.dao.IVoterTagDAO;
 import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
+import com.itgrids.partyanalyst.dto.CadrePrintVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.LoginResponceVO;
 import com.itgrids.partyanalyst.dto.LoginStatusVO;
@@ -734,6 +735,12 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 		
 		return surveyCadreResponceVO;
 		
+	}
+	
+	public Object getVCadreDataByPanchayatId(Long panchayatId)
+	{
+		List<CadrePrintVO> list = cadreRegistrationService.getSelectedLevelCadreDetails(panchayatId);
+		return list;
 	}
 	
 }

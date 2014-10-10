@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dao.IVoterBoothActivitiesDAO;
 import com.itgrids.partyanalyst.dao.IVoterTagDAO;
 import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
+import com.itgrids.partyanalyst.dto.CadrePrintVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.FlagVO;
 import com.itgrids.partyanalyst.dto.PanchayatCountVo;
@@ -38,6 +39,7 @@ import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.VoterBoothActivities;
 import com.itgrids.partyanalyst.model.VoterTag;
 import com.itgrids.partyanalyst.security.PBKDF2;
+import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.itgrids.partyanalyst.service.ILoginService;
 import com.itgrids.partyanalyst.service.IMailService;
@@ -86,6 +88,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	@Autowired IUserDAO userDAO;
 	@Autowired IStrategyModelTargetingService strategyModelTargetingService;
     @Autowired IUserSurveyBoothsDAO userSurveyBoothsDAO ;
+    @Autowired ICadreRegistrationService cadreRegistrationService;
 	public IVoterBoothActivitiesDAO getVoterBoothActivitiesDAO() {
 		return voterBoothActivitiesDAO;
 	}
@@ -1062,6 +1065,18 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		return null;  	
 		}
 		return wsResultVO;
+	}
+	
+	public Object getVCadreDataByPanchayatId(Long panchayatId)
+	{
+		List<CadrePrintVO> list = cadreRegistrationService.getSelectedLevelCadreDetails(panchayatId);
+		return list;
+	}
+	
+	public Object tagCardIdForNFCReader(String cardNo , Long voetrId)
+	{
+		String status = cadreRegistrationService.tagCardIdForNFCReader(cardNo,voetrId);
+		return status;
 	}
 }
 

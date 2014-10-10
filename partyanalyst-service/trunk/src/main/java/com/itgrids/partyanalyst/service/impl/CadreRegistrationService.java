@@ -2137,20 +2137,34 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	 * @date 08-10-2014
 	 * @return returnList
 	 */
-	public List<BasicVO> getSelectedLevelCadreDetails(Long panchayatId)
+	public List<CadrePrintVO> getSelectedLevelCadreDetails(Long panchayatId)
 	{
-		List<BasicVO> returnList = null;
+		List<CadrePrintVO> returnList = null;
 		try {
 		 List<Object[]> result = tdpCadreDAO.getPanchayatWiseCadreDetails(panchayatId);
 		 if(result != null && result.size() > 0)
 		 {
-			 returnList = new ArrayList<BasicVO>();
+			 returnList = new ArrayList<CadrePrintVO>();
 			 for (Object[] objects : result)
 			 {
-				 BasicVO basicVO = new BasicVO();
-				 basicVO.setName(objects[0] != null ? objects[0].toString() : "");
-				 basicVO.setMandalName(objects[1] != null ? objects[1].toString() : "");
-				 returnList.add(basicVO);
+				 CadrePrintVO cadrePrintVO = new CadrePrintVO();
+				 	Long voterId = (Long)objects[1];
+					UserAddress userAddress = new UserAddress()	;
+					getVoterAddressDetails(voterId,userAddress,null);
+					cadrePrintVO.setVillageName(userAddress.getPanchayat() != null ? StringEscapeUtils.unescapeJava(userAddress.getPanchayat().getLocalName()  )  + StringEscapeUtils.unescapeJava("\u0C17\u0C4D\u0C30\u0C3E\u0C2E\u0C02"): "");
+					cadrePrintVO.setMandalName(userAddress.getTehsil() != null ?  StringEscapeUtils.unescapeJava(userAddress.getTehsil().getLocalName() ) + StringEscapeUtils.unescapeJava("\u0C2E\u0C02\u0C21\u0C32\u0C02"):"");
+					cadrePrintVO.setConstituencyName(userAddress.getConstituency() != null ?  StringEscapeUtils.unescapeJava(userAddress.getConstituency().getLocalName() ) + StringEscapeUtils.unescapeJava("\u0C28\u0C3F") + "||" : "");
+					cadrePrintVO.setDistrictName(userAddress.getDistrict() != null ?  StringEscapeUtils.unescapeJava(userAddress.getDistrict().getLocalName() ) + StringEscapeUtils.unescapeJava("\u0C1C\u0C3F\u0C32\u0C4D\u0C32\u0C3E"):"");
+					cadrePrintVO.setFirstCode(objects[0] != null ? objects[0].toString() : "");
+					cadrePrintVO.setVoterName(objects[2] != null ? objects[2].toString() : "");
+					cadrePrintVO.setRelativeName(objects[3] != null ? objects[3].toString() : "");
+					cadrePrintVO.setVoterId(objects[4] != null ? (Long)objects[4] : 0l);
+					cadrePrintVO.setVoterCardNo(objects[5] != null ? objects[5].toString() : "");
+					cadrePrintVO.setVillageEng(userAddress.getPanchayat() != null ? userAddress.getPanchayat().getPanchayatName() : "");
+					cadrePrintVO.setMandalEng(userAddress.getTehsil() != null ?  userAddress.getTehsil().getTehsilName() :"");
+					cadrePrintVO.setConstiEng(userAddress.getConstituency() != null ?  userAddress.getConstituency().getName()  : "");
+					cadrePrintVO.setDistrictEng(userAddress.getDistrict() != null ?  userAddress.getDistrict().getDistrictName() :"");
+				 returnList.add(cadrePrintVO);
 			 }
 		 }
 		} catch (Exception e) {
