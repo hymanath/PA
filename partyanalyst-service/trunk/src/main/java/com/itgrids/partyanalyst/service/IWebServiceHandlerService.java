@@ -56,5 +56,7 @@ public interface IWebServiceHandlerService {
 	
 	public EffectedBoothsResponse getInfectedBoothsOfConstituency(Long constituencyId);
 	public WSResultVO getLoginFieldDataUser(String uname,String pwd);
+	public Object getVCadreDataByPanchayatId(Long panchayatId);
+	public Object tagCardIdForNFCReader(String cardNo , Long voetrId);
 
 }

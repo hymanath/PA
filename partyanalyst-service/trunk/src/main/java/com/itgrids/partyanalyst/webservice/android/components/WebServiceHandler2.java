@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.webservice.android.components;
 
 import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.LoginResponceVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -191,6 +193,10 @@ public class WebServiceHandler2 {
 		
 		 else return "{\"status\":\"Success\"}";
 	}
+	
+	
+	
+	
 	
 	
 }

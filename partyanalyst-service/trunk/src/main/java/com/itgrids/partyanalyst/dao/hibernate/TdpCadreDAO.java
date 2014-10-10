@@ -300,13 +300,20 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		return query.list();
 	}
 	
-	public List<Object[]> getPanchayatWiseCadreDetails(Long panchayatId)
+	public List<Object[]> getPanchayatWiseCadreDetails(Long panchayatId )
+	{
+		Query query = getSession().createQuery("select model.memberShipNo , model.voterId,model.firstname,model.relativename,model.voter.voterId,model.voter.voterIDCardNo from TdpCadre model where model.userAddress.panchayat.panchayatId = :panchayatId");
+		query.setParameter("panchayatId", panchayatId);
+		return query.list();
+	}
+	
+	/*public List<Object[]> getPanchayatWiseCadreDetails(Long panchayatId)
 	{
 		Query query = getSession().createQuery("select model.refNo , model.firstname from TdpCadre model where model.userAddress.panchayat.panchayatId = :panchayatId and model.enrollmentYear = :year order by model.firstname ");
 		query.setParameter("panchayatId", panchayatId);
 		query.setParameter("year", IConstants.CADRE_ENROLLMENT_NUMBER);
 		return query.list();
-	}
+	}*/
 	
 	public Integer updateNFCCardNumberByVoterId(Long voterId , String nfcCardNo)
 	{
