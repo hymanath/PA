@@ -91,6 +91,9 @@
 		<class>com.itgrids.partyanalyst.model.DuplicateWrongMobileNumbers</class>
 		<class>com.itgrids.partyanalyst.model.CadreSurveyUser</class>
 		<class>com.itgrids.partyanalyst.model.CadreSurveyUserAssignDetails</class>
+		<class>com.itgrids.partyanalyst.model.TdpCadreFamilyDetails</class>
+		<class>com.itgrids.partyanalyst.model.CadrePreviousRoles</class>
+		
 		 <properties> 
 			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
 			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/party_analyst_schema" />
