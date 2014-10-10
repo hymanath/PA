@@ -17,6 +17,7 @@ import org.springframework.web.context.ServletContextAware;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.ICtpCasteReportService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
@@ -38,7 +39,8 @@ public class CtpCasteReportAction extends ActionSupport implements ServletReques
 	@Autowired
 	private IVotersAnalysisService votersAnalysisService;
 	private VoterHouseInfoVO voterHouseInfoVO;
-	
+	@Autowired
+    private EntitlementsHelper entitlementsHelper;
 	public VoterHouseInfoVO getVoterHouseInfoVO() {
 		return voterHouseInfoVO;
 	}
@@ -106,7 +108,13 @@ public class CtpCasteReportAction extends ActionSupport implements ServletReques
 		session=request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		if(user == null)
-			return Action.ERROR;
+			return INPUT;
+			if(session.getAttribute(IConstants.USER) == null && 
+			!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.CTP_CASTE_REPORT_ENTITLEMENT))
+		return INPUT;
+	if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CTP_CASTE_REPORT_ENTITLEMENT))
+		return ERROR;
+			
 		constituencyList = user.getUserAccessVoterConstituencies();
 		if(constituencyList == null || constituencyList.isEmpty()){
 			Long userID = user.getRegistrationID();
