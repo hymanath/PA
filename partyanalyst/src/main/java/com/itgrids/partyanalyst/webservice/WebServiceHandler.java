@@ -2,7 +2,9 @@ package com.itgrids.partyanalyst.webservice;
 
 import java.util.List;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -12,6 +14,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
@@ -476,6 +479,46 @@ public class WebServiceHandler {
 		try{
 			
 			return webServiceHandlerService.requestForAuthorisationAccesskey(uniqueCode);
+			
+
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in requestForAuthorisationForAccessKey() Method, Exception is ",e);
+			return "Fail";
+		}
+	}
+	
+	@GET
+	@Path("/getVCadreDataByPanchayatId/{uniqueCode}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Object getVCadreDataByPanchayatId(@PathParam("uniqueCode") String uniqueCode)
+	{
+		
+		try{
+			
+			//return webServiceHandlerService.requestForAuthorisationAccesskey(uniqueCode);
+			Object object = null;
+			object=(List<BasicVO>) webServiceHandlerService.getVCadreDataByPanchayatId(Long.valueOf(uniqueCode));
+			return object;
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in requestForAuthorisationForAccessKey() Method, Exception is ",e);
+			return "Fail";
+		}
+	}
+	
+	@GET
+	@Path("/tagCardIdForNFCReader/{uniqueCode}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Object tagCardIdForNFCReader(@PathParam("uniqueCode") String uniqueCode,@PathParam("voterId") String voterId)
+	{
+		
+		try{
+
+			Object status= webServiceHandlerService.tagCardIdForNFCReader(uniqueCode,Long.valueOf(voterId));
+			return status;
 		}
 		catch(Exception e)
 		{
@@ -536,5 +579,27 @@ public class WebServiceHandler {
 		}
 		
 	}
+
+	/*@GET
+	@Path("/getCadreDetailsByPanchayat")
+	@Produces(MediaType.TEXT_PLAIN)
+	public Object getCadreDetailsByPanchayat (Long panchayatId)
+	{
+		Object object = null;
+		object=(List<BasicVO>) webServiceHandlerService.getVCadreDataByPanchayatId(panchayatId);
+		return object;
+		
+		
+	}*/
+	
+	@GET
+    @Path("/getCadreDetailsByPanchayat/{panchayatId}")
+	@Produces(MediaType.TEXT_PLAIN)
+	public Object getCadreDetailsByPanchayat(@PathParam("panchayatId") String panchayatId)
+    {
+		Object object = null;
+		object=(List<BasicVO>) webServiceHandlerService.getVCadreDataByPanchayatId(Long.valueOf(panchayatId));
+		return object;
+    }
 	
 }
