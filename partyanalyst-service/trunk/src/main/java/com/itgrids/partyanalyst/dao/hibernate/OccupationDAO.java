@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.model.Occupation;
@@ -25,4 +26,10 @@ public class OccupationDAO extends GenericDaoHibernate<Occupation, Long> impleme
 		return getHibernateTemplate().find(" from Occupation model ");
 	}
 
+	public String getOccupationNameByOccupationId(Long occupationId)
+	{
+		Query query = getSession().createQuery("select model.occupation from Occupation model where model.occupationId = :occupationId ");
+		query.setParameter("occupationId", occupationId);
+		return (String) query.uniqueResult();
+	}
 }
