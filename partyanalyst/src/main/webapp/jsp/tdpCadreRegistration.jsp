@@ -116,7 +116,20 @@
 				occupationDetailsArr.push( '${occupation.name}');
 				occupationArr.push(obj);
 		</c:forEach>
+	var participationCount = 0;
+		<s:if test="%{voterInfoVOList[0].previousParticipationInfoList != null && voterInfoVOList[0].previousParticipationInfoList.size() > 0}">
+					<c:forEach var="role" items="${voterInfoVOList[0].previousParticipationInfoList}" varStatus="indexValue">
+						participationCount = participationCount + 1;
+					</c:forEach>
+		</s:if>
 
+	var isRolesCount = 0 ;
+		
+		<s:if test="%{voterInfoVOList[0].previousParticipationInfoList != null && voterInfoVOList[0].previousParticipationInfoList.size() > 0}">
+			<c:forEach var="role" items="${voterInfoVOList[0].previousParticipationInfoList}" varStatus="indexValue">
+				isRolesCount = isRolesCount+1;
+			</c:forEach>
+		</s:if>	
 	</script>
 	
    	<script>
@@ -193,8 +206,15 @@
 	});
 
 	var rolesSize = 1;
+	var isRolesSet = true;
 	function createNewForm()
 	{
+		if(participationCount >= 1 &&  isRolesSet)
+		{
+			rolesSize = participationCount;
+			isRolesSet = false;
+		}
+		
 		var str = '';
 		str += '<div class="row rolesList'+rolesSize+'" style="margin-top:-15px;">';
 		str += '<div class="span3">';
@@ -259,7 +279,16 @@
 		//alert(rolesSize);
 		
 		$('#rollesDiv').append(str);
-		$('.datePickerCls').datepicker({dateFormat: 'dd-mm-yy',minDate: '01-01-1900',maxDate: new Date()});
+		//$('.datePickerCls').datepicker({dateFormat: 'dd-mm-yy',minDate: '01-01-1900',maxDate: new Date()});
+		
+		 $('.datePickerCls').datepicker({
+		dateFormat: 'dd-mm-yy',
+		maxDate: new Date(),
+		changeMonth: true,
+		changeYear: true,
+		yearRange: "-100:+0"
+	  });
+	  
 	}
 	
 	function deleteRollesForm(id)
@@ -290,12 +319,16 @@
 		var result = (String)(myResult);
 		var errorDivEle = document.getElementById('errorMsgDiv');
 		var str = '';
+		var resultArr = result.split(',');
 		if(result.search('SUCCESS') != -1)
 		{
 			str+= '<div class="container m_top10" id="yourElement">';
 			str+= '<div class="span12  show-grid" style="position: relative;">';
 			str+= '<p class="text-align">Thank You For Your Registration</p>';
 			str+= '<h3 class="text-align">Successfully Registration Completed</h3>';
+			str+= '</div>';
+			str+= '<div class="span12  show-grid" style="position: relative;">';
+			str+= '<p class="text-align">Your Enrollment No :'+resultArr[1]+' </p>';
 			str+= '</div>';
 			str+= '</div>';
 			str+= '<div class="container m_top10" id="yourElement">';
@@ -318,7 +351,7 @@
 			str+= '</div>';
 			str+= '</div>';
 		}
-		else
+		/*else
 		{
 			str+= '<div class="container m_top10" id="yourElement">';
 			str+= '<div class="span12  show-grid" style="position: relative;">';
@@ -332,7 +365,7 @@
 			str+= '</div>';
 			str+= '</div>';
 			
-		}
+		}*/
 		$('#statusDiv').html(str);
 	}
 	var cadreLevelArr = [];
@@ -447,15 +480,20 @@
 		evt=null;
 	} 
 	var eletionCont = 1;
-	
+	var isRolesCountSet = true;
 	function createNewFormForElections()
 	{
+		if(isRolesCount >=1 && isRolesCountSet)
+		{
+			isRolesCountSet = false;
+			eletionCont = isRolesCount;
+		}
 		var str = '';
 		str += '<div class="row-fluid electionsList'+eletionCont+'">';
 		str += '<div class="span3">';
 		str += '<div class=" " >';
 		//str += '<h5 class="text-align1">Election Type</h5>';
-		str += '<select id="electionTypeId'+eletionCont+'" onChange="getElectionYears(this.value,\'electionYears'+eletionCont+'\')">';
+		str += '<select id="electionTypeId'+eletionCont+'" style="margin-left: 12px;" onChange="getElectionYears(this.value,\'electionYears'+eletionCont+'\')">';
 		if(electionArray != null && electionArray.length>0)
 		{
 			str += '<option value = "0">Select Election Year</option>';
@@ -477,7 +515,7 @@
 		str += '<div class="span3">';
 		str += '<div class=" " >';
 		//str += '<h5 class="text-align1">Constituency</h5>';
-		str += '<select class="" name="cadreRegistrationVO.previousParicaptedElectionsList['+eletionCont+'].constituencyId">';
+		str += '<select class="" name="cadreRegistrationVO.previousParicaptedElectionsList['+eletionCont+'].constituencyId" style="margin-left: 12px;">';
 		str += '<option value = "0"> Select Constituency </option>';
 			if(constituencyArray != null && constituencyArray.length>0)
 			{
@@ -544,7 +582,7 @@
 
 	str +=' <tr class="voterDev'+voterCount+'">';
 	str +=' <td>  <input id="countVar" type="hidden" value="'+voterCount+'">';
-	str +=' <input type="text" class="form-control border-radius-0 text-align2" placeholder=" Enter Voter Name "  ></input> ';
+	str +=' <input type="text" class="form-control border-radius-0 text-align2" placeholder=" Enter Voter Name " name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].voterName" ></input> ';
 	str +=' <input type="hidden" class="form-control border-radius-0 text-align2"  name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].voterId"></input> ';
 	str +=' </td>';
 	str +=' <td> ';
@@ -604,7 +642,16 @@
 	}
 	
 	
-	
+	function isNumber()
+	{
+		var mobileNumber = $('#mobileNumberId').val();
+		$('#mobileErr').html('');
+		 if (isNaN(mobileNumber)) 
+		  {
+			$('#mobileErr').html('Invalid Mobile No.');
+			return false;
+		  }		 
+	}
 	</script>
 
 </head>
@@ -630,14 +677,14 @@
 					<div class="span6   show-grid"  id="fadeInLeft">
 					<input type="hidden" class="form-control border-radius-0 text-align2" value="${voterInfoVOList[0].voterId}" > 
 											<h5 class="text-align1"> CANDIDATE NAME </h5>
-											<input type="text" class="form-control border-radius-0 text-align2" placeholder="Text input" name="cadreRegistrationVO.voterName"  value="${voterInfoVOList[0].name}"></input>
+											<input type="text" class="form-control border-radius-0 text-align2" placeholder="Candidate Name" name="cadreRegistrationVO.voterName"  value="${voterInfoVOList[0].name}"></input>
 									<div class="row-fluid">
 										<div class="span7">
 											<h5 class="text-align1">DATE OF BIRTH</h5>
 												
 												<div class="input-prepend text-align2 ">
 													
-													<input type="text" class="datePickerCls" name="cadreRegistrationVO.dobStr" value="${voterInfoVOList[0].dateOfBirth}" ></input>
+													<input type="text" class="datePickerCls" name="cadreRegistrationVO.dobStr" value="${voterInfoVOList[0].dateOfBirth}" placeholder="Date of Birth"></input>
 													</div>
 													
 													<h5 class="text-align1">GENDER</h5>	 
@@ -682,13 +729,13 @@
 									<div class="row-fluid">
 										
 										<div class="span6">
-										<h5 class="text-align1">GURIDIAN NAME</h5>
-										<input type="text" class="form-control border-radius-0 text-align2" placeholder="Text input" name="cadreRegistrationVO.relativeName"   value="${voterInfoVOList[0].relativeName}"></input>
+										<h5 class="text-align1">GUARDIAN NAME</h5>
+										<input type="text" class="form-control border-radius-0 text-align2" placeholder="Guardian Name" name="cadreRegistrationVO.relativeName"   value="${voterInfoVOList[0].relativeName}"></input>
 										</div>
 										<input type="hidden" value="${voterInfoVOList[0].voterId}" name="cadreRegistrationVO.voterId"></input>
 										<div class="span6">
 										<h5 class="text-align1">Age</h5>
-											<input type="text" class="form-control border-radius-0 " placeholder="House Number" name="cadreRegistrationVO.houseNo"   value="${voterInfoVOList[0].age}"></input>
+											<input type="text" class="form-control border-radius-0 " placeholder="Age" name="cadreRegistrationVO.houseNo"   value="${voterInfoVOList[0].age}"></input>
 										</div>
 									</div>
 								</div>
@@ -712,7 +759,7 @@
 										
 											<div class="span6">
 											<h5 class="text-align1">PARTY MEMBER SINCES</h5>
-												<input type="text" class="form-control border-radius-0 text-align2 datePickerCls" placeholder="" name="cadreRegistrationVO.partyMemberSinceStr"  value="${voterInfoVOList[0].activeDate}"></input>
+												<input type="text" class="form-control border-radius-0 text-align2 datePickerCls" placeholder="Party Member Since " name="cadreRegistrationVO.partyMemberSinceStr"  value="${voterInfoVOList[0].activeDate}"></input>
 											</div>
 											
 											<div class="span6">
@@ -734,18 +781,18 @@
 					
 								<div class=" m_top20" >
 										<h5 class="text-align1">STREET/HAMLET</h5>
-										<input type="text" class="form-control border-radius-0  input-block-level" placeholder="Text input" name="cadreRegistrationVO.street"  value="${voterInfoVOList[0].location}" style="width:260px;"></input>
+										<input type="text" class="form-control border-radius-0  input-block-level" placeholder=" Street / Hamlet " name="cadreRegistrationVO.street"  value="${voterInfoVOList[0].location}" style="width:260px;"></input>
 								</div>	
 							<div class=" m_top20" >
 										<h5 class="text-align1">CASTE NAME</h5>
-										<input type="text" class="form-control border-radius-0  input-block-level" id="casteIdValue" placeholder="Enter Caste"   value="${voterInfoVOList[0].casteName}" style="width:260px;"></input>
+										<input type="text" class="form-control border-radius-0  input-block-level" id="casteIdValue" placeholder=" Caste Name "   value="${voterInfoVOList[0].casteName}" style="width:260px;"></input>
 										
-										<input type="hidden" class="form-control border-radius-0  input-block-level" id="casteId" placeholder="Enter Caste" name="cadreRegistrationVO.casteId"  value="${voterInfoVOList[0].casteName}" style="width:260px;"></input>
+										<input type="hidden" class="form-control border-radius-0  input-block-level" id="casteId" placeholder="Enter Caste" name="cadreRegistrationVO.casteId"  value="${voterInfoVOList[0].casteId}" style="width:260px;"></input>
 										
 							</div>
 							<div class=" m_top20" >
-										<h5 class="text-align1">MOBILE NUMBER</h5>
-										<input type="text" class="form-control border-radius-0 input-block-level" placeholder="Text input"  name="cadreRegistrationVO.mobileNumber"  value="${voterInfoVOList[0].mobileNo}" style="width:260px;"></input>
+										<h5 class="text-align1">MOBILE NUMBER  <span id="mobileErr" style="color:red;font-size:12px;"></span> </h5>
+										<input type="text" id="mobileNumberId" class="form-control border-radius-0 input-block-level" placeholder=" Mobile Number "  name="cadreRegistrationVO.mobileNumber"  value="${voterInfoVOList[0].mobileNo}" style="width:260px;" maxlength="10" onKeyup="isNumber()"></input>
 							</div>
 							<div class=" m_top20" >
 								<h5 class="text-align1">EDUCATION</h5>
@@ -754,14 +801,14 @@
 							<div class=" m_top20" >
 								<h5 class="text-align1">OCCUPATION</h5>
 
-							<input type="hidden" class="form-control border-radius-0 input-block-level"  id="occupationId" placeholder="Text input" name="cadreRegistrationVO.occupationId" value="${voterInfoVOList[0].occupation}" style="width:260px;"></input>
+							<input type="hidden" class="form-control border-radius-0 input-block-level"  id="occupationId" placeholder="Occupation" name="cadreRegistrationVO.occupationId" value="${voterInfoVOList[0].occupationId}" style="width:260px;"></input>
 							
 							<input type="text" class="form-control border-radius-0 input-block-level"  id="occupationValue"  placeholder=" Enter Occupation "  value="${voterInfoVOList[0].occupation}" style="width:260px;"></input>
 							
 							</div>
 							<div class=" m_top20" >
 									<h5 class="text-align1">PREVIOUS ENROLLMENT NUMBER</h5>
-									<input type="text" id="preEnrollNoValue" class="form-control border-radius-0 input-block-level" placeholder="Text input"  value="${voterInfoVOList[0].memberShipId}" style="width:260px;" onkeyup="getExistingCadreInfo()"></input>
+									<input type="text" id="preEnrollNoValue" class="form-control border-radius-0 input-block-level" placeholder="Previous Enrollment No."  value="${voterInfoVOList[0].memberShipId}" style="width:260px;" onkeyup="getExistingCadreInfo()"></input>
 									
 									<input type="hidden" id="preEnrollNo" class="form-control border-radius-0 input-block-level" placeholder="Text input" name="cadreRegistrationVO.previousEnrollmentNumber" value="${voterInfoVOList[0].memberShipId}" style="width:260px;" ></input>
 									
@@ -802,34 +849,39 @@
 									
 										<input type="hidden" value="${commentLoop.index}" id="countVar"></input>
 											<tr>
-												<td> 
-													<input type="text" class="form-control border-radius-0 text-align2" placeholder="Voter Card No " value="${familyVO.name}" ></input> 
+												<td>   
+													<input type="text" class="form-control border-radius-0 text-align2" placeholder="Voter Name " value="${familyVO.name}" name="cadreRegistrationVO.cadreFamilyDetails[${commentLoop.index}].voterName"></input> 
 													<input type="hidden" class="form-control border-radius-0 text-align2" value="${familyVO.voterId}"  name="cadreRegistrationVO.cadreFamilyDetails[${commentLoop.index}].voterId"></input> 
 												</td>
 												<td> 
 													<input type="text" class="form-control border-radius-0 text-align2" placeholder="Voter Card No " value="${familyVO.voterCardNo}"name="cadreRegistrationVO.cadreFamilyDetails[${commentLoop.index}].voterCadreNO" style="width:120px;"></input>
 												</td>
 												<td style="width:50px;"> 
-													<input type="text" class="form-control border-radius-0 text-align2" placeholder="Voter Card No " value="${familyVO.age}" style="width:50px;"></input> 
+													<input type="text" class="form-control border-radius-0 text-align2" placeholder="Age " value="${familyVO.age}" style="width:50px;"></input> 
 												</td>
 												<td style="width:50px;">
-													<input type="text" class="form-control border-radius-0 text-align2" placeholder="Voter Card No " value="${familyVO.gender}" style="width:50px;"> </input>
+													<input type="text" class="form-control border-radius-0 text-align2" placeholder="Gender " value="${familyVO.gender}" style="width:50px;"> </input>
 												</td>
 												<td style="width:100px;"> 
 												
 													<select name="cadreRegistrationVO.cadreFamilyDetails[${commentLoop.index}].educationId" style="width:160px;">
 													<option value="0">Select Education</option>
-														<c:forEach var="educationList" items="${genericVOList}" >
-															<option value="${educationList.id}">${educationList.name}</option>
+														<c:forEach var="educationList" items="${genericVOList}" >															
+															<c:if test="${educationList.id == familyVO.education }">																
+																<option value="${educationList.id}" selected="selected">${educationList.name}</option>
+															</c:if>	
+															<c:if test="${educationList.id != familyVO.education }">																
+																<option value="${educationList.id}">${educationList.name}</option>
+															</c:if>	
 														</c:forEach>
 													</select>
 													 
 												</td>
 												<td style="width:100px;"> 
 												
-													 <input type="text" id="familyOccupation${commentLoop.index}" class="familyOccupationsCls form-control border-radius-0 text-align2" placeholder=" Enter Occupation "  style="width:150px;"  value=""> </input>
+													 <input type="text" id="familyOccupation${commentLoop.index}" class="familyOccupationsCls form-control border-radius-0 text-align2" placeholder=" Occupation "  style="width:150px;"  value="${familyVO.occupation}"> </input>
 													 
-													 <input type="hidden"  id="familyOccupation${commentLoop.index}0" name="cadreRegistrationVO.cadreFamilyDetails[${commentLoop.index}].occupationId" class="form-control border-radius-0 text-align2" placeholder="Enter Occupation " style="width:50px;" value=""> </input>
+													 <input type="hidden"  id="familyOccupation${commentLoop.index}0" name="cadreRegistrationVO.cadreFamilyDetails[${commentLoop.index}].occupationId" class="form-control border-radius-0 text-align2" placeholder="Enter Occupation " style="width:50px;" value="${familyVO.occupationId}"> </input>
 													 
 													 
 												</td>
@@ -854,11 +906,11 @@
 										<input type="hidden" value="0" class="countVar"></input>
 											<tr id="addVotersDiv">
 												<td> 
-													<input type="text" class="form-control border-radius-0 text-align2" placeholder=" Enter Voter Name "  ></input> 
+													<input type="text" class="form-control border-radius-0 text-align2" placeholder=" Voter Name "  ></input> 
 													<input type="hidden" class="form-control border-radius-0 text-align2"  name="cadreRegistrationVO.cadreFamilyDetails[0].voterId"  ;"></input> 
 												</td>
 												<td> 
-													<input type="text" class="form-control border-radius-0 text-align2" placeholder=" Enter Voter Id " name="cadreRegistrationVO.cadreFamilyDetails[0].voterCadreNO"  style="width:120px;"></input>
+													<input type="text" class="form-control border-radius-0 text-align2" placeholder=" Voter Id " name="cadreRegistrationVO.cadreFamilyDetails[0].voterCadreNO"  style="width:120px;"></input>
 												</td>
 												<td style="width:50px;"> 
 													<input type="text" class="form-control border-radius-0 text-align2" placeholder=" Age " style="width:50px;"></input> 
@@ -877,7 +929,7 @@
 													 
 												</td>
 												<td style="width:100px;"> 
-													<input type="text" id="familyOccupation0" class="familyOccupationsCls form-control border-radius-0 text-align2" placeholder=" Enter Occupation "  style="width:150px;"  value=""> </input>
+													<input type="text" id="familyOccupation0" class="familyOccupationsCls form-control border-radius-0 text-align2" placeholder="  Occupation "  style="width:150px;"  value=""> </input>
 													 
 													<input type="hidden"  id="familyOccupation00" name="cadreRegistrationVO.cadreFamilyDetails[0].occupationId" class="form-control border-radius-0 text-align2" placeholder="Enter Occupation " style="width:50px;" value=""> </input>
 												</td>
@@ -902,7 +954,7 @@
 	<div id="fadeInUp">
 		<div class="container m_top10">
 			<div class="span12 show-grid" style="position: relative;">
-				<h3 class="text-align ">PREVIOUS ROLLS PARTICIPATED IN PARTIES</h3>
+				<h3 class="text-align ">PREVIOUS ROLES PARTICIPATED IN PARTIES</h3>
 			</div>
 		</div>
 		<div class="container m_top10">
@@ -911,6 +963,79 @@
 				<!--<div class="row">
 					<a class="btn btn-success" style="float:right" onClick="createNewForm();">Add More</a>
 				</div>-->
+				<s:if test="%{voterInfoVOList[0].cadreRolesList != null && voterInfoVOList[0].cadreRolesList.size() > 0}">
+					<c:forEach var="participation" items="${voterInfoVOList[0].cadreRolesList}" varStatus="indexValue">
+
+					<div class="row rolesList">
+					<div class="span3">
+							<div class=" " >
+							<c:if test="${indexValue.index == 0}">	
+								<h5 class="text-align1"> Select Level </h5>
+							</c:if>
+							<select  name="cadreRegistrationVO.previousRollesList[${indexValue.index}].designationLevelId" id="cadreLevelId" style="margin-left: 12px">
+								<option value="0">Select Level</option>
+								<c:forEach var="educationList" items="${eletionTypesList}" >															
+									<c:if test="${educationList.id == participation.id }">																
+										<option value="${educationList.id}" selected="selected">${educationList.name}</option>
+									</c:if>	
+									<c:if test="${educationList.id != participation.id }">																
+										<option value="${educationList.id}">${educationList.name}</option>
+									</c:if>	
+								</c:forEach>
+							</select>
+													 
+													 
+							</div>
+					</div>
+					<div class="span3">
+						<div class=" " >
+						<c:if test="${indexValue.index == 0}">	
+							<h5 class="text-align1">Party Designation </h5>
+						</c:if>
+								 
+							<select  name="cadreRegistrationVO.previousRollesList[${indexValue.index}].designationLevelValue" id="partyDesignationId" style="margin-left: 12px">
+								<option value="0">Select Level</option>
+								<c:forEach var="educationList" items="${selectOptionVOList}" >															
+									<c:if test="${educationList.id == participation.count }">																
+										<option value="${educationList.id}" selected="selected">${educationList.name}</option>
+									</c:if>	
+									<c:if test="${educationList.id != participation.count }">																
+										<option value="${educationList.id}">${educationList.name}</option>
+									</c:if>	
+								</c:forEach>
+							</select>
+							
+						</div>
+		
+					</div>
+		
+					<div class="span2">
+						<div class=" " >
+
+						<c:if test="${indexValue.index == 0}">	
+							<h5 class="text-align1">From Date </h5>
+						</c:if>
+								<div class="input-prepend text-align2 ">				
+									<input type="text" class="form-control span2 border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList[${indexValue.index}].fromDateStr" value="${participation.startTime}" placeholder="From Date"></input></span>
+								</div>
+						</div>
+					</div>
+					<div class="span2 ">
+						<div class=" " >
+						<c:if test="${indexValue.index == 0}">	
+							<h5 class="text-align1">To Date </h5>
+						</c:if>
+								<div class="input-prepend  ">	
+									<input type="text" class="form-control span2  border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList[${indexValue.index}].toDateStr"  value="${participation.endTime}" placeholder="To Date"></input></span>
+								</div>
+						</div>
+					</div>
+					
+				</div>
+					</c:forEach>
+						<a class="icon-plus-sign" style="float: right;margin-right: 120px;margin-top:-30px;" onClick="createNewForm();" title="Add More Details"></a>
+			</s:if>
+			<s:else>
 				<div class="row rolesList">
 					<div class="span3">
 							<div class=" " >
@@ -932,7 +1057,7 @@
 						<div class=" " >
 							<h5 class="text-align1">From Date</h5>
 								<div class="input-prepend text-align2 ">				
-									<input type="text" class="form-control span2 border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList[0].fromDateStr"></input></span>
+									<input type="text" class="form-control span2 border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList[0].fromDateStr" placeholder="From Date"></input></span>
 								</div>
 						</div>
 					</div>
@@ -940,7 +1065,7 @@
 						<div class=" " >
 							<h5 class="text-align1">To Date</h5>
 								<div class="input-prepend  ">	
-									<input type="text" class="form-control span2  border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList[0].toDateStr"></input></span>
+									<input type="text" class="form-control span2  border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList[0].toDateStr" placeholder="To Date"></input></span>
 								</div>
 						</div>
 					</div>
@@ -952,6 +1077,7 @@
 						</div>
 					</div>
 				</div>
+			</s:else>
 			</div>
 	</div>
 	</div>
@@ -963,11 +1089,80 @@
 		</div>
 		<div class="container m_top10">
 			<div class="span12 show-grid" style="position: relative;" id="electionsDiv">
+			
+			<s:if test="%{voterInfoVOList[0].previousParticipationInfoList != null && voterInfoVOList[0].previousParticipationInfoList.size() > 0}">
+					<c:forEach var="role" items="${voterInfoVOList[0].previousParticipationInfoList}" varStatus="indexValue">
+					
+					<div class="row-fluid">
+					<div class="span3">
+						<div class=" " >
+						<c:if test="${indexValue.index == 0}">	
+							<h5 class="text-align1">Election Type</h5>
+						</c:if>
+
+							<select  style="margin-left: 12px" onChange="getElectionYears(this.value,'electionYearId${indexValue.index}')">
+								<option value="0"> Select Election Type</option>
+								<c:forEach var="educationList" items="${eletionTypesList}" >															
+									<c:if test="${educationList.id == role.id }">																
+										<option value="${educationList.id}" selected="selected">${educationList.name}</option>
+									</c:if>	
+									<c:if test="${educationList.id != role.id }">																
+										<option value="${educationList.id}">${educationList.name}</option>
+									</c:if>	
+								</c:forEach>
+							</select>
+							
+						</div>
+					</div>
+					<div class="span3">
+						<div class=" " >
+						<c:if test="${indexValue.index == 0}">	
+							<h5 class="text-align1">Year</h5>
+						</c:if>							  		
+							 <select class="" name="cadreRegistrationVO.previousParicaptedElectionsList[${indexValue.index}].electionTypeId" id="electionYearId${indexValue.index}">
+								<option value="0"> Select Election </option>
+								<c:forEach var="educationList" items="${role.genericVOList}" >															
+									<c:if test="${educationList.id == role.count }">																
+										<option value="${educationList.id}" selected="selected">${educationList.name}</option>
+									</c:if>	
+									<c:if test="${educationList.id != role.count }">																
+										<option value="${educationList.id}">${educationList.name}</option>
+									</c:if>	
+								</c:forEach>
+							</select>							
+						</div>
+					</div>
+					<div class="span3">
+						<div class=" " >
+						<c:if test="${indexValue.index == 0}">	
+							<h5 class="text-align1">Constituency</h5>
+						</c:if>
+
+							<select   name="cadreRegistrationVO.previousParicaptedElectionsList[${indexValue.index}].constituencyId" style="margin-left: 12px">
+								<option value="0"> Select Election Type</option>
+								<c:forEach var="educationList" items="${constituencyesList}" >															
+									<c:if test="${educationList.id == role.rank }">																
+										<option value="${educationList.id}" selected="selected">${educationList.name}</option>
+									</c:if>	
+									<c:if test="${educationList.id != role.rank }">																
+										<option value="${educationList.id}">${educationList.name}</option>
+									</c:if>	
+								</c:forEach>
+							</select>
+							
+						</div>
+					</div>					
+				</div>				
+					</c:forEach>
+					<a class="icon-plus-sign" style="float:right;margin-right:206px;;margin-top:-30px;" onClick="createNewFormForElections();" title="Add More Details"></a>
+			</s:if>
+			<s:else>
+			
 				<div class="row-fluid">
 					<div class="span3">
 						<div class=" " >
 							<h5 class="text-align1">Election Type</h5>
-							<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="electionTypeId" list="eletionTypesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Election Type" style="width:220px;"   onChange="getElectionYears(this.value,'electionYearId')"/>
+							<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="electionTypeId" list="eletionTypesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Election Type" style="width:220px;margin-left: 12px"   onChange="getElectionYears(this.value,'electionYearId')" value="%{role.id}"/>
 						</div>
 					</div>
 					<div class="span3">
@@ -981,7 +1176,7 @@
 						<div class=" " >
 							<h5 class="text-align1">Constituency</h5>
 							
-							<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level"  list="constituencyesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" style="width:220px;" name="cadreRegistrationVO.previousParicaptedElectionsList[0].constituencyId"/>
+							<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level"  list="constituencyesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" style="width:220px;margin-left: 12px" name="cadreRegistrationVO.previousParicaptedElectionsList[0].constituencyId"  value="%{role.rank}"/>
 						</div>
 					</div>
 					<div class="span2">
@@ -990,11 +1185,14 @@
 						</div>
 					</div>
 				</div>
+				
+			</s:else>
 			</div>
 		</div>
 		<div class="container m_top10">
 			<div class="span12 show-grid" style="position: relative;">
-				<a class="btn btn-primary m_top20 border-radius-0 text-align2" href="search-constituency.html"><span class="icon-chevron-left icon-white"></span>&nbsp;&nbsp;Back </a>
+				<!-- <a class="btn btn-primary m_top20 border-radius-0 text-align2" href="search-constituency.html"><span class="icon-chevron-left icon-white"></span>&nbsp;&nbsp;Back </a> -->
+				
 				<a  class="btn btn-success text-align3 m_top20 pull-right border-radius-0"  onClick="submitCadreForm();"> &nbsp;&nbsp;Next<span class=" icon-chevron-right icon-white"></span></a>
 			</div>
 		</div>
