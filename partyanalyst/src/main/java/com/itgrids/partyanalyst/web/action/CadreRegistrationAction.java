@@ -67,7 +67,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	
 	private EntitlementsHelper 					entitlementsHelper;
 	private CadrePrintVO						cadrePrintVO;
-	private List<BasicVO>						basicVOList;
+	private List<CadrePrintVO>						basicVOList;
 	
 	
 
@@ -294,11 +294,11 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	}
 
 	
-	public List<BasicVO> getBasicVOList() {
+	public List<CadrePrintVO> getBasicVOList() {
 		return basicVOList;
 	}
 
-	public void setBasicVOList(List<BasicVO> basicVOList) {
+	public void setBasicVOList(List<CadrePrintVO> basicVOList) {
 		this.basicVOList = basicVOList;
 	}
 
