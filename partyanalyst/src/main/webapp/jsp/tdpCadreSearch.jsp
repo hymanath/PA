@@ -120,6 +120,20 @@
 		 
 		});
 		
+	function isValid(str)
+	{
+		var flag = true;
+		var iChars = "`~!@#$%^&*()_-+=}]{[\"':;|\?/><,";		 
+		for (var i = 0; i < str.length; i++) 
+		{
+			if (iChars.indexOf(str.charAt(i)) != -1) 
+			{			
+				flag = false;
+			}
+		}
+	return flag;
+	}
+	
 	var request;	
 	function searchCandidatesDetailsBySearchCriteria(type)
 	{
@@ -144,47 +158,73 @@
 			$('#errorDiv').html('Please Select Panchayat.');
 			return;
 		}
-		
+
 		var isError = false ;
 		
+		if(!(/^[a-zA-Z]+$/.test(candidateName)))
+		{
+				$('#errorDiv').html('Candidate Name allows only alphabets.');
+			return;
+		}
+		  
+		if(!isValid(candidateName))
+		{
+			$('#errorDiv').html('Special Characters not allowed for Candidate Name.');
+			return ;
+		}
+		if(!isValid(voterCardNo))
+		{
+			var iChars = "`~!@#$%^&*()._-+=}]{[\"':;|\?/><,";		 
+			for (var i = 0; i < voterCardNo.length; i++) 
+			{
+				if (iChars.indexOf(voterCardNo.charAt(i)) != -1) 
+				{			
+					$('#errorDiv').html('Special Characters not allowed for Voter Card No.');
+				return ;
+				}
+			}
+		}
+	
+		if(!isValid(houseNo))
+		{
+			var iChars = "`~!@#$%^&*()_+=}]{[\"':;|\?><,.";		 
+			for (var i = 0; i < houseNo.length; i++) 
+			{
+				if (iChars.indexOf(houseNo.charAt(i)) != -1) 
+				{			
+					$('#errorDiv').html('Special Characters not allowed for House No.');
+					return ;
+				}
+			}
+		}
 		
-			if(voterCardNo == null || voterCardNo.length == 0)
-			{	
-				$('#errorDiv').html('Enter any search criteria for details.');
-				 isError = true ;
-			}
-			else
-			{
-				isError = false ;
-			}
-			
-			if(houseNo == null || houseNo.length == 0)
-			{	
-				$('#errorDiv').html('Enter any search criteria for details.');
-				 isError = true ;
-			}
-			else
-			{
-				isError = false ;
-			}
-			
-			if(candidateName == null || candidateName.length <=2)
-			{	
-				$('#errorDiv').html('Candidate Name should containse atleast 3 Charactors.');
-				 isError = true ;
-			}
-			else
-			{
-				isError = false ;
-			}
-			
-			if((voterCardNo == null || voterCardNo.length == 0) && (houseNo == null || houseNo.length == 0) && (candidateName == null || candidateName.length <=2))
-			{
-				$('#errorDiv').html('Enter any search criteria for details.');
-				 isError = true ;
-			}
+		if((voterCardNo == null || voterCardNo.length == 0) && (houseNo == null || houseNo.length == 0) && (candidateName == null || candidateName.length ==0))
+		{
+			$('#errorDiv').html('Enter any search criteria for details.');
+			 isError = true ;
+		}
 		
-		
+		if(candidateName == null || candidateName.length <=2)
+		{	
+			if(voterCardNo != null && voterCardNo.length  >=3 )
+			{
+				 isError = false ;
+			}
+			else if(houseNo != null && houseNo.length >=3 )
+			{						
+				  isError = false ;
+			} 
+			else 
+			{
+				$('#errorDiv').html('Atleast 3 Characters required for Candidate Name.');
+				isError = true ;	
+			}		
+		}
+		else
+		{
+			 isError = false ;
+		}
+
 		if(!isError)
 		{			
 			$('#errorDiv').html('');
@@ -250,9 +290,9 @@
 			str +='<tr>';
 			str +='<th class="text-align1">NAME</th>';
 			str +='<th class="text-align1">GUARDIAN NAME</th>';
+			str +='<th class="text-align1">RELATION</th>';
 			str +='<th class="text-align1">AGE</th>';
 			str +='<th class="text-align1">GENDER</th>';
-			str +='<th class="text-align1">RELATION</th>';
 			str +='<th class="text-align1">H.NUMBER</th>';
 			str +='</tr>';
 			str +='</thead>';
@@ -261,12 +301,33 @@
 			for(var i in result)
 			{
 				str +='<tr>';
-				str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].name+'</span></td>';
-				str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].relativeName+'</span></td>';
-				str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].age+'</span></td>';
-				str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].gender+'</span></td>';
-				str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].relationType+'</span></td>';
-				str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].houseNo+'</span><label class="pull-right">';
+				if(result[i].name != null)
+					str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].name+'</span></td>';
+				else
+					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+					
+				if(result[i].relativeName != null)
+					str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].name+'</span></td>';
+				else
+					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+				if(result[i].relationType != null)
+					str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].name+'</span></td>';
+				else
+					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';					
+				if(result[i].age != null)
+					str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].name+'</span></td>';
+				else
+					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+				if(result[i].gender != null)
+					str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].name+'</span></td>';
+				else
+					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+				
+				if(result[i].houseNo != null)
+					str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].name+'</span></td>';
+				else
+					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+				
 				str +='<input type="radio" value="'+result[i].id+'" name="optionsRadios" onClick="getDetailsForUser();"></label></td>';
 				str +='</tr>';
 			}
@@ -348,6 +409,7 @@
 	{
 		var cosntiteucnyId = $('#userConstituencyId').val();
 		var locationId = $('#panchayatList').val();
+		$('#errorDiv').html('');
 		$('#boothsList').find('option').remove();
 		$('#boothsList').append('<option value="0"> Select Booth </option>');
 		$('#loadingImg').show();			
@@ -378,8 +440,9 @@
 		var boothsArr = [];	
 		var locationId = $('#boothsList').val();		
 		boothsArr.push(locationId);
+		$('#errorDiv').html('');
 		$('#vilagecovrdList').find('option').remove();
-		$('#vilagecovrdList').append('<option value="0"> Select Booth </option>');
+		$('#vilagecovrdList').append('<option value="0"> Select Covered Village  </option>');
 		$('#loadingImg').show();
 		var jsObj = 
 			   {
