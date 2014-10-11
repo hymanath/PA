@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -117,4 +118,42 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		return Action.SUCCESS;
 	}
     
+	public String getLocationWiseRegistrationInfo(){
+		try{
+			String task = request.getParameter("task");
+			if(task.equalsIgnoreCase("assemblyInfo")){
+				result = cadreDashBoardService.getLocationWiseRegistrationInfo(getIds(request.getParameter("ids")),"assembly");
+			}else if(task.equalsIgnoreCase("districtInfo")){
+				result = cadreDashBoardService.getLocationWiseRegistrationInfo(getIds(request.getParameter("ids")),"district");
+			}else if(task.equalsIgnoreCase("panchayatInfo")){
+				result = cadreDashBoardService.getLocationWiseRegistrationInfo(getIds(request.getParameter("ids")),"panchayat");
+			}else if(task.equalsIgnoreCase("boothInfo")){
+				result = cadreDashBoardService.getLocationWiseRegistrationInfo(getIds(request.getParameter("ids")),"booth");
+			}else if(task.equalsIgnoreCase("mandalInfo")){
+				result = cadreDashBoardService.getLocationWiseRegistrationInfo(getIds(request.getParameter("ids")),"mandal");
+			}else if(task.equalsIgnoreCase("stateInfo")){
+				result = cadreDashBoardService.getStateWiseRegistrationInfo(getIds(request.getParameter("ids")));
+			}else if(task.equalsIgnoreCase("boothNames")){
+				result = cadreDashBoardService.getBoothsInConstituencies(Long.parseLong(request.getParameter("constituencyId")));
+			}else if(task.equalsIgnoreCase("panchayatNames")){
+				result = cadreDashBoardService.getPanchayatsInConstituencies(Long.parseLong(request.getParameter("constituencyId")));
+			}else if(task.equalsIgnoreCase("assemblyNames")){
+				result = cadreDashBoardService.getAssemblyConstituencies(request.getParameter("type"));
+			}
+		 }catch(Exception e){
+			  LOG.error("Exception rised in getLocationWiseRegistrationInfo ",e);
+		  }
+		return Action.SUCCESS;
+	}
+	
+	public List<Long> getIds(String idsString){
+		List<Long> ids = new ArrayList<Long>();
+		String[] idsArray = idsString.split(",");
+		
+		for(String id:idsArray){
+			ids.add(Long.valueOf(id.trim()));
+		}
+		
+		return ids;
+	}
 }

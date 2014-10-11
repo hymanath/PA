@@ -177,7 +177,7 @@
 					<tbody >
 						<tr>
 							<td><div style="text-align:center;" id="totalMembersWorkingTodayId"><img style=" margin-top: 36px;padding-left: 110px;" src="images/icons/search.gif"/></div></td>
-							<td style="width:50%;text-align:center;"><div style="margin-top:20px;"><a href="javascript:{}" onclick="openDialogToTrack();">Click Here To View</br> Users Working Status</a></div></b></td>
+							<td style="width:50%;text-align:center;"><div><a href="javascript:{}" onclick="openDialogToTrack();">Click Here To View</br> Users Working Status </br> & </br> Location Wise Cadre Registration Info</a></div></b></td>
 						</tr>
 					</tbody>
 				</table>

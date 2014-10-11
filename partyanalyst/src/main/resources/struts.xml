@@ -8574,8 +8574,12 @@
 				<param name="root">task</param>
 			</result>
 		</action>
-		
-		
+				
+		<action name="getLocationWiseRegistrationInfo" class="cadreDashBoardAction" method="getLocationWiseRegistrationInfo">
+			<result type="json" name="success">
+				<param name="root">result</param>
+			</result>
+		</action>
 </package>
 
 </struts>      
