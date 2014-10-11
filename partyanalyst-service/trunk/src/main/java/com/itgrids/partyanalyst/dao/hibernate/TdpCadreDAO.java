@@ -454,5 +454,47 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		
 		return query.list();
     }
+		
+	public List<Object[]> getCadreInfoPanchayatWise(List<Long> panchayatIds){
+		StringBuilder queryStr = new StringBuilder();
+		//0 count,1 id,2 name ,3 year
+		queryStr.append("select count(model.tdpCadreId),model.userAddress.panchayat.panchayatId,model.userAddress.panchayat.panchayatName,model.enrollmentYear from TdpCadre model where model.isDeleted = 'N' and model.userAddress.panchayat.panchayatId in(:panchayatIds) " +
+				" group by model.userAddress.panchayat.panchayatId,model.enrollmentYear");
+
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameterList("panchayatIds", panchayatIds);
+		return query.list();
+	}
 	
+	public List<Object[]> getCadreInfoBoothWise(List<Long> boothIds){
+		StringBuilder queryStr = new StringBuilder();
+		//0 count,1 id,2 name ,3 year
+		queryStr.append("select count(model.tdpCadreId),model.userAddress.booth.boothId,model.userAddress.booth.partNo,model.enrollmentYear from TdpCadre model where model.isDeleted = 'N' and model.userAddress.booth.boothId in(:boothIds) " +
+				" group by model.userAddress.booth.boothId,model.enrollmentYear");
+
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameterList("boothIds", boothIds);
+		return query.list();
+	}
+	
+	public List<Object[]> getCadreInfoMandalWise(List<Long> tehsilIds){
+		StringBuilder queryStr = new StringBuilder();
+		//0 count,1 id,2 name ,3 year
+		queryStr.append("select count(model.tdpCadreId),model.userAddress.tehsil.tehsilId,model.userAddress.tehsil.tehsilName,model.enrollmentYear from TdpCadre model where model.isDeleted = 'N' and model.userAddress.tehsil.tehsilId in(:tehsilIds) " +
+				" group by model.userAddress.tehsil.tehsilId,model.enrollmentYear");
+
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameterList("tehsilIds", tehsilIds);
+		return query.list();
+	}
+	public List<Object[]> getCadreInfoLocalBodyWise(List<Long> localBdyIds){
+		StringBuilder queryStr = new StringBuilder();
+		//0 count,1 id,2 name ,3 year
+		queryStr.append("select count(model.tdpCadreId),model.userAddress.localElectionBody.localElectionBodyId,model.userAddress.localElectionBody.name,model.enrollmentYear from TdpCadre model where model.isDeleted = 'N' and model.userAddress.localElectionBody.localElectionBodyId in(:localBdyIds) " +
+				" group by model.userAddress.localElectionBody.localElectionBodyId,model.enrollmentYear");
+
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameterList("localBdyIds", localBdyIds);
+		return query.list();
+	}
 }

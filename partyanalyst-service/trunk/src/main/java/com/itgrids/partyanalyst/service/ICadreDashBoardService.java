@@ -33,7 +33,14 @@ public interface ICadreDashBoardService {
 	public Map<Long,List<CadreRegisterInfo>> getConstituencyWiseCastCadreCount(Long constituencyId);
 	
 	public Map<Long,List<CadreRegisterInfo>> getDistrictWiseCastCadreCount(Long districtId);
+		
+	public List<CadreRegisterInfo> getAssemblyConstituencies(String type);
 	
+	public List<CadreRegisterInfo> getPanchayatsInConstituencies(Long constituencyId);
 	
+	public List<CadreRegisterInfo> getBoothsInConstituencies(Long constituencyId);
 	
+	public List<CadreRegisterInfo> getStateWiseRegistrationInfo(List<Long> stateIds);
+	
+	public List<CadreRegisterInfo> getLocationWiseRegistrationInfo(List<Long> ids,String type);
 }

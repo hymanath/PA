@@ -1836,7 +1836,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getPanchayatsByConstituencyAndPublication(Long constituencyId,Long publicationDateId)
 	{
-		Query query = getSession().createQuery("SELECT DISTINCT model.panchayat.panchayatId,model.panchayat.panchayatName from Booth model where model.constituency.constituencyId = :constituencyId and model.publicationDate.publicationDateId = :publicationDateId");
+		Query query = getSession().createQuery("SELECT DISTINCT model.panchayat.panchayatId,model.panchayat.panchayatName from Booth model where model.constituency.constituencyId = :constituencyId and model.publicationDate.publicationDateId = :publicationDateId order by model.panchayat.panchayatName");
 		query.setParameter("constituencyId",constituencyId);
 		query.setParameter("publicationDateId", publicationDateId);
 		return query.list();
@@ -2027,5 +2027,20 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		return query.list();
 	}
 
+	public List<Object[]> getBoothsInAConstituency(Long constituencyId,Long publicationDateId){
+		Query query = getSession().createQuery(" select distinct model.boothId,concat('Booth-',model.partNo) from Booth model where model.constituency.constituencyId =:constituencyId " +
+				" and model.publicationDate.publicationDateId =:publicationDateId and model.refBooth is null ");
+		
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationDateId", publicationDateId);
+		return query.list();
+	}
 	
+	public List<Object[]> getBoothNamesByIds(List<Long> boothIds)
+	{
+		Query query = getSession().createQuery(" select model.boothId,concat('Booth-',model.partNo) from Booth model where model.boothId in(:boothIds) ");
+		query.setParameterList("boothIds", boothIds);
+		return query.list();
+		
+	}
 }

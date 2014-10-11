@@ -932,4 +932,14 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		return query.list();
 	}
 	
+	public List<Object[]> getAssemblyConstituenciesInAP(String type){
+		StringBuilder str = new StringBuilder();
+		str.append("select model.constituencyId,model.name from Constituency model where model.electionScope.electionType.electionTypeId = 2 and model.deformDate is null and model.state.stateId = 1 ");
+		if(!type.equalsIgnoreCase("ALL")){
+			str.append(" and model.areaType !='URBAN' ");
+		}
+		str.append("order by model.name");
+		Query query = getSession().createQuery(str.toString());
+		return query.list();
+	}
 }
