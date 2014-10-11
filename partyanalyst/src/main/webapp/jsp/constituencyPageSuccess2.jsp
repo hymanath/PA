@@ -62,6 +62,7 @@
 		if(host != "tdpserver"){
 			$("#inline").fancybox();
 			$("#inline").trigger("click");
+			$("#cadre2014RegInfoDiv").show();
 		}
 		else
 			$("#connect-people-sec-id").hide();
@@ -830,9 +831,13 @@ var queryString='';
 		<c:if test="${constituencyDetails.hasAnalize}">
 			<input title="Click Here To Get ${constituencyDetails.constituencyName}&nbsp; ${constituencyDetails.constituencyType} Constituency Voting Trendz" type="button" class="button" style="background-color:#3897A5;cursor:pointer;font-weight:bold;" value="${constituencyDetails.constituencyName}&nbsp;Detailed Analysis" onclick="openConstVotingTrendzWindow('${constituencyDetails.districtId}','${constituencyDetails.constituencyId}','${constituencyDetails.constituencyName}')" />
 		</c:if>
-	
+		
 	</div>
-						
+		<div id="cadre2014RegInfoDiv" style="display:none;">
+		    <s:if test="#session.USER.isAdmin == 'true'"> 
+			   <input title="Click Here To Get 2014 Cadre Registration Info" type="button" class="button" style="background-color:#3897A5;cursor:pointer;font-weight:bold;margin-top: -12px;" value="2014 Cadre Registration Info" onclick="show2014CadreRegistInfo();" />
+            </s:if>			
+        </div>		
         <!--VIEW YOUR PROBLEMS SECTION START-->
         
         <div class="vy-problems-sec">
@@ -1192,7 +1197,10 @@ var queryString='';
 		
 			
       <!--CIBSTUTYEBCT DETAILS RIGHT SECTION END--> 
-
+<div id="cadre2014InfoPopUpMainDIV" title="2014 Cadre Registration Info" style="display:none;">
+   <div id="cadre2014InfoDistricDIV"></div>
+   <div id="cadre2014InfoConstituDIV"></div>
+</div>
 	<script type="text/javascript">
 	if('${candidateDetailsForConstituency.ispartial}' == 'true'){
 	        getcandidateAssetsAndLiabilities(constiId);
@@ -4235,6 +4243,71 @@ function callAjaxTosaveUserFavouriteLink(jObj,url){
 }
 function hideFavouriteLink(){
 $('.favouritelink').hide();
+}
+function show2014CadreRegistInfo(){
+   $("#cadre2014InfoDistricDIV").html('<img style="display: block;margin-left:350px;margin-top:50px;" src="images/icons/goldAjaxLoad.gif" id="news_ImgSpan">');
+   $("#cadre2014InfoConstituDIV").html("");
+  $("#cadre2014InfoPopUpMainDIV").dialog({
+    height:550,
+    width:900
+  });
+  
+    $.ajax({
+          type:'GET',
+          url: 'getLocationWiseRegistrationInfo.action',
+		  data: {task:"districtInfo",ids:"1,22,23,14,17,5,20,3,10,16,21,7,4,8,19,2,18,6,11,13,12,9,15"},
+		  success: function(result){  
+             buildRegistrationTable("#cadre2014InfoDistricDIV","DISTRICT",result);
+           }
+	   });
+	 $.ajax({
+          type:'GET',
+          url: 'getLocationWiseRegistrationInfo.action',
+		  data: {task:"assemblyInfo",ids:"61,181,218,1,253,74,62,254,255,108,146,315,133,298,147,32,359,10,2,326,241,182,242,313,11,333,12,209,295,100,167,368,75,365,3,122,13,280,43,44,120,4,55,199,168,219,281,134,20,221,169,369,77,322,267,257,86,336,135,170,109,63,121,358,34,301,310,184,87,222,171,317,185,231,297,311,312,203,270,320,21,339,56,111,64,149,186,23,244,89,314,15,243,271,187,308,307,65,272,245,16,223,224,24,46,232,47,101,5,78,66,258,246,67,225,321,102,152,233,172,346,282,260,360,348,205,328,273,294,103,136,91,68,349,69,49,367,319,296,309,206,26,334,226,35,57,79,6,92,153,80,50,249,191,283,338,70,81,82,316,192,261,262,112,173,208,36,335,93,37,137,361,340,341,366,7,343,342,193,227,138,174,104,113,362,284,352,329,263,228,58,94,124,337,114,264,140,327,210,30,155,330,141,275,285,324,156,176,211,157,212,250,251,286,302,300,345,304,305,353,252,303,351,159,318,306,299,248,276,160,213,125,51,39,229,236,105,214,288,52,53,350,71,40,277,31,8,116,289,332,127,237,84,177,215,278,59,178,117,216,290,291,194,85,163,238,179,180,347,279,323,217,239,331,195,196,60,207,354,356,355,357,129,73,364,363,97,325,54,107,18,265,344,41"},
+		  success: function(result){  
+              buildRegistrationTable("#cadre2014InfoConstituDIV","CONSTITUENCY",result);
+           }
+	   });
+}
+function buildRegistrationTable(divId,divName,result){
+   var str='';
+	       if(result.length > 0){
+		        if(divName == "DISTRICT"){
+		         str+='<div style="font-weight: bold;padding-bottom: 10px;padding-top: 20px;">DISTRICT WISE CADRE REGISTRATION INFO</div>';
+				}else{
+				 str+='<div style="font-weight: bold;padding-bottom: 10px;padding-top: 20px;">CONSTITUENCY WISE CADRE REGISTRATION INFO</div>';
+				}
+		        str+='<div id="resultTableDiv"><table class="table table-bordered table-striped table-hover"><thead>';
+				str+='<tr>';
+				str+='<th>'+divName+'</th>';
+			    str+='<th>2014 CADRE COUNT</th>';
+			    str+='<th>2012 CADRE COUNT</th>';
+				str+='<th>REGISTRATION COMPLETED %</th>';
+				str+='</tr>';
+				str+='</thead><tbody>';
+				for(var i in result){
+				  str+='<tr>';
+				  str+='  <td>'+result[i].location+'</td>';
+				    if(result[i].apCount != null){
+				      str+='  <td>'+result[i].apCount+'</td>';
+					}else{
+					  str+='  <td>-</td>';
+					}
+					if(result[i].tgCount != null){
+				      str+='  <td>'+result[i].tgCount+'</td>';
+					}else{
+					  str+='  <td>-</td>';
+					}
+					if(result[i].name != null){
+				      str+='  <td>'+result[i].name+'</td>';
+					}else{
+					  str+='  <td>-</td>';
+					}
+				  str+='</tr>';
+				}
+				str+='</tbody></table></div>';
+		   }
+		   $(divId).html(str);
 }
 </script>
 
