@@ -52,7 +52,7 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> getPanchayatWiseCadreDetails(Long panchayatId);
 	
 	public Integer updateNFCCardNumberByVoterId(Long voterId , String nfcCardNo);
-	
+
 	public List<Object[]> getConstituencyWiseAgeRangeCadreCount(Long constituencyId,String ageRange);
 	
 	public Long getConstituencyWiseYearCount(Long constituencyId,Long enrollmentYear);
@@ -68,4 +68,12 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> getConstituencyWiseCastCadreCount(Long constituencyId);
 	
 	public List<Object[]> getDistrictWiseCastCadreCount(Long districtId);
+	
+	public List<Object[]> getCadreInfoPanchayatWise(List<Long> panchayatIds);
+	
+	public List<Object[]> getCadreInfoBoothWise(List<Long> boothIds);
+	
+	public List<Object[]> getCadreInfoMandalWise(List<Long> tehsilIds);
+	
+	public List<Object[]> getCadreInfoLocalBodyWise(List<Long> localBdyIds);
 }

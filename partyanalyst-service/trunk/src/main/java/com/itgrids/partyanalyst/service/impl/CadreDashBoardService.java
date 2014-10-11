@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +13,13 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -21,6 +29,12 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	private static Logger LOG = Logger.getLogger(CadreDashBoardService.class);
 	
 	private ITdpCadreDAO tdpCadreDAO;
+	private IConstituencyDAO constituencyDAO;
+	private IBoothDAO boothDAO;
+	private IDistrictDAO districtDAO;
+	private IPanchayatDAO panchayatDAO;
+	private ITehsilDAO tehsilDAO;
+	private ILocalElectionBodyDAO localElectionBodyDAO;
 	private DateUtilService dateService = new DateUtilService();
 
 	public ITdpCadreDAO getTdpCadreDAO() {
@@ -31,7 +45,54 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		this.tdpCadreDAO = tdpCadreDAO;
 	}
 	
-	
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+
+	public IBoothDAO getBoothDAO() {
+		return boothDAO;
+	}
+
+	public void setBoothDAO(IBoothDAO boothDAO) {
+		this.boothDAO = boothDAO;
+	}
+
+	public IDistrictDAO getDistrictDAO() {
+		return districtDAO;
+	}
+
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
+	}
+
+	public IPanchayatDAO getPanchayatDAO() {
+		return panchayatDAO;
+	}
+
+	public void setPanchayatDAO(IPanchayatDAO panchayatDAO) {
+		this.panchayatDAO = panchayatDAO;
+	}
+
+	public ITehsilDAO getTehsilDAO() {
+		return tehsilDAO;
+	}
+
+	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
+		this.tehsilDAO = tehsilDAO;
+	}
+
+	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
+		return localElectionBodyDAO;
+	}
+
+	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
+		this.localElectionBodyDAO = localElectionBodyDAO;
+	}
+
 	public List<CadreRegisterInfo> getDashBoardBasicInfo(){
 		
 		List<CadreRegisterInfo> returnResult = new ArrayList<CadreRegisterInfo>();
@@ -763,4 +824,163 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		casteMap.put(2012L, genderInfo2012);	
 		casteMap.put(2014L, genderInfo2014);
 	}
+	
+	public List<CadreRegisterInfo> getAssemblyConstituencies(String type){
+		List<CadreRegisterInfo> returnList = new ArrayList<CadreRegisterInfo>();
+		try{
+			CadreRegisterInfo vo = null;
+			List<Object[]> constituenciesList = constituencyDAO.getAssemblyConstituenciesInAP(type);
+			for(Object[] constituency:constituenciesList){
+				vo = new CadreRegisterInfo();
+				vo.setId((Long)constituency[0]);
+				vo.setName(constituency[1].toString());
+				returnList.add(vo);
+			}
+		}catch(Exception e){
+			LOG.error("Exception rised in getAssemblyConstituencies",e);
+		}
+		return returnList;
+	}
+	
+	public List<CadreRegisterInfo> getPanchayatsInConstituencies(Long constituencyId){
+		List<CadreRegisterInfo> returnList = new ArrayList<CadreRegisterInfo>();
+		try{
+			CadreRegisterInfo vo = null;
+			List<Object[]> constituenciesList = boothDAO.getPanchayatsByConstituencyAndPublication(constituencyId,11l);
+			for(Object[] constituency:constituenciesList){
+				vo = new CadreRegisterInfo();
+				vo.setId((Long)constituency[0]);
+				vo.setName(constituency[1].toString());
+				returnList.add(vo);
+			}
+		}catch(Exception e){
+			LOG.error("Exception rised in getPanchayatsInConstituencies",e);
+		}
+		return returnList;
+	}
+	
+	public List<CadreRegisterInfo> getBoothsInConstituencies(Long constituencyId){
+		List<CadreRegisterInfo> returnList = new ArrayList<CadreRegisterInfo>();
+		try{
+			CadreRegisterInfo vo = null;
+			List<Object[]> constituenciesList = boothDAO.getBoothsInAConstituency(constituencyId,11l);
+			for(Object[] constituency:constituenciesList){
+				vo = new CadreRegisterInfo();
+				vo.setId((Long)constituency[0]);
+				vo.setName(constituency[1].toString());
+				returnList.add(vo);
+			}
+		}catch(Exception e){
+			LOG.error("Exception rised in getBoothsInConstituencies",e);
+		}
+		return returnList;
+	}
+	
+	public List<CadreRegisterInfo> getStateWiseRegistrationInfo(List<Long> stateIds){
+		List<CadreRegisterInfo> returnList = new ArrayList<CadreRegisterInfo>();
+		try{
+			if(stateIds.contains(1l)){
+				 Long count_2012AP = tdpCadreDAO.getWorkStartedConstituencyYearCount(2012L,"AP");
+				 Long count_2014AP = tdpCadreDAO.getWorkStartedConstituencyYearCount(2014L,"AP");
+				 CadreRegisterInfo apVo = new CadreRegisterInfo();
+				 apVo.setLocation("Andhra Pradesh");
+				 apVo.setApCount(count_2014AP);
+				 apVo.setTgCount(count_2012AP);
+				 returnList.add(apVo);
+			}
+			if(stateIds.contains(36l)){
+			    Long count_2012TS = tdpCadreDAO.getWorkStartedConstituencyYearCount(2012L,"TS");
+			    Long count_2014TS = tdpCadreDAO.getWorkStartedConstituencyYearCount(2014L,"TS");
+			    CadreRegisterInfo tgVo = new CadreRegisterInfo();
+			    tgVo.setLocation("Telangana");
+			    tgVo.setApCount(count_2014TS);
+			    tgVo.setTgCount(count_2012TS);
+				 returnList.add(tgVo);
+			}
+		}catch(Exception e){
+			LOG.error("Exception rised in getStateWiseRegistrationInfo",e);
+		}
+		return returnList;
+	}
+	
+	
+	public List<CadreRegisterInfo> getLocationWiseRegistrationInfo(List<Long> ids,String type){
+		List<CadreRegisterInfo> returnList = new ArrayList<CadreRegisterInfo>();
+		try{
+			CadreRegisterInfo infoVo = null;
+			Map<Long,Map<Long,Long>> locationMap = new HashMap<Long,Map<Long,Long>>();//Map<locationId,Map<year,count>>
+			Map<Long,Long> yearMap = null;
+			List<Object[]> namesList = new ArrayList<Object[]>();
+			//0 count,1 id,2 name ,3 year
+			List<Object[]> constituencyInfoList = new ArrayList<Object[]>();
+			if(ids.size() > 0){
+				if(type.equals("assembly")){
+					constituencyInfoList = tdpCadreDAO.getCadreInfoConstituencytWise(ids);
+					 namesList = constituencyDAO.getConstituencyNameByConstituencyIdsList(ids);
+				}else if(type.equals("district")){
+				    constituencyInfoList = tdpCadreDAO.getCadreInfoDistrictWise(ids);
+				    namesList = districtDAO.getDistrictDetailsByDistrictIds(ids);
+				}else if(type.equals("panchayat")){
+				    constituencyInfoList = tdpCadreDAO.getCadreInfoPanchayatWise(ids);
+				    namesList = panchayatDAO.getPanchayatNamesByIds(ids);
+				}else if(type.equals("booth")){
+				    constituencyInfoList = tdpCadreDAO.getCadreInfoBoothWise(ids);
+				    namesList = boothDAO.getBoothNamesByIds(ids);
+				}else if(type.equals("mandal")){
+					List<Long> mandalIds = new ArrayList<Long>();
+					List<Long> localBodyIds = new ArrayList<Long>();
+					for(Long id:ids){
+						if(id.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+							localBodyIds.add(new Long(id.toString().substring(1)));
+						}else{
+							mandalIds.add(new Long(id.toString().substring(1)));
+						}
+					}
+					if(mandalIds.size() > 0){
+						constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoMandalWise(mandalIds));
+						namesList.addAll(tehsilDAO.getTehsilNameByTehsilIdsList(mandalIds));
+					}
+					if(localBodyIds.size() > 0){
+						constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoLocalBodyWise(localBodyIds));
+						namesList.addAll(localElectionBodyDAO.getLocalElectionBodyNames(localBodyIds));
+					}
+				     
+				}
+				for(Object[] info:constituencyInfoList){
+					 yearMap = locationMap.get((Long)info[1]);
+					 if(yearMap == null){
+						 yearMap = new HashMap<Long,Long>();
+						 locationMap.put((Long)info[1],yearMap);
+					 }
+					 yearMap.put((Long)info[3], (Long)info[0]);
+				}
+			}
+			for(Object[] name:namesList){
+			    yearMap = locationMap.get((Long)name[0]);
+			    infoVo = new CadreRegisterInfo();
+			    infoVo.setLocation(name[1].toString());
+			    if(yearMap != null){
+					infoVo.setApCount(yearMap.get(2014l));
+					infoVo.setTgCount(yearMap.get(2012l));
+					if((type.equals("assembly") || type.equals("district")) && infoVo.getApCount() != null && infoVo.getApCount().longValue() > 0 && infoVo.getTgCount() != null && infoVo.getTgCount().longValue() > 0 ){
+						infoVo.setName(new BigDecimal(infoVo.getApCount()*(100.0)/infoVo.getTgCount().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					}
+			    }
+			    returnList.add(infoVo);
+			}
+		}catch(Exception e){
+			LOG.error("Exception rised in getLocationWiseRegistrationInfo",e);
+		}
+		Collections.sort(returnList,locationSort);
+		return returnList;
+	}
+	
+	public  Comparator<CadreRegisterInfo> locationSort = new Comparator<CadreRegisterInfo>(){
+				  
+	  public int compare(CadreRegisterInfo vo1, CadreRegisterInfo vo2)
+		{
+		   return vo1.getLocation().compareTo(vo2.getLocation());
+		}
+	};
+	
 }

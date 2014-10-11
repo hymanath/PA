@@ -18,6 +18,7 @@ public class CadreRegisterInfo implements Serializable{
 	private String location;
 	private Long percentage;
 	private String date;
+	private Long id;
 	private List<CadreRegisterInfo> infoList;
 	
 	public Long getTotalCount() {
@@ -90,6 +91,14 @@ public class CadreRegisterInfo implements Serializable{
 
 	public void setInfoList(List<CadreRegisterInfo> infoList) {
 		this.infoList = infoList;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}	
 
 }
