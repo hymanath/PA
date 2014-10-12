@@ -52,6 +52,19 @@ public class CadreRegistrationVO implements Serializable{
 	private String           refNo;
 	private String 			 imageBase64String;
 	
+	
+	private String 			aadheerNo;
+	private String 			nomineeName;
+	
+	private Long 			constituencyId;
+	private Long			panchayatId;
+	private Long            boothId;
+	private Long			muncipalityId;
+	
+	private Long			voterRelationId;
+	private String 			cadreType;
+
+	
 	private List<CadrePreviousRollesVO> previousRollesList;
 	
 	private List<CadrePreviousRollesVO> previousParicaptedElectionsList;
@@ -288,6 +301,55 @@ public class CadreRegistrationVO implements Serializable{
 	public void setImageBase64String(String imageBase64String) {
 		this.imageBase64String = imageBase64String;
 	}
+	public String getAadheerNo() {
+		return aadheerNo;
+	}
+	public void setAadheerNo(String aadheerNo) {
+		this.aadheerNo = aadheerNo;
+	}
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	public Long getPanchayatId() {
+		return panchayatId;
+	}
+	public void setPanchayatId(Long panchayatId) {
+		this.panchayatId = panchayatId;
+	}
+	public Long getBoothId() {
+		return boothId;
+	}
+	public void setBoothId(Long boothId) {
+		this.boothId = boothId;
+	}
+	public String getNomineeName() {
+		return nomineeName;
+	}
+	public void setNomineeName(String nomineeName) {
+		this.nomineeName = nomineeName;
+	}
+	public Long getMuncipalityId() {
+		return muncipalityId;
+	}
+	public void setMuncipalityId(Long muncipalityId) {
+		this.muncipalityId = muncipalityId;
+	}
+	public Long getVoterRelationId() {
+		return voterRelationId;
+	}
+	public void setVoterRelationId(Long voterRelationId) {
+		this.voterRelationId = voterRelationId;
+	}
+	public String getCadreType() {
+		return cadreType;
+	}
+	public void setCadreType(String cadreType) {
+		this.cadreType = cadreType;
+	}
+	
 	
 	
 	
