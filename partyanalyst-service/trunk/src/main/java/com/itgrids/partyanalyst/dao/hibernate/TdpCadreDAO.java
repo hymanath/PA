@@ -295,7 +295,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 	
 	public List<Object[]> getCadreDetailsByMemberId(String memberCardNo)
 	{
-		Query query = getSession().createQuery("select model.memberShipNo , model.voterId,model.firstname,model.relativename,model.voter.voterId,model.voter.voterIDCardNo from TdpCadre model where model.refNo = :memberCardNo");
+		Query query = getSession().createQuery("select model.memberShipNo , model.voterId,model.firstname,model.relativename,model.voter.voterId,model.voter.voterIDCardNo from TdpCadre model where model.memberShipNo = :memberCardNo");
 		query.setParameter("memberCardNo", memberCardNo);
 		return query.list();
 	}
@@ -497,4 +497,12 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		query.setParameterList("localBdyIds", localBdyIds);
 		return query.list();
 	}
+	
+	public List<String> chechForCardNumber(String cardNo)
+	{
+		Query query = getSession().createQuery("select model.cardNumber from TdpCadre model where model.cardNumber = :cardNo");
+		query.setParameter("cardNo", cardNo);
+		return query.list();
+	}
+	
 }

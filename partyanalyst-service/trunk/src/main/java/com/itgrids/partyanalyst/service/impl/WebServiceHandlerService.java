@@ -1078,5 +1078,11 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		String status = cadreRegistrationService.tagCardIdForNFCReader(cardNo,voetrId);
 		return status;
 	}
+	
+	public Object getCadreDetailsForPrinting(String memberNo)
+	{
+		CadrePrintVO cadrePrintVO = cadreRegistrationService.getCadreDetailsForPrinting(memberNo);
+		return cadrePrintVO;
+	}
 }
 

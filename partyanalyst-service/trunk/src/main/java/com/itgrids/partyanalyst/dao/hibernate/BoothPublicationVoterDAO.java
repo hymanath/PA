@@ -7339,4 +7339,6 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 	   		query.setParameter("casteInsertTypeId", IConstants.CTP_CASTE_INSERT_TYPE);
 	   		return query.list();
    }
+   
+  
 }

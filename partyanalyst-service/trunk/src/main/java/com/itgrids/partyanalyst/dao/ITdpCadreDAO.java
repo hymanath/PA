@@ -76,4 +76,6 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> getCadreInfoMandalWise(List<Long> tehsilIds);
 	
 	public List<Object[]> getCadreInfoLocalBodyWise(List<Long> localBdyIds);
+	
+	public List<String> chechForCardNumber(String cardNo);
 }

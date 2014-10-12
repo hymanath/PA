@@ -48,7 +48,6 @@ import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
-import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreFamilyVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
@@ -456,9 +455,59 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				}
 				
 				UserAddress userAddress = new UserAddress();
-				getVoterAddressDetails(tdpCadre.getVoterId(),userAddress,cadreRegistrationVO.getStreet());
+				if(tdpCadre.getVoterId() != null && tdpCadre.getVoterId().longValue() > 0)
+				{
+					getVoterAddressDetails(tdpCadre.getVoterId(),userAddress,cadreRegistrationVO.getStreet());
+				}
+				else
+				{
+					if(cadreRegistrationVO.getConstituencyId() != null && cadreRegistrationVO.getConstituencyId().longValue() > 0)
+					{
+						userAddress.setConstituency(constituencyDAO.get(cadreRegistrationVO.getConstituencyId()));
+						userAddress.setCountry(countryDAO.get(1l));
+						userAddress.setState(stateDAO.get(1l));
+						userAddress.setConstituency(constituencyDAO.get(cadreRegistrationVO.getConstituencyId()));
+						userAddress.setDistrict(constituencyDAO.get(cadreRegistrationVO.getConstituencyId()).getDistrict());
+						if(cadreRegistrationVO.getStreet() != null && cadreRegistrationVO.getStreet().trim().length() > 0 && cadreRegistrationVO.getStreet().trim().equalsIgnoreCase("null"))
+						{
+							userAddress.setStreet(cadreRegistrationVO.getStreet());
+						}
+						if(cadreRegistrationVO.getPanchayatId() != null && cadreRegistrationVO.getPanchayatId().longValue() > 0)
+						{
+							userAddress.setPanchayat(panchayatDAO.get(cadreRegistrationVO.getPanchayatId()));
+							userAddress.setTehsil(panchayatDAO.get(cadreRegistrationVO.getPanchayatId()).getTehsil());
+						}
+						if(cadreRegistrationVO.getBoothId() != null && cadreRegistrationVO.getBoothId().longValue() > 0)
+						{
+							userAddress.setBooth(boothDAO.get(cadreRegistrationVO.getBoothId()));
+							
+						}
+						if(cadreRegistrationVO.getMuncipalityId() !=null && cadreRegistrationVO.getMuncipalityId().longValue() >0)
+						{
+							userAddress.setLocalElectionBody(localElectionBodyDAO.get(cadreRegistrationVO.getMuncipalityId()));
+						}
+					}
+					
+				}
+				
 				userAddress = userAddressDAO.save(userAddress);
-				tdpCadre.setUserAddress(userAddress);						
+				tdpCadre.setUserAddress(userAddress);	
+				if(cadreRegistrationVO.getNomineeName() != null && cadreRegistrationVO.getNomineeName().trim().length() > 0 && !cadreRegistrationVO.getNomineeName().trim().equalsIgnoreCase("null"))
+				{
+					tdpCadre.setNomineeName(cadreRegistrationVO.getNomineeName());
+				}
+				if(cadreRegistrationVO.getAadheerNo() != null && cadreRegistrationVO.getAadheerNo().trim().length() > 0 && !cadreRegistrationVO.getAadheerNo().trim().equalsIgnoreCase("null"))
+				{
+					tdpCadre.setAadheerNo(cadreRegistrationVO.getAadheerNo());
+				}
+				if(cadreRegistrationVO.getVoterRelationId() != null && cadreRegistrationVO.getVoterRelationId().longValue() > 0)
+				{
+					tdpCadre.setVoterRelationId(cadreRegistrationVO.getVoterRelationId());
+				}
+				if(cadreRegistrationVO.getCadreType() != null && cadreRegistrationVO.getCadreType().trim().length() > 0 && cadreRegistrationVO.getCadreType().trim().equalsIgnoreCase("null"))
+				{
+					tdpCadre.setCadreType(cadreRegistrationVO.getCadreType());
+				}
 				tdpCadre.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 				tdpCadre.setUpdatedTime(dateUtilService.getCurrentDateAndTime());		
 				tdpCadre.setEnrollmentYear(IConstants.CADRE_ENROLLMENT_NUMBER);
@@ -524,8 +573,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				  if(insertType.equalsIgnoreCase("new")){
 					  synchronized (CadreRegistrationService.class) {
 					     tdpCadre.setRefNo(cadreRegistrationVO.getRefNo());
-					     String membershipNo = getMemberShipNo(userAddress.getDistrict().getDistrictId());
-							tdpCadre.setMemberShipNo(membershipNo);
+					    // String membershipNo = getMemberShipNo(userAddress.getDistrict().getDistrictId());
+							tdpCadre.setMemberShipNo("1234");
 							surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getMemberShipNo());
 							uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre);
 					     tdpCadre = tdpCadreDAO.save(tdpCadre);	
@@ -2322,12 +2371,15 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		 if(result != null && result.size() > 0)
 		 {
 			 returnList = new ArrayList<CadrePrintVO>();
+			 Long count = 1l;
 			 for (Object[] objects : result)
 			 {
 				 CadrePrintVO cadrePrintVO = new CadrePrintVO();
 				 	Long voterId = (Long)objects[1];
 					UserAddress userAddress = new UserAddress()	;
 					getVoterAddressDetails(voterId,userAddress,null);
+					cadrePrintVO.setCadrePrintVOId(count);
+					count++;
 					cadrePrintVO.setVillageName(userAddress.getPanchayat() != null ? StringEscapeUtils.unescapeJava(userAddress.getPanchayat().getLocalName()  )  + StringEscapeUtils.unescapeJava("\u0C17\u0C4D\u0C30\u0C3E\u0C2E\u0C02"): "");
 					cadrePrintVO.setMandalName(userAddress.getTehsil() != null ?  StringEscapeUtils.unescapeJava(userAddress.getTehsil().getLocalName() ) + StringEscapeUtils.unescapeJava("\u0C2E\u0C02\u0C21\u0C32\u0C02"):"");
 					cadrePrintVO.setConstituencyName(userAddress.getConstituency() != null ?  StringEscapeUtils.unescapeJava(userAddress.getConstituency().getLocalName() ) + StringEscapeUtils.unescapeJava("\u0C28\u0C3F") + "||" : "");
@@ -2361,11 +2413,21 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	{
 		String status = "fail";
 		try {
-			Integer count = tdpCadreDAO.updateNFCCardNumberByVoterId(voterId,cardNumber);
-			if(count != null && count.longValue() > 0)
+			
+			List<String> checkForNumber =tdpCadreDAO.chechForCardNumber(cardNumber);
+			if(checkForNumber.size() == 0)
 			{
-				status = "success";
+				Integer count = tdpCadreDAO.updateNFCCardNumberByVoterId(voterId,cardNumber);
+				if(count != null && count.longValue() > 0)
+				{
+					status = "success";
+				}
 			}
+			else
+			{
+				status = "CardAssigned";
+			}
+			
 		} catch (Exception e) {
 			LOG.error("Exception raised in tagCardIdForNFCReader in CadreRegistrationService service", e);
 		}

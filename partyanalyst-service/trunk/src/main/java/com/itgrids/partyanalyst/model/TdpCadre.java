@@ -80,6 +80,14 @@ public class TdpCadre {
 	private String                      refNo;
 	private String						cardNumber;
 	
+	private String 						nomineeName;
+	private String						aadheerNo;
+	
+	private Long 						voterRelationId;
+	private VoterRelation				voterRelation;
+	
+	private String						cadreType;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "tdp_cadre_id", unique = true, nullable = false)
@@ -472,6 +480,48 @@ public class TdpCadre {
 	}
 	public void setCardNumber(String cardNumber) {
 		this.cardNumber = cardNumber;
+	}
+	
+	@Column(name="nominee_name")
+	public String getNomineeName() {
+		return nomineeName;
+	}
+	public void setNomineeName(String nomineeName) {
+		this.nomineeName = nomineeName;
+	}
+	@Column(name="aadheer_no")
+	public String getAadheerNo() {
+		return aadheerNo;
+	}
+	public void setAadheerNo(String aadheerNo) {
+		this.aadheerNo = aadheerNo;
+	}
+	
+	@Column(name="voter_relation_id")
+	public Long getVoterRelationId() {
+		return voterRelationId;
+	}
+	public void setVoterRelationId(Long voterRelationId) {
+		this.voterRelationId = voterRelationId;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "voter_relation_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public VoterRelation getVoterRelation() {
+		return voterRelation;
+	}
+	public void setVoterRelation(VoterRelation voterRelation) {
+		this.voterRelation = voterRelation;
+	}
+	
+	@Column(name="cadre_type")
+	public String getCadreType() {
+		return cadreType;
+	}
+	public void setCadreType(String cadreType) {
+		this.cadreType = cadreType;
 	}
 	
 	
