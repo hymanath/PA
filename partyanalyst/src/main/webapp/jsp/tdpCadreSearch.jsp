@@ -294,6 +294,7 @@
 			str +='<th class="text-align1">AGE</th>';
 			str +='<th class="text-align1">GENDER</th>';
 			str +='<th class="text-align1">H.NUMBER</th>';
+			str +='<th class="text-align1"></th>';
 			str +='</tr>';
 			str +='</thead>';
 			str +='<tbody>';
@@ -307,28 +308,28 @@
 					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
 					
 				if(result[i].relativeName != null)
-					str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].name+'</span></td>';
+					str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].relativeName+'</span></td>';
 				else
 					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
 				if(result[i].relationType != null)
-					str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].name+'</span></td>';
+					str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].relationType+'</span></td>';
 				else
 					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';					
 				if(result[i].age != null)
-					str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].name+'</span></td>';
+					str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].age+'</span></td>';
 				else
 					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
 				if(result[i].gender != null)
-					str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].name+'</span></td>';
+					str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].gender+'</span></td>';
 				else
 					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
 				
 				if(result[i].houseNo != null)
-					str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].name+'</span></td>';
+					str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].houseNo+'</span></td>';
 				else
 					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
 				
-				str +='<input type="radio" value="'+result[i].id+'" name="optionsRadios" onClick="getDetailsForUser();"></label></td>';
+				str +='<td><input type="radio" value="'+result[i].id+'" name="optionsRadios" onClick="getDetailsForUser();"></label></td>';
 				str +='</tr>';
 			}
 			

@@ -951,6 +951,39 @@
 	</div>
 	<!----  srishailam end  -->
 	
+	
+	<div id="fadeInUp">
+		<div class="container m_top10">
+			<div class="span12 show-grid" style="position: relative;">
+				<h3 class="text-align "></h3>
+			</div>
+		</div>
+		<div class="container m_top10">
+			<div class="span12 show-grid" style="position: relative;" id="accDiv">
+				<div class="span3">
+					<h5 class="text-align1"> Aadheer Number </h5>
+					<input type="text" class="form-control border-radius-0 text-align2" placeholder="Aadheer Number"  name="cadreRegistrationVO.aadheerNo"></input> 
+				</div>
+				
+				<div class="span3">
+					<h5 class="text-align1"> Nominee Name </h5>
+					<input type="text" class="form-control border-radius-0 text-align2" placeholder="Nominee Name"  name="cadreRegistrationVO.nomineeName"></input>
+				</div>
+				
+				<div class="span3">
+					<h5 class="text-align1"> Relation Type </h5>
+					<select name="cadreRegistrationVO.voterRelationId" style="width:160px;">
+							<option value="0">Select Relation</option>	
+							<option value="1">Father</option>
+							<option value="2">Mother</option>
+							<option value="3">Wife</option>
+					</select>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
 	<div id="fadeInUp">
 		<div class="container m_top10">
 			<div class="span12 show-grid" style="position: relative;">

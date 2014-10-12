@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.CadrePrintVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
@@ -488,44 +489,6 @@ public class WebServiceHandler {
 			return "Fail";
 		}
 	}
-	
-	@GET
-	@Path("/getVCadreDataByPanchayatId/{uniqueCode}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Object getVCadreDataByPanchayatId(@PathParam("uniqueCode") String uniqueCode)
-	{
-		
-		try{
-			
-			//return webServiceHandlerService.requestForAuthorisationAccesskey(uniqueCode);
-			Object object = null;
-			object=(List<BasicVO>) webServiceHandlerService.getVCadreDataByPanchayatId(Long.valueOf(uniqueCode));
-			return object;
-		}
-		catch(Exception e)
-		{
-			LOG.error("Exception Occured in requestForAuthorisationForAccessKey() Method, Exception is ",e);
-			return "Fail";
-		}
-	}
-	
-	@GET
-	@Path("/tagCardIdForNFCReader/{uniqueCode}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Object tagCardIdForNFCReader(@PathParam("uniqueCode") String uniqueCode,@PathParam("voterId") String voterId)
-	{
-		
-		try{
-
-			Object status= webServiceHandlerService.tagCardIdForNFCReader(uniqueCode,Long.valueOf(voterId));
-			return status;
-		}
-		catch(Exception e)
-		{
-			LOG.error("Exception Occured in requestForAuthorisationForAccessKey() Method, Exception is ",e);
-			return "Fail";
-		}
-	}
 
 	
 	@GET
@@ -601,5 +564,64 @@ public class WebServiceHandler {
 		object=(List<BasicVO>) webServiceHandlerService.getVCadreDataByPanchayatId(Long.valueOf(panchayatId));
 		return object;
     }
+	
+	
+	@GET
+	@Path("/getVCadreDataByPanchayatId/{uniqueCode}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Object getVCadreDataByPanchayatId(@PathParam("uniqueCode") String uniqueCode)
+	{
+		
+		try{
+			
+			//return webServiceHandlerService.requestForAuthorisationAccesskey(uniqueCode);
+			Object object = null;
+			object= webServiceHandlerService.getVCadreDataByPanchayatId(Long.valueOf(uniqueCode));
+			return object;
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in requestForAuthorisationForAccessKey() Method, Exception is ",e);
+			return "Fail";
+		}
+	}
+	
+	@GET
+	@Path("/tagCardIdForNFCReader/{uniqueCode}/{voterId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Object tagCardIdForNFCReader(@PathParam("uniqueCode") String uniqueCode,@PathParam("voterId") String voterId)
+	{
+		
+		try{
+
+			Object status= webServiceHandlerService.tagCardIdForNFCReader(uniqueCode,Long.valueOf(voterId));
+			return status;
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in requestForAuthorisationForAccessKey() Method, Exception is ",e);
+			return "Fail";
+		}
+	}
+	
+	@GET
+	@Path("/getCadreDetailsForPrinting/{uniqueCode}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Object getCadreDetailsForPrinting(@PathParam("uniqueCode") String uniqueCode)
+	{
+		
+		try{
+			
+			//return webServiceHandlerService.requestForAuthorisationAccesskey(uniqueCode);
+			Object object = null;
+			object= webServiceHandlerService.getCadreDetailsForPrinting(uniqueCode);
+			return object;
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in requestForAuthorisationForAccessKey() Method, Exception is ",e);
+			return "Fail";
+		}
+	}
 	
 }
