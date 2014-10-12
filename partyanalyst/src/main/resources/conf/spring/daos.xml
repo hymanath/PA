@@ -1659,6 +1659,11 @@
 <bean id="tdpCadreFamilyDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreFamilyDetailsDAO" >
 	<property name="sessionFactory" ref="sessionFactory" />
 </bean>
+
+
+<bean id="voterRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterRelationDAO" >
+	<property name="sessionFactory" ref="sessionFactory" />
+</bean>
 	
 	
 	<!--  end -->
