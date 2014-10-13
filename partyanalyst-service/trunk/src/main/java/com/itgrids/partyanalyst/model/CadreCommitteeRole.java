@@ -37,7 +37,7 @@ public class CadreCommitteeRole implements Serializable{
 	
 	 @Id
 	 @GeneratedValue(strategy = GenerationType.AUTO)
-	 @Column(name = "cadre_committee_role", unique = true, nullable = false)
+	 @Column(name = "cadre_committee_role_id", unique = true, nullable = false)
 	public Long getCadreCommitteeRoleId() {
 		return cadreCommitteeRoleId;
 	}
