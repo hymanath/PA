@@ -367,8 +367,9 @@
 		//var candidateId = $('input[name="optionsRadios"]:checked').val();
 		var searchType = $('input[name="searchTypeRadio"]:checked').val();
 		var cosntiteucnyId = $('#userConstituencyId').val();	
+		var boothId = $('#boothsList').val();	
 		var houseNo = $('#panchayatList').val();	
-		window.open('tdpCadreRegistrationAction.action?candidateId='+candidateId+'&searchType='+searchType+'&constiteucnyId='+cosntiteucnyId+'&houseNo='+houseNo+'&panchayatId=0&boothId=0');
+		window.open('tdpCadreRegistrationAction.action?candidateId='+candidateId+'&searchType='+searchType+'&constiteucnyId='+cosntiteucnyId+'&houseNo='+houseNo+'&panchayatId=0&boothId='+boothId);
 		
 	}
 	
