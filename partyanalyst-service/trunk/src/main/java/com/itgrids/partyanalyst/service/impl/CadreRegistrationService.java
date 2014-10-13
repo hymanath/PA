@@ -968,7 +968,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						vo.setHouseNo(voter[4] != null ? voter[4].toString().trim():"");
 						vo.setRelationType(voter[5] != null ? voter[5].toString().trim():"");
 						vo.setGender(voter[6] != null ? voter[6].toString().trim():"");
-						
+						vo.setVoterCardNo(voter[7]!=null ?voter[7].toString().trim():"");
 						returnList.add(vo);
 					}
 				}
