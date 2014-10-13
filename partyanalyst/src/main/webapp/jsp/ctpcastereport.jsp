@@ -364,6 +364,7 @@ function clearFieldsData(){
 	$('#startWith').attr('checked', 'checked');  
 	$('#allGenderId').attr('checked', 'checked'); 
 	$("#voterCountData").html('');
+	$("#voterDetailsDiv").html('');
 }
 </script>
 </head>
