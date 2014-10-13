@@ -70,6 +70,8 @@ public class CadreRegistrationVO implements Serializable{
 	private String			photoType;
 	private String			nameType;
 	private String			 relationType;
+	private boolean          relative;
+	private Long            relationTypeId;
 
 	
 	private List<CadrePreviousRollesVO> previousRollesList;
@@ -388,6 +390,20 @@ public class CadreRegistrationVO implements Serializable{
 		this.relationType = relationType;
 	}
 	
+	
+	
+	public boolean isRelative() {
+		return relative;
+	}
+	public void setRelative(boolean relative) {
+		this.relative = relative;
+	}
+	public Long getRelationTypeId() {
+		return relationTypeId;
+	}
+	public void setRelationTypeId(Long relationTypeId) {
+		this.relationTypeId = relationTypeId;
+	}
 	
 	
 	

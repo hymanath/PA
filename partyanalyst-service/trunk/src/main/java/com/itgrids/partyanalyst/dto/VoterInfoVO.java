@@ -27,6 +27,8 @@ public class VoterInfoVO implements java.io.Serializable
 	private Long voterId;
 	private Long cadreId;
 	private String memberShipId;
+	private String          relative;
+	private Long            relationTypeId;
 	private String isRegistered;
 	private String  aadharNo;
 	private String nomineeName;
@@ -243,6 +245,18 @@ public class VoterInfoVO implements java.io.Serializable
 		this.aiDetails = aiDetails;
 	}
 	
+	public String getRelative() {
+		return relative;
+	}
+	public void setRelative(String relative) {
+		this.relative = relative;
+	}
+	public Long getRelationTypeId() {
+		return relationTypeId;
+	}
+	public void setRelationTypeId(Long relationTypeId) {
+		this.relationTypeId = relationTypeId;
+	}
 	
 	
 }
