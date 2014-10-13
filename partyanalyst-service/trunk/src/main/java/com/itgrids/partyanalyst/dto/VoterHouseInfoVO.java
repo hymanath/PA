@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class VoterHouseInfoVO implements Comparable<VoterHouseInfoVO>{
@@ -49,6 +50,7 @@ public class VoterHouseInfoVO implements Comparable<VoterHouseInfoVO>{
 	private List<VoterHouseInfoVO> votersList;
 	private List<VoterHouseInfoVO> boothsList,localbodyList;
 	private List<VoterHouseInfoVO> familiesList;
+	private List<VoterHouseInfoVO> casteList = new ArrayList<VoterHouseInfoVO>();
 	private Long publicationId;
 	private Long toAge;
 	private String mobileNo;
@@ -133,7 +135,25 @@ public class VoterHouseInfoVO implements Comparable<VoterHouseInfoVO>{
     private Long id;
     private Long maleCnt = 0l;
     private Long femaleCnt = 0l;
+    private Long totalCasteVoters;
+    private String categoryName;
     
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
+
+	public Long getTotalCasteVoters() {
+		return totalCasteVoters;
+	}
+
+	public void setTotalCasteVoters(Long totalCasteVoters) {
+		this.totalCasteVoters = totalCasteVoters;
+	}
+
 	public List<VoterHouseInfoVO> getLocalbodyList() {
 		return localbodyList;
 	}
@@ -1294,6 +1314,14 @@ public class VoterHouseInfoVO implements Comparable<VoterHouseInfoVO>{
 		if(this.cast == null || vo.getCast() == null)
 			return 1;
 		return this.cast.compareTo(vo.getCast());
+	}
+
+	public List<VoterHouseInfoVO> getCasteList() {
+		return casteList;
+	}
+
+	public void setCasteList(List<VoterHouseInfoVO> casteList) {
+		this.casteList = casteList;
 	}
 	
 	

@@ -3263,7 +3263,9 @@ IUserVoterDetailsDAO{
 	 public List<Object[]> getCasteCountBylocationType(Long publicationDateId,Long userId,Long constituencyId,String locationType)
 	 {
 		 StringBuilder str = new StringBuilder();
-		 if(locationType.equalsIgnoreCase(IConstants.MANDAL))
+		 if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			 str.append("select distinct model.booth.constituency.constituencyId,model.booth.constituency.name");	 
+		 else if(locationType.equalsIgnoreCase(IConstants.MANDAL))
 		   str.append("select distinct model.booth.tehsil.tehsilId,model.booth.tehsil.tehsilName");
 		 else if(locationType.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
 			 str.append("select distinct model.booth.localBody.localElectionBodyId,model.booth.localBody.name");
@@ -3275,7 +3277,9 @@ IUserVoterDetailsDAO{
 		 str.append(" ,count(uvd.casteState.caste.casteId),uvd.voter.gender from BoothPublicationVoter model,UserVoterDetails uvd " +
 		   		" where model.voter.voterId = uvd.voter.voterId and model.booth.publicationDate.publicationDateId = :publicationDateId ");
 		   str.append(" and uvd.user.userId = :userId and uvd.casteInsertType.casteInsertTypeId = :casteInsertTypeId and model.booth.constituency.constituencyId = :constituencyId");
-		   if(locationType.equalsIgnoreCase(IConstants.MANDAL))
+		   if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			   str.append(" group by model.booth.constituency.constituencyId,uvd.voter.gender");
+		   else if(locationType.equalsIgnoreCase(IConstants.MANDAL))
 			   str.append(" group by model.booth.tehsil.tehsilId,uvd.voter.gender");
 		   else if(locationType.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
 			   str.append(" group by model.booth.localBody.localElectionBodyId,uvd.voter.gender");
@@ -3283,6 +3287,40 @@ IUserVoterDetailsDAO{
 			   str.append(" group by model.booth.panchayat.panchayatId,uvd.voter.gender");
 			   else if(locationType.equalsIgnoreCase(IConstants.BOOTH))  
 				   str.append(" group by model.booth.boothId,uvd.voter.gender");
+		   Query query = getSession().createQuery(str.toString());
+		   query.setParameter("userId", userId);
+		   query.setParameter("publicationDateId", publicationDateId);
+		   query.setParameter("casteInsertTypeId", IConstants.CTP_CASTE_INSERT_TYPE);
+		   query.setParameter("constituencyId", constituencyId);
+		   return query.list();	 
+	 }
+	 public List<Object[]> getCasteVotersCountBylocationTypeInConstituency(Long publicationDateId,Long userId,Long constituencyId,String locationType)
+	 {
+		 StringBuilder str = new StringBuilder();
+		 if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			 str.append("select distinct model.booth.constituency.constituencyId,model.booth.constituency.name");	 
+		 else if(locationType.equalsIgnoreCase(IConstants.MANDAL))
+		   str.append("select distinct model.booth.tehsil.tehsilId,model.booth.tehsil.tehsilName");
+		 else if(locationType.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+			 str.append("select distinct model.booth.localBody.localElectionBodyId,model.booth.localBody.name");
+		 else if(locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
+			 str.append("select distinct model.booth.panchayat.panchayatId,model.booth.panchayat.panchayatName"); 
+		 else if(locationType.equalsIgnoreCase(IConstants.BOOTH))
+			 str.append("select distinct model.booth.boothId,model.booth.partNo"); 
+		 
+		 str.append(" ,count(uvd.casteState.caste.casteId),uvd.voter.gender,uvd.casteState.caste.casteId,uvd.casteState.caste.casteName,uvd.casteState.casteCategoryGroup.casteCategory.categoryName from BoothPublicationVoter model,UserVoterDetails uvd " +
+		   		" where model.voter.voterId = uvd.voter.voterId and model.booth.publicationDate.publicationDateId = :publicationDateId ");
+		   str.append(" and uvd.user.userId = :userId and uvd.casteInsertType.casteInsertTypeId = :casteInsertTypeId and model.booth.constituency.constituencyId = :constituencyId");
+		   if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			   str.append(" group by model.booth.constituency.constituencyId,uvd.casteState.caste.casteId,uvd.voter.gender");
+		   else if(locationType.equalsIgnoreCase(IConstants.MANDAL))
+			   str.append(" group by model.booth.tehsil.tehsilId,uvd.casteState.caste.casteId,uvd.voter.gender");
+		   else if(locationType.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+			   str.append(" group by model.booth.localBody.localElectionBodyId,uvd.casteState.caste.casteId,uvd.voter.gender");
+		   else if(locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
+			   str.append(" group by model.booth.panchayat.panchayatId,uvd.casteState.caste.casteId,uvd.voter.gender");
+			   else if(locationType.equalsIgnoreCase(IConstants.BOOTH))  
+				   str.append(" group by model.booth.boothId,uvd.casteState.caste.casteId,uvd.voter.gender");
 		   Query query = getSession().createQuery(str.toString());
 		   query.setParameter("userId", userId);
 		   query.setParameter("publicationDateId", publicationDateId);
