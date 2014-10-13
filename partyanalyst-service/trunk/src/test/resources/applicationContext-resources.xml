@@ -494,7 +494,7 @@
 				<value>com.itgrids.partyanalyst.model.CadreSurveyUser</value>
 				
 				<value>com.itgrids.partyanalyst.model.TdpCadreFamilyDetails</value>
-				
+				<value>com.itgrids.partyanalyst.model.VoterRelation</value>
 			</list>
 		</property>
 	</bean>
@@ -567,6 +567,10 @@
 	</bean>
 	
 	<bean id="voterTagDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterTagDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="voterRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterRelationDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	

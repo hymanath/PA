@@ -1,7 +1,5 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -12,6 +10,7 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyRebelCandidateDAO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 
 public class NominationDAOHibernateTest extends BaseDaoTestCase {
@@ -1770,8 +1769,29 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 	public void testDetails1()
 	{
 		
-		List<Object[]> list  = nominationDAO.getCandidateResultsByCandidateInfo(3424L,258L);
-		System.out.println(list.size());
+		List<Object[]> candidateList  = nominationDAO.getCandidateResultsByCandidateInfo(3424L,258L);
+		System.out.println(candidateList.size());
+		
+		if(candidateList != null && candidateList.size() > 0)
+		{
+			for (Object[] param : candidateList)
+			{
+				SelectOptionVO vo = new SelectOptionVO();
+				
+				vo.setId(param[0] != null ? Long.valueOf(param[0].toString()):0L); // election type Id
+				vo.setName(param[1] != null ? param[1].toString():"");  // election Type
+				
+				vo.setOrderId(param[2] != null ? Long.valueOf(param[2].toString()):0L);  // electionId 
+				vo.setLocation(param[3] != null ? param[3].toString() +" ("+(param[4] != null ? param[4].toString():"")+")":""); // election Year
+				
+				vo.setMainAccountId(param[5] != null ? Long.valueOf(param[5].toString()):0L); //constituency Id
+				vo.setPanchayatName(param[6] != null ? param[6].toString():""); //constituency Name
+				
+				vo.setPartno(param[7] != null ? param[7].toString():""); // partyname 
+				vo.setMandalName(param[8] != null ? param[8].toString():""); // party Id
+			}
+		}
+		
 	}
 	
 	
