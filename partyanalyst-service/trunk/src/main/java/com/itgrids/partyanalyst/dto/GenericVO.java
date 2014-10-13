@@ -32,6 +32,11 @@ public class GenericVO implements Serializable, Comparable<GenericVO>{
    private String endTime;
    private String workedTime;
 
+   private String nomineeName;
+   private Long nomineeAge;
+   private Long nomineeGenderId;
+   private Long voterRelationType;
+   private Long aadhireNo;
    
 	public BasicVO getBasicVO() {
 	return basicVO;
@@ -195,6 +200,37 @@ public class GenericVO implements Serializable, Comparable<GenericVO>{
 	public void setCaste(String caste) {
 		this.caste = caste;
 	}
+	public String getNomineeName() {
+		return nomineeName;
+	}
+	public void setNomineeName(String nomineeName) {
+		this.nomineeName = nomineeName;
+	}
+	public Long getNomineeAge() {
+		return nomineeAge;
+	}
+	public void setNomineeAge(Long nomineeAge) {
+		this.nomineeAge = nomineeAge;
+	}
+	public Long getNomineeGenderId() {
+		return nomineeGenderId;
+	}
+	public void setNomineeGenderId(Long nomineeGenderId) {
+		this.nomineeGenderId = nomineeGenderId;
+	}
+	public Long getVoterRelationType() {
+		return voterRelationType;
+	}
+	public void setVoterRelationType(Long voterRelationType) {
+		this.voterRelationType = voterRelationType;
+	}
+	public Long getAadhireNo() {
+		return aadhireNo;
+	}
+	public void setAadhireNo(Long aadhireNo) {
+		this.aadhireNo = aadhireNo;
+	}
+	
 	
 	
 	

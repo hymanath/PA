@@ -27,7 +27,7 @@ public class CadrePreviousRolesDAO extends GenericDaoHibernate<CadrePreviousRole
 	public List<Object[]> getexistingRolesForTdpCadreByTdpCadreId(Long tdpCadreId)
 	{
 		
-		Query query = getSession().createQuery(" select model.cadreLevelId, model.partyDesignationId, model.fromDate, model.toDate  from CadrePreviousRoles model  where " +
+		Query query = getSession().createQuery(" select model.cadreCommitteeRole.cadreCommitteeLevelId,model.cadreCommitteeRole.cadreCommiteeId,model.cadreCommitteeRole.cadreRolesId, model.fromDate, model.toDate  from CadrePreviousRoles model  where " +
 				"  model.tdpCadreId = :tdpCadreId and model.isDeleted = 'N' order by  model.cadrePreviousRolesId ");
 		query.setParameter("tdpCadreId", tdpCadreId);
 				

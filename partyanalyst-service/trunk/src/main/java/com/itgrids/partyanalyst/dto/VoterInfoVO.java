@@ -36,6 +36,7 @@ public class VoterInfoVO implements java.io.Serializable
 	private List<VoterInfoVO> voterInfoVOList = new ArrayList<VoterInfoVO>();
 	private List<GenericVO> genericVOList = new ArrayList<GenericVO>();
 	private List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>();
+	private List<GenericVO> aiDetails = new ArrayList<GenericVO>();
 	
 	private List<GenericVO> cadreRolesList = new ArrayList<GenericVO>();
 	private List<GenericVO> previousParticipationInfoList = new ArrayList<GenericVO>();
@@ -235,6 +236,13 @@ public class VoterInfoVO implements java.io.Serializable
 	public void setHouseNo(String houseNo) {
 		this.houseNo = houseNo;
 	}
+	public List<GenericVO> getAiDetails() {
+		return aiDetails;
+	}
+	public void setAiDetails(List<GenericVO> aiDetails) {
+		this.aiDetails = aiDetails;
+	}
+	
 	
 	
 }
