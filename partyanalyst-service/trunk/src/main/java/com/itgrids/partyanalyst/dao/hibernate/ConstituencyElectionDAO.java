@@ -903,7 +903,7 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 		Query query = getSession().createQuery("SELECT CE.constituency.constituencyId,CE.constituency.name FROM ConstituencyElection CE,DelimitationConstituencyMandal DCMD " +
 				" 	 WHERE CE.constituency.tehsil.tehsilId = DCMD.tehsil.tehsilId AND DCMD.delimitationConstituency.year = 2009  " +
 				"	 AND DCMD.delimitationConstituency.constituency.constituencyId = :constituencyId AND "+
-				" 	CE.election.electionId = :electionId ORDER BY CE.constituency.tehsil.tehsilName,C.name");
+				" 	CE.election.electionId = :electionId ORDER BY CE.constituency.tehsil.tehsilName,CE.constituency.name");
 		
 		query.setParameter("electionId", electionId);
 		query.setParameter("constituencyId", constituencyId);
