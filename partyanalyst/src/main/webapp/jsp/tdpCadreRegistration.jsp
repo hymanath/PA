@@ -818,7 +818,9 @@
 										
 											<div class="span6">
 											<h5 class="text-align1">VOTER ID</h5>
-												<input type="text" class="form-control border-radius-0 text-align2" placeholder="Voter Id" name="cadreRegistrationVO.voterCardNumber"   value="${voterInfoVOList[0].voterCardNo}" readonly></input>
+												<input type="text" class="form-control border-radius-0 text-align2 " placeholder="Voter Id" name="cadreRegistrationVO.voterCardNumber"   id="cardNumber" value="${voterInfoVOList[0].voterCardNo}" readonly></input>
+												
+												<!--<input type="hidden" id="cardNo" class="form-control border-radius-0 input-block-level" placeholder="Text input" value="${voterInfoVOList[0].voterCardNo}" style="width:260px;" ></input>-->
 											</div>
 											
 											<div class="span6">
@@ -1409,5 +1411,68 @@ function getExistingCadreInfo()
 				});
 	}
 }
+
+$("#cardNumber").keyup(function(){
+	var cardNumberVal = $("#cardNumber").val();
+	if(cardNumberVal.trim().length>2){
+		var constituencyId = '${constiteucnyId}';
+		var panchayatId = '${houseNo}'; 
+		var boothId = '${boothId}'
+		
+		searchedVoters = [];
+		searchedVotersInfoArr = [];
+		
+		var jsObj ={
+					  constituencyId:constituencyId,
+					  searchType :"voter", 
+					  candidateName:cardNumberVal,
+					  houseNo : "",
+					  voterCardNo : "",
+					  panchayatId : panchayatId,
+					  boothId : boothId ,
+					  locationId : 0,
+					  task:"searchCandidatesDtailsBySearchCriteria"             
+				   }
+		
+		 $.ajax({
+					type : "POST",
+					url : "searchVoterAndCadreInfoBySearchCriteriaAction.action",
+					data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+					//if(result==null){return;}
+					for(var i in result){
+							var vtrsObj = {
+								id : result[i].id,
+								name : 	result[i].name,
+								relativeName : result[i].desc,
+								voterCardNo :result[i].voterCardNo,
+								check : result[i].name+" - "+result[i].voterCardNo+" - "+result[i].relativeName+" - "+result[i].relationType+" - "+result[i].age+" - "+result[i].gender
+							}
+							searchedVoters.push(vtrsObj);
+							searchedVotersInfoArr.push(result[i].name+" - "+result[i].voterCardNo+" - "+result[i].relativeName+" - "+result[i].relationType+" - "+result[i].age+" - "+result[i].gender);
+					}
+					
+					$( "#cardNumber" ).autocomplete({ 
+							source:searchedVotersInfoArr,
+							select: function (event, ui) {
+								$('#cardNumber').val(ui.item.value);	
+								for(var k in searchedVoters){
+									console.log(searchedVoters);
+									if(searchedVoters[k].check == ui.item.value){
+										//$('#cardNo').val(searchedVoters[k].voterCardNo);
+										$('#cardNumber').val(searchedVoters[k].voterCardNo);	
+										break;
+									}
+								}
+								
+								return false;
+							}
+						});
+						
+						
+				});
+	}
+	
+});
 </script>
 </html>
