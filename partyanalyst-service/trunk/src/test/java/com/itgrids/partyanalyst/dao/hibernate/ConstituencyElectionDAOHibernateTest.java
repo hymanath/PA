@@ -12,15 +12,28 @@ import java.util.Map.Entry;
 import org.appfuse.dao.BaseDaoTestCase;
 import org.junit.Test;
 
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVO;
+import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 	
 	private IConstituencyElectionDAO constituencyElectionDAO;
 	//ConstituencyElection constElec = new ConstituencyElection(new Long(4),null,null,new Date(27-8-2009),null,null);
+	private IConstituencyDAO constituencyDAO;
 	
+	
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+
 	public IConstituencyElectionDAO getConstituencyElectionDAO() {
 		return constituencyElectionDAO;
 	}
@@ -470,7 +483,51 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 	
 	public void testDetails()
 	{
-		List<Object[]> list = constituencyElectionDAO.getParliamentConstiListForElectionYear(1L, "2014", 1L);
-		System.out.println(list.size());
+		List<BasicVO> returnList = new ArrayList<BasicVO>();
+		try {
+			List<Object[]> constituencyList = constituencyElectionDAO.getConstituenciesByElectionId(303L);
+			List<Long> constiIds = new ArrayList<Long>();
+			
+			if(constituencyList != null && constituencyList.size() > 0)
+			{
+				for (Object[] objects : constituencyList)
+				{
+					if(objects[0] != null) 
+					{
+						if(!constiIds.contains((Long)objects[0]))
+						{
+							constiIds.add((Long)objects[0]);
+							
+							Constituency constituency = constituencyDAO.get((Long)objects[0]);
+							
+							if(constituency.getLocalElectionBody() != null)
+							{
+								constiIds.add(constituency.getLocalElectionBody().getLocalElectionBodyId());
+								
+								BasicVO basicVO = new BasicVO();
+								basicVO.setId(constituency.getLocalElectionBody().getLocalElectionBodyId());
+								basicVO.setName(constituency.getLocalElectionBody().getName());
+								
+								System.out.println(constituency.getLocalElectionBody().getName());
+								returnList.add(basicVO);
+							}
+							else
+							{
+								BasicVO basicVO = new BasicVO();
+								basicVO.setId((Long)objects[0]);
+								basicVO.setName(objects[1] != null ? objects[1].toString() : "");
+								returnList.add(basicVO);
+							}
+						}
+						
+						
+					}
+					
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+			System.out.println(returnList);
 	}
 }

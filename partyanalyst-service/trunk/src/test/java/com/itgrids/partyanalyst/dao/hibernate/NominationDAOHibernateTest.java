@@ -1705,7 +1705,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		System.out.println(list.size());
 	}
 	*/
-	
+	/*
 	public void testDetails()
 	{
 		List<Long> staticPartyList = new ArrayList<Long>();
@@ -1742,7 +1742,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 			e.printStackTrace();
 		}
 		
-	}
+	}*/
 	/*
 	public void testDetails()
 	{
@@ -1756,5 +1756,25 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		System.out.println(list.size());
 	}
 	*/
+	
+	
+/*	
+	public void testDetails()
+	{
+		
+		List<Object[]> list  = nominationDAO.getNominatedCandidateInfoForAConstituency(282L,258L);
+		System.out.println(list);
+	}*/
+	
+	
+	public void testDetails1()
+	{
+		
+		List<Object[]> list  = nominationDAO.getCandidateResultsByCandidateInfo(3424L,258L);
+		System.out.println(list.size());
+	}
+	
+	
+	
 }	
 	
