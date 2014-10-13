@@ -304,6 +304,11 @@
 	
 	function submitCadreForm()
 	{
+	
+		if(!isNumber()){
+		
+			return false;
+		}
 		var uploadHandler = {
 				upload: function(o) {
 					uploadResult = o.responseText;
@@ -583,18 +588,18 @@
 	var str ='';
 
 	str +=' <tr class="voterDev'+voterCount+'">';
-	str +=' <td>  <input id="countVar" type="hidden" value="'+voterCount+'">';
+	str +=' <td style="width:100px;">  <input id="countVar" type="hidden" value="'+voterCount+'">';
 	str +=' <input type="text" class="form-control border-radius-0 text-align2" placeholder=" Enter Voter Name " name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].voterName" ></input> ';
 	str +=' <input type="hidden" class="form-control border-radius-0 text-align2"  name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].voterId"></input> ';
 	str +=' </td>';
-	str +=' <td> ';
-	str +=' <input type="text" class="form-control border-radius-0 text-align2" placeholder=" Enter Voter Id " name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].voterCadreNO"  style="width:120px;"></input>';
+	str +=' <td style="width:100px;"> ';
+	str +=' <input type="text" class="form-control border-radius-0 text-align2" placeholder=" Enter Voter Id " name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].voterCadreNO" style="width:121px;"></input>';
 	str +=' </td>';
-	str +=' <td style="width:50px;"> ';
-	str +=' <input type="text" class="form-control border-radius-0 text-align2" placeholder=" Age " style="width:50px;"></input> ';
+	str +=' <td style="width:80px;"> ';
+	str +=' <input type="text" class="form-control border-radius-0 text-align2" placeholder=" Age " style="width:55px;"></input> ';
 	str +=' </td>';
-	str +=' <td style="width:50px;">';
-	str +=' <input type="text" class="form-control border-radius-0 text-align2" placeholder="Gender"  style="width:50px;"> </input>';
+	str +=' <td style="width:82px;">';
+	str +=' <input type="text" class="form-control border-radius-0 text-align2" placeholder="Gender"  style="width:53px;"> </input>';
 	str +=' </td>';
 	str +=' <td style="width:100px;"> ';
 
@@ -609,7 +614,7 @@
 	str +=' </td>';
 	str +=' <td style="width:100px;"> ';
 
-	str +='<input type="text" id="familyOccupation'+voterCount+'" class="familyOccupationsCls form-control border-radius-0 text-align2" placeholder=" Enter Occupation "  style="width:150px;"  value=""> </input>';												 
+	str +='<input type="text" id="familyOccupation'+voterCount+'" class="familyOccupationsCls form-control border-radius-0 text-align2" placeholder=" Enter Occupation "  style="width:151px;"  value=""> </input>';												 
 	str +='<input type="hidden"  id="familyOccupation'+voterCount+'0" name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].occupationId" class="form-control border-radius-0 text-align2" placeholder="Enter Occupation " style="width:50px;" value=""> </input>';
 
 	str +=' </select>';
@@ -646,13 +651,21 @@
 	
 	function isNumber()
 	{
-		var mobileNumber = $('#mobileNumberId').val();
+		var numberFlag = true;
+		var mobileNumber = $('#mobileNumberId').val().trim();
 		$('#mobileErr').html('');
-		 if (isNaN(mobileNumber)) 
-		  {
-			$('#mobileErr').html('Invalid Mobile No.');
-			return false;
-		  }		 
+		if (mobileNumber.length == 0) 
+		{
+			$('#mobileErr').html('Please Enter Mobile No');		
+			numberFlag= false;
+		}		 
+		else if (isNaN(mobileNumber) || mobileNumber.length != 10) 
+		{
+			$('#mobileErr').html('Invalid Mobile No.');			
+			numberFlag = false;
+		}
+	
+			return numberFlag;
 	}
 	
 	function getConstiteuncyListForElection(eletionId,constiListId)
@@ -729,8 +742,16 @@
 					<input type="hidden" class="form-control border-radius-0 text-align2" value="${panchayatId}" name="cadreRegistrationVO.panchayatId"> 
 					
 					<input type="hidden" class="form-control border-radius-0 text-align2" value = "${boothId}" name="cadreRegistrationVO.boothId" > 
-											<h5 class="text-align1"> CANDIDATE NAME </h5>
-											<input type="text" class="form-control border-radius-0 text-align2" placeholder="Candidate Name" name="cadreRegistrationVO.voterName"  value="${voterInfoVOList[0].name}"></input>
+										<div class="span12">
+										<div class="span6">
+											<h5 style="color: #9a9a9a;">  CANDIDATE NAME </h5>
+											<input type="text" class="form-control border-radius-0" placeholder="Candidate Name" name="cadreRegistrationVO.voterName"  value="${voterInfoVOList[0].name}"></input>
+										</div>	
+										<div class="span4">	
+											<h5 class="text-align1">Age</h5>
+											<input style="width:180px;" type="text" class="form-control border-radius-0 text-align2"  placeholder="Age" name="cadreRegistrationVO.age"   value="${voterInfoVOList[0].age}"></input>
+										</div>
+										</div>
 									<div class="row-fluid">
 										<div class="span7">
 											<h5 class="text-align1">DATE OF BIRTH</h5>
@@ -787,8 +808,8 @@
 										</div>
 										<input type="hidden" value="${voterInfoVOList[0].voterId}" name="cadreRegistrationVO.voterId"></input>
 										<div class="span6">
-										<h5 class="text-align1">Age</h5>
-											<input type="text" class="form-control border-radius-0 " placeholder="Age" name="cadreRegistrationVO.age"   value="${voterInfoVOList[0].age}"></input>
+										<h5 class="text-align1">Relationship Type</h5>
+											<input type="text" class="form-control border-radius-0 " placeholder="Age" name="cadreRegistrationVO.relationType"   value="${voterInfoVOList[0].relationType}"></input>
 										</div>
 									</div>
 								</div>
@@ -797,7 +818,7 @@
 										
 											<div class="span6">
 											<h5 class="text-align1">VOTER ID</h5>
-												<input type="text" class="form-control border-radius-0 text-align2" placeholder="Voter Id" name="cadreRegistrationVO.voterCardNumber"   value="${voterInfoVOList[0].voterCardNo}"></input>
+												<input type="text" class="form-control border-radius-0 text-align2" placeholder="Voter Id" name="cadreRegistrationVO.voterCardNumber"   value="${voterInfoVOList[0].voterCardNo}" readonly></input>
 											</div>
 											
 											<div class="span6">
@@ -861,7 +882,7 @@
 							</div>
 							<div class=" m_top20" >
 									<h5 class="text-align1">PREVIOUS ENROLLMENT NUMBER</h5>
-									<input type="text" id="preEnrollNoValue" class="form-control border-radius-0 input-block-level" placeholder="Previous Enrollment No."  value="${voterInfoVOList[0].memberShipId}" style="width:260px;" onkeyup="getExistingCadreInfo()"name="cadreRegistrationVO.previousEnrollmentNumber"></input>
+									<input type="text" id="preEnrollNoValue" class="form-control border-radius-0 input-block-level" placeholder="Previous Enrollment No."  value="${voterInfoVOList[0].memberShipId}" style="width:260px;" readonly onkeyup="getExistingCadreInfo()" name="cadreRegistrationVO.previousEnrollmentNumber"></input>
 									
 									<input type="hidden" id="preEnrollNo" class="form-control border-radius-0 input-block-level" placeholder="Text input"  value="${voterInfoVOList[0].memberShipId}" style="width:260px;" ></input>
 									
@@ -876,22 +897,22 @@
 	
 		<div class="span12" >
 				<div class="row-fluid">
-					<div class="span  offset3 show-grid m_top10"  id="fadeInLeft" style="margin-left:200px;margin-bottom:10px;">						
+					<div class="span  offset3 show-grid m_top10"  id="fadeInLeft" style="margin-left:204px;margin-bottom:10px;">						
 						<div class="m_top10">
 						<div class="span12 " style="position: relative;">
 							<h3 class="text-align "> FAMILY DETAILS </h3>
 						</div>
-								<div class="row-fluid">		
+								<div class="row-fluid" id="addVotersDiv">		
 											<table>
 											<thead>
 											<tr>
-												<th> VOTER NAME </th>
-												<th  style="width:120px;"> VOTER CARD NO</th>
-												<th  style="width:50px;"> AGE </th>
-												<th  style="width:50px;"> GENDER </th>
-												<th  style="width:100px;"> EDUCATION  </th>
-												<th  style="width:100px;"> OCCUPATION </th>
-												<th></th>
+												<th style="width:223px;"> VOTER NAME </th>
+												<th  style="width:145px;"> VOTER CARD NO</th>
+												<th  style="width:80px;"> AGE </th>
+												<th  style="width:80px;"> GENDER </th>
+												<th  style="width:156px;"> EDUCATION  </th>
+												<th  style="width:175px;"> OCCUPATION </th>
+												<th> <a class="icon-plus-sign" style="float:right;margin-right:0px;margin-top:-13px;" onClick="addMoreVoters();"  title="Add More Voter Details"> </a></th>
 													
 							<s:if test="%{voterInfoVOList[0].voterInfoVOList != null && voterInfoVOList[0].voterInfoVOList.size() > 0}">
 											</tr>
@@ -901,18 +922,18 @@
 									<c:forEach var="familyVO" items="${voterInfoVOList[0].voterInfoVOList}" varStatus="commentLoop">
 									
 										<input type="hidden" value="${commentLoop.index}" id="countVar"></input>
-											<tr>
-												<td>   
+											<tr class="voterDev${commentLoop.index}">
+												<td style="width:100px;">   
 													<input type="text" class="form-control border-radius-0 text-align2" placeholder="Voter Name " value="${familyVO.name}" name="cadreRegistrationVO.cadreFamilyDetails[${commentLoop.index}].voterName"></input> 
 													<input type="hidden" class="form-control border-radius-0 text-align2" value="${familyVO.voterId}"  name="cadreRegistrationVO.cadreFamilyDetails[${commentLoop.index}].voterId"></input> 
 												</td>
-												<td> 
+												<td style="width:100px;"> 
 													<input type="text" class="form-control border-radius-0 text-align2" placeholder="Voter Card No " value="${familyVO.voterCardNo}"name="cadreRegistrationVO.cadreFamilyDetails[${commentLoop.index}].voterCadreNO" style="width:120px;"></input>
 												</td>
-												<td style="width:50px;"> 
-													<input type="text" class="form-control border-radius-0 text-align2" placeholder="Age " value="${familyVO.age}" style="width:50px;"></input> 
+												<td style="width:80px;"> 
+													<input type="text" class="form-control border-radius-0 text-align2" placeholder="Age " value="${familyVO.age}" style="width:53px;"></input> 
 												</td>
-												<td style="width:50px;">
+												<td style="width:80px;">
 													<input type="text" class="form-control border-radius-0 text-align2" placeholder="Gender " value="${familyVO.gender}" style="width:50px;"> </input>
 												</td>
 												<td style="width:100px;"> 
@@ -939,7 +960,7 @@
 													 
 												</td>
 												<td style="width:15px;"> 
-													
+												<a class="icon-minus-sign" style="float:right;margin-top:-10px;" onClick="deleteRollesForm('voterDev${commentLoop.index}');" title="Remove Details"></a>
 												</td>
 											</tr>
 											
@@ -947,8 +968,7 @@
 									</tbody>									
 								</table>
 								
-								<a class="icon-plus-sign" style="float:right;margin-right:50px;margin-top:-30px;" onClick="addMoreVoters();"  title="Add More Voter Details"> </a>
-									<div  id="addVotersDiv"></div>
+								
 									
 								</s:if>
 								<s:else>
@@ -957,7 +977,7 @@
 											</thead>
 											<tbody>	
 										<input type="hidden" value="0" class="countVar"></input>
-											<tr id="addVotersDiv">
+											<tr class="voterDev0">
 												<td> 
 													<input type="text" class="form-control border-radius-0 text-align2" placeholder=" Voter Name "  ></input> 
 													<input type="hidden" class="form-control border-radius-0 text-align2"  name="cadreRegistrationVO.cadreFamilyDetails[0].voterId"  ;"></input> 
@@ -965,10 +985,10 @@
 												<td> 
 													<input type="text" class="form-control border-radius-0 text-align2" placeholder=" Voter Id " name="cadreRegistrationVO.cadreFamilyDetails[0].voterCadreNO"  style="width:120px;"></input>
 												</td>
-												<td style="width:50px;"> 
+												<td style="width:80px;"> 
 													<input type="text" class="form-control border-radius-0 text-align2" placeholder=" Age " style="width:50px;"></input> 
 												</td>
-												<td style="width:50px;">
+												<td style="width:80px;">
 													<input type="text" class="form-control border-radius-0 text-align2" placeholder="Gender"  style="width:50px;"> </input>
 												</td>
 												<td style="width:100px;"> 
@@ -987,7 +1007,7 @@
 													<input type="hidden"  id="familyOccupation00" name="cadreRegistrationVO.cadreFamilyDetails[0].occupationId" class="form-control border-radius-0 text-align2" placeholder="Enter Occupation " style="width:50px;" value=""> </input>
 												</td>
 												<td style="width:15px;"> 
-													<a class="icon-plus-sign" style="float:right;margin-top:-30px;" onClick="addMoreVoters();"  title="Add More Voter Details"></a>
+													<a class="icon-minus-sign" style="float:right;margin-top:-10px;" onClick="deleteRollesForm('voterDev0');" title="Remove Details">
 												</td>
 											</tr>
 											

@@ -304,7 +304,7 @@
 			{
 				str +='<tr>';
 				if(result[i].name != null)
-					str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].name+'</span></td>';
+					str +='<td style="cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].name+'</span></td>';
 				else
 					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
 					
