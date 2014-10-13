@@ -1304,7 +1304,7 @@
 					<div class="levelCls">
 						<div>
 							<h5 class="text-align1"> Committee Level </h5>
-							<select class="levelCls" id="CadreCommitteeLevelsId" name="cadreRegistrationVO.previousRollesList[0].cadreCommitteeLevelId"  style="margin-left: 12px">			<option value="0"> Select Level </option>				
+							<select class="levelCls" id="CadreCommitteeLevelsId" name="cadreRegistrationVO.previousRollesList[0].cadreCommitteeLevelId"  style="margin-left: 12px">			
 							<c:forEach var="educationList" items="${cadreRolesVOList[1].selectOptionsList}" >																	
 										<option value="${educationList.id}">${educationList.name}</option>
 							</c:forEach>															
@@ -1318,7 +1318,7 @@
 						<div class=" " >	
 							<h5 class="text-align1"> Cadre Committee </h5>
 							<select class="levelCls" id="CadreRolesId" name="cadreRegistrationVO.previousRollesList[0].cadreCommitteeId" style="margin-left: 12px">
-							<option value="0"> Select Committee </option>	
+				
 							<c:forEach var="educationList" items="${cadreRolesVOList[0].selectOptionsList}" >
 										<option value="${educationList.id}">${educationList.name}</option>
 							</c:forEach>
@@ -1331,7 +1331,7 @@
 						<div class=" " >
 							<h5 class="text-align1">Cadre Role </h5>
 								<select class="levelCls" id="CadreCommitteeId" name="cadreRegistrationVO.previousRollesList[0].cadreRoleId" style="margin-left: 12px">
-								<option value="0"> Select Role </option>	
+						
 								<c:forEach var="educationList" items="${cadreRolesVOList[2].selectOptionsList}" >	
 									<option value="${educationList.id}">${educationList.name}</option>
 								</c:forEach>
