@@ -879,4 +879,18 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getCandidateInfoByNomination()
+	{
+		LOG.info("Entered into getCandidateInfoByNomination method in CadreRegistrationAction Action");
+		try {		
+			jobj = new JSONObject(getTask());
+			selectOptionVOList = cadreRegistrationService.getCandidateInfoByNomination(jobj.getLong("electionId"),jobj.getLong("nominationId"));
+		}
+		catch(Exception e){
+			LOG.error("Exception raised in getCandidateInfoByNomination method in CadreRegistrationAction action", e);
+		}
+		return Action.SUCCESS;
+		
+	}
 }
