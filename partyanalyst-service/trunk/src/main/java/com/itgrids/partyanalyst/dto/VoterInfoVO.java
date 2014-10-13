@@ -27,7 +27,12 @@ public class VoterInfoVO implements java.io.Serializable
 	private Long voterId;
 	private Long cadreId;
 	private String memberShipId;
-	
+	private String isRegistered;
+	private String  aadharNo;
+	private String nomineeName;
+	private String nomineAge;
+	private Long nomineeGender;
+	private Long VoterRelationId;
 	private List<VoterInfoVO> voterInfoVOList = new ArrayList<VoterInfoVO>();
 	private List<GenericVO> genericVOList = new ArrayList<GenericVO>();
 	private List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>();
@@ -36,6 +41,43 @@ public class VoterInfoVO implements java.io.Serializable
 	private List<GenericVO> previousParticipationInfoList = new ArrayList<GenericVO>();
 	
 	
+	
+	public String getNomineAge() {
+		return nomineAge;
+	}
+	public void setNomineAge(String nomineAge) {
+		this.nomineAge = nomineAge;
+	}
+	public Long getNomineeGender() {
+		return nomineeGender;
+	}
+	public void setNomineeGender(Long nomineeGender) {
+		this.nomineeGender = nomineeGender;
+	}
+	public String getAadharNo() {
+		return aadharNo;
+	}
+	public void setAadharNo(String aadharNo) {
+		this.aadharNo = aadharNo;
+	}
+	public String getNomineeName() {
+		return nomineeName;
+	}
+	public void setNomineeName(String nomineeName) {
+		this.nomineeName = nomineeName;
+	}
+	public Long getVoterRelationId() {
+		return VoterRelationId;
+	}
+	public void setVoterRelationId(Long voterRelationId) {
+		VoterRelationId = voterRelationId;
+	}
+	public String getIsRegistered() {
+		return isRegistered;
+	}
+	public void setIsRegistered(String isRegistered) {
+		this.isRegistered = isRegistered;
+	}
 	public List<GenericVO> getCadreRolesList() {
 		return cadreRolesList;
 	}
