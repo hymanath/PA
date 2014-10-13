@@ -26,6 +26,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IBloodGroupDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.ICadreCommitteeRoleDAO;
 import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.ICadreLevelDAO;
 import com.itgrids.partyanalyst.dao.ICadreParticipatedElectionDAO;
@@ -121,6 +122,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private IOccupationDAO 						occupationDAO;
 	private IConstituencyElectionDAO 			constituencyElectionDAO;
 	private INominationDAO 						nominationDAO;
+	
+	private ICadreCommitteeRoleDAO				cadreCommitteeRoleDAO;
 	
 	
 	public void setNominationDAO(INominationDAO nominationDAO) {
@@ -254,6 +257,12 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	public void setTdpCadreFamilyDetailsDAO(
 			ITdpCadreFamilyDetailsDAO tdpCadreFamilyDetailsDAO) {
 		this.tdpCadreFamilyDetailsDAO = tdpCadreFamilyDetailsDAO;
+	}
+
+	
+	public void setCadreCommitteeRoleDAO(
+			ICadreCommitteeRoleDAO cadreCommitteeRoleDAO) {
+		this.cadreCommitteeRoleDAO = cadreCommitteeRoleDAO;
 	}
 
 	/**
@@ -665,15 +674,24 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								CadrePreviousRoles cadrePreviousRoles = new CadrePreviousRoles();
 								cadrePreviousRoles.setTdpCadreId(tdpCadre.getTdpCadreId());
 								
-								if(rolesVO.getFromDate() != null && rolesVO.getToDate() != null)
-								{
-									if(rolesVO.getDesignationLevelId() != null && rolesVO.getDesignationLevelId().longValue() > 0)
+								//if(rolesVO.getFromDate() != null && rolesVO.getToDate() != null)
+								//{
+									/*if(rolesVO.getDesignationLevelId() != null && rolesVO.getDesignationLevelId().longValue() > 0)
 									{
 										cadrePreviousRoles.setCadreLevelId(rolesVO.getDesignationLevelId());
 									}
 									if(rolesVO.getDesignationLevelValue() != null && rolesVO.getDesignationLevelValue().longValue() > 0)
 									{
 										cadrePreviousRoles.setPartyDesignationId(rolesVO.getDesignationLevelValue());
+									}*/
+									if(rolesVO.getCadreCommitteeId() != null && rolesVO.getCadreCommitteeId().longValue() > 0 && rolesVO.getCadreCommitteeLevelId() != null && rolesVO.getCadreCommitteeLevelId().longValue() > 0 && rolesVO.getCadreRoleId() != null && rolesVO.getCadreRoleId().longValue() > 0 )
+									{
+										List<Long> cadreCommotteRoleIds = cadreCommitteeRoleDAO.getCadreCommitteRoleIdBySelection(rolesVO.getCadreCommitteeLevelId(), rolesVO.getCadreRoleId(), rolesVO.getCadreCommitteeId());
+										if(cadreCommotteRoleIds != null && cadreCommotteRoleIds.size() > 0)
+										{
+											cadrePreviousRoles.setCadreCommitteeRoleId(cadreCommotteRoleIds.get(0));
+										}
+										
 									}
 									if(rolesVO.getFromDate() != null)
 									{
@@ -683,9 +701,11 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 									{
 										cadrePreviousRoles.setToDate(rolesVO.getToDate());
 									}
+									cadrePreviousRoles.setInsertedDate(dateUtilService.getCurrentDateAndTime());
+									cadrePreviousRoles.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
 									cadrePreviousRoles.setIsDeleted("N");
 									cadrePreviousRolesDAO.save(cadrePreviousRoles);
-								}
+								//}
 								
 							}
 						}

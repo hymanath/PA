@@ -26,7 +26,7 @@ public class CadreCommitteeRole implements Serializable{
 
 	
 	private static final long serialVersionUID = 7309800970734005327L;
-	private Long 				cadreCommitteeRole;
+	private Long 				cadreCommitteeRoleId;
 	private Long 				cadreCommitteeLevelId;
 	private Long 				cadreCommiteeId;
 	private Long 				cadreRolesId;
@@ -38,11 +38,11 @@ public class CadreCommitteeRole implements Serializable{
 	 @Id
 	 @GeneratedValue(strategy = GenerationType.AUTO)
 	 @Column(name = "cadre_committee_role", unique = true, nullable = false)
-	public Long getCadreCommitteeRole() {
-		return cadreCommitteeRole;
+	public Long getCadreCommitteeRoleId() {
+		return cadreCommitteeRoleId;
 	}
-	public void setCadreCommitteeRole(Long cadreCommitteeRole) {
-		this.cadreCommitteeRole = cadreCommitteeRole;
+	public void setCadreCommitteeRoleId(Long cadreCommitteeRoleId) {
+		this.cadreCommitteeRoleId = cadreCommitteeRoleId;
 	}
 	
 	@Column(name="cadre_committee_level_id")

@@ -31,15 +31,20 @@ public class CadrePreviousRoles {
 
 	private Long 				cadrePreviousRolesId;
 	private Long 				tdpCadreId;
-	private Long 				cadreLevelId;
-	private Long 				partyDesignationId;
+/*	private Long 				cadreLevelId;
+	private Long 				partyDesignationId;*/
 	private Date 				fromDate;
 	private Date 				toDate;
 	private String				isDeleted;
+	private Date				insertedDate;
+	private Date 				updatedDate;
+	private Long				cadreCommitteeRoleId;
+	
 	
 	private TdpCadre 			tdpCadre;
-	private CadreLevel 			cadreLevel;
-	private PartyDesignation    partyDesignation;
+	private CadreCommitteeRole  cadreCommitteeRole;
+/*	private CadreLevel 			cadreLevel;
+	private PartyDesignation    partyDesignation;*/
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -60,7 +65,7 @@ public class CadrePreviousRoles {
 		this.tdpCadreId = tdpCadreId;
 	}
 	
-	@Column(name="cadre_level_id")
+	/*@Column(name="cadre_level_id")
 	public Long getCadreLevelId() {
 		return cadreLevelId;
 	}
@@ -74,7 +79,7 @@ public class CadrePreviousRoles {
 	}
 	public void setPartyDesignationId(Long partyDesignationId) {
 		this.partyDesignationId = partyDesignationId;
-	}
+	}*/
 	
 	@Column(name="from_date")
 	public Date getFromDate() {
@@ -103,7 +108,7 @@ public class CadrePreviousRoles {
 		this.tdpCadre = tdpCadre;
 	}
 	
-	@ManyToOne(fetch = FetchType.LAZY )
+	/*@ManyToOne(fetch = FetchType.LAZY )
 	@JoinColumn(name = "cadre_level_id" , insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
@@ -123,7 +128,7 @@ public class CadrePreviousRoles {
 	}
 	public void setPartyDesignation(PartyDesignation partyDesignation) {
 		this.partyDesignation = partyDesignation;
-	}
+	}*/
 	
 	@Column(name="is_deleted")
 	public String getIsDeleted() {
@@ -132,6 +137,45 @@ public class CadrePreviousRoles {
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
 	}
+	
+	
+	@Column(name="inserted_date")
+	public Date getInsertedDate() {
+		return insertedDate;
+	}
+	public void setInsertedDate(Date insertedDate) {
+		this.insertedDate = insertedDate;
+	}
+	
+	@Column(name="updated_date")
+	public Date getUpdatedDate() {
+		return updatedDate;
+	}
+	public void setUpdatedDate(Date updatedDate) {
+		this.updatedDate = updatedDate;
+	}
+	
+	@Column(name="cadre_committee_role_Id")
+	public Long getCadreCommitteeRoleId() {
+		return cadreCommitteeRoleId;
+	}
+	public void setCadreCommitteeRoleId(Long cadreCommitteeRoleId) {
+		this.cadreCommitteeRoleId = cadreCommitteeRoleId;
+	}
+	
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "cadre_committee_role_Id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public CadreCommitteeRole getCadreCommitteeRole() {
+		return cadreCommitteeRole;
+	}
+	public void setCadreCommitteeRole(CadreCommitteeRole cadreCommitteeRole) {
+		this.cadreCommitteeRole = cadreCommitteeRole;
+	}
+	
+	
 	
 	
 	

@@ -16,10 +16,17 @@ public class CadrePreviousRollesVO implements Serializable {
 	private String 				fromDateStr;
 	private String 				toDateStr;
 	
-	private Long electionTypeId;
-	private String year;
-	private Long constituencyId;
-	private Long electionYear;
+	private Long 				electionTypeId;
+	private String 				year;
+	private Long 				constituencyId;
+	private Long 				electionYear;
+	
+	
+	private Long 				cadreCommitteeLevelId;
+	private Long 				cadreCommitteeId;
+	private Long 				cadreRoleId;
+	
+	private Long				candidateId;
 	
 	
 	public Long getDesignationLevelId() {
@@ -82,6 +89,34 @@ public class CadrePreviousRollesVO implements Serializable {
 	public void setElectionYear(Long electionYear) {
 		this.electionYear = electionYear;
 	}
+	
+	
+	
+	public Long getCadreCommitteeLevelId() {
+		return cadreCommitteeLevelId;
+	}
+	public void setCadreCommitteeLevelId(Long cadreCommitteeLevelId) {
+		this.cadreCommitteeLevelId = cadreCommitteeLevelId;
+	}
+	public Long getCadreCommitteeId() {
+		return cadreCommitteeId;
+	}
+	public void setCadreCommitteeId(Long cadreCommitteeId) {
+		this.cadreCommitteeId = cadreCommitteeId;
+	}
+	public Long getCadreRoleId() {
+		return cadreRoleId;
+	}
+	public void setCadreRoleId(Long cadreRoleId) {
+		this.cadreRoleId = cadreRoleId;
+	}
+	public Long getCandidateId() {
+		return candidateId;
+	}
+	public void setCandidateId(Long candidateId) {
+		this.candidateId = candidateId;
+	}
+	
 	
 	
 	
