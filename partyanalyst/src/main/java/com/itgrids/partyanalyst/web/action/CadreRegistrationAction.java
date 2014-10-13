@@ -880,6 +880,18 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		return Action.SUCCESS;
 	}
 	
+	public String getCadreLevelsForCadreSearch(){
+		LOG.info("Entered into getOptionDetailsForCadre method in CadreRegistrationAction Action");
+		try {			
+			selectOptionVOList = cadreRegistrationService.getCadreLevelsForCadreSearch();
+			
+		} catch (Exception e) {			
+			LOG.info("Entered into getOptionDetailsForCadre method in CadreRegistrationAction Action");
+		}
+		return Action.SUCCESS;
+		
+	}
+	
 	public String getCandidateInfoByNomination()
 	{
 		LOG.info("Entered into getCandidateInfoByNomination method in CadreRegistrationAction Action");
