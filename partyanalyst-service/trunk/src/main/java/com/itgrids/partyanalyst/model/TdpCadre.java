@@ -35,6 +35,7 @@ public class TdpCadre {
 	private String 						firstname;
 	private String 						lastname;
 	private String 						relativename;
+	private String 						relativeType;
 	private String 						houseNo;
 	private String 						image;
 	private String 						mobileNo;
@@ -543,6 +544,14 @@ public class TdpCadre {
 	}
 	public void setCadreType(String cadreType) {
 		this.cadreType = cadreType;
+	}
+	
+	@Column(name="relative_type")
+	public String getRelativeType() {
+		return relativeType;
+	}
+	public void setRelativeType(String relativeType) {
+		this.relativeType = relativeType;
 	}
 	
 	
