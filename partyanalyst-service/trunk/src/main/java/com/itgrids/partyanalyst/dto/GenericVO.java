@@ -13,6 +13,7 @@ public class GenericVO implements Serializable, Comparable<GenericVO>{
     private String desc;
     private Long count;
     private List<GenericVO> genericVOList = new ArrayList<GenericVO>();
+    private BasicVO basicVO = new BasicVO();
     private String percent;
     private String mobileNo;
     
@@ -32,6 +33,12 @@ public class GenericVO implements Serializable, Comparable<GenericVO>{
    private String workedTime;
 
    
+	public BasicVO getBasicVO() {
+	return basicVO;
+	}
+	public void setBasicVO(BasicVO basicVO) {
+		this.basicVO = basicVO;
+	}
 	public String getStartTime() {
 	return startTime;
 	}
