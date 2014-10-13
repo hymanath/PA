@@ -26,11 +26,14 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IBloodGroupDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.ICadreCommitteeDAO;
+import com.itgrids.partyanalyst.dao.ICadreCommitteeLevelDAO;
 import com.itgrids.partyanalyst.dao.ICadreCommitteeRoleDAO;
 import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.ICadreLevelDAO;
 import com.itgrids.partyanalyst.dao.ICadreParticipatedElectionDAO;
 import com.itgrids.partyanalyst.dao.ICadrePreviousRolesDAO;
+import com.itgrids.partyanalyst.dao.ICadreRolesDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserAssignDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
@@ -123,10 +126,44 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private IOccupationDAO 						occupationDAO;
 	private IConstituencyElectionDAO 			constituencyElectionDAO;
 	private INominationDAO 						nominationDAO;
-	
+	private ICadreCommitteeDAO					cadreCommitteeDAO;
+	private ICadreCommitteeLevelDAO				cadreCommitteeLevelDAO;
+	private ICadreRolesDAO						cadreRolesDAO;
 	private ICadreCommitteeRoleDAO				cadreCommitteeRoleDAO;
 	
 	
+	
+	
+	public void setCadreCommitteeRoleDAO(
+			ICadreCommitteeRoleDAO cadreCommitteeRoleDAO) {
+		this.cadreCommitteeRoleDAO = cadreCommitteeRoleDAO;
+	}
+
+	public ICadreCommitteeDAO getCadreCommitteeDAO() {
+		return cadreCommitteeDAO;
+	}
+
+	public void setCadreCommitteeDAO(ICadreCommitteeDAO cadreCommitteeDAO) {
+		this.cadreCommitteeDAO = cadreCommitteeDAO;
+	}
+
+	public ICadreCommitteeLevelDAO getCadreCommitteeLevelDAO() {
+		return cadreCommitteeLevelDAO;
+	}
+
+	public void setCadreCommitteeLevelDAO(
+			ICadreCommitteeLevelDAO cadreCommitteeLevelDAO) {
+		this.cadreCommitteeLevelDAO = cadreCommitteeLevelDAO;
+	}
+
+	public ICadreRolesDAO getCadreRolesDAO() {
+		return cadreRolesDAO;
+	}
+
+	public void setCadreRolesDAO(ICadreRolesDAO cadreRolesDAO) {
+		this.cadreRolesDAO = cadreRolesDAO;
+	}
+
 	public void setNominationDAO(INominationDAO nominationDAO) {
 		this.nominationDAO = nominationDAO;
 	}
@@ -258,12 +295,6 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	public void setTdpCadreFamilyDetailsDAO(
 			ITdpCadreFamilyDetailsDAO tdpCadreFamilyDetailsDAO) {
 		this.tdpCadreFamilyDetailsDAO = tdpCadreFamilyDetailsDAO;
-	}
-
-	
-	public void setCadreCommitteeRoleDAO(
-			ICadreCommitteeRoleDAO cadreCommitteeRoleDAO) {
-		this.cadreCommitteeRoleDAO = cadreCommitteeRoleDAO;
 	}
 
 	/**
@@ -2830,6 +2861,53 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			LOG.error("Exception raised in tagCardIdForNFCReader in CadreRegistrationService service", e);
 		}
 		return status;
+	}
+	
+	public List<SelectOptionVO> getCadreLevelsForCadreSearch(){
+		LOG.debug("In getCadreLevelsForCadreSearch ");
+		List<SelectOptionVO> finalList = new ArrayList<SelectOptionVO>();
+		try{
+			List<Object[]> cdrCmmtList = cadreCommitteeDAO.getAllCadreCommittees();
+			List<Object[]> cdrCmmtLvlList = cadreCommitteeLevelDAO.getAllCadreCommitteeLevels();
+			List<Object[]> cdrRlsList = cadreRolesDAO.getAllCadreRoles();
+			
+			if(cdrCmmtList!=null && cdrCmmtList.size()>0){
+				
+				SelectOptionVO finalVO = new SelectOptionVO();
+				List<SelectOptionVO> tempList= new ArrayList<SelectOptionVO>();
+				for(Object[] temp:cdrCmmtList){
+					tempList.add(new SelectOptionVO(Long.valueOf(temp[0].toString()),temp[1].toString()));
+				}
+				finalVO.setName("CadreCommitteeList");
+				finalVO.setSelectOptionsList(tempList);
+				finalList.add(finalVO);
+				
+			}
+			if(cdrCmmtLvlList!=null && cdrCmmtLvlList.size()>0){
+				SelectOptionVO finalVO = new SelectOptionVO();
+				List<SelectOptionVO> tempList= new ArrayList<SelectOptionVO>();
+				for(Object[] temp:cdrCmmtLvlList){
+					tempList.add(new SelectOptionVO(Long.valueOf(temp[0].toString()),temp[1].toString()));
+				}
+				finalVO.setName("CadreCommitteeLevelsList");
+				finalVO.setSelectOptionsList(tempList);
+				finalList.add(finalVO);
+			}
+			if(cdrRlsList!=null && cdrRlsList.size()>0){
+				SelectOptionVO finalVO = new SelectOptionVO();
+				List<SelectOptionVO> tempList= new ArrayList<SelectOptionVO>();
+				for(Object[] temp:cdrRlsList){
+					tempList.add(new SelectOptionVO(Long.valueOf(temp[0].toString()),temp[1].toString()));
+				}
+				finalVO.setName("CadreRolesList");
+				finalVO.setSelectOptionsList(tempList);
+				finalList.add(finalVO);
+			}
+			
+		}catch (Exception e) {
+			LOG.error("Exception Raised in getCadreLevelsForCadreSearch "+ e);
+		}
+		return finalList;
 	}
 
 	
