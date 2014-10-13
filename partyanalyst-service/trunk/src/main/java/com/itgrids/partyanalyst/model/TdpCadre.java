@@ -90,6 +90,9 @@ public class TdpCadre {
 	private VoterRelation				voterRelation;
 	
 	private String						cadreType;
+	private String                     isRelative;
+	private VoterRelation				relationType;
+	private Long				relationTypeId;
 	
 	private String 						photoType;
 	private String						nameType;
@@ -570,6 +573,33 @@ public class TdpCadre {
 	}
 	public void setNameType(String nameType) {
 		this.nameType = nameType;
+	}
+		
+	@Column(name="is_relative")
+	public String getIsRelative() {
+		return isRelative;
+	}
+	public void setIsRelative(String isRelative) {
+		this.isRelative = isRelative;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "relation_type_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public VoterRelation getRelationType() {
+		return relationType;
+	}
+	public void setRelationType(VoterRelation relationType) {
+		this.relationType = relationType;
+	}
+	
+	@Column(name="relation_type_id")
+	public Long getRelationTypeId() {
+		return relationTypeId;
+	}
+	public void setRelationTypeId(Long relationTypeId) {
+		this.relationTypeId = relationTypeId;
 	}
 	
 	

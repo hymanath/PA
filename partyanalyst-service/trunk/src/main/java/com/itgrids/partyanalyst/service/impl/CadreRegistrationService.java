@@ -54,6 +54,7 @@ import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dao.IVoterRelationDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreFamilyVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
@@ -126,11 +127,11 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private IOccupationDAO 						occupationDAO;
 	private IConstituencyElectionDAO 			constituencyElectionDAO;
 	private INominationDAO 						nominationDAO;
+	private IVoterRelationDAO voterRelationDAO;
 	private ICadreCommitteeDAO					cadreCommitteeDAO;
 	private ICadreCommitteeLevelDAO				cadreCommitteeLevelDAO;
 	private ICadreRolesDAO						cadreRolesDAO;
 	private ICadreCommitteeRoleDAO				cadreCommitteeRoleDAO;
-	
 	
 	
 	
@@ -295,6 +296,14 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	public void setTdpCadreFamilyDetailsDAO(
 			ITdpCadreFamilyDetailsDAO tdpCadreFamilyDetailsDAO) {
 		this.tdpCadreFamilyDetailsDAO = tdpCadreFamilyDetailsDAO;
+	}
+
+	public IVoterRelationDAO getVoterRelationDAO() {
+		return voterRelationDAO;
+	}
+
+	public void setVoterRelationDAO(IVoterRelationDAO voterRelationDAO) {
+		this.voterRelationDAO = voterRelationDAO;
 	}
 
 	/**
@@ -662,6 +671,13 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				if(cadreRegistrationVO.getRelationType() != null && cadreRegistrationVO.getRelationType().trim().length() > 0 && !cadreRegistrationVO.getRelationType().trim().equalsIgnoreCase("null"))
 				{
 					tdpCadre.setRelativeType(cadreRegistrationVO.getRelationType());
+				}				
+				if(cadreRegistrationVO.isRelative()){
+				   tdpCadre.setIsRelative("Y");
+				   tdpCadre.setRelationTypeId(cadreRegistrationVO.getRelationTypeId());
+				}else{
+				   tdpCadre.setIsRelative("N");
+				   tdpCadre.setRelationTypeId(null);
 				}
 				if(registrationType != null && (registrationType.equalsIgnoreCase("WEB") || registrationType.equalsIgnoreCase("ONLINE")) && insertType.equalsIgnoreCase("new")){
 					String userId = "0000";
@@ -1218,7 +1234,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								vo.setMobileNo(tdpCadre.getMobileNo() != null ? tdpCadre.getMobileNo():"");
 								vo.setMemberShipId(tdpCadre.getPreviousEnrollmentNo() != null ? tdpCadre.getPreviousEnrollmentNo().toString():"");
 								vo.setActiveDate(tdpCadre.getPartyMemberSince() != null ? new SimpleDateFormat("dd-MM-yyyy").format(new SimpleDateFormat("yy-MM-dd").parse(tdpCadre.getPartyMemberSince().toString())):"");
-								 
+								if(tdpCadre.getIsRelative() != null && tdpCadre.getIsRelative().equalsIgnoreCase("Y")){
+								  vo.setRelative("true");
+								  vo.setRelationTypeId(tdpCadre.getRelationType().getVoterRelationId());
+								}
 								existingFamilyInfo =  getExistingCadreFamilyInfo(tdpCadreId);
 								existingParticipationDetails = getExistingCadreParticipationInfo(tdpCadreId);
 								existingrollsDetails = getExistingRollsInfo(tdpCadreId);
@@ -2910,5 +2929,20 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		return finalList;
 	}
 
+	public List<SelectOptionVO> getAllRelationDetails(){
+		List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
+		try{
+		List<Object[]> results = voterRelationDAO.getAllRelationDetails();
+		for(Object[] result:results){
+			SelectOptionVO vo = new SelectOptionVO();
+			vo.setId((Long)result[0]);
+			vo.setName(result[1].toString());
+			returnList.add(vo);
+		}
+		}catch(Exception e){
+			LOG.error("Exception raised in getAllRelationDetails in CadreRegistrationService service", e);
+		}
+		return returnList;
+	}
 	
 }
