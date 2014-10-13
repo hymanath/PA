@@ -1046,6 +1046,9 @@
 							<option value="1">Father</option>
 							<option value="2">Mother</option>
 							<option value="3">Wife</option>
+							<option value="4">Brother</option>
+							<option value="5">Sister</option>
+							<option value="6">Friend</option>
 					</select>
 				</div>
 			</div>
