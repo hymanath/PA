@@ -75,12 +75,21 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		return (String)query.uniqueResult();
 	}
 
-	public List<Object[]> getCadreDetailsForCadreRegistratiobByconstituencId(Long constituencyId, String queryStr,Long panchayatId,Long boothId,String villagesCovered)
+	public List<Object[]> getCadreDetailsForCadreRegistratiobByconstituencId(Long constituencyId, String queryStr,Long panchayatId,Long boothId,String isPresentCadre)
 	{
 		StringBuilder str = new StringBuilder();
 		
-		str.append(" select distinct TC.tdpCadreId, TC.firstname, TC.relativename, TC.dateOfBirth, TC.age, TC.gender, UA.houseNo, UA.userAddressId,TC.voterId from TdpCadre TC, UserAddress UA where "+queryStr+" TC.userAddress.constituency.constituencyId = :constituencyId ");
+		if(isPresentCadre != null && isPresentCadre.trim().length()>0 && !isPresentCadre.equalsIgnoreCase("0"))
+		{
+			str.append(" select distinct TC.tdpCadreId, TC.voter.name, TC.voter.relativeName, TC.dateOfBirth, TC.voter.age, TC.voter.gender, TC.voter.houseNo, UA.userAddressId,TC.voterId,TC.voter.relationshipType ");
+		}
+		else
+		{
+			str.append(" select distinct TC.tdpCadreId, TC.firstname, TC.relativename, TC.dateOfBirth, TC.age, TC.gender, UA.houseNo, UA.userAddressId,TC.voterId,TC.relativeType ");
+		}
 
+		str.append(" from TdpCadre TC, UserAddress UA where "+queryStr+" TC.userAddress.constituency.constituencyId = :constituencyId ");
+		
 		if(panchayatId.longValue() != 0L)
 		{
 			str.append(" and TC.userAddress.panchayatId = :panchayatId ");
@@ -91,9 +100,13 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 			str.append(" and TC.userAddress.booth.boothId = :boothId ");
 		}
 		
-		if(villagesCovered != null && villagesCovered.trim().length()>0)
+		if(isPresentCadre != null && isPresentCadre.trim().length()>0 && !isPresentCadre.equalsIgnoreCase("0"))
 		{
-			str.append(" ");
+			str.append(" and TC.enrollmentYear in (:cadreEnrollmentYear)  ");
+		}
+		else
+		{
+			str.append(" and TC.enrollmentYear not in (:cadreEnrollmentYear)  ");
 		}
 		
 		str.append(" and TC.userAddress.userAddressId = UA.userAddressId order by TC.houseNo ");
@@ -113,6 +126,8 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 			query.setParameter("boothId", boothId);
 		}		
 		
+		query.setParameter("cadreEnrollmentYear", IConstants.CADRE_ENROLLMENT_NUMBER);
+
 		return query.list();
 	}
 	
@@ -243,7 +258,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		return (Long)query.uniqueResult();
 	}
 
-	public List<Object[]> getexistringCadreInfoByLocation(String candidateName, Long constid, Long panchayatId)
+	public List<Object[]> getexistringCadreInfoByLocation(String candidateName, Long constid, Long panchayatId,Long boothId,String isPresentCadre)
 	{
 		
 		StringBuilder queryStr = new StringBuilder();
@@ -259,7 +274,21 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		{
 			queryStr.append(" and model.userAddress.panchayatId = :panchayatId ");
 		}
-		queryStr.append(" order by model.tdpCadreId ");
+		if(boothId != null && boothId.longValue() != 0L)
+		{
+			queryStr.append(" and model.userAddress.booth.boothId = :boothId");
+		}
+		if(isPresentCadre != null && isPresentCadre.trim().length()>0 && !isPresentCadre.equalsIgnoreCase("0"))
+		{
+			queryStr.append(" and model.enrollmentYear in (:year) ");
+		}
+		
+		else
+		{
+			queryStr.append(" and model.enrollmentYear not in (:year) ");
+		}
+		
+		queryStr.append("  and model.isDeleted = 'N' order by model.firstname ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
 		
@@ -272,8 +301,13 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		{
 			query.setParameter("panchayatId", panchayatId);
 		}
+		if(boothId != null && boothId.longValue() != 0L)
+		{
+			query.setParameter("boothId", boothId);
+		}
 		
-		
+			query.setParameter("year", IConstants.CADRE_ENROLLMENT_NUMBER);
+
 		return query.list();
 		
 	}
@@ -502,6 +536,17 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 	{
 		Query query = getSession().createQuery("select model.cardNumber from TdpCadre model where model.cardNumber = :cardNo");
 		query.setParameter("cardNo", cardNo);
+		return query.list();
+	}
+	
+	public List<Long> getVoterDetailsByVoterIds(List<Long> voterIdList)
+	{
+		Query query = getSession().createQuery("select distinct model.voterId  from TdpCadre model where model.voterId in (:voterIdList) and model.isDeleted = 'N' " +
+				" and model.enrollmentYear in (:enrollmentYear)  ");
+		
+		query.setParameterList("voterIdList", voterIdList);
+		query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_NUMBER);
+		
 		return query.list();
 	}
 	
