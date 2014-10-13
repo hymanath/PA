@@ -1143,6 +1143,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						vo.setGender(voter.getGender());
 						vo.setVoterCardNo(voter.getVoterIDCardNo() != null ? voter.getVoterIDCardNo() :"");
 						
+						
+						
 						List<UserVoterDetails> voterList = userVoterDetailsDAO.getVoterDetailsByUserIdAndVoterId(voter.getVoterId(),1L);
 						
 						if(voterList != null && voterList.size()>0)
@@ -1188,6 +1190,23 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								existingFamilyInfo =  getExistingCadreFamilyInfo(tdpCadreId);
 								existingParticipationDetails = getExistingCadreParticipationInfo(tdpCadreId);
 								existingrollsDetails = getExistingRollsInfo(tdpCadreId);
+								
+								vo.setAadharNo(tdpCadre.getAadheerNo() != null ? tdpCadre.getAadheerNo() : "");
+								vo.setNomineeName(tdpCadre.getNomineeName() != null ? tdpCadre.getNomineeName() : "");
+								vo.setNomineAge(tdpCadre.getNomineeAge() != null ? tdpCadre.getNomineeAge().toString() : "");
+								vo.setVoterRelationId(tdpCadre.getVoterRelationId() != null ? tdpCadre.getVoterRelationId() : 0l);
+								if(tdpCadre.getNomineeGender() != null && tdpCadre.getNomineeGender().trim().equalsIgnoreCase("MALE"))
+								{
+									vo.setNomineeGender(1l);
+								}
+								else if(tdpCadre.getNomineeGender() != null && tdpCadre.getNomineeGender().trim().equalsIgnoreCase("FEMALE"))
+								{
+									vo.setNomineeGender(2l);
+								}
+								else
+								{
+									vo.setNomineeGender(0l);
+								}
 							}
 						}
 						
@@ -1693,10 +1712,11 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				for (Object[] participation : participationInfo)
 				{
 					GenericVO vo = new GenericVO();
-					vo.setId(participation[0] != null ? Long.valueOf(participation[0].toString().trim()):0L);		//cadre level Id
-					vo.setCount(participation[1] != null ? Long.valueOf(participation[1].toString().trim()):0L);	// designation Id
-					vo.setStartTime(participation[2] != null ?format.format(format1.parse(participation[2].toString())):"");		// from date
-					vo.setEndTime(participation[3] != null ? format.format(format1.parse(participation[3].toString())):"");		// to date 
+					vo.setId(participation[0] != null ? Long.valueOf(participation[0].toString().trim()):0L);		//Committe Level Id
+					vo.setCount(participation[1] != null ? Long.valueOf(participation[1].toString().trim()):0L);	// Committe Id
+					vo.setRank(participation[2] != null ? Long.valueOf(participation[2].toString().trim()):0L);	// Committe role id
+					vo.setStartTime(participation[3] != null ?format.format(format1.parse(participation[3].toString())):"");		// from date
+					vo.setEndTime(participation[4] != null ? format.format(format1.parse(participation[4].toString())):"");		// to date 
 					
 					returnList.add(vo);
 				}
