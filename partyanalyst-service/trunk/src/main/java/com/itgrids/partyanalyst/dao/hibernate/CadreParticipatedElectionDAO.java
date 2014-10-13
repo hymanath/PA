@@ -29,6 +29,6 @@ public class CadreParticipatedElectionDAO extends GenericDaoHibernate<CadreParti
 				" CadreParticipatedElection model  where model.tdpCadreId = :tdpCadreId and model.isDeleted = 'N' order by model.cadreParticipatedElectionId ");
 		query.setParameter("tdpCadreId", tdpCadreId);
 		return query.list();
-	}
-	
+	}	
+
 }

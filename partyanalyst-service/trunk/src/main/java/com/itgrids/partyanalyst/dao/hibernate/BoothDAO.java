@@ -457,10 +457,10 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 	    @SuppressWarnings("unchecked")
 		public List<Object[]> getBoothIdsByPanchayatIdsInAPublication(List<Long> panchayatIds,Long publicationDateId)
 	    {
-	    	Query query = getSession().createQuery("select model.boothId, model.panchayat.panchayatId, model.partNo from Booth model where model.panchayat.panchayatId in(:panchayatIds) and " +
+	    	Query query = getSession().createQuery("select model.boothId, model.panchayat.panchayatId, model.partNo, model.villagesCovered from Booth model where model.panchayat.panchayatId in(:panchayatIds) and " +
 	    			" model.publicationDate.publicationDateId = :publicationDateId and model.localBody is null ");
 	    	query.setParameterList("panchayatIds", panchayatIds);
-	    	query.setParameter("publicationDateId",publicationDateId);
+	    	query.setParameter("publicationDateId",publicationDateId); 
 	    	return query.list();
 	    }
 		
@@ -986,7 +986,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		 */
 		public List<Object[]> getAllBoothsInAMuncipality(Long localBodyId,Long publicationId)
 		{
-			Query query = getSession().createQuery("select model.boothId,model.partNo from Booth model " +
+			Query query = getSession().createQuery("select model.boothId,model.partNo, model.villagesCovered from Booth model " +
 					" where model.localBody.localElectionBodyId = :localBodyId and " +
 					"  model.publicationDate.publicationDateId = :publicationId");
 			query.setParameter("localBodyId", localBodyId);
@@ -2050,4 +2050,15 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		return query.list();
 		
 	}
+	
+	public List<Object[]> getAllBoothsInUrban(Long constituencyId,Long publicationId)
+	{
+		Query query = getSession().createQuery("select model.boothId,model.partNo, model.villagesCovered from Booth model " +
+				" where model.constituency.constituencyId = :constituencyId and " +
+				"  model.publicationDate.publicationDateId = :publicationId order by model.boothId ");
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationId", publicationId);
+		return query.list();
+	}
+	
 }

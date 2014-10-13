@@ -876,6 +876,27 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 		return query.list();
 	}
 	
+	public List<Object[]> getConstituenciesByElectionId(Long electionId)
+	{
+		Query query = getSession().createQuery("select distinct model.constituency.constituencyId , model.constituency.name from " +
+				" ConstituencyElection model where model.election.electionId = :electionId order by  model.constituency.name asc ");
+		
+		query.setParameter("electionId", electionId);
+		
+		return query.list();
+	}
+	
+	
+	public List<Object[]> getConstituenciyListByElectionId(Long electionId)
+	{
+		Query query = getSession().createQuery("select distinct model.constituency.constituencyId , model.constituency.name from " +
+				" ConstituencyElection model where model.election.electionId = :electionId order by  model.constituency.name asc ");
+		
+		query.setParameter("electionId", electionId);
+		
+		return query.list();
+	}
+	
 }
 
 
