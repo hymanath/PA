@@ -365,6 +365,8 @@ function clearFieldsData(){
 	$('#allGenderId').attr('checked', 'checked'); 
 	$("#voterCountData").html('');
 	$("#voterDetailsDiv").html('');
+	$("#CastevoterData").html('');
+	
 }
 </script>
 </head>
@@ -372,14 +374,19 @@ function clearFieldsData(){
 
  <div style="width:960px;margin-left:auto;margin-right:auto;margin-top:20px;">
     <ul class="nav nav-tabs" id="myTab">
-	<li class="active"><a href="#statusDiv" >STATUS REPORT </a></li>
+	<!--<li class="active"><a href="#SurveystatusDiv" >Survey STATUS REPORT </a></li>-->
+	<li class="active"> <a href="#statusDiv">STATUS REPORT </a></li>
 <li ><a href="#voterSearchDiv">VOTER SEARCH </a></li>
 <li><a href="#voterCountDetailsDiv">VOTER COUNT </a></li>
-
 </ul>
- 
-
-	 <div class="tab-content widget" style="margin-top:-20px;">
+<div class="tab-content widget" style="margin-top:-20px;">
+	 	<!-- <div id="SurveystatusDiv"  class="tab-pane active">
+		 <div class="titleHeading" >SURVEY OVERVIEW
+	 </div>
+	 <div id="surveyStatusDetailsDiv"></div>
+	 
+		 </div>-->
+	 
 	 <div id="statusDiv"  class="tab-pane active">
 	 <img src="./images/Loading-data.gif" alt="Processing Image" id="voterDetailsImg" style="width: 65px;" class="offset4"/>
 	    <div class="titleHeading" >CONSTITUENCY WISE OVERVIEW
@@ -502,16 +509,19 @@ function clearFieldsData(){
 		
 	   <label id="reportLevelDiv1" >Select Level<font class="requiredFont">*</font><select id="reportLevel1"  name="constituencyList">
 	   <option value=0>Select Region Level</option>
+	   <option value="1">Constituency</option>
 		<option value=2>Mandal</option>
 	    <option value=3>Panchayat</option>
 		<option value=4>PollingStation</option>
 		</select>
       </label>&nbsp;&nbsp;
-	   <input onclick="getVotersCountInRegion();" class="btn btn-success" type="button"  value="submit"/>
+	   <input onclick="getCasteVotersCountInRegion();getVotersCountInRegion();" class="btn btn-success" type="button"  value="submit"/>
 	
 	  </div>
 	 	</div>
 		<div id="voterCountData" style="margin-top:10px;"></div>
+		<div id="CastevoterData" style="margin-top:10px;"></div>
+		
 		<div id="errorMessageDiv1" style="display:none;font-weight:bold;color:red" align="center"></div>
 	 
 	  <span style='display:none;' id='ajaxLoad1'><img src='./images/icons/search.gif' /></span>
@@ -966,8 +976,11 @@ if(!flag){
 	    });
 		}
 	}
+	
 	function getVotersCountDetails()
 	{
+		
+		
 		$("#statusContentDiv").html('');
 		$("#voterDetailsImg").show();
 		var jObj ={
@@ -1065,9 +1078,10 @@ if(!flag){
 			$("#voterCountDetailsDiv").show();
 			}
 	}
+
 	function getVotersCountInRegion()
 	{
-		
+	
 	$("#voterCountData").html('');
 	$('#errorMessageDiv1').html('');
 	var constituencyId = $("#constituencyList1").val();
@@ -1106,6 +1120,7 @@ if(!flag){
 	           console.log('error', arguments);
 	         }
 	});
+		
 	}
 	function buildVoterCountData(resultList,type)
 	{
@@ -1120,6 +1135,8 @@ if(!flag){
 
 		var str = '';
 		str+='<table class="table table-bordered">';
+		if(type == "Constituency")
+		str+='<th>Constituency</th>';
 		if(type == "Mandal")
 		str+='<th>Mandal</th>';
 		if(type == "Panchayat")
@@ -1164,6 +1181,125 @@ if(!flag){
 		$("#voterCountData").html(str);
 		
 		
+	}
+	function buildCasteVoterCountData(resultList,type)
+	{
+		var result = resultList.votersList;
+		var result1 =  resultList.localbodyList;
+		if(result.length == 0)
+		{
+			$('#errorMessageDiv1').show().html('No Data Avalible ');
+			return;
+		}
+		var str = '';
+		str+='<table class="table table-bordered">';
+		if(type == "Constituency")
+		str+='<th>Constituency</th>';
+		if(type == "Mandal")
+		str+='<th>Mandal</th>';
+		if(type == "Panchayat")
+		str+='<th>Panchayat</th>';
+		if(type == "BOOTH")
+		str+='<th>Booth</th>';
+		str+='<th>Caste </th>';
+		str+='<th>Total Caste Voters</th>';
+		str+='<th>Caste Voters</th>';
+		str+='<th>male Caste Voters</th>';
+		str+='<th>female Caste Voters</th>';
+		str+='<th>Caste Percentage</th>';
+		for(var i in result)
+		{
+			for(var j in result[i].casteList)
+			{
+			str+='<tr>';
+			str+='<td>'+result[i].name+'</td>';
+			str+='<td>'+result[i].casteList[j].cast+'</td>';
+			str+='<td>'+result[i].totalCasteVoters+'</td>';
+			str+='<td>'+result[i].casteList[j].casteCount+'</td>';
+			str+='<td>'+result[i].casteList[j].maleCnt+'</td>';
+			str+='<td>'+result[i].casteList[j].femaleCnt+'</td>';
+			str+='<td>'+result[i].casteList[j].percentage+'</td>';
+			str+='</tr>';
+			}
+		}
+			if(type == "Mandal" &&  result1 != null)
+			{
+				for(var k in result1)
+				{
+					for(var l in result1[k].casteList)
+						{
+						str+='<tr>';
+						str+='<td>'+result1[k].name+'</td>';
+						str+='<td>'+result1[k].casteList[l].cast+'</td>';
+						str+='<td>'+result1[k].totalCasteVoters+'</td>';
+						str+='<td>'+result1[k].casteList[l].casteCount+'</td>';
+						str+='<td>'+result1[k].casteList[l].maleCnt+'</td>';
+						str+='<td>'+result1[k].casteList[l].femaleCnt+'</td>';
+						str+='<td>'+result1[k].casteList[l].percentage+'</td>';
+						str+='</tr>';
+						}
+				}
+			}
+		
+		str+='</table>';
+		$("#CastevoterData").html(str);
+	}
+	
+	function getCasteVotersCountInRegion()
+	{
+	
+		
+	$("#CastevoterData").html('');
+	
+	var constituencyId = $("#constituencyList1").val();
+	var regionVal = $("#reportLevel1").val();
+	var regionType = $("#reportLevel1 option:selected").text();
+	
+		if(regionVal == 4)
+			regionType = "BOOTH";
+		
+	var jObj = {
+		constituencyId :constituencyId,
+		locationType : regionType
+	}
+	$.ajax({
+	type : 'GET',
+	url : 'getCasteVotersCountInRegionAction.action',
+	dataType:'json',
+	data:{task:JSON.stringify(jObj)},
+	success:function(result)
+		{
+		
+		buildCasteVoterCountData(result,jObj.locationType);
+				  },
+	          error:function() { 
+	           console.log('error', arguments);
+	         }
+	});
+		
+		
+	}
+	function getSurveyStatusDetails()
+	{
+	var jObj = {
+	task : "surveyStatusDetails"
+	}
+	$.ajax({
+	type : 'GET',
+	url : 'getSurveyStatusDetailsAction.action',
+	dataType:'json',
+	data:{task:JSON.stringify(jObj)},
+	success:function(result)
+		{
+		$("#ajaxLoad1").hide();
+		
+		buildSurveyStatusDetails(result);
+				  },
+	          error:function() { 
+	           console.log('error', arguments);
+	         }
+	});
+	
 	}
 	
 </script>
