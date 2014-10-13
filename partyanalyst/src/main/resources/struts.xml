@@ -8586,10 +8586,15 @@
 			</result>
 		</action>
 		
+		<action name="getCandidateInfoByNominationAction" class="cadreRegistrationAction" method="getCandidateInfoByNomination">
+			<result type="json" name="success">
+				<param name="root">selectOptionVOList</param>
+			</result>
+		</action>
 		
 		<action name="getCandidateDetailsForElectionAction" class="cadreRegistrationAction" method="getCandidateDetailsForElection">
 			<result type="json" name="success">
-				<param name="root">genericVOList</param>
+				<param name="root">constituencyList</param>
 			</result>
 		</action>
 		
