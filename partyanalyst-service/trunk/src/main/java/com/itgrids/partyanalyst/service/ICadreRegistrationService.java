@@ -31,7 +31,7 @@ public interface ICadreRegistrationService {
 	
 	public List<SelectOptionVO> getElectionYearsByElectionType(Long electionTypeId);
 
-	public List<GenericVO> getExistingCadreInfo(String candidateName,Long constituencyId,Long panchayatId);
+	public List<GenericVO> getExistingCadreInfo(String candidateName,Long constituencyId,Long panchayatId,Long boothId,String isPresentCadre);
 	
 	public CadrePrintVO getCadreDetailsForPrinting(String memberCardNo);
 	
