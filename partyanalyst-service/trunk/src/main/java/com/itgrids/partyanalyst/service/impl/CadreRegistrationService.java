@@ -602,7 +602,26 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					}
 				}
 				
-				
+				if(cadreRegistrationVO.getPhotoType() != null && cadreRegistrationVO.getPhotoType().trim().length() > 0 && !cadreRegistrationVO.getPhotoType().trim().equalsIgnoreCase("null"))
+				{
+					tdpCadre.setPhotoType(cadreRegistrationVO.getPhotoType() );
+				}
+				else
+				{
+					tdpCadre.setPhotoType("VOTER");
+				}
+				if(cadreRegistrationVO.getNameType() != null && cadreRegistrationVO.getNameType().trim().length() > 0 && !cadreRegistrationVO.getNameType().trim().equalsIgnoreCase("null"))
+				{
+					tdpCadre.setNameType(cadreRegistrationVO.getNameType() );
+				}
+				else
+				{
+					tdpCadre.setNameType("VOTER");
+				}
+				if(cadreRegistrationVO.getRelationType() != null && cadreRegistrationVO.getRelationType().trim().length() > 0 && !cadreRegistrationVO.getRelationType().trim().equalsIgnoreCase("null"))
+				{
+					tdpCadre.setRelativeType(cadreRegistrationVO.getRelationType());
+				}
 				if(registrationType != null && (registrationType.equalsIgnoreCase("WEB") || registrationType.equalsIgnoreCase("ONLINE")) && insertType.equalsIgnoreCase("new")){
 					String userId = "0000";
 					if(cadreRegistrationVO.getCreatedUserId() != null){
@@ -623,8 +642,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				  if(insertType.equalsIgnoreCase("new")){
 					  synchronized (CadreRegistrationService.class) {
 					     tdpCadre.setRefNo(cadreRegistrationVO.getRefNo());
-					    // String membershipNo = getMemberShipNo(userAddress.getDistrict().getDistrictId());
-							tdpCadre.setMemberShipNo("1234");
+					        String membershipNo = getMemberShipNo(userAddress.getDistrict().getDistrictId());
 							surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getMemberShipNo());
 							uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre);
 					     tdpCadre = tdpCadreDAO.save(tdpCadre);	
@@ -1120,7 +1138,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								
 								vo.setLocation(tdpCadre.getUserAddress() != null ? (tdpCadre.getUserAddress().getStreet() != null ?tdpCadre.getUserAddress().getStreet().toString():""):"");
 								vo.setMobileNo(tdpCadre.getMobileNo() != null ? tdpCadre.getMobileNo():"");
-								vo.setMemberShipId(tdpCadre.getMemberShipNo() != null ? tdpCadre.getMemberShipNo().toString():"");
+								vo.setMemberShipId(tdpCadre.getPreviousEnrollmentNo() != null ? tdpCadre.getPreviousEnrollmentNo().toString():"");
 								vo.setActiveDate(tdpCadre.getPartyMemberSince() != null ? new SimpleDateFormat("dd-MM-yyyy").format(new SimpleDateFormat("yy-MM-dd").parse(tdpCadre.getPartyMemberSince().toString())):"");
 								 
 								existingFamilyInfo =  getExistingCadreFamilyInfo(tdpCadreId);
