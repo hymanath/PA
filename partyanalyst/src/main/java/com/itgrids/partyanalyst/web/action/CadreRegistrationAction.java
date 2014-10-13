@@ -67,9 +67,17 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	
 	private EntitlementsHelper 					entitlementsHelper;
 	private CadrePrintVO						cadrePrintVO;
-	private List<CadrePrintVO>						basicVOList;
+	private List<CadrePrintVO>					basicVOList;
+	private List<BasicVO>						constituencyList;
 	
 	
+	public void setConstituencyList(List<BasicVO> constituencyList) {
+		this.constituencyList = constituencyList;
+	}
+	
+	public List<BasicVO> getConstituencyList() {
+		return constituencyList;
+	}
 
 	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
 		this.entitlementsHelper = entitlementsHelper;
@@ -432,13 +440,18 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			
 			HttpSession session = request.getSession();
 			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			
+			
 			if(user == null)
 				return Action.INPUT;
 			
-			Long stateTypeId = 0L; // 0 for All, 1 for AP, 2 for TG 
-			Long stateId = 1L;
+			if(entitlementsHelper.checkForEntitlementToViewReport(user,"CADRE_REGISTRATION_2014"))
+			{
+				Long stateTypeId = 0L; // 0 for All, 1 for AP, 2 for TG 
+				Long stateId = 1L;
 
-			selectOptionVOList = 	surveyDataDetailsService.getAssemblyConstituenciesByStateId(stateTypeId,stateId);
+				selectOptionVOList = 	surveyDataDetailsService.getAssemblyConstituenciesByStateId(stateTypeId,stateId);
+			}
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in tdpCadreSearchPage method in CadreRegistrationAction Action",e);
@@ -458,17 +471,22 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			if(user == null)
 				return ERROR;
 			
-			constituencyesList = 	surveyDataDetailsService.getAssemblyConstituenciesByStateId(0l,1l);
-			genericVOList = candidateUpdationDetailsService.gettingEducationDetails();
-			selectOptionVOList = staticDataService.getAllOccupations();
-			eletionTypesList = cadreRegistrationService.getElectionOptionDetailsForCadre();
-			voterInfoVOList = cadreRegistrationService.getCandidateInfoBySearchCriteria(searchType,Long.valueOf(candidateId));
+			if(entitlementsHelper.checkForEntitlementToViewReport(user,"CADRE_REGISTRATION_2014"))
+			{
+				constituencyesList = 	surveyDataDetailsService.getAssemblyConstituenciesByStateId(0l,1l);
+				genericVOList = candidateUpdationDetailsService.gettingEducationDetails();
+				selectOptionVOList = staticDataService.getAllOccupations();
+				eletionTypesList = cadreRegistrationService.getElectionOptionDetailsForCadre();
+				voterInfoVOList = cadreRegistrationService.getCandidateInfoBySearchCriteria(searchType,Long.valueOf(candidateId));
+				
+				return Action.SUCCESS;
+			}
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in tdpCadreRegistrationPage method in CadreRegistrationAction Action",e);
 		}
 	
-		return Action.SUCCESS;
+		return Action.INPUT;
 	}
 	
 	public String getconstituencyDetailsByConstiteuncy()
@@ -626,25 +644,18 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	{
 		LOG.info("Entered into cadreSurveyUserDetailsPage method in CadreRegistrationAction Action");
 		try {
-			/*session = request.getSession();
+			session = request.getSession();
 			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 			
 			if(user == null)
 				return Action.INPUT;
 			
-			if(entitlementsHelper.checkForEntitlementToViewReport(user,"CADRE_REGISTRATION_2014")){
-				
+			if(entitlementsHelper.checkForEntitlementToViewReport(user,"CADRE_REGISTRATION_2014"))
+			{
 				genericVOList = cadreRegistrationService.getSurveyCadreUsersList();
 				constituencyesList = 	surveyDataDetailsService.getAssemblyConstituenciesByStateId(0l,1l);
 				selectOptionVOList = cadreRegistrationService.getSurveyCadreAssignedConstituencyList();
-				
-				return Action.SUCCESS;
 			}
-			*/
-			
-			genericVOList = cadreRegistrationService.getSurveyCadreUsersList();
-			constituencyesList = 	surveyDataDetailsService.getAssemblyConstituenciesByStateId(0l,1l);
-			selectOptionVOList = cadreRegistrationService.getSurveyCadreAssignedConstituencyList();
 			
 			return Action.SUCCESS;
 			
@@ -825,5 +836,29 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	}
 	
 	
+	public String getConstiteuncyListForElection()
+	{
+		LOG.info("Entered into getConstiteuncyListForElection method in CadreRegistrationAction Action");
+		try {		
+			jobj = new JSONObject(getTask());
+			constituencyList = cadreRegistrationService.constituencyListForElection(jobj.getLong("electionId"));
+		}
+		catch(Exception e){
+			LOG.error("Exception raised in getConstiteuncyListForElection method in CadreRegistrationAction action", e);
+		}
+		return Action.SUCCESS;
+	}
 	
+	public String getCandidateDetailsForElection()
+	{
+		LOG.info("Entered into getCandidateDetailsForElection method in CadreRegistrationAction Action");
+		try {		
+			jobj = new JSONObject(getTask());
+			constituencyList = cadreRegistrationService.participatedCandList(jobj.getLong("electionId"),jobj.getLong("constituencyId"));
+		}
+		catch(Exception e){
+			LOG.error("Exception raised in getCandidateDetailsForElection method in CadreRegistrationAction action", e);
+		}
+		return Action.SUCCESS;
+	}
 }
