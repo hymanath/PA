@@ -5349,8 +5349,9 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			
 			Query query = getSession().createQuery("SELECT C.candidateId,C.lastname,P.shortName FROM Candidate C,Nomination N,Party P," +
 					" ConstituencyElection CE WHERE CE.constiElecId = N.constituencyElection.constiElecId AND  N.party.partyId = P.partyId " +
-					" AND N.candidate.candidateId = C.candidate.candidateId AND CE.election.electionId = 38 AND CE.constituency.constituencyId = 282  ORDER BY C.lastname");
-			
+					" AND N.candidate.candidateId = C.candidateId AND CE.election.electionId = :electionId AND CE.constituency.constituencyId = :constituencyId  ORDER BY C.lastname");
+			query.setParameter("constituencyId", constituencyId);
+			query.setParameter("electionId", electionId);
 			return query.list();
 		}
 		public List<Object[]> getCandidateResultsByCandidateInfo(Long candidateId,Long electionId)
