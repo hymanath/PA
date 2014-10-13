@@ -69,6 +69,7 @@ import com.itgrids.partyanalyst.model.CadrePreviousRoles;
 import com.itgrids.partyanalyst.model.CadreSurveyUser;
 import com.itgrids.partyanalyst.model.CadreSurveyUserAssignDetails;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.TdpCadre;
@@ -1462,11 +1463,30 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		return returnList;
 	}
 	
-	public List<BasicVO> constituencyListForElection(Long electionId)
+	public List<BasicVO> constituencyListForElection(Long electionId,Long constituencyId)
 	{
 		List<BasicVO> returnList = new ArrayList<BasicVO>();
 		try {
-			List<Object[]> constituencyList = constituencyElectionDAO.getConstituenciesByElectionId(electionId);
+			Election election = electionDAO.get(electionId);
+			List<Object[]> constituencyList = null;
+			if(election != null )
+			{
+				String electionType = election.getElectionScope().getElectionType().getElectionType();
+				
+				if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE))
+				{
+					constituencyList = constituencyElectionDAO.getConstituenciesByElectionId(electionId);
+				}
+				else if(electionType.equalsIgnoreCase(IConstants.MUNCIPLE_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.CORPORATION_ELECTION_TYPE))
+				{
+					constituencyList = constituencyElectionDAO.getConstituenciesByElectionIdForMuncipal(electionId,constituencyId);
+				}
+				else 
+				{
+					constituencyList = constituencyElectionDAO.getConstituenciesByElectionIdForPanchayat(electionId,constituencyId);
+				}
+			}
+			
 			List<Long> constiIds = new ArrayList<Long>();
 			
 			if(constituencyList != null && constituencyList.size() > 0)
@@ -1522,7 +1542,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					{
 						BasicVO basicVO = new BasicVO();
 						basicVO.setId((Long)objects[0]);
-						basicVO.setName(objects[1] != null ? objects[1].toString() : "");
+						basicVO.setName(objects[1] != null ? objects[1].toString() : " - " +objects[2].toString());
 						returnList.add(basicVO);
 					}
 					
@@ -1581,7 +1601,45 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		
 		return returnList;
 	}
-	/*
+	
+	public List<SelectOptionVO> getCandidateInfoByNomination(Long electionId,Long nominationId)
+	{
+		List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
+		try {
+			List<Object[]> candidateList  = nominationDAO.getCandidateResultsByCandidateInfo(3424L,258L);
+			System.out.println(candidateList.size());
+			
+			if(candidateList != null && candidateList.size() > 0)
+			{
+				for (Object[] param : candidateList)
+				{
+					SelectOptionVO vo = new SelectOptionVO();
+					
+					vo.setId(param[0] != null ? Long.valueOf(param[0].toString()):0L); // election type Id
+					vo.setName(param[1] != null ? param[1].toString():"");  // election Type
+					
+					vo.setOrderId(param[2] != null ? Long.valueOf(param[2].toString()):0L);  // electionId 
+					vo.setLocation(param[3] != null ? param[3].toString() +" ("+(param[4] != null ? param[4].toString():"")+")":""); // election Year
+					
+					vo.setMainAccountId(param[5] != null ? Long.valueOf(param[5].toString()):0L); //constituency Id
+					vo.setPanchayatName(param[6] != null ? param[6].toString():""); //constituency Name
+					
+					vo.setPartno(param[7] != null ? param[7].toString():""); // partyname 
+					vo.setMandalName(param[8] != null ? param[8].toString():""); // party Id
+					
+					returnList.add(vo);
+					
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in constituencyListForElection in CadreRegistrationService service", e);
+		}
+		
+		return returnList;
+		
+	}
+	
 	public List<GenericVO> getExistingCadreParticipationInfo(Long tdpCadreId)
 	{
 		List<GenericVO> returnList = new ArrayList<GenericVO>();
@@ -1600,7 +1658,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					vo.setRank(participation[2] != null ? Long.valueOf(participation[2].toString().trim()):0L);		// constituencyId
 					
 					
-					List<BasicVO> constituencyList = constituencyListForElection(vo.getCount());
+					List<BasicVO> constituencyList = constituencyListForElection(vo.getCount(),vo.getRank());
 					
 					if(constituencyList != null && constituencyList.size()>0)
 					{
@@ -1646,7 +1704,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		return returnList;
 	}
 	
-	*/
+	/*
 	
 	public List<GenericVO> getExistingCadreParticipationInfo(Long tdpCadreId)
 	{
@@ -1696,7 +1754,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		
 		return returnList;
 	}
-	
+	*/
 	public List<GenericVO> getExistingRollsInfo(Long tdpCadreId)
 	{
 		List<GenericVO> returnList = new ArrayList<GenericVO>();
