@@ -216,8 +216,10 @@
 	function enableSearchByName(){
 		$('#preEnrollNoValue').removeAttr('readOnly');
 	}
-	function createNewForm()
-	{
+	function createNewForm(){
+	
+		cadreCmmittArr,cadreCmmittLvlArr,cadreRolesArr
+		
 		if(participationCount >= 1 &&  isRolesSet)
 		{
 			rolesSize = participationCount;
@@ -229,53 +231,68 @@
 		str += '<div class="span3">';
 		str += '<div class=" text-align1 " >';
 		//str += '<h5 class="text-align1">Select Level </h5>';
-		str += '<select class="form-control border-radius-0" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].designationLevelId">';
-		str += '<option value = "0"> Select Level</option>';
-			if(cadreLevelArr != null && cadreLevelArr.length>0)
+		str += '<select class="form-control border-radius-0" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].cadreCommitteeLevelId">';
+		str += '<option value = "0"> Select </option>';
+			if(cadreCmmittLvlArr != null && cadreCmmittLvlArr.length>0)
 			{
-				for(var i in cadreLevelArr)
+				for(var i in cadreCmmittLvlArr)
 				{
-					str += '<option value = "'+cadreLevelArr[i].id+'">'+cadreLevelArr[i].name+'</option>';
+					str += '<option value = "'+cadreCmmittLvlArr[i].id+'">'+cadreCmmittLvlArr[i].name+'</option>';
 				}
 			}
 		str += '</select>';
 		str += '</div>';
 		str += '</div>';
-		str += '<div class="span3">';
+		str += '<div class="levelCls">';
 		str += '<div class=" text-align1" >';
 		//str += '<h5 class="text-align1">Party Designation </h5>';
-		str += '<select class="form-control border-radius-0 " name="cadreRegistrationVO.previousRollesList['+rolesSize+'].designationLevelValue">';
-		str += '<option value = "0"> Select Designation </option>';
-			if(partyDesignationArr != null && partyDesignationArr.length>0)
+		str += '<select class="form-control border-radius-0 " name="cadreRegistrationVO.previousRollesList['+rolesSize+'].cadreCommitteeId">';
+		str += '<option value = "0"> Select </option>';
+			if(cadreCmmittArr != null && cadreCmmittArr.length>0)
 			{
-				for(var i in partyDesignationArr)
+				for(var i in cadreCmmittArr)
 				{
-					str += '<option value = "'+partyDesignationArr[i].id+'">'+partyDesignationArr[i].name+'</option>';
+					str += '<option value = "'+cadreCmmittArr[i].id+'">'+cadreCmmittArr[i].name+'</option>';
 				}
 			}
 		str += '</select>';
 		str += '</div>';
 		str += '</div>';
-		str += '<div class="span2">';
+		str += '<div class="levelCls">';
+		str += '<div class=" text-align1" >';
+		//str += '<h5 class="text-align1">Party Designation </h5>';
+		str += '<select class="form-control border-radius-0 " name="cadreRegistrationVO.previousRollesList['+rolesSize+'].cadreRoleId">';
+		str += '<option value = "0"> Select </option>';
+			if(cadreRolesArr != null && cadreRolesArr.length>0)
+			{
+				for(var i in cadreRolesArr)
+				{
+					str += '<option value = "'+cadreRolesArr[i].id+'">'+cadreRolesArr[i].name+'</option>';
+				}
+			}
+		str += '</select>';
+		str += '</div>';
+		str += '</div>';
+		str += '<div class="levelCls">';
 		str += '<div class=" " >';
 		//str += '<h5 class="text-align1">From Date</h5>';
 		str += '<div class="input-prepend text-align2 ">';
-		str += '<input type="text" class="form-control span2 border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].fromDateStr"  readOnly="true"></input></span>';
+		str += '<input type="text" class="levelClsDt form-control span2 border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].fromDateStr"  readOnly="true"></input></span>';
 		str += '</div>';
 		str += '</div>';
 		str += '</div>';
-		str += '<div class="span2 ">';
+		str += '<div class="levelCls ">';
 		str += '<div class=" " >';
 		//str += '<h5 class="text-align1">To Date</h5>';
 		str += '<div class="input-prepend  ">';
-		str += '<input type="text" class="form-control span2  border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].toDateStr"  readOnly="true"></input></span>';
+		str += '<input type="text" class="levelClsDt form-control span2  border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].toDateStr"  readOnly="true"></input></span>';
 		str += '</div>';
 		str += '</div>';
 		str += '</div>';
 		/*str += '<div class="span2">';
 		str += '<a onClick="deleteRollesForm(\'rolesList'+rolesSize+'\')" class="btn btn-success"></a>';
 		str += '<div>';*/
-		str += '<div class="span2 ">';
+		str += '<div class="width:60px;float:left;margin-top:20px;">';
 		str += '<div class=" " >';
 		str += '<div class="input-prepend text-align2 ">';	
 		str += '<a class="icon-minus-sign" style="float:right" onClick="deleteRollesForm(\'rolesList'+rolesSize+'\')" title="Remove Details"></a>';
@@ -388,7 +405,7 @@
 	{
 		window.location.assign('tdpCadreSearchAction.action')
 	}
-	function prepopulateOptions()
+	/* function prepopulateOptions()
 	{
 		var jsObj = 
 			   {				
@@ -439,6 +456,73 @@
 							}	
 						}
 				});
+	} */
+	
+	function prepopulateOptions(){
+		var jsObj ={}				   
+			$.ajax({
+				type : "POST",
+				url : "getCadreLevelsForCadreSearchAction.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				if(result.length>0){
+					buildSelectBoxes(result);
+				}
+			});
+	}
+	
+	var cadreCmmittArr = [];
+	var cadreCmmittLvlArr = [];
+	var cadreRolesArr = [];
+	
+	function buildSelectBoxes(results){
+		
+		for(var i in results){
+		
+			if(results[i].name=="CadreCommitteeList"){
+				var str = "";
+					str+="<option value = '0'> Select </option>";
+					for(var j in results[i].selectOptionsList){
+						str+="<option value="+results[i].selectOptionsList[j].id+">"+results[i].selectOptionsList[j].name+"</option>";
+					}
+					var cadreCmmtObj = {
+										id		:	results[i].selectOptionsList[j].id,
+										name	:	results[i].selectOptionsList[j].name								
+									}
+									
+					cadreCmmittArr.push(cadreCmmtObj);
+				$("#CadreCommitteeId").html(str);
+			}
+			if(results[i].name=="CadreCommitteeLevelsList"){
+				var str = "";
+					str+="<option value = '0'> Select </option>";
+					for(var j in results[i].selectOptionsList){
+						str+="<option value="+results[i].selectOptionsList[j].id+">"+results[i].selectOptionsList[j].name+"</option>";
+					}
+					var cadreCmmtObj = {
+										id		:	results[i].selectOptionsList[j].id,
+										name	:	results[i].selectOptionsList[j].name								
+									}
+									
+					cadreCmmittLvlArr.push(cadreCmmtObj);
+				$("#CadreCommitteeLevelsId").html(str);
+			}
+			if(results[i].name=="CadreRolesList"){
+				var str = "";
+					str+="<option value = '0'> Select </option>";
+					for(var j in results[i].selectOptionsList){
+						str+="<option value="+results[i].selectOptionsList[j].id+">"+results[i].selectOptionsList[j].name+"</option>";
+					}
+					var cadreCmmtObj = {
+										id		:	results[i].selectOptionsList[j].id,
+										name	:	results[i].selectOptionsList[j].name								
+									}
+									
+					cadreRolesArr.push(cadreCmmtObj);
+				$("#CadreRolesId").html(str);
+			}
+			
+		}
 	}
 	
 	function prepopulateElctionOptions()
@@ -1106,10 +1190,14 @@
 		<div class="container m_top10">
 			
 			<div class="span12 show-grid" style="position: relative;" id="rollesDiv">	
+				
+				
+				
+			
 				<!--<div class="row">
 					<a class="btn btn-success" style="float:right" onClick="createNewForm();">Add More</a>
 				</div>-->
-				<s:if test="%{voterInfoVOList[0].cadreRolesList != null && voterInfoVOList[0].cadreRolesList.size() > 0}">
+				<!--<s:if test="%{voterInfoVOList[0].cadreRolesList != null && voterInfoVOList[0].cadreRolesList.size() > 0}">
 					<c:forEach var="participation" items="${voterInfoVOList[0].cadreRolesList}" varStatus="indexValue">
 
 					<div class="row rolesList">
@@ -1223,7 +1311,54 @@
 						</div>
 					</div>
 				</div>
-			</s:else>
+			</s:else>-->
+			
+					<div class="levelCls">
+						<div>
+							<h5 class="text-align1"> Committee Level </h5>
+								<select class="levelCls" id="CadreCommitteeId" name="cadreRegistrationVO.previousRollesList[0].cadreCommitteeId" style="margin-left: 12px"></select>
+						</div>
+		
+					</div>
+					
+					<div class="levelCls">
+						<div class=" " >
+							<h5 class="text-align1"> Cadre Committee </h5>
+								<select class="levelCls" id="CadreCommitteeLevelsId" name="cadreRegistrationVO.previousRollesList[0].cadreCommitteeLevelId"  style="margin-left: 12px"></select>
+						</div>
+					</div>
+					
+					<div class="levelCls">
+						<div class=" " >
+							<h5 class="text-align1">Cadre Role </h5>
+								<select class="levelCls" id="CadreRolesId" name="cadreRegistrationVO.previousRollesList[0].cadreRoleId" style="margin-left: 12px"></select>
+						</div>
+		
+					</div>
+		
+					<div class="levelCls">
+						<div class=" " >
+							<h5 class="text-align1">From Date</h5>
+								<div class="input-prepend text-align2 ">				
+									<input type="text" class="levelDtCls form-control span2 border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList[0].fromDateStr" placeholder="From Date"  readOnly="true"></input></span>
+								</div>
+						</div>
+					</div>
+					<div class="levelCls">
+						<div class=" " >
+							<h5 class="text-align1">To Date</h5>
+								<div class="input-prepend  ">	
+									<input type="text" class="levelDtCls form-control span2  border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList[0].toDateStr" placeholder="To Date"  readOnly="true"></input></span>
+								</div>
+						</div>
+					</div>
+					<div style="width:60px;float:left;margin-top:20px;">
+						<div class=" " >
+								<div class="input-prepend text-align2 ">	
+								<a class="icon-plus-sign" style="float:left;margin-top:30px;" onClick="createNewForm();" title="Add More Details"></a>
+							</div>
+						</div>
+					</div>
 			</div>
 	</div>
 	</div>
