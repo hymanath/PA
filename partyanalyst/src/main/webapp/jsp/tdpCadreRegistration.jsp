@@ -490,13 +490,15 @@
 					str+="<option value = '0'> Select </option>";
 					for(var j in results[i].selectOptionsList){
 						str+="<option value="+results[i].selectOptionsList[j].id+">"+results[i].selectOptionsList[j].name+"</option>";
+						
+						var cadreCmmtObj = {
+								id		:	results[i].selectOptionsList[j].id,
+								name	:	results[i].selectOptionsList[j].name								
+							}
+							
+						cadreCmmittArr.push(cadreCmmtObj);
 					}
-					var cadreCmmtObj = {
-										id		:	results[i].selectOptionsList[j].id,
-										name	:	results[i].selectOptionsList[j].name								
-									}
-									
-					cadreCmmittArr.push(cadreCmmtObj);
+					
 				$("#CadreCommitteeId").html(str);
 			}
 			if(results[i].name=="CadreCommitteeLevelsList"){
@@ -504,13 +506,15 @@
 					str+="<option value = '0'> Select </option>";
 					for(var j in results[i].selectOptionsList){
 						str+="<option value="+results[i].selectOptionsList[j].id+">"+results[i].selectOptionsList[j].name+"</option>";
+						
+						var cadreCmmtObj = {
+								id		:	results[i].selectOptionsList[j].id,
+								name	:	results[i].selectOptionsList[j].name								
+							}
+							
+						cadreCmmittLvlArr.push(cadreCmmtObj);
 					}
-					var cadreCmmtObj = {
-										id		:	results[i].selectOptionsList[j].id,
-										name	:	results[i].selectOptionsList[j].name								
-									}
-									
-					cadreCmmittLvlArr.push(cadreCmmtObj);
+					
 				$("#CadreCommitteeLevelsId").html(str);
 			}
 			if(results[i].name=="CadreRolesList"){
@@ -518,13 +522,15 @@
 					str+="<option value = '0'> Select </option>";
 					for(var j in results[i].selectOptionsList){
 						str+="<option value="+results[i].selectOptionsList[j].id+">"+results[i].selectOptionsList[j].name+"</option>";
+						
+						var cadreCmmtObj = {
+								id		:	results[i].selectOptionsList[j].id,
+								name	:	results[i].selectOptionsList[j].name								
+							}
+							
+						cadreRolesArr.push(cadreCmmtObj);
 					}
-					var cadreCmmtObj = {
-										id		:	results[i].selectOptionsList[j].id,
-										name	:	results[i].selectOptionsList[j].name								
-									}
-									
-					cadreRolesArr.push(cadreCmmtObj);
+					
 				$("#CadreRolesId").html(str);
 			}
 			
