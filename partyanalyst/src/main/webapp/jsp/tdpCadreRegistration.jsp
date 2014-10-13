@@ -676,6 +676,9 @@
 	
 	function getConstiteuncyListForElection(eletionId,constiListId)
 	{
+			$('#'+constiListId+'').find('option').remove();
+			$('#'+constiListId+'').append('<option value="0"> Select Constituency </option>');
+			
 			var jsObj = 
 			   {			
 				  electionId : eletionId,
@@ -687,8 +690,7 @@
 					data : {task:JSON.stringify(jsObj)} ,
 				}).done(function(result){
 
-					$('#'+constiListId+'').find('option').remove();
-					$('#'+constiListId+'').append('<option value="0"> Select Constituency </option>');
+					
 					if(result != null)
 					{
 						for(var i in result)
@@ -699,21 +701,32 @@
 				});
 	}
 	
-	function getCandidateDetailsForElection(candidateId,electionId)
+	function getCandidateDetailsForElection(constituencyId,candidateId,electionId,electionTypeId)
 	{
 		var electionValue = $('#'+electionId+'').val();
+		var electionTypeId = $('#'+electionTypeId+'').val();
+		$('#'+candidateId+'').find('option').remove();
+		$('#'+candidateId+'').append('<option value="0"> Select Candidate </option>');
+		
 			var jsObj = 
-			   {			
+			   {	
+				  electionTypeId : electionTypeId,
 				  electionId : electionValue,
-				  candidateId : candidateId,
-				  task          : "getCandidateDetailsForElection"             
+				  constituencyId : constituencyId,
+				  task         : "getCandidateDetailsForElection"             
 			   }				   
 			   $.ajax({
 					type : "POST",
 					url : "getCandidateDetailsForElectionAction.action",
 					data : {task:JSON.stringify(jsObj)} ,
 				}).done(function(result){
-					console.log(result);
+					if(result != null)
+					{
+						for(var i in result)
+						{
+							$('#'+candidateId+'').append('<option value="'+result[i].id+'"> '+result[i].name+' </option>');
+						}
+					}		
 					
 				});
 	}
@@ -1233,7 +1246,7 @@
 							<h5 class="text-align1">Election Type</h5>
 						</c:if>
 
-							<select  style="margin-left: 12px" onChange="getElectionYears(this.value,'electionYearId${indexValue.index}')">
+							<select  style="margin-left: 12px" onChange="getElectionYears(this.value,'electionYearId${indexValue.index}')" id="electionsTypeID${indexValue.index}">
 								<option value="0"> Select Election Type</option>
 								<c:forEach var="educationList" items="${eletionTypesList}" >															
 									<c:if test="${educationList.id == role.id }">																
@@ -1252,7 +1265,7 @@
 						<c:if test="${indexValue.index == 0}">	
 							<h5 class="text-align1">Year</h5>
 						</c:if>							  		
-							 <select class="" name="cadreRegistrationVO.previousParicaptedElectionsList[${indexValue.index}].electionTypeId" id="electionYearId${indexValue.index}" >
+							 <select class="" name="cadreRegistrationVO.previousParicaptedElectionsList[${indexValue.index}].electionTypeId" id="electionYearId${indexValue.index}" onchange="getConstiteuncyListForElection(this.value,'constituencyList${indexValue.index}')">
 								<option value="0"> Select Election </option>
 								<c:forEach var="educationList" items="${role.genericVOList}" >															
 									<c:if test="${educationList.id == role.count }">																
@@ -1271,9 +1284,10 @@
 							<h5 class="text-align1">Constituency</h5>
 						</c:if>
 
-							<select   id="constituencyList${indexValue.index}" name="cadreRegistrationVO.previousParicaptedElectionsList[${indexValue.index}].constituencyId" style="margin-left: 12px">
+							<select   id="constituencyList${indexValue.index}" name="cadreRegistrationVO.previousParicaptedElectionsList[${indexValue.index}].constituencyId" style="margin-left: 12px" onchange="getCandidateDetailsForElection(this.value,'candidatesList${indexValue.index}','electionYearId${indexValue.index}',
+							'electionsTypeID${indexValue.index}');">
 								<option value="0"> Select Constituency</option>
-								<c:forEach var="educationList" items="${constituencyesList}" >															
+								<c:forEach var="educationList" items="${voterInfoVOList[0].previousParticipationInfoList[indexValue.index].basicVO.hamletCasteInfo}" >															
 									<c:if test="${educationList.id == role.rank }">																
 										<option value="${educationList.id}" selected="selected">${educationList.name}</option>
 									</c:if>	
@@ -1284,7 +1298,23 @@
 							</select>
 							
 						</div>
-					</div>					
+					</div>	
+
+					<div class="span3">
+						<div class=" " >
+						<c:if test="${indexValue.index == 0}">	
+							<h5 class="text-align1">Candidate </h5>
+						</c:if>
+
+							<select   id="candidatesList${indexValue.index}" name="cadreRegistrationVO.previousParicaptedElectionsList[${indexValue.index}].constituencyId" style="margin-left: 12px" onchange="getCandidateDetailsById('electionYearId${indexValue.index},this.value');">
+								<option value="0"> Select Candidate</option>
+								<c:forEach var="educationList" items="${voterInfoVOList[0].previousParticipationInfoList[indexValue.index].basicVO.hamletVoterInfo}" ><option value="${educationList.id}">${educationList.name}</option>
+								</c:forEach>
+							</select>
+							
+						</div>
+					</div>		
+					
 				</div>				
 					</c:forEach>
 					<a class="icon-plus-sign" style="float:right;margin-right:206px;;margin-top:-30px;" onClick="createNewFormForElections();" title="Add More Details"></a>
@@ -1295,24 +1325,39 @@
 					<div class="span3">
 						<div class=" " >
 							<h5 class="text-align1">Election Type</h5>
-							<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="electionTypeId" list="eletionTypesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Election Type" style="width:220px;margin-left: 12px"   onChange="getElectionYears(this.value,'electionYearId')" value="%{role.id}"/>
+							<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="electionTypeId" list="eletionTypesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Election Type" style="width:220px;margin-left: 12px"   onChange="getElectionYears(this.value,'electionYearId0')" value="%{role.id}"/>
 						</div>
 					</div>
 					<div class="span3">
 						<div class=" " >
 							<h5 class="text-align1">Year</h5>
-							<select class="" name="cadreRegistrationVO.previousParicaptedElectionsList[0].electionTypeId" id="electionYearId">							
+							<select class="" name="cadreRegistrationVO.previousParicaptedElectionsList[0].electionTypeId" id="electionYearId0" onchange="getConstiteuncyListForElection(this.value,'constituencyList0')">							
 							  </select>
 						</div>
 					</div>
 					<div class="span3">
 						<div class=" " >
 							<h5 class="text-align1">Constituency</h5>
-
-							 <s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level"  list="constituencyesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" style="width:220px;" name="cadreRegistrationVO.previousParicaptedElectionsList[0].constituencyId"/>
-
+							
+							<select id="constituencyList0" name="cadreRegistrationVO.previousParicaptedElectionsList[0].constituencyId" style="margin-left: 12px" >		
+							<option value="0"> Select Constituency</option>
+							 </select>
+							
 						</div>
 					</div>
+					
+					<div class="span3">
+						<div class=" " >
+							<h5 class="text-align1">Candidate </h5>
+							<select   id="candidatesList0" name="cadreRegistrationVO.previousParicaptedElectionsList[0].constituencyId" style="margin-left: 12px" onchange="getCandidateDetailsById('electionYearId${indexValue.index},this.value');">
+								<option value="0"> Select Candidate</option>
+								<c:forEach var="educationList" items="${voterInfoVOList[0].previousParticipationInfoList[indexValue.index].basicVO.hamletVoterInfo}" ><option value="${educationList.id}">${educationList.name}</option>
+								</c:forEach>
+							</select>
+							
+						</div>
+					</div>	
+					
 					<div class="span2">
 						<div class="" >
 									<a class="icon-plus-sign" style="float:left;margin-top:30px;" onClick="createNewFormForElections();" title="Add More Details"></a>
@@ -1484,5 +1529,25 @@ $("#cardNumber").keyup(function(){
 	}
 	
 });
+
+function getCandidateDetailsById(electionId,nominationId )
+{
+var electionsId = $('#'+electionId+'').val();
+	
+	var jsObj = 
+	   {
+			electionId : electionsId,
+			nominationId : nominationId,
+			task:"getCandidateDetailsById"             
+	   }				   
+	   $.ajax({
+			type : "POST",
+			url : "getCandidateInfoByNominationAction.action",
+			data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+		console.log(result);
+		});
+}
+
 </script>
 </html>
