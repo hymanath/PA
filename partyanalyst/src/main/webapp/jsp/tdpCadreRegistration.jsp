@@ -73,6 +73,10 @@
 	.header-bg{background:#3598DB url('./images/cadre_images/2014-Header-BG.png') repeat-x; height:179px;}
 	.color-white{color:#f9f9f9;}
 	
+	.levelCls{width:160px;float:left;margin:5px;}
+	.levelClsDt{width:140px;float:left;}
+	select.levelCls{border-radius:4px;}
+	
 	</style>
 	
 		
@@ -218,8 +222,6 @@
 	}
 	function createNewForm(){
 	
-		cadreCmmittArr,cadreCmmittLvlArr,cadreRolesArr
-		
 		if(participationCount >= 1 &&  isRolesSet)
 		{
 			rolesSize = participationCount;
@@ -227,11 +229,11 @@
 		}
 		
 		var str = '';
-		str += '<div class="row rolesList'+rolesSize+'" style="margin-top:-15px;">';
-		str += '<div class="span3">';
+		str += '<div class="rolesList'+rolesSize+'" style="margin-top:0px;float:left;margin-left:-5px;">';
+		str += '<div class="levelCls">';
 		str += '<div class=" text-align1 " >';
 		//str += '<h5 class="text-align1">Select Level </h5>';
-		str += '<select class="form-control border-radius-0" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].cadreCommitteeLevelId">';
+		str += '<select class="form-control border-radius-0 levelCls" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].cadreCommitteeLevelId">';
 		str += '<option value = "0"> Select </option>';
 			if(cadreCmmittLvlArr != null && cadreCmmittLvlArr.length>0)
 			{
@@ -246,7 +248,7 @@
 		str += '<div class="levelCls">';
 		str += '<div class=" text-align1" >';
 		//str += '<h5 class="text-align1">Party Designation </h5>';
-		str += '<select class="form-control border-radius-0 " name="cadreRegistrationVO.previousRollesList['+rolesSize+'].cadreCommitteeId">';
+		str += '<select class="form-control border-radius-0 levelCls" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].cadreCommitteeId">';
 		str += '<option value = "0"> Select </option>';
 			if(cadreCmmittArr != null && cadreCmmittArr.length>0)
 			{
@@ -261,7 +263,7 @@
 		str += '<div class="levelCls">';
 		str += '<div class=" text-align1" >';
 		//str += '<h5 class="text-align1">Party Designation </h5>';
-		str += '<select class="form-control border-radius-0 " name="cadreRegistrationVO.previousRollesList['+rolesSize+'].cadreRoleId">';
+		str += '<select class="form-control border-radius-0 levelCls" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].cadreRoleId">';
 		str += '<option value = "0"> Select </option>';
 			if(cadreRolesArr != null && cadreRolesArr.length>0)
 			{
@@ -277,7 +279,7 @@
 		str += '<div class=" " >';
 		//str += '<h5 class="text-align1">From Date</h5>';
 		str += '<div class="input-prepend text-align2 ">';
-		str += '<input type="text" class="levelClsDt form-control span2 border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].fromDateStr"  readOnly="true"></input></span>';
+		str += '<input type="text" style="width:120px;float:left;margin-left:6px;margin-top:5px;" class="form-control span2 border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].fromDateStr"  readOnly="true"></input></span>';
 		str += '</div>';
 		str += '</div>';
 		str += '</div>';
@@ -285,17 +287,17 @@
 		str += '<div class=" " >';
 		//str += '<h5 class="text-align1">To Date</h5>';
 		str += '<div class="input-prepend  ">';
-		str += '<input type="text" class="levelClsDt form-control span2  border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].toDateStr"  readOnly="true"></input></span>';
+		str += '<input type="text" style="width:120px;float:left;margin-left:6px;margin-top:5px;" class="form-control span2  border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].toDateStr"  readOnly="true"></input></span>';
 		str += '</div>';
 		str += '</div>';
 		str += '</div>';
 		/*str += '<div class="span2">';
 		str += '<a onClick="deleteRollesForm(\'rolesList'+rolesSize+'\')" class="btn btn-success"></a>';
 		str += '<div>';*/
-		str += '<div class="width:60px;float:left;margin-top:20px;">';
+		str += '<div class="" style="width:60px;float:left;margin-top:-10px;">';
 		str += '<div class=" " >';
 		str += '<div class="input-prepend text-align2 ">';	
-		str += '<a class="icon-minus-sign" style="float:right" onClick="deleteRollesForm(\'rolesList'+rolesSize+'\')" title="Remove Details"></a>';
+		str += '<a class="icon-minus-sign" style="float:left;margin-top:30px;" onClick="deleteRollesForm(\'rolesList'+rolesSize+'\')" title="Remove Details"></a>';
 		str += '</div>';
 		str += '</div>';
 		str += '</div>';
@@ -1340,7 +1342,7 @@
 						<div class=" " >
 							<h5 class="text-align1">From Date</h5>
 								<div class="input-prepend text-align2 ">				
-									<input type="text" class="levelDtCls form-control span2 border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList[0].fromDateStr" placeholder="From Date"  readOnly="true"></input></span>
+									<input type="text" class="levelDtCls form-control span2 border-radius-0 border-right-0 datePickerCls" style="margin-top:5px;" name="cadreRegistrationVO.previousRollesList[0].fromDateStr" placeholder="From Date"  readOnly="true"></input></span>
 								</div>
 						</div>
 					</div>
@@ -1348,7 +1350,7 @@
 						<div class=" " >
 							<h5 class="text-align1">To Date</h5>
 								<div class="input-prepend  ">	
-									<input type="text" class="levelDtCls form-control span2  border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList[0].toDateStr" placeholder="To Date"  readOnly="true"></input></span>
+									<input type="text" class="levelDtCls form-control span2  border-radius-0 border-right-0 datePickerCls" style="margin-top:5px;" name="cadreRegistrationVO.previousRollesList[0].toDateStr" placeholder="To Date"  readOnly="true"></input></span>
 								</div>
 						</div>
 					</div>
