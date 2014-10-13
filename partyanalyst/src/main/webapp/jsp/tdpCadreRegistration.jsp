@@ -202,7 +202,7 @@
 		});
 		
 		
-		prepopulateOptions();
+		//prepopulateOptions();
 		//prepopulateElctionOptions();
 		/*$('input').iCheck({
 			checkboxClass: 'icheckbox_square-blue',
@@ -1205,24 +1205,124 @@
 			</div>
 		</div>
 		<div class="container m_top10">
-			
 			<div class="span12 show-grid" style="position: relative;" id="rollesDiv">	
-				
+			<s:if test="%{voterInfoVOList[0].cadreRolesList != null && voterInfoVOList[0].cadreRolesList.size() > 0}">
+					<c:forEach var="role" items="${voterInfoVOList[0].cadreRolesList}" varStatus="indexValue">
+					
 			
+				
 			
 					<div class="levelCls">
 						<div>
+						<c:if test="${indexValue.index == 0}">	
 							<h5 class="text-align1"> Committee Level </h5>
-							<select class="levelCls" id="CadreCommitteeLevelsId" name="cadreRegistrationVO.previousRollesList[0].cadreCommitteeLevelId"  style="margin-left: 12px"></select>
-							
+						</c:if>
+							<select class="levelCls" id="CadreCommitteeLevelsId" name="cadreRegistrationVO.previousRollesList[0].cadreCommitteeLevelId"  style="margin-left: 12px">			<option value="0"> Select Level </option>				
+							<c:forEach var="educationList" items="${cadreRolesVOList[1].selectOptionsList}" >		
+									<c:if test="${educationList.id == role.id }">																
+										<option value="${educationList.id}" selected="selected">${educationList.name}</option>
+									</c:if>	
+									<c:if test="${educationList.id != role.id }">																
+										<option value="${educationList.id}">${educationList.name}</option>
+									</c:if>	
+							</c:forEach>															
+									
+							</select>
 						</div>
 		
 					</div>
 					
 					<div class="levelCls">
 						<div class=" " >
+						<c:if test="${indexValue.index == 0}">	
 							<h5 class="text-align1"> Cadre Committee </h5>
-							<select class="levelCls" id="CadreRolesId" name="cadreRegistrationVO.previousRollesList[0].cadreCommitteeId" style="margin-left: 12px"></select>
+						</c:if>
+							<select class="levelCls" id="CadreRolesId" name="cadreRegistrationVO.previousRollesList[0].cadreCommitteeId" style="margin-left: 12px">
+							<option value="0"> Select Committee </option>	
+							<c:forEach var="educationList" items="${cadreRolesVOList[0].selectOptionsList}" >		
+										<c:if test="${educationList.id == role.count }">																
+										<option value="${educationList.id}" selected="selected">${educationList.name}</option>
+									</c:if>	
+									<c:if test="${educationList.id != role.count }">																
+										<option value="${educationList.id}">${educationList.name}</option>
+									</c:if>	
+							</c:forEach>
+							</select>
+									
+						</div>
+					</div>
+					
+					<div class="levelCls">
+						<div class=" " >
+						<c:if test="${indexValue.index == 0}">	
+							<h5 class="text-align1">Cadre Role </h5>
+						</c:if>
+								<select class="levelCls" id="CadreCommitteeId" name="cadreRegistrationVO.previousRollesList[0].cadreRoleId" style="margin-left: 12px">
+								<option value="0"> Select Role </option>	
+								<c:forEach var="educationList" items="${cadreRolesVOList[2].selectOptionsList}" >		
+										<c:if test="${educationList.id == role.rank }">																
+										<option value="${educationList.id}" selected="selected">${educationList.name}</option>
+									</c:if>	
+									<c:if test="${educationList.id != role.rank }">																
+										<option value="${educationList.id}">${educationList.name}</option>
+									</c:if>	
+							</c:forEach>
+								</select>
+						</div>
+		
+					</div>
+		
+					<div class="levelCls">
+						<div class=" " >
+						<c:if test="${indexValue.index == 0}">	
+							<h5 class="text-align1">From Date</h5>
+						</c:if>
+								<div class="input-prepend text-align2 ">				
+									<input type="text" class="levelDtCls form-control span2 border-radius-0 border-right-0 datePickerCls" style="margin-top:5px;" name="cadreRegistrationVO.previousRollesList[0].fromDateStr" placeholder="From Date"  readOnly="true" value="${role.startTime}"></input></span>
+								</div>
+						</div>
+					</div>
+					<div class="levelCls">
+						<div class=" " >
+						<c:if test="${indexValue.index == 0}">	
+							<h5 class="text-align1">To Date</h5>
+						</c:if>
+								<div class="input-prepend  ">	
+									<input type="text" class="levelDtCls form-control span2  border-radius-0 border-right-0 datePickerCls" style="margin-top:5px;" name="cadreRegistrationVO.previousRollesList[0].toDateStr" placeholder="To Date"  readOnly="true" value="${role.endTime}"></input></span>
+								</div>
+						</div>
+					</div>
+					
+		
+			</c:forEach>
+			<div>
+				<a class="icon-plus-sign" style="float:left;margin-top:30px;" onClick="createNewForm();" title="Add More Details"></a>
+			</div>
+				
+			</s:if>
+			<s:else>
+					<div class="levelCls">
+						<div>
+							<h5 class="text-align1"> Committee Level </h5>
+							<select class="levelCls" id="CadreCommitteeLevelsId" name="cadreRegistrationVO.previousRollesList[0].cadreCommitteeLevelId"  style="margin-left: 12px">			<option value="0"> Select Level </option>				
+							<c:forEach var="educationList" items="${cadreRolesVOList[1].selectOptionsList}" >																	
+										<option value="${educationList.id}">${educationList.name}</option>
+							</c:forEach>															
+									
+							</select>
+						</div>
+		
+					</div>
+					
+					<div class="levelCls">
+						<div class=" " >	
+							<h5 class="text-align1"> Cadre Committee </h5>
+							<select class="levelCls" id="CadreRolesId" name="cadreRegistrationVO.previousRollesList[0].cadreCommitteeId" style="margin-left: 12px">
+							<option value="0"> Select Committee </option>	
+							<c:forEach var="educationList" items="${cadreRolesVOList[0].selectOptionsList}" >
+										<option value="${educationList.id}">${educationList.name}</option>
+							</c:forEach>
+							</select>
 									
 						</div>
 					</div>
@@ -1230,7 +1330,12 @@
 					<div class="levelCls">
 						<div class=" " >
 							<h5 class="text-align1">Cadre Role </h5>
-								<select class="levelCls" id="CadreCommitteeId" name="cadreRegistrationVO.previousRollesList[0].cadreRoleId" style="margin-left: 12px"></select>
+								<select class="levelCls" id="CadreCommitteeId" name="cadreRegistrationVO.previousRollesList[0].cadreRoleId" style="margin-left: 12px">
+								<option value="0"> Select Role </option>	
+								<c:forEach var="educationList" items="${cadreRolesVOList[2].selectOptionsList}" >	
+									<option value="${educationList.id}">${educationList.name}</option>
+								</c:forEach>
+								</select>
 						</div>
 		
 					</div>
@@ -1239,7 +1344,7 @@
 						<div class=" " >
 							<h5 class="text-align1">From Date</h5>
 								<div class="input-prepend text-align2 ">				
-									<input type="text" class="levelDtCls form-control span2 border-radius-0 border-right-0 datePickerCls" style="margin-top:5px;" name="cadreRegistrationVO.previousRollesList[0].fromDateStr" placeholder="From Date"  readOnly="true"></input></span>
+									<input type="text" class="levelDtCls form-control span2 border-radius-0 border-right-0 datePickerCls" style="margin-top:5px;" name="cadreRegistrationVO.previousRollesList[0].fromDateStr" placeholder="From Date"  readOnly="true" value=""></input></span>
 								</div>
 						</div>
 					</div>
@@ -1247,17 +1352,12 @@
 						<div class=" " >
 							<h5 class="text-align1">To Date</h5>
 								<div class="input-prepend  ">	
-									<input type="text" class="levelDtCls form-control span2  border-radius-0 border-right-0 datePickerCls" style="margin-top:5px;" name="cadreRegistrationVO.previousRollesList[0].toDateStr" placeholder="To Date"  readOnly="true"></input></span>
+									<input type="text" class="levelDtCls form-control span2  border-radius-0 border-right-0 datePickerCls" style="margin-top:5px;" name="cadreRegistrationVO.previousRollesList[0].toDateStr" placeholder="To Date"  readOnly="true" value=""></input></span>
 								</div>
 						</div>
-					</div>
-					<div style="width:60px;float:left;margin-top:20px;">
-						<div class=" " >
-								<div class="input-prepend text-align2 ">	
-								<a class="icon-plus-sign" style="float:left;margin-top:30px;" onClick="createNewForm();" title="Add More Details"></a>
-							</div>
-						</div>
-					</div>
+					</div>					
+
+			</s:else>
 			</div>
 	</div>
 	</div>
