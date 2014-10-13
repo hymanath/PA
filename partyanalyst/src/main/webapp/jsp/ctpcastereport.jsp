@@ -73,9 +73,7 @@ input[type="text"]{
 	}
 	
 .nav-tabs > .active > a, .nav-tabs > .active > a:hover {
-  
     background-color: #81BEF7 !important;
-   
 }	
 </style>
 
@@ -83,7 +81,6 @@ input[type="text"]{
 var presentPublication = 11;
 
 function getDistrictsInAState(){
-
 	var jsObj=
 			{
 				id:1,
@@ -96,7 +93,6 @@ function getDistrictsInAState(){
 }
 
 function getConstituenciesInDistrict(){
-
 	var jsObj=
 			{
 				id:$('#districtSelectId').val(),
@@ -340,10 +336,12 @@ function clearFieldsData(){
 		removeSelectElements(mandalId);
 		removeSelectElements(panchayatFieldId);
 		$('#constituencyList').val(0);
+		
 	}
 	function clearErrDiv(){
 	$("#errorMsgAlert").html("");
 	$("#errorMsgAlert1").html("");
+	
 	}
 	function clearData()
 	{
@@ -364,7 +362,8 @@ function clearFieldsData(){
 		$("#fromSno").val('');
 		$("#toSno").val('');
 	$('#startWith').attr('checked', 'checked');  
-	$('#allGenderId').attr('checked', 'checked');  
+	$('#allGenderId').attr('checked', 'checked'); 
+	$("#voterCountData").html('');
 }
 </script>
 </head>
@@ -381,6 +380,7 @@ function clearFieldsData(){
 
 	 <div class="tab-content widget" style="margin-top:-20px;">
 	 <div id="statusDiv"  class="tab-pane active">
+	 <img src="./images/Loading-data.gif" alt="Processing Image" id="voterDetailsImg" style="width: 65px;" class="offset4"/>
 	    <div class="titleHeading" >CONSTITUENCY WISE OVERVIEW
 	 </div>
    <div id="statusContentDiv"></div>
@@ -486,8 +486,10 @@ function clearFieldsData(){
 
 <div id="errorMessageDiv" style="display:none;font-weight:bold;color:red" align="center"></div>
 	<div id="voterDetailsDiv"></div>
+	
 	</div>
 	<div id="voterCountDetailsDiv" class="tab-pane" >
+
 	 <div class="titleHeading" >VOTER COUNT
 	 </div>
 	
@@ -966,6 +968,7 @@ if(!flag){
 	function getVotersCountDetails()
 	{
 		$("#statusContentDiv").html('');
+		$("#voterDetailsImg").show();
 		var jObj ={
 			task : "getVoterCount"
 		}
@@ -975,6 +978,7 @@ if(!flag){
 	          dataType: 'json',
 	          data: {task:JSON.stringify(jObj)},
 			  success: function(result){ 
+				  $("#voterDetailsImg").hide();
 			  buildVoterCount(result.votersList);
 				  },
 	          error:function() { 
