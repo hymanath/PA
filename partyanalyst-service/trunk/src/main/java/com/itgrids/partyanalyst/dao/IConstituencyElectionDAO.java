@@ -196,4 +196,6 @@ public interface IConstituencyElectionDAO extends GenericDao<ConstituencyElectio
 	
 	public List<Object[]> getParliamentConstiListForElectionYear(Long electionScopeId,String electionYear,Long stateId);
 	
+	public List<Object[]> getConstituenciesByElectionId(Long electionId);
+	
 }
