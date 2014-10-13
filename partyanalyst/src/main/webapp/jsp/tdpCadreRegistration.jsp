@@ -1042,7 +1042,7 @@
 		<div class="container m_top10">
 			<div class="span12 show-grid" style="position: relative;" id="accDiv">
 				<div class="span2">
-					<h5 class="text-align1"> Aadhar Card Number </h5>
+					<h5 class="text-align1"> Aadhar Card  </h5>
 					<input type="text" class="" style="width: 138px;" placeholder="Aadheer Number"  name="cadreRegistrationVO.aadheerNo" value="${voterInfoVOList[0].aadharNo}"></input> 
 				</div>
 				
