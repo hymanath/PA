@@ -220,6 +220,10 @@
 	function enableSearchByName(){
 		$('#preEnrollNoValue').removeAttr('readOnly');
 	}
+	function enableLookupName(){
+		$('#cardNumber').removeAttr('readOnly');
+	}
+	
 	function createNewForm(){
 	
 		if(participationCount >= 1 &&  isRolesSet)
@@ -921,16 +925,18 @@
 								<div class="m_top10">
 										<div class="row-fluid">
 										
-											<div class="span6">
+											<div style="width:150px;float:left;">
 											<h5 class="text-align1">VOTER ID</h5>
-												<input type="text" class="form-control border-radius-0 text-align2 " placeholder="Voter Id" name="cadreRegistrationVO.voterCardNumber"   id="cardNumber" value="${voterInfoVOList[0].voterCardNo}" readonly></input>
+												<input type="text" class="form-control border-radius-0 text-align2 " placeholder="Voter Id" name="cadreRegistrationVO.voterCardNumber"   id="cardNumber" value="${voterInfoVOList[0].voterCardNo}" readonly style="width:135px;"></input>
 												
 												<!--<input type="hidden" id="cardNo" class="form-control border-radius-0 input-block-level" placeholder="Text input" value="${voterInfoVOList[0].voterCardNo}" style="width:260px;" ></input>-->
 											</div>
-											
-											<div class="span6">
+											<div style="width: 120px; float: left; margin-top: 20px;">
+												<a id="searchByNameId" class="btn btn-success" href="javascript:{enableLookupName();}" style="margin-top: 20px; width: 120px; margin-left: 16px;">LookUp By Name</a>
+											</div>
+											<div style="width: 120px; float: left; margin-left: 49px;">
 											<h5 class="text-align1">H NO</h5>
-												<input type="text" class="form-control border-radius-0 " placeholder="House Number" name="cadreRegistrationVO.houseNo"   value="${voterInfoVOList[0].houseNo}"></input>
+												<input type="text" class="form-control border-radius-0 " placeholder="House Number" name="cadreRegistrationVO.houseNo" style="width: 120px; float: left; margin-left: 0px;"  value="${voterInfoVOList[0].houseNo}"></input>
 											</div>
 											<div class="span6"> <input type="checkbox" id="relativeTypeChecked" name="relativeTypeChecked" onclick="showHideFamRelatinoSts();"/> Is Family Member</div>
 											<div  class="span6" id="showHideFammemberType" style="display:none; margin-left: 232px;margin-top: -33px;"><select name="relativeTypeChecked" id="relativeTypeId"> </select></div>
@@ -1611,8 +1617,8 @@ $("#cardNumber").keyup(function(){
 	if(cardNumberVal.trim().length>2){
 		var constituencyId = '${constiteucnyId}';
 		var panchayatId = '${houseNo}'; 
-		var boothId = '${boothId}'
-		
+		var boothId = '${boothId}';
+		var isPresentCadre = '${panchayatId}';
 		searchedVoters = [];
 		searchedVotersInfoArr = [];
 		
@@ -1625,6 +1631,7 @@ $("#cardNumber").keyup(function(){
 					  panchayatId : panchayatId,
 					  boothId : boothId ,
 					  locationId : 0,
+					  isPresentCadre:isPresentCadre,
 					  task:"searchCandidatesDtailsBySearchCriteria"             
 				   }
 		
