@@ -231,7 +231,7 @@
 			rolesSize = participationCount;
 			isRolesSet = false;
 		}
-		
+		console.log(cadreCmmittLvlArr);
 		var str = '';
 		str += '<div class="rolesList'+rolesSize+'" style="margin-top:0px;float:left;margin-left:-5px;">';
 		str += '<div class="levelCls">';
@@ -1387,7 +1387,7 @@
 					<div class="span3">
 						<div class=" " >
 							<h5 class="text-align1">Candidate </h5>
-							<select   id="candidatesList0"  style="margin-left: 12px" onchange="getCandidateDetailsById('constituencyList0','electionYearId0',this.value);">
+							<select   id="candidatesList0"  style="margin-left: 12px" onchange="getCandidateDetailsById('constituencyList0','electionYearId0',this.value); " name="cadreRegistrationVO.previousParicaptedElectionsList[0].candidateId">
 								<option value="0"> Select Candidate</option>
 								<c:forEach var="educationList" items="${voterInfoVOList[0].previousParticipationInfoList[indexValue.index].basicVO.hamletVoterInfo}" ><option value="${educationList.id}">${educationList.name}</option>
 								</c:forEach>
@@ -1601,14 +1601,14 @@ function buildCandidateDetails(result)
 		{
 			str+='<tr class="removeId'+i+'" >';
 				str += '<input type="hidden" value=""></input>';
-				str += '<input type="hidden" value="'+result[i].orderId+'" name="cadreRegistrationVO.previousParicaptedElectionsList['+prvEleCount+'].electionTypeId"></input>';
-				str += '<input type="hidden" value="'+result[i].mainAccountId+'" name="cadreRegistrationVO.previousParicaptedElectionsList['+prvEleCount+'].constituencyId"></input>';
-				str += '<input type="hidden" value="'+result[i].orderId+'" name="cadreRegistrationVO.previousParicaptedElectionsList['+prvEleCount+'].candidateId"></input>';
+				str += '<input type="hidden" value='+result[i].orderId+' name="cadreRegistrationVO.previousParicaptedElectionsList['+prvEleCount+'].electionTypeId"></input>';
+				str += '<input type="hidden" value='+result[i].mainAccountId+' name="cadreRegistrationVO.previousParicaptedElectionsList['+prvEleCount+'].constituencyId"></input>';
 				str +='<td>'+result[i].name+'</td>';
 				str +='<td>'+result[i].location+'</td>';
 				str +='<td>'+result[i].panchayatName+' ('+result[i].partno+')</td>';
 				str +='<td> <a class="icon-minus-sign" href="javascript:{deleteDetails(\'removeId'+i+'\')}"></a></td>';
 			str+='</tr>';
+			prvEleCount++;
 		}
 		
 		str+='</tbody>';

@@ -397,12 +397,14 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 					for (CadrePreviousRollesVO cadrePreviousRollesVO : rolesVOList) 
 					{
 						CadrePreviousRollesVO rolesVO = new CadrePreviousRollesVO();
-						rolesVO.setDesignationLevelId(1l);
-						rolesVO.setDesignationLevelValue(1l);
+
 						if(cadrePreviousRollesVO.getFromDateStr() != null && cadrePreviousRollesVO.getFromDateStr().trim().length() > 0)
 						rolesVO.setFromDate(convertToDateFormet(cadrePreviousRollesVO.getFromDateStr()));
 						if(cadrePreviousRollesVO.getToDateStr() != null && cadrePreviousRollesVO.getToDateStr().trim().length() > 0)
 						rolesVO.setToDate(convertToDateFormet(cadrePreviousRollesVO.getToDateStr()));
+						rolesVO.setCadreCommitteeId(cadrePreviousRollesVO.getCadreCommitteeId());
+						rolesVO.setCadreCommitteeLevelId(cadrePreviousRollesVO.getCadreCommitteeLevelId());
+						rolesVO.setCadreRoleId(cadrePreviousRollesVO.getCadreRoleId());
 						rolesList.add(rolesVO);
 					}
 					cadreRegistrationVO.setPreviousRollesList(rolesList);
@@ -890,7 +892,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		LOG.info("Entered into getConstiteuncyListForElection method in CadreRegistrationAction Action");
 		try {		
 			jobj = new JSONObject(getTask());
-			constituencyList = cadreRegistrationService.constituencyListForElection(jobj.getLong("electionId"));
+			constituencyList = cadreRegistrationService.constituencyListForElection(jobj.getLong("electionId"),jobj.getLong("constituencyId"));
 		}
 		catch(Exception e){
 			LOG.error("Exception raised in getConstiteuncyListForElection method in CadreRegistrationAction action", e);

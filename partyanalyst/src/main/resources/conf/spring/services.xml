@@ -2198,7 +2198,7 @@
 		<property name="cadreCommitteeDAO" ref="cadreCommitteeDAO" />
 		<property name="cadreCommitteeLevelDAO" ref="cadreCommitteeLevelDAO" />
 		<property name="cadreRolesDAO" ref="cadreRolesDAO" />		
-						
+		<property name="cadreCommitteeRoleDAO" ref="cadreCommitteeRoleDAO" />	
 		<property name="voterRelationDAO" ref="voterRelationDAO" />				
      </bean>
       
