@@ -55,11 +55,13 @@ public class CadreRegistrationVO implements Serializable{
 	
 	private String 			aadheerNo;
 	private String 			nomineeName;
+	private Long			nomineeAge;
+	private String			nomineeGender;
 	
-	private Long 			constituencyId;
-	private Long			panchayatId;
-	private Long            boothId;
-	private Long			muncipalityId;
+	private String 			constituencyId;
+	private String			panchayatId;
+	private String            boothId;
+	private String			muncipalityId;
 	
 	private Long			voterRelationId;
 	private String 			cadreType;
@@ -307,22 +309,22 @@ public class CadreRegistrationVO implements Serializable{
 	public void setAadheerNo(String aadheerNo) {
 		this.aadheerNo = aadheerNo;
 	}
-	public Long getConstituencyId() {
+	public String getConstituencyId() {
 		return constituencyId;
 	}
-	public void setConstituencyId(Long constituencyId) {
+	public void setConstituencyId(String constituencyId) {
 		this.constituencyId = constituencyId;
 	}
-	public Long getPanchayatId() {
+	public String getPanchayatId() {
 		return panchayatId;
 	}
-	public void setPanchayatId(Long panchayatId) {
+	public void setPanchayatId(String panchayatId) {
 		this.panchayatId = panchayatId;
 	}
-	public Long getBoothId() {
+	public String getBoothId() {
 		return boothId;
 	}
-	public void setBoothId(Long boothId) {
+	public void setBoothId(String boothId) {
 		this.boothId = boothId;
 	}
 	public String getNomineeName() {
@@ -331,10 +333,10 @@ public class CadreRegistrationVO implements Serializable{
 	public void setNomineeName(String nomineeName) {
 		this.nomineeName = nomineeName;
 	}
-	public Long getMuncipalityId() {
+	public String getMuncipalityId() {
 		return muncipalityId;
 	}
-	public void setMuncipalityId(Long muncipalityId) {
+	public void setMuncipalityId(String muncipalityId) {
 		this.muncipalityId = muncipalityId;
 	}
 	public Long getVoterRelationId() {
@@ -349,6 +351,19 @@ public class CadreRegistrationVO implements Serializable{
 	public void setCadreType(String cadreType) {
 		this.cadreType = cadreType;
 	}
+	public Long getNomineeAge() {
+		return nomineeAge;
+	}
+	public void setNomineeAge(Long nomineeAge) {
+		this.nomineeAge = nomineeAge;
+	}
+	public String getNomineeGender() {
+		return nomineeGender;
+	}
+	public void setNomineeGender(String nomineeGender) {
+		this.nomineeGender = nomineeGender;
+	}
+	
 	
 	
 	

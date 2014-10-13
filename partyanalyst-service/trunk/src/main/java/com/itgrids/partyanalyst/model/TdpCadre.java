@@ -82,6 +82,8 @@ public class TdpCadre {
 	
 	private String 						nomineeName;
 	private String						aadheerNo;
+	private Long						nomineeAge;
+	private String						nomineeGender;
 	
 	private Long 						voterRelationId;
 	private VoterRelation				voterRelation;
@@ -489,7 +491,26 @@ public class TdpCadre {
 	public void setNomineeName(String nomineeName) {
 		this.nomineeName = nomineeName;
 	}
-	@Column(name="aadheer_no")
+	
+	
+	@Column(name="nominee_age")
+	public Long getNomineeAge() {
+		return nomineeAge;
+	}
+	public void setNomineeAge(Long nomineeAge) {
+		this.nomineeAge = nomineeAge;
+	}
+	
+	@Column(name="nominee_gender")
+	public String getNomineeGender() {
+		return nomineeGender;
+	}
+	public void setNomineeGender(String nomineeGender) {
+		this.nomineeGender = nomineeGender;
+	}
+	
+	
+	@Column(name="aadhar_no")
 	public String getAadheerNo() {
 		return aadheerNo;
 	}
