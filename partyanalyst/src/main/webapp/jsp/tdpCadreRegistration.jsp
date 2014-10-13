@@ -1217,7 +1217,7 @@
 						<c:if test="${indexValue.index == 0}">	
 							<h5 class="text-align1"> Committee Level </h5>
 						</c:if>
-							<select class="levelCls" id="CadreCommitteeLevelsId" name="cadreRegistrationVO.previousRollesList[0].cadreCommitteeLevelId"  style="margin-left: 12px">			<option value="0"> Select Level </option>				
+							<select class="levelCls" id="CadreCommitteeLevelsId" name="cadreRegistrationVO.previousRollesList[0].cadreCommitteeLevelId"  style="margin-left: 12px">			
 							<c:forEach var="educationList" items="${cadreRolesVOList[1].selectOptionsList}" >		
 									<c:if test="${educationList.id == role.id }">																
 										<option value="${educationList.id}" selected="selected">${educationList.name}</option>
@@ -1238,7 +1238,6 @@
 							<h5 class="text-align1"> Cadre Committee </h5>
 						</c:if>
 							<select class="levelCls" id="CadreRolesId" name="cadreRegistrationVO.previousRollesList[0].cadreCommitteeId" style="margin-left: 12px">
-							<option value="0"> Select Committee </option>	
 							<c:forEach var="educationList" items="${cadreRolesVOList[0].selectOptionsList}" >		
 										<c:if test="${educationList.id == role.count }">																
 										<option value="${educationList.id}" selected="selected">${educationList.name}</option>
@@ -1258,7 +1257,6 @@
 							<h5 class="text-align1">Cadre Role </h5>
 						</c:if>
 								<select class="levelCls" id="CadreCommitteeId" name="cadreRegistrationVO.previousRollesList[0].cadreRoleId" style="margin-left: 12px">
-								<option value="0"> Select Role </option>	
 								<c:forEach var="educationList" items="${cadreRolesVOList[2].selectOptionsList}" >		
 										<c:if test="${educationList.id == role.rank }">																
 										<option value="${educationList.id}" selected="selected">${educationList.name}</option>
