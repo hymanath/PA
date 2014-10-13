@@ -134,6 +134,9 @@
 	
    	<script>
 	
+	var constituencyId = '${constiteucnyId}';
+	var panchayatId    = '${constiteucnyId}';
+	var boothId 	   = '${boothId}';
 	$(document).ready(function(){
 	    $('.datePickerCls').datepicker({
 		dateFormat: 'dd-mm-yy',
@@ -341,8 +344,7 @@
 		{
 			str+= '<div class="container m_top10" id="yourElement">';
 			str+= '<div class="span12  show-grid" style="position: relative;">';
-			str+= '<p class="text-align">Thank You For Your Registration</p>';
-			str+= '<h3 class="text-align">Exception raised while cadre registration</h3>';
+			str+= '<h3 class="text-align">Error raised while cadre registration</h3>';
 			str+= '</div>';
 			str+= '</div>';
 			str+= '<div class="container m_top10" id="yourElement">';
@@ -721,6 +723,12 @@
 				<div class="row-fluid">
 					<div class="span6   show-grid"  id="fadeInLeft">
 					<input type="hidden" class="form-control border-radius-0 text-align2" value="${voterInfoVOList[0].voterId}" > 
+					
+					<input type="hidden" class="form-control border-radius-0 text-align2" value="${constiteucnyId}" name="cadreRegistrationVO.constituencyId"> 
+					
+					<input type="hidden" class="form-control border-radius-0 text-align2" value="${panchayatId}" name="cadreRegistrationVO.panchayatId"> 
+					
+					<input type="hidden" class="form-control border-radius-0 text-align2" value = "${boothId}" name="cadreRegistrationVO.boothId" > 
 											<h5 class="text-align1"> CANDIDATE NAME </h5>
 											<input type="text" class="form-control border-radius-0 text-align2" placeholder="Candidate Name" name="cadreRegistrationVO.voterName"  value="${voterInfoVOList[0].name}"></input>
 									<div class="row-fluid">
@@ -780,7 +788,7 @@
 										<input type="hidden" value="${voterInfoVOList[0].voterId}" name="cadreRegistrationVO.voterId"></input>
 										<div class="span6">
 										<h5 class="text-align1">Age</h5>
-											<input type="text" class="form-control border-radius-0 " placeholder="Age" name="cadreRegistrationVO.houseNo"   value="${voterInfoVOList[0].age}"></input>
+											<input type="text" class="form-control border-radius-0 " placeholder="Age" name="cadreRegistrationVO.age"   value="${voterInfoVOList[0].age}"></input>
 										</div>
 									</div>
 								</div>
@@ -1000,22 +1008,38 @@
 	<div id="fadeInUp">
 		<div class="container m_top10">
 			<div class="span12 show-grid" style="position: relative;">
-				<h3 class="text-align "></h3>
+				<h3 class="text-align ">ACCIDENTAL INSURANCE DETAILS</h3>
 			</div>
 		</div>
 		<div class="container m_top10">
 			<div class="span12 show-grid" style="position: relative;" id="accDiv">
-				<div class="span3">
+				<div class="span2">
 					<h5 class="text-align1"> Aadheer Number </h5>
-					<input type="text" class="form-control border-radius-0 text-align2" placeholder="Aadheer Number"  name="cadreRegistrationVO.aadheerNo"></input> 
+					<input type="text" class="" style="width: 138px;" placeholder="Aadheer Number"  name="cadreRegistrationVO.aadheerNo"></input> 
 				</div>
 				
-				<div class="span3">
+				<div class="span2">
 					<h5 class="text-align1"> Nominee Name </h5>
-					<input type="text" class="form-control border-radius-0 text-align2" placeholder="Nominee Name"  name="cadreRegistrationVO.nomineeName"></input>
+					<input type="text" class="" style="width: 138px;"placeholder="Nominee Name"  name="cadreRegistrationVO.nomineeName"></input>
 				</div>
 				
-				<div class="span3">
+				
+				
+				<div class="span2">
+					<h5 class="text-align1"> Gender </h5>
+					<select name="cadreRegistrationVO.nomineeGender" style="width: 138px;">
+							<option value="0">Select Gender</option>	
+							<option value="1">Male</option>
+							<option value="2">Female</option>
+					</select>
+				</div>
+				
+				<div class="span2">
+					<h5 class="text-align1"> Age </h5>
+					<input type="text" class=""  style="width: 100px;" placeholder="Nominee Name"  name="cadreRegistrationVO.nomineeAge"></input>
+				</div>
+				
+				<div class="span2">
 					<h5 class="text-align1"> Relation Type </h5>
 					<select name="cadreRegistrationVO.voterRelationId" style="width:160px;">
 							<option value="0">Select Relation</option>	

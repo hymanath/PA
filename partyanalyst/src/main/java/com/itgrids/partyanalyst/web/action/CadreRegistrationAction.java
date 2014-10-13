@@ -69,7 +69,8 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private CadrePrintVO						cadrePrintVO;
 	private List<CadrePrintVO>					basicVOList;
 	private List<BasicVO>						constituencyList;
-	
+	private String								panchayatId;
+	private String								boothId;
 	
 	public void setConstituencyList(List<BasicVO> constituencyList) {
 		this.constituencyList = constituencyList;
@@ -308,6 +309,23 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 
 	public void setBasicVOList(List<CadrePrintVO> basicVOList) {
 		this.basicVOList = basicVOList;
+	}
+
+	
+	public String getPanchayatId() {
+		return panchayatId;
+	}
+
+	public void setPanchayatId(String panchayatId) {
+		this.panchayatId = panchayatId;
+	}
+
+	public String getBoothId() {
+		return boothId;
+	}
+
+	public void setBoothId(String boothId) {
+		this.boothId = boothId;
 	}
 
 	public String execute()
