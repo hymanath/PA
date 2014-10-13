@@ -2898,38 +2898,53 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			List<Object[]> cdrCmmtLvlList = cadreCommitteeLevelDAO.getAllCadreCommitteeLevels();
 			List<Object[]> cdrRlsList = cadreRolesDAO.getAllCadreRoles();
 			
-			if(cdrCmmtList!=null && cdrCmmtList.size()>0){
-				
-				SelectOptionVO finalVO = new SelectOptionVO();
-				List<SelectOptionVO> tempList= new ArrayList<SelectOptionVO>();
-				for(Object[] temp:cdrCmmtList){
-					tempList.add(new SelectOptionVO(Long.valueOf(temp[0].toString()),temp[1].toString()));
+			SelectOptionVO finalVO1 = new SelectOptionVO();
+			List<SelectOptionVO> tempList1= new ArrayList<SelectOptionVO>();
+			tempList1.add(new SelectOptionVO(0L,"Select Committee"));
+			
+			SelectOptionVO finalVO2 = new SelectOptionVO();
+			List<SelectOptionVO> tempList2= new ArrayList<SelectOptionVO>();
+			tempList2.add(new SelectOptionVO(0L,"Select Level"));
+			
+			SelectOptionVO finalVO3 = new SelectOptionVO();
+			List<SelectOptionVO> tempList3= new ArrayList<SelectOptionVO>();
+			tempList3.add(new SelectOptionVO(0L,"Select Role"));
+			
+			if(cdrCmmtList!=null && cdrCmmtList.size()>0)
+			{				
+				for(Object[] temp:cdrCmmtList)
+				{
+					tempList1.add(new SelectOptionVO(Long.valueOf(temp[0].toString()),temp[1].toString()));
 				}
-				finalVO.setName("CadreCommitteeList");
-				finalVO.setSelectOptionsList(tempList);
-				finalList.add(finalVO);
-				
 			}
+			
+			finalVO1.setName("CadreCommitteeList");
+			finalVO1.setSelectOptionsList(tempList1);
+			finalList.add(finalVO1);
+			
 			if(cdrCmmtLvlList!=null && cdrCmmtLvlList.size()>0){
-				SelectOptionVO finalVO = new SelectOptionVO();
-				List<SelectOptionVO> tempList= new ArrayList<SelectOptionVO>();
-				for(Object[] temp:cdrCmmtLvlList){
-					tempList.add(new SelectOptionVO(Long.valueOf(temp[0].toString()),temp[1].toString()));
+				for(Object[] temp:cdrCmmtLvlList)
+				{
+					tempList2.add(new SelectOptionVO(Long.valueOf(temp[0].toString()),temp[1].toString()));
 				}
-				finalVO.setName("CadreCommitteeLevelsList");
-				finalVO.setSelectOptionsList(tempList);
-				finalList.add(finalVO);
+				
 			}
-			if(cdrRlsList!=null && cdrRlsList.size()>0){
-				SelectOptionVO finalVO = new SelectOptionVO();
-				List<SelectOptionVO> tempList= new ArrayList<SelectOptionVO>();
-				for(Object[] temp:cdrRlsList){
-					tempList.add(new SelectOptionVO(Long.valueOf(temp[0].toString()),temp[1].toString()));
+			
+			finalVO2.setName("CadreCommitteeLevelsList");
+			finalVO2.setSelectOptionsList(tempList2);
+			finalList.add(finalVO2);
+			
+			if(cdrRlsList!=null && cdrRlsList.size()>0)
+			{
+				for(Object[] temp:cdrRlsList)
+				{
+					tempList3.add(new SelectOptionVO(Long.valueOf(temp[0].toString()),temp[1].toString()));
 				}
-				finalVO.setName("CadreRolesList");
-				finalVO.setSelectOptionsList(tempList);
-				finalList.add(finalVO);
 			}
+			
+			finalVO3.setName("CadreRolesList");
+			finalVO3.setSelectOptionsList(tempList3);
+			finalList.add(finalVO3);
 			
 		}catch (Exception e) {
 			LOG.error("Exception Raised in getCadreLevelsForCadreSearch "+ e);
