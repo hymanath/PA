@@ -206,10 +206,16 @@
 			increaseArea: '20%' // optional
 		  });
 		 
+		 $('#voterRelationId').val(parseInt(${voterInfoVOList[0].voterRelationId}));
+	
 	});
 
 	var rolesSize = 1;
 	var isRolesSet = true;
+	
+	function enableSearchByName(){
+		$('#preEnrollNoValue').removeAttr('readOnly');
+	}
 	function createNewForm()
 	{
 		if(participationCount >= 1 &&  isRolesSet)
@@ -254,7 +260,7 @@
 		str += '<div class=" " >';
 		//str += '<h5 class="text-align1">From Date</h5>';
 		str += '<div class="input-prepend text-align2 ">';
-		str += '<input type="text" class="form-control span2 border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].fromDateStr"></input></span>';
+		str += '<input type="text" class="form-control span2 border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].fromDateStr"  readOnly="true"></input></span>';
 		str += '</div>';
 		str += '</div>';
 		str += '</div>';
@@ -262,7 +268,7 @@
 		str += '<div class=" " >';
 		//str += '<h5 class="text-align1">To Date</h5>';
 		str += '<div class="input-prepend  ">';
-		str += '<input type="text" class="form-control span2  border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].toDateStr"></input></span>';
+		str += '<input type="text" class="form-control span2  border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].toDateStr"  readOnly="true"></input></span>';
 		str += '</div>';
 		str += '</div>';
 		str += '</div>';
@@ -758,7 +764,7 @@
 												
 												<div class="input-prepend text-align2 ">
 													
-													<input type="text" class="datePickerCls" name="cadreRegistrationVO.dobStr" value="${voterInfoVOList[0].dateOfBirth}" placeholder="Date of Birth"></input>
+													<input type="text" class="datePickerCls" name="cadreRegistrationVO.dobStr" value="${voterInfoVOList[0].dateOfBirth}" placeholder="Date of Birth" readOnly="true"></input>
 													</div>
 													
 													<h5 class="text-align1">GENDER</h5>	 
@@ -835,7 +841,7 @@
 										
 											<div class="span6">
 											<h5 class="text-align1">PARTY MEMBER SINCES</h5>
-												<input type="text" class="form-control border-radius-0 text-align2 datePickerCls" placeholder="Party Member Since " name="cadreRegistrationVO.partyMemberSinceStr"  value="${voterInfoVOList[0].activeDate}"></input>
+												<input type="text" class="form-control border-radius-0 text-align2 datePickerCls" placeholder="Party Member Since " name="cadreRegistrationVO.partyMemberSinceStr"  value="${voterInfoVOList[0].activeDate}"  readOnly="true"></input>
 											</div>
 											
 											<div class="span6">
@@ -882,10 +888,10 @@
 							<input type="text" class="form-control border-radius-0 input-block-level"  id="occupationValue"  placeholder=" Enter Occupation "  value="${voterInfoVOList[0].occupation}" style="width:260px;"></input>
 							
 							</div>
-							<div class=" m_top20" >
+							<div class=" m_top20" > 
 									<h5 class="text-align1">PREVIOUS ENROLLMENT NUMBER</h5>
 									<input type="text" id="preEnrollNoValue" class="form-control border-radius-0 input-block-level" placeholder="Previous Enrollment No."  value="${voterInfoVOList[0].memberShipId}" style="width:260px;" readonly onkeyup="getExistingCadreInfo()" name="cadreRegistrationVO.previousEnrollmentNumber"></input>
-									
+									<a id="searchByNameId" class="btn btn-success" href="javascript:{enableSearchByName();}" style="margin-top: -10px;"> Search By Name </a>
 									<input type="hidden" id="preEnrollNo" class="form-control border-radius-0 input-block-level" placeholder="Text input"  value="${voterInfoVOList[0].memberShipId}" style="width:260px;" ></input>
 									
 							</div>
@@ -1036,13 +1042,13 @@
 		<div class="container m_top10">
 			<div class="span12 show-grid" style="position: relative;" id="accDiv">
 				<div class="span2">
-					<h5 class="text-align1"> Aadheer Number </h5>
-					<input type="text" class="" style="width: 138px;" placeholder="Aadheer Number"  name="cadreRegistrationVO.aadheerNo"></input> 
+					<h5 class="text-align1"> Aadhar Card Number </h5>
+					<input type="text" class="" style="width: 138px;" placeholder="Aadheer Number"  name="cadreRegistrationVO.aadheerNo" value="${voterInfoVOList[0].aadharNo}"></input> 
 				</div>
 				
 				<div class="span2">
 					<h5 class="text-align1"> Nominee Name </h5>
-					<input type="text" class="" style="width: 138px;"placeholder="Nominee Name"  name="cadreRegistrationVO.nomineeName"></input>
+					<input type="text" class="" style="width: 138px;"placeholder="Nominee Name"  name="cadreRegistrationVO.nomineeName" value="${voterInfoVOList[0].nomineeName}"></input>
 				</div>
 				
 				
@@ -1063,7 +1069,7 @@
 				
 				<div class="span2">
 					<h5 class="text-align1"> Relation Type </h5>
-					<select name="cadreRegistrationVO.voterRelationId" style="width:160px;">
+					<select name="cadreRegistrationVO.voterRelationId" style="width:160px;" id="voterRelationId">
 							<option value="0">Select Relation</option>	
 							<option value="1">Father</option>
 							<option value="2">Mother</option>
@@ -1143,7 +1149,7 @@
 							<h5 class="text-align1">From Date </h5>
 						</c:if>
 								<div class="input-prepend text-align2 ">				
-									<input type="text" class="form-control span2 border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList[${indexValue.index}].fromDateStr" value="${participation.startTime}" placeholder="From Date"></input></span>
+									<input type="text" class="form-control span2 border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList[${indexValue.index}].fromDateStr" value="${participation.startTime}" placeholder="From Date"  readOnly="true"></input></span>
 								</div>
 						</div>
 					</div>
@@ -1153,7 +1159,7 @@
 							<h5 class="text-align1">To Date </h5>
 						</c:if>
 								<div class="input-prepend  ">	
-									<input type="text" class="form-control span2  border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList[${indexValue.index}].toDateStr"  value="${participation.endTime}" placeholder="To Date"></input></span>
+									<input type="text" class="form-control span2  border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList[${indexValue.index}].toDateStr"  value="${participation.endTime}" placeholder="To Date"  readOnly="true"></input></span>
 								</div>
 						</div>
 					</div>
@@ -1184,7 +1190,7 @@
 						<div class=" " >
 							<h5 class="text-align1">From Date</h5>
 								<div class="input-prepend text-align2 ">				
-									<input type="text" class="form-control span2 border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList[0].fromDateStr" placeholder="From Date"></input></span>
+									<input type="text" class="form-control span2 border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList[0].fromDateStr" placeholder="From Date"  readOnly="true"></input></span>
 								</div>
 						</div>
 					</div>
@@ -1192,7 +1198,7 @@
 						<div class=" " >
 							<h5 class="text-align1">To Date</h5>
 								<div class="input-prepend  ">	
-									<input type="text" class="form-control span2  border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList[0].toDateStr" placeholder="To Date"></input></span>
+									<input type="text" class="form-control span2  border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList[0].toDateStr" placeholder="To Date"  readOnly="true"></input></span>
 								</div>
 						</div>
 					</div>
@@ -1351,6 +1357,8 @@ function getExistingCadreInfo()
 	$('#preEnrollNo').val('');
 	var constituencyId = '${constiteucnyId}';
 	var panchayatId = '${houseNo}';  // panchayat Id 
+	var boothId = '${boothId}';  // boothId Id 
+	var isPresentCadre = '${panchayatId}';  // ispresentCader checked ot not 
 	
 	if(value.trim().length >2)
 	{
@@ -1361,6 +1369,8 @@ function getExistingCadreInfo()
 				name : value,
 				constituencyId : constituencyId,
 				panchayatId : panchayatId,
+				boothId : boothId,
+				isPresentCadre:isPresentCadre,
 				task:"getExistingCadreInfo"             
 			   }
 			   
