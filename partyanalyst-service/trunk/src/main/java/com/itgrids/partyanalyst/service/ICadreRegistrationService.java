@@ -61,6 +61,7 @@ public interface ICadreRegistrationService {
 	
 	public List<GenericVO> getCandidateDetailsForElection(Long candidateId, Long electionId);
 	
-	public List<SelectOptionVO> getCandidateInfoByNomination(Long electionId,Long nominationId);
+	public List<SelectOptionVO> getCadreLevelsForCadreSearch();
 	
+	public List<SelectOptionVO> getCandidateInfoByNomination(Long electionId,Long nominationId);
 }
