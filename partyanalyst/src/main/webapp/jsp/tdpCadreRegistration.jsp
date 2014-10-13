@@ -772,6 +772,7 @@
 			var jsObj = 
 			   {			
 				  electionId : eletionId,
+				  constituencyId : constituencyId,
 				  task       : "getConstiteuncyListForElection"             
 			   }				   
 			   $.ajax({
@@ -997,7 +998,7 @@
 							</div>
 							<div class=" m_top20" > 
 									<h5 class="text-align1">PREVIOUS ENROLLMENT NUMBER</h5>
-									<input type="text" id="preEnrollNoValue" class="form-control border-radius-0 input-block-level" placeholder="Previous Enrollment No."  value="${voterInfoVOList[0].memberShipId}" style="width:260px;" readonly onkeyup="getExistingCadreInfo()" name="cadreRegistrationVO.previousEnrollmentNumber"></input>
+									<input type="text" id="preEnrollNoValue" class="form-control border-radius-0 input-block-level" placeholder="Previous Enrollment No."  value="${voterInfoVOList[0].memberShipId}" style="width:260px;"  onkeyup="getExistingCadreInfo();" name="cadreRegistrationVO.previousEnrollmentNumber" readonly></input>
 									<a id="searchByNameId" class="btn btn-success" href="javascript:{enableSearchByName();}" style="margin-top: -10px;"> Search By Name </a>
 									<input type="hidden" id="preEnrollNo" class="form-control border-radius-0 input-block-level" placeholder="Text input"  value="${voterInfoVOList[0].memberShipId}" style="width:260px;" ></input>
 									
@@ -1201,132 +1202,13 @@
 			
 			<div class="span12 show-grid" style="position: relative;" id="rollesDiv">	
 				
-				
-				
 			
-				<!--<div class="row">
-					<a class="btn btn-success" style="float:right" onClick="createNewForm();">Add More</a>
-				</div>-->
-				<!--<s:if test="%{voterInfoVOList[0].cadreRolesList != null && voterInfoVOList[0].cadreRolesList.size() > 0}">
-					<c:forEach var="participation" items="${voterInfoVOList[0].cadreRolesList}" varStatus="indexValue">
-
-					<div class="row rolesList">
-					<div class="span3">
-							<div class=" " >
-							<c:if test="${indexValue.index == 0}">	
-								<h5 class="text-align1"> Select Level </h5>
-							</c:if>
-							<select  name="cadreRegistrationVO.previousRollesList[${indexValue.index}].designationLevelId" id="cadreLevelId" style="margin-left: 12px">
-								<option value="0">Select Level</option>
-								<c:forEach var="educationList" items="${eletionTypesList}" >															
-									<c:if test="${educationList.id == participation.id }">																
-										<option value="${educationList.id}" selected="selected">${educationList.name}</option>
-									</c:if>	
-									<c:if test="${educationList.id != participation.id }">																
-										<option value="${educationList.id}">${educationList.name}</option>
-									</c:if>	
-								</c:forEach>
-							</select>
-													 
-													 
-							</div>
-					</div>
-					<div class="span3">
-						<div class=" " >
-						<c:if test="${indexValue.index == 0}">	
-							<h5 class="text-align1">Party Designation </h5>
-						</c:if>
-								 
-							<select  name="cadreRegistrationVO.previousRollesList[${indexValue.index}].designationLevelValue" id="partyDesignationId" style="margin-left: 12px">
-								<option value="0">Select Level</option>
-								<c:forEach var="educationList" items="${selectOptionVOList}" >															
-									<c:if test="${educationList.id == participation.count }">																
-										<option value="${educationList.id}" selected="selected">${educationList.name}</option>
-									</c:if>	
-									<c:if test="${educationList.id != participation.count }">																
-										<option value="${educationList.id}">${educationList.name}</option>
-									</c:if>	
-								</c:forEach>
-							</select>
-							
-						</div>
-		
-					</div>
-		
-					<div class="span2">
-						<div class=" " >
-
-						<c:if test="${indexValue.index == 0}">	
-							<h5 class="text-align1">From Date </h5>
-						</c:if>
-								<div class="input-prepend text-align2 ">				
-									<input type="text" class="form-control span2 border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList[${indexValue.index}].fromDateStr" value="${participation.startTime}" placeholder="From Date"  readOnly="true"></input></span>
-								</div>
-						</div>
-					</div>
-					<div class="span2 ">
-						<div class=" " >
-						<c:if test="${indexValue.index == 0}">	
-							<h5 class="text-align1">To Date </h5>
-						</c:if>
-								<div class="input-prepend  ">	
-									<input type="text" class="form-control span2  border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList[${indexValue.index}].toDateStr"  value="${participation.endTime}" placeholder="To Date"  readOnly="true"></input></span>
-								</div>
-						</div>
-					</div>
-					
-				</div>
-					</c:forEach>
-						<a class="icon-plus-sign" style="float: right;margin-right: 120px;margin-top:-30px;" onClick="createNewForm();" title="Add More Details"></a>
-			</s:if>
-			<s:else>
-				<div class="row rolesList">
-					<div class="span3">
-							<div class=" " >
-								<h5 class="text-align1"> Select Level </h5>
-									<select class="" name="cadreRegistrationVO.previousRollesList[0].designationLevelId" id="cadreLevelId" style="margin-left: 12px">
-									 </select>
-							</div>
-					</div>
-					<div class="span3">
-						<div class=" " >
-							<h5 class="text-align1">Party Designation </h5>
-								<select class="" name="cadreRegistrationVO.previousRollesList[0].designationLevelValue" id="partyDesignationId" style="margin-left: 12px">								
-								  </select>
-						</div>
-		
-					</div>
-		
-					<div class="span2">
-						<div class=" " >
-							<h5 class="text-align1">From Date</h5>
-								<div class="input-prepend text-align2 ">				
-									<input type="text" class="form-control span2 border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList[0].fromDateStr" placeholder="From Date"  readOnly="true"></input></span>
-								</div>
-						</div>
-					</div>
-					<div class="span2 ">
-						<div class=" " >
-							<h5 class="text-align1">To Date</h5>
-								<div class="input-prepend  ">	
-									<input type="text" class="form-control span2  border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList[0].toDateStr" placeholder="To Date"  readOnly="true"></input></span>
-								</div>
-						</div>
-					</div>
-					<div class="span2 ">
-						<div class=" " >
-								<div class="input-prepend text-align2 ">	
-								<a class="icon-plus-sign" style="float:left;margin-top:30px;" onClick="createNewForm();" title="Add More Details"></a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</s:else>-->
 			
 					<div class="levelCls">
 						<div>
 							<h5 class="text-align1"> Committee Level </h5>
-								<select class="levelCls" id="CadreCommitteeId" name="cadreRegistrationVO.previousRollesList[0].cadreCommitteeId" style="margin-left: 12px"></select>
+							<select class="levelCls" id="CadreCommitteeLevelsId" name="cadreRegistrationVO.previousRollesList[0].cadreCommitteeLevelId"  style="margin-left: 12px"></select>
+							
 						</div>
 		
 					</div>
@@ -1334,14 +1216,15 @@
 					<div class="levelCls">
 						<div class=" " >
 							<h5 class="text-align1"> Cadre Committee </h5>
-								<select class="levelCls" id="CadreCommitteeLevelsId" name="cadreRegistrationVO.previousRollesList[0].cadreCommitteeLevelId"  style="margin-left: 12px"></select>
+							<select class="levelCls" id="CadreRolesId" name="cadreRegistrationVO.previousRollesList[0].cadreCommitteeId" style="margin-left: 12px"></select>
+									
 						</div>
 					</div>
 					
 					<div class="levelCls">
 						<div class=" " >
 							<h5 class="text-align1">Cadre Role </h5>
-								<select class="levelCls" id="CadreRolesId" name="cadreRegistrationVO.previousRollesList[0].cadreRoleId" style="margin-left: 12px"></select>
+								<select class="levelCls" id="CadreCommitteeId" name="cadreRegistrationVO.previousRollesList[0].cadreRoleId" style="margin-left: 12px"></select>
 						</div>
 		
 					</div>
@@ -1429,7 +1312,7 @@
 							<h5 class="text-align1">Constituency</h5>
 						</c:if>
 
-							<select   id="constituencyList${indexValue.index}" name="cadreRegistrationVO.previousParicaptedElectionsList[${indexValue.index}].constituencyId" style="margin-left: 12px" onchange="getCandidateDetailsForElection(this.value,'candidatesList${indexValue.index}','electionYearId${indexValue.index}',
+							<select   id="constituencyList${indexValue.index}"  style="margin-left: 12px" onchange="getCandidateDetailsForElection(this.value,'candidatesList${indexValue.index}','electionYearId${indexValue.index}',
 							'electionsTypeID${indexValue.index}');">
 								<option value="0"> Select Constituency</option>
 								<c:forEach var="educationList" items="${voterInfoVOList[0].previousParticipationInfoList[indexValue.index].basicVO.hamletCasteInfo}" >															
@@ -1451,7 +1334,7 @@
 							<h5 class="text-align1">Candidate </h5>
 						</c:if>
 
-							<select   id="candidatesList${indexValue.index}" name="cadreRegistrationVO.previousParicaptedElectionsList[${indexValue.index}].constituencyId" style="margin-left: 12px" onchange="getCandidateDetailsById('electionYearId${indexValue.index},this.value');">
+							<select   id="candidatesList${indexValue.index}"  style="margin-left: 12px" onchange="getCandidateDetailsById('constituencyList${indexValue.index}','electionYearId${indexValue.index}',this.value);">
 								<option value="0"> Select Candidate</option>
 								<c:forEach var="educationList" items="${voterInfoVOList[0].previousParticipationInfoList[indexValue.index].basicVO.hamletVoterInfo}" ><option value="${educationList.id}">${educationList.name}</option>
 								</c:forEach>
@@ -1463,6 +1346,9 @@
 				</div>				
 					</c:forEach>
 					<a class="icon-plus-sign" style="float:right;margin-right:206px;;margin-top:-30px;" onClick="createNewFormForElections();" title="Add More Details"></a>
+					
+					<div id="candidateDivTab" style="float:left;"></div>
+					
 			</s:if>
 			<s:else>
 			
@@ -1473,10 +1359,10 @@
 							<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="electionTypeId" list="eletionTypesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Election Type" style="width:220px;margin-left: 12px"   onChange="getElectionYears(this.value,'electionYearId0')" value="%{role.id}"/>
 						</div>
 					</div>
-					<div class="span3">
+					<div class="span2">
 						<div class=" " >
 							<h5 class="text-align1">Year</h5>
-							<select class="" name="cadreRegistrationVO.previousParicaptedElectionsList[0].electionTypeId" id="electionYearId0" onchange="getConstiteuncyListForElection(this.value,'constituencyList0')">							
+							<select class="" style="width: 150px;" name="cadreRegistrationVO.previousParicaptedElectionsList[0].electionTypeId" id="electionYearId0" onchange="getConstiteuncyListForElection(this.value,'constituencyList0')">							
 							  </select>
 						</div>
 					</div>
@@ -1484,7 +1370,8 @@
 						<div class=" " >
 							<h5 class="text-align1">Constituency</h5>
 							
-							<select id="constituencyList0" name="cadreRegistrationVO.previousParicaptedElectionsList[0].constituencyId" style="margin-left: 12px" >		
+							<select id="constituencyList0" name="cadreRegistrationVO.previousParicaptedElectionsList[0].constituencyId" style="margin-left: 12px" onchange="getCandidateDetailsForElection(this.value,'candidatesList0','electionYearId0',
+							'electionsTypeID0');">		
 							<option value="0"> Select Constituency</option>
 							 </select>
 							
@@ -1494,7 +1381,7 @@
 					<div class="span3">
 						<div class=" " >
 							<h5 class="text-align1">Candidate </h5>
-							<select   id="candidatesList0" name="cadreRegistrationVO.previousParicaptedElectionsList[0].constituencyId" style="margin-left: 12px" onchange="getCandidateDetailsById('electionYearId${indexValue.index},this.value');">
+							<select   id="candidatesList0"  style="margin-left: 12px" onchange="getCandidateDetailsById('constituencyList0','electionYearId0',this.value);">
 								<option value="0"> Select Candidate</option>
 								<c:forEach var="educationList" items="${voterInfoVOList[0].previousParticipationInfoList[indexValue.index].basicVO.hamletVoterInfo}" ><option value="${educationList.id}">${educationList.name}</option>
 								</c:forEach>
@@ -1508,8 +1395,9 @@
 									<a class="icon-plus-sign" style="float:left;margin-top:30px;" onClick="createNewFormForElections();" title="Add More Details"></a>
 						</div>
 					</div>
-				</div>
-				
+					
+					<div id="candidateDivTab" style="float:left;"></div>
+				</div>				
 			</s:else>
 			</div>
 		</div>
@@ -1676,10 +1564,10 @@ $("#cardNumber").keyup(function(){
 	
 });
 
-function getCandidateDetailsById(electionId,nominationId )
+function getCandidateDetailsById(constituencyId,electionId,nominationId )
 {
 var electionsId = $('#'+electionId+'').val();
-	
+	$('#candidateDivTab').html('');
 	var jsObj = 
 	   {
 			electionId : electionsId,
@@ -1691,8 +1579,37 @@ var electionsId = $('#'+electionId+'').val();
 			url : "getCandidateInfoByNominationAction.action",
 			data : {task:JSON.stringify(jsObj)} ,
 		}).done(function(result){
-		console.log(result);
+			buildCandidateDetails(result);
 		});
+}
+var prvEleCount = 1;
+function buildCandidateDetails(result)
+{
+	var str ='';
+	if(result != null)
+	{
+		str +='<table class="table table-bordered m_top20 table-hover table-striped"  id="seachDetalsTab1" style="width:850px;">';
+		str+='<tbody>';
+		
+		for(var i in result)
+		{
+			str+='<tr class="removeId'+i+'" >';
+				str += '<input type="hidden" value=""></input>';
+				str += '<input type="hidden" value="'+result[i].orderId+'" name="cadreRegistrationVO.previousParicaptedElectionsList['+prvEleCount+'].electionTypeId"></input>';
+				str += '<input type="hidden" value="'+result[i].mainAccountId+'" name="cadreRegistrationVO.previousParicaptedElectionsList['+prvEleCount+'].constituencyId"></input>';
+				str += '<input type="hidden" value="'+result[i].orderId+'" name="cadreRegistrationVO.previousParicaptedElectionsList['+prvEleCount+'].candidateId"></input>';
+				str +='<td>'+result[i].name+'</td>';
+				str +='<td>'+result[i].location+'</td>';
+				str +='<td>'+result[i].panchayatName+' ('+result[i].partno+')</td>';
+				str +='<td> <a class="icon-minus-sign" href="javascript:{deleteDetails(\'removeId'+i+'\')}"></a></td>';
+			str+='</tr>';
+		}
+		
+		str+='</tbody>';
+		str +='</table>';
+		
+		$('#candidateDivTab').html(str);
+	}
 }
 function showHideFamRelatinoSts(){
   
@@ -1721,5 +1638,13 @@ function getAllRelationDetails(){
 	});
 }
 getAllRelationDetails();
+function deleteDetails(id)
+	{
+		if(confirm('Are you sure want to delete it? '))
+		{
+			$('.'+id).remove();
+		}		
+	}
+	
 </script>
 </html>
