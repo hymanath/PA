@@ -809,7 +809,7 @@
 										<input type="hidden" value="${voterInfoVOList[0].voterId}" name="cadreRegistrationVO.voterId"></input>
 										<div class="span6">
 										<h5 class="text-align1">Relationship Type</h5>
-											<input type="text" class="form-control border-radius-0 " placeholder="Age" name="cadreRegistrationVO.relationType"   value="${voterInfoVOList[0].relationType}"></input>
+											<input type="text" class="form-control border-radius-0 " placeholder="Relationship Type" name="cadreRegistrationVO.relationType"   value="${voterInfoVOList[0].relationType}"></input>
 										</div>
 									</div>
 								</div>
@@ -913,7 +913,7 @@
 												<th  style="width:80px;"> AGE </th>
 												<th  style="width:80px;"> GENDER </th>
 												<th  style="width:156px;"> EDUCATION  </th>
-												<th  style="width:175px;"> OCCUPATION </th>
+												<th  style="width:182px;"> OCCUPATION </th>
 												<th> <a class="icon-plus-sign" style="float:right;margin-right:0px;margin-top:-13px;" onClick="addMoreVoters();"  title="Add More Voter Details"> </a></th>
 													
 							<s:if test="%{voterInfoVOList[0].voterInfoVOList != null && voterInfoVOList[0].voterInfoVOList.size() > 0}">
