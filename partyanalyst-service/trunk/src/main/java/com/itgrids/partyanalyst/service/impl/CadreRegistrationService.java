@@ -34,10 +34,12 @@ import com.itgrids.partyanalyst.dao.ICadreSurveyUserAssignDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyDesignationDAO;
@@ -48,6 +50,7 @@ import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreFamilyVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
@@ -112,13 +115,23 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private ITdpCadreFamilyDetailsDAO		tdpCadreFamilyDetailsDAO;
 	private ImageAndStringConverter 		imageAndStringConverter = new ImageAndStringConverter();
 	
-	private ICadreSurveyUserAssignDetailsDAO  cadreSurveyUserAssignDetailsDAO;
-	private ICadreSurveyUserDAO cadreSurveyUserDAO;
-	private IRegionServiceData regionServiceDataImp;
-	private IOccupationDAO occupationDAO;
+	private ICadreSurveyUserAssignDetailsDAO  	cadreSurveyUserAssignDetailsDAO;
+	private ICadreSurveyUserDAO 				cadreSurveyUserDAO;
+	private IRegionServiceData 					regionServiceDataImp;
+	private IOccupationDAO 						occupationDAO;
+	private IConstituencyElectionDAO 			constituencyElectionDAO;
+	private INominationDAO 						nominationDAO;
 	
 	
-	
+	public void setNominationDAO(INominationDAO nominationDAO) {
+		this.nominationDAO = nominationDAO;
+	}
+
+	public void setConstituencyElectionDAO(
+			IConstituencyElectionDAO constituencyElectionDAO) {
+		this.constituencyElectionDAO = constituencyElectionDAO;
+	}
+
 	public void setOccupationDAO(IOccupationDAO occupationDAO) {
 		this.occupationDAO = occupationDAO;
 	}
@@ -675,7 +688,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 									{
 										tdpCadreFamilyDetails.setVoterName(cadreFamilyVO.getVoterName());
 									}
-									if(tdpCadreFamilyDetails.getOccupationId() != null && cadreFamilyVO.getOccupationId().longValue() > 0l)
+									if(cadreFamilyVO.getOccupationId() != null && cadreFamilyVO.getOccupationId().longValue() > 0l)
 									{
 										tdpCadreFamilyDetails.setOccupationId(cadreFamilyVO.getOccupationId());
 									}
@@ -1092,8 +1105,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						vo = new VoterInfoVO();
 						try {
 								vo.setCadreId(tdpCadre.getTdpCadreId());
-								String dateOfBirth = tdpCadre.getDateOfBirth() != null ? tdpCadre.getDateOfBirth().toString().substring(0, 10):"";
-								vo.setDateOfBirth(dateOfBirth != null ? new SimpleDateFormat("dd-MM-yyyy").format(new SimpleDateFormat("yy-MM-dd").parse(tdpCadre.getDateOfBirth().toString())):"");
+								Date dateOfBirth = tdpCadre.getDateOfBirth() != null ? tdpCadre.getDateOfBirth():null;
+								vo.setDateOfBirth(dateOfBirth != null ? new SimpleDateFormat("dd-MM-yyyy").format(dateOfBirth):"");
 								
 								if(tdpCadre.getVoter() != null)
 									
@@ -1121,12 +1134,12 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 									vo.setHouseNo("");
 									vo.setRelationType("");
 									
-									if(dateOfBirth != null && dateOfBirth.trim().length()>0)
+									if(dateOfBirth != null)
 									{
 										Calendar startDate = new GregorianCalendar();
 										Calendar endDate = new GregorianCalendar();
 										
-										startDate.setTime(new SimpleDateFormat("yy-MM-dd").parse(dateOfBirth));
+										startDate.setTime(dateOfBirth);
 										
 										endDate.setTime(new Date());
 
@@ -1321,6 +1334,191 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		return returnList;
 	}
 	
+	public List<BasicVO> constituencyListForElection(Long electionId)
+	{
+		List<BasicVO> returnList = new ArrayList<BasicVO>();
+		try {
+			List<Object[]> constituencyList = constituencyElectionDAO.getConstituenciesByElectionId(electionId);
+			List<Long> constiIds = new ArrayList<Long>();
+			
+			if(constituencyList != null && constituencyList.size() > 0)
+			{
+				for (Object[] objects : constituencyList)
+				{
+					if(objects[0] != null) 
+					{
+						Constituency constituency = constituencyDAO.get((Long)objects[0]);
+						
+						if(constituency.getLocalElectionBody() != null)
+						{
+							if(!constiIds.contains(constituency.getLocalElectionBody().getLocalElectionBodyId()))
+							{
+								constiIds.add(constituency.getLocalElectionBody().getLocalElectionBodyId());
+								
+								BasicVO basicVO = new BasicVO();
+								basicVO.setId(constituency.getLocalElectionBody().getLocalElectionBodyId());
+								basicVO.setName(constituency.getLocalElectionBody().getName() +" "+constituency.getLocalElectionBody().getElectionType().getElectionType());
+								returnList.add(basicVO);
+							}
+						}							
+						else if(constituency.getState().getStateId() == 1L)
+						{
+							BasicVO basicVO = new BasicVO();
+							basicVO.setId(constituency.getConstituencyId());
+							basicVO.setName(constituency.getName());
+							returnList.add(basicVO);
+						}
+					}
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in constituencyListForElection in CadreRegistrationService service", e);
+		}
+		
+		return returnList;
+	}
+	
+	public List<BasicVO> participatedCandList(Long electionId,Long constituencyId)
+	{
+		List<BasicVO> returnList = new ArrayList<BasicVO>();
+		try {
+
+			List<Object[]>	candidatesInfo = nominationDAO.getNominatedCandidateInfoForAConstituency(constituencyId,electionId);
+			
+			if(candidatesInfo != null && candidatesInfo.size() > 0)
+			{
+				for (Object[] objects : candidatesInfo)
+				{
+					if(objects[0] != null)
+					{
+						BasicVO basicVO = new BasicVO();
+						basicVO.setId((Long)objects[0]);
+						basicVO.setName(objects[1] != null ? objects[1].toString() : "");
+						returnList.add(basicVO);
+					}
+					
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in constituencyListForElection in CadreRegistrationService service", e);
+		}
+		
+		return returnList;
+		
+	}
+	
+	public List<GenericVO> getCandidateDetailsForElection(Long candidateId, Long electionId)
+	{
+		List<GenericVO> returnList = new ArrayList<GenericVO>();
+		
+		try {
+			
+			List<Object[]> participationInfo = nominationDAO.getCandidateResultsByCandidateInfo(candidateId,electionId);
+			
+			if(participationInfo != null && participationInfo.size()>0)
+			{
+				for (Object[] participation : participationInfo)
+				{
+					GenericVO vo = new GenericVO();
+					vo.setId(participation[0] != null ? Long.valueOf(participation[0].toString().trim()):0L);		//electionScopeId
+					vo.setCount(participation[1] != null ? Long.valueOf(participation[1].toString().trim()):0L);	// election Id
+					vo.setRank(participation[2] != null ? Long.valueOf(participation[2].toString().trim()):0L);		// constituencyId
+					vo.setName(participation[3] != null ?participation[3].toString().trim():"");					// party name
+					vo.setPercent(participation[4] != null ?participation[4].toString().trim():"0L");				
+					
+					List<SelectOptionVO> electionTypeList = getElectionYearsByElectionType(vo.getId());
+					List<GenericVO> electionsList = new ArrayList<GenericVO>();
+					
+					if(electionTypeList != null && electionTypeList.size()>0)
+					{
+						for (SelectOptionVO selectOptionVO : electionTypeList) 
+						{
+							GenericVO electionVo = new GenericVO();
+							electionVo.setId(selectOptionVO.getId());
+							electionVo.setName(selectOptionVO.getName());
+							
+							electionsList.add(electionVo);	
+						}
+						
+						vo.setGenericVOList(electionsList);						
+					}
+					
+					returnList.add(vo);
+				}	
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in getCandidateDetailsForElection in CadreRegistrationService service", e);
+		}
+		
+		return returnList;
+	}
+	/*
+	public List<GenericVO> getExistingCadreParticipationInfo(Long tdpCadreId)
+	{
+		List<GenericVO> returnList = new ArrayList<GenericVO>();
+		
+		try {
+			
+			List<Object[]> participationInfo = cadreParticipatedElectionDAO.getPreviousParticipationInfoByTdpCadreId(tdpCadreId);
+			
+			if(participationInfo != null && participationInfo.size()>0)
+			{
+				for (Object[] participation : participationInfo)
+				{
+					GenericVO vo = new GenericVO();
+					vo.setId(participation[0] != null ? Long.valueOf(participation[0].toString().trim()):0L);		//electionScopeId
+					vo.setCount(participation[1] != null ? Long.valueOf(participation[1].toString().trim()):0L);	// election Id
+					vo.setRank(participation[2] != null ? Long.valueOf(participation[2].toString().trim()):0L);		// constituencyId
+					
+					
+					List<BasicVO> constituencyList = constituencyListForElection(vo.getCount());
+					
+					if(constituencyList != null && constituencyList.size()>0)
+					{
+						vo.getBasicVO().setHamletCasteInfo(constituencyList);
+					}
+					
+					List<BasicVO> participatedCandList = participatedCandList(vo.getCount(),vo.getRank());
+					
+					if(participatedCandList != null && participatedCandList.size()>0)
+					{
+						vo.getBasicVO().setHamletVoterInfo(participatedCandList);
+					}
+					
+					List<SelectOptionVO> electionTypeList = getElectionYearsByElectionType(participation[0] != null ? Long.valueOf(participation[0].toString().trim()):0L);
+					List<GenericVO> electionsList = new ArrayList<GenericVO>();
+					
+					if(electionTypeList != null && electionTypeList.size()>0)
+					{
+						for (SelectOptionVO selectOptionVO : electionTypeList) 
+						{
+							GenericVO electionVo = new GenericVO();
+							electionVo.setId(selectOptionVO.getId());
+							electionVo.setName(selectOptionVO.getName());
+							
+							electionsList.add(electionVo);	
+						}
+						
+						vo.setGenericVOList(electionsList);						
+						returnList.add(vo);
+						
+					}
+					else
+					{
+						returnList.add(vo);
+					}
+					
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in getExistingCadreParticipationInfo in CadreRegistrationService service", e);
+		}
+		
+		return returnList;
+	}
+	
+	*/
 	
 	public List<GenericVO> getExistingCadreParticipationInfo(Long tdpCadreId)
 	{
@@ -1402,6 +1600,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		return returnList;
 	}
 	
+
 	public VoterInfoVO getmatchedVOByVoterId(List<VoterInfoVO> existingFamilyList, Long voterId)
 	{
 		VoterInfoVO voterVO = null;
@@ -1536,16 +1735,16 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				}
 				else if(araaType != null && araaType.equalsIgnoreCase("URBAN"))
 				{
-					List<Object[]> localelectinbody = localElectionBodyDAO.getMuncipalitiesAndCorporationsInAConstituency(tehsilIds);
+					List<Object[]> boothList = boothDAO.getAllBoothsInUrban(constituencyId, IConstants.VOTER_DATA_PUBLICATION_ID);
 					
-					if(localelectinbody != null && localelectinbody.size()>0)
+					if(boothList != null && boothList.size()>0)
 					{
-						for (Object[] param : localelectinbody)
+						for (Object[] param : boothList)
 						{
 							GenericVO vo = new GenericVO();
 							
 							vo.setId(param[0] != null ? Long.valueOf(param[0].toString()):0L);
-							vo.setName(param[1] != null ? param[1].toString()+" Muncipality/Corporation ":"");
+							vo.setName(param[1] != null ? "Booth - "+param[1].toString() + "  ("+(param[2] != null? param[2].toString()+") ":""):"");
 							
 							returnList.add(vo);
 							
@@ -1630,7 +1829,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								GenericVO vo = new GenericVO();
 								
 								vo.setId(param[0] != null ? Long.valueOf(param[0].toString()):0L);
-								vo.setName(param[2] != null ? "Booth - "+param[2].toString():"");
+								vo.setName(param[2] != null ? "Booth - "+param[2].toString() + "  ("+(param[3] != null? param[3].toString()+") ":""):"");
 								
 								returnList.add(vo);
 								
@@ -1641,7 +1840,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				}
 				else
 				{
-					List<Object[]> boothList = boothDAO.getAllBoothsInAMuncipality(locationId, IConstants.VOTER_DATA_PUBLICATION_ID);
+					List<Object[]> boothList = boothDAO.getAllBoothsInUrban(constituencyId, IConstants.VOTER_DATA_PUBLICATION_ID);
 					
 					if(boothList != null && boothList.size()>0)
 					{
@@ -1650,7 +1849,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							GenericVO vo = new GenericVO();
 							
 							vo.setId(param[0] != null ? Long.valueOf(param[0].toString()):0L);
-							vo.setName(param[2] != null ? "Booth - "+param[2].toString():"");
+							vo.setName(param[1] != null ? "Booth - "+param[1].toString() + "  ("+(param[2] != null? param[2].toString()+") ":""):"");
 							
 							returnList.add(vo);
 							
@@ -1859,7 +2058,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						
 						vo.setName(param[0] != null ? param[0].toString().trim():"");
 						vo.setDesc(param[1] != null ? param[1].toString().trim():"");
-						vo.setRank(param[2] != null ? Long.valueOf(param[2].toString().trim()):0L);
+						vo.setCaste(param[2] != null ? param[2].toString().trim():"");
 						
 						vo.setId(param[3] != null ? Long.valueOf(param[3].toString().trim()):0L);
 						
