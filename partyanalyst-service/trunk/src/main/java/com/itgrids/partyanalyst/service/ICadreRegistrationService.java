@@ -55,9 +55,12 @@ public interface ICadreRegistrationService {
 	
 	public String isTabAssignedAlready(String TabNo);
 	
-	public List<BasicVO> constituencyListForElection(Long electionId);
+	public List<BasicVO> constituencyListForElection(Long electionId,Long constituencyId);
 	
 	public List<BasicVO> participatedCandList(Long electionId,Long constituencyId);
 	
 	public List<GenericVO> getCandidateDetailsForElection(Long candidateId, Long electionId);
+	
+	public List<SelectOptionVO> getCandidateInfoByNomination(Long electionId,Long nominationId);
+	
 }
