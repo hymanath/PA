@@ -1664,7 +1664,23 @@
 <bean id="voterRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterRelationDAO" >
 	<property name="sessionFactory" ref="sessionFactory" />
 </bean>
-	
+
+
+<bean id="cadreCommitteeLevelDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreCommitteeLevelDAO" >
+	<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
+<bean id="cadreCommitteeDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreCommitteeDAO" >
+	<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
+<bean id="cadreRolesDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreRolesDAO" >
+	<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
+<bean id="cadreCommitteeRoleDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreCommitteeRoleDAO" >
+	<property name="sessionFactory" ref="sessionFactory" />
+</bean>	
 	
 	<!--  end -->
 </beans>		
