@@ -1192,7 +1192,8 @@ if(!flag){
 			return;
 		}
 		var str = '';
-		str+='<table class="table table-bordered">';
+		str+='<table class="table table-bordered" id="casteDataTable">';
+		str+='<thead>';
 		if(type == "Constituency")
 		str+='<th>Constituency</th>';
 		if(type == "Mandal")
@@ -1207,6 +1208,8 @@ if(!flag){
 		str+='<th>male Caste Voters</th>';
 		str+='<th>female Caste Voters</th>';
 		str+='<th>Caste Percentage</th>';
+		str+='</thead>';
+		str+='<tbody>';
 		for(var i in result)
 		{
 			for(var j in result[i].casteList)
@@ -1240,9 +1243,10 @@ if(!flag){
 						}
 				}
 			}
-		
+		str+='</tbody>';
 		str+='</table>';
 		$("#CastevoterData").html(str);
+		$("#casteDataTable").dataTable();
 	}
 	
 	function getCasteVotersCountInRegion()
