@@ -91,6 +91,9 @@ public class TdpCadre {
 	
 	private String						cadreType;
 	
+	private String 						photoType;
+	private String						nameType;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "tdp_cadre_id", unique = true, nullable = false)
@@ -552,6 +555,21 @@ public class TdpCadre {
 	}
 	public void setRelativeType(String relativeType) {
 		this.relativeType = relativeType;
+	}
+	
+	@Column(name="photo_type")
+	public String getPhotoType() {
+		return photoType;
+	}
+	public void setPhotoType(String photoType) {
+		this.photoType = photoType;
+	}
+	@Column(name="name_type")
+	public String getNameType() {
+		return nameType;
+	}
+	public void setNameType(String nameType) {
+		this.nameType = nameType;
 	}
 	
 	

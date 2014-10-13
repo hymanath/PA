@@ -17,6 +17,7 @@ public class CadreRegistrationVO implements Serializable{
 	private String		 	 dobStr;
 	private String			 gender;
 	private String 			 relativeName;
+
 	private String 			 voterId;
 	private String 			 previousEnrollmentNumber;
 	private String 			 voterCardNo;
@@ -60,11 +61,15 @@ public class CadreRegistrationVO implements Serializable{
 	
 	private String 			constituencyId;
 	private String			panchayatId;
-	private String            boothId;
+	private String          boothId;
 	private String			muncipalityId;
 	
 	private Long			voterRelationId;
 	private String 			cadreType;
+	
+	private String			photoType;
+	private String			nameType;
+	private String			 relationType;
 
 	
 	private List<CadrePreviousRollesVO> previousRollesList;
@@ -357,11 +362,30 @@ public class CadreRegistrationVO implements Serializable{
 	public void setNomineeAge(Long nomineeAge) {
 		this.nomineeAge = nomineeAge;
 	}
+	public String getPhotoType() {
+		return photoType;
+	}
+	public void setPhotoType(String photoType) {
+		this.photoType = photoType;
+	}
+	
+	public String getNameType() {
+		return nameType;
+	}
+	public void setNameType(String nameType) {
+		this.nameType = nameType;
+	}
 	public String getNomineeGender() {
 		return nomineeGender;
 	}
 	public void setNomineeGender(String nomineeGender) {
 		this.nomineeGender = nomineeGender;
+	}
+	public String getRelationType() {
+		return relationType;
+	}
+	public void setRelationType(String relationType) {
+		this.relationType = relationType;
 	}
 	
 	

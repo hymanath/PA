@@ -7271,10 +7271,10 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 			queryStr1.append(" and BPV.booth.boothId = :boothId ");
 		}
 		
-		if(villageCovered != null && villageCovered.trim().length()>0)
+		/*if(villageCovered != null && villageCovered.trim().length()>0 && Long.valueOf(villageCovered.trim()))
 		{
 			queryStr1.append(" and BPV.booth.villagesCovered like '%"+villageCovered+"%' ");
-		}
+		}*/
 		
 		Query query = getSession().createQuery(queryStr1.toString());
 			
