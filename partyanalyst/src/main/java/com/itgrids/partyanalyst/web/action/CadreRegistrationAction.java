@@ -71,6 +71,8 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private List<BasicVO>						constituencyList;
 	private String								panchayatId;
 	private String								boothId;
+	private Boolean                             relativeTypeChecked;
+	private Long                                relativeTypeId;
 	
 	public void setConstituencyList(List<BasicVO> constituencyList) {
 		this.constituencyList = constituencyList;
@@ -327,6 +329,22 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	public void setBoothId(String boothId) {
 		this.boothId = boothId;
 	}
+	
+	public Boolean getRelativeTypeChecked() {
+		return relativeTypeChecked;
+	}
+
+	public void setRelativeTypeChecked(Boolean relativeTypeChecked) {
+		this.relativeTypeChecked = relativeTypeChecked;
+	}
+
+	public Long getRelativeTypeId() {
+		return relativeTypeId;
+	}
+
+	public void setRelativeTypeId(Long relativeTypeId) {
+		this.relativeTypeId = relativeTypeId;
+	}
 
 	public String execute()
 	{
@@ -368,7 +386,10 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 				cadreRegistrationVO.setDob(convertToDateFormet(cadreRegistrationVO.getDobStr()));
 				if(cadreRegistrationVO.getPartyMemberSinceStr() != null && cadreRegistrationVO.getPartyMemberSinceStr().trim().length() > 0)
 				cadreRegistrationVO.setPartyMemberSince(convertToDateFormet(cadreRegistrationVO.getPartyMemberSinceStr()));
-				
+				if(relativeTypeChecked != null){
+					cadreRegistrationVO.setRelative(true);
+					cadreRegistrationVO.setRelationTypeId(relativeTypeId);
+				}
 				List<CadrePreviousRollesVO> rolesVOList = cadreRegistrationVO.getPreviousRollesList();
 				if(rolesVOList != null && rolesVOList.size() > 0)
 				{
@@ -853,6 +874,16 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		return Action.SUCCESS;
 	}
 	
+	public String getAllRelationDetails(){
+		
+		try {		
+			selectOptionVOList = cadreRegistrationService.getAllRelationDetails();
+		}
+		catch(Exception e){
+			LOG.error("Exception raised in getAllRelationDetails method in CadreRegistrationAction action", e);
+		}
+		return Action.SUCCESS;
+	}
 	
 	public String getConstiteuncyListForElection()
 	{

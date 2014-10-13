@@ -204,11 +204,11 @@
 		
 		prepopulateOptions();
 		//prepopulateElctionOptions();
-		$('input').iCheck({
+		/*$('input').iCheck({
 			checkboxClass: 'icheckbox_square-blue',
 			radioClass: 'iradio_square-blue',
 			increaseArea: '20%' // optional
-		  });
+		  });*/
 		 
 		 $('#voterRelationId').val(parseInt(${voterInfoVOList[0].voterRelationId}));
 	
@@ -932,6 +932,8 @@
 											<h5 class="text-align1">H NO</h5>
 												<input type="text" class="form-control border-radius-0 " placeholder="House Number" name="cadreRegistrationVO.houseNo"   value="${voterInfoVOList[0].houseNo}"></input>
 											</div>
+											<div class="span6"> <input type="checkbox" id="relativeTypeChecked" name="relativeTypeChecked" onclick="showHideFamRelatinoSts();"/> Is Family Member</div>
+											<div  class="span6" id="showHideFammemberType" style="display:none; margin-left: 232px;margin-top: -33px;"><select name="relativeTypeChecked" id="relativeTypeId"> </select></div>
 										</div>
 								</div>	
 								
@@ -1685,6 +1687,32 @@ var electionsId = $('#'+electionId+'').val();
 		console.log(result);
 		});
 }
-
+function showHideFamRelatinoSts(){
+  
+   if($('#relativeTypeChecked').prop('checked')==true){
+     $('#showHideFammemberType').show();
+   }else{
+     $('#showHideFammemberType').hide();
+   }
+}
+function getAllRelationDetails(){
+	 $.ajax({
+		type : "POST",
+		url : "getAllRelationDetails.action"
+	}).done(function(result){
+	  if(result != null && result.length > 0){
+	   for(var i in result){
+		 $('#relativeTypeId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+	    }
+	  }
+	 
+	  <s:if test="voterInfoVOList[0].relative != null">
+	    $('#relativeTypeId').val('${voterInfoVOList[0].relationTypeId >0}');
+		$('#relativeTypeChecked').attr("checked","checked");
+		showHideFamRelatinoSts();
+	  </s:if>
+	});
+}
+getAllRelationDetails();
 </script>
 </html>

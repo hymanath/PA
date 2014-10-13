@@ -8614,7 +8614,12 @@
 				<param name="root">voterHouseInfoVO</param>
 			</result>
 		</action>
-		
+						
+		<action name="getAllRelationDetails" class="cadreRegistrationAction" method="getAllRelationDetails">
+			<result type="json" name="success">
+				<param name="root">selectOptionVOList</param>
+			</result>
+		</action>
 		
 </package>
 

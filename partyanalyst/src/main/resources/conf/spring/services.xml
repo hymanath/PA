@@ -2199,6 +2199,7 @@
 		<property name="cadreCommitteeLevelDAO" ref="cadreCommitteeLevelDAO" />
 		<property name="cadreRolesDAO" ref="cadreRolesDAO" />		
 						
+		<property name="voterRelationDAO" ref="voterRelationDAO" />				
      </bean>
       
       <bean name="cadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CadreDashBoardService">
