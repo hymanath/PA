@@ -54,7 +54,8 @@
 
 			<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="userConstituencyId" list="selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" style="width:460px;" onChange="getConstituencyWiseDetails();"/>
 			<select style="width:150px;" id="panchayatList" onchange="getLocationWiseDetails();"><option value="0"> Select Panchayat </option></select>		
-			<select style="width:150px;" id="boothsList" onchange="getBoothCoverdVillagesDetails();"> <option value="0"> Select Booth </option> </select> 	<select style="width:150px;" id="vilagecovrdList"> <option value="0"> Select Covered Village </option> </select> 
+			<select style="width:250px;" id="boothsList"> <option value="0"> Select Booth </option> </select> 	
+			<!-- <select style="width:150px;" id="vilagecovrdList"> <option value="0"> Select Covered Village </option> </select>  -->
 			<img src='images/icons/search.gif' id="loadingImg" style="display:none;"/>
 				
 				<h5 class="text-align small m_top15">SEARCH BY</h5>
@@ -145,7 +146,7 @@
 		var searchType = $('input[name="searchTypeRadio"]:checked').val();
 		var panchayatId = $('#panchayatList').val();
 		var boothId = $('#boothsList').val();
-		var villageCoveredId = $('#vilagecovrdList').val(); 
+		//var villageCoveredId = $('#vilagecovrdList').val(); 
 		var villageCovered = '';
 		$('#errorDiv').html('');
 		if(cosntiteucnyId == 0 )
@@ -236,12 +237,12 @@
 			{
 				request.abort();
 			}
-		
+		/*
 			if(villageCoveredId != 0)
 			{
 				villageCovered = $("#vilagecovrdList option:selected").text();
 			}
-			
+		*/	
 			
 			$('#searchDataImg').show();
 
@@ -254,7 +255,7 @@
 					  voterCardNo : voterCardNo,
 					  panchayatId : panchayatId,
 					  boothId : boothId ,
-					  locationId : villageCovered,
+					  locationId : 0,
 					  task:"searchCandidatesDtailsBySearchCriteria"             
 				   }
 
@@ -435,8 +436,8 @@
 					}
 				});
 	}
-	
-		function getBoothCoverdVillagesDetails()
+	/*
+	function getBoothCoverdVillagesDetails()
 	{
 		var boothsArr = [];	
 		var locationId = $('#boothsList').val();		
@@ -465,6 +466,7 @@
 					}
 				});
 	}
+	*/
 	function getPrintDetails()
 	{
 		var jsObj = 
