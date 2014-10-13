@@ -31,6 +31,7 @@ public interface ISurveyCompletedLocationsDAO extends GenericDao<SurveyCompleted
 	public List<Object[]> getDistrictWiseCompletedConstituenciesDetails();
 
 	public List<Object[]> getCompletedConstituencyDetails();
+	public List<Object[]> getSurveyConstituenciesStatus();
 	
 }
 

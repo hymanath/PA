@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
+import com.itgrids.partyanalyst.dto.SurveyCompletionDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.service.ICtpCasteReportService;
@@ -222,6 +223,7 @@ public class CtpCasteReportService implements ICtpCasteReportService{
 		return null;
 	 }
 	 
+	 
 	 public VoterHouseInfoVO getVotersCountInRegion(Long constituencyId,String locationType,Long userId)
 	 {
 		 VoterHouseInfoVO result = new VoterHouseInfoVO();
@@ -263,7 +265,7 @@ public class CtpCasteReportService implements ICtpCasteReportService{
 		}
 		return result;
 	 }
-	 
+	
 	 public void setDataToList(List<Object[]> list,List<VoterHouseInfoVO> resultList,String locationType,Long constituencyId)
 	 {
 		 List<Long> locationIds = new ArrayList<Long>();
@@ -309,5 +311,149 @@ public class CtpCasteReportService implements ICtpCasteReportService{
 					
 				}
 			}
+	 }
+	 
+	 public VoterHouseInfoVO getCatseVotersCountInRegion(Long constituencyId,String locationType,Long userId)
+	 {
+		 VoterHouseInfoVO result = new VoterHouseInfoVO();
+		 List<VoterHouseInfoVO> resultList = new ArrayList<VoterHouseInfoVO>();
+
+		 List<VoterHouseInfoVO> localbodyList = new ArrayList<VoterHouseInfoVO>();
+		 result.setVotersList(resultList);
+		 try{
+			if(locationType.equalsIgnoreCase(IConstants.MANDAL))
+			{
+			List<Object[]> list1 = userVoterDetailsDAO.getCasteVotersCountBylocationTypeInConstituency(IConstants.VOTER_DATA_PUBLICATION_ID,userId,constituencyId,IConstants.LOCAL_ELECTION_BODY);
+			result.setLocalbodyList(localbodyList);
+			
+			setCasteDataToList(list1,localbodyList,IConstants.LOCAL_ELECTION_BODY,constituencyId);
+			}
+			List<Object[]> list = userVoterDetailsDAO.getCasteVotersCountBylocationTypeInConstituency(IConstants.VOTER_DATA_PUBLICATION_ID,userId,constituencyId,locationType);
+			setCasteDataToList(list,resultList,locationType,constituencyId);
+			if(resultList != null && resultList.size() > 0)
+			for(VoterHouseInfoVO vo1 : resultList)
+			{
+				if( vo1.getCasteList() != null &&  vo1.getCasteList().size() > 0)
+				for(VoterHouseInfoVO castVo : vo1.getCasteList())
+				{
+				if(vo1.getTotalCasteVoters() == 0)
+					castVo.setPercentage("-");
+				else
+					castVo.setPercentage(new BigDecimal(castVo.getCasteCount()*(100.0)/vo1.getTotalCasteVoters()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				}
+			}
+			if(localbodyList != null && localbodyList.size() > 0)
+				for(VoterHouseInfoVO vo2 : localbodyList)
+				{
+					if( vo2.getCasteList() != null &&  vo2.getCasteList().size() > 0)
+					for(VoterHouseInfoVO castVo1 : vo2.getCasteList())
+					{
+					if(vo2.getTotalCasteVoters() == 0)
+						castVo1.setPercentage("-");
+					else
+						castVo1.setPercentage(new BigDecimal(castVo1.getCasteCount()*(100.0)/vo2.getTotalCasteVoters()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					}
+				}
+			 
+		 }
+		 catch (Exception e) {
+			 LOG.error("Exception Occured in getCTPVoterCount()", e);
+		}
+		return result;
+	 } 
+	 public void setCasteDataToList(List<Object[]> list,List<VoterHouseInfoVO> resultList,String locationType,Long constituencyId)
+	 {
+		Map<Long,Map<Long,VoterHouseInfoVO>> resultMap = new HashMap<Long, Map<Long,VoterHouseInfoVO>>();
+		Map<Long,String> locationName = new HashMap<Long, String>();
+		 	if(list != null && list.size() > 0)
+			{
+		 		for(Object[] params :list)
+				{
+		 			Map<Long,VoterHouseInfoVO> casteMap = resultMap.get((Long)params[0]);
+		 			if(casteMap == null)
+		 			{
+		 				casteMap = new HashMap<Long, VoterHouseInfoVO>();
+		 				if(locationType.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+		 				locationName.put((Long)params[0], params[1].toString() + " Muncipality");
+		 				else
+		 					locationName.put((Long)params[0], params[1].toString());
+		 				resultMap.put((Long)params[0], casteMap);
+		 			}
+		 			VoterHouseInfoVO vo = casteMap.get((Long)params[4]);
+		 			if(vo == null)
+		 			{
+		 				if(params[4] != null)
+		 				{
+		 					vo = new VoterHouseInfoVO();
+		 				vo.setCasteStateId((Long)params[4]);
+		 				vo.setCast(params[5].toString());
+		 				vo.setCasteCount(0l);
+		 				vo.setCategoryName(params[6].toString());
+		 				casteMap.put((Long)params[4],vo);
+		 				}
+		 			}
+		 			
+				}
+		 		
+		 		for(Long location : resultMap.keySet())
+		 		{
+		 			
+		 			VoterHouseInfoVO vo = new VoterHouseInfoVO();
+		 			vo.setId(location);
+		 			vo.setName(locationName.get(location));
+		 			Map<Long,VoterHouseInfoVO> casteMap = resultMap.get(location);
+		 			if(casteMap != null)
+		 			vo.setCasteList(new ArrayList<VoterHouseInfoVO>(casteMap.values()));
+		 			vo.setTotalCasteVoters(0l);
+		 			resultList.add(vo);
+		 		}
+		 		for(Object[] params :list)
+				{
+		 			VoterHouseInfoVO vo = getMatchedVo(resultList, (Long)params[0]);
+					if(vo != null)
+					{
+						VoterHouseInfoVO casteVo = getMatchedCasteVo(vo.getCasteList(), (Long)params[4]);
+						if(casteVo != null)
+						{
+						if(params[3] != null && params[3].toString().equalsIgnoreCase("M"))
+							casteVo.setMaleCnt((Long)params[2]);
+						else if(params[3] != null && params[3].toString().equalsIgnoreCase("F"))
+							casteVo.setFemaleCnt((Long)params[2]);
+							casteVo.setCasteCount(casteVo.getMaleCnt() + casteVo.getFemaleCnt());
+							
+						}
+						vo.setTotalCasteVoters(vo.getTotalCasteVoters() + (Long)params[2]);
+					}	
+				}
+		 		
+			}
+	 }
+	 public VoterHouseInfoVO getMatchedCasteVo(List<VoterHouseInfoVO> castelist ,Long id)
+	 {
+		 try{
+			 if(castelist == null || castelist.size() == 0)
+				 return null;
+			 for(VoterHouseInfoVO vo : castelist)
+			 {
+				 if(vo.getCasteStateId().longValue() == id.longValue())
+					 return vo;
+			 }
+		 }
+		 catch (Exception e) {
+			 LOG.error("Exception Occured in getMatchedVo()", e);
+		}
+		return null;
+	 }
+	 public SurveyCompletionDetailsVO getSurveyStatusDetailsInfo()
+	 {
+		 SurveyCompletionDetailsVO resultVo = new SurveyCompletionDetailsVO();
+		 try{
+			
+			 
+		 }
+		 catch (Exception e) {
+			LOG.error("Exception Occured in getSurveyStatusDetailsInfo() method", e);
+		}
+		return resultVo;
 	 }
 }
