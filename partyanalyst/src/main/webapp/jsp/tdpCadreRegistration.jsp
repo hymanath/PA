@@ -1064,7 +1064,7 @@
 				
 				<div class="span2">
 					<h5 class="text-align1"> Age </h5>
-					<input type="text" class=""  style="width: 100px;" placeholder="Nominee Name"  name="cadreRegistrationVO.nomineeAge"></input>
+					<input type="text" class=""  style="width: 100px;" placeholder="Nominee Name"  name="cadreRegistrationVO.nomineeAge" value="${voterInfoVOList[0].nomineAge}"></input>
 				</div>
 				
 				<div class="span2">
