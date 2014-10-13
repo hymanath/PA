@@ -441,9 +441,9 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			String voterCardNo = jobj.getString("voterCardNo");
 			Long panchayatId = jobj.getLong("panchayatId");
 			Long boothId = jobj.getLong("boothId");
-			String vilagesCovered = jobj.getString("locationId");
+			String isPresentCadre = jobj.getString("isPresentCadre");
 			
-			voterInfoVOList = cadreRegistrationService.getSearchDetailsCadreRegistration(constituencyId,searchType,candidateName,voterCardNo,houseNo,panchayatId,boothId,vilagesCovered);
+			voterInfoVOList = cadreRegistrationService.getSearchDetailsCadreRegistration(constituencyId,searchType,candidateName,voterCardNo,houseNo,panchayatId,boothId,isPresentCadre);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in searchVoterAndCadreInfoBySearchCriteria method in CadreRegistrationAction Action",e);
@@ -491,7 +491,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			
 			if(entitlementsHelper.checkForEntitlementToViewReport(user,"CADRE_REGISTRATION_2014"))
 			{
-				constituencyesList = 	surveyDataDetailsService.getAssemblyConstituenciesByStateId(0l,1l);
+				constituencyesList = 	surveyDataDetailsService.getAssemblyConstituenciesByStateId(0l,1l);  
 				genericVOList = candidateUpdationDetailsService.gettingEducationDetails();
 				selectOptionVOList = staticDataService.getAllOccupations();
 				eletionTypesList = cadreRegistrationService.getElectionOptionDetailsForCadre();
@@ -607,7 +607,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		try {		
 			jobj = new JSONObject(getTask());
 			
-			genericVOList = cadreRegistrationService.getExistingCadreInfo(jobj.getString("name"),jobj.getLong("constituencyId"),jobj.getLong("panchayatId"));	
+			genericVOList = cadreRegistrationService.getExistingCadreInfo(jobj.getString("name"),jobj.getLong("constituencyId"),jobj.getLong("panchayatId"),jobj.getLong("boothId"),jobj.getString("isPresentCadre"));	
 		}
 		catch(Exception e){
 			LOG.error("Exception raised in getExistingCadreInfo method in CadreRegistrationAction action", e);
